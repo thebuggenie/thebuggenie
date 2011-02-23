@@ -1437,7 +1437,6 @@
 				TBGLogging::log("Setting scope from function parameter");
 				self::$_scope = $scope;
 				TBGSettings::forceSettingsReload();
-				TBGSettings::loadSettings();
 				TBGLogging::log("...done (Setting scope from function parameter)");
 				return true;
 			}
@@ -1445,13 +1444,13 @@
 			$row = null;
 			try
 			{
-				if (!self::isCLI())
+				if (!self::isCLI() && !self::isInstallmode())
 				{
 					TBGLogging::log("Checking if scope can be set from hostname (".$_SERVER['HTTP_HOST'].")");
 					$row = TBGScopesTable::getTable()->getByHostname($_SERVER['HTTP_HOST']);
 				}
 
-				if (!$row)
+				if (!$row && class_exists('TBGScopesTable'))
 				{
 					TBGLogging::log("Using default scope.");
 					$row = TBGScopesTable::getTable()->getDefault();

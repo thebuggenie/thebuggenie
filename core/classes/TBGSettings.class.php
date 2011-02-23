@@ -68,13 +68,13 @@
 							$cc++;
 							self::$_settings[$row->get(TBGSettingsTable::MODULE)][$row->get(TBGSettingsTable::NAME)][$row->get(TBGSettingsTable::UID)] = $row->get(TBGSettingsTable::VALUE);
 						}
-						if ($cc == 0)
+						if ($cc == 0 && !TBGContext::isInstallmode())
 						{
 							TBGLogging::log('There were no settings stored in the database!', 'main', TBGLogging::LEVEL_FATAL);
-							throw new TBGSettingsException('Could not retrieve settings from database');
+							throw new TBGSettingsException('Could not retrieve settings from database (no settings stored)');
 						}
 					}
-					else
+					elseif (!TBGContext::isInstallmode())
 					{
 						TBGLogging::log('Settings could not be retrieved from the database!', 'main', TBGLogging::LEVEL_FATAL);
 						throw new TBGSettingsException('Could not retrieve settings from database');

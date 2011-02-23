@@ -371,40 +371,7 @@
 			<?php TBGEvent::createNew('core', 'viewissue_tab_panes_front', $issue)->trigger(); ?>
 			<div id="tab_comments_pane" style="padding-top: 0; margin: 0 5px 0 5px;" class="comments">
 				<div id="viewissue_comments">
-					<?php if ($tbg_user->canPostComments()): ?>
-						<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px;" id="comment_add_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="$('comment_add_button').hide(); $('comment_add').show();$('comment_bodybox').focus();" value="<?php echo __('Add new comment'); ?>"></td></tr></table>
-						<div id="comment_add" class="comment_add" style="<?php if (!(isset($comment_error) && $comment_error)): ?>display: none; <?php endif; ?>margin-top: 5px;">
-							<div class="comment_add_main">
-								<div class="comment_add_title"><?php echo __('Create a comment'); ?></div><br>
-								<form id="comment_form" accept-charset="<?php echo strtoupper(TBGContext::getI18n()->getCharset()); ?>" action="<?php echo make_url('comment_add', array('project_id' => $issue->getProject()->getID(), 'comment_applies_id' => $issue->getID(), 'comment_applies_type' => 1, 'comment_module' => 'core')); ?>" method="post" onSubmit="return addComment('<?php echo make_url('comment_add', array('project_id' => $issue->getProject()->getID(), 'comment_applies_id' => $issue->getID(), 'comment_applies_type' => 1, 'comment_module' => 'core')); ?>', 'viewissue_comment_count');">
-									<label for="comment_visibility"><?php echo __('Comment visibility'); ?> <span class="faded_out">(<?php echo __('whether to hide this comment for "regular users"'); ?>)</span></label><br />
-									<select class="comment_visibilitybox" id="comment_visibility" name="comment_visibility">
-										<option value="1"><?php echo __('Visible for all users'); ?></option>
-										<option value="0"><?php echo __('Visible for me, developers and administrators only'); ?></option>
-									</select>
-									<br />
-									<label for="comment_bodybox"><?php echo __('Comment'); ?></label><br />
-									<?php include_template('main/textarea', array('area_name' => 'comment_body', 'area_id' => 'comment_bodybox', 'height' => '200px', 'width' => '970px', 'value' => ((isset($comment_error) && $comment_error) ? $comment_error_body : ''))); ?>
-									<div id="comment_add_indicator" style="display: none;">
-										<?php echo image_tag('spinning_20.gif'); ?>
-									</div>
-
-									<div id="comment_add_controls" style="font-size: 12px;" class="comment_controls">
-										<input type="checkbox" name="comment_save_changes" id="comment_save_changes" value="1"<?php if (isset($issue_unsaved) || (isset($comment_error) && $comment_error)): ?> checked<?php endif; ?>>&nbsp;<label for="comment_save_changes"><?php echo __('Save my changes with this comment'); ?></label>
-										<br><br>
-										<input type="hidden" name="forward_url" value="<?php echo make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())); ?>">
-										<?php echo __('%create_comment% or %cancel%', array('%create_comment%' => '<input type="submit" class="comment_addsave" value="'.__('Create comment').'" />', '%cancel%' => '<a href="javascript:void(0);" onClick="$(\'comment_add\').hide();$(\'comment_add_button\').show();">'.__('cancel').'</a>')); ?>
-									</div>
-								</form>
-							</div>
-						</div>
-					<?php endif; ?>
-					<div class="faded_out comments_none" id="comments_none" <?php if (count(TBGComment::getComments($issue->getID(), 1)) != 0): ?>style="display: none;"<?php endif; ?>><?php echo __('There are no comments'); ?></div>
-					<div id="comments_box">
-						<?php foreach (TBGComment::getComments($issue->getID(), 1) as $comment): ?>
-							<?php include_template('main/comment', array('comment' => $comment, 'issue' => $issue)); ?>
-						<?php endforeach; ?>
-					</div>
+					<?php include_template('main/comments', array('target_id' => $issue->getID(), 'target_type' => TBGComment::TYPE_ISSUE, 'comment_count_div' => 'viewissue_comment_count', 'save_changes_checked' => (isset($issue_unsaved) || (isset($comment_error) && $comment_error)), 'issue' => $issue, 'forward_url' => make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())))); ?>
 				</div>
 			</div>
 			<div id="tab_attached_information_pane" style="padding-top: 0; margin: 0 5px 0 5px; display: none;">

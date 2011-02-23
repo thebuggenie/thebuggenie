@@ -1,8 +1,4 @@
-<?php
-
-	$options = (isset($issue)) ? array('issue' => $issue) : array();
-
-?>
+<?php $options = (isset($issue)) ? array('issue' => $issue) : array(); ?>
 <div class="comment" id="comment_<?php echo $comment->getTargetType(); ?>_<?php echo $comment->getTargetID(); ?>_<?php echo $comment->getID(); ?>">
 	<div style="padding: 5px;" id="comment_view_<?php echo $comment->getID(); ?>" class="comment_main">
 		<div id="comment_<?php echo $comment->getID(); ?>_header" class="commentheader">

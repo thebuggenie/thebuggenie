@@ -380,7 +380,7 @@
 					TBGContext::reinitializeI18n('en_US');
 					$scope = new TBGScope();
 					$scope->setName('The default scope');
-					$scope->setHostname($url_host);
+					$scope->setHostname('*');
 					$scope->setEnabled();
 					TBGContext::setScope($scope);
 					$scope->save();
@@ -443,6 +443,7 @@
 			{
 				$this->cliEcho("\n\nThe installation was interrupted\n", 'red');
 				$this->cliEcho($e->getMessage() . "\n");
+				var_dump($e->getTraceAsString());die();
 			}
 			$this->cliEcho("\n");
 		}

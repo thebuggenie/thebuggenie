@@ -1171,3 +1171,152 @@ function _detachFile(url, file_id, base_id)
 		}
 	});
 }
+
+function deleteComment(url, cid)
+{
+	new Ajax.Request(url, {
+	asynchronous:true,
+	method: "post",
+	requestHeaders: {Accept: 'application/json'},
+	onLoading: function (transport) {
+		$('comment_delete_controls_' + cid).hide();
+		$('comment_delete_indicator_' + cid).show();
+	},
+	onSuccess: function(transport) {
+		var json = transport.responseJSON;
+		if (json.failed)
+		{
+			$('comment_delete_controls_' + cid).show();
+			$('comment_delete_indicator_' + cid).hide();
+			failedMessage(json.error);
+		}
+		else
+		{
+			$('comment_delete_indicator_' + cid).remove();
+			$('comment_delete_confirm_' + cid).remove();
+			$('comment_' + cid).remove();
+			if ($('comments_box').childElements().size() == 0)
+			{
+				$('comments_none').show();
+			}
+			successMessage(json.title);
+		}
+	},
+	onFailure: function (transport) {
+		$('comment_delete_indicator_' + cid).hide();
+		$('comment_delete_controls_' + cid).show();
+		var json = transport.responseJSON;
+		if (json && (json.failed || json.error))
+		{
+			failedMessage(json.error);
+		}
+	}
+	});
+}
+
+function updateComment(url, cid)
+{
+	params = $('comment_edit_form_' + cid).serialize();
+	new Ajax.Request(url, {
+	asynchronous:true,
+	method: "post",
+	parameters: params,
+	requestHeaders: {Accept: 'application/json'},
+	onLoading: function (transport) {
+		$('comment_edit_controls_' + cid).hide();
+		$('comment_edit_indicator_' + cid).show();
+	},
+	onSuccess: function(transport) {
+		var json = transport.responseJSON;
+		if (json.failed)
+		{
+			$('comment_edit_controls_' + cid).show();
+			$('comment_edit_indicator_' + cid).hide();
+			failedMessage(json.error);
+		}
+		else
+		{
+			$('comment_edit_indicator_' + cid).hide();
+			$('comment_edit_' + cid).hide();
+
+			//$('comment_' + cid + '_header').update(json.comment_title);
+			/* $('comment_' + cid + '_date').update(json.comment_date);	see the actions file */
+			$('comment_' + cid + '_body').update(json.comment_body);
+
+			$('comment_view_' + cid).show();
+			$('comment_edit_controls_' + cid).show();
+
+			successMessage(json.title);
+		}
+	},
+	onFailure: function (transport) {
+		$('comment_edit_controls_' + cid).show();
+		$('comment_edit_indicator_' + cid).hide();
+		var json = transport.responseJSON;
+		if (json && json.error)
+		{
+			failedMessage(json.error);
+		}
+	}
+	});
+}
+
+function addComment(url, commentcount_span)
+{
+	if ($('comment_save_changes').checked)
+	{
+		return true;
+	}
+	params = $('comment_form').serialize();
+	new Ajax.Request(url, {
+	asynchronous:true,
+	method: "post",
+	parameters: params,
+	requestHeaders: {Accept: 'application/json'},
+	onLoading: function (transport) {
+		$('comment_add_controls').hide();
+		$('comment_add_indicator').show();
+	},
+	onSuccess: function(transport) {
+		var json = transport.responseJSON;
+		if (json.failed)
+		{
+			$('comment_add_controls').show();
+			$('comment_add_indicator').hide();
+			failedMessage(json.error);
+		}
+		else
+		{
+			$('comment_add_indicator').hide();
+			$('comment_add').hide();
+			$('comment_add_button').show();
+
+			$('comments_box').insert({bottom: json.comment_data});
+
+			if ($('comments_box').childElements().size() != 0)
+			{
+				$('comments_none').hide();
+			}
+
+			$('comment_add_controls').show();
+
+			//$('comment_title').clear();
+			$('comment_bodybox').clear()
+			$('comment_visibility').setValue(1);
+			$(commentcount_span).update(json.commentcount);
+
+			successMessage(json.title);
+		}
+	},
+	onFailure: function (transport) {
+		$('comment_add_controls').show();
+		$('comment_add_indicator').hide();
+		var json = transport.responseJSON;
+		if (json && json.error)
+		{
+			failedMessage(json.error);
+		}
+	}
+	});
+	return false;
+}

@@ -63,6 +63,12 @@
 					<?php endif; ?>
 				</div>
 			<?php endif; ?>
+			<?php if ($article instanceof TBGWikiArticle): ?>
+				<div id="article_comments">
+					<h4><?php echo __('Article comments (%count%)', array('%count%' => TBGComment::countComments($article->getID(), TBGComment::TYPE_ARTICLE))); ?></h4>
+					<?php include_template('main/comments', array('target_id' => $article->getID(), 'target_type' => TBGComment::TYPE_ARTICLE, 'comment_count_div' => 'article_comment_count', 'forward_url' => make_url('publish_article', array('article_name' => $article->getName())))); ?>
+				</div>
+			<?php endif; ?>
 		</td>
 	</tr>
 </table>

@@ -97,3 +97,9 @@ INS { display: inline; background-color: #8D8; text-decoration: none; } DEL { di
 .article .icleft { float: left; }
 .article .icright { float: right; }
 .article .iccenter { clear: both; display: inline-block; margin: 10px auto; float: none; }
+
+#article_comments { margin-top: 20px; }
+#article_comments h4 { color: #888; padding: 5px; }
+#article_comments #comment_add_button { margin-bottom: 15px; }
+#article_comments #comment_add { width: 1000px; margin-left: 5px; }
+#article_comments table td.nice_button { border: 0; }

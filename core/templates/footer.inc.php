@@ -14,7 +14,6 @@
 										| <b><?php echo link_tag(make_url('configure'), __('Configure The Bug Genie')); ?></b>
 									<?php endif; ?>
 								</td>
-								<?php /*<td style="width: 100px; text-align: center;"><a href="http://validator.w3.org/check?uri=referer" class="image"><img src="<?php echo TBGContext::getTBGPath(); ?>valid-html401.png" alt="Valid HTML 4.01 Transitional" height="31" width="88"></a></td> */ ?>
 							</tr>
 						</table>
 						<?php if (TBGLogging::isEnabled() && TBGContext::isDebugMode()): ?>

@@ -30,7 +30,7 @@
 		<?php endif; ?>
 		<script type="text/javascript" src="<?php print TBGContext::getTBGPath(); ?>js/prototype.js"></script>
 		<script type="text/javascript" src="<?php print TBGContext::getTBGPath(); ?>js/scriptaculous.js"></script>
-		<script type="text/javascript" src="<?php print TBGContext::getTBGPath(); ?>js/b2.js"></script>
+		<script type="text/javascript" src="<?php print TBGContext::getTBGPath(); ?>js/thebuggenie.js"></script>
 		<?php if ($tbg_user->isGuest()): ?>
 			<script type="text/javascript" src="<?php print TBGContext::getTBGPath(); ?>js/login.js"></script>
 		<?php endif; ?>

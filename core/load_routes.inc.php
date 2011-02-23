@@ -167,9 +167,9 @@
 	$routes[] = array('configure_get_permissions', '/configure/permissions/:permissions_type/for/:permissions_target_type/:permissions_target', 'configuration', 'getPermissions', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_PERMISSIONS));
 	$routes[] = array('configure_import_csv', '/configure/import/:type/from/csv', 'configuration', 'importCSV', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_IMPORT));
 	$routes[] = array('configure_do_import_csv', '/configure/do/import/:type/from/csv', 'configuration', 'doImportCSV', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_IMPORT));
-	$routes[] = array('comment_delete', '/comment/delete/:comment_id', 'main', 'deletecomment');
-	$routes[] = array('comment_update', '/comment/update/:comment_id', 'main', 'updatecomment');
-	$routes[] = array('comment_add', '/comment/add/for/project/:project_id/module/:comment_module/item/type/:comment_applies_type/id/:comment_applies_id', 'main', 'addcomment');
+	$routes[] = array('comment_delete', '/comment/delete/:comment_id', 'main', 'deleteComment');
+	$routes[] = array('comment_update', '/comment/update/:comment_id', 'main', 'updateComment');
+	$routes[] = array('comment_add', '/comment/add/for/module/:comment_module/item/type/:comment_applies_type/id/:comment_applies_id', 'main', 'addComment');
 	$routes[] = array('confirm_affected', '/issue/:issue_id/confirm/:affected_type/:affected_id', 'main', 'toggleaffectedconfirmed');
 	$routes[] = array('remove_affected', '/issue/:issue_id/remove/:affected_type/:affected_id', 'main', 'removeaffected');
 	$routes[] = array('status_affected', '/issue/:issue_id/set/:affected_type/:affected_id/status/:status_id', 'main', 'statusaffected');

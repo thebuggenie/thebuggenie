@@ -135,7 +135,7 @@
 			if (TBGContext::isCLI()) return;
 			if ($this->_hostname == '*')
 			{
-				$hostprefix = (!array_key_exists('HTTPS', $_SERVER) || $_SERVER['HTTPS'] == '' || $_SERVER['HTTPS'] == 'off') ? 'http://' : 'https://';
+				$hostprefix = (!array_key_exists('HTTPS', $_SERVER) || $_SERVER['HTTPS'] == '' || $_SERVER['HTTPS'] == 'off') ? 'http' : 'https';
 				$this->_hostname = "{$hostprefix}://{$_SERVER['SERVER_NAME']}";
 				$port = $_SERVER['SERVER_PORT'];
 				if ($port != 80)

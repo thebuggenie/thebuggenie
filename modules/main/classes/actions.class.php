@@ -2373,80 +2373,59 @@
 		{
 			$i18n = TBGContext::getI18n();
 			$comment = null;
-			$project = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
-			$project_key = ($project instanceof TBGProject) ? $project->getKey() : false;
+			$comment_applies_type = $request->getParameter('comment_applies_type');
 			try
 			{
-				if ($project instanceof TBGProject)
-				{
-					if (!TBGContext::getUser()->canPostComments())
-					{
-						throw new Exception($i18n->__('You are not allowed to do this'));
-					}
-					else
-					{
-						if ($request->getParameter('comment_title') == '')
-						{
-							$title = $i18n->__('Untitled comment');
-						}
-						else
-						{
-							$title = $request->getParameter('comment_title');
-						}
-
-						if ($request->getParameter('comment_body') == '')
-						{
-							throw new Exception($i18n->__('The comment must have some content'));
-						}
-
-						if (!$request->isAjaxCall())
-						{
-							$this->comment_lines = array();
-							$this->comment = '';
-							TBGEvent::listen('core', 'TBGIssue::save', array($this, 'listenIssueSaveAddComment'));
-							$issue = TBGContext::factory()->TBGIssue($request->getParameter('comment_applies_id'));
-							$issue->save(false);
-						}
-
-						if (empty($this->comment) == false) // prevent empty lines when only user comment
-						{
-							$comment_body = $this->comment . "\n\n" . $request->getParameter('comment_body', null, false);
-						}
-						else
-						{
-							$comment_body = $request->getParameter('comment_body', null, false);
-						}
-						$comment = new TBGComment();
-						$comment->setTitle($title);
-						$comment->setContent($comment_body);
-						$comment->setPostedBy(TBGContext::getUser()->getID());
-						$comment->setTargetID($request->getParameter('comment_applies_id'));
-						$comment->setTargetType($request->getParameter('comment_applies_type'));
-						$comment->setModuleName($request->getParameter('comment_module'));
-						$comment->setIsPublic((bool) $request->getParameter('comment_visibility'));
-						$comment->save();
-
-						if ($request->getParameter('comment_applies_type') == 1 && $request->getParameter('comment_module') == 'core')
-						{
-							$comment_html = $this->getTemplateHTML('main/comment', array('comment' => $comment, 'issue' => TBGContext::factory()->TBGIssue($request->getParameter('comment_applies_id'))));
-						}
-						else
-						{
-							$comment_html = 'OH NO!';
-						}
-					}
-				}
+				if (!TBGContext::getUser()->canPostComments())
+					throw new Exception($i18n->__('You are not allowed to do this'));
 				else
 				{
-					throw new Exception($i18n->__('Comment ID is invalid'));
+					if ($request->getParameter('comment_title') == '')
+						$title = $i18n->__('Untitled comment');
+					else
+						$title = $request->getParameter('comment_title');
+
+					if ($request->getParameter('comment_body') == '')
+						throw new Exception($i18n->__('The comment must have some content'));
+
+					if ($comment_applies_type == TBGComment::TYPE_ISSUE && !$request->isAjaxCall())
+					{
+						$this->comment_lines = array();
+						$this->comment = '';
+						TBGEvent::listen('core', 'TBGIssue::save', array($this, 'listenIssueSaveAddComment'));
+						$issue = TBGContext::factory()->TBGIssue($request->getParameter('comment_applies_id'));
+						$issue->save(false);
+					}
+
+					if (empty($this->comment) == false) // prevent empty lines when only user comment
+						$comment_body = $this->comment . "\n\n" . $request->getParameter('comment_body', null, false);
+					else
+						$comment_body = $request->getParameter('comment_body', null, false);
+
+					$comment = new TBGComment();
+					$comment->setTitle($title);
+					$comment->setContent($comment_body);
+					$comment->setPostedBy(TBGContext::getUser()->getID());
+					$comment->setTargetID($request->getParameter('comment_applies_id'));
+					$comment->setTargetType($request->getParameter('comment_applies_type'));
+					$comment->setModuleName($request->getParameter('comment_module'));
+					$comment->setIsPublic((bool) $request->getParameter('comment_visibility'));
+					$comment->save();
+
+					switch ($comment_applies_type)
+					{
+						case TBGComment::TYPE_ISSUE:
+							$comment_html = $this->getTemplateHTML('main/comment', array('comment' => $comment, 'issue' => TBGContext::factory()->TBGIssue($request->getParameter('comment_applies_id'))));
+							break;
+						default:
+							$comment_html = 'OH NO!';
+					}
 				}
 			}
 			catch (Exception $e)
 			{
 				if ($request->isAjaxCall())
-				{
 					return $this->renderJSON(array('failed' => true, 'error' => $e->getMessage()));
-				}
 				else
 				{
 					TBGContext::setMessage('comment_error', $e->getMessage());
@@ -2456,17 +2435,11 @@
 				}
 			}
 			if ($request->isAjaxCall())
-			{
 				return $this->renderJSON(array('title' => $i18n->__('Comment added!'), 'comment_data' => $comment_html, 'commentcount' => TBGComment::countComments($request->getParameter('comment_applies_id'), $request->getParameter('comment_applies_type')/*, $request->getParameter('comment_module')*/)));
-			}
 			if ($comment instanceof TBGComment)
-			{
 				$this->forward($request->getParameter('forward_url') . "#comment_{$request->getParameter('comment_applies_type')}_{$request->getParameter('comment_applies_id')}_{$comment->getID()}");
-			}
 			else
-			{
 				$this->forward($request->getParameter('forward_url'));
-			}
 		}
 
 		public function runListProjects(TBGRequest $request)

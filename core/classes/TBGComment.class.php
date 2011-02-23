@@ -26,6 +26,11 @@
 		 */
 		const TYPE_ISSUE = 1;
 		
+		/**
+		 * Article comment
+		 */
+		const TYPE_ARTICLE = 2;
+
 		protected $_content;
 		
 		protected $_posted_by;
