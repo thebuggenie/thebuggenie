@@ -105,6 +105,13 @@
 			if ($this->searchterm)
 			{
 				preg_replace_callback('#(?<!\!)((bug|issue|ticket|story)\s\#?(([A-Z0-9]+\-)?\d+))#i', array($this, 'extractIssues'), $this->searchterm);
+				if (!count($this->issues) && substr($this->searchterm, 0, 1) == '#')
+				{
+					$searchterm = substr($this->searchterm, 1);
+					$issue = TBGIssue::getIssueFromLink($searchterm);
+					if ($issue instanceof TBGIssue)
+						$this->foundissues = array($issue);
+				}
 			}
 
 			if (count($this->foundissues) == 0)
