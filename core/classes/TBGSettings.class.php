@@ -533,4 +533,9 @@
 			return (bool) self::get('permissive');
 		}
 
+		public static function getAll()
+		{
+			return self::$_settings;
+		}
+
 	}

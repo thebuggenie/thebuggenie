@@ -28,7 +28,7 @@
 											<?php echo image_tag('debug_time.png', array('style' => 'float: left; margin-right: 5px;')); ?>
 											<?php echo $tbg_summary['load_time']; ?>
 										</td>
-										<td style="width: 80px; padding: 3px; font-size: 11px; font-family: Ubuntu;" title="Generated hostname: <?php echo TBGContext::getScope()->getHostname(); ?>">
+										<td onclick="$('scope_settings').toggle();" style="width: 80px; padding: 3px; cursor: pointer; font-size: 11px; font-family: Ubuntu;" title="Generated hostname: <?php echo TBGContext::getScope()->getHostname(); ?>">
 											<?php echo image_tag('debug_scope.png', array('style' => 'float: left; margin-right: 5px;')); ?>
 											<b>Scope: </b><?php echo $tbg_summary['scope_id']; ?>
 										</td>
@@ -56,6 +56,26 @@
 			</tr>
 		</table>
 		<?php if (TBGLogging::isEnabled() && TBGContext::isDebugMode()): ?>
+			<div id="scope_settings" style="display: none;">
+				<div style="font-size: 16px; font-weight: bold; border-bottom: 1px solid #DDD; padding: 4px;">Scope <?php echo TBGContext::getScope()->getID(); ?> settings</div>
+				<div class="log">
+					<?php foreach (TBGSettings::getAll() as $module => $settings): ?>
+						<h3><?php echo $module; ?></h3>
+						<table style="border: 0;" cellpadding="0" cellspacing="0">
+							<?php foreach ($settings as $setting => $setting_details): ?>
+								<tr>
+									<td style="font-size: 12px; padding: 1px 5px 1px 1px;"><b><?php echo $setting; ?>: </b></td>
+									<td style="font-size: 12px;">
+										<?php foreach ($setting_details as $uid => $setting): ?>
+											<?php echo htmlspecialchars($setting); ?>&nbsp;<i style="color: #AAA;">(<?php echo (!$uid) ? 'default' : "uid {$uid}"; ?>)</i><br>
+										<?php endforeach; ?>
+									</td>
+								</tr>
+							<?php endforeach; ?>
+						</table>
+					<?php endforeach; ?>
+				</div>
+			</div>
 			<div id="log_timing" style="display: none;">
 				<div style="font-size: 16px; font-weight: bold; border-bottom: 1px solid #DDD; padding: 4px;">Timing</div>
 				<div class="log">

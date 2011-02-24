@@ -424,7 +424,7 @@ echo "
 
 		if (!isset($argc))
 		{
-			session_name("THEBUGGENIE");
+			session_name(THEBUGGENIE_SESSION_NAME);
 			session_start();
 		}
 
