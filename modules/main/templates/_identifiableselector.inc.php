@@ -7,7 +7,11 @@
 			</div>
 		<?php endif; ?>
 		<div class="dropdown_content">
+			<?php if ($include_teams): ?>
+			<label for="<?php echo $base_id; ?>_input"><?php echo __('Find a user or team'); ?>:</label><br>
+			<?php else: ?>
 			<label for="<?php echo $base_id; ?>_input"><?php echo __('Find a user'); ?>:</label><br>
+			<?php endif; ?>
 			<?php $text_title = __('Enter a name here'); ?>
 			<?php if (isset($teamup_callback)): ?>
 				<input type="hidden" name="teamup_callback" value="<?php echo $teamup_callback; ?>">
@@ -21,18 +25,20 @@
 		</div>
 	</form>
 	<div class="dropdown_content">
+		<b><?php echo __('Select yourself or a friend below'); ?>:</b><br>
 		<a href="javascript:void(0);" onclick="<?php echo str_replace(array(urlencode('%identifiable_type%'), '%identifiable_type%', urlencode('%identifiable_value%'), '%identifiable_value%'), array(TBGIdentifiableClass::TYPE_USER, TBGIdentifiableClass::TYPE_USER, $tbg_user->getID(), $tbg_user->getID()), $callback); ?>"><?php echo __('Select yourself'); ?> (<?php echo $tbg_user->getUsername(); ?>)</a><br>
 		<?php if (count($tbg_user->getFriends()) == 0): ?>
-			<span class="faded_out"><?php echo __("Your friends will appear here"); ?></span>
+			<span class="faded_out"><?php echo __("Your friends will appear here"); ?></span><br>
 		<?php else: ?>
-			<b><?php echo __('%select_yourself% or select a friend below', array('%select_yourself%' => '')); ?>:</b><br>
 			<?php include_component('identifiableselectorresults', array('users' => $tbg_user->getFriends(), 'callback' => $callback, 'team_callback' => ((isset($team_callback)) ? $team_callback : null))); ?>
 		<?php endif; ?>
+		<?php if (count($tbg_user->getTeams()) > 0): ?>
 		<br>
-		<br>
-		<?php foreach ($tbg_user->getTeams() as $team): ?>
-			<a href="javascript:void(0);" onclick="<?php echo str_replace(array(urlencode('%identifiable_type%'), '%identifiable_type%', urlencode('%identifiable_value%'), '%identifiable_value%'), array(TBGIdentifiableClass::TYPE_TEAM, TBGIdentifiableClass::TYPE_TEAM, $team->getID(), $team->getID()), $callback); ?>"><?php echo __('Select %teamname%', array('%teamname%' => $team->getName())); ?> (<?php echo $team->getName(); ?>)</a><br>
-		<?php endforeach; ?>
+		<b><?php echo __('Or select one of your teams'); ?>:</b><br>
+			<?php foreach ($tbg_user->getTeams() as $team): ?>
+				<a href="javascript:void(0);" onclick="<?php echo str_replace(array(urlencode('%identifiable_type%'), '%identifiable_type%', urlencode('%identifiable_value%'), '%identifiable_value%'), array(TBGIdentifiableClass::TYPE_TEAM, TBGIdentifiableClass::TYPE_TEAM, $team->getID(), $team->getID()), $callback); ?>"><?php echo __('Select %teamname%', array('%teamname%' => $team->getName())); ?> (<?php echo $team->getName(); ?>)</a><br>
+			<?php endforeach; ?>
+		<?php endif; ?>
 	</div>
 	<div id="<?php echo $base_id; ?>_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</div>
 	<div id="<?php echo $base_id; ?>_change_error" class="error_message" style="display: none;"></div>
