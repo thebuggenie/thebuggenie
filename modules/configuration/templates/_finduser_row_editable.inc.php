@@ -1,4 +1,3 @@
-<td style="padding: 3px;" colspan="6">
 	<form action="<?php echo make_url('configure_users_update_user', array('user_id' => $user->getID())); ?>" method="post" onsubmit="editUser('<?php echo make_url('configure_users_update_user', array('user_id' => $user->getID())); ?>', '<?php echo $user->getID(); ?>');return false;" id="edituser_<?php echo $user->getID(); ?>_form">
 		<table style="width: 100%;">
 			<tr>
@@ -80,9 +79,8 @@
 				<td colspan="4" style="text-align: right; font-size: 13px; padding-top: 10px;">
 					<div style="padding: 10px 0 10px 0; display: none;" id="edit_user_<?php echo $user->getID(); ?>_indicator"><span style="float: left;"><?php echo image_tag('spinning_16.gif'); ?></span>&nbsp;<?php echo __('Please wait'); ?></div>
 					<input type="submit" value="<?php echo __('Update user'); ?>" style="font-size: 13px; font-weight: bold;">
-					<?php echo __('or %cancel%', array('%cancel%' => javascript_link_tag('<b>'.__('cancel').'</b>', array('onclick' => "$('users_results_user_".$user->getID()."_edit').toggleClassName('selected_green');$('users_results_user_".$user->getID()."').toggle();$('users_results_user_".$user->getID()."_edit').toggle();")))); ?>
+					<?php echo __('or %cancel%', array('%cancel%' => javascript_link_tag('<b>'.__('cancel').'</b>', array('onclick' => "$('user_".$user->getID()."_edit_tr').hide();$('users_results_user_".$user->getID()."').toggle();")))); ?>
 				</td>
 			</tr>
 		</table>
 	</form>
-</td>

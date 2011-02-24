@@ -1335,6 +1335,14 @@
 		}
 		
 		/**
+		 * Get edit form for user
+		 */
+		public function runGetUserEditForm(TBGRequest $request)
+		{
+			return $this->renderJSON(array('failed' => false, "content" => get_template_html('finduser_row_editable', array('user' => TBGContext::factory()->TBGUser($request->getParameter('user_id'))))));
+		}	
+			
+		/**
 		 * Add a build (AJAX call)
 		 * 
 		 * @param TBGRequest $request The request object

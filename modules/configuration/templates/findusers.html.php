@@ -27,8 +27,15 @@
 				<tr class="hover_highlight" id="users_results_user_<?php echo $user->getID(); ?>" onclick="$('users_results_user_<?php echo $user->getID(); ?>').toggleClassName('selected_green');"<?php if (isset($created_user) && $created_user): ?> style="display: none;"<?php endif; ?>>
 					<?php include_template('finduser_row', array('user' => $user)); ?>
 				</tr>
-				<tr class="hover_highlight<?php if (isset($created_user) && $created_user): ?> selected_green<?php endif; ?>" id="users_results_user_<?php echo $user->getID(); ?>_edit"<?php if (!isset($created_user) || !$created_user): ?> style="display: none;"<?php endif; ?>>
-					<?php include_template('finduser_row_editable', array('user' => $user)); ?>
+				<tr id="user_<?php echo $user->getID(); ?>_edit_spinning" class="selected_green" style="display: none;">
+					<td style="padding: 3px;" colspan="6">
+						<?php echo image_tag('spinning_32.gif'); ?>
+					</td>
+				</tr>
+				<tr id="user_<?php echo $user->getID(); ?>_edit_tr" class="selected_green" style="display: none;">
+					<td style="padding: 3px;" colspan="6" id="user_<?php echo $user->getID(); ?>_edit_td">
+						&nbsp;
+					</td>
 				</tr>
 				<tr id="users_results_user_<?php echo $user->getID(); ?>_permissions_row" style="display: none;">
 					<td id="users_results_user_<?php echo $user->getID(); ?>_permissions" colspan="6" class="config_permissions" style="padding-bottom: 5px;"></td>

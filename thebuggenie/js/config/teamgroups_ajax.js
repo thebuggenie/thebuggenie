@@ -40,6 +40,23 @@ function createUser(url)
 	return true;
 }
 
+function loadUserEditForm(url, uid)
+{
+	new Ajax.Request(url, {
+		asynchronous: true,
+		method: "post",
+		onLoading: function (transport) {
+			$('user_' + uid + '_edit_spinning').show();
+		},
+		onSuccess: function (transport) {
+			$('user_' + uid + '_edit_spinning').hide();
+			var json = transport.responseJSON;
+			$('user_' + uid + '_edit_tr').show();
+			$('user_' + uid + '_edit_td').update(json.content);
+		}
+	});
+}
+
 function createGroup(url)
 {
 	_postFormWithJSONFeedback(url, 'create_group_form', 'create_group_indicator', '', 'groupconfig_list', true);
@@ -410,8 +427,7 @@ function editUser(url, user_id)
 				$('new_password_' + user_id + '_2').value = '';
 				$('users_results_user_' + user_id).update(json.content);
 				$('users_results_user_' + user_id).show();
-				$('users_results_user_' + user_id + '_edit').hide();
-				$('users_results_user_' + user_id + '_edit').toggleClassName('selected_green');
+				$('user_' + user_id + '_edit_tr').hide();
 				if (json.update_groups)
 				{
 					json.update_groups.ids.each(function(group_id)

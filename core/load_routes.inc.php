@@ -145,6 +145,7 @@
 	$routes[] = array('configure_users', '/configure/users', 'configuration', 'configureUsers', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_USERS));
 	$routes[] = array('configure_users_find_user', '/configure/users/find/users/*', 'configuration', 'findUsers', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_USERS));
 	$routes[] = array('configure_users_add_user', '/configure/users/add/user', 'configuration', 'addUser', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_USERS));
+	$routes[] = array('configure_users_edit_user_form', '/configure/users/edit/user/:user_id/form', 'configuration', 'getUserEditForm', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_USERS));
 	$routes[] = array('configure_users_add_group', '/configure/users/add/group', 'configuration', 'addGroup', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_USERS, 'format' => 'json', 'mode' => 'new'));
 	$routes[] = array('configure_users_clone_group', '/configure/users/clone/group/:group_id', 'configuration', 'addGroup', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_USERS, 'format' => 'json', 'mode' => 'clone'));
 	$routes[] = array('configure_users_delete_group', '/configure/users/delete/group/:group_id', 'configuration', 'deleteGroup', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_USERS, 'format' => 'json'));
