@@ -120,7 +120,7 @@
 		<script type="text/javascript">
 			var containerResize = function ()
 			{
-				if ($('fullpage_backdrop').visible() || $('attach_file').visible())
+				if (($('fullpage_backdrop') && $('fullpage_backdrop').visible()) || ($('attach_file') && $('attach_file').visible()))
 				{
 					var docheight = document.viewport.getHeight();
 					var backdropheight = $('backdrop_detail_content').getHeight();
