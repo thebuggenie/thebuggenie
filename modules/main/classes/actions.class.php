@@ -219,6 +219,7 @@
 			try
 			{
 				$this->client = TBGContext::factory()->TBGClient($request->getParameter('client_id'));
+				$this->forward403Unless(TBGContext::getUser()->hasPageAccess('clientlist') || TBGContext::getUser()->isMemberOfClient($this->client));
 			}
 			catch (Exception $e)
 			{
@@ -741,39 +742,25 @@
 
 		protected function _loadSelectedProjectAndIssueTypeFromRequestForReportIssueAction(TBGRequest $request)
 		{
-			if ($project_key = $request->getParameter('project_key'))
+			try
 			{
-				try
-				{
+				if ($project_key = $request->getParameter('project_key'))
 					$this->selected_project = TBGProject::getByKey($project_key);
-				}
-				catch (Exception $e) {}
-			}
-			elseif ($project_id = $request->getParameter('project_id'))
-			{
-				try
-				{
+				elseif ($project_id = $request->getParameter('project_id'))
 					$this->selected_project = TBGContext::factory()->TBGProject($project_id);
-				}
-				catch (Exception $e) {}
 			}
+			catch (Exception $e) {}
+			
 			if ($this->selected_project instanceof TBGProject)
-			{
 				TBGContext::setCurrentProject($this->selected_project);
-			}
 			if ($this->selected_project instanceof TBGProject)
-			{
 				$this->issuetypes = $this->selected_project->getIssuetypeScheme()->getIssuetypes();
-			}
 			else
-			{
 				$this->issuetypes = TBGIssuetype::getAll();
-			}
 
 			if ($request->hasParameter('issuetype'))
-			{
 				$this->selected_issuetype = TBGIssuetype::getIssuetypeByKeyish($request->getParameter('issuetype'));
-			}
+
 			if (!$this->selected_issuetype instanceof TBGIssuetype)
 			{
 				$this->issuetype_id = $request->getParameter('issuetype_id');
@@ -806,107 +793,72 @@
 				$this->selected_reproduction_steps = $request->getRawParameter('reproduction_steps', null, false);
 
 				if ($edition_id = (int) $request->getParameter('edition_id'))
-				{
 					$this->selected_edition = TBGContext::factory()->TBGEdition($edition_id);
-				}
 				if ($build_id = (int) $request->getParameter('build_id'))
-				{
 					$this->selected_build = TBGContext::factory()->TBGBuild($build_id);
-				}
 				if ($component_id = (int) $request->getParameter('component_id'))
-				{
 					$this->selected_component = TBGContext::factory()->TBGComponent($component_id);
-				}
 
-				if (trim($this->title) == '' || $this->title == $this->default_title) $errors['title'] = true;
-				if (isset($fields_array['description']) && $fields_array['description']['required'] && trim($this->selected_description) == '') $errors['description'] = true;
-				if (isset($fields_array['reproduction_steps']) && $fields_array['reproduction_steps']['required'] && trim($this->selected_reproduction_steps) == '') $errors['reproduction_steps'] = true;
+				if (trim($this->title) == '' || $this->title == $this->default_title)
+					$errors['title'] = true;
+				if (isset($fields_array['description']) && $fields_array['description']['required'] && trim($this->selected_description) == '')
+					$errors['description'] = true;
+				if (isset($fields_array['reproduction_steps']) && $fields_array['reproduction_steps']['required'] && trim($this->selected_reproduction_steps) == '')
+					$errors['reproduction_steps'] = true;
 
-				if (isset($fields_array['edition']))
-				{
-					if ($edition_id && !in_array($edition_id, array_keys($fields_array['edition']['values'])))
-						$errors['edition'] = true; // $i18n->__('The edition you specified is invalid');
-				}
+				if (isset($fields_array['edition']) && $edition_id && !in_array($edition_id, array_keys($fields_array['edition']['values'])))
+					$errors['edition'] = true;
 
-				if (isset($fields_array['build']))
-				{
-					if ($build_id && !in_array($build_id, array_keys($fields_array['build']['values'])))
-						$errors['build'] = true; //$i18n->__('The release you specified is invalid');
-				}
+				if (isset($fields_array['build']) && $build_id && !in_array($build_id, array_keys($fields_array['build']['values'])))
+					$errors['build'] = true;
 
-				if (isset($fields_array['component']))
-				{
-					if ($component_id && !in_array($component_id, array_keys($fields_array['component']['values'])))
-						$errors['component'] = true; //$i18n->__('The component you specified is invalid');
-				}
+				if (isset($fields_array['component']) && $component_id && !in_array($component_id, array_keys($fields_array['component']['values'])))
+					$errors['component'] = true;
 
 				if ($category_id = (int) $request->getParameter('category_id'))
-				{
 					$this->selected_category = TBGContext::factory()->TBGCategory($category_id);
-				}
 
 				if ($status_id = (int) $request->getParameter('status_id'))
-				{
 					$this->selected_status = TBGContext::factory()->TBGStatus($status_id);
-				}
 
 				if ($reproducability_id = (int) $request->getParameter('reproducability_id'))
-				{
 					$this->selected_reproducability = TBGContext::factory()->TBGReproducability($reproducability_id);
-				}
 
 				if ($resolution_id = (int) $request->getParameter('resolution_id'))
-				{
 					$this->selected_resolution = TBGContext::factory()->TBGResolution($resolution_id);
-				}
 
 				if ($severity_id = (int) $request->getParameter('severity_id'))
-				{
 					$this->selected_severity = TBGContext::factory()->TBGSeverity($severity_id);
-				}
 
 				if ($priority_id = (int) $request->getParameter('priority_id'))
-				{
 					$this->selected_priority = TBGContext::factory()->TBGPriority($priority_id);
-				}
 
 				if ($request->getParameter('estimated_time'))
-				{
 					$this->selected_estimated_time = $request->getParameter('estimated_time');
-				}
 
 				if ($request->getParameter('spent_time'))
-				{
 					$this->selected_spent_time = $request->getParameter('spent_time');
-				}
 
 				if (is_numeric($request->getParameter('percent_complete')))
-				{
 					$this->selected_percent_complete = (int) $request->getParameter('percent_complete');
-				}
 
 				if ($pain_bug_type_id = (int) $request->getParameter('pain_bug_type_id'))
-				{
 					$this->selected_pain_bug_type = $pain_bug_type_id;
-				}
 
 				if ($pain_likelihood_id = (int) $request->getParameter('pain_likelihood_id'))
-				{
 					$this->selected_pain_likelihood = $pain_likelihood_id;
-				}
 
 				if ($pain_effect_id = (int) $request->getParameter('pain_effect_id'))
-				{
 					$this->selected_pain_effect = $pain_effect_id;
-				}
 
 				$selected_customdatatype = array();
 				foreach (TBGCustomDatatype::getAll() as $customdatatype)
 				{
+					$customdatatype_id = $customdatatype->getKey() . '_id';
+					$customdatatype_value = $customdatatype->getKey() . '_value';
 					if ($customdatatype->hasCustomOptions())
 					{
 						$selected_customdatatype[$customdatatype->getKey()] = null;
-						$customdatatype_id = $customdatatype->getKey() . '_id';
 						if ($request->hasParameter($customdatatype_id))
 						{
 							$$customdatatype_id = $request->getParameter($customdatatype_id);
@@ -916,29 +868,20 @@
 					else
 					{
 						$selected_customdatatype[$customdatatype->getKey()] = null;
-						$customdatatype_value = $customdatatype->getKey() . '_value';
 						switch ($customdatatype->getType())
 						{
 							case TBGCustomDatatype::INPUT_TEXTAREA_MAIN:
 							case TBGCustomDatatype::INPUT_TEXTAREA_SMALL:
 								if ($request->hasParameter($customdatatype_value))
-								{
 									$selected_customdatatype[$customdatatype->getKey()] = $request->getParameter($customdatatype_value, null, false);
-								}
+
 								break;
 							default:
 								if ($request->hasParameter($customdatatype_value))
-								{
 									$selected_customdatatype[$customdatatype->getKey()] = $request->getParameter($customdatatype_value);
-								}
-								else
-								{
-									$customdatatype_id = $customdatatype->getKey() . '_id';
-									if ($request->hasParameter($customdatatype_id))
-									{
-										$selected_customdatatype[$customdatatype->getKey()] = $request->getParameter($customdatatype_id);
-									}
-								}
+								elseif ($request->hasParameter($customdatatype_id))
+									$selected_customdatatype[$customdatatype->getKey()] = $request->getParameter($customdatatype_id);
+
 								break;
 						}
 					}
@@ -1022,7 +965,7 @@
 					$issue->setCustomField($customdatatype->getKey(), $this->selected_customdatatype[$customdatatype->getKey()]);
 				}
 			}
-			
+
 			// FIXME: If we set the issue assignee during report issue, this needs to be set INSTEAD of this
 			if ($this->selected_project->canAutoassign())
 			{
@@ -2416,6 +2359,9 @@
 					{
 						case TBGComment::TYPE_ISSUE:
 							$comment_html = $this->getTemplateHTML('main/comment', array('comment' => $comment, 'issue' => TBGContext::factory()->TBGIssue($request->getParameter('comment_applies_id'))));
+							break;
+						case TBGComment::TYPE_ARTICLE:
+							$comment_html = $this->getTemplateHTML('main/comment', array('comment' => $comment));
 							break;
 						default:
 							$comment_html = 'OH NO!';

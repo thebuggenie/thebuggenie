@@ -333,6 +333,18 @@
 		 */
 		public function __construct()
 		{
+			if (get_magic_quotes_gpc())
+			{
+				$strip_gpc = function(&$value)
+				{
+					$value = stripslashes($value);
+				};
+				foreach (array($_GET, $_POST, $_COOKIE, $_REQUEST) as $inputarray)
+				{
+					array_walk_recursive($inputarray, $strip_gpc);
+				}
+			}
+
 			foreach ($_COOKIE as $key => $value)
 			{
 				$this->_cookies[$key] = $value;
@@ -522,27 +534,6 @@
 		}
 
 		/**
-		 * Strip slashes for a string if magic quotes gpc is turned on in phpini
-		 *
-		 * @param string $string The string to strip
-		 *
-		 * @return string a slashstripped string
-		 */
-		protected function __strip_if_needed($string)
-		{
-			if (get_magic_quotes_gpc() == 1)
-			{
-				if (is_array($string))
-				{
-					throw new Exception('peeeeka!');
-					var_dump($string);die();
-				}
-				$string = stripslashes($string);
-			}
-			return $string;
-		}
-
-		/**
 		 * Sanitize a string
 		 *
 		 * @param string $string The string to sanitize
@@ -551,7 +542,6 @@
 		 */
 		protected function __sanitize_string($string)
 		{
-			$string = $this->__strip_if_needed($string);
 			$charset = (class_exists('TBGContext')) ? TBGContext::getI18n()->getCharset() : 'utf-8';
 			return htmlspecialchars($string, ENT_QUOTES, $charset);
 		}

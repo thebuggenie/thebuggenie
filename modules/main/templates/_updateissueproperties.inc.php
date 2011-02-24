@@ -1,7 +1,7 @@
 <div class="rounded_box white borderless shadowed backdrop_box mediumsmall issuedetailspopup" style="padding: 5px; text-align: left; font-size: 13px;">
 	<div class="backdrop_detail_header"><?php echo $transition->getDescription(); ?></div>
 	<form action="<?php echo make_url('transition_issue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'transition_id' => $transition->getID())); ?>" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>">
-		<div class="backdrop_detail_content">
+		<div id="backdrop_detail_content">
 			<ul class="simple_list">
 				<?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE) && !$transition->getAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE)->hasTargetValue()): ?>
 					<li id="transition_popup_assignee_div">

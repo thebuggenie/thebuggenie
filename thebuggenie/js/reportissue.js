@@ -46,7 +46,9 @@ function updateFields(url, projectmenustripurl)
 								$(key + '_additional').show();
 								$(key + '_div').hide();
 								if ($(key + '_id_additional')) $(key + '_id_additional').enable();
+								if ($(key + '_value_additional')) $(key + '_value_additional').enable();
 								if ($(key + '_id')) $(key + '_id').disable();
+								if ($(key + '_value')) $(key + '_value').disable();
 								
 								if (fields[key].values)
 								{
@@ -62,8 +64,10 @@ function updateFields(url, projectmenustripurl)
 							{
 								$(key + '_div').show();
 								if ($(key + '_id')) $(key + '_id').enable();
-								if ($(key + '_additional')) $(key + '_additional').hide();
+								if ($(key + '_value')) $(key + '_value').enable();
 								if ($(key + '_id_additional')) $(key + '_id_additional').disable();
+								if ($(key + '_value_additional')) $(key + '_value_additional').disable();
+								if ($(key + '_additional')) $(key + '_additional').hide();
 								if (fields[key].values)
 								{
 									$(key + '_id').update('');
@@ -80,8 +84,10 @@ function updateFields(url, projectmenustripurl)
 						{
 							$(key + '_div').hide();
 							if ($(key + '_id')) $(key + '_id').disable();
+							if ($(key + '_value')) $(key + '_value').disable();
 							if ($(key + '_additional')) $(key + '_additional').hide();
 							if ($(key + '_id_additional')) $(key + '_id_additional').disable();
+							if ($(key + '_value_additional')) $(key + '_value_additional').disable();
 						}
 					}
 				});				

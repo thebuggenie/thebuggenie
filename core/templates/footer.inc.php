@@ -97,13 +97,10 @@
 				</div>
 			</div>
 		<?php endif; ?>
-		<?php /*foreach (TBGContext::getI18n()->getMissingStrings() as $text => $t): ?>
-			<?php echo '$strings[\'' . str_replace("'", "\'", $text) . '\'] = \'' . str_replace("'", "\'", $text) . "';\n"; ?>
-		<?php endforeach; */?>
 		<script type="text/javascript">
 			var containerResize = function ()
 			{
-				if ($('fullpage_backdrop').visible())
+				if ($('fullpage_backdrop').visible() || $('attach_file').visible())
 				{
 					var docheight = document.viewport.getHeight();
 					var backdropheight = $('backdrop_detail_content').getHeight();

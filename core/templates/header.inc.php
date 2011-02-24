@@ -142,7 +142,7 @@
 												</div>											
 											</li>
 										<?php endif; ?>
-										<?php if (!TBGContext::isProjectContext() && $tbg_user->hasPageAccess('clientlist') && !is_null(TBGClientsTable::getTable()->getAll())): ?>
+										<?php if (!TBGContext::isProjectContext() && ($tbg_user->hasPageAccess('clientlist') || count($tbg_user->getClients())) && !is_null(TBGClientsTable::getTable()->getAll())): ?>
 											<li<?php if ($tbg_response->getPage() == 'client'): ?> class="selected"<?php endif; ?>>
 												<div>
 													<?php echo link_tag('javascript:void(0)', image_tag('tab_clients.png') . __('Clients')); ?>
@@ -150,6 +150,7 @@
 												</div>
 												<div id="client_menu" class="tab_menu_dropdown shadowed">
 													<?php foreach (TBGClient::getAll() as $client): ?>
+														<?php if (!($tbg_user->hasPageAccess('clientlist') || $tbg_user->isMemberOfClient($client))) continue; ?>
 														<?php echo link_tag(make_url('client_dashboard', array('client_id' => $client->getID())), image_tag('tab_clients.png' ) . $client->getName()); ?>
 													<?php endforeach;?>
 												</div>											

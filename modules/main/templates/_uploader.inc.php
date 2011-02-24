@@ -8,7 +8,7 @@
 				<?php echo __('Attach one or more file(s) to this article'); ?>
 			<?php endif; ?>
 		</div>
-		<div class="backdrop_detail_content">
+		<div id="backdrop_detail_content">
 			<div id="upload_forms">
 				<form method="post" action="<?php echo $form_action; ?>" enctype="multipart/form-data" id="uploader_upload_form" style="margin: 10px 0 0 5px;<?php if ($apc_enabled): ?> display: none;<?php endif; ?>">
 					<input type="hidden" name ="MAX_FILE_SIZE" value="<?php echo TBGSettings::getUploadsMaxSize(true); ?>">

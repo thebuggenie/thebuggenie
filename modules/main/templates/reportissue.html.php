@@ -25,7 +25,7 @@
 ?>
 <div style="text-align: center; margin-bottom: 10px;">
 	<div class="report_issue_header">
-		<?php echo __('What\'s the issue?'); ?>
+		<?php echo __("What's the issue?"); ?>
 	</div>
 	<?php if (!empty($errors) || !(empty($permission_errors))): ?>
 		<div class="rounded_box report_issue_desc red borderless" style="margin-bottom: 5px;">

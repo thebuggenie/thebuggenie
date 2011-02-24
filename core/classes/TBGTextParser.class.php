@@ -394,7 +394,7 @@
 						$retval .= image_tag($file_link, array('alt' => $caption, 'title' => $caption, 'style' => $style_dimensions, 'class' => 'image'), true);
 						if ($caption != '')
 						{
-							$retval .= '<br>'.tbg_parse_text($caption);
+							$retval .= '<br>'.$caption;
 						}
 						$retval .= link_tag($file_link, image_tag('icon_open_new.png', array('style' => 'margin-left: 5px;')), array('title' => __('Open image in new window')));
 						$retval .= '</div>';

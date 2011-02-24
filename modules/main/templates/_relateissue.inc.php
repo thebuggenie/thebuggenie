@@ -1,6 +1,6 @@
 <div class="rounded_box white borderless shadowed backdrop_box medium" id="viewissue_add_relation_div">
 	<div class="backdrop_detail_header"><?php echo __('Find related issues'); ?></div>
-	<div class="backdrop_detail_content">
+	<div id="backdrop_detail_content">
 		<?php echo __('Please enter some details to search for, and then select the matching issues to relate them'); ?>
 		<form id="viewissue_find_issue_form" action="<?php echo make_url('viewissue_find_issue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'type' => 'related')); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="findRelatedIssues('<?php echo make_url('viewissue_find_issue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'type' => 'related')); ?>');return false;">
 			<div>

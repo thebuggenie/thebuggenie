@@ -1,5 +1,5 @@
 <div class="rounded_box white borderless shadowed backdrop_box large"  id="login_popup">
-	<div class="backdrop_detail_content rounded_top" id="login_content">
+	<div id="backdrop_detail_content rounded_top" id="login_content">
 		<div class="tab_menu">
 			<ul id="login_menu">
 				<li id="tab_login"<?php if ($selected_tab == 'login'): ?> class="selected"<?php endif; ?>><?php echo javascript_link_tag(image_tag('icon_login.png', array('style' => 'float: left;')).__('Login'), array('onclick' => "switchSubmenuTab('tab_login', 'login_menu');")); ?></li>
@@ -66,9 +66,9 @@
 				<?php include_template('main/loginregister', array('selected_tab' => $selected_tab)); ?>
 			<?php endif; ?>
 		</div>
-	</div>
-	<div class="backdrop_detail_content" id="backdrop_detail_indicator" style="text-align: center; padding: 50px; display: none;">
-		<?php echo image_tag('spinning_32.gif'); ?>
+		<div id="backdrop_detail_indicator" style="text-align: center; padding: 50px; display: none;">
+			<?php echo image_tag('spinning_32.gif'); ?>
+		</div>
 	</div>
 	<div class="backdrop_detail_footer">
 	<?php if ($mandatory != true): ?>

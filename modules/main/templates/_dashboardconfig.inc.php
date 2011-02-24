@@ -2,7 +2,7 @@
 	<div class="backdrop_detail_header">
 		<?php echo __('Configure my personal dashboard'); ?>
 	</div>
-	<div class="backdrop_detail_content" id="login_content">
+	<div id="backdrop_detail_content">
 		<ul id="views_list" style="float: left; margin: 0; padding: 0; list-style: none;" class="sortable">
 		<?php foreach ($dashboardViews as $view): ?>
 			<li id="view_<?php echo $view->get(TBGUserDashboardViewsTable::VIEW); ?>" class="rounded_box mediumgrey" style="margin: 5px 10px; float: left; width: 30em; cursor: move; text-align: left;">

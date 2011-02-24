@@ -701,6 +701,17 @@
 			$this->_populateClients();
 			return array_key_exists($client->getID(), $this->clients);
 		}
+
+		/**
+		 * Return all this user's clients
+		 *
+		 * @return array
+		 */
+		public function getClients()
+		{
+			$this->_populateClients();
+			return $this->clients;
+		}
 		
 		/**
 		 * Checks whether or not the user is logged in

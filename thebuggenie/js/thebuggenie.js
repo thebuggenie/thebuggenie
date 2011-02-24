@@ -243,7 +243,7 @@ function _postFormWithJSONFeedback(url, formname, indicator, hide_divs_when_done
 				{
 					successMessage(json.message);
 				}
-				else
+				else if (json.title)
 				{
 					successMessage(json.title, json.content);
 				}
@@ -1263,7 +1263,7 @@ function updateComment(url, cid)
 
 function addComment(url, commentcount_span)
 {
-	if ($('comment_save_changes').checked)
+	if ($('comment_save_changes') && $('comment_save_changes').checked)
 	{
 		return true;
 	}
