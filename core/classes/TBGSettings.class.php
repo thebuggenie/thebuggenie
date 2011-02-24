@@ -267,6 +267,11 @@
 			return self::get('icon_header_url');
 		}
 		
+		public static function getHeaderLink()
+		{
+			return self::get('header_link');
+		}
+		
 		public static function getFaviconURL()
 		{
 			return self::get('icon_fav_url');

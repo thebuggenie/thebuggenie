@@ -307,7 +307,7 @@
 									'limit_registration', 'showprojectsoverview', 'showprojectsoverview', 'cleancomments',
 									'b2_name', 'b2_tagline', 'charset', 'language', 'server_timezone',
 									'highlight_default_lang', 'highlight_default_interval', 'highlight_default_numbering', 'icon_header',
-									'icon_fav', 'icon_header_url', 'icon_fav_url', 'previewcommentimages');
+									'icon_fav', 'icon_header_url', 'icon_fav_url', 'previewcommentimages', 'header_link');
 				
 				foreach ($settings as $setting)
 				{

@@ -47,6 +47,15 @@
 		<td class="config_explanation" colspan="2"><?php echo __('If you want to load your header icon from a URL, specify the URL to an image here.'); ?></td>
 	</tr>
 	<tr>
+		<td><label for="header_link"><?php echo __('Custom header link'); ?></label></td>
+		<td>
+			<input type="text" name="header_link" id="header_link" value="<?php echo TBGSettings::getHeaderLink(); ?>" style="width: 100%;"<?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>>
+		</td>
+	</tr>
+	<tr>
+		<td class="config_explanation" colspan="2"><?php echo __('You can alter the webpage that clicking on the header icon navigates to. If left blank it will link to the main page of this installation.'); ?></td>
+	</tr>
+	<tr>
 		<td><label for="icon_fav"><?php echo __('Custom favicon'); ?></label></td>
 		<td>
 			<select name="icon_fav" id="icon_fav" onchange="if ($('icon_fav').getValue() == 2) { $('icon_fav_url').enable() } else { $('icon_fav_url').disable() }" style="width: 300px;"<?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>>

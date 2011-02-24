@@ -68,12 +68,22 @@
 					<table class="main_header" cellpadding=0 cellspacing=0 width="100%" style="table-layout: fixed;">
 						<tr>
 							<td align="left" valign="middle" id="logo_td">
+								<?php
+									if (TBGSettings::getHeaderLink() == '')
+									{
+										$link = TBGContext::getTBGPath();
+									}
+									else
+									{
+										$link = TBGSettings::getHeaderLink();
+									}
+								?>
 								<?php if (TBGSettings::isUsingCustomHeaderIcon() == '2'): ?>
-									<a class="logo" href="<?php print TBGContext::getTBGPath(); ?>"><img src="<?php print TBGSettings::getHeaderIconURL(); ?>" alt="<?php print TBGSettings::getTBGname() . ' ~ ' . strip_tags(TBGSettings::getTBGtagline()); ?>" title="<?php print TBGSettings::getTBGname() . ' ~ ' . strip_tags(TBGSettings::getTBGtagline()); ?>"></a>
+									<a class="logo" href="<?php print $link; ?>"><img src="<?php print TBGSettings::getHeaderIconURL(); ?>" alt="<?php print TBGSettings::getTBGname() . ' ~ ' . strip_tags(TBGSettings::getTBGtagline()); ?>" title="<?php print TBGSettings::getTBGname() . ' ~ ' . strip_tags(TBGSettings::getTBGtagline()); ?>"></a>
 								<?php elseif (TBGSettings::isUsingCustomHeaderIcon() == '1'): ?>
-									<a class="logo" href="<?php print TBGContext::getTBGPath(); ?>"><img src="<?php print TBGContext::getTBGPath(); ?>header.png" alt="<?php print TBGSettings::getTBGname() . ' ~ ' . strip_tags(TBGSettings::getTBGtagline()); ?>" title="<?php print TBGSettings::getTBGname() . ' ~ ' . strip_tags(TBGSettings::getTBGtagline()); ?>"></a>
+									<a class="logo" href="<?php print $link; ?>"><img src="<?php print TBGContext::getTBGPath(); ?>header.png" alt="<?php print TBGSettings::getTBGname() . ' ~ ' . strip_tags(TBGSettings::getTBGtagline()); ?>" title="<?php print TBGSettings::getTBGname() . ' ~ ' . strip_tags(TBGSettings::getTBGtagline()); ?>"></a>
 								<?php else: ?>
-									<a class="logo" href="<?php print TBGContext::getTBGPath(); ?>"><?php echo image_tag('logo_24.png', array('alt' => TBGSettings::getTBGname() . ' ~ ' . strip_tags(TBGSettings::getTBGtagline()), 'title' => TBGSettings::getTBGname() . ' ~ ' . strip_tags(TBGSettings::getTBGtagline()))) ; ?></a>
+									<a class="logo" href="<?php print $link; ?>"><?php echo image_tag('logo_24.png', array('alt' => TBGSettings::getTBGname() . ' ~ ' . strip_tags(TBGSettings::getTBGtagline()), 'title' => TBGSettings::getTBGname() . ' ~ ' . strip_tags(TBGSettings::getTBGtagline()))) ; ?></a>
 								<?php endif; ?>
 								<div class="logo_large"><?php echo TBGSettings::get('b2_name'); ?></div>
 								<div class="logo_small"><?php echo TBGSettings::get('b2_tagline'); ?></div>
