@@ -721,7 +721,7 @@
 	$strings['New user accounts'] = 'Nuevas cuentas de usuario';
 	$strings['Users can register new accounts'] = 'Los usuarios pueden registrar cuentas nuevas';
 	$strings['All new user accounts will be created by an admin'] = 'Todos las nuevas cuentas de usuario serán creadas por un administrador';
-	$strings['Registration domain whitelist'] = 'Regsitro con lista blanca de dominios';
+	$strings['Registration domain whitelist'] = 'Registro con lista blanca de dominios';
 	$strings['Redirect after login'] = 'Redirigir después de iniciar sesión';
 	$strings['Redirect after logout'] = 'Redirigir después de cerrar sesión';
 	$strings['User state when online'] = 'Estado del usuario cuando está en línea';
@@ -983,7 +983,7 @@
 	$strings['%role% for %item%'] = '%role% para %item%';
 	$strings['The release has been added'] = 'La liberación ha sido agregada';
 	$strings['Not released yet'] = 'Sin liberar todavía';
-	$strings['Set this build / release as the initial default when reporting new issues'] = 'Usar esta compilación / liberación como predeterminada cuando se regsitren nuevas peticiones';
+	$strings['Set this build / release as the initial default when reporting new issues'] = 'Usar esta compilación / liberación como predeterminada cuando se registren nuevas peticiones';
 	$strings['Add this build / release to the list of affected builds / releases for all open issues'] = 'Agregar esta compilación / liberación a la lista de compilaciones / liberación afectadas para todas las peticiones abiertas';
 	$strings['Do not allow users to report issues for this build / release'] = 'Impedir a los usuarios registrar peticiones para esta compilación / liberación';
 	$strings['Edit information about this build'] = 'Editar información acerca de esta compilación';
@@ -1488,7 +1488,7 @@
 	$strings['No client assigned'] = 'Sin clientes asignados'; 
 	$strings['Allowed extensions'] = 'Extensiones permitidas';
 	$strings['The project lead will automatically be assigned issues. This can be overriden by component and edition leads, as well as manually specifing when creating an issue.'] = 'El líder de proyecto será asignado automáticamente a la petición. Esto puede ser redefinido por componente y edición, como así también manualmente cuando se crea un pedido.';
-	$strings['These icons may be freely distributed under the %link_to_LGLP%'] = 'Estos íconos pueden ser distribuidos libremente bajo %link_to_LGLP%';
+	$strings['These icons may be freely distributed under the %link_to_LGPL%'] = 'Estos íconos pueden ser distribuidos libremente bajo %link_to_LGPL%';
 	$strings['Your dashboard'] = 'Su panel de control';      
 	$strings['Recent comments'] = 'Comentarios recientes'; 
 	$strings['Customize your dashboard'] = 'Personalizar su panel de control';
@@ -1839,7 +1839,9 @@
 	$strings['Resolve the issue'] = 'Resolución del pedido';
 	$strings['Resolution isn\'t visible for this issuetype / product combination'] = 'La resolución no está visible para esta combinación de tipo de petición/producto';               
 	$strings['Resolve issue'] = 'Solucionar el pedido';
-	$strings['%milestone_name% (started %start_date% - ends %end_date%)'] = '%milestone_name% (comenzó %start_date% - finalizó %end_date%)'; 
+	$strings['%milestone_name% (started %start_date% - ends %end_date%)'] = '%milestone_name% (comenzó %start_date% - finaliza %end_date%)'; 
+  $strings['%milestone_name% (started %start_date% - ended %end_date%)'] = '%milestone_name% (comenzó %start_date% - finalizó %end_date%)'; 
+  $strings['Assigned to %assignee%'] = 'Asignado a %assignee%';  
 	$strings['This relation is solved because the issue has been closed'] = 'Esta relación está resuelta porque la petición ha sido cerrada';   
 	$strings['Estimation changed: %text%'] = 'Cambio en estimación: %text%';
 

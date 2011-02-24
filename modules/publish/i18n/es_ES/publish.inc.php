@@ -119,7 +119,7 @@
   $strings['Specify permissions for the article %article_name%'] = 'Especificar los permisos para el artículo %article_name%'; 
   $strings['Select this option to specify permissions for this article.'] = 'Seleccione esta opción para definir los permisos para este artículo.'; 
   $strings['Edit write permissions'] = 'Editar permisos de escritura'; 
-  $strings['Edit delete permissions'] = 'Editar permisos para borrar'; 
+  $strings['Edit delete permissions'] = 'Editar permisos para borrar';
   $strings['Specify permissions for entire wiki'] = 'Definir permisos globales para wiki'; 
   $strings['Select this option to specify permissions for the entire wiki.'] = 'Seleccione esta opción para definir los permisos para todo wiki.';        
 
@@ -146,5 +146,26 @@
 	$strings['Table of contents'] = 'Tabla de contenidos';
 	$strings['Move your mouse here to toggle the table of contents'] = 'Mueva el mouse aquí para cambiar la tabla de contenidos';	
   $strings['No other articles links to this article'] = 'No hay enlaces a este artículo'; 
+
+  $strings['%time%, by %user%'] = '%time%, por %user%'; 
+  $strings['Open image in new window'] = 'Abrir imagen en una nueva pantalla'; 
+  $strings['Compare'] = 'Comparar'; 
+  $strings['Restore this version'] = 'Restaurar está versión'; 
+  $strings['Are you sure you want to restore this revision?'] = '¿Está seguro que quiere restaurar esta revisión?'; 
+  $strings['If you confirm, all changes after this revision will be lost, and the article reverted back to the state it was in revision %revision_number%'] = 'Si confirma, todos los cambios posteriores a esta revisión se perderán, y el artículo revertido a la revisión %revision_number%'; 
+  $strings['%yes% or %cancel%'] = '%yes% o %cancel%';
+
+  $strings['Specify permissions for the %namespace% namespace'] = 'Especificar permisos para el espacio de nombres %namespace%'; 
+  $strings['Specify permissions for the %namespace% namespace. These permissions will apply for all articles in the mentioned namespace for which article-specific permissions, or child-namespace permissions have not been granted.'] = 'Especifique permisos para el nombre de espacio %namespace%. Estos permisos se aplicarán a todos los artículos en el espacio de nombres menciando para aquellos artículos específicos, o permisos para espacios de nombres dependientes que no hayan recibido permisos.';
   
+  $strings['%article_name% attachments'] = 'Adjuntos a %article_name%'; 
+  $strings['Attach one or more file(s) to this article'] = 'Adjuntar uno o más archivos a este artículo'; 
+  $strings['%filename%, uploaded %date%'] = '%filename%, subido %date%'; 
+  $strings['Use this tag to include this image: [[Image:%filename%|thumb|Image description]]'] = 'Utilice esta etiquetea para incluir esta imagen: [[Image:%filename%|thumb|Descripción de la imagen]]'; 
+  $strings['Do you really want to detach this file?'] = '¿Realmente quiere separar este archivo?'; 
+  $strings['If you detach this file, it will be deleted. This action cannot be undone. Are you sure you want to remove this file?'] = 'Si desvincula este archivo, será eliminado. Esta acción no puede ser revertida. ¿Está seguro que quiere eliminarlo?'; 
+  $strings['%article_name% ~ Attachments'] = '%article_name% ~ Adjuntos'; 
+  $strings['There are no file attached to this article'] = 'No hay archivos adjuntos a este artículo';     
+  
+     
 ?>
