@@ -543,12 +543,12 @@ function submitProjectSettings(url)
 	_submitProjectDetails(url, 'project_settings');
 }
 
-function submitProjectInfo(url)
+function submitProjectInfo(url, pid)
 {
-	_submitProjectDetails(url, 'project_info');
+	_submitProjectDetails(url, 'project_info', pid);
 }
 
-function _submitProjectDetails(url, form)
+function _submitProjectDetails(url, form, pid)
 {
 	var params = Form.serialize(form);
 	new Ajax.Request(url, {
@@ -634,6 +634,15 @@ function _submitProjectDetails(url, form)
 					$('project_builds').hide();
 					$('project_builds_disabled').show();
 				}
+				
+				if (pid != undefined)
+				{
+					if ($('project_box_' + pid) != undefined)
+					{
+						$('project_box_' + pid).update(json.content);
+					}
+				}
+				
 				successMessage(json.title, json.message);
 			}
 		},

@@ -49,7 +49,9 @@ include_component('leftmenu', array('selected_section' => 10));
 	<div id="project_table">
 	<?php if (count($allProjects) > 0): ?>
 		<?php foreach ($allProjects as $aProject): ?>
-			<?php include_template('projectbox', array('project' => $aProject, 'access_level' => $access_level)); ?>
+			<div id="project_box_<?php echo $aProject->getID();?>">
+				<?php include_template('projectbox', array('project' => $aProject, 'access_level' => $access_level)); ?>
+			</div>
 		<?php endforeach; ?>
 	<?php endif; ?>
 	</div>

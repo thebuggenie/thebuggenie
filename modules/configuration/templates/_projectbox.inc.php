@@ -1,5 +1,5 @@
 <?php TBGContext::loadLibrary('ui'); ?>
-<div class="rounded_box round_canhover lightgrey projectbox" style="margin: 10px 0px 10px 0px; width: 690px;" id="project_box_<?php echo $project->getID();?>">
+<div class="rounded_box round_canhover lightgrey projectbox" style="margin: 10px 0px 10px 0px; width: 690px;">
 	<div style="padding: 3px; font-size: 14px;">
 		<strong><?php echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), $project->getName()); ?></strong>&nbsp;(<?php echo $project->getKey(); ?>)
 		<?php if ($project->usePrefix()): ?>

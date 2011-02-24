@@ -1108,7 +1108,7 @@
 					$this->project->save();
 					$project_description = new TBGTextParser($this->project->getDescription());
 					$project_description = $project_description->getParsedText();
-					return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('Your changes has been saved'), 'message' => $message, 'project_key' => $this->project->getKey(), 'project_description' => $project_description));
+					return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('Your changes has been saved'), 'message' => $message, 'project_key' => $this->project->getKey(), 'project_description' => $project_description, 'content' => get_template_html('projectbox', array('project' => $this->project, 'access_level' => $this->access_level))));
 				}
 				return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__("You don't have access to save settings")));
 			}
