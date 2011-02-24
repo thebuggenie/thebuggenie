@@ -8,14 +8,14 @@
 				<li>Full ACL support with multilevel access control</li>
 				<li>Highly configurable and easy to use search</li>
 				<li>Wiki integrated throughout the entire system</li>
-				<li>Source code integration - SVN, GIT, Mercurial ++</li>
+				<li>Source code integration - SVN, GIT, Mercurial and Bazaar</li>
 				<li>Issue tasks and issue dependancies</li>
 				<li>Project dashboard, with detailed breakdowns and statistics</li>
 				<li>Automated roadmap generation</li>
 				<li>Extensions: MVC framework with module support</li>
 				<li>Voting! Comments! Logs! Avatars! Kittens!</li>
 			</ul>
-			For more information, refer to <a href="http://doc.thebuggenie.com" target="_blank">The Bug Genie online manual</a>.<br>
+			For more information, refer to <a href="http://thebuggenie.com/thebuggenie/wiki/Thebuggenie:MainPage" target="_blank">The Bug Genie online manual</a>.<br>
 		</div>
 		<div class="feature">
 			<h4 style="padding-top: 0; margin-top: 0;">UPGRADING FROM A PREVIOUS VERSION?</h4>
