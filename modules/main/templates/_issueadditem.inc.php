@@ -27,7 +27,7 @@
 		<select name="which_item_build" id="which_item_build" style="width: 100%; margin-top: 10px; display: none;">
 		<?php if ($issue->getProject()->isBuildsEnabled()): ?>
 			<?php foreach ($builds as $build): ?>
-			<option value="<?php echo $build->getID(); ?>"><?php echo $build->getName(); ?></option>
+			<option value="<?php echo $build->getID(); ?>"><?php echo $build->getName(); ?> (<?php print $build->getVersionMajor(); ?>.<?php print $build->getVersionMinor(); ?>.<?php print $build->getVersionRevision(); ?>)</option>
 			<?php endforeach; ?>
 		<?php endif; ?>
 		</select>

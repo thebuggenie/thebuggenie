@@ -5,7 +5,7 @@
 		<td style="width: 20px; padding: 7px 2px 0 2px; text-align: center; vertical-align: top;"><?php echo image_tag('icon_' . (($build->isReleased()) ? 'release' : 'build') . '.png'); ?></td>
 		<td style="width: auto; padding: 2px 0 2px 0;">
 			<div style="padding-left: 2px;">
-				<b><?php print $build->getName(); ?></b><br>
+				<b><?php print $build->getName(); ?></b> <span class="faded_out">(<?php print $build->getVersionMajor(); ?>.<?php print $build->getVersionMinor(); ?>.<?php print $build->getVersionRevision(); ?>)</span><br>
 			<?php if ($build->isReleased()): ?>
 				<?php echo __('Released %release_date%', array('%release_date%' => tbg_formatTime($build->getReleaseDate(), 5))); ?>
 			<?php else: ?>
