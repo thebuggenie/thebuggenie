@@ -251,7 +251,7 @@
 			}
 			catch (Exception $e)
 			{
-				return $this->return404(TBGContext::getI18n()->__('This client does not exist'));
+				return $this->return404(TBGContext::getI18n()->__('This team does not exist'));
 				TBGLogging::log($e->getMessage(), 'core', TBGLogging::LEVEL_WARNING);
 			}
 		}
