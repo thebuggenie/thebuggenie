@@ -1,3 +1,4 @@
+<?php include_component('main/hideableInfoBox', array('key' => 'projectinfo_didyouknow', 'title' => __('You can set a project icon too'), 'content' => __('By creating a PNG image in the project_icons directory of your installation, with the same name as the project key, this image will be shown next to your project throughout The Bug Genie. We recommend images are 16x16 in size. For further information please see the documentation.'))); ?>
 <table style="table-layout: fixed; width: 790px;" cellpadding=0 cellspacing=0>
 	<tr class="hover_highlight">
 		<td style="padding: 4px; width: 192px;">
