@@ -87,6 +87,7 @@
 	$routes[] = array('configure_project', '/configure/project/:project_id/hierarchy', 'configuration', 'configureProject', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_PROJECTS, 'format' => 'json'));
 	$routes[] = array('configure_settings', '/configure/settings', 'configuration', 'settings', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_SETTINGS));
 	$routes[] = array('configure_scopes', '/configure/scopes', 'configuration', 'scopes', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_SCOPES));
+	$routes[] = array('configure_scope', '/configure/scope/:id', 'configuration', 'scope', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_SCOPES));
 	$routes[] = array('configure_workflow', '/configure/workflow', 'configuration', 'configureWorkflows', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_WORKFLOW));
 	$routes[] = array('configure_workflow_copy_workflow', '/configure/workflow/copy/workflow/:workflow_id', 'configuration', 'configureWorkflowSteps', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_WORKFLOW, 'mode' => 'copy_workflow', 'format' => 'json'));
 	$routes[] = array('configure_workflow_delete_workflow', '/configure/workflow/delete/workflow/:workflow_id', 'configuration', 'configureWorkflowSteps', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_WORKFLOW, 'mode' => 'delete_workflow', 'format' => 'json'));
@@ -176,6 +177,7 @@
 	$routes[] = array('status_affected', '/issue/:issue_id/set/:affected_type/:affected_id/status/:status_id', 'main', 'statusaffected');
 	$routes[] = array('add_affected', '/project/:project_key/issue/:issue_id/add/affected', 'main', 'addaffected');
 	$routes[] = array('captcha', '/captcha/*', 'main', 'captcha');
+	$routes[] = array('publish_article', '/wiki/:article_name', 'publish', 'showArticle');
 	
 	foreach ($routes as $route)
 	{

@@ -70,16 +70,19 @@
 
 			$admin_group = new TBGGroup();
 			$admin_group->setName('Administrators');
+			$admin_group->setScope($scope);
 			$admin_group->save();
 			TBGSettings::saveSetting('admingroup', $admin_group->getID(), 'core', $scope_id);
 
 			$user_group = new TBGGroup();
 			$user_group->setName('Regular users');
+			$user_group->setScope($scope);
 			$user_group->save();
 			TBGSettings::saveSetting('defaultgroup', $user_group->getID(), 'core', $scope_id);
 
 			$guest_group = new TBGGroup();
 			$guest_group->setName('Guests');
+			$guest_group->setScope($scope);
 			$guest_group->save();
 			
 			// Set up initial users, and their permissions

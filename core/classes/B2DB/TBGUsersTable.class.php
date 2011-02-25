@@ -78,11 +78,15 @@
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 
-		public function getByUsername($username)
+		public function getByUsername($username, $scope = null)
 		{
+			$scope = ($scope instanceof TBGScope) ? $scope->getID() : $scope;
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::UNAME, $username);
 			$crit->addWhere(self::DELETED, false);
+			if ($scope)
+				$crit->addWhere(self::SCOPE, $scope);
+			
 			return $this->doSelectOne($crit);
 		}
 

@@ -81,6 +81,7 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::CLASSNAME, $classname);
   			$crit->addWhere(self::MODULE_NAME, $identifier);
+  			$crit->addWhere(self::SCOPE, $scope);
   			if (!$res = $this->doSelectOne($crit))
   			{
 				$crit = $this->getCriteria();

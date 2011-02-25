@@ -65,7 +65,6 @@
 		{
 			$this->addRoute('publish', '/wiki', 'showArticle', array('article_name' => 'MainPage'));
 			$this->addRoute('publish_article_new', '/wiki/new', 'editArticle', array('article_name' => 'NewArticle'));
-			$this->addRoute('publish_article', '/wiki/:article_name', 'showArticle');
 			$this->addRoute('publish_article_revision', '/wiki/:article_name/revision/:revision', 'showArticle');
 			$this->addRoute('publish_article_edit', '/wiki/:article_name/edit', 'editArticle');
 			$this->addRoute('publish_article_permissions', '/wiki/:article_name/permissions', 'articlePermissions');

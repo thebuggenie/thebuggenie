@@ -672,78 +672,57 @@
 				if (self::isInstallmode()) return;
 				$modules = array();
 
-				if ($module_paths = TBGCache::get('module_paths'))
+				TBGLogging::log('getting modules from database');
+				$module_paths = array();
+
+				if ($res = B2DB::getTable('TBGModulesTable')->getAll())
 				{
-					TBGLogging::log('using cached modules');
-					foreach ($module_paths as $moduleClassPath)
+					while ($moduleRow = $res->getNextRow())
 					{
+						$module_name = $moduleRow->get(TBGModulesTable::MODULE_NAME);
+						$modules[$module_name] = $moduleRow;
+						$moduleClassPath = self::getIncludePath() . "modules/{$module_name}/classes/";
 						try
 						{
 							self::addClasspath($moduleClassPath);
+							$module_paths[] = $moduleClassPath;
+							if (file_exists($moduleClassPath . 'B2DB'))
+							{
+								self::addClasspath($moduleClassPath . 'B2DB/');
+								$module_paths[] = $moduleClassPath . 'B2DB/';
+							}
 						}
 						catch (Exception $e) { } // ignore "dir not exists" errors
 					}
-					$modules = TBGCache::get('modules');
-					foreach ($modules as $module)
-					{
-						self::$_modules[$module] = unserialize(TBGCache::get("module_{$module}"));
-					}
-					TBGLogging::log('done');
 				}
-				else
+				TBGLogging::log('done (getting modules from database)');
+				TBGCache::add('module_paths', $module_paths);
+				TBGCache::add('modules', array_keys($modules));
+				TBGLogging::log('setting up module objects');
+				foreach ($modules as $module_name => $moduleRow)
 				{
-					TBGLogging::log('getting modules from database');
-					$module_paths = array();
-
-					if ($res = B2DB::getTable('TBGModulesTable')->getAll())
+					$classname = $moduleRow->get(TBGModulesTable::CLASSNAME);
+					if ($classname != '' && $classname != 'TBGModule')
 					{
-						while ($moduleRow = $res->getNextRow())
+						if (class_exists($classname))
 						{
-							$module_name = $moduleRow->get(TBGModulesTable::MODULE_NAME);
-							$modules[$module_name] = $moduleRow;
-							$moduleClassPath = self::getIncludePath() . "modules/{$module_name}/classes/";
-							try
-							{
-								self::addClasspath($moduleClassPath);
-								$module_paths[] = $moduleClassPath;
-								if (file_exists($moduleClassPath . 'B2DB'))
-								{
-									self::addClasspath($moduleClassPath . 'B2DB/');
-									$module_paths[] = $moduleClassPath . 'B2DB/';
-								}
-							}
-							catch (Exception $e) { } // ignore "dir not exists" errors
-						}
-					}
-					TBGLogging::log('done (getting modules from database)');
-					TBGCache::add('module_paths', $module_paths);
-					TBGCache::add('modules', array_keys($modules));
-					TBGLogging::log('setting up module objects');
-					foreach ($modules as $module_name => $moduleRow)
-					{
-						$classname = $moduleRow->get(TBGModulesTable::CLASSNAME);
-						if ($classname != '' && $classname != 'TBGModule')
-						{
-							if (class_exists($classname))
-							{
-								self::getI18n()->loadModuleStrings($module_name);
-								self::$_modules[$module_name] = new $classname($moduleRow->get(TBGModulesTable::ID), $moduleRow);
-								TBGCache::add("module_{$module_name}", serialize(self::$_modules[$module_name]));
-							}
-							else
-							{
-								TBGLogging::log('Cannot load module "' . $module_name . '" as class "' . $classname . '", the class is not defined in the classpaths.', 'modules', TBGLogging::LEVEL_WARNING_RISK);
-								TBGLogging::log('Removing module "' . $module_name . '" as it cannot be loaded', 'modules', TBGLogging::LEVEL_NOTICE);
-								TBGModule::removeModule($moduleRow->get(TBGModulesTable::ID));
-							}
+							self::getI18n()->loadModuleStrings($module_name);
+							self::$_modules[$module_name] = new $classname($moduleRow->get(TBGModulesTable::ID), $moduleRow);
+							TBGCache::add("module_{$module_name}", serialize(self::$_modules[$module_name]));
 						}
 						else
 						{
-							throw new Exception('Cannot load module "' . $module_name . '" as class TBGModule - modules should extend the TBGModule class with their own class.');
+							TBGLogging::log('Cannot load module "' . $module_name . '" as class "' . $classname . '", the class is not defined in the classpaths.', 'modules', TBGLogging::LEVEL_WARNING_RISK);
+							TBGLogging::log('Removing module "' . $module_name . '" as it cannot be loaded', 'modules', TBGLogging::LEVEL_NOTICE);
+							TBGModule::removeModule($moduleRow->get(TBGModulesTable::ID));
 						}
 					}
-					TBGLogging::log('done (setting up module objects)');
+					else
+					{
+						throw new Exception('Cannot load module "' . $module_name . '" as class TBGModule - modules should extend the TBGModule class with their own class.');
+					}
 				}
+				TBGLogging::log('done (setting up module objects)');
 
 				TBGLogging::log('initializing modules');
 				if (!empty(self::$_modules))
@@ -1481,6 +1460,7 @@
 				}
 				elseif (!self::isInstallmode())
 				{
+					throw $e;
 					TBGLogging::log("Couldn't find a scope for hostname {$_SERVER['HTTP_HOST']}", 'main', TBGLogging::LEVEL_FATAL);
 					TBGLogging::log($e->getMessage(), 'main', TBGLogging::LEVEL_FATAL);
 					throw new Exception("Could not load scope. This is usually because the scopes table doesn't have a scope for this hostname");

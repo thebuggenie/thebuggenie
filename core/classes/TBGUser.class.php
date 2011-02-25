@@ -250,9 +250,9 @@
 		 *
 		 * @return TBGUser
 		 */
-		public static function getByUsername($username)
+		public static function getByUsername($username, $scope = null)
 		{
-			if ($row = TBGUsersTable::getTable()->getByUsername($username))
+			if ($row = TBGUsersTable::getTable()->getByUsername($username, $scope))
 			{
 				return TBGContext::factory()->TBGUser($row->get(TBGUsersTable::ID), $row);
 			}
@@ -278,6 +278,7 @@
 			$adminuser->setActivated();
 			$adminuser->setEnabled();
 			$adminuser->setAvatar('admin');
+			$adminuser->setScope($scope);
 			$adminuser->save();
 			
 			$guestuser = new TBGUser();
@@ -288,6 +289,7 @@
 			$guestuser->setPassword('password'); // Settings not active yet
 			$guestuser->setActivated();
 			$guestuser->setEnabled();
+			$guestuser->setScope($scope);
 			$guestuser->save();
 
 			TBGSettings::saveSetting('defaultuserid', $guestuser->getID(), 'core', $scope->getID());
@@ -454,7 +456,7 @@
 		 */
 		protected function _preSave($is_new)
 		{
-			$compare_user = self::getByUsername($this->getUsername());
+			$compare_user = self::getByUsername($this->getUsername(), $this->getScope());
 			if ($compare_user instanceof TBGUser && $compare_user->getID() && $compare_user->getID() != $this->getID())
 			{
 				throw new Exception(TBGContext::getI18n()->__('This username already exists'));
@@ -1014,7 +1016,7 @@
 		{
 			if ($this->_customstate)
 			{
-				return !$this->getState()->isOnline();
+				return (!$this->getState() instanceof TBGUserState) ? false : !$this->getState()->isOnline();
 			}
 			elseif ($this->_lastseen < (NOW - (60 * 30)))
 			{
@@ -1022,7 +1024,7 @@
 			}
 			else
 			{
-				return !$this->getState()->isOnline();
+				return (!$this->getState() instanceof TBGUserState) ? false : !$this->getState()->isOnline();
 			}
 		}
 		

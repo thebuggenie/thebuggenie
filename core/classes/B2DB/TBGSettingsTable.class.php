@@ -56,10 +56,9 @@
 			return $row;
 		}
 
-		public function getSettingsForEnabledScope($scope)
+		public function getSettingsForScope($scope)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(TBGScopesTable::ENABLED, true);
 			$crit->addWhere(self::SCOPE, $scope);
 			$res = $this->doSelect($crit);
 			return $res;

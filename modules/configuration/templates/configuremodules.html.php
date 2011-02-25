@@ -20,24 +20,26 @@
 				<?php foreach ($modules as $module_key => $module): ?>
 					<?php include_template('modulebox', array('module' => $module)); ?>
 				<?php endforeach; ?>
-				<div class="header" style="margin-top: 15px;"><?php echo __('Uninstalled modules'); ?></div>
-				<?php if (count($uninstalled_modules) == 0): ?>
-					<div class="faded_out" style="margin-top: 5px;"><?php echo __('There are no uninstalled modules available'); ?></div>
-				<?php else: ?>
-					<form action="<?php echo make_url('configure_install_module'); ?>" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>">
-						<div class="rounded_box mediumgrey borderless" style="margin: 5px 0px 5px 0px; text-align: right; width: 750px;">
-							<div class="content">
-								<?php echo __('This is a list of modules available, but not installed on this system.'); ?>
-								<?php echo __('To install a module, select it from the dropdown list and press the %install%-button', array('%install%' => '<b>' . __('Install') . '</b>')); ?>
+				<?php if (TBGContext::getScope()->isDefault()): ?>
+					<div class="header" style="margin-top: 15px;"><?php echo __('Uninstalled modules'); ?></div>
+					<?php if (count($uninstalled_modules) == 0): ?>
+						<div class="faded_out" style="margin-top: 5px;"><?php echo __('There are no uninstalled modules available'); ?></div>
+					<?php else: ?>
+						<form action="<?php echo make_url('configure_install_module'); ?>" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>">
+							<div class="rounded_box mediumgrey borderless" style="margin: 5px 0px 5px 0px; text-align: right; width: 750px;">
+								<div class="content">
+									<?php echo __('This is a list of modules available, but not installed on this system.'); ?>
+									<?php echo __('To install a module, select it from the dropdown list and press the %install%-button', array('%install%' => '<b>' . __('Install') . '</b>')); ?>
+								</div>
+								<select name="module_key" style="margin-top: 5px; width: 100%;">
+								<?php foreach ($uninstalled_modules as $module_key => $description): ?>
+									<option value="<?php echo $module_key; ?>"><?php echo $description; ?></option>
+								<?php endforeach; ?>
+								</select><br>
+								<input type="submit" value="<?php echo __('Install'); ?>" style="font-weight: bold; margin: 5px 0 10px 0;">
 							</div>
-							<select name="module_key" style="margin-top: 5px; width: 100%;">
-							<?php foreach ($uninstalled_modules as $module_key => $description): ?>
-								<option value="<?php echo $module_key; ?>"><?php echo $description; ?></option>
-							<?php endforeach; ?>
-							</select><br>
-							<input type="submit" value="<?php echo __('Install'); ?>" style="font-weight: bold; margin: 5px 0 10px 0;">
-						</div>
-					</form>
+						</form>
+					<?php endif; ?>
 				<?php endif; ?>
 			</div>
 		</td>

@@ -60,7 +60,7 @@
 				else
 				{
 					TBGLogging::log('Settings not cached or install mode enabled. Retrieving from database');
-					if ($res = B2DB::getTable('TBGSettingsTable')->getSettingsForEnabledScope(TBGContext::getScope()->getID()))
+					if ($res = B2DB::getTable('TBGSettingsTable')->getSettingsForScope(TBGContext::getScope()->getID()))
 					{
 						$cc = 0;
 						while ($row = $res->getNextRow())

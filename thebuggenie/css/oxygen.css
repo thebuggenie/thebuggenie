@@ -1010,7 +1010,7 @@ a:hover .issue_title { color: #555; }
 #config_scopes .rounded_box .content .header { margin-top: 15px; }
 #config_scopes a.action_button { float: right; }
 #scopes_list ul.simple_list li { list-style-type: square; font-size: 11px; margin-left: 25px; color: #AAA; }
-#scopes_list ul.simple_list li span { color: #333; }
+#scopes_list ul.simple_list li span { color: #333; font-size: 13px; font-weight: normal; }
 #scopes_list .scope_description { font-size: 12px; }
 
 a.action_button { padding: 3px; background-color: #FAFAFA; border: 1px solid #CCC; display: block; line-height: 0; margin-left: 5px; }

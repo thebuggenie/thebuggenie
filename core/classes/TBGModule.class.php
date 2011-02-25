@@ -46,19 +46,19 @@
 		 * @param string $module_name the module key
 		 * @return boolean Whether the install succeeded or not
 		 */
-		public static function installModule($module_name)
+		public static function installModule($module_name, $scope = null)
 		{
 			$module_basepath = TBGContext::getIncludePath() . "modules/{$module_name}";
 			$module_classpath = "{$module_basepath}/classes";
-			TBGContext::addClasspath($module_classpath);
+
+			if ($scope === null || $scope->getID() == TBGContext::getScope()->getID())
+				TBGContext::addClasspath($module_classpath);
 			
-			$scope = TBGContext::getScope()->getID();
+			$scope_id = ($scope) ? $scope->getID() : TBGContext::getScope()->getID();
 			$module_details = file_get_contents($module_basepath . '/class');
 
 			if (strpos($module_details, '|') === false)
-			{
 				throw new Exception("Need to have module details in the form of ModuleName|version in the {$module_basepath}/class file");
-			}
 
 			$details = explode('|', $module_details);
 			list($classname, $version) = $details;
@@ -66,7 +66,7 @@
   			if (!TBGContext::getScope() instanceof TBGScope) throw new Exception('No scope??');
 
 			TBGLogging::log('installing module ' . $module_name);
-			$module_id = B2DB::getTable('TBGModulesTable')->installModule($module_name, $classname, $version, $scope);
+			$module_id = TBGModulesTable::getTable()->installModule($module_name, $classname, $version, $scope_id);
 
 			if (!class_exists($classname))
 			{
@@ -74,7 +74,7 @@
 			}
 
 			$module = new $classname($module_id);
-			$module->install($scope);
+			$module->install($scope_id);
 
 			return $module;
 		}

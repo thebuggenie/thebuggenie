@@ -141,7 +141,20 @@
 		{
 			TBGScopeHostnamesTable::getTable()->saveScopeHostnames($this->getHostnames(), $this->getID());
 			// Load fixtures for this scope if it's a new scope
-			if ($is_new) $this->loadFixtures();
+			if ($is_new)
+			{
+				if ($this->getID() != 1)
+				{
+					$prev_scope = TBGContext::getScope();
+					TBGContext::setScope($this);
+				}
+				$this->loadFixtures();
+				if ($this->getID() != 1)
+				{
+					TBGModule::installModule('publish', $this);
+					TBGContext::setScope($prev_scope);
+				}
+			}
 		}
 		
 		public function _construct(B2DBRow $row, $foreign_key = null)

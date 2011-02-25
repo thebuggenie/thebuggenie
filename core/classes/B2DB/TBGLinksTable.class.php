@@ -85,6 +85,7 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::TARGET_TYPE, $target_type);
 			$crit->addWhere(self::TARGET_ID, $target_id);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addOrderBy(self::LINK_ORDER, B2DBCriteria::SORT_ASC);
 			if ($res = $this->doSelect($crit))
 			{

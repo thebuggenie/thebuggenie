@@ -3916,6 +3916,29 @@
 
 		public function runScopes(TBGRequest $request)
 		{
+			if ($request->isMethod(TBGRequest::POST))
+			{
+				$hostname = $request->getParameter('hostname');
+				$scopename = $request->getParameter('name');
+				if (!$hostname || TBGScopesTable::getTable()->getByHostname($hostname) instanceof TBGScope)
+				{
+					$this->scope_hostname_error = true;
+				}
+				elseif (!$scopename)
+				{
+					$this->scope_name_error = true;
+				}
+				else
+				{
+					$scope = new TBGScope();
+					$scope->addHostname($hostname);
+					$scope->setName($scopename);
+					$scope->setEnabled();
+					$scope->save();
+					return $this->forward(TBGContext::getRouting()->generate('configure_scopes'));
+				}
+			}
 			$this->scopes = TBGScope::getAll();
 		}
+
 	}
