@@ -2,9 +2,9 @@
 	<div class="header"><?php echo $scope->getName(); ?></div>
 	<div class="content">
 		<?php if (!$scope->isDefault()): ?>
-			<div class="nice_button" style="float: right;"><input type="button" value="<?php echo __('Delete'); ?>" onclick="failedMessage('not implemented yet')"></input></div>
+			<a href="javascript:void(0);" onclick="failedMessage('not implemented yet')" class="rounded_box action_button"><?php echo image_tag('icon_delete.png', array('title' => __('Delete this scope'))); ?></a>
 		<?php endif; ?>
-		<div class="nice_button" style="float: right;"><input type="button" value="<?php echo __('Copy'); ?>" onclick="failedMessage('not implemented yet')"></input></div>
+		<a href="javascript:void(0);" onclick="failedMessage('not implemented yet')" class="rounded_box action_button"><?php echo image_tag('icon_copy.png', array('title' => __('Create a copy of this scope for a different hostname'))); ?></a>
 		<div class="faded_out scope_description">
 			<?php if (!$scope->isDefault()): ?>
 				<?php echo $scope->getDescription(); ?>
