@@ -380,7 +380,7 @@
 					TBGContext::reinitializeI18n('en_US');
 					$scope = new TBGScope();
 					$scope->setName('The default scope');
-					$scope->setHostname('*');
+					$scope->addHostname('*');
 					$scope->setEnabled();
 					TBGContext::setScope($scope);
 					$scope->save();

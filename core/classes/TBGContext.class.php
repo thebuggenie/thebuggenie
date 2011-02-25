@@ -2071,7 +2071,7 @@
 
 		public static function getURLhost()
 		{
-			return self::getScope()->getHostname();
+			return self::getScope()->getCurrentHostname();
 		}
 
 		public static function getMimeType($filename)

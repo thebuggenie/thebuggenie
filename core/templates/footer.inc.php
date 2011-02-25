@@ -39,7 +39,7 @@
 											<?php echo image_tag('debug_time.png', array('style' => 'float: left; margin-right: 5px;')); ?>
 											<?php echo $tbg_summary['load_time']; ?>
 										</td>
-										<td onclick="$('scope_settings').toggle();" style="width: 80px; padding: 3px; cursor: pointer; font-size: 11px; font-family: Ubuntu;" title="Generated hostname: <?php echo TBGContext::getScope()->getHostname(); ?>">
+										<td onclick="$('scope_settings').toggle();" style="width: 80px; padding: 3px; cursor: pointer; font-size: 11px; font-family: Ubuntu;" title="Generated hostname: <?php echo implode(', ', TBGContext::getScope()->getHostnames()); ?>">
 											<?php echo image_tag('debug_scope.png', array('style' => 'float: left; margin-right: 5px;')); ?>
 											<b>Scope: </b><?php echo $tbg_summary['scope_id']; ?>
 										</td>

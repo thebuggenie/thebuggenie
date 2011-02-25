@@ -21,6 +21,8 @@
 		
 		static protected $_b2dbtablename = 'TBGScopesTable';
 		
+		static protected $_scopes = null;
+
 		protected $_description = '';
 		
 		protected $_enabled = false;
@@ -29,34 +31,35 @@
 		
 		protected $_administrator = null;
 		
-		protected $_hostname = '';
+		protected $_hostnames = null;
 		
 		static function getAll()
 		{
-			$res = TBGScopesTable::getTable()->doSelectAll();
-			$scopes = array();
-	
-			while ($row = $res->getNextRow())
+			if (self::$_scopes === null)
 			{
-				$scopes[] = TBGContext::factory()->TBGScope($row->get(TBGScopesTable::ID), $row);
+				$res = TBGScopesTable::getTable()->doSelectAll();
+				$scopes = array();
+
+				while ($row = $res->getNextRow())
+				{
+					$scope = TBGContext::factory()->TBGScope($row->get(TBGScopesTable::ID), $row);
+					$scopes[$scope->getID()] = $scope;
+				}
+
+				self::$_scopes = $scopes;
 			}
-	
-			return $scopes;
-		}
-		
-		public function getShortname()
-		{
-			return $this->_shortname;
-		}
-		
-		public function setShortname($shortname)
-		{
-			$this->_shortname = $shortname;
+
+			return self::$_scopes;
 		}
 		
 		public function isEnabled()
 		{
 			return $this->_enabled;
+		}
+
+		public function isDefault()
+		{
+			return (bool) ($this->_id == 1);
 		}
 		
 		public function setEnabled($enabled = true)
@@ -74,15 +77,28 @@
 			$this->_description = $description;
 		}
 		
-		public function getHostname()
+		protected function _populateHostnames()
 		{
-			return $this->_hostname;
+			if ($this->_hostnames === null)
+			{
+				if ($this->_id)
+					$this->_hostnames = TBGScopeHostnamesTable::getTable()->getHostnamesForScope($this->getID());
+				else
+					$this->_hostnames = array();
+			}
+		}
+
+		public function getHostnames()
+		{
+			$this->_populateHostnames();
+			return $this->_hostnames;
 		}
 		
-		public function setHostname($hostname)
+		public function addHostname($hostname)
 		{
-			$hostname = trim($hostname, "/"); 
-			$this->_hostname = $hostname;
+			$hostname = trim($hostname, "/");
+			$this->_populateHostnames();
+			$this->_hostnames[] = $hostname;
 		}
 		
 		/**
@@ -98,10 +114,7 @@
 				{
 					$this->_administrator = TBGContext::factory()->TBGUser($this->_administrator);
 				}
-				catch (Exception $e)
-				{
-					
-				}
+				catch (Exception $e) { }
 			}
 			return $this->_administrator;
 		}
@@ -126,6 +139,7 @@
 
 		public function _postSave($is_new)
 		{
+			TBGScopeHostnamesTable::getTable()->saveScopeHostnames($this->getHostnames(), $this->getID());
 			// Load fixtures for this scope if it's a new scope
 			if ($is_new) $this->loadFixtures();
 		}
@@ -133,16 +147,18 @@
 		public function _construct(B2DBRow $row, $foreign_key = null)
 		{
 			if (TBGContext::isCLI()) return;
-			if ($this->_hostname == '*')
+			$hostprefix = (!array_key_exists('HTTPS', $_SERVER) || $_SERVER['HTTPS'] == '' || $_SERVER['HTTPS'] == 'off') ? 'http' : 'https';
+			$this->_hostname = "{$hostprefix}://{$_SERVER['SERVER_NAME']}";
+			$port = $_SERVER['SERVER_PORT'];
+			if ($port != 80)
 			{
-				$hostprefix = (!array_key_exists('HTTPS', $_SERVER) || $_SERVER['HTTPS'] == '' || $_SERVER['HTTPS'] == 'off') ? 'http' : 'https';
-				$this->_hostname = "{$hostprefix}://{$_SERVER['SERVER_NAME']}";
-				$port = $_SERVER['SERVER_PORT'];
-				if ($port != 80)
-				{
-					$this->_hostname .= ":{$port}";
-				}
+				$this->_hostname .= ":{$port}";
 			}
+		}
+
+		public function getCurrentHostname()
+		{
+			return $this->_hostname;
 		}
 
 		public function loadFixtures()

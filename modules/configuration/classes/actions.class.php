@@ -3913,5 +3913,9 @@
 			
 			return $this->renderJSON(array('content' => $this->project->getKey()));
 		}
-		
+
+		public function runScopes(TBGRequest $request)
+		{
+			$this->scopes = TBGScope::getAll();
+		}
 	}

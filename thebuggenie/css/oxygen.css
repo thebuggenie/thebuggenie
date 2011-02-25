@@ -1005,3 +1005,9 @@ a:hover .issue_title { color: #555; }
 .csv_import_dry { float: left; }
 .csv_import_go { float: right; }
 #csv_import_control { height: 20px }
+
+#config_scopes .nice_button { margin-left: 0; }
+#scopes_list ul.simple_list li { list-style-type: square; font-size: 11px; margin-left: 25px; color: #AAA; }
+#scopes_list ul.simple_list li span { color: #333; }
+#scopes_list .scope_description { font-size: 12px; }
+#scopes_list .rounded_box .content .header { margin-top: 15px; }

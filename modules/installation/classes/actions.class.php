@@ -282,7 +282,7 @@
 
 				TBGLogging::log('Loading fixtures for default scope');
 				$scope = new TBGScope();
-				$scope->setHostname('*');
+				$scope->addHostname('*');
 				$scope->setName('The default scope');
 				$scope->setEnabled(true);
 				TBGContext::setScope($scope);
