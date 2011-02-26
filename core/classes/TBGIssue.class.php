@@ -3694,7 +3694,7 @@
 			{
 				$comment->save();
 			}
-			TBGEvent::createNew('core', 'issue_comment_posted', $this, array('comment' => $comment))->trigger();
+			TBGEvent::createNew('core', 'TBGComment::createNew', $this, array('comment' => $comment))->trigger();
 			return $comment;
 		}
 	

@@ -296,7 +296,7 @@
 		{
 			if ($this->isOutgoingNotificationsEnabled())
 			{
-				$comment = $event->getSubject();
+				$comment = $event->getParameter('comment');
 				if ($comment instanceof TBGComment && $comment->getTargetType() == 1)
 				{
 					try
@@ -305,8 +305,8 @@
 						$title = $comment->getTitle();
 						$content = $comment->getContent();
 						$to_users = $issue->getRelatedUsers();
-						$subject = TBGContext::getI18n()->__('[%project_name%] %issue_type% %issue_no% - "%issue_title%" updated', array('%project_name%' => $issue->getProject()->getKey(), '%issue_type%' => TBGContext::getI18n()->__($issue->getIssueType()->getName()), '%issue_no%' => $issue->getFormattedIssueNo(true), '%issue_title%' => $issue->getTitle()));
-						$message = $this->createNewTBGMimemailFromTemplate($subject, 'issuecomment', array('issue' => $issue));
+						$subject = TBGContext::getI18n()->__('[%project_name%] %issue_type% %issue_no% - Comment added by %comment_user%', array('%project_name%' => $issue->getProject()->getKey(), '%issue_type%' => TBGContext::getI18n()->__($issue->getIssueType()->getName()), '%issue_no%' => $issue->getFormattedIssueNo(true), '%comment_user%' => $comment->getPostedBy()->getName()));
+						$message = $this->createNewTBGMimemailFromTemplate($subject, 'issuecomment', array('issue' => $issue, 'comment' => $comment));
 						$this->_sendToUsers($to_users, $message);
 					}
 					catch (Exception $e)
