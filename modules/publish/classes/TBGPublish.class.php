@@ -98,11 +98,11 @@
 		public function loadFixturesArticles($scope, $overwrite = true)
 		{
 			if (TBGContext::isCLI()) TBGCliCommand::cli_echo("Loading default articles\n");
-			$this->loadArticles('', $overwrite);
+			$this->loadArticles('', $overwrite, $scope);
 			if (TBGContext::isCLI()) TBGCliCommand::cli_echo("... done\n");
 		}
 		
-		public function loadArticles($namespace = '', $overwrite = true)
+		public function loadArticles($namespace = '', $overwrite = true, $scope = null)
 		{
 			$scope = TBGContext::getScope()->getID();
 			$namespace = strtolower($namespace);

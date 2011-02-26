@@ -111,7 +111,7 @@
 				$this->_install($scope);
 				$b2db_classpath = TBGContext::getIncludePath() . 'modules/' . $this->_name . '/classes/B2DB';
 
-				if ($scope == TBGContext::getScope()->getID() && is_dir($b2db_classpath))
+				if (TBGContext::getScope()->isDefault() && is_dir($b2db_classpath))
 				{
 					TBGContext::addClasspath($b2db_classpath);
 					$b2db_classpath_handle = opendir($b2db_classpath);
