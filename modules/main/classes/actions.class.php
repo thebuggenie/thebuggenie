@@ -2366,6 +2366,12 @@
 						default:
 							$comment_html = 'OH NO!';
 					}
+					
+					if ($comment_applies_type == TBGComment::TYPE_ISSUE)
+					{
+						$issue = TBGContext::factory()->TBGIssue($request->getParameter('comment_applies_id'));
+						TBGEvent::createNew('core', 'TBGComment::createNew', $issue, array('comment' => $comment))->trigger();
+					}
 				}
 			}
 			catch (Exception $e)
