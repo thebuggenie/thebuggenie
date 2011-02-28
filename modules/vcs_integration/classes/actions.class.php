@@ -86,7 +86,7 @@
 				echo 'Error: This access method has been disallowed';
 				exit;
 			}
-			
+			$passkey = TBGContext::getRequest()->getParameter('passkey');
 			if ($passkey != TBGContext::getModule('vcs_integration')->getSetting('vcs_passkey'))
 			{
 				echo 'Error: Invalid passkey';
