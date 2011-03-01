@@ -32,7 +32,21 @@
 		protected $_administrator = null;
 		
 		protected $_hostnames = null;
-		
+
+		protected $_uploads_enabled = true;
+
+		protected $_max_upload_limit = 0;
+
+		protected $_custom_workflows_enabled = true;
+
+		protected $_max_workflows = 0;
+
+		protected $_max_users = 0;
+
+		protected $_max_projects = 0;
+
+		protected $_max_teams = 0;
+
 		static function getAll()
 		{
 			if (self::$_scopes === null)
@@ -201,6 +215,76 @@
 			
 			// Set up left menu links
 			TBGLinksTable::getTable()->loadFixtures($this);
+		}
+
+		public function isUploadsEnabled()
+		{
+			return ($this->isDefault() || $this->_uploads_enabled);
+		}
+
+		public function setUploadsEnabled($enabled = true)
+		{
+			$this->_uploads_enabled = $enabled;
+		}
+
+		public function isCustomWorkflowsEnabled()
+		{
+			return ($this->isDefault() || $this->_custom_workflows_enabled);
+		}
+
+		public function setCustomWorkflowsEnabled($enabled = true)
+		{
+			$this->_custom_workflows_enabled = $enabled;
+		}
+
+		public function setMaxWorkflowsLimit($limit)
+		{
+			$this->_max_workflows = $limit;
+		}
+
+		public function getMaxWorkflowsLimit()
+		{
+			return ($this->isDefault()) ? 0 : (int) $this->_max_workflows;
+		}
+
+		public function setMaxUploadLimit($limit)
+		{
+			$this->_max_upload_limit = $limit;
+		}
+
+		public function getMaxUploadLimit()
+		{
+			return ($this->isDefault()) ? 0 : (int) $this->_max_upload_limit;
+		}
+
+		public function getMaxUsers()
+		{
+			return ($this->isDefault()) ? 0 : (int) $this->_max_users;
+		}
+
+		public function setMaxUsers($limit)
+		{
+			$this->_max_users = $limit;
+		}
+
+		public function getMaxProjects()
+		{
+			return ($this->isDefault()) ? 0 : (int) $this->_max_projects;
+		}
+
+		public function setMaxProjects($limit)
+		{
+			$this->_max_projects = $limit;
+		}
+
+		public function getMaxTeams()
+		{
+			return ($this->isDefault()) ? 0 : (int) $this->_max_teams;
+		}
+
+		public function setMaxTeams($limit)
+		{
+			$this->_max_teams = $limit;
 		}
 		
 	}

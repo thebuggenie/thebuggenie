@@ -165,18 +165,18 @@
 			$this->_enabled = true;
 		}
 		
-		final public function uninstall()
+		final public function uninstall($scope = null)
 		{
 			if ($this->isCore())
 			{
 				throw new Exception('Cannot uninstall core modules');
 			}
-			$this->_uninstall();
-			$scope = TBGContext::getScope()->getID();
+			$scope = ($scope) ?: TBGContext::getScope()->getID();
+			$this->_uninstall($scope);
 			B2DB::getTable('TBGModulesTable')->doDeleteById($this->getID());
 			B2DB::getTable('TBGEnabledModuleListenersTable')->removeAllModuleListeners($this->getName(), $scope);
-			TBGSettings::deleteModuleSettings($this->getName());
-			TBGContext::deleteModulePermissions($this->getName());
+			TBGSettings::deleteModuleSettings($this->getName(), $scope);
+			TBGContext::deleteModulePermissions($this->getName(), $scope);
 		}
 		
 		public function getClassname()

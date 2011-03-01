@@ -86,13 +86,16 @@
 			TBGLogging::log("...done");
 		}
 
-		public static function deleteModuleSettings($module_name)
+		public static function deleteModuleSettings($module_name, $scope)
 		{
-			if (array_key_exists($module_name, self::$_settings))
+			if ($scope == TBGContext::getScope()->getID())
 			{
-				unset(self::$_settings[$module_name]);
+				if (array_key_exists($module_name, self::$_settings))
+				{
+					unset(self::$_settings[$module_name]);
+				}
 			}
-			B2DB::getTable('TBGSettingsTable')->deleteModuleSettings($module_name, TBGContext::getScope()->getID());
+			TBGSettingsTable::getTable()->deleteModuleSettings($module_name, $scope);
 		}
 		
 		public static function saveSetting($name, $value, $module = 'core', $scope = 0, $uid = 0)

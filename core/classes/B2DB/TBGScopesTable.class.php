@@ -22,6 +22,13 @@
 		const B2DBNAME = 'scopes';
 		const ID = 'scopes.id';
 		const ENABLED = 'scopes.enabled';
+		const CUSTOM_WORKFLOWS_ENABLED = 'scopes.custom_workflows_enabled';
+		const MAX_WORKFLOWS = 'scopes.max_workflows';
+		const UPLOADS_ENABLED = 'scopes.uploads_enabled';
+		const MAX_UPLOAD_LIMIT = 'scopes.max_upload_limit';
+		const MAX_USERS = 'scopes.max_users';
+		const MAX_TEAMS = 'scopes.max_teams';
+		const MAX_PROJECTS = 'scopes.max_projects';
 		const DESCRIPTION = 'scopes.description';
 		const NAME = 'scopes.name';
 		const ADMINISTRATOR = 'scopes.administrator';
@@ -30,6 +37,13 @@
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
 			parent::_addBoolean(self::ENABLED, false);
+			parent::_addBoolean(self::CUSTOM_WORKFLOWS_ENABLED, true);
+			parent::_addBoolean(self::UPLOADS_ENABLED, true);
+			parent::_addInteger(self::MAX_UPLOAD_LIMIT, 5);
+			parent::_addInteger(self::MAX_WORKFLOWS, 5);
+			parent::_addInteger(self::MAX_USERS, 5);
+			parent::_addInteger(self::MAX_PROJECTS, 5);
+			parent::_addInteger(self::MAX_TEAMS, 5);
 			parent::_addText(self::DESCRIPTION, false);
 			parent::_addText(self::NAME, false);
 			parent::_addInteger(self::ADMINISTRATOR, 10);

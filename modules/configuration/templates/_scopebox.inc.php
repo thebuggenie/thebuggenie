@@ -8,7 +8,7 @@
 		<?php echo $scope->getName(); ?>
 		<span style="font-weight: normal;" class="faded_out">
 			<?php if (!$scope->isDefault()): ?>
-				(<?php echo join(' / ', $scope->getHostnames()); ?>)
+				(<?php echo join(', ', $scope->getHostnames()); ?>)
 			<?php else: ?>
 				<span style="font-size: 11px;">(<?php echo __('All hostnames not covered by other scopes'); ?>)</span>
 			<?php endif; ?>

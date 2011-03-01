@@ -99,4 +99,37 @@
 			return $module_id;
 		}
 
+		public function getModulesForScope($scope_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::SCOPE, $scope_id);
+
+			$return_array = array();
+			if ($res = $this->doSelect($crit))
+			{
+				while ($row = $res->getNextRow())
+				{
+					$return_array[$row->get(self::MODULE_NAME)] = (bool) $row->get(self::ENABLED);
+				}
+			}
+
+			return $return_array;
+		}
+
+		public function getModuleForScope($module_name, $scope_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::MODULE_NAME, $module_name);
+			$crit->addWhere(self::SCOPE, $scope_id);
+
+			$module = null;
+			if ($row = $this->doSelectOne($crit))
+			{
+				$classname = $row->get(self::CLASSNAME);
+				$module = new $classname($row->get(self::ID), $row);
+			}
+
+			return $module;
+		}
+
 	}

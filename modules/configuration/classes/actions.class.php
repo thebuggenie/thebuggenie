@@ -1115,42 +1115,6 @@
 		}
 		
 		/**
-		 * Configure a project edition with builds and settings
-		 * 
-		 * @param TBGRequest $request The request object
-		 *
-		
-		{
-			try
-			{
-				$this->theProject = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
-				$this->theEdition = TBGContext::factory()->TBGEdition($request->getParameter('edition_id'));
-			}
-			catch (Exception $e) {}
-			
-			$this->forward403unless($this->theProject instanceof TBGProject && $this->theEdition instanceof TBGEdition);
-			
-			if ($request->isAjaxCall())
-			{
-				if ($request->hasParameter('release_month') && $request->hasParameter('release_day') && $request->hasParameter('release_year'))
-				{
-					$release_date = mktime(0, 0, 1, $request->getParameter('release_month'), $request->getParameter('release_day'), $request->getParameter('release_year'));
-					$this->theEdition->setReleaseDate($release_date);
-				}
-
-				$this->theEdition->setName($request->getParameter('edition_name'));
-				$this->theEdition->setDescription($request->getParameter('description', null, false));
-				$this->theEdition->setDocumentationURL($request->getParameter('doc_url'));
-				$this->theEdition->setPlannedReleased($request->getParameter('planned_release'));
-				$this->theEdition->setReleased((int) $request->getParameter('released'));
-				$this->theEdition->setLocked((bool) $request->getParameter('locked'));
-				$this->theEdition->save();
-				return $this->renderJSON(array('failed' => false));
-			}
-			
-		}*/
-		
-		/**
 		 * Add a project (AJAX call)
 		 * 
 		 * @param TBGRequest $request The request object
@@ -3939,6 +3903,59 @@
 				}
 			}
 			$this->scopes = TBGScope::getAll();
+		}
+
+		public function runScope(TBGRequest $request)
+		{
+			$this->scope = new TBGScope($request->getParameter('id'));
+			$modules = TBGModulesTable::getTable()->getModulesForScope($this->scope->getID());
+			$this->modules = $modules;
+			$this->scope_save_error = TBGContext::getMessageAndClear('scope_save_error');
+			$this->scope_saved = TBGContext::getMessageAndClear('scope_saved');
+
+			if ($request->isMethod(TBGRequest::POST))
+			{
+				try
+				{
+					if (!$request->getParameter('name'))
+					{
+						throw new Exception(TBGContext::getI18n()->__('Please specify a scope name'));
+					}
+					$this->scope->setName($request->getParameter('name'));
+					$this->scope->setDescription($request->getParameter('description'));
+					$this->scope->setCustomWorkflowsEnabled((bool) $request->getParameter('custom_workflows_enabled'));
+					$this->scope->setMaxWorkflowsLimit((int) $request->getParameter('workflow_limit'));
+					$this->scope->setUploadsEnabled((bool) $request->getParameter('file_uploads_enabled'));
+					$this->scope->setMaxUploadLimit((int) $request->getParameter('upload_limit'));
+					$this->scope->setMaxProjects((int) $request->getParameter('project_limit'));
+					$this->scope->setMaxUsers((int) $request->getParameter('user_limit'));
+					$this->scope->setMaxTeams((int) $request->getParameter('team_limit'));
+					$this->scope->save();
+
+					$enabled_modules = $request->getParameter('module_enabled');
+					$prev_scope = TBGContext::getScope();
+					foreach ($enabled_modules as $module => $enabled)
+					{
+						if (!TBGContext::getModule($module)->isCore() && !$enabled && array_key_exists($module, $modules))
+						{
+							$module = TBGModulesTable::getTable()->getModuleForScope($module, $this->scope->getID());
+							$module->uninstall($this->scope->getID());
+						}
+						elseif (!TBGContext::getModule($module)->isCore() && $enabled && !array_key_exists($module, $modules))
+						{
+							TBGContext::setScope($this->scope);
+							TBGModule::installModule($module);
+							TBGContext::setScope($prev_scope);
+						}
+					}
+					TBGContext::setMessage('scope_saved', true);
+				}
+				catch (Exception $e)
+				{
+					TBGContext::setMessage('scope_save_error', $e->getMessage());
+				}
+				$this->forward(make_url('configure_scope', array('id' => $this->scope->getID())));
+			}
 		}
 
 	}

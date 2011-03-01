@@ -932,13 +932,16 @@
 			TBGLogging::log('...cached');
 		}
 
-		public static function deleteModulePermissions($module_name)
+		public static function deleteModulePermissions($module_name, $scope)
 		{
-			if (array_key_exists($module_name, self::$_permissions))
+			if ($scope == TBGContext::getScope()->getID())
 			{
-				unset(self::$_permissions[$module_name]);
+				if (array_key_exists($module_name, self::$_permissions))
+				{
+					unset(self::$_permissions[$module_name]);
+				}
 			}
-			B2DB::getTable('TBGPermissionsTable')->deleteModulePermissions($module_name, self::getScope()->getID());
+			TBGPermissionsTable::getTable()->deleteModulePermissions($module_name, $scope);
 		}
 
 		/**
