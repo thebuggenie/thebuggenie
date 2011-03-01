@@ -104,7 +104,10 @@
 		 */
 		public function isCore()
 		{
-			return ($this->getID() == 1);
+			foreach (self::getAll() as $workflow)
+			{
+				return ($this->getID() == $workflow->getID());
+			}
 		}
 
 		/**

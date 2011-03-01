@@ -18,26 +18,30 @@
 						<a href="javascript:void(0);" onclick="$('delete_workflow_<?php echo $workflow->getID(); ?>_popup').toggle();" class="rounded_box"><?php echo image_tag('icon_delete.png', array('title' => __('Delete this workflow'))); ?></a>
 					<?php endif; ?>
 				<?php endif; ?>
-				<a href="javascript:void(0);" onclick="$('copy_workflow_<?php echo $workflow->getID(); ?>_popup').toggle();" class="rounded_box"><?php echo image_tag('icon_copy.png', array('title' => __('Create a copy of this workflow'))); ?></a>
+				<?php if (TBGContext::getScope()->isCustomWorkflowsEnabled()): ?>
+					<a href="javascript:void(0);" onclick="$('copy_workflow_<?php echo $workflow->getID(); ?>_popup').toggle();" class="rounded_box"><?php echo image_tag('icon_copy.png', array('title' => __('Create a copy of this workflow'))); ?></a>
+				<?php endif; ?>
 				<?php echo link_tag(make_url('configure_workflow_steps', array('workflow_id' => $workflow->getID())), image_tag('icon_workflow_scheme_edit.png', array('title' => __('Show workflow details'))), array('class' => 'rounded_box')); ?></a>
 			</td>
 		</tr>
 	</table>
 </li>
-<li class="rounded_box white shadowed" id="copy_workflow_<?php echo $workflow->getID(); ?>_popup" style="margin-bottom: 5px; padding: 10px; display: none;">
-	<div class="header"><?php echo __('Copy workflow'); ?></div>
-	<div class="content">
-		<?php echo __('Please enter the name of the new workflow'); ?><br>
-		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_workflow_copy_workflow', array('workflow_id' => $workflow->getID())); ?>" onsubmit="copyWorkflow('<?php echo make_url('configure_workflow_copy_workflow', array('workflow_id' => $workflow->getID())); ?>', <?php echo $workflow->getID(); ?>);return false;" id="copy_workflow_<?php echo $workflow->getID(); ?>_form">
-			<label for="copy_workflow_<?php echo $workflow->getID(); ?>_new_name"><?php echo __('New name'); ?></label>
-			<input type="text" name="new_name" id="copy_workflow_<?php echo $workflow->getID(); ?>_new_name" value="<?php echo __('Copy of %old_name%', array('%old_name%' => addslashes($workflow->getName()))); ?>" style="width: 300px;">
-			<div style="text-align: right;">
-				<?php echo image_tag('spinning_16.gif', array('style' => 'margin-right: 5px; display: none;', 'id' => 'copy_workflow_'.$workflow->getID().'_indicator')); ?>
-				<input type="submit" value="<?php echo __('Copy workflow'); ?>">
-			</div>
-		</form>
-	</div>
-</li>
+<?php if (TBGContext::getScope()->isCustomWorkflowsEnabled()): ?>
+	<li class="rounded_box white shadowed" id="copy_workflow_<?php echo $workflow->getID(); ?>_popup" style="margin-bottom: 5px; padding: 10px; display: none;">
+		<div class="header"><?php echo __('Copy workflow'); ?></div>
+		<div class="content">
+			<?php echo __('Please enter the name of the new workflow'); ?><br>
+			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_workflow_copy_workflow', array('workflow_id' => $workflow->getID())); ?>" onsubmit="copyWorkflow('<?php echo make_url('configure_workflow_copy_workflow', array('workflow_id' => $workflow->getID())); ?>', <?php echo $workflow->getID(); ?>);return false;" id="copy_workflow_<?php echo $workflow->getID(); ?>_form">
+				<label for="copy_workflow_<?php echo $workflow->getID(); ?>_new_name"><?php echo __('New name'); ?></label>
+				<input type="text" name="new_name" id="copy_workflow_<?php echo $workflow->getID(); ?>_new_name" value="<?php echo __('Copy of %old_name%', array('%old_name%' => addslashes($workflow->getName()))); ?>" style="width: 300px;">
+				<div style="text-align: right;">
+					<?php echo image_tag('spinning_16.gif', array('style' => 'margin-right: 5px; display: none;', 'id' => 'copy_workflow_'.$workflow->getID().'_indicator')); ?>
+					<input type="submit" value="<?php echo __('Copy workflow'); ?>">
+				</div>
+			</form>
+		</div>
+	</li>
+<?php endif; ?>
 <?php if (!$workflow->isCore() && !$workflow->isInUse()): ?>
 	<li class="rounded_box white shadowed" id="delete_workflow_<?php echo $workflow->getID(); ?>_popup" style="margin-bottom: 5px; padding: 10px; display: none;">
 		<div class="header"><?php echo __('Are you sure?'); ?></div>

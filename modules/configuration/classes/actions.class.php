@@ -2373,7 +2373,7 @@
 			{
 				$this->workflow_scheme = TBGContext::factory()->TBGWorkflowScheme($request->getParameter('scheme_id'));
 				$this->issuetypes = TBGIssuetype::getAll();
-				if ($this->mode == 'copy_scheme')
+				if (TBGContext::getScope()->isCustomWorkflowsEnabled() && $this->mode == 'copy_scheme')
 				{
 					if ($new_name = $request->getParameter('new_name'))
 					{
@@ -2394,12 +2394,12 @@
 						$this->error = TBGContext::getI18n()->__('Please enter a valid name');
 					}
 				}
-				elseif ($this->mode == 'delete_scheme')
+				elseif (TBGContext::getScope()->isCustomWorkflowsEnabled() && $this->mode == 'delete_scheme')
 				{
 					$this->workflow_scheme->delete();
 					return $this->renderJSON(array('success' => true, 'message' => TBGContext::getI18n()->__('The workflow scheme was deleted')));
 				}
-				elseif ($request->isMethod(TBGRequest::POST))
+				elseif (TBGContext::getScope()->isCustomWorkflowsEnabled() && $request->isMethod(TBGRequest::POST))
 				{
 					foreach ($request->getParameter('workflow_id', array()) as $issuetype_id => $workflow_id)
 					{

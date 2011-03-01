@@ -90,7 +90,10 @@
 		 */
 		public function isCore()
 		{
-			return ($this->getID() == 1);
+			foreach (self::getAll() as $scheme)
+			{
+				return ($this->getID() == $scheme->getID());
+			}
 		}
 
 		protected function _populateAssociatedWorkflows()
