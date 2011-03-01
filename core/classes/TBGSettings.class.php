@@ -446,7 +446,7 @@
 		
 		public static function isUploadsEnabled()
 		{
-			return (bool) self::get('enable_uploads');
+			return (bool) (TBGContext::getScope()->isUploadsEnabled() && self::get('enable_uploads'));
 		}
 
 		public static function getUploadsMaxSize($bytes = false)
