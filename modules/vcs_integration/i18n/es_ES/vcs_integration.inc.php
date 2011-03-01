@@ -29,5 +29,13 @@
 	$strings['Error: Invalid project ID'] = 'Error: ID de proyecto no válido';
 	$strings['Issue updated from code repository'] = 'Petición actualizada por código desde el repositorio';
 	$strings['This issue has been updated with the latest changes from the code repository.<source>%commit_msg%</source>'] = 'Esta petición ha sido actualizada con los últimos cambios desde el repositorio.<source>%commit_msg%</source>';
-  $strings['help'] = 'ayuda'; 
-   
+  $strings['help'] = 'ayuda';
+  
+  $strings['bug|issue|ticket|fix|fixes|fixed|fixing|applies to|closes|references|ref|addresses|re|see|according to|also see'] = 'error|bug|pedido|tarea|petición|corrige|corregido|corrigiendo|se aplica|cierra|referencia|ref|ver|de acuerdo con|ver también';  
+ 
+  $strings["Revision %revno%"] = "Revisión %revno%";
+  $strings["committed on %date% by"] = "enviado el %date% por";
+  $strings["Log entry:"] = "Información de log";
+  $strings["Changed files:"] = "Archivos modificados";
+  $strings["Diff"] = "Diferencia";
+  $strings["View"] = "Ver";

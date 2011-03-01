@@ -167,5 +167,15 @@
   $strings['%article_name% ~ Attachments'] = '%article_name% ~ Adjuntos'; 
   $strings['There are no file attached to this article'] = 'No hay archivos adjuntos a este artículo';     
   
-     
-?>
+  $strings["Article comments (%count%)"] = "Comentarios al artículo (%count%)";
+  $strings["General wiki settings"] = "Opciones generales para wiki";
+  $strings["Import wiki articles"] = "Importar artículos wiki";
+  $strings["Show articles in category"] = "Mostrar artículos en categorías";
+  $strings["Toggle selection on visible articles"] = "Cambiar selección en artículos visibles";
+  $strings["Import articles"] = "Importar artículos";
+  $strings["Please select which articles to import, from the list of available articles below. When you are finished, click the %import_articles% button at the bottom"]="Por favor seleccione los artículos a importar, de la lista de artículos disponibles. Cuando haya finalizado, haga clic en el botón %import_articles% del pie";
+  $strings["Open existing article in new window"] = "Abrir artículos existentes en una nueva ventana";
+  $strings["Importing this article will overwrite an existing article in the database"] = "Al importar este artículo sobreescribirá el artículo existente en la base de datos";
+  $strings['Click "%import_articles%" to import the selected articles'] = 'Haga clic en "%import_articles%" para importar los artículos seleccionados';
+  
+  ?>

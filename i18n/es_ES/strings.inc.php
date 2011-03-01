@@ -1828,7 +1828,7 @@
   $strings['%points%pt(s)'] = '%points%pt(s)'; 
   $strings['%set% or %cancel%'] = '%set% o %cancel%'; 
   $strings['%hours% hr(s)'] = '%hours% h(s)'; 
-  $strings['No user stories assigned to this sprint'] = 'Sin historias de usuario asignadas a este sprint';
+  $strings['No user stories assigned to this sprint'] = 'No hay historias de usuario asignadas a este sprint';
   $strings['%sprint_name% overview'] = 'Resumen %sprint_name%'; 
   $strings['"%project_name%" sprint overview'] = 'Resumen del sprint de "%project_name%"';   
    
@@ -1935,3 +1935,31 @@
   $strings['Click %done% when you have uploaded the files you want to attach'] = 'Haga clic en %done% cuando haya subido el archivo a adjuntar'; 
   $strings['%select_yourself% or select a friend below'] = '%select_yourself% o seleccione un amigo'; 
   $strings['Related issues and tasks (%count%)'] = 'Pedidos/tareas relacionadas (%count%)';
+
+  $strings["Enable issue type for this scheme"] = "Habilitar el tipo de pedido para este esquema"; 
+  $strings["Disable issue type for this scheme"] = "Inhabilitar el tipo de pedido para este esquema";
+  
+  $strings["Cannot delete issuetype scheme"] = "No se puede eliminar el tipo de pedido del esquema";
+  $strings["This issuetype scheme can not be deleted as it is being used by %number_of_projects% project(s)"] = "Este tipo de problema no puede ser eliminado porque está siendo utilizado por %number_of_projects% proyecto(s)";
+  $strings["Delete this issue type scheme"] = "Eliminar este tipo de problema del esquema";
+  
+  $strings['Showing "bug report" issues sorted by user pain, threshold set at %threshold%']='Mostrando peticiones de "Informes de error" ordenados por sufrimiento del usuario con el umbral en  %threshold%'; 
+  $strings["User pain threshold"]= 'Umbral de sufrimiento del usuario';
+
+  $strings["Scopes are self-contained Bug Genie environments. Configure them here."]  = "Los ámbitos son entornos autocontenidos en Bug Genie. Configúrelos aquí.";
+  
+  $strings["Find a user or team"] = "Encuentre un usuario o equipo";
+  $strings["Select yourself or a friend below"]  = "Selecciónese o elija un amigo debajo";
+  $strings["Or select one of your teams"] = "O seleccione uno de los equipos";
+  
+  $strings["%teamname% has been working on this issue since %time%"] = "%teamname% han estado trabajando en este pedido desde %time%";
+  $strings["You are working together"] = "Está trabajando junto";
+  $strings["Issue type changed: %text%"] = "El tipo de pedido cambió: %text%";
+  $strings["This relation is solved because the task has been closed"] = "Esta relación está resuelta porque la tarea ha sido cerrada";
+  $strings["You can set a project icon too"] = "También puede establecer un icono para el proyecto";
+  $strings["By creating a PNG image in the project_icons directory of your installation, with the same name as the project key, this image will be shown next to your project throughout The Bug Genie. We recommend images are 16x16 in size. For further information please see the documentation."] = "Al crear una imagen PNG en la carpeta project_icons de su instalación, con el mismo nombre que el nombre clave del proyecto, esta imagen será mostrada junto a su proyecto. Recomendamos imagenes de 16x16 pixel de tamaño. Para más información acceda a la documentación.";
+
+  $strings["One or more errors occured when trying to file your issue"] = "Uno o más errores ocurrieron cuando intentaba guardar el pedido"; 
+  $strings['You have to enter a description in the "%description%" field'] = 'Tiene que completar la descripción en el campo "%description%"';
+  $strings["Please try to fix the error described above, and then click the %file_issue% button again"] =  "Por favor, intente corregir el error descripto arriba, y luego haga clic en el botón %file_issue%";
+  $strings["Client: %clientname%"] = "Cliente: %clientname%";
