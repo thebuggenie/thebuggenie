@@ -681,15 +681,15 @@
 					{
 						$module_name = $moduleRow->get(TBGModulesTable::MODULE_NAME);
 						$modules[$module_name] = $moduleRow;
-						$moduleClassPath = self::getIncludePath() . "modules/{$module_name}/classes/";
+						$moduleClassPath = self::getIncludePath() . "modules" . DIRECTORY_SEPARATOR . $module_name . DIRECTORY_SEPARATOR . "classes" . DIRECTORY_SEPARATOR;
 						try
 						{
 							self::addClasspath($moduleClassPath);
 							$module_paths[] = $moduleClassPath;
 							if (file_exists($moduleClassPath . 'B2DB'))
 							{
-								self::addClasspath($moduleClassPath . 'B2DB/');
-								$module_paths[] = $moduleClassPath . 'B2DB/';
+								self::addClasspath($moduleClassPath . 'B2DB' . DIRECTORY_SEPARATOR);
+								$module_paths[] = $moduleClassPath . 'B2DB' . DIRECTORY_SEPARATOR;
 							}
 						}
 						catch (Exception $e) { } // ignore "dir not exists" errors
@@ -1982,15 +1982,15 @@
 						TBGLogging::log('An error occurred setting up the user object, redirecting to login', 'main', TBGLogging::LEVEL_NOTICE);
 						self::getResponse()->headerRedirect(self::getRouting()->generate('login_redirect'), 403);
 					}
-					if (is_dir(self::getIncludePath() . 'modules/' . $route['module']))
+					if (is_dir(self::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . $route['module']))
 					{
-						if (!file_exists(self::getIncludePath() . 'modules/' . $route['module'] . '/classes/actions.class.php'))
+						if (!file_exists(self::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . $route['module'] . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR . 'actions.class.php'))
 						{
 							throw new TBGActionNotFoundException('The ' . $route['module'] . ' module is missing the classes/actions.class.php file, containing all the module actions');
 						}
 						if (!class_exists($route['module'].'Actions') && !class_exists($route['module'].'ActionComponents'))
 						{
-							self::addClasspath(self::getIncludePath() . 'modules/' . $route['module'] . '/classes/');
+							self::addClasspath(self::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . $route['module'] . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR);
 						}
 						if (self::performAction($route['module'], $route['action']))
 						{

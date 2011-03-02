@@ -412,10 +412,10 @@ echo "
 		date_default_timezone_set('Europe/London');
 		
 		// Load the context class, which controls most of things
-		require THEBUGGENIE_CORE_PATH . 'classes/TBGContext.class.php';
+		require THEBUGGENIE_CORE_PATH . 'classes' . DIRECTORY_SEPARATOR . 'TBGContext.class.php';
 
 		// Load the logging class so we can log stuff
-		require THEBUGGENIE_CORE_PATH . 'classes/TBGLogging.class.php';
+		require THEBUGGENIE_CORE_PATH . 'classes' . DIRECTORY_SEPARATOR . 'TBGLogging.class.php';
 
 		// Set the start time
 		TBGContext::setLoadStart($starttime[1] + $starttime[0]);
@@ -432,10 +432,10 @@ echo "
 		TBGContext::setIncludePath(THEBUGGENIE_PATH);
 
 		// Add classpath so we can find the TBG* classes
-		TBGContext::addClasspath(THEBUGGENIE_CORE_PATH . 'classes/');
+		TBGContext::addClasspath(THEBUGGENIE_CORE_PATH . 'classes' . DIRECTORY_SEPARATOR);
 
 		// Load the logging class so we can log stuff
-		require THEBUGGENIE_CORE_PATH . 'classes/TBGCache.class.php';
+		require THEBUGGENIE_CORE_PATH . 'classes' . DIRECTORY_SEPARATOR . 'TBGCache.class.php';
 
 		TBGLogging::log((TBGCache::isEnabled()) ? 'Cache is enabled' : 'Cache is not enabled');
 		
@@ -443,9 +443,9 @@ echo "
 		try
 		{
 			TBGLogging::log('Adding B2DB classes to autoload path');
-			define ('B2DB_BASEPATH', THEBUGGENIE_CORE_PATH . 'B2DB/');
-			define ('B2DB_CACHEPATH', THEBUGGENIE_CORE_PATH . 'cache/B2DB/');
-			TBGContext::addClasspath(THEBUGGENIE_CORE_PATH . 'B2DB/classes/');
+			define ('B2DB_BASEPATH', THEBUGGENIE_CORE_PATH . 'B2DB' . DIRECTORY_SEPARATOR);
+			define ('B2DB_CACHEPATH', THEBUGGENIE_CORE_PATH . 'cache' . DIRECTORY_SEPARATOR . 'B2DB' . DIRECTORY_SEPARATOR);
+			TBGContext::addClasspath(THEBUGGENIE_CORE_PATH . 'B2DB' . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR);
 			TBGLogging::log('...done (Adding B2DB classes to autoload path)');
 
 			TBGLogging::log('Initializing B2DB');
@@ -469,7 +469,7 @@ echo "
 				B2DB::doConnect();
 				TBGLogging::log('...done (Database connection details found, connecting)');
 				TBGLogging::log('Adding core table classpath to autoload path');
-				TBGContext::addClasspath(THEBUGGENIE_CORE_PATH . 'classes/B2DB/');
+				TBGContext::addClasspath(THEBUGGENIE_CORE_PATH . 'classes' . DIRECTORY_SEPARATOR . 'B2DB' . DIRECTORY_SEPARATOR);
 			}
 			
 		}

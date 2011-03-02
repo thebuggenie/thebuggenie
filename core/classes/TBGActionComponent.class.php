@@ -78,7 +78,7 @@
 			list ($module_file, $actionClassName, $actionToRunName) = self::_getComponentDetails($template);
 			if (!class_exists($actionClassName))
 			{
-				TBGContext::addClasspath(TBGContext::getIncludePath() . 'modules/' . $module_file['module'] . '/classes/');
+				TBGContext::addClasspath(TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . $module_file['module'] . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR);
 			}
 			if (!class_exists($actionClassName))
 			{

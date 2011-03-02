@@ -215,7 +215,7 @@
 						}
 					}
 					
-					BaseB2DB::initialize(TBGContext::getIncludePath() . 'core/b2db_bootstrap.inc.php');
+					BaseB2DB::initialize(TBGContext::getIncludePath() . 'core' . DIRECTORY_SEPARATOR . 'b2db_bootstrap.inc.php');
 					$engine_path = BaseB2DB::getEngineClassPath();
 					if ($engine_path !== null)
 					{
@@ -231,7 +231,7 @@
 					{
 						throw new Exception('You must provide a database to use');
 					}
-					B2DB::saveConnectionParameters(TBGContext::getIncludePath() . 'core/b2db_bootstrap.inc.php');
+					B2DB::saveConnectionParameters(TBGContext::getIncludePath() . 'core' . DIRECTORY_SEPARATOR . 'b2db_bootstrap.inc.php');
 					
 				}
 				else
@@ -240,7 +240,7 @@
 				}
 				
 				// Add table classes to classpath 
-				$tables_path = THEBUGGENIE_CORE_PATH . 'classes/B2DB/';
+				$tables_path = THEBUGGENIE_CORE_PATH . 'classes' . DIRECTORY_SEPARATOR . 'B2DB' . DIRECTORY_SEPARATOR;
 				TBGContext::addClasspath($tables_path);
 				$tables_path_handle = opendir($tables_path);
 				$tables_created = array();

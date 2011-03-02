@@ -48,14 +48,14 @@
 		 */
 		public static function installModule($module_name, $scope = null)
 		{
-			$module_basepath = TBGContext::getIncludePath() . "modules/{$module_name}";
-			$module_classpath = "{$module_basepath}/classes";
+			$module_basepath = TBGContext::getIncludePath() . "modules" . DIRECTORY_SEPARATOR . $module_name;
+			$module_classpath = $module_basepath . DIRECTORY_SEPARATOR . "classes";
 
 			if ($scope === null || $scope->getID() == TBGContext::getScope()->getID())
 				TBGContext::addClasspath($module_classpath);
 			
 			$scope_id = ($scope) ? $scope->getID() : TBGContext::getScope()->getID();
-			$module_details = file_get_contents($module_basepath . '/class');
+			$module_details = file_get_contents($module_basepath . DIRECTORY_SEPARATOR . 'class');
 
 			if (strpos($module_details, '|') === false)
 				throw new Exception("Need to have module details in the form of ModuleName|version in the {$module_basepath}/class file");
@@ -109,7 +109,7 @@
 			try
 			{
 				$this->_install($scope);
-				$b2db_classpath = TBGContext::getIncludePath() . 'modules/' . $this->_name . '/classes/B2DB';
+				$b2db_classpath = TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . $this->_name . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR . 'B2DB';
 
 				if (TBGContext::getScope()->isDefault() && is_dir($b2db_classpath))
 				{

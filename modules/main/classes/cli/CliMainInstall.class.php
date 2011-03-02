@@ -350,18 +350,12 @@
 					$this->cliEcho("Enable communication with version control systems (i.e. svn)? ", 'white', 'bold') . $this->cliEcho('(yes): ');
 					$enable_modules['vcs_integration'] = ($this->getProvidedArgument('enable_all_modules') == 'yes') ? true : $this->askToDecline();
 					if ($this->getProvidedArgument('enable_all_modules') == 'yes') $this->cliEcho("Yes\n", 'yellow', 'bold');
-					/*$this->cliEcho("Enable internal messaging between users? ", 'white', 'bold') . $this->cliEcho('(yes): ');
-					$enable_modules['messages'] = ($this->getProvidedArgument('enable_all_modules') == 'yes') ? true : $this->askToDecline();
-					if ($this->getProvidedArgument('enable_all_modules') == 'yes') $this->cliEcho("Yes\n", 'yellow', 'bold');
-					$this->cliEcho("Enable calendar? ", 'white', 'bold') . $this->cliEcho('(yes): ');
-					$enable_modules['calendar'] = ($this->getProvidedArgument('enable_all_modules') == 'yes') ? true : $this->askToDecline();
-					if ($this->getProvidedArgument('enable_all_modules') == 'yes') $this->cliEcho("Yes\n", 'yellow', 'bold'); */
 
 					$enable_modules['publish'] = true;
 
 					$this->cliEcho("\n");
 					$this->cliEcho("Creating tables ...\n", 'white', 'bold');
-					$tables_path = THEBUGGENIE_CORE_PATH . 'classes/B2DB/';
+					$tables_path = THEBUGGENIE_CORE_PATH . 'classes' . DIRECTORY_SEPARATOR . 'B2DB' . DIRECTORY_SEPARATOR;
 					TBGContext::addClasspath($tables_path);
 					$tables_path_handle = opendir($tables_path);
 					$tables_created = array();
