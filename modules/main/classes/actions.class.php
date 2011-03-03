@@ -2072,6 +2072,7 @@
 							case 'issue':
 								if (!$issue instanceof TBGIssue) break;
 								$issue->attachFile($file);
+								$issue->save();
 								$comment = new TBGComment();
 								$comment->setPostedBy(TBGContext::getUser()->getID());
 								$comment->setTargetID($issue->getID());
@@ -2371,6 +2372,7 @@
 					{
 						$issue = TBGContext::factory()->TBGIssue($request->getParameter('comment_applies_id'));
 						TBGEvent::createNew('core', 'TBGComment::createNew', $issue, array('comment' => $comment))->trigger();
+						$issue->save();
 					}
 				}
 			}

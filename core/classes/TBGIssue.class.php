@@ -4163,7 +4163,6 @@
 					$this->_issue_no = TBGIssuesTable::getTable()->getNextIssueNumberForProductID($this->getProject()->getID());
 				
 				if (!$this->_posted) $this->_posted = NOW;
-				if (!$this->_last_updated) $this->_last_updated = NOW;
 				if (!$this->_posted_by) $this->_posted_by = TBGContext::getUser();
 				
 				$step = $this->getProject()->getWorkflowScheme()->getWorkflowForIssuetype($this->getIssueType())->getFirstStep();
@@ -4171,6 +4170,7 @@
 				return;
 			}
 
+			$this->_last_updated = NOW;
 			$comment_lines = array();
 			$related_issues_to_save = array();
 			$is_saved_estimated = false;
