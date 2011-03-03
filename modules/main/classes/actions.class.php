@@ -2168,7 +2168,7 @@
 				$this->getResponse()->clearHeaders();
 				$this->getResponse()->setDecoration(TBGResponse::DECORATE_NONE);
 				$this->getResponse()->addHeader('Content-disposition: '.(($request->getParameter('mode') == 'download') ? 'attachment' : 'inline').'; filename="'.$file->get(TBGFilesTable::ORIGINAL_FILENAME).'"');
-				$this->getResponse()->addHeader('Content-type: '.$file->get(TBGFilesTable::CONTENT_TYPE));
+				$this->getResponse()->addHeader('Content-type: '.$file->get(TBGFilesTable::CONTENT_TYPE).'; charset=UTF-8');
 				$this->getResponse()->renderHeaders();
 				if (TBGSettings::getUploadStorage() == 'files')
 				{
