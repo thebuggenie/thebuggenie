@@ -165,7 +165,7 @@
 				{
 					BaseB2DB::setUname($this->username);
 					BaseB2DB::setTablePrefix($request->getParameter('db_prefix'));
-					if ($this->password = $request->getParameter('db_password'))
+					if ($this->password = $request->getRawParameter('db_password'))
 					{
 						BaseB2DB::setPasswd($this->password);
 					}
