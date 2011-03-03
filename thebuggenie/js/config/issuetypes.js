@@ -54,11 +54,11 @@ function updateIssuetype(url, id)
 		{
 			$('edit_issuetype_' + id + '_indicator').hide();
 			$('edit_issuetype_' + id + '_form').hide();
-			if (json.description)
+			if (json.description != undefined)
 			{
 				$('issuetype_' + id + '_description_span').update(json.description);
 			}
-			if (json.name)
+			if (json.name != undefined)
 			{
 				$('issuetype_' + id + '_name_span').update(json.name);
 				if ($('issuetype_' + id + '_info'))
