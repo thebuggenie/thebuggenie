@@ -203,7 +203,7 @@
 			switch ($matches[1])
 			{
 				case ';':
-					$term = htmlspecialchars($matches[2]);
+					$term = $matches[2];
 					$p = strpos($term, ' :');
 					if ($p !== false)
 					{
@@ -216,7 +216,7 @@
 					}
 					break;
 				case ':':
-					$definition = htmlspecialchars($matches[2]);
+					$definition = $matches[2];
 					$output .= "<dd>{$definition}</dd>\n";
 					break;
 			}
@@ -250,7 +250,7 @@
 
 		protected function _parse_underline($matches)
 		{
-			return "<u>".htmlspecialchars($matches[1])."</u>";
+			return "<u>".$matches[1]."</u>";
 		}
 
 		protected function _wiki_link($topic)
@@ -465,7 +465,7 @@
 
 			if (TBGContext::isCLI()) return $href;
 
-			return link_tag($href, htmlspecialchars($title), array('target' => '_new'));
+			return link_tag($href, $title, array('target' => '_new'));
 		}
 
 		protected function _parse_autosensedlink($matches)
@@ -534,7 +534,7 @@
 			}
 			else
 			{
-				$output = htmlspecialchars($matches[1]);
+				$output = $matches[1];
 			}
 			return $output;
 		}
@@ -873,7 +873,7 @@
 
 		protected function _parse_restore_nowiki($matches)
 		{
-			return htmlspecialchars(array_pop($this->nowikis));
+			return array_pop($this->nowikis);
 		}
 
 		protected function _parse_save_code($matches)
