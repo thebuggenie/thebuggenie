@@ -156,12 +156,13 @@
 			return $this->headers;
 		}
 
-		public function getHeadersAsString()
+		public function getHeadersAsString($include_subject = true)
 		{
 			$headers = $this->getHeaders();
 			$header = '';
 			foreach ($headers as $key => $val)
 			{
+				if (!$include_subject && strtolower($key) == 'subject') continue;
 				$header .= "{$key}: {$val}\r\n";
 			}
 			return $header;

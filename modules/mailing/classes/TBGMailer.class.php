@@ -130,11 +130,11 @@
 
 			if (!$this->no_dash_f)
 			{
-				$retval = mail($email->getRecipientAddressesAsString(), $email->getSubject(), $email->getBodyAsString(), $email->getHeadersAsString(), '-f'.$email->getFromAddress());
+				$retval = mail($email->getRecipientAddressesAsString(), $email->getSubject(), $email->getBodyAsString(), $email->getHeadersAsString(false), '-f'.$email->getFromAddress());
 			}
 			else
 			{
-				$retval = mail($email->getRecipientAddressesAsString(), $email->getSubject(), $email->getBodyAsString(), $email->getHeadersAsString());
+				$retval = mail($email->getRecipientAddressesAsString(), $email->getSubject(), $email->getBodyAsString(), $email->getHeadersAsString(false));
 			}
 			if ($retval)
 			{
