@@ -20,14 +20,16 @@
 	{
 		
 		static protected $_b2dbtablename = 'TBGTeamsTable';
+
+		static protected $_teams = null;
 		
+		static protected $_num_teams = null;
+
 		protected $_members = null;
 
 		protected $_num_members = null;
 		
 		protected $_ondemand = false;
-		
-		protected static $_teams = null;
 		
 		protected $_associated_projects = null;
 		
@@ -74,6 +76,19 @@
 			$translators->setName('Translators');
 			$translators->save();
 		}
+
+		public static function getTeamsCount()
+		{
+			if (self::$_num_teams === null)
+			{
+				if (self::$_teams !== null)
+					self::$_num_teams = count(self::$_teams);
+				else
+					self::$_num_teams = TBGTeamsTable::getTable()->countTeams();
+			}
+
+			return self::$_num_teams;
+		}
 		
 		public function __toString()
 		{
@@ -83,21 +98,6 @@
 		public function getType()
 		{
 			return self::TYPE_TEAM;
-		}
-		
-		/**
-		 * Creates a team
-		 *
-		 * @param unknown_type $groupname
-		 * @return TBGTeam
-		 */
-		public static function createNew($teamname)
-		{
-			$crit = new B2DBCriteria();
-			$crit->addInsert(TBGTeamsTable::NAME, $teamname);
-			$crit->addInsert(TBGTeamsTable::SCOPE, TBGContext::getScope()->getID());
-			$res = B2DB::getTable('TBGTeamsTable')->doInsert($crit);
-			return TBGContext::factory()->TBGTeam($res->getInsertID());
 		}
 		
 		/**

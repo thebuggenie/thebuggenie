@@ -3,6 +3,8 @@
 	$tbg_response->setTitle(__('Configure users, teams and groups'));
 	$tbg_response->addJavascript('config/teamgroups_ajax.js');
 	$tbg_response->addJavascript('config/permissions.js');
+	$users_text = (TBGContext::getScope()->getMaxUsers()) ? __('Users (%num%/%max%)', array('%num%' => '<span id="current_user_num_count">'.TBGUser::getUsersCount().'</span>', '%max%' => TBGContext::getScope()->getMaxUsers())) : __('Users');
+	$teams_text = (TBGContext::getScope()->getMaxTeams()) ? __('Teams (%num%/%max%)', array('%num%' => '<span id="current_team_num_count">'.TBGTeam::getTeamsCount().'</span>', '%max%' => TBGContext::getScope()->getMaxTeams())) : __('Teams');
 
 ?>
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
@@ -16,9 +18,9 @@
 			<div class="config_header" style="width: 750px;"><?php echo __('Configure users, teams and groups'); ?></div>
 			<div style="width: 750px; clear: both; height: 30px;" class="tab_menu">
 				<ul id="usersteamsgroups_menu">
-					<li id="tab_users" class="selected"><?php echo javascript_link_tag(image_tag('cfg_icon_users.png', array('style' => 'float: left; margin-right: 5px;')) . __('Users'), array('onclick' => "switchSubmenuTab('tab_users', 'usersteamsgroups_menu');")); ?></li>
+					<li id="tab_users" class="selected"><?php echo javascript_link_tag(image_tag('cfg_icon_users.png', array('style' => 'float: left; margin-right: 5px;')) . $users_text, array('onclick' => "switchSubmenuTab('tab_users', 'usersteamsgroups_menu');")); ?></li>
 					<li id="tab_groups"><?php echo javascript_link_tag(image_tag('cfg_icon_teamgroups.png', array('style' => 'float: left; margin-right: 5px;')) . __('Groups'), array('onclick' => "switchSubmenuTab('tab_groups', 'usersteamsgroups_menu');")); ?></li>
-					<li id="tab_teams"><?php echo javascript_link_tag(image_tag('cfg_icon_teamgroups.png', array('style' => 'float: left; margin-right: 5px;')) . __('Teams'), array('onclick' => "switchSubmenuTab('tab_teams', 'usersteamsgroups_menu');")); ?></li>
+					<li id="tab_teams"><?php echo javascript_link_tag(image_tag('cfg_icon_teamgroups.png', array('style' => 'float: left; margin-right: 5px;')) . $teams_text, array('onclick' => "switchSubmenuTab('tab_teams', 'usersteamsgroups_menu');")); ?></li>
 					<li id="tab_clients"><?php echo javascript_link_tag(image_tag('cfg_icon_teamgroups.png', array('style' => 'float: left; margin-right: 5px;')) . __('Clients'), array('onclick' => "switchSubmenuTab('tab_clients', 'usersteamsgroups_menu');")); ?></li>
 				</ul>
 			</div>
@@ -52,7 +54,7 @@
 									</form>
 								</td>
 							</tr>
-							<tr id="adduser_div">
+							<tr id="adduser_div"<?php if (!TBGContext::getScope()->hasUsersAvailable()): ?> style="display: none;"<?php endif; ?>>
 								<td style="padding: 3px;"><label for="adduser_username"><?php echo __('Enter username'); ?>:</label></td>
 								<td style="padding: 3px;">
 									<form action="<?php echo make_url('configure_users_add_user'); ?>" method="post" onsubmit="createUser('<?php echo make_url('configure_users_add_user'); ?>');return false;" id="createuser_form">
@@ -90,13 +92,11 @@
 					</div>
 				</div>
 				<div id="tab_teams_pane" style="display: none; padding-top: 0; width: 750px;">
-					<div class="rounded_box yellow borderless" style="margin-top: 5px; padding: 7px;">
+					<div class="rounded_box yellow borderless" style="margin-top: 5px; padding: 7px;<?php if (!TBGContext::getScope()->hasTeamsAvailable()): ?> display: none;<?php endif; ?>" id="add_team_div">
 						<form id="create_team_form" action="<?php echo make_url('configure_users_add_team'); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="createTeam('<?php echo make_url('configure_users_add_team'); ?>');return false;">
-							<div id="add_team">
-								<label for="team_name"><?php echo __('Create a new team'); ?></label>
-								<input type="text" id="team_name" name="team_name">
-								<input type="submit" value="<?php echo __('Create'); ?>">
-							</div>
+							<label for="team_name"><?php echo __('Create a new team'); ?></label>
+							<input type="text" id="team_name" name="team_name">
+							<input type="submit" value="<?php echo __('Create'); ?>">
 						</form>
 					</div>
 					<table cellpadding=0 cellspacing=0 style="display: none; margin-left: 5px; width: 300px;" id="create_team_indicator">

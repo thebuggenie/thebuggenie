@@ -223,4 +223,14 @@
 			return $this->doSelect($crit);
 		}
 
+		public function countUsers($scope = null)
+		{
+			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::SCOPE, $scope);
+			$crit->addWhere(self::DELETED, false);
+
+			return $this->doCount($crit);
+		}
+
 	}

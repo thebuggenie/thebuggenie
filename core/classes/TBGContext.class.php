@@ -1819,7 +1819,7 @@
 						$content = ob_get_clean();
 						TBGLogging::log('...done');
 					}
-					else
+					elseif (!$action_retval)
 					{
 						// If the action doesn't return any output (which it usually doesn't)
 						// we continue on to rendering the template file for that specific action
@@ -2018,7 +2018,7 @@
 				B2DB::closeDBLink();
 				TBGContext::setLoadedAt();
 				header("HTTP/1.0 404 Not Found", true, 404);
-				tbg_exception('Template file does not exist for current action', $e);
+				tbg_exception($e->getMessage() /*'Template file does not exist for current action'*/, $e);
 			}
 			catch (TBGActionNotFoundException $e)
 			{

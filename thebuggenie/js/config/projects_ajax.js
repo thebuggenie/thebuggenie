@@ -1,6 +1,9 @@
 function updateProjectLinks(json)
 {
-	$('current_project_num_count').update(json.total_count);
+	if ($('current_project_num_count'))
+	{
+		$('current_project_num_count').update(json.total_count);
+	}
 	if (json.more_available)
 	{
 		$('add_project_div').show();

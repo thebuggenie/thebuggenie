@@ -17,7 +17,10 @@ function deleteWorkflowScheme(url, scheme_id)
 
 function updateWorkflowLinks(json)
 {
-	$('current_workflow_num_count').update(json.total_count);
+	if ($('current_workflow_num_count'))
+	{
+		$('current_workflow_num_count').update(json.total_count);
+	}
 	$$('.copy_workflow_link').each(function (element) {
 		if (json.more_available)
 		{

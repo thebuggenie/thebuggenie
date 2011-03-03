@@ -275,6 +275,11 @@
 			$this->_max_users = $limit;
 		}
 
+		public function hasUsersAvailable()
+		{
+			return ($this->getMaxUsers()) ? (TBGUser::getUsersCount() < $this->getMaxUsers()) : true;
+		}
+
 		public function getMaxProjects()
 		{
 			return ($this->isDefault()) ? 0 : (int) $this->_max_projects;
@@ -298,6 +303,11 @@
 		public function setMaxTeams($limit)
 		{
 			$this->_max_teams = $limit;
+		}
+
+		public function hasTeamsAvailable()
+		{
+			return ($this->getMaxTeams()) ? (TBGTeam::getTeamsCount() < $this->getMaxTeams()) : true;
 		}
 		
 	}

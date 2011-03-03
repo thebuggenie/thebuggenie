@@ -8,7 +8,7 @@
 		<p class="teambox_membercount"><?php echo __('%number_of% member(s)', array('%number_of%' => '<span id="team_'.$team->getID().'_membercount">'.$team->getNumberOfMembers().'</span>')); ?></p>
 		<div class="rounded_box white shadowed" style="margin: 5px; display: none;" id="clone_team_<?php echo $team->getID(); ?>">
 			<div class="dropdown_header"><?php echo __('Please specify what parts of this team you want to clone'); ?></div>
-			<div class="dropdown_content">
+			<div class="dropdown_content copy_team_link">
 				<form id="clone_team_<?php echo $team->getID(); ?>_form" action="<?php echo make_url('configure_users_clone_team', array('team_id' => $team->getID())); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="cloneTeam('<?php echo make_url('configure_users_clone_team', array('team_id' => $team->getID())); ?>');return false;">
 					<div id="add_team">
 						<label for="clone_team_<?php echo $team->getID(); ?>_new_name"><?php echo __('New team name'); ?></label>

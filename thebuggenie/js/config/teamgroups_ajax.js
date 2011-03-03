@@ -161,59 +161,46 @@ function showGroupMembers(url, group_id)
 	}
 }
 
+function updateTeamLinks(json)
+{
+	if ($('current_team_num_count'))
+	{
+		$('current_team_num_count').update(json.total_count);
+	}
+	$$('.copy_team_link').each(function (element) {
+		if (json.more_available)
+		{
+			$(element).show();
+		}
+		else
+		{
+			$(element).hide();
+		}
+	});
+	if (json.more_available)
+	{
+		$('add_team_div').show();
+	}
+	else
+	{
+		$('add_team_div').hide();
+	}
+}
+
 function createTeam(url)
 {
-	_postFormWithJSONFeedback(url, 'create_team_form', 'create_team_indicator', '', 'teamconfig_list', true);
+	_postFormWithJSONFeedback(url, 'create_team_form', 'create_team_indicator', '', 'teamconfig_list', true, null, null, updateTeamLinks);
 	return true;
 }
 
 function deleteTeam(url, team_id)
 {
-	new Ajax.Request(url, {
-		asynchronous: true,
-		method: "post",
-		onLoading: function (transport) {
-			$('delete_team_' + team_id + '_indicator').show();
-		},
-		onSuccess: function (transport) {
-			$('delete_team_' + team_id + '_indicator').hide();
-			$('teambox_' + team_id).remove();
-			var json = transport.responseJSON;
-			if (json && (!json.failed || json.success) && json.message)
-			{
-				successMessage(json.message);
-			}
-		},
-		onComplete: function (transport) {
-			$('delete_team_' + team_id + '_indicator').hide();
-			var json = transport.responseJSON;
-			if (json && (!json.failed || json.success) && json.message)
-			{
-				successMessage(json.message);
-			}
-			if (json && (json.failed || json.error))
-			{
-				failedMessage(json.error);
-			}
-		},
-		onFailure: function (transport) {
-			$('delete_team_' + team_id + '_indicator').hide();
-			var json = transport.responseJSON;
-			if (json && (json.failed || json.error))
-			{
-				failedMessage(json.error);
-			}
-			else
-			{
-				failedMessage(transport.responseText);
-			}
-		}
-	});
+	_updateDivWithJSONFeedback(url, null, 'delete_team_' + team_id + '_indicator', null, null, null, ['teambox_' + team_id], null, null, null, updateTeamLinks);
 }
 
 function cloneTeam(url, team_id)
 {
-	_postFormWithJSONFeedback(url, 'clone_team_' + team_id + '_form', 'clone_team_' + team_id + '_indicator', 'clone_team_' + team_id, 'teamconfig_list', true);
+	_postFormWithJSONFeedback(url, 'clone_team_' + team_id + '_form', 'clone_team_' + team_id + '_indicator', 'clone_team_' + team_id, 'teamconfig_list', true, null, null, updateTeamLinks);
 	return false;
 }
 

@@ -24,7 +24,7 @@
 			</thead>
 			<tbody>
 				<?php foreach ($users as $user): ?>
-				<tr class="hover_highlight" id="users_results_user_<?php echo $user->getID(); ?>" onclick="$('users_results_user_<?php echo $user->getID(); ?>').toggleClassName('selected_green');"<?php if (isset($created_user) && $created_user): ?> style="display: none;"<?php endif; ?>>
+				<tr class="hover_highlight" id="users_results_user_<?php echo $user->getID(); ?>" onclick="$('users_results_user_<?php echo $user->getID(); ?>').toggleClassName('selected_green');">
 					<?php include_template('finduser_row', array('user' => $user)); ?>
 				</tr>
 				<tr id="user_<?php echo $user->getID(); ?>_edit_spinning" class="selected_green" style="display: none;">
@@ -44,4 +44,16 @@
 			</tbody>
 		</table>
 	<?php endif; ?>
+<?php endif; ?>
+<?php if (isset($more_available)): ?>
+	<script type="text/javascript">
+		<?php if (!$more_available): ?>
+			$('adduser_div').hide();
+		<?php else: ?>
+			$('adduser_div').show();
+		<?php endif; ?>
+		<?php if (TBGContext::getScope()->getMaxUsers()): ?>
+			$('current_user_num_count').update(<?php echo $total_count; ?>);
+		<?php endif; ?>
+	</script>
 <?php endif; ?>

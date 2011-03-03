@@ -2017,7 +2017,7 @@
 					throw new Exception(TBGContext::getI18n()->__("You cannot delete this team"));
 				}
 				$team->delete();
-				return $this->renderJSON(array('success' => true, 'message' => TBGContext::getI18n()->__('The team was deleted')));
+				return $this->renderJSON(array('success' => true, 'message' => TBGContext::getI18n()->__('The team was deleted'), 'total_count' => TBGTeam::getTeamsCount(), 'more_available' => TBGContext::getScope()->hasTeamsAvailable()));
 			}
 			catch (Exception $e)
 			{
@@ -2068,7 +2068,7 @@
 					{
 						$message = TBGContext::getI18n()->__('The team was added');
 					}
-					return $this->renderJSON(array('failed' => false, 'message' => $message, 'content' => $this->getTemplateHTML('configuration/teambox', array('team' => $team))));
+					return $this->renderJSON(array('failed' => false, 'message' => $message, 'content' => $this->getTemplateHTML('configuration/teambox', array('team' => $team)), 'total_count' => TBGTeam::getTeamsCount(), 'more_available' => TBGContext::getScope()->hasTeamsAvailable()));
 				}
 				else
 				{
@@ -2130,6 +2130,11 @@
 		{
 			try
 			{
+				if (!TBGContext::getScope()->hasUsersAvailable())
+				{
+					throw new Exception(TBGContext::getI18n()->__('This instance of The Bug Genie cannot add more users'));
+				}
+				
 				if ($username = $request->getParameter('username'))
 				{
 					$user = new TBGUser();
@@ -2152,6 +2157,8 @@
 				$this->users = array($user);
 				$this->total_results = 1;
 				$this->title = TBGContext::getI18n()->__('User %username% created', array('%username%' => $username));
+				$this->total_count = TBGUser::getUsersCount();
+				$this->more_available = TBGContext::getScope()->hasUsersAvailable();
 			}
 			catch (Exception $e)
 			{

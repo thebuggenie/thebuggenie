@@ -20,6 +20,8 @@
 	{
 		
 		static protected $_b2dbtablename = 'TBGUsersTable';
+
+		static protected $_num_users = null;
 		
 		/**
 		 * Unique username (login name)
@@ -446,6 +448,16 @@
 				$lchar = $char;
 			}
 			return $pass;
+		}
+
+		public static function getUsersCount()
+		{
+			if (self::$_num_users === null)
+			{
+				self::$_num_users = TBGUsersTable::getTable()->countUsers();
+			}
+
+			return self::$_num_users;
 		}
 
 		/**
