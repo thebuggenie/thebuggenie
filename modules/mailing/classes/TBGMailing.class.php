@@ -380,6 +380,11 @@
 			return $this->getSetting('smtp_pwd');
 		}
 
+		public function getEhlo()
+		{
+			return $this->getSetting('ehlo');
+		}
+
 		/**
 		 * Retrieve the instantiated and configured mailer object
 		 *
@@ -396,6 +401,7 @@
 					$this->mailer->setPort($this->getSmtpPort());
 					$this->mailer->setUsername($this->getSmtpUsername());
 					$this->mailer->setPassword($this->getSmtpPassword());
+					$this->getEhlo() ? $this->mailer->setEhlo() : $this->mailer->setHelo(); 
 				}
 				else
 				{
