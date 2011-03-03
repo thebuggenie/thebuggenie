@@ -23,6 +23,8 @@
 		
 		protected static $_workflows = null;
 
+		protected static $_num_workflows = null;
+
 		/**
 		 * The workflow description
 		 *
@@ -74,6 +76,24 @@
 			$workflow->save();
 			
 			TBGWorkflowStep::loadFixtures($scope, $workflow);
+		}
+
+		public static function getWorkflowsCount()
+		{
+			if (self::$_num_workflows === null)
+			{
+				if (self::$_workflows !== null)
+					self::$_num_workflows = count(self::$_workflows);
+				else
+					self::$_num_workflows = TBGWorkflowsTable::getTable()->countWorkflows();
+			}
+
+			return self::$_num_workflows;
+		}
+
+		public static function getCustomWorkflowsCount()
+		{
+			return self::getWorkflowsCount() - 1;
 		}
 		
 		/**

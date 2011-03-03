@@ -79,6 +79,3 @@
 		<?php include_template('configuration/projectpermissions', array('access_level' => $access_level, 'project' => $project)); ?>
 	</div>
 </div>
-<?php if (TBGContext::getRequest()->isAjaxCall()): ?>
-	<script type="text/javascript">new Effect.Pulsate('project_box_<?php echo $project->getID(); ?>');</script>
-<?php endif; ?>

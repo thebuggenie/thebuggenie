@@ -1125,6 +1125,10 @@
 		{
 			$i18n = TBGContext::getI18n();
 
+			if (!TBGContext::getScope()->hasProjectsAvailable())
+			{
+				return $this->renderJSON(array('failed' => true, "error" => $i18n->__("There are no more projects available in this instance")));
+			}
 			if ($this->access_level == TBGSettings::ACCESS_FULL)
 			{
 				if (($p_name = $request->getParameter('p_name')) && trim($p_name) != '')
@@ -1134,7 +1138,7 @@
 						$project = new TBGProject();
 						$project->setName($p_name);
 						$project->save();
-						return $this->renderJSON(array('title' => $i18n->__('The project has been added'), 'content' => $this->getTemplateHTML('projectbox', array('project' => $project, 'access_level' => $this->access_level))));
+						return $this->renderJSON(array('title' => $i18n->__('The project has been added'), 'content' => $this->getTemplateHTML('projectbox', array('project' => $project, 'access_level' => $this->access_level)), 'total_count' => TBGProject::getProjectsCount(), 'more_available' => TBGContext::getScope()->hasProjectsAvailable()));
 					}
 					catch (InvalidArgumentException $e)
 					{
@@ -1673,7 +1677,7 @@
 					$theProject = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
 					$theProject->setDeleted();
 					$theProject->save();
-					return $this->renderJSON(array('failed' => false, 'title' => $i18n->__('The project was deleted')));
+					return $this->renderJSON(array('failed' => false, 'title' => $i18n->__('The project was deleted'), 'total_count' => TBGProject::getProjectsCount(), 'more_available' => TBGContext::getScope()->hasProjectsAvailable()));
 				}
 				catch (Exception $e)
 				{
@@ -2443,7 +2447,7 @@
 					if ($new_name = $request->getParameter('new_name'))
 					{
 						$new_workflow = $this->workflow->copy($new_name);
-						return $this->renderJSON(array('content' => $this->getTemplateHTML('configuration/workflow', array('workflow' => $new_workflow))));
+						return $this->renderJSON(array('content' => $this->getTemplateHTML('configuration/workflow', array('workflow' => $new_workflow)), 'total_count' => TBGWorkflow::getCustomWorkflowsCount(), 'more_available' => TBGContext::getScope()->hasCustomWorkflowsAvailable()));
 					}
 					else
 					{
@@ -2453,7 +2457,7 @@
 				elseif ($this->mode == 'delete_workflow')
 				{
 					$this->workflow->delete();
-					return $this->renderJSON(array('success' => true, 'message' => TBGContext::getI18n()->__('The workflow was deleted')));
+					return $this->renderJSON(array('success' => true, 'message' => TBGContext::getI18n()->__('The workflow was deleted'), 'total_count' => TBGWorkflow::getCustomWorkflowsCount(), 'more_available' => TBGContext::getScope()->hasCustomWorkflowsAvailable()));
 				}
 			}
 			catch (Exception $e)

@@ -189,6 +189,16 @@
 			return $this->doCount($crit);
 		}
 		
+		public function countProjects($scope = null)
+		{
+			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::SCOPE, $scope);
+			$crit->addWhere(self::DELETED, false);
+
+			return $this->doCount($crit);
+		}
+
 		public function getByUserID($user_id)
 		{
 			$crit = $this->getCriteria();

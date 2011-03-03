@@ -22,6 +22,15 @@
 		static protected $_b2dbtablename = 'TBGProjectsTable';
 		
 		/**
+		 * Project list cache
+		 *
+		 * @var array
+		 */
+		static protected $_projects = null;
+
+		static protected $_num_projects = null;
+
+		/**
 		 * The project prefix
 		 *
 		 * @var string
@@ -213,13 +222,6 @@
 		protected $_allow_freelancing = false;
 		
 		/**
-		 * Project list cache
-		 * 
-		 * @var array
-		 */
-		static protected $_projects = null;
-
-		/**
 		 * Is project deleted
 		 * 
 		 * @var boolean
@@ -374,6 +376,19 @@
 		{
 			self::_populateProjects();
 			return self::$_projects;
+		}
+
+		public static function getProjectsCount()
+		{
+			if (self::$_num_projects === null)
+			{
+				if (self::$_projects !== null)
+					self::$_num_projects = count(self::$_projects);
+				else
+					self::$_num_projects = TBGProjectsTable::getTable()->countProjects();
+			}
+
+			return self::$_num_projects;
 		}
 		
 		/**
@@ -556,6 +571,9 @@
 		{
 			if ($is_new)
 			{
+				self::$_num_projects = null;
+				self::$_projects = null;
+
 				TBGContext::setPermission("canseeproject", $this->getID(), "core", TBGContext::getUser()->getID(), 0, 0, true);
 				TBGContext::setPermission("canseeprojecthierarchy", $this->getID(), "core", TBGContext::getUser()->getID(), 0, 0, true);
 				TBGContext::setPermission("canmanageproject", $this->getID(), "core", TBGContext::getUser()->getID(), 0, 0, true);
@@ -569,6 +587,11 @@
 				TBGContext::setPermission("canpostseeandeditallcomments", $this->getID(), "core", TBGContext::getUser()->getID(), 0, 0, true);
 
 				TBGEvent::createNew('core', 'TBGProject::createNew', $this)->trigger();
+			}
+			if ($this->_dodelete)
+			{
+				TBGIssuesTable::getTable()->markIssuesDeletedByProjectID($this->getID());
+				$this->_dodelete = false;
 			}
 		}
 		
@@ -1293,34 +1316,6 @@
 			$this->_allow_freelancing = (bool) $val;
 		}
 		
-		/**
-		 * Save changes made to the project
-		 * 
-		 * @return bool
-		 */
-		public function preSave()
-		{
-			if ($this->_client == 0)
-			{
-				$this->_client = null;
-			}
-		}
-		
-		
-		/**
-		 * Save changes made to the project
-		 * 
-		 * @return bool
-		 */
-		public function postSave()
-		{
-			if ($this->_dodelete)
-			{
-				TBGIssuesTable::getTable()->markIssuesDeletedByProjectID($this->getID());
-				$this->_dodelete = false;
-			}
-		}
-
 		/**
 		 * Populates builds inside the project
 		 *

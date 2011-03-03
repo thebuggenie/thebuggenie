@@ -15,14 +15,29 @@ function deleteWorkflowScheme(url, scheme_id)
 	_postFormWithJSONFeedback(url, 'delete_workflow_scheme_' + scheme_id + '_form', 'delete_workflow_scheme_' + scheme_id + '_indicator', ['delete_scheme_' + scheme_id + '_popup', 'copy_scheme_' + scheme_id + '_popup', 'workflow_scheme_' + scheme_id], 'workflow_schemes_list', true);
 }
 
+function updateWorkflowLinks(json)
+{
+	$('current_workflow_num_count').update(json.total_count);
+	$$('.copy_workflow_link').each(function (element) {
+		if (json.more_available)
+		{
+			$(element).show();
+		}
+		else
+		{
+			$(element).hide();
+		}
+	});
+}
+
 function copyWorkflow(url, workflow_id)
 {
-	_postFormWithJSONFeedback(url, 'copy_workflow_' + workflow_id + '_form', 'copy_workflow_' + workflow_id + '_indicator', 'copy_workflow_' + workflow_id + '_popup', 'workflows_list', true);
+	_postFormWithJSONFeedback(url, 'copy_workflow_' + workflow_id + '_form', 'copy_workflow_' + workflow_id + '_indicator', 'copy_workflow_' + workflow_id + '_popup', 'workflows_list', true, null, null, updateWorkflowLinks);
 }
 
 function deleteWorkflow(url, workflow_id)
 {
-	_postFormWithJSONFeedback(url, 'delete_workflow_' + workflow_id + '_form', 'delete_workflow_' + workflow_id + '_indicator', ['delete_workflow_' + workflow_id + '_popup', 'copy_workflow_' + workflow_id + '_popup', 'workflow_' + workflow_id], 'workflows_list', true);
+	_postFormWithJSONFeedback(url, 'delete_workflow_' + workflow_id + '_form', 'delete_workflow_' + workflow_id + '_indicator', ['delete_workflow_' + workflow_id + '_popup', 'copy_workflow_' + workflow_id + '_popup', 'workflow_' + workflow_id], 'workflows_list', true, null, null, updateWorkflowLinks);
 }
 
 function updateWorkflowScheme(url, scheme_id)

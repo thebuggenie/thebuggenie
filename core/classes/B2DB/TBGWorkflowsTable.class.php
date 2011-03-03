@@ -64,4 +64,13 @@
 			return $row;
 		}
 
+		public function countWorkflows($scope = null)
+		{
+			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::SCOPE, $scope);
+
+			return $this->doCount($crit);
+		}
+
 	}

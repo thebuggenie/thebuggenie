@@ -18,16 +18,16 @@
 						<a href="javascript:void(0);" onclick="$('delete_workflow_<?php echo $workflow->getID(); ?>_popup').toggle();" class="rounded_box"><?php echo image_tag('icon_delete.png', array('title' => __('Delete this workflow'))); ?></a>
 					<?php endif; ?>
 				<?php endif; ?>
-				<?php if (TBGContext::getScope()->isCustomWorkflowsEnabled()): ?>
-					<a href="javascript:void(0);" onclick="$('copy_workflow_<?php echo $workflow->getID(); ?>_popup').toggle();" class="rounded_box"><?php echo image_tag('icon_copy.png', array('title' => __('Create a copy of this workflow'))); ?></a>
+				<?php if (TBGContext::getScope()->hasCustomWorkflowsAvailable()): ?>
+					<a href="javascript:void(0);" onclick="$('copy_workflow_<?php echo $workflow->getID(); ?>_popup').toggle();" class="rounded_box copy_workflow_link"><?php echo image_tag('icon_copy.png', array('title' => __('Create a copy of this workflow'))); ?></a>
 				<?php endif; ?>
 				<?php echo link_tag(make_url('configure_workflow_steps', array('workflow_id' => $workflow->getID())), image_tag('icon_workflow_scheme_edit.png', array('title' => __('Show workflow details'))), array('class' => 'rounded_box')); ?></a>
 			</td>
 		</tr>
 	</table>
 </li>
-<?php if (TBGContext::getScope()->isCustomWorkflowsEnabled()): ?>
-	<li class="rounded_box white shadowed" id="copy_workflow_<?php echo $workflow->getID(); ?>_popup" style="margin-bottom: 5px; padding: 10px; display: none;">
+<?php if (TBGContext::getScope()->hasCustomWorkflowsAvailable()): ?>
+	<li class="rounded_box white shadowed copy_workflow_popup" id="copy_workflow_<?php echo $workflow->getID(); ?>_popup" style="margin-bottom: 5px; padding: 10px; display: none;">
 		<div class="header"><?php echo __('Copy workflow'); ?></div>
 		<div class="content">
 			<?php echo __('Please enter the name of the new workflow'); ?><br>

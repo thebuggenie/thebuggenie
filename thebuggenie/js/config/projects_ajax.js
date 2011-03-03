@@ -1,3 +1,16 @@
+function updateProjectLinks(json)
+{
+	$('current_project_num_count').update(json.total_count);
+	if (json.more_available)
+	{
+		$('add_project_div').show();
+	}
+	else
+	{
+		$('add_project_div').hide();
+	}
+}
+
 function addProject(url)
 {
 	var params = Form.serialize('add_project_form');
@@ -23,6 +36,7 @@ function addProject(url)
 				$('project_add_indicator').hide();
 				successMessage(json.title, json.message);
 				$('project_table').insert({bottom: json.content});
+				updateProjectLinks(json);
 			}
 		},
 		onFailure: function (transport) {
@@ -63,6 +77,7 @@ function removeProject(url, pid)
 			{
 				$('noprojects_tr').show();
 			}
+			updateProjectLinks(json);
 			successMessage(json.title);
 		}
 	},

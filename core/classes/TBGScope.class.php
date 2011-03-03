@@ -247,6 +247,14 @@
 			return ($this->isDefault()) ? 0 : (int) $this->_max_workflows;
 		}
 
+		public function hasCustomWorkflowsAvailable()
+		{
+			if ($this->isCustomWorkflowsEnabled())
+				return ($this->getMaxWorkflowsLimit()) ? (TBGWorkflow::getCustomWorkflowsCount() < $this->getMaxWorkflowsLimit()) : true;
+			else
+				return false;
+		}
+
 		public function setMaxUploadLimit($limit)
 		{
 			$this->_max_upload_limit = $limit;
@@ -275,6 +283,11 @@
 		public function setMaxProjects($limit)
 		{
 			$this->_max_projects = $limit;
+		}
+
+		public function hasProjectsAvailable()
+		{
+			return ($this->getMaxProjects()) ? (TBGProject::getProjectsCount() < $this->getMaxProjects()) : true;
 		}
 
 		public function getMaxTeams()

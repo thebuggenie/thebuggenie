@@ -19,12 +19,15 @@ include_component('leftmenu', array('selected_section' => 10));
 				<div class="config_header" style="width: 750px;"><?php echo __('Configure projects'); ?></div>
 				<p style="padding-top: 5px;">
 					<?php echo __('More information about projects, editions, builds and components is available from the %wiki_help_section%.', array('%wiki_help_section%' => link_tag(make_url('publish_article', array('article_name' => 'Category:Help')), '<b>'.__('Wiki help section').'</b>'))); ?>
+					<div class="faded_out dark" style="margin: 12px 0;">
+						<?php echo __('This instance is using %num% of max %max% projects', array('%num%' => '<b id="current_project_num_count">'.TBGProject::getProjectsCount().'</b>', '%max%' => '<b>'.TBGContext::getScope()->getMaxProjects().'</b>')); ?>
+					</div>
 				</p>
 			</td>
 		</tr>
 	</table>
 	<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-		<div class="rounded_box lightgrey" style="width: 690px; padding: 5px; margin: 10px 0;">
+		<div class="rounded_box lightgrey" style="width: 690px; padding: 5px; margin: 10px 0;<?php if (!TBGContext::getScope()->hasProjectsAvailable()): ?> display: none;<?php endif; ?>" id="add_project_div">
 			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" method="post" id="add_project_form" onsubmit="addProject('<?php echo make_url('configure_projects_add_project'); ?>');return false;">
 				<input type="hidden" name="add_project" value="true">
 				<table cellpadding=0 cellspacing=0 style="margin: 0; width: 690px; table-layout: auto;">
@@ -55,7 +58,9 @@ include_component('leftmenu', array('selected_section' => 10));
 		<?php endforeach; ?>
 	<?php endif; ?>
 	</div>
-	<div id="noprojects_tr" style="padding: 3px; color: #AAA;<?php if (count($allProjects) > 0): ?> display: none;<?php endif;?>"><?php echo __('There are no projects available'); ?></div>
+	<div id="noprojects_tr" style="padding: 3px; color: #AAA;<?php if (count($allProjects) > 0): ?> display: none;<?php endif;?>">
+		<?php echo __('There are no projects available'); ?>
+	</div>
 </td>
 </tr>
 </table>
