@@ -26,6 +26,11 @@
 			return TBGIssueFilesTable::getTable()->getByIssueID($issue_id);
 		}
 
+		public static function countByIssueID($issue_id)
+		{
+			return TBGIssueFilesTable::getTable()->countByIssueID($issue_id);
+		}
+
 		public static function getByArticleID($article_id)
 		{
 			return TBGArticleFilesTable::getTable()->getByArticleID($article_id);

@@ -85,6 +85,13 @@
 			return $ret_arr;
 		}
 
+		public function countByIssueID($issue_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::ISSUE_ID, $issue_id);
+			return $this->doCount($crit);
+		}
+
 		public function removeByIssueIDandFileID($issue_id, $file_id)
 		{
 			$crit = $this->getCriteria();

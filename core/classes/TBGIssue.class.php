@@ -48,6 +48,13 @@
 		 * @var array
 		 */
 		protected $_files = null;
+
+		/**
+		 * Number of attached files
+		 *
+		 * @var integer
+		 */
+		protected $_num_files = null;
 		
 		/**
 		 * The issue title
@@ -3757,6 +3764,23 @@
 		{
 			$this->_populateFiles();
 			return $this->_files;
+		}
+
+		public function countFiles()
+		{
+			if ($this->_num_files === null)
+			{
+				if ($this->_files !== null)
+				{
+					$this->_num_files = count($this->_files);
+				}
+				else
+				{
+					$this->_num_files = TBGFile::countByIssueID($this->getID());
+				}
+			}
+
+			return $this->_num_files;
 		}
 
 		/**

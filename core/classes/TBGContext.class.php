@@ -1927,17 +1927,16 @@
 				self::getResponse()->renderHeaders();
 
 				if (isset($decoration_header))
-				{
 					echo $decoration_header;
-				}
+
 				echo $content;
 				if (isset($decoration_footer))
-				{
 					echo $decoration_footer;
-				}
+
 				TBGLogging::log('...done (rendering content)');
 
-				//self::getI18n()->addMissingStringsToStringsFile();
+				if (self::isDebugMode())
+					self::getI18n()->addMissingStringsToStringsFile();
 				
 				return true;
 			}
