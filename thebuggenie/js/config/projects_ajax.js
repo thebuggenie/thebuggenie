@@ -933,34 +933,9 @@ function assignToProject(url, form_id)
 	});
 }
 
-function removeFromProject(url, aid)
+function removeAssignee(url, type, id)
 {
-	new Ajax.Request(url, {
-		asynchronous:true,
-		method: "post",
-		onSuccess: function (transport) {
-			var json = transport.responseJSON;
-			if (json && (json.failed || json.error))
-			{
-				failedMessage(json.error);
-			}
-			else
-			{
-				if ($('assignment_product_' + aid).parentNode.childElements().size() == 1)
-				{
-					$('assignment_product_' + aid).parentNode.remove();
-				}
-				$('assignment_product_' + aid).remove();
-			}
-		},
-		onFailure: function (transport) {
-			var json = transport.responseJSON;
-			if (json && (json.failed || json.error))
-			{
-				failedMessage(json.error);
-			}
-		}
-	});
+	_updateDivWithJSONFeedback(url, null, 'remove_assignee_'+type+'_'+id+'_indicator', null, null, 'assignee_'+type+'_'+id+'_link', ['assignee_'+type+'_'+id+'_row']);
 }
 
 function editEdition(url, edition_id)

@@ -121,5 +121,17 @@
 			}
 			return false;
 		}
-		
+
+		public function removeAssigneeFromEdition($assignee_type, $assignee_id, $edition_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::EDITION_ID, $edition_id);
+			if ($assignee_type == 'team')
+				$crit->addWhere(self::TID, $assignee_id);
+			else
+				$crit->addWhere(self::UID, $assignee_id);
+
+			$this->doDelete($crit);
+		}
+
 	}

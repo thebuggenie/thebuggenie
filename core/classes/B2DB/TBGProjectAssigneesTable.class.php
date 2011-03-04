@@ -105,6 +105,18 @@
 			$res = $this->doInsert($crit);
 			return $res;
 		}
+
+		public function removeAssigneeFromProject($assignee_type, $assignee_id, $project_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::PROJECT_ID, $project_id);
+			if ($assignee_type == 'team')
+				$crit->addWhere(self::TID, $assignee_id);
+			else
+				$crit->addWhere(self::UID, $assignee_id);
+
+			$this->doDelete($crit);
+		}
 		
 		public function getProjectsByUserID($user_id)
 		{

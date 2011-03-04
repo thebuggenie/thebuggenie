@@ -3972,4 +3972,18 @@
 			}
 		}
 
+		public function runUnassignFromProject(TBGRequest $request)
+		{
+			try
+			{
+				$project = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
+				$project->removeAssignee($request->getParameter('assignee_type'), $request->getParameter('assignee_id'));
+				return $this->renderJSON(array('failed' => false, 'message' => TBGContext::getI18n()->__('The assignee has been removed')));
+			}
+			catch (Exception $e)
+			{
+				return $this->renderJSON(array('failed' => true, 'message' => $e->getMessage()));
+			}
+		}
+
 	}
