@@ -27,7 +27,7 @@
 					<th><?php echo __('Status'); ?></th>
 					<th><?php echo __('Resolution'); ?></th>
 					<th><?php echo __('Last updated'); ?></th>
-					<th style="width: 20px; padding-bottom: 0; text-align: center;"><?php echo image_tag('icon_comments.png'); ?></th>
+					<th style="width: 20px; padding-bottom: 0; text-align: center;"><?php echo image_tag('icon_comments.png', array('title' => __('Number of user comments on this issue'))); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -73,7 +73,7 @@
 				</td>
 				<td class="smaller" title="<?php echo tbg_formatTime($issue->getLastUpdatedTime(), 21); ?>"><?php echo tbg_formatTime($issue->getLastUpdatedTime(), 20); ?></td>
 				<td class="smaller" style="text-align: center;">
-					<?php echo $issue->getCommentCount(); ?>
+					<?php echo $issue->countUserComments(); ?>
 				</td>
 			</tr>
 	<?php if ($cc == count($issues)): ?>

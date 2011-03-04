@@ -1,4 +1,5 @@
 <?php $module = (isset($module)) ? $module : 'core'; ?>
+<div style="float: right; padding: 5px;"><label><?php echo __('Show system comments'); ?><input type="checkbox" id="comments_show_system_comments_toggle" onchange="$$('#comments_box .system_comment').each(function (elm) { $(elm).toggle(); })"</label></div>
 <?php if ($tbg_user->canPostComments()): ?>
 	<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px;" id="comment_add_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="$('comment_add_button').hide(); $('comment_add').show();$('comment_bodybox').focus();" value="<?php echo __('Add new comment'); ?>"></td></tr></table>
 	<div id="comment_add" class="comment_add" style="<?php if (!(isset($comment_error) && $comment_error)): ?>display: none; <?php endif; ?>margin-top: 5px;">

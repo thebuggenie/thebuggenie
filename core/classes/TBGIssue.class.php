@@ -455,6 +455,10 @@
 		 */
 		protected $_comments;
 
+		protected $_num_comments;
+
+		protected $_num_user_comments;
+
 		/**
 		 * All custom data type properties
 		 *
@@ -3880,6 +3884,14 @@
 			if ($this->_comments === null)
 			{
 				$this->_comments = TBGComment::getComments($this->getID(), TBGComment::TYPE_ISSUE);
+				$this->_num_comments = count($this->_comments);
+				$sc = 0;
+				foreach ($this->_comments as $comment)
+				{
+					if ($comment->isSystemComment())
+						$sc++;
+				}
+				$this->_num_user_comments = $sc;
 			}
 		}
 		
@@ -3890,14 +3902,34 @@
 		 */
 		public function getCommentCount()
 		{
-			if ($this->_comments === null)
+			if ($this->_num_comments === null)
 			{
-				return TBGComment::countComments($this->getID(), TBGComment::TYPE_ISSUE);
+				if ($this->_comments !== null)
+				{
+					$this->_num_comments = count($this->getComments());
+				}
+				else
+				{
+					$this->_num_comments = TBGComment::countComments($this->getID(), TBGComment::TYPE_ISSUE);
+				}
 			}
-			else
+
+			return $this->_num_comments;
+		}
+
+		public function countComments()
+		{
+			return $this->getCommentCount();
+		}
+
+		public function countUserComments()
+		{
+			if ($this->_num_user_comments === null)
 			{
-				return count($this->getComments());
+				$this->_num_user_comments = TBGComment::countComments($this->getID(), TBGComment::TYPE_ISSUE, false);
 			}
+
+			return (int) $this->_num_user_comments;
 		}
 		
 		public function isReproductionStepsChanged()

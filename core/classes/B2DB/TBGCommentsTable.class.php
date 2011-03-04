@@ -77,7 +77,7 @@
 			return $res;
 		}
 
-		public function countComments($target_id, $target_type)
+		public function countComments($target_id, $target_type, $include_system_comments = true)
 		{
 			$crit = $this->getCriteria();
 			if($target_id != 0) 
@@ -86,8 +86,10 @@
 			}
 			$crit->addWhere(self::TARGET_TYPE, $target_type);
 			$crit->addWhere(self::DELETED, 0);
-			$res = $this->doCount($crit);
-			return $res;
+			if (!$include_system_comments)
+				$crit->addWhere(self::SYSTEM_COMMENT, false);
+			
+			return $this->doCount($crit);
 		}
 
 		public function getNextCommentNumber($target_id, $target_type)

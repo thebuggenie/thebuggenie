@@ -77,17 +77,9 @@
 			return $retval;
 		}
 		
-		static function countComments($target_id, $target_type/*, $module = 'core'*/)
+		static function countComments($target_id, $target_type, $include_system_comments = true)
 		{
-			if (!array_key_exists($target_type, self::$_comment_count))
-			{
-				self::$_comment_count[$target_type] = array();
-			}
-			if (!array_key_exists($target_id, self::$_comment_count[$target_type]))
-			{
-				self::$_comment_count[$target_type][$target_id] = TBGCommentsTable::getTable()->countComments($target_id, $target_type);
-			}
-			return self::$_comment_count[$target_type][$target_id];
+			return (int) TBGCommentsTable::getTable()->countComments($target_id, $target_type, $include_system_comments);
 		}
 		
 		public function setTitle($var)
