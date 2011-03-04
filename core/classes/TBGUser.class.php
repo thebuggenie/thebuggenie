@@ -485,6 +485,12 @@
 			{
 				$this->setGroup(TBGSettings::getDefaultGroup());
 			}
+			if ($this->_deleted)
+			{
+				$this->_group_id = null;
+				TBGTeamMembersTable::getTable()->clearTeamsByUserID($this->getID());
+				TBGClientMembersTable::getTable()->clearClientsByUserID($this->getID());
+			}
 		}
 
 		/**
@@ -1098,6 +1104,11 @@
 		public function isDeleted()
 		{
 			return $this->_deleted;
+		}
+
+		public function markAsDeleted()
+		{
+			$this->_deleted = true;
 		}
 		
 		/**

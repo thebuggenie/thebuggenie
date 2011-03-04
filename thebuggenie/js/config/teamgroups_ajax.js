@@ -107,6 +107,27 @@ function deleteGroup(url, group_id)
 	});
 }
 
+function updateUserLinks(json)
+{
+	if ($('current_user_num_count'))
+	{
+		$('current_user_num_count').update(json.total_count);
+	}
+	if (json.more_available)
+	{
+		$('adduser_div').show();
+	}
+	else
+	{
+		$('adduser_div').hide();
+	}
+}
+
+function deleteUser(url, user_id)
+{
+	_updateDivWithJSONFeedback(url, null, 'delete_user_'+user_id+'_indicator', null, null, null, ['users_results_user_'+user_id, 'user_'+user_id+'_edit_spinning', 'user_'+user_id+'_edit_tr', 'users_results_user_'+user_id+'_permissions_row'], null, 'post', null, updateUserLinks);
+}
+
 function cloneGroup(url, group_id)
 {
 	_postFormWithJSONFeedback(url, 'clone_group_' + group_id + '_form', 'clone_group_' + group_id + '_indicator', 'clone_group_' + group_id, 'groupconfig_list', true);

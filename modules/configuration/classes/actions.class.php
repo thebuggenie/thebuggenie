@@ -2003,6 +2003,30 @@
 		
 		}
 
+		public function runDeleteUser(TBGRequest $request)
+		{
+			try
+			{
+				try
+				{
+					$user = TBGContext::factory()->TBGUser($request->getParameter('user_id'));
+				}
+				catch (Exception $e) { }
+				if (!$user instanceof TBGUser)
+				{
+					throw new Exception(TBGContext::getI18n()->__("You cannot delete this user"));
+				}
+				$user->markAsDeleted();
+				$user->save();
+				return $this->renderJSON(array('success' => true, 'message' => TBGContext::getI18n()->__('The user was deleted'), 'total_count' => TBGUser::getUsersCount(), 'more_available' => TBGContext::getScope()->hasUsersAvailable()));
+			}
+			catch (Exception $e)
+			{
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('failed' => true, 'error' => $e->getMessage()));
+			}
+		}
+
 		public function runDeleteTeam(TBGRequest $request)
 		{
 			try
