@@ -2010,6 +2010,10 @@
 				try
 				{
 					$user = TBGContext::factory()->TBGUser($request->getParameter('user_id'));
+					if (in_array($user->getUsername(), array('administrator', 'guest')))
+					{
+						throw new Exception(TBGContext::getI18n()->__("You cannot delete this system user"));
+					}
 				}
 				catch (Exception $e) { }
 				if (!$user instanceof TBGUser)
