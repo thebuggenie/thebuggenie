@@ -1760,3 +1760,7 @@
 	$strings['No issues recently commented'] = 'No issues recently commented';
 	$strings['You\'re not allowed to change your password.'] = 'You\'re not allowed to change your password.';
 	$strings['Please contact your administrator to change it.'] = 'Please contact your administrator to change it.';
+	$strings['Your issues'] = 'Your issues';
+	$strings['Please confirm that you want to delete this user'] = 'Please confirm that you want to delete this user';
+	$strings['The user with username "%username%" will be deleted permanently. Are you sure you want to do this?'] = 'The user with username "%username%" will be deleted permanently. Are you sure you want to do this?';
+	$strings['Delete this user'] = 'Delete this user';
