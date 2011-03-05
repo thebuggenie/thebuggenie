@@ -19,6 +19,7 @@
 	class TBGModulePermissionsTable extends TBGB2DBTable 
 	{
 
+		const B2DB_TABLE_VERSION = 1;
 		const B2DBNAME = 'modulepermissions';
 		const ID = 'modulepermissions.id';
 		const SCOPE = 'modulepermissions.scope';

@@ -2,6 +2,8 @@
 
 	class TBGArticleHistoryTable extends TBGB2DBTable
 	{
+
+		const B2DB_TABLE_VERSION = 1;
 		const B2DBNAME = 'articlehistory';
 		const ID = 'articlehistory.id';
 		const ARTICLE_NAME = 'articlehistory.article_name';

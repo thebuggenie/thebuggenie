@@ -6,12 +6,14 @@
     header ("Pragma: no-cache"); // HTTP/1.0
 
     $step = $tbg_request->getParameter('step', 0);
+
+	$mode = (isset($mode)) ? $mode : 'install';
     
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
-		<title>The Bug Genie installation</title>
+		<title>The Bug Genie <?php if ($mode == 'upgrade'): ?>upgrade<?php else: ?>installation<?php endif; ?></title>
 		<meta name="description" content="">
 		<meta name="keywords" content="">
 		<meta name="author" content="zegenie">
@@ -73,19 +75,23 @@
 					</table>
 					<div style="border-bottom: 1px solid #DDD; height: 1px;"></div>
 					<div class="print_header_strip" style="text-align: left; padding: 5px;">
-						<b>The Bug Genie installation</b> &ndash; 
-						<?php if ($step == 0): ?>
-							Introduction
-						<?php elseif ($step == 6): ?>
-							Finished
-						<?php elseif ($step == 2): ?>
-							Prerequisites
+						<?php if ($mode == 'upgrade'): ?>
+							<b>The Bug Genie upgrade</b>
 						<?php else: ?>
-							step <?php echo $step; ?>
+							<b>The Bug Genie installation</b> &ndash;
+							<?php if ($step == 0): ?>
+								Introduction
+							<?php elseif ($step == 6): ?>
+								Finished
+							<?php elseif ($step == 2): ?>
+								Prerequisites
+							<?php else: ?>
+								step <?php echo $step; ?>
+							<?php endif; ?>
 						<?php endif; ?>
 					</div>
 					<div style="text-align: left; padding: 0px;">
-						<?php if ($step >= 1): ?>
+						<?php if ($step >= 1 && $mode == 'install'): ?>
 							<div style="text-align: center; width: 100%; margin-top: 5px; font-size: 12px;">
 								<b>Installation progress</b><br>
 								<table style="width: 700px; margin: 5px auto 0 auto;" cellpadding="0" cellspacing="0" border="0">

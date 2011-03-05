@@ -19,6 +19,7 @@
 	class TBGUserIssuesTable extends TBGB2DBTable 
 	{
 
+		const B2DB_TABLE_VERSION = 1;
 		const B2DBNAME = 'userissues';
 		const ID = 'userissues.id';
 		const SCOPE = 'userissues.scope';

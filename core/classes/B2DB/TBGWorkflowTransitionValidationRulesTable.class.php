@@ -19,6 +19,7 @@
 	class TBGWorkflowTransitionValidationRulesTable extends TBGB2DBTable
 	{
 
+		const B2DB_TABLE_VERSION = 1;
 		const B2DBNAME = 'workflow_transition_validation_rules';
 		const ID = 'workflow_transition_validation_rules.id';
 		const SCOPE = 'workflow_transition_validation_rules.scope';

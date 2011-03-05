@@ -17,6 +17,8 @@
 	 */
 	class TBGVCSIntegrationTable extends TBGB2DBTable 
 	{
+
+		const B2DB_TABLE_VERSION = 1;
 		const B2DBNAME = 'vcsintegration';
 		const ID = 'vcsintegration.id';
 		const SCOPE = 'vcsintegration.scope';

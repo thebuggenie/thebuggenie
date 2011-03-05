@@ -19,6 +19,7 @@
 	class TBGMilestonesTable extends TBGB2DBTable 
 	{
 
+		const B2DB_TABLE_VERSION = 1;
 		const B2DBNAME = 'milestones';
 		const ID = 'milestones.id';
 		const SCOPE = 'milestones.scope';

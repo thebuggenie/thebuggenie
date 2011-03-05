@@ -19,6 +19,7 @@
 	class TBGIssuetypeSchemesTable extends TBGB2DBTable
 	{
 
+		const B2DB_TABLE_VERSION = 1;
 		const B2DBNAME = 'issuetype_schemes';
 		const ID = 'issuetype_schemes.id';
 		const SCOPE = 'issuetype_schemes.scope';

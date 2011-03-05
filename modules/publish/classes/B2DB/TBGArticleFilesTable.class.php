@@ -19,6 +19,7 @@
 	class TBGArticleFilesTable extends TBGB2DBTable
 	{
 
+		const B2DB_TABLE_VERSION = 1;
 		const B2DBNAME = 'articlefiles';
 		const ID = 'articlefiles.id';
 		const SCOPE = 'articlefiles.scope';

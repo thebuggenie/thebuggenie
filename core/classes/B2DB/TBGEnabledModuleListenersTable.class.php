@@ -18,6 +18,8 @@
 	 */
 	class TBGEnabledModuleListenersTable extends TBGB2DBTable 
 	{
+
+		const B2DB_TABLE_VERSION = 1;
 		const B2DBNAME = 'enabledmodulelisteners';
 		const ID = 'enabledmodulelisteners.id';
 		const IDENTIFIER = 'enabledmodulelisteners.identifier';

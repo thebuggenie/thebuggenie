@@ -19,6 +19,7 @@
 	class TBGIssueTagsTable extends TBGB2DBTable
 	{
 
+		const B2DB_TABLE_VERSION = 1;
 		const B2DBNAME = 'issuetags';
 		const ID = 'issuetags.id';
 		const ISSUE_ID = 'issuetags.issue_id';

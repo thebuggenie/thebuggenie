@@ -2,6 +2,8 @@
 
 	class TBGArticleViewsTable extends TBGB2DBTable 
 	{
+
+		const B2DB_TABLE_VERSION = 1;
 		const B2DBNAME = 'articleviews';
 		const ID = 'articleviews.id';
 		const ARTICLE_ID = 'articleviews.article_id';

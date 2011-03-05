@@ -2,6 +2,8 @@
 
 	class TBGSavedSearchFiltersTable extends TBGB2DBTable
 	{
+
+		const B2DB_TABLE_VERSION = 1;
 		const B2DBNAME = 'savedsearchfilters';
 		const ID = 'savedsearchfilters.id';
 		const SCOPE = 'savedsearchfilters.scope';

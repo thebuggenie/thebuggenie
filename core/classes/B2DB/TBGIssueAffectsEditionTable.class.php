@@ -19,6 +19,7 @@
 	class TBGIssueAffectsEditionTable extends TBGB2DBTable 
 	{
 
+		const B2DB_TABLE_VERSION = 1;
 		const B2DBNAME = 'issueaffectsedition';
 		const ID = 'issueaffectsedition.id';
 		const SCOPE = 'issueaffectsedition.scope';

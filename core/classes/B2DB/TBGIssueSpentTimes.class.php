@@ -19,6 +19,7 @@
 	class TBGIssueSpentTimes extends TBGB2DBTable
 	{
 
+		const B2DB_TABLE_VERSION = 1;
 		const B2DBNAME = 'issue_spenttimes';
 		const ID = 'issue_spenttimes.id';
 		const SCOPE = 'issue_spenttimes.scope';

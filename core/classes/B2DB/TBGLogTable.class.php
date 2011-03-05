@@ -19,6 +19,7 @@
 	class TBGLogTable extends TBGB2DBTable 
 	{
 
+		const B2DB_TABLE_VERSION = 1;
 		const TYPE_ISSUE = 1;
 		
 		const LOG_MILESTONE_REMOVE = 1;

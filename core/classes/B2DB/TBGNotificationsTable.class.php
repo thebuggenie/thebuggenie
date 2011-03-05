@@ -19,6 +19,7 @@
 	class TBGNotificationsTable extends TBGB2DBTable 
 	{
 		
+		const B2DB_TABLE_VERSION = 1;
 		const B2DBNAME = 'notifications';
 		const ID = 'notifications.id';
 		const SCOPE = 'notifications.scope';

@@ -16,9 +16,10 @@
 	 * @package thebuggenie
 	 * @subpackage tables
 	 */
-	class TBGUserDashboardViewsTable extends B2DBTable 
+	class TBGUserDashboardViewsTable extends TBGB2DBTable
 	{
 
+		const B2DB_TABLE_VERSION = 1;
 		const B2DBNAME = 'user_dashboard_views';
 		const ID = 'user_dashboard_views.id';
 		const TYPE = 'user_dashboard_views.type';

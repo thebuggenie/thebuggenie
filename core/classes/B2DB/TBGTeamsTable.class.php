@@ -19,6 +19,7 @@
 	class TBGTeamsTable extends TBGB2DBTable 
 	{
 
+		const B2DB_TABLE_VERSION = 1;
 		const B2DBNAME = 'teams';
 		const ID = 'teams.id';
 		const SCOPE = 'teams.scope';

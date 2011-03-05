@@ -19,6 +19,7 @@
 	class TBGIssueEstimates extends TBGB2DBTable
 	{
 
+		const B2DB_TABLE_VERSION = 1;
 		const B2DBNAME = 'issue_estimates';
 		const ID = 'issue_estimates.id';
 		const SCOPE = 'issue_estimates.scope';

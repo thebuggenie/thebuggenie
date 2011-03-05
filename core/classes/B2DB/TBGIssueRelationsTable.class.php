@@ -19,6 +19,7 @@
 	class TBGIssueRelationsTable extends TBGB2DBTable 
 	{
 
+		const B2DB_TABLE_VERSION = 1;
 		const B2DBNAME = 'issuerelations';
 		const ID = 'issuerelations.id';
 		const SCOPE = 'issuerelations.scope';

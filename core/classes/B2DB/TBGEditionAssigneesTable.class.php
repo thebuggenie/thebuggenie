@@ -19,6 +19,7 @@
 	class TBGEditionAssigneesTable extends TBGB2DBTable
 	{
 
+		const B2DB_TABLE_VERSION = 1;
 		const B2DBNAME = 'editionassignees';
 		const ID = 'editionassignees.id';
 		const SCOPE = 'editionassignees.scope';

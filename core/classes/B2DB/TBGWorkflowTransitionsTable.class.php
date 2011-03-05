@@ -19,6 +19,7 @@
 	class TBGWorkflowTransitionsTable extends TBGB2DBTable
 	{
 
+		const B2DB_TABLE_VERSION = 1;
 		const B2DBNAME = 'workflow_transitions';
 		const ID = 'workflow_transitions.id';
 		const SCOPE = 'workflow_transitions.scope';

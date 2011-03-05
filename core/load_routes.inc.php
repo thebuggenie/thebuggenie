@@ -2,6 +2,7 @@
 
 	$routes = array();
 	$routes[] = array('home', '/', 'main', 'index');
+	$routes[] = array('upgrade', '/upgrade', 'installation', 'upgrade');
 	$routes[] = array('attach_link', '/attach/link/to/:target_type/:target_id', 'main', 'attachLink');
 	$routes[] = array('remove_link', '/upload/remove/link/:link_id/from/other/:target_type/:target_id', 'main', 'removeLink');
 	$routes[] = array('client_dashboard', '/clients/:client_id', 'main', 'clientdashboard');

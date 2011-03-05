@@ -19,6 +19,7 @@
 	class TBGVotesTable extends TBGB2DBTable 
 	{
 
+		const B2DB_TABLE_VERSION = 1;
 		const B2DBNAME = 'votes';
 		const ID = 'votes.id';
 		const SCOPE = 'votes.scope';

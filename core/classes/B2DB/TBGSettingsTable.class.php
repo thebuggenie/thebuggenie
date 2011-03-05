@@ -18,6 +18,8 @@
 	 */
 	class TBGSettingsTable extends TBGB2DBTable 
 	{
+
+		const B2DB_TABLE_VERSION = 1;
 		const B2DBNAME = 'settings';
 		const ID = 'settings.id';
 		const SCOPE = 'settings.scope';

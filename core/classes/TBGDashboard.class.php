@@ -21,6 +21,7 @@
 	class TBGDashboard extends TBGB2DBTable
 	{
 		
+		const B2DB_TABLE_VERSION = 1;
 		const DASHBOARD_VIEW_PREDEFINED_SEARCH = 1;
 		const DASHBOARD_VIEW_SAVED_SEARCH = 2;
 		const DASHBOARD_VIEW_LOGGED_ACTION = 3;

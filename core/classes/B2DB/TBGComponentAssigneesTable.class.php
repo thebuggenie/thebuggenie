@@ -19,6 +19,7 @@
 	class TBGComponentAssigneesTable extends TBGB2DBTable 
 	{
 
+		const B2DB_TABLE_VERSION = 1;
 		const B2DBNAME = 'componentassignees';
 		const ID = 'componentassignees.id';
 		const SCOPE = 'componentassignees.scope';

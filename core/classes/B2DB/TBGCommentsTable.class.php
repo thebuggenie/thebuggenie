@@ -19,6 +19,7 @@
 	class TBGCommentsTable extends TBGB2DBTable 
 	{
 
+		const B2DB_TABLE_VERSION = 1;
 		const B2DBNAME = 'comments';
 		const ID = 'comments.id';
 		const SCOPE = 'comments.scope';

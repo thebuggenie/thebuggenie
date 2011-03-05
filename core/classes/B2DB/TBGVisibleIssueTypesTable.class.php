@@ -19,6 +19,7 @@
 	class TBGVisibleIssueTypesTable extends TBGB2DBTable 
 	{
 
+		const B2DB_TABLE_VERSION = 1;
 		const B2DBNAME = 'visible_issue_types';
 		const ID = 'visible_issue_types.id';
 		const SCOPE = 'visible_issue_types.scope';

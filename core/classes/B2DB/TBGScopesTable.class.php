@@ -19,6 +19,7 @@
 	class TBGScopesTable extends TBGB2DBTable 
 	{
 		
+		const B2DB_TABLE_VERSION = 1;
 		const B2DBNAME = 'scopes';
 		const ID = 'scopes.id';
 		const ENABLED = 'scopes.enabled';

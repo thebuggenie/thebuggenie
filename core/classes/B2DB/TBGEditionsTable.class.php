@@ -19,6 +19,7 @@
 	class TBGEditionsTable extends TBGB2DBTable 
 	{
 
+		const B2DB_TABLE_VERSION = 1;
 		const B2DBNAME = 'editions';
 		const ID = 'editions.id';
 		const SCOPE = 'editions.scope';

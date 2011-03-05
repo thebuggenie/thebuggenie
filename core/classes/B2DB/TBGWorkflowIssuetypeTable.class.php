@@ -19,6 +19,7 @@
 	class TBGWorkflowIssuetypeTable extends TBGB2DBTable
 	{
 
+		const B2DB_TABLE_VERSION = 1;
 		const B2DBNAME = 'workflow_issuetype';
 		const ID = 'workflow_issuetype.id';
 		const SCOPE = 'workflow_issuetype.scope';

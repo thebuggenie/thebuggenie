@@ -19,6 +19,7 @@
 	class TBGVisibleMilestonesTable extends TBGB2DBTable 
 	{
 
+		const B2DB_TABLE_VERSION = 1;
 		const B2DBNAME = 'visible_milestones';
 		const ID = 'visible_milestones.id';
 		const SCOPE = 'visible_milestones.scope';

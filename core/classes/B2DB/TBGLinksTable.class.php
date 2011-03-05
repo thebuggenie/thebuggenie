@@ -19,6 +19,7 @@
 	class TBGLinksTable extends TBGB2DBTable 
 	{
 
+		const B2DB_TABLE_VERSION = 1;
 		const B2DBNAME = 'links';
 		const ID = 'links.id';
 		const UID = 'links.uid';

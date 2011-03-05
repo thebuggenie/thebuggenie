@@ -19,6 +19,7 @@
 	class TBGIssueAffectsBuildTable extends TBGB2DBTable 
 	{
 
+		const B2DB_TABLE_VERSION = 1;
 		const B2DBNAME = 'issueaffectsbuild';
 		const ID = 'issueaffectsbuild.id';
 		const SCOPE = 'issueaffectsbuild.scope';

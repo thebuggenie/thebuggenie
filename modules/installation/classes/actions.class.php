@@ -368,5 +368,31 @@
 				$this->error = "Couldn't write to the main directory";
 			}
 		}
-		
+
+		protected function _upgradeFrom3dot0()
+		{
+			TBGScopeHostnamesTable::getTable()->create();
+			//foreach (TBGScope::getAll() as $scope)
+		}
+
+		public function runUpgrade(TBGRequest $request)
+		{
+			$version_info = explode(',', file_get_contents(THEBUGGENIE_PATH . 'installed'));
+			$this->current_version = $version_info[0];
+			$this->upgrade_available = false;
+
+			switch ($this->current_version)
+			{
+				case '3.0':
+					$this->_upgradeFrom3dot0();
+					break;
+			}
+
+			if ($this->current_version != '3.1')
+			{
+				$this->getResponse()->setDecoration(TBGResponse::DECORATE_NONE);
+				$this->upgrade_available = true;
+			}
+		}
+
 	}

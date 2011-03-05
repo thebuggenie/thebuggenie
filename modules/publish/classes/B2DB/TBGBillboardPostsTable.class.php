@@ -2,6 +2,8 @@
 
 	class TBGBillboardPostsTable extends TBGB2DBTable 
 	{
+
+		const B2DB_TABLE_VERSION = 1;
 		const B2DBNAME = 'billboardposts';
 		const ID = 'billboardposts.id';
 		const TITLE = 'billboardposts.title';

@@ -19,6 +19,7 @@
 	class TBGProjectAssigneesTable extends TBGB2DBTable 
 	{
 
+		const B2DB_TABLE_VERSION = 1;
 		const B2DBNAME = 'projectassignees';
 		const ID = 'projectassignees.id';
 		const SCOPE = 'projectassignees.scope';
