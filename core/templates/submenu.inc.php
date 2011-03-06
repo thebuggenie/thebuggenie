@@ -21,7 +21,7 @@
 							<span style="float: left;"><?php echo $breadcrumb['title']; ?></span>
 						<?php endif; ?>
 						<?php if ($next_has_menu): ?>
-							<?php echo javascript_link_tag(image_tag('tabmenu_dropdown_popout.png', array('class' => 'dropdown_activator')), array('onclick' => "$(this).up('li').next().toggleClassName('popped_out');$(this).toggleClassName('activated');")); ?>
+							<?php echo javascript_link_tag(image_tag('tabmenu_dropdown_popout.png', array('class' => 'dropdown_activator clickable')), array('onclick' => "$(this).up('li').next().toggleClassName('popped_out');$(this).toggleClassName('activated');", 'title' => __('Click to expand'))); ?>
 						<?php elseif ($index < count($breadcrumbs) - 1): ?>
 							<?php echo image_tag('tabmenu_dropdown_popout.png', array('class' => 'dropdown_activator')); ?>
 						<?php endif; ?>

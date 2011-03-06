@@ -1807,3 +1807,4 @@
 	$strings['To auto-link to an existing issue, write "issue", "bug", "ticket" or the issue type (like "bug report" or "enhancement") followed by the issue number (ex: "%ticket_example_1%" or "%ticket_example_2%"). Enclose sourcecode samples in <source></source>; tags.'] = 'To auto-link to an existing issue, write "issue", "bug", "ticket" or the issue type (like "bug report" or "enhancement") followed by the issue number (ex: "%ticket_example_1%" or "%ticket_example_2%"). Enclose sourcecode samples in <source></source>; tags.';
 	$strings['Developers'] = 'Developers';
 	$strings['Assigned to %assignee%'] = 'Assigned to %assignee%';
+	$strings['Click to expand'] = 'Click to expand';
