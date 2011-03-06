@@ -339,3 +339,8 @@
 		}
 		return preg_match("/" . ($exact_match ? '^' : '') . $regex . ($exact_match ? '$' : '') . "/" . ($case_sensitive ? '' : 'i'), $str);
 	}
+
+	function tbg_get_breadcrumblinks($type, $project = null)
+	{
+		return TBGContext::getResponse()->getPredefinedBreadcrumbLinks($type, $project);
+	}

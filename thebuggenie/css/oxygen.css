@@ -222,7 +222,14 @@ div.dropdown_separator { border-left: 1px dotted #EAEAF5; padding: 0 0 0 4px; ma
 /* project menu strip */
 .project_stuff { float: left; position: relative; height: 25px; border-color: transparent; }
 .project_stuff ul { list-style-type: none; margin: 0; padding: 0; }
-.project_stuff ul li { height: 23px; float: left; margin: 0 6px 0 0; padding-bottom: 0; }
+.project_stuff ul img.dropdown_activator { float: left; margin: 2px 3px 0 2px; }
+.project_stuff ul a.activated img.dropdown_activator { background-color: #FFF; border: 1px dotted #CCC; border-right-color: #FFF; margin-top: 1px; }
+.project_stuff ul li div.popoutmenu { display: none; width: 250px; }
+.project_stuff ul li.popped_out div.popoutmenu { background-color: #FFF; z-index: 100; position: absolute; border: 1px solid #FFF; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; margin-top: -4px; margin-left: -4px; display: block; box-shadow: 4px 4px 3px rgba(0, 0, 0, 0.2); -webkit-box-shadow: 4px 4px 3px rgba(0, 0, 0, 0.2); -moz-box-shadow: 4px 4px 3px rgba(0, 0, 0, 0.2); }
+.project_stuff ul li.popped_out div.popoutmenu a { border: 0; padding: 3px; display: block; color: #333; }
+.project_stuff ul li.popped_out div.popoutmenu a.selected { font-weight: normal; color: #888; }
+.project_stuff ul li.popped_out div.popoutmenu a:hover { font-weight: bold; }
+.project_stuff ul li { height: 23px; float: left; margin: 0; padding-bottom: 0; }
 .project_stuff ul li.project_name { font-size: 1em; font-weight: bold; padding-top: 1px; }
 .project_stuff ul li.no_project_name { font-size: 0.9em; font-weight: normal; padding-top: 2px; color: #888; }
 .project_stuff ul li.project_name span { font-weight: normal; font-size: 0.9em; color: #886; }

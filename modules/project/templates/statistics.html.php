@@ -1,6 +1,6 @@
 <?php
 
-	$tbg_response->addBreadcrumb(__('Project statistics'));
+	$tbg_response->addBreadcrumb(__('Statistics'), null, tbg_get_breadcrumblinks('project_summary', $selected_project));
 	$tbg_response->setTitle(__('"%project_name%" project team', array('%project_name%' => $selected_project->getName())));
 
 ?>

@@ -1,11 +1,11 @@
 <?php 
 
-	$tbg_response->addBreadcrumb(__('Clients'));
+	$tbg_response->addBreadcrumb(__('Clients'), null, tbg_get_breadcrumblinks('main_links'));
 	if ($client instanceof TBGClient)
 	{
 		$tbg_response->setTitle(__('Client dashboard for %client_name%', array('%client_name%' => $client->getName())));
 		$tbg_response->setPage('client');
-		$tbg_response->addBreadcrumb(link_tag(make_url('client_dashboard', array('client_id' => $client->getID())), $client->getName()));
+		$tbg_response->addBreadcrumb($client->getName(), make_url('client_dashboard', array('client_id' => $client->getID())), tbg_get_breadcrumblinks('client_list'));
 	}
 	else
 	{

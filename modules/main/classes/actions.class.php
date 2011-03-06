@@ -131,7 +131,6 @@
 				}
 			}
 			$this->forward403unless(TBGContext::getUser()->hasPageAccess('home'));
-			$this->getResponse()->setProjectMenuStripHidden();
 			$this->links = TBGContext::getMainLinks();
 		}
 
@@ -143,15 +142,10 @@
 		public function runDashboard(TBGRequest $request)
 		{
 			$this->forward403unless(!TBGContext::getUser()->isThisGuest() && TBGContext::getUser()->hasPageAccess('dashboard'));
-			if (!TBGSettings::isSingleProjectTracker())
-			{
-				$this->getResponse()->setProjectMenuStripHidden();
-			}
-			else
+			if (TBGSettings::isSingleProjectTracker())
 			{
 				if (($projects = TBGProject::getAll()) && $project = array_shift($projects))
 				{
-					$this->getResponse()->setProjectMenuStripHidden(false);
 					TBGContext::setCurrentProject($project);
 				}
 			}
@@ -214,12 +208,11 @@
 		public function runClientDashboard(TBGRequest $request)
 		{
 			$this->forward403unless(TBGContext::getUser()->hasPageAccess('home'));
-			$this->getResponse()->setProjectMenuStripHidden();
 			$this->client = null;
 			try
 			{
 				$this->client = TBGContext::factory()->TBGClient($request->getParameter('client_id'));
-				$this->forward403Unless(TBGContext::getUser()->hasPageAccess('clientlist') || TBGContext::getUser()->isMemberOfClient($this->client));
+				$this->forward403Unless($this->client->hasAccess());
 			}
 			catch (Exception $e)
 			{
@@ -236,7 +229,6 @@
 		public function runTeamDashboard(TBGRequest $request)
 		{
 			$this->forward403unless(TBGContext::getUser()->hasPageAccess('home'));
-			$this->getResponse()->setProjectMenuStripHidden();
 
 			try
 			{
@@ -265,7 +257,6 @@
 		public function runAbout(TBGRequest $request)
 		{
 			$this->forward403unless(TBGContext::getUser()->hasPageAccess('about'));
-			$this->getResponse()->setProjectMenuStripHidden();
 		}
 		
 		/**
@@ -631,7 +622,6 @@
 			}
 			$this->rnd_no = rand();
 			$this->getResponse()->setPage('account');
-			$this->getResponse()->setProjectMenuStripHidden();
 		}
 
 		/**

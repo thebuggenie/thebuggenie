@@ -1,7 +1,7 @@
 <?php 
 
 	$tbg_response->setTitle(__('Dashboard'));
-	$tbg_response->addBreadcrumb(link_tag(make_url('dashboard'), __('Personal dashboard')));
+	$tbg_response->addBreadcrumb(__('Personal dashboard'), make_url('dashboard'), tbg_get_breadcrumblinks('main_links'));
 	$tbg_response->addJavascript('dashboard.js');
 	$tbg_response->addFeed(make_url('my_reported_issues', array('format' => 'rss')), __('Issues reported by me'));
 	$tbg_response->addFeed(make_url('my_assigned_issues', array('format' => 'rss')), __('Open issues assigned to you'));

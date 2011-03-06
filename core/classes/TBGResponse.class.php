@@ -117,6 +117,7 @@
 
 		public function ajaxResponseText($code, $error)
 		{
+			return true;
 			$ob_status = ob_get_status();
 			if (!empty($ob_status) && $ob_status['status'] != PHP_OUTPUT_HANDLER_END)
 			{
@@ -208,14 +209,12 @@
 		 * @param string $breadcrumb 
 		 * @param string $url[optional]
 		 */
-		public function addBreadcrumb($breadcrumb, $url = null)
+		public function addBreadcrumb($breadcrumb, $url = null, $subitems = null)
 		{
 			if ($this->_breadcrumb === null)
-			{
 				$this->_breadcrumb = array();
-			}
-			
-			$this->_breadcrumb[] = array('title' => $breadcrumb, 'url' => $url);
+
+			$this->_breadcrumb[] = array('title' => $breadcrumb, 'url' => $url, 'subitems' => $subitems);
 		}
 
 		/**
@@ -263,7 +262,7 @@
 		 * 
 		 * @return array
 		 */
-		public function getBreadcrumb()
+		public function getBreadcrumbs()
 		{
 			if (!is_array($this->_breadcrumb))
 			{
@@ -498,14 +497,51 @@
 			
 		}
 
-		public function setProjectMenuStripHidden($val = true)
+		public function getPredefinedBreadcrumbLinks($type, $project = null)
 		{
-			$this->_project_menu_strip_visible = !(bool) $val;
+			$i18n = TBGContext::getI18n();
+			$links = array();
+			switch ($type)
+			{
+				case 'main_links':
+					$links[] = array('url' => TBGContext::getRouting()->generate('home'), 'title' => $i18n->__('Frontpage'));
+					$links[] = array('url' => TBGContext::getRouting()->generate('dashboard'), 'title' => $i18n->__('Personal dashboard'));
+					$links[] = array('title' => $i18n->__('Teams'));
+					$links[] = array('title' => $i18n->__('Clients'));
+					$links = TBGEvent::createNew('core', 'breadcrumb_main_links', null, array(), $links)->trigger()->getReturnList();
+
+					if (TBGContext::getUser()->canAccessConfigurationPage())
+					{
+						$links[] = array('url' => make_url('configure'), 'title' => $i18n->__('Configure The Bug Genie'));
+					}
+
+					break;
+				case 'project_summary':
+					$links[] = array('url' => TBGContext::getRouting()->generate('project_dashboard', array('project_key' => $project->getKey())), 'title' => $i18n->__('Dashboard'));
+					$links[] = array('url' => TBGContext::getRouting()->generate('project_scrum', array('project_key' => $project->getKey())), 'title' => $i18n->__('Sprint planning'));
+					$links[] = array('url' => TBGContext::getRouting()->generate('project_roadmap', array('project_key' => $project->getKey())), 'title' => $i18n->__('Roadmap'));
+					$links[] = array('url' => TBGContext::getRouting()->generate('project_team', array('project_key' => $project->getKey())), 'title' => $i18n->__('Team overview'));
+					$links[] = array('url' => TBGContext::getRouting()->generate('project_statistics', array('project_key' => $project->getKey())), 'title' => $i18n->__('Statistics'));
+					$links[] = array('url' => TBGContext::getRouting()->generate('project_timeline', array('project_key' => $project->getKey())), 'title' => $i18n->__('Timeline'));
+					$links = TBGEvent::createNew('core', 'breadcrumb_project_links', null, array(), $links)->trigger()->getReturnList();
+					break;
+				case 'client_list':
+					foreach (TBGClient::getAll() as $client)
+					{
+						if ($client->hasAccess())
+							$links[] = array('url' => TBGContext::getRouting()->generate('client_dashboard', array('client_id' => $client->getID())), 'title' => $client->getName());
+					}
+					break;
+				case 'team_list':
+					foreach (TBGTeam::getAll() as $team)
+					{
+						if ($team->hasAccess())
+							$links[] = array('url' => TBGContext::getRouting()->generate('team_dashboard', array('team_id' => $team->getID())), 'title' => $team->getName());
+					}
+					break;
+			}
+
+			return $links;
 		}
 
-		public function isProjectMenuStripVisible()
-		{
-			return $this->_project_menu_strip_visible;
-		}
-		
 	}

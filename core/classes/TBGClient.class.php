@@ -267,5 +267,10 @@
 
 			return $this->_num_members;
 		}
+
+		public function hasAccess()
+		{
+			return (bool) (TBGContext::getUser()->hasPageAccess('clientlist') || TBGContext::getUser()->isMemberOfClient($this));
+		}
 		
 	}

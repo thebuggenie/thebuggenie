@@ -1,6 +1,6 @@
 <?php
 
-	$tbg_response->addBreadcrumb(__('Project team'));
+	$tbg_response->addBreadcrumb(__('Team overview'), null, tbg_get_breadcrumblinks('project_summary', $selected_project));
 	$tbg_response->setTitle(__('"%project_name%" project team', array('%project_name%' => $selected_project->getName())));
 
 ?>
@@ -14,7 +14,7 @@
 						<table cellpadding=0 cellspacing=0 width="100%">
 							<?php foreach ($assignees['users'] as $u_id => $assigns): ?>
 								<tr>
-									<td style="vertical-align: top; width: 250px; border-bottom: 1px solid #F1F1F1;">
+									<td style="vertical-align: top; padding: 5px; width: 250px; border-bottom: 1px solid #F1F1F1;">
 										<?php echo include_component('main/userdropdown', array('user' => $u_id)); ?>
 									</td>
 									<td style="vertical-align: top; padding-top: 3px; border-bottom: 1px solid #F1F1F1; padding-bottom: 7px;">
@@ -22,7 +22,9 @@
 											<?php foreach ($assigns['projects'] as $p_id => $types): ?>
 												<?php $types_array = array(); ?>
 												<?php $theProject = TBGContext::factory()->TBGProject($p_id); ?>
-												<b><?php echo $theProject->getName(); ?></b>:&nbsp;
+												<?php if (array_key_exists('editions', $assigns) || array_key_exists('components', $assigns)): ?>
+													<b><?php echo $theProject->getName(); ?></b>:&nbsp;
+												<?php endif; ?>
 												<?php foreach ($types as $type => $bool): ?>
 													<?php $types_array[] = TBGProjectAssigneesTable::getTypeName($type); ?>
 												<?php endforeach; ?>
@@ -65,7 +67,7 @@
 						<table cellpadding=0 cellspacing=0 width="100%">
 							<?php foreach ($assignees['teams'] as $c_id => $assigns): ?>
 								<tr>
-									<td style="vertical-align: top; width: 250px; border-bottom: 1px solid #F1F1F1;">
+									<td style="vertical-align: top; padding: 5px; width: 250px; border-bottom: 1px solid #F1F1F1;">
 										<table cellpadding=0 cellspacing=0 width="100%">
 											<?php echo include_component('main/teamdropdown', array('team' => $c_id)); ?>
 										</table>
@@ -75,7 +77,9 @@
 											<?php foreach ($assigns['projects'] as $p_id => $types): ?>
 												<?php $types_array = array(); ?>
 												<?php $theProject = TBGContext::factory()->TBGProject($p_id); ?>
-												<b><?php echo $theProject->getName(); ?></b>:&nbsp;
+												<?php if (array_key_exists('editions', $assigns) || array_key_exists('components', $assigns)): ?>
+													<b><?php echo $theProject->getName(); ?></b>:&nbsp;
+												<?php endif; ?>
 												<?php foreach ($types as $type => $bool): ?>
 													<?php $types_array[] = TBGProjectAssigneesTable::getTypeName($type); ?>
 												<?php endforeach; ?>

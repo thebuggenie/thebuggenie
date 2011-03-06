@@ -216,5 +216,10 @@
 		{
 			$this->_ondemand = $val;
 		}
-		
+
+		public function hasAccess()
+		{
+			return (bool) (TBGContext::getUser()->hasPageAccess('teamlist') || TBGContext::getUser()->isMemberOfClient($this));
+		}
+
 	}

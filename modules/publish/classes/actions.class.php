@@ -13,7 +13,6 @@
 		 */
 		public function preExecute(TBGRequest $request, $action)
 		{
-			$this->getResponse()->setProjectMenuStripHidden();
 			$this->getResponse()->setPage('wiki');
 
 			$this->article = null;
@@ -33,7 +32,6 @@
 				if ($namespace != '' && ($project = TBGProject::getByKey($namespace)) instanceof TBGProject)
 				{
 					TBGContext::setCurrentProject($project);
-					$this->getResponse()->setProjectMenuStripHidden(false);
 				}
 			}
 			

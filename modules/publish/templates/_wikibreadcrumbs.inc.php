@@ -8,7 +8,7 @@
 		}
 		else
 		{
-			$tbg_response->addBreadcrumb(TBGPublish::getModule()->getMenuTitle(), make_url('publish_article', array('article_name' => 'MainPage')));
+			$tbg_response->addBreadcrumb(TBGPublish::getModule()->getMenuTitle(), make_url('publish_article', array('article_name' => 'MainPage')), tbg_get_breadcrumblinks('main_links'));
 		}
 		$items = explode(':', $article_name);
 		$bcpath = array_shift($items);

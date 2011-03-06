@@ -1,6 +1,6 @@
 <?php
 
-	$tbg_response->addBreadcrumb(__('Project roadmap'));
+	$tbg_response->addBreadcrumb(__('Roadmap'), null, tbg_get_breadcrumblinks('project_summary', $selected_project));
 	$tbg_response->setTitle(__('"%project_name%" roadmap', array('%project_name%' => $selected_project->getName())));
 
 ?>

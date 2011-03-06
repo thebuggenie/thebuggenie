@@ -2472,4 +2472,5 @@
 		{
 			return (bool) ($this->_autoassign);
 		}
+
 	}

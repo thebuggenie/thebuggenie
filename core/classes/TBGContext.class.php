@@ -1492,12 +1492,45 @@
 		 */
 		public static function setCurrentProject($project)
 		{
+			self::getResponse()->setBreadcrumb(null);
 			self::$_selected_project = $project;
-			if (self::$_selected_project instanceof TBGProject && self::$_selected_project->hasClient())
+			if ($project instanceof TBGProject)
 			{
-				self::setCurrentClient(self::$_selected_project->getClient());
+				$projectsubmenulinks = null;
+				$clientsubmenulinks = null;
+				if (count(TBGProject::getAll()) > 1)
+				{
+					$projectsubmenulinks = array();
+					foreach (TBGProject::getAll() as $existing_project)
+					{
+						if (!$project->hasClient() || ($existing_project->hasClient() && $project->getClient()->getID() == $existing_project->getClient()->getID()))
+							$projectsubmenulinks[] = array('url' => self::getRouting()->generate('project_dashboard', array('project_key' => $existing_project->getKey())), 'title' => $existing_project->getName());
+					}
+				}
+				if (self::$_selected_project->hasClient())
+				{
+					$clientsubmenulinks = array();
+					foreach (TBGClient::getAll() as $client)
+					{
+						if ($client->hasAccess())
+							$clientsubmenulinks[] = array('url' => self::getRouting()->generate('client_dashboard', array('client_id' => $client->getID())), 'title' => $client->getName());
+					}
+					self::setCurrentClient(self::$_selected_project->getClient());
+				}
+				if (strtolower(TBGSettings::getTBGname()) != strtolower($project->getName()) || self::isClientContext())
+				{
+					self::getResponse()->addBreadcrumb(TBGSettings::getTBGName(), self::getRouting()->generate('home'));
+					if (self::isClientContext())
+					{
+						self::getResponse()->addBreadcrumb(self::getCurrentClient()->getName(), self::getRouting()->generate('client_dashboard', array('client_id' => self::getCurrentClient()->getID())), $clientsubmenulinks);
+					}
+				}
+				self::getResponse()->addBreadcrumb($project->getName(), self::getRouting()->generate('project_dashboard', array('project_key' => TBGContext::getCurrentProject()->getKey())), $projectsubmenulinks);
 			}
-			
+			else
+			{
+				self::getResponse()->addBreadcrumb(TBGSettings::getTBGName(), self::getRouting()->generate('home'));
+			}
 		}
 		
 		/**
@@ -1747,6 +1780,7 @@
 			self::getResponse()->setPage(self::getRouting()->getCurrentRouteName());
 			self::getResponse()->setTemplate(strtolower($method) . '.' . TBGContext::getRequest()->getRequestedFormat() . '.php');
 			self::getResponse()->setupResponseContentType(self::getRequest()->getRequestedFormat());
+			self::setCurrentProject(null);
 			
 			// Set up the action object
 			$actionObject = new $actionClassName();

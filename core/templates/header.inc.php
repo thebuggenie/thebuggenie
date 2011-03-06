@@ -139,7 +139,7 @@
 												<?php endif; ?>
 											</li>
 										<?php endif; ?>
-										<?php if (!TBGContext::isProjectContext() && $tbg_user->hasPageAccess('teamlist') && !is_null(TBGTeamsTable::getTable()->getAll())): ?>
+										<?php if (!TBGContext::isProjectContext() && ($tbg_user->hasPageAccess('teamlist') || count($tbg_user->getTeams())) && !is_null(TBGTeamsTable::getTable()->getAll())): ?>
 											<li<?php if ($tbg_response->getPage() == 'team'): ?> class="selected"<?php endif; ?>>
 												<div>
 													<?php echo link_tag('javascript:void(0)', image_tag('tab_teams.png') . __('Teams')); ?>
@@ -147,6 +147,7 @@
 												</div>
 												<div id="team_menu" class="tab_menu_dropdown shadowed">
 													<?php foreach (TBGTeam::getAll() as $team): ?>
+														<?php if (!$team->hasAccess()) continue; ?>
 														<?php echo link_tag(make_url('team_dashboard', array('team_id' => $team->getID())), image_tag('tab_teams.png' ) . $team->getName()); ?>
 													<?php endforeach;?>
 												</div>											
@@ -160,7 +161,7 @@
 												</div>
 												<div id="client_menu" class="tab_menu_dropdown shadowed">
 													<?php foreach (TBGClient::getAll() as $client): ?>
-														<?php if (!($tbg_user->hasPageAccess('clientlist') || $tbg_user->isMemberOfClient($client))) continue; ?>
+														<?php if (!$client->hasAccess()) continue; ?>
 														<?php echo link_tag(make_url('client_dashboard', array('client_id' => $client->getID())), image_tag('tab_clients.png' ) . $client->getName()); ?>
 													<?php endforeach;?>
 												</div>											

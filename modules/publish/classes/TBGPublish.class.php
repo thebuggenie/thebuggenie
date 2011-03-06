@@ -56,6 +56,8 @@
 			{
 				$this->addAvailableListener('core', 'project_overview_item_links', 'listen_projectLinks', 'Project overview links');
 				$this->addAvailableListener('core', 'menustrip_item_links', 'listen_MenustripLinks', 'Menustrip links');
+				$this->addAvailableListener('core', 'breadcrumb_main_links', 'listen_BreadcrumbMainLinks', 'Main links');
+				$this->addAvailableListener('core', 'breadcrumb_project_links', 'listen_BreadcrumbProjectLinks', 'Main links');
 			}
 			$this->addAvailableListener('core', 'TBGProject::createNew', 'listen_createNewProject', 'Create basic project wiki page');
 			$this->addAvailableListener('core', 'upload', 'listen_upload', 'File is uploaded');
@@ -418,6 +420,18 @@
 		public function listen_projectLinks(TBGEvent $event)
 		{
 			TBGActionComponent::includeTemplate('publish/projectlinks', array('project' => $event->getSubject()));
+		}
+
+		public function listen_BreadcrumbMainLinks(TBGEvent $event)
+		{
+			$link = array('url' => TBGContext::getRouting()->generate('publish'), 'title' => $this->getMenuTitle(TBGContext::isProjectContext()));
+			$event->addToReturnList($link);
+		}
+		
+		public function listen_BreadcrumbProjectLinks(TBGEvent $event)
+		{
+			$link = array('url' => TBGContext::getRouting()->generate('publish_article', array('article_name' => TBGContext::getCurrentProject()->getStrippedProjectName() . ':MainPage')), 'title' => $this->getMenuTitle(true));
+			$event->addToReturnList($link);
 		}
 
 		public function listen_MenustripLinks(TBGEvent $event)

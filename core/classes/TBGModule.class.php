@@ -248,7 +248,8 @@
 		
 		public function addAvailableListener($module, $identifier, $callback_function, $description)
 		{
-			$this->_listeners[$module . '_' . $identifier] = array('callback_function' => $callback_function, 'description' => $description, 'enabled' => false);
+			$this->_listeners[$module . '_' . $identifier] = array('callback_function' => $callback_function, 'description' => $description, 'enabled' => true);
+			TBGEvent::listen($module, $identifier, array($this, $callback_function));
 		}
 		
 		public function getAvailableListeners()
@@ -284,6 +285,7 @@
 		
 		public function enableListener($module, $identifier, $scope = null)
 		{
+			return true;
 			if (array_key_exists($module . '_' . $identifier, $this->_listeners) && !$this->_listeners[$module . '_' . $identifier]['enabled'])
 			{
 				if ($scope === null || $scope == TBGContext::getScope()->getID())

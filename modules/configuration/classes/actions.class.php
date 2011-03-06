@@ -20,9 +20,8 @@
 			$this->access_level = $this->getAccessLevel($request->getParameter('section'), 'core');
 			
 			$this->getResponse()->setPage('config');
-			$this->getResponse()->setProjectMenuStripHidden();
 			TBGContext::loadLibrary('ui');
-			$this->getResponse()->addBreadcrumb(link_tag(make_url('configure'), TBGContext::getI18n()->__('Configure')));
+			$this->getResponse()->addBreadcrumb(TBGContext::getI18n()->__('Configure The Bug Genie'), TBGContext::getRouting()->generate('configure'), $this->getResponse()->getPredefinedBreadcrumbLinks('main_links'));
 			
 		}
 		

@@ -24,12 +24,7 @@
 					$this->forward403unless(TBGContext::getUser()->hasProjectPageAccess('project_issues', $project->getID()));
 					TBGContext::getResponse()->setPage('project_issues');
 					TBGContext::setCurrentProject($project);
-					$this->getResponse()->setProjectMenuStripHidden(false);
 				}
-			}
-			else
-			{
-				TBGContext::getResponse()->setProjectMenuStripHidden();
 			}
 			$filters = $request->getParameter('filters', array());
 			$this->searchterm = null;
