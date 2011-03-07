@@ -222,7 +222,7 @@ div.dropdown_separator { border-left: 1px dotted #EAEAF5; padding: 0 0 0 4px; ma
 /* project menu strip */
 .project_stuff { float: left; position: relative; height: 25px; border-color: transparent; }
 .project_stuff ul { list-style-type: none; margin: 0; padding: 0; }
-.project_stuff ul img.dropdown_activator { float: left; margin: 2px 3px 0 2px; border: 1px solid transparent; }
+.project_stuff ul img.dropdown_activator { float: left; margin: 0 3px 0 2px; border: 1px solid transparent; }
 .project_stuff ul img.dropdown_activator.clickable:hover { background-color: #FFF; border: 1px dotted #CCC; }
 .project_stuff ul a.activated img.dropdown_activator { background-color: #FFF; border: 1px dotted #CCC; border-right-color: #FFF; }
 .project_stuff ul li div.popoutmenu { display: none; white-space: nowrap; }
