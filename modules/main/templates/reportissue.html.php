@@ -1,7 +1,7 @@
 <?php 
 
-	$tbg_response->addBreadcrumb(__('Create new issue'));
-	$tbg_response->setTitle('Report an issue');
+	$tbg_response->addBreadcrumb(__('Report an issue'), make_url('project_reportissue', array('project_key' => TBGContext::getCurrentProject()->getKey())), tbg_get_breadcrumblinks('project_summary', TBGContext::getCurrentProject()));
+	$tbg_response->setTitle(__('Report an issue'));
 	$tbg_response->addJavascript('reportissue.js');
 	
 	if (TBGContext::getCurrentProject()->isLocked() == true)
