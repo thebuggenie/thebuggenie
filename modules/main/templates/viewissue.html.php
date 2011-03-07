@@ -129,8 +129,8 @@
 							<?php echo image_tag('star_faded.png', array('id' => 'issue_favourite_faded', 'title' => __('Please log in to bookmark issues'))); ?>
 						<?php else: ?>
 							<?php echo image_tag('spinning_20.gif', array('id' => 'issue_favourite_indicator', 'style' => 'display: none;')); ?>
-							<?php echo image_tag('star_faded.png', array('id' => 'issue_favourite_faded', 'style' => 'cursor: pointer;'.(($tbg_user->isIssueStarred($issue->getID())) ? 'display: none;' : ''), 'onclick' => "toggleFavourite('".make_url('toggle_favourite_issue', array('issue_id' => $issue->getID()))."', ".$issue->getID().");")); ?>
-							<?php echo image_tag('star.png', array('id' => 'issue_favourite_normal', 'style' => 'cursor: pointer;'.((!$tbg_user->isIssueStarred($issue->getID())) ? 'display: none;' : ''), 'onclick' => "toggleFavourite('".make_url('toggle_favourite_issue', array('issue_id' => $issue->getID()))."', ".$issue->getID().");")); ?>
+							<?php echo image_tag('star_faded.png', array('id' => 'issue_favourite_faded', 'style' => 'cursor: pointer;'.(($tbg_user->isIssueStarred($issue->getID())) ? 'display: none;' : ''), 'onclick' => "thebuggenie.events.toggleFavourite('".make_url('toggle_favourite_issue', array('issue_id' => $issue->getID()))."', ".$issue->getID().");")); ?>
+							<?php echo image_tag('star.png', array('id' => 'issue_favourite_normal', 'style' => 'cursor: pointer;'.((!$tbg_user->isIssueStarred($issue->getID())) ? 'display: none;' : ''), 'onclick' => "thebuggenie.events.toggleFavourite('".make_url('toggle_favourite_issue', array('issue_id' => $issue->getID()))."', ".$issue->getID().");")); ?>
 						<?php endif; ?>
 					</td>
 					<td style="font-size: 17px; width: auto; padding: 0; padding-left: 7px;" id="title_field">
@@ -138,7 +138,7 @@
 							<span class="faded_out <?php if ($issue->isTitleChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isTitleMerged()): ?> issue_detail_unmerged<?php endif; ?>" id="title_header">
 								<?php if ($issue->isEditable() && $issue->canEditTitle()): ?>
 									<?php echo image_tag('icon_edit.png', array('class' => 'dropdown', 'id' => 'title_edit', 'onclick' => "$('title_change').show(); $('title_name').hide(); $('no_title').hide();")); ?>
-									<a class="undo" href="javascript:void(0);" onclick="revertField('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'title')); ?>', 'title');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
+									<a class="undo" href="javascript:void(0);" onclick="thebuggenie.events.revertField('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'title')); ?>', 'title');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
 									<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'title_undo_spinning')); ?>
 								<?php endif; ?>
 								<?php echo $issue->isClosed() ? strtoupper(__('Closed')) : strtoupper(__('Open')); ?>&nbsp;&nbsp;<b><?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), __('%issuetype% %issue_no%', array('%issuetype%' => $issue->getIssueType()->getName(), '%issue_no%' => $issue->getFormattedIssueNo(true)))); ?>&nbsp;&nbsp;-&nbsp;</b>
@@ -153,7 +153,7 @@
 							</span>
 							<?php if ($issue->isEditable() && $issue->canEditTitle()) : ?>
 							<span id="title_change" style="display: none;">
-								<form id="title_form" action="<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'title')); ?>" method="post" onSubmit="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'title')) ?>', 'title'); return false;">
+								<form id="title_form" action="<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'title')); ?>" method="post" onsubmit="thebuggenie.events.setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'title')) ?>', 'title'); return false;">
 									<input type="text" name="value" value="<?php echo $issue->getTitle() ?>" /><?php echo __('%save% or %cancel%', array('%save%' => '<input type="submit" value="'.__('Save').'">', '%cancel%' => '<a href="#" onClick="$(\'title_change\').hide(); $(\'title_name\').show(); return false;">'.__('cancel').'</a>')); ?>
 								</form>
 								<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'title_spinning')); ?>
@@ -172,7 +172,7 @@
 									<td id="vote_down">
 										<?php $vote_down_options = ($issue->hasUserVoted($tbg_user, false)) ? 'display: none;' : ''; ?>
 										<?php $vote_down_faded_options = ($vote_down_options == '') ? 'display: none;' : ''; ?>
-										<?php echo javascript_link_tag(image_tag('action_vote_minus.png'), array('onclick' => "voteDown('".make_url('issue_vote', array('issue_id' => $issue->getID(), 'vote' => 'down'))."');", 'id' => 'vote_down_link', 'class' => 'image', 'style' => $vote_down_options)); ?>
+										<?php echo javascript_link_tag(image_tag('action_vote_minus.png'), array('onclick' => "thebuggenie.events.voteDown('".make_url('issue_vote', array('issue_id' => $issue->getID(), 'vote' => 'down'))."');", 'id' => 'vote_down_link', 'class' => 'image', 'style' => $vote_down_options)); ?>
 										<?php echo image_tag('spinning_16.gif', array('id' => 'vote_down_indicator', 'style' => 'display: none;')); ?>
 										<?php echo image_tag('action_vote_minus_faded.png', array('id' => 'vote_down_faded', 'style' => $vote_down_faded_options)); ?>
 									</td>
@@ -183,7 +183,7 @@
 									<td id="vote_up">
 										<?php $vote_up_options = ($issue->hasUserVoted($tbg_user, true)) ? 'display: none;' : ''; ?>
 										<?php $vote_up_faded_options = ($vote_up_options == '') ? 'display: none;' : ''; ?>
-										<?php echo javascript_link_tag(image_tag('action_vote_plus.png'), array('onclick' => "voteUp('".make_url('issue_vote', array('issue_id' => $issue->getID(), 'vote' => 'up'))."');", 'id' => 'vote_up_link', 'class' => 'image', 'style' => $vote_up_options)); ?>
+										<?php echo javascript_link_tag(image_tag('action_vote_plus.png'), array('onclick' => "thebuggenie.events.voteUp('".make_url('issue_vote', array('issue_id' => $issue->getID(), 'vote' => 'up'))."');", 'id' => 'vote_up_link', 'class' => 'image', 'style' => $vote_up_options)); ?>
 										<?php echo image_tag('spinning_16.gif', array('id' => 'vote_up_indicator', 'style' => 'display: none;')); ?>
 										<?php echo image_tag('action_vote_plus_faded.png', array('id' => 'vote_up_faded', 'style' => $vote_up_faded_options)); ?>
 									</td>
@@ -211,7 +211,7 @@
 									<?php foreach ($issue->getAvailableWorkflowTransitions() as $transition): ?>
 										<li class="nice_button workflow<?php if ($cc == 1): ?> first<?php endif; if ($cc == $num_transitions): ?> last<?php endif; ?>">
 											<?php if ($transition->hasTemplate()): ?>
-												<input type="button" value="<?php echo $transition->getName(); ?>" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'workflow_transition', 'transition_id' => $transition->getID(), 'issue_id' => $issue->getID())); ?>');">
+												<input type="button" value="<?php echo $transition->getName(); ?>" onclick="thebuggenie.events.showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'workflow_transition', 'transition_id' => $transition->getID(), 'issue_id' => $issue->getID())); ?>');">
 											<?php else: ?>
 												<form action="<?php echo make_url('transition_issue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'transition_id' => $transition->getID())); ?>" method="post">
 													<input type="submit" value="<?php echo $transition->getName(); ?>">
@@ -229,7 +229,7 @@
 							<div class="rounded_box invisible nohover viewissue_description<?php if ($issue->isDescriptionChanged()): ?> issue_detail_changed<?php endif; ?><?php if (!$issue->isDescriptionMerged()): ?> issue_detail_unmerged<?php endif; ?>" id="description_header" style="margin: 0;">
 								<div class="viewissue_description_header">
 									<?php if ($issue->isEditable() && $issue->canEditDescription()): ?>
-										<a href="javascript:void(0);" onclick="revertField('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'description')); ?>', 'description');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a> <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'description_undo_spinning')); ?>
+										<a href="javascript:void(0);" onclick="thebuggenie.events.revertField('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'description')); ?>', 'description');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a> <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'description_undo_spinning')); ?>
 										<?php echo image_tag('icon_edit.png', array('class' => 'dropdown', 'id' => 'description_edit', 'onclick' => "$('description_change').show(); $('description_name').hide(); $('no_description').hide();", 'title' => __('Click here to edit description'))); ?>
 									<?php endif; ?>
 									<?php echo __('Description'); ?>:
@@ -245,7 +245,7 @@
 								</div>
 								<?php if ($issue->isEditable() && $issue->canEditDescription()): ?>
 								<div id="description_change" style="display: none;">
-									<form id="description_form" action="<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'description')); ?>" method="post" onSubmit="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'description')) ?>', 'description'); return false;">
+									<form id="description_form" action="<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'description')); ?>" method="post" onsubmit="thebuggenie.events.setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'description')) ?>', 'description'); return false;">
 										<?php include_template('main/textarea', array('area_name' => 'value', 'area_id' => 'description_form_value', 'height' => '100px', 'width' => '100%', 'value' => ($issue->getDescription()))); ?>
 										<br>
 										<input type="submit" value="<?php echo __('Save'); ?>" style="font-weight: bold;"><?php echo __('%save% or %cancel%', array('%save%' => '', '%cancel%' => javascript_link_tag(__('cancel'), array('style' => 'font-weight: bold;', 'onclick' => "$('description_change').hide();".(($issue->getDescription() != '') ? "$('description_name').show();" : "$('no_description').show();")."return false;")))); ?>
@@ -261,7 +261,7 @@
 							<div id="reproduction_steps_header" class="rounded_box invisible nohover viewissue_reproduction_steps<?php if ($issue->isReproduction_StepsChanged()): ?> issue_detail_changed<?php endif; ?><?php if (!$issue->isReproduction_StepsMerged()): ?> issue_detail_unmerged<?php endif; ?>" style="margin: 0;">
 								<div class="viewissue_reproduction_steps_header">
 									<?php if ($issue->isEditable() && $issue->canEditReproductionSteps()): ?>
-										<a href="javascript:void(0);" onclick="revertField('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'reproduction_steps')); ?>', 'reproduction_steps');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a> <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'reproduction_steps_undo_spinning')); ?>
+										<a href="javascript:void(0);" onclick="thebuggenie.events.revertField('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'reproduction_steps')); ?>', 'reproduction_steps');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a> <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'reproduction_steps_undo_spinning')); ?>
 										<?php echo image_tag('icon_edit.png', array('class' => 'dropdown', 'id' => 'reproduction_steps_edit', 'onclick' => "$('reproduction_steps_change').show(); $('reproduction_steps_name').hide(); $('no_reproduction_steps').hide();", 'title' => __('Click here to edit reproduction steps'))); ?>
 									<?php endif; ?>
 									<?php echo __('Reproduction steps'); ?>:
@@ -277,7 +277,7 @@
 								</div>
 								<?php if ($issue->isEditable() && $issue->canEditReproductionSteps()): ?>
 								<div id="reproduction_steps_change" style="display: none;">
-									<form id="reproduction_steps_form" action="<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'reproduction_steps')); ?>" method="post" onSubmit="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'reproduction_steps')) ?>', 'reproduction_steps'); return false;">
+									<form id="reproduction_steps_form" action="<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'reproduction_steps')); ?>" method="post" onsubmit="thebuggenie.events.setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'reproduction_steps')) ?>', 'reproduction_steps'); return false;">
 										<?php include_template('main/textarea', array('area_name' => 'value', 'area_id' => 'reproduction_steps_form_value', 'height' => '100px', 'width' => '100%', 'value' => ($issue->getReproductionSteps()))); ?>
 										<br>
 										<input type="submit" value="<?php echo __('Save'); ?>" style="font-weight: bold;"><?php echo __('%save% or %cancel%', array('%save%' => '', '%cancel%' => javascript_link_tag(__('cancel'), array('style' => 'font-weight: bold;', 'onclick' => "$('reproduction_steps_change').hide();".(($issue->getReproductionSteps() != '') ? "$('reproduction_steps_name').show();" : "$('no_reproduction_steps').show();")."return false;")))); ?>
@@ -298,8 +298,8 @@
 		<?php TBGEvent::createNew('core', 'viewissue_before_tabs', $issue)->trigger(); ?>
 		<div style="clear: both; height: 30px; margin: 20px 5px 0 5px;" class="tab_menu">
 			<ul id="viewissue_menu">
-				<li id="tab_comments" class="selected"><?php echo javascript_link_tag(image_tag('icon_comments.png', array('style' => 'float: left; margin-right: 5px;')) . __('Comments (%count%)', array('%count%' => '<span id="viewissue_comment_count">'.$issue->getCommentCount().'</span>')), array('onclick' => "switchSubmenuTab('tab_comments', 'viewissue_menu');")); ?></li>
-				<li id="tab_attached_information"><?php echo javascript_link_tag(image_tag('icon_attached_information.png', array('style' => 'float: left; margin-right: 5px;')) . __('Attached information (%count%)', array('%count%' => '<span id="viewissue_uploaded_attachments_count">'.(count($issue->getLinks()) + count($issue->getFiles())).'</span>')), array('onclick' => "switchSubmenuTab('tab_attached_information', 'viewissue_menu');")); ?></li>
+				<li id="tab_comments" class="selected"><?php echo javascript_link_tag(image_tag('icon_comments.png', array('style' => 'float: left; margin-right: 5px;')) . __('Comments (%count%)', array('%count%' => '<span id="viewissue_comment_count">'.$issue->getCommentCount().'</span>')), array('onclick' => "thebuggenie.events.switchSubmenuTab('tab_comments', 'viewissue_menu');")); ?></li>
+				<li id="tab_attached_information"><?php echo javascript_link_tag(image_tag('icon_attached_information.png', array('style' => 'float: left; margin-right: 5px;')) . __('Attached information (%count%)', array('%count%' => '<span id="viewissue_uploaded_attachments_count">'.(count($issue->getLinks()) + count($issue->getFiles())).'</span>')), array('onclick' => "thebuggenie.events.switchSubmenuTab('tab_attached_information', 'viewissue_menu');")); ?></li>
 				<?php
 					$editions = array();
 					$components = array();
@@ -322,9 +322,9 @@
 					
 					$count = count($editions) + count($components) + count($builds);				
 				?>
-				<li id="tab_affected"><?php echo javascript_link_tag(image_tag('cfg_icon_projecteditionsbuilds.png', array('style' => 'float: left; margin-right: 5px;')) . __('Affected items (%count%)', array('%count%' => '<span id="viewissue_affects_count">'.$count.'</span>')), array('onclick' => "switchSubmenuTab('tab_affected', 'viewissue_menu');")); ?></li>
-				<li id="tab_related_issues_and_tasks"><?php echo javascript_link_tag(image_tag('icon_related_issues.png', array('style' => 'float: left; margin-right: 5px;')) . __('Related issues and tasks (%count%)', array('%count%' => '<span id="viewissue_duplicate_issues_count">'.(count($issue->getParentIssues())+count($issue->getChildIssues())).'</span>')), array('onclick' => "switchSubmenuTab('tab_related_issues_and_tasks', 'viewissue_menu');")); ?></li>
-				<li id="tab_duplicate_issues"><?php echo javascript_link_tag(image_tag('icon_duplicate_issues.png', array('style' => 'float: left; margin-right: 5px;')) . __('Duplicate issues (%count%)', array('%count%' => '<span id="viewissue_duplicate_issues_count">'.(count($issue->getDuplicateIssues())).'</span>')), array('onclick' => "switchSubmenuTab('tab_duplicate_issues', 'viewissue_menu');")); ?></li>
+				<li id="tab_affected"><?php echo javascript_link_tag(image_tag('cfg_icon_projecteditionsbuilds.png', array('style' => 'float: left; margin-right: 5px;')) . __('Affected items (%count%)', array('%count%' => '<span id="viewissue_affects_count">'.$count.'</span>')), array('onclick' => "thebuggenie.events.switchSubmenuTab('tab_affected', 'viewissue_menu');")); ?></li>
+				<li id="tab_related_issues_and_tasks"><?php echo javascript_link_tag(image_tag('icon_related_issues.png', array('style' => 'float: left; margin-right: 5px;')) . __('Related issues and tasks (%count%)', array('%count%' => '<span id="viewissue_duplicate_issues_count">'.(count($issue->getParentIssues())+count($issue->getChildIssues())).'</span>')), array('onclick' => "thebuggenie.events.switchSubmenuTab('tab_related_issues_and_tasks', 'viewissue_menu');")); ?></li>
+				<li id="tab_duplicate_issues"><?php echo javascript_link_tag(image_tag('icon_duplicate_issues.png', array('style' => 'float: left; margin-right: 5px;')) . __('Duplicate issues (%count%)', array('%count%' => '<span id="viewissue_duplicate_issues_count">'.(count($issue->getDuplicateIssues())).'</span>')), array('onclick' => "thebuggenie.events.switchSubmenuTab('tab_duplicate_issues', 'viewissue_menu');")); ?></li>
 				<?php TBGEvent::createNew('core', 'viewissue_tabs', $issue)->trigger(); ?>
 			</ul>
 		</div>
@@ -350,7 +350,7 @@
 					<?php endif; ?>
 					<div class="rounded_box mediumgrey shadowed" id="attach_link" style="margin: 5px 0 5px 0; display: none; position: absolute; width: 350px;">
 						<div class="header_div" style="margin: 0 0 5px 0;"><?php echo __('Attach a link'); ?>:</div>
-						<form action="<?php echo make_url('issue_attach_link', array('issue_id' => $issue->getID())); ?>" method="post" onsubmit="attachLink('<?php echo make_url('issue_attach_link', array('issue_id' => $issue->getID())); ?>');return false;" id="attach_link_form">
+						<form action="<?php echo make_url('issue_attach_link', array('issue_id' => $issue->getID())); ?>" method="post" onsubmit="thebuggenie.events.attachLink('<?php echo make_url('issue_attach_link', array('issue_id' => $issue->getID())); ?>');return false;" id="attach_link_form">
 							<dl style="margin: 0;">
 								<dt style="width: 80px; padding-top: 3px;"><label for="attach_link_url"><?php echo __('URL'); ?>:</label></dt>
 								<dd style="margin-bottom: 0px;"><input type="text" name="link_url" id="attach_link_url" style="width: 235px;"></dd>
@@ -382,10 +382,10 @@
 			<div id="tab_related_issues_and_tasks_pane" style="padding-top: 5px; margin: 0 5px 0 5px; display: none;">
 				<?php if ($issue->isEditable()): ?>
 					<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px; float: left;" id="add_task_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="$('viewissue_add_task_div').toggle();" value="<?php echo __('Add a task to this issue'); ?>"></td></tr></table>
-					<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px; float: left;" id="relate_to_existing_issue_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'relate_issue', 'issue_id' => $issue->getID())); ?>');" value="<?php echo __('Relate to an existing issue'); ?>"></td></tr></table>
+					<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px; float: left;" id="relate_to_existing_issue_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="thebuggenie.events.showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'relate_issue', 'issue_id' => $issue->getID())); ?>');" value="<?php echo __('Relate to an existing issue'); ?>"></td></tr></table>
 					<br style="clear: both;">
 					<div class="rounded_box mediumgrey shadowed" id="viewissue_add_task_div" style="margin: 5px 0 5px 0; display: none; position: absolute; font-size: 12px; width: 400px;">
-						<form id="viewissue_add_task_form" action="<?php echo make_url('project_scrum_story_addtask', array('project_key' => $issue->getProject()->getKey(), 'story_id' => $issue->getID(), 'mode' => 'issue')); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="addUserStoryTask('<?php echo make_url('project_scrum_story_addtask', array('project_key' => $issue->getProject()->getKey(), 'story_id' => $issue->getID(), 'mode' => 'issue')); ?>', <?php echo $issue->getID(); ?>, 'issue');return false;">
+						<form id="viewissue_add_task_form" action="<?php echo make_url('project_scrum_story_addtask', array('project_key' => $issue->getProject()->getKey(), 'story_id' => $issue->getID(), 'mode' => 'issue')); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="thebuggenie.events.addUserStoryTask('<?php echo make_url('project_scrum_story_addtask', array('project_key' => $issue->getProject()->getKey(), 'story_id' => $issue->getID(), 'mode' => 'issue')); ?>', <?php echo $issue->getID(); ?>, 'issue');return false;">
 							<div>
 								<label for="viewissue_task_name_input"><?php echo __('Add task'); ?>&nbsp;</label>
 								<input type="text" name="task_name" id="viewissue_task_name_input">

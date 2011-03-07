@@ -101,7 +101,7 @@
 					
 				?>
 			</select>
-			<div style="padding-top: 3px; text-align: right;"><input type="submit" value="<?php echo __('Post link'); ?>" onclick="addBillboardLink();"></div>
+			<div style="padding-top: 3px; text-align: right;"><input type="submit" value="<?php echo __('Post link'); ?>" onclick="thebuggenie.events.addBillboardLink();"></div>
 			</form></div>
 			</div>
 			<div style="padding: 3px; position: absolute; width: 262px; background-color: #F9F9F9; border: 1px solid #DDD; display: none;" id="post_new_text">
@@ -135,7 +135,7 @@
 					
 				?>
 			</select>
-			<div style="padding-top: 3px; text-align: right;"><input type="submit" value="<?php echo __('Post this text'); ?>" onclick="addBillboardPost();"></div>
+			<div style="padding-top: 3px; text-align: right;"><input type="submit" value="<?php echo __('Post this text'); ?>" onclick="thebuggenie.events.addBillboardPost();"></div>
 			</form></div>
 			</div>
 		</div> 

@@ -1,4 +1,4 @@
-function showIssuefieldOptions(url, field)
+thebuggenie.events.showIssuefieldOptions = function(url, field)
 {
 	$(field + '_content').toggle();
 	if ($(field + '_content').childElements().size() == 0)
@@ -32,7 +32,7 @@ function showIssuefieldOptions(url, field)
 	}
 }
 
-function addIssuefieldCustom(url)
+thebuggenie.events.addIssuefieldCustom = function(url)
 {
 	var params = Form.serialize('add_custom_type_form');
 	new Ajax.Request(url, {
@@ -76,7 +76,7 @@ function addIssuefieldCustom(url)
 	});
 }
 
-function updateIssuefieldCustom(url, type)
+thebuggenie.events.updateIssuefieldCustom = function(url, type)
 {
 	var params = Form.serialize('edit_custom_type_' + type + '_form');
 	new Ajax.Request(url, {
@@ -129,7 +129,7 @@ function updateIssuefieldCustom(url, type)
 	});
 }
 
-function addIssuefieldOption(url, type)
+thebuggenie.events.addIssuefieldOption = function(url, type)
 {
 	var params = Form.serialize('add_' + type + '_form');
 	new Ajax.Request(url, {
@@ -170,7 +170,7 @@ function addIssuefieldOption(url, type)
 	});
 }
 
-function editIssuefieldOption(url, type, id)
+thebuggenie.events.editIssuefieldOption = function(url, type, id)
 {
 	var params = Form.serialize('edit_' + type + '_' + id + '_form');
 	new Ajax.Request(url, {
@@ -219,7 +219,7 @@ function editIssuefieldOption(url, type, id)
 	});
 }
 
-function deleteIssuefieldOption(url, type, id)
+thebuggenie.events.deleteIssuefieldOption = function(url, type, id)
 {
 	new Ajax.Request(url, {
 	asynchronous:true,
@@ -256,7 +256,7 @@ function deleteIssuefieldOption(url, type, id)
 	});
 }
 
-function deleteIssuefieldCustom(url, type, id)
+thebuggenie.events.deleteIssuefieldCustom = function(url, type, id)
 {
 	new Ajax.Request(url, {
 	asynchronous:true,

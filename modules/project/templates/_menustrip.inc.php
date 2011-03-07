@@ -27,7 +27,7 @@
 									<?php if (in_array($tbg_response->getPage(), array('project_dashboard', 'project_planning', 'project_scrum', 'project_issues', 'project_statistics', 'project_users', 'project_timeline'))): ?>
 										<?php echo link_tag(make_url($tbg_response->getPage(), array('project_key' => $aProject->getKey())), $aProject->getName()); ?>
 									<?php else: ?>
-										<a href="javascript:void(0);" onclick="updateProjectMenuStrip('<?php echo make_url('getprojectmenustrip', array('page' => $tbg_response->getPage())); ?>', <?php echo $aProject->getID(); ?>);"><?php echo $aProject->getName(); ?></a>
+										<a href="javascript:void(0);" onclick="thebuggenie.events.updateProjectMenuStrip('<?php echo make_url('getprojectmenustrip', array('page' => $tbg_response->getPage())); ?>', <?php echo $aProject->getID(); ?>);"><?php echo $aProject->getName(); ?></a>
 									<?php endif; ?>
 								</td>
 							</tr>

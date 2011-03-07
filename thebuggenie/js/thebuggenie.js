@@ -1,6 +1,7 @@
 
 if (!window.thebuggenie) window.thebuggenie = {};
 if (!thebuggenie.events) thebuggenie.events = {};
+if (!thebuggenie.utils) thebuggenie.utils = {};
 
 thebuggenie.events.failedMessage = function(title, content)
 {
@@ -57,7 +58,7 @@ thebuggenie.events.successMessage = function(title, content)
 	}
 }
 
-function clearPopupMessages()
+thebuggenie.events.clearPopupMessages = function()
 {
 	var success_queue = Effect.Queues.get('thebuggenie.events.successMessage');
 	success_queue.each(function(effect) {effect.cancel();});
@@ -88,7 +89,7 @@ function clearPopupMessages()
  * @param url_method get or post the url or null to use "get"
  * @param params Optional parameters to pass with the url or null to ignore
  */
-function _updateDivWithJSONFeedback(url, update_element, indicator, insertion, clear_update_element_before_loading, hide_element_while_loading, hide_elements_on_success, show_elements_on_success, url_method, params, onsuccess_callback, onfailure_callback, oncomplete_callback)
+thebuggenie.utils.updateDivWithJSONFeedback = function(url, update_element, indicator, insertion, clear_update_element_before_loading, hide_element_while_loading, hide_elements_on_success, show_elements_on_success, url_method, params, onsuccess_callback, onfailure_callback, oncomplete_callback)
 {
 	params = (params) ? params : '';
 	url_method = (url_method) ? url_method : "get";
@@ -146,7 +147,7 @@ function _updateDivWithJSONFeedback(url, update_element, indicator, insertion, c
 			{
 				hide_elements_on_success.each(function(s)
 				{
-					if (is_string(s) && $(s))
+					if (thebuggenie.utils.is_string(s) && $(s))
 					{
 						$(s).hide();
 					}
@@ -194,7 +195,7 @@ function _updateDivWithJSONFeedback(url, update_element, indicator, insertion, c
 	});
 }
 
-function _postFormWithJSONFeedback(url, formname, indicator, hide_divs_when_done, update_div, insertion, show_divs_when_done, update_form_elm, onsuccess_callback, onfailure_callback, oncomplete_callback)
+thebuggenie.utils.postFormWithJSONFeedback = function(url, formname, indicator, hide_divs_when_done, update_div, insertion, show_divs_when_done, update_form_elm, onsuccess_callback, onfailure_callback, oncomplete_callback)
 {
 	var params = Form.serialize(formname);
 	new Ajax.Request(url, {
@@ -251,7 +252,7 @@ function _postFormWithJSONFeedback(url, formname, indicator, hide_divs_when_done
 					thebuggenie.events.successMessage(json.title, json.content);
 				}
 			}
-			if (is_string(hide_divs_when_done) && $(hide_divs_when_done))
+			if (thebuggenie.utils.is_string(hide_divs_when_done) && $(hide_divs_when_done))
 			{
 				$(hide_divs_when_done).hide();
 			}
@@ -259,14 +260,14 @@ function _postFormWithJSONFeedback(url, formname, indicator, hide_divs_when_done
 			{
 				hide_divs_when_done.each(function(s)
 				{
-					if (is_string(s) && $(s))
+					if (thebuggenie.utils.is_string(s) && $(s))
 					{
 						$(s).hide();
 					}
 					else if ($(s)) s.hide();
 				});
 			}
-			if (is_string(show_divs_when_done) && $(show_divs_when_done))
+			if (thebuggenie.utils.is_string(show_divs_when_done) && $(show_divs_when_done))
 			{
 				$(show_divs_when_done).show();
 			}
@@ -274,7 +275,7 @@ function _postFormWithJSONFeedback(url, formname, indicator, hide_divs_when_done
 			{
 				show_divs_when_done.each(function(s)
 				{
-					if (is_string(s) && $(s))
+					if (thebuggenie.utils.is_string(s) && $(s))
 					{
 						$(s).show();
 					}
@@ -322,7 +323,7 @@ function _postFormWithJSONFeedback(url, formname, indicator, hide_divs_when_done
 	});
 }
 
-function findIdentifiable(url, field)
+thebuggenie.events.findIdentifiable = function(url, field)
 {
 	var params = Form.serialize(field + '_form');
 	new Ajax.Updater(field + '_results', url, {
@@ -334,7 +335,7 @@ function findIdentifiable(url, field)
 	});
 }
 
-function submitForm(url, form_id)
+thebuggenie.events.submitForm = function(url, form_id)
 {
 	var params = Form.serialize(form_id);
 	new Ajax.Request(url, {
@@ -374,7 +375,7 @@ function submitForm(url, form_id)
 	});
 }
 
-function switchSubmenuTab(visibletab, menu)
+thebuggenie.events.switchSubmenuTab = function(visibletab, menu)
 {
   $(menu).childElements().each(function(item){item.removeClassName('selected');});
   $(visibletab).addClassName('selected');
@@ -382,7 +383,7 @@ function switchSubmenuTab(visibletab, menu)
   $(visibletab + '_pane').show();
 }
 
-function showFadedBackdrop(url)
+thebuggenie.events.showFadedBackdrop = function(url)
 {
 	$('fullpage_backdrop').show();
 	new Ajax.Request(url, {
@@ -428,14 +429,14 @@ function showFadedBackdrop(url)
 	});
 }
 
-function resetFadedBackdrop()
+thebuggenie.events.resetFadedBackdrop = function()
 {
 	$('fullpage_backdrop').hide();
 	$('fullpage_backdrop_indicator').show();
 	$('fullpage_backdrop_content').update('');
 }
 
-function updatePercentageFromNumber(tds, percent)
+thebuggenie.events.updatePercentageFromNumber = function(tds, percent)
 {
 	cc = 0;
 	$(tds).childElements().each(function(elm) {
@@ -465,7 +466,7 @@ function updatePercentageFromNumber(tds, percent)
 	});
 }
 
-function addLink(url, target_type, target_id)
+thebuggenie.events.addLink = function(url, target_type, target_id)
 {
 	var params = $('attach_link_' + target_type + '_' + target_id + '_form').serialize();
 	$('attach_link_' + target_type + '_' + target_id + '_indicator').show();
@@ -511,7 +512,7 @@ function addLink(url, target_type, target_id)
 	});
 }
 
-function removeLink(url, target_type, target_id, link_id)
+thebuggenie.events.removeLink = function(url, target_type, target_id, link_id)
 {
 	new Ajax.Request(url, {
 		method: 'post',
@@ -562,7 +563,7 @@ function removeLink(url, target_type, target_id, link_id)
 	});
 }
 
-function reloadImage(id) {
+thebuggenie.events.reloadImage = function(id) {
    var src = $(id).src;
    var pos = src.indexOf('?');
    if (pos >= 0) {
@@ -573,7 +574,7 @@ function reloadImage(id) {
    return false;
 }
 
-function addUserStoryTask(url, story_id, mode)
+thebuggenie.events.addUserStoryTask = function(url, story_id, mode)
 {
 	if (mode == 'scrum')
 	{
@@ -650,7 +651,7 @@ function addUserStoryTask(url, story_id, mode)
 	});
 }
 
-function addSearchFilter(url)
+thebuggenie.events.addSearchFilter = function(url)
 {
 	var params = Form.serialize('add_filter_form');
 	params += '&key=' + $('max_filters').value;
@@ -692,7 +693,7 @@ function addSearchFilter(url)
 	});
 }
 
-function removeSearchFilter(key)
+thebuggenie.events.removeSearchFilter = function(key)
 {
 	$('filter_' + key).remove();
 	if ($('search_filters_list').childElements().size() == 0)
@@ -701,21 +702,21 @@ function removeSearchFilter(key)
 	}
 }
 
-function updateProfileInformation(url)
+thebuggenie.events.updateProfileInformation = function(url)
 {
-	_postFormWithJSONFeedback(url, 'profile_information_form', 'profile_save_indicator');
+thebuggenie.utils.postFormWithJSONFeedback(url, 'profile_information_form', 'profile_save_indicator');
 	return true;
 }
 
-function updateProfileModuleSettings(url, module_name)
+thebuggenie.events.updateProfileModuleSettings = function(url, module_name)
 {
-	_postFormWithJSONFeedback(url, 'profile_' + module_name + '_form', 'profile_' + module_name + '_save_indicator');
+thebuggenie.utils.postFormWithJSONFeedback(url, 'profile_' + module_name + '_form', 'profile_' + module_name + '_save_indicator');
 	return true;
 }
 
-function updateProfileSettings(url)
+thebuggenie.events.updateProfileSettings = function(url)
 {
-	_postFormWithJSONFeedback(url, 'profile_settings_form', 'profile_settings_save_indicator');
+thebuggenie.utils.postFormWithJSONFeedback(url, 'profile_settings_form', 'profile_settings_save_indicator');
 	if ($('profile_use_gravatar_yes').checked)
 	{
 		$('gravatar_change').show();
@@ -727,13 +728,13 @@ function updateProfileSettings(url)
 	return true;
 }
 
-function changePassword(url)
+thebuggenie.events.changePassword = function(url)
 {
-	_postFormWithJSONFeedback(url, 'change_password_form', 'change_password_indicator', 'change_password_form');
+thebuggenie.utils.postFormWithJSONFeedback(url, 'change_password_form', 'change_password_indicator', 'change_password_form');
 	return true;
 }
 
-function hideInfobox(url, boxkey)
+thebuggenie.events.hideInfobox = function(url, boxkey)
 {
 	if ($('close_me_' + boxkey).checked)
 	{
@@ -751,7 +752,7 @@ function hideInfobox(url, boxkey)
 	$('infobox_' + boxkey).fade({duration: 0.3});
 }
 
-function updateProjectMenuStrip(url, project_id)
+thebuggenie.events.updateProjectMenuStrip = function(url, project_id)
 {
 	new Ajax.Updater('project_menustrip', url, {
 		asynchronous: true,
@@ -770,7 +771,7 @@ function updateProjectMenuStrip(url, project_id)
 	});
 }
 
-function setPermission(url, field)
+thebuggenie.events.setPermission = function(url, field)
 {
 	new Ajax.Request(url, {
 		asynchronous: true,
@@ -805,7 +806,7 @@ function setPermission(url, field)
 	});
 }
 
-function searchPage(url, offset)
+thebuggenie.events.searchPage = function(url, offset)
 {
 	//var params = Form.serialize('find_issues_form');
 	var params = '&offset=' + offset;
@@ -818,7 +819,7 @@ function searchPage(url, offset)
 	});
 }
 
-function getUserStateList()
+thebuggenie.events.getUserStateList = function()
 {
 	new Ajax.Updater('user_statelist', 'ajax_handler.php?getuserstatelist=true', {
 	asynchronous:true,
@@ -826,7 +827,7 @@ function getUserStateList()
 	});
 }
 
-function setUserState(sid)
+thebuggenie.events.setUserState = function(sid)
 {
 	new Ajax.Request('ajax_handler.php?getuserstatelist=true', {
 	asynchronous:true,
@@ -835,7 +836,7 @@ function setUserState(sid)
 	});
 }
 
-function setEmailPrivacy(priv)
+thebuggenie.events.setEmailPrivacy = function(priv)
 {
 	new Ajax.Updater('account_email', 'ajax_handler.php?setemailprivacy=true', {
 	asynchronous:true,
@@ -844,7 +845,7 @@ function setEmailPrivacy(priv)
 	});
 }
 
-function showFollowUps(priv)
+thebuggenie.events.showFollowUps = function(priv)
 {
 	new Ajax.Updater('account_followups', 'ajax_handler.php?showfollowups=true', {
 	asynchronous:true,
@@ -853,7 +854,7 @@ function showFollowUps(priv)
 	});
 }
 
-function showAssigned(priv)
+thebuggenie.events.showAssigned = function(priv)
 {
 	new Ajax.Updater('account_showassigned', 'ajax_handler.php?showassigned=true', {
 	asynchronous:true,
@@ -862,7 +863,7 @@ function showAssigned(priv)
 	});
 }
 
-function submitNewPassword()
+thebuggenie.events.submitNewPassword = function()
 {
 	var params = Form.serialize('changepassword_form');
 	new Ajax.Updater('password_changed_span', 'ajax_handler.php?change_password=true', {
@@ -874,7 +875,7 @@ function submitNewPassword()
 	Element.show('password_changed_span');
 }
 
-function getStatistics(url)
+thebuggenie.events.getStatistics = function(url)
 {
 	new Ajax.Request(url, {
 	asynchronous:true,
@@ -957,58 +958,58 @@ function getStatistics(url)
 
 }
 
-function toggleStatisticsMainImage(image)
+thebuggenie.events.toggleStatisticsMainImage = function(image)
 {
 	$('statistics_main_image').src = '';
 	$('statistics_main_image').src = $('statistics_mini_'+image+'_main').getValue();
 }
 
-function findRelatedIssues(url)
+thebuggenie.events.findRelatedIssues = function(url)
 {
-	_postFormWithJSONFeedback(url, 'viewissue_find_issue_form', 'find_issue_indicator', '', 'viewissue_relation_results');
+thebuggenie.utils.postFormWithJSONFeedback(url, 'viewissue_find_issue_form', 'find_issue_indicator', '', 'viewissue_relation_results');
 	return false;
 }
 
-function findDuplicateIssues(url)
+thebuggenie.events.findDuplicateIssues = function(url)
 {
-	_postFormWithJSONFeedback(url, 'viewissue_find_issue_form', 'find_issue_indicator', '', 'viewissue_duplicate_results');
+thebuggenie.utils.postFormWithJSONFeedback(url, 'viewissue_find_issue_form', 'find_issue_indicator', '', 'viewissue_duplicate_results');
 	return false;
 }
 
-function relateIssues(url)
+thebuggenie.events.relateIssues = function(url)
 {
 	if ($('relate_issue_with_selected').getValue() == 'relate_children')
 	{
-		_postFormWithJSONFeedback(url, 'viewissue_relate_issues_form', 'relate_issues_indicator', 'no_child_issues', 'related_child_issues_inline', true);
+	thebuggenie.utils.postFormWithJSONFeedback(url, 'viewissue_relate_issues_form', 'relate_issues_indicator', 'no_child_issues', 'related_child_issues_inline', true);
 	}
 	else
 	{
-		_postFormWithJSONFeedback(url, 'viewissue_relate_issues_form', 'relate_issues_indicator', 'no_parent_issues', 'related_parent_issues_inline', true);
+	thebuggenie.utils.postFormWithJSONFeedback(url, 'viewissue_relate_issues_form', 'relate_issues_indicator', 'no_parent_issues', 'related_parent_issues_inline', true);
 	}
 	return false;
 }
 
-function _addVote(url, direction)
+thebuggenie.utils.addVote = function(url, direction)
 {
 	var opp_direction = (direction == 'up') ? 'down' : 'up';
-	_updateDivWithJSONFeedback(url, 'issue_votes', 'vote_' + direction + '_indicator', null, false, 'vote_' + direction + '_link', ['vote_' + direction + '_link', 'vote_' + opp_direction + '_faded'], ['vote_' + direction + '_faded', 'vote_' + opp_direction + '_link']);
+thebuggenie.utils.updateDivWithJSONFeedback(url, 'issue_votes', 'vote_' + direction + '_indicator', null, false, 'vote_' + direction + '_link', ['vote_' + direction + '_link', 'vote_' + opp_direction + '_faded'], ['vote_' + direction + '_faded', 'vote_' + opp_direction + '_link']);
 }
 
-function voteUp(url)
+thebuggenie.events.voteUp = function(url)
 {
-	_addVote(url, 'up');
+thebuggenie.utils.addVote(url, 'up');
 }
 
-function voteDown(url)
+thebuggenie.events.voteDown = function(url)
 {
-	_addVote(url, 'down');
+thebuggenie.utils.addVote(url, 'down');
 }
 
-function toggleMilestoneIssues(url, milestone_id)
+thebuggenie.events.toggleMilestoneIssues = function(url, milestone_id)
 {
 	if ($('milestone_' + milestone_id + '_issues').childElements().size() == 0)
 	{
-		_updateDivWithJSONFeedback(url, 'milestone_' + milestone_id + '_issues', 'milestone_' + milestone_id + '_indicator', null, null, null, null, ['milestone_' + milestone_id + '_issues']);
+	thebuggenie.utils.updateDivWithJSONFeedback(url, 'milestone_' + milestone_id + '_issues', 'milestone_' + milestone_id + '_indicator', null, null, null, null, ['milestone_' + milestone_id + '_issues']);
 	}
 	else
 	{
@@ -1016,7 +1017,7 @@ function toggleMilestoneIssues(url, milestone_id)
 	}
 }
 
-function refreshMilestoneDetails(url, milestone_id)
+thebuggenie.events.refreshMilestoneDetails = function(url, milestone_id)
 {
 	new Ajax.Request(url, {
 	asynchronous:true,
@@ -1106,12 +1107,12 @@ function refreshMilestoneDetails(url, milestone_id)
 
 }
 
-function is_string(elm)
+thebuggenie.utils.is_string = function(elm)
 {
     return typeof elm == 'string';
 }
 
-function dashboardResize()
+thebuggenie.events.dashboardResize = function()
 {
 	var dashboard_width = $('dashboard').getWidth();
 	var element_width = (dashboard_width > 600) ? ((dashboard_width / 2) - 5) : (dashboard_width - 5);
@@ -1120,12 +1121,12 @@ function dashboardResize()
 	});
 }
 
-function detachFileFromArticle(url, file_id, article_name)
+thebuggenie.events.detachFileFromArticle = function(url, file_id, article_name)
 {
-	_detachFile(url, file_id, 'article_' + article_name + '_files_');
+thebuggenie.utils.detachFile(url, file_id, 'article_' + article_name + '_files_');
 }
 
-function _detachFile(url, file_id, base_id)
+thebuggenie.utils.detachFile = function(url, file_id, base_id)
 {
 	new Ajax.Request(url, {
 		method: 'post',
@@ -1189,7 +1190,7 @@ function _detachFile(url, file_id, base_id)
 	});
 }
 
-function deleteComment(url, cid)
+thebuggenie.events.deleteComment = function(url, cid)
 {
 	new Ajax.Request(url, {
 	asynchronous:true,
@@ -1231,7 +1232,7 @@ function deleteComment(url, cid)
 	});
 }
 
-function updateComment(url, cid)
+thebuggenie.events.updateComment = function(url, cid)
 {
 	params = $('comment_edit_form_' + cid).serialize();
 	new Ajax.Request(url, {
@@ -1278,7 +1279,7 @@ function updateComment(url, cid)
 	});
 }
 
-function addComment(url, commentcount_span)
+thebuggenie.events.addComment = function(url, commentcount_span)
 {
 	if ($('comment_save_changes') && $('comment_save_changes').checked)
 	{

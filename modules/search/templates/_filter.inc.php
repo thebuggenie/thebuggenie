@@ -14,7 +14,7 @@
 						<option value="<?php echo $project->getID(); ?>"<?php if ($selected_value == $project->getID()): ?> selected<?php endif; ?>><?php echo $project->getName(); ?></option>
 					<?php endforeach; ?>
 				</select>
-				<a class="image" href="javascript:void(0);" onclick="removeSearchFilter(<?php echo $key; ?>);"><?php echo image_tag('action_remove_small.png', array('style' => 'margin-left: 5px;')); ?></a>
+				<a class="image" href="javascript:void(0);" onclick="thebuggenie.events.removeSearchFilter(<?php echo $key; ?>);"><?php echo image_tag('action_remove_small.png', array('style' => 'margin-left: 5px;')); ?></a>
 			<?php endif; ?>
 		<?php elseif (in_array($filter, array_keys($filters))): ?>
 			<label for="filter_<?php echo $filter; ?>_<?php echo $key; ?>"><?php echo $filters[$filter]['description']; ?></label>
@@ -28,7 +28,7 @@
 					<option value="<?php echo $item->getID(); ?>"<?php if ($selected_value == $item->getID()): ?> selected<?php endif; ?>><?php echo $item->getName(); ?></option>
 				<?php endforeach; ?>
 			</select>
-			<a class="image" href="javascript:void(0);" onclick="removeSearchFilter(<?php echo $key; ?>);"><?php echo image_tag('action_remove_small.png', array('style' => 'margin-left: 5px;')); ?></a>
+			<a class="image" href="javascript:void(0);" onclick="thebuggenie.events.removeSearchFilter(<?php echo $key; ?>);"><?php echo image_tag('action_remove_small.png', array('style' => 'margin-left: 5px;')); ?></a>
 		<?php elseif ($filter == 'state'): ?>
 			<label for="filter_state_<?php echo $key; ?>"><?php echo __('Issue state'); ?></label>
 			<select name="filters[state][<?php echo $key; ?>][operator]">
@@ -39,7 +39,7 @@
 				<option value="<?php echo TBGIssue::STATE_OPEN; ?>"<?php if ($selected_value == TBGIssue::STATE_OPEN): ?> selected<?php endif; ?>><?php echo __('Open'); ?></option>
 				<option value="<?php echo TBGIssue::STATE_CLOSED; ?>"<?php if ($selected_value == TBGIssue::STATE_CLOSED): ?> selected<?php endif; ?>><?php echo __('Closed'); ?></option>
 			</select>
-			<a class="image" href="javascript:void(0);" onclick="removeSearchFilter(<?php echo $key; ?>);"><?php echo image_tag('action_remove_small.png', array('style' => 'margin-left: 5px;')); ?></a>
+			<a class="image" href="javascript:void(0);" onclick="thebuggenie.events.removeSearchFilter(<?php echo $key; ?>);"><?php echo image_tag('action_remove_small.png', array('style' => 'margin-left: 5px;')); ?></a>
 		<?php endif; ?>
 	<?php else: ?>
 		<?php $customdatatype = TBGCustomDatatype::getByKey($filter); ?>
@@ -57,6 +57,6 @@
 		<?php else: ?>
 			<input name="filters[<?php echo $filter; ?>][<?php echo $key; ?>][value]" id="filter_<?php echo $filter; ?>_<?php echo $key; ?>">
 		<?php endif; ?>
-		<a class="image" href="javascript:void(0);" onclick="removeSearchFilter(<?php echo $key; ?>);"><?php echo image_tag('action_remove_small.png', array('style' => 'margin-left: 5px;')); ?></a>
+		<a class="image" href="javascript:void(0);" onclick="thebuggenie.events.removeSearchFilter(<?php echo $key; ?>);"><?php echo image_tag('action_remove_small.png', array('style' => 'margin-left: 5px;')); ?></a>
 	<?php endif; ?>
 </li>

@@ -1,4 +1,4 @@
-function toggleFavourite(url, issue_id)
+thebuggenie.events.toggleFavourite = function(url, issue_id)
 {
 	$('issue_favourite_indicator_' + issue_id).show();
 	$('issue_favourite_normal_' + issue_id).hide();
@@ -38,7 +38,7 @@ function toggleFavourite(url, issue_id)
 	});
 }
 
-function swapDashboardView(el1, el2)
+thebuggenie.events.swapDashboardView = function(el1, el2)
 {
 	var source = el1.innerHTML;
 	var target = el2.innerHTML;
@@ -61,7 +61,7 @@ function swapDashboardView(el1, el2)
 	el1.ancestors()[3].hide();
 }
 
-function addDashboardView()
+thebuggenie.events.addDashboardView = function()
 {
 	var element_view = $('view_default').clone(true);
 	element_view.id = 'view_' + new Date().getTime();
@@ -71,7 +71,7 @@ function addDashboardView()
 	Sortable.create('views_list', {constraint: ''});
 }
 
-function saveDashboard(url)
+thebuggenie.events.saveDashboard = function(url)
 {
 	var countViews = document.evaluate( 'count(//ul[@id="views_list"]/li)', document, null, XPathResult.NUMBER_TYPE, null ).numberValue;
 	myViews = new Array();

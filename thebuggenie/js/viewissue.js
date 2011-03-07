@@ -1,4 +1,4 @@
-function toggleFavourite(url, issue_id)
+thebuggenie.events.toggleFavourite = function(url, issue_id)
 {
 	$('issue_favourite_indicator').show();
 	$('issue_favourite_normal').hide();
@@ -47,7 +47,7 @@ function toggleFavourite(url, issue_id)
 	});
 }
 
-function attachLink(url)
+thebuggenie.events.attachLink = function(url)
 {
 	var params = $('attach_link_form').serialize();
 	$('attach_link_indicator').show();
@@ -93,7 +93,7 @@ function attachLink(url)
 	});
 }
 
-function removeLinkFromIssue(url, link_id)
+thebuggenie.events.removeLinkFromIssue = function(url, link_id)
 {
 	new Ajax.Request(url, {
 		method: 'post',
@@ -145,12 +145,12 @@ function removeLinkFromIssue(url, link_id)
 	});
 }
 
-function detachFileFromIssue(url, file_id)
+thebuggenie.events.detachFileFromIssue = function(url, file_id)
 {
-	_detachFile(url, file_id, 'viewissue_files_');
+thebuggenie.utils.detachFile(url, file_id, 'viewissue_files_');
 }
 
-function updatePercent(url, mode)
+thebuggenie.events.updatePercent = function(url, mode)
 {
 	new Ajax.Request(url, {
 		method: 'post',
@@ -185,7 +185,7 @@ function updatePercent(url, mode)
 	});
 }
 
-function updateDualFieldFromJSON(dualfield, field)
+thebuggenie.events.updateDualFieldFromJSON = function(dualfield, field)
 {
 	if (dualfield.id == 0)
 	{
@@ -202,7 +202,7 @@ function updateDualFieldFromJSON(dualfield, field)
 	}
 }
 
-function updateFieldFromObject(object, field)
+thebuggenie.events.updateFieldFromObject = function(object, field)
 {
 	if ((Object.isUndefined(object.id) == false && object.id == 0) || (object.value && object.value == ''))
 	{
@@ -217,7 +217,7 @@ function updateFieldFromObject(object, field)
 	}
 }
 
-function updateTimeFieldFromObject(object, values, field)
+thebuggenie.events.updateTimeFieldFromObject = function(object, values, field)
 {
 	if (object.id == 0)
 	{
@@ -237,7 +237,7 @@ function updateTimeFieldFromObject(object, values, field)
 	$(field + '_points').setValue(values.points);
 }
 
-function updateVisibleFields(visible_fields)
+thebuggenie.events.updateVisibleFields = function(visible_fields)
 {
 	available_fields = new Array('description', 'user_pain', 'reproduction_steps', 'category', 'resolution', 'priority', 'reproducability', 'percent_complete', 'severity', 'edition', 'build', 'component', 'estimated_time', 'spent_time', 'milestone');
 	available_fields.each(function (key, index) 
@@ -276,7 +276,7 @@ function updateVisibleFields(visible_fields)
  * 
  * @return void
  */
-function setField(url, field, serialize)
+thebuggenie.events.setField = function(url, field, serialize)
 {
 	if (field == 'description') var params = $('description_form').serialize();
 	else if (field == 'reproduction_steps') var params = $('reproduction_steps_form').serialize();
@@ -338,7 +338,7 @@ function setField(url, field, serialize)
 	});
 }
 
-function setTimeField(url, field)
+thebuggenie.events.setTimeField = function(url, field)
 {
 	params = $(field + '_form').serialize(); 
 	new Ajax.Request(url, {
@@ -373,7 +373,7 @@ function setTimeField(url, field)
 	});
 }
 
-function revertField(url, field)
+thebuggenie.events.revertField = function(url, field)
 {
 	if (field == 'issuetype') $('issuetype_indicator_fullpage').show();
 	new Ajax.Request(url, {
@@ -422,7 +422,7 @@ function revertField(url, field)
 	});
 }
 
-function setIssueChanged(field)
+thebuggenie.events.setIssueChanged = function(field)
 {
 	if (!$('viewissue_changed').visible())
 	{
@@ -437,7 +437,7 @@ function setIssueChanged(field)
 	}
 }
 
-function setIssueUnchanged(field)
+thebuggenie.events.setIssueUnchanged = function(field)
 {
 	$(field + '_header').removeClassName('issue_detail_changed');
 	$(field + '_header').removeClassName('issue_detail_unmerged');
@@ -455,7 +455,7 @@ function setIssueUnchanged(field)
 	}
 }
 
-function toggleConfirmed(url, affected)
+thebuggenie.events.toggleConfirmed = function(url, affected)
 {
 	new Ajax.Request(url, {
 		method: 'post',
@@ -484,7 +484,7 @@ function toggleConfirmed(url, affected)
 	});
 }
 
-function deleteAffected(url, affected)
+thebuggenie.events.deleteAffected = function(url, affected)
 {
 	new Ajax.Request(url, {
 		method: 'post',
@@ -514,7 +514,7 @@ function deleteAffected(url, affected)
 	});
 }
 
-function statusAffected(url, affected)
+thebuggenie.events.statusAffected = function(url, affected)
 {
 	new Ajax.Request(url, {
 		method: 'post',
@@ -548,7 +548,7 @@ function statusAffected(url, affected)
 	});
 }
 
-function addAffected(url)
+thebuggenie.events.addAffected = function(url)
 {
 	params = $('viewissue_add_item_form').serialize();
 	new Ajax.Request(url, {
@@ -584,11 +584,11 @@ function addAffected(url)
 	});
 }
 
-function updateWorkflowAssignee(url, assignee_id, assignee_type)
+thebuggenie.events.updateWorkflowAssignee = function(url, assignee_id, assignee_type)
 {
 	$('popup_no_assigned_to').hide();
 	$('popup_assigned_to_name').show();
-	_updateDivWithJSONFeedback(url, 'popup_assigned_to_name', 'popup_assigned_to_name_indicator');
+thebuggenie.utils.updateDivWithJSONFeedback(url, 'popup_assigned_to_name', 'popup_assigned_to_name_indicator');
 	$('popup_assigned_to_id').setValue(assignee_id);
 	$('popup_assigned_to_type').setValue(assignee_type);
 	$('popup_assigned_to_teamup').setValue(0);
@@ -596,11 +596,11 @@ function updateWorkflowAssignee(url, assignee_id, assignee_type)
 	$('popup_assigned_to_change').hide();
 }
 
-function updateWorkflowAssigneeTeamup(url, assignee_id, assignee_type)
+thebuggenie.events.updateWorkflowAssigneeTeamup = function(url, assignee_id, assignee_type)
 {
 	$('popup_no_assigned_to').hide();
 	$('popup_assigned_to_name').show();
-	_updateDivWithJSONFeedback(url, 'popup_assigned_to_name', 'popup_assigned_to_name_indicator');
+thebuggenie.utils.updateDivWithJSONFeedback(url, 'popup_assigned_to_name', 'popup_assigned_to_name_indicator');
 	$('popup_assigned_to_id').setValue(assignee_id);
 	$('popup_assigned_to_type').setValue(assignee_type);
 	$('popup_assigned_to_teamup').setValue(1);

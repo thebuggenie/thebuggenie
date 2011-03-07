@@ -4,7 +4,7 @@
 	<?php $url = make_url('configure_edition_add_build', array('project_id' => $parent->getProject()->getID(), 'edition_id' => $parent->getID())); ?>
 <?php endif; ?>
 <div id="<?php echo ($parent instanceof TBGProject) ? 'project' : 'edition'; ?>_builds"<?php if ($parent instanceof TBGProject && !$parent->isBuildsEnabled()): ?> style="display: none;"<?php endif; ?>>
-	<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo $url; ?>" method="post" id="add_build_form" onsubmit="addBuild('<?php echo $url; ?>');return false;">
+	<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo $url; ?>" method="post" id="add_build_form" onsubmit="thebuggenie.events.addBuild('<?php echo $url; ?>');return false;">
 		<div class="rounded_box lightyellow" style="vertical-align: middle; padding: 5px; font-size: 12px;">
 			<table cellpadding=0 cellspacing=0 style="width: 100%;">
 				<tr>

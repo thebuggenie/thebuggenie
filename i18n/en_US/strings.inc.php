@@ -1881,3 +1881,4 @@
 	$strings['If you detach this file, it will be deleted. This action cannot be undone. Are you sure you want to remove this file?'] = 'If you detach this file, it will be deleted. This action cannot be undone. Are you sure you want to remove this file?';
 	$strings['Open file in new window'] = 'Open file in new window';
 	$strings['Open image in new window'] = 'Open image in new window';
+	$strings['This milestone is starting on %starting_date% and scheduled for %scheduled_date%'] = 'This milestone is starting on %starting_date% and scheduled for %scheduled_date%';

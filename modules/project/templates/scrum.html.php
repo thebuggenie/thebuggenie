@@ -22,7 +22,7 @@
 			</div>
 			<?php if ($tbg_user->canAddScrumSprints($selected_project)): ?>
 				<div class="rounded_box lightyellow" style="margin-top: 5px; display: none; padding: 7px;" id="sprint_add_div">
-					<form id="add_sprint_form" action="<?php echo make_url('project_scrum_add_sprint', array('project_key' => $project_key)); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="addSprint('<?php echo make_url('project_scrum_add_sprint', array('project_key' => $project_key)); ?>', '<?php echo make_url('project_scrum_assign_story', array('project_key' => $selected_project->getKey())); ?>');return false;">
+					<form id="add_sprint_form" action="<?php echo make_url('project_scrum_add_sprint', array('project_key' => $project_key)); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="thebuggenie.events.addSprint('<?php echo make_url('project_scrum_add_sprint', array('project_key' => $project_key)); ?>', '<?php echo make_url('project_scrum_assign_story', array('project_key' => $selected_project->getKey())); ?>');return false;">
 						<div id="add_sprint">
 							<label for="sprint_name"><?php echo __('Add sprint'); ?></label>
 							<input type="text" id="sprint_name" name="sprint_name">
@@ -72,7 +72,7 @@
 					</tr>
 				</table>
 			<?php endif; ?>
-			<?php if ($tbg_user->canEditProjectDetails($selected_project)): ?><div class="faded_out" style="margin-top: 10px;"><?php echo __("Sprints are created as milestones for this project, which can be edited in the %project_configuration%.", array('%project_configuration%' => javascript_link_tag(__('project configuration'), array('onclick' => "showFadedBackdrop('".make_url('get_partial_for_backdrop', array('key' => 'project_config', 'section' => 'milestones', 'project_id' => $selected_project->getID()))."');")))); ?></div><?php endif; ?>
+			<?php if ($tbg_user->canEditProjectDetails($selected_project)): ?><div class="faded_out" style="margin-top: 10px;"><?php echo __("Sprints are created as milestones for this project, which can be edited in the %project_configuration%.", array('%project_configuration%' => javascript_link_tag(__('project configuration'), array('onclick' => "thebuggenie.events.showFadedBackdrop('".make_url('get_partial_for_backdrop', array('key' => 'project_config', 'section' => 'milestones', 'project_id' => $selected_project->getID()))."');")))); ?></div><?php endif; ?>
 			<div class="faded_out" style="margin-top: 10px; font-size: 13px;<?php if (count($selected_project->getSprints()) > 0): ?> display: none;<?php endif; ?>" id="no_sprints"><?php echo __('No sprints have been defined for this project'); ?></div>
 			<?php foreach ($selected_project->getSprints() as $sprint): ?>
 				<?php include_template('sprintbox', array('sprint' => $sprint)); ?>
@@ -83,7 +83,7 @@
 				<div class="header_div"><?php echo __('Unassigned items / project backlog'); ?></div>
 				<?php if ($tbg_user->canAddScrumUserStories($selected_project)): ?>
 					<div class="rounded_box white" style="margin-top: 5px; padding: 7px;">
-						<form id="add_user_story_form" action="<?php echo make_url('project_reportissue', array('project_key' => $project_key)); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="addUserStory('<?php echo make_url('project_reportissue', array('project_key' => $project_key)); ?>');return false;">
+						<form id="add_user_story_form" action="<?php echo make_url('project_reportissue', array('project_key' => $project_key)); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="thebuggenie.events.addUserStory('<?php echo make_url('project_reportissue', array('project_key' => $project_key)); ?>');return false;">
 							<div id="add_story">
 								<label for="story_title"><?php echo __('Create a user story'); ?></label>
 								<input type="hidden" name="issuetype_id" value="<?php echo TBGSettings::getIssueTypeUserStory(); ?>">

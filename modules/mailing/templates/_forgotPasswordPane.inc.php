@@ -1,6 +1,6 @@
 <div id="tab_forgot_pane"<?php if ($selected_tab != 'forgot'): ?> style="display: none;<?php endif; ?>">
 	<div style="vertical-align: middle; padding: 5px;">
-		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('forgot'); ?>" method="post" id="forgot_password_form" onsubmit="resetForgotPassword('<?php echo make_url('forgot'); ?>'); return false;">
+		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('forgot'); ?>" method="post" id="forgot_password_form" onsubmit="thebuggenie.events.resetForgotPassword('<?php echo make_url('forgot'); ?>'); return false;">
 			<div class="login_boxheader"><?php echo __('Forgot password?'); ?></div>
 			<p><?php echo __('If you have forgot your password, enter your username here, and we will send you an email that will allow you to change your password'); ?>.</p><br>
 			<div>

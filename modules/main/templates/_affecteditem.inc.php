@@ -17,7 +17,7 @@
 									<?php if (!$status->canUserSet($tbg_user)) continue; ?>
 									<tr>
 										<td style="width: 16px;"><div style="border: 1px solid #AAA; background-color: <?php echo $status->getColor(); ?>; font-size: 1px; width: 16px; height: 15px; margin-right: 2px;">&nbsp;</div></td>
-										<td style="padding-left: 5px;"><a href="javascript:void(0);" onclick="statusAffected('<?php echo make_url('status_affected', array('issue_id' => $issue->getID(), 'affected_type' => $itemtype, 'affected_id' => $item['a_id'], 'status_id' => $status->getID())); ?>', '<?php echo $itemtype.'_'.$item['a_id']; ?>');"><?php echo $status->getName(); ?></a></td>
+										<td style="padding-left: 5px;"><a href="javascript:void(0);" onclick="thebuggenie.events.statusAffected('<?php echo make_url('status_affected', array('issue_id' => $issue->getID(), 'affected_type' => $itemtype, 'affected_id' => $item['a_id'], 'status_id' => $status->getID())); ?>', '<?php echo $itemtype.'_'.$item['a_id']; ?>');"><?php echo $status->getName(); ?></a></td>
 									</tr>
 								<?php endforeach; ?>
 							</table>
@@ -41,7 +41,7 @@
 			<div class="rounded_box lightgrey">
 				<b><?php echo __('Are you sure you want to remove \'%item%\'?', array('%item%' => $item[$itemtype]->getName())); ?></b><br>
 				<?php echo __('This will remove it from the list of items affected by this issue. It can be readded at any time.'); ?><br>
-				<a href="javascript:void(0);" onClick="deleteAffected('<?php echo make_url('remove_affected', array('issue_id' => $issue->getID(), 'affected_type' => $itemtype, 'affected_id' => $item['a_id'])).'\', '.'\''.$itemtype.'_'.$item['a_id']; ?>')"><?php echo __('Yes'); ?></a> - <a href="javascript:void(0);" onClick="$('affected_<?php echo $itemtype; ?>_<?php echo $item['a_id']; ?>_delete').hide()"><?php echo __('No'); ?></a><span id="affected_<?php echo $itemtype; ?>_<?php echo $item['a_id']; ?>_delete_spinner" style="display: none;"> <?php echo image_tag('spinning_16.gif'); ?></span>
+				<a href="javascript:void(0);" onclick="thebuggenie.events.deleteAffected('<?php echo make_url('remove_affected', array('issue_id' => $issue->getID(), 'affected_type' => $itemtype, 'affected_id' => $item['a_id'])).'\', '.'\''.$itemtype.'_'.$item['a_id']; ?>')"><?php echo __('Yes'); ?></a> - <a href="javascript:void(0);" onClick="$('affected_<?php echo $itemtype; ?>_<?php echo $item['a_id']; ?>_delete').hide()"><?php echo __('No'); ?></a><span id="affected_<?php echo $itemtype; ?>_<?php echo $item['a_id']; ?>_delete_spinner" style="display: none;"> <?php echo image_tag('spinning_16.gif'); ?></span>
 			</div>
 		</td>
 	</tr>

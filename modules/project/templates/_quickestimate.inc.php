@@ -1,5 +1,5 @@
 <div class="rounded_box lightgrey shadowed story_estimation_div" id="scrum_story_<?php echo $issue->getID(); ?>_estimation" style="display: none; padding: 5px;">
-	<form id="scrum_story_<?php echo $issue->getID(); ?>_estimation_form" action="<?php echo make_url('project_scrum_story_setestimates', array('project_key' => $issue->getProject()->getKey(), 'story_id' => $issue->getID())); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="setStoryEstimates('<?php echo make_url('project_scrum_story_setestimates', array('project_key' => $issue->getProject()->getKey(), 'story_id' => $issue->getID())); ?>', <?php echo $issue->getID(); ?>, 'scrum');return false;">
+	<form id="scrum_story_<?php echo $issue->getID(); ?>_estimation_form" action="<?php echo make_url('project_scrum_story_setestimates', array('project_key' => $issue->getProject()->getKey(), 'story_id' => $issue->getID())); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="thebuggenie.events.setStoryEstimates('<?php echo make_url('project_scrum_story_setestimates', array('project_key' => $issue->getProject()->getKey(), 'story_id' => $issue->getID())); ?>', <?php echo $issue->getID(); ?>, 'scrum');return false;">
 		<div class="header">
 			<?php if (isset($show_hours) && $show_hours): ?>
 				<?php echo __('New task estimate'); ?>

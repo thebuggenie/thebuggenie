@@ -1,4 +1,4 @@
-function getPermissionOptions(url, field)
+thebuggenie.events.getPermissionOptions = function(url, field)
 {
 	$(field).toggle();
 	if ($(field).childElements().size() == 0)

@@ -28,8 +28,8 @@
 								<?php else: ?>
 									<?php echo __('%num_closed% issue(s) closed of %num_assigned% assigned', array('%num_closed%' => '<b id="milestone_'.$milestone->getID().'_closed_issues">'.$milestone->countClosedIssues().'</b>', '%num_assigned%' => '<b id="milestone_'.$milestone->getID().'_assigned_issues">'.$milestone->countIssues().'</b>')); ?>
 								<?php endif; ?>
-								<?php echo javascript_link_tag(image_tag('view_list_details.png', array('style' => 'float: right;', 'title' => __('Show issues'))), array('onclick' => "toggleMilestoneIssues('".make_url('project_roadmap_milestone_issues', array('project_key' => $selected_project->getKey(), 'milestone_id' => $milestone->getID()))."', ".$milestone->getID().");")); ?>
-								<?php echo javascript_link_tag(image_tag('refresh.png', array('style' => 'float: right; margin-right: 10px;', 'title' => __('Update (regenerate) milestone details'))), array('onclick' => "refreshMilestoneDetails('".make_url('project_roadmap_milestone_refresh', array('project_key' => $selected_project->getKey(), 'milestone_id' => $milestone->getID()))."', ".$milestone->getID().");")); ?>
+								<?php echo javascript_link_tag(image_tag('view_list_details.png', array('style' => 'float: right;', 'title' => __('Show issues'))), array('onclick' => "thebuggenie.events.toggleMilestoneIssues('".make_url('project_roadmap_milestone_issues', array('project_key' => $selected_project->getKey(), 'milestone_id' => $milestone->getID()))."', ".$milestone->getID().");")); ?>
+								<?php echo javascript_link_tag(image_tag('refresh.png', array('style' => 'float: right; margin-right: 10px;', 'title' => __('Update (regenerate) milestone details'))), array('onclick' => "thebuggenie.events.refreshMilestoneDetails('".make_url('project_roadmap_milestone_refresh', array('project_key' => $selected_project->getKey(), 'milestone_id' => $milestone->getID()))."', ".$milestone->getID().");")); ?>
 							</div>
 							<br style="clear: both;">
 							<div id="milestone_<?php echo $milestone->getID(); ?>_changed" class="milestones_indicator" style="display: none;">

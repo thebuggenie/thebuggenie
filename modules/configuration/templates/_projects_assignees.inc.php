@@ -12,7 +12,7 @@
 		<?php foreach ($assignees['users'] as $u_id => $assigns): ?>
 			<tr id="assignee_user_<?php echo $u_id; ?>_row">
 				<td style="width: 20px; border-bottom: 1px solid #F1F1F1;">
-					<?php echo javascript_link_tag(image_tag('action_delete.png'), array('class' => 'image', 'onclick' => "removeAssignee('".make_url('configure_project_remove_assignee', array('project_id' => $project->getID(), 'assignee_type' => TBGIdentifiableClass::TYPE_USER, 'assignee_id' => $u_id))."', 'user', {$u_id});", 'style' => 'float: left;', 'id' => 'assignee_user_'.$u_id.'_link')); ?>
+					<?php echo javascript_link_tag(image_tag('action_delete.png'), array('class' => 'image', 'onclick' => "thebuggenie.events.removeAssignee('".make_url('configure_project_remove_assignee', array('project_id' => $project->getID(), 'assignee_type' => TBGIdentifiableClass::TYPE_USER, 'assignee_id' => $u_id))."', 'user', {$u_id});", 'style' => 'float: left;', 'id' => 'assignee_user_'.$u_id.'_link')); ?>
 					<?php echo image_tag('spinning_16.gif', array('id' => 'remove_assignee_user_'.$u_id.'_indicator', 'style' => 'float: left; display: none;')); ?>
 				</td>
 				<td style="vertical-align: top; width: 250px; border-bottom: 1px solid #F1F1F1;">
@@ -65,7 +65,7 @@
 		<?php foreach ($assignees['teams'] as $c_id => $assigns): ?>
 			<tr id="assignee_team_<?php echo $c_id; ?>_row">
 				<td style="width: 20px; border-bottom: 1px solid #F1F1F1;">
-					<?php echo javascript_link_tag(image_tag('action_delete.png'), array('class' => 'image', 'onclick' => "removeAssignee('".make_url('configure_project_remove_assignee', array('project_id' => $project->getID(), 'assignee_type' => TBGIdentifiableClass::TYPE_TEAM, 'assignee_id' => $c_id))."', 'team', {$c_id});", 'style' => 'float: left;', 'id' => 'assignee_team_'.$c_id.'_link')); ?>
+					<?php echo javascript_link_tag(image_tag('action_delete.png'), array('class' => 'image', 'onclick' => "thebuggenie.events.removeAssignee('".make_url('configure_project_remove_assignee', array('project_id' => $project->getID(), 'assignee_type' => TBGIdentifiableClass::TYPE_TEAM, 'assignee_id' => $c_id))."', 'team', {$c_id});", 'style' => 'float: left;', 'id' => 'assignee_team_'.$c_id.'_link')); ?>
 					<?php echo image_tag('spinning_16.gif', array('id' => 'remove_assignee_team_'.$c_id.'_indicator', 'style' => 'float: left; display: none;')); ?>
 				</td>
 				<td style="vertical-align: top; width: 250px; border-bottom: 1px solid #F1F1F1;">

@@ -40,14 +40,14 @@
 		<?php TBGEvent::createNew('core', 'header_ends')->trigger(); ?>
 	</head>
 	<body>
-		<div class="medium_transparent rounded_box shadowed popup_message failure" onclick="clearPopupMessages();" style="display: none;" id="thebuggenie_failuremessage">
+		<div class="medium_transparent rounded_box shadowed popup_message failure" onclick="thebuggenie.events.clearPopupMessages();" style="display: none;" id="thebuggenie_failuremessage">
 			<div style="padding: 10px 0 10px 0;">
 				<div class="dismiss_me"><?php echo __('Click this message to dismiss it'); ?></div>
 				<span style="color: #000; font-weight: bold;" id="thebuggenie_failuremessage_title"></span><br>
 				<span id="thebuggenie_failuremessage_content"></span>
 			</div>
 		</div>
-		<div class="medium_transparent rounded_box shadowed popup_message success" onclick="clearPopupMessages();" style="display: none;" id="thebuggenie_thebuggenie.events.successMessage">
+		<div class="medium_transparent rounded_box shadowed popup_message success" onclick="thebuggenie.events.clearPopupMessages();" style="display: none;" id="thebuggenie_thebuggenie.events.successMessage">
 			<div style="padding: 10px 0 10px 0;">
 				<div class="dismiss_me"><?php echo __('Click this message to dismiss it'); ?></div>
 				<span style="color: #000; font-weight: bold;" id="thebuggenie_thebuggenie.events.successMessage_title"></span><br>
@@ -60,7 +60,7 @@
 				<?php echo __('Please wait, loading content'); ?>...
 			</div>
 			<div id="fullpage_backdrop_content"> </div>
-			<div style="background-color: #000; width: 100%; height: 100%; position: absolute; top: 0; left: 0; margin: 0; padding: 0; z-index: 100000;" class="semi_transparent" <?php if (TBGContext::getRouting()->getCurrentRouteAction() != 'login'): ?>onclick="resetFadedBackdrop();"<?php endif; ?>> </div>
+			<div style="background-color: #000; width: 100%; height: 100%; position: absolute; top: 0; left: 0; margin: 0; padding: 0; z-index: 100000;" class="semi_transparent" <?php if (TBGContext::getRouting()->getCurrentRouteAction() != 'login'): ?>onclick="thebuggenie.events.resetFadedBackdrop();"<?php endif; ?>> </div>
 		</div>
 		<table style="width: 100%; height: 100%; table-layout: fixed; min-width: 1020px;" cellpadding=0 cellspacing=0>
 			<tr>
@@ -196,9 +196,9 @@
 										</table>
 										<div class="rounded_box blue tab_menu_dropdown user_menu_dropdown shadowed">
 											<?php if ($tbg_user->isGuest()): ?>
-												<a href="javascript:void(0);" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'login')); ?>')"><?php echo image_tag('icon_login.png').__('Login'); ?></a>
+												<a href="javascript:void(0);" onclick="thebuggenie.events.showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'login')); ?>')"><?php echo image_tag('icon_login.png').__('Login'); ?></a>
 												<?php if (TBGSettings::isRegistrationAllowed()): ?>
-													<a href="javascript:void(0);" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'login', 'section' => 'register')); ?>');"><?php echo image_tag('icon_register.png').__('Register'); ?></a>
+													<a href="javascript:void(0);" onclick="thebuggenie.events.showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'login', 'section' => 'register')); ?>');"><?php echo image_tag('icon_register.png').__('Register'); ?></a>
 												<?php endif; ?>
 											<?php else: ?>
 												<div class="header"><?php echo __('You are: %userstate%', array('%userstate%' => '<span class="userstate">'.(($tbg_user->getState() instanceof TBGUserState) ? $tbg_user->getState()->getName() : __('offline')).'</span>')); ?></div>

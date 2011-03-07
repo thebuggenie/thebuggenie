@@ -9,7 +9,7 @@
 		<div class="rounded_box white shadowed" style="margin: 5px; display: none;" id="clone_group_<?php echo $group->getID(); ?>">
 			<div class="dropdown_header"><?php echo __('Please specify what parts of this group you want to clone'); ?></div>
 			<div class="dropdown_content">
-				<form id="clone_group_<?php echo $group->getID(); ?>_form" action="<?php echo make_url('configure_users_clone_group', array('group_id' => $group->getID())); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="cloneGroup('<?php echo make_url('configure_users_clone_group', array('group_id' => $group->getID())); ?>');return false;">
+				<form id="clone_group_<?php echo $group->getID(); ?>_form" action="<?php echo make_url('configure_users_clone_group', array('group_id' => $group->getID())); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="thebuggenie.events.cloneGroup('<?php echo make_url('configure_users_clone_group', array('group_id' => $group->getID())); ?>');return false;">
 					<div id="add_group">
 						<label for="clone_group_<?php echo $group->getID(); ?>_new_name"><?php echo __('New group name'); ?></label>
 						<input type="text" id="clone_group_<?php echo $group->getID(); ?>_new_name" name="group_name"><br />

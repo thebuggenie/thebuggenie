@@ -1,4 +1,4 @@
-function updateFields(url, projectmenustripurl)
+thebuggenie.events.updateFields = function(url, projectmenustripurl)
 {
 	if ($('issuetype_id').getValue() != 0)
 	{

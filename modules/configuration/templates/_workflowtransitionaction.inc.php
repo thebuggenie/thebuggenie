@@ -62,7 +62,7 @@
 				</td>
 				<?php if (!$action->getTransition()->isCore()): ?>
 					<td id="workflowtransitionaction_<?php echo $action->getID(); ?>_edit" style="display: none; padding: 2px;">
-						<form action="<?php echo make_url('configure_workflow_transition_update_action', array('workflow_id' => $action->getWorkflow()->getID(), 'transition_id' => $action->getTransition()->getID(), 'action_id' => $action->getID())); ?>" onsubmit="updateWorkflowTransitionAction('<?php echo make_url('configure_workflow_transition_update_action', array('workflow_id' => $action->getWorkflow()->getID(), 'transition_id' => $action->getTransition()->getID(), 'action_id' => $action->getID())); ?>', <?php echo $action->getID(); ?>);return false;" id="workflowtransitionaction_<?php echo $action->getID(); ?>_form">
+						<form action="<?php echo make_url('configure_workflow_transition_update_action', array('workflow_id' => $action->getWorkflow()->getID(), 'transition_id' => $action->getTransition()->getID(), 'action_id' => $action->getID())); ?>" onsubmit="thebuggenie.events.updateWorkflowTransitionAction('<?php echo make_url('configure_workflow_transition_update_action', array('workflow_id' => $action->getWorkflow()->getID(), 'transition_id' => $action->getTransition()->getID(), 'action_id' => $action->getID())); ?>', <?php echo $action->getID(); ?>);return false;" id="workflowtransitionaction_<?php echo $action->getID(); ?>_form">
 							<input type="submit" value="<?php echo __('Update'); ?>" style="float: right;">
 							<label for="workflowtransitionaction_<?php echo $action->getID(); ?>_input">
 								<?php if ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_SET_STATUS): ?>
@@ -142,7 +142,7 @@
 			<div class="content">
 				<?php echo __('Do you really want to delete this transition action?'); ?>
 				<div style="text-align: right;">
-					<?php echo javascript_link_tag(__('Yes'), array('onclick' => "deleteWorkflowTransitionAction('".make_url('configure_workflow_transition_delete_action', array('workflow_id' => $action->getWorkflow()->getID(), 'transition_id' => $action->getTransition()->getID(), 'action_id' => $action->getID()))."', {$action->getID()}, '{$action->getActionType()}');")); ?> ::
+					<?php echo javascript_link_tag(__('Yes'), array('onclick' => "thebuggenie.events.deleteWorkflowTransitionAction('".make_url('configure_workflow_transition_delete_action', array('workflow_id' => $action->getWorkflow()->getID(), 'transition_id' => $action->getTransition()->getID(), 'action_id' => $action->getID()))."', {$action->getID()}, '{$action->getActionType()}');")); ?> ::
 					<b><?php echo javascript_link_tag(__('No'), array('onclick' => "\$('workflowtransitionaction_{$action->getID()}_delete').toggle();")); ?></b>
 				</div>
 				<div style="padding: 10px 0 10px 0; display: none;" id="workflowtransitionaction_<?php echo $action->getID(); ?>_delete_indicator"><span style="float: left;"><?php echo image_tag('spinning_16.gif'); ?></span>&nbsp;<?php echo __('Please wait'); ?></div>

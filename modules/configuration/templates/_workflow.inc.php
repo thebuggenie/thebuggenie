@@ -31,7 +31,7 @@
 		<div class="header"><?php echo __('Copy workflow'); ?></div>
 		<div class="content">
 			<?php echo __('Please enter the name of the new workflow'); ?><br>
-			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_workflow_copy_workflow', array('workflow_id' => $workflow->getID())); ?>" onsubmit="copyWorkflow('<?php echo make_url('configure_workflow_copy_workflow', array('workflow_id' => $workflow->getID())); ?>', <?php echo $workflow->getID(); ?>);return false;" id="copy_workflow_<?php echo $workflow->getID(); ?>_form">
+			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_workflow_copy_workflow', array('workflow_id' => $workflow->getID())); ?>" onsubmit="thebuggenie.events.copyWorkflow('<?php echo make_url('configure_workflow_copy_workflow', array('workflow_id' => $workflow->getID())); ?>', <?php echo $workflow->getID(); ?>);return false;" id="copy_workflow_<?php echo $workflow->getID(); ?>_form">
 				<label for="copy_workflow_<?php echo $workflow->getID(); ?>_new_name"><?php echo __('New name'); ?></label>
 				<input type="text" name="new_name" id="copy_workflow_<?php echo $workflow->getID(); ?>_new_name" value="<?php echo __('Copy of %old_name%', array('%old_name%' => addslashes($workflow->getName()))); ?>" style="width: 300px;">
 				<div style="text-align: right;">
@@ -47,7 +47,7 @@
 		<div class="header"><?php echo __('Are you sure?'); ?></div>
 		<div class="content">
 			<?php echo __('Please confirm that you want to delete this workflow.'); ?><br>
-			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_workflow_delete_workflow', array('workflow_id' => $workflow->getID())); ?>" onsubmit="deleteWorkflow('<?php echo make_url('configure_workflow_delete_workflow', array('workflow_id' => $workflow->getID())); ?>', <?php echo $workflow->getID(); ?>);return false;" id="delete_workflow_<?php echo $workflow->getID(); ?>_form">
+			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_workflow_delete_workflow', array('workflow_id' => $workflow->getID())); ?>" onsubmit="thebuggenie.events.deleteWorkflow('<?php echo make_url('configure_workflow_delete_workflow', array('workflow_id' => $workflow->getID())); ?>', <?php echo $workflow->getID(); ?>);return false;" id="delete_workflow_<?php echo $workflow->getID(); ?>_form">
 				<div style="text-align: right;">
 					<?php echo image_tag('spinning_16.gif', array('style' => 'margin-right: 5px; display: none;', 'id' => 'delete_workflow_'.$workflow->getID().'_indicator')); ?>
 					<input type="submit" value="<?php echo __('Yes, delete it'); ?>"><?php echo __('%delete% or %cancel%', array('%delete%' => '', '%cancel%' => '<b>'.javascript_link_tag(__('cancel'), array('onclick' => "$('delete_workflow_{$workflow->getID()}_popup').toggle();")).'</b>')); ?>
