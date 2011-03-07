@@ -61,7 +61,7 @@
 		<?php else: ?>
 			<?php echo link_tag(make_url('configure_workflow_step', array('workflow_id' => $step->getWorkflow()->getID(), 'step_id' => $step->getID())), __('Edit step')); ?> |
 			<?php if ($step->hasIncomingTransitions()): ?>
-				<span class="faded_out"><a href="javascript:void(0);" class="disabled" onclick="failedMessage('<?php echo __('You cannot delete a step with incoming transitions'); ?>', '<?php echo __('To delete a step that has incoming transitions, first remove all incoming transitions'); ?>');"><?php echo __('Delete step'); ?></a></span><br>
+				<span class="faded_out"><a href="javascript:void(0);" class="disabled" onclick="thebuggenie.events.failedMessage('<?php echo __('You cannot delete a step with incoming transitions'); ?>', '<?php echo __('To delete a step that has incoming transitions, first remove all incoming transitions'); ?>');"><?php echo __('Delete step'); ?></a></span><br>
 			<?php else: ?>
 				<?php echo javascript_link_tag(__('Delete step'), array('onclick' => "\$('step_{$step->getID()}_delete').toggle();")); ?><br>
 			<?php endif; ?>

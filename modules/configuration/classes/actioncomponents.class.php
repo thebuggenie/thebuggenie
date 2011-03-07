@@ -31,6 +31,24 @@
 					$config_sections[TBGSettings::CONFIGURATION_SECTION_MODULES][] = array('route' => array('configure_module', array('config_module' => $module->getName())), 'description' => $module->getConfigTitle(), 'icon' => $module->getName(), 'module' => $module->getName());
 				}
 			}
+			$breadcrumblinks = array();
+			foreach ($config_sections as $section)
+			{
+				if (is_array($section) && !array_key_exists('route', $section))
+				{
+					foreach ($section as $subsection)
+					{
+						$url = (is_array($subsection['route'])) ? make_url($subsection['route'][0], $subsection['route'][1]) : make_url($subsection['route']);
+						$breadcrumblinks[] = array('url' => $url, 'title' => $subsection['description']);
+					}
+				}
+				else
+				{
+					$breadcrumblinks[] = array('url' => make_url($section['route']), 'title' => $section['description']);
+				}
+			}
+			$this->breadcrumblinks = $breadcrumblinks;
+
 			$this->config_sections = $config_sections;
 			if ($this->selected_section == TBGSettings::CONFIGURATION_SECTION_MODULES)
 			{

@@ -2111,7 +2111,7 @@
 			return ($this->hasIcon()) ? 'project_icons/' . $this->getKey() . '.png' : 'icon_project.png';			
 		}
 
-		protected function _populateLogItems($limit = null, $important = true)
+		protected function _populateLogItems($limit = null, $important = true, $offset = null)
 		{
 			$varname = ($important) ? '_recentimportantlogitems' : '_recentlogitems';
 			if ($this->$varname === null)
@@ -2119,11 +2119,11 @@
 				$this->$varname = array();
 				if ($important)
 				{
-					$res = TBGLogTable::getTable()->getImportantByProjectID($this->getID(), $limit);
+					$res = TBGLogTable::getTable()->getImportantByProjectID($this->getID(), $limit, $offset);
 				}
 				else
 				{
-					$res = TBGLogTable::getTable()->getByProjectID($this->getID(), $limit);
+					$res = TBGLogTable::getTable()->getByProjectID($this->getID(), $limit, $offset);
 				}
 				if ($res)
 				{
@@ -2137,9 +2137,9 @@
 		 *
 		 * @return array A list of log items
 		 */
-		public function getRecentLogItems($limit = null, $important = true)
+		public function getRecentLogItems($limit = null, $important = true, $offset = null)
 		{
-			$this->_populateLogItems($limit, $important);
+			$this->_populateLogItems($limit, $important, $offset);
 			return ($important) ? $this->_recentimportantlogitems : $this->_recentlogitems;
 		}
 
@@ -2244,7 +2244,7 @@
 			return $this->_recentideas;
 		}
 
-		protected function _populateRecentActivities($limit = null, $important = true)
+		protected function _populateRecentActivities($limit = null, $important = true, $offset = null)
 		{
 			if ($this->_recentactivities === null)
 			{
@@ -2283,7 +2283,7 @@
 					}
 				}
 				
-				foreach ($this->getRecentLogItems($limit, $important) as $log_item)
+				foreach ($this->getRecentLogItems($limit, $important, $offset) as $log_item)
 				{
 					if (!array_key_exists($log_item['timestamp'], $this->_recentactivities))
 					{
@@ -2292,16 +2292,6 @@
 					$this->_recentactivities[$log_item['timestamp']][] = $log_item;
 				}
 				
-				/*if ($important)
-				{
-					if ($res = TBGCommentsTable::getTable()->getRecentCommentsByProjectID($this->getID()))
-					{
-						while ($row = $res->getNextRow())
-						{
-							//$this->_recentactivities[$row->get(TBGCommentsTable::POSTED)][] = 
-						}
-					}
-				}*/
 				krsort($this->_recentactivities, SORT_NUMERIC);
 			}
 		}
@@ -2312,9 +2302,9 @@
 		 * @param integer $limit Limit number of activities
 		 * @return array
 		 */
-		public function getRecentActivities($limit = null, $important = false)
+		public function getRecentActivities($limit = null, $important = false, $offset = null)
 		{
-			$this->_populateRecentActivities($limit, $important);
+			$this->_populateRecentActivities($limit, $important, $offset);
 			if ($limit !== null)
 			{
 				$recent_activities = array_slice($this->_recentactivities, 0, $limit, true);

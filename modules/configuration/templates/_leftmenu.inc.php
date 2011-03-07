@@ -11,7 +11,7 @@
 				<?php else: ?>
 					<?php $url = make_url($info['route']); ?>
 				<?php endif;?>
-				<?php if ($is_selected) $tbg_response->addBreadcrumb(link_tag($url, $info['description'])); ?>
+				<?php if ($is_selected) $tbg_response->addBreadcrumb($info['description'], $url, $breadcrumblinks); ?>
 				<a href="<?php echo $url; ?>">
 					<?php if ($info['module'] != 'core'): ?>
 						<?php echo image_tag('cfg_icon_'.$info['icon'].'.png', array('style' => 'float: left; margin-right: 5px;'), false, $info['module']); ?>

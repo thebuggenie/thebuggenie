@@ -1,9 +1,15 @@
 <?php if (isset($issue) && $issue instanceof TBGIssue && !($issue->isDeleted())): ?>
 	<tr>
-		<td class="imgtd"><?php echo image_tag($issue->getIssueType()->getIcon() . '_tiny.png'); ?></td>
-		<td style="padding-bottom: <?php if (isset($extra_padding) && $extra_padding == true): ?>10<?php else: ?>5<?php endif; ?>px;">
-			<?php if (isset($include_time) && $include_time == true): ?><span class="time"><?php echo tbg_formatTime($log_action['timestamp'], 19); ?></span>&nbsp;<?php endif; ?>
-			<?php if (isset($include_project) && $include_project == true): ?><span class="faded_out smaller"><?php echo link_tag(make_url('project_dashboard', array('project_key' => $issue->getProject()->getKey())), '['.$issue->getProject()->getKey().']'); ?></span><?php endif; ?>
+		<td class="imgtd"<?php if (!isset($include_issue_title) || $include_issue_title): ?> style="padding-top: <?php echo (isset($extra_padding) && $extra_padding) ? 10 : 3; ?>px;"<?php endif; ?>>
+			<?php if (!isset($include_issue_title) || $include_issue_title): ?>
+				<?php echo image_tag($issue->getIssueType()->getIcon() . '_tiny.png', array('style' => 'margin-top: 7px;')); ?>
+			<?php endif; ?>
+		</td>
+		<td style="clear: both;<?php if (!isset($include_issue_title) || $include_issue_title): ?> padding-top: <?php echo (isset($extra_padding) && $extra_padding) ? 10 : 3; ?>px;<?php endif; ?>">
+			<?php if ((!isset($include_issue_title) || $include_issue_title) && (isset($include_time) && $include_time == true)): ?><span class="time"><?php echo tbg_formatTime($log_action['timestamp'], 19); ?></span>&nbsp;<?php endif; ?>
+			<?php if (!isset($include_issue_title) || $include_issue_title): ?>
+				<?php if (isset($include_project) && $include_project == true): ?><span class="faded_out smaller"><?php echo link_tag(make_url('project_dashboard', array('project_key' => $issue->getProject()->getKey())), '['.$issue->getProject()->getKey().']'); ?></span><?php endif; ?>
+			<?php endif; ?>
 			<?php 
 
 				$issue_title = tbg_decodeUTF8($issue->getFormattedTitle(true));
@@ -13,8 +19,10 @@
 				}
 				
 			?>
-			<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue_title, array('class' => (($log_action['change_type'] == TBGLogTable::LOG_ISSUE_CLOSE) ? 'issue_closed' : 'issue_open'))); ?>
-			<?php if (isset($include_user) && $include_user == true): ?>
+			<?php if (!isset($include_issue_title) || $include_issue_title): ?>
+				<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue_title, array('class' => (($log_action['change_type'] == TBGLogTable::LOG_ISSUE_CLOSE) ? 'issue_closed' : 'issue_open'), 'style' => 'margin-top: 7px;')); ?>
+			<?php endif; ?>
+			<?php if ((!isset($include_issue_title) || $include_issue_title) && (isset($include_user) && $include_user == true)): ?>
 				<br>
 				<span class="user">
 					<?php if (($user = TBGContext::factory()->TBGUser($log_action['user_id'])) instanceof TBGUser): ?>
@@ -31,7 +39,7 @@
 						<?php endif; ?>
 					<?php endif; ?>:
 				</span>
-			<?php else: ?>
+			<?php elseif (!isset($include_issue_title) || $include_issue_title): ?>
 				<br>
 			<?php endif; ?>
 			<?php

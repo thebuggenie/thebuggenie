@@ -523,6 +523,8 @@
 					$links[] = array('url' => TBGContext::getRouting()->generate('project_team', array('project_key' => $project->getKey())), 'title' => $i18n->__('Team overview'));
 					$links[] = array('url' => TBGContext::getRouting()->generate('project_statistics', array('project_key' => $project->getKey())), 'title' => $i18n->__('Statistics'));
 					$links[] = array('url' => TBGContext::getRouting()->generate('project_timeline', array('project_key' => $project->getKey())), 'title' => $i18n->__('Timeline'));
+					$links[] = array('url' => TBGContext::getRouting()->generate('project_reportissue', array('project_key' => $project->getKey())), 'title' => $i18n->__('Report an issue'));
+					$links[] = array('url' => TBGContext::getRouting()->generate('project_issues', array('project_key' => $project->getKey())), 'title' => $i18n->__('Issues'));
 					$links = TBGEvent::createNew('core', 'breadcrumb_project_links', null, array(), $links)->trigger()->getReturnList();
 					break;
 				case 'client_list':

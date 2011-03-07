@@ -14,7 +14,7 @@
 										| <b><?php echo link_tag(make_url('configure'), __('Configure The Bug Genie')); ?></b>
 									<?php endif; ?>
 									<?php if (TBGLogging::isEnabled() && TBGContext::isDebugMode()): ?>
-										<?php echo image_tag('debug_show.png', array('style' => 'position: absolute; bottom: 5px; right: 3px; cursor: pointer;', 'onclick' => "$('debug_bar').show();", 'title' => 'Show debug bar')); ?>
+										<?php echo image_tag('debug_show.png', array('style' => 'position: fixed; bottom: 5px; right: 3px; cursor: pointer;', 'onclick' => "$('debug_bar').show();", 'title' => 'Show debug bar')); ?>
 									<?php endif; ?>
 								</td>
 							</tr>

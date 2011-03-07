@@ -168,7 +168,7 @@
 			
 		}
 
-		public function getByProjectID($project_id, $limit = 20)
+		public function getByProjectID($project_id, $limit = 20, $offset = null)
 		{
 			$crit = $this->getCriteria();
 			$crit->addJoin(TBGIssuesTable::getTable(), TBGIssuesTable::ID, self::TARGET);
@@ -178,6 +178,11 @@
 			{
 				$crit->setLimit($limit);
 			}
+			if ($offset !== null)
+			{
+				$crit->setOffset($offset);
+			}
+			
 			$crit->addOrderBy(self::TIME, B2DBCriteria::SORT_DESC);
 
 			$ret_arr = array();
@@ -193,7 +198,7 @@
 
 		}
 
-		public function getImportantByProjectID($project_id, $limit = 20)
+		public function getImportantByProjectID($project_id, $limit = 20, $offset = null)
 		{
 			$crit = $this->getCriteria();
 			$crit->addJoin(TBGIssuesTable::getTable(), TBGIssuesTable::ID, self::TARGET);
@@ -204,6 +209,11 @@
 			{
 				$crit->setLimit($limit);
 			}
+			if ($offset !== null)
+			{
+				$crit->setOffset($offset);
+			}
+
 			$crit->addOrderBy(self::TIME, B2DBCriteria::SORT_DESC);
 
 			$ret_arr = array();

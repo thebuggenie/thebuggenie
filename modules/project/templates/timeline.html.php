@@ -16,6 +16,8 @@
 				<?php if (count($recent_activities) > 0): ?>
 					<table cellpadding=0 cellspacing=0 class="recent_activities">
 						<?php $prev_date = null; ?>
+						<?php $prev_timestamp = null; ?>
+						<?php $prev_issue = null; ?>
 						<?php foreach ($recent_activities as $timestamp => $activities): ?>
 							<?php $date = tbg_formatTime($timestamp, 5); ?>
 								<?php if ($date != $prev_date): ?>
@@ -45,8 +47,10 @@
 										<td style="padding-bottom: 10px;"><span class="time"><?php echo tbg_formatTime($timestamp, 19); ?></span>&nbsp;<b><?php echo $activity['info']; ?></b><br><i><?php echo __('A new milestone has been reached'); ?></i></td>
 									</tr>
 								<?php else: ?>
-									<?php include_component('main/logitem', array('log_action' => $activity, 'include_time' => true, 'include_user' => true, 'extra_padding' => true, 'include_details' => true)); ?>
+									<?php include_component('main/logitem', array('log_action' => $activity, 'include_time' => true, 'include_user' => true, 'extra_padding' => true, 'include_details' => true, 'include_issue_title' => !($prev_timestamp == $activity['timestamp'] && $prev_issue == $activity['target']))); ?>
 								<?php endif; ?>
+								<?php $prev_timestamp = $activity['timestamp']; ?>
+								<?php $prev_issue = ($activity['target_type'] == 1) ? $activity['target'] : null; ?>
 							<?php endforeach; ?>
 							<?php $prev_date = $date; ?>
 						<?php endforeach; ?>

@@ -78,7 +78,7 @@
 </div>
 <?php if (isset($options['error'])): ?>
 	<script type="text/javascript">
-		failedMessage('<?php echo $options['error']; ?>');
+		thebuggenie.events.failedMessage('<?php echo $options['error']; ?>');
 	</script>
 <?php endif; ?>
 <script type="text/javascript">

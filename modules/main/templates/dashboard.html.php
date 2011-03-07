@@ -21,7 +21,7 @@
 		<td class="main_area">
 			<?php TBGEvent::createNew('core', 'dashboard_main_top')->trigger(); ?>
 			<?php if (empty($dashboardViews)) :?>
-				<p class="content faded_out"><?php echo __('This dashboard doesn\'t contain any view. To add views in this dashboard, press the "Customize dashboard"-icon to the far right.'); ?>.</p>
+				<p class="content faded_out"><?php echo __("This dashboard doesn't contain any view. To add views in this dashboard, press the 'Customize dashboard'-icon to the far right."); ?></p>
 			<?php else: ?>
 				<ul id="dashboard">
 					<?php $clearleft = true; ?>
@@ -50,7 +50,7 @@
 							</div>
 							<div class="rounded_box lightgrey cut_top" style="border-top: 0;">
 								<div style="float: left; font-weight: bold;"><?php echo __('Go to'); ?>:</div>
-								<?php echo link_tag(make_url('project_issues', array('project_key' => $project->getKey())), __('Issues')); ?>
+								<?php echo link_tag(make_url('project_open_issues', array('project_key' => $project->getKey())), __('Issues')); ?>
 								|
 								<?php if ($project->usesScrum()): ?>
 									<?php echo link_tag(make_url('project_scrum', array('project_key' => $project->getKey())), __('Scrum')); ?>

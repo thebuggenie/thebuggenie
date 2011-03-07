@@ -119,7 +119,7 @@
 		public function runTimeline(TBGRequest $request)
 		{
 			$this->forward403unless($this->_checkProjectPageAccess('project_timeline'));
-			$this->recent_activities = $this->selected_project->getRecentActivities();
+			$this->recent_activities = $this->selected_project->getRecentActivities(40);
 		}
 
 		/**

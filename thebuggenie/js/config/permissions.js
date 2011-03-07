@@ -14,7 +14,7 @@ function getPermissionOptions(url, field)
 			$(field + '_indicator').hide();
 			if (json && (json.failed || json.error))
 			{
-				failedMessage(json.error);
+				thebuggenie.events.failedMessage(json.error);
 			}
 			else
 			{
@@ -25,11 +25,11 @@ function getPermissionOptions(url, field)
 			$(field + '_indicator').hide();
 			if (transport.responseJSON)
 			{
-				failedMessage(transport.responseJSON.error);
+				thebuggenie.events.failedMessage(transport.responseJSON.error);
 			}
 			else
 			{
-				failedMessage(transport.responseText);
+				thebuggenie.events.failedMessage(transport.responseText);
 			}
 		}
 		});

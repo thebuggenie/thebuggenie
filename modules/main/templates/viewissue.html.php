@@ -1,7 +1,7 @@
 <?php if ($issue instanceof TBGIssue): ?>
 	<?php
 
-		$tbg_response->addBreadcrumb(__('Issues'), make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())));
+		$tbg_response->addBreadcrumb(__('Issues'), make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), tbg_get_breadcrumblinks('project_summary', TBGContext::getCurrentProject()));
 		$tbg_response->addBreadcrumb($issue->getIssueType()->getName() . ' ' . $issue->getFormattedIssueNo(true), make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
 		$tbg_response->addJavascript('viewissue.js');
 		$tbg_response->setTitle('['.(($issue->isClosed()) ? strtoupper(__('Closed')) : strtoupper(__('Open'))) .'] ' . $issue->getFormattedIssueNo(true) . ' - ' . tbg_decodeUTF8($issue->getTitle()));
@@ -344,7 +344,7 @@
 						<?php if (TBGSettings::isUploadsEnabled() && $issue->canAttachFiles()): ?>
 							<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px; float: left;" id="attach_file_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="$('attach_file').show();" value="<?php echo __('Attach a file'); ?>"></td></tr></table>
 						<?php else: ?>
-							<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px; float: left;" id="attach_file_button"><tr><td class="nice_button disabled" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="failedMessage('<?php echo __('File uploads are not enabled'); ?>');" value="<?php echo __('Attach a file'); ?>"></td></tr></table>
+							<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px; float: left;" id="attach_file_button"><tr><td class="nice_button disabled" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="thebuggenie.events.failedMessage('<?php echo __('File uploads are not enabled'); ?>');" value="<?php echo __('Attach a file'); ?>"></td></tr></table>
 						<?php endif; ?>
 						<br style="clear: both;">
 					<?php endif; ?>

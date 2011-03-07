@@ -12,7 +12,7 @@
 				<?php echo __('Actions: %list%', array('%list%' => '')); ?><br>
 				<?php if (!$scheme->isCore()): ?>
 					<?php if ($scheme->isInUse()): ?>
-						<a href="javascript:void(0);" onclick="failedMessage('<?php echo __('Cannot delete workflow scheme'); ?>', '<?php echo __('This workflow scheme can not be deleted as it is being used by %number_of_projects% project(s)', array('%number_of_projects%' => $scheme->getNumberOfProjects())); ?>');" class="rounded_box"><?php echo image_tag('icon_delete.png', array('title' => __('Delete this issue type scheme'))); ?></a>
+						<a href="javascript:void(0);" onclick="thebuggenie.events.failedMessage('<?php echo __('Cannot delete workflow scheme'); ?>', '<?php echo __('This workflow scheme can not be deleted as it is being used by %number_of_projects% project(s)', array('%number_of_projects%' => $scheme->getNumberOfProjects())); ?>');" class="rounded_box"><?php echo image_tag('icon_delete.png', array('title' => __('Delete this issue type scheme'))); ?></a>
 					<?php else: ?>
 						<a href="javascript:void(0);" onclick="$('delete_scheme_<?php echo $scheme->getID(); ?>_popup').toggle();" class="rounded_box"><?php echo image_tag('icon_delete.png', array('title' => __('Delete this issue type scheme'))); ?></a>
 					<?php endif; ?>

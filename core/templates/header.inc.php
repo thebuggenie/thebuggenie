@@ -47,11 +47,11 @@
 				<span id="thebuggenie_failuremessage_content"></span>
 			</div>
 		</div>
-		<div class="medium_transparent rounded_box shadowed popup_message success" onclick="clearPopupMessages();" style="display: none;" id="thebuggenie_successmessage">
+		<div class="medium_transparent rounded_box shadowed popup_message success" onclick="clearPopupMessages();" style="display: none;" id="thebuggenie_thebuggenie.events.successMessage">
 			<div style="padding: 10px 0 10px 0;">
 				<div class="dismiss_me"><?php echo __('Click this message to dismiss it'); ?></div>
-				<span style="color: #000; font-weight: bold;" id="thebuggenie_successmessage_title"></span><br>
-				<span id="thebuggenie_successmessage_content"></span>
+				<span style="color: #000; font-weight: bold;" id="thebuggenie_thebuggenie.events.successMessage_title"></span><br>
+				<span id="thebuggenie_thebuggenie.events.successMessage_content"></span>
 			</div>
 		</div>
 		<div id="fullpage_backdrop" style="display: none; background-color: transparent; width: 100%; height: 100%; position: fixed; top: 0; left: 0; margin: 0; padding: 0; text-align: center;">

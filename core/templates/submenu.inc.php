@@ -7,9 +7,11 @@
 				<li class="<?php echo (array_key_exists('class', $breadcrumb)) ? $breadcrumb['class'] : 'breadcrumb'; ?>">
 					<?php if (array_key_exists('subitems', $breadcrumb) && is_array($breadcrumb['subitems']) && count($breadcrumb['subitems'])): ?>
 						<div class="popoutmenu">
-							<?php foreach ($breadcrumb['subitems'] as $subitem): ?>
+							<?php $first = true; ?>
+							<?php foreach ($breadcrumb['subitems'] as $subindex => $subitem): ?>
 								<?php if (array_key_exists('url', $subitem) || $subitem['title'] == $breadcrumb['title']): ?>
-									<a href="<?php echo (array_key_exists('url', $subitem)) ? $subitem['url'] : '#'; ?>"<?php if ($subitem['title'] == $breadcrumb['title']): ?> class="selected"<?php endif; ?>><?php echo $subitem['title']; ?></a>
+									<a href="<?php echo (array_key_exists('url', $subitem)) ? $subitem['url'] : '#'; ?>"<?php if ($subitem['title'] == $breadcrumb['title']): ?> class="selected<?php if ($first): ?> rounded_list_first_item<?php endif; ?>"<?php endif; ?>><?php echo $subitem['title']; ?></a>
+									<?php $first = false; ?>
 								<?php endif; ?>
 							<?php endforeach; ?>
 						</div>
@@ -28,28 +30,6 @@
 					</div>
 				</li>
 			<?php endforeach; ?>
-			<?php /* $tbg_name_printed = false; ?>
-				<?php if (strtolower(TBGSettings::getTBGname()) != strtolower(TBGContext::getCurrentProject()->getName()) || TBGContext::isClientContext()): ?>
-					<?php $tbg_name_printed = true; ?>
-					<li class="breadcrumb"><?php echo link_tag(make_url('home'), TBGSettings::getTBGName()); ?></li>
-					<?php if (TBGContext::isClientContext()): ?>
-						<li class="breadcrumb">&raquo; <?php echo link_tag(make_url('client_dashboard', array('client_id' => TBGContext::getCurrentClient()->getID())), TBGContext::getCurrentClient()->getName()); ?></li>
-					<?php endif; ?>
-				<?php endif; ?>
-				<?php break; ?>
-			<?php endforeach; ?>
-			<li class="project_name">
-				<?php if ($tbg_name_printed): ?><span>&raquo;</span> <?php endif; ?><?php echo link_tag(make_url('project_dashboard', array('project_key' => TBGContext::getCurrentProject()->getKey())), TBGContext::getCurrentProject()->getName()); ?>
-			</li>
-			<?php foreach ($tbg_response->getBreadcrumbs() as $breadcrumb): ?>
-				<li class="breadcrumb">&raquo;
-					<?php if ($breadcrumb['url']): ?>
-						<?php echo link_tag($breadcrumb['url'], $breadcrumb['title']); ?>
-					<?php else: ?>
-						<?php echo $breadcrumb['title']; ?>
-					<?php endif; ?>
-				</li>
-			<?php endforeach; */ ?>
 		</ul>
 	</div>
 	<?php if ($tbg_user->canSearchForIssues()): ?>

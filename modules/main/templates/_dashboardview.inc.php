@@ -13,6 +13,8 @@
 		<?php if (count($tbg_user->getLatestActions()) > 0): ?>
 			<table cellpadding=0 cellspacing=0 style="margin: 5px;">
 				<?php $prev_date = null; ?>
+				<?php $prev_timestamp = null; ?>
+				<?php $prev_issue = null; ?>
 				<?php foreach ($tbg_user->getLatestActions() as $action): ?>
 					<?php $date = tbg_formatTime($action['timestamp'], 5); ?>
 					<?php if ($date != $prev_date): ?>
@@ -20,8 +22,10 @@
 							<td class="latest_action_dates" colspan="2"><?php echo $date; ?></td>
 						</tr>
 					<?php endif; ?>
-					<?php include_component('main/logitem', array('log_action' => $action, 'include_project' => true, 'pad_length' => 60)); ?>
+					<?php include_component('main/logitem', array('log_action' => $action, 'include_project' => true, 'include_issue_title' => !($prev_timestamp == $action['timestamp'] && $prev_issue == $action['target']))); ?>
 					<?php $prev_date = $date; ?>
+					<?php $prev_timestamp = $action['timestamp']; ?>
+					<?php $prev_issue = $action['target']; ?>
 				<?php endforeach; ?>
 			</table>
 		<?php else: ?>
@@ -51,7 +55,7 @@
 							<td class="latest_action_dates" colspan="2"><?php echo $date; ?></td>
 						</tr>
 					<?php endif; ?>
-					<?php include_component('main/commentitem', array('comment' => $comment, 'include_project' => true, 'pad_length' => 60)); ?>
+					<?php include_component('main/commentitem', array('comment' => $comment, 'include_project' => true)); ?>
 					<?php $prev_date = $date; ?>
 					<?php if ($count++ == 10) break; // limit to 10 last comments ?>
 				<?php endforeach; ?>

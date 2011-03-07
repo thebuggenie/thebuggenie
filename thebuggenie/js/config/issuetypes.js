@@ -14,18 +14,18 @@ function showIssuetypeOptions(url, id)
 			$('issuetype_' + id + '_indicator').hide();
 			if (json && (json.failed || json.error))
 			{
-				failedMessage(json.error);
+				thebuggenie.events.failedMessage(json.error);
 			}
 		},
 		onFailure: function (transport) {
 			$('issuetype_' + id + '_indicator').hide();
 			if (transport.responseJSON)
 			{
-				failedMessage(transport.responseJSON.error);
+				thebuggenie.events.failedMessage(transport.responseJSON.error);
 			}
 			else
 			{
-				failedMessage(transport.responseText);
+				thebuggenie.events.failedMessage(transport.responseText);
 			}
 		}
 		});
@@ -47,7 +47,7 @@ function updateIssuetype(url, id)
 		var json = transport.responseJSON;
 		if (json.failed)
 		{
-			failedMessage(json.error);
+			thebuggenie.events.failedMessage(json.error);
 			$('edit_issuetype_' + id + '_indicator').hide();
 		}
 		else
@@ -66,18 +66,18 @@ function updateIssuetype(url, id)
 					$('issuetype_' + id + '_info').show();
 				}
 			}
-			successMessage(json.title);
+			thebuggenie.events.successMessage(json.title);
 		}
 	},
 	onFailure: function (transport) {
 		$('edit_issuetype_' + id + '_indicator').hide();
 		if (transport.responseJSON)
 		{
-			failedMessage(transport.responseJSON.error);
+			thebuggenie.events.failedMessage(transport.responseJSON.error);
 		}
 		else
 		{
-			failedMessage(transport.responseText);
+			thebuggenie.events.failedMessage(transport.responseText);
 		}
 	}
 	});
@@ -96,25 +96,25 @@ function deleteIssuetype(url, id)
 		var json = transport.responseJSON;
 		if (json.failed)
 		{
-			failedMessage(json.error);
+			thebuggenie.events.failedMessage(json.error);
 			$('delete_issuetype_' + id + '_indicator').hide();
 		}
 		else
 		{
 			$('delete_issuetype_' + id + '_indicator').hide();
 			$('issuetype_' + id + '_box').remove();
-			successMessage(json.message);
+			thebuggenie.events.successMessage(json.message);
 		}
 	},
 	onFailure: function (transport) {
 		$('edit_issuetype_' + id + '_indicator').hide();
 		if (transport.responseJSON)
 		{
-			failedMessage(transport.responseJSON.error);
+			thebuggenie.events.failedMessage(transport.responseJSON.error);
 		}
 		else
 		{
-			failedMessage(transport.responseText);
+			thebuggenie.events.failedMessage(transport.responseText);
 		}
 	}
 	});
@@ -135,25 +135,25 @@ function updateIssuetypeChoices(url, id)
 		var json = transport.responseJSON;
 		if (json.failed)
 		{
-			failedMessage(json.error);
+			thebuggenie.events.failedMessage(json.error);
 			$('update_' + id + '_choices_indicator').hide();
 		}
 		else
 		{
 			$('update_' + id + '_choices_indicator').hide();
 			$('issuetype_' + id + '_content').hide();
-			successMessage(json.title, '');
+			thebuggenie.events.successMessage(json.title, '');
 		}
 	},
 	onFailure: function (transport) {
 		$('update_' + id + '_choices_indicator').hide();
 		if (transport.responseJSON)
 		{
-			failedMessage(transport.responseJSON.error);
+			thebuggenie.events.failedMessage(transport.responseJSON.error);
 		}
 		else
 		{
-			failedMessage(transport.responseText);
+			thebuggenie.events.failedMessage(transport.responseText);
 		}
 	}
 	});
@@ -175,7 +175,7 @@ function addIssuetype(url)
 		var json = transport.responseJSON;
 		if (json.failed)
 		{
-			failedMessage(json.error);
+			thebuggenie.events.failedMessage(json.error);
 			$('add_issuetype_button').show();
 			$('add_issuetype_indicator').hide();
 		}
@@ -184,7 +184,7 @@ function addIssuetype(url)
 			$('add_issuetype_indicator').hide();
 			$('add_issuetype_button').show();
 			$('add_issuetype_form').reset();
-			successMessage(json.title, '');
+			thebuggenie.events.successMessage(json.title, '');
 			$('issuetypes_list').insert({bottom: json.content});
 		}
 	},
@@ -193,11 +193,11 @@ function addIssuetype(url)
 		$('add_issuetype_button').show();
 		if (transport.responseJSON)
 		{
-			failedMessage(transport.responseJSON.error);
+			thebuggenie.events.failedMessage(transport.responseJSON.error);
 		}
 		else
 		{
-			failedMessage(transport.responseText);
+			thebuggenie.events.failedMessage(transport.responseText);
 		}
 	}
 	});

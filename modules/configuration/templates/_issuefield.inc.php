@@ -12,7 +12,7 @@
 		<?php if ($item->canBeDeleted()): ?>
 			<a href="javascript:void(0);" onclick="$('delete_item_<?php echo $item->getID(); ?>').toggle();" class="image" id="delete_<?php echo $item->getID(); ?>_link"><?php echo image_tag('icon_delete.png'); ?></a>
 		<?php else: ?>
-			<a href="javascript:void(0);" onclick="failedMessage('<?php echo __('This item cannot be deleted'); ?>', '<?php echo __('Other items - such as workflow steps - may depend on this item to exist. Remove the dependant item or unlink it from this item to continue.'); ?>');" class="image" id="delete_<?php echo $item->getID(); ?>_link"><?php echo image_tag('icon_delete_disabled.png'); ?></a>
+			<a href="javascript:void(0);" onclick="thebuggenie.events.failedMessage('<?php echo __('This item cannot be deleted'); ?>', '<?php echo __('Other items - such as workflow steps - may depend on this item to exist. Remove the dependant item or unlink it from this item to continue.'); ?>');" class="image" id="delete_<?php echo $item->getID(); ?>_link"><?php echo image_tag('icon_delete_disabled.png'); ?></a>
 		<?php endif; ?>
 		<?php echo image_tag('spinning_16.gif', array('id' => 'delete_' . $type . '_' . $item->getID() . '_indicator', 'style' => 'display: none;')); ?>
 	</td>
