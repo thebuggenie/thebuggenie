@@ -45,7 +45,7 @@
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 
 			$return_array = array();
-			if ($res = $this->doSelect($crit, false))
+			if ($res = $this->doSelect($crit))
 			{
 				while ($row = $res->getNextRow())
 				{
