@@ -34,6 +34,10 @@
 		const CONFIGURATION_SECTION_MODULES = 15;
 		const CONFIGURATION_SECTION_IMPORT = 16;
 
+		const APPEARANCE_HEADER_USE_THEME = 0;
+		const APPEARANCE_HEADER_CUSTOM = 1;
+		const APPEARANCE_HEADER_URL = 2;
+
 		static protected $_ver_mj = 3;
 		static protected $_ver_mn = 1;
 		static protected $_ver_rev = '0';

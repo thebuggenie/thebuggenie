@@ -68,19 +68,10 @@
 					<table class="main_header" cellpadding=0 cellspacing=0 width="100%" style="table-layout: fixed;">
 						<tr>
 							<td align="left" valign="middle" id="logo_td">
-								<?php
-									if (TBGSettings::getHeaderLink() == '')
-									{
-										$link = TBGContext::getTBGPath();
-									}
-									else
-									{
-										$link = TBGSettings::getHeaderLink();
-									}
-								?>
-								<?php if (TBGSettings::isUsingCustomHeaderIcon() == '2'): ?>
+								<?php $link = (TBGSettings::getHeaderLink() == '') ? TBGContext::getTBGPath() : TBGSettings::getHeaderLink(); ?>
+								<?php if (TBGSettings::isUsingCustomHeaderIcon() == TBGSettings::APPEARANCE_HEADER_URL): ?>
 									<a class="logo" href="<?php print $link; ?>"><img src="<?php print TBGSettings::getHeaderIconURL(); ?>" alt="<?php print TBGSettings::getTBGname() . ' ~ ' . strip_tags(TBGSettings::getTBGtagline()); ?>" title="<?php print TBGSettings::getTBGname() . ' ~ ' . strip_tags(TBGSettings::getTBGtagline()); ?>"></a>
-								<?php elseif (TBGSettings::isUsingCustomHeaderIcon() == '1'): ?>
+								<?php elseif (TBGSettings::isUsingCustomHeaderIcon() == TBGSettings::APPEARANCE_HEADER_CUSTOM): ?>
 									<a class="logo" href="<?php print $link; ?>"><img src="<?php print TBGContext::getTBGPath(); ?>header.png" alt="<?php print TBGSettings::getTBGname() . ' ~ ' . strip_tags(TBGSettings::getTBGtagline()); ?>" title="<?php print TBGSettings::getTBGname() . ' ~ ' . strip_tags(TBGSettings::getTBGtagline()); ?>"></a>
 								<?php else: ?>
 									<a class="logo" href="<?php print $link; ?>"><?php echo image_tag('logo_24.png', array('alt' => TBGSettings::getTBGname() . ' ~ ' . strip_tags(TBGSettings::getTBGtagline()), 'title' => TBGSettings::getTBGname() . ' ~ ' . strip_tags(TBGSettings::getTBGtagline()))) ; ?></a>
@@ -168,10 +159,6 @@
 											</li>
 										<?php endif; ?>
 										<?php TBGEvent::createNew('core', 'menustrip_item_links', null, array('selected_tab' => $tbg_response->getPage()))->trigger(); ?>
-										<?php /*if (!TBGContext::isProjectContext() && $tbg_user->canAccessConfigurationPage()): ?>
-											<li<?php if ($tbg_response->getPage() == 'config'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('configure'), image_tag('tab_config.png').__('Configure')); ?></li>
-										<?php endif;*/ ?>
-										<?php /*?><li<?php if ($tbg_response->getPage() == 'about'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('about'), image_tag('tab_about.png').__('About')); ?></li> */ ?>
 									</ul>
 									<div class="rounded_box blue tab_menu_container" id="header_userinfo">
 										<table style="width: auto;" cellpadding="0" cellspacing="0">

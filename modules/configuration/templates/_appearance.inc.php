@@ -28,9 +28,9 @@
 		<td><label for="icon_header"><?php echo __('Custom header icon'); ?></label></td>
 		<td>
 			<select name="icon_header" id="icon_header" onchange="if ($('icon_header').getValue() == 2) { $('icon_header_url').enable() } else { $('icon_header_url').disable() }" style="width: 300px;"<?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>>
-				<option value="0"<?php if (TBGSettings::isUsingCustomHeaderIcon() == '0'): ?> selected<?php endif; ?><?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>><?php echo __("Use the theme's default icon in the header"); ?></option>
-				<option value="1"<?php if (TBGSettings::isUsingCustomHeaderIcon() == '1'): ?> selected<?php endif; ?><?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>><?php echo __("Use the file header.png in the '%thebuggenie%' directory", array('%thebuggenie%', THEBUGGENIE_PUBLIC_FOLDER_NAME)); ?></option>
-				<option value="2"<?php if (TBGSettings::isUsingCustomHeaderIcon() == '2'): ?> selected<?php endif; ?><?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>><?php echo __('Load an image from a specified URL'); ?></option>
+				<option value="<?php echo TBGSettings::APPEARANCE_HEADER_USE_THEME; ?>"<?php if (TBGSettings::isUsingCustomHeaderIcon() == TBGSettings::APPEARANCE_HEADER_USE_THEME): ?> selected<?php endif; ?><?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>><?php echo __("Use the theme's default icon in the header"); ?></option>
+				<option value="<?php echo TBGSettings::APPEARANCE_HEADER_CUSTOM; ?>"<?php if (TBGSettings::isUsingCustomHeaderIcon() == TBGSettings::APPEARANCE_HEADER_CUSTOM): ?> selected<?php endif; ?><?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>><?php echo __("Use the file header.png in the '%thebuggenie%' directory", array('%thebuggenie%', THEBUGGENIE_PUBLIC_FOLDER_NAME)); ?></option>
+				<option value="<?php echo TBGSettings::APPEARANCE_HEADER_URL; ?>"<?php if (TBGSettings::isUsingCustomHeaderIcon() == TBGSettings::APPEARANCE_HEADER_URL): ?> selected<?php endif; ?><?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>><?php echo __('Load an image from a specified URL'); ?></option>
 			</select>
 		</td>
 	</tr>
