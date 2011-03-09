@@ -18,10 +18,10 @@
 			<div class="config_header" style="width: 750px;"><?php echo __('Configure users, teams and groups'); ?></div>
 			<div style="width: 750px; clear: both; height: 30px;" class="tab_menu">
 				<ul id="usersteamsgroups_menu">
-					<li id="tab_users" class="selected"><?php echo javascript_link_tag(image_tag('cfg_icon_users.png', array('style' => 'float: left; margin-right: 5px;')) . $users_text, array('onclick' => "thebuggenie.events.switchSubmenuTab('tab_users', 'usersteamsgroups_menu');")); ?></li>
-					<li id="tab_groups"><?php echo javascript_link_tag(image_tag('cfg_icon_teamgroups.png', array('style' => 'float: left; margin-right: 5px;')) . __('Groups'), array('onclick' => "thebuggenie.events.switchSubmenuTab('tab_groups', 'usersteamsgroups_menu');")); ?></li>
-					<li id="tab_teams"><?php echo javascript_link_tag(image_tag('cfg_icon_teamgroups.png', array('style' => 'float: left; margin-right: 5px;')) . $teams_text, array('onclick' => "thebuggenie.events.switchSubmenuTab('tab_teams', 'usersteamsgroups_menu');")); ?></li>
-					<li id="tab_clients"><?php echo javascript_link_tag(image_tag('cfg_icon_teamgroups.png', array('style' => 'float: left; margin-right: 5px;')) . __('Clients'), array('onclick' => "thebuggenie.events.switchSubmenuTab('tab_clients', 'usersteamsgroups_menu');")); ?></li>
+					<li id="tab_users" class="selected"><?php echo javascript_link_tag(image_tag('cfg_icon_users.png', array('style' => 'float: left; margin-right: 5px;')) . $users_text, array('onclick' => "switchSubmenuTab('tab_users', 'usersteamsgroups_menu');")); ?></li>
+					<li id="tab_groups"><?php echo javascript_link_tag(image_tag('cfg_icon_teamgroups.png', array('style' => 'float: left; margin-right: 5px;')) . __('Groups'), array('onclick' => "switchSubmenuTab('tab_groups', 'usersteamsgroups_menu');")); ?></li>
+					<li id="tab_teams"><?php echo javascript_link_tag(image_tag('cfg_icon_teamgroups.png', array('style' => 'float: left; margin-right: 5px;')) . $teams_text, array('onclick' => "switchSubmenuTab('tab_teams', 'usersteamsgroups_menu');")); ?></li>
+					<li id="tab_clients"><?php echo javascript_link_tag(image_tag('cfg_icon_teamgroups.png', array('style' => 'float: left; margin-right: 5px;')) . __('Clients'), array('onclick' => "switchSubmenuTab('tab_clients', 'usersteamsgroups_menu');")); ?></li>
 				</ul>
 			</div>
 			<div id="usersteamsgroups_menu_panes">
@@ -34,22 +34,22 @@
 								<td style="padding: 3px;" rowspan="2"><label><?php echo __('Show user(s)'); ?>:</label></td>
 								<td style="padding: 3px; font-size: 12px;">
 									<?php foreach (range('A', 'Z') as $letter): ?>
-										<?php echo javascript_link_tag($letter, array('onclick' => "thebuggenie.events.showUsers('".make_url('configure_users_find_user')."', '{$letter}');")); ?> |
+										<?php echo javascript_link_tag($letter, array('onclick' => "showUsers('".make_url('configure_users_find_user')."', '{$letter}');")); ?> |
 									<?php endforeach; ?>
-									<?php echo javascript_link_tag('0-9', array('onclick' => "thebuggenie.events.showUsers('".make_url('configure_users_find_user')."', '0-9');")); ?> |
-									<?php echo javascript_link_tag('ALL', array('onclick' => "thebuggenie.events.showUsers('".make_url('configure_users_find_user')."', 'all');")); ?>
+									<?php echo javascript_link_tag('0-9', array('onclick' => "showUsers('".make_url('configure_users_find_user')."', '0-9');")); ?> |
+									<?php echo javascript_link_tag('ALL', array('onclick' => "showUsers('".make_url('configure_users_find_user')."', 'all');")); ?>
 								</td>
 							</tr>
 							<tr>
 								<td style="padding: 3px; font-size: 12px;">
-									<?php echo javascript_link_tag(__('Unactivated users'), array('onclick' => "thebuggenie.events.showUsers('".make_url('configure_users_find_user')."', 'unactivated');")); ?> |
-									<?php echo javascript_link_tag(__('New users'), array('onclick' => "thebuggenie.events.showUsers('".make_url('configure_users_find_user')."', 'newusers');")); ?>
+									<?php echo javascript_link_tag(__('Unactivated users'), array('onclick' => "showUsers('".make_url('configure_users_find_user')."', 'unactivated');")); ?> |
+									<?php echo javascript_link_tag(__('New users'), array('onclick' => "showUsers('".make_url('configure_users_find_user')."', 'newusers');")); ?>
 								</td>
 							</tr>
 							<tr>
 								<td style="padding: 3px;"><label for="findusers"><?php echo __('Find user(s)'); ?>:</label></td>
 								<td style="padding: 3px;">
-									<form action="<?php echo make_url('configure_users_find_user'); ?>" method="post" onsubmit="thebuggenie.events.showUsers('<?php echo make_url('configure_users_find_user'); ?>', $('findusers').getValue());return false;">
+									<form action="<?php echo make_url('configure_users_find_user'); ?>" method="post" onsubmit="showUsers('<?php echo make_url('configure_users_find_user'); ?>', $('findusers').getValue());return false;">
 										<input type="text" name="findusers" id="findusers" style="width: 300px;">&nbsp;<input type="submit" value="<?php echo __('Find'); ?>" style="font-size: 12px; font-weight: bold;">
 									</form>
 								</td>
@@ -57,7 +57,7 @@
 							<tr id="adduser_div"<?php if (!TBGContext::getScope()->hasUsersAvailable()): ?> style="display: none;"<?php endif; ?>>
 								<td style="padding: 3px;"><label for="adduser_username"><?php echo __('Enter username'); ?>:</label></td>
 								<td style="padding: 3px;">
-									<form action="<?php echo make_url('configure_users_add_user'); ?>" method="post" onsubmit="thebuggenie.events.createUser('<?php echo make_url('configure_users_add_user'); ?>');return false;" id="createuser_form">
+									<form action="<?php echo make_url('configure_users_add_user'); ?>" method="post" onsubmit="createUser('<?php echo make_url('configure_users_add_user'); ?>');return false;" id="createuser_form">
 										<input type="text" name="username" id="adduser_username" style="width: 300px;">&nbsp;<input type="submit" value="<?php echo __('Create user'); ?>" style="font-size: 12px; font-weight: bold;">
 									</form>
 								</td>
@@ -71,7 +71,7 @@
 				</div>
 				<div id="tab_groups_pane" style="display: none; padding-top: 0; width: 750px;">
 					<div class="rounded_box yellow borderless" style="margin-top: 5px; padding: 7px;">
-						<form id="create_group_form" action="<?php echo make_url('configure_users_add_group'); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="thebuggenie.events.createGroup('<?php echo make_url('configure_users_add_group'); ?>');return false;">
+						<form id="create_group_form" action="<?php echo make_url('configure_users_add_group'); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="createGroup('<?php echo make_url('configure_users_add_group'); ?>');return false;">
 							<div id="add_group">
 								<label for="group_name"><?php echo __('Create a new group'); ?></label>
 								<input type="text" id="group_name" name="group_name">
@@ -93,7 +93,7 @@
 				</div>
 				<div id="tab_teams_pane" style="display: none; padding-top: 0; width: 750px;">
 					<div class="rounded_box yellow borderless" style="margin-top: 5px; padding: 7px;<?php if (!TBGContext::getScope()->hasTeamsAvailable()): ?> display: none;<?php endif; ?>" id="add_team_div">
-						<form id="create_team_form" action="<?php echo make_url('configure_users_add_team'); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="thebuggenie.events.createTeam('<?php echo make_url('configure_users_add_team'); ?>');return false;">
+						<form id="create_team_form" action="<?php echo make_url('configure_users_add_team'); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="createTeam('<?php echo make_url('configure_users_add_team'); ?>');return false;">
 							<label for="team_name"><?php echo __('Create a new team'); ?></label>
 							<input type="text" id="team_name" name="team_name">
 							<input type="submit" value="<?php echo __('Create'); ?>">
@@ -113,7 +113,7 @@
 				</div>
 				<div id="tab_clients_pane" style="display: none; padding-top: 0; width: 750px;">
 					<div class="rounded_box yellow borderless" style="margin-top: 5px; padding: 7px;">
-						<form id="create_client_form" action="<?php echo make_url('configure_users_add_client'); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="thebuggenie.events.createClient('<?php echo make_url('configure_users_add_client'); ?>');return false;">
+						<form id="create_client_form" action="<?php echo make_url('configure_users_add_client'); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="createClient('<?php echo make_url('configure_users_add_client'); ?>');return false;">
 							<div id="add_client">
 								<label for="client_name"><?php echo __('Create a new client'); ?></label>
 								<input type="text" id="client_name" name="client_name">

@@ -2,7 +2,7 @@
 	<div style="display: none;" class="story_color_selector" id="color_selector_<?php echo $issue->getID(); ?>">
 		<div style="float: left;">
 			<?php foreach ($colors as $color): ?>
-				<div onclick="thebuggenie.events.setStoryColor('<?php echo make_url('project_scrum_story_setcolor', array('project_key' => $issue->getProject()->getKey(), 'story_id' => $issue->getID())); ?>', <?php echo $issue->getID(); ?>, '<?php echo $color; ?>');" class="story_color_selector_item c_sel_red_1" style="background-color: <?php echo $color; ?>;">&nbsp;</div>
+				<div onclick="setStoryColor('<?php echo make_url('project_scrum_story_setcolor', array('project_key' => $issue->getProject()->getKey(), 'story_id' => $issue->getID())); ?>', <?php echo $issue->getID(); ?>, '<?php echo $color; ?>');" class="story_color_selector_item c_sel_red_1" style="background-color: <?php echo $color; ?>;">&nbsp;</div>
 			<?php endforeach; ?>
 		</div>
 		<div style="float: left; position: relative;">
@@ -27,7 +27,7 @@
 	<div class="actions">
 		<label><?php echo __('Actions'); ?>:</label>
 		<?php echo link_tag(make_url('viewissue', array('issue_no' => $issue->getFormattedIssueNo(), 'project_key' => $issue->getProject()->getKey())), image_tag('tab_new.png', array('title' => __('Open in new window'))), array('target' => '_blank')); ?>
-		<?php /*<a href="javascript:void(0);" onclick="thebuggenie.events.showUserStoryEdit('url', <?php echo $issue->getID(); ?>);"><?php echo image_tag('icon_edit.png', array('title' => __('Edit user story'))); ?></a>*/ ?>
+		<?php /*<a href="javascript:void(0);" onclick="showUserStoryEdit('url', <?php echo $issue->getID(); ?>);"><?php echo image_tag('icon_edit.png', array('title' => __('Edit user story'))); ?></a>*/ ?>
 		<?php if ($issue->canAddRelatedIssues()): ?>
 			<a href="javascript:void(0);" onclick="$('scrum_story_<?php echo $issue->getID(); ?>_add_task_div').toggle();"><?php echo image_tag('scrum_add_task.png', array('title' => __('Add a task to this user story'))); ?></a>
 		<?php endif; ?>

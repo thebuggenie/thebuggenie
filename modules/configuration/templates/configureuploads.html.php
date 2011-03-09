@@ -35,7 +35,7 @@
 		<td valign="top">
 			<div class="config_header" style="width: 750px;"><?php echo __('Configure uploads &amp; attachments'); ?></div>
 			<?php if ($uploads_enabled && $access_level == TBGSettings::ACCESS_FULL): ?>
-				<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_files'); ?>" method="post" onsubmit="thebuggenie.events.submitForm('<?php echo make_url('configure_files'); ?>', 'config_uploads'); return false;" id="config_uploads">
+				<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_files'); ?>" method="post" onsubmit="submitForm('<?php echo make_url('configure_files'); ?>', 'config_uploads'); return false;" id="config_uploads">
 			<?php endif; ?>
 					<?php if ($uploads_enabled): ?>
 						<table style="clear: both; width: 700px; margin-top: 5px;" class="padded_table" cellpadding=0 cellspacing=0>
@@ -43,8 +43,8 @@
 								<td style="width: 200px;"><label for="enable_uploads_yes"><?php echo __('Enable uploads'); ?></label></td>
 								<td style="width: auto;">
 									<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-										<input type="radio" name="enable_uploads" value="1" id="enable_uploads_yes"<?php if (TBGSettings::isUploadsEnabled()): ?> checked<?php endif; ?> onclick="thebuggenie.events.toggleSettings();"><label for="enable_uploads_yes"><?php echo __('Yes'); ?></label>&nbsp;&nbsp;
-										<input type="radio" name="enable_uploads" value="0" id="enable_uploads_no"<?php if (!TBGSettings::isUploadsEnabled()): ?> checked<?php endif; ?> onclick="thebuggenie.events.toggleSettings();"><label for="enable_uploads_no"><?php echo __('No'); ?></label>
+										<input type="radio" name="enable_uploads" value="1" id="enable_uploads_yes"<?php if (TBGSettings::isUploadsEnabled()): ?> checked<?php endif; ?> onclick="toggleSettings();"><label for="enable_uploads_yes"><?php echo __('Yes'); ?></label>&nbsp;&nbsp;
+										<input type="radio" name="enable_uploads" value="0" id="enable_uploads_no"<?php if (!TBGSettings::isUploadsEnabled()): ?> checked<?php endif; ?> onclick="toggleSettings();"><label for="enable_uploads_no"><?php echo __('No'); ?></label>
 									<?php endif; ?>
 								</td>
 							</tr>

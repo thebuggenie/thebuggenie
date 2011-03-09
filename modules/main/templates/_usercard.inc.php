@@ -71,6 +71,6 @@
 		<?php TBGEvent::createNew('core', 'usercardactions_bottom', $user)->trigger(); ?>
 	</div>
 	<div class="backdrop_detail_footer">
-		<a href="javascript:void(0);" onclick="thebuggenie.events.resetFadedBackdrop();"><?php echo __('Close'); ?></a>
+		<a href="javascript:void(0);" onclick="resetFadedBackdrop();"><?php echo __('Close'); ?></a>
 	</div>
 </div>

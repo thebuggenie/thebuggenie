@@ -106,11 +106,11 @@
 					<br style="clear: both;">
 					<div class="tab_menu" style="margin-top: 55px;">
 						<ul id="transition_menu">
-							<li class="selected" id="pre_validation_tab"><a href="javascript:void(0);" onclick="thebuggenie.events.switchSubmenuTab('pre_validation_tab', 'transition_menu');"><?php echo __('Pre-transition validation'); ?></a></li>
+							<li class="selected" id="pre_validation_tab"><a href="javascript:void(0);" onclick="switchSubmenuTab('pre_validation_tab', 'transition_menu');"><?php echo __('Pre-transition validation'); ?></a></li>
 							<?php if ($transition->hasTemplate()): ?>
-								<li id="post_validation_tab"><a href="javascript:void(0);" onclick="thebuggenie.events.switchSubmenuTab('post_validation_tab', 'transition_menu');"><?php echo __('Post-transition validation'); ?></a></li>
+								<li id="post_validation_tab"><a href="javascript:void(0);" onclick="switchSubmenuTab('post_validation_tab', 'transition_menu');"><?php echo __('Post-transition validation'); ?></a></li>
 							<?php endif; ?>
-							<li id="actions_tab"><a href="javascript:void(0);" onclick="thebuggenie.events.switchSubmenuTab('actions_tab', 'transition_menu');"><?php echo __('Post-transition actions'); ?></a></li>
+							<li id="actions_tab"><a href="javascript:void(0);" onclick="switchSubmenuTab('actions_tab', 'transition_menu');"><?php echo __('Post-transition actions'); ?></a></li>
 						</ul>
 					</div>
 					<div id="transition_menu_panes" style="margin-bottom: 100px;">
@@ -120,7 +120,7 @@
 							</div>
 							<?php if (!$transition->isCore()): ?>
 								<div class="rounded_box lightyellow" style="margin-bottom: 15px;">
-									<form action="<?php echo make_url('configure_workflow_transition_add_validation_rule', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'postorpre' => 'pre')); ?>" onsubmit="thebuggenie.events.addWorkflowTransitionValidationRule('<?php echo make_url('configure_workflow_transition_add_validation_rule', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'postorpre' => 'pre')); ?>', 'pre');return false;" id="workflowtransitionprevalidationrule_add_form">
+									<form action="<?php echo make_url('configure_workflow_transition_add_validation_rule', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'postorpre' => 'pre')); ?>" onsubmit="addWorkflowTransitionValidationRule('<?php echo make_url('configure_workflow_transition_add_validation_rule', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'postorpre' => 'pre')); ?>', 'pre');return false;" id="workflowtransitionprevalidationrule_add_form">
 										<label for="workflowtransitionprevalidationrule_add_type"><?php echo __('Add pre transition validation rule'); ?></label>
 										<select name="rule" id="workflowtransitionprevalidationrule_add_type">
 											<option <?php if ($transition->hasPreValidationRule(TBGWorkflowTransitionValidationRule::RULE_MAX_ASSIGNED_ISSUES)): ?>style="display: none;"<?php endif; ?> id="add_workflowtransitionprevalidationrule_<?php echo TBGWorkflowTransitionValidationRule::RULE_MAX_ASSIGNED_ISSUES; ?>" value="<?php echo TBGWorkflowTransitionValidationRule::RULE_MAX_ASSIGNED_ISSUES; ?>"><?php echo __('Max number of assigned issues'); ?></option>
@@ -146,7 +146,7 @@
 								</div>
 								<?php if (!$transition->isCore()): ?>
 									<div class="rounded_box lightyellow" style="margin-bottom: 15px;">
-										<form action="<?php echo make_url('configure_workflow_transition_add_validation_rule', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'postorpre' => 'post')); ?>" onsubmit="thebuggenie.events.addWorkflowTransitionValidationRule('<?php echo make_url('configure_workflow_transition_add_validation_rule', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'postorpre' => 'post')); ?>', 'post');return false;" id="workflowtransitionpostvalidationrule_add_form">
+										<form action="<?php echo make_url('configure_workflow_transition_add_validation_rule', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'postorpre' => 'post')); ?>" onsubmit="addWorkflowTransitionValidationRule('<?php echo make_url('configure_workflow_transition_add_validation_rule', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'postorpre' => 'post')); ?>', 'post');return false;" id="workflowtransitionpostvalidationrule_add_form">
 											<label for="workflowtransitionpostvalidationrule_add_type"><?php echo __('Add post transition validation rule'); ?></label>
 											<select name="rule" id="workflowtransitionpostvalidationrule_add_type">
 												<option <?php if ($transition->hasPostValidationRule(TBGWorkflowTransitionValidationRule::RULE_PRIORITY_VALID)): ?>style="display: none;"<?php endif; ?> id="add_workflowtransitionpostvalidationrule_<?php echo TBGWorkflowTransitionValidationRule::RULE_PRIORITY_VALID; ?>" value="<?php echo TBGWorkflowTransitionValidationRule::RULE_PRIORITY_VALID; ?>"><?php echo __('Validate specified priority'); ?></option>
@@ -175,7 +175,7 @@
 							</div>
 							<?php if (!$transition->isCore()): ?>
 								<div class="rounded_box lightyellow" style="margin-bottom: 15px;">
-									<form action="<?php echo make_url('configure_workflow_transition_add_action', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID())); ?>" onsubmit="thebuggenie.events.addWorkflowTransitionAction('<?php echo make_url('configure_workflow_transition_add_action', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID())); ?>');return false;" id="workflowtransitionaction_add_form">
+									<form action="<?php echo make_url('configure_workflow_transition_add_action', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID())); ?>" onsubmit="addWorkflowTransitionAction('<?php echo make_url('configure_workflow_transition_add_action', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID())); ?>');return false;" id="workflowtransitionaction_add_form">
 										<label for="workflowtransitionaction_add_type"><?php echo __('Add transition action'); ?></label>
 										<select name="action_type" id="workflowtransitionaction_add_type">
 											<option <?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE)): ?>style="display: none;"<?php endif; ?> id="add_workflowtransitionaction_<?php echo TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE; ?>" value="<?php echo TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE; ?>"><?php echo __('Assign the issue to a user'); ?></option>

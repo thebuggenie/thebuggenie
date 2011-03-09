@@ -1,6 +1,6 @@
 <?php if ($issue->isEditable()): ?>
 	<?php if ($issue->canEditIssue()): ?>
-		<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px; float: left;" id="affected_add_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="thebuggenie.events.showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'issue_add_item', 'issue_id' => $issue->getID())); ?>');" value="<?php echo __('Add an item'); ?>" value="<?php echo __('Add an item'); ?>"></td></tr></table>
+		<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px; float: left;" id="affected_add_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'issue_add_item', 'issue_id' => $issue->getID())); ?>');" value="<?php echo __('Add an item'); ?>" value="<?php echo __('Add an item'); ?>"></td></tr></table>
 	<?php else: ?>
 		<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px; float: left;" id="affected_add_button"><tr><td class="nice_button disabled" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="thebuggenie.events.failedMessage('<?php echo __('You are not allowed to add an item to this list'); ?>');" value="<?php echo __('Add an item'); ?>"></td></tr></table>
 	<?php endif; ?>

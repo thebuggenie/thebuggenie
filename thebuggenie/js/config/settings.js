@@ -1,4 +1,4 @@
-thebuggenie.events.importCSV = function(url)
+function importCSV(url)
 {
 	var params = Form.serialize('import_csv_form');
 	new Ajax.Request(url, {

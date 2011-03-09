@@ -27,7 +27,7 @@
 				<h4><?php echo __('Really delete'); ?></h4>
 				<span class="question_header"><?php echo __('Are you sure you want to delete this comment?'); ?></span><br><br>
 				<div id="comment_delete_controls_<?php echo $comment->getID(); ?>">
-					<a href="javascript:void(0)" onclick="thebuggenie.events.deleteComment('<?php echo make_url('comment_delete', array('comment_id' => $comment->getID())); ?>', <?php echo $comment->getID(); ?>)" class="xboxlink">Yes</a> :: <a href="javascript:void(0)" onClick="$('comment_delete_confirm_<?php echo $comment->getID(); ?>').hide();" class="xboxlink"><?php echo __('No'); ?></a>
+					<a href="javascript:void(0)" onClick="deleteComment('<?php echo make_url('comment_delete', array('comment_id' => $comment->getID())); ?>', <?php echo $comment->getID(); ?>)" class="xboxlink">Yes</a> :: <a href="javascript:void(0)" onClick="$('comment_delete_confirm_<?php echo $comment->getID(); ?>').hide();" class="xboxlink"><?php echo __('No'); ?></a>
 				</div>
 				<div id="comment_delete_indicator_<?php echo $comment->getID(); ?>" style="display: none;">
 					<?php echo image_tag('spinning_16.gif', array('class' => 'spinning')); ?>
@@ -38,7 +38,7 @@
 	</div>
 	
 	<div id="comment_edit_<?php echo $comment->getID(); ?>" class="comment_edit" style="display: none;">
-		<form id="comment_edit_form_<?php echo $comment->getID(); ?>" action="<?php echo make_url('comment_update', array('comment_id' => $comment->getID())); ?>" method="post" onsubmit="thebuggenie.events.updateComment('<?php echo make_url('comment_update', array('comment_id' => $comment->getID())); ?>', '<?php echo $comment->getID(); ?>'); return false;">
+		<form id="comment_edit_form_<?php echo $comment->getID(); ?>" action="<?php echo make_url('comment_update', array('comment_id' => $comment->getID())); ?>" method="post" onSubmit="updateComment('<?php echo make_url('comment_update', array('comment_id' => $comment->getID())); ?>', '<?php echo $comment->getID(); ?>'); return false;">
 			<input type="hidden" name="comment_id" value="<?php echo $comment->getID(); ?>" />
 			<input type="text" class="comment_titlebox" name="comment_title" value="<?php echo $comment->getTitle(); ?>" /><br>
 			<select class="comment_visibilitybox" id="comment_visibility" name="comment_visibility">

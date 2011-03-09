@@ -25,7 +25,7 @@
 						</div>
 					</div>
 					<?php if (!$workflow_scheme->isCore()): ?>
-						<form action="<?php echo make_url('configure_workflow_scheme', array('scheme_id' => $workflow_scheme->getID())); ?>" onsubmit="thebuggenie.events.updateWorkflowScheme('<?php echo make_url('configure_workflow_scheme', array('scheme_id' => $workflow_scheme->getID())); ?>', <?php echo $workflow_scheme->getID(); ?>); return false;" method="post" id="workflow_scheme_form">
+						<form action="<?php echo make_url('configure_workflow_scheme', array('scheme_id' => $workflow_scheme->getID())); ?>" onsubmit="updateWorkflowScheme('<?php echo make_url('configure_workflow_scheme', array('scheme_id' => $workflow_scheme->getID())); ?>', <?php echo $workflow_scheme->getID(); ?>); return false;" method="post" id="workflow_scheme_form">
 					<?php endif; ?>
 						<table id="workflow_steps_list" cellpadding="0" cellspacing="0">
 							<thead>

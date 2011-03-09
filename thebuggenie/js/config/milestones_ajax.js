@@ -1,4 +1,4 @@
-thebuggenie.events.addMilestone = function(pid)
+function addMilestone(pid)
 {
 	var params = Form.serialize('add_milestone_form');
 	new Ajax.Updater('milestones_span', 'config.php?module=core&p_id=' + pid + '&section=9', {
@@ -18,7 +18,7 @@ thebuggenie.events.addMilestone = function(pid)
 	});
 }
 
-thebuggenie.events.updateMilestone = function(pid, mid)
+function updateMilestone(pid, mid)
 {
 	var params = Form.serialize('edit_milestone_' + mid);
 	new Ajax.Updater('milestone_span_' + mid, 'config.php?module=core&section=9&p_id=' + pid, {
@@ -30,7 +30,7 @@ thebuggenie.events.updateMilestone = function(pid, mid)
 	Effect.Appear('show_milestone_' + mid, { duration: 0.5 });
 }
 
-thebuggenie.events.setMilestoneVisibility = function(pid, mid, visibility)
+function setMilestoneVisibility(pid, mid, visibility)
 {
 	new Ajax.Updater('milestone_span_' + mid, 'config.php?module=core&section=9&p_id=' + pid + '&setvisibility=true', {
 	asynchronous:true,
@@ -39,7 +39,7 @@ thebuggenie.events.setMilestoneVisibility = function(pid, mid, visibility)
 	});
 }
 
-thebuggenie.events.deleteMilestone = function(pid, mid)
+function deleteMilestone(pid, mid)
 {
 	new Ajax.Updater('milestones_span', 'config.php?module=core&section=9&p_id=' + pid + '&delete_milestone=true', {
 	asynchronous:true,

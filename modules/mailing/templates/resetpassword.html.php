@@ -1,5 +1,5 @@
 <div style="vertical-align: middle; padding: 5px; text-align: center;">
-	<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('reset_password', array('user' => $username, 'id' => $id)); ?>" method="post" id="forgot_password_form" onsubmit="thebuggenie.events.resetForgotPassword('<?php echo make_url('reset_password', array('user' => $username, 'id' => $id)); ?>'); return false;">
+	<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('reset_password', array('user' => $username, 'id' => $id)); ?>" method="post" id="forgot_password_form" onsubmit="resetForgotPassword('<?php echo make_url('reset_password', array('user' => $username, 'id' => $id)); ?>'); return false;">
 		<div class="login_boxheader"><?php echo __('Reset password?'); ?></div>
 		<p><?php echo __('If you have forgot your password, enter your email adress here, and we will send you an email with your new password'); ?>.</p><br>
 		<div>

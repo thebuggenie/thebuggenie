@@ -15,9 +15,9 @@
 			<div class="config_header" style="width: 750px;"><?php echo __('Import data'); ?></div>
 			<div style="width: 750px; clear: both; height: 30px;" class="tab_menu">
 				<ul id="import_menu">
-					<li id="tab_csv" class="selected"><?php echo javascript_link_tag(image_tag('icon_csv.png', array('style' => 'float: left; margin-right: 5px;')) . __('CSV'), array('onclick' => "thebuggenie.events.switchSubmenuTab('tab_csv', 'import_menu');")); ?></li>
-					<li id="tab_tbg"><?php echo javascript_link_tag(image_tag('favicon.png', array('style' => 'float: left; margin-right: 5px;')) . __('BUGS 1.x/The Bug Genie 2'), array('onclick' => "thebuggenie.events.switchSubmenuTab('tab_tbg', 'import_menu');")); ?></li>
-					<li id="tab_sample"><?php echo javascript_link_tag(image_tag('icon_project.png', array('style' => 'float: left; margin-right: 5px;')) . __('Sample data'), array('onclick' => "thebuggenie.events.switchSubmenuTab('tab_sample', 'import_menu');")); ?></li>
+					<li id="tab_csv" class="selected"><?php echo javascript_link_tag(image_tag('icon_csv.png', array('style' => 'float: left; margin-right: 5px;')) . __('CSV'), array('onclick' => "switchSubmenuTab('tab_csv', 'import_menu');")); ?></li>
+					<li id="tab_tbg"><?php echo javascript_link_tag(image_tag('favicon.png', array('style' => 'float: left; margin-right: 5px;')) . __('BUGS 1.x/The Bug Genie 2'), array('onclick' => "switchSubmenuTab('tab_tbg', 'import_menu');")); ?></li>
+					<li id="tab_sample"><?php echo javascript_link_tag(image_tag('icon_project.png', array('style' => 'float: left; margin-right: 5px;')) . __('Sample data'), array('onclick' => "switchSubmenuTab('tab_sample', 'import_menu');")); ?></li>
 				</ul>
 			</div>
 			<div id="import_menu_panes">
@@ -26,12 +26,12 @@
 						<?php echo __('You can import data from a CSV file copied into a text box in The Bug Genie, exported from other sources. Please see the %CSVImport% wiki article for further details and instructions.', array('%CSVImport%' => link_tag(make_url('publish_article', array('article_name' => 'CSVImport')), __('CSVImport'), array('target' => '_blank')))); ?>
 						<div class="tab_header"><?php echo __('What data would you like to import?'); ?></div>
 						<ul>
-							<li><a href="javascript:void(0);" onclick="thebuggenie.events.showFadedBackdrop('<?php echo make_url('configure_import_csv', array('type' => 'issues')); ?>');"><?php echo __('Issues'); ?></a></li>
-							<li><a href="javascript:void(0);" onclick="thebuggenie.events.showFadedBackdrop('<?php echo make_url('configure_import_csv', array('type' => 'projects')); ?>');"><?php echo __('Projects'); ?></a></li>
-							<!--<li><a href="javascript:void(0);" onclick="thebuggenie.events.showFadedBackdrop('<?php echo make_url('configure_import_csv', array('type' => 'users')); ?>');"><?php echo __('Users'); ?></a></li>
-							<li><a href="javascript:void(0);" onclick="thebuggenie.events.showFadedBackdrop('<?php echo make_url('configure_import_csv', array('type' => 'teams')); ?>');"><?php echo __('Teams'); ?></a></li>-->
-							<li><a href="javascript:void(0);" onclick="thebuggenie.events.showFadedBackdrop('<?php echo make_url('configure_import_csv', array('type' => 'clients')); ?>');"><?php echo __('Clients'); ?></a></li>
-							<!--<li><a href="javascript:void(0);" onclick="thebuggenie.events.showFadedBackdrop('<?php echo make_url('configure_import_csv', array('type' => 'groups')); ?>');"><?php echo __('Groups'); ?></a></li>-->
+							<li><a href="javascript:void(0);" onClick="showFadedBackdrop('<?php echo make_url('configure_import_csv', array('type' => 'issues')); ?>');"><?php echo __('Issues'); ?></a></li>
+							<li><a href="javascript:void(0);" onClick="showFadedBackdrop('<?php echo make_url('configure_import_csv', array('type' => 'projects')); ?>');"><?php echo __('Projects'); ?></a></li>
+							<!--<li><a href="javascript:void(0);" onClick="showFadedBackdrop('<?php echo make_url('configure_import_csv', array('type' => 'users')); ?>');"><?php echo __('Users'); ?></a></li>
+							<li><a href="javascript:void(0);" onClick="showFadedBackdrop('<?php echo make_url('configure_import_csv', array('type' => 'teams')); ?>');"><?php echo __('Teams'); ?></a></li>-->
+							<li><a href="javascript:void(0);" onClick="showFadedBackdrop('<?php echo make_url('configure_import_csv', array('type' => 'clients')); ?>');"><?php echo __('Clients'); ?></a></li>
+							<!--<li><a href="javascript:void(0);" onClick="showFadedBackdrop('<?php echo make_url('configure_import_csv', array('type' => 'groups')); ?>');"><?php echo __('Groups'); ?></a></li>-->
 						</ul>
 						<?php echo __('When you select a type, you will be given the opportunity to copy in your CSV file, and import the data.'); ?>
 					</div>

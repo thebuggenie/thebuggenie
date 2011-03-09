@@ -1,7 +1,6 @@
 
 if (!window.thebuggenie) window.thebuggenie = {};
 if (!thebuggenie.events) thebuggenie.events = {};
-if (!thebuggenie.utils) thebuggenie.utils = {};
 
 thebuggenie.events.failedMessage = function(title, content)
 {
@@ -58,7 +57,7 @@ thebuggenie.events.successMessage = function(title, content)
 	}
 }
 
-thebuggenie.events.clearPopupMessages = function()
+function clearPopupMessages()
 {
 	var success_queue = Effect.Queues.get('thebuggenie.events.successMessage');
 	success_queue.each(function(effect) {effect.cancel();});
@@ -89,7 +88,7 @@ thebuggenie.events.clearPopupMessages = function()
  * @param url_method get or post the url or null to use "get"
  * @param params Optional parameters to pass with the url or null to ignore
  */
-thebuggenie.utils.updateDivWithJSONFeedback = function(url, update_element, indicator, insertion, clear_update_element_before_loading, hide_element_while_loading, hide_elements_on_success, show_elements_on_success, url_method, params, onsuccess_callback, onfailure_callback, oncomplete_callback)
+function _updateDivWithJSONFeedback(url, update_element, indicator, insertion, clear_update_element_before_loading, hide_element_while_loading, hide_elements_on_success, show_elements_on_success, url_method, params, onsuccess_callback, onfailure_callback, oncomplete_callback)
 {
 	params = (params) ? params : '';
 	url_method = (url_method) ? url_method : "get";
@@ -147,7 +146,7 @@ thebuggenie.utils.updateDivWithJSONFeedback = function(url, update_element, indi
 			{
 				hide_elements_on_success.each(function(s)
 				{
-					if (thebuggenie.utils.is_string(s) && $(s))
+					if (is_string(s) && $(s))
 					{
 						$(s).hide();
 					}
@@ -195,7 +194,7 @@ thebuggenie.utils.updateDivWithJSONFeedback = function(url, update_element, indi
 	});
 }
 
-thebuggenie.utils.postFormWithJSONFeedback = function(url, formname, indicator, hide_divs_when_done, update_div, insertion, show_divs_when_done, update_form_elm, onsuccess_callback, onfailure_callback, oncomplete_callback)
+function _postFormWithJSONFeedback(url, formname, indicator, hide_divs_when_done, update_div, insertion, show_divs_when_done, update_form_elm, onsuccess_callback, onfailure_callback, oncomplete_callback)
 {
 	var params = Form.serialize(formname);
 	new Ajax.Request(url, {
@@ -252,7 +251,7 @@ thebuggenie.utils.postFormWithJSONFeedback = function(url, formname, indicator, 
 					thebuggenie.events.successMessage(json.title, json.content);
 				}
 			}
-			if (thebuggenie.utils.is_string(hide_divs_when_done) && $(hide_divs_when_done))
+			if (is_string(hide_divs_when_done) && $(hide_divs_when_done))
 			{
 				$(hide_divs_when_done).hide();
 			}
@@ -260,14 +259,14 @@ thebuggenie.utils.postFormWithJSONFeedback = function(url, formname, indicator, 
 			{
 				hide_divs_when_done.each(function(s)
 				{
-					if (thebuggenie.utils.is_string(s) && $(s))
+					if (is_string(s) && $(s))
 					{
 						$(s).hide();
 					}
 					else if ($(s)) s.hide();
 				});
 			}
-			if (thebuggenie.utils.is_string(show_divs_when_done) && $(show_divs_when_done))
+			if (is_string(show_divs_when_done) && $(show_divs_when_done))
 			{
 				$(show_divs_when_done).show();
 			}
@@ -275,7 +274,7 @@ thebuggenie.utils.postFormWithJSONFeedback = function(url, formname, indicator, 
 			{
 				show_divs_when_done.each(function(s)
 				{
-					if (thebuggenie.utils.is_string(s) && $(s))
+					if (is_string(s) && $(s))
 					{
 						$(s).show();
 					}
@@ -323,7 +322,7 @@ thebuggenie.utils.postFormWithJSONFeedback = function(url, formname, indicator, 
 	});
 }
 
-thebuggenie.events.findIdentifiable = function(url, field)
+function findIdentifiable(url, field)
 {
 	var params = Form.serialize(field + '_form');
 	new Ajax.Updater(field + '_results', url, {
@@ -335,7 +334,7 @@ thebuggenie.events.findIdentifiable = function(url, field)
 	});
 }
 
-thebuggenie.events.submitForm = function(url, form_id)
+function submitForm(url, form_id)
 {
 	var params = Form.serialize(form_id);
 	new Ajax.Request(url, {
@@ -375,7 +374,7 @@ thebuggenie.events.submitForm = function(url, form_id)
 	});
 }
 
-thebuggenie.events.switchSubmenuTab = function(visibletab, menu)
+function switchSubmenuTab(visibletab, menu)
 {
   $(menu).childElements().each(function(item){item.removeClassName('selected');});
   $(visibletab).addClassName('selected');
@@ -383,7 +382,7 @@ thebuggenie.events.switchSubmenuTab = function(visibletab, menu)
   $(visibletab + '_pane').show();
 }
 
-thebuggenie.events.showFadedBackdrop = function(url)
+function showFadedBackdrop(url)
 {
 	$('fullpage_backdrop').show();
 	new Ajax.Request(url, {
@@ -429,14 +428,14 @@ thebuggenie.events.showFadedBackdrop = function(url)
 	});
 }
 
-thebuggenie.events.resetFadedBackdrop = function()
+function resetFadedBackdrop()
 {
 	$('fullpage_backdrop').hide();
 	$('fullpage_backdrop_indicator').show();
 	$('fullpage_backdrop_content').update('');
 }
 
-thebuggenie.events.updatePercentageFromNumber = function(tds, percent)
+function updatePercentageFromNumber(tds, percent)
 {
 	cc = 0;
 	$(tds).childElements().each(function(elm) {
@@ -466,7 +465,7 @@ thebuggenie.events.updatePercentageFromNumber = function(tds, percent)
 	});
 }
 
-thebuggenie.events.addLink = function(url, target_type, target_id)
+function addLink(url, target_type, target_id)
 {
 	var params = $('attach_link_' + target_type + '_' + target_id + '_form').serialize();
 	$('attach_link_' + target_type + '_' + target_id + '_indicator').show();
@@ -512,7 +511,7 @@ thebuggenie.events.addLink = function(url, target_type, target_id)
 	});
 }
 
-thebuggenie.events.removeLink = function(url, target_type, target_id, link_id)
+function removeLink(url, target_type, target_id, link_id)
 {
 	new Ajax.Request(url, {
 		method: 'post',
@@ -563,7 +562,7 @@ thebuggenie.events.removeLink = function(url, target_type, target_id, link_id)
 	});
 }
 
-thebuggenie.events.reloadImage = function(id) {
+function reloadImage(id) {
    var src = $(id).src;
    var pos = src.indexOf('?');
    if (pos >= 0) {
@@ -574,7 +573,7 @@ thebuggenie.events.reloadImage = function(id) {
    return false;
 }
 
-thebuggenie.events.addUserStoryTask = function(url, story_id, mode)
+function addUserStoryTask(url, story_id, mode)
 {
 	if (mode == 'scrum')
 	{
@@ -651,7 +650,7 @@ thebuggenie.events.addUserStoryTask = function(url, story_id, mode)
 	});
 }
 
-thebuggenie.events.addSearchFilter = function(url)
+function addSearchFilter(url)
 {
 	var params = Form.serialize('add_filter_form');
 	params += '&key=' + $('max_filters').value;
@@ -693,7 +692,7 @@ thebuggenie.events.addSearchFilter = function(url)
 	});
 }
 
-thebuggenie.events.removeSearchFilter = function(key)
+function removeSearchFilter(key)
 {
 	$('filter_' + key).remove();
 	if ($('search_filters_list').childElements().size() == 0)
@@ -702,21 +701,21 @@ thebuggenie.events.removeSearchFilter = function(key)
 	}
 }
 
-thebuggenie.events.updateProfileInformation = function(url)
+function updateProfileInformation(url)
 {
-thebuggenie.utils.postFormWithJSONFeedback(url, 'profile_information_form', 'profile_save_indicator');
+	_postFormWithJSONFeedback(url, 'profile_information_form', 'profile_save_indicator');
 	return true;
 }
 
-thebuggenie.events.updateProfileModuleSettings = function(url, module_name)
+function updateProfileModuleSettings(url, module_name)
 {
-thebuggenie.utils.postFormWithJSONFeedback(url, 'profile_' + module_name + '_form', 'profile_' + module_name + '_save_indicator');
+	_postFormWithJSONFeedback(url, 'profile_' + module_name + '_form', 'profile_' + module_name + '_save_indicator');
 	return true;
 }
 
-thebuggenie.events.updateProfileSettings = function(url)
+function updateProfileSettings(url)
 {
-thebuggenie.utils.postFormWithJSONFeedback(url, 'profile_settings_form', 'profile_settings_save_indicator');
+	_postFormWithJSONFeedback(url, 'profile_settings_form', 'profile_settings_save_indicator');
 	if ($('profile_use_gravatar_yes').checked)
 	{
 		$('gravatar_change').show();
@@ -728,13 +727,13 @@ thebuggenie.utils.postFormWithJSONFeedback(url, 'profile_settings_form', 'profil
 	return true;
 }
 
-thebuggenie.events.changePassword = function(url)
+function changePassword(url)
 {
-thebuggenie.utils.postFormWithJSONFeedback(url, 'change_password_form', 'change_password_indicator', 'change_password_form');
+	_postFormWithJSONFeedback(url, 'change_password_form', 'change_password_indicator', 'change_password_form');
 	return true;
 }
 
-thebuggenie.events.hideInfobox = function(url, boxkey)
+function hideInfobox(url, boxkey)
 {
 	if ($('close_me_' + boxkey).checked)
 	{
@@ -752,7 +751,7 @@ thebuggenie.events.hideInfobox = function(url, boxkey)
 	$('infobox_' + boxkey).fade({duration: 0.3});
 }
 
-thebuggenie.events.updateProjectMenuStrip = function(url, project_id)
+function updateProjectMenuStrip(url, project_id)
 {
 	new Ajax.Updater('project_menustrip', url, {
 		asynchronous: true,
@@ -771,7 +770,7 @@ thebuggenie.events.updateProjectMenuStrip = function(url, project_id)
 	});
 }
 
-thebuggenie.events.setPermission = function(url, field)
+function setPermission(url, field)
 {
 	new Ajax.Request(url, {
 		asynchronous: true,
@@ -806,7 +805,7 @@ thebuggenie.events.setPermission = function(url, field)
 	});
 }
 
-thebuggenie.events.searchPage = function(url, offset)
+function searchPage(url, offset)
 {
 	//var params = Form.serialize('find_issues_form');
 	var params = '&offset=' + offset;
@@ -819,7 +818,7 @@ thebuggenie.events.searchPage = function(url, offset)
 	});
 }
 
-thebuggenie.events.getUserStateList = function()
+function getUserStateList()
 {
 	new Ajax.Updater('user_statelist', 'ajax_handler.php?getuserstatelist=true', {
 	asynchronous:true,
@@ -827,7 +826,7 @@ thebuggenie.events.getUserStateList = function()
 	});
 }
 
-thebuggenie.events.setUserState = function(sid)
+function setUserState(sid)
 {
 	new Ajax.Request('ajax_handler.php?getuserstatelist=true', {
 	asynchronous:true,
@@ -836,7 +835,7 @@ thebuggenie.events.setUserState = function(sid)
 	});
 }
 
-thebuggenie.events.setEmailPrivacy = function(priv)
+function setEmailPrivacy(priv)
 {
 	new Ajax.Updater('account_email', 'ajax_handler.php?setemailprivacy=true', {
 	asynchronous:true,
@@ -845,7 +844,7 @@ thebuggenie.events.setEmailPrivacy = function(priv)
 	});
 }
 
-thebuggenie.events.showFollowUps = function(priv)
+function showFollowUps(priv)
 {
 	new Ajax.Updater('account_followups', 'ajax_handler.php?showfollowups=true', {
 	asynchronous:true,
@@ -854,7 +853,7 @@ thebuggenie.events.showFollowUps = function(priv)
 	});
 }
 
-thebuggenie.events.showAssigned = function(priv)
+function showAssigned(priv)
 {
 	new Ajax.Updater('account_showassigned', 'ajax_handler.php?showassigned=true', {
 	asynchronous:true,
@@ -863,7 +862,7 @@ thebuggenie.events.showAssigned = function(priv)
 	});
 }
 
-thebuggenie.events.submitNewPassword = function()
+function submitNewPassword()
 {
 	var params = Form.serialize('changepassword_form');
 	new Ajax.Updater('password_changed_span', 'ajax_handler.php?change_password=true', {
@@ -875,7 +874,7 @@ thebuggenie.events.submitNewPassword = function()
 	Element.show('password_changed_span');
 }
 
-thebuggenie.events.getStatistics = function(url)
+function getStatistics(url)
 {
 	new Ajax.Request(url, {
 	asynchronous:true,
@@ -958,58 +957,58 @@ thebuggenie.events.getStatistics = function(url)
 
 }
 
-thebuggenie.events.toggleStatisticsMainImage = function(image)
+function toggleStatisticsMainImage(image)
 {
 	$('statistics_main_image').src = '';
 	$('statistics_main_image').src = $('statistics_mini_'+image+'_main').getValue();
 }
 
-thebuggenie.events.findRelatedIssues = function(url)
+function findRelatedIssues(url)
 {
-thebuggenie.utils.postFormWithJSONFeedback(url, 'viewissue_find_issue_form', 'find_issue_indicator', '', 'viewissue_relation_results');
+	_postFormWithJSONFeedback(url, 'viewissue_find_issue_form', 'find_issue_indicator', '', 'viewissue_relation_results');
 	return false;
 }
 
-thebuggenie.events.findDuplicateIssues = function(url)
+function findDuplicateIssues(url)
 {
-thebuggenie.utils.postFormWithJSONFeedback(url, 'viewissue_find_issue_form', 'find_issue_indicator', '', 'viewissue_duplicate_results');
+	_postFormWithJSONFeedback(url, 'viewissue_find_issue_form', 'find_issue_indicator', '', 'viewissue_duplicate_results');
 	return false;
 }
 
-thebuggenie.events.relateIssues = function(url)
+function relateIssues(url)
 {
 	if ($('relate_issue_with_selected').getValue() == 'relate_children')
 	{
-	thebuggenie.utils.postFormWithJSONFeedback(url, 'viewissue_relate_issues_form', 'relate_issues_indicator', 'no_child_issues', 'related_child_issues_inline', true);
+		_postFormWithJSONFeedback(url, 'viewissue_relate_issues_form', 'relate_issues_indicator', 'no_child_issues', 'related_child_issues_inline', true);
 	}
 	else
 	{
-	thebuggenie.utils.postFormWithJSONFeedback(url, 'viewissue_relate_issues_form', 'relate_issues_indicator', 'no_parent_issues', 'related_parent_issues_inline', true);
+		_postFormWithJSONFeedback(url, 'viewissue_relate_issues_form', 'relate_issues_indicator', 'no_parent_issues', 'related_parent_issues_inline', true);
 	}
 	return false;
 }
 
-thebuggenie.utils.addVote = function(url, direction)
+function _addVote(url, direction)
 {
 	var opp_direction = (direction == 'up') ? 'down' : 'up';
-thebuggenie.utils.updateDivWithJSONFeedback(url, 'issue_votes', 'vote_' + direction + '_indicator', null, false, 'vote_' + direction + '_link', ['vote_' + direction + '_link', 'vote_' + opp_direction + '_faded'], ['vote_' + direction + '_faded', 'vote_' + opp_direction + '_link']);
+	_updateDivWithJSONFeedback(url, 'issue_votes', 'vote_' + direction + '_indicator', null, false, 'vote_' + direction + '_link', ['vote_' + direction + '_link', 'vote_' + opp_direction + '_faded'], ['vote_' + direction + '_faded', 'vote_' + opp_direction + '_link']);
 }
 
-thebuggenie.events.voteUp = function(url)
+function voteUp(url)
 {
-thebuggenie.utils.addVote(url, 'up');
+	_addVote(url, 'up');
 }
 
-thebuggenie.events.voteDown = function(url)
+function voteDown(url)
 {
-thebuggenie.utils.addVote(url, 'down');
+	_addVote(url, 'down');
 }
 
-thebuggenie.events.toggleMilestoneIssues = function(url, milestone_id)
+function toggleMilestoneIssues(url, milestone_id)
 {
 	if ($('milestone_' + milestone_id + '_issues').childElements().size() == 0)
 	{
-	thebuggenie.utils.updateDivWithJSONFeedback(url, 'milestone_' + milestone_id + '_issues', 'milestone_' + milestone_id + '_indicator', null, null, null, null, ['milestone_' + milestone_id + '_issues']);
+		_updateDivWithJSONFeedback(url, 'milestone_' + milestone_id + '_issues', 'milestone_' + milestone_id + '_indicator', null, null, null, null, ['milestone_' + milestone_id + '_issues']);
 	}
 	else
 	{
@@ -1017,7 +1016,7 @@ thebuggenie.events.toggleMilestoneIssues = function(url, milestone_id)
 	}
 }
 
-thebuggenie.events.refreshMilestoneDetails = function(url, milestone_id)
+function refreshMilestoneDetails(url, milestone_id)
 {
 	new Ajax.Request(url, {
 	asynchronous:true,
@@ -1107,12 +1106,12 @@ thebuggenie.events.refreshMilestoneDetails = function(url, milestone_id)
 
 }
 
-thebuggenie.utils.is_string = function(elm)
+function is_string(elm)
 {
     return typeof elm == 'string';
 }
 
-thebuggenie.events.dashboardResize = function()
+function dashboardResize()
 {
 	var dashboard_width = $('dashboard').getWidth();
 	var element_width = (dashboard_width > 600) ? ((dashboard_width / 2) - 5) : (dashboard_width - 5);
@@ -1121,12 +1120,12 @@ thebuggenie.events.dashboardResize = function()
 	});
 }
 
-thebuggenie.events.detachFileFromArticle = function(url, file_id, article_name)
+function detachFileFromArticle(url, file_id, article_name)
 {
-thebuggenie.utils.detachFile(url, file_id, 'article_' + article_name + '_files_');
+	_detachFile(url, file_id, 'article_' + article_name + '_files_');
 }
 
-thebuggenie.utils.detachFile = function(url, file_id, base_id)
+function _detachFile(url, file_id, base_id)
 {
 	new Ajax.Request(url, {
 		method: 'post',
@@ -1190,7 +1189,7 @@ thebuggenie.utils.detachFile = function(url, file_id, base_id)
 	});
 }
 
-thebuggenie.events.deleteComment = function(url, cid)
+function deleteComment(url, cid)
 {
 	new Ajax.Request(url, {
 	asynchronous:true,
@@ -1232,7 +1231,7 @@ thebuggenie.events.deleteComment = function(url, cid)
 	});
 }
 
-thebuggenie.events.updateComment = function(url, cid)
+function updateComment(url, cid)
 {
 	params = $('comment_edit_form_' + cid).serialize();
 	new Ajax.Request(url, {
@@ -1279,7 +1278,7 @@ thebuggenie.events.updateComment = function(url, cid)
 	});
 }
 
-thebuggenie.events.addComment = function(url, commentcount_span)
+function addComment(url, commentcount_span)
 {
 	if ($('comment_save_changes') && $('comment_save_changes').checked)
 	{

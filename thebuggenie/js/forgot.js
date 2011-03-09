@@ -1,4 +1,4 @@
-thebuggenie.events.resetForgotPassword = function(url)
+function resetForgotPassword(url)
 {
 	var params = Form.serialize('forgot_password_form');
 	new Ajax.Request(url, {

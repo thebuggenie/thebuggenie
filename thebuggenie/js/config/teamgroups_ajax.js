@@ -1,4 +1,4 @@
-thebuggenie.events.showUsers = function(url, findstring)
+function showUsers(url, findstring)
 {
 	new Ajax.Request(url, {
 		asynchronous: true,
@@ -34,13 +34,13 @@ thebuggenie.events.showUsers = function(url, findstring)
 	});
 }
 
-thebuggenie.events.createUser = function(url)
+function createUser(url)
 {
-thebuggenie.utils.postFormWithJSONFeedback(url, 'createuser_form', 'find_users_indicator', '', 'users_results');
+	_postFormWithJSONFeedback(url, 'createuser_form', 'find_users_indicator', '', 'users_results');
 	return true;
 }
 
-thebuggenie.events.loadUserEditForm = function(url, uid)
+function loadUserEditForm(url, uid)
 {
 	new Ajax.Request(url, {
 		asynchronous: true,
@@ -57,13 +57,13 @@ thebuggenie.events.loadUserEditForm = function(url, uid)
 	});
 }
 
-thebuggenie.events.createGroup = function(url)
+function createGroup(url)
 {
-thebuggenie.utils.postFormWithJSONFeedback(url, 'create_group_form', 'create_group_indicator', '', 'groupconfig_list', true);
+	_postFormWithJSONFeedback(url, 'create_group_form', 'create_group_indicator', '', 'groupconfig_list', true);
 	return true;
 }
 
-thebuggenie.events.deleteGroup = function(url, group_id)
+function deleteGroup(url, group_id)
 {
 	new Ajax.Request(url, {
 		asynchronous: true,
@@ -107,7 +107,7 @@ thebuggenie.events.deleteGroup = function(url, group_id)
 	});
 }
 
-thebuggenie.events.updateUserLinks = function(json)
+function updateUserLinks(json)
 {
 	if ($('current_user_num_count'))
 	{
@@ -123,18 +123,18 @@ thebuggenie.events.updateUserLinks = function(json)
 	}
 }
 
-thebuggenie.events.deleteUser = function(url, user_id)
+function deleteUser(url, user_id)
 {
-thebuggenie.utils.updateDivWithJSONFeedback(url, null, 'delete_user_'+user_id+'_indicator', null, null, null, ['users_results_user_'+user_id, 'user_'+user_id+'_edit_spinning', 'user_'+user_id+'_edit_tr', 'users_results_user_'+user_id+'_permissions_row'], null, 'post', null, updateUserLinks);
+	_updateDivWithJSONFeedback(url, null, 'delete_user_'+user_id+'_indicator', null, null, null, ['users_results_user_'+user_id, 'user_'+user_id+'_edit_spinning', 'user_'+user_id+'_edit_tr', 'users_results_user_'+user_id+'_permissions_row'], null, 'post', null, updateUserLinks);
 }
 
-thebuggenie.events.cloneGroup = function(url, group_id)
+function cloneGroup(url, group_id)
 {
-thebuggenie.utils.postFormWithJSONFeedback(url, 'clone_group_' + group_id + '_form', 'clone_group_' + group_id + '_indicator', 'clone_group_' + group_id, 'groupconfig_list', true);
+	_postFormWithJSONFeedback(url, 'clone_group_' + group_id + '_form', 'clone_group_' + group_id + '_indicator', 'clone_group_' + group_id, 'groupconfig_list', true);
 	return true;
 }
 
-thebuggenie.events.showGroupMembers = function(url, group_id)
+function showGroupMembers(url, group_id)
 {
 	$('group_members_' + group_id + '_container').toggle();
 	if ($('group_members_' + group_id + '_list').innerHTML == '')
@@ -182,7 +182,7 @@ thebuggenie.events.showGroupMembers = function(url, group_id)
 	}
 }
 
-thebuggenie.events.updateTeamLinks = function(json)
+function updateTeamLinks(json)
 {
 	if ($('current_team_num_count'))
 	{
@@ -208,24 +208,24 @@ thebuggenie.events.updateTeamLinks = function(json)
 	}
 }
 
-thebuggenie.events.createTeam = function(url)
+function createTeam(url)
 {
-thebuggenie.utils.postFormWithJSONFeedback(url, 'create_team_form', 'create_team_indicator', '', 'teamconfig_list', true, null, null, updateTeamLinks);
+	_postFormWithJSONFeedback(url, 'create_team_form', 'create_team_indicator', '', 'teamconfig_list', true, null, null, updateTeamLinks);
 	return true;
 }
 
-thebuggenie.events.deleteTeam = function(url, team_id)
+function deleteTeam(url, team_id)
 {
-thebuggenie.utils.updateDivWithJSONFeedback(url, null, 'delete_team_' + team_id + '_indicator', null, null, null, ['teambox_' + team_id], null, null, null, updateTeamLinks);
+	_updateDivWithJSONFeedback(url, null, 'delete_team_' + team_id + '_indicator', null, null, null, ['teambox_' + team_id], null, null, null, updateTeamLinks);
 }
 
-thebuggenie.events.cloneTeam = function(url, team_id)
+function cloneTeam(url, team_id)
 {
-thebuggenie.utils.postFormWithJSONFeedback(url, 'clone_team_' + team_id + '_form', 'clone_team_' + team_id + '_indicator', 'clone_team_' + team_id, 'teamconfig_list', true, null, null, updateTeamLinks);
+	_postFormWithJSONFeedback(url, 'clone_team_' + team_id + '_form', 'clone_team_' + team_id + '_indicator', 'clone_team_' + team_id, 'teamconfig_list', true, null, null, updateTeamLinks);
 	return false;
 }
 
-thebuggenie.events.showTeamMembers = function(url, team_id)
+function showTeamMembers(url, team_id)
 {
 	$('team_members_' + team_id + '_container').toggle();
 	if ($('team_members_' + team_id + '_list').innerHTML == '')
@@ -273,13 +273,13 @@ thebuggenie.events.showTeamMembers = function(url, team_id)
 	}
 }
 
-thebuggenie.events.createClient = function(url)
+function createClient(url)
 {
-thebuggenie.utils.postFormWithJSONFeedback(url, 'create_client_form', 'create_client_indicator', '', 'clientconfig_list', true);
+	_postFormWithJSONFeedback(url, 'create_client_form', 'create_client_indicator', '', 'clientconfig_list', true);
 	return true;
 }
 
-thebuggenie.events.deleteClient = function(url, client_id)
+function deleteClient(url, client_id)
 {
 	new Ajax.Request(url, {
 		asynchronous: true,
@@ -323,7 +323,7 @@ thebuggenie.events.deleteClient = function(url, client_id)
 	});
 }
 
-thebuggenie.events.showClientMembers = function(url, client_id)
+function showClientMembers(url, client_id)
 {
 	$('client_members_' + client_id + '_container').toggle();
 	if ($('client_members_' + client_id + '_list').innerHTML == '')
@@ -371,7 +371,7 @@ thebuggenie.events.showClientMembers = function(url, client_id)
 	}
 }
 
-thebuggenie.events.editClient = function(url, client_id)
+function editClient(url, client_id)
 {
 	var params = Form.serialize('edit_client_' + client_id + '_form');
 	new Ajax.Request(url, {
@@ -411,7 +411,7 @@ thebuggenie.events.editClient = function(url, client_id)
 	});
 }
 
-thebuggenie.events.editUser = function(url, user_id)
+function editUser(url, user_id)
 {
 	var params = Form.serialize('edituser_' + user_id + '_form');
 	new Ajax.Request(url, {
@@ -478,7 +478,7 @@ thebuggenie.events.editUser = function(url, user_id)
 	});
 }
 
-thebuggenie.events.getUserPermissionsBlock = function(url, user_id)
+function getUserPermissionsBlock(url, user_id)
 {
 	if ($('users_results_user_' + user_id + '_permissions').innerHTML == '')
 	{

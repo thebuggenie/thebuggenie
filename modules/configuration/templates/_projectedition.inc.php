@@ -1,12 +1,12 @@
 <div style="clear: both; margin: 10px 0 10px 0; text-align: center; font-size: 1.2em;">
 	<?php echo __('You are now editing %project_name%\'s edition %edition_name%', array('%project_name%' => '<b>'.$edition->getProject()->getName().'</b>', '%edition_name%' => '<b>'.$edition->getName().'</b>')); ?><br>
-	<?php echo javascript_link_tag('<b>&lt;&lt; '.__('Switch to editing project details').'</b>', array('onclick' => "thebuggenie.events.backToEditProject('".make_url('configure_project', array('project_id' => $edition->getProject()->getID()))."', '".$edition->getProject()->getID()."');")); ?>
+	<?php echo javascript_link_tag('<b>&lt;&lt; '.__('Switch to editing project details').'</b>', array('onclick' => "backToEditProject('".make_url('configure_project', array('project_id' => $edition->getProject()->getID()))."', '".$edition->getProject()->getID()."');")); ?>
 </div>
 <div style="clear: both; margin-top: 10px; margin-bottom: 10px; width: 790px; height: 30px;" class="tab_menu">
 	<ul>
-		<li<?php if ($selected_section == 'general'): ?> class="selected"<?php endif; ?> id="tab_edition_settings"><a href="javascript:void(0);" onclick="thebuggenie.events.switchEditionTab('settings');"><?php echo image_tag('cfg_icon_editiondetails.png', array('style' => 'float: left;')).__('Details &amp; settings'); ?></a></li>
-		<li<?php if ($selected_section == 'components'): ?> class="selected"<?php endif; ?> id="tab_edition_components"><a href="javascript:void(0);" onclick="thebuggenie.events.switchEditionTab('components');"><?php echo image_tag('cfg_icon_components.png', array('style' => 'float: left;')).__('Components'); ?></a></li>
-		<li<?php if ($selected_section == 'releases'): ?> class="selected"<?php endif; ?> id="tab_edition_builds"><a href="javascript:void(0);" onclick="thebuggenie.events.switchEditionTab('builds');"><?php echo image_tag('cfg_icon_builds.png', array('style' => 'float: left;')).__('Releases'); ?></a></li>
+		<li<?php if ($selected_section == 'general'): ?> class="selected"<?php endif; ?> id="tab_edition_settings"><a href="javascript:void(0);" onclick="switchEditionTab('settings');"><?php echo image_tag('cfg_icon_editiondetails.png', array('style' => 'float: left;')).__('Details &amp; settings'); ?></a></li>
+		<li<?php if ($selected_section == 'components'): ?> class="selected"<?php endif; ?> id="tab_edition_components"><a href="javascript:void(0);" onclick="switchEditionTab('components');"><?php echo image_tag('cfg_icon_components.png', array('style' => 'float: left;')).__('Components'); ?></a></li>
+		<li<?php if ($selected_section == 'releases'): ?> class="selected"<?php endif; ?> id="tab_edition_builds"><a href="javascript:void(0);" onclick="switchEditionTab('builds');"><?php echo image_tag('cfg_icon_builds.png', array('style' => 'float: left;')).__('Releases'); ?></a></li>
 	</ul>
 </div>
 <div id="edition_settings"<?php if ($selected_section != 'general'): ?> style="display: none;"<?php endif; ?>>
@@ -104,7 +104,7 @@
 		</table>
 	</div>
 	<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_project_edition', array('project_id' => $edition->getProject()->getID(), 'edition_id' => $edition->getID(), 'mode' => 'general')); ?>" method="post" id="edition_settings_form" onsubmit="thebuggenie.events.submitEditionSettings('<?php echo make_url('configure_project_edition', array('project_id' => $edition->getProject()->getID(), 'edition_id' => $edition->getID(), 'mode' => 'general')); ?>');return false;">
+		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_project_edition', array('project_id' => $edition->getProject()->getID(), 'edition_id' => $edition->getID(), 'mode' => 'general')); ?>" method="post" id="edition_settings_form" onsubmit="submitEditionSettings('<?php echo make_url('configure_project_edition', array('project_id' => $edition->getProject()->getID(), 'edition_id' => $edition->getID(), 'mode' => 'general')); ?>');return false;">
 			<table style="clear: both; width: 785px;" class="padded_table" cellpadding=0 cellspacing=0>
 				<tr>
 					<td style="width: 120px;"><label for="edition_name"><?php echo __('Name:') ?></label></td>
@@ -192,7 +192,7 @@
 						<td style="width: 20px; padding: 2px;"><?php echo image_tag('icon_components.png'); ?></td>
 						<td style="width: auto; padding: 2px;"><?php print $aComponent; ?></td>
 					<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-						<td style="width: 70px; text-align: right;"><a href="javascript:void(0);" onclick="thebuggenie.events.removeEditionComponent('<?php echo make_url('configure_edition_remove_component', array('project_id' => $edition->getProject()->getID(), 'edition_id' => $edition->getID(), 'component_id' => $aComponent->getID())); ?>', <?php echo $aComponent->getID(); ?>);"><?php echo __('Remove'); ?>&nbsp;&gt;&gt;</a></td>
+						<td style="width: 70px; text-align: right;"><a href="javascript:void(0);" onclick="removeEditionComponent('<?php echo make_url('configure_edition_remove_component', array('project_id' => $edition->getProject()->getID(), 'edition_id' => $edition->getID(), 'component_id' => $aComponent->getID())); ?>', <?php echo $aComponent->getID(); ?>);"><?php echo __('Remove'); ?>&nbsp;&gt;&gt;</a></td>
 					<?php endif; ?>
 					</tr>
 				<?php endforeach; ?>
@@ -210,7 +210,7 @@
 				<?php foreach ($edition->getProject()->getComponents() as $aComponent): ?>
 					<tr id="project_component_<?php echo $aComponent->getID(); ?>"<?php if ($edition->hasComponent($aComponent)): ?> style="display: none;"<?php endif; ?>>
 					<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-						<td style="width: 50px; text-align: left;"><a href="javascript:void(0);" onclick="thebuggenie.events.addEditionComponent('<?php echo make_url('configure_edition_add_component', array('project_id' => $edition->getProject()->getID(), 'edition_id' => $edition->getID(), 'component_id' => $aComponent->getID())); ?>', <?php echo $aComponent->getID(); ?>);">&lt;&lt;&nbsp;<?php echo __('Add'); ?></a></td>
+						<td style="width: 50px; text-align: left;"><a href="javascript:void(0);" onclick="addEditionComponent('<?php echo make_url('configure_edition_add_component', array('project_id' => $edition->getProject()->getID(), 'edition_id' => $edition->getID(), 'component_id' => $aComponent->getID())); ?>', <?php echo $aComponent->getID(); ?>);">&lt;&lt;&nbsp;<?php echo __('Add'); ?></a></td>
 					<?php endif; ?>
 						<td style="width: 20px; padding: 2px;"><?php echo image_tag('icon_components.png'); ?></td>
 						<td style="width: auto; padding: 2px;"><?php print $aComponent; ?></td>

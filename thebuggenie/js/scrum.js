@@ -1,4 +1,4 @@
-thebuggenie.events.addUserStory = function(url)
+function addUserStory(url)
 {
 	var params = Form.serialize('add_user_story_form');
 	new Ajax.Request(url, {
@@ -31,7 +31,7 @@ thebuggenie.events.addUserStory = function(url)
 	});
 }
 
-thebuggenie.events.addSprint = function(url, assign_url)
+function addSprint(url, assign_url)
 {
 	var params = Form.serialize('add_sprint_form');
 	new Ajax.Request(url, {
@@ -67,7 +67,7 @@ thebuggenie.events.addSprint = function(url, assign_url)
 	});
 }
 
-thebuggenie.events.assignStory = function(url, dragged, dropped)
+function assignStory(url, dragged, dropped)
 {
 	new Ajax.Request(url, {
 	asynchronous:true,
@@ -106,7 +106,7 @@ thebuggenie.events.assignStory = function(url, dragged, dropped)
 	});
 }
 
-thebuggenie.events.setStoryColor = function(url, story_id, color)
+function setStoryColor(url, story_id, color)
 {
 	new Ajax.Request(url, {
 	asynchronous:true,
@@ -137,7 +137,7 @@ thebuggenie.events.setStoryColor = function(url, story_id, color)
 	});
 }
 
-thebuggenie.events.setStoryEstimates = function(url, story_id)
+function setStoryEstimates(url, story_id)
 {
 	var params = {};
 	if ($('scrum_story_' + story_id + '_points_input') && $('scrum_story_' + story_id + '_hours_input'))

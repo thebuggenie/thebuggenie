@@ -14,7 +14,7 @@
 						<?php foreach ($view_type as $id_view => $a_view): ?>
 							<?php if ($id_view == $view->get(TBGUserDashboardViewsTable::VIEW)) continue; ?>
 							<tr class="hover_highlight">
-								<td style="padding-left: 12px;" onclick="thebuggenie.events.swapDashboardView(this.childElements()[0], this.ancestors()[3].childElements()[0]);">
+								<td style="padding-left: 12px;" onclick="swapDashboardView(this.childElements()[0], this.ancestors()[3].childElements()[0]);">
 									<span id="<?php echo $id_view; ?>_<?php echo $id_type; ?>"><?php echo __($a_view); ?></span>
 								</td>
 							</tr>
@@ -34,7 +34,7 @@
 					<?php foreach ($views as $id_type => $view_type): ?>
 						<?php foreach ($view_type as $id_view => $a_view): ?>
 							<tr class="hover_highlight">
-								<td style="padding-left: 12px;" onclick="thebuggenie.events.swapDashboardView(this.childElements()[0], this.ancestors()[3].childElements()[0]);">
+								<td style="padding-left: 12px;" onclick="swapDashboardView(this.childElements()[0], this.ancestors()[3].childElements()[0]);">
 									<span id="<?php echo $id_view; ?>_<?php echo $id_type; ?>"><?php echo __($a_view); ?></span>
 								</td>
 							</tr>
@@ -46,13 +46,13 @@
 
 		<ul style="margin: 0; padding: 0; list-style:none; clear: both;">
 			<li class="rounded_box white" style="margin: 5px 10px; text-align: center;">
-				<?php echo javascript_link_tag(__('Add a view to my dashboard'), array('onclick' => "thebuggenie.events.addDashboardView();")); ?>
-				<?php echo javascript_link_tag(image_tag('action_add_small.png', array('class' => 'menu_dropdown', 'style' => 'float: right; margin-left: 5px;')), array('onclick' => "thebuggenie.events.addDashboardView();")); ?>
+				<?php echo javascript_link_tag(__('Add a view to my dashboard'), array('onclick' => "addDashboardView();")); ?>
+				<?php echo javascript_link_tag(image_tag('action_add_small.png', array('class' => 'menu_dropdown', 'style' => 'float: right; margin-left: 5px;')), array('onclick' => "addDashboardView();")); ?>
 			</li>
 		</ul>
 		<div id="save_dashboard" style="text-align: right; padding: 10px;">
 			<?php echo __("When you're happy, save your changes"); ?>
-			<button onclick="thebuggenie.events.saveDashboard('<?php echo make_url('dashboard_save'); ?>');" style="float: right; margin-left: 10px;"><?php echo __('Save my dashboard'); ?></button>
+			<button onclick="saveDashboard('<?php echo make_url('dashboard_save'); ?>');" style="float: right; margin-left: 10px;"><?php echo __('Save my dashboard'); ?></button>
 		</div>
 		<span id="save_dashboard_indicator" style="display: none;"><?php echo image_tag('spinning_20.gif'); ?></span>
 	</div>

@@ -1,4 +1,4 @@
-thebuggenie.events.toggleFavourite = function(url, issue_id)
+function toggleFavourite(url, issue_id)
 {
 	$('issue_favourite_indicator').show();
 	$('issue_favourite_normal').hide();
@@ -47,7 +47,7 @@ thebuggenie.events.toggleFavourite = function(url, issue_id)
 	});
 }
 
-thebuggenie.events.attachLink = function(url)
+function attachLink(url)
 {
 	var params = $('attach_link_form').serialize();
 	$('attach_link_indicator').show();
@@ -93,7 +93,7 @@ thebuggenie.events.attachLink = function(url)
 	});
 }
 
-thebuggenie.events.removeLinkFromIssue = function(url, link_id)
+function removeLinkFromIssue(url, link_id)
 {
 	new Ajax.Request(url, {
 		method: 'post',
@@ -145,12 +145,12 @@ thebuggenie.events.removeLinkFromIssue = function(url, link_id)
 	});
 }
 
-thebuggenie.events.detachFileFromIssue = function(url, file_id)
+function detachFileFromIssue(url, file_id)
 {
-thebuggenie.utils.detachFile(url, file_id, 'viewissue_files_');
+	_detachFile(url, file_id, 'viewissue_files_');
 }
 
-thebuggenie.events.updatePercent = function(url, mode)
+function updatePercent(url, mode)
 {
 	new Ajax.Request(url, {
 		method: 'post',
@@ -185,7 +185,7 @@ thebuggenie.events.updatePercent = function(url, mode)
 	});
 }
 
-thebuggenie.events.updateDualFieldFromJSON = function(dualfield, field)
+function updateDualFieldFromJSON(dualfield, field)
 {
 	if (dualfield.id == 0)
 	{
@@ -202,7 +202,7 @@ thebuggenie.events.updateDualFieldFromJSON = function(dualfield, field)
 	}
 }
 
-thebuggenie.events.updateFieldFromObject = function(object, field)
+function updateFieldFromObject(object, field)
 {
 	if ((Object.isUndefined(object.id) == false && object.id == 0) || (object.value && object.value == ''))
 	{
@@ -217,7 +217,7 @@ thebuggenie.events.updateFieldFromObject = function(object, field)
 	}
 }
 
-thebuggenie.events.updateTimeFieldFromObject = function(object, values, field)
+function updateTimeFieldFromObject(object, values, field)
 {
 	if (object.id == 0)
 	{
@@ -237,7 +237,7 @@ thebuggenie.events.updateTimeFieldFromObject = function(object, values, field)
 	$(field + '_points').setValue(values.points);
 }
 
-thebuggenie.events.updateVisibleFields = function(visible_fields)
+function updateVisibleFields(visible_fields)
 {
 	available_fields = new Array('description', 'user_pain', 'reproduction_steps', 'category', 'resolution', 'priority', 'reproducability', 'percent_complete', 'severity', 'edition', 'build', 'component', 'estimated_time', 'spent_time', 'milestone');
 	available_fields.each(function (key, index) 
@@ -276,7 +276,7 @@ thebuggenie.events.updateVisibleFields = function(visible_fields)
  * 
  * @return void
  */
-thebuggenie.events.setField = function(url, field, serialize)
+function setField(url, field, serialize)
 {
 	if (field == 'description') var params = $('description_form').serialize();
 	else if (field == 'reproduction_steps') var params = $('reproduction_steps_form').serialize();
@@ -338,7 +338,7 @@ thebuggenie.events.setField = function(url, field, serialize)
 	});
 }
 
-thebuggenie.events.setTimeField = function(url, field)
+function setTimeField(url, field)
 {
 	params = $(field + '_form').serialize(); 
 	new Ajax.Request(url, {
@@ -373,7 +373,7 @@ thebuggenie.events.setTimeField = function(url, field)
 	});
 }
 
-thebuggenie.events.revertField = function(url, field)
+function revertField(url, field)
 {
 	if (field == 'issuetype') $('issuetype_indicator_fullpage').show();
 	new Ajax.Request(url, {
@@ -422,7 +422,7 @@ thebuggenie.events.revertField = function(url, field)
 	});
 }
 
-thebuggenie.events.setIssueChanged = function(field)
+function setIssueChanged(field)
 {
 	if (!$('viewissue_changed').visible())
 	{
@@ -437,7 +437,7 @@ thebuggenie.events.setIssueChanged = function(field)
 	}
 }
 
-thebuggenie.events.setIssueUnchanged = function(field)
+function setIssueUnchanged(field)
 {
 	$(field + '_header').removeClassName('issue_detail_changed');
 	$(field + '_header').removeClassName('issue_detail_unmerged');
@@ -455,7 +455,7 @@ thebuggenie.events.setIssueUnchanged = function(field)
 	}
 }
 
-thebuggenie.events.toggleConfirmed = function(url, affected)
+function toggleConfirmed(url, affected)
 {
 	new Ajax.Request(url, {
 		method: 'post',
@@ -484,7 +484,7 @@ thebuggenie.events.toggleConfirmed = function(url, affected)
 	});
 }
 
-thebuggenie.events.deleteAffected = function(url, affected)
+function deleteAffected(url, affected)
 {
 	new Ajax.Request(url, {
 		method: 'post',
@@ -514,7 +514,7 @@ thebuggenie.events.deleteAffected = function(url, affected)
 	});
 }
 
-thebuggenie.events.statusAffected = function(url, affected)
+function statusAffected(url, affected)
 {
 	new Ajax.Request(url, {
 		method: 'post',
@@ -548,7 +548,7 @@ thebuggenie.events.statusAffected = function(url, affected)
 	});
 }
 
-thebuggenie.events.addAffected = function(url)
+function addAffected(url)
 {
 	params = $('viewissue_add_item_form').serialize();
 	new Ajax.Request(url, {
@@ -584,11 +584,11 @@ thebuggenie.events.addAffected = function(url)
 	});
 }
 
-thebuggenie.events.updateWorkflowAssignee = function(url, assignee_id, assignee_type)
+function updateWorkflowAssignee(url, assignee_id, assignee_type)
 {
 	$('popup_no_assigned_to').hide();
 	$('popup_assigned_to_name').show();
-thebuggenie.utils.updateDivWithJSONFeedback(url, 'popup_assigned_to_name', 'popup_assigned_to_name_indicator');
+	_updateDivWithJSONFeedback(url, 'popup_assigned_to_name', 'popup_assigned_to_name_indicator');
 	$('popup_assigned_to_id').setValue(assignee_id);
 	$('popup_assigned_to_type').setValue(assignee_type);
 	$('popup_assigned_to_teamup').setValue(0);
@@ -596,11 +596,11 @@ thebuggenie.utils.updateDivWithJSONFeedback(url, 'popup_assigned_to_name', 'popu
 	$('popup_assigned_to_change').hide();
 }
 
-thebuggenie.events.updateWorkflowAssigneeTeamup = function(url, assignee_id, assignee_type)
+function updateWorkflowAssigneeTeamup(url, assignee_id, assignee_type)
 {
 	$('popup_no_assigned_to').hide();
 	$('popup_assigned_to_name').show();
-thebuggenie.utils.updateDivWithJSONFeedback(url, 'popup_assigned_to_name', 'popup_assigned_to_name_indicator');
+	_updateDivWithJSONFeedback(url, 'popup_assigned_to_name', 'popup_assigned_to_name_indicator');
 	$('popup_assigned_to_id').setValue(assignee_id);
 	$('popup_assigned_to_type').setValue(assignee_type);
 	$('popup_assigned_to_teamup').setValue(1);

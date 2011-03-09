@@ -1,4 +1,4 @@
-thebuggenie.events.showIssuetypeOptions = function(url, id)
+function showIssuetypeOptions(url, id)
 {
 	$('issuetype_' + id + '_content').toggle();
 	if ($('issuetype_' + id + '_content').childElements().size() == 0)
@@ -32,7 +32,7 @@ thebuggenie.events.showIssuetypeOptions = function(url, id)
 	}
 }
 
-thebuggenie.events.updateIssuetype = function(url, id)
+function updateIssuetype(url, id)
 {
 	var params = Form.serialize('edit_issuetype_' + id + '_form');
 	new Ajax.Request(url, {
@@ -83,7 +83,7 @@ thebuggenie.events.updateIssuetype = function(url, id)
 	});
 }
 
-thebuggenie.events.deleteIssuetype = function(url, id)
+function deleteIssuetype(url, id)
 {
 	new Ajax.Request(url, {
 	asynchronous:true,
@@ -120,7 +120,7 @@ thebuggenie.events.deleteIssuetype = function(url, id)
 	});
 }
 
-thebuggenie.events.updateIssuetypeChoices = function(url, id)
+function updateIssuetypeChoices(url, id)
 {
 	var params = Form.serialize('update_' + id + '_choices_form');
 	new Ajax.Request(url, {
@@ -159,7 +159,7 @@ thebuggenie.events.updateIssuetypeChoices = function(url, id)
 	});
 }
 
-thebuggenie.events.addIssuetype = function(url)
+function addIssuetype(url)
 {
 	var params = Form.serialize('add_issuetype_form');
 	new Ajax.Request(url, {
@@ -203,7 +203,7 @@ thebuggenie.events.addIssuetype = function(url)
 	});
 }
 
-thebuggenie.events.toggleIssuetypeForScheme = function(url, issuetype_id, scheme_id, action)
+function toggleIssuetypeForScheme(url, issuetype_id, scheme_id, action)
 {
 	var hide_element = 'type_toggle_' + issuetype_id + '_' + action;
 	var show_element = 'type_toggle_' + issuetype_id + '_' + ((action == 'enable') ? 'disable' : 'enable');
@@ -215,15 +215,15 @@ thebuggenie.events.toggleIssuetypeForScheme = function(url, issuetype_id, scheme
 	{
 		var onsuccess_callback = function (json) {$('issuetype_' + json.issuetype_id + '_box').removeClassName("green");$('issuetype_' + json.issuetype_id + '_box').addClassName("lightgrey");};
 	}
-thebuggenie.utils.updateDivWithJSONFeedback(url, null, 'edit_issuetype_' + issuetype_id + '_indicator', null, null, [hide_element], [hide_element], [show_element], 'post', null, onsuccess_callback);
+	_updateDivWithJSONFeedback(url, null, 'edit_issuetype_' + issuetype_id + '_indicator', null, null, [hide_element], [hide_element], [show_element], 'post', null, onsuccess_callback);
 }
 
-thebuggenie.events.copyIssuetypeScheme = function(url, scheme_id)
+function copyIssuetypeScheme(url, scheme_id)
 {
-thebuggenie.utils.postFormWithJSONFeedback(url, 'copy_issuetype_scheme_' + scheme_id + '_form', 'copy_issuetype_scheme_' + scheme_id + '_indicator', 'copy_scheme_' + scheme_id + '_popup', 'issuetype_schemes_list', true);
+	_postFormWithJSONFeedback(url, 'copy_issuetype_scheme_' + scheme_id + '_form', 'copy_issuetype_scheme_' + scheme_id + '_indicator', 'copy_scheme_' + scheme_id + '_popup', 'issuetype_schemes_list', true);
 }
 
-thebuggenie.events.deleteIssuetypeScheme = function(url, scheme_id)
+function deleteIssuetypeScheme(url, scheme_id)
 {
-thebuggenie.utils.postFormWithJSONFeedback(url, 'delete_issuetype_scheme_' + scheme_id + '_form', 'delete_issuetype_scheme_' + scheme_id + '_indicator', ['delete_scheme_' + scheme_id + '_popup', 'copy_scheme_' + scheme_id + '_popup', 'issuetype_scheme_' + scheme_id], 'issuetype_schemes_list', true);
+	_postFormWithJSONFeedback(url, 'delete_issuetype_scheme_' + scheme_id + '_form', 'delete_issuetype_scheme_' + scheme_id + '_indicator', ['delete_scheme_' + scheme_id + '_popup', 'copy_scheme_' + scheme_id + '_popup', 'issuetype_scheme_' + scheme_id], 'issuetype_schemes_list', true);
 }

@@ -1,4 +1,4 @@
-thebuggenie.events.setEnabled = function(module)
+function setEnabled(module)
 {
 	new Ajax.Updater('modulestrip_' + module, 'config.php?module=core&section=15&module_name=' + module + '&enabled=1', {
 	asynchronous:true,
@@ -6,7 +6,7 @@ thebuggenie.events.setEnabled = function(module)
 	});
 }
 
-thebuggenie.events.setDisabled = function(module)
+function setDisabled(module)
 {
 	new Ajax.Updater('modulestrip_' + module, 'config.php?module=core&section=15&module_name=' + module + '&enabled=0', {
 	asynchronous:true,
@@ -14,7 +14,7 @@ thebuggenie.events.setDisabled = function(module)
 	});
 }
 
-thebuggenie.events.showInMenu = function(module)
+function showInMenu(module)
 {
 	new Ajax.Updater('modulestrip_' + module, 'config.php?module=core&section=15&module_name=' + module + '&show_in_menu=1', {
 	asynchronous:true,
@@ -22,7 +22,7 @@ thebuggenie.events.showInMenu = function(module)
 	});
 }
 
-thebuggenie.events.hideFromMenu = function(module)
+function hideFromMenu(module)
 {
 	new Ajax.Updater('modulestrip_' + module, 'config.php?module=core&section=15&module_name=' + module + '&show_in_menu=0', {
 	asynchronous:true,
@@ -30,7 +30,7 @@ thebuggenie.events.hideFromMenu = function(module)
 	});
 }
 
-thebuggenie.events.showInUserMenu = function(module)
+function showInUserMenu(module)
 {
 	new Ajax.Updater('modulestrip_' + module, 'config.php?module=core&section=15&module_name=' + module + '&show_in_usermenu=1', {
 	asynchronous:true,
@@ -38,7 +38,7 @@ thebuggenie.events.showInUserMenu = function(module)
 	});
 }
 
-thebuggenie.events.hideFromUserMenu = function(module)
+function hideFromUserMenu(module)
 {
 	new Ajax.Updater('modulestrip_' + module, 'config.php?module=core&section=15&module_name=' + module + '&show_in_usermenu=0', {
 	asynchronous:true,

@@ -1,4 +1,4 @@
-thebuggenie.events.updateProjectLinks = function(json)
+function updateProjectLinks(json)
 {
 	if ($('current_project_num_count'))
 	{
@@ -14,7 +14,7 @@ thebuggenie.events.updateProjectLinks = function(json)
 	}
 }
 
-thebuggenie.events.addProject = function(url)
+function addProject(url)
 {
 	var params = Form.serialize('add_project_form');
 	new Ajax.Request(url, {
@@ -53,7 +53,7 @@ thebuggenie.events.addProject = function(url)
 	});
 }
 
-thebuggenie.events.removeProject = function(url, pid)
+function removeProject(url, pid)
 {
 	new Ajax.Request(url, {
 	asynchronous:true,
@@ -96,7 +96,7 @@ thebuggenie.events.removeProject = function(url, pid)
 	});
 }
 
-thebuggenie.events.addMilestone = function(url)
+function addMilestone(url)
 {
 	var params = Form.serialize('add_milestone_form');
 	new Ajax.Request(url, {
@@ -134,7 +134,7 @@ thebuggenie.events.addMilestone = function(url)
 	});
 }
 
-thebuggenie.events.doBuildAction = function(url, bid, action, update)
+function doBuildAction(url, bid, action, update)
 {
 	new Ajax.Request(url, {
 		asynchronous:true,
@@ -178,7 +178,7 @@ thebuggenie.events.doBuildAction = function(url, bid, action, update)
 	});
 }
 
-thebuggenie.events.updateBuild = function(url, bid)
+function updateBuild(url, bid)
 {
 	var params = Form.serialize('edit_build_'+bid);
 	new Ajax.Request(url, {
@@ -217,7 +217,7 @@ thebuggenie.events.updateBuild = function(url, bid)
 	});
 }
 
-thebuggenie.events.saveProjectOther = function(url)
+function saveProjectOther(url)
 {
 	var params = Form.serialize('project_other');
 	new Ajax.Request(url, {
@@ -253,7 +253,7 @@ thebuggenie.events.saveProjectOther = function(url)
 	});
 }
 
-thebuggenie.events.addToOpenBuild = function(url, bid)
+function addToOpenBuild(url, bid)
 {
 	var params = Form.serialize('addtoopen_build_'+bid);
 	new Ajax.Request(url, {
@@ -296,7 +296,7 @@ thebuggenie.events.addToOpenBuild = function(url, bid)
 	});
 }
 
-thebuggenie.events.deleteBuild = function(url, bid)
+function deleteBuild(url, bid)
 {
 	new Ajax.Request(url, {
 		asynchronous:true,
@@ -349,7 +349,7 @@ thebuggenie.events.deleteBuild = function(url, bid)
 	});
 }
 
-thebuggenie.events.deleteComponent = function(url, cid)
+function deleteComponent(url, cid)
 {
 	new Ajax.Request(url, {
 		asynchronous:true,
@@ -391,7 +391,7 @@ thebuggenie.events.deleteComponent = function(url, cid)
 	});
 }
 
-thebuggenie.events.deleteEdition = function(url, eid)
+function deleteEdition(url, eid)
 {
 	new Ajax.Request(url, {
 		asynchronous:true,
@@ -432,7 +432,7 @@ thebuggenie.events.deleteEdition = function(url, eid)
 	});
 }
 
-thebuggenie.events.switchEditionTab = function(select_tab)
+function switchEditionTab(select_tab)
 {
 	$('edition_settings').hide();
 	$('tab_edition_settings').removeClassName('selected');
@@ -444,7 +444,7 @@ thebuggenie.events.switchEditionTab = function(select_tab)
 	$('tab_edition_'+select_tab).addClassName('selected');
 }
 
-thebuggenie.events.addEdition = function(url)
+function addEdition(url)
 {
 	var params = Form.serialize('add_edition_form');
 		new Ajax.Request(url, {
@@ -482,7 +482,7 @@ thebuggenie.events.addEdition = function(url)
 	});
 }
 
-thebuggenie.events.addBuild = function(url)
+function addBuild(url)
 {
 	var params = Form.serialize('add_build_form');
 	new Ajax.Request(url, {
@@ -518,7 +518,7 @@ thebuggenie.events.addBuild = function(url)
 	});
 }
 
-thebuggenie.events.addComponent = function(url)
+function addComponent(url)
 {
 	var params = Form.serialize('add_component_form');
 		new Ajax.Request(url, {
@@ -556,17 +556,17 @@ thebuggenie.events.addComponent = function(url)
 	});
 }
 
-thebuggenie.events.submitProjectSettings = function(url)
+function submitProjectSettings(url)
 {
-thebuggenie.utils.submitProjectDetails(url, 'project_settings');
+	_submitProjectDetails(url, 'project_settings');
 }
 
-thebuggenie.events.submitProjectInfo = function(url, pid)
+function submitProjectInfo(url, pid)
 {
-thebuggenie.utils.submitProjectDetails(url, 'project_info', pid);
+	_submitProjectDetails(url, 'project_info', pid);
 }
 
-thebuggenie.utils.submitProjectDetails = function(url, form, pid)
+function _submitProjectDetails(url, form, pid)
 {
 	var params = Form.serialize(form);
 	new Ajax.Request(url, {
@@ -675,12 +675,12 @@ thebuggenie.utils.submitProjectDetails = function(url, form, pid)
 	});
 }
 
-thebuggenie.events.submitEditionSettings = function(url)
+function submitEditionSettings(url)
 {
-thebuggenie.utils.postFormWithJSONFeedback(url, 'edition_settings_form', 'edition_save_indicator');
+	_postFormWithJSONFeedback(url, 'edition_settings_form', 'edition_save_indicator');
 }
 
-thebuggenie.events.addEditionComponent = function(url, cid)
+function addEditionComponent(url, cid)
 {
 	new Ajax.Request(url, {
 		asynchronous:true,
@@ -713,7 +713,7 @@ thebuggenie.events.addEditionComponent = function(url, cid)
 	});
 }
 
-thebuggenie.events.removeEditionComponent = function(url, cid)
+function removeEditionComponent(url, cid)
 {
 	new Ajax.Request(url, {
 	asynchronous:true,
@@ -749,7 +749,7 @@ thebuggenie.events.removeEditionComponent = function(url, cid)
 	});
 }
 
-thebuggenie.events.updateComponent = function(url, cid)
+function updateComponent(url, cid)
 {
 	var params = Form.serialize('edit_component_' + cid + '_form');
 		new Ajax.Request(url, {
@@ -786,12 +786,12 @@ thebuggenie.events.updateComponent = function(url, cid)
 	});
 }
 
-thebuggenie.events.updateMilestone = function(url, mid)
+function updateMilestone(url, mid)
 {
-thebuggenie.utils.postFormWithJSONFeedback(url, 'edit_milestone_' + mid, 'milestone_' + mid + '_indicator', 'edit_milestone_' + mid, 'milestone_span_' + mid, false, 'show_milestone_' + mid);
+	_postFormWithJSONFeedback(url, 'edit_milestone_' + mid, 'milestone_' + mid + '_indicator', 'edit_milestone_' + mid, 'milestone_span_' + mid, false, 'show_milestone_' + mid);
 }
 
-thebuggenie.events.deleteMilestone = function(url, mid)
+function deleteMilestone(url, mid)
 {
 	new Ajax.Request(url, {
 		asynchronous:true,
@@ -828,7 +828,7 @@ thebuggenie.events.deleteMilestone = function(url, mid)
 	});
 }
 
-thebuggenie.events.findDevs = function(url)
+function findDevs(url)
 {
 	var params = Form.serialize('find_dev_form');
 	new Ajax.Updater('find_dev_results', url, {
@@ -857,7 +857,7 @@ thebuggenie.events.findDevs = function(url)
 	});
 }
 
-thebuggenie.events.updateFieldFromObject = function(object, field)
+function updateFieldFromObject(object, field)
 {
 	if (object.id == 0)
 	{
@@ -872,7 +872,7 @@ thebuggenie.events.updateFieldFromObject = function(object, field)
 	}
 }
 
-thebuggenie.events.setUser = function(url, field)
+function setUser(url, field)
 {
 	new Ajax.Request(url, {
 		method: 'post',
@@ -904,7 +904,7 @@ thebuggenie.events.setUser = function(url, field)
 	});
 }
 
-thebuggenie.events.assignToProject = function(url, form_id)
+function assignToProject(url, form_id)
 {
 	var params = Form.serialize(form_id);
 	new Ajax.Updater('assignees_list', url, {
@@ -933,22 +933,22 @@ thebuggenie.events.assignToProject = function(url, form_id)
 	});
 }
 
-thebuggenie.events.removeAssignee = function(url, type, id)
+function removeAssignee(url, type, id)
 {
-thebuggenie.utils.updateDivWithJSONFeedback(url, null, 'remove_assignee_'+type+'_'+id+'_indicator', null, null, 'assignee_'+type+'_'+id+'_link', ['assignee_'+type+'_'+id+'_row']);
+	_updateDivWithJSONFeedback(url, null, 'remove_assignee_'+type+'_'+id+'_indicator', null, null, 'assignee_'+type+'_'+id+'_link', ['assignee_'+type+'_'+id+'_row']);
 }
 
-thebuggenie.events.editEdition = function(url, edition_id)
+function editEdition(url, edition_id)
 {
-thebuggenie.utils.updateDivWithJSONFeedback(url, 'backdrop_detail_content', 'backdrop_detail_indicator', false);
+	_updateDivWithJSONFeedback(url, 'backdrop_detail_content', 'backdrop_detail_indicator', false);
 }
 
-thebuggenie.events.backToEditProject = function(url, project_id)
+function backToEditProject(url, project_id)
 {
-thebuggenie.utils.updateDivWithJSONFeedback(url, 'backdrop_detail_content', 'backdrop_detail_indicator', false);
+	_updateDivWithJSONFeedback(url, 'backdrop_detail_content', 'backdrop_detail_indicator', false);
 }
 
-thebuggenie.events.updateProjectPrefix = function(url, project_id)
+function updateProjectPrefix(url, project_id)
 {
-thebuggenie.utils.postFormWithJSONFeedback(url, 'project_info', 'project_key_indicator', null, '', null, null, 'project_key_input');
+	_postFormWithJSONFeedback(url, 'project_info', 'project_key_indicator', null, '', null, null, 'project_key_input');
 }

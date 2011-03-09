@@ -28,7 +28,7 @@ include_component('leftmenu', array('selected_section' => 10));
 	</table>
 	<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 		<div class="rounded_box lightgrey" style="width: 690px; padding: 5px; margin: 10px 0;<?php if (!TBGContext::getScope()->hasProjectsAvailable()): ?> display: none;<?php endif; ?>" id="add_project_div">
-			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" method="post" id="add_project_form" onsubmit="thebuggenie.events.addProject('<?php echo make_url('configure_projects_add_project'); ?>');return false;">
+			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" method="post" id="add_project_form" onsubmit="addProject('<?php echo make_url('configure_projects_add_project'); ?>');return false;">
 				<input type="hidden" name="add_project" value="true">
 				<table cellpadding=0 cellspacing=0 style="margin: 0; width: 690px; table-layout: auto;">
 					<tr>

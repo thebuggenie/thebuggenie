@@ -87,7 +87,7 @@ function loginRegister2(url)
 	});
 }
 
-thebuggenie.events.loginUser = function(url)
+function loginUser(url)
 {
 	var params = Form.serialize('login_form');
 	new Ajax.Request(url, {
