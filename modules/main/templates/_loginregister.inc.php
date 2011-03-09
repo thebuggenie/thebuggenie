@@ -53,15 +53,11 @@
 				</div>
 			</form>
 		</div>
-		<div class="rounded_box green borderless" style="display: none;" id="register3">
-			<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-			<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
-				<div class="login_boxheader"><?php echo __('Register a new account'); ?></div>
-				<span class="login_fieldheader"><?php echo __('Thank you for registering!'); ?></span>
-				<br>
-				<span style="font-size: 14px;" id="register_message"></span>
-			</div>
-			<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
-		</div>		
+		<div class="rounded_box green borderless" style="display: none; vertical-align: middle; padding: 5px;" id="register3">
+			<div class="login_boxheader"><?php echo __('Register a new account'); ?></div>
+			<span class="login_fieldheader"><?php echo __('Thank you for registering!'); ?></span>
+			<br>
+			<span style="font-size: 14px;" id="register_message"></span>
+		</div>
 	<br>
 </div>

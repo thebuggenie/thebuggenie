@@ -1428,13 +1428,7 @@
 				if (!self::isCLI() && !self::isInstallmode())
 				{
 					TBGLogging::log("Checking if scope can be set from hostname (".$_SERVER['HTTP_HOST'].")");
-					$row = TBGScopesTable::getTable()->getByHostname($_SERVER['HTTP_HOST']);
-				}
-
-				if (!$row && class_exists('TBGScopesTable'))
-				{
-					TBGLogging::log("Using default scope.");
-					$row = TBGScopesTable::getTable()->getDefault();
+					$row = TBGScopesTable::getTable()->getByHostnameOrDefault($_SERVER['HTTP_HOST']);
 				}
 				
 				if (!$row instanceof B2DBRow)

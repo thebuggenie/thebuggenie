@@ -41,7 +41,7 @@
 			$crit->addWhere(self::SCOPE, $scope);
 			$crit->addWhere(self::ONDEMAND, false);
 			
-			$res = $this->doSelect($crit);
+			$res = $this->doSelect($crit, 'none');
 			
 			return $res;
 		}

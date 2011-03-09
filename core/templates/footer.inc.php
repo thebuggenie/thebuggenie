@@ -101,8 +101,8 @@
 									<?php foreach (B2DB::getSQLHits() as $details): ?>
 										<li>
 											<b><?php echo $cc++; ?>
-											<span class="faded_out dark small">[<?php echo ($details['time'] >= 1) ? round($details['time'], 2) . ' seconds' : round($details['time'] * 1000, 1) . 'ms'; ?>]</span> </b>
-											<?php echo $details['sql']; ?>
+											<span class="faded_out dark small">[<?php echo ($details['time'] >= 1) ? round($details['time'], 2) . ' seconds' : round($details['time'] * 1000, 1) . 'ms'; ?>]</span> </b> from <b><?php echo $details['filename']; ?>, line <?php echo $details['line']; ?></b>:<br>
+											<span style="font-size: 12px;"><?php geshi_highlight($details['sql'], 'sql'); ?></span>
 										</li>
 									<?php endforeach; ?>
 									</ol>

@@ -211,32 +211,28 @@
 							<?php endif; ?>
 							<input type="submit" value="<?php echo __('Search'); ?>" id="search_button_bottom" onclick="$('save_search').disable();$('saved_search_name').disable();$('saved_search_description').disable();<?php if ($tbg_user->canCreatePublicSearches()): ?>$('saved_search_public').disable();<?php endif; ?>$('find_issues_form').method = 'get';">
 						</div>
-						<div class="rounded_box white borderless" style="margin: 5px 0 5px 0; display: none;" id="saved_search_details">
-							<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-							<div class="xboxcontent" style="padding: 3px 10px 3px 10px; font-size: 14px;">
-								<?php if (TBGContext::isProjectContext()): ?>
-									<p style="padding-bottom: 15px;" class="faded_out"><?php echo __('This saved search will be available under this project only. To make a non-project-specific search, use the main "%find_issues%" page instead', array('%find_issues%' => link_tag(make_url('search'), __('Find issues')))); ?></p>
-								<?php endif; ?>
-								<?php if ($issavedsearch): ?>
-									<input type="hidden" name="saved_search_id" id="saved_search_id" value="<?php echo $savedsearch->get(TBGSavedSearchesTable::ID); ?>">
-								<?php endif; ?>
-								<input type="hidden" name="save" value="1" id="save_search" disabled>
-								<label for="saved_search_name"><?php echo __('Saved search name'); ?></label>
-								<input type="text" name="saved_search_name" id="saved_search_name"<?php if ($issavedsearch): ?> value="<?php echo $savedsearch->get(TBGSavedSearchesTable::NAME); ?>"<?php endif; ?> style="width: 350px;" disabled><br>
-								<label for="saved_search_description"><?php echo __('Description'); ?> <span style="font-weight: normal;">(<?php echo __('Optional'); ?>)</span></label>
-								<input type="text" name="saved_search_description" id="saved_search_description"<?php if ($issavedsearch): ?> value="<?php echo $savedsearch->get(TBGSavedSearchesTable::DESCRIPTION); ?>"<?php endif; ?> style="width: 350px;" disabled><br>
-								<label for="saved_search_public"><?php echo __('Available to'); ?></label>
-								<select name="saved_search_public" id="saved_search_public" disabled<?php if (!$tbg_user->canCreatePublicSearches()): ?> style="display: none;"<?php endif; ?>>
-									<option value="0"<?php if ($issavedsearch && $savedsearch->get(TBGSavedSearchesTable::IS_PUBLIC) == 0): ?> selected<?php endif; ?>><?php echo __('Only to me'); ?></option>
-									<option value="1"<?php if ($issavedsearch && $savedsearch->get(TBGSavedSearchesTable::IS_PUBLIC) == 1): ?> selected<?php endif; ?>><?php echo __('To everyone'); ?></option>
-								</select>
-								<div style="text-align: right;">
-									<input type="submit" value="<?php echo __('Update this saved search'); ?>" id="search_button_save" onclick="$('find_issues_form').method = 'post';$('save_search').enable();return true;">
-									<input type="submit" value="<?php echo __('Save this search'); ?>" id="search_button_save_new" onclick="$('find_issues_form').method = 'post';$('save_search').enable();return true;">
-									<?php echo __('%update_or_save_search% or %cancel%', array('%update_or_save_search%' => '', '%cancel%' => "<a href=\"javascript:void('0');\" onclick=\"$('saved_search_details').hide();$('saved_search_name').disable();$('saved_search_description').disable();".(($tbg_user->canCreatePublicSearches()) ? "$('saved_search_public').disable();" : '')."$('search_button_bottom').enable();$('search_button_bottom').show();$('search_button_top').enable();$('search_button_top').show();\"><b>".__('cancel').'</b></a>')); ?>
-								</div>
+						<div class="rounded_box white borderless" style="display: none; margin: 5px 0 5px 0; padding: 3px 10px 3px 10px; font-size: 14px;" id="saved_search_details">
+							<?php if (TBGContext::isProjectContext()): ?>
+								<p style="padding-bottom: 15px;" class="faded_out"><?php echo __('This saved search will be available under this project only. To make a non-project-specific search, use the main "%find_issues%" page instead', array('%find_issues%' => link_tag(make_url('search'), __('Find issues')))); ?></p>
+							<?php endif; ?>
+							<?php if ($issavedsearch): ?>
+								<input type="hidden" name="saved_search_id" id="saved_search_id" value="<?php echo $savedsearch->get(TBGSavedSearchesTable::ID); ?>">
+							<?php endif; ?>
+							<input type="hidden" name="save" value="1" id="save_search" disabled>
+							<label for="saved_search_name"><?php echo __('Saved search name'); ?></label>
+							<input type="text" name="saved_search_name" id="saved_search_name"<?php if ($issavedsearch): ?> value="<?php echo $savedsearch->get(TBGSavedSearchesTable::NAME); ?>"<?php endif; ?> style="width: 350px;" disabled><br>
+							<label for="saved_search_description"><?php echo __('Description'); ?> <span style="font-weight: normal;">(<?php echo __('Optional'); ?>)</span></label>
+							<input type="text" name="saved_search_description" id="saved_search_description"<?php if ($issavedsearch): ?> value="<?php echo $savedsearch->get(TBGSavedSearchesTable::DESCRIPTION); ?>"<?php endif; ?> style="width: 350px;" disabled><br>
+							<label for="saved_search_public"><?php echo __('Available to'); ?></label>
+							<select name="saved_search_public" id="saved_search_public" disabled<?php if (!$tbg_user->canCreatePublicSearches()): ?> style="display: none;"<?php endif; ?>>
+								<option value="0"<?php if ($issavedsearch && $savedsearch->get(TBGSavedSearchesTable::IS_PUBLIC) == 0): ?> selected<?php endif; ?>><?php echo __('Only to me'); ?></option>
+								<option value="1"<?php if ($issavedsearch && $savedsearch->get(TBGSavedSearchesTable::IS_PUBLIC) == 1): ?> selected<?php endif; ?>><?php echo __('To everyone'); ?></option>
+							</select>
+							<div style="text-align: right;">
+								<input type="submit" value="<?php echo __('Update this saved search'); ?>" id="search_button_save" onclick="$('find_issues_form').method = 'post';$('save_search').enable();return true;">
+								<input type="submit" value="<?php echo __('Save this search'); ?>" id="search_button_save_new" onclick="$('find_issues_form').method = 'post';$('save_search').enable();return true;">
+								<?php echo __('%update_or_save_search% or %cancel%', array('%update_or_save_search%' => '', '%cancel%' => "<a href=\"javascript:void('0');\" onclick=\"$('saved_search_details').hide();$('saved_search_name').disable();$('saved_search_description').disable();".(($tbg_user->canCreatePublicSearches()) ? "$('saved_search_public').disable();" : '')."$('search_button_bottom').enable();$('search_button_bottom').show();$('search_button_top').enable();$('search_button_top').show();\"><b>".__('cancel').'</b></a>')); ?>
 							</div>
-							<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 						</div>
 					</div>
 				</form>

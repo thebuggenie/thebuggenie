@@ -46,22 +46,18 @@
 <?php endif; ?>
 <?php if (!$embedded && $show_article): ?>
 	<br style="clear: both;">
-	<div class="rounded_box lightgrey borderless" style="margin: 30px 5px 20px 5px;">
-		<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-		<div class="xboxcontent" style="padding: 3px 10px 3px 10px; font-size: 1.1em;">
-			<div class="content">
-				<b><?php echo __('Categories:'); ?></b>
-				<?php if (count($article->getCategories()) > 0): ?>
-					<?php $category_links = array(); ?>
-					<?php foreach ($article->getCategories() as $category): ?>
-						<?php $category_links[] = link_tag(make_url('publish_article', array('article_name' => 'Category:'.$category)), $category); ?>
-					<?php endforeach; ?>
-					<?php echo join(', ', $category_links); ?>
-				<?php else: ?>
-					<span class="faded_out dark"><?php echo __('This article is not in any categories'); ?></span>
-				<?php endif; ?>
-			</div>
+	<div class="rounded_box lightgrey borderless" style="margin: 30px 5px 20px 5px; padding: 3px 10px 3px 10px; font-size: 1.1em;">
+		<div class="content">
+			<b><?php echo __('Categories:'); ?></b>
+			<?php if (count($article->getCategories()) > 0): ?>
+				<?php $category_links = array(); ?>
+				<?php foreach ($article->getCategories() as $category): ?>
+					<?php $category_links[] = link_tag(make_url('publish_article', array('article_name' => 'Category:'.$category)), $category); ?>
+				<?php endforeach; ?>
+				<?php echo join(', ', $category_links); ?>
+			<?php else: ?>
+				<span class="faded_out dark"><?php echo __('This article is not in any categories'); ?></span>
+			<?php endif; ?>
 		</div>
-		<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 	</div>
 <?php endif; ?>

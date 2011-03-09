@@ -7,25 +7,21 @@
 				<td style="width: 24px;"><div style="border: 1px solid #AAA; background-color: <?php echo $item['status']->getColor(); ?>; font-size: 1px; width: 20px; height: 15px; margin-right: 2px;" id="affected_<?php echo $itemtype; ?>_<?php echo $item['a_id'] ?>_status_colour">&nbsp;</div></td>
 				<td style="padding-left: 5px;" id="status_content" onmouseover="$('affected_<?php echo $itemtype; ?>_<?php echo $item['a_id']; ?>_status_dropdown').show();" onmouseout="$('affected_<?php echo $itemtype; ?>_<?php echo $item['a_id']; ?>_status_dropdown').hide();"><?php if ($issue->canEditIssue()): echo image_tag('action_dropdown_small.png', array('id' => 'affected_'.$itemtype.'_'.$item['a_id'].'_status_dropdown', 'style' => 'display: none;', 'onClick' => "$('affected_".$itemtype.'_'.$item['a_id']."_status_change').toggle();")); endif; ?> <span id="affected_<?php echo $itemtype; ?>_<?php echo $item['a_id'] ?>_status_name"><?php echo $item['status']->getName(); ?></span>
 
-				<div class="rounded_box white shadowed" id="affected_<?php echo $itemtype; ?>_<?php echo $item['a_id']; ?>_status_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0;">
-					<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-					<div class="xboxcontent" style="padding: 5px;">
-						<div class="dropdown_header"><?php echo __('Set status'); ?></div>
-						<div class="dropdown_content">
-							<table cellpadding="0" cellspacing="0">
-								<?php foreach ($statuses as $status): ?>
-									<?php if (!$status->canUserSet($tbg_user)) continue; ?>
-									<tr>
-										<td style="width: 16px;"><div style="border: 1px solid #AAA; background-color: <?php echo $status->getColor(); ?>; font-size: 1px; width: 16px; height: 15px; margin-right: 2px;">&nbsp;</div></td>
-										<td style="padding-left: 5px;"><a href="javascript:void(0);" onclick="statusAffected('<?php echo make_url('status_affected', array('issue_id' => $issue->getID(), 'affected_type' => $itemtype, 'affected_id' => $item['a_id'], 'status_id' => $status->getID())); ?>', '<?php echo $itemtype.'_'.$item['a_id']; ?>');"><?php echo $status->getName(); ?></a></td>
-									</tr>
-								<?php endforeach; ?>
-							</table>
-							<div id="affected_<?php echo $itemtype; ?>_<?php echo $item['a_id']; ?>_status_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</div>
-						</div>
-						<div id="affected_<?php echo $itemtype; ?>_<?php echo $item['a_id']; ?>_status_error" class="error_message" style="display: none;"></div>
+				<div class="rounded_box white shadowed" id="affected_<?php echo $itemtype; ?>_<?php echo $item['a_id']; ?>_status_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0; padding: 5px;">
+					<div class="dropdown_header"><?php echo __('Set status'); ?></div>
+					<div class="dropdown_content">
+						<table cellpadding="0" cellspacing="0">
+							<?php foreach ($statuses as $status): ?>
+								<?php if (!$status->canUserSet($tbg_user)) continue; ?>
+								<tr>
+									<td style="width: 16px;"><div style="border: 1px solid #AAA; background-color: <?php echo $status->getColor(); ?>; font-size: 1px; width: 16px; height: 15px; margin-right: 2px;">&nbsp;</div></td>
+									<td style="padding-left: 5px;"><a href="javascript:void(0);" onclick="statusAffected('<?php echo make_url('status_affected', array('issue_id' => $issue->getID(), 'affected_type' => $itemtype, 'affected_id' => $item['a_id'], 'status_id' => $status->getID())); ?>', '<?php echo $itemtype.'_'.$item['a_id']; ?>');"><?php echo $status->getName(); ?></a></td>
+								</tr>
+							<?php endforeach; ?>
+						</table>
+						<div id="affected_<?php echo $itemtype; ?>_<?php echo $item['a_id']; ?>_status_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</div>
 					</div>
-					<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+					<div id="affected_<?php echo $itemtype; ?>_<?php echo $item['a_id']; ?>_status_error" class="error_message" style="display: none;"></div>
 				</div>
 				</td>
 			</tr>

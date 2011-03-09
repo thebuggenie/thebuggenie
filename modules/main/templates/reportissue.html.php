@@ -573,233 +573,219 @@
 				<?php if ($selected_issuetype != null && $selected_project != null): ?>
 					<script type="text/javascript">updateFields('<?php echo make_url('getreportissuefields'); ?>');</script>
 				<?php endif; ?>
-				<div class="rounded_box report_issue_desc green borderless" id="report_issue_add_extra">
-					<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-					<div class="xboxcontent" style="vertical-align: middle; padding: 5px; height: 25px; font-size: 15px;">
-						<div style="float: left; padding-top: 3px;"><?php echo __('When you are satisfied, click the %file_issue% button to file your issue', array('%file_issue%' => '<strong>'.__('File issue').'</strong>')); ?></div>
-						<input type="submit" value="<?php echo __('File issue'); ?>" style="font-weight: bold; padding: 2px 10px 2px 10px; float: right; clear: none;">
-					</div>
-					<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+				<div class="rounded_box report_issue_desc green borderless" id="report_issue_add_extra" style="vertical-align: middle; padding: 5px; height: 25px; font-size: 15px;">
+					<div style="float: left; padding-top: 3px;"><?php echo __('When you are satisfied, click the %file_issue% button to file your issue', array('%file_issue%' => '<strong>'.__('File issue').'</strong>')); ?></div>
+					<input type="submit" value="<?php echo __('File issue'); ?>" style="font-weight: bold; padding: 2px 10px 2px 10px; float: right; clear: none;">
 				</div>
-				<div class="rounded_box report_issue_desc borderless lightgrey" id="report_issue_add_extra">
-					<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-					<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
-						<strong><?php echo __('Add more information to your issue'); ?></strong><br>
-						<p><?php echo __('Specify additional information by clicking the links below before submitting your issue'); ?></p>
-						<ul id="reportissue_extrafields">
-							<li><?php echo image_tag('icon_file.png'); ?><a href="javascript:void(0);" onclick="thebuggenie.events.successMessage('<?php echo __('Please file the issue before attaching a file'); ?>');"><?php echo __('Attach a file'); ?></a></li>
-							<li><?php echo image_tag('icon_link.png'); ?><a href="javascript:void(0);" onclick="thebuggenie.events.successMessage('<?php echo __('Please file the issue before attaching a link'); ?>');"><?php echo __('Add a link'); ?></a></li>
-							<li id="status_additional" style="display: none;">
-								<?php echo image_tag('icon_status.png'); ?>
-								<div id="status_link"<?php if ($selected_status instanceof TBGStatus): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('status_link').hide();$('status_additional_div').show();"><?php echo __('Set initial status'); ?></a></div>
-								<div id="status_additional_div"<?php if ($selected_status === null): ?> style="display: none;"<?php endif; ?>>
-									<select name="status_id" id="status_id_additional">
-										<option value="0"><?php echo __('Not specified'); ?></option>
-										<?php foreach ($statuses as $status): ?>
-											<option value="<?php echo $status->getID(); ?>"<?php if ($selected_status instanceof TBGDatatype && $selected_status->getID() == $status->getID()): ?> selected<?php endif; ?>><?php echo $status->getName(); ?></option>
-										<?php endforeach; ?>
-									</select>
-									<a href="javascript:void(0);" class="img" onclick="$('status_link').show();$('status_additional_div').hide();$('status_id_additional').setValue(0);"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
-								</div>
-							</li>
-							<li id="category_additional" style="display: none;">
-								<?php echo image_tag('icon_category.png'); ?>
-								<div id="category_link"<?php if ($selected_category instanceof TBGCategory): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('category_link').hide();$('category_additional_div').show();"><?php echo __('Specify category'); ?></a></div>
-								<div id="category_additional_div"<?php if ($selected_category === null): ?> style="display: none;"<?php endif; ?>>
-									<select name="category_id" id="category_id_additional">
-										<option value="0"><?php echo __('Not specified'); ?></option>
-										<?php foreach ($categories as $category): ?>
-											<option value="<?php echo $category->getID(); ?>"<?php if ($selected_category instanceof TBGDatatype && $selected_category->getID() == $category->getID()): ?> selected<?php endif; ?>><?php echo $category->getName(); ?></option>
-										<?php endforeach; ?>
-									</select>
-									<a href="javascript:void(0);" class="img" onclick="$('category_link').show();$('category_additional_div').hide();$('category_id_additional').setValue(0);"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a> 
-								</div>
-							</li>
-							<li id="estimated_time_additional" style="display: none;">
-								<?php echo image_tag('icon_time.png'); ?>
-								<div id="estimated_time_link"<?php if ($selected_estimated_time != ''): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('estimated_time_link').hide();$('estimated_time_additional_div').show();"><?php echo __('Estimate time to fix'); ?></a></div>
-								<div id="estimated_time_additional_div"<?php if ($selected_estimated_time === null): ?> style="display: none;"<?php endif; ?>>
-									<input name="estimated_time" id="estimated_time_id_additional" style="width: 100px;">
-									<a href="javascript:void(0);" class="img" onclick="$('estimated_time_link').show();$('estimated_time_additional_div').hide();$('estimated_time_id_additional').setValue('');"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
-								</div>
-							</li>
-							<li id="spent_time_additional" style="display: none;">
-								<?php echo image_tag('icon_time.png'); ?>
-								<div id="spent_time_link"<?php if ($selected_spent_time != ''): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('spent_time_link').hide();$('spent_time_additional_div').show();"><?php echo __('Estimate time to fix'); ?></a></div>
-								<div id="spent_time_additional_div"<?php if ($selected_spent_time === null): ?> style="display: none;"<?php endif; ?>>
-									<input name="spent_time" id="spent_time_id_additional" style="width: 100px;">
-									<a href="javascript:void(0);" class="img" onclick="$('spent_time_link').show();$('spent_time_additional_div').hide();$('spent_time_id_additional').setValue('');"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
-								</div>
-							</li>
-							<li id="percent_complete_additional" style="display: none;">
-								<?php echo image_tag('icon_percent.png'); ?>
-								<div id="percent_complete_link"<?php if ($selected_percent_complete != ''): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('percent_complete_link').hide();$('percent_complete_additional_div').show();"><?php echo __('Set percent completed'); ?></a></div>
-								<div id="percent_complete_additional_div"<?php if ($selected_percent_complete === null): ?> style="display: none;"<?php endif; ?>>
-									<input name="percent_complete" id="percent_complete_id_additional" style="width: 30px;"<?php if ($selected_percent_complete !== null): ?> value="<?php echo $selected_percent_complete; ?>"<?php endif; ?>>
-									<a href="javascript:void(0);" class="img" onclick="$('percent_complete_link').show();$('percent_complete_additional_div').hide();$('percent_complete_id_additional').setValue('');"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
-								</div>
-							</li>
-							<li id="priority_additional">
-								<?php echo image_tag('icon_priority.png'); ?>
-								<div id="priority_link"<?php if ($selected_priority instanceof TBGPriority): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('priority_link').hide();$('priority_additional_div').show();"><?php echo __('Set priority'); ?></a></div>
-								<div id="priority_additional_div"<?php if ($selected_priority === null): ?> style="display: none;"<?php endif; ?>>
-									<select name="priority_id" id="priority_id_additional">
-										<option value="0"><?php echo __('Not specified'); ?></option>
-										<?php foreach ($priorities as $priority): ?>
-											<option value="<?php echo $priority->getID(); ?>"><?php echo $priority->getName(); ?></option>
-										<?php endforeach; ?>
-									</select>
-									<a href="javascript:void(0);" class="img" onclick="$('priority_link').show();$('priority_additional_div').hide();$('priority').setValue(0);"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a> 
-								</div>
-							</li>
-							<li id="reproducability_additional" style="display: none;">
-								<?php echo image_tag('icon_reproducability.png'); ?>
-								<div id="reproducability_link"<?php if ($selected_reproducability instanceof TBGReproducability): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('reproducability_link').hide();$('reproducability_additional_div').show();"><?php echo __('Set reproducability'); ?></a></div>
-								<div id="reproducability_additional_div"<?php if ($selected_reproducability === null): ?> style="display: none;"<?php endif; ?>>
-									<select name="reproducability_id" id="reproducability_id_additional">
-										<option value="0"><?php echo __('Not specified'); ?></option>
-										<?php foreach ($reproducabilities as $reproducability): ?>
-											<option value="<?php echo $reproducability->getID(); ?>"<?php if ($selected_reproducability instanceof TBGDatatype && $selected_reproducability->getID() == $reproducability->getID()): ?> selected<?php endif; ?>><?php echo $reproducability->getName(); ?></option>
-										<?php endforeach; ?>
-									</select>
-									<a href="javascript:void(0);" class="img" onclick="$('reproducability_link').show();$('reproducability_additional_div').hide();$('reproducability_id_additional').setValue(0);"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a> 
-								</div>
-							</li>
-							<li id="resolution_additional" style="display: none;">
-								<?php echo image_tag('icon_resolution.png'); ?>
-								<div id="resolution_link"<?php if ($selected_resolution instanceof TBGResolution): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('resolution_link').hide();$('resolution_additional_div').show();"><?php echo __('Set resolution'); ?></a></div>
-								<div id="resolution_additional_div"<?php if ($selected_resolution === null): ?> style="display: none;"<?php endif; ?>>
-									<select name="resolution_id" id="resolution_id_additional">
-										<option value="0"><?php echo __('Not specified'); ?></option>
-										<?php foreach ($resolutions as $resolution): ?>
-											<option value="<?php echo $resolution->getID(); ?>"><?php echo $resolution->getName(); ?></option>
-										<?php endforeach; ?>
-									</select>
-									<a href="javascript:void(0);" class="img" onclick="$('resolution_link').show();$('resolution_additional_div').hide();$('resolution_id_additional').setValue(0);"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a> 
-								</div>
-							</li>
-							<li id="severity_additional" style="display: none;">
-								<?php echo image_tag('icon_severity.png'); ?>
-								<div id="severity_link"<?php if ($selected_severity instanceof TBGSeverity): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('severity_link').hide();$('severity_additional_div').show();"><?php echo __('Set severity'); ?></a></div>
-								<div id="severity_additional_div"<?php if ($selected_severity === null): ?> style="display: none;"<?php endif; ?>>
-									<select name="severity_id" id="severity_id_additional">
-										<option value="0"><?php echo __('Not specified'); ?></option>
-										<?php foreach ($severities as $severity): ?>
-											<option value="<?php echo $severity->getID(); ?>"><?php echo $severity->getName(); ?></option>
-										<?php endforeach; ?>
-									</select>
-									<a href="javascript:void(0);" class="img" onclick="$('severity_link').show();$('severity_additional_div').hide();$('severity_id_additional').setValue(0);"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a> 
-								</div>
-							</li>
-							<?php foreach (TBGCustomDatatype::getAll() as $customdatatype): ?>
-								<li id="<?php echo $customdatatype->getKey(); ?>_additional" style="display: none;">
-									<?php echo image_tag('icon_customdatatype.png'); ?>
-									<div id="<?php echo $customdatatype->getKey(); ?>_link"<?php if ($selected_customdatatype[$customdatatype->getKey()] !== null): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('<?php echo $customdatatype->getKey(); ?>_link').hide();$('<?php echo $customdatatype->getKey(); ?>_additional_div').show();"><?php echo __($customdatatype->getDescription()); ?></a></div>
-									<div id="<?php echo $customdatatype->getKey(); ?>_additional_div"<?php if ($selected_customdatatype[$customdatatype->getKey()] === null): ?> style="display: none;"<?php endif; ?>>
-										<?php 
-											switch ($customdatatype->getType())
-											{
-												case TBGCustomDatatype::DROPDOWN_CHOICE_TEXT:
-													?>
-													<select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id_additional">
-														<?php foreach ($customdatatype->getOptions() as $option): ?>
-														<option value="<?php echo $option->getValue(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeOption && $selected_customdatatype[$customdatatype->getKey()]->getValue() == $option->getValue()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
-														<?php endforeach; ?>
-													</select>
-													<?php
-													break;
-												case TBGCustomDatatype::EDITIONS_CHOICE:
-													?>
-													<select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id_additional">
-														<?php if ($selected_project instanceof TBGProject): ?>
-															<?php foreach (TBGEdition::getAllByProjectID($selected_project->getID()) as $option): ?>
-															<option value="<?php echo $option->getID(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] == $option->getID()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
-															<?php endforeach; ?>
-														<?php endif; ?>
-													</select>
-													<?php
-													break;
-												case TBGCustomDatatype::STATUS_CHOICE:
-													?>
-													<select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id_additional">
-														<?php foreach (TBGStatus::getAll() as $option): ?>
+				<div class="rounded_box report_issue_desc borderless lightgrey" id="report_issue_add_extra" style="vertical-align: middle; padding: 5px;">
+					<strong><?php echo __('Add more information to your issue'); ?></strong><br>
+					<p><?php echo __('Specify additional information by clicking the links below before submitting your issue'); ?></p>
+					<ul id="reportissue_extrafields">
+						<li><?php echo image_tag('icon_file.png'); ?><a href="javascript:void(0);" onclick="thebuggenie.events.successMessage('<?php echo __('Please file the issue before attaching a file'); ?>');"><?php echo __('Attach a file'); ?></a></li>
+						<li><?php echo image_tag('icon_link.png'); ?><a href="javascript:void(0);" onclick="thebuggenie.events.successMessage('<?php echo __('Please file the issue before attaching a link'); ?>');"><?php echo __('Add a link'); ?></a></li>
+						<li id="status_additional" style="display: none;">
+							<?php echo image_tag('icon_status.png'); ?>
+							<div id="status_link"<?php if ($selected_status instanceof TBGStatus): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('status_link').hide();$('status_additional_div').show();"><?php echo __('Set initial status'); ?></a></div>
+							<div id="status_additional_div"<?php if ($selected_status === null): ?> style="display: none;"<?php endif; ?>>
+								<select name="status_id" id="status_id_additional">
+									<option value="0"><?php echo __('Not specified'); ?></option>
+									<?php foreach ($statuses as $status): ?>
+										<option value="<?php echo $status->getID(); ?>"<?php if ($selected_status instanceof TBGDatatype && $selected_status->getID() == $status->getID()): ?> selected<?php endif; ?>><?php echo $status->getName(); ?></option>
+									<?php endforeach; ?>
+								</select>
+								<a href="javascript:void(0);" class="img" onclick="$('status_link').show();$('status_additional_div').hide();$('status_id_additional').setValue(0);"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
+							</div>
+						</li>
+						<li id="category_additional" style="display: none;">
+							<?php echo image_tag('icon_category.png'); ?>
+							<div id="category_link"<?php if ($selected_category instanceof TBGCategory): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('category_link').hide();$('category_additional_div').show();"><?php echo __('Specify category'); ?></a></div>
+							<div id="category_additional_div"<?php if ($selected_category === null): ?> style="display: none;"<?php endif; ?>>
+								<select name="category_id" id="category_id_additional">
+									<option value="0"><?php echo __('Not specified'); ?></option>
+									<?php foreach ($categories as $category): ?>
+										<option value="<?php echo $category->getID(); ?>"<?php if ($selected_category instanceof TBGDatatype && $selected_category->getID() == $category->getID()): ?> selected<?php endif; ?>><?php echo $category->getName(); ?></option>
+									<?php endforeach; ?>
+								</select>
+								<a href="javascript:void(0);" class="img" onclick="$('category_link').show();$('category_additional_div').hide();$('category_id_additional').setValue(0);"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
+							</div>
+						</li>
+						<li id="estimated_time_additional" style="display: none;">
+							<?php echo image_tag('icon_time.png'); ?>
+							<div id="estimated_time_link"<?php if ($selected_estimated_time != ''): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('estimated_time_link').hide();$('estimated_time_additional_div').show();"><?php echo __('Estimate time to fix'); ?></a></div>
+							<div id="estimated_time_additional_div"<?php if ($selected_estimated_time === null): ?> style="display: none;"<?php endif; ?>>
+								<input name="estimated_time" id="estimated_time_id_additional" style="width: 100px;">
+								<a href="javascript:void(0);" class="img" onclick="$('estimated_time_link').show();$('estimated_time_additional_div').hide();$('estimated_time_id_additional').setValue('');"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
+							</div>
+						</li>
+						<li id="spent_time_additional" style="display: none;">
+							<?php echo image_tag('icon_time.png'); ?>
+							<div id="spent_time_link"<?php if ($selected_spent_time != ''): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('spent_time_link').hide();$('spent_time_additional_div').show();"><?php echo __('Estimate time to fix'); ?></a></div>
+							<div id="spent_time_additional_div"<?php if ($selected_spent_time === null): ?> style="display: none;"<?php endif; ?>>
+								<input name="spent_time" id="spent_time_id_additional" style="width: 100px;">
+								<a href="javascript:void(0);" class="img" onclick="$('spent_time_link').show();$('spent_time_additional_div').hide();$('spent_time_id_additional').setValue('');"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
+							</div>
+						</li>
+						<li id="percent_complete_additional" style="display: none;">
+							<?php echo image_tag('icon_percent.png'); ?>
+							<div id="percent_complete_link"<?php if ($selected_percent_complete != ''): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('percent_complete_link').hide();$('percent_complete_additional_div').show();"><?php echo __('Set percent completed'); ?></a></div>
+							<div id="percent_complete_additional_div"<?php if ($selected_percent_complete === null): ?> style="display: none;"<?php endif; ?>>
+								<input name="percent_complete" id="percent_complete_id_additional" style="width: 30px;"<?php if ($selected_percent_complete !== null): ?> value="<?php echo $selected_percent_complete; ?>"<?php endif; ?>>
+								<a href="javascript:void(0);" class="img" onclick="$('percent_complete_link').show();$('percent_complete_additional_div').hide();$('percent_complete_id_additional').setValue('');"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
+							</div>
+						</li>
+						<li id="priority_additional">
+							<?php echo image_tag('icon_priority.png'); ?>
+							<div id="priority_link"<?php if ($selected_priority instanceof TBGPriority): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('priority_link').hide();$('priority_additional_div').show();"><?php echo __('Set priority'); ?></a></div>
+							<div id="priority_additional_div"<?php if ($selected_priority === null): ?> style="display: none;"<?php endif; ?>>
+								<select name="priority_id" id="priority_id_additional">
+									<option value="0"><?php echo __('Not specified'); ?></option>
+									<?php foreach ($priorities as $priority): ?>
+										<option value="<?php echo $priority->getID(); ?>"><?php echo $priority->getName(); ?></option>
+									<?php endforeach; ?>
+								</select>
+								<a href="javascript:void(0);" class="img" onclick="$('priority_link').show();$('priority_additional_div').hide();$('priority').setValue(0);"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
+							</div>
+						</li>
+						<li id="reproducability_additional" style="display: none;">
+							<?php echo image_tag('icon_reproducability.png'); ?>
+							<div id="reproducability_link"<?php if ($selected_reproducability instanceof TBGReproducability): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('reproducability_link').hide();$('reproducability_additional_div').show();"><?php echo __('Set reproducability'); ?></a></div>
+							<div id="reproducability_additional_div"<?php if ($selected_reproducability === null): ?> style="display: none;"<?php endif; ?>>
+								<select name="reproducability_id" id="reproducability_id_additional">
+									<option value="0"><?php echo __('Not specified'); ?></option>
+									<?php foreach ($reproducabilities as $reproducability): ?>
+										<option value="<?php echo $reproducability->getID(); ?>"<?php if ($selected_reproducability instanceof TBGDatatype && $selected_reproducability->getID() == $reproducability->getID()): ?> selected<?php endif; ?>><?php echo $reproducability->getName(); ?></option>
+									<?php endforeach; ?>
+								</select>
+								<a href="javascript:void(0);" class="img" onclick="$('reproducability_link').show();$('reproducability_additional_div').hide();$('reproducability_id_additional').setValue(0);"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
+							</div>
+						</li>
+						<li id="resolution_additional" style="display: none;">
+							<?php echo image_tag('icon_resolution.png'); ?>
+							<div id="resolution_link"<?php if ($selected_resolution instanceof TBGResolution): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('resolution_link').hide();$('resolution_additional_div').show();"><?php echo __('Set resolution'); ?></a></div>
+							<div id="resolution_additional_div"<?php if ($selected_resolution === null): ?> style="display: none;"<?php endif; ?>>
+								<select name="resolution_id" id="resolution_id_additional">
+									<option value="0"><?php echo __('Not specified'); ?></option>
+									<?php foreach ($resolutions as $resolution): ?>
+										<option value="<?php echo $resolution->getID(); ?>"><?php echo $resolution->getName(); ?></option>
+									<?php endforeach; ?>
+								</select>
+								<a href="javascript:void(0);" class="img" onclick="$('resolution_link').show();$('resolution_additional_div').hide();$('resolution_id_additional').setValue(0);"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
+							</div>
+						</li>
+						<li id="severity_additional" style="display: none;">
+							<?php echo image_tag('icon_severity.png'); ?>
+							<div id="severity_link"<?php if ($selected_severity instanceof TBGSeverity): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('severity_link').hide();$('severity_additional_div').show();"><?php echo __('Set severity'); ?></a></div>
+							<div id="severity_additional_div"<?php if ($selected_severity === null): ?> style="display: none;"<?php endif; ?>>
+								<select name="severity_id" id="severity_id_additional">
+									<option value="0"><?php echo __('Not specified'); ?></option>
+									<?php foreach ($severities as $severity): ?>
+										<option value="<?php echo $severity->getID(); ?>"><?php echo $severity->getName(); ?></option>
+									<?php endforeach; ?>
+								</select>
+								<a href="javascript:void(0);" class="img" onclick="$('severity_link').show();$('severity_additional_div').hide();$('severity_id_additional').setValue(0);"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
+							</div>
+						</li>
+						<?php foreach (TBGCustomDatatype::getAll() as $customdatatype): ?>
+							<li id="<?php echo $customdatatype->getKey(); ?>_additional" style="display: none;">
+								<?php echo image_tag('icon_customdatatype.png'); ?>
+								<div id="<?php echo $customdatatype->getKey(); ?>_link"<?php if ($selected_customdatatype[$customdatatype->getKey()] !== null): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('<?php echo $customdatatype->getKey(); ?>_link').hide();$('<?php echo $customdatatype->getKey(); ?>_additional_div').show();"><?php echo __($customdatatype->getDescription()); ?></a></div>
+								<div id="<?php echo $customdatatype->getKey(); ?>_additional_div"<?php if ($selected_customdatatype[$customdatatype->getKey()] === null): ?> style="display: none;"<?php endif; ?>>
+									<?php
+										switch ($customdatatype->getType())
+										{
+											case TBGCustomDatatype::DROPDOWN_CHOICE_TEXT:
+												?>
+												<select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id_additional">
+													<?php foreach ($customdatatype->getOptions() as $option): ?>
+													<option value="<?php echo $option->getValue(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeOption && $selected_customdatatype[$customdatatype->getKey()]->getValue() == $option->getValue()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
+													<?php endforeach; ?>
+												</select>
+												<?php
+												break;
+											case TBGCustomDatatype::EDITIONS_CHOICE:
+												?>
+												<select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id_additional">
+													<?php if ($selected_project instanceof TBGProject): ?>
+														<?php foreach (TBGEdition::getAllByProjectID($selected_project->getID()) as $option): ?>
 														<option value="<?php echo $option->getID(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] == $option->getID()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
 														<?php endforeach; ?>
-													</select>
-													<?php
-													break;
-												case TBGCustomDatatype::COMPONENTS_CHOICE:
-													?>
-													<select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id_additional">
-														<?php if ($selected_project instanceof TBGProject): ?>
-															<?php foreach (TBGComponent::getAllByProjectID($selected_project->getID()) as $option): ?>
-															<option value="<?php echo $option->getID(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] == $option->getID()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
-															<?php endforeach; ?>
-														<?php endif; ?>
-													</select>
-													<?php
-													break;
-												case TBGCustomDatatype::RELEASES_CHOICE:
-													?>
-													<select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id_additional">
-														<?php if ($selected_project instanceof TBGProject): ?>
-															<?php foreach (TBGBuild::getByProjectID($selected_project->getID()) as $option): ?>
-															<option value="<?php echo $option->getID(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] == $option->getID()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
-															<?php endforeach; ?>
-														<?php endif; ?>
-													</select>
-													<?php
-													break;
-												case TBGCustomDatatype::RADIO_CHOICE:
-													?>
-													<label for="<?php echo $customdatatype->getKey(); ?>_id_additional"><?php echo $customdatatype->getDescription(); ?></label>
-													<br>
-													<?php foreach ($customdatatype->getOptions() as $option): ?>
-														<input type="radio" name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id_additional" value="<?php echo $option->getValue(); ?>" <?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeOption && $selected_customdatatype[$customdatatype->getKey()]->getValue() == $option->getValue()): ?> selected<?php endif; ?> /> <?php echo $option->getName(); ?><br>
-													<?php
-													endforeach;
-													break;
-												case TBGCustomDatatype::INPUT_TEXT:
-													?>
-													<input type="text" name="<?php echo $customdatatype->getKey(); ?>_value" class="field_additional" value="<?php echo $selected_customdatatype[$customdatatype->getKey()]; ?>" id="<?php echo $customdatatype->getKey(); ?>_value_additional" />
-													<?php
-													break;
-												case TBGCustomDatatype::INPUT_TEXTAREA_SMALL:
-												case TBGCustomDatatype::INPUT_TEXTAREA_MAIN:
-													?>
-													<label for="<?php echo $customdatatype->getKey(); ?>_value_additional"><?php echo $customdatatype->getDescription(); ?></label>
-													<br>
-													<?php include_template('main/textarea', array('area_name' => $customdatatype->getKey().'_value', 'area_id' => $customdatatype->getKey().'_value_additional', 'height' => '125px', 'width' => '100%', 'value' => $selected_customdatatype[$customdatatype->getKey()])); ?>
-													<?php
-													break;
-											}
-											if (!$customdatatype->hasCustomOptions())
-											{
-												?>
-												<a href="javascript:void(0);" class="img" onclick="$('<?php echo $customdatatype->getKey(); ?>_link').show();$('<?php echo $customdatatype->getKey(); ?>_additional_div').hide();$('<?php echo $customdatatype->getKey(); ?>_value_additional').setValue('');"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
+													<?php endif; ?>
+												</select>
 												<?php
-											}
-											else
-											{
+												break;
+											case TBGCustomDatatype::STATUS_CHOICE:
 												?>
-												<a href="javascript:void(0);" class="img" onclick="$('<?php echo $customdatatype->getKey(); ?>_link').show();$('<?php echo $customdatatype->getKey(); ?>_additional_div').hide();$('<?php echo $customdatatype->getKey(); ?>_id_additional').setValue(0);"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
+												<select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id_additional">
+													<?php foreach (TBGStatus::getAll() as $option): ?>
+													<option value="<?php echo $option->getID(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] == $option->getID()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
+													<?php endforeach; ?>
+												</select>
 												<?php
-											}
-											?>								
-									</div>
-								</li>
-							<?php endforeach; ?>
-							<!-- <li><?php echo image_tag('icon_team.png'); ?><a href="#" class="faded_out dark"><?php echo __('Set assignee'); ?></a></li>
-							<li><?php echo image_tag('icon_team.png'); ?><a href="#" class="faded_out dark"><?php echo __('Set owner'); ?></a></li> -->
-							<?php
-		
-								TBGEvent::createNew('core', 'reportissue.listfields')->trigger();
-							
-							?>
-						</ul>
-						<div style="clear: both;"> </div>
-					</div>
-					<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+												break;
+											case TBGCustomDatatype::COMPONENTS_CHOICE:
+												?>
+												<select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id_additional">
+													<?php if ($selected_project instanceof TBGProject): ?>
+														<?php foreach (TBGComponent::getAllByProjectID($selected_project->getID()) as $option): ?>
+														<option value="<?php echo $option->getID(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] == $option->getID()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
+														<?php endforeach; ?>
+													<?php endif; ?>
+												</select>
+												<?php
+												break;
+											case TBGCustomDatatype::RELEASES_CHOICE:
+												?>
+												<select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id_additional">
+													<?php if ($selected_project instanceof TBGProject): ?>
+														<?php foreach (TBGBuild::getByProjectID($selected_project->getID()) as $option): ?>
+														<option value="<?php echo $option->getID(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] == $option->getID()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
+														<?php endforeach; ?>
+													<?php endif; ?>
+												</select>
+												<?php
+												break;
+											case TBGCustomDatatype::RADIO_CHOICE:
+												?>
+												<label for="<?php echo $customdatatype->getKey(); ?>_id_additional"><?php echo $customdatatype->getDescription(); ?></label>
+												<br>
+												<?php foreach ($customdatatype->getOptions() as $option): ?>
+													<input type="radio" name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id_additional" value="<?php echo $option->getValue(); ?>" <?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeOption && $selected_customdatatype[$customdatatype->getKey()]->getValue() == $option->getValue()): ?> selected<?php endif; ?> /> <?php echo $option->getName(); ?><br>
+												<?php
+												endforeach;
+												break;
+											case TBGCustomDatatype::INPUT_TEXT:
+												?>
+												<input type="text" name="<?php echo $customdatatype->getKey(); ?>_value" class="field_additional" value="<?php echo $selected_customdatatype[$customdatatype->getKey()]; ?>" id="<?php echo $customdatatype->getKey(); ?>_value_additional" />
+												<?php
+												break;
+											case TBGCustomDatatype::INPUT_TEXTAREA_SMALL:
+											case TBGCustomDatatype::INPUT_TEXTAREA_MAIN:
+												?>
+												<label for="<?php echo $customdatatype->getKey(); ?>_value_additional"><?php echo $customdatatype->getDescription(); ?></label>
+												<br>
+												<?php include_template('main/textarea', array('area_name' => $customdatatype->getKey().'_value', 'area_id' => $customdatatype->getKey().'_value_additional', 'height' => '125px', 'width' => '100%', 'value' => $selected_customdatatype[$customdatatype->getKey()])); ?>
+												<?php
+												break;
+										}
+										if (!$customdatatype->hasCustomOptions())
+										{
+											?>
+											<a href="javascript:void(0);" class="img" onclick="$('<?php echo $customdatatype->getKey(); ?>_link').show();$('<?php echo $customdatatype->getKey(); ?>_additional_div').hide();$('<?php echo $customdatatype->getKey(); ?>_value_additional').setValue('');"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
+											<?php
+										}
+										else
+										{
+											?>
+											<a href="javascript:void(0);" class="img" onclick="$('<?php echo $customdatatype->getKey(); ?>_link').show();$('<?php echo $customdatatype->getKey(); ?>_additional_div').hide();$('<?php echo $customdatatype->getKey(); ?>_id_additional').setValue(0);"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
+											<?php
+										}
+										?>
+								</div>
+							</li>
+						<?php endforeach; ?>
+						<?php TBGEvent::createNew('core', 'reportissue.listfields')->trigger(); ?>
+					</ul>
+					<div style="clear: both;"> </div>
 				</div>
 			</div>
 		<?php endif; ?>

@@ -64,4 +64,18 @@
 			return $this->doSelectById(1);
 		}
 
+		public function getByHostnameOrDefault($hostname)
+		{
+			$crit = $this->getCriteria();
+			$crit->addJoin(TBGScopeHostnamesTable::getTable(), TBGScopeHostnamesTable::SCOPE_ID, self::ID);
+			$crit->addWhere(TBGScopeHostnamesTable::HOSTNAME, $hostname);
+			$crit->addOr(self::ID, 1);
+			$crit->addOrderBy(self::ID, 'desc');
+
+			if ($res = $this->doSelect($crit))
+			{
+				return $res->getNextRow();
+			}
+		}
+
 	}

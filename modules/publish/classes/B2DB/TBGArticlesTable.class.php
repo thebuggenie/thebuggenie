@@ -60,7 +60,7 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::NAME, $name);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
-			$row = $this->doSelectOne($crit);
+			$row = $this->doSelectOne($crit, 'none');
 
 			return $row;
 		}

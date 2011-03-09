@@ -21,19 +21,15 @@
 				<?php if ($comment->canUserDeleteComment()): ?><a href="javascript:void(0)" onClick="$('comment_delete_confirm_<?php echo $comment->getID(); ?>').show();"><?php echo image_tag('icon_comment_delete.png', array('title' => __('Delete'))); ?><?php echo __('Delete'); ?></a><?php endif; ?>
 			</div>
 		<?php endif; ?>
-		<div class="rounded_box yellow borderless comment_delete" id="comment_delete_confirm_<?php echo $comment->getID(); ?>" style="display: none;">
-			<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-			<div class="xboxcontent" style="padding: 5px;">
-				<h4><?php echo __('Really delete'); ?></h4>
-				<span class="question_header"><?php echo __('Are you sure you want to delete this comment?'); ?></span><br><br>
-				<div id="comment_delete_controls_<?php echo $comment->getID(); ?>">
-					<a href="javascript:void(0)" onClick="deleteComment('<?php echo make_url('comment_delete', array('comment_id' => $comment->getID())); ?>', <?php echo $comment->getID(); ?>)" class="xboxlink">Yes</a> :: <a href="javascript:void(0)" onClick="$('comment_delete_confirm_<?php echo $comment->getID(); ?>').hide();" class="xboxlink"><?php echo __('No'); ?></a>
-				</div>
-				<div id="comment_delete_indicator_<?php echo $comment->getID(); ?>" style="display: none;">
-					<?php echo image_tag('spinning_16.gif', array('class' => 'spinning')); ?>
-				</div>
+		<div class="rounded_box yellow borderless comment_delete" id="comment_delete_confirm_<?php echo $comment->getID(); ?>" style="display: none; padding: 5px;">
+			<h4><?php echo __('Really delete'); ?></h4>
+			<span class="question_header"><?php echo __('Are you sure you want to delete this comment?'); ?></span><br><br>
+			<div id="comment_delete_controls_<?php echo $comment->getID(); ?>">
+				<a href="javascript:void(0)" onClick="deleteComment('<?php echo make_url('comment_delete', array('comment_id' => $comment->getID())); ?>', <?php echo $comment->getID(); ?>)" class="xboxlink">Yes</a> :: <a href="javascript:void(0)" onClick="$('comment_delete_confirm_<?php echo $comment->getID(); ?>').hide();" class="xboxlink"><?php echo __('No'); ?></a>
 			</div>
-			<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+			<div id="comment_delete_indicator_<?php echo $comment->getID(); ?>" style="display: none;">
+				<?php echo image_tag('spinning_16.gif', array('class' => 'spinning')); ?>
+			</div>
 		</div>
 	</div>
 	

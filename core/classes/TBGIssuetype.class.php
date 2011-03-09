@@ -218,7 +218,7 @@
 				}
 				
 				$issuetypes = array();
-				if ($res = TBGIssueTypesTable::getTable()->doSelect($crit))
+				if ($res = TBGIssueTypesTable::getTable()->doSelect($crit, 'none'))
 				{
 					while ($row = $res->getNextRow())
 					{

@@ -49,7 +49,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
-			$row = $this->doSelectById($id, $crit, false);
+			$row = $this->doSelectById($id, $crit, 'none');
 			return $row;
 		}
 

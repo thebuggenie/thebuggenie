@@ -133,7 +133,7 @@
 										<?php if (!TBGContext::isProjectContext() && ($tbg_user->hasPageAccess('teamlist') || count($tbg_user->getTeams())) && !is_null(TBGTeamsTable::getTable()->getAll())): ?>
 											<li<?php if ($tbg_response->getPage() == 'team'): ?> class="selected"<?php endif; ?>>
 												<div>
-													<?php echo link_tag('javascript:void(0)', image_tag('tab_teams.png') . __('Teams')); ?>
+													<?php echo link_tag('javascript:void(0)', image_tag('tab_teams.png') . __('Teams'), array('class' => 'not_clickable')); ?>
 													<?php echo javascript_link_tag(image_tag('tabmenu_dropdown.png', array('class' => 'menu_dropdown')), array('onmouseover' => "")); ?>
 												</div>
 												<div id="team_menu" class="tab_menu_dropdown shadowed">
@@ -147,7 +147,7 @@
 										<?php if (!TBGContext::isProjectContext() && ($tbg_user->hasPageAccess('clientlist') || count($tbg_user->getClients())) && !is_null(TBGClientsTable::getTable()->getAll())): ?>
 											<li<?php if ($tbg_response->getPage() == 'client'): ?> class="selected"<?php endif; ?>>
 												<div>
-													<?php echo link_tag('javascript:void(0)', image_tag('tab_clients.png') . __('Clients')); ?>
+													<?php echo link_tag('javascript:void(0)', image_tag('tab_clients.png') . __('Clients'), array('class' => 'not_clickable')); ?>
 													<?php echo javascript_link_tag(image_tag('tabmenu_dropdown.png', array('class' => 'menu_dropdown')), array('onmouseover' => "")); ?>
 												</div>
 												<div id="client_menu" class="tab_menu_dropdown shadowed">

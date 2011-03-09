@@ -26,45 +26,41 @@
 			</div>
 			<div id="usersteamsgroups_menu_panes">
 				<div id="tab_users_pane" style="padding-top: 0; width: 750px;">
-					<div class="rounded_box mediumgrey borderless" style="margin-top: 5px;">
-						<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-						<div class="xboxcontent" style="padding: 0 5px 5px 5px;">
-						<table cellpadding="0" cellspacing="0" border="0">
-							<tr>
-								<td style="padding: 3px;" rowspan="2"><label><?php echo __('Show user(s)'); ?>:</label></td>
-								<td style="padding: 3px; font-size: 12px;">
-									<?php foreach (range('A', 'Z') as $letter): ?>
-										<?php echo javascript_link_tag($letter, array('onclick' => "showUsers('".make_url('configure_users_find_user')."', '{$letter}');")); ?> |
-									<?php endforeach; ?>
-									<?php echo javascript_link_tag('0-9', array('onclick' => "showUsers('".make_url('configure_users_find_user')."', '0-9');")); ?> |
-									<?php echo javascript_link_tag('ALL', array('onclick' => "showUsers('".make_url('configure_users_find_user')."', 'all');")); ?>
-								</td>
-							</tr>
-							<tr>
-								<td style="padding: 3px; font-size: 12px;">
-									<?php echo javascript_link_tag(__('Unactivated users'), array('onclick' => "showUsers('".make_url('configure_users_find_user')."', 'unactivated');")); ?> |
-									<?php echo javascript_link_tag(__('New users'), array('onclick' => "showUsers('".make_url('configure_users_find_user')."', 'newusers');")); ?>
-								</td>
-							</tr>
-							<tr>
-								<td style="padding: 3px;"><label for="findusers"><?php echo __('Find user(s)'); ?>:</label></td>
-								<td style="padding: 3px;">
-									<form action="<?php echo make_url('configure_users_find_user'); ?>" method="post" onsubmit="showUsers('<?php echo make_url('configure_users_find_user'); ?>', $('findusers').getValue());return false;">
-										<input type="text" name="findusers" id="findusers" style="width: 300px;">&nbsp;<input type="submit" value="<?php echo __('Find'); ?>" style="font-size: 12px; font-weight: bold;">
-									</form>
-								</td>
-							</tr>
-							<tr id="adduser_div"<?php if (!TBGContext::getScope()->hasUsersAvailable()): ?> style="display: none;"<?php endif; ?>>
-								<td style="padding: 3px;"><label for="adduser_username"><?php echo __('Enter username'); ?>:</label></td>
-								<td style="padding: 3px;">
-									<form action="<?php echo make_url('configure_users_add_user'); ?>" method="post" onsubmit="createUser('<?php echo make_url('configure_users_add_user'); ?>');return false;" id="createuser_form">
-										<input type="text" name="username" id="adduser_username" style="width: 300px;">&nbsp;<input type="submit" value="<?php echo __('Create user'); ?>" style="font-size: 12px; font-weight: bold;">
-									</form>
-								</td>
-							</tr>
-						</table>
-						</div>
-						<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+					<div class="rounded_box mediumgrey borderless" style="margin-top: 5px; padding: 0 5px 5px 5px;">
+					<table cellpadding="0" cellspacing="0" border="0">
+						<tr>
+							<td style="padding: 3px;" rowspan="2"><label><?php echo __('Show user(s)'); ?>:</label></td>
+							<td style="padding: 3px; font-size: 12px;">
+								<?php foreach (range('A', 'Z') as $letter): ?>
+									<?php echo javascript_link_tag($letter, array('onclick' => "showUsers('".make_url('configure_users_find_user')."', '{$letter}');")); ?> |
+								<?php endforeach; ?>
+								<?php echo javascript_link_tag('0-9', array('onclick' => "showUsers('".make_url('configure_users_find_user')."', '0-9');")); ?> |
+								<?php echo javascript_link_tag('ALL', array('onclick' => "showUsers('".make_url('configure_users_find_user')."', 'all');")); ?>
+							</td>
+						</tr>
+						<tr>
+							<td style="padding: 3px; font-size: 12px;">
+								<?php echo javascript_link_tag(__('Unactivated users'), array('onclick' => "showUsers('".make_url('configure_users_find_user')."', 'unactivated');")); ?> |
+								<?php echo javascript_link_tag(__('New users'), array('onclick' => "showUsers('".make_url('configure_users_find_user')."', 'newusers');")); ?>
+							</td>
+						</tr>
+						<tr>
+							<td style="padding: 3px;"><label for="findusers"><?php echo __('Find user(s)'); ?>:</label></td>
+							<td style="padding: 3px;">
+								<form action="<?php echo make_url('configure_users_find_user'); ?>" method="post" onsubmit="showUsers('<?php echo make_url('configure_users_find_user'); ?>', $('findusers').getValue());return false;">
+									<input type="text" name="findusers" id="findusers" style="width: 300px;">&nbsp;<input type="submit" value="<?php echo __('Find'); ?>" style="font-size: 12px; font-weight: bold;">
+								</form>
+							</td>
+						</tr>
+						<tr id="adduser_div"<?php if (!TBGContext::getScope()->hasUsersAvailable()): ?> style="display: none;"<?php endif; ?>>
+							<td style="padding: 3px;"><label for="adduser_username"><?php echo __('Enter username'); ?>:</label></td>
+							<td style="padding: 3px;">
+								<form action="<?php echo make_url('configure_users_add_user'); ?>" method="post" onsubmit="createUser('<?php echo make_url('configure_users_add_user'); ?>');return false;" id="createuser_form">
+									<input type="text" name="username" id="adduser_username" style="width: 300px;">&nbsp;<input type="submit" value="<?php echo __('Create user'); ?>" style="font-size: 12px; font-weight: bold;">
+								</form>
+							</td>
+						</tr>
+					</table>
 					</div>
 					<div style="padding: 10px 0 10px 0; display: none;" id="find_users_indicator"><span style="float: left;"><?php echo image_tag('spinning_16.gif'); ?></span>&nbsp;<?php echo __('Please wait'); ?></div>
 					<div id="users_results"></div>

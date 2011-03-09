@@ -62,7 +62,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, $scope);
-			$res = $this->doSelect($crit);
+			$res = $this->doSelect($crit, 'none');
 			return $res;
 		}
 

@@ -24,40 +24,27 @@
 				<?php if ($article instanceof TBGWikiArticle): ?>
 					<?php include_component('publish/articledisplay', array('article' => $article, 'show_title' => false, 'show_details' => false, 'show_actions' => false, 'embedded' => true)); ?>
 				<?php endif; ?>
-				<?php /*<h1><?php echo __('Welcome to'); ?> <?php echo(TBGSettings::getTBGname()); ?></h1>
-				<?php echo __('Please fill in your username and password below, and press "Continue" to log in.'); ?>
-				<br>
-				<?php if (TBGSettings::get('allowreg') == true): ?> 
-					<?php echo __('If you have not already registered, please use the "Register new account" tab.'); ?>
-				<?php else: ?>
-					<?php echo __('It is not possible to register new accounts. To register a new account, please contact the administrator.'); ?>
-				<?php endif; ?>
-				<br><br> */ ?>	
 				<div class="logindiv">			
-					<div class="rounded_box iceblue">
-						<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-						<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
-							<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('login'); ?>" method="post" id="login_form" onsubmit="loginUser('<?php echo make_url('login'); ?>'); return false;">
-								<input type="hidden" id="tbg3_referer" name="tbg3_referer" value="" />
-								<div class="login_boxheader"><?php echo __('Log in to an existing account'); ?></div>
-								<div>
-									<table border="0" class="login_fieldtable">
-										<tr>
-											<td><label class="login_fieldheader" for="tbg3_username"><?php echo __('Username'); ?></label></td>
-											<td><input type="text" id="tbg3_username" name="tbg3_username" style="width: 200px;"></td>
-										</tr>
-										<tr>
-											<td><label class="login_fieldheader" for="tbg3_password"><?php echo __('Password'); ?></label></td>
-											<td><input type="password" id="tbg3_password" name="tbg3_password" style="width: 200px;"></td>
-										</tr>
-									</table>
-									<br>
-									<input type="submit" id="login_button" value="<?php echo __('Continue'); ?>">
-									<span id="login_indicator" style="display: none;"><?php echo image_tag('spinning_20.gif'); ?></span>
-								</div>
-							</form>								
-						</div>
-						<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+					<div class="rounded_box iceblue" style="vertical-align: middle; padding: 5px;">
+						<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('login'); ?>" method="post" id="login_form" onsubmit="loginUser('<?php echo make_url('login'); ?>'); return false;">
+							<input type="hidden" id="tbg3_referer" name="tbg3_referer" value="" />
+							<div class="login_boxheader"><?php echo __('Log in to an existing account'); ?></div>
+							<div>
+								<table border="0" class="login_fieldtable">
+									<tr>
+										<td><label class="login_fieldheader" for="tbg3_username"><?php echo __('Username'); ?></label></td>
+										<td><input type="text" id="tbg3_username" name="tbg3_username" style="width: 200px;"></td>
+									</tr>
+									<tr>
+										<td><label class="login_fieldheader" for="tbg3_password"><?php echo __('Password'); ?></label></td>
+										<td><input type="password" id="tbg3_password" name="tbg3_password" style="width: 200px;"></td>
+									</tr>
+								</table>
+								<br>
+								<input type="submit" id="login_button" value="<?php echo __('Continue'); ?>">
+								<span id="login_indicator" style="display: none;"><?php echo image_tag('spinning_20.gif'); ?></span>
+							</div>
+						</form>
 					</div>
 				</div>				
 			</div>

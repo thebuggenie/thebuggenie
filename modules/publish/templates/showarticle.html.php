@@ -48,16 +48,12 @@
 					<?php if (TBGContext::getModule('publish')->canUserDeleteArticle($article_name)): ?>
 						<?php if ($article instanceof TBGWikiArticle): ?>
 							<button onclick="$('delete_article_confirm').toggle();"><?php echo __('Delete this article'); ?></button>
-							<div class="rounded_box" style="margin: 10px 0 5px; width: 720px; display: none;" id="delete_article_confirm">
-								<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-								<div class="xboxcontent" style="padding: 3px 10px 3px 10px; font-size: 14px;">
-									<h4><?php echo __('Really delete this article?'); ?></h4>
-									<span class="question_header"><?php echo __('Deleting this article will remove it from the system.'); ?></span><br>
-									<div style="text-align: right;">
-										<?php echo link_tag(make_url('publish_article_delete', array('article_name' => $article_name)), __('Yes')); ?> :: <a href="javascript:void(0)" class="xboxlink" onclick="$('delete_article_confirm').hide();"><?php echo __('No'); ?></a>
-									</div>
+							<div class="rounded_box" style="margin: 10px 0 5px; width: 720px; display: none; padding: 3px 10px 3px 10px; font-size: 14px;" id="delete_article_confirm">
+								<h4><?php echo __('Really delete this article?'); ?></h4>
+								<span class="question_header"><?php echo __('Deleting this article will remove it from the system.'); ?></span><br>
+								<div style="text-align: right;">
+									<?php echo link_tag(make_url('publish_article_delete', array('article_name' => $article_name)), __('Yes')); ?> :: <a href="javascript:void(0)" class="xboxlink" onclick="$('delete_article_confirm').hide();"><?php echo __('No'); ?></a>
 								</div>
-								<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 							</div>
 						<?php endif; ?>
 					<?php endif; ?>

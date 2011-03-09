@@ -351,13 +351,16 @@
 					}
 					if ($username !== null && $password !== null)
 					{
-						// First test a pre-encrypted password
-						$row = TBGUsersTable::getTable()->getByUsernameAndPassword($username, $password);
-
 						if (!$row)
 						{
-							// Then test an unencrypted password
-							$row = TBGUsersTable::getTable()->getByUsernameAndPassword($username, self::hashPassword($password));
+							// First test a pre-encrypted password
+							$row = TBGUsersTable::getTable()->getByUsernameAndPassword($username, $password);
+
+							if (!$row)
+							{
+								// Then test an unencrypted password
+								$row = TBGUsersTable::getTable()->getByUsernameAndPassword($username, self::hashPassword($password));
+							}
 							
 							if(!$row)
 							{

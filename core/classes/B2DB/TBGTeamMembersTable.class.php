@@ -124,7 +124,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::UID, $user_id);
-			return $this->doSelect($crit);
+			return $this->doSelect($crit, 'none');
 		}
 		
 	}
