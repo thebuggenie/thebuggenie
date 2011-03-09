@@ -14,6 +14,7 @@
 		public function preExecute(TBGRequest $request, $action)
 		{
 			$this->getResponse()->setPage('wiki');
+			$i18n = TBGContext::getI18n();
 
 			$this->article = null;
 			$this->article_name = $request->getParameter('article_name');
@@ -39,6 +40,7 @@
 			{
 				$this->article = PublishFactory::article($row->get(TBGArticlesTable::ID), $row);
 			}
+
 		}
 
 		/**

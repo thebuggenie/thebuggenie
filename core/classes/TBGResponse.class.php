@@ -506,6 +506,7 @@
 				case 'main_links':
 					$links[] = array('url' => TBGContext::getRouting()->generate('home'), 'title' => $i18n->__('Frontpage'));
 					$links[] = array('url' => TBGContext::getRouting()->generate('dashboard'), 'title' => $i18n->__('Personal dashboard'));
+					$links[] = array('title' => $i18n->__('Issues'));
 					$links[] = array('title' => $i18n->__('Teams'));
 					$links[] = array('title' => $i18n->__('Clients'));
 					$links = TBGEvent::createNew('core', 'breadcrumb_main_links', null, array(), $links)->trigger()->getReturnList();

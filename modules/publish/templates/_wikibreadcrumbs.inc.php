@@ -4,7 +4,7 @@
 	{
 		if (TBGContext::isProjectContext())
 		{
-			$tbg_response->addBreadcrumb(TBGPublish::getModule()->getMenuTitle(), make_url('publish_article', array('article_name' => TBGContext::getCurrentProject()->getStrippedProjectName() . ':MainPage')));
+			$tbg_response->addBreadcrumb(TBGPublish::getModule()->getMenuTitle(), make_url('publish_article', array('article_name' => TBGContext::getCurrentProject()->getStrippedProjectName() . ':MainPage')), tbg_get_breadcrumblinks('project_summary', TBGContext::getCurrentProject()));
 		}
 		else
 		{
@@ -32,7 +32,7 @@
 	}
 	else
 	{
-		$tbg_response->addBreadcrumb(TBGPublish::getModule()->getMenuTitle());
+		$tbg_response->addBreadcrumb(TBGPublish::getModule()->getMenuTitle(), make_url('publish_article', array('article_name' => TBGContext::getCurrentProject()->getStrippedProjectName() . ':MainPage')), tbg_get_breadcrumblinks('project_summary', TBGContext::getCurrentProject()));
 	}
 
 ?>
