@@ -1294,7 +1294,7 @@
 	$strings['Set priority'] = 'Establecer prioridad';
 	$strings['top'] = 'arriba';
 	$strings['"%project_name%" project planning'] = 'Planificación del proyecto "%project_name%"';
-	$strings['Closed vs open issues, last 30 days isolated'] = 'Peticiones abiertas vs cerradas, solo de los últimos 30 días';
+	$strings['Closed vs open issues, last 30 days isolated'] = 'Peticiones abiertas vs cerradas, sólo de los últimos 30 días';
 	$strings['Open issues'] = 'Peticiones abiertas';
 	$strings['Most voted for issues'] = 'La mayoría votó por estas peticiones';
 	$strings['There are no saved searches for this project'] = 'No hay búsquedas guardadas para este proyecto';
@@ -1760,9 +1760,131 @@
 	$strings['No issues recently commented'] = 'No hay peticiones recientemente comentadas';
 	$strings['You\'re not allowed to change your password.'] = 'No tiene permitido cambiar su contraseña.';
 	$strings['Please contact your administrator to change it.'] = 'Por favor comuníquese con su administrador para cambiarla.';
-	
-	//TODO: Revisar hasta el final
+	$strings['Your issues'] = 'Sus peticiones'; 
+	$strings['Please confirm that you want to delete this user'] = 'Por favor confirme que quiere borrar este usuario';	
+	$strings['The user with username "%username%" will be deleted permanently. Are you sure you want to do this?'] = 'El usuario con el nombre "%username%" será borrado definitivamente. ¿Seguro que quiere hacer esto?';
+	$strings['Delete this user'] = 'Borrar este usuario';
+	$strings['Show team dashboard'] = 'Mostrar panel de control del equipo';   
+	$strings['You can set a project icon too'] = 'También puede establecer un icono para el proyecto';
+	$strings['By creating a PNG image in the project_icons directory of your installation, with the same name as the project key, this image will be shown next to your project throughout The Bug Genie. We recommend images are 16x16 in size. For further information please see the documentation.'] = 'Al crear una imagen PNG en la carpeta project_icons de su instalación, con el mismo nombre que el nombre clave del proyecto, esta imagen será mostrada junto a su proyecto. Recomendamos imagenes de 16x16 pixel de tamaño. Para más información acceda a la documentación.';
+	$strings['Find a user or team'] = 'Encuentre un usuario o equipo';
+	$strings['Select yourself or a friend below']  = 'Selecciónese o elija un amigo debajo';
+	$strings['Project key'] = 'Código de proyecto';	
+	$strings['This is a part of all urls referring to this project'] = 'Esto es una parte de la referencia url a este proyecto';
+	$strings['Issue prefix'] = 'Prefijo de pedido';
+	$strings['about issue prefixes'] = 'acerca de los prefijos de peticiones';
+	$strings['See %about_issue_prefix% for an explanation about issue prefixes'] = 'Vea %about_issue_prefix% para una explicación más completa';
+	$strings['Can access all clients'] = 'Pueden acceder todos los clientes';
+	$strings['Can change own password'] = 'Puede cambiar su propia contraseña';
+	$strings['Scopes are self-contained Bug Genie environments. Configure them here.']  = 'Los ámbitos son entornos autocontenidos en Bug Genie. Configúrelos aquí.';
+	$strings['The client was added'] = 'El cliente fue agregado';
+	$strings['Delete this user client'] = 'Borrar este cliente usuario'; 
+	$strings['Edit this user client'] = 'Editar este cliente usuario'; 
+	$strings['List users in this client'] = 'Listar los usuarios en este cliente';
+	$strings['View users'] = 'Ver usuarios'; 
+	$strings['View client dashboard'] = 'Ver panel del cliente';
+	$strings['Client: %clientname%'] = 'Cliente: %clientname%';
+	$strings['Code samples are best presented in <source></source> tags.'] = 'Las muestras de código se presentan mejor entre etiquetas <source></source>.';
+	$strings['The Bug Genie uses %geshi% for syntax highlighting with support for over 100 languages!'] = 'The Bug Genie utiliza %geshi% para la sintáxis resaltada que tiene soporte para más de 100 lenguajes!';
+	$strings['See more formatting tips in %wiki_formatting%.'] = 'Vea más consejos sobre formateo en %wiki_formatting%.';
+	$strings['If you want to put a horizontal line in the document, use four dashes: "----".'] = 'Si quiere poner una línea horizontal en el documento, utilice cuatro guiones: "----".';
+	$strings["If you have certain text you don't want to be formatted, enclose it in <nowiki></nowiki> tags: \"'''formatted''' text <nowiki>'''non-formatted''' text</nowiki>."] = "Si tiene un texto que no quiere que sea formateado, enciérrelo entre etiquetas <nowiki></nowiki>: \"texto '''con formato'''<nowiki>texto '''sin formato'''</nowiki>.";
+	$strings['To create a bulleted list, start one or more lines with a star ("* bulleted list item"). You can create a numbered list by using the hash/pund sign instead ("# numbered list item").'] = 'Para crear una lista con viñetas, comience una o más líneas con un asterisco ("* item de la lista con viñeta"). Puede crear una lista numerada utilice el signo numeral ("# item de la lista numerada").';
+	$strings['You can use simple formatting tags for underlined text (<b></b>) or strikethrough (<strike></strike>).'] = 'Puede utilizar etiquetas simples para resaltar el texto (<b></b>) o tachar (<strike></strike>).';
+	$strings['One or more errors occured when trying to file your issue'] = 'Uno o más errores ocurrieron cuando intentaba enviar su pedido';
+	$strings['You have to specify a title'] = 'Tiene que establecer un título';
+	$strings['You have to enter a description in the "%description%" field'] = 'Tiene que completar la descripción en el campo "%description%"';
+	$strings['Please try to fix the error described above, and then click the %file_issue% button again'] = 'Por favor, resuelva los problemas anteriores, y haga clic en el botón %file_issue% nuevamente';	
+	$strings['Toggle more filters'] = 'Cambiar más filtros';
+	$strings['Team leaders'] = 'Líderes del equipo';
+	$strings['Percent completed: %text%'] = 'Porcentaje completado: %text%'; 
+	$strings['%time%, by %user%'] = '%time%, por %user%';
+	$strings['Show'] = 'Mostrar';
+	$strings['Attachments'] = 'Adjuntos';
+	$strings['Article comments (%count%)'] = 'Comentarios al artículo (%count%)';
+	$strings['Show system comments'] = 'Ver comentarios del sistema';
+	$strings['The Bug Genie will automatically add new lines when you add two new lines in your text, whereas one new line is used for formatting as you type. To force a new line, use the <br> tag: "There is a new<br>line here".'] = 'The Bug Genie agregará automáticamente una nueva línea cuando ponga dos líneas nuevas en el texto, considerando que una nueva línea es usada para dar formato cuando escribe. Para forzar una nueva línea, emplée la etiqueta <br>: "Aquí hay <br>una nueva línea".';
+	$strings['To auto-link to an existing issue, write "issue", "bug", "ticket" or the issue type (like "bug report" or "enhancement") followed by the issue number (ex: "%ticket_example_1%" or "%ticket_example_2%"). Enclose sourcecode samples in <source></source>; tags.'] = 'Para enlazar a una petición existente, escriba "issue", "bug", "ticket" o el tipo de pedido (como "bug report" o "enhancement") seguido por el número de petición (ej: "%ticket_example_1%" o "%ticket_example_2%"). Encierre código fuente entre etiquetas <source></source>;.';
+	$strings['Developers'] = 'Desarrolladores';
+	$strings['Assigned to %assignee%'] = 'Asignado a %assignee%';  
+	$strings['Click to expand'] = 'Haga clic para ampliar';
+	$strings["Use the file header.png in the '%thebuggenie%' directory"] = "Utilice el archivo header.png de la carpeta '%thebuggenie%'";
+	$strings['Custom header link'] = 'Enlace personalizada en la cabecera';
+	$strings['You can alter the webpage that clicking on the header icon navigates to. If left blank it will link to the main page of this installation.'] = 'Puede modificar la página web que aparece cuando hace clic en la ícono de la cabecera. Si lo deja en blanco irá a la página principal de esta instalación.';
+	$strings["Use the file favicon.png in the '%thebuggenie%' directory"] = "Utilice el archivo favicon.png de la carpeta '%thebuggenie%'";
+	$strings['Security key'] = 'Código de seguridad'; 
+	$strings['Whenever the "remote security key" is needed, this is the key'] = 'Cuando un "código de seguridad remoto" sea necesario, este es el código';
+	$strings['project configuration'] = 'configuración del proyecto';
+	$strings['Sprints are created as milestones for this project, which can be edited in the %project_configuration%.'] = 'Los Sprints son creados como puntos de control para este proyecto, los que puden ser editados en %project_configuration%.';
+	$strings['Starting %start_date%'] = 'Inicio %start_date%';
+	$strings['Click to show assigned stories for this sprint'] = 'Haga clic para mostrar las historias asignadas para este sprint';
+	$strings['%hours% hrs / %points% pts'] = '%hours% hrs / %points% pts'; 
+	$strings['No user stories assigned to this sprint'] = 'No hay historias de usuario asignadas a este sprint';
+ 	$strings['...Select a view...'] = '...Seleccione una vista...';
+	$strings['Close and reload'] = 'Cerrar y volver a cargar';
+	$strings['Member of client(s)'] = 'Miembro del/os cliente/s';
+	$strings['You are on this team'] = 'Está en este equipo'; 
+	$strings['You are a member of this team'] = 'Ud. es miembro de este equipo';
+	$strings['This is one of your friends'] = 'Este es uno de sus amigos';
+	$strings['URLs will be automatically transformed to links. If you want to add a title, use the link formatter: [[http://awesome.com/something An awesome link]].'] = 'Las direcciones URL serán transformadas automáticamente a enlaces. Si quiere agregarle un título, utilice el formato: [[http://impresionante.com/algo Un enlace impresionante]].';
+	$strings['Configure scopes'] = 'Configurar ámbitos';
+	$strings['The Bug Genie scopes are self-contained environments within the same The Bug Genie installation, set up to be initialized when The Bug Genie is accessed via different hostnames.'] = 'Los ámbitos de The Bug Genie son entornos autocontenidos en la instalación de The Bug Genie, definidos para ser iniciados cuando The Bug Genie es accedido a través de distintos nombres de servidor.';
+	$strings['The default scope (which is created during the first installation) is used for all hostnames where there is no other scope defined. Read more about scopes in %ConfigureScopes%.'] = 'Al ámbito por defecto (que es creado en la instalación) es utilizado por todos los nombres de servidor en donde no se haya definido. Lea más acerca de los ámbitos en %ConfigureScopes%.';
+	$strings['Create a new scope for a new hostname'] = 'Crear un nuevo ámbito para un nuevo nombre de servidor';
+	$strings['Scopes available on this installation'] = 'Ámbitos disponibles en esta instalación';
+	$strings['Create a new scope'] = 'Crear un nuevo ámbito';
+	$strings['Scope name'] = 'Nombre del ámbito';
+	$strings['The scope name is used in the list below as a short descriptive name for the scope'] = 'El nombre del ámbito es utilizado en la lista siguiente como un nombre descriptivo para el ámbito';
+	$strings['Scope hostname'] = 'Ámbito de la aplicación';
+	$strings['The hostname should be provided without protocol or the trailing slash (.com, not .com/) and port specified if desired. Valid examples are: %examples%'] = 'El nombre del servidor debe ser provisto sin protocolo o la barra inclinada final (.com, y no .com/) y el puerto solicitado. Ejemplos válidos: %examples%';
+	$strings['Create scope'] = 'Crear ámbito';
+	$strings['Create a copy of this scope for a different hostname'] = 'Crear una copia de este ámbito para un nombre de servidor diferente';
+	$strings['All hostnames not covered by other scopes'] = 'Todos los nombres de servidor no cubiertos por otros ámbitos';
+	$strings['This is the default scope. It will be loaded and used whenever The Bug Genie is accessed on a hostname for which there is not explicit scope defined.'] = 'Este es el ámbito predeterminado. Será cargado y usado siempre que The Bug Genie es accedido en el servidor que no haya sido definido en un ámbito específico.';
+	$strings['Delete this scope'] = 'Borrar este ámbito';
+	$strings['Edit scope settings'] = 'Editar opciones del ámbito';
+	$strings['Custom type'] = 'Tipo personalizado';
+	$strings['Field label'] = 'Etiqueta para campo';
+	$strings['The label is shown to the user in issue view'] = 'La etiqueta es mostrada al usuario en la vista del pedido';
+	$strings['Add custom field'] = 'Agregar campo personalizado';
+	$strings['help'] = 'ayuda';
+	$strings['Use this page to configure the interface between The Bug Genie and your VCS system. Note that further configuration is necessary to use this feature - please refer to the %help% for further details on these settings and other necessary configuration.'] = 'Utilice esta página para definir la interfaz entre The Bug Genie y su sistema VCS. Hay que realizar una configuración adicional para esta característica - por favor acuda a la %help% para más detalles y opciones de configuración necesarias.';
+	$strings['Attach one or more file(s) to this issue'] = 'Adjuntar uno o más archivos a este pedido'; 
+	$strings['Select a file'] = 'Seleccione un archivo'; 
+	$strings['Files bigger than %max_filesize% can not be attached. Please check that the file you are attaching is not bigger than this.'] = 'Los archivos más grandes que %max_filesize% no pueden ser adjuntados. Verifique que el archivo no sea más grande que esto.'; 
+	$strings['Describe the file'] = 'Describa el contenido del archivo'; 
+	$strings['Enter a few words about the file, so people can understand what it is/does'] = 'Escriba unas pocas palabras acerca del contenido del archivo, para que el resto de las personas pueda entender que es o que hace'; 
+	$strings['If you want to add a comment with the file, enter the comment here, and it will automatically be added to the issue with the file'] = 'Si quiere agregar un comentario con el archivo, ingrese aqui el comentario, y será agregado automáticamente a la petición con el archivo'; 
+	$strings['Upload and attach'] = 'Subir y adjuntar'; 
+	$strings['Press the %upload_and_attach% button to upload and attach the file'] = 'Presione el botón %upload_and_attach% para cargar el archivo'; 
+	$strings['Uploading file, please wait'] = 'Subiendo archivo, por favor espere'; 
+	$strings['Files already attached'] = 'Archivos ya adjuntados'; 
+	$strings["You haven't uploaded any files right now (not including already attached files)"] = "Ahora no ha adjuntado ningún archivo (no se incluyen los ya adjuntados)"; 
+	$strings['Click %done% when you have uploaded the files you want to attach'] = 'Haga clic en %done% cuando haya subido el archivo a adjuntar'; 
+	$strings['Or select one of your teams'] = 'O seleccione uno de los equipos';
+	$strings['Select %teamname%'] = 'Seleccione %teamname%'; 
+	$strings['Mark as blocking the next release'] = 'Marcar como bloqueo para la próxima liberación'; 
+	$strings['Permanently delete this issue'] = 'Borrar definitivamente este pedido'; 
+	$strings['Are you sure you wish to delete this issue? It will remain in the database for your records, but will not be accessible via The Bug Genie.'] = '¿Desea borrar esta petición? Permanecerá en la base de datos, pero no será accesible a través de The Bug Genie.'; 
+	$strings['Hide further actions'] = 'Ocultar más acciones'; 
+	$strings['Show further actions'] = 'Mostrar más acciones'; 
+	$strings['You can create a link directly to a wikipedia page by using the "WIKIPEDIA:" link namespace: "Here is a link to the wikipedia article about [[WIKIPEDIA:Norway|Norway]].'] = 'Puede crear un enlace directo a wikipedia escribiendo en el enlace "WIKIPEDIA:" "Aquí hay un enlace a un artículo de wikipedia [[WIKIPEDIA:Norway|Norway]].';
+	$strings['%sprint_name% overview'] = 'Resumen %sprint_name%'; 
+	$strings['"%project_name%" sprint overview'] = 'Resumen del sprint de "%project_name%"';   
+	$strings['Points'] = 'Puntos';
+	$strings['Date'] = 'Día';
+	$strings['Sprint burndown graph - %sprint_name% (starts %starting_date%, ends %scheduled_date%)'] = 'Gráfico del sprint - %sprint_name% (comienza %starting_date%, finaliza %scheduled_date%)';
+	$strings['Steps to reproduce'] = 'Pasos para reproducir';
+	$strings['You have to enter something in the "%steps_to_reproduce%" field'] = 'Tiene que ingresar algo en el campo "%steps_to_reproduce%" ';
+	$strings['%filename%, uploaded %date%'] = '%filename%, subido %date%';
+	$strings['Do you really want to detach this file?'] = '¿Realmente quiere desvincular este archivo?';
+	$strings['If you detach this file, it will be deleted. This action cannot be undone. Are you sure you want to remove this file?'] = 'Si desvincula este archivo, será eliminado. Esta acción no puede ser deshecha. ¿Está seguro que quiere quitar este archivo?';
+	$strings['Open file in new window'] = 'Abrir archivo en una nueva ventana';
+	$strings['Open image in new window'] = 'Abrir imagen en una nueva ventana';
+	$strings['Updating, please wait ...'] = 'Actualizando, espere por favor...';
+	$strings['This milestone is starting on %starting_date% and scheduled for %scheduled_date%'] = 'Este punto de control está comenzando el %starting_date% y agendado para el %scheduled_date%';
 
+//TODO: Revisar hasta el final
 	$strings['Assigned to %user%'] = 'Asignado a %user%';  
 	$strings['New story estimate'] = 'Nueva estimación de historia';
 	$strings['New task estimate'] = 'Nueva estimación de tarea';
@@ -1774,23 +1896,15 @@
 	$strings['%milestone_name% (reached: %date%)'] = '%milestone_name% (alcanzado: %date%)';  
 	$strings['%pts% points'] = '%pts% puntos'; 
 	$strings['This issue must be closed before the issue relation is solved'] = 'Esta petición debe ser cerrada antes de que el pedido vinculado esté resuelto';
-	$strings['Percent completed: %text%'] = 'Porcentaje completado: %text%'; 
 	$strings['Customize your dashboard'] = 'Personalizar el panel'; 
 	$strings['Project wikis'] = 'Wikis de proyectos'; 
 	$strings['There are no public saved searches'] = 'No hay búsquedas públicas registradas'; 
 	$strings['No feature requests posted yet'] = 'No hay funcionalidades solicitadas aún'; 
 
- 	$strings['...Select a view...'] = '...Seleccione una vista...';
 
-	$strings['Date'] = 'Día';
-	$strings['Points'] = 'Puntos';
 
 	$strings['This task must be closed before the issue relation is solved'] = 'Esta tarea debe ser cerrada antes de que la petición relacionada sea resuelta'; 
 
-  $strings['Select %teamname%'] = 'Seleccione %teamname%'; 
-  $strings['Mark as blocking the next release'] = 'Marcar como bloqueo para la próxima liberación'; 
-  $strings['Hide further actions'] = 'Ocultar más acciones'; 
-  $strings['Show further actions'] = 'Mostrar más acciones'; 
   
 	$strings['Denied extension'] = 'Extensión denegada';
   
@@ -1817,23 +1931,6 @@
   $strings['All closed issues'] = 'Todas las peticiones cerradas'; 
   $strings['RSS feed'] = 'Canal RSS';
   
-  $strings['Sprint burndown graph'] = 'Gráfico de burndown';
-    
-  $strings['Burndown Line'] = 'Línea Ideal';
-  $strings['Starting %start_date%'] = 'Inicio %start_date%';
-  $strings['Click to show assigned stories for this sprint'] = 'Haga clic para mostrar las historias asignadas para este sprint';
-  $strings['%hours% hrs / %points% pts'] = '%hours% hrs / %points% pts'; 
-  $strings['Pick a color for this user story'] = 'Seleccione un color para esta historia de usuario'; 
-  $strings['Selecting a color makes the story easily recognizable'] = 'Al seleccionar un color en la historia la hace más identificable'; 
-  $strings['%points%pt(s)'] = '%points%pt(s)'; 
-  $strings['%set% or %cancel%'] = '%set% o %cancel%'; 
-  $strings['%hours% hr(s)'] = '%hours% h(s)'; 
-  $strings['No user stories assigned to this sprint'] = 'No hay historias de usuario asignadas a este sprint';
-  $strings['%sprint_name% overview'] = 'Resumen %sprint_name%'; 
-  $strings['"%project_name%" sprint overview'] = 'Resumen del sprint de "%project_name%"';   
-   
-	$strings['starts'] = 'inicio';
-  $strings['ends'] = 'fin';
   
   
 	$strings['Resolve the issue'] = 'Resolución del pedido';
@@ -1853,9 +1950,6 @@
 	$strings['Edit issue types and their settings here.'] = 'Edite los tipos de petición y sus opciones.';
 	$strings['Edit this issue type'] = 'Editar este tipo de petición';
 	$strings['What kind of issue type this is'] = 'Qué clase de pedido es este';
-	$strings['Member of client(s)'] = 'Miembro del/os cliente/s';
-	$strings['The client waas added'] = 'El cliente fue agregado';
-	$strings['If you want to start working on this issue instead, click the %take_over% button to the right'] = 'Si quiere empezar a trabajar en este pedido, haga clic en el botón %take_over%';
 	$strings['Can manage project releases and components'] = 'Puede administrar liberaciones y componentes del proyecto';
   $strings['Show step info'] = 'Ver información del paso';
   $strings['Transition: %transition_name%'] = 'Transición: %transition_name%'; 
@@ -1878,31 +1972,21 @@
   $strings['Open, but not editable'] = 'Abierto, pero no editable';  
   $strings['Closed and not editable'] = 'Cerrado y no editable';
   $strings['This step is not connected to a specific status'] = 'Este paso no está vinculado a ningún estado específico';
-  $strings['Delete this user client'] = 'Borrar este cliente usuario'; 
-  $strings['Edit this user client'] = 'Editar este cliente usuario'; 
-  $strings['List users in this client'] = 'Listar los usuarios en este cliente';
    
   $strings['Allowed extensions'] = 'Extensiones permitidas';   
 	
   
-  $strings['The client was added'] = 'El cliente fue agregado';
-  $strings['View users'] = 'Ver usuarios'; 
-  $strings['View client dashboard'] = 'Ver panel del cliente';
   $strings['Project editions'] = 'Ediciones del proyecto'; 
   $strings['Edit details'] = 'Editar detalles'; 
   $strings['Click a user to view more details, such as view his/her user card.'] = 'Haga clic sobre un usuario para ver más detalle, como por ejemplo su tarjeta de usuario';
   
   $strings['Code checkins (%count%)'] = 'Código confirmado (%count%)'; 
   $strings['There are no code checkins for this issue'] = 'No hay código confirmado para esta petición';
-  $strings['Permanently delete this issue'] = 'Borrar definitivamente este pedido'; 
-  $strings['Are you sure you wish to delete this issue? It will remain in the database for your records, but will not be accessible via The Bug Genie.'] = '¿Desea borrar esta petición? Permanecerá en la base de datos, pero no será accesible a través de The Bug Genie.'; 
   $strings['Source code'] = 'Código fuente';
    
-  $strings['Security key'] = 'Llave de seguridad'; 
   $strings['This is the key used for remote cli access'] = 'Esta es la llave utilizada para el acceso cli remoto';    
    
   $strings['Can change own password'] = 'Puede cambiar su propia contraseña'; 
-  $strings['Your issues'] = 'Sus peticiones'; 
   $strings['Cool - you\'re using Firebug, too - so do we!'] = 'Excelente, está utilizando Firebug, nosotros también!'; 
   $strings['As you probably know, Firebug has awesome monitoring and profiling features, which in turn means The Bug Genie will probably be a bit slow if you have Firebug enabled with it.'] = 'Probablemente sabrá que Firebug tiene funciones de mejora y monitoreo sorprendentes, pero en cambio a The Bug Genie probablemente lo hará un poco más lento si tiene Firebug habilitado.'; 
   $strings['Disabling Firebug'] = 'Inhabilitación de Firebug'; 
@@ -1911,28 +1995,12 @@
 
   $strings['There are no projects to choose from'] = 'No hay proyectos para seleccionar'; 
   $strings['An administrator must create one or more projects before you can report any issues'] = 'Un administrador debe crear uno o más proyectos antes que Ud. pueda informar cualquier petición';
-  $strings['Toggle more filters'] = 'Cambiar más filtros';
   
-  $strings['You are on this team'] = 'Está en este equipo'; 
-  $strings['Show team dashboard'] = 'Mostrar panel de control del equipo';   
   
   $strings['Please specify something to search for'] = 'Por favor especifique algo para buscar';
-  $strings['Close and reload'] = 'Cerrar y volver a cargar';
 
   $strings["Total number of issues in this group: %number%"]  = "Cantidad total de peticiones en este grupo: %number%";
 
-  $strings['Attach one or more file(s) to this issue'] = 'Adjuntar uno o más archivos a este pedido'; 
-  $strings['Select a file'] = 'Seleccione un archivo'; 
-  $strings['Files bigger than %max_filesize% can not be attached. Please check that the file you are attaching is not bigger than this.'] = 'Los archivos más grandes que %max_filesize% no pueden ser adjuntados. Verifique que el archivo no sea más grande que esto.'; 
-  $strings['Describe the file'] = 'Describa el contenido del archivo'; 
-  $strings['Enter a few words about the file, so people can understand what it is/does'] = 'Escriba unas pocas palabras acerca del contenido del archivo, para que el resto de las personas pueda entender que es o que hace'; 
-  $strings['If you want to add a comment with the file, enter the comment here, and it will automatically be added to the issue with the file'] = 'Si quiere agregar un comentario con el archivo, ingrese aqui el comentario, y será agregado automáticamente a la petición con el archivo'; 
-  $strings['Upload and attach'] = 'Subir y adjuntar'; 
-  $strings['Press the %upload_and_attach% button to upload and attach the file'] = 'Presione el botón %upload_and_attach% para cargar el archivo'; 
-  $strings['Uploading file, please wait'] = 'Subiendo archivo, por favor espere'; 
-  $strings['Files already attached'] = 'Archivos ya adjuntados'; 
-  $strings['You haven\'t uploaded any files right now (not including already attached files)'] = 'Ahora no ha adjuntado ningún archivo (no se incluyen los ya adjuntados)'; 
-  $strings['Click %done% when you have uploaded the files you want to attach'] = 'Haga clic en %done% cuando haya subido el archivo a adjuntar'; 
   $strings['%select_yourself% or select a friend below'] = '%select_yourself% o seleccione un amigo'; 
   $strings['Related issues and tasks (%count%)'] = 'Pedidos/tareas relacionadas (%count%)';
 
@@ -1946,20 +2014,24 @@
   $strings['Showing "bug report" issues sorted by user pain, threshold set at %threshold%']='Mostrando peticiones de "Informes de error" ordenados por sufrimiento del usuario con el umbral en  %threshold%'; 
   $strings["User pain threshold"]= 'Umbral de sufrimiento del usuario';
 
-  $strings["Scopes are self-contained Bug Genie environments. Configure them here."]  = "Los ámbitos son entornos autocontenidos en Bug Genie. Configúrelos aquí.";
   
-  $strings["Find a user or team"] = "Encuentre un usuario o equipo";
-  $strings["Select yourself or a friend below"]  = "Selecciónese o elija un amigo debajo";
-  $strings["Or select one of your teams"] = "O seleccione uno de los equipos";
   
   $strings["%teamname% has been working on this issue since %time%"] = "%teamname% han estado trabajando en este pedido desde %time%";
   $strings["You are working together"] = "Está trabajando junto";
   $strings["Issue type changed: %text%"] = "El tipo de pedido cambió: %text%";
   $strings["This relation is solved because the task has been closed"] = "Esta relación está resuelta porque la tarea ha sido cerrada";
-  $strings["You can set a project icon too"] = "También puede establecer un icono para el proyecto";
-  $strings["By creating a PNG image in the project_icons directory of your installation, with the same name as the project key, this image will be shown next to your project throughout The Bug Genie. We recommend images are 16x16 in size. For further information please see the documentation."] = "Al crear una imagen PNG en la carpeta project_icons de su instalación, con el mismo nombre que el nombre clave del proyecto, esta imagen será mostrada junto a su proyecto. Recomendamos imagenes de 16x16 pixel de tamaño. Para más información acceda a la documentación.";
 
   $strings["One or more errors occured when trying to file your issue"] = "Uno o más errores ocurrieron cuando intentaba guardar el pedido"; 
-  $strings['You have to enter a description in the "%description%" field'] = 'Tiene que completar la descripción en el campo "%description%"';
   $strings["Please try to fix the error described above, and then click the %file_issue% button again"] =  "Por favor, intente corregir el error descripto arriba, y luego haga clic en el botón %file_issue%";
-  $strings["Client: %clientname%"] = "Cliente: %clientname%";
+  $strings['Burndown Line'] = 'Línea Ideal';
+  $strings['Pick a color for this user story'] = 'Seleccione un color para esta historia de usuario'; 
+  $strings['Selecting a color makes the story easily recognizable'] = 'Al seleccionar un color en la historia la hace más identificable'; 
+  $strings['%points%pt(s)'] = '%points%pt(s)'; 
+  $strings['%set% or %cancel%'] = '%set% o %cancel%'; 
+  $strings['%hours% hr(s)'] = '%hours% h(s)'; 
+   
+	$strings['starts'] = 'inicio';
+  $strings['ends'] = 'fin';
+
+	$strings['The client waas added'] = 'El cliente fue agregado';
+	$strings['If you want to start working on this issue instead, click the %take_over% button to the right'] = 'Si quiere empezar a trabajar en este pedido, haga clic en el botón %take_over%';
