@@ -181,7 +181,7 @@
 												</td>
 												<td id="header_username" valign="middle">
 													<?php if ($tbg_user->isGuest()): ?>
-														<?php echo __('You are not logged in'); ?>
+														<a href="javascript:void(0);" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'login')); ?>')"><?php echo __('You are not logged in'); ?></a>
 													<?php else: ?>
 														<?php $name = (TBGContext::getUser()->getRealname() == '') ? TBGContext::getUser()->getBuddyname() : TBGContext::getUser()->getRealname(); ?>
 														<?php echo link_tag(make_url('dashboard'), tbg_decodeUTF8($name)); ?>
