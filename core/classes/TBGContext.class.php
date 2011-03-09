@@ -731,7 +731,6 @@
 					{
 						$module->initialize();
 					}
-					TBGModule::loadModuleListeners(array_keys(self::$_modules));
 					TBGLogging::log('done (initializing modules)');
 				}
 				else

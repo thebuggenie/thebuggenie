@@ -30,7 +30,6 @@
 		protected $_module_config_description = '';
 		protected $_version = '';
 		protected $_availablepermissions = array();
-		protected $_listeners = array();
 		protected $_settings = array();
 		protected $_routes = array();
 		protected $_has_account_settings = false;
@@ -81,9 +80,9 @@
 
 		protected function _addAvailablePermissions() { }
 
-		protected function _addAvailableListeners() { }
+		protected function _addListeners() { }
 
-		protected function _addAvailableRoutes() { }
+		protected function _addRoutes() { }
 
 		abstract protected function _initialize(TBGI18n $i18n);
 
@@ -174,7 +173,6 @@
 			$scope = ($scope) ?: TBGContext::getScope()->getID();
 			$this->_uninstall($scope);
 			B2DB::getTable('TBGModulesTable')->doDeleteById($this->getID());
-			B2DB::getTable('TBGEnabledModuleListenersTable')->removeAllModuleListeners($this->getName(), $scope);
 			TBGSettings::deleteModuleSettings($this->getName(), $scope);
 			TBGContext::deleteModulePermissions($this->getName(), $scope);
 		}
@@ -182,23 +180,6 @@
 		public function getClassname()
 		{
 			return $this->_classname;
-		}
-		
-		public function disableListener($module, $identifier, $scope = null)
-		{
-			if (array_key_exists($module . '_' . $identifier, $this->_listeners))
-			{
-				if ($scope === null || $scope == TBGContext::getScope()->getID())
-				{
-					$this->_listeners[$module . '_' . $identifier]['enabled'] = false;
-				}
-			}
-		}
-
-		public function disableListenerSaved($module, $identifier, $scope = null)
-		{
-			$this->disableListener($module, $identifier, $scope);
-			B2DB::getTable('TBGEnabledModuleListenersTable')->removePermanentListener($module, $identifier, $this->getName(), $scope);
 		}
 		
 		public function __toString()
@@ -246,17 +227,6 @@
 			return array();
 		}
 		
-		public function addAvailableListener($module, $identifier, $callback_function, $description)
-		{
-			$this->_listeners[$module . '_' . $identifier] = array('callback_function' => $callback_function, 'description' => $description, 'enabled' => true);
-			TBGEvent::listen($module, $identifier, array($this, $callback_function));
-		}
-		
-		public function getAvailableListeners()
-		{
-			return $this->_listeners;
-		}
-		
 		public function setPermission($uid, $gid, $tid, $allowed, $scope = null)
 		{
 			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
@@ -268,41 +238,6 @@
 			}
 		}
 		
-		static function loadModuleListeners($module_names)
-		{
-			if ($res = B2DB::getTable('TBGEnabledModuleListenersTable')->getAll($module_names))
-			{
-				while ($row = $res->getNextRow())
-				{
-					$module = TBGContext::getModule($row->get(TBGEnabledModuleListenersTable::MODULE_NAME));
-					if ($module->isEnabled())
-					{
-						$module->enableListener($row->get(TBGEnabledModuleListenersTable::MODULE), $row->get(TBGEnabledModuleListenersTable::IDENTIFIER));
-					}
-				}
-			}
-		}
-		
-		public function enableListener($module, $identifier, $scope = null)
-		{
-			return true;
-			if (array_key_exists($module . '_' . $identifier, $this->_listeners) && !$this->_listeners[$module . '_' . $identifier]['enabled'])
-			{
-				if ($scope === null || $scope == TBGContext::getScope()->getID())
-				{
-					$listener = &$this->_listeners[$module . '_' . $identifier];
-					TBGEvent::listen($module, $identifier, array($this, $listener['callback_function']));
-					$listener['enabled'] = true;
-				}
-			}
-		}
-
-		public function enableListenerSaved($module, $identifier, $scope = null)
-		{
-			$this->enableListener($module, $identifier, $scope);
-			B2DB::getTable('TBGEnabledModuleListenersTable')->savePermanentListener($module, $identifier, $this->getName(), $scope);
-		}
-
 		public function setConfigTitle($title)
 		{
 			$this->_module_config_title = $title;
@@ -357,15 +292,6 @@
 			return $this->_enabled;
 		}
 		
-		public function isListening($module, $identifier)
-		{
-			if ($this->_enabled && array_key_exists($module . '_' . $identifier, $this->_listeners))
-			{
-				return $this->_listeners[$module . '_' . $identifier]['enabled'];
-			}
-			return false;
-		}
-
 		public function addRoute($key, $url, $function, $params = array(), $csrf_enabled = false, $module_name = null)
 		{
 			$module_name = ($module_name !== null) ? $module_name : $this->getName();
@@ -378,10 +304,10 @@
 			if ($this->isEnabled())
 			{
 				$this->_addAvailablePermissions();
-				$this->_addAvailableListeners();
+				$this->_addListeners();
 				if (!TBGCache::isEnabled() || !TBGCache::get('routes_2'))
 				{
-					$this->_addAvailableRoutes();
+					$this->_addRoutes();
 					$this->_loadRoutes();
 				}
 			}

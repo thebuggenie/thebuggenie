@@ -41,20 +41,16 @@
 		
 		protected function _install($scope)
 		{
-			$this->enableListenerSaved('core', 'project_sidebar_links_timeline');
-			$this->enableListenerSaved('core', 'viewissue_tabs');
-			$this->enableListenerSaved('core', 'viewissue_tab_panes_back');
-			//TBGPublish::getModule()->loadArticles('VCSIntegration', true);
 		}
 		
-		protected function _addAvailableListeners()
+		protected function _addListeners()
 		{
-			$this->addAvailableListener('core', 'project_sidebar_links_timeline', 'listen_SidebarLinks', 'Project sidebar links');
-			$this->addAvailableListener('core', 'viewissue_tabs', 'listen_viewissue_tab', 'Tab to view commit details when viewing issues');
-			$this->addAvailableListener('core', 'viewissue_tab_panes_back', 'listen_viewissue_panel', 'Commit details shown when viewing issues');
+			TBGEvent::listen('core', 'project_sidebar_links_timeline', array($this, 'listen_SidebarLinks'));
+			TBGEvent::listen('core', 'viewissue_tabs', array($this, 'listen_viewissue_tab'));
+			TBGEvent::listen('core', 'viewissue_tab_panes_back', array($this, 'listen_viewissue_panel'));
 		}
 
-		protected function _addAvailableRoutes()
+		protected function _addRoutes()
 		{
 			$this->addRoute('normalcheckin', '/vcs_integration/report/:project/', 'addCommit');
 			$this->addRoute('githubcheckin', '/vcs_integration/report/:project/github/', 'addCommitGithub');

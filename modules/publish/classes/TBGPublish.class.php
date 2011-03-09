@@ -48,22 +48,22 @@
 			}
 		}
 
-		protected function _addAvailableListeners()
+		protected function _addListeners()
 		{
-			$this->addAvailableListener('core', 'index_left', 'listen_frontpageLeftmenu', 'Frontpage left menu');
-			$this->addAvailableListener('core', 'index_right_top', 'listen_frontpageArticle', 'Frontpage article');
+			TBGEvent::listen('core', 'index_left', array($this, 'listen_frontpageLeftmenu'));
+			TBGEvent::listen('core', 'index_right_top', array($this, 'listen_frontpageArticle'));
 			if ($this->isWikiTabsEnabled())
 			{
-				$this->addAvailableListener('core', 'project_overview_item_links', 'listen_projectLinks', 'Project overview links');
-				$this->addAvailableListener('core', 'menustrip_item_links', 'listen_MenustripLinks', 'Menustrip links');
-				$this->addAvailableListener('core', 'breadcrumb_main_links', 'listen_BreadcrumbMainLinks', 'Main links');
-				$this->addAvailableListener('core', 'breadcrumb_project_links', 'listen_BreadcrumbProjectLinks', 'Main links');
+				TBGEvent::listen('core', 'project_overview_item_links', array($this, 'listen_projectLinks'));
+				TBGEvent::listen('core', 'menustrip_item_links', array($this, 'listen_MenustripLinks'));
+				TBGEvent::listen('core', 'breadcrumb_main_links', array($this, 'listen_BreadcrumbMainLinks'));
+				TBGEvent::listen('core', 'breadcrumb_project_links', array($this, 'listen_BreadcrumbProjectLinks'));
 			}
-			$this->addAvailableListener('core', 'TBGProject::createNew', 'listen_createNewProject', 'Create basic project wiki page');
-			$this->addAvailableListener('core', 'upload', 'listen_upload', 'File is uploaded');
+			TBGEvent::listen('core', 'TBGProject::createNew', array($this, 'listen_createNewProject'));
+			TBGEvent::listen('core', 'upload', array($this, 'listen_upload'));
 		}
 
-		protected function _addAvailableRoutes()
+		protected function _addRoutes()
 		{
 			$this->addRoute('publish', '/wiki', 'showArticle', array('article_name' => 'MainPage'));
 			$this->addRoute('publish_article_new', '/wiki/new', 'editArticle', array('article_name' => 'NewArticle'));
@@ -86,12 +86,6 @@
 			TBGContext::setPermission('manage_billboard', 0, 'publish', 0, 1, 0, true, $scope);
 			$this->saveSetting('allow_camelcase_links', 1);
 
-			$this->enableListenerSaved('core', 'index_left');
-			$this->enableListenerSaved('core', 'index_right_top');
-			$this->enableListenerSaved('core', 'project_overview_item_links');
-			$this->enableListenerSaved('core', 'menustrip_item_links');
-			$this->enableListenerSaved('core', 'TBGProject::createNew');
-  									  
 			TBGContext::getRouting()->addRoute('publish_article', '/wiki/:article_name', 'publish', 'showArticle');
 			TBGTextParser::addRegex('/(?<![\!|\"|\[|\>|\/\:])\b[A-Z]+[a-z]+[A-Z][A-Za-z]*\b/', array($this, 'getArticleLinkTag'));
 			TBGTextParser::addRegex('/(?<!")\![A-Z]+[a-z]+[A-Z][A-Za-z]*\b/', array($this, 'stripExclamationMark'));

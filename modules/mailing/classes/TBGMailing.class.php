@@ -29,22 +29,22 @@
 			$this->setHasConfigSettings();
 		}
 
-		protected function _addAvailableListeners()
+		protected function _addListeners()
 		{
 			$i18n = TBGContext::getI18n();
-			$this->addAvailableListener('core', 'user_registration', 'listen_registerUser', $i18n->__('Email when user registers'));
-			$this->addAvailableListener('core', 'password_reset', 'listen_forgottenPassword', $i18n->__('Email to reset password'));
-			$this->addAvailableListener('core', 'viewissue_top', 'listen_issueTop', $i18n->__('Email when user registers'));
-			$this->addAvailableListener('core', 'login_form_pane', 'listen_loginPane', $i18n->__('Email to reset password'));
-			$this->addAvailableListener('core', 'login_form_tab', 'listen_loginTab', $i18n->__('Email to reset password'));
-			$this->addAvailableListener('core', 'password_reset', 'listen_passwordReset', $i18n->__('Email when password is reset'));
-			$this->addAvailableListener('core', 'TBGIssue::save', 'listen_issueSave', $i18n->__('Email when an issue is updated'));
-			$this->addAvailableListener('core', 'TBGIssue::createNew', 'listen_issueCreate', $i18n->__('Email on new issues'));
-			$this->addAvailableListener('core', 'TBGComment::createNew', 'listen_TBGComment_createNew', $i18n->__('Email when comments are posted'));
-			$this->addAvailableListener('core', 'header_begins', 'listen_headerBegins', $i18n->__('Javascript Mailing'));
+			TBGEvent::listen('core', 'user_registration', array($this, 'listen_registerUser'));
+			TBGEvent::listen('core', 'password_reset', array($this, 'listen_forgottenPassword'));
+			TBGEvent::listen('core', 'viewissue_top', array($this, 'listen_issueTop'));
+			TBGEvent::listen('core', 'login_form_pane', array($this, 'listen_loginPane'));
+			TBGEvent::listen('core', 'login_form_tab', array($this, 'listen_loginTab'));
+			TBGEvent::listen('core', 'password_reset', array($this, 'listen_passwordReset'));
+			TBGEvent::listen('core', 'TBGIssue::save', array($this, 'listen_issueSave'));
+			TBGEvent::listen('core', 'TBGIssue::createNew', array($this, 'listen_issueCreate'));
+			TBGEvent::listen('core', 'TBGComment::createNew', array($this, 'listen_TBGComment_createNew'));
+			TBGEvent::listen('core', 'header_begins', array($this, 'listen_headerBegins'));
 		}
 
-		protected function _addAvailableRoutes()
+		protected function _addRoutes()
 		{
 			$this->addRoute('forgot', '/forgot', 'forgot');
 			$this->addRoute('reset', '/reset/:user/:reset_hash', 'resetPassword', array('continue' => true));
@@ -53,14 +53,6 @@
 		
 		protected function _install($scope)
 		{
-			$this->enableListenerSaved('core', 'user_registration', $scope);
-			$this->enableListenerSaved('core', 'login_form_tab', $scope);
-			$this->enableListenerSaved('core', 'login_form_pane', $scope);
-			$this->enableListenerSaved('core', 'password_reset', $scope);
-			$this->enableListenerSaved('core', 'TBGIssue::save', $scope);
-			$this->enableListenerSaved('core', 'TBGIssue::createNew', $scope);
-			$this->enableListenerSaved('core', 'TBGComment::createNew', $scope);
-			$this->enableListenerSaved('core', 'header_begins', $scope);
 			$this->saveSetting('smtp_host', '');
 			$this->saveSetting('smtp_port', 25);
 			$this->saveSetting('smtp_user', '');
