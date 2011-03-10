@@ -79,7 +79,16 @@
 		
 		static function countComments($target_id, $target_type, $include_system_comments = true)
 		{
-			return (int) TBGCommentsTable::getTable()->countComments($target_id, $target_type, $include_system_comments);
+			if (!array_key_exists($target_type, self::$_comment_count))
+				self::$_comment_count[$target_type] = array();
+
+			if (!array_key_exists($target_id, self::$_comment_count[$target_type]))
+				self::$_comment_count[$target_type][$target_id] = array();
+
+			if (!array_key_exists((int) $include_system_comments, self::$_comment_count[$target_type][$target_id]))
+				self::$_comment_count[$target_type][$target_id][(int) $include_system_comments] = (int) TBGCommentsTable::getTable()->countComments($target_id, $target_type, $include_system_comments);
+
+			return (int) self::$_comment_count[$target_type][$target_id][(int) $include_system_comments];
 		}
 		
 		public function setTitle($var)
@@ -164,6 +173,17 @@
 				{
 					$this->_comment_number = TBGCommentsTable::getTable()->getNextCommentNumber($this->_target_id, $this->_target_type);
 				}
+			}
+		}
+
+		protected function _postSave($is_new)
+		{
+			if ($is_new)
+			{
+				$tty = $this->getTargetType();
+				$tid = $this->getTargetID();
+				if (array_key_exists($tty, self::$_comment_count) && array_key_exists($tid, self::$_comment_count[$tty]) && array_key_exists((int) $this->isSystemComment(), self::$_comment_count[$tty][$tid]))
+					self::$_comment_count[$tty][$tid][(int) $this->isSystemComment()]++;
 			}
 		}
 		

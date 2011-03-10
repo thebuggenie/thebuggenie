@@ -459,6 +459,8 @@
 
 		protected $_num_user_comments;
 
+		protected $_custom_populated = false;
+
 		/**
 		 * All custom data type properties
 		 *
@@ -657,7 +659,7 @@
 		 */
 		public function _construct(B2DBRow $row, $foreign_key = null)
 		{
-			$this->_populateCustomfields();
+			//$this->_populateCustomfields();
 			$this->_mergeChangedProperties();
 		}
 		
@@ -780,30 +782,35 @@
 		 */
 		protected function _populateCustomfields()
 		{
-			foreach (TBGCustomDatatype::getAll() as $key => $customdatatype)
+			if (!$this->_custom_populated)
 			{
-				$var_name = "_customfield".$key;
-				$this->$var_name = null;
-			}
-			if ($res = TBGIssueCustomFieldsTable::getTable()->getAllValuesByIssueID($this->getID()))
-			{
-				while ($row = $res->getNextRow())
+				$this->_custom_populated = true;
+				foreach (TBGCustomDatatype::getAll() as $key => $customdatatype)
 				{
-					$var_name = "_customfield".$row->get(TBGCustomFieldsTable::FIELD_KEY);
-					$datatype = new TBGCustomDatatype($row->get(TBGCustomFieldsTable::ID));
-					
-					if ($datatype->hasCustomOptions())
+					$var_name = "_customfield".$key;
+					$this->$var_name = null;
+				}
+				if ($res = TBGIssueCustomFieldsTable::getTable()->getAllValuesByIssueID($this->getID()))
+				{
+					while ($row = $res->getNextRow())
 					{
-						if ($optionrow = TBGCustomFieldOptionsTable::getTable()->doSelectById($row->get(TBGIssueCustomFieldsTable::OPTION_VALUE)))
+						$var_name = "_customfield".$row->get(TBGCustomFieldsTable::FIELD_KEY);
+						$datatype = new TBGCustomDatatype($row->get(TBGCustomFieldsTable::ID));
+
+						if ($datatype->hasCustomOptions())
 						{
-							$this->$var_name = $optionrow->get(TBGCustomFieldOptionsTable::OPTION_VALUE);
+							if ($optionrow = TBGCustomFieldOptionsTable::getTable()->doSelectById($row->get(TBGIssueCustomFieldsTable::OPTION_VALUE)))
+							{
+								$this->$var_name = $optionrow->get(TBGCustomFieldOptionsTable::OPTION_VALUE);
+							}
+						}
+						else
+						{
+							$this->$var_name = $row->get(TBGIssueCustomFieldsTable::OPTION_VALUE);
 						}
 					}
-					else
-					{
-						$this->$var_name = $row->get(TBGIssueCustomFieldsTable::OPTION_VALUE);
-					}
 				}
+				$this->_mergeChangedProperties();
 			}
 		}
 		
@@ -2039,6 +2046,7 @@
 		 */
 		public function getCustomField($key)
 		{
+			$this->_populateCustomfields();
 			$var_name = "_customfield{$key}";
 			if (property_exists($this, $var_name) && !is_null($this->$var_name))
 			{

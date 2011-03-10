@@ -66,7 +66,7 @@
 				$crit = $this->getCriteria();
 				$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 				$crit->addOrderBy(self::ORDER, B2DBCriteria::SORT_ASC);
-				if ($res = $this->doSelect($crit))
+				if ($res = $this->doSelect($crit, false))
 				{
 					while ($row = $res->getNextRow())
 					{

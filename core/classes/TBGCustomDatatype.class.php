@@ -55,7 +55,7 @@
 		 */		
 		public static function getAll()
 		{
-			if (self::$_types === NULL)
+			if (self::$_types === null)
 			{
 				self::$_types = array();
 				if ($items = B2DB::getTable('TBGCustomFieldsTable')->getAll())

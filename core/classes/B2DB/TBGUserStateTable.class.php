@@ -54,5 +54,13 @@
 			parent::_addVarchar(self::COLOR, 7, '');
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
+
+		public function getAll()
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+
+			return $this->doSelect($crit);
+		}
 		
 	}

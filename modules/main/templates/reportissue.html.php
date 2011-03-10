@@ -253,7 +253,7 @@
 				<table cellpadding="0" cellspacing="0"<?php if (array_key_exists('title', $errors)): ?> class="reportissue_error"<?php endif; ?>>
 					<tr>
 						<td style="width: 150px;"><label for="title" class="required"><span>* </span><?php echo __('Short summary'); ?></label></td>
-						<td style="text-align: right;"><input type="text" name="title" id="title" <?php if ((isset($title) && $title == $default_title) || !isset($title) || (isset($title) && trim($title) == '')): ?> class="title faded_out"<?php endif; ?> value="<?php echo (isset($title) && trim($title) != '') ? $title : $default_title; ?>" onblur="if ($('title').getValue() == '') { $('title').value = '<?php echo $default_title; ?>'; $('title').addClassName('faded_out'); }" onfocus="if ($('title').getValue() == '<?php echo $default_title; ?>') { $('title').clear(); } $('title').removeClassName('faded_out');"></td>
+						<td style="text-align: right;"><input type="text" name="title" id="title" <?php if ((isset($title) && $title == $default_title) || !isset($title) || (isset($title) && trim($title) == '')): ?> class="title faded_out"<?php endif; ?> value="<?php echo (isset($title) && trim($title) != '') ? htmlspecialchars($title) : $default_title; ?>" onblur="if ($('title').getValue() == '') { $('title').value = '<?php echo $default_title; ?>'; $('title').addClassName('faded_out'); }" onfocus="if ($('title').getValue() == '<?php echo $default_title; ?>') { $('title').clear(); } $('title').removeClassName('faded_out');"></td>
 					</tr>
 				</table>
 				<div id="report_issue_more_options_indicator">

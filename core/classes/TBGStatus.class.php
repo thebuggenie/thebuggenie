@@ -39,7 +39,7 @@
 		 */		
 		public static function getAll()
 		{
-			if (self::$_items === NULL)
+			if (self::$_items === null)
 			{
 				self::$_items = array();
 				if ($items = TBGListTypesTable::getTable()->getAllByItemType(self::STATUS))

@@ -22,6 +22,7 @@
 		const KEY_PREMODULES_ROUTES_CACHE = '_routes';
 		const KEY_POSTMODULES_ROUTES_CACHE = '_routes_postmodules';
 		const KEY_PERMISSIONS_CACHE = '_permissions';
+		const KEY_USERSTATES_CACHE = 'TBGUserstate::getAll';
 		
 		protected static $_enabled = false;
 		protected static $_filecache_enabled = false;
@@ -32,6 +33,14 @@
 			$success = false;
 			$var = apc_fetch($key, $success);
 			return ($success) ? $var : null;
+		}
+
+		public static function has($key)
+		{
+			if (!self::isEnabled()) return false;
+			$success = false;
+			apc_fetch($key, $success);
+			return $success;
 		}
 		
 		public static function add($key, $value)

@@ -34,18 +34,17 @@
 		{
 			if (self::$_userstates === null)
 			{
-				$crit = new B2DBCriteria();
-				$crit->addWhere(TBGUserStateTable::SCOPE, TBGContext::getScope()->getID());
-				
-				$res = B2DB::getTable('TBGUserStateTable')->doSelect($crit);
-		
-				$aStates = array();
-				
-				while ($row = $res->getNextRow())
+				if (!($states = TBGCache::get(TBGCache::KEY_USERSTATES_CACHE)))
 				{
-					$aStates[$row->get(TBGUserStateTable::ID)] = TBGContext::factory()->TBGUserstate($row->get(TBGUserStateTable::ID), $row);
+					$res = TBGUserStateTable::getTable()->doSelect($crit);
+					$states = array();
+					while ($row = $res->getNextRow())
+					{
+						$states[$row->get(TBGUserStateTable::ID)] = TBGContext::factory()->TBGUserstate($row->get(TBGUserStateTable::ID), $row);
+					}
+					TBGCache::add(TBGCache::KEY_USERSTATES_CACHE, $states);
 				}
-				self::$_userstates = $aStates;
+				self::$_userstates = $states;
 			}
 			return self::$_userstates;
 		}

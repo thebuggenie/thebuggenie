@@ -1153,7 +1153,7 @@
 					}
 					else
 					{
-						$issue->setTitle($request->getParameter('value'));
+						$issue->setTitle($request->getRawParameter('value'));
 						return $this->renderJSON(array('changed' => $issue->isTitleChanged(), 'field' => array('id' => 1, 'name' => strip_tags($issue->getTitle())), 'title' => strip_tags($issue->getTitle())));
 					}
 					break;
