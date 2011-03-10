@@ -338,11 +338,8 @@
 		 */
 		public static function getByKey($key)
 		{
-			if ($project_row = TBGProjectsTable::getTable()->getByKey(strtolower($key)))
-			{
-				return TBGContext::factory()->TBGProject($project_row->get(TBGProjectsTable::ID), $project_row);
-			}
-			return null;
+			self::_populateProjects();
+			return (array_key_exists($key, self::$_projects)) ? self::$_projects[$key] : null;
 		}
 		
 		/**
@@ -360,7 +357,7 @@
 						$project = TBGContext::factory()->TBGProject($row->get(TBGProjectsTable::ID), $row);
 						if ($project->hasAccess() && $project->isDeleted() == 0)
 						{
-							self::$_projects[$project->getID()] = $project;
+							self::$_projects[$project->getKey()] = $project;
 						}
 					}
 				}
