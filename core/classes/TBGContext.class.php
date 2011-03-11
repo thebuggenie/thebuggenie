@@ -92,6 +92,13 @@
 		static protected $_installmode = false;
 		
 		/**
+		 * Whether we're in upgrademode or not
+		 * 
+		 * @var boolean
+		 */
+		static protected $_upgrademode = false;
+		
+		/**
 		 * The i18n object
 		 *
 		 * @var TBGI18n
@@ -192,6 +199,16 @@
 		public static function isInstallmode()
 		{
 			return self::$_installmode;
+		}
+
+		/**
+		 * Returns whether or not we're in upgrade mode
+		 * 
+		 * @return boolean
+		 */
+		public static function isUpgrademode()
+		{
+			return self::$_upgrademode;
 		}
 
 		/**
@@ -395,6 +412,8 @@
 		{
 			if (!is_readable(THEBUGGENIE_PATH . 'installed'))
 				self::$_installmode = true;
+			elseif (is_readable(THEBUGGENIE_PATH . 'upgrade'))
+				self::$_installmode = self::$_upgrademode = true;
 			elseif (!class_exists('B2DB'))
 				throw new Exception("The Bug Genie seems installed, but B2DB isn't configured. This usually indicates an error with the installation. Try removing the file ".THEBUGGENIE_PATH."installed and try again.");
 		}
@@ -1999,7 +2018,11 @@
 			{
 				if (($route = self::getRouting()->getRouteFromUrl(self::getRequest()->getParameter('url', null, false)))  || self::isInstallmode())
 				{
-					if (self::isInstallmode())
+					if (self::isUpgrademode())
+					{
+						$route = array('module' => 'installation', 'action' => 'upgrade');
+					}
+					elseif (self::isInstallmode())
 					{
 						$route = array('module' => 'installation', 'action' => 'installIntro');
 					}

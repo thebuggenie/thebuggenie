@@ -21,7 +21,9 @@
 		<form accept-charset="utf-8" action="<?php echo make_url('upgrade'); ?>" method="post">
 			<input type="hidden" name="perform_upgrade" value="1">
 			<input type="checkbox" name="confirm_backup" id="confirm_backup" onclick="($('confirm_backup').checked) ? $('start_upgrade').enable() : $('start_upgrade').disable();">
-			<label for="confirm_backup" style="font-weight: bold; font-size: 14px;">I have made a backup, and will be solely responsible if I have chosen not to do so</label>&nbsp;&nbsp;<br>
+			<label for="confirm_backup" style="font-weight: bold; font-size: 14px;">
+				I have made a backup, and will be solely responsible if I have chosen not to do so
+				<div style="font-weight: normal; font-size: 11px; margin-left: 25px;">And even if I have made a backup I know there is no 100% guarantee this will work</div></label>&nbsp;&nbsp;<br>
 			<input type="submit" style="margin-top: 15px;" value="Perform upgrade" id="start_upgrade" disabled="disabled">
 		</form>
 	<?php else: ?>
