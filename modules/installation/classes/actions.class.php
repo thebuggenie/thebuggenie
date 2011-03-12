@@ -371,8 +371,16 @@
 
 		protected function _upgradeFrom3dot0()
 		{
+			// Add new tables
 			TBGScopeHostnamesTable::getTable()->create();
-			//foreach (TBGScope::getAll() as $scope)
+			
+			// Add classpath for existing old tables used for upgrade
+			TBGContext::addClasspath(THEBUGGENIE_PATH . 'modules' . DIRECTORY_SEPARATOR . 'installation' . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR . 'upgrade_3.0');
+			
+			// Upgrade old tables
+			TBGScopesTable::getTable()->upgrade(TBGScopesTable3dot0::getTable());
+			
+			$this->upgrade_complete = true;
 		}
 
 		public function runUpgrade(TBGRequest $request)
@@ -381,17 +389,33 @@
 			$this->current_version = $version_info[0];
 			$this->upgrade_available = false;
 
-			switch ($this->current_version)
+			if ($request->isMethod(TBGRequest::POST))
 			{
-				case '3.0':
-					$this->_upgradeFrom3dot0();
-					break;
+				$this->upgrade_complete = false;
+				switch ($this->current_version)
+				{
+					case '3.0':
+						$this->_upgradeFrom3dot0();
+						break;
+				}
+				
+				if ($this->upgrade_complete)
+				{
+					$existing_installed_content = file_get_contents(THEBUGGENIE_PATH . 'installed');
+					file_put_contents(THEBUGGENIE_PATH . 'installed', TBGSettings::getVersion(false, false) . ', upgraded ' . date('d.m.Y H:i') . "\n" . $existing_installed_content);
+					unlink(THEBUGGENIE_PATH . 'upgrade');
+				}
 			}
 
 			if ($this->current_version != '3.1')
 			{
 				$this->getResponse()->setDecoration(TBGResponse::DECORATE_NONE);
 				$this->upgrade_available = true;
+				$this->permissions_ok = false;
+				if (is_writable(THEBUGGENIE_PATH . 'installed') && is_writable(THEBUGGENIE_PATH . 'upgrade'))
+				{
+					$this->permissions_ok = true;
+				}
 			}
 		}
 

@@ -19,7 +19,7 @@
 	class TBGScopesTable extends TBGB2DBTable 
 	{
 		
-		const B2DB_TABLE_VERSION = 1;
+		const B2DB_TABLE_VERSION = 2;
 		const B2DBNAME = 'scopes';
 		const ID = 'scopes.id';
 		const ENABLED = 'scopes.enabled';
@@ -50,6 +50,14 @@
 			parent::_addInteger(self::ADMINISTRATOR, 10);
 		}
 
+		protected function _migrateData(BaseB2DBTable $old_table)
+		{
+			$crit = TBGScopeHostnamesTable::getTable()->getCriteria();
+			$crit->addInsert(TBGScopeHostnamesTable::HOSTNAME, '*');
+			$crit->addInsert(TBGScopeHostnamesTable::SCOPE_ID, 1);
+			TBGScopeHostnamesTable::getTable()->doInsert($crit);
+		}
+		
 		public function getByHostname($hostname)
 		{
 			$crit = $this->getCriteria();

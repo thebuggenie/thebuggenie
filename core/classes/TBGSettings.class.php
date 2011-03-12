@@ -176,9 +176,10 @@
 			}
 		}
 		
-		public static function getVersion($with_codename = false)
+		public static function getVersion($with_codename = false, $with_revision = true)
 		{
-			$retvar = self::$_ver_mj . '.' . self::$_ver_mn . '.' . self::$_ver_rev;
+			$retvar = self::$_ver_mj . '.' . self::$_ver_mn;
+			if ($with_revision) $retvar .= '.' . self::$_ver_rev;
 			if ($with_codename) $retvar .= ' ("' . self::$_ver_name . '")';
 			return $retvar;  
 		}
