@@ -39,3 +39,4 @@
   $strings["Changed files:"] = "Archivos modificados";
   $strings["Diff"] = "Diferencia";
   $strings["View"] = "Ver";
+  $strings["new file"] = "Archivo nuevo";
