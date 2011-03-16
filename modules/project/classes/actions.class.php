@@ -678,7 +678,7 @@
 
 		public function runListIssues(TBGRequest $request)
 		{
-			$filters = array();
+			$filters = array('project_id' => array('operator' => '=', 'value' => $this->selected_project->getID()));
 			$filter_state = $request->getParameter('state', 'all');
 			$filter_issuetype = $request->getParameter('issuetype', 'all');
 			$filter_assigned_to = $request->getParameter('assigned_to', 'all');
@@ -686,8 +686,10 @@
 			if (strtolower($filter_state) != 'all')
 			{
 				$filters['state'] = array('operator' => '=', 'value' => '');
-				if (strtolower($filter_state) == 'open') $filters['state']['value'] = TBGIssue::STATE_OPEN;
-				if (strtolower($filter_state) == 'closed') $filters['state']['value'] = TBGIssue::STATE_CLOSED;
+				if (strtolower($filter_state) == 'open')
+					$filters['state']['value'] = TBGIssue::STATE_OPEN;
+				elseif (strtolower($filter_state) == 'closed')
+					$filters['state']['value'] = TBGIssue::STATE_CLOSED;
 			}
 
 			if (strtolower($filter_issuetype) != 'all')
@@ -727,7 +729,7 @@
 				}
 			}
 
-			list ($this->issues, $this->count) = TBGIssue::findIssues($filters);
+			list ($this->issues, $this->count) = TBGIssue::findIssues($filters, 0);
 			$this->return_issues = array();
 		}
 
@@ -747,12 +749,6 @@
 			$this->issuefields = array_keys($issuefields);
 		}
 
-		public function listenUpdateIssueAddMessage(TBGEvent $event)
-		{
-			$this->comment_lines = $event->getParameter('comment_lines');
-			$this->comment = $event->getParameter('comment');
-		}
-
 		public function runUpdateIssueDetails(TBGRequest $request)
 		{
 			$this->error = false;
@@ -760,7 +756,7 @@
 			{
 				$i18n = TBGContext::getI18n();
 				$issue = TBGContext::factory()->TBGIssue($request->getParameter('issue_id'));
-				if ($issue->getProject() != $this->selected_project)
+				if ($issue->getProject()->getID() != $this->selected_project->getID())
 				{
 					throw new Exception($i18n->__('This issue is not valid for this project'));
 				}
@@ -870,25 +866,21 @@
 						$return_values[$field_key] = array('success' => false, 'error' => $e->getMessage());
 					}
 				}
-				$this->comment_lines = array();
-				$this->comment = '';
-				TBGEvent::listen('core', 'TBGIssue::save', array($this, 'listenUpdateIssueAddMessage'));
-				$issue->save(false);
-				$comment_body = $this->comment . "\n\n" . $request->getParameter('message');
-				$comment = new TBGComment();
-				$comment->setTitle('Issue updated!');
-				$comment->setContent($comment_body);
-				$comment->setPostedBy(TBGContext::getUser()->getID());
-				$comment->setTargetID($issue->getID());
-				$comment->setTargetType(TBGComment::TYPE_ISSUE);
-				$comment->save();
-
+				TBGEvent::listen('core', 'TBGIssue::save', function(TBGEvent $event) {
+					$comment = $event->getParameter('comment');
+					$comment->setContent($request->getRawParameter('message') . "\n\n" . $comment->getContent());
+					$comment->setSystemComment(false);
+					$comment->save();
+				});
+				$issue->getWorkflowStep()->getWorkflow()->moveIssueToMatchingWorkflowStep($issue);
+				$issue->save();
 				$this->return_values = $return_values;
 			}
 			catch (Exception $e)
 			{
 				$this->error = true;
 				$this->error_message = $e->getMessage();
+				die($e);
 			}
 		}
 

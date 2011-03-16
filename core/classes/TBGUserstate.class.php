@@ -36,7 +36,7 @@
 			{
 				if (!($states = TBGCache::get(TBGCache::KEY_USERSTATES_CACHE)))
 				{
-					$res = TBGUserStateTable::getTable()->doSelect($crit);
+					$res = TBGUserStateTable::getTable()->doSelectAll();
 					$states = array();
 					while ($row = $res->getNextRow())
 					{

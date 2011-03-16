@@ -36,6 +36,8 @@
 
 		protected static $_loglevel = 1;
 
+		protected static $_cli_log_to_screen_in_debug_mode = false;
+
 		/**
 		 * Log a message to the logger
 		 *
@@ -48,6 +50,12 @@
 			TBGContext::ping();
 			if (!self::$_logging_enabled) return false;
 			if (self::$_loglevel > $level) return false;
+			if (self::$_cli_log_to_screen_in_debug_mode && TBGContext::isCLI() && TBGContext::isDebugMode() && class_exists('TBGCliCommand'))
+			{
+				TBGCliCommand::cli_echo(strtoupper(self::getLevelName($level)), 'white', 'bold');
+				TBGCliCommand::cli_echo(" [{$category}] ", 'green', 'bold');
+				TBGCliCommand::cli_echo("$message\n");
+			}
 			if (self::$_logonajaxcalls || !(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) || (isset($_SERVER["HTTP_X_REQUESTED_WITH"]) && $_SERVER["HTTP_X_REQUESTED_WITH"] == '')))
 			{
 				if (self::$_logfile !== null)

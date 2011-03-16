@@ -1,7 +1,7 @@
 <?php
 
 	/**
-	 * CLI command class, main -> remote_list_issuetypes
+	 * CLI command class, remote -> list_issuetypes
 	 *
 	 * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
 	 ** @version 3.0
@@ -11,17 +11,17 @@
 	 */
 
 	/**
-	 * CLI command class, main -> remote_list_issuetypes
+	 * CLI command class, remote -> list_issuetypes
 	 *
 	 * @package thebuggenie
 	 * @subpackage core
 	 */
-	class CliMainRemoteListIssuetypes extends TBGCliRemoteCommand
+	class CliRemoteListIssuetypes extends TBGCliRemoteCommand
 	{
 
 		protected function _setup()
 		{
-			$this->_command_name = 'remote_list_issuetypes';
+			$this->_command_name = 'list_issuetypes';
 			$this->_description = "Query a remote server for a list of available issue types";
 			parent::_setup();
 		}

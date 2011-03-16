@@ -1,7 +1,7 @@
 <?php
 
 	/**
-	 * CLI command class, main -> remote_list_projects
+	 * CLI command class, remote -> list_projects
 	 *
 	 * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
 	 ** @version 3.0
@@ -11,17 +11,17 @@
 	 */
 
 	/**
-	 * CLI command class, main -> remote_list_projects
+	 * CLI command class, remote -> list_projects
 	 *
 	 * @package thebuggenie
 	 * @subpackage core
 	 */
-	class CliMainRemoteListProjects extends TBGCliRemoteCommand
+	class CliRemoteListProjects extends TBGCliRemoteCommand
 	{
 
 		protected function _setup()
 		{
-			$this->_command_name = 'remote_list_projects';
+			$this->_command_name = 'list_projects';
 			$this->_description = "Query a remote server for a list of available projects";
 			parent::_setup();
 		}

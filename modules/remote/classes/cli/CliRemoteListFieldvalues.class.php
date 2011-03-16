@@ -1,7 +1,7 @@
 <?php
 
 	/**
-	 * CLI command class, main -> remote_list_fieldvalues
+	 * CLI command class, remote -> list_fieldvalues
 	 *
 	 * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
 	 ** @version 3.0
@@ -11,17 +11,17 @@
 	 */
 
 	/**
-	 * CLI command class, main -> remote_list_fieldvalues
+	 * CLI command class, remote -> list_fieldvalues
 	 *
 	 * @package thebuggenie
 	 * @subpackage core
 	 */
-	class CliMainRemoteListFieldvalues extends TBGCliRemoteCommand
+	class CliRemoteListFieldvalues extends TBGCliRemoteCommand
 	{
 
 		protected function _setup()
 		{
-			$this->_command_name = 'remote_list_fieldvalues';
+			$this->_command_name = 'list_fieldvalues';
 			$this->_description = "Query a remote server for a list of available field values";
 			$this->addRequiredArgument('field_key', 'The key for an issue field to show available values for');
 			$this->addOptionalArgument('project_key', "The key for a project to retrieve values for in case of project specific values (e.g. milestone)");
@@ -93,12 +93,12 @@
 				}
 				$this->cliEcho("\n");
 				$this->cliEcho("When using ");
-				$this->cliEcho('remote_update_issue', 'green');
+				$this->cliEcho('remote:update_issue', 'green');
 				$this->cliEcho(" to update an issue, pass any combination of a field key and a valid value\n");
 				$this->cliEcho("as a parameter to update the issue details.\n");
 				$this->cliEcho("\n");
 				$this->cliEcho("For more information, check the documentation for ");
-				$this->cliEcho('remote_update_issue', 'green');
+				$this->cliEcho('remote:update_issue', 'green');
 				$this->cliEcho(".\n");
 
 			}

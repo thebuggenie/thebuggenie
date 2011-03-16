@@ -72,13 +72,20 @@
 			return $this->doSelectById(1);
 		}
 
-		public function getByHostnameOrDefault($hostname)
+		public function getByHostnameOrDefault($hostname = null)
 		{
 			$crit = $this->getCriteria();
-			$crit->addJoin(TBGScopeHostnamesTable::getTable(), TBGScopeHostnamesTable::SCOPE_ID, self::ID);
-			$crit->addWhere(TBGScopeHostnamesTable::HOSTNAME, $hostname);
-			$crit->addOr(self::ID, 1);
-			$crit->addOrderBy(self::ID, 'desc');
+			if ($hostname !== null)
+			{
+				$crit->addJoin(TBGScopeHostnamesTable::getTable(), TBGScopeHostnamesTable::SCOPE_ID, self::ID);
+				$crit->addWhere(TBGScopeHostnamesTable::HOSTNAME, $hostname);
+				$crit->addOr(self::ID, 1);
+				$crit->addOrderBy(self::ID, 'desc');
+			}
+			else
+			{
+				$crit->addWhere(self::ID, 1);
+			}
 
 			if ($res = $this->doSelect($crit))
 			{

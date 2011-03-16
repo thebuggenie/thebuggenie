@@ -591,7 +591,7 @@
 					switch ($groupby)
 					{
 						case 'category':
-							$crit->addOrderBy(TBGListTypesTable::CATEGORY, $grouporder);
+							$crit->addOrderBy(TBGListTypesTable::NAME, $grouporder);
 							break;
 						case 'status':
 							$crit->addOrderBy(self::STATUS, $grouporder);

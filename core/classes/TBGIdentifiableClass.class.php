@@ -53,7 +53,7 @@
 		 */
 		public function getID()
 		{
-			return $this->_id;
+			return (int) $this->_id;
 		}
 
 		/**

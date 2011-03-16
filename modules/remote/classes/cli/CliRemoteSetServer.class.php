@@ -16,12 +16,12 @@
 	 * @package thebuggenie
 	 * @subpackage core
 	 */
-	class CliMainSetRemoteServer extends TBGCliCommand
+	class CliRemoteSetServer extends TBGCliCommand
 	{
 
 		protected function _setup()
 		{
-			$this->_command_name = 'set_remote';
+			$this->_command_name = 'set_server';
 			$this->_description = "Set a default server to connect to and / or username to connect as";
 			$this->addRequiredArgument('server_url', "The URL for the remote The Bug Genie installation");
 			$this->addOptionalArgument('username', "The username to connect with. If not specified, will use the current logged in user");

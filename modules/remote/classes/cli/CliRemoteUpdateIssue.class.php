@@ -1,7 +1,7 @@
 <?php
 
 	/**
-	 * CLI command class, main -> remote_update_issue
+	 * CLI command class, remote -> update_issue
 	 *
 	 * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
 	 ** @version 3.0
@@ -11,17 +11,17 @@
 	 */
 
 	/**
-	 * CLI command class, main -> remote_update_issue
+	 * CLI command class, remote -> update_issue
 	 *
 	 * @package thebuggenie
 	 * @subpackage core
 	 */
-	class CliMainRemoteUpdateIssue extends TBGCliRemoteCommand
+	class CliRemoteUpdateIssue extends TBGCliRemoteCommand
 	{
 
 		protected function _setup()
 		{
-			$this->_command_name = 'remote_update_issue';
+			$this->_command_name = 'update_issue';
 			$this->_description = "Update an issue on a remote server";
 			$this->addRequiredArgument('project_key', 'The project key for the project you want to update an issue for');
 			$this->addRequiredArgument('issue_id', 'The ID of the issue to update (see remote_list_issues or remote_get_issue_id)');
@@ -77,19 +77,26 @@
 			
 			$this->cliEcho("\n");
 			$this->cliEcho("Updating fields: \n", 'white', 'bold');
-			$response = $this->getRemoteResponse($this->getRemoteURL('project_update_issuedetails', $url_options), $post_data);
-			foreach ($fields as $key => $value)
+			if (count($fields))
 			{
-				$this->cliEcho("  ".str_pad($key, 20), 'yellow');
-				if ($response->$key && $response->$key->success)
+				$response = $this->getRemoteResponse($this->getRemoteURL('project_update_issuedetails', $url_options), $post_data);
+				foreach ($fields as $key => $value)
 				{
-					$this->cliEcho('OK!', 'green');
+					$this->cliEcho("  ".str_pad($key, 20), 'yellow');
+					if ($response->$key && $response->$key->success)
+					{
+						$this->cliEcho('OK!', 'green');
+					}
+					else
+					{
+						$this->cliEcho("failed ({$response->$key->error})", 'red');
+					}
+					$this->cliEcho("\n");
 				}
-				else
-				{
-					$this->cliEcho("failed ({$response->$key->error})", 'red');
-				}
-				$this->cliEcho("\n");
+			}
+			else
+			{
+				$this->cliEcho('No fields to update!', 'red', 'bold');
 			}
 
 			$this->cliEcho("\n");

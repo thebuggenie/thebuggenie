@@ -20,6 +20,7 @@
 	// Set up all available search paths for cli commands
 	$command_paths = array();
 	$command_paths['main'] = THEBUGGENIE_PATH . 'modules' . DIRECTORY_SEPARATOR . 'main' . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR . 'cli' . DIRECTORY_SEPARATOR;
+	$command_paths['remote'] = THEBUGGENIE_PATH . 'modules' . DIRECTORY_SEPARATOR . 'remote' . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR . 'cli' . DIRECTORY_SEPARATOR;
 	foreach (TBGContext::getModules() as $module_name => $module)
 	{
 		$module_cli_path = THEBUGGENIE_PATH . 'modules' . DIRECTORY_SEPARATOR . $module_name . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR . 'cli' . DIRECTORY_SEPARATOR;

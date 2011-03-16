@@ -1444,11 +1444,13 @@
 			$row = null;
 			try
 			{
+				$hostname = null;
 				if (!self::isCLI() && !self::isInstallmode())
 				{
 					TBGLogging::log("Checking if scope can be set from hostname (".$_SERVER['HTTP_HOST'].")");
-					$row = TBGScopesTable::getTable()->getByHostnameOrDefault($_SERVER['HTTP_HOST']);
+					$hostname = $_SERVER['HTTP_HOST'];
 				}
+				$row = TBGScopesTable::getTable()->getByHostnameOrDefault($hostname);
 				
 				if (!$row instanceof B2DBRow)
 				{
