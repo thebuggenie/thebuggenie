@@ -1,12 +1,10 @@
 <?php
 
+	defined('DS') || define('DS', DIRECTORY_SEPARATOR);
+	
+	// The time the script was loaded
 	$starttime = explode(' ', microtime());
-
-	/**
-	 * The time the script was loaded
-	 */
 	define('NOW', $starttime[1]);
-	error_reporting(E_ALL | E_STRICT);
 
 	/**
 	 * Displays a nicely formatted exception message
@@ -383,43 +381,46 @@ echo "
 		//tbg_exception($error, array('code' => $code, 'file' => $file, 'line' => $line_number));
 	}
 	
-	set_error_handler('tbg_error_handler');
-	set_exception_handler('tbg_exception');
-	
-	if (!defined('THEBUGGENIE_PATH'))
-	{
-		tbg_msgbox(true, 'THEBUGGENIE_PATH not defined', 'You must define the THEBUGGENIE_PATH constant so we can find the files we need');
-	}
-
 	/**
 	 * Magic autoload function to make sure classes are autoloaded when used
-	 * 
+	 *
 	 * @param $classname
 	 */
 	function __autoload($classname)
 	{
-		$classes = TBGContext::getClasspaths();
-		if (isset($classes[$classname]))
+		foreach (TBGContext::getClasspaths() as $path)
 		{
-			require $classes[$classname];
+			if (file_exists($path . $classname . '.class.php'))
+			{
+				require $path . $classname . '.class.php';
+				break;
+			}
 		}
 	}
+
+	// Set up error and exception handling
+	set_error_handler('tbg_error_handler');
+	set_exception_handler('tbg_exception');
+	error_reporting(E_ALL | E_STRICT);
+	
+	// Set the default timezone
+	date_default_timezone_set('Europe/London');
+
+	if (!defined('THEBUGGENIE_PATH'))
+		throw new Exception('You must define the THEBUGGENIE_PATH constant so we can find the files we need');
+
+	// Load the context class, which controls most of things
+	require THEBUGGENIE_CORE_PATH . 'classes' . DS . 'TBGContext.class.php';
+
+	// Load the logging class so we can log stuff
+	require THEBUGGENIE_CORE_PATH . 'classes' . DS . 'TBGLogging.class.php';
 
 	// Start loading The Bug Genie
 	try
 	{
-		// Set the default timezone
-		date_default_timezone_set('Europe/London');
-		
-		// Load the context class, which controls most of things
-		require THEBUGGENIE_CORE_PATH . 'classes' . DIRECTORY_SEPARATOR . 'TBGContext.class.php';
-
-		// Load the logging class so we can log stuff
-		require THEBUGGENIE_CORE_PATH . 'classes' . DIRECTORY_SEPARATOR . 'TBGLogging.class.php';
-
 		// Set the start time
 		TBGContext::setLoadStart($starttime[1] + $starttime[0]);
-		TBGLogging::log('Initializing B2 framework');
+		TBGLogging::log('Initializing Caspar framework');
 		TBGLogging::log('PHP_SAPI says "' . PHP_SAPI . '"');
 
 		if (!isset($argc))
@@ -432,20 +433,20 @@ echo "
 		TBGContext::setIncludePath(THEBUGGENIE_PATH);
 
 		// Add classpath so we can find the TBG* classes
-		TBGContext::addClasspath(THEBUGGENIE_CORE_PATH . 'classes' . DIRECTORY_SEPARATOR);
+		TBGContext::addClasspath(THEBUGGENIE_CORE_PATH . 'classes' . DS);
 
 		// Load the logging class so we can log stuff
-		require THEBUGGENIE_CORE_PATH . 'classes' . DIRECTORY_SEPARATOR . 'TBGCache.class.php';
+		require THEBUGGENIE_CORE_PATH . 'classes' . DS . 'TBGCache.class.php';
 
-		TBGLogging::log((TBGCache::isEnabled()) ? 'Cache is enabled' : 'Cache is not enabled');
+		TBGLogging::log((TBGCache::isEnabled()) ? 'APC cache is enabled' : 'APC cache is not enabled');
 		
 		TBGLogging::log('Loading B2DB');
 		try
 		{
 			TBGLogging::log('Adding B2DB classes to autoload path');
-			define ('B2DB_BASEPATH', THEBUGGENIE_CORE_PATH . 'B2DB' . DIRECTORY_SEPARATOR);
-			define ('B2DB_CACHEPATH', THEBUGGENIE_CORE_PATH . 'cache' . DIRECTORY_SEPARATOR . 'B2DB' . DIRECTORY_SEPARATOR);
-			TBGContext::addClasspath(THEBUGGENIE_CORE_PATH . 'B2DB' . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR);
+			define ('B2DB_BASEPATH', THEBUGGENIE_CORE_PATH . 'B2DB' . DS);
+			define ('B2DB_CACHEPATH', THEBUGGENIE_CORE_PATH . 'cache' . DS . 'B2DB' . DS);
+			TBGContext::addClasspath(THEBUGGENIE_CORE_PATH . 'B2DB' . DS . 'classes' . DS);
 			TBGLogging::log('...done (Adding B2DB classes to autoload path)');
 
 			TBGLogging::log('Initializing B2DB');
@@ -469,7 +470,7 @@ echo "
 				B2DB::doConnect();
 				TBGLogging::log('...done (Database connection details found, connecting)');
 				TBGLogging::log('Adding core table classpath to autoload path');
-				TBGContext::addClasspath(THEBUGGENIE_CORE_PATH . 'classes' . DIRECTORY_SEPARATOR . 'B2DB' . DIRECTORY_SEPARATOR);
+				TBGContext::addClasspath(THEBUGGENIE_CORE_PATH . 'classes' . DS . 'B2DB' . DS);
 			}
 			
 		}
@@ -487,7 +488,7 @@ echo "
 		//require THEBUGGENIE_CORE_PATH . 'common_functions.inc.php';
 		require THEBUGGENIE_CORE_PATH . 'geshi/geshi.php';
 		
-		TBGLogging::log('B2 framework loaded');
+		TBGLogging::log('Caspar framework loaded');
 	}
 	catch (Exception $e)
 	{

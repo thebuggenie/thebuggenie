@@ -215,47 +215,28 @@
 		 * Add a path to the list of searched paths in the autoloader
 		 * Class files must contain one class with the same name as the class
 		 * in the form of Classname.class.php
-		 * 
+		 *
 		 * @param string $classpath The path where the class files are
-		 * 
+		 *
 		 * @return null
 		 */
 		public static function addClasspath($classpath)
 		{
-			if (!file_exists($classpath)) throw new Exception("Cannot add {$classpath} to classpaths, since it doesn't exist");
-			if ($classpath[strlen($classpath) - 1] != DIRECTORY_SEPARATOR)
-			{
-				TBGLogging::log('Invalid classpath, appending directory separator', 'main', TBGLogging::LEVEL_WARNING);
-				$classpath .= DIRECTORY_SEPARATOR;
-			}
-			if (file_exists($classpath . 'generics.class.php') && !isset(self::$_classpaths[$classpath . 'generics.class.php']))
-			{
-				require_once $classpath . 'generics.class.php';
-			}
+			if (!is_dir($classpath))
+				throw new Exception("Cannot add {$classpath} to classpaths, since it doesn't exist");
+
+			$classpath = realpath($classpath) . DS;
+			
 			if (file_exists($classpath . 'actions.class.php'))
-			{
 				require_once $classpath . 'actions.class.php';
-			}
+
 			if (file_exists($classpath . 'actioncomponents.class.php'))
-			{
 				require_once $classpath . 'actioncomponents.class.php';
-			}
-			if ($dir_handle = opendir($classpath))
-			{
-				while (false !== ($file = readdir($dir_handle)))
-				{
-					if ($offset = strpos($file, '.class.php'))
-					{
-						self::$_classpaths[substr($file, 0, $offset)] = $classpath . $file;
-					}
-				}
-			}
-			else
-			{
-				throw new Exception($classpath . ' is not a valid directory');
-			}
+
+			self::$_classpaths[$classpath] = $classpath; // . $file;
+			return true;
 		}
-		
+
 		/**
 		 * Returns the classpaths that has been registered to the autoloader
 		 *
@@ -614,7 +595,7 @@
 		 */
 		public static function getThemes()
 		{
-			$theme_path_handle = opendir(self::getIncludePath() . THEBUGGENIE_PUBLIC_FOLDER_NAME . DIRECTORY_SEPARATOR . 'themes' . DIRECTORY_SEPARATOR);
+			$theme_path_handle = opendir(self::getIncludePath() . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'themes' . DS);
 			$themes = array();
 			
 			while ($theme = readdir($theme_path_handle))
@@ -689,59 +670,72 @@
 			{
 				self::$_modules = array();
 				if (self::isInstallmode()) return;
-				$modules = array();
 
-				TBGLogging::log('getting modules from database');
-				$module_paths = array();
-
-				if ($res = B2DB::getTable('TBGModulesTable')->getAll())
+				if (!TBGCache::has(TBGCache::KEY_MODULE_PATHS) || !TBGCache::has(TBGCache::KEY_MODULES))
 				{
-					while ($moduleRow = $res->getNextRow())
+					$modules = array();
+
+					TBGLogging::log('getting modules from database');
+					$module_paths = array();
+
+					if ($res = B2DB::getTable('TBGModulesTable')->getAll())
 					{
-						$module_name = $moduleRow->get(TBGModulesTable::MODULE_NAME);
-						$modules[$module_name] = $moduleRow;
-						$moduleClassPath = self::getIncludePath() . "modules" . DIRECTORY_SEPARATOR . $module_name . DIRECTORY_SEPARATOR . "classes" . DIRECTORY_SEPARATOR;
-						try
+						while ($moduleRow = $res->getNextRow())
 						{
-							self::addClasspath($moduleClassPath);
-							$module_paths[] = $moduleClassPath;
-							if (file_exists($moduleClassPath . 'B2DB'))
+							$module_name = $moduleRow->get(TBGModulesTable::MODULE_NAME);
+							$modules[$module_name] = $moduleRow;
+							$moduleClassPath = self::getIncludePath() . "modules" . DS . $module_name . DS . "classes" . DS;
+							try
 							{
-								self::addClasspath($moduleClassPath . 'B2DB' . DIRECTORY_SEPARATOR);
-								$module_paths[] = $moduleClassPath . 'B2DB' . DIRECTORY_SEPARATOR;
+								self::addClasspath($moduleClassPath);
+								$module_paths[] = $moduleClassPath;
+								if (file_exists($moduleClassPath . 'B2DB'))
+								{
+									self::addClasspath($moduleClassPath . 'B2DB' . DS);
+									$module_paths[] = $moduleClassPath . 'B2DB' . DS;
+								}
 							}
+							catch (Exception $e) { } // ignore "dir not exists" errors
 						}
-						catch (Exception $e) { } // ignore "dir not exists" errors
 					}
-				}
-				TBGLogging::log('done (getting modules from database)');
-				TBGCache::add('module_paths', $module_paths);
-				TBGCache::add('modules', array_keys($modules));
-				TBGLogging::log('setting up module objects');
-				foreach ($modules as $module_name => $moduleRow)
-				{
-					$classname = $moduleRow->get(TBGModulesTable::CLASSNAME);
-					if ($classname != '' && $classname != 'TBGModule')
+					TBGLogging::log('done (getting modules from database)');
+					TBGCache::add(TBGCache::KEY_MODULE_PATHS, $module_paths);
+					TBGLogging::log('setting up module objects');
+					foreach ($modules as $module_name => $moduleRow)
 					{
-						if (class_exists($classname))
+						$classname = $moduleRow->get(TBGModulesTable::CLASSNAME);
+						if ($classname != '' && $classname != 'TBGModule')
 						{
-							self::getI18n()->loadModuleStrings($module_name);
-							self::$_modules[$module_name] = new $classname($moduleRow->get(TBGModulesTable::ID), $moduleRow);
-							TBGCache::add("module_{$module_name}", serialize(self::$_modules[$module_name]));
+							if (class_exists($classname))
+							{
+								self::$_modules[$module_name] = new $classname($moduleRow->get(TBGModulesTable::ID), $moduleRow);
+							}
+							else
+							{
+								TBGLogging::log('Cannot load module "' . $module_name . '" as class "' . $classname . '", the class is not defined in the classpaths.', 'modules', TBGLogging::LEVEL_WARNING_RISK);
+								TBGLogging::log('Removing module "' . $module_name . '" as it cannot be loaded', 'modules', TBGLogging::LEVEL_NOTICE);
+								TBGModule::removeModule($moduleRow->get(TBGModulesTable::ID));
+							}
 						}
 						else
 						{
-							TBGLogging::log('Cannot load module "' . $module_name . '" as class "' . $classname . '", the class is not defined in the classpaths.', 'modules', TBGLogging::LEVEL_WARNING_RISK);
-							TBGLogging::log('Removing module "' . $module_name . '" as it cannot be loaded', 'modules', TBGLogging::LEVEL_NOTICE);
-							TBGModule::removeModule($moduleRow->get(TBGModulesTable::ID));
+							throw new Exception('Cannot load module "' . $module_name . '" as class TBGModule - modules should extend the TBGModule class with their own class.');
 						}
 					}
-					else
-					{
-						throw new Exception('Cannot load module "' . $module_name . '" as class TBGModule - modules should extend the TBGModule class with their own class.');
-					}
+					TBGCache::add(TBGCache::KEY_MODULES, self::$_modules);
+					TBGLogging::log('done (setting up module objects)');
 				}
-				TBGLogging::log('done (setting up module objects)');
+				else
+				{
+					TBGLogging::log('using cached modules');
+					$module_paths = TBGCache::get(TBGCache::KEY_MODULE_PATHS);
+					foreach ($module_paths as $path)
+					{
+						self::addClasspath($path);
+					}
+					self::$_modules = TBGCache::get(TBGCache::KEY_MODULES);
+					TBGLogging::log('done (using cached modules)');
+				}
 
 				TBGLogging::log('initializing modules');
 				if (!empty(self::$_modules))
@@ -2033,15 +2027,15 @@
 						TBGLogging::log('An error occurred setting up the user object, redirecting to login', 'main', TBGLogging::LEVEL_NOTICE);
 						self::getResponse()->headerRedirect(self::getRouting()->generate('login_redirect'), 403);
 					}
-					if (is_dir(self::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . $route['module']))
+					if (is_dir(self::getIncludePath() . 'modules' . DS . $route['module']))
 					{
-						if (!file_exists(self::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . $route['module'] . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR . 'actions.class.php'))
+						if (!file_exists(self::getIncludePath() . 'modules' . DS . $route['module'] . DS . 'classes' . DS . 'actions.class.php'))
 						{
 							throw new TBGActionNotFoundException('The ' . $route['module'] . ' module is missing the classes/actions.class.php file, containing all the module actions');
 						}
 						if (!class_exists($route['module'].'Actions') && !class_exists($route['module'].'ActionComponents'))
 						{
-							self::addClasspath(self::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . $route['module'] . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR);
+							self::addClasspath(self::getIncludePath() . 'modules' . DS . $route['module'] . DS . 'classes' . DS);
 						}
 						if (self::performAction($route['module'], $route['action']))
 						{

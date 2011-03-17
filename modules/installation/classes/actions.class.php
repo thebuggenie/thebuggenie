@@ -363,9 +363,13 @@
 		 */
 		public function runInstallStep6(TBGRequest $request)
 		{
-			if (file_put_contents(TBGContext::getIncludePath() . 'installed', '3.0, installed ' . date('d.m.Y H:i')) === false)
+			if (file_put_contents(THEBUGGENIE_PATH . 'installed', '3.0, installed ' . date('d.m.Y H:i')) === false)
 			{
-				$this->error = "Couldn't write to the main directory";
+				$this->error = "Couldn't write to the main directory. Please create the file " . THEBUGGENIE_PATH . "installed manually, with the following content: \n3.0, installed " . date('d.m.Y H:i');
+			}
+			if (!unlink(THEBUGGENIE_PATH . 'upgrade'))
+			{
+				$this->error = "Couldn't remove the file " . THEBUGGENIE_PATH . "upgrade. Please remove this file manually.";
 			}
 		}
 

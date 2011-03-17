@@ -73,7 +73,7 @@ if ($dirname != '/')
 				<div class="content">
 					<b>Apache setup:</b> Set up the virtual host as usual, but point the <u>DocumentRoot</u> for The Bug Genie to the <i>thebuggenie/</i> subfolder <i>inside</i> the main folder. Make sure the apache virtual host setup has <u>AllowOverride All</u> for the folder where The Bug Genie is located, and make sure the .htaccess file inside the <i>thebuggenie/</i>-folder is accessible to Apache.<br>
 					<br>
-					<b>The Bug Genie setup:</b> Set the <u>hostname</u> below to the public hostname where you plan to access The Bug Genie. With this setup, The Bug Genie will be located at the top level, so set the <u>URL subdirectory</u> below to "/", which means "top level".
+					<b>The Bug Genie setup:</b> With this setup, The Bug Genie will be located at the top level, so set the <u>URL subdirectory</u> below to "/", which means "top level".
 				</div>
 			</div>
 			<div class="feature" style="border-top: 0; padding: 0; margin-bottom: 5px; display: none;" id="example_2">
@@ -83,7 +83,7 @@ if ($dirname != '/')
 				<div class="content">
 					<b>Apache setup:</b> Make sure the apache host setup has <u>AllowOverride All</u> for the folder thebuggenie is located, and make sure the .htaccess file inside the <i>thebuggenie/</i>-folder is accessible to Apache. You may want to copy the main folder content to a folder one level up (extract the main content of the top <i>thebuggenie/</i>-folder directly to /var/www), so that the <i>thebuggenie/</i>-folder inside the main folder is accessible as /var/www/thebuggenie.<br>
 					<br>
-					<b>The Bug Genie setup:</b> Set the <u>hostname</u> below to the public hostname where you plan to access The Bug Genie. With this setup, The Bug Genie will be located at either <i>http://hostname/thebuggenie/thebuggenie/</i> or <i>http://hostname/thebuggenie/</i> (see above), so set the <u>URL subdirectory</u> below to "/", which means "top level".
+					<b>The Bug Genie setup:</b> With this setup, The Bug Genie will be located at either <i>http://hostname/thebuggenie/thebuggenie/</i> or <i>http://hostname/thebuggenie/</i> (see above), so set the <u>URL subdirectory</u> below to match the subdirectory part (either "/thebuggenie/" or "/thebuggenie/thebuggenie/").
 				</div>
 			</div>
 			<div class="feature">

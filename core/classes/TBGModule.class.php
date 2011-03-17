@@ -300,12 +300,13 @@
 
 		final public function initialize()
 		{
+			TBGContext::getI18n()->loadModuleStrings($this->getName());
 			$this->_initialize(TBGContext::getI18n());
 			if ($this->isEnabled())
 			{
 				$this->_addAvailablePermissions();
 				$this->_addListeners();
-				if (!TBGCache::isEnabled() || !TBGCache::get('routes_2'))
+				if (!TBGCache::has(TBGCache::KEY_POSTMODULES_ROUTES_CACHE))
 				{
 					$this->_addRoutes();
 					$this->_loadRoutes();

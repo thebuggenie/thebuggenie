@@ -18,11 +18,14 @@
 	 */
 	class TBGCache
 	{
-		
+
+		const KEY_SCOPES = '_scopes';
 		const KEY_PREMODULES_ROUTES_CACHE = '_routes';
 		const KEY_POSTMODULES_ROUTES_CACHE = '_routes_postmodules';
 		const KEY_PERMISSIONS_CACHE = '_permissions';
 		const KEY_USERSTATES_CACHE = 'TBGUserstate::getAll';
+		const KEY_MODULE_PATHS = '_module_paths';
+		const KEY_MODULES = '_modules';
 		
 		protected static $_enabled = false;
 		protected static $_filecache_enabled = false;
@@ -47,7 +50,7 @@
 		{
 			if (!self::isEnabled())
 			{
-				TBGLogging::log('Can not cache value for key "' . $key . '"', 'cache');
+				TBGLogging::log('Key "' . $key . '" not cached', 'cache');
 				return false;
 			}
 			apc_store($key, $value);
@@ -64,7 +67,7 @@
 		public static function fileGet($key)
 		{
 			if (!self::$_filecache_enabled) return null;
-			$filename = THEBUGGENIE_PATH . 'core' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . $key . '.cache';
+			$filename = THEBUGGENIE_PATH . 'core' . DS . 'cache' . DS . $key . '.cache';
 			if (!file_exists($filename))
 			{
 				return null;
@@ -77,14 +80,14 @@
 		public static function fileAdd($key, $value)
 		{
 			if (!self::$_filecache_enabled) return null;
-			$filename = THEBUGGENIE_PATH . 'core' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . $key . '.cache';
-			file_put_contents($filename, serialize(self::$_permissions));
+			$filename = THEBUGGENIE_PATH . 'core' . DS . 'cache' . DS . $key . '.cache';
+			file_put_contents($filename, serialize($value));
 		}
 		
 		public static function fileDelete($key)
 		{
 			if (!self::$_filecache_enabled) return null;
-			$filename = THEBUGGENIE_PATH . 'core' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . $key . '.cache';
+			$filename = THEBUGGENIE_PATH . 'core' . DS . 'cache' . DS . $key . '.cache';
 			unlink($filename);
 		}
 		
