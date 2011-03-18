@@ -108,31 +108,26 @@ if ($dirname != '/')
 			<fieldset>
 				<legend>The Bug Genie URL information</legend>
 				<dl class="install_list">
-					<dt style="width: 500px;">
-						<label for="apache_autosetup_yes">Set up my .htaccess file automatically</label> <span class="faded_out">Check this if you're using an Apache web server</span>
+					<dt style="width: 600px;">
+						<label for="apache_autosetup_yes">Set up my .htaccess file automatically</label> <span class="faded_out">Select "yes" if you are using an Apache web server</span>
 					</dt>
 					<dd>
 						<input type="radio" name="apache_autosetup" id="apache_autosetup_yes" value="1" checked><label for="apache_autosetup_yes">Yes</label>&nbsp;
 						<input type="radio" name="apache_autosetup" id="apache_autosetup_no" value="0"><label for="apache_autosetup_no">No</label>
 					</dd>
-					<dt style="width: 500px;">
-						<label for="url_subdir">Url subdirectory</label> <span class="faded_out">The Bug Genie subdirectory part of the url</span>
+					<dt style="width: 600px;">
+						<label for="url_subdir">Url subdirectory</label> <span class="faded_out">The part from the server root url to The Bug Genie</span>
 					</dt><br>
-					<dd><input onblur="updateURLPreview();" onkeyup="updateURLPreview();" type="text" name="url_subdir" id="url_subdir" value="<?php echo $dirname; ?>"></dd>
-					<dt style="width: 500px;"><b>According to the information above,</b> The Bug Genie will be accessible at</dt><br>
+					<dd><input onblur="updateURLPreview();" onkeyup="updateURLPreview();" type="text" name="url_subdir" id="url_subdir" value="<?php echo $dirname; ?>" style="width: 300px;"></dd>
+					<dt style="width: 600px;">
+						<b>According to the information above,</b> The Bug Genie will be accessible at</b><br>
+						<span class="faded_out"><i>The Bug Genie will be available from other hostnames as well, but the subfolder path needs to be the same</i></span>
+					</dt><br>
 					<dd id="url_preview"><?php echo (array_key_exists('HTTPS', $_SERVER)) ? 'https' : 'http'; ?>://<?php echo $_SERVER['SERVER_NAME'] . $dirname; ?></dd>
 				</dl>
 			</fieldset>
 			<div class="error" id="continue_error" style="display: none;"> </div>
 			<br style="clear: both;">
-			<div class="ok">
-				<b style="font-size: 14px;">IMPORTANT: </b><br>
-				The installation routine will try to set up the initial .htaccess file for you. <b>If that fails for some reason</b>:
-				<ul style="font-size: 11px;">
-					<li>Rename or copy the <i>core/templates/htaccess.template</i> file to <i>thebuggenie/.htaccess</i></li>
-					<li>Open up the <i>.htaccess</i> file, and change the <u>RewriteBase</u> path to be identical to the <u>URL subdirectory</u>.
-				</ul>
-			</div>
 			<div style="padding-top: 20px; clear: both; text-align: center;">
 				<label for="continue_button" style="font-size: 13px; margin-right: 10px;">Click this button to continue and load the necessary default settings</label>
 				<img src="themes/oxygen/spinning_30.gif" id="next_indicator" style="display: none;">

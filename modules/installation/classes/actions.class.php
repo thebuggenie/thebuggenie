@@ -7,7 +7,12 @@
 		 * Sample docblock used to test docblock retrieval
 		 */
 		protected $_sampleproperty;
-		
+
+		public function preExecute(TBGRequest $request, $action)
+		{
+			$this->getResponse()->setDecoration(TBGResponse::DECORATE_NONE);
+		}
+
 		/**
 		 * Runs the installation action
 		 * 
@@ -52,7 +57,7 @@
 			$this->php_ok = true;
 			$this->docblock_ok = false;
 			$this->php_ver = PHP_VERSION;
-			
+
 			if (version_compare($this->php_ver, '5.3.0', 'lt'))
 			{
 				$this->php_ok = false;
@@ -68,7 +73,7 @@
 				$this->b2db_param_folder_ok = false;
 				$this->all_well = false;
 			}			
-			if (!is_writable(TBGContext::getIncludePath()))
+			if (!is_writable(THEBUGGENIE_PATH))
 			{
 				$this->base_folder_perm_ok = false;
 				$this->all_well = false;
@@ -108,8 +113,16 @@
 				$this->docblock_ok = true;
 				$this->all_well = true;
 			}
+			else
+			{
+				$this->all_well = false;
+			}
 			
-			$this->all_well = $this->all_well & ($this->mysql_ok | $this->pgsql_ok);
+			if (!$this->mysql_ok && !$this->pgsql_ok)
+			{
+				$this->all_well = false;
+			}
+
 		}
 		
 		/**
@@ -392,6 +405,7 @@
 			$version_info = explode(',', file_get_contents(THEBUGGENIE_PATH . 'installed'));
 			$this->current_version = $version_info[0];
 			$this->upgrade_available = false;
+			$this->upgrade_complete = false;
 
 			if ($request->isMethod(TBGRequest::POST))
 			{
@@ -414,7 +428,6 @@
 			}
 			elseif ($this->current_version != '3.1')
 			{
-				$this->getResponse()->setDecoration(TBGResponse::DECORATE_NONE);
 				$this->upgrade_available = true;
 				$this->permissions_ok = false;
 				if (is_writable(THEBUGGENIE_PATH . 'installed') && is_writable(THEBUGGENIE_PATH . 'upgrade'))
