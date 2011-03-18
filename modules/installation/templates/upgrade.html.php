@@ -38,6 +38,8 @@
 				<b>Please make sure these files are writable before you continue</b>
 			</div>
 		<?php endif; ?>
+	<?php elseif ($upgrade_complete): ?>
+		<h2>Upgrade successfully completed!</h2>
 	<?php else: ?>
 		<h2>No upgrade necessary!</h2>
 	<?php endif; ?>

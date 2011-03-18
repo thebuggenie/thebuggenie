@@ -408,10 +408,11 @@
 					$existing_installed_content = file_get_contents(THEBUGGENIE_PATH . 'installed');
 					file_put_contents(THEBUGGENIE_PATH . 'installed', TBGSettings::getVersion(false, false) . ', upgraded ' . date('d.m.Y H:i') . "\n" . $existing_installed_content);
 					unlink(THEBUGGENIE_PATH . 'upgrade');
+					$this->current_version = '3.1';
+					$this->upgrade_available = false;
 				}
 			}
-
-			if ($this->current_version != '3.1')
+			elseif ($this->current_version != '3.1')
 			{
 				$this->getResponse()->setDecoration(TBGResponse::DECORATE_NONE);
 				$this->upgrade_available = true;
