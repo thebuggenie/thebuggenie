@@ -1444,7 +1444,9 @@
 					TBGLogging::log("Checking if scope can be set from hostname (".$_SERVER['HTTP_HOST'].")");
 					$hostname = $_SERVER['HTTP_HOST'];
 				}
-				$row = TBGScopesTable::getTable()->getByHostnameOrDefault($hostname);
+				
+				if (!self::isUpgrademode())
+					$row = TBGScopesTable::getTable()->getByHostnameOrDefault($hostname);
 				
 				if (!$row instanceof B2DBRow)
 				{
