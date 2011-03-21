@@ -379,19 +379,10 @@
 		 */
 		public function isScheduled()
 		{
-			return $this->_isscheduled;
+			$retval = (bool) ($this->_scheduleddate > 0);
+			return $retval;
 		}
 		
-		/**
-		 * Set whether or not the milestone is scheduled for release
-		 * 
-		 * @param boolean $scheduled[optional] scheduled or not (default true)
-		 */
-		public function setScheduled($scheduled)
-		{
-			$this->_isscheduled = $scheduled;
-		}
-
 		/**
 		 * Set the milestone type
 		 *
@@ -444,7 +435,7 @@
 		 */
 		public function isOverdue()
 		{
-			return ($this->getScheduledDate() < time() && !$this->isReached()) ? true : false;
+			return ($this->getScheduledDate() && $this->getScheduledDate() < time() && !$this->isReached()) ? true : false;
 		}
 		
 		/**
@@ -475,10 +466,6 @@
 		public function setScheduledDate($date)
 		{
 			$this->_scheduleddate = $date;
-			if ($date == 0)
-			{
-				$this->setScheduled(false);
-			}
 		}
 
 		/**
@@ -816,8 +803,6 @@
 						$child_issues[] = (int) $child_issue->getID();
 					}
 				}
-				
-				//var_dump($child_issues);die();
 				
 				$estimations = B2DB::getTable('TBGIssueEstimates')->getEstimatesByDateAndIssueIDs($this->getStartingDate(), $this->getScheduledDate(), $child_issues);
 				$spent_times = B2DB::getTable('TBGIssueSpentTimes')->getSpentTimesByDateAndIssueIDs($this->getStartingDate(), $this->getScheduledDate(), $child_issues);

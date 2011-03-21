@@ -130,10 +130,9 @@
 						{
 							$milestone = new TBGMilestone();
 							$milestone->setName("Milestone {$cc}");
-							$milestone->setScheduled((bool) rand(0,1));
 							$milestone->setProject($project);
 							$milestone->setType(TBGMilestone::TYPE_REGULAR);
-							if ($milestone->isScheduled())
+							if ((bool) rand(0,1))
 							{
 								$milestone->setScheduledDate(NOW + (100000 * (20 * $cc)));
 							}
@@ -284,6 +283,14 @@
 					}
 					
 					$this->imported_data = true;
+
+					foreach (array($project1, $project2) as $project)
+					{
+						foreach ($users as $user)
+						{
+							$project->addAssignee($user, TBGProjectAssigneesTable::TYPE_DEVELOPER);
+						}
+					}
 				}
 			}
 

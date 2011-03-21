@@ -355,7 +355,7 @@
 					while ($row = $res->getNextRow())
 					{
 						$project = TBGContext::factory()->TBGProject($row->get(TBGProjectsTable::ID), $row);
-						if ($project->hasAccess() && $project->isDeleted() == 0)
+						if ($project->hasAccess() && !$project->isDeleted())
 						{
 							self::$_projects[$project->getKey()] = $project;
 						}
@@ -1154,7 +1154,7 @@
 			$ret_arr = array();
 			if ($allmilestones = $this->getAllMilestones())
 			{
-				$curr_day = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
+				$curr_day = time();
 				foreach ($allmilestones as $milestone)
 				{
 					if (($milestone->getScheduledDate() >= $curr_day || $milestone->isOverdue()) && (($milestone->getScheduledDate() <= ($curr_day + (86400 * $days))) || ($milestone->getType() == TBGMilestone::TYPE_SCRUMSPRINT && $milestone->isCurrent())))
