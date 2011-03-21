@@ -116,9 +116,8 @@
 
 			$this->message = $message;
 			$this->getResponse()->setHttpStatus(404);
-			//TBGContext::get
 			$this->getResponse()->setTemplate('main/notfound');
-			return;
+			return true;
 		}
 		
 		/**

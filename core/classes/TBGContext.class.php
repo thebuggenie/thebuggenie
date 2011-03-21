@@ -1825,12 +1825,13 @@
 					{
 						$content = ob_get_clean();
 						TBGLogging::log('preexecute method returned something, skipping further action');
-						if (self::$debug_mode) $visited_templatename = "{$actionObject}::preExecute()";
+						if (self::$debug_mode) $visited_templatename = "{$actionClassName}::preExecute()";
 					}
 				}
 
 				if ($content === null)
 				{
+					$action_retval = null;
 					if (self::getResponse()->getHttpStatus() == 200)
 					{
 						// Checking for and running action-specific preExecute() function if
@@ -1840,21 +1841,21 @@
 							TBGLogging::log('Running custom pre-execute action');
 							$actionObject->$preActionToRunName(self::getRequest(), $method);
 						}
-					}
 
-					// Running main route action
-					TBGLogging::log('Running route action '.$actionToRunName.'()');
-					if (self::$debug_mode)
-					{
-						$time = explode(' ', microtime());
-						$action_pretime = $time[1] + $time[0];
-					}
-					$action_retval = $actionObject->$actionToRunName(self::getRequest());
-					if (self::$debug_mode)
-					{
-						$time = explode(' ', microtime());
-						$action_posttime = $time[1] + $time[0];
-						TBGContext::visitPartial("{$actionClassName}::{$actionToRunName}", $action_posttime - $action_pretime);					
+						// Running main route action
+						TBGLogging::log('Running route action '.$actionToRunName.'()');
+						if (self::$debug_mode)
+						{
+							$time = explode(' ', microtime());
+							$action_pretime = $time[1] + $time[0];
+						}
+						$action_retval = $actionObject->$actionToRunName(self::getRequest());
+						if (self::$debug_mode)
+						{
+							$time = explode(' ', microtime());
+							$action_posttime = $time[1] + $time[0];
+							TBGContext::visitPartial("{$actionClassName}::{$actionToRunName}", $action_posttime - $action_pretime);
+						}
 					}
 					if (self::getResponse()->getHttpStatus() == 200 && $action_retval)
 					{
