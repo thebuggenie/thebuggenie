@@ -54,6 +54,7 @@
 			$this->mysql_ok = true;
 			$this->pgsql_ok = true;
 			$this->gd_ok = true;
+			$this->mb_ok = true;
 			$this->php_ok = true;
 			$this->docblock_ok = false;
 			$this->php_ver = PHP_VERSION;
@@ -104,6 +105,11 @@
 			if (!extension_loaded('gd'))
 			{
 				$this->gd_ok = false;
+			}
+			if (!extension_loaded('mbstring'))
+			{
+				$this->mb_ok = false;
+				$this->all_well = false;
 			}
 			
 			$reflection = new ReflectionProperty(get_class($this), '_sampleproperty');

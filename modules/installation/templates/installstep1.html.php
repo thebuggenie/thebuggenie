@@ -72,6 +72,15 @@
 			chmod a+w <?php echo str_ireplace('\\', '/', substr(TBGContext::getIncludePath(), 0, strripos(TBGContext::getIncludePath(), DIRECTORY_SEPARATOR) + 1)) . THEBUGGENIE_PUBLIC_FOLDER_NAME; ?>/
 			</div>
 		<?php endif; ?>
+		<?php if ($mb_ok): ?>
+			<div class="install_progress prereq_ok"><?php echo image_tag('themes/oxygen/action_ok.png', array(), true); ?>PHP extension mbstring is loaded</div>
+		<?php else: ?>
+			<div class="install_progress prereq_warn">
+			<b>PHP extensions "mbstring" is not loaded</b><br>
+			The Bug Genie 3 requires the PHP extension "mbstring". This extension is used by the internationalization functionality in The Bug Genie and is required for The Bug Genie to operate.<br/>
+			More information is available at <a href="http://php.net/manual/en/book.mbstring.php" target="_blank">php.net</a>
+			</div>
+		<?php endif; ?>
 		<?php if ($pdo_ok): ?>
 			<div class="install_progress prereq_ok"><?php echo image_tag('themes/oxygen/action_ok.png', array(), true); ?>PHP PDO installed and enabled ...</div>
 		<?php endif; ?>
