@@ -61,7 +61,8 @@
 						</li>
 					<?php endforeach; ?>
 				</ul>
-				<div class="header" style="margin: 5px 5px 5px 0;"><?php echo __('Milestones / sprints'); ?></div>
+				<div class="header" style="margin: 5px 5px 5px 0;"><?php echo __('Upcoming milestones / sprints'); ?></div>
+				<div class="faded_out" style="font-size: 11px;"><?php echo __('Showing milestones and sprint for the next 21 days'); ?></div>
 				<?php $milestone_cc = 0; ?>
 				<?php foreach ($tbg_user->getAssociatedProjects() as $project): ?>
 					<?php foreach ($project->getUpcomingMilestonesAndSprints() as $milestone): ?>
