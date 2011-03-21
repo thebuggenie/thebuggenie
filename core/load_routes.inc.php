@@ -14,7 +14,6 @@
 	$routes[] = array('login_page', '/login', 'main', 'login', array('continue' => true));
 	$routes[] = array('login_redirect', '/login/redirect', 'main', 'login', array('redirect' => true, 'continue' => true));
 	$routes[] = array('login_section', '/login/section/:section/*', 'main', 'login');
-	$routes[] = array('openid_login', '/login/openid', 'openid', 'login');
 	$routes[] = array('register1', '/register1', 'main', 'register1');
 	$routes[] = array('register2', '/register2', 'main', 'register2');
 	$routes[] = array('activate', '/activate/:user/:key', 'main', 'activate');
@@ -34,11 +33,9 @@
 	
 	$routes[] = array('quicksearch', '/quicksearch/*', 'search', 'quickSearch');
 	$routes[] = array('about', '/about', 'main', 'about');
-	$routes[] = array('soap', '/soapmeup', 'soap', 'soapHandler');
 	$routes[] = array('list_projects', '/list/projects/:format', 'main', 'listProjects');
 	$routes[] = array('list_issuetypes', '/list/issuetypes/:format', 'main', 'listIssuetypes');
 	$routes[] = array('list_fieldvalues', '/list/fieldvalues/for/field/:field_key/:format/*', 'main', 'listFieldvalues');
-	$routes[] = array('wsdl', '/thebuggenie.wsdl', 'soap', 'getWSDL');
 	$routes[] = array('get_partial_for_backdrop', '/get/partials/:key/*', 'main', 'getBackdropPartial');
 	$routes[] = array('issue_upload', '/upload/to/issue/:issue_id', 'main', 'upload', array('mode' => 'issue'));
 	$routes[] = array('article_upload', '/upload/to/article/:article_name', 'main', 'upload', array('mode' => 'article'));
