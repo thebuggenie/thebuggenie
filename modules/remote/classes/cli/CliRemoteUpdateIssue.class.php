@@ -25,7 +25,7 @@
 			$this->_description = "Update an issue on a remote server";
 			$this->addRequiredArgument('project_key', 'The project key for the project you want to update an issue for');
 			$this->addRequiredArgument('issue_id', 'The ID of the issue to update (see remote_list_issues or remote_get_issue_id)');
-			$this->addOptionalArgument('state', 'Change the state of the issue (open/closed)');
+			$this->addOptionalArgument('workflow_transition', 'The workflow transition to trigger (if any)');
 			$this->addOptionalArgument('m', 'A comment to save with the changes');
 			parent::_setup();
 		}
@@ -67,6 +67,12 @@
 			}
 			$url_options['format'] = 'json';
 
+			if (array_key_exists('workflow_transition', $post_data))
+			{
+				$url_options['workflow_transition'] = $post_data['workflow_transition'];
+				unset($post_data['workflow_transition']);
+			}
+
 			$fields = $post_data;
 			foreach ($post_data as $key => $value)
 			{
@@ -76,27 +82,55 @@
 			$post_data['message'] = $message;
 			
 			$this->cliEcho("\n");
-			$this->cliEcho("Updating fields: \n", 'white', 'bold');
-			if (count($fields))
+			
+			if (array_key_exists('workflow_transition', $url_options))
+				$this->cliEcho("Transitioning issue: \n", 'white', 'bold');
+			else
+				$this->cliEcho("Updating fields: \n", 'white', 'bold');
+
+			if (count($fields) || array_key_exists('workflow_transition', $url_options))
 			{
 				$response = $this->getRemoteResponse($this->getRemoteURL('project_update_issuedetails', $url_options), $post_data);
-				foreach ($fields as $key => $value)
+				if (array_key_exists('workflow_transition', $url_options))
 				{
-					$this->cliEcho("  ".str_pad($key, 20), 'yellow');
-					if ($response->$key && $response->$key->success)
+					$this->cliEcho("  " . str_pad($response->applied_transition, 20), 'yellow');
+
+					if ($response->transition_ok)
 					{
 						$this->cliEcho('OK!', 'green');
 					}
 					else
 					{
-						$this->cliEcho("failed ({$response->$key->error})", 'red');
+						$this->cliEcho('Failed!', 'red', 'bold');
+						if (isset($response->message))
+						{
+							$this->cliEcho("\n");
+							$this->cliEcho("  " . $response->message, 'red');
+						}
 					}
+
 					$this->cliEcho("\n");
+				}
+				else
+				{
+					foreach ($fields as $key => $value)
+					{
+						$this->cliEcho("  ".str_pad($key, 20), 'yellow');
+						if ($response->$key && $response->$key->success)
+						{
+							$this->cliEcho('OK!', 'green');
+						}
+						else
+						{
+							$this->cliEcho("failed ({$response->$key->error})", 'red');
+						}
+						$this->cliEcho("\n");
+					}
 				}
 			}
 			else
 			{
-				$this->cliEcho('No fields to update!', 'red', 'bold');
+				$this->cliEcho('No fields to update, and no transition specified!', 'red', 'bold');
 			}
 
 			$this->cliEcho("\n");

@@ -94,8 +94,9 @@
 				$this->cliEcho("\n");
 				$this->cliEcho("When using ");
 				$this->cliEcho('remote:update_issue', 'green');
-				$this->cliEcho(" to update an issue, pass any combination of a field key and a valid value\n");
-				$this->cliEcho("as a parameter to update the issue details.\n");
+				$this->cliEcho(" to update an issue, pass any combination of a\n");
+				$this->cliEcho("field key and a valid value as a parameter to update the issue details.\n");
+				$this->cliEcho("The value is case-insensitive, and may also be written without spaces.\n");
 				$this->cliEcho("\n");
 				$this->cliEcho("For more information, check the documentation for ");
 				$this->cliEcho('remote:update_issue', 'green');

@@ -139,7 +139,12 @@
 				$errors = (isset($http_response_header)) ? ":\n" . $http_response_header[0] : '';
 				throw new Exception($url . " could not be retrieved" . $errors);
 			}
-			return json_decode($retval);
+			$response = json_decode($retval);
+			if (is_object($response) && isset($response->failed) && $response->failed)
+			{
+				throw new Exception($url . "\n" . $response->message);
+			}
+			return $response;
 		}
 
 		protected function getRemoteURL($route_name, $params = array())
