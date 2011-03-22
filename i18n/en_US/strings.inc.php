@@ -1950,3 +1950,13 @@
 	$strings['Set up the Wiki module from this section'] = 'Set up the Wiki module from this section';
 	$strings['This instance is using %num% of max %max% projects'] = 'This instance is using %num% of max %max% projects';
 	$strings['Help'] = 'Help';
+	$strings['Not being worked on'] = 'Not being worked on';
+	$strings["Information about the user working on this issue has been changed, from '''%previous_name%''' to '''%new_name%'''."] = "Information about the user working on this issue has been changed, from '''%previous_name%''' to '''%new_name%'''.";
+	$strings['Unknown'] = 'Unknown';
+	$strings['You can only import sample projects once'] = 'You can only import sample projects once';
+	$strings['404 - Not Found'] = '404 - Not Found';
+	$strings['Upcoming milestones / sprints'] = 'Upcoming milestones / sprints';
+	$strings['Showing milestones and sprint for the next 21 days'] = 'Showing milestones and sprint for the next 21 days';
+	$strings['When uploads are disabled, users will not be able to attach files to issues or upload documents, images or PDFs in project planning. More fine-grained permissions are available from the permissions configuration.'] = 'When uploads are disabled, users will not be able to attach files to issues or upload documents, images or PDFs in project planning. More fine-grained permissions are available from the permissions configuration.';
+	$strings['Number of user comments on this issue'] = 'Number of user comments on this issue';
+	$strings['Total number of issues in this group: %number%'] = 'Total number of issues in this group: %number%';
