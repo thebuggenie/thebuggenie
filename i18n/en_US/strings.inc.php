@@ -1960,3 +1960,4 @@
 	$strings['When uploads are disabled, users will not be able to attach files to issues or upload documents, images or PDFs in project planning. More fine-grained permissions are available from the permissions configuration.'] = 'When uploads are disabled, users will not be able to attach files to issues or upload documents, images or PDFs in project planning. More fine-grained permissions are available from the permissions configuration.';
 	$strings['Number of user comments on this issue'] = 'Number of user comments on this issue';
 	$strings['Total number of issues in this group: %number%'] = 'Total number of issues in this group: %number%';
+	$strings['Show system-generated comments'] = 'Show system-generated comments';
