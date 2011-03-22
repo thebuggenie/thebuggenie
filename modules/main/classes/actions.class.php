@@ -111,6 +111,28 @@
 			{
 				$this->error = TBGContext::getMessageAndClear('issue_error');
 			}
+
+			$issuelist = array();
+			$issues = TBGContext::getUser()->getStarredIssues();
+
+			if (count($issues))
+			{
+				foreach ($issues as $starred_issue)
+				{
+					if ($starred_issue->isOpen() && $starred_issue->getProject()->getID() == $this->selected_project->getID())
+					{
+						$issuelist[$starred_issue->getID()] = array('url' => TBGContext::getRouting()->generate('viewissue', array('project_key' => $this->selected_project->getKey(), 'issue_no' => $starred_issue->getFormattedIssueNo())), 'title' => $starred_issue->getFormattedIssueNo(true, true));
+					}
+				}
+				if (!array_key_exists($issue->getID(), $issuelist))
+					$issuelist[$issue->getID()] = array('url' => TBGContext::getRouting()->generate('viewissue', array('project_key' => $this->selected_project->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), 'title' => $issue->getFormattedIssueNo(true, true));
+			}
+
+			if (!count($issues) || count($issuelist) == 1)
+			{
+				$issuelist = null;
+			}
+			$this->issuelist = $issuelist;
 			$this->issue = $issue;
 			$event = TBGEvent::createNew('core', 'viewissue', $issue)->trigger();
 			$this->listenViewIssuePostError($event);
