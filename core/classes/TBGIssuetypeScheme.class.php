@@ -192,6 +192,17 @@
 			}
 			return $retarr;
 		}
+
+		public function getReportableIssuetypes()
+		{
+			$issuetypes = $this->getIssuetypes();
+			foreach ($issuetypes as $key => $issuetype)
+			{
+				if ($this->isIssuetypeReportable($issuetype)) continue;
+				unset($issuetypes[$key]);
+			}
+			return $issuetypes;
+		}
 		
 		protected function _preDelete()
 		{

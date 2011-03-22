@@ -498,6 +498,7 @@ th.highlighted_column { background-color: #C1C1C1; }
 .side_bar .content { padding: 0 0 3px 5px; font-size: 12px; }
 
 /* project list, client/team dashboard and overview */
+ul.project_list { margin-bottom: 30px; }
 ul.project_list li { margin: 0px; font-size: 11px; font-weight: bold; padding: 5px 0 5px 0; clear: both; }
 .client_dashboard, .project_overview { clear: both;  }
 .client_dashboard .header, .project_overview .header { padding: 5px; margin-bottom: 8px; border-bottom: 1px solid #DDD; font-size: 14px; }
@@ -529,8 +530,8 @@ a.friend:hover { border-bottom: 1px dotted #0000a4; }
 /* reporting an issue styles */
 .report_button input { float: right; clear: both; }
 .report_button:hover .report_button_hover { display: block; }
-.report_button_hover { display: none; position: relative; width: 200px; background: #5a5; text-align: left;  margin-top: 5px; clear: both; padding: 0; }
-.report_button_hover a { display: block; color: white; padding: 3px 5px 3px 5px; border: 0 !important; }
+.report_button_hover { display: none; position: absolute; width: 200px; background: #5a5; text-align: left;  margin-top: 5px; clear: both; padding: 0; right: -2px; z-index: 5; top: -6px; }
+.report_button_hover a { display: block; color: white; padding: 2px 3px 2px 3px; font-size: 12px; border: 0 !important; }
 .report_button_hover a:hover { background: #9d9; text-decoration: none; }
 .issuetype_list { list-style-type: none; padding: 0; margin: 10px auto 0 auto; width: 1010px; clear: both; }
 .issuetype_list li { font-size: 11px; font-weight: normal; clear: both; margin: 0 0 5px 0; text-align: left; }
@@ -896,6 +897,8 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .project_information_sidebar .sidebar_links { margin-top: 30px; }
 .project_information_sidebar .sidebar_links a { display: block; padding: 4px; color: #555; border: 1px dotted #DDD; background-color: #FAFAFA; border-right: 1px solid #CCC; margin: 0 -1px 0 7px; }
 .project_information_sidebar .sidebar_links a.first { border-top-left-radius: 5px; -moz-border-radius-topleft: 5px; -webkit-border-top-left-radius: 5px; }
+.tab_menu_dropdown .first { border-top-left-radius: 5px; -moz-border-radius-topleft: 5px; -webkit-border-top-left-radius: 5px; border-top-right-radius: 5px; -moz-border-radius-topright: 5px; -webkit-border-top-right-radius: 5px; }
+.tab_menu_dropdown .last { border-bottom-left-radius: 5px; -moz-border-radius-bottomleft: 5px; -webkit-border-bottom-left-radius: 5px; border-bottom-right-radius: 5px; -moz-border-radius-bottomright: 5px; -webkit-border-bottom-right-radius: 5px; }
 .project_information_sidebar .sidebar_links a.last { border-bottom-left-radius: 5px; -moz-border-radius-bottomleft: 5px; -webkit-border-bottom-left-radius: 5px; }
 .project_information_sidebar .sidebar_links a:hover { border: 1px solid transparent; background-color: #F1F1F1; border-right-color: #CCC; }
 .project_information_sidebar .sidebar_links a.selected { border-top-left-radius: 5px; border-bottom-left-radius: 5px; -moz-border-radius-topleft: 5px; -moz-border-radius-bottomleft: 5px; -webkit-border-top-left-radius: 5px; -webkit-border-bottom-left-radius: 5px; border: 1px solid #CCC; border-right-color: #FFF; margin-left: 0; padding: 8px; font-weight: bold; background-color: #FFF; }

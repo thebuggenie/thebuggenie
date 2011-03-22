@@ -8,6 +8,7 @@
 
 		public function componentOverview()
 		{
+			$this->issuetypes = $this->project->getIssuetypeScheme()->getReportableIssuetypes();
 		}
 
 		public function componentMenustrip()
