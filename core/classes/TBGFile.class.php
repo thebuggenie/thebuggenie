@@ -41,6 +41,23 @@
 			return array('image/png', 'image/jpeg', 'image/jpg', 'image/bmp', 'image/gif');
 		}
 
+		public static function getMimeType($filename)
+		{
+			$content_type = null;
+			if (function_exists('finfo_open'))
+			{
+				$finfo = finfo_open(FILEINFO_MIME_TYPE); // return mime type ala mimetype extension
+				$content_type = finfo_file($finfo, $filename);
+				finfo_close($finfo);
+			}
+			elseif (function_exists('mime_content_type'))
+			{
+				$content_type = mime_content_type($filename);
+			}
+
+			return $content_type;
+		}
+
 		public function getContentType()
 		{
 			return $this->_content_type;

@@ -131,7 +131,7 @@
 								else
 								{
 									TBGLogging::log('Upload complete and ok, storing upload status and returning filename '.$new_filename);
-									$content_type = TBGContext::getMimeType($files_dir.$new_filename);
+									$content_type = TBGFile::getMimeType($files_dir.$new_filename);
 									$file = new TBGFile();
 									$file->setRealFilename($new_filename);
 									$file->setOriginalFilename(basename($thefile['name']));
