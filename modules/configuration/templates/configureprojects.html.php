@@ -19,9 +19,11 @@ include_component('leftmenu', array('selected_section' => 10));
 				<div class="config_header" style="width: 750px;"><?php echo __('Configure projects'); ?></div>
 				<p style="padding-top: 5px;">
 					<?php echo __('More information about projects, editions, builds and components is available from the %wiki_help_section%.', array('%wiki_help_section%' => link_tag(make_url('publish_article', array('article_name' => 'Category:Help')), '<b>'.__('Wiki help section').'</b>'))); ?>
-					<div class="faded_out dark" style="margin: 12px 0;">
-						<?php echo __('This instance is using %num% of max %max% projects', array('%num%' => '<b id="current_project_num_count">'.TBGProject::getProjectsCount().'</b>', '%max%' => '<b>'.TBGContext::getScope()->getMaxProjects().'</b>')); ?>
-					</div>
+					<?php if (TBGContext::getScope()->getMaxProjects()): ?>
+						<div class="faded_out dark" style="margin: 12px 0;">
+							<?php echo __('This instance is using %num% of max %max% projects', array('%num%' => '<b id="current_project_num_count">'.TBGProject::getProjectsCount().'</b>', '%max%' => '<b>'.TBGContext::getScope()->getMaxProjects().'</b>')); ?>
+						</div>
+					<?php endif; ?>
 				</p>
 			</td>
 		</tr>
