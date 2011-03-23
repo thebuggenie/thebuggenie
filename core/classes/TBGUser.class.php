@@ -663,7 +663,7 @@
 				{
 					while ($row = $res->getNextRow())
 					{
-						$team = TBGContext::factory()->TBGTeam($row->get(TBGTeamsTable::ID), $row);
+				/*		$team = TBGContext::factory()->TBGTeam($row->get(TBGTeamsTable::ID), $row);
 						if ($team->isOndemand())
 						{
 							$this->teams['ondemand'][$team->getID()] = $team;
@@ -671,7 +671,7 @@
 						else
 						{
 							$this->teams['assigned'][$team->getID()] = $team;
-						}
+						}*/
 					}
 				}
 				TBGLogging::log('...done (Populating user teams)');

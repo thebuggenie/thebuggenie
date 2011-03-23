@@ -1999,7 +1999,6 @@
   
   $strings['Please specify something to search for'] = 'Por favor especifique algo para buscar';
 
-  $strings["Total number of issues in this group: %number%"]  = "Cantidad total de peticiones en este grupo: %number%";
 
   $strings['%select_yourself% or select a friend below'] = '%select_yourself% o seleccione un amigo'; 
   $strings['Related issues and tasks (%count%)'] = 'Pedidos/tareas relacionadas (%count%)';
@@ -2035,3 +2034,29 @@
 
 	$strings['The client waas added'] = 'El cliente fue agregado';
 	$strings['If you want to start working on this issue instead, click the %take_over% button to the right'] = 'Si quiere empezar a trabajar en este pedido, haga clic en el botón %take_over%';
+	$strings['This instance is using %num% of max %max% projects'] = 'This instance is using %num% of max %max% projects';
+	$strings['Not being worked on'] = 'No se está trabajando';
+	$strings["Information about the user working on this issue has been changed, from '''%previous_name%''' to '''%new_name%'''."] = "La información acerca del usuario que está trabajando en este pedido ha sido cambiada, de '''%previous_name%''' a '''%new_name%'''.";
+	$strings['Unknown'] = 'Desconocido';
+	$strings['You can only import sample projects once'] = 'Solo se puedene importar ejemplos de proyectos una vez';
+	$strings['404 - Not Found'] = '404 - No se encontró';
+	$strings['Upcoming milestones / sprints'] = 'Próximos Sprints / Puntos de control';
+	$strings['Showing milestones and sprint for the next 21 days'] = 'Se muestran los puntos de control y sprint de los próximos 21 días';
+	$strings['When uploads are disabled, users will not be able to attach files to issues or upload documents, images or PDFs in project planning. More fine-grained permissions are available from the permissions configuration.'] = 'Cuando la subida está inhabilitada, los usuarios no podrán adjuntar archivos a los pedidos o subir documentos, imágenes o PDF al proyecto. Más permisos específicos están disponibles en la configuración de permisos.';
+	$strings['Number of user comments on this issue'] = 'Número de comentarios de usuarios en esta petición';
+  $strings["Total number of issues in this group: %number%"]  = "Cantidad total de peticiones en este grupo: %number%";
+  $strings["This sprint is overdue"] = "Este sprint está atrasado";
+	$strings['You will be teamed up with this user'] = 'Será asociado con este usuario';
+	$strings['This issue has %num% attachments'] = 'Esta petición posee %num% adjuntos';
+	$strings['Show system-generated comments'] = 'Mostrar comentarios del sistema';
+	$strings['Find related issues'] = 'Encontrar pedidos relacionados';
+	$strings['Please enter some details to search for, and then select the matching issues to relate them'] = 'Ingrese algunos detalles para buscar, y luego seleccione los pedidos encontrados que se relacionen';
+	$strings['Relate these issues'] = 'Relacionar estos pedidos';
+	$strings['Either use the checkboxes and press the "%relate_these_issues%"-button below or click any issues in the list, and select an action.'] = 'Utilice las casillas y presione el botón "%relate_these_issues%" o haga clic en cualquier pedido en la lista, y seleccione una acción.';
+	$strings['Mark selected issues as child issues of this issue'] = 'Marcar las peticiones seleccionadas como dependientes de esta petición';
+	$strings['Mark selected issues as parent issues of this issue'] = 'Marcar las peticiones seleccionadas como padres de esta petición';
+	$strings['%issuetype% %issue_no% now depends on the solution of this %this_issuetype%'] = '%issuetype% %issue_no% ahora depende de la resolución de %this_issuetype%';
+	$strings['Dependancy added'] = 'Dependencia agregada';
+	$strings['This %this_issuetype% now depends on the solution of %issuetype% %issue_no%'] = 'El pedido %this_issuetype% ahora depende de la resolución de %issuetype% %issue_no%';  
+  $strings['There is no roadmap to be shown for this project, as it does not have any available milestones'] = 'No hay ninguna hoja de ruta para ser mostrada en este proyecto, tampoco hay puntos de control disponibles';   
+
