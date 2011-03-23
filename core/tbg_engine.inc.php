@@ -450,9 +450,9 @@ echo "
 			TBGLogging::log('...done (Adding B2DB classes to autoload path)');
 
 			TBGLogging::log('Initializing B2DB');
-			if (!isset($argc)) BaseB2DB::setHTMLException(true);
-			BaseB2DB::initialize(THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php');
-			$engine_path = BaseB2DB::getEngineClassPath();
+			if (!isset($argc)) B2DB::setHTMLException(true);
+			B2DB::initialize(THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php');
+			$engine_path = B2DB::getEngineClassPath();
 			if ($engine_path !== null)
 			{
 				TBGLogging::log("adding classpath {$engine_path}");
@@ -464,7 +464,7 @@ echo "
 			}
 			TBGLogging::log('...done (Initializing B2DB)');
 			
-			if (class_exists('B2DB'))
+			if (B2DB::isInitialized())
 			{
 				TBGLogging::log('Database connection details found, connecting');
 				B2DB::doConnect();

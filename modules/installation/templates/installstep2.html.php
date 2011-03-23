@@ -60,7 +60,7 @@
 				</dt>
 				<dd>
 					<select name="db_type" id="db_type">
-					<?php foreach (BaseB2DB::getDBtypes() as $db_type => $db_desc): ?>
+					<?php foreach (B2DB::getDBtypes() as $db_type => $db_desc): ?>
 						<?php if (extension_loaded("pdo_{$db_type}")): ?>
 							<option value="<?php echo $db_type; ?>"<?php if (isset($b2db_dbtype) && $b2db_dbtype == $db_type): ?> selected<?php endif; ?>><?php echo $db_desc; ?></option>
 						<?php endif; ?>

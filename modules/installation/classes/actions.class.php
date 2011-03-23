@@ -148,12 +148,12 @@
 			{
 				try
 				{
-					BaseB2DB::initialize(TBGContext::getIncludePath() . 'core/b2db_bootstrap.inc.php');
+					B2DB::initialize(TBGContext::getIncludePath() . 'core/b2db_bootstrap.inc.php');
 				}
 				catch (Exception $e)
 				{
 				}
-				if (class_exists('B2DB'))
+				if (B2DB::isInitialized())
 				{
 					$this->preloaded = true;
 					$this->username = B2DB::getUname();
@@ -182,51 +182,35 @@
 			{
 				if ($this->username = $request->getParameter('db_username'))
 				{
-					BaseB2DB::setUname($this->username);
-					BaseB2DB::setTablePrefix($request->getParameter('db_prefix'));
+					B2DB::setUname($this->username);
+					B2DB::setTablePrefix($request->getParameter('db_prefix'));
 					if ($this->password = $request->getRawParameter('db_password'))
-					{
-						BaseB2DB::setPasswd($this->password);
-					}
+						B2DB::setPasswd($this->password);
 
 					if ($this->selected_connection_detail == 'dsn')
 					{
 						if (($this->dsn = $request->getParameter('db_dsn')) != '')
-						{
-							BaseB2DB::setDSN($this->dsn);
-						}
+							B2DB::setDSN($this->dsn);
 						else
-						{
 							throw new Exception('You must provide a valid DSN');
-						}
 					}
 					else
 					{
 						if ($this->db_type = $request->getParameter('db_type'))
 						{
-							BaseB2DB::setDBtype($this->db_type);
+							B2DB::setDBtype($this->db_type);
 							if ($this->db_hostname = $request->getParameter('db_hostname'))
-							{
-								BaseB2DB::setHost($this->db_hostname);
-							}
+								B2DB::setHost($this->db_hostname);
 							else
-							{
 								throw new Exception('You must provide a database hostname');
-							}
 
 							if ($this->db_port = $request->getParameter('db_port'))
-							{
-								BaseB2DB::setPort($this->db_port);
-							}
+								B2DB::setPort($this->db_port);
 
 							if ($this->db_databasename = $request->getParameter('db_name'))
-							{
-								BaseB2DB::setDBname($this->db_databasename);
-							}
+								B2DB::setDBname($this->db_databasename);
 							else
-							{
 								throw new Exception('You must provide a database to use');
-							}
 						}
 						else
 						{
@@ -234,24 +218,19 @@
 						}
 					}
 					
-					BaseB2DB::initialize(TBGContext::getIncludePath() . 'core' . DIRECTORY_SEPARATOR . 'b2db_bootstrap.inc.php');
-					$engine_path = BaseB2DB::getEngineClassPath();
+					B2DB::initialize(TBGContext::getIncludePath() . 'core' . DIRECTORY_SEPARATOR . 'b2db_bootstrap.inc.php');
+					$engine_path = B2DB::getEngineClassPath();
 					if ($engine_path !== null)
-					{
 						TBGContext::addClasspath($engine_path);
-					}
 					else
-					{
 						throw new Exception("Cannot initialize the B2DB engine");
-					}
+
 					B2DB::doConnect();
 					
 					if (B2DB::getDBname() == '')
-					{
 						throw new Exception('You must provide a database to use');
-					}
+
 					B2DB::saveConnectionParameters(TBGContext::getIncludePath() . 'core' . DIRECTORY_SEPARATOR . 'b2db_bootstrap.inc.php');
-					
 				}
 				else
 				{
@@ -386,7 +365,7 @@
 			{
 				$this->error = "Couldn't write to the main directory. Please create the file " . THEBUGGENIE_PATH . "installed manually, with the following content: \n3.0, installed " . date('d.m.Y H:i');
 			}
-			if (!unlink(THEBUGGENIE_PATH . 'upgrade'))
+			if (file_exists(THEBUGGENIE_PATH . 'upgrade') && !unlink(THEBUGGENIE_PATH . 'upgrade'))
 			{
 				$this->error = "Couldn't remove the file " . THEBUGGENIE_PATH . "upgrade. Please remove this file manually.";
 			}

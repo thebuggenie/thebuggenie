@@ -395,7 +395,7 @@
 				self::$_installmode = true;
 			elseif (is_readable(THEBUGGENIE_PATH . 'upgrade'))
 				self::$_installmode = self::$_upgrademode = true;
-			elseif (!class_exists('B2DB'))
+			elseif (!B2DB::isInitialized())
 				throw new Exception("The Bug Genie seems installed, but B2DB isn't configured. This usually indicates an error with the installation. Try removing the file ".THEBUGGENIE_PATH."installed and try again.");
 		}
 
@@ -1949,7 +1949,7 @@
 				ob_start();
 				ob_implicit_flush(0);
 				$load_time = self::getLoadtime();
-				if (class_exists('B2DB'))
+				if (B2DB::isInitialized())
 				{
 					$tbg_summary['db_queries'] = B2DB::getSQLHits();
 					$tbg_summary['db_timing'] = B2DB::getSQLTiming();
@@ -2042,7 +2042,7 @@
 						}
 						if (self::performAction($route['module'], $route['action']))
 						{
-							if (class_exists('B2DB'))
+							if (B2DB::isInitialized())
 							{
 								B2DB::closeDBLink();
 							}

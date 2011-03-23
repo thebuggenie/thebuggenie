@@ -138,9 +138,9 @@
 					{
 						$this->cliEcho("The Bug Genie uses a database to store information. To be able to connect\nto your database, The Bug Genie needs some information, such as\ndatabase type, username, password, etc.\n\n");
 						$this->cliEcho("Please select what kind of database you are installing The Bug Genie on:\n");
-						BaseB2DB::setHTMLException(false);
+						B2DB::setHTMLException(false);
 						$db_types = array();
-						foreach (BaseB2DB::getDBtypes() as $db_type => $db_desc)
+						foreach (B2DB::getDBtypes() as $db_type => $db_desc)
 						{
 							$db_types[] = $db_type;
 							$this->cliEcho(count($db_types) . ': ' . $db_desc . "\n", 'white', 'bold');
@@ -187,20 +187,17 @@
 						while (!$e_ok);
 						try
 						{
-							BaseB2DB::setHost($db_hostname);
-							BaseB2DB::setUname($db_username);
-							BaseB2DB::setPasswd($db_password);
-							BaseB2DB::setDBtype($db_type);
-							BaseB2DB::initialize();
-							$engine_path = BaseB2DB::getEngineClassPath();
+							B2DB::setHost($db_hostname);
+							B2DB::setUname($db_username);
+							B2DB::setPasswd($db_password);
+							B2DB::setDBtype($db_type);
+							B2DB::initialize();
+							$engine_path = B2DB::getEngineClassPath();
 							if ($engine_path !== null)
-							{
 								TBGContext::addClasspath($engine_path);
-							}
 							else
-							{
 								throw new Exception("Cannot initialize the B2DB engine");
-							}
+
 							B2DB::doConnect();
 							B2DB::createDatabase($db_name);
 							B2DB::setDBname($db_name);

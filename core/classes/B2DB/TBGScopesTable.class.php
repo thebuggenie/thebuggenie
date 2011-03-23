@@ -50,7 +50,7 @@
 			parent::_addInteger(self::ADMINISTRATOR, 10);
 		}
 
-		protected function _migrateData(BaseB2DBTable $old_table)
+		protected function _migrateData(B2DBTable $old_table)
 		{
 			$crit = TBGScopeHostnamesTable::getTable()->getCriteria();
 			$crit->addInsert(TBGScopeHostnamesTable::HOSTNAME, '*');
