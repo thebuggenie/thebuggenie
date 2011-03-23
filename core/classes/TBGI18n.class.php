@@ -97,23 +97,24 @@
 
 		public function addMissingStringsToStringsFile()
 		{
+			$strings = array();
 			foreach ($this->getMissingStrings() as $string => $truth)
 			{
 				if (strpos($string, '"') !== false && strpos($string, "'") !== false)
 				{
 					$string = str_replace('"', '\"', $string);
-					file_put_contents($this->getStringsFilename(), "\n\t".'$strings["'.$string.'"] = "'.$string."\";", FILE_APPEND);
+					$strings[] = '$strings["'.$string.'"] = "'.$string."\";";
 				}
 				elseif (strpos($string, "'") !== false)
 				{
-					file_put_contents($this->getStringsFilename(), "\n\t".'$strings["'.$string.'"] = "'.$string."\";", FILE_APPEND);
+					$strings[] = '$strings["'.$string.'"] = "'.$string."\";";
 				}
 				else
 				{
-					file_put_contents($this->getStringsFilename(), "\n\t".'$strings[\''.$string.'\'] = \''.$string."';", FILE_APPEND);
+					$strings[] = '$strings[\''.$string.'\'] = \''.$string."';";
 				}
 			}
-
+			file_put_contents("\n\t".$this->getStringsFilename(), join("\n\t", $strings), FILE_APPEND);
 		}
 		
 		public function setCharset($charset)
