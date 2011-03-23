@@ -97,6 +97,7 @@
 
 		public function addMissingStringsToStringsFile()
 		{
+			return;
 			$strings = array();
 			foreach ($this->getMissingStrings() as $string => $truth)
 			{

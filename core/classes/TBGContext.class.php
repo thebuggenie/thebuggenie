@@ -1445,7 +1445,7 @@
 					$hostname = $_SERVER['HTTP_HOST'];
 				}
 				
-				if (!self::isUpgrademode())
+				if (!self::isUpgrademode() && !self::isInstallmode())
 					$row = TBGScopesTable::getTable()->getByHostnameOrDefault($hostname);
 				
 				if (!$row instanceof B2DBRow)
