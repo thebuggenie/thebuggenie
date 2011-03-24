@@ -232,7 +232,7 @@
 					<strong style="font-size: 14px;"><?php echo $issuetype->getName(); ?></strong><br>
 					<?php echo $issuetype->getDescription(); ?>
 					<div style="text-align: right; margin-top: 5px;">
-						<a href="javascript:void(0);" onclick="$('issuetype_id').setValue(<?php echo $issuetype->getID(); ?>);updateFields('<?php echo make_url('getreportissuefields'); ?>', '<?php echo make_url('getprojectmenustrip', array('page' => 'reportissue')); ?>');" style="font-size: 13px; font-weight: bold;"><?php echo __('Choose %issuetype%', array('%issuetype%' => strtolower($issuetype->getName()))); ?>&nbsp;&gt;&gt;</a>
+						<a href="javascript:void(0);" onclick="$('issuetype_id').setValue(<?php echo $issuetype->getID(); ?>);updateFields('<?php echo make_url('getreportissuefields'); ?>', '<?php echo make_url('getprojectmenustrip', array('page' => 'reportissue')); ?>');" style="font-size: 13px; font-weight: bold;"><?php echo __('Choose %issuetype%', array('%issuetype%' => mb_strtolower($issuetype->getName()))); ?>&nbsp;&gt;&gt;</a>
 					</div>
 				</li>
 			<?php endforeach; ?>
