@@ -179,6 +179,11 @@
 			return $sprints;
 		}
 
+		protected function _construct(B2DBRow $row, $foreign_key = null)
+		{
+			$this->_reached = ($this->_reacheddate > 0);
+		}
+
 		public function _postSave($is_new)
 		{
 			if ($is_new)
