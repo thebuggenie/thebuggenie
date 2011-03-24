@@ -2227,6 +2227,9 @@
 					
 					$comment->setIsPublic($request->getParameter('comment_visibility'));
 					$comment->setUpdatedBy(TBGContext::getUser()->getID());
+					$comment->save();
+
+					TBGContext::loadLibrary('common');
 					$body = tbg_parse_text($comment->getContent());
 					
 					return $this->renderJSON(array('title' => TBGContext::getI18n()->__('Comment edited!'), 'comment_title' => $comment->getTitle(), 'comment_body' => $body));

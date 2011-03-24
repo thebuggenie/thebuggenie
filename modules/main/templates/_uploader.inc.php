@@ -178,7 +178,7 @@
 							$('article_<?php echo strtolower($article->getName()); ?>_files').insert({bottom: json.content_inline});
 						<?php endif; ?>
 						this.error = false;
-						thebuggenie.events.successMessage('File attached successfully');
+						successMessage('File attached successfully');
 					}
 					else if (json.error)
 					{
@@ -186,7 +186,7 @@
 						this.status.hide();
 						this.form.hide();
 						this.error = true;
-						thebuggenie.events.failedMessage(json.error);
+						failedMessage(json.error);
 					}
 				}
 			},
@@ -200,11 +200,11 @@
 				this.poller.stop();
 				if (json && (json.failed || json.error))
 				{
-					thebuggenie.events.failedMessage(json.error);
+					failedMessage(json.error);
 				}
 				else
 				{
-					thebuggenie.events.failedMessage(transport.responseText);
+					failedMessage(transport.responseText);
 				}
 			}
 

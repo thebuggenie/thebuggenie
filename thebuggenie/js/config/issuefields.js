@@ -14,18 +14,18 @@ function showIssuefieldOptions(url, field)
 			$(field + '_indicator').hide();
 			if (json && (json.failed || json.error))
 			{
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 			}
 		},
 		onFailure: function (transport) {
 			$(field + '_indicator').hide();
 			if (transport.responseJSON)
 			{
-				thebuggenie.events.failedMessage(transport.responseJSON.error);
+				failedMessage(transport.responseJSON.error);
 			}
 			else
 			{
-				thebuggenie.events.failedMessage(transport.responseText);
+				failedMessage(transport.responseText);
 			}
 		}
 		});
@@ -48,7 +48,7 @@ function addIssuefieldCustom(url)
 		var json = transport.responseJSON;
 		if (json.failed)
 		{
-			thebuggenie.events.failedMessage(json.error);
+			failedMessage(json.error);
 			$('add_custom_type_button').show();
 			$('add_custom_type_indicator').hide();
 		}
@@ -57,7 +57,7 @@ function addIssuefieldCustom(url)
 			$('add_custom_type_indicator').hide();
 			$('add_custom_type_button').show();
 			$('add_custom_type_form').reset();
-			thebuggenie.events.successMessage(json.title, '');
+			successMessage(json.title, '');
 			$('custom_types_list').insert({bottom: json.content});
 		}
 	},
@@ -66,11 +66,11 @@ function addIssuefieldCustom(url)
 		$('add_custom_type_button').show();
 		if (transport.responseJSON)
 		{
-			thebuggenie.events.failedMessage(transport.responseJSON.error);
+			failedMessage(transport.responseJSON.error);
 		}
 		else
 		{
-			thebuggenie.events.failedMessage(transport.responseText);
+			failedMessage(transport.responseText);
 		}
 	}
 	});
@@ -91,7 +91,7 @@ function updateIssuefieldCustom(url, type)
 		var json = transport.responseJSON;
 		if (json.failed)
 		{
-			thebuggenie.events.failedMessage(json.error);
+			failedMessage(json.error);
 			$('edit_custom_type_' + type + '_indicator').hide();
 		}
 		else
@@ -112,18 +112,18 @@ function updateIssuefieldCustom(url, type)
 			}
 			$('custom_type_' + type + '_name_link').update(json.name);
 			$('custom_type_' + type + '_info').show();
-			thebuggenie.events.successMessage(json.title, '');
+			successMessage(json.title, '');
 		}
 	},
 	onFailure: function (transport) {
 		$('edit_custom_type_' + type + '_indicator').hide();
 		if (transport.responseJSON)
 		{
-			thebuggenie.events.failedMessage(transport.responseJSON.error);
+			failedMessage(transport.responseJSON.error);
 		}
 		else
 		{
-			thebuggenie.events.failedMessage(transport.responseText);
+			failedMessage(transport.responseText);
 		}
 	}
 	});
@@ -144,14 +144,14 @@ function addIssuefieldOption(url, type)
 		var json = transport.responseJSON;
 		if (json.failed)
 		{
-			thebuggenie.events.failedMessage(json.error);
+			failedMessage(json.error);
 			$('add_' + type + '_indicator').hide();
 		}
 		else
 		{
 			$('add_' + type + '_indicator').hide();
 			$('add_' + type + '_form').reset();
-			thebuggenie.events.successMessage(json.title, '');
+			successMessage(json.title, '');
 			$('no_' + type + '_items').hide();
 			$(type + '_list').insert({bottom: json.content});
 		}
@@ -160,11 +160,11 @@ function addIssuefieldOption(url, type)
 		$('add_' + type + '_indicator').hide();
 		if (transport.responseJSON)
 		{
-			thebuggenie.events.failedMessage(transport.responseJSON.error);
+			failedMessage(transport.responseJSON.error);
 		}
 		else
 		{
-			thebuggenie.events.failedMessage(transport.responseText);
+			failedMessage(transport.responseText);
 		}
 	}
 	});
@@ -185,13 +185,13 @@ function editIssuefieldOption(url, type, id)
 		var json = transport.responseJSON;
 		if (json.failed)
 		{
-			thebuggenie.events.failedMessage(json.error);
+			failedMessage(json.error);
 			$('edit_' + type + '_' + id + '_indicator').hide();
 		}
 		else
 		{
 			$('edit_' + type + '_' + id + '_indicator').hide();
-			thebuggenie.events.successMessage(json.title, '');
+			successMessage(json.title, '');
 			$(type + '_' + id + '_name').update($(type + '_' + id + '_name_input').getValue());
 			if ($(type + '_' + id + '_itemdata_input') && $(type + '_' + id + '_itemdata'))
 			{
@@ -209,11 +209,11 @@ function editIssuefieldOption(url, type, id)
 		$('edit_' + type + '_' + id + '_indicator').hide();
 		if (transport.responseJSON)
 		{
-			thebuggenie.events.failedMessage(transport.responseJSON.error);
+			failedMessage(transport.responseJSON.error);
 		}
 		else
 		{
-			thebuggenie.events.failedMessage(transport.responseText);
+			failedMessage(transport.responseText);
 		}
 	}
 	});
@@ -231,13 +231,13 @@ function deleteIssuefieldOption(url, type, id)
 		var json = transport.responseJSON;
 		if (json.failed)
 		{
-			thebuggenie.events.failedMessage(json.error);
+			failedMessage(json.error);
 			$('delete_' + type + '_' + id + '_indicator').hide();
 		}
 		else
 		{
 			$('delete_' + type + '_' + id + '_indicator').hide();
-			thebuggenie.events.successMessage(json.title, '');
+			successMessage(json.title, '');
 			$('delete_item_' + id).remove();
 			$('item_' + type + '_' + id).remove();
 		}
@@ -246,11 +246,11 @@ function deleteIssuefieldOption(url, type, id)
 		$('delete_' + type + '_' + id + '_indicator').hide();
 		if (transport.responseJSON)
 		{
-			thebuggenie.events.failedMessage(transport.responseJSON.error);
+			failedMessage(transport.responseJSON.error);
 		}
 		else
 		{
-			thebuggenie.events.failedMessage(transport.responseText);
+			failedMessage(transport.responseText);
 		}
 	}
 	});
@@ -268,13 +268,13 @@ function deleteIssuefieldCustom(url, type, id)
 		var json = transport.responseJSON;
 		if (json.failed)
 		{
-			thebuggenie.events.failedMessage(json.error);
+			failedMessage(json.error);
 			$('delete_' + type + '_' + id + '_indicator').hide();
 		}
 		else
 		{
 			$('delete_' + type + '_' + id + '_indicator').hide();
-			thebuggenie.events.successMessage(json.title, '');
+			successMessage(json.title, '');
 			$('delete_item_' + id).remove();
 			$('item_' + type + '_' + id).remove();
 		}
@@ -283,11 +283,11 @@ function deleteIssuefieldCustom(url, type, id)
 		$('delete_' + type + '_' + id + '_indicator').hide();
 		if (transport.responseJSON)
 		{
-			thebuggenie.events.failedMessage(transport.responseJSON.error);
+			failedMessage(transport.responseJSON.error);
 		}
 		else
 		{
-			thebuggenie.events.failedMessage(transport.responseText);
+			failedMessage(transport.responseText);
 		}
 	}
 	});

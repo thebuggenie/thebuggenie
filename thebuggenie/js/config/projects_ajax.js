@@ -29,7 +29,7 @@ function addProject(url)
 			var json = transport.responseJSON;
 			if (json.failed)
 			{
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 				$('project_add_indicator').hide();
 			}
 			else
@@ -37,7 +37,7 @@ function addProject(url)
 				Form.reset('add_project_form');
 				$('noprojects_tr').hide();
 				$('project_add_indicator').hide();
-				thebuggenie.events.successMessage(json.title, json.message);
+				successMessage(json.title, json.message);
 				$('project_table').insert({bottom: json.content});
 				updateProjectLinks(json);
 			}
@@ -47,7 +47,7 @@ function addProject(url)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 			}
 		}
 	});
@@ -69,7 +69,7 @@ function removeProject(url, pid)
 		{
 			$('project_delete_controls_' + pid).show();
 			$('project_delete_indicator_' + pid).hide();
-			thebuggenie.events.failedMessage(json.error);
+			failedMessage(json.error);
 		}
 		else
 		{
@@ -81,7 +81,7 @@ function removeProject(url, pid)
 				$('noprojects_tr').show();
 			}
 			updateProjectLinks(json);
-			thebuggenie.events.successMessage(json.title);
+			successMessage(json.title);
 		}
 	},
 	onFailure: function (transport) {
@@ -90,7 +90,7 @@ function removeProject(url, pid)
 		var json = transport.responseJSON;
 		if (json && (json.failed || json.error))
 		{
-			thebuggenie.events.failedMessage(json.error);
+			failedMessage(json.error);
 		}
 	}
 	});
@@ -111,7 +111,7 @@ function addMilestone(url)
 			var json = transport.responseJSON;
 			if (json.failed)
 			{
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 				$('milestone_add_indicator').hide();
 			}
 			else
@@ -119,7 +119,7 @@ function addMilestone(url)
 				Form.reset('add_milestone_form');
 				$('no_milestones').hide();
 				$('milestone_add_indicator').hide();
-				thebuggenie.events.successMessage(json.title, json.message);
+				successMessage(json.title, json.message);
 				$('milestone_list').insert({bottom: json.content});
 			}
 		},
@@ -128,7 +128,7 @@ function addMilestone(url)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 			}
 		}
 	});
@@ -148,7 +148,7 @@ function doBuildAction(url, bid, action, update)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 				$('build_'+bid+'_indicator').hide();
 				$('build_'+bid+'_info').show();
 			}
@@ -172,7 +172,7 @@ function doBuildAction(url, bid, action, update)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 			}
 		}
 	});
@@ -194,7 +194,7 @@ function updateBuild(url, bid)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 				$('build_'+bid+'_indicator').hide();
 				$('build_'+bid+'_info').show();
 			}
@@ -211,7 +211,7 @@ function updateBuild(url, bid)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 			}
 		}
 	});
@@ -234,12 +234,12 @@ function saveProjectOther(url)
 			if (json.failed)
 			{
 				$('settings_save_indicator').hide();
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 			}
 			else
 			{
 				$('settings_save_indicator').hide();
-				thebuggenie.events.successMessage(json.title, json.message);
+				successMessage(json.title, json.message);
 			}	
 		},
 		onFailure: function (transport) {
@@ -247,7 +247,7 @@ function saveProjectOther(url)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 			}
 		}
 	});
@@ -273,14 +273,14 @@ function addToOpenBuild(url, bid)
 				$('build_'+bid+'_indicator').hide();
 				$('build_'+bid+'_info').show();
 				$('addtoopen_build_'+bid).hide();
-				thebuggenie.events.failedMessage(json.title, json.message);
+				failedMessage(json.title, json.message);
 			}
 			else
 			{
 				$('build_'+bid+'_indicator').hide();
 				$('build_'+bid+'_info').show();
 				$('addtoopen_build_'+bid).hide();
-				thebuggenie.events.successMessage(json.title, json.message);
+				successMessage(json.title, json.message);
 			}
 		},
 		onFailure: function (transport) {
@@ -290,7 +290,7 @@ function addToOpenBuild(url, bid)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 			}
 		}
 	});
@@ -316,7 +316,7 @@ function deleteBuild(url, bid)
 				$('build_'+bid+'_indicator').hide();
 				$('build_'+bid+'_info').show();
 				$('del_build_'+bid).hide();
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 			}
 			else
 			{
@@ -332,7 +332,7 @@ function deleteBuild(url, bid)
 				{
 					$('no_builds').show();
 				}
-				thebuggenie.events.successMessage(json.message);
+				successMessage(json.message);
 			}
 		},
 		onFailure: function (transport) {
@@ -343,7 +343,7 @@ function deleteBuild(url, bid)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 			}
 		}
 	});
@@ -365,7 +365,7 @@ function deleteComponent(url, cid)
 			{
 				$('component_'+cid+'_delete_indicator').hide();
 				$('del_component_'+cid).hide();
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 			}
 			else
 			{
@@ -376,7 +376,7 @@ function deleteComponent(url, cid)
 				{
 					$('no_components').show();
 				}
-				thebuggenie.events.successMessage(json.message);
+				successMessage(json.message);
 			}
 		},
 		onFailure: function (transport) {
@@ -385,7 +385,7 @@ function deleteComponent(url, cid)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 			}
 		}
 	});
@@ -407,7 +407,7 @@ function deleteEdition(url, eid)
 			{
 				$('edition_'+eid+'_delete_indicator').hide();
 				$('del_edition_'+eid).hide();
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 			}
 			else
 			{
@@ -417,7 +417,7 @@ function deleteEdition(url, eid)
 				{
 					$('no_editions').show();
 				}
-				thebuggenie.events.successMessage(json.message);
+				successMessage(json.message);
 			}
 		},
 		onFailure: function (transport) {
@@ -426,7 +426,7 @@ function deleteEdition(url, eid)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 			}
 		}
 	});
@@ -459,7 +459,7 @@ function addEdition(url)
 			var json = transport.responseJSON;
 			if (json.failed)
 			{
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 				$('edition_add_indicator').hide();
 			}
 			else
@@ -467,7 +467,7 @@ function addEdition(url)
 				Form.reset('add_edition_form');
 				$('edition_add_indicator').hide();
 				$('no_editions').hide();
-				thebuggenie.events.successMessage(json.title, json.message);
+				successMessage(json.title, json.message);
 				$('edition_table').update($('edition_table').innerHTML + json.html);
 			}
 		},
@@ -476,7 +476,7 @@ function addEdition(url)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 			}
 		}
 	});
@@ -496,7 +496,7 @@ function addBuild(url)
 			var json = transport.responseJSON;
 			if (json.failed)
 			{
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 				$('build_add_indicator').hide();
 			}
 			else
@@ -504,7 +504,7 @@ function addBuild(url)
 				$('build_table').update($('build_table').innerHTML + json.html);
 				$('no_builds').hide();
 				$('build_add_indicator').hide();
-				thebuggenie.events.successMessage(json.title, json.message);
+				successMessage(json.title, json.message);
 			}
 		},
 		onFailure: function (transport) {
@@ -512,7 +512,7 @@ function addBuild(url)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 			}
 		}
 	});
@@ -533,14 +533,14 @@ function addComponent(url)
 			var json = transport.responseJSON;
 			if (json.failed)
 			{
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 				$('component_add_indicator').hide();
 			}
 			else
 			{
 				Form.reset('add_component_form');
 				$('component_add_indicator').hide();
-				thebuggenie.events.successMessage(json.title, json.message);
+				successMessage(json.title, json.message);
 				$('no_components').hide();
 				$('component_table').update($('component_table').innerHTML + json.html);
 			}
@@ -550,7 +550,7 @@ function addComponent(url)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 			}
 		}
 	});
@@ -582,7 +582,7 @@ function _submitProjectDetails(url, form, pid)
 			if (json.failed)
 			{
 				$(form + '_indicator').hide();
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 			}
 			else
 			{
@@ -661,7 +661,7 @@ function _submitProjectDetails(url, form, pid)
 					}
 				}
 				
-				thebuggenie.events.successMessage(json.title, json.message);
+				successMessage(json.title, json.message);
 			}
 		},
 		onFailure: function (transport) {
@@ -669,7 +669,7 @@ function _submitProjectDetails(url, form, pid)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 			}
 		}
 	});
@@ -693,7 +693,7 @@ function addEditionComponent(url, cid)
 			var json = transport.responseJSON;
 			if (json.failed)
 			{
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 			}
 			else
 			{
@@ -707,7 +707,7 @@ function addEditionComponent(url, cid)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 			}
 		}
 	});
@@ -726,7 +726,7 @@ function removeEditionComponent(url, cid)
 			var json = transport.responseJSON;
 			if (json.failed)
 			{
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 			}
 			else
 			{
@@ -743,7 +743,7 @@ function removeEditionComponent(url, cid)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 			}
 		}
 	});
@@ -764,7 +764,7 @@ function updateComponent(url, cid)
 			var json = transport.responseJSON;
 			if (json.failed)
 			{
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 				$('component_'+cid+'_indicator').hide();
 			}
 			else
@@ -780,7 +780,7 @@ function updateComponent(url, cid)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 			}
 		}
 	});
@@ -805,7 +805,7 @@ function deleteMilestone(url, mid)
 			if (json.failed)
 			{
 				$('milestone_'+mid+'_indicator').hide();
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 			}
 			else
 			{
@@ -822,7 +822,7 @@ function deleteMilestone(url, mid)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 			}
 		}
 	});
@@ -843,7 +843,7 @@ function findDevs(url)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 			}
 		},
 		onFailure: function (transport) {
@@ -851,7 +851,7 @@ function findDevs(url)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 			}
 		}
 	});
@@ -886,7 +886,7 @@ function setUser(url, field)
 			$(field + '_change').hide();
 			if (json.failed)
 			{
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 			}
 			else
 			{
@@ -898,7 +898,7 @@ function setUser(url, field)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 			}
 		}
 	});
@@ -919,7 +919,7 @@ function assignToProject(url, form_id)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 			}
 		},
 		onFailure: function (transport) {
@@ -927,7 +927,7 @@ function assignToProject(url, form_id)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 			}
 		}
 	});

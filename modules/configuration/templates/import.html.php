@@ -63,7 +63,7 @@
 			</div>
 			<?php if (isset($imported_data)): ?>
 				<script type="text/javascript">
-					thebuggenie.events.successMessage('<?php echo __('Sample data loaded!'); ?>', '<?php echo __('Sample data was loaded. You can now browse around The Bug Genie and try it out!'); ?>');
+					successMessage('<?php echo __('Sample data loaded!'); ?>', '<?php echo __('Sample data was loaded. You can now browse around The Bug Genie and try it out!'); ?>');
 				</script>
 			<?php endif; ?>
 		</td>

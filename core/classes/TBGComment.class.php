@@ -194,6 +194,7 @@
 		 */
 		public function canUserEditComment()
 		{
+			if ($this->isSystemComment()) return false;
 			return (bool) ($this->getPostedByID() == TBGContext::getUser()->getID() || $this->_permissionCheck('caneditcomments') || $this->_permissionCheck('canpostseeandeditallcomments', true));
 		}
 

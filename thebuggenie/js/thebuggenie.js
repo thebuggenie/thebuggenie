@@ -1,71 +1,67 @@
-
-if (!window.thebuggenie) window.thebuggenie = {};
-if (!thebuggenie.events) thebuggenie.events = {};
-
-thebuggenie.events.failedMessage = function(title, content)
+function failedMessage(title, content)
 {
 	$('thebuggenie_failuremessage_title').update(title);
 	$('thebuggenie_failuremessage_content').update(content);
-	if ($('thebuggenie_thebuggenie.events.successMessage').visible())
+	if ($('thebuggenie_successMessage').visible())
 	{
-		var success_queue = Effect.Queues.get('thebuggenie.events.successMessage');
+		var success_queue = Effect.Queues.get('successMessage');
 		success_queue.each(function(effect) {effect.cancel();});
-		new Effect.Fade('thebuggenie_thebuggenie.events.successMessage', {queue: {position: 'end', scope: 'thebuggenie.events.successMessage', limit: 2}, duration: 0.2});
+		new Effect.Fade('thebuggenie_successMessage', {queue: {position: 'end', scope: 'successMessage', limit: 2}, duration: 0.2});
 	}
 	if ($('thebuggenie_failuremessage').visible())
 	{
-		var failed_queue = Effect.Queues.get('thebuggenie.events.failedMessage');
+		var failed_queue = Effect.Queues.get('failedMessage');
 		failed_queue.each(function(effect) {effect.cancel();});
 		new Effect.Pulsate('thebuggenie_failuremessage');
 	}
 	else
 	{
-		new Effect.Appear('thebuggenie_failuremessage', {queue: {position: 'end', scope: 'thebuggenie.events.failedMessage', limit: 2}, duration: 0.2});
+		new Effect.Appear('thebuggenie_failuremessage', {queue: {position: 'end', scope: 'failedMessage', limit: 2}, duration: 0.2});
 	}
-	new Effect.Fade('thebuggenie_failuremessage', {queue: {position: 'end', scope: 'thebuggenie.events.failedMessage', limit: 2}, delay: 30, duration: 0.2});
+	new Effect.Fade('thebuggenie_failuremessage', {queue: {position: 'end', scope: 'failedMessage', limit: 2}, delay: 30, duration: 0.2});
 }
 
-thebuggenie.events.successMessage = function(title, content)
+function successMessage(title, content)
 {
-	$('thebuggenie_thebuggenie.events.successMessage_title').update(title);
-	$('thebuggenie_thebuggenie.events.successMessage_content').update(content);
+	$('thebuggenie_successMessage_title').update(title);
+	$('thebuggenie_successMessage_content').update(content);
 	if (title || content)
 	{
 		if ($('thebuggenie_failuremessage').visible())
 		{
-			var failed_queue = Effect.Queues.get('thebuggenie.events.failedMessage');
+			var failed_queue = Effect.Queues.get('failedMessage');
 			failed_queue.each(function(effect) {effect.cancel();});
-			new Effect.Fade('thebuggenie_failuremessage', {queue: {position: 'end', scope: 'thebuggenie.events.failedMessage', limit: 2}, duration: 0.2});
+			new Effect.Fade('thebuggenie_failuremessage', {queue: {position: 'end', scope: 'failedMessage', limit: 2}, duration: 0.2});
 		}
-		if ($('thebuggenie_thebuggenie.events.successMessage').visible())
+		if ($('thebuggenie_successMessage').visible())
 		{
-			var success_queue = Effect.Queues.get('thebuggenie.events.successMessage');
+			var success_queue = Effect.Queues.get('successMessage');
 			success_queue.each(function(effect) {effect.cancel();});
-			new Effect.Pulsate('thebuggenie_thebuggenie.events.successMessage');
+			new Effect.Pulsate('thebuggenie_successMessage');
 		}
 		else
 		{
-			new Effect.Appear('thebuggenie_thebuggenie.events.successMessage', {queue: {position: 'end', scope: 'thebuggenie.events.successMessage', limit: 2}, duration: 0.2});
+			new Effect.Appear('thebuggenie_successMessage', {queue: {position: 'end', scope: 'successMessage', limit: 2}, duration: 0.2});
 		}
-		new Effect.Fade('thebuggenie_thebuggenie.events.successMessage', {queue: {position: 'end', scope: 'thebuggenie.events.successMessage', limit: 2}, delay: 10, duration: 0.2});
+		new Effect.Fade('thebuggenie_successMessage', {queue: {position: 'end', scope: 'successMessage', limit: 2}, delay: 10, duration: 0.2});
 	}
-	else if ($('thebuggenie_thebuggenie.events.successMessage').visible())
+	else if ($('thebuggenie_successMessage').visible())
 	{
-		var success_queue = Effect.Queues.get('thebuggenie.events.successMessage');
+		var success_queue = Effect.Queues.get('successMessage');
 		success_queue.each(function(effect) {effect.cancel();});
-		new Effect.Fade('thebuggenie_thebuggenie.events.successMessage', {queue: {position: 'end', scope: 'thebuggenie.events.successMessage', limit: 2}, duration: 0.2});
+		new Effect.Fade('thebuggenie_successMessage', {queue: {position: 'end', scope: 'successMessage', limit: 2}, duration: 0.2});
 	}
 }
 
 function clearPopupMessages()
 {
-	var success_queue = Effect.Queues.get('thebuggenie.events.successMessage');
+	var success_queue = Effect.Queues.get('successMessage');
 	success_queue.each(function(effect) {effect.cancel();});
-	var failed_queue = Effect.Queues.get('thebuggenie.events.failedMessage');
+	var failed_queue = Effect.Queues.get('failedMessage');
 	failed_queue.each(function(effect) {effect.cancel();});
-	if ($('thebuggenie_thebuggenie.events.successMessage').visible())
+	if ($('thebuggenie_successMessage').visible())
 	{
-		$('thebuggenie_thebuggenie.events.successMessage').fade({duration: 0.2});
+		$('thebuggenie_successMessage').fade({duration: 0.2});
 	}
 	if ($('thebuggenie_failuremessage').visible())
 	{
@@ -112,7 +108,7 @@ function _updateDivWithJSONFeedback(url, update_element, indicator, insertion, c
 		var json = transport.responseJSON;
 		if (json && json.failed)
 		{
-			thebuggenie.events.failedMessage(json.error);
+			failedMessage(json.error);
 			$(indicator).hide();
 		}
 		else
@@ -131,16 +127,16 @@ function _updateDivWithJSONFeedback(url, update_element, indicator, insertion, c
 				}
 				if (json && json.message)
 				{
-					thebuggenie.events.successMessage(json.message);
+					successMessage(json.message);
 				}
 			}
 			else if (json && (json.title || json.content))
 			{
-				thebuggenie.events.successMessage(json.title, json.content);
+				successMessage(json.title, json.content);
 			}
 			else if (json && (json.message))
 			{
-				thebuggenie.events.successMessage(json.message);
+				successMessage(json.message);
 			}
 			if (hide_elements_on_success)
 			{
@@ -170,11 +166,11 @@ function _updateDivWithJSONFeedback(url, update_element, indicator, insertion, c
 		$(indicator).hide();
 		if (transport.responseJSON)
 		{
-			thebuggenie.events.failedMessage(transport.responseJSON.error);
+			failedMessage(transport.responseJSON.error);
 		}
 		else
 		{
-			thebuggenie.events.failedMessage(transport.responseText);
+			failedMessage(transport.responseText);
 		}
 		if (onfailure_callback)
 		{
@@ -209,7 +205,7 @@ function _postFormWithJSONFeedback(url, formname, indicator, hide_divs_when_done
 		var json = transport.responseJSON;
 		if (json && json.failed)
 		{
-			thebuggenie.events.failedMessage(json.error);
+			failedMessage(json.error);
 			$(indicator).hide();
 		}
 		else
@@ -228,7 +224,7 @@ function _postFormWithJSONFeedback(url, formname, indicator, hide_divs_when_done
 				}
 				if (json && json.message)
 				{
-					thebuggenie.events.successMessage(json.message);
+					successMessage(json.message);
 				}
 			}
 			if (update_form_elm != '' && $(update_form_elm))
@@ -237,18 +233,18 @@ function _postFormWithJSONFeedback(url, formname, indicator, hide_divs_when_done
 				$(update_form_elm).setValue(content);
 				if (json && json.message)
 				{
-					thebuggenie.events.successMessage(json.message);
+					successMessage(json.message);
 				}
 			}
 			else if (json)
 			{
 				if (json.message)
 				{
-					thebuggenie.events.successMessage(json.message);
+					successMessage(json.message);
 				}
 				else if (json.title)
 				{
-					thebuggenie.events.successMessage(json.title, json.content);
+					successMessage(json.title, json.content);
 				}
 			}
 			if (is_string(hide_divs_when_done) && $(hide_divs_when_done))
@@ -293,15 +289,15 @@ function _postFormWithJSONFeedback(url, formname, indicator, hide_divs_when_done
 		{
 			if (transport.responseJSON.error && transport.responseJSON.message)
 			{
-				thebuggenie.events.failedMessage(transport.responseJSON.message, transport.responseJSON.error);
+				failedMessage(transport.responseJSON.message, transport.responseJSON.error);
 			}
 			else if (transport.responseJSON.error)
 			{
-				thebuggenie.events.failedMessage(transport.responseJSON.error);
+				failedMessage(transport.responseJSON.error);
 			}
 			else if (transport.responseJSON.message)
 			{
-				thebuggenie.events.failedMessage(transport.responseJSON.message);
+				failedMessage(transport.responseJSON.message);
 			}
 			if (onfailure_callback)
 			{
@@ -310,7 +306,7 @@ function _postFormWithJSONFeedback(url, formname, indicator, hide_divs_when_done
 		}
 		else
 		{
-			thebuggenie.events.failedMessage(transport.responseText);
+			failedMessage(transport.responseText);
 		}
 	},
 	onComplete: function (transport) {
@@ -350,15 +346,15 @@ function submitForm(url, form_id)
 		var json = transport.responseJSON;
 		if (json && (json.failed || json.error))
 		{
-			thebuggenie.events.failedMessage(json.error);
+			failedMessage(json.error);
 		}
 		else if (json && json.title)
 		{
-			thebuggenie.events.successMessage(json.title, json.message);
+			successMessage(json.title, json.message);
 		}
 		else
 		{
-			thebuggenie.events.failedMessage(transport.responseText);
+			failedMessage(transport.responseText);
 		}
 		$(form_id + '_button').enable();
 	},
@@ -368,7 +364,7 @@ function submitForm(url, form_id)
 		var json = transport.responseJSON;
 		if (json && (json.failed || json.error))
 		{
-			thebuggenie.events.failedMessage(json.error);
+			failedMessage(json.error);
 		}
 	}
 	});
@@ -396,7 +392,7 @@ function showFadedBackdrop(url)
 		var json = transport.responseJSON;
 		if (json && (json.failed || json.error))
 		{
-			thebuggenie.events.failedMessage(json.error);
+			failedMessage(json.error);
 			$('fullpage_backdrop_indicator').hide();
 			$('fullpage_backdrop').hide();
 		}
@@ -407,7 +403,7 @@ function showFadedBackdrop(url)
 		}
 		else
 		{
-			thebuggenie.events.failedMessage(transport.responseText);
+			failedMessage(transport.responseText);
 			$('fullpage_backdrop_indicator').hide();
 			$('fullpage_backdrop').hide();
 		}
@@ -416,11 +412,11 @@ function showFadedBackdrop(url)
 		var json = transport.responseJSON;
 		if (json && (json.failed || json.error))
 		{
-			thebuggenie.events.failedMessage(json.error);
+			failedMessage(json.error);
 		}
 		else
 		{
-			thebuggenie.events.failedMessage(transport.responseText);
+			failedMessage(transport.responseText);
 		}
 		$('fullpage_backdrop_indicator').hide();
 		$('fullpage_backdrop').hide();
@@ -482,15 +478,15 @@ function addLink(url, target_type, target_id)
 				$('attach_link_' + target_type + '_' + target_id).hide();
 				$(target_type + '_' + target_id + '_no_links').hide();
 				$(target_type + '_' + target_id + '_links').insert({bottom: json.content});
-				thebuggenie.events.successMessage(json.message);
+				successMessage(json.message);
 			}
 			else if (json && (json.failed || json.error))
 			{
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 			}
 			else
 			{
-				thebuggenie.events.failedMessage(transport.responseText);
+				failedMessage(transport.responseText);
 			}
 			$('attach_link_' + target_type + '_' + target_id + '_indicator').hide();
 			$('attach_link_' + target_type + '_' + target_id + '_submit').show();
@@ -499,11 +495,11 @@ function addLink(url, target_type, target_id)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 			}
 			else
 			{
-				thebuggenie.events.failedMessage(transport.responseText);
+				failedMessage(transport.responseText);
 			}
 			$('attach_link_' + target_type + '_' + target_id + '_indicator').hide();
 			$('attach_link_' + target_type + '_' + target_id + '_submit').show();
@@ -526,7 +522,7 @@ function removeLink(url, target_type, target_id, link_id)
 			{
 				$(target_type + '_' + target_id + '_links_' + link_id).remove();
 				$(target_type + '_' + target_id + '_links_' + link_id + '_remove_confirm').remove();
-				thebuggenie.events.successMessage(json.message);
+				successMessage(json.message);
 				if ($(target_type + '_' + target_id + '_links').childElements().size() == 0)
 				{
 					$(target_type + '_' + target_id + '_no_links').show();
@@ -536,11 +532,11 @@ function removeLink(url, target_type, target_id, link_id)
 			{
 				if (json && (json.failed || json.error))
 				{
-					thebuggenie.events.failedMessage(json.error);
+					failedMessage(json.error);
 				}
 				else
 				{
-					thebuggenie.events.failedMessage(transport.responseText);
+					failedMessage(transport.responseText);
 				}
 				$(target_type + '_' + target_id + '_links_'+ link_id + '_remove_link').show();
 				$(target_type + '_' + target_id + '_links_'+ link_id + '_remove_indicator').hide();
@@ -552,11 +548,11 @@ function removeLink(url, target_type, target_id, link_id)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 			}
 			else
 			{
-				thebuggenie.events.failedMessage(transport.responseText);
+				failedMessage(transport.responseText);
 			}
 		}
 	});
@@ -610,7 +606,7 @@ function addUserStoryTask(url, story_id, mode)
 			{
 				$('related_child_issues_inline').insert({bottom: json.content});
 				$('no_child_issues').hide();
-				thebuggenie.events.successMessage(json.message);
+				successMessage(json.message);
 				if (json.comment)
 				{
 					$('comments_box').insert({bottom: json.comment});
@@ -626,11 +622,11 @@ function addUserStoryTask(url, story_id, mode)
 		{
 			if (json && json.error)
 			{
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 			}
 			else
 			{
-				thebuggenie.events.failedMessage(transport.responseText);
+				failedMessage(transport.responseText);
 			}
 			$(indicator_prefix + '_indicator').hide();
 		}
@@ -639,11 +635,11 @@ function addUserStoryTask(url, story_id, mode)
 		var json = transport.responseJSON;
 		if (json && json.error)
 		{
-			thebuggenie.events.failedMessage(json.error);
+			failedMessage(json.error);
 		}
 		else
 		{
-			thebuggenie.events.failedMessage(transport.responseText);
+			failedMessage(transport.responseText);
 		}
 		$(indicator_prefix + '_indicator').hide();
 	}
@@ -666,7 +662,7 @@ function addSearchFilter(url)
 		var json = transport.responseJSON;
 		if (json && (json.failed || json.error))
 		{
-			thebuggenie.events.failedMessage(json.error);
+			failedMessage(json.error);
 			$('add_filter_indicator').hide();
 		}
 		else if (json)
@@ -677,7 +673,7 @@ function addSearchFilter(url)
 		}
 		else
 		{
-			thebuggenie.events.failedMessage(transport.responseText);
+			failedMessage(transport.responseText);
 			$('add_filter_indicator').hide();
 		}
 	},
@@ -685,7 +681,7 @@ function addSearchFilter(url)
 		var json = transport.responseJSON;
 		if (json && (json.failed || json.error))
 		{
-			thebuggenie.events.failedMessage(json.error);
+			failedMessage(json.error);
 		}
 		$('add_filter_indicator').hide();
 	}
@@ -784,7 +780,7 @@ function setPermission(url, field)
 			$(field + '_indicator').hide();
 			if (json && (json.failed || json.error))
 			{
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 			}
 			else
 			{
@@ -795,11 +791,11 @@ function setPermission(url, field)
 			$(field + '_indicator').hide();
 			if (transport.responseJSON)
 			{
-				thebuggenie.events.failedMessage(transport.responseJSON.error);
+				failedMessage(transport.responseJSON.error);
 			}
 			else
 			{
-				thebuggenie.events.failedMessage(transport.responseText);
+				failedMessage(transport.responseText);
 			}
 		}
 	});
@@ -892,7 +888,7 @@ function getStatistics(url)
 		var json = transport.responseJSON;
 		if (json && (json.failed || json.error))
 		{
-			thebuggenie.events.failedMessage(json.error);
+			failedMessage(json.error);
 			$('statistics_help').show();
 			$('statistics_main').hide();
 		}
@@ -935,7 +931,7 @@ function getStatistics(url)
 		}
 		else
 		{
-			thebuggenie.events.failedMessage(transport.responseText);
+			failedMessage(transport.responseText);
 			$('statistics_help').show();
 			$('statistics_main').hide();
 		}
@@ -944,11 +940,11 @@ function getStatistics(url)
 		var json = transport.responseJSON;
 		if (json && (json.failed || json.error))
 		{
-			thebuggenie.events.failedMessage(json.error);
+			failedMessage(json.error);
 		}
 		else
 		{
-			thebuggenie.events.failedMessage(transport.responseText);
+			failedMessage(transport.responseText);
 		}
 		$('statistics_help').show();
 		$('statistics_main').hide();
@@ -1029,7 +1025,7 @@ function refreshMilestoneDetails(url, milestone_id)
 		var json = transport.responseJSON;
 		if (json && (json.failed || json.error))
 		{
-			thebuggenie.events.failedMessage(json.error);
+			failedMessage(json.error);
 		}
 		else if (json)
 		{
@@ -1086,7 +1082,7 @@ function refreshMilestoneDetails(url, milestone_id)
 		}
 		else
 		{
-			thebuggenie.events.failedMessage(transport.responseText);
+			failedMessage(transport.responseText);
 		}
 		$('milestone_' + milestone_id + '_indicator').hide();
 	},
@@ -1094,11 +1090,11 @@ function refreshMilestoneDetails(url, milestone_id)
 		var json = transport.responseJSON;
 		if (json && (json.failed || json.error))
 		{
-			thebuggenie.events.failedMessage(json.error);
+			failedMessage(json.error);
 		}
 		else
 		{
-			thebuggenie.events.failedMessage(transport.responseText);
+			failedMessage(transport.responseText);
 		}
 		$('milestone_' + milestone_id + '_indicator').hide();
 	}
@@ -1144,7 +1140,7 @@ function _detachFile(url, file_id, base_id)
 				$('uploaded_files_' + file_id).remove();
 				$(base_id + file_id + '_remove_confirm').remove();
 				$('uploaded_files_' + file_id + '_remove_confirm').remove();
-				thebuggenie.events.successMessage(json.message);
+				successMessage(json.message);
 				if (json.attachmentcount == 0)
 				{
 					if ($('viewissue_no_uploaded_files'))
@@ -1159,11 +1155,11 @@ function _detachFile(url, file_id, base_id)
 			{
 				if (json && (json.failed || json.error))
 				{
-					thebuggenie.events.failedMessage(json.error);
+					failedMessage(json.error);
 				}
 				else
 				{
-					thebuggenie.events.failedMessage(transport.responseText);
+					failedMessage(transport.responseText);
 				}
 				$(base_id + file_id + '_remove_link').show();
 				$(base_id + file_id + '_remove_indicator').hide();
@@ -1179,11 +1175,11 @@ function _detachFile(url, file_id, base_id)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 			}
 			else
 			{
-				thebuggenie.events.failedMessage(transport.responseText);
+				failedMessage(transport.responseText);
 			}
 		}
 	});
@@ -1205,7 +1201,7 @@ function deleteComment(url, cid)
 		{
 			$('comment_delete_controls_' + cid).show();
 			$('comment_delete_indicator_' + cid).hide();
-			thebuggenie.events.failedMessage(json.error);
+			failedMessage(json.error);
 		}
 		else
 		{
@@ -1216,7 +1212,7 @@ function deleteComment(url, cid)
 			{
 				$('comments_none').show();
 			}
-			thebuggenie.events.successMessage(json.title);
+			successMessage(json.title);
 		}
 	},
 	onFailure: function (transport) {
@@ -1225,7 +1221,7 @@ function deleteComment(url, cid)
 		var json = transport.responseJSON;
 		if (json && (json.failed || json.error))
 		{
-			thebuggenie.events.failedMessage(json.error);
+			failedMessage(json.error);
 		}
 	}
 	});
@@ -1249,7 +1245,7 @@ function updateComment(url, cid)
 		{
 			$('comment_edit_controls_' + cid).show();
 			$('comment_edit_indicator_' + cid).hide();
-			thebuggenie.events.failedMessage(json.error);
+			failedMessage(json.error);
 		}
 		else
 		{
@@ -1263,7 +1259,7 @@ function updateComment(url, cid)
 			$('comment_view_' + cid).show();
 			$('comment_edit_controls_' + cid).show();
 
-			thebuggenie.events.successMessage(json.title);
+			successMessage(json.title);
 		}
 	},
 	onFailure: function (transport) {
@@ -1272,7 +1268,7 @@ function updateComment(url, cid)
 		var json = transport.responseJSON;
 		if (json && json.error)
 		{
-			thebuggenie.events.failedMessage(json.error);
+			failedMessage(json.error);
 		}
 	}
 	});
@@ -1300,7 +1296,7 @@ function addComment(url, commentcount_span)
 		{
 			$('comment_add_controls').show();
 			$('comment_add_indicator').hide();
-			thebuggenie.events.failedMessage(json.error);
+			failedMessage(json.error);
 		}
 		else
 		{
@@ -1322,7 +1318,7 @@ function addComment(url, commentcount_span)
 			$('comment_visibility').setValue(1);
 			$(commentcount_span).update(json.commentcount);
 
-			thebuggenie.events.successMessage(json.title);
+			successMessage(json.title);
 		}
 	},
 	onFailure: function (transport) {
@@ -1331,7 +1327,7 @@ function addComment(url, commentcount_span)
 		var json = transport.responseJSON;
 		if (json && json.error)
 		{
-			thebuggenie.events.failedMessage(json.error);
+			failedMessage(json.error);
 		}
 	}
 	});

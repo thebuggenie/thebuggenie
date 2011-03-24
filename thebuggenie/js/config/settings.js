@@ -14,13 +14,13 @@ function importCSV(url)
 			var json = transport.responseJSON;
 			if (json.failed)
 			{
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 				$('csv_import_indicator').hide();
 			}
 			else
 			{
 				$('csv_import_indicator').hide();
-				thebuggenie.events.successMessage(json.title, json.message);
+				successMessage(json.title, json.message);
 			}
 		},
 		onFailure: function (transport) {
@@ -28,7 +28,7 @@ function importCSV(url)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 				$('csv_import_error_detail').update(json.errordetail);
 				$('csv_import_error').show();
 			}

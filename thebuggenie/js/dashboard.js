@@ -94,11 +94,11 @@ function saveDashboard(url)
 			var json = transport.responseJSON;
 			if (json.failed)
 			{
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 			}
 			else
 			{
-				thebuggenie.events.successMessage(json.message);
+				successMessage(json.message);
 			}
 			$('save_dashboard_indicator').hide();
 			$('save_dashboard').show();
@@ -107,7 +107,7 @@ function saveDashboard(url)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				thebuggenie.events.failedMessage(json.error);
+				failedMessage(json.error);
 			}
 			$('save_dashboard_indicator').hide();
 			$('save_dashboard').show();
