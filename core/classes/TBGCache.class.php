@@ -67,7 +67,7 @@
 		public static function fileGet($key)
 		{
 			if (!self::$_filecache_enabled) return null;
-			$filename = THEBUGGENIE_PATH . 'core' . DS . 'cache' . DS . $key . '.cache';
+			$filename = THEBUGGENIE_CORE_PATH . 'cache' . DS . $key . '.cache';
 			if (!file_exists($filename))
 			{
 				return null;
@@ -80,14 +80,14 @@
 		public static function fileAdd($key, $value)
 		{
 			if (!self::$_filecache_enabled) return null;
-			$filename = THEBUGGENIE_PATH . 'core' . DS . 'cache' . DS . $key . '.cache';
+			$filename = THEBUGGENIE_CORE_PATH . 'cache' . DS . $key . '.cache';
 			file_put_contents($filename, serialize($value));
 		}
 		
 		public static function fileDelete($key)
 		{
 			if (!self::$_filecache_enabled) return null;
-			$filename = THEBUGGENIE_PATH . 'core' . DS . 'cache' . DS . $key . '.cache';
+			$filename = THEBUGGENIE_CORE_PATH . 'cache' . DS . $key . '.cache';
 			unlink($filename);
 		}
 		

@@ -28,7 +28,7 @@
 		}
 		else
 		{
-			if ($module != 'core' && !file_exists(TBGContext::getIncludePath() . 'themes/' . TBGSettings::getThemeName() . "/{$module}/" . $image))
+			if ($module != 'core' && !file_exists(THEBUGGENIE_PATH . 'themes/' . TBGSettings::getThemeName() . "/{$module}/" . $image))
 			{
 				$params['src'] = TBGContext::getTBGPath() . "themes/modules/{$module}/" . TBGSettings::getThemeName() . '/' . $image;
 			}
@@ -72,7 +72,7 @@
 		}
 		else
 		{
-			if ($module != 'core' && !file_exists(TBGContext::getIncludePath() . 'themes/' . TBGSettings::getThemeName() . "/{$module}/" . $image))
+			if ($module != 'core' && !file_exists(THEBUGGENIE_PATH . 'themes/' . TBGSettings::getThemeName() . "/{$module}/" . $image))
 			{
 				$params['src'] = TBGContext::getTBGPath() . "themes/modules/{$module}/" . TBGSettings::getThemeName() . '/' . $image;
 			}

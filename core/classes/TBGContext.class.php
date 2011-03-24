@@ -276,16 +276,6 @@
 		}
 		
 		/**
-		 * Returns the include path (used for including files)
-		 * 
-		 * @return string
-		 */
-		public static function getIncludePath()
-		{
-			return self::$_includepath;
-		}
-		
-		/**
 		 * Get when we last loaded the engine
 		 * 
 		 * @return integer
@@ -303,23 +293,6 @@
 			$_SESSION['b2lastreloadtime'] = NOW;
 		}
 		
-		/**
-		 * Set the include path to a specific path
-		 * 
-		 * @param string $path the path to change to
-		 */
-		public static function setIncludePath($path = null)
-		{
-			if ($path !== null)
-			{
-				self::$_includepath = $path;
-			}
-			else
-			{
-				self::$_includepath = TBGSettings::get('local_path', 'core');
-			}
-		}
-
 		/**
 		 * Get the subdirectory part of the url
 		 * 
@@ -595,7 +568,7 @@
 		 */
 		public static function getThemes()
 		{
-			$theme_path_handle = opendir(self::getIncludePath() . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'themes' . DS);
+			$theme_path_handle = opendir(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'themes' . DS);
 			$themes = array();
 			
 			while ($theme = readdir($theme_path_handle))
@@ -684,7 +657,7 @@
 						{
 							$module_name = $moduleRow->get(TBGModulesTable::MODULE_NAME);
 							$modules[$module_name] = $moduleRow;
-							$moduleClassPath = self::getIncludePath() . "modules" . DS . $module_name . DS . "classes" . DS;
+							$moduleClassPath = THEBUGGENIE_MODULES_PATH . $module_name . DS . "classes" . DS;
 							try
 							{
 								self::addClasspath($moduleClassPath);
@@ -789,15 +762,14 @@
 		 */
 		public static function getUninstalledModules()
 		{
-			$module_path = self::getIncludePath() . 'modules/';
-			$module_path_handle = opendir($module_path);
+			$module_path_handle = opendir(THEBUGGENIE_MODULES_PATH);
 			$modules = array();
 			while ($module_name = readdir($module_path_handle))
 			{
-				if (is_dir($module_path . $module_name) && file_exists($module_path . $module_name . '/module'))
+				if (is_dir($module_path . $module_name) && file_exists(THEBUGGENIE_MODULES_PATH . $module_name . DS . 'module'))
 				{
 					if (self::isModuleLoaded($module_name)) continue;
-					$modules[$module_name] = file_get_contents($module_path . $module_name . '/module');
+					$modules[$module_name] = file_get_contents(THEBUGGENIE_MODULES_PATH . $module_name . DS . 'module');
 				}
 			}
 			return $modules;
@@ -1721,29 +1693,29 @@
 			{
 				$lib_file_name = "{$lib_name}.inc.php";
 
-				if (isset($module) && file_exists(self::getIncludePath() . "modules/{$module}/lib/{$lib_file_name}"))
+				if (isset($module) && file_exists(THEBUGGENIE_MODULES_PATH . $module . DS . 'lib' . DS . $lib_file_name))
 				{
-					require self::getIncludePath() . "modules/{$module}/lib/" . $lib_file_name;
-					self::$_libs[$lib_name] = self::getIncludePath() . "modules/{$module}/lib/{$lib_file_name}";
+					require THEBUGGENIE_MODULES_PATH . $module . DS . 'lib' . DS . $lib_file_name;
+					self::$_libs[$lib_name] = THEBUGGENIE_MODULES_PATH . $module . DS . 'lib' . DS . $lib_file_name;
 				}
-				elseif (file_exists(self::getIncludePath() . 'modules/' . self::getRouting()->getCurrentRouteModule() . '/lib/' . $lib_file_name))
+				elseif (file_exists(THEBUGGENIE_MODULES_PATH . self::getRouting()->getCurrentRouteModule() . DS . 'lib' . DS . $lib_file_name))
 				{
 					// Include the library from the current module if it exists
-					require self::getIncludePath() . 'modules/' . self::getRouting()->getCurrentRouteModule() . '/lib/' . $lib_file_name;
-					self::$_libs[$lib_name] = self::getIncludePath() . 'modules/' . self::getRouting()->getCurrentRouteModule() . '/lib/' . $lib_file_name;
+					require THEBUGGENIE_MODULES_PATH . self::getRouting()->getCurrentRouteModule() . DS . 'lib' . DS . $lib_file_name;
+					self::$_libs[$lib_name] = THEBUGGENIE_MODULES_PATH . self::getRouting()->getCurrentRouteModule() . DS . 'lib' . DS . $lib_file_name;
 				}
-				elseif (file_exists(self::getIncludePath() . "core/lib/" . $lib_file_name))
+				elseif (file_exists(THEBUGGENIE_CORE_PATH . 'lib' . DS . $lib_file_name))
 				{
 					// Include the library from the global library directory if it exists
-					require self::getIncludePath() . "core/lib/" . $lib_file_name;
-					self::$_libs[$lib_name] = self::getIncludePath() . "core/lib/" . $lib_file_name;
+					require THEBUGGENIE_CORE_PATH . 'lib' . DS . $lib_file_name;
+					self::$_libs[$lib_name] = THEBUGGENIE_CORE_PATH . 'lib' . DS . $lib_file_name;
 				}
 				else
 				{
 					// Throw an exception if the library can't be found in any of
 					// the above directories
-					TBGLogging::log("The \"{$lib_name}\" library does not exist in either " . self::getIncludePath() . 'modules/' . self::getRouting()->getCurrentRouteModule() . '/lib/ or ' . self::getIncludePath() . "core/lib/", 'core', TBGLogging::LEVEL_FATAL);
-					throw new TBGLibraryNotFoundException("The \"{$lib_name}\" library does not exist in either " . self::getIncludePath() . 'modules/' . self::getRouting()->getCurrentRouteModule() . '/lib/ or ' . self::getIncludePath() . "core/lib/");
+					TBGLogging::log("The \"{$lib_name}\" library does not exist in either " . THEBUGGENIE_MODULES_PATH . self::getRouting()->getCurrentRouteModule() . DS . 'lib' . DS . ' or ' . THEBUGGENIE_CORE_PATH . 'lib' . DS, 'core', TBGLogging::LEVEL_FATAL);
+					throw new TBGLibraryNotFoundException("The \"{$lib_name}\" library does not exist in either " . THEBUGGENIE_MODULES_PATH . self::getRouting()->getCurrentRouteModule() . DS . 'lib' . DS . ' or ' . THEBUGGENIE_CORE_PATH . 'lib' . DS);
 				}
 			}
 		}
@@ -1779,7 +1751,7 @@
 			$content = null;
 			
 			// Set the template to be used when rendering the html (or other) output
-			$templatePath = self::getIncludePath() . 'modules/' . $action . '/templates/';
+			$templatePath = THEBUGGENIE_MODULES_PATH . $action . DS . 'templates' . DS;
 
 			// Construct the action class and method name, including any pre- action(s)
 			$actionClassName = $action.'Actions';
@@ -1879,7 +1851,7 @@
 							if (strpos(self::getResponse()->getTemplate(), '/'))
 							{
 								$newPath = explode('/', self::getResponse()->getTemplate());
-								$templateName = self::getIncludePath() . 'modules/' . $newPath[0] . '/templates/' . $newPath[1] . '.' . TBGContext::getRequest()->getRequestedFormat() . '.php';
+								$templateName = THEBUGGENIE_MODULES_PATH . $newPath[0] . DS . 'templates' . DS . $newPath[1] . '.' . TBGContext::getRequest()->getRequestedFormat() . '.php';
 							}
 							else
 							{
@@ -2030,15 +2002,15 @@
 						TBGLogging::log('An error occurred setting up the user object, redirecting to login', 'main', TBGLogging::LEVEL_NOTICE);
 						self::getResponse()->headerRedirect(self::getRouting()->generate('login_redirect'), 403);
 					}
-					if (is_dir(self::getIncludePath() . 'modules' . DS . $route['module']))
+					if (is_dir(THEBUGGENIE_MODULES_PATH . $route['module']))
 					{
-						if (!file_exists(self::getIncludePath() . 'modules' . DS . $route['module'] . DS . 'classes' . DS . 'actions.class.php'))
+						if (!file_exists(THEBUGGENIE_MODULES_PATH . $route['module'] . DS . 'classes' . DS . 'actions.class.php'))
 						{
 							throw new TBGActionNotFoundException('The ' . $route['module'] . ' module is missing the classes/actions.class.php file, containing all the module actions');
 						}
 						if (!class_exists($route['module'].'Actions') && !class_exists($route['module'].'ActionComponents'))
 						{
-							self::addClasspath(self::getIncludePath() . 'modules' . DS . $route['module'] . DS . 'classes' . DS);
+							self::addClasspath(THEBUGGENIE_MODULES_PATH . $route['module'] . DS . 'classes' . DS);
 						}
 						if (self::performAction($route['module'], $route['action']))
 						{
@@ -2057,7 +2029,7 @@
 				}
 				else
 				{
-					require self::getIncludePath() . 'modules/main/classes/actions.class.php';
+					require THEBUGGENIE_MODULES_PATH . 'main' . DS . 'classes' . DS . 'actions.class.php';
 					self::performAction('main', 'notFound');
 				}
 			}

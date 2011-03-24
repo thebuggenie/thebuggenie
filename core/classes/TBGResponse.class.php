@@ -148,7 +148,7 @@
 					$this->setContentType('text/csv');
 					break;
 				default:
-					$this->setDecoration(self::DECORATE_BOTH, array('header' => TBGContext::getIncludePath() . 'core/templates/header.inc.php', 'footer' => TBGContext::getIncludePath() . 'core/templates/footer.inc.php'));
+					$this->setDecoration(self::DECORATE_BOTH, array('header' => THEBUGGENIE_CORE_PATH . 'templates/header.inc.php', 'footer' => THEBUGGENIE_CORE_PATH . 'templates/footer.inc.php'));
 					break;
 			}
 

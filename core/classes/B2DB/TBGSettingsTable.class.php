@@ -133,7 +133,7 @@
 			$settings['upload_restriction_mode'] = 'blacklist';
 			$settings['upload_extensions_list'] = 'exe,bat,php,asp,jsp';
 			$settings['upload_storage'] = 'files';
-			$settings['upload_localpath'] = TBGContext::getIncludePath() . 'files/';
+			$settings['upload_localpath'] = THEBUGGENIE_PATH . 'files/';
 			$settings['b2_name'] = 'The Bug Genie';
 			$settings['b2_tagline'] = '<b>Friendly</b> issue tracking and project management';
 			$settings['highlight_default_lang'] = 'html4strict';

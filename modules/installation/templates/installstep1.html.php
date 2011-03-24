@@ -43,12 +43,12 @@
 			</div>
 			<b>If you're installing this on a Linux server,</b> running this command should fix it:<br>
 			<div class="command_box">
-			chmod a+w <?php echo str_ireplace('\\', '/', substr(TBGContext::getIncludePath(), 0, strripos(TBGContext::getIncludePath(), DIRECTORY_SEPARATOR) + 1)); ?>
+			chmod a+w <?php echo THEBUGGENIE_PATH; /* str_ireplace('\\', '/', substr(THEBUGGENIE_PATH, 0, strripos(THEBUGGENIE_PATH, DIRECTORY_SEPARATOR) + 1)); */ ?>
 			</div>
 		<?php endif; ?>
 		<?php if ($cache_folder_perm_ok): ?>
 			<div class="install_progress prereq_ok">
-				<?php echo image_tag('themes/oxygen/action_ok.png', array(), true); ?>Can write to <?php echo THEBUGGENIE_PATH . 'core' . DS . 'cache'; ?>
+				<?php echo image_tag('themes/oxygen/action_ok.png', array(), true); ?>Can write to <?php echo THEBUGGENIE_CORE_PATH . 'cache'; ?>
 			</div>
 		<?php else: ?>
 			<div class="install_progress prereq_fail">
@@ -57,7 +57,7 @@
 			</div>
 			<b>If you're installing this on a Linux server,</b> running this command should fix it:<br>
 			<div class="command_box">
-			chmod a+w -R <?php echo str_ireplace('\\', '/', substr(TBGContext::getIncludePath(), 0, strripos(TBGContext::getIncludePath(), DIRECTORY_SEPARATOR) + 1)); ?>core/cache
+			chmod a+w -R <?php echo THEBUGGENIE_CORE_PATH; ?>cache
 			</div>
 		<?php endif; ?>
 		<?php if ($thebuggenie_folder_perm_ok): ?>
@@ -69,7 +69,7 @@
 			</div>
 			<b>If you're installing this on a Linux server,</b> running this command should fix it:<br>
 			<div class="command_box">
-			chmod a+w <?php echo str_ireplace('\\', '/', substr(TBGContext::getIncludePath(), 0, strripos(TBGContext::getIncludePath(), DIRECTORY_SEPARATOR) + 1)) . THEBUGGENIE_PUBLIC_FOLDER_NAME; ?>/
+			chmod a+w <?php echo THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME; ?>/
 			</div>
 		<?php endif; ?>
 		<?php if ($mb_ok): ?>
@@ -114,8 +114,8 @@
 			</div>
 			<b>If you're installing this on a Linux server,</b> running those commands should fix it:<br>
 			<div class="command_box">
-			touch <?php echo str_ireplace('\\', '/', substr(TBGContext::getIncludePath(), 0, strripos(TBGContext::getIncludePath(), DIRECTORY_SEPARATOR) + 1)); ?>core/b2db_bootstrap.inc.php<br>
-			chmod a+w <?php echo str_ireplace('\\', '/', substr(TBGContext::getIncludePath(), 0, strripos(TBGContext::getIncludePath(), DIRECTORY_SEPARATOR) + 1)); ?>core/b2db_bootstrap.inc.php
+			touch <?php echo str_ireplace('\\', '/', substr(THEBUGGENIE_PATH, 0, strripos(THEBUGGENIE_PATH, DIRECTORY_SEPARATOR) + 1)); ?>core/b2db_bootstrap.inc.php<br>
+			chmod a+w <?php echo str_ireplace('\\', '/', substr(THEBUGGENIE_PATH, 0, strripos(THEBUGGENIE_PATH, DIRECTORY_SEPARATOR) + 1)); ?>core/b2db_bootstrap.inc.php
 			</div>
 		<?php endif; ?>
 		<?php if ($b2db_param_file_ok): ?>
@@ -127,7 +127,7 @@
 			</div>
 			<b>If you're installing this on a Linux server,</b> running this command should fix it:<br>
 			<div class="command_box">
-			chmod a+w <?php echo str_ireplace('\\', '/', substr(TBGContext::getIncludePath(), 0, strripos(TBGContext::getIncludePath(), DIRECTORY_SEPARATOR) + 1)); ?>core/b2db_bootstrap.inc.php
+			chmod a+w <?php echo str_ireplace('\\', '/', substr(THEBUGGENIE_PATH, 0, strripos(THEBUGGENIE_PATH, DIRECTORY_SEPARATOR) + 1)); ?>core/b2db_bootstrap.inc.php
 			</div>
 		<?php endif; ?>
 		<?php if ($gd_ok): ?>

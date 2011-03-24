@@ -45,7 +45,7 @@
 			if (!isset($module_file)) $module_file = self::getModuleAndTemplate($template);
 			if (($template_name = TBGContext::getI18n()->hasTranslatedTemplate($template, true)) === false)
 			{
-				$template_name = TBGContext::getIncludePath() . "modules/{$module_file['module']}/templates/_{$module_file['file']}.inc.php";
+				$template_name = THEBUGGENIE_MODULES_PATH . $module_file['module'] . DS . 'templates' . DS . "_{$module_file['file']}.inc.php";
 			}
 			return $template_name;
 		}
@@ -78,7 +78,7 @@
 			list ($module_file, $actionClassName, $actionToRunName) = self::_getComponentDetails($template);
 			if (!class_exists($actionClassName))
 			{
-				TBGContext::addClasspath(TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . $module_file['module'] . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR);
+				TBGContext::addClasspath(THEBUGGENIE_MODULES_PATH . $module_file['module'] . DS . 'classes' . DS);
 			}
 			if (!class_exists($actionClassName))
 			{

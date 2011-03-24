@@ -2100,7 +2100,7 @@
 		
 		public function hasIcon()
 		{
-			return (bool) (file_exists(TBGContext::getIncludePath() . THEBUGGENIE_PUBLIC_FOLDER_NAME . DIRECTORY_SEPARATOR . 'project_icons' . DIRECTORY_SEPARATOR . $this->getKey() . '.png'));
+			return (bool) (file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DIRECTORY_SEPARATOR . 'project_icons' . DIRECTORY_SEPARATOR . $this->getKey() . '.png'));
 		}
 		
 		public function getIcon()

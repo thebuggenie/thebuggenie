@@ -83,7 +83,7 @@
 				{
 					$not_well[] = 'b2db_perm';
 				}
-				if (!is_writable(TBGContext::getIncludePath()))
+				if (!is_writable(THEBUGGENIE_PATH))
 				{
 					$not_well[] = 'root';
 				}
@@ -215,13 +215,13 @@
 						$this->cliEcho("\n");
 						$this->cliEcho("Saving database connection information ... ", 'white', 'bold');
 						$this->cliEcho("\n");
-						B2DB::saveConnectionParameters(TBGContext::getIncludePath() . 'core/b2db_bootstrap.inc.php');
+						B2DB::saveConnectionParameters(THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php');
 						$this->cliEcho("Successfully saved database connection information.\n", 'green');
 						$this->cliEcho("\n");
 					}
 					else
 					{
-						B2DB::initialize(TBGContext::getIncludePath() . 'core/b2db_bootstrap.inc.php');
+						B2DB::initialize(THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php');
 						$this->cliEcho("Successfully connected to the database.\n", 'green');
 						if ($this->getProvidedArgument('use_existing_db_info') != 'yes')
 						{
@@ -297,7 +297,7 @@
 
 					if ($htaccess_ok)
 					{
-						if (!is_writable(TBGContext::getIncludePath() . 'thebuggenie/') || (file_exists(TBGContext::getIncludePath() . 'thebuggenie/.htaccess') && !is_writable(TBGContext::getIncludePath() . 'thebuggenie/.htaccess')))
+						if (!is_writable(THEBUGGENIE_PATH . 'thebuggenie/') || (file_exists(THEBUGGENIE_PATH . 'thebuggenie/.htaccess') && !is_writable(THEBUGGENIE_PATH . 'thebuggenie/.htaccess')))
 						{
 							$this->cliEcho("Permission denied when trying to save the [main folder]/thebuggenie/.htaccess\n", 'red', 'bold');
 							$this->cliEcho("You will have to set up the .htaccess file yourself. See the README file for more information.\n", 'white', 'bold');
@@ -307,8 +307,8 @@
 						else
 						{
 							$content = str_replace('###PUT URL SUBDIRECTORY HERE###', $url_subdir, file_get_contents(THEBUGGENIE_CORE_PATH . 'templates/htaccess.template'));
-							file_put_contents(TBGContext::getIncludePath() . 'thebuggenie/.htaccess', $content);
-							if (file_get_contents(TBGContext::getIncludePath() . 'thebuggenie/.htaccess') != $content)
+							file_put_contents(THEBUGGENIE_PATH . 'thebuggenie/.htaccess', $content);
+							if (file_get_contents(THEBUGGENIE_PATH . 'thebuggenie/.htaccess') != $content)
 							{
 								$this->cliEcho("Permission denied when trying to save the [main folder]/thebuggenie/.htaccess\n", 'red', 'bold');
 								$this->cliEcho("You will have to set up the .htaccess file yourself. See the README file for more information.\n", 'white', 'bold');
@@ -383,7 +383,7 @@
 					{
 						foreach ($enable_modules as $module => $install)
 						{
-							if ((bool) $install && file_exists(TBGContext::getIncludePath() . "modules/{$module}/module"))
+							if ((bool) $install && file_exists(THEBUGGENIE_MODULES_PATH . $module . DS . 'module'))
 							{
 								$this->cliEcho("Installing {$module}... \n");
 								TBGModule::installModule($module);
@@ -396,12 +396,12 @@
 						$this->cliEcho("\n");
 
 						$this->cliEcho("Finishing installation... \n", 'white', 'bold');
-						if (!is_writable(TBGContext::getIncludePath() . 'installed'))
+						if (!is_writable(THEBUGGENIE_PATH . 'installed'))
 						{
 							$this->cliEcho("\n");
 							$this->cliEcho("Could not create the 'installed' file.\n", 'red', 'bold');
 							$this->cliEcho("Please create the file ");
-							$this->cliEcho(TBGContext::getIncludePath() . "installed\n", 'white', 'bold');
+							$this->cliEcho(THEBUGGENIE_PATH . "installed\n", 'white', 'bold');
 							$this->cliEcho("with the following line inside:\n");
 							$this->cliEcho('3.0, installed ' . date('d.m.Y H:i'), 'blue', 'bold');
 							$this->cliEcho("\n");
@@ -415,7 +415,7 @@
 						}
 						else
 						{
-							file_put_contents(TBGContext::getIncludePath() . 'installed', '3.0, installed ' . date('d.m.Y H:i'));
+							file_put_contents(THEBUGGENIE_PATH . 'installed', '3.0, installed ' . date('d.m.Y H:i'));
 						}
 						$this->cliEcho("The installation was completed successfully!\n", 'green', 'bold');
 						$this->cliEcho("\nTo use The Bug Genie, access http://example.com" . $url_subdir . "index.php with a web-browser.\n");

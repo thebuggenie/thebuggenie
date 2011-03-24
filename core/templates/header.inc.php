@@ -23,7 +23,7 @@
 		<?php if (count(TBGContext::getModules())): ?>
 			<?php foreach (TBGContext::getModules() as $module): ?>
 				<?php $css_name = "css/" . TBGSettings::getThemeName() . "_" . $module->getName() . ".css"; ?>
-				<?php if (file_exists(TBGContext::getIncludePath() . THEBUGGENIE_PUBLIC_FOLDER_NAME . DIRECTORY_SEPARATOR . $css_name)): ?>
+				<?php if (file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DIRECTORY_SEPARATOR . $css_name)): ?>
 					<link rel="stylesheet" type="text/css" href="<?php echo TBGContext::getTBGPath() . $css_name; ?>">
 				<?php endif; ?>
 			<?php endforeach; ?>
@@ -216,7 +216,7 @@
 							</td>
 						</tr>
 					</table>
-					<?php require TBGContext::getIncludePath() . 'core/templates/submenu.inc.php'; ?>
+					<?php require THEBUGGENIE_CORE_PATH . 'templates/submenu.inc.php'; ?>
 					<?php if (!TBGContext::isDebugMode()): ?>
 						<div class="rounded_box iceblue borderless infobox" style="margin: 5px; display: none;" id="firebug_warning">
 							<div style="padding: 5px;">

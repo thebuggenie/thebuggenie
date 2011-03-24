@@ -29,7 +29,7 @@
 		{
 			$articles = array();
 			$categories = array();
-			$_path_handle = opendir(TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . 'publish' . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR);
+			$_path_handle = opendir(THEBUGGENIE_MODULES_PATH . 'publish' . DS . 'fixtures' . DS);
 			while ($article_name = readdir($_path_handle))
 			{
 				if (strpos($article_name, '.') === false)

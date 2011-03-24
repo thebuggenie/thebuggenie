@@ -36,7 +36,7 @@
 
 			foreach ($articles as $article_id => $article)
 			{
-				$filename = TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . 'publish' . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . urlencode($article->getName());
+				$filename = THEBUGGENIE_MODULES_PATH . 'publish' . DS . 'fixtures' . DS . urlencode($article->getName());
 				if (!file_exists($filename) || $this->getProvidedArgument('overwrite', 'no') == 'yes')
 				{
 					$this->cliEcho("Saving ");

@@ -64,7 +64,7 @@
 			$this->cliEcho("Install module\n", 'green', 'bold');
 			try
 			{
-				if (!$module_name || !file_exists(TBGContext::getIncludePath() . "modules/{$module_name}/module"))
+				if (!$module_name || !file_exists(THEBUGGENIE_MODULES_PATH . $module_name . DS . 'module'))
 				{
 					throw new Exception("Please provide a valid module name");
 				}
@@ -91,7 +91,7 @@
 			$this->cliEcho("Uninstall module\n", 'green', 'bold');
 			try
 			{
-				if (!$module_name || !file_exists(TBGContext::getIncludePath() . "modules/{$module_name}/module"))
+				if (!$module_name || !file_exists(THEBUGGENIE_MODULES_PATH . $module_name . DS . 'module'))
 				{
 					throw new Exception("Please provide a valid module name");
 				}

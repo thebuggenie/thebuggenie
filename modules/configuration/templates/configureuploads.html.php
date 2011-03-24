@@ -105,7 +105,7 @@
 							<tr>
 								<td><label for="upload_localpath"><?php echo __('Upload location'); ?></label></td>
 								<td>
-									<input type="text" name="upload_localpath" id="upload_localpath" style="width: 250px;" value="<?php echo (TBGSettings::getUploadsLocalpath() != "") ? TBGSettings::getUploadsLocalpath() : TBGContext::getIncludePath() . 'files/'; ?>"<?php if (!TBGSettings::isUploadsEnabled() || TBGSettings::getUploadStorage() == 'database'): ?> disabled<?php endif; ?>>
+									<input type="text" name="upload_localpath" id="upload_localpath" style="width: 250px;" value="<?php echo (TBGSettings::getUploadsLocalpath() != "") ? TBGSettings::getUploadsLocalpath() : THEBUGGENIE_PATH . 'files/'; ?>"<?php if (!TBGSettings::isUploadsEnabled() || TBGSettings::getUploadStorage() == 'database'): ?> disabled<?php endif; ?>>
 								</td>
 							</tr>
 							<tr>

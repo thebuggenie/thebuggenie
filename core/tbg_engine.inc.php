@@ -429,14 +429,8 @@ echo "
 			session_start();
 		}
 
-		// Set the include path
-		TBGContext::setIncludePath(THEBUGGENIE_PATH);
-
 		// Add classpath so we can find the TBG* classes
 		TBGContext::addClasspath(THEBUGGENIE_CORE_PATH . 'classes' . DS);
-
-		// Load the logging class so we can log stuff
-		require THEBUGGENIE_CORE_PATH . 'classes' . DS . 'TBGCache.class.php';
 
 		TBGLogging::log((TBGCache::isEnabled()) ? 'APC cache is enabled' : 'APC cache is not enabled');
 		
@@ -452,16 +446,6 @@ echo "
 			TBGLogging::log('Initializing B2DB');
 			if (!isset($argc)) B2DB::setHTMLException(true);
 			B2DB::initialize(THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php');
-			$engine_path = B2DB::getEngineClassPath();
-			if ($engine_path !== null)
-			{
-				TBGLogging::log("adding classpath {$engine_path}");
-				TBGContext::addClasspath($engine_path);
-			}
-			else
-			{
-				TBGLogging::log('...no b2db classpath', 'main', TBGLogging::LEVEL_WARNING);
-			}
 			TBGLogging::log('...done (Initializing B2DB)');
 			
 			if (B2DB::isInitialized())
@@ -477,7 +461,6 @@ echo "
 		catch (Exception $e)
 		{
 			tbg_exception('Could not load and initiate the B2DB subsystem', $e);
-			exit();
 		}
 		TBGLogging::log('...done');
 		

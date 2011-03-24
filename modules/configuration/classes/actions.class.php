@@ -1704,7 +1704,7 @@
 			
 			try
 			{
-				if ($request->getParameter('mode') == 'install' && file_exists(TBGContext::getIncludePath() . 'modules/' . $request->getParameter('module_key') . '/module'))
+				if ($request->getParameter('mode') == 'install' && file_exists(THEBUGGENIE_MODULES_PATH . $request->getParameter('module_key') . DS . 'module'))
 				{
 					if (TBGModule::installModule($request->getParameter('module_key')))
 					{

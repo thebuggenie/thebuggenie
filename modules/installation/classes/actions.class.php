@@ -64,12 +64,12 @@
 				$this->php_ok = false;
 				$this->all_well = false;
 			}
-			if (file_exists(TBGContext::getIncludePath() . 'core/b2db_bootstrap.inc.php') && !is_writable(TBGContext::getIncludePath() . 'core/b2db_bootstrap.inc.php'))
+			if (file_exists(THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php') && !is_writable(THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php'))
 			{
 				$this->b2db_param_file_ok = false;
 				$this->all_well = false;
 			}
-			if (!file_exists(TBGContext::getIncludePath() . 'core/b2db_bootstrap.inc.php') && !is_writable(TBGContext::getIncludePath() . 'core/'))
+			if (!file_exists(THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php') && !is_writable(THEBUGGENIE_CORE_PATH))
 			{
 				$this->b2db_param_folder_ok = false;
 				$this->all_well = false;
@@ -79,12 +79,12 @@
 				$this->base_folder_perm_ok = false;
 				$this->all_well = false;
 			}
-			if (!is_writable(TBGContext::getIncludePath() . 'core/cache/') || !is_writable(TBGContext::getIncludePath() . 'core/cache/B2DB/'))
+			if (!is_writable(THEBUGGENIE_CORE_PATH . 'cache' . DS) || !is_writable(THEBUGGENIE_CORE_PATH . 'cache' . DS .'B2DB' . DS))
 			{
 				$this->cache_folder_perm_ok = false;
 				$this->all_well = false;
 			}
-			if (!is_writable(TBGContext::getIncludePath() . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/'))
+			if (!is_writable(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS))
 			{
 				$this->thebuggenie_folder_perm_ok = false;
 				$this->all_well = false;
@@ -148,7 +148,7 @@
 			{
 				try
 				{
-					B2DB::initialize(TBGContext::getIncludePath() . 'core/b2db_bootstrap.inc.php');
+					B2DB::initialize(THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php');
 				}
 				catch (Exception $e)
 				{
@@ -218,7 +218,7 @@
 						}
 					}
 					
-					B2DB::initialize(TBGContext::getIncludePath() . 'core' . DIRECTORY_SEPARATOR . 'b2db_bootstrap.inc.php');
+					B2DB::initialize(THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php');
 					$engine_path = B2DB::getEngineClassPath();
 					if ($engine_path !== null)
 						TBGContext::addClasspath($engine_path);
@@ -230,7 +230,7 @@
 					if (B2DB::getDBname() == '')
 						throw new Exception('You must provide a database to use');
 
-					B2DB::saveConnectionParameters(TBGContext::getIncludePath() . 'core' . DIRECTORY_SEPARATOR . 'b2db_bootstrap.inc.php');
+					B2DB::saveConnectionParameters(THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php');
 				}
 				else
 				{
@@ -238,7 +238,7 @@
 				}
 				
 				// Add table classes to classpath 
-				$tables_path = THEBUGGENIE_CORE_PATH . 'classes' . DIRECTORY_SEPARATOR . 'B2DB' . DIRECTORY_SEPARATOR;
+				$tables_path = THEBUGGENIE_CORE_PATH . 'classes' . DS . 'B2DB' . DS;
 				TBGContext::addClasspath($tables_path);
 				$tables_path_handle = opendir($tables_path);
 				$tables_created = array();
@@ -294,15 +294,15 @@
 
 				if ($request->getParameter('apache_autosetup'))
 				{
-					if (!is_writable(TBGContext::getIncludePath() . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/') || (file_exists(TBGContext::getIncludePath() . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.htaccess') && !is_writable(TBGContext::getIncludePath() . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.htaccess')))
+					if (!is_writable(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/') || (file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.htaccess') && !is_writable(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.htaccess')))
 					{
 						$this->htaccess_error = 'Permission denied when trying to save the [main folder]/' . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.htaccess';
 					}
 					else
 					{
 						$content = str_replace('###PUT URL SUBDIRECTORY HERE###', $request->getParameter('url_subdir'), file_get_contents(THEBUGGENIE_CORE_PATH . '/templates/htaccess.template'));
-						file_put_contents(TBGContext::getIncludePath() . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.htaccess', $content);
-						if (file_get_contents(TBGContext::getIncludePath() . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.htaccess') != $content)
+						file_put_contents(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.htaccess', $content);
+						if (file_get_contents(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.htaccess') != $content)
 						{
 							$this->htaccess_error = true;
 						}
@@ -333,7 +333,7 @@
 				{
 					foreach ($request->getParameter('modules', array()) as $module => $install)
 					{
-						if ((bool) $install && file_exists(TBGContext::getIncludePath() . "modules/{$module}/module"))
+						if ((bool) $install && file_exists(THEBUGGENIE_MODULES_PATH . $module . DS . 'module'))
 						{
 							TBGModule::installModule($module);
 						}
@@ -377,7 +377,7 @@
 			TBGScopeHostnamesTable::getTable()->create();
 			
 			// Add classpath for existing old tables used for upgrade
-			TBGContext::addClasspath(THEBUGGENIE_PATH . 'modules' . DIRECTORY_SEPARATOR . 'installation' . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR . 'upgrade_3.0');
+			TBGContext::addClasspath(THEBUGGENIE_MODULES_PATH . 'installation' . DS . 'classes' . DS . 'upgrade_3.0');
 			
 			// Upgrade old tables
 			TBGScopesTable::getTable()->upgrade(TBGScopesTable3dot0::getTable());

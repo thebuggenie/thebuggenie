@@ -68,12 +68,12 @@
 		public function getStringsFilename($language = null)
 		{
 			$language = ($language === null) ? $this->_language : $language;
-			return TBGContext::getIncludePath() . 'i18n' . DIRECTORY_SEPARATOR . $language . DIRECTORY_SEPARATOR . 'strings.inc.php';
+			return THEBUGGENIE_PATH . 'i18n' . DS . $language . DS . 'strings.inc.php';
 		}
 		
 		public function initialize()
 		{
-			$filename = TBGContext::getIncludePath() . 'i18n' . DIRECTORY_SEPARATOR . $this->_language . DIRECTORY_SEPARATOR . 'initialize.inc.php';
+			$filename = THEBUGGENIE_PATH . 'i18n' . DS . $this->_language . DS . 'initialize.inc.php';
 			if (file_exists($filename))
 			{
 				include $filename;
@@ -136,7 +136,7 @@
 				{
 					return TBGSettings::get($topic, 'help');
 				}
-				$filename = TBGContext::getIncludePath() . 'i18n/' . $this->getCurrentLanguage() . "/help/$topic.inc.php";
+				$filename = THEBUGGENIE_PATH . 'i18n/' . $this->getCurrentLanguage() . "/help/$topic.inc.php";
 				if (file_exists($filename))
 				{
 					return file_get_contents($filename);
@@ -144,12 +144,12 @@
 			}
 			else
 			{
-				$filename = TBGContext::getIncludePath() . 'i18n/' . $this->getCurrentLanguage() . "/help/$module/$topic.inc.php";
+				$filename = THEBUGGENIE_PATH . 'i18n/' . $this->getCurrentLanguage() . "/help/$module/$topic.inc.php";
 				if (file_exists($filename))
 				{
 					return file_get_contents($filename);
 				}
-				$filename = TBGContext::getIncludePath() . "modules/$module/help/$topic.inc.php";
+				$filename = THEBUGGENIE_MODULES_PATH . $module . DS . 'help' . DS . "{$topic}.inc.php";
 				if (file_exists($filename))
 				{
 					return file_get_contents($filename);
@@ -183,13 +183,13 @@
 				$filename = '';
 				if ($module !== null)
 				{
-					if (file_exists(TBGContext::getIncludePath() . 'i18n' . DIRECTORY_SEPARATOR . $this->_language . DIRECTORY_SEPARATOR . "{$module}.inc.php"))
+					if (file_exists(THEBUGGENIE_PATH . 'i18n' . DS . $this->_language . DS . "{$module}.inc.php"))
 					{
-						$filename = TBGContext::getIncludePath() . 'i18n' . DIRECTORY_SEPARATOR . $this->_language . DIRECTORY_SEPARATOR . "{$module}.inc.php";
+						$filename = THEBUGGENIE_PATH . 'i18n' . DS . $this->_language . DS . "{$module}.inc.php";
 					}
 					else
 					{
-						$filename = TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . $module . DIRECTORY_SEPARATOR . 'i18n' . DIRECTORY_SEPARATOR . $this->_language . DIRECTORY_SEPARATOR . "{$module}.inc.php";
+						$filename = THEBUGGENIE_MODULES_PATH . $module . DS . 'i18n' . DS . $this->_language . DS . "{$module}.inc.php";
 					}
 				}
 				else
@@ -235,12 +235,12 @@
 		public static function getLanguages()
 		{
 			$retarr = array();
-			$cp_handle = opendir(TBGContext::getIncludePath() . 'i18n');
+			$cp_handle = opendir(THEBUGGENIE_PATH . 'i18n');
 			while ($classfile = readdir($cp_handle))
 			{
 				if (strstr($classfile, '.') == '') 
 				{ 
-					$retarr[$classfile] = file_get_contents(TBGContext::getIncludePath() . 'i18n/' . $classfile . '/language');
+					$retarr[$classfile] = file_get_contents(THEBUGGENIE_PATH . 'i18n/' . $classfile . '/language');
 				}
 			}
 			
@@ -260,13 +260,13 @@
 				$module = TBGContext::getRouting()->getCurrentRouteModule();
 				$templatefile = ($is_component) ? '_' . $template . '.inc.php' : $template . '.' . TBGContext::getRequest()->getRequestedFormat() . '.php';
 			}
-			if (file_exists(TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . $module . DIRECTORY_SEPARATOR . 'i18n' . DIRECTORY_SEPARATOR . $this->_language . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . $templatefile))
+			if (file_exists(THEBUGGENIE_MODULES_PATH . $module . DS . 'i18n' . DS . $this->_language . DS . 'templates' . DS . $templatefile))
 			{
-				return TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . $module . DIRECTORY_SEPARATOR . 'i18n' . DIRECTORY_SEPARATOR . $this->_language . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . $templatefile;
+				return THEBUGGENIE_MODULES_PATH . $module . DS . 'i18n' . DS . $this->_language . DS . 'templates' . DS . $templatefile;
 			}
-			elseif (file_exists(TBGContext::getIncludePath() . 'i18n' . DIRECTORY_SEPARATOR . $this->getCurrentLanguage() . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . $module . DIRECTORY_SEPARATOR . $templatefile))
+			elseif (file_exists(THEBUGGENIE_PATH . 'i18n' . DS . $this->getCurrentLanguage() . DS . 'templates' . DS . $module . DS . $templatefile))
 			{
-				return TBGContext::getIncludePath() . 'i18n' . DIRECTORY_SEPARATOR . $this->getCurrentLanguage() . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . $module . DIRECTORY_SEPARATOR . $templatefile;
+				return THEBUGGENIE_PATH . 'i18n' . DS . $this->getCurrentLanguage() . DS . 'templates' . DS . $module . DS . $templatefile;
 			}
 			return false;
 		}

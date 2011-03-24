@@ -41,7 +41,7 @@
 				$this->cliEcho("Initializing empty module ");
 				$this->cliEcho("{$module_key}\n", 'white', 'bold');
 				$this->cliEcho("Checking that the module doesn't exist ... ");
-				if (file_exists(TBGContext::getIncludePath() . "modules/{$module_key}"))
+				if (file_exists(THEBUGGENIE_MODULES_PATH . $module_key))
 				{
 					$this->cliEcho("fail\n", 'red');
 					$this->cliEcho("A module with this name already exists\n", 'red');
@@ -65,12 +65,12 @@
 				}
 
 				$this->cliEcho("Checking that the module path is writable ... ");
-				if (!is_writable(TBGContext::getIncludePath() . "modules/"))
+				if (!is_writable(THEBUGGENIE_MODULES_PATH))
 				{
 					$this->cliEcho("fail\n", 'red');
 					$this->cliEcho("Module path isn't writable\n\n", 'red');
 					$this->cliEcho("Please make sure that the following path is writable: \n");
-					$this->cliEcho(TBGContext::getIncludePath() . "modules/", 'cyan');
+					$this->cliEcho(THEBUGGENIE_MODULES_PATH, 'cyan');
 					return false;
 				}
 				else
@@ -79,40 +79,41 @@
 				}
 
 				$this->cliEcho("\nCreating module directory structure ... \n", 'white', 'bold');
-				mkdir(TBGContext::getIncludePath() . "modules/{$module_key}");
-				$this->cliEcho("modules/{$module_key}\n");
-				mkdir(TBGContext::getIncludePath() . "modules/{$module_key}/classes");
-				$this->cliEcho("modules/{$module_key}/classes\n");
-				mkdir(TBGContext::getIncludePath() . "modules/{$module_key}/classes/cli");
-				$this->cliEcho("modules/{$module_key}/classes/cli\n");
-				mkdir(TBGContext::getIncludePath() . "modules/{$module_key}/templates");
-				$this->cliEcho("modules/{$module_key}/templates\n");
+				$this_module_path = THEBUGGENIE_MODULES_PATH . $module_key . DS;
+				mkdir(THEBUGGENIE_MODULES_PATH . $module_key);
+				$this->cliEcho('modules' . DS . "{$module_key}\n");
+				mkdir($this_module_path . 'classes');
+				$this->cliEcho('modules' . DS . $module_key . DS . "classes\n");
+				mkdir($this_module_path . 'classes' . DS . 'cli');
+				$this->cliEcho('modules' . DS . $module_key . DS . 'classes' . DS . "cli\n");
+				mkdir($this_module_path . 'templates');
+				$this->cliEcho('modules' . DS . $module_key . DS . "templates\n");
 				$this->cliEcho("... ", 'white', 'bold');
 				$this->cliEcho("OK\n", 'green', 'bold');
 
 				$this->cliEcho("\nCreating module files ... \n", 'white', 'bold');
-				file_put_contents(TBGContext::getIncludePath() . "modules/{$module_key}/class", "{$module_name}|0.1");
-				$this->cliEcho("modules/{$module_key}/class\n");
-				file_put_contents(TBGContext::getIncludePath() . "modules/{$module_key}/module", $module_description);
-				$this->cliEcho("modules/{$module_key}/module\n");
+				file_put_contents($this_module_path . "class", "{$module_name}|0.1");
+				$this->cliEcho('modules' . DS . $module_key . DS . "class\n");
+				file_put_contents($this_module_path . "module", $module_description);
+				$this->cliEcho('modules' . DS . $module_key . DS . "module\n");
 
-				$module_class_template = file_get_contents(TBGContext::getIncludePath() . "modules/main/fixtures/emptymoduleclass");
+				$module_class_template = file_get_contents(THEBUGGENIE_MODULES_PATH . "main" . DS . "fixtures" . DS . "emptymoduleclass");
 				$module_class_content = str_replace(array('%module_key%', '%module_name%', '%module_description%'), array($module_key, $module_name, $module_description), $module_class_template);
-				file_put_contents(TBGContext::getIncludePath() . "modules/{$module_key}/classes/{$module_name}.class.php", $module_class_content);
-				$this->cliEcho("modules/{$module_key}/classes/{$module_name}.class.php\n");
+				file_put_contents($this_module_path . "classes" . DS . $module_name . ".class.php", $module_class_content);
+				$this->cliEcho("modules" . DS . $module_key . DS . "classes" . DS . $module_name . ".class.php\n");
 
-				$module_actions_class_template = file_get_contents(TBGContext::getIncludePath() . "modules/main/fixtures/emptymoduleactionsclass");
+				$module_actions_class_template = file_get_contents(THEBUGGENIE_MODULES_PATH . "main" . DS . "fixtures" . DS . "emptymoduleactionsclass");
 				$module_actions_class_content = str_replace(array('%module_key%', '%module_name%', '%module_description%'), array($module_key, $module_name, $module_description), $module_actions_class_template);
-				file_put_contents(TBGContext::getIncludePath() . "modules/{$module_key}/classes/actions.class.php", $module_actions_class_content);
-				$this->cliEcho("modules/{$module_key}/classes/actions.class.php\n");
+				file_put_contents($this_module_path . "classes" . DS . "actions.class.php", $module_actions_class_content);
+				$this->cliEcho("modules" . DS . $module_key . DS . "classes" . DS . "actions.class.php\n");
 
-				$module_actioncomponents_class_template = file_get_contents(TBGContext::getIncludePath() . "modules/main/fixtures/emptymoduleactioncomponentsclass");
+				$module_actioncomponents_class_template = file_get_contents(THEBUGGENIE_MODULES_PATH . "main" . DS . "fixtures" . DS . "emptymoduleactioncomponentsclass");
 				$module_actioncomponents_class_content = str_replace(array('%module_key%', '%module_name%', '%module_description%'), array($module_key, $module_name, $module_description), $module_actioncomponents_class_template);
-				file_put_contents(TBGContext::getIncludePath() . "modules/{$module_key}/classes/actioncomponents.class.php", $module_actioncomponents_class_content);
-				$this->cliEcho("modules/{$module_key}/classes/actioncomponents.class.php\n");
+				file_put_contents($this_module_path . "classes" . DS . "actioncomponents.class.php", $module_actioncomponents_class_content);
+				$this->cliEcho("modules" . DS . $module_key . DS . "classes" . DS . "actioncomponents.class.php\n");
 
-				file_put_contents(TBGContext::getIncludePath() . "modules/{$module_key}/templates/index.html.php", "{$module_name} frontpage");
-				$this->cliEcho("modules/{$module_key}/templates/index.html.php\n");
+				file_put_contents($this_module_path . "templates" . DS . "index.html.php", "{$module_name} frontpage");
+				$this->cliEcho("modules" . DS . $module_key . DS . "templates" . DS . "index.html.php\n");
 
 				$this->cliEcho("... ", 'white', 'bold');
 				$this->cliEcho("OK\n\n", 'green', 'bold');
