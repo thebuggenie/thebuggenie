@@ -3,6 +3,34 @@
 	class configurationActionComponents extends TBGActionComponent
 	{
 
+		public function componentGeneral()
+		{
+			$files = scandir(THEBUGGENIE_CORE_PATH . 'geshi' . DS . 'geshi' . DS);
+			$geshi_languages = array();
+			foreach ($files as $file)
+			{
+				if (strstr($file, '.php') === false) continue;
+				$lang = str_replace('.php', '', $file);
+				$geshi_languages[$lang] = $lang;
+			}
+			$this->geshi_languages = $geshi_languages;
+		}
+
+		public function componentUser()
+		{
+			$this->userstates = TBGUserstate::getAll();
+		}
+
+		public function componentAppearance()
+		{
+			$this->themes = TBGContext::getThemes();
+		}
+
+		public function componentReglang()
+		{
+			$this->languages = TBGI18n::getLanguages();
+		}
+
 		public function componentLeftmenu()
 		{
 			$i18n = TBGContext::getI18n();

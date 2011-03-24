@@ -19,10 +19,10 @@
 	</ul>
 </div>
 <div id="settings_menu_panes">
-	<div id="tab_general_settings_pane"><?php include_template('general', array('access_level' => $access_level)); ?></div>
-	<div id="tab_appearance_settings_pane" style="display: none;"><?php include_template('appearance', array('access_level' => $access_level, 'themes' => $themes)); ?></div>
-	<div id="tab_reglang_settings_pane" style="display: none;"><?php include_template('reglang', array('access_level' => $access_level, 'languages' => $languages)); ?></div>
-	<div id="tab_user_settings_pane" style="display: none;"><?php include_template('user', array('access_level' => $access_level)); ?></div>
+	<div id="tab_general_settings_pane"><?php include_component('general', array('access_level' => $access_level)); ?></div>
+	<div id="tab_appearance_settings_pane" style="display: none;"><?php include_component('appearance', array('access_level' => $access_level)); ?></div>
+	<div id="tab_reglang_settings_pane" style="display: none;"><?php include_component('reglang', array('access_level' => $access_level)); ?></div>
+	<div id="tab_user_settings_pane" style="display: none;"><?php include_component('user', array('access_level' => $access_level)); ?></div>
 </div>
 <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 	<div class="rounded_box mediumgrey" style="margin: 5px 0px 5px 0px; width: 725px; height: 25px; padding: 5px 10px 5px 10px;">

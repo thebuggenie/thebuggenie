@@ -38,6 +38,58 @@
 		const APPEARANCE_HEADER_CUSTOM = 1;
 		const APPEARANCE_HEADER_URL = 2;
 
+		const FAVICON_DEFAULT = 0;
+		const FAVICON_PUBLIC = 1;
+		const FAVICON_CUSTOM_URL = 2;
+
+		const SYNTAX_HIHGLIGHTING_FANCY_NUMBERS = 1;
+		const SYNTAX_HIHGLIGHTING_NORMAL_NUMBERS = 2;
+		const SYNTAX_HIHGLIGHTING_NO_NUMBERS = 3;
+
+		const INFOBOX_PREFIX = 'hide_infobox_';
+
+		const SETTING_ADMIN_GROUP = 'admingroup';
+		const SETTING_ALLOW_REGISTRATION = 'allowreg';
+		const SETTING_ALLOW_USER_THEMES = 'userthemes';
+		const SETTING_AWAYSTATE = 'awaystate';
+		const SETTING_DEFAULT_CHARSET = 'charset';
+		const SETTING_DEFAULT_LANGUAGE = 'language';
+		const SETTING_DEFAULT_USER_IS_GUEST = 'defaultisguest';
+		const SETTING_DEFAULT_USER_ID = 'defaultuserid';
+		const SETTING_ENABLE_UPLOADS = 'enable_uploads';
+		const SETTING_FAVICON_TYPE = 'icon_fav';
+		const SETTING_FAVICON_URL = 'icon_fav_url';
+		const SETTING_GUEST_GROUP = 'guestgroup';
+		const SETTING_HEADER_ICON_TYPE = 'icon_header';
+		const SETTING_HEADER_ICON_URL = 'icon_header_url';
+		const SETTING_HEADER_LINK = 'header_link';
+		const SETTING_IS_PERMISSIVE_MODE = 'permissive';
+		const SETTING_IS_SINGLE_PROJECT_TRACKER = 'singleprojecttracker';
+		const SETTING_KEEP_COMMENT_TRAIL_CLEAN = 'cleancomments';
+		const SETTING_OFFLINESTATE = 'offlinestate';
+		const SETTING_ONLINESTATE = 'onlinestate';
+		const SETTING_PREVIEW_COMMENT_IMAGES = 'previewcommentimages';
+		const SETTING_REGISTRATION_DOMAIN_WHITELIST = 'limit_registration';
+		const SETTING_REQUIRE_LOGIN = 'requirelogin';
+		const SETTING_RETURN_FROM_LOGIN = 'returnfromlogin';
+		const SETTING_RETURN_FROM_LOGOUT = 'returnfromlogout';
+		const SETTING_SALT = 'salt';
+		const SETTING_SERVER_TIMEZONE = 'server_timezone';
+		const SETTING_SHOW_PROJECTS_OVERVIEW = 'showprojectsoverview';
+		const SETTING_SYNTAX_HIGHLIGHT_DEFAULT_LANGUAGE = 'highlight_default_lang';
+		const SETTING_SYNTAX_HIGHLIGHT_DEFAULT_NUMBERING = 'highlight_default_numbering';
+		const SETTING_SYNTAX_HIGHLIGHT_DEFAULT_INTERVAL = 'highlight_default_interval';
+		const SETTING_TBG_NAME = 'b2_name';
+		const SETTING_TBG_TAGLINE = 'b2_tagline';
+		const SETTING_THEME_NAME = 'theme_name';
+		const SETTING_UPLOAD_EXTENSIONS_LIST = 'upload_extensions_list';
+		const SETTING_UPLOAD_LOCAL_PATH = 'upload_localpath';
+		const SETTING_UPLOAD_MAX_FILE_SIZE = 'upload_max_file_size';
+		const SETTING_UPLOAD_RESTRICTION_MODE = 'upload_restriction_mode';
+		const SETTING_UPLOAD_STORAGE = 'upload_storage';
+		const SETTING_USER_GROUP = 'defaultgroup';
+		const SETTING_USER_TIMEZONE = 'timezone';
+
 		static protected $_ver_mj = 3;
 		static protected $_ver_mn = 1;
 		static protected $_ver_rev = '0';
@@ -57,7 +109,7 @@
 			{
 				TBGLogging::log('Loading all settings');
 				self::$_settings = array();
-				if (!TBGContext::isInstallmode() && self::$_settings = TBGCache::get('settings'))
+				if (!TBGContext::isInstallmode() && self::$_settings = TBGCache::get(TBGCache::KEY_SETTINGS))
 				{
 					TBGLogging::log('Using cached settings');
 				}
@@ -84,7 +136,7 @@
 						throw new TBGSettingsException('Could not retrieve settings from database');
 					}
 					TBGLogging::log('Retrieved');
-					TBGCache::add('settings', self::$_settings);
+					TBGCache::add(TBGCache::KEY_SETTINGS, self::$_settings);
 				}
 			}
 			TBGLogging::log("...done");
@@ -252,102 +304,102 @@
 
 		public static function getAdminGroup()
 		{
-			return TBGContext::factory()->TBGGroup((int) self::get('admingroup'));
+			return TBGContext::factory()->TBGGroup((int) self::get(self::SETTING_ADMIN_GROUP));
 		}
 		
 		public static function isRegistrationEnabled()
 		{
-			return (bool) self::get('allowreg');
+			return (bool) self::get(self::SETTING_ALLOW_REGISTRATION);
 		}
 		
 		public static function getLanguage()
 		{
-			return self::get('language');
+			return self::get(self::SETTING_DEFAULT_LANGUAGE);
 		}
 		
 		public static function getCharset()
 		{
-			return self::get('charset');
+			return self::get(self::SETTING_DEFAULT_CHARSET);
 		}
 		
 		public static function getHeaderIconURL()
 		{
-			return self::get('icon_header_url');
+			return self::get(self::SETTING_HEADER_ICON_URL);
 		}
 		
 		public static function getHeaderLink()
 		{
-			return self::get('header_link');
+			return self::get(self::SETTING_HEADER_LINK);
 		}
 		
 		public static function getFaviconURL()
 		{
-			return self::get('icon_fav_url');
+			return self::get(self::SETTING_FAVICON_URL);
 		}
 		
 		public static function getTBGname()
 		{
-			return self::get('b2_name');
+			return self::get(self::SETTING_TBG_NAME);
 		}
 	
 		public static function getTBGtagline()
 		{
-			return self::get('b2_tagline');
+			return self::get(self::SETTING_TBG_TAGLINE);
 		}
 		
-		public static function isProjectOverviewEnabled()
+		public static function isFrontpageProjectListVisible()
 		{
-			return (bool) self::get('showprojectsoverview');
+			return (bool) self::get(self::SETTING_SHOW_PROJECTS_OVERVIEW);
 		}
 
 		public static function isSingleProjectTracker()
 		{
-			return (bool) self::get('singleprojecttracker');
+			return (bool) self::get(self::SETTING_IS_SINGLE_PROJECT_TRACKER);
 		}
 		
 		public static function isUsingCustomHeaderIcon()
 		{
-			return self::get('icon_header');
+			return self::get(self::SETTING_HEADER_ICON_TYPE);
 		}
 		
-		public static function isUsingCustomFavicon()
+		public static function getFaviconType()
 		{
-			return self::get('icon_fav');
+			return self::get(self::SETTING_FAVICON_TYPE);
 		}
 
 		public static function getThemeName()
 		{
-			return self::get('theme_name');
+			return self::get(self::SETTING_THEME_NAME);
 		}
 		
 		public static function isUserThemesEnabled()
 		{
-			return (bool) self::get('user_themes');
+			return (bool) self::get(self::SETTING_ALLOW_USER_THEMES);
 		}
 		
 		public static function isCommentTrailClean()
 		{
-			return (bool) self::get('cleancomments');
+			return (bool) self::get(self::SETTING_KEEP_COMMENT_TRAIL_CLEAN);
 		}
 
 		public static function isCommentImagePreviewEnabled()
 		{
-			return (self::get('previewcommentimages') !== null) ? (bool) self::get('previewcommentimages') : true;
+			return (self::get(self::SETTING_PREVIEW_COMMENT_IMAGES) !== null) ? (bool) self::get(self::SETTING_PREVIEW_COMMENT_IMAGES) : true;
 		}
 
 		public static function isLoginRequired()
 		{
-			return (bool) self::get('requirelogin');
+			return (bool) self::get(self::SETTING_REQUIRE_LOGIN);
 		}
 		
 		public static function isDefaultUserGuest()
 		{
-			return (bool) self::get('defaultisguest');
+			return (bool) self::get(self::SETTING_DEFAULT_USER_IS_GUEST);
 		}
 		
 		public static function getDefaultUserID()
 		{
-			return self::get('defaultuserid');
+			return self::get(self::SETTING_DEFAULT_USER_ID);
 		}
 		
 		public static function allowRegistration()
@@ -357,14 +409,24 @@
 		
 		public static function getRegistrationDomainWhitelist()
 		{
-			return self::get('limit_registration');
+			return self::get(self::SETTING_REGISTRATION_DOMAIN_WHITELIST);
 		}
-		
+
+		public static function getDefaultGroupIDs()
+		{
+			return array(self::get(self::SETTING_ADMIN_GROUP), self::get(self::SETTING_GUEST_GROUP), self::get(self::SETTING_USER_GROUP));
+		}
+
+		/**
+		 * Return the default user group
+		 *
+		 * @return TBGGroup
+		 */
 		public static function getDefaultGroup()
 		{
 			try
 			{
-				return TBGContext::factory()->TBGGroup(self::get('defaultgroup'));
+				return TBGContext::factory()->TBGGroup(self::get(self::SETTING_USER_GROUP));
 			}
 			catch (Exception $e)
 			{
@@ -374,19 +436,19 @@
 		
 		public static function getLoginReturnRoute()
 		{
-			return self::get('returnfromlogin');
+			return self::get(self::SETTING_RETURN_FROM_LOGIN);
 		}
 		
 		public static function getLogoutReturnRoute()
 		{
-			return self::get('returnfromlogout');
+			return self::get(self::SETTING_RETURN_FROM_LOGOUT);
 		}
 		
 		public static function getOnlineState()
 		{
 			try
 			{
-				return TBGContext::factory()->TBGUserstate(self::get('onlinestate'));
+				return TBGContext::factory()->TBGUserstate(self::get(self::SETTING_ONLINESTATE));
 			}
 			catch (Exception $e)
 			{
@@ -398,7 +460,7 @@
 		{
 			try
 			{
-				return TBGContext::factory()->TBGUserstate(self::get('offlinestate'));
+				return TBGContext::factory()->TBGUserstate(self::get(self::SETTING_OFFLINESTATE));
 			}
 			catch (Exception $e)
 			{
@@ -408,7 +470,7 @@
 		
 		public static function getPasswordSalt()
 		{
-			$salt = self::get('salt');
+			$salt = self::get(self::SETTING_SALT);
 			return $salt;
 		}
 		
@@ -416,7 +478,7 @@
 		{
 			try
 			{
-				return TBGContext::factory()->TBGUserstate(self::get('awaystate'));
+				return TBGContext::factory()->TBGUserstate(self::get(self::SETTING_AWAYSTATE));
 			}
 			catch (Exception $e)
 			{
@@ -429,44 +491,34 @@
 			return TBGContext::getScope()->getHostname();
 		}
 		
-		public static function getLocalPath()
-		{
-			return self::get('local_path');
-		}
-		
 		public static function getGMToffset()
 		{
-			return self::get('server_timezone');
+			return self::get(self::SETTING_SERVER_TIMEZONE);
 		}
 		
 		public static function getUserTimezone()
 		{
-			return self::get('timezone', 'core', null, TBGContext::getUser()->getID());
-		}
-		
-		public static function getAuthenticationMethod()
-		{
-			return self::get('authentication_method');
+			return self::get(self::SETTING_USER_TIMEZONE, 'core', null, TBGContext::getUser()->getID());
 		}
 		
 		public static function isUploadsEnabled()
 		{
-			return (bool) (TBGContext::getScope()->isUploadsEnabled() && self::get('enable_uploads'));
+			return (bool) (TBGContext::getScope()->isUploadsEnabled() && self::get(self::SETTING_ENABLE_UPLOADS));
 		}
 
 		public static function getUploadsMaxSize($bytes = false)
 		{
-			return ($bytes) ? (int) (self::get('upload_max_file_size') * 1024 * 1024) : (int) self::get('upload_max_file_size');
+			return ($bytes) ? (int) (self::get(self::SETTING_UPLOAD_MAX_FILE_SIZE) * 1024 * 1024) : (int) self::get(self::SETTING_UPLOAD_MAX_FILE_SIZE);
 		}
 
 		public static function getUploadsRestrictionMode()
 		{
-			return self::get('upload_restriction_mode');
+			return self::get(self::SETTING_UPLOAD_RESTRICTION_MODE);
 		}
 
 		public static function getUploadsExtensionsList()
 		{
-			$extensions = (string) self::get('upload_extensions_list');
+			$extensions = (string) self::get(self::SETTING_UPLOAD_EXTENSIONS_LIST);
 			$delimiter = ' ';
 
 			switch (true)
@@ -483,67 +535,57 @@
 
 		public static function getUploadStorage()
 		{
-			return self::get('upload_storage');
+			return self::get(self::SETTING_UPLOAD_STORAGE);
 		}
 
 		public static function getUploadsLocalpath()
 		{
-			return self::get('upload_localpath');
+			return self::get(self::SETTING_UPLOAD_LOCAL_PATH);
 		}
 
-		public static function getIssueTypeBugReport()
-		{
-			return self::get('issuetype_bug_report');
-		}
-		
-		public static function getIssueTypeFeatureRequest()
-		{
-			return self::get('issuetype_feature_request');
-		}
-
-		public static function getIssueTypeEnhancement()
-		{
-			return self::get('issuetype_enhancement');
-		}
-
-		public static function getIssueTypeTask()
-		{
-			return self::get('issuetype_task');
-		}
-
-		public static function getIssueTypeUserStory()
-		{
-			return self::get('issuetype_user_story');
-		}
-
-		public static function getIssueTypeIdea()
-		{
-			return self::get('issuetype_idea');
-		}
-		
 		public static function isInfoBoxVisible($key)
 		{
-			return !(bool) self::get('hide_infobox_' . $key, 'core', TBGContext::getScope()->getID(), TBGContext::getUser()->getID());
+			return !(bool) self::get(self::INFOBOX_PREFIX . $key, 'core', TBGContext::getScope()->getID(), TBGContext::getUser()->getID());
 		}
 
 		public static function hideInfoBox($key)
 		{
-			self::saveSetting('hide_infobox_' . $key, 1, 'core', TBGContext::getScope()->getID(), TBGContext::getUser()->getID());
+			self::saveSetting(self::INFOBOX_PREFIX . $key, 1, 'core', TBGContext::getScope()->getID(), TBGContext::getUser()->getID());
 		}
 		
 		public static function showInfoBox($key)
 		{
-			self::deleteSetting('hide_infobox_' . $key, 'core', '', TBGContext::getScope()->getID(), TBGContext::getUser()->getID());
+			self::deleteSetting(self::INFOBOX_PREFIX . $key, 'core', '', TBGContext::getScope()->getID(), TBGContext::getUser()->getID());
 		}
 
 		public static function isPermissive()
 		{
-			return (bool) self::get('permissive');
+			return (bool) self::get(self::SETTING_IS_PERMISSIVE_MODE);
 		}
 
 		public static function getAll()
 		{
 			return self::$_settings;
+		}
+
+		public static function getDefaultSyntaxHighlightingLanguage()
+		{
+			return self::get(self::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_LANGUAGE);
+		}
+
+		public static function getDefaultSyntaxHighlightingNumbering()
+		{
+			return self::get(self::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_NUMBERING);
+		}
+
+		public static function getDefaultSyntaxHighlightingInterval()
+		{
+			return self::get(self::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_INTERVAL);
+		}
+
+		public static function getRemoteSecurityKey()
+		{
+			return self::getPasswordSalt();
 		}
 
 	}

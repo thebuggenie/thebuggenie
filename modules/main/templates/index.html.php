@@ -19,7 +19,7 @@
 		</td>
 		<td class="main_area frontpage">
 			<?php TBGEvent::createNew('core', 'index_right_top')->trigger(); ?>
-			<?php if (TBGSettings::isProjectOverviewEnabled()): ?>
+			<?php if (TBGSettings::isFrontpageProjectListVisible()): ?>
 				<div class="project_overview">
 					<div class="header">
 						<?php if ($tbg_user->canAccessConfigurationPage(TBGSettings::CONFIGURATION_SECTION_PROJECTS)): ?>

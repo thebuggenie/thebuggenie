@@ -2,15 +2,15 @@
    "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 	<head>
-		<title><?php echo ($tbg_response->hasTitle()) ? strip_tags(TBGSettings::get('b2_name') . ' ~ ' . $tbg_response->getTitle()) : strip_tags(TBGSettings::get('b2_name')); ?></title>
+		<title><?php echo ($tbg_response->hasTitle()) ? strip_tags(TBGSettings::getTBGname() . ' ~ ' . $tbg_response->getTitle()) : strip_tags(TBGSettings::getTBGname()); ?></title>
 		<?php TBGEvent::createNew('core', 'header_begins')->trigger(); ?>
 		<meta name="description" content="The bug genie, friendly issue tracking">
 		<meta name="keywords" content="thebuggenie friendly issue tracking">
 		<meta name="author" content="thebuggenie.com">
 		<meta http-equiv="Content-Type" content="<?php echo $tbg_response->getContentType(); ?> charset=<?php echo TBGContext::getI18n()->getCharset(); ?>">
-		<?php if (TBGSettings::isUsingCustomFavicon() == '2'): ?>
+		<?php if (TBGSettings::getFaviconType() == '2'): ?>
 			<link rel="shortcut icon" href="<?php print TBGSettings::getFaviconURL(); ?>">
-		<?php elseif (TBGSettings::isUsingCustomFavicon() == '1'): ?>
+		<?php elseif (TBGSettings::getFaviconType() == '1'): ?>
 			<link rel="shortcut icon" href="<?php print TBGContext::getTBGPath(); ?>favicon.png">
 		<?php else: ?>
 			<link rel="shortcut icon" href="<?php print TBGContext::getTBGPath(); ?>themes/<?php print TBGSettings::getThemeName(); ?>/favicon.png">

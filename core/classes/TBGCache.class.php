@@ -26,6 +26,7 @@
 		const KEY_USERSTATES_CACHE = 'TBGUserstate::getAll';
 		const KEY_MODULE_PATHS = '_module_paths';
 		const KEY_MODULES = '_modules';
+		const KEY_SETTINGS = '_settings';
 		
 		protected static $_enabled = false;
 		protected static $_filecache_enabled = false;

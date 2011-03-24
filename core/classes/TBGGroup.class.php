@@ -106,7 +106,12 @@
 		{
 			$crit = TBGUsersTable::getTable()->getCriteria();
 			$crit->addWhere(TBGUsersTable::GROUP_ID, $this->getID());
-			$crit->addUpdate(TBGUsersTable::GROUP_ID, null);
+			
+			if ($this->getID() == TBGSettings::getDefaultGroup()->getID())
+				$crit->addUpdate(TBGUsersTable::GROUP_ID, null);
+			else
+				$crit->addUpdate(TBGUsersTable::GROUP_ID, TBGSettings::getDefaultGroup()->getID());
+
 			$res = TBGUsersTable::getTable()->doUpdate($crit);
 		}
 

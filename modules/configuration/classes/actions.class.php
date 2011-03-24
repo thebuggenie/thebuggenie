@@ -309,12 +309,15 @@
 			if (TBGContext::getRequest()->isMethod(TBGRequest::POST))
 			{
 				$this->forward403unless($this->access_level == TBGSettings::ACCESS_FULL);
-				$settings = array('theme_name', 'user_themes', 'onlinestate', 'offlinestate', 'awaystate', 'singleprojecttracker',
-									'requirelogin', 'allowreg', 'defaultgroup', 'returnfromlogin', 'returnfromlogout', 'permissive',
-									'limit_registration', 'showprojectsoverview', 'showprojectsoverview', 'cleancomments',
-									'b2_name', 'b2_tagline', 'charset', 'language', 'server_timezone',
-									'highlight_default_lang', 'highlight_default_interval', 'highlight_default_numbering', 'icon_header',
-									'icon_fav', 'icon_header_url', 'icon_fav_url', 'previewcommentimages', 'header_link');
+				$settings = array(TBGSettings::SETTING_THEME_NAME, TBGSettings::SETTING_ALLOW_USER_THEMES, TBGSettings::SETTING_ONLINESTATE,
+								TBGSettings::SETTING_OFFLINESTATE, TBGSettings::SETTING_AWAYSTATE, TBGSettings::SETTING_AWAYSTATE, TBGSettings::SETTING_IS_SINGLE_PROJECT_TRACKER,
+								TBGSettings::SETTING_REQUIRE_LOGIN, TBGSettings::SETTING_ALLOW_REGISTRATION, TBGSettings::SETTING_USER_GROUP,
+								TBGSettings::SETTING_RETURN_FROM_LOGIN, TBGSettings::SETTING_RETURN_FROM_LOGOUT, TBGSettings::SETTING_IS_PERMISSIVE_MODE,
+								TBGSettings::SETTING_REGISTRATION_DOMAIN_WHITELIST, TBGSettings::SETTING_SHOW_PROJECTS_OVERVIEW, TBGSettings::SETTING_KEEP_COMMENT_TRAIL_CLEAN,
+								TBGSettings::SETTING_TBG_NAME, TBGSettings::SETTING_TBG_TAGLINE, TBGSettings::SETTING_DEFAULT_CHARSET, TBGSettings::SETTING_DEFAULT_LANGUAGE,
+								TBGSettings::SETTING_SERVER_TIMEZONE, TBGSettings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_LANGUAGE, TBGSettings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_INTERVAL,
+								TBGSettings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_NUMBERING, TBGSettings::SETTING_HEADER_ICON_TYPE, TBGSettings::SETTING_FAVICON_TYPE,
+								TBGSettings::SETTING_HEADER_ICON_URL, TBGSettings::SETTING_FAVICON_URL, TBGSettings::SETTING_PREVIEW_COMMENT_IMAGES, TBGSettings::SETTING_HEADER_LINK);
 				
 				foreach ($settings as $setting)
 				{
@@ -323,18 +326,18 @@
 						$value = TBGContext::getRequest()->getParameter($setting);
 						switch ($setting)
 						{
-							case 'b2_name':
-							case 'b2_tagline':
+							case TBGSettings::SETTING_TBG_NAME:
+							case TBGSettings::SETTING_TBG_TAGLINE:
 								$value = TBGContext::getRequest()->getParameter($setting, null, false);
 								break;
-							case  'highlight_default_interval':
+							case  TBGSettings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_INTERVAL:
 								if (!is_numeric($value) || $value < 1)
 								{
 									$this->getResponse()->setHttpStatus(400);
 									return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please provide a valid setting for highlighting interval')));
 								}
 								break;
-							case 'charset' :
+							case TBGSettings::SETTING_DEFAULT_CHARSET:
 								TBGContext::loadLibrary('common');
 								if ($value && !tbg_check_syntax($value, "CHARSET"))
 								{
@@ -349,8 +352,6 @@
 				return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('All settings saved')));
 			}
 			
-			$this->themes = TBGContext::getThemes();
-			$this->languages = TBGI18n::getLanguages();
 		}
 
 		/**
@@ -1896,7 +1897,7 @@
 		{
 			try
 			{
-				if (!($request->getParameter('group_id') > 3))
+				if (!(!in_array($request->getParameter('group_id'), TBGSettings::getDefaultGroupIDs())))
 				{
 					throw new Exception(TBGContext::getI18n()->__("You cannot delete the default groups"));
 				}
