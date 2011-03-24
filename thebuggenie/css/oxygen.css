@@ -133,7 +133,7 @@ div.image_container.thumb img.image { width: 220px; }
 .comment_add_title { font-size: 14px; font-weight: bold; }
 .commentbody { padding: 5px 5px 5px 0; font-size: 12px; }
 .commentbody .image_container.thumb img.image { width: 130px; }
-.commenttools { float: right; border: 1px dotted #CCC; background-color: #F1F1F1; padding: 5px; margin: 5px; font-size: 12px; }
+.commenttools { float: right; padding: 5px; margin: 5px; font-size: 12px; }
 .commenttools img { vertical-align: bottom; margin-right: 5px; }
 .comment_controls { margin-top: 10px;  }
 .comment_edit, .comment_add_main { padding: 5px; background-color: #F1F1F1; border: 1px dotted #CCC; }
@@ -780,12 +780,12 @@ table.issue_affects td img { vertical-align: bottom; }
 #dashboard_lefthand a.friend { color: #00a400; }
 #dashboard_lefthand a.friend:hover { border-bottom: 1px solid #CCC; }
 
-#dashboard_righthand .milestone_box { margin: 5px 5px 5px 0; }
-#dashboard_righthand .milestone_box .header { font-weight: normal;  }
-#dashboard_righthand .milestone_box .date { font-size: 11px; font-weight: bold; }
-#dashboard_righthand .milestone_box .status { font-weight: normal; text-align: right; margin-top: 10px;  }
-#dashboard_righthand .milestone_box .percentage { position: relative; margin-top: 5px; }
-#dashboard_righthand .milestone_box .percentage .numbers { position: absolute; right: 2px; text-align: right; font-size: 11px; }
+.milestone_box { margin: 5px 5px 5px 0; }
+.milestone_box .header { font-weight: normal;  }
+.milestone_box .date { font-size: 11px; font-weight: bold; }
+.milestone_box .status { font-weight: normal; text-align: right; margin-top: 10px;  }
+.milestone_box .percentage { position: relative; margin-top: 5px; }
+.milestone_box .percentage .numbers { position: absolute; right: 2px; text-align: right; font-size: 11px; }
 
 #dashboard_righthand #associated_projects li { padding: 0 5px 5px 0; border: 0; position: relative; margin: 0;  }
 #dashboard_righthand #associated_projects li .project_name { text-align: left; padding: 0; font-weight: bold; }
