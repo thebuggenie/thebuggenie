@@ -62,7 +62,7 @@
 	 * @param integer $format[optional] the format
 	 * @param integer $skiptimestamp
 	 */
-	function tbg_formatTime($tstamp, $format = 0, $skiptimestamp = 0)
+	function tbg_formatTime($tstamp, $format = 0)
 	{
 		//if (TBGSettings::getUserTimezone() !== null && $skiptimestamp == 0)
 		//{
