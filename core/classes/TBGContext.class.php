@@ -394,11 +394,11 @@
 				{
 					self::loadModules();
 					self::initializeUser();
-					self::loadPostModuleRoutes();
 				}
 				else
 					self::$_modules = array();
 				
+				self::loadPostModuleRoutes();
 				TBGLogging::log('...done initializing');
 			}
 			catch (Exception $e)
