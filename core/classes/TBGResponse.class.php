@@ -515,6 +515,7 @@
 					{
 						$links[] = array('url' => make_url('configure'), 'title' => $i18n->__('Configure The Bug Genie'));
 					}
+					$links[] = array('url' => TBGContext::getRouting()->generate('about'), 'title' => $i18n->__('About %sitename%', array('%sitename%' => TBGSettings::getTBGname())));
 
 					break;
 				case 'project_summary':
