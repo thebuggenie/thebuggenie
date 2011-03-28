@@ -15,7 +15,6 @@
 		<?php endif; ?>
 		<?php if (!isset($scheme) || !$scheme->isCore()): ?>
 			<?php echo image_tag('spinning_16.gif', array('style' => 'margin-right: 5px; float: right; display: none;', 'id' => 'delete_issuetype_'.$type->getID().'_indicator')); ?>
-			<a title="<?php echo __('Delete issue type'); ?>" href="javascript:void(0);" onclick="deleteIssuetype('<?php echo make_url('configure_issuetypes_delete', array('id' => $type->getID())); ?>', <?php echo $type->getID(); ?>)" class="image" style="float: right; margin-right: 5px;"><?php echo image_tag('icon_delete.png'); ?></a>
 			<a title="<?php echo __('Show / edit issue type settings'); ?>" href="javascript:void(0);" onclick="$('edit_issuetype_<?php echo $type->getID(); ?>_form').toggle();" class="image" style="float: right; margin-right: 5px;"><?php echo image_tag('icon_edit.png'); ?></a>
 		<?php endif; ?>
 	</div>
