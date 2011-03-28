@@ -56,6 +56,10 @@
 			$crit->addInsert(TBGScopeHostnamesTable::HOSTNAME, '*');
 			$crit->addInsert(TBGScopeHostnamesTable::SCOPE_ID, 1);
 			TBGScopeHostnamesTable::getTable()->doInsert($crit);
+
+			$crit = $this->getCriteria();
+			$crit->addUpdate(self::NAME, 'Default scope');
+			$this->doUpdateById($crit, 1);
 		}
 		
 		public function getByHostname($hostname)

@@ -3948,9 +3948,10 @@
 					$scope->setName($scopename);
 					$scope->setEnabled();
 					$scope->save();
-					return $this->forward(TBGContext::getRouting()->generate('configure_scopes'));
+					$this->forward(TBGContext::getRouting()->generate('configure_scopes'));
 				}
 			}
+			$this->scope_deleted = TBGContext::getMessageAndClear('scope_deleted');
 			$this->scopes = TBGScope::getAll();
 		}
 
@@ -3966,44 +3967,60 @@
 			{
 				try
 				{
-					if (!$request->getParameter('name'))
+					if ($request->getParameter('scope_action') == 'delete')
 					{
-						throw new Exception(TBGContext::getI18n()->__('Please specify a scope name'));
+						if (!$this->scope->isDefault())
+						{
+							$this->scope->delete();
+							TBGContext::setMessage('scope_deleted', true);
+							$this->forward(make_url('configure_scopes'));
+						}
+						else
+						{
+							$this->scope_save_error = TBGContext::getI18n()->__('You cannot delete the default scope');
+						}
 					}
-					$this->scope->setName($request->getParameter('name'));
-					$this->scope->setDescription($request->getParameter('description'));
-					$this->scope->setCustomWorkflowsEnabled((bool) $request->getParameter('custom_workflows_enabled'));
-					$this->scope->setMaxWorkflowsLimit((int) $request->getParameter('workflow_limit'));
-					$this->scope->setUploadsEnabled((bool) $request->getParameter('file_uploads_enabled'));
-					$this->scope->setMaxUploadLimit((int) $request->getParameter('upload_limit'));
-					$this->scope->setMaxProjects((int) $request->getParameter('project_limit'));
-					$this->scope->setMaxUsers((int) $request->getParameter('user_limit'));
-					$this->scope->setMaxTeams((int) $request->getParameter('team_limit'));
-					$this->scope->save();
+					else
+					{
+						if (!$request->getParameter('name'))
+						{
+							throw new Exception(TBGContext::getI18n()->__('Please specify a scope name'));
+						}
+						$this->scope->setName($request->getParameter('name'));
+						$this->scope->setDescription($request->getParameter('description'));
+						$this->scope->setCustomWorkflowsEnabled((bool) $request->getParameter('custom_workflows_enabled'));
+						$this->scope->setMaxWorkflowsLimit((int) $request->getParameter('workflow_limit'));
+						$this->scope->setUploadsEnabled((bool) $request->getParameter('file_uploads_enabled'));
+						$this->scope->setMaxUploadLimit((int) $request->getParameter('upload_limit'));
+						$this->scope->setMaxProjects((int) $request->getParameter('project_limit'));
+						$this->scope->setMaxUsers((int) $request->getParameter('user_limit'));
+						$this->scope->setMaxTeams((int) $request->getParameter('team_limit'));
+						$this->scope->save();
 
-					$enabled_modules = $request->getParameter('module_enabled');
-					$prev_scope = TBGContext::getScope();
-					foreach ($enabled_modules as $module => $enabled)
-					{
-						if (!TBGContext::getModule($module)->isCore() && !$enabled && array_key_exists($module, $modules))
+						$enabled_modules = $request->getParameter('module_enabled');
+						$prev_scope = TBGContext::getScope();
+						foreach ($enabled_modules as $module => $enabled)
 						{
-							$module = TBGModulesTable::getTable()->getModuleForScope($module, $this->scope->getID());
-							$module->uninstall($this->scope->getID());
+							if (!TBGContext::getModule($module)->isCore() && !$enabled && array_key_exists($module, $modules))
+							{
+								$module = TBGModulesTable::getTable()->getModuleForScope($module, $this->scope->getID());
+								$module->uninstall($this->scope->getID());
+							}
+							elseif (!TBGContext::getModule($module)->isCore() && $enabled && !array_key_exists($module, $modules))
+							{
+								TBGContext::setScope($this->scope);
+								TBGModule::installModule($module);
+								TBGContext::setScope($prev_scope);
+							}
 						}
-						elseif (!TBGContext::getModule($module)->isCore() && $enabled && !array_key_exists($module, $modules))
-						{
-							TBGContext::setScope($this->scope);
-							TBGModule::installModule($module);
-							TBGContext::setScope($prev_scope);
-						}
+						TBGContext::setMessage('scope_saved', true);
+						$this->forward(make_url('configure_scope', array('id' => $this->scope->getID())));
 					}
-					TBGContext::setMessage('scope_saved', true);
 				}
 				catch (Exception $e)
 				{
 					TBGContext::setMessage('scope_save_error', $e->getMessage());
 				}
-				$this->forward(make_url('configure_scope', array('id' => $this->scope->getID())));
 			}
 		}
 

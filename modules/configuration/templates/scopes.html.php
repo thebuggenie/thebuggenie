@@ -13,6 +13,11 @@
 					<a href="javascript:void(0);" onclick="$('new_scope_hostname').toggle();" class="rounded_box action_button"><?php echo image_tag('action_add_small.png', array('title' => __('Create a new scope for a new hostname'))); ?></a>
 					<?php echo __('Scopes available on this installation'); ?>
 				</div>
+				<?php if (isset($scope_deleted)): ?>
+					<div class="rounded_box green borderless" style="margin: 0 0 5px 0; padding: 8px; font-size: 14px;">
+						<?php echo __('The scope was deleted'); ?>
+					</div>
+				<?php endif; ?>
 				<?php if (isset($scope_hostname_error)): ?>
 					<div class="rounded_box red borderless" style="margin: 0 0 5px 0; padding: 8px; font-size: 14px; color: #FFF;">
 						<?php echo __('The hostname must be unique and cannot be blank'); ?>
@@ -25,22 +30,24 @@
 				<?php endif; ?>
 				<div class="rounded_box lightgrey shadowed borderless" id="new_scope_hostname" style="display: none; position: absolute; width: 740px;">
 					<form action="<?php echo make_url('configure_scopes'); ?>" onsubmit="$('add_scope_indicator').show();$('add_scope_submit_button').hide();return true;" method="POST">
-					<div class="content">
-						<div class="header" style="margin-top: 0;"><?php echo __('Create a new scope'); ?></div>
-						<label for="new_scope_name_input"><?php echo __('Scope name'); ?></label>
-						<input id="new_scope_name_input" name="name" style="width: 250px;">
-						<div class="content faded_out" style="margin-bottom: 10px;">
-							<?php echo __('The scope name is used in the list below as a short descriptive name for the scope'); ?>
+						<div class="content">
+							<div class="header" style="margin-top: 0;"><?php echo __('Create a new scope'); ?></div>
+							<label for="new_scope_name_input"><?php echo __('Scope name'); ?></label>
+							<input id="new_scope_name_input" name="name" style="width: 250px;">
+							<div class="content faded_out" style="margin-bottom: 10px;">
+								<?php echo __('The scope name is used in the list below as a short descriptive name for the scope'); ?>
+							</div>
+							<label for="new_scope_hostname_input"><?php echo __('Scope hostname'); ?></label>
+							<input id="new_scope_hostname_input" name="hostname" style="width: 250px;">
+							<div class="content faded_out">
+								<?php echo __('The hostname should be provided without protocol or the trailing slash (.com, not .com/) and port specified if desired. Valid examples are: %examples%', array('%examples%' => '')); ?>
+								<i>bugs.mycompany.com , internal.company.org , thebuggenie.company.com , dev.company.com:8080</i>
+							</div>
 						</div>
-						<label for="new_scope_hostname_input"><?php echo __('Scope hostname'); ?></label>
-						<input id="new_scope_hostname_input" name="hostname" style="width: 250px;">
-						<div class="content faded_out">
-							<?php echo __('The hostname should be provided without protocol or the trailing slash (.com, not .com/) and port specified if desired. Valid examples are: %examples%', array('%examples%' => '')); ?>
-							<i>bugs.mycompany.com , internal.company.org , thebuggenie.company.com , dev.company.com:8080</i>
-						</div>
-					</div>
-					<input type="submit" value="<?php echo __('Create scope'); ?>" style="float: right; font-weight: bold;" id="add_scope_submit_button">
-					<?php echo image_tag('spinning_16.gif', array('id' => 'add_scope_indicator', 'style' => 'float: right; display: none;')); ?>
+						<div style="float: right; padding: 2px 5px 0 5px;"><?php echo __('%create_scope% or %cancel%', array('%create_scope%' => '', '%cancel%' => javascript_link_tag(__('cancel'), array('onclick' => "$('new_scope_hostname').toggle();")))); ?></div>
+						<input type="submit" value="<?php echo __('Create scope'); ?>" style="float: right; font-weight: bold;" id="add_scope_submit_button">
+						<?php echo image_tag('spinning_16.gif', array('id' => 'add_scope_indicator', 'style' => 'float: right; display: none;')); ?>
+					</form>
 					<br style="clear: both;">
 				</div>
 				<div id="scopes_list" style="margin-top: 5px;">

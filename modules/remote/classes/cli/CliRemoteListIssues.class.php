@@ -100,11 +100,23 @@
 				$this->cliEcho("issue type), ex:\n");
 				$this->cliEcho("./tbg_cli", 'green');
 				$this->cliEcho(" remote:update_issue projectname ");
-				$this->cliEcho("300", 'white', 'bold');
+				$this->cliEcho("300\n", 'white', 'bold');
+				$this->cliEcho("./tbg_cli", 'green');
+				$this->cliEcho(" remote:show_issue projectname ");
+				$this->cliEcho("300\n", 'white', 'bold');
+				$this->cliEcho("./tbg_cli", 'green');
+				$this->cliEcho(" remote:list_transitions projectname ");
+				$this->cliEcho("300\n", 'white', 'bold');
 				$this->cliEcho("\nor\n");
 				$this->cliEcho("./tbg_cli", 'green');
 				$this->cliEcho(" remote:update_issue projectname ");
-				$this->cliEcho("PREFIX-12", 'white', 'bold');
+				$this->cliEcho("PREFIX-12\n", 'white', 'bold');
+				$this->cliEcho("./tbg_cli", 'green');
+				$this->cliEcho(" remote:show_issue projectname ");
+				$this->cliEcho("PREFIX-12\n", 'white', 'bold');
+				$this->cliEcho("./tbg_cli", 'green');
+				$this->cliEcho(" remote:list_transitions projectname ");
+				$this->cliEcho("PREFIX-12\n", 'white', 'bold');
 				$this->cliEcho("\n");
 				$this->cliEcho("\n");
 			}

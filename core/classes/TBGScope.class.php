@@ -151,7 +151,24 @@
 			}
 		}
 
-		public function _postSave($is_new)
+		protected function _preDelete()
+		{
+			$tables = array(
+				'TBGIssueCustomFieldsTable', 'TBGIssueAffectsEditionTable',
+				'TBGIssueAffectsBuildTable', 'TBGIssueAffectsComponentTable', 'TBGIssueFilesTable',
+				'TBGIssueRelationsTable', 'TBGIssuetypeSchemeLinkTable', 'TBGIssuetypeSchemesTable',
+				'TBGIssueTypesTable', 'TBGListTypesTable', 'TBGIssuesTable', 'TBGCommentsTable',
+				'TBGComponentAssigneesTable', 'TBGProjectAssigneesTable', 'TBGEditionAssigneesTable',
+				'TBGComponentsTable', 'TBGEditionsTable', 'TBGBuildsTable', 'TBGMilestonesTable',
+				'TBGIssuesTable', 'TBGProjectsTable'
+			);
+			foreach($tables as $table)
+			{
+				$table::getTable()->deleteFromScope($this->getID());
+			}
+		}
+
+		protected function _postSave($is_new)
 		{
 			TBGScopeHostnamesTable::getTable()->saveScopeHostnames($this->getHostnames(), $this->getID());
 			// Load fixtures for this scope if it's a new scope

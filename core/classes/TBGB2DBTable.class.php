@@ -40,5 +40,13 @@
 			}
 			return $row;
 		}
-		
+
+		public function deleteFromScope($scope)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(static::SCOPE, $scope);
+			$res = $this->doDelete($crit);
+			return $res;
+		}
+
 	}
