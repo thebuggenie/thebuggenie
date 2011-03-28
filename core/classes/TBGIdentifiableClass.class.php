@@ -116,4 +116,10 @@
 				$this->_scope = TBGContext::getScope();
 			}
 		}
+
+		protected function toJSON()
+		{
+			return array('id' => $this->getID(), 'type' => $this->getType(), 'name' => $this->getName());
+		}
+
 	}

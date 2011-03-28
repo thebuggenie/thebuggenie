@@ -67,7 +67,7 @@
 
 				foreach ($response->issues as $issue)
 				{
-					$this->cliEcho("ID: {$issue->id} ", 'yellow');
+					//$this->cliEcho("ID: {$issue->id} ", 'yellow');
 					if (strtolower($options['state']) == 'all')
 					{
 						$this->cliEcho(($issue->state == TBGIssue::STATE_OPEN) ? "[open] " : "[closed] ");
@@ -94,8 +94,18 @@
 						$this->cliEcho("\n\n");
 					}
 				}
-				$this->cliEcho("If you are going to update any of these issues, use the id shown\n");
-				$this->cliEcho("in front of the issue as the issue id.\n");
+				$this->cliEcho("\n");
+				$this->cliEcho("If you are going to update or query any of these issues, use the \n");
+				$this->cliEcho("issue number shown in front of the issue (do not include the \n");
+				$this->cliEcho("issue type), ex:\n");
+				$this->cliEcho("./tbg_cli", 'green');
+				$this->cliEcho(" remote:update_issue projectname ");
+				$this->cliEcho("300", 'white', 'bold');
+				$this->cliEcho("\nor\n");
+				$this->cliEcho("./tbg_cli", 'green');
+				$this->cliEcho(" remote:update_issue projectname ");
+				$this->cliEcho("PREFIX-12", 'white', 'bold');
+				$this->cliEcho("\n");
 				$this->cliEcho("\n");
 			}
 			else

@@ -24,7 +24,7 @@
 			$this->_command_name = 'list_transitions';
 			$this->_description = "Show available workflow transitions for an issue";
 			$this->addRequiredArgument('project_key', 'The project key for the project containing the issue you want to see transitions for');
-			$this->addRequiredArgument('issue_id', 'The ID of the issue to show transitions for (see remote:list_issues)');
+			$this->addRequiredArgument('issue_number', 'The issue number of the issue to show transitions for');
 			$this->addOptionalArgument('transition', 'The name of a transition to show more details about');
 			parent::_setup();
 		}
@@ -41,8 +41,13 @@
 			}
 			else
 			{
-				$this->cliEcho('Listing available transitions for issue ID ');
-				$this->cliEcho($this->getProvidedArgument('issue_id'), 'yellow');
+				$this->cliEcho('Listing available transitions for issue ');
+				$print_issue_number = $this->getProvidedArgument('issue_number');
+				
+				if (is_numeric($print_issue_number))
+					$print_issue_number = '#' . $print_issue_number;
+
+				$this->cliEcho($print_issue_number, 'yellow');
 				$this->cliEcho(' on ');
 				$this->cliEcho($this->_getCurrentRemoteServer(), 'white', 'bold');
 				$this->cliEcho("\n");
@@ -51,7 +56,7 @@
 				$this->cliEcho(" requires you to pass parameters when applied to an issue\n");
 			}
 
-			$url_options = array('project_key' => $this->project_key, 'issue_id' => $this->issue_id, 'format' => 'json');
+			$url_options = array('project_key' => $this->project_key, 'issue_no' => $this->issue_number, 'format' => 'json');
 			$response = $this->getRemoteResponse($this->getRemoteURL('project_list_workflowtransitions', $url_options));
 			$this->cliEcho("\n");
 

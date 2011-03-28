@@ -332,5 +332,19 @@
 		{
 			return (int) $this->_comment_number;
 		}
-				
+
+		public function toJSON()
+		{
+			$return_values = array(
+				'id' => $this->getID(),
+				'created_at' => $this->getPosted(),
+				'comment_number' => $this->getCommentNumber(),
+				'posted_by' => ($this->getPostedBy() instanceof TBGIdentifiable) ? $this->getPostedBy()->toJSON() : null,
+				'content' => $this->getContent(),
+				'system_comment' => $this->isSystemComment(),
+			);
+
+			return $return_values;
+		}
+
 	}

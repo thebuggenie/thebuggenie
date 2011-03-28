@@ -24,7 +24,7 @@
 			$this->_command_name = 'update_issue';
 			$this->_description = "Update an issue on a remote server";
 			$this->addRequiredArgument('project_key', 'The project key for the project you want to update an issue for');
-			$this->addRequiredArgument('issue_id', 'The ID of the issue to update (see remote_list_issues or remote_get_issue_id)');
+			$this->addRequiredArgument('issue_number', 'The issue number for the issue you want to update');
 			$this->addOptionalArgument('workflow_transition', 'The workflow transition to trigger (if any)');
 			$this->addOptionalArgument('m', 'A comment to save with the changes');
 			parent::_setup();
@@ -34,8 +34,13 @@
 		{
 			$this->cliEcho('Updating ');
 			$this->cliEcho($this->getProvidedArgument('project_key'), 'green');
-			$this->cliEcho(' issue ID ');
-			$this->cliEcho($this->getProvidedArgument('issue_id'), 'yellow');
+			$this->cliEcho(' issue ');
+			$print_issue_number = $this->getProvidedArgument('issue_number');
+
+			if (is_numeric($print_issue_number))
+				$print_issue_number = '#' . $print_issue_number;
+
+			$this->cliEcho($print_issue_number, 'yellow');
 			$this->cliEcho(' on ');
 			$this->cliEcho($this->_getCurrentRemoteServer(), 'white', 'bold');
 			$this->cliEcho("\n");
@@ -58,10 +63,10 @@
 				throw new Exception("Please enter a valid message with your changes");
 			}
 
-			$url_options = array('project_key' => $this->project_key, 'issue_id' => $this->issue_id);
+			$url_options = array('project_key' => $this->project_key, 'issue_no' => $this->issue_number);
 			$post_data = $this->getNamedArguments();
 			
-			foreach (array('server', 'username', 'project_key', 'issue_id', 'm') as $key)
+			foreach (array('server', 'username', 'project_key', 'issue_number', 'm') as $key)
 			{
 				if (array_key_exists($key, $post_data)) unset($post_data[$key]);
 			}
@@ -76,6 +81,7 @@
 			$fields = $post_data;
 			foreach ($post_data as $key => $value)
 			{
+				if (is_numeric($key)) continue;
 				$post_data["fields[{$key}]"] = $value;
 				unset($post_data[$key]);
 			}
@@ -91,6 +97,10 @@
 			if (count($fields) || array_key_exists('workflow_transition', $url_options))
 			{
 				$response = $this->getRemoteResponse($this->getRemoteURL('project_update_issuedetails', $url_options), $post_data);
+
+				if (!is_object($response))
+					throw new Exception('Could not parse the return value from the server. Please re-check the command run.');
+
 				if (array_key_exists('workflow_transition', $url_options))
 				{
 					$this->cliEcho("  " . str_pad($response->applied_transition, 20), 'yellow');

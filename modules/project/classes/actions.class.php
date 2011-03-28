@@ -752,7 +752,7 @@
 		public function runListWorkflowTransitions(TBGRequest $request)
 		{
 			$i18n = TBGContext::getI18n();
-			$issue = TBGContext::factory()->TBGIssue($request->getParameter('issue_id'));
+			$issue = TBGIssue::getIssueFromLink($request->getParameter('issue_no'));
 			if ($issue->getProject()->getID() != $this->selected_project->getID())
 			{
 				throw new Exception($i18n->__('This issue is not valid for this project'));
@@ -781,7 +781,7 @@
 			try
 			{
 				$i18n = TBGContext::getI18n();
-				$issue = TBGContext::factory()->TBGIssue($request->getParameter('issue_id'));
+				$issue = TBGIssue::getIssueFromLink($request->getParameter('issue_no'));
 				if ($issue->getProject()->getID() != $this->selected_project->getID())
 				{
 					throw new Exception($i18n->__('This issue is not valid for this project'));

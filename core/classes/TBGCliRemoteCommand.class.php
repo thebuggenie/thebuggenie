@@ -144,6 +144,10 @@
 			{
 				throw new Exception($url . "\n" . $response->message);
 			}
+
+			if (!is_object($response) && !is_array($response))
+				throw new Exception('Could not parse the return value from the server. Please re-check the command being executed.');
+			
 			return $response;
 		}
 

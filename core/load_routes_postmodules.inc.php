@@ -38,7 +38,7 @@
 	$routes[] = array('project_my_teams_assigned_issues', '/:project_key/issues/my/assigned/teams', 'search', 'findIssues', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true));
 	$routes[] = array('project_my_assigned_issues', '/:project_key/issues/my/assigned/*', 'search', 'findIssues', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true));
 	$routes[] = array('project_my_reported_issues', '/:project_key/issues/my/*', 'search', 'findIssues', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES, 'search' => true));
-	$routes[] = array('viewissue', '/:project_key/issues/:issue_no', 'main', 'viewIssue');
+	$routes[] = array('viewissue', '/:project_key/issues/:issue_no/*', 'main', 'viewIssue');
 	$routes[] = array('project_issues', '/:project_key/issues/*', 'search', 'findIssues');
 	$routes[] = array('project_findthis', '/:project_key/issues/find/:searchfor/*', 'search', 'findIssues');
 	$routes[] = array('project_quicksearch', '/:project_key/quicksearch/*', 'search', 'quickSearch');
@@ -54,8 +54,8 @@
 	$routes[] = array('project_roadmap_milestone_refresh', '/:project_key/milestone/:milestone_id/get/details', 'project', 'getMilestoneDetails');
 	$routes[] = array('project_list_issues', '/:project_key/list/issues/:format/*', 'project', 'listIssues');
 	$routes[] = array('project_list_issuefields', '/:project_key/list/issuefields/for/type/:issuetype/:format', 'project', 'listIssuefields');
-	$routes[] = array('project_update_issuedetails', '/:project_key/update/issue/:issue_id/:format/*', 'project', 'updateIssueDetails');
-	$routes[] = array('project_list_workflowtransitions', '/:project_key/list/workflowtransitions/:issue_id/:format/*', 'project', 'listWorkflowTransitions');
+	$routes[] = array('project_update_issuedetails', '/:project_key/update/issue/:issue_no/:format/*', 'project', 'updateIssueDetails');
+	$routes[] = array('project_list_workflowtransitions', '/:project_key/list/workflowtransitions/:issue_no/:format/*', 'project', 'listWorkflowTransitions');
 	$routes[] = array('project_dashboard', '/:project_key', 'project', 'dashboard');
 
 	foreach ($routes as $route)

@@ -143,4 +143,9 @@
 			$this->_key = $key;
 		}
 
+		public function toJSON()
+		{
+			return array('id' => $this->getID(), 'itemdata' => $this->getItemdata(), 'itemtype' => $this->_itemtype, 'name' => $this->getName(), 'key' => $this->getKey());
+		}
+
 	}

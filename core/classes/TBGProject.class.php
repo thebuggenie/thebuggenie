@@ -1944,6 +1944,7 @@
 		 */
 		protected function _getFieldsArray($issue_type, $reportable = true)
 		{
+			$issue_type = (is_object($issue_type)) ? $issue_type->getID() : $issue_type;
 			if (!isset($this->_fieldsarrays[$issue_type][(int) $reportable]))
 			{
 				$retval = array();
