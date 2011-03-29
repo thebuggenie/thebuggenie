@@ -41,7 +41,7 @@
 		 */		
 		public function runQuickSearch(TBGRequest $request)
 		{
-			$results = array();
+			/*$results = array();
 
 			if ($this->searchterm != '')
 			{
@@ -54,15 +54,19 @@
 					}
 				}
 			}
-
-			$this->results = $results;
+			$this->results = $results;*/
 		}
 
 		protected function _getSearchDetailsFromRequest(TBGRequest $request)
 		{
 			$this->ipp = $request->getParameter('issues_per_page', 30);
 			$this->offset = $request->getParameter('offset', 0);
-			$this->filters = $request->getParameter('filters', array());
+			$filters = $request->getParameter('filters', array());
+			if ($request->getParameter('quicksearch'))
+			{
+				$filters['text']['operator'] = '=';
+			}
+			$this->filters = $filters;
 			if (TBGContext::isProjectContext())
 			{
 				$this->filters['project_id'][0] = array('operator' => '=', 'value' => TBGContext::getCurrentProject()->getID());
@@ -248,7 +252,7 @@
 		{
 			$this->_getSearchDetailsFromRequest($request);
 
-			if ($request->isMethod(TBGRequest::POST))
+			if ($request->isMethod(TBGRequest::POST) && !$request->getParameter('quicksearch'))
 			{
 				if ($request->getParameter('saved_search_name') != '')
 				{
@@ -284,6 +288,10 @@
 			{
 				$this->doSearch($request);
 				$this->issues = $this->foundissues;
+				if ($request->getParameter('quicksearch') == true)
+				{
+					$this->redirect('quicksearch');
+				}
 			}
 			$this->search_error = TBGContext::getMessageAndClear('search_error');
 			$this->search_message = TBGContext::getMessageAndClear('search_message');

@@ -160,10 +160,13 @@ div.image_container.thumb img.image { width: 220px; }
 /* autocompleter styling */
 div.autocomplete { position: absolute; z-index: 200000; background-color: white; border: 0; padding: 0px; }
 div.autocomplete ul { list-style-type: none; margin: 0px; width: 320px; padding: 0px; border: 0; }
-div.autocomplete ul li.selected, div.autocomplete ul li.selected:hover { background-color: #DDD; text-align: left; font-weight: normal; border: 0px; color: #333; text-align: left; }
+div.autocomplete ul li.selected, div.autocomplete ul li.selected:hover { background-color: #F1F1F1; text-align: left; font-weight: normal; border-top: 1px dotted #BBB; color: #333; text-align: left; }
 div.autocomplete ul li.selected:first-line, div.autocomplete ul li.selected:hover:first-line { font-weight: bold; }
+div.autocomplete ul li img { float: left; margin-right: 5px; }
 div.autocomplete ul li span { font-size: 11px; }
-div.autocomplete ul li { list-style-type: none; display: block; width: 100%; margin: 0; padding: 2px; height: 32px; cursor: pointer; font-weight: normal; text-align: left; background-color: #FFF; color: #555; }
+div.autocomplete ul li span.url { display: none; }
+div.autocomplete ul li { border-top: 1px dotted #CCC; font-size: 12px; list-style-type: none; display: block; width: 100%; margin: 0; padding: 2px; /*height: 32px;*/ cursor: pointer; font-weight: normal; text-align: left; background-color: #FFF; color: #555; line-height: 1.4; }
+div.autocomplete ul li.searchterm, div.autocomplete ul li.searchterm.selected { border-top: 0; }
 div.autocomplete ul li:first-line { font-weight: bold; }
 /* end autocompleter */
 
@@ -898,7 +901,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .project_information_sidebar .sidebar_links a { display: block; padding: 4px; color: #555; border: 1px dotted #DDD; background-color: #FAFAFA; border-right: 1px solid #CCC; margin: 0 -1px 0 7px; }
 .project_information_sidebar .sidebar_links a.first { border-top-left-radius: 5px; -moz-border-radius-topleft: 5px; -webkit-border-top-left-radius: 5px; }
 .tab_menu_dropdown .first { border-top-left-radius: 5px; -moz-border-radius-topleft: 5px; -webkit-border-top-left-radius: 5px; border-top-right-radius: 5px; -moz-border-radius-topright: 5px; -webkit-border-top-right-radius: 5px; }
-.tab_menu_dropdown .last { border-bottom-left-radius: 5px; -moz-border-radius-bottomleft: 5px; -webkit-border-bottom-left-radius: 5px; border-bottom-right-radius: 5px; -moz-border-radius-bottomright: 5px; -webkit-border-bottom-right-radius: 5px; }
+.tab_menu_dropdown .last, li.last { border-bottom-left-radius: 5px; -moz-border-radius-bottomleft: 5px; -webkit-border-bottom-left-radius: 5px; border-bottom-right-radius: 5px; -moz-border-radius-bottomright: 5px; -webkit-border-bottom-right-radius: 5px; }
 .project_information_sidebar .sidebar_links a.last { border-bottom-left-radius: 5px; -moz-border-radius-bottomleft: 5px; -webkit-border-bottom-left-radius: 5px; }
 .project_information_sidebar .sidebar_links a:hover { border: 1px solid transparent; background-color: #F1F1F1; border-right-color: #CCC; }
 .project_information_sidebar .sidebar_links a.selected { border-top-left-radius: 5px; border-bottom-left-radius: 5px; -moz-border-radius-topleft: 5px; -moz-border-radius-bottomleft: 5px; -webkit-border-top-left-radius: 5px; -webkit-border-bottom-left-radius: 5px; border: 1px solid #CCC; border-right-color: #FFF; margin-left: 0; padding: 8px; font-weight: bold; background-color: #FFF; }
