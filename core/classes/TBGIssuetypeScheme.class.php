@@ -229,7 +229,7 @@
 			TBGIssueFieldsTable::getTable()->deleteBySchemeIDandIssuetypeID($this->getID(), $issuetype->getID());
 		}
 
-		public function setFieldAvailableForIssuetype(TBGIssuetype $issuetype, $key, $details)
+		public function setFieldAvailableForIssuetype(TBGIssuetype $issuetype, $key, $details = array())
 		{
 			TBGIssueFieldsTable::getTable()->addFieldAndDetailsBySchemeIDandIssuetypeID($this->getID(), $issuetype->getID(), $key, $details);
 		}

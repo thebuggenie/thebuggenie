@@ -30,7 +30,7 @@
 					$article_name = substr($article_name, strpos($article_name, ':') + 1);
 				}
 				
-				if ($namespace != '' && ($project = TBGProject::getByKey($namespace)) instanceof TBGProject)
+				if ($namespace != '' && ($project = TBGProject::getByKey(strtolower($namespace))) instanceof TBGProject)
 				{
 					TBGContext::setCurrentProject($project);
 				}

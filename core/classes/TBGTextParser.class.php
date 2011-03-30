@@ -72,6 +72,24 @@
 			return self::$additional_regexes;
 		}
 
+		public static function getIssueRegex()
+		{
+			if (!$regex = TBGCache::get(TBGCache::KEY_TEXTPARSER_ISSUE_REGEX))
+			{
+				$issue_strings = array('bug', 'issue', 'ticket', 'story');
+				foreach (TBGIssuetype::getAll() as $issuetype)
+				{
+					$issue_strings[] = $issuetype->getName();
+				}
+				$issue_string = join('|', $issue_strings);
+				$issue_string = html_entity_decode($issue_string, ENT_QUOTES);
+				$issue_string = str_replace(array(' ', "'"), array('\s{1,1}', "\'"), $issue_string);
+				$regex = '#(?<!\!)(('.$issue_string.')\s\#?(([A-Z0-9]+\-)?\d+))#i';
+				TBGCache::add(TBGCache::KEY_TEXTPARSER_ISSUE_REGEX, $regex);
+			}
+			return $regex;
+		}
+
 		/**
 		 * Setup the parser object
 		 *
@@ -713,16 +731,7 @@
 			{
 				$char_regexes[] = array('/(\{\{([^\}]*?)\}\})/i', array($this, '_parse_variable'));
 			}
-			$issue_strings = array('bug', 'issue', 'ticket', 'story');
-			foreach (TBGIssuetype::getAll() as $issuetype)
-			{
-				$issue_strings[] = $issuetype->getName();
-			}
-			$issue_string = join('|', $issue_strings);
-			$issue_string = html_entity_decode($issue_string, ENT_QUOTES);
-			$issue_string = str_replace(array(' ', "'"), array('\s{1,1}', "\'"), $issue_string);
-			TBGLogging::log('issue string '.$issue_string);
-			$char_regexes[] = array('#(?<!\!)(('.$issue_string.')\s\#?(([A-Z0-9]+\-)?\d+))#i', array($this, '_parse_issuelink'));
+			$char_regexes[] = array(self::getIssueRegex(), array($this, '_parse_issuelink'));
 			$char_regexes[] = array('/(\:\(|\:-\(|\:\)|\:-\)|8\)|8-\)|B\)|B-\)|\:-\/|\:-D|\:-P|\(\!\)|\(\?\))/i', array($this, '_getsmiley'));
 			$char_regexes[] = array('/(^|[ \t\r\n])((ftp|http|https|gopher|mailto|news|nntp|telnet|wais|file|prospero|aim|webcal):(([A-Za-z0-9$_.+!*(),;\/?:@&~=-])|%[A-Fa-f0-9]{2}){2,}(#([a-zA-Z0-9][a-zA-Z0-9$_.+!*(),;\/?:@&~=%-]*))?([A-Za-z0-9$_+!*();\/?:~-]))/', array($this, '_parse_autosensedlink'));
 			foreach (self::getRegexes() as $regex)

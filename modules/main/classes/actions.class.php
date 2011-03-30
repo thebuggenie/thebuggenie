@@ -124,7 +124,7 @@
 						$issuelist[$starred_issue->getID()] = array('url' => TBGContext::getRouting()->generate('viewissue', array('project_key' => $this->selected_project->getKey(), 'issue_no' => $starred_issue->getFormattedIssueNo())), 'title' => $starred_issue->getFormattedIssueNo(true, true));
 					}
 				}
-				if (!array_key_exists($issue->getID(), $issuelist))
+				if (isset($issue) && $issue instanceof TBGIssue && !array_key_exists($issue->getID(), $issuelist))
 					$issuelist[$issue->getID()] = array('url' => TBGContext::getRouting()->generate('viewissue', array('project_key' => $this->selected_project->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), 'title' => $issue->getFormattedIssueNo(true, true));
 			}
 

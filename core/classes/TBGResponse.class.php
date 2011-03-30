@@ -209,12 +209,12 @@
 		 * @param string $breadcrumb 
 		 * @param string $url[optional]
 		 */
-		public function addBreadcrumb($breadcrumb, $url = null, $subitems = null)
+		public function addBreadcrumb($breadcrumb, $url = null, $subitems = null, $class = null)
 		{
 			if ($this->_breadcrumb === null)
 				$this->_breadcrumb = array();
 
-			$this->_breadcrumb[] = array('title' => $breadcrumb, 'url' => $url, 'subitems' => $subitems);
+			$this->_breadcrumb[] = array('title' => $breadcrumb, 'url' => $url, 'subitems' => $subitems, 'class' => $class);
 		}
 
 		/**

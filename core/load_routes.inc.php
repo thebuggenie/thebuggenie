@@ -31,7 +31,7 @@
 	$routes[] = array('my_reported_issues', '/issues/my/*', 'search', 'findIssues', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES, 'search' => true));
 	$routes[] = array('search', '/issues/*', 'search', 'findIssues');
 	
-	$routes[] = array('quicksearch', '/quicksearch/*', 'search', 'findIssues', array('quicksearch' => true, 'issues_per_page' => 10));
+	$routes[] = array('quicksearch', '/quicksearch/*', 'search', 'findIssues', array('quicksearch' => true, 'issues_per_page' => 6));
 	$routes[] = array('about', '/about', 'main', 'about');
 	$routes[] = array('list_projects', '/list/projects/:format', 'main', 'listProjects');
 	$routes[] = array('list_issuetypes', '/list/issuetypes/:format', 'main', 'listIssuetypes');

@@ -4,7 +4,7 @@
 			<?php $breadcrumbs = $tbg_response->getBreadcrumbs(); ?>
 			<?php foreach ($breadcrumbs as $index => $breadcrumb): ?>
 				<?php $next_has_menu = (array_key_exists($index + 1, $breadcrumbs) && array_key_exists('subitems', $breadcrumbs[$index + 1]) && is_array($breadcrumbs[$index + 1]['subitems'])); ?>
-				<li class="<?php echo (array_key_exists('class', $breadcrumb)) ? $breadcrumb['class'] : 'breadcrumb'; ?>">
+				<li class="breadcrumb">
 					<?php if (array_key_exists('subitems', $breadcrumb) && is_array($breadcrumb['subitems']) && count($breadcrumb['subitems'])): ?>
 						<div class="popoutmenu">
 							<?php $first = true; ?>
@@ -17,10 +17,11 @@
 						</div>
 					<?php endif; ?>
 					<div>
+						<?php $class = (array_key_exists('class', $breadcrumb) && $breadcrumb['class']) ? $breadcrumb['class'] : ''; ?>
 						<?php if ($breadcrumb['url']): ?>
-							<?php echo link_tag($breadcrumb['url'], $breadcrumb['title'], array('style' => 'float: left;')); ?>
+							<?php echo link_tag($breadcrumb['url'], $breadcrumb['title'], array('style' => 'float: left;', 'class' => $class)); ?>
 						<?php else: ?>
-							<span style="float: left;"><?php echo $breadcrumb['title']; ?></span>
+							<span <?php if ($class): ?> class="<?php echo $class; ?>"<?php endif; ?> style="float: left;"><?php echo $breadcrumb['title']; ?></span>
 						<?php endif; ?>
 						<?php if ($next_has_menu): ?>
 							<?php echo javascript_link_tag(image_tag('tabmenu_dropdown_popout.png', array('class' => 'dropdown_activator clickable')), array('onclick' => "$(this).up('li').next().toggleClassName('popped_out');$(this).toggleClassName('activated');", 'title' => __('Click to expand'))); ?>
@@ -33,7 +34,7 @@
 		</ul>
 	</div>
 	<?php if ($tbg_user->canSearchForIssues()): ?>
-		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo (TBGContext::isProjectContext()) ? make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'quicksearch' => 'true')) : make_url('search', array('quicksearch' => 'true')); ?>" method="get" name="quicksearchform" style="float: right;">
+		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo (TBGContext::isProjectContext()) ? make_url('project_quicksearch', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('quicksearch'); ?>" method="get" name="quicksearchform" style="float: right;">
 			<div style="width: auto; padding: 0; text-align: right; position: relative;">
 				<?php $quicksearch_title = __('Search for anything here'); ?>
 				<input type="hidden" name="filters[text][operator]" value="=">
@@ -64,7 +65,7 @@
 						afterUpdateElement: function (elem, value)
 						{
 							val = Ajax.Autocompleter.extract_value(value, 'url');
-							if (val != '')
+							if (val != '' && val !== undefined)
 							{
 								window.location = val;
 								$('quicksearch_indicator').show();

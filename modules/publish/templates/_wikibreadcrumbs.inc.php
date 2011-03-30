@@ -1,10 +1,10 @@
 <?php
 
-	if (!TBGContext::isProjectContext() || (TBGContext::isProjectContext() && strtolower($article_name) != strtolower(TBGContext::getCurrentProject()->getStrippedProjectName() . ':mainpage')))
+	if (!TBGContext::isProjectContext() || (TBGContext::isProjectContext() && strtolower($article_name) != strtolower(TBGContext::getCurrentProject()->getKey() . ':mainpage')))
 	{
 		if (TBGContext::isProjectContext())
 		{
-			$tbg_response->addBreadcrumb(TBGPublish::getModule()->getMenuTitle(), make_url('publish_article', array('article_name' => TBGContext::getCurrentProject()->getStrippedProjectName() . ':MainPage')), tbg_get_breadcrumblinks('project_summary', TBGContext::getCurrentProject()));
+			$tbg_response->addBreadcrumb(TBGPublish::getModule()->getMenuTitle(), make_url('publish_article', array('article_name' => TBGContext::getCurrentProject()->getKey() . ':MainPage')), tbg_get_breadcrumblinks('project_summary', TBGContext::getCurrentProject()));
 		}
 		else
 		{
@@ -32,7 +32,7 @@
 	}
 	else
 	{
-		$tbg_response->addBreadcrumb(TBGPublish::getModule()->getMenuTitle(), make_url('publish_article', array('article_name' => TBGContext::getCurrentProject()->getStrippedProjectName() . ':MainPage')), tbg_get_breadcrumblinks('project_summary', TBGContext::getCurrentProject()));
+		$tbg_response->addBreadcrumb(TBGPublish::getModule()->getMenuTitle(), make_url('publish_article', array('article_name' => TBGContext::getCurrentProject()->getKey() . ':MainPage')), tbg_get_breadcrumblinks('project_summary', TBGContext::getCurrentProject()));
 	}
 
 ?>

@@ -67,8 +67,7 @@ div.image_container.thumb img.image { width: 220px; }
 #header_username { width: auto; font-size: 1.1em; color: #FFF; padding: 0 25px 0 0; }
 #header_username a { font-weight: normal; color: #FFF; }
 .header_userlinks { font-size: 0.7em; line-height: 1.1; text-align: right; color: #6193CF }
-.submenu_strip.project_context .selected_project_name { font-size: 0.9em; font-weight: bold; color: #555; border-color: #D9D9BB; }
-.submenu_strip .selected_project_name { font-size: 0.9em; font-weight: normal; color: #888; }
+.submenu_strip .selected_project { font-size: 1em; font-weight: bold; color: #555; border-color: #D9D9BB; }
 
 .submenu_strip { background-color: transparent; border-bottom: 1px dotted #CCC; padding: 5px; height: 20px; }
 .submenu_strip.project_context { background-color: #FAF3B8; color: #333; }
@@ -160,14 +159,19 @@ div.image_container.thumb img.image { width: 220px; }
 /* autocompleter styling */
 div.autocomplete { position: absolute; z-index: 200000; background-color: white; border: 0; padding: 0px; }
 div.autocomplete ul { list-style-type: none; margin: 0px; width: 320px; padding: 0px; border: 0; }
+div.autocomplete li.header { padding-top: 15px; font-size: 15px; font-weight: bold; border-top: 0; }
 div.autocomplete ul li.selected, div.autocomplete ul li.selected:hover { background-color: #F1F1F1; text-align: left; font-weight: normal; border-top: 1px dotted #BBB; color: #333; text-align: left; }
-div.autocomplete ul li.selected:first-line, div.autocomplete ul li.selected:hover:first-line { font-weight: bold; }
+div.autocomplete ul li div { font-weight: bold; }
 div.autocomplete ul li img { float: left; margin-right: 5px; }
 div.autocomplete ul li span { font-size: 11px; }
 div.autocomplete ul li span.url { display: none; }
-div.autocomplete ul li { border-top: 1px dotted #CCC; font-size: 12px; list-style-type: none; display: block; width: 100%; margin: 0; padding: 2px; /*height: 32px;*/ cursor: pointer; font-weight: normal; text-align: left; background-color: #FFF; color: #555; line-height: 1.4; }
+div.autocomplete ul li.disabled { cursor: default; }
+div.autocomplete ul li.issue_closed { color: #AAA; }
+div.autocomplete ul li.no_issues_found { color: #AAA; padding: 10px; }
+div.autocomplete ul li { border-top: 1px dotted #CCC; font-size: 12px; list-style-type: none; display: block; width: 100%; margin: 0; padding: 2px 2px 2px 5px; /*height: 32px;*/ cursor: pointer; font-weight: normal; text-align: left; background-color: #FFF; color: #555; line-height: 1.4; }
 div.autocomplete ul li.searchterm, div.autocomplete ul li.searchterm.selected { border-top: 0; }
-div.autocomplete ul li:first-line { font-weight: bold; }
+div.autocomplete ul li.searchterm:first-line { font-style: italic; }
+div.autocomplete ul li .hidden { display: none; }
 /* end autocompleter */
 
 /* tabbed menu styles */

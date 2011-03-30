@@ -41,20 +41,6 @@
 		 */		
 		public function runQuickSearch(TBGRequest $request)
 		{
-			/*$results = array();
-
-			if ($this->searchterm != '')
-			{
-				$issue = TBGIssue::getIssueFromLink($this->searchterm);
-				if ($issue instanceof TBGIssue)
-				{
-					if (!TBGContext::isProjectContext() || (TBGContext::isProjectContext() && $issue->getProjectID() == TBGContext::getCurrentProject()->getID()))
-					{
-						$results[] = $issue;
-					}
-				}
-			}
-			$this->results = $results;*/
 		}
 
 		protected function _getSearchDetailsFromRequest(TBGRequest $request)
@@ -103,13 +89,16 @@
 			$i18n = TBGContext::getI18n();
 			if ($this->searchterm)
 			{
-				preg_replace_callback('#(?<!\!)((bug|issue|ticket|story)\s\#?(([A-Z0-9]+\-)?\d+))#i', array($this, 'extractIssues'), $this->searchterm);
-				if (!count($this->issues) && substr($this->searchterm, 0, 1) == '#')
+				preg_replace_callback(TBGTextParser::getIssueRegex(), array($this, 'extractIssues'), $this->searchterm);
+				if (!count($this->foundissues) && substr($this->searchterm, 0, 1) == '#')
 				{
 					$searchterm = substr($this->searchterm, 1);
 					$issue = TBGIssue::getIssueFromLink($searchterm);
 					if ($issue instanceof TBGIssue)
+					{
 						$this->foundissues = array($issue);
+						$this->resultcount = 1;
+					}
 				}
 			}
 
@@ -178,7 +167,7 @@
 				}
 				list ($this->foundissues, $this->resultcount) = TBGIssue::findIssues($this->filters, $this->ipp, $this->offset, $this->groupby, $this->grouporder);
 			}
-			elseif (count($this->foundissues) == 1 && $request->getParameter('quicksearch'))
+			elseif (count($this->foundissues) == 1 && !$request->getParameter('quicksearch'))
 			{
 				$issue = array_shift($this->foundissues);
 				$this->forward(TBGContext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
@@ -338,6 +327,7 @@
 				if (!TBGContext::isProjectContext() || (TBGContext::isProjectContext() && $issue->getProjectID() == TBGContext::getCurrentProject()->getID()))
 				{
 					$this->foundissues[$issue->getID()] = $issue;
+					$this->resultcount++;
 				}
 			}
 		}

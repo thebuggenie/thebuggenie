@@ -1507,7 +1507,7 @@
 						self::getResponse()->addBreadcrumb(self::getCurrentClient()->getName(), self::getRouting()->generate('client_dashboard', array('client_id' => self::getCurrentClient()->getID())), $clientsubmenulinks);
 					}
 				}
-				self::getResponse()->addBreadcrumb($project->getName(), self::getRouting()->generate('project_dashboard', array('project_key' => TBGContext::getCurrentProject()->getKey())), $projectsubmenulinks);
+				self::getResponse()->addBreadcrumb($project->getName(), self::getRouting()->generate('project_dashboard', array('project_key' => TBGContext::getCurrentProject()->getKey())), $projectsubmenulinks, 'selected_project');
 			}
 			else
 			{

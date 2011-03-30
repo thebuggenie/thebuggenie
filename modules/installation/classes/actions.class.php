@@ -381,7 +381,20 @@
 			
 			// Upgrade old tables
 			TBGScopesTable::getTable()->upgrade(TBGScopesTable3dot0::getTable());
-			
+
+			// Add votes to feature requests for default issue type scheme
+			$its = new TBGIssuetypeScheme(1);
+			foreach (TBGIssuetype::getAll() as $fr)
+			{
+				if ($fr instanceof TBGIssuetype)
+				{
+					if (in_array($fr->getKey(), array('featurerequest', 'bugreport', 'enhancement')))
+					{
+						$its->setFieldAvailableForIssuetype($fr, 'votes');
+					}
+				}
+			}
+
 			$this->upgrade_complete = true;
 		}
 

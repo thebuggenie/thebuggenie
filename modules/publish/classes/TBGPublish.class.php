@@ -424,7 +424,7 @@
 		
 		public function listen_BreadcrumbProjectLinks(TBGEvent $event)
 		{
-			$link = array('url' => TBGContext::getRouting()->generate('publish_article', array('article_name' => TBGContext::getCurrentProject()->getStrippedProjectName() . ':MainPage')), 'title' => $this->getMenuTitle(true));
+			$link = array('url' => TBGContext::getRouting()->generate('publish_article', array('article_name' => TBGContext::getCurrentProject()->getKey() . ':MainPage')), 'title' => $this->getMenuTitle(true));
 			$event->addToReturnList($link);
 		}
 
@@ -439,7 +439,7 @@
 		{
 			if (!TBGWikiArticle::getByName(ucfirst($event->getSubject()->getKey()).':MainPage') instanceof TBGWikiArticle)
 			{
-				$project_key = $event->getSubject()->getStrippedProjectName();
+				$project_key = $event->getSubject()->getKey();
 				$article = TBGWikiArticle::createNew("{$project_key}:MainPage", "This is the wiki frontpage for {$event->getSubject()->getName()} \n\n[[Category:{$project_key}:About]]", true);
 				$this->loadArticles($project_key);
 			}

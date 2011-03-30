@@ -73,7 +73,7 @@ Autocompleter.Base = Class.create({
         Effect.Appear(update,{duration:0.15});
       };
     this.options.onHide = this.options.onHide ||
-      function(element, update){ new Effect.Fade(update,{duration:0.15}) };
+      function(element, update){new Effect.Fade(update,{duration:0.15})};
 
     if(typeof(this.options.tokens) == 'string')
       this.options.tokens = new Array(this.options.tokens);
@@ -172,7 +172,7 @@ Autocompleter.Base = Class.create({
 
   onHover: function(event) {
     var element = Event.findElement(event, 'LI');
-    if(this.index != element.autocompleteIndex)
+    if(this.index != element.autocompleteIndex && element.hasClassName('disabled') == false)
     {
         this.index = element.autocompleteIndex;
         this.render();
@@ -182,9 +182,18 @@ Autocompleter.Base = Class.create({
 
   onClick: function(event) {
     var element = Event.findElement(event, 'LI');
-    this.index = element.autocompleteIndex;
-    this.selectEntry();
-    this.hide();
+	if (element.hasClassName('disabled'))
+	{
+		this.active = true;
+		this.hasFocus = true;
+		Event.stop(event);
+	}
+	else
+	{
+		this.index = element.autocompleteIndex;
+		this.selectEntry();
+		this.hide();
+	}
   },
 
   onBlur: function(event) {
@@ -211,14 +220,28 @@ Autocompleter.Base = Class.create({
   },
 
   markPrevious: function() {
-    if(this.index > 0) this.index--;
-      else this.index = this.entryCount-1;
+	var found_item = false;
+	var curr_index = this.index;
+	while (found_item == false) {
+		if(this.index > 0) this.index--;
+		else this.index = this.entryCount-1;
+		
+		if (this.update.firstChild.childNodes[this.index].hasClassName('disabled') == false || this.index == curr_index)
+			found_item = true;
+	}
     this.getEntry(this.index).scrollIntoView(true);
   },
 
   markNext: function() {
-    if(this.index < this.entryCount-1) this.index++;
-      else this.index = 0;
+	var found_item = false;
+	var curr_index = this.index;
+	while (found_item == false) {
+		if(this.index < this.entryCount-1) this.index++;
+		else this.index = 0;
+	
+		if (this.update.firstChild.childNodes[this.index].hasClassName('disabled') == false || this.index == curr_index)
+			found_item = true;
+	}
     this.getEntry(this.index).scrollIntoView(false);
   },
 
@@ -628,15 +651,15 @@ Ajax.InPlaceEditor = Class.create({
       params = params.toQueryParams();
     params.editorId = this.element.id;
     if (this.options.htmlResponse) {
-      var options = Object.extend({ evalScripts: true }, this.options.ajaxOptions);
+      var options = Object.extend({evalScripts: true}, this.options.ajaxOptions);
       Object.extend(options, {
         parameters: params,
         onComplete: this._boundWrapperHandler,
         onFailure: this._boundFailureHandler
       });
-      new Ajax.Updater({ success: this.element }, this.url, options);
+      new Ajax.Updater({success: this.element}, this.url, options);
     } else {
-      var options = Object.extend({ method: 'get' }, this.options.ajaxOptions);
+      var options = Object.extend({method: 'get'}, this.options.ajaxOptions);
       Object.extend(options, {
         parameters: params,
         onComplete: this._boundWrapperHandler,
@@ -668,7 +691,7 @@ Ajax.InPlaceEditor = Class.create({
   loadExternalText: function() {
     this._form.addClassName(this.options.loadingClassName);
     this._controls.editor.disabled = true;
-    var options = Object.extend({ method: 'get' }, this.options.ajaxOptions);
+    var options = Object.extend({method: 'get'}, this.options.ajaxOptions);
     Object.extend(options, {
       parameters: 'editorId=' + encodeURIComponent(this.element.id),
       onComplete: Prototype.emptyFunction,
@@ -775,7 +798,7 @@ Ajax.InPlaceCollectionEditor = Class.create(Ajax.InPlaceEditor, {
   loadCollection: function() {
     this._form.addClassName(this.options.loadingClassName);
     this.showLoadingText(this.options.loadingCollectionText);
-    var options = Object.extend({ method: 'get' }, this.options.ajaxOptions);
+    var options = Object.extend({method: 'get'}, this.options.ajaxOptions);
     Object.extend(options, {
       parameters: 'editorId=' + encodeURIComponent(this.element.id),
       onComplete: Prototype.emptyFunction,
@@ -813,7 +836,7 @@ Ajax.InPlaceCollectionEditor = Class.create(Ajax.InPlaceEditor, {
 
   loadExternalText: function() {
     this.showLoadingText(this.options.loadingText);
-    var options = Object.extend({ method: 'get' }, this.options.ajaxOptions);
+    var options = Object.extend({method: 'get'}, this.options.ajaxOptions);
     Object.extend(options, {
       parameters: 'editorId=' + encodeURIComponent(this.element.id),
       onComplete: Prototype.emptyFunction,
@@ -907,7 +930,7 @@ Object.extend(Ajax.InPlaceEditor, {
       // For backward compatibility, this one is bound to the IPE, and passes
       // the element directly.  It was too often customized, so we don't break it.
       new Effect.Highlight(element, {
-        startcolor: this.options.highlightColor, keepBackgroundImage: true });
+        startcolor: this.options.highlightColor, keepBackgroundImage: true});
     },
     onEnterEditMode: null,
     onEnterHover: function(ipe) {
