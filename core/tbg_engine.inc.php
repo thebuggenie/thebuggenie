@@ -423,7 +423,7 @@ echo "
 		TBGLogging::log('Initializing Caspar framework');
 		TBGLogging::log('PHP_SAPI says "' . PHP_SAPI . '"');
 
-		if (!isset($argc))
+		if (!isset($argc) && !ini_get('session.auto_start'))
 		{
 			session_name(THEBUGGENIE_SESSION_NAME);
 			session_start();
