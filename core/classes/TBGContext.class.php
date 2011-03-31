@@ -766,7 +766,7 @@
 			$modules = array();
 			while ($module_name = readdir($module_path_handle))
 			{
-				if (is_dir($module_path . $module_name) && file_exists(THEBUGGENIE_MODULES_PATH . $module_name . DS . 'module'))
+				if (is_dir(THEBUGGENIE_MODULES_PATH . $module_name) && file_exists(THEBUGGENIE_MODULES_PATH . $module_name . DS . 'module'))
 				{
 					if (self::isModuleLoaded($module_name)) continue;
 					$modules[$module_name] = file_get_contents(THEBUGGENIE_MODULES_PATH . $module_name . DS . 'module');
