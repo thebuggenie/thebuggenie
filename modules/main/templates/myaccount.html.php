@@ -1,7 +1,7 @@
 <?php
 
 	$tbg_response->setTitle('Your account details');
-	$tbg_response->addBreadcrumb(link_tag(make_url('account'), __('Account details')));
+	$tbg_response->addBreadcrumb(__('Account details'), make_url('account'), tbg_get_breadcrumblinks('main_links'));
 	
 ?>
 <table style="margin: 0 0 20px 0; table-layout: fixed; width: 100%; height: 100%;" cellpadding=0 cellspacing=0>
