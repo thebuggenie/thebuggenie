@@ -1211,76 +1211,7 @@
 		{
 			if ($this->_assignees === null)
 			{
-				$this->_assignees = array('uids' => array(), 'users' => array(), 'teams' => array());
-		
-				if ($res = B2DB::getTable('TBGProjectAssigneesTable')->getByProjectID($this->getID()))
-				{
-					while ($row = $res->getNextRow())
-					{
-						switch (true)
-						{
-							case ($row->get(TBGProjectAssigneesTable::UID) != 0):
-								$this->_assignees['users'][$row->get(TBGProjectAssigneesTable::UID)]['projects'][$this->getID()][$row->get(TBGProjectAssigneesTable::TARGET_TYPE)] = true;
-								$this->_assignees['uids'][$row->get(TBGProjectAssigneesTable::UID)] = $row->get(TBGProjectAssigneesTable::UID);
-								break;
-							case ($row->get(TBGProjectAssigneesTable::TID) != 0):
-								$this->_assignees['teams'][$row->get(TBGProjectAssigneesTable::TID)]['projects'][$this->getID()][$row->get(TBGProjectAssigneesTable::TARGET_TYPE)] = true;
-								foreach (B2DB::getTable('TBGTeamMembersTable')->getUIDsForTeamID($row->get(TBGProjectAssigneesTable::TID)) as $uid)
-								{
-									$this->_assignees['uids'][$uid] = $uid;
-								}
-								break;
-						}
-					}
-				}
-				
-				if ($edition_ids = array_keys($this->getEditions()))
-				{
-					if ($res = B2DB::getTable('TBGEditionAssigneesTable')->getByEditionIDs($edition_ids))
-					{
-						while ($row = $res->getNextRow())
-						{
-							switch (true)
-							{
-								case ($row->get(TBGEditionAssigneesTable::UID) != 0):
-									$this->_assignees['users'][$row->get(TBGEditionAssigneesTable::UID)]['editions'][$row->get(TBGEditionAssigneesTable::EDITION_ID)][$row->get(TBGEditionAssigneesTable::TARGET_TYPE)] = true;
-									$this->_assignees['uids'][$row->get(TBGEditionAssigneesTable::UID)] = $row->get(TBGEditionAssigneesTable::UID);
-									break;
-								case ($row->get(TBGEditionAssigneesTable::TID) != 0):
-									$this->_assignees['teams'][$row->get(TBGEditionAssigneesTable::TID)]['editions'][$row->get(TBGEditionAssigneesTable::EDITION_ID)][$row->get(TBGEditionAssigneesTable::TARGET_TYPE)] = true;
-									foreach (B2DB::getTable('TBGTeamMembersTable')->getUIDsForTeamID($row->get(TBGEditionAssigneesTable::TID)) as $uid)
-									{
-										$this->_assignees['uids'][$uid] = $uid;
-									}
-									break;
-							}
-						}
-					}
-				}
-	
-				if ($component_ids = array_keys($this->getComponents()))
-				{
-					if ($res = B2DB::getTable('TBGComponentAssigneesTable')->getByComponentIDs($component_ids))
-					{
-						while ($row = $res->getNextRow())
-						{
-							switch (true)
-							{
-								case ($row->get(TBGComponentAssigneesTable::UID) != 0):
-									$this->_assignees['users'][$row->get(TBGComponentAssigneesTable::UID)]['components'][$row->get(TBGComponentAssigneesTable::COMPONENT_ID)][$row->get(TBGComponentAssigneesTable::TARGET_TYPE)] = true;
-									$this->_assignees['uids'][$row->get(TBGComponentAssigneesTable::UID)] = $row->get(TBGComponentAssigneesTable::UID);
-									break;
-								case ($row->get(TBGComponentAssigneesTable::TID) != 0):
-									$this->_assignees['teams'][$row->get(TBGComponentAssigneesTable::TID)]['components'][$row->get(TBGComponentAssigneesTable::COMPONENT_ID)][$row->get(TBGComponentAssigneesTable::TARGET_TYPE)] = true;
-									foreach (B2DB::getTable('TBGTeamMembersTable')->getUIDsForTeamID($row->get(TBGComponentAssigneesTable::TID)) as $uid)
-									{
-										$this->_assignees['uids'][$uid] = $uid;
-									}
-									break;
-							}
-						}
-					}
-				}
+				$this->_assignees = TBGProjectAssigneesTable::getTable()->getByProjectID($this->getID());
 			}
 		}
 		
@@ -1294,18 +1225,29 @@
 			$this->_populateAssignees();
 			return $this->_assignees;
 		}
-
-		/**
-		 * Return a list of user ids for all users assigned to this project
-		 *
-		 * @return array
-		 */
-		public function getAssignedUserIDs()
+		
+		public function getAssignedUsers()
 		{
 			$this->_populateAssignees();
-			return array_keys($this->_assignees['uids']);
+			$users = array();
+			foreach (array_keys($this->_assignees['users']) as $user_id)
+			{
+				$users[$user_id] = TBGContext::factory()->TBGUser($user_id);
+			}
+			return $users;
 		}
 		
+		public function getAssignedTeams()
+		{
+			$this->_populateAssignees();
+			$teams = array();
+			foreach (array_keys($this->_assignees['teams']) as $team_id)
+			{
+				$teams[$team_id] = TBGContext::factory()->TBGTeam($team_id);
+			}
+			return $teams;
+		}
+
 		/**
 		 * Return whether a user can change details about an issue without working on the issue
 		 *  

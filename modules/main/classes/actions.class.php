@@ -55,9 +55,11 @@
 			TBGLogging::log('done (Loading issue)');
 			//$this->getResponse()->setPage('viewissue');
 			if ($issue instanceof TBGIssue && (!$issue->hasAccess() || $issue->isDeleted()))
-			{
 				$issue = null;
-			}
+
+			if ($issue instanceof TBGIssue)
+				TBGEvent::createNew('core', 'viewissue', $issue)->trigger();
+
 			$message = TBGContext::getMessageAndClear('issue_saved');
 			$uploaded = TBGContext::getMessageAndClear('issue_file_uploaded');
 			
@@ -2269,11 +2271,6 @@
 					throw new Exception($i18n->__('You are not allowed to do this'));
 				else
 				{
-					if ($request->getParameter('comment_title') == '')
-						$title = $i18n->__('Untitled comment');
-					else
-						$title = $request->getParameter('comment_title');
-
 					if ($request->getParameter('comment_body') == '')
 						throw new Exception($i18n->__('The comment must have some content'));
 
@@ -2292,7 +2289,7 @@
 						$comment_body = $request->getParameter('comment_body', null, false);
 
 					$comment = new TBGComment();
-					$comment->setTitle($title);
+					$comment->setTitle($i18n->__('Untitled comment'));
 					$comment->setContent($comment_body);
 					$comment->setPostedBy(TBGContext::getUser()->getID());
 					$comment->setTargetID($request->getParameter('comment_applies_id'));

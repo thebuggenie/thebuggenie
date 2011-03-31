@@ -101,19 +101,45 @@
 			B2DB::getTable('TBGComponentAssigneesTable')->doDelete($crit);
 		}
 		
+		protected function _populateAssignees()
+		{
+			if ($this->_assignees === null)
+			{
+				$this->_assignees = TBGComponentAssigneesTable::getTable()->getByComponentID($this->getID());
+			}
+		}
+		
+		/**
+		 * Get assignees for this component
+		 * 
+		 * @return array
+		 */
 		public function getAssignees()
 		{
-			$uids = array();
-	
-			$crit = new B2DBCriteria();
-			$crit->addWhere(TBGComponentAssigneesTable::COMPONENT_ID, $this->getID());
-			
-			$res = B2DB::getTable('TBGComponentAssigneesTable')->doSelect($crit);
-			while ($row = $res->getNextRow())
+			$this->_populateAssignees();
+			return $this->_assignees;
+		}
+		
+		public function getAssignedUsers()
+		{
+			$this->_populateAssignees();
+			$users = array();
+			foreach (array_keys($this->_assignees['users']) as $user_id)
 			{
-				$uids[] = $row->get(TBGComponentAssigneesTable::UID);
+				$users[$user_id] = TBGContext::factory()->TBGUser($user_id);
 			}
-			return $uids;
+			return $users;
+		}
+		
+		public function getAssignedTeams()
+		{
+			$this->_populateAssignees();
+			$teams = array();
+			foreach (array_keys($this->_assignees['teams']) as $team_id)
+			{
+				$teams[$team_id] = TBGContext::factory()->TBGTeam($team_id);
+			}
+			return $teams;
 		}
 
 		/**

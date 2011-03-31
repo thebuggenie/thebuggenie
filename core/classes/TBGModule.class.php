@@ -282,6 +282,11 @@
 			return TBGSettings::saveSetting($setting, $value, $this->getName(), $scope, $uid);
 		}
 		
+		public function deleteSetting($setting, $uid = null, $scope = null)
+		{
+			return TBGSettings::deleteSetting($setting, $this->getName(), $scope, $uid);
+		}
+		
 		/**
 		 * Returns whether the module is enabled
 		 *

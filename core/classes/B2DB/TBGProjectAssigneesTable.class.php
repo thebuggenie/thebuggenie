@@ -62,7 +62,22 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::PROJECT_ID, $project_id);
 			$res = $this->doSelect($crit);
-			return $res;
+			
+			$users = array();
+			$teams = array();
+			
+			if ($res)
+			{
+				while ($row = $res->getNextRow())
+				{
+					if ($row->get(self::UID) != 0)
+						$users[$row->get(self::UID)][$row->get(self::TARGET_TYPE)] = true;
+					else
+						$teams[$row->get(self::TID)][$row->get(self::TARGET_TYPE)] = true;
+				}
+			}
+			
+			return array('users' => $users, 'teams' => $teams);
 		}
 		
 		public function getByProjectAndRoleAndUser($project_id, $role, $user_id)

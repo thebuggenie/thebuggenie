@@ -45,7 +45,8 @@
 			{
 				while ($row = $res->getNextRow())
 				{
-					$uids[] = $row->get(TBGUserIssuesTable::UID);
+					$uid = $row->get(TBGUserIssuesTable::UID);
+					$uids[$uid] = $uid;
 				}
 			}
 			

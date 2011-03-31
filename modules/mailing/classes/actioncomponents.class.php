@@ -23,10 +23,16 @@
 			$i18n = TBGContext::getI18n();
 			$general_settings = array();
 			$issues_settings = array();
+			
 			$general_settings['notify_add_friend'] = $i18n->__('Notify me when someone adds me as their friend');
-			$issues_settings['notify_issue_change'] = $i18n->__('Notify me when an issue I posted gets updated');
-			$issues_settings['notify_issue_change_own'] = $i18n->__('Send me a notification email when I update an issue');
-			$issues_settings['notify_issue_comment'] = $i18n->__('Notify me when someone comments on an issue I posted');
+			
+			$issues_settings[TBGMailing::NOTIFY_ISSUE_POSTED_UPDATED] = $i18n->__('Notify me when an issue I posted gets updated or created');
+			$issues_settings[TBGMailing::NOTIFY_ISSUE_ONCE] = $i18n->__('Only notify me once per issue until I open the issue');
+			$issues_settings[TBGMailing::NOTIFY_ISSUE_ASSIGNED_UPDATED] = $i18n->__("Notify me when an issue I'm assigned to gets updated or created");
+			$issues_settings[TBGMailing::NOTIFY_ISSUE_UPDATED_SELF] = $i18n->__('Notify me when I update or create an issue');
+			$issues_settings[TBGMailing::NOTIFY_ISSUE_TEAMASSIGNED_UPDATED] = $i18n->__("Notify me when an issue assigned to one of my teams is updated or created");
+			$issues_settings[TBGMailing::NOTIFY_ISSUE_RELATED_PROJECT_TEAMASSIGNED] = $i18n->__("Notify me when an issue assigned to one of my team projects is updated or created");
+			$issues_settings[TBGMailing::NOTIFY_ISSUE_PROJECT_ASSIGNED] = $i18n->__("Notify me when an issue assigned to one of my projects is updated or created");
 
 			$this->general_settings = $general_settings;
 			$this->issues_settings = $issues_settings;

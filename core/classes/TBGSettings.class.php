@@ -252,21 +252,17 @@
 			return self::$_defaultscope;
 		}
 		
-		public static function deleteSetting($name, $module = 'core', $value = '', $scope = 0, $uid = 0)
+		public static function deleteSetting($name, $module = 'core', $scope = null, $uid = null)
 		{
-			if ($scope == 0)
-			{
-				$scope = TBGContext::getScope()->getID();
-			}
+			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
+			$uid = ($uid === null) ? TBGContext::getUser()->getID() : $uid;
+
 			$crit = new B2DBCriteria();
 			$crit->addWhere(TBGSettingsTable::NAME, $name);
 			$crit->addWhere(TBGSettingsTable::MODULE, $module);
 			$crit->addWhere(TBGSettingsTable::SCOPE, $scope);
 			$crit->addWhere(TBGSettingsTable::UID, $uid);
-			if ($value != "")
-			{
-				$crit->addWhere(TBGSettingsTable::VALUE, $value);
-			}
+			
 			B2DB::getTable('TBGSettingsTable')->doDelete($crit);
 			unset(self::$_settings[$name][$uid]);
 		}
@@ -555,7 +551,7 @@
 		
 		public static function showInfoBox($key)
 		{
-			self::deleteSetting(self::INFOBOX_PREFIX . $key, 'core', '', TBGContext::getScope()->getID(), TBGContext::getUser()->getID());
+			self::deleteSetting(self::INFOBOX_PREFIX . $key);
 		}
 
 		public static function isPermissive()

@@ -45,6 +45,8 @@
 		
 		protected $_description = '';
 		
+		protected $_assignees = null;
+		
 		/**
 		 * The editions documentation URL
 		 * 
@@ -333,20 +335,47 @@
 			return $retval;
 		}
 
-		public function getAssignees()
+		protected function _populateAssignees()
 		{
-			$uids = array();
-			$crit = new B2DBCriteria();
-			$crit->addWhere(TBGEditionAssigneesTable::EDITION_ID, $this->getID());
-			
-			$res = B2DB::getTable('TBGEditionAssigneesTable')->doSelect($crit);
-			while ($row = $res->getNextRow())
+			if ($this->_assignees === null)
 			{
-				$uids[] = $row->get(TBGEditionAssigneesTable::UID);
+				$this->_assignees = TBGEditionAssigneesTable::getTable()->getByEditionID($this->getID());
 			}
-			return $uids;
 		}
 		
+		/**
+		 * Get assignees for this edition
+		 * 
+		 * @return array
+		 */
+		public function getAssignees()
+		{
+			$this->_populateAssignees();
+			return $this->_assignees;
+		}
+		
+		public function getAssignedUsers()
+		{
+			$this->_populateAssignees();
+			$users = array();
+			foreach (array_keys($this->_assignees['users']) as $user_id)
+			{
+				$users[$user_id] = TBGContext::factory()->TBGUser($user_id);
+			}
+			return $users;
+		}
+		
+		public function getAssignedTeams()
+		{
+			$this->_populateAssignees();
+			$teams = array();
+			foreach (array_keys($this->_assignees['teams']) as $team_id)
+			{
+				$teams[$team_id] = TBGContext::factory()->TBGTeam($team_id);
+			}
+			return $teams;
+		}
+
 		/**
 		 * Set the edition description
 		 *

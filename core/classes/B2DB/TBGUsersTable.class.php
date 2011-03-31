@@ -233,5 +233,28 @@
 
 			return $this->doCount($crit);
 		}
+		
+		public function getAllUserIDs($scope = null)
+		{
+			$crit = $this->getCriteria();
+			
+			if ($scope !== null)
+				$crit->addWhere(self::SCOPE, $scope);
+			
+			$crit->addSelectionColumn(self::ID, 'uid');
+			$res = $this->doSelect($crit);
+			
+			$uids = array();
+			if ($res)
+			{
+				while ($row = $res->getNextRow())
+				{
+					$uid = $row->get('uid');
+					$uids[$uid] = $uid;
+				}
+			}
+			
+			return $uids;
+		}
 
 	}

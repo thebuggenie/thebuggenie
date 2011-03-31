@@ -394,6 +394,14 @@
 					}
 				}
 			}
+			
+			foreach (TBGContext::getModules() as $module)
+			{
+				if (method_exists($module, 'upgradeFrom3dot0'))
+				{
+					$module->upgradeFrom3dot0();
+				}
+			}
 
 			$this->upgrade_complete = true;
 		}

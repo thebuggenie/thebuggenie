@@ -3,6 +3,41 @@
 	class TBGMailing extends TBGModule
 	{
 
+		/**
+		 * Notify the user when an issue I posted gets updated
+		 */
+		const NOTIFY_ISSUE_POSTED_UPDATED = 'notify_issue_posted_updated';
+		
+		/**
+		 * Only notify me once per issue
+		 */
+		const NOTIFY_ISSUE_ONCE = 'notify_issue_once';
+		
+		/**
+		 * Notify the user when an issue I'm assigned to gets updated
+		 */
+		const NOTIFY_ISSUE_ASSIGNED_UPDATED = 'notify_issue_assigned_updated';
+		
+		/**
+		 * Notify the user when he updates an issue
+		 */
+		const NOTIFY_ISSUE_UPDATED_SELF = 'notify_issue_updated_self';
+		
+		/**
+		 * Notify the user when an issue assigned to one of my teams is updated
+		 */
+		const NOTIFY_ISSUE_TEAMASSIGNED_UPDATED = 'notify_issue_teamassigned_updated';
+		
+		/**
+		 * Notify the user when an issue related to one of my team assigned projects is updated
+		 */
+		const NOTIFY_ISSUE_RELATED_PROJECT_TEAMASSIGNED = 'notify_issue_related_project_teamassigned';
+		
+		/**
+		 * Notify the user when an issue related to one of my assigned projects is updated
+		 */
+		const NOTIFY_ISSUE_PROJECT_ASSIGNED = 'notify_issue_project_vip';
+		
 		protected $_module_version = '1.0';
 
 		protected $mailer = null;
@@ -34,14 +69,15 @@
 			$i18n = TBGContext::getI18n();
 			TBGEvent::listen('core', 'user_registration', array($this, 'listen_registerUser'));
 			TBGEvent::listen('core', 'password_reset', array($this, 'listen_forgottenPassword'));
-			TBGEvent::listen('core', 'viewissue_top', array($this, 'listen_issueTop'));
 			TBGEvent::listen('core', 'login_form_pane', array($this, 'listen_loginPane'));
 			TBGEvent::listen('core', 'login_form_tab', array($this, 'listen_loginTab'));
 			TBGEvent::listen('core', 'password_reset', array($this, 'listen_passwordReset'));
-			TBGEvent::listen('core', 'TBGIssue::save', array($this, 'listen_issueSave'));
+			//TBGEvent::listen('core', 'TBGIssue::save', array($this, 'listen_issueSave'));
 			TBGEvent::listen('core', 'TBGIssue::createNew', array($this, 'listen_issueCreate'));
+			TBGEvent::listen('core', 'TBGUser::createNew', array($this, 'listen_createUser'));
 			TBGEvent::listen('core', 'TBGComment::createNew', array($this, 'listen_TBGComment_createNew'));
 			TBGEvent::listen('core', 'header_begins', array($this, 'listen_headerBegins'));
+			TBGEvent::listen('core', 'viewissue', array($this, 'listen_viewissue'));
 		}
 
 		protected function _addRoutes()
@@ -75,7 +111,7 @@
 								'smtp_pwd', 'headcharset', 'from_name', 'from_addr', 'ehlo', 'use_queue', 'no_dash_f');
 			foreach ($settings as $setting)
 			{
-				if ($request->getParameter($setting) !== null)
+				if ($request->getParameter($setting) !== null || $setting = 'no_dash_f')
 				{
 					$value = $request->getParameter($setting);
 					$dns_regex = '(\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b|(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\]))';
@@ -132,9 +168,13 @@
 			return $this->getSetting('from_name');
 		}
 
-		public function listen_accountSettingsList(TBGEvent $event)
+		public function listen_createUser(TBGEvent $event)
 		{
-			include_template('mailing/accountsettingslist');
+			$uid = $event->getSubject()->getID();
+			$settings = array(self::NOTIFY_ISSUE_ASSIGNED_UPDATED, self::NOTIFY_ISSUE_ONCE, self::NOTIFY_ISSUE_POSTED_UPDATED, self::NOTIFY_ISSUE_PROJECT_ASSIGNED, self::NOTIFY_ISSUE_RELATED_PROJECT_TEAMASSIGNED, self::NOTIFY_ISSUE_TEAMASSIGNED_UPDATED);
+
+			foreach ($settings as $setting)
+				$this->saveSetting($setting, 1, $uid);
 		}
 		
 		public function listen_registerUser(TBGEvent $event)
@@ -223,6 +263,204 @@
 			}
 		}
 
+		protected function _getIssueRelatedUsers(TBGIssue $issue)
+		{
+			$uids = array();
+			$ns = $this->getSetting(self::NOTIFY_ISSUE_UPDATED_SELF);
+			$cu = TBGContext::getUser()->getID();
+	
+			// Add all users who's marked this issue as interesting
+			$uids = TBGUserIssuesTable::getTable()->getUserIDsByIssueID($issue->getID());
+	
+			// Add all users from the team owning the issue if valid
+			// or add the owning user if a user owns the issue
+			if ($issue->getOwnerType() == TBGIdentifiableClass::TYPE_TEAM)
+			{
+				foreach ($issue->getOwner()->getMembers() as $member)
+				{
+					if ($member->getID() == $cu && !$ns) continue;
+					$uids[$member->getID()] = $member->getID();
+				}
+			}
+			elseif ($issue->getOwnerType() == TBGIdentifiableClass::TYPE_USER)
+			{
+				if (!($issue->getOwnerID() == $cu && !$ns))
+					$uids[$issue->getOwnerID()] = $issue->getOwnerID();
+			}
+
+			// Add the poster
+			if ($this->getSetting(self::NOTIFY_ISSUE_POSTED_UPDATED, $issue->getPostedByID()))
+			{
+				if (!($issue->getPostedByID() == $cu && !$ns))
+					$uids[$issue->getPostedByID()] = $issue->getPostedByID();
+			}
+
+			// Add all users from the team assigned to the issue if valid
+			// or add the assigned user if a user is assigned to the issue
+			if ($issue->getAssigneeType() == TBGIdentifiableClass::TYPE_TEAM)
+			{
+				// Get team member IDs
+				foreach ($issue->getAssignee()->getMembers() as $member)
+				{
+					if ($member->getID() == $cu && !$ns) continue;
+					if (!$this->getSetting(self::NOTIFY_ISSUE_TEAMASSIGNED_UPDATED, $member->getID())) continue;
+					$uids[$member->getID()] = $member->getID();
+				}
+			}
+			elseif ($issue->getAssigneeType() == TBGIdentifiableClass::TYPE_USER)
+			{
+				if (!($issue->getAssigneeID() == $cu && !$ns) && !(!$this->getSetting(self::NOTIFY_ISSUE_ASSIGNED_UPDATED, $issue->getAssigneeID())))
+					$uids[$issue->getAssigneeID()] = $issue->getAssigneeID();
+			}
+			
+			// Add all users in the team who leads the project, if valid
+			// or add the user who leads the project, if valid
+			if ($issue->getProject()->getLeaderType() == TBGIdentifiableClass::TYPE_TEAM)
+			{
+				foreach ($issue->getProject()->getLeader()->getMembers() as $member)
+				{
+					if ($member->getID() == $cu && !$ns) continue;
+					if (!$this->getSetting(self::NOTIFY_ISSUE_RELATED_PROJECT_TEAMASSIGNED, $member->getID())) continue;
+					$uids[$member->getID()] = $member->getID();
+				}
+			}
+			elseif ($issue->getProject()->getLeaderType() == TBGIdentifiableClass::TYPE_USER)
+			{
+				if (!($issue->getProject()->getLeaderID() == $cu && !$ns) && !(!$this->getSetting(self::NOTIFY_ISSUE_PROJECT_ASSIGNED, $issue->getProject()->getLeaderID())))
+					$uids[$issue->getProject()->getLeaderID()] = $issue->getProject()->getLeaderID();
+			}
+	
+			// Same for QA
+			if ($issue->getProject()->getQaResponsibleType() == TBGIdentifiableClass::TYPE_TEAM)
+			{
+				foreach ($issue->getProject()->getQaResponsible()->getMembers() as $member)
+				{
+					if ($member->getID() == $cu && !$ns) continue;
+					if (!$this->getSetting(self::NOTIFY_ISSUE_RELATED_PROJECT_TEAMASSIGNED, $member->getID())) continue;
+					$uids[$member->getID()] = $member->getID();
+				}
+			}
+			elseif ($issue->getProject()->getQaResponsibleType() == TBGIdentifiableClass::TYPE_USER)
+			{
+				if (!($issue->getProject()->getQaResponsibleID() == $cu && !$ns) && !(!$this->getSetting(self::NOTIFY_ISSUE_PROJECT_ASSIGNED, $issue->getProject()->getQaResponsibleID())))
+					$uids[$issue->getProject()->getQaResponsibleID()] = $issue->getProject()->getQaResponsibleID();
+			}
+			
+			foreach ($issue->getProject()->getAssignedTeams() as $team_id => $assignments)
+			{
+				foreach (TBGContext::factory()->TBGTeam($team_id)->getMembers() as $member)
+				{
+					if ($member->getID() == $cu && !$ns) continue;
+					if (!$this->getSetting(self::NOTIFY_ISSUE_RELATED_PROJECT_TEAMASSIGNED, $member->getID())) continue;
+					$uids[$member->getID()] = $member->getID();
+				}
+			}
+			foreach ($issue->getProject()->getAssignedUsers() as $user_id => $assignments)
+			{
+				$member = TBGContext::factory()->TBGUser($user_id);
+				if (!($member->getID() == $cu && !$ns) && !(!$this->getSetting(self::NOTIFY_ISSUE_PROJECT_ASSIGNED, $member->getID())))
+					$uids[$member->getID()] = $member->getID();
+			}
+			
+			// Add all users relevant for all affected editions
+			foreach ($issue->getEditions() as $edition_list)
+			{
+				if ($edition_list['edition']->getLeaderType() == TBGIdentifiableClass::TYPE_TEAM)
+				{
+					foreach ($edition_list['edition']->getLeader()->getMembers() as $member)
+					{
+						if ($member->getID() == $cu && !$ns) continue;
+						if (!$this->getSetting(self::NOTIFY_ISSUE_RELATED_PROJECT_TEAMASSIGNED, $member->getID())) continue;
+						$uids[$member->getID()] = $member->getID();
+					}
+				}
+				elseif ($edition_list['edition']->getLeaderType() == TBGIdentifiableClass::TYPE_USER)
+				{
+					if (!($edition_list['edition']->getLeaderID() == $cu && !$ns) && !(!$this->getSetting(self::NOTIFY_ISSUE_PROJECT_ASSIGNED, $edition_list['edition']->getLeaderID())))
+						$uids[$edition_list['edition']->getLeaderID()] = $edition_list['edition']->getLeaderID();
+				}
+				
+				if ($edition_list['edition']->getQaResponsibleType() == TBGIdentifiableClass::TYPE_TEAM)
+				{
+					foreach ($edition_list['edition']->getQaResponsible()->getMembers() as $member)
+					{
+						if ($member->getID() == $cu && !$ns) continue;
+						if (!$this->getSetting(self::NOTIFY_ISSUE_RELATED_PROJECT_TEAMASSIGNED, $member->getID())) continue;
+						$uids[$member->getID()] = $member->getID();
+					}
+				}
+				elseif ($edition_list['edition']->getQaResponsibleType() == TBGIdentifiableClass::TYPE_USER)
+				{
+					if (!($edition_list['edition']->getQaResponsibleID() == $cu && !$ns) && !(!$this->getSetting(self::NOTIFY_ISSUE_PROJECT_ASSIGNED, $edition_list['edition']->getQaResponsibleID())))
+						$uids[$edition_list['edition']->getQaResponsibleID()] = $edition_list['edition']->getQaResponsibleID();
+				}
+				foreach ($edition_list['edition']->getAssignedTeams() as $team_id => $assignments)
+				{
+					foreach (TBGContext::factory()->TBGTeam($team_id)->getMembers() as $member)
+					{
+						if ($member->getID() == $cu && !$ns) continue;
+						if (!$this->getSetting(self::NOTIFY_ISSUE_RELATED_PROJECT_TEAMASSIGNED, $member->getID())) continue;
+						$uids[$member->getID()] = $member->getID();
+					}
+				}
+				foreach ($edition_list['edition']->getAssignedUsers() as $user_id => $assignments)
+				{
+					$member = TBGContext::factory()->TBGUser($user_id);
+					if ($member->getID() == $cu && !$ns) continue;
+					if (!$this->getSetting(self::NOTIFY_ISSUE_PROJECT_ASSIGNED, $member->getID())) continue;
+					$uids[$member->getID()] = $member->getID();
+				}
+			}
+			
+			// Add all users relevant for all affected components
+			foreach ($issue->getComponents() as $component_list)
+			{
+				foreach ($component_list['component']->getAssignedTeams() as $team_id => $assignments)
+				{
+					foreach (TBGContext::factory()->TBGTeam($team_id)->getMembers() as $member)
+					{
+						if ($member->getID() == $cu && !$ns) continue;
+						if (!$this->getSetting(self::NOTIFY_ISSUE_RELATED_PROJECT_TEAMASSIGNED, $member->getID())) continue;
+						$uids[$member->getID()] = $member->getID();
+					}
+				}
+				foreach ($component_list['component']->getAssignedUsers() as $user_id => $assignments)
+				{
+					$member = TBGContext::factory()->TBGUser($user_id);
+					if ($member->getID() == $cu && !$ns) continue;
+					if (!$this->getSetting(self::NOTIFY_ISSUE_PROJECT_ASSIGNED, $member->getID())) continue;
+					$uids[$member->getID()] = $member->getID();
+				}
+			}
+			
+			foreach ($uids as $uid => $val)
+			{
+				if ($this->getSetting(self::NOTIFY_ISSUE_ONCE, $uid))
+				{
+					if ($this->getSetting(self::NOTIFY_ISSUE_ONCE . '_' . $issue->getID(), $uid))
+					{
+						unset($uids[$uid]);
+						continue;
+					}
+					else
+					{
+						$this->saveSetting(self::NOTIFY_ISSUE_ONCE . '_' . $issue->getID(), 1, $uid);
+					}
+				}
+				$uids[$uid] = TBGContext::factory()->TBGUser($uid);
+			}
+			
+			return $uids;
+		}
+		
+		public function listen_viewissue(TBGEvent $event)
+		{
+			if ($this->getSetting(self::NOTIFY_ISSUE_ONCE))
+			{
+				$this->deleteSetting(self::NOTIFY_ISSUE_ONCE . '_' . $event->getSubject()->getID(), $uid);
+			}
+		}
+		
 		public function listen_issueCreate(TBGEvent $event)
 		{
 			if ($this->isOutgoingNotificationsEnabled())
@@ -230,24 +468,11 @@
 				$issue = $event->getSubject();
 				if ($issue instanceof TBGIssue)
 				{
-					$to_users = $issue->getRelatedUsers();
+					$to_users = $this->_getIssueRelatedUsers($issue);
 					$subject = TBGContext::getI18n()->__('[%project_name%] %issue_type% %issue_no% - "%issue_title%" created', array('%project_name%' => $issue->getProject()->getKey(), '%issue_type%' => TBGContext::getI18n()->__($issue->getIssueType()->getName()), '%issue_no%' => $issue->getFormattedIssueNo(true), '%issue_title%' => $issue->getTitle()));
 					$message = $this->createNewTBGMimemailFromTemplate($subject, 'issuecreate', array('issue' => $issue));
 					$this->_sendToUsers($to_users, $message);
 				}
-			}
-		}
-		
-		protected function _mustNotifyUserForIssue($issue_id, $user_id)
-		{
-			$dont_want_forced_notifications = $this->getSetting('hold_email_on_issue_update', $user_id);
-			if (!$dont_want_forced_notifications)
-			{
-				return true;
-			}
-			else
-			{
-				return !(bool) $this->getSetting('notified_issue_'.$issue_id, $user_id);
 			}
 		}
 		
@@ -261,23 +486,20 @@
 				}
 				foreach ($to_users as $user)
 				{
-					if ($user->getID() != TBGContext::getUser()->getID() || $this->getSetting('notify_issue_change_own', $user->getID()))
+					if ($user instanceof TBGUser && $user->isEnabled() && $user->isActivated() && !$user->isDeleted() && !$user->isGuest() && $user->getEmail())
 					{
-						if ($user instanceof TBGUser && $user->isEnabled() && $user->isActivated() && !$user->isDeleted() && !$user->isGuest())
-						{
-							$message->setLanguage($user->getLanguage());
-							$message->clearRecipients();
-							$message->addReplacementValues(array('%user_buddyname%' => $user->getBuddyname(), '%user_username%' => $user->getUsername()));
-							$message->addTo($user->getEmail(), $user->getBuddyname());
+						$message->setLanguage($user->getLanguage());
+						$message->clearRecipients();
+						$message->addReplacementValues(array('%user_buddyname%' => $user->getBuddyname(), '%user_username%' => $user->getUsername()));
+						$message->addTo($user->getEmail(), $user->getBuddyname());
 
-							try
-							{
-								$this->sendMail($message);
-							}
-							catch (Exception $e)
-							{
-								$this->log("There was an error when trying to send email to some recipients:\n" . $e->getMessage(), TBGLogging::LEVEL_NOTICE);
-							}
+						try
+						{
+							$this->sendMail($message);
+						}
+						catch (Exception $e)
+						{
+							$this->log("There was an error when trying to send email to some recipients:\n" . $e->getMessage(), TBGLogging::LEVEL_NOTICE);
 						}
 					}
 				}
@@ -289,56 +511,42 @@
 			if ($this->isOutgoingNotificationsEnabled())
 			{
 				$comment = $event->getParameter('comment');
-				if ($comment instanceof TBGComment && $comment->getTargetType() == 1)
+				if ($comment instanceof TBGComment && $comment->getTargetType() == TBGComment::TYPE_ISSUE)
 				{
 					try
 					{
-						$issue = TBGContext::factory()->TBGIssue($comment->getTargetID());
+						$issue = $event->getSubject();
 						$title = $comment->getTitle();
 						$content = $comment->getContent();
-						$to_users = $issue->getRelatedUsers();
-						$subject = TBGContext::getI18n()->__('[%project_name%] %issue_type% %issue_no% - Comment added by %comment_user%', array('%project_name%' => $issue->getProject()->getKey(), '%issue_type%' => TBGContext::getI18n()->__($issue->getIssueType()->getName()), '%issue_no%' => $issue->getFormattedIssueNo(true), '%comment_user%' => $comment->getPostedBy()->getName()));
-						$message = $this->createNewTBGMimemailFromTemplate($subject, 'issuecomment', array('issue' => $issue, 'comment' => $comment));
+						$to_users = $this->_getIssueRelatedUsers($issue);
+						
+						$subject = TBGContext::getI18n()->__('[%project_name%] %issue_type% %issue_no% - "%issue_title%" updated', array('%project_name%' => $issue->getProject()->getKey(), '%issue_type%' => TBGContext::getI18n()->__($issue->getIssueType()->getName()), '%issue_no%' => $issue->getFormattedIssueNo(true), '%issue_title%' => $issue->getTitle()));
+						$message = $this->createNewTBGMimemailFromTemplate($subject, 'issueupdate', array('issue' => $issue, 'comment' => $content, 'updated_by' => $comment->getPostedBy()));
+						var_dump($message);
 						$this->_sendToUsers($to_users, $message);
+//						$subject = TBGContext::getI18n()->__('[%project_name%] %issue_type% %issue_no% - Comment added by %comment_user%', array('%project_name%' => $issue->getProject()->getKey(), '%issue_type%' => TBGContext::getI18n()->__($issue->getIssueType()->getName()), '%issue_no%' => $issue->getFormattedIssueNo(true), '%comment_user%' => $comment->getPostedBy()->getName()));
+//						$message = $this->createNewTBGMimemailFromTemplate($subject, 'issuecomment', array('issue' => $issue, 'comment' => $comment));
+//						$this->_sendToUsers($to_users, $message);
 					}
 					catch (Exception $e)
 					{
+						var_dump('fu');
+						var_dump($e);die();
 						throw $e;
 					}
 				}
 			}
 		}
 		
-		public function listen_issueTop(TBGEvent $event)
-		{
-			$issue = $event->getSubject();
-			TBGSettings::deleteSetting('notified_issue_'.$issue->getId(), 'mailing', '', 0, TBGContext::getUser()->getId());
-		}
-		
 		public function listen_issueSave(TBGEvent $event)
 		{
-			if ($this->isOutgoingNotificationsEnabled() && $event->getParameter('notify'))
+			if ($this->isOutgoingNotificationsEnabled())
 			{
 				$issue = $event->getSubject();
 
 				if ($issue instanceof TBGIssue)
 				{
-					$to_users = $issue->getRelatedUsers();
-					foreach ($to_users as &$a_user)
-					{
-						if (is_array($a_user) && isset($a_user['id'])) $a_user = $a_user['id'];
-						if ($this->_mustNotifyUserForIssue($issue->getID(), $a_user))
-						{
-							if ($this->getSetting('hold_email_on_issue_update', $a_user) == 1)
-							{
-								$this->saveSetting('notified_issue_'.$issue->getID(), 1, $a_user);
-							}
-						}
-						else
-						{
-							unset($to_users[$cc]);
-						}
-					}
+					$to_users = $this->_getIssueRelatedUsers($issue);
 
 					$subject = TBGContext::getI18n()->__('[%project_name%] %issue_type% %issue_no% - "%issue_title%" updated', array('%project_name%' => $issue->getProject()->getKey(), '%issue_type%' => TBGContext::getI18n()->__($issue->getIssueType()->getName()), '%issue_no%' => $issue->getFormattedIssueNo(true), '%issue_title%' => $issue->getTitle()));
 					$message = $this->createNewTBGMimemailFromTemplate($subject, 'issueupdate', array('issue' => $issue, 'comment_lines' => $event->getParameter('comment_lines'), 'updated_by' => $event->getParameter('updated_by')));
@@ -503,7 +711,7 @@
 
 		public function postAccountSettings(TBGRequest $request)
 		{
-			$settings = array('notify_add_friend', 'notify_issue_change', 'notify_issue_change_own', 'notify_issue_comment');
+			$settings = array(self::NOTIFY_ISSUE_ASSIGNED_UPDATED, self::NOTIFY_ISSUE_ONCE, self::NOTIFY_ISSUE_POSTED_UPDATED, self::NOTIFY_ISSUE_PROJECT_ASSIGNED, self::NOTIFY_ISSUE_RELATED_PROJECT_TEAMASSIGNED, self::NOTIFY_ISSUE_TEAMASSIGNED_UPDATED, self::NOTIFY_ISSUE_UPDATED_SELF);
 			$uid = TBGContext::getUser()->getID();
 			foreach ($settings as $setting)
 			{
@@ -526,5 +734,22 @@
 		{
 			$this->saveSetting('enable_outgoing_notifications', $enabled);
 		}
+		
+		protected function addDefaultSettingsToAllUsers()
+		{
+			$settings = array(self::NOTIFY_ISSUE_ASSIGNED_UPDATED, self::NOTIFY_ISSUE_ONCE, self::NOTIFY_ISSUE_POSTED_UPDATED, self::NOTIFY_ISSUE_PROJECT_ASSIGNED, self::NOTIFY_ISSUE_RELATED_PROJECT_TEAMASSIGNED, self::NOTIFY_ISSUE_TEAMASSIGNED_UPDATED);
+			foreach (TBGUsersTable::getTable()->getAllUserIDs() as $uid)
+			{
+				foreach ($settings as $setting)
+				{
+					$this->saveSetting($setting, 1, $uid);
+				}
+			}
+		}
 
+		public function upgradeFrom3dot0()
+		{
+			$this->addDefaultSettingsToAllUsers();
+		}
+		
 	}

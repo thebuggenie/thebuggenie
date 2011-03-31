@@ -2,12 +2,7 @@
 	Buen d&iacute;a %user_buddyname%,<br>
 	<?php echo $issue->getIssuetype()->getName(); ?> <?php echo $issue->getFormattedTitle(true); ?> ha sido actualizada por <?php echo $updated_by->getName(); ?>.<br>
 	<br>
-	<b>La siguiente informaci&oacute;n ha sido modificada :</b><br>
-	<ul>
-	<?php foreach ($comment_lines as $comment_line): ?>
-		<li><?php echo $comment_line; ?></li>
-	<?php endforeach; ?>
-	</ul>
+	<?php echo tbg_parse_text($comment); ?>
 	<br>
 	<div style="color: #888;">
 		--
