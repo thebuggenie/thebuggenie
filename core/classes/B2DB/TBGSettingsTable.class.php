@@ -58,10 +58,11 @@
 			return $row;
 		}
 
-		public function getSettingsForScope($scope)
+		public function getSettingsForScope($scope, $uid = 0)
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, $scope);
+			$crit->addWhere(self::UID, $uid);
 			$res = $this->doSelect($crit, 'none');
 			return $res;
 		}

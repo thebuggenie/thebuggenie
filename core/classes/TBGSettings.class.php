@@ -96,27 +96,30 @@
 		static protected $_ver_name = "Kittens!";
 		static protected $_defaultscope = null;
 		static protected $_settings = null;
+		static protected $_loadedsettings = array();
 	
 		public static function forceSettingsReload()
 		{
 			self::$_settings = null;
 		}
 		
-		public static function loadSettings()
+		public static function loadSettings($uid = 0)
 		{
 			TBGLogging::log("Loading settings");
-			if (self::$_settings === null)
+			if (self::$_settings === null || ($uid > 0 && !array_key_exists($uid, self::$_loadedsettings)))
 			{
-				TBGLogging::log('Loading all settings');
-				self::$_settings = array();
-				if (!TBGContext::isInstallmode() && self::$_settings = TBGCache::get(TBGCache::KEY_SETTINGS))
+				TBGLogging::log('Loading settings');
+				if (self::$_settings === null)
+					self::$_settings = array();
+				
+				if (!TBGContext::isInstallmode() && $uid == 0 && self::$_settings = TBGCache::get(TBGCache::KEY_SETTINGS))
 				{
 					TBGLogging::log('Using cached settings');
 				}
 				else
 				{
 					TBGLogging::log('Settings not cached or install mode enabled. Retrieving from database');
-					if ($res = B2DB::getTable('TBGSettingsTable')->getSettingsForScope(TBGContext::getScope()->getID()))
+					if ($res = B2DB::getTable('TBGSettingsTable')->getSettingsForScope(TBGContext::getScope()->getID(), $uid))
 					{
 						$cc = 0;
 						while ($row = $res->getNextRow())
@@ -135,6 +138,7 @@
 						TBGLogging::log('Settings could not be retrieved from the database!', 'main', TBGLogging::LEVEL_FATAL);
 						throw new TBGSettingsException('Could not retrieve settings from database');
 					}
+					self::$_loadedsettings[$uid] = true;
 					TBGLogging::log('Retrieved');
 					TBGCache::add(TBGCache::KEY_SETTINGS, self::$_settings);
 				}
@@ -204,6 +208,10 @@
 			if (self::$_settings === null)
 			{
 				self::loadSettings();
+			}
+			if ($uid > 0 && !array_key_exists($uid, self::$_loadedsettings))
+			{
+				self::loadSettings($uid);
 			}
 			if (!is_array(self::$_settings) || !array_key_exists($module, self::$_settings))
 			{
