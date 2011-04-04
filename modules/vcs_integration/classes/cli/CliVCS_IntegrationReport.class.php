@@ -4,7 +4,7 @@
 	 * CLI command class, vcs_integration -> report
 	 *
 	 * @author Philip Kent <kentphilip@gmail.com>
-	 ** @version 3.0
+	 * @version 3.1
 	 * @license http://www.opensource.org/licenses/mozilla1.1.php Mozilla Public License 1.1 (MPL 1.1)
 	 * @package thebuggenie
 	 * @subpackage vcs_integration
