@@ -84,7 +84,7 @@
 				$issue_string = join('|', $issue_strings);
 				$issue_string = html_entity_decode($issue_string, ENT_QUOTES);
 				$issue_string = str_replace(array(' ', "'"), array('\s{1,1}', "\'"), $issue_string);
-				$regex = '#(?<!\!)(('.$issue_string.')\s\#?(([A-Z0-9]+\-)?\d+))#i';
+				$regex = '#( |^)(?<!\!)(('.$issue_string.')\s\#?(([A-Z0-9]+\-)?\d+))#i';
 				TBGCache::add(TBGCache::KEY_TEXTPARSER_ISSUE_REGEX, $regex);
 			}
 			return $regex;
