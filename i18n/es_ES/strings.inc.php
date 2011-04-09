@@ -713,7 +713,7 @@
 	$strings['You need a valid user account to access any content'] = 'Necesita una cuenta de usuario válida para acceder a cualquier contenido';
 	$strings['Use the guest user account'] = 'Utilizar la cuenta de usuario invitado';
 	$strings['Guest user is authenticated'] = 'El usuario invitado se valida';
-	$strings['No, the default user is a guest account'] = 'No, la usuario por defecto es una cuenta de invitado';
+	$strings['No, the default user is a guest account'] = 'No, el usuario por defecto es una cuenta de invitado';
 	$strings['Yes, the default user is a normal account'] = 'Sí, el usuario por defecto es una cuenta común';
 	$strings['Security policy'] = 'Política de seguridad';
 	$strings['%restrictive%: With this security policy, users don\'t automatically get access to projects, modules, etc., but must be granted access specifically.'] = '%restrictive%: Con está política de seguridad, los usuarios no pueden acceder automáticamente a los proyectos, módulos, etc., sino que debe tener acceso específicamente.';
@@ -2059,4 +2059,24 @@
 	$strings['Dependancy added'] = 'Dependencia agregada';
 	$strings['This %this_issuetype% now depends on the solution of %issuetype% %issue_no%'] = 'El pedido %this_issuetype% ahora depende de la resolución de %issuetype% %issue_no%';  
   $strings['There is no roadmap to be shown for this project, as it does not have any available milestones'] = 'No hay ninguna hoja de ruta para ser mostrada en este proyecto, tampoco hay puntos de control disponibles';   
+	$strings['Help'] = 'Ayuda';
 
+  $strings['Post-transition validation'] = 'Validación pos-transición';
+  $strings['The following validation rules will be applied to the input given by the user in the transition view. If the validation fails, the transition will not take place.'] = 'Las siguientes reglas de validación serán aplicadas cuando el usuario introduzca los valores en la transición. Si la validación falla, la transición no tendrá lugar.'; 
+  $strings['Status is any of these values: %statuses%'] = 'El estado es uno de estos valores: %statuses%';
+  $strings['Resolution is any of these values: %resolutions%'] = 'La resolución es cualquiera de estos valores: %resolutions%';
+  $strings['This transition has no post validation rules'] = 'Esta transición no tiene reglas de validación posterior';
+  $strings['Status provided by user'] = 'El estado es provisto por el usuario';
+  $strings['Set status to %status%'] = 'Definir el estado en %status%';
+  $strings['Resolution provided by user'] = 'La resolución es porvista por el usuario';
+  $strings['Set resolution to %resolution%'] = 'Definir la resolución a %resolution%';
+  $strings['Mark issue as no longer being worked on, and optionally add time spent'] = 'Marcar el pedido como que ya no se está trabajando, y opcionalmente añadir el tiempo dedicado';
+  $strings['Add a comment if one is specified'] = 'Agregar un comentario si se especifica';
+  $strings['Clear issue assignee']  = 'Limpiar la asignación de la petición';
+  $strings['Mark issue as being worked on by the assigned user'] = 'Marcar el pedido como que se está trabajando por un usuario';
+  $strings['Clear issue resolution'] = 'Limpiar la resolución del pedido';
+  $strings['Clear issue percent completed'] = 'Limpiar el porcentaje completado';
+  $strings['Show project list on frontpage'] = 'Mostrar la lista de proyectos en la portada';  
+  $strings['About %sitename%'] = 'Acerca de %sitename%';
+  $strings['This article has not been created yet.'] = 'Este artículo no ha sido creado aún';
+  $strings['You can create this article by clicking %create_this_article% below.'] = 'Puede crear este artículo haciendo clic en %create_this_article%';
