@@ -118,13 +118,14 @@
 		public function getByDetails($details, $limit = null)
 		{
 			$crit = $this->getCriteria();
+			$crit->addWhere(self::DELETED, false);
 			if (stristr($details, "@"))
 			{
-				$crit->addWhere(TBGUsersTable::EMAIL, "%$details%", B2DBCriteria::DB_LIKE);
+				$crit->addWhere(self::EMAIL, "%$details%", B2DBCriteria::DB_LIKE);
 			}
 			else
 			{
-				$crit->addWhere(TBGUsersTable::UNAME, "%$details%", B2DBCriteria::DB_LIKE);
+				$crit->addWhere(self::UNAME, "%$details%", B2DBCriteria::DB_LIKE);
 			}
 	
 			if ($limit)
@@ -134,10 +135,11 @@
 			if (!$res = $this->doSelect($crit))
 			{
 				$crit = $this->getCriteria();
-				$crit->addWhere(TBGUsersTable::UNAME, "%$details%", B2DBCriteria::DB_LIKE);
-				$crit->addOr(TBGUsersTable::BUDDYNAME, "%$details%", B2DBCriteria::DB_LIKE);
-				$crit->addOr(TBGUsersTable::REALNAME, "%$details%", B2DBCriteria::DB_LIKE);
-				$crit->addOr(TBGUsersTable::EMAIL, "%$details%", B2DBCriteria::DB_LIKE);
+				$crit->addWhere(self::DELETED, false);
+				$crit->addWhere(self::UNAME, "%$details%", B2DBCriteria::DB_LIKE);
+				$crit->addOr(self::BUDDYNAME, "%$details%", B2DBCriteria::DB_LIKE);
+				$crit->addOr(self::REALNAME, "%$details%", B2DBCriteria::DB_LIKE);
+				$crit->addOr(self::EMAIL, "%$details%", B2DBCriteria::DB_LIKE);
 				if ($limit)
 				{
 					$crit->setLimit($limit);
