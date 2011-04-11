@@ -131,6 +131,7 @@
 			$settings[TBGSettings::SETTING_SHOW_PROJECTS_OVERVIEW] = 1;
 			$settings[TBGSettings::SETTING_ALLOW_USER_THEMES] = 0;
 			$settings[TBGSettings::SETTING_ENABLE_UPLOADS] = 0;
+			$settings[TBGSettings::SETTING_ENABLE_GRAVATARS] = 1;
 			$settings[TBGSettings::SETTING_UPLOAD_RESTRICTION_MODE] = 'blacklist';
 			$settings[TBGSettings::SETTING_UPLOAD_EXTENSIONS_LIST] = 'exe,bat,php,asp,jsp';
 			$settings[TBGSettings::SETTING_UPLOAD_STORAGE] = 'files';

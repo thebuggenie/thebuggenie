@@ -57,6 +57,7 @@
 		const SETTING_DEFAULT_USER_IS_GUEST = 'defaultisguest';
 		const SETTING_DEFAULT_USER_ID = 'defaultuserid';
 		const SETTING_ENABLE_UPLOADS = 'enable_uploads';
+		const SETTING_ENABLE_GRAVATARS = 'enable_gravatars';
 		const SETTING_FAVICON_TYPE = 'icon_fav';
 		const SETTING_FAVICON_URL = 'icon_fav_url';
 		const SETTING_GUEST_GROUP = 'guestgroup';
@@ -315,6 +316,11 @@
 		public static function isRegistrationEnabled()
 		{
 			return (bool) self::get(self::SETTING_ALLOW_REGISTRATION);
+		}
+		
+		public static function isGravatarsEnabled()
+		{
+			return (bool) self::get(self::SETTING_ENABLE_GRAVATARS);
 		}
 		
 		public static function getLanguage()

@@ -410,6 +410,8 @@
 					$module->upgradeFrom3dot0();
 				}
 			}
+			
+			TBGSettings::saveSetting(TBGSettings::SETTING_ENABLE_GRAVATARS, 1);
 
 			$this->upgrade_complete = true;
 		}

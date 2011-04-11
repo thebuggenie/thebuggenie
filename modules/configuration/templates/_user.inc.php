@@ -54,6 +54,20 @@
 		</td>
 	</tr>
 	<tr>
+		<td><label for="allowreg"><?php echo __('Gravatar user icons'); ?></label></td>
+		<td>
+			<select name="<?php echo TBGSettings::SETTING_ENABLE_GRAVATARS; ?>" id="allowreg" style="width: 300px;"<?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>>
+				<option value=1<?php if (TBGSettings::isGravatarsEnabled()): ?> selected<?php endif; ?>><?php echo __('Users icons will use the gravatar.com service'); ?></option>
+				<option value=0<?php if (!TBGSettings::isGravatarsEnabled()): ?> selected<?php endif; ?>><?php echo __('Users will use default user icons'); ?></option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td class="config_explanation" colspan="2">
+			<?php echo __('Select whether to use the %gravatar.com% user icon service for user avatars, or just use the default ones', array('%gravatar.com%' => link_tag('http://www.gravatar.com', 'gravatar.com'))); ?>
+		</td>
+	</tr>
+	<tr>
 		<td><label for="allowreg"><?php echo __('New user accounts'); ?></label></td>
 		<td>
 			<select name="<?php echo TBGSettings::SETTING_ALLOW_REGISTRATION; ?>" id="allowreg" style="width: 300px;"<?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>>

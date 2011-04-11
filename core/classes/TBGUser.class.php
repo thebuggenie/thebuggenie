@@ -1417,6 +1417,7 @@
 		 */
 		public function usesGravatar()
 		{
+			if (!TBGSettings::isGravatarsEnabled()) return false;
 			if ($this->isGuest()) return false;
 			return (bool) $this->_use_gravatar;
 		}
