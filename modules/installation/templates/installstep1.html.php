@@ -26,12 +26,20 @@
 			The Bug Genie 3 requires PHP 5.3.0 or later. You have version <?php echo $php_ver; ?>.<br/>Grab the latest release from your usual sources or from <a href="http://php.net/downloads.php" target="_blank">php.net</a>
 			</div>
 		<?php endif; ?>
+		<?php if ($pcre_ok): ?>
+			<div class="install_progress prereq_ok"><?php echo image_tag('themes/oxygen/action_ok.png', array(), true); ?>PCRE librairies version (<?php echo $pcre_ver; ?>) meets requirements ...</div>
+		<?php else: ?>
+			<div class="install_progress prereq_warn">
+			<b>PCRE librairies version is too old</b><br>
+			The Bug Genie 3 requires PCRE librairies 8.0 or later. You have version <?php echo $pcre_ver; ?>.<br/>Update your system to the latest release from your usual sources.
+			</div>
+		<?php endif; ?>		
 		<?php if ($docblock_ok): ?>
 			<div class="install_progress prereq_ok"><?php echo image_tag('themes/oxygen/action_ok.png', array(), true); ?>PHP docblocks are readable ...</div>
 		<?php else: ?>
 			<div class="install_progress prereq_fail">
 			<b>PHP docblocks are not readable</b><br>
-			The Bug Genie 3 requires that PHP docblocks are readable. You may be running a PHP accellerator that removes docblocks from PHP code files as an optimization technique. Please refer to the accellerator documentation for how to disable this feature, or disable the accellerator.</a>
+			The Bug Genie 3 requires that PHP docblocks are readable. You may be running a PHP accellerator that removes docblocks from PHP code files as an optimization technique. Please refer to the accelerator documentation for how to disable this feature, or disable the accellerator.</a>
 			</div>
 		<?php endif; ?>
 		<?php if ($base_folder_perm_ok): ?>

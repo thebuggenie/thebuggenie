@@ -56,14 +56,21 @@
 			$this->gd_ok = true;
 			$this->mb_ok = true;
 			$this->php_ok = true;
+			$this->pcre_ok = true;
 			$this->docblock_ok = false;
 			$this->php_ver = PHP_VERSION;
+			$this->pcre_ver = PCRE_VERSION;
 
 			if (version_compare($this->php_ver, '5.3.0', 'lt'))
 			{
 				$this->php_ok = false;
 				$this->all_well = false;
 			}
+			if (version_compare($this->pcre_ver, '8.0', 'lt'))
+			{
+				$this->pcre_ok = false;
+				$this->all_well = false;
+			}			
 			if (file_exists(THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php') && !is_writable(THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php'))
 			{
 				$this->b2db_param_file_ok = false;
