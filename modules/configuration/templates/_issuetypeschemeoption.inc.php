@@ -1,7 +1,7 @@
 <tr class="hover_highlight" id="item_<?php echo $key; ?>_<?php echo $issuetype->getID(); ?>">
 	<td style="padding: 2px; font-size: 12px;" id="<?php echo $key; ?>_<?php echo $issuetype->getID(); ?>_name">
 		<?php
-		
+
 			if (is_object($item))
 			{
 				echo $item->getDescription();
@@ -65,7 +65,7 @@
 	</td>
 	<td style="padding: 2px; text-align: center;">
 		<?php if (in_array($key, array('votes'))): ?>
-			<input type="hidden" id="f_<?php echo $issuetype->getID(); ?>_<?php echo $key; ?>_reportable" name="fu"> -
+			<input type="hidden" id="f_<?php echo $issuetype->getID(); ?>_<?php echo $key; ?>_reportable"> -
 		<?php else: ?>
 			<?php if (!$scheme->isCore()): ?>
 				<input type="checkbox" onclick="if (this.checked) { $('f_<?php echo $issuetype->getID(); ?>_<?php echo $key; ?>_additional').enable();$('f_<?php echo $issuetype->getID(); ?>_<?php echo $key; ?>_required').enable(); } else { $('f_<?php echo $issuetype->getID(); ?>_<?php echo $key; ?>_additional').disable();$('f_<?php echo $issuetype->getID(); ?>_<?php echo $key; ?>_required').disable(); }" id="f_<?php echo $issuetype->getID(); ?>_<?php echo $key; ?>_reportable" name="field[<?php echo $key; ?>][reportable]" value="1"<?php if (array_key_exists($key, $visiblefields) && $visiblefields[$key]['reportable']): ?> checked<?php endif; ?><?php if (!array_key_exists($key, $visiblefields) && !in_array($key, array('status'))): ?> disabled<?php endif; ?>></td>
@@ -81,12 +81,12 @@
 				<?php echo (array_key_exists($key, $visiblefields) && $visiblefields[$key]['additional']) ? image_tag('action_ok.png') : ''; ?>
 			<?php endif; ?>
 		<?php else: ?>
-			<input type="hidden" id="f_<?php echo $issuetype->getID(); ?>_<?php echo $key; ?>_additional" name="fu"> - 
+			<input type="hidden" id="f_<?php echo $issuetype->getID(); ?>_<?php echo $key; ?>_additional"> - 
 		<?php endif; ?>
 	</td>
 	<td style="padding: 2px; text-align: center;">
 		<?php if (in_array($key, array('votes'))): ?>
-			<input type="hidden" id="f_<?php echo $issuetype->getID(); ?>_<?php echo $key; ?>_required" name="fu"> -
+			<input type="hidden" id="f_<?php echo $issuetype->getID(); ?>_<?php echo $key; ?>_required"> -
 		<?php else: ?>
 			<?php if (!$scheme->isCore()): ?>
 				<input type="checkbox" id="f_<?php echo $issuetype->getID(); ?>_<?php echo $key; ?>_required" name="field[<?php echo $key; ?>][required]" value="1"<?php if (array_key_exists($key, $visiblefields) && $visiblefields[$key]['required']): ?> checked<?php endif; ?><?php if ((!array_key_exists($key, $visiblefields) || !$visiblefields[$key]['reportable']) && !in_array($key, array('status'))): ?> disabled<?php endif; ?>>

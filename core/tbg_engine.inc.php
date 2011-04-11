@@ -403,9 +403,6 @@ echo "
 	set_exception_handler('tbg_exception');
 	error_reporting(E_ALL | E_STRICT);
 	
-	// Set the default timezone
-	date_default_timezone_set('Europe/London');
-
 	if (!defined('THEBUGGENIE_PATH'))
 		throw new Exception('You must define the THEBUGGENIE_PATH constant so we can find the files we need');
 

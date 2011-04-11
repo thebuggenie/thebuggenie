@@ -156,6 +156,13 @@
 			}
 			$this->forward403unless(TBGContext::getUser()->hasPageAccess('home'));
 			$this->links = TBGContext::getMainLinks();
+			$this->show_project_list = TBGSettings::isFrontpageProjectListVisible();
+			if ($this->show_project_list)
+			{
+				$this->show_project_config_link = TBGContext::getUser()->canAccessConfigurationPage(TBGSettings::CONFIGURATION_SECTION_PROJECTS);
+				$this->projects = TBGProject::getAll();
+				$this->project_count = count($this->projects);
+			}
 		}
 
 		/**

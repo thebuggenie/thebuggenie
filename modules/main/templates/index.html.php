@@ -4,10 +4,10 @@
 	$tbg_response->addBreadcrumb(__('Frontpage'), make_url('home'), tbg_get_breadcrumblinks('main_links'));
 
 ?>
-<?php if ($tbg_user->canAccessConfigurationPage(TBGSettings::CONFIGURATION_SECTION_PROJECTS)): ?>
-	<?php if (count(TBGProject::getAll()) == 1): ?>
+<?php if ($show_project_config_link): ?>
+	<?php if ($project_count == 1): ?>
 		<?php include_component('main/hideableInfoBox', array('key' => 'index_single_project_mode', 'title' => __('Only using The Bug Genie to track issues for one project?'), 'content' => __("It looks likes you're only using The Bug Genie to track issues for one project. If you don't want to use this homepage, you can set The Bug Genie to <i>single project tracker mode</i>, which will automatically forward the frontpage to the project overview page.<br><br><i>Single project tracker mode</i> can be enabled from %configure_settings%.", array('%configure_settings%' => link_tag(make_url('configure_settings'), '<b>' . __('Configure &ndash;&gt; Settings') . '</b>'))))); ?>
-	<?php elseif (count(TBGProject::getAll()) == 0): ?>
+	<?php elseif ($project_count == 0): ?>
 		<?php include_component('main/hideableInfoBox', array('key' => 'index_no_projects', 'title' => __('Oh noes! There are no projects!'), 'content' => __("It doesn't look like you have had the chance to add any projects yet. If you want to play around a bit with The Bug Genie before you start using it for your own projects, you can import some sample data before adding your own projects.").'<br>'. __("Sample data can be imported from %configure_import%.", array('%configure_import%' => link_tag(make_url('configure_import'), '<b>' . __('Configure &ndash;&gt; Import') . '</b>'))))); ?>
 	<?php endif; ?>
 <?php endif; ?>
@@ -19,23 +19,24 @@
 		</td>
 		<td class="main_area frontpage">
 			<?php TBGEvent::createNew('core', 'index_right_top')->trigger(); ?>
-			<?php if (TBGSettings::isFrontpageProjectListVisible()): ?>
+			<?php if ($show_project_list): ?>
 				<div class="project_overview">
 					<div class="header">
-						<?php if ($tbg_user->canAccessConfigurationPage(TBGSettings::CONFIGURATION_SECTION_PROJECTS)): ?>
+						<?php if ($show_project_config_link): ?>
 							<?php echo link_tag(make_url('configure_projects'), image_tag('cfg_icon_projectheader.png', array('style' => 'float: left; margin-right: 5px;'))); ?>
 						<?php endif; ?>
 						<?php echo __('Projects'); ?>
 					</div>
-					<?php if (count(TBGProject::getAll()) > 0): ?>
+					<?php if ($project_count > 0): ?>
 						<ul class="project_list simple_list">
-						<?php foreach (TBGProject::getAll() as $aProject): ?>
-							<li><?php include_component('project/overview', array('project' => $aProject)); ?></li>
+						<?php foreach ($projects as $project): ?>
+							<li><?php include_component('project/overview', array('project' => $project)); ?></li>
 						<?php endforeach; ?>
 						</ul>
 					<?php else: ?>
-						<p class="content"><?php echo __('There are no projects'); ?>.
-							<?php if ($tbg_user->canAccessConfigurationPage(TBGSettings::CONFIGURATION_SECTION_PROJECTS)): ?>
+						<p class="content">
+							<?php echo __('There are no projects'); ?>.
+							<?php if ($show_project_config_link): ?>
 								<?php echo link_tag(make_url('configure_projects'), __('Go to project management').' &gt;&gt;'); ?>
 							<?php else: ?>
 								<?php echo __('Projects can only be created by an administrator'); ?>.

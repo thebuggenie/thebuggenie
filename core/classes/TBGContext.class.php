@@ -394,6 +394,7 @@
 				{
 					self::loadModules();
 					self::initializeUser();
+					TBGSettings::setTimezone();
 				}
 				else
 					self::$_modules = array();

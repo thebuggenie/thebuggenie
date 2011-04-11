@@ -19,7 +19,7 @@
 	class TBGIssueFieldsTable extends TBGB2DBTable 
 	{
 
-		const B2DB_TABLE_VERSION = 1;
+		const B2DB_TABLE_VERSION = 2;
 		const B2DBNAME = 'issuefields';
 		const ID = 'issuefields.id';
 		const SCOPE = 'issuefields.scope';
@@ -33,7 +33,7 @@
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
-			parent::_addVarchar(self::FIELD_KEY, 20);
+			parent::_addVarchar(self::FIELD_KEY, 100);
 			parent::_addBoolean(self::REQUIRED);
 			parent::_addBoolean(self::REPORTABLE);
 			parent::_addBoolean(self::ADDITIONAL);

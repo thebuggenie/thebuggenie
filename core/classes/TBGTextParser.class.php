@@ -548,7 +548,7 @@
 			}
 			if ($theIssue instanceof TBGIssue)
 			{
-				$output = link_tag(make_url('viewissue', array('issue_no' => $theIssue->getFormattedIssueNo(false), 'project_key' => $theIssue->getProject()->getKey())), $theIssue->getFormattedTitle(), array('class' => $classname));
+				$output = ' '.link_tag(make_url('viewissue', array('issue_no' => $theIssue->getFormattedIssueNo(false), 'project_key' => $theIssue->getProject()->getKey())), $theIssue->getFormattedTitle(), array('class' => $classname));
 			}
 			else
 			{
@@ -743,20 +743,9 @@
 			$this->stop_all = false;
 
 			$called = array();
-			//$line = rtrim($line);
-
-			//$trimmed_line = rtrim($line);
-
-			//if ($trimmed_line) $line = $trimmed_line;
-
-			//if (substr($line, -1) == " ")
-			//{
-				//$line = substr($line, 0, -1);
-			//}
 
 			foreach ($line_regexes as $func => $regex)
 			{
-				//TBGLogging::log($func, 'parsing', 5);
 				if (preg_match("/$regex/i", $line, $matches))
 				{
 					$called[$func] = true;
@@ -784,14 +773,11 @@
 
 			if ($this->preformat && !array_key_exists('preformat', $called)) $line = $this->_parse_preformat(false, true) . $line;
 
-			//if ($this->tablemode && (!array_key_exists('tablerow', $called) && !array_key_exists('tableopener', $called))) $line = $this->_parse_tablecloser(array()) . $line;
-
 			// suppress linebreaks for the next line if we just displayed one; otherwise re-enable them
 			if ($isline) $this->ignore_newline = (array_key_exists('newline', $called) || array_key_exists('headers', $called));
 
 			if (substr($line, -1) != "\n")
 			{
-				//var_dump($line);
 				$line = $line . " \n";
 			}
 
