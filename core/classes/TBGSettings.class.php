@@ -127,13 +127,13 @@
 							$cc++;
 							self::$_settings[$row->get(TBGSettingsTable::MODULE)][$row->get(TBGSettingsTable::NAME)][$row->get(TBGSettingsTable::UID)] = $row->get(TBGSettingsTable::VALUE);
 						}
-						if ($cc == 0 && !TBGContext::isInstallmode())
+						if ($cc == 0 && !TBGContext::isInstallmode() && $uid == 0)
 						{
 							TBGLogging::log('There were no settings stored in the database!', 'main', TBGLogging::LEVEL_FATAL);
 							throw new TBGSettingsException('Could not retrieve settings from database (no settings stored)');
 						}
 					}
-					elseif (!TBGContext::isInstallmode())
+					elseif (!TBGContext::isInstallmode() && $uid == 0)
 					{
 						TBGLogging::log('Settings could not be retrieved from the database!', 'main', TBGLogging::LEVEL_FATAL);
 						throw new TBGSettingsException('Could not retrieve settings from database');
@@ -143,6 +143,7 @@
 					TBGCache::add(TBGCache::KEY_SETTINGS, self::$_settings);
 				}
 			}
+			
 			TBGLogging::log("...done");
 		}
 
@@ -590,6 +591,29 @@
 		public static function getRemoteSecurityKey()
 		{
 			return self::getPasswordSalt();
+		}
+		
+		public static function setTimezone()
+		{
+			$offset = null;
+			if (TBGContext::getUser() instanceof TBGUser)
+			{
+				$offset = self::get(self::SETTING_USER_TIMEZONE, 'core', null, TBGContext::getUser()->getID());
+			}
+			
+			if ($offset === null)
+			{
+				$offset = self::get(self::SETTING_SERVER_TIMEZONE);
+			}
+			
+			if ($offset == 0)
+				$tz_string = "GMT";
+			elseif ($offset > 0)
+				$tz_string = "Etc/GMT+" . $offset;
+			else
+				$tz_string = "Etc/GMT" . $offset;
+
+			date_default_timezone_set($tz_string);
 		}
 
 	}
