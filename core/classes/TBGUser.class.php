@@ -921,7 +921,7 @@
 		 */
 		public function addFriend($user)
 		{
-			if (!($this->isFriend($user)))
+			if (!($this->isFriend($user)) && !$user->isDeleted())
 			{
 				TBGBuddiesTable::getTable()->addFriend($this->getID(), $user->getID());
 				$this->_friends[$user->getID()] = $user;

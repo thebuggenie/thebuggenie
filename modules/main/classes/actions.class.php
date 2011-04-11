@@ -2701,6 +2701,10 @@
 				$mode = $request->getParameter('mode');
 				if ($mode == 'add')
 				{
+					if ($friend_user instanceof TBGUser && $friend_user->isDeleted())
+					{
+						return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('This user has been deleted')));
+					}
 					TBGContext::getUser()->addFriend($friend_user);
 				}
 				else
