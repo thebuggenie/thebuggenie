@@ -2615,6 +2615,9 @@
 								case TBGWorkflowTransitionAction::ACTION_SET_STATUS:
 									$text = ($this->action->getTargetValue()) ? TBGContext::factory()->TBGStatus((int) $this->action->getTargetValue())->getName() : TBGContext::getI18n()->__('Status specified by user');
 									break;
+								case TBGWorkflowTransitionAction::ACTION_SET_MILESTONE:
+									$text = ($this->action->getTargetValue()) ? TBGContext::factory()->TBGMilestone((int) $this->action->getTargetValue())->getName() : TBGContext::getI18n()->__('Milestone specified by user');
+									break;
 								case TBGWorkflowTransitionAction::ACTION_SET_PRIORITY:
 									$text = ($this->action->getTargetValue()) ? TBGContext::factory()->TBGPriority((int) $this->action->getTargetValue())->getName() : TBGContext::getI18n()->__('Priority specified by user');
 									break;

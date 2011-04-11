@@ -100,6 +100,25 @@
 						</li>
 					<?php endif; ?>
 				<?php endif; ?>
+				<?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_MILESTONE)): ?>
+					<li id="transition_popup_milestone_div">
+						<label for="transition_popup_set_milestone"><?php echo __('Milestone'); ?></label>
+						<select name="milestone_id" id="transition_popup_set_milestone">
+							<option value="0"<?php if (!$issue->getMilestone() instanceof TBGMilestone): ?> selected<?php endif; ?>><?php echo __('Not determined') ?></option>
+							<?php foreach ($issue->getProject()->getAllMilestones() as $milestone): ?>
+								<option value="<?php echo $milestone->getID(); ?>"<?php if ($issue->getMilestone() instanceof TBGMilestone && $issue->getMilestone()->getID() == $milestone->getID()): ?> selected<?php endif; ?>><?php echo $milestone->getName(); ?></option>
+							<?php endforeach; ?>
+						</select>
+					</li>
+					<li class="faded_out">
+						<?php echo __("Specify the target milestone for this issue"); ?>
+					</li>
+					<?php if (!$issue->isMilestoneVisible()): ?>
+						<li class="faded_out">
+							<?php echo __("Milestone isn't visible for this issuetype / product combination"); ?>
+						</li>
+					<?php endif; ?>
+				<?php endif; ?>
 				<?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_USER_STOP_WORKING) && $issue->isBeingWorkedOn()): ?>
 					<li id="transition_popup_stop_working_div">
 						<label for="transition_popup_set_stop_working"><?php echo __('Log time spent'); ?></label>

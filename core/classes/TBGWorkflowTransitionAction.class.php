@@ -25,6 +25,7 @@
 		const ACTION_SET_RESOLUTION = 'set_resolution';
 		const ACTION_CLEAR_RESOLUTION = 'clear_resolution';
 		const ACTION_SET_STATUS = 'set_status';
+		const ACTION_SET_MILESTONE = 'set_milestone';
 		const ACTION_SET_PRIORITY = 'set_priority';
 		const ACTION_CLEAR_PRIORITY = 'clear_priority';
 		const ACTION_SET_PERCENT = 'set_percent';
@@ -133,6 +134,12 @@
 						$issue->setStatus(TBGContext::factory()->TBGStatus((int) $this->getTargetValue()));
 					else
 						$issue->setStatus($request->getParameter('status_id'));
+					break;
+				case self::ACTION_SET_MILESTONE:
+					if ($this->getTargetValue())
+						$issue->setMilestone(TBGContext::factory()->TBGMilestone((int) $this->getTargetValue()));
+					else
+						$issue->setMilestone($request->getParameter('milestone_id'));
 					break;
 				case self::ACTION_CLEAR_PRIORITY:
 					$issue->setPriority(null);
