@@ -224,12 +224,12 @@
 			{
 				foreach ($team->getMembers() as $user)
 				{
-					$available_assignees[$user->getID()] = $user->getNameWithUsername();
+					$available_assignees[$user->getID()] = $user;
 				}
 			}
 			foreach (TBGContext::getUser()->getFriends() as $user)
 			{
-				$available_assignees[$user->getID()] = $user->getNameWithUsername();
+				$available_assignees[$user->getID()] = $user;
 			}
 			$this->available_assignees = $available_assignees;
 		}
