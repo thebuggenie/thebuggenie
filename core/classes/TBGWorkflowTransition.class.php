@@ -215,7 +215,7 @@
 		 */
 		public function setTemplate($template)
 		{
-			if (array_key_exists($template, $this->getTemplates()))
+			if (array_key_exists($template, $this->getTemplates()) || !$template)
 			{
 				$this->_template = $template;
 			}
