@@ -276,15 +276,9 @@
 									return true;
 								}
 							}
-							else
-							{
-								$step->applyToIssue($issue);
-								return true;
-							}
 						}
 					}
 				}
-				throw new TBGWorkflowException('Cannot find valid workflow step');
 			}
 		}
 		
