@@ -126,17 +126,16 @@
 			return $this->_members;
 		}
 
-		/**
-		 * Removes a user from the team
-		 *
-		 * @param integer $uid
-		 */
-		public function removeMember($uid)
+		public function removeMember(TBGUser $user)
 		{
-			$crit = new B2DBCriteria();
-			$crit->addWhere(TBGTeamMembersTable::UID, $uid);
-			$crit->addWhere(TBGTeamMembersTable::TID, $this->_id);
-			B2DB::getTable('TBGTeamMembersTable')->doDelete($crit);
+			if ($this->_members !== null)
+			{
+				unset($this->_members[$user->getID()]);
+			}
+			if ($this->_num_members !== null)
+			{
+				$this->_num_members--;
+			}
 		}
 		
 		public function _preDelete()

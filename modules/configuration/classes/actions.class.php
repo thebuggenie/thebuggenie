@@ -2016,7 +2016,25 @@
 			{
 				try
 				{
+					$return_options = array('success' => true);
 					$user = TBGContext::factory()->TBGUser($request->getParameter('user_id'));
+					if ($user->getGroup() instanceof TBGGroup)
+					{
+						$return_options['update_groups'] = array('ids' => array(), 'membercounts' => array());
+						$group_id = $user->getGroup()->getID();
+						$return_options['update_groups']['ids'][] = $group_id;
+						$return_options['update_groups']['membercounts'][$group_id] = $user->getGroup()->getNumberOfMembers();
+					}
+					if (count($user->getTeams()))
+					{
+						$return_options['update_teams'] = array('ids' => array(), 'membercounts' => array());
+						foreach ($user->getTeams() as $team)
+						{
+							$team_id = $team->getID();
+							$return_options['update_teams']['ids'][] = $team_id;
+							$return_options['update_teams']['membercounts'][$team_id] = $team->getNumberOfMembers();
+						}
+					}
 					if (in_array($user->getUsername(), array('administrator', 'guest')))
 					{
 						throw new Exception(TBGContext::getI18n()->__("You cannot delete this system user"));
@@ -2029,7 +2047,11 @@
 				}
 				$user->markAsDeleted();
 				$user->save();
-				return $this->renderJSON(array('success' => true, 'message' => TBGContext::getI18n()->__('The user was deleted'), 'total_count' => TBGUser::getUsersCount(), 'more_available' => TBGContext::getScope()->hasUsersAvailable()));
+				$return_options['message'] = TBGContext::getI18n()->__('The user was deleted');
+				$return_options['total_count'] = TBGUser::getUsersCount();
+				$return_options['more_available'] = TBGContext::getScope()->hasUsersAvailable();
+				
+				return $this->renderJSON($return_options);
 			}
 			catch (Exception $e)
 			{

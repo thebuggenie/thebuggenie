@@ -487,6 +487,15 @@
 			}
 			if ($this->_deleted)
 			{
+				try
+				{
+					if ($this->getGroup() instanceof TBGGroup)
+					{
+						$this->getGroup()->removeMember($this);
+					}
+				}
+				catch (Exception $e) {}
+				
 				$this->_group_id = null;
 				TBGTeamMembersTable::getTable()->clearTeamsByUserID($this->getID());
 				TBGClientMembersTable::getTable()->clearClientsByUserID($this->getID());

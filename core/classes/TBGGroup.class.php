@@ -138,5 +138,17 @@
 
 			return $this->_num_members;
 		}
+		
+		public function removeMember(TBGUser $user)
+		{
+			if ($this->_members !== null)
+			{
+				unset($this->_members[$user->getID()]);
+			}
+			if ($this->_num_members !== null)
+			{
+				$this->_num_members--;
+			}
+		}
 
 	}

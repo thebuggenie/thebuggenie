@@ -133,24 +133,6 @@
 			return $this->_administrator;
 		}
 		
-		public function setScopeAdmin($uid)
-		{
-			$adminuser = TBGContext::factory()->TBGUser($uid);
-			$crit = new B2DBCriteria();
-			$crit->addUpdate(TBGScopesTable::ADMINISTRATOR, $uid);
-			$res = TBGScopesTable::getTable()->doUpdateById($crit, $this->_id);
-			$this->_administrator = $adminuser;
-			$crit = new B2DBCriteria();
-			$crit->addWhere(TBGGroupsTable::SCOPE, $this->_id);
-			$crit->addOrderBy(TBGScopesTable::ID, B2DBCriteria::SORT_ASC);
-			$adminuser->setGroup(TBGGroupsTable::getTable()->doSelectOne($crit)->get(TBGGroupsTable::ID));
-			foreach ($adminuser->getTeams() as $aTeam)
-			{
-				$aTeam = TBGContext::factory()->TBGTeam($aTeam);
-				$aTeam->removeMember($adminuser->getID());
-			}
-		}
-
 		protected function _preDelete()
 		{
 			$tables = array(
