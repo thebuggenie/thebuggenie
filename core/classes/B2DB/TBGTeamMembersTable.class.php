@@ -127,4 +127,13 @@
 			return $this->doSelect($crit, 'all');
 		}
 		
+		public function addUserToTeam($user_id, $team_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
+			$crit->addInsert(self::TID, $team_id);
+			$crit->addInsert(self::UID, $user_id);
+			$this->doInsert($crit);
+		}
+		
 	}

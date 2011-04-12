@@ -90,18 +90,6 @@
 			TBGPermissionsTable::getTable()->loadFixtures($scope, $admin_group->getID(), $guest_group->getID());
 		}
 		
-		/**
-		 * Adds a user to the group
-		 *
-		 * @param integer $uid
-		 */
-		public function addMember($uid)
-		{
-			$crit = new B2DBCriteria();
-			$crit->addUpdate(TBGUsersTable::GROUP_ID, $this->_id);
-			TBGUsersTable::getTable()->doUpdateById($crit, $uid);
-		}
-		
 		public function _preDelete()
 		{
 			$crit = TBGUsersTable::getTable()->getCriteria();
