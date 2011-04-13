@@ -254,7 +254,7 @@
 				{
 					$action = substr($aline, 0, 1);
 
-					if ($action == "A" || $action == "U" || $action == "D" || $action == "M" || $action == "C" || $action == "R" || $action == "T" || $action == "B")
+					if ($action == "A" || $action == "U" || $action == "D" || $action == "M" || $action == "C" || $action == "R" || $action == "T" || $action == "B" || $action == "X")
 					{
 						$theline = trim(substr($aline, 1));
 						$files[] = array($action, $theline);

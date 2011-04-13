@@ -159,7 +159,7 @@
 			echo '<td class="faded_out" style="width: 75px;">'.__('new file').'</td>';
 		}
 		
-		if($action != "D" && $action != "X")
+		if($action != "D" && $action != "X" && $action != "B")
 		{
 			echo '<td style="width: 75px;"><a href="' . $link_view . '" target="_new"><b>' . __('View') . '</b></a></td>';
 		}
