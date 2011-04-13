@@ -7,7 +7,6 @@
 </div>
 <div id="project_hierarcy_menu_panes">
 	<div class="tab_pane" id="tab_hierarchy_editions_pane" style="text-align: left;">
-		<div class="config_header"><b><?php echo __('Editions'); ?></b></div>
 		<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_projects_add_edition', array('project_id' => $project->getID())); ?>" method="post" id="add_edition_form" onsubmit="addEdition('<?php echo make_url('configure_projects_add_edition', array('project_id' => $project->getID())); ?>');return false;" <?php if (!$project->isEditionsEnabled()): ?> style="display: none;"<?php endif; ?>>
 				<div class="rounded_box lightyellow" style="vertical-align: middle; padding: 5px; font-size: 12px;">
@@ -38,7 +37,6 @@
 		<div style="padding: 2px 5px 5px 5px;<?php if ($project->isEditionsEnabled()): ?> display: none;<?php endif; ?>" id="project_editions_disabled" class="faded_out"><?php echo __('This project does not use editions'); ?>.<br><?php echo __('Editions can be enabled in project settings'); ?>.</div>
 	</div>
 	<div class="tab_pane" id="tab_hierarchy_components_pane" style="display: none; text-align: left;">
-		<div class="config_header"><b><?php echo __('Components'); ?></b></div>
 		<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_projects_add_component', array('project_id' => $project->getID())); ?>" method="post" id="add_component_form" onsubmit="addComponent('<?php echo make_url('configure_projects_add_component', array('project_id' => $project->getID())); ?>');return false;"<?php if (!$project->isComponentsEnabled()): ?> style="display: none;"<?php endif; ?>>
 				<div class="rounded_box lightyellow" style="vertical-align: middle; padding: 5px; font-size: 12px;">
@@ -69,7 +67,6 @@
 		<div style="padding: 2px 5px 5px 5px;<?php if ($project->isComponentsEnabled()): ?> display: none;<?php endif; ?>" id="project_components_disabled" class="faded_out"><?php echo __('This project does not use components'); ?>.<br><?php echo __('Components can be enabled in project settings'); ?>.</div>
 	</div>
 	<div class="tab_pane" id="tab_hierarchy_releases_pane" style="display: none; text-align: left;">
-		<div class="config_header" style="margin-top: 10px;"><b><?php echo __('Releases'); ?></b></div>
 		<?php include_template('configuration/builds', array('parent' => $project, 'access_level' => $access_level)); ?>
 		<div style="padding: 2px 5px 5px 5px;<?php if ($project->isBuildsEnabled()): ?> display: none;<?php endif; ?>" id="project_builds_disabled" class="faded_out"><?php echo __('This project does not use releases'); ?>.<br><?php echo __('Releases can be enabled in project settings'); ?>.</div>
 	</div>

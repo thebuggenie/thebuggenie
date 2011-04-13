@@ -1,4 +1,4 @@
-<div id="milestone_span_<?php echo $milestone->getID(); ?>" style="margin-bottom: 10px;">
+<li id="milestone_span_<?php echo $milestone->getID(); ?>" style="margin-bottom: 10px;">
 	<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_project_milestone_action', array('project_id' => $milestone->getProject()->getID(), 'milestone_id' => $milestone->getID(), 'milestone_action' => 'update')); ?>" method="post" id="edit_milestone_<?php echo $milestone->getID(); ?>" style="display: none;" onsubmit="updateMilestone('<?php echo make_url('configure_project_milestone_action', array('project_id' => $milestone->getProject()->getID(), 'milestone_id' => $milestone->getID(), 'milestone_action' => 'update')); ?>', <?php echo $milestone->getID(); ?>);return false;">
 		<table style="width: 750px;" cellpadding=0 cellspacing=0>
 			<tr>
@@ -83,15 +83,17 @@
 			</td>
 		</tr>
 	</table>
-	<div id="show_milestone_<?php echo $milestone->getID(); ?>">
-		<a class="image" href="javascript:void(0);" onclick="Element.show('edit_milestone_<?php echo $milestone->getID(); ?>');Element.hide('show_milestone_<?php echo $milestone->getID(); ?>');"><?php echo image_tag('icon_edit.png', array('style' => 'float: left; margin-top: 10px;')); ?></a>
-		<a class="image" href="javascript:void(0);" onclick="Effect.Appear('delete_milestone_<?php echo $milestone->getID(); ?>', { duration: 0.5 });"><?php echo image_tag('icon_delete.png', array('style' => 'float: left; margin: 10px 5px 0 5px;')); ?></a>
-		<div style="display: none; width: 300px; position: absolute; left: 600px; padding: 5px; border: 1px solid #DDD; background-color: #FFF; text-align: center;" id="delete_milestone_<?php echo $milestone->getID(); ?>">
-			<b><?php echo __('Do you really want to delete this milestone?'); ?></b><br>
-			<a href="javascript:void(0);" onclick="deleteMilestone('<?php echo make_url('configure_project_milestone_action', array('project_id' => $milestone->getProject()->getID(), 'milestone_id' => $milestone->getID(), 'milestone_action' => 'delete')); ?>', <?php echo $milestone->getID();?>);"><?php echo __('Yes'); ?></a>&nbsp;|&nbsp;<a href="javascript:void(0);" onclick="Effect.Fade('delete_milestone_<?php echo $milestone->getID(); ?>', { duration: 0.5 });"><b><?php echo __('No'); ?></b></a>
+	<div id="show_milestone_<?php echo $milestone->getID(); ?>" style="position: relative;">
+		<a class="image" href="javascript:void(0);" onclick="Element.show('edit_milestone_<?php echo $milestone->getID(); ?>');Element.hide('show_milestone_<?php echo $milestone->getID(); ?>');"><?php echo image_tag('icon_edit.png', array('style' => 'float: left; margin-right: 5px;')); ?></a>
+		<a class="image" href="javascript:void(0);" onclick="Effect.Appear('delete_milestone_<?php echo $milestone->getID(); ?>', { duration: 0.5 });"><?php echo image_tag('icon_delete.png', array('style' => 'float: left; margin-right: 5px;')); ?></a>
+		<div style="display: none; width: 400px; position: absolute; left: 0; padding: 5px; text-align: left;" id="delete_milestone_<?php echo $milestone->getID(); ?>" class="rounded_box white shadowed">
+			<b><?php echo __('Do you really want to delete this milestone?'); ?></b>
+			<div style="text-align: right;">
+				<a href="javascript:void(0);" onclick="deleteMilestone('<?php echo make_url('configure_project_milestone_action', array('project_id' => $milestone->getProject()->getID(), 'milestone_id' => $milestone->getID(), 'milestone_action' => 'delete')); ?>', <?php echo $milestone->getID();?>);"><?php echo __('Yes'); ?></a>&nbsp;::&nbsp;<a href="javascript:void(0);" onclick="Effect.Fade('delete_milestone_<?php echo $milestone->getID(); ?>', { duration: 0.5 });"><b><?php echo __('No'); ?></b></a>
+			</div>
 		</div>
-		<div style="padding: 3px; width: auto; font-size: 13px;"><b><?php echo $milestone->getName(); ?></b></div>
-		<div style="padding: 3px; padding-top: 0px; padding-bottom: 0px; color: #AAA;">
+		<div style="padding: 0; width: auto; font-size: 13px;"><b><?php echo $milestone->getName(); ?></b></div>
+		<div style="padding: 0 0 3px 0; color: #AAA;">
 			<?php if (!$milestone->hasScheduledDate() && !$milestone->hasStartingDate()): ?>
 				<?php echo __('This milestone has no planned schedule'); ?>
 			<?php elseif ($milestone->hasScheduledDate() && $milestone->hasStartingDate()): ?>
@@ -102,6 +104,8 @@
 				<?php echo __('This milestone is starting on %starting_date%', array('%starting_date%' => tbg_formatTime($milestone->getStartingDate(), 5))); ?>
 			<?php endif;?>
 		</div>
-		<div style="padding: 5px 0 10px 0;"><?php echo $milestone->getDescription(); ?></div>
+		<?php if ($milestone->getDescription()): ?>
+			<div style="padding: 5px 0 10px 0;"><?php echo $milestone->getDescription(); ?></div>
+		<?php endif; ?>
 	</div>
-</div>
+</li>

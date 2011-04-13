@@ -4,21 +4,21 @@
 	$assignees = $project->getAssignees(); 
 
 ?>
-<div class="config_header" style="margin-top: 20px;"><b><?php echo __('Assigned users'); ?></b></div>
+<div class="config_header" style="border-bottom: 0;"><b><?php echo __('Assigned users'); ?></b></div>
 <?php if (count($assignees['users']) == 0): ?>
 	<div style="padding-left: 5px; padding-top: 3px; color: #AAA;"><?php echo __('There are no users assigned to this project'); ?></div>
 <?php else: ?>
 	<table cellpadding=0 cellspacing=0 width="100%">
 		<?php foreach ($assignees['users'] as $u_id => $assigns): ?>
-			<tr id="assignee_user_<?php echo $u_id; ?>_row">
-				<td style="width: 20px; border-bottom: 1px solid #F1F1F1;">
-					<?php echo javascript_link_tag(image_tag('action_delete.png'), array('class' => 'image', 'onclick' => "removeAssignee('".make_url('configure_project_remove_assignee', array('project_id' => $project->getID(), 'assignee_type' => TBGIdentifiableClass::TYPE_USER, 'assignee_id' => $u_id))."', 'user', {$u_id});", 'style' => 'float: left;', 'id' => 'assignee_user_'.$u_id.'_link')); ?>
+			<tr id="assignee_user_<?php echo $u_id; ?>_row" class="hoverable">
+				<td style="width: 20px;">
+					<?php echo javascript_link_tag(image_tag('action_delete.png'), array('class' => 'image', 'onclick' => "removeAssignee('".make_url('configure_project_remove_assignee', array('project_id' => $project->getID(), 'assignee_type' => TBGIdentifiableClass::TYPE_USER, 'assignee_id' => $u_id))."', 'user', {$u_id});", 'id' => 'assignee_user_'.$u_id.'_link')); ?>
 					<?php echo image_tag('spinning_16.gif', array('id' => 'remove_assignee_user_'.$u_id.'_indicator', 'style' => 'float: left; display: none;')); ?>
 				</td>
-				<td style="vertical-align: top; width: 250px; border-bottom: 1px solid #F1F1F1;">
+				<td style="vertical-align: top; font-size: 0.9em;">
 					<?php echo include_component('main/userdropdown', array('user' => $u_id)); ?>
 				</td>
-				<td style="vertical-align: top; padding-top: 3px; border-bottom: 1px solid #F1F1F1; padding-bottom: 7px;">
+				<td style="vertical-align: top; padding: 3px; font-size: 0.9em;">
 					<?php if (array_key_exists('projects', $assigns)): ?>
 						<?php foreach ($assigns['projects'] as $p_id => $types): ?>
 							<?php $types_array = array(); ?>
@@ -57,23 +57,21 @@
 		<?php endforeach; ?>
 	</table>
 <?php endif; ?>
-<div class="config_header" style="margin-top: 20px;"><b><?php echo __('Assigned teams'); ?></b></div>
+<div class="config_header" style="border-bottom: 0;"><b><?php echo __('Assigned teams'); ?></b></div>
 <?php if (count($assignees['teams']) == 0): ?>
 	<div style="padding-left: 5px; padding-top: 3px; color: #AAA;"><?php echo __('There are no teams assigned to this project'); ?></div>
 <?php else: ?>
 	<table cellpadding=0 cellspacing=0 width="100%">
 		<?php foreach ($assignees['teams'] as $c_id => $assigns): ?>
-			<tr id="assignee_team_<?php echo $c_id; ?>_row">
-				<td style="width: 20px; border-bottom: 1px solid #F1F1F1;">
+			<tr id="assignee_team_<?php echo $c_id; ?>_row" style="font-size: 0.9em;" class="hoverable">
+				<td style="width: 20px;">
 					<?php echo javascript_link_tag(image_tag('action_delete.png'), array('class' => 'image', 'onclick' => "removeAssignee('".make_url('configure_project_remove_assignee', array('project_id' => $project->getID(), 'assignee_type' => TBGIdentifiableClass::TYPE_TEAM, 'assignee_id' => $c_id))."', 'team', {$c_id});", 'style' => 'float: left;', 'id' => 'assignee_team_'.$c_id.'_link')); ?>
 					<?php echo image_tag('spinning_16.gif', array('id' => 'remove_assignee_team_'.$c_id.'_indicator', 'style' => 'float: left; display: none;')); ?>
 				</td>
-				<td style="vertical-align: top; width: 250px; border-bottom: 1px solid #F1F1F1;">
-					<table cellpadding=0 cellspacing=0 width="100%">
-						<?php echo include_component('main/teamdropdown', array('team' => $c_id)); ?>
-					</table>
+				<td style="vertical-align: top; font-size: 0.9em;">
+					<?php echo include_component('main/teamdropdown', array('team' => $c_id)); ?>
 				</td>
-				<td style="vertical-align: top; padding-top: 3px; border-bottom: 1px solid #F1F1F1; padding-bottom: 7px;">
+				<td style="vertical-align: top; padding: 3px; font-size: 0.9em;">
 					<?php if (array_key_exists('projects', $assigns)): ?>
 						<?php foreach ($assigns['projects'] as $p_id => $types): ?>
 							<?php $types_array = array(); ?>
