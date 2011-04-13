@@ -19,18 +19,15 @@
 					<?php echo include_component('main/userdropdown', array('user' => $u_id)); ?>
 				</td>
 				<td style="vertical-align: top; padding: 3px; font-size: 0.9em;">
-					<?php if (array_key_exists('projects', $assigns)): ?>
-						<?php foreach ($assigns['projects'] as $p_id => $types): ?>
-							<?php $types_array = array(); ?>
-							<?php $theProject = TBGContext::factory()->TBGProject($p_id); ?>
-							<b><?php echo $theProject->getName(); ?></b>:&nbsp;
-							<?php foreach ($types as $type => $bool): ?>
-								<?php $types_array[] = TBGProjectAssigneesTable::getTypeName($type); ?>
-							<?php endforeach; ?>
-							<?php echo join(', ', $types_array); ?><br>
+					<?php //if (array_key_exists('projects', $assigns)): ?>
+						<?php // <b><?php echo $project->getName(); </b>:&nbsp; ?>
+						<?php $types_array = array(); ?>
+						<?php foreach ($assigns as $type => $bool): ?>
+							<?php $types_array[] = TBGProjectAssigneesTable::getTypeName($type); ?>
 						<?php endforeach; ?>
-					<?php endif; ?>
-					<?php if (array_key_exists('editions', $assigns)): ?>
+						<?php echo join(', ', $types_array); ?><br>
+					<?php //endif; ?>
+					<?php /*if (array_key_exists('editions', $assigns)): ?>
 						<?php foreach ($assigns['editions'] as $e_id => $types): ?>
 							<?php $types_array = array(); ?>
 							<?php $theEdition = TBGContext::factory()->TBGEdition($e_id); ?>
@@ -51,7 +48,7 @@
 							<?php endforeach; ?>
 							<?php echo join(', ', $types_array); ?><br>
 						<?php endforeach; ?>
-					<?php endif; ?>
+					<?php endif;*/ ?>
 				</td>
 			</tr>
 		<?php endforeach; ?>
@@ -72,18 +69,15 @@
 					<?php echo include_component('main/teamdropdown', array('team' => $c_id)); ?>
 				</td>
 				<td style="vertical-align: top; padding: 3px; font-size: 0.9em;">
-					<?php if (array_key_exists('projects', $assigns)): ?>
-						<?php foreach ($assigns['projects'] as $p_id => $types): ?>
-							<?php $types_array = array(); ?>
-							<?php $theProject = TBGContext::factory()->TBGProject($p_id); ?>
-							<b><?php echo $theProject->getName(); ?></b>:&nbsp;
-							<?php foreach ($types as $type => $bool): ?>
-								<?php $types_array[] = TBGProjectAssigneesTable::getTypeName($type); ?>
-							<?php endforeach; ?>
-							<?php echo join(', ', $types_array); ?><br>
+					<?php //if (array_key_exists('projects', $assigns)): ?>
+						<?php // <b><?php echo $project->getName(); </b>:&nbsp; ?>
+						<?php $types_array = array(); ?>
+						<?php foreach ($assigns as $type => $bool): ?>
+							<?php $types_array[] = TBGProjectAssigneesTable::getTypeName($type); ?>
 						<?php endforeach; ?>
-					<?php endif; ?>
-					<?php if (array_key_exists('editions', $assigns)): ?>
+						<?php echo join(', ', $types_array); ?><br>
+					<?php //endif; ?>
+					<?php /*if (array_key_exists('editions', $assigns)): ?>
 						<?php foreach ($assigns['editions'] as $e_id => $types): ?>
 							<?php $types_array = array(); ?>
 							<?php $theEdition = TBGContext::factory()->TBGEdition($e_id); ?>
@@ -104,7 +98,7 @@
 							<?php endforeach; ?>
 							<?php echo join(', ', $types_array); ?><br>
 						<?php endforeach; ?>
-					<?php endif; ?>
+					<?php endif;*/ ?>
 				</td>
 			</tr>
 		<?php endforeach; ?>

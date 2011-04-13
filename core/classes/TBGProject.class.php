@@ -1499,11 +1499,19 @@
 			if ($this->_visible_issuetypes === null)
 			{
 				$this->_visible_issuetypes = array();
-				if ($res = B2DB::getTable('TBGVisibleIssueTypesTable')->getAllByProjectID($this->getID()))
+				if ($res = TBGVisibleIssueTypesTable::getTable()->getAllByProjectID($this->getID()))
 				{
 					while ($row = $res->getNextRow())
 					{
-						$this->_visible_issuetypes[$row->get(TBGIssueTypesTable::ID)] = TBGContext::factory()->TBGIssuetype($row->get(TBGIssueTypesTable::ID), $row);
+						try
+						{
+							$i_id = $row->get(TBGVisibleIssueTypesTable::ISSUETYPE_ID);
+							$this->_visible_issuetypes[$i_id] = TBGContext::factory()->TBGIssuetype($i_id);
+						}
+						catch (Exception $e)
+						{
+							TBGVisibleIssueTypesTable::getTable()->deleteByIssuetypeID($i_id);
+						}
 					}
 				}
 			}

@@ -237,7 +237,8 @@
 		
 		public function _preDelete()
 		{
-			B2DB::getTable('TBGIssuetypeSchemeLinkTable')->deleteByIssuetypeID($this->getID());
+			TBGIssuetypeSchemeLinkTable::getTable()->deleteByIssuetypeID($this->getID());
+			TBGVisibleIssueTypesTable::getTable()->deleteByIssuetypeID($this->getID());
 		}
 	}
 	

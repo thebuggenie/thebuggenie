@@ -238,7 +238,7 @@
 			$cp_handle = opendir(THEBUGGENIE_PATH . 'i18n');
 			while ($classfile = readdir($cp_handle))
 			{
-				if (strstr($classfile, '.') == '') 
+				if (strstr($classfile, '.') == '' && file_exists(THEBUGGENIE_PATH . 'i18n/' . $classfile . '/language')) 
 				{ 
 					$retarr[$classfile] = file_get_contents(THEBUGGENIE_PATH . 'i18n/' . $classfile . '/language');
 				}
