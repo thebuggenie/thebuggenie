@@ -97,6 +97,25 @@
 				}
 				echo "\n";
 			}
+			if (class_exists('B2DB'))
+			{
+				echo "\n";
+				TBGCliCommand::cli_echo("SQL queries:\n", 'white', 'bold');
+				$cc = 1;
+				foreach (B2DB::getSQLHits() as $details)
+				{
+					TBGCliCommand::cli_echo("(".$cc++.") [");
+					$str = ($details['time'] >= 1) ? round($details['time'], 2) . ' seconds' : round($details['time'] * 1000, 1) . 'ms';
+					TBGCliCommand::cli_echo($str);
+					TBGCliCommand::cli_echo("] from ");
+					TBGCliCommand::cli_echo($details['filename'], 'blue');
+					TBGCliCommand::cli_echo(", line ");
+					TBGCliCommand::cli_echo($details['line'], 'white', 'bold');
+					TBGCliCommand::cli_echo(":\n");
+					TBGCliCommand::cli_echo("{$details['sql']}\n");
+				}
+				echo "\n";
+			}
 			echo "\n";
 			die();
 		}
@@ -265,6 +284,22 @@
 					$lname = TBGLogging::getLevelName($entry['level']);
 					echo "<div class=\"log_{$entry['category']}\"><strong>{$lname}</strong> <strong style=\"color: #{$color}\">[{$entry['category']}]</strong> <span style=\"color: #555; font-size: 10px; font-style: italic;\">{$entry['time']}</span>&nbsp;&nbsp;{$entry['message']}</div>";
 				}
+			}
+			if (class_exists("B2DB") && TBGContext::isDebugMode())
+			{
+				echo "<h3>SQL queries:</h3>";
+				echo "<ol>";
+				foreach (B2DB::getSQLHits() as $details)
+				{
+					echo "<li>
+						<b>
+						<span class=\"faded_out dark small\">[";
+					echo ($details['time'] >= 1) ? round($details['time'], 2) . ' seconds' : round($details['time'] * 1000, 1) . 'ms'; 
+					echo "]</span> </b> from <b>{$details['filename']}, line {$details['line']}</b>:<br>
+						<span style=\"font-size: 12px;\">{$details['sql']}</span>
+					</li>";
+				}
+				echo "</ol>";
 			}
 			echo "</div>
 			<b class=\"xbottom\"><b class=\"xb4\"></b><b class=\"xb3\"></b><b class=\"xb2\"></b><b class=\"xb1\"></b></b>
