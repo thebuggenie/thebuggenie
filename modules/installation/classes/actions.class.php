@@ -415,6 +415,11 @@
 				}
 			}
 			
+			$ut = TBGUsersTable::getTable();
+			$crit = $ut->getCriteria();
+			$crit->addUpdate(TBGUsersTable::PRIVATE_EMAIL, true);
+			$ut->doUpdate($crit);
+			
 			// Add default gravatar setting
 			TBGSettings::saveSetting(TBGSettings::SETTING_ENABLE_GRAVATARS, 1);
 
