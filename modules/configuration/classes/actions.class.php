@@ -2226,107 +2226,138 @@
 
 		public function runUpdateUser(TBGRequest $request)
 		{
-			$user = TBGContext::factory()->TBGUser($request->getParameter('user_id'));
-			if ($user instanceof TBGUser)
+			try
 			{
-				$testuser = TBGUser::getByUsername($request->getParameter('username'));
-				if (!$testuser instanceof TBGUser || $testuser->getID() == $user->getID())
+				$user = TBGContext::factory()->TBGUser($request->getParameter('user_id'));
+				if ($user instanceof TBGUser)
 				{
-					$user->setUsername($request->getParameter('username'));
-				}
-				else
-				{
-					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('This username is already taken')));
-				}
-				$password_changed = false;
-				if ($request->getParameter('password_action') == 'change' && $request->getParameter('new_password_1') && $request->getParameter('new_password_2'))
-				{
-					if ($request->getParameter('new_password_1') == $request->getParameter('new_password_2'))
+					$testuser = TBGUser::getByUsername($request->getParameter('username'));
+					if (!$testuser instanceof TBGUser || $testuser->getID() == $user->getID())
 					{
-						$user->setPassword($request->getParameter('new_password_1'));
-						$password_changed = true;
+						$user->setUsername($request->getParameter('username'));
 					}
 					else
 					{
-						return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please enter the new password twice')));
+						return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('This username is already taken')));
 					}
-				}
-				elseif ($request->getParameter('password_action') == 'random')
-				{
-					$random_password = TBGUser::createPassword();
-					$user->setPassword($random_password);
-					$password_changed = true;
-				}
-				$user->setRealname($request->getParameter('realname'));
-				$return_options = array();
-				if ($group = TBGContext::factory()->TBGGroup($request->getParameter('group')))
-				{
-					if ($user->getGroupID() != $group->getID())
+					$password_changed = false;
+					if ($request->getParameter('password_action') == 'change' && $request->getParameter('new_password_1') && $request->getParameter('new_password_2'))
 					{
-						$groups = array($user->getGroupID(), $group->getID());
-						$return_options['update_groups'] = array('ids' => array(), 'membercounts' => array());
+						if ($request->getParameter('new_password_1') == $request->getParameter('new_password_2'))
+						{
+							$user->setPassword($request->getParameter('new_password_1'));
+							$password_changed = true;
+						}
+						else
+						{
+							return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please enter the new password twice')));
+						}
 					}
-					$user->setGroup($group);
-				}
-				$existing_teams = array_keys($user->getTeams());
-				$new_teams = array();
-				$user->clearTeams();
-				foreach ($request->getParameter('teams', array()) as $team_id => $team)
-				{
-					if ($team = TBGContext::factory()->TBGTeam($team_id))
+					elseif ($request->getParameter('password_action') == 'random')
 					{
-						$new_teams[] = $team_id;
-						$user->addToTeam($team);
+						$random_password = TBGUser::createPassword();
+						$user->setPassword($random_password);
+						$password_changed = true;
 					}
-				}
-				$user->clearClients();
-				foreach ($request->getParameter('clients', array()) as $client_id => $client)
-				{
-					if ($client = TBGContext::factory()->TBGClient($client_id))
+					$user->setRealname($request->getParameter('realname'));
+					$return_options = array();
+					try
 					{
-						$new_clients[] = $client_id;
-						$user->addToClient($client);
+						if ($group = TBGContext::factory()->TBGGroup($request->getParameter('group')))
+						{
+							if ($user->getGroupID() != $group->getID())
+							{
+								$groups = array($user->getGroupID(), $group->getID());
+								$return_options['update_groups'] = array('ids' => array(), 'membercounts' => array());
+							}
+							$user->setGroup($group);
+						}
 					}
-				}
-				$user->setBuddyname($request->getParameter('nickname'));
-				$user->setActivated((bool) $request->getParameter('activated'));
-				$user->setEmail($request->getParameter('email'));
-				$user->setEnabled((bool) $request->getParameter('enabled'));
-				$user->save();
-				if (isset($groups))
-				{
-					foreach ($groups as $group_id)
+					catch (Exception $e)
 					{
-						if (!$group_id) continue;
-						$return_options['update_groups']['ids'][] = $group_id;
-						$return_options['update_groups']['membercounts'][$group_id] = TBGContext::factory()->TBGGroup($group_id)->getNumberOfMembers();
+						throw new Exception(TBGContext::getI18n()->__('Invalid user group'));
 					}
-				}
-				if ($new_teams != $existing_teams)
-				{
-					$new_team_ids = array_diff($new_teams, $existing_teams);
-					$existing_team_ids = array_diff($existing_teams, $new_teams);
-					$teams_to_update = array_merge($new_team_ids, $existing_team_ids);
-					$return_options['update_teams'] = array('ids' => array(), 'membercounts' => array());
-					foreach ($teams_to_update as $team_id)
+					
+					$existing_teams = array_keys($user->getTeams());
+					$new_teams = array();
+					$user->clearTeams();
+					try
 					{
-						$return_options['update_teams']['ids'][] = $team_id;
-						$return_options['update_teams']['membercounts'][$team_id] = TBGContext::factory()->TBGTeam($team_id)->getNumberOfMembers();
+						foreach ($request->getParameter('teams', array()) as $team_id => $team)
+						{
+							if ($team = TBGContext::factory()->TBGTeam($team_id))
+							{
+								$new_teams[] = $team_id;
+								$user->addToTeam($team);
+							}
+						}
 					}
+					catch (Exception $e)
+					{
+						throw new Exception(TBGContext::getI18n()->__('One or more teams were invalid'));
+					}
+					
+					try
+					{
+						$user->clearClients();
+						foreach ($request->getParameter('clients', array()) as $client_id => $client)
+						{
+							if ($client = TBGContext::factory()->TBGClient($client_id))
+							{
+								$new_clients[] = $client_id;
+								$user->addToClient($client);
+							}
+						}
+					}
+					catch (Exception $e)
+					{
+						throw new Exception(TBGContext::getI18n()->__('One or more clients were invalid'));
+					}
+					$user->setBuddyname($request->getParameter('nickname'));
+					$user->setActivated((bool) $request->getParameter('activated'));
+					$user->setEmail($request->getParameter('email'));
+					$user->setEnabled((bool) $request->getParameter('enabled'));
+					$user->save();
+					if (isset($groups))
+					{
+						foreach ($groups as $group_id)
+						{
+							if (!$group_id) continue;
+							$return_options['update_groups']['ids'][] = $group_id;
+							$return_options['update_groups']['membercounts'][$group_id] = TBGContext::factory()->TBGGroup($group_id)->getNumberOfMembers();
+						}
+					}
+					if ($new_teams != $existing_teams)
+					{
+						$new_team_ids = array_diff($new_teams, $existing_teams);
+						$existing_team_ids = array_diff($existing_teams, $new_teams);
+						$teams_to_update = array_merge($new_team_ids, $existing_team_ids);
+						$return_options['update_teams'] = array('ids' => array(), 'membercounts' => array());
+						foreach ($teams_to_update as $team_id)
+						{
+							$return_options['update_teams']['ids'][] = $team_id;
+							$return_options['update_teams']['membercounts'][$team_id] = TBGContext::factory()->TBGTeam($team_id)->getNumberOfMembers();
+						}
+					}
+					$return_options['failed'] = false;
+					$template_options = array('user' => $user);
+					if (isset($random_password))
+					{
+						$template_options['random_password'] = $random_password;
+					}
+					$return_options['content'] = $this->getTemplateHTML('configuration/finduser_row', $template_options);
+					$return_options['title'] = TBGContext::getI18n()->__('User updated!');
+					if ($password_changed)
+					{
+						$return_options['message'] = TBGContext::getI18n()->__('The password was changed');
+					}
+					return $this->renderJSON($return_options);
 				}
-				$return_options['failed'] = false;
-				$template_options = array('user' => $user);
-				if (isset($random_password))
-				{
-					$template_options['random_password'] = $random_password;
-				}
-				$return_options['content'] = $this->getTemplateHTML('configuration/finduser_row', $template_options);
-				$return_options['title'] = TBGContext::getI18n()->__('User updated!');
-				if ($password_changed)
-				{
-					$return_options['message'] = TBGContext::getI18n()->__('The password was changed');
-				}
-				return $this->renderJSON($return_options);
+			}
+			catch (Exception $e)
+			{
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('This user could not be updated: %message%', array('%message%' => $e->getMessage()))));
 			}
 			$this->getResponse()->setHttpStatus(400);
 			return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('This user could not be updated')));
