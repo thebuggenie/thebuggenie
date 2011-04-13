@@ -104,20 +104,14 @@
 				{
 					try
 					{
-						if (is_array($trigger))
-						{
-							TBGLogging::log('Running callback function '.get_class($trigger[0]).'::'.$trigger[1]);
-						}
-						else
-						{
-							TBGLogging::log('Running callback function '.$trigger);
-						}
+						$cb_string = (is_array($trigger)) ? get_class($trigger[0]).'::'.$trigger[1] : $trigger;
+						TBGLogging::log('Running callback function '.$cb_string);
 						$retval = call_user_func($trigger, $event);
 						if ($return_when_processed && $event->isProcessed())
 						{
 							return true;
 						}
-						TBGLogging::log('done (Running callback function '.$trigger.')');
+						TBGLogging::log('done (Running callback function '.$cb_string.')');
 					}
 					catch (Exception $e)
 					{
