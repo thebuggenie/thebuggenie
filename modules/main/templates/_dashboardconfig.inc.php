@@ -6,7 +6,7 @@
 		<ul id="views_list" style="float: left; margin: 0; padding: 0; list-style: none;" class="sortable">
 		<?php foreach ($dashboardViews as $view): ?>
 			<li id="view_<?php echo $view->get(TBGUserDashboardViewsTable::VIEW); ?>" class="rounded_box mediumgrey" style="margin: 5px 10px; float: left; width: 30em; cursor: move; text-align: left;">
-				<span id="<?php echo $view->get(TBGUserDashboardViewsTable::VIEW); ?>_<?php echo $view->get(TBGUserDashboardViewsTable::TYPE); ?>"><?php echo __($views[$view->get(TBGUserDashboardViewsTable::TYPE)][$view->get(TBGUserDashboardViewsTable::VIEW)]); ?></span>
+				<span id="<?php echo $view->get(TBGUserDashboardViewsTable::VIEW); ?>_<?php echo $view->get(TBGUserDashboardViewsTable::TYPE); ?>"><?php echo ($view->get(TBGUserDashboardViewsTable::TYPE)) ? __($views[$view->get(TBGUserDashboardViewsTable::TYPE)][$view->get(TBGUserDashboardViewsTable::VIEW)]) : __('...Select a view...'); ?></span>
 				<?php echo javascript_link_tag(image_tag('tabmenu_dropdown.png', array('class' => 'menu_dropdown', 'style' => 'float: right; margin-left: 5px;')), array('onclick' => "this.ancestors()[0].childElements()[3].toggle(); this.ancestors()[0].className = this.ancestors()[0].childElements()[3].visible() ? 'rounded_box verylightyellow' : 'rounded_box mediumgrey';")); ?>
 				<?php echo javascript_link_tag(image_tag('action_remove_small.png', array('class' => 'menu_dropdown', 'style' => 'float: right; margin-left: 5px;')), array('onclick' => "this.ancestors()[0].remove();  Sortable.create('views');")); ?>
 				<table style="display: none; width: 100%; cursor: default;">

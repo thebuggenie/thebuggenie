@@ -50,12 +50,15 @@
 		
 		public function addView($user_id, $view)
 		{
-			$crit = $this->getCriteria();
-			$crit->addInsert(self::UID, $user_id);
-			$crit->addInsert(self::TYPE, $view['type']);
-			$crit->addInsert(self::VIEW, $view['id']);
-			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
-			$this->doInsert($crit);
+			if ($view['type'])
+			{
+				$crit = $this->getCriteria();
+				$crit->addInsert(self::UID, $user_id);
+				$crit->addInsert(self::TYPE, $view['type']);
+				$crit->addInsert(self::VIEW, $view['id']);
+				$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
+				$this->doInsert($crit);
+			}
 		}
 		
 		public function clearViews($user_id)
