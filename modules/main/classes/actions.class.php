@@ -190,7 +190,6 @@
 		 */
 		public function runDashboardSave(TBGRequest $request)
 		{
-			return $this->renderJSON(array('failed' => true, 'error' => 'bla'));
 			$i18n = TBGContext::getI18n();
 			$this->login_referer = (array_key_exists('HTTP_REFERER', $_SERVER) && isset($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : '';
 			$this->options = $request->getParameters();
