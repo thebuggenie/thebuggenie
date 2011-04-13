@@ -390,6 +390,18 @@
 			TBGScopesTable::getTable()->upgrade(TBGScopesTable3dot0::getTable());
 			TBGIssueFieldsTable::getTable()->upgrade(TBGIssueFieldsTable3dot0::getTable());
 
+			// Upgrade all modules
+			foreach (TBGContext::getModules() as $module)
+			{
+				if (method_exists($module, 'upgradeFrom3dot0'))
+				{
+					$module->upgradeFrom3dot0();
+				}
+			}
+			
+			// Start a transaction to preserve the upgrade path
+			$transaction = B2DB::startTransaction();
+			
 			// Add votes to feature requests for default issue type scheme
 			$its = new TBGIssuetypeScheme(1);
 			foreach (TBGIssuetype::getAll() as $fr)
@@ -403,16 +415,11 @@
 				}
 			}
 			
-			foreach (TBGContext::getModules() as $module)
-			{
-				if (method_exists($module, 'upgradeFrom3dot0'))
-				{
-					$module->upgradeFrom3dot0();
-				}
-			}
-			
+			// Add default gravatar setting
 			TBGSettings::saveSetting(TBGSettings::SETTING_ENABLE_GRAVATARS, 1);
 
+			// End transaction and finalize upgrade
+			$transaction->commitAndEnd();
 			$this->upgrade_complete = true;
 		}
 
@@ -420,10 +427,18 @@
 		{
 			$version_info = explode(',', file_get_contents(THEBUGGENIE_PATH . 'installed'));
 			$this->current_version = $version_info[0];
-			$this->upgrade_available = false;
+			$this->upgrade_available = ($this->current_version != '3.1');
+			
+			if ($this->upgrade_available)
+			{
+				$scope = new TBGScope();
+				$scope->setID(1);
+				$scope->setEnabled();
+				TBGContext::setScope($scope);
+			}
 			$this->upgrade_complete = false;
 
-			if ($request->isMethod(TBGRequest::POST))
+			if ($this->upgrade_available && $request->isMethod(TBGRequest::POST))
 			{
 				$this->upgrade_complete = false;
 				switch ($this->current_version)
@@ -444,12 +459,15 @@
 			}
 			elseif ($this->current_version != '3.1')
 			{
-				$this->upgrade_available = true;
 				$this->permissions_ok = false;
 				if (is_writable(THEBUGGENIE_PATH . 'installed') && is_writable(THEBUGGENIE_PATH . 'upgrade'))
 				{
 					$this->permissions_ok = true;
 				}
+			}
+			else
+			{
+				$this->forward(TBGContext::getRouting()->generate('home'));
 			}
 		}
 

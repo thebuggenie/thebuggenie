@@ -1,17 +1,19 @@
 <?php include_template('installation/header', array('mode' => 'upgrade')); ?>
-<div class="donate installation_box">
-	<h2>Don't you like us?</h2>
-	Even though this software has been provided to you free of charge, developing it is not possible without financial support from our users.
-	By making a donation or buying a support contract, you:
-	<ul>
-		<li>Help ensure continued development of The Bug Genie</li>
-		<li>Make sure we can keep our web services available</li>
-		<li>Help Philip buy more kittens</li>
-	</ul>
-	<h4>If this software has turned out to be valuable to you and/or your business - please consider supporting it.</h4>
-	More information about supporting The Bug Genie development can be found here:
-	<a target="_blank" href="http://www.thebuggenie.com/support.php">http://www.thebuggenie.com/support.php</a> <i>(opens in a new window)</i>
-</div>
+<?php if ($upgrade_available): ?>
+	<div class="donate installation_box">
+		<h2>Don't you like us?</h2>
+		Even though this software has been provided to you free of charge, developing it is not possible without financial support from our users.
+		By making a donation or buying a support contract, you:
+		<ul>
+			<li>Help ensure continued development of The Bug Genie</li>
+			<li>Make sure we can keep our web services available</li>
+			<li>Help Philip buy more kittens</li>
+		</ul>
+		<h4>If this software has turned out to be valuable to you and/or your business - please consider supporting it.</h4>
+		More information about supporting The Bug Genie development can be found here:
+		<a target="_blank" href="http://www.thebuggenie.com/support.php">http://www.thebuggenie.com/support.php</a> <i>(opens in a new window)</i>
+	</div>
+<?php endif; ?>
 <div class="installation_box">
 	<?php if ($upgrade_available): ?>
 		<h2>You are performing the following upgrade: <?php echo $current_version; ?>.x => 3.1<br>
@@ -40,7 +42,7 @@
 		<?php endif; ?>
 	<?php elseif ($upgrade_complete): ?>
 		<h2>Upgrade successfully completed!</h2>
-		If the file <?php echo THEBUGGENIE_PATH . 'upgrade'; ?> exists, please remove this file and reload this page.
+		If the file <b><?php echo THEBUGGENIE_PATH . 'upgrade'; ?></b> exists, please remove this file and reload this page.
 	<?php else: ?>
 		<h2>No upgrade necessary!</h2>
 		If the file <b><?php echo THEBUGGENIE_PATH . 'upgrade'; ?></b> exists, please remove this file and reload this page.
