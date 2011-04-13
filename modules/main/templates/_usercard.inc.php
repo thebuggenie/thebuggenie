@@ -7,6 +7,9 @@
 		<div class="user_realname">
 			<?php echo $user->getRealname(); ?> <span class="user_username"><?php echo $user->getUsername(); ?></span>
 			<div class="user_status"><?php echo $user->getState()->getName(); ?></div>
+			<?php if ($user->isEmailPublic() || $tbg_user->canAccessConfigurationPage(TBGSettings::CONFIGURATION_SECTION_USERS)): ?>
+				<div class="user_email"><?php echo $user->getEmail(); ?></div>
+			<?php endif; ?>
 		</div>
 		<div class="user_details">
 		<?php if (TBGUser::isThisGuest() == false): ?>

@@ -19,7 +19,7 @@ table, img, a img { border: 0; }
 a { color: #00a400; text-decoration: none; }
 a.image:hover { border: 0px; }
 a.issue_closed { text-decoration: line-through; }
-a:hover { border-bottom: 1px dotted #aaa; }
+a:hover { border-bottom: 1px dotted #AAA; }
 a:active, a:focus { outline: none; outline-style: none; }
 
 form, p { margin: 0px; padding: 0px; }
@@ -127,7 +127,7 @@ div.image_container.thumb img.image { width: 220px; }
 .commenttitle {  font-weight: bold; }
 .comment_hash { float: right; font-size: 23px; font-weight: normal; color: #B1B8E9; }
 .comments_none {  font-weight: normal; }
-.commentdate { color: #aaa; font-weight: normal; font-size: 0.8em; }
+.commentdate { color: #AAA; font-weight: normal; font-size: 0.8em; }
 .commentheader { padding: 0 0 5px 0; border-bottom: 1px dotted #CCC; }
 .comment_add_title { font-size: 14px; font-weight: bold; }
 .commentbody { padding: 5px 5px 5px 0; font-size: 12px; }
@@ -271,14 +271,15 @@ a.shadowed:active { box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); -webkit-box-shad
 /* user popups */
 .user_popup, #user_details_popup { font-size: 12px; color: #555; }
 .user_popup .user_realname { font-size: 1.2em; font-weight: bold; padding: 0 0 0 7px; width: 240px; float: left; }
-#user_details_popup .user_realname { font-size: 1.5em; font-weight: bold; padding: 4px 0 0 10px; float: left; line-height: 1.2; }
+#user_details_popup .user_realname { font-size: 1.5em; font-weight: bold; padding: 2px 0 0 10px; float: left; line-height: 1.2; }
 .account_details { margin: 10px 0px 10px 10px; padding: 10px; font-size: 1em; }
 .account_details .user_realname { font-size: 1.2em; font-weight: bold; line-height: 1.3; padding-bottom: 2px; }
 .account_details .user_username { font-size: 0.9em; line-height: 1.2; }
 .account_details .user_status { font-size: 0.9em; line-height: 1.2; }
-#user_details_popup .user_username { font-weight: normal; font-size: 0.9em; color: #aaa; font-style: italic; line-height: 1.2; }
+#user_details_popup .user_username { font-weight: normal; font-size: 0.9em; color: #AAA; font-style: italic; line-height: 1.2; }
 #user_details_popup .user_id { float: right; font-size: 26px; font-weight: normal; color: #C4CAE9; }
-.user_popup .user_realname .user_status, #user_details_popup .user_realname .user_status { font-size: 0.8em; font-weight: normal; color: #aaa; }
+.user_popup .user_realname .user_status, #user_details_popup .user_realname .user_status { font-size: 0.8em; font-weight: normal; color: #AAA; }
+#user_details_popup .user_realname .user_email { font-size: 0.6em; font-weight: normal; color: #AAA; }
 .user_popup .user_details, #user_details_popup .user_details { font-size: 1.0em; font-weight: normal; padding: 3px; clear: both; }
 .user_details ul.teamlist { list-style-type: none; }
 .user_details ul.teamlist li { margin: 0 0 0 10px; }
@@ -380,7 +381,7 @@ th.highlighted_column { background-color: #C1C1C1; }
 
 .config_badges { margin: 0; }
 .config_badges li { margin: 5px 10px 5px 0; width: 315px; font-size: 12px; border: 1px solid #DDD; padding: 0px; background-color: #FFF; float: left; }
-.config_badges li:hover	{ border-color: #aaa; background-color: #F5F5F5; }
+.config_badges li:hover	{ border-color: #AAA; background-color: #F5F5F5; }
 .config_badges li a	{ display: block; height: 60px; padding: 7px; }
 .config_badges li a:hover { border: 0px; }
 .config_badges li a span { color: #555; }
@@ -405,7 +406,7 @@ th.highlighted_column { background-color: #C1C1C1; }
 /* permissions configuration styling */
 .config_permissions { font-size: 12px; }
 .config_permissions .faded_out.smaller { font-size: 10px; padding-left: 10px; }
-.config_permissions .permission_list .tab_pane { border: 1px solid #aaa; border-top: 0; padding: 10px; }
+.config_permissions .permission_list .tab_pane { border: 1px solid #AAA; border-top: 0; padding: 10px; }
 .config_permissions .permission_list .tab_pane p { margin-bottom: 15px;  }
 .permission_list ul { list-style-type: none; padding: 0; margin: 0; width: 715px; }
 .permission_list ul li { margin: 0px; padding: 0;  font-weight: normal; clear: both; background-color: transparent; }
@@ -560,7 +561,7 @@ a.friend:hover { border-bottom: 1px dotted #0000a4; }
 #report_form select { font-size: 14px; padding: 2px; height: 24px; text-align: left; width: 100%; }
 .report_issue_help { padding: 5px 0 0 2px;  }
 #report_issue_add_extra { margin-top: 15px; color: #333; }
-#report_form .textarea_hint { color: #aaa;  font-weight: normal; padding: 5px 0 0 0; }
+#report_form .textarea_hint { color: #AAA;  font-weight: normal; padding: 5px 0 0 0; }
 .issue_main .textarea_hint { color: #999;  font-weight: normal; padding: 5px 0 0 0; }
 .issue_main pre { width: 650px; padding: 3px; background-color: #F1EECB; border: 1px dotted #E3DDa5; }
 .reportissue_error tr { background-color: #FEE; }
@@ -582,7 +583,7 @@ a.friend:hover { border-bottom: 1px dotted #0000a4; }
 .nice_button input:hover { background-color: #8C8; }
 
 .nice_button.disabled { padding: 0px; color: #FFF; border: 0; position: relative; display: inline; text-align: center; margin-left: 10px; }
-.nice_button.disabled input { border: 0; border-top: 1px solid #F9F9F9; color: #aaa; padding: 3px; font-weight: bold; background-color: #EEE; cursor: pointer; }
+.nice_button.disabled input { border: 0; border-top: 1px solid #F9F9F9; color: #AAA; padding: 3px; font-weight: bold; background-color: #EEE; cursor: pointer; }
 .nice_button.disabled input:active { background-color: #F5F5F5; }
 
 .nice_button.workflow { padding: 0px; color: #FFF; border: 1px solid #E3DDA5; position: relative; display: inline; text-align: center; margin: 0; }
@@ -718,7 +719,7 @@ dd { float: left; display: block; width: 195px; font-weight: normal; margin: 0; 
 .header_div.smaller, label.smaller, div.smaller { font-size: 12px; }
 .header_div.bigger, label.bigger, div.bigger { font-size: 15px; }
 .header_div.light { border-color: #EEE; }
-.no_items { color: #aaa; font-size: 12px; padding: 5px; }
+.no_items { color: #AAA; font-size: 12px; padding: 5px; }
 .percent_filled { background-color: #8C8; }
 .percent_unfilled { background-color: #aFa; }
 .issue_lefthand .percent_filled a, .percent_unfilled a { display: block; height: 14px; }
@@ -771,7 +772,7 @@ table.issue_affects td img { vertical-align: bottom; }
 #customize_dashboard_icon:hover span { display: inherit; }
 #dashboard li { font-size: 12px; font-weight: normal; clear: none; margin: 5px 5px 5px 0; text-align: left; float: left; width: 460px; }
 #dashboard li table tr td { font-size: 1em; font-weight: normal; vertical-align: top; }
-#dashboard li table tr.issue_closed td { text-decoration: line-through; color: #aaa; }
+#dashboard li table tr.issue_closed td { text-decoration: line-through; color: #AAA; }
 #dashboard li table tr.issue_closed td a { color: #88C688; }
 #dashboard li table tr td .issue_closed { text-decoration: line-through; }
 #dashboard li.narrow { width: 300px; }
@@ -816,14 +817,14 @@ ul.scrum_container li .story_color_selector { position: absolute; top: 0px; left
 .story_estimation_div a { font-weight: bold; }
 .story_estimation_div input[type="text"] { width: 30px; }
 ul.scrum_container li .story_color_selector_item { cursor: pointer; float: left; width: 12px; height: 50px; font-size: 1px; font-weight: normal; padding: 0; border: 0; border-right: 1px solid #555; }
-ul.scrum_container li .story_no { float: left; font-size: 14px; font-weight: bold; font-style: italic; background-color: transparent; color: #aaa; padding: 1px 2px 1px 2px; margin-right: 3px; }
+ul.scrum_container li .story_no { float: left; font-size: 14px; font-weight: bold; font-style: italic; background-color: transparent; color: #AAA; padding: 1px 2px 1px 2px; margin-right: 3px; }
 ul.scrum_container li .story_estimate { float: right; margin-left: 3px;  font-weight: normal; padding: 1px 0 0 0; }
 ul.scrum_container li .story_estimate img { float: right; margin: 0 2px 0 3px; }
 ul.scrum_container li .story_owner { position: absolute; bottom: 1px; left: 8px; font-size: 14px; font-weight: normal; padding: 1px 4px 1px 1px; }
 ul.scrum_container li .story_tags { padding-top: 3px; line-height: 15px;  font-weight: normal; }
 ul.scrum_container li .actions { display: none; clear: both; padding: 3px; }
 ul.scrum_container li .actions a:hover { border: 0; }
-ul.scrum_container li .actions .task_count { font-size: 14px; font-weight: normal; color: #aaa; }
+ul.scrum_container li .actions .task_count { font-size: 14px; font-weight: normal; color: #AAA; }
 ul.scrum_container li:hover .actions { display: block; }
 ul.scrum_container li .actions label { float: left; font-weight: bold; margin: 0 5px 0 0; padding: 0; font-size: 12px; }
 #scrum .story_card { position: relative; }
@@ -850,7 +851,7 @@ ul.scrum_container li .actions label { float: left; font-weight: bold; margin: 0
 #scrum .sprint_header a.issue_count { font-size: 11px; font-weight: normal; color: #888; }
 #scrum .sprint_header a.issue_count:hover { color: #BBB; }
 #scrum .sprint_header a:hover { color: #888; text-decoration: none; border: 0; }
-#scrum_sprint_burndown a { color: #555; border-bottom: 1px dotted #aaa; }
+#scrum_sprint_burndown a { color: #555; border-bottom: 1px dotted #AAA; }
 #scrum_sprint_burndown .faded_out a { color: #888; border-bottom: 0; }
 #scrum_sprint_burndown a:hover { color: #777; border-bottom: 1px dotted #BBB; }
 #scrum_sprint_burndown .faded_out a:hover { color: #999; border-bottom: 0; }
@@ -893,7 +894,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 #project_header_container img.config_link { float: right; margin: 1px 20px 0 0; }
 #project_name img.logo { float: left; margin: 1px 5px 0 0; }
 #project_name { font-size: 18px; font-weight: bold; margin: 10px 5px 5px 0; line-height: 1; }
-#project_key_span { margin: 3px 0 0 0; font-size: 12px; font-weight: normal; display: inline; padding: 3px; color: #aaa; }
+#project_key_span { margin: 3px 0 0 0; font-size: 12px; font-weight: normal; display: inline; padding: 3px; color: #AAA; }
 #project_team, #project_client { font-weight: normal; margin: 0 5px 5px 0; width: 675px; }
 #project_qa, #project_leader, #project_owner { font-weight: normal; margin: 5px 0; width: 290px; }
 #project_description_span { font-size: 14px; font-weight: normal; color: #666; }
@@ -932,7 +933,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .recent_activities_details { font-size: 0.8em; }
 .recent_activities td.latest_action_dates { font-size: 1.1em; font-weight: bold; padding: 15px 0 0 0; }
 .project_information_main .recent_activities td { padding-bottom: 7px; }
-#timeline .user { font-size: 12px; color: #aaa; }
+#timeline .user { font-size: 12px; color: #AAA; }
 .timeline_actions a { font-weight: bold; }
 .timeline_actions .content { padding-top: 5px; }
 .timeline_inline_details { color: #AAA; font-style: italic; margin: 5px 0 0 7px; padding-left: 5px; border-left: 1px dotted #CCC; font-size: 0.9em; }
@@ -952,14 +953,14 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .roadmap_issues { clear: both; font-size: 12px; padding-top: 5px; }
 .roadmap_issue { padding: 3px; }
 .roadmap_issue .issue_status { display: inline; width: 20px; float: left; }
-.roadmap_issue .issue_points { display: inline; color: #aaa; font-size: 11px; margin-left: 10px; }
+.roadmap_issue .issue_points { display: inline; color: #AAA; font-size: 11px; margin-left: 10px; }
 .roadmap_issue.issue_closed { text-decoration: line-through; }
 .roadmap_issue.blocking .issue_title { font-weight: bold; color: red; }
 /* end roadmap */
 
 /* search styling */
 /* search boxes */
-#find_issues .main_header { font-weight: bold; font-size: 14px; padding: 5px 0 3px 2px; border-bottom: 1px solid #aaa; color: #333; background-color: transparent; }
+#find_issues .main_header { font-weight: bold; font-size: 14px; padding: 5px 0 3px 2px; border-bottom: 1px solid #AAA; color: #333; background-color: transparent; }
 .searchbox_container { margin: 5px 0 5px 0; padding: 3px 10px 3px 10px; font-size: 0.9em; }
 /*.searchbox_container label { font-size: 0.9em; }
 .searchbox_container input[type="text"], .searchbox_container select { font-size: 0.9em; }*/

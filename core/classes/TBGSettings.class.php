@@ -93,8 +93,8 @@
 
 		static protected $_ver_mj = 3;
 		static protected $_ver_mn = 1;
-		static protected $_ver_rev = '0';
-		static protected $_ver_name = "Kittens!";
+		static protected $_ver_rev = '0 beta1';
+		static protected $_ver_name = "Moar kittens!";
 		static protected $_defaultscope = null;
 		static protected $_settings = null;
 		static protected $_loadedsettings = array();
