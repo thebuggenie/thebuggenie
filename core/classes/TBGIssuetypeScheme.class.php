@@ -208,6 +208,7 @@
 		{
 			TBGIssueFieldsTable::getTable()->deleteByIssuetypeSchemeID($this->getID());
 			TBGIssuetypeSchemeLinkTable::getTable()->deleteByIssuetypeSchemeID($this->getID());
+			TBGProjectsTable::getTable()->updateByIssuetypeSchemeID($this->getID());
 		}
 
 		protected function _populateVisibleFieldsForIssuetype(TBGIssuetype $issuetype)

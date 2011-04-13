@@ -223,5 +223,22 @@
 			}
 			return $return_array;
 		}
+
+		public function updateByIssuetypeSchemeID($scheme_id)
+		{
+			$schemes = TBGIssuetypeScheme::getAll();
+			foreach ($schemes as $default_scheme_id => $scheme)
+			{
+				break;
+			}
+			
+			$crit = $this->getCriteria();
+			
+			$crit->addWhere(self::ISSUETYPE_SCHEME_ID, $scheme_id);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$crit->addUpdate(self::ISSUETYPE_SCHEME_ID, $default_scheme_id);
+			
+			$res = $this->doUpdate($crit);
+		}
 		
 	}
