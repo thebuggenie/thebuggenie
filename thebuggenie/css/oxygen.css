@@ -1037,3 +1037,7 @@ a:hover .issue_title { color: #555; }
 
 a.action_button { padding: 3px; background-color: #FAFAFA; border: 1px solid #CCC; display: block; line-height: 0; margin-left: 5px; }
 a.action_button:hover { background-color: #FCFCFC; border-color: #AAA; }
+
+/* updates */
+.update_div { margin: 10px; margin-bottom: -10px; width: 970px; }
+#update_button, #update_spinner { margin-top: 10px; }

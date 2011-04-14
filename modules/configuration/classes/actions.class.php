@@ -64,6 +64,46 @@
 		}
 		
 		/**
+		 * check for updates
+		 * 
+		 * @param TBGRequest $request
+		 */
+		public function runCheckUpdates(TBGRequest $request)
+		{
+			$data = json_decode(file_get_contents('http://www.thebuggenie.com/updatecheck.php'));
+			if (!is_object($data))
+			{
+				$this->getResponse()->setHttpStatus(500);
+				return $this->renderJSON(array('failed' => true, 'title' => TBGContext::getI18n()->__('Failed to check for updates'), 'message' => TBGContext::getI18n()->__('The response from The Bug Genie website was invalid')));
+			}
+			
+			$outofdate = false;
+			
+			// major
+			if ($data->maj > TBGSettings::getMajorVer())
+			{
+				$outofdate = true;
+			}
+			elseif ($data->min > TBGSettings::getMinorVer() && ($data->maj == TBGSettings::getMajorVer()))
+			{
+				$outofdate = true;
+			}
+			elseif ($data->rev > TBGSettings::getRevision() && ($data->maj == TBGSettings::getMajorVer()) && ($data->min == TBGSettings::getMinorVer()))
+			{
+				$outofdate = true;
+			}
+			
+			if (!$outofdate)
+			{
+				return $this->renderJSON(array('failed' => false, 'uptodate' => true, 'title' => TBGContext::getI18n()->__('The Bug Genie is up to date'), 'message' => TBGContext::getI18n()->__('The latest version is %ver%', array('%ver%' => $data->nicever))));
+			}
+			else
+			{
+				return $this->renderJSON(array('failed' => false, 'uptodate' => false, 'title' => TBGContext::getI18n()->__('The Bug Genie is out of date'), 'message' => TBGContext::getI18n()->__('The latest version is %ver%. Update now from www.thebuggenie.com.', array('%ver%' => $data->nicever))));
+			}
+		}
+		
+		/**
 		 * Configuration import page
 		 * 
 		 * @param TBGRequest $request

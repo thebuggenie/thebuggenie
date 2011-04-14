@@ -246,6 +246,21 @@
 			return $retvar;  
 		}
 		
+		public static function getMajorVer()
+		{
+			return self::$_ver_mj;
+		}
+		
+		public static function getMinorVer()
+		{
+			return self::$_ver_mn;
+		}
+		
+		public static function getRevision()
+		{
+			return self::$_ver_rev;
+		}
+		
 		/**
 		 * Returns the default scope
 		 *

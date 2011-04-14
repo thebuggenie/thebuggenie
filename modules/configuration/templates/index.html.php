@@ -1,8 +1,15 @@
 <?php
 
 	$tbg_response->setTitle(__('Configuration center'));
+	$tbg_response->addJavascript('config/settings.js');
 	
 ?>
+<div class="update_div rounded_box lightgrey">
+	<div class="header"><?php echo __('Check for the latest updates'); ?></div>
+	<?php echo __('Checking for updates and installing the latest releases ensures you have the latest improvements, fixes and features for The Bug Genie.'); ?>
+	<div id="update_button"><a href="javascript:void(0);" onClick="updatecheck('<?php echo make_url('configure_update_check'); ?>');"><?php echo __('Check for updates now'); ?></a></div>
+	<div id="update_spinner" style="display: none;"><?php echo image_tag('spinning_32.gif'); ?></div>
+</div>
 <table style="table-layout: fixed; width: 1000px; margin: 10px 0 0 10px;" cellpadding=0 cellspacing=0>
 	<tr>
 		<td valign="top">

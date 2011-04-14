@@ -35,3 +35,45 @@ function importCSV(url)
 		}
 	});
 }
+
+function updatecheck(url)
+{
+	new Ajax.Request(url, {
+		asynchronous:true,
+		method: "post",
+		evalScripts: true,
+		onLoading: function (transport) {
+			$('update_button').hide();
+			$('update_spinner').show();
+		},
+		onSuccess: function (transport) {
+			$('update_button').show();
+			$('update_spinner').hide();
+			var json = transport.responseJSON;
+			if (json && (json.failed))
+			{
+				failedMessage(json.title, json.message);
+			}
+			else
+			{
+				if (json.uptodate)
+				{
+					successMessage(json.title, json.message);
+				}
+				else
+				{
+					failedMessage(json.title, json.message);
+				}
+			}
+		},
+		onFailure: function (transport) {
+			$('update_button').show();
+			$('update_spinner').hide();
+			var json = transport.responseJSON;
+			if (json && (json.failed))
+			{
+				failedMessage(json.title, json.message);
+			}
+		}
+	});
+}
