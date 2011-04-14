@@ -49,7 +49,16 @@
 			{
 				while ($row = $res->getNextRow())
 				{
-					$return_array[$row->get(self::ISSUETYPE_ID)] = array('reportable' => (bool) $row->get(self::REPORTABLE), 'redirect' => (bool) $row->get(self::REDIRECT_AFTER_REPORTING), 'issuetype' => TBGContext::factory()->TBGIssuetype($row->get(self::ISSUETYPE_ID), $row));
+					try
+					{
+						$i_id = $row->get(self::ISSUETYPE_ID);
+						$issuetype = TBGContext::factory()->TBGIssuetype($i_id, $row);
+					}
+					catch (Exception $e)
+					{
+						$this->deleteByIssuetypeID($i_id);
+					}
+					$return_array[$row->get(self::ISSUETYPE_ID)] = array('reportable' => (bool) $row->get(self::REPORTABLE), 'redirect' => (bool) $row->get(self::REDIRECT_AFTER_REPORTING), 'issuetype' => $issuetype);
 				}
 			}
 
