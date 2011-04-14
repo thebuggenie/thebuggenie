@@ -21,6 +21,13 @@
 
 		static protected $_b2dbtablename = 'TBGWorkflowSchemesTable';
 		
+		/**
+		 * The default (core) workflow scheme
+		 * 
+		 * @var TBGWorkflowScheme
+		 */
+		static protected $_core_scheme = null;
+		
 		protected static $_schemes = null;
 
 		protected $_issuetype_workflows = null;
@@ -36,12 +43,7 @@
 		 */
 		protected $_description = null;
 
-		/**
-		 * Return all workflows in the system
-		 *
-		 * @return array An array of TBGWorkflow objects
-		 */
-		public static function getAll()
+		protected static function _populateSchemes()
 		{
 			if (self::$_schemes === null)
 			{
@@ -50,11 +52,37 @@
 				{
 					while ($row = $res->getNextRow())
 					{
-						self::$_schemes[$row->get(TBGWorkflowSchemesTable::ID)] = TBGContext::factory()->TBGWorkflowScheme($row->get(TBGWorkflowSchemesTable::ID), $row);
+						$scheme = TBGContext::factory()->TBGWorkflowScheme($row->get(TBGWorkflowSchemesTable::ID), $row);
+						
+						if (self::$_core_scheme === null)
+							self::$_core_scheme = $scheme;
+						
+						self::$_schemes[$row->get(TBGWorkflowSchemesTable::ID)] = $scheme;
 					}
 				}
 			}
+		}
+		
+		/**
+		 * Return all workflow schemes in the system
+		 *
+		 * @return array An array of TBGWorkflowScheme objects
+		 */
+		public static function getAll()
+		{
+			self::_populateSchemes();
 			return self::$_schemes;
+		}
+		
+		/**
+		 * Return the default (core) workflow scheme
+		 * 
+		 * @return TBGWorkflowScheme
+		 */
+		public static function getCoreScheme()
+		{
+			self::_populateSchemes();
+			return self::$_core_scheme;
 		}
 		
 		protected function _preDelete()
@@ -90,10 +118,7 @@
 		 */
 		public function isCore()
 		{
-			foreach (self::getAll() as $scheme)
-			{
-				return ($this->getID() == $scheme->getID());
-			}
+			return ($this->getID() == self::getCoreScheme()->getID());
 		}
 
 		protected function _populateAssociatedWorkflows()

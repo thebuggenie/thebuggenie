@@ -21,6 +21,13 @@
 
 		static protected $_b2dbtablename = 'TBGIssuetypeSchemesTable';
 		
+		/**
+		 * The default (core) issuetype scheme
+		 * 
+		 * @var TBGIssuetypeScheme
+		 */
+		static protected $_core_scheme = null;
+		
 		protected static $_schemes = null;
 
 		protected $_visiblefields = array();
@@ -36,12 +43,7 @@
 		 */
 		protected $_description = null;
 
-		/**
-		 * Return all issuetypes in the system
-		 *
-		 * @return array An array of TBGIssuetype objects
-		 */
-		public static function getAll()
+		protected static function _populateSchemes()
 		{
 			if (self::$_schemes === null)
 			{
@@ -50,11 +52,37 @@
 				{
 					while ($row = $res->getNextRow())
 					{
-						self::$_schemes[$row->get(TBGIssuetypeSchemesTable::ID)] = TBGContext::factory()->TBGIssuetypeScheme($row->get(TBGIssuetypeSchemesTable::ID), $row);
+						$scheme = TBGContext::factory()->TBGIssuetypeScheme($row->get(TBGIssuetypeSchemesTable::ID), $row);
+						
+						if (self::$_core_scheme === null)
+							self::$_core_scheme = $scheme;
+						
+						self::$_schemes[$row->get(TBGIssuetypeSchemesTable::ID)] = $scheme;
 					}
 				}
 			}
+		}
+		
+		/**
+		 * Return all issuetypes in the system
+		 *
+		 * @return array An array of TBGIssuetype objects
+		 */
+		public static function getAll()
+		{
+			self::_populateSchemes();
 			return self::$_schemes;
+		}
+		
+		/**
+		 * Return the default (core) issuetype scheme
+		 * 
+		 * @return TBGIssuetypeScheme
+		 */
+		public static function getCoreScheme()
+		{
+			self::_populateSchemes();
+			return self::$_core_scheme;
 		}
 
 		public static function loadFixtures(TBGScope $scope)
@@ -107,7 +135,7 @@
 		 */
 		public function isCore()
 		{
-			return ($this->getID() == 1);
+			return ($this->getID() == self::getCoreScheme()->getID());
 		}
 
 		protected function _populateAssociatedIssuetypes()

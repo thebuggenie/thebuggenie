@@ -61,6 +61,7 @@
 			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, $scope);
+			$crit->addOrderBy(self::ID, B2DBCriteria::SORT_ASC);
 
 			$res = $this->doSelect($crit);
 

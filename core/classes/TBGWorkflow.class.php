@@ -22,6 +22,13 @@
 		static protected $_b2dbtablename = 'TBGWorkflowsTable';
 		
 		protected static $_workflows = null;
+		
+		/**
+		 * The default (core) workflow
+		 * 
+		 * @var TBGWorkflow
+		 */
+		protected static $_core_workflow = null;
 
 		protected static $_num_workflows = null;
 
@@ -47,12 +54,7 @@
 		
 		protected $_number_of_schemes = null;
 
-		/**
-		 * Return all workflows in the system
-		 *
-		 * @return array An array of TBGWorkflow objects
-		 */
-		public static function getAll()
+		protected static function _populateWorkflows()
 		{
 			if (self::$_workflows === null)
 			{
@@ -61,11 +63,37 @@
 				{
 					while ($row = $res->getNextRow())
 					{
-						self::$_workflows[$row->get(TBGWorkflowsTable::ID)] = TBGContext::factory()->TBGWorkflow($row->get(TBGWorkflowsTable::ID), $row);
+						$workflow = TBGContext::factory()->TBGWorkflow($row->get(TBGWorkflowsTable::ID), $row);
+						
+						if (self::$_core_workflow === null)
+							self::$_core_workflow = $workflow;
+						
+						self::$_workflows[$row->get(TBGWorkflowsTable::ID)] = $workflow;
 					}
 				}
 			}
+		}
+		
+		/**
+		 * Return all workflows in the system
+		 *
+		 * @return array An array of TBGWorkflow objects
+		 */
+		public static function getAll()
+		{
+			self::_populateWorkflows();
 			return self::$_workflows;
+		}
+		
+		/**
+		 * Return the default (core) workflow
+		 * 
+		 * @return TBGWorkflow
+		 */
+		public static function getCoreWorkflow()
+		{
+			self::_populateWorkflows();
+			return self::$_core_workflow;
 		}
 
 		public static function loadFixtures(TBGScope $scope)
@@ -124,10 +152,7 @@
 		 */
 		public function isCore()
 		{
-			foreach (self::getAll() as $workflow)
-			{
-				return ($this->getID() == $workflow->getID());
-			}
+			return ($this->getID() == self::getCoreWorkflow()->getID());
 		}
 
 		/**
