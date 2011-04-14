@@ -1330,6 +1330,7 @@
 					
 					try
 					{
+						$classname = null;
 						$parameter_name = strtolower($request->getParameter('field'));
 						$parameter_id_name = "{$parameter_name}_id";
 						$is_pain = in_array($parameter_name, array('pain_bug_type', 'pain_likelihood', 'pain_effect'));
