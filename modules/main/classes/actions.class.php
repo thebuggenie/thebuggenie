@@ -113,7 +113,11 @@
 			{
 				$this->error = TBGContext::getMessageAndClear('issue_error');
 			}
-
+			elseif (TBGContext::hasMessage('issue_message'))
+			{
+				$this->issue_message = TBGContext::getMessageAndClear('issue_message');
+			}
+			
 			$issuelist = array();
 			$issues = TBGContext::getUser()->getStarredIssues();
 
@@ -138,6 +142,54 @@
 			$this->issue = $issue;
 			$event = TBGEvent::createNew('core', 'viewissue', $issue)->trigger();
 			$this->listenViewIssuePostError($event);
+		}
+		
+		public function runMoveIssue(TBGRequest $request) 
+		{
+			$issue = null;
+			$project = null;
+			if ($issue_id = $request->getParameter('issue_id'))
+			{
+				try
+				{
+					$issue = TBGContext::factory()->TBGIssue($issue_id);
+				}
+				catch (Exception $e) { }
+			}
+			if ($project_id = $request->getParameter('project_id'))
+			{
+				try
+				{
+					$project = TBGContext::factory()->TBGProject($project_id);
+				}
+				catch (Exception $e) { }
+			}
+			
+			if (!$issue instanceof TBGIssue)
+			{
+				return $this->return404(TBGContext::getI18n()->__('Cannot find the issue specified'));
+			}
+
+			if (!$project instanceof TBGProject)
+			{
+				return $this->return404(TBGContext::getI18n()->__('Cannot find the project specified'));
+			}
+
+			if ($issue->getProject()->getID() != $project->getID())
+			{
+				$issue->setProject($project);
+				$step = $issue->getProject()->getWorkflowScheme()->getWorkflowForIssuetype($issue->getIssueType())->getFirstStep();
+				$issue->setWorkflowStep($step);
+				$issue->setStatus($issue->getWorkflowStep()->getLinkedStatus());
+				$issue->save();
+				TBGContext::setMessage('issue_message', TBGContext::getI18n()->__('The issue was moved'));
+			}
+			else
+			{
+				TBGContext::setMessage('issue_error', TBGContext::getI18n()->__('The issue was not moved, since the project is the same'));
+			}
+			
+			return $this->forward(TBGContext::getRouting()->generate('viewissue', array('project_key' => $project->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
 		}
 		
 		/**
@@ -1025,6 +1077,7 @@
 			$errors = array();
 			$permission_errors = array();
 			$this->getResponse()->setPage('reportissue');
+			$this->uniqid = $request->getParameter('uniqid', uniqid());
 			$this->default_title = $i18n->__('Enter a short, but descriptive summary of the issue here');
 			$this->default_estimated_time = $i18n->__('Enter an estimate here');
 			$this->default_spent_time = $i18n->__('Enter time spent here');

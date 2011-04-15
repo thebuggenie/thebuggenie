@@ -78,6 +78,11 @@
 			<?php echo __('Your changes has been saved'); ?>
 		</div>
 	<?php endif; ?>
+	<?php if (isset($issue_message)): ?>
+		<div class="rounded_box green borderless issue_info aligned" id="viewissue_saved" onclick="$(this).fade({duration: 0.5});">
+			<?php echo $issue_message; ?>
+		</div>
+	<?php endif; ?>
 	<?php if (isset($issue_file_uploaded)): ?>
 		<div class="rounded_box green borderless issue_info aligned" id="viewissue_saved" onclick="$(this).fade({duration: 0.5});">
 			<?php echo __('The file was attached to this issue'); ?>
@@ -337,7 +342,7 @@
 			</div>
 			<div id="tab_attached_information_pane" style="padding-top: 0; margin: 0 5px 0 5px; display: none;">
 				<div id="viewissue_attached_information">
-					<?php if ($issue->isEditable() && ($issue->canAttachLinks() || (TBGSettings::isUploadsEnabled() && $issue->canAttachFiles()))): ?>
+					<?php if ($issue->isUpdateable() && ($issue->canAttachLinks() || (TBGSettings::isUploadsEnabled() && $issue->canAttachFiles()))): ?>
 						<?php if ($issue->canAttachLinks()): ?>
 							<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px; float: left;" id="attach_link_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="$('attach_link').show();" value="<?php echo __('Attach a link'); ?>"></td></tr></table>
 						<?php endif; ?>
@@ -380,7 +385,7 @@
 				</div>
 			</div>
 			<div id="tab_related_issues_and_tasks_pane" style="padding-top: 5px; margin: 0 5px 0 5px; display: none;">
-				<?php if ($issue->isEditable()): ?>
+				<?php if ($issue->isUpdateable()): ?>
 					<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px; float: left;" id="add_task_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="$('viewissue_add_task_div').toggle();" value="<?php echo __('Add a task to this issue'); ?>"></td></tr></table>
 					<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px; float: left;" id="relate_to_existing_issue_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'relate_issue', 'issue_id' => $issue->getID())); ?>');" value="<?php echo __('Relate to an existing issue'); ?>"></td></tr></table>
 					<br style="clear: both;">

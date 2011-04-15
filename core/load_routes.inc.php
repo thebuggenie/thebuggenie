@@ -19,10 +19,8 @@
 	$routes[] = array('activate', '/activate/:user/:key', 'main', 'activate');
 	$routes[] = array('reset_password', '/reset/password/:user/:id', 'main', 'reset');
 	$routes[] = array('logout', '/logout', 'main', 'logout');
-	$routes[] = array('getprojectmenustrip', '/getprojectmenustrip/on/page/:page', 'project', 'getMenustrip');
 	$routes[] = array('hide_infobox', '/hide/infobox/:key', 'main', 'hideInfobox');
 	$routes[] = array('getreportissuefields', '/reportissue/get/fields/for/project/*', 'main', 'reportIssueGetFields');
-	$routes[] = array('reportissue', '/reportissue/*', 'main', 'reportIssue');
 	$routes[] = array('findthis', '/issues/find/:searchfor/*', 'search', 'findIssues');
 	$routes[] = array('search_paginated', '/issues/paginated/*', 'search', 'findIssuesPaginated');
 	$routes[] = array('search_add_filter', '/issues/add/filter/*', 'search', 'addFilter');
@@ -177,6 +175,7 @@
 	$routes[] = array('remove_affected', '/issue/:issue_id/remove/:affected_type/:affected_id', 'main', 'removeaffected');
 	$routes[] = array('status_affected', '/issue/:issue_id/set/:affected_type/:affected_id/status/:status_id', 'main', 'statusaffected');
 	$routes[] = array('add_affected', '/project/:project_key/issue/:issue_id/add/affected', 'main', 'addaffected');
+	$routes[] = array('move_issue', '/issue/:issue_id/move', 'main', 'moveIssue');
 	$routes[] = array('captcha', '/captcha/*', 'main', 'captcha');
 	$routes[] = array('publish_article', '/wiki/:article_name', 'publish', 'showArticle');
 	
