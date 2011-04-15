@@ -178,9 +178,13 @@
 			if ($issue->getProject()->getID() != $project->getID())
 			{
 				$issue->setProject($project);
+				$issue->clearUserWorkingOnIssue();
+				$issue->unsetAssignee();
+				$issue->unsetOwner();
+				$issue->setPercentCompleted(0);
+				$issue->setMilestone(null);
 				$step = $issue->getProject()->getWorkflowScheme()->getWorkflowForIssuetype($issue->getIssueType())->getFirstStep();
-				$issue->setWorkflowStep($step);
-				$issue->setStatus($issue->getWorkflowStep()->getLinkedStatus());
+				$step->applyToIssue($issue);
 				$issue->save();
 				TBGContext::setMessage('issue_message', TBGContext::getI18n()->__('The issue was moved'));
 			}
