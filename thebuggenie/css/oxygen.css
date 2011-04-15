@@ -643,6 +643,7 @@ ul.workflow_actions li form { display: inline; margin: 0; padding: 0; }
 #viewissue_saved { cursor: pointer; }
 #viewissue_being_worked_on { height: 33px; }
 #viewissue_being_worked_on .header { padding-top: 7px; }
+#viewissue_error .content { font-size: 14px; padding-top: 5px; padding-bottom: 5px; text-align: left; }
 /* end issue info boxes */
 
 /* issue extra data (pain and votes) - includes search result styling */
