@@ -562,6 +562,11 @@
 			{
 				throw new InvalidArgumentException("A project with this key already exists");
 			}
+			if ($is_new)
+			{
+				$this->setIssuetypeScheme(TBGIssuetypeScheme::getCoreScheme());
+				$this->setWorkflowScheme(TBGWorkflowScheme::getCoreScheme());
+			}
 		}
 
 		public function _postSave($is_new)

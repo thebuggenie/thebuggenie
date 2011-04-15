@@ -106,6 +106,10 @@
 			$vacation->setIsAbsent();
 			$vacation->setName('On vacation');
 			$vacation->save();
+			
+			TBGSettings::saveSetting(TBGSettings::SETTING_ONLINESTATE, $available->getID(), 'core', $scope->getID());
+			TBGSettings::saveSetting(TBGSettings::SETTING_OFFLINESTATE, $offline->getID(), 'core', $scope->getID());
+			TBGSettings::saveSetting(TBGSettings::SETTING_AWAYSTATE, $away->getID(), 'core', $scope->getID());
 		}
 		
 		public function setIsOnline($val = true)

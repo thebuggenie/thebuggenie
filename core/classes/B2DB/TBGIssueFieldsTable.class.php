@@ -128,12 +128,13 @@
 			$res = $this->doDelete($crit);
 		}
 
-		public function loadFixtures(TBGScope $scope, $issue_type_bug_report_id, $issue_type_feature_request_id, $issue_type_enhancement_id, $issue_type_task_id, $issue_type_user_story_id, $issue_type_idea_id)
+		public function loadFixtures(TBGScope $scope, TBGIssuetypeScheme $scheme, $issue_type_bug_report_id, $issue_type_feature_request_id, $issue_type_enhancement_id, $issue_type_task_id, $issue_type_user_story_id, $issue_type_idea_id)
 		{
 			$scope = $scope->getID();
+			$scheme = $scheme->getID();
 			
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_bug_report_id);
 			$crit->addInsert(self::FIELD_KEY, 'description');
 			$crit->addInsert(self::REPORTABLE, true);
@@ -142,7 +143,7 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_bug_report_id);
 			$crit->addInsert(self::FIELD_KEY, 'reproduction_steps');
 			$crit->addInsert(self::REPORTABLE, true);
@@ -151,7 +152,7 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_bug_report_id);
 			$crit->addInsert(self::FIELD_KEY, 'edition');
 			$crit->addInsert(self::REPORTABLE, true);
@@ -160,7 +161,7 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_bug_report_id);
 			$crit->addInsert(self::FIELD_KEY, 'build');
 			$crit->addInsert(self::REPORTABLE, true);
@@ -169,7 +170,7 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_bug_report_id);
 			$crit->addInsert(self::FIELD_KEY, 'component');
 			$crit->addInsert(self::REPORTABLE, true);
@@ -177,7 +178,7 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_bug_report_id);
 			$crit->addInsert(self::FIELD_KEY, 'category');
 			$crit->addInsert(self::REPORTABLE, true);
@@ -185,7 +186,7 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_bug_report_id);
 			$crit->addInsert(self::FIELD_KEY, 'reproducability');
 			$crit->addInsert(self::REPORTABLE, true);
@@ -193,7 +194,7 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_bug_report_id);
 			$crit->addInsert(self::FIELD_KEY, 'resolution');
 			$crit->addInsert(self::REPORTABLE, true);
@@ -202,7 +203,7 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_bug_report_id);
 			$crit->addInsert(self::FIELD_KEY, 'severity');
 			$crit->addInsert(self::REPORTABLE, true);
@@ -211,7 +212,7 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_bug_report_id);
 			$crit->addInsert(self::FIELD_KEY, 'milestone');
 			$crit->addInsert(self::REPORTABLE, true);
@@ -220,7 +221,7 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_bug_report_id);
 			$crit->addInsert(self::FIELD_KEY, 'estimated_time');
 			$crit->addInsert(self::REPORTABLE, true);
@@ -229,14 +230,14 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_bug_report_id);
 			$crit->addInsert(self::FIELD_KEY, 'spent_time');
 			$crit->addInsert(self::SCOPE, $scope);
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_bug_report_id);
 			$crit->addInsert(self::FIELD_KEY, 'percentcomplete');
 			$crit->addInsert(self::REPORTABLE, true);
@@ -245,7 +246,7 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_bug_report_id);
 			$crit->addInsert(self::FIELD_KEY, 'priority');
 			$crit->addInsert(self::REPORTABLE, true);
@@ -254,7 +255,7 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_feature_request_id);
 			$crit->addInsert(self::FIELD_KEY, 'description');
 			$crit->addInsert(self::REPORTABLE, true);
@@ -263,7 +264,7 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_feature_request_id);
 			$crit->addInsert(self::FIELD_KEY, 'milestone');
 			$crit->addInsert(self::REPORTABLE, true);
@@ -272,7 +273,7 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_feature_request_id);
 			$crit->addInsert(self::FIELD_KEY, 'category');
 			$crit->addInsert(self::REPORTABLE, true);
@@ -281,7 +282,7 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_feature_request_id);
 			$crit->addInsert(self::FIELD_KEY, 'estimated_time');
 			$crit->addInsert(self::REPORTABLE, true);
@@ -290,14 +291,14 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_feature_request_id);
 			$crit->addInsert(self::FIELD_KEY, 'spent_time');
 			$crit->addInsert(self::SCOPE, $scope);
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_feature_request_id);
 			$crit->addInsert(self::FIELD_KEY, 'percent_complete');
 			$crit->addInsert(self::REPORTABLE, true);
@@ -306,7 +307,7 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_feature_request_id);
 			$crit->addInsert(self::FIELD_KEY, 'priority');
 			$crit->addInsert(self::REPORTABLE, true);
@@ -315,14 +316,14 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_feature_request_id);
 			$crit->addInsert(self::FIELD_KEY, 'votes');
 			$crit->addInsert(self::SCOPE, $scope);
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_enhancement_id);
 			$crit->addInsert(self::FIELD_KEY, 'description');
 			$crit->addInsert(self::REPORTABLE, true);
@@ -331,7 +332,7 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_enhancement_id);
 			$crit->addInsert(self::FIELD_KEY, 'milestone');
 			$crit->addInsert(self::REPORTABLE, true);
@@ -340,7 +341,7 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_enhancement_id);
 			$crit->addInsert(self::FIELD_KEY, 'category');
 			$crit->addInsert(self::REPORTABLE, true);
@@ -349,7 +350,7 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_enhancement_id);
 			$crit->addInsert(self::FIELD_KEY, 'estimated_time');
 			$crit->addInsert(self::REPORTABLE, true);
@@ -358,14 +359,14 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_enhancement_id);
 			$crit->addInsert(self::FIELD_KEY, 'spent_time');
 			$crit->addInsert(self::SCOPE, $scope);
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_enhancement_id);
 			$crit->addInsert(self::FIELD_KEY, 'percent_complete');
 			$crit->addInsert(self::REPORTABLE, true);
@@ -374,7 +375,7 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_enhancement_id);
 			$crit->addInsert(self::FIELD_KEY, 'priority');
 			$crit->addInsert(self::REPORTABLE, true);
@@ -383,7 +384,7 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_task_id);
 			$crit->addInsert(self::FIELD_KEY, 'description');
 			$crit->addInsert(self::REPORTABLE, true);
@@ -391,7 +392,7 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_task_id);
 			$crit->addInsert(self::FIELD_KEY, 'category');
 			$crit->addInsert(self::REPORTABLE, true);
@@ -400,7 +401,7 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_task_id);
 			$crit->addInsert(self::FIELD_KEY, 'estimated_time');
 			$crit->addInsert(self::REPORTABLE, true);
@@ -409,14 +410,14 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_task_id);
 			$crit->addInsert(self::FIELD_KEY, 'spent_time');
 			$crit->addInsert(self::SCOPE, $scope);
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_task_id);
 			$crit->addInsert(self::FIELD_KEY, 'percent_complete');
 			$crit->addInsert(self::REPORTABLE, true);
@@ -425,7 +426,7 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_task_id);
 			$crit->addInsert(self::FIELD_KEY, 'priority');
 			$crit->addInsert(self::REPORTABLE, true);
@@ -434,7 +435,7 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_task_id);
 			$crit->addInsert(self::FIELD_KEY, 'milestone');
 			$crit->addInsert(self::REPORTABLE, true);
@@ -443,7 +444,7 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_user_story_id);
 			$crit->addInsert(self::FIELD_KEY, 'description');
 			$crit->addInsert(self::REPORTABLE, true);
@@ -451,7 +452,7 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_user_story_id);
 			$crit->addInsert(self::FIELD_KEY, 'percent_complete');
 			$crit->addInsert(self::REPORTABLE, true);
@@ -459,7 +460,7 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_user_story_id);
 			$crit->addInsert(self::FIELD_KEY, 'category');
 			$crit->addInsert(self::REPORTABLE, true);
@@ -467,7 +468,7 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_user_story_id);
 			$crit->addInsert(self::FIELD_KEY, 'milestone');
 			$crit->addInsert(self::REPORTABLE, true);
@@ -475,7 +476,7 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_user_story_id);
 			$crit->addInsert(self::FIELD_KEY, 'estimated_time');
 			$crit->addInsert(self::REPORTABLE, true);
@@ -483,7 +484,7 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_user_story_id);
 			$crit->addInsert(self::FIELD_KEY, 'spent_time');
 			$crit->addInsert(self::REPORTABLE, true);
@@ -491,7 +492,7 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_user_story_id);
 			$crit->addInsert(self::FIELD_KEY, 'priority');
 			$crit->addInsert(self::REPORTABLE, true);
@@ -499,7 +500,7 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_idea_id);
 			$crit->addInsert(self::FIELD_KEY, 'description');
 			$crit->addInsert(self::REPORTABLE, true);
@@ -508,7 +509,7 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_idea_id);
 			$crit->addInsert(self::FIELD_KEY, 'milestone');
 			$crit->addInsert(self::REPORTABLE, true);
@@ -517,7 +518,7 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_idea_id);
 			$crit->addInsert(self::FIELD_KEY, 'category');
 			$crit->addInsert(self::REPORTABLE, true);
@@ -526,7 +527,7 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_idea_id);
 			$crit->addInsert(self::FIELD_KEY, 'estimated_time');
 			$crit->addInsert(self::REPORTABLE, true);
@@ -535,14 +536,14 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_idea_id);
 			$crit->addInsert(self::FIELD_KEY, 'spent_time');
 			$crit->addInsert(self::SCOPE, $scope);
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_idea_id);
 			$crit->addInsert(self::FIELD_KEY, 'percent_complete');
 			$crit->addInsert(self::REPORTABLE, true);
@@ -551,7 +552,7 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_idea_id);
 			$crit->addInsert(self::FIELD_KEY, 'priority');
 			$crit->addInsert(self::REPORTABLE, true);

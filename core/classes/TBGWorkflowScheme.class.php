@@ -171,7 +171,7 @@
 			}
 			else
 			{
-				return TBGContext::factory()->TBGWorkflow(1);
+				return TBGWorkflow::getCoreWorkflow();
 			}
 		}
 

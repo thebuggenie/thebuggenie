@@ -82,7 +82,7 @@
 			$idea->save();
 			TBGSettings::saveSetting('issuetype_idea', $idea->getID(), 'core', $scope_id);
 
-			TBGIssueFieldsTable::getTable()->loadFixtures($scope, $bug_report->getID(), $feature_request->getID(), $enhancement->getID(), $task->getID(), $user_story->getID(), $idea->getID());
+			return array($bug_report->getID(), $feature_request->getID(), $enhancement->getID(), $task->getID(), $user_story->getID(), $idea->getID());
 		}
 		
 		/**

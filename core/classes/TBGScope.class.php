@@ -203,8 +203,9 @@
 			TBGUserstate::loadFixtures($this);
 			
 			// Set up data types
-			TBGIssuetype::loadFixtures($this);
-			TBGIssuetypeScheme::loadFixtures($this);
+			list($b_id, $f_id, $e_id, $t_id, $u_id, $i_id) = TBGIssuetype::loadFixtures($this);
+			$scheme = TBGIssuetypeScheme::loadFixtures($this);
+			TBGIssueFieldsTable::getTable()->loadFixtures($this, $scheme, $b_id, $f_id, $e_id, $t_id, $u_id, $i_id);
 			TBGDatatype::loadFixtures($this);
 			
 			// Set up workflows

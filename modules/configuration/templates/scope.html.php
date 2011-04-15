@@ -27,10 +27,10 @@
 									<td><input id="scope_description_input" name="description" value="<?php echo $scope->getDescription(); ?>" style="width: 500px;"></td>
 								</tr>
 								<tr>
-									<td><label><?php echo __('Scope hostnames'); ?></label></td>
+									<td><label><?php echo __('Scope hostname'); ?></label></td>
 									<td>
 										<?php foreach ($scope->getHostnames() as $hostname): ?>
-											<a href="javascript:void(0);" onclick="failedMessage('not implemented yet')" class="rounded_box action_button" style="float: left; margin-left: 0; margin-right: 5px;"><?php echo image_tag('icon_delete.png', array('title' => __('Delete this hostname'))); ?></a>
+											<?php /* <a href="javascript:void(0);" onclick="failedMessage('not implemented yet')" class="rounded_box action_button" style="float: left; margin-left: 0; margin-right: 5px;"><?php echo image_tag('icon_delete.png', array('title' => __('Delete this hostname'))); ?></a> */ ?>
 											<?php echo $hostname; ?>
 											<br style="clear: both;">
 										<?php endforeach; ?>

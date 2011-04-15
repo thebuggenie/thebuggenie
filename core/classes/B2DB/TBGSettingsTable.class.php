@@ -125,9 +125,6 @@
 			$settings[TBGSettings::SETTING_ALLOW_REGISTRATION] = 1;
 			$settings[TBGSettings::SETTING_RETURN_FROM_LOGIN] = 'referer';
 			$settings[TBGSettings::SETTING_RETURN_FROM_LOGOUT] = 'home';
-			$settings[TBGSettings::SETTING_ONLINESTATE] = 1;
-			$settings[TBGSettings::SETTING_OFFLINESTATE] = 2;
-			$settings[TBGSettings::SETTING_AWAYSTATE] = 8;
 			$settings[TBGSettings::SETTING_SHOW_PROJECTS_OVERVIEW] = 1;
 			$settings[TBGSettings::SETTING_ALLOW_USER_THEMES] = 0;
 			$settings[TBGSettings::SETTING_ENABLE_UPLOADS] = 0;

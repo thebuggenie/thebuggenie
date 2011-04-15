@@ -105,6 +105,8 @@
 					$scheme->setIssuetypeReportable($issuetype, false);
 				}
 			}
+			
+			return $scheme;
 		}
 		
 		/**
