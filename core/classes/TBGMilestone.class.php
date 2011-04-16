@@ -220,7 +220,15 @@
 			if ($this->_points === null)
 			{
 				$this->_points = array();
-				list($this->_points['estimated'], $this->_points['spent']) = TBGIssuesTable::getTable()->getTotalPointsByMilestoneID($this->getID());
+				
+				$this->_points['estimated'] = 0;
+				$this->_points['spent'] = 0;
+				
+				foreach ($this->getIssues() as $issue)
+				{
+					$this->_points['estimated'] += $issue->getEstimatedPoints();
+					$this->_points['spent'] += $issue->getSpentPoints();
+				}
 			}
 		}
 		
