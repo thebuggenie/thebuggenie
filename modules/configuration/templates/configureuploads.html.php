@@ -37,6 +37,11 @@
 			<?php if ($uploads_enabled && $access_level == TBGSettings::ACCESS_FULL): ?>
 				<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_files'); ?>" method="post" onsubmit="submitForm('<?php echo make_url('configure_files'); ?>', 'config_uploads'); return false;" id="config_uploads">
 			<?php endif; ?>
+			<?php if (!function_exists('mime_content_type') && !extension_loaded('fileinfo')): ?>
+				<div class="rounded_box yellow borderless" style="margin: 5px 0px 5px 0px; width: 700px; padding: 5px 10px 5px 10px;">
+					<?php echo __('The file upload functionality can be enhanced with file type detection. To enable this, please install and enable the fileinfo extension.'); ?>
+				</div>
+			<?php endif; ?>
 					<?php if ($uploads_enabled): ?>
 						<table style="clear: both; width: 700px; margin-top: 5px;" class="padded_table" cellpadding=0 cellspacing=0>
 							<tr>
