@@ -49,8 +49,7 @@
 								<?php else: ?>
 									<?php include_component('main/logitem', array('log_action' => $activity, 'include_time' => true, 'include_user' => true, 'extra_padding' => true, 'include_details' => true, 'include_issue_title' => !($prev_timestamp == $activity['timestamp'] && $prev_issue == $activity['target']))); ?>
 								<?php endif; ?>
-								<?php $prev_timestamp = $activity['timestamp']; ?>
-								<?php $prev_issue = ($activity['target_type'] == 1) ? $activity['target'] : null; ?>
+								<?php $prev_timestamp = $timestamp; ?>
 							<?php endforeach; ?>
 							<?php $prev_date = $date; ?>
 						<?php endforeach; ?>
