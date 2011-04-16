@@ -4,7 +4,7 @@
 <?php 
 /* Deal with issue assignee */
 $temp = $issue->getAssignee();
-if ($temp instanceof TBGUser)
+if ($temp instanceof TBGUser && !($temp->isDeleted()))
 {
 	$assignee = $temp->getBuddyname();
 }
