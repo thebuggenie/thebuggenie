@@ -125,7 +125,7 @@ div.image_container.thumb img.image { width: 220px; }
 .comment:target .comment_main { border: 1px dotted #CCC; background-color: #F0F7FF; border-radius: 10px; -moz-border-radius: 10px; -webkit-border-radius: 10px; }
 .comment_delete { margin-top: 10px !important; }
 .commenttitle {  font-weight: bold; }
-.comment_hash { float: right; font-size: 2.5em; font-weight: normal; color: #B1B8E9; }
+.comment_hash { float: right; font-size: 2.0em; font-weight: normal; color: #B1B8E9; }
 .comments_none {  font-weight: normal; }
 .commentdate { color: #AAA; font-weight: normal; font-size: 0.8em; }
 .commentheader { padding: 0 0 5px 0; border-bottom: 1px dotted #CCC; }
@@ -618,8 +618,8 @@ ul.workflow_actions li form { display: inline; margin: 0; padding: 0; }
 .backdrop_box.mediumsmall { width: 500px; margin: 0 -250px 0 -250px; }
 .backdrop_box.medium { width: 600px; margin: 0 -300px 0 -300px; }
 .backdrop_box.large { width: 800px; margin: 0 -400px 200px -400px; }
-.backdrop_detail_header { font-weight: bold; font-size: 1.1em; color: #FFF; padding: 5px; }
-#backdrop_detail_content { font-weight: normal; font-size: 0.9em; padding: 5px; background: white; }
+.backdrop_detail_header { font-weight: bold; font-size: 1.0em; color: #FFF; padding: 5px; }
+#backdrop_detail_content { font-weight: normal; font-size: 1.0em; padding: 5px; background: white; }
 #backdrop_detail_content .tab_menu { margin-top: 30px; margin-bottom: 10px; font-size: 1.1em; }
 .backdrop_detail_footer { font-weight: bold; font-size: 0.9em; padding: 5px; text-align: right; }
 .backdrop_detail_footer a { color: #A4C0E4; }
