@@ -34,7 +34,7 @@
 		</ul>
 	</div>
 	<?php if ($tbg_user->canSearchForIssues()): ?>
-		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo (TBGContext::isProjectContext()) ? make_url('project_quicksearch', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('quicksearch'); ?>" method="get" name="quicksearchform" style="float: right;">
+		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo (TBGContext::isProjectContext()) ? make_url('project_search', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('search'); ?>" method="get" name="quicksearchform" style="float: right;">
 			<div style="width: auto; padding: 0; text-align: right; position: relative;">
 				<?php $quicksearch_title = __('Search for anything here'); ?>
 				<input type="hidden" name="filters[text][operator]" value="=">
