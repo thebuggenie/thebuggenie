@@ -1058,5 +1058,4 @@
 				return $this->return404();
 			}
 		}
-
 	}

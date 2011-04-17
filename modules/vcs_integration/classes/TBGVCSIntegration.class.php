@@ -52,6 +52,7 @@
 
 		protected function _addRoutes()
 		{
+			$this->addRoute('project_commits', '/:project_key/commits', 'projectCommits');
 			$this->addRoute('normalcheckin', '/vcs_integration/report/:project/', 'addCommit');
 			$this->addRoute('githubcheckin', '/vcs_integration/report/:project/github/', 'addCommitGithub');
 		}

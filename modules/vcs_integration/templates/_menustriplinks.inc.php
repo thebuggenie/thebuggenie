@@ -37,7 +37,12 @@
 	}
 	if ($web_path != '')
 	{
-		echo '<a href="'.$link_repo.'" target="_blank">'.__('Source code').'</a>';
+		echo link_tag(make_url('project_commits', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('VCS Commits'), (($tbg_response->getPage() == 'project_commits') ? array('class' => 'selected') : array()));
+		if (!isset($submenu) && $tbg_response->getPage() == 'project_commits'): ?>
+			<ul class="simple_list">
+				<li><?php echo '<a href="'.$link_repo.'" target="_blank">'.__('Source code').'</a>'; ?></li>
+			</ul>
+		<?php
+		endif;
 	}
-
 ?>

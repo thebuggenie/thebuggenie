@@ -126,5 +126,16 @@
 				echo TBGContext::getModule('vcs_integration')->addNewCommit($project, $commit_msg, $old_rev, $previous, $date, array($entries->commits->modfied, $entries->commits->added, $entries->commits->removed), $author);
 				exit;
 			}
+		}		
+				
+		public function runProjectCommits(TBGRequest $request)
+		{
+			$this->selected_project = TBGProject::getByKey($request->getParameter('project_key'));
+			
+			if ($this->selected_project instanceof TBGProject)
+			{
+				TBGContext::setCurrentProject($this->selected_project);
+				$this->project_key = $this->selected_project->getKey();
+			}
 		}
 	}
