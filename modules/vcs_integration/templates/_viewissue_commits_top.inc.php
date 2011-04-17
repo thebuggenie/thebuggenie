@@ -6,9 +6,5 @@ if ($items === false)
 {
 	echo '<div class="no_items">' . __('There are no code checkins for this issue') . '</div>';
 }
-else
-{
-	echo '<div class="rounded_box mediumgrey borderless cut_bottom"></div>';
-}
 
 ?>

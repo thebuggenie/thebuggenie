@@ -1,1 +1,0 @@
-<div class="rounded_box mediumgrey borderless cut_top"></div>

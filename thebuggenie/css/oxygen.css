@@ -527,6 +527,7 @@ ul.project_list li { margin: 0px; font-size: 1.0em; font-weight: bold; padding: 
 ul.client_users, ul.team_users { margin: 0; padding: 0; }
 ul.client_users li, ul.team_users li { list-style-type: none; padding-bottom: 5px; margin: 0;}
 .project_commits_box { margin-right: 10px; }
+.commit_box { margin-top: 5px }
 /* end project styling */
 
 /* account page tab panes content */

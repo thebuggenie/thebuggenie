@@ -46,9 +46,9 @@
 	}
 ?>
 
-<div class="rounded_box mediumgrey borderless cut_top cut_bottom">
-	<a href="javascript:void(0);" style="float: left; padding-right: 5px;" id="checkin_expand_<?php echo $id; ?>" onclick="$('checkin_details_<?php echo $id; ?>').show(); $('checkin_expand_<?php echo $id; ?>').hide(); $('checkin_collapse_<?php echo $id; ?>').show();"><?php echo image_tag('expand.png'); ?></a>
-	<a href="javascript:void(0);" style="display: none; float: left; padding-right: 5px;" id="checkin_collapse_<?php echo $id; ?>" onclick="$('checkin_details_<?php echo $id; ?>').hide(); $('checkin_expand_<?php echo $id; ?>').show(); $('checkin_collapse_<?php echo $id; ?>').hide();"><?php echo image_tag('collapse.png'); ?></a>
+<div id="commit_<?php echo $id; ?>_box" class="rounded_box iceblue borderless commit_box">
+	<a href="javascript:void(0);" style="float: left; padding-right: 5px;" id="checkin_expand_<?php echo $id; ?>" onclick="$('checkin_details_<?php echo $id; ?>').show(); $('checkin_expand_<?php echo $id; ?>').hide(); $('checkin_collapse_<?php echo $id; ?>').show(); $('commit_<?php echo $id; ?>_box').addClassName('cut_bottom');"><?php echo image_tag('expand.png'); ?></a>
+	<a href="javascript:void(0);" style="display: none; float: left; padding-right: 5px;" id="checkin_collapse_<?php echo $id; ?>" onclick="$('checkin_details_<?php echo $id; ?>').hide(); $('checkin_expand_<?php echo $id; ?>').show(); $('checkin_collapse_<?php echo $id; ?>').hide(); $('commit_<?php echo $id; ?>_box').removeClassName('cut_bottom');"><?php echo image_tag('collapse.png'); ?></a>
 <?php 
 	switch (TBGContext::getModule('vcs_integration')->getSetting('web_type_' . $project->getID()))
 	{
@@ -73,7 +73,7 @@
 	}
 ?>
 </div>
-<div id="checkin_details_<?php echo $id; ?>" style="display: none;" class="rounded_box borderless cut_bottom cut_top iceblue">
+<div id="checkin_details_<?php echo $id; ?>" style="display: none;" class="rounded_box borderless cut_top lightgrey">
 	<h4><?php echo __('Log entry:'); ?></h4>
 	<pre>
 <?php echo $log; ?>
