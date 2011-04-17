@@ -107,7 +107,59 @@
 				{
 					// one array for revision details, other for files
 					$data[$results->get(TBGVCSIntegrationTable::NEW_REV)] = array(array(), array());
-					$data[$results->get(TBGVCSIntegrationTable::NEW_REV)][0] = array($results->get(TBGVCSIntegrationTable::ID), $results->get(TBGVCSIntegrationTable::AUTHOR), $results->get(TBGVCSIntegrationTable::DATE), $results->get(TBGVCSIntegrationTable::LOG));
+					$data[$results->get(TBGVCSIntegrationTable::NEW_REV)][0] = array($results->get(TBGVCSIntegrationTable::ID), $results->get(TBGVCSIntegrationTable::AUTHOR), $results->get(TBGVCSIntegrationTable::DATE), $results->get(TBGVCSIntegrationTable::LOG), $results->get(TBGVCSIntegrationTable::ISSUE_NO));
+					$data[$results->get(TBGVCSIntegrationTable::NEW_REV)][1][] = $file;
+				}
+			}
+			
+			return $data;
+		}
+		
+		/**
+		 * Return all commits associated to a given project
+		 *
+		 * @param $id ID number of project
+		 * @param $limit Maximum age of commits to show, use strtotime format (default is 2 weeks ago)
+		 *
+		 * @return false if no commits, otherwise array
+		 */
+		public function getCommitsByProject($id, $limit = '-2 weeks')
+		{
+			$crit = new B2DBCriteria();
+			
+			$issues = TBGIssuesTable::getTable()->getIssuesByProjectId($id);
+			
+			$crit->addWhere(self::ISSUE_NO, $issues[0]->getID());
+			for($i = 1; $i != count($issues); $i++)
+			{
+				$crit->addOr(self::ISSUE_NO, $issues[$i]->getID());
+			}
+			
+			$crit->addWhere(self::DATE, strtotime($limit), $crit::DB_GREATER_THAN_EQUAL);
+			
+			$crit->addOrderBy(self::DATE, B2DBCriteria::SORT_DESC);
+			$results = $this->doSelect($crit);
+
+			if (!is_object($results) || $results->getNumberOfRows() == 0)
+			{
+				return false;
+			}
+			
+			$data = array();
+			
+			/* Build revision details */
+			while ($results->next())
+			{
+				$file = array($results->get(TBGVCSIntegrationTable::FILE_NAME), $results->get(TBGVCSIntegrationTable::ACTION), $results->get(TBGVCSIntegrationTable::NEW_REV), $results->get(TBGVCSIntegrationTable::OLD_REV));
+				if (array_key_exists($results->get(TBGVCSIntegrationTable::NEW_REV), $data))
+				{
+					$data[$results->get(TBGVCSIntegrationTable::NEW_REV)][1][] = $file;
+				}
+				else
+				{
+					// one array for revision details, other for files
+					$data[$results->get(TBGVCSIntegrationTable::NEW_REV)] = array(array(), array());
+					$data[$results->get(TBGVCSIntegrationTable::NEW_REV)][0] = array($results->get(TBGVCSIntegrationTable::ID), $results->get(TBGVCSIntegrationTable::AUTHOR), $results->get(TBGVCSIntegrationTable::DATE), $results->get(TBGVCSIntegrationTable::LOG), $results->get(TBGVCSIntegrationTable::ISSUE_NO));
 					$data[$results->get(TBGVCSIntegrationTable::NEW_REV)][1][] = $file;
 				}
 			}

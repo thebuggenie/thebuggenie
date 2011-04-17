@@ -272,6 +272,28 @@
 		{
 			return $this->_getCountByProjectIDAndColumn($project_id, self::STATE);
 		}
+		
+		public function getIssuesByProjectID($id)
+		{
+			$crit = new B2DBCriteria();
+			$crit->addWhere(self::PROJECT_ID, $id);
+			$results = $this->doSelect($crit);
+
+			if (!is_object($results) || $results->getNumberOfRows() == 0)
+			{
+				return false;
+			}
+			
+			$data = array();
+			
+			/* Build revision details */
+			while ($results->next())
+			{
+				$data[] = TBGContext::factory()->TBGIssue($results->get(TBGIssuesTable::ID));
+			}
+			
+			return $data;
+		}
 
 		public function getByID($id)
 		{

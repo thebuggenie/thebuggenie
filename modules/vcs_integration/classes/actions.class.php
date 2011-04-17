@@ -137,5 +137,11 @@
 				TBGContext::setCurrentProject($this->selected_project);
 				$this->project_key = $this->selected_project->getKey();
 			}
+			else
+			{
+				$this->return404(TBGContext::getI18n()->__('This project does not exist'));
+			}
+			
+			$this->commits = TBGVCSIntegrationTable::getTable()->getCommitsByProject($this->selected_project->getID());
 		}
 	}

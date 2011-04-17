@@ -7,11 +7,13 @@
 	{
 		$theUser = TBGContext::factory()->TBGUser($author);
 	}
-
-	$web_path = TBGContext::getModule('vcs_integration')->getSetting('web_path_' . $projectId);
-	$web_repo = TBGContext::getModule('vcs_integration')->getSetting('web_repo_' . $projectId);
 	
-	switch (TBGContext::getModule('vcs_integration')->getSetting('web_type_' . $projectId))
+	$issue = TBGContext::factory()->TBGIssue($issue_no);
+
+	$web_path = TBGContext::getModule('vcs_integration')->getSetting('web_path_' . $project->getID());
+	$web_repo = TBGContext::getModule('vcs_integration')->getSetting('web_repo_' . $project->getID());
+	
+	switch (TBGContext::getModule('vcs_integration')->getSetting('web_type_' . $project->getID()))
 	{
 		case 'viewvc':
 			$link_rev = $web_path . '/' . '?root=' . $web_repo . '&amp;view=rev&amp;revision=' . $revision; 
@@ -48,7 +50,7 @@
 	<a href="javascript:void(0);" style="float: left; padding-right: 5px;" id="checkin_expand_<?php echo $id; ?>" onclick="$('checkin_details_<?php echo $id; ?>').show(); $('checkin_expand_<?php echo $id; ?>').hide(); $('checkin_collapse_<?php echo $id; ?>').show();"><?php echo image_tag('expand.png'); ?></a>
 	<a href="javascript:void(0);" style="display: none; float: left; padding-right: 5px;" id="checkin_collapse_<?php echo $id; ?>" onclick="$('checkin_details_<?php echo $id; ?>').hide(); $('checkin_expand_<?php echo $id; ?>').show(); $('checkin_collapse_<?php echo $id; ?>').hide();"><?php echo image_tag('collapse.png'); ?></a>
 <?php 
-	switch (TBGContext::getModule('vcs_integration')->getSetting('web_type_' . $projectId))
+	switch (TBGContext::getModule('vcs_integration')->getSetting('web_type_' . $project->getID()))
 	{
 		case 'hgweb':
 			if (isset($theUser))
@@ -56,7 +58,7 @@
 				$user = '<div style="display: inline;">'.get_component_html('main/userdropdown', array('user' => $theUser, 'size' => 'small')).'</div>';
 			}
 			?>
-			<span class="commenttitle" style="float: left; padding-right: 5px;"><a href="<?php echo $link_rev; ?>" target="_new"><?php echo __('Revision %revno%', array('%revno%' => $revision[0].':'.$revision[1])) . '</a> - ' . __('committed on %date% by', array('%date%' => tbg_formatTime($date, 10))) . '</span> ' . $user; ?>
+			<span class="commenttitle" style="float: left; padding-right: 5px;"><?php if ($projectmode == true): echo(link_tag(make_url('viewissue', array('project_key' => $project->getKey(), 'issue_no' => $issue->getFormattedIssueNo(false, false))), $issue->getFormattedIssueNo(true, true)).' - '); endif; ?><a href="<?php echo $link_rev; ?>" target="_new"><?php echo __('Revision %revno%', array('%revno%' => $revision[0].':'.$revision[1])) . '</a> - ' . __('committed on %date% by', array('%date%' => tbg_formatTime($date, 10))) . '</span> ' . $user; ?>
 			<?php
 			break;
 		default:
@@ -65,7 +67,7 @@
 				$user = '<div style="display: inline;">'.get_component_html('main/userdropdown', array('user' => $theUser, 'size' => 'small')).'</div>';
 			}
 			?>
-			<span class="commenttitle" style="float: left; padding-right: 5px;"><a href="<?php echo $link_rev; ?>" target="_new"><?php echo __('Revision %revno%', array('%revno%' => $revision)) . '</a> - ' . __('committed on %date% by', array('%date%' => tbg_formatTime($date, 10))) . '</span> ' . $user; ?>
+			<span class="commenttitle" style="float: left; padding-right: 5px;"><?php if ($projectmode == true): echo(link_tag(make_url('viewissue', array('project_key' => $project->getKey(), 'issue_no' => $issue->getFormattedIssueNo(false, false))), $issue->getFormattedIssueNo(true, true)).' - '); endif; ?><a href="<?php echo $link_rev; ?>" target="_new"><?php echo __('Revision %revno%', array('%revno%' => $revision)) . '</a> - ' . __('committed on %date% by', array('%date%' => tbg_formatTime($date, 10))) . '</span> ' . $user; ?>
 			<?php
 			break;
 	}
@@ -86,7 +88,7 @@
 		$action = $file[1];
 		if ($action == 'M'): $action = 'U'; endif;
 		echo '<td class="imgtd">' . image_tag('icon_action_' . $action . '.png', null, false, 'vcs_integration') . '</td>';
-		switch (TBGContext::getModule('vcs_integration')->getSetting('web_type_' . $projectId))
+		switch (TBGContext::getModule('vcs_integration')->getSetting('web_type_' . $project->getID()))
 		{
 			case 'viewvc':
 				$link_file = $web_path . '/' . $file[0] . '?root=' . $web_repo . '&amp;view=log';

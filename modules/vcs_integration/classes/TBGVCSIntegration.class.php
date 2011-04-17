@@ -195,7 +195,7 @@
 					}
 					
 					/* Now we have everything, render the template */
-					include_template('vcs_integration/commitbox', array("projectId" => $event->getSubject()->getProject()->getID(), "id" => $entry[0][0], "revision" => $revision, "author" => $entry[0][1], "date" => $entry[0][2], "log" => $entry[0][3], "files" => $entry[1]));
+					include_template('vcs_integration/commitbox', array("project" => $event->getSubject()->getProject(), "issue_no" => $entry[0][4], "id" => $entry[0][0], "revision" => $revision, "author" => $entry[0][1], "date" => $entry[0][2], "log" => $entry[0][3], "files" => $entry[1], "projectmode" => false));
 				}
 				
 				TBGActionComponent::includeTemplate('vcs_integration/viewissue_commits_bottom');
