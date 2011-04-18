@@ -571,6 +571,10 @@
 		 */
 		public function getName()
 		{
+			if ($this->isDeleted())
+			{
+				return __('No such user');
+			}
 			return ($this->_buddyname) ? $this->_buddyname : (($this->_realname) ? $this->_realname : $this->_username);
 		}
 		
@@ -591,6 +595,10 @@
 		 */
 		public function getNameWithUsername()
 		{
+			if ($this->isDeleted())
+			{
+				return __('No such user');
+			}
 			return ($this->_buddyname) ? $this->_buddyname . ' (' . $this->_username . ')' : $this->_username;
 		}
 		
