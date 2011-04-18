@@ -1,6 +1,7 @@
 <?php
 
 	$routes = array();
+	$routes[] = array('serve', '/serve', 'main', 'serve');
 	$routes[] = array('home', '/', 'main', 'index');
 	$routes[] = array('upgrade', '/upgrade', 'installation', 'upgrade');
 	$routes[] = array('attach_link', '/attach/link/to/:target_type/:target_id', 'main', 'attachLink');

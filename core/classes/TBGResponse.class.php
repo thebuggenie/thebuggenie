@@ -59,6 +59,13 @@
 		 * @var array
 		 */
 		protected $_javascripts = array();
+		
+		/**
+		 * List of stylesheets
+		 *
+		 * @var array
+		 */
+		protected $_stylesheets = array();
 
 		/**
 		 * List of feeds
@@ -290,6 +297,16 @@
 		{
 			$this->_javascripts[$javascript] = $javascript;
 		}
+		
+		/**
+		 * Add a stylesheet
+		 *
+		 * @param string $stylesheet stylesheet name
+		 */
+		public function addStylesheet($stylesheet)
+		{
+			$this->_stylesheets[$stylesheet] = $stylesheet;
+		}
 
 		/**
 		 * Add a feed
@@ -476,6 +493,16 @@
 		public function getJavascripts()
 		{
 			return $this->_javascripts;
+		}
+		
+		/**
+		 * Return all active stylesheets
+		 *
+		 * @return array
+		 */
+		public function getStylesheets()
+		{
+			return $this->_stylesheets;
 		}
 
 		/**

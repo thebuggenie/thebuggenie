@@ -16,27 +16,36 @@
 			<link rel="shortcut icon" href="<?php print TBGContext::getTBGPath(); ?>themes/<?php print TBGSettings::getThemeName(); ?>/favicon.png">
 		<?php endif; ?>
 		<link rel="shortcut icon" href="<?php print TBGContext::getTBGPath(); ?>themes/<?php print TBGSettings::getThemeName(); ?>/favicon.png">
-		<link rel="stylesheet" type="text/css" href="<?php print TBGContext::getTBGPath(); ?>css/<?php print TBGSettings::getThemeName(); ?>.css">
+		<?php $tbg_response->addStylesheet(TBGSettings::getThemeName().'.css'); ?>
 		<?php foreach ($tbg_response->getFeeds() as $feed_url => $feed_title): ?>
 			<link rel="alternate" type="application/rss+xml" title="<?php echo str_replace('"', '\'', $feed_title); ?>" href="<?php echo $feed_url; ?>">
 		<?php endforeach; ?>
 		<?php if (count(TBGContext::getModules())): ?>
 			<?php foreach (TBGContext::getModules() as $module): ?>
-				<?php $css_name = "css/" . TBGSettings::getThemeName() . "_" . $module->getName() . ".css"; ?>
-				<?php if (file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DIRECTORY_SEPARATOR . $css_name)): ?>
-					<link rel="stylesheet" type="text/css" href="<?php echo TBGContext::getTBGPath() . $css_name; ?>">
-				<?php endif; ?>
+				<?php $css_name = TBGSettings::getThemeName() . "_" . $module->getName() . ".css"; ?>
+				<?php
+				if (file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DIRECTORY_SEPARATOR . $css_name)):
+					$tbg_response->addStylesheet($css_name);
+				endif; ?>
 			<?php endforeach; ?>
 		<?php endif; ?>
-		<script type="text/javascript" src="<?php print TBGContext::getTBGPath(); ?>js/prototype.js"></script>
-		<script type="text/javascript" src="<?php print TBGContext::getTBGPath(); ?>js/scriptaculous.js"></script>
-		<script type="text/javascript" src="<?php print TBGContext::getTBGPath(); ?>js/thebuggenie.js"></script>
-		<?php if ($tbg_user->isGuest()): ?>
-			<script type="text/javascript" src="<?php print TBGContext::getTBGPath(); ?>js/login.js"></script>
-		<?php endif; ?>
-		<?php foreach ($tbg_response->getJavascripts() as $javascript): ?>
-			<script type="text/javascript" src="<?php print TBGContext::getTBGPath() . 'js/' . $javascript; ?>"></script>
-		<?php endforeach;?>
+		<?php 
+		$tbg_response->addJavascript('prototype.js');
+		$tbg_response->addJavascript('builder.js');
+		$tbg_response->addJavascript('effects.js');
+		$tbg_response->addJavascript('dragdrop.js');
+		$tbg_response->addJavascript('controls.js');
+
+		$tbg_response->addJavascript('thebuggenie.js');
+		if ($tbg_user->isGuest()):
+			$tbg_response->addJavascript('login.js');
+		endif;
+
+		$cssstring = 'css/'.implode(',css/', $tbg_response->getStylesheets());
+		$jsstring = 'js/'.implode(',js/', $tbg_response->getJavascripts());
+		?>
+		<link rel="stylesheet" type="text/css" href="<?php print make_url('serve'); ?>?g=css&files=<?php print base64_encode($cssstring); ?>">
+		<script type="text/javascript" src="<?php print make_url('serve'); ?>?g=js&files=<?php print base64_encode($jsstring); ?>"></script>
 		<?php TBGEvent::createNew('core', 'header_ends')->trigger(); ?>
 	</head>
 	<body>
