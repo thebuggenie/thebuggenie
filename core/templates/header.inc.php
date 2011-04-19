@@ -44,8 +44,8 @@
 		$cssstring = 'css/'.implode(',css/', $tbg_response->getStylesheets());
 		$jsstring = 'js/'.implode(',js/', $tbg_response->getJavascripts());
 		?>
-		<link rel="stylesheet" type="text/css" href="<?php print make_url('serve'); ?>?g=css&files=<?php print base64_encode($cssstring); ?>">
-		<script type="text/javascript" src="<?php print make_url('serve'); ?>?g=js&files=<?php print base64_encode($jsstring); ?>"></script>
+		<link rel="stylesheet" type="text/css" href="<?php print make_url('serve'); ?>&g=css&files=<?php print base64_encode($cssstring); ?>">
+		<script type="text/javascript" src="<?php print make_url('serve'); ?>&g=js&files=<?php print base64_encode($jsstring); ?>"></script>
 		<?php TBGEvent::createNew('core', 'header_ends')->trigger(); ?>
 	</head>
 	<body>
