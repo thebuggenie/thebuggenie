@@ -3339,22 +3339,29 @@
 			$min_serveOptions['minApp']['groups'] = $itemarray;
 
 			$data = Minify::serve('MinApp', $min_serveOptions);
+			header_remove('Pragma');
+
 			foreach ($data['headers'] as $name => $val)
 			{
 				header($name . ': ' . $val);
 			}
 			
 			if ($request->getParameter('g') == 'js'):
-				$this->getResponse()->setContentType('text/javascript');
+				header('Content-type: text/javascript');
 			elseif ($request->getParameter('g') == 'css'):
-				$this->getResponse()->setContentType('text/css');
+				header('Content-type: text/css');
 			else:
-				$this->getResponse()->setContentType('text/plain');
+				header('Content-type: text/plain');
 			endif;
 			
-			$this->getResponse()->setHttpStatus($data['statusCode']);
-			echo $data['content'];
-			return true;
+			header('HTTP/1.1 '.$data['statusCode']);
+
+			if ($data['statusCode'] != 304)
+			{
+				echo $data['content'];
+			}
+
+			exit();
 		}
 		
 }
