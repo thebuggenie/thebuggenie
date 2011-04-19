@@ -62,6 +62,10 @@
 
 		public function componentResults_normal()
 		{
+			if (!property_exists($this, 'show_project'))
+			{
+				$this->show_project = false;
+			}
 		}
 
 		public function componentResults_todo()

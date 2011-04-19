@@ -18,7 +18,7 @@
 		<table style="width: 100%;" cellpadding="0" cellspacing="0" class="results_container">
 			<thead>
 				<tr>
-					<?php if (!TBGContext::isProjectContext()): ?>
+					<?php if (!TBGContext::isProjectContext() && $show_project == true): ?>
 						<th style="padding-left: 3px;"><?php echo __('Project'); ?></th>
 					<?php endif; ?>
 					<th style="width: 16px; text-align: right; padding: 0;<?php if (TBGContext::isProjectContext()): ?> padding-left: 3px;<?php endif; ?>">&nbsp;</th>
@@ -33,7 +33,7 @@
 			<tbody>
 	<?php endif; ?>
 				<tr class="<?php if ($issue->isClosed()): ?> closed<?php endif; ?><?php if ($issue->hasUnsavedChanges()): ?> changed<?php endif; ?><?php if ($issue->isBlocking()): ?> blocking<?php endif; ?> priority_<?php echo ($issue->getPriority() instanceof TBGPriority) ? $issue->getPriority()->getValue() : 0; ?>">
-				<?php if (!TBGContext::isProjectContext()): ?>
+				<?php if (!TBGContext::isProjectContext() && $show_project == true): ?>
 				<td style="padding-left: 5px;"><?php echo link_tag(make_url('project_issues', array('project_key' => $issue->getProject()->getKey())), $issue->getProject()->getName()); ?></td>
 				<?php endif; ?>
 				<td>
