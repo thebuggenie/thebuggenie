@@ -294,7 +294,7 @@
 		 */
 		public function runClientDashboard(TBGRequest $request)
 		{
-			$this->forward403unless(TBGContext::getUser()->hasPageAccess('home'));
+			$this->forward403unless(TBGContext::getUser()->hasPageAccess('clientlist'));
 			$this->client = null;
 			try
 			{
@@ -315,7 +315,7 @@
 		 */
 		public function runTeamDashboard(TBGRequest $request)
 		{
-			$this->forward403unless(TBGContext::getUser()->hasPageAccess('home'));
+			$this->forward403unless(TBGContext::getUser()->hasPageAccess('teamlist'));
 
 			try
 			{
