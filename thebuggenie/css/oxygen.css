@@ -116,7 +116,7 @@ div.image_container.thumb img.image { width: 220px; }
 .imgtd { width: 22px; text-align: center; vertical-align: middle; }
 
 /* frontpage article layout styling */
-.article { font-size: 0.925em; color: #666; width: auto; padding: 5px; position: relative; }
+.article { font-size: 1em; color: #666; width: auto; padding: 5px; position: relative; }
 .main_area.frontpage .article { padding-top: 0; }
 .main_area.frontpage .article h1, .main_area.frontpage .article h2, .main_area.frontpage .article h3, .main_area.frontpage .article h4, .main_area.frontpage .article h5, .main_area.frontpage .article h6 { margin-top: 0; margin-bottom: 5px; }
 

@@ -1,16 +1,16 @@
-.article_list { list-style-type: none; margin: 5px 0 0 5px; padding: 0; font-size: 12px; }
+.article_list { list-style-type: none; margin: 5px 0 0 5px; padding: 0; font-size: 0.9em; }
 .article_list img { float: left; margin-right: 5px; }
-.article_list span { font-size: 9px; }
-.article_list span a { font-size: 9px; font-weight: normal; }
+.article_list span { font-size: 0.8em; }
+.article_list span a { font-size: 0.8em; font-weight: normal; }
 .article_list .more_news { margin: 10px 0 0 0; }
 .article_list li { margin-bottom: 8px; }
 
-.toc .publish_toc_1 { margin: 15px 0 3px 0; font-size: 14px; font-weight: bold; }
-.toc .publish_toc_2 { margin: 0 0 3px 4px; font-size: 13px; }
-.toc .publish_toc_3 { margin: 0 0 3px 7px; font-size: 12.5px; }
-.toc .publish_toc_4 { margin: 0 0 3px 10px; font-size: 12px; }
-.toc .publish_toc_5 { margin: 0 0 3px 13px; font-size: 11.5px; }
-.toc .publish_toc_6 { margin: 0 0 3px 16px; font-size: 11px; }
+.toc .publish_toc_1 { margin: 15px 0 3px 0; font-size: 1.1em; font-weight: bold; }
+.toc .publish_toc_2 { margin: 0 0 3px 4px; font-size: 1.0em; }
+.toc .publish_toc_3 { margin: 0 0 3px 7px; font-size: 0.95em; }
+.toc .publish_toc_4 { margin: 0 0 3px 10px; font-size: 0.9em; }
+.toc .publish_toc_5 { margin: 0 0 3px 13px; font-size: 0.85em; }
+.toc .publish_toc_6 { margin: 0 0 3px 16px; font-size: 0.8em; }
 
 .article .article a { border-bottom: 1px dotted #CCC; }
 .article h1 { font-size: 1.4em; padding: 3px 3px 3px 0; }
@@ -35,9 +35,9 @@
 .article .publish_article_actions input[type="submit"], .article .publish_article_actions button { padding: 3px; font-weight: bold; font-size: 12px; cursor: pointer; }
 .article .publish_article_actions input[type="submit"]:hover, .article .publish_article_actions button:hover { background-color: #F1F1F1; cursor: pointer; }
 
-.article.edit label { font-size: 15px; }
-.article.edit label.small { font-size: 13px; }
-.article.edit input[type="text"] { font-size: 15px; padding: 5px; }
+.article.edit label { font-size: 1.2em; }
+.article.edit label.small { font-size: 1em; }
+.article.edit input[type="text"] { font-size: 1.2em; padding: 5px; }
 .article.edit textarea { font-family: "DroidSansMono", monospace; }
 
 .article .header { margin: 0 0 5px 0; padding: 3px; font-weight: bold; font-size: 17px; border-bottom: 1px solid #CCC; }
@@ -61,16 +61,16 @@
 
 .article table { border: 0; border-collapse: collapse; }
 .article.edit table, .article.edit table td { border: 0; }
-.article table td, .article table th { border: 1px solid #DDD; padding: 2px; font-size: 12px; }
+.article table td, .article table th { border: 1px solid #DDD; padding: 2px; font-size: 0.9em; }
 .article table th { text-align: center; }
 
 .category_list { padding: 0; margin: 0 0 10px 10px; width: 100%; }
-.category_list li { margin-left: 10px; float: left; font-size: 13px; width: 33%; }
-.category_list div { font-size: 13px; }
+.category_list li { margin-left: 10px; float: left; font-size: 1em; width: 33%; }
+.category_list div { font-size: 1em; }
 
-#wiki_menu .header { font-size: 14px; font-weight: bold; margin-bottom: 5px; }
+#wiki_menu .header { font-size: 1.1em; font-weight: bold; margin-bottom: 5px; }
 #wiki_menu .content ul { list-style-type: none; margin: 0; padding: 0; }
-#wiki_menu .content ul li { font-size: 12px; }
+#wiki_menu .content ul li { font-size: 0.9em; }
 #wiki_menu .content ul li a { font-weight: bold; }
 
 #article_history, #article_diff { border: 0; width: 100%; }

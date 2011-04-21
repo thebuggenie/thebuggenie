@@ -24,7 +24,7 @@
 			<?php foreach (TBGContext::getModules() as $module): ?>
 				<?php $css_name = TBGSettings::getThemeName() . "_" . $module->getName() . ".css"; ?>
 				<?php
-				if (file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DIRECTORY_SEPARATOR . $css_name)):
+				if (file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DIRECTORY_SEPARATOR . 'css' . DIRECTORY_SEPARATOR . $css_name)):
 					$tbg_response->addStylesheet($css_name);
 				endif; ?>
 			<?php endforeach; ?>
