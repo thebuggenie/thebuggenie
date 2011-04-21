@@ -17,7 +17,6 @@
       			<?php endif; ?>
       		</div>
       	</div>
-      	<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
       </div>
     <?php
     return;
