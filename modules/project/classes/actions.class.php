@@ -425,27 +425,6 @@
 			$this->labels = array(30,'','','','',25,'','','','',20,'','','','',15,'','','','',10,'','','','',5,'','','','',0);
 		}
 
-		/**
-		 * Return the project menu strip
-		 *
-		 * @param TBGRequest $request The request object
-		 */
-		public function runGetMenustrip(TBGRequest $request)
-		{
-			$this->forward403unless($request->isMethod(TBGRequest::POST) && $request->hasParameter('project_id'));
-			$project = null;
-			$hide_button = ($request->getParameter('page') == 'reportissue') ? true : false;
-			$this->getResponse()->setPage($request->getParameter('page'));
-
-			try
-			{
-				$project = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
-			}
-			catch (Exception $e) {}
-
-			return $this->renderComponent('menustrip', array('project' => $project, 'hide_button' => $hide_button));
-		}
-
 		public function runStatisticsImagesets(TBGRequest $request)
 		{
 			$this->forward403unless($this->_checkProjectPageAccess('project_statistics'));
