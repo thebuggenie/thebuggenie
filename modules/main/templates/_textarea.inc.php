@@ -21,7 +21,7 @@
 						break;
 					case 5:
 						echo htmlspecialchars(__('Code samples are best presented in <source></source> tags.')) . ' ' . __('The Bug Genie uses %geshi% for syntax highlighting with support for over 100 languages!', array('%geshi%' => link_tag('http://qbnz.com/highlighter/', 'GeSHi', array('tabindex' => '-1'))));
-						echo "(<source lang=\"php\"><?php echo \"fu\"; ?></source>)";
+						echo htmlspecialchars(" (<source lang=\"php\"><?php echo \"fu\"; ?></source>)");
 						break;
 					case 6:
 						echo htmlspecialchars(__('You can use simple formatting tags for underlined text (<b></b>) or strikethrough (<strike></strike>).'));
