@@ -186,6 +186,7 @@
 		</div>
 	<?php endif; ?>
 	<form action="<?php echo make_url('project_reportissue', array('project_key' => $selected_project->getKey())); ?>" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>">
+		<input type="hidden" name="project_id" id="project_id" value="<?php echo $selected_project->getID(); ?>">
 		<div class="rounded_box report_issue_desc borderless lightgrey">
 			<div style="margin: 0; clear: both; height: 25px;">
 				<div style="float: left;">
