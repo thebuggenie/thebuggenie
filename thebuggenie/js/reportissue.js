@@ -1,13 +1,9 @@
-function updateFields(url, projectmenustripurl)
+function updateFields(url)
 {
 	if ($('issuetype_id').getValue() != 0)
 	{
 		$('issuetype_list').hide();
 		$('issuetype_dropdown').show();
-	}
-	if (projectmenustripurl != '' && $('project_id').getValue() != 0)
-	{
-		updateProjectMenuStrip(projectmenustripurl, $('project_id').getValue());
 	}
 	if ($('project_id').getValue() != 0 && $('issuetype_id').getValue() != 0)
 	{

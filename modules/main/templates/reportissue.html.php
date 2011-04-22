@@ -185,44 +185,25 @@
 			<?php echo __('Click the link to visit the reported issue'); ?>
 		</div>
 	<?php endif; ?>
-	<form action="<?php echo make_url('reportissue'); ?>" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>">
+	<form action="<?php echo make_url('project_reportissue', array('project_key' => $selected_project->getKey())); ?>" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>">
 		<div class="rounded_box report_issue_desc borderless lightgrey">
-			<?php if (count($projects) > 0): ?>
-				<?php if (!$selected_project instanceof TBGProject): ?>
-					<p><?php echo __('Please select the project you are filing an issue for, as well as what kind of issue you are filing'); ?>.</p>
-				<?php endif; ?>
-				<div style="margin: 10px 0 0 0; clear: both; height: 25px;">
-					<div style="float: left;">
-						<?php if ($selected_project instanceof TBGProject): ?>
-							<span style="font-size: 14px;"><?php echo __('Reporting an issue for %project_name%', array('%project_name%' => '<b>' . $selected_project->getName() . '</b>'))?><?php if ($selected_project->hasClient()): ?> (<?php echo __('Client: %clientname%', array('%clientname%' => link_tag(make_url('client_dashboard', array('client_id' => $selected_project->getClient()->getID())), $selected_project->getClient()->getName()))); ?>)<?php endif;?></span>
-						<?php endif; ?>
-						<label for="project_id" style="margin-right: 20px;<?php if ($selected_project instanceof TBGProject): ?> display: none;<?php endif; ?>"><?php echo __('Select project'); ?></label>
-						<select name="project_id" id="project_id" style="min-width: 300px; height: 25px;<?php if ($selected_project instanceof TBGProject): ?> display: none;<?php endif; ?>" onchange="updateFields('<?php echo make_url('getreportissuefields'); ?>', '<?php echo make_url('getprojectmenustrip', array('page' => 'reportissue')); ?>');">
-							<option value="0"><?php echo __('Please select a project from this list'); ?>...</option>
-							<?php foreach ($projects as $project): ?>
-								<option value="<?php echo $project->getID(); ?>"<?php if ($selected_project instanceof TBGProject && $selected_project->getID() == $project->getID()): ?> selected<?php endif; ?>><?php echo $project->getName(); ?></option>
-							<?php endforeach; ?>
-						</select>
-					</div>
-					<div style="float: right;<?php if (!$selected_issuetype instanceof TBGIssuetype): ?> display: none;<?php endif; ?>" id="issuetype_dropdown">
-						<label for="issuetype_id" style="margin-right: 20px;"><?php echo __('Select issue type'); ?></label>
-						<select name="issuetype_id" id="issuetype_id" style="min-width: 300px; height: 25px;" onchange="updateFields('<?php echo make_url('getreportissuefields'); ?>', '<?php echo make_url('getprojectmenustrip', array('page' => 'reportissue')); ?>');">
-							<option value="0"><?php echo __('Please select an issue type from this list'); ?>...</option>
-							<?php foreach ($issuetypes as $issuetype): ?>
-								<?php if (!$selected_project->getIssuetypeScheme()->isIssuetypeReportable($issuetype)) continue; ?>
-								<option value="<?php echo $issuetype->getID(); ?>"<?php if ($selected_issuetype instanceof TBGIssuetype && $selected_issuetype->getID() == $issuetype->getID()): ?> selected<?php endif; ?>><?php echo $issuetype->getName(); ?></option>
-							<?php endforeach; ?>
-						</select>
-					</div>
+			<div style="margin: 0; clear: both; height: 25px;">
+				<div style="float: left;">
+					<span style="font-size: 14px;"><?php echo __('Reporting an issue for %project_name%', array('%project_name%' => '<b>' . $selected_project->getName() . '</b>'))?><?php if ($selected_project->hasClient()): ?> (<?php echo __('Client: %clientname%', array('%clientname%' => link_tag(make_url('client_dashboard', array('client_id' => $selected_project->getClient()->getID())), $selected_project->getClient()->getName()))); ?>)<?php endif;?></span>
 				</div>
-			<?php else: ?>
-				<p style="padding-bottom: 5px;">
-					<b class="faded_out dark"><?php echo __('There are no projects to choose from'); ?>.</b><br>
-					<i><?php echo __('An administrator must create one or more projects before you can report any issues'); ?>.</i>
-				</p>
-			<?php endif; ?>
+				<div style="float: right;<?php if (!$selected_issuetype instanceof TBGIssuetype): ?> display: none;<?php endif; ?>" id="issuetype_dropdown">
+					<label for="issuetype_id" style="margin-right: 20px;"><?php echo __('Select issue type'); ?></label>
+					<select name="issuetype_id" id="issuetype_id" style="min-width: 300px; height: 25px;" onchange="updateFields('<?php echo make_url('getreportissuefields'); ?>');">
+						<option value="0"><?php echo __('Please select an issue type from this list'); ?>...</option>
+						<?php foreach ($issuetypes as $issuetype): ?>
+							<?php if (!$selected_project->getIssuetypeScheme()->isIssuetypeReportable($issuetype)) continue; ?>
+							<option value="<?php echo $issuetype->getID(); ?>"<?php if ($selected_issuetype instanceof TBGIssuetype && $selected_issuetype->getID() == $issuetype->getID()): ?> selected<?php endif; ?>><?php echo $issuetype->getName(); ?></option>
+						<?php endforeach; ?>
+					</select>
+				</div>
+			</div>
 		</div>
-		<?php if (count($projects) > 0 && count($issuetypes) > 0): ?>
+		<?php if (count($issuetypes) > 0): ?>
 			<ul class="issuetype_list" id="issuetype_list"<?php if ($selected_issuetype instanceof TBGIssuetype): ?> style="display: none;"<?php endif; ?>>
 			<?php foreach ($issuetypes as $issuetype): ?>
 				<?php if (!$selected_project->getIssuetypeScheme()->isIssuetypeReportable($issuetype)) continue; ?>
@@ -231,23 +212,21 @@
 					<strong style="font-size: 14px;"><?php echo $issuetype->getName(); ?></strong><br>
 					<?php echo $issuetype->getDescription(); ?>
 					<div style="text-align: right; margin-top: 5px;">
-						<a href="javascript:void(0);" onclick="$('issuetype_id').setValue(<?php echo $issuetype->getID(); ?>);updateFields('<?php echo make_url('getreportissuefields'); ?>', '<?php echo make_url('getprojectmenustrip', array('page' => 'reportissue')); ?>');" style="font-size: 13px; font-weight: bold;"><?php echo __('Choose %issuetype%', array('%issuetype%' => mb_strtolower($issuetype->getName()))); ?>&nbsp;&gt;&gt;</a>
+						<a href="javascript:void(0);" onclick="$('issuetype_id').setValue(<?php echo $issuetype->getID(); ?>);updateFields('<?php echo make_url('getreportissuefields'); ?>');" style="font-size: 13px; font-weight: bold;"><?php echo __('Choose %issuetype%', array('%issuetype%' => mb_strtolower($issuetype->getName()))); ?>&nbsp;&gt;&gt;</a>
 					</div>
 				</li>
 			<?php endforeach; ?>
 			</ul>
 		<?php endif; ?>
 		<div style="clear: both;"></div>
-		<?php if (count($projects) > 0 && count($issuetypes) > 0): ?>
-			<?php if ($selected_project instanceof TBGProject) : ?>
-				<?php if (!isset($description)) : ?>
-					<?php $description = ''; ?>
-				<?php endif; ?>
-				<?php if (!isset($reproduction_steps)) : ?>
-					<?php $reproduction_steps = ''; ?>
-				<?php endif; ?>
+		<?php if (count($issuetypes) > 0): ?>
+			<?php if (!isset($description)) : ?>
+				<?php $description = ''; ?>
 			<?php endif; ?>
-			<div id="report_more_here"<?php if ($selected_issuetype instanceof TBGIssuetype && $selected_project instanceof TBGProject): ?> style="display: none;"<?php endif; ?>><?php echo __('More options will appear here as soon as you select a project and an issue type above'); ?>...</div>
+			<?php if (!isset($reproduction_steps)) : ?>
+				<?php $reproduction_steps = ''; ?>
+			<?php endif; ?>
+			<div id="report_more_here"<?php if ($selected_issuetype instanceof TBGIssuetype && $selected_project instanceof TBGProject): ?> style="display: none;"<?php endif; ?>><?php echo __('More options will appear here as soon as you select an issue type above'); ?>...</div>
 			<div class="report_form" id="report_form"<?php if (!$selected_project instanceof TBGProject || !$selected_issuetype instanceof TBGPssuetype): ?> style="display: none;"<?php endif; ?>>
 				<table cellpadding="0" cellspacing="0"<?php if (array_key_exists('title', $errors)): ?> class="reportissue_error"<?php endif; ?>>
 					<tr>

@@ -786,7 +786,7 @@
 			$this->reproducabilities = TBGReproducability::getAll();
 			$this->resolutions = TBGResolution::getAll();
 			$this->statuses = TBGStatus::getAll();
-			$this->projects = TBGProject::getAll();
+//			$this->projects = TBGProject::getAll();
 		}
 
 		protected function _clearReportIssueProperties()
