@@ -29,6 +29,8 @@
 		 */
 		protected $_project = null;
 		
+		protected $_assignees = null;
+		
 		public static function getAllByProjectID($project_id)
 		{
 			$retval = array();
