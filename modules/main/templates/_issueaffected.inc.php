@@ -43,7 +43,7 @@
 	<tr id="no_affected" <?php if ($count != 0): ?>style="display: none;"<?php endif; ?>><td colspan="4"><span class="faded_out"><?php echo __('There are no items'); ?></span></td></tr>
 	<?php
 		if ($issue->getProject()->isEditionsEnabled()):
-			foreach ($issue->getEditions() as $edition):
+			foreach ($editions as $edition):
 				$item = $edition;
 				$itemtype = 'edition';
 				$itemtypename = __('Edition');
@@ -54,7 +54,7 @@
 	?>
 	<?php
 		if ($issue->getProject()->isComponentsEnabled()):
-			foreach ($issue->getComponents() as $component):
+			foreach ($components as $component):
 				$item = $component;
 				$itemtype = 'component';
 				$itemtypename = __('Component');
@@ -65,7 +65,7 @@
 	?>
 	<?php
 		if ($issue->getProject()->isBuildsEnabled()):
-			foreach ($issue->getBuilds() as $build):
+			foreach ($builds as $build):
 				$item = $build;
 				$itemtype = 'build';
 				$itemtypename = __('Release');
