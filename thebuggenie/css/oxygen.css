@@ -733,7 +733,8 @@ dd { float: left; display: block; width: 195px; font-weight: normal; margin: 0; 
 .priority_percentage .percent_unfilled, .priority_percentage .faded_out .percent_unfilled { background-color: #E2FFE1; }
 
 #upload_error_div { margin: 10px 5px 5px 5px; }
-#viewissue_attached_information, #viewissue_comments { margin: 5px 0 0 0; }
+#viewissue_attached_information, #viewissue_comments, #viewissue_related, #viewissue_duplicates, #viewissue_affected { margin: 5px 0 0 0; }
+#viewissue_commits { margin: 10px 0 0 0; }
 #viewissue_attached_information .header_div a { float: right; margin-left: 5px; }
 #viewissue_attached_information .header_div a:hover { border: 0; }
 #attach_file { background-color: transparent; width: 100%; height: 100%; position: fixed; top: 0; left: 0; margin: 0; padding: 0; text-align: center; }

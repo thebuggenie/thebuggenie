@@ -385,69 +385,75 @@
 				</div>
 			</div>
 			<div id="tab_related_issues_and_tasks_pane" style="padding-top: 5px; margin: 0 5px 0 5px; display: none;">
-				<?php if ($issue->isUpdateable()): ?>
-					<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px; float: left;" id="add_task_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="$('viewissue_add_task_div').toggle();" value="<?php echo __('Add a task to this issue'); ?>"></td></tr></table>
-					<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px; float: left;" id="relate_to_existing_issue_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'relate_issue', 'issue_id' => $issue->getID())); ?>');" value="<?php echo __('Relate to an existing issue'); ?>"></td></tr></table>
-					<br style="clear: both;">
-					<div class="rounded_box mediumgrey shadowed" id="viewissue_add_task_div" style="margin: 5px 0 5px 0; display: none; position: absolute; font-size: 12px; width: 400px;">
-						<form id="viewissue_add_task_form" action="<?php echo make_url('project_scrum_story_addtask', array('project_key' => $issue->getProject()->getKey(), 'story_id' => $issue->getID(), 'mode' => 'issue')); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="addUserStoryTask('<?php echo make_url('project_scrum_story_addtask', array('project_key' => $issue->getProject()->getKey(), 'story_id' => $issue->getID(), 'mode' => 'issue')); ?>', <?php echo $issue->getID(); ?>, 'issue');return false;">
-							<div>
-								<label for="viewissue_task_name_input"><?php echo __('Add task'); ?>&nbsp;</label>
-								<input type="text" name="task_name" id="viewissue_task_name_input">
-								<input type="submit" value="<?php echo __('Add task'); ?>">
-								<a class="close_micro_popup_link" href="javascript:void(0);" onclick="$('viewissue_add_task_div').toggle();"><?php echo __('Done'); ?></a>
-								<?php echo image_tag('spinning_20.gif', array('id' => 'add_task_indicator', 'style' => 'display: none;')); ?><br>
-							</div>
-						</form>
-					</div>
-				<?php endif; ?>
-				<table border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
-					<tr>
-						<td id="related_parent_issues_inline" style="width: 360px;">
-							<?php $p_issues = 0; ?>
-							<?php foreach ($issue->getParentIssues() as $parent_issue): ?>
-								<?php if ($parent_issue->hasAccess()): ?>
-									<?php include_template('main/relatedissue', array('theIssue' => $issue, 'related_issue' => $parent_issue)); ?>
-									<?php $p_issues++; ?>
-								<?php endif; ?>
-							<?php endforeach; ?>
-							<div class="no_items" id="no_parent_issues"<?php if ($p_issues > 0): ?> style="display: none;"<?php endif; ?>><?php echo __('No other issues depends on this issue'); ?></div>
-						</td>
-						<td style="width: 40px; text-align: center; padding: 0;"><?php echo image_tag('left.png'); ?></td>
-						<td style="width: auto;">
-							<div class="rounded_box mediumgrey borderless" id="related_issues_this_issue" style="margin: 5px auto 5px auto;">
-								<?php echo __('This issue'); ?>
-							</div>
-						</td>
-						<td style="width: 40px; text-align: center; padding: 0;"><?php echo image_tag('right.png'); ?></td>
-						<td id="related_child_issues_inline" style="width: 360px;">
-							<?php $c_issues = 0; ?>
-							<?php foreach ($issue->getChildIssues() as $child_issue): ?>
-								<?php if ($child_issue->hasAccess()): ?>
-									<?php include_template('main/relatedissue', array('theIssue' => $issue, 'related_issue' => $child_issue)); ?>
-									<?php $c_issues++; ?>
-								<?php endif; ?>
-							<?php endforeach; ?>
-							<div class="no_items" id="no_child_issues"<?php if ($c_issues > 0): ?> style="display: none;"<?php endif; ?>><?php echo __('This issue does not depend on any other issues'); ?></div>
-						</td>
-					</tr>
-				</table>
+				<div id="viewissue_related">
+					<?php if ($issue->isUpdateable()): ?>
+						<table border="0" cellpadding="0" cellspacing="0" style="margin-left: 5px; margin-right: 5px; float: left;" id="add_task_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="$('viewissue_add_task_div').toggle();" value="<?php echo __('Add a task to this issue'); ?>"></td></tr></table>
+						<table border="0" cellpadding="0" cellspacing="0" style="margin-left: 5px; float: left;" id="relate_to_existing_issue_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'relate_issue', 'issue_id' => $issue->getID())); ?>');" value="<?php echo __('Relate to an existing issue'); ?>"></td></tr></table>
+						<br style="clear: both;">
+						<div class="rounded_box mediumgrey shadowed" id="viewissue_add_task_div" style="margin: 5px 0 5px 0; display: none; position: absolute; font-size: 12px; width: 400px;">
+							<form id="viewissue_add_task_form" action="<?php echo make_url('project_scrum_story_addtask', array('project_key' => $issue->getProject()->getKey(), 'story_id' => $issue->getID(), 'mode' => 'issue')); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="addUserStoryTask('<?php echo make_url('project_scrum_story_addtask', array('project_key' => $issue->getProject()->getKey(), 'story_id' => $issue->getID(), 'mode' => 'issue')); ?>', <?php echo $issue->getID(); ?>, 'issue');return false;">
+								<div>
+									<label for="viewissue_task_name_input"><?php echo __('Add task'); ?>&nbsp;</label>
+									<input type="text" name="task_name" id="viewissue_task_name_input">
+									<input type="submit" value="<?php echo __('Add task'); ?>">
+									<a class="close_micro_popup_link" href="javascript:void(0);" onclick="$('viewissue_add_task_div').toggle();"><?php echo __('Done'); ?></a>
+									<?php echo image_tag('spinning_20.gif', array('id' => 'add_task_indicator', 'style' => 'display: none;')); ?><br>
+								</div>
+							</form>
+						</div>
+					<?php endif; ?>
+					<table border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
+						<tr>
+							<td id="related_parent_issues_inline" style="width: 360px;">
+								<?php $p_issues = 0; ?>
+								<?php foreach ($issue->getParentIssues() as $parent_issue): ?>
+									<?php if ($parent_issue->hasAccess()): ?>
+										<?php include_template('main/relatedissue', array('theIssue' => $issue, 'related_issue' => $parent_issue)); ?>
+										<?php $p_issues++; ?>
+									<?php endif; ?>
+								<?php endforeach; ?>
+								<div class="no_items" id="no_parent_issues"<?php if ($p_issues > 0): ?> style="display: none;"<?php endif; ?>><?php echo __('No other issues depends on this issue'); ?></div>
+							</td>
+							<td style="width: 40px; text-align: center; padding: 0;"><?php echo image_tag('left.png'); ?></td>
+							<td style="width: auto;">
+								<div class="rounded_box mediumgrey borderless" id="related_issues_this_issue" style="margin: 5px auto 5px auto;">
+									<?php echo __('This issue'); ?>
+								</div>
+							</td>
+							<td style="width: 40px; text-align: center; padding: 0;"><?php echo image_tag('right.png'); ?></td>
+							<td id="related_child_issues_inline" style="width: 360px;">
+								<?php $c_issues = 0; ?>
+								<?php foreach ($issue->getChildIssues() as $child_issue): ?>
+									<?php if ($child_issue->hasAccess()): ?>
+										<?php include_template('main/relatedissue', array('theIssue' => $issue, 'related_issue' => $child_issue)); ?>
+										<?php $c_issues++; ?>
+									<?php endif; ?>
+								<?php endforeach; ?>
+								<div class="no_items" id="no_child_issues"<?php if ($c_issues > 0): ?> style="display: none;"<?php endif; ?>><?php echo __('This issue does not depend on any other issues'); ?></div>
+							</td>
+						</tr>
+					</table>
+				</div>
 			</div>
 			<div id="tab_duplicate_issues_pane" style="padding-top: 0; margin: 0 5px 0 5px; display: none;">
-				<?php $data = $issue->getDuplicateIssues(); ?>
-				<?php if (count($data) != 0): ?>
-				<div class="header"><?php echo __('The following issues are duplicates of this issue:'); ?></div>
-				<?php else: ?>
-				<div class="no_items"><?php echo __('This issue has no duplicates'); ?></div>
-				<?php endif; ?>
-				<ul>
-					<?php foreach ($data as $issue): ?>
-						<?php include_template('main/duplicateissue', array('duplicate_issue' => $issue)); ?>
-					<?php endforeach; ?>
-				</ul>
+				<div id="viewissue_duplicates">
+					<?php $data = $issue->getDuplicateIssues(); ?>
+					<?php if (count($data) != 0): ?>
+					<div class="header"><?php echo __('The following issues are duplicates of this issue:'); ?></div>
+					<?php else: ?>
+					<div class="no_items"><?php echo __('This issue has no duplicates'); ?></div>
+					<?php endif; ?>
+					<ul>
+						<?php foreach ($data as $issue): ?>
+							<?php include_template('main/duplicateissue', array('duplicate_issue' => $issue)); ?>
+						<?php endforeach; ?>
+					</ul>
+				</div>
 			</div>
 			<div id="tab_affected_pane" style="padding-top: 0; margin: 0 5px 0 5px; display: none;">
-				<?php include_component('main/issueaffected', array('issue' => $issue)); ?>
+				<div id="viewissue_affected">
+					<?php include_component('main/issueaffected', array('issue' => $issue)); ?>
+				</div>
 			</div>
 			<?php TBGEvent::createNew('core', 'viewissue_tab_panes_back', $issue)->trigger(); ?>
 		</div>

@@ -8,6 +8,7 @@
 		<?php if ($issue->getProject()->isEditionsEnabled()): ?><input type="radio" name="item_type" id="item_type_edition" value="edition" onClick="$('no_type').hide(); $('which_item_edition').show(); $('which_item_component').hide(); $('which_item_build').hide(); $('item_submit').show();" /><label for="item_type_edition"> <?php echo __('Edition'); ?></label><br /><?php endif; ?>
 		<?php if ($issue->getProject()->isComponentsEnabled()): ?><input type="radio" name="item_type" id="item_type_component" value="component" onClick="$('no_type').hide(); $('which_item_edition').hide(); $('which_item_component').show(); $('which_item_build').hide(); $('item_submit').show();" /><label for="item_type_component"> <?php echo __('Component'); ?></label><br /><?php endif; ?>
 		<?php if ($issue->getProject()->isBuildsEnabled()): ?><input type="radio" name="item_type" id="item_type_build" value="build" onClick="$('no_type').hide(); $('which_item_edition').hide(); $('which_item_component').hide(); $('which_item_build').show(); $('item_submit').show();" /><label for="item_type_build"> <?php echo __('Release'); ?></label><br /><?php endif; ?>
+		<?php if ($issue->getProject()->isBuildsEnabled() || $issue->getProject()->isComponentsEnabled() || $issue->getProject()->isEditionsEnabled()): ?>
 		<div class="header_div"><?php echo __('Affected item'); ?></div>
 		<div class="faded_out" id="no_type" style="padding-top: 10px;"><?php echo('Please select an item type'); ?></div>
 		<select name="which_item_edition" id="which_item_edition" style="width: 100%; margin-top: 10px; display: none;">
@@ -33,6 +34,9 @@
 		</select>
 		<input type="submit" style="display: none; margin-top: 10px;" id="item_submit" value="<?php echo __('Add this item'); ?>">
 		<?php echo image_tag('spinning_20.gif', array('id' => 'add_affected_spinning', 'style' => 'display: none;')); ?>
+		<?php else: ?>
+		<div class="faded_out" style="padding-top: 10px;"><?php echo('No item types are enabled'); ?></div>
+		<?php endif; ?>
 		</form>
 	</div>
 	<div class="backdrop_detail_footer">
