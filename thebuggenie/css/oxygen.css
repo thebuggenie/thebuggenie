@@ -698,8 +698,7 @@ dd { float: left; display: block; width: 195px; font-weight: normal; margin: 0; 
 .dropdown_content ul { list-style-type: none; padding: 0; margin: 5px 0 0 0; clear: both; }
 .dropdown_content table { margin: 5px 0 0 0; }
 .dropdown_content ul li { font-size: 1em; font-weight: normal; margin: 0; text-align: left; min-height: 18px; padding: 1px; }
-.dropdown_content table, .dropdown_content table td { font-size: 0.9em; font-weight: normal; margin: 0; text-align: left; height: 18px; padding: 1px; }
-.issue_lefthand .dropdown_content, .issue_lefthand .dropdown_content table td { font-size: 0.9em; }
+.dropdown_content table, .dropdown_content table td { font-weight: normal; margin: 0; text-align: left; height: 18px; padding: 1px; }
 .dropdown_content table { margin-top: 5px; }
 /* end dropdown */
 /* end left hand list */
