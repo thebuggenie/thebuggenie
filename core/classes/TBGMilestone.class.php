@@ -392,8 +392,7 @@
 		 */
 		public function isScheduled()
 		{
-			$retval = (bool) ($this->_scheduleddate > 0);
-			return $retval;
+			return $this->_isscheduled;
 		}
 		
 		/**
@@ -459,6 +458,16 @@
 		public function getReachedDate()
 		{
 			return $this->_reacheddate;
+		}
+		
+		/**
+		 * Set whether or not the milestone is scheduled for finishing
+		 *
+		 * @param boolean $scheduled[optional] scheduled or not (default true)
+		 */
+		public function setScheduled($scheduled = true)
+		{
+			$this->_isscheduled = $scheduled;
 		}
 		
 		/**

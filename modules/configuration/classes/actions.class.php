@@ -1562,10 +1562,16 @@
 											}
 										}
 										$theMilestone->setName($m_name);
-										if ($request->getParameter('is_scheduled'))
+										if ($request->getParameter('is_starting'))
 										{
 											$theMilestone->setStarting((bool) $request->getParameter('is_starting'));
 										}
+										
+										if ($request->getParameter('is_scheduled'))
+										{
+											$theMilestone->setScheduled((bool) $request->getParameter('is_scheduled'));
+										}
+										
 										$theMilestone->setDescription($request->getParameter('description', null));
 										$theMilestone->setType($request->getParameter('milestone_type', 1));
 										if ($theMilestone->isScheduled())
