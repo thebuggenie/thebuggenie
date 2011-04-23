@@ -787,9 +787,9 @@
 				{
 					while ($row = $res->getNextRow())
 					{
-						$var_name = "_customfield".$row->get(TBGCustomFieldsTable::FIELD_KEY);
-						$datatype = new TBGCustomDatatype($row->get(TBGCustomFieldsTable::ID));
-
+						$datatype = new TBGCustomDatatype($row->get(TBGIssueCustomFieldsTable::CUSTOMFIELDS_ID));
+						$var_name = "_customfield".$datatype->getKey();
+						
 						if ($datatype->hasCustomOptions())
 						{
 							if ($optionrow = TBGCustomFieldOptionsTable::getTable()->doSelectById($row->get(TBGIssueCustomFieldsTable::OPTION_VALUE)))
