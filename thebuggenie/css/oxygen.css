@@ -650,15 +650,15 @@ ul.workflow_actions li form { display: inline; margin: 0; padding: 0; }
 /* end issue info boxes */
 
 /* issue extra data (pain and votes) - includes search result styling */
-.user_pain, .votes { font-size: 1.25em; font-weight: bold; line-height: 1.2; }
+.user_pain, .votes { font-size: 2.3em; font-weight: bold; line-height: 1.2; }
 .user_pain { color: #91A291; }
 #votes_additional { vertical-align: middle; }
 .votes { color: #999; text-align: center; }
-.votes .votes_header { text-transform: uppercase; font-size: 1em; line-height: 1.2; }
+.votes .votes_header { text-transform: uppercase; font-size: 0.43em; line-height: 1.2; }
 #vote_up, #vote_down { width: 16px; text-align: center; padding: 2px; }
 .user_pain_calculated { font-size: 0.8em; font-weight: bold; color: #91a291; }
 .search_results .yellow_borderless .user_pain { color: #B6aC6D; }
-.search_results .user_pain, .search_results .votes { font-size: 1.6em; }
+.search_results .user_pain, .search_results .votes { font-size: 1.5em; }
 .search_results .votes { color: #88C; }
 .search_results .red_borderless .user_pain { color: #B55; }
 .userpain_below_threshold td { border-top: 2px solid #B77; }
