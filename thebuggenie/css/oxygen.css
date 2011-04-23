@@ -650,7 +650,7 @@ ul.workflow_actions li form { display: inline; margin: 0; padding: 0; }
 /* end issue info boxes */
 
 /* issue extra data (pain and votes) - includes search result styling */
-.user_pain, .votes { font-size: 2.7em; font-weight: bold; line-height: 1.2; }
+.user_pain, .votes { font-size: 1.25em; font-weight: bold; line-height: 1.2; }
 .user_pain { color: #91A291; }
 #votes_additional { vertical-align: middle; }
 .votes { color: #999; text-align: center; }
@@ -676,7 +676,7 @@ img.undo { display: none; }
 
 /* issue left hand list */
 .issue_lefthand { width: 300px; padding: 0; vertical-align: top; }
-dl { margin: 0; font-size: 0.8em; padding: 0 0 0 0; position: relative; min-height: 16px; clear: both; }
+dl { margin: 0; font-size: 0.85em; padding: 0 0 0 0; position: relative; min-height: 16px; clear: both; }
 dt { width: 85px; font-weight: bold; padding: 3px 2px 2px 2px; clear: both; }
 dd { float: left; display: block; width: 195px; font-weight: normal; margin: 0; padding: 3px 5px 1px 2px; min-height: 16px; }
 
@@ -697,9 +697,9 @@ dd { float: left; display: block; width: 195px; font-weight: normal; margin: 0; 
 .dropdown_content { font-weight: normal; padding-top: 5px; font-size: 0.9em; }
 .dropdown_content ul { list-style-type: none; padding: 0; margin: 5px 0 0 0; clear: both; }
 .dropdown_content table { margin: 5px 0 0 0; }
-.dropdown_content ul li { font-size: 0.9em; font-weight: normal; margin: 0; text-align: left; min-height: 18px; padding: 1px; }
+.dropdown_content ul li { font-size: 1em; font-weight: normal; margin: 0; text-align: left; min-height: 18px; padding: 1px; }
 .dropdown_content table, .dropdown_content table td { font-size: 0.9em; font-weight: normal; margin: 0; text-align: left; height: 18px; padding: 1px; }
-.issue_lefthand .dropdown_content, .issue_lefthand .dropdown_content table td { font-size: 0.8em; }
+.issue_lefthand .dropdown_content, .issue_lefthand .dropdown_content table td { font-size: 0.9em; }
 .dropdown_content table { margin-top: 5px; }
 /* end dropdown */
 /* end left hand list */
