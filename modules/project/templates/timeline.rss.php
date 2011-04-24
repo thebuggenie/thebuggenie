@@ -83,6 +83,14 @@
 							echo __('Posted by changed: %text%', array('%text%' => $activity['text']));
 							break;
 						default:
+							if (empty($activity['text']))
+							{
+								echo __('Issue updated');
+							}
+							else
+							{
+								echo $activity['text'];
+							}
 							break;
 					}
 

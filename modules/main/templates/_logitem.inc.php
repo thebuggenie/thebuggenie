@@ -126,6 +126,14 @@
 						echo '<i>' . __('Posted by changed: %text%', array('%text%' => $log_action['text'])) . '</i>';
 						break;
 					default:
+						if (empty($log_action['text']))
+						{
+							echo '<i>' .__('Issue updated') . '</i>';
+						}
+						else
+						{
+							echo '<i>' .$log_action['text'] . '</i>';
+						}
 						break;
 				}
 
