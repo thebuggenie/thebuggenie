@@ -386,6 +386,15 @@
 								throw new Exception('Invalid module type');
 							}
 							$row = $mod->loginCheck($username, $password);
+							
+							if(!$row)
+							{
+								// Invalid
+								TBGContext::getResponse()->deleteCookie('tbg3_username');
+								TBGContext::getResponse()->deleteCookie('tbg3_password');
+								throw new Exception('No such login');
+								//TBGContext::getResponse()->headerRedirect(TBGContext::getRouting()->generate('login'));
+							}
 						}
 						catch (Exception $e)
 						{
