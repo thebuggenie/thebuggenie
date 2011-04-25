@@ -1767,19 +1767,25 @@
 				else
 				{
 					$module = TBGContext::getModule($request->getParameter('module_key'));
-					switch ($request->getParameter('mode'))
-					{
-						case 'disable':
-							$module->disable();
-							break;
-						case 'enable':
-							$module->enable();
-							break;
-						case 'uninstall':
-							$module->uninstall();
-							TBGContext::setMessage('module_message', TBGContext::getI18n()->__('The module "%module_name%" was uninstalled successfully', array('%module_name%' => $module->getName())));
-							break;
-					}
+					if (!$module->isCore())
+						switch ($request->getParameter('mode'))
+						{
+							case 'disable':
+								if ($module->getType() !== TBGModule::MODULE_AUTH):
+									$module->disable();
+								endif;
+								break;
+							case 'enable':
+								if ($module->getType() !== TBGModule::MODULE_AUTH):
+									$module->enable();
+								endif;
+								break;
+							case 'uninstall':
+								$module->uninstall();
+								TBGContext::setMessage('module_message', TBGContext::getI18n()->__('The module "%module_name%" was uninstalled successfully', array('%module_name%' => $module->getName())));
+								break;
+						}
+				}
 				}
 			}
 			catch (Exception $e)
