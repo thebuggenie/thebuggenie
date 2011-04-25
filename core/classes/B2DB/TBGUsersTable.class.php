@@ -52,6 +52,17 @@
 		{
 			return B2DB::getTable('TBGUsersTable');
 		}
+		
+		public function getAll($scope = null)
+		{
+			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::SCOPE, $scope);
+			
+			$res = $this->doSelect($crit, 'none');
+			
+			return $res;
+		}
 
 		public function __construct()
 		{

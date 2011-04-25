@@ -24,6 +24,13 @@
 		static protected $_num_users = null;
 		
 		/**
+		 * All users
+		 * 
+		 * @var array
+		 */
+		static protected $_users = null;
+		
+		/**
 		 * Unique username (login name)
 		 *
 		 * @var string
@@ -259,6 +266,27 @@
 				return TBGContext::factory()->TBGUser($row->get(TBGUsersTable::ID), $row);
 			}
 			return null;
+		}
+		
+		/**
+		 * Retrieve all userrs
+		 *
+		 * @return array
+		 */
+		public static function getAll()
+		{
+			if (self::$_users === null)
+			{
+				self::$_users = array();
+				if ($res = B2DB::getTable('TBGUsersTable')->getAll())
+				{
+					while ($row = $res->getNextRow())
+					{
+						self::$_users[$row->get(TBGUsersTable::ID)] = TBGContext::factory()->TBGUser($row->get(TBGUsersTable::ID), $row);
+					}
+				}
+			}
+			return self::$_users;
 		}
 		
 		/**
