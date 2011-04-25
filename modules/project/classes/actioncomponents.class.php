@@ -20,5 +20,12 @@
 		{
 			$this->default_displayed = isset($this->default_displayed) ? $this->default_displayed : false;
 		}
+		
+		public function componentTimeline()
+		{
+			$this->prev_date = null;
+			$this->prev_timestamp = null;
+			$this->prev_issue = null;
+		}
 
 	}

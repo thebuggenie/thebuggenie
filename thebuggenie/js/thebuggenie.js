@@ -1012,6 +1012,11 @@ function toggleMilestoneIssues(url, milestone_id)
 	}
 }
 
+function updateTimeline(url)
+{
+	_updateDivWithJSONFeedback(url, 'timeline', 'timeline_indicator', true, false, 'timeline_more_link', null, ['timeline_more_link'], 'get', { offset: $('timeline_offset').getValue()}, function (json) {$('timeline_offset').setValue(json.offset)});
+}
+
 function refreshMilestoneDetails(url, milestone_id)
 {
 	new Ajax.Request(url, {

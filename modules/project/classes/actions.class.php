@@ -119,7 +119,13 @@
 		public function runTimeline(TBGRequest $request)
 		{
 			$this->forward403unless($this->_checkProjectPageAccess('project_timeline'));
-			$this->recent_activities = $this->selected_project->getRecentActivities(40);
+			$offset = $request->getParameter('offset', 0);
+			$this->recent_activities = $this->selected_project->getRecentActivities(10, false, $offset);
+			
+			if ($offset)
+			{
+				return $this->renderJSON(array('content' => $this->getComponentHTML('project/timeline', array('activities' => $this->recent_activities)), 'offset' => $offset + 40));
+			}
 		}
 
 		/**
