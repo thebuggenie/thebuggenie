@@ -57,6 +57,8 @@
 	$routes[] = array('toggle_friend', '/friends/:mode/:user_id', 'main', 'toggleFriend');
 	$routes[] = array('configure', '/configure', 'configuration', 'index', array('section' => 0));
 	$routes[] = array('configure_update_check', '/configure/check/updates', 'configuration', 'checkUpdates');
+	$routes[] = array('configure_authentication', '/configure/authentication', 'configuration', 'configureAuthentication', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_AUTHENTICATION));
+	$routes[] = array('configure_authentication_pt2', '/configure/authentication/save', 'configuration', 'saveAuthentication', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_AUTHENTICATION));
 	$routes[] = array('configure_projects', '/configure/projects', 'configuration', 'configureProjects', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_PROJECTS));
 	$routes[] = array('configure_projects_add_project', '/configure/projects/add/new', 'configuration', 'addProject', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_PROJECTS));
 	$routes[] = array('configure_project_settings', '/configure/project/:project_id/settings', 'configuration', 'configureProjectSettings', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_PROJECTS));

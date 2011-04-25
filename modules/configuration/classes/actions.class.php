@@ -42,7 +42,8 @@
 
 			$general_config_sections[TBGSettings::CONFIGURATION_SECTION_SETTINGS] = array('route' => 'configure_settings', 'description' => $i18n->__('Settings'), 'icon' => 'general', 'details' => $i18n->__('Every setting in the bug genie can be adjusted in this section.'));
 			$general_config_sections[TBGSettings::CONFIGURATION_SECTION_PERMISSIONS] = array('route' => 'configure_permissions', 'description' => $i18n->__('Permissions'), 'icon' => 'permissions', 'details' => $i18n->__('Configure permissions in this section'));
-
+			$general_config_sections[TBGSettings::CONFIGURATION_SECTION_PERMISSIONS] = array('route' => 'configure_authentication', 'description' => $i18n->__('Authentication'), 'icon' => 'authentication', 'details' => $i18n->__('Configure the authentication method in this section'));
+			
 			if (TBGContext::getScope()->isUploadsEnabled())
 				$general_config_sections[TBGSettings::CONFIGURATION_SECTION_UPLOADS] = array('route' => 'configure_files', 'description' => $i18n->__('Uploads &amp; attachments'), 'icon' => 'files', 'details' => $i18n->__('All settings related to file uploads are controlled from this section.'));
 
@@ -1936,6 +1937,38 @@
 					}
 				}
 				return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('All settings saved')));
+			}
+		}
+		
+		public function runConfigureAuthentication(TBGRequest $request)
+		{
+			$modules = array();
+			$allmods = TBGContext::getModules();
+			foreach ($allmods as $mod)
+			{
+				if ($mod->getType() == TBGModule::MODULE_AUTH)
+				{
+					$modules[] = $mod;
+				}
+			}
+			$this->modules = $modules;
+		}
+		
+		public function runSaveAuthentication(TBGRequest $request)
+		{
+			if (TBGContext::getRequest()->isMethod(TBGRequest::POST))
+			{
+				$this->forward403unless($this->access_level == TBGSettings::ACCESS_FULL);
+				$settings = array(TBGSettings::SETTING_AUTH_BACKEND, 'register_message', 'forgot_message', 'changepw_message', 'changedetails_message');
+				
+				foreach ($settings as $setting)
+				{
+					if (TBGContext::getRequest()->getParameter($setting) !== null)
+					{
+						$value = TBGContext::getRequest()->getParameter($setting);
+						TBGSettings::saveSetting($setting, $value);
+					}
+				}
 			}
 		}
 		
