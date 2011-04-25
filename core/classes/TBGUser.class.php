@@ -323,15 +323,28 @@
 			try
 			{
 				$row = null;
-				$event = TBGEvent::createNew('TBGUser', 'loginCheck');
-				$event->trigger();
 
-				if ($event->isProcessed())
+				if (TBGSettings::getAuthenticationBackend() !== null && TBGSettings::getAuthenticationBackend() !== 'tbg')
 				{
-					$row = $event->getReturnValue();
+					TBGLogging::log('Authenticating with backend: '.TBGSettings::getAuthenticationBackend(), 'auth', TBGLogging::LEVEL_INFO);
+					try
+					{
+						$mod = TBGContext::getModule(TBGSettings::getAuthenticationBackend());
+						if ($mod->getType() !== TBGModule::MODULE_AUTH)
+						{
+							TBGLogging::log('Auth module is not the right type', 'auth', TBGLogging::LEVEL_FATAL);
+							throw new Exception('Invalid module type');
+						}
+						$row = $mod->loginCheck($username, $password);
+					}
+					catch (Exception $e)
+					{
+						throw new Exception('Backend error');
+					}
 				}
 				else
 				{
+					TBGLogging::log('Using internal authentication', 'auth', TBGLogging::LEVEL_INFO);
 					if ($username === null && $password === null)
 					{
 						if (TBGContext::getRequest()->hasCookie('tbg3_username') && TBGContext::getRequest()->hasCookie('tbg3_password'))

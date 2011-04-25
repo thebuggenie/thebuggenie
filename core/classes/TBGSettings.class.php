@@ -90,6 +90,7 @@
 		const SETTING_UPLOAD_STORAGE = 'upload_storage';
 		const SETTING_USER_GROUP = 'defaultgroup';
 		const SETTING_USER_TIMEZONE = 'timezone';
+		const SETTING_AUTH_BACKEND = 'auth_backend';
 
 		static protected $_ver_mj = 3;
 		static protected $_ver_mn = 1;
@@ -635,6 +636,11 @@
 				$tz_string = "Etc/GMT" . $offset;
 
 			date_default_timezone_set($tz_string);
+		}
+		
+		public static function getAuthenticationBackend()
+		{
+			return self::get(self::SETTING_AUTH_BACKEND);
 		}
 
 	}

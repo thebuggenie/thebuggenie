@@ -74,5 +74,70 @@
 				}
 			}
 		}
+		
+		public function loginCheck($username, $password)
+		{
+			$host = $this->getSetting('hostname');
+			$port = $this->getSetting('port');
+			$lduser = $this->getSetting('username');
+			$ldpass = $this->getSetting('password');
+			$dn = $this->getSetting('dn');
+			
+			$failed = true;
+			$email = null;
+			$realname = $username;
+			
+			/*
+			 * Do the LDAP check here.
+			 * 
+			 * If login successful, set $failed = false;, else true
+			 * If a connection error or something, throw an exception and log
+			 * 
+			 * If we can, set $mail and $realname to correct values from LDAP
+			 * otherwise don't touch those variables.
+			 * 
+			 * To log do:
+			 * TBGLogging::log('error goes here', 'ldap', TBGLogging::LEVEL_FATAL);
+			 */
+			
+			if (!$failed)
+			{
+				try
+				{
+					$user = TBGUser::getByUsername($username);
+					if ($user instanceof TBGUser)
+					{
+						$user->setRealname($realname);
+						$user->setPassword($password); // update password
+						$user->setEmail($email); // update emaila ddress
+						$user->save();
+					}
+					else
+					{
+						// create user
+						$user = new TBGUser();
+						$user->setUsername($username);
+						$user->setRealname($realname);
+						$user->setBuddyname($username);
+						$user->setEmail($email);
+						$user->setEnabled();
+						$user->setActivated();
+						$user->setPassword($password);
+						$user->setJoined();
+						$user->save();
+					}
+					
+					return TBGUsersTable::getByUsername($username);
+				}
+				catch (Exception $e)
+				{
+					throw $e;
+				}
+			}
+			else
+			{
+				return false; // login failed
+			}
+		}
 	}
 
