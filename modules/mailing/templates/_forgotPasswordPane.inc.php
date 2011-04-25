@@ -1,4 +1,12 @@
 <div id="tab_forgot_pane"<?php if ($selected_tab != 'forgot'): ?> style="display: none;<?php endif; ?>">
+<?php
+if (TBGSettings::getAuthenticationBackend() != 'tbg' && TBGSettings::getAuthenticationBackend() != null)
+{
+	echo tbg_parse_text(TBGSettings::get('forgot_message'), null, null, array('embedded' => true));
+}
+else
+{
+?>
 	<div style="vertical-align: middle; padding: 5px;">
 		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('forgot'); ?>" method="post" id="forgot_password_form" onsubmit="resetForgotPassword('<?php echo make_url('forgot'); ?>'); return false;">
 			<div class="login_boxheader"><?php echo __('Forgot password?'); ?></div>
@@ -13,4 +21,7 @@
 		</form>
 	</div>
 	<br>
+<?php
+}
+?>
 </div>

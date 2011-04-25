@@ -22,6 +22,14 @@
 						<?php echo image_tag('icon_change_password.png', array('style' => 'float: left; margin-right: 5px;')); ?>
 						<a href="javascript:void(0);" onclick="$('change_password_form').toggle();"><?php echo __('Change my password'); ?></a>
 					</div>
+					<?php
+					if (TBGSettings::getAuthenticationBackend() != 'tbg' && TBGSettings::getAuthenticationBackend() != null)
+					{
+						echo tbg_parse_text(TBGSettings::get('changepw_message'), null, null, array('embedded' => true));
+					}
+					else
+					{
+					?>
 					<?php if ($tbg_user->canChangePassword()): ?>
 					<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_change_password'); ?>" onsubmit="changePassword('<?php echo make_url('account_change_password'); ?>'); return false;" method="post" id="change_password_form" style="display: none;">
 						<div class="rounded_box white shadowed" style="position: absolute; padding: 5px 10px 5px 10px; font-size: 13px; width: 300px;" id="change_password_div">
@@ -54,6 +62,9 @@
 							</div>
 					</div>
 					<?php endif; ?>
+					<?php
+					}
+					?>
 					<div style="<?php if (!$tbg_user->usesGravatar()): ?>display: none; <?php endif; ?>clear: both; margin: 3px 0 15px 0;" id="gravatar_change">
 						<?php echo image_tag('gravatar.png', array('style' => 'float: left; margin-right: 5px;')); ?>
 						<?php echo link_tag('http://en.gravatar.com/emails/', __('Change my profile picture / avatar'), array('target' => '_blank')); ?>
@@ -99,6 +110,14 @@
 			</div>
 			<div id="account_tabs_panes">
 				<div id="tab_profile_pane">
+					<?php
+					if (TBGSettings::getAuthenticationBackend() != 'tbg' && TBGSettings::getAuthenticationBackend() != null)
+					{
+						echo tbg_parse_text(TBGSettings::get('changedetails_message'), null, null, array('embedded' => true));
+					}
+					else
+					{
+					?>
 					<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_save_information'); ?>" onsubmit="updateProfileInformation('<?php echo make_url('account_save_information'); ?>'); return false;" method="post" id="profile_information_form">
 						<div class="rounded_box borderless lightgrey cut_bottom" style="margin: 5px 0 0 0; width: 690px; border-bottom: 0;">
 							<p class="content"><?php echo __('Edit your profile details here, including additional information.'); ?><br><?php echo __('Required fields are marked with a little star.'); ?></p>
@@ -154,6 +173,9 @@
 							<span id="profile_save_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
 						</div>
 					</form>
+					<?php
+					}
+					?>
 				</div>
 				<div id="tab_settings_pane" style="display: none;">
 					<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_save_settings'); ?>" onsubmit="updateProfileSettings('<?php echo make_url('account_save_settings'); ?>'); return false;" method="post" id="profile_settings_form">

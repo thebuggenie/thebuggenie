@@ -1,4 +1,12 @@
 <div id="tab_register_pane"<?php if ($selected_tab != 'register'): ?> style="display: none;"<?php endif; ?>>
+<?php
+if (TBGSettings::getAuthenticationBackend() != 'tbg' && TBGSettings::getAuthenticationBackend() != null)
+{
+	echo tbg_parse_text(TBGSettings::get('register_message'), null, null, array('embedded' => true));
+}
+else
+{
+?>
 		<div style="vertical-align: middle; padding: 10px;" id="register1">
 			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('register1'); ?>" method="post" id="register1_form" onsubmit="loginRegister1('<?php echo make_url('register1'); ?>'); return false;">
 				<div class="login_boxheader"><?php echo __('Register a new account'); ?></div>
@@ -60,4 +68,7 @@
 			<span style="font-size: 14px;" id="register_message"></span>
 		</div>
 	<br>
+<?php
+}
+?>
 </div>
