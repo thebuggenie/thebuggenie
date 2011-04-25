@@ -324,46 +324,49 @@
 			{
 				$row = null;
 
-				if (TBGSettings::getAuthenticationBackend() !== null && TBGSettings::getAuthenticationBackend() !== 'tbg')
+				// If no username and password specified, check if we have a session that exists already
+				if ($username === null && $password === null)
 				{
-					TBGLogging::log('Authenticating with backend: '.TBGSettings::getAuthenticationBackend(), 'auth', TBGLogging::LEVEL_INFO);
-					try
+					if (TBGContext::getRequest()->hasCookie('tbg3_username') && TBGContext::getRequest()->hasCookie('tbg3_password'))
 					{
-						$mod = TBGContext::getModule(TBGSettings::getAuthenticationBackend());
-						if ($mod->getType() !== TBGModule::MODULE_AUTH)
+						$username = TBGContext::getRequest()->getCookie('tbg3_username');
+						$password = TBGContext::getRequest()->getCookie('tbg3_password');
+						$row = TBGUsersTable::getTable()->getByUsernameAndPassword($username, $password);
+
+						if (!$row)
 						{
-							TBGLogging::log('Auth module is not the right type', 'auth', TBGLogging::LEVEL_FATAL);
-							throw new Exception('Invalid module type');
+							TBGContext::getResponse()->deleteCookie('tbg3_username');
+							TBGContext::getResponse()->deleteCookie('tbg3_password');
+							throw new Exception('No such login');
+							//TBGContext::getResponse()->headerRedirect(TBGContext::getRouting()->generate('login'));
 						}
-						$row = $mod->loginCheck($username, $password);
-					}
-					catch (Exception $e)
-					{
-						throw new Exception('Backend error');
 					}
 				}
-				else
+				
+				// If we have authentication details, validate them
+				if ($username !== null && $password !== null)
 				{
-					TBGLogging::log('Using internal authentication', 'auth', TBGLogging::LEVEL_INFO);
-					if ($username === null && $password === null)
+					if (TBGSettings::getAuthenticationBackend() !== null && TBGSettings::getAuthenticationBackend() !== 'tbg')
 					{
-						if (TBGContext::getRequest()->hasCookie('tbg3_username') && TBGContext::getRequest()->hasCookie('tbg3_password'))
+						TBGLogging::log('Authenticating with backend: '.TBGSettings::getAuthenticationBackend(), 'auth', TBGLogging::LEVEL_INFO);
+						try
 						{
-							$username = TBGContext::getRequest()->getCookie('tbg3_username');
-							$password = TBGContext::getRequest()->getCookie('tbg3_password');
-							$row = TBGUsersTable::getTable()->getByUsernameAndPassword($username, $password);
-							
-							if (!$row)
+							$mod = TBGContext::getModule(TBGSettings::getAuthenticationBackend());
+							if ($mod->getType() !== TBGModule::MODULE_AUTH)
 							{
-								TBGContext::getResponse()->deleteCookie('tbg3_username');
-								TBGContext::getResponse()->deleteCookie('tbg3_password');
-								throw new Exception('No such login');
-								//TBGContext::getResponse()->headerRedirect(TBGContext::getRouting()->generate('login'));
+								TBGLogging::log('Auth module is not the right type', 'auth', TBGLogging::LEVEL_FATAL);
+								throw new Exception('Invalid module type');
 							}
+							$row = $mod->loginCheck($username, $password);
+						}
+						catch (Exception $e)
+						{
+							throw new Exception('Backend error');
 						}
 					}
-					if ($username !== null && $password !== null)
+					else
 					{
+						TBGLogging::log('Using internal authentication', 'auth', TBGLogging::LEVEL_INFO);
 						// First test a pre-encrypted password
 						$row = TBGUsersTable::getTable()->getByUsernameAndPassword($username, $password);
 
@@ -371,7 +374,7 @@
 						{
 							// Then test an unencrypted password
 							$row = TBGUsersTable::getTable()->getByUsernameAndPassword($username, self::hashPassword($password));
-							
+
 							if(!$row)
 							{
 								// This is a legacy account from a 2.1 upgrade - try md5
@@ -395,14 +398,16 @@
 							}
 						}
 					}
-					elseif (TBGContext::isCLI())
-					{
-						$row = TBGUsersTable::getTable()->getByUsername(TBGContext::getCurrentCLIusername());
-					}
-					elseif (!TBGSettings::isLoginRequired())
-					{
-						$row = TBGUsersTable::getTable()->getByUserID(TBGSettings::getDefaultUserID());
-					}
+				}
+				elseif (TBGContext::isCLI())
+				{
+					$row = TBGUsersTable::getTable()->getByUsername(TBGContext::getCurrentCLIusername());
+				
+				}
+				// guest user
+				elseif (!TBGSettings::isLoginRequired())
+				{
+					$row = TBGUsersTable::getTable()->getByUserID(TBGSettings::getDefaultUserID());
 				}
 
 				if ($row)
