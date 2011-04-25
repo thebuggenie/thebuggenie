@@ -1786,7 +1786,6 @@
 								break;
 						}
 				}
-				}
 			}
 			catch (Exception $e)
 			{
