@@ -66,7 +66,7 @@
 
 		public function postConfigSettings(TBGRequest $request)
 		{
-			$settings = array('username', 'password', 'port', 'hostname', 'dn');
+			$settings = array('username', 'password', 'port', 'hostname', 'dn', 'groups');
 			foreach ($settings as $setting)
 			{
 				if ($request->hasParameter($setting))
@@ -82,6 +82,7 @@
 			$port = $this->getSetting('port');
 			$lduser = $this->getSetting('username');
 			$ldpass = $this->getSetting('password');
+			$validgroups = $this->getSetting('groups');
 			$dn = $this->getSetting('dn');
 			
 			$failed = true;
