@@ -49,7 +49,7 @@
 
 			// Initialise the graph
 			$Test = new pChart($this->width, $this->height);
-			$Test->setFixedScale(0, max($maxvals));
+			$Test->setFixedScale(0, (ceil(max($maxvals) / 5)*5));
 			$Test->setFontProperties(THEBUGGENIE_MODULES_PATH . 'pchart' . DS . 'fonts' . DS . 'DroidSans.ttf', 8);
 			if (isset($this->labels_title))
 			{
