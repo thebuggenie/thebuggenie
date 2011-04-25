@@ -39,13 +39,10 @@
 			$this->setConfigDescription($i18n->__('Configure server connection settings'));
 			$this->setHasConfigSettings();
 		}
-
-		protected function _addAvailableListeners()
+		
+		protected function _addRoutes()
 		{
-		}
-
-		protected function _addAvailableRoutes()
-		{
+			$this->addRoute('ldap_test', '/test/ldap', 'testConnection');
 		}
 
 		protected function _install($scope)
@@ -66,5 +63,16 @@
 			return TBGContext::getRouting()->generate('ldap_authentication_index');
 		}
 
+		public function postConfigSettings(TBGRequest $request)
+		{
+			$settings = array('username', 'password', 'port', 'hostname', 'dn');
+			foreach ($settings as $setting)
+			{
+				if ($request->hasParameter($setting))
+				{
+					$this->saveSetting($setting, $request->getParameter($setting));
+				}
+			}
+		}
 	}
 

@@ -5,6 +5,9 @@
 	 */
 	class auth_ldapActionComponents extends TBGActionComponent
 	{
-
+		public function componentSettings()
+		{
+			
+		}
 	}
 
