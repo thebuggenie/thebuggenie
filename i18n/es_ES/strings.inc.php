@@ -94,7 +94,7 @@
 	$strings['Regular users'] = 'Usuarios comunes';
 	$strings['Guests'] = 'Invitados';
 	$strings['Staff members'] = 'Miembros del personal';
-	$strings['Please fill in your username and password below, and press "Continue" to log in.'] = 'Por favor complete con su usuario y contraseña, y presione "Continuar" para ingresar.';
+	$strings['Please fill in your username and password below, and press "%Continue%" to log in.'] = 'Por favor complete con su usuario y contraseña, y presione "%Continuar%" para ingresar.';
 	$strings['Log in to an existing account'] = 'Ingrese con una cuenta registrada';
 	$strings['Username'] = 'Nombre de usuario';
 	$strings['Password'] = 'Contraseña';
@@ -736,7 +736,7 @@
 	$strings['Not set (permissive system setting)'] = 'Sin definir (opción sistema permisivo)';
 	$strings['Not set (restrictive system setting)'] = 'Sin definir (opción sistema restrictivo)';
 	$strings['Not set (uses global permission)'] = 'Sin definir (utiliza permisos globales)';
-	$strings['Edit all global, group and team permissions from this page - user-specific permissions are handled from the [[TBG:configure_users|user configuration page]]. The Bug Genie permissions are thoroughly explained in [[ConfigurePermissions]] in the wiki - look it up if you\'re ever stuck.'] = 'Edite los permisos globales, de grupo y equipo desde esta pagina - permisos para usuarios individuales son administrados desde [[TBG:configure_users|pagina de configuracion del usuario]]. Los permisos de The Bug Genie estan explicados en el wiki [[ConfigurePermissions]] - revise allí si tiene peticiones.';
+	$strings['Edit all global, group and team permissions from this page - user-specific permissions are handled from the [[TBG:configure_users|user configuration page]]. The Bug Genie permissions are thoroughly explained in [[ConfigurePermissions]] in the wiki - look it up if you\'re ever stuck.'] = 'Edite los permisos globales, de grupo y equipo desde esta pagina - permisos para usuarios individuales son administrados desde [[TBG:configure_users|pagina de configuracion del usuario]]. Los permisos de The Bug Genie estan explicados en el wiki [[ConfigurePermissions]] - revise allí si tiene dudas.';
 	$strings['General permissions'] = 'Permisos generales';
 	$strings['Page access permissions'] = 'Permisos de acceso a página';
 	$strings['Project-specific permissions'] = 'Permisos específicos de proyecto';
@@ -2080,3 +2080,37 @@
   $strings['About %sitename%'] = 'Acerca de %sitename%';
   $strings['This article has not been created yet.'] = 'Este artículo no ha sido creado aún';
   $strings['You can create this article by clicking %create_this_article% below.'] = 'Puede crear este artículo haciendo clic en %create_this_article%';
+
+  $strings['Check for the latest updates'] = 'Verificar las últimas actualizaciones';
+  $strings['Checking for updates and installing the latest releases ensures you have the latest improvements, fixes and features for The Bug Genie.'] = 'Al verificar e instalar las últimas actualizaciones se asegura de tener las últimas mejoras, correcciones y funcionalidades de The Bug Genie.';
+  $strings['You currently have version %thebuggenie_version% of The Bug Genie.']='Actualmente tiene la versión %thebuggenie_version% de The Bug Genie.';
+  $strings['Check for updates now']='Buscar actualizaciones ahora';
+  $strings['This user has been a member for a while'] = 'Este usuario ha sido miembro por un tiempo';
+  $strings['Last reported issues:']= 'Últimas peticiones registradas';
+  $strings['Member of the following teams: '] = 'Miembro de los siguientes equipos: ';  
+
+
+  $strings['This is the user pain value for this issue'] = 'Este es la valuación del sufrimiento del usuario por esta petición';
+  $strings['Click to start following this issue'] = 'Haga clic para seguir esta petición';
+  $strings['Click to stop following this issue'] = 'Haga clic para detener el seguimiento de esta petición';
+  $strings['Move issue to another project'] = 'Mover pedido a otro proyecto';
+  $strings['Move issue to a different project'] = 'Mover pedido a un proyecto distinto';
+  $strings['Please be aware that moving this issue to a different project will reset details such as status, category, etc., and may also make some fields invisible, depending on the issue type configuration for that project.'] = 'Por favor tenga precaución al mover esta petición a un proyecto diferente, los detalles como estado, categoría, etc. serán removidos, y también puede dejar invisibles algunos campos, dependiendo de la configuración del tipo de pedido del proyecto.';
+  $strings['Move issue to'] = 'Mover pedido a';
+  $strings['Move issue'] = 'Mover pedido';
+  $strings['%move_issue% or %cancel%'] = '%move_issue% o %cancel%';
+  $strings['VCS Commits'] = 'Código del VCS';
+  $strings['Show more'] = 'Ver más';
+  $strings['Commits'] = 'Código confirmado';
+  $strings['"%project_name%" commits'] = 'Código de %project_name%';
+  $strings['View source code'] = 'Ver código fuente';
+  $strings['Commits for the previous two weeks are shown here. For previous commits, please refer to the source code viewer, available on the left. Note that this page only shows commits which affect issues for this project, other commits can be viewed in the source code viewer.'] = 'Código confirmado de las últimas dos semanas. Para código anterior, por favor ingrese al visor de código fuente, disponible a la izquierda. Fíjese que está página sólo muestra el código afectado por un pedido para este proyecto, los otros cambios pueden verse en el visor de código fuente.';
+  $strings['LDAP Authentication'] = 'Autentificación LDAP';
+  $strings['Allows authentication against a LDAP or Active Directory server'] = 'Permite la autenticación contra un servidor LDAP o Active Directory';
+  $strings['Configure server connection settings'] = 'Configurar las opciones de conexión al servidor';
+  $strings['Authentication module'] = 'Módulo de autentificación';
+  
+  $strings['Gravatar user icons'] = 'Iconos Gravatar para usuario';
+  $strings['Users icons will use the gravatar.com service'] = 'Los íconos de usuario usarán el servicio de gravatar.com';
+  $strings['Users will use default user icons'] = 'Los usuarios usarán los íconos por defecto';
+  $strings['Select whether to use the %gravatar.com% user icon service for user avatars, or just use the default ones'] = 'Seleccione si los usuarios utilizarán el servicio de %gravatar.com% o solo los por defecto';
