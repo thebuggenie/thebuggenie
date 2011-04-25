@@ -38,6 +38,10 @@
 		protected $_has_config_settings = false;
 		
 		static protected $_permissions = array();
+		
+		const MODULE_NORMAL = 1;
+		const MODULE_AUTH = 2;
+		const MODULE_GRAPH = 3;
 
 		/**
 		 * Installs a module
@@ -261,6 +265,11 @@
 		public function getVersion()
 		{
 			return $this->_version;
+		}
+		
+		public function getType()
+		{
+			return self::MODULE_NORMAL;
 		}
 		
 		/**
