@@ -97,8 +97,9 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::ISSUE_ID, $issue_id);
+			$crit->addWhere(self::FILE_ID, $file_id);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
-			if ($res = $this->doSelectById($file_id, $crit))
+			if ($res = $this->doSelectOne($crit))
 			{
 				$this->doDelete($crit);
 			}
