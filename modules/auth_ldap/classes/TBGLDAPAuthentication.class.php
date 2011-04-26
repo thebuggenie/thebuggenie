@@ -44,6 +44,7 @@
 		{
 			$this->addRoute('ldap_test', '/test/ldap', 'testConnection');
 			$this->addRoute('ldap_prune', '/configure/module/auth_ldap/prune', 'pruneUsers');
+			$this->addRoute('ldap_import', '/configure/module/auth_ldap/import', 'importUsers');
 		}
 
 		protected function _install($scope)

@@ -1,12 +1,8 @@
 <p><?php echo __('Use this page to set up the connection details for your LDAP or Active Directory server. The user you select here will need access to the user list, so the username and password users log in with can be verified, but no write access is necessary.'); ?></p>
 <div class="rounded_box red" style="margin-top: 5px">
 	<div class="header"><?php echo __('Important information'); ?></div>
-	<p><?php echo __('When you enable LDAP as your authentication backend in Authentication Settings, you will lose access to all accounts which do not also exist in the LDAP database. This may mean you lose administrative access.'); ?></p>
-	<p style="font-weight: bold; padding-top: 5px"><?php echo __('To resolve this issue, you MUST create a user (in The Bug Genie) with the same username as a user in the LDAP database, and give it administrative access by making it a member of the Administrators group (in The Bug Genie). Then, after enabling LDAP, log in with this user using the credentials in the LDAP database, and use this account to configure The Bug Genie and create more administrators.'); ?></p>
-</div>
-<div class="rounded_box yellow" style="margin-top: 5px">
-	<div class="header"><?php echo __('User details synchronisation'); ?></div>
-	<p><?php echo __('Users will not appear in The Bug Genie until they have logged in for the first time. In addition, upon every login the user\'s password, full name and email address will be set in The Bug Genie to the values from LDAP. This ensures that emails from The Bug Genie always get sent to the correct address, for example. If you choose to go back to The Bug Genie authentication, any LDAP users who have previously logged in will still be able to log in with their most recently used credentials.'); ?></p>
+	<p><?php echo __('When you enable LDAP as your authentication backend in Authentication configuration, you will lose access to all accounts which do not also exist in the LDAP database. This may mean you lose administrative access.'); ?></p>
+	<p style="font-weight: bold; padding-top: 5px"><?php echo __('To resolve this issue, either import all users using the tool on this page and make one an administrator using Users configuration, or create a user with the same username as one in LDAP and make that one an administrator.'); ?></p>
 </div>
 <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_module', array('config_module' => $module->getName())); ?>" enctype="multipart/form-data" method="post">
 	<div class="rounded_box borderless mediumgrey<?php if ($access_level == TBGSettings::ACCESS_FULL): ?> cut_bottom<?php endif; ?>" style="margin: 10px 0 0 0; width: 700px;<?php if ($access_level == TBGSettings::ACCESS_FULL): ?> border-bottom: 0;<?php endif; ?>">
@@ -59,7 +55,15 @@
 	<div class="rounded_box borderless mediumgrey" style="margin: 10px 0 0 0; width: 700px; padding: 5px 5px 30px 5px;">
 		<div class="header"><?php echo __('Test connection'); ?></div>
 		<div class="content"><?php echo __('After configuring and saving your connection settings, you should test your connection to the LDAP server. This test does not check whether the DN can correctly find users, but it will give an indication if The Bug Genie can talk to your LDAP server.'); ?></div>
-		<input type="submit" id="submit_settings_button" style="float: right; padding: 0 10px 0 10px; font-size: 13px; font-weight: bold;" value="<?php echo __('Test connection'); ?>">
+		<input type="submit" id="test_button" style="float: right; padding: 0 10px 0 10px; font-size: 13px; font-weight: bold;" value="<?php echo __('Test connection'); ?>">
+	</div>
+</form>
+
+<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('ldap_import'); ?>" method="post">
+	<div class="rounded_box borderless mediumgrey" style="margin: 10px 0 0 0; width: 700px; padding: 5px 5px 30px 5px;">
+		<div class="header"><?php echo __('Import all users'); ?></div>
+		<div class="content"><?php echo __('So that you can ensure all users from LDAP exist in The Bug Genie exist for initial configuration (e.g. to set permissions), you can import all users who don\'t already exist using this tool. If you set a group restriction, this will be obyed here. Remember to make at least one an administrator so you can continue to configure The Bug Genie after switching.'); ?></div>
+		<input type="submit" id="import_button" style="float: right; padding: 0 10px 0 10px; font-size: 13px; font-weight: bold;" value="<?php echo __('Import users'); ?>">
 	</div>
 </form>
 
@@ -67,6 +71,6 @@
 	<div class="rounded_box borderless mediumgrey" style="margin: 10px 0 0 0; width: 700px; padding: 5px 5px 30px 5px;">
 		<div class="header"><?php echo __('Prune users'); ?></div>
 		<div class="content"><?php echo __('If a user is deleted from LDAP then they will not be able to log into The Bug Genie. However if you want to remove users from The Bug Genie who have been deleted from LDAP you may wish to prune the users list. This action will delete all users from The Bug Genie\'s user list who do not exist in the LDAP database, and can not be reversed.'); ?></div>
-		<input type="submit" id="submit_settings_button" style="float: right; padding: 0 10px 0 10px; font-size: 13px; font-weight: bold;" value="<?php echo __('Prune users'); ?>">
+		<input type="submit" id="prune_button" style="float: right; padding: 0 10px 0 10px; font-size: 13px; font-weight: bold;" value="<?php echo __('Prune users'); ?>">
 	</div>
 </form>
