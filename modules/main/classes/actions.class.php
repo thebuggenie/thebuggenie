@@ -3217,12 +3217,12 @@
 						}
 						else
 						{
-							throw new Exception('Invalid user');
+							throw new Exception('Your password recovery token is either invalid or has expired');
 						}
 					}
 					else
 					{
-						throw new Exception('User not specified');	
+						throw new Exception('User is invalid or does not exist');	
 					}
 				}
 				catch (Exception $e)
