@@ -2114,3 +2114,22 @@
   $strings['Users icons will use the gravatar.com service'] = 'Los íconos de usuario usarán el servicio de gravatar.com';
   $strings['Users will use default user icons'] = 'Los usuarios usarán los íconos por defecto';
   $strings['Select whether to use the %gravatar.com% user icon service for user avatars, or just use the default ones'] = 'Seleccione si los usuarios utilizarán el servicio de %gravatar.com% o solo los por defecto';
+  $strings['%revision_number%, by %author% [%date%]'] = '%revision_number%, por %author% [%date%]';
+  $strings['Showing the difference between revisions: %from_revision% ⇒ %to_revision%'] = 'Mostrando la diferencia entre las revisiones: %from_revision% ⇒ %to_revision%';
+  $strings['Back to history'] = 'Volver al historial';
+  $strings['You are now viewing a previous revision of this article - revision %revision_number% %date%, by %author%'] = 'Ahora está viendo una revisión previa de este artículo - revisión %revision_number% %date%, por %author%';
+  $strings['Show current version'] = 'Mostrar la versión actual';
+
+  $strings['Configure authentication'] = 'Configurar autenticación';
+  $strings['Configure the authentication method in this section'] = 'Configure el método de autenticación en esta sección';
+  $strings['Authentication'] = 'Autenticación';
+  $strings['Please remember to install and configure your chosen authentication backend before setting it here. Changing settings on this page will result in you being logged out.'] = 'Por favor recuerde instalar y configurar el método de autenticación antes de definirlo aquí. El resultado de cambiar las opciones en esta página es que será deslogueado';
+  $strings['Authentication backend'] = 'Método de autenticación';
+  $strings['The Bug Genie authentication (use internal user mechanisms)'] = 'Autenticación de The Bug Genie (utiliza mecanismos de usuarios internos)';
+  $strings['All modules which provide authentication are shown here. Please ensure your chosen backend is configured first, and please read the warnings included with your chosen backend to ensure that you do not lose administrator access.'] = 'Todos los módulos que otorgan autenticación son mostrados aquí. Asegurese que esté configurado primero, y por favor lea las advertencias incluidas en el método de autenticación seleccionado para no perder los privilegios de administrador.';
+  $strings['Registration message'] = 'Mensaje al registrarse';
+  $strings["The Bug Genie's registration page is unavailable when using a different backend. Write a message here to be shown to users instead. WikiFormatting can be used in this box and similar ones on this page."] = 'La página de registro de usuarios de The Bug Genie no está disponible cuando utiliza un método de autenticación diferente. Escriba el aquí el mensaje que será mostrado al usuario. El formato wiki puede ser utilizado en estas casillas y similares.';
+  $strings['Forgot password message'] = 'Mensaje para el olvido de contraseña';
+  $strings['Change password message'] = 'Mensaje para el cambio de contraseña';
+  $strings['Change account details message'] = 'Mensaje para el cambio de detalles de cuenta'; 
+  $strings['To apply changes to the authentication system, you have been automatically logged out. The new authentication system is now in use.'] = 'Al aplicar los cambios del método de atenticación, será automáticamente deslogueado. El nuevo sistema de autenticación está en uso ahora.';
