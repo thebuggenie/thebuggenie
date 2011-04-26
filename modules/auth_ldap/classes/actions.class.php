@@ -13,9 +13,36 @@
 		 */
 		public function runTestConnection(TBGRequest $request)
 		{
-			TBGContext::setMessage('module_error', TBGContext::getI18n()->__('Failed to connect to server'));
-			TBGContext::setMessage('module_error_details', 'This functionality is currently unimplemented');
-			$this->forward(TBGContext::getRouting()->generate('configure_module', array('config_module' => 'auth_ldap')));
+			try
+			{
+				// Connection
+				$failed = false;
+				// do connection here, set failed to true if failed
+				if ($failed)
+				{
+					TBGContext::setMessage('module_error', TBGContext::getI18n()->__('Failed to connect to server'));
+					TBGContext::setMessage('module_error_details', __('Connection failed'));
+					$this->forward(TBGContext::getRouting()->generate('configure_module', array('config_module' => 'auth_ldap')));
+				}
+				
+				// do binding here, set failed to true if failed
+				if ($failed)
+				{
+					TBGContext::setMessage('module_error', TBGContext::getI18n()->__('Failed to connect to server'));
+					TBGContext::setMessage('module_error_details', __('Authentication faield'));
+					$this->forward(TBGContext::getRouting()->generate('configure_module', array('config_module' => 'auth_ldap')));
+				}
+				
+				// disconnect
+				TBGContext::setMessage('module_message', TBGContext::getI18n()->__('Connection test successful'));
+				$this->forward(TBGContext::getRouting()->generate('configure_module', array('config_module' => 'auth_ldap')));
+			}
+			catch (Exception $e)
+			{
+				TBGContext::setMessage('module_error', TBGContext::getI18n()->__('Failed to connect to server'));
+				TBGContext::setMessage('module_error_details', $e->getMessage());
+				$this->forward(TBGContext::getRouting()->generate('configure_module', array('config_module' => 'auth_ldap')));
+			}
 		}
 		
 		/**
