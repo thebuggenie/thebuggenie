@@ -71,7 +71,6 @@
 			TBGEvent::listen('core', 'password_reset', array($this, 'listen_forgottenPassword'));
 			TBGEvent::listen('core', 'login_form_pane', array($this, 'listen_loginPane'));
 			TBGEvent::listen('core', 'login_form_tab', array($this, 'listen_loginTab'));
-			TBGEvent::listen('core', 'password_reset', array($this, 'listen_passwordReset'));
 			//TBGEvent::listen('core', 'TBGIssue::save', array($this, 'listen_issueSave'));
 			TBGEvent::listen('core', 'TBGIssue::createNew', array($this, 'listen_issueCreate'));
 			TBGEvent::listen('core', 'TBGUser::createNew', array($this, 'listen_createUser'));
@@ -214,7 +213,7 @@
 			}
 		}			
 		
-		public function listen_passwordReset(TBGEvent $event)
+		public function listen_forgottenPassword(TBGEvent $event)
 		{
 			if ($this->isOutgoingNotificationsEnabled())
 			{
