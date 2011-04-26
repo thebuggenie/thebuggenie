@@ -544,7 +544,9 @@
 			}
 			else
 			{
+				TBGLogging::log('Changing language to '.$language);
 				self::$_i18n = new TBGI18n($language);
+				self::$_i18n->initialize();
 			}
 		}
 		
@@ -2093,6 +2095,5 @@
 		{
 			return self::$debug_mode;
 		}
-
 	}
 	

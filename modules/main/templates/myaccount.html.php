@@ -215,6 +215,21 @@
 									</td>
 								</tr>
 								<tr>
+									<td style="width: 200px; padding: 5px;"><label for="profile_timezone"><?php echo __('Language'); ?></label></td>
+									<td>
+										<select name="profile_language" id="profile_language" style="width: 300px;">
+										<?php foreach ($languages as $lang_code => $lang_desc): ?>
+											<option value="<?php echo $lang_code; ?>" <?php if ($tbg_user->getLanguage() == $lang_code): ?> selected<?php endif; ?>><?php echo $lang_desc; ?><?php if (TBGSettings::getLanguage() == $lang_code): ?> <?php echo __('(site default)'); endif;?></option>
+										<?php endforeach; ?>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<td class="config_explanation" colspan="2">
+										<?php echo __('The language you select here will be used instead of the language chosen by the administrator.'); ?><br>
+									</td>
+								</tr>
+								<tr>
 									<td colspan="2" style="padding: 5px; text-align: right;">&nbsp;</td>
 								</tr>
 							</table>
