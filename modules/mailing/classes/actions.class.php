@@ -88,7 +88,8 @@
 				}
 				catch (Exception $e)
 				{
-					TBGContext::setMessage('module_error', $e->getMessage());
+					TBGContext::setMessage('module_error', TBGContext::getI18n()->__('The email was not sent'));
+					TBGContext::setMessage('module_error_details', $e->getMessage());
 				}
 			}
 			else
