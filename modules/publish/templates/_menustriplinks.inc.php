@@ -12,7 +12,7 @@
 				<?php echo link_tag($project_url, __('Project wiki frontpage')); ?>
 				<div style="font-weight: normal; margin: 0 0 15px 5px;">
 					<form action="<?php echo make_url('publish_find_project_articles', array('project_key' => TBGContext::getCurrentProject()->getKey())); ?>" method="get" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>">
-						<div class="faded_out" style="font-size: 0.9em;"><?php echo __('%wiki_link% or find article (press enter to search):', array('%wiki_link%' => '')); ?></div>
+						<div style="font-size: 0.9em; font-style: italic;"><?php echo __('%wiki_link% or find article (press enter to search):', array('%wiki_link%' => '')); ?></div>
 						<input type="text" name="articlename" value="" style="width: 230px;">
 					</form>
 				</div>
@@ -21,7 +21,7 @@
 			<?php echo link_tag($url, TBGContext::getModule('publish')->getMenuTitle(false)); ?>
 			<div style="font-weight: normal; margin: 0 0 15px 5px;">
 				<form action="<?php echo make_url('publish_find_articles'); ?>" method="get" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>">
-					<div class="faded_out" style="font-size: 0.9em;"><?php echo __('%wiki_link% or find article (press enter to search):', array('%wiki_link%' => '')); ?></div>
+					<div style="font-size: 0.9em; font-style: italic;"><?php echo __('%wiki_link% or find article (press enter to search):', array('%wiki_link%' => '')); ?></div>
 					<input type="text" name="articlename" value="" style="width: 230px;">
 				</form>
 			</div>
