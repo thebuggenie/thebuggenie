@@ -7,7 +7,6 @@
 		<ul>
 			<li>Help ensure continued development of The Bug Genie</li>
 			<li>Make sure we can keep our web services available</li>
-			<li>Help Philip buy more kittens</li>
 		</ul>
 		<h4>If this software has turned out to be valuable to you and/or your business - please consider supporting it.</h4>
 		More information about supporting The Bug Genie development can be found here:
