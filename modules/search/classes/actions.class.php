@@ -161,7 +161,7 @@
 				elseif ($this->templatename == 'results_votes')
 				{
 					$this->searchtitle = $i18n->__('Showing issues ordered by number of votes');
-					$this->ipp = 100;
+					$this->ipp = $request->getParameter('issues_per_page', 100);
 					$this->groupby = 'votes';
 					$this->grouporder = 'desc';
 				}

@@ -32,7 +32,7 @@
 					$parameters[] = "filters[{$key}]=".urlencode($filter);
 				}
 			}
-			$parameters[] = 'result_template='.$this->templatename;
+			$parameters[] = 'template='.$this->templatename;
 			$parameters[] = 'template_parameter='.$this->template_parameter;
 			$parameters[] = 'searchterm='.$this->searchterm;
 			$parameters[] = 'groupby='.$this->groupby;
