@@ -26,18 +26,7 @@
 		<div class="header"><?php echo __('This issue has been changed since you started editing it'); ?></div>
 		<div class="content"><?php echo __('Data that has been changed is highlighted in red below. Undo your changes to see the updated information'); ?></div>
 	</div>
-	<?php if ($issue->isBeingWorkedOn()): ?>
-		<div class="rounded_box iceblue borderless issue_info full_width" id="viewissue_being_worked_on">
-			<?php echo image_tag('action_start_working.png'); ?>
-			<?php if ($issue->getUserWorkingOnIssue()->getID() == $tbg_user->getID()): ?>
-				<div class="header"><?php echo __('You have been working on this issue since %time%', array('%time%' => tbg_formatTime($issue->getWorkedOnSince(), 6))); ?></div>
-			<?php elseif ($issue->getAssignee() instanceof TBGTeam): ?>
-				<div class="header"><?php echo __('%teamname% has been working on this issue since %time%', array('%teamname%' => $issue->getAssignee()->getName(), '%time%' => tbg_formatTime($issue->getWorkedOnSince(), 6))); ?></div>
-			<?php else: ?>
-				<div class="header"><?php echo __('%user% has been working on this issue since %time%', array('%user%' => $issue->getUserWorkingOnIssue()->getNameWithUsername(), '%time%' => tbg_formatTime($issue->getWorkedOnSince(), 6))); ?></div>
-			<?php endif; ?>
-		</div>
-	<?php endif; ?>
+
 	<div class="rounded_box iceblue borderless issue_info full_width" id="viewissue_changed" <?php if (!$issue->hasUnsavedChanges()): ?>style="display: none;"<?php endif; ?>>
 		<button onclick="$('comment_add_button').hide(); $('comment_add').show();$('comment_save_changes').checked = true;$('comment_bodybox').focus();return false;"><?php echo __('Add comment and save changes'); ?></button>
 		<form action="<?php echo make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())); ?>" method="post">
@@ -86,6 +75,18 @@
 	<?php if (isset($issue_file_uploaded)): ?>
 		<div class="rounded_box green borderless issue_info aligned" id="viewissue_saved" onclick="$(this).fade({duration: 0.5});">
 			<?php echo __('The file was attached to this issue'); ?>
+		</div>
+	<?php endif; ?>
+	<?php if ($issue->isBeingWorkedOn()): ?>
+		<div class="rounded_box lightgrey borderless issue_info aligned" id="viewissue_being_worked_on">
+			<?php echo image_tag('action_start_working.png', array('style' => 'float: left; margin: 0 5px 0 5px;')); ?>
+			<?php if ($issue->getUserWorkingOnIssue()->getID() == $tbg_user->getID()): ?>
+				<div class="header"><?php echo __('You have been working on this issue since %time%', array('%time%' => tbg_formatTime($issue->getWorkedOnSince(), 6))); ?></div>
+			<?php elseif ($issue->getAssignee() instanceof TBGTeam): ?>
+				<div class="header"><?php echo __('%teamname% has been working on this issue since %time%', array('%teamname%' => $issue->getAssignee()->getName(), '%time%' => tbg_formatTime($issue->getWorkedOnSince(), 6))); ?></div>
+			<?php else: ?>
+				<div class="header"><?php echo __('%user% has been working on this issue since %time%', array('%user%' => $issue->getUserWorkingOnIssue()->getNameWithUsername(), '%time%' => tbg_formatTime($issue->getWorkedOnSince(), 6))); ?></div>
+			<?php endif; ?>
 		</div>
 	<?php endif; ?>
 	<?php if ($issue->isBlocking()): ?>
