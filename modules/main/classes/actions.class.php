@@ -2788,7 +2788,7 @@
 				if (!$issue->canEditIssue())
 				{
 					$this->getResponse()->setHttpStatus(400);
-					return $this->renderJSON(array('failed' => true, 'error' => __('You are not allowed to do this')));
+					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You are not allowed to do this')));
 				}
 				
 				switch ($request->getParameter('affected_type'))
@@ -2797,7 +2797,7 @@
 						if (!$issue->getProject()->isEditionsEnabled())
 						{
 							$this->getResponse()->setHttpStatus(400);
-							return $this->renderJSON(array('failed' => true, 'error' => __('Editions are disabled')));
+							return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Editions are disabled')));
 						}
 						
 						$editions = $issue->getEditions();
@@ -2825,7 +2825,7 @@
 						if (!$issue->getProject()->isComponentsEnabled())
 						{
 							$this->getResponse()->setHttpStatus(400);
-							return $this->renderJSON(array('failed' => true, 'error' => __('Components are disabled')));
+							return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Components are disabled')));
 						}
 						
 						$components = $issue->getComponents();
@@ -2853,7 +2853,7 @@
 						if (!$issue->getProject()->isBuildsEnabled())
 						{
 							$this->getResponse()->setHttpStatus(400);
-							return $this->renderJSON(array('failed' => true, 'error' => __('Releases are disabled')));
+							return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Releases are disabled')));
 						}
 						
 						$builds = $issue->getBuilds();
