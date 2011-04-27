@@ -1,5 +1,6 @@
 <?php
 
+	$article_name = (isset($article_name)) ? $article_name : '';
 	if (!TBGContext::isProjectContext() || (TBGContext::isProjectContext() && strtolower($article_name) != strtolower(TBGContext::getCurrentProject()->getKey() . ':mainpage')))
 	{
 		if (TBGContext::isProjectContext())

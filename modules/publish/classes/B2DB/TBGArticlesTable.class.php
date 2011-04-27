@@ -134,14 +134,22 @@
 			{
 				$crit->addWhere(self::NAME, "%{$name}%", B2DBCriteria::DB_LIKE);
 			}
-			$crit->setLimit($limit);
 			
-			if ($offset)
-				$crit->setOffset($offset);
+			$resultcount = $this->doCount($crit);
 			
-			$articles = array();
-			
-			return $this->doSelect($crit);
+			if ($resultcount)
+			{
+				$crit->setLimit($limit);
+
+				if ($offset)
+					$crit->setOffset($offset);
+
+				return array($resultcount, $this->doSelect($crit));
+			}
+			else
+			{
+				return array($resultcount, array());
+			}
 		}
 
 		public function save($name, $content, $published, $author, $id = null, $scope = null)

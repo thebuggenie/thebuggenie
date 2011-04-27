@@ -35,6 +35,20 @@
 					TBGContext::setCurrentProject($project);
 				}
 			}
+			else
+			{
+				try
+				{
+					if ($project_key = $request->getParameter('project_key'))
+						$this->selected_project = TBGProject::getByKey($project_key);
+					elseif ($project_id = (int) $request->getParameter('project_id'))
+						$this->selected_project = TBGContext::factory()->TBGProject($project_id);
+
+					TBGContext::setCurrentProject($this->selected_project);
+				}
+				catch (Exception $e) {}
+				
+			}
 			
 			if ($row = TBGArticlesTable::getTable()->getArticleByName($this->article_name))
 			{
@@ -296,6 +310,16 @@
 					
 				TBGContext::loadLibrary('publish');
 				$this->article_title = str_replace(array(':', '_'), array(' ', ' '), get_spaced_name($this->article_name));
+			}
+		}
+		
+		public function runFindArticles(TBGRequest $request)
+		{
+			$this->articlename = $request->getParameter('articlename');
+			
+			if ($this->articlename)
+			{
+				list ($this->resultcount, $this->articles) = TBGWikiArticle::findByArticleNameAndProject($this->articlename, TBGContext::getCurrentProject(), 10);
 			}
 		}
 

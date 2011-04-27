@@ -180,6 +180,19 @@
 	$routes[] = array('add_affected', '/project/:project_key/issue/:issue_id/add/affected', 'main', 'addaffected');
 	$routes[] = array('move_issue', '/issue/:issue_id/move', 'main', 'moveIssue');
 	$routes[] = array('captcha', '/captcha/*', 'main', 'captcha');
+	$routes[] = array('publish', '/wiki', 'publish', 'showArticle', array('article_name' => 'MainPage'));
+	$routes[] = array('publish_article_new', '/wiki/new', 'publish', 'editArticle', array('article_name' => 'NewArticle'));
+	$routes[] = array('publish_article_revision', '/wiki/:article_name/revision/:revision', 'publish', 'showArticle');
+	$routes[] = array('publish_article_edit', '/wiki/:article_name/edit', 'publish', 'editArticle');
+	$routes[] = array('publish_article_permissions', '/wiki/:article_name/permissions', 'publish', 'articlePermissions');
+	$routes[] = array('publish_article_attachments', '/wiki/:article_name/attachments', 'publish', 'articleAttachments');
+	$routes[] = array('publish_article_delete', '/wiki/:article_name/delete', 'publish', 'deleteArticle');
+	$routes[] = array('publish_article_save', '/wiki/savearticle', 'publish', 'saveArticle');
+	$routes[] = array('publish_article_history', '/wiki/:article_name/history', 'publish', 'articleHistory', array('history_action' => 'list'));
+	$routes[] = array('publish_article_diff', '/wiki/:article_name/diff', 'publish', 'articleHistory', array('history_action' => 'diff'));
+	$routes[] = array('publish_article_restore', '/wiki/:article_name/revert/to/revision/:revision', 'publish', 'articleHistory', array('history_action' => 'revert'));
+	$routes[] = array('publish_find_project_articles', '/wiki/:project_key/find/*', 'publish', 'findArticles');
+	$routes[] = array('publish_find_articles', '/wiki/find', 'publish', 'findArticles');
 	$routes[] = array('publish_article', '/wiki/:article_name', 'publish', 'showArticle');
 	
 	foreach ($routes as $route)

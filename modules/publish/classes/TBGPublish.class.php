@@ -67,17 +67,6 @@
 
 		protected function _addRoutes()
 		{
-			$this->addRoute('publish', '/wiki', 'showArticle', array('article_name' => 'MainPage'));
-			$this->addRoute('publish_article_new', '/wiki/new', 'editArticle', array('article_name' => 'NewArticle'));
-			$this->addRoute('publish_article_revision', '/wiki/:article_name/revision/:revision', 'showArticle');
-			$this->addRoute('publish_article_edit', '/wiki/:article_name/edit', 'editArticle');
-			$this->addRoute('publish_article_permissions', '/wiki/:article_name/permissions', 'articlePermissions');
-			$this->addRoute('publish_article_attachments', '/wiki/:article_name/attachments', 'articleAttachments');
-			$this->addRoute('publish_article_delete', '/wiki/:article_name/delete', 'deleteArticle');
-			$this->addRoute('publish_article_save', '/wiki/savearticle', 'saveArticle');
-			$this->addRoute('publish_article_history', '/wiki/:article_name/history', 'articleHistory', array('history_action' => 'list'));
-			$this->addRoute('publish_article_diff', '/wiki/:article_name/diff', 'articleHistory', array('history_action' => 'diff'));
-			$this->addRoute('publish_article_restore', '/wiki/:article_name/revert/to/revision/:revision', 'articleHistory', array('history_action' => 'revert'));
 		}
 
 		protected function _install($scope)
@@ -508,8 +497,8 @@
 		public function listen_quicksearchDropdownFoundItems(TBGEvent $event)
 		{
 			$searchterm = $event->getSubject();
-			$articles = TBGWikiArticle::findByArticleNameAndProject($searchterm, TBGContext::getCurrentProject());
-			TBGActionComponent::includeTemplate('publish/quicksearch_dropdown_founditems', array('articles' => $articles, 'resultcount' => count($articles)));
+			list ($resultcount, $articles) = TBGWikiArticle::findByArticleNameAndProject($searchterm, TBGContext::getCurrentProject());
+			TBGActionComponent::includeTemplate('publish/quicksearch_dropdown_founditems', array('searchterm' => $searchterm, 'articles' => $articles, 'resultcount' => $resultcount));
 		}
 		
 	}

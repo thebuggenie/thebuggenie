@@ -7,14 +7,7 @@
 		<?php foreach ($issues as $issue): ?>
 			<?php $cc++; ?>
 			<?php if ($issue instanceof TBGIssue): ?>
-				<li class="issue_<?php echo ($issue->isOpen()) ? 'open' : 'closed'; ?><?php if ($cc == count($issues) && $resultcount == count($issues)): ?> last<?php endif; ?>">
-					<?php echo image_tag($issue->getIssueType()->getIcon() . '_tiny.png', array('class' => 'informal')); ?>
-					<div><?php echo __('Issue %issue_no% - %title%', array('%issue_no%' => $issue->getFormattedIssueNo(true), '%title%' => (strlen($issue->getTitle()) <= 32) ? $issue->getTitle() : str_pad(substr($issue->getTitle(), 0, 32), 35, '...'))); ?></div>
-					<span class="informal"><?php if ($issue->isClosed()): ?>[<?php echo strtoupper(__('Closed')); ?>] <?php endif; ?><?php echo __('Last updated %updated_at%', array('%updated_at%' => tbg_formatTime($issue->getLastUpdatedTime(), 6))); ?></span>
-					<span class="informal url"><?php echo make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())); ?></span>
-				</li>
-			<?php else: ?>
-				<?php TBGEvent::createNew('search', 'quicksearch_item', $issue)->trigger(); ?>
+				<li class="issue_<?php echo ($issue->isOpen()) ? 'open' : 'closed'; ?><?php if ($cc == count($issues) && $resultcount == count($issues)): ?> last<?php endif; ?>"><?php echo image_tag($issue->getIssueType()->getIcon() . '_tiny.png', array('class' => 'informal')); ?><div><?php echo __('Issue %issue_no% - %title%', array('%issue_no%' => $issue->getFormattedIssueNo(true), '%title%' => (strlen($issue->getTitle()) <= 32) ? $issue->getTitle() : str_pad(substr($issue->getTitle(), 0, 32), 35, '...'))); ?></div><span class="informal"><?php if ($issue->isClosed()): ?>[<?php echo strtoupper(__('Closed')); ?>] <?php endif; ?><?php echo __('Last updated %updated_at%', array('%updated_at%' => tbg_formatTime($issue->getLastUpdatedTime(), 6))); ?></span><span class="informal url"><?php echo make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())); ?></span></li>
 			<?php endif; ?>
 		<?php endforeach; ?>
 		<?php if ($resultcount - $cc > 0): ?>

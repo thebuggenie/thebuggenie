@@ -114,8 +114,9 @@
 		public static function findByArticleNameAndProject($name, $project, $limit = 5, $offset = 0)
 		{
 			$articles = array();
+			list ($resultcount, $res) = TBGArticlesTable::getTable()->findArticlesLikeName($name, $project, $limit, $offset);
 			
-			if ($res = TBGArticlesTable::getTable()->findArticlesLikeName($name, $project, $limit, $offset))
+			if ($res)
 			{
 				while ($row = $res->getNextRow())
 				{
@@ -123,7 +124,7 @@
 				}
 			}
 			
-			return $articles;
+			return array($resultcount, $articles);
 		}
 
 		public static function getByName($article_name, $row = null)
