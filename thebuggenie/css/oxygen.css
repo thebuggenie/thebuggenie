@@ -365,6 +365,9 @@ td.selected_red span { color: #FFF; }
 .padded_table td { padding: 2px; }
 td.highlighted_column { background-color: #F1F1F1; }
 th.highlighted_column { background-color: #C1C1C1; }
+table.cleantable { border: 0; border-collapse: collapse; }
+table.cleantable td, table.cleantable th { border: 1px solid #DDD; padding: 4px; }
+table.cleantable th { text-align: center; }
 /* end table styling */
 
 /* configuration section styling */

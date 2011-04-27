@@ -1,4 +1,5 @@
 <td style="padding: 3px;"><?php echo image_tag('icon_user.png', array('title' => "User ID: {$user->getID()}")); ?></td>
+<td style="padding: 3px;"><?php echo ($user->getID()); ?></td>
 <td style="padding: 3px;">
 	<?php if (!in_array($user->getUsername(), array('administrator', 'guest'))): ?>
 		<div id="user_<?php echo $user->getID(); ?>_delete" style="position: absolute; left: 280px; width: 700px; z-index: 100; display: none;" class="rounded_box white shadowed">

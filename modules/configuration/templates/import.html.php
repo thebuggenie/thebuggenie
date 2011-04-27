@@ -34,6 +34,64 @@
 							<!--<li><a href="javascript:void(0);" onClick="showFadedBackdrop('<?php echo make_url('configure_import_csv', array('type' => 'groups')); ?>');"><?php echo __('Groups'); ?></a></li>-->
 						</ul>
 						<?php echo __('When you select a type, you will be given the opportunity to copy in your CSV file, and import the data.'); ?>
+						<div class="tab_header"><?php echo __('Field IDs'); ?></div>
+						<div class="tab_content">
+						<?php echo __('To import some field an ID number is required. The table below contains all the ID numbers you require. User, team, group and client IDs can be found in user configuration.'); ?>
+						<p style="font-weight: bold; margin-bottom: 5px;"><a href="javascript:void(0);" onclick="$('id_table').toggle();"><?php echo __('Toggle list of ID numbers'); ?></a></p>
+						<table class="cleantable" style="display: none" id="id_table">
+							<thead>
+								<tr>
+									<th><?php echo __('Type'); ?></th>
+									<th><?php echo __('Name'); ?></th>
+									<th><?php echo __('ID'); ?></th>
+								</tr>
+							</thead>
+							<tbody>
+						<?php
+							foreach (TBGIssuetypeScheme::getAll() as $item)
+							{
+								echo '<tr><td>'.__('Issue type scheme').'</td><td>'.$item->getName().'</td><td>'.$item->getID().'</td></tr>';
+							}
+							foreach (TBGWorkflowScheme::getAll() as $item)
+							{
+								echo '<tr><td>'.__('Workflow scheme').'</td><td>'.$item->getName().'</td><td>'.$item->getID().'</td></tr>';
+							}
+							foreach (TBGProject::getAll() as $item)
+							{
+								echo '<tr><td>'.__('Project').'</td><td>'.$item->getName().'</td><td>'.$item->getID().'</td></tr>';
+								foreach (TBGMilestone::getAllByProjectID($item->getID()) as $item2)
+								{
+									echo '<tr><td>'.__('Milestone for project').' '.$item->getID().'</td><td>'.$item2->getName().'</td><td>'.$item2->getID().'</td></tr>';
+								}
+							}
+							foreach (TBGReproducability::getAll() as $item)
+							{
+								echo '<tr><td>'.__('Reproducability').'</td><td>'.$item->getName().'</td><td>'.$item->getID().'</td></tr>';
+							}
+							foreach (TBGSeverity::getAll() as $item)
+							{
+								echo '<tr><td>'.__('Severity').'</td><td>'.$item->getName().'</td><td>'.$item->getID().'</td></tr>';
+							}
+							foreach (TBGCategory::getAll() as $item)
+							{
+								echo '<tr><td>'.__('Category').'</td><td>'.$item->getName().'</td><td>'.$item->getID().'</td></tr>';
+							}
+							foreach (TBGPriority::getAll() as $item)
+							{
+								echo '<tr><td>'.__('Priority').'</td><td>'.$item->getName().'</td><td>'.$item->getID().'</td></tr>';
+							}
+							foreach (TBGResolution::getAll() as $item)
+							{
+								echo '<tr><td>'.__('Resolution').'</td><td>'.$item->getName().'</td><td>'.$item->getID().'</td></tr>';
+							}
+							foreach (TBGIssuetype::getAll() as $item)
+							{
+								echo '<tr><td>'.__('Issue type').'</td><td>'.$item->getName().'</td><td>'.$item->getID().'</td></tr>';
+							}
+						?>
+							</tbody>
+						</table>
+						</div>
 					</div>
 				</div>
 				<div id="tab_tbg_pane" style="padding-top: 0; width: 750px; display: none;">

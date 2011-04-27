@@ -5,7 +5,7 @@
 		<?php echo javascript_link_tag(image_tag('icon_edit.png'), array('title' => __('Edit this user client'), 'onclick' => '$(\'edit_client_'.$client->getID().'\').toggle();', 'style' => 'float: right; margin-right: 5px;', 'class' => 'image')); ?>
 		<?php echo javascript_link_tag(image_tag('client_list_users.png'), array('title' => __('List users in this client'), 'onclick' => 'showClientMembers(\''.make_url('configure_users_get_client_members', array('client_id' => $client->getID())).'\', '.$client->getID().');', 'style' => 'float: right; margin-right: 5px;', 'class' => 'image')); ?>
 		<p class="clientbox_header"><?php echo $client->getName(); ?></p>
-		<p class="clientbox_membercount"><?php echo __('%number_of% member(s)', array('%number_of%' => '<span id="client_'.$client->getID().'_membercount">'.$client->getNumberOfMembers().'</span>')); ?></p>
+		<p class="clientbox_membercount"><?php echo __('ID: %id%', array('%id%' => $client->getID())); ?> - <?php echo __('%number_of% member(s)', array('%number_of%' => '<span id="client_'.$client->getID().'_membercount">'.$client->getNumberOfMembers().'</span>')); ?></p>
 		<div class="rounded_box white shadowed" style="margin: 5px; display: none;" id="edit_client_<?php echo $client->getID(); ?>">
 			<div class="dropdown_header"><?php echo __('Edit client settings'); ?></div>
 			<div class="dropdown_content">

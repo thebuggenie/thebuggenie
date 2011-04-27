@@ -5,7 +5,7 @@
 		<?php echo javascript_link_tag(image_tag('group_clone.png'), array('title' => __('Clone this user group'), 'onclick' => '$(\'clone_group_'.$group->getID().'\').toggle();', 'style' => 'float: right; margin-right: 5px;', 'class' => 'image')); ?>
 		<?php echo javascript_link_tag(image_tag('group_list_users.png'), array('title' => __('List users in this group'), 'onclick' => 'showGroupMembers(\''.make_url('configure_users_get_group_members', array('group_id' => $group->getID())).'\', '.$group->getID().');', 'style' => 'float: right; margin-right: 5px;', 'class' => 'image')); ?>
 		<p class="groupbox_header"><?php echo $group->getName(); ?></p>
-		<p class="groupbox_membercount"><?php echo __('%number_of% member(s)', array('%number_of%' => '<span id="group_'.$group->getID().'_membercount">'.$group->getNumberOfMembers().'</span>')); ?></p>
+		<p class="groupbox_membercount"><?php echo __('ID: %id%', array('%id%' => $group->getID())); ?> - <?php echo __('%number_of% member(s)', array('%number_of%' => '<span id="group_'.$group->getID().'_membercount">'.$group->getNumberOfMembers().'</span>')); ?></p>
 		<div class="rounded_box white shadowed" style="margin: 5px; display: none;" id="clone_group_<?php echo $group->getID(); ?>">
 			<div class="dropdown_header"><?php echo __('Please specify what parts of this group you want to clone'); ?></div>
 			<div class="dropdown_content">

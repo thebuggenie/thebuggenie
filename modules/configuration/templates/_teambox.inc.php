@@ -5,7 +5,7 @@
 		<?php echo javascript_link_tag(image_tag('team_clone.png'), array('title' => __('Clone this user team'), 'onclick' => '$(\'clone_team_'.$team->getID().'\').toggle();', 'style' => 'float: right; margin-right: 5px;', 'class' => 'image')); ?>
 		<?php echo javascript_link_tag(image_tag('team_list_users.png'), array('title' => __('List users in this team'), 'onclick' => 'showTeamMembers(\''.make_url('configure_users_get_team_members', array('team_id' => $team->getID())).'\', '.$team->getID().');', 'style' => 'float: right; margin-right: 5px;', 'class' => 'image')); ?>
 		<p class="teambox_header"><?php echo $team->getName(); ?></p>
-		<p class="teambox_membercount"><?php echo __('%number_of% member(s)', array('%number_of%' => '<span id="team_'.$team->getID().'_membercount">'.$team->getNumberOfMembers().'</span>')); ?></p>
+		<p class="teambox_membercount"><?php echo __('ID: %id%', array('%id%' => $team->getID())); ?> - <?php echo __('%number_of% member(s)', array('%number_of%' => '<span id="team_'.$team->getID().'_membercount">'.$team->getNumberOfMembers().'</span>')); ?></p>
 		<div class="rounded_box white shadowed" style="margin: 5px; display: none;" id="clone_team_<?php echo $team->getID(); ?>">
 			<div class="dropdown_header"><?php echo __('Please specify what parts of this team you want to clone'); ?></div>
 			<div class="dropdown_content copy_team_link">

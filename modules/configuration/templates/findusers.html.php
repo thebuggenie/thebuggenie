@@ -15,6 +15,7 @@
 			<thead>
 				<tr>
 					<th style="width: 20px;">&nbsp;</th>
+					<th><?php echo __('ID'); ?></th>
 					<th><?php echo __('Username'); ?></th>
 					<th><?php echo __('Real name (nickname)'); ?></th>
 					<th><?php echo __('E-mail'); ?></th>
