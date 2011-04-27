@@ -39,7 +39,7 @@
 	$routes[] = array('project_search_paginated', '/:project_key/issues/paginated/*', 'search', 'findIssuesPaginated');
 	$routes[] = array('project_search_add_filter', '/:project_key/issues/add/filter/*', 'search', 'addFilter');
 	$routes[] = array('project_findthis', '/:project_key/issues/find/:searchfor/*', 'search', 'findIssues');
-	$routes[] = array('project_issues', '/:project_key/issues/*', 'search', 'findIssues');
+	$routes[] = array('project_issues', '/:project_key/issues/find/*', 'search', 'findIssues');
 	$routes[] = array('viewissue', '/:project_key/issues/:issue_no/*', 'main', 'viewIssue');
 	$routes[] = array('project_quicksearch', '/:project_key/quicksearch/*', 'search', 'findIssues', array('quicksearch' => true, 'issues_per_page' => 6));
 	$routes[] = array('project_team', '/:project_key/team', 'project', 'team');
