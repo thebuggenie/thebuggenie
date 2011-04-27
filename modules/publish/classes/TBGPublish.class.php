@@ -61,6 +61,8 @@
 			}
 			TBGEvent::listen('core', 'TBGProject::createNew', array($this, 'listen_createNewProject'));
 			TBGEvent::listen('core', 'upload', array($this, 'listen_upload'));
+			TBGEvent::listen('core', 'quicksearch_dropdown_firstitems', array($this, 'listen_quicksearchDropdownFirstItems'));
+			TBGEvent::listen('core', 'quicksearch_dropdown_founditems', array($this, 'listen_quicksearchDropdownFoundItems'));
 		}
 
 		protected function _addRoutes()
@@ -495,6 +497,19 @@
 		public function canUserDeleteArticle($article_name)
 		{
 			return $this->_checkArticlePermissions($article_name, 'deletearticle');
+		}
+		
+		public function listen_quicksearchDropdownFirstItems(TBGEvent $event)
+		{
+			$searchterm = $event->getSubject();
+			TBGActionComponent::includeTemplate('publish/quicksearch_dropdown_firstitems', array('searchterm' => $searchterm));
+		}
+		
+		public function listen_quicksearchDropdownFoundItems(TBGEvent $event)
+		{
+			$searchterm = $event->getSubject();
+			$articles = TBGWikiArticle::findByArticleNameAndProject($searchterm, TBGContext::getCurrentProject());
+			TBGActionComponent::includeTemplate('publish/quicksearch_dropdown_founditems', array('articles' => $articles, 'resultcount' => count($articles)));
 		}
 		
 	}

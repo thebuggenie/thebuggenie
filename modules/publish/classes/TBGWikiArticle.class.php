@@ -110,6 +110,21 @@
 		{
 			$this->_date = NOW;
 		}
+		
+		public static function findByArticleNameAndProject($name, $project, $limit = 5, $offset = 0)
+		{
+			$articles = array();
+			
+			if ($res = TBGArticlesTable::getTable()->findArticlesLikeName($name, $project, $limit, $offset))
+			{
+				while ($row = $res->getNextRow())
+				{
+					$articles[$row->get(TBGArticlesTable::ID)] = self::getByName($row->get(TBGArticlesTable::NAME), $row);
+				}
+			}
+			
+			return $articles;
+		}
 
 		public static function getByName($article_name, $row = null)
 		{

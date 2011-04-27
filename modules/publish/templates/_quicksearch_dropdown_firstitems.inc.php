@@ -1,0 +1,1 @@
+<li class="searchterm"><?php echo $searchterm; ?><br><span class="informal"><?php echo __('Select this to search the wiki'); ?></span></li>

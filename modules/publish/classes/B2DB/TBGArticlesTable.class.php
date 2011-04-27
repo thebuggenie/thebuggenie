@@ -116,6 +116,33 @@
 
 			return (bool) ($res = $this->doSelect($crit));
 		}
+		
+		public function findArticlesLikeName($name, $project, $limit = 5, $offset = 0)
+		{
+			$crit = $this->getCriteria();
+			if ($project instanceof TBGProject)
+			{
+				$ctn = $crit->returnCriterion(self::NAME, "%{$name}%", B2DBCriteria::DB_LIKE);
+				$ctn->addWhere(self::NAME, "category:" . $project->getKey() . "%", B2DBCriteria::DB_LIKE);
+				$crit->addWhere($ctn);
+				
+				$ctn = $crit->returnCriterion(self::NAME, "%{$name}%", B2DBCriteria::DB_LIKE);
+				$ctn->addWhere(self::NAME, $project->getKey() . "%", B2DBCriteria::DB_LIKE);
+				$crit->addOr($ctn);
+			}
+			else
+			{
+				$crit->addWhere(self::NAME, "%{$name}%", B2DBCriteria::DB_LIKE);
+			}
+			$crit->setLimit($limit);
+			
+			if ($offset)
+				$crit->setOffset($offset);
+			
+			$articles = array();
+			
+			return $this->doSelect($crit);
+		}
 
 		public function save($name, $content, $published, $author, $id = null, $scope = null)
 		{
