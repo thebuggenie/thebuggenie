@@ -167,6 +167,12 @@ div.autocomplete ul li span { font-size: 0.8em; }
 div.autocomplete ul li span.url { display: none; }
 div.autocomplete ul li.disabled { cursor: default; }
 div.autocomplete ul li.issue_closed { color: #AAA; }
+div.autocomplete .extra { display: none; font-weight: bold; font-size: 1em; }
+div.autocomplete .extra.attached { text-align: right; height: 20px; }
+div.autocomplete .extra.attached span, div.autocomplete .extra.attached img { float: right; }
+div.autocomplete .extra.attached img { margin-left: 3px; margin-right: 15px; }
+div.autocomplete .extra span { font-weight: normal; font-size: 1em; }
+div.autocomplete li.selected .extra { display: block; }
 div.autocomplete ul li.no_issues_found { color: #AAA; padding: 10px; }
 div.autocomplete ul li { border-top: 1px dotted #CCC; font-size: 0.9em; list-style-type: none; display: block; width: 100%; margin: 0; padding: 2px 2px 2px 5px; /*height: 32px;*/ cursor: pointer; font-weight: normal; text-align: left; background-color: #FFF; color: #555; line-height: 1.4; }
 div.autocomplete ul li.searchterm, div.autocomplete ul li.searchterm.selected { border-top: 0; }
