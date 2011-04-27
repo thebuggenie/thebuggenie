@@ -192,7 +192,7 @@
 	$routes[] = array('publish_article_diff', '/wiki/:article_name/diff', 'publish', 'articleHistory', array('history_action' => 'diff'));
 	$routes[] = array('publish_article_restore', '/wiki/:article_name/revert/to/revision/:revision', 'publish', 'articleHistory', array('history_action' => 'revert'));
 	$routes[] = array('publish_find_project_articles', '/wiki/:project_key/find/*', 'publish', 'findArticles');
-	$routes[] = array('publish_find_articles', '/wiki/find', 'publish', 'findArticles');
+	$routes[] = array('publish_find_articles', '/wiki/find/*', 'publish', 'findArticles');
 	$routes[] = array('publish_article', '/wiki/:article_name', 'publish', 'showArticle');
 	
 	foreach ($routes as $route)
