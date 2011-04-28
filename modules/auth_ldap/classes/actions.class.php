@@ -15,25 +15,9 @@
 		{
 			try
 			{
-				// Connection
-				$failed = false;
-				// do connection here, set failed to true if failed
-				if ($failed)
-				{
-					TBGContext::setMessage('module_error', TBGContext::getI18n()->__('Failed to connect to server'));
-					TBGContext::setMessage('module_error_details', __('Connection failed'));
-					$this->forward(TBGContext::getRouting()->generate('configure_module', array('config_module' => 'auth_ldap')));
-				}
+				$connection = TBGContext::getModule('auth_ldap')->connect();
+				ldap_unbind($connection);
 				
-				// do binding here, set failed to true if failed
-				if ($failed)
-				{
-					TBGContext::setMessage('module_error', TBGContext::getI18n()->__('Failed to connect to server'));
-					TBGContext::setMessage('module_error_details', __('Authentication faield'));
-					$this->forward(TBGContext::getRouting()->generate('configure_module', array('config_module' => 'auth_ldap')));
-				}
-				
-				// disconnect
 				TBGContext::setMessage('module_message', TBGContext::getI18n()->__('Connection test successful'));
 				$this->forward(TBGContext::getRouting()->generate('configure_module', array('config_module' => 'auth_ldap')));
 			}
@@ -55,6 +39,17 @@
 			$users = TBGUser::getAll();
 			$deletecount = 0;
 			
+			try
+			{
+				$connection = TBGContext::getModule('auth_ldap')->connect();
+			}
+			catch (Exception $e)
+			{
+				TBGContext::setMessage('module_error', TBGContext::getI18n()->__('Pruning failed'));
+				TBGContext::setMessage('module_error_details', $e->getMessage());
+				$this->forward(TBGContext::getRouting()->generate('configure_module', array('config_module' => 'auth_ldap')));
+			}
+
 			foreach ($users as $user)
 			{
 				try
@@ -71,6 +66,7 @@
 					 * To log do:
 					 * TBGLogging::log('error goes here', 'ldap', TBGLogging::LEVEL_FATAL);
 					 */
+					
 					if (!$exists)
 					{
 						$user->delete();
@@ -80,12 +76,14 @@
 				}
 				catch (Exception $e)
 				{
+					ldap_unbind($connection);
 					TBGContext::setMessage('module_error', TBGContext::getI18n()->__('Pruning failed'));
 					TBGContext::setMessage('module_error_details', $e->getMessage());
 					$this->forward(TBGContext::getRouting()->generate('configure_module', array('config_module' => 'auth_ldap')));
 				}
 			}
 			
+			ldap_unbind($connection);
 			TBGContext::setMessage('module_message', TBGContext::getI18n()->__('Pruning successful! %del% users deleted', array('%del%' => $deletecount)));
 			$this->forward(TBGContext::getRouting()->generate('configure_module', array('config_module' => 'auth_ldap')));
 		}
@@ -97,10 +95,6 @@
 		 */
 		public function runImportUsers(TBGRequest $request)
 		{
-			$host = TBGContext::getModule('auth_ldap')->getSetting('hostname');
-			$port = TBGContext::getModule('auth_ldap')->getSetting('port');
-			$lduser = TBGContext::getModule('auth_ldap')->getSetting('username');
-			$ldpass = TBGContext::getModule('auth_ldap')->getSetting('password');
 			$validgroups = TBGContext::getModule('auth_ldap')->getSetting('groups');
 			$dn = TBGContext::getModule('auth_ldap')->getSetting('dn');
 			
@@ -110,6 +104,8 @@
 			
 			try
 			{
+				$connection = TBGContext::getModule('auth_ldap')->connect();
+				
 				/*
 				 * Build an array of all valid LDAP users here.
 				 * 
@@ -180,9 +176,9 @@
 				}
 			}
 			
+			ldap_unbind($connection);
 			TBGContext::setMessage('module_message', TBGContext::getI18n()->__('Import successful! %imp% users imported, %upd% users updated from LDAP', array('%imp%' => $importcount, '%upd%' => $updatecount)));
 			$this->forward(TBGContext::getRouting()->generate('configure_module', array('config_module' => 'auth_ldap')));
 		}
 
 	}
-

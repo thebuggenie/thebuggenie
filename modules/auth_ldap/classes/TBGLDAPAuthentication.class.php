@@ -77,23 +77,48 @@
 			}
 		}
 		
-		public function loginCheck($username, $password)
+		public function connect()
 		{
 			$host = $this->getSetting('hostname');
 			$port = $this->getSetting('port');
 			$lduser = $this->getSetting('username');
 			$ldpass = $this->getSetting('password');
+			$failed = false;
+
+			$connection = ldap_connect($host, $port);
+			if ($connection == false): $failed = true; endif;
+
+			// do connection here, set failed to true if failed
+			if ($failed)
+			{
+				throw new Exception(__('Failed to connect to server'));
+			}
+
+			$bind = ldap_bind($connection, $lduser, $ldpass);
+			if ($bind == false): $failed = true; endif;
+
+			// do connection here, set failed to true if failed
+			if ($failed)
+			{
+				ldap_unbind($connection);
+				throw new Exception(__('Failed to bind: ').ldap_error($connection));
+				TBGLogging::log('bind failed: '.ldap_error($connection), 'ldap', TBGLogging::LEVEL_FATAL);
+			}
+			
+			return $connection;
+		}
+		
+		public function loginCheck($username, $password)
+		{
 			$validgroups = $this->getSetting('groups');
 			$dn = $this->getSetting('dn');
 			
-			$failed = true;
 			$email = null;
 			$realname = $username;
 			
 			/*
 			 * Do the LDAP check here.
 			 * 
-			 * If login successful, set $failed = false;, else true
 			 * If a connection error or something, throw an exception and log
 			 * 
 			 * If we can, set $mail and $realname to correct values from LDAP
@@ -102,44 +127,45 @@
 			 * To log do:
 			 * TBGLogging::log('error goes here', 'ldap', TBGLogging::LEVEL_FATAL);
 			 */
-			
-			if (!$failed)
+			try
 			{
-				try
-				{
-					$user = TBGUser::getByUsername($username);
-					if ($user instanceof TBGUser)
-					{
-						$user->setRealname($realname);
-						$user->setPassword($password); // update password
-						$user->setEmail($email); // update emaila ddress
-						$user->save();
-					}
-					else
-					{
-						// create user
-						$user = new TBGUser();
-						$user->setUsername($username);
-						$user->setRealname($realname);
-						$user->setBuddyname($username);
-						$user->setEmail($email);
-						$user->setEnabled();
-						$user->setActivated();
-						$user->setPassword($password);
-						$user->setJoined();
-						$user->save();
-					}
-					
-					return TBGUsersTable::getByUsername($username);
-				}
-				catch (Exception $e)
-				{
-					throw $e;
-				}
+				$connection = $this->connect();
 			}
-			else
+			catch (Exception $e)
 			{
-				return false; // login failed
+				throw $e;
+			}
+			
+			try
+			{
+				$user = TBGUser::getByUsername($username);
+				if ($user instanceof TBGUser)
+				{
+					$user->setRealname($realname);
+					$user->setPassword($password); // update password
+					$user->setEmail($email); // update emaila ddress
+					$user->save();
+				}
+				else
+				{
+					// create user
+					$user = new TBGUser();
+					$user->setUsername($username);
+					$user->setRealname($realname);
+					$user->setBuddyname($username);
+					$user->setEmail($email);
+					$user->setEnabled();
+					$user->setActivated();
+					$user->setPassword($password);
+					$user->setJoined();
+					$user->save();
+				}
+
+				return TBGUsersTable::getByUsername($username);
+			}
+			catch (Exception $e)
+			{
+				throw $e;
 			}
 		}
 	}

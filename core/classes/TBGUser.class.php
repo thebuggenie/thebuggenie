@@ -398,7 +398,7 @@
 						}
 						catch (Exception $e)
 						{
-							throw new Exception('Backend error');
+							throw $e;
 						}
 					}
 					else
