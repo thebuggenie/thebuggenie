@@ -30,6 +30,8 @@
 		protected $toc_base_id = null;
 		protected $openblocks = array();
 		protected $nowikis = array();
+		protected $elinks = array();
+		protected $ilinks = array();
 		protected $codeblocks = array();
 		protected $linknumber = 0;
 		protected $internallinks = array();
@@ -723,8 +725,6 @@
 			$line_regexes['horizontalrule'] = '^----$';
 
 			$char_regexes = array();
-			$char_regexes[] = array('/(\[\[(\:?([^\]]*?)\:)?([^\]]*?)(\|([^\]]*?))?\]\]([a-z]+)?)/i', array($this, '_parse_internallink'));
-			$char_regexes[] = array('/(\[([^\]]*?)(\s+[^\]]*?)?\])/i', array($this, '_parse_externallink'));
 			$char_regexes[] = array('/(\'{2,5})/i', array($this, '_parse_emphasize'));
 			$char_regexes[] = array('/(__NOTOC__|__NOEDITSECTION__)/i', array($this, '_parse_eliminate'));
 			if (!array_key_exists('ignore_vars', $options))
@@ -800,6 +800,8 @@
 			$text = preg_replace_callback('/<nowiki>(.+?)<\/nowiki>(?!<\/nowiki>)/ism', array($this, "_parse_save_nowiki"), $text);
 			$text = preg_replace_callback('/<source((?:\s+[^\s]+=".*")*)>\s*?(.+)\s*?<\/source>/ismU', array($this, "_parse_save_code"), $text);
 			// Thanks to Mike Smith (scgtrp) for the above regexp
+			$text = preg_replace_callback('/(\[\[(\:?([^\]]*?)\:)?([^\]]*?)(\|([^\]]*?))?\]\]([a-z]+)?)/i', array($this, "_parse_save_ilink"), $text);
+			$text = preg_replace_callback('/(\[([^\]]*?)(\s+[^\]]*?)?\])/i', array($this, "_parse_save_elink"), $text);
 
 			$text = tbg_decodeUTF8($text, true);
 			$text = preg_replace('/&lt;((\/)?u|(\/)?strike|br)&gt;/ism', '<\\1>' ,$text);
@@ -821,7 +823,8 @@
 			
 			$this->nowikis = array_reverse($this->nowikis);
 			$this->codeblocks = array_reverse($this->codeblocks);
-
+			$this->elinks = array_reverse($this->elinks);
+			
 			if (!array_key_exists('ignore_toc', $options))
 			{
 				$output = preg_replace_callback('/\{\{TOC\}\}/', array($this, "_parse_add_toc"), $output);
@@ -831,6 +834,8 @@
 			{
 				$output = preg_replace_callback('/\|\|\|CODE\|\|\|/Ui', array($this, "_parse_restore_code"), $output);
 			}
+			$output = preg_replace_callback('/~~~ILINK~~~/i', array($this, "_parse_restore_ilink"), $output);
+			$output = preg_replace_callback('/~~~ELINK~~~/i', array($this, "_parse_restore_elink"), $output);
 
 			self::$current_parser = null;
 			return $output;
@@ -864,6 +869,28 @@
 		{
 			array_push($this->nowikis, $matches[1]);
 			return "|||NOWIKI|||";
+		}
+		
+		protected function _parse_save_ilink($matches)
+		{
+			array_push($this->ilinks, $matches);
+			return "~~~ILINK~~~";
+		}
+		
+		protected function _parse_save_elink($matches)
+		{
+			array_push($this->elinks, $matches);
+			return "~~~ELINK~~~";
+		}
+		
+		protected function _parse_restore_ilink($matches)
+		{
+			return $this->_parse_internallink(array_pop($this->ilinks));
+		}
+		
+		protected function _parse_restore_elink($matches)
+		{
+			return $this->_parse_externallink(array_pop($this->elinks));
 		}
 
 		protected function _parse_restore_nowiki($matches)
