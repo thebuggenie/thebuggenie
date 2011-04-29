@@ -44,7 +44,7 @@
 		 */
 		public function runInstallStep1(TBGRequest $request)
 		{
-			$this->all_well = false;
+			$this->all_well = true;
 			$this->base_folder_perm_ok = true;
 			$this->cache_folder_perm_ok = true;
 			$this->thebuggenie_folder_perm_ok = true;
@@ -124,7 +124,6 @@
 			if ($docblock)
 			{
 				$this->docblock_ok = true;
-				$this->all_well = true;
 			}
 			else
 			{
