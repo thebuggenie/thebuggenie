@@ -1281,10 +1281,6 @@ function updateComment(url, cid)
 
 function addComment(url, commentcount_span)
 {
-	if ($('comment_save_changes') && $('comment_save_changes').checked)
-	{
-		return true;
-	}
 	params = $('comment_form').serialize();
 	new Ajax.Request(url, {
 	asynchronous:true,
