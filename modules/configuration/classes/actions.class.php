@@ -2561,6 +2561,25 @@
 		public function runConfigureWorkflows(TBGRequest $request)
 		{
 			$this->workflows = TBGWorkflow::getAll();
+			if ($request->isMethod(TBGRequest::POST))
+			{
+				try
+				{
+					$workflow_name = $request->getParameter('workflow_name');
+					$workflow = new TBGWorkflow();
+					$workflow->setName($workflow_name);
+					$workflow->save();
+					$step = new TBGWorkflowStep();
+					$step->setName(TBGContext::getI18n()->__('New'));
+					$step->setWorkflow($workflow);
+					$step->save();
+					$this->forward(TBGContext::getRouting()->generate('configure_workflow'));
+				}
+				catch (Exception $e)
+				{
+					$this->error = $e->getMessage();
+				}
+			}
 		}
 
 		public function runConfigureWorkflowScheme(TBGRequest $request)
