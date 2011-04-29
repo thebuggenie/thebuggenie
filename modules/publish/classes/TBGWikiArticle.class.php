@@ -109,6 +109,7 @@
 		protected function _preSave($is_new)
 		{
 			$this->_date = NOW;
+			$this->_author = TBGContext::getUser();
 		}
 		
 		public static function findByArticleNameAndProject($name, $project, $limit = 5, $offset = 0)
