@@ -18,6 +18,7 @@ Mercurial hook:
  
 Git hook:
  - Ilmar Kruis ('SeaEagle1' on the forums)
+ - Karl Palsson <karlp@tweak.net.au>
  Note: The git hook does not support the web access method, only direct access
  
 Thank you to everyone who contributed to this module.
