@@ -1765,6 +1765,19 @@
 						TBGContext::setMessage('module_error', TBGContext::getI18n()->__('There was an error install the module %module_name%', array('%module_name%' => $request->getParameter('module_key'))));
 					}
 				}
+				else if ($request->getParameter('mode') == 'upload')
+				{
+					$archive = $request->getUploadedFile('archive');	
+					if ($archive == null || $archive['error'] != UPLOAD_ERR_OK || !preg_match('/application\/(x-)?zip/i', $archive['type']))
+					{
+						TBGContext::setMessage('module_error', TBGContext::getI18n()->__('Invalid or empty archive uploaded'));
+					}
+					else
+					{
+						$module_name = TBGModule::uploadModule($archive);
+						TBGContext::setMessage('module_message', TBGContext::getI18n()->__('The module "%module_name%" was uploaded successfully', array('%module_name%' => $module_name)));
+					}
+				}				
 				else
 				{
 					$module = TBGContext::getModule($request->getParameter('module_key'));
@@ -1790,7 +1803,7 @@
 			}
 			catch (Exception $e)
 			{
-				TBGLogging::log('Trying to run action ' . $request->getParameter('mode') . ' on module ' . $request->getParameter('module_key') . ' which is an invalid module', 'main', TBGLogging::LEVEL_FATAL);
+				TBGLogging::log('Trying to run action ' . $request->getParameter('mode') . ' on module ' . $request->getParameter('module_key') . ' made an exception: ' . $e->getMessage(), TBGLogging::LEVEL_FATAL);
 				TBGContext::setMessage('module_error', TBGContext::getI18n()->__('This module (%module_name%) does not exist', array('%module_name%' => $request->getParameter('module_key'))));
 			}
 			$this->forward(TBGContext::getRouting()->generate('configure_modules'));

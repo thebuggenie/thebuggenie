@@ -40,6 +40,17 @@
 							</div>
 						</form>
 					<?php endif; ?>
+					<div class="header" style="margin-top: 15px;"><?php echo __('Add new module'); ?></div>
+						<form action="<?php echo make_url('configure_upload_module'); ?>" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" enctype="multipart/form-data">
+							<div class="rounded_box mediumgrey borderless" style="margin: 5px 0px 5px 0px; text-align: right; width: 750px;">
+								<div class="content">
+									<?php echo __('To add a new module in The Bug Genie, download it then select it from the %browse%-button and press the %upload%-button', array('%upload%' => '<b>' . __('Upload') . '</b>', '%browse%' => '<b>' . __('Browse') . '</b>')); ?>
+								</div>
+								<input type="file" name="archive" size="100%" style="margin-top: 5px; width: 100%; background-color: #fff;"><br>
+								<input type="submit" value="<?php echo __('Upload'); ?>" style="font-weight: bold; margin: 5px 0 10px 0;">
+							</div>
+						</form>
+					</div>
 				<?php endif; ?>
 			</div>
 		</td>
