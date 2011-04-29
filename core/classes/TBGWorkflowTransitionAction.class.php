@@ -157,7 +157,7 @@
 					if ($this->getTargetValue())
 						$issue->setPercentCompleted((int) $this->getTargetValue());
 					else
-						$issue->setPercentCompleted((int) $request->getParameter('priority_id'));
+						$issue->setPercentCompleted((int) $request->getParameter('percent_complete_id'));
 					break;
 				case self::ACTION_CLEAR_RESOLUTION:
 					$issue->setResolution(null);
