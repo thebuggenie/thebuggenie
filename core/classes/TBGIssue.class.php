@@ -1905,19 +1905,6 @@
 		 */
 		public function getCategory()
 		{
-			/*if (is_numeric($this->_category))
-			{
-				try
-				{
-					$this->_category = TBGContext::factory()->TBGCategory($this->_category);
-				}
-				catch (Exception $e)
-				{
-					$this->_category = null;
-				}
-			}
-			return $this->_category;*/
-			//var_dump($this->_category);
 			return $this->_getPopulatedObjectFromProperty('_category');
 		}
 		
@@ -2027,6 +2014,7 @@
 		 */
 		public function setCustomField($key, $value)
 		{
+			$this->_populateCustomfields();
 			$this->_addChangedProperty('_customfield'.$key, $value);
 		}
 
@@ -4494,7 +4482,7 @@
 			$this->_clearChangedProperties();
 		}
 		
-		public function _postSave($is_new)
+		protected function _postSave($is_new)
 		{
 			if (!$is_new && isset($this->comment) && isset($this->comment_lines))
 			{
