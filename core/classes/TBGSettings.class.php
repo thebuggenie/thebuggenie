@@ -516,7 +516,7 @@
 		
 		public static function getURLhost()
 		{
-			return TBGContext::getScope()->getHostname();
+			return TBGContext::getScope()->getCurrentHostname();
 		}
 		
 		public static function getGMToffset()
