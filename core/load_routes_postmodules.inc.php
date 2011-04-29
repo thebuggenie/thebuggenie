@@ -48,6 +48,7 @@
 	$routes[] = array('project_statistics_imagesets', '/:project_key/statistics/imagesets/:set', 'project', 'statisticsImagesets');
 	$routes[] = array('project_statistics_image', '/:project_key/statistics/image/:key/:mode/:image_number/*', 'project', 'statisticsGetImage');
 	$routes[] = array('project_timeline', '/:project_key/timeline/*', 'project', 'timeline');
+	$routes[] = array('project_timeline_important', '/:project_key/timeline/show/important/*', 'project', 'timeline');
 	$routes[] = array('project_files', '/:project_key/files', 'project', 'files');
 	$routes[] = array('project_roadmap', '/:project_key/roadmap', 'project', 'roadmap');
 	$routes[] = array('project_roadmap_milestone_issues', '/:project_key/milestone/:milestone_id/get/issues', 'project', 'getMilestoneIssues');

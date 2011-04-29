@@ -120,7 +120,16 @@
 		{
 			$this->forward403unless($this->_checkProjectPageAccess('project_timeline'));
 			$offset = $request->getParameter('offset', 0);
-			$this->recent_activities = $this->selected_project->getRecentActivities(40, false, $offset);
+			if ($request->getParameter('show') == 'important')
+			{
+				$this->recent_activities = $this->selected_project->getRecentActivities(40, true, $offset);
+				$this->important = true;
+			}
+			else
+			{
+				$this->important = false;
+				$this->recent_activities = $this->selected_project->getRecentActivities(40, false, $offset);
+			}
 			
 			if ($offset)
 			{
