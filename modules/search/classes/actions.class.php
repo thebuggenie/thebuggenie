@@ -90,10 +90,10 @@
 			if ($this->searchterm)
 			{
 				preg_replace_callback(TBGTextParser::getIssueRegex(), array($this, 'extractIssues'), $this->searchterm);
-				if (!count($this->foundissues) && substr($this->searchterm, 0, 1) == '#')
+				
+				if (!count($this->foundissues))
 				{
-					$searchterm = substr($this->searchterm, 1);
-					$issue = TBGIssue::getIssueFromLink($searchterm);
+					$issue = TBGIssue::getIssueFromLink($this->searchterm);
 					if ($issue instanceof TBGIssue)
 					{
 						$this->foundissues = array($issue);
@@ -319,7 +319,7 @@
 			}
 		}
 
-		protected function extractIssues($matches)
+		public function extractIssues($matches)
 		{
 			$issue = TBGIssue::getIssueFromLink($matches[0]);
 			if ($issue instanceof TBGIssue)

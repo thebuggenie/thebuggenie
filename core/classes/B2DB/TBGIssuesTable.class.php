@@ -324,7 +324,7 @@
 		public function getByPrefixAndIssueNo($prefix, $issue_no)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(TBGProjectsTable::PREFIX, $prefix);
+			$crit->addWhere(TBGProjectsTable::PREFIX, strtolower($prefix), B2DBCriteria::DB_EQUALS, '', '', B2DBCriteria::DB_LOWER);
 			$crit->addWhere(TBGProjectsTable::DELETED, false);
 			$crit->addWhere(self::ISSUE_NO, $issue_no);
 			$row = $this->doSelectOne($crit, array(self::PROJECT_ID));
