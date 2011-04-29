@@ -2739,7 +2739,7 @@
 							$this->action = TBGContext::factory()->TBGWorkflowTransitionAction($request->getParameter('action_id'));
 							$this->action->setTargetValue($request->getParameter('target_value'));
 							$this->action->save();
-							$text = null;
+							$text = $request->getParameter('target_value');
 							switch ($this->action->getActionType())
 							{
 								case TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE:
