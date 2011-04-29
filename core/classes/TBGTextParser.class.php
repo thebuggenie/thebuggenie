@@ -304,7 +304,7 @@
 
 		protected function _parse_internallink($matches)
 		{
-			$href = $matches[4];
+			$href = html_entity_decode($matches[4]);
 			
 			if (isset($matches[6]) && $matches[6])
 			{
@@ -474,7 +474,7 @@
 
 		protected function _parse_externallink($matches)
 		{
-			$href = $matches[2];
+			$href = html_entity_decode($matches[2]);
 			$title = null;
 			$title = (array_key_exists(3, $matches)) ? $matches[3] : $matches[2];
 			if (!$title)
