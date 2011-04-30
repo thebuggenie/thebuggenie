@@ -81,19 +81,21 @@
 		{
 			$host = $this->getSetting('hostname');
 			$port = $this->getSetting('port');
-			$lduser = $this->getSetting('username');
-			$ldpass = $this->getSetting('password');
 			$failed = false;
 
 			$connection = ldap_connect($host, $port);
 			if ($connection == false): $failed = true; endif;
 
-			// do connection here, set failed to true if failed
 			if ($failed)
 			{
 				throw new Exception(__('Failed to connect to server'));
 			}
-
+			
+			return $connection;
+		}
+		
+		public function bind($username, $password, $connection)
+		{
 			$bind = ldap_bind($connection, $lduser, $ldpass);
 			if ($bind == false): $failed = true; endif;
 
@@ -104,8 +106,6 @@
 				throw new Exception(__('Failed to bind: ').ldap_error($connection));
 				TBGLogging::log('bind failed: '.ldap_error($connection), 'ldap', TBGLogging::LEVEL_FATAL);
 			}
-			
-			return $connection;
 		}
 		
 		public function loginCheck($username, $password)

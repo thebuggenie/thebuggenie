@@ -42,6 +42,7 @@
 			try
 			{
 				$connection = TBGContext::getModule('auth_ldap')->connect();
+				TBGContext::getModule('auth_ldap')->bind($request->getParameter('username'), $request->getParameter('password'), $connection);
 			}
 			catch (Exception $e)
 			{
@@ -105,6 +106,7 @@
 			try
 			{
 				$connection = TBGContext::getModule('auth_ldap')->connect();
+				TBGContext::getModule('auth_ldap')->bind($request->getParameter('username'), $request->getParameter('password'), $connection);
 				
 				/*
 				 * Build an array of all valid LDAP users here.
