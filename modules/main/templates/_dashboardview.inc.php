@@ -40,15 +40,11 @@
 			<?php echo __('Recent comments'); ?>
 		</div>
 		<div id="dashboard_<?php echo $id; ?>">
-		<?php $issues = TBGIssue::findIssues(array('state' => array('operator' => '=', 'value' => TBGIssue::STATE_OPEN))); ?>
-		<?php if ($issues[1] > 0 && TBGComment::countComments(0, TBGComment::TYPE_ISSUE) > 0): ?>
-			<?php $comments = TBGComment::getComments(0, TBGComment::TYPE_ISSUE, B2DBCriteria::SORT_DESC); ?>
+		<?php $comments = TBGComment::getRecentCommentsByAuthor($tbg_user->getID()); ?>
+		<?php if (count($comments)): ?>
 			<table cellpadding=0 cellspacing=0 style="margin: 5px;">
 				<?php $prev_date = null; ?>
-				<?php $count = 1; ?>
 				<?php foreach ($comments as $comment): ?>
-					<?php if (!$comment->isPublic() && $tbg_user->getID() != $comment->getPostedByID() && !$tbg_user->hasPermission('canpostseeandeditallcomments')) continue; // skip private comments ?>
-					<?php if ($comment->isSystemComment()) continue; // skip system comments ?>
 					<?php $date = tbg_formatTime($comment->getPosted(), 5); ?>
 					<?php if ($date != $prev_date): ?>
 						<tr>
@@ -57,13 +53,7 @@
 					<?php endif; ?>
 					<?php include_component('main/commentitem', array('comment' => $comment, 'include_project' => true)); ?>
 					<?php $prev_date = $date; ?>
-					<?php if ($count++ == 10) break; // limit to 10 last comments ?>
 				<?php endforeach; ?>
-				<?php if ($count == 1): ?>
-					<tr>
-						<td><div class="faded_out" style="padding: 5px 5px 15px 5px;"><?php echo __('No issues recently commented'); ?></div></td>
-					</tr>
-				<?php endif; ?>
 			</table>
 		<?php else: ?>
 			<div class="faded_out" style="padding: 5px 5px 15px 5px;"><?php echo __('No issues recently commented'); ?></div>

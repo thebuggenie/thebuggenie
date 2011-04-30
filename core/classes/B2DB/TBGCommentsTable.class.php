@@ -104,11 +104,14 @@
 			return ($row->get('max_no')) ? $row->get('max_no') : 1;
 		}
 		
-		public function getRecentCommentsByProjectID($project_id)
+		public function getRecentCommentsByUserIDandTargetType($user_id, $target_type, $limit = 10)
 		{
 			$crit = $this->getCriteria();
-			$crit->addJoin(TBGIssuesTable::getTable(), TBGIssuesTable::ID, self::TARGET_ID, array(array(self::TARGET_TYPE, 1)));
-			$crit->addWhere(TBGIssuesTable::PROJECT_ID, $project_id);
+			$crit->addWhere(self::POSTED_BY, $user_id);
+			$crit->addWhere(self::TARGET_TYPE, $target_type);
+			$crit->addWhere(self::SYSTEM_COMMENT, false);
+			$crit->addOrderBy(self::POSTED, B2DBCriteria::SORT_DESC);
+			$crit->setLimit($limit);
 			
 			return $this->doSelect($crit);
 		}		

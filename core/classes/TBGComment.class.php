@@ -62,7 +62,7 @@
 		 * Returns all comments for a given item
 		 *
 		 */
-		static function getComments($target_id, $target_type/*, $module = 'core', $from_when = null*/, $sort_order = B2DBCriteria::SORT_ASC)
+		static function getComments($target_id, $target_type, $sort_order = B2DBCriteria::SORT_ASC)
 		{
 			$retval = array();
 			if ($res = TBGCommentsTable::getTable()->getComments($target_id, $target_type, $sort_order))
@@ -73,6 +73,20 @@
 					$retval[$comment->getID()] = $comment;
 				}
 				self::$_comment_count[$target_type][$target_id] = count($retval);
+			}
+			return $retval;
+		}
+		
+		static function getRecentCommentsByAuthor($user_id, $target_type = self::TYPE_ISSUE, $limit = 10)
+		{
+			$retval = array();
+			if ($res = TBGCommentsTable::getTable()->getRecentCommentsByUserIDandTargetType($user_id, $target_type, $limit))
+			{
+				while ($row = $res->getNextRow())
+				{
+					$comment = TBGContext::factory()->TBGComment($row->get(TBGCommentsTable::ID), $row);
+					$retval[$comment->getID()] = $comment;
+				}
 			}
 			return $retval;
 		}
