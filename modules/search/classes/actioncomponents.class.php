@@ -39,7 +39,8 @@
 			$parameters[] = 'grouporder='.$this->grouporder;
 			$parameters[] = 'issues_per_page='.$this->ipp;
 			$route = (TBGContext::isProjectContext()) ? TBGContext::getRouting()->generate('project_search_paginated', array('project_key' => TBGContext::getCurrentProject()->getKey())) : TBGContext::getRouting()->generate('search_paginated');
-			$this->route = $route . '?' . join('&', $parameters);
+			$this->route = $route;
+			$this->parameters = join('&', $parameters);
 		}
 
 		public function componentFilter()

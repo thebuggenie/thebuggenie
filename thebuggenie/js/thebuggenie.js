@@ -801,10 +801,10 @@ function setPermission(url, field)
 	});
 }
 
-function searchPage(url, offset)
+function searchPage(url, parameters, offset)
 {
 	//var params = Form.serialize('find_issues_form');
-	var params = '&offset=' + offset;
+	var params = parameters + '&offset=' + offset;
 	new Ajax.Updater('search_results', url, {
 	asynchronous: true,
 	method: "post",
