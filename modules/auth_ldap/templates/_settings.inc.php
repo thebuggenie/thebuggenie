@@ -26,11 +26,40 @@
 				<td><input type="text"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> name="port" id="port" value="<?php echo $module->getSetting('port'); ?>" style="width: 100%;"></td>
 			</tr>
 			<tr>
-				<td style="padding: 5px;"><label for="dn"><?php echo __('Base DN'); ?></label></td>
-				<td><input type="text"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> name="dn" id="dn" value="<?php echo $module->getSetting('dn'); ?>" style="width: 100%;"></td>
+				<td style="padding: 5px;"><label for="u_dn"><?php echo __('Users DN'); ?></label></td>
+				<td><input type="text"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> name="u_dn" id="u_dn" value="<?php echo $module->getSetting('u_dn'); ?>" style="width: 100%;"></td>
 			</tr>
 			<tr>
 				<td class="config_explanation" colspan="2"><?php echo __('This should be the DN string for the OU containing the user list. For example, OU=People,OU=staff,DN=ldap,DN=example,DN=com.'); ?></td>
+			</tr>
+			<tr>
+				<td style="padding: 5px;"><label for="u_attr"><?php echo __('Username attribute'); ?></label></td>
+				<td><input type="text"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> name="u_attr" id="u_attr" value="<?php echo $module->getSetting('u_attr'); ?>" style="width: 100%;"></td>
+			</tr>
+			<tr>
+				<td class="config_explanation" colspan="2"><?php echo __('This field should contain the name of the attribute where the username is stored, such as uid.'); ?></td>
+			</tr>
+			<tr>
+				<td style="padding: 5px;"><label for="f_attr"><?php echo __('Full name attribute'); ?></label></td>
+				<td><input type="text"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> name="f_attr" id="f_attr" value="<?php echo $module->getSetting('f_attr'); ?>" style="width: 100%;"></td>
+			</tr>
+			<tr>
+				<td style="padding: 5px;"><label for="e_attr"><?php echo __('Email address attribute'); ?></label></td>
+				<td><input type="text"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> name="e_attr" id="e_attr" value="<?php echo $module->getSetting('e_attr'); ?>" style="width: 100%;"></td>
+			</tr>
+			<tr>
+				<td style="padding: 5px;"><label for="g_dn"><?php echo __('Groups DN'); ?></label></td>
+				<td><input type="text"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> name="g_dn" id="g_dn" value="<?php echo $module->getSetting('g_dn'); ?>" style="width: 100%;"></td>
+			</tr>
+			<tr>
+				<td class="config_explanation" colspan="2"><?php echo __('This should be the DN string for the OU containing the group list.'); ?></td>
+			</tr>
+			<tr>
+				<td style="padding: 5px;"><label for="g_attr"><?php echo __('Group members attribute'); ?></label></td>
+				<td><input type="text"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> name="g_attr" id="g_attr" value="<?php echo $module->getSetting('g_attr'); ?>" style="width: 100%;"></td>
+			</tr>
+			<tr>
+				<td class="config_explanation" colspan="2"><?php echo __('This field should contain the name of the attribute where the list of members of a group is stored, such as uniqueMember.'); ?></td>
 			</tr>
 			<tr>
 				<td style="padding: 5px;"><label for="groups"><?php echo __('Allowed groups'); ?></label></td>
@@ -44,7 +73,7 @@
 <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 	<div class="rounded_box iceblue borderless cut_top" style="margin: 0 0 5px 0; width: 700px; border-top: 0; padding: 8px 5px 2px 5px; height: 25px;">
 		<div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "%save%" to save the settings', array('%save%' => __('Save'))); ?></div>
-		<input type="submit" id="submit_settings_button""<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
+		<input type="submit" id="submit_settings_button"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
 	</div>
 <?php endif; ?>
 </form>

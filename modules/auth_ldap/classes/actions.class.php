@@ -36,6 +36,14 @@
 		 */
 		public function runPruneUsers(TBGRequest $request)
 		{
+			$validgroups = TBGContext::getModule('auth_ldap')->getSetting('groups');
+			$users_dn = TBGContext::getModule('auth_ldap')->getSetting('u_dn');
+			$username_dn = TBGContext::getModule('auth_ldap')->getSetting('u_attr');
+			$fullname_attr = TBGContext::getModule('auth_ldap')->getSetting('f_attr');
+			$email_attr = TBGContext::getModule('auth_ldap')->getSetting('e_attr');
+			$groups_dn = TBGContext::getModule('auth_ldap')->getSetting('g_dn');
+			$groups_members_attr = TBGContext::getModule('auth_ldap')->getSetting('g_attr');
+			
 			$users = TBGUser::getAll();
 			$deletecount = 0;
 			
@@ -97,7 +105,12 @@
 		public function runImportUsers(TBGRequest $request)
 		{
 			$validgroups = TBGContext::getModule('auth_ldap')->getSetting('groups');
-			$dn = TBGContext::getModule('auth_ldap')->getSetting('dn');
+			$users_dn = TBGContext::getModule('auth_ldap')->getSetting('u_dn');
+			$username_dn = TBGContext::getModule('auth_ldap')->getSetting('u_attr');
+			$fullname_attr = TBGContext::getModule('auth_ldap')->getSetting('f_attr');
+			$email_attr = TBGContext::getModule('auth_ldap')->getSetting('e_attr');
+			$groups_dn = TBGContext::getModule('auth_ldap')->getSetting('g_dn');
+			$groups_members_attr = TBGContext::getModule('auth_ldap')->getSetting('g_attr');
 			
 			$users = array();
 			$importcount = 0;

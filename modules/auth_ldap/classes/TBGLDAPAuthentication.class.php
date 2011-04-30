@@ -67,7 +67,7 @@
 
 		public function postConfigSettings(TBGRequest $request)
 		{
-			$settings = array('username', 'password', 'port', 'hostname', 'dn', 'groups');
+			$settings = array('port', 'hostname', 'u_dn', 'groups', 'u_attr', 'g_attr', 'e_attr', 'f_attr', 'g_dn');
 			foreach ($settings as $setting)
 			{
 				if ($request->hasParameter($setting))
@@ -111,7 +111,12 @@
 		public function loginCheck($username, $password)
 		{
 			$validgroups = $this->getSetting('groups');
-			$dn = $this->getSetting('dn');
+			$users_dn = $this->getSetting('u_dn');
+			$username_dn = $this->getSetting('u_attr');
+			$fullname_attr = $this->getSetting('f_attr');
+			$email_attr = $this->getSetting('e_attr');
+			$groups_dn = $this->getSetting('g_dn');
+			$groups_members_attr = $this->getSetting('g_attr');
 			
 			$email = null;
 			$realname = $username;
