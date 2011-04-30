@@ -1301,6 +1301,13 @@ function addComment(url, commentcount_span)
 		}
 		else
 		{
+			params2 = $('comment_form').serialize(true);
+			if (params2.comment_save_changes == '1')
+			{
+				window.location = json.continue_url;
+				return;
+			}
+
 			$('comment_add_indicator').hide();
 			$('comment_add').hide();
 			$('comment_add_button').show();
@@ -1315,7 +1322,7 @@ function addComment(url, commentcount_span)
 			$('comment_add_controls').show();
 
 			//$('comment_title').clear();
-			$('comment_bodybox').clear()
+			$('comment_bodybox').clear();
 			$('comment_visibility').setValue(1);
 			$(commentcount_span).update(json.commentcount);
 

@@ -2396,8 +2396,8 @@
 					TBGContext::setMessage('comment_error_visibility', $request->getParameter('comment_visibility'));
 				}
 			}
-			if ($request->isAjaxCall() && !($request->hasParameter('comment_save_changes')))
-				return $this->renderJSON(array('title' => $i18n->__('Comment added!'), 'comment_data' => $comment_html, 'commentcount' => TBGComment::countComments($request->getParameter('comment_applies_id'), $request->getParameter('comment_applies_type')/*, $request->getParameter('comment_module')*/)));
+			if ($request->isAjaxCall())
+				return $this->renderJSON(array('title' => $i18n->__('Comment added!'), 'comment_data' => $comment_html, 'continue_url' => $request->getParameter('forward_url'), 'commentcount' => TBGComment::countComments($request->getParameter('comment_applies_id'), $request->getParameter('comment_applies_type')/*, $request->getParameter('comment_module')*/)));
 			if ($comment instanceof TBGComment)
 				$this->forward($request->getParameter('forward_url') . "#comment_{$request->getParameter('comment_applies_type')}_{$request->getParameter('comment_applies_id')}_{$comment->getID()}");
 			else
