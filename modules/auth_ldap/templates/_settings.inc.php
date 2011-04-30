@@ -19,11 +19,7 @@
 				<td><input type="text"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> name="hostname" id="hostname" value="<?php echo $module->getSetting('hostname'); ?>" style="width: 100%;"></td>
 			</tr>
 			<tr>
-				<td class="config_explanation" colspan="2"><?php echo __('If your server requires SSL, use ldaps://hostname/ in this field.'); ?></td>
-			</tr>
-			<tr>
-				<td style="padding: 5px;"><label for="port"><?php echo __('Port'); ?></label></td>
-				<td><input type="text"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> name="port" id="port" value="<?php echo $module->getSetting('port'); ?>" style="width: 100%;"></td>
+				<td class="config_explanation" colspan="2"><?php echo __('Use URL syntax (ldap://hostname:port). If your server requires SSL, use ldaps://hostname/ in this field.'); ?></td>
 			</tr>
 			<tr>
 				<td style="padding: 5px;"><label for="u_dn"><?php echo __('Users DN'); ?></label></td>

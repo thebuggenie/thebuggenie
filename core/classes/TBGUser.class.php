@@ -372,21 +372,48 @@
 				}
 				
 				// If we have authentication details, validate them
-				if ($username !== null && $password !== null)
+				if (TBGSettings::getAuthenticationBackend() !== null && TBGSettings::getAuthenticationBackend() !== 'tbg' && $username !== null && $password !== null)
 				{
-					if (TBGSettings::getAuthenticationBackend() !== null && TBGSettings::getAuthenticationBackend() !== 'tbg')
+					TBGLogging::log('Authenticating with backend: '.TBGSettings::getAuthenticationBackend(), 'auth', TBGLogging::LEVEL_INFO);
+					try
 					{
-						TBGLogging::log('Authenticating with backend: '.TBGSettings::getAuthenticationBackend(), 'auth', TBGLogging::LEVEL_INFO);
-						try
+						$mod = TBGContext::getModule(TBGSettings::getAuthenticationBackend());
+						if ($mod->getType() !== TBGModule::MODULE_AUTH)
 						{
-							$mod = TBGContext::getModule(TBGSettings::getAuthenticationBackend());
-							if ($mod->getType() !== TBGModule::MODULE_AUTH)
-							{
-								TBGLogging::log('Auth module is not the right type', 'auth', TBGLogging::LEVEL_FATAL);
-								throw new Exception('Invalid module type');
-							}
-							$row = $mod->loginCheck($username, $password);
-							
+							TBGLogging::log('Auth module is not the right type', 'auth', TBGLogging::LEVEL_FATAL);
+							throw new Exception('Invalid module type');
+						}
+						$row = $mod->loginCheck($username, $password);
+
+						if(!$row)
+						{
+							// Invalid
+							TBGContext::getResponse()->deleteCookie('tbg3_username');
+							TBGContext::getResponse()->deleteCookie('tbg3_password');
+							throw new Exception('No such login');
+							//TBGContext::getResponse()->headerRedirect(TBGContext::getRouting()->generate('login'));
+						}
+					}
+					catch (Exception $e)
+					{
+						throw $e;
+					}
+				}
+				elseif ($username !== null && $password !== null)
+				{
+					TBGLogging::log('Using internal authentication', 'auth', TBGLogging::LEVEL_INFO);
+					// First test a pre-encrypted password
+					$row = TBGUsersTable::getTable()->getByUsernameAndPassword($username, $password);
+
+					if (!$row)
+					{
+						// Then test an unencrypted password
+						$row = TBGUsersTable::getTable()->getByUsernameAndPassword($username, self::hashPassword($password));
+
+						if(!$row)
+						{
+							// This is a legacy account from a 2.1 upgrade - try md5
+							$row = TBGUsersTable::getTable()->getByUsernameAndPassword($username, md5($password));
 							if(!$row)
 							{
 								// Invalid
@@ -395,43 +422,13 @@
 								throw new Exception('No such login');
 								//TBGContext::getResponse()->headerRedirect(TBGContext::getRouting()->generate('login'));
 							}
-						}
-						catch (Exception $e)
-						{
-							throw $e;
-						}
-					}
-					else
-					{
-						TBGLogging::log('Using internal authentication', 'auth', TBGLogging::LEVEL_INFO);
-						// First test a pre-encrypted password
-						$row = TBGUsersTable::getTable()->getByUsernameAndPassword($username, $password);
-
-						if (!$row)
-						{
-							// Then test an unencrypted password
-							$row = TBGUsersTable::getTable()->getByUsernameAndPassword($username, self::hashPassword($password));
-
-							if(!$row)
+							else 
 							{
-								// This is a legacy account from a 2.1 upgrade - try md5
-								$row = TBGUsersTable::getTable()->getByUsernameAndPassword($username, md5($password));
-								if(!$row)
-								{
-									// Invalid
-									TBGContext::getResponse()->deleteCookie('tbg3_username');
-									TBGContext::getResponse()->deleteCookie('tbg3_password');
-									throw new Exception('No such login');
-									//TBGContext::getResponse()->headerRedirect(TBGContext::getRouting()->generate('login'));
-								}
-								else 
-								{
-									// convert md5 to new password type
-									$user = new TBGUser($row->get(TBGUsersTable::ID), $row);
-									$user->changePassword($password);
-									$user->save();
-									unset($user);
-								}
+								// convert md5 to new password type
+								$user = new TBGUser($row->get(TBGUsersTable::ID), $row);
+								$user->changePassword($password);
+								$user->save();
+								unset($user);
 							}
 						}
 					}

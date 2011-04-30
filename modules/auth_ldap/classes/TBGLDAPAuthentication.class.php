@@ -80,10 +80,9 @@
 		public function connect()
 		{
 			$host = $this->getSetting('hostname');
-			$port = $this->getSetting('port');
 			$failed = false;
 
-			$connection = ldap_connect($host, $port);
+			$connection = ldap_connect($host);
 			if ($connection == false): $failed = true; endif;
 
 			if ($failed)
@@ -147,8 +146,8 @@
 				if ($user instanceof TBGUser)
 				{
 					$user->setRealname($realname);
-					$user->setPassword($password); // update password
-					$user->setEmail($email); // update emaila ddress
+					$user->setPassword(TBGUser::createPassword(7)); // update password
+					$user->setEmail($email); // update email address
 					$user->save();
 				}
 				else
@@ -161,7 +160,7 @@
 					$user->setEmail($email);
 					$user->setEnabled();
 					$user->setActivated();
-					$user->setPassword($password);
+					$user->setPassword(TBGUser::createPassword(7));
 					$user->setJoined();
 					$user->save();
 				}
