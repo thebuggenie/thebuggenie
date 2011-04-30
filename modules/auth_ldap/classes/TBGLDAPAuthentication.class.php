@@ -88,7 +88,7 @@
 
 			if ($failed)
 			{
-				throw new Exception(__('Failed to connect to server'));
+				throw new Exception(TBGContext::geti18n()->__('Failed to connect to server'));
 			}
 			
 			return $connection;
@@ -103,7 +103,7 @@
 			if ($failed)
 			{
 				ldap_unbind($connection);
-				throw new Exception(__('Failed to bind: ').ldap_error($connection));
+				throw new Exception(TBGContext::geti18n()->__('Failed to bind: ').ldap_error($connection));
 				TBGLogging::log('bind failed: '.ldap_error($connection), 'ldap', TBGLogging::LEVEL_FATAL);
 			}
 		}
