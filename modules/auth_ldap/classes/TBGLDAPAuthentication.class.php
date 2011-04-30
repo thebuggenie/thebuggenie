@@ -67,7 +67,7 @@
 
 		public function postConfigSettings(TBGRequest $request)
 		{
-			$settings = array('port', 'hostname', 'u_dn', 'groups', 'u_attr', 'g_attr', 'e_attr', 'f_attr', 'g_dn');
+			$settings = array('hostname', 'u_dn', 'groups', 'u_attr', 'g_attr', 'e_attr', 'f_attr', 'g_dn');
 			foreach ($settings as $setting)
 			{
 				if ($request->hasParameter($setting))
