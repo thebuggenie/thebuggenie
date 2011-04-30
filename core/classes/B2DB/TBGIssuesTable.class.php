@@ -613,59 +613,76 @@
 					switch ($groupby)
 					{
 						case 'category':
+							$crit->addSelectionColumn(TBGListTypesTable::NAME);
 							$crit->addOrderBy(TBGListTypesTable::NAME, $grouporder);
 							break;
 						case 'status':
+							$crit->addSelectionColumn(self::STATUS);
 							$crit->addOrderBy(self::STATUS, $grouporder);
 							break;
 						case 'milestone':
+							$crit->addSelectionColumn(self::MILESTONE);
+							$crit->addSelectionColumn(self::PERCENT_COMPLETE);
 							$crit->addOrderBy(self::MILESTONE, $grouporder);
 							$crit->addOrderBy(self::PERCENT_COMPLETE, 'desc');
 							break;
 						case 'assignee':
+							$crit->addSelectionColumn(self::ASSIGNED_TYPE);
+							$crit->addSelectionColumn(self::ASSIGNED_TO);
 							$crit->addOrderBy(self::ASSIGNED_TYPE);
 							$crit->addOrderBy(self::ASSIGNED_TO, $grouporder);
 							break;
 						case 'state':
+							$crit->addSelectionColumn(self::STATE);
 							$crit->addOrderBy(self::STATE, $grouporder);
 							break;
 						case 'severity':
+							$crit->addSelectionColumn(self::SEVERITY);
 							$crit->addOrderBy(self::SEVERITY, $grouporder);
 							break;
 						case 'user_pain':
+							$crit->addSelectionColumn(self::USER_PAIN);
 							$crit->addOrderBy(self::USER_PAIN, $grouporder);
 							break;
 						case 'votes':
+							$crit->addSelectionColumn(self::VOTES_TOTAL);
 							$crit->addOrderBy(self::VOTES_TOTAL, $grouporder);
 							break;
 						case 'resolution':
+							$crit->addSelectionColumn(self::RESOLUTION);
 							$crit->addOrderBy(self::RESOLUTION, $grouporder);
 							break;
 						case 'priority':
+							$crit->addSelectionColumn(self::PRIORITY);
 							$crit->addOrderBy(self::PRIORITY, $grouporder);
 							break;
 						case 'issuetype':
 							$crit->addJoin(TBGIssueTypesTable::getTable(), TBGIssueTypesTable::ID, self::ISSUE_TYPE);
+							$crit->addSelectionColumn(TBGIssueTypesTable::NAME);
 							$crit->addOrderBy(TBGIssueTypesTable::NAME, $grouporder);
 							break;
 						case 'edition':
 							$crit->addJoin(TBGIssueAffectsEditionTable::getTable(), TBGIssueAffectsEditionTable::ISSUE, self::ID);
 							$crit->addJoin(TBGEditionsTable::getTable(), TBGEditionsTable::ID, TBGIssueAffectsEditionTable::EDITION, array(), B2DBCriteria::DB_LEFT_JOIN, TBGIssueAffectsEditionTable::getTable());
+							$crit->addSelectionColumn(TBGEditionsTable::NAME);
 							$crit->addOrderBy(TBGEditionsTable::NAME, $grouporder);
 							break;
 						case 'build':
 							$crit->addJoin(TBGIssueAffectsBuildTable::getTable(), TBGIssueAffectsBuildTable::ISSUE, self::ID);
 							$crit->addJoin(TBGBuildsTable::getTable(), TBGBuildsTable::ID, TBGIssueAffectsBuildTable::BUILD, array(), B2DBCriteria::DB_LEFT_JOIN, TBGIssueAffectsBuildTable::getTable());
+							$crit->addSelectionColumn(TBGBuildsTable::NAME);
 							$crit->addOrderBy(TBGBuildsTable::NAME, $grouporder);
 							break;
 						case 'component':
 							$crit->addJoin(TBGIssueAffectsComponentTable::getTable(), TBGIssueAffectsComponentTable::ISSUE, self::ID);
 							$crit->addJoin(TBGComponentsTable::getTable(), TBGComponentsTable::ID, TBGIssueAffectsComponentTable::COMPONENT, array(), B2DBCriteria::DB_LEFT_JOIN, TBGIssueAffectsComponentTable::getTable());
+							$crit->addSelectionColumn(TBGComponentsTable::NAME);
 							$crit->addOrderBy(TBGComponentsTable::NAME, $grouporder);
 							break;
 					}
 				}
 				
+				$crit->addSelectionColumn(self::LAST_UPDATED);
 				$crit->addOrderBy(self::LAST_UPDATED, 'asc');
 
 				$res = $this->doSelect($crit, 'none');
