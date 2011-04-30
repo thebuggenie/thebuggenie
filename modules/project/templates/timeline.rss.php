@@ -21,8 +21,9 @@
 <?php if (array_key_exists('target_type', $activity) && $activity['target_type'] == 1 && ($issue = TBGContext::factory()->TBGIssue($activity['target'])) && $issue instanceof TBGIssue): ?>
 <?php if ($issue->isDeleted()): continue; endif; ?>
 		<item>
-			<title><![CDATA[<?php
-
+			<title><![CDATA[
+				<?php
+					$activity['text'] = str_replace("&rArr;", '->', html_entity_decode($activity['text']));
 					switch ($activity['change_type'])
 					{
 						case TBGLogTable::LOG_ISSUE_CREATED:
@@ -98,7 +99,7 @@
 			<description><![CDATA[<?php echo strip_tags($issue->getDescription()); ?>]]></description>
 			<pubDate><?php echo tbg_formatTime($issue->getLastUpdatedTime(), 21); ?></pubDate>
 			<link><?php echo make_url('viewissue', array('issue_no' => $issue->getFormattedIssueNo(), 'project_key' => $issue->getProject()->getKey()), false); ?></link>
-			<guid isPermaLink="false"><?php echo sha1($timestamp); ?></guid>
+			<guid isPermaLink="false"><?php echo sha1($timestamp.$activity['text']); ?></guid>
 		</item>
 		
 <?php endif; ?>
