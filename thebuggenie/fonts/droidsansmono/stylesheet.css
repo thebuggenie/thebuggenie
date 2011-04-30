@@ -4,11 +4,11 @@
 
 @font-face {
     font-family: 'Droid Sans Mono';
-    src: url('DroidSansMono-webfont.eot');
-    src: url('DroidSansMono-webfont.eot?#iefix') format('embedded-opentype'),
-         url('DroidSansMono-webfont.woff') format('woff'),
-         url('DroidSansMono-webfont.ttf') format('truetype'),
-         url('DroidSansMono-webfont.svg#DroidSansMonoRegular') format('svg');
+    src: url('droidsansmono-webfont.eot');
+    src: url('droidsansmono-webfont.eot?#iefix') format('embedded-opentype'),
+         url('droidsansmono-webfont.woff') format('woff'),
+         url('droidsansmono-webfont.ttf') format('truetype'),
+         url('droidsansmono-webfont.svg#DroidSansMonoRegular') format('svg');
     font-weight: normal;
     font-style: normal;
 
