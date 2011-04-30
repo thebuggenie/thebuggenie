@@ -148,10 +148,10 @@
 				margin:5px 0 5px 0;
 			}
 			.markItUpContainer  {
-				font:11px Verdana, Arial, Helvetica, sans-serif;
+				font:11px 'Droid Sans', sans-serif;
 			}
 			.markItUpEditor {
-				font:12px 'Courier New', Courier, monospace;
+				font:12px 'Droid Sans Mono', monospace;
 				padding:5px;
 				width:690px;
 				height:320px;
