@@ -383,8 +383,14 @@
 							TBGLogging::log('Auth module is not the right type', 'auth', TBGLogging::LEVEL_FATAL);
 							throw new Exception('Invalid module type');
 						}
-						$row = $mod->loginCheck($username, $password);
-
+						if (TBGContext::getRequest()->hasCookie('tbg3_username') && TBGContext::getRequest()->hasCookie('tbg3_password'))
+						{
+							$row = $mod->verifyLogin($username, $password);
+						}
+						else
+						{
+							$row = $mod->doLogin($username, $password);
+						}
 						if(!$row)
 						{
 							// Invalid

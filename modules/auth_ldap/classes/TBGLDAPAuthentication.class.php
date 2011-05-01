@@ -133,7 +133,71 @@
 			 */
 			try
 			{
+				$row = TBGUsersTable::getTable()->getByUsernameAndPassword($username, $password);
+				if (!$row)
+				{
+					$connection = $this->connect();
+					//verify by anon bind - return false if failed
+					// could you set $email and $realname here too
+				}
+				else
+				{
+					return false;
+				}
+			}
+			catch (Exception $e)
+			{
+				throw $e;
+			}
+			
+			try
+			{
+				$user = TBGUser::getByUsername($username);
+				if ($user instanceof TBGUser)
+				{
+					$user->setRealname($realname);
+					$user->setPassword(TBGUser::createPassword(7)); // update password
+					$user->setEmail($email); // update email address
+					$user->save();
+				}
+
+				return TBGUsersTable::getByUsername($username);
+			}
+			catch (Exception $e)
+			{
+				throw $e;
+			}
+		}
+		
+		public function doLogin($username, $password)
+		{
+			$validgroups = $this->getSetting('groups');
+			$users_dn = $this->getSetting('u_dn');
+			$username_dn = $this->getSetting('u_attr');
+			$fullname_attr = $this->getSetting('f_attr');
+			$email_attr = $this->getSetting('e_attr');
+			$groups_dn = $this->getSetting('g_dn');
+			$groups_members_attr = $this->getSetting('g_attr');
+			
+			$email = null;
+			$realname = $username;
+			
+			/*
+			 * Do the LDAP check here.
+			 * 
+			 * If a connection error or something, throw an exception and log
+			 * 
+			 * If we can, set $mail and $realname to correct values from LDAP
+			 * otherwise don't touch those variables.
+			 * 
+			 * To log do:
+			 * TBGLogging::log('error goes here', 'ldap', TBGLogging::LEVEL_FATAL);
+			 */
+			try
+			{
 				$connection = $this->connect();
+				
+				// if invalid login - return false
 			}
 			catch (Exception $e)
 			{
