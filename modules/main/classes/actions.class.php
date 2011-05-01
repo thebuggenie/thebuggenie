@@ -58,7 +58,22 @@
 				$issue = null;
 
 			if ($issue instanceof TBGIssue)
+			{
+				if (!array_key_exists('viewissue_list', $_SESSION))
+				{
+					$_SESSION['viewissue_list'] = array();
+				}
+				
+				$k = array_search($issue->getID(), $_SESSION['viewissue_list']);
+				if ($k !== false) unset($_SESSION['viewissue_list'][$k]);
+				
+				array_push($_SESSION['viewissue_list'], $issue->getID());
+				
+				if (count($_SESSION['viewissue_list']) > 10)
+					array_shift($_SESSION['viewissue_list']);
+
 				TBGEvent::createNew('core', 'viewissue', $issue)->trigger();
+			}
 
 			$message = TBGContext::getMessageAndClear('issue_saved');
 			$uploaded = TBGContext::getMessageAndClear('issue_file_uploaded');
@@ -130,11 +145,22 @@
 						$issuelist[$starred_issue->getID()] = array('url' => TBGContext::getRouting()->generate('viewissue', array('project_key' => $this->selected_project->getKey(), 'issue_no' => $starred_issue->getFormattedIssueNo())), 'title' => $starred_issue->getFormattedIssueNo(true, true));
 					}
 				}
-				if (isset($issue) && $issue instanceof TBGIssue && !array_key_exists($issue->getID(), $issuelist))
-					$issuelist[$issue->getID()] = array('url' => TBGContext::getRouting()->generate('viewissue', array('project_key' => $this->selected_project->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), 'title' => $issue->getFormattedIssueNo(true, true));
 			}
-
-			if (!count($issues) || count($issuelist) == 1)
+			
+			foreach ($_SESSION['viewissue_list'] as $k => $i_id)
+			{
+				try
+				{
+					$an_issue = new TBGIssue($i_id);
+					array_unshift($issuelist, array('url' => TBGContext::getRouting()->generate('viewissue', array('project_key' => $an_issue->getProject()->getKey(), 'issue_no' => $an_issue->getFormattedIssueNo())), 'title' => $an_issue->getFormattedIssueNo(true, true)));
+				}
+				catch (Exception $e)
+				{
+					unset($_SESSION['viewissue_list'][$k]);
+				}
+			}
+			
+			if (count($issuelist) == 1)
 			{
 				$issuelist = null;
 			}
