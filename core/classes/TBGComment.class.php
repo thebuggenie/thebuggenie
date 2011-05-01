@@ -33,8 +33,20 @@
 
 		protected $_content;
 		
+		/**
+		 * Who posted the comment
+		 * 
+		 * @var TBGUser
+		 * @Class TBGUser
+		 */
 		protected $_posted_by;
 		
+		/**
+		 * Who last updated the comment
+		 * 
+		 * @var TBGUser
+		 * @Class TBGUser
+		 */
 		protected $_updated_by;
 		
 		protected $_posted;
@@ -244,7 +256,7 @@
 		 */
 		public function getUpdatedBy()
 		{
-			return TBGContext::factory()->TBGUser($this->_updated_by);
+			return ($this->_updated_by instanceof TBGUser) ? $this->_updated_by : TBGContext::factory()->TBGUser($this->_updated_by);
 		}
 		
 		/**
@@ -254,7 +266,7 @@
 		 */
 		public function getPostedBy()
 		{
-			return TBGContext::factory()->TBGUser($this->_posted_by);
+			return ($this->_posted_by instanceof TBGUser) ? $this->_posted_by : TBGContext::factory()->TBGUser($this->_posted_by);
 		}
 
 		/**
@@ -264,7 +276,12 @@
 		 */
 		public function getPostedByID()
 		{
-			$poster = $this->getPostedBy();
+			$poster = null;
+			try
+			{
+				$poster = $this->getPostedBy();
+			}
+			catch (Exception $e) {}
 			return ($poster instanceof TBGIdentifiable) ? $poster->getID() : null;
 		}
 
