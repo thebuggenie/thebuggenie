@@ -7,13 +7,12 @@
 	{
 		$theUser = TBGContext::factory()->TBGUser($author);
 	}
-	
-	$issue = TBGContext::factory()->TBGIssue($issue_no);
 
-	$web_path = TBGContext::getModule('vcs_integration')->getSetting('web_path_' . $project->getID());
-	$web_repo = TBGContext::getModule('vcs_integration')->getSetting('web_repo_' . $project->getID());
+	$web_path = TBGContext::getModule('vcs_integration')->getSetting('web_path_' . $projectId);
+	$web_repo = TBGContext::getModule('vcs_integration')->getSetting('web_repo_' . $projectId);
+	echo 'jOYCE';
 	
-	switch (TBGContext::getModule('vcs_integration')->getSetting('web_type_' . $project->getID()))
+	switch (TBGContext::getModule('vcs_integration')->getSetting('web_type_' . $projectId))
 	{
 		case 'viewvc':
 			$link_rev = $web_path . '/' . '?root=' . $web_repo . '&amp;view=rev&amp;revision=' . $revision; 
@@ -43,14 +42,17 @@
 		case 'github':
 			$link_rev = 'http://github.com/' . $web_repo . '/commit/' . $revision; 
 			break;
+		case 'gitorious':
+			$link_rev = $web_path . '/' . $web_repo . '/commit/' . $revision; 
+			break;
 	}
 ?>
 
-<div id="commit_<?php echo $id; ?>_box" class="rounded_box iceblue borderless commit_box">
-	<a href="javascript:void(0);" style="float: left; padding-right: 5px;" id="checkin_expand_<?php echo $id; ?>" onclick="$('checkin_details_<?php echo $id; ?>').show(); $('checkin_expand_<?php echo $id; ?>').hide(); $('checkin_collapse_<?php echo $id; ?>').show(); $('commit_<?php echo $id; ?>_box').addClassName('cut_bottom');"><?php echo image_tag('expand.png'); ?></a>
-	<a href="javascript:void(0);" style="display: none; float: left; padding-right: 5px;" id="checkin_collapse_<?php echo $id; ?>" onclick="$('checkin_details_<?php echo $id; ?>').hide(); $('checkin_expand_<?php echo $id; ?>').show(); $('checkin_collapse_<?php echo $id; ?>').hide(); $('commit_<?php echo $id; ?>_box').removeClassName('cut_bottom');"><?php echo image_tag('collapse.png'); ?></a>
+<div class="rounded_box mediumgrey borderless cut_top cut_bottom">
+	<a href="javascript:void(0);" style="float: left; padding-right: 5px;" id="checkin_expand_<?php echo $id; ?>" onclick="$('checkin_details_<?php echo $id; ?>').show(); $('checkin_expand_<?php echo $id; ?>').hide(); $('checkin_collapse_<?php echo $id; ?>').show();"><?php echo image_tag('expand.png'); ?></a>
+	<a href="javascript:void(0);" style="display: none; float: left; padding-right: 5px;" id="checkin_collapse_<?php echo $id; ?>" onclick="$('checkin_details_<?php echo $id; ?>').hide(); $('checkin_expand_<?php echo $id; ?>').show(); $('checkin_collapse_<?php echo $id; ?>').hide();"><?php echo image_tag('collapse.png'); ?></a>
 <?php 
-	switch (TBGContext::getModule('vcs_integration')->getSetting('web_type_' . $project->getID()))
+	switch (TBGContext::getModule('vcs_integration')->getSetting('web_type_' . $projectId))
 	{
 		case 'hgweb':
 			if (isset($theUser))
@@ -58,7 +60,7 @@
 				$user = '<div style="display: inline;">'.get_component_html('main/userdropdown', array('user' => $theUser, 'size' => 'small')).'</div>';
 			}
 			?>
-			<span class="commenttitle" style="float: left; padding-right: 5px;"><?php if ($projectmode == true): echo(link_tag(make_url('viewissue', array('project_key' => $project->getKey(), 'issue_no' => $issue->getFormattedIssueNo(false, false))), $issue->getFormattedIssueNo(true, true)).' - '); endif; ?><a href="<?php echo $link_rev; ?>" target="_new"><?php echo __('Revision %revno%', array('%revno%' => $revision[0].':'.$revision[1])) . '</a> - ' . __('committed on %date% by', array('%date%' => tbg_formatTime($date, 10))) . '</span> ' . $user; ?>
+			<span class="commenttitle" style="float: left; padding-right: 5px;"><a href="<?php echo $link_rev; ?>" target="_new"><?php echo __('Revision %revno%', array('%revno%' => $revision[0].':'.$revision[1])) . '</a> - ' . __('committed on %date% by', array('%date%' => tbg_formatTime($date, 10))) . '</span> ' . $user; ?>
 			<?php
 			break;
 		default:
@@ -67,13 +69,13 @@
 				$user = '<div style="display: inline;">'.get_component_html('main/userdropdown', array('user' => $theUser, 'size' => 'small')).'</div>';
 			}
 			?>
-			<span class="commenttitle" style="float: left; padding-right: 5px;"><?php if ($projectmode == true): echo(link_tag(make_url('viewissue', array('project_key' => $project->getKey(), 'issue_no' => $issue->getFormattedIssueNo(false, false))), $issue->getFormattedIssueNo(true, true)).' - '); endif; ?><a href="<?php echo $link_rev; ?>" target="_new"><?php echo __('Revision %revno%', array('%revno%' => $revision)) . '</a> - ' . __('committed on %date% by', array('%date%' => tbg_formatTime($date, 10))) . '</span> ' . $user; ?>
+			<span class="commenttitle" style="float: left; padding-right: 5px;"><a href="<?php echo $link_rev; ?>" target="_new"><?php echo __('Revision %revno%', array('%revno%' => $revision)) . '</a> - ' . __('committed on %date% by', array('%date%' => tbg_formatTime($date, 10))) . '</span> ' . $user; ?>
 			<?php
 			break;
 	}
 ?>
 </div>
-<div id="checkin_details_<?php echo $id; ?>" style="display: none;" class="rounded_box borderless cut_top lightgrey">
+<div id="checkin_details_<?php echo $id; ?>" style="display: none;" class="rounded_box borderless cut_bottom cut_top iceblue">
 	<h4><?php echo __('Log entry:'); ?></h4>
 	<pre>
 <?php echo $log; ?>
@@ -88,7 +90,7 @@
 		$action = $file[1];
 		if ($action == 'M'): $action = 'U'; endif;
 		echo '<td class="imgtd">' . image_tag('icon_action_' . $action . '.png', null, false, 'vcs_integration') . '</td>';
-		switch (TBGContext::getModule('vcs_integration')->getSetting('web_type_' . $project->getID()))
+		switch (TBGContext::getModule('vcs_integration')->getSetting('web_type_' . $projectId))
 		{
 			case 'viewvc':
 				$link_file = $web_path . '/' . $file[0] . '?root=' . $web_repo . '&amp;view=log';
@@ -136,6 +138,11 @@
 				$link_diff = 'http://github.com/' . $web_repo . '/commit/' . $file[2];
 				$link_view = 'http://github.com/' . $web_repo . '/blob/' .$file[2] . '/' . $file[0];
 				break;
+			case 'gitorious':
+				$link_file = $web_path . '/' . $web_repo . '/blobs/history/master/' . $file[0];
+				$link_diff = $web_path . '/' . $web_repo . '/commit/' . $file[2];
+				$link_view = $web_path . '/' . $web_repo . '/blobs/' .$file[2] . '/' . $file[0];
+				break;
 		}
 
 		echo '<td><a href="' . $link_file . '" target="_new"><b>' . $file[0] . '</b></a></td>';
@@ -161,7 +168,7 @@
 			echo '<td class="faded_out" style="width: 75px;">'.__('new file').'</td>';
 		}
 		
-		if($action != "D" && $action != "X" && $action != "B")
+		if($action != "D")
 		{
 			echo '<td style="width: 75px;"><a href="' . $link_view . '" target="_new"><b>' . __('View') . '</b></a></td>';
 		}

@@ -52,9 +52,9 @@
 
 		protected function _addRoutes()
 		{
-			$this->addRoute('project_commits', '/:project_key/commits', 'projectCommits');
 			$this->addRoute('normalcheckin', '/vcs_integration/report/:project/', 'addCommit');
 			$this->addRoute('githubcheckin', '/vcs_integration/report/:project/github/', 'addCommitGithub');
+			$this->addRoute('gitoriouscheckin', '/vcs_integration/report/:project/gitorious/', 'addCommitGitorious');
 		}
 
 		protected function _uninstall()
@@ -192,10 +192,13 @@
 						case 'github':
 							$link_rev = 'http://github.com/' . $web_repo . '/commit/' . $revision;
 							break;
+						case 'gitorious':
+							$link_rev = $web_path . '/' . $web_repo . '/commit/' . $revision;
+							break;
 					}
 					
 					/* Now we have everything, render the template */
-					include_template('vcs_integration/commitbox', array("project" => $event->getSubject()->getProject(), "issue_no" => $entry[0][4], "id" => $entry[0][0], "revision" => $revision, "author" => $entry[0][1], "date" => $entry[0][2], "log" => $entry[0][3], "files" => $entry[1], "projectmode" => false));
+					include_template('vcs_integration/commitbox', array("projectId" => $event->getSubject()->getProject()->getID(), "id" => $entry[0][0], "revision" => $revision, "author" => $entry[0][1], "date" => $entry[0][2], "log" => $entry[0][3], "files" => $entry[1]));
 				}
 				
 				TBGActionComponent::includeTemplate('vcs_integration/viewissue_commits_bottom');
@@ -255,7 +258,7 @@
 				{
 					$action = substr($aline, 0, 1);
 
-					if ($action == "A" || $action == "U" || $action == "D" || $action == "M" || $action == "C" || $action == "R" || $action == "T" || $action == "B" || $action == "X")
+					if ($action == "A" || $action == "U" || $action == "D" || $action == "M")
 					{
 						$theline = trim(substr($aline, 1));
 						$files[] = array($action, $theline);
@@ -352,7 +355,7 @@
 							}
 						}
 						
-						$theIssue->addSystemComment(TBGContext::getI18n()->__('Issue updated from code repository'), TBGContext::getI18n()->__('This issue has been updated with the latest changes from the code repository.<source>%commit_msg%</source>', array('%commit_msg%' => $commit_msg)), $uid);
+						$theIssue->addSystemComment(TBGContext::getI18n()->__('Issue updated from code repository'), TBGContext::getI18n()->__('This issue has been updated with the latest changes from the code repository.<source>%commit_msg%</source>', array('commit_msg' => $commit_msg)), $uid);
 
 						foreach ($files as $afile)
 						{

@@ -63,6 +63,7 @@
 											<optgroup label="Git">
 												<option value='gitweb' <?php print ($module->getSetting('web_type_' . $aProject->getID()) == 'gitweb') ? 'selected' : ''; ?>>gitweb</option>
 												<option value='cgit' <?php print ($module->getSetting('web_type_' . $aProject->getID()) == 'cgit') ? 'selected' : ''; ?>>cgit</option>
+												<option value='gitorious' <?php print ($module->getSetting('web_type_' . $aProject->getID()) == 'gitorious') ? 'selected' : ''; ?>>Gitorious (<?php echo __('locally hosted'); ?>)</option>
 												<option value='github' <?php print ($module->getSetting('web_type_' . $aProject->getID()) == 'github') ? 'selected' : ''; ?>>Github</option>
 											</optgroup>
 											<optgroup label="Bazaar">
@@ -79,7 +80,7 @@
 									<td><input type="text" name="web_path_<?php echo $aProject->getID(); ?>" id="web_path_<?php echo $aProject->getID(); ?>" value="<?php echo $module->getSetting('web_path_'.$aProject->getID()); ?>" style="width: 100%;"></td>
 								</tr>
 								<tr>
-									<td class="config_explanation" colspan="2"><?php echo __('The path to the main page of the repository browser, so links can be correctly generated (see %help% for details).', array('%help%' => link_tag(make_url('publish_article', array('article_name' => 'VCSIntegration')), __('help'), array('target' => '_blank')))); ?></td>
+									<td class="config_explanation" colspan="2"><?php echo __('The path to the main page of the repository browser, so links can be correctly generated (<i>see help for details</i>).'); ?></td>
 								</tr>
 								<tr>
 									<td style="padding: 5px;"><label for="web_repo_<?php echo $aProject->getID(); ?>"><?php echo __('Repository name'); ?></label></td>

@@ -34,15 +34,13 @@
 		case 'github':
 			$link_repo = 'http://www.github.com/' . $web_repo; 
 			break;
+		case 'gitorious':
+			$link_repo = $web_path . '/' . $web_repo; 
+			break;
 	}
 	if ($web_path != '')
 	{
-		echo link_tag(make_url('project_commits', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('VCS Commits'), (($tbg_response->getPage() == 'project_commits') ? array('class' => 'selected') : array()));
-		if (!isset($submenu) && $tbg_response->getPage() == 'project_commits'): ?>
-			<ul class="simple_list">
-				<li><?php echo '<a href="'.$link_repo.'" target="_blank">'.__('View source code').'</a>'; ?></li>
-			</ul>
-		<?php
-		endif;
+		echo '<a href="'.$link_repo.'" target="_blank">'.__('Source code').'</a>';
 	}
+
 ?>

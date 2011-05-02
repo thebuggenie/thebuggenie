@@ -123,25 +123,56 @@
 				$file_lines = preg_split('/[\n\r]+/', $changed);
 				$files = array();
 				
-				echo TBGContext::getModule('vcs_integration')->addNewCommit($project, $commit_msg, $old_rev, $previous, $date, array($entries->commits->modfied, $entries->commits->added, $entries->commits->removed), $author);
+				echo TBGContext::getModule('vcs_integration')->addNewCommit($project, $commit_msg, $old_rev, $previous, $time, array($entries->commits->modfied, $entries->commits->added, $entries->commits->removed), $author);
 				exit;
 			}
-		}		
-				
-		public function runProjectCommits(TBGRequest $request)
+		}
+		
+		public function runAddCommitGitorious(TBGRequest $request)
 		{
-			$this->selected_project = TBGProject::getByKey($request->getParameter('project_key'));
-			
-			if ($this->selected_project instanceof TBGProject)
+			if (!(TBGContext::getModule('vcs_integration')->isUsingHTTPMethod()))
 			{
-				TBGContext::setCurrentProject($this->selected_project);
-				$this->project_key = $this->selected_project->getKey();
+				echo 'Error: This access method has been disallowed';
+				exit;
 			}
-			else
+			$passkey = TBGContext::getRequest()->getParameter('passkey');
+			if ($passkey != TBGContext::getModule('vcs_integration')->getSetting('vcs_passkey'))
 			{
-				$this->return404(TBGContext::getI18n()->__('This project does not exist'));
+				echo 'Error: Invalid passkey';
+				exit;
 			}
 			
-			$this->commits = TBGVCSIntegrationTable::getTable()->getCommitsByProject($this->selected_project->getID());
+			$project = TBGContext::getRequest()->getParameter('project');
+			$data = TBGContext::getRequest()->getParameter('payload', null, false);
+			if (empty($data) || $data == null)
+			{
+				die('Error: Invalid data');
+			}
+		
+			if (!function_exists('json_decode'))
+			{
+				die('Error: Gitorious support requires either PHP 5.2.0 or later, or the json PECL module version 1.2.0 or later for prior versions of PHP');
+			}
+			$entries = json_decode($data);
+			echo $project;
+			$previous = $entries->before;
+			// Parse each commit individually
+			foreach (array_reverse($entries->commits) as $commit)
+			{
+				$email = $commit->author->email;
+				$author = $commit->author->name;
+				$new_rev = $commit->id;
+				$old_rev = $previous;
+				$commit_msg = $commit->message;
+				$time = strtotime($commit->timestamp);
+				//$f_issues = array_unique($f_issues[3]);
+
+				//$file_lines = preg_split('/[\n\r]+/', $changed);
+				//$files = array();
+				
+				echo TBGContext::getModule('vcs_integration')->addNewCommit($project, $commit_msg, $old_rev, $previous, $time, "", $author);
+				$previous = $new_rev;
+				exit;
+			}
 		}
 	}
