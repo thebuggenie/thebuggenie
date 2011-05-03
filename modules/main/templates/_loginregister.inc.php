@@ -33,8 +33,11 @@ else
 							<td><input type="text" id="fieldusername" name="fieldusername" style="width: 200px;" disabled></td>
 						</tr>					
 						<tr>
-							<td><label class="login_fieldheader" for="buddyname">*&nbsp;<?php echo __('Buddy name'); ?></label></td>
+							<td><label class="login_fieldheader" for="buddyname">*&nbsp;<?php echo __('Display name'); ?></label></td>
 							<td><input type="text" class="required" id="buddyname" name="buddyname" style="width: 200px;"></td>
+						</tr>
+						<tr>
+							<td colspan="2" class="faded_out"><?php echo __('The "display name" is the name shown to others'); ?></td>
 						</tr>
 						<tr>
 							<td><label class="login_fieldheader" for="realname">&nbsp;<?php echo __('Real name'); ?></label></td>
