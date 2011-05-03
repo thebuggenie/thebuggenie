@@ -3286,7 +3286,7 @@
 			$captcha = imagecreatetruecolor($size[0]*sizeof($chain), $size[1]);
 			foreach ($chain as $n => $number)
 			{
-				$pic = imagecreatefrompng(image_url('numbers/' . $number . '.png', false, 'core', false));
+				$pic = imagecreatefrompng(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'themes' . DS . TBGSettings::getThemeName() . DS . 'numbers/' . $number . '.png');
 				imagecopymerge($captcha, $pic, $size[0]*$n, 0, 0, 0, imagesx($pic), imagesy($pic), 100);
 				imagedestroy($pic);
 			}
