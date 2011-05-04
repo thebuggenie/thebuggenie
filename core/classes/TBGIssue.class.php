@@ -1016,7 +1016,7 @@
 		protected function _permissionCheck($key, $exclusive = false)
 		{
 			$retval = null;
-			//if (TBGContext::getUser()->isGuest()) return false;
+			if (TBGContext::getUser()->isGuest()) return false;
 			if ($this->isInvolved() && !$exclusive)
 			{
 				$retval = $this->getProject()->permissionCheck($key.'own', true);

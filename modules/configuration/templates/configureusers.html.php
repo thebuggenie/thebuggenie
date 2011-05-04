@@ -48,7 +48,7 @@
 							<td style="padding: 3px;"><label for="findusers"><?php echo __('Find user(s)'); ?>:</label></td>
 							<td style="padding: 3px;">
 								<form action="<?php echo make_url('configure_users_find_user'); ?>" method="post" onsubmit="showUsers('<?php echo make_url('configure_users_find_user'); ?>', $('findusers').getValue());return false;">
-									<input type="text" name="findusers" id="findusers" style="width: 300px;">&nbsp;<input type="submit" value="<?php echo __('Find'); ?>" style="font-size: 12px; font-weight: bold;">
+									<input type="text" name="findusers" id="findusers" style="width: 300px;" value="<?php echo $finduser; ?>">&nbsp;<input type="submit" value="<?php echo __('Find'); ?>" style="font-size: 12px; font-weight: bold;">
 								</form>
 							</td>
 						</tr>
@@ -134,3 +134,10 @@
 		</td>
 	</tr>
 </table>
+<?php if ($finduser): ?>
+	<script type="text/javascript">
+		Event.observe(window, 'load', function() {
+			showUsers('<?php echo make_url('configure_users_find_user'); ?>', '<?php echo $finduser; ?>');
+		});
+	</script>
+<?php endif; ?>

@@ -25,6 +25,9 @@
 					</span>
 				</div>
 			<?php endif; ?>
+			<?php if ($tbg_user->canAccessConfigurationPage(TBGSettings::CONFIGURATION_SECTION_USERS)): ?>
+				<div style="padding: 2px;"><?php echo link_tag(make_url('configure_users', array('finduser' => $user->getUsername())), __('Edit this user'), array('target' => '_new')); ?></div>
+			<?php endif; ?>
 		<?php endif; ?>
 			<?php if (!$user->getJoinedDate()): ?>
 				<i><?php echo __('This user has been a member for a while'); ?></i>

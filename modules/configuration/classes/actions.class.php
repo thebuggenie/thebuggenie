@@ -1990,6 +1990,7 @@
 			$this->groups = TBGGroup::getAll();
 			$this->teams = TBGTeam::getAll();
 			$this->clients = TBGClient::getall();
+			$this->finduser = $request->getParameter('finduser');
 		}
 
 		public function runDeleteGroup(TBGRequest $request)

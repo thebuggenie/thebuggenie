@@ -452,6 +452,6 @@
 							  if (window.console && window.console.firebug) {
 								  $('firebug_warning').show();
 							  }
-							});			
+							});
 						</script>
 					<?php endif; ?>
