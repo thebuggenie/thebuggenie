@@ -348,7 +348,7 @@
 					$filename = $href;
 					$issuemode = (bool) (isset($this->options['issue']) && $this->options['issue'] instanceof TBGIssue);
 					$articlemode = (bool) (isset($this->options['article']) && $this->options['article'] instanceof TBGWikiArticle);
-					//var_dump($this->options);die();
+
 					$file = null;
 					$file_link = $filename;
 					$caption = $filename;
@@ -724,7 +724,6 @@
 			$line_regexes['headers'] = '^(={1,6})(.*?)(={1,6})$';
 			$line_regexes['horizontalrule'] = '^----$';
 
-
 			$char_regexes = array();
 			$char_regexes[] = array('/(\'{2,5})/i', array($this, '_parse_emphasize'));
 			$char_regexes[] = array('/(__NOTOC__|__NOEDITSECTION__)/i', array($this, '_parse_eliminate'));
@@ -803,16 +802,9 @@
 			$text = preg_replace_callback('/<nowiki>(.+?)<\/nowiki>(?!<\/nowiki>)/ism', array($this, "_parse_save_nowiki"), $text);
 			$text = preg_replace_callback('/<source((?:\s+[^\s]+=".*")*)>\s*?(.+)\s*?<\/source>/ismU', array($this, "_parse_save_code"), $text);
 			// Thanks to Mike Smith (scgtrp) for the above regexp
-//			$text = preg_replace_callback('/(\[\[(\:?([^\]]*?)\:)?([^\]]*?)(\|([^\]]*?))?\]\]([a-z]+)?)/i', array($this, "_parse_save_ilink"), $text);
-//			$text = preg_replace_callback('/(\[([^\]]*?)(\s+[^\]]*?)?\])/i', array($this, "_parse_save_elink"), $text);
 
 			$text = tbg_decodeUTF8($text, true);
 			$text = preg_replace('/&lt;((\/)?u|(\/)?strike|br)&gt;/ism', '<\\1>' ,$text);
-			//$text = str_replace('&lt;u&gt;', '<u>', $text);
-			//$text = str_replace('&lt;/u&gt;', '</u>', $text);
-			//$text = str_replace('&lt;strike&gt;', '<strike>', $text);
-			//$text = str_replace('&lt;/strike&gt;', '</strike>', $text);
-			//$text = str_replace('&lt;br&gt;', '<br>', $text);
 			
 			$lines = explode("\n", $text);
 			foreach ($lines as $line)
