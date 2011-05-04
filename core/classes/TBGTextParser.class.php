@@ -724,6 +724,7 @@
 			$line_regexes['headers'] = '^(={1,6})(.*?)(={1,6})$';
 			$line_regexes['horizontalrule'] = '^----$';
 
+
 			$char_regexes = array();
 			$char_regexes[] = array('/(\'{2,5})/i', array($this, '_parse_emphasize'));
 			$char_regexes[] = array('/(__NOTOC__|__NOEDITSECTION__)/i', array($this, '_parse_eliminate'));
@@ -731,6 +732,8 @@
 			{
 				$char_regexes[] = array('/(\{\{([^\}]*?)\}\})/i', array($this, '_parse_variable'));
 			}
+			$char_regexes[] = array('/(\[\[(\:?([^\]]*?)\:)?([^\]]*?)(\|([^\]]*?))?\]\]([a-z]+)?)/i', array($this, "_parse_save_ilink"));
+			$char_regexes[] = array('/(\[([^\]]*?)(\s+[^\]]*?)?\])/i', array($this, "_parse_save_elink"));
 			$char_regexes[] = array(self::getIssueRegex(), array($this, '_parse_issuelink'));
 			$char_regexes[] = array('/(?<=\s|^)(\:\(|\:-\(|\:\)|\:-\)|8\)|8-\)|B\)|B-\)|\:-\/|\:-D|\:-P|\(\!\)|\(\?\))(?=\s|$)/i', array($this, '_getsmiley'));
 			$char_regexes[] = array('/(^|[ \t\r\n])((ftp|http|https|gopher|mailto|news|nntp|telnet|wais|file|prospero|aim|webcal):(([A-Za-z0-9$_.+!*(),;\/?:@&~=-])|%[A-Fa-f0-9]{2}){2,}(#([a-zA-Z0-9][a-zA-Z0-9$_.+!*(),;\/?:@&~=%-]*))?([A-Za-z0-9$_+!*();\/?:~-]))/', array($this, '_parse_autosensedlink'));
@@ -800,8 +803,8 @@
 			$text = preg_replace_callback('/<nowiki>(.+?)<\/nowiki>(?!<\/nowiki>)/ism', array($this, "_parse_save_nowiki"), $text);
 			$text = preg_replace_callback('/<source((?:\s+[^\s]+=".*")*)>\s*?(.+)\s*?<\/source>/ismU', array($this, "_parse_save_code"), $text);
 			// Thanks to Mike Smith (scgtrp) for the above regexp
-			$text = preg_replace_callback('/(\[\[(\:?([^\]]*?)\:)?([^\]]*?)(\|([^\]]*?))?\]\]([a-z]+)?)/i', array($this, "_parse_save_ilink"), $text);
-			$text = preg_replace_callback('/(\[([^\]]*?)(\s+[^\]]*?)?\])/i', array($this, "_parse_save_elink"), $text);
+//			$text = preg_replace_callback('/(\[\[(\:?([^\]]*?)\:)?([^\]]*?)(\|([^\]]*?))?\]\]([a-z]+)?)/i', array($this, "_parse_save_ilink"), $text);
+//			$text = preg_replace_callback('/(\[([^\]]*?)(\s+[^\]]*?)?\])/i', array($this, "_parse_save_elink"), $text);
 
 			$text = tbg_decodeUTF8($text, true);
 			$text = preg_replace('/&lt;((\/)?u|(\/)?strike|br)&gt;/ism', '<\\1>' ,$text);
@@ -834,6 +837,7 @@
 			{
 				$output = preg_replace_callback('/\|\|\|CODE\|\|\|/Ui', array($this, "_parse_restore_code"), $output);
 			}
+
 			$output = preg_replace_callback('/~~~ILINK~~~/i', array($this, "_parse_restore_ilink"), $output);
 			$output = preg_replace_callback('/~~~ELINK~~~/i', array($this, "_parse_restore_elink"), $output);
 
@@ -885,7 +889,7 @@
 		
 		protected function _parse_restore_ilink($matches)
 		{
-			return $this->_parse_internallink(array_pop($this->ilinks));
+			return $this->_parse_internallink(array_shift($this->ilinks));
 		}
 		
 		protected function _parse_restore_elink($matches)
