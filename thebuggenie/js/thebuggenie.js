@@ -697,6 +697,11 @@ function removeSearchFilter(key)
 	}
 }
 
+function deleteSavedSearch(url, id)
+{
+	_updateDivWithJSONFeedback(url, null, 'delete_search_'+id+'_indicator', null, null, null, ['saved_search_'+id+'_container'], null, 'post');
+}
+
 function updateProfileInformation(url)
 {
 	_postFormWithJSONFeedback(url, 'profile_information_form', 'profile_save_indicator');
@@ -1014,7 +1019,7 @@ function toggleMilestoneIssues(url, milestone_id)
 
 function updateTimeline(url)
 {
-	_updateDivWithJSONFeedback(url, 'timeline', 'timeline_indicator', true, false, 'timeline_more_link', null, ['timeline_more_link'], 'get', { offset: $('timeline_offset').getValue()}, function (json) {$('timeline_offset').setValue(json.offset)});
+	_updateDivWithJSONFeedback(url, 'timeline', 'timeline_indicator', true, false, 'timeline_more_link', null, ['timeline_more_link'], 'get', {offset: $('timeline_offset').getValue()}, function (json) {$('timeline_offset').setValue(json.offset)});
 }
 
 function refreshMilestoneDetails(url, milestone_id)

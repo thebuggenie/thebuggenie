@@ -243,10 +243,26 @@
 
 			if ($request->isMethod(TBGRequest::POST) && !$request->getParameter('quicksearch'))
 			{
-				if ($request->getParameter('saved_search_name') != '')
+				if ($request->getParameter('delete_saved_search'))
+				{
+					try
+					{
+						$search = TBGSavedSearchesTable::getTable()->getByID($request->getParameter('saved_search_id'));
+						if ($search->get(TBGSavedSearchesTable::UID) == TBGContext::getUser()->getID() || $search->get(TBGSavedSearchesTable::IS_PUBLIC) && TBGContext::getUser()->canCreatePublicSearches())
+						{
+							TBGSavedSearchesTable::getTable()->doDeleteById($request->getParameter('saved_search_id'));
+							return $this->renderJSON(array('failed' => false, 'message' => TBGContext::getI18n()->__('The saved search was deleted successfully')));
+						}
+					}
+					catch (Exception $e)
+					{
+						return $this->renderJSON(array('failed' => true, 'message' => TBGContext::getI18n()->__('Cannot delete this saved search')));
+					}
+				}
+				elseif ($request->getParameter('saved_search_name') != '')
 				{
 					$project_id = (TBGContext::isProjectContext()) ? TBGContext::getCurrentProject()->getID() : 0;
-					B2DB::getTable('TBGSavedSearchesTable')->saveSearch($request->getParameter('saved_search_name'), $request->getParameter('saved_search_description'), $request->getParameter('saved_search_public'), $this->filters, $this->groupby, $this->grouporder, $this->ipp, $this->templatename, $this->template_parameter, $project_id, $request->getParameter('saved_search_id'));
+					TBGSavedSearchesTable::getTable()->saveSearch($request->getParameter('saved_search_name'), $request->getParameter('saved_search_description'), $request->getParameter('saved_search_public'), $this->filters, $this->groupby, $this->grouporder, $this->ipp, $this->templatename, $this->template_parameter, $project_id, $request->getParameter('saved_search_id'));
 					if ($request->getParameter('saved_search_id'))
 					{
 						TBGContext::setMessage('search_message', TBGContext::getI18n()->__('The saved search was updated'));
