@@ -10,10 +10,10 @@
 				<div class="header_div"><?php echo __('Timeline actions'); ?></div>
 				<div class="content">
 					<?php if ($important): ?>
-						<?php echo link_tag(make_url('project_timeline', array('project_key' => $selected_project->getKey(), 'format' => 'rss')), image_tag('icon_rss.png', array('style' => 'float: left; margin-right: 5px;')) . __('Subscribe to updates via RSS')); ?>
+						<?php echo link_tag(make_url('project_timeline_important', array('project_key' => $selected_project->getKey(), 'format' => 'rss')), image_tag('icon_rss.png', array('style' => 'float: left; margin-right: 5px;')) . __('Subscribe to updates via RSS')); ?>
 						<br><?php echo link_tag(make_url('project_timeline', array('project_key' => $selected_project->getKey())), image_tag('icon_timeline.png', array('style' => 'float: left; margin-right: 5px;')) . __('Show all items')); ?>
 					<?php else: ?>
-						<?php echo link_tag(make_url('project_timeline_important', array('project_key' => $selected_project->getKey(), 'format' => 'rss')), image_tag('icon_rss.png', array('style' => 'float: left; margin-right: 5px;')) . __('Subscribe to updates via RSS')); ?>
+						<?php echo link_tag(make_url('project_timeline', array('project_key' => $selected_project->getKey(), 'format' => 'rss')), image_tag('icon_rss.png', array('style' => 'float: left; margin-right: 5px;')) . __('Subscribe to updates via RSS')); ?>
 						<br><?php echo link_tag(make_url('project_timeline_important', array('project_key' => $selected_project->getKey())), image_tag('icon_important.png', array('style' => 'float: left; margin-right: 5px;')) . __('Only show important items')); ?>
 					<?php endif; ?>
 				</div>
