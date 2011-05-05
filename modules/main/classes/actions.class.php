@@ -2308,7 +2308,7 @@
 						return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('The comment must have some content')));
 					}
 					
-					$comment->setContent($request->getParameter('comment_body'));
+					$comment->setContent($request->getRawParameter('comment_body'));
 					
 					if ($request->getParameter('comment_title') == '')
 					{
