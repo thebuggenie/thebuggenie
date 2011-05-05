@@ -480,7 +480,6 @@
 				throw $e;
 			}
 			
-//			TBGContext::reinitializeI18n($user->getLanguage());
 			return $user;
 	
 		}
