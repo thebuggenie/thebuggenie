@@ -582,8 +582,9 @@
 		{
 			if (!self::$_i18n instanceof TBGI18n)
 			{
-				throw new Exception('gac!');
-				self::reinitializeI18n(self::getUser()->getLanguage());
+				TBGLogging::log('Cannot access the translation object until the i18n system has been initialized!', 'i18n', TBGLogging::LEVEL_WARNING);
+				throw new Exception('Cannot access the translation object until the i18n system has been initialized!');
+				//self::reinitializeI18n(self::getUser()->getLanguage());
 			}
 			return self::$_i18n;
 		}
