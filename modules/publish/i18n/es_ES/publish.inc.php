@@ -178,11 +178,5 @@
   $strings["Importing this article will overwrite an existing article in the database"] = "Al importar este artículo sobreescribirá el artículo existente en la base de datos";
   $strings['Click "%import_articles%" to import the selected articles'] = 'Haga clic en "%import_articles%" para importar los artículos seleccionados';
 
-  $strings['Find any article (press enter to search)'] = 'Encuentre cualquier artículo (Presione enter para buscar)';
-  $strings['Enter something to search for in the input box above'] = 'Escriba algo para buscar en la casilla superior';
-    
-  $strings['Find articles'] = 'Encontrar artículos';
-  $strings['Find articles by name'] = 'Encontrar artículos por nombre';
-  $strings['No articles found'] = 'No se econtraron artículos';
-  $strings['Found %num% article(s)'] = '%num% artículo(s) encontrado(s)';  
+
   ?>

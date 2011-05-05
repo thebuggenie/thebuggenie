@@ -94,7 +94,7 @@
 	$strings['Regular users'] = 'Usuarios comunes';
 	$strings['Guests'] = 'Invitados';
 	$strings['Staff members'] = 'Miembros del personal';
-	$strings['Please fill in your username and password below, and press "%Continue%" to log in.'] = 'Por favor complete con su usuario y contraseña, y presione "%Continuar%" para ingresar.';
+	$strings['Please fill in your username and password below, and press "Continue" to log in.'] = 'Por favor complete con su usuario y contraseña, y presione "Continuar" para ingresar.';
 	$strings['Log in to an existing account'] = 'Ingrese con una cuenta registrada';
 	$strings['Username'] = 'Nombre de usuario';
 	$strings['Password'] = 'Contraseña';
@@ -2034,7 +2034,7 @@
 
 	$strings['The client waas added'] = 'El cliente fue agregado';
 	$strings['If you want to start working on this issue instead, click the %take_over% button to the right'] = 'Si quiere empezar a trabajar en este pedido, haga clic en el botón %take_over%';
-	$strings['This instance is using %num% of max %max% projects'] = 'This instance is using %num% of max %max% projects';
+	$strings['This instance is using %num% of max %max% projects'] = 'Esta instancia está utilizando %num% de %max% proyectos';
 	$strings['Not being worked on'] = 'No se está trabajando';
 	$strings["Information about the user working on this issue has been changed, from '''%previous_name%''' to '''%new_name%'''."] = "La información acerca del usuario que está trabajando en este pedido ha sido cambiada, de '''%previous_name%''' a '''%new_name%'''.";
 	$strings['Unknown'] = 'Desconocido';
@@ -2139,28 +2139,34 @@
   $strings['See %num% more issues ...'] = 'Vea otros %num% pedidos más ...';
   $strings['No issues found matching your query'] = 'No hay pedidos coincidentes con lo buscado'; 
   
-  $strings['Use this page to set up the connection details for your LDAP or Active Directory server. The user you select here will need access to the user list, so the username and password users log in with can be verified, but no write access is necessary.'] = 'Utilice esta página para establecer los detalles de la conexión para su servidor LDAP o Active Directory. El usuario que aquí seleccione necesitará acceso a la lista de usuarios, para que los usuarios que quieran ingresar sean verificados, pero no es necesario el permiso de escritura.';
-  $strings['Important information'] = 'Información importante';
-  $strings['When you enable LDAP as your authentication backend in Authentication configuration, you will lose access to all accounts which do not also exist in the LDAP database. This may mean you lose administrative access.'] = 'Cuando LDAP esté habilitado como su método de autenticación en la configuración de autentificación, perderá el acceso a todas las cuentas que no existan en la base de datos de LDAP. Esto quiere decir que perderá los accesos de administración';
-  $strings['To resolve this issue, either import all users using the tool on this page and make one an administrator using Users configuration, or create a user with the same username as one in LDAP and make that one an administrator.'] = 'Para resolver este inconveniente, importe todos los usuarios utilizando la herramienta de esta página y haga un único administrador utilizando la configuración de Usuarios, o cree un usuario con el mismo nombre de usuario que haya en LDAP y hagalo administrador.';
-  $strings['Hostname'] = 'Nombre de servidor';
-  $strings['Connection details'] = 'Detalles de conexión';
-  $strings['Port'] = 'Puerto';
-  $strings['If your server requires SSL, use ldaps://hostname/ in this field.'] = 'Si su servidor solicita SSL, utilice ldaps://nombre_de_servidor/ en este campo';
-  $strings['Warning: The password will be stored unencrypted in the database.'] = 'Atención: La contraseña será almacenada en forma desencriptada en la base de datos.';
-  $strings['Base DN'] = 'DN base';
-  $strings['This should be the DN string for the OU containing the user list. For example, OU=People,OU=staff,DN=ldap,DN=example,DN=com.'] = 'Esta prodría ser la cadena DN para el OU que contenga la lista de usuarios. Por ejemplo, OU=People, OU=staff,DN=ldap,DN=example,DN=com.';
-  $strings['Allowed groups'] = 'Grupos permitidos';
-  $strings['You may wish to restrict access to users who belong to certain groups in LDAP. If so, write a comma separated list of group names here. Leave blank to disable this feature.'] = '';
-  $strings['Click "%save%" to save the settings'] = 'Haga clic en "%save%" para salvar la configuración';
-  $strings['Test connection'] = 'Probar conexión';
-  $strings['After configuring and saving your connection settings, you should test your connection to the LDAP server. This test does not check whether the DN can correctly find users, but it will give an indication if The Bug Genie can talk to your LDAP server.'] = 'Luego de configurar y guardar las opciones de conexión, debería probar la conexión con el servidor LDAP. Esta prueba no revisa si el DN puede encontrar usuarios correctamente, pero la dará un indicio si The Bug Genie puede comunicarse con su servidor LDAP.';
-  $strings['Import all users'] = 'Importar todos los usuarios';
-  $strings["So that you can ensure all users from LDAP exist in The Bug Genie exist for initial configuration (e.g. to set permissions), you can import all users who don't already exist using this tool. If you set a group restriction, this will be obyed here. Remember to make at least one an administrator so you can continue to configure The Bug Genie after switching."] = 'Puede asegurarse de que todos los usuarios de LDAP existan en The Bug Genie en la configuración inicial (por ejemplo, para definir permisos), puede importar todos los usuarios que no existan utilizando esta herramienta. Si define una restricción a un grupo, ésta será aplicada aquí. Recuerde hacer al menos un administrador para poder continuar la configuración de the Bug Genie después de cambiarlo.';
-  $strings['Import users'] = 'Importar usuarios';
-  $strings['Prune users'] = 'Quitar usuarios';
-  $strings["If a user is deleted from LDAP then they will not be able to log into The Bug Genie. However if you want to remove users from The Bug Genie who have been deleted from LDAP you may wish to prune the users list. This action will delete all users from The Bug Genie's user list who do not exist in the LDAP database, and can not be reversed."] = 'Si un usuario es borrado de LDAP entonces no podrá acceder a The Bug Genie. Sin embargo si quiere quitar usuarios de The Bug Genie que han sido eliminados en LDAP puede quitar los usuarios de la lista. Esta acción eliminará todos los usuarios de la lista de The Bug Genie que no existan en la base de datos de LDAP, y no puede deshacerse.';
-
-
+  $strings['Only show important items'] = 'Solo mostrar ítems importantes';
+  $strings['Show all items'] = 'Mostrar todos los ítems';
   
+  $strings['Language'] = 'Idioma';
+  $strings['(site default)']  = '(Predeterminado del sitio)';
+  $strings['The language you select here will be used instead of the language chosen by the administrator.']  = 'El idioma que seleccione aquí será usado en lugar del idioma elegido por el administrador';
   
+  $strings['Notify me when someone adds me as their friend']  = 'Avisarme cuando alguien me agrega como su amigo';
+  $strings['Notify me when an issue I posted gets updated or created']  = 'Avisarme cuando un pedido que publiqué sea actualizado o creado';
+  $strings['Only notify me once per issue until I open the issue']  = 'Solo avisarme una vez por pedido hasta que abra el pedido';
+  $strings["Notify me when an issue I'm assigned to gets updated or created"]  = 'Avisarme cuando un pedido que tengo asignado sea actualizado o creado';
+  $strings['Notify me when I update or create an issue']  = 'Avisarme cuando actualice o cree un pedido';
+  $strings['Notify me when an issue assigned to one of my teams is updated or created']  = 'Avisarme cuando un pedido asignado a uno de mis equipos sea actualizado o creado';
+  $strings['Notify me when an issue assigned to one of my team projects is updated or created']  = 'Avisarme cuando un pedido asignado a uno de mis proyectos del equipo sea actualizado o creado';
+  $strings['Notify me when an issue assigned to one of my projects is updated or created']  = 'Avisarme cuando un pedido asignado a uno de mis proyectos sea actualizado o creado';
+
+  $strings['Find any article (press enter to search)'] = 'Encuentre cualquier artículo (Enter para buscar)';
+  $strings['Enter something to search for in the input box above'] = 'Escriba algo para buscar en la casilla superior';  
+  $strings['Find articles'] = 'Encontrar artículos';
+  $strings['Find articles by name'] = 'Encontrar artículos por nombre';
+  $strings['No articles found'] = 'No se econtraron artículos';
+  $strings['Found %num% article(s)'] = '%num% artículo(s) encontrado(s)';  
+  $strings['Find project article (press enter to search)'] = 'Encuentre artículos del proyecto (Enter para buscar)';
+  $strings['Press enter twice to search'] = 'Presione Enter 2 veces para buscar';
+
+  $strings['Add new module'] = 'Agregar módulo nuevo';
+  $strings['Upload'] = 'Subir';
+  $strings['Browse'] = 'Examinar';
+  $strings['To add a new module in The Bug Genie, download it then select it from the %browse%-button and press the %upload%-button'] = 'Para agregar un nuevo módulo a The Bug Genie, descárguelo, luego selecciónelo desde el botón %browse% y presione el botón %upload%';
+  $strings['404 - Not Found'] = '404 - No se encontró';
+
