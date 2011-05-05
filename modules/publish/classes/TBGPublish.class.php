@@ -19,6 +19,16 @@
 	class TBGPublish extends TBGModule 
 	{
 		
+		protected $_longname = 'Wiki';
+		
+		protected $_description = 'Enables Wiki-functionality';
+		
+		protected $_module_config_title = 'Wiki';
+		
+		protected $_module_config_description = 'Set up the Wiki module from this section';
+		
+		protected $_has_config_settings = true;
+		
 		protected $_module_version = '1.0';
 
 		/**
@@ -31,20 +41,12 @@
 			return TBGContext::getModule('publish');
 		}
 
-		protected function _initialize(TBGI18n $i18n)
+		protected function _initialize()
 		{
-			$this->setLongName($i18n->__('Wiki'));
-			$this->setConfigTitle($i18n->__('Wiki'));
-			$this->setDescription($i18n->__('Enables Wiki-functionality'));
-			$this->setConfigDescription($i18n->__('Set up the Wiki module from this section'));
-			$this->setHasConfigSettings();
-			if ($this->isEnabled())
+			if ($this->isEnabled() && $this->getSetting('allow_camelcase_links'))
 			{
-				if ($this->getSetting('allow_camelcase_links'))
-				{
-					TBGTextParser::addRegex('/(?<![\!|\"|\[|\>|\/\:])\b[A-Z]+[a-z]+[A-Z][A-Za-z]*\b/', array($this, 'getArticleLinkTag'));
-					TBGTextParser::addRegex('/(?<!")\![A-Z]+[a-z]+[A-Z][A-Za-z]*\b/', array($this, 'stripExclamationMark'));
-				}
+				TBGTextParser::addRegex('/(?<![\!|\"|\[|\>|\/\:])\b[A-Z]+[a-z]+[A-Z][A-Za-z]*\b/', array($this, 'getArticleLinkTag'));
+				TBGTextParser::addRegex('/(?<!")\![A-Z]+[a-z]+[A-Z][A-Za-z]*\b/', array($this, 'stripExclamationMark'));
 			}
 		}
 

@@ -480,7 +480,7 @@
 				throw $e;
 			}
 			
-			TBGContext::reinitializeI18n($user->getLanguage());
+//			TBGContext::reinitializeI18n($user->getLanguage());
 			return $user;
 	
 		}
@@ -2038,7 +2038,7 @@
 
 		public function getLanguage()
 		{
-			return ($this->_language != '') ? $this->_language : TBGContext::getI18n()->getCurrentLanguage();
+			return ($this->_language != '') ? $this->_language : TBGSettings::getLanguage();
 		}
 
 		/**

@@ -38,6 +38,22 @@
 		 */
 		const NOTIFY_ISSUE_PROJECT_ASSIGNED = 'notify_issue_project_vip';
 		
+		protected $_longname = 'Email communication';
+		
+		protected $_description = 'Enables in- and outgoing email functionality';
+		
+		protected $_module_config_title = 'Email communication';
+		
+		protected $_module_config_description = 'Set up in- and outgoing email communication from this section';
+		
+		protected $_account_settings_name = 'Notifications';
+		
+		protected $_account_settings_logo = 'notification_settings.png';
+		
+		protected $_has_account_settings = true;
+
+		protected $_has_config_settings = true;
+		
 		protected $_module_version = '1.0';
 
 		protected $mailer = null;
@@ -52,21 +68,12 @@
 			return TBGContext::getModule('mailing');
 		}
 		
-		protected function _initialize(TBGI18n $i18n)
+		protected function _initialize()
 		{
-			$this->setLongName($i18n->__('Email communication'));
-			$this->setConfigTitle($i18n->__('Email communication'));
-			$this->setDescription($i18n->__('Enables in- and outgoing email functionality'));
-			$this->setConfigDescription($i18n->__('Set up in- and outgoing email communication from this section'));
-			$this->setHasAccountSettings();
-			$this->setAccountSettingsName($i18n->__('Notifications'));
-			$this->setAccountSettingsLogo('notification_settings.png');
-			$this->setHasConfigSettings();
 		}
 
 		protected function _addListeners()
 		{
-			$i18n = TBGContext::getI18n();
 			TBGEvent::listen('core', 'user_registration', array($this, 'listen_registerUser'));
 			TBGEvent::listen('core', 'password_reset', array($this, 'listen_forgottenPassword'));
 			TBGEvent::listen('core', 'login_form_pane', array($this, 'listen_loginPane'));

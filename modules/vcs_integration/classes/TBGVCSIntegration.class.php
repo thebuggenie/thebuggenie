@@ -18,6 +18,16 @@
 	class TBGVCSIntegration extends TBGModule 
 	{
 		
+		protected $_longname = 'VCS Integration';
+		
+		protected $_description = 'Allows details from source code checkins to be displayed in The Bug Genie';
+		
+		protected $_module_config_title = 'VCS Integration';
+		
+		protected $_module_config_description = 'Configure repository settings for source code integration';
+		
+		protected $_has_config_settings = true;
+		
 		protected $_module_version = '1.0';
 
 		/**
@@ -30,13 +40,8 @@
 			return TBGContext::getModule('vcs_integration');
 		}
 
-		protected function _initialize(TBGI18n $i18n)
+		protected function _initialize()
 		{
-			$this->setLongName($i18n->__('VCS Integration'));
-			$this->setConfigTitle($i18n->__('VCS Integration'));
-			$this->setDescription($i18n->__('Allows details from source code checkins to be displayed in The Bug Genie'));
-			$this->setConfigDescription($i18n->__('Configure repository settings for source code integration'));
-			$this->setHasConfigSettings();
 		}
 		
 		protected function _install($scope)

@@ -140,7 +140,7 @@
 
 		protected function _addRoutes() { }
 
-		abstract protected function _initialize(TBGI18n $i18n);
+		abstract protected function _initialize();
 
 		protected function _install($scope) { }
 
@@ -366,8 +366,7 @@
 
 		final public function initialize()
 		{
-			TBGContext::getI18n()->loadModuleStrings($this->getName());
-			$this->_initialize(TBGContext::getI18n());
+			$this->_initialize();
 			if ($this->isEnabled())
 			{
 				$this->_addAvailablePermissions();

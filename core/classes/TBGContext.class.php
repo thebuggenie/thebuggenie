@@ -388,7 +388,6 @@
 				self::checkInstallMode();
 				self::loadPreModuleRoutes();
 				self::setScope();
-				self::$_i18n = TBGI18n::setup();
 
 				if (!self::$_installmode)
 				{
@@ -399,6 +398,9 @@
 				else
 					self::$_modules = array();
 				
+//				var_dump(self::getUser());die();
+				self::setupI18n();
+				
 				self::loadPostModuleRoutes();
 				TBGLogging::log('...done initializing');
 			}
@@ -407,6 +409,27 @@
 				if (!self::isCLI() && !self::isInstallmode())
 					throw $e;
 			}
+		}
+		
+		protected static function setupI18n()
+		{
+			if (TBGContext::isCLI())
+				return null;
+
+			$language = (self::$_user instanceof TBGUser) ? self::$_user->getLanguage() : 'en_US';
+			TBGLogging::log('Loading i18n strings');
+			if (!self::$_i18n = TBGCache::get("i18n_{$language}"))
+			{
+				TBGLogging::log("Loading strings from file ({$language})");
+				self::$_i18n = new TBGI18n($language);
+				self::$_i18n->initialize();
+				TBGCache::add("i18n_{$language}", self::$_i18n);
+			}
+			else
+			{
+				TBGLogging::log('Using cached i18n strings');
+			}
+			TBGLogging::log('...done');
 		}
 
 		protected static function initializeUser()
@@ -559,7 +582,8 @@
 		{
 			if (!self::$_i18n instanceof TBGI18n)
 			{
-				self::reinitializeI18n('en_US');
+				throw new Exception('gac!');
+				self::reinitializeI18n(self::getUser()->getLanguage());
 			}
 			return self::$_i18n;
 		}

@@ -19,7 +19,17 @@
 	class TBGLDAPAuthentication extends TBGModule
 	{
 
+		protected $_longname = 'LDAP Authentication';
+		
+		protected $_description = 'Allows authentication against a LDAP or Active Directory server';
+		
+		protected $_module_config_title = 'LDAP Authentication';
+		
+		protected $_module_config_description = 'Configure server connection settings';
+		
 		protected $_module_version = '0.1';
+		
+		protected $_has_config_settings = true;
 
 		/**
 		 * Return an instance of this module
@@ -31,13 +41,8 @@
 			return TBGContext::getModule('auth_ldap');
 		}
 
-		protected function _initialize(TBGI18n $i18n)
+		protected function _initialize()
 		{
-			$this->setLongName($i18n->__('LDAP Authentication'));
-			$this->setConfigTitle($i18n->__('LDAP Authentication'));
-			$this->setDescription($i18n->__('Allows authentication against a LDAP or Active Directory server'));
-			$this->setConfigDescription($i18n->__('Configure server connection settings'));
-			$this->setHasConfigSettings();
 		}
 		
 		protected function _addRoutes()

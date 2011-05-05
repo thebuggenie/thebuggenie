@@ -29,25 +29,8 @@
 		
 		protected $_datetime_formats = array();
 		
-		public static function setup()
+		public static function setup($language)
 		{
-			if (TBGContext::isCLI())
-				return null;
-
-			$language = TBGSettings::getLanguage();
-			TBGLogging::log('Loading i18n strings');
-			if (!$_i18n = TBGCache::get("i18n_{$language}"))
-			{
-				TBGLogging::log("Loading strings from file ({$language})");
-				$_i18n = new TBGI18n($language);
-				$_i18n->initialize();
-				TBGCache::add("i18n_{$language}", $_i18n);
-			}
-			else
-			{
-				TBGLogging::log('Using cached i18n strings');
-			}
-			TBGLogging::log('...done');
 			return $_i18n;
 		}
 
@@ -76,9 +59,15 @@
 			$filename = THEBUGGENIE_PATH . 'i18n' . DS . $this->_language . DS . 'initialize.inc.php';
 			if (file_exists($filename))
 			{
+				TBGLogging::log("Initiating with file '{$filename}", 'i18n');
 				include $filename;
 			}
 			$this->loadStrings();
+			foreach (TBGContext::getModules() as $module_name => $module)
+			{
+				$this->loadStrings($module_name);
+			}
+			
 		}
 		
 		public function setLanguage($language)
@@ -179,7 +168,6 @@
 			$strings_key = ($module !== null) ? 'i18n_strings' : "i18n_strings_{$module}";
 			if (!$strings = TBGCache::get($strings_key))
 			{
-				TBGLogging::log('Loading strings from file', 'i18n');
 				$filename = '';
 				if ($module !== null)
 				{
@@ -199,6 +187,7 @@
 
 				if (file_exists($filename))
 				{
+					TBGLogging::log("Loading strings from file '{$filename}", 'i18n');
 					$strings = array();
 					require $filename;
 					TBGCache::add($strings_key, $strings);
