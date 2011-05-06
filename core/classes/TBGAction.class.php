@@ -117,7 +117,7 @@
 			$this->message = $message;
 			$this->getResponse()->setHttpStatus(404);
 			$this->getResponse()->setTemplate('main/notfound');
-			return true;
+			return false;
 		}
 		
 		/**
