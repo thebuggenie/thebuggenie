@@ -43,10 +43,52 @@
 			<?php if ($error == 'transition_error'): ?>
 				<div class="header"><?php echo __('There was an error trying to move this issue to the next step in the workflow'); ?></div>
 				<div class="content" style="text-align: left;">
-					<?php echo __('The following fields had invalid values: %list%', array('%list%' => '')); ?><br>
+					<?php echo __('The following actions could not be performed because of missing or invalid values: %list%', array('%list%' => '')); ?><br>
 					<ul>
 						<?php foreach (TBGContext::getMessageAndClear('issue_workflow_errors') as $error_field): ?>
-							<li><?php echo ucfirst($error_field); ?></li>
+							<li><?php 
+							
+								switch ($error_field)
+								{
+									case TBGWorkflowTransitionValidationRule::RULE_MAX_ASSIGNED_ISSUES:
+										echo __('Could not assign issue to the selected user because this users assigned issues limit is reached');
+										break;
+									case TBGWorkflowTransitionValidationRule::RULE_PRIORITY_VALID:
+										echo __('Could not set priority');
+										break;
+									case TBGWorkflowTransitionValidationRule::RULE_REPRODUCABILITY_VALID:
+										echo __('Could not set reproducability');
+										break;
+									case TBGWorkflowTransitionValidationRule::RULE_RESOLUTION_VALID:
+										echo __('Could not set resolution');
+										break;
+									case TBGWorkflowTransitionValidationRule::RULE_STATUS_VALID:
+										echo __('Could not set status');
+										break;
+									case TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE:
+										echo __('Could not assign issue to the any user or team because none were provided');
+										break;
+									case TBGWorkflowTransitionAction::ACTION_SET_MILESTONE:
+										echo __('Could not assign the issue to a milestone because none was provided');
+										break;
+									case TBGWorkflowTransitionAction::ACTION_SET_PRIORITY:
+										echo __('Could not set issue priority because none was provided');
+										break;
+									case TBGWorkflowTransitionAction::ACTION_SET_REPRODUCABILITY:
+										echo __('Could not set issue reproducability because none was provided');
+										break;
+									case TBGWorkflowTransitionAction::ACTION_SET_RESOLUTION:
+										echo __('Could not set issue resolution because none was provided');
+										break;
+									case TBGWorkflowTransitionAction::ACTION_SET_STATUS:
+										echo __('Could not set issue status because none was provided');
+										break;
+									default:
+										echo $error_field;
+										break;
+								}
+							
+							?></li>
 						<?php endforeach; ?>
 					</ul>
 				</div>

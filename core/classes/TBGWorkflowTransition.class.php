@@ -410,6 +410,13 @@
 					$this->_validation_errors[$rule->getRule()] = true;
 				}
 			}
+			foreach ($this->getActions() as $action)
+			{
+				if (!$action->isValid($request))
+				{
+					$this->_validation_errors[$action->getActionType()] = true;
+				}
+			}
 			return empty($this->_validation_errors);
 		}
 		

@@ -1049,6 +1049,7 @@
 			}
 			catch (Exception $e)
 			{
+				throw $e;
 				return $this->return404();
 			}
 		}

@@ -234,5 +234,34 @@
 					break;
 			}
 		}
+		
+		public function isValid(TBGRequest $request)
+		{
+			if ($this->_target_value) return true;
+			
+			switch ($this->_action_type)
+			{
+				case self::ACTION_ASSIGN_ISSUE:
+					return (bool) $request->getParameter('assignee_type') && $request->getParameter('assignee_id');
+					break;
+				case self::ACTION_SET_MILESTONE:
+					return (bool) $request->hasParameter('milestone_id');
+					break;
+				case self::ACTION_SET_PRIORITY:
+					return (bool) $request->hasParameter('priority_id');
+					break;
+				case self::ACTION_SET_STATUS:
+					return (bool) $request->hasParameter('status_id');
+					break;
+				case self::ACTION_SET_REPRODUCABILITY:
+					return (bool) $request->hasParameter('reproducability_id');
+					break;
+				case self::ACTION_SET_RESOLUTION:
+					return (bool) $request->hasParameter('resolution_id');
+					break;
+				default:
+					return true;
+			}
+		}
 
 	}
