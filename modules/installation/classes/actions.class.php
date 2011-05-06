@@ -421,6 +421,17 @@
 			
 			// Add default gravatar setting
 			TBGSettings::saveSetting(TBGSettings::SETTING_ENABLE_GRAVATARS, 1);
+			
+			$trans_crit = TBGWorkflowTransitionsTable::getTable()->getCriteria();
+			$trans_crit->addWhere(TBGWorkflowTransitionsTable::NAME, 'Request more information');
+			$trans_crit->addWhere(TBGWorkflowTransitionsTable::WORKFLOW_ID, 1);
+			$trans_row = TBGWorkflowTransitionsTable::getTable()->doSelectOne($trans_crit);
+			if ($trans_row)
+			{
+				$transition = new TBGWorkflowTransition($trans_res->get(TBGWorkflowTransitionsTable::ID), $trans_row);
+				$transition->setTemplate('main/updateissueproperties');
+				$transition->save();
+			}
 
 			// End transaction and finalize upgrade
 			$transaction->commitAndEnd();
