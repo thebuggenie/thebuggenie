@@ -287,7 +287,7 @@
 							<select name="build_id" id="build_id" style="width: 100%;">
 								<option value="0"><?php echo __('Not specified'); ?></option>
 								<?php if ($selected_build instanceof TBGBuild): ?>
-									<option value="<?php echo $selected_build->getID(); ?>"><?php echo $selected_build->getName(); ?></option>
+									<option value="<?php echo $selected_build->getID(); ?>"><?php echo $selected_build->getName(); ?> (<?php echo $selected_build->getVersion(); ?>)</option>
 								<?php endif; ?>
 							</select>
 						</td>

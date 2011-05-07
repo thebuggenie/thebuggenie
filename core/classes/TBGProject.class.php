@@ -2021,7 +2021,7 @@
 								$retval[$key]['values'][''] = TBGContext::getI18n()->__('None');
 								foreach ($this->getBuilds() as $build)
 								{
-									$retval[$key]['values'][$build->getID()] = $build->getName();
+									$retval[$key]['values'][$build->getID()] = $build->getName().' ('.$build->getVersion().')';
 								}
 								if (!$this->isBuildsEnabled() || empty($retval[$key]['values']))
 								{
