@@ -769,7 +769,7 @@ tr.attached_item td { font-size: 0.9em; line-height: 1.3; }
 tr.attached_item td .upload_details { color: #AAA; font-size: 0.9em; }
 
 .issuedetailspopup li.faded_out { padding: 3px 3px 10px 3px; }
-.issuedetailspopup label { display: block; float: left; min-width: 150px; }
+.issuedetailspopup label { display: block; float: left; min-width: 150px; padding: 0; }
 .issuedetailspopup label.simple { display: inline; float: none; width: auto; font-weight: normal; }
 .issuedetailspopup #popup_assigned_to_change { position: absolute; top: 50%; margin-top: -100px; left: 50%; margin-left: -249px; }
 
