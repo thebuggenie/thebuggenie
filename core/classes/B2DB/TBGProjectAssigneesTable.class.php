@@ -126,7 +126,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::PROJECT_ID, $project_id);
-			if ($assignee_type == 'team')
+			if ($assignee_type == TBGIdentifiableClass::TYPE_TEAM)
 				$crit->addWhere(self::TID, $assignee_id);
 			else
 				$crit->addWhere(self::UID, $assignee_id);
