@@ -405,6 +405,9 @@
 												<div class="header"><?php echo __('You are: %userstate%', array('%userstate%' => '<span class="userstate">'.(($tbg_user->getState() instanceof TBGUserState) ? $tbg_user->getState()->getName() : __('offline')).'</span>')); ?></div>
 												<?php echo link_tag(make_url('dashboard'), image_tag('icon_dashboard_small.png').__('Your dashboard')); ?>	
 												<?php echo link_tag(make_url('account'), image_tag('icon_account.png').__('Your account')); ?>
+												<?php if ($tbg_user->canAccessConfigurationPage()): ?>
+													<?php echo link_tag(make_url('configure'), image_tag('tab_config.png').__('Configure The Bug Genie')); ?>
+												<?php endif; ?>
 												<?php echo link_tag(make_url('publish_article', array('article_name' => 'Category:Help')), image_tag('help.png').__('Help')); ?>
 												<?php echo link_tag(make_url('logout'), image_tag('logout.png').__('Logout')); ?>
 												<div class="header"><?php echo __('Your issues'); ?></div>
