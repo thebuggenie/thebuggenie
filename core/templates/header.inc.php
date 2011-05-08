@@ -374,6 +374,7 @@
 										<?php endif; ?>
 										<?php TBGEvent::createNew('core', 'menustrip_item_links', null, array('selected_tab' => $tbg_response->getPage()))->trigger(); ?>
 									</ul>
+									<?php TBGEvent::createNew('core', 'before_header_userinfo')->trigger(); ?>
 									<div class="rounded_box blue tab_menu_container" id="header_userinfo">
 										<table style="width: auto;" cellpadding="0" cellspacing="0">
 											<tr>
@@ -430,6 +431,7 @@
 											<?php endif; ?>
 										</div>
 									</div>
+									<?php TBGEvent::createNew('core', 'after_header_userinfo')->trigger(); ?>
 								</div>
 							</td>
 						</tr>
