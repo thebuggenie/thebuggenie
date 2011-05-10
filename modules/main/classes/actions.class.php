@@ -142,7 +142,7 @@
 				{
 					if ($starred_issue->isOpen() && $starred_issue->getProject()->getID() == $this->selected_project->getID())
 					{
-						$issuelist[$starred_issue->getID()] = array('url' => TBGContext::getRouting()->generate('viewissue', array('project_key' => $this->selected_project->getKey(), 'issue_no' => $starred_issue->getFormattedIssueNo())), 'title' => $starred_issue->getFormattedIssueNo(true, true));
+						$issuelist[$starred_issue->getID()] = array('url' => TBGContext::getRouting()->generate('viewissue', array('project_key' => $this->selected_project->getKey(), 'issue_no' => $starred_issue->getFormattedIssueNo())), 'title' => $starred_issue->getFormattedTitle(true, true));
 					}
 				}
 			}
@@ -152,7 +152,7 @@
 				try
 				{
 					$an_issue = new TBGIssue($i_id);
-					array_unshift($issuelist, array('url' => TBGContext::getRouting()->generate('viewissue', array('project_key' => $an_issue->getProject()->getKey(), 'issue_no' => $an_issue->getFormattedIssueNo())), 'title' => $an_issue->getFormattedIssueNo(true, true)));
+					array_unshift($issuelist, array('url' => TBGContext::getRouting()->generate('viewissue', array('project_key' => $an_issue->getProject()->getKey(), 'issue_no' => $an_issue->getFormattedIssueNo())), 'title' => $an_issue->getFormattedTitle(true, true)));
 				}
 				catch (Exception $e)
 				{
