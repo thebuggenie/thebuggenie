@@ -156,7 +156,7 @@
 					<?php elseif ($issue->canPostComments()): ?>
 						<?php echo __('A closed issue will usually not be further updated - try %posting_a_comment%', array('%posting_a_comment%' => '<a href="#add_comment_location_core_1_' . $issue->getID() . '">' . __('posting a comment') . '</a>')); ?>
 					<?php elseif ($tbg_user->canReportIssues($issue->getProjectID())): ?>
-						<?php echo __('A closed issue will usually not be further updated - try %reporting_a_new_issue%', array('%reporting_a_new_issue%' => link_tag(make_url('reportissue'), __('reporting a new issue')))); ?>
+						<?php echo __('A closed issue will usually not be further updated - try %reporting_a_new_issue%', array('%reporting_a_new_issue%' => link_tag(make_url('project_reportissue', array('project_key' => $issue->getProject()->getKey())), __('reporting a new issue')))); ?>
 					<?php endif; ?>
 				</div>
 			</div>
