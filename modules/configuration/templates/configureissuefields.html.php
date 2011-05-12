@@ -2,7 +2,10 @@
 
 	$tbg_response->setTitle(__('Configure data types'));
 	$tbg_response->addJavascript('config/issuefields.js');
-
+	$tbg_response->addJavascript('prototype.js');
+	//$tbg_response->addJavascript('scriptaculous.js');
+	$tbg_response->addJavascript('cpicker/cpicker.js');
+	$tbg_response->addStylesheet('cpicker/cpicker.css');
 ?>
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
 <tr>
@@ -54,3 +57,12 @@
 </td>
 </tr>
 </table>
+<script>
+	var picker = new ColorPicker({iconPath: '<?php echo TBGSettings::getURLhost() . TBGContext::getTBGPath() . 'themes/' . TBGSettings::getThemeName() . '/cpicker/'; ?>'});
+	
+	picker.setCallback(function (color) {
+		picker.selector.style.backgroundColor = color;
+		picker.selector.value = color;
+		picker.hide();
+	});
+</script>
