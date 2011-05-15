@@ -66,7 +66,7 @@
 				$this->php_ok = false;
 				$this->all_well = false;
 			}
-			if (version_compare($this->pcre_ver, '8.0', 'lt'))
+			if (version_compare($this->pcre_ver, '7.99', 'le'))
 			{
 				$this->pcre_ok = false;
 				$this->all_well = false;
