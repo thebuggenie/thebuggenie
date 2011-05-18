@@ -22,7 +22,6 @@
 	$routes[] = array('logout', '/logout', 'main', 'logout');
 	$routes[] = array('hide_infobox', '/hide/infobox/:key', 'main', 'hideInfobox');
 	$routes[] = array('getreportissuefields', '/reportissue/get/fields/for/project/*', 'main', 'reportIssueGetFields');
-	$routes[] = array('findthis', '/issues/find/:searchfor/*', 'search', 'findIssues');
 	$routes[] = array('search_paginated', '/issues/paginated/*', 'search', 'findIssuesPaginated');
 	$routes[] = array('search_add_filter', '/issues/add/filter/*', 'search', 'addFilter');
 	$routes[] = array('my_teams_assigned_issues', '/issues/my/assigned/teams/*', 'search', 'findIssues', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true));
@@ -31,6 +30,7 @@
 	$routes[] = array('search', '/issues/*', 'search', 'findIssues');
 	
 	$routes[] = array('quicksearch', '/quicksearch/*', 'search', 'findIssues', array('quicksearch' => true, 'issues_per_page' => 6));
+	$routes[] = array('opensearch', '/opensearch.xml', 'search', 'opensearch', array('format' => 'xml'));
 	$routes[] = array('about', '/about', 'main', 'about');
 	$routes[] = array('list_projects', '/list/projects/:format', 'main', 'listProjects');
 	$routes[] = array('list_issuetypes', '/list/issuetypes/:format', 'main', 'listIssuetypes');

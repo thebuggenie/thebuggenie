@@ -77,7 +77,7 @@
 				$suffix = '';
 				if (preg_match('/^(.+)(\.\w*)$/i', $elements[count($elements) - 1], $matches))
 				{
-					$suffix = ($matches[2] == '.') ? '' : $matches[2];
+					$suffix = ($matches[2][0] == '.') ? $matches[2] : '';
 					$elements[count($elements) - 1] = $matches[1];
 					$route = '/'.implode('/', $elements);
 				}
@@ -85,6 +85,8 @@
 				{
 					$suffix = '/';
 				}
+				
+				$route = $route.$suffix;
 	
 				$regexp_suffix = preg_quote($suffix);
 
@@ -126,7 +128,7 @@
 					}
 				}
 				$regexp = '#^'.join('', $parsed).$regexp_suffix.'$#';
-	
+					
 				$this->routes[$name] = array($route, $regexp, $names, $names_hash, $module, $action, $params, $csrf_enabled);
 			}
 		}
@@ -412,6 +414,7 @@
 			}
 
 			list($url, $regexp, $names, $names_hash, $action, $module, $defaults, $csrf_enabled) = $this->routes[$name];
+
 			$defaults = array('action' => $action, 'module' => $module);
 			
 			// all params must be given

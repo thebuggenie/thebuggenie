@@ -41,6 +41,7 @@
 	$routes[] = array('project_issues', '/:project_key/issues/find/*', 'search', 'findIssues');
 	$routes[] = array('viewissue', '/:project_key/issues/:issue_no/*', 'main', 'viewIssue');
 	$routes[] = array('project_quicksearch', '/:project_key/quicksearch/*', 'search', 'findIssues', array('quicksearch' => true, 'issues_per_page' => 6));
+	$routes[] = array('project_opensearch', '/:project_key/opensearch.xml', 'search', 'opensearch', array('format' => 'xml'));
 	$routes[] = array('project_team', '/:project_key/team', 'project', 'team');
 	$routes[] = array('project_statistics', '/:project_key/statistics', 'project', 'statistics');
 	$routes[] = array('project_statistics_last_30', '/:project_key/statistics/last/30', 'project', 'statisticsLast30');

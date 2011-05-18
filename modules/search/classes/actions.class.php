@@ -347,6 +347,11 @@
 				}
 			}
 		}
+		
+		public function runOpensearch(TBGRequest $request)
+		{
+			
+		}
 
 		static function resultGrouping(TBGIssue $issue, $groupby, $cc, $prevgroup_id)
 		{
