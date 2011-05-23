@@ -52,10 +52,6 @@
 	$strings['Outgoing emails'] = 'Correos salientes';
 	$strings['These are the settings for outgoing emails, such as notification emails and registration emails.'] = 'Estos son las configuraciones para el correo saliente, tales como la notificación por correo y el correo al registrarse.';
 	$strings['Enable outgoing email notifications'] = 'Habilitar los avisos por correo saliente';
-	
-	
-	
-	
 	$strings['The character encoding used in outgoing emails'] = 'El conjunto de caracteres utilizado para los correos salientes';
 	$strings['Queue emails for batch processing'] = 'Correos electrónicos a la cola para el procesamiento en lote';
 	$strings['Send email notifications instantly'] = 'Enviar avisos inmediatamente';
@@ -65,19 +61,12 @@
 	$strings['Use php settings'] = 'Usar configuración de php';
 	$strings['Use custom settings'] = 'Usar configuración personal';
 	$strings['This setting determines whether The Bug Genie uses the built-in php email function, or a custom configuration'] = 'Esta opción determina si The Bug Genie utiliza funciones de correo propias de php, o una configuración personalizada';
-
- 
 	$strings['%number_of% seconds'] = '%number_of% segundos';
 	$strings['Connection information for the outgoing email server'] = 'Información de la conexión del servidor para el correo saliente';
 	$strings['Microsoft Exchange server'] = 'Servidor Microsoft Exchange';
 	$strings['For compatibility reasons, specify whether the SMTP server is a Microsoft Exchange server'] = 'Pro motivos de compatibilidad, especifique si el servidor de SMTP es un Microsoft Exchange';
-
-
-
-
 	$strings['This section doesn\'t have any settings yet'] = 'Esta sección no tiene opciones todavía';
 	$strings['Click "%save%" to save email notification settings'] = 'Haga clic en "%save%" para guardar las opciones de aviso';
-
 	$strings['Enter an email address, and click "%send_test_email%" to check if the email module is configured correctly'] = 'Ingrese una dirección de correo, y haga clic en "%send_test_email%" para verificar si el módulo está correctamente configurado';
 	$strings['Yes'] = 'Sí';
 	$strings['No'] = 'No';
@@ -93,8 +82,6 @@
 	$strings['Email when an issue is updated'] = 'Correo cuando una peticion es actualizada';
 	$strings['Javascript Mailing'] = 'Correo Javascript';
 	$strings['The email module is not configured for outgoing emails'] = 'El módulo de correo no está configurado para correo saliente';
-
-
 	$strings['Forgot password'] = 'Olvido de contraseña';
 	$strings['Forgot password?'] = '¿Olvidó su contraseña?';
 	$strings['If you have forgot your password, enter your username here, and we will send you an email that will allow you to change your password'] = 'Si olvidó su contraseña, ingrese aquí su nombre de usuario y le enviaremos un correo que le permitirá cambiar la contraseña';
@@ -118,5 +105,5 @@
 	$strings['Did not receive a confirmation message from the mail server.. However, we received: %rv%']='No se recibió un mensaje de confirmación desde el servidor de correo. \nDe todas maneras, recibimos: %rv%';
 	$strings['The character encoding used in outgoing emails'] = 'La codificación de los caracteres usada en los correos salientes';
 	$strings['This is the name and email address email notifications from The Bug Genie will be sent from'] = 'Este es el nombre y dirección de correo que The Bug Genie utilizará';
-  $strings['Don\'t use sendmail \'-f\''] = 'No utilizar sendmail \'-f\''; 
-  $strings['Don\'t use the \'-f\' sendmail parameter (some systems may not allow it)'] = 'No utiliza el parámetro \'-f\' de sendmail (algunos sistemas no lo permiten)';
+	$strings['Don\'t use sendmail \'-f\''] = 'No utilizar sendmail \'-f\''; 
+	$strings['Don\'t use the \'-f\' sendmail parameter (some systems may not allow it)'] = 'No utiliza el parámetro \'-f\' de sendmail (algunos sistemas no lo permiten)';

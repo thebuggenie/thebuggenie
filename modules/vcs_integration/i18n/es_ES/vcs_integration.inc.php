@@ -1,7 +1,7 @@
 <?php
 	$strings['Project settings'] = 'Configuración del proyecto';
 	$strings['General settings'] = 'Ajustes generales';
-  $strings['Use this page to configure the interface between The Bug Genie and your VCS system. Note that further configuration is necessary to use this feature - please refer to the %help% for further details on these settings and other necessary configuration.'] = 'Utilice esta página para configurar la interface entre The Bug Genie y su sistema VCS. Tenga en cuenta que más configuración es necesaria para usar esta característica - por favor consulte %help% para más detalle sobre estos ajustes y la configuracion necesaria.';
+	$strings['Use this page to configure the interface between The Bug Genie and your VCS system. Note that further configuration is necessary to use this feature - please refer to the %help% for further details on these settings and other necessary configuration.'] = 'Utilice esta página para configurar la interface entre The Bug Genie y su sistema VCS. Tenga en cuenta que más configuración es necesaria para usar esta característica - por favor consulte %help% para más detalle sobre estos ajustes y la configuracion necesaria.';
 	$strings['These are the settings that apply to all communications between The Bug Genie and any VCS, regardless of the project.'] = 'Estos son los ajustes que se aplican a todas las comunicaciones entre The Bug Genie y cualquier VCS, independientemente del proyecto.';
 	$strings['Access method'] = 'Método de acceso';
 	$strings['Use the HTTP access method'] = 'Usar el médtodo de acceso HTTP';
@@ -19,7 +19,7 @@
 	$strings['The path to the main page of the repository browser, so links can be correctly generated (<i>see help for details</i>).'] = 'La ruta de acceso a la página principal del navegador de repositorios, por lo que los enlaces pueden ser generado correctamente (ver <i> ayuda para más información </ i>).';
 	$strings['Repository name'] = 'Nombre del repositorio';
 	$strings['The name of the repository in use, so the correct one can be chosen for viewing commit details. This is not required under certain conditions, see help for details.'] = 'El nombre del repositorio en uso, por lo que debe elegir la correcta para ver detalles. Esto no es necesario en determinadas condiciones, consulte la ayuda para más detalles.';
-	$strings['Click "%save%" to save the settings on both tabs'] = 'Haga clic  en "%save%" para guardar lass configuraciones de ambas pestañas';
+	$strings['Click "%save%" to save the settings on both tabs'] = 'Haga clic	en "%save%" para guardar lass configuraciones de ambas pestañas';
 	$strings['No such user'] = 'Usuario inexistente';
 	$strings['Save'] = 'Guardar';
 	$strings['VCS Integration'] = 'Integración VCS';
@@ -29,14 +29,11 @@
 	$strings['Error: Invalid project ID'] = 'Error: ID de proyecto no válido';
 	$strings['Issue updated from code repository'] = 'Petición actualizada por código desde el repositorio';
 	$strings['This issue has been updated with the latest changes from the code repository.<source>%commit_msg%</source>'] = 'Esta petición ha sido actualizada con los últimos cambios desde el repositorio.<source>%commit_msg%</source>';
-  $strings['help'] = 'ayuda';
-  
-  $strings['bug|issue|ticket|fix|fixes|fixed|fixing|applies to|closes|references|ref|addresses|re|see|according to|also see'] = 'error|bug|pedido|tarea|petición|corrige|corregido|corrigiendo|se aplica|cierra|referencia|ref|ver|de acuerdo con|ver también';  
- 
-  $strings["Revision %revno%"] = "Revisión %revno%";
-  $strings["committed on %date% by"] = "enviado el %date% por";
-  $strings["Log entry:"] = "Información de log";
-  $strings["Changed files:"] = "Archivos modificados";
-  $strings["Diff"] = "Diferencia";
-  $strings["View"] = "Ver";
-  $strings["new file"] = "Archivo nuevo";
+	$strings['help'] = 'ayuda';
+	$strings["Revision %revno%"] = "Revisión %revno%";
+	$strings["committed on %date% by"] = "enviado el %date% por";
+	$strings["Log entry:"] = "Información de log";
+	$strings["Changed files:"] = "Archivos modificados";
+	$strings["Diff"] = "Diferencia";
+	$strings["View"] = "Ver";
+	$strings["new file"] = "Archivo nuevo";
