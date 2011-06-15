@@ -673,7 +673,7 @@
 		 */
 		public function getFormattedTitle($link_formatted = false, $include_issuetype = true)
 		{
-			return $this->getFormattedIssueNo($link_formatted, $include_issuetype) . ' - ' . $this->_title;
+			return $this->getFormattedIssueNo($link_formatted, $include_issuetype) . ' - ' . $this->getTitle();
 		}
 		
 		/**
@@ -892,7 +892,7 @@
 		 */
 		public function getName()
 		{
-			return $this->_title;
+			return $this->getTitle();
 		}
 		
 		/**
@@ -1830,6 +1830,16 @@
 		 * @return string
 		 */
 		public function getTitle()
+		{
+			return htmlentities($this->_title, ENT_COMPAT, TBGContext::getI18n()->getCharset());
+		}
+		
+		/**
+		 * Returns the issue title
+		 *
+		 * @return string
+		 */
+		public function getRawTitle()
 		{
 			return $this->_title;
 		}
@@ -3439,24 +3449,6 @@
 			return false;
 		}
 		
-		/**
-		 * Adds a task and returns the task id
-		 *
-		 * @param string $title
-		 * @param string $desc
-		 * 
-		 * @return TBGTask The task that was created
-		 */
-		public function addTask($title, $desc)
-		{
-			$task = TBGTask::createTask($title, $desc, $this->getID());
-			
-			$this->addLogEntry(TBGLogTable::LOG_TASK_ADD, TBGContext::getI18n()->__("Added task '%task_title%'", array('%task_title%' => $title)));
-			$this->addSystemComment(TBGContext::getI18n()->__("Task added"), TBGContext::getI18n()->__("The task '%task_title%' has been added", array('%task_title%' => $title)), TBGContext::getUser()->getID());
-	
-			return $task;
-		}
-	
 		/**
 		 * Updates the issue's last_updated time to "now"
 		 */

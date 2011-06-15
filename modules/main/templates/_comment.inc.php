@@ -42,7 +42,7 @@
 			</select>
 			<br />
 			<label for="comment_bodybox"><?php echo __('Comment'); ?></label><br />
-			<?php include_template('main/textarea', array('area_name' => 'comment_body', 'area_id' => 'comment_bodybox', 'height' => '200px', 'width' => '970px', 'value' => $comment->getContent())); ?>
+			<?php include_template('main/textarea', array('area_name' => 'comment_body', 'area_id' => 'comment_bodybox', 'height' => '200px', 'width' => '970px', 'value' => htmlentities($comment->getContent(), ENT_COMPAT, TBGContext::getI18n()->getCharset()))); ?>
 			<div id="comment_edit_indicator_<?php echo $comment->getID(); ?>" style="display: none;">
 				<?php echo image_tag('spinning_16.gif', array('class' => 'spinning')); ?>
 			</div>
