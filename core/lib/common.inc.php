@@ -207,7 +207,7 @@
 				}
 				break;
 			case 21:
-				$tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(17), $tstamp);
+				$tstring = (TBGContext::isCLI()) ? strftime('%a, %d %b %Y %H:%M:%S GMT', $tstamp) : strftime(TBGContext::getI18n()->getDateTimeFormat(17), $tstamp);
 				if (TBGContext::getUser()->getTimezone() > 0) $tstring .= '+';
 				if (TBGContext::getUser()->getTimezone() < 0) $tstring .= '-';
 				if (TBGContext::getUser()->getTimezone() != 0) $tstring .= TBGContext::getUser()->getTimezone();

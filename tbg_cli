@@ -97,6 +97,7 @@
 		}
 		catch (Exception $e)
 		{
+			var_dump($e);die();
 			TBGCliCommand::cli_echo("\n");
 			TBGCliCommand::cli_echo("The following error occured:\n", 'red', 'bold');
 			TBGCliCommand::cli_echo($e->getMessage()."\n\n", 'red');
