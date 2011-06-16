@@ -428,7 +428,7 @@
 			$trans_row = TBGWorkflowTransitionsTable::getTable()->doSelectOne($trans_crit);
 			if ($trans_row)
 			{
-				$transition = new TBGWorkflowTransition($trans_res->get(TBGWorkflowTransitionsTable::ID), $trans_row);
+				$transition = new TBGWorkflowTransition($trans_row->get(TBGWorkflowTransitionsTable::ID), $trans_row);
 				$transition->setTemplate('main/updateissueproperties');
 				$transition->save();
 			}
