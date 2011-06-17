@@ -2051,7 +2051,7 @@
 		 */
 		public function hasAccess()
 		{
-			return TBGContext::getUser()->hasPermission('canseeproject', $this->getID(), 'core');
+			return TBGContext::getUser()->hasPermission('canseeproject', $this->getID());
 		}
 		
 		public function hasIcon()

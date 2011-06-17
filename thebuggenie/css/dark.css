@@ -1,0 +1,189 @@
+/* Dark template
+   Add this file in css folder  
+   Add the next line in template/header.inc.php file before line TBGEvent::createNew('core', 'header_ends')->trigger(); 
+   <link rel="stylesheet" type="text/css" href="<?php echo TBGSettings::getURLhost() . TBGContext::getStrippedTBGPath() . '/css/dark.css'; ?>">
+   The work is in progress but whoever you are welcome to continue and improve it.
+*/   
+
+/* General styles */
+body, td, th { color: #999999;}
+body { background-color: #323232; }
+a { color: #F87C03; }
+a:hover { border-bottom: #888; }
+input, select, textarea, button { color: #BBB; border: #BBB;  }
+input, select, textarea { background-color: #444; }
+input[type="submit"], button, input[type="file"] { background-color: #333; }
+input[type="submit"]:hover, button:hover { background-color: #555; }
+input[type="submit"]:active , button:active { background-color: #444; }
+input[disabled], button[disabled], select[disabled] { background-color: #444; color: #222; }
+th { border-bottom: #222; background-color: #333; }
+div.image_container { border: #333; background-color: #232323; }
+/* end general styles */
+/* Main header area */
+.main_header { background-color: #1a1a1a; color: #FFF; }
+#logo_td { border-bottom: #666666; }
+#header_userinfo { background: #2a2a2a; }
+#header_userinfo a { color: #666666; }
+.header_userlinks { color: #1a1a1a }
+.submenu_strip .selected_project { color: #555; border-color: #888; }
+.submenu_strip { background-color: transparent; border-bottom: #EEE;  }
+/* End main header area */
+/* error and success message popups / slidedowns */
+/* end slidedowns */
+/* main page layout dimensions and details */
+/* end main page layout */
+/* footer section */
+/* login and registration page styling */
+/* end login / registration styling */
+/* table column containing an image */
+/* frontpage article layout styling */
+.article { color: #777;  }
+/* comments styling */
+/* end comments styling */
+/* generic closed and blocking issue styling */
+/* end closed / blocking */
+/* faded text styles */
+/* end faded text */
+/* autocompleter styling */
+/* end autocompleter */
+/* tabbed menu styles */
+.tab_menu { border-bottom: #444; }
+.tab_menu li:hover img.menu_dropdown, .tab_menu_container:hover img.menu_dropdown { border-color: #222; background-color: #444444; }
+.tab_menu li { color: #777;  }
+.tab_menu li { border: #222; border-bottom: #444; background-color: #1a1a1a;  }
+.tab_menu .selected, .tab_menu li:hover { color: #aaa;  }
+.tab_menu .selected, .tab_menu li.selected:hover { background-color: #333; border: #444; border-bottom: #444; }
+.tab_menu li:hover { background-color: #444; border: #222;  }
+.tab_menu .tab_menu_dropdown, .tab_menu_container .tab_menu_dropdown { background-color: #555; color: #FFF; }
+.user_menu_dropdown { background: #2a2a2a !important; }
+div.dropdown_separator { border-left: #222;  }
+.tab_menu li.selected .tab_menu_dropdown, .tab_menu_container li.selected .tab_menu_dropdown { background-color: #444; color: #FFF; }
+.tab_menu li.selected:hover img.menu_dropdown { background-color: #333; border: #CCC; }
+.tab_menu .tab_menu_dropdown a:hover, .tab_menu_container .tab_menu_dropdown a:hover { background-color: #F87C03; }
+.tab_menu li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_menu_dropdown a:hover { background-color: #333; }
+/* end tabbed menu */
+/* header tabbed menu */
+.header_menu { background-color: #1a1a1a; color: #FFF; border-color: #333; }
+.header_menu li:hover { background-color: #333; border-color: #444; border-bottom: #444; }
+.header_menu .selected, .header_menu li.selected:hover { color: #FFF; background-color: #333; border-bottom: #333; }
+/* end header menu */
+/* project menu strip */
+/* end project menu */
+/* project front page menu */
+.project_strip .project_name a { color: #999;  }
+.submenu_strip.project_context { background-color: #333 }
+/* end project frontpage menu */
+/* unformatted lists */
+/* generic header formatting */
+/* general text area styling */
+/* end text area styling */
+/* shadowed boxes */
+/* user popups */
+/* end user popups */
+/* rounded boxes styling */
+.rounded_box.green { background-color: #669900; border-color: #aaC6aa; color: #242; }
+.rounded_box.iceblue { background-color: #e6f0ff; border-color: #B1B8E9; }
+.rounded_box.lightgrey { background-color: #3e3e3e; border-color: #222; }
+.rounded_box.verylightgrey { background-color: #434343; border-color: #222; }
+.rounded_box.white { background-color: #252525;	border-color: #222;}
+.rounded_box.white th {background-color: #5d5d5d; border-bottom: #DDD;  }
+/* end rounded box styling */
+/* hoverable styles */
+/* selected green and selected red styling */
+tr.selected_green { background-color: #338533; }
+tr.selected_green:hover { background-color: #06d506; }
+/* end selected green / red */
+/* some table styling */
+/* end table styling */
+/* configuration section styling */
+.config_buttons li:hover { background-color: #333333; }
+.config_buttons li.config_selected { background-color: #222; }
+.tab_header { border-bottom: #444; }
+/* permissions configuration styling */
+/* end permissions */
+/* configure users / teams / groups styling */
+/* end users / teams / groups */
+/* workflow styling */
+/* end workflow styling */
+/* end config styling */
+/* sidebar formatting */
+/* project list, client/team dashboard and overview */
+/* end project styling */
+/* account page tab panes content */
+/* friend names links */
+/* reporting an issue styles */
+/* end report issue styling */
+/* very visible green button */
+/* very visible green button */
+.nice_button { color: #FFF; }
+.nice_button input { border-top: #9D9; color: #FFF; background-color: #5a5; }
+.nice_button input:active { background-color: #7B7; }
+.nice_button input:hover { background-color: #8C8; }
+.nice_button.disabled { color: #FFF; }
+.nice_button.disabled input { border-top: #F9F9F9; color: #AAA; background-color: #EEE; }
+.nice_button.disabled input:active { background-color: #F5F5F5; }
+.nice_button.workflow { color: #FFF; border: #E3DDA5; }
+.nice_button.workflow input { border-left: #CDC895; border-bottom: #CDC895; color: #6E6E53; background-color: #E3DDA5;  }
+.nice_button.workflow input:active { background-color: #E9E9B0; }
+.nice_button.workflow input:hover { background-color: #D3CE99; }
+/* end very visible button */
+
+/* end very visible button */
+/* workflow actions */
+/* end workflow actions */
+/* fullpage (faded out) backdrop styling */
+.backdrop_box { background: #2a2a2a !important; }
+.backdrop_detail_footer a { color: #c1c0c0;; }
+/* end backdrop styling */
+/* main issue view styling */
+/* issue info boxes */
+/* end issue info boxes */
+/* issue extra data (pain and votes) - includes search result styling */
+/* end issue pain and votes */
+/* issue edit and undo link styling - also what makes them appear and disappear */
+/* end edit and undo styling */
+/* issue left hand list */
+/* left hand dropdown boxes */
+/* end dropdown */
+/* end left hand list */
+/* changed, merged and unmerged styling */
+/* end changed, merged, unmerged */
+.header_div { border-bottom: #222;  }
+.header_div.light { border-color: #333; }
+.percent_filled { background-color: #ff9933; }
+.percent_unfilled { background-color: #ffcc99; }
+.faded_out .percent_filled { background-color: #ff9933; }
+.faded_out .percent_unfilled { background-color: #ffcc99; }
+.priority_percentage .percent_unfilled, .priority_percentage .faded_out .percent_unfilled { background-color: #ffcc99; }
+/* end view issue styling */
+/* user dashboard styling */
+/* end user dashboard */
+/* scrum page styling */
+/* end scrum page styling */
+/* menu links */
+.menu_links .content a.selected { color: #339900; }
+/* end menu links */
+/* generic blue infobox */
+/* end infobox */
+/* add task popup */
+/* project dashboard */
+/* end dashboard */
+/* project timeline */
+/* end timeline */
+/* project roadmap styling */
+/* end roadmap */
+/* search styling */
+/* search boxes */
+/* end boxes */
+/* search results */
+.search_results h5 { background-color: #313131; }
+.search_results tbody tr:hover { background-color: #929292; }
+.search_results td.result_issue a .issue_title { color: #d6d6d6; }
+/* end results */
+/* saved searches */
+/* end search styling */
+/* non-link-styled issue titles */
+a .issue_title { color: #777; }
+/* article styles */
+/* import */
+/* updates */
