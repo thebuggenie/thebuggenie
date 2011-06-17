@@ -146,6 +146,12 @@
 			You won't be able to display graphs statistics and some other images.<br/>More information is available at <a href="http://php.net/manual/en/book.image.php" target="_blank">php.net</a>
 			</div>
 		<?php endif; ?>
+		<?php if (get_magic_quotes_gpc()): ?>
+			<div class="install_progress prereq_warn">
+			<b>Magic quotes are enabled</b><br>
+			You have magic quotes enabled on your PHP setup. You should disable these to avoid double slashes being shown in places where you enter your own text.<br/>More information is available at <a href="http://www.php.net/manual/en/security.magicquotes.php" target="_blank">php.net</a>
+			</div>
+		<?php endif; ?>
 		<?php if ($all_well): ?>
 			<br style="clear: both;">
 			<div style="margin-top: 10px; font-size: 13px; text-align: center; margin-left: 200px; text-align: left;">
