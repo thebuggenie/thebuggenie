@@ -5,28 +5,28 @@
 		<?php echo __('Please select the type and item you wish to add as affected by this issue.'); ?>
 		<br />
 		<div class="header_div"><?php echo __('Item type'); ?></div>
-		<?php if ($issue->getProject()->isEditionsEnabled()): ?><input type="radio" name="item_type" id="item_type_edition" value="edition" onClick="$('no_type').hide(); $('which_item_edition').show(); $('which_item_component').hide(); $('which_item_build').hide(); $('item_submit').show();" /><label for="item_type_edition"> <?php echo __('Edition'); ?></label><br /><?php endif; ?>
-		<?php if ($issue->getProject()->isComponentsEnabled()): ?><input type="radio" name="item_type" id="item_type_component" value="component" onClick="$('no_type').hide(); $('which_item_edition').hide(); $('which_item_component').show(); $('which_item_build').hide(); $('item_submit').show();" /><label for="item_type_component"> <?php echo __('Component'); ?></label><br /><?php endif; ?>
-		<?php if ($issue->getProject()->isBuildsEnabled()): ?><input type="radio" name="item_type" id="item_type_build" value="build" onClick="$('no_type').hide(); $('which_item_edition').hide(); $('which_item_component').hide(); $('which_item_build').show(); $('item_submit').show();" /><label for="item_type_build"> <?php echo __('Release'); ?></label><br /><?php endif; ?>
+		<?php if ($issue->getProject()->isEditionsEnabled() && $issue->canEditAffectedEditions()): ?><input type="radio" name="item_type" id="item_type_edition" value="edition" onClick="$('no_type').hide(); $('which_item_edition').show(); $('which_item_component').hide(); $('which_item_build').hide(); $('item_submit').show();" /><label for="item_type_edition"> <?php echo __('Edition'); ?></label><br /><?php endif; ?>
+		<?php if ($issue->getProject()->isComponentsEnabled() && $issue->canEditAffectedComponents()): ?><input type="radio" name="item_type" id="item_type_component" value="component" onClick="$('no_type').hide(); $('which_item_edition').hide(); $('which_item_component').show(); $('which_item_build').hide(); $('item_submit').show();" /><label for="item_type_component"> <?php echo __('Component'); ?></label><br /><?php endif; ?>
+		<?php if ($issue->getProject()->isBuildsEnabled() && $issue->canEditAffectedBuilds()): ?><input type="radio" name="item_type" id="item_type_build" value="build" onClick="$('no_type').hide(); $('which_item_edition').hide(); $('which_item_component').hide(); $('which_item_build').show(); $('item_submit').show();" /><label for="item_type_build"> <?php echo __('Release'); ?></label><br /><?php endif; ?>
 		<?php if ($issue->getProject()->isBuildsEnabled() || $issue->getProject()->isComponentsEnabled() || $issue->getProject()->isEditionsEnabled()): ?>
 		<div class="header_div"><?php echo __('Affected item'); ?></div>
 		<div class="faded_out" id="no_type" style="padding-top: 10px;"><?php echo('Please select an item type'); ?></div>
 		<select name="which_item_edition" id="which_item_edition" style="width: 100%; margin-top: 10px; display: none;">
-		<?php if ($issue->getProject()->isEditionsEnabled()): ?>
+		<?php if ($issue->getProject()->isEditionsEnabled() && $issue->canEditAffectedEditions()): ?>
 			<?php foreach ($editions as $edition): ?>
 			<option value="<?php echo $edition->getID(); ?>"><?php echo $edition->getName(); ?></option>
 			<?php endforeach; ?>
 		<?php endif; ?>
 		</select>
 		<select name="which_item_component" id="which_item_component" style="width: 100%; margin-top: 10px; display: none;">
-		<?php if ($issue->getProject()->isComponentsEnabled()): ?>
+		<?php if ($issue->getProject()->isComponentsEnabled() && $issue->canEditAffectedComponents()): ?>
 			<?php foreach ($components as $component): ?>
 			<option value="<?php echo $component->getID(); ?>"><?php echo $component->getName(); ?></option>
 			<?php endforeach; ?>
 		<?php endif; ?>
 		</select>
 		<select name="which_item_build" id="which_item_build" style="width: 100%; margin-top: 10px; display: none;">
-		<?php if ($issue->getProject()->isBuildsEnabled()): ?>
+		<?php if ($issue->getProject()->isBuildsEnabled() && $issue->canEditAffectedBuilds()): ?>
 			<?php foreach ($builds as $build): ?>
 			<option value="<?php echo $build->getID(); ?>"><?php echo $build->getName(); ?> (<?php print $build->getVersionMajor(); ?>.<?php print $build->getVersionMinor(); ?>.<?php print $build->getVersionRevision(); ?>)</option>
 			<?php endforeach; ?>
