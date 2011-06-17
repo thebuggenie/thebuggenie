@@ -65,7 +65,7 @@
 			</div>
 			<b>If you're installing this on a Linux server,</b> running this command should fix it:<br>
 			<div class="command_box">
-			chmod a+w -R <?php echo THEBUGGENIE_CORE_PATH; ?>cache
+			chmod -R a+w <?php echo THEBUGGENIE_CORE_PATH; ?>cache
 			</div>
 		<?php endif; ?>
 		<?php if ($thebuggenie_folder_perm_ok): ?>
