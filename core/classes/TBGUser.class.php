@@ -1626,7 +1626,7 @@
 			TBGLogging::log('Checking permission '.$permission_type);
 			$group_id = ($this->getGroup() instanceof TBGGroup) ? $this->getGroup()->getID() : 0;
 			$retval = TBGContext::checkPermission($permission_type, $this->getID(), $group_id, $this->getTeams(), $target_id, $module_name, $explicit, $permissive);
-			TBGLogging::log('...done (Checking permissions '.$permission_type.')');
+			TBGLogging::log('...done (Checking permissions '.$permission_type.') - return was '.(($retval) ? 'true' : 'false'));
 			
 			return $retval;
 		}
