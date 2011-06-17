@@ -190,6 +190,13 @@
 		static protected $_messages = null;
 
 		static protected $_redirect_login = null;
+		
+		/**
+		 * Do you want to disable minifcation of javascript and css?
+		 * 
+		 * @var boolean
+		 */
+		static protected $_minifyoff = false;
 
 		/**
 		 * Returns whether or not we're in install mode
@@ -199,6 +206,16 @@
 		public static function isInstallmode()
 		{
 			return self::$_installmode;
+		}
+		
+		/**
+		 * Returns whether or minify is disabled
+		 * 
+		 * @return boolean
+		 */
+		public static function isMinifyDisabled()
+		{
+			return self::$_minifyoff;
 		}
 
 		/**

@@ -3332,6 +3332,35 @@
 		
 		public function runServe(TBGRequest $request)
 		{
+			if(TBGContext::isMinifyDisabled())
+			{
+				$itemarray = array($request->getParameter('g') => explode(',', base64_decode($request->getParameter('files'))));
+				
+				if (array_key_exists('js', $itemarray))
+				{
+					header('Content-type: text/javascript');
+					foreach($itemarray['js'] as $file)
+					{
+						if(file_exists($file))
+						{
+							echo file_get_contents($file);
+						}
+					}
+				}
+				else
+				{
+					header('Content-type: text/css');
+					foreach($itemarray['css'] as $file)
+					{
+						if(file_exists($file))
+						{
+							echo file_get_contents($file);
+						}
+					}
+				}
+				exit();
+			}
+			
 			$this->getResponse()->setDecoration(TBGResponse::DECORATE_NONE);
 			define('MINIFY_MIN_DIR', dirname(__FILE__).'/../../../core/min');
 
