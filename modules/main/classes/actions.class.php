@@ -140,6 +140,7 @@
 			{
 				foreach ($issues as $starred_issue)
 				{
+					if (!$starred_issue instanceof TBGIssue || !$starred_issue->getProject() instanceof TBGProject || !$this->selected_project instanceof TBGProject) continue;
 					if ($starred_issue->isOpen() && $starred_issue->getProject()->getID() == $this->selected_project->getID())
 					{
 						$issuelist[$starred_issue->getID()] = array('url' => TBGContext::getRouting()->generate('viewissue', array('project_key' => $this->selected_project->getKey(), 'issue_no' => $starred_issue->getFormattedIssueNo())), 'title' => $starred_issue->getFormattedTitle(true, true));
@@ -147,16 +148,18 @@
 				}
 			}
 			
-			foreach ($_SESSION['viewissue_list'] as $k => $i_id)
-			{
-				try
+			if (array_key_exists('viewissue_list', $_SESSION) && is_array($_SESSION['viewissue_list'])) {
+				foreach ($_SESSION['viewissue_list'] as $k => $i_id)
 				{
-					$an_issue = new TBGIssue($i_id);
-					array_unshift($issuelist, array('url' => TBGContext::getRouting()->generate('viewissue', array('project_key' => $an_issue->getProject()->getKey(), 'issue_no' => $an_issue->getFormattedIssueNo())), 'title' => $an_issue->getFormattedTitle(true, true)));
-				}
-				catch (Exception $e)
-				{
-					unset($_SESSION['viewissue_list'][$k]);
+					try
+					{
+						$an_issue = new TBGIssue($i_id);
+						array_unshift($issuelist, array('url' => TBGContext::getRouting()->generate('viewissue', array('project_key' => $an_issue->getProject()->getKey(), 'issue_no' => $an_issue->getFormattedIssueNo())), 'title' => $an_issue->getFormattedTitle(true, true)));
+					}
+					catch (Exception $e)
+					{
+						unset($_SESSION['viewissue_list'][$k]);
+					}
 				}
 			}
 			
