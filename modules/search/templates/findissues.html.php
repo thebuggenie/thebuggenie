@@ -336,6 +336,10 @@
 							{
 								/* Produce get parameters for query */
 								preg_match('/((?<=\/)issues).+$/i', $_SERVER['QUERY_STRING'], $get);
+								if (!isset($get[0]))
+								{
+									preg_match('/((?<=url=)issues).+$/i', $_SERVER['QUERY_STRING'], $get);
+								}
 								if (isset($get[0])) // prevent unhandled error
 								{
 									if (TBGContext::isProjectContext())
