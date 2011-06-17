@@ -1310,6 +1310,36 @@
 		}
 
 		/**
+		 * Return if the user can add related issues to this issue
+		 *
+		 * @return boolean
+		 */
+		public function canEditAffectedComponents()
+		{
+			return (bool) ($this->_permissionCheck('canaddcomponents') || $this->_permissionCheck('canaddextrainformationtoissues'));
+		}
+
+		/**
+		 * Return if the user can add related issues to this issue
+		 *
+		 * @return boolean
+		 */
+		public function canEditAffectedEditions()
+		{
+			return (bool) ($this->_permissionCheck('canaddeditions') || $this->_permissionCheck('canaddextrainformationtoissues'));
+		}
+
+		/**
+		 * Return if the user can add related issues to this issue
+		 *
+		 * @return boolean
+		 */
+		public function canEditAffectedBuilds()
+		{
+			return (bool) ($this->_permissionCheck('canaddbuilds') || $this->_permissionCheck('canaddextrainformationtoissues'));
+		}
+
+		/**
 		 * Return if the user can remove attachments
 		 *
 		 * @return boolean

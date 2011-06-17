@@ -3094,12 +3094,6 @@
 				$issue = TBGContext::factory()->TBGIssue($request->getParameter('issue_id'));
 				$statuses = TBGStatus::getAll();
 
-				if (!$issue->canEditIssue())
-				{
-					$this->getResponse()->setHttpStatus(400);
-					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You are not allowed to do this')));
-				}
-				
 				switch ($request->getParameter('item_type'))
 				{
 					case 'edition':
@@ -3108,6 +3102,12 @@
 							$this->getResponse()->setHttpStatus(400);
 							return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Editions are disabled')));
 						}
+						elseif (!$issue->canEditAffectedEditions())
+						{
+							$this->getResponse()->setHttpStatus(400);
+							return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You are not allowed to do this')));
+						}
+
 						
 						$edition = TBGContext::factory()->TBGEdition($request->getParameter('which_item_edition'));
 						
@@ -3133,6 +3133,11 @@
 							$this->getResponse()->setHttpStatus(400);
 							return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Components are disabled')));
 						}
+						elseif (!$issue->canEditAffectedComponents())
+						{
+							$this->getResponse()->setHttpStatus(400);
+							return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You are not allowed to do this')));
+						}
 						
 						$component = TBGContext::factory()->TBGComponent($request->getParameter('which_item_component'));
 						
@@ -3157,6 +3162,11 @@
 						{
 							$this->getResponse()->setHttpStatus(400);
 							return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Releases are disabled')));
+						}
+						elseif (!$issue->canEditAffectedBuilds())
+						{
+							$this->getResponse()->setHttpStatus(400);
+							return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You are not allowed to do this')));
 						}
 						
 						$build = TBGContext::factory()->TBGBuild($request->getParameter('which_item_build'));
