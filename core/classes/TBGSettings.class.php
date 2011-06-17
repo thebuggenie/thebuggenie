@@ -95,7 +95,7 @@
 
 		static protected $_ver_mj = 3;
 		static protected $_ver_mn = 1;
-		static protected $_ver_rev = '0 FINAL';
+		static protected $_ver_rev = '1';
 		static protected $_ver_name = "Madeleine";
 		static protected $_defaultscope = null;
 		static protected $_settings = null;
