@@ -4,7 +4,6 @@
  * @package Minify
  */
 
-
 /**
  * In 'debug' mode, Minify can combine files with no minification and 
  * add comments to indicate line #s of the original files. 
@@ -34,12 +33,11 @@ $min_errorLogger = true;
  **/
 $min_enableBuilder = false;
 
-
 /**
  * For best performance, specify your temp directory here. Otherwise Minify
  * will have to load extra code to guess. Some examples below:
  */
-//$min_cachePath = 'c:\\WINDOWS\\Temp';
+$min_cachePath = THEBUGGENIE_CORE_PATH . 'cache';
 //$min_cachePath = '/tmp';
 //$min_cachePath = preg_replace('/^\\d+;/', '', session_save_path());
 
