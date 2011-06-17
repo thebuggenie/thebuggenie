@@ -11,10 +11,10 @@
 		public function runForgot(TBGRequest $request)
 		{
 			$i18n = TBGContext::getI18n();
-			
+
 			try
 			{
-				$username = $request->getParameter('forgot_password_username');
+				$username = str_replace('%2E', '.', $request->getParameter('forgot_password_username'));
 				if (!empty($username))
 				{
 					if (($user = TBGUser::getByUsername($username)) instanceof TBGUser)
@@ -59,7 +59,7 @@
 		 */
 		public function runResetPassword(TBGRequest $request)
 		{
-			$this->user = TBGUser::getByUsername($request->getParameter('user'));
+			$this->user = TBGUser::getByUsername(str_replace('%2E', '.', $request->getParameter('user')));
 			$this->username = $request->getParameter('user');
 			$this->id = $request->getParameter('reset_hash');
 			$this->forward403unless($this->user instanceof TBGUser && $this->id == $this->user->getHashPassword(), 'Invalid password reset request');

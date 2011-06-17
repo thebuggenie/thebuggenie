@@ -652,7 +652,7 @@
 		{
 			$this->getResponse()->setPage('login');
 			
-			$row = TBGUsersTable::getTable()->getByUsername($request->getParameter('user'));
+			$row = TBGUsersTable::getTable()->getByUsername(str_replace('%2E', '.', $request->getParameter('user')));
 			if ($row)
 			{
 				if ($row->get(TBGUsersTable::PASSWORD) != $request->getParameter('key'))
