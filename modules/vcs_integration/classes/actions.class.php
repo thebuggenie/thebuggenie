@@ -83,7 +83,7 @@
 		{
 			if (!(TBGContext::getModule('vcs_integration')->isUsingHTTPMethod()))
 			{
-				echo 'Error: This access method has been disallowed';
+				echo 'Error: Github support requires use of the HTTP method';
 				exit;
 			}
 			$passkey = TBGContext::getRequest()->getParameter('passkey');
