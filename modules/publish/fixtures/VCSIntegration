@@ -28,8 +28,18 @@ After saving these settings, you can then set up each project.
 If you wish to use the github hook, please set up HTTP access as previously discussed. You will then need to set up your Github project's post-receive hook to contact The Bug Genie.
 
 To do this, go to your project's service hooks page on github, and set a Post-recieve URL to point to the following URL:
-  http://www.your-tbg-site.com/vcs_integration/PROJECTID/github/?passkey=PASSKEY
+  http://www.your-tbg-site.com/vcs_integration/report/PROJECTID/github/?passkey=PASSKEY
 You will need to set the hostname and path correctly as appropriate, as well as replacing PASSKEY with the passkey you set, and PROJECTID with the ID number of the project, which can be found on the projects tab of VCS Integration configuration.
+
+Any commits which follow the rules for being picked up (see below) will then be recorded against their respective issues on push, though commits which make no changes to the filesystem (i.e. nothing added, removed or modified) will not be recorded in this release of VCS Integration.
+
+==== Gitorious support ====
+If you have a locally hosted Gitorious server, then you can integrate that with The Bug Genie.
+
+Again, set a post-receive hook as per your documentation, the URL for which is:
+  http://www.your-tbg-site.com/vcs_integration/report/PROJECTID/gitorious/?passkey=PASSKEY
+
+Please note that the Gitorious support will only create comments and will not record filesystem changes, plus it will not work on the gitorious.com server.
 
 === Project settings ===
 Each project to use VCS Integration will then require configuration. If a project will not be using VCS Integration, then you can leave its repository URL field empty.
