@@ -110,8 +110,7 @@
 			$previous = $entries->before;
 		
 			// Parse each commit individually
-			$allcommits = array_reverse($entries->commits);
-			foreach ($allcommits as $commit)
+			foreach ($entries->commits as $commit)
 			{
 				$email = $commit->author->email;
 				$author = $commit->author->name;
@@ -149,8 +148,8 @@
 				
 				echo TBGContext::getModule('vcs_integration')->addNewCommit($project, $commit_msg, $old_rev, $new_rev, $time, array($modified, $added, $removed), $author);
 				$previous = $commit->id;
-				exit;
 			}
+			exit();
 		}
 		
 		public function runAddCommitGitorious(TBGRequest $request)
