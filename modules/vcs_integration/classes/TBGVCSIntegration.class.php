@@ -96,7 +96,15 @@
 			{
 				if ($request->hasParameter('web_path_' . $aProduct->getID()))
 				{
-					$this->saveSetting('web_path_' . $aProduct->getID(), $request->getParameter('web_path_' . $aProduct->getID()));
+					// github is always at github.com
+					if ($request->hasParameter('web_type_' . $aProduct->getID()) && $request->getParameter('web_type_' . $aProduct->getID()) == 'github')
+					{
+						$this->saveSetting('web_path_' . $aProduct->getID(), 'http://github.com');
+					}
+					else
+					{
+						$this->saveSetting('web_path_' . $aProduct->getID(), $request->getParameter('web_path_' . $aProduct->getID()));
+					}
 				}
 				if ($request->hasParameter('web_type_' . $aProduct->getID()))
 				{
