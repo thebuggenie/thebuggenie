@@ -77,7 +77,7 @@
 								</tr>
 								<tr>
 									<td style="padding: 5px;"><label for="web_path_<?php echo $aProject->getID(); ?>"><?php echo __('URL to repository browser'); ?></label></td>
-									<td><input type="text" name="web_path_<?php echo $aProject->getID(); ?>" id="web_path_<?php echo $aProject->getID(); ?>" value="<?php echo $module->getSetting('web_path_'.$aProject->getID()); ?>" style="width: 100%;"></td>
+									<td><input type="text" name="web_path_<?php echo $aProject->getID(); ?>" id="web_path_<?php echo $aProject->getID(); ?>" value="<?php echo $module->getSetting('web_path_'.$aProject->getID()); ?>" style="width: 100%;" <?php if ($module->getSetting('web_type_' . $aProject->getID()) == 'github'): ?>disabled<?php endif; ?>></td>
 								</tr>
 								<tr>
 									<td class="config_explanation" colspan="2"><?php echo __('The path to the main page of the repository browser, so links can be correctly generated (<i>see help for details</i>).'); ?></td>
