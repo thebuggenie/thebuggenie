@@ -147,7 +147,7 @@
 					$added = array();
 				}
 				
-				echo TBGContext::getModule('vcs_integration')->addNewCommit($project, $commit_msg, $old_rev, $previous, $time, array($modified, $added, $removed), $author);
+				echo TBGContext::getModule('vcs_integration')->addNewCommit($project, $commit_msg, $old_rev, $new_rev, $time, array($modified, $added, $removed), $author);
 				$previous = $commit->id;
 				exit;
 			}
