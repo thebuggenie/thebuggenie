@@ -96,7 +96,15 @@
 			{
 				if ($request->hasParameter('web_path_' . $aProduct->getID()))
 				{
-					$this->saveSetting('web_path_' . $aProduct->getID(), $request->getParameter('web_path_' . $aProduct->getID()));
+					// github is always at github.com
+					if ($request->hasParameter('web_type_' . $aProduct->getID()) && $request->getParameter('web_type_' . $aProduct->getID()) == 'github')
+					{
+						$this->saveSetting('web_path_' . $aProduct->getID(), 'http://github.com');
+					}
+					else
+					{
+						$this->saveSetting('web_path_' . $aProduct->getID(), $request->getParameter('web_path_' . $aProduct->getID()));
+					}
 				}
 				if ($request->hasParameter('web_type_' . $aProduct->getID()))
 				{
@@ -360,7 +368,7 @@
 							}
 						}
 						
-						$theIssue->addSystemComment(TBGContext::getI18n()->__('Issue updated from code repository'), TBGContext::getI18n()->__('This issue has been updated with the latest changes from the code repository.<source>%commit_msg%</source>', array('commit_msg' => $commit_msg)), $uid);
+						$theIssue->addSystemComment(TBGContext::getI18n()->__('Issue updated from code repository'), TBGContext::getI18n()->__('This issue has been updated with the latest changes from the code repository.<source>%commit_msg%</source>', array('%commit_msg%' => $commit_msg)), $uid);
 
 						foreach ($files as $afile)
 						{

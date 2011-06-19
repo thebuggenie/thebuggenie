@@ -266,7 +266,14 @@
 		 */
 		public function getPostedBy()
 		{
-			return ($this->_posted_by instanceof TBGUser) ? $this->_posted_by : TBGContext::factory()->TBGUser($this->_posted_by);
+			try
+			{
+				return ($this->_posted_by instanceof TBGUser) ? $this->_posted_by : TBGContext::factory()->TBGUser($this->_posted_by);
+			}
+			catch (Exception $e)
+			{
+				return null;
+			}
 		}
 
 		/**

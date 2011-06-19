@@ -83,7 +83,7 @@
 		{
 			if (!(TBGContext::getModule('vcs_integration')->isUsingHTTPMethod()))
 			{
-				echo 'Error: This access method has been disallowed';
+				echo 'Error: Github support requires use of the HTTP method';
 				exit;
 			}
 			$passkey = TBGContext::getRequest()->getParameter('passkey');
@@ -94,7 +94,7 @@
 			}
 			
 			$project = TBGContext::getRequest()->getParameter('project');
-			$data = TBGContext::getRequest()->getParameter('payload');
+			$data = html_entity_decode(TBGContext::getRequest()->getParameter('payload'));
 			if (empty($data) || $data == null)
 			{
 				die('Error: Invalid data');
@@ -104,28 +104,52 @@
 			{
 				die('Error: Github support requires either PHP 5.2.0 or later, or the json PECL module version 1.2.0 or later for prior versions of PHP');
 			}
-		
+
 			$entries = json_decode($data);
-		
+	
 			$previous = $entries->before;
 		
 			// Parse each commit individually
 			foreach ($entries->commits as $commit)
 			{
-				$email = $commit->author->_email;
+				$email = $commit->author->email;
 				$author = $commit->author->name;
 				$new_rev = $commit->id;
+				$old_rev = $previous;
 				$commit_msg = $commit->message;
 				$time = strtotime($commit->timestamp);
 				
-				$f_issues = array_unique($f_issues[3]);
-
-				$file_lines = preg_split('/[\n\r]+/', $changed);
-				$files = array();
+				if (property_exists($commit, 'modified'))
+				{
+					$modified = $commit->modified;
+				}
+				else
+				{
+					$modified = array();
+				}
 				
-				echo TBGContext::getModule('vcs_integration')->addNewCommit($project, $commit_msg, $old_rev, $previous, $time, array($entries->commits->modfied, $entries->commits->added, $entries->commits->removed), $author);
-				exit;
+				if (property_exists($commit, 'removed'))
+				{
+					$removed = $commit->removed;
+				}
+				else
+				{
+					$removed = array();
+				}
+				
+				if (property_exists($commit, 'added'))
+				{
+					$added = $commit->added;
+				}
+				else
+				{
+					$added = array();
+				}
+				
+				echo TBGContext::getModule('vcs_integration')->addNewCommit($project, $commit_msg, $old_rev, $new_rev, $time, array($modified, $added, $removed), $author);
+				$previous = $commit->id;
 			}
+			exit();
 		}
 		
 		public function runAddCommitGitorious(TBGRequest $request)
