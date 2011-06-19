@@ -6,3 +6,4 @@ core/b2db_bootstrap.inc.php
 core/cache/
 installed
 thebuggenie/.htaccess
+nbproject
