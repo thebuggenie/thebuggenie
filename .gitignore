@@ -1,3 +1,8 @@
 .settings/
 .buildpath
 .project
+thebuggenie.log
+core/b2db_bootstrap.inc.php
+core/cache/
+installed
+thebuggenie/.htaccess
