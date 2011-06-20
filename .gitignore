@@ -7,3 +7,4 @@ core/cache/
 installed
 thebuggenie/.htaccess
 nbproject
+*.kdev4
