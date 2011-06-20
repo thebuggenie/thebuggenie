@@ -259,7 +259,7 @@
 									<?php foreach ($issue->getAvailableWorkflowTransitions() as $transition): ?>
 										<li class="nice_button workflow<?php if ($cc == 1): ?> first<?php endif; if ($cc == $num_transitions): ?> last<?php endif; ?>">
 											<?php if ($transition->hasTemplate()): ?>
-												<input type="button" value="<?php echo $transition->getName(); ?>" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'workflow_transition', 'transition_id' => $transition->getID(), 'issue_id' => $issue->getID())); ?>');">
+												<input type="button" value="<?php echo $transition->getName(); ?>" onclick="TBG.showWorkflowTransition(<?php echo $transition->getID(); ?>);">
 											<?php else: ?>
 												<form action="<?php echo make_url('transition_issue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'transition_id' => $transition->getID())); ?>" method="post">
 													<input type="submit" value="<?php echo $transition->getName(); ?>">
@@ -508,3 +508,8 @@
 		<div class="content"><?php echo __("This could be because you the issue doesn't exist, has been deleted or you don't have permission to see it"); ?></div>
 	</div>
 <?php endif; ?>
+<?php foreach ($issue->getAvailableWorkflowTransitions() as $transition): ?>
+	<?php if ($transition instanceof TBGWorkflowTransition && $transition->hasTemplate()): ?>
+		<?php include_component($transition->getTemplate(), array('issue' => $issue, 'transition' => $transition)); ?>
+	<?php endif; ?>
+<?php endforeach; ?>

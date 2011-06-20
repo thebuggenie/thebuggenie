@@ -381,47 +381,49 @@ function switchSubmenuTab(visibletab, menu)
 function showFadedBackdrop(url)
 {
 	$('fullpage_backdrop').show();
-	new Ajax.Request(url, {
-	asynchronous:true,
-	method: "post",
-	evalScripts: true,
-	onLoading: function (transport) {
-		$('fullpage_backdrop_indicator').show();
-	},
-	onSuccess: function (transport) {
-		var json = transport.responseJSON;
-		if (json && (json.failed || json.error))
-		{
-			failedMessage(json.error);
+	if (url != undefined) {
+		new Ajax.Request(url, {
+		asynchronous:true,
+		method: "post",
+		evalScripts: true,
+		onLoading: function (transport) {
+			$('fullpage_backdrop_indicator').show();
+		},
+		onSuccess: function (transport) {
+			var json = transport.responseJSON;
+			if (json && (json.failed || json.error))
+			{
+				failedMessage(json.error);
+				$('fullpage_backdrop_indicator').hide();
+				$('fullpage_backdrop').hide();
+			}
+			else if (json)
+			{
+				$('fullpage_backdrop_indicator').hide();
+				$('fullpage_backdrop_content').update(json.content);
+			}
+			else
+			{
+				failedMessage(transport.responseText);
+				$('fullpage_backdrop_indicator').hide();
+				$('fullpage_backdrop').hide();
+			}
+		},
+		onFailure: function (transport) {
+			var json = transport.responseJSON;
+			if (json && (json.failed || json.error))
+			{
+				failedMessage(json.error);
+			}
+			else
+			{
+				failedMessage(transport.responseText);
+			}
 			$('fullpage_backdrop_indicator').hide();
 			$('fullpage_backdrop').hide();
 		}
-		else if (json)
-		{
-			$('fullpage_backdrop_indicator').hide();
-			$('fullpage_backdrop_content').update(json.content);
-		}
-		else
-		{
-			failedMessage(transport.responseText);
-			$('fullpage_backdrop_indicator').hide();
-			$('fullpage_backdrop').hide();
-		}
-	},
-	onFailure: function (transport) {
-		var json = transport.responseJSON;
-		if (json && (json.failed || json.error))
-		{
-			failedMessage(json.error);
-		}
-		else
-		{
-			failedMessage(transport.responseText);
-		}
-		$('fullpage_backdrop_indicator').hide();
-		$('fullpage_backdrop').hide();
+		});
 	}
-	});
 }
 
 function resetFadedBackdrop()
@@ -1345,4 +1347,14 @@ function addComment(url, commentcount_span)
 	}
 	});
 	return false;
+}
+
+var TBG = {};
+
+TBG.showWorkflowTransition = function(transition_id) {
+	showFadedBackdrop();
+	$('fullpage_backdrop_indicator').hide();
+	var workflow_div = $('issue_transition_container_' + transition_id).clone(true);
+	$('fullpage_backdrop_content').update(workflow_div);
+	workflow_div.appear({duration: 0.2});
 }
