@@ -1349,7 +1349,9 @@ function addComment(url, commentcount_span)
 	return false;
 }
 
-var TBG = {};
+var TBG = {
+	activated_popoutmenu: undefined
+};
 
 TBG.showWorkflowTransition = function(transition_id) {
 	showFadedBackdrop();
@@ -1358,3 +1360,23 @@ TBG.showWorkflowTransition = function(transition_id) {
 	$('fullpage_backdrop_content').update(workflow_div);
 	workflow_div.appear({duration: 0.2});
 }
+
+TBG.toggleBreadcrumbItem = function (item) {
+	item.up('li').next().toggleClassName('popped_out');
+	item.toggleClassName('activated');
+}
+
+TBG.toggleBreadcrumbMenuPopout = function (event) {
+	var item = event.findElement('a');
+	if (TBG.activated_popoutmenu != undefined && TBG.activated_popoutmenu != item) {
+		TBG.toggleBreadcrumbItem(TBG.activated_popoutmenu);
+	}
+	if (item != undefined && item.hasClassName('submenu_activator')) {
+		TBG.toggleBreadcrumbItem(item);
+		TBG.activated_popoutmenu = item;
+	} else {
+		TBG.activated_popoutmenu = undefined;
+	}
+}
+
+document.observe('click', TBG.toggleBreadcrumbMenuPopout);

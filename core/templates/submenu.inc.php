@@ -1,6 +1,6 @@
 <div class="submenu_strip<?php if (TBGContext::isProjectContext()): ?> project_context<?php endif; ?>">
 	<div class="project_stuff">
-		<ul>
+		<ul id="submenu">
 			<?php $breadcrumbs = $tbg_response->getBreadcrumbs(); ?>
 			<?php foreach ($breadcrumbs as $index => $breadcrumb): ?>
 				<?php $next_has_menu = (array_key_exists($index + 1, $breadcrumbs) && array_key_exists('subitems', $breadcrumbs[$index + 1]) && is_array($breadcrumbs[$index + 1]['subitems'])); ?>
@@ -24,7 +24,7 @@
 							<span <?php if ($class): ?> class="<?php echo $class; ?>"<?php endif; ?> style="float: left;"><?php echo $breadcrumb['title']; ?></span>
 						<?php endif; ?>
 						<?php if ($next_has_menu): ?>
-							<?php echo javascript_link_tag(image_tag('tabmenu_dropdown_popout.png', array('class' => 'dropdown_activator clickable')), array('onclick' => "$(this).up('li').next().toggleClassName('popped_out');$(this).toggleClassName('activated');", 'title' => __('Click to expand'))); ?>
+							<?php echo javascript_link_tag(image_tag('tabmenu_dropdown_popout.png', array('class' => 'dropdown_activator clickable')), array('title' => __('Click to expand'), 'class' => 'submenu_activator')); ?>
 						<?php elseif ($index < count($breadcrumbs) - 1): ?>
 							<?php echo image_tag('tabmenu_dropdown_popout.png', array('class' => 'dropdown_activator')); ?>
 						<?php endif; ?>
