@@ -40,42 +40,6 @@
 				<input type="hidden" name="filters[text][operator]" value="=">
 				<?php echo image_tag('spinning_16.gif', array('id' => 'quicksearch_indicator', 'style' => 'position: absolute; left: 305px; top: 2px; display: none; z-index: 10;')); ?>
 				<input type="text" name="filters[text][value]" id="searchfor" value="<?php echo $quicksearch_title; ?>" style="width: 320px; padding: 1px 1px 1px;" onblur="if ($('searchfor').getValue() == '') { $('searchfor').value = '<?php echo $quicksearch_title; ?>'; $('searchfor').addClassName('faded_out'); }" onfocus="if ($('searchfor').getValue() == '<?php echo $quicksearch_title; ?>') { $('searchfor').clear(); } $('searchfor').removeClassName('faded_out');" class="faded_out"><div id="searchfor_autocomplete_choices" class="autocomplete rounded_box"></div>
-				<script type="text/javascript">
-
-				Ajax.Autocompleter.extract_value = function (value, className)
-				{
-					var result;
-					var elements = value.getElementsByClassName(className);
-					if (elements && elements.length == 1)
-					{
-						result = elements[0].innerHTML.unescapeHTML();
-					}
-
-					return result;
-				};
-  
-				new Ajax.Autocompleter(
-					"searchfor",
-					"searchfor_autocomplete_choices",
-					'<?php echo (TBGContext::isProjectContext()) ? make_url('project_quicksearch', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('quicksearch'); ?>',
-					{
-						paramName: "filters[text][value]",
-						minChars: 2,
-						indicator: 'quicksearch_indicator',
-						afterUpdateElement: function (elem, value)
-						{
-							val = Ajax.Autocompleter.extract_value(value, 'url');
-							if (val != '' && val !== undefined)
-							{
-								window.location = val;
-								$('quicksearch_indicator').show();
-								$('searchfor').blur();
-							}
-						}
-					}
-				);
-
-				</script>
 				<input type="submit" value="<?php echo TBGContext::getI18n()->__('Find'); ?>" style="padding: 0 2px 0 2px;">
 			</div>
 		</form>

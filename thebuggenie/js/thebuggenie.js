@@ -1350,8 +1350,32 @@ function addComment(url, commentcount_span)
 }
 
 var TBG = {
-	activated_popoutmenu: undefined
+	activated_popoutmenu: undefined,
+	autocompleter_url: undefined
 };
+
+TBG._initializeAutocompleter = function() {
+	new Ajax.Autocompleter(
+		"searchfor",
+		"searchfor_autocomplete_choices",
+		TBG.autocompleter_url,
+		{
+			paramName: "filters[text][value]",
+			minChars: 2,
+			indicator: 'quicksearch_indicator',
+			afterUpdateElement: TBG.extractAutocompleteValue
+		}
+	);
+}
+
+TBG.initialize = function(options) {
+	for(var key in options) {
+		TBG[key] = options[key];
+	}
+	TBG._initializeAutocompleter();
+	Event.observe(window, 'resize', TBG.resizeWatcher);
+	document.observe('click', TBG.toggleBreadcrumbMenuPopout);
+}
 
 TBG.showWorkflowTransition = function(transition_id) {
 	showFadedBackdrop();
@@ -1361,22 +1385,42 @@ TBG.showWorkflowTransition = function(transition_id) {
 	workflow_div.appear({duration: 0.2});
 }
 
-TBG.toggleBreadcrumbItem = function (item) {
+TBG._toggleBreadcrumbItem = function(item) {
 	item.up('li').next().toggleClassName('popped_out');
 	item.toggleClassName('activated');
 }
 
-TBG.toggleBreadcrumbMenuPopout = function (event) {
+TBG.toggleBreadcrumbMenuPopout = function(event) {
 	var item = event.findElement('a');
 	if (TBG.activated_popoutmenu != undefined && TBG.activated_popoutmenu != item) {
-		TBG.toggleBreadcrumbItem(TBG.activated_popoutmenu);
+		TBG._toggleBreadcrumbItem(TBG.activated_popoutmenu);
 	}
 	if (item != undefined && item.hasClassName('submenu_activator')) {
-		TBG.toggleBreadcrumbItem(item);
+		TBG._toggleBreadcrumbItem(item);
 		TBG.activated_popoutmenu = item;
 	} else {
 		TBG.activated_popoutmenu = undefined;
 	}
 }
 
-document.observe('click', TBG.toggleBreadcrumbMenuPopout);
+TBG.extractAutocompleteValue = function(elem, value) {
+	var elements = value.select('.url');
+	if (elements.size() == 1) {
+		window.location = elements[0].innerHTML.unescapeHTML();
+		$('quicksearch_indicator').show();
+		$('searchfor').blur();
+	}
+};
+
+TBG.resizeWatcher = function() {
+	if (($('fullpage_backdrop') && $('fullpage_backdrop').visible()) || ($('attach_file') && $('attach_file').visible())) {
+		var docheight = document.viewport.getHeight();
+		var backdropheight = $('backdrop_detail_content').getHeight();
+		if (backdropheight > (docheight - 100)) {
+			$('backdrop_detail_content').setStyle({height: docheight - 100 + 'px', overflow: 'scroll'});
+		} else {
+			$('backdrop_detail_content').setStyle({height: 'auto', overflow: ''});
+		}
+	}
+}
+

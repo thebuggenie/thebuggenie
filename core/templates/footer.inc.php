@@ -127,24 +127,7 @@
 			</tr>
 		</table>
 		<script type="text/javascript">
-			var containerResize = function ()
-			{
-				if (($('fullpage_backdrop') && $('fullpage_backdrop').visible()) || ($('attach_file') && $('attach_file').visible()))
-				{
-					var docheight = document.viewport.getHeight();
-					var backdropheight = $('backdrop_detail_content').getHeight();
-					if (backdropheight > (docheight - 100))
-					{
-						$('backdrop_detail_content').setStyle({height: docheight - 100 + 'px', overflow: 'scroll'});
-					}
-					else
-					{
-						$('backdrop_detail_content').setStyle({height: 'auto', overflow: ''});
-					}
-				}
-			}
-
-			Event.observe(window, 'resize', containerResize);
+			document.observe('dom:loaded', TBG.initialize({ autocompleter_url: '<?php echo (TBGContext::isProjectContext()) ? make_url('project_quicksearch', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('quicksearch'); ?>'}));
 		</script>		
 	</body>
 </html>
