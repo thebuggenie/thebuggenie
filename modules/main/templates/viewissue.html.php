@@ -284,7 +284,7 @@
 								</div>
 								<div id="description_content" class="<?php if ($issue->isDescriptionChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isDescriptionMerged()): ?> issue_detail_unmerged<?php endif; ?>">
 									<div class="faded_out" id="no_description" <?php if ($issue->getDescription() != ''):?> style="display: none;" <?php endif; ?>><?php echo __('Nothing entered.'); ?></div>
-									<div id="description_name">
+									<div id="description_name" class="issue_inline_description">
 										<?php if ($issue->getDescription()): ?>
 											<?php echo tbg_parse_text($issue->getDescription(), false, null, array('headers' => false, 'issue' => $issue)); ?>
 										<?php endif; ?>
@@ -316,7 +316,7 @@
 								</div>
 								<div id="reproduction_steps_content" class="<?php if ($issue->isReproduction_StepsChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isReproduction_StepsMerged()): ?> issue_detail_unmerged<?php endif; ?>">
 									<div class="faded_out" id="no_reproduction_steps" <?php if ($issue->getReproductionSteps() != ''):?> style="display: none;" <?php endif; ?>><?php echo __('Nothing entered.'); ?></div>
-									<div id="reproduction_steps_name">
+									<div id="reproduction_steps_name" class="issue_inline_description">
 										<?php if ($issue->getReproductionSteps()): ?>
 											<?php echo tbg_parse_text($issue->getReproductionSteps(), false, null, array('headers' => false, 'issue' => $issue)); ?>
 										<?php endif; ?>
