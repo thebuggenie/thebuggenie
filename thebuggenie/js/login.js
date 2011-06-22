@@ -17,7 +17,7 @@ function loginRegister1(url)
 				Form.reset('register1_form');
 				$('register1_indicator').hide();
 				$('register1_button').show();			
-				failedMessage(json.error);
+				TBG.Main.failedMessage(json.error);
 			}
 			else
 			{
@@ -34,7 +34,7 @@ function loginRegister1(url)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				failedMessage(json.error);
+				TBG.Main.failedMessage(json.error);
 			}
 		}
 	});
@@ -64,7 +64,7 @@ function loginRegister2(url)
 				json.fields.each(function(field) {
 					$(field).setStyle({ backgroundColor: '#FBB' });
 				});	
-				failedMessage(json.error);
+				TBG.Main.failedMessage(json.error);
 			}
 			else
 			{
@@ -81,7 +81,7 @@ function loginRegister2(url)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				failedMessage(json.error);
+				TBG.Main.failedMessage(json.error);
 			}
 		}
 	});
@@ -107,7 +107,7 @@ function loginUser(url)
 				$('tbg3_referer').value = json.referer;
 				$('login_indicator').hide();
 				$('login_button').show();
-				failedMessage(json.error);
+				TBG.Main.failedMessage(json.error);
 			}
 			else
 			{
@@ -122,7 +122,7 @@ function loginUser(url)
 			{
 				Form.reset('login_form');
 				$('tbg3_referer').value = json.referer;
-				failedMessage(json.error);
+				TBG.Main.failedMessage(json.error);
 			}
 		}
 	});

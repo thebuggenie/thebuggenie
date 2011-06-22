@@ -94,11 +94,11 @@ function saveDashboard(url)
 			var json = transport.responseJSON;
 			if (json.failed)
 			{
-				failedMessage(json.error);
+				TBG.Main.failedMessage(json.error);
 			}
 			else
 			{
-				successMessage(json.message);
+				TBG.Main.successMessage(json.message);
 			}
 			$('save_dashboard_indicator').hide();
 			$('save_dashboard').show();
@@ -107,7 +107,7 @@ function saveDashboard(url)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				failedMessage(json.error);
+				TBG.Main.failedMessage(json.error);
 			}
 			$('save_dashboard_indicator').hide();
 			$('save_dashboard').show();

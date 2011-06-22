@@ -14,13 +14,13 @@ function importCSV(url)
 			var json = transport.responseJSON;
 			if (json.failed)
 			{
-				failedMessage(json.error);
+				TBG.Main.failedMessage(json.error);
 				$('csv_import_indicator').hide();
 			}
 			else
 			{
 				$('csv_import_indicator').hide();
-				successMessage(json.title, json.message);
+				TBG.Main.successMessage(json.title, json.message);
 			}
 		},
 		onFailure: function (transport) {
@@ -28,7 +28,7 @@ function importCSV(url)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				failedMessage(json.error);
+				TBG.Main.failedMessage(json.error);
 				$('csv_import_error_detail').update(json.errordetail);
 				$('csv_import_error').show();
 			}
@@ -52,17 +52,17 @@ function updatecheck(url)
 			var json = transport.responseJSON;
 			if (json && (json.failed))
 			{
-				failedMessage(json.title, json.message);
+				TBG.Main.failedMessage(json.title, json.message);
 			}
 			else
 			{
 				if (json.uptodate)
 				{
-					successMessage(json.title, json.message);
+					TBG.Main.successMessage(json.title, json.message);
 				}
 				else
 				{
-					failedMessage(json.title, json.message);
+					TBG.Main.failedMessage(json.title, json.message);
 				}
 			}
 		},
@@ -72,7 +72,7 @@ function updatecheck(url)
 			var json = transport.responseJSON;
 			if (json && (json.failed))
 			{
-				failedMessage(json.title, json.message);
+				TBG.Main.failedMessage(json.title, json.message);
 			}
 		}
 	});

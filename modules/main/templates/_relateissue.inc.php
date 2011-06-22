@@ -7,13 +7,13 @@
 				<label for="viewissue_find_issue_input"><?php echo __('Find issue(s)'); ?>&nbsp;</label>
 				<input type="text" name="searchfor" id="viewissue_find_issue_input">
 				<input type="submit" value="<?php echo __('Find'); ?>">
-				<?php echo __('%find% or %cancel%', array('%find%' => '', '%cancel%' => '<a href="javascript:void(0);" onclick="resetFadedBackdrop();">' . __('cancel') . '</a>')); ?>
+				<?php echo __('%find% or %cancel%', array('%find%' => '', '%cancel%' => '<a href="javascript:void(0);" onclick="TBG.Main.resetFadedBackdrop();">' . __('cancel') . '</a>')); ?>
 				<?php echo image_tag('spinning_20.gif', array('id' => 'find_issue_indicator', 'style' => 'display: none;')); ?><br>
 			</div>
 		</form>
 		<div id="viewissue_relation_results"></div>
 	</div>
 	<div class="backdrop_detail_footer">
-		<a href="javascript:void(0);" onclick="resetFadedBackdrop();"><?php echo __('Cancel and close this pop-up'); ?></a>
+		<a href="javascript:void(0);" onclick="TBG.Main.resetFadedBackdrop();"><?php echo __('Cancel and close this pop-up'); ?></a>
 	</div>
 </div>

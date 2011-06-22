@@ -13,7 +13,7 @@ function addUserStory(url)
 		var json = transport.responseJSON;
 		if (json.failed)
 		{
-			failedMessage(json.error);
+			TBG.Main.failedMessage(json.error);
 			$('user_story_add_indicator').hide();
 		}
 		else
@@ -46,7 +46,7 @@ function addSprint(url, assign_url)
 		var json = transport.responseJSON;
 		if (json.failed)
 		{
-			failedMessage(json.error);
+			TBG.Main.failedMessage(json.error);
 			$('sprint_add_indicator').hide();
 		}
 		else
@@ -81,7 +81,7 @@ function assignStory(url, dragged, dropped)
 		var json = transport.responseJSON;
 		if (json.failed)
 		{
-			failedMessage(json.error);
+			TBG.Main.failedMessage(json.error);
 			$(dropped.id + '_indicator').hide();
 		}
 		else
@@ -119,7 +119,7 @@ function setStoryColor(url, story_id, color)
 		var json = transport.responseJSON;
 		if (json.failed)
 		{
-			failedMessage(json.error);
+			TBG.Main.failedMessage(json.error);
 			$('color_selector_' + story_id + '_indicator').hide();
 			$('color_selector_' + story_id).hide();
 		}
@@ -163,7 +163,7 @@ function setStoryEstimates(url, story_id)
 		var json = transport.responseJSON;
 		if (json.failed)
 		{
-			failedMessage(json.error);
+			TBG.Main.failedMessage(json.error);
 			$('point_selector_' + story_id + '_indicator').hide();
 			$('scrum_story_' + story_id + '_estimation').hide();
 		}
@@ -180,7 +180,7 @@ function setStoryEstimates(url, story_id)
 				$('scrum_story_' + story_id + '_hours').update(json.hours);
 				if ($('selected_burndown_image'))
 				{
-					reloadImage('selected_burndown_image');
+					TBG.Main.reloadImage('selected_burndown_image');
 				}
 			}
 			$('scrum_sprint_' + json.sprint_id + '_estimated_points').update(json.new_estimated_points);

@@ -1,694 +1,3 @@
-function failedMessage(title, content)
-{
-	$('thebuggenie_failuremessage_title').update(title);
-	$('thebuggenie_failuremessage_content').update(content);
-	if ($('thebuggenie_successMessage').visible())
-	{
-		var success_queue = Effect.Queues.get('successMessage');
-		success_queue.each(function(effect) {effect.cancel();});
-		new Effect.Fade('thebuggenie_successMessage', {queue: {position: 'end', scope: 'successMessage', limit: 2}, duration: 0.2});
-	}
-	if ($('thebuggenie_failuremessage').visible())
-	{
-		var failed_queue = Effect.Queues.get('failedMessage');
-		failed_queue.each(function(effect) {effect.cancel();});
-		new Effect.Pulsate('thebuggenie_failuremessage');
-	}
-	else
-	{
-		new Effect.Appear('thebuggenie_failuremessage', {queue: {position: 'end', scope: 'failedMessage', limit: 2}, duration: 0.2});
-	}
-	new Effect.Fade('thebuggenie_failuremessage', {queue: {position: 'end', scope: 'failedMessage', limit: 2}, delay: 30, duration: 0.2});
-}
-
-function successMessage(title, content)
-{
-	$('thebuggenie_successMessage_title').update(title);
-	$('thebuggenie_successMessage_content').update(content);
-	if (title || content)
-	{
-		if ($('thebuggenie_failuremessage').visible())
-		{
-			var failed_queue = Effect.Queues.get('failedMessage');
-			failed_queue.each(function(effect) {effect.cancel();});
-			new Effect.Fade('thebuggenie_failuremessage', {queue: {position: 'end', scope: 'failedMessage', limit: 2}, duration: 0.2});
-		}
-		if ($('thebuggenie_successMessage').visible())
-		{
-			var success_queue = Effect.Queues.get('successMessage');
-			success_queue.each(function(effect) {effect.cancel();});
-			new Effect.Pulsate('thebuggenie_successMessage');
-		}
-		else
-		{
-			new Effect.Appear('thebuggenie_successMessage', {queue: {position: 'end', scope: 'successMessage', limit: 2}, duration: 0.2});
-		}
-		new Effect.Fade('thebuggenie_successMessage', {queue: {position: 'end', scope: 'successMessage', limit: 2}, delay: 10, duration: 0.2});
-	}
-	else if ($('thebuggenie_successMessage').visible())
-	{
-		var success_queue = Effect.Queues.get('successMessage');
-		success_queue.each(function(effect) {effect.cancel();});
-		new Effect.Fade('thebuggenie_successMessage', {queue: {position: 'end', scope: 'successMessage', limit: 2}, duration: 0.2});
-	}
-}
-
-function clearPopupMessages()
-{
-	var success_queue = Effect.Queues.get('successMessage');
-	success_queue.each(function(effect) {effect.cancel();});
-	var failed_queue = Effect.Queues.get('failedMessage');
-	failed_queue.each(function(effect) {effect.cancel();});
-	if ($('thebuggenie_successMessage').visible())
-	{
-		$('thebuggenie_successMessage').fade({duration: 0.2});
-	}
-	if ($('thebuggenie_failuremessage').visible())
-	{
-		$('thebuggenie_failuremessage').fade({duration: 0.2});
-	}
-}
-
-/**
- * Convenience function for running an AJAX call and updating / showing / hiding
- * divs on json feedback
- *
- * @param url The URL to call
- * @param update_element Id of the element to update (or null if none)
- * @param indicator The id of an indicator element to show while running the ajax call
- * @param insertion If update_div is provided, specify insertion to add to bottom/top of the update_element, or null to replace contents
- * @param clear_update_element_before_loading boolean to say whether or not to clear the update_element before loading or null to ignore
- * @param hide_element_while_loading Id of an element to hide while the ajax is loading or null to ignore
- * @param hide_elements_on_success An array of element ids to hide if the request was successful or null to ignore
- * @param show_elements_on_success An array of element ids to show if the request was successful or null to ignore
- * @param url_method get or post the url or null to use "get"
- * @param params Optional parameters to pass with the url or null to ignore
- */
-function _updateDivWithJSONFeedback(url, update_element, indicator, insertion, clear_update_element_before_loading, hide_element_while_loading, hide_elements_on_success, show_elements_on_success, url_method, params, onsuccess_callback, onfailure_callback, oncomplete_callback)
-{
-	params = (params) ? params : '';
-	url_method = (url_method) ? url_method : "get";
-	new Ajax.Request(url, {
-	asynchronous:true,
-	method: url_method,
-	parameters: params,
-	evalScripts: true,
-	onLoading: function (transport) {
-		$(indicator).show();
-		if (clear_update_element_before_loading && $(update_element))
-		{
-			$(update_element).update('');
-		}
-		if (hide_element_while_loading && $(hide_element_while_loading))
-		{
-			$(hide_element_while_loading).hide();
-		}
-	},
-	onSuccess: function (transport) {
-		var json = transport.responseJSON;
-		if (json && json.failed)
-		{
-			failedMessage(json.error);
-			$(indicator).hide();
-		}
-		else
-		{
-			$(indicator).hide();
-			if ($(update_element))
-			{
-				content = (json) ? json.content : transport.responseText;
-				if (insertion == true)
-				{
-					$(update_element).insert(content, 'after');
-				}
-				else
-				{
-					$(update_element).update(content);
-				}
-				if (json && json.message)
-				{
-					successMessage(json.message);
-				}
-			}
-			else if (json && (json.title || json.content))
-			{
-				successMessage(json.title, json.content);
-			}
-			else if (json && (json.message))
-			{
-				successMessage(json.message);
-			}
-			if (hide_elements_on_success)
-			{
-				hide_elements_on_success.each(function(s)
-				{
-					if (is_string(s) && $(s))
-					{
-						$(s).hide();
-					}
-					else if ($(s)) s.hide();
-				});
-			}
-			if (show_elements_on_success)
-			{
-				show_elements_on_success.each(function(s)
-				{
-					if ($(s)) $(s).show();
-				});
-			}
-			if (onsuccess_callback)
-			{
-				onsuccess_callback(json);
-			}
-		}
-	},
-	onFailure: function (transport) {
-		$(indicator).hide();
-		if (transport.responseJSON)
-		{
-			failedMessage(transport.responseJSON.error);
-		}
-		else
-		{
-			failedMessage(transport.responseText);
-		}
-		if (onfailure_callback)
-		{
-			onfailure_callback(json);
-		}
-	},
-	onComplete: function (transport) {
-		if (hide_element_while_loading && hide_element_while_loading != hide_div_on_success && $(hide_element_while_loading))
-		{
-			$(hide_element_while_loading).show();
-		}
-		if (oncomplete_callback)
-		{
-			oncomplete_callback(json);
-		}
-	}
-	});
-}
-
-function _postFormWithJSONFeedback(url, formname, indicator, hide_divs_when_done, update_div, insertion, show_divs_when_done, update_form_elm, onsuccess_callback, onfailure_callback, oncomplete_callback)
-{
-	var params = Form.serialize(formname);
-	new Ajax.Request(url, {
-	asynchronous:true,
-	method: "post",
-	evalScripts: true,
-	parameters: params,
-	onLoading: function (transport) {
-		$(indicator).show();
-	},
-	onSuccess: function (transport) {
-		var json = transport.responseJSON;
-		if (json && json.failed)
-		{
-			failedMessage(json.error);
-			$(indicator).hide();
-		}
-		else
-		{
-			$(indicator).hide();
-			if (update_div != '' && $(update_div))
-			{
-				content = (json) ? json.content : transport.responseText;
-				if (insertion == true)
-				{
-					$(update_div).insert(content, 'after');
-				}
-				else
-				{
-					$(update_div).update(content);
-				}
-				if (json && json.message)
-				{
-					successMessage(json.message);
-				}
-			}
-			if (update_form_elm != '' && $(update_form_elm))
-			{
-				content = (json) ? json.content : transport.responseText;
-				$(update_form_elm).setValue(content);
-				if (json && json.message)
-				{
-					successMessage(json.message);
-				}
-			}
-			else if (json)
-			{
-				if (json.message)
-				{
-					successMessage(json.message);
-				}
-				else if (json.title)
-				{
-					successMessage(json.title, json.content);
-				}
-			}
-			if (is_string(hide_divs_when_done) && $(hide_divs_when_done))
-			{
-				$(hide_divs_when_done).hide();
-			}
-			else if (hide_divs_when_done) 
-			{
-				hide_divs_when_done.each(function(s)
-				{
-					if (is_string(s) && $(s))
-					{
-						$(s).hide();
-					}
-					else if ($(s)) s.hide();
-				});
-			}
-			if (is_string(show_divs_when_done) && $(show_divs_when_done))
-			{
-				$(show_divs_when_done).show();
-			}
-			else if (show_divs_when_done) 
-			{
-				show_divs_when_done.each(function(s)
-				{
-					if (is_string(s) && $(s))
-					{
-						$(s).show();
-					}
-					else if ($(s)) s.show();
-				});
-			}
-			if (onsuccess_callback)
-			{
-				onsuccess_callback(json);
-			}
-		}
-	},
-	onFailure: function (transport) {
-		$(indicator).hide();
-		if (transport.responseJSON)
-		{
-			if (transport.responseJSON.error && transport.responseJSON.message)
-			{
-				failedMessage(transport.responseJSON.message, transport.responseJSON.error);
-			}
-			else if (transport.responseJSON.error)
-			{
-				failedMessage(transport.responseJSON.error);
-			}
-			else if (transport.responseJSON.message)
-			{
-				failedMessage(transport.responseJSON.message);
-			}
-			if (onfailure_callback)
-			{
-				onfailure_callback(json);
-			}
-		}
-		else
-		{
-			failedMessage(transport.responseText);
-		}
-	},
-	onComplete: function (transport) {
-		if (oncomplete_callback)
-		{
-			oncomplete_callback(json);
-		}
-	}
-	});
-}
-
-function findIdentifiable(url, field)
-{
-	var params = Form.serialize(field + '_form');
-	new Ajax.Updater(field + '_results', url, {
-	asynchronous: true,
-	method: "post",
-	parameters: params,
-	onLoading: function () {$(field + '_spinning').show();},
-	onComplete: function () {$(field + '_spinning').hide();}
-	});
-}
-
-function submitForm(url, form_id)
-{
-	var params = Form.serialize(form_id);
-	new Ajax.Request(url, {
-	asynchronous:true,
-	method: "post",
-	parameters: params,
-	onLoading: function (transport) {
-		$(form_id + '_indicator').show();
-		$(form_id + '_button').disable();
-	},
-	onSuccess: function (transport) {
-		$(form_id + '_indicator').hide();
-		var json = transport.responseJSON;
-		if (json && (json.failed || json.error))
-		{
-			failedMessage(json.error);
-		}
-		else if (json && json.title)
-		{
-			successMessage(json.title, json.message);
-		}
-		else
-		{
-			failedMessage(transport.responseText);
-		}
-		$(form_id + '_button').enable();
-	},
-	onFailure: function (transport) {
-		$(form_id + '_indicator').hide();
-		$(form_id + '_button').enable();
-		var json = transport.responseJSON;
-		if (json && (json.failed || json.error))
-		{
-			failedMessage(json.error);
-		}
-	}
-	});
-}
-
-function switchSubmenuTab(visibletab, menu)
-{
-  $(menu).childElements().each(function(item){item.removeClassName('selected');});
-  $(visibletab).addClassName('selected');
-  $(menu + '_panes').childElements().each(function(item){item.hide();});
-  $(visibletab + '_pane').show();
-}
-
-function showFadedBackdrop(url)
-{
-	$('fullpage_backdrop').show();
-	if (url != undefined) {
-		new Ajax.Request(url, {
-		asynchronous:true,
-		method: "post",
-		evalScripts: true,
-		onLoading: function (transport) {
-			$('fullpage_backdrop_indicator').show();
-		},
-		onSuccess: function (transport) {
-			var json = transport.responseJSON;
-			if (json && (json.failed || json.error))
-			{
-				failedMessage(json.error);
-				$('fullpage_backdrop_indicator').hide();
-				$('fullpage_backdrop').hide();
-			}
-			else if (json)
-			{
-				$('fullpage_backdrop_indicator').hide();
-				$('fullpage_backdrop_content').update(json.content);
-			}
-			else
-			{
-				failedMessage(transport.responseText);
-				$('fullpage_backdrop_indicator').hide();
-				$('fullpage_backdrop').hide();
-			}
-		},
-		onFailure: function (transport) {
-			var json = transport.responseJSON;
-			if (json && (json.failed || json.error))
-			{
-				failedMessage(json.error);
-			}
-			else
-			{
-				failedMessage(transport.responseText);
-			}
-			$('fullpage_backdrop_indicator').hide();
-			$('fullpage_backdrop').hide();
-		}
-		});
-	}
-}
-
-function resetFadedBackdrop()
-{
-	$('fullpage_backdrop').hide();
-	$('fullpage_backdrop_indicator').show();
-	$('fullpage_backdrop_content').update('');
-}
-
-function updatePercentageFromNumber(tds, percent)
-{
-	cc = 0;
-	$(tds).childElements().each(function(elm) {
-		if ($(tds).childElements().size() == 2)
-		{
-			$(tds).childElements().first().style.width = percent + '%';
-			$(tds).childElements().last().style.width = (100 - percent) + '%';
-		}
-		else
-		{
-			elm.removeClassName("percent_filled");
-			elm.removeClassName("percent_unfilled");
-			if (percent > 0 && percent < 100)
-			{
-				(cc <= percent) ? elm.addClassName("percent_filled") : elm.addClassName("percent_unfilled");
-			}
-			else if (percent == 0)
-			{
-				elm.addClassName("percent_unfilled");
-			}
-			else if (percent == 100)
-			{
-				elm.addClassName("percent_filled");
-			}
-			cc++;
-		}
-	});
-}
-
-function addLink(url, target_type, target_id)
-{
-	var params = $('attach_link_' + target_type + '_' + target_id + '_form').serialize();
-	$('attach_link_' + target_type + '_' + target_id + '_indicator').show();
-	$('attach_link_' + target_type + '_' + target_id + '_submit').hide();
-	new Ajax.Request(url, {
-		method: 'post',
-		parameters: params,
-		requestHeaders: {Accept: 'application/json'},
-		onSuccess: function(transport) {
-			var json = transport.responseJSON;
-			if (json && !json.failed)
-			{
-				$('attach_link_' + target_type + '_' + target_id + '_form').reset();
-				$('attach_link_' + target_type + '_' + target_id).hide();
-				$(target_type + '_' + target_id + '_no_links').hide();
-				$(target_type + '_' + target_id + '_links').insert({bottom: json.content});
-				successMessage(json.message);
-			}
-			else if (json && (json.failed || json.error))
-			{
-				failedMessage(json.error);
-			}
-			else
-			{
-				failedMessage(transport.responseText);
-			}
-			$('attach_link_' + target_type + '_' + target_id + '_indicator').hide();
-			$('attach_link_' + target_type + '_' + target_id + '_submit').show();
-		},
-		onFailure: function(transport) {
-			var json = transport.responseJSON;
-			if (json && (json.failed || json.error))
-			{
-				failedMessage(json.error);
-			}
-			else
-			{
-				failedMessage(transport.responseText);
-			}
-			$('attach_link_' + target_type + '_' + target_id + '_indicator').hide();
-			$('attach_link_' + target_type + '_' + target_id + '_submit').show();
-		}
-	});
-}
-
-function removeLink(url, target_type, target_id, link_id)
-{
-	new Ajax.Request(url, {
-		method: 'post',
-		requestHeaders: {Accept: 'application/json'},
-		onLoading: function() {
-			$(target_type + '_' + target_id + '_links_'+ link_id + '_remove_link').hide();
-			$(target_type + '_' + target_id + '_links_'+ link_id + '_remove_indicator').show();
-		},
-		onSuccess: function(transport) {
-			var json = transport.responseJSON;
-			if (json && json.failed == false)
-			{
-				$(target_type + '_' + target_id + '_links_' + link_id).remove();
-				$(target_type + '_' + target_id + '_links_' + link_id + '_remove_confirm').remove();
-				successMessage(json.message);
-				if ($(target_type + '_' + target_id + '_links').childElements().size() == 0)
-				{
-					$(target_type + '_' + target_id + '_no_links').show();
-				}
-			}
-			else
-			{
-				if (json && (json.failed || json.error))
-				{
-					failedMessage(json.error);
-				}
-				else
-				{
-					failedMessage(transport.responseText);
-				}
-				$(target_type + '_' + target_id + '_links_'+ link_id + '_remove_link').show();
-				$(target_type + '_' + target_id + '_links_'+ link_id + '_remove_indicator').hide();
-			}
-		},
-		onFailure: function(transport) {
-			$(target_type + '_' + target_id + '_links_'+ link_id + '_remove_link').show();
-			$(target_type + '_' + target_id + '_links_'+ link_id + '_remove_indicator').hide();
-			var json = transport.responseJSON;
-			if (json && (json.failed || json.error))
-			{
-				failedMessage(json.error);
-			}
-			else
-			{
-				failedMessage(transport.responseText);
-			}
-		}
-	});
-}
-
-function reloadImage(id) {
-   var src = $(id).src;
-   var pos = src.indexOf('?');
-   if (pos >= 0) {
-      src = src.substr(0, pos);
-   }
-   var date = new Date();
-   $(id).src = src + '?v=' + date.getTime();
-   return false;
-}
-
-function addUserStoryTask(url, story_id, mode)
-{
-	if (mode == 'scrum')
-	{
-		var prefix = 'scrum_story_' + story_id;
-		var indicator_prefix = 'add_task_' + story_id;
-	}
-	else if (mode == 'issue')
-	{
-		var prefix = 'viewissue';
-		var indicator_prefix = 'add_task';
-	}
-	var params = Form.serialize(prefix + '_add_task_form');
-	new Ajax.Request(url, {
-	asynchronous:true,
-	method: "post",
-	evalScripts: true,
-	parameters: params,
-	onLoading: function (transport) {
-		$(indicator_prefix + '_indicator').show();
-	},
-	onSuccess: function (transport) {
-		var json = transport.responseJSON;
-		if (json && !json.failed)
-		{
-			Form.reset(prefix + '_add_task_form');
-			$(indicator_prefix + '_indicator').hide();
-			if (mode == 'scrum')
-			{
-				$('no_tasks_' + story_id).hide();
-				$(prefix + '_tasks').insert({bottom: json.content});
-				$(prefix + '_tasks_count').update(json.count);
-			}
-			else if (mode == 'issue')
-			{
-				$('related_child_issues_inline').insert({bottom: json.content});
-				$('no_child_issues').hide();
-				successMessage(json.message);
-				if (json.comment)
-				{
-					$('comments_box').insert({bottom: json.comment});
-
-					if ($('comments_box').childElements().size() != 0)
-					{
-						$('comments_none').hide();
-					}
-				}
-			}
-		}
-		else
-		{
-			if (json && json.error)
-			{
-				failedMessage(json.error);
-			}
-			else
-			{
-				failedMessage(transport.responseText);
-			}
-			$(indicator_prefix + '_indicator').hide();
-		}
-	},
-	onFailure: function (transport) {
-		var json = transport.responseJSON;
-		if (json && json.error)
-		{
-			failedMessage(json.error);
-		}
-		else
-		{
-			failedMessage(transport.responseText);
-		}
-		$(indicator_prefix + '_indicator').hide();
-	}
-	});
-}
-
-function addSearchFilter(url)
-{
-	var params = Form.serialize('add_filter_form');
-	params += '&key=' + $('max_filters').value;
-	new Ajax.Request(url, {
-	asynchronous:true,
-	method: "post",
-	evalScripts: true,
-	parameters: params,
-	onLoading: function (transport) {
-		$('add_filter_indicator').show();
-	},
-	onSuccess: function (transport) {
-		var json = transport.responseJSON;
-		if (json && (json.failed || json.error))
-		{
-			failedMessage(json.error);
-			$('add_filter_indicator').hide();
-		}
-		else if (json)
-		{
-			$('add_filter_indicator').hide();
-			$('search_filters_list').insert({bottom: json.content});
-			$('max_filters').value++;
-		}
-		else
-		{
-			failedMessage(transport.responseText);
-			$('add_filter_indicator').hide();
-		}
-	},
-	onFailure: function (transport) {
-		var json = transport.responseJSON;
-		if (json && (json.failed || json.error))
-		{
-			failedMessage(json.error);
-		}
-		$('add_filter_indicator').hide();
-	}
-	});
-}
 
 function removeSearchFilter(key)
 {
@@ -787,7 +96,7 @@ function setPermission(url, field)
 			$(field + '_indicator').hide();
 			if (json && (json.failed || json.error))
 			{
-				failedMessage(json.error);
+				TBG.Main.failedMessage(json.error);
 			}
 			else
 			{
@@ -798,11 +107,11 @@ function setPermission(url, field)
 			$(field + '_indicator').hide();
 			if (transport.responseJSON)
 			{
-				failedMessage(transport.responseJSON.error);
+				TBG.Main.failedMessage(transport.responseJSON.error);
 			}
 			else
 			{
-				failedMessage(transport.responseText);
+				TBG.Main.failedMessage(transport.responseText);
 			}
 		}
 	});
@@ -895,7 +204,7 @@ function getStatistics(url)
 		var json = transport.responseJSON;
 		if (json && (json.failed || json.error))
 		{
-			failedMessage(json.error);
+			TBG.Main.failedMessage(json.error);
 			$('statistics_help').show();
 			$('statistics_main').hide();
 		}
@@ -938,7 +247,7 @@ function getStatistics(url)
 		}
 		else
 		{
-			failedMessage(transport.responseText);
+			TBG.Main.failedMessage(transport.responseText);
 			$('statistics_help').show();
 			$('statistics_main').hide();
 		}
@@ -947,11 +256,11 @@ function getStatistics(url)
 		var json = transport.responseJSON;
 		if (json && (json.failed || json.error))
 		{
-			failedMessage(json.error);
+			TBG.Main.failedMessage(json.error);
 		}
 		else
 		{
-			failedMessage(transport.responseText);
+			TBG.Main.failedMessage(transport.responseText);
 		}
 		$('statistics_help').show();
 		$('statistics_main').hide();
@@ -1037,14 +346,14 @@ function refreshMilestoneDetails(url, milestone_id)
 		var json = transport.responseJSON;
 		if (json && (json.failed || json.error))
 		{
-			failedMessage(json.error);
+			TBG.Main.failedMessage(json.error);
 		}
 		else if (json)
 		{
 			var must_reload_issue_list = false;
 			if (json.percent)
 			{
-				updatePercentageFromNumber('milestone_'+milestone_id+'_percent', json.percent);
+				TBG.Main.updatePercentageLayout('milestone_'+milestone_id+'_percent', json.percent);
 			}
 			if (json.closed_issues && $('milestone_'+milestone_id+'_closed_issues'))
 			{
@@ -1094,7 +403,7 @@ function refreshMilestoneDetails(url, milestone_id)
 		}
 		else
 		{
-			failedMessage(transport.responseText);
+			TBG.Main.failedMessage(transport.responseText);
 		}
 		$('milestone_' + milestone_id + '_indicator').hide();
 	},
@@ -1102,11 +411,11 @@ function refreshMilestoneDetails(url, milestone_id)
 		var json = transport.responseJSON;
 		if (json && (json.failed || json.error))
 		{
-			failedMessage(json.error);
+			TBG.Main.failedMessage(json.error);
 		}
 		else
 		{
-			failedMessage(transport.responseText);
+			TBG.Main.failedMessage(transport.responseText);
 		}
 		$('milestone_' + milestone_id + '_indicator').hide();
 	}
@@ -1152,7 +461,7 @@ function _detachFile(url, file_id, base_id)
 				$('uploaded_files_' + file_id).remove();
 				$(base_id + file_id + '_remove_confirm').remove();
 				$('uploaded_files_' + file_id + '_remove_confirm').remove();
-				successMessage(json.message);
+				TBG.Main.successMessage(json.message);
 				if (json.attachmentcount == 0)
 				{
 					if ($('viewissue_no_uploaded_files'))
@@ -1167,11 +476,11 @@ function _detachFile(url, file_id, base_id)
 			{
 				if (json && (json.failed || json.error))
 				{
-					failedMessage(json.error);
+					TBG.Main.failedMessage(json.error);
 				}
 				else
 				{
-					failedMessage(transport.responseText);
+					TBG.Main.failedMessage(transport.responseText);
 				}
 				$(base_id + file_id + '_remove_link').show();
 				$(base_id + file_id + '_remove_indicator').hide();
@@ -1187,11 +496,11 @@ function _detachFile(url, file_id, base_id)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				failedMessage(json.error);
+				TBG.Main.failedMessage(json.error);
 			}
 			else
 			{
-				failedMessage(transport.responseText);
+				TBG.Main.failedMessage(transport.responseText);
 			}
 		}
 	});
@@ -1213,7 +522,7 @@ function deleteComment(url, cid)
 		{
 			$('comment_delete_controls_' + cid).show();
 			$('comment_delete_indicator_' + cid).hide();
-			failedMessage(json.error);
+			TBG.Main.failedMessage(json.error);
 		}
 		else
 		{
@@ -1224,7 +533,7 @@ function deleteComment(url, cid)
 			{
 				$('comments_none').show();
 			}
-			successMessage(json.title);
+			TBG.Main.successMessage(json.title);
 		}
 	},
 	onFailure: function (transport) {
@@ -1233,7 +542,7 @@ function deleteComment(url, cid)
 		var json = transport.responseJSON;
 		if (json && (json.failed || json.error))
 		{
-			failedMessage(json.error);
+			TBG.Main.failedMessage(json.error);
 		}
 	}
 	});
@@ -1247,7 +556,7 @@ function updateComment(url, cid)
 	method: "post",
 	parameters: params,
 	requestHeaders: {Accept: 'application/json'},
-	onLoading: function (transport) {
+	onLoading: function () {
 		$('comment_edit_controls_' + cid).hide();
 		$('comment_edit_indicator_' + cid).show();
 	},
@@ -1257,21 +566,18 @@ function updateComment(url, cid)
 		{
 			$('comment_edit_controls_' + cid).show();
 			$('comment_edit_indicator_' + cid).hide();
-			failedMessage(json.error);
+			TBG.Main.failedMessage(json.error);
 		}
 		else
 		{
 			$('comment_edit_indicator_' + cid).hide();
 			$('comment_edit_' + cid).hide();
-
-			//$('comment_' + cid + '_header').update(json.comment_title);
-			/* $('comment_' + cid + '_date').update(json.comment_date);	see the actions file */
 			$('comment_' + cid + '_body').update(json.comment_body);
 
 			$('comment_view_' + cid).show();
 			$('comment_edit_controls_' + cid).show();
 
-			successMessage(json.title);
+			TBG.Main.successMessage(json.title);
 		}
 	},
 	onFailure: function (transport) {
@@ -1280,7 +586,7 @@ function updateComment(url, cid)
 		var json = transport.responseJSON;
 		if (json && json.error)
 		{
-			failedMessage(json.error);
+			TBG.Main.failedMessage(json.error);
 		}
 	}
 	});
@@ -1294,7 +600,7 @@ function addComment(url, commentcount_span)
 	method: "post",
 	parameters: params,
 	requestHeaders: {Accept: 'application/json'},
-	onLoading: function (transport) {
+	onLoading: function () {
 		$('comment_add_controls').hide();
 		$('comment_add_indicator').show();
 	},
@@ -1304,7 +610,7 @@ function addComment(url, commentcount_span)
 		{
 			$('comment_add_controls').show();
 			$('comment_add_indicator').hide();
-			failedMessage(json.error);
+			TBG.Main.failedMessage(json.error);
 		}
 		else
 		{
@@ -1333,7 +639,7 @@ function addComment(url, commentcount_span)
 			$('comment_visibility').setValue(1);
 			$(commentcount_span).update(json.commentcount);
 
-			successMessage(json.title);
+			TBG.Main.successMessage(json.title);
 		}
 	},
 	onFailure: function (transport) {
@@ -1342,19 +648,29 @@ function addComment(url, commentcount_span)
 		var json = transport.responseJSON;
 		if (json && json.error)
 		{
-			failedMessage(json.error);
+			TBG.Main.failedMessage(json.error);
 		}
 	}
 	});
 	return false;
 }
 
+// The core js class used by thebuggenie
 var TBG = {
+	Core: {}, // The "Core" namespace is for functions used by thebuggenie core, not to be invoked outside the js class
+	Main: {}, // The "Main" namespace contains regular functions in use across the site
+	Issues: {}, // The "Issues" namespace contains functions used in direct relation to issues
+	Search: {}, // The "Search" namespace contains functions related to searching
+	Subscriptions: {}, // The "Subscription" namespace contains functionality related to subscribing to - and publishing js events
+	effect_queues: {
+		successmessage: 'TBG_successmessage',
+		failedmessage: 'TBG_failedmessage'
+	},
 	activated_popoutmenu: undefined,
 	autocompleter_url: undefined
 };
 
-TBG._initializeAutocompleter = function() {
+TBG.Core.initializeAutocompleter = function() {
 	new Ajax.Autocompleter(
 		"searchfor",
 		"searchfor_autocomplete_choices",
@@ -1363,47 +679,12 @@ TBG._initializeAutocompleter = function() {
 			paramName: "filters[text][value]",
 			minChars: 2,
 			indicator: 'quicksearch_indicator',
-			afterUpdateElement: TBG.extractAutocompleteValue
+			afterUpdateElement: TBG.Core.extractAutocompleteValue
 		}
 	);
-}
+};
 
-TBG.initialize = function(options) {
-	for(var key in options) {
-		TBG[key] = options[key];
-	}
-	TBG._initializeAutocompleter();
-	Event.observe(window, 'resize', TBG.resizeWatcher);
-	document.observe('click', TBG.toggleBreadcrumbMenuPopout);
-}
-
-TBG.showWorkflowTransition = function(transition_id) {
-	showFadedBackdrop();
-	$('fullpage_backdrop_indicator').hide();
-	var workflow_div = $('issue_transition_container_' + transition_id).clone(true);
-	$('fullpage_backdrop_content').update(workflow_div);
-	workflow_div.appear({duration: 0.2});
-}
-
-TBG._toggleBreadcrumbItem = function(item) {
-	item.up('li').next().toggleClassName('popped_out');
-	item.toggleClassName('activated');
-}
-
-TBG.toggleBreadcrumbMenuPopout = function(event) {
-	var item = event.findElement('a');
-	if (TBG.activated_popoutmenu != undefined && TBG.activated_popoutmenu != item) {
-		TBG._toggleBreadcrumbItem(TBG.activated_popoutmenu);
-	}
-	if (item != undefined && item.hasClassName('submenu_activator')) {
-		TBG._toggleBreadcrumbItem(item);
-		TBG.activated_popoutmenu = item;
-	} else {
-		TBG.activated_popoutmenu = undefined;
-	}
-}
-
-TBG.extractAutocompleteValue = function(elem, value) {
+TBG.Core.extractAutocompleteValue = function(elem, value) {
 	var elements = value.select('.url');
 	if (elements.size() == 1) {
 		window.location = elements[0].innerHTML.unescapeHTML();
@@ -1412,7 +693,7 @@ TBG.extractAutocompleteValue = function(elem, value) {
 	}
 };
 
-TBG.resizeWatcher = function() {
+TBG.Core.resizeWatcher = function() {
 	if (($('fullpage_backdrop') && $('fullpage_backdrop').visible()) || ($('attach_file') && $('attach_file').visible())) {
 		var docheight = document.viewport.getHeight();
 		var backdropheight = $('backdrop_detail_content').getHeight();
@@ -1422,5 +703,389 @@ TBG.resizeWatcher = function() {
 			$('backdrop_detail_content').setStyle({height: 'auto', overflow: ''});
 		}
 	}
+};
+
+TBG.Core.toggleBreadcrumbItem = function(item) {
+	item.up('li').next().toggleClassName('popped_out');
+	item.toggleClassName('activated');
+};
+
+TBG.initialize = function(options) {
+	for(var key in options) {
+		TBG[key] = options[key];
+	}
+	TBG.Core.initializeAutocompleter();
+	Event.observe(window, 'resize', TBG.Core.resizeWatcher);
+	document.observe('click', TBG.Main.toggleBreadcrumbMenuPopout);
+};
+
+TBG.Main.clearPopupMessages = function() {
+	Effect.Queues.get(TBG.effect_queues.successmessage).each(function(effect) {effect.cancel();});
+	Effect.Queues.get(TBG.effect_queues.failedmessage).each(function(effect) {effect.cancel();});
+	if ($('thebuggenie_successmessage').visible()) {
+		$('thebuggenie_successmessage').fade({duration: 0.2});
+	}
+	if ($('thebuggenie_failuremessage').visible()) {
+		$('thebuggenie_failuremessage').fade({duration: 0.2});
+	}
+};
+
+TBG.Main.failedMessage = function(title, content) {
+	$('thebuggenie_failuremessage_title').update(title);
+	$('thebuggenie_failuremessage_content').update(content);
+	if ($('thebuggenie_successmessage').visible()) {
+		Effect.Queues.get(TBG.effect_queues.successmessage).each(function(effect) {effect.cancel();});
+		new Effect.Fade('thebuggenie_successmessage', {queue: {position: 'end', scope: TBG.effect_queues.successmessage, limit: 2}, duration: 0.2});
+	}
+	if ($('thebuggenie_failuremessage').visible()) {
+		Effect.Queues.get(TBG.effect_queues.failedmessage).each(function(effect) {effect.cancel();});
+		new Effect.Pulsate('thebuggenie_failuremessage', {duration: 1, pulses: 4});
+	} else {
+		new Effect.Appear('thebuggenie_failuremessage', {queue: {position: 'end', scope: TBG.effect_queues.failedmessage, limit: 2}, duration: 0.2});
+	}
+	new Effect.Fade('thebuggenie_failuremessage', {queue: {position: 'end', scope: TBG.effect_queues.failedmessage, limit: 2}, delay: 30, duration: 0.2});
+};
+
+TBG.Main.successMessage = function(title, content) {
+	$('thebuggenie_successmessage_title').update(title);
+	$('thebuggenie_successmessage_content').update(content);
+	if (title || content) {
+		if ($('thebuggenie_failuremessage').visible()) {
+			Effect.Queues.get(TBG.effect_queues.failedmessage).each(function(effect) {effect.cancel();});
+			new Effect.Fade('thebuggenie_failuremessage', {queue: {position: 'end', scope: TBG.effect_queues.failedmessage, limit: 2}, duration: 0.2});
+		}
+		if ($('thebuggenie_successmessage').visible()) {
+			Effect.Queues.get(TBG.effect_queues.successmessage).each(function(effect) {effect.cancel();});
+			new Effect.Pulsate('thebuggenie_successmessage', {duration: 1, pulses: 4});
+		} else {
+			new Effect.Appear('thebuggenie_successmessage', {queue: {position: 'end', scope: TBG.effect_queues.successmessage, limit: 2}, duration: 0.2});
+		}
+		new Effect.Fade('thebuggenie_successmessage', {queue: {position: 'end', scope: TBG.effect_queues.successmessage, limit: 2}, delay: 10, duration: 0.2});
+	} else if ($('thebuggenie_successmessage').visible()) {
+		Effect.Queues.get(TBG.effect_queues.successmessage).each(function(effect) {effect.cancel();});
+		new Effect.Fade('thebuggenie_successmessage', {queue: {position: 'end', scope: TBG.effect_queues.successmessage, limit: 2}, duration: 0.2});
+	}
+};
+
+TBG.Main.toggleBreadcrumbMenuPopout = function(event) {
+	var item = event.findElement('a');
+	if (TBG.activated_popoutmenu != undefined && TBG.activated_popoutmenu != item) {
+		TBG.Core.toggleBreadcrumbItem(TBG.activated_popoutmenu);
+		TBG.activated_popoutmenu = undefined;
+	}
+	if (item != undefined && item.hasClassName('submenu_activator')) {
+		TBG.Core.toggleBreadcrumbItem(item);
+		TBG.activated_popoutmenu = item;
+	} else {
+		TBG.activated_popoutmenu = undefined;
+	}
+};
+
+/**
+ * Convenience function for running an AJAX call and updating / showing / hiding
+ * divs on json feedback
+ *
+ * @param url The URL to call
+ * @param options An associated array of options
+ */
+TBG.Main.AjaxHelper = function(url, options) {
+	var params = (options.params) ? options.params : '';
+	if (options.form) params = Form.serialize(options.form);
+	if (options.additional_params) params += options.additional_params;
+	var url_method = (options.url_method) ? options.url_method : "get";
+	
+	new Ajax.Request(url, {
+		asynchronous: true,
+		method: url_method,
+		parameters: params,
+		evalScripts: true,
+		onLoading: function () {
+			$(options.loading.indicator).show();
+			var update_element = (is_string(options.success.update)) ? options.success.update : options.success.update.element;
+			if (options.loading.clear && $(update_element)) {
+				$(update_element).update('');
+			}
+			if (options.loading.hide) {
+				if (is_string(options.loading.hide) && $(options.loading.hide)) {
+					$(options.loading.hide).hide();
+				} else {
+					options.loading.hide.each(function (element) {
+						element.hide();
+					});
+				}
+			}
+			if (options.loading.disable && $(options.loading.disable)) {
+				$(options.loading.disable).disable();
+			}
+			if (options.loading.reset && $(options.loading.reset)) {
+				$(options.loading.reset).reset();
+			}
+		},
+		onSuccess: function (transport) {
+			var json = transport.responseJSON;
+			$(options.loading.indicator).hide();
+			if (json && json.failed) {
+				TBG.Main.failedMessage(json.error);
+			} else {
+				if (options.success && options.success.update) {
+					var content = (json) ? json.content : transport.responseText;
+					var update_element = (is_string(options.success.update)) ? options.success.update : options.success.update.element;
+					if ($(update_element)) {
+						var insertion = (is_string(options.success.update)) ? false : (options.success.insertion) ? options.success.insertion : false;
+						if (insertion) {
+							$(update_element).insert(content, 'after');
+						} else {
+							$(update_element).update(content);
+						}
+					}
+					if (json && json.message) {
+						TBG.Main.successMessage(json.message);
+					}
+				} else if (json && (json.title || json.content)) {
+					TBG.Main.successMessage(json.title, json.content);
+				} else if (json && (json.message)) {
+					TBG.Main.successMessage(json.message);
+				}
+				if (options.success.remove) {
+					if (is_string(options.success.remove)) {
+						if ($(options.success.remove)) $(options.success.remove).remove();
+					} else {
+						options.success.remove.each(function(s) {if (is_string(s) && $(s)) $(s).remove();else if ($(s)) s.remove();});
+					}
+				}
+				if (options.success.hide) {
+					if (is_string(options.success.hide)) {
+						if ($(options.success.hide)) $(options.success.hide).hide();
+					} else {
+						options.success.hide.each(function(s) {if (is_string(s) && $(s)) $(s).hide();else if ($(s)) s.hide();});
+					}
+				}
+				if (options.success.show) {
+					if (is_string(options.success.show)) {
+						if ($(options.success.show)) $(options.success.show).show();
+					} else {
+						options.success.show.each(function(s) {if ($(s)) $(s).show();});
+					}
+				}
+				if (options.success.enable && $(options.success.enable)) {
+					$(options.success.enable).enable();
+				}
+				if (options.success.reset && $(options.success.reset)) {
+					$(options.success.reset).reset();
+				}
+				if (options.success.callback) {
+					options.success.callback(json);
+				}
+			}
+		},
+		onFailure: function (transport) {
+			$(options.loading.indicator).hide();
+			var json = (transport.responseJSON) ? transport.responeJSON : undefined;
+			if (transport.responseJSON) {
+				TBG.Main.failedMessage(json.error);
+			} else {
+				TBG.Main.failedMessage(transport.responseText);
+			}
+			if (options.loading && options.loading.disable && $(options.loading.disable)) {
+				$(options.loading.disable).enable();
+			}
+			if (options.failure && options.failure.hide && $(options.failure.hide)) {
+				$(options.failure.hide).hide();
+			}
+			if (options.failure.callback) {
+				options.failure.callback(transport);
+			}
+		},
+		onComplete: function (transport) {
+			var json = (transport.responseJSON) ? transport.responeJSON : undefined;
+			if (options.loading.hide && (options.loading.hide != options.success.hide || !options.success || !options.success.hide) && $(options.loading.hide)) {
+				$(options.loading.hide).show();
+			}
+			if (options.complete && options.complete.callback) {
+				options.complete.callback(json);
+			}
+		}
+	});
+};
+
+TBG.Main.formSubmitHelper = function(url, form_id) {
+	TBG.Main.AjaxHelper(url, {
+		form: form_id,
+		url_method: 'post',
+		loading: {indicator: form_id + '_indicator', disable: form_id + '_button'}, 
+		success: {enable: form_id + '_button'}
+	});
+};
+
+TBG.Main.showFadedBackdrop = function(url) {
+	$('fullpage_backdrop').show();
+	if (url != undefined) {
+		TBG.Main.AjaxHelper(url, {
+			url_method: 'post',
+			loading: {indicator: 'fullpage_backdrop_indicator', hide: 'fullpage_backdrop'},
+			success: {update: 'fullpage_backdrop_content'},
+			failure: {hide: 'fullpage_backdrop'}
+		});
+	}
+};
+
+TBG.Main.resetFadedBackdrop = function() {
+	$('fullpage_backdrop').hide();
+	$('fullpage_backdrop_indicator').show();
+	$('fullpage_backdrop_content').update('');
+};
+
+TBG.Main.findIdentifiable = function(url, field) {
+	TBG.Main.AjaxHelper(url, { 
+		form: field + '_form', 
+		url_method: 'post', 
+		loading: {indicator: field + '_spinning'}, 
+		success: {update: field + '_results'}
+	});
+};
+
+TBG.Main.switchSubmenuTab = function(visibletab, menu)
+{
+	$(menu).childElements().each(function(item){item.removeClassName('selected');});
+	$(visibletab).addClassName('selected');
+	$(menu + '_panes').childElements().each(function(item){item.hide();});
+	$(visibletab + '_pane').show();
 }
 
+TBG.Main.updatePercentageLayout = function(tds, percent)
+{
+	cc = 0;
+	$(tds).childElements().each(function(elm) {
+		if ($(tds).childElements().size() == 2) {
+			$(tds).childElements().first().style.width = percent + '%';
+			$(tds).childElements().last().style.width = (100 - percent) + '%';
+		} else {
+			elm.removeClassName("percent_filled");
+			elm.removeClassName("percent_unfilled");
+			switch (true) {
+				case (percent > 0 && percent < 100):
+					(cc <= percent) ? elm.addClassName("percent_filled") : elm.addClassName("percent_unfilled");
+					break;
+				case (percent == 0):
+					elm.addClassName("percent_unfilled");
+					break;
+				case (percent == 100):
+					elm.addClassName("percent_filled");
+					break;
+			}
+			cc++;
+		}
+	});
+}
+
+TBG.Main.addLink = function(url, target_type, target_id)
+{
+	TBG.Main.AjaxHelper(url, {
+		loading: {
+			indicator: 'attach_link_' + target_type + '_' + target_id + '_indicator',
+			hide: 'attach_link_' + target_type + '_' + target_id + '_submit'
+		},
+		success: {
+			reset: 'attach_link_' + target_type + '_' + target_id + '_form',
+			hide: ['attach_link_' + target_type + '_' + target_id, target_type + '_' + target_id + '_no_links'],
+			update: {element: target_type + '_' + target_id + '_links', insertion: true}
+		},
+		complete: {
+			show: 'attach_link_' + target_type + '_' + target_id + '_submit'
+		}
+	});
+}
+
+TBG.Main.removeLink = function(url, target_type, target_id, link_id)
+{
+	TBG.Main.AjaxHelper(url, {
+		url_method: 'post',
+		loading: {
+			hide: target_type + '_' + target_id + '_links_'+ link_id + '_remove_link',
+			indicator: target_type + '_' + target_id + '_links_'+ link_id + '_remove_indicator'
+		},
+		success: {
+			remove: [target_type + '_' + target_id + '_links_' + link_id, target_type + '_' + target_id + '_links_' + link_id + '_remove_confirm'],
+			callback: function (json) {
+				if ($(json.target_type + '_' + json.target_id + '_links').childElements().size() == 0) {
+					$(json.target_type + '_' + json.target_id + '_no_links').show();
+				}
+			}
+		},
+		failure: {
+			show: target_type + '_' + target_id + '_links_'+ link_id + '_remove_link'
+		}
+	});
+}
+
+TBG.Main.reloadImage = function(id) {
+   var src = $(id).src;
+   var date = new Date();
+   
+   src = (src.indexOf('?') >= 0) ? src.substr(0, pos) : src;
+   $(id).src = src + '?v=' + date.getTime();
+   
+   return false;
+}
+
+TBG.Issues.showWorkflowTransition = function(transition_id) {
+	TBG.Main.showFadedBackdrop();
+	$('fullpage_backdrop_indicator').hide();
+	var workflow_div = $('issue_transition_container_' + transition_id).clone(true);
+	$('fullpage_backdrop_content').update(workflow_div);
+	workflow_div.appear({duration: 0.2});
+};
+
+TBG.Issues.addUserStoryTask = function(url, story_id, mode)
+{
+	var prefix = (mode == 'scrum') ? 'scrum_story_' + story_id : 'viewissue';
+	var indicator_prefix = (mode == 'scrum') ? 'add_task_' + story_id : 'add_task';
+	var success_arr = {};
+	
+	if (mode == scrum) {
+		success_arr = {
+			reset: prefix + '_add_task_form',
+			hide: 'no_tasks_' + story_id,
+			callback: function(json) {
+				$(prefix + '_tasks').insert({bottom: json.content});
+				$(prefix + '_tasks_count').update(json.count);
+			}
+		};
+	} else {
+		success_arr = {
+			reset: prefix + '_add_task_form',
+			hide: 'no_child_issues',
+			callback: function(json) {
+				$('related_child_issues_inline').insert({bottom: json.content});
+				if (json.comment) {
+					$('comments_box').insert({bottom: json.comment});
+					if ($('comments_box').childElements().size() != 0) {
+						$('comments_none').hide();
+					}
+				}
+			}
+		};
+	}
+	
+	TBG.Main.AjaxHelper(url, {
+		form: prefix + '_add_task_form',
+		loading: {indicator: indicator_prefix + '_indicator'},
+		success: success_arr
+	});
+}
+
+TBG.Search.addFilter = function(url)
+{
+	TBG.Main.AjaxHelper(url, {
+		form: 'add_filter_form',
+		additional_params: '&key=' + $('max_filters').value,
+		url_method: 'post',
+		loading: {indicator: 'add_filter_indicator'},
+		success: {
+			update: {element: 'search_filters_list', insertion: true},
+			callback: function() {
+				$('max_filters').value++;
+			}
+		}
+	});
+}

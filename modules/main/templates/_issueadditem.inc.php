@@ -40,6 +40,6 @@
 		</form>
 	</div>
 	<div class="backdrop_detail_footer">
-		<a href="javascript:void(0);" onclick="resetFadedBackdrop();"><?php echo __('Cancel'); ?></a>
+		<a href="javascript:void(0);" onclick="TBG.Main.resetFadedBackdrop();"><?php echo __('Cancel'); ?></a>
 	</div>
 </div>

@@ -86,7 +86,7 @@
 					</div>
 					<div style="clear: both; margin-top: 10px;">
 						<?php echo image_tag('icon_user.png', array('style' => 'float: left; margin-right: 5px;')); ?>
-						<a href="javascript:void(0);" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'usercard', 'user_id' => $tbg_user->getID())); ?>');"><?php echo __('Preview my user card'); ?></a>
+						<a href="javascript:void(0);" onclick="TBG.Main.showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'usercard', 'user_id' => $tbg_user->getID())); ?>');"><?php echo __('Preview my user card'); ?></a>
 					</div>
 				</div>
 			</div>
@@ -98,12 +98,12 @@
 		<td valign="top" align="left" style="padding: 0 10px 0 5px;">
 			<div style="margin: 10px 0 0 0; clear: both; height: 30px; width: 700px;" class="tab_menu">
 				<ul id="account_tabs">
-					<li class="selected" id="tab_profile"><a onclick="switchSubmenuTab('tab_profile', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_users.png', array('style' => 'float: left;')).__('Profile information'); ?></a></li>
-					<li id="tab_settings"><a onclick="switchSubmenuTab('tab_settings', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_general.png', array('style' => 'float: left;')).__('Settings'); ?></a></li>
+					<li class="selected" id="tab_profile"><a onclick="TBG.Main.switchSubmenuTab('tab_profile', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_users.png', array('style' => 'float: left;')).__('Profile information'); ?></a></li>
+					<li id="tab_settings"><a onclick="TBG.Main.switchSubmenuTab('tab_settings', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_general.png', array('style' => 'float: left;')).__('Settings'); ?></a></li>
 					<?php TBGEvent::createNew('core', 'account_tabs')->trigger(); ?>
 					<?php foreach (TBGContext::getModules() as $module_name => $module): ?>
 						<?php if ($module->hasAccountSettings()): ?>
-							<li id="tab_settings_<?php echo $module_name; ?>"><a onclick="switchSubmenuTab('tab_settings_<?php echo $module_name; ?>', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag($module->getAccountSettingsLogo(), array('style' => 'float: left;'), false, $module_name).$module->getAccountSettingsName(); ?></a></li>
+							<li id="tab_settings_<?php echo $module_name; ?>"><a onclick="TBG.Main.switchSubmenuTab('tab_settings_<?php echo $module_name; ?>', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag($module->getAccountSettingsLogo(), array('style' => 'float: left;'), false, $module_name).$module->getAccountSettingsName(); ?></a></li>
 						<?php endif; ?>
 					<?php endforeach; ?>
 				</ul>
