@@ -1,4 +1,6 @@
 
+function _updateDivWithJSONFeedback(url, update_element, indicator, insertion, clear_update_element_before_loading, hide_element_while_loading, hide_elements_on_success, show_elements_on_success, url_method, params, onsuccess_callback, onfailure_callback, oncomplete_callback) {}
+function _postFormWithJSONFeedback(url, formname, indicator, hide_divs_when_done, update_div, insertion, show_divs_when_done, update_form_elm, onsuccess_callback, onfailure_callback, oncomplete_callback) {}
 
 function setPermission(url, field)
 {
@@ -588,6 +590,9 @@ var TBG = {
 	autocompleter_url: undefined
 };
 
+/**
+ * Initializes the autocompleter
+ */
 TBG.Core.initializeAutocompleter = function() {
 	new Ajax.Autocompleter(
 		"searchfor",
@@ -602,6 +607,9 @@ TBG.Core.initializeAutocompleter = function() {
 	);
 };
 
+/**
+ * Helper function to extract url from autocomplete response container
+ */
 TBG.Core.extractAutocompleteValue = function(elem, value) {
 	var elements = value.select('.url');
 	if (elements.size() == 1) {
@@ -611,6 +619,9 @@ TBG.Core.extractAutocompleteValue = function(elem, value) {
 	}
 };
 
+/**
+ * Monitors viewport resize to adapt backdrops and dashboard containers
+ */
 TBG.Core.resizeWatcher = function() {
 	if (($('fullpage_backdrop') && $('fullpage_backdrop').visible()) || ($('attach_file') && $('attach_file').visible())) {
 		var docheight = document.viewport.getHeight();
@@ -623,11 +634,20 @@ TBG.Core.resizeWatcher = function() {
 	}
 };
 
+/**
+ * Toggles one breadcrumb item in the breadcrumb bar
+ */
 TBG.Core.toggleBreadcrumbItem = function(item) {
 	item.up('li').next().toggleClassName('popped_out');
 	item.toggleClassName('activated');
 };
 
+/**
+ * Main initializer function
+ * Sets up and initializes autocompleters, watchers, etc
+ * 
+ * @param {Object} options A {key: value} store with options to set
+ */
 TBG.initialize = function(options) {
 	for(var key in options) {
 		TBG[key] = options[key];
@@ -637,6 +657,9 @@ TBG.initialize = function(options) {
 	document.observe('click', TBG.Main.toggleBreadcrumbMenuPopout);
 };
 
+/**
+ * Clears all popup messages from the effect queue
+ */
 TBG.Main.clearPopupMessages = function() {
 	Effect.Queues.get(TBG.effect_queues.successmessage).each(function(effect) {effect.cancel();});
 	Effect.Queues.get(TBG.effect_queues.failedmessage).each(function(effect) {effect.cancel();});
@@ -648,6 +671,12 @@ TBG.Main.clearPopupMessages = function() {
 	}
 };
 
+/**
+ * Shows an error popup message
+ * 
+ * @param string title The title to show
+ * @param string content Error details
+ */
 TBG.Main.failedMessage = function(title, content) {
 	$('thebuggenie_failuremessage_title').update(title);
 	$('thebuggenie_failuremessage_content').update(content);
@@ -664,6 +693,12 @@ TBG.Main.failedMessage = function(title, content) {
 	new Effect.Fade('thebuggenie_failuremessage', {queue: {position: 'end', scope: TBG.effect_queues.failedmessage, limit: 2}, delay: 30, duration: 0.2});
 };
 
+/**
+ * Shows a "success"-style popup message
+ * 
+ * @param string title The title to show
+ * @param string content Message details
+ */
 TBG.Main.successMessage = function(title, content) {
 	$('thebuggenie_successmessage_title').update(title);
 	$('thebuggenie_successmessage_content').update(content);
