@@ -2,7 +2,6 @@
 
 	$tbg_response->addBreadcrumb(__('Sprint planning'), null, tbg_get_breadcrumblinks('project_summary', $selected_project));
 	$tbg_response->setTitle(__('"%project_name%" project planning', array('%project_name%' => $selected_project->getName())));
-	$tbg_response->addJavascript('scrum.js');
 
 ?>
 		<?php include_template('project/projectinfosidebar', array('selected_project' => $selected_project, 'table_id' => 'scrum')); ?>

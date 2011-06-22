@@ -20,7 +20,11 @@ var TBG = {
 	Project: {
 		Statistics: {},
 		Milestone: {},
-		Timeline: {}
+		Timeline: {},
+		Scrum: {
+			Story: {},
+			Sprint: {}
+		}
 	},
 	Config: {
 		Permissions: {}
@@ -654,6 +658,106 @@ TBG.Project.Timeline.update = function(url) {
 		}
 	});
 };
+
+TBG.Project.Scrum.Sprint.add = function(url, assign_url)
+{
+	TBG.Main.Helpers.Ajax(url, {
+		form: 'add_sprint_form',
+		loading: {indicator: 'sprint_add_indicator'},
+		success: {
+			reset: 'add_sprint_form',
+			hide: 'no_sprints',
+			update: {element: 'scrum_sprints', insertion: true},
+			callback: function(json) {
+				Droppables.add('scrum_sprint_' + json.sprint_id, {hoverclass: 'highlighted', onDrop: function (dragged, dropped, event) {TBG.Project.Scrum.Story.Assign(assign_url, dragged, dropped)}});
+			}
+		}
+	});
+}
+
+TBG.Project.Scrum.Story.add = function(url)
+{
+	TBG.Main.Helpers.Ajax(url, {
+		form: 'add_user_story_form',
+		loading: {indicator: 'user_story_add_indicator'},
+		success: {
+			reset: 'add_user_story_form',
+			update: {element: 'scrum_sprint_0_list', insertion: true},
+			hide: 'scrum_sprint_0_unassigned',
+			callback: function(json) {
+				new Draggable('scrum_story_' + json.story_id, {revert: true});
+			}
+		}
+	});
+}
+
+TBG.Project.Scrum.Story.assign = function(url, dragged, dropped)
+{
+	TBG.Main.Helpers.Ajax(url, {
+		params: {story_id: $(dragged.id + '_id').getValue(), sprint_id: $(dropped.id + '_id').getValue()},
+		loading: {indicator: dropped.id + '_indicator'},
+		success: {
+			callback: function(json) {
+				$(dropped.id + '_list').insert(Element.remove(dragged), {insertion: Insertion.Bottom, queue: 'end'});
+				$('scrum_sprint_' + json.old_sprint_id + '_issues').update(json.old_issues);
+				$('scrum_sprint_' + json.new_sprint_id + '_issues').update(json.new_issues);
+				$('scrum_sprint_' + json.old_sprint_id + '_estimated_points').update(json.old_estimated_points);
+				$('scrum_sprint_' + json.new_sprint_id + '_estimated_points').update(json.new_estimated_points);
+				$('scrum_sprint_' + json.old_sprint_id + '_estimated_hours').update(json.old_estimated_hours);
+				$('scrum_sprint_' + json.new_sprint_id + '_estimated_hours').update(json.new_estimated_hours);
+				($('scrum_sprint_' + json.old_sprint_id + '_list').childElements().size() == 0) ? $('scrum_sprint_' + json.old_sprint_id + '_unassigned').show() : $('scrum_sprint_' + json.old_sprint_id + '_unassigned').hide();
+				($('scrum_sprint_' + json.new_sprint_id + '_list').childElements().size() == 0) ? $('scrum_sprint_' + json.new_sprint_id + '_unassigned').show() : $('scrum_sprint_' + json.new_sprint_id + '_unassigned').hide();
+			}
+		}
+	});
+}
+
+TBG.Project.Scrum.Story.setColor = function(url, story_id, color)
+{
+	TBG.Main.Helpers.Ajax(url, {
+		parameters: {color: color},
+		loading: {indicator: 'color_selector_' + story_id + '_indicator'},
+		success: {
+			callback: function() {
+				$('story_color_' + story_id).style.backgroundColor = color;
+			}
+		},
+		complete: {
+			hide: 'color_selector_' + story_id
+		}
+	});
+}
+
+TBG.Project.Scrum.Story.setEstimates = function(url, story_id)
+{
+	var params = {};
+	if ($('scrum_story_' + story_id + '_points_input') && $('scrum_story_' + story_id + '_hours_input')) {
+		params = {estimated_points: $('scrum_story_' + story_id + '_points_input').getValue(), estimated_hours: $('scrum_story_' + story_id + '_hours_input').getValue()};
+	} else if ($('scrum_story_' + story_id + '_hours_input')) {
+		params = {estimated_hours: $('scrum_story_' + story_id + '_hours_input').getValue()};
+	} else if ($('scrum_story_' + story_id + '_points_input')) {
+		params = {estimated_points: $('scrum_story_' + story_id + '_points_input').getValue()};
+	}
+	
+	TBG.Main.Helpers.Ajax(url, {
+		parameters: params,
+		loading: {indicator: 'point_selector_' + story_id + '_indicator'},
+		success: {
+			callback: function(json) {
+				if ($('scrum_story_' + story_id + '_points')) $('scrum_story_' + story_id + '_points').update(json.points);
+				if ($('scrum_story_' + story_id + '_hours')) {
+					$('scrum_story_' + story_id + '_hours').update(json.hours);
+					if ($('selected_burndown_image')) TBG.Main.reloadImage('selected_burndown_image');
+				}
+				$('scrum_sprint_' + json.sprint_id + '_estimated_points').update(json.new_estimated_points);
+				$('scrum_sprint_' + json.sprint_id + '_remaining_points').update(json.new_remaining_points);
+				$('scrum_sprint_' + json.sprint_id + '_estimated_hours').update(json.new_estimated_hours);
+				$('scrum_sprint_' + json.sprint_id + '_remaining_hours').update(json.new_remaining_hours);
+			}
+		},
+		complete: {hide: 'scrum_story_' + story_id + '_estimation'}
+	});
+}
 
 TBG.Main.Comment.remove = function(url, comment_id) {
 	TBG.Main.Helpers.Ajax(url, {
