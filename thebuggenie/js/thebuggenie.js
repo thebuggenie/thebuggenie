@@ -10,11 +10,21 @@ function is_string(element) {
 var TBG = {
 	Core: {}, // The "Core" namespace is for functions used by thebuggenie core, not to be invoked outside the js class
 	Main: { // The "Main" namespace contains regular functions in use across the site
-		Helpers: {}, 
-		Profile: {} 
+		Helpers: {
+			Message: {},
+			Backdrop: {}
+		}, 
+		Profile: {},
+		Comment: {}
 	},
-	Project: {},
-	Config: {}, // The "Config" namespace contains functions used in the configuration section
+	Project: {
+		Statistics: {},
+		Milestone: {},
+		Timeline: {}
+	},
+	Config: {
+		Permissions: {}
+	}, // The "Config" namespace contains functions used in the configuration section
 	Issues: {}, // The "Issues" namespace contains functions used in direct relation to issues
 	Search: {}, // The "Search" namespace contains functions related to searching
 	Subscriptions: {}, // The "Subscription" namespace contains functionality related to subscribing to - and publishing js events
@@ -526,7 +536,7 @@ TBG.Main.hideInfobox = function(url, boxkey) {
 TBG.Project.Statistics.get = function(url) {
 	TBG.Main.Helpers.Ajax(url, {
 		loading: {
-			indicator: 'statistics_main', 
+			show: 'statistics_main', 
 			hide: 'statistics_help',
 			callback: function() {
 				$('statistics_main_image').src = '';
@@ -552,7 +562,7 @@ TBG.Project.Statistics.get = function(url) {
 				}
 			}
 		},
-		complete: {show: 'statistics_help'}
+		failure: {show: 'statistics_help'}
 	});
 };
 
