@@ -1,8 +1,8 @@
 <div class="tab_menu">
 	<ul id="project_hierarcy_menu">
-		<li id="tab_hierarchy_editions" class="selected"><?php echo javascript_link_tag(__('Editions'), array('onclick' => "TBG.Main.switchSubmenuTab('tab_hierarchy_editions', 'project_hierarcy_menu');")); ?></li>
-		<li id="tab_hierarchy_components"><?php echo javascript_link_tag(__('Components'), array('onclick' => "TBG.Main.switchSubmenuTab('tab_hierarchy_components', 'project_hierarcy_menu');")); ?></li>
-		<li id="tab_hierarchy_releases"><?php echo javascript_link_tag(__('Releases'), array('onclick' => "TBG.Main.switchSubmenuTab('tab_hierarchy_releases', 'project_hierarcy_menu');")); ?></li>
+		<li id="tab_hierarchy_editions" class="selected"><?php echo javascript_link_tag(__('Editions'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_hierarchy_editions', 'project_hierarcy_menu');")); ?></li>
+		<li id="tab_hierarchy_components"><?php echo javascript_link_tag(__('Components'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_hierarchy_components', 'project_hierarcy_menu');")); ?></li>
+		<li id="tab_hierarchy_releases"><?php echo javascript_link_tag(__('Releases'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_hierarchy_releases', 'project_hierarcy_menu');")); ?></li>
 	</ul>
 </div>
 <div id="project_hierarcy_menu_panes">

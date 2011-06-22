@@ -37,11 +37,11 @@ function toggleFavourite(url, issue_id)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				TBG.Main.failedMessage(json.error);
+				TBG.Main.Helpers.Message.error(json.error);
 			}
 			else
 			{
-				TBG.Main.failedMessage(transport.responseText);
+				TBG.Main.Helpers.Message.error(transport.responseText);
 			}
 		}
 	});
@@ -68,11 +68,11 @@ function attachLink(url)
 			}
 			else if (json && (json.failed || json.error))
 			{
-				TBG.Main.failedMessage(json.error);
+				TBG.Main.Helpers.Message.error(json.error);
 			}
 			else
 			{
-				TBG.Main.failedMessage(transport.responseText);
+				TBG.Main.Helpers.Message.error(transport.responseText);
 			}
 			$('attach_link_indicator').hide();
 			$('attach_link_submit').show();
@@ -81,11 +81,11 @@ function attachLink(url)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				TBG.Main.failedMessage(json.error);
+				TBG.Main.Helpers.Message.error(json.error);
 			}
 			else
 			{
-				TBG.Main.failedMessage(transport.responseText);
+				TBG.Main.Helpers.Message.error(transport.responseText);
 			}
 			$('attach_link_indicator').hide();
 			$('attach_link_submit').show();
@@ -108,7 +108,7 @@ function removeLinkFromIssue(url, link_id)
 			{
 				$('viewissue_links_' + link_id).remove();
 				$('viewissue_links_' + link_id + '_remove_confirm').remove();
-				TBG.Main.successMessage(json.message);
+				TBG.Main.Helpers.Message.success(json.message);
 				if (json.attachmentcount == 0)
 				{
 					$('viewissue_no_uploaded_files').show();
@@ -119,11 +119,11 @@ function removeLinkFromIssue(url, link_id)
 			{
 				if (json && (json.failed || json.error))
 				{
-					TBG.Main.failedMessage(json.error);
+					TBG.Main.Helpers.Message.error(json.error);
 				}
 				else
 				{
-					TBG.Main.failedMessage(transport.responseText);
+					TBG.Main.Helpers.Message.error(transport.responseText);
 				}
 				$('viewissue_links_'+ link_id + '_remove_link').show();
 				$('viewissue_links_'+ link_id + '_remove_indicator').hide();
@@ -135,11 +135,11 @@ function removeLinkFromIssue(url, link_id)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				TBG.Main.failedMessage(json.error);
+				TBG.Main.Helpers.Message.error(json.error);
 			}
 			else
 			{
-				TBG.Main.failedMessage(transport.responseText);
+				TBG.Main.Helpers.Message.error(transport.responseText);
 			}
 		}
 	});
@@ -175,11 +175,11 @@ function updatePercent(url, mode)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				TBG.Main.failedMessage(json.error);
+				TBG.Main.Helpers.Message.error(json.error);
 			}
 			else
 			{
-				TBG.Main.failedMessage(transport.responseText);
+				TBG.Main.Helpers.Message.error(transport.responseText);
 			}
 		}
 	});
@@ -320,7 +320,7 @@ function setField(url, field, serialize)
 			}
 			else if (json.failed)
 			{
-				TBG.Main.failedMessage(json.error);
+				TBG.Main.Helpers.Message.error(json.error);
 			}
 			(json.changed == true) ? setIssueChanged(field) : setIssueUnchanged(field);
 			$(field + '_spinning').hide();
@@ -405,7 +405,7 @@ function revertField(url, field)
 			}
 			else if (json && json.error)
 			{
-				TBG.Main.failedMessage(json.error);
+				TBG.Main.Helpers.Message.error(json.error);
 			}
 			$(field + '_undo_spinning').hide();
 			if (field == 'issuetype') $('issuetype_indicator_fullpage').hide();
@@ -415,7 +415,7 @@ function revertField(url, field)
 			var json = transport.responseJSON;
 			if (json && json.error)
 			{
-				TBG.Main.failedMessage(json.error);
+				TBG.Main.Helpers.Message.error(json.error);
 			}
 			if (field == 'issuetype') $('issuetype_indicator_fullpage').hide();
 		}
@@ -466,7 +466,7 @@ function toggleConfirmed(url, affected)
 		},
 		onSuccess: function(transport) {
 			var json = transport.responseJSON;
-			TBG.Main.successMessage(json.message);
+			TBG.Main.Helpers.Message.success(json.message);
 			
 			$('affected_' + affected + '_confirmed_icon').writeAttribute('alt', json.alt);
 			$('affected_' + affected + '_confirmed_icon').writeAttribute('src', json.src);
@@ -477,7 +477,7 @@ function toggleConfirmed(url, affected)
 		onFailure: function(transport) {
 			var json = transport.responseJSON;
 
-			TBG.Main.failedMessage(json.error);
+			TBG.Main.Helpers.Message.error(json.error);
 			$('affected_' + affected + '_confirmed_spinner').hide();
 			$('affected_' + affected + '_confirmed_icon').show();
 		}
@@ -494,7 +494,7 @@ function deleteAffected(url, affected)
 		},
 		onSuccess: function(transport) {
 			var json = transport.responseJSON;
-			TBG.Main.successMessage(json.message);
+			TBG.Main.Helpers.Message.success(json.message);
 			
 			$('viewissue_affects_count').update(json.itemcount);
 			$('affected_' + affected + '_delete').remove();
@@ -508,7 +508,7 @@ function deleteAffected(url, affected)
 		onFailure: function(transport) {
 			var json = transport.responseJSON;
 
-			TBG.Main.failedMessage(json.error);
+			TBG.Main.Helpers.Message.error(json.error);
 			$('affected_' + affected + '_delete_spinner').hide();
 		}
 	});
@@ -524,7 +524,7 @@ function statusAffected(url, affected)
 		},
 		onSuccess: function(transport) {
 			var json = transport.responseJSON;
-			TBG.Main.successMessage(json.message);
+			TBG.Main.Helpers.Message.success(json.message);
 			
 			$('affected_' + affected + '_status_colour').setStyle({
 				backgroundColor: json.colour,
@@ -561,7 +561,7 @@ function addAffected(url)
 		},
 		onSuccess: function(transport) {
 			var json = transport.responseJSON;
-			TBG.Main.successMessage(json.message);
+			TBG.Main.Helpers.Message.success(json.message);
 
 			$('viewissue_affects_count').update(json.itemcount);
 			
@@ -573,13 +573,13 @@ function addAffected(url)
 			$('affected_list').insert({bottom: json.content});
 			
 			$('add_affected_spinning').hide();
-			TBG.Main.resetFadedBackdrop();
+			TBG.Main.Helpers.Backdrop.reset();
 		},
 		onFailure: function(transport) {
 			var json = transport.responseJSON;
 
 			$('add_affected_spinning').hide();
-			TBG.Main.failedMessage(json.error);
+			TBG.Main.Helpers.Message.error(json.error);
 		}
 	});
 }

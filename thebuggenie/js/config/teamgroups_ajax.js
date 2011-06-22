@@ -16,7 +16,7 @@ function showUsers(url, findstring)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				TBG.Main.failedMessage(json.error);
+				TBG.Main.Helpers.Message.error(json.error);
 			}
 		},
 		onFailure: function (transport) {
@@ -24,11 +24,11 @@ function showUsers(url, findstring)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				TBG.Main.failedMessage(json.error);
+				TBG.Main.Helpers.Message.error(json.error);
 			}
 			else
 			{
-				TBG.Main.failedMessage(transport.responseText);
+				TBG.Main.Helpers.Message.error(transport.responseText);
 			}
 		}
 	});
@@ -77,7 +77,7 @@ function deleteGroup(url, group_id)
 			var json = transport.responseJSON;
 			if (json && (!json.failed || json.success) && json.message)
 			{
-				TBG.Main.successMessage(json.message);
+				TBG.Main.Helpers.Message.success(json.message);
 			}
 		},
 		onComplete: function (transport) {
@@ -85,11 +85,11 @@ function deleteGroup(url, group_id)
 			var json = transport.responseJSON;
 			if (json && (!json.failed || json.success) && json.message)
 			{
-				TBG.Main.successMessage(json.message);
+				TBG.Main.Helpers.Message.success(json.message);
 			}
 			if (json && (json.failed || json.error))
 			{
-				TBG.Main.failedMessage(json.error);
+				TBG.Main.Helpers.Message.error(json.error);
 			}
 		},
 		onFailure: function (transport) {
@@ -97,11 +97,11 @@ function deleteGroup(url, group_id)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				TBG.Main.failedMessage(json.error);
+				TBG.Main.Helpers.Message.error(json.error);
 			}
 			else
 			{
-				TBG.Main.failedMessage(transport.responseText);
+				TBG.Main.Helpers.Message.error(transport.responseText);
 			}
 		}
 	});
@@ -159,11 +159,11 @@ function showGroupMembers(url, group_id)
 				var json = transport.responseJSON;
 				if (json && (!json.failed || json.success) && json.message)
 				{
-					TBG.Main.successMessage(json.message);
+					TBG.Main.Helpers.Message.success(json.message);
 				}
 				if (json && (json.failed || json.error))
 				{
-					TBG.Main.failedMessage(json.error);
+					TBG.Main.Helpers.Message.error(json.error);
 				}
 			},
 			onFailure: function (transport) {
@@ -172,11 +172,11 @@ function showGroupMembers(url, group_id)
 				var json = transport.responseJSON;
 				if (json && (json.failed || json.error))
 				{
-					TBG.Main.failedMessage(json.error);
+					TBG.Main.Helpers.Message.error(json.error);
 				}
 				else
 				{
-					TBG.Main.failedMessage(transport.responseText);
+					TBG.Main.Helpers.Message.error(transport.responseText);
 				}
 			}
 		});
@@ -250,11 +250,11 @@ function showTeamMembers(url, team_id)
 				var json = transport.responseJSON;
 				if (json && (!json.failed || json.success) && json.message)
 				{
-					TBG.Main.successMessage(json.message);
+					TBG.Main.Helpers.Message.success(json.message);
 				}
 				if (json && (json.failed || json.error))
 				{
-					TBG.Main.failedMessage(json.error);
+					TBG.Main.Helpers.Message.error(json.error);
 				}
 			},
 			onFailure: function (transport) {
@@ -263,11 +263,11 @@ function showTeamMembers(url, team_id)
 				var json = transport.responseJSON;
 				if (json && (json.failed || json.error))
 				{
-					TBG.Main.failedMessage(json.error);
+					TBG.Main.Helpers.Message.error(json.error);
 				}
 				else
 				{
-					TBG.Main.failedMessage(transport.responseText);
+					TBG.Main.Helpers.Message.error(transport.responseText);
 				}
 			}
 		});
@@ -294,7 +294,7 @@ function deleteClient(url, client_id)
 			var json = transport.responseJSON;
 			if (json && (!json.failed || json.success) && json.message)
 			{
-				TBG.Main.successMessage(json.message);
+				TBG.Main.Helpers.Message.success(json.message);
 			}
 		},
 		onComplete: function (transport) {
@@ -302,11 +302,11 @@ function deleteClient(url, client_id)
 			var json = transport.responseJSON;
 			if (json && (!json.failed || json.success) && json.message)
 			{
-				TBG.Main.successMessage(json.message);
+				TBG.Main.Helpers.Message.success(json.message);
 			}
 			if (json && (json.failed || json.error))
 			{
-				TBG.Main.failedMessage(json.error);
+				TBG.Main.Helpers.Message.error(json.error);
 			}
 		},
 		onFailure: function (transport) {
@@ -314,11 +314,11 @@ function deleteClient(url, client_id)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				TBG.Main.failedMessage(json.error);
+				TBG.Main.Helpers.Message.error(json.error);
 			}
 			else
 			{
-				TBG.Main.failedMessage(transport.responseText);
+				TBG.Main.Helpers.Message.error(transport.responseText);
 			}
 		}
 	});
@@ -348,11 +348,11 @@ function showClientMembers(url, client_id)
 				var json = transport.responseJSON;
 				if (json && (!json.failed || json.success) && json.message)
 				{
-					TBG.Main.successMessage(json.message);
+					TBG.Main.Helpers.Message.success(json.message);
 				}
 				if (json && (json.failed || json.error))
 				{
-					TBG.Main.failedMessage(json.error);
+					TBG.Main.Helpers.Message.error(json.error);
 				}
 			},
 			onFailure: function (transport) {
@@ -361,11 +361,11 @@ function showClientMembers(url, client_id)
 				var json = transport.responseJSON;
 				if (json && (json.failed || json.error))
 				{
-					TBG.Main.failedMessage(json.error);
+					TBG.Main.Helpers.Message.error(json.error);
 				}
 				else
 				{
-					TBG.Main.failedMessage(transport.responseText);
+					TBG.Main.Helpers.Message.error(transport.responseText);
 				}
 			}
 		});
@@ -387,14 +387,14 @@ function editClient(url, client_id)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				TBG.Main.failedMessage(json.error);
+				TBG.Main.Helpers.Message.error(json.error);
 			}
 			else if (json)
 			{
 				$('clientbox_' + client_id).update(json.content);
 				$('edit_client_' + client_id).hide();
 
-				TBG.Main.successMessage(json.message);
+				TBG.Main.Helpers.Message.success(json.message);
 			}
 		},
 		onFailure: function (transport) {
@@ -402,11 +402,11 @@ function editClient(url, client_id)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				TBG.Main.failedMessage(json.error);
+				TBG.Main.Helpers.Message.error(json.error);
 			}
 			else
 			{
-				TBG.Main.failedMessage(transport.responseText);
+				TBG.Main.Helpers.Message.error(transport.responseText);
 			}
 		}
 	});
@@ -427,7 +427,7 @@ function editUser(url, user_id)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				TBG.Main.failedMessage(json.error);
+				TBG.Main.Helpers.Message.error(json.error);
 			}
 			else if (json)
 			{
@@ -438,7 +438,7 @@ function editUser(url, user_id)
 				$('users_results_user_' + user_id).show();
 				$('user_' + user_id + '_edit_tr').hide();
 				updateTeamAndGroupDetailsFromJSON(json);
-				TBG.Main.successMessage(json.title, json.message);
+				TBG.Main.Helpers.Message.success(json.title, json.message);
 			}
 		},
 		onFailure: function (transport) {
@@ -446,11 +446,11 @@ function editUser(url, user_id)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				TBG.Main.failedMessage(json.error);
+				TBG.Main.Helpers.Message.error(json.error);
 			}
 			else
 			{
-				TBG.Main.failedMessage(transport.responseText);
+				TBG.Main.Helpers.Message.error(transport.responseText);
 			}
 		}
 	});
@@ -507,7 +507,7 @@ function getUserPermissionsBlock(url, user_id)
 				var json = transport.responseJSON;
 				if (json && (json.failed || json.error))
 				{
-					TBG.Main.failedMessage(json.error);
+					TBG.Main.Helpers.Message.error(json.error);
 				}
 			}
 		});

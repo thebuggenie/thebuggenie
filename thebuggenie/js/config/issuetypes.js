@@ -14,18 +14,18 @@ function showIssuetypeOptions(url, id)
 			$('issuetype_' + id + '_indicator').hide();
 			if (json && (json.failed || json.error))
 			{
-				TBG.Main.failedMessage(json.error);
+				TBG.Main.Helpers.Message.error(json.error);
 			}
 		},
 		onFailure: function (transport) {
 			$('issuetype_' + id + '_indicator').hide();
 			if (transport.responseJSON)
 			{
-				TBG.Main.failedMessage(transport.responseJSON.error);
+				TBG.Main.Helpers.Message.error(transport.responseJSON.error);
 			}
 			else
 			{
-				TBG.Main.failedMessage(transport.responseText);
+				TBG.Main.Helpers.Message.error(transport.responseText);
 			}
 		}
 		});
@@ -47,7 +47,7 @@ function updateIssuetype(url, id)
 		var json = transport.responseJSON;
 		if (json.failed)
 		{
-			TBG.Main.failedMessage(json.error);
+			TBG.Main.Helpers.Message.error(json.error);
 			$('edit_issuetype_' + id + '_indicator').hide();
 		}
 		else
@@ -66,18 +66,18 @@ function updateIssuetype(url, id)
 					$('issuetype_' + id + '_info').show();
 				}
 			}
-			TBG.Main.successMessage(json.title);
+			TBG.Main.Helpers.Message.success(json.title);
 		}
 	},
 	onFailure: function (transport) {
 		$('edit_issuetype_' + id + '_indicator').hide();
 		if (transport.responseJSON)
 		{
-			TBG.Main.failedMessage(transport.responseJSON.error);
+			TBG.Main.Helpers.Message.error(transport.responseJSON.error);
 		}
 		else
 		{
-			TBG.Main.failedMessage(transport.responseText);
+			TBG.Main.Helpers.Message.error(transport.responseText);
 		}
 	}
 	});
@@ -96,25 +96,25 @@ function deleteIssuetype(url, id)
 		var json = transport.responseJSON;
 		if (json.failed)
 		{
-			TBG.Main.failedMessage(json.error);
+			TBG.Main.Helpers.Message.error(json.error);
 			$('delete_issuetype_' + id + '_indicator').hide();
 		}
 		else
 		{
 			$('delete_issuetype_' + id + '_indicator').hide();
 			$('issuetype_' + id + '_box').remove();
-			TBG.Main.successMessage(json.message);
+			TBG.Main.Helpers.Message.success(json.message);
 		}
 	},
 	onFailure: function (transport) {
 		$('edit_issuetype_' + id + '_indicator').hide();
 		if (transport.responseJSON)
 		{
-			TBG.Main.failedMessage(transport.responseJSON.error);
+			TBG.Main.Helpers.Message.error(transport.responseJSON.error);
 		}
 		else
 		{
-			TBG.Main.failedMessage(transport.responseText);
+			TBG.Main.Helpers.Message.error(transport.responseText);
 		}
 	}
 	});
@@ -135,25 +135,25 @@ function updateIssuetypeChoices(url, id)
 		var json = transport.responseJSON;
 		if (json.failed)
 		{
-			TBG.Main.failedMessage(json.error);
+			TBG.Main.Helpers.Message.error(json.error);
 			$('update_' + id + '_choices_indicator').hide();
 		}
 		else
 		{
 			$('update_' + id + '_choices_indicator').hide();
 			$('issuetype_' + id + '_content').hide();
-			TBG.Main.successMessage(json.title, '');
+			TBG.Main.Helpers.Message.success(json.title, '');
 		}
 	},
 	onFailure: function (transport) {
 		$('update_' + id + '_choices_indicator').hide();
 		if (transport.responseJSON)
 		{
-			TBG.Main.failedMessage(transport.responseJSON.error);
+			TBG.Main.Helpers.Message.error(transport.responseJSON.error);
 		}
 		else
 		{
-			TBG.Main.failedMessage(transport.responseText);
+			TBG.Main.Helpers.Message.error(transport.responseText);
 		}
 	}
 	});
@@ -175,7 +175,7 @@ function addIssuetype(url)
 		var json = transport.responseJSON;
 		if (json.failed)
 		{
-			TBG.Main.failedMessage(json.error);
+			TBG.Main.Helpers.Message.error(json.error);
 			$('add_issuetype_button').show();
 			$('add_issuetype_indicator').hide();
 		}
@@ -184,7 +184,7 @@ function addIssuetype(url)
 			$('add_issuetype_indicator').hide();
 			$('add_issuetype_button').show();
 			$('add_issuetype_form').reset();
-			TBG.Main.successMessage(json.title, '');
+			TBG.Main.Helpers.Message.success(json.title, '');
 			$('issuetypes_list').insert({bottom: json.content});
 		}
 	},
@@ -193,11 +193,11 @@ function addIssuetype(url)
 		$('add_issuetype_button').show();
 		if (transport.responseJSON)
 		{
-			TBG.Main.failedMessage(transport.responseJSON.error);
+			TBG.Main.Helpers.Message.error(transport.responseJSON.error);
 		}
 		else
 		{
-			TBG.Main.failedMessage(transport.responseText);
+			TBG.Main.Helpers.Message.error(transport.responseText);
 		}
 	}
 	});

@@ -18,10 +18,10 @@
 			<div class="config_header" style="width: 750px;"><?php echo __('Configure users, teams and groups'); ?></div>
 			<div style="width: 750px; clear: both; height: 30px;" class="tab_menu">
 				<ul id="usersteamsgroups_menu">
-					<li id="tab_users" class="selected"><?php echo javascript_link_tag(image_tag('cfg_icon_users.png', array('style' => 'float: left; margin-right: 5px;')) . $users_text, array('onclick' => "TBG.Main.switchSubmenuTab('tab_users', 'usersteamsgroups_menu');")); ?></li>
-					<li id="tab_groups"><?php echo javascript_link_tag(image_tag('cfg_icon_teamgroups.png', array('style' => 'float: left; margin-right: 5px;')) . __('Groups'), array('onclick' => "TBG.Main.switchSubmenuTab('tab_groups', 'usersteamsgroups_menu');")); ?></li>
-					<li id="tab_teams"><?php echo javascript_link_tag(image_tag('cfg_icon_teamgroups.png', array('style' => 'float: left; margin-right: 5px;')) . $teams_text, array('onclick' => "TBG.Main.switchSubmenuTab('tab_teams', 'usersteamsgroups_menu');")); ?></li>
-					<li id="tab_clients"><?php echo javascript_link_tag(image_tag('cfg_icon_teamgroups.png', array('style' => 'float: left; margin-right: 5px;')) . __('Clients'), array('onclick' => "TBG.Main.switchSubmenuTab('tab_clients', 'usersteamsgroups_menu');")); ?></li>
+					<li id="tab_users" class="selected"><?php echo javascript_link_tag(image_tag('cfg_icon_users.png', array('style' => 'float: left; margin-right: 5px;')) . $users_text, array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_users', 'usersteamsgroups_menu');")); ?></li>
+					<li id="tab_groups"><?php echo javascript_link_tag(image_tag('cfg_icon_teamgroups.png', array('style' => 'float: left; margin-right: 5px;')) . __('Groups'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_groups', 'usersteamsgroups_menu');")); ?></li>
+					<li id="tab_teams"><?php echo javascript_link_tag(image_tag('cfg_icon_teamgroups.png', array('style' => 'float: left; margin-right: 5px;')) . $teams_text, array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_teams', 'usersteamsgroups_menu');")); ?></li>
+					<li id="tab_clients"><?php echo javascript_link_tag(image_tag('cfg_icon_teamgroups.png', array('style' => 'float: left; margin-right: 5px;')) . __('Clients'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_clients', 'usersteamsgroups_menu');")); ?></li>
 				</ul>
 			</div>
 			<div id="usersteamsgroups_menu_panes">

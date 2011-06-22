@@ -14,7 +14,7 @@ function getPermissionOptions(url, field)
 			$(field + '_indicator').hide();
 			if (json && (json.failed || json.error))
 			{
-				TBG.Main.failedMessage(json.error);
+				TBG.Main.Helpers.Message.error(json.error);
 			}
 			else
 			{
@@ -25,11 +25,11 @@ function getPermissionOptions(url, field)
 			$(field + '_indicator').hide();
 			if (transport.responseJSON)
 			{
-				TBG.Main.failedMessage(transport.responseJSON.error);
+				TBG.Main.Helpers.Message.error(transport.responseJSON.error);
 			}
 			else
 			{
-				TBG.Main.failedMessage(transport.responseText);
+				TBG.Main.Helpers.Message.error(transport.responseText);
 			}
 		}
 		});

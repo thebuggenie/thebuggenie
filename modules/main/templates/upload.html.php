@@ -1,5 +1,5 @@
 <?php if (isset($error)): ?>
-	frameElement.parent.TBG.Main.failedMessage('<?php echo $error; ?>');
+	frameElement.parent.TBG.Main.Helpers.Message.error('<?php echo $error; ?>');
 <?php else: ?>
-	frameElement.parent.TBG.Main.successMessage('<?php echo __('The file "%filename%" was uploaded successfully'); ?>');
+	frameElement.parent.TBG.Main.Helpers.Message.success('<?php echo __('The file "%filename%" was uploaded successfully'); ?>');
 <?php endif; ?>

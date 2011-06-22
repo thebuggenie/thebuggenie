@@ -136,7 +136,7 @@
 			</div>
 		</div>
 		<div class="backdrop_detail_footer">
-			<?php echo '<a href="javascript:void(0);" onclick="TBG.Main.resetFadedBackdrop();">' . __('Cancel and close this pop-up') . '</a>'; ?>
+			<?php echo '<a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.reset();">' . __('Cancel and close this pop-up') . '</a>'; ?>
 		</div>
 	</form>
 	<?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE) && !$transition->getAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE)->hasTargetValue()): ?>

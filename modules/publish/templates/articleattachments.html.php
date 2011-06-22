@@ -21,7 +21,7 @@
 					<?php if (TBGSettings::isUploadsEnabled()): ?>
 						<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px; float: left;" id="article_attach_file_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="$('attach_file').show();" value="<?php echo __('Attach a file'); ?>"></td></tr></table>
 					<?php else: ?>
-						<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px; float: left;" id="article_attach_file_button"><tr><td class="nice_button disabled" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="TBG.Main.failedMessage('<?php echo __('File uploads are not enabled'); ?>');" value="<?php echo __('Attach a file'); ?>"></td></tr></table>
+						<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px; float: left;" id="article_attach_file_button"><tr><td class="nice_button disabled" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="TBG.Main.Helpers.Message.error('<?php echo __('File uploads are not enabled'); ?>');" value="<?php echo __('Attach a file'); ?>"></td></tr></table>
 					<?php endif; ?>
 					<br style="clear: both;">
 					<?php include_template('publish/attachments', array('article' => $article)); ?>

@@ -106,11 +106,11 @@
 					<br style="clear: both;">
 					<div class="tab_menu" style="margin-top: 55px;">
 						<ul id="transition_menu">
-							<li class="selected" id="pre_validation_tab"><a href="javascript:void(0);" onclick="TBG.Main.switchSubmenuTab('pre_validation_tab', 'transition_menu');"><?php echo __('Pre-transition validation'); ?></a></li>
+							<li class="selected" id="pre_validation_tab"><a href="javascript:void(0);" onclick="TBG.Main.Helpers.tabSwitcher('pre_validation_tab', 'transition_menu');"><?php echo __('Pre-transition validation'); ?></a></li>
 							<?php if ($transition->hasTemplate()): ?>
-								<li id="post_validation_tab"><a href="javascript:void(0);" onclick="TBG.Main.switchSubmenuTab('post_validation_tab', 'transition_menu');"><?php echo __('Post-transition validation'); ?></a></li>
+								<li id="post_validation_tab"><a href="javascript:void(0);" onclick="TBG.Main.Helpers.tabSwitcher('post_validation_tab', 'transition_menu');"><?php echo __('Post-transition validation'); ?></a></li>
 							<?php endif; ?>
-							<li id="actions_tab"><a href="javascript:void(0);" onclick="TBG.Main.switchSubmenuTab('actions_tab', 'transition_menu');"><?php echo __('Post-transition actions'); ?></a></li>
+							<li id="actions_tab"><a href="javascript:void(0);" onclick="TBG.Main.Helpers.tabSwitcher('actions_tab', 'transition_menu');"><?php echo __('Post-transition actions'); ?></a></li>
 						</ul>
 					</div>
 					<div id="transition_menu_panes" style="margin-bottom: 100px;">

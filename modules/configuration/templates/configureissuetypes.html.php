@@ -22,7 +22,7 @@
 			<?php if ($mode == 'issuetypes'): ?>
 				<div id="tab_types_pane" style="padding-top: 0; width: 750px;">
 					<div class="content">
-						<?php echo __('In this tab you can add/remove/edit what issue types are available to issue type schemes. If you add a new issue type on this page, remember to associate it to an issue type scheme on the %issue_type_schemes% tab to get it to show up for users.', array('%issue_type_schemes%' => javascript_link_tag(__('Issue type schemes'), array('onclick' => "TBG.Main.switchSubmenuTab('tab_schemes', 'issuetypes_menu');")))); ?>
+						<?php echo __('In this tab you can add/remove/edit what issue types are available to issue type schemes. If you add a new issue type on this page, remember to associate it to an issue type scheme on the %issue_type_schemes% tab to get it to show up for users.', array('%issue_type_schemes%' => javascript_link_tag(__('Issue type schemes'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_schemes', 'issuetypes_menu');")))); ?>
 					</div>
 					<div id="issuetypes_list">
 						<?php foreach ($issue_types as $type): ?>

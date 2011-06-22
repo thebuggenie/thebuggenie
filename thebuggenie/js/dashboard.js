@@ -94,11 +94,11 @@ function saveDashboard(url)
 			var json = transport.responseJSON;
 			if (json.failed)
 			{
-				TBG.Main.failedMessage(json.error);
+				TBG.Main.Helpers.Message.error(json.error);
 			}
 			else
 			{
-				TBG.Main.successMessage(json.message);
+				TBG.Main.Helpers.Message.success(json.message);
 			}
 			$('save_dashboard_indicator').hide();
 			$('save_dashboard').show();
@@ -107,7 +107,7 @@ function saveDashboard(url)
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
-				TBG.Main.failedMessage(json.error);
+				TBG.Main.Helpers.Message.error(json.error);
 			}
 			$('save_dashboard_indicator').hide();
 			$('save_dashboard').show();

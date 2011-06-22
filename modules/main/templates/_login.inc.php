@@ -2,10 +2,10 @@
 	<div id="backdrop_detail_content" class="rounded_top login_content">
 		<div class="tab_menu">
 			<ul id="login_menu">
-				<li id="tab_login"<?php if ($selected_tab == 'login'): ?> class="selected"<?php endif; ?>><?php echo javascript_link_tag(image_tag('icon_login.png', array('style' => 'float: left;')).__('Login'), array('onclick' => "TBG.Main.switchSubmenuTab('tab_login', 'login_menu');")); ?></li>
+				<li id="tab_login"<?php if ($selected_tab == 'login'): ?> class="selected"<?php endif; ?>><?php echo javascript_link_tag(image_tag('icon_login.png', array('style' => 'float: left;')).__('Login'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_login', 'login_menu');")); ?></li>
 				<?php TBGEvent::createNew('core', 'login_form_tab')->trigger(array('selected_tab' => $selected_tab)); ?>
 				<?php if (TBGSettings::get('allowreg') == true): ?>
-					<li id="tab_register"<?php if ($selected_tab == 'register'): ?> class="selected"<?php endif; ?>><?php echo javascript_link_tag(image_tag('icon_register.png', array('style' => 'float: left;')).__('Register new account'), array('onclick' => "TBG.Main.switchSubmenuTab('tab_register', 'login_menu');")); ?></li>
+					<li id="tab_register"<?php if ($selected_tab == 'register'): ?> class="selected"<?php endif; ?>><?php echo javascript_link_tag(image_tag('icon_register.png', array('style' => 'float: left;')).__('Register new account'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_register', 'login_menu');")); ?></li>
 				<?php endif; ?>
 			</ul>
 		</div>
@@ -59,13 +59,13 @@
 	</div>
 	<div class="backdrop_detail_footer">
 	<?php if ($mandatory != true): ?>
-		<a href="javascript:void(0);" onclick="TBG.Main.resetFadedBackdrop();"><?php echo __('Close'); ?></a>
+		<a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.reset();"><?php echo __('Close'); ?></a>
 	<?php endif; ?>
 	</div>
 </div>
 <?php if (isset($options['error'])): ?>
 	<script type="text/javascript">
-		TBG.Main.failedMessage('<?php echo $options['error']; ?>');
+		TBG.Main.Helpers.Message.error('<?php echo $options['error']; ?>');
 	</script>
 <?php endif; ?>
 <script type="text/javascript">

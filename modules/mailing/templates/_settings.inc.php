@@ -1,8 +1,8 @@
 <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_module', array('config_module' => $module->getName())); ?>" enctype="multipart/form-data" method="post">
 <?php /*<div style="margin-top: 5px; width: 750px; clear: both; height: 30px;" class="tab_menu">
 	<ul id="mailing_settings_menu">
-		<li class="selected" id="tab_outgoing_settings"><a onclick="TBG.Main.switchSubmenuTab('tab_outgoing_settings', 'mailing_settings_menu');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_general.png', array('style' => 'float: left;')).__('Outgoing settings'); ?></a></li>
-		<li id="tab_incoming_settings"><a onclick="TBG.Main.switchSubmenuTab('tab_incoming_settings', 'mailing_settings_menu');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_server.png', array('style' => 'float: left;')).__('Incoming settings'); ?></a></li>
+		<li class="selected" id="tab_outgoing_settings"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_outgoing_settings', 'mailing_settings_menu');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_general.png', array('style' => 'float: left;')).__('Outgoing settings'); ?></a></li>
+		<li id="tab_incoming_settings"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_incoming_settings', 'mailing_settings_menu');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_server.png', array('style' => 'float: left;')).__('Incoming settings'); ?></a></li>
 	</ul>
 </div>
 <div id="mailing_settings_menu_panes"> */ ?>

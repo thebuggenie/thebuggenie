@@ -1,7 +1,7 @@
 <div style="margin-top: 5px; width: 750px; clear: both; height: 30px;" class="tab_menu">
 	<ul id="publish_settings_menu">
-		<li class="selected" id="publish_tab_settings"><a onclick="TBG.Main.switchSubmenuTab('publish_tab_settings', 'publish_settings_menu');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_general.png', array('style' => 'float: left;')).__('General wiki settings'); ?></a></li>
-		<li id="publish_tab_import"><a onclick="TBG.Main.switchSubmenuTab('publish_tab_import', 'publish_settings_menu');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_import.png', array('style' => 'float: left;')).__('Import wiki articles'); ?></a></li>
+		<li class="selected" id="publish_tab_settings"><a onclick="TBG.Main.Helpers.tabSwitcher('publish_tab_settings', 'publish_settings_menu');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_general.png', array('style' => 'float: left;')).__('General wiki settings'); ?></a></li>
+		<li id="publish_tab_import"><a onclick="TBG.Main.Helpers.tabSwitcher('publish_tab_import', 'publish_settings_menu');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_import.png', array('style' => 'float: left;')).__('Import wiki articles'); ?></a></li>
 	</ul>
 </div>
 <div id="publish_settings_menu_panes">

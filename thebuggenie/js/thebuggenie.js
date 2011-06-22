@@ -2,583 +2,20 @@
 function _updateDivWithJSONFeedback(url, update_element, indicator, insertion, clear_update_element_before_loading, hide_element_while_loading, hide_elements_on_success, show_elements_on_success, url_method, params, onsuccess_callback, onfailure_callback, oncomplete_callback) {}
 function _postFormWithJSONFeedback(url, formname, indicator, hide_divs_when_done, update_div, insertion, show_divs_when_done, update_form_elm, onsuccess_callback, onfailure_callback, oncomplete_callback) {}
 
-function setPermission(url, field)
+function is_string(element)
 {
-	new Ajax.Request(url, {
-		asynchronous: true,
-		evalScripts: true,
-		method: "post",
-		onLoading: function(transport) {
-			$(field + '_indicator').show();
-		},
-		onSuccess: function (transport) {
-			var json = transport.responseJSON;
-			$(field + '_indicator').hide();
-			if (json && (json.failed || json.error))
-			{
-				TBG.Main.failedMessage(json.error);
-			}
-			else
-			{
-				$(field).update(json.content);
-			}
-		},
-		onFailure: function (transport) {
-			$(field + '_indicator').hide();
-			if (transport.responseJSON)
-			{
-				TBG.Main.failedMessage(transport.responseJSON.error);
-			}
-			else
-			{
-				TBG.Main.failedMessage(transport.responseText);
-			}
-		}
-	});
-}
-
-function searchPage(url, parameters, offset)
-{
-	//var params = Form.serialize('find_issues_form');
-	var params = parameters + '&offset=' + offset;
-	new Ajax.Updater('search_results', url, {
-	asynchronous: true,
-	method: "post",
-	parameters: params,
-	onLoading: function () {$('paging_spinning').show();},
-	onComplete: function () {$('paging_spinning').hide();}
-	});
-}
-
-function getUserStateList()
-{
-	new Ajax.Updater('user_statelist', 'ajax_handler.php?getuserstatelist=true', {
-	asynchronous:true,
-	method: "post"
-	});
-}
-
-function setUserState(sid)
-{
-	new Ajax.Request('ajax_handler.php?getuserstatelist=true', {
-	asynchronous:true,
-	method: "post",
-	parameters: {setuserstate: sid}
-	});
-}
-
-function setEmailPrivacy(priv)
-{
-	new Ajax.Updater('account_email', 'ajax_handler.php?setemailprivacy=true', {
-	asynchronous:true,
-	method: "post",
-	parameters: {setting: priv}
-	});
-}
-
-function showFollowUps(priv)
-{
-	new Ajax.Updater('account_followups', 'ajax_handler.php?showfollowups=true', {
-	asynchronous:true,
-	method: "post",
-	parameters: {setting: priv}
-	});
-}
-
-function showAssigned(priv)
-{
-	new Ajax.Updater('account_showassigned', 'ajax_handler.php?showassigned=true', {
-	asynchronous:true,
-	method: "post",
-	parameters: {setting: priv}
-	});
-}
-
-function submitNewPassword()
-{
-	var params = Form.serialize('changepassword_form');
-	new Ajax.Updater('password_changed_span', 'ajax_handler.php?change_password=true', {
-	asynchronous:true,
-	method: "post",
-	parameters: params,
-	evalScripts: true
-	});
-	Element.show('password_changed_span');
-}
-
-function getStatistics(url)
-{
-	new Ajax.Request(url, {
-	asynchronous:true,
-	method: "post",
-	evalScripts: true,
-	onLoading: function (transport) {
-		$('statistics_help').hide();
-		$('statistics_main').show();
-		$('statistics_main_image').src = '';
-		$('statistics_mini_image_1').src = '';
-		$('statistics_mini_image_2').src = '';
-		$('statistics_mini_image_3').src = '';
-	},
-	onSuccess: function (transport) {
-		var json = transport.responseJSON;
-		if (json && (json.failed || json.error))
-		{
-			TBG.Main.failedMessage(json.error);
-			$('statistics_help').show();
-			$('statistics_main').hide();
-		}
-		else if (json)
-		{
-			$('statistics_main_image').src = json.images.main;
-			if (json.images.mini_1_small)
-			{
-				$('statistics_mini_image_1').show();
-				$('statistics_mini_image_1').src = json.images.mini_1_small;
-				$('statistics_mini_1_main').setValue(json.images.mini_1_large);
-			}
-			else
-			{
-				$('statistics_mini_image_1').hide();
-				$('statistics_mini_1_main').setValue('');
-			}
-			if (json.images.mini_2_small)
-			{
-				$('statistics_mini_image_2').show();
-				$('statistics_mini_image_2').src = json.images.mini_2_small;
-				$('statistics_mini_2_main').setValue(json.images.mini_2_large);
-			}
-			else
-			{
-				$('statistics_mini_image_2').hide();
-				$('statistics_mini_2_main').setValue('');
-			}
-			if (json.images.mini_3_small)
-			{
-				$('statistics_mini_image_3').show();
-				$('statistics_mini_image_3').src = json.images.mini_3_small;
-				$('statistics_mini_3_main').setValue(json.images.mini_3_large);
-			}
-			else
-			{
-				$('statistics_mini_image_3').hide();
-				$('statistics_mini_3_main').setValue('');
-			}
-		}
-		else
-		{
-			TBG.Main.failedMessage(transport.responseText);
-			$('statistics_help').show();
-			$('statistics_main').hide();
-		}
-	},
-	onFailure: function (transport) {
-		var json = transport.responseJSON;
-		if (json && (json.failed || json.error))
-		{
-			TBG.Main.failedMessage(json.error);
-		}
-		else
-		{
-			TBG.Main.failedMessage(transport.responseText);
-		}
-		$('statistics_help').show();
-		$('statistics_main').hide();
-	}
-	});
-
-}
-
-function toggleStatisticsMainImage(image)
-{
-	$('statistics_main_image').src = '';
-	$('statistics_main_image').src = $('statistics_mini_'+image+'_main').getValue();
-}
-
-function findRelatedIssues(url)
-{
-	_postFormWithJSONFeedback(url, 'viewissue_find_issue_form', 'find_issue_indicator', '', 'viewissue_relation_results');
-	return false;
-}
-
-function findDuplicateIssues(url)
-{
-	_postFormWithJSONFeedback(url, 'viewissue_find_issue_form', 'find_issue_indicator', '', 'viewissue_duplicate_results');
-	return false;
-}
-
-function relateIssues(url)
-{
-	if ($('relate_issue_with_selected').getValue() == 'relate_children')
-	{
-		_postFormWithJSONFeedback(url, 'viewissue_relate_issues_form', 'relate_issues_indicator', 'no_child_issues', 'related_child_issues_inline', true);
-	}
-	else
-	{
-		_postFormWithJSONFeedback(url, 'viewissue_relate_issues_form', 'relate_issues_indicator', 'no_parent_issues', 'related_parent_issues_inline', true);
-	}
-	return false;
-}
-
-function _addVote(url, direction)
-{
-	var opp_direction = (direction == 'up') ? 'down' : 'up';
-	_updateDivWithJSONFeedback(url, 'issue_votes', 'vote_' + direction + '_indicator', null, false, 'vote_' + direction + '_link', ['vote_' + direction + '_link', 'vote_' + opp_direction + '_faded'], ['vote_' + direction + '_faded', 'vote_' + opp_direction + '_link']);
-}
-
-function voteUp(url)
-{
-	_addVote(url, 'up');
-}
-
-function voteDown(url)
-{
-	_addVote(url, 'down');
-}
-
-function toggleMilestoneIssues(url, milestone_id)
-{
-	if ($('milestone_' + milestone_id + '_issues').childElements().size() == 0)
-	{
-		_updateDivWithJSONFeedback(url, 'milestone_' + milestone_id + '_issues', 'milestone_' + milestone_id + '_indicator', null, null, null, null, ['milestone_' + milestone_id + '_issues']);
-	}
-	else
-	{
-		$('milestone_' + milestone_id + '_issues').toggle();
-	}
-}
-
-function updateTimeline(url)
-{
-	_updateDivWithJSONFeedback(url, 'timeline', 'timeline_indicator', true, false, 'timeline_more_link', null, ['timeline_more_link'], 'get', {offset: $('timeline_offset').getValue()}, function (json) {$('timeline_offset').setValue(json.offset)});
-}
-
-function refreshMilestoneDetails(url, milestone_id)
-{
-	new Ajax.Request(url, {
-	asynchronous:true,
-	method: "post",
-	evalScripts: true,
-	onLoading: function (transport) {
-		$('milestone_' + milestone_id + '_indicator').show();
-	},
-	onSuccess: function (transport) {
-		var json = transport.responseJSON;
-		if (json && (json.failed || json.error))
-		{
-			TBG.Main.failedMessage(json.error);
-		}
-		else if (json)
-		{
-			var must_reload_issue_list = false;
-			if (json.percent)
-			{
-				TBG.Main.updatePercentageLayout('milestone_'+milestone_id+'_percent', json.percent);
-			}
-			if (json.closed_issues && $('milestone_'+milestone_id+'_closed_issues'))
-			{
-				if ($('milestone_'+milestone_id+'_closed_issues').innerHTML != json.closed_issues)
-				{
-					$('milestone_'+milestone_id+'_closed_issues').update(json.closed_issues);
-					must_reload_issue_list = true;
-				}
-			}
-			if (json.assigned_issues && $('milestone_'+milestone_id+'_assigned_issues'))
-			{
-				if ($('milestone_'+milestone_id+'_assigned_issues').innerHTML != json.assigned_issues)
-				{
-					$('milestone_'+milestone_id+'_assigned_issues').update(json.assigned_issues);
-					must_reload_issue_list = true;
-				}
-			}
-			if (json.assigned_points && $('milestone_'+milestone_id+'_assigned_points'))
-			{
-				if ($('milestone_'+milestone_id+'_assigned_points').innerHTML != json.assigned_points)
-				{
-					$('milestone_'+milestone_id+'_assigned_points').update(json.assigned_points);
-					must_reload_issue_list = true;
-				}
-			}
-			if (json.closed_points && $('milestone_'+milestone_id+'_closed_points'))
-			{
-				if ($('milestone_'+milestone_id+'_closed_points').innerHTML != json.closed_points)
-				{
-					$('milestone_'+milestone_id+'_closed_points').update(json.closed_points);
-					must_reload_issue_list = true;
-				}
-			}
-			if (json.date_string && $('milestone_'+milestone_id+'_date_string'))
-			{
-				if ($('milestone_'+milestone_id+'_date_string').innerHTML != json.date_string)
-				{
-					$('milestone_'+milestone_id+'_date_string').update(json.date_string);
-					must_reload_issue_list = true;
-				}
-			}
-			if (must_reload_issue_list)
-			{
-				$('milestone_'+milestone_id+'_changed').show();
-				$('milestone_'+milestone_id+'_issues').update('');
-			}
-		}
-		else
-		{
-			TBG.Main.failedMessage(transport.responseText);
-		}
-		$('milestone_' + milestone_id + '_indicator').hide();
-	},
-	onFailure: function (transport) {
-		var json = transport.responseJSON;
-		if (json && (json.failed || json.error))
-		{
-			TBG.Main.failedMessage(json.error);
-		}
-		else
-		{
-			TBG.Main.failedMessage(transport.responseText);
-		}
-		$('milestone_' + milestone_id + '_indicator').hide();
-	}
-	});
-
-}
-
-function is_string(elm)
-{
-    return typeof elm == 'string';
-}
-
-function dashboardResize()
-{
-	var dashboard_width = $('dashboard').getWidth();
-	var element_width = (dashboard_width > 600) ? ((dashboard_width / 2) - 5) : (dashboard_width - 5);
-	$('dashboard').childElements().each(function(item) {
-		item.setStyle({width: element_width + 'px'});
-	});
-}
-
-function detachFileFromArticle(url, file_id, article_name)
-{
-	_detachFile(url, file_id, 'article_' + article_name + '_files_');
-}
-
-function _detachFile(url, file_id, base_id)
-{
-	new Ajax.Request(url, {
-		method: 'post',
-		requestHeaders: {Accept: 'application/json'},
-		onLoading: function() {
-			$(base_id + file_id + '_remove_link').hide();
-			$(base_id + file_id + '_remove_indicator').show();
-			$('uploaded_files_'+ file_id + '_remove_link').hide();
-			$('uploaded_files_'+ file_id + '_remove_indicator').show();
-		},
-		onSuccess: function(transport) {
-			var json = transport.responseJSON;
-			if (json && json.failed == false)
-			{
-				$(base_id + file_id).remove();
-				$('uploaded_files_' + file_id).remove();
-				$(base_id + file_id + '_remove_confirm').remove();
-				$('uploaded_files_' + file_id + '_remove_confirm').remove();
-				TBG.Main.successMessage(json.message);
-				if (json.attachmentcount == 0)
-				{
-					if ($('viewissue_no_uploaded_files'))
-						$('viewissue_no_uploaded_files').show();
-				}
-				if ($('viewissue_uploaded_attachments_count'))
-				{
-					$('viewissue_uploaded_attachments_count').update(json.attachmentcount);
-				}
-			}
-			else
-			{
-				if (json && (json.failed || json.error))
-				{
-					TBG.Main.failedMessage(json.error);
-				}
-				else
-				{
-					TBG.Main.failedMessage(transport.responseText);
-				}
-				$(base_id + file_id + '_remove_link').show();
-				$(base_id + file_id + '_remove_indicator').hide();
-				$('uploaded_files_'+ file_id + '_remove_link').show();
-				$('uploaded_files_'+ file_id + '_remove_indicator').hide();
-			}
-		},
-		onFailure: function(transport) {
-			$(base_id + file_id + '_remove_link').show();
-			$(base_id + file_id + '_remove_indicator').hide();
-			$('uploaded_files_'+ file_id + '_remove_link').show();
-			$('uploaded_files_'+ file_id + '_remove_indicator').hide();
-			var json = transport.responseJSON;
-			if (json && (json.failed || json.error))
-			{
-				TBG.Main.failedMessage(json.error);
-			}
-			else
-			{
-				TBG.Main.failedMessage(transport.responseText);
-			}
-		}
-	});
-}
-
-function deleteComment(url, cid)
-{
-	new Ajax.Request(url, {
-	asynchronous:true,
-	method: "post",
-	requestHeaders: {Accept: 'application/json'},
-	onLoading: function (transport) {
-		$('comment_delete_controls_' + cid).hide();
-		$('comment_delete_indicator_' + cid).show();
-	},
-	onSuccess: function(transport) {
-		var json = transport.responseJSON;
-		if (json.failed)
-		{
-			$('comment_delete_controls_' + cid).show();
-			$('comment_delete_indicator_' + cid).hide();
-			TBG.Main.failedMessage(json.error);
-		}
-		else
-		{
-			$('comment_delete_indicator_' + cid).remove();
-			$('comment_delete_confirm_' + cid).remove();
-			$('comment_' + cid).remove();
-			if ($('comments_box').childElements().size() == 0)
-			{
-				$('comments_none').show();
-			}
-			TBG.Main.successMessage(json.title);
-		}
-	},
-	onFailure: function (transport) {
-		$('comment_delete_indicator_' + cid).hide();
-		$('comment_delete_controls_' + cid).show();
-		var json = transport.responseJSON;
-		if (json && (json.failed || json.error))
-		{
-			TBG.Main.failedMessage(json.error);
-		}
-	}
-	});
-}
-
-function updateComment(url, cid)
-{
-	params = $('comment_edit_form_' + cid).serialize();
-	new Ajax.Request(url, {
-	asynchronous:true,
-	method: "post",
-	parameters: params,
-	requestHeaders: {Accept: 'application/json'},
-	onLoading: function () {
-		$('comment_edit_controls_' + cid).hide();
-		$('comment_edit_indicator_' + cid).show();
-	},
-	onSuccess: function(transport) {
-		var json = transport.responseJSON;
-		if (json.failed)
-		{
-			$('comment_edit_controls_' + cid).show();
-			$('comment_edit_indicator_' + cid).hide();
-			TBG.Main.failedMessage(json.error);
-		}
-		else
-		{
-			$('comment_edit_indicator_' + cid).hide();
-			$('comment_edit_' + cid).hide();
-			$('comment_' + cid + '_body').update(json.comment_body);
-
-			$('comment_view_' + cid).show();
-			$('comment_edit_controls_' + cid).show();
-
-			TBG.Main.successMessage(json.title);
-		}
-	},
-	onFailure: function (transport) {
-		$('comment_edit_controls_' + cid).show();
-		$('comment_edit_indicator_' + cid).hide();
-		var json = transport.responseJSON;
-		if (json && json.error)
-		{
-			TBG.Main.failedMessage(json.error);
-		}
-	}
-	});
-}
-
-function addComment(url, commentcount_span)
-{
-	params = $('comment_form').serialize();
-	new Ajax.Request(url, {
-	asynchronous:true,
-	method: "post",
-	parameters: params,
-	requestHeaders: {Accept: 'application/json'},
-	onLoading: function () {
-		$('comment_add_controls').hide();
-		$('comment_add_indicator').show();
-	},
-	onSuccess: function(transport) {
-		var json = transport.responseJSON;
-		if (json.failed)
-		{
-			$('comment_add_controls').show();
-			$('comment_add_indicator').hide();
-			TBG.Main.failedMessage(json.error);
-		}
-		else
-		{
-			params2 = $('comment_form').serialize(true);
-			if (params2.comment_save_changes == '1')
-			{
-				window.location = json.continue_url;
-				return;
-			}
-
-			$('comment_add_indicator').hide();
-			$('comment_add').hide();
-			$('comment_add_button').show();
-
-			$('comments_box').insert({bottom: json.comment_data});
-
-			if ($('comments_box').childElements().size() != 0)
-			{
-				$('comments_none').hide();
-			}
-
-			$('comment_add_controls').show();
-
-			//$('comment_title').clear();
-			$('comment_bodybox').clear();
-			$('comment_visibility').setValue(1);
-			$(commentcount_span).update(json.commentcount);
-
-			TBG.Main.successMessage(json.title);
-		}
-	},
-	onFailure: function (transport) {
-		$('comment_add_controls').show();
-		$('comment_add_indicator').hide();
-		var json = transport.responseJSON;
-		if (json && json.error)
-		{
-			TBG.Main.failedMessage(json.error);
-		}
-	}
-	});
-	return false;
+    return (typeof element == 'string');
 }
 
 // The core js class used by thebuggenie
 var TBG = {
 	Core: {}, // The "Core" namespace is for functions used by thebuggenie core, not to be invoked outside the js class
-	Main: {}, // The "Main" namespace contains regular functions in use across the site
+	Main: { // The "Main" namespace contains regular functions in use across the site
+		Helpers: {}, 
+		Profile: {} 
+	},
+	Project: {},
+	Config: {}, // The "Config" namespace contains functions used in the configuration section
 	Issues: {}, // The "Issues" namespace contains functions used in direct relation to issues
 	Search: {}, // The "Search" namespace contains functions related to searching
 	Subscriptions: {}, // The "Subscription" namespace contains functionality related to subscribing to - and publishing js events
@@ -593,7 +30,7 @@ var TBG = {
 /**
  * Initializes the autocompleter
  */
-TBG.Core.initializeAutocompleter = function() {
+TBG.Core._initializeAutocompleter = function() {
 	new Ajax.Autocompleter(
 		"searchfor",
 		"searchfor_autocomplete_choices",
@@ -602,7 +39,7 @@ TBG.Core.initializeAutocompleter = function() {
 			paramName: "filters[text][value]",
 			minChars: 2,
 			indicator: 'quicksearch_indicator',
-			afterUpdateElement: TBG.Core.extractAutocompleteValue
+			afterUpdateElement: TBG.Core._extractAutocompleteValue
 		}
 	);
 };
@@ -610,7 +47,7 @@ TBG.Core.initializeAutocompleter = function() {
 /**
  * Helper function to extract url from autocomplete response container
  */
-TBG.Core.extractAutocompleteValue = function(elem, value) {
+TBG.Core._extractAutocompleteValue = function(elem, value) {
 	var elements = value.select('.url');
 	if (elements.size() == 1) {
 		window.location = elements[0].innerHTML.unescapeHTML();
@@ -622,7 +59,7 @@ TBG.Core.extractAutocompleteValue = function(elem, value) {
 /**
  * Monitors viewport resize to adapt backdrops and dashboard containers
  */
-TBG.Core.resizeWatcher = function() {
+TBG.Core._resizeWatcher = function() {
 	if (($('fullpage_backdrop') && $('fullpage_backdrop').visible()) || ($('attach_file') && $('attach_file').visible())) {
 		var docheight = document.viewport.getHeight();
 		var backdropheight = $('backdrop_detail_content').getHeight();
@@ -632,15 +69,96 @@ TBG.Core.resizeWatcher = function() {
 			$('backdrop_detail_content').setStyle({height: 'auto', overflow: ''});
 		}
 	}
+	if ($('dashboard')) {
+		var dashboard_width = $('dashboard').getWidth();
+		var element_width = (dashboard_width > 600) ? ((dashboard_width / 2) - 5) : (dashboard_width - 5);
+		$('dashboard').childElements().each(function(item) {
+			item.setStyle({width: element_width + 'px'});
+		});
+	}
 };
 
 /**
  * Toggles one breadcrumb item in the breadcrumb bar
  */
-TBG.Core.toggleBreadcrumbItem = function(item) {
+TBG.Core._toggleBreadcrumbItem = function(item) {
 	item.up('li').next().toggleClassName('popped_out');
 	item.toggleClassName('activated');
 };
+
+TBG.Core._detachFile = function(url, file_id, base_id)
+{
+	TBG.Main.Helpers.Ajax(url, {
+		loading: {
+			indicator: base_id + file_id + '_remove_indicator',
+			hide: [base_id + file_id + '_remove_link', 'uploaded_files_'+ file_id + '_remove_link'],
+			show: 'uploaded_files_'+ file_id + '_remove_indicator'
+		},
+		success: {
+			remove: [base_id + file_id, 'uploaded_files_' + file_id, base_id + file_id + '_remove_confirm', 'uploaded_files_' + file_id + '_remove_confirm'],
+			callback: function(json) {
+				if (json.attachmentcount == 0 && $('viewissue_no_uploaded_files')) $('viewissue_no_uploaded_files').show();
+				if ($('viewissue_uploaded_attachments_count')) $('viewissue_uploaded_attachments_count').update(json.attachmentcount);
+			}
+		},
+		failure: {
+			show: [base_id + file_id + '_remove_link', 'uploaded_files_'+ file_id + '_remove_link'],
+			hide: 'uploaded_files_'+ file_id + '_remove_indicator'			
+		}
+	});
+}
+
+TBG.Core._processCommonAjaxPostEvents = function(options) {
+	if (options.remove) {
+		if (is_string(options.remove)) {
+			if ($(options.remove)) $(options.remove).remove();
+		} else {
+			options.remove.each(function(s) {if (is_string(s) && $(s)) $(s).remove();else if ($(s)) s.remove();});
+		}
+	}
+	if (options.hide) {
+		if (is_string(options.hide)) {
+			if ($(options.hide)) $(options.hide).hide();
+		} else {
+			options.hide.each(function(s) {if (is_string(s) && $(s)) $(s).hide();else if ($(s)) s.hide();});
+		}
+	}
+	if (options.show) {
+		if (is_string(options.show)) {
+			if ($(options.show)) $(options.show).show();
+		} else {
+			options.show.each(function(s) {if ($(s)) $(s).show();});
+		}
+	}
+	if (options.enable) {
+		if (is_string(options.enable)) {
+			if ($(options.enable)) $(options.enable).enable();
+		} else {
+			options.enable.each(function(s) {if ($(s)) $(s).enable();});
+		}
+	}
+	if (options.disable) {
+		if (is_string(options.disable)) {
+			if ($(options.disable)) $(options.disable).disable();
+		} else {
+			options.disable.each(function(s) {if ($(s)) $(s).disable();});
+		}
+	}
+	if (options.reset) {
+		if (is_string(options.reset)) {
+			if ($(options.reset)) $(options.reset).reset();
+		} else {
+			options.reset.each(function(s) {if ($(s)) $(s).reset();});
+		}
+	}
+	if (options.clear) {
+		if (is_string(options.clear)) {
+			if ($(options.clear)) $(options.clear).clear();
+		} else {
+			options.clear.each(function(s) {if ($(s)) $(s).clear();});
+		}
+	}
+}
 
 /**
  * Main initializer function
@@ -652,15 +170,15 @@ TBG.initialize = function(options) {
 	for(var key in options) {
 		TBG[key] = options[key];
 	}
-	TBG.Core.initializeAutocompleter();
-	Event.observe(window, 'resize', TBG.Core.resizeWatcher);
+	TBG.Core._initializeAutocompleter();
+	Event.observe(window, 'resize', TBG.Core._resizeWatcher);
 	document.observe('click', TBG.Main.toggleBreadcrumbMenuPopout);
 };
 
 /**
  * Clears all popup messages from the effect queue
  */
-TBG.Main.clearPopupMessages = function() {
+TBG.Main.Helpers.Message.clear = function() {
 	Effect.Queues.get(TBG.effect_queues.successmessage).each(function(effect) {effect.cancel();});
 	Effect.Queues.get(TBG.effect_queues.failedmessage).each(function(effect) {effect.cancel();});
 	if ($('thebuggenie_successmessage').visible()) {
@@ -674,10 +192,10 @@ TBG.Main.clearPopupMessages = function() {
 /**
  * Shows an error popup message
  * 
- * @param string title The title to show
- * @param string content Error details
+ * @param title string The title to show
+ * @param content string Error details
  */
-TBG.Main.failedMessage = function(title, content) {
+TBG.Main.Helpers.Message.error = function(title, content) {
 	$('thebuggenie_failuremessage_title').update(title);
 	$('thebuggenie_failuremessage_content').update(content);
 	if ($('thebuggenie_successmessage').visible()) {
@@ -696,10 +214,10 @@ TBG.Main.failedMessage = function(title, content) {
 /**
  * Shows a "success"-style popup message
  * 
- * @param string title The title to show
- * @param string content Message details
+ * @param title string The title to show
+ * @param content string Message details
  */
-TBG.Main.successMessage = function(title, content) {
+TBG.Main.Helpers.Message.success = function(title, content) {
 	$('thebuggenie_successmessage_title').update(title);
 	$('thebuggenie_successmessage_content').update(content);
 	if (title || content) {
@@ -720,32 +238,50 @@ TBG.Main.successMessage = function(title, content) {
 	}
 };
 
-TBG.Main.toggleBreadcrumbMenuPopout = function(event) {
-	var item = event.findElement('a');
-	if (TBG.activated_popoutmenu != undefined && TBG.activated_popoutmenu != item) {
-		TBG.Core.toggleBreadcrumbItem(TBG.activated_popoutmenu);
-		TBG.activated_popoutmenu = undefined;
-	}
-	if (item != undefined && item.hasClassName('submenu_activator')) {
-		TBG.Core.toggleBreadcrumbItem(item);
-		TBG.activated_popoutmenu = item;
-	} else {
-		TBG.activated_popoutmenu = undefined;
-	}
-};
-
 /**
  * Convenience function for running an AJAX call and updating / showing / hiding
  * divs on json feedback
+ * 
+ * Available options:
+ *   loading: {} Instructions for the onLoading event
+ *   success: {} Instructions for the onSuccess event
+ *   failure: {} Instructions for the onComplete event
+ *   complete: {} Instructions for the onComplete event
+ *   
+ *   Common options for all on* events:
+ *     hide: string/array A list of / element id(s) to hide
+ *     reset: string/array A list of / element id(s) to reset
+ *     show: string/array A list of / element id(s) to show
+ *     clear: string/array A list of / element id(s) to clear
+ *     remove: string/array A list of / element id(s) to remove
+ *     enable: string/array A list of / element id(s) to enable
+ *     disable: string/array A list of / element id(s) to disable
+ *     callback: a function to call at the end of the event. For 
+ *		         success/failure/complete events, the callback 
+ *		         function retrieves the json object
+ *   
+ *   The loading.indicator element will be toggled off in the onComplete event 
+ *    
+ *   Options for the onSuccess event instruction set:
+ *     update: either an element id which will receive the value of the 
+ *             json.content property or an object with instructions:
+ *             
+ *     Available instructions for the success "update" object:
+ *       element: the id of the element to update
+ *       insertion: true / false / ommitted. If "true" the element will get the
+ *                  content inserted after the existing content, instead of
+ *                  the content replacing the existing content
+ *       from: if the json return value does not contain a "content" key, 
+ *			   specify which json key should be used
  *
  * @param url The URL to call
  * @param options An associated array of options
  */
-TBG.Main.AjaxHelper = function(url, options) {
+TBG.Main.Helpers.Ajax = function(url, options) {
 	var params = (options.params) ? options.params : '';
 	if (options.form) params = Form.serialize(options.form);
 	if (options.additional_params) params += options.additional_params;
-	var url_method = (options.url_method) ? options.url_method : "get";
+	var url_method = (options.url_method) ? options.url_method : 'post';
 	
 	new Ajax.Request(url, {
 		asynchronous: true,
@@ -753,35 +289,19 @@ TBG.Main.AjaxHelper = function(url, options) {
 		parameters: params,
 		evalScripts: true,
 		onLoading: function () {
-			$(options.loading.indicator).show();
-			var update_element = (is_string(options.success.update)) ? options.success.update : options.success.update.element;
-			if (options.loading.clear && $(update_element)) {
-				$(update_element).update('');
-			}
-			if (options.loading.hide) {
-				if (is_string(options.loading.hide) && $(options.loading.hide)) {
-					$(options.loading.hide).hide();
-				} else {
-					options.loading.hide.each(function (element) {
-						element.hide();
-					});
+			if (options.loading) {
+				if ($(options.loading.indicator)) {
+					$(options.loading.indicator).show();
 				}
-			}
-			if (options.loading.disable && $(options.loading.disable)) {
-				$(options.loading.disable).disable();
-			}
-			if (options.loading.reset && $(options.loading.reset)) {
-				$(options.loading.reset).reset();
+				TBG.Core._processCommonAjaxPostEvents(options.loading);
 			}
 		},
 		onSuccess: function (transport) {
 			var json = transport.responseJSON;
-			$(options.loading.indicator).hide();
-			if (json && json.failed) {
-				TBG.Main.failedMessage(json.error);
-			} else {
+			if (json) {
 				if (options.success && options.success.update) {
-					var content = (json) ? json.content : transport.responseText;
+					var json_content_element = (is_string(options.success.update) || options.success.update.from == undefined) ? content : options.success.update.from;
+					var content = (json) ? json[json_content_element] : transport.responseText;
 					var update_element = (is_string(options.success.update)) ? options.success.update : options.success.update.element;
 					if ($(update_element)) {
 						var insertion = (is_string(options.success.update)) ? false : (options.success.insertion) ? options.success.insertion : false;
@@ -792,89 +312,60 @@ TBG.Main.AjaxHelper = function(url, options) {
 						}
 					}
 					if (json && json.message) {
-						TBG.Main.successMessage(json.message);
+						TBG.Main.Helpers.Message.success(json.message);
 					}
 				} else if (json && (json.title || json.content)) {
-					TBG.Main.successMessage(json.title, json.content);
+					TBG.Main.Helpers.Message.success(json.title, json.content);
 				} else if (json && (json.message)) {
-					TBG.Main.successMessage(json.message);
+					TBG.Main.Helpers.Message.success(json.message);
 				}
-				if (options.success.remove) {
-					if (is_string(options.success.remove)) {
-						if ($(options.success.remove)) $(options.success.remove).remove();
-					} else {
-						options.success.remove.each(function(s) {if (is_string(s) && $(s)) $(s).remove();else if ($(s)) s.remove();});
+				if (options.success) {
+					TBG.Core._processCommonAjaxPostEvents(options.success);
+					if (options.success.callback) {
+						options.success.callback(json);
 					}
-				}
-				if (options.success.hide) {
-					if (is_string(options.success.hide)) {
-						if ($(options.success.hide)) $(options.success.hide).hide();
-					} else {
-						options.success.hide.each(function(s) {if (is_string(s) && $(s)) $(s).hide();else if ($(s)) s.hide();});
-					}
-				}
-				if (options.success.show) {
-					if (is_string(options.success.show)) {
-						if ($(options.success.show)) $(options.success.show).show();
-					} else {
-						options.success.show.each(function(s) {if ($(s)) $(s).show();});
-					}
-				}
-				if (options.success.enable && $(options.success.enable)) {
-					$(options.success.enable).enable();
-				}
-				if (options.success.reset && $(options.success.reset)) {
-					$(options.success.reset).reset();
-				}
-				if (options.success.callback) {
-					options.success.callback(json);
 				}
 			}
 		},
 		onFailure: function (transport) {
-			$(options.loading.indicator).hide();
 			var json = (transport.responseJSON) ? transport.responeJSON : undefined;
 			if (transport.responseJSON) {
-				TBG.Main.failedMessage(json.error);
+				TBG.Main.Helpers.Message.error(json.error);
 			} else {
-				TBG.Main.failedMessage(transport.responseText);
+				TBG.Main.Helpers.Message.error(transport.responseText);
 			}
-			if (options.loading && options.loading.disable && $(options.loading.disable)) {
-				$(options.loading.disable).enable();
-			}
-			if (options.failure && options.failure.hide && $(options.failure.hide)) {
-				$(options.failure.hide).hide();
-			}
-			if (options.failure.callback) {
-				options.failure.callback(transport);
+			if (options.failure) {
+				TBG.Core._processCommonAjaxPostEvents(options.failure);
+				if (options.failure.callback) {
+					options.failure.callback(transport);
+				}
 			}
 		},
 		onComplete: function (transport) {
-			var json = (transport.responseJSON) ? transport.responeJSON : undefined;
-			if (options.loading.hide && (options.loading.hide != options.success.hide || !options.success || !options.success.hide) && $(options.loading.hide)) {
-				$(options.loading.hide).show();
-			}
-			if (options.complete && options.complete.callback) {
-				options.complete.callback(json);
+			$(options.loading.indicator).hide();
+			if (options.complete) {
+				TBG.Core._processCommonAjaxPostEvents(options.complete);
+				if (options.complete.callback) {
+					var json = (transport.responseJSON) ? transport.responeJSON : undefined;
+					options.complete.callback(json);
+				}
 			}
 		}
 	});
 };
 
-TBG.Main.formSubmitHelper = function(url, form_id) {
-	TBG.Main.AjaxHelper(url, {
+TBG.Main.Helpers.formSubmit = function(url, form_id) {
+	TBG.Main.Helpers.Ajax(url, {
 		form: form_id,
-		url_method: 'post',
 		loading: {indicator: form_id + '_indicator', disable: form_id + '_button'}, 
 		success: {enable: form_id + '_button'}
 	});
 };
 
-TBG.Main.showFadedBackdrop = function(url) {
+TBG.Main.Helpers.Backdrop.show = function(url) {
 	$('fullpage_backdrop').show();
 	if (url != undefined) {
-		TBG.Main.AjaxHelper(url, {
-			url_method: 'post',
+		TBG.Main.Helpers.Ajax(url, {
 			loading: {indicator: 'fullpage_backdrop_indicator', hide: 'fullpage_backdrop'},
 			success: {update: 'fullpage_backdrop_content'},
 			failure: {hide: 'fullpage_backdrop'}
@@ -882,28 +373,41 @@ TBG.Main.showFadedBackdrop = function(url) {
 	}
 };
 
-TBG.Main.resetFadedBackdrop = function() {
+TBG.Main.Helpers.Backdrop.reset = function() {
 	$('fullpage_backdrop').hide();
 	$('fullpage_backdrop_indicator').show();
 	$('fullpage_backdrop_content').update('');
 };
 
-TBG.Main.findIdentifiable = function(url, field) {
-	TBG.Main.AjaxHelper(url, { 
-		form: field + '_form', 
-		url_method: 'post', 
-		loading: {indicator: field + '_spinning'}, 
-		success: {update: field + '_results'}
-	});
-};
-
-TBG.Main.switchSubmenuTab = function(visibletab, menu)
+TBG.Main.Helpers.tabSwitcher = function(visibletab, menu)
 {
 	$(menu).childElements().each(function(item){item.removeClassName('selected');});
 	$(visibletab).addClassName('selected');
 	$(menu + '_panes').childElements().each(function(item){item.hide();});
 	$(visibletab + '_pane').show();
 }
+
+TBG.Main.toggleBreadcrumbMenuPopout = function(event) {
+	var item = event.findElement('a');
+	if (TBG.activated_popoutmenu != undefined && TBG.activated_popoutmenu != item) {
+		TBG.Core._toggleBreadcrumbItem(TBG.activated_popoutmenu);
+		TBG.activated_popoutmenu = undefined;
+	}
+	if (item != undefined && item.hasClassName('submenu_activator')) {
+		TBG.Core._toggleBreadcrumbItem(item);
+		TBG.activated_popoutmenu = item;
+	} else {
+		TBG.activated_popoutmenu = undefined;
+	}
+};
+
+TBG.Main.findIdentifiable = function(url, field) {
+	TBG.Main.Helpers.Ajax(url, { 
+		form: field + '_form', 
+		loading: {indicator: field + '_spinning'}, 
+		success: {update: field + '_results'}
+	});
+};
 
 TBG.Main.updatePercentageLayout = function(tds, percent)
 {
@@ -933,7 +437,7 @@ TBG.Main.updatePercentageLayout = function(tds, percent)
 
 TBG.Main.addLink = function(url, target_type, target_id)
 {
-	TBG.Main.AjaxHelper(url, {
+	TBG.Main.Helpers.Ajax(url, {
 		loading: {
 			indicator: 'attach_link_' + target_type + '_' + target_id + '_indicator',
 			hide: 'attach_link_' + target_type + '_' + target_id + '_submit'
@@ -951,8 +455,7 @@ TBG.Main.addLink = function(url, target_type, target_id)
 
 TBG.Main.removeLink = function(url, target_type, target_id, link_id)
 {
-	TBG.Main.AjaxHelper(url, {
-		url_method: 'post',
+	TBG.Main.Helpers.Ajax(url, {
 		loading: {
 			hide: target_type + '_' + target_id + '_links_'+ link_id + '_remove_link',
 			indicator: target_type + '_' + target_id + '_links_'+ link_id + '_remove_indicator'
@@ -971,6 +474,11 @@ TBG.Main.removeLink = function(url, target_type, target_id, link_id)
 	});
 }
 
+TBG.Main.detachFileFromArticle = function(url, file_id, article_name)
+{
+	TBG.Core._detachFile(url, file_id, 'article_' + article_name + '_files_');
+}
+
 TBG.Main.reloadImage = function(id) {
    var src = $(id).src;
    var date = new Date();
@@ -981,25 +489,25 @@ TBG.Main.reloadImage = function(id) {
    return false;
 }
 
-TBG.Main.updateProfileInformation = function(url)
+TBG.Main.Profile.updateInformation = function(url)
 {
-	TBG.Main.AjaxHelper(url, {
+	TBG.Main.Helpers.Ajax(url, {
 		form: 'profile_information_form',
 		loading: {indicator: 'profile_save_indicator'}
 	});
 }
 
-TBG.Main.updateProfileModuleSettings = function(url, module_name)
+TBG.Main.Profile.updateModuleSettings = function(url, module_name)
 {
-	TBG.Main.AjaxHelper(url, {
+	TBG.Main.Helpers.Ajax(url, {
 		form: 'profile_' + module_name + '_form',
 		loading: {indicator: 'profile_' + module_name + '_save_indicator'}
 	});
 }
 
-TBG.Main.updateProfileSettings = function(url)
+TBG.Main.Profile.updateSettings = function(url)
 {
-	TBG.Main.AjaxHelper(url, {
+	TBG.Main.Helpers.Ajax(url, {
 		form: 'profile_settings_form',
 		loading: {indicator: 'profile_settings_save_indicator'},
 		success: {callback: function() {
@@ -1008,9 +516,9 @@ TBG.Main.updateProfileSettings = function(url)
 	});
 }
 
-TBG.Main.changePassword = function(url)
+TBG.Main.Profile.changePassword = function(url)
 {
-	TBG.Main.AjaxHelper(url, {
+	TBG.Main.Helpers.Ajax(url, {
 		form: 'change_password_form',
 		loading: {indicator: 'change_password_indicator'},
 		success: {reset: 'change_password_form'}
@@ -1020,16 +528,216 @@ TBG.Main.changePassword = function(url)
 TBG.Main.hideInfobox = function(url, boxkey)
 {
 	if ($('close_me_' + boxkey).checked) {
-		TBG.Main.AjaxHelper(url, {
-			url_method: 'post',
+		TBG.Main.Helpers.Ajax(url, {
 			loading: {indicator: 'infobox_' + boxkey + '_indicator'}
 		});
 	}
 	$('infobox_' + boxkey).fade({duration: 0.3});
 }
 
+TBG.Project.Statistics.get = function(url)
+{
+	TBG.Main.Helpers.Ajax(url, {
+		loading: {
+			indicator: 'statistics_main', 
+			hide: 'statistics_help',
+			callback: function() {
+				$('statistics_main_image').src = '';
+				for (var cc = 1; cc <= 3; cc++) {
+					$('statistics_mini_image_' + cc).src = '';
+				}
+			}
+		},
+		success: {
+			callback: function(json) {
+				$('statistics_main_image').src = json.images.main;
+				for (var cc = 1; cc <= 3; cc++) {
+					var small_name = 'mini_' + cc + '_small';
+					var large_name = 'mini_' + cc + '_large';
+					if (json.images[small_name]) {
+						$('statistics_mini_image_' + cc).show();
+						$('statistics_mini_image_' + cc).src = json.images[small_name];
+						$('statistics_mini_' + cc + '_main').setValue(json.images[large_name]);
+					} else {
+						$('statistics_mini_image_' + cc).hide();
+						$('statistics_mini_' + cc + '_main').setValue('');
+					}
+				}
+			}
+		},
+		complete: {show: 'statistics_help'}
+	});
+}
+
+TBG.Project.Statistics.toggleImage = function(image)
+{
+	$('statistics_main_image').src = '';
+	$('statistics_main_image').src = $('statistics_mini_'+image+'_main').getValue();
+}
+
+TBG.Project.Milestone.toggle = function(url, milestone_id)
+{
+	if ($('milestone_' + milestone_id + '_issues').childElements().size() == 0) {
+		TBG.Main.Helpers.Ajax(url, {
+			loading: {indicator: 'milestone_' + milestone_id + '_indicator'},
+			success: {
+				update: 'milestone_' + milestone_id + '_issues',
+				show: 'milestone_' + milestone_id + '_issues'
+			}
+		});
+	} else {
+		$('milestone_' + milestone_id + '_issues').toggle();
+	}
+}
+
+TBG.Project.Milestone.refresh = function(url, milestone_id)
+{
+	var m_id = milestone_id;
+	TBG.Main.Helpers.Ajax(url, {
+		loading: {
+			indicator: 'milestone_' + milestone_id + '_indicator'
+		},
+		success: {
+			callback: function(json) {
+				var must_reload_issue_list = false;
+				if (json.percent) {
+					TBG.Main.updatePercentageLayout('milestone_'+m_id+'_percent', json.percent);
+				}
+				if (json.closed_issues && $('milestone_'+m_id+'_closed_issues')) {
+					if ($('milestone_'+m_id+'_closed_issues').innerHTML != json.closed_issues) {
+						$('milestone_'+m_id+'_closed_issues').update(json.closed_issues);
+						must_reload_issue_list = true;
+					}
+				}
+				if (json.assigned_issues && $('milestone_'+m_id+'_assigned_issues')) {
+					if ($('milestone_'+m_id+'_assigned_issues').innerHTML != json.assigned_issues) {
+						$('milestone_'+m_id+'_assigned_issues').update(json.assigned_issues);
+						must_reload_issue_list = true;
+					}
+				}
+				if (json.assigned_points && $('milestone_'+m_id+'_assigned_points')) {
+					if ($('milestone_'+m_id+'_assigned_points').innerHTML != json.assigned_points) {
+						$('milestone_'+m_id+'_assigned_points').update(json.assigned_points);
+						must_reload_issue_list = true;
+					}
+				}
+				if (json.closed_points && $('milestone_'+m_id+'_closed_points')) {
+					if ($('milestone_'+m_id+'_closed_points').innerHTML != json.closed_points) {
+						$('milestone_'+m_id+'_closed_points').update(json.closed_points);
+						must_reload_issue_list = true;
+					}
+				}
+				if (json.date_string && $('milestone_'+m_id+'_date_string')) {
+					if ($('milestone_'+m_id+'_date_string').innerHTML != json.date_string) {
+						$('milestone_'+m_id+'_date_string').update(json.date_string);
+						must_reload_issue_list = true;
+					}
+				}
+				if (must_reload_issue_list) {
+					$('milestone_'+m_id+'_changed').show();
+					$('milestone_'+m_id+'_issues').update('');
+				}
+				
+			}
+		}
+	});
+}
+
+TBG.Project.Timeline.update = function(url)
+{
+	TBG.Main.Helpers.Ajax(url, {
+		url_method: 'get',
+		additional_params: {offset: $('timeline_offset').getValue()},
+		loading: {
+			indicator: 'timeline_indicator',
+			hide: 'timeline_more_link'
+		},
+		success: {
+			update: {element: 'timeline', insertion: true},
+			show: 'timeline_more_link',
+			callback: function(json) {
+				$('timeline_offset').setValue(json.offset)
+			}
+		}
+	});
+}
+
+TBG.Main.Comment.remove = function(url, comment_id)
+{
+	TBG.Main.Helpers.Ajax(url, {
+		loading: {
+			indicator: 'comment_delete_indicator_' + comment_id,
+			hide: 'comment_delete_controls_' + comment_id
+		},
+		success: {
+			remove: ['comment_delete_indicator_' + comment_id, 'comment_delete_confirm_' + comment_id, 'comment_' + comment_id],
+			callback: function() {
+				if ($('comments_box').childElements().size() == 0) $('comments_none').show();
+			}
+		},
+		failure: {
+			show: 'comment_delete_controls_' + comment_id
+		}
+	});
+}
+
+TBG.Main.Comment.update = function(url, cid)
+{
+	TBG.Main.Helpers.Ajax(url, {
+		form: 'comment_edit_form_' + cid,
+		loading: {
+			indicator: 'comment_edit_controls_' + cid,
+			hide: 'comment_edit_controls_' + cid
+		},
+		success: {
+			hide: ['comment_edit_indicator_' + cid, 'comment_edit_' + cid],
+			show: ['comment_view_' + cid, 'comment_edit_controls_' + cid],
+			update: {element: 'comment_' + cid + '_body', from: 'comment_body'}
+		},
+		failure: {
+			show: ['comment_edit_controls_' + cid]
+		}
+	});
+}
+
+TBG.Main.Comment.add = function(url, commentcount_span)
+{
+	TBG.Main.Helpers.Ajax(url, {
+		form: 'comment_form',
+		loading: {
+			indicator: 'comment_add_indicator',
+			hide: 'comment_add_controls'
+		},
+		success: {
+			hide: ['comment_add_indicator', 'comment_add'],
+			show: ['comment_add_button', 'comment_add_controls'],
+			clear: 'comment_bodybox',
+			update: {element: 'comments_box', insertion: true, from: 'comment_data'},
+			callback: function(json) {
+				if ($('comment_form').serialize(true).comment_save_changes == '1') {
+					window.location = json.continue_url;
+				} else if ($('comments_box').childElements().size() != 0) {
+					$('comments_none').hide();
+				}
+				$('comment_visibility').setValue(1);
+				$(commentcount_span).update(json.commentcount);
+			}
+		},
+		failure: {
+			show: 'comment_add_controls'
+		}
+	});
+}
+
+TBG.Config.Permissions.set = function(url, field)
+{
+	TBG.Main.Helpers.Ajax(url, {
+		loading: {indicator: field + '_indicator'}
+	});
+}
+
 TBG.Issues.showWorkflowTransition = function(transition_id) {
-	TBG.Main.showFadedBackdrop();
+	TBG.Main.Helpers.Backdrop.show();
 	$('fullpage_backdrop_indicator').hide();
 	var workflow_div = $('issue_transition_container_' + transition_id).clone(true);
 	$('fullpage_backdrop_content').update(workflow_div);
@@ -1067,19 +775,80 @@ TBG.Issues.addUserStoryTask = function(url, story_id, mode)
 		};
 	}
 	
-	TBG.Main.AjaxHelper(url, {
+	TBG.Main.Helpers.Ajax(url, {
 		form: prefix + '_add_task_form',
 		loading: {indicator: indicator_prefix + '_indicator'},
 		success: success_arr
 	});
 }
 
+TBG.Issues.findRelated = function(url)
+{
+	TBG.Main.Helpers.Ajax(url, {
+		form: 'viewissue_find_issue_form',
+		loading: {indicator: 'find_issue_indicator'},
+		success: {update: 'viewissue_relation_results'}
+	});
+	return false;
+}
+
+TBG.Issues.findDuplicate = function(url)
+{
+	TBG.Main.Helpers.Ajax(url, {
+		form: 'viewissue_find_issue_form',
+		loading: {indicator: 'find_issue_indicator'},
+		success: {update: 'viewissue_duplicate_results'}
+	});
+	return false;
+}
+
+TBG.Issues.relate = function(url)
+{
+	var hide_div = ($('relate_issue_with_selected').getValue() == 'relate_children') ? 'no_child_issues' : 'no_parent_issues';
+	var update_div = ($('relate_issue_with_selected').getValue() == 'relate_children') ? 'related_child_issues_inline' : 'related_parent_issues_inline';
+	
+	TBG.Main.Helpers.Ajax(url, {
+		form: 'viewissue_relate_issues_form',
+		loading: {indicator: 'relate_issues_indicator'},
+		success: {
+			update: {element: update_div, insertion: true}, 
+			hide: hide_div
+		}
+	});
+	return false;
+}
+
+TBG.Issues._addVote = function(url, direction)
+{
+	var opp_direction = (direction == 'up') ? 'down' : 'up';
+	
+	TBG.Main.Helpers.Ajax(url, {
+		loading: {
+			indicator: 'vote_' + direction + '_indicator', 
+			hide: 'vote_' + direction + '_link'},
+		success: {
+			update: 'issue_votes',
+			hide: ['vote_' + direction + '_link', 'vote_' + opp_direction + '_faded'],
+			show: ['vote_' + direction + '_faded', 'vote_' + opp_direction + '_link']
+		}
+	});
+}
+
+TBG.Issues.voteUp = function(url)
+{
+	TBG.Issues._addVote(url, 'up');
+}
+
+TBG.Issues.voteDown = function(url)
+{
+	TBG.Issues._addVote(url, 'down');
+}
+
 TBG.Search.addFilter = function(url)
 {
-	TBG.Main.AjaxHelper(url, {
+	TBG.Main.Helpers.Ajax(url, {
 		form: 'add_filter_form',
 		additional_params: '&key=' + $('max_filters').value,
-		url_method: 'post',
 		loading: {indicator: 'add_filter_indicator'},
 		success: {
 			update: {element: 'search_filters_list', insertion: true},
@@ -1100,10 +869,18 @@ TBG.Search.removeFilter = function(key)
 
 TBG.Search.deleteSavedSearch = function(url, id)
 {
-	TBG.Main.AjaxHelper(url, {
-		url_method: 'post',
+	TBG.Main.Helpers.Ajax(url, {
 		loading: {indicator: 'delete_search_' + id + '_indicator'},
 		success: {hide: 'saved_search_' + id + '_container'}
 	});
 }
 
+TBG.Search.toPage = function(url, parameters, offset)
+{
+	parameters += '&offset=' + offset;
+	TBG.Main.Helpers.Ajax(url, {
+		params: parameters,
+		loading: {indicator: 'paging_spinning'},
+		success: {update: 'search_results'}
+	});
+}

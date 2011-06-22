@@ -16,13 +16,13 @@ function resetForgotPassword(url)
 			{
 				$('forgot_password_indicator').hide();
 				$('forgot_password_button').show();
-				TBG.Main.failedMessage(json.error);
+				TBG.Main.Helpers.Message.error(json.error);
 			}
 			else
 			{
 				$('forgot_password_indicator').hide();
 				$('forgot_password_button').show();
-				TBG.Main.successMessage(json.message);
+				TBG.Main.Helpers.Message.success(json.message);
 			}
 		},
 		onFailure: function (transport) {
@@ -32,7 +32,7 @@ function resetForgotPassword(url)
 			if (json && (json.failed || json.error))
 			{
 				Form.reset('forgot_password_form');
-				TBG.Main.failedMessage(json.error);
+				TBG.Main.Helpers.Message.error(json.error);
 			}
 		}
 	});
