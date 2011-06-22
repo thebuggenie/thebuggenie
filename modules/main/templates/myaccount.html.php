@@ -118,7 +118,7 @@
 					else
 					{
 					?>
-					<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_save_information'); ?>" onsubmit="updateProfileInformation('<?php echo make_url('account_save_information'); ?>'); return false;" method="post" id="profile_information_form">
+					<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_save_information'); ?>" onsubmit="TBG.Main.updateProfileInformation('<?php echo make_url('account_save_information'); ?>'); return false;" method="post" id="profile_information_form">
 						<div class="rounded_box borderless lightgrey cut_bottom" style="margin: 5px 0 0 0; width: 690px; border-bottom: 0;">
 							<p class="content"><?php echo __('Edit your profile details here, including additional information.'); ?><br><?php echo __('Required fields are marked with a little star.'); ?></p>
 							<table style="width: 680px;" class="padded_table" cellpadding=0 cellspacing=0>
@@ -178,7 +178,7 @@
 					?>
 				</div>
 				<div id="tab_settings_pane" style="display: none;">
-					<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_save_settings'); ?>" onsubmit="updateProfileSettings('<?php echo make_url('account_save_settings'); ?>'); return false;" method="post" id="profile_settings_form">
+					<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_save_settings'); ?>" onsubmit="TBG.Main.updateProfileSettings('<?php echo make_url('account_save_settings'); ?>'); return false;" method="post" id="profile_settings_form">
 						<div class="rounded_box borderless lightgrey cut_bottom" style="margin: 5px 0 0 0; width: 690px; border-bottom: 0;">
 							<table style="width: 680px;" class="padded_table" cellpadding=0 cellspacing=0>
 								<tr>
@@ -245,7 +245,7 @@
 				<?php foreach (TBGContext::getModules() as $module_name => $module): ?>
 					<?php if ($module->hasAccountSettings()): ?>
 						<div id="tab_settings_<?php echo $module_name; ?>_pane" style="display: none;">
-							<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_save_module_settings', array('target_module' => $module_name)); ?>" onsubmit="updateProfileModuleSettings('<?php echo make_url('account_save_module_settings', array('target_module' => $module_name)); ?>', '<?php echo $module_name; ?>'); return false;" method="post" id="profile_<?php echo $module_name; ?>_form">
+							<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_save_module_settings', array('target_module' => $module_name)); ?>" onsubmit="TBG.Main.updateProfileModuleSettings('<?php echo make_url('account_save_module_settings', array('target_module' => $module_name)); ?>', '<?php echo $module_name; ?>'); return false;" method="post" id="profile_<?php echo $module_name; ?>_form">
 								<div class="rounded_box borderless lightgrey cut_bottom" style="margin: 5px 0 0 0; width: 690px; border-bottom: 0;">
 									<?php include_component("{$module_name}/accountsettings", array('module' => $module)); ?>
 								</div>

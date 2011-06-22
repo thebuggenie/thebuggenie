@@ -1,86 +1,4 @@
 
-function removeSearchFilter(key)
-{
-	$('filter_' + key).remove();
-	if ($('search_filters_list').childElements().size() == 0)
-	{
-		$('max_filters').value = 0;
-	}
-}
-
-function deleteSavedSearch(url, id)
-{
-	_updateDivWithJSONFeedback(url, null, 'delete_search_'+id+'_indicator', null, null, null, ['saved_search_'+id+'_container'], null, 'post');
-}
-
-function updateProfileInformation(url)
-{
-	_postFormWithJSONFeedback(url, 'profile_information_form', 'profile_save_indicator');
-	return true;
-}
-
-function updateProfileModuleSettings(url, module_name)
-{
-	_postFormWithJSONFeedback(url, 'profile_' + module_name + '_form', 'profile_' + module_name + '_save_indicator');
-	return true;
-}
-
-function updateProfileSettings(url)
-{
-	_postFormWithJSONFeedback(url, 'profile_settings_form', 'profile_settings_save_indicator');
-	if ($('profile_use_gravatar_yes').checked)
-	{
-		$('gravatar_change').show();
-	}
-	else
-	{
-		$('gravatar_change').hide();
-	}
-	return true;
-}
-
-function changePassword(url)
-{
-	_postFormWithJSONFeedback(url, 'change_password_form', 'change_password_indicator', 'change_password_form');
-	return true;
-}
-
-function hideInfobox(url, boxkey)
-{
-	if ($('close_me_' + boxkey).checked)
-	{
-		new Ajax.Request(url, {
-		asynchronous:true,
-		method: "post",
-		onLoading: function (transport) {
-			$('infobox_' + boxkey + '_indicator').show();
-		},
-		onComplete: function (transport) {
-			$('infobox_' + boxkey + '_indicator').hide();
-		}
-		});
-	}
-	$('infobox_' + boxkey).fade({duration: 0.3});
-}
-
-function updateProjectMenuStrip(url, project_id)
-{
-	new Ajax.Updater('project_menustrip', url, {
-		asynchronous: true,
-		parameters: {project_id: project_id},
-		evalScripts: true,
-		method: "post",
-		onLoading: function(transport) {
-			$('project_menustrip_change').hide();
-			$('project_menustrip_indicator').show();
-			$('project_menustrip_name').hide();
-		},
-		onComplete: function(transport) {
-			$('project_menustrip_indicator').hide();
-			$('project_menustrip_name').show();
-		}
-	});
-}
 
 function setPermission(url, field)
 {
@@ -1028,6 +946,53 @@ TBG.Main.reloadImage = function(id) {
    return false;
 }
 
+TBG.Main.updateProfileInformation = function(url)
+{
+	TBG.Main.AjaxHelper(url, {
+		form: 'profile_information_form',
+		loading: {indicator: 'profile_save_indicator'}
+	});
+}
+
+TBG.Main.updateProfileModuleSettings = function(url, module_name)
+{
+	TBG.Main.AjaxHelper(url, {
+		form: 'profile_' + module_name + '_form',
+		loading: {indicator: 'profile_' + module_name + '_save_indicator'}
+	});
+}
+
+TBG.Main.updateProfileSettings = function(url)
+{
+	TBG.Main.AjaxHelper(url, {
+		form: 'profile_settings_form',
+		loading: {indicator: 'profile_settings_save_indicator'},
+		success: {callback: function() {
+			($('profile_use_gravatar_yes').checked) ? $('gravatar_change').show() : $('gravatar_change').hide();
+		}}
+	});
+}
+
+TBG.Main.changePassword = function(url)
+{
+	TBG.Main.AjaxHelper(url, {
+		form: 'change_password_form',
+		loading: {indicator: 'change_password_indicator'},
+		success: {reset: 'change_password_form'}
+	});
+}
+
+TBG.Main.hideInfobox = function(url, boxkey)
+{
+	if ($('close_me_' + boxkey).checked) {
+		TBG.Main.AjaxHelper(url, {
+			url_method: 'post',
+			loading: {indicator: 'infobox_' + boxkey + '_indicator'}
+		});
+	}
+	$('infobox_' + boxkey).fade({duration: 0.3});
+}
+
 TBG.Issues.showWorkflowTransition = function(transition_id) {
 	TBG.Main.showFadedBackdrop();
 	$('fullpage_backdrop_indicator').hide();
@@ -1089,3 +1054,21 @@ TBG.Search.addFilter = function(url)
 		}
 	});
 }
+
+TBG.Search.removeFilter = function(key)
+{
+	$('filter_' + key).remove();
+	if ($('search_filters_list').childElements().size() == 0) {
+		$('max_filters').value = 0;
+	}
+}
+
+TBG.Search.deleteSavedSearch = function(url, id)
+{
+	TBG.Main.AjaxHelper(url, {
+		url_method: 'post',
+		loading: {indicator: 'delete_search_' + id + '_indicator'},
+		success: {hide: 'saved_search_' + id + '_container'}
+	});
+}
+

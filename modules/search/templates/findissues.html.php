@@ -100,7 +100,7 @@
 									<?php echo __('This action cannot be reverted. Note: this will not modify any issues affected by this search'); ?>
 									<div style="text-align: right; margin-top: 10px;">
 										<?php echo image_tag('spinning_16.gif', array('style' => 'margin-left: 5px; display: none;', 'id' => 'delete_search_'.$a_savedsearch->get(TBGSavedSearchesTable::ID).'_indicator')); ?>
-										<input type="submit" onclick="deleteSavedSearch('<?php echo make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'saved_search_id' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => 0, 'delete_saved_search' => true)); ?>', <?php echo $a_savedsearch->get(TBGSavedSearchesTable::ID); ?>);" value="<?php echo __('Yes, delete'); ?>" style="font-weight: bold;">
+										<input type="submit" onclick="TBG.Search.deleteSavedSearch('<?php echo make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'saved_search_id' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => 0, 'delete_saved_search' => true)); ?>', <?php echo $a_savedsearch->get(TBGSavedSearchesTable::ID); ?>);" value="<?php echo __('Yes, delete'); ?>" style="font-weight: bold;">
 										<?php echo __('%yes_delete% or %cancel%', array('%yes_delete%' => '', '%cancel%' => javascript_link_tag(__('cancel'), array('onclick' => "$('delete_search_".$a_savedsearch->get(TBGSavedSearchesTable::ID)."').toggle();")))); ?>
 									</div>
 								</div>
@@ -121,7 +121,7 @@
 									<?php echo __('This action cannot be reverted. Note: this will not modify any issues affected by this search'); ?>
 									<div style="text-align: right; margin-top: 10px;">
 										<?php echo image_tag('spinning_16.gif', array('style' => 'margin-left: 5px; display: none;', 'id' => 'delete_search_'.$a_savedsearch->get(TBGSavedSearchesTable::ID).'_indicator')); ?>
-										<input type="submit" onclick="deleteSavedSearch('<?php echo make_url('search', array('saved_search_id' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => 0, 'delete_saved_search' => true)); ?>', <?php echo $a_savedsearch->get(TBGSavedSearchesTable::ID); ?>);" value="<?php echo __('Yes, delete'); ?>" style="font-weight: bold;">
+										<input type="submit" onclick="TBG.Search.deleteSavedSearch('<?php echo make_url('search', array('saved_search_id' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => 0, 'delete_saved_search' => true)); ?>', <?php echo $a_savedsearch->get(TBGSavedSearchesTable::ID); ?>);" value="<?php echo __('Yes, delete'); ?>" style="font-weight: bold;">
 										<?php echo __('%yes_delete% or %cancel%', array('%yes_delete%' => '', '%cancel%' => javascript_link_tag(__('cancel'), array('onclick' => "$('delete_search_".$a_savedsearch->get(TBGSavedSearchesTable::ID)."').toggle();")))); ?>
 									</div>
 								</div>
@@ -163,9 +163,9 @@
 								<div style="text-align: right; margin-top: 10px;">
 									<?php echo image_tag('spinning_16.gif', array('style' => 'margin-left: 5px; display: none;', 'id' => 'delete_search_'.$a_savedsearch->get(TBGSavedSearchesTable::ID).'_indicator')); ?>
 									<?php if (TBGContext::isProjectContext()): ?>
-										<input type="submit" onclick="deleteSavedSearch('<?php echo make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'saved_search_id' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => 0, 'delete_saved_search' => true)); ?>', <?php echo $a_savedsearch->get(TBGSavedSearchesTable::ID); ?>);" value="<?php echo __('Yes, delete'); ?>" style="font-weight: bold;">
+										<input type="submit" onclick="TBG.Search.deleteSavedSearch('<?php echo make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'saved_search_id' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => 0, 'delete_saved_search' => true)); ?>', <?php echo $a_savedsearch->get(TBGSavedSearchesTable::ID); ?>);" value="<?php echo __('Yes, delete'); ?>" style="font-weight: bold;">
 									<?php else: ?>
-										<input type="submit" onclick="deleteSavedSearch('<?php echo make_url('search', array('saved_search_id' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => 0, 'delete_saved_search' => true)); ?>', <?php echo $a_savedsearch->get(TBGSavedSearchesTable::ID); ?>);" value="<?php echo __('Yes, delete'); ?>" style="font-weight: bold;">
+										<input type="submit" onclick="TBG.Search.deleteSavedSearch('<?php echo make_url('search', array('saved_search_id' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => 0, 'delete_saved_search' => true)); ?>', <?php echo $a_savedsearch->get(TBGSavedSearchesTable::ID); ?>);" value="<?php echo __('Yes, delete'); ?>" style="font-weight: bold;">
 									<?php endif; ?>
 									<?php echo __('%yes_delete% or %cancel%', array('%yes_delete%' => '', '%cancel%' => javascript_link_tag(__('cancel'), array('onclick' => "$('delete_search_".$a_savedsearch->get(TBGSavedSearchesTable::ID)."').toggle();")))); ?>
 								</div>
