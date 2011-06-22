@@ -829,6 +829,90 @@ TBG.Config.Permissions.set = function(url, field) {
 	});
 };
 
+/**
+ * This function updates available issue reporting fields on page to match 
+ * those returned by thebuggenie
+ */
+TBG.Issues.updateFields = function(url)
+{
+	if ($('issuetype_id').getValue() != 0) {
+		$('issuetype_list').hide();
+		$('issuetype_dropdown').show();
+	}
+	if ($('project_id').getValue() != 0 && $('issuetype_id').getValue() != 0) {
+		$('report_more_here').hide();
+		$('report_form').show();
+		
+		TBG.Main.Helpers.Ajax(url, {
+			loading: {indicator: 'report_issue_more_options_indicator'},
+			parameters: {project_id: $('project_id').getValue(), issuetype_id: $('issuetype_id').getValue()},
+			success: {
+				callback: function(json) {
+					json.available_fields.each(function (fieldname, key)
+					{
+						if ($(fieldname + '_div')) {
+							if (json.fields[fieldname]) {
+								if (json.fields[fieldname].values) {
+									var prev_val;
+									if ($(fieldname + '_additional') && $(fieldname + '_additional_div').visible()) {
+										prev_val = $(fieldname + '_id_additional').getValue();
+									} else if ($(fieldname + '_div') && $(fieldname + '_div').visible()) {
+										prev_val = $(fieldname + '_id').getValue();
+									}
+								}
+								if (json.fields[fieldname].additional && $(fieldname + '_additional')) {
+									$(fieldname + '_additional').show();
+									$(fieldname + '_div').hide();
+									if ($(fieldname + '_id_additional')) $(fieldname + '_id_additional').enable();
+									if ($(fieldname + '_value_additional')) $(fieldname + '_value_additional').enable();
+									if ($(fieldname + '_id')) $(fieldname + '_id').disable();
+									if ($(fieldname + '_value')) $(fieldname + '_value').disable();
+									if (json.fields[fieldname].values) {
+										$(fieldname + '_id_additional').update('');
+										for (var opt in json.fields[fieldname].values) {
+											$(fieldname + '_id_additional').insert('<option value="'+opt+'">'+json.fields[fieldname].values[opt]+'</option>');
+										}
+										$(fieldname + '_id_additional').setValue(prev_val);
+									}
+								} else {
+									$(fieldname + '_div').show();
+									if ($(fieldname + '_id')) $(fieldname + '_id').enable();
+									if ($(fieldname + '_value')) $(fieldname + '_value').enable();
+									if ($(fieldname + '_id_additional')) $(fieldname + '_id_additional').disable();
+									if ($(fieldname + '_value_additional')) $(fieldname + '_value_additional').disable();
+									if ($(fieldname + '_additional')) $(fieldname + '_additional').hide();
+									if (json.fields[fieldname].values) {
+										$(fieldname + '_id').update('');
+										for (var opt in json.fields[fieldname].values) {
+											$(fieldname + '_id').insert('<option value="'+opt+'">'+json.fields[fieldname].values[opt]+'</option>');
+										}
+										$(fieldname + '_id').setValue(prev_val);
+									}
+								}
+								(json.fields[fieldname].required) ? $(fieldname + '_label').addClassName('required') : $(fieldname + '_label').removeClassName('required');
+							} else {
+								$(fieldname + '_div').hide();
+								if ($(fieldname + '_id')) $(fieldname + '_id').disable();
+								if ($(fieldname + '_value')) $(fieldname + '_value').disable();
+								if ($(fieldname + '_additional')) $(fieldname + '_additional').hide();
+								if ($(fieldname + '_id_additional')) $(fieldname + '_id_additional').disable();
+								if ($(fieldname + '_value_additional')) $(fieldname + '_value_additional').disable();
+							}
+						}
+					});				
+				}
+			}
+		});
+	} else {
+		$('report_form').hide();
+		$('report_more_here').show();
+	}
+	
+}
+
+/**
+ * Displays the workflow transition popup dialog
+ */
 TBG.Issues.showWorkflowTransition = function(transition_id) {
 	TBG.Main.Helpers.Backdrop.show();
 	$('fullpage_backdrop_indicator').hide();
