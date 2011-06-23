@@ -37,8 +37,8 @@
 		$tbg_response->addJavascript('dragdrop.js');
 		$tbg_response->addJavascript('controls.js');
 		$tbg_response->addJavascript('jquery.markitup.js');
-
 		$tbg_response->addJavascript('thebuggenie.js');
+
 		if ($tbg_user->isGuest()):
 			$tbg_response->addJavascript('login.js');
 		endif;

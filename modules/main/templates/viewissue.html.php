@@ -174,11 +174,11 @@
 					</td>
 					<td style="width: 22px; padding: 0 5px 0 5px;">
 						<?php if ($tbg_user->isGuest()): ?>
-							<?php echo image_tag('star_faded.png', array('id' => 'issue_favourite_faded', 'title' => __('Please log in to bookmark issues'))); ?>
+							<?php echo image_tag('star_faded.png', array('id' => 'issue_favourite_faded_'.$issue->getId(), 'title' => __('Please log in to bookmark issues'))); ?>
 						<?php else: ?>
-							<?php echo image_tag('spinning_20.gif', array('id' => 'issue_favourite_indicator', 'style' => 'display: none;')); ?>
-							<?php echo image_tag('star_faded.png', array('id' => 'issue_favourite_faded', 'style' => 'cursor: pointer;'.(($tbg_user->isIssueStarred($issue->getID())) ? 'display: none;' : ''), 'title' => __('Click to start following this issue'), 'onclick' => "toggleFavourite('".make_url('toggle_favourite_issue', array('issue_id' => $issue->getID()))."', ".$issue->getID().");")); ?>
-							<?php echo image_tag('star.png', array('id' => 'issue_favourite_normal', 'style' => 'cursor: pointer;'.((!$tbg_user->isIssueStarred($issue->getID())) ? 'display: none;' : ''), 'title' => __('Click to stop following this issue'), 'onclick' => "toggleFavourite('".make_url('toggle_favourite_issue', array('issue_id' => $issue->getID()))."', ".$issue->getID().");")); ?>
+							<?php echo image_tag('spinning_20.gif', array('id' => 'issue_favourite_indicator_'.$issue->getId(), 'style' => 'display: none;')); ?>
+							<?php echo image_tag('star_faded.png', array('id' => 'issue_favourite_faded_'.$issue->getId(), 'style' => 'cursor: pointer;'.(($tbg_user->isIssueStarred($issue->getID())) ? 'display: none;' : ''), 'title' => __('Click to start following this issue'), 'onclick' => "toggleFavourite('".make_url('toggle_favourite_issue', array('issue_id' => $issue->getID()))."', ".$issue->getID().");")); ?>
+							<?php echo image_tag('star.png', array('id' => 'issue_favourite_normal_'.$issue->getId(), 'style' => 'cursor: pointer;'.((!$tbg_user->isIssueStarred($issue->getID())) ? 'display: none;' : ''), 'title' => __('Click to stop following this issue'), 'onclick' => "toggleFavourite('".make_url('toggle_favourite_issue', array('issue_id' => $issue->getID()))."', ".$issue->getID().");")); ?>
 						<?php endif; ?>
 					</td>
 					<td style="font-size: 17px; width: auto; padding: 0; padding-left: 7px;" id="title_field">
