@@ -1,5 +1,5 @@
 
-function attachLink(url)
+TBG.Issues.Link.add = function(url)
 {
 	var params = $('attach_link_form').serialize();
 	$('attach_link_indicator').show();
