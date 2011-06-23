@@ -19,7 +19,8 @@ var TBG = {
 				View: {}
 			}
 		},
-		Comment: {}
+		Comment: {},
+		Link: {}
 	},
 	Project: {
 		Statistics: {},
@@ -451,7 +452,7 @@ TBG.Main.updatePercentageLayout = function(tds, percent) {
 	});
 };
 
-TBG.Main.addLink = function(url, target_type, target_id) {
+TBG.Main.Link.add = function(url, target_type, target_id) {
 	TBG.Main.Helpers.Ajax(url, {
 		loading: {
 			indicator: 'attach_link_' + target_type + '_' + target_id + '_indicator',
@@ -468,7 +469,7 @@ TBG.Main.addLink = function(url, target_type, target_id) {
 	});
 };
 
-TBG.Main.removeLink = function(url, target_type, target_id, link_id) {
+TBG.Main.Link.remove = function(url, target_type, target_id, link_id) {
 	TBG.Main.Helpers.Ajax(url, {
 		loading: {
 			hide: target_type + '_' + target_id + '_links_'+ link_id + '_remove_link',
