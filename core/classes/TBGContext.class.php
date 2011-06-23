@@ -1966,8 +1966,8 @@
 				}
 
 				// Set up the run summary, and store it in a variable
-				ob_start();
-				ob_implicit_flush(0);
+//				ob_start();
+//				ob_implicit_flush(0);
 				$load_time = self::getLoadtime();
 				if (B2DB::isInitialized())
 				{
@@ -1978,14 +1978,6 @@
 				$tbg_summary['scope_id'] = self::getScope() instanceof TBGScope ? self::getScope()->getID() : 'unknown';
 				self::ping();
 
-				// Render footer template if any, and store the output in a variable
-				if (!self::getRequest()->isAjaxCall() && self::getResponse()->doDecorateFooter())
-				{
-					TBGLogging::log('decorating with footer');
-					require self::getResponse()->getFooterDecoration();
-					$decoration_footer = ob_get_clean();
-				}
-				TBGLogging::log('...done');
 				TBGLogging::log('rendering content');
 
 				// Render output in correct order
@@ -1995,10 +1987,17 @@
 					echo $decoration_header;
 
 				echo $content;
-				if (isset($decoration_footer))
-					echo $decoration_footer;
-
 				TBGLogging::log('...done (rendering content)');
+				
+				// Render footer template if any, and store the output in a variable
+				if (!self::getRequest()->isAjaxCall() && self::getResponse()->doDecorateFooter())
+				{
+					TBGLogging::log('decorating with footer');
+					require self::getResponse()->getFooterDecoration();
+//					$decoration_footer = ob_get_clean();
+				}
+				
+				TBGLogging::log('...done');
 
 				if (self::isDebugMode())
 					self::getI18n()->addMissingStringsToStringsFile();
