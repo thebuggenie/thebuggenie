@@ -436,7 +436,7 @@ echo "
 	// Set up error and exception handling
 	set_error_handler('tbg_error_handler');
 	set_exception_handler('tbg_exception');
-	error_reporting(E_ALL | E_STRICT);
+	error_reporting(E_ALL | E_NOTICE | E_STRICT);
 	
 	if (!defined('THEBUGGENIE_PATH'))
 		throw new Exception('You must define the THEBUGGENIE_PATH constant so we can find the files we need');
