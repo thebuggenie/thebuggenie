@@ -365,6 +365,17 @@
 			$res = $this->doSelect($crit);
 			return $res;
 		}
+		
+		public function getByProjectIDandNoMilestoneandTypes($project_id, $issuetypes)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::MILESTONE, null);
+			$crit->addWhere(self::ISSUE_TYPE, $issuetypes, B2DBCriteria::DB_IN);
+			$crit->addWhere(self::PROJECT_ID, $project_id);
+			$crit->addWhere(self::DELETED, false);
+			$res = $this->doSelect($crit);
+			return $res;
+		}
 
 		public function clearMilestone($milestone_id)
 		{

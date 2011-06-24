@@ -150,6 +150,13 @@
 		 * @var array
 		 */
 		protected $_unassignedissues = null;
+		
+		/**
+		 * Developer reports registered for this project with no milestone assigned
+		 *
+		 * @var array
+		 */
+		protected $_unassignedstories = null;
 
 		/**
 		 * The projects documentation URL
@@ -1334,6 +1341,34 @@
 				}
 			}
 		}
+		
+		/**
+		 * Populates the internal array with unassigned user stories for the scrum page
+		 */
+		protected function _populateUnassignedStories()
+		{
+			if ($this->_unassignedstories === null)
+			{
+				$this->_unassignedstories = array();
+				$issuetypes = array();
+				
+				foreach (TBGIssuetype::getAll() as $issuetype)
+				{
+					if ($issuetype->getIcon() == 'developer_report')
+					{
+						$issuetypes[] = $issuetype->getID();
+					}
+				}
+				
+				if ($res = TBGIssuesTable::getTable()->getByProjectIDandNoMilestoneandTypes($this->getID(), $issuetypes))
+				{
+					while ($row = $res->getNextRow())
+					{
+						$this->_unassignedstories[$row->get(TBGIssuesTable::ID)] = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID));
+					}
+				}
+			}
+		}
 
 		/**
 		 * Returns an array with issues
@@ -1353,16 +1388,8 @@
 		 */
 		public function getUnassignedStories()
 		{
-			$issues = $this->getIssuesWithoutMilestone();
-			$unassigned_stories = array();
-			foreach ($issues as $issue)
-			{
-				if ($issue->getIssueType() instanceof TBGIssuetype && $issue->getIssueType()->getIcon() == 'developer_report')
-				{
-					$unassigned_stories[$issue->getID()] = $issue;
-				}
-			}
-			return $unassigned_stories;
+			$this->_populateUnassignedStories();
+			return $this->_unassignedstories;
 		}
 
 		/**
