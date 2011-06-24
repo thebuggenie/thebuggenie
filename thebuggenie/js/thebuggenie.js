@@ -36,7 +36,12 @@ var TBG = {
 		Edition: {}
 	},
 	Config: {
-		Permissions: {}
+		Permissions: {},
+		User: {},
+		Collection: {},
+		Group: {},
+		Team: {},
+		Client: {}
 	}, // The "Config" namespace contains functions used in the configuration section
 	Issues: {
 		Link: {},
@@ -1395,6 +1400,211 @@ TBG.Config.Permissions.set = function(url, field) {
 		loading: {indicator: field + '_indicator'}
 	});
 };
+
+TBG.Config.User.show = function(url, findstring) {
+	TBG.Main.Helpers.ajax(url, {
+		params: '&findstring=' + findstring,
+		loading: {indicator: 'find_users_indicator'},
+		success: {update: 'users_results'}
+	});
+}
+
+TBG.Config.User.create = function(url) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'createuser_form',
+		loading: {indicator: 'find_users_indicator'},
+		success: {
+			update: 'users_results',
+			callback: TBG.Config.User.updateLinks
+		}
+	});
+}
+
+TBG.Config.User.getEditForm = function(url, uid) {
+	TBG.Main.Helpers.ajax(url, {
+		loading: {indicator: 'user_' + uid + '_edit_spinning'},
+		success: {
+			update: 'user_' + uid + '_edit_td',
+			show: 'user_' + uid + '_edit_tr'
+		}
+	});
+}
+
+TBG.Config.User.remove = function(url, user_id) {
+	TBG.Main.Helpers.ajax(url, {
+		loading: {indicator: 'delete_user_'+user_id+'_indicator'},
+		success: {
+			remove: ['users_results_user_'+user_id, 'user_'+user_id+'_edit_spinning', 'user_'+user_id+'_edit_tr', 'users_results_user_'+user_id+'_permissions_row'],
+			callback: TBG.Config.User.updateLinks
+		}
+	});
+}
+
+TBG.Config.User.updateLinks = function(json) {
+	if ($('current_user_num_count')) $('current_user_num_count').update(json.total_count);
+	(json.more_available) ? $('adduser_div').show() : $('adduser_div').hide();
+	TBG.Config.Collection.updateDetailsFromJSON(json);
+}
+
+TBG.Config.User.update = function(url, user_id) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'edituser_' + user_id + '_form',
+		loading: {indicator: 'edit_user_' + user_id + '_indicator'},
+		success: {
+			update: 'users_results_user_' + user_id,
+			show: 'users_results_user_' + user_id,
+			hide: 'user_' + user_id + '_edit_tr',
+			callback: function(json) {
+				$('password_' + user_id + '_leave').checked = true;
+				$('new_password_' + user_id + '_1').value = '';
+				$('new_password_' + user_id + '_2').value = '';
+				TBG.Config.Collection.updateDetailsFromJSON(json);
+			}
+		}
+	});
+}
+
+TBG.Config.User.getPermissionsBlock = function(url, user_id) {
+	$('users_results_user_' + user_id + '_permissions_row').toggle();
+	if ($('users_results_user_' + user_id + '_permissions').innerHTML == '') {
+		TBG.Main.Helpers.ajax(url, {
+			loading: {
+				indicator: 'permissions_' + user_id + '_indicator',
+				hide: 'permissions_' + user_id + '_link'
+			},
+			success: {
+				update: 'users_results_user_' + user_id + '_permissions'
+			},
+			complete: {
+				hide: 'permissions_' + user_id + '_link'
+			}
+		});
+	}
+}
+
+TBG.Config.Collection.add = function(url, type, callback_function) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'create_' + type + '_form',
+		loading: {indicator: 'create_' + type + '_indicator'},
+		success: {
+			update: {element: type + 'config_list', insertion: true},
+			callback: callback_function
+		}
+	});
+}
+
+TBG.Config.Collection.remove = function(url, type, cid, callback_function) {
+	TBG.Main.Helpers.ajax(url, {
+		loading: {indicator: 'delete_' + type + '_' + cid + '_indicator'},
+		success: {
+			remove: type + 'box_' + cid,
+			callback: callback_function
+		}
+	});
+}
+
+TBG.Config.Collection.clone = function(url, type, cid, callback_function) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'clone_' + type + '_' + cid + '_form',
+		loading: {indicator: 'clone_' + type + '_' + cid + '_indicator'},
+		success: {
+			update: {element: type + 'config_list', insertion: true},
+			hide: 'clone_' + type + '_' + cid,
+			callback: callback_function
+		}
+	});
+}
+
+TBG.Config.Collection.showMembers = function(url, type, cid) {
+	$(type + '_members_' + cid + '_container').toggle();
+	if ($(type + '_members_' + cid + '_list').innerHTML == '') {
+		TBG.Main.Helpers.ajax(url, {
+			loading: {indicator: type + '_members_' + cid + '_indicator'},
+			success: {update: type + '_members_' + cid + '_list'},
+			failure: {hide: type + '_members_' + cid + '_container'}
+		});
+	}
+}
+
+TBG.Config.Collection.updateDetailsFromJSON = function(json) {
+	if (json.update_groups) {
+		json.update_groups.ids.each(function(group_id) {
+			if ($('group_'+group_id+'_membercount')) $('group_'+group_id+'_membercount').update(json.update_groups.membercounts[group_id]);
+			$('group_members_'+group_id+'_container').hide();
+			$('group_members_'+group_id+'_list').update('');
+		});
+	}
+	if (json.update_teams) {
+		json.update_teams.ids.each(function(team_id) {
+			if ($('team_'+team_id+'_membercount')) $('team_'+team_id+'_membercount').update(json.update_teams.membercounts[team_id]);
+			$('team_members_'+team_id+'_container').hide();
+			$('team_members_'+team_id+'_list').update('');
+		});
+	}
+}
+
+TBG.Config.Group.add = function(url) {
+	TBG.Config.Collection.add(url, 'group');
+}
+
+TBG.Config.Group.remove = function(url, group_id) {
+	TBG.Config.Collection.remove(url, 'group', group_id);
+}
+
+TBG.Config.Group.clone = function(url, group_id) {
+	TBG.Config.Collection.clone(url, 'group', group_id);
+}
+
+TBG.Config.Group.showMembers = function(url, group_id) {
+	TBG.Config.Collection.showMembers(url, 'group', group_id);
+}
+
+TBG.Config.Team.updateLinks = function(json) {
+	if ($('current_team_num_count')) $('current_team_num_count').update(json.total_count);
+	$$('.copy_team_link').each(function(element) {
+		(json.more_available) ? $(element).show() : $(element).hide();
+	});
+	(json.more_available) ? $('add_team_div').show() : $('add_team_div').hide();
+}
+
+TBG.Config.Team.add = function(url) {
+	TBG.Config.Collection.add(url, 'team', TBG.Config.Team.updateLinks);
+}
+
+TBG.Config.Team.remove = function(url, team_id) {
+	TBG.Config.Collection.remove(url, 'team', team_id, TBG.Config.Team.updateLinks);
+}
+
+TBG.Config.Team.clone = function(url, team_id) {
+	TBG.Config.Collection.clone(url, 'team', team_id, TBG.Config.Team.updateLinks);
+}
+
+TBG.Config.Team.showMembers = function(url, team_id) {
+	TBG.Config.Collection.showMembers(url, 'team', team_id);
+}
+
+TBG.Config.Client.add = function(url) {
+	TBG.Config.Collection.add(url, 'client');
+}
+
+TBG.Config.Client.remove = function(url, client_id) {
+	TBG.Config.Collection.remove(url, 'client', client_id);
+}
+
+TBG.Config.Client.showMembers = function(url, client_id) {
+	TBG.Config.Collection.showMembers(url, 'client', client_id);
+}
+
+TBG.Config.Client.update = function(url, client_id) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'edit_client_' + client_id + '_form',
+		loading: {indicator: 'edit_client_' + client_id + '_indicator'},
+		success: {
+			hide: 'edit_client_' + client_id,
+			update: 'clientbox_' + client_id
+		}
+	});
+}
 
 /**
  * This function updates available issue reporting fields on page to match 
