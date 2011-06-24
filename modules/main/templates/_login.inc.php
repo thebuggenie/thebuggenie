@@ -26,7 +26,7 @@
 				<?php endif; ?>
 				<div class="logindiv">			
 					<div class="rounded_box iceblue" style="vertical-align: middle; padding: 5px;">
-						<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('login'); ?>" method="post" id="login_form" onsubmit="loginUser('<?php echo make_url('login'); ?>'); return false;">
+						<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('login'); ?>" method="post" id="login_form" onsubmit="TBG.Main.Login.login('<?php echo make_url('login'); ?>'); return false;">
 							<input type="hidden" id="tbg3_referer" name="tbg3_referer" value="" />
 							<div class="login_boxheader"><?php echo __('Log in to an existing account'); ?></div>
 							<div>

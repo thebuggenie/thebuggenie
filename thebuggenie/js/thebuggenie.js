@@ -20,7 +20,8 @@ var TBG = {
 			}
 		},
 		Comment: {},
-		Link: {}
+		Link: {},
+		Login: {}
 	},
 	Project: {
 		Statistics: {},
@@ -115,7 +116,7 @@ TBG.Core._toggleBreadcrumbItem = function(item) {
 };
 
 TBG.Core._detachFile = function(url, file_id, base_id) {
-	TBG.Main.Helpers.Ajax(url, {
+	TBG.Main.Helpers.ajax(url, {
 		loading: {
 			indicator: base_id + file_id + '_remove_indicator',
 			hide: [base_id + file_id + '_remove_link', 'uploaded_files_'+ file_id + '_remove_link'],
@@ -304,7 +305,7 @@ TBG.Main.Helpers.Message.success = function(title, content) {
  * @param url The URL to call
  * @param options An associated array of options
  */
-TBG.Main.Helpers.Ajax = function(url, options) {
+TBG.Main.Helpers.ajax = function(url, options) {
 	var params = (options.params) ? options.params : '';
 	if (options.form) params = Form.serialize(options.form);
 	if (options.additional_params) params += options.additional_params;
@@ -326,32 +327,36 @@ TBG.Main.Helpers.Ajax = function(url, options) {
 		onSuccess: function (transport) {
 			var json = transport.responseJSON;
 			if (json) {
-				if (options.success && options.success.update) {
-					var json_content_element = (is_string(options.success.update) || options.success.update.from == undefined) ? 'content' : options.success.update.from;
-					console.log('updating ');
-					console.log(json_content_element);
-					var content = (json) ? json[json_content_element] : transport.responseText;
-					var update_element = (is_string(options.success.update)) ? options.success.update : options.success.update.element;
-					if ($(update_element)) {
-						var insertion = (is_string(options.success.update)) ? false : (options.success.insertion) ? options.success.insertion : false;
-						if (insertion) {
-							$(update_element).insert(content, 'after');
-						} else {
-							$(update_element).update(content);
+				if (json.forward != undefined) {
+					document.location = json.forward;
+				} else {
+					if (options.success && options.success.update) {
+						var json_content_element = (is_string(options.success.update) || options.success.update.from == undefined) ? 'content' : options.success.update.from;
+						console.log('updating ');
+						console.log(json_content_element);
+						var content = (json) ? json[json_content_element] : transport.responseText;
+						var update_element = (is_string(options.success.update)) ? options.success.update : options.success.update.element;
+						if ($(update_element)) {
+							var insertion = (is_string(options.success.update)) ? false : (options.success.insertion) ? options.success.insertion : false;
+							if (insertion) {
+								$(update_element).insert(content, 'after');
+							} else {
+								$(update_element).update(content);
+							}
 						}
-					}
-					if (json && json.message) {
+						if (json && json.message) {
+							TBG.Main.Helpers.Message.success(json.message);
+						}
+					} else if (json && (json.title || json.content)) {
+						TBG.Main.Helpers.Message.success(json.title, json.content);
+					} else if (json && (json.message)) {
 						TBG.Main.Helpers.Message.success(json.message);
 					}
-				} else if (json && (json.title || json.content)) {
-					TBG.Main.Helpers.Message.success(json.title, json.content);
-				} else if (json && (json.message)) {
-					TBG.Main.Helpers.Message.success(json.message);
-				}
-				if (options.success) {
-					TBG.Core._processCommonAjaxPostEvents(options.success);
-					if (options.success.callback) {
-						options.success.callback(json);
+					if (options.success) {
+						TBG.Core._processCommonAjaxPostEvents(options.success);
+						if (options.success.callback) {
+							options.success.callback(json);
+						}
 					}
 				}
 			}
@@ -384,7 +389,7 @@ TBG.Main.Helpers.Ajax = function(url, options) {
 };
 
 TBG.Main.Helpers.formSubmit = function(url, form_id) {
-	TBG.Main.Helpers.Ajax(url, {
+	TBG.Main.Helpers.ajax(url, {
 		form: form_id,
 		loading: {indicator: form_id + '_indicator', disable: form_id + '_button'}, 
 		success: {enable: form_id + '_button'}
@@ -394,7 +399,7 @@ TBG.Main.Helpers.formSubmit = function(url, form_id) {
 TBG.Main.Helpers.Backdrop.show = function(url) {
 	$('fullpage_backdrop').show();
 	if (url != undefined) {
-		TBG.Main.Helpers.Ajax(url, {
+		TBG.Main.Helpers.ajax(url, {
 			loading: {indicator: 'fullpage_backdrop_indicator'},
 			success: {update: 'fullpage_backdrop_content'},
 			failure: {hide: 'fullpage_backdrop'}
@@ -430,7 +435,7 @@ TBG.Main.toggleBreadcrumbMenuPopout = function(event) {
 };
 
 TBG.Main.findIdentifiable = function(url, field) {
-	TBG.Main.Helpers.Ajax(url, { 
+	TBG.Main.Helpers.ajax(url, { 
 		form: field + '_form', 
 		loading: {indicator: field + '_spinning'}, 
 		success: {update: field + '_results'}
@@ -463,7 +468,7 @@ TBG.Main.updatePercentageLayout = function(tds, percent) {
 };
 
 TBG.Main.Link.add = function(url, target_type, target_id) {
-	TBG.Main.Helpers.Ajax(url, {
+	TBG.Main.Helpers.ajax(url, {
 		loading: {
 			indicator: 'attach_link_' + target_type + '_' + target_id + '_indicator',
 			hide: 'attach_link_' + target_type + '_' + target_id + '_submit'
@@ -480,7 +485,7 @@ TBG.Main.Link.add = function(url, target_type, target_id) {
 };
 
 TBG.Main.Link.remove = function(url, target_type, target_id, link_id) {
-	TBG.Main.Helpers.Ajax(url, {
+	TBG.Main.Helpers.ajax(url, {
 		loading: {
 			hide: target_type + '_' + target_id + '_links_'+ link_id + '_remove_link',
 			indicator: target_type + '_' + target_id + '_links_'+ link_id + '_remove_indicator'
@@ -514,21 +519,21 @@ TBG.Main.reloadImage = function(id) {
 };
 
 TBG.Main.Profile.updateInformation = function(url) {
-	TBG.Main.Helpers.Ajax(url, {
+	TBG.Main.Helpers.ajax(url, {
 		form: 'profile_information_form',
 		loading: {indicator: 'profile_save_indicator'}
 	});
 };
 
 TBG.Main.Profile.updateModuleSettings = function(url, module_name) {
-	TBG.Main.Helpers.Ajax(url, {
+	TBG.Main.Helpers.ajax(url, {
 		form: 'profile_' + module_name + '_form',
 		loading: {indicator: 'profile_' + module_name + '_save_indicator'}
 	});
 };
 
 TBG.Main.Profile.updateSettings = function(url) {
-	TBG.Main.Helpers.Ajax(url, {
+	TBG.Main.Helpers.ajax(url, {
 		form: 'profile_settings_form',
 		loading: {indicator: 'profile_settings_save_indicator'},
 		success: {callback: function() {
@@ -538,7 +543,7 @@ TBG.Main.Profile.updateSettings = function(url) {
 };
 
 TBG.Main.Profile.changePassword = function(url) {
-	TBG.Main.Helpers.Ajax(url, {
+	TBG.Main.Helpers.ajax(url, {
 		form: 'change_password_form',
 		loading: {indicator: 'change_password_indicator'},
 		success: {reset: 'change_password_form'}
@@ -585,7 +590,7 @@ TBG.Main.Profile.Dashboard.save = function(url)
 		parameters = parameters + element.down('span.dashboard_view_data').id + ';';
 	});
 	
-	TBG.Main.Helpers.Ajax(url, {
+	TBG.Main.Helpers.ajax(url, {
 		params: parameters,
 		loading: {
 			indicator: 'save_dashboard_indicator',
@@ -597,7 +602,7 @@ TBG.Main.Profile.Dashboard.save = function(url)
 
 TBG.Main.hideInfobox = function(url, boxkey) {
 	if ($('close_me_' + boxkey).checked) {
-		TBG.Main.Helpers.Ajax(url, {
+		TBG.Main.Helpers.ajax(url, {
 			loading: {indicator: 'infobox_' + boxkey + '_indicator'}
 		});
 	}
@@ -605,7 +610,7 @@ TBG.Main.hideInfobox = function(url, boxkey) {
 };
 
 TBG.Main.Comment.remove = function(url, comment_id) {
-	TBG.Main.Helpers.Ajax(url, {
+	TBG.Main.Helpers.ajax(url, {
 		loading: {
 			indicator: 'comment_delete_indicator_' + comment_id,
 			hide: 'comment_delete_controls_' + comment_id
@@ -623,7 +628,7 @@ TBG.Main.Comment.remove = function(url, comment_id) {
 };
 
 TBG.Main.Comment.update = function(url, cid) {
-	TBG.Main.Helpers.Ajax(url, {
+	TBG.Main.Helpers.ajax(url, {
 		form: 'comment_edit_form_' + cid,
 		loading: {
 			indicator: 'comment_edit_controls_' + cid,
@@ -641,7 +646,7 @@ TBG.Main.Comment.update = function(url, cid) {
 };
 
 TBG.Main.Comment.add = function(url, commentcount_span) {
-	TBG.Main.Helpers.Ajax(url, {
+	TBG.Main.Helpers.ajax(url, {
 		form: 'comment_form',
 		loading: {
 			indicator: 'comment_add_indicator',
@@ -669,7 +674,7 @@ TBG.Main.Comment.add = function(url, commentcount_span) {
 };
 
 TBG.Project.Statistics.get = function(url) {
-	TBG.Main.Helpers.Ajax(url, {
+	TBG.Main.Helpers.ajax(url, {
 		loading: {
 			show: 'statistics_main', 
 			hide: 'statistics_help',
@@ -708,7 +713,7 @@ TBG.Project.Statistics.toggleImage = function(image) {
 
 TBG.Project.Milestone.toggle = function(url, milestone_id) {
 	if ($('milestone_' + milestone_id + '_issues').childElements().size() == 0) {
-		TBG.Main.Helpers.Ajax(url, {
+		TBG.Main.Helpers.ajax(url, {
 			loading: {indicator: 'milestone_' + milestone_id + '_indicator'},
 			success: {
 				update: 'milestone_' + milestone_id + '_issues',
@@ -722,7 +727,7 @@ TBG.Project.Milestone.toggle = function(url, milestone_id) {
 
 TBG.Project.Milestone.refresh = function(url, milestone_id) {
 	var m_id = milestone_id;
-	TBG.Main.Helpers.Ajax(url, {
+	TBG.Main.Helpers.ajax(url, {
 		loading: {
 			indicator: 'milestone_' + milestone_id + '_indicator'
 		},
@@ -773,7 +778,7 @@ TBG.Project.Milestone.refresh = function(url, milestone_id) {
 };
 
 TBG.Project.Timeline.update = function(url) {
-	TBG.Main.Helpers.Ajax(url, {
+	TBG.Main.Helpers.ajax(url, {
 		url_method: 'get',
 		additional_params: {offset: $('timeline_offset').getValue()},
 		loading: {
@@ -792,7 +797,7 @@ TBG.Project.Timeline.update = function(url) {
 
 TBG.Project.Scrum.Sprint.add = function(url, assign_url)
 {
-	TBG.Main.Helpers.Ajax(url, {
+	TBG.Main.Helpers.ajax(url, {
 		form: 'add_sprint_form',
 		loading: {indicator: 'sprint_add_indicator'},
 		success: {
@@ -808,7 +813,7 @@ TBG.Project.Scrum.Sprint.add = function(url, assign_url)
 
 TBG.Project.Scrum.Story.add = function(url)
 {
-	TBG.Main.Helpers.Ajax(url, {
+	TBG.Main.Helpers.ajax(url, {
 		form: 'add_user_story_form',
 		loading: {indicator: 'user_story_add_indicator'},
 		success: {
@@ -824,7 +829,7 @@ TBG.Project.Scrum.Story.add = function(url)
 
 TBG.Project.Scrum.Story.assign = function(url, dragged, dropped)
 {
-	TBG.Main.Helpers.Ajax(url, {
+	TBG.Main.Helpers.ajax(url, {
 		params: {story_id: $(dragged.id + '_id').getValue(), sprint_id: $(dropped.id + '_id').getValue()},
 		loading: {indicator: dropped.id + '_indicator'},
 		success: {
@@ -845,7 +850,7 @@ TBG.Project.Scrum.Story.assign = function(url, dragged, dropped)
 
 TBG.Project.Scrum.Story.setColor = function(url, story_id, color)
 {
-	TBG.Main.Helpers.Ajax(url, {
+	TBG.Main.Helpers.ajax(url, {
 		parameters: {color: color},
 		loading: {indicator: 'color_selector_' + story_id + '_indicator'},
 		success: {
@@ -870,7 +875,7 @@ TBG.Project.Scrum.Story.setEstimates = function(url, story_id)
 		params = {estimated_points: $('scrum_story_' + story_id + '_points_input').getValue()};
 	}
 	
-	TBG.Main.Helpers.Ajax(url, {
+	TBG.Main.Helpers.ajax(url, {
 		parameters: params,
 		loading: {indicator: 'point_selector_' + story_id + '_indicator'},
 		success: {
@@ -891,7 +896,7 @@ TBG.Project.Scrum.Story.setEstimates = function(url, story_id)
 }
 
 TBG.Config.Permissions.set = function(url, field) {
-	TBG.Main.Helpers.Ajax(url, {
+	TBG.Main.Helpers.ajax(url, {
 		loading: {indicator: field + '_indicator'}
 	});
 };
@@ -910,7 +915,7 @@ TBG.Issues.updateFields = function(url)
 		$('report_more_here').hide();
 		$('report_form').show();
 		
-		TBG.Main.Helpers.Ajax(url, {
+		TBG.Main.Helpers.ajax(url, {
 			loading: {indicator: 'report_issue_more_options_indicator'},
 			parameters: {project_id: $('project_id').getValue(), issuetype_id: $('issuetype_id').getValue()},
 			success: {
@@ -1018,7 +1023,7 @@ TBG.Issues.addUserStoryTask = function(url, story_id, mode) {
 		};
 	}
 	
-	TBG.Main.Helpers.Ajax(url, {
+	TBG.Main.Helpers.ajax(url, {
 		form: prefix + '_add_task_form',
 		loading: {indicator: indicator_prefix + '_indicator'},
 		success: success_arr
@@ -1026,7 +1031,7 @@ TBG.Issues.addUserStoryTask = function(url, story_id, mode) {
 };
 
 TBG.Issues.findRelated = function(url) {
-	TBG.Main.Helpers.Ajax(url, {
+	TBG.Main.Helpers.ajax(url, {
 		form: 'viewissue_find_issue_form',
 		loading: {indicator: 'find_issue_indicator'},
 		success: {update: 'viewissue_relation_results'}
@@ -1035,7 +1040,7 @@ TBG.Issues.findRelated = function(url) {
 };
 
 TBG.Issues.findDuplicate = function(url) {
-	TBG.Main.Helpers.Ajax(url, {
+	TBG.Main.Helpers.ajax(url, {
 		form: 'viewissue_find_issue_form',
 		loading: {indicator: 'find_issue_indicator'},
 		success: {update: 'viewissue_duplicate_results'}
@@ -1047,7 +1052,7 @@ TBG.Issues.relate = function(url) {
 	var hide_div = ($('relate_issue_with_selected').getValue() == 'relate_children') ? 'no_child_issues' : 'no_parent_issues';
 	var update_div = ($('relate_issue_with_selected').getValue() == 'relate_children') ? 'related_child_issues_inline' : 'related_parent_issues_inline';
 	
-	TBG.Main.Helpers.Ajax(url, {
+	TBG.Main.Helpers.ajax(url, {
 		form: 'viewissue_relate_issues_form',
 		loading: {indicator: 'relate_issues_indicator'},
 		success: {
@@ -1061,7 +1066,7 @@ TBG.Issues.relate = function(url) {
 TBG.Issues._addVote = function(url, direction) {
 	var opp_direction = (direction == 'up') ? 'down' : 'up';
 	
-	TBG.Main.Helpers.Ajax(url, {
+	TBG.Main.Helpers.ajax(url, {
 		loading: {
 			indicator: 'vote_' + direction + '_indicator', 
 			hide: 'vote_' + direction + '_link'},
@@ -1083,7 +1088,7 @@ TBG.Issues.voteDown = function(url) {
 
 TBG.Issues.toggleFavourite = function(url, issue_id)
 {
-	TBG.Main.Helpers.Ajax(url, {
+	TBG.Main.Helpers.ajax(url, {
 		loading: {
 			indicator: 'issue_favourite_indicator_' + issue_id,
 			hide: ['issue_favourite_normal_' + issue_id, 'issue_favourite_faded_' + issue_id]
@@ -1105,7 +1110,7 @@ TBG.Issues.toggleFavourite = function(url, issue_id)
 }
 
 TBG.Issues.Link.add = function(url) {
-	TBG.Main.Helpers.Ajax(url, {
+	TBG.Main.Helpers.ajax(url, {
 		form: 'attach_link_form',
 		loading: {
 			indicator: 'attach_link_indicator',
@@ -1126,7 +1131,7 @@ TBG.Issues.Link.add = function(url) {
 }
 
 TBG.Issues.Link.remove = function(url, link_id) {
-	TBG.Main.Helpers.Ajax(url, {
+	TBG.Main.Helpers.ajax(url, {
 		loading: {
 			indicator: 'viewissue_links_'+ link_id + '_remove_indicator',
 			hide: 'viewissue_links_'+ link_id + '_remove_link'
@@ -1149,7 +1154,7 @@ TBG.Issues.File.remove = function(url, file_id) {
 }
 
 TBG.Issues.Field.setPercent = function(url, mode) {
-	TBG.Main.Helpers.Ajax(url, {
+	TBG.Main.Helpers.ajax(url, {
 		loading: {indicator: 'percent_spinning'},
 		success: {
 			callback: function(json) {
@@ -1234,7 +1239,7 @@ TBG.Issues.Field.set = function(url, field, serialize_form) {
 	
 	var loading_show = (field == 'issuetype') ? 'issuetype_indicator_fullpage' : undefined;
 	
-	TBG.Main.Helpers.Ajax(url, {
+	TBG.Main.Helpers.ajax(url, {
 		form: post_form,
 		loading: {
 			indicator: field + '_spinning',
@@ -1276,7 +1281,7 @@ TBG.Issues.Field.set = function(url, field, serialize_form) {
 }
 
 TBG.Issues.Field.setTime = function(url, field) {
-	TBG.Main.Helpers.Ajax(url, {
+	TBG.Main.Helpers.ajax(url, {
 		form: field + '_form',
 		loading: {
 			indicator: field + '_spinning',
@@ -1303,7 +1308,7 @@ TBG.Issues.Field.revert = function(url, field)
 {
 	var loading_show = (field == 'issuetype') ? 'issuetype_indicator_fullpage' : undefined;
 	
-	TBG.Main.Helpers.Ajax(url, {
+	TBG.Main.Helpers.ajax(url, {
 		loading: {
 			indicator: field + '_undo_spinning',
 			show: loading_show
@@ -1359,7 +1364,7 @@ TBG.Issues.markAsUnchanged = function(field)
 
 TBG.Issues.Affected.toggleConfirmed = function(url, affected)
 {
-	TBG.Main.Helpers.Ajax(url, {
+	TBG.Main.Helpers.ajax(url, {
 		loading: {
 			indicator: 'affected_' + affected + '_confirmed_spinner',
 			hide: 'affected_' + affected + '_confirmed_icon'
@@ -1378,7 +1383,7 @@ TBG.Issues.Affected.toggleConfirmed = function(url, affected)
 
 TBG.Issues.Affected.remove = function(url, affected)
 {
-	TBG.Main.Helpers.Ajax(url, {
+	TBG.Main.Helpers.ajax(url, {
 		loading: {
 			indicator: 'affected_' + affected + '_delete_spinner'
 		},
@@ -1392,7 +1397,7 @@ TBG.Issues.Affected.remove = function(url, affected)
 
 TBG.Issues.Affected.setStatus = function(url, affected)
 {
-	TBG.Main.Helpers.Ajax(url, {
+	TBG.Main.Helpers.ajax(url, {
 		loading: {
 			indicator: 'affected_' + affected + '_status_spinning'
 		},
@@ -1421,7 +1426,7 @@ TBG.Issues.Affected.setStatus = function(url, affected)
 
 TBG.Issues.Affected.add = function(url)
 {
-	TBG.Main.Helpers.Ajax(url, {
+	TBG.Main.Helpers.ajax(url, {
 		form: 'viewissue_add_item_form',
 		loading: {
 			indicator: 'add_affected_spinning'
@@ -1441,7 +1446,7 @@ TBG.Issues.Affected.add = function(url)
 TBG.Issues.updateWorkflowAssignee = function(url, assignee_id, assignee_type, teamup)
 {
 	teamup = (teamup == undefined) ? 0 : 1;
-	TBG.Main.Helpers.Ajax(url, {
+	TBG.Main.Helpers.ajax(url, {
 		loading: {
 			indicator: 'popup_assigned_to_name_indicator',
 			hide: 'popup_no_assigned_to',
@@ -1467,7 +1472,7 @@ TBG.Issues.updateWorkflowAssigneeTeamup = function(url, assignee_id, assignee_ty
 }
 
 TBG.Search.Filter.add = function(url) {
-	TBG.Main.Helpers.Ajax(url, {
+	TBG.Main.Helpers.ajax(url, {
 		form: 'add_filter_form',
 		additional_params: '&key=' + $('max_filters').value,
 		loading: {indicator: 'add_filter_indicator'},
@@ -1488,7 +1493,7 @@ TBG.Search.Filter.remove = function(key) {
 };
 
 TBG.Search.deleteSavedSearch = function(url, id) {
-	TBG.Main.Helpers.Ajax(url, {
+	TBG.Main.Helpers.ajax(url, {
 		loading: {indicator: 'delete_search_' + id + '_indicator'},
 		success: {hide: 'saved_search_' + id + '_container'}
 	});
@@ -1496,7 +1501,7 @@ TBG.Search.deleteSavedSearch = function(url, id) {
 
 TBG.Search.toPage = function(url, parameters, offset) {
 	parameters += '&offset=' + offset;
-	TBG.Main.Helpers.Ajax(url, {
+	TBG.Main.Helpers.ajax(url, {
 		params: parameters,
 		loading: {indicator: 'paging_spinning'},
 		success: {update: 'search_results'}
