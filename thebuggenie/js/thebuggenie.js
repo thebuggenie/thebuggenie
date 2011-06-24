@@ -740,6 +740,23 @@ TBG.Main.Login.login = function(url)
 	});
 }
 
+TBG.Main.Login.resetForgotPassword(url)
+{
+	TBG.Main.Helpers.ajax(url, {
+		form: 'forgot_password_form',
+		loading: {
+			indicator: 'forgot_password_indicator',
+			hide: 'forgot_password_button'
+		},
+		failure: {
+			reset: 'forgot_password_form'
+		},
+		complete: {
+			show: 'forgot_password_button'
+		}
+	});
+}
+
 TBG.Project.Statistics.get = function(url) {
 	TBG.Main.Helpers.ajax(url, {
 		loading: {
