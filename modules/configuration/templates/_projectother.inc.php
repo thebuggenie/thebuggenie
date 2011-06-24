@@ -2,7 +2,7 @@
 	<div class="config_header"><b><?php echo __('Project frontpage overview'); ?></b></div>
 	<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 		<?php echo __('Select what to show on the frontpage project overview'); ?>. (<?php echo __('This will not affect the separate project overview page'); ?>)
-		<form action="<?php echo make_url('configure_project_updateother', array('project_id' => $project->getID())); ?>" method="post" style="margin-top: 10px;" onsubmit="saveProjectOther('<?php echo make_url('configure_project_updateother', array('project_id' => $project->getID())); ?>');return false;" id="project_other">
+		<form action="<?php echo make_url('configure_project_updateother', array('project_id' => $project->getID())); ?>" method="post" style="margin-top: 10px;" onsubmit="TBG.Project.saveOther('<?php echo make_url('configure_project_updateother', array('project_id' => $project->getID())); ?>');return false;" id="project_other">
 	<?php else: ?>
 		<div style="margin-bottom: 15px;"><?php echo __('This is what is shown on the frontpage project overview'); ?></div>
 	<?php endif; ?>

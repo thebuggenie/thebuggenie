@@ -30,7 +30,10 @@ var TBG = {
 		Scrum: {
 			Story: {},
 			Sprint: {}
-		}
+		},
+		Build: {},
+		Component: {},
+		Edition: {}
 	},
 	Config: {
 		Permissions: {}
@@ -976,6 +979,414 @@ TBG.Project.Scrum.Story.setEstimates = function(url, story_id)
 			}
 		},
 		complete: {hide: 'scrum_story_' + story_id + '_estimation'}
+	});
+}
+
+TBG.Project.updateLinks = function(json) {
+	if ($('current_project_num_count')) $('current_project_num_count').update(json.total_count);
+	(json.more_available) ? $('add_project_div').show() : $('add_project_div').hide();
+}
+
+TBG.Project.add = function(url) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'add_project_form',
+		loading: {indicator: 'project_add_indicator'},
+		success: {
+			reset: 'add_project_form',
+			update: 'project_table',
+			callback: TBG.Project.updateLinks
+		}
+	});
+}
+
+TBG.Project.remove = function(url, pid) {
+	TBG.Main.Helpers.ajax(url, {
+		loading: {
+			indicator: 'project_delete_indicator_' + pid,
+			hide: 'project_delete_controls_' + pid
+		},
+		success: {
+			remove: 'project_box_' + pid,
+			callback: function(json) {
+				if ($('project_table').childElements().size() == 0) $('noprojects_tr').show();
+				TBG.Project.updateLinks(json);
+			}
+		},
+		failure: {
+			show: 'project_delete_error_' + pid
+		},
+		complete: {
+			show: 'project_delete_controls_' + pid
+		}
+	});
+}
+
+TBG.Project.Milestone.add = function(url) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'add_milestone_form',
+		loading: {indicator: 'milestone_add_indicator'},
+		success: {
+			reset: 'add_milestone_form',
+			hide: 'no_milestones',
+			update: {element: 'milestone_list', insertion: true}
+		}
+	});
+}
+
+TBG.Project.Build.doAction = function(url, bid, action, update) {
+	var update_elm = (update == 'all') ? 'build_table' : 'build_list_' + bid;
+	TBG.Main.Helpers.ajax(url, {
+		loading: {
+			indicator: 'build_'+bid+'_indicator',
+			hide: 'build_'+bid+'_info'
+		},
+		success: {
+			update: update_elm
+		},
+		complete: {
+			show: 'build_'+bid+'_info'
+		}
+	});
+}
+
+TBG.Project.Build.update = function(url, bid) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'edit_build_'+bid,
+		loading: {
+			indicator: 'build_'+bid+'_indicator',
+			hide: 'build_'+bid+'_info'
+		},
+		success: {
+			update: 'build_list_'+bid
+		},
+		complete: {
+			show: 'build_'+bid+'_info'
+		}
+	});
+}
+
+TBG.Project.saveOther = function(url) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'project_other',
+		loading: {indicator: 'settings_save_indicator'}
+	});
+}
+
+TBG.Project.Build.addToOpenIssues = function(url, bid) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'addtoopen_build_'+bid,
+		loading: {
+			indicator: 'build_'+bid+'_indicator',
+			hide: 'build_'+bid+'_info'
+		},
+		success: {
+			hide: 'addtoopen_build_'+bid
+		},
+		complete: {
+			show: 'build_'+bid+'_info'
+		}
+	});
+}
+
+TBG.Project.Build.remove = function(url, bid) {
+	TBG.Main.Helpers.ajax(url, {
+		loading: {
+			indicator: 'build_'+bid+'_indicator',
+			hide: 'build_'+bid+'_info',
+			callback: function() {
+				$('build_'+bid+'_indicator').addClassName('selected_red');
+			}
+		},
+		success: {
+			remove: ['build_list_'+bid, 'buildbox_'+bid],
+			callback: function () {
+				if ($('build_table').childElements().size() == 0) $('no_builds').show();
+			}
+		},
+		failure: {
+			show: 'build_'+bid+'_info',
+			hide: 'del_build_'+bid,
+			callback: function() {
+				$('build_'+bid+'_indicator').removeClassName('selected_red');
+			}
+		}
+	});
+}
+
+TBG.Project.Component.remove = function(url, cid) {
+	TBG.Main.Helpers.ajax(url, {
+		loading: {indicator: 'component_'+cid+'_delete_indicator'},
+		success: {
+			remove: ['show_component_'+cid, 'edit_component_'+cid, 'component_'+cid+'_permissions'],
+			callback: function(json) {
+				if (json.itemcount == 0) $('no_components').show();
+			}
+		},
+		failure: {
+			hide: 'del_component_'+cid
+		}
+	});
+}
+
+TBG.Project.Edition.remove = function(url, eid) {
+	TBG.Main.Helpers.ajax(url, {
+		loading: {indicator: 'edition_'+eid+'_delete_indicator'},
+		success: {
+			remove: ['show_edition_'+eid, 'edit_edition_'+eid, 'edition_'+eid+'_permissions'],
+			callback: function(json) {
+				if (json.itemcount == 0) $('no_editions').show();
+			}
+		},
+		failure: {
+			hide: 'del_edition_'+eid
+		}
+	});
+}
+
+TBG.Project.Edition.add = function(url) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'add_edition_form',
+		loading: {indicator: 'edition_add_indicator'},
+		success: {
+			reset: 'add_edition_form',
+			hide: 'no_editions',
+			update: {element: 'edition_table', insertion: true, from: 'html'}
+		}
+	});
+}
+
+TBG.Project.Build.add = function(url) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'add_build_form',
+		loading: {indicator: 'build_add_indicator'},
+		success: {
+			reset: 'add_build_form',
+			hide: 'no_builds',
+			update: {element: 'build_table', insertion: true, from: 'html'}
+		}
+	});
+}
+
+TBG.Project.Component.add = function(url) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'add_component_form',
+		loading: {indicator: 'component_add_indicator'},
+		success: {
+			reset: 'add_component_form',
+			hide: 'no_components',
+			update: {element: 'component_table', insertion: true, from: 'html'}
+		}
+	});
+}
+
+TBG.Project.submitSettings = function(url) {
+	_submitProjectDetails(url, 'project_settings');
+}
+
+TBG.Project.submitInfo = function(url, pid) {
+	_submitProjectDetails(url, 'project_info', pid);
+}
+
+TBG.Project._submitDetails = function(url, form_id, pid) {
+	TBG.Main.Helpers.ajax(url, {
+		form: form_id,
+		loading: form_id + '_indicator',
+		success: {
+			callback: function(json) {
+				if ($('project_name_span')) $('project_name_span').update($('project_name_input').getValue());
+				if ($('project_description_span')) {
+					if ($('project_description_input').getValue()) {
+						$('project_description_span').update(json.project_description);
+						$('project_no_description').hide();
+					} else {
+						$('project_description_span').update('');
+						$('project_no_description').show();
+					}
+				}
+				if ($('project_key_span')) $('project_key_span').update(json.project_key);
+				if ($('sidebar_link_scrum') && $('use_scrum').getValue() == 1) $('sidebar_link_scrum').show();
+				else if ($('sidebar_link_scrum')) $('sidebar_link_scrum').hide();
+
+				['edition', 'component', 'build'].each(function(element) {
+					if ($('enable_'+element+'s').getValue() == 1) {
+						$('add_'+element+'_form').show();
+						$('project_'+element+'s').show();
+						$('project_'+element+'s_disabled').hide();
+					} else {
+						$('add_'+element+'_form').hide();
+						$('project_'+element+'s').hide();
+						$('project_'+element+'s_disabled').show();
+					}
+				});
+				
+				if (pid != undefined && $('project_box_' + pid) != undefined) $('project_box_' + pid).update(json.content);
+			}
+		}
+	});
+}
+
+TBG.Project.Edition.submitSettings = function(url) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'edition_settings_form',
+		loading: {indicator: 'edition_save_indicator'}
+	});
+}
+
+TBG.Project.Edition.Component.add = function(url, cid) {
+	TBG.Main.Helpers.ajax(url, {
+		loading: {
+			callback: function() {
+				$('project_component_'+cid).fade();
+			}
+		},
+		success: {
+			callback: function() {
+				$('edition_component_count').value++;
+				$('edition_component_'+cid).appear();
+			},
+			hide: 'edition_no_components'
+		},
+		failure: {
+			callback: function() {
+				$('project_component_'+cid).appear();
+			}
+		}
+	});
+}
+
+TBG.Project.Edition.Component.remove = function(url, cid) {
+	TBG.Main.Helpers.ajax(url, {
+		loading: {
+			callback: function() {
+				$('edition_component_'+cid).fade();
+			}
+		},
+		success: {
+			callback: function() {
+				$('edition_component_count').value--;
+				if ($('edition_component_count').value == 0) $('edition_no_components').appear();
+				$('project_component_'+cid).show();
+			}
+		},
+		failure: {
+			callback: function() {
+				$('edition_component_'+cid).appear();
+			}
+		}
+	});
+}
+
+TBG.Project.Component.update = function(url, cid) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'edit_component_' + cid + '_form',
+		loading: {
+			indicator: 'component_'+cid+'_indicator'
+		},
+		success: {
+			update: {element: 'component_'+cid+'_name', from: 'newname'},
+			hide: 'edit_component_'+cid,
+			show: 'show_component_'+cid
+		}
+	});
+}
+
+TBG.Project.Milestone.update = function(url, mid) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'edit_milestone_' + mid,
+		loading: {
+			indicator: 'milestone_' + mid + '_indicator'
+		},
+		success: {
+			hide: 'edit_milestone_' + mid,
+			update: 'milestone_span_' + mid,
+			show: 'show_milestone_' + mid
+		}
+	});
+}
+
+TBG.Project.Milestone.remove = function (url, mid) {
+	TBG.Main.Helpers.ajax(url, {
+		loading: {indicator: 'milestone_'+mid+'_indicator'},
+		success: {
+			remove: 'milestone_span_' + mid,
+			callback: function() {
+				if ($('milestone_list').childElements().size() == 0) $('no_milestones').show();
+			}
+		}
+	});
+}
+
+TBG.Project.findDevelopers = function(url) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'find_dev_form',
+		loading: {indicator: 'find_dev_indicator'},
+		success: {update: 'find_dev_results'}
+	});
+}
+
+TBG.Project._updateUserFromJSON = function(object, field) {
+	if (object.id == 0) {
+		$(field + '_name').hide();
+		$('no_' + field).show();
+	} else {
+		$(field + '_name').update(object.name);
+		$('no_' + field).hide();
+		$(field + '_name').show();
+	}
+}
+
+TBG.Project.setUser = function(url, field) {
+	TBG.Main.Helpers.ajax(url, {
+		loading: {indicator: field + '_spinning'},
+		success: {
+			hide: field + '_change',
+			callback: function(json) {
+				TBG.Project._updateUserFromJSON(json.field, field);
+			}
+		}
+	});
+}
+
+TBG.Project.assign = function(url, form_id) {
+	TBG.Main.Helpers.ajax(url, {
+		form: form_id,
+		loading: {indicator: 'assign_dev_indicator'},
+		success: {update: 'assignees_list'}
+	});
+}
+
+TBG.Project.removeAssignee = function(url, type, id) {
+	TBG.Main.Helpers.ajax(url, {
+		loading: {
+			indicator: 'remove_assignee_'+type+'_'+id+'_indicator',
+			hide: 'assignee_'+type+'_'+id+'_link'
+		},
+		success: {
+			hide: 'assignee_'+type+'_'+id+'_row'
+		}
+	});
+}
+
+TBG.Project.Edition.edit = function(url, edition_id)
+{
+	TBG.Main.Helpers.ajax(url, {
+		loading: {indicator: 'backdrop_detail_indicator'},
+		success: {update: 'backdrop_detail_content'}
+	});
+}
+
+TBG.Project.edit = function(url) {
+	TBG.Main.Helpers.ajax(url, {
+		loading: {indicator: 'backdrop_detail_indicator'},
+		success: {update: 'backdrop_detail_content'}
+	});
+}
+
+TBG.Project.updatePrefix = function(url, project_id) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'project_info',
+		loading: {indicator: 'project_key_indicator'},
+		success: {update: 'project_key_input'}
 	});
 }
 

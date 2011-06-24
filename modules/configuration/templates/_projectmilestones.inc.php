@@ -2,7 +2,7 @@
 	<tr>
 		<td style="width: auto; padding-right: 5px; vertical-align: top;">
 			<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-				<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_projects_add_milestone', array('project_id' => $project->getID())); ?>" method="post" id="add_milestone_form" onsubmit="addMilestone('<?php echo make_url('configure_projects_add_milestone', array('project_id' => $project->getID())); ?>');return false;">
+				<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_projects_add_milestone', array('project_id' => $project->getID())); ?>" method="post" id="add_milestone_form" onsubmit="TBG.Project.Milestone.add('<?php echo make_url('configure_projects_add_milestone', array('project_id' => $project->getID())); ?>');return false;">
 					<div class="rounded_box yellow" style="padding: 5px; margin-bottom: 15px;">
 						<table cellpadding=0 cellspacing=0 style="width: 770px;">
 							<tr>
