@@ -85,12 +85,16 @@
 					<div class="rounded_box white" style="margin-top: 5px; padding: 7px;">
 						<form id="add_user_story_form" action="<?php echo make_url('project_reportissue', array('project_key' => $project_key)); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="addUserStory('<?php echo make_url('project_reportissue', array('project_key' => $project_key)); ?>');return false;">
 							<div id="add_story">
-								<label for="story_title"><?php echo __('Create a user story'); ?></label>
+								<div class="add_story_header"><?php echo __('Create a user story'); ?></div>
 								<select name="issuetype_id">
 									<?php foreach ($selected_project->getIssuetypeScheme()->getIssuetypes() as $issuetype): ?>
-										<option value="<?php echo $issuetype->getID(); ?>"><?php echo $issuetype->getName(); ?></option>
+										<?php if ($issuetype->getIcon() == 'developer_report'): ?>
+											<option value="<?php echo $issuetype->getID(); ?>"><?php echo $issuetype->getName(); ?></option>
+										<?php endif; ?>
 									<?php endforeach; ?>
 								</select>
+								<br />
+								<label for="story_title"><?php echo __('Story title:'); ?></label>
 								<input type="hidden" name="return_format" value="scrum">
 								<input type="text" id="story_title" name="title">
 								<input type="submit" value="<?php echo __('Add'); ?>">
