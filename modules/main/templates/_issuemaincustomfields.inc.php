@@ -7,7 +7,7 @@
 										<div id="<?php echo $field;?>_field" class="hoverable">
 											<div id="<?php echo $field; ?>_header" class="rounded_box invisible nohover viewissue_customfield<?php if ($info['changed']): ?> issue_detail_changed<?php endif; ?><?php if (!$info['merged']): ?> issue_detail_unmerged<?php endif; ?>" style="margin: 0;">
 												<div class="viewissue_customfield_header">
-													<a href="javascript:void(0);" onclick="revertField('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field)); ?>', '<?php echo $field; ?>');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
+													<a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field)); ?>', '<?php echo $field; ?>');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
 													<?php echo image_tag('icon_edit.png', array('class' => 'dropdown', 'id' => $field.'_edit', 'onclick' => "$('{$field}_change').show(); $('{$field}_name').hide(); $('no_{$field}').hide();", 'title' => __('Click here to edit this field'))); ?>
 													<?php echo $info['title']; ?>:
 												</div>

@@ -36,7 +36,7 @@
 						<?php echo __('If you detach this file, it will be deleted. This action cannot be undone. Are you sure you want to remove this file?'); ?>
 						<div style="text-align: right; font-size: 12px;">
 							<?php if ($mode == 'issue'): ?>
-								<?php echo javascript_link_tag(__('Yes'), array('onclick' => "$('{$base_id}_{$file_id}_remove_confirm').toggle();detachFileFromIssue('".make_url('issue_detach_file', array('issue_id' => $issue->getID(), 'file_id' => $file_id))."', ".$file_id.");")); ?> ::
+								<?php echo javascript_link_tag(__('Yes'), array('onclick' => "$('{$base_id}_{$file_id}_remove_confirm').toggle();TBG.Issues.File.remove('".make_url('issue_detach_file', array('issue_id' => $issue->getID(), 'file_id' => $file_id))."', ".$file_id.");")); ?> ::
 							<?php elseif ($mode == 'article'): ?>
 								<?php echo javascript_link_tag(__('Yes'), array('onclick' => "$('{$base_id}_{$file_id}_remove_confirm').toggle();detachFileFromArticle('".make_url('article_detach_file', array('article_name' => $article->getName(), 'file_id' => $file_id))."', ".$file_id.", '".strtolower($article->getName())."');")); ?> ::
 							<?php endif; ?>

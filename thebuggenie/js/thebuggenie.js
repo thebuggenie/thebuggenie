@@ -34,15 +34,25 @@ var TBG = {
 	Config: {
 		Permissions: {}
 	}, // The "Config" namespace contains functions used in the configuration section
-	Issues: {}, // The "Issues" namespace contains functions used in direct relation to issues
-	Search: {}, // The "Search" namespace contains functions related to searching
+	Issues: {
+		Link: {},
+		File: {},
+		Field: {
+			Updaters: {}
+		},
+		Affected: {}
+	}, // The "Issues" namespace contains functions used in direct relation to issues
+	Search: {
+		Filter: {}
+	}, // The "Search" namespace contains functions related to searching
 	Subscriptions: {}, // The "Subscription" namespace contains functionality related to subscribing to - and publishing js events
 	effect_queues: {
 		successmessage: 'TBG_successmessage',
 		failedmessage: 'TBG_failedmessage'
 	},
 	activated_popoutmenu: undefined,
-	autocompleter_url: undefined
+	autocompleter_url: undefined,
+	available_fields: ['description', 'user_pain', 'reproduction_steps', 'category', 'resolution', 'priority', 'reproducability', 'percent_complete', 'severity', 'edition', 'build', 'component', 'estimated_time', 'spent_time', 'milestone']
 };
 
 /**
@@ -594,6 +604,70 @@ TBG.Main.hideInfobox = function(url, boxkey) {
 	$('infobox_' + boxkey).fade({duration: 0.3});
 };
 
+TBG.Main.Comment.remove = function(url, comment_id) {
+	TBG.Main.Helpers.Ajax(url, {
+		loading: {
+			indicator: 'comment_delete_indicator_' + comment_id,
+			hide: 'comment_delete_controls_' + comment_id
+		},
+		success: {
+			remove: ['comment_delete_indicator_' + comment_id, 'comment_delete_confirm_' + comment_id, 'comment_' + comment_id],
+			callback: function() {
+				if ($('comments_box').childElements().size() == 0) $('comments_none').show();
+			}
+		},
+		failure: {
+			show: 'comment_delete_controls_' + comment_id
+		}
+	});
+};
+
+TBG.Main.Comment.update = function(url, cid) {
+	TBG.Main.Helpers.Ajax(url, {
+		form: 'comment_edit_form_' + cid,
+		loading: {
+			indicator: 'comment_edit_controls_' + cid,
+			hide: 'comment_edit_controls_' + cid
+		},
+		success: {
+			hide: ['comment_edit_indicator_' + cid, 'comment_edit_' + cid],
+			show: ['comment_view_' + cid, 'comment_edit_controls_' + cid],
+			update: {element: 'comment_' + cid + '_body', from: 'comment_body'}
+		},
+		failure: {
+			show: ['comment_edit_controls_' + cid]
+		}
+	});
+};
+
+TBG.Main.Comment.add = function(url, commentcount_span) {
+	TBG.Main.Helpers.Ajax(url, {
+		form: 'comment_form',
+		loading: {
+			indicator: 'comment_add_indicator',
+			hide: 'comment_add_controls'
+		},
+		success: {
+			hide: ['comment_add_indicator', 'comment_add'],
+			show: ['comment_add_button', 'comment_add_controls'],
+			clear: 'comment_bodybox',
+			update: {element: 'comments_box', insertion: true, from: 'comment_data'},
+			callback: function(json) {
+				if ($('comment_form').serialize(true).comment_save_changes == '1') {
+					window.location = json.continue_url;
+				} else if ($('comments_box').childElements().size() != 0) {
+					$('comments_none').hide();
+				}
+				$('comment_visibility').setValue(1);
+				$(commentcount_span).update(json.commentcount);
+			}
+		},
+		failure: {
+			show: 'comment_add_controls'
+		}
+	});
+};
+
 TBG.Project.Statistics.get = function(url) {
 	TBG.Main.Helpers.Ajax(url, {
 		loading: {
@@ -816,70 +890,6 @@ TBG.Project.Scrum.Story.setEstimates = function(url, story_id)
 	});
 }
 
-TBG.Main.Comment.remove = function(url, comment_id) {
-	TBG.Main.Helpers.Ajax(url, {
-		loading: {
-			indicator: 'comment_delete_indicator_' + comment_id,
-			hide: 'comment_delete_controls_' + comment_id
-		},
-		success: {
-			remove: ['comment_delete_indicator_' + comment_id, 'comment_delete_confirm_' + comment_id, 'comment_' + comment_id],
-			callback: function() {
-				if ($('comments_box').childElements().size() == 0) $('comments_none').show();
-			}
-		},
-		failure: {
-			show: 'comment_delete_controls_' + comment_id
-		}
-	});
-};
-
-TBG.Main.Comment.update = function(url, cid) {
-	TBG.Main.Helpers.Ajax(url, {
-		form: 'comment_edit_form_' + cid,
-		loading: {
-			indicator: 'comment_edit_controls_' + cid,
-			hide: 'comment_edit_controls_' + cid
-		},
-		success: {
-			hide: ['comment_edit_indicator_' + cid, 'comment_edit_' + cid],
-			show: ['comment_view_' + cid, 'comment_edit_controls_' + cid],
-			update: {element: 'comment_' + cid + '_body', from: 'comment_body'}
-		},
-		failure: {
-			show: ['comment_edit_controls_' + cid]
-		}
-	});
-};
-
-TBG.Main.Comment.add = function(url, commentcount_span) {
-	TBG.Main.Helpers.Ajax(url, {
-		form: 'comment_form',
-		loading: {
-			indicator: 'comment_add_indicator',
-			hide: 'comment_add_controls'
-		},
-		success: {
-			hide: ['comment_add_indicator', 'comment_add'],
-			show: ['comment_add_button', 'comment_add_controls'],
-			clear: 'comment_bodybox',
-			update: {element: 'comments_box', insertion: true, from: 'comment_data'},
-			callback: function(json) {
-				if ($('comment_form').serialize(true).comment_save_changes == '1') {
-					window.location = json.continue_url;
-				} else if ($('comments_box').childElements().size() != 0) {
-					$('comments_none').hide();
-				}
-				$('comment_visibility').setValue(1);
-				$(commentcount_span).update(json.commentcount);
-			}
-		},
-		failure: {
-			show: 'comment_add_controls'
-		}
-	});
-};
-
 TBG.Config.Permissions.set = function(url, field) {
 	TBG.Main.Helpers.Ajax(url, {
 		loading: {indicator: field + '_indicator'}
@@ -1094,7 +1104,369 @@ TBG.Issues.toggleFavourite = function(url, issue_id)
 	});
 }
 
-TBG.Search.addFilter = function(url) {
+TBG.Issues.Link.add = function(url) {
+	TBG.Main.Helpers.Ajax(url, {
+		form: 'attach_link_form',
+		loading: {
+			indicator: 'attach_link_indicator',
+			hide: 'attach_link_submit'
+		},
+		success: {
+			reset: 'attach_link_form',
+			hide: ['attach_link', 'viewissue_no_uploaded_files'],
+			update: {element: 'viewissue_uploaded_links', insertion: true},
+			callback: function(json) {
+				$('viewissue_uploaded_attachments_count').update(json.attachmentcount);
+			}
+		},
+		complete: {
+			show: 'attach_link_submit'
+		}
+	});
+}
+
+TBG.Issues.Link.remove = function(url, link_id) {
+	TBG.Main.Helpers.Ajax(url, {
+		loading: {
+			indicator: 'viewissue_links_'+ link_id + '_remove_indicator',
+			hide: 'viewissue_links_'+ link_id + '_remove_link'
+		},
+		success: {
+			remove: ['viewissue_links_' + link_id, 'viewissue_links_' + link_id + '_remove_confirm'],
+			callback: function(json) {
+				if (json.attachmentcount == 0) $('viewissue_no_uploaded_files').show();
+				$('viewissue_uploaded_attachments_count').update(json.attachmentcount);
+			}
+		},
+		complete: {
+			show: 'viewissue_links_'+ link_id + '_remove_link'
+		}
+	});
+}
+
+TBG.Issues.File.remove = function(url, file_id) {
+	TBG.Core._detachFile(url, file_id, 'viewissue_files_');
+}
+
+TBG.Issues.Field.setPercent = function(url, mode) {
+	TBG.Main.Helpers.Ajax(url, {
+		loading: {indicator: 'percent_spinning'},
+		success: {
+			callback: function(json) {
+				TBG.Main.updatePercentageLayout('percentage_tds', json.percent);
+				(mode == 'set') ? TBG.Issues.markAsChanged('percent') : TBG.Issues.markAsUnchanged('percent');
+			}
+		}
+	});
+}
+
+TBG.Issues.Field.Updaters.dualFromJSON = function(dualfield, field) {
+	if (dualfield.id == 0) {
+		$(field + '_table').hide();
+		$('no_' + field).show();
+	} else {
+		$(field + '_content').update(dualfield.name);
+		if (field == 'status') $('status_color').setStyle({backgroundColor: dualfield.color});
+		else if (field == 'issuetype') $('issuetype_image').src = dualfield.src;
+		$('no_' + field).hide();
+		$(field + '_table').show();
+	}
+}
+
+TBG.Issues.Field.Updaters.fromObject = function(object, field) {
+	if ((Object.isUndefined(object.id) == false && object.id == 0) || (object.value && object.value == '')) {
+		$(field + '_name').hide();
+		$('no_' + field).show();
+	} else {
+		$(field + '_name').update(object.name);
+		$('no_' + field).hide();
+		$(field + '_name').show();
+	}
+}
+
+TBG.Issues.Field.Updaters.timeFromObject = function(object, values, field) {
+	if (object.id == 0) {
+		$(field + '_name').hide();
+		$('no_' + field).show();
+	} else {
+		$(field + '_name').update(object.name);
+		$('no_' + field).hide();
+		$(field + '_name').show();
+	}
+	['points', 'hours', 'days', 'weeks', 'months'].each(function(unit) {
+		$(field + '_' + unit).setValue(values[unit]);
+	});
+}
+
+TBG.Issues.Field.Updaters.allVisible = function(visible_fields) {
+	TBG.available_fields.each(function (field) 
+	{
+		if ($(field + '_field')) {
+			if (visible_fields[field] != undefined)  {
+				$(field + '_field').show();
+				if ($(field + '_additional')) $(field + '_additional').show();
+			} else {
+				$(field + '_field').hide();
+				if ($(field + '_additional')) $(field + '_additional').hide();
+			}
+		}
+	});
+}
+
+/**
+ * This function is triggered every time an issue is updated via the web interface
+ * It sends a request that performs the update, and gets JSON back
+ * 
+ * Depending on the JSON return value, it updates fields, shows/hides boxes on the 
+ * page, and sets some class values
+ * 
+ * @param url The URL to request
+ * @param field The field that is being changed
+ * @param serialize_form Whether a form is being serialized
+ */
+TBG.Issues.Field.set = function(url, field, serialize_form) {
+	var post_form = undefined;
+	if (['description', 'reproduction_steps', 'title'].indexOf(field)) {
+		post_form = field + '_form';
+	} else if (serialize_form != undefined) {
+		post_form = serialize_form + '_form';
+	}
+	
+	var loading_show = (field == 'issuetype') ? 'issuetype_indicator_fullpage' : undefined;
+	
+	TBG.Main.Helpers.Ajax(url, {
+		form: post_form,
+		loading: {
+			indicator: field + '_spinning',
+			clear: field + '_change_error',
+			hide: field + '_change_error',
+			show: loading_show
+		},
+		success: {
+			callback: function(json) {
+				if (json.field != undefined)
+				{
+					if (field == 'status' || field == 'issuetype') TBG.Issues.Field.Updaters.dualFromJSON(json.field, field);
+					else TBG.Issues.Field.Updaters.fromObject(json.field, field);
+					
+					if (field == 'issuetype') TBG.Issues.Field.Updaters.allVisible(json.visible_fields);
+					else if (field == 'pain_bug_type' || field == 'pain_likelihood' || field == 'pain_effect')
+					{
+						$('issue_user_pain').update(json.user_pain);
+						if (json.user_pain_diff_text != '') {
+							$('issue_user_pain_calculated').update(json.user_pain_diff_text);
+							$('issue_user_pain_calculated').show();
+						} else {
+							$('issue_user_pain_calculated').hide();
+						}
+					}
+				}
+				(json.changed == true) ? TBG.Issues.markAsChanged(field) : TBG.Issues.markAsUnchanged(field);
+			},
+			hide: field + '_change'
+		},
+		failure: {
+			update: field + '_change_error',
+			show: field + '_change_error',
+			callback: function(json) {
+				new Effect.Pulsate($(field + '_change_error'));
+			}
+		}
+	});
+}
+
+TBG.Issues.Field.setTime = function(url, field) {
+	TBG.Main.Helpers.Ajax(url, {
+		form: field + '_form',
+		loading: {
+			indicator: field + '_spinning',
+			clear: field + '_change_error',
+			hide: field + '_change_error'
+		},
+		success: {
+			callback: function(json) {
+				TBG.Issues.Field.Updaters.timeFromObject(json.field, json.values, field);
+			},
+			hide: field + '_change'
+		},
+		failure: {
+			update: field + '_change_error',
+			show: field + '_change_error',
+			callback: function(json) {
+				new Effect.Pulsate($(field + '_change_error'));
+			}
+		}
+	});
+}
+
+TBG.Issues.Field.revert = function(url, field)
+{
+	var loading_show = (field == 'issuetype') ? 'issuetype_indicator_fullpage' : undefined;
+	
+	TBG.Main.Helpers.Ajax(url, {
+		loading: {
+			indicator: field + '_undo_spinning',
+			show: loading_show
+		},
+		success: {
+			callback: function(json) {
+				if (json.field != undefined) {
+					if (field == 'status' || field == 'issuetype') TBG.Issues.Field.Updaters.dualFromJSON(json.field, field);
+					else if (field == 'estimated_time' || field == 'spent_time') TBG.Issues.Field.Updaters.timeFromObject(json.field, json.values, field);
+					else TBG.Issues.Field.Updaters.fromObject(json.field, field);
+					
+					if (field == 'issuetype') TBG.Issues.Field.Updaters.allVisible(json.visible_fields);
+					else if (field == 'description' || field == 'reproduction_steps') $(field + '_form_value').update(json.form_value);
+					else if (field == 'pain_bug_type' || field == 'pain_likelihood' || field == 'pain_effect') $('issue_user_pain').update(json.field.user_pain);
+
+					TBG.Issues.markAsUnchanged(field);
+				}
+				
+			}
+		},
+		complete: {
+			hide: loading_show
+		}
+	});
+}
+
+TBG.Issues.markAsChanged = function(field)
+{
+	if (!$('viewissue_changed').visible()) {
+		$('viewissue_changed').show();
+		Effect.Pulsate($('viewissue_changed'));
+	}
+	
+	$(field + '_header').addClassName('issue_detail_changed');
+	$(field + '_content').addClassName('issue_detail_changed');
+	
+	if ($('comment_save_changes')) $('comment_save_changes').checked = true;
+}
+
+TBG.Issues.markAsUnchanged = function(field)
+{
+	$(field + '_header').removeClassName('issue_detail_changed');
+	$(field + '_header').removeClassName('issue_detail_unmerged');
+	$(field + '_content').removeClassName('issue_detail_changed');
+	$(field + '_content').removeClassName('issue_detail_unmerged');
+	if ($('issue_view').select('.issue_detail_changed').size() == 0) {
+		$('viewissue_changed').hide();
+		$('viewissue_merge_errors').hide();
+		$('viewissue_unsaved').hide();
+		if ($('comment_save_changes')) $('comment_save_changes').checked = false;
+	}
+}
+
+TBG.Issues.Affected.toggleConfirmed = function(url, affected)
+{
+	TBG.Main.Helpers.Ajax(url, {
+		loading: {
+			indicator: 'affected_' + affected + '_confirmed_spinner',
+			hide: 'affected_' + affected + '_confirmed_icon'
+		},
+		success: {
+			callback: function(json) {
+				$('affected_' + affected + '_confirmed_icon').writeAttribute('alt', json.alt);
+				$('affected_' + affected + '_confirmed_icon').writeAttribute('src', json.src);
+			}
+		},
+		complete: {
+			show: 'affected_' + affected + '_confirmed_icon'
+		}
+	});
+}
+
+TBG.Issues.Affected.remove = function(url, affected)
+{
+	TBG.Main.Helpers.Ajax(url, {
+		loading: {
+			indicator: 'affected_' + affected + '_delete_spinner'
+		},
+		success: {
+			update: {element: 'viewissue_affects_count', from: 'itemcount'},
+			remove: ['affected_' + affected + '_delete', 'affected_' + affected],
+			callback: function(json) {if (json.itemcount == 0) $('no_affected').show();}
+		}
+	});
+}
+
+TBG.Issues.Affected.setStatus = function(url, affected)
+{
+	TBG.Main.Helpers.Ajax(url, {
+		loading: {
+			indicator: 'affected_' + affected + '_status_spinning'
+		},
+		success: {
+			callback: function(json) {
+				$('affected_' + affected + '_status_colour').setStyle({
+					backgroundColor: json.colour,
+					fontSize: '1px',
+					width: '20px',
+					height: '15px',
+					marginRight: '2px'
+				});
+			},
+			update: {element: 'affected_' + affected + '_status_name', from: 'name'},
+			hide: 'affected_' + affected + '_status_change'
+		},
+		failure: {
+			update: {element: 'affected_' + affected + '_status_error', from: 'error'},
+			show: 'affected_' + affected + '_status_error',
+			callback: function(json) {
+				new Effect.Pulsate($('affected_' + affected + '_status_error'));
+			}
+		}
+	});
+}
+
+TBG.Issues.Affected.add = function(url)
+{
+	TBG.Main.Helpers.Ajax(url, {
+		form: 'viewissue_add_item_form',
+		loading: {
+			indicator: 'add_affected_spinning'
+		},
+		success: {
+			callback: function(json) {
+				$('viewissue_affects_count').update(json.itemcount);
+				if (json.itemcount != 0) $('no_affected').hide();
+				TBG.Main.Helpers.Backdrop.reset();
+			},
+			update: {element: 'affected_list', insertion: true},
+			hide: 'add_affected_spinning'
+		}
+	});
+}
+
+TBG.Issues.updateWorkflowAssignee = function(url, assignee_id, assignee_type, teamup)
+{
+	teamup = (teamup == undefined) ? 0 : 1;
+	TBG.Main.Helpers.Ajax(url, {
+		loading: {
+			indicator: 'popup_assigned_to_name_indicator',
+			hide: 'popup_no_assigned_to',
+			show: 'popup_assigned_to_name'
+		},
+		success: {
+			update: 'popup_assigned_to_name'
+		},
+		complete: {
+			callback: function() {
+				$('popup_assigned_to_id').setValue(assignee_id);
+				$('popup_assigned_to_type').setValue(assignee_type);
+				$('popup_assigned_to_teamup').setValue(teamup);
+			},
+			hide: ['popup_assigned_to_teamup_info', 'popup_assigned_to_change']
+		}
+	});
+}
+
+TBG.Issues.updateWorkflowAssigneeTeamup = function(url, assignee_id, assignee_type)
+{
+	TBG.Issues.updateWorkflowAssignee(url, assignee_id, assignee_type, true);
+}
+
+TBG.Search.Filter.add = function(url) {
 	TBG.Main.Helpers.Ajax(url, {
 		form: 'add_filter_form',
 		additional_params: '&key=' + $('max_filters').value,
@@ -1108,7 +1480,7 @@ TBG.Search.addFilter = function(url) {
 	});
 };
 
-TBG.Search.removeFilter = function(key) {
+TBG.Search.Filter.remove = function(key) {
 	$('filter_' + key).remove();
 	if ($('search_filters_list').childElements().size() == 0) {
 		$('max_filters').value = 0;

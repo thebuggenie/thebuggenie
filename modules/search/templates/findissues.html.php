@@ -290,7 +290,7 @@
 					</div>
 				</form>
 				<input type="hidden" id="max_filters" name="max_filters" value="<?php echo count($appliedfilters); ?>">
-				<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo (TBGContext::isProjectContext()) ? make_url('project_search_add_filter', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('search_add_filter'); ?>" method="post" id="add_filter_form"<?php if ($show_results): ?> style="display: none;"<?php endif; ?> onsubmit="addSearchFilter('<?php echo (TBGContext::isProjectContext()) ? make_url('project_search_add_filter', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('search_add_filter'); ?>');return false;">
+				<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo (TBGContext::isProjectContext()) ? make_url('project_search_add_filter', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('search_add_filter'); ?>" method="post" id="add_filter_form"<?php if ($show_results): ?> style="display: none;"<?php endif; ?> onsubmit="TBG.Search.Filter.add('<?php echo (TBGContext::isProjectContext()) ? make_url('project_search_add_filter', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('search_add_filter'); ?>');return false;">
 					<label for="add_filter"><?php echo __('Add filter'); ?></label>
 					<select name="filter_name">
 						<?php if (!TBGContext::isProjectContext()): ?>
