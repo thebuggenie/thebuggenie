@@ -821,7 +821,7 @@ ul.scrum_container li { padding: 0; background-color: #FFF; border: 1px solid #B
 .moveable { cursor: move; }
 ul.scrum_container li .header, .infobox .header { font-size: 1.1em; font-weight: bold; }
 ul.scrum_container li .content { padding-top: 3px; line-height: 15px;  font-weight: normal; margin-bottom: 12px; }
-ul.scrum_container li .story_title { font-size: 0.9em; font-weight: bold; padding-top: 1px; height: 18px; }
+ul.scrum_container li .story_title { font-size: 0.9em; font-weight: bold; padding-top: 1px; height: 18px; overflow: hidden; }
 ul.scrum_container li .story_color { float: left; width: 13px; height: 19px; font-size: 1px; font-weight: normal; padding: 0; border-right: 1px solid #BBB; margin-right: 3px; }
 ul.scrum_container li:hover .story_color { border-bottom: 1px solid #BBB; }
 ul.scrum_container li .story_color_selector { position: absolute; top: 0px; left: 0px; width: 385px; height: 60px; z-index: 999; border: 1px solid #BBB; padding: 1px; background-color: #FFF; }
