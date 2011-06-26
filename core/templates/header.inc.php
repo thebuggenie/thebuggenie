@@ -79,7 +79,7 @@
 		}
 		
 		$cssstring = ltrim($cssstring, ',');
-		$jsstring = ltrim($cssstring, ',');
+		$jsstring = ltrim($jsstring, ',');
 		?>
 		<script type="text/javascript" src="http://code.jquery.com/jquery-1.5.2.min.js"></script>
 		<script type="text/javascript">jQuery.noConflict();</script>
