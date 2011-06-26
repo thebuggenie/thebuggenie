@@ -43,8 +43,39 @@
 			$tbg_response->addJavascript('login.js');
 		endif;
 
-		$cssstring = 'css/'.implode(',css/', $tbg_response->getStylesheets());
-		$jsstring = 'js/'.implode(',js/', $tbg_response->getJavascripts());
+		$cssstring = '';
+		$jsstring = '';
+		
+		$sepcss = array();
+		$sepjs = array();
+		
+		foreach ($tbg_response->getStylesheets() as $stylesheet => $minify)
+		{
+			if ($minify == true)
+			{
+				$cssstring .= ',css/'.$stylesheet;
+			}
+			else
+			{
+				$sepcss[] = $stylesheet;
+			}
+		}
+		
+		foreach ($tbg_response->getJavascripts() as $script => $minify)
+		{
+			if ($minify == true)
+			{
+				$jsstring .= ',js/'.$script;
+			}
+			else
+			{
+				$sepjs[] = $script;
+			}
+		}
+		
+		$cssstring = ltrim($cssstring, ',');
+		$jsstring = ltrim($jsstring, ',');
+
 		?>
 		<script type="text/javascript" src="http://code.jquery.com/jquery-1.5.2.min.js"></script>
 		<script type="text/javascript">jQuery.noConflict();</script>
