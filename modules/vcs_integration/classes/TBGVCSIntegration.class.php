@@ -50,13 +50,15 @@
 		
 		protected function _addListeners()
 		{
-			TBGEvent::listen('core', 'project_sidebar_links_timeline', array($this, 'listen_SidebarLinks'));
+			TBGEvent::listen('core', 'project_sidebar_links_statistics', array($this, 'listen_sidebar_links'));
+			TBGEvent::listen('core', 'breadcrumb_project_links', array($this, 'listen_breadcrumb_links'));
 			TBGEvent::listen('core', 'viewissue_tabs', array($this, 'listen_viewissue_tab'));
 			TBGEvent::listen('core', 'viewissue_tab_panes_back', array($this, 'listen_viewissue_panel'));
 		}
 
 		protected function _addRoutes()
 		{
+			$this->addRoute('vcs_commitspage', '/:project_key/commits', 'projectCommits');
 			$this->addRoute('normalcheckin', '/vcs_integration/report/:project/', 'addCommit');
 			$this->addRoute('githubcheckin', '/vcs_integration/report/:project/github/', 'addCommitGithub');
 			$this->addRoute('gitoriouscheckin', '/vcs_integration/report/:project/gitorious/', 'addCommitGitorious');
@@ -129,7 +131,7 @@
 			}
 		}
 		
-		public function listen_SidebarLinks(TBGEvent $event)
+		public function listen_sidebar_links(TBGEvent $event)
 		{
 			if (TBGContext::isProjectContext())
 			{
@@ -149,6 +151,11 @@
 
 			$count = TBGVCSIntegrationTable::getTable()->getNumberOfCommitsByIssue($event->getSubject()->getId());
 			TBGActionComponent::includeTemplate('vcs_integration/viewissue_tab', array('count' => $count));
+		}
+		
+		public function listen_breadcrumb_links(TBGEvent $event)
+		{
+			$event->addToReturnList(array('url' => TBGContext::getRouting()->generate('vcs_commitspage', array('project_key' => TBGContext::getCurrentProject()->getKey())), 'title' => TBGContext::getI18n()->__('Commits')));
 		}
 		
 		public function listen_viewissue_panel(TBGEvent $event)
