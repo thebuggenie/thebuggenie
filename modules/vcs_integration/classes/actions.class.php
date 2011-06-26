@@ -17,6 +17,14 @@
 	 */
 	class vcs_integrationActions extends TBGAction
 	{
+		public function runProjectCommits(TBGRequest $request)
+		{
+			$this->selected_project = TBGProject::getByKey($request->getParameter('project_key'));
+			TBGContext::setCurrentProject($this->selected_project);
+			
+			$this->commits = false;
+		}
+		
 		public function runAddCommit(TBGRequest $request)
 		{
 			/* Prepare variables */

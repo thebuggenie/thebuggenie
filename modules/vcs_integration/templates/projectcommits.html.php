@@ -6,13 +6,11 @@
 ?>
 			<?php include_template('project/projectinfosidebar', array('selected_project' => $selected_project)); ?>
 			<div id="project_commits">
-				<?php echo __('Commits for the previous two weeks are shown here. For previous commits, please refer to the source code viewer, available on the left. Note that this page only shows commits which affect issues for this project, other commits can be viewed in the source code viewer.')?>
 				<?php
 				if ($commits == false)
 				{
 				?>
-					<br><br>
-					<p class="faded_out">No commits for this time range were found for this project.</p>
+					<p class="faded_out"><?php echo __('No commits have been found for this project'); ?></p>
 				<?php
 				}
 				else
