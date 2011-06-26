@@ -22,7 +22,7 @@
 			$this->selected_project = TBGProject::getByKey($request->getParameter('project_key'));
 			TBGContext::setCurrentProject($this->selected_project);
 			
-			$this->commits = false;
+			$this->commits = B2DB::getTable('TBGVCSIntegrationTable')->getCommitsByProject($this->selected_project->getID());
 		}
 		
 		public function runAddCommit(TBGRequest $request)

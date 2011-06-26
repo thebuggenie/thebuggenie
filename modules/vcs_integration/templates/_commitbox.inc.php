@@ -10,7 +10,6 @@
 
 	$web_path = TBGContext::getModule('vcs_integration')->getSetting('web_path_' . $projectId);
 	$web_repo = TBGContext::getModule('vcs_integration')->getSetting('web_repo_' . $projectId);
-//	echo 'jOYCE';
 	
 	switch (TBGContext::getModule('vcs_integration')->getSetting('web_type_' . $projectId))
 	{
