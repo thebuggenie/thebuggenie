@@ -39,6 +39,10 @@ var TBG = {
 		Permissions: {},
 		User: {},
 		Collection: {},
+		Issuefields: {
+			Options: {},
+			Custom: {}
+		},
 		Group: {},
 		Team: {},
 		Client: {}
@@ -1393,6 +1397,97 @@ TBG.Project.updatePrefix = function(url, project_id) {
 		loading: {indicator: 'project_key_indicator'},
 		success: {update: 'project_key_input'}
 	});
+}
+
+TBG.Config.Issuefields.Options.show = function(url, field) {
+	$(field + '_content').toggle();
+	if ($(field + '_content').childElements().size() == 0) {
+		TBG.Main.Helpers.ajax(url, {
+			loading: {indicator: field + '_indicator'},
+			success: {update: field + '_content'}
+		});
+	}
+}
+
+TBG.Config.Issuefields.Options.add = function(url, type) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'add_' + type + '_form',
+		loading: {indicator: 'add_' + type + '_indicator'},
+		success: {
+			reset: 'add_' + type + '_form',
+			hide: 'no_' + type + '_items',
+			update: {element: type + '_list', insertion: true}
+		}
+	});
+}
+
+TBG.Config.Issuefields.Options.update = function(url, type, id) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'edit_' + type + '_' + id + '_form',
+		loading: {indicator: 'edit_' + type + '_' + id + '_indicator'},
+		success: {
+			show: 'item_' + type + '_' + id,
+			hide: 'edit_item_' + id,
+			callback: function(json) {
+				$(type + '_' + id + '_name').update($(type + '_' + id + '_name_input').getValue());
+				if ($(type + '_' + id + '_itemdata_input') && $(type + '_' + id + '_itemdata')) $(type + '_' + id + '_itemdata').style.backgroundColor = $(type + '_' + id + '_itemdata_input').getValue();
+				if ($(type + '_' + id + '_value_input') && $(type + '_' + id + '_value')) $(type + '_' + id + '_value').update($(type + '_' + id + '_value_input').getValue());
+			}
+		}
+	});
+}
+
+TBG.Config.Issuefields.Options.remove = function(url, type, id) {
+	TBG.Main.Helpers.ajax(url, {
+		loading: {indicator: 'delete_' + type + '_' + id + '_indicator'},
+		success: {
+			remove: ['delete_item_' + id, 'item_' + type + '_' + id]
+		}
+	});
+}
+
+TBG.Config.Issuefields.Custom.add = function(url) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'add_custom_type_form',
+		loading: {
+			indicator: 'add_custom_type_indicator',
+			hide: 'add_custom_type_button'
+		},
+		success: {
+			reset: 'add_custom_type_form',
+			update: {element: 'custom_types_list', insertion: true}
+		},
+		complete: {
+			show: 'add_custom_type_button'
+		}
+	});
+}
+
+TBG.Config.Issuefields.Custom.update = function(url, type) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'edit_custom_type_' + type + '_form',
+		loading: {indicator: 'edit_custom_type_' + type + '_indicator'},
+		success: {
+			hide: 'edit_custom_type_' + type + '_form',
+			callback: function(json) {
+				$('custom_type_' + type + '_description_span').update(json.description);
+				$('custom_type_' + type + '_instructions_span').update(json.instructions);
+				if (json.instructions != '') {
+					$('custom_type_' + type + '_instructions_div').show();
+					$('custom_type_' + type + '_no_instructions_div').hide();
+				} else {
+					$('custom_type_' + type + '_instructions_div').hide();
+					$('custom_type_' + type + '_no_instructions_div').show();
+				}
+				$('custom_type_' + type + '_name_link').update(json.name);
+			},
+			show: 'custom_type_' + type + '_info'
+		}
+	});
+}
+
+TBG.Config.Issuefields.Custom.remove = function(url, type, id) {
+	TBG.Config.Issuefields.Options.remove(url, type, id);
 }
 
 TBG.Config.Permissions.set = function(url, field) {
