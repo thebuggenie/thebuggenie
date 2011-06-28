@@ -73,9 +73,7 @@
 			</div>
 			
 			<div class="commit_header"><?php echo __('Log entry'); ?></div>
-			<pre>
-<?php echo $log; ?>
-			</pre>
+			<pre><?php echo $log; ?></pre>
 
 			<div id="checkin_details_<?php echo $id; ?>" style="display: none;" >
 				<div class="commit_left">
