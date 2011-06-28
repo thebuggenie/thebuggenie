@@ -59,7 +59,7 @@
 <div class="comment" id="commit_<?php echo $id; ?>">
 	<div style="position: relative; overflow: visible; padding: 5px;" id="commit_view_<?php echo $id; ?>" class="comment_main">
 		<div id="commit_<?php echo $id; ?>_header" class="commentheader">
-			<a href="<?php echo $link_rev; ?>" class="comment_hash"><?php if (!is_numeric($revision)): echo substr($revision, -8); else: echo $revision; endif; ?></a>
+			<a href="<?php echo $link_rev; ?>" class="comment_hash"><?php if (!is_numeric($revision)): echo substr($revision, 0, 7); else: echo $revision; endif; ?></a>
 			<div class="commenttitle">
 				<?php echo __('Revision %rev% by %user%', array('%rev%' => "<a href=".$link_rev.">".$revision."</a>", '%user%' => '<div style="display: inline;">'.get_component_html('main/userdropdown', array('user' => $theUser, 'size' => 'small')).'</div>')); ?>
 			</div>
