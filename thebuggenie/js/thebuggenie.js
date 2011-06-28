@@ -1,7 +1,4 @@
 
-function _updateDivWithJSONFeedback(url, update_element, indicator, insertion, clear_update_element_before_loading, hide_element_while_loading, hide_elements_on_success, show_elements_on_success, url_method, params, onsuccess_callback, onfailure_callback, oncomplete_callback) {}
-function _postFormWithJSONFeedback(url, formname, indicator, hide_divs_when_done, update_div, insertion, show_divs_when_done, update_form_elm, onsuccess_callback, onfailure_callback, oncomplete_callback) {}
-
 function is_string(element) {
     return (typeof element == 'string');
 }
@@ -622,6 +619,36 @@ TBG.Main.Profile.Dashboard.save = function(url)
 			hide: 'save_dashboard'
 		},
 		complete: {show: 'save_dashboard'}
+	});
+}
+
+TBG.Main.Profile.addFriend = function(url, user_id, rnd_no) {
+	TBG.Main.Helpers.ajax(url, {
+		loading: {
+			indicator: 'toggle_friend_' + user_id + '_' + rnd_no + '_indicator',
+			hide: 'add_friend_' + user_id + '_' + rnd_no
+		},
+		success: {
+			show: 'remove_friend_' + user_id + '_' + rnd_no
+		},
+		failure: {
+			show: 'add_friend_' + user_id + '_' + rnd_no
+		}
+	});
+}
+
+TBG.Main.Profile.removeFriend = function(url, user_id, rnd_no) {
+	TBG.Main.Helpers.ajax(url, {
+		loading: {
+			indicator: 'toggle_friend_' + user_id + '_' + rnd_no + '_indicator',
+			hide: 'remove_friend_' + user_id + '_' + rnd_no
+		},
+		success: {
+			show: 'add_friend_' + user_id + '_' + rnd_no
+		},
+		failure: {
+			show: 'remove_friend_' + user_id + '_' + rnd_no
+		}
 	});
 }
 
