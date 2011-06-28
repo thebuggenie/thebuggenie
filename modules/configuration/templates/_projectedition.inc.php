@@ -1,6 +1,6 @@
 <div style="clear: both; margin: 10px 0 10px 0; text-align: center; font-size: 1.2em;">
 	<?php echo __('You are now editing %project_name%\'s edition %edition_name%', array('%project_name%' => '<b>'.$edition->getProject()->getName().'</b>', '%edition_name%' => '<b>'.$edition->getName().'</b>')); ?><br>
-	<?php echo javascript_link_tag('<b>&lt;&lt; '.__('Switch to editing project details').'</b>', array('onclick' => "backToEditProject('".make_url('configure_project', array('project_id' => $edition->getProject()->getID()))."', '".$edition->getProject()->getID()."');")); ?>
+	<?php echo javascript_link_tag('<b>&lt;&lt; '.__('Switch to editing project details').'</b>', array('onclick' => "TBG.Project.edit('".make_url('configure_project', array('project_id' => $edition->getProject()->getID()))."', '".$edition->getProject()->getID()."');")); ?>
 </div>
 <div style="clear: both; margin-top: 10px; margin-bottom: 10px; width: 790px; height: 30px;" class="tab_menu">
 	<ul id="editions_menu">
@@ -22,7 +22,7 @@
 																					'clear_link_text'	=> __('Set owned by noone'),
 																					'absolute'			=> true,
 																					'style'				=> array('position' => 'absolute'),
-																					'callback'		 	=> "setUser('" . make_url('configure_edition_set_leadby', array('project_id' => $edition->getProject()->getID(), 'edition_id' => $edition->getID(), 'field' => 'owned_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'owned_by');",
+																					'callback'		 	=> "TBG.Project.setUser('" . make_url('configure_edition_set_leadby', array('project_id' => $edition->getProject()->getID(), 'edition_id' => $edition->getID(), 'field' => 'owned_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'owned_by');",
 																					'base_id'			=> 'owned_by')); ?>
 						<?php endif; ?>
 					</td>
@@ -52,7 +52,7 @@
 																				'clear_link_text'	=> __('Set lead by noone'),
 																				'absolute'			=> true,
 																				'style'				=> array('position' => 'absolute'),
-																				'callback'		 	=> "setUser('" . make_url('configure_edition_set_leadby', array('project_id' => $edition->getProject()->getID(), 'edition_id' => $edition->getID(), 'field' => 'lead_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'lead_by');",
+																				'callback'		 	=> "TBG.Project.setUser('" . make_url('configure_edition_set_leadby', array('project_id' => $edition->getProject()->getID(), 'edition_id' => $edition->getID(), 'field' => 'lead_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'lead_by');",
 																				'base_id'			=> 'lead_by')); ?>
 						<?php endif; ?>
 					</td>
@@ -82,7 +82,7 @@
 																					'clear_link_text'	=> __('Set QA resp. noone'),
 																					'absolute'			=> true,
 																					'style'				=> array('position' => 'absolute'),
-																					'callback'		 	=> "setUser('" . make_url('configure_edition_set_leadby', array('project_id' => $edition->getProject()->getID(), 'edition_id' => $edition->getID(), 'field' => 'qa_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'qa_by');",
+																					'callback'		 	=> "TBG.Project.setUser('" . make_url('configure_edition_set_leadby', array('project_id' => $edition->getProject()->getID(), 'edition_id' => $edition->getID(), 'field' => 'qa_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'qa_by');",
 																					'base_id'			=> 'qa_by')); ?>
 						<?php endif; ?>
 					</td>

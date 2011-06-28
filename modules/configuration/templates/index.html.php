@@ -9,7 +9,7 @@
 	<?php echo __('Checking for updates and installing the latest releases ensures you have the latest improvements, fixes and features for The Bug Genie.'); ?>
 	<br>
 	<?php echo __('You currently have version %thebuggenie_version% of The Bug Genie.', array('%thebuggenie_version%' => TBGSettings::getVersion(false))); ?>
-	<div id="update_button"><a href="javascript:void(0);" onClick="updatecheck('<?php echo make_url('configure_update_check'); ?>');"><?php echo __('Check for updates now'); ?></a></div>
+	<div id="update_button"><a href="javascript:void(0);" onClick="TBG.Config.updateCheck('<?php echo make_url('configure_update_check'); ?>');"><?php echo __('Check for updates now'); ?></a></div>
 	<div id="update_spinner" style="display: none;"><?php echo image_tag('spinning_32.gif'); ?></div>
 </div>
 <table style="table-layout: fixed; width: 1000px; margin: 10px 0 0 10px;" cellpadding=0 cellspacing=0>

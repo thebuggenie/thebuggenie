@@ -1699,7 +1699,7 @@ TBG.Config.User.create = function(url) {
 		loading: {indicator: 'find_users_indicator'},
 		success: {
 			update: 'users_results',
-			callback: TBG.Config.User.updateLinks
+			callback: TBG.Config.User._updateLinks
 		}
 	});
 }
@@ -1719,12 +1719,12 @@ TBG.Config.User.remove = function(url, user_id) {
 		loading: {indicator: 'delete_user_'+user_id+'_indicator'},
 		success: {
 			remove: ['users_results_user_'+user_id, 'user_'+user_id+'_edit_spinning', 'user_'+user_id+'_edit_tr', 'users_results_user_'+user_id+'_permissions_row'],
-			callback: TBG.Config.User.updateLinks
+			callback: TBG.Config.User._updateLinks
 		}
 	});
 }
 
-TBG.Config.User.updateLinks = function(json) {
+TBG.Config.User._updateLinks = function(json) {
 	if ($('current_user_num_count')) $('current_user_num_count').update(json.total_count);
 	(json.more_available) ? $('adduser_div').show() : $('adduser_div').hide();
 	TBG.Config.Collection.updateDetailsFromJSON(json);

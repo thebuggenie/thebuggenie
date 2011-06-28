@@ -45,7 +45,7 @@
 																	'header' 			=> __('Change / set auto assignee'),
 																	'clear_link_text'	=> __('Set auto assignee by noone'),
 																	'style'				=> array('position' => 'absolute'),
-																	'callback'			=> "setUser('" . make_url('configure_component_set_assignedto', array('project_id' => $component->getProject()->getID(), 'component_id' => $component->getID(), 'field' => 'lead_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'comp_".$component->getID()."_auto_assign');",
+																	'callback'			=> "TBG.Project.setUser('" . make_url('configure_component_set_assignedto', array('project_id' => $component->getProject()->getID(), 'component_id' => $component->getID(), 'field' => 'lead_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'comp_".$component->getID()."_auto_assign');",
 																	'base_id'			=> 'comp_'.$component->getID().'_auto_assign',
 																	'absolute'			=> true,
 																	'include_teams'		=> true)); ?>

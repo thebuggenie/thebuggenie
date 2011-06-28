@@ -31,7 +31,7 @@
 					</div>
 					<div class="header_div" style="margin-top: 20px;"><?php echo __('Add a new issue type'); ?></div>
 					<div class="rounded_box yellow borderless" style="margin: 5px 0 0 0; padding: 3px; font-size: 12px;">
-						<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuetypes_add'); ?>" onsubmit="addIssuetype('<?php echo make_url('configure_issuetypes_add'); ?>');return false;" id="add_issuetype_form">
+						<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuetypes_add'); ?>" onsubmit="TBG.Config.Issuetype.add('<?php echo make_url('configure_issuetypes_add'); ?>');return false;" id="add_issuetype_form">
 							<label for="new_issuetype_name"><?php echo __('Issue type name'); ?></label>
 							<input type="text" name="name" id="new_issuetype_name" style="width: 200px;">
 							<label for="new_issuetype_icon"><?php echo __('Type'); ?></label>
