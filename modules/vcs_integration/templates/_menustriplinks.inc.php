@@ -41,7 +41,7 @@
 	if ($web_path != '')
 	{
 			echo link_tag(make_url('vcs_commitspage', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Commits'), (($tbg_response->getPage() == 'vcs_commitspage') ? array('class' => 'selected') : array()));
-			if (!isset($submenu) && $tbg_response->getPage() == 'vcs_commitspage'): ?>
+			if (!($submenu) && $tbg_response->getPage() == 'vcs_commitspage'): ?>
 			<ul class="simple_list">
 				<li><a href="<?php echo $link_repo; ?>" target="_blank"><?php echo __('Browse source code'); ?></a></li>
 			</ul>
