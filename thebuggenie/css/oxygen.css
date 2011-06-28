@@ -117,7 +117,7 @@ div.image_container.thumb img.image { width: 220px; }
 .main_area.frontpage .article { padding-top: 0; }
 .main_area.frontpage .article h1, .main_area.frontpage .article h2, .main_area.frontpage .article h3, .main_area.frontpage .article h4, .main_area.frontpage .article h5, .main_area.frontpage .article h6 { margin-top: 0; margin-bottom: 5px; }
 
-/* comments styling */
+/* comments and commits styling */
 .comment { padding-bottom: 0; clear: both; }
 .comment:target .comment_main { border: 1px dotted #CCC; background-color: #F0F7FF; border-radius: 10px; -moz-border-radius: 10px; -webkit-border-radius: 10px; }
 .comment_delete { margin-top: 10px !important; }
@@ -136,7 +136,14 @@ div.image_container.thumb img.image { width: 220px; }
 .comment_editsave, .comment_addsave {  font-weight: bold; }
 .comment_titlebox { width: 600px; margin-bottom: 8px; }
 .comment_visibilitybox { width: 400px; margin-bottom: 8px; }
-/* end comments styling */
+
+.commit_header { font-weight: bold; font-size: larger; }
+.commit_expander { float: right; }
+.commit_left { width: 620px; float: left; margin-top: 10px; margin-bottom: 20px; }
+.commit_right { width: 210px; float: right; margin-top: 10px; margin-bottom: 20px;}
+.commit_left .commit_header, .commit_right .commit_header { padding-bottom: 5px; }
+.commit_left td { border: none !important; }
+/* end comments and commits styling */
 
 /* generic closed and blocking issue styling */
 .issue_closed TD { text-decoration: line-through; }
