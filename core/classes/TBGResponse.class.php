@@ -292,20 +292,22 @@
 		 * Add a javascript
 		 *
 		 * @param string $javascript javascript name
+		 * @param bool $minify Run through minify/content server
 		 */
-		public function addJavascript($javascript)
+		public function addJavascript($javascript, $minify = true)
 		{
-			$this->_javascripts[$javascript] = $javascript;
+			$this->_javascripts[$javascript] = $minify;
 		}
 		
 		/**
 		 * Add a stylesheet
 		 *
 		 * @param string $stylesheet stylesheet name
+		 * @param bool $minify Run through minify/content server
 		 */
-		public function addStylesheet($stylesheet)
+		public function addStylesheet($stylesheet, $minify = true)
 		{
-			$this->_stylesheets[$stylesheet] = $stylesheet;
+			$this->_stylesheets[$stylesheet] = $minify;
 		}
 
 		/**

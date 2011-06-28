@@ -15,6 +15,11 @@
 		<?php else: ?>
 			<link rel="shortcut icon" href="<?php print TBGContext::getTBGPath(); ?>themes/<?php print TBGSettings::getThemeName(); ?>/favicon.png">
 		<?php endif; ?>
+		
+		<?php
+		include(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DIRECTORY_SEPARATOR . 'themes' . DIRECTORY_SEPARATOR . TBGSettings::getThemeName() . DIRECTORY_SEPARATOR . 'theme.php');
+		?>
+		
 		<link rel="shortcut icon" href="<?php print TBGContext::getTBGPath(); ?>themes/<?php print TBGSettings::getThemeName(); ?>/favicon.png">
 		<link title="<?php echo (TBGContext::isProjectContext()) ? __('%project_name% search', array('%project_name%' => TBGContext::getCurrentProject()->getName())) : __('%site_name% search', array('%site_name%' => TBGSettings::getTBGname())); ?>" href="<?php echo (TBGContext::isProjectContext()) ? make_url('project_opensearch', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('opensearch'); ?>" type="application/opensearchdescription+xml" rel="search">
 		<?php $tbg_response->addStylesheet(TBGSettings::getThemeName().'.css'); ?>
@@ -43,13 +48,58 @@
 			$tbg_response->addJavascript('login.js');
 		endif;
 
-		$cssstring = 'css/'.implode(',css/', $tbg_response->getStylesheets());
-		$jsstring = 'js/'.implode(',js/', $tbg_response->getJavascripts());
+		$cssstring = '';
+		$jsstring = '';
+		
+		$sepcss = array();
+		$sepjs = array();
+		
+		foreach ($tbg_response->getStylesheets() as $stylesheet => $minify)
+		{
+			if ($minify == true)
+			{
+				$cssstring .= ',css/'.$stylesheet;
+			}
+			else
+			{
+				$sepcss[] = $stylesheet;
+			}
+		}
+		
+		foreach ($tbg_response->getJavascripts() as $script => $minify)
+		{
+			if ($minify == true)
+			{
+				$jsstring .= ',js/'.$script;
+			}
+			else
+			{
+				$sepjs[] = $script;
+			}
+		}
+		
+		$cssstring = ltrim($cssstring, ',');
+		$jsstring = ltrim($jsstring, ',');
 		?>
 		<script type="text/javascript" src="http://code.jquery.com/jquery-1.5.2.min.js"></script>
 		<script type="text/javascript">jQuery.noConflict();</script>
 		<link rel="stylesheet" type="text/css" href="<?php print make_url('serve'); ?>&g=css&files=<?php print base64_encode($cssstring); ?>">
 		<script type="text/javascript" src="<?php print make_url('serve'); ?>&g=js&files=<?php print base64_encode($jsstring); ?>"></script>
+
+		<?php
+		// files opted out of minification, wont use content server on minify=off mode
+		foreach ($sepcss as $css)
+		{
+			echo '<link rel="stylesheet" type="text/css" href="'.$css.'">';
+		}
+		
+		foreach ($sepjs as $js)
+		{
+			echo 'script type="text/javascript" src="'.$js.'">';
+		}
+		
+		?>
+
 		<script type="text/javascript">
 			jQuery(document).ready(function(){jQuery('textarea').markItUp({
 				previewParserPath:	'', // path to your Wiki parser

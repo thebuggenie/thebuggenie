@@ -167,6 +167,7 @@
 			{
 				$issuelist = null;
 			}
+			
 			$this->issuelist = $issuelist;
 			$this->issue = $issue;
 			$event = TBGEvent::createNew('core', 'viewissue', $issue)->trigger();
