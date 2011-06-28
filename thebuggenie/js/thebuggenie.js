@@ -43,9 +43,22 @@ var TBG = {
 			Options: {},
 			Custom: {}
 		},
+		Issuetype: {
+			Choices: {}
+		},
+		IssuetypeScheme: {},
+		Workflows: {
+			Workflow: {},
+			Transition: {
+				Actions: {},
+				Validations: {}
+			},
+			Scheme: {}
+		},
 		Group: {},
 		Team: {},
-		Client: {}
+		Client: {},
+		Import: {}
 	}, // The "Config" namespace contains functions used in the configuration section
 	Issues: {
 		Link: {},
@@ -1399,6 +1412,145 @@ TBG.Project.updatePrefix = function(url, project_id) {
 	});
 }
 
+TBG.Config.Import.importCSV = function(url) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'import_csv_form',
+		loading: {
+			indicator: 'csv_import_indicator',
+			hide: 'csv_import_error'
+		},
+		failure: {
+			update: {element: 'csv_import_error_detail', from: 'errordetail'},
+			show: 'csv_import_error'
+		}
+	});
+}
+
+TBG.Config.updateCheck = function(url) {
+	TBG.Main.Helpers.ajax(url, {
+		loading: {
+			indicator: 'update_spinner',
+			hide: 'update_button'
+		},
+		success: {
+			callback: function(json) {
+				(json.uptodate) ? 
+					TBG.Main.Helpers.Message.success(json.title, json.message) : 
+					TBG.Main.Helpers.Message.error(json.title, json.message);
+			}
+		},
+		complete: {
+			show: 'update_button'
+		}
+	});
+}
+
+TBG.Config.Issuetype.showOptions = function(url, id) {
+	$('issuetype_' + id + '_content').toggle();
+	if ($('issuetype_' + id + '_content').childElements().size() == 0) {
+		TBG.Main.Helpers.ajax(url, {
+			loading: {indicator: 'issuetype_' + id + '_indicator'},
+			success: {update: 'issuetype_' + id + '_content'}
+		});
+	}
+}
+
+TBG.Config.Issuetype.update = function(url, id) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'edit_issuetype_' + id + '_form',
+		loading: {indicator: 'edit_issuetype_' + id + '_indicator'},
+		success: {
+			hide: 'edit_issuetype_' + id + '_form',
+			callback: function(json) {
+				if (json.description != undefined) $('issuetype_' + id + '_description_span').update(json.description);
+				if (json.name != undefined) {
+					$('issuetype_' + id + '_name_span').update(json.name);
+					if ($('issuetype_' + id + '_info')) $('issuetype_' + id + '_info').show();
+				}
+			}
+		}
+	});
+}
+
+TBG.Config.Issuetype.remove = function(url, id) {
+	TBG.Main.Helpers.ajax(url, {
+		loading: {indicator: 'delete_issuetype_' + id + '_indicator'},
+		success: {remove: 'issuetype_' + id + '_box'}
+	});
+}
+
+TBG.Config.Issuetype.Choices.update = function(url, id) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'update_' + id + '_choices_form',
+		loading: {indicator: 'update_' + id + '_choices_indicator'},
+		success: {hide: 'issuetype_' + id + '_content'}
+	});
+}
+
+TBG.Config.Issuetype.add = function(url) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'add_issuetype_form',
+		loading: {
+			indicator: 'add_issuetype_indicator',
+			hide: 'add_issuetype_button'
+		},
+		success: {
+			reset: 'add_issuetype_form',
+			update: {element: 'issuetypes_list', insertion: true}
+		},
+		complete: {
+			show: 'add_issuetype_button'
+		}
+	});
+}
+
+TBG.Config.Issuetype.toggleForScheme = function(url, issuetype_id, scheme_id, action) {
+	var hide_element = 'type_toggle_' + issuetype_id + '_' + action;
+	var show_element = 'type_toggle_' + issuetype_id + '_' + ((action == 'enable') ? 'disable' : 'enable');
+	var cb;
+	if (action == 'enable') {
+		cb = function(json) {$('issuetype_' + json.issuetype_id + '_box').addClassName("green");$('issuetype_' + json.issuetype_id + '_box').removeClassName("lightgrey");};
+	} else {
+		cb = function(json) {$('issuetype_' + json.issuetype_id + '_box').removeClassName("green");$('issuetype_' + json.issuetype_id + '_box').addClassName("lightgrey");};
+	}
+	TBG.Main.Helpers.ajax(url, {
+		loading: {
+			indicator: 'edit_issuetype_' + issuetype_id + '_indicator',
+			hide: hide_element
+		},
+		success: {
+			show: show_element,
+			callback: cb
+		}
+	});
+}
+
+TBG.Config.IssuetypeScheme.copy = function(url, scheme_id) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'copy_issuetype_scheme_' + scheme_id + '_form',
+		loading: {
+			indicator: 'copy_issuetype_scheme_' + scheme_id + '_indicator'
+		},
+		success: {
+			hide: 'copy_scheme_' + scheme_id + '_popup',
+			update: {element: 'issuetype_schemes_list', insertion: true}
+		}
+	});
+}
+
+TBG.Config.IssuetypeScheme.remove = function(url, scheme_id) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'delete_issuetype_scheme_' + scheme_id + '_form',
+		loading: {
+			indicator: 'delete_issuetype_scheme_' + scheme_id + '_indicator'
+		},
+		success: {
+			remove: ['delete_scheme_' + scheme_id + '_popup', 'copy_scheme_' + scheme_id + '_popup', 'issuetype_scheme_' + scheme_id],
+			update: {element: 'issuetype_schemes_list', insertion: true}
+		}
+	});
+}
+
 TBG.Config.Issuefields.Options.show = function(url, field) {
 	$(field + '_content').toggle();
 	if ($(field + '_content').childElements().size() == 0) {
@@ -1495,6 +1647,16 @@ TBG.Config.Permissions.set = function(url, field) {
 		loading: {indicator: field + '_indicator'}
 	});
 };
+
+TBG.Config.Permissions.getOptions = function(url, field) {
+	$(field).toggle();
+	if ($(field).childElements().size() == 0) {
+		TBG.Main.Helpers.ajax(url, {
+			loading: {indicator: field + '_indicator'},
+			success: {update: field}
+		});
+	}
+}
 
 TBG.Config.User.show = function(url, findstring) {
 	TBG.Main.Helpers.ajax(url, {
@@ -1697,6 +1859,142 @@ TBG.Config.Client.update = function(url, client_id) {
 		success: {
 			hide: 'edit_client_' + client_id,
 			update: 'clientbox_' + client_id
+		}
+	});
+}
+
+TBG.Config.Workflows.Transition.remove = function(url, transition_id, direction) {
+	var trans_sib = $('transition_' + transition_id).next(1);
+	var parameters = "&direction=" + direction;
+	TBG.Main.Helpers.ajax(url, {
+		params: parameters,
+		loading: {indicator: 'delete_transition_' + transition_id + '_indicator'},
+		success: {remove: ['transition_' + transition_id, trans_sib, 'delete_transition_' + transition_id + '_confirm']}
+	});
+}
+
+TBG.Config.Workflows.Scheme.copy = function(url, scheme_id) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'copy_workflow_scheme_' + scheme_id + '_form',
+		loading: {indicator: 'copy_workflow_scheme_' + scheme_id + '_indicator'},
+		success: {
+			hide: 'copy_scheme_' + scheme_id + '_popup',
+			update: {element: 'workflow_schemes_list', insertion: true}
+		}
+	});
+}
+
+TBG.Config.Workflows.Scheme.remove = function(url, scheme_id) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'delete_workflow_scheme_' + scheme_id + '_form',
+		loading: {indicator: 'delete_workflow_scheme_' + scheme_id + '_indicator'},
+		success: {
+			remove: ['delete_scheme_' + scheme_id + '_popup', 'copy_scheme_' + scheme_id + '_popup', 'workflow_scheme_' + scheme_id],
+			update: {element: 'workflow_schemes_list', insertion: true}
+		}
+	});
+}
+
+TBG.Config.Workflows._updateLinks = function(json){
+	if ($('current_workflow_num_count')) $('current_workflow_num_count').update(json.total_count);
+	$$('.copy_workflow_link').each(function (element) {
+		(json.more_available) ? $(element).show() : $(element).hide();
+	});
+}
+
+TBG.Config.Workflows.Workflow.copy = function(url, workflow_id) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'copy_workflow_' + workflow_id + '_form',
+		loading: {indicator: 'copy_workflow_' + workflow_id + '_indicator'},
+		success: {
+			hide: 'copy_workflow_' + workflow_id + '_popup',
+			update: {element: 'workflows_list', insertion: true},
+			callback: TBG.Config.Workflows._updateLinks
+		}
+	});
+}
+
+TBG.Config.Workflows.Workflow.remove = function(url, workflow_id) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'delete_workflow_' + workflow_id + '_form',
+		loading: {indicator: 'delete_workflow_' + workflow_id + '_indicator'},
+		success: {
+			remove: ['delete_workflow_' + workflow_id + '_popup', 'copy_workflow_' + workflow_id + '_popup', 'workflow_' + workflow_id],
+			update: {element: 'workflows_list', insertion: true},
+			callback: TBG.Config.Workflows._updateLinks
+		}
+	});
+}
+
+TBG.Config.Workflows.Scheme.update = function(url, scheme_id) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'workflow_scheme_form',
+		loading: {indicator: 'workflow_scheme_indicator'}
+	});
+}
+
+TBG.Config.Workflows.Transition.Validations.add = function(url, mode) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'workflowtransition' + mode + 'validationrule_add_form',
+		loading: {indicator: 'workflowtransition' + mode + 'validationrule_add_indicator'},
+		success: {
+			hide: ['no_workflowtransition' + mode + 'validationrules', 'add_workflowtransition' + mode + 'validationrule_' + $('workflowtransition' + mode + 'validationrule_add_type').getValue()],
+			update: {element: 'workflowtransition' + mode + 'validationrules_list', insertion: true}
+		}
+	});
+}
+
+TBG.Config.Workflows.Transition.Validations.update = function(url, rule_id) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'workflowtransitionvalidationrule_' + rule_id + '_form',
+		loading: {indicator: 'workflowtransitionvalidationrule_' + rule_id + '_indicator'},
+		success: {
+			hide: ['workflowtransitionvalidationrule_' + rule_id + '_cancel_button', 'workflowtransitionvalidationrule_' + rule_id + '_edit'],
+			update: 'workflowtransitionvalidationrule_' + rule_id + '_value',
+			show: ['workflowtransitionvalidationrule_' + rule_id + '_edit_button', 'workflowtransitionvalidationrule_' + rule_id + '_delete_button', 'workflowtransitionvalidationrule_' + rule_id + '_description']
+		}
+	});
+}
+
+TBG.Config.Workflows.Transition.Validations.remove = function(url, rule_id, type, mode) {
+	TBG.Main.Helpers.ajax(url, {
+		loading: {indicator: 'workflowtransitionvalidationrule_' + rule_id + '_delete_indicator'},
+		success: {
+			remove: ['workflowtransitionvalidationrule_' + rule_id + '_delete', 'workflowtransitionvalidationrule_' + rule_id],
+			show: ['add_workflowtransition' + type + 'validationrule_' + mode]
+		}
+	});
+}
+
+TBG.Config.Workflows.Transition.Actions.add = function(url) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'workflowtransitionaction_add_form',
+		loading: {indicator: 'workflowtransitionaction_add_indicator'},
+		success: {
+			hide: ['no_workflowtransitionactions', 'add_workflowtransitionaction_' + $('workflowtransitionaction_add_type').getValue()],
+			update: {element: 'workflowtransitionactions_list', insertion: true}
+		}
+	});
+}
+
+TBG.Config.Workflows.Transition.Actions.update = function(url, action_id) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'workflowtransitionaction_' + action_id + '_form',
+		loading: {indicator: 'workflowtransitionaction_' + action_id + '_indicator'},
+		success: {
+			hide: ['workflowtransitionaction_' + action_id + '_cancel_button', 'workflowtransitionaction_' + action_id + '_edit'],
+			update: 'workflowtransitionaction_' + action_id + '_value',
+			show: ['workflowtransitionaction_' + action_id + '_edit_button', 'workflowtransitionaction_' + action_id + '_delete_button', 'workflowtransitionaction_' + action_id + '_description']
+		}
+	});
+}
+
+TBG.Config.Workflows.Transition.Actions.remove = function(url, action_id, type) {
+	TBG.Main.Helpers.ajax(url, {
+		loading: {indicator: 'workflowtransitionaction_' + action_id + '_delete_indicator'},
+		success: {
+			hide: ['workflowtransitionaction_' + action_id + '_delete', 'workflowtransitionaction_' + action_id],
+			show: ['add_workflowtransitionaction_' + type]
 		}
 	});
 }
