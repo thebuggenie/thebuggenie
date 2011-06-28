@@ -123,7 +123,7 @@
 		 *
 		 * @return false if no commits, otherwise array
 		 */
-		public function getCommitsByProject($id, $limit = '-2 weeks')
+		public function getCommitsByProject($id, $limit = 40, $offset = null)
 		{
 			$crit = new B2DBCriteria();
 			
@@ -138,6 +138,16 @@
 			$crit->addWhere(self::DATE, strtotime($limit), $crit::DB_GREATER_THAN_EQUAL);
 			
 			$crit->addOrderBy(self::DATE, B2DBCriteria::SORT_DESC);
+
+			if ($limit !== null)
+			{
+				$crit->setLimit($limit);
+			}
+			if ($offset !== null)
+			{
+				$crit->setOffset($offset);
+			}
+			
 			$results = $this->doSelect($crit);
 
 			if (!is_object($results) || $results->getNumberOfRows() == 0)

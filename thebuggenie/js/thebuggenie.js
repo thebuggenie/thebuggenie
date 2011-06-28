@@ -1024,6 +1024,11 @@ function updateTimeline(url)
 	_updateDivWithJSONFeedback(url, 'timeline', 'timeline_indicator', true, false, 'timeline_more_link', null, ['timeline_more_link'], 'get', {offset: $('timeline_offset').getValue()}, function (json) {$('timeline_offset').setValue(json.offset)});
 }
 
+function updateCommits(url)
+{
+	_updateDivWithJSONFeedback(url, 'commits', 'commits_indicator', true, false, 'commits_more_link', null, ['commits_more_link'], 'get', {offset: $('commits_offset').getValue()}, function (json) {$('commits_offset').setValue(json.offset)});
+}
+
 function refreshMilestoneDetails(url, milestone_id)
 {
 	new Ajax.Request(url, {

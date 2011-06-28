@@ -22,7 +22,14 @@
 			$this->selected_project = TBGProject::getByKey($request->getParameter('project_key'));
 			TBGContext::setCurrentProject($this->selected_project);
 			
-			$this->commits = B2DB::getTable('TBGVCSIntegrationTable')->getCommitsByProject($this->selected_project->getID());
+			$offset = $request->getParameter('offset', 0);
+			
+			$this->commits = B2DB::getTable('TBGVCSIntegrationTable')->getCommitsByProject($this->selected_project->getID(), 40, $offset);
+			
+			if ($offset)
+			{
+				return $this->renderJSON(array('content' => $this->getTemplateHTML('vcs_integration/projectcommits', array('commits' => $this->commits, 'selected_project' => $this->selected_project)), 'offset' => $offset + 40));
+			}
 		}
 		
 		public function runAddCommit(TBGRequest $request)
