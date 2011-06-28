@@ -1052,3 +1052,8 @@ a.action_button:hover { background-color: #FCFCFC; border-color: #AAA; }
 /* updates */
 .update_div { font-size: 0.9em; margin: 10px; margin-bottom: -10px; width: 970px; }
 #update_button, #update_spinner { margin-top: 10px; }
+
+#views_list li { margin: 5px 10px; float: left; width: 360px; cursor: move; text-align: left; }
+#views_list li .available_views_list { width: 340px; margin-left: 15px; cursor: default; display: none; }
+#views_list li.verylightyellow .available_views_list { display: block; }
+#views_list li .available_views_list div:hover { background-color: #F1F1F1; cursor: pointer; }

@@ -36,10 +36,10 @@
 				<?php echo image_tag(make_url('project_statistics_last_30', array('project_key' => $selected_project->getKey())), array('style' => 'float: right; margin-bottom: 15px;'), true); ?>
 				<div style="clear: both; height: 30px;" class="tab_menu">
 					<ul id="project_dashboard_menu">
-						<li class="selected" id="tab_10_recent_issues"><a onclick="switchSubmenuTab('tab_10_recent_issues', 'project_dashboard_menu');" href="javascript:void(0);"><?php echo __('Recent issues / bugs'); ?></a></li>
-						<li id="tab_5_recent_requests"><a onclick="switchSubmenuTab('tab_5_recent_requests', 'project_dashboard_menu');" href="javascript:void(0);"><?php echo __('Recent feature requests'); ?></a></li>
-						<li id="tab_recent_ideas"><a onclick="switchSubmenuTab('tab_recent_ideas', 'project_dashboard_menu');" href="javascript:void(0);"><?php echo __('Recent ideas'); ?></a></li>
-						<li id="tab_statistics"><a onclick="switchSubmenuTab('tab_statistics', 'project_dashboard_menu');" href="javascript:void(0);"><?php echo __('Statistics'); ?></a></li>
+						<li class="selected" id="tab_10_recent_issues"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_10_recent_issues', 'project_dashboard_menu');" href="javascript:void(0);"><?php echo __('Recent issues / bugs'); ?></a></li>
+						<li id="tab_5_recent_requests"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_5_recent_requests', 'project_dashboard_menu');" href="javascript:void(0);"><?php echo __('Recent feature requests'); ?></a></li>
+						<li id="tab_recent_ideas"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_recent_ideas', 'project_dashboard_menu');" href="javascript:void(0);"><?php echo __('Recent ideas'); ?></a></li>
+						<li id="tab_statistics"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_statistics', 'project_dashboard_menu');" href="javascript:void(0);"><?php echo __('Statistics'); ?></a></li>
 					</ul>
 				</div>
 				<div id="project_dashboard_menu_panes">

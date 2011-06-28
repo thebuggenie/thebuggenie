@@ -13,7 +13,7 @@
 				<?php echo image_tag('sidebar_collapse.png', array('id' => 'project_sidebar_collapse', 'onclick' => "\$('project_information_sidebar').addClassName('collapsed');$(this).hide();\$('project_sidebar_expand').show();")); ?>
 				<?php echo image_tag('sidebar_expand.png', array('id' => 'project_sidebar_expand', 'style' => 'display: none;', 'onclick' => "\$('project_information_sidebar').removeClassName('collapsed');$(this).hide();\$('project_sidebar_collapse').show();")); ?>
 				<div>
-					<?php if ($tbg_user->canEditProjectDetails($selected_project)): ?><?php echo javascript_link_tag(image_tag('cfg_icon_projectheader.png', array('class' => 'config_link')), array('onclick' => "showFadedBackdrop('".make_url('get_partial_for_backdrop', array('key' => 'project_config', 'project_id' => $selected_project->getID()))."');")); ?><?php endif; ?>
+					<?php if ($tbg_user->canEditProjectDetails($selected_project)): ?><?php echo javascript_link_tag(image_tag('cfg_icon_projectheader.png', array('class' => 'config_link')), array('onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'project_config', 'project_id' => $selected_project->getID()))."');")); ?><?php endif; ?>
 					<div id="project_name">
 						<?php echo image_tag($selected_project->getIcon(), array('class' => 'logo'), $selected_project->hasIcon(), 'core', !$selected_project->hasIcon()); ?>
 						<span id="project_name_span"><?php echo $selected_project->getName(); ?></span><br>

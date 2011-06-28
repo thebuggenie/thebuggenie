@@ -24,10 +24,10 @@
 </div>
 <div style="margin: 10px 0 0 0; clear: both; height: 30px;" class="tab_menu">
 	<ul id="permissions_<?php echo $base_id; ?>_tabs">
-		<li class="selected" id="<?php echo $base_id; ?>_tab_general"><a onclick="switchSubmenuTab('<?php echo $base_id; ?>_tab_general', 'permissions_<?php echo $base_id; ?>_tabs');" href="javascript:void(0);"><?php echo __('General permissions'); ?></a></li>
-		<li id="<?php echo $base_id; ?>_tab_pages"><a onclick="switchSubmenuTab('<?php echo $base_id; ?>_tab_pages', 'permissions_<?php echo $base_id; ?>_tabs');" href="javascript:void(0);"><?php echo __('Page access permissions'); ?></a></li>
-		<li id="<?php echo $base_id; ?>_tab_projects"><a onclick="switchSubmenuTab('<?php echo $base_id; ?>_tab_projects', 'permissions_<?php echo $base_id; ?>_tabs');" href="javascript:void(0);"><?php echo __('Project-specific permissions'); ?></a></li>
-		<li id="<?php echo $base_id; ?>_tab_modules"><a onclick="switchSubmenuTab('<?php echo $base_id; ?>_tab_modules', 'permissions_<?php echo $base_id; ?>_tabs');" href="javascript:void(0);"><?php echo __('Module-specific permissions'); ?></a></li>
+		<li class="selected" id="<?php echo $base_id; ?>_tab_general"><a onclick="TBG.Main.Helpers.tabSwitcher('<?php echo $base_id; ?>_tab_general', 'permissions_<?php echo $base_id; ?>_tabs');" href="javascript:void(0);"><?php echo __('General permissions'); ?></a></li>
+		<li id="<?php echo $base_id; ?>_tab_pages"><a onclick="TBG.Main.Helpers.tabSwitcher('<?php echo $base_id; ?>_tab_pages', 'permissions_<?php echo $base_id; ?>_tabs');" href="javascript:void(0);"><?php echo __('Page access permissions'); ?></a></li>
+		<li id="<?php echo $base_id; ?>_tab_projects"><a onclick="TBG.Main.Helpers.tabSwitcher('<?php echo $base_id; ?>_tab_projects', 'permissions_<?php echo $base_id; ?>_tabs');" href="javascript:void(0);"><?php echo __('Project-specific permissions'); ?></a></li>
+		<li id="<?php echo $base_id; ?>_tab_modules"><a onclick="TBG.Main.Helpers.tabSwitcher('<?php echo $base_id; ?>_tab_modules', 'permissions_<?php echo $base_id; ?>_tabs');" href="javascript:void(0);"><?php echo __('Module-specific permissions'); ?></a></li>
 	</ul>
 </div>
 <div id="permissions_<?php echo $base_id; ?>_tabs_panes" class="permission_list">

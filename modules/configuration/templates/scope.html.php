@@ -30,7 +30,7 @@
 									<td><label><?php echo __('Scope hostname'); ?></label></td>
 									<td>
 										<?php foreach ($scope->getHostnames() as $hostname): ?>
-											<?php /* <a href="javascript:void(0);" onclick="failedMessage('not implemented yet')" class="rounded_box action_button" style="float: left; margin-left: 0; margin-right: 5px;"><?php echo image_tag('icon_delete.png', array('title' => __('Delete this hostname'))); ?></a> */ ?>
+											<?php /* <a href="javascript:void(0);" onclick="TBG.Main.Helpers.Message.error('not implemented yet')" class="rounded_box action_button" style="float: left; margin-left: 0; margin-right: 5px;"><?php echo image_tag('icon_delete.png', array('title' => __('Delete this hostname'))); ?></a> */ ?>
 											<?php echo $hostname; ?>
 											<br style="clear: both;">
 										<?php endforeach; ?>

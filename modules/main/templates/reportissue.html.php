@@ -194,7 +194,7 @@
 				</div>
 				<div style="float: right;<?php if (!$selected_issuetype instanceof TBGIssuetype): ?> display: none;<?php endif; ?>" id="issuetype_dropdown">
 					<label for="issuetype_id" style="margin-right: 20px;"><?php echo __('Select issue type'); ?></label>
-					<select name="issuetype_id" id="issuetype_id" style="min-width: 300px; height: 25px;" onchange="updateFields('<?php echo make_url('getreportissuefields'); ?>');">
+					<select name="issuetype_id" id="issuetype_id" style="min-width: 300px; height: 25px;" onchange="TBG.Issues.updateFields('<?php echo make_url('getreportissuefields'); ?>');">
 						<option value="0"><?php echo __('Please select an issue type from this list'); ?>...</option>
 						<?php foreach ($issuetypes as $issuetype): ?>
 							<?php if (!$selected_project->getIssuetypeScheme()->isIssuetypeReportable($issuetype)) continue; ?>
@@ -213,7 +213,7 @@
 					<strong style="font-size: 14px;"><?php echo $issuetype->getName(); ?></strong><br>
 					<?php echo $issuetype->getDescription(); ?>
 					<div style="text-align: right; margin-top: 5px;">
-						<a href="javascript:void(0);" onclick="$('issuetype_id').setValue(<?php echo $issuetype->getID(); ?>);updateFields('<?php echo make_url('getreportissuefields'); ?>');" style="font-size: 13px; font-weight: bold;"><?php echo __('Choose %issuetype%', array('%issuetype%' => mb_strtolower($issuetype->getName()))); ?>&nbsp;&gt;&gt;</a>
+						<a href="javascript:void(0);" onclick="$('issuetype_id').setValue(<?php echo $issuetype->getID(); ?>);TBG.Issues.updateFields('<?php echo make_url('getreportissuefields'); ?>');" style="font-size: 13px; font-weight: bold;"><?php echo __('Choose %issuetype%', array('%issuetype%' => mb_strtolower($issuetype->getName()))); ?>&nbsp;&gt;&gt;</a>
 					</div>
 				</li>
 			<?php endforeach; ?>
@@ -550,7 +550,7 @@
 					</table>
 				<?php endforeach; ?>
 				<?php if ($selected_issuetype != null && $selected_project != null): ?>
-					<script type="text/javascript">updateFields('<?php echo make_url('getreportissuefields'); ?>');</script>
+					<script type="text/javascript">TBG.Issues.updateFields('<?php echo make_url('getreportissuefields'); ?>');</script>
 				<?php endif; ?>
 				<div class="rounded_box report_issue_desc green borderless" id="report_issue_add_extra" style="vertical-align: middle; padding: 5px; height: 25px; font-size: 15px;">
 					<div style="float: left; padding-top: 3px;"><?php echo __('When you are satisfied, click the %file_issue% button to file your issue', array('%file_issue%' => '<strong>'.__('File issue').'</strong>')); ?></div>
@@ -560,8 +560,8 @@
 					<strong><?php echo __('Add more information to your issue'); ?></strong><br>
 					<p><?php echo __('Specify additional information by clicking the links below before submitting your issue'); ?></p>
 					<ul id="reportissue_extrafields">
-						<li><?php echo image_tag('icon_file.png'); ?><a href="javascript:void(0);" onclick="successMessage('<?php echo __('Please file the issue before attaching a file'); ?>');"><?php echo __('Attach a file'); ?></a></li>
-						<li><?php echo image_tag('icon_link.png'); ?><a href="javascript:void(0);" onclick="successMessage('<?php echo __('Please file the issue before attaching a link'); ?>');"><?php echo __('Add a link'); ?></a></li>
+						<li><?php echo image_tag('icon_file.png'); ?><a href="javascript:void(0);" onclick="TBG.Main.Helpers.Message.success('<?php echo __('Please file the issue before attaching a file'); ?>');"><?php echo __('Attach a file'); ?></a></li>
+						<li><?php echo image_tag('icon_link.png'); ?><a href="javascript:void(0);" onclick="TBG.Main.Helpers.Message.success('<?php echo __('Please file the issue before attaching a link'); ?>');"><?php echo __('Add a link'); ?></a></li>
 						<li id="status_additional" style="display: none;">
 							<?php echo image_tag('icon_status.png'); ?>
 							<div id="status_link"<?php if ($selected_status instanceof TBGStatus): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('status_link').hide();$('status_additional_div').show();"><?php echo __('Set initial status'); ?></a></div>

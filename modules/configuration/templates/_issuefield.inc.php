@@ -12,14 +12,14 @@
 		<?php if ($item->canBeDeleted()): ?>
 			<a href="javascript:void(0);" onclick="$('delete_item_<?php echo $item->getID(); ?>').toggle();" class="image" id="delete_<?php echo $item->getID(); ?>_link"><?php echo image_tag('icon_delete.png'); ?></a>
 		<?php else: ?>
-			<a href="javascript:void(0);" onclick="failedMessage('<?php echo __('This item cannot be deleted'); ?>', '<?php echo __('Other items - such as workflow steps - may depend on this item to exist. Remove the dependant item or unlink it from this item to continue.'); ?>');" class="image" id="delete_<?php echo $item->getID(); ?>_link"><?php echo image_tag('icon_delete_disabled.png'); ?></a>
+			<a href="javascript:void(0);" onclick="TBG.Main.Helpers.Message.error('<?php echo __('This item cannot be deleted'); ?>', '<?php echo __('Other items - such as workflow steps - may depend on this item to exist. Remove the dependant item or unlink it from this item to continue.'); ?>');" class="image" id="delete_<?php echo $item->getID(); ?>_link"><?php echo image_tag('icon_delete_disabled.png'); ?></a>
 		<?php endif; ?>
 		<?php echo image_tag('spinning_16.gif', array('id' => 'delete_' . $type . '_' . $item->getID() . '_indicator', 'style' => 'display: none;')); ?>
 	</td>
 </tr>
 <tr id="edit_item_<?php echo $item->getID(); ?>" style="display: none;">
 	<td colspan="3">
-		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuefields_edit', array('type' => $type, 'id' => $item->getID())); ?>" onsubmit="editIssuefieldOption('<?php echo make_url('configure_issuefields_edit', array('type' => $type, 'id' => $item->getID())); ?>', '<?php echo $type; ?>', <?php echo $item->getID(); ?>);return false;" id="edit_<?php echo $type; ?>_<?php echo $item->getID(); ?>_form">
+		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuefields_edit', array('type' => $type, 'id' => $item->getID())); ?>" onsubmit="TBG.Issues.Field.Options.update('<?php echo make_url('configure_issuefields_edit', array('type' => $type, 'id' => $item->getID())); ?>', '<?php echo $type; ?>', <?php echo $item->getID(); ?>);return false;" id="edit_<?php echo $type; ?>_<?php echo $item->getID(); ?>_form">
 			<table style="width: 100%;" cellpadding="0" cellspacing="0">
 				<tr>
 					<?php if ($type == 'status'): ?>
@@ -52,7 +52,7 @@
 				<div class="content">
 					<?php echo __('Are you really sure you want to delete this item?'); ?>
 					<div style="text-align: right; font-size: 13px;">
-						<a href="javascript:void(0);" onclick="deleteIssuefieldOption('<?php echo make_url('configure_issuefields_delete', array('type' => $type, 'id' => $item->getID())); ?>', '<?php echo $type; ?>', <?php echo $item->getID(); ?>);"><?php echo __('Yes'); ?></a> ::
+						<a href="javascript:void(0);" onclick="TBG.Issues.Field.Options.remove('<?php echo make_url('configure_issuefields_delete', array('type' => $type, 'id' => $item->getID())); ?>', '<?php echo $type; ?>', <?php echo $item->getID(); ?>);"><?php echo __('Yes'); ?></a> ::
 						<a href="javascript:void(0);" onclick="$('delete_item_<?php echo $item->getID(); ?>').toggle();"><b><?php echo __('No'); ?></b></a>
 					</div>
 				</div>
