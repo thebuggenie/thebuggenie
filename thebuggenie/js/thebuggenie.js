@@ -1082,6 +1082,32 @@ TBG.Project.Milestone.add = function(url) {
 	});
 }
 
+TBG.Project.Milestone.update = function(url, mid) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'edit_milestone_' + mid,
+		loading: {
+			indicator: 'milestone_' + mid + '_indicator'
+		},
+		success: {
+			hide: 'edit_milestone_' + mid,
+			update: 'milestone_span_' + mid,
+			show: 'show_milestone_' + mid
+		}
+	});
+}
+
+TBG.Project.Milestone.remove = function (url, mid) {
+	TBG.Main.Helpers.ajax(url, {
+		loading: {indicator: 'milestone_'+mid+'_indicator'},
+		success: {
+			remove: 'milestone_span_' + mid,
+			callback: function() {
+				if ($('milestone_list').childElements().size() == 0) $('no_milestones').show();
+			}
+		}
+	});
+}
+
 TBG.Project.Build.doAction = function(url, bid, action, update) {
 	var update_elm = (update == 'all') ? 'build_table' : 'build_list_' + bid;
 	TBG.Main.Helpers.ajax(url, {
@@ -1111,13 +1137,6 @@ TBG.Project.Build.update = function(url, bid) {
 		complete: {
 			show: 'build_'+bid+'_info'
 		}
-	});
-}
-
-TBG.Project.saveOther = function(url) {
-	TBG.Main.Helpers.ajax(url, {
-		form: 'project_other',
-		loading: {indicator: 'settings_save_indicator'}
 	});
 }
 
@@ -1162,18 +1181,30 @@ TBG.Project.Build.remove = function(url, bid) {
 	});
 }
 
-TBG.Project.Component.remove = function(url, cid) {
+TBG.Project.Build.add = function(url) {
 	TBG.Main.Helpers.ajax(url, {
-		loading: {indicator: 'component_'+cid+'_delete_indicator'},
+		form: 'add_build_form',
+		loading: {indicator: 'build_add_indicator'},
 		success: {
-			remove: ['show_component_'+cid, 'edit_component_'+cid, 'component_'+cid+'_permissions'],
-			callback: function(json) {
-				if (json.itemcount == 0) $('no_components').show();
-			}
-		},
-		failure: {
-			hide: 'del_component_'+cid
+			reset: 'add_build_form',
+			hide: 'no_builds',
+			update: {element: 'build_table', insertion: true, from: 'html'}
 		}
+	});
+}
+
+TBG.Project.saveOther = function(url) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'project_other',
+		loading: {indicator: 'settings_save_indicator'}
+	});
+}
+
+TBG.Project.Edition.edit = function(url, edition_id)
+{
+	TBG.Main.Helpers.ajax(url, {
+		loading: {indicator: 'backdrop_detail_indicator'},
+		success: {update: 'backdrop_detail_content'}
 	});
 }
 
@@ -1200,76 +1231,6 @@ TBG.Project.Edition.add = function(url) {
 			reset: 'add_edition_form',
 			hide: 'no_editions',
 			update: {element: 'edition_table', insertion: true, from: 'html'}
-		}
-	});
-}
-
-TBG.Project.Build.add = function(url) {
-	TBG.Main.Helpers.ajax(url, {
-		form: 'add_build_form',
-		loading: {indicator: 'build_add_indicator'},
-		success: {
-			reset: 'add_build_form',
-			hide: 'no_builds',
-			update: {element: 'build_table', insertion: true, from: 'html'}
-		}
-	});
-}
-
-TBG.Project.Component.add = function(url) {
-	TBG.Main.Helpers.ajax(url, {
-		form: 'add_component_form',
-		loading: {indicator: 'component_add_indicator'},
-		success: {
-			reset: 'add_component_form',
-			hide: 'no_components',
-			update: {element: 'component_table', insertion: true, from: 'html'}
-		}
-	});
-}
-
-TBG.Project.submitSettings = function(url) {
-	_submitProjectDetails(url, 'project_settings');
-}
-
-TBG.Project.submitInfo = function(url, pid) {
-	_submitProjectDetails(url, 'project_info', pid);
-}
-
-TBG.Project._submitDetails = function(url, form_id, pid) {
-	TBG.Main.Helpers.ajax(url, {
-		form: form_id,
-		loading: form_id + '_indicator',
-		success: {
-			callback: function(json) {
-				if ($('project_name_span')) $('project_name_span').update($('project_name_input').getValue());
-				if ($('project_description_span')) {
-					if ($('project_description_input').getValue()) {
-						$('project_description_span').update(json.project_description);
-						$('project_no_description').hide();
-					} else {
-						$('project_description_span').update('');
-						$('project_no_description').show();
-					}
-				}
-				if ($('project_key_span')) $('project_key_span').update(json.project_key);
-				if ($('sidebar_link_scrum') && $('use_scrum').getValue() == 1) $('sidebar_link_scrum').show();
-				else if ($('sidebar_link_scrum')) $('sidebar_link_scrum').hide();
-
-				['edition', 'component', 'build'].each(function(element) {
-					if ($('enable_'+element+'s').getValue() == 1) {
-						$('add_'+element+'_form').show();
-						$('project_'+element+'s').show();
-						$('project_'+element+'s_disabled').hide();
-					} else {
-						$('add_'+element+'_form').hide();
-						$('project_'+element+'s').hide();
-						$('project_'+element+'s_disabled').show();
-					}
-				});
-				
-				if (pid != undefined && $('project_box_' + pid) != undefined) $('project_box_' + pid).update(json.content);
-			}
 		}
 	});
 }
@@ -1339,27 +1300,74 @@ TBG.Project.Component.update = function(url, cid) {
 	});
 }
 
-TBG.Project.Milestone.update = function(url, mid) {
+TBG.Project.Component.add = function(url) {
 	TBG.Main.Helpers.ajax(url, {
-		form: 'edit_milestone_' + mid,
-		loading: {
-			indicator: 'milestone_' + mid + '_indicator'
-		},
+		form: 'add_component_form',
+		loading: {indicator: 'component_add_indicator'},
 		success: {
-			hide: 'edit_milestone_' + mid,
-			update: 'milestone_span_' + mid,
-			show: 'show_milestone_' + mid
+			reset: 'add_component_form',
+			hide: 'no_components',
+			update: {element: 'component_table', insertion: true, from: 'html'}
 		}
 	});
 }
 
-TBG.Project.Milestone.remove = function (url, mid) {
+TBG.Project.Component.remove = function(url, cid) {
 	TBG.Main.Helpers.ajax(url, {
-		loading: {indicator: 'milestone_'+mid+'_indicator'},
+		loading: {indicator: 'component_'+cid+'_delete_indicator'},
 		success: {
-			remove: 'milestone_span_' + mid,
-			callback: function() {
-				if ($('milestone_list').childElements().size() == 0) $('no_milestones').show();
+			remove: ['show_component_'+cid, 'edit_component_'+cid, 'component_'+cid+'_permissions'],
+			callback: function(json) {
+				if (json.itemcount == 0) $('no_components').show();
+			}
+		},
+		failure: {
+			hide: 'del_component_'+cid
+		}
+	});
+}
+
+TBG.Project.submitSettings = function(url) {
+	_submitProjectDetails(url, 'project_settings');
+}
+
+TBG.Project.submitInfo = function(url, pid) {
+	_submitProjectDetails(url, 'project_info', pid);
+}
+
+TBG.Project._submitDetails = function(url, form_id, pid) {
+	TBG.Main.Helpers.ajax(url, {
+		form: form_id,
+		loading: form_id + '_indicator',
+		success: {
+			callback: function(json) {
+				if ($('project_name_span')) $('project_name_span').update($('project_name_input').getValue());
+				if ($('project_description_span')) {
+					if ($('project_description_input').getValue()) {
+						$('project_description_span').update(json.project_description);
+						$('project_no_description').hide();
+					} else {
+						$('project_description_span').update('');
+						$('project_no_description').show();
+					}
+				}
+				if ($('project_key_span')) $('project_key_span').update(json.project_key);
+				if ($('sidebar_link_scrum') && $('use_scrum').getValue() == 1) $('sidebar_link_scrum').show();
+				else if ($('sidebar_link_scrum')) $('sidebar_link_scrum').hide();
+
+				['edition', 'component', 'build'].each(function(element) {
+					if ($('enable_'+element+'s').getValue() == 1) {
+						$('add_'+element+'_form').show();
+						$('project_'+element+'s').show();
+						$('project_'+element+'s_disabled').hide();
+					} else {
+						$('add_'+element+'_form').hide();
+						$('project_'+element+'s').hide();
+						$('project_'+element+'s_disabled').show();
+					}
+				});
+				
+				if (pid != undefined && $('project_box_' + pid) != undefined) $('project_box_' + pid).update(json.content);
 			}
 		}
 	});
@@ -1413,14 +1421,6 @@ TBG.Project.removeAssignee = function(url, type, id) {
 		success: {
 			hide: 'assignee_'+type+'_'+id+'_row'
 		}
-	});
-}
-
-TBG.Project.Edition.edit = function(url, edition_id)
-{
-	TBG.Main.Helpers.ajax(url, {
-		loading: {indicator: 'backdrop_detail_indicator'},
-		success: {update: 'backdrop_detail_content'}
 	});
 }
 
