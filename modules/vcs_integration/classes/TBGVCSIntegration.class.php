@@ -59,9 +59,9 @@
 		protected function _addRoutes()
 		{
 			$this->addRoute('vcs_commitspage', '/:project_key/commits', 'projectCommits');
-			$this->addRoute('normalcheckin', '/vcs_integration/report/:project/', 'addCommit');
-			$this->addRoute('githubcheckin', '/vcs_integration/report/:project/github/', 'addCommitGithub');
-			$this->addRoute('gitoriouscheckin', '/vcs_integration/report/:project/gitorious/', 'addCommitGitorious');
+			$this->addRoute('normalcheckin', '/vcs_integration/report/:project_key/', 'addCommit');
+			$this->addRoute('githubcheckin', '/vcs_integration/report/:project_key/github/', 'addCommitGithub');
+			$this->addRoute('gitoriouscheckin', '/vcs_integration/report/:project_key/gitorious/', 'addCommitGitorious');
 		}
 
 		protected function _uninstall()
@@ -225,7 +225,7 @@
 			}
 		}
 		
-		public function addNewCommit($project, $commit_msg, $old_rev, $new_rev, $date = null, $changed, $author)
+		public function addNewCommit($project_key, $commit_msg, $old_rev, $new_rev, $date = null, $changed, $author)
 		{
 			/* Find issues to update */
 			$fixes_grep = "#((bug|issue|ticket|fix|fixes|fixed|fixing|applies to|closes|references|ref|addresses|re|see|according to|also see)\s\#?(([A-Z0-9]+\-)?\d+))#ie";
@@ -234,13 +234,11 @@
 			
 			$f_issues = array();
 			
-			try
+			$project = TBGProject::getByKey($project_key);
+			
+			if (!$project)
 			{
-				$project = new TBGProject($project);
-			}
-			catch (Exception $e)
-			{
-				return TBGContext::getI18n()->__('Error: Invalid project ID');
+				return TBGContext::getI18n()->__('Error: Project does not exist');
 			}
 			
 			if (preg_match_all($fixes_grep, $commit_msg, $f_issues))
