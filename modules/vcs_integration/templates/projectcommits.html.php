@@ -24,7 +24,7 @@
 						<div class="commits_next">
 							<input id="commits_offset" value="40" type="hidden">
 							<?php echo image_tag('spinning_16.gif', array('id' => 'commits_indicator', 'style' => 'display: none; float: left; margin-right: 5px;')); ?>
-							<?php echo javascript_link_tag(__('Show more').image_tag('action_add_small.png', array('style' => 'float: left; margin-right: 5px;')), array('onclick' => "updateCommits('".make_url('vcs_commitspage', array('project_key' => $selected_project->getKey()))."');", 'id' => 'commits_more_link')); ?>
+							<?php echo javascript_link_tag(__('Show more').image_tag('action_add_small.png', array('style' => 'float: left; margin-right: 5px;')), array('onclick' => "TBG.Project.Commits.update('".make_url('vcs_commitspage', array('project_key' => $selected_project->getKey()))."');", 'id' => 'commits_more_link')); ?>
 						</div>
 					</div>
 					<?php
