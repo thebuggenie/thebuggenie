@@ -36,7 +36,7 @@
 		{
 			/* Prepare variables */
 			$passkey = TBGContext::getRequest()->getParameter('passkey');
-			$project = urldecode(TBGContext::getRequest()->getParameter('project'));
+			$project_key = urldecode(TBGContext::getRequest()->getParameter('project_key'));
 			$author = trim(html_entity_decode(urldecode(TBGContext::getRequest()->getParameter('author')), ENT_QUOTES), '"');
 			$new_rev = TBGContext::getRequest()->getParameter('rev');
 			$commit_msg = trim(html_entity_decode(urldecode(TBGContext::getRequest()->getParameter('commit_msg')), ENT_QUOTES), '"');
@@ -71,16 +71,16 @@
 				echo 'Error: Invalid passkey';
 				exit;
 			}
-
-			if (empty($author) || empty($new_rev) || empty($commit_msg) || empty($changed) || empty($project))
+					
+			if (!TBGProject::getByKey($project_key))
 			{
-				echo 'Error: A field was not specified';
+				echo 'Error: Project does not exist';
 				exit;
 			}
 			
-			if (!is_numeric($project))
+			if (empty($author) || empty($new_rev) || empty($commit_msg) || empty($changed) || empty($project_key))
 			{
-				echo 'Error: Project ID not a number';
+				echo 'Error: A field was not specified';
 				exit;
 			}
 			
@@ -90,7 +90,7 @@
 				exit;
 			}
 			
-			echo TBGContext::getModule('vcs_integration')->addNewCommit($project, $commit_msg, $old_rev, $new_rev, $date, $changed, $author);
+			echo TBGContext::getModule('vcs_integration')->addNewCommit($project_key, $commit_msg, $old_rev, $new_rev, $date, $changed, $author);
 			exit;
 		}
 		
@@ -108,7 +108,14 @@
 				exit;
 			}
 			
-			$project = TBGContext::getRequest()->getParameter('project');
+			$project_key = TBGContext::getRequest()->getParameter('project_key');
+			
+			if (!TBGProject::getByKey($project_key))
+			{
+				echo 'Error: Project does not exist';
+				exit;
+			}
+			
 			$data = html_entity_decode(TBGContext::getRequest()->getParameter('payload'));
 			if (empty($data) || $data == null)
 			{
@@ -161,7 +168,7 @@
 					$added = array();
 				}
 				
-				echo TBGContext::getModule('vcs_integration')->addNewCommit($project, $commit_msg, $old_rev, $new_rev, $time, array($modified, $added, $removed), $author);
+				echo TBGContext::getModule('vcs_integration')->addNewCommit($project_key, $commit_msg, $old_rev, $new_rev, $time, array($modified, $added, $removed), $author);
 				$previous = $commit->id;
 			}
 			exit();
@@ -181,7 +188,14 @@
 				exit;
 			}
 			
-			$project = TBGContext::getRequest()->getParameter('project');
+			$project_key = TBGContext::getRequest()->getParameter('project_key');
+			
+			if (!TBGProject::getByKey($project_key))
+			{
+				echo 'Error: Project does not exist';
+				exit;
+			}
+			
 			$data = TBGContext::getRequest()->getParameter('payload', null, false);
 			if (empty($data) || $data == null)
 			{
@@ -209,7 +223,7 @@
 				//$file_lines = preg_split('/[\n\r]+/', $changed);
 				//$files = array();
 				
-				echo TBGContext::getModule('vcs_integration')->addNewCommit($project, $commit_msg, $old_rev, $previous, $time, "", $author);
+				echo TBGContext::getModule('vcs_integration')->addNewCommit($project_key, $commit_msg, $old_rev, $previous, $time, "", $author);
 				$previous = $new_rev;
 				exit;
 			}
