@@ -55,6 +55,14 @@
 			$link_old = $web_path . '/' . $web_repo . '/commit/' . $revision;
 			break;
 	}
+	
+	// Affected issues
+	$fixes_grep = "#((bug|issue|ticket|fix|fixes|fixed|fixing|applies to|closes|references|ref|addresses|re|see|according to|also see)\s\#?(([A-Z0-9]+\-)?\d+))#ie";
+	$f_issues = array();
+	
+	preg_match_all($fixes_grep, $log, $f_issues);
+	
+	$f_issues = array_unique($f_issues[3]);
 ?>
 <div class="comment" id="commit_<?php echo $id; ?>">
 	<div style="position: relative; overflow: visible; padding: 5px;" id="commit_view_<?php echo $id; ?>" class="comment_main">
@@ -176,7 +184,39 @@
 				</div>
 				<div class="commit_right">
 					<div class="commit_header"><?php echo __('Affected issues'); ?></div>
-					<span class="faded_out">This will be implemented in the future</span>
+					<?php
+						$valid_issues = array();
+						
+						foreach ($f_issues as $issue_no)
+						{
+							$issue = TBGIssue::getIssueFromLink($issue_no, true);
+							if ($issue instanceof TBGIssue)
+							{
+								if (!TBGContext::getCurrentProject() instanceof TBGProject || $issue->getProjectID() != TBGContext::getCurrentProject()->getID())
+								{
+									$issue = null;
+								}
+							}
+							
+							if ($issue != null)
+							{
+								$valid_issues[] = $issue;
+							}
+						}
+						if (count($valid_issues) == '')
+						{
+							echo '<span class="faded_out">'.__('This commit affects no issues').'</span>';
+						}
+						else
+						{
+							echo '<ul>';
+							foreach ($valid_issues as $issue)
+							{
+								echo '<li>'.link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue->getFormattedIssueNo(true, true)).'</li>';
+							}
+							echo '</ul>';
+						}
+					?>
 				</div>
 			</div>
 		</div>

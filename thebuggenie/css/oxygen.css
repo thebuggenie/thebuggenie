@@ -140,9 +140,10 @@ div.image_container.thumb img.image { width: 220px; }
 .commit_header { font-weight: bold; font-size: larger; }
 .commit_expander { float: right; }
 .commit_expander img { vertical-align: text-bottom; }
-.commit_left { width: 620px; float: left; margin-top: 10px; margin-bottom: 20px; }
-.commit_right { width: 210px; float: right; margin-top: 10px; margin-bottom: 20px;}
+.commit_left { width: 660px; float: left; margin-top: 10px; margin-bottom: 20px; }
+.commit_right { width: 180px; float: right; margin-top: 10px; margin-bottom: 20px;}
 .commit_left .commit_header, .commit_right .commit_header { padding-bottom: 5px; }
+.commits_next { clear: both; }
 .commit_left td { border: none !important; }
 /* end comments and commits styling */
 
