@@ -41,6 +41,8 @@
 							<?php echo link_tag(make_url('project_roadmap', array('project_key' => $project->getKey())), __('Show roadmap')); ?>&nbsp;&nbsp;&nbsp;&nbsp;
 						<?php endif; ?>
 						<?php TBGEvent::createNew('core', 'project_overview_item_links', $project)->trigger(); ?>
+					</td>
+					<td style="font-weight: normal; vertical-align: top; position: relative;">
 						<?php if ($tbg_user->canReportIssues($project)): ?>
 							<div class="nice_button report_button" style="float: right; overflow: visible;">
 								<input type="submit" value="<?php echo __('Report an issue'); ?>">
