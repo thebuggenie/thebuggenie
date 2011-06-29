@@ -35,7 +35,7 @@
 		<td valign="top">
 			<div class="config_header" style="width: 750px;"><?php echo __('Configure uploads &amp; attachments'); ?></div>
 			<?php if ($uploads_enabled && $access_level == TBGSettings::ACCESS_FULL): ?>
-				<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_files'); ?>" method="post" onsubmit="submitForm('<?php echo make_url('configure_files'); ?>', 'config_uploads'); return false;" id="config_uploads">
+				<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_files'); ?>" method="post" onsubmit="TBG.Main.Helpers.formSubmit('<?php echo make_url('configure_files'); ?>', 'config_uploads'); return false;" id="config_uploads">
 			<?php endif; ?>
 			<?php if (!function_exists('mime_content_type') && !extension_loaded('fileinfo')): ?>
 				<div class="rounded_box yellow borderless" style="margin: 5px 0px 5px 0px; width: 700px; padding: 5px 10px 5px 10px;">

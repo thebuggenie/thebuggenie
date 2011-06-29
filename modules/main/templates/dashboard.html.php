@@ -2,6 +2,7 @@
 
 	$tbg_response->setTitle(__('Dashboard'));
 	$tbg_response->addBreadcrumb(__('Personal dashboard'), make_url('dashboard'), tbg_get_breadcrumblinks('main_links'));
+	$tbg_response->addJavascript('thebuggenie.js');
 	$tbg_response->addJavascript('dashboard.js');
 	$tbg_response->addFeed(make_url('my_reported_issues', array('format' => 'rss')), __('Issues reported by me'));
 	$tbg_response->addFeed(make_url('my_assigned_issues', array('format' => 'rss')), __('Open issues assigned to you'));
@@ -36,7 +37,7 @@
 			<?php TBGEvent::createNew('core', 'dashboard_main_bottom')->trigger(); ?>
 		</td>
 		<td id="dashboard_righthand" class="side_bar">
-			<?php echo javascript_link_tag(image_tag('icon_dashboard_config.png').'<span>'.__('Customize your dashboard').'</span>', array('title' => __('Customize your dashboard'), 'id' => 'customize_dashboard_icon', 'class' => 'image', 'onclick' => "showFadedBackdrop('".make_url('get_partial_for_backdrop', array('key' => 'dashboard_config'))."');")); ?>
+			<?php echo javascript_link_tag(image_tag('icon_dashboard_config.png').'<span>'.__('Customize your dashboard').'</span>', array('title' => __('Customize your dashboard'), 'id' => 'customize_dashboard_icon', 'class' => 'image', 'onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'dashboard_config'))."');")); ?>
 			<div class="header" style="margin: 0 5px 5px 0;"><?php echo __('Your projects'); ?></div>
 			<?php if (count($tbg_user->getAssociatedProjects()) > 0): ?>
 				<ul id="associated_projects">
@@ -81,7 +82,3 @@
 		</td>
 	</tr>
 </table>
-<script type="text/javascript">
-	Event.observe(window, 'resize', dashboardResize);
-	document.observe('dom:loaded', dashboardResize);
-</script>

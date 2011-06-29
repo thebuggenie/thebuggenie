@@ -237,7 +237,7 @@
 			default:
 				return $tstamp;
 		}
-		return htmlentities($tstring);
+		return htmlentities($tstring, ENT_COMPAT, TBGContext::getI18n()->getCharset());
 	}
 
 	function tbg_parse_text($text, $toc = false, $article_id = null, $options = array())

@@ -10,7 +10,6 @@
 		$tbg_response->addBreadcrumb(__('No sprint selected'));
 	}
 	$tbg_response->setTitle(__('"%project_name%" sprint overview', array('%project_name%' => $selected_project->getName())));
-	$tbg_response->addJavascript('scrum.js');
 
 ?>
 			<?php include_template('project/projectinfosidebar', array('selected_project' => $selected_project)); ?>

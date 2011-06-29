@@ -2,7 +2,7 @@
 	<td style="width: 20px; padding: 2px;"><?php echo image_tag('icon_components.png'); ?>
 		<div style="display: none; border: 1px solid #DDD; padding: 5px; text-align: center; width: 300px; position: absolute; background-color: #FFF;" id="del_component_<?php print $component->getID(); ?>">
 			<?php echo __('Are you sure you want to delete this component?'); ?><br>
-			<?php echo image_tag('spinning_16.gif', array('id' => 'component_'.$component->getID().'_delete_indicator', 'style' => 'margin-right: 5px; display: none;')); ?> <a href="javascript:void(0);" onclick="deleteComponent('<?php echo make_url('configure_delete_component', array('component_id' => $component->getID())); ?>', <?php print $component->getID(); ?>);return false;"><?php echo __('Yes'); ?></a> | <a href="javascript:void(0);" onclick="Effect.Fade('del_component_<?php print $component->getID(); ?>', { duration: 0.5 });"><b><?php echo __('No'); ?></b></a>
+			<?php echo image_tag('spinning_16.gif', array('id' => 'component_'.$component->getID().'_delete_indicator', 'style' => 'margin-right: 5px; display: none;')); ?> <a href="javascript:void(0);" onclick="TBG.Project.Component.remove('<?php echo make_url('configure_delete_component', array('component_id' => $component->getID())); ?>', <?php print $component->getID(); ?>);return false;"><?php echo __('Yes'); ?></a> | <a href="javascript:void(0);" onclick="Effect.Fade('del_component_<?php print $component->getID(); ?>', { duration: 0.5 });"><b><?php echo __('No'); ?></b></a>
 		</div>
 	</td>
 	<td style="width: auto; padding: 2px;" id="component_<?php echo $component->getID(); ?>_name"><?php print $component->getName(); ?></td>
@@ -45,7 +45,7 @@
 																	'header' 			=> __('Change / set auto assignee'),
 																	'clear_link_text'	=> __('Set auto assignee by noone'),
 																	'style'				=> array('position' => 'absolute'),
-																	'callback'			=> "setUser('" . make_url('configure_component_set_assignedto', array('project_id' => $component->getProject()->getID(), 'component_id' => $component->getID(), 'field' => 'lead_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'comp_".$component->getID()."_auto_assign');",
+																	'callback'			=> "TBG.Project.setUser('" . make_url('configure_component_set_assignedto', array('project_id' => $component->getProject()->getID(), 'component_id' => $component->getID(), 'field' => 'lead_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'comp_".$component->getID()."_auto_assign');",
 																	'base_id'			=> 'comp_'.$component->getID().'_auto_assign',
 																	'absolute'			=> true,
 																	'include_teams'		=> true)); ?>

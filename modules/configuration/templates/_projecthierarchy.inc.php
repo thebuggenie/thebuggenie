@@ -1,14 +1,14 @@
 <div class="tab_menu">
 	<ul id="project_hierarcy_menu">
-		<li id="tab_hierarchy_editions" class="selected"><?php echo javascript_link_tag(__('Editions'), array('onclick' => "switchSubmenuTab('tab_hierarchy_editions', 'project_hierarcy_menu');")); ?></li>
-		<li id="tab_hierarchy_components"><?php echo javascript_link_tag(__('Components'), array('onclick' => "switchSubmenuTab('tab_hierarchy_components', 'project_hierarcy_menu');")); ?></li>
-		<li id="tab_hierarchy_releases"><?php echo javascript_link_tag(__('Releases'), array('onclick' => "switchSubmenuTab('tab_hierarchy_releases', 'project_hierarcy_menu');")); ?></li>
+		<li id="tab_hierarchy_editions" class="selected"><?php echo javascript_link_tag(__('Editions'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_hierarchy_editions', 'project_hierarcy_menu');")); ?></li>
+		<li id="tab_hierarchy_components"><?php echo javascript_link_tag(__('Components'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_hierarchy_components', 'project_hierarcy_menu');")); ?></li>
+		<li id="tab_hierarchy_releases"><?php echo javascript_link_tag(__('Releases'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_hierarchy_releases', 'project_hierarcy_menu');")); ?></li>
 	</ul>
 </div>
 <div id="project_hierarcy_menu_panes">
 	<div class="tab_pane" id="tab_hierarchy_editions_pane" style="text-align: left;">
 		<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_projects_add_edition', array('project_id' => $project->getID())); ?>" method="post" id="add_edition_form" onsubmit="addEdition('<?php echo make_url('configure_projects_add_edition', array('project_id' => $project->getID())); ?>');return false;" <?php if (!$project->isEditionsEnabled()): ?> style="display: none;"<?php endif; ?>>
+			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_projects_add_edition', array('project_id' => $project->getID())); ?>" method="post" id="add_edition_form" onsubmit="TBG.Project.Edition.add('<?php echo make_url('configure_projects_add_edition', array('project_id' => $project->getID())); ?>');return false;" <?php if (!$project->isEditionsEnabled()): ?> style="display: none;"<?php endif; ?>>
 				<div class="rounded_box lightyellow" style="vertical-align: middle; padding: 5px; font-size: 12px;">
 					<input type="submit" value="<?php echo __('Add'); ?>" style="float: right;">
 					<label for="edition_name"><?php echo __('Add an edition'); ?></label>
@@ -38,7 +38,7 @@
 	</div>
 	<div class="tab_pane" id="tab_hierarchy_components_pane" style="display: none; text-align: left;">
 		<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_projects_add_component', array('project_id' => $project->getID())); ?>" method="post" id="add_component_form" onsubmit="addComponent('<?php echo make_url('configure_projects_add_component', array('project_id' => $project->getID())); ?>');return false;"<?php if (!$project->isComponentsEnabled()): ?> style="display: none;"<?php endif; ?>>
+			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_projects_add_component', array('project_id' => $project->getID())); ?>" method="post" id="add_component_form" onsubmit="TBG.Project.Component.add('<?php echo make_url('configure_projects_add_component', array('project_id' => $project->getID())); ?>');return false;"<?php if (!$project->isComponentsEnabled()): ?> style="display: none;"<?php endif; ?>>
 				<div class="rounded_box lightyellow" style="vertical-align: middle; padding: 5px; font-size: 12px;">
 					<input type="submit" value="<?php echo __('Add'); ?>" style="float: right;">
 					<label for="component_name"><?php echo __('Add a component'); ?></label>

@@ -8,7 +8,7 @@
 																		'header' 			=> __('Change / set owner'),
 																		'clear_link_text'	=> __('Set owned by noone'),
 																		'style'				=> array('position' => 'absolute'),
-																		'callback'		 	=> "setUser('" . make_url('configure_project_set_leadby', array('project_id' => $project->getID(), 'field' => 'owned_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'owned_by');",
+																		'callback'		 	=> "TBG.Project.setUser('" . make_url('configure_project_set_leadby', array('project_id' => $project->getID(), 'field' => 'owned_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'owned_by');",
 																		'base_id'			=> 'owned_by',
 																		'absolute'			=> true,
 																		'include_teams'		=> true)); ?>
@@ -39,7 +39,7 @@
 																		'header' 			=> __('Change / set leader'),
 																		'clear_link_text'	=> __('Set lead by noone'),
 																		'style'				=> array('position' => 'absolute'),
-																		'callback'		 	=> "setUser('" . make_url('configure_project_set_leadby', array('project_id' => $project->getID(), 'field' => 'lead_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'lead_by');",
+																		'callback'		 	=> "TBG.Project.setUser('" . make_url('configure_project_set_leadby', array('project_id' => $project->getID(), 'field' => 'lead_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'lead_by');",
 																		'base_id'			=> 'lead_by',
 																		'absolute'			=> true,
 																		'include_teams'		=> true)); ?>
@@ -70,7 +70,7 @@
 																		'header' 			=> __('Change / set QA responsible'),
 																		'clear_link_text'	=> __('Set QA responsible to noone'),
 																		'style'				=> array('position' => 'absolute'),
-																		'callback'		 	=> "setUser('" . make_url('configure_project_set_leadby', array('project_id' => $project->getID(), 'field' => 'qa_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'qa_by');",
+																		'callback'		 	=> "TBG.Project.setUser('" . make_url('configure_project_set_leadby', array('project_id' => $project->getID(), 'field' => 'qa_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'qa_by');",
 																		'base_id'			=> 'qa_by',
 																		'absolute'			=> true,
 																		'include_teams'		=> true)); ?>
@@ -102,7 +102,7 @@
 		<td style="width: 200px;"><label for="project_name"><?php echo __('Project name'); ?></label></td>
 		<td style="width: 580px;">
 			<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-				<input type="text" name="project_name" id="project_name_input" onblur="updateProjectPrefix('<?php echo make_url('configure_project_get_updated_key', array('project_id' => $project->getID())); ?>', <?php echo $project->getID(); ?>);" value="<?php print $project->getName(); ?>" style="width: 100%;">
+				<input type="text" name="project_name" id="project_name_input" onblur="TBG.Project.updatePrefix('<?php echo make_url('configure_project_get_updated_key', array('project_id' => $project->getID())); ?>', <?php echo $project->getID(); ?>);" value="<?php print $project->getName(); ?>" style="width: 100%;">
 			<?php else: ?>
 				<?php echo $project->getName(); ?>
 			<?php endif; ?>

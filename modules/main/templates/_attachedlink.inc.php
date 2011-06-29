@@ -18,7 +18,7 @@
 				<div class="content" style="padding: 3px;">
 					<?php echo __('This aciton cannot be reversed. Are you sure you want to do this?'); ?>
 					<div style="text-align: right; font-size: 12px;">
-						<?php echo javascript_link_tag(__('Yes'), array('onclick' => "$('viewissue_links_{$link_id}_remove_confirm').toggle();removeLinkFromIssue('".make_url('issue_remove_link', array('issue_id' => $issue->getID(), 'link_id' => $link_id))."', ".$link_id.");")); ?> ::
+						<?php echo javascript_link_tag(__('Yes'), array('onclick' => "$('viewissue_links_{$link_id}_remove_confirm').toggle();TBG.Issues.Link.remove('".make_url('issue_remove_link', array('issue_id' => $issue->getID(), 'link_id' => $link_id))."', ".$link_id.");")); ?> ::
 						<?php echo javascript_link_tag('<b>'.__('No').'</b>', array('onclick' => "$('viewissue_links_{$link_id}_remove_confirm').toggle();")); ?>
 					</div>
 				</div>

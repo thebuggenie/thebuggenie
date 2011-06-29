@@ -2,10 +2,10 @@
 	<div id="backdrop_detail_content" class="rounded_top login_content">
 		<div class="tab_menu">
 			<ul id="login_menu">
-				<li id="tab_login"<?php if ($selected_tab == 'login'): ?> class="selected"<?php endif; ?>><?php echo javascript_link_tag(image_tag('icon_login.png', array('style' => 'float: left;')).__('Login'), array('onclick' => "switchSubmenuTab('tab_login', 'login_menu');")); ?></li>
+				<li id="tab_login"<?php if ($selected_tab == 'login'): ?> class="selected"<?php endif; ?>><?php echo javascript_link_tag(image_tag('icon_login.png', array('style' => 'float: left;')).__('Login'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_login', 'login_menu');")); ?></li>
 				<?php TBGEvent::createNew('core', 'login_form_tab')->trigger(array('selected_tab' => $selected_tab)); ?>
 				<?php if (TBGSettings::get('allowreg') == true): ?>
-					<li id="tab_register"<?php if ($selected_tab == 'register'): ?> class="selected"<?php endif; ?>><?php echo javascript_link_tag(image_tag('icon_register.png', array('style' => 'float: left;')).__('Register new account'), array('onclick' => "switchSubmenuTab('tab_register', 'login_menu');")); ?></li>
+					<li id="tab_register"<?php if ($selected_tab == 'register'): ?> class="selected"<?php endif; ?>><?php echo javascript_link_tag(image_tag('icon_register.png', array('style' => 'float: left;')).__('Register new account'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_register', 'login_menu');")); ?></li>
 				<?php endif; ?>
 			</ul>
 		</div>
@@ -26,7 +26,7 @@
 				<?php endif; ?>
 				<div class="logindiv">			
 					<div class="rounded_box iceblue" style="vertical-align: middle; padding: 5px;">
-						<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('login'); ?>" method="post" id="login_form" onsubmit="loginUser('<?php echo make_url('login'); ?>'); return false;">
+						<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('login'); ?>" method="post" id="login_form" onsubmit="TBG.Main.Login.login('<?php echo make_url('login'); ?>'); return false;">
 							<input type="hidden" id="tbg3_referer" name="tbg3_referer" value="" />
 							<div class="login_boxheader"><?php echo __('Log in to an existing account'); ?></div>
 							<div>
@@ -59,13 +59,13 @@
 	</div>
 	<div class="backdrop_detail_footer">
 	<?php if ($mandatory != true): ?>
-		<a href="javascript:void(0);" onclick="resetFadedBackdrop();"><?php echo __('Close'); ?></a>
+		<a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.reset();"><?php echo __('Close'); ?></a>
 	<?php endif; ?>
 	</div>
 </div>
 <?php if (isset($options['error'])): ?>
 	<script type="text/javascript">
-		failedMessage('<?php echo $options['error']; ?>');
+		TBG.Main.Helpers.Message.error('<?php echo $options['error']; ?>');
 	</script>
 <?php endif; ?>
 <script type="text/javascript">

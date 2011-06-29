@@ -11,6 +11,6 @@
 	</div>
 	<div class="backdrop_detail_footer">
 		<?php echo image_tag('spinning_32.gif', array('id' => 'backdrop_detail_indicator', 'style' => 'display: none; float: right; margin-left: 5px;')); ?>
-		<a href="javascript:void(0);" onclick="resetFadedBackdrop();"><?php echo __('Close'); ?></a>
+		<a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.reset();"><?php echo __('Close'); ?></a>
 	</div>
 </div>

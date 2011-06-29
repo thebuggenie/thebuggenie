@@ -8,7 +8,7 @@ else
 {
 ?>
 		<div style="vertical-align: middle; padding: 10px;" id="register1">
-			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('register1'); ?>" method="post" id="register1_form" onsubmit="loginRegister1('<?php echo make_url('register1'); ?>'); return false;">
+			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('register1'); ?>" method="post" id="register1_form" onsubmit="TBG.Main.Login.checkUsername('<?php echo make_url('register1'); ?>'); return false;">
 				<div class="login_boxheader"><?php echo __('Register a new account'); ?></div>
 				<div>
 					<label class="login_fieldheader"  for="desired_username"><?php echo __('Desired username'); ?></label>&nbsp;
@@ -20,7 +20,7 @@ else
 			</form>
 		</div>
 		<div style="vertical-align: middle; padding: 10px; display: none;" id="register2">
-			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('register2'); ?>" method="post" id="register2_form" onsubmit="loginRegister2('<?php echo make_url('register2'); ?>'); return false;">
+			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('register2'); ?>" method="post" id="register2_form" onsubmit="TBG.Main.Login.register('<?php echo make_url('register2'); ?>'); return false;">
 				<input type="hidden" id="username" name="username">
 				<div class="login_boxheader"><?php echo __('Register a new account'); ?></div>
 				<div>
