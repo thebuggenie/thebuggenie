@@ -2,7 +2,7 @@
 	<div style="display: none;" class="story_color_selector" id="color_selector_<?php echo $issue->getID(); ?>">
 		<div style="float: left;">
 			<?php foreach ($colors as $color): ?>
-				<div onclick="setStoryColor('<?php echo make_url('project_scrum_story_setcolor', array('project_key' => $issue->getProject()->getKey(), 'story_id' => $issue->getID())); ?>', <?php echo $issue->getID(); ?>, '<?php echo $color; ?>');" class="story_color_selector_item c_sel_red_1" style="background-color: <?php echo $color; ?>;">&nbsp;</div>
+				<div <?php if ($issue->canEditIssue()): ?>onclick="setStoryColor('<?php echo make_url('project_scrum_story_setcolor', array('project_key' => $issue->getProject()->getKey(), 'story_id' => $issue->getID())); ?>', <?php echo $issue->getID(); ?>, '<?php echo $color; ?>');" <?php endif; ?>class="story_color_selector_item c_sel_red_1" style="background-color: <?php echo $color; ?>;">&nbsp;</div>
 			<?php endforeach; ?>
 		</div>
 		<div style="float: left; position: relative;">
@@ -17,7 +17,7 @@
 		<?php endif; ?>
 		<?php echo __('%points%pt(s)', array('%points%' => '<span id="scrum_story_' . $issue->getID() . '_points">' . $issue->getEstimatedPoints() . '</span>')); ?>
 	</div>
-	<div class="story_color" id="story_color_<?php echo $issue->getID(); ?>" onclick="$('color_selector_<?php echo $issue->getID(); ?>').toggle();" style="cursor: pointer; background-color: <?php echo $issue->getScrumColor(); ?>;">&nbsp;</div>
+	<div class="story_color" id="story_color_<?php echo $issue->getID(); ?>" <?php if ($issue->canEditIssue()): ?>onclick="$('color_selector_<?php echo $issue->getID(); ?>').toggle();"<?php endif; ?> style="cursor: pointer; background-color: <?php echo $issue->getScrumColor(); ?>;">&nbsp;</div>
 	<div class="story_no"><?php echo $issue->getFormattedIssueNo(); ?></div>
 	<div class="story_title"><?php echo $issue->getTitle(); ?></div>
 	<input type="hidden" id="scrum_story_<?php echo $issue->getID(); ?>_id" value="<?php echo $issue->getID(); ?>">
