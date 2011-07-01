@@ -3,7 +3,6 @@
 	if ($workflow instanceof TBGWorkflow)
 	{
 		$tbg_response->setTitle(__('Configure workflow "%workflow_name%"', array('%workflow_name%' => $workflow->getName())));
-		$tbg_response->addJavascript('config/workflow.js');
 	}
 	else
 	{

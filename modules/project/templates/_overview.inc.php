@@ -4,10 +4,6 @@
 	{
 		$tbg_response->addFeed(make_url('project_timeline', array('project_key' => $project->getKey(), 'format' => 'rss')), __('"%project_name%" project timeline', array('%project_name%' => $project->getName())));
 	}
-	if ($tbg_user->canEditProjectDetails($project))
-	{
-		$tbg_response->addJavascript('config/projects_ajax.js');
-	}
 
 ?>
 <div class="rounded_box <?php if (!($project->isIssuelistVisibleInFrontpageSummary() && count($project->getVisibleIssuetypes()))): ?>invisible <?php else: ?> white borderless <?php endif; ?>project_strip">

@@ -1,9 +1,6 @@
 <?php
 
 	$tbg_response->setTitle(__('Configure data types'));
-	$tbg_response->addJavascript('config/issuefields.js');
-	$tbg_response->addJavascript('prototype.js');
-	//$tbg_response->addJavascript('scriptaculous.js');
 	$tbg_response->addJavascript('cpicker/cpicker.js');
 	$tbg_response->addStylesheet('cpicker/cpicker.css');
 ?>

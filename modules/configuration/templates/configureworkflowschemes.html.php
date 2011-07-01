@@ -1,7 +1,6 @@
 <?php
 
 	$tbg_response->setTitle(__('Configure workflow schemes'));
-	$tbg_response->addJavascript('config/workflow.js')
 
 ?>
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
