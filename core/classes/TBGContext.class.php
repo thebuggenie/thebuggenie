@@ -1986,7 +1986,19 @@
 				if (isset($decoration_header))
 					echo $decoration_header;
 
-				echo $content;
+				if (TBGSettings::isMaintenanceModeEnabled() && !strstr(self::getRouting()->getCurrentRouteName(), 'configure'))
+				{
+					if (!file_exists(THEBUGGENIE_CORE_PATH . 'templates/offline.inc.php'))
+					{
+						throw new TBGTemplateNotFoundException('Can not find offline mode template');
+					}
+					require THEBUGGENIE_CORE_PATH . 'templates/offline.inc.php';
+				}
+				else
+				{
+					echo $content;
+				}
+				
 				TBGLogging::log('...done (rendering content)');
 				
 				// Render footer template if any, and store the output in a variable

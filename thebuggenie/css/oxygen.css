@@ -48,6 +48,10 @@ div.image_container { border: 1px solid #CCC; padding: 3px; background-color: #F
 div.image_container icleft { float: left; clear: left; }
 div.image_container icright { float: right; clear: right; }
 div.image_container.thumb img.image { width: 220px; }
+
+.offline_msg { padding: 10px; }
+.generic_offline { text-align: center; font-weight: bold; font-size: larger; }
+
 /* end general styles */
 
 /* Main header area */

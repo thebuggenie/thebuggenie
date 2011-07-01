@@ -26,6 +26,6 @@
 		<?php endif; ?>
 	</tr>
 	<tr>
-		<td class="config_explanation" colspan="2"><?php echo __('The message you enter here will be displayed to users whilst in maintenance mode. If you do not enter anything, users will be greeted with a blank screen.'); ?></td>
+		<td class="config_explanation" colspan="2"><?php echo __('The message you enter here will be displayed to users whilst in maintenance mode. If you do not enter anything, users will be shown a generic message.'); ?></td>
 	</tr>
 </table>

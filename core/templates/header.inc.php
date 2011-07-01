@@ -347,6 +347,7 @@
 							</td>
 							<td style="width: auto;">
 								<div class="tab_menu header_menu<?php if (TBGContext::isProjectContext()): ?> project_context<?php endif; ?>">
+								<?php if (!TBGSettings::isMaintenanceModeEnabled()): ?>
 									<ul>
 										<?php if (!TBGSettings::isSingleProjectTracker() && !TBGContext::isProjectContext()): ?>
 											<li<?php if ($tbg_response->getPage() == 'home'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('home'), image_tag('tab_index.png').__('Frontpage')); ?></li>
@@ -483,11 +484,17 @@
 										</div>
 									</div>
 									<?php TBGEvent::createNew('core', 'after_header_userinfo')->trigger(); ?>
+								<?php endif; ?>
 								</div>
 							</td>
 						</tr>
 					</table>
-					<?php require THEBUGGENIE_CORE_PATH . 'templates/submenu.inc.php'; ?>
+					<?php 
+						if (!TBGSettings::isMaintenanceModeEnabled())
+						{
+							require THEBUGGENIE_CORE_PATH . 'templates/submenu.inc.php';
+						}
+					?>
 					<?php if (!TBGContext::isDebugMode()): ?>
 						<div class="rounded_box iceblue borderless infobox" style="margin: 5px; display: none;" id="firebug_warning">
 							<div style="padding: 5px;">
