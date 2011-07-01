@@ -1360,7 +1360,7 @@
 					}
 				}
 				
-				if ($res = TBGIssuesTable::getTable()->getByProjectIDandNoMilestoneandTypes($this->getID(), $issuetypes))
+				if ($res = TBGIssuesTable::getTable()->getByProjectIDandNoMilestoneandTypesAndState($this->getID(), $issuetypes, TBGIssue::STATE_OPEN))
 				{
 					while ($row = $res->getNextRow())
 					{
