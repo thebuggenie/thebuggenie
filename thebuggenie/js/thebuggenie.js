@@ -30,7 +30,8 @@ var TBG = {
 		},
 		Build: {},
 		Component: {},
-		Edition: {}
+		Edition: {},
+        Commits: {}
 	},
 	Config: {
 		Permissions: {},
@@ -926,6 +927,24 @@ TBG.Project.Timeline.update = function(url) {
 			show: 'timeline_more_link',
 			callback: function(json) {
 				$('timeline_offset').setValue(json.offset)
+			}
+		}
+	});
+};
+
+TBG.Project.Commits.update = function(url) {
+	TBG.Main.Helpers.ajax(url, {
+		url_method: 'get',
+		additional_params: {offset: $('commits_offset').getValue()},
+		loading: {
+			indicator: 'commits_indicator',
+			hide: 'commits_more_link'
+		},
+		success: {
+			update: {element: 'commits', insertion: true},
+			show: 'commits_more_link',
+			callback: function(json) {
+				$('commits_offset').setValue(json.offset)
 			}
 		}
 	});
