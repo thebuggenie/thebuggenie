@@ -14,7 +14,7 @@
 <?php endif; ?>
 <?php if ($tbg_user->hasProjectPageAccess('project_scrum', $selected_project->getID())): ?>
 	<?php echo link_tag(make_url('project_scrum', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Sprint planning'), ((in_array($tbg_response->getPage(), array('project_scrum', 'project_scrum_sprint_details'))) ? array_merge($scrum_additional_array, array('class' => 'selected')) : $scrum_additional_array)); ?>
-	<?php if (!($submenu) && TBGContext::getCurrentProject()->usesScrum() && in_array($tbg_response->getPage(), array('project_scrum', 'project_scrum_sprint_details'))): ?>
+	<?php if (!isset($submenu) && (count($selected_project->getSprints()) > 0) && TBGContext::getCurrentProject()->usesScrum() && in_array($tbg_response->getPage(), array('project_scrum', 'project_scrum_sprint_details'))): ?>
 		<ul class="simple_list">
 			<?php foreach ($selected_project->getSprints() as $sprint): ?>
 				<li><?php echo link_tag(make_url('project_scrum_sprint_details', array('project_key' => $selected_project->getKey(), 'sprint_id' => $sprint->getID())), $sprint->getName()); ?></li>

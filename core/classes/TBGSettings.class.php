@@ -92,6 +92,8 @@
 		const SETTING_USER_GROUP = 'defaultgroup';
 		const SETTING_USER_TIMEZONE = 'timezone';
 		const SETTING_AUTH_BACKEND = 'auth_backend';
+		const SETTING_MAINTENANCE_MODE = 'offline';
+		const SETTING_MAINTENANCE_MESSAGE = 'offline_msg';
 
 		static protected $_ver_mj = 3;
 		static protected $_ver_mn = 1;
@@ -470,6 +472,25 @@
 		public static function getLogoutReturnRoute()
 		{
 			return self::get(self::SETTING_RETURN_FROM_LOGOUT);
+		}
+		
+		public static function isMaintenanceModeEnabled()
+		{
+			return (bool)self::get(self::SETTING_MAINTENANCE_MODE);
+		}
+		
+		public static function hasMaintenanceMessage()
+		{
+			if (self::get(self::SETTING_MAINTENANCE_MESSAGE) == '')
+			{
+				return false;
+			}
+			return true;
+		}
+		
+		public static function getMaintenanceMessage()
+		{
+			return self::get(self::SETTING_MAINTENANCE_MESSAGE);
 		}
 		
 		public static function getOnlineState()

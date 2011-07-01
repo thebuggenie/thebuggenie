@@ -1,8 +1,3 @@
-<?php
-
-	$tbg_response->addJavascript('config/workflow.js');
-
-?>
 <div class="workflow_browser_step_transition transition" id="transition_<?php echo $transition->getID(); ?>">
 	<?php if (!$transition->isCore()): ?>
 		<?php echo javascript_link_tag(image_tag('icon_delete.png'), array('class' => 'image', 'style' => 'float: right;', 'onclick' => "\$('delete_transition_{$transition->getID()}_confirm').toggle();")); ?>

@@ -1,7 +1,6 @@
 <?php
 
 	$tbg_response->setTitle(__('Configuration center'));
-	$tbg_response->addJavascript('config/settings.js');
 	
 ?>
 <div class="update_div rounded_box lightgrey">

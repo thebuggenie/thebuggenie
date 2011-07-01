@@ -232,10 +232,7 @@
 		
 		public function listen_headerBegins(TBGEvent $event)
 		{
-			if ($this->isOutgoingNotificationsEnabled() && TBGContext::getUser()->isGuest())
-			{			
-				TBGContext::getResponse()->addJavascript('forgot.js');
-			}
+
 		}
 		
 		public function sendforgottenPasswordEmail($user)

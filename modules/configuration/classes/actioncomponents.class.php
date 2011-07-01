@@ -30,6 +30,11 @@
 		{
 			$this->languages = TBGI18n::getLanguages();
 		}
+		
+		public function componentOffline()
+		{
+			
+		}
 
 		public function componentLeftmenu()
 		{

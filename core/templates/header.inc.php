@@ -16,295 +16,95 @@
 			<link rel="shortcut icon" href="<?php print TBGContext::getTBGPath(); ?>themes/<?php print TBGSettings::getThemeName(); ?>/favicon.png">
 		<?php endif; ?>
 		
-		<?php
-		include(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DIRECTORY_SEPARATOR . 'themes' . DIRECTORY_SEPARATOR . TBGSettings::getThemeName() . DIRECTORY_SEPARATOR . 'theme.php');
-		?>
-		
 		<link rel="shortcut icon" href="<?php print TBGContext::getTBGPath(); ?>themes/<?php print TBGSettings::getThemeName(); ?>/favicon.png">
 		<link title="<?php echo (TBGContext::isProjectContext()) ? __('%project_name% search', array('%project_name%' => TBGContext::getCurrentProject()->getName())) : __('%site_name% search', array('%site_name%' => TBGSettings::getTBGname())); ?>" href="<?php echo (TBGContext::isProjectContext()) ? make_url('project_opensearch', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('opensearch'); ?>" type="application/opensearchdescription+xml" rel="search">
-		<?php $tbg_response->addStylesheet(TBGSettings::getThemeName().'.css'); ?>
 		<?php foreach ($tbg_response->getFeeds() as $feed_url => $feed_title): ?>
-			<link rel="alternate" type="application/rss+xml" title="<?php echo str_replace('"', '\'', $feed_title); ?>" href="<?php echo $feed_url; ?>">
+<link rel="alternate" type="application/rss+xml" title="<?php echo str_replace('"', '\'', $feed_title); ?>" href="<?php echo $feed_url; ?>">
 		<?php endforeach; ?>
-		<?php if (count(TBGContext::getModules())): ?>
-			<?php foreach (TBGContext::getModules() as $module): ?>
-				<?php $css_name = TBGSettings::getThemeName() . "_" . $module->getName() . ".css"; ?>
-				<?php
-				if (file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DIRECTORY_SEPARATOR . 'css' . DIRECTORY_SEPARATOR . $css_name)):
-					$tbg_response->addStylesheet($css_name);
-				endif; ?>
-			<?php endforeach; ?>
-		<?php endif; ?>
-		<?php 
-		$tbg_response->addJavascript('prototype.js');
-		$tbg_response->addJavascript('builder.js');
-		$tbg_response->addJavascript('effects.js');
-		$tbg_response->addJavascript('dragdrop.js');
-		$tbg_response->addJavascript('controls.js');
-		$tbg_response->addJavascript('jquery.markitup.js');
-		$tbg_response->addJavascript('thebuggenie.js');
-
-		if ($tbg_user->isGuest()):
-			$tbg_response->addJavascript('login.js');
-		endif;
-
-		$cssstring = '';
-		$jsstring = '';
 		
-		$sepcss = array();
-		$sepjs = array();
-		
-		foreach ($tbg_response->getStylesheets() as $stylesheet => $minify)
-		{
-			if ($minify == true)
+		<?php
+			// Load theme specific code - includes core CSS
+			include(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DIRECTORY_SEPARATOR . 'themes' . DIRECTORY_SEPARATOR . TBGSettings::getThemeName() . DIRECTORY_SEPARATOR . 'theme.php');
+			
+			// Module CSS files
+			if (count(TBGContext::getModules()))
 			{
-				$cssstring .= ',css/'.$stylesheet;
+				foreach (TBGContext::getModules() as $module)
+				{
+					$css_name = TBGSettings::getThemeName() . "_" . $module->getName() . ".css";
+					if (file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DIRECTORY_SEPARATOR . 'css' . DIRECTORY_SEPARATOR . $css_name)):
+						$tbg_response->addStylesheet($css_name);
+					endif;
+				}
 			}
-			else
+	
+			// Core JS scripts
+			$tbg_response->addJavascript('prototype.js');
+			$tbg_response->addJavascript('builder.js');
+			$tbg_response->addJavascript('effects.js');
+			$tbg_response->addJavascript('dragdrop.js');
+			$tbg_response->addJavascript('controls.js');
+			$tbg_response->addJavascript('jquery.markitup.js');
+			$tbg_response->addJavascript('thebuggenie.js');
+			$tbg_response->addJavascript('markitup.js');
+	
+			$cssstring = '';
+			$jsstring = '';
+			
+			$sepcss = array();
+			$sepjs = array();
+			
+			
+			// Add stylesheets to minify and non-minify lists
+			foreach ($tbg_response->getStylesheets() as $stylesheet => $minify)
 			{
-				$sepcss[] = $stylesheet;
+				if ($minify == true && file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DIRECTORY_SEPARATOR . 'css' . DIRECTORY_SEPARATOR . $stylesheet))
+				{
+					$cssstring .= ',css/'.$stylesheet;
+				}
+				else
+				{
+					$sepcss[] = $stylesheet;
+				}
 			}
-		}
-		
-		foreach ($tbg_response->getJavascripts() as $script => $minify)
-		{
-			if ($minify == true)
+			
+			// Add scripts to minify and non-minify lists
+			foreach ($tbg_response->getJavascripts() as $script => $minify)
 			{
-				$jsstring .= ',js/'.$script;
+				if ($minify == true && file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DIRECTORY_SEPARATOR . 'js' . DIRECTORY_SEPARATOR . $script))
+				{
+					$jsstring .= ',js/'.$script;
+				}
+				else
+				{
+					$sepjs[] = $script;
+				}
 			}
-			else
-			{
-				$sepjs[] = $script;
-			}
-		}
-		
-		$cssstring = ltrim($cssstring, ',');
-		$jsstring = ltrim($jsstring, ',');
+			
+			$cssstring = ltrim($cssstring, ',');
+			$jsstring = ltrim($jsstring, ',');
 		?>
-		<script type="text/javascript" src="http://code.jquery.com/jquery-1.5.2.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.5.2.min.js"></script>
 		<script type="text/javascript">jQuery.noConflict();</script>
+		
 		<link rel="stylesheet" type="text/css" href="<?php print make_url('serve'); ?>&g=css&files=<?php print base64_encode($cssstring); ?>">
 		<script type="text/javascript" src="<?php print make_url('serve'); ?>&g=js&files=<?php print base64_encode($jsstring); ?>"></script>
 
 		<?php
-		// files opted out of minification, wont use content server on minify=off mode
-		foreach ($sepcss as $css)
-		{
-			echo '<link rel="stylesheet" type="text/css" href="'.$css.'">';
-		}
-		
-		foreach ($sepjs as $js)
-		{
-			echo 'script type="text/javascript" src="'.$js.'">';
-		}
-		
+			// Load CSS and scripts manually which have opted out of minification
+			foreach ($sepcss as $css)
+			{
+				echo '<link rel="stylesheet" type="text/css" href="'.$css.'">';
+			}
+			
+			foreach ($sepjs as $js)
+			{
+				echo '<script type="text/javascript" src="'.$js.'"></script>';
+			}
 		?>
 
-		<script type="text/javascript">
-			jQuery(document).ready(function(){jQuery('textarea').markItUp({
-				previewParserPath:	'', // path to your Wiki parser
-				onShiftEnter:		{keepDefault:false, replaceWith:'\n\n'},
-				markupSet: [
-					{name:'Heading 1', key:'1', openWith:'== ', closeWith:' ==', placeHolder:'Your title here...' },
-					{name:'Heading 2', key:'2', openWith:'=== ', closeWith:' ===', placeHolder:'Your title here...' },
-					{name:'Heading 3', key:'3', openWith:'==== ', closeWith:' ====', placeHolder:'Your title here...' },
-					{name:'Heading 4', key:'4', openWith:'===== ', closeWith:' =====', placeHolder:'Your title here...' },
-					{name:'Heading 5', key:'5', openWith:'====== ', closeWith:' ======', placeHolder:'Your title here...' },
-					{separator:'---------------' },		
-					{name:'Bold', key:'B', openWith:"'''", closeWith:"'''"}, 
-					{name:'Italic', key:'I', openWith:"''", closeWith:"''"}, 
-					{name:'Stroke through', key:'S', openWith:'<s>', closeWith:'</s>'}, 
-					{separator:'---------------' },
-					{name:'Bulleted list', openWith:'(!(* |!|*)!)'}, 
-					{name:'Numeric list', openWith:'(!(# |!|#)!)'}, 
-					{separator:'---------------' },
-					{name:'Picture', key:"P", replaceWith:'[[Image:[![Url:!:http://]!]|[![name]!]]]'}, 
-					{name:'Link', key:"L", openWith:"[[![Link]!] ", closeWith:']', placeHolder:'Your text to link here...' },
-					{name:'Url', openWith:"[[![Url:!:http://]!] ", closeWith:']', placeHolder:'Your text to link here...' },
-					{separator:'---------------' },
-					{name:'Quotes', openWith:'(!(> |!|>)!)', placeHolder:''},
-					{name:'Code', openWith:'(!(<source lang="[![Language:!:php]!]">|!|<pre>)!)', closeWith:'(!(</source>|!|</pre>)!)'}
-				]
-			});});
-		</script>
-		<style type="text/css">
-			/* -------------------------------------------------------------------
-			// markItUp! Universal MarkUp Engine, JQuery plugin
-			// By Jay Salvat - http://markitup.jaysalvat.com/
-			// ------------------------------------------------------------------*/
-			.markItUp .markItUpButton1 a {
-				background-image:url(<?php echo TBGSettings::getURLhost() . TBGContext::getStrippedTBGPath() . '/themes/' . TBGSettings::getThemeName() . '/markitup/'; ?>h1.png); 
-			}
-			.markItUp .markItUpButton2 a {
-				background-image:url(<?php echo TBGSettings::getURLhost() . TBGContext::getStrippedTBGPath() . '/themes/' . TBGSettings::getThemeName() . '/markitup/'; ?>h2.png); 
-			}
-			.markItUp .markItUpButton3 a {
-				background-image:url(<?php echo TBGSettings::getURLhost() . TBGContext::getStrippedTBGPath() . '/themes/' . TBGSettings::getThemeName() . '/markitup/'; ?>h3.png); 
-			}
-			.markItUp .markItUpButton4 a {
-				background-image:url(<?php echo TBGSettings::getURLhost() . TBGContext::getStrippedTBGPath() . '/themes/' . TBGSettings::getThemeName() . '/markitup/'; ?>h4.png); 
-			}
-			.markItUp .markItUpButton5 a {
-				background-image:url(<?php echo TBGSettings::getURLhost() . TBGContext::getStrippedTBGPath() . '/themes/' . TBGSettings::getThemeName() . '/markitup/'; ?>h5.png); 
-			}
-
-			.markItUp .markItUpButton6 a {
-				background-image:url(<?php echo TBGSettings::getURLhost() . TBGContext::getStrippedTBGPath() . '/themes/' . TBGSettings::getThemeName() . '/markitup/'; ?>bold.png);
-			}
-			.markItUp .markItUpButton7 a {
-				background-image:url(<?php echo TBGSettings::getURLhost() . TBGContext::getStrippedTBGPath() . '/themes/' . TBGSettings::getThemeName() . '/markitup/'; ?>italic.png);
-			}
-			.markItUp .markItUpButton8 a {
-				background-image:url(<?php echo TBGSettings::getURLhost() . TBGContext::getStrippedTBGPath() . '/themes/' . TBGSettings::getThemeName() . '/markitup/'; ?>stroke.png);
-			}
-
-			.markItUp .markItUpButton9 a {
-				background-image:url(<?php echo TBGSettings::getURLhost() . TBGContext::getStrippedTBGPath() . '/themes/' . TBGSettings::getThemeName() . '/markitup/'; ?>list-bullet.png);
-			}
-			.markItUp .markItUpButton10 a {
-				background-image:url(<?php echo TBGSettings::getURLhost() . TBGContext::getStrippedTBGPath() . '/themes/' . TBGSettings::getThemeName() . '/markitup/'; ?>list-numeric.png);
-			}
-
-			.markItUp .markItUpButton11 a {
-				background-image:url(<?php echo TBGSettings::getURLhost() . TBGContext::getStrippedTBGPath() . '/themes/' . TBGSettings::getThemeName() . '/markitup/'; ?>picture.png); 
-			}
-			.markItUp .markItUpButton12 a {
-				background-image:url(<?php echo TBGSettings::getURLhost() . TBGContext::getStrippedTBGPath() . '/themes/' . TBGSettings::getThemeName() . '/markitup/'; ?>link.png);
-			}
-			.markItUp .markItUpButton13 a {
-				background-image:url(<?php echo TBGSettings::getURLhost() . TBGContext::getStrippedTBGPath() . '/themes/' . TBGSettings::getThemeName() . '/markitup/'; ?>url.png);
-			}
-
-			.markItUp .markItUpButton14 a	{
-				background-image:url(<?php echo TBGSettings::getURLhost() . TBGContext::getStrippedTBGPath() . '/themes/' . TBGSettings::getThemeName() . '/markitup/'; ?>quotes.png);
-			}
-			.markItUp .markItUpButton15 a	{
-				background-image:url(<?php echo TBGSettings::getURLhost() . TBGContext::getStrippedTBGPath() . '/themes/' . TBGSettings::getThemeName() . '/markitup/'; ?>code.png);
-			}
-
-			.markItUp .preview a {
-				background-image:url(<?php echo TBGSettings::getURLhost() . TBGContext::getStrippedTBGPath() . '/themes/' . TBGSettings::getThemeName() . '/markitup/'; ?>preview.png);
-			}
-			.markItUp * {
-				margin:0px; padding:0px;
-				outline:none;
-			}
-			.markItUp a:link,
-			.markItUp a:visited {
-				color:#000;
-				text-decoration:none;
-			}
-			.markItUp  {
-/*				width:700px;*/
-				margin:5px 0 5px 0;
-			}
-			.markItUpContainer  {
-				font:11px 'Droid Sans', sans-serif;
-			}
-			.markItUpEditor {
-				font:12px 'Droid Sans Mono', monospace;
-				padding:5px;
-				width:690px;
-				height:320px;
-				clear:both;
-				line-height:18px;
-				overflow:auto;
-			}
-			.markItUpPreviewFrame	{
-				overflow:auto;
-				background-color:#FFF;
-				width:99.9%;
-				height:300px;
-				margin:5px 0;
-			}
-			.markItUpFooter {
-				width:100%;
-			}
-			.markItUpResizeHandle {
-				overflow:hidden;
-				width:22px; height:5px;
-				margin-left:auto;
-				margin-right:auto;
-				background-image:url(<?php echo TBGSettings::getURLhost() . TBGContext::getStrippedTBGPath() . '/themes/' . TBGSettings::getThemeName() . '/markitup/'; ?>handle.png);
-				cursor:n-resize;
-			}
-			/***************************************************************************************/
-			/* first row of buttons */
-			.markItUpHeader ul li	{
-				list-style:none;
-				float:left;
-				position:relative;
-			}
-			.markItUpHeader ul li:hover > ul{
-				display:block;
-			}
-			.markItUpHeader ul .markItUpDropMenu {
-				background:transparent url(<?php echo TBGSettings::getURLhost() . TBGContext::getStrippedTBGPath() . '/themes/' . TBGSettings::getThemeName() . '/markitup/'; ?>menu.png) no-repeat 115% 50%;
-				margin-right:5px;
-			}
-			.markItUpHeader ul .markItUpDropMenu li {
-				margin-right:0px;
-			}
-			/* next rows of buttons */
-			.markItUpHeader ul ul {
-				display:none;
-				position:absolute;
-				top:18px; left:0px;	
-				background:#FFF;
-				border:1px solid #000;
-			}
-			.markItUpHeader ul ul li {
-				float:none;
-				border-bottom:1px solid #000;
-			}
-			.markItUpHeader ul ul .markItUpDropMenu {
-				background:#FFF url(<?php echo TBGSettings::getURLhost() . TBGContext::getStrippedTBGPath() . '/themes/' . TBGSettings::getThemeName() . '/markitup/'; ?>submenu.png) no-repeat 100% 50%;
-			}
-			.markItUpHeader ul .markItUpSeparator {
-				margin:0 10px;
-				width:1px;
-				height:16px;
-				overflow:hidden;
-				background-color:#CCC;
-			}
-			.markItUpHeader ul ul .markItUpSeparator {
-				width:auto; height:1px;
-				margin:0px;
-			}
-			/* next rows of buttons */
-			.markItUpHeader ul ul ul {
-				position:absolute;
-				top:-1px; left:150px; 
-			}
-			.markItUpHeader ul ul ul li {
-				float:none;
-			}
-			.markItUpHeader ul a {
-				display:block;
-				width:16px; height:16px;
-				text-indent:-10000px;
-				background-repeat:no-repeat;
-				padding:3px;
-				margin:0px;
-			}
-			.markItUpHeader ul ul a {
-				display:block;
-				padding-left:0px;
-				text-indent:0;
-				width:120px; 
-				padding:5px 5px 5px 25px;
-				background-position:2px 50%;
-			}
-			.markItUpHeader ul ul a:hover  {
-				color:#FFF;
-				background-color:#000;
-			}
-			.markItUpHeader a:hover  {
-				border-bottom: none;
-			}			
-		</style>
 		<?php TBGEvent::createNew('core', 'header_ends')->trigger(); ?>
-	</head>
+</head>
 	<body>
 		<div class="medium_transparent rounded_box shadowed popup_message failure" onclick="TBG.Main.Helpers.Message.clear();" style="display: none;" id="thebuggenie_failuremessage">
 			<div style="padding: 10px 0 10px 0;">
@@ -347,6 +147,7 @@
 							</td>
 							<td style="width: auto;">
 								<div class="tab_menu header_menu<?php if (TBGContext::isProjectContext()): ?> project_context<?php endif; ?>">
+								<?php if (!TBGSettings::isMaintenanceModeEnabled()): ?>
 									<ul>
 										<?php if (!TBGSettings::isSingleProjectTracker() && !TBGContext::isProjectContext()): ?>
 											<li<?php if ($tbg_response->getPage() == 'home'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('home'), image_tag('tab_index.png').__('Frontpage')); ?></li>
@@ -483,11 +284,17 @@
 										</div>
 									</div>
 									<?php TBGEvent::createNew('core', 'after_header_userinfo')->trigger(); ?>
+								<?php endif; ?>
 								</div>
 							</td>
 						</tr>
 					</table>
-					<?php require THEBUGGENIE_CORE_PATH . 'templates/submenu.inc.php'; ?>
+					<?php 
+						if (!TBGSettings::isMaintenanceModeEnabled())
+						{
+							require THEBUGGENIE_CORE_PATH . 'templates/submenu.inc.php';
+						}
+					?>
 					<?php if (!TBGContext::isDebugMode()): ?>
 						<div class="rounded_box iceblue borderless infobox" style="margin: 5px; display: none;" id="firebug_warning">
 							<div style="padding: 5px;">
