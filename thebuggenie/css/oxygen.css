@@ -132,7 +132,7 @@ div.image_container.thumb img.image { width: 220px; }
 .comment_add_title { font-size: 1.1em; font-weight: bold; }
 .commentbody { padding: 5px 5px 5px 0; font-size: 0.9em; }
 .commentbody .image_container.thumb img.image { width: 130px; }
-.commenttools { float: right; padding: 5px; margin: 5px; font-size: 0.9em; }
+.commenttools { float: right; padding: 5px; margin: 5px; font-size: 0.9em; text-align: right; width: 150px; }
 .commenttools img { vertical-align: bottom; margin-right: 5px; }
 .comment_controls { margin-top: 10px;  }
 .comment_edit, .comment_add_main { padding: 5px; background-color: #F1F1F1; border: 1px dotted #CCC; }
