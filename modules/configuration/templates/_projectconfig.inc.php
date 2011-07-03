@@ -7,6 +7,7 @@
 		<li id="tab_developers"<?php if ($selected_tab == 'developers'): ?> class="selected"<?php endif; ?>><?php echo javascript_link_tag(image_tag('cfg_icon_project_devs.png', array('style' => 'float: left;')).__('Team'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_developers', 'project_config_menu');")); ?></li>
 		<li id="tab_other"<?php if ($selected_tab == 'other'): ?> class="selected"<?php endif; ?>><?php echo javascript_link_tag(image_tag('cfg_icon_datatypes.png', array('style' => 'float: left;')).__('Other'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_other', 'project_config_menu');")); ?></li>
 		<li id="tab_permissions"<?php if ($selected_tab == 'permissions'): ?> class="selected"<?php endif; ?>><?php echo javascript_link_tag(image_tag('cfg_icon_permissions.png', array('style' => 'float: left;')).__('permissions'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_permissions', 'project_config_menu');")); ?></li>
+		<?php TBGEvent::createNew('core', 'config_project_tabs')->trigger(array('selected_tab' => $selected_tab)); ?>
 	</ul>
 </div>
 <div id="project_config_menu_panes">
@@ -31,4 +32,5 @@
 	<div id="tab_permissions_pane" style="text-align: left;<?php if ($selected_tab != 'permissions'): ?> display: none;<?php endif; ?>" class="permission_list" style="">
 		<?php include_template('configuration/projectpermissions', array('access_level' => $access_level, 'project' => $project)); ?>
 	</div>
+	<?php TBGEvent::createNew('core', 'config_project_panes')->trigger(array('selected_tab' => $selected_tab, 'access_level' => $access_level, 'project' => $project)); ?>
 </div>

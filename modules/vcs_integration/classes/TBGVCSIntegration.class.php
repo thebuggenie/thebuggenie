@@ -54,6 +54,8 @@
 			TBGEvent::listen('core', 'breadcrumb_project_links', array($this, 'listen_breadcrumb_links'));
 			TBGEvent::listen('core', 'viewissue_tabs', array($this, 'listen_viewissue_tab'));
 			TBGEvent::listen('core', 'viewissue_tab_panes_back', array($this, 'listen_viewissue_panel'));
+			TBGEvent::listen('core', 'config_project_tabs', array($this, 'listen_projectconfig_tab'));
+			TBGEvent::listen('core', 'config_project_panes', array($this, 'listen_projectconfig_panel'));
 		}
 
 		protected function _addRoutes()
@@ -151,6 +153,16 @@
 
 			$count = TBGVCSIntegrationTable::getTable()->getNumberOfCommitsByIssue($event->getSubject()->getId());
 			TBGActionComponent::includeTemplate('vcs_integration/viewissue_tab', array('count' => $count));
+		}
+		
+		public function listen_projectconfig_tab(TBGEvent $event)
+		{
+			TBGActionComponent::includeTemplate('vcs_integration/projectconfig_tab', array('selected_tab' => $event->getParameter('selected_tab')));
+		}
+		
+		public function listen_projectconfig_panel(TBGEvent $event)
+		{
+			TBGActionComponent::includeTemplate('vcs_integration/projectconfig_panel', array('selected_tab' => $event->getParameter('selected_tab'), 'access_level' => $event->getParameter('access_level'), 'project' => $event->getParameter('project')));
 		}
 		
 		public function listen_breadcrumb_links(TBGEvent $event)

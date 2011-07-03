@@ -52,6 +52,9 @@ div.image_container.thumb img.image { width: 220px; }
 .offline_msg { padding: 10px; }
 .generic_offline { text-align: center; font-weight: bold; font-size: larger; }
 
+.left { text-align: left; }
+.right { text-align: right; }
+
 /* end general styles */
 
 /* Main header area */

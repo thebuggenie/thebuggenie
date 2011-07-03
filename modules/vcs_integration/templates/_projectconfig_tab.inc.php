@@ -1,0 +1,1 @@
+<li id="tab_vcs"<?php if ($selected_tab == 'vcs'): ?> class="selected"<?php endif; ?>><?php echo javascript_link_tag(image_tag('cfg_icon_vcs_integration.png', array('style' => 'float: left;'), false, 'vcs_integration').__('VCS Integration'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_vcs', 'project_config_menu');")); ?></li>
