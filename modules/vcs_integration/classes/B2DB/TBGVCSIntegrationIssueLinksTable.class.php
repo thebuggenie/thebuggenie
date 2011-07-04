@@ -43,4 +43,19 @@
 			return B2DB::getTable('TBGVCSIntegrationIssueLinksTable');
 		}
 
+		/**
+		* Get all affected issues by commit
+		* @param integer $id
+		*/
+		public static function getByCommitID($id)
+		{
+			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::SCOPE, $scope);
+			$crit->addWhere(self::COMMIT_ID, $id);
+				
+			$res = $this->doSelect($crit);
+				
+			return $res;
+		}
 	}

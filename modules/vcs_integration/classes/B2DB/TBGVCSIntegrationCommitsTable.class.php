@@ -35,10 +35,10 @@
 			parent::_addText(self::LOG, false);
 			parent::_addVarchar(self::OLD_REV, 40);
 			parent::_addVarchar(self::NEW_REV, 40);
-			parent::_addVarchar(self::AUTHOR, 100);
 			parent::_addInteger(self::DATE, 10);
 			parent::_addText(self::DATA, false);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(),  TBGScopesTable::ID);
+			parent::_addForeignKeyColumn(self::AUTHOR, TBGUsersTable::getTable(), TBGUsersTable::ID);
 		}
 		
 		/**
@@ -50,39 +50,5 @@
 		{
 			return B2DB::getTable('TBGVCSIntegrationCommitsTable');
 		}
-
-		/**
-		 * Add a commit entry to the database
-		 *
-		 * @param $id Issue ID
-		 * @param $action A/D/U action applied to file
-		 * @param $commit_msg Log message
-		 * @param $file File changed
-		 * @param $new_rev New revision
-		 * @param $old_rev Old revision
-		 * @param $uid UID of changer
-		 * @param $date POSIX timestamp of change
-		 */
-		/*public static function addEntry($id, $action, $commit_msg, $file, $new_rev, $old_rev, $uid, $date)
-		{
-			$crit = new B2DBCriteria();
-			$crit->addInsert(TBGVCSIntegrationTable::ISSUE_NO, $id); 
-			$crit->addInsert(TBGVCSIntegrationTable::ACTION, $action);
-			$crit->addInsert(TBGVCSIntegrationTable::LOG, $commit_msg);
-			$crit->addInsert(TBGVCSIntegrationTable::FILE_NAME, $file); 
-			$crit->addInsert(TBGVCSIntegrationTable::NEW_REV, $new_rev);
-			$crit->addInsert(TBGVCSIntegrationTable::OLD_REV, $old_rev);
-			$crit->addInsert(TBGVCSIntegrationTable::AUTHOR, $uid);
-			if ($date == null)
-			{
-				$crit->addInsert(TBGVCSIntegrationTable::DATE, time());
-			}
-			else
-			{
-				$crit->addInsert(TBGVCSIntegrationTable::DATE, $date);
-			}
-			$crit->addInsert(TBGVCSIntegrationTable::SCOPE, TBGContext::getScope()->getID());
-			B2DB::getTable('TBGVCSIntegrationTable')->doInsert($crit);
-		} */
 	}
 
