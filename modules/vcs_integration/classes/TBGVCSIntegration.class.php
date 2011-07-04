@@ -20,13 +20,13 @@
 		
 		protected $_longname = 'VCS Integration';
 		
-		protected $_description = 'Allows details from source code checkins to be displayed in The Bug Genie';
+		protected $_description = 'Allows details from source code checkins to be displayed in The Bug Genie. Configure in each project\'s settings.';
 		
 		protected $_module_config_title = 'VCS Integration';
 		
 		protected $_module_config_description = 'Configure repository settings for source code integration';
 		
-		protected $_has_config_settings = true;
+		protected $_has_config_settings = false;
 		
 		protected $_module_version = '2.0';
 
@@ -95,42 +95,6 @@
 		public function hasProjectAwareRoute()
 		{
 			return false;
-		}
-
-		public function postConfigSettings(TBGRequest $request)
-		{
-			$settings = array('use_web_interface', 'vcs_passkey');
-			foreach ($settings as $setting)
-			{
-				if ($request->hasParameter($setting))
-				{
-					$this->saveSetting($setting, $request->getParameter($setting));
-				}
-			}
-			
-			foreach (TBGProject::getAll() as $aProduct)
-			{
-				if ($request->hasParameter('web_path_' . $aProduct->getID()))
-				{
-					// github is always at github.com
-					if ($request->hasParameter('web_type_' . $aProduct->getID()) && $request->getParameter('web_type_' . $aProduct->getID()) == 'github')
-					{
-						$this->saveSetting('web_path_' . $aProduct->getID(), 'http://github.com');
-					}
-					else
-					{
-						$this->saveSetting('web_path_' . $aProduct->getID(), $request->getParameter('web_path_' . $aProduct->getID()));
-					}
-				}
-				if ($request->hasParameter('web_type_' . $aProduct->getID()))
-				{
-					$this->saveSetting('web_type_' . $aProduct->getID(), $request->getParameter('web_type_' . $aProduct->getID()));
-				}
-				if ($request->hasParameter('web_repo_' . $aProduct->getID()))
-				{
-					$this->saveSetting('web_repo_' . $aProduct->getID(), $request->getParameter('web_repo_' . $aProduct->getID()));
-				}
-			}
 		}
 		
 		public function isUsingHTTPMethod()
