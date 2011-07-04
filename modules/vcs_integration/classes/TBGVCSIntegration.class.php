@@ -70,7 +70,15 @@
 		{
 			if (TBGContext::getScope()->getID() == 1)
 			{
-				TBGVCSIntegrationTable::getTable()->drop();
+				TBGVCSIntegrationCommitsTable::getTable()->drop();
+				TBGVCSIntegrationFilesTable::getTable()->drop();
+				TBGVCSIntegrationIssueLinksTable::getTable()->drop();
+				
+				try
+				{
+					B2DB::getTable('TBGVCSIntegrationTable')->drop();
+				}
+				catch (Exception $e) { }
 			}
 			parent::_uninstall();
 		}
@@ -81,8 +89,7 @@
 			B2DB::getTable('TBGVCSIntegrationCommitsTable')->create();
 			B2DB::getTable('TBGVCSIntegrationFilesTable')->create();
 			B2DB::getTable('TBGVCSIntegrationIssueLinksTable')->create();
-			B2DB::getTable('TBGVCSIntegrationSettingsTable')->create();
-			
+						
 			$this->_version = $this->_module_version;
 			$this->save();
 		}
