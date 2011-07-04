@@ -1,6 +1,6 @@
 <div class="rounded_box<?php if ($module->isEnabled()): ?> iceblue<?php else: ?> lightgrey<?php endif; ?> borderless" style="margin: 5px 0px 5px 0px; width: 750px; vertical-align: middle; text-align: right; min-height: 40px;" id="module_<?php echo $module->getID(); ?>">
 	<div style="float: left;">
-		<div class="header"><?php echo __($module->getLongName()); ?><span class="module_shortname faded_out"> (<?php echo $module->getName(); ?>) <?php if ($module->getType() == TBGModule::MODULE_AUTH): echo ' - '.__('Authentication module'); endif; ?></span></div>
+		<div class="header"><?php echo __($module->getLongName()); ?><span class="module_shortname faded_out"> <?php echo $module->getVersion(); ?> (<?php echo $module->getName(); ?>) <?php if ($module->getType() == TBGModule::MODULE_AUTH): echo ' - '.__('Authentication module'); endif; ?></span></div>
 		<div class="content"><?php echo __($module->getDescription()); ?></div>
 	</div>
 	<div style="text-align: right; font-size: 13px; font-weight: normal; padding-top: 3px;">

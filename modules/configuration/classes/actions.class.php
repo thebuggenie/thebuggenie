@@ -736,6 +736,7 @@
 			$this->module_error = TBGContext::getMessageAndClear('module_error');
 			$this->modules = TBGContext::getModules();
 			$this->uninstalled_modules = TBGContext::getUninstalledModules();
+			$this->outdated_modules = TBGContext::getOutdatedModules();
 		}
 
 		/**
@@ -1798,6 +1799,17 @@
 							case 'uninstall':
 								$module->uninstall();
 								TBGContext::setMessage('module_message', TBGContext::getI18n()->__('The module "%module_name%" was uninstalled successfully', array('%module_name%' => $module->getName())));
+								break;
+							case 'update':
+								try
+								{
+									$module->upgrade();
+									TBGContext::setMessage('module_message', TBGContext::getI18n()->__('The module "%module_name%" was successfully upgraded and can now be used again', array('%module_name%' => $module->getName())));
+								}
+								catch (Exception $e)
+								{
+									TBGContext::setMessage('module_error', TBGContext::getI18n()->__('The module "%module_name%" was not successfully upgraded', array('%module_name%' => $module->getName())));	
+								}
 								break;
 						}
 				}

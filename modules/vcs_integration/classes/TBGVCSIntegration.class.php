@@ -28,7 +28,7 @@
 		
 		protected $_has_config_settings = true;
 		
-		protected $_module_version = '1.0';
+		protected $_module_version = '2.0';
 
 		/**
 		 * Return an instance of this module
@@ -73,6 +73,18 @@
 				TBGVCSIntegrationTable::getTable()->drop();
 			}
 			parent::_uninstall();
+		}
+		
+		public function upgrade()
+		{
+			// Upgrade tables
+			B2DB::getTable('TBGVCSIntegrationCommitsTable')->create();
+			B2DB::getTable('TBGVCSIntegrationFilesTable')->create();
+			B2DB::getTable('TBGVCSIntegrationIssueLinksTable')->create();
+			B2DB::getTable('TBGVCSIntegrationSettingsTable')->create();
+			
+			$this->_version = $this->_module_version;
+			$this->save();
 		}
 
 		public function getRoute()

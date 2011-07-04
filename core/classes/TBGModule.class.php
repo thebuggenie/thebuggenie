@@ -355,7 +355,26 @@
 		 */
 		public function isEnabled()
 		{
+			/* Outdated modules can not be used */
+			if ($this->isOutdated())
+			{
+				return false;
+			}
 			return $this->_enabled;
+		}
+		
+		/**
+		 * Returns whether the module is out of date
+		 * 
+		 * @return boolean
+		 */
+		public function isOutdated()
+		{
+			if ($this->_version != $this->_module_version)
+			{
+				return true;
+			}
+			return false;
 		}
 		
 		public function addRoute($key, $url, $function, $params = array(), $csrf_enabled = false, $module_name = null)
@@ -490,6 +509,9 @@
 
 		public function hasConfigSettings()
 		{
+			/* If the module is outdated, we may not access its settings */
+			if ($this->isOutdated()): return false; endif;
+			
 			return $this->_has_config_settings;
 		}
 
