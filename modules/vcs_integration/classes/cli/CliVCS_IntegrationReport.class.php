@@ -23,7 +23,7 @@
 		{
 			$this->_command_name = 'report_commit';
 			$this->_description = "Report a new commit to an issue";
-			$this->addRequiredArgument('projectid', "Project ID number");
+			$this->addRequiredArgument('projectkey', "Project Key");
 			$this->addRequiredArgument('author', "Username of the committer");
 			$this->addRequiredArgument('revno', "Revision number or hash of this commit");
 			$this->addRequiredArgument('log', "Log entry from commit");
@@ -36,7 +36,7 @@
 		public function do_execute()
 		{
 			/* Prepare variables */
-			$project = $this->getProvidedArgument('projectid');
+			$project = $this->getProvidedArgument('projectkey');
 			$author = $this->getProvidedArgument('author');
 			$new_rev = $this->getProvidedArgument('revno');
 			$commit_msg = $this->getProvidedArgument('log');
