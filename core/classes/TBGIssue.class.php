@@ -4485,10 +4485,18 @@
 				}
 			}
 
-			$comment = TBGContext::getI18n()->__("The issue was updated with the following change(s):%list_of_changes%", array('%list_of_changes%' => "\n* ".join("\n* ", $comment_lines)), true);
-			
-			$this->comment = $this->addSystemComment(TBGContext::getI18n()->__('Issue updated'), $comment, TBGContext::getUser()->getID());
-			$this->comment_lines = $comment_lines;
+			if (count($comment_lines) == 0)
+			{
+				$comment = TBGContext::getI18n()->__("The issue has been updated");
+				$this->comment = $this->addSystemComment(TBGContext::getI18n()->__('Issue updated'), $comment, TBGContext::getUser()->getID());
+				$this->comment_lines = $comment_lines;
+			}
+			else
+			{
+				$comment = TBGContext::getI18n()->__("The issue was updated with the following change(s):%list_of_changes%", array('%list_of_changes%' => "\n* ".join("\n* ", $comment_lines)), true);
+				$this->comment = $this->addSystemComment(TBGContext::getI18n()->__('Issue updated'), $comment, TBGContext::getUser()->getID());
+				$this->comment_lines = $comment_lines;
+			}
 
 			if ($is_saved_estimated)
 			{
