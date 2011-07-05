@@ -51,4 +51,21 @@
 			return $this->_commit_id;
 		}
 		
+		/**
+		 * Set the issue in this link
+		 * @param TBGIssue $issue
+		 */
+		public function setIssue(TBGIssue $issue)
+		{
+			$this->_issue_no = $issue;
+		}
+		
+		/**
+		 * Set the commit in this link
+		 * @param TBGVCSIntegrationCommit $commit
+		 */
+		public function setCommit(TBGVCSIntegrationCommit $commit)
+		{
+			$this->_commit_id = $commit;
+		}
 	}

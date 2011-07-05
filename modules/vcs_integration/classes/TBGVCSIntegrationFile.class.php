@@ -65,4 +65,31 @@
 			return $this->_commit_id;
 		}
 		
+		/**
+		 * Set the file path
+		 * @param string $file
+		 */
+		public function setFile($file)
+		{
+			$this->_file_name = $file;
+		}
+		
+		/**
+		 * Set the action applied (M/A/D)
+		 * @param string $action
+		 */
+		public function setAction($action)
+		{
+			$this->_action = $action;
+		}
+		
+		/**
+		 * Set the commit this change applies to
+		 * @param TBGVCSIntegrationCommit $commit
+		 */
+		public function setCommit(TBGVCSIntegrationCommit $commit)
+		{
+			$this->commit_id = $commit;
+		}
+		
 	}

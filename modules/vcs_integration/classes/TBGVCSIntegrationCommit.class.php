@@ -151,6 +151,60 @@
 			return $this->_issues;
 		}
 		
+		/**
+		 * Set a new commit author
+		 * @param TBGUser $user
+		 */
+		public function setAuthor(TBGUser $user)
+		{
+			$this->_author = $author;
+		}
+		
+		/**
+		 * Set a new date for the commit
+		 * @param integer $date
+		 */
+		public function setDate($date)
+		{
+			$this->_date = $date;
+		}
+
+		/**
+		 * Set a new log for the commit. This will not affect the issues which are affected
+		 * @param string $log
+		 */
+		public function setLog($log)
+		{
+			$this->_log = $log;
+		}
+
+		/**
+		 * Set a new parent revision
+		 * @param integer $revno
+		 */
+		public function setPreviousRevision($revno)
+		{
+			$this->_old_rev = $revno;
+		}
+		
+		/**
+		 * Set THIS revisions revno
+		 * @param integer $revno
+		 */
+		public function setRevision($revno)
+		{
+			$this->_new_rev = $revno;
+		}
+		
+		/**
+		 * Set misc data for this commit (see other docs)
+		 * @param string $data
+		 */
+		public function setMiscData($data)
+		{
+			$this->_data = $data;
+		}
+		
 		private function _populateAffectedFiles()
 		{
 			if ($this->_files == null)
