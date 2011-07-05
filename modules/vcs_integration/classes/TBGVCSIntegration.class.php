@@ -85,13 +85,107 @@
 		
 		public function upgrade()
 		{
-			// Upgrade tables
-			B2DB::getTable('TBGVCSIntegrationCommitsTable')->create();
-			B2DB::getTable('TBGVCSIntegrationFilesTable')->create();
-			B2DB::getTable('TBGVCSIntegrationIssueLinksTable')->create();
+			switch ($this->_version)
+			{
+				case "1.0":
+					// Upgrade tables
+					B2DB::getTable('TBGVCSIntegrationCommitsTable')->create();
+					B2DB::getTable('TBGVCSIntegrationFilesTable')->create();
+					B2DB::getTable('TBGVCSIntegrationIssueLinksTable')->create();
+					
+					// Migrate data from old table to new tables
+					$crit = new B2DBCriteria();
+					$crit->addOrderBy(TBGVCSIntegrationTable::DATE, B2DBCriteria::SORT_DESC);
+					$results = TBGVCSIntegrationTable::getTable()->doSelect($crit);
+					
+					if (is_object($results) && $results->getNumberOfRows() > 0)
+					{
+						$commits = array();
+
+						while ($results->next())
+						{
+							$rev = $results->get(TBGVCSIntegrationTable::NEW_REV);
+							if (array_key_exists($rev, $commits))
+							{
+								// Add a new file or issue to the commit data
+								$commits[$rev]['files'][$results->get(TBGVCSIntegrationTable::FILE_NAME)] = array('file_name' => $results->get(TBGVCSIntegrationTable::FILE_NAME), 'action' => $results->get(TBGVCSIntegrationTable::ACTION));
+								$commits[$rev]['issues'][$results->get(TBGVCSIntegrationTable::ISSUE_NO)] = $results->get(TBGVCSIntegrationTable::ISSUE_NO);
+							}
+							else
+							{
+								// Add details of a new commit
+								$commits[$rev] = array('commit' => array(), 'files' => array(), 'issues' => array());
+								
+								$commits[$rev]['commit'] = array('new_rev' => $rev, 'old_rev' => $results->get(TBGVCSIntegrationTable::OLD_REV), 'author' => $results->get(TBGVCSIntegrationTable::AUTHOR), 'date' => $results->get(TBGVCSIntegrationTable::DATE), 'log' => $results->get(TBGVCSIntegrationTable::LOG), 'scope' => $results->get(TBGVCSIntegrationTable::SCOPE));
+								$commits[$rev]['files'][$results->get(TBGVCSIntegrationTable::FILE_NAME)] = array('file_name' => $results->get(TBGVCSIntegrationTable::FILE_NAME), 'action' => $results->get(TBGVCSIntegrationTable::ACTION));
+								$commits[$rev]['issues'][$results->get(TBGVCSIntegrationTable::ISSUE_NO)] = $results->get(TBGVCSIntegrationTable::ISSUE_NO);
+							}
+						}
 						
-			$this->_version = $this->_module_version;
-			$this->save();
+						foreach ($commits as $commit)
+						{
+							$files = array();
+							$issues = array();
+
+							$scope = TBGContext::factory()->TBGScope($commit['commit']['scope']);
+							
+							try
+							{
+								$author = TBGContext::factory()->TBGUser($commit['commit']['author']);
+							}
+							catch (Exception $e)
+							{
+								$author = TBGContext::factory()->TBGUser(TBGSettings::getDefaultUserID());
+							}
+							
+							// Add the commit
+							$inst = new TBGVCSIntegrationCommit();
+							$inst->setAuthor($author);
+							$inst->setDate($commit['commit']['date']);
+							$inst->setLog($commit['commit']['log']);
+							$inst->setPreviousRevision($commit['commit']['old_rev']);
+							$inst->setRevision($commit['commit']['new_rev']);
+							$inst->setScope($scope);
+							$inst->save();
+							
+							// Process issue list, remove duplicates
+							$issues = $commit['issues'];
+							$files = $commit['files'];
+
+							$commit = $inst;
+							
+							foreach ($files as $file)
+							{
+								// Add affected files
+								$inst = new TBGVCSIntegrationFile();
+								$inst->setCommit($commit);
+								$inst->setFile($file['file_name']);
+								$inst->setAction($file['action']);
+								$inst->setScope($scope);
+								$inst->save();
+							}
+							
+							foreach ($issues as $issue)
+							{
+								// Add affected issues
+								$issue = TBGContext::factory()->TBGIssue($issue);
+								$inst = new TBGVCSIntegrationIssueLink();
+								$inst->setIssue($issue);
+								$inst->setCommit($commit);
+								$inst->setScope($scope);
+								$inst->save();
+							}
+						}
+					}
+					
+					// Drop old table
+					TBGVCSIntegrationTable::getTable()->drop();
+					
+					// Upgrade module version
+					$this->_version = $this->_module_version;
+					$this->save();
+					break;
+			}
 		}
 
 		public function getRoute()

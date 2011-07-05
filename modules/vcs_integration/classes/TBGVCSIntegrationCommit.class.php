@@ -157,7 +157,7 @@
 		 */
 		public function setAuthor(TBGUser $user)
 		{
-			$this->_author = $author;
+			$this->_author = $user;
 		}
 		
 		/**

@@ -1807,7 +1807,7 @@
 									TBGContext::setMessage('module_message', TBGContext::getI18n()->__('The module "%module_name%" was successfully upgraded and can now be used again', array('%module_name%' => $module->getName())));
 								}
 								catch (Exception $e)
-								{
+								{ throw $e;
 									TBGContext::setMessage('module_error', TBGContext::getI18n()->__('The module "%module_name%" was not successfully upgraded', array('%module_name%' => $module->getName())));	
 								}
 								break;
@@ -1815,7 +1815,7 @@
 				}
 			}
 			catch (Exception $e)
-			{
+			{ throw $e;
 				TBGLogging::log('Trying to run action ' . $request->getParameter('mode') . ' on module ' . $request->getParameter('module_key') . ' made an exception: ' . $e->getMessage(), TBGLogging::LEVEL_FATAL);
 				TBGContext::setMessage('module_error', TBGContext::getI18n()->__('This module (%module_name%) does not exist', array('%module_name%' => $request->getParameter('module_key'))));
 			}

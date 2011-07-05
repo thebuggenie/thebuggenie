@@ -17,7 +17,7 @@
 	 */
 	class TBGVCSIntegrationFile extends TBGIdentifiableClass
 	{
-		protected static $_b2dbtablename = 'TBGVCSIntegrationFileTable';
+		protected static $_b2dbtablename = 'TBGVCSIntegrationFilesTable';
 		
 		/**
 		 * File path
@@ -89,7 +89,7 @@
 		 */
 		public function setCommit(TBGVCSIntegrationCommit $commit)
 		{
-			$this->commit_id = $commit;
+			$this->_commit_id = $commit;
 		}
 		
 	}
