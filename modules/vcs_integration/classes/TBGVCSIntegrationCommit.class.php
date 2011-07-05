@@ -69,6 +69,13 @@
 		protected $_issues = null;
 		
 		/**
+		 * Project
+		 * @var TBGProject
+		 * @Class TBGProject
+		 */
+		protected $_project_id = null;
+		
+		/**
 		 * Get the commit log for this commit
 		 * @return string
 		 */
@@ -152,6 +159,15 @@
 		}
 		
 		/**
+		 * Get the project this commit applies to
+		 * @return TBGProject
+		 */
+		public function getProject()
+		{
+			return $this->_project;
+		}
+		
+		/**
 		 * Set a new commit author
 		 * @param TBGUser $user
 		 */
@@ -205,15 +221,24 @@
 			$this->_data = $data;
 		}
 		
+		/**
+		 * Set the project this commit applies to
+		 * @param TBGProject $project
+		 */
+		public function setProject(TBGProject $project)
+		{
+			$this->_project_id = $project;
+		}
+		
 		private function _populateAffectedFiles()
 		{
 			if ($this->_files == null)
 			{
 				$this->_files = array();
 				
-				foreach (TBGVCSIntegrationFilesTable::getByCommitID($this->id) as $row)
+				foreach (TBGVCSIntegrationFilesTable::getTable()->getByCommitID($this->_id)->getAllRows() as $row)
 				{
-					$this->_files[] = TBGContext::getFactory()->TBGVCSIntegrationFile($row->get(TBGVCSIntegrationFilesTable::ID), $row);
+					$this->_files[] = TBGContext::factory()->TBGVCSIntegrationFile($row->get(TBGVCSIntegrationFilesTable::ID), $row);
 				}
 			}
 		}
@@ -224,10 +249,34 @@
 			{
 				$this->_issues = array();
 		
-				foreach (TBGVCSIntegrationIssueLinksTable::getByCommitID($this->id) as $row)
+				foreach (TBGVCSIntegrationIssueLinksTable::getTable()->getByCommitID($this->_id)->getAllRows() as $row)
 				{
-					$this->_issues[] = TBGContext::getFactory()->TBGIssue($row->get(TBGVCSIntegrationIssueLinksTable::ISSUE_ID));
+					$this->_issues[] = TBGContext::factory()->TBGIssue($row->get(TBGVCSIntegrationIssueLinksTable::ISSUE_NO));
 				}
 			}
+		}
+		
+		/**
+		 * Get all commits relating to issues inside a project
+		 * @param integer $id
+		 * @param integer $limit
+		 * @param integer $offset
+		 * 
+		 * @return array/false
+		 */
+		public static function getByProject($id, $limit = 40, $offset = null)
+		{
+			$data = array();
+			
+			if (!is_object(TBGVCSIntegrationCommitsTable::getTable()->getCommitsByProject($id, $limit, $offset)))
+			{
+				return false;
+			}
+			
+			foreach (TBGVCSIntegrationCommitsTable::getTable()->getCommitsByProject($id, $limit, $offset)->getAllRows() as $row)
+			{
+				$data[] = TBGContext::factory()->TBGVCSIntegrationCommit($row->get(TBGVCSIntegrationCommitsTable::ID), $row);
+			}
+			return $data;
 		}
 	}

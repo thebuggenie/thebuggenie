@@ -28,6 +28,7 @@
 		const AUTHOR = 'vcsintegration_commits.author';
 		const DATE = 'vcsintegration_commits.date';
 		const DATA = 'vcsintegration_commits.data';
+		const PROJECT_ID = 'vcsintegration_commits.project_id';
 					
 		public function __construct()
 		{
@@ -39,6 +40,7 @@
 			parent::_addText(self::DATA, false);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(),  TBGScopesTable::ID);
 			parent::_addForeignKeyColumn(self::AUTHOR, TBGUsersTable::getTable(), TBGUsersTable::ID);
+			parent::_addForeignKeyColumn(self::PROJECT_ID, TBGProjectsTable::getTable(), TBGProjectsTable::ID);
 		}
 		
 		/**
@@ -49,6 +51,34 @@
 		public static function getTable()
 		{
 			return B2DB::getTable('TBGVCSIntegrationCommitsTable');
+		}
+		
+		/**
+		 * Get all commits relating to issues inside a project
+		 * @param integer $id
+		 * @param integer $limit
+		 * @param integer $offset
+		 */
+		public function getCommitsByProject($id, $limit = 40, $offset = null)
+		{
+			$crit = new B2DBCriteria();
+			
+			$crit->addWhere(self::PROJECT_ID, $id);
+			$crit->addWhere(self::DATE, strtotime($limit), $crit::DB_GREATER_THAN_EQUAL);
+			$crit->addOrderBy(self::DATE, B2DBCriteria::SORT_DESC);
+		
+			if ($limit !== null)
+			{
+				$crit->setLimit($limit);
+			}
+			
+			if ($offset !== null)
+			{
+				$crit->setOffset($offset);
+			}
+				
+			$results = $this->doSelect($crit);
+			return $results;
 		}
 	}
 

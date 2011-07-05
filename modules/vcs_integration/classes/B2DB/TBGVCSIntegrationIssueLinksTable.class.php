@@ -44,10 +44,11 @@
 		}
 
 		/**
-		* Get all affected issues by commit
-		* @param integer $id
-		*/
-		public static function getByCommitID($id)
+		 * Get all rows by commit ID
+		 * @param integer $id
+		 * @return B2DBRow
+		 */
+		public function getByCommitID($id, $scope = null)
 		{
 			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
 			$crit = $this->getCriteria();
@@ -56,6 +57,23 @@
 				
 			$res = $this->doSelect($crit);
 				
+			return $res;
+		}
+		
+		/**
+		 * Get all rows by issue ID
+		 * @param integer $id
+		 * @return B2DBRow
+		 */
+		public function getByIssueID($id, $scope = null)
+		{
+			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::SCOPE, $scope);
+			$crit->addWhere(self::ISSUE_NO, $id);
+				
+			$res = $this->doSelect($crit);
+
 			return $res;
 		}
 	}

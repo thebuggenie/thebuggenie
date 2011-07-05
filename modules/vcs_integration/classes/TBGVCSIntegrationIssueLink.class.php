@@ -68,4 +68,49 @@
 		{
 			$this->_commit_id = $commit;
 		}
+		
+		/**
+		 * Return all commits for a given issue
+		 * @param TBGIssue $issue
+		 * @return array
+		 */
+		public static function getCommitsByIssue(TBGIssue $issue)
+		{
+			$data = array();
+
+			if (!is_object(TBGVCSIntegrationIssueLinksTable::getTable()->getByIssueID($issue->getID())))
+			{
+				return false;
+			}
+			
+			foreach (TBGVCSIntegrationIssueLinksTable::getTable()->getByIssueID($issue->getID())->getAllRows() as $row)
+			{
+				$data[] = TBGContext::factory()->TBGVCSIntegrationIssueLink($row->get(TBGVCSIntegrationIssueLinksTable::ID), $row);
+			}
+
+			return $data;
+		}
+		
+		/**
+		 * Return all issues for a given commit
+		 * @param TBGVCSIntegrationCommit $commit
+		 * @return array
+		 */
+		public static function getIssuesByCommit(TBGVCSIntegrationCommit $commit)
+		{
+			$rows = TBGVCSIntegrationIssueLinksTable::getTable()->getByCommitID($commit->getID());
+			$data = array();
+			
+			if (!is_object($rows))
+			{
+				return false;
+			}
+			
+			foreach ($rows->getAllRows() as $row)
+			{
+				$data[] = TBGContext::factory()->TBGVCSIntegrationIssueLink($row->get(TBGVCSIntegrationIssueLinksTable::ID), $row);
+			}
+
+			return $data;
+		}
 	}

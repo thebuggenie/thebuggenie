@@ -24,7 +24,7 @@
 			
 			$offset = $request->getParameter('offset', 0);
 			
-			$this->commits = B2DB::getTable('TBGVCSIntegrationTable')->getCommitsByProject($this->selected_project->getID(), 40, $offset);
+			$this->commits = TBGVCSIntegrationCommit::getByProject($this->selected_project->getID(), 40, $offset);
 			
 			if ($offset)
 			{

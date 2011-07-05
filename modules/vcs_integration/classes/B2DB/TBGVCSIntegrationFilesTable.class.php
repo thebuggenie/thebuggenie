@@ -49,7 +49,7 @@
 		 * Get all affected files by commit
 		 * @param integer $id
 		 */
-		public static function getByCommitID($id)
+		public function getByCommitID($id, $scope = null)
 		{
 			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
 			$crit = $this->getCriteria();
