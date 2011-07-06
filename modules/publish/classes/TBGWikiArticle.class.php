@@ -419,82 +419,7 @@
 
 			return true;
 		}
-
-		public function retract()
-		{
-			$crit = new B2DBCriteria();
-			$crit->addUpdate(TBGArticlesTable::IS_PUBLISHED, 0);
-			$res = TBGArticlesTable::getTable()->doUpdateById($crit, $this->_id);
-			$this->is_published = false;
-		}
-
-		public function publish()
-		{
-			$crit = new B2DBCriteria();
-			$crit->addUpdate(TBGArticlesTable::IS_PUBLISHED, 1);
-			$res = TBGArticlesTable::getTable()->doUpdateById($crit, $this->_id);
-			$this->is_published = true;
-		}
-
-		public function hideFromNews()
-		{
-			$crit = new B2DBCriteria();
-			$crit->addUpdate(TBGArticlesTable::IS_NEWS, 0);
-			$res = TBGArticlesTable::getTable()->doUpdateById($crit, $this->_id);
-			$this->is_news = false;
-		}
 		
-		public function view()
-		{
-			$crit = new B2DBCriteria();
-			$crit->addWhere(TBGArticleViewsTable::ARTICLE_ID, $this->getID());
-			$crit->addWhere(TBGArticleViewsTable::USER_ID, TBGContext::getUser()->getID());
-			if (B2DB::getTable('TBGArticleViewsTable')->doCount($crit) == 0)
-			{
-				$crit = new B2DBCriteria();
-				$crit->addInsert(TBGArticleViewsTable::ARTICLE_ID, $this->getID());
-				$crit->addInsert(TBGArticleViewsTable::USER_ID, TBGContext::getUser()->getID());
-				$crit->addInsert(TBGArticleViewsTable::SCOPE, TBGContext::getScope()->getID());
-				B2DB::getTable('TBGArticleViewsTable')->doInsert($crit);
-			}
-		}
-		
-		public function getViews()
-		{
-			$crit = new B2DBCriteria();
-			$crit->addWhere(TBGArticleViewsTable::ARTICLE_ID, $this->getID());
-			return B2DB::getTable('TBGArticleViewsTable')->doCount($crit);
-		}
-		
-		public function hasIntro()
-		{
-			return ($this->_intro_text != '') ? true : false;
-		}
-		
-		public function hasAnyContent()
-		{
-			if ($this->hasIntro() || $this->hasContent())
-			{
-				return true;
-			}
-			return false;
-		}
-		
-		public function canRead()
-		{
-			return true;
-		}
-
-		public function isPublished()
-		{
-			return $this->_is_published;
-		}
-
-		public function setIsPublished($published = true)
-		{
-			$this->_is_published = $published;
-		}
-
 		public function getPostedDate()
 		{
 			return $this->_date;
@@ -690,4 +615,14 @@
 			return TBGContext::getModule('publish')->canUserEditArticle($this->getName());
 		}
 		
+		public function canRead()
+		{
+			return TBGContext::getModule('publish')->canUserReadArticle($this->getName());
+		}
+		
+		public function hasAccess()
+		{
+			return $this->canRead();
+		}
+
 	}

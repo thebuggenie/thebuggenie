@@ -70,28 +70,36 @@
 
 			if ($this->article instanceof TBGWikiArticle)
 			{
-				if (!$request->hasParameter('no_redirect') && substr($this->article->getContent(), 0, 10) == "#REDIRECT ")
+				if (!$this->article->canRead())
 				{
-					$content = explode("\n", $this->article->getContent());
-					preg_match('/(\[\[([^\]]*?)\]\])$/im', substr(array_shift($content), 10), $matches);
-					if (count($matches) == 3)
-					{
-						$redirect_article = $matches[2];
-						TBGContext::setMessage('publish_redirected_article', $this->article->getName());
-						$this->forward(TBGContext::getRouting()->generate('publish_article', array('article_name' => $redirect_article)));
-					}
+					$this->error = TBGContext::getI18n()->__("You don't have access to read this article");
+					$this->article = null;
 				}
-				try
+				else
 				{
-					if ($request->hasParameter('revision'))
+					if (!$request->hasParameter('no_redirect') && substr($this->article->getContent(), 0, 10) == "#REDIRECT ")
 					{
-						$this->revision = $request->getParameter('revision');
-						$this->article->setRevision($this->revision);
+						$content = explode("\n", $this->article->getContent());
+						preg_match('/(\[\[([^\]]*?)\]\])$/im', substr(array_shift($content), 10), $matches);
+						if (count($matches) == 3)
+						{
+							$redirect_article = $matches[2];
+							TBGContext::setMessage('publish_redirected_article', $this->article->getName());
+							$this->forward(TBGContext::getRouting()->generate('publish_article', array('article_name' => $redirect_article)));
+						}
 					}
-				}
-				catch (Exception $e)
-				{
-					$this->error = TBGContext::getI18n()->__('There was an error trying to show this revision');
+					try
+					{
+						if ($request->hasParameter('revision'))
+						{
+							$this->revision = $request->getParameter('revision');
+							$this->article->setRevision($this->revision);
+						}
+					}
+					catch (Exception $e)
+					{
+						$this->error = TBGContext::getI18n()->__('There was an error trying to show this revision');
+					}
 				}
 			}
 		}

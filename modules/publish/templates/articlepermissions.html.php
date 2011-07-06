@@ -40,14 +40,18 @@
 									<?php echo __('Specify permissions for the %namespace% namespace. These permissions will apply for all articles in the mentioned namespace for which article-specific permissions, or child-namespace permissions have not been granted.', array('%namespace%' => '<i>'.$namespace.'</i>')); ?>
 								<?php endif; ?>
 								<div style="text-align: right; padding: 10px;">
+									<button onclick="$('publish_<?php echo $namespace; ?>_readarticle_permissions').toggle();"><?php echo __('Edit read permissions'); ?></button>
 									<button onclick="$('publish_<?php echo $namespace; ?>_editarticle_permissions').toggle();"><?php echo __('Edit write permissions'); ?></button>
 									<button onclick="$('publish_<?php echo $namespace; ?>_deletearticle_permissions').toggle();"><?php echo __('Edit delete permissions'); ?></button>
 								</div>
+								<div id="publish_<?php echo $namespace; ?>_readarticle_permissions" style="padding: 10px; width: 700px; display: none;">
+									<?php include_component('configuration/permissionsinfo', array('key' => TBGPublish::PERMISSION_READ_ARTICLE, 'mode' => 'module_permissions', 'target_id' => $namespace, 'module' => 'publish', 'access_level' => TBGSettings::ACCESS_FULL)); ?>
+								</div>
 								<div id="publish_<?php echo $namespace; ?>_editarticle_permissions" style="padding: 10px; width: 700px; display: none;">
-									<?php include_component('configuration/permissionsinfo', array('key' => 'editarticle', 'mode' => 'module_permissions', 'target_id' => $namespace, 'module' => 'publish', 'access_level' => TBGSettings::ACCESS_FULL)); ?>
+									<?php include_component('configuration/permissionsinfo', array('key' => TBGPublish::PERMISSION_EDIT_ARTICLE, 'mode' => 'module_permissions', 'target_id' => $namespace, 'module' => 'publish', 'access_level' => TBGSettings::ACCESS_FULL)); ?>
 								</div>
 								<div id="publish_<?php echo $namespace; ?>_deletearticle_permissions" style="padding: 10px; width: 700px; display: none;">
-									<?php include_component('configuration/permissionsinfo', array('key' => 'deletearticle', 'mode' => 'module_permissions', 'target_id' => $namespace, 'module' => 'publish', 'access_level' => TBGSettings::ACCESS_FULL)); ?>
+									<?php include_component('configuration/permissionsinfo', array('key' => TBGPublish::PERMISSION_DELETE_ARTICLE, 'mode' => 'module_permissions', 'target_id' => $namespace, 'module' => 'publish', 'access_level' => TBGSettings::ACCESS_FULL)); ?>
 								</div>
 							</li>
 						<?php endforeach; ?>
