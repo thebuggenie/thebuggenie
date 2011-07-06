@@ -52,6 +52,9 @@ div.image_container.thumb img.image { width: 220px; }
 .offline_msg { padding: 10px; }
 .generic_offline { text-align: center; font-weight: bold; font-size: larger; }
 
+.left { text-align: left; }
+.right { text-align: right; }
+
 /* end general styles */
 
 /* Main header area */
@@ -144,8 +147,8 @@ div.image_container.thumb img.image { width: 220px; }
 .commit_header { font-weight: bold; font-size: larger; }
 .commit_expander { float: right; }
 .commit_expander img { vertical-align: text-bottom; }
-.commit_left { width: 660px; float: left; margin-top: 10px; margin-bottom: 20px; }
-.commit_right { width: 180px; float: right; margin-top: 10px; margin-bottom: 20px;}
+.commit_left { min-width: 650px; float: left; margin-top: 10px; margin-bottom: 20px; }
+.commit_right { width: 200px; float: right; margin-top: 10px; margin-bottom: 20px;}
 .commit_left .commit_header, .commit_right .commit_header { padding-bottom: 5px; }
 .commits_next { clear: both; }
 .commit_left td { border: none !important; }

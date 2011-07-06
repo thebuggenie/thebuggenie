@@ -62,6 +62,7 @@
 			$this->general_config_sections = $general_config_sections; 
 			$this->data_config_sections = $data_config_sections;
 			$this->module_config_sections = $module_config_sections;
+			$this->outdated_modules = TBGContext::getOutdatedModules();
 		}
 		
 		/**
@@ -736,6 +737,7 @@
 			$this->module_error = TBGContext::getMessageAndClear('module_error');
 			$this->modules = TBGContext::getModules();
 			$this->uninstalled_modules = TBGContext::getUninstalledModules();
+			$this->outdated_modules = TBGContext::getOutdatedModules();
 		}
 
 		/**
@@ -1799,11 +1801,22 @@
 								$module->uninstall();
 								TBGContext::setMessage('module_message', TBGContext::getI18n()->__('The module "%module_name%" was uninstalled successfully', array('%module_name%' => $module->getName())));
 								break;
+							case 'update':
+								try
+								{
+									$module->upgrade();
+									TBGContext::setMessage('module_message', TBGContext::getI18n()->__('The module "%module_name%" was successfully upgraded and can now be used again', array('%module_name%' => $module->getName())));
+								}
+								catch (Exception $e)
+								{ throw $e;
+									TBGContext::setMessage('module_error', TBGContext::getI18n()->__('The module "%module_name%" was not successfully upgraded', array('%module_name%' => $module->getName())));	
+								}
+								break;
 						}
 				}
 			}
 			catch (Exception $e)
-			{
+			{ throw $e;
 				TBGLogging::log('Trying to run action ' . $request->getParameter('mode') . ' on module ' . $request->getParameter('module_key') . ' made an exception: ' . $e->getMessage(), TBGLogging::LEVEL_FATAL);
 				TBGContext::setMessage('module_error', TBGContext::getI18n()->__('This module (%module_name%) does not exist', array('%module_name%' => $request->getParameter('module_key'))));
 			}

@@ -32,6 +32,13 @@
 		static protected $debug_mode = true;
 		
 		static protected $_partials_visited = array();
+		
+		/**
+		 * Outdated modules
+		 * 
+		 * @var array
+		 */
+		static protected $_outdated_modules = null;
 
 		/**
 		 * The current user
@@ -798,6 +805,28 @@
 		public static function getModules()
 		{
 			return self::$_modules;
+		}
+		
+		/**
+		 * Returns an array of modules which need upgrading
+		 * 
+		 * @return array
+		 */
+		public static function getOutdatedModules()
+		{
+			if (self::$_outdated_modules == null)
+			{
+				self::$_outdated_modules = array();
+				foreach (self::getModules() as $module)
+				{
+					if ($module->isOutdated())
+					{
+						self::$_outdated_modules[] = $module;
+					}
+				}
+			}
+			
+			return self::$_outdated_modules;
 		}
 
 		/**

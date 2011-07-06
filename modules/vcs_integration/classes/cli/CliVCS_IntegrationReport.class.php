@@ -4,7 +4,7 @@
 	 * CLI command class, vcs_integration -> report
 	 *
 	 * @author Philip Kent <kentphilip@gmail.com>
-	 * @version 3.1
+	 * @version 3.2
 	 * @license http://www.opensource.org/licenses/mozilla1.1.php Mozilla Public License 1.1 (MPL 1.1)
 	 * @package thebuggenie
 	 * @subpackage vcs_integration
@@ -23,7 +23,7 @@
 		{
 			$this->_command_name = 'report_commit';
 			$this->_description = "Report a new commit to an issue";
-			$this->addRequiredArgument('projectid', "Project ID number");
+			$this->addRequiredArgument('projectkey', "Project Key");
 			$this->addRequiredArgument('author', "Username of the committer");
 			$this->addRequiredArgument('revno', "Revision number or hash of this commit");
 			$this->addRequiredArgument('log', "Log entry from commit");
@@ -36,7 +36,15 @@
 		public function do_execute()
 		{
 			/* Prepare variables */
-			$project = $this->getProvidedArgument('projectid');
+			//$project = TBGProject::getByKey($this->getProvidedArgument('projectkey'));
+			$project = TBGContext::factory()->TBGProject($this->getProvidedArgument('projectkey'));
+			
+			if (!($project instanceof TBGProject))
+			{
+				$this->cliEcho("The project with the key ".$this->getProvidedArgument('projectkey')." does not exist\n", 'red', 'bold');
+				exit;
+			}
+			
 			$author = $this->getProvidedArgument('author');
 			$new_rev = $this->getProvidedArgument('revno');
 			$commit_msg = $this->getProvidedArgument('log');
@@ -44,9 +52,9 @@
 			$old_rev = $this->getProvidedArgument('oldrev', $new_rev - 1);
 			$date = $this->getProvidedArgument('date', null);
 			
-			if ((TBGContext::getModule('vcs_integration')->isUsingHTTPMethod()))
+			if (TBGSettings::get('access_method_'.$project->getKey()) == TBGVCSIntegration::ACCESS_HTTP)
 			{
-				$this->cliEcho("This access method has been disallowed\n", 'red', 'bold');
+				$this->cliEcho("This project uses the HTTP access method, and so access via the CLI has been disabled\n", 'red', 'bold');
 				exit;
 			}
 
@@ -56,7 +64,7 @@
 				exit;
 			}
 			
-			$output = TBGContext::getModule('vcs_integration')->addNewCommit($project, $commit_msg, $old_rev, $new_rev, $date, $changed, $author);
+			$output = TBGVCSIntegration::processCommit($project, $commit_msg, $old_rev, $new_rev, $date, $changed, $author);
 			$this->cliEcho($output);
 		}
 	}
