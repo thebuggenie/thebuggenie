@@ -235,10 +235,14 @@
 			if ($this->_files == null)
 			{
 				$this->_files = array();
+				$res = TBGVCSIntegrationFilesTable::getTable()->getByCommitID($this->_id);
 				
-				foreach (TBGVCSIntegrationFilesTable::getTable()->getByCommitID($this->_id)->getAllRows() as $row)
+				if ($res instanceof B2DBResultset)
 				{
-					$this->_files[] = TBGContext::factory()->TBGVCSIntegrationFile($row->get(TBGVCSIntegrationFilesTable::ID), $row);
+					foreach ($res->getAllRows() as $row)
+					{
+						$this->_files[] = TBGContext::factory()->TBGVCSIntegrationFile($row->get(TBGVCSIntegrationFilesTable::ID), $row);
+					}
 				}
 			}
 		}
@@ -248,10 +252,14 @@
 			if ($this->_issues == null)
 			{
 				$this->_issues = array();
-		
-				foreach (TBGVCSIntegrationIssueLinksTable::getTable()->getByCommitID($this->_id)->getAllRows() as $row)
+				$res = TBGVCSIntegrationIssueLinksTable::getTable()->getByCommitID($this->_id);
+				
+				if ($res instanceof B2DBResultset)
 				{
-					$this->_issues[] = TBGContext::factory()->TBGIssue($row->get(TBGVCSIntegrationIssueLinksTable::ISSUE_NO));
+					foreach ($res->getAllRows() as $row)
+					{
+						$this->_issues[] = TBGContext::factory()->TBGIssue($row->get(TBGVCSIntegrationIssueLinksTable::ISSUE_NO));
+					}
 				}
 			}
 		}

@@ -170,7 +170,27 @@
 					$added = array();
 				}
 				
-				echo TBGContext::getModule('vcs_integration')->addNewCommit($project_key, $commit_msg, $old_rev, $new_rev, $time, array($modified, $added, $removed), $author);
+				$entries = array($modified, $added, $removed);
+				$changed = '';
+				// Now handle changed files
+				foreach ($entries[0] as $file)
+				{
+					$changed .= 'M'.$file."\n";
+				}
+					
+				// Now handle new files
+				foreach ($entries[1] as $file)
+				{
+					$changed .= 'A'.$file."\n";
+				}
+					
+				// Now handle deleted files
+				foreach ($entries[2] as $file)
+				{
+					$changed .= 'D'.$file."\n";
+				}
+				
+				echo TBGContext::getModule('vcs_integration')->addNewCommit($project_key, $commit_msg, $old_rev, $new_rev, $time, $changed, $author);
 				$previous = $commit->id;
 			}
 			exit();

@@ -374,173 +374,211 @@
 			}
 		}
 		
-		public function addNewCommit($project_key, $commit_msg, $old_rev, $new_rev, $date = null, $changed, $author)
+		public static function processCommit(TBGProject $project, $commit_msg, $old_rev, $new_rev, $date = null, $changed, $author)
 		{
-			/* Find issues to update */
-			$fixes_grep = "#((bug|issue|ticket|fix|fixes|fixed|fixing|applies to|closes|references|ref|addresses|re|see|according to|also see)\s\#?(([A-Z0-9]+\-)?\d+))#ie";
-			
 			$output = '';
+			TBGContext::setCurrentProject($project);
 			
-			$f_issues = array();
-			
-			$project = TBGProject::getByKey($project_key);
-			
-			if (!$project)
+			try
 			{
-				return TBGContext::getI18n()->__('Error: Project does not exist');
+				TBGContext::getI18n();
+			}
+			catch (Exception $e)
+			{
+				TBGContext::reinitializeI18n(null);
 			}
 			
-			if (preg_match_all($fixes_grep, $commit_msg, $f_issues))
+			// Is VCS Integration enabled?
+			if (TBGSettings::get('vcs_mode_'.$project->getID(), 'vcs_integration') == TBGVCSIntegration::MODE_DISABLED)
 			{
-				// Github
-				if (is_array($changed))
+				$output .= '[VCS '.$project->getKey().'] This project does not use VCS Integration' . "\n";
+				return $output;
+			}
+			
+			// Produce list of keywords for matching
+			if (TBGSettings::get('match_keywords_'.$project->getID(), 'vcs_integration') == '')
+			{
+				$fixes_grep = "#((bug|issue|ticket|fix|fixes|fixed|fixing|applies to|closes|references|ref|addresses|re|see|according to|also see)\s\#?(([A-Z0-9]+\-)?\d+))#ie";
+			}
+			else
+			{
+				$fixes_grep = "#((".TBGSettings::get('match_keywords_'.$project->getID()).")\s\#?(([A-Z0-9]+\-)?\d+))#ie";
+			}
+			
+			// Build list of affected issues
+			$temp = array();
+			$issues = array();
+			
+			if (preg_match_all($fixes_grep, $commit_msg, $temp))
+			{	
+				$temp = array_unique($temp[3]);
+				foreach ($temp as $issue_no)
 				{
-					$entries = $changed;
-					$changed = '';
-					// Now handle changed files
-					foreach ($entries[0] as $file)
-					{
-						$changed .= 'M'.$file."\n";
-					}
-					
-					// Now handle new files
-					foreach ($entries[1] as $file)
-					{
-						$changed .= 'A'.$file."\n";
-					}
-					
-					// Now handle deleted files
-					foreach ($entries[2] as $file)
-					{
-						$changed .= 'D'.$file."\n";
-					}
-				}
-				
-				$f_issues = array_unique($f_issues[3]);
-
-				$file_lines = preg_split('/[\n\r]+/', $changed);
-				$files = array();
-
-				foreach ($file_lines as $aline)
-				{
-					$action = substr($aline, 0, 1);
-
-					if ($action == "A" || $action == "U" || $action == "D" || $action == "M")
-					{
-						$theline = trim(substr($aline, 1));
-						$files[] = array($action, $theline);
-					}
-				}
-				
-				foreach ($f_issues as $issue_no)
-				{
-					TBGContext::setCurrentProject($project);
-					$theIssue = TBGIssue::getIssueFromLink($issue_no, true);
-
-					if ($theIssue instanceof TBGIssue)
-					{
-						$uid = 0;
-						
-						/*
-						 * Some VCSes use a different format of storing the committer's name. Systems like bzr, git and hg use the format
-						 * Joe Bloggs <me@example.com>, instead of a classic username. Therefore a user will be found via 4 queries:
-						 * a) First we extract the email if there is one, and find a user with that email
-						 * b) If one is not found - or if no email was specified, then instead test against the real name (using the name part if there was an email)
-						 * c) the username or full name is checked against the friendly name field
-						 * d) and if we still havent found one, then we check against the username
-						 * e) and if we STILL havent found one, we just say the user is id 0 (unknown user).
-						 */
-						 
-						if (preg_match("/(?<=<)(.*)(?=>)/", $author, $matches))
-						{
-							$email = $matches[0];
-							
-							// a)
-							$crit = new B2DBCriteria();
-							$crit->setFromTable(TBGUsersTable::getTable());
-							$crit->addSelectionColumn(TBGUsersTable::ID);
-							$crit->addWhere(TBGUsersTable::EMAIL, $email);
-							$row = TBGUsersTable::getTable()->doSelectOne($crit);
-							
-							if ($row != null)
-							{
-								$uid = $row->get(TBGUsersTable::ID);
-							}
-							else
-							{
-								// Not found by email
-								preg_match("/(?<=^)(.*)(?= <)/", $author, $matches);
-								$author = $matches[0];
-							}
-						}
-
-						// b)
-						
-						if ($uid == 0)
-						{
-							$crit = new B2DBCriteria();
-							$crit->setFromTable(TBGUsersTable::getTable());
-							$crit->addSelectionColumn(TBGUsersTable::ID);
-							$crit->addWhere(TBGUsersTable::REALNAME, $author);
-							$row = TBGUsersTable::getTable()->doSelectOne($crit);
-							
-							if ($row != null)
-							{
-								$uid = $row->get(TBGUsersTable::ID);
-							}
-						}
-						
-						// c)
-						
-						if ($uid == 0)
-						{
-							$crit = new B2DBCriteria();
-							$crit->setFromTable(TBGUsersTable::getTable());
-							$crit->addSelectionColumn(TBGUsersTable::ID);
-							$crit->addWhere(TBGUsersTable::BUDDYNAME, $author);
-							$row = TBGUsersTable::getTable()->doSelectOne($crit);
-							
-							if ($row != null)
-							{
-								$uid = $row->get(TBGUsersTable::ID);
-							}
-						}
-						
-						// d)
-						
-						if ($uid == 0)
-						{
-							$crit = new B2DBCriteria();
-							$crit->setFromTable(TBGUsersTable::getTable());
-							$crit->addSelectionColumn(TBGUsersTable::ID);
-							$crit->addWhere(TBGUsersTable::UNAME, $author);
-							$row = TBGUsersTable::getTable()->doSelectOne($crit);
-							
-							if ($row != null)
-							{
-								$uid = $row->get(TBGUsersTable::ID);
-							}
-						}
-						
-						$theIssue->addSystemComment(TBGContext::getI18n()->__('Issue updated from code repository'), TBGContext::getI18n()->__('This issue has been updated with the latest changes from the code repository.<source>%commit_msg%</source>', array('%commit_msg%' => $commit_msg)), $uid);
-
-						foreach ($files as $afile)
-						{
-							if ($date == null)
-							{
-								$date = time();
-							}
-						
-							TBGVCSIntegrationTable::addEntry($theIssue->getID(), $afile[0], $commit_msg, $afile[1], $new_rev, $old_rev, $uid, $date);
-						}
-						$output .= 'Updated ' . $theIssue->getFormattedIssueNo() . "\n";
-					}
-					else
-					{
-						$output .= 'Can\'t find ' . $issue_no . ' so not updating that one.' . "\n";
-					}
+					$issues[] = TBGIssue::getIssueFromLink($issue_no);
 				}
 			}
+
+			// If no issues exist, we may not be able to continue
+			if (count($issues) == 0)
+			{
+				if (TBGSettings::get('vcs_mode_'.$project->getID(), 'vcs_integration') == TBGVCSIntegration::MODE_ISSUECOMMITS)
+				{
+					$output .= '[VCS '.$project->getKey().'] This project only accepts commits which affect issues' . "\n";
+					return $output;
+				}
+			}
+			
+			// Build list of affected files
+			$file_lines = preg_split('/[\n\r]+/', $changed);
+			$files = array();
+			
+			foreach ($file_lines as $aline)
+			{
+				$action = substr($aline, 0, 1);
+			
+				if ($action == "A" || $action == "U" || $action == "D" || $action == "M")
+				{
+					$theline = trim(substr($aline, 1));
+					$files[] = array($action, $theline);
+				}
+			}
+			
+			// Find author of commit, fallback is guest
+			$uid = 0;
+			
+			/*
+			 * Some VCSes use a different format of storing the committer's name. Systems like bzr, git and hg use the format
+			 * Joe Bloggs <me@example.com>, instead of a classic username. Therefore a user will be found via 4 queries:
+			 * a) First we extract the email if there is one, and find a user with that email
+			 * b) If one is not found - or if no email was specified, then instead test against the real name (using the name part if there was an email)
+			 * c) the username or full name is checked against the friendly name field
+			 * d) and if we still havent found one, then we check against the username
+			 * e) and if we STILL havent found one, we use the guest user
+			 */
+			 
+			if (preg_match("/(?<=<)(.*)(?=>)/", $author, $matches))
+			{
+				$email = $matches[0];
+
+				// a)
+				$crit = new B2DBCriteria();
+				$crit->setFromTable(TBGUsersTable::getTable());
+				$crit->addSelectionColumn(TBGUsersTable::ID);
+				$crit->addWhere(TBGUsersTable::EMAIL, $email);
+				$row = TBGUsersTable::getTable()->doSelectOne($crit);
+				
+				if ($row != null)
+				{
+					$uid = $row->get(TBGUsersTable::ID);
+				}
+				else
+				{
+					// Not found by email
+					preg_match("/(?<=^)(.*)(?= <)/", $author, $matches);
+					$author = $matches[0];
+				}
+			}
+
+			// b)
+			
+			if ($uid == 0)
+			{
+				$crit = new B2DBCriteria();
+				$crit->setFromTable(TBGUsersTable::getTable());
+				$crit->addSelectionColumn(TBGUsersTable::ID);
+				$crit->addWhere(TBGUsersTable::REALNAME, $author);
+				$row = TBGUsersTable::getTable()->doSelectOne($crit);
+				
+				if ($row != null)
+				{
+					$uid = $row->get(TBGUsersTable::ID);
+				}
+			}
+			
+			// c)
+			
+			if ($uid == 0)
+			{
+				$crit = new B2DBCriteria();
+				$crit->setFromTable(TBGUsersTable::getTable());
+				$crit->addSelectionColumn(TBGUsersTable::ID);
+				$crit->addWhere(TBGUsersTable::BUDDYNAME, $author);
+				$row = TBGUsersTable::getTable()->doSelectOne($crit);
+				
+				if ($row != null)
+				{
+					$uid = $row->get(TBGUsersTable::ID);
+				}
+			}
+			
+			// d)
+			
+			if ($uid == 0)
+			{
+				$crit = new B2DBCriteria();
+				$crit->setFromTable(TBGUsersTable::getTable());
+				$crit->addSelectionColumn(TBGUsersTable::ID);
+				$crit->addWhere(TBGUsersTable::UNAME, $author);
+				$row = TBGUsersTable::getTable()->doSelectOne($crit);
+				
+				if ($row != null)
+				{
+					$uid = $row->get(TBGUsersTable::ID);
+				}
+			}
+			
+			// e)
+			
+			if ($uid == 0)
+			{
+				$uid = TBGSettings::getDefaultUserID();
+			}
+			
+			$user = TBGContext::factory()->TBGUser($uid);
+			
+			$output .= '[VCS '.$project->getKey().'] Commit to be logged by user ' . $user->getName() . "\n";
+
+			if ($date == null):
+				$date = time();
+			endif;
+			
+			// Create the commit data
+			$commit = new TBGVCSIntegrationCommit();
+			$commit->setAuthor($user);
+			$commit->setDate($date);
+			$commit->setLog($commit_msg);
+			$commit->setPreviousRevision($old_rev);
+			$commit->setRevision($new_rev);
+			$commit->setProject($project);
+			$commit->save();
+			
+			$output .= '[VCS '.$project->getKey().'] Commit logged with revision ' . $commit->getRevision() . "\n";
+			
+			// Create issue links
+			foreach ($issues as $issue)
+			{
+				$inst = new TBGVCSIntegrationIssueLink();
+				$inst->setIssue($issue);
+				$inst->setCommit($commit);
+				$inst->save();
+				
+				$issue->addSystemComment(TBGContext::getI18n()->__('Issue updated from code repository'), TBGContext::getI18n()->__('This issue has been updated with the latest changes from the code repository.<source>%commit_msg%</source>', array('%commit_msg%' => $commit_msg)), $uid);
+				$output .= '[VCS '.$project->getKey().'] Updated issue ' . $issue->getFormattedIssueNo() . "\n";
+			}
+			
+			// Create file links
+			foreach ($files as $afile)
+			{
+				// index 0 is action, index 1 is file
+				$inst = new TBGVCSIntegrationFile();
+				$inst->setAction($afile[0]);
+				$inst->setFile($afile[1]);
+				$inst->setCommit($commit);
+				$inst->save();
+				
+				$output .= '[VCS '.$project->getKey().'] Added with action '.$afile[0].' file ' . $afile[1] . "\n";
+			}
+
 			return $output;
 		}
 	}
