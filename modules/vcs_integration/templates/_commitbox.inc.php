@@ -1,53 +1,29 @@
 <?php
-	$web_path = TBGContext::getModule('vcs_integration')->getSetting('web_path_' . $projectId);
-	$web_repo = TBGContext::getModule('vcs_integration')->getSetting('web_repo_' . $projectId);
+	$base_url = TBGContext::getModule('vcs_integration')->getSetting('browser_url_' . $projectId);
 	
-	switch (TBGContext::getModule('vcs_integration')->getSetting('web_type_' . $projectId))
+	if (strstr($commit->getRevision(), ':'))
 	{
-		case 'viewvc':
-			$link_rev = $web_path . '/' . '?root=' . $web_repo . '&amp;view=rev&amp;revision=' . $commit->getRevision(); 
-			$link_old = $web_path . '/' . '?root=' . $web_repo . '&amp;view=rev&amp;revision=' . $commit->getPreviousRevision(); 
-			break;
-		case 'viewvc_repo':
-			$link_rev = $web_path . '/' . '?view=rev&amp;revision=' . $commit->getRevision();
-			$link_old = $web_path . '/' . '?view=rev&amp;revision=' . $commit->getPreviousRevision(); 
-			break;
-		case 'websvn':
-			$link_rev = $web_path . '/revision.php?repname=' . $web_repo . '&amp;isdir=1&amp;rev=' . $commit->getRevision();
-			$link_old = $web_path . '/revision.php?repname=' . $web_repo . '&amp;isdir=1&amp;rev=' . $commit->getPreviousRevision(); 
-			break;
-		case 'websvn_mv':
-			$link_rev = $web_path . '/' . '?repname=' . $web_repo . '&amp;op=log&isdir=1&amp;rev=' . $commit->getRevision();
-			$link_old = $web_path . '/' . '?repname=' . $web_repo . '&amp;op=log&isdir=1&amp;rev=' . $commit->getPreviousRevision(); 
-			break;
-		case 'loggerhead':
-			$link_rev = $web_path . '/' . $web_repo . '/revision/' . $commit->getRevision();
-			$link_old = $web_path . '/' . $web_repo . '/revision/' . $commit->getPreviousRevision(); 
-			break;
-		case 'gitweb':
-			$link_rev = $web_path . '/' . '?p=' . $web_repo . ';a=commitdiff;h=' . $commit->getRevision();
-			$link_old = $web_path . '/' . '?p=' . $web_repo . ';a=commitdiff;h=' . $commit->getPreviousRevision(); 
-			break;
-		case 'cgit':
-			$link_rev = $web_path . '/' . $web_repo . '/commit/?id=' . $commit->getRevision();
-			$link_old = $web_path . '/' . $web_repo . '/commit/?id=' . $commit->getPreviousRevision(); 
-			break;
-		case 'hgweb':
-			$revision = explode(':', $commit->getRevision());
-			$previousRevision = explode(':', $commit->getPreviousRevision());
-			$link_rev = $web_path . '/' . $web_repo . '/rev/' . $revision[1];
-			$link_old = $web_path . '/' . $web_repo . '/rev/' . $previousRevision[1]; 
-			break;
-		case 'github':
-			$link_rev = 'http://github.com/' . $web_repo . '/commit/' . $commit->getRevision();
-			$link_old = 'http://github.com/' . $web_repo . '/commit/' . $commit->getPreviousRevision(); 
-			break;
-		case 'gitorious':
-			$link_rev = $web_path . '/' . $web_repo . '/commit/' . $commit->getRevision();
-			$link_old = $web_path . '/' . $web_repo . '/commit/' . $commit->getPreviousRevision();
-			break;
+		$revision = explode(':', $commit->getRevision());
+		$revision = $revision[1];
 	}
-
+	else
+	{
+		$revision = $commit->getRevision();
+	}
+	
+	if (strstr($commit->getPreviousRevision(), ':'))
+	{
+		$oldrevision = explode(':', $commit->getPreviousRevision());
+		$oldrevision = $oldrevision[1];
+	}
+	else
+	{
+		$oldrevision = $commit->getPreviousRevision();
+	}
+	
+	$link_rev = $base_url.str_replace('%revno%', $revision, TBGContext::getModule('vcs_integration')->getSetting('commit_url_' . $projectId));
+	$link_old = $base_url.str_replace('%revno%', $oldrevision, TBGContext::getModule('vcs_integration')->getSetting('commit_url_' . $projectId));
+	
 ?>
 <div class="comment" id="commit_<?php echo $commit->getID(); ?>">
 	<div style="position: relative; overflow: visible; padding: 5px;" id="commit_view_<?php echo $commit->getID(); ?>" class="comment_main">
@@ -85,60 +61,18 @@
 							$action = $file->getAction();
 							if ($action == 'M'): $action = 'U'; endif;
 							echo '<td class="imgtd">' . image_tag('icon_action_' . $action . '.png', null, false, 'vcs_integration') . '</td>';
-							switch (TBGContext::getModule('vcs_integration')->getSetting('web_type_' . $projectId))
-							{
-								case 'viewvc':
-									$link_file = $web_path . '/' . $file->getFile() . '?root=' . $web_repo . '&amp;view=log';
-									$link_diff = $web_path . '/' . $file->getFile() . '?root=' . $web_repo . '&amp;r1=' . $commit->getRevision() . '&amp;r2=' . $commit->getPreviousRevision();
-									$link_view = $web_path . '/' . $file->getFile() . '?root=' . $web_repo . '&amp;revision=' . $commit->getRevision() . '&amp;view=markup';
-									break;
-								case 'viewvc_repo':
-									$link_file = $web_path . '/' . $file->getFile() . '?view=log';
-									$link_diff = $web_path . '/' . $file->getFile() . '?r1=' . $commit->getRevision() . '&amp;r2=' . $commit->getPreviousRevision();
-									$link_view = $web_path . '/' . $file->getFile() . '?revision=' . $commit->getRevision() . '&amp;view=markup';
-									break;
-								case 'websvn':
-									$link_file = $web_path . '/log.php?repname=' . $web_repo . '&amp;path=/' . $file->getFile();
-									$link_diff = $web_path . '/comp.php?repname=' . $web_repo . '&amp;compare[]=/' . $file->getFile() . '@' . $commit->getRevision() . '&amp;compare[]=/' . $file->getFile() . '@' . $commit->getPreviousRevision();
-									$link_view = $web_path . '/filedetails.php?repname=' . $web_repo . '&path=/' . $file->getFile() . '&amp;rev=' . $commit->getRevision();
-									break;
-								case 'websvn_mv':
-									$link_file = $web_path . '/' . $file->getFile() . '?repname=' . $web_repo;
-									$link_diff = $web_path . '/' . $file->getFile() . '?repname=' . $web_repo . '&amp;compare[]=/' . $file->getFile() . '@' . $commit->getRevision() . '&amp;compare[]=/' . $file->getFile() . '@' . $commit->getPreviousRevision();
-									$link_view = $web_path . '/' . $file->getFile() . '?repname=' . $web_repo . '&amp;rev=' . $commit->getRevision();
-									break;
-								case 'loggerhead':
-									$link_file = $web_path . '/' . $web_repo . '/changes';
-									$link_diff = $web_path . '/' . $web_repo . '/revision/' . $commit->getRevision() . '?compare_revid=' . $commit->getPreviousRevision();
-									$link_view = $web_path . '/' . $web_repo . '/annotate/head:/' . $file->getFile();
-									break;
-								case 'gitweb':
-									$link_file = $web_path . '/' . '?p=' . $web_repo . ';a=history;f=' . $file->getFile() . ';hb=HEAD';
-									$link_diff = $web_path . '/' . '?p=' . $web_repo . ';a=blobdiff;f=' . $file->getFile() . ';hb=' . $commit->getRevision() . ';hpb=' . $commit->getPreviousRevision();
-									$link_view = $web_path . '/' . '?p=' . $web_repo . ';a=blob;f=' . $file->getFile() . ';hb=' . $commit->getRevision();
-									break;
-								case 'cgit':
-									$link_file = $web_path . '/' . $web_repo . '/log';
-									$link_diff = $web_path . '/' . $web_repo . '/diff/' . $file->getFile() . '?id=' . $commit->getRevision() . '?id2=' . $commit->getPreviousRevision();
-									$link_view = $web_path . '/' . $web_repo . '/tree/' . $file->getFile() . '?id=' . $commit->getRevision();
-									break;
-								case 'hgweb':
-									$rev = explode(':', $commit->getRevision());
-									$link_file = $web_path . '/' . $web_repo . '/log/tip/' . $file->getFile();
-									$link_diff = $web_path . '/' . $web_repo . '/diff/' . $revision[1] . '/' . $file->getFile();
-									$link_view = $web_path . '/' . $web_repo . '/file/' .$revision[1] . '/' . $file->getFile();
-									break;
-								case 'github':
-									$link_file = 'http://github.com/' . $web_repo . '/commits/master/' . $file->getFile();
-									$link_diff = 'http://github.com/' . $web_repo . '/commit/' . $commit->getRevision();
-									$link_view = 'http://github.com/' . $web_repo . '/blob/' .$commit->getRevision() . '/' . $file->getFile();
-									break;
-								case 'gitorious':
-									$link_file = $web_path . '/' . $web_repo . '/blobs/history/master/' . $file->getFile();
-									$link_diff = $web_path . '/' . $web_repo . '/commit/' . $commit->getRevision();
-									$link_view = $web_path . '/' . $web_repo . '/blobs/' .$commit->getRevision() . '/' . $file->getFile();
-									break;
-							}
+									
+							$link_file = str_replace('%revno%', $revision, TBGContext::getModule('vcs_integration')->getSetting('log_url_' . $projectId));
+							$link_file = str_replace('%oldrev%', $oldrevision, $link_file);
+							$link_file = $base_url.str_replace('%file%', $file->getFile(), $link_file);
+							
+							$link_diff = str_replace('%revno%', $revision, TBGContext::getModule('vcs_integration')->getSetting('blob_url_' . $projectId));
+							$link_diff = str_replace('%oldrev%', $oldrevision, $link_diff);
+							$link_diff = $base_url.str_replace('%file%', $file->getFile(), $link_diff);
+							
+							$link_view = str_replace('%revno%', $revision, TBGContext::getModule('vcs_integration')->getSetting('diff_url_' . $projectId));
+							$link_view = str_replace('%oldrev%', $oldrevision, $link_view);
+							$link_view = $base_url.str_replace('%file%', $file->getFile(), $link_view);
 					
 							echo '<td><a href="' . $link_file . '" target="_new"><b>' . $file->getFile() . '</b></a></td>';
 							if ($action == "U" || $action == "M")

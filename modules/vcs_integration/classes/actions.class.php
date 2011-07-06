@@ -22,6 +22,8 @@
 			$this->selected_project = TBGProject::getByKey($request->getParameter('project_key'));
 			TBGContext::setCurrentProject($this->selected_project);
 			
+			if (TBGContext::getModule('vcs_integration')->getSetting('vcs_mode_' . TBGContext::getCurrentProject()->getID()) == TBGVCSIntegration::MODE_DISABLED): return $this->return404(TBGContext::getI18n()->__('VCS Integration has been disabled for this project'));; endif;
+			
 			$offset = $request->getParameter('offset', 0);
 			
 			$this->commits = TBGVCSIntegrationCommit::getByProject($this->selected_project->getID(), 40, $offset);

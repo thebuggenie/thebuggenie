@@ -11,6 +11,11 @@
 	<div id="update_button"><a href="javascript:void(0);" onClick="TBG.Config.updateCheck('<?php echo make_url('configure_update_check'); ?>');"><?php echo __('Check for updates now'); ?></a></div>
 	<div id="update_spinner" style="display: none;"><?php echo image_tag('spinning_32.gif'); ?></div>
 </div>
+<?php if (count($outdated_modules) > 0): ?>
+	<div class="update_div rounded_box yellow" style="margin-top: 20px;">
+		<div class="header"><?php echo __('You have %count% outdated modules. They have been disabled until you upgrade them, you can upgrade them from Module settings.', array('%count%' => count($outdated_modules))); ?></div>
+	</div>
+<?php endif; ?>
 <table style="table-layout: fixed; width: 1000px; margin: 10px 0 0 10px;" cellpadding=0 cellspacing=0>
 	<tr>
 		<td valign="top">

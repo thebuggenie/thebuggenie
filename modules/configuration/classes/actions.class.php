@@ -62,6 +62,7 @@
 			$this->general_config_sections = $general_config_sections; 
 			$this->data_config_sections = $data_config_sections;
 			$this->module_config_sections = $module_config_sections;
+			$this->outdated_modules = TBGContext::getOutdatedModules();
 		}
 		
 		/**

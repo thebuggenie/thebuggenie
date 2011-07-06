@@ -17,6 +17,12 @@
 	 */
 	class TBGVCSIntegration extends TBGModule 
 	{
+		const MODE_DISABLED = 0;
+		const MODE_ISSUECOMMITS = 1;
+		const MODE_ALLCOMMITS = 2;
+		
+		const ACCESS_DIRECT = 0;
+		const ACCESS_HTTP = 1;
 		
 		protected $_longname = 'VCS Integration';
 		
@@ -182,7 +188,119 @@
 					}
 					
 					// Drop old table
-					//TBGVCSIntegrationTable::getTable()->drop();
+					TBGVCSIntegrationTable::getTable()->drop();
+					
+					// Migrate settings to new format
+					$access_method = $this->getSetting('use_web_interface');
+					$passkey = $this->getSetting('vcs_passkey');
+					
+					foreach (TBGProject::getAll() as $project)
+					{
+						$projectId = $project->getID();
+						$web_path = $this->getSetting('web_path_' . $projectId);
+						$web_repo = $this->getSetting('web_repo_' . $projectId);
+						
+						// Check if enabled
+						if ($web_path == ''): continue; endif;
+							
+						switch ($this->getSetting('web_type_' . $projectId))
+						{
+							case 'viewvc':
+								$base_url = $web_path . '/' . '?root=' . $web_repo;
+								$link_rev = '&amp;view=rev&amp;revision=%revno%';
+								$link_file = '&amp;view=log';
+								$link_diff = '&amp;r1=%revno%&amp;r2=%oldrev%';
+								$link_view = '&amp;revision=%revno%&amp;view=markup';
+								break;
+							case 'viewvc_repo':
+								$base_url = $web_path;
+								$link_rev = '/?view=rev&amp;revision=%revno%';
+								$link_file = '/%file%?view=log';
+								$link_diff = '/%file%?r1=%revno%&amp;r2=%oldrev%';
+								$link_view = '/%file%?revision=%revno%&amp;view=markup';
+								break;
+							case 'websvn':
+								$base_url = $web_path;
+								$link_rev = '/revision.php?repname=' . $web_repo . '&amp;isdir=1&amp;rev=%revno%';
+								$link_file = '/log.php?repname=' . $web_repo . '&amp;path=/$file%';
+								$link_diff = '/comp.php?repname=' . $web_repo . '&amp;compare[]=/%file%@%revno%&amp;compare[]=/%file%@%oldrev%';
+								$link_view = '/filedetails.php?repname=' . $web_repo . '&path=/%file%&amp;rev=%revno%';
+								break;
+							case 'websvn_mv':
+								$base_url = $web_path;
+								$link_rev = '/' . '?repname=' . $web_repo . '&amp;op=log&isdir=1&amp;rev=%revno%';
+								$link_file = '/%file%?repname=' . $web_repo;
+								$link_diff = '/%file%?repname=' . $web_repo . '&amp;compare[]=/%file%@%revno%&amp;compare[]=/%file%@%oldrev%';
+								$link_view = '/%file%?repname=' . $web_repo . '&amp;rev=%revno%';
+								break;
+							case 'loggerhead':
+								$base_url = $web_path . '/' . $web_repo;
+								$link_rev = '/revision/%revno%';
+								$link_file = '/changes';
+								$link_diff = '/revision/%revno%?compare_revid=%oldrev%';
+								$link_view = '/annotate/head:/%file%';
+								break;
+							case 'gitweb':
+								$base_url = $web_path . '/' . '?p=' . $web_repo;
+								$link_rev = ';a=commitdiff;h=%revno%';
+								$link_file = ';a=history;f=%file%;hb=HEAD';
+								$link_diff = ';a=blobdiff;f=%file%;hb=%revno%;hpb=%oldrev%';
+								$link_view = ';a=blob;f=%file%;hb=%revno%';
+								break;
+							case 'cgit':
+								$base_url = $web_path . '/' . $web_repo;
+								$link_rev = '/commit/?id=%revno%';
+								$link_file = '/log';
+								$link_diff = '/diff/%file%?id=%revno%?id2=%oldrev%';
+								$link_view = '/tree/%file%?id=%revno%';
+								break;
+							case 'hgweb':
+								$base_url = $web_path . '/' . $web_repo;
+								$link_rev = '/rev/%revno%';
+								$link_file = '/log/tip/%file%';
+								$link_diff = '/diff/%revno%/%file%';
+								$link_view = '/file/%revno%/%file%';
+								break;
+							case 'github':
+								$base_url = 'http://github.com/' . $web_repo;
+								$link_rev = '/commit/%revno%';
+								$link_file = '/commits/master/%file%';
+								$link_diff = '/commit/%revno%';
+								$link_view = '/blob/%revno%/%file%';
+								break;
+							case 'gitorious':
+								$base_url = $web_path . '/' . $web_repo;
+								$link_rev = '/commit/%revno%';
+								$link_file = '/blobs/history/master/%file%';
+								$link_diff = '/commit/%revno%';
+								$link_view = '/blobs/%revno%/%file%';
+								break;
+						}
+						$this->saveSetting('browser_url_'.$projectId, $base_url);
+						$this->saveSetting('log_url_'.$projectId, $link_file);
+						$this->saveSetting('blob_url_'.$projectId, $link_diff);
+						$this->saveSetting('diff_url_'.$projectId, $link_view);
+						$this->saveSetting('commit_url_'.$projectId, $link_rev);
+						
+						// Access method
+						$this->saveSetting('access_method_'.$projectId, $access_method);
+						if ($access_method == self::ACCESS_HTTP)
+						{
+							$this->saveSetting('access_passkey_'.$projectId, $passkey);
+						}
+						
+						// Enable VCS Integration
+						$this->saveSetting('vcs_mode_'.$projectId, self::MODE_ISSUECOMMITS);
+						
+						// Remove old settings
+						$this->deleteSetting('web_type_' . $projectId);
+						$this->deleteSetting('web_path_' . $projectId);
+						$this->deleteSetting('web_repo_' . $projectId);
+					}
+					
+					// Remove old settings
+					$this->deleteSetting('use_web_interface');
+					$this->deleteSetting('vcs_passkey');
 					
 					// Upgrade module version
 					$this->_version = $this->_module_version;
@@ -199,18 +317,6 @@
 		public function hasProjectAwareRoute()
 		{
 			return false;
-		}
-		
-		public function isUsingHTTPMethod()
-		{
-			if ($this->getSetting('use_web_interface') == 1)
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
 		}
 		
 		public function listen_sidebar_links(TBGEvent $event)
@@ -238,7 +344,7 @@
 		
 		public function listen_viewissue_tab(TBGEvent $event)
 		{
-			// FIXME - check if enabled
+			if (TBGContext::getModule('vcs_integration')->getSetting('vcs_mode_' . TBGContext::getCurrentProject()->getID()) == TBGVCSIntegration::MODE_DISABLED): return; endif;
 				
 			$count = count(TBGVCSIntegrationIssueLink::getCommitsByIssue($event->getSubject()));
 			TBGActionComponent::includeTemplate('vcs_integration/viewissue_tab', array('count' => $count));
@@ -246,7 +352,7 @@
 		
 		public function listen_viewissue_panel(TBGEvent $event)
 		{
-			// FIXME: Check if enabled
+			if (TBGContext::getModule('vcs_integration')->getSetting('vcs_mode_' . TBGContext::getCurrentProject()->getID()) == TBGVCSIntegration::MODE_DISABLED): return; endif;
 
 			$links = TBGVCSIntegrationIssueLink::getCommitsByIssue($event->getSubject());
 			
