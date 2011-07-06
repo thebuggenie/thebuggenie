@@ -41,7 +41,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td class="config_explanation" colspan="2"><?php echo __('Enter, separated by a comma but no space, keywords which should be prefixed to an issue number in a commit message for The Bug Genie to match a commit to an issue. If left blank, the default set (as detailed in the help file) will be used'); ?></td>
+							<td class="config_explanation" colspan="2"><?php echo __('Enter, separated by a pipe (a | symbol) but no space, keywords which should be prefixed to an issue number in a commit message for The Bug Genie to match a commit to an issue. If left blank, the default set (as detailed in the help file) will be used. Example: see|fixes|resolves'); ?></td>
 						</tr>
 					</table>
 				</div>
