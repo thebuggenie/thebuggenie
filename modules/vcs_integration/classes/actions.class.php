@@ -273,4 +273,107 @@ var_dump($_GET);
 				exit;
 			}
 		}
+		
+		public function runConfigureProjectSettings(TBGRequest $request)
+		{
+			$this->forward403unless($request->isMethod(TBGRequest::POST));
+									
+			if ($this->access_level != TBGSettings::ACCESS_FULL)
+			{
+				$project_id = $request->getParameter('project_id');
+				
+				$fields = array('vcs_mode', 'match_keywords', 'access_method', 'access_passkey', 'commit_url', 'log_url',
+								'blob_url', 'diff_url', 'browser_url');
+				
+				foreach ($fields as $field)
+				{
+					TBGContext::getModule('vcs_integration')->saveSetting($field.'_'.$project_id, $request->getParameter($field));
+				}
+				
+				switch ($request->getParameter('browser_type'))
+				{
+					case 'viewvc':
+						$base_url = $request->getParameter('browser_url');
+						$link_rev = '&amp;view=rev&amp;revision=%revno%';
+						$link_file = '&amp;view=log';
+						$link_diff = '&amp;r1=%revno%&amp;r2=%oldrev%';
+						$link_view = '&amp;revision=%revno%&amp;view=markup';
+						break;
+					case 'viewvc_repo':
+						$base_url = $request->getParameter('browser_url');
+						$link_rev = '/?view=rev&amp;revision=%revno%';
+						$link_file = '/%file%?view=log';
+						$link_diff = '/%file%?r1=%revno%&amp;r2=%oldrev%';
+						$link_view = '/%file%?revision=%revno%&amp;view=markup';
+						break;
+					case 'websvn':
+						$base_url = $request->getParameter('browser_url');
+						$link_rev = '/revision.php?repname=' . $request->getParameter('repository') . '&amp;isdir=1&amp;rev=%revno%';
+						$link_file = '/log.php?repname=' . $request->getParameter('repository') . '&amp;path=/$%file%';
+						$link_diff = '/comp.php?repname=' . $request->getParameter('repository') . '&amp;compare[]=/%file%@%revno%&amp;compare[]=/%file%@%oldrev%';
+						$link_view = '/filedetails.php?repname=' . $request->getParameter('repository') . '&path=/%file%&amp;rev=%revno%';
+						break;
+					case 'websvn_mv':
+						$base_url = $request->getParameter('browser_url');
+						$link_rev = '/' . '?repname=' . $request->getParameter('repository') . '&amp;op=log&isdir=1&amp;rev=%revno%';
+						$link_file = '/%file%?repname=' . $request->getParameter('repository');
+						$link_diff = '/%file%?repname=' . $request->getParameter('repository') . '&amp;compare[]=/%file%@%revno%&amp;compare[]=/%file%@%oldrev%';
+						$link_view = '/%file%?repname=' . $request->getParameter('repository') . '&amp;rev=%revno%';
+						break;
+					case 'loggerhead':
+						$base_url = $request->getParameter('browser_url');
+						$link_rev = '/revision/%revno%';
+						$link_file = '/changes';
+						$link_diff = '/revision/%revno%?compare_revid=%oldrev%';
+						$link_view = '/annotate/head:/%file%';
+						break;
+					case 'gitweb':
+						$base_url = $request->getParameter('browser_url');
+						$link_rev = ';a=commitdiff;h=%revno%';
+						$link_file = ';a=history;f=%file%;hb=HEAD';
+						$link_diff = ';a=blobdiff;f=%file%;hb=%revno%;hpb=%oldrev%';
+						$link_view = ';a=blob;f=%file%;hb=%revno%';
+						break;
+					case 'cgit':
+						$base_url = $request->getParameter('browser_url');
+						$link_rev = '/commit/?id=%revno%';
+						$link_file = '/log';
+						$link_diff = '/diff/%file%?id=%revno%?id2=%oldrev%';
+						$link_view = '/tree/%file%?id=%revno%';
+						break;
+					case 'hgweb':
+						$base_url = $request->getParameter('browser_url');
+						$link_rev = '/rev/%revno%';
+						$link_file = '/log/tip/%file%';
+						$link_diff = '/diff/%revno%/%file%';
+						$link_view = '/file/%revno%/%file%';
+						break;
+					case 'github':
+						$base_url = 'http://github.com/';
+						$link_rev = '/commit/%revno%';
+						$link_file = '/commits/master/%file%';
+						$link_diff = '/commit/%revno%';
+						$link_view = '/blob/%revno%/%file%';
+						break;
+					case 'gitorious':
+						$base_url = $request->getParameter('browser_url');
+						$link_rev = '/commit/%revno%';
+						$link_file = '/blobs/history/master/%file%';
+						$link_diff = '/commit/%revno%';
+						$link_view = '/blobs/%revno%/%file%';
+						break;
+				}
+				TBGContext::getModule('vcs_integration')->saveSetting('browser_url_'.$project_id, $base_url);
+				TBGContext::getModule('vcs_integration')->saveSetting('log_url_'.$project_id, $link_file);
+				TBGContext::getModule('vcs_integration')->saveSetting('blob_url_'.$project_id, $link_diff);
+				TBGContext::getModule('vcs_integration')->saveSetting('diff_url_'.$project_id, $link_view);
+				TBGContext::getModule('vcs_integration')->saveSetting('commit_url_'.$project_id, $link_rev);
+				
+				return $this->renderJSON(array('failed' => false, 'message' => TBGContext::getI18n()->__('Settings saved')));
+			}
+			else
+			{
+				$this->forward403();
+			}
+		}
 	}

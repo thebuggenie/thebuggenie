@@ -70,6 +70,7 @@
 			$this->addRoute('normalcheckin', '/vcs_integration/report/:project_key/', 'addCommit');
 			$this->addRoute('githubcheckin', '/vcs_integration/report/:project_key/github/', 'addCommitGithub');
 			$this->addRoute('gitoriouscheckin', '/vcs_integration/report/:project_key/gitorious/', 'addCommitGitorious');
+			$this->addRoute('configure_vcs_settings', '/configure/project/:project_id/vcs', 'configureProjectSettings', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_PROJECTS));
 		}
 
 		protected function _uninstall()
@@ -222,7 +223,7 @@
 							case 'websvn':
 								$base_url = $web_path;
 								$link_rev = '/revision.php?repname=' . $web_repo . '&amp;isdir=1&amp;rev=%revno%';
-								$link_file = '/log.php?repname=' . $web_repo . '&amp;path=/$file%';
+								$link_file = '/log.php?repname=' . $web_repo . '&amp;path=/$%file%';
 								$link_diff = '/comp.php?repname=' . $web_repo . '&amp;compare[]=/%file%@%revno%&amp;compare[]=/%file%@%oldrev%';
 								$link_view = '/filedetails.php?repname=' . $web_repo . '&path=/%file%&amp;rev=%revno%';
 								break;
