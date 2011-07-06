@@ -47,14 +47,7 @@
 			$link_old = $web_path . '/' . $web_repo . '/commit/' . $commit->getPreviousRevision();
 			break;
 	}
-	
-	// Affected issues
-	$fixes_grep = "#((bug|issue|ticket|fix|fixes|fixed|fixing|applies to|closes|references|ref|addresses|re|see|according to|also see)\s\#?(([A-Z0-9]+\-)?\d+))#ie";
-	$f_issues = array();
-	
-	preg_match_all($fixes_grep, $commit->getLog(), $f_issues);
-	
-	$f_issues = array_unique($f_issues[3]);
+
 ?>
 <div class="comment" id="commit_<?php echo $commit->getID(); ?>">
 	<div style="position: relative; overflow: visible; padding: 5px;" id="commit_view_<?php echo $commit->getID(); ?>" class="comment_main">
