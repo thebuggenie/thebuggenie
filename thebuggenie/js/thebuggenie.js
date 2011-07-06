@@ -415,7 +415,8 @@ TBG.Main.Helpers.formSubmit = function(url, form_id) {
 	TBG.Main.Helpers.ajax(url, {
 		form: form_id,
 		loading: {indicator: form_id + '_indicator', disable: form_id + '_button'}, 
-		success: {enable: form_id + '_button'}
+		success: {enable: form_id + '_button'},
+		failure: {enable: form_id + '_button'}
 	});
 };
 
