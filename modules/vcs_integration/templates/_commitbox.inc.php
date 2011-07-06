@@ -58,8 +58,10 @@
 						foreach ($commit->getFiles() as $file)
 						{
 							echo '<tr>';
+							
 							$action = $file->getAction();
 							if ($action == 'M'): $action = 'U'; endif;
+							
 							echo '<td class="imgtd">' . image_tag('icon_action_' . $action . '.png', null, false, 'vcs_integration') . '</td>';
 									
 							$link_file = str_replace('%revno%', $revision, TBGContext::getModule('vcs_integration')->getSetting('log_url_' . $projectId));
@@ -91,13 +93,11 @@
 							{
 								echo '<td colspan="2" class="faded_out" style="width: 150px;">'.__('deleted').'</td>';
 							}
-							
-							if ($action == "A")
+							elseif ($action == "A")
 							{
 								echo '<td class="faded_out" style="width: 75px;">'.__('new file').'</td>';
 							}
-							
-							if($action != "D")
+							elseif ($action != "D")
 							{
 								echo '<td style="width: 75px;"><a href="' . $link_view . '" target="_new"><b>' . __('View') . '</b></a></td>';
 							}
@@ -127,6 +127,7 @@
 								$valid_issues[] = $issue;
 							}
 						}
+						
 						if (count($valid_issues) == '')
 						{
 							echo '<span class="faded_out">'.__('This commit affects no issues').'</span>';
