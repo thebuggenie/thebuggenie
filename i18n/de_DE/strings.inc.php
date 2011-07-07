@@ -983,8 +983,8 @@
 	$strings['This will not affect the separate project overview page']='Keine Auswirkungen auf die seperate Projektübersicht';
 	$strings['On the frontpage summary, show']='Zeige auf der Übersicht';
 	$strings['only project information']='nur Projektinformationen';
-	$strings['status per milestone']='Stati pro Meilenstein';
-	$strings['status per issue types']='stati pro Falltyp';
+	$strings['status per milestone']='Status pro Meilenstein';
+	$strings['status per issue types']='status pro Falltyp';
 	$strings['list of open issues']='Liste der offenen Fälle';
 	$strings['Show %issuetype%']='Zeige %issuetype%';
 	$strings['Adding edition, please wait']='Edition wird hinzugefügt, bitte warten';
