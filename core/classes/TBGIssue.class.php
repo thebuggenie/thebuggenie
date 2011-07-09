@@ -2348,6 +2348,11 @@
 		 */
 		public function unsetAssignee()
 		{
+			if ($this->getAssigneeType() == TBGIdentifiableClass::TYPE_USER && $this->getUserWorkingOnIssue() == $this->getAssignee())
+			{
+				$this->stopWorkingOnIssue();
+			}
+			
 			$this->_addChangedProperty('_assigned_to', 0);
 			$this->_addChangedProperty('_assigned_type', 0);
 		}
