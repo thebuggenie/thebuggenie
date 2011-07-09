@@ -134,10 +134,20 @@
 						}
 						else
 						{
+							$c = 0;
 							echo '<ul>';
 							foreach ($valid_issues as $issue)
 							{
-								echo '<li>'.link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue->getFormattedIssueNo(true, true)).'</li>';
+								if ($issue->hasAccess())
+								{
+									$c++;
+									echo '<li>'.link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue->getFormattedIssueNo(true, true)).'</li>';
+								}
+								
+								if ($c == 0)
+								{
+									echo '<span class="faded_out">'.__('This commit only affects issues you do not hae access to').'</span>';
+								}
 							}
 							echo '</ul>';
 						}

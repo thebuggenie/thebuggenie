@@ -1,4 +1,4 @@
-<?php if (isset($issue) && $issue instanceof TBGIssue && !($issue->isDeleted())): ?>
+<?php if (isset($issue) && $issue instanceof TBGIssue && !($issue->isDeleted()) && $issue->hasAccess()): ?>
 	<tr>
 		<td class="imgtd"<?php if (!isset($include_issue_title) || $include_issue_title): ?> style="padding-top: <?php echo (isset($extra_padding) && $extra_padding) ? 10 : 3; ?>px;"<?php endif; ?>>
 			<?php if (!isset($include_issue_title) || $include_issue_title): ?>
