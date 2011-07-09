@@ -1152,7 +1152,12 @@
 			}
 			if ($request->getParameter('return_format') == 'scrum')
 			{
-				return $this->renderJSON(array('failed' => true, 'error' => $i18n->__('You have to specify a title')));
+				$err_msg = '';
+				foreach ($errors as $field => $value)
+				{
+					$err_msg .= '<br>'.$i18n->__('Please provide a %field%', array('%field%' => $field));
+				}
+				return $this->renderJSON(array('failed' => true, 'error' => $i18n->__('An error occured while creating this story').$err_msg));
 			}
 			$this->errors = $errors;
 			$this->permission_errors = $permission_errors;
