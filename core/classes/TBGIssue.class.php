@@ -654,6 +654,10 @@
 		{
 			//$this->_populateCustomfields();
 			$this->_mergeChangedProperties();
+			if($this->isDeleted())
+			{
+				throw new Exception(TBGContext::geti18n()->__('This issue has been deleted'));
+			}
 		}
 		
 		/**
