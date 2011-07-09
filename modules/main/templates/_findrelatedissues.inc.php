@@ -8,7 +8,7 @@
 				<tr>
 					<td style="width: 20px;"><input type="checkbox" value="<?php echo $aissue->getID(); ?>" name="relate_issues[<?php echo $aissue->getID(); ?>]"></td>
 					<td class="issue_title">
-						<?php echo $aissue->getFormattedTitle(); ?>
+						[<?php if ($aissue->getState() == TBGIssue::STATE_OPEN): echo __('OPEN'); else: echo __('CLOSED'); endif; ?>] <?php echo $aissue->getFormattedTitle(); ?>
 					</td>
 				</tr>
 			<?php endforeach; ?>
