@@ -1098,73 +1098,77 @@
 		
 		protected static function _permissionsCheck($permissions, $uid, $gid, $tid)
 		{
-			if ($uid != 0 || $gid != 0 || $tid != 0)
+			try
 			{
-				if ($uid != 0)
+				if ($uid != 0 || $gid != 0 || $tid != 0)
 				{
-					foreach ($permissions as $key => $permission)
+					if ($uid != 0)
 					{
-						if (!array_key_exists('uid', $permission))
+						foreach ($permissions as $key => $permission)
 						{
-							foreach ($permission as $pkey => $pp)
+							if (!array_key_exists('uid', $permission))
 							{
-								if ($pp['uid'] == $uid) {
-									return $pp['allowed'];
-								}
-							}
-						}
-						elseif ($permission['uid'] == $uid) return $permission['allowed'];
-					}
-				}
-
-				if (is_array($tid) || $tid != 0)
-				{
-					foreach ($permissions as $key => $permission)
-					{
-						if (!array_key_exists('tid', $permission))
-						{
-							foreach ($permission as $pkey => $pp)
-							{
-								if ((is_array($tid) && in_array($pp['tid'], array_keys($tid))) || $pp['tid'] == $tid)
+								foreach ($permission as $pkey => $pp)
 								{
-									return $pp['allowed'];
+									if ($pp['uid'] == $uid) {
+										return $pp['allowed'];
+									}
 								}
 							}
-						}
-						elseif ((is_array($tid) && in_array($permission['tid'], array_keys($tid))) || $permission['tid'] == $tid)
-						{
-							return $permission['allowed'];
+							elseif ($permission['uid'] == $uid) return $permission['allowed'];
 						}
 					}
-				}
-
-				if ($gid != 0)
-				{
-					foreach ($permissions as $key => $permission)
+	
+					if (is_array($tid) || $tid != 0)
 					{
-						if (!array_key_exists('gid', $permission))
+						foreach ($permissions as $key => $permission)
 						{
-							foreach ($permission as $pkey => $pp)
+							if (!array_key_exists('tid', $permission))
 							{
-								if ($pp['gid'] == $gid) return $pp['allowed'];
+								foreach ($permission as $pkey => $pp)
+								{
+									if ((is_array($tid) && in_array($pp['tid'], array_keys($tid))) || $pp['tid'] == $tid)
+									{
+										return $pp['allowed'];
+									}
+								}
+							}
+							elseif ((is_array($tid) && in_array($permission['tid'], array_keys($tid))) || $permission['tid'] == $tid)
+							{
+								return $permission['allowed'];
 							}
 						}
-						elseif ($permission['gid'] == $gid) return $permission['allowed'];
 					}
-				}
-			}
-
-			foreach ($permissions as $key => $permission)
-			{
-				if (!array_key_exists('uid', $permission))
-				{
-					foreach ($permission as $pkey => $pp)
+	
+					if ($gid != 0)
 					{
-						if ($pp['uid'] + $pp['gid'] + $pp['tid'] == 0) return $pp['allowed'];
+						foreach ($permissions as $key => $permission)
+						{
+							if (!array_key_exists('gid', $permission))
+							{
+								foreach ($permission as $pkey => $pp)
+								{
+									if ($pp['gid'] == $gid) return $pp['allowed'];
+								}
+							}
+							elseif ($permission['gid'] == $gid) return $permission['allowed'];
+						}
 					}
 				}
-				elseif ($permission['uid'] + $permission['gid'] + $permission['tid'] == 0) return $permission['allowed'];
+	
+				foreach ($permissions as $key => $permission)
+				{
+					if (!array_key_exists('uid', $permission))
+					{
+						foreach ($permission as $pkey => $pp)
+						{
+							if ($pp['uid'] + $pp['gid'] + $pp['tid'] == 0) return $pp['allowed'];
+						}
+					}
+					elseif ($permission['uid'] + $permission['gid'] + $permission['tid'] == 0) return $permission['allowed'];
+				}
 			}
+			catch (Exception $e) { }
 			
 			return null;
 		}
