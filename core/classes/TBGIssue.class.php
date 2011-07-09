@@ -4213,6 +4213,16 @@
 								}
 								$new_name = ($this->getAssignee() instanceof TBGIdentifiableClass) ? $this->getAssignee()->getName() : TBGContext::getI18n()->__('Not assigned');
 								
+								
+								if (!$this->isAssigned() || $this->getAssigneeType() == TBGIdentifiableClass::TYPE_TEAM)
+								{
+									$this->stopWorkingOnIssue();
+								}
+								elseif ($this->getAssigneeType() == TBGIdentifiableClass::TYPE_USER)
+								{
+									$this->startWorkingOnIssue($this->getAssignee());
+								}
+								
 								$this->addLogEntry(TBGLogTable::LOG_ISSUE_ASSIGNED, $old_name . ' &rArr; ' . $new_name);
 								$comment_lines[] = TBGContext::getI18n()->__("The assignee has been changed, from '''%previous_name%''' to '''%new_name%'''.", array('%previous_name%' => $old_name, '%new_name%' => $new_name));
 								$is_saved_assignee = true;
