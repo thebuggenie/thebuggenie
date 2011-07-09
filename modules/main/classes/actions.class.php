@@ -323,7 +323,6 @@
 		 */
 		public function runClientDashboard(TBGRequest $request)
 		{
-			$this->forward403unless(TBGContext::getUser()->hasPageAccess('clientlist'));
 			$this->client = null;
 			try
 			{
@@ -344,11 +343,10 @@
 		 */
 		public function runTeamDashboard(TBGRequest $request)
 		{
-			$this->forward403unless(TBGContext::getUser()->hasPageAccess('teamlist'));
-
 			try
 			{
 				$this->team = TBGContext::factory()->TBGTeam($request->getParameter('team_id'));
+				$this->forward403Unless($this->team->hasAccess());
 				
 				$own = TBGProject::getAllByOwner($this->team);
 				$leader = TBGProject::getAllByLeader($this->team);
