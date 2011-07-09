@@ -357,7 +357,7 @@
 
 			$links = TBGVCSIntegrationIssueLink::getCommitsByIssue($event->getSubject());
 			
-			if (count($links) == 0)
+			if (count($links) == 0 || !is_array($links))
 			{
 				TBGActionComponent::includeTemplate('vcs_integration/viewissue_commits_top', array('items' => false));
 			}
