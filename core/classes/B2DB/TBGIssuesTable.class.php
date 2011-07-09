@@ -141,6 +141,7 @@
 			$crit->addWhere(self::PROJECT_ID, $project_id);
 			$crit->addWhere(self::DELETED, false);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$crit->addWhere(self::DELETED, 0);
 
 			$crit2 = clone $crit;
 
@@ -156,6 +157,7 @@
 			$crit->addWhere(self::DELETED, false);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addWhere(self::ISSUE_TYPE, $issuetype_id);
+			$crit->addWhere(self::DELETED, 0);
 			
 			$crit2 = clone $crit;
 			
@@ -171,6 +173,7 @@
 			$crit->addSelectionColumn($column);
 			$crit->addWhere(self::PROJECT_ID, $project_id);
 			$crit->addGroupBy($column);
+			$crit->addWhere(self::DELETED, 0);
 
 			$crit2 = clone $crit;
 
@@ -221,6 +224,7 @@
 			$crit->addWhere(self::DELETED, false);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addWhere(self::MILESTONE, $milestone_id);
+			$crit->addWhere(self::DELETED, 0);
 			if ($exclude_tasks)
 			{
 				$crit->addJoin(TBGIssueTypesTable::getTable(), TBGIssueTypesTable::ID, self::ISSUE_TYPE);
@@ -239,6 +243,7 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::STATE, TBGIssue::STATE_OPEN);
 			$crit->addWhere(self::PROJECT_ID, $project_id);
+			$crit->addWhere(self::DELETED, 0);
 			$res = $this->doSelect($crit);
 			return $res;
 		}
@@ -277,6 +282,7 @@
 		{
 			$crit = new B2DBCriteria();
 			$crit->addWhere(self::PROJECT_ID, $id);
+			$crit->addWhere(self::DELETED, 0);
 			$results = $this->doSelect($crit);
 
 			if (!is_object($results) || $results->getNumberOfRows() == 0)
@@ -299,6 +305,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$crit->addWhere(self::DELETED, 0);
 			$row = $this->doSelectById($id, $crit, false);
 			return $row;
 		}
@@ -307,6 +314,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::PROJECT_ID, $project_id);
+			$crit->addWhere(self::DELETED, 0);
 			$res = $this->doCount($crit);
 			return $res;
 		}
@@ -315,6 +323,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::PROJECT_ID, $p_id);
+			$crit->addWhere(self::DELETED, 0);
 			$crit->addSelectionColumn(self::ISSUE_NO, 'issueno', B2DBCriteria::DB_MAX, '', '+1');
 			$row = $this->doSelectOne($crit, 'none');
 			$issue_no = $row->get('issueno');
@@ -327,6 +336,7 @@
 			$crit->addWhere(TBGProjectsTable::PREFIX, strtolower($prefix), B2DBCriteria::DB_EQUALS, '', '', B2DBCriteria::DB_LOWER);
 			$crit->addWhere(TBGProjectsTable::DELETED, false);
 			$crit->addWhere(self::ISSUE_NO, $issue_no);
+			$crit->addWhere(self::DELETED, 0);
 			$row = $this->doSelectOne($crit, array(self::PROJECT_ID));
 			return $row;
 		}
@@ -336,6 +346,7 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::PROJECT_ID, $project_id);
 			$crit->addWhere(self::ISSUE_NO, $issue_no);
+			$crit->addWhere(self::DELETED, 0);
 			$row = $this->doSelectOne($crit);
 			return $row;
 		}
