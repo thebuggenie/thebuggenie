@@ -19,7 +19,7 @@
 			Make a backup of your installation before you continue!</h2>
 		<br>
 		<br>
-		<?php if ($permissions_ok): ?>
+		<?php if (isset($permissions_ok) && $permissions_ok): ?>
 			<form accept-charset="utf-8" action="<?php echo make_url('upgrade'); ?>" method="post">
 				<input type="hidden" name="perform_upgrade" value="1">
 				<input type="checkbox" name="confirm_backup" id="confirm_backup" onclick="($('confirm_backup').checked) ? $('start_upgrade').enable() : $('start_upgrade').disable();">
