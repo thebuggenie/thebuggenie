@@ -19,6 +19,10 @@
 	class TBGPublish extends TBGModule 
 	{
 		
+		const PERMISSION_READ_ARTICLE = 'readarticle';
+		const PERMISSION_EDIT_ARTICLE = 'editarticle';
+		const PERMISSION_DELETE_ARTICLE = 'deletearticle';
+
 		protected $_longname = 'Wiki';
 		
 		protected $_description = 'Enables Wiki-functionality';
@@ -156,8 +160,9 @@
 			TBGLinksTable::getTable()->addLink('wiki', 0, 'MainPage', 'Wiki Frontpage', 1, $scope);
 			TBGLinksTable::getTable()->addLink('wiki', 0, 'WikiFormatting', 'Formatting help', 2, $scope);
 			TBGLinksTable::getTable()->addLink('wiki', 0, 'Category:Help', 'Help topics', 3, $scope);
-			TBGContext::setPermission('editarticle', 0, 'publish', 0, 1, 0, true, $scope);
-			TBGContext::setPermission('deletearticle', 0, 'publish', 0, 1, 0, true, $scope);
+			TBGContext::setPermission(self::PERMISSION_READ_ARTICLE, 0, 'publish', 0, 1, 0, true, $scope);
+			TBGContext::setPermission(self::PERMISSION_EDIT_ARTICLE, 0, 'publish', 0, 1, 0, true, $scope);
+			TBGContext::setPermission(self::PERMISSION_DELETE_ARTICLE, 0, 'publish', 0, 1, 0, true, $scope);
 		}
 		
 		protected function _uninstall()
@@ -480,14 +485,19 @@
 			return $user->hasPermission($permission_name, 0, 'publish', false, $permissive);
 		}
 		
+		public function canUserReadArticle($article_name)
+		{
+			return $this->_checkArticlePermissions($article_name, self::PERMISSION_READ_ARTICLE);
+		}
+		
 		public function canUserEditArticle($article_name)
 		{
-			return $this->_checkArticlePermissions($article_name, 'editarticle');
+			return $this->_checkArticlePermissions($article_name, self::PERMISSION_EDIT_ARTICLE);
 		}
 		
 		public function canUserDeleteArticle($article_name)
 		{
-			return $this->_checkArticlePermissions($article_name, 'deletearticle');
+			return $this->_checkArticlePermissions($article_name, self::PERMISSION_DELETE_ARTICLE);
 		}
 		
 		public function listen_quicksearchDropdownFirstItems(TBGEvent $event)
