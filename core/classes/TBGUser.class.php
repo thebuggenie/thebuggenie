@@ -591,7 +591,7 @@
 				TBGUserDashboardViewsTable::getTable()->addView($this->getID(), array('type' => TBGDashboard::DASHBOARD_VIEW_LOGGED_ACTION, 'id' => 0));
 			}
 			
-			if ($this->_timezone != null)
+			if ($this->_timezone !== null)
 			{
 				TBGSettings::saveSetting('timezone', $this->_timezone, 'core', null, $this->getID());
 			}
