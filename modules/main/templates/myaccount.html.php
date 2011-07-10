@@ -199,6 +199,7 @@
 									<td style="width: 200px; padding: 5px;"><label for="profile_timezone"><?php echo __('Current timezone'); ?></label></td>
 									<td>
 										<select name="timezone" id="profile_timezone" style="width: 150px;">
+											<option value="sys"<?php if ($tbg_user->getTimezone() == 'sys'): ?> selected<?php endif; ?>><?php echo __('Use global setting'); ?></option>
 											<?php for ($cc = 12;$cc >= 1;$cc--): ?>
 												<option value="-<?php echo $cc; ?>"<?php if ($tbg_user->getTimezone() == -$cc): ?> selected<?php endif; ?>>GMT -<?php echo $cc; ?></option>
 											<?php endfor; ?>
@@ -218,6 +219,7 @@
 									<td style="width: 200px; padding: 5px;"><label for="profile_timezone"><?php echo __('Language'); ?></label></td>
 									<td>
 										<select name="profile_language" id="profile_language" style="width: 300px;">
+											<option value="sys"<?php if ($tbg_user->getLanguage() == 'sys'): ?> selected<?php endif; ?>><?php echo __('Use global setting'); ?></option>
 										<?php foreach ($languages as $lang_code => $lang_desc): ?>
 											<option value="<?php echo $lang_code; ?>" <?php if ($tbg_user->getLanguage() == $lang_code): ?> selected<?php endif; ?>><?php echo $lang_desc; ?><?php if (TBGSettings::getLanguage() == $lang_code): ?> <?php echo __('(site default)'); endif;?></option>
 										<?php endforeach; ?>
