@@ -9,7 +9,7 @@
 	if(!isset($submenu)): $submenu = false; endif;
 ?>
 <?php if ($tbg_user->hasProjectPageAccess('project_dashboard', $selected_project->getID())): ?>
-	<?php echo link_tag(make_url('project_dashboard', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Dashboard'), (($tbg_response->getPage() == 'project_dashboard') ? array('class' => 'selected first') : array('class' => 'first'))); ?>
+	<?php echo link_tag(make_url('project_dashboard', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Dashboard'), (($tbg_response->getPage() == 'project_dashboard') ? array('class' => 'selected') : null)); ?>
 	<?php TBGEvent::createNew('core', 'project_sidebar_links_dashboard')->trigger(array('submenu' => $submenu)); ?>
 <?php endif; ?>
 <?php if ($tbg_user->hasProjectPageAccess('project_scrum', $selected_project->getID())): ?>
@@ -47,6 +47,6 @@
 	<?php TBGEvent::createNew('core', 'project_sidebar_links_statistics')->trigger(array('submenu' => $submenu)); ?>
 <?php endif; ?>
 <?php if ($tbg_user->hasProjectPageAccess('project_timeline', $selected_project->getID())): ?>
-	<?php echo link_tag(make_url('project_timeline', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Timeline'), (($tbg_response->getPage() == 'project_timeline') ? array('class' => 'selected last') : array('class' => 'last'))); ?>
+	<?php echo link_tag(make_url('project_timeline', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Timeline'), (($tbg_response->getPage() == 'project_timeline') ? array('class' => 'selected') : null)); ?>
 	<?php TBGEvent::createNew('core', 'project_sidebar_links_timeline')->trigger(array('submenu' => $submenu)); ?>
 <?php endif; ?>
