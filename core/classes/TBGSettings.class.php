@@ -91,6 +91,7 @@
 		const SETTING_UPLOAD_STORAGE = 'upload_storage';
 		const SETTING_USER_GROUP = 'defaultgroup';
 		const SETTING_USER_TIMEZONE = 'timezone';
+		const SETTING_USER_LANGUAGE = 'language';
 		const SETTING_AUTH_BACKEND = 'auth_backend';
 
 		static protected $_ver_mj = 3;
@@ -527,6 +528,11 @@
 		public static function getUserTimezone()
 		{
 			return self::get(self::SETTING_USER_TIMEZONE, 'core', null, TBGContext::getUser()->getID());
+		}
+		
+		public static function getUserLanguage()
+		{
+			return self::get(self::SETTING_USER_LANGUAGE, 'core', null, TBGContext::getUser()->getID());
 		}
 		
 		public static function isUploadsEnabled()
