@@ -213,6 +213,7 @@
 								<tr>
 									<td class="config_explanation" colspan="2">
 										<?php echo __('This setting is used to display issues, comments and more in your local timezone.'); ?><br>
+ 										<?php echo __('The time is now: %time%', array('%time%' => tbg_formatTime(time(), 1))); ?>
 									</td>
 								</tr>
 								<tr>
