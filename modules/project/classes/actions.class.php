@@ -677,16 +677,16 @@
 			$filter_issuetype = $request->getParameter('issuetype', 'all');
 			$filter_assigned_to = $request->getParameter('assigned_to', 'all');
 
-			if (strtolower($filter_state) != 'all')
+			if (mb_strtolower($filter_state) != 'all')
 			{
 				$filters['state'] = array('operator' => '=', 'value' => '');
-				if (strtolower($filter_state) == 'open')
+				if (mb_strtolower($filter_state) == 'open')
 					$filters['state']['value'] = TBGIssue::STATE_OPEN;
-				elseif (strtolower($filter_state) == 'closed')
+				elseif (mb_strtolower($filter_state) == 'closed')
 					$filters['state']['value'] = TBGIssue::STATE_CLOSED;
 			}
 
-			if (strtolower($filter_issuetype) != 'all')
+			if (mb_strtolower($filter_issuetype) != 'all')
 			{
 				$issuetype = TBGIssuetype::getIssuetypeByKeyish($filter_issuetype);
 				if ($issuetype instanceof TBGIssuetype)
@@ -695,10 +695,10 @@
 				}
 			}
 
-			if (strtolower($filter_assigned_to) != 'all')
+			if (mb_strtolower($filter_assigned_to) != 'all')
 			{
 				$user_id = 0;
-				switch (strtolower($filter_assigned_to))
+				switch (mb_strtolower($filter_assigned_to))
 				{
 					case 'me':
 						$user_id = TBGContext::getUser()->getID();
@@ -709,7 +709,7 @@
 					default:
 						try
 						{
-							$user = TBGUser::findUser(strtolower($filter_assigned_to));
+							$user = TBGUser::findUser(mb_strtolower($filter_assigned_to));
 							if ($user instanceof TBGUser) $user_id = $user->getID();
 						}
 						catch (Exception $e) {}
@@ -786,12 +786,12 @@
 				if ($passed_transition = $request->getParameter('workflow_transition'))
 				{
 					//echo "looking for transition ";
-					$key = str_replace(' ', '', mb_strtolower($passed_transition));
+					$key = str_replace(' ', '', mb_mb_strtolower($passed_transition));
 					//echo $key . "\n";
 					foreach ($issue->getAvailableWorkflowTransitions() as $transition)
 					{
-						//echo str_replace(' ', '', mb_strtolower($transition->getName())) . "?";
-						if (strpos(str_replace(' ', '', mb_strtolower($transition->getName())), $key) !== false)
+						//echo str_replace(' ', '', mb_mb_strtolower($transition->getName())) . "?";
+						if (mb_strpos(str_replace(' ', '', mb_mb_strtolower($transition->getName())), $key) !== false)
 						{
 							$workflow_transition = $transition;
 							//echo "found transition " . $transition->getID();
@@ -815,7 +815,7 @@
 						$found = false;
 						foreach ($choices as $choice_key => $choice)
 						{
-							if (strpos(str_replace(' ', '', strtolower($choice->getName())), str_replace(' ', '', strtolower($field_value))) !== false)
+							if (mb_strpos(str_replace(' ', '', mb_strtolower($choice->getName())), str_replace(' ', '', mb_strtolower($field_value))) !== false)
 							{
 								$request->setParameter($field_key . '_id', $choice->getId());
 								break;
@@ -871,7 +871,7 @@
 										$found = false;
 										foreach ($choices as $choice_key => $choice)
 										{
-											if (str_replace(' ', '', strtolower($choice->getName())) == str_replace(' ', '', strtolower($field_value)))
+											if (str_replace(' ', '', mb_strtolower($choice->getName())) == str_replace(' ', '', mb_strtolower($field_value)))
 											{
 												$issue->$method($choice);
 												$found = true;
@@ -889,7 +889,7 @@
 									case 'assignee':
 										$set_method = "set".ucfirst($field_key);
 										$unset_method = "un{$set_method}";
-										switch (strtolower($field_value))
+										switch (mb_strtolower($field_value))
 										{
 											case 'me':
 												$issue->$set_method(TBGContext::getUser());
@@ -900,7 +900,7 @@
 											default:
 												try
 												{
-													$user = TBGUser::findUser(strtolower($field_value));
+													$user = TBGUser::findUser(mb_strtolower($field_value));
 													if ($user instanceof TBGUser) $issue->$set_method($user);
 												}
 												catch (Exception $e)
@@ -919,7 +919,7 @@
 										$found = false;
 										foreach ($this->selected_project->getAllMilestones() as $milestone)
 										{
-											if (str_replace(' ', '', strtolower($milestone->getName())) == str_replace(' ', '', strtolower($field_value)))
+											if (str_replace(' ', '', mb_strtolower($milestone->getName())) == str_replace(' ', '', mb_strtolower($field_value)))
 											{
 												$issue->setMilestone($milestone->getID());
 												$found = true;

@@ -116,7 +116,7 @@
 								<?php endforeach; ?>
 								<?php foreach (TBGLogging::getEntries() as $entry): ?>
 									<?php $color = TBGLogging::getCategoryColor($entry['category']); ?>
-									<div class="log_<?php echo $entry['category']; ?>"><strong><?php echo strtoupper(TBGLogging::getLevelName($entry['level'])); ?></strong> <strong style="color: #<?php echo $color; ?>">[<?php echo $entry['category']; ?>]</strong> <span style="color: #555; font-size: 10px; font-style: italic;"><?php echo $entry['time']; ?></span>&nbsp;&nbsp;<?php echo $entry['message']; ?></div>
+									<div class="log_<?php echo $entry['category']; ?>"><strong><?php echo mb_strtoupper(TBGLogging::getLevelName($entry['level'])); ?></strong> <strong style="color: #<?php echo $color; ?>">[<?php echo $entry['category']; ?>]</strong> <span style="color: #555; font-size: 10px; font-style: italic;"><?php echo $entry['time']; ?></span>&nbsp;&nbsp;<?php echo $entry['message']; ?></div>
 								<?php endforeach; ?>
 								</div>
 							</div>

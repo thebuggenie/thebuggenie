@@ -124,7 +124,7 @@
 		{
 			foreach (self::getAll() as $issuetype)
 			{
-				if ($issuetype->getKey() == str_replace(array(' ', '/'), array('', ''), strtolower($key)))
+				if ($issuetype->getKey() == str_replace(array(' ', '/'), array('', ''), mb_strtolower($key)))
 				{
 					return $issuetype;
 				}

@@ -28,10 +28,10 @@
 		 */
 		protected static function getModuleAndTemplate($template)
 		{
-			if ($separator_pos = strpos($template, '/'))
+			if ($separator_pos = mb_strpos($template, '/'))
 			{
-				$module = substr($template, 0, $separator_pos);
-				$template = substr($template, $separator_pos + 1);
+				$module = mb_substr($template, 0, $separator_pos);
+				$template = mb_substr($template, $separator_pos + 1);
 			}
 			else
 			{

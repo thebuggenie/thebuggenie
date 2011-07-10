@@ -572,10 +572,10 @@
 
 			switch (true)
 			{
-				case (strpos($extensions, ',') !== false):
+				case (mb_strpos($extensions, ',') !== false):
 					$delimiter = ',';
 					break;
-				case (strpos($extensions, ';') !== false):
+				case (mb_strpos($extensions, ';') !== false):
 					$delimiter = ';';
 					break;
 			}

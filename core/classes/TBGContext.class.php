@@ -340,7 +340,7 @@
 		{
 			if (self::$_stripped_tbgpath === null)
 			{
-				self::$_stripped_tbgpath = substr(self::getTBGPath(), 0, strlen(self::getTBGPath()) - 1);
+				self::$_stripped_tbgpath = mb_substr(self::getTBGPath(), 0, mb_strlen(self::getTBGPath()) - 1);
 			}
 			return self::$_stripped_tbgpath;
 		}
@@ -351,8 +351,8 @@
 		protected static function _setTBGPath()
 		{
 			self::$_tbgpath = dirname($_SERVER['PHP_SELF']);
-			if (stristr(PHP_OS, 'WIN')) { self::$_tbgpath = str_replace("\\", "/", self::$_tbgpath); /* Windows adds a \ to the URL which we don't want */ }
-			if (self::$_tbgpath[strlen(self::$_tbgpath) - 1] != '/') self::$_tbgpath .= '/';
+			if (mb_stristr(PHP_OS, 'WIN')) { self::$_tbgpath = str_replace("\\", "/", self::$_tbgpath); /* Windows adds a \ to the URL which we don't want */ }
+			if (self::$_tbgpath[mb_strlen(self::$_tbgpath) - 1] != '/') self::$_tbgpath .= '/';
 		}
 		
 		/**
@@ -405,6 +405,10 @@
 		{
 			try
 			{
+				mb_internal_encoding("UTF-8");
+				mb_language('uni');
+				mb_http_output("UTF-8");
+				
 				self::$_request = new TBGRequest();
 				self::$_response = new TBGResponse();
 				self::$_factory = new TBGFactory();
@@ -419,6 +423,7 @@
 					self::initializeUser();
 					TBGSettings::setTimezone();
 				}
+				
 				else
 					self::$_modules = array();
 				
@@ -625,7 +630,7 @@
 			
 			while ($theme = readdir($theme_path_handle))
 			{
-				if (strstr($theme, '.') == '' && $theme != 'modules') 
+				if (mb_strstr($theme, '.') == '' && $theme != 'modules') 
 				{ 
 					$themes[] = $theme; 
 				}
@@ -1380,9 +1385,9 @@
 			{
 				return self::$_available_permissions[$applies_to];
 			}
-			elseif (substr($applies_to, 0, 7) == 'module_')
+			elseif (mb_substr($applies_to, 0, 7) == 'module_')
 			{
-				$module_name = substr($applies_to, 7);
+				$module_name = mb_substr($applies_to, 7);
 				if (self::isModuleLoaded($module_name))
 				{
 					return self::getModule($module_name)->getAvailablePermissions();
@@ -1580,7 +1585,7 @@
 					}
 					self::setCurrentClient(self::$_selected_project->getClient());
 				}
-				if (strtolower(TBGSettings::getTBGname()) != strtolower($project->getName()) || self::isClientContext())
+				if (mb_strtolower(TBGSettings::getTBGname()) != mb_strtolower($project->getName()) || self::isClientContext())
 				{
 					self::getResponse()->addBreadcrumb(TBGSettings::getTBGName(), self::getRouting()->generate('home'));
 					if (self::isClientContext())
@@ -1764,7 +1769,7 @@
 		 */
 		public static function loadLibrary($lib_name)
 		{
-			if (strpos($lib_name, '/') !== false)
+			if (mb_strpos($lib_name, '/') !== false)
 			{
 				list ($module, $lib_name) = explode('/', $lib_name);
 			}
@@ -1841,7 +1846,7 @@
 
 			// Set up the response object, responsible for controlling any output
 			self::getResponse()->setPage(self::getRouting()->getCurrentRouteName());
-			self::getResponse()->setTemplate(strtolower($method) . '.' . TBGContext::getRequest()->getRequestedFormat() . '.php');
+			self::getResponse()->setTemplate(mb_strtolower($method) . '.' . TBGContext::getRequest()->getRequestedFormat() . '.php');
 			self::getResponse()->setupResponseContentType(self::getRequest()->getRequestedFormat());
 			self::setCurrentProject(null);
 			
@@ -1852,7 +1857,7 @@
 			if (method_exists($actionObject, $actionToRunName))
 			{
 				// Turning on output buffering
-				ob_start();
+				ob_start('mb_output_handler');
 				ob_implicit_flush(0);
 
 				if (self::getRouting()->isCurrentRouteCSRFenabled())
@@ -1929,7 +1934,7 @@
 						{
 							// Check to see if the template has been changed, and whether it's in a
 							// different module, specified by "module/templatename"
-							if (strpos(self::getResponse()->getTemplate(), '/'))
+							if (mb_strpos(self::getResponse()->getTemplate(), '/'))
 							{
 								$newPath = explode('/', self::getResponse()->getTemplate());
 								$templateName = THEBUGGENIE_MODULES_PATH . $newPath[0] . DS . 'templates' . DS . $newPath[1] . '.' . TBGContext::getRequest()->getRequestedFormat() . '.php';
@@ -1985,7 +1990,7 @@
 				self::loadLibrary('common');
 				
 				// Render header template if any, and store the output in a variable
-				ob_start();
+				ob_start('mb_output_handler');
 				ob_implicit_flush(0);
 				if (!self::getRequest()->isAjaxCall() && self::getResponse()->doDecorateHeader())
 				{
@@ -1999,7 +2004,7 @@
 				}
 
 				// Set up the run summary, and store it in a variable
-//				ob_start();
+//				ob_start('mb_output_handler');
 //				ob_implicit_flush(0);
 				$load_time = self::getLoadtime();
 				if (B2DB::isInitialized())
@@ -2019,7 +2024,7 @@
 				if (isset($decoration_header))
 					echo $decoration_header;
 
-				if (TBGSettings::isMaintenanceModeEnabled() && !strstr(self::getRouting()->getCurrentRouteName(), 'configure'))
+				if (TBGSettings::isMaintenanceModeEnabled() && !mb_strstr(self::getRouting()->getCurrentRouteName(), 'configure'))
 				{
 					if (!file_exists(THEBUGGENIE_CORE_PATH . 'templates/offline.inc.php'))
 					{

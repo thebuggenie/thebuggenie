@@ -211,7 +211,7 @@
 							for ($ll = 1; $ll <= $rand_length; $ll++)
 							{
 								$word = str_replace(array(',', '.', "\r", "\n"), array('', '', '', ''), $lorem_words[array_rand($lorem_words)]);
-								$word = ($ucnext || (rand(1, 40) == 19)) ? ucfirst($word) : strtolower($word);
+								$word = ($ucnext || (rand(1, 40) == 19)) ? ucfirst($word) : mb_strtolower($word);
 								$title_string .= $word;
 								$ucnext = false;
 								if ($ll == $rand_length || rand(1, 15) == 5) 
@@ -226,7 +226,7 @@
 							for ($ll = 1; $ll <= $rand_length; $ll++)
 							{
 								$word = str_replace(array(',', '.', "\r", "\n"), array('', '', '', ''), $lorem_words[array_rand($lorem_words)]);
-								$word = ($ucnext || (rand(1, 40) == 19)) ? ucfirst($word) : strtolower($word);
+								$word = ($ucnext || (rand(1, 40) == 19)) ? ucfirst($word) : mb_strtolower($word);
 								$description_string .= $word;
 								$ucnext = false;
 								if ($ll == $rand_length || rand(1, 15) == 5) 
@@ -266,7 +266,7 @@
 							for ($ll = 1; $ll <= $rand_length; $ll++)
 							{
 								$word = str_replace(array(',', '.', "\r", "\n"), array('', '', '', ''), $lorem_words[array_rand($lorem_words)]);
-								$word = ($ucnext || (rand(1, 40) == 19)) ? ucfirst($word) : strtolower($word);
+								$word = ($ucnext || (rand(1, 40) == 19)) ? ucfirst($word) : mb_strtolower($word);
 								$title_string .= $word;
 								$ucnext = false;
 								if ($ll == $rand_length || rand(1, 15) == 5) 
@@ -281,7 +281,7 @@
 							for ($ll = 1; $ll <= $rand_length; $ll++)
 							{
 								$word = str_replace(array(',', '.', "\r", "\n"), array('', '', '', ''), $lorem_words[array_rand($lorem_words)]);
-								$word = ($ucnext || (rand(1, 40) == 19)) ? ucfirst($word) : strtolower($word);
+								$word = ($ucnext || (rand(1, 40) == 19)) ? ucfirst($word) : mb_strtolower($word);
 								$description_string .= $word;
 								$ucnext = false;
 								if ($ll == $rand_length || rand(1, 15) == 5) 
@@ -2272,7 +2272,7 @@
 		{
 			$this->too_short = false;
 			$findstring = $request->getParameter('findstring');
-			if (strlen($findstring) >= 1)
+			if (mb_strlen($findstring) >= 1)
 			{
 				list ($this->users, $this->total_results) = TBGUsersTable::getTable()->findInConfig($findstring);
 			}
@@ -3367,7 +3367,7 @@
 								// Check if project exists
 								$key = trim($activerow[$namecol], '" ');
 								$key = str_replace(' ', '', $key);
-								$key = strtolower($key);
+								$key = mb_strtolower($key);
 								
 								$tmp = TBGProject::getByKey($key);
 								

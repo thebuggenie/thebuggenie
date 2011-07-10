@@ -3,7 +3,7 @@
 
 $dirname = dirname($_SERVER['PHP_SELF']);
 
-if (stristr(PHP_OS, 'WIN'))
+if (mb_stristr(PHP_OS, 'WIN'))
 {
 	$dirname = str_replace("\\", "/", $dirname); /* Windows adds a \ to the URL which we don't want */
 }

@@ -724,7 +724,7 @@
 		public function setName($name)
 		{
 			parent::setName($name);
-			$this->_key = strtolower($this->getStrippedProjectName());
+			$this->_key = mb_strtolower($this->getStrippedProjectName());
 			if ($this->_key == '') $this->_key = 'project'.$this->getID();
 		}
 		

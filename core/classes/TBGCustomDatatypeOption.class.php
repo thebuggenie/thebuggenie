@@ -79,7 +79,7 @@
 			elseif (in_array($this->getItemtype(), array(TBGCustomDatatype::DROPDOWN_CHOICE_TEXT_COLORED, TBGCustomDatatype::DROPDOWN_CHOICE_TEXT_COLOR)))
 			{
 				$itemdata = ($this->getItemdata() === null || trim($this->getItemdata()) == '') ? '#FFF' : $this->getItemdata();
-				if (substr($itemdata, 0, 1) != '#')
+				if (mb_substr($itemdata, 0, 1) != '#')
 				{
 					$itemdata = '#'.$itemdata;
 				}

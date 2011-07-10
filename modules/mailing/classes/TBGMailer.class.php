@@ -130,11 +130,11 @@
 
 			if (!$this->no_dash_f)
 			{
-				$retval = mail($email->getRecipientAddressesAsString(), $email->getSubject(), $email->getBodyAsString(), $email->getHeadersAsString(false), '-f'.$email->getFromAddress());
+				$retval = mb_send_mail($email->getRecipientAddressesAsString(), $email->getSubject(), $email->getBodyAsString(), $email->getHeadersAsString(false), '-f'.$email->getFromAddress());
 			}
 			else
 			{
-				$retval = mail($email->getRecipientAddressesAsString(), $email->getSubject(), $email->getBodyAsString(), $email->getHeadersAsString(false));
+				$retval = mb_send_mail($email->getRecipientAddressesAsString(), $email->getSubject(), $email->getBodyAsString(), $email->getHeadersAsString(false));
 			}
 			if ($retval)
 			{
@@ -210,13 +210,13 @@
 				$rv = fgets($fp, 4096);
 				if ($this->debug)
 				{
-					echo(base64_decode(substr($rv,4)) . $this->username . ' ' . $rv . '<br>');
+					echo(base64_decode(mb_substr($rv,4)) . $this->username . ' ' . $rv . '<br>');
 				}
 				fputs($fp,base64_encode($this->username) . "\r\n");
 				$rv = fgets($fp, 4096);
 				if ($this->debug)
 				{
-					echo(base64_decode(substr($rv,4)) . $this->password . ' ' . $rv . '<br>');
+					echo(base64_decode(mb_substr($rv,4)) . $this->password . ' ' . $rv . '<br>');
 				}
 				fputs($fp,base64_encode($this->password) . "\r\n");
 				$rv = $this->_read_buffer($fp, 'user/pass');

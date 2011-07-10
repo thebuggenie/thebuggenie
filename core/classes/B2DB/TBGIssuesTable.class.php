@@ -333,7 +333,7 @@
 		public function getByPrefixAndIssueNo($prefix, $issue_no)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(TBGProjectsTable::PREFIX, strtolower($prefix), B2DBCriteria::DB_EQUALS, '', '', B2DBCriteria::DB_LOWER);
+			$crit->addWhere(TBGProjectsTable::PREFIX, mb_strtolower($prefix), B2DBCriteria::DB_EQUALS, '', '', B2DBCriteria::DB_LOWER);
 			$crit->addWhere(TBGProjectsTable::DELETED, false);
 			$crit->addWhere(self::ISSUE_NO, $issue_no);
 			$crit->addWhere(self::DELETED, 0);
@@ -526,7 +526,7 @@
 						{
 							if ($filter_info['value'] != '')
 							{
-								$searchterm = (strpos($filter_info['value'], '%') !== false) ? $filter_info['value'] : "%{$filter_info['value']}%";
+								$searchterm = (mb_strpos($filter_info['value'], '%') !== false) ? $filter_info['value'] : "%{$filter_info['value']}%";
 								if ($filter_info['operator'] == '=')
 								{
 									$ctn = $crit->returnCriterion(self::TITLE, $searchterm, B2DBCriteria::DB_LIKE);
@@ -566,7 +566,7 @@
 								$filter_info = $first_val;
 								if ($filter_info['value'] != '')
 								{
-									$searchterm = (strpos($filter_info['value'], '%') !== false) ? $filter_info['value'] : "%{$filter_info['value']}%";
+									$searchterm = (mb_strpos($filter_info['value'], '%') !== false) ? $filter_info['value'] : "%{$filter_info['value']}%";
 									if ($filter_info['operator'] == '=')
 									{
 										$ctn = $crit->returnCriterion(self::TITLE, $searchterm, B2DBCriteria::DB_LIKE);

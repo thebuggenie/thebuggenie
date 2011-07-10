@@ -232,7 +232,7 @@
 		
 		protected function _getRealColumnFieldName($column)
 		{
-			return substr($column, stripos($column, '.') + 1);
+			return mb_substr($column, mb_stripos($column, '.') + 1);
 		}
 		
 		public function getAliasColumns()
@@ -701,7 +701,7 @@
 			foreach ($this->getColumns() as $property)
 			{
 				$property = $property['name'];
-				$value = $this->formatify($object->getB2DBSaveablePropertyValue(strtolower($property)), $property['type']);
+				$value = $this->formatify($object->getB2DBSaveablePropertyValue(mb_strtolower($property)), $property['type']);
 				if ($property == $this->getIdColumn())
 				{
 					$res_id = $value;
@@ -786,7 +786,7 @@
 					break;
 				case 'text':
 				case 'boolean':
-					$fsql .= strtoupper($column['type']);
+					$fsql .= mb_strtoupper($column['type']);
 					break;
 			}
 			if ($column['not_null']) $fsql .= ' NOT NULL';

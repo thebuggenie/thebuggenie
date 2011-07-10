@@ -254,7 +254,7 @@
 				$tables_created = array();
 				while ($table_class_file = readdir($tables_path_handle))
 				{
-					if (($tablename = substr($table_class_file, 0, strpos($table_class_file, '.'))) != '') 
+					if (($tablename = mb_substr($table_class_file, 0, mb_strpos($table_class_file, '.'))) != '') 
 					{
 						B2DB::getTable($tablename)->create();
 						$tables_created[] = $tablename;

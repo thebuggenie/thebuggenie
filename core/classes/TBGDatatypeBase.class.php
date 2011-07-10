@@ -129,7 +129,7 @@
 		protected function _generateKey()
 		{
 			if ($this->_key === null)
-				$this->_key = preg_replace("/[^0-9a-zA-Z]/i", '', strtolower($this->getName()));
+				$this->_key = preg_replace("/[^0-9a-zA-Z]/i", '', mb_strtolower($this->getName()));
 		}
 		
 		public function getKey()

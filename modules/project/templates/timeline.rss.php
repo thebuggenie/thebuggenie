@@ -4,7 +4,7 @@
 		<title><?php echo TBGSettings::getTBGname() . ' ~ '. __('%project_name% project timeline', array('%project_name%' => TBGContext::getCurrentProject()->getName())); ?></title>
 		<link><?php echo make_url('project_timeline', array('project_key' => TBGContext::getCurrentProject()->getKey()), false); ?></link>
 		<description><?php echo strip_tags(TBGSettings::getTBGtagline()); ?></description>
-		<language><?php echo (strtolower(str_replace('_', '-', TBGContext::getI18n()->getCurrentLanguage()))); ?></language>
+		<language><?php echo (mb_strtolower(str_replace('_', '-', TBGContext::getI18n()->getCurrentLanguage()))); ?></language>
 		<image>
 		<?php if (TBGSettings::isUsingCustomHeaderIcon() == '2'): ?>
 			<url><?php echo TBGSettings::getHeaderIconURL(); ?></url>

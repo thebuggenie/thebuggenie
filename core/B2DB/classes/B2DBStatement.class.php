@@ -253,7 +253,7 @@
 					{
 						$val = '\'' . $val . '\'';
 					}
-					$str = substr_replace($str, $val, strpos($str, '?'), 1);
+					$str = substr_replace($str, $val, mb_strpos($str, '?'), 1);
 				}
 			}
 			return $str;

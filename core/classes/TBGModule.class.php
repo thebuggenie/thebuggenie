@@ -60,7 +60,7 @@
 			$scope_id = ($scope) ? $scope->getID() : TBGContext::getScope()->getID();
 			$module_details = file_get_contents($module_basepath . DS . 'class');
 
-			if (strpos($module_details, '|') === false)
+			if (mb_strpos($module_details, '|') === false)
 				throw new Exception("Need to have module details in the form of ModuleName|version in the {$module_basepath}/class file");
 
 			$details = explode('|', $module_details);
@@ -172,7 +172,7 @@
 					$b2db_classpath_handle = opendir($b2db_classpath);
 					while ($table_class_file = readdir($b2db_classpath_handle))
 					{
-						if (($tablename = substr($table_class_file, 0, strpos($table_class_file, '.'))) != '')
+						if (($tablename = mb_substr($table_class_file, 0, mb_strpos($table_class_file, '.'))) != '')
 						{
 							B2DB::getTable($tablename)->create();
 						}

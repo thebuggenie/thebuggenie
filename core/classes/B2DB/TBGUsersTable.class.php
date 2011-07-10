@@ -130,7 +130,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::DELETED, false);
-			if (stristr($details, "@"))
+			if (mb_stristr($details, "@"))
 			{
 				$crit->addWhere(self::EMAIL, "%$details%", B2DBCriteria::DB_LIKE);
 			}
@@ -181,7 +181,7 @@
 				case 'all':
 					break;
 				default:
-					$details = (strlen($details) == 1) ? strtolower("$details%") : strtolower("%$details%");
+					$details = (mb_strlen($details) == 1) ? mb_strtolower("$details%") : mb_strtolower("%$details%");
 					$ctn = $crit->returnCriterion(self::UNAME, $details, B2DBCriteria::DB_LIKE);
 					$ctn->addOr(self::BUDDYNAME, $details, B2DBCriteria::DB_LIKE);
 					$ctn->addOr(self::REALNAME, $details, B2DBCriteria::DB_LIKE);

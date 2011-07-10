@@ -290,7 +290,7 @@
 							$views = array();
 							foreach(explode(';', $request->getParameter('id')) as $view)
 							{
-								array_push($views, array('type' => strrev(strstr(strrev($view), '_', true)), 'id' => strstr($view, '_', true)));
+								array_push($views, array('type' => strrev(mb_strstr(strrev($view), '_', true)), 'id' => mb_strstr($view, '_', true)));
 							}
 							array_pop($views);
 							TBGDashboard::setUserViews(TBGContext::getUser()->getID(), $views);
@@ -581,7 +581,7 @@
 							foreach ($allowed_domains as $allowed_domain)
 							{
 								$allowed_domain = '@' . trim($allowed_domain);
-								if (strpos($email, $allowed_domain) !== false ) //strpos checks if $to
+								if (mb_strpos($email, $allowed_domain) !== false ) //mb_strpos checks if $to
 								{
 									$valid_domain = true;
 									break;
@@ -1423,7 +1423,7 @@
 					try
 					{
 						$classname = null;
-						$parameter_name = strtolower($request->getParameter('field'));
+						$parameter_name = mb_strtolower($request->getParameter('field'));
 						$parameter_id_name = "{$parameter_name}_id";
 						$is_pain = in_array($parameter_name, array('pain_bug_type', 'pain_likelihood', 'pain_effect'));
 						if ($is_pain)
@@ -2065,8 +2065,8 @@
 			elseif (array_key_exists('file_id', $status) && $request->getParameter('mode') == 'article')
 			{
 				$file = TBGContext::factory()->TBGFile($status['file_id']);
-				$status['content_uploader'] = $this->getComponentHTML('main/attachedfile', array('base_id' => 'article_'.strtolower(urldecode($request->getParameter('article_name'))).'_files', 'mode' => 'article', 'article_name' => $request->getParameter('article_name'), 'file' => $file));
-				$status['content_inline'] = $this->getComponentHTML('main/attachedfile', array('base_id' => 'article_'.strtolower(urldecode($request->getParameter('article_name'))).'_files', 'mode' => 'article', 'article_name' => $request->getParameter('article_name'), 'file' => $file));
+				$status['content_uploader'] = $this->getComponentHTML('main/attachedfile', array('base_id' => 'article_'.mb_strtolower(urldecode($request->getParameter('article_name'))).'_files', 'mode' => 'article', 'article_name' => $request->getParameter('article_name'), 'file' => $file));
+				$status['content_inline'] = $this->getComponentHTML('main/attachedfile', array('base_id' => 'article_'.mb_strtolower(urldecode($request->getParameter('article_name'))).'_files', 'mode' => 'article', 'article_name' => $request->getParameter('article_name'), 'file' => $file));
 				$article = TBGWikiArticle::getByName($request->getParameter('article_name'));
 				$status['attachmentcount'] = count($article->getFiles());
 			}
@@ -2642,7 +2642,7 @@
 
 			$searchfor = $request->getParameter('searchfor');
 
-			if (strlen(trim($searchfor)) < 3 && !is_numeric($searchfor) && substr($searchfor, 0, 1) != '#')
+			if (mb_strlen(trim($searchfor)) < 3 && !is_numeric($searchfor) && mb_substr($searchfor, 0, 1) != '#')
 			{
 				$status = 400;
 				$message = TBGContext::getI18n()->__('Please enter something to search for (3 characters or more) %searchfor%', array('searchfor' => $searchfor));
@@ -2682,7 +2682,7 @@
 
 			$searchfor = $request->getParameter('searchfor');
 
-			if (strlen(trim($searchfor)) < 3 && !is_numeric($searchfor))
+			if (mb_strlen(trim($searchfor)) < 3 && !is_numeric($searchfor))
 			{
 				$status = 400;
 				$message = TBGContext::getI18n()->__('Please enter something to search for (3 characters or more) %searchfor%', array('searchfor' => $searchfor));
@@ -3384,7 +3384,7 @@
 			
 			if ($min_documentRoot) {
 			    $_SERVER['DOCUMENT_ROOT'] = $min_documentRoot;
-			} elseif (0 === stripos(PHP_OS, 'win')) {
+			} elseif (0 === mb_stripos(PHP_OS, 'win')) {
 			    Minify::setDocRoot(); // IIS may need help
 			}
 			
