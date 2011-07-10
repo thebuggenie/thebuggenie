@@ -536,6 +536,7 @@
 				{
 					throw new B2DBException('Could not connect to the database, but not caught by PDO');
 				}
+				self::getDBLink()->query('SET NAMES UTF8');
 			}
 			catch (PDOException $e)
 			{
