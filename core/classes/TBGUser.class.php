@@ -591,8 +591,23 @@
 				TBGUserDashboardViewsTable::getTable()->addView($this->getID(), array('type' => TBGDashboard::DASHBOARD_VIEW_LOGGED_ACTION, 'id' => 0));
 			}
 			
-			if ($this->_timezone !== null)
+			if ($this->_timezone != null)
+			{
 				TBGSettings::saveSetting('timezone', $this->_timezone, 'core', null, $this->getID());
+			}
+			else
+			{
+				TBGSettings::saveSetting('timezone', 'sys', 'core', null, $this->getID());
+			}
+			
+			if ($this->_language != null)
+			{
+				TBGSettings::saveSetting('language', $this->_language, 'core', null, $this->getID());
+			}
+			else
+			{
+				TBGSettings::saveSetting('language', 'sys', 'core', null, $this->getID());
+			}
 		}
 		
 		/**

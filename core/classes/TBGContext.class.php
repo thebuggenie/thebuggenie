@@ -441,6 +441,12 @@
 				return null;
 
 			$language = (self::$_user instanceof TBGUser) ? self::$_user->getLanguage() : 'en_US';
+			
+			if (self::$_user->getLanguage() == 'sys')
+			{
+				$language = 'en_US';
+			}
+			
 			TBGLogging::log('Loading i18n strings');
 			if (!self::$_i18n = TBGCache::get("i18n_{$language}"))
 			{

@@ -645,7 +645,7 @@
 				$offset = self::get(self::SETTING_USER_TIMEZONE, 'core', null, TBGContext::getUser()->getID());
 			}
 			
-			if ($offset === null)
+			if ($offset === null || $offset == 'sys')
 			{
 				$offset = self::get(self::SETTING_SERVER_TIMEZONE);
 			}
