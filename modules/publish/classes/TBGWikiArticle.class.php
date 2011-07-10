@@ -159,7 +159,6 @@
 			$article = new TBGWikiArticle();
 			$article->setName($name);
 			$article->setContent($content);
-			$article->setIsPublished($published);
 			
 			if (!isset($options['noauthor']))
 				$article->setAuthor($user_id);
