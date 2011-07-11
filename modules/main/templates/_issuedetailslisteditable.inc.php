@@ -582,7 +582,7 @@
 					<form action="<?php echo make_url('move_issue', array('issue_id' => $issue->getID())); ?>" method="post">
 						<div class="rounded_box borderless yellow" style="margin: 5px 0 20px 0;">
 							<b><?php echo __('Move issue to a different project'); ?></b>
-							<p><?php echo __('Please be aware that moving this issue to a different project will reset details such as status, category, etc., and may also make some fields invisible, depending on the issue type configuration for that project.'); ?></p>
+							<p><?php echo __('Please be aware that moving this issue to a different project will reset details such as status, category, etc., and may also make some fields invisible, depending on the issue type configuration for that project. The issue will also be renumbered.'); ?></p>
 							<br>
 							<label for="move_issue_project"><?php echo __('Move issue to'); ?></label><br>
 							<select name="project_id">
