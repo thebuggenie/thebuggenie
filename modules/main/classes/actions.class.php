@@ -213,6 +213,7 @@
 				$issue->unsetOwner();
 				$issue->setPercentCompleted(0);
 				$issue->setMilestone(null);
+				$issue->setIssueNumber(TBGIssuesTable::getTable()->getNextIssueNumberForProductID($project->getID()));
 				$step = $issue->getProject()->getWorkflowScheme()->getWorkflowForIssuetype($issue->getIssueType())->getFirstStep();
 				$step->applyToIssue($issue);
 				$issue->save();

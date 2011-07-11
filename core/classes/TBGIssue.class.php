@@ -2738,6 +2738,16 @@
 		{
 			$this->_addChangedProperty('_estimated_hours', $hours);
 		}
+		
+		/**
+		 * Set issue number
+		 * 
+		 * @param integer $no New issue number
+		 */
+		public function setIssueNumber($no)
+		{
+			$this->_issue_no = $no;
+		}
 	
 		/**
 		 * Set estimated points
