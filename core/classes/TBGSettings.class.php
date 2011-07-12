@@ -645,25 +645,7 @@
 		
 		public static function setTimezone()
 		{
-			$offset = null;
-			if (TBGContext::getUser() instanceof TBGUser)
-			{
-				$offset = self::get(self::SETTING_USER_TIMEZONE, 'core', null, TBGContext::getUser()->getID());
-			}
-			
-			if ($offset === null || $offset == 'sys')
-			{
-				$offset = self::get(self::SETTING_SERVER_TIMEZONE);
-			}
-			
-			if ($offset == 0)
-				$tz_string = "GMT";
-			elseif ($offset > 0)
-				$tz_string = "Etc/GMT+" . $offset;
-			else
-				$tz_string = "Etc/GMT" . $offset;
-
-			date_default_timezone_set($tz_string);
+			date_default_timezone_set('Etc/UTC');
 		}
 		
 		public static function getAuthenticationBackend()

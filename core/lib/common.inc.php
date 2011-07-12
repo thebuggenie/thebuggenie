@@ -65,15 +65,11 @@
 	function tbg_formatTime($tstamp, $format = 0)
 	{
 		// offset the timestamp properly
-		if (TBGSettings::getGMToffset() > 0)
+		if (TBGSettings::getGMToffset() != 0)
 			$tstamp += TBGSettings::getGMToffset() * 60 * 60;
-		elseif (TBGSettings::getGMToffset() < 0)
-			$tstamp -= TBGSettings::getGMToffset() * 60 * 60;
 
-		if (TBGSettings::getUserTimezone() > 0)
+		if ((TBGSettings::getUserTimezone() != 0) && TBGSettings::getUserTimezone() != 'sys')
 			$tstamp += TBGSettings::getUserTimezone() * 60 * 60;
-		elseif (TBGSettings::getUserTimezone() < 0)
-			$tstamp -= TBGSettings::getUserTimezone() * 60 * 60;
 			
 		switch ($format)
 		{
