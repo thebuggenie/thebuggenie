@@ -95,6 +95,15 @@
 
 		public function send(TBGMimemail $email)
 		{
+			try
+			{
+				TBGContext::getI18n();
+			}
+			catch (Exception $e)
+			{
+				TBGContext::reinitializeI18n(null);
+			}
+			
 			if (!$email->hasRecipients())
 			{
 				throw new Exception(TBGContext::getI18n()->__('You need to add at least one recipient'));
