@@ -31,21 +31,21 @@
 			{
 				if ($exception instanceof TBGActionNotFoundException)
 				{
-					TBGCliCommand::cli_echo("Could not find the specified action", 'white', 'bold');
+					TBGCliCommand::cli_echo("Could not find the specified action\n", 'white', 'bold');
 				}
 				elseif ($exception instanceof TBGTemplateNotFoundException)
 				{
-					TBGCliCommand::cli_echo("Could not find the template file for the specified action", 'white', 'bold');
+					TBGCliCommand::cli_echo("Could not find the template file for the specified action\n", 'white', 'bold');
 				}
 				elseif ($exception instanceof B2DBException)
 				{
-					TBGCliCommand::cli_echo("An exception was thrown in the B2DB framework", 'white', 'bold');
+					TBGCliCommand::cli_echo("An exception was thrown in the B2DB framework\n", 'white', 'bold');
 				}
 				else
 				{
-					TBGCliCommand::cli_echo("An unhandled exception occurred:", 'white', 'bold');
+					TBGCliCommand::cli_echo("An unhandled exception occurred:\n", 'white', 'bold');
 				}
-				echo "\n".TBGCliCommand::cli_echo($exception->getMessage(), 'red', 'bold')."\n";
+				echo TBGCliCommand::cli_echo($exception->getMessage(), 'red', 'bold')."\n";
 				echo "\n";
 				TBGCliCommand::cli_echo('Stack trace').":\n";
 				$trace_elements = $exception->getTrace();
@@ -120,7 +120,7 @@
 				}
 				catch (Exception $e)
 				{
-					TBGCliCommand::cli_echo("Could not generate query list");
+					TBGCliCommand::cli_echo("Could not generate query list (there may be no database connection)", "red", "bold");
 				}
 			}
 			echo "\n";
@@ -312,7 +312,7 @@
 				}
 				catch (Exception $e)
 				{
-					echo 'Could not generate query list';
+					echo '<span style="color: red;">Could not generate query list (there may be no database connection)</span>';
 				}
 			}
 			echo "</div>
