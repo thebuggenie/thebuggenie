@@ -175,10 +175,7 @@
 				$tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(13), $tstamp);
 				break;
 			case 18:
-				$old = date_default_timezone_get();
-				date_default_timezone_set('UTC');
 				$tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(16), $tstamp);
-				date_default_timezone_set($old);
 				break;
 			case 19:
 				$tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(14), $tstamp);
