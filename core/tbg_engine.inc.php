@@ -1,5 +1,5 @@
 <?php
-
+	date_default_timezone_set('Etc/UTC');
 	defined('DS') || define('DS', DIRECTORY_SEPARATOR);
 	
 	// The time the script was loaded

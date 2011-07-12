@@ -643,11 +643,6 @@
 			return self::getPasswordSalt();
 		}
 		
-		public static function setTimezone()
-		{
-			date_default_timezone_set('Etc/UTC');
-		}
-		
 		public static function getAuthenticationBackend()
 		{
 			return self::get(self::SETTING_AUTH_BACKEND);

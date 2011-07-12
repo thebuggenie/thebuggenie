@@ -10,7 +10,6 @@
 
 		public function preExecute(TBGRequest $request, $action)
 		{
-			date_default_timezone_set('Etc/UTC');
 			$this->getResponse()->setDecoration(TBGResponse::DECORATE_NONE);
 		}
 
