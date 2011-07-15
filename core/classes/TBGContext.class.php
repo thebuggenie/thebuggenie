@@ -435,7 +435,7 @@
 
 			$language = (self::$_user instanceof TBGUser) ? self::$_user->getLanguage() : 'en_US';
 			
-			if (self::$_user->getLanguage() == 'sys')
+			if (self::$_user instanceof TBGUser && self::$_user->getLanguage() == 'sys')
 			{
 				$language = 'en_US';
 			}
