@@ -89,7 +89,7 @@
 
 			if ($this->article instanceof TBGWikiArticle)
 			{
-				if (!$this->article->canRead())
+				if (!$this->article->hasAccess())
 				{
 					$this->error = TBGContext::getI18n()->__("You don't have access to read this article");
 					$this->article = null;
