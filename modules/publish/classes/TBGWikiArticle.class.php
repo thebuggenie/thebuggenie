@@ -121,7 +121,15 @@
 			{
 				while ($row = $res->getNextRow())
 				{
-					$articles[$row->get(TBGArticlesTable::ID)] = self::getByName($row->get(TBGArticlesTable::NAME), $row);
+					$article = self::getByName($row->get(TBGArticlesTable::NAME), $row);
+					if ($article->hasAccess())
+					{
+						$articles[$row->get(TBGArticlesTable::ID)] = $article;
+					}
+					else
+					{
+						$resultcount--;
+					}
 				}
 			}
 			
@@ -621,6 +629,20 @@
 		
 		public function hasAccess()
 		{
+				$namespaces = $this->getNamespaces();
+				$key = $namespaces[0];
+				$row = TBGProjectsTable::getTable()->getByKey($key);
+				
+				if ($row instanceof B2DBRow)
+				{
+					$project = TBGContext::factory()->TBGProject($row->get(TBGProjectsTable::ID), $row);
+					if ($project instanceof TBGProject)
+					{
+						if (!$project->hasAccess())
+							return false;
+					}
+				}
+			
 			return $this->canRead();
 		}
 
