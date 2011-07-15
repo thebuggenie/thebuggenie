@@ -36,11 +36,15 @@
 					$key = strtolower($namespace);
 					$row = TBGProjectsTable::getTable()->getByKey($key);
 					
-					$project = TBGContext::factory()->TBGProject($row->get(TBGProjectsTable::ID), $row);
-					
-					$this->forward403unless($project->hasAccess());
+					if ($row instanceof B2DBRow)
+					{
+						$project = TBGContext::factory()->TBGProject($row->get(TBGProjectsTable::ID), $row);
+						
+						if ($project instanceof TBGProject)
+							$this->forward403unless($project->hasAccess());
 
-					TBGContext::setCurrentProject($project);
+						TBGContext::setCurrentProject($project);
+					}
 				}
 			}
 			else

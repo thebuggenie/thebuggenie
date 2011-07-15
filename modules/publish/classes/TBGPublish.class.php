@@ -304,7 +304,11 @@
 			$articles = array();
 			while ($row = $res->getNextRow())
 			{
-				$articles[] = PublishFactory::article($row->get(TBGArticlesTable::ID), $row);
+				$article = PublishFactory::article($row->get(TBGArticlesTable::ID), $row);
+				if ($article->hasAccess())
+				{
+					$articles[] = $article;
+				}
 			}
 			return $articles;
 		}
@@ -334,7 +338,7 @@
 						continue;
 					}
 					
-					if ($article->canRead())
+					if ($article->hasAccess())
 					{
 						$articles[] = $article;
 					}
