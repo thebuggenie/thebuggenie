@@ -441,7 +441,7 @@
 
 			$language = (self::$_user instanceof TBGUser) ? self::$_user->getLanguage() : 'en_US';
 			
-			if (self::$_user->getLanguage() == 'sys')
+			if (self::$_user instanceof TBGUser && self::$_user->getLanguage() == 'sys')
 			{
 				$language = 'en_US';
 			}
@@ -1202,8 +1202,8 @@
 				array_key_exists($permission_type, self::$_permissions[$module_name]) &&
 				(array_key_exists($target_id, self::$_permissions[$module_name][$permission_type]) || $target_id === null))
 			{
-				$permissions_notarget = self::$_permissions[$module_name][$permission_type];
-				$permissions_target = (array_key_exists($target_id, $permissions_notarget)) ? $permissions_notarget[$target_id] : array();
+				$permissions_notarget = self::$_permissions[$module_name][$permission_type][0];
+				$permissions_target = (array_key_exists($target_id, self::$_permissions[$module_name][$permission_type])) ? self::$_permissions[$module_name][$permission_type][$target_id] : array();
 				
 				$retval = self::_permissionsCheck($permissions_target, $uid, $gid, $tid);
 				$retval = ($retval !== null) ? $retval : self::_permissionsCheck($permissions_notarget, $uid, $gid, $tid);
