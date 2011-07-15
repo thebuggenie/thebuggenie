@@ -370,7 +370,7 @@
 						continue;
 					}
 
-					if ($article->canRead())
+					if ($article->hasAccess())
 					{
 						$articles[] = $article;
 					}
