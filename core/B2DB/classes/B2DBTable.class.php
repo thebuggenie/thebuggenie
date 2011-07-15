@@ -899,8 +899,11 @@
 
 			if (count($sqls))
 			{
-				$statement = B2DBStatement::getPreparedStatement(join(";\n", $sqls));
-				$res = $statement->performQuery('alter');
+				foreach ($sqls as $sqlStmt)
+				{
+					$statement = B2DBStatement::getPreparedStatement($sqlStmt);
+					$res = $statement->performQuery('alter');
+				}
 			}
 
 			$this->_migrateData($old_table);
@@ -914,8 +917,11 @@
 
 			if (count($sqls))
 			{
-				$statement = B2DBStatement::getPreparedStatement(join(";\n", $sqls));
-				$res = $statement->performQuery('alter');
+				foreach ($sqls as $sqlStmt)
+				{
+					$statement = B2DBStatement::getPreparedStatement($sqlStmt);
+					$res = $statement->performQuery('alter');
+				}
 			}
 		}
 
