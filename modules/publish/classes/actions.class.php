@@ -21,6 +21,7 @@
 
 			if ($request->hasParameter('article_name') && strpos($request->getParameter('article_name'), ':') !== false)
 			{
+
 				$namespace = substr($this->article_name, 0, strpos($this->article_name, ':'));
 				$article_name = substr($this->article_name, strpos($this->article_name, ':') + 1);
 
@@ -30,8 +31,15 @@
 					$article_name = substr($article_name, strpos($article_name, ':') + 1);
 				}
 				
-				if ($namespace != '' && ($project = TBGProject::getByKey(strtolower($namespace))) instanceof TBGProject)
+				if ($namespace != '')
 				{
+					$key = strtolower($namespace);
+					$row = TBGProjectsTable::getTable()->getByKey($key);
+					
+					$project = TBGContext::factory()->TBGProject($row->get(TBGProjectsTable::ID), $row);
+					
+					$this->forward403unless($project->hasAccess());
+
 					TBGContext::setCurrentProject($project);
 				}
 			}
@@ -40,9 +48,16 @@
 				try
 				{
 					if ($project_key = $request->getParameter('project_key'))
-						$this->selected_project = TBGProject::getByKey($project_key);
+					{
+						$row = TBGProjectsTable::getTable()->getByKey($project_key);
+						
+						$this->selected_project = TBGContext::factory()->TBGProject($row->get(TBGProjectsTable::ID), $row);
+					}
 					elseif ($project_id = (int) $request->getParameter('project_id'))
 						$this->selected_project = TBGContext::factory()->TBGProject($project_id);
+
+					if ($this->selected_project instanceof TBGProject)
+						$this->forward403unless($this->selected_project->hasAccess());
 
 					TBGContext::setCurrentProject($this->selected_project);
 				}
