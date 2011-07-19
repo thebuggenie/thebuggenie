@@ -16,6 +16,11 @@
 		<div class="header"><?php echo __('You have %count% outdated modules. They have been disabled until you upgrade them, you can upgrade them from Module settings.', array('%count%' => count($outdated_modules))); ?></div>
 	</div>
 <?php endif; ?>
+<?php if (!get_magic_quotes_gpc()): ?>
+	<div class="update_div rounded_box red" style="margin-top: 20px;">
+		<div class="header"><?php echo __('You appear to have Magic Quotes enabled. This will cause problems with The Bug Genie, and so it is highly recommended that you disable it in your PHP configuration. Please note that this feature has been deprecated by the PHP developers, and so leaving it enabled is not advised. %furtherdetails%', array('%furtherdetails%' => '<a href="http://www.php.net/manual/en/security.magicquotes.php">'.__('Further details').'</a>')); ?></div>
+	</div>
+<?php endif; ?>
 <table style="table-layout: fixed; width: 1000px; margin: 10px 0 0 10px;" cellpadding=0 cellspacing=0>
 	<tr>
 		<td valign="top">
