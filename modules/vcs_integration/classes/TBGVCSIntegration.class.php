@@ -229,6 +229,15 @@
 			
 			try
 			{
+				TBGContext::getI18n();
+			}
+			catch (Exception $e)
+			{
+				TBGContext::reinitializei18n();
+			}
+			
+			try
+			{
 				$project = new TBGProject($project);
 			}
 			catch (Exception $e)
