@@ -97,9 +97,9 @@
 		const SETTING_MAINTENANCE_MESSAGE = 'offline_msg';
 
 		static protected $_ver_mj = 3;
-		static protected $_ver_mn = 1;
-		static protected $_ver_rev = 2;
-		static protected $_ver_name = "Sleeping Labrador";
+		static protected $_ver_mn = 2;
+		static protected $_ver_rev = '0-pre';
+		static protected $_ver_name = "Borg";
 		static protected $_defaultscope = null;
 		static protected $_settings = null;
 		static protected $_loadedsettings = array();
