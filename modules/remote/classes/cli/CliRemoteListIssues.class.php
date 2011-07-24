@@ -68,7 +68,7 @@
 				foreach ($response->issues as $issue)
 				{
 					//$this->cliEcho("ID: {$issue->id} ", 'yellow');
-					if (strtolower($options['state']) == 'all')
+					if (mb_strtolower($options['state']) == 'all')
 					{
 						$this->cliEcho(($issue->state == TBGIssue::STATE_OPEN) ? "[open] " : "[closed] ");
 					}

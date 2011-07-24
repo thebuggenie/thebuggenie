@@ -52,7 +52,7 @@
 			if (self::$_loglevel > $level) return false;
 			if (self::$_cli_log_to_screen_in_debug_mode && TBGContext::isCLI() && TBGContext::isDebugMode() && class_exists('TBGCliCommand'))
 			{
-				TBGCliCommand::cli_echo(strtoupper(self::getLevelName($level)), 'white', 'bold');
+				TBGCliCommand::cli_echo(mb_strtoupper(self::getLevelName($level)), 'white', 'bold');
 				TBGCliCommand::cli_echo(" [{$category}] ", 'green', 'bold');
 				TBGCliCommand::cli_echo("$message\n");
 			}
@@ -60,7 +60,7 @@
 			{
 				if (self::$_logfile !== null)
 				{
-					file_put_contents(self::$_logfile, strtoupper(self::getLevelName($level)) . " [{$category}] {$message}\n", FILE_APPEND);
+					file_put_contents(self::$_logfile, mb_strtoupper(self::getLevelName($level)) . " [{$category}] {$message}\n", FILE_APPEND);
 				}
 				$time_msg = (($load_time = TBGContext::getLoadtime()) >= 1) ? round($load_time, 2) . ' seconds' : round(($load_time * 1000), 3) . ' ms';
 				

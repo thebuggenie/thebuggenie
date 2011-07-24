@@ -90,12 +90,12 @@
 			$strings = array();
 			foreach ($this->getMissingStrings() as $string => $truth)
 			{
-				if (strpos($string, '"') !== false && strpos($string, "'") !== false)
+				if (mb_strpos($string, '"') !== false && mb_strpos($string, "'") !== false)
 				{
 					$string = str_replace('"', '\"', $string);
 					$strings[] = '$strings["'.$string.'"] = "'.$string."\";";
 				}
-				elseif (strpos($string, "'") !== false)
+				elseif (mb_strpos($string, "'") !== false)
 				{
 					$strings[] = '$strings["'.$string.'"] = "'.$string."\";";
 				}
@@ -227,7 +227,7 @@
 			$cp_handle = opendir(THEBUGGENIE_PATH . 'i18n');
 			while ($classfile = readdir($cp_handle))
 			{
-				if (strstr($classfile, '.') == '' && file_exists(THEBUGGENIE_PATH . 'i18n/' . $classfile . '/language')) 
+				if (mb_strstr($classfile, '.') == '' && file_exists(THEBUGGENIE_PATH . 'i18n/' . $classfile . '/language')) 
 				{ 
 					$retarr[$classfile] = file_get_contents(THEBUGGENIE_PATH . 'i18n/' . $classfile . '/language');
 				}
@@ -238,7 +238,7 @@
 
 		public function hasTranslatedTemplate($template, $is_component = false)
 		{
-			if (strpos($template, '/'))
+			if (mb_strpos($template, '/'))
 			{
 				$templateinfo = explode('/', $template);
 				$module = $templateinfo[0];

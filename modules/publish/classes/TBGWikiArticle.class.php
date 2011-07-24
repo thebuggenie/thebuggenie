@@ -350,7 +350,7 @@
 		{
 			if ($this->_category_name === null)
 			{
-				$this->_category_name = substr($this->_name, strpos($this->_name, ':') + 1);
+				$this->_category_name = mb_substr($this->_name, mb_strpos($this->_name, ':') + 1);
 			}
 			return $this->_category_name;
 		}
@@ -401,10 +401,10 @@
 			TBGArticleLinksTable::getTable()->deleteLinksByArticle($this->_name);
 			TBGArticleCategoriesTable::getTable()->deleteCategoriesByArticle($this->_name);
 
-			if (substr($this->getContent(), 0, 10) == "#REDIRECT ")
+			if (mb_substr($this->getContent(), 0, 10) == "#REDIRECT ")
 			{
 				$content = explode("\n", $this->getContent());
-				preg_match('/(\[\[([^\]]*?)\]\])$/im', substr(array_shift($content), 10), $matches);
+				preg_match('/(\[\[([^\]]*?)\]\])$/im', mb_substr(array_shift($content), 10), $matches);
 				if (count($matches) == 3)
 				{
 					return;
@@ -573,7 +573,7 @@
 		{
 			foreach ($this->getFiles() as $file_id => $file)
 			{
-				if (strtolower($filename) == strtolower($file->getOriginalFilename()))
+				if (mb_strtolower($filename) == mb_strtolower($file->getOriginalFilename()))
 				{
 					return $file;
 				}

@@ -9,7 +9,7 @@
 			$geshi_languages = array();
 			foreach ($files as $file)
 			{
-				if (strstr($file, '.php') === false) continue;
+				if (mb_strstr($file, '.php') === false) continue;
 				$lang = str_replace('.php', '', $file);
 				$geshi_languages[$lang] = $lang;
 			}

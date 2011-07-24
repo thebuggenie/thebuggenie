@@ -98,37 +98,37 @@
 		public function loadArticles($namespace = '', $overwrite = true, $scope = null)
 		{
 			$scope = TBGContext::getScope()->getID();
-			$namespace = strtolower($namespace);
+			$namespace = mb_strtolower($namespace);
 			$_path_handle = opendir(THEBUGGENIE_MODULES_PATH . 'publish' . DS . 'fixtures' . DS);
 			while ($original_article_name = readdir($_path_handle))
 			{
-				if (strpos($original_article_name, '.') === false)
+				if (mb_strpos($original_article_name, '.') === false)
 				{
-					$article_name = strtolower($original_article_name);
+					$article_name = mb_strtolower($original_article_name);
 					$imported = false;
 					$import = false;
 					if ($namespace)
 					{
-						if (strpos(urldecode($article_name), "{$namespace}:") === 0 || (strpos(urldecode($article_name), "category:") === 0 && strpos(urldecode($article_name), "{$namespace}:") === 9))
+						if (mb_strpos(urldecode($article_name), "{$namespace}:") === 0 || (mb_strpos(urldecode($article_name), "category:") === 0 && mb_strpos(urldecode($article_name), "{$namespace}:") === 9))
 						{
 							$import = true;
 						}
 					}
 					else
 					{
-						if (strpos(urldecode($article_name), "category:help:") === 0)
+						if (mb_strpos(urldecode($article_name), "category:help:") === 0)
 						{
-							$name_test = substr(urldecode($article_name), 14);
+							$name_test = mb_substr(urldecode($article_name), 14);
 						}
-						elseif (strpos(urldecode($article_name), "category:") === 0)
+						elseif (mb_strpos(urldecode($article_name), "category:") === 0)
 						{
-							$name_test = substr(urldecode($article_name), 9);
+							$name_test = mb_substr(urldecode($article_name), 9);
 						}
 						else
 						{
 							$name_test = urldecode($article_name);
 						}
-						if (strpos($name_test, ':') === false) 
+						if (mb_strpos($name_test, ':') === false) 
 							$import = true;
 					}
 					if ($import)
@@ -248,7 +248,7 @@
 
 		public function stripExclamationMark($matches)
 		{
-			return substr($matches[0], 1);
+			return mb_substr($matches[0], 1);
 		}
 
 		public function getArticleLinkTag($matches)

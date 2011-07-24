@@ -111,7 +111,7 @@
 				$crit->addInsert(self::ID, $p_id);
 			}
 			$crit->addInsert(self::NAME, $name);
-			$crit->addInsert(self::KEY, strtolower(str_replace(' ', '', $name)));
+			$crit->addInsert(self::KEY, mb_strtolower(str_replace(' ', '', $name)));
 			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addInsert(self::WORKFLOW_SCHEME_ID, 1);
 			$res = $this->doInsert($crit);

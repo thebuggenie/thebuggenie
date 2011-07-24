@@ -435,11 +435,11 @@
 			
 			foreach ($file_lines as $aline)
 			{
-				$action = substr($aline, 0, 1);
+				$action = mb_substr($aline, 0, 1);
 			
 				if ($action == "A" || $action == "U" || $action == "D" || $action == "M")
 				{
-					$theline = trim(substr($aline, 1));
+					$theline = trim(mb_substr($aline, 1));
 					$files[] = array($action, $theline);
 				}
 			}

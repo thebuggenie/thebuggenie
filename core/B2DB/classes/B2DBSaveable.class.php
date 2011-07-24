@@ -62,12 +62,12 @@
 				$docblock = $reflection->getDocComment();
 				if ($docblock)
 				{
-					$has_b2dbtype = strpos($docblock, '@Class', 3);
-					$no_autopopulate = strpos($docblock, '@NoAutoPopulation', 3);
+					$has_b2dbtype = mb_strpos($docblock, '@Class', 3);
+					$no_autopopulate = mb_strpos($docblock, '@NoAutoPopulation', 3);
 
 					if ($has_b2dbtype !== false && !$no_autopopulate)
 					{
-						$type_details = substr($docblock, $has_b2dbtype + 7);
+						$type_details = mb_substr($docblock, $has_b2dbtype + 7);
 						$type_details = explode(' ', $type_details);
 						$foreign_type = trim($type_details[0]);
 						B2DB::addCachedClassPropertyForeignClass(get_class($this), $property_name, $foreign_type);
@@ -82,7 +82,7 @@
 			if (!$property_name = B2DB::getCachedColumnClassProperty($column_name, get_class($this)))
 			{
 				$property = explode('.', $column_name);
-				$property_name = "_".strtolower($property[1]);
+				$property_name = "_".mb_strtolower($property[1]);
 				B2DB::addCachedColumnClassProperty($column_name, get_class($this), $property_name);
 			}
 			return $property_name;

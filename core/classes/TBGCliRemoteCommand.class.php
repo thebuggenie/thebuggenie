@@ -115,7 +115,7 @@
 			if (!empty($postdata))
 			{
 				$content = '';
-				$boundary = "---------------------".substr(md5(rand(0,32000)), 0, 10); 
+				$boundary = "---------------------".mb_substr(md5(rand(0,32000)), 0, 10); 
 				$headers .= 'Content-Type: multipart/form-data; boundary='.$boundary."\r\n";
 				$options['http']['header'] = $headers;
 
@@ -155,9 +155,9 @@
 		{
 			$url = TBGContext::getRouting()->generate($route_name, $params, true);
 			$host = $this->_getCurrentRemoteServer();
-			if (substr($host, strlen($host) - 2) != '/') $host .= '/';
+			if (mb_substr($host, mb_strlen($host) - 2) != '/') $host .= '/';
 
-			return $host . substr($url, 2);
+			return $host . mb_substr($url, 2);
 		}
 
 	}

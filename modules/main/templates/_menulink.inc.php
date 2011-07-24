@@ -6,7 +6,7 @@
 			<?php else: ?>
 				<?php echo link_tag(make_url('publish_article', array('article_name' => $link['url'])), (($link['description'] != '') ? $link['description'] : $link['url'])); ?>
 			<?php endif; ?>
-		<?php elseif (substr($link['url'], 0, 1) == '@'): ?>
+		<?php elseif (mb_substr($link['url'], 0, 1) == '@'): ?>
 			<?php echo link_tag(make_url($link['url']), (($link['description'] != '') ? $link['description'] : $link['url'])); ?>
 		<?php elseif ($link['url'] != ''): ?>
 			<?php echo link_tag($link['url'], (($link['description'] != '') ? $link['description'] : $link['url'])); ?>

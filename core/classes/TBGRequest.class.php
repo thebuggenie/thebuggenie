@@ -68,7 +68,7 @@
 								throw new Exception(TBGContext::getI18n()->__('You cannot upload files bigger than %max_size% MB', array('%max_size%' => TBGSettings::getUploadsMaxSize())));
 							}
 							TBGLogging::log('Upload filesize ok');
-							$extension = substr(basename($thefile['name']), strpos(basename($thefile['name']), '.'));
+							$extension = mb_substr(basename($thefile['name']), mb_strpos(basename($thefile['name']), '.'));
 							if ($extension == '')
 							{
 								TBGLogging::log('OOps, could not determine upload filetype', 'main', TBGLogging::LEVEL_WARNING_RISK);
@@ -77,14 +77,14 @@
 							else
 							{
 								TBGLogging::log('Checking uploaded file extension');
-								$extension = substr($extension, 1);
+								$extension = mb_substr($extension, 1);
 								$upload_extensions = TBGSettings::getUploadsExtensionsList();
 								if (TBGSettings::getUploadsRestrictionMode() == 'blacklist')
 								{
 									TBGLogging::log('... using blacklist');
 									foreach ($upload_extensions as $an_ext)
 									{
-										if (strtolower(trim($extension)) == strtolower(trim($an_ext)))
+										if (mb_strtolower(trim($extension)) == mb_strtolower(trim($an_ext)))
 										{
 											TBGLogging::log('Upload extension not ok');
 											throw new Exception(TBGContext::getI18n()->__('This filetype is not allowed'));
@@ -98,7 +98,7 @@
 									$is_ok = false;
 									foreach ($upload_extensions as $an_ext)
 									{
-										if (strtolower(trim($extension)) == strtolower(trim($an_ext)))
+										if (mb_strtolower(trim($extension)) == mb_strtolower(trim($an_ext)))
 										{
 											TBGLogging::log('Upload extension ok');
 											$is_ok = true;
@@ -111,7 +111,7 @@
 										throw new Exception(TBGContext::getI18n()->__('This filetype is not allowed'));
 									}
 								}
-								/*if (in_array(strtolower(trim($extension)), array('php', 'asp')))
+								/*if (in_array(mb_strtolower(trim($extension)), array('php', 'asp')))
 								{
 									TBGLogging::log('Upload extension is php or asp');
 									throw new Exception(TBGContext::getI18n()->__('This filetype is not allowed'));
@@ -236,7 +236,7 @@
 			TBGLogging::log('sanitizing id');
             // sanitize the ID value
             $id = preg_replace('/[^a-z0-9]/i', '', $id);
-            if (strlen($id) == 0)
+            if (mb_strlen($id) == 0)
 			{
 				TBGLogging::log('oops, invalid id '. $id);
                 return;
@@ -365,7 +365,7 @@
 				$this->_hasfiles = true;
 			}
 			//var_dump($this->_request_parameters);die();
-			$this->_is_ajax_call = (array_key_exists("HTTP_X_REQUESTED_WITH", $_SERVER) && strtolower($_SERVER["HTTP_X_REQUESTED_WITH"]) == 'xmlhttprequest');
+			$this->_is_ajax_call = (array_key_exists("HTTP_X_REQUESTED_WITH", $_SERVER) && mb_strtolower($_SERVER["HTTP_X_REQUESTED_WITH"]) == 'xmlhttprequest');
 
             if (isset($_SESSION) && !array_key_exists('__upload_status', $_SESSION))
 			{
@@ -500,7 +500,7 @@
 		 */
 		public function getMethod()
 		{
-			switch (strtolower($_SERVER['REQUEST_METHOD']))
+			switch (mb_strtolower($_SERVER['REQUEST_METHOD']))
 			{
 				case 'get':
 					return self::GET;

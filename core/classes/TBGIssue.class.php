@@ -573,12 +573,12 @@
 		public static function getIssueFromLink($issue_no)
 		{
 			$theIssue = null;
-			$issue_no = strtolower($issue_no);
-			if (strpos($issue_no, ' ') !== false)
+			$issue_no = mb_strtolower($issue_no);
+			if (mb_strpos($issue_no, ' ') !== false)
 			{
-				$issue_no = substr($issue_no, strrpos($issue_no, ' ') + 1);
+				$issue_no = mb_substr($issue_no, strrpos($issue_no, ' ') + 1);
 			}
-			if (substr($issue_no, 0, 1) == '#') $issue_no = substr($issue_no, 1);
+			if (mb_substr($issue_no, 0, 1) == '#') $issue_no = mb_substr($issue_no, 1);
 			if (is_numeric($issue_no))
 			{
 				try
@@ -595,7 +595,7 @@
 			}
 			else
 			{
-				$issue_no = explode('-', strtoupper($issue_no));
+				$issue_no = explode('-', mb_strtoupper($issue_no));
 				TBGLogging::log('exploding');
 				if (count($issue_no) == 2 && $row = TBGIssuesTable::getTable()->getByPrefixAndIssueNo($issue_no[0], $issue_no[1]))
 				{
@@ -2632,7 +2632,7 @@
 		protected function _convertFancyStringToTime($string)
 		{
 			$retarr = array('months' => 0, 'weeks' => 0, 'days' => 0, 'hours' => 0, 'points' => 0);
-			$string = strtolower(trim($string));
+			$string = mb_strtolower(trim($string));
 			$time_arr = preg_split('/(\,|\/|and|or|plus)/', $string);
 			foreach ($time_arr as $time_elm)
 			{
@@ -2641,19 +2641,19 @@
 				{
 					switch (true)
 					{
-						case stristr($time_parts[1], 'month'):
+						case mb_stristr($time_parts[1], 'month'):
 							$retarr['months'] = (int) trim($time_parts[0]);
 							break;
-						case stristr($time_parts[1], 'week'):
+						case mb_stristr($time_parts[1], 'week'):
 							$retarr['weeks'] = (int) trim($time_parts[0]);
 							break;
-						case stristr($time_parts[1], 'day'):
+						case mb_stristr($time_parts[1], 'day'):
 							$retarr['days'] = (int) trim($time_parts[0]);
 							break;
-						case stristr($time_parts[1], 'hour'):
+						case mb_stristr($time_parts[1], 'hour'):
 							$retarr['hours'] = (int) trim($time_parts[0]);
 							break;
-						case stristr($time_parts[1], 'point'):
+						case mb_stristr($time_parts[1], 'point'):
 							$retarr['points'] = (int) trim($time_parts[0]);
 							break;
 					}
@@ -3642,7 +3642,7 @@
 		{
 			foreach ($this->getFiles() as $file_id => $file)
 			{
-				if (strtolower($filename) == strtolower($file->getOriginalFilename()))
+				if (mb_strtolower($filename) == mb_strtolower($file->getOriginalFilename()))
 				{
 					return $file;
 				}
@@ -4435,9 +4435,9 @@
 							}
 							break;
 						default:
-							if (substr($property, 0, 12) == '_customfield')
+							if (mb_substr($property, 0, 12) == '_customfield')
 							{
-								$key = substr($property, 12);
+								$key = mb_substr($property, 12);
 								$customdatatype = TBGCustomDatatype::getByKey($key);
 								
 								switch ($customdatatype->getType())

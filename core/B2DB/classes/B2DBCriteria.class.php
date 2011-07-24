@@ -380,9 +380,9 @@
 		 */
 		public function getColumnName($column)
 		{
-			if (stripos($column, '.') > 0)
+			if (mb_stripos($column, '.') > 0)
 			{
-				return substr($column, stripos($column, '.') + 1);
+				return mb_substr($column, mb_stripos($column, '.') + 1);
 			}
 			else
 			{
@@ -762,7 +762,7 @@
 				{
 					$sql .= '`';
 				}
-				$sql .= substr($a_crit['column'], strpos($a_crit['column'], '.') + 1);
+				$sql .= mb_substr($a_crit['column'], mb_strpos($a_crit['column'], '.') + 1);
 				if (B2DB::getDBtype() == 'pgsql')
 				{
 					$sql .= '"';
@@ -809,7 +809,7 @@
 			{
 				$sql .= (!$first_upd) ? ', ' : '';
 				if (B2DB::getDBtype() == 'mysql') $sql .= '`';
-				$sql .= substr($an_upd['column'], strpos($an_upd['column'], '.') + 1);
+				$sql .= mb_substr($an_upd['column'], mb_strpos($an_upd['column'], '.') + 1);
 				if (B2DB::getDBtype() == 'mysql') $sql .= '`';
 				$sql .= self::DB_EQUALS;
 				$sql .= '?';
@@ -850,9 +850,9 @@
 						{
 							$sql .= ' @' . $a_sel['variable'] . ':=';
 						}
-						$sql .= strtoupper($a_sel['special']) . '(' . $a_sel['column'] . ')';
+						$sql .= mb_strtoupper($a_sel['special']) . '(' . $a_sel['column'] . ')';
 						$sql .= ($a_sel['additional'] != '') ? ' ' . $a_sel['additional'] . ' ' : '';
-						if (strlen(stristr($a_sel['special'], '(')) > 0)
+						if (mb_strlen(mb_stristr($a_sel['special'], '(')) > 0)
 						{
 							$sql .= ')';
 						}

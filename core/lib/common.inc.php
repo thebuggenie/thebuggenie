@@ -28,10 +28,10 @@
 	 */
 	function tbg_truncateText($text, $length, $add_dots = true)
 	{
-		if (mb_strlen($text) > $length)
+		if (mb_mb_strlen($text) > $length)
 		{
 			$string = wordwrap($text, $length - 3);
-			$text = mb_substr($string, 0, mb_strpos($string, "\n"));
+			$text = mb_mb_substr($string, 0, mb_mb_strpos($string, "\n"));
 			if ($add_dots) $text .= '...';
 		}
 		return $text;
@@ -256,7 +256,7 @@
 	 */
 	function tbg_decodeUTF8($str, $htmlentities = false)
 	{
-		if (tbg_isUTF8($str) && !stristr(TBGContext::getI18n()->getCharset(), 'UTF-8'))
+		if (tbg_isUTF8($str) && !mb_stristr(TBGContext::getI18n()->getCharset(), 'UTF-8'))
 		{
 			$str = utf8_decode($str);
 		}

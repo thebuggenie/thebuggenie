@@ -51,7 +51,7 @@
 			</div>
 			<b>If you're installing this on a Linux server,</b> running this command should fix it:<br>
 			<div class="command_box">
-			chmod a+w <?php echo THEBUGGENIE_PATH; /* str_ireplace('\\', '/', substr(THEBUGGENIE_PATH, 0, strripos(THEBUGGENIE_PATH, DIRECTORY_SEPARATOR) + 1)); */ ?>
+			chmod a+w <?php echo THEBUGGENIE_PATH; /* str_ireplace('\\', '/', mb_substr(THEBUGGENIE_PATH, 0, strripos(THEBUGGENIE_PATH, DIRECTORY_SEPARATOR) + 1)); */ ?>
 			</div>
 		<?php endif; ?>
 		<?php if ($cache_folder_perm_ok): ?>
@@ -122,8 +122,8 @@
 			</div>
 			<b>If you're installing this on a Linux server,</b> running those commands should fix it:<br>
 			<div class="command_box">
-			touch <?php echo str_ireplace('\\', '/', substr(THEBUGGENIE_PATH, 0, strripos(THEBUGGENIE_PATH, DIRECTORY_SEPARATOR) + 1)); ?>core/b2db_bootstrap.inc.php<br>
-			chmod a+w <?php echo str_ireplace('\\', '/', substr(THEBUGGENIE_PATH, 0, strripos(THEBUGGENIE_PATH, DIRECTORY_SEPARATOR) + 1)); ?>core/b2db_bootstrap.inc.php
+			touch <?php echo str_ireplace('\\', '/', mb_substr(THEBUGGENIE_PATH, 0, strripos(THEBUGGENIE_PATH, DIRECTORY_SEPARATOR) + 1)); ?>core/b2db_bootstrap.inc.php<br>
+			chmod a+w <?php echo str_ireplace('\\', '/', mb_substr(THEBUGGENIE_PATH, 0, strripos(THEBUGGENIE_PATH, DIRECTORY_SEPARATOR) + 1)); ?>core/b2db_bootstrap.inc.php
 			</div>
 		<?php endif; ?>
 		<?php if ($b2db_param_file_ok): ?>
@@ -135,7 +135,7 @@
 			</div>
 			<b>If you're installing this on a Linux server,</b> running this command should fix it:<br>
 			<div class="command_box">
-			chmod a+w <?php echo str_ireplace('\\', '/', substr(THEBUGGENIE_PATH, 0, strripos(THEBUGGENIE_PATH, DIRECTORY_SEPARATOR) + 1)); ?>core/b2db_bootstrap.inc.php
+			chmod a+w <?php echo str_ireplace('\\', '/', mb_substr(THEBUGGENIE_PATH, 0, strripos(THEBUGGENIE_PATH, DIRECTORY_SEPARATOR) + 1)); ?>core/b2db_bootstrap.inc.php
 			</div>
 		<?php endif; ?>
 		<?php if ($gd_ok): ?>

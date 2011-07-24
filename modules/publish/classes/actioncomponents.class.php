@@ -32,20 +32,20 @@
 			$_path_handle = opendir(THEBUGGENIE_MODULES_PATH . 'publish' . DS . 'fixtures' . DS);
 			while ($article_name = readdir($_path_handle))
 			{
-				if (strpos($article_name, '.') === false)
+				if (mb_strpos($article_name, '.') === false)
 				{
-					if (strpos($article_name, '%3A') !== false)
+					if (mb_strpos($article_name, '%3A') !== false)
 					{
 						$article_elements = explode('%3A', $article_name);
 						$category = array_shift($article_elements);
-						$categories[strtolower($category)] = $category;
+						$categories[mb_strtolower($category)] = $category;
 					}
 					else
 					{
 						$category = '';
 					}
 					
-					$articles[$article_name] = array('exists' => TBGWikiArticle::doesArticleExist(urldecode($article_name)), 'category' => strtolower($category));
+					$articles[$article_name] = array('exists' => TBGWikiArticle::doesArticleExist(urldecode($article_name)), 'category' => mb_strtolower($category));
 				}
 			}
 			ksort($articles, SORT_STRING);

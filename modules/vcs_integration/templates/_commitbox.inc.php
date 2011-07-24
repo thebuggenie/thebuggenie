@@ -1,7 +1,7 @@
 <?php
 	$base_url = TBGContext::getModule('vcs_integration')->getSetting('browser_url_' . $projectId);
 	
-	if (strstr($commit->getRevision(), ':'))
+	if (mb_strstr($commit->getRevision(), ':'))
 	{
 		$revision = explode(':', $commit->getRevision());
 		$revision = $revision[1];
@@ -11,7 +11,7 @@
 		$revision = $commit->getRevision();
 	}
 	
-	if (strstr($commit->getPreviousRevision(), ':'))
+	if (mb_strstr($commit->getPreviousRevision(), ':'))
 	{
 		$oldrevision = explode(':', $commit->getPreviousRevision());
 		$oldrevision = $oldrevision[1];
@@ -28,7 +28,7 @@
 <div class="comment" id="commit_<?php echo $commit->getID(); ?>">
 	<div style="position: relative; overflow: visible; padding: 5px;" id="commit_view_<?php echo $commit->getID(); ?>" class="comment_main">
 		<div id="commit_<?php echo $commit->getID(); ?>_header" class="commentheader">
-			<a href="<?php echo $link_rev; ?>" class="comment_hash"><?php if (!is_numeric($commit->getRevision())): echo substr($commit->getRevision(), 0, 7); else: echo $commit->getRevision(); endif; ?></a>
+			<a href="<?php echo $link_rev; ?>" class="comment_hash"><?php if (!is_numeric($commit->getRevision())): echo mb_substr($commit->getRevision(), 0, 7); else: echo $commit->getRevision(); endif; ?></a>
 			<div class="commenttitle">
 				<?php echo __('Revision %rev% by %user%', array('%rev%' => "<a href=".$link_rev.">".$commit->getRevision()."</a>", '%user%' => '<div style="display: inline;">'.get_component_html('main/userdropdown', array('user' => $commit->getAuthor(), 'size' => 'small')).'</div>')); ?>
 			</div>
@@ -79,7 +79,7 @@
 							echo '<td><a href="' . $link_file . '" target="_new"><b>' . $file->getFile() . '</b></a></td>';
 							if ($action == "U" || $action == "M")
 							{
-								if (substr($file->getFile(), -1) == '/' || substr($file->getFile(), -1) == '\\')
+								if (mb_substr($file->getFile(), -1) == '/' || mb_substr($file->getFile(), -1) == '\\')
 								{
 									echo '<td style="width: 75px;" class="faded_out">' . __('directory') . '</td>';
 								}

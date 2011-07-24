@@ -274,7 +274,7 @@
 														$link_text = image_tag('star_small.png');
 														if ($issue->isBlocking()) $link_text .= image_tag('icon_important.png', array('style' => 'margin-right: 5px;', 'title' => __('This issue is blocking the next release')));
 														$link_text .= $issue->getIssueType()->getName() . ' ' . $issue->getFormattedIssueNo(true) . '<br>';
-														$link_text .= (strlen($issue->getTitle()) > 43) ? substr($issue->getTitle(), 0, 40) . '...' : $issue->getTitle();
+														$link_text .= (mb_strlen($issue->getTitle()) > 43) ? mb_substr($issue->getTitle(), 0, 40) . '...' : $issue->getTitle();
 														$classes = ($issue->isClosed()) ? 'issue_closed' : '';
 													
 													?>

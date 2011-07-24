@@ -19,21 +19,20 @@
 			$this->article = null;
 			$this->article_name = $request->getParameter('article_name');
 
-			if ($request->hasParameter('article_name') && strpos($request->getParameter('article_name'), ':') !== false)
+			if ($request->hasParameter('article_name') && mb_strpos($request->getParameter('article_name'), ':') !== false)
 			{
-
-				$namespace = substr($this->article_name, 0, strpos($this->article_name, ':'));
-				$article_name = substr($this->article_name, strpos($this->article_name, ':') + 1);
+				$namespace = mb_substr($this->article_name, 0, mb_strpos($this->article_name, ':'));
+				$article_name = mb_substr($this->article_name, mb_strpos($this->article_name, ':') + 1);
 
 				if ($namespace == 'Category')
 				{
-					$namespace = substr($article_name, 0, strpos($article_name, ':'));
-					$article_name = substr($article_name, strpos($article_name, ':') + 1);
+					$namespace = mb_substr($article_name, 0, mb_strpos($article_name, ':'));
+					$article_name = mb_substr($article_name, mb_strpos($article_name, ':') + 1);
 				}
 				
 				if ($namespace != '')
 				{
-					$key = strtolower($namespace);
+					$key = mb_strtolower($namespace);
 					$row = TBGProjectsTable::getTable()->getByKey($key);
 					
 					if ($row instanceof B2DBRow)
@@ -96,10 +95,10 @@
 				}
 				else
 				{
-					if (!$request->hasParameter('no_redirect') && substr($this->article->getContent(), 0, 10) == "#REDIRECT ")
+					if (!$request->hasParameter('no_redirect') && mb_substr($this->article->getContent(), 0, 10) == "#REDIRECT ")
 					{
 						$content = explode("\n", $this->article->getContent());
-						preg_match('/(\[\[([^\]]*?)\]\])$/im', substr(array_shift($content), 10), $matches);
+						preg_match('/(\[\[([^\]]*?)\]\])$/im', mb_substr(array_shift($content), 10), $matches);
 						if (count($matches) == 3)
 						{
 							$redirect_article = $matches[2];
