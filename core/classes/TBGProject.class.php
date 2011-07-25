@@ -2155,11 +2155,15 @@
 				{
 					while ($row = $res->getNextRow())
 					{
-						$recentissue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
-						if ($recentissue->hasAccess())
+						try
 						{
-							$this->_recentissues[$recentissue->getID()] = $recentissue;
+							$recentissue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
+							if ($recentissue->hasAccess())
+							{
+								$this->_recentissues[$recentissue->getID()] = $recentissue;
+							}
 						}
+						catch (Exception $e) {}
 					}
 				}
 			}
@@ -2174,11 +2178,15 @@
 				{
 					while ($row = $res->getNextRow())
 					{
-						$recentissue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
-						if ($recentissue->hasAccess())
+						try
 						{
-							$this->_recentfeatures[$recentissue->getID()] = $recentissue;
+							$recentissue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
+							if ($recentissue->hasAccess())
+							{
+								$this->_recentfeatures[$recentissue->getID()] = $recentissue;
+							}
 						}
+						catch (Exception $e) {}
 					}
 				}
 			}
@@ -2193,11 +2201,15 @@
 				{
 					while ($row = $res->getNextRow())
 					{
-						$recentissue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
-						if ($recentissue->hasAccess())
+						try
 						{
-							$this->_recentideas[$recentissue->getID()] = $recentissue;
+							$recentissue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
+							if ($recentissue->hasAccess())
+							{
+								$this->_recentideas[$recentissue->getID()] = $recentissue;
+							}
 						}
+						catch (Exception $e) {}
 					}
 				}
 			}
