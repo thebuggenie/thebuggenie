@@ -223,7 +223,11 @@
 				{
 					while ($row = $res->getNextRow())
 					{
-						$this->_linking_articles[$row->get(TBGArticleLinksTable::ARTICLE_NAME)] = PublishFactory::articleName($row->get(TBGArticleLinksTable::ARTICLE_NAME));
+						try
+						{
+							$this->_linking_articles[$row->get(TBGArticleLinksTable::ARTICLE_NAME)] = PublishFactory::articleName($row->get(TBGArticleLinksTable::ARTICLE_NAME));
+						}
+						catch (Exception $e) {}
 					}
 				}
 			}
@@ -380,7 +384,7 @@
 		}
 
 		public function doSave($options = array(), $reason = null)
-		{
+		{	
 			if (TBGArticlesTable::getTable()->doesNameConflictExist($this->_name, $this->_id, TBGContext::getScope()->getID()))
 			{
 				if (!array_key_exists('overwrite', $options) || !$options['overwrite'])
@@ -394,12 +398,13 @@
 			{
 				TBGArticleHistoryTable::getTable()->addArticleHistory($this->_name, $this->_old_content, $this->_content, $user_id, $reason);
 			}
-			$this->save();
-
-			$this->_old_content = $this->_content;
 
 			TBGArticleLinksTable::getTable()->deleteLinksByArticle($this->_name);
 			TBGArticleCategoriesTable::getTable()->deleteCategoriesByArticle($this->_name);
+
+			$this->save();
+
+			$this->_old_content = $this->_content;
 
 			if (mb_substr($this->getContent(), 0, 10) == "#REDIRECT ")
 			{
