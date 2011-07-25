@@ -3,7 +3,7 @@
 	<form action="<?php echo make_url('transition_issue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'transition_id' => $transition->getID())); ?>" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>">
 		<div id="backdrop_detail_content">
 			<ul class="simple_list">
-				<?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE) && !$transition->getAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE)->hasTargetValue()): ?>
+				<?php if ($issue->isEditable() && $issue->canEditCategory() && $transition->hasAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE) && !$transition->getAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE)->hasTargetValue()): ?>
 					<li id="transition_popup_assignee_div">
 						<input type="hidden" name="assignee_id" id="popup_assigned_to_id" value="<?php echo $issue->getAssigneeID(); ?>">
 						<input type="hidden" name="assignee_type" id="popup_assigned_to_type" value="<?php echo $issue->getAssigneeType(); ?>">
@@ -22,7 +22,7 @@
 						<div class="faded_out" id="popup_assigned_to_teamup_info" style="clear: both; display: none;"><?php echo __('You will be teamed up with this user'); ?></div>
 					</li>
 				<?php endif; ?>
-				<?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_STATUS) && !$transition->getAction(TBGWorkflowTransitionAction::ACTION_SET_STATUS)->hasTargetValue()): ?>
+				<?php if ($issue->isUpdateable() && $issue->canEditStatus() && $transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_STATUS) && !$transition->getAction(TBGWorkflowTransitionAction::ACTION_SET_STATUS)->hasTargetValue()): ?>
 					<li>
 						<label for="transition_popup_set_status"><?php echo __('Status'); ?></label>
 						<select name="status_id" id="transition_popup_set_status">
@@ -34,7 +34,7 @@
 						</select>
 					</li>
 				<?php endif; ?>
-				<?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_PRIORITY) && !$transition->getAction(TBGWorkflowTransitionAction::ACTION_SET_PRIORITY)->hasTargetValue()): ?>
+				<?php if ($issue->isUpdateable() && $issue->canEditPriority() && $transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_PRIORITY) && !$transition->getAction(TBGWorkflowTransitionAction::ACTION_SET_PRIORITY)->hasTargetValue()): ?>
 					<li id="transition_popup_priority_div">
 						<label for="transition_popup_set_priority"><?php echo __('Priority'); ?></label>
 						<select name="priority_id" id="transition_popup_set_priority">
@@ -51,7 +51,7 @@
 						</li>
 					<?php endif; ?>
 				<?php endif; ?>
-				<?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_PERCENT) && !$transition->getAction(TBGWorkflowTransitionAction::ACTION_SET_PERCENT)->hasTargetValue()): ?>
+				<?php if ($issue->isUpdateable() && $transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_PERCENT) && !$transition->getAction(TBGWorkflowTransitionAction::ACTION_SET_PERCENT)->hasTargetValue()): ?>
 					<li id="transition_popup_percent_complete_div">
 						<label for="transition_popup_set_percent_complete"><?php echo __('Percent complete'); ?></label>
 						<select name="percent_complete_id" id="transition_popup_set_percent_complete">
@@ -66,7 +66,7 @@
 						</li>
 					<?php endif; ?>
 				<?php endif; ?>
-				<?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_REPRODUCABILITY) && !$transition->getAction(TBGWorkflowTransitionAction::ACTION_SET_REPRODUCABILITY)->hasTargetValue()): ?>
+				<?php if ($issue->isEditable() && $issue->canEditReproducability() && $transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_REPRODUCABILITY) && !$transition->getAction(TBGWorkflowTransitionAction::ACTION_SET_REPRODUCABILITY)->hasTargetValue()): ?>
 					<li id="transition_popup_reproducability_div">
 						<label for="transition_popup_set_reproducability"><?php echo __('Reproducability'); ?></label>
 						<select name="reproducability_id" id="transition_popup_set_reproducability">
@@ -83,7 +83,7 @@
 						</li>
 					<?php endif; ?>
 				<?php endif; ?>
-				<?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_RESOLUTION) && !$transition->getAction(TBGWorkflowTransitionAction::ACTION_SET_RESOLUTION)->hasTargetValue()): ?>
+				<?php if ($issue->isUpdateable() && $transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_RESOLUTION) && !$transition->getAction(TBGWorkflowTransitionAction::ACTION_SET_RESOLUTION)->hasTargetValue()): ?>
 					<li id="transition_popup_resolution_div">
 						<label for="transition_popup_set_resolution"><?php echo __('Resolution'); ?></label>
 						<select name="resolution_id" id="transition_popup_set_resolution">
@@ -100,7 +100,7 @@
 						</li>
 					<?php endif; ?>
 				<?php endif; ?>
-				<?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_MILESTONE)): ?>
+				<?php if ($issue->isUpdateable() && $issue->canEditMilestone() && $transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_MILESTONE)): ?>
 					<li id="transition_popup_milestone_div">
 						<label for="transition_popup_set_milestone"><?php echo __('Milestone'); ?></label>
 						<select name="milestone_id" id="transition_popup_set_milestone">
@@ -139,7 +139,7 @@
 			<?php echo '<a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.reset();">' . __('Cancel and close this pop-up') . '</a>'; ?>
 		</div>
 	</form>
-	<?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE) && !$transition->getAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE)->hasTargetValue()): ?>
+	<?php if ($issue->canEditAssignedTo() && $transition->hasAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE) && !$transition->getAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE)->hasTargetValue()): ?>
 		<?php include_component('identifiableselector', array(	'html_id' 			=> 'popup_assigned_to_change', 
 																'header' 			=> __('Assign this issue'),
 																'callback'		 	=> "TBG.Issues.updateWorkflowAssignee('" . make_url('issue_gettempfieldvalue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'assigned_to', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', %identifiable_value%, %identifiable_type%);",
