@@ -2,32 +2,28 @@
 <?php foreach ($issues as $issue): ?>
 	<?php list ($showtablestart, $showheader, $prevgroup_id, $groupby_description) = searchActions::resultGrouping($issue, $groupby, $cc, $prevgroup_id); ?>
 	<?php if (($showtablestart || $showheader) && $cc > 1): ?>
-		<tr>
-			<td colspan="<?php if (!TBGContext::isProjectContext()): ?>9<?php else: ?>8<?php endif; ?>" class="results_summary">
-				<?php echo __('Total number of issues in this group: %number%', array('%number%' => "<b>{$current_count}</b>")); ?>
-			</td>
-		</tr>
 		<?php $current_count = 0; ?>
 		<?php echo '</tbody></table>'; ?>
+		<div class="results_summary"><?php echo __('Total number of issues in this group: %number%', array('%number%' => "<b>{$current_count}</b>")); ?></div>
 	<?php endif; ?>
 	<?php $current_count++; ?>
 	<?php if ($showheader): ?>
 		<h5><?php echo $groupby_description; ?></h5>
 	<?php endif; ?>
 	<?php if ($showtablestart): ?>
-		<table style="width: 100%;" cellpadding="0" cellspacing="0" class="results_container">
+		<table style="width: 100%;" cellpadding="0" cellspacing="0" class="results_container resizable sortable">
 			<thead>
 				<tr>
 					<?php if (!TBGContext::isProjectContext() && $show_project == true): ?>
 						<th style="padding-left: 3px;"><?php echo __('Project'); ?></th>
 					<?php endif; ?>
-					<th style="width: 16px; text-align: right; padding: 0;<?php if (TBGContext::isProjectContext()): ?> padding-left: 3px;<?php endif; ?>">&nbsp;</th>
+					<th style="width: 16px; text-align: right; padding: 0;<?php if (TBGContext::isProjectContext()): ?> padding-left: 3px;<?php endif; ?>" class="nosort">&nbsp;</th>
 					<th><?php echo __('Issue'); ?></th>
 					<th><?php echo __('Assigned to'); ?></th>
 					<th><?php echo __('Status'); ?></th>
 					<th><?php echo __('Resolution'); ?></th>
 					<th><?php echo __('Last updated'); ?></th>
-					<th style="width: 20px; padding-bottom: 0; text-align: center;"><?php echo image_tag('icon_comments.png', array('title' => __('Number of user comments on this issue'))); ?></th>
+					<th class="nosort" style="width: 20px; padding-bottom: 0; text-align: center;"><?php echo image_tag('icon_comments.png', array('title' => __('Number of user comments on this issue'))); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -77,13 +73,9 @@
 				</td>
 			</tr>
 	<?php if ($cc == count($issues)): ?>
-			<tr>
-				<td colspan="<?php if (!TBGContext::isProjectContext()): ?>9<?php else: ?>8<?php endif; ?>">
-					<?php echo __('Total number of issues in this group: %number%', array('%number%' => "<b>{$current_count}</b>")); ?>
-				</td>
-			</tr>
 			</tbody>
 		</table>
+		<div class="results_summary"><?php echo __('Total number of issues in this group: %number%', array('%number%' => "<b>{$current_count}</b>")); ?></div>
 	<?php endif; ?>
 	<?php $cc++; ?>
 <?php endforeach; ?>

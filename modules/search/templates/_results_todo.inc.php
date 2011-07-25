@@ -7,7 +7,7 @@
 		<h3 style="margin-top: 20px;"><?php echo $groupby_description; ?></h3>
 	<?php endif; ?>
 	<?php if ($showtablestart): ?>
-		<table style="width: 100%;" cellpadding="0" cellspacing="0">
+		<table style="width: 100%;" cellpadding="0" cellspacing="0" class="resizable sortable">
 			<thead>
 				<tr>
 					<th style="text-align: center; width: 60px;"><?php echo __('Progress'); ?></th>

@@ -1025,7 +1025,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .search_results td.result_issue a:hover .issue_title { color: #555; }
 .search_results td.result_issue a, .search_results td.result_issue a:hover { font-weight: normal; font-size: 1.0em; }
 .search_results td.smaller { font-size: 0.85em; }
-.search_results td.results_summary { border-top: 1px dotted #CCC; }
+.search_results div.results_summary { border-top: 1px dotted #CCC; font-size: small; margin-top: -15px; padding-top: 3px; padding-bottom: 10px; }
 .search_results tr.priority_0 td { background-color: transparent; }
 /*.search_results tr.priority_1 td { background-color: #EFE; }
 .search_results tr.priority_2 td { background-color: #DFD; }

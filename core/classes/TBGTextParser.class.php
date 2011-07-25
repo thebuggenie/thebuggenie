@@ -602,7 +602,7 @@
 			}
 			if (mb_strpos($output, "cellspacing") === false)
 			{
-				$output .= " cellspacing=0";
+				$output .= " class=\"sortable resizable\" cellspacing=0";
 			}
 			$output .= ">";
 			$this->tablemode = true;

@@ -47,6 +47,7 @@
 			$tbg_response->addJavascript('jquery.markitup.js');
 			$tbg_response->addJavascript('thebuggenie.js');
 			$tbg_response->addJavascript('markitup.js');
+			$tbg_response->addJavascript('http://192.168.1.7/~philip/tbg/thebuggenie/js/tablekit.js', false);
 	
 			$cssstring = '';
 			$jsstring = '';
