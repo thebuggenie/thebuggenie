@@ -3412,6 +3412,8 @@
 
 			$itemarray = array($request->getParameter('g') => explode(',', base64_decode($request->getParameter('files'))));
 			$min_serveOptions['minApp']['groups'] = $itemarray;
+			
+			ob_end_clean();
 
 			$data = Minify::serve('MinApp', $min_serveOptions);
 			header_remove('Pragma');
@@ -3420,14 +3422,6 @@
 			{
 				header($name . ': ' . $val);
 			}
-			
-			if ($request->getParameter('g') == 'js'):
-				header('Content-type: text/javascript');
-			elseif ($request->getParameter('g') == 'css'):
-				header('Content-type: text/css');
-			else:
-				header('Content-type: text/plain');
-			endif;
 			
 			header('HTTP/1.1 '.$data['statusCode']);
 
