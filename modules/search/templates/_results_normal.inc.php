@@ -2,9 +2,9 @@
 <?php foreach ($issues as $issue): ?>
 	<?php list ($showtablestart, $showheader, $prevgroup_id, $groupby_description) = searchActions::resultGrouping($issue, $groupby, $cc, $prevgroup_id); ?>
 	<?php if (($showtablestart || $showheader) && $cc > 1): ?>
-		<?php $current_count = 0; ?>
 		<?php echo '</tbody></table>'; ?>
 		<div class="results_summary"><?php echo __('Total number of issues in this group: %number%', array('%number%' => "<b>{$current_count}</b>")); ?></div>
+		<?php $current_count = 0; ?>
 	<?php endif; ?>
 	<?php $current_count++; ?>
 	<?php if ($showheader): ?>
