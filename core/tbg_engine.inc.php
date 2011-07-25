@@ -461,6 +461,13 @@ echo "
 	// Load the logging class so we can log stuff
 	require THEBUGGENIE_CORE_PATH . 'classes' . DS . 'TBGLogging.class.php';
 
+	// This code requires PHP 5.3 or newer, so if we don't have it - complain
+	if (PHP_VERSION_ID < 50300)
+	{
+		$e = new Exception('This software requires PHP 5.3.0 or newer, but you have an older version. Please upgrade');
+		return tbg_exception('Startup error', $e);
+	}
+
 	// Start loading The Bug Genie
 	try
 	{
