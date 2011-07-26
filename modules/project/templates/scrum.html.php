@@ -87,17 +87,24 @@
 							<div id="add_story">
 								<div class="add_story_header"><?php echo __('Create a user story'); ?></div>
 								<select name="issuetype_id">
+									<?php $c = 0; ?>
 									<?php foreach ($selected_project->getIssuetypeScheme()->getIssuetypes() as $issuetype): ?>
 										<?php if ($issuetype->getIcon() == 'developer_report'): ?>
+											<?php $c++; ?>
 											<option value="<?php echo $issuetype->getID(); ?>"><?php echo $issuetype->getName(); ?></option>
+										<?php endif; ?>
+										<?php if ($c == 0): ?>
+											<option disabled="disabled"><?php echo __('No scrum-compatible issue types found'); ?></option>
 										<?php endif; ?>
 									<?php endforeach; ?>
 								</select>
 								<br />
+								<?php if ($c > 0): ?>
 								<label for="story_title"><?php echo __('Story title:'); ?></label>
 								<input type="hidden" name="return_format" value="scrum">
 								<input type="text" id="story_title" name="title">
 								<input type="submit" value="<?php echo __('Add'); ?>">
+								<?php endif; ?>
 							</div>
 						</form>
 					</div>
