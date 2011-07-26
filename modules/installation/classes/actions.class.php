@@ -86,9 +86,13 @@
 				$this->base_folder_perm_ok = false;
 				$this->all_well = false;
 			}
-			
-			if (!file_exists(THEBUGGENIE_CORE_PATH . 'cache')) mkdir(THEBUGGENIE_CORE_PATH . 'cache');
-			if (!file_exists(THEBUGGENIE_CORE_PATH . 'cache' . DS . 'B2DB')) mkdir(THEBUGGENIE_CORE_PATH . 'cache' . DS . 'B2DB');
+
+            try
+            {
+			    if (!file_exists(THEBUGGENIE_CORE_PATH . 'cache')) mkdir(THEBUGGENIE_CORE_PATH . 'cache');
+			    if (!file_exists(THEBUGGENIE_CORE_PATH . 'cache' . DS . 'B2DB')) mkdir(THEBUGGENIE_CORE_PATH . 'cache' . DS . 'B2DB');
+            }
+            catch (Exception $e) {}
 			
 			if (!is_writable(THEBUGGENIE_CORE_PATH . 'cache' . DS) || !is_writable(THEBUGGENIE_CORE_PATH . 'cache' . DS .'B2DB' . DS))
 			{

@@ -63,9 +63,10 @@
 			<b>Could not write to The Bug Genie cache directory</b><br>
 			The cache folder for The Bug Genie should be writable during installation and normal operations, since we need to store cache files in it
 			</div>
-			<b>If you're installing this on a Linux server,</b> running this command should fix it:<br>
+			<b>If you're installing this on a Linux server,</b> running these commands should fix it:<br>
 			<div class="command_box">
-			chmod -R a+w <?php echo THEBUGGENIE_CORE_PATH; ?>cache
+                chmod -R a+w <?php echo THEBUGGENIE_CORE_PATH; ?>cache<br>
+                chmod -R a+w <?php echo THEBUGGENIE_CORE_PATH; ?>cache/B2DB
 			</div>
 		<?php endif; ?>
 		<?php if ($thebuggenie_folder_perm_ok): ?>
