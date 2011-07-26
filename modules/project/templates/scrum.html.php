@@ -92,10 +92,10 @@
 											<?php $c++; ?>
 											<option value="<?php echo $issuetype->getID(); ?>"><?php echo $issuetype->getName(); ?></option>
 										<?php endif; ?>
-										<?php if ($c == 0): ?>
-											<option disabled="disabled"><?php echo __('No scrum-compatible issue types found'); ?></option>
-										<?php endif; ?>
 									<?php endforeach; ?>
+									<?php if ($c == 0): ?>
+										<option disabled="disabled"><?php echo __('No scrum-compatible issue types found'); ?></option>
+									<?php endif; ?>
 								</select>
 								<br />
 								<?php if ($c > 0): ?>
