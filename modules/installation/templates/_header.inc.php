@@ -28,13 +28,13 @@
 			.install_progress:first-line { font-weight: bold; }
 			.install_progress img { float: right; }
 			.prereq_ok { border: 1px solid #aaC6aa; background-color: #CFE8CF; font-size: 11px; }
-			.prereq_fail { border: 1px solid #B76B6B; color: #FFF; font-size: 13px; background-color: #F38888; }
+			.prereq_fail { border: 1px solid #B76B6B; color: #FFF; font-size: 13px; background-color: #F38888; margin-top: 10px; }
 			.prereq_warn { border: 1px solid #FF9900; background-color: #FFFF99; font-size: 12px; }
 			.installation_box { padding: 3px 10px 10px 10px; width: 950px; margin-left: auto; margin-right: auto; margin-top: 15px; position: relative; font-size: 12px; }
 			.installation_box input[type="submit"] { padding: 5px; font-weight: bold; height: 30px; font-size: 15px; }
 			.donate { border: 1px solid #aaC6aa; background-color: #CFE8CF; }
 			.grey_box { border: 1px solid #DDD; background-color: #F5F5F5; }
-			.command_box { border: 1px dashed #DDD; background-color: #F5F5F5; padding: 4px; font-family: 'Droid Sans Mono', monospace; width: 500px; margin-top: 5px; }
+			.command_box { border: 1px dashed #DDD; background-color: #F5F5F5; padding: 4px; font-family: 'Droid Sans Mono', monospace; width: 928px; margin-top: 5px; margin-bottom: 15px; }
 			.features { width: 400px; float: right; margin-left: 10px; }
 			.feature { border: 1px solid #DDD; background-color: #F5F5F5; padding: 10px; margin-bottom: 5px; }
 			.feature .description { background-color: #FFF; padding: 10px; }
