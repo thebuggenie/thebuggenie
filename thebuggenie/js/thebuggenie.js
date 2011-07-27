@@ -349,6 +349,9 @@ TBG.Main.Helpers.ajax = function(url, options) {
 					$(options.loading.indicator).show();
 				}
 				TBG.Core._processCommonAjaxPostEvents(options.loading);
+				if (options.loading.callback) {
+					options.loading.callback();
+				}
 			}
 		},
 		onSuccess: function (transport) {
@@ -2680,3 +2683,23 @@ TBG.Search.setColumns = function(resultview, available_columns, visible_columns)
 	});
 	$('search_column_settings_toggler').show();
 }
+
+TBG.Search.saveVisibleColumns = function(url) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'scs_column_settings_form',
+		loading: {
+			indicator: 'search_column_settings_indicator',
+			callback: function() {
+				$('search_column_settings_button').addClassName('disabled');
+			}
+		},
+		success: {
+			hide: 'search_column_settings_container'
+		},
+		complete: {
+			callback: function() {
+				$('search_column_settings_button').addClassName('disabled');
+			}
+		}
+	});
+};

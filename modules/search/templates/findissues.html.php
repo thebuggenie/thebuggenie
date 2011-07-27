@@ -328,17 +328,18 @@
 						<div class="rounded_box shadowed white" id="search_column_settings_container" style="width: 300px; position: absolute; right: 5px; display: none;">
 							<h4><?php echo __('Select columns to show'); ?></h4>
 							<p class="faded_out"><?php echo __('Select which columns you would like to show in this result view. Your selection is saved until the next time you visit.'); ?></p>
-							<form onsubmit="$(this).up().hide();return false;">
+							<form id="scs_column_settings_form" action="<?php echo make_url('search_save_column_settings'); ?>" onsubmit="TBG.Search.saveVisibleColumns('<?php echo make_url('search_save_column_settings'); ?>');return false;">
 								<ul class="simple_list scs_list">
 									<?php 
-										$columns = array('title' => __('Issue title'), 'assigned_to' => __('Assigned to'), 'status' => __('Status'), 'resolution' => __('Resolution'), 'category' => __('Category'), 'severity' => __('Severity'), 'percent_complete' => __('% completed'), 'reproducability' => __('Reproducability'), 'priority' => __('Priority'), 'last_updated' => __('Last updated time'), 'comments' => __('Number of comments'));
+										$columns = array('title' => __('Issue title'), 'assigned_to' => __('Assigned to'), 'status' => __('Status'), 'resolution' => __('Resolution'), 'category' => __('Category'), 'severity' => __('Severity'), 'percent_complete' => __('% completed'), 'reproducability' => __('Reproducability'), 'priority' => __('Priority'), 'last_updated' => __('Last updated time'), 'comments' => __('Number of comments')); 
 									?>
 									<?php foreach ($columns as $c_key => $c_name): ?>
 										<li class="scs_<?php echo $c_key; ?>" style="display: none;"><label><input type="checkbox" onclick="TBG.Search.toggleColumn('<?php echo $c_key; ?>');" value="<?php echo $c_key; ?>"></input><div><?php echo $c_name; ?></div></label></li>
 									<?php endforeach; ?>
 								</ul>
 								<div style="text-align: right;">
-									<div class="button button-green smaller" onclick="$(this).up().up().up().hide();"><span><?php echo __('Ok'); ?></span></div>
+									<div id="search_column_settings_button" class="button button-green smaller" onclick="TBG.Search.saveVisibleColumns('<?php echo make_url('search_save_column_settings'); ?>');"><span><?php echo __('Ok'); ?></span></div>
+									<div id="search_column_settings_indicator" style="display: none; float: right; margin: 7px 5px 0 10px;"><?php echo image_tag('spinning_20.gif'); ?></div>
 								</div>
 							</form>
 						</div>
