@@ -88,7 +88,7 @@
 <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('ldap_test'); ?>" method="post">
 	<div class="rounded_box borderless mediumgrey" style="margin: 10px 0 0 0; width: 700px; padding: 5px 5px 30px 5px;">
 		<div class="header"><?php echo __('Test connection'); ?></div>
-		<div class="content"><?php echo __('After configuring and saving your connection settings, you should test your connection to the LDAP server. This test does not check whether the DN can correctly find users, but it will give an indication if The Bug Genie can talk to your LDAP server.'); ?></div>
+		<div class="content"><?php echo __('After configuring and saving your connection settings, you should test your connection to the LDAP server. This test does not check whether the DN and attributes can allow The Bug Genie to correctly find users, but it will give an indication if The Bug Genie can talk to your LDAP server.'); ?></div>
 		<input type="submit" id="test_button"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> style="float: right; padding: 0 10px 0 10px; font-size: 13px; font-weight: bold;" value="<?php echo __('Test connection'); ?>">
 	</div>
 </form>
@@ -113,7 +113,7 @@
 <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('ldap_prune'); ?>" method="post">
 	<div class="rounded_box borderless mediumgrey" style="margin: 10px 0 0 0; width: 700px; padding: 5px 5px 30px 5px;">
 		<div class="header"><?php echo __('Prune users'); ?></div>
-		<div class="content"><?php echo __('If a user is deleted from LDAP then they will not be able to log into The Bug Genie. However if you want to remove users from The Bug Genie who have been deleted from LDAP you may wish to prune the users list. This action will delete all users from The Bug Genie\'s user list who do not exist in the LDAP database, and can not be reversed. The default (typically the guest) user will not be removed.'); ?></div>
+		<div class="content"><?php echo __('If a user is deleted from LDAP then they will not be able to log into The Bug Genie. However if you want to remove users from The Bug Genie who have been deleted from LDAP you may wish to prune the users list. This action will delete all users from The Bug Genie\'s user list who do not exist in the LDAP database, and can not be reversed. The default (typically the guest) user will not be removed. Users who would not be able to log in due to a group restriction will be deleted.'); ?></div>
 		<input type="submit"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> id="prune_button" style="float: right; padding: 0 10px 0 10px; font-size: 13px; font-weight: bold;" value="<?php echo __('Prune users'); ?>">
 	</div>
 </form>

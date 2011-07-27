@@ -171,6 +171,10 @@
 					$data = explode('\\', $username);
 					$username2 = $data[1];
 				}
+				else
+				{
+					$username2 = $username;
+				}
 				
 				$fields = array($fullname_attr, $email_attr, 'cn');
 				$filter = '('.$username_attr.'='.$this->escape($username2).')';
