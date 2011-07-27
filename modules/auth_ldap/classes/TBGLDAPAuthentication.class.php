@@ -27,7 +27,7 @@
 		
 		protected $_module_config_description = 'Configure server connection settings';
 		
-		protected $_module_version = '0.1';
+		protected $_module_version = '1.0';
 		
 		protected $_has_config_settings = true;
 
