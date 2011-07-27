@@ -18,12 +18,17 @@
 						<th style="padding-left: 3px;"><?php echo __('Project'); ?></th>
 					<?php endif; ?>
 					<th style="width: 16px; text-align: right; padding: 0;<?php if (TBGContext::isProjectContext()): ?> padding-left: 3px;<?php endif; ?>" class="nosort">&nbsp;</th>
-					<th><?php echo __('Issue'); ?></th>
-					<th><?php echo __('Assigned to'); ?></th>
-					<th><?php echo __('Status'); ?></th>
-					<th><?php echo __('Resolution'); ?></th>
-					<th><?php echo __('Last updated'); ?></th>
-					<th class="nosort" style="width: 20px; padding-bottom: 0; text-align: center;"><?php echo image_tag('icon_comments.png', array('title' => __('Number of user comments on this issue'))); ?></th>
+					<th><span class="sc_title"><?php echo __('Issue'); ?></span></th>
+					<th class="sc_assigned_to"><?php echo __('Assigned to'); ?></th>
+					<th class="sc_status"><?php echo __('Status'); ?></th>
+					<th class="sc_resolution"><?php echo __('Resolution'); ?></th>
+					<th class="sc_category" style="display: none;"><?php echo __('Category'); ?></th>
+					<th class="sc_severity" style="display: none;"><?php echo __('Severity'); ?></th>
+					<th class="sc_percent_complete" style="width: 150px; display: none;"><?php echo __('% completed'); ?></th>
+					<th class="sc_reproducability" style="display: none;"><?php echo __('Reproducability'); ?></th>
+					<th class="sc_priority" style="display: none;"><?php echo __('Priority'); ?></th>
+					<th class="sc_last_updated"><?php echo __('Last updated'); ?></th>
+					<th class="nosort sc_comments" style="width: 20px; padding-bottom: 0; text-align: center;"><?php echo image_tag('icon_comments.png', array('title' => __('Number of user comments on this issue'))); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -39,9 +44,9 @@
 					<?php if ($issue->countFiles()): ?>
 						<?php echo image_tag('icon_attached_information.png', array('style' => 'float: left; margin-right: 3px;', 'title' => __('This issue has %num% attachments', array('%num%' => $issue->countFiles())))); ?>
 					<?php endif; ?>
-					<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), '<span class="issue_no">' . $issue->getFormattedIssueNo(true) . '</span> - <span class="issue_title">' . $issue->getTitle() . '</span>'); ?>
+					<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), '<span class="issue_no">' . $issue->getFormattedIssueNo(true) . '</span><span class="issue_title sc_title"> - ' . $issue->getTitle() . '</span>'); ?>
 				</td>
-				<td<?php if (!$issue->isAssigned()): ?> class="faded_out"<?php endif; ?>>
+				<td class="sc_assigned_to<?php if (!$issue->isAssigned()): ?> faded_out<?php endif; ?>">
 					<?php if ($issue->isAssigned()): ?>
 						<?php if ($issue->getAssigneeType() == TBGIdentifiableClass::TYPE_USER): ?>
 							<?php echo include_component('main/userdropdown', array('user' => $issue->getAssignee())); ?>
@@ -52,7 +57,7 @@
 						-
 					<?php endif; ?>
 				</td>
-				<td<?php if (!$issue->getStatus() instanceof TBGDatatype): ?> class="faded_out"<?php endif; ?>>
+				<td class="sc_status<?php if (!$issue->getStatus() instanceof TBGDatatype): ?> faded_out<?php endif; ?>">
 					<?php if ($issue->getStatus() instanceof TBGDatatype): ?>
 						<table style="table-layout: auto; width: auto;" cellpadding=0 cellspacing=0>
 							<tr>
@@ -64,11 +69,26 @@
 						-
 					<?php endif; ?>
 				</td>
-				<td<?php if (!$issue->getResolution() instanceof TBGResolution): ?> class="faded_out"<?php endif; ?>>
+				<td class="sc_resolution<?php if (!$issue->getResolution() instanceof TBGResolution): ?> faded_out<?php endif; ?>">
 					<?php echo ($issue->getResolution() instanceof TBGResolution) ? mb_strtoupper($issue->getResolution()->getName()) : '-'; ?>
 				</td>
-				<td class="smaller" title="<?php echo tbg_formatTime($issue->getLastUpdatedTime(), 21); ?>"><?php echo tbg_formatTime($issue->getLastUpdatedTime(), 20); ?></td>
-				<td class="smaller" style="text-align: center;">
+				<td class="sc_category<?php if (!$issue->getCategory() instanceof TBGCategory): ?> faded_out<?php endif; ?>" style="display: none;">
+					<?php echo ($issue->getCategory() instanceof TBGCategory) ? mb_strtoupper($issue->getCategory()->getName()) : '-'; ?>
+				</td>
+				<td class="sc_severity<?php if (!$issue->getSeverity() instanceof TBGSeverity): ?> faded_out<?php endif; ?>" style="display: none;">
+					<?php echo ($issue->getSeverity() instanceof TBGSeverity) ? mb_strtoupper($issue->getSeverity()->getName()) : '-'; ?>
+				</td>
+				<td class="smaller sc_percent_complete" style="display: none;">
+					<span style="display: none;"><?php echo $issue->getPercentComplete(); ?></span><?php include_template('main/percentbar', array('percent' => $issue->getPercentComplete(), 'height' => 15)) ?>
+				</td>
+				<td class="sc_reproducability<?php if (!$issue->getReproducability() instanceof TBGReproducability): ?> faded_out<?php endif; ?>" style="display: none;">
+					<?php echo ($issue->getReproducability() instanceof TBGReproducability) ? mb_strtoupper($issue->getReproducability()->getName()) : '-'; ?>
+				</td>
+				<td class="sc_priority<?php if (!$issue->getPriority() instanceof TBGPriority): ?> faded_out<?php endif; ?>" style="display: none;">
+					<?php echo ($issue->getPriority() instanceof TBGPriority) ? mb_strtoupper($issue->getPriority()->getName()) : '-'; ?>
+				</td>
+				<td class="smaller sc_last_updated" title="<?php echo tbg_formatTime($issue->getLastUpdatedTime(), 21); ?>"><?php echo tbg_formatTime($issue->getLastUpdatedTime(), 20); ?></td>
+				<td class="smaller sc_comments" style="text-align: center;">
 					<?php echo $issue->countUserComments(); ?>
 				</td>
 			</tr>
@@ -79,3 +99,8 @@
 	<?php endif; ?>
 	<?php $cc++; ?>
 <?php endforeach; ?>
+<script type="text/javascript">
+	document.observe('dom:loaded', function() {
+		TBG.Search.setColumns('results_normal', ['title', 'assigned_to', 'status', 'resolution', 'category', 'severity', 'percent_complete', 'reproducability', 'priority', 'last_updated', 'comments'], ['title', 'assigned_to', 'status', 'resolution', 'last_updated', 'comments']);
+	});
+</script>

@@ -2655,3 +2655,28 @@ TBG.Search.toPage = function(url, parameters, offset) {
 		success: {update: 'search_results'}
 	});
 };
+
+TBG.Search.toggleColumn = function(column) {
+	$$('.sc_' + column).each(function(element) {
+		console.log(element);
+		element.toggle();
+	});
+};
+
+TBG.Search.setColumns = function(resultview, available_columns, visible_columns) {
+	TBG.Search.ResultViews[resultview] = {
+		available: available_columns,
+		visible: visible_columns
+	};
+	TBG.Search.ResultViews[resultview].available.each(function(column) {
+		$$('.scs_' + column).each(function(element) {
+			console.log('checking '+column);
+			element.show();
+			if (TBG.Search.ResultViews[resultview].visible.indexOf(column) != -1) {
+				console.log(column+' input checked');
+				element.down('input').checked = true;
+			}
+		});
+	});
+	$('search_column_settings_toggler').show();
+}

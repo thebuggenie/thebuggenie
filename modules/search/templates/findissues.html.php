@@ -323,6 +323,26 @@
 				<div class="main_header">
 					<?php echo $searchtitle; ?>
 					&nbsp;&nbsp;<span class="faded_out"><?php echo __('%number_of% issue(s)', array('%number_of%' => (int) $resultcount)); ?></span>
+					<div class="search_column_settings" id="search_column_settings_toggler" style="display: none;">
+						<div id="search_column_settings_button" onclick="$('search_column_settings_container').toggle();" class="button button-silver button-icon" title="<?php echo __('Configure visible columns'); ?>"><span><?php echo image_tag('cfg_icon_general.png'); ?></span></div>
+						<div class="rounded_box shadowed white" id="search_column_settings_container" style="width: 300px; position: absolute; right: 5px; display: none;">
+							<h4><?php echo __('Select columns to show'); ?></h4>
+							<p class="faded_out"><?php echo __('Select which columns you would like to show in this result view. Your selection is saved until the next time you visit.'); ?></p>
+							<form onsubmit="$(this).up().hide();return false;">
+								<ul class="simple_list scs_list">
+									<?php 
+										$columns = array('title' => __('Issue title'), 'assigned_to' => __('Assigned to'), 'status' => __('Status'), 'resolution' => __('Resolution'), 'category' => __('Category'), 'severity' => __('Severity'), 'percent_complete' => __('% completed'), 'reproducability' => __('Reproducability'), 'priority' => __('Priority'), 'last_updated' => __('Last updated time'), 'comments' => __('Number of comments'));
+									?>
+									<?php foreach ($columns as $c_key => $c_name): ?>
+										<li class="scs_<?php echo $c_key; ?>" style="display: none;"><label><input type="checkbox" onclick="TBG.Search.toggleColumn('<?php echo $c_key; ?>');" value="<?php echo $c_key; ?>"></input><div><?php echo $c_name; ?></div></label></li>
+									<?php endforeach; ?>
+								</ul>
+								<div style="text-align: right;">
+									<div class="button button-green smaller" onclick="$(this).up().up().up().hide();"><span><?php echo __('Ok'); ?></span></div>
+								</div>
+							</form>
+						</div>
+					</div>
 					<div class="search_export_links">
 						<?php
 							if (TBGContext::getRequest()->hasParameter('quicksearch'))
