@@ -93,7 +93,7 @@
 			$this->ehlo = false;
 		}
 
-		public function send(TBGMimemail $email)
+		public function send(TBGMimemail $email, $server = null)
 		{
 			try
 			{
@@ -122,7 +122,7 @@
 				}
 				else
 				{
-					$retval = $this->_mail2($email);
+					$retval = $this->_mail2($email, $server);
 				}
 			}
 			catch (Exception $e)
@@ -185,8 +185,9 @@
 			return $ret;
 		}
 
-		protected function _mail2(TBGMimemail $email)
+		protected function _mail2(TBGMimemail $email, $server = null)
 		{
+			if ($server == null): $server = $_SERVER['SERVER_NAME']; endif;
 
 			/* Open a socket connection to the mail server SMTP port (25) and read the welcome message. */
 			$fp = fsockopen($this->server, $this->port, $errno, $errstr, $this->timeout);
@@ -203,12 +204,12 @@
 			/* Standard "ehlo" message. */
 			if ($this->ehlo)
 			{
-				fputs($fp, "ehlo {$_SERVER['SERVER_NAME']}\r\n");
+				fputs($fp, "ehlo {$server}\r\n");
 				$this->_read_buffer($fp, 'ehlo');
 			}
 			else /* MS Exchange "helo" message. */
 			{
-				fputs($fp, "helo {$_SERVER['SERVER_NAME']}\r\n");
+				fputs($fp, "helo {$server}\r\n");
 				$this->_read_buffer($fp, 'helo');
 			}
 
