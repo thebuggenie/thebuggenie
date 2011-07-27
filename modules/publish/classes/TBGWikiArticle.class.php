@@ -627,11 +627,14 @@
 			return TBGContext::getModule('publish')->canUserEditArticle($this->getName());
 		}
 		
+<<<<<<< HEAD
 		public function canRead()
 		{
 			return TBGContext::getModule('publish')->canUserReadArticle($this->getName());
 		}
 		
+=======
+>>>>>>> ldap
 		public function hasAccess()
 		{
 				$namespaces = $this->getNamespaces();
@@ -652,7 +655,11 @@
 					}
 				}
 			
+<<<<<<< HEAD
 			return $this->canRead();
+=======
+			return true;
+>>>>>>> ldap
 		}
 
 	}

@@ -351,6 +351,8 @@
 			try
 			{
 				$row = null;
+				$external = false;
+				$raw = true;
 
 				// If no username and password specified, check if we have a session that exists already
 				if ($username === null && $password === null)
@@ -360,6 +362,7 @@
 						$username = TBGContext::getRequest()->getCookie('tbg3_username');
 						$password = TBGContext::getRequest()->getCookie('tbg3_password');
 						$row = TBGUsersTable::getTable()->getByUsernameAndPassword($username, $password);
+						$raw = false;
 
 						if (!$row)
 						{
@@ -374,6 +377,7 @@
 				// If we have authentication details, validate them
 				if (TBGSettings::getAuthenticationBackend() !== null && TBGSettings::getAuthenticationBackend() !== 'tbg' && $username !== null && $password !== null)
 				{
+					$external = true;
 					TBGLogging::log('Authenticating with backend: '.TBGSettings::getAuthenticationBackend(), 'auth', TBGLogging::LEVEL_INFO);
 					try
 					{
@@ -381,7 +385,6 @@
 						if ($mod->getType() !== TBGModule::MODULE_AUTH)
 						{
 							TBGLogging::log('Auth module is not the right type', 'auth', TBGLogging::LEVEL_FATAL);
-							throw new Exception('Invalid module type');
 						}
 						if (TBGContext::getRequest()->hasCookie('tbg3_username') && TBGContext::getRequest()->hasCookie('tbg3_password'))
 						{
@@ -407,6 +410,7 @@
 				}
 				elseif ($username !== null && $password !== null)
 				{
+					$external = false;
 					TBGLogging::log('Using internal authentication', 'auth', TBGLogging::LEVEL_INFO);
 					// First test a pre-encrypted password
 					$row = TBGUsersTable::getTable()->getByUsernameAndPassword($username, $password);
@@ -465,6 +469,19 @@
 						throw new Exception('This account has been suspended');
 					}
 					$user = TBGContext::factory()->TBGUser($row->get(TBGUsersTable::ID), $row);
+					
+					if ($external == false)
+					{
+						if ($raw == false)
+						{
+							TBGContext::getResponse()->setCookie('tbg3_password', $password);
+						}
+						else
+						{
+							TBGContext::getResponse()->setCookie('tbg3_password', TBGUser::hashPassword($password));
+						}
+						TBGContext::getResponse()->setCookie('tbg3_username', $username);
+					}
 				}
 				elseif (TBGSettings::isLoginRequired())
 				{
@@ -479,7 +496,6 @@
 			{
 				throw $e;
 			}
-			
 			return $user;
 	
 		}
