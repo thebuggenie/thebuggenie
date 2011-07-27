@@ -172,7 +172,7 @@
 		{
 			$validgroups = TBGContext::getModule('auth_ldap')->getSetting('groups');
 			$users_dn = TBGContext::getModule('auth_ldap')->getSetting('u_dn');
-			$username_dn = TBGContext::getModule('auth_ldap')->getSetting('u_attr');
+			$username_attr = TBGContext::getModule('auth_ldap')->getSetting('u_attr');
 			$fullname_attr = TBGContext::getModule('auth_ldap')->getSetting('f_attr');
 			$email_attr = TBGContext::getModule('auth_ldap')->getSetting('e_attr');
 			$groups_dn = TBGContext::getModule('auth_ldap')->getSetting('g_dn');
@@ -187,7 +187,7 @@
 				$connection = TBGContext::getModule('auth_ldap')->connect();
 				TBGContext::getModule('auth_ldap')->bind(TBGContext::getModule('auth_ldap')->getSetting('control_user'), TBGContext::getModule('auth_ldap')->getSetting('control_pass'), $connection);
 				
-				$fields = array($fullname_attr, $email_attr, 'cn');
+				$fields = array($fullname_attr, $username_attr, $email_attr, 'cn');
 				$filter = '(objectClass=person)';
 				
 				$results = ldap_search($connection, $users_dn, $filter, $fields);
@@ -238,7 +238,7 @@
 								continue;
 							}
 							
-							foreach ($data2[0][$groups_members_attr] as $member)
+							foreach ($data2[0][strtolower($groups_members_attr)] as $member)
 							{
 								if ($member == $user_dn)
 								{
@@ -255,25 +255,24 @@
 
 					$users[$i] = array();
 	
-					if (!array_key_exists($fullname_attr, $data[$i]))
+					if (!array_key_exists(strtolower($fullname_attr), $data[$i]))
 					{
 						$users[$i]['realname'] = $data[$i]['cn'][0];
 					}
 					else
 					{
-						$users[$i]['realname'] = $data[$i][$fullname_attr][0];
+						$users[$i]['realname'] = $data[$i][strtolower($fullname_attr)][0];
 					}
 					
-					if (!array_key_exists($email_attr, $data[$i]))
+					if (!array_key_exists(strtolower($email_attr), $data[$i]))
 					{
 						$users[$i]['email'] = '';
 					}
 					else
 					{
-						$users[$i]['email'] = $data[$i][$email_attr][0];
+						$users[$i]['email'] = $data[$i][strtolower($email_attr)][0];
 					}
-
-					$users[$i]['username'] = $data[$i]['cn'][0];
+					$users[$i]['username'] = $data[$i][strtolower($username_attr)][0];
 				}
 
 			}
@@ -287,7 +286,6 @@
 			foreach ($users as $ldapuser)
 			{
 				$username = $request->getParameter('prefix').$ldapuser['username'];
-				$password = TBGUser::hashPassword(TBGUser::createPassword(8));
 				$email = $ldapuser['email'];
 				$realname = $ldapuser['realname'];
 				
@@ -311,7 +309,7 @@
 						$user->setEmail($email);
 						$user->setEnabled();
 						$user->setActivated();
-						$user->setPassword($password);
+						$user->setPassword($user->getJoinedDate().$username);
 						$user->setJoined();
 						$user->save();
 						$importcount++;

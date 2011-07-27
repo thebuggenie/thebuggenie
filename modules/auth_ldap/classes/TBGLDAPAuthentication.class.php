@@ -231,7 +231,7 @@
 							continue;
 						}
 						
-						foreach ($data2[0][$groups_members_attr] as $member)
+						foreach ($data2[0][strtolower($groups_members_attr)] as $member)
 						{
 							if ($member == $user_dn)
 							{
@@ -246,22 +246,22 @@
 					}
 				}
 
-				if (!array_key_exists($fullname_attr, $data[0]))
+				if (!array_key_exists(strtolower($fullname_attr), $data[0]))
 				{
 					$realname = $username;
 				}
 				else
 				{
-					$realname = $data[0][$fullname_attr][0];
+					$realname = $data[0][strtolower($fullname_attr)][0];
 				}
 				
-				if (!array_key_exists($email_attr, $data[0]))
+				if (!array_key_exists(strtolower($email_attr), $data[0]))
 				{
 					$email = '';
 				}
 				else
 				{
-					$email = $data[0][$email_attr][0];
+					$email = $data[0][strtolower($email_attr)][0];
 				}
 			}
 			catch (Exception $e)
@@ -274,10 +274,9 @@
 				$user = TBGUser::getByUsername($username);
 				if ($user instanceof TBGUser)
 				{
-					$temp_password = TBGUser::createPassword(7);
 					$user->setBuddyname($realname);
 					$user->setRealname($realname);
-					$user->setPassword($temp_password); // update password
+					$user->setPassword($user->getJoinedDate().$username); // update password
 					$user->setEmail($email); // update email address
 					$user->save();
 				}
@@ -285,7 +284,6 @@
 				{
 					if ($mode == 1)
 					{
-						$temp_password = TBGUser::createPassword(7);
 						// create user
 						$user = new TBGUser();
 						$user->setUsername($username);
@@ -294,7 +292,7 @@
 						$user->setEmail('temporary');
 						$user->setEnabled();
 						$user->setActivated();
-						$user->setPassword($temp_password);
+						$user->setPassword($user->getJoinedDate().$username);
 						$user->setJoined();
 						$user->save();
 					}
@@ -310,7 +308,7 @@
 			}
 
 			TBGContext::getResponse()->setCookie('tbg3_username', $username);
-			TBGContext::getResponse()->setCookie('tbg3_password', TBGUser::hashPassword($temp_password));
+			TBGContext::getResponse()->setCookie('tbg3_password', TBGUser::hashPassword($user->getJoinedDate().$username));
 
 			return TBGUsersTable::getTable()->getByUsername($username);
 		}
