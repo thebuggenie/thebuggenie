@@ -64,6 +64,17 @@
 			<tr>
 				<td class="config_explanation" colspan="2"><?php echo __('You may wish to restrict access to users who belong to certain groups in LDAP. If so, write a comma separated list of group names here. Leave blank to disable this feature.'); ?></td>
 			</tr>
+			<tr>
+				<td style="padding: 5px;"><label for="control_user"><?php echo __('Control username'); ?></label></td>
+				<td><input type="text"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> name="control_user" id="control_pass" value="<?php echo $module->getSetting('control_user'); ?>" style="width: 100%;"></td>
+			</tr>
+			<tr>
+				<td style="padding: 5px;"><label for="control_pass"><?php echo __('Control user password'); ?></label></td>
+				<td><input type="password"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> name="control_pass" id="control_pass" value="<?php echo $module->getSetting('control_pass'); ?>" style="width: 100%;"></td>
+			</tr>
+			<tr>
+				<td class="config_explanation" colspan="2"><?php echo __('Please insert the authentication details for a user who can access all LDAP records. Only read access is necessary, and this will be used to perform validation checks on users.'); ?></td>
+			</tr>
 		</table>
 	</div>
 <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
@@ -86,19 +97,6 @@
 	<div class="rounded_box borderless mediumgrey" style="margin: 10px 0 0 0; width: 700px; padding: 5px 5px 30px 5px;">
 		<div class="header"><?php echo __('Import all users'); ?></div>
 		<div class="content"><?php echo __('So that you can ensure all users from LDAP exist in The Bug Genie exist for initial configuration (e.g. to set permissions), you can import all users who don\'t already exist using this tool. If you set a group restriction, this will be obyed here. Remember to make at least one an administrator so you can continue to configure The Bug Genie after switching.'); ?></div>
-		<table style="width: 680px;" class="padded_table" cellpadding=0 cellspacing=0 id="vcsintegration_settings_table">
-			<tr>
-				<td style="padding: 5px;"><label for="username"><?php echo __('Username'); ?></label></td>
-				<td><input type="text"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> name="username" id="username" value="<?php echo $module->getSetting('username'); ?>" style="width: 100%;"></td>
-			</tr>
-			<tr>
-				<td style="padding: 5px;"><label for="password"><?php echo __('Password'); ?></label></td>
-				<td><input type="password"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> name="password" id="password" value="<?php echo $module->getSetting('password'); ?>" style="width: 100%;"></td>
-			</tr>
-			<tr>
-				<td class="config_explanation" colspan="2"><?php echo __('Please insert the authentication details for a user who can access all LDAP records.'); ?></td>
-			</tr>
-		</table>
 		<input type="submit" id="import_button"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> style="float: right; padding: 0 10px 0 10px; font-size: 13px; font-weight: bold;" value="<?php echo __('Import users'); ?>">
 	</div>
 </form>
@@ -107,19 +105,6 @@
 	<div class="rounded_box borderless mediumgrey" style="margin: 10px 0 0 0; width: 700px; padding: 5px 5px 30px 5px;">
 		<div class="header"><?php echo __('Prune users'); ?></div>
 		<div class="content"><?php echo __('If a user is deleted from LDAP then they will not be able to log into The Bug Genie. However if you want to remove users from The Bug Genie who have been deleted from LDAP you may wish to prune the users list. This action will delete all users from The Bug Genie\'s user list who do not exist in the LDAP database, and can not be reversed.'); ?></div>
-		<table style="width: 680px;" class="padded_table" cellpadding=0 cellspacing=0 id="vcsintegration_settings_table">
-			<tr>
-				<td style="padding: 5px;"><label for="username"><?php echo __('Username'); ?></label></td>
-				<td><input type="text"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> name="username" id="username" value="<?php echo $module->getSetting('username'); ?>" style="width: 100%;"></td>
-			</tr>
-			<tr>
-				<td style="padding: 5px;"><label for="password"><?php echo __('Password'); ?></label></td>
-				<td><input type="password"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> name="password" id="password" value="<?php echo $module->getSetting('password'); ?>" style="width: 100%;"></td>
-			</tr>
-			<tr>
-				<td class="config_explanation" colspan="2"><?php echo __('Please insert the authentication details for a user who can access all LDAP records.'); ?></td>
-			</tr>
-		</table>
 		<input type="submit"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> id="prune_button" style="float: right; padding: 0 10px 0 10px; font-size: 13px; font-weight: bold;" value="<?php echo __('Prune users'); ?>">
 	</div>
 </form>
