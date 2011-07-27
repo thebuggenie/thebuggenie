@@ -30,7 +30,9 @@ var TBG = {
 		},
 		Build: {},
 		Component: {},
-		Edition: {},
+		Edition: {
+			Component: {}
+		},
         Commits: {}
 	},
 	Config: {
@@ -67,7 +69,8 @@ var TBG = {
 		Affected: {}
 	}, // The "Issues" namespace contains functions used in direct relation to issues
 	Search: {
-		Filter: {}
+		Filter: {},
+		ResultViews: {}
 	}, // The "Search" namespace contains functions related to searching
 	Subscriptions: {}, // The "Subscription" namespace contains functionality related to subscribing to - and publishing js events
 	effect_queues: {
@@ -795,8 +798,7 @@ TBG.Main.Login.login = function(url)
 	});
 }
 
-TBG.Main.Login.resetForgotPassword(url)
-{
+TBG.Main.Login.resetForgotPassword = function(url) {
 	TBG.Main.Helpers.ajax(url, {
 		form: 'forgot_password_form',
 		loading: {
@@ -810,7 +812,7 @@ TBG.Main.Login.resetForgotPassword(url)
 			show: 'forgot_password_button'
 		}
 	});
-}
+};
 
 TBG.Project.Statistics.get = function(url) {
 	TBG.Main.Helpers.ajax(url, {
