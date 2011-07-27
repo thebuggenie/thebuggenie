@@ -16,6 +16,9 @@
 			try
 			{
 				$connection = TBGContext::getModule('auth_ldap')->connect();
+				
+				TBGLDAPAuthentication::getModule()->bind(TBGLDAPAuthentication::getModule()->getSetting('control_user'), TBGLDAPAuthentication::getModule()->getSetting('control_pass'), $connection);
+				
 				ldap_unbind($connection);
 				
 				TBGContext::setMessage('module_message', TBGContext::getI18n()->__('Connection test successful'));
