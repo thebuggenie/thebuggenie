@@ -172,7 +172,7 @@
 					$username2 = $data[1];
 				}
 				
-				$fields = array($fullname_attr, $email_attr);
+				$fields = array($fullname_attr, $email_attr, 'cn');
 				$filter = '('.$username_attr.'='.$this->escape($username2).')';
 				
 				$results = ldap_search($connection, $users_dn, $filter, $fields);
@@ -191,8 +191,74 @@
 					throw new Exception(TBGContext::geti18n()->__('User does not exist in DN'));
 				}
 
-				$realname = $data[0][$fullname_attr][0];
-				$email = $data[0][$email_attr][0];
+				$user_dn = 'CN='.$data[0]['cn'][0].','.$users_dn;
+				
+				if ($validgroups != '')
+				{
+					if (strstr($validgroups, ','))
+					{
+						$groups = explode(',', $validgroups);
+					}
+					else
+					{
+						$groups = array();
+						$groups[] = $validgroups;
+					}
+					
+					$allowed = false;
+					
+					foreach ($groups as $group)
+					{
+						$fields2 = array($groups_members_attr);
+						$filter2 = '(cn='.$this->escape($group).')';
+						
+						$results2 = ldap_search($connection, $groups_dn, $filter2, $fields2);
+						
+						if (!$results2)
+						{
+							TBGLogging::log('failed to search for user after binding: '.ldap_error($connection), 'ldap', TBGLogging::LEVEL_FATAL);
+							throw new Exception(TBGContext::geti18n()->__('Search failed ').ldap_error($connection));
+						}
+						
+						$data2 = ldap_get_entries($connection, $results2);
+						
+						if ($data2['count'] == 0)
+						{
+							continue;
+						}
+						
+						foreach ($data2[0][$groups_members_attr] as $member)
+						{
+							if ($member == $user_dn)
+							{
+								$allowed = true;
+							}
+						}
+					}
+					
+					if ($allowed == false)
+					{
+						throw new Exception(TBGContext::getI18n()->__('You are not a member of a group allowed to log in'));
+					}
+				}
+
+				if (!array_key_exists($fullname_attr, $data[0]))
+				{
+					$realname = $username;
+				}
+				else
+				{
+					$realname = $data[0][$fullname_attr][0];
+				}
+				
+				if (!array_key_exists($email_attr, $data[0]))
+				{
+					$email = '';
+				}
+				else
+				{
+					$email = $data[0][$email_attr][0];
+				}
 			}
 			catch (Exception $e)
 			{

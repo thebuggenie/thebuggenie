@@ -453,6 +453,8 @@
 				}
 				elseif (TBGSettings::isLoginRequired())
 				{
+					TBGContext::getResponse()->deleteCookie('tbg3_username');
+					TBGContext::getResponse()->deleteCookie('tbg3_password');
 					throw new Exception($i18n->__('You need to log in to access this site'));
 				}
 				elseif (!TBGContext::getUser()->isAuthenticated())
