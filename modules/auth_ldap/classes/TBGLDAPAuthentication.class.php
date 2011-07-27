@@ -100,94 +100,40 @@
 			return $connection;
 		}
 		
-		public function bind($username, $password, $connection)
+		public function bind($lduser, $ldpass, $connection)
 		{
 			$bind = ldap_bind($connection, $lduser, $ldpass);
-			if ($bind == false): $failed = true; endif;
 
-			// do connection here, set failed to true if failed
-			if ($failed)
+			if (!$bind)
 			{
 				ldap_unbind($connection);
-				throw new Exception(TBGContext::geti18n()->__('Failed to bind: ').ldap_error($connection));
 				TBGLogging::log('bind failed: '.ldap_error($connection), 'ldap', TBGLogging::LEVEL_FATAL);
+				throw new Exception(TBGContext::geti18n()->__('Failed to bind: ').ldap_error($connection));
 			}
 		}
 		
-		public function loginCheck($username, $password)
+		public function escape($string)
 		{
-			$validgroups = $this->getSetting('groups');
-			$users_dn = $this->getSetting('u_dn');
-			$username_dn = $this->getSetting('u_attr');
-			$fullname_attr = $this->getSetting('f_attr');
-			$email_attr = $this->getSetting('e_attr');
-			$groups_dn = $this->getSetting('g_dn');
-			$groups_members_attr = $this->getSetting('g_attr');
-			
-			$email = null;
-			$realname = $username;
-			
-			/*
-			 * Do the LDAP check here.
-			 * 
-			 * If a connection error or something, throw an exception and log
-			 * 
-			 * If we can, set $mail and $realname to correct values from LDAP
-			 * otherwise don't touch those variables.
-			 * 
-			 * To log do:
-			 * TBGLogging::log('error goes here', 'ldap', TBGLogging::LEVEL_FATAL);
-			 */
-			try
+			$chars = array('\\', '*', '()', ')', chr(0));
+			foreach ($chars as $char)
 			{
-				$row = TBGUsersTable::getTable()->getByUsernameAndPassword($username, $password);
-				if (!$row)
-				{
-					$connection = $this->connect();
-					//verify by anon bind - return false if failed
-					// could you set $email and $realname here too
-				}
-				else
-				{
-					return false;
-				}
+				$string = str_replace($char, '\\'.$char, $string);
 			}
-			catch (Exception $e)
-			{
-				throw $e;
-			}
-			
-			try
-			{
-				$user = TBGUser::getByUsername($username);
-				if ($user instanceof TBGUser)
-				{
-					$user->setRealname($realname);
-					$user->setPassword(TBGUser::createPassword(7)); // update password
-					$user->setEmail($email); // update email address
-					$user->save();
-				}
 
-				return TBGUsersTable::getByUsername($username);
-			}
-			catch (Exception $e)
-			{
-				throw $e;
-			}
+			return $string;
 		}
-		
+
 		public function doLogin($username, $password)
-		{
+		{	
 			$validgroups = $this->getSetting('groups');
 			$users_dn = $this->getSetting('u_dn');
-			$username_dn = $this->getSetting('u_attr');
-			$fullname_attr = $this->getSetting('f_attr');
-			$email_attr = $this->getSetting('e_attr');
+			$username_attr = $this->escape($this->getSetting('u_attr'));
+			$fullname_attr = $this->escape($this->getSetting('f_attr'));
+			$email_attr = $this->escape($this->getSetting('e_attr'));
 			$groups_dn = $this->getSetting('g_dn');
-			$groups_members_attr = $this->getSetting('g_attr');
+			$groups_members_attr = $this->escape($this->getSetting('g_attr'));
 			
 			$email = null;
-			$realname = $username;
 			
 			/*
 			 * Do the LDAP check here.
@@ -203,8 +149,38 @@
 			try
 			{
 				$connection = $this->connect();
+				$this->bind($username, $password, $connection);
 				
-				// if invalid login - return false
+				// Assume bind successful, otherwise we would have had an exception
+				
+				// Windows Domains require the username to be in the form DOMAIN\User, only we don't want that, strip domain
+				if (strstr($username, '\\'))
+				{
+					$data = explode('\\', $username);
+					$username2 = $data[1];
+				}
+				
+				$fields = array($fullname_attr, $email_attr);
+				$filter = '('.$username_attr.'='.$this->escape($username2).')';
+				
+				$results = ldap_search($connection, $users_dn, $filter, $fields);
+				
+				if (!$results)
+				{
+					TBGLogging::log('failed to search for user after binding: '.ldap_error($connection), 'ldap', TBGLogging::LEVEL_FATAL);
+					throw new Exception(TBGContext::geti18n()->__('Search failed ').ldap_error($connection));
+				}
+				
+				$data = ldap_get_entries($connection, $results);
+				
+				if ($data['count'] == 0)
+				{
+					TBGLogging::log('bind OK but user '.$username.' does not exist in DN '.$users_dn.', attribute '.$username_attr, 'ldap', TBGLogging::LEVEL_FATAL);
+					throw new Exception(TBGContext::geti18n()->__('User does not exist in DN'));
+				}
+
+				$realname = $data[0][$fullname_attr][0];
+				$email = $data[0][$email_attr][0];
 			}
 			catch (Exception $e)
 			{
@@ -216,32 +192,127 @@
 				$user = TBGUser::getByUsername($username);
 				if ($user instanceof TBGUser)
 				{
+					$temp_password = TBGUser::createPassword(7);
+					$user->setBuddyname($realname);
 					$user->setRealname($realname);
-					$user->setPassword(TBGUser::createPassword(7)); // update password
+					$user->setPassword($temp_password); // update password
 					$user->setEmail($email); // update email address
 					$user->save();
 				}
 				else
 				{
+					$temp_password = TBGUser::createPassword(7);
 					// create user
 					$user = new TBGUser();
 					$user->setUsername($username);
-					$user->setRealname($realname);
+					$user->setRealname('temporary');
 					$user->setBuddyname($username);
-					$user->setEmail($email);
+					$user->setEmail('temporary');
 					$user->setEnabled();
 					$user->setActivated();
-					$user->setPassword(TBGUser::createPassword(7));
+					$user->setPassword($temp_password);
 					$user->setJoined();
 					$user->save();
 				}
-
-				return TBGUsersTable::getByUsername($username);
 			}
 			catch (Exception $e)
 			{
 				throw $e;
 			}
+
+			TBGContext::getResponse()->setCookie('tbg3_username', $username);
+			TBGContext::getResponse()->setCookie('tbg3_password', TBGUser::hashPassword($temp_password));
+
+			return TBGUsersTable::getTable()->getByUsername($username);
+		}
+
+		public function verifyLogin($username)
+		{
+			// This method checks if the user exists, and updates it details. It does not check the password
+			
+			$validgroups = $this->getSetting('groups');
+			$users_dn = $this->getSetting('u_dn');
+			$username_attr = $this->escape($this->getSetting('u_attr'));
+			$fullname_attr = $this->escape($this->getSetting('f_attr'));
+			$email_attr = $this->escape($this->getSetting('e_attr'));
+			$groups_dn = $this->getSetting('g_dn');
+			$groups_members_attr = $this->escape($this->getSetting('g_attr'));
+			$control_user = $this->getSetting('control_user');
+			$control_password = $this->getSetting('control_pass');
+			
+			$email = null;
+			
+			/*
+			 * Do the LDAP check here.
+			 * 
+			 * If a connection error or something, throw an exception and log
+			 * 
+			 * If we can, set $mail and $realname to correct values from LDAP
+			 * otherwise don't touch those variables.
+			 * 
+			 * To log do:
+			 * TBGLogging::log('error goes here', 'ldap', TBGLogging::LEVEL_FATAL);
+			 */
+			try
+			{
+				$connection = $this->connect();
+				$this->bind($control_user, $control_password, $connection);
+				
+				// Windows Domains require the username to be in the form DOMAIN\User, only we don't want that, strip domain
+				if (strstr($username, '\\'))
+				{
+					$data = explode('\\', $username);
+					$username2 = $data[1];
+				}
+				
+				$fields = array($fullname_attr, $email_attr);
+				$filter = '('.$username_attr.'='.$this->escape($username2).')';
+
+				$results = ldap_search($connection, $users_dn, $filter, $fields);
+				
+				if (!$results)
+				{
+					TBGLogging::log('failed to search for user after binding: '.ldap_error($connection), 'ldap', TBGLogging::LEVEL_FATAL);
+					throw new Exception(TBGContext::geti18n()->__('Search failed ').ldap_error($connection));
+				}
+				
+				$data = ldap_get_entries($connection, $results);
+				
+				if ($data['count'] == 0)
+				{
+					TBGLogging::log('bind OK but user '.$username.' does not exist in DN '.$users_dn.', attribute '.$username_attr, 'ldap', TBGLogging::LEVEL_FATAL);
+					throw new Exception(TBGContext::geti18n()->__('User does not exist in DN'));
+				}
+
+				$realname = $data[0][$fullname_attr][0];
+				$email = $data[0][$email_attr][0];
+			}
+			catch (Exception $e)
+			{
+				throw $e;
+			}
+			
+			try
+			{
+				$user = TBGUser::getByUsername($username);
+				if ($user instanceof TBGUser)
+				{
+					$user->setBuddyname($realname);
+					$user->setRealname($realname);
+					$user->setEmail($email); // update email address
+					$user->save();
+				}
+				else
+				{
+					throw new Exception('User does not exist in TBG');
+				}
+			}
+			catch (Exception $e)
+			{
+				throw $e;
+			}
+
+			return TBGUsersTable::getTable()->getByUsername($username);
 		}
 	}
 
