@@ -88,6 +88,8 @@
 			$failed = false;
 
 			$connection = ldap_connect($host);
+			ldap_set_option($connection, LDAP_OPT_PROTOCOL_VERSION, 3);
+			
 			if ($connection == false): $failed = true; endif;
 
 			if ($failed)
