@@ -199,7 +199,7 @@
 		public function getSubject()
 		{
 			$this->_translateSubject();
-			return $this->subject_translated;
+			return html_entity_decode($this->subject_translated);
 		}
 		
 		public function setMessagePlain($message)
