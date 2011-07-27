@@ -30,7 +30,9 @@ var TBG = {
 		},
 		Build: {},
 		Component: {},
-		Edition: {},
+		Edition: {
+			Component: {}
+		},
         Commits: {}
 	},
 	Config: {
@@ -67,7 +69,8 @@ var TBG = {
 		Affected: {}
 	}, // The "Issues" namespace contains functions used in direct relation to issues
 	Search: {
-		Filter: {}
+		Filter: {},
+		ResultViews: {}
 	}, // The "Search" namespace contains functions related to searching
 	Subscriptions: {}, // The "Subscription" namespace contains functionality related to subscribing to - and publishing js events
 	effect_queues: {
@@ -346,6 +349,9 @@ TBG.Main.Helpers.ajax = function(url, options) {
 					$(options.loading.indicator).show();
 				}
 				TBG.Core._processCommonAjaxPostEvents(options.loading);
+				if (options.loading.callback) {
+					options.loading.callback();
+				}
 			}
 		},
 		onSuccess: function (transport) {
@@ -795,8 +801,7 @@ TBG.Main.Login.login = function(url)
 	});
 }
 
-TBG.Main.Login.resetForgotPassword(url)
-{
+TBG.Main.Login.resetForgotPassword = function(url) {
 	TBG.Main.Helpers.ajax(url, {
 		form: 'forgot_password_form',
 		loading: {
@@ -810,7 +815,7 @@ TBG.Main.Login.resetForgotPassword(url)
 			show: 'forgot_password_button'
 		}
 	});
-}
+};
 
 TBG.Project.Statistics.get = function(url) {
 	TBG.Main.Helpers.ajax(url, {
@@ -2651,5 +2656,50 @@ TBG.Search.toPage = function(url, parameters, offset) {
 		params: parameters,
 		loading: {indicator: 'paging_spinning'},
 		success: {update: 'search_results'}
+	});
+};
+
+TBG.Search.toggleColumn = function(column) {
+	$$('.sc_' + column).each(function(element) {
+		console.log(element);
+		element.toggle();
+	});
+};
+
+TBG.Search.setColumns = function(resultview, available_columns, visible_columns) {
+	TBG.Search.ResultViews[resultview] = {
+		available: available_columns,
+		visible: visible_columns
+	};
+	TBG.Search.ResultViews[resultview].available.each(function(column) {
+		$$('.scs_' + column).each(function(element) {
+			console.log('checking '+column);
+			element.show();
+			if (TBG.Search.ResultViews[resultview].visible.indexOf(column) != -1) {
+				console.log(column+' input checked');
+				element.down('input').checked = true;
+			}
+		});
+	});
+	$('search_column_settings_toggler').show();
+}
+
+TBG.Search.saveVisibleColumns = function(url) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'scs_column_settings_form',
+		loading: {
+			indicator: 'search_column_settings_indicator',
+			callback: function() {
+				$('search_column_settings_button').addClassName('disabled');
+			}
+		},
+		success: {
+			hide: 'search_column_settings_container'
+		},
+		complete: {
+			callback: function() {
+				$('search_column_settings_button').addClassName('disabled');
+			}
+		}
 	});
 };
