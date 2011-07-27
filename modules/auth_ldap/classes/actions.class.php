@@ -185,26 +185,97 @@
 			try
 			{
 				$connection = TBGContext::getModule('auth_ldap')->connect();
-				TBGContext::getModule('auth_ldap')->bind($request->getParameter('username'), $request->getParameter('password'), $connection);
+				TBGContext::getModule('auth_ldap')->bind(TBGContext::getModule('auth_ldap')->getSetting('control_user'), TBGContext::getModule('auth_ldap')->getSetting('control_pass'), $connection);
 				
-				/*
-				 * Build an array of all valid LDAP users here.
-				 * 
-				 * Each array element should be an associative array:
-				 * 
-				 * array (
-				 *			'username' => username of user,
-				 *			'password' => password of user from ldap, will be overwritten later,
-				 *			'email' => email from ldap or null if unavailable,
-				 *			'realname' => realname of user, or the username if unavailable
-				 * )
-				 * 
-				 * So we have an array: array(array(), array()...) etc., with an element (being an array for each user
-				 * If we have an error, log it and throw an exception.
-				 * 
-				 * To log do:
-				 * TBGLogging::log('error goes here', 'ldap', TBGLogging::LEVEL_FATAL);
-				 */
+				$fields = array($fullname_attr, $email_attr, 'cn');
+				$filter = '(objectClass=person)';
+				
+				$results = ldap_search($connection, $users_dn, $filter, $fields);
+				
+				if (!$results)
+				{
+					TBGLogging::log('failed to search for user after binding: '.ldap_error($connection), 'ldap', TBGLogging::LEVEL_FATAL);
+					throw new Exception(TBGContext::geti18n()->__('Search failed ').ldap_error($connection));
+				}
+				
+				$data = ldap_get_entries($connection, $results);
+				
+				for ($i = 0; $i != $data['count']; $i++)
+				{
+					$user_dn = 'CN='.$data[$i]['cn'][0].','.$users_dn;
+					
+					if ($validgroups != '')
+					{
+						if (strstr($validgroups, ','))
+						{
+							$groups = explode(',', $validgroups);
+						}
+						else
+						{
+							$groups = array();
+							$groups[] = $validgroups;
+						}
+						
+						$allowed = false;
+						
+						foreach ($groups as $group)
+						{
+							$fields2 = array($groups_members_attr);
+							$filter2 = '(cn='.TBGLDAPAuthentication::getModule()->escape($group).')';
+							
+							$results2 = ldap_search($connection, $groups_dn, $filter2, $fields2);
+							
+							if (!$results2)
+							{
+								TBGLogging::log('failed to search for user after binding: '.ldap_error($connection), 'ldap', TBGLogging::LEVEL_FATAL);
+								throw new Exception(TBGContext::geti18n()->__('Search failed ').ldap_error($connection));
+							}
+							
+							$data2 = ldap_get_entries($connection, $results2);
+							
+							if ($data2['count'] == 0)
+							{
+								continue;
+							}
+							
+							foreach ($data2[0][$groups_members_attr] as $member)
+							{
+								if ($member == $user_dn)
+								{
+									$allowed = true;
+								}
+							}
+						}
+						
+						if ($allowed == false)
+						{
+							continue;
+						}
+					}
+
+					$users[$i] = array();
+	
+					if (!array_key_exists($fullname_attr, $data[$i]))
+					{
+						$users[$i]['realname'] = $data[$i]['cn'][0];
+					}
+					else
+					{
+						$users[$i]['realname'] = $data[$i][$fullname_attr][0];
+					}
+					
+					if (!array_key_exists($email_attr, $data[$i]))
+					{
+						$users[$i]['email'] = '';
+					}
+					else
+					{
+						$users[$i]['email'] = $data[$i][$email_attr][0];
+					}
+
+					$users[$i]['username'] = $data[$i]['cn'][0];
+				}
+
 			}
 			catch (Exception $e)
 			{
@@ -215,8 +286,8 @@
 				
 			foreach ($users as $ldapuser)
 			{
-				$username = $ldapuser['username'];
-				$password = $ldapuser['password']; // People will be unable to log in with this as is isnt TBG format, but it prevents blank passwords. Password will be set on login.
+				$username = $request->getParameter('prefix').$ldapuser['username'];
+				$password = TBGUser::hashPassword(TBGUser::createPassword(8));
 				$email = $ldapuser['email'];
 				$realname = $ldapuser['realname'];
 				
@@ -226,7 +297,6 @@
 					if ($user instanceof TBGUser)
 					{
 						$user->setRealname($realname);
-						$user->setPassword($password); // update password
 						$user->setEmail($email); // update emaila ddress
 						$user->save();
 						$updatecount++;
@@ -245,9 +315,7 @@
 						$user->setJoined();
 						$user->save();
 						$importcount++;
-					}
-					
-					return TBGUsersTable::getByUsername($username);
+					}					
 				}
 				catch (Exception $e)
 				{
