@@ -96,8 +96,8 @@
 
 		static protected $_ver_mj = 3;
 		static protected $_ver_mn = 1;
-		static protected $_ver_rev = 3;
-		static protected $_ver_name = "Triple Reyo";
+		static protected $_ver_rev = 4;
+		static protected $_ver_name = "Lightweight Dairy and Airbourne Pigs - BETA RELEASE";
 		static protected $_defaultscope = null;
 		static protected $_settings = null;
 		static protected $_loadedsettings = array();
