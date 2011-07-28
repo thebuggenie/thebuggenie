@@ -56,17 +56,19 @@
 		<?php endif; ?>
 		<?php if ($cache_folder_perm_ok): ?>
 			<div class="install_progress prereq_ok">
-				<?php echo image_tag('themes/oxygen/action_ok.png', array(), true); ?>Can write to <?php echo THEBUGGENIE_CORE_PATH . 'cache'; ?>
+				<?php echo image_tag('themes/oxygen/action_ok.png', array(), true); ?>Can write to <?php echo THEBUGGENIE_CORE_PATH . 'cache'; ?> and <?php echo THEBUGGENIE_CORE_PATH . 'cache' . DS . 'B2DB'; ?>
 			</div>
 		<?php else: ?>
 			<div class="install_progress prereq_fail">
-			<b>Could not write to The Bug Genie cache directory</b><br>
-			The cache folder for The Bug Genie should be writable during installation and normal operations, since we need to store cache files in it
+			<b>Could not write to The Bug Genie cache directoies</b><br>
+			Either the cache folder, or its B2DB subfolder can not be accessed. These folders should exist and be writable during installation and normal operations, since we need to store cache files in them
 			</div>
 			<b>If you're installing this on a Linux server,</b> running these commands should fix it:<br>
 			<div class="command_box">
-                chmod -R a+w <?php echo THEBUGGENIE_CORE_PATH; ?>cache<br>
-                chmod -R a+w <?php echo THEBUGGENIE_CORE_PATH; ?>cache/B2DB
+			mkdir <?php echo THEBUGGENIE_CORE_PATH; ?>cache<br>
+			chmod -R a+w <?php echo THEBUGGENIE_CORE_PATH; ?>cache<br><br>
+			mkdir <?php echo THEBUGGENIE_CORE_PATH; ?>cache<?php echo DS; ?>B2DB<br>
+			chmod -R a+w <?php echo THEBUGGENIE_CORE_PATH; ?>cache<?php echo DS; ?>B2DB<br>
 			</div>
 		<?php endif; ?>
 		<?php if ($thebuggenie_folder_perm_ok): ?>
