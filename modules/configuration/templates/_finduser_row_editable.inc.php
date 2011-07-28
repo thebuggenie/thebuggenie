@@ -13,7 +13,7 @@
 			</tr>
 			<tr>
 				<td><label for="realname_<?php echo $user->getID(); ?>"><?php echo __('Real name'); ?></label></td>
-				<td><?php if (TBGSettings::isUsingExternalAuthenticationBackend()): echo $user->getRealname(); else: ?><input type="text" name="realname" id="realname_<?php echo $user->getID(); ?>" style="width: 220px;" value="<?php echo $user->getRealname(); ?>"><?php endif; ?></td>
+				<td><?php if (TBGSettings::isUsingExternalAuthenticationBackend()): if ($user->getRealname() == null): echo '-'; else: echo $user->getRealname(); endif; else: ?><input type="text" name="realname" id="realname_<?php echo $user->getID(); ?>" style="width: 220px;" value="<?php echo $user->getRealname(); ?>"><?php endif; ?></td>
 				<td><label for="enabled_<?php echo $user->getID(); ?>_yes"><?php echo __('Enabled'); ?></label></td>
 				<td valign="middle">
 					<input type="radio" name="enabled" id="enabled_<?php echo $user->getID(); ?>_yes" value="1"<?php if ($user->isEnabled()): ?> checked<?php endif; ?>>
@@ -24,11 +24,11 @@
 			</tr>
 			<tr>
 				<td><label for="buddyname_<?php echo $user->getID(); ?>"><?php echo __('Nickname'); ?></label></td>
-				<td colspan="3"><?php if (TBGSettings::isUsingExternalAuthenticationBackend()): echo $user->getNickname(); else: ?><input type="text" name="nickname" id="nickname_<?php echo $user->getID(); ?>" style="width: 220px;" value="<?php echo $user->getNickname(); ?>"><?php endif; ?></td>
+				<td colspan="3"><?php if (TBGSettings::isUsingExternalAuthenticationBackend()): if ($user->getNickname() == null): echo '-'; else: echo $user->getNickname(); endif; else: ?><input type="text" name="nickname" id="nickname_<?php echo $user->getID(); ?>" style="width: 220px;" value="<?php echo $user->getNickname(); ?>"><?php endif; ?></td>
 			</tr>
 			<tr>
 				<td><label for="email_<?php echo $user->getID(); ?>"><?php echo __('Email address'); ?></label></td>
-				<td><?php if (TBGSettings::isUsingExternalAuthenticationBackend()): echo $user->getEmail(); else: ?><input type="text" name="email" id="email_<?php echo $user->getID(); ?>" style="width: 220px;" value="<?php echo $user->getEmail(); ?>"><?php endif; ?></td>
+				<td><?php if (TBGSettings::isUsingExternalAuthenticationBackend()): if ($user->getEmail() == null): echo '-'; else: echo $user->getEmail(); endif; else: ?><input type="text" name="email" id="email_<?php echo $user->getID(); ?>" style="width: 220px;" value="<?php echo $user->getEmail(); ?>"><?php endif; ?></td>
 				<td><label for="user_<?php echo $user->getID(); ?>_group"><?php echo __('In group'); ?></label></td>
 				<td>
 					<select name="group" id="user_<?php echo $user->getID(); ?>_group">
