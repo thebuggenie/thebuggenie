@@ -305,7 +305,7 @@
 						$user = new TBGUser();
 						$user->setUsername($username);
 						$user->setRealname($realname);
-						$user->setBuddyname($username);
+						$user->setBuddyname($realname);
 						$user->setEmail($email);
 						$user->setEnabled();
 						$user->setActivated();
