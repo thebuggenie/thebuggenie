@@ -786,12 +786,12 @@
 				if ($passed_transition = $request->getParameter('workflow_transition'))
 				{
 					//echo "looking for transition ";
-					$key = str_replace(' ', '', mb_mb_strtolower($passed_transition));
+					$key = str_replace(' ', '', mb_strtolower($passed_transition));
 					//echo $key . "\n";
 					foreach ($issue->getAvailableWorkflowTransitions() as $transition)
 					{
-						//echo str_replace(' ', '', mb_mb_strtolower($transition->getName())) . "?";
-						if (mb_strpos(str_replace(' ', '', mb_mb_strtolower($transition->getName())), $key) !== false)
+						//echo str_replace(' ', '', mb_strtolower($transition->getName())) . "?";
+						if (mb_strpos(str_replace(' ', '', mb_strtolower($transition->getName())), $key) !== false)
 						{
 							$workflow_transition = $transition;
 							//echo "found transition " . $transition->getID();

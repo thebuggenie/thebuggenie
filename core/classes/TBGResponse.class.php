@@ -293,10 +293,20 @@
 		 *
 		 * @param string $javascript javascript name
 		 * @param bool $minify Run through minify/content server
+		 * @param bool $important Mark this script for being loaded before others
 		 */
-		public function addJavascript($javascript, $minify = true)
+		public function addJavascript($javascript, $minify = true, $important = false)
 		{
-			$this->_javascripts[$javascript] = $minify;
+			if ($important)
+			{
+				$temp = array();
+				$temp[$javascript] = $minify;
+				$this->_javascripts = array_merge($temp, $this->_javascripts);
+			}
+			else
+			{
+				$this->_javascripts[$javascript] = $minify;
+			}
 		}
 		
 		/**
@@ -304,10 +314,20 @@
 		 *
 		 * @param string $stylesheet stylesheet name
 		 * @param bool $minify Run through minify/content server
+		 * @param bool $important Mark this stylesheet for being loaded before others
 		 */
-		public function addStylesheet($stylesheet, $minify = true)
+		public function addStylesheet($stylesheet, $minify = true, $important = false)
 		{
-			$this->_stylesheets[$stylesheet] = $minify;
+			if ($important)
+			{
+				$temp = array();
+				$temp[$stylesheet] = $minify;
+				$this->_stylesheets = array_merge($temp, $this->_stylesheets);
+			}
+			else
+			{
+				$this->_stylesheets[$stylesheet] = $minify;
+			}
 		}
 
 		/**

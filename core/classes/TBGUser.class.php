@@ -375,7 +375,7 @@
 				}
 				
 				// If we have authentication details, validate them
-				if (TBGSettings::getAuthenticationBackend() !== null && TBGSettings::getAuthenticationBackend() !== 'tbg' && $username !== null && $password !== null)
+				if (TBGSettings::isUsingExternalAuthenticationBackend() && $username !== null && $password !== null)
 				{
 					$external = true;
 					TBGLogging::log('Authenticating with backend: '.TBGSettings::getAuthenticationBackend(), 'auth', TBGLogging::LEVEL_INFO);
