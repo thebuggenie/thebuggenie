@@ -431,6 +431,7 @@ TBG.Main.Helpers.Backdrop.show = function(url) {
 	$('fullpage_backdrop').show();
 	if (url != undefined) {
 		TBG.Main.Helpers.ajax(url, {
+			url_method: 'get',
 			loading: {indicator: 'fullpage_backdrop_indicator'},
 			success: {update: 'fullpage_backdrop_content'},
 			failure: {hide: 'fullpage_backdrop'}
