@@ -2,7 +2,7 @@
 		<table style="width: 100%;">
 			<tr>
 				<td><label for="username_<?php echo $user->getID(); ?>"><?php echo __('Username'); ?></label></td>
-				<td><input type="text" name="username" id="username_<?php echo $user->getID(); ?>" style="width: 120px;" value="<?php echo $user->getUsername(); ?>"></td>
+				<td><?php if (TBGSettings::isUsingExternalAuthenticationBackend()): echo $user->getUsername(); else: ?><input type="text" name="username" id="username_<?php echo $user->getID(); ?>" style="width: 120px;" value="<?php echo $user->getUsername(); ?>"><?php endif; ?></td>
 				<td><label for="activated_<?php echo $user->getID(); ?>_yes"><?php echo __('Activated'); ?></label></td>
 				<td valign="middle">
 					<input type="radio" name="activated" id="activated_<?php echo $user->getID(); ?>_yes" value="1"<?php if ($user->isActivated()): ?> checked<?php endif; ?>>
@@ -13,7 +13,7 @@
 			</tr>
 			<tr>
 				<td><label for="realname_<?php echo $user->getID(); ?>"><?php echo __('Real name'); ?></label></td>
-				<td><input type="text" name="realname" id="realname_<?php echo $user->getID(); ?>" style="width: 220px;" value="<?php echo $user->getRealname(); ?>"></td>
+				<td><?php if (TBGSettings::isUsingExternalAuthenticationBackend()): echo $user->getRealname(); else: ?><input type="text" name="realname" id="realname_<?php echo $user->getID(); ?>" style="width: 220px;" value="<?php echo $user->getRealname(); ?>"><?php endif; ?></td>
 				<td><label for="enabled_<?php echo $user->getID(); ?>_yes"><?php echo __('Enabled'); ?></label></td>
 				<td valign="middle">
 					<input type="radio" name="enabled" id="enabled_<?php echo $user->getID(); ?>_yes" value="1"<?php if ($user->isEnabled()): ?> checked<?php endif; ?>>
@@ -24,11 +24,11 @@
 			</tr>
 			<tr>
 				<td><label for="buddyname_<?php echo $user->getID(); ?>"><?php echo __('Nickname'); ?></label></td>
-				<td colspan="3"><input type="text" name="nickname" id="nickname_<?php echo $user->getID(); ?>" style="width: 220px;" value="<?php echo $user->getNickname(); ?>"></td>
+				<td colspan="3"><?php if (TBGSettings::isUsingExternalAuthenticationBackend()): echo $user->getNickname(); else: ?><input type="text" name="nickname" id="nickname_<?php echo $user->getID(); ?>" style="width: 220px;" value="<?php echo $user->getNickname(); ?>"><?php endif; ?></td>
 			</tr>
 			<tr>
 				<td><label for="email_<?php echo $user->getID(); ?>"><?php echo __('Email address'); ?></label></td>
-				<td><input type="text" name="email" id="email_<?php echo $user->getID(); ?>" style="width: 220px;" value="<?php echo $user->getEmail(); ?>"></td>
+				<td><?php if (TBGSettings::isUsingExternalAuthenticationBackend()): echo $user->getEmail(); else: ?><input type="text" name="email" id="email_<?php echo $user->getID(); ?>" style="width: 220px;" value="<?php echo $user->getEmail(); ?>"><?php endif; ?></td>
 				<td><label for="user_<?php echo $user->getID(); ?>_group"><?php echo __('In group'); ?></label></td>
 				<td>
 					<select name="group" id="user_<?php echo $user->getID(); ?>_group">
@@ -44,18 +44,32 @@
 			</tr>
 			<tr>
 				<td style="vertical-align: top; padding-top: 4px; padding-top: 15px;" colspan="4">
+					<?php if (TBGSettings::isUsingExternalAuthenticationBackend()): ?>
+						<?php echo __('The password setting, along with a number of other settings for this user, have been disabled due to use of an alternative authentictation mechanism'); ?>
+					<?php else: ?>
 					<input onchange="if($(this).checked) { $('new_password_<?php echo $user->getID(); ?>_1').disable(); $('new_password_<?php echo $user->getID(); ?>_2').disable(); }" type="radio" name="password_action" value="leave" id="password_<?php echo $user->getID(); ?>_leave" checked><label for="password_<?php echo $user->getID(); ?>_leave"><?php echo __("Don't change the password"); ?></label>
 					<input onchange="if($(this).checked) { $('new_password_<?php echo $user->getID(); ?>_1').enable(); $('new_password_<?php echo $user->getID(); ?>_2').enable(); }" type="radio" name="password_action" value="change" id="password_<?php echo $user->getID(); ?>_change"><label for="password_<?php echo $user->getID(); ?>_change"><?php echo __("Input new password"); ?></label>
 					<input onchange="if($(this).checked) { $('new_password_<?php echo $user->getID(); ?>_1').disable(); $('new_password_<?php echo $user->getID(); ?>_2').disable(); }" type="radio" name="password_action" value="random" id="password_<?php echo $user->getID(); ?>_random"><label for="password_<?php echo $user->getID(); ?>_random"><?php echo __("Generate random new password"); ?></label>
+					<?php endif; ?>
 				</td>
 			</tr>
 			<tr>
+				<?php if (TBGSettings::isUsingExternalAuthenticationBackend()): ?>
+				<td colspan="2">
+				</td>
+				<?php else: ?>
 				<td style="vertical-align: top; padding-top: 4px;"><label for="new_password_<?php echo $user->getID(); ?>_1"><?php echo __('New password'); ?></label></td>
 				<td style="vertical-align: top;" colspan="3"><input type="password" name="new_password_1" id="new_password_<?php echo $user->getID(); ?>_1" style="width: 250px;" value="" disabled></td>
+				<?php endif; ?>
 			</tr>
 			<tr>
+				<?php if (TBGSettings::isUsingExternalAuthenticationBackend()): ?>
+				<td colspan="2">
+				</td>
+				<?php else: ?>
 				<td style="vertical-align: top; padding-top: 4px;"><label for="new_password_<?php echo $user->getID(); ?>_2"><?php echo __('Repeat password'); ?></label></td>
 				<td style="vertical-align: top;" colspan="3"><input type="password" name="new_password_2" id="new_password_<?php echo $user->getID(); ?>_2" style="width: 250px;" value="" disabled></td>
+				<?php endif; ?>
 			</tr>
 			<tr>
 				<td style="vertical-align: top; padding-top: 4px;"><label><?php echo __('Member of team(s)'); ?></label></td>

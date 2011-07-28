@@ -647,5 +647,10 @@
 		{
 			return self::get(self::SETTING_AUTH_BACKEND);
 		}
+		
+		public static function isUsingExternalAuthenticationBackend()
+		{
+			if (TBGSettings::getAuthenticationBackend() !== null && TBGSettings::getAuthenticationBackend() !== 'tbg'): return true; else: return false; endif;
+		}
 
 	}
