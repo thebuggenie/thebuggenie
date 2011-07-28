@@ -87,8 +87,8 @@
 				$this->all_well = false;
 			}
 			
-			if (!file_exists(THEBUGGENIE_CORE_PATH . 'cache')) mkdir(THEBUGGENIE_CORE_PATH . 'cache');
-			if (!file_exists(THEBUGGENIE_CORE_PATH . 'cache' . DS . 'B2DB')) mkdir(THEBUGGENIE_CORE_PATH . 'cache' . DS . 'B2DB');
+			if (!file_exists(THEBUGGENIE_CORE_PATH . 'cache') && is_writable(THEBUGGENIE_CORE_PATH)) mkdir(THEBUGGENIE_CORE_PATH . 'cache');
+			if (!file_exists(THEBUGGENIE_CORE_PATH . 'cache' . DS . 'B2DB') && is_writable(THEBUGGENIE_CORE_PATH . 'cache')) mkdir(THEBUGGENIE_CORE_PATH . 'cache' . DS . 'B2DB');
 			
 			if (!is_writable(THEBUGGENIE_CORE_PATH . 'cache' . DS) || !is_writable(THEBUGGENIE_CORE_PATH . 'cache' . DS .'B2DB' . DS))
 			{
