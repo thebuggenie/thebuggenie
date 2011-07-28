@@ -577,5 +577,10 @@
 
 			return $links;
 		}
+		
+		public function getAllHeaders()
+		{
+			return $this->_headers;
+		}
 
 	}
