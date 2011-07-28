@@ -39,6 +39,7 @@
 			}
 	
 			// Core JS scripts
+			$tbg_response->addJavascript('jquery-1.6.2.min.js');
 			$tbg_response->addJavascript('prototype.js');
 			$tbg_response->addJavascript('builder.js');
 			$tbg_response->addJavascript('effects.js');
@@ -85,8 +86,6 @@
 			$cssstring = ltrim($cssstring, ',');
 			$jsstring = ltrim($jsstring, ',');
 		?>
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.5.2.min.js"></script>
-		<script type="text/javascript">jQuery.noConflict();</script>
 		
 		<link rel="stylesheet" type="text/css" href="<?php print make_url('serve'); ?>&g=css&files=<?php print base64_encode($cssstring); ?>">
 		<script type="text/javascript" src="<?php print make_url('serve'); ?>&g=js&files=<?php print base64_encode($jsstring); ?>"></script>
