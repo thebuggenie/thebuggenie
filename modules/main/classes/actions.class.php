@@ -417,13 +417,12 @@
 			{
 				if ($request->getMethod() == TBGRequest::POST)
 				{
-					if ($request->hasParameter('tbg3_username') && $request->hasParameter('tbg3_password'))
+					if ($request->hasParameter('tbg3_username') && $request->hasParameter('tbg3_password') && $request->getParameter('tbg3_username') != '' && $request->getParameter('tbg3_password') != '')
 					{
 						$username = $request->getParameter('tbg3_username');
 						$password = $request->getParameter('tbg3_password');
 						$user = TBGUser::loginCheck($username, $password, true);
-						$this->getResponse()->setCookie('tbg3_username', $username);
-						$this->getResponse()->setCookie('tbg3_password', TBGUser::hashPassword($password));
+
 						TBGContext::setUser($user);
 						if ($request->hasParameter('return_to')) 
 						{
@@ -455,6 +454,8 @@
 				}
 				elseif (TBGSettings::isLoginRequired())
 				{
+					TBGContext::getResponse()->deleteCookie('tbg3_username');
+					TBGContext::getResponse()->deleteCookie('tbg3_password');
 					throw new Exception($i18n->__('You need to log in to access this site'));
 				}
 				elseif (!TBGContext::getUser()->isAuthenticated())
@@ -477,6 +478,7 @@
 					$options['error'] = $e->getMessage();
 				}
 			}
+
 			if (TBGContext::getRequest()->isAjaxCall() || TBGContext::getRequest()->getRequestedFormat() == 'json')
 			{
 				return $this->renderJSON(array('forward' => $forward_url));

@@ -634,23 +634,23 @@
 		
 		public function hasAccess()
 		{
-				$namespaces = $this->getNamespaces();
+			$namespaces = $this->getNamespaces();
+			
+			if(count($namespaces) > 0)
+			{
+				$key = $namespaces[0];
+				$row = TBGProjectsTable::getTable()->getByKey($key);
 				
-				if(count($namespaces) > 0)
+				if ($row instanceof B2DBRow)
 				{
-					$key = $namespaces[0];
-					$row = TBGProjectsTable::getTable()->getByKey($key);
-					
-					if ($row instanceof B2DBRow)
+					$project = TBGContext::factory()->TBGProject($row->get(TBGProjectsTable::ID), $row);
+					if ($project instanceof TBGProject)
 					{
-						$project = TBGContext::factory()->TBGProject($row->get(TBGProjectsTable::ID), $row);
-						if ($project instanceof TBGProject)
-						{
-							if (!$project->hasAccess())
-								return false;
-						}
+						if (!$project->hasAccess())
+							return false;
 					}
 				}
+			}
 			
 			return $this->canRead();
 		}

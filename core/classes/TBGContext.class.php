@@ -29,7 +29,7 @@
 		
 		static protected $_environment = 2;
 
-		static protected $debug_mode = true;
+		static protected $debug_mode = false;
 		
 		static protected $_partials_visited = array();
 		
