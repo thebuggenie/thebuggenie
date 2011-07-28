@@ -2005,10 +2005,10 @@
 				self::loadLibrary('common');
 				
 				// Render header template if any, and store the output in a variable
-				ob_start('mb_output_handler');
-				ob_implicit_flush(0);
 				if (!self::getRequest()->isAjaxCall() && self::getResponse()->doDecorateHeader())
 				{
+					ob_start('mb_output_handler');
+					ob_implicit_flush(0);
 					TBGLogging::log('decorating with header');
 					if (!file_exists(self::getResponse()->getHeaderDecoration()))
 					{
