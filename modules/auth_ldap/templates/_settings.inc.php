@@ -1,4 +1,5 @@
-<p><?php echo __('Use this page to set up the connection details for your LDAP or Active Directory server. The user you select here will need access to the user list, so the username and password users log in with can be verified, but no write access is necessary.'); ?></p>
+<p><?php echo __('Use this page to set up the connection details for your LDAP or Active Directory server. It is highly recommended that you read the online help before use, as misconfiguration may prevent you from accessing configuration pages to rectify issues.'); ?></p>
+<p><b><?php echo link_tag('http://thebuggenie.com/thebuggenie/wiki/Category%3ATheBugGenie%3AUserGuide%3AModules%3ALDAP', __('View the online documentation')); ?></b></p>
 <?php if ($noldap): ?>
 <div class="rounded_box red" style="margin-top: 5px">
 	<div class="header"><?php echo __('LDAP support is not installed'); ?></div>
