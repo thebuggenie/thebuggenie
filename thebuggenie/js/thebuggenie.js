@@ -2664,10 +2664,24 @@ TBG.Search.toggleColumn = function(column) {
 	});
 };
 
-TBG.Search.setColumns = function(resultview, available_columns, visible_columns) {
+TBG.Search.resetColumns = function() {
+	TBG.Search.ResultViews[TBG.Search.current_result_view].default_visible.each(function(column) {
+		$$('.scs_' + column).each(function(element) {
+			element.show();
+			element.down('input').checked = true;
+		});
+		$$('.sc_' + column).each(function(element) {
+			element.show();
+		});
+	});
+};
+
+TBG.Search.setColumns = function(resultview, available_columns, visible_columns, default_columns) {
+	TBG.Search.current_result_view = resultview;
 	TBG.Search.ResultViews[resultview] = {
 		available: available_columns,
-		visible: visible_columns
+		visible: visible_columns,
+		default_visible: default_columns
 	};
 	TBG.Search.ResultViews[resultview].available.each(function(column) {
 		$$('.scs_' + column).each(function(element) {
@@ -2677,6 +2691,7 @@ TBG.Search.setColumns = function(resultview, available_columns, visible_columns)
 			}
 		});
 	});
+	$('scs_current_template').setValue(resultview);
 	$('search_column_settings_toggler').show();
 }
 

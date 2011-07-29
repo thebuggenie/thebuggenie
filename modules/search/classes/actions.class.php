@@ -533,7 +533,8 @@
 		
 		public function runSaveColumnSettings(TBGRequest $request)
 		{
-			return $this->renderJSON('ok');
+			TBGSettings::saveSetting('search_scs_'.$request->getParameter('template'), join(',', $request->getParameter('columns')));
+			return $this->renderJSON('template '.$request->getParameter('template').' columns saved ok');
 		}
 
 	}

@@ -67,6 +67,13 @@
 			{
 				$this->show_project = false;
 			}
+			$columns = array('title', 'assigned_to', 'status', 'resolution', 'last_updated', 'comments');
+			$this->default_columns = $columns;
+			if ($cols = TBGSettings::get('search_scs_results_normal'))
+			{
+				$columns = explode(',', $cols);
+			}
+			$this->visible_columns = $columns;
 		}
 
 		public function componentResults_todo()
