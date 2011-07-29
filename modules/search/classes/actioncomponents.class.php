@@ -73,6 +73,14 @@
 		{
 		}
 
+		public function componentResults_votes()
+		{
+		}
+
+		public function componentResults_userpain_singlepainthreshold()
+		{
+		}
+
 		public function componentResults_view()
 		{
 			$request = new TBGRequest();
