@@ -4,7 +4,7 @@
 	</div>
 	<div id="backdrop_detail_content">
 		<h5 style="font-size: 13px; text-align: left;">
-			<div class="button button-blue small-button" style="float: right; margin: -5px 5px 5px 0;"><?php echo link_tag(make_url('project_settings', array('project_key' => $project->getKey())), '<span>'.__('Edit project').'</span>'); ?></a></div>
+			<div class="button button-blue small-button" style="float: right; margin: -5px 5px 5px 0;"><?php echo link_tag(make_url('project_settings', array('project_key' => $project->getKey())), '<span>'.__('More settings').'</span>'); ?></a></div>
 			<?php echo __('Only showing basic project details. More settings available in the main project configuration.'); ?>
 		</h5>
 		<?php /* if (isset($edition)): ?>
