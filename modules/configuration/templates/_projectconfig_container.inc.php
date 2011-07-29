@@ -17,10 +17,10 @@
 		<?php endif; ?>
 		<table style="clear: both; width: 780px;" class="padded_table" cellpadding=0 cellspacing=0>
 			<tr>
-				<td style="width: 200px;"><label for="project_name"><?php echo __('Project name'); ?></label></td>
+				<td style="width: 200px;"><label for="project_name_input" style="font-size: 1.15em;"><?php echo __('Project name'); ?></label></td>
 				<td style="width: 580px;">
 					<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-						<input type="text" name="project_name" id="project_name_input" onblur="TBG.Project.updatePrefix('<?php echo make_url('configure_project_get_updated_key', array('project_id' => $project->getID())); ?>', <?php echo $project->getID(); ?>);" value="<?php print $project->getName(); ?>" style="width: 100%;">
+						<input type="text" name="project_name" id="project_name_input" onblur="TBG.Project.updatePrefix('<?php echo make_url('configure_project_get_updated_key', array('project_id' => $project->getID())); ?>', <?php echo $project->getID(); ?>);" value="<?php print $project->getName(); ?>" style="width: 576px; padding: 4px; font-size: 1.2em;">
 					<?php else: ?>
 						<?php echo $project->getName(); ?>
 					<?php endif; ?>
@@ -28,11 +28,11 @@
 			</tr>
 			<tr>
 			<tr>
-				<td style="width: 200px;"><label for="project_name"><?php echo __('Project key'); ?></label></td>
+				<td style="width: 200px;"><label for="project_key_input"><?php echo __('Project key'); ?></label></td>
 				<td style="width: 580px; position: relative;">
 					<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 						<div id="project_key_indicator" class="semi_transparent" style="position: absolute; height: 23px; background-color: #FFF; width: 210px; text-align: center; display: none;"><?php echo image_tag('spinning_16.gif'); ?></div>
-						<input type="text" name="project_key" id="project_key_input" value="<?php print $project->getKey(); ?>" style="width: 200px;">
+						<input type="text" name="project_key" id="project_key_input" value="<?php print $project->getKey(); ?>" style="width: 150px;">
 					<?php else: ?>
 						<?php echo $project->getKey(); ?>
 					<?php endif; ?>
@@ -43,7 +43,7 @@
 				<td><label for="use_prefix"><?php echo __('Use prefix'); ?></label></td>
 				<td>
 					<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-						<select name="use_prefix" id="use_prefix" style="width: 70px;" onchange="if ($('use_prefix').getValue() == 1) { $('prefix').enable(); } else { $('prefix').disable(); }">
+						<select name="use_prefix" id="use_prefix" style="width: 70px;" onchange="if ($('use_prefix').getValue() == 1) { $('prefix_input').enable();$('prefix_input').focus(); } else { $('prefix_input').disable(); }">
 							<option value=1<?php if ($project->usePrefix()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
 							<option value=0<?php if (!$project->usePrefix()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
 						</select>
@@ -53,10 +53,10 @@
 				</td>
 			</tr>
 			<tr>
-				<td><label for="prefix"><?php echo __('Issue prefix'); ?></label></td>
+				<td><label for="prefix_input"><?php echo __('Issue prefix'); ?></label></td>
 				<td>
 					<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-						<input type="text" name="prefix" id="prefix" value="<?php print $project->getPrefix(); ?>" style="width: 70px;"<?php if (!$project->usePrefix()): ?> disabled<?php endif; ?>>
+						<input type="text" name="prefix" id="prefix_input" value="<?php print $project->getPrefix(); ?>" style="width: 70px;"<?php if (!$project->usePrefix()): ?> disabled<?php endif; ?>>
 					<?php elseif ($project->hasPrefix()): ?>
 						<?php echo $project->getPrefix(); ?>
 					<?php else: ?>
@@ -66,7 +66,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td><label for="description"><?php echo __('Project description'); ?></label></td>
+				<td><label for="project_description_input"><?php echo __('Project description'); ?></label></td>
 				<td>
 					<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 						<?php include_template('main/textarea', array('area_name' => 'description', 'area_id' => 'project_description_input', 'height' => '75px', 'width' => '100%', 'value' => $project->getDescription(), 'hide_hint' => true)); ?>
