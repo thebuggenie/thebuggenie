@@ -362,8 +362,6 @@ TBG.Main.Helpers.ajax = function(url, options) {
 				} else {
 					if (options.success && options.success.update) {
 						var json_content_element = (is_string(options.success.update) || options.success.update.from == undefined) ? 'content' : options.success.update.from;
-						console.log('updating ');
-						console.log(json_content_element);
 						var content = (json) ? json[json_content_element] : transport.responseText;
 						var update_element = (is_string(options.success.update)) ? options.success.update : options.success.update.element;
 						if ($(update_element)) {
@@ -2662,7 +2660,6 @@ TBG.Search.toPage = function(url, parameters, offset) {
 
 TBG.Search.toggleColumn = function(column) {
 	$$('.sc_' + column).each(function(element) {
-		console.log(element);
 		element.toggle();
 	});
 };
@@ -2674,10 +2671,8 @@ TBG.Search.setColumns = function(resultview, available_columns, visible_columns)
 	};
 	TBG.Search.ResultViews[resultview].available.each(function(column) {
 		$$('.scs_' + column).each(function(element) {
-			console.log('checking '+column);
 			element.show();
 			if (TBG.Search.ResultViews[resultview].visible.indexOf(column) != -1) {
-				console.log(column+' input checked');
 				element.down('input').checked = true;
 			}
 		});
