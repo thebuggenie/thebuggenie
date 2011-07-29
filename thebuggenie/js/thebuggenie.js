@@ -1353,17 +1353,17 @@ TBG.Project.Component.remove = function(url, cid) {
 }
 
 TBG.Project.submitSettings = function(url) {
-	_submitProjectDetails(url, 'project_settings');
+	TBG.Project._submitDetails(url, 'project_settings');
 }
 
 TBG.Project.submitInfo = function(url, pid) {
-	_submitProjectDetails(url, 'project_info', pid);
+	TBG.Project._submitDetails(url, 'project_info', pid);
 }
 
 TBG.Project._submitDetails = function(url, form_id, pid) {
 	TBG.Main.Helpers.ajax(url, {
 		form: form_id,
-		loading: form_id + '_indicator',
+		loading: {indicator: form_id + '_indicator'},
 		success: {
 			callback: function(json) {
 				if ($('project_name_span')) $('project_name_span').update($('project_name_input').getValue());

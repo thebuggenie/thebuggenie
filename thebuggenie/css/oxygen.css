@@ -916,10 +916,13 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 
 /* project dashboard */
 #timeline td { vertical-align: top; }
+.download_links { margin: 10px 0 15px 0; }
+.download_links img { float: left; margin: 2px 7px -3px 0; }
+#project_settings_popout .button { cursor: pointer; }
 #project_dashboard_menu_panes a.more { padding: 5px; float: right; font-weight: bold; }
 #project_dashboard_menu_panes a.more:hover { border: 0; }
 #project_header_container { clear: both; position: relative; }
-#project_header_container img.config_link { float: right; margin: 1px 20px 0 0; }
+#project_header_container .config_link { float: right; margin: 1px 20px 0 0; }
 #project_name img.logo { float: left; margin: 1px 5px 0 0; }
 #project_name { font-size: 1.4em; font-weight: bold; margin: 10px 5px 5px 0; line-height: 1; }
 #project_key_span { margin: 3px 0 0 0; font-size: 0.7em; font-weight: normal; display: inline; padding: 3px; color: #AAA; }
@@ -1119,7 +1122,7 @@ a.action_button:hover { background-color: #FCFCFC; border-color: #AAA; }
 	background-size: 3px 3px;*/
 }
 
-.smaller_buttons .button span { padding: 3px 7px; }
+.smaller_buttons .button span, .button.small-button span { padding: 3px 7px; font-size: 14px; }
 
 .open_match_page .button { font-size: 16px; }
 .open_match_page .button span { padding: 4px 7px; }
@@ -1128,6 +1131,7 @@ a.action_button:hover { background-color: #FCFCFC; border-color: #AAA; }
 .button:active { position: relative; top: 1px; }
 /*----------------------------*/
 .button-icon span { padding: 0 4px; line-height: 1; }
+.button a, .button a:hover, .button a:visited, .button a:active { color: #FFF; border: 0; }
 /*----------------------------*/
 .button-khaki {
 	background: #A2B598;
