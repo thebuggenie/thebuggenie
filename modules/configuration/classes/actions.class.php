@@ -1601,7 +1601,7 @@
 										}
 										else
 										{
-											$theMilestone->setScheduledDate(0);
+											$theMilestone->setStartingDate(0);
 										}
 										
 										$theMilestone->save();
