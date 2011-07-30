@@ -323,6 +323,21 @@
 		protected $_autoassign = null;
 		
 		/**
+		 * Parent project
+		 * 
+		 * @var TBGProject
+		 * @Class TBGProject
+		 */
+		protected $_parent = null;
+		
+		/**
+		 * Child projects
+		 * 
+		 * @var Array
+		 */
+		protected $_children = null;
+		
+		/**
 		 * Make a project default
 		 * 
 		 * @param $p_id integer The id for the default project
@@ -380,6 +395,44 @@
 		{
 			self::_populateProjects();
 			return self::$_projects;
+		}
+		
+		/**
+		 * Retrieve all projects by parent ID
+		 * 
+		 * @return array
+		 */
+		public static function getAllByParentID($id)
+		{
+			self::_populateProjects();
+			$final = array();
+			foreach (self::$_projects as $project)
+			{
+				if (($project->getParent() instanceof TBGProject) && $project->getParent()->getID() == $id)
+				{
+					$final[] = $project;
+				}
+			}
+			return $final;
+		}
+		
+		/**
+		 * Retrieve all projects with no parent
+		 * 
+		 * @return array
+		 */
+		public static function getAllRootProjects()
+		{
+			self::_populateProjects();
+			$final = array();
+			foreach (self::$_projects as $project)
+			{
+				if (!($project->getParent() instanceof TBGProject))
+				{
+					$final[] = $project;
+				}
+			}
+			return $final;
 		}
 
 		public static function getProjectsCount()
@@ -2468,6 +2521,49 @@
 		public function canAutoassign()
 		{
 			return (bool) ($this->_autoassign);
+		}
+		
+		public function hasParent()
+		{
+			if ($this->getKey() == 'sampleproject2'): return true; endif;
+			if ($this->getParent() instanceof TBGProject): return true; endif;
+			return false;
+		}
+		
+		public function hasChildren()
+		{
+			if (count($this->getChildren()) == 0): return false; endif;
+			return true;
+		}
+		
+		public function getParent()
+		{
+			if ($this->getKey() == 'sampleproject2'): return TBGProject::getByKey('sampleproject1'); endif;
+			return $this->_parent;
+		}
+		
+		public function setParent(TBGProject $project)
+		{
+			$this->_parent = $project;
+		}
+		
+		public function getChildren()
+		{
+			if ($this->_children == null): $this->_populateChildren(); endif;
+			return $this->_children;
+		}
+		
+		protected function _populateChildren()
+		{
+			$this->_children = array();
+			$res = TBGProjectsTable::getTable()->getByParentID($this->getID());
+			
+			if ($res == false): return; endif;
+			
+			foreach ($res->getAllRows() as $row)
+			{
+				$this->_children[] = TBGContext::factory()->TBGProject($row->get(TBGProjectsTable::ID), $row);
+			}
 		}
 
 	}

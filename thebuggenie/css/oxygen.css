@@ -270,6 +270,8 @@ div.dropdown_separator { border-left: 1px dotted #EAEAF5; padding: 0 0 0 4px; ma
 .project_strip .project_name a { color: #333; font-size: 1.1em; }
 .project_strip .project_name a:hover { color: #555; }
 .project_strip .search_results { padding-top: 5px; }
+.project_strip .subprojects_list { clear: both; padding-top: 10px; }
+.project_strip .subprojects_list .subproject_link { font-weight: normal; margin-left: 10px;}
 /* end project frontpage menu */
 
 /* unformatted lists */

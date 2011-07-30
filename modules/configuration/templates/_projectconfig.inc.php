@@ -12,7 +12,7 @@
 </div>
 <div id="project_config_menu_panes">
 	<div id="tab_information_pane"<?php if ($selected_tab != 'info'): ?> style="display: none;"<?php endif; ?>>
-		<?php include_template('configuration/projectinfo', array('access_level' => $access_level, 'project' => $project)); ?>
+		<?php include_template('configuration/projectinfo', array('valid_subproject_targets' => $valid_subproject_targets, 'access_level' => $access_level, 'project' => $project)); ?>
 	</div>
 	<div id="tab_settings_pane"<?php if ($selected_tab != 'settings'): ?> style="display: none;"<?php endif; ?>>
 		<?php include_component('configuration/projectsettings', array('access_level' => $access_level, 'project' => $project)); ?>

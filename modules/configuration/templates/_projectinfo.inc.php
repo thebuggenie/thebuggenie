@@ -122,6 +122,22 @@
 		</td>
 	</tr>
 	<tr>
+		<td><label for="client"><?php echo __('Subproject of'); ?></label></td>
+		<td>
+			<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
+				<select name="client" id="client" style="width: 100%">
+					<option value="0"<?php if (!($project->hasParent())): ?> selected<?php endif; ?>><?php echo __('Not a subproject'); ?></option>
+					<?php foreach ($valid_subproject_targets as $aproject): ?>
+						<option value=<?php echo $aproject->getID(); ?><?php if ($project()->hasParent() && $project->getParent()->getID() == $aproject->getID()): ?> selected<?php endif; ?>><?php echo $aproject->getName(); ?></option>
+					<?php endforeach; ?>
+				</select>
+			<?php else: ?>
+				<?php if (!($project->hasParent())): echo __('Not a subproject'); else: echo $project->getParent()->getName(); endif; ?>
+			<?php endif; ?>
+		</td>
+	</tr>
+<tr><td colspan="2" class="config_explanation" style="padding-bottom: 10px;"><?php echo __('You can make this project a subproject of another one by selecting a parent project here. If you set a case where this project becomes a subproject of a project which is a subproject of this one, an exception will occur. Some options have been removed to avoid common causes of this.'); ?></td></tr>
+	<tr>
 		<td><label for="client"><?php echo __('Client'); ?></label></td>
 		<td>
 			<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
