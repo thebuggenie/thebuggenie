@@ -272,7 +272,7 @@
 		protected function _getIssueRelatedUsers(TBGIssue $issue)
 		{
 			$uids = array();
-			$ns = $this->getSetting(self::NOTIFY_ISSUE_UPDATED_SELF);
+			$ns = $this->getSetting(self::NOTIFY_ISSUE_UPDATED_SELF, TBGContext::getUser()->getID());
 			$cu = TBGContext::getUser()->getID();
 	
 			// Add all users who's marked this issue as interesting
