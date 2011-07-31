@@ -289,7 +289,24 @@
 				
 				foreach ($f_issues as $issue_no)
 				{
-					TBGContext::setCurrentProject($project);
+					if (mb_stristr($issue_no, ':'))
+					{
+						$old_project = $project;
+
+						$data = explode(':', $issue_no);
+						$project = TBGProject::getByKey($data[0]);
+						$issue_no = $data[1];
+						
+						TBGContext::setCurrentProject($project);
+						
+						// Restore old project
+						$project = $old_project;
+					}
+					else
+					{
+						TBGContext::setCurrentProject($project);
+					}
+					
 					$theIssue = TBGIssue::getIssueFromLink($issue_no, true);
 
 					if ($theIssue instanceof TBGIssue)
