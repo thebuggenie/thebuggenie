@@ -1589,7 +1589,7 @@
 				
 				while ($t instanceof TBGProject)
 				{
-					if (!array_key_exists($t->getKey(), $projects_processed))
+					if (array_key_exists($t->getKey(), $projects_processed))
 					{
 						// We have a cyclic dependency! Oh no!
 						// If this happens, throw an exception
