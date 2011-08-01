@@ -139,7 +139,7 @@
 						<div class="dashboard_view_content">	
 							<div id="project_client">
 								<?php if ($client instanceof TBGClient): ?>
-									<div class="project_client_info rounded_box lightgrey">
+									<div class="project_client_info">
 										<?php echo include_template('project/clientinfo', array('client' => $client)); ?>
 									</div>
 								<?php else: ?>
@@ -168,7 +168,6 @@
 			<?php endif; ?>
 			<?php TBGEvent::createNew('core', 'project_dashboard_bottom')->trigger(); ?>
 
-			<div style="width: 700px;">
 				<?php echo image_tag(make_url('project_statistics_last_30', array('project_key' => $selected_project->getKey())), array('style' => 'float: right; margin-bottom: 15px;'), true); ?>
 				<div style="clear: both; height: 30px;" class="tab_menu">
 					<ul id="project_dashboard_menu">
@@ -206,7 +205,6 @@
 						</table>
 						<?php echo link_tag(make_url('project_issues', array('project_key' => $selected_project->getKey(), 'search' => true, 'filters[state]' => array('operator' => '=', 'value' => TBGIssue::STATE_OPEN), 'groupby' => 'priority', 'grouporder' => 'desc')), __('Show details'), array('class' => 'more', 'title' => __('Show more issues'))); ?>
 					</div>
-				</div>
 			</div>
 		</td>
 	</tr>

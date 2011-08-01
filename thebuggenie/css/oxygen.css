@@ -928,7 +928,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 #project_name img.logo { float: left; margin: -3px 5px 0 0; }
 #project_name { font-size: 1.8em; font-weight: bold; margin: 10px 5px 5px 0; line-height: 1; }
 #project_key_span { margin: 3px 0 0 0; font-size: 0.5em; font-weight: normal; display: inline; padding: 3px; color: #AAA; }
-#project_team, #project_client { font-weight: normal; margin: 0 5px 5px 0; width: 675px; }
+#project_team, #project_client { font-weight: normal; margin: 0 5px 5px 0; }
 #project_qa, #project_leader, #project_owner { font-weight: normal; margin: 5px 0; width: 290px; }
 #project_description_span { font-size: 1.1em; font-weight: normal; color: #666; }
 #project_no_description { font-size: 1.1em; font-weight: normal; color: #AAA; }
@@ -943,12 +943,11 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .project_information_sidebar .sidebar_links a.selected:hover { border: 1px solid #CCC; border-right-color: #FFF; background-color: #FFF; }
 .project_information_sidebar .sidebar_links .simple_list { margin: 0 0 0 25px; padding: 10px; border-top: 1px solid #DDD; background-color: #F1F1F1; }
 .project_information_sidebar .sidebar_links .simple_list li a { border: 0; padding: 3px; margin: 0; background-color: transparent; }
-.project_information_main { padding: 10px 0 0 15px; vertical-align: top; border-top: 1px solid #ccc; }
+.project_information_main { padding: 10px 15px 10px 15px; vertical-align: top; border-top: 1px solid #ccc; }
 #project_sidebar_collapse, #project_sidebar_expand { cursor: pointer; position: absolute; padding: 2px; border: 1px dotted #CCC; border-right-color: #FFF; background-color: #FFF; }
 #project_sidebar_collapse { top: -8px; left: 284px; }
 #project_sidebar_expand { top: 2px; left: -6px; }
-.project_client_info { margin-bottom: 10px; width: 670px; }
-.project_client_info .project_client_header { font-weight: bold; font-size: 1.3em; }
+.project_client_info .project_client_header { font-weight: bold; font-size: 1.5em; }
 .project_client_info .project_client_viewusers { float: right; }
 .client_users_div { border: 1px solid #BBB; width: 100%; height: 300px; margin-top: 10px; overflow: auto; text-align: left; }
 .client_users_div_inner { padding: 10px; }
