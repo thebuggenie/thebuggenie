@@ -4,6 +4,7 @@
 	$tbg_response->setTitle(__('"%project_name%" project team', array('%project_name%' => $selected_project->getName())));
 
 ?>
+			<?php include_template('project/projectheader', array('selected_project' => $selected_project)); ?>
 			<?php include_template('project/projectinfosidebar', array('selected_project' => $selected_project)); ?>
 			<div style="display: none;" id="statistics_main">
 				<div style="width: 695px; height: 310px; padding: 0;" id="statistics_main_image_div">

@@ -565,7 +565,7 @@ a.friend:hover { border-bottom: 1px dotted #0000a4; }
 /* reporting an issue styles */
 .report_button input { float: right; clear: both; }
 .report_button:hover .report_button_hover { display: block; }
-.report_button_hover { display: none; position: absolute; width: 200px; background: #5a5; text-align: left;  margin-top: 5px; clear: both; padding: 0; right: -2px; z-index: 5; top: -6px; }
+.report_button_hover { display: none; position: absolute; width: 200px; background: #5a5; text-align: left; margin-top: 5px; clear: both; padding: 0; right: -2px; z-index: 5; top: -6px; }
 .report_button_hover a { display: block; color: white; padding: 2px 3px 2px 3px; font-size: 0.9em; border: 0 !important; }
 .report_button_hover a:hover { background: #9d9; text-decoration: none; }
 .issuetype_list { list-style-type: none; padding: 0; margin: 10px auto 0 auto; width: 1010px; clear: both; }
@@ -866,7 +866,7 @@ ul.scrum_container li .actions label { float: left; font-weight: bold; margin: 0
 #related_issues_this_issue { font-size: 1.1em; font-weight: bold; text-align: center; }
 #no_child_issues, #no_parent_issues { text-align: center; }
 #scrum_unassigned #add_story, #scrum_sprints #add_sprint { text-align: right; padding-top: 3px; }
-#scrum_unassigned { width: 440px; padding: 10px 5px; vertical-align: top; }
+#scrum_unassigned { width: 440px; border-top: 1px solid #ccc; padding: 10px 5px; vertical-align: top; }
 #scrum_unassigned .header_div { border: 0; margin: 0; font-size: 1.2em; }
 #scrum_sprints label { float: left; padding-top: 4px; }
 #scrum_unassigned label, #scrum_unassigned input[type="submit"], #scrum_sprints label, #scrum_sprints input[type="submit"] { font-size: 0.9em; font-weight: bold; }
@@ -924,17 +924,16 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 #project_dashboard_menu_panes a.more:hover { border: 0; }
 #project_header_container { clear: both; position: relative; }
 #project_header_container .config_link { float: right; margin: 1px 20px 0 0; }
-#project_name img.logo { float: left; margin: 1px 5px 0 0; }
-#project_name { font-size: 1.4em; font-weight: bold; margin: 10px 5px 5px 0; line-height: 1; }
-#project_key_span { margin: 3px 0 0 0; font-size: 0.7em; font-weight: normal; display: inline; padding: 3px; color: #AAA; }
+#project_name img.logo { float: left; margin: -3px 5px 0 0; }
+#project_name { font-size: 1.8em; font-weight: bold; margin: 10px 5px 5px 0; line-height: 1; }
+#project_key_span { margin: 3px 0 0 0; font-size: 0.5em; font-weight: normal; display: inline; padding: 3px; color: #AAA; }
 #project_team, #project_client { font-weight: normal; margin: 0 5px 5px 0; width: 675px; }
 #project_qa, #project_leader, #project_owner { font-weight: normal; margin: 5px 0; width: 290px; }
 #project_description_span { font-size: 1.1em; font-weight: normal; color: #666; }
 #project_no_description { font-size: 1.1em; font-weight: normal; color: #AAA; }
-.project_information_sidebar { vertical-align: top; border-right: 1px solid #CCC; height: 100%; width: 300px; padding: 0 0 50px 10px; position: relative; }
+.project_information_sidebar { vertical-align: top; border-right: 1px solid #CCC; height: 100%; width: 200px; padding: 0 0 50px 10px; position: relative; }
 .project_information_sidebar.collapsed { width: 10px; }
 .project_information_sidebar.collapsed .sidebar_links, .project_information_sidebar.collapsed #project_header_container div { display: none; }
-.project_information_sidebar .sidebar_links { margin-top: 30px; }
 .project_information_sidebar .sidebar_links a { display: block; padding: 4px; color: #555; border: 1px dotted #DDD; background-color: #FAFAFA; border-right: 1px solid #CCC; margin: 0 -1px 0 7px; }
 .project_information_sidebar .sidebar_links a:first-child { border-top-left-radius: 5px; -moz-border-radius-topleft: 5px; -webkit-border-top-left-radius: 5px; }
 .project_information_sidebar .sidebar_links a:last-child { border-bottom-left-radius: 5px; -moz-border-radius-bottomleft: 5px; -webkit-border-bottom-left-radius: 5px; }
@@ -943,7 +942,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .project_information_sidebar .sidebar_links a.selected:hover { border: 1px solid #CCC; border-right-color: #FFF; background-color: #FFF; }
 .project_information_sidebar .sidebar_links .simple_list { margin: 0 0 0 25px; padding: 10px; border-top: 1px solid #DDD; background-color: #F1F1F1; }
 .project_information_sidebar .sidebar_links .simple_list li a { border: 0; padding: 3px; margin: 0; background-color: transparent; }
-.project_information_main { padding: 10px 0 0 15px; vertical-align: top; }
+.project_information_main { padding: 10px 0 0 15px; vertical-align: top; border-top: 1px solid #ccc; }
 #project_sidebar_collapse, #project_sidebar_expand { cursor: pointer; position: absolute; padding: 2px; border: 1px dotted #CCC; border-right-color: #FFF; background-color: #FFF; }
 #project_sidebar_collapse { top: -8px; left: 284px; }
 #project_sidebar_expand { top: 2px; left: -6px; }
@@ -952,6 +951,9 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .project_client_info .project_client_viewusers { float: right; }
 .client_users_div { border: 1px solid #BBB; width: 100%; height: 300px; margin-top: 10px; overflow: auto; text-align: left; }
 .client_users_div_inner { padding: 10px; }
+.project_header { padding: 10px; }
+.project_header_right { float: right; }
+.project_header_right .button { float: left; margin-left: 10px; }
 /* end dashboard */
 
 /* project timeline */
@@ -987,6 +989,9 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .roadmap_issue.issue_closed { text-decoration: line-through; }
 .roadmap_issue.blocking .issue_title { font-weight: bold; color: red; }
 /* end roadmap */
+
+/* statistics page */
+#statistics_main, #statistics_help { width: 695px; margin-left: auto; margin-right: auto; }
 
 /* search styling */
 /* search boxes */

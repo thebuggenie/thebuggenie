@@ -5,6 +5,7 @@
 	$tbg_response->addFeed(make_url('project_timeline', array('project_key' => $selected_project->getKey(), 'format' => 'rss')), __('"%project_name%" project timeline', array('%project_name%' => $selected_project->getName())));
 
 ?>
+			<?php include_template('project/projectheader', array('selected_project' => $selected_project)); ?>
 			<?php include_template('project/projectinfosidebar', array('selected_project' => $selected_project)); ?>
 			<div class="rounded_box lightgrey feature timeline_actions" style="width: 330px; float: right; margin: 10px;">
 				<div class="header_div"><?php echo __('Timeline actions'); ?></div>

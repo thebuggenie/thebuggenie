@@ -5,7 +5,68 @@
 	$tbg_response->addFeed(make_url('project_timeline', array('project_key' => $selected_project->getKey(), 'format' => 'rss')), __('"%project_name%" project timeline', array('%project_name%' => $selected_project->getName())));
 
 ?>
+			<?php include_template('project/projectheader', array('selected_project' => $selected_project)); ?>
 			<?php include_template('project/projectinfosidebar', array('selected_project' => $selected_project)); ?>
+								<span id="project_description_span">
+							<?php if ($selected_project->hasDescription()): ?>
+								<?php echo tbg_parse_text($selected_project->getDescription()); ?>
+							<?php endif; ?>
+						</span>
+					</div>
+					<div id="project_no_description"<?php if ($selected_project->hasDescription()): ?> style="display: none;"<?php endif; ?>>
+						<?php echo __('This project has no description'); ?>
+					</div>
+					<div id="project_documentation_url"<?php if (!$selected_project->hasDocumentationUrl()): ?> style="display: none;"<?php endif; ?>>
+						<a href="<?php echo $selected_project->getDocumentationUrl(); ?>" target="_blank"><?php echo __('View documentation'); ?></a>
+					</div>
+					<div id="project_owner">
+						<?php if ($selected_project->hasOwner()): ?>
+							<div style="font-weight: bold; float: left; margin: 0 10px 0 0;"><?php echo __('Owned by: %name%', array('%name%' => '')); ?></div>
+							<?php if ($selected_project->getOwnerType() == TBGIdentifiableClass::TYPE_USER): ?>
+								<div style="width: auto; display: table-cell; clear: none; padding: 0 10px 0 0; ">
+									<?php echo include_component('main/userdropdown', array('user' => $selected_project->getOwner())); ?>
+								</div>
+							<?php else: ?>
+								<div style="width: auto; display: table-cell; clear: none; padding: 0 10px 0 0; ">
+									<?php echo include_component('main/teamdropdown', array('team' => $selected_project->getOwner())); ?>
+								</div>
+							<?php endif; ?>
+						<?php else: ?>
+							<div class="faded_out" style="font-weight: normal;"><?php echo __('No project owner specified'); ?></div>
+						<?php endif; ?>
+					</div>
+					<div id="project_leader">
+						<?php if ($selected_project->hasLeader()): ?>
+							<div style="font-weight: bold; float: left; margin: 0 10px 0 0;"><?php echo __('Lead by: %name%', array('%name%' => '')); ?></div>
+							<?php if ($selected_project->getLeaderType() == TBGIdentifiableClass::TYPE_USER): ?>
+								<div style="width: auto; display: table-cell; clear: none; padding: 0 10px 0 0; ">
+									<?php echo include_component('main/userdropdown', array('user' => $selected_project->getLeader())); ?>
+								</div>
+							<?php else: ?>
+								<div style="width: auto; display: table-cell; clear: none; padding: 0 10px 0 0; ">
+									<?php echo include_component('main/teamdropdown', array('team' => $selected_project->getLeader())); ?>
+								</div>
+							<?php endif; ?>
+						<?php else: ?>
+							<div class="faded_out" style="font-weight: normal;"><?php echo __('Nor project leader specified'); ?></div>
+						<?php endif; ?>
+					</div>
+					<div id="project_qa">
+						<?php if ($selected_project->hasQaResponsible()): ?>
+							<div style="font-weight: bold; float: left; margin: 0 10px 0 0;"><?php echo __('QA responsible: %name%', array('%name%' => '')); ?></div>
+							<?php if ($selected_project->getQaResponsibleType() == TBGIdentifiableClass::TYPE_USER): ?>
+								<div style="width: auto; display: table-cell; clear: none; padding: 0 10px 0 0; ">
+									<?php echo include_component('main/userdropdown', array('user' => $selected_project->getQaResponsible())); ?>
+								</div>
+							<?php else: ?>
+								<div style="width: auto; display: table-cell; clear: none; padding: 0 10px 0 0; ">
+									<?php echo include_component('main/teamdropdown', array('team' => $selected_project->getQaResponsible())); ?>
+								</div>
+							<?php endif; ?>
+						<?php else: ?>
+							<div class="faded_out" style="font-weight: normal;"><?php echo __('No QA responsible specified'); ?></div>
+						<?php endif; ?>
+					</div>
 			<div id="project_client">
 				<?php if ($client instanceof TBGClient): ?>
 					<div class="project_client_info rounded_box lightgrey">
