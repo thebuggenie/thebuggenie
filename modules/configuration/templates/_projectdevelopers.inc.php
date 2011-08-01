@@ -1,6 +1,6 @@
 <h3><?php echo __('Project administration'); ?></h3>
 <p class="faded_out" style="margin-bottom: 10px;">
-	<?php echo __('This is the people in charge of the main areas of the project. The project owner has total control over this project and can edit information, settings, and anything about it. The project leader does not have this power, but will be notified of anything happening in the project. The QA responsible role does not grant any special privileges, it is purely an informational setting.'); ?>
+	<?php echo __('These are the people in charge of different areas of the project. The project owner has total control over this project and can edit information, settings, and anything about it. The project leader does not have this power, but will be notified of anything happening in the project. The QA responsible role does not grant any special privileges, it is purely an informational setting.'); ?>
 </p>
 <table style="table-layout: fixed; width: 790px;" cellpadding=0 cellspacing=0>
 	<tr class="hover_highlight">
