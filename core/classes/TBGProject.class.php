@@ -2535,8 +2535,8 @@
 		
 		public function getParent()
 		{
-			if ($this->getKey() == 'sampleproject2'): return TBGProject::getByKey('sampleproject1'); endif;
-			return $this->_parent;
+//			if ($this->getKey() == 'sampleproject2'): return TBGProject::getByKey('sampleproject1'); endif;
+			return $this->_getPopulatedObjectFromProperty('_parent');
 		}
 		
 		public function setParent(TBGProject $project)
