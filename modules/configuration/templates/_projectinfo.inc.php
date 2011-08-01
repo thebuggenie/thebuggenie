@@ -128,7 +128,7 @@
 				<select name="client" id="client" style="width: 100%">
 					<option value="0"<?php if (!($project->hasParent())): ?> selected<?php endif; ?>><?php echo __('Not a subproject'); ?></option>
 					<?php foreach ($valid_subproject_targets as $aproject): ?>
-						<option value=<?php echo $aproject->getID(); ?><?php if ($project()->hasParent() && $project->getParent()->getID() == $aproject->getID()): ?> selected<?php endif; ?>><?php echo $aproject->getName(); ?></option>
+						<option value=<?php echo $aproject->getID(); ?><?php if ($project->hasParent() && $project->getParent()->getID() == $aproject->getID()): ?> selected<?php endif; ?>><?php echo $aproject->getName(); ?></option>
 					<?php endforeach; ?>
 				</select>
 			<?php else: ?>
