@@ -2067,7 +2067,7 @@ TBG.Issues.updateFields = function(url)
 		
 		TBG.Main.Helpers.ajax(url, {
 			loading: {indicator: 'report_issue_more_options_indicator'},
-			parameters: {project_id: $('project_id').getValue(), issuetype_id: $('issuetype_id').getValue()},
+			params: 'issuetype_id=' + $('issuetype_id').getValue(),
 			success: {
 				callback: function(json) {
 					json.available_fields.each(function (fieldname, key)
