@@ -1098,7 +1098,7 @@ a.action_button:hover { background-color: #FCFCFC; border-color: #AAA; }
 	-moz-box-shadow: 0 0 .05em rgba(0,0,0,0.4);
 	-webkit-box-shadow: 0 0 .05em rgba(0,0,0,0.4);
 }
-.button, .button span, .button input, .button button {
+.button, .button span, .button input, .button input:hover, .button button {
 	-moz-border-radius: .3em;
 	-webkit-border-radius: .3em;
 	border-radius: .3em;
@@ -1114,7 +1114,7 @@ a.action_button:hover { background-color: #FCFCFC; border-color: #AAA; }
 	border: 0;
 }
 
-.button span, .button input, .button button {
+.button span, .button input, .button input:hover, .button button {
 	border-top: 1px solid #fff; /* Fallback style */
 	border-top: 1px solid rgba(255, 255, 255, 0.5);
 	display: block;
