@@ -600,7 +600,7 @@
 						</div>
 					</form>
 				</li>
-				<?php if (TBGContext::getUser()->hasPermission('candeleteissues')): ?>
+				<?php if (TBGContext::getUser()->hasPermission('candeleteissues') || TBGContext::getUser()->hasPermission('caneditissue')): ?>
 					<li><a href="javascript:void(0)" onClick="$('delete_issue').toggle();"><?php echo image_tag('icon_delete.png', array('style' => 'float: left; margin-right: 5px;')) . __("Permanently delete this issue"); ?></a></li>
 				<?php endif; ?>
 			</ul>
