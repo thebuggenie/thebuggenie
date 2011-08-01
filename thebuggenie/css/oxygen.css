@@ -549,8 +549,8 @@ ul.project_list li { margin: 0px; font-size: 1.0em; font-weight: bold; padding: 
 .team_dashboard_table td.padded, .client_dashboard_table td.padded { padding: 10px; padding-top: 0; vertical-align: top; }
 .team_dashboard_table td.team_dashboard_projects, .client_dashboard_table td.client_dashboard_projects { padding-left: 0; }
 .team_dashboard_table td.team_dashboard_users, .client_dashboard_table td.client_dashboard_users { padding-right: 0; width: 350px; }
-ul.client_users, ul.team_users { margin: 0; padding: 0; }
-ul.client_users li, ul.team_users li { list-style-type: none; padding-bottom: 5px; margin: 0;}
+ul.client_users, ul.team_users, ul.project_users { margin: 0; padding: 0; }
+ul.client_users li, ul.team_users li, ul.project_users li { list-style-type: none; padding-bottom: 5px; margin: 0;}
 .project_commits_box { margin-right: 10px; }
 .commit_box { margin-top: 5px }
 /* end project styling */
@@ -808,6 +808,7 @@ table.issue_affects td img { vertical-align: bottom; }
 #dashboard li.wide { width: 700px; }
 #dashboard li .header { margin: 2px 0 5px 0; padding: 3px 3px 3px 0; font-weight: bold;  border-bottom: 1px solid #CCC; background-color: #FFF; }
 #dashboard .dashboard_view_header { font-weight: bold; color: #666; font-size: 1em; padding: 4px; }
+#dashboard .dashboard_view_content { padding: 10px; }
 #dashboard .dashboard_view_header img { margin-right: 2px; }
 #dashboard .latest_action_dates{ font-weight: bold;  padding: 10px 0 0 0; }
 #dashboard .faded_out.smaller { font-size: 0.8em; padding-right: 5px; }
@@ -954,6 +955,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .project_header { padding: 10px; }
 .project_header_right { float: right; }
 .project_header_right .button { float: left; margin-left: 10px; }
+#project_website, #project_documentation { margin-top: 5px; }
 /* end dashboard */
 
 /* project timeline */

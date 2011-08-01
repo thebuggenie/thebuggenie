@@ -7,101 +7,168 @@
 ?>
 			<?php include_template('project/projectheader', array('selected_project' => $selected_project)); ?>
 			<?php include_template('project/projectinfosidebar', array('selected_project' => $selected_project)); ?>
-								<span id="project_description_span">
-							<?php if ($selected_project->hasDescription()): ?>
-								<?php echo tbg_parse_text($selected_project->getDescription()); ?>
-							<?php endif; ?>
-						</span>
-					</div>
-					<div id="project_no_description"<?php if ($selected_project->hasDescription()): ?> style="display: none;"<?php endif; ?>>
-						<?php echo __('This project has no description'); ?>
-					</div>
-					<div id="project_documentation_url"<?php if (!$selected_project->hasDocumentationUrl()): ?> style="display: none;"<?php endif; ?>>
-						<a href="<?php echo $selected_project->getDocumentationUrl(); ?>" target="_blank"><?php echo __('View documentation'); ?></a>
-					</div>
-					<div id="project_owner">
-						<?php if ($selected_project->hasOwner()): ?>
-							<div style="font-weight: bold; float: left; margin: 0 10px 0 0;"><?php echo __('Owned by: %name%', array('%name%' => '')); ?></div>
-							<?php if ($selected_project->getOwnerType() == TBGIdentifiableClass::TYPE_USER): ?>
-								<div style="width: auto; display: table-cell; clear: none; padding: 0 10px 0 0; ">
-									<?php echo include_component('main/userdropdown', array('user' => $selected_project->getOwner())); ?>
-								</div>
-							<?php else: ?>
-								<div style="width: auto; display: table-cell; clear: none; padding: 0 10px 0 0; ">
-									<?php echo include_component('main/teamdropdown', array('team' => $selected_project->getOwner())); ?>
-								</div>
-							<?php endif; ?>
-						<?php else: ?>
-							<div class="faded_out" style="font-weight: normal;"><?php echo __('No project owner specified'); ?></div>
-						<?php endif; ?>
-					</div>
-					<div id="project_leader">
-						<?php if ($selected_project->hasLeader()): ?>
-							<div style="font-weight: bold; float: left; margin: 0 10px 0 0;"><?php echo __('Lead by: %name%', array('%name%' => '')); ?></div>
-							<?php if ($selected_project->getLeaderType() == TBGIdentifiableClass::TYPE_USER): ?>
-								<div style="width: auto; display: table-cell; clear: none; padding: 0 10px 0 0; ">
-									<?php echo include_component('main/userdropdown', array('user' => $selected_project->getLeader())); ?>
-								</div>
-							<?php else: ?>
-								<div style="width: auto; display: table-cell; clear: none; padding: 0 10px 0 0; ">
-									<?php echo include_component('main/teamdropdown', array('team' => $selected_project->getLeader())); ?>
-								</div>
-							<?php endif; ?>
-						<?php else: ?>
-							<div class="faded_out" style="font-weight: normal;"><?php echo __('Nor project leader specified'); ?></div>
-						<?php endif; ?>
-					</div>
-					<div id="project_qa">
-						<?php if ($selected_project->hasQaResponsible()): ?>
-							<div style="font-weight: bold; float: left; margin: 0 10px 0 0;"><?php echo __('QA responsible: %name%', array('%name%' => '')); ?></div>
-							<?php if ($selected_project->getQaResponsibleType() == TBGIdentifiableClass::TYPE_USER): ?>
-								<div style="width: auto; display: table-cell; clear: none; padding: 0 10px 0 0; ">
-									<?php echo include_component('main/userdropdown', array('user' => $selected_project->getQaResponsible())); ?>
-								</div>
-							<?php else: ?>
-								<div style="width: auto; display: table-cell; clear: none; padding: 0 10px 0 0; ">
-									<?php echo include_component('main/teamdropdown', array('team' => $selected_project->getQaResponsible())); ?>
-								</div>
-							<?php endif; ?>
-						<?php else: ?>
-							<div class="faded_out" style="font-weight: normal;"><?php echo __('No QA responsible specified'); ?></div>
-						<?php endif; ?>
-					</div>
-			<div id="project_client">
-				<?php if ($client instanceof TBGClient): ?>
-					<div class="project_client_info rounded_box lightgrey">
-						<?php echo include_template('project/clientinfo', array('client' => $client)); ?>
-					</div>
-				<?php else: ?>
-					<div class="faded_out" style="font-weight: normal;"><?php echo __('No client assigned'); ?></div>
-				<?php endif; ?>
-			</div>
-			<div id="project_team">
-				<div style="font-weight: bold; float: left; margin: 0 10px 0 0;"><?php echo __('Team'); ?>:</div>
-				<?php if ((count($assignees['users']) > 0) || (count($assignees['teams']) > 0)): ?>
-					<?php foreach ($assignees['users'] as $user_id => $info): ?>
-						<div style="width: auto; display: table-cell; clear: none; padding: 0 10px 0 0; ">
-							<?php echo include_component('main/userdropdown', array('user' => $user_id)); ?>
+			<?php TBGEvent::createNew('core', 'project_dashboard_top')->trigger(); ?>
+			<?php if (false) :?>
+				<p class="content faded_out"><?php echo __("This dashboard doesn't contain any view. To add views in this dashboard, press the 'Customize dashboard'-icon to the far right."); ?></p>
+			<?php else: ?>
+				<ul id="dashboard">
+					<li style="clear: left;">
+						<div class="rounded_box lightgrey borderless cut_bottom dashboard_view_header" style="margin-top: 5px;">
+							<?php echo __('About this project'); ?>
 						</div>
-					<?php endforeach; ?>
-					<?php foreach ($assignees['teams'] as $team_id => $info): ?>
-						<div style="width: auto; display: table-cell; clear: none; padding: 0 10px 0 0; ">
-							<?php echo include_component('main/teamdropdown', array('team' => $team_id)); ?>
+						<div class="dashboard_view_content">
+							<div id="project_description_span">
+								<?php if ($selected_project->hasDescription()): ?>
+									<?php echo tbg_parse_text($selected_project->getDescription()); ?>
+								<?php endif; ?>
+							</div>
+	
+							<div id="project_no_description"<?php if ($selected_project->hasDescription()): ?> style="display: none;"<?php endif; ?>>
+								<?php echo __('This project has no description'); ?>
+							</div>
+							
+							<div id="project_website">
+								<span style="font-weight: bold; float: left; margin: 0 10px 0 0;"><?php echo __('Homepage: '); ?></span>
+								<?php if ($selected_project->hasHomepage()): ?>
+									<a href="<?php echo $selected_project->getHomepage(); ?>" target="_blank"><?php echo $selected_project->getHomepage(); ?></a>
+								<?php else: ?>
+									<span class="faded_out" style="font-weight: normal;"><?php echo __('No homepage provided'); ?></span>
+								<?php endif; ?>
+							</div>
+							
+							<div id="project_documentation">
+								<span style="font-weight: bold; float: left; margin: 0 10px 0 0;"><?php echo __('Documentation: '); ?></span>
+								<?php if ($selected_project->hasDocumentationURL()): ?>
+									<a href="<?php echo $selected_project->getDocumentationURL(); ?>" target="_blank"><?php echo $selected_project->getDocumentationURL(); ?></a>
+								<?php else: ?>
+									<span class="faded_out" style="font-weight: normal;"><?php echo __('No documentation URL provided'); ?></span>
+								<?php endif; ?>
+							</div>
+							
+							<div id="project_owner">
+								<?php if ($selected_project->hasOwner()): ?>
+									<div style="font-weight: bold; float: left; margin: 0 10px 0 0;"><?php echo __('Owned by: %name%', array('%name%' => '')); ?></div>
+									<?php if ($selected_project->getOwnerType() == TBGIdentifiableClass::TYPE_USER): ?>
+										<div style="width: auto; display: table-cell; clear: none; padding: 0 10px 0 0; ">
+											<?php echo include_component('main/userdropdown', array('user' => $selected_project->getOwner())); ?>
+										</div>
+									<?php else: ?>
+										<div style="width: auto; display: table-cell; clear: none; padding: 0 10px 0 0; ">
+											<?php echo include_component('main/teamdropdown', array('team' => $selected_project->getOwner())); ?>
+										</div>
+									<?php endif; ?>
+								<?php else: ?>
+									<div class="faded_out" style="font-weight: normal;"><?php echo __('No project owner specified'); ?></div>
+								<?php endif; ?>
+							</div>
+							<div id="project_leader">
+								<?php if ($selected_project->hasLeader()): ?>
+									<div style="font-weight: bold; float: left; margin: 0 10px 0 0;"><?php echo __('Lead by: %name%', array('%name%' => '')); ?></div>
+									<?php if ($selected_project->getLeaderType() == TBGIdentifiableClass::TYPE_USER): ?>
+										<div style="width: auto; display: table-cell; clear: none; padding: 0 10px 0 0; ">
+											<?php echo include_component('main/userdropdown', array('user' => $selected_project->getLeader())); ?>
+										</div>
+									<?php else: ?>
+										<div style="width: auto; display: table-cell; clear: none; padding: 0 10px 0 0; ">
+											<?php echo include_component('main/teamdropdown', array('team' => $selected_project->getLeader())); ?>
+										</div>
+									<?php endif; ?>
+								<?php else: ?>
+									<div class="faded_out" style="font-weight: normal;"><?php echo __('Nor project leader specified'); ?></div>
+								<?php endif; ?>
+							</div>
+							<div id="project_qa">
+								<?php if ($selected_project->hasQaResponsible()): ?>
+									<div style="font-weight: bold; float: left; margin: 0 10px 0 0;"><?php echo __('QA responsible: %name%', array('%name%' => '')); ?></div>
+									<?php if ($selected_project->getQaResponsibleType() == TBGIdentifiableClass::TYPE_USER): ?>
+										<div style="width: auto; display: table-cell; clear: none; padding: 0 10px 0 0; ">
+											<?php echo include_component('main/userdropdown', array('user' => $selected_project->getQaResponsible())); ?>
+										</div>
+									<?php else: ?>
+										<div style="width: auto; display: table-cell; clear: none; padding: 0 10px 0 0; ">
+											<?php echo include_component('main/teamdropdown', array('team' => $selected_project->getQaResponsible())); ?>
+										</div>
+									<?php endif; ?>
+								<?php else: ?>
+									<div class="faded_out" style="font-weight: normal;"><?php echo __('No QA responsible specified'); ?></div>
+								<?php endif; ?>
+							</div>
 						</div>
-					<?php endforeach; ?>
-				<?php else: ?>
-					<div class="faded_out" style="font-weight: normal;"><?php echo __('No users or teams assigned'); ?></div>
-				<?php endif; ?>
-			</div>
-			<div style="width: 680px; padding-right: 5px;">
-				<?php if ($selected_project->hasChildren()): ?>
-					<div class="header_div"><?php echo __('Subprojects'); ?></div>
-					<ul class="project_list simple_list">
-					<?php foreach ($subprojects as $project): ?>
-						<li><?php include_component('project/overview', array('project' => $project)); ?></li>
-					<?php endforeach; ?>
-					</ul>
-				<?php endif; ?>
+					</li>
+					<li style="clear: right;">
+						<div class="rounded_box lightgrey borderless cut_bottom dashboard_view_header" style="margin-top: 5px;">
+							<?php echo __('Project team'); ?>
+						</div>
+									
+						<div class="dashboard_view_content">			
+							<?php if ((count($assignees['users']) > 0) || (count($assignees['teams']) > 0)): ?>
+								<?php foreach ($assignees['users'] as $user_id => $info): ?>
+									<div style="width: auto; display: table-cell; clear: none; padding: 0 10px 0 0; ">
+										<?php echo include_component('main/userdropdown', array('user' => $user_id)); ?>
+										<span class="faded_out"> -
+										<?php foreach ($info as $type => $bool): ?>
+											<?php if ($bool == true): ?>
+												<?php echo ' '.TBGProjectAssigneesTable::getTypeName($type); ?>
+											<?php endif; ?>
+										<?php endforeach; ?>
+										</span>
+									</div>
+								<?php endforeach; ?>
+								<?php foreach ($assignees['teams'] as $user_id => $info): ?>
+									<div style="width: auto; display: table-cell; clear: none; padding: 0 10px 0 0; ">
+										<?php echo include_component('main/teamdropdown', array('team' => $team_id)); ?>
+										<span class="faded_out"> -
+										<?php foreach ($info as $type => $bool): ?>
+											<?php if ($bool == true): ?>
+												<?php echo ' '.TBGProjectAssigneesTable::getTypeName($type); ?>
+											<?php endif; ?>
+										<?php endforeach; ?>
+										</span>
+									</div>
+								<?php endforeach; ?>
+							<?php else: ?>
+								<p class="content faded_out"><?php echo __('No users or teams assigned'); ?>.</p>
+							<?php endif; ?>
+						</div>
+					</li>
+					<li style="clear: left">
+						<div class="rounded_box lightgrey borderless cut_bottom dashboard_view_header" style="margin-top: 5px;">
+							<?php echo __('Client'); ?>
+						</div>
+
+						<div class="dashboard_view_content">	
+							<div id="project_client">
+								<?php if ($client instanceof TBGClient): ?>
+									<div class="project_client_info rounded_box lightgrey">
+										<?php echo include_template('project/clientinfo', array('client' => $client)); ?>
+									</div>
+								<?php else: ?>
+									<div class="faded_out" style="font-weight: normal;"><?php echo __('No client assigned'); ?></div>
+								<?php endif; ?>
+							</div>
+						</div>
+					</li>
+					<li style="clear: right;">
+						<div class="rounded_box lightgrey borderless cut_bottom dashboard_view_header" style="margin-top: 5px;">
+							<?php echo __('Subprojects'); ?>
+						</div>
+						<?php if ($selected_project->hasChildren()): ?>
+							<ul class="project_list simple_list">
+							<?php foreach ($subprojects as $project): ?>
+								<li><?php include_component('project/overview', array('project' => $project)); ?></li>
+							<?php endforeach; ?>
+							</ul>
+						<?php else: ?>
+							<div class="dashboard_view_content">	
+								<div class="faded_out" style="font-weight: normal;"><?php echo __('This project has no subprojects'); ?></div>
+							</div>
+						<?php endif; ?>
+					</li>
+				</ul>
+			<?php endif; ?>
+			<?php TBGEvent::createNew('core', 'project_dashboard_bottom')->trigger(); ?>
+
+			<div style="width: 700px;">
 				<?php echo image_tag(make_url('project_statistics_last_30', array('project_key' => $selected_project->getKey())), array('style' => 'float: right; margin-bottom: 15px;'), true); ?>
 				<div style="clear: both; height: 30px;" class="tab_menu">
 					<ul id="project_dashboard_menu">
