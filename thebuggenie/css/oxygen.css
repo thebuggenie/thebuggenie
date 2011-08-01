@@ -1098,12 +1098,23 @@ a.action_button:hover { background-color: #FCFCFC; border-color: #AAA; }
 	-moz-box-shadow: 0 0 .05em rgba(0,0,0,0.4);
 	-webkit-box-shadow: 0 0 .05em rgba(0,0,0,0.4);
 }
-.button, .button span {
+.button, .button span, .button input, .button button {
 	-moz-border-radius: .3em;
 	-webkit-border-radius: .3em;
 	border-radius: .3em;
 }
-.button span {
+.button input, .button button, .button input:hover, .button button:hover {
+	background-color: transparent;
+	color: #FFF;
+	font-size: inherit;
+	font-weight: inherit;
+	cursor: pointer;
+	margin: inherit;
+	padding: inherit;
+	border: 0;
+}
+
+.button span, .button input, .button button {
 	border-top: 1px solid #fff; /* Fallback style */
 	border-top: 1px solid rgba(255, 255, 255, 0.5);
 	display: block;
@@ -1123,10 +1134,8 @@ a.action_button:hover { background-color: #FCFCFC; border-color: #AAA; }
 	background-size: 3px 3px;*/
 }
 
-.smaller_buttons .button span, .button.small-button span { padding: 3px 7px; font-size: 14px; }
+.smaller_buttons .button span, .button.small-button span, .smaller_buttons .button input, .smaller_buttons .button button, .button.small-button input, .button.small-button button { padding: 3px 7px; font-size: 14px; }
 
-.open_match_page .button { font-size: 16px; }
-.open_match_page .button span { padding: 4px 7px; }
 .button:hover { box-shadow: 0 0 .1em rgba(0,0,0,0.4); -moz-box-shadow: 0 0 .1em rgba(0,0,0,0.4); -webkit-box-shadow: 0 0 .1em rgba(0,0,0,0.4); cursor: pointer; }
 /* When pressed, move it down 1px */ 
 .button:active { position: relative; top: 1px; }
