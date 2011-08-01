@@ -5,6 +5,9 @@
 		<?php if ($project->usePrefix()): ?>
 			&nbsp;-&nbsp;<i><?php echo $project->getPrefix(); ?></i>
 		<?php endif; ?>
+		<?php if ($project->hasParent()): ?>
+			&nbsp;-&nbsp;<?php echo __('Subproject of'); ?> <i><?php echo $project->getParent()->getName(); ?></i>
+		<?php endif; ?>
 	</div>
 	<table cellpadding=0 cellspacing=0 style="width: 680px; table-layout: auto;">
 	<tr>

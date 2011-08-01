@@ -33,6 +33,14 @@
 				<?php endif; ?>
 			</div>
 			<div style="width: 680px; padding-right: 5px;">
+				<?php if ($selected_project->hasChildren()): ?>
+					<div class="header_div"><?php echo __('Subprojects'); ?></div>
+					<ul class="project_list simple_list">
+					<?php foreach ($subprojects as $project): ?>
+						<li><?php include_component('project/overview', array('project' => $project)); ?></li>
+					<?php endforeach; ?>
+					</ul>
+				<?php endif; ?>
 				<?php echo image_tag(make_url('project_statistics_last_30', array('project_key' => $selected_project->getKey())), array('style' => 'float: right; margin-bottom: 15px;'), true); ?>
 				<div style="clear: both; height: 30px;" class="tab_menu">
 					<ul id="project_dashboard_menu">

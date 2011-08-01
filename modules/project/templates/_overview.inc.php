@@ -66,6 +66,14 @@
 			</table>
 		</form>
 	</div>
+	<?php if ($project->hasChildren()): ?>
+	<div class="subprojects_list">
+		<?php echo __('Subprojects'); ?>
+		<?php foreach ($project->getChildren() as $child): ?>
+			<span class="subproject_link"><?php echo link_tag(make_url('project_dashboard', array('project_key' => $child->getKey())), $child->getName()); ?></span>
+		<?php endforeach; ?>
+	</div>
+	<?php endif; ?>
 	<?php if ($project->isIssuetypesVisibleInFrontpageSummary() && count($project->getVisibleIssuetypes())): ?>
 		<table style="width: 100%; margin-top: 5px;" cellpadding=0 cellspacing=0>
 		<?php foreach ($project->getVisibleIssuetypes() as $issuetype): ?>

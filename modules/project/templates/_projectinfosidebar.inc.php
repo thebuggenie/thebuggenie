@@ -83,7 +83,21 @@
 							<div class="faded_out" style="font-weight: normal;"><?php echo __('No QA responsible specified'); ?></div>
 						<?php endif; ?>
 					</div>
-					<div class="sidebar_links">
+					<div id="project_family"
+						<?php if ($selected_project->hasParent()): ?>
+							<div class="button button-blue small-button"><span><?php echo link_tag(make_url('project_dashboard', array('project_key' => $selected_project->getParent()->getKey())), __('Go to parent').' <i>'.$selected_project->getParent()->getName().'</i>'); ?></span></div>
+						<?php endif; ?>
+						<div class="header_div"><?php echo __('Subprojects'); ?></div>
+						<?php if ($selected_project->hasChildren()): ?>
+							<ul>
+							<?php foreach ($selected_project->getChildren() as $child): ?>
+								<li><?php echo link_tag(make_url('project_dashboard', array('project_key' => $child->getKey())), $child->getName()); ?></li>
+							<?php endforeach; ?>
+							</ul>
+						<?php else: ?>
+							<p class="faded_out"><?php echo __('This project has no subprojects'); ?></p>
+						<?php endif; ?>
+						<div class="sidebar_links">
 						<?php include_template('project/projectinfolinks'); ?>
 					</div>
 				</div>

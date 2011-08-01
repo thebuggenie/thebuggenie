@@ -52,6 +52,7 @@
 		const WORKFLOW_SCHEME_ID = 'projects.workflow_scheme_id';
 		const ISSUETYPE_SCHEME_ID = 'projects.issuetype_scheme_id';
 		const AUTOASSIGN = 'projects.autoassign';
+		const PARENT = 'projects.parent';
 		
 		public function __construct()
 		{
@@ -86,6 +87,7 @@
 			parent::_addForeignKeyColumn(self::CLIENT, TBGClientsTable::getTable(), TBGClientsTable::ID);
 			parent::_addBoolean(self::DELETED);
 			parent::_addBoolean(self::AUTOASSIGN);
+			parent::_addInteger(self::PARENT);
 		}
 		
 		public function clearDefaults()
@@ -159,6 +161,15 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addWhere(self::CLIENT, $id);
+			$row = $this->doSelect($crit, false);
+			return $row;
+		}
+		
+		public function getByParentID($id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$crit->addWhere(self::PARENT, $id);
 			$row = $this->doSelect($crit, false);
 			return $row;
 		}

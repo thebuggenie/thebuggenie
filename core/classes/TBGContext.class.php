@@ -1577,19 +1577,81 @@
 		{
 			self::getResponse()->setBreadcrumb(null);
 			self::$_selected_project = $project;
+			
+			$childbreadcrumbs = array();
+			
 			if ($project instanceof TBGProject)
 			{
-				$projectsubmenulinks = null;
-				$clientsubmenulinks = null;
-				if (count(TBGProject::getAll()) > 1)
+				$t = $project;
+				
+				$hierarchy_breadcrumbs = array();
+				$projects_processed = array();
+				
+				while ($t instanceof TBGProject)
 				{
-					$projectsubmenulinks = array();
-					foreach (TBGProject::getAll() as $existing_project)
+					if (array_key_exists($t->getKey(), $projects_processed))
 					{
-						if (!$project->hasClient() || ($existing_project->hasClient() && $project->getClient()->getID() == $existing_project->getClient()->getID()))
-							$projectsubmenulinks[] = array('url' => self::getRouting()->generate('project_dashboard', array('project_key' => $existing_project->getKey())), 'title' => $existing_project->getName());
+						// We have a cyclic dependency! Oh no!
+						// If this happens, throw an exception
+						
+						throw new Exception(TBGContext::geti18n()->__('A loop has been found in the project heirarchy. Go to project configuration, and alter the subproject setting for this project so that this project is not a subproject of one which is a subproject of this one.'));
+						continue;
+					}
+					else
+					{
+						// If this is a root project, display a list of other root projects, then t is null
+						if (!($t->hasParent()) && count(TBGProject::getAllRootProjects()) > 1)
+						{
+							$itemsubmenulinks = array();
+							foreach (TBGProject::getAllRootProjects() as $child)
+							{
+								$itemsubmenulinks[] = array('url' => self::getRouting()->generate('project_dashboard', array('project_key' => $child->getKey())), 'title' => $child->getName());
+							}
+							
+							$hierarchy_breadcrumbs[] = array($t, $itemsubmenulinks);
+							
+							$projects_processed[$t->getKey()] = $t;
+							
+							$t = null;
+							continue;
+						}
+						elseif (!($t->hasParent()))
+						{
+							$hierarchy_breadcrumbs[] = array($t, null);
+							
+							$projects_processed[$t->getKey()] = $t;
+							
+							$t = null;
+							continue;
+						}
+						else
+						{
+							// What we want to do here is to build a list of the children of the parent unless we are the only one
+							$parent = $t->getParent();
+							$children = $parent->getChildren();
+							
+							$itemsubmenulinks = null;
+							
+							if ($parent->hasChildren() && count($children) > 1)
+							{
+								$itemsubmenulinks = array();
+								foreach ($children as $child)
+								{
+									$itemsubmenulinks[] = array('url' => self::getRouting()->generate('project_dashboard', array('project_key' => $child->getKey())), 'title' => $child->getName());
+								}
+							}
+							
+							$hierarchy_breadcrumbs[] = array($t, $itemsubmenulinks);
+							
+							$projects_processed[$t->getKey()] = $t;
+							
+							$t = $parent;
+							continue;
+						}
 					}
 				}
+				
+				$clientsubmenulinks = null;
 				if (self::$_selected_project->hasClient())
 				{
 					$clientsubmenulinks = array();
@@ -1608,7 +1670,19 @@
 						self::getResponse()->addBreadcrumb(self::getCurrentClient()->getName(), self::getRouting()->generate('client_dashboard', array('client_id' => self::getCurrentClient()->getID())), $clientsubmenulinks);
 					}
 				}
-				self::getResponse()->addBreadcrumb($project->getName(), self::getRouting()->generate('project_dashboard', array('project_key' => TBGContext::getCurrentProject()->getKey())), $projectsubmenulinks, 'selected_project');
+				
+				// Add root breadcrumb first, so reverse order
+				$hierarchy_breadcrumbs = array_reverse($hierarchy_breadcrumbs);
+				
+				foreach ($hierarchy_breadcrumbs as $breadcrumb)
+				{
+					$class = null;
+					if ($breadcrumb[0]->getKey() == self::getCurrentProject()->getKey())
+					{
+						$class = 'selected_project';
+					}
+					self::getResponse()->addBreadcrumb($breadcrumb[0]->getName(), self::getRouting()->generate('project_dashboard', array('project_key' => $breadcrumb[0]->getKey())), $breadcrumb[1], $class);					
+				}
 			}
 			else
 			{

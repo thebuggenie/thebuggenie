@@ -247,7 +247,7 @@
 			$this->show_project_config_link = TBGContext::getUser()->canAccessConfigurationPage(TBGSettings::CONFIGURATION_SECTION_PROJECTS);
 			if ($this->show_project_list)
 			{
-				$this->projects = TBGProject::getAll();
+				$this->projects = TBGProject::getAllRootProjects();
 				$this->project_count = count($this->projects);
 			}
 		}
