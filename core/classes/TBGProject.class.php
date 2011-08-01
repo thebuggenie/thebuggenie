@@ -2525,15 +2525,12 @@
 		
 		public function hasParent()
 		{
-			if ($this->getKey() == 'sampleproject2'): return true; endif;
-			if ($this->getParent() instanceof TBGProject): return true; endif;
-			return false;
+			return ($this->getParent() instanceof TBGProject);
 		}
 		
 		public function hasChildren()
 		{
-			if (count($this->getChildren()) == 0): return false; endif;
-			return true;
+			return (bool) count($this->getChildren());
 		}
 		
 		public function getParent()
