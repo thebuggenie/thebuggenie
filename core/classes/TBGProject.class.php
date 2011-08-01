@@ -2546,20 +2546,23 @@
 		
 		public function getChildren()
 		{
-			if ($this->_children == null): $this->_populateChildren(); endif;
+			$this->_populateChildren();
 			return $this->_children;
 		}
 		
 		protected function _populateChildren()
 		{
-			$this->_children = array();
-			$res = TBGProjectsTable::getTable()->getByParentID($this->getID());
-			
-			if ($res == false): return; endif;
-			
-			foreach ($res->getAllRows() as $row)
+			if ($this->_children === null)
 			{
-				$this->_children[] = TBGContext::factory()->TBGProject($row->get(TBGProjectsTable::ID), $row);
+				$this->_children = array();
+				$res = TBGProjectsTable::getTable()->getByParentID($this->getID());
+
+				if ($res == false): return; endif;
+
+				foreach ($res->getAllRows() as $row)
+				{
+					$this->_children[] = TBGContext::factory()->TBGProject($row->get(TBGProjectsTable::ID), $row);
+				}
 			}
 		}
 
