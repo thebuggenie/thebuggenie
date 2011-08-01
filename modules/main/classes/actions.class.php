@@ -1989,7 +1989,7 @@
 		 */
 		public function runDeleteIssue(TBGRequest $request)
 		{
-			$this->forward403unless(TBGContext::getUser()->hasPermission('candeleteissues'));
+			$this->forward403unless(TBGContext::getUser()->hasPermission('caneditissue') || TBGContext::getUser()->hasPermission('candeleteissues'));
 
 			if ($issue_id = $request->getParameter('issue_id'))
 			{
