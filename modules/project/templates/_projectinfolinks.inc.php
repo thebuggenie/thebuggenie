@@ -12,7 +12,7 @@
 	<?php echo link_tag(make_url('project_dashboard', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Dashboard'), (($tbg_response->getPage() == 'project_dashboard') ? array('class' => 'selected') : null)); ?>
 	<?php TBGEvent::createNew('core', 'project_sidebar_links_dashboard')->trigger(array('submenu' => $submenu)); ?>
 <?php endif; ?>
-<?php if ($tbg_user->hasProjectPageAccess('project_releases', $selected_project->getID())): ?>
+<?php if ($tbg_user->hasProjectPageAccess('project_releases', $selected_project->getID()) && $selected_project->isBuildsEnabled()): ?>
 	<?php echo link_tag(make_url('project_releases', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Releases'), (($tbg_response->getPage() == 'project_releases') ? array('class' => 'selected') : null)); ?>
 	<?php TBGEvent::createNew('core', 'project_sidebar_links_releases')->trigger(array('submenu' => $submenu)); ?>
 <?php endif; ?>
@@ -69,5 +69,7 @@
 			<?php TBGEvent::createNew('core', 'config_project_tabs')->trigger(array('selected_tab' => $selected_tab)); ?>
 		</ul>
 	<?php endif; ?>
-	<?php echo link_tag(make_url('project_release_center', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Release center'), (($tbg_response->getPage() == 'project_release_center') ? array('class' => 'selected') : array())); ?>
+	<?php if ($selected_project->isBuildsEnabled()): ?>
+		<?php echo link_tag(make_url('project_release_center', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Release center'), (($tbg_response->getPage() == 'project_release_center') ? array('class' => 'selected') : array())); ?>
+	<?php endif; ?>
 <?php endif; ?>
