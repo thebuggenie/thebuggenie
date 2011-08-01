@@ -207,6 +207,11 @@
 			$this->statustypes = TBGStatus::getAll();
 			$this->selected_tab = isset($this->section) ? $this->section : 'info';
 		}
+		
+		public function componentProjectInfo()
+		{
+			$this->valid_subproject_targets = TBGProject::getValidSubprojects($this->project);
+		}
 
 		public function componentProjectSettings()
 		{
