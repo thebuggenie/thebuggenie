@@ -394,7 +394,6 @@
 				}
 				return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('All settings saved')));
 			}
-			
 		}
 
 		/**
@@ -2556,25 +2555,8 @@
 					// Build list of valid targets for the subproject dropdown
 					// The following items are banned from the list: current project, children of the current project
 					// Any further tests and things get silly, so we will trap it when building breadcrumbs
-					$valid_subproject_list = array();
 					$project = TBGContext::factory()->TBGProject($project_id);
-					
-					foreach (TBGProject::getAll() as $aproject)
-					{
-						$valid_subproject_list[$aproject->getKey()] = $aproject;
-					}
-					
-					unset($valid_subproject_list[$project->getKey()]);
-					
-					// if this project has no children, life is made easy
-					if ($project->hasChildren())
-					{
-						foreach ($project->getChildren() as $child)
-						{
-							unset($valid_subproject_list[$child->getKey()]);
-						}
-					}
-					
+					$valid_subproject_targets = TBGProject::getValidSubprojects($project);					
 					$content = $this->getComponentHTML('configuration/projectconfig', array('valid_subproject_targets' => $valid_subproject_targets, 'project' => $project, 'access_level' => $this->access_level, 'section' => 'hierarchy'));
 					return $this->renderJSON(array('failed' => false, 'content' => $content));
 				}

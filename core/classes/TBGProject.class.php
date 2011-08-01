@@ -364,6 +364,27 @@
 			return (array_key_exists($key, self::$_projects)) ? self::$_projects[$key] : null;
 		}
 		
+		public static function getValidSubprojects(TBGProject $project)
+		{
+			$valid_subproject_targets = array();
+			foreach (self::getAll() as $aproject)
+			{
+				if ($aproject->getId() == $project->getId()) continue;
+				$valid_subproject_targets[$aproject->getKey()] = $aproject;
+			}
+
+			// if this project has no children, life is made easy
+			if ($project->hasChildren())
+			{
+				foreach ($project->getChildren() as $child)
+				{
+					unset($valid_subproject_targets[$child->getKey()]);
+				}
+			}
+			
+			return $valid_subproject_targets;
+		}
+		
 		/**
 		 * Populates the projects array
 		 */
