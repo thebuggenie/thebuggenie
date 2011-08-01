@@ -563,7 +563,6 @@ a.friend { color: #0000a4; }
 a.friend:hover { border-bottom: 1px dotted #0000a4; }
 
 /* reporting an issue styles */
-.report_button input { float: right; clear: both; }
 .report_button:hover .report_button_hover { display: block; }
 .report_button_hover { display: none; position: absolute; width: 200px; background: #5a5; text-align: left; margin-top: 5px; clear: both; padding: 0; right: -2px; z-index: 5; top: -6px; }
 .report_button_hover a { display: block; color: white; padding: 2px 3px 2px 3px; font-size: 0.9em; border: 0 !important; }
