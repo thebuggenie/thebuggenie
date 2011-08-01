@@ -1053,4 +1053,15 @@
 				return $this->return404();
 			}
 		}
+		
+		public function runSettings(TBGRequest $request)
+		{
+			
+		}
+		
+		public function runReleaseCenter(TBGRequest $request)
+		{
+			
+		}
+		
 	}

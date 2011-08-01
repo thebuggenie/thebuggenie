@@ -12,6 +12,10 @@
 	<?php echo link_tag(make_url('project_dashboard', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Dashboard'), (($tbg_response->getPage() == 'project_dashboard') ? array('class' => 'selected') : null)); ?>
 	<?php TBGEvent::createNew('core', 'project_sidebar_links_dashboard')->trigger(array('submenu' => $submenu)); ?>
 <?php endif; ?>
+<?php if ($tbg_user->hasProjectPageAccess('project_releases', $selected_project->getID())): ?>
+	<?php echo link_tag(make_url('project_releases', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Releases'), (($tbg_response->getPage() == 'project_releases') ? array('class' => 'selected') : null)); ?>
+	<?php TBGEvent::createNew('core', 'project_sidebar_links_releases')->trigger(array('submenu' => $submenu)); ?>
+<?php endif; ?>
 <?php if ($tbg_user->hasProjectPageAccess('project_scrum', $selected_project->getID())): ?>
 	<?php echo link_tag(make_url('project_scrum', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Sprint planning'), ((in_array($tbg_response->getPage(), array('project_scrum', 'project_scrum_sprint_details'))) ? array_merge($scrum_additional_array, array('class' => 'selected')) : $scrum_additional_array)); ?>
 	<?php if (!isset($submenu) && (count($selected_project->getSprints()) > 0) && TBGContext::getCurrentProject()->usesScrum() && in_array($tbg_response->getPage(), array('project_scrum', 'project_scrum_sprint_details'))): ?>
@@ -49,4 +53,8 @@
 <?php if ($tbg_user->hasProjectPageAccess('project_timeline', $selected_project->getID())): ?>
 	<?php echo link_tag(make_url('project_timeline', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Timeline'), (($tbg_response->getPage() == 'project_timeline') ? array('class' => 'selected') : null)); ?>
 	<?php TBGEvent::createNew('core', 'project_sidebar_links_timeline')->trigger(array('submenu' => $submenu)); ?>
+<?php endif; ?>
+<?php if ($tbg_user->canEditProjectDetails($selected_project)): ?>
+	<?php echo link_tag(make_url('project_settings', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Settings'), (($tbg_response->getPage() == 'project_settings') ? array('class' => 'selected') : array())); ?>
+	<?php echo link_tag(make_url('project_release_center', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Release center'), (($tbg_response->getPage() == 'project_release_center') ? array('class' => 'selected') : array())); ?>
 <?php endif; ?>

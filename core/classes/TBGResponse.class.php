@@ -578,6 +578,8 @@
 					$links[] = array('url' => TBGContext::getRouting()->generate('project_reportissue', array('project_key' => $project->getKey())), 'title' => $i18n->__('Report an issue'));
 					$links[] = array('url' => TBGContext::getRouting()->generate('project_issues', array('project_key' => $project->getKey())), 'title' => $i18n->__('Issues'));
 					$links = TBGEvent::createNew('core', 'breadcrumb_project_links', null, array(), $links)->trigger()->getReturnList();
+					$links[] = array('url' => TBGContext::getRouting()->generate('project_settings', array('project_key' => $project->getKey())), 'title' => $i18n->__('Settings'));
+					$links[] = array('url' => TBGContext::getRouting()->generate('project_release_center', array('project_key' => $project->getKey())), 'title' => $i18n->__('Release center'));
 					break;
 				case 'client_list':
 					foreach (TBGClient::getAll() as $client)

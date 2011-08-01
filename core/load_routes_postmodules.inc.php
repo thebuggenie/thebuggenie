@@ -29,6 +29,7 @@
 	$routes[] = array('project_scrum', '/:project_key/scrum', 'project', 'scrum');
 	$routes[] = array('project_settings', '/:project_key/settings', 'project', 'settings');
 	$routes[] = array('project_releases', '/:project_key/releases', 'project', 'releases');
+	$routes[] = array('project_release_center', '/:project_key/release_center', 'project', 'releaseCenter');
 	$routes[] = array('project_scrum_sprint_details', '/:project_key/scrum/sprint/details/*', 'project', 'scrumShowDetails');
 	$routes[] = array('project_scrum_release_burndown', '/:project_key/scrum/burndown/release', 'project', 'scrumShowBurndown', array('mode' => 'release'));
 	$routes[] = array('project_scrum_sprint_burndown_image', '/:project_key/scrum/burndown/sprint/image/*', 'project', 'scrumShowBurndownImage', array('mode' => 'sprint'));
