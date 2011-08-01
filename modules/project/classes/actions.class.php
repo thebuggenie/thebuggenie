@@ -1065,4 +1065,9 @@
 			
 		}
 		
+		public function runReleases(TBGRequest $request)
+		{
+			
+		}
+		
 	}
