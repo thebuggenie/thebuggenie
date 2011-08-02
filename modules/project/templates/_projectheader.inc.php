@@ -1,5 +1,6 @@
 <div class="project_header">
 	<div class="project_header_right">
+		<?php TBGEvent::createNew('core', 'config_project_header_buttons')->trigger(); ?>
 		<div class="button button-orange"><span><?php echo image_tag('icon_download.png').__('Download'); ?></span></div>
 		<?php if (TBGContext::getUser()->canReportIssues($selected_project)): ?>
 			<div class="button button-green report_button" style="overflow: visible;">
