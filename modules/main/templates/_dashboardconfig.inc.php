@@ -12,8 +12,7 @@
 				<div class="available_views_list">
 					<?php foreach ($views as $id_type => $view_type): ?>
 						<?php foreach ($view_type as $id_view => $a_view): ?>
-							<?php if ($id_view == $view->get(TBGDashboardViewsTable::VIEW)) continue; ?>
-							<div id="<?php echo $id_view; ?>_<?php echo $id_type; ?>" onclick="TBG.Main.Profile.Dashboard.View.swap(this);"><?php echo __($a_view); ?></div>
+							<div id="<?php echo $id_view; ?>_<?php echo $id_type; ?>" onclick="TBG.Main.Dashboard.View.swap(this);"><?php echo __($a_view); ?></div>
 						<?php endforeach; ?>
 					<?php endforeach; ?>
 				</div>
@@ -29,8 +28,7 @@
 				<div class="available_views_list">
 					<?php foreach ($views as $id_type => $view_type): ?>
 						<?php foreach ($view_type as $id_view => $a_view): ?>
-							<?php if ($id_view == $view->get(TBGDashboardViewsTable::VIEW)) continue; ?>
-							<div id="<?php echo $id_view; ?>_<?php echo $id_type; ?>" onclick="TBG.Main.Profile.Dashboard.View.swap(this);"><?php echo __($a_view); ?></div>
+							<div id="<?php echo $id_view; ?>_<?php echo $id_type; ?>" onclick="TBG.Main.Dashboard.View.swap(this);"><?php echo __($a_view); ?></div>
 						<?php endforeach; ?>
 					<?php endforeach; ?>
 				</div>
@@ -39,18 +37,18 @@
 
 		<ul style="margin: 0; padding: 0; list-style:none; clear: both;">
 			<li class="rounded_box white" style="margin: 5px 15px 5px 10px; text-align: center;">
-				<?php echo javascript_link_tag(__('Add a view to dashboard'), array('onclick' => "TBG.Main.Profile.Dashboard.View.add();")); ?>
-				<?php echo javascript_link_tag(image_tag('action_add_small.png', array('class' => 'menu_dropdown', 'style' => 'float: right; margin-left: 5px;')), array('onclick' => "TBG.Main.Profile.Dashboard.View.add();")); ?>
+				<?php echo javascript_link_tag(__('Add a view to dashboard'), array('onclick' => "TBG.Main.Dashboard.View.add();")); ?>
+				<?php echo javascript_link_tag(image_tag('action_add_small.png', array('class' => 'menu_dropdown', 'style' => 'float: right; margin-left: 5px;')), array('onclick' => "TBG.Main.Dashboard.View.add();")); ?>
 			</li>
 		</ul>
 		<div id="save_dashboard" style="text-align: right; padding: 10px;">
 			<?php echo __("When you're happy, save your changes"); ?>
-			<button onclick="TBG.Main.Profile.Dashboard.save('<?php echo make_url('dashboard_save'); ?>');" style="float: right; margin-left: 10px;"><?php echo __('Save dashboard'); ?></button>
+			<button onclick="TBG.Main.Dashboard.save('<?php echo make_url('dashboard_save', array('target_type' => $target_type, 'tid' => $tid)); ?>');" style="float: right; margin-left: 10px;"><?php echo __('Save dashboard'); ?></button>
 		</div>
 		<span id="save_dashboard_indicator" style="display: none;"><?php echo image_tag('spinning_20.gif'); ?></span>
 	</div>
 	<div class="backdrop_detail_footer">
-		<?php echo link_tag('dashboard', __('Close and reload')); ?>
+		<?php echo link_tag($previous_route, __('Close and reload')); ?>
 	</div>
 </div>
 <script>Sortable.create('views_list', {constraint: ''});</script>

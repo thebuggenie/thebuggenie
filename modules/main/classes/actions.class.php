@@ -267,7 +267,7 @@
 					TBGContext::setCurrentProject($project);
 				}
 			}
-			$this->dashboardViews = TBGDashboard::getViews(TBGDashboardViewsTable::TYPE_USER);
+			$this->dashboardViews = TBGDashboard::getViews(TBGContext::getUser()->getID(), TBGDashboardViewsTable::TYPE_USER);
 		}
 		
 		/**
@@ -294,7 +294,7 @@
 								array_push($views, array('type' => strrev(mb_strstr(strrev($view), '_', true)), 'id' => mb_strstr($view, '_', true)));
 							}
 							array_pop($views);
-							TBGDashboard::setViews(TBGContext::getUser()->getID(), TBGDashboardViewsTable::TYPE_USER, $views);
+							TBGDashboard::setViews($request->getParameter('tid'), $request->getParameter('target_type'), $views);
 							return $this->renderJSON(array('message' => $i18n->__('Dashboard configuration saved')));
 						}
 						else
@@ -2604,6 +2604,9 @@
 						break;
 					case 'dashboard_config':
 						$template_name = 'main/dashboardconfig';
+						$options['tid'] = $request->getParameter('tid');
+						$options['target_type'] = $request->getParameter('target_type');
+						$options['previous_route'] = $request->getParameter('previous_route');
 						$options['mandatory'] = true;
 						break;
 				}

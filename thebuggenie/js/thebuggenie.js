@@ -11,10 +11,9 @@ var TBG = {
 			Message: {},
 			Backdrop: {}
 		}, 
-		Profile: {
-			Dashboard: {
-				View: {}
-			}
+		Profile: {},
+		Dashboard: {
+			View: {}
 		},
 		Comment: {},
 		Link: {},
@@ -580,7 +579,7 @@ TBG.Main.Profile.changePassword = function(url) {
 	});
 };
 
-TBG.Main.Profile.Dashboard.View.swap = function(source_elm)
+TBG.Main.Dashboard.View.swap = function(source_elm)
 {
 	source_elm = $(source_elm);
 	var target_elm = source_elm.up('li').down('span');
@@ -603,7 +602,7 @@ if (target_elm.hasClassName('template_view')) {
 	}
 }
 
-TBG.Main.Profile.Dashboard.View.add = function()
+TBG.Main.Dashboard.View.add = function()
 {
 	var element_view = $('view_default').clone(true);
 	element_view.id = 'view_' + new Date().getTime();
@@ -613,7 +612,7 @@ TBG.Main.Profile.Dashboard.View.add = function()
 	Sortable.create('views_list');
 }
 
-TBG.Main.Profile.Dashboard.save = function(url)
+TBG.Main.Dashboard.save = function(url)
 {
 	var parameters = 'id=';
 	$('views_list').select('li').each(function (element) {

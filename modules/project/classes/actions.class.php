@@ -70,13 +70,8 @@
 		public function runDashboard(TBGRequest $request)
 		{
 			$this->forward403unless($this->_checkProjectPageAccess('project_dashboard'));
-			$this->recent_issues = $this->selected_project->getRecentIssues(10);
-			$this->recent_features = $this->selected_project->getRecentFeatures();
-			$this->recent_ideas = $this->selected_project->getRecentIdeas();
-			$this->priority_count = $this->selected_project->getPriorityCount();
-			$this->assignees = $this->selected_project->getAssignees();
-			$this->client = $this->selected_project->getClient();
-			$this->subprojects = $this->selected_project->getChildren();
+			
+			$this->dashboardViews = TBGDashboard::getViews($this->selected_project->getID(), TBGDashboardViewsTable::TYPE_PROJECT);
 		}
 
 		/**

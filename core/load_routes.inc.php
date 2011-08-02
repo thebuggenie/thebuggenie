@@ -9,7 +9,7 @@
 	$routes[] = array('client_dashboard', '/clients/:client_id', 'main', 'clientdashboard');
 	$routes[] = array('team_dashboard', '/teams/:team_id', 'main', 'teamdashboard');	
 	$routes[] = array('dashboard', '/dashboard', 'main', 'dashboard');
-	$routes[] = array('dashboard_save', '/dashboard/save', 'main', 'dashboardSave');
+	$routes[] = array('dashboard_save', '/dashboard/save/:target_type/:tid', 'main', 'dashboardSave');
 	$routes[] = array('get_javascript', '/js/:js_file', 'main', 'index');
 	$routes[] = array('login', '/do/login', 'main', 'login');
 	$routes[] = array('login_page', '/login', 'main', 'login', array('continue' => true));

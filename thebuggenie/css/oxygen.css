@@ -920,7 +920,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 #timeline td { vertical-align: top; }
 .download_links { margin: 10px 0 15px 0; }
 #project_settings_popout .button { cursor: pointer; float: none; margin: none; }
-#project_dashboard_menu_panes a.more { padding: 5px; float: right; font-weight: bold; }
+.dashboard_view_content a.more { padding: 5px; float: right; font-weight: bold; }
 #project_dashboard_menu_panes a.more:hover { border: 0; }
 #project_header_container { clear: both; position: relative; }
 #project_header_container .config_link { float: right; margin: 1px 20px 0 0; }
