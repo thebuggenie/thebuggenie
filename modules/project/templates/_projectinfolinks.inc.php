@@ -13,7 +13,7 @@
 	<?php TBGEvent::createNew('core', 'project_sidebar_links_dashboard')->trigger(array('submenu' => $submenu)); ?>
 	<?php if (!($submenu) && $tbg_response->getPage() == 'project_dashboard' && $tbg_user->canEditProjectDetails($selected_project)): ?>
 		<ul class="simple_list">
-			<li><?php echo javascript_link_tag('<span>'.__('Customize').'</span>', array('title' => __('Customize'), 'onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'dashboard_config', 'tid' => $selected_project->getID(), 'target_type' => TBGDashboardViewsTable::TYPE_PROJECT, 'previous_route' => TBGContext::getRouting()->getCurrentRouteName()))."');")); ?></li>
+			<li><?php echo javascript_link_tag('<span>'.__('Customize').'</span>', array('title' => __('Customize'), 'onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'dashboard_config', 'tid' => $selected_project->getID(), 'target_type' => TBGDashboardViewsTable::TYPE_PROJECT, 'previous_route'))."');")); ?></li>
 		</ul>
 	<?php endif; ?>
 <?php endif; ?>
