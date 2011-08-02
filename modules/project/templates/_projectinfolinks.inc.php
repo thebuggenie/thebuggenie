@@ -56,7 +56,7 @@
 	<?php TBGEvent::createNew('core', 'project_sidebar_links_statistics')->trigger(array('submenu' => $submenu)); ?>
 <?php endif; ?>
 <?php if ($tbg_user->hasProjectPageAccess('project_timeline', $selected_project->getID())): ?>
-	<?php echo link_tag(make_url('project_timeline', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Timeline'), (($tbg_response->getPage() == 'project_timeline') ? array('class' => 'selected') : null)); ?>
+	<?php echo link_tag(make_url('project_timeline_important', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Timeline'), (($tbg_response->getPage() == 'project_timeline') ? array('class' => 'selected') : null)); ?>
 	<?php TBGEvent::createNew('core', 'project_sidebar_links_timeline')->trigger(array('submenu' => $submenu)); ?>
 <?php endif; ?>
 <?php if ($tbg_user->canEditProjectDetails($selected_project)): ?>

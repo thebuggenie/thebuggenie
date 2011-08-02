@@ -1088,14 +1088,12 @@ a.action_button:hover { background-color: #FCFCFC; border-color: #AAA; }
 .button {
 	margin: 0;
 	text-decoration: none;
-	font-size: 18px;
 	font-weight: bold;
 	display: inline-block;
 	text-align: center;
 	color: #fff;
 	border: 1px solid #9c9c9c; /* Fallback style */
 	border: 1px solid rgba(0, 0, 0, 0.3);
-	text-shadow: 0 1px 0 rgba(0,0,0,0.4);
 	box-shadow: 0 0 .05em rgba(0,0,0,0.4);
 	-moz-box-shadow: 0 0 .05em rgba(0,0,0,0.4);
 	-webkit-box-shadow: 0 0 .05em rgba(0,0,0,0.4);
@@ -1120,7 +1118,8 @@ a.action_button:hover { background-color: #FCFCFC; border-color: #AAA; }
 	border-top: 1px solid #fff; /* Fallback style */
 	border-top: 1px solid rgba(255, 255, 255, 0.5);
 	display: block;
-	padding: 8px 15px;
+	padding: 3px 7px; font-size: 14px;
+	text-shadow: 0 1px 0 rgba(0,0,0,0.4);
 	/* The background pattern */
 /*	background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, rgba(0, 0, 0, 0.05)), color-stop(.25, transparent), to(transparent)),
 		-webkit-gradient(linear, 0 100%, 100% 0, color-stop(.25, rgba(0, 0, 0, 0.05)), color-stop(.25, transparent), to(transparent)),
@@ -1136,14 +1135,14 @@ a.action_button:hover { background-color: #FCFCFC; border-color: #AAA; }
 	background-size: 3px 3px;*/
 }
 
-.smaller_buttons .button span, .button.small-button span, .smaller_buttons .button input, .smaller_buttons .button button, .button.small-button input, .button.small-button button { padding: 3px 7px; font-size: 14px; }
+.smaller_buttons .button span, .button.big-button span, .smaller_buttons .button input, .smaller_buttons .button button, .button.big-button input, .button.big-button button { padding: 8px 15px; font-size: 18px; }
 
-.button:hover { box-shadow: 0 0 .1em rgba(0,0,0,0.4); -moz-box-shadow: 0 0 .1em rgba(0,0,0,0.4); -webkit-box-shadow: 0 0 .1em rgba(0,0,0,0.4); cursor: pointer; }
+.button:hover { box-shadow: 0 0 .3em rgba(0,0,0,0.7); -moz-box-shadow: 0 0 .3em rgba(0,0,0,0.7); -webkit-box-shadow: 0 0 .3em rgba(0,0,0,0.7); cursor: pointer; }
 /* When pressed, move it down 1px */ 
 .button:active { position: relative; top: 1px; }
 /*----------------------------*/
 .button-icon span { padding: 0 4px; line-height: 1; }
-.smaller_buttons .button img, .button.small-button img { float: left; margin: 2px 7px -3px 0; }
+.button img { float: left; margin: 2px 7px -3px 0; }
 .button-icon img { margin: 0; float: none; }
 .button a, .button a:hover, .button a:visited, .button a:active { color: #FFF; border: 0; }
 /*----------------------------*/

@@ -364,7 +364,7 @@ TBG.Main.Helpers.ajax = function(url, options) {
 						var content = (json) ? json[json_content_element] : transport.responseText;
 						var update_element = (is_string(options.success.update)) ? options.success.update : options.success.update.element;
 						if ($(update_element)) {
-							var insertion = (is_string(options.success.update)) ? false : (options.success.insertion) ? options.success.insertion : false;
+							var insertion = (is_string(options.success.update)) ? false : (options.success.update.insertion) ? options.success.update.insertion : false;
 							if (insertion) {
 								$(update_element).insert(content, 'after');
 							} else {
@@ -1253,7 +1253,7 @@ TBG.Project.Edition.add = function(url) {
 		loading: {indicator: 'edition_add_indicator'},
 		success: {
 			reset: 'add_edition_form',
-			hide: 'no_editions',
+			hide: ['no_editions', 'add_edition_form'],
 			update: {element: 'edition_table', insertion: true, from: 'html'}
 		}
 	});
@@ -1330,7 +1330,7 @@ TBG.Project.Component.add = function(url) {
 		loading: {indicator: 'component_add_indicator'},
 		success: {
 			reset: 'add_component_form',
-			hide: 'no_components',
+			hide: ['no_components', 'add_component_form'],
 			update: {element: 'component_table', insertion: true, from: 'html'}
 		}
 	});

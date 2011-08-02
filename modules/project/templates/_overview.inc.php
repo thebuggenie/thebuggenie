@@ -40,7 +40,7 @@
 					</td>
 					<td style="font-weight: normal; vertical-align: top; position: relative;">
 						<?php if ($tbg_user->canReportIssues($project)): ?>
-							<div class="button button-green small-button report_button" style="float: right; overflow: visible; position: relative;">
+							<div class="button button-green report_button" style="float: right; overflow: visible; position: relative;">
 								<input type="submit" value="<?php echo __('Report an issue'); ?>">
 								<div class="report_button_hover rounded_box green shadowed borderless">
 									<div class="tab_menu_dropdown">
