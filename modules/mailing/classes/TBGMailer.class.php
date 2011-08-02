@@ -93,7 +93,7 @@
 			$this->ehlo = false;
 		}
 
-		public function send(TBGMimemail $email, $server = null)
+		public function send(TBGMimemail $email)
 		{
 			try
 			{
@@ -122,7 +122,7 @@
 				}
 				else
 				{
-					$retval = $this->_mail2($email, $server);
+					$retval = $this->_mail2($email);
 				}
 			}
 			catch (Exception $e)
@@ -185,9 +185,16 @@
 			return $ret;
 		}
 
-		protected function _mail2(TBGMimemail $email, $server = null)
+		protected function _mail2(TBGMimemail $email)
 		{
-			if ($server == null): $server = $_SERVER['SERVER_NAME']; endif;
+			if (TBGContext::isCLI())
+			{
+				$server = php_uname('n');
+			}
+			else
+			{
+				$server = $_SERVER['SERVER_NAME'];
+			}
 
 			/* Open a socket connection to the mail server SMTP port (25) and read the welcome message. */
 			$fp = fsockopen($this->server, $this->port, $errno, $errstr, $this->timeout);
