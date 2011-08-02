@@ -23,7 +23,6 @@
 		{
 			$this->_command_name = 'process_mail_queue';
 			$this->_description = "Processes emails waiting to be sent";
-			$this->addRequiredArgument('server', "Server name (i.e. www.example.com)");
 			$this->addOptionalArgument('test', "Set to 'yes' or 'no' to do a test run");
 			$this->addOptionalArgument('limit', "Specify a limit to only process a certain number of emails");
 		}
@@ -48,7 +47,7 @@
 					{
 						foreach ($messages as $message_id => $message)
 						{
-							$retval = $mailer->send($message, $this->getProvidedArgument('server'));
+							$retval = $mailer->send($message);
 							$processed_messages[] = $message_id;
 							if (!$retval) $failed_messages++;
 						}
