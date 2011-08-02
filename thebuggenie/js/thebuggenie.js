@@ -365,7 +365,7 @@ TBG.Main.Helpers.ajax = function(url, options) {
 						var content = (json) ? json[json_content_element] : transport.responseText;
 						var update_element = (is_string(options.success.update)) ? options.success.update : options.success.update.element;
 						if ($(update_element)) {
-							var insertion = (is_string(options.success.update)) ? false : (options.success.insertion) ? options.success.insertion : false;
+							var insertion = (is_string(options.success.update)) ? false : (options.success.update.insertion) ? options.success.update.insertion : false;
 							if (insertion) {
 								$(update_element).insert(content, 'after');
 							} else {
