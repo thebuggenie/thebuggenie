@@ -20,13 +20,13 @@
 		<td class="main_area">
 			<?php TBGEvent::createNew('core', 'dashboard_main_top')->trigger(); ?>
 			<?php if (empty($dashboardViews)) :?>
-				<p class="content faded_out"><?php echo __("This dashboard doesn't contain any view. To add views in this dashboard, press the 'Customize dashboard'-icon to the far right."); ?></p>
+				<p class="content faded_out"><?php echo __("This dashboard doesn't contain any views. To add views in this dashboard, press the 'Customize dashboard'-icon to the far right."); ?></p>
 			<?php else: ?>
 				<ul id="dashboard">
 					<?php $clearleft = true; ?>
 					<?php foreach($dashboardViews as $view): ?>
 					<li style="clear: <?php echo ($clearleft) ? 'left' : 'right'; ?>;">
-						<?php include_component('dashboardview', array('type' => $view->get(TBGUserDashboardViewsTable::TYPE), 'id' => $view->get(TBGUserDashboardViewsTable::ID), 'view' => $view->get(TBGUserDashboardViewsTable::VIEW), 'rss' => true)); ?>
+						<?php include_component('dashboardview', array('type' => $view->get(TBGDashboardViewsTable::TYPE), 'id' => $view->get(TBGDashboardViewsTable::ID), 'view' => $view->get(TBGDashboardViewsTable::VIEW), 'rss' => true)); ?>
 					</li>
 					<?php $clearleft = !$clearleft; ?>
 					<?php endforeach; ?>
