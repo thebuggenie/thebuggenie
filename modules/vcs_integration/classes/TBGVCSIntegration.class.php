@@ -399,11 +399,11 @@
 			// Produce list of keywords for matching
 			if (TBGSettings::get('match_keywords_'.$project->getID(), 'vcs_integration') == '')
 			{
-				$fixes_grep = "#((bug|issue|ticket|fix|fixes|fixed|fixing|applies to|closes|references|ref|addresses|re|see|according to|also see)\s\#?(([A-Z0-9]+\-)?\d+))#ie";
+				$fixes_grep = "#((bug|issue|ticket|fix|fixes|fixed|fixing|applies to|closes|references|ref|addresses|re|see|according to|also see)\s\#?(([A-Z0-9]+\-)?((\w*:)?\d+)))#ie";
 			}
 			else
 			{
-				$fixes_grep = "#((".TBGSettings::get('match_keywords_'.$project->getID()).")\s\#?(([A-Z0-9]+\-)?\d+))#ie";
+				$fixes_grep = "#((".TBGSettings::get('match_keywords_'.$project->getID()).")\s\#?(([A-Z0-9]+\-)?((\w*:)?\d+)))#ie";
 			}
 			
 			// Build list of affected issues
