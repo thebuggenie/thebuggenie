@@ -806,6 +806,7 @@ table.issue_affects td img { vertical-align: bottom; }
 #dashboard li.narrow { width: 300px; }
 #dashboard li.wide { width: 700px; }
 #dashboard li .header { margin: 2px 0 5px 0; padding: 3px 3px 3px 0; font-weight: bold;  border-bottom: 1px solid #CCC; background-color: #FFF; }
+#dashboard li .milestone_box .header { margin: 0; padding: 0; border: none; background: none; }
 #dashboard .dashboard_view_header { font-weight: bold; color: #666; font-size: 1em; padding: 4px; }
 #dashboard .dashboard_view_content { padding: 10px; }
 #dashboard .dashboard_view_header img { margin-right: 2px; }

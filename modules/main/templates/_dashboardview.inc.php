@@ -125,7 +125,7 @@
 						</div>
 					<?php endif; ?>
 				<?php else: ?>
-					<div class="faded_out" style="font-weight: normal;"><?php echo __('Nor project leader specified'); ?></div>
+					<div class="faded_out" style="font-weight: normal;"><?php echo __('No project leader specified'); ?></div>
 				<?php endif; ?>
 			</div>
 			<div id="project_qa">
@@ -292,27 +292,74 @@
 		
 		<?php break; ?>
 	<?php case TBGDashboard::DASHBOARD_PROJECT_RECENT_ACTIVITIES : ?>
+		<?php $selected_project = TBGContext::getCurrentProject(); ?>
+		<?php $recent_activities = $selected_project->getRecentActivities(5); ?>
+		<div class="rounded_box lightgrey borderless cut_bottom dashboard_view_header" style="margin-top: 5px;">
+			<?php echo image_tag('collapse_small.png', array('id' => 'dashboard_'.$id.'_collapse', 'style' => 'float: left; margin: 3px 5px 0 2px;', 'onclick' => "\$('dashboard_{$id}').toggle(); this.src = (this.src == '" . image_url('collapse_small.png', false, 'core', false) . "') ? '" . image_url('expand_small.png', false, 'core', false) . "' : '" . image_url('collapse_small.png', false, 'core', false) . "'")); ?>
+			<?php echo __('Recent activities'); ?>
+		</div>
+					
+		<div class="dashboard_view_content" id="dashboard_<?php echo $id; ?>">
+			<?php if (count($recent_activities) > 0): ?>
+				<?php echo link_tag(make_url('project_timeline', array('project_key' => $selected_project->getKey())), __('Show more') . ' &raquo;', array('class' => 'more', 'title' => __('Show more'))); ?>
+				<?php include_component('project/timeline', array('activities' => $recent_activities)); ?>
+			<?php else: ?>
+				<div class="faded_out"><b><?php echo __('No recent activity registered for this project.'); ?></b><br><?php echo __('As soon as something important happens it will appear here.'); ?></div>
+			<?php endif; ?>
+		</div>
+		<?php break; ?>
 	<?php case TBGDashboard::DASHBOARD_PROJECT_UPCOMING : ?>
+		<?php $selected_project = TBGContext::getCurrentProject(); ?>
+		<div class="rounded_box lightgrey borderless cut_bottom dashboard_view_header" style="margin-top: 5px;">
+			<?php echo image_tag('collapse_small.png', array('id' => 'dashboard_'.$id.'_collapse', 'style' => 'float: left; margin: 3px 5px 0 2px;', 'onclick' => "\$('dashboard_{$id}').toggle(); this.src = (this.src == '" . image_url('collapse_small.png', false, 'core', false) . "') ? '" . image_url('expand_small.png', false, 'core', false) . "' : '" . image_url('collapse_small.png', false, 'core', false) . "'")); ?>
+			<?php echo __('Upcoming milestones and deadlines'); ?>
+		</div>
+					
+		<div class="dashboard_view_content" id="dashboard_<?php echo $id; ?>">
+			<div class="header"><?php echo __('Milestones finishing in the next 14 days'); ?></div>
+			<?php $milestone_cc = 0; ?>
+			<?php foreach ($selected_project->getUpcomingMilestonesAndSprints(14) as $milestone): ?>
+				<?php if ($milestone->isScheduled()): ?>
+					<?php include_template('main/milestonedashboardbox', array('milestone' => $milestone)); ?>
+					<?php $milestone_cc++; ?>
+				<?php endif; ?>
+			<?php endforeach; ?>
+			<?php if ($milestone_cc == 0): ?>
+				<div class="faded_out"><?php echo __('This project has no upcoming milestones.'); ?></div>
+			<?php endif; ?>
+			<div class="header"><?php echo __('Milestones starting in the next 14 days'); ?></div>
+			<?php $milestone_cc = 0; ?>
+			<?php foreach ($selected_project->getStartingMilestonesAndSprints(14) as $milestone): ?>
+				<?php if ($milestone->isStarting()): ?>
+					<?php include_template('main/milestonedashboardbox', array('milestone' => $milestone)); ?>
+					<?php $milestone_cc++; ?>
+				<?php endif; ?>
+			<?php endforeach; ?>
+			<?php if ($milestone_cc == 0): ?>
+				<div class="faded_out"><?php echo __('This project has no upcoming milestones.'); ?></div>
+			<?php endif; ?>
+		</div>
+		<?php break; ?>
 	<?php case TBGDashboard::DASHBOARD_PROJECT_DOWNLOADS : ?>
 		<?php $selected_project = TBGContext::getCurrentProject(); ?>
 		<div class="rounded_box lightgrey borderless cut_bottom dashboard_view_header" style="margin-top: 5px;">
 			<?php echo image_tag('collapse_small.png', array('id' => 'dashboard_'.$id.'_collapse', 'style' => 'float: left; margin: 3px 5px 0 2px;', 'onclick' => "\$('dashboard_{$id}').toggle(); this.src = (this.src == '" . image_url('collapse_small.png', false, 'core', false) . "') ? '" . image_url('expand_small.png', false, 'core', false) . "' : '" . image_url('collapse_small.png', false, 'core', false) . "'")); ?>
-			<?php echo __('Coming soon'); ?> <?php echo $type; ?>
+			<?php echo __('Latest downloads'); ?>
 		</div>
 					
 		<div class="dashboard_view_content" id="dashboard_<?php echo $id; ?>">			
-			<span class="faded_out">This view is coming soon...</span>
+			<span class="faded_out">This is coming soon...</span>
 		</div>
 		<?php break; ?>
 	<?php case TBGDashboard::DASHBOARD_PROJECT_STATISTICS : ?>
 		<?php $selected_project = TBGContext::getCurrentProject(); ?>
-		<?php $priority_count = count(TBGPriority::getAll()); ?>
+		<?php $priority_count = $selected_project->getPriorityCount(); ?>
 		<div class="rounded_box lightgrey borderless cut_bottom dashboard_view_header" style="margin-top: 5px;">
 			<?php echo image_tag('collapse_small.png', array('id' => 'dashboard_'.$id.'_collapse', 'style' => 'float: left; margin: 3px 5px 0 2px;', 'onclick' => "\$('dashboard_{$id}').toggle(); this.src = (this.src == '" . image_url('collapse_small.png', false, 'core', false) . "') ? '" . image_url('expand_small.png', false, 'core', false) . "' : '" . image_url('collapse_small.png', false, 'core', false) . "'")); ?>
 			<?php echo __('Statistics'); ?>
 		</div>
 		<div class="dashboard_view_content" id="dashboard_<?php echo $id; ?>">
-			<?php echo link_tag(make_url('project_statistics', array('project_key' => $selected_project->getKey())), __('More statistics') . ' &raquo;', array('class' => 'more', 'title' => __('Show more issues'))); ?>
+			<?php echo link_tag(make_url('project_statistics', array('project_key' => $selected_project->getKey())), __('More statistics') . ' &raquo;', array('class' => 'more', 'title' => __('More statistics'))); ?>
 			<div class="header_div">
 				<?php echo __('Open issues by priority'); ?>
 			</div>

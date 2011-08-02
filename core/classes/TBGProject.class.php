@@ -366,6 +366,13 @@
 		protected $_children = null;
 		
 		/**
+		 * Recent activities
+		 * 
+		 * @var Array
+		 */
+		protected $_recentactivities = null;
+		
+		/**
 		 * Make a project default
 		 * 
 		 * @param $p_id integer The id for the default project
@@ -1272,6 +1279,30 @@
 				foreach ($allmilestones as $milestone)
 				{
 					if (($milestone->getScheduledDate() >= $curr_day || $milestone->isOverdue()) && (($milestone->getScheduledDate() <= ($curr_day + (86400 * $days))) || ($milestone->getType() == TBGMilestone::TYPE_SCRUMSPRINT && $milestone->isCurrent())))
+					{
+						$ret_arr[$milestone->getID()] = $milestone;
+					}
+				}
+			}
+			return $ret_arr;
+		}
+		
+		/**
+		 * Returns a list of milestones and sprints starting soon
+		 * 
+		 * @param integer $days[optional] Number of days, default 21 
+		 * 
+		 * @return array
+		 */
+		public function getStartingMilestonesAndSprints($days = 21)
+		{
+			$ret_arr = array();
+			if ($allmilestones = $this->getAllMilestones())
+			{
+				$curr_day = time();
+				foreach ($allmilestones as $milestone)
+				{
+					if (($milestone->getStartingDate() > $curr_day) && ($milestone->getStartingDate() < ($curr_day + (86400 * $days))))
 					{
 						$ret_arr[$milestone->getID()] = $milestone;
 					}

@@ -392,7 +392,7 @@
 		 */
 		public function isScheduled()
 		{
-			return $this->_isscheduled;
+			return ($this->getScheduledDate() > 0);
 		}
 		
 		/**
@@ -809,7 +809,7 @@
 		 */
 		public function isStarting()
 		{
-			return $this->_isstarting;
+			return ($this->getStartingDate() > 0);
 		}
 
 		protected function _populateBurndownData()

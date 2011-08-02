@@ -85,7 +85,7 @@
 					$searches[self::DASHBOARD_PROJECT_LAST15] = array( 0 => TBGContext::geti18n()->__('Graph of closed vs open issues, past 15 days'));
 					$searches[self::DASHBOARD_PROJECT_STATISTICS] = array( 0 => TBGContext::geti18n()->__('Basic statistics'));
 					$searches[self::DASHBOARD_PROJECT_RECENT_ISSUES] = $issuetype_icons;
-					$searches[self::DASHBOARD_PROJECT_RECENT_ACTIVITIES] = array( 0 => TBGContext::geti18n()->__('List of recent activities'));
+					$searches[self::DASHBOARD_PROJECT_RECENT_ACTIVITIES] = array( 0 => TBGContext::geti18n()->__('Recent activities'));
 					$searches[self::DASHBOARD_PROJECT_UPCOMING] = array( 0 => TBGContext::geti18n()->__('Upcoming milestones and deadlines'));
 					$searches[self::DASHBOARD_PROJECT_DOWNLOADS] = array( 0 => TBGContext::geti18n()->__('Latest downloads'));
 					break;				
