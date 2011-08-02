@@ -1057,7 +1057,7 @@
 		
 		public function runSettings(TBGRequest $request)
 		{
-			
+			$this->settings_saved = TBGContext::getMessageAndClear('project_settings_saved');
 		}
 		
 		public function runReleaseCenter(TBGRequest $request)

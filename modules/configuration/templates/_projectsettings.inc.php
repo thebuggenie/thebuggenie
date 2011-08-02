@@ -1,6 +1,7 @@
 <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_project_settings', array('project_id' => $project->getID())); ?>" method="post" onsubmit="submitProjectSettings('<?php echo make_url('configure_project_settings', array('project_id' => $project->getID())); ?>'); return false;" id="project_settings">
 <?php endif; ?>
+	<h3><?php echo __('Editing advanced project settings'); ?></h3>
 	<table style="clear: both; width: 780px;" class="padded_table" cellpadding=0 cellspacing=0>
 		<tr>
 			<td style="width: 300px;"><label for="locked"><?php echo __('Allow issues to be reported'); ?></label></td>
@@ -233,7 +234,9 @@
 		<tr>
 			<td colspan="2" style="padding: 10px 0 10px 10px; text-align: right;">
 				<div style="float: left; font-size: 13px; padding-top: 2px; font-style: italic;" class="config_explanation"><?php echo __('When you are done, click "%save%" to save your changes', array('%save%' => __('Save'))); ?></div>
-				<input type="submit" id="project_submit_settings_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
+				<div class="button small-button button-green" style="float: right;">
+					<input type="submit" id="project_submit_settings_button" value="<?php echo __('Save'); ?>">
+				</div>
 				<span id="project_settings_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
 			</td>
 		</tr>
