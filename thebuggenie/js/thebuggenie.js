@@ -1254,7 +1254,7 @@ TBG.Project.Edition.add = function(url) {
 		loading: {indicator: 'edition_add_indicator'},
 		success: {
 			reset: 'add_edition_form',
-			hide: 'no_editions',
+			hide: ['no_editions', 'add_edition_form'],
 			update: {element: 'edition_table', insertion: true, from: 'html'}
 		}
 	});
@@ -1331,7 +1331,7 @@ TBG.Project.Component.add = function(url) {
 		loading: {indicator: 'component_add_indicator'},
 		success: {
 			reset: 'add_component_form',
-			hide: 'no_components',
+			hide: ['no_components', 'add_component_form'],
 			update: {element: 'component_table', insertion: true, from: 'html'}
 		}
 	});
