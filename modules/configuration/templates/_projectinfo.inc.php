@@ -2,6 +2,7 @@
 <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 	<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_project_settings', array('project_id' => $project->getID())); ?>" method="post" id="project_info">
 <?php endif; ?>
+<h3><?php echo __('Editing project details'); ?></h3>
 <table style="clear: both; width: 780px;" class="padded_table" cellpadding=0 cellspacing=0>
 	<tr>
 		<td style="width: 200px;"><label for="project_name"><?php echo __('Project name'); ?></label></td>
