@@ -229,11 +229,11 @@
 
 		}
 
-		public function getLast30IssueCountsByProjectID($project_id)
+		public function getLast15IssueCountsByProjectID($project_id)
 		{
 			$retarr = array();
 
-			for ($cc = 30; $cc >= 0; $cc--)
+			for ($cc = 15; $cc >= 0; $cc--)
 			{
 				$crit = $this->getCriteria();
 				$joinedtable = $crit->addJoin(TBGIssuesTable::getTable(), TBGIssuesTable::ID, self::TARGET);

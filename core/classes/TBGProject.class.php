@@ -1563,11 +1563,11 @@
 			{
 				list ($this->_issuecounts['all']['closed'], $this->_issuecounts['all']['open']) = TBGIssue::getIssueCountsByProjectID($this->getID());
 			}
-			if (empty($this->_issuecounts['last30']))
+			if (empty($this->_issuecounts['last15']))
 			{
-				list ($closed, $open) = TBGLogTable::getTable()->getLast30IssueCountsByProjectID($this->getID());
-				$this->_issuecounts['last30']['open'] = $open;
-				$this->_issuecounts['last30']['closed'] = $closed;
+				list ($closed, $open) = TBGLogTable::getTable()->getLast15IssueCountsByProjectID($this->getID());
+				$this->_issuecounts['last15']['open'] = $open;
+				$this->_issuecounts['last15']['closed'] = $closed;
 			}
 		}
 		
@@ -1692,10 +1692,10 @@
 			return $this->_issuecounts['all']['closed'] + $this->_issuecounts['all']['open'];
 		}
 
-		public function getLast30Counts()
+		public function getLast15Counts()
 		{
 			$this->_populateIssueCounts();
-			return $this->_issuecounts['last30'];
+			return $this->_issuecounts['last15'];
 		}
 		
 		/**
