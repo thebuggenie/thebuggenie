@@ -4,7 +4,7 @@
 	$assignees = $project->getAssignees(); 
 
 ?>
-<div class="config_header" style="border-bottom: 0;"><b><?php echo __('Assigned users'); ?></b></div>
+<div class="config_header" style="border-bottom: 0; margin-top: 0; padding-top: 0;"><b><?php echo __('Assigned users'); ?></b></div>
 <?php if (count($assignees['users']) == 0): ?>
 	<div style="padding-left: 5px; padding-top: 3px; color: #AAA;"><?php echo __('There are no users assigned to this project'); ?></div>
 <?php else: ?>

@@ -1,4 +1,5 @@
 <div style="text-align: left;">
+	<h3><?php echo __('Editing project display settings'); ?></h3>
 	<div class="config_header"><b><?php echo __('Project frontpage overview'); ?></b></div>
 	<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 		<?php echo __('Select what to show on the frontpage project overview'); ?>. (<?php echo __('This will not affect the separate project overview page'); ?>)
@@ -44,7 +45,9 @@
 	<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 		<div style="margin: 15px 0px 5px 0px; width: 770px; vertical-align: middle; height: 23px; padding: 5px 10px 5px 10px;">
 			<div style="float: left; font-size: 13px; padding-top: 2px; font-style: italic;" class="config_explanation"><?php echo __('When you are done, click "%save%" to save your changes', array('%save%' => __('Save'))); ?></div>
-			<input type="submit" id="project_submit_settings_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
+			<div class="button small-button button-green" style="float: right;">
+				<input type="submit" id="project_submit_settings_button" value="<?php echo __('Save'); ?>">
+			</div>
 			<span id="settings_save_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
 		</div>
 	</form>

@@ -65,7 +65,7 @@
 		 *
 		 * @var boolean
 		 */
-		protected $_enable_builds = null;
+		protected $_enable_builds = true;
 
 		/**
 		 * Edition builds

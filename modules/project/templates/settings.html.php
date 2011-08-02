@@ -6,9 +6,16 @@
 ?>
 			<?php include_template('project/projectheader', array('selected_project' => $selected_project)); ?>
 			<?php include_template('project/projectinfosidebar', array('selected_project' => $selected_project)); ?>
-			<div style="width: 790px; margin-top: 30px;">
+			<div style="width: 790px;">
 				<?php include_component('configuration/projectconfig', array('project' => $selected_project)); ?>
 			</div>
 		</td>
 	</tr>
 </table>
+<?php if ($settings_saved): ?>
+	<script type="text/javascript">
+		document.observe('dom:loaded', function() {
+			TBG.Main.Helpers.Message.success('<?php echo __('Settings saved'); ?>', '<?php echo __('Project settings have been saved successfully'); ?>');
+		});
+	</script>
+<?php endif; ?>
