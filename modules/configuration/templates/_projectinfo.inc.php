@@ -125,7 +125,7 @@
 	<tr>
 		<td colspan="2" style="padding: 10px 0 10px 10px; text-align: right;">
 			<div style="float: left; font-size: 13px; padding-top: 2px; font-style: italic;" class="config_explanation"><?php echo __('When you are done, click "%save%" to save your changes', array('%save%' => __('Save'))); ?></div>
-			<div class="button small-button button-green" style="float: right;">
+			<div class="button button-green" style="float: right;">
 				<input type="submit" id="project_submit_settings_button" value="<?php echo __('Save'); ?>">
 			</div>
 			<span id="project_info_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>

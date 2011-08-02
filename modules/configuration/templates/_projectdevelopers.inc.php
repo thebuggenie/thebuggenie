@@ -97,7 +97,7 @@
 </table>
 <h3 style="margin-top: 20px;">
 	<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-	<div class="button button-green small-button" style="float: right; margin-top: -5px;" onclick="$('add_people_to_project_container').toggle();"><span><?php echo __('Add people to this project'); ?></span></div>
+	<div class="button button-green" style="float: right; margin-top: -5px;" onclick="$('add_people_to_project_container').toggle();"><span><?php echo __('Add people to this project'); ?></span></div>
 	<?php endif; ?>
 	<?php echo __('Project team'); ?>
 </h3>
