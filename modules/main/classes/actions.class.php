@@ -267,7 +267,7 @@
 					TBGContext::setCurrentProject($project);
 				}
 			}
-			$this->dashboardViews = TBGDashboard::getUserViews();
+			$this->dashboardViews = TBGDashboard::getViews(TBGDashboardViewsTable::TYPE_USER);
 		}
 		
 		/**
@@ -294,7 +294,7 @@
 								array_push($views, array('type' => strrev(mb_strstr(strrev($view), '_', true)), 'id' => mb_strstr($view, '_', true)));
 							}
 							array_pop($views);
-							TBGDashboard::setUserViews(TBGContext::getUser()->getID(), $views);
+							TBGDashboard::setViews(TBGContext::getUser()->getID(), TBGDashboardViewsTable::TYPE_USER, $views);
 							return $this->renderJSON(array('message' => $i18n->__('Dashboard configuration saved')));
 						}
 						else

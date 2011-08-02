@@ -422,7 +422,7 @@
 			$this->forward403unless($this->_checkProjectPageAccess('project_statistics'));
 		}
 
-		public function runStatisticsLast30(TBGRequest $request)
+		public function runStatisticsLast15(TBGRequest $request)
 		{
 			$this->forward403unless($this->_checkProjectPageAccess('project_statistics'));
 
@@ -434,11 +434,11 @@
 			$this->getResponse()->setContentType('image/png');
 			$this->getResponse()->setDecoration(TBGResponse::DECORATE_NONE);
 			$datasets = array();
-			$issues = $this->selected_project->getLast30Counts();
+			$issues = $this->selected_project->getLast15Counts();
 			$datasets[] = array('values' => $issues['open'], 'label' => TBGContext::getI18n()->__('Open issues', array(), true));
 			$datasets[] = array('values' => $issues['closed'], 'label' => TBGContext::getI18n()->__('Issues closed', array(), true));
 			$this->datasets = $datasets;
-			$this->labels = array(30,'','','','',25,'','','','',20,'','','','',15,'','','','',10,'','','','',5,'','','','',0);
+			$this->labels = array(15,'','','','',10,'','','','',5,'','','','',0);
 		}
 
 		public function runStatisticsImagesets(TBGRequest $request)

@@ -1,18 +1,18 @@
 <div class="rounded_box white borderless shadowed backdrop_box large">
 	<div class="backdrop_detail_header">
-		<?php echo __('Configure my personal dashboard'); ?>
+		<?php echo __('Configure dashboard'); ?>
 	</div>
 	<div id="backdrop_detail_content">
 		<ul id="views_list" style="float: left; margin: 0; padding: 0; list-style: none;" class="sortable">
 		<?php foreach ($dashboardViews as $view): ?>
-			<li id="view_<?php echo $view->get(TBGUserDashboardViewsTable::VIEW); ?>" class="rounded_box mediumgrey">
-				<span class="dashboard_view_data" id="<?php echo $view->get(TBGUserDashboardViewsTable::VIEW); ?>_<?php echo $view->get(TBGUserDashboardViewsTable::TYPE); ?>"><?php echo ($view->get(TBGUserDashboardViewsTable::TYPE)) ? __($views[$view->get(TBGUserDashboardViewsTable::TYPE)][$view->get(TBGUserDashboardViewsTable::VIEW)]) : __('...Select a view...'); ?></span>
+			<li id="view_<?php echo $view->get(TBGDashboardViewsTable::VIEW); ?>" class="rounded_box mediumgrey">
+				<span class="dashboard_view_data" id="<?php echo $view->get(TBGDashboardViewsTable::VIEW); ?>_<?php echo $view->get(TBGDashboardViewsTable::TYPE); ?>"><?php echo ($view->get(TBGDashboardViewsTable::TYPE)) ? __($views[$view->get(TBGDashboardViewsTable::TYPE)][$view->get(TBGDashboardViewsTable::VIEW)]) : __('...Select a view...'); ?></span>
 				<?php echo javascript_link_tag(image_tag('tabmenu_dropdown.png', array('class' => 'menu_dropdown', 'style' => 'float: right; margin-left: 5px;')), array('onclick' => "this.up('li').toggleClassName('verylightyellow');this.up('li').toggleClassName('mediumgrey');")); ?>
 				<?php echo javascript_link_tag(image_tag('action_remove_small.png', array('class' => 'menu_dropdown', 'style' => 'float: right; margin-left: 5px;')), array('onclick' => "this.up('li').remove();Sortable.create('views_list');")); ?>
 				<div class="available_views_list">
 					<?php foreach ($views as $id_type => $view_type): ?>
 						<?php foreach ($view_type as $id_view => $a_view): ?>
-							<?php if ($id_view == $view->get(TBGUserDashboardViewsTable::VIEW)) continue; ?>
+							<?php if ($id_view == $view->get(TBGDashboardViewsTable::VIEW)) continue; ?>
 							<div id="<?php echo $id_view; ?>_<?php echo $id_type; ?>" onclick="TBG.Main.Profile.Dashboard.View.swap(this);"><?php echo __($a_view); ?></div>
 						<?php endforeach; ?>
 					<?php endforeach; ?>
@@ -29,7 +29,7 @@
 				<div class="available_views_list">
 					<?php foreach ($views as $id_type => $view_type): ?>
 						<?php foreach ($view_type as $id_view => $a_view): ?>
-							<?php if ($id_view == $view->get(TBGUserDashboardViewsTable::VIEW)) continue; ?>
+							<?php if ($id_view == $view->get(TBGDashboardViewsTable::VIEW)) continue; ?>
 							<div id="<?php echo $id_view; ?>_<?php echo $id_type; ?>" onclick="TBG.Main.Profile.Dashboard.View.swap(this);"><?php echo __($a_view); ?></div>
 						<?php endforeach; ?>
 					<?php endforeach; ?>
@@ -39,13 +39,13 @@
 
 		<ul style="margin: 0; padding: 0; list-style:none; clear: both;">
 			<li class="rounded_box white" style="margin: 5px 15px 5px 10px; text-align: center;">
-				<?php echo javascript_link_tag(__('Add a view to my dashboard'), array('onclick' => "TBG.Main.Profile.Dashboard.View.add();")); ?>
+				<?php echo javascript_link_tag(__('Add a view to dashboard'), array('onclick' => "TBG.Main.Profile.Dashboard.View.add();")); ?>
 				<?php echo javascript_link_tag(image_tag('action_add_small.png', array('class' => 'menu_dropdown', 'style' => 'float: right; margin-left: 5px;')), array('onclick' => "TBG.Main.Profile.Dashboard.View.add();")); ?>
 			</li>
 		</ul>
 		<div id="save_dashboard" style="text-align: right; padding: 10px;">
 			<?php echo __("When you're happy, save your changes"); ?>
-			<button onclick="TBG.Main.Profile.Dashboard.save('<?php echo make_url('dashboard_save'); ?>');" style="float: right; margin-left: 10px;"><?php echo __('Save my dashboard'); ?></button>
+			<button onclick="TBG.Main.Profile.Dashboard.save('<?php echo make_url('dashboard_save'); ?>');" style="float: right; margin-left: 10px;"><?php echo __('Save dashboard'); ?></button>
 		</div>
 		<span id="save_dashboard_indicator" style="display: none;"><?php echo image_tag('spinning_20.gif'); ?></span>
 	</div>

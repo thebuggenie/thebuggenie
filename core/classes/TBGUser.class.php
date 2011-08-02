@@ -602,9 +602,7 @@
 				}
 				
 				// Set up a default dashboard for the user
-				TBGUserDashboardViewsTable::getTable()->addView($this->getID(), array('type' => TBGDashboard::DASHBOARD_VIEW_PREDEFINED_SEARCH, 'id' => TBGContext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES));
-				TBGUserDashboardViewsTable::getTable()->addView($this->getID(), array('type' => TBGDashboard::DASHBOARD_VIEW_PREDEFINED_SEARCH, 'id' => TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES));
-				TBGUserDashboardViewsTable::getTable()->addView($this->getID(), array('type' => TBGDashboard::DASHBOARD_VIEW_LOGGED_ACTION, 'id' => 0));
+				TBGDashboardViewsTable::getTable()->setDefaultViews($this->getID(), TBGDashboardViewsTable::TYPE_USER);
 			}
 			
 			if ($this->_timezone !== null)

@@ -290,7 +290,7 @@
 		
 		public function componentDashboardConfig()
 		{
-			$this->views = TBGDashboard::getAvailableUserViews();
-			$this->dashboardViews = TBGDashboard::getUserViews();
+			$this->views = TBGDashboard::getAvailableViews(TBGDashboardViewsTable::TYPE_USER);
+			$this->dashboardViews = TBGDashboard::getViews(TBGDashboardViewsTable::TYPE_USER);
 		}
 	}
