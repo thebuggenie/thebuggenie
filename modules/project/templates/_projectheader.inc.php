@@ -1,7 +1,9 @@
 <div class="project_header">
 	<div class="project_header_right">
 		<?php TBGEvent::createNew('core', 'config_project_header_buttons')->trigger(); ?>
-		<div class="button button-orange"><span><?php echo image_tag('icon_download.png').__('Download'); ?></span></div>
+		<?php if ($tbg_response->getPage() != 'project_releases'): ?>
+			<div class="button button-orange"><span><?php echo link_tag(make_url('project_releases', array('project_key' => $selected_project->getKey())), image_tag('icon_download.png').__('Download')); ?></span></div>
+		<?php endif; ?>
 		<?php if (TBGContext::getUser()->canReportIssues($selected_project)): ?>
 			<div class="button button-green report_button" style="overflow: visible; position: relative;">
 				<span><?php echo image_tag('tab_reportissue.png'); ?> <?php echo __('Report an issue'); ?></span>

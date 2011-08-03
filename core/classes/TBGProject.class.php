@@ -373,6 +373,13 @@
 		protected $_recentactivities = null;
 		
 		/**
+		 * Whether to show a "Download" link and corresponding section
+		 * 
+		 * @var boolean
+		 */
+		protected $_has_downloads = true;
+		
+		/**
 		 * Make a project default
 		 * 
 		 * @param $p_id integer The id for the default project
@@ -1444,6 +1451,17 @@
 		{
 			$this->_populateBuilds();
 			return $this->_builds;
+		}
+		
+		public function getActiveBuilds()
+		{
+			$builds = $this->getBuilds();
+			foreach ($builds as $id => $build)
+			{
+				if ($build->isLocked()) unset($builds[$id]);
+			}
+			
+			return $builds;
 		}
 
 		/**
@@ -2825,6 +2843,26 @@
 					$this->_children[] = TBGContext::factory()->TBGProject($row->get(TBGProjectsTable::ID), $row);
 				}
 			}
+		}
+		
+		/**
+		 * Whether or not this project has downloads enabled
+		 * 
+		 * @return boolean
+		 */
+		public function hasDownloads() 
+		{
+			return (bool) $this->_has_downloads;
+		}
+		
+		/**
+		 * Set whether this project has downloads enabled
+		 * 
+		 * @param boolean $value
+		 */
+		public function setDownloadsEnabled($value = true)
+		{
+			$this->_has_downloads = $value;
 		}
 
 	}

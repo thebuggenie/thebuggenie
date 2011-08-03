@@ -45,11 +45,33 @@
 		protected $_isreleased = null;
 		
 		/**
+		 * Whether this build is active or not
+		 * 
+		 * @var boolean
+		 */
+		protected $_isactive = null;
+		
+		/**
 		 * The builds release date
 		 * 
 		 * @var integer
 		 */
 		protected $_release_date = null;
+		
+		/**
+		 * An attached file, if exists
+		 * 
+		 * @var TBGFile
+		 * @Class TBGFile
+		 */
+		protected $_file_id = null;
+		
+		/**
+		 * An url to download this releases file, if any
+		 * 
+		 * @var string
+		 */
+		protected $_file_url = null;
 		
 		/**
 		 * Project builds cache
@@ -287,6 +309,76 @@
 		public function hasAccess()
 		{
 			return (($this->getProject() instanceof TBGProject && $this->getProject()->canSeeAllBuilds()) || TBGContext::getUser()->hasPermission('canseebuild', $this->getID()));
+		}
+
+		/**
+		 * Return the file associated with this build, if any
+		 * 
+		 * @return TBGFile
+		 */
+		public function getFile()
+		{
+			return $this->_getPopulatedObjectFromProperty('_file_id');
+		}
+		
+		/**
+		 * Set the file associated with this build
+		 * 
+		 * @param TBGFile $file 
+		 */
+		public function setFile(TBGFile $file)
+		{
+			$this->_file = $file;
+		}
+		
+		/**
+		 * Return whether this build has a file associated to it
+		 * 
+		 * @return boolean
+		 */
+		public function hasFile()
+		{
+			return (bool) ($this->getFile() instanceof TBGFile);
+		}
+		
+		/**
+		 * Return the file download url for this build
+		 * 
+		 * @return string
+		 */
+		public function getFileURL()
+		{
+			return $this->_file_url;
+		}
+		
+		/**
+		 * Set the file download url for this build
+		 * 
+		 * @param string $file_url 
+		 */
+		public function setFileURL($file_url)
+		{
+			$this->_file_url = $file_url;
+		}
+		
+		/**
+		 * Return whether this build has a file url
+		 * 
+		 * @return boolean
+		 */
+		public function hasFileURL()
+		{
+			return (bool) ($this->_file_url != '');
+		}
+		
+		/**
+		 * Whether this build has any download associated with it
+		 * 
+		 * @return boolean
+		 */
+		public function hasDownload()
+		{
+			return (bool) ($this->getFile() instanceof TBGFile || $this->_file_url != '');
 		}
 		
 	}

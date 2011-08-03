@@ -44,6 +44,7 @@
 		const ENABLE_COMPONENTS = 'projects.enable_components';
 		const SHOW_IN_SUMMARY = 'projects.show_in_summary';
 		const SUMMARY_DISPLAY = 'projects.summary_display';
+		const HAS_DOWNLOADS = 'projects.has_downloads';
 		const QA = 'projects.qa_responsible';
 		const QA_TYPE = 'projects.qa_responsible_type';
 		const LOCKED = 'projects.locked';
@@ -62,6 +63,7 @@
 			parent::_addVarchar(self::PREFIX, 5, '');
 			parent::_addBoolean(self::USE_PREFIX);
 			parent::_addBoolean(self::USE_SCRUM);
+			parent::_addBoolean(self::HAS_DOWNLOADS);
 			parent::_addVarchar(self::HOMEPAGE, 200, '');
 			parent::_addInteger(self::OWNER, 10);
 			parent::_addInteger(self::OWNER_TYPE, 3);

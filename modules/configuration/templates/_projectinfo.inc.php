@@ -2,7 +2,7 @@
 	<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_project_settings', array('project_id' => $project->getID())); ?>" method="post" id="project_info">
 <?php endif; ?>
 <h3><?php echo __('Editing project details'); ?></h3>
-<?php include_component('main/hideableInfoBox', array('key' => 'projectinfo_didyouknow', 'title' => __('You can set a project icon too'), 'content' => __('By creating a PNG image in the project_icons directory of your installation, with the same name as the project key, this image will be shown next to your project throughout The Bug Genie. We recommend images are 16x16 in size. For further information please see the documentation.'))); ?>
+<?php //include_component('main/hideableInfoBox', array('key' => 'projectinfo_didyouknow', 'title' => __('You can set a project icon too'), 'content' => __('By creating a PNG image in the project_icons directory of your installation, with the same name as the project key, this image will be shown next to your project throughout The Bug Genie. We recommend images are 16x16 in size. For further information please see the documentation.'))); ?>
 <table style="clear: both; width: 780px;" class="padded_table" cellpadding=0 cellspacing=0>
 	<tr>
 		<td style="width: 200px;"><label for="project_name"><?php echo __('Project name'); ?></label></td>
@@ -15,7 +15,6 @@
 		</td>
 	</tr>
 	<tr>
-	<tr>
 		<td style="width: 200px;"><label for="project_name"><?php echo __('Project key'); ?></label></td>
 		<td style="width: 580px; position: relative;">
 			<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
@@ -25,6 +24,17 @@
 				<?php echo $project->getKey(); ?>
 			<?php endif; ?>
 			<div style="float: right; margin-right: 5px;" class="faded_out"><?php echo __('This is a part of all urls referring to this project'); ?></div>
+		</td>
+	</tr>
+	<tr>
+		<td><label><?php echo __('Project icons'); ?></label></td>
+		<td style="padding: 15px 0;">
+			<?php if (!$project->hasIcon()): ?>
+				<div class="button button-red" style="float: right; margin-left: 5px;"><span><?php echo __('Reset icons'); ?></span></div>
+			<?php endif; ?>
+			<div class="button button-blue" style="float: right;"><span><?php echo __('Change project icons'); ?></span></div>
+			<?php echo image_tag($project->getIcon(false), array('style' => 'float: left; margin: 8px 10px 0 0;'), $project->hasIcon(), 'core', !$project->hasIcon()); ?>
+			<?php echo image_tag($project->getIcon(true), array(), $project->hasIcon(), 'core', !$project->hasIcon()); ?> &nbsp; 
 		</td>
 	</tr>
 	<tr>

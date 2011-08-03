@@ -1062,7 +1062,21 @@
 		
 		public function runReleases(TBGRequest $request)
 		{
+			$builds = $this->selected_project->getBuilds();
 			
+			$active_builds = array();
+			$archived_builds = array();
+			
+			foreach ($builds as $build)
+			{
+				if ($build->isLocked())
+					$archived_builds[$build->getID()] = $build;
+				else
+					$active_builds[$build->getID()] = $build;
+			}
+			
+			$this->active_builds = $active_builds;
+			$this->archived_builds = $archived_builds;
 		}
 		
 	}

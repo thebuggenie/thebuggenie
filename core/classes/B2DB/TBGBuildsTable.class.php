@@ -32,11 +32,14 @@
 		const LOCKED = 'builds.locked';
 		const PROJECT = 'builds.project';
 		const RELEASED = 'builds.isreleased';
+		const FILE_ID = 'builds.file_id';
+		const FILE_URL = 'builds.file_url';
 		
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
 			parent::_addVarchar(self::NAME, 100);
+			parent::_addText(self::FILE_URL);
 			parent::_addInteger(self::VERSION_MAJOR, 3);
 			parent::_addInteger(self::VERSION_MINOR, 3);
 			parent::_addInteger(self::VERSION_REVISION, 5);
@@ -45,6 +48,7 @@
 			parent::_addBoolean(self::LOCKED);
 			parent::_addForeignKeyColumn(self::EDITION, B2DB::getTable('TBGEditionsTable'), TBGEditionsTable::ID);
 			parent::_addForeignKeyColumn(self::PROJECT, TBGProjectsTable::getTable(), TBGProjectsTable::ID);
+			parent::_addForeignKeyColumn(self::FILE_ID, TBGFilesTable::getTable(), TBGFilesTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 		

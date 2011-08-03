@@ -53,6 +53,22 @@
 			<?php endif; ?>
 			</td>
 		</tr>
+		<tr>
+			<td><label for="project_downloads_enabled"><?php echo __('Show project downloads'); ?></label></td>
+			<td>
+				<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
+					<select name="has_downloads" id="released" style="width: 70px;">
+						<option value=1<?php if ($project->hasDownloads()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
+						<option value=0<?php if (!$project->hasDownloads()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
+					</select>
+				<?php else: ?>
+					<?php echo ($project->hasDownloads()) ? __('Yes') : __('No'); ?>
+				<?php endif; ?>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" class="faded_out"><?php echo __('Choose whether download links and tools are available'); ?></td>
+		</tr>
 	</table>
 <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 	<div style="margin: 15px 0px 5px 0px; width: 770px; vertical-align: middle; height: 23px; padding: 5px 10px 5px 10px;">
