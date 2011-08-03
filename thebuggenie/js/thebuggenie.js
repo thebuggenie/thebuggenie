@@ -1227,10 +1227,7 @@ TBG.Project.saveOther = function(url) {
 
 TBG.Project.Edition.edit = function(url, edition_id)
 {
-	TBG.Main.Helpers.ajax(url, {
-		loading: {indicator: 'backdrop_detail_indicator'},
-		success: {update: 'backdrop_detail_content'}
-	});
+	TBG.Main.Helpers.Backdrop.show(url);
 }
 
 TBG.Project.Edition.remove = function(url, eid) {

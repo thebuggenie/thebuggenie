@@ -21,13 +21,11 @@
 <?php endif; ?>
 <div id="project_editions"<?php if (!$project->isEditionsEnabled()): ?> style="display: none;"<?php endif; ?>>
 	<div class="faded_out" id="no_editions" style="padding: 5px;<?php if (count($project->getEditions()) > 0): ?> display: none;<?php endif; ?>"><?php echo __('There are no editions'); ?></div>
-	<table cellpadding=0 cellspacing=0 style="width: 100%; margin: 10px 0 30px;">
-		<tbody id="edition_table">
+	<ul style="margin: 10px 0 30px;" id="edition_table">
 		<?php foreach ($project->getEditions() as $edition): ?>
 			<?php include_template('configuration/editionbox', array('theProject' => $project, 'edition' => $edition, 'access_level' => $access_level)); ?>
 		<?php endforeach; ?>
-		</tbody>
-	</table>
+	</ul>
 </div>
 <div style="padding: 2px 5px 5px 5px;<?php if ($project->isEditionsEnabled()): ?> display: none;<?php endif; ?>" id="project_editions_disabled" class="faded_out"><?php echo __('This project does not use editions'); ?>.<br><?php echo __('Editions can be enabled in project settings'); ?>.</div>
 <h3>

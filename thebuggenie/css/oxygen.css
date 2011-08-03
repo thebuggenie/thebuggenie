@@ -951,6 +951,8 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .project_header_right { float: right; }
 .project_header_right .button { float: left; margin-left: 10px; }
 #project_website, #project_documentation { margin-top: 5px; }
+#edition_table { list-style: none; margin: 0; padding: 0; line-height: 1; }
+#edition_table li { list-style: none; margin: 0; padding: 3px; clear: both; margin-top: 5px; }
 /* end dashboard */
 
 /* project timeline */
