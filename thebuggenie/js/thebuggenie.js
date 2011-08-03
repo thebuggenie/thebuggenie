@@ -226,6 +226,7 @@ TBG.initialize = function(options) {
 	}
 	TBG.Core._initializeAutocompleter();
 	Event.observe(window, 'resize', TBG.Core._resizeWatcher);
+	TBG.Core._resizeWatcher();
 	$('fullpage_backdrop_content').observe('click', TBG.Core._resizeWatcher);
 	document.observe('click', TBG.Main.toggleBreadcrumbMenuPopout);
 };
