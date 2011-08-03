@@ -285,11 +285,39 @@
 		protected $_recentideas = null;
 
 		/**
-		 * Recent activities
+		 * Recent documentation requests
 		 *
 		 * @var array
 		 */
-		protected $_recentactivities = null;
+		protected $_recentdocumentationrequests = null;
+		
+		/**
+		 * Recent new enhancements
+		 *
+		 * @var array
+		 */
+		protected $_recentenhancements = null;
+
+		/**
+		 * Recent support requests
+		 *
+		 * @var array
+		 */
+		protected $_recentsupportrequests = null;
+		
+		/**
+		 * Recent tasks
+		 *
+		 * @var array
+		 */
+		protected $_recenttasks = null;
+
+		/**
+		 * Recent developer reports
+		 *
+		 * @var array
+		 */
+		protected $_recentdeveloperreports = null;
 		
 		/**
 		 * The selected workflow scheme
@@ -336,6 +364,13 @@
 		 * @var Array
 		 */
 		protected $_children = null;
+		
+		/**
+		 * Recent activities
+		 * 
+		 * @var Array
+		 */
+		protected $_recentactivities = null;
 		
 		/**
 		 * Make a project default
@@ -656,6 +691,8 @@
 			{
 				self::$_num_projects = null;
 				self::$_projects = null;
+
+				TBGDashboardViewsTable::getTable()->setDefaultViews($this->getID(), TBGDashboardViewsTable::TYPE_PROJECT);
 
 				TBGContext::setPermission("canseeproject", $this->getID(), "core", TBGContext::getUser()->getID(), 0, 0, true);
 				TBGContext::setPermission("canseeprojecthierarchy", $this->getID(), "core", TBGContext::getUser()->getID(), 0, 0, true);
@@ -1244,6 +1281,30 @@
 				foreach ($allmilestones as $milestone)
 				{
 					if (($milestone->getScheduledDate() >= $curr_day || $milestone->isOverdue()) && (($milestone->getScheduledDate() <= ($curr_day + (86400 * $days))) || ($milestone->getType() == TBGMilestone::TYPE_SCRUMSPRINT && $milestone->isCurrent())))
+					{
+						$ret_arr[$milestone->getID()] = $milestone;
+					}
+				}
+			}
+			return $ret_arr;
+		}
+		
+		/**
+		 * Returns a list of milestones and sprints starting soon
+		 * 
+		 * @param integer $days[optional] Number of days, default 21 
+		 * 
+		 * @return array
+		 */
+		public function getStartingMilestonesAndSprints($days = 21)
+		{
+			$ret_arr = array();
+			if ($allmilestones = $this->getAllMilestones())
+			{
+				$curr_day = time();
+				foreach ($allmilestones as $milestone)
+				{
+					if (($milestone->getStartingDate() > $curr_day) && ($milestone->getStartingDate() < ($curr_day + (86400 * $days))))
 					{
 						$ret_arr[$milestone->getID()] = $milestone;
 					}
@@ -2236,7 +2297,7 @@
 			if ($this->_recentissues === null)
 			{
 				$this->_recentissues = array();
-				if ($res = TBGIssuesTable::getTable()->getRecentByProjectIDandIssueType($this->getID(), array('bug_report'), 10))
+				if ($res = TBGIssuesTable::getTable()->getRecentByProjectIDandIssueType($this->getID(), array('bug_report'), 5))
 				{
 					while ($row = $res->getNextRow())
 					{
@@ -2254,12 +2315,58 @@
 			}
 		}
 
+		protected function _populateRecentDocumentationRequests()
+		{
+			if ($this->_recentdocumentationrequests === null)
+			{
+				$this->_recentdocumentationrequests = array();
+				if ($res = TBGIssuesTable::getTable()->getRecentByProjectIDandIssueType($this->getID(), array('documentation_request')))
+				{
+					while ($row = $res->getNextRow())
+					{
+						try
+						{
+							$recentissue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
+							if ($recentissue->hasAccess())
+							{
+								$this->_recentdocumentationrequests[$recentissue->getID()] = $recentissue;
+							}
+						}
+						catch (Exception $e) {}
+					}
+				}
+			}
+		}
+		
+		protected function _populateRecentEnhancements()
+		{
+			if ($this->_recentenhancements === null)
+			{
+				$this->_recentenhancements = array();
+				if ($res = TBGIssuesTable::getTable()->getRecentByProjectIDandIssueType($this->getID(), array('enhancement')))
+				{
+					while ($row = $res->getNextRow())
+					{
+						try
+						{
+							$recentissue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
+							if ($recentissue->hasAccess())
+							{
+								$this->_recentenhancements[$recentissue->getID()] = $recentissue;
+							}
+						}
+						catch (Exception $e) {}
+					}
+				}
+			}
+		}
+
 		protected function _populateRecentFeatures()
 		{
 			if ($this->_recentfeatures === null)
 			{
 				$this->_recentfeatures = array();
-				if ($res = TBGIssuesTable::getTable()->getRecentByProjectIDandIssueType($this->getID(), array('feature_request', 'enhancement')))
+				if ($res = TBGIssuesTable::getTable()->getRecentByProjectIDandIssueType($this->getID(), array('feature_request')))
 				{
 					while ($row = $res->getNextRow())
 					{
@@ -2299,6 +2406,75 @@
 				}
 			}
 		}
+		
+		protected function _populateRecentSupportRequests()
+		{
+			if ($this->_recentsupportrequests === null)
+			{
+				$this->_recentsupportrequests = array();
+				if ($res = TBGIssuesTable::getTable()->getRecentByProjectIDandIssueType($this->getID(), array('support_request')))
+				{
+					while ($row = $res->getNextRow())
+					{
+						try
+						{
+							$recentissue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
+							if ($recentissue->hasAccess())
+							{
+								$this->_recentsupportrequests[$recentissue->getID()] = $recentissue;
+							}
+						}
+						catch (Exception $e) {}
+					}
+				}
+			}
+		}
+		
+		protected function _populateRecentTasks()
+		{
+			if ($this->_recenttasks === null)
+			{
+				$this->_recenttasks = array();
+				if ($res = TBGIssuesTable::getTable()->getRecentByProjectIDandIssueType($this->getID(), array('task')))
+				{
+					while ($row = $res->getNextRow())
+					{
+						try
+						{
+							$recentissue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
+							if ($recentissue->hasAccess())
+							{
+								$this->_recenttasks[$recentissue->getID()] = $recentissue;
+							}
+						}
+						catch (Exception $e) {}
+					}
+				}
+			}
+		}
+		
+		protected function _populateRecentDeveloperReports()
+		{
+			if ($this->_recentdeveloperreports === null)
+			{
+				$this->_recentdeveloperreports = array();
+				if ($res = TBGIssuesTable::getTable()->getRecentByProjectIDandIssueType($this->getID(), array('developer_reports')))
+				{
+					while ($row = $res->getNextRow())
+					{
+						try
+						{
+							$recentissue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
+							if ($recentissue->hasAccess())
+							{
+								$this->_recentdeveloperreports[$recentissue->getID()] = $recentissue;
+							}
+						}
+						catch (Exception $e) {}
+					}
+				}
+			}
+		}
 
 		/**
 		 * Return this projects 10 most recent issues
@@ -2312,7 +2488,7 @@
 		}
 
 		/**
-		 * Return this projects 5 most recent feature requests / enhancements
+		 * Return this projects 5 most recent feature requests
 		 *
 		 * @return array A list of TBGIssues
 		 */
@@ -2332,6 +2508,62 @@
 			$this->_populateRecentIdeas();
 			return $this->_recentideas;
 		}
+		
+		/**
+		 * Return this projects 5 most recent documentation requests
+		 *
+		 * @return array A list of TBGIssues
+		 */
+		public function getRecentDocumentationRequests()
+		{
+			$this->_populateRecentDocumentationRequests();
+			return $this->_recentdocumentationrequests;
+		}
+
+		/**
+		 * Return this projects 5 most recent enhancements
+		 *
+		 * @return array A list of TBGIssues
+		 */
+		public function getRecentEnhancements()
+		{
+			$this->_populateRecentEnhancements();
+			return $this->_recentenhancements;
+		}
+		
+		/**
+		 * Return this projects 5 most recent tasks
+		 *
+		 * @return array A list of TBGIssues
+		 */
+		public function getRecentTasks()
+		{
+			$this->_populateRecentTasks();
+			return $this->_recenttasks;
+		}
+
+		/**
+		 * Return this projects 5 most recent support requests
+		 *
+		 * @return array A list of TBGIssues
+		 */
+		public function getRecentSupportRequests()
+		{
+			$this->_populateRecentSupportRequests();
+			return $this->_recentsupportrequests;
+		}
+
+		/**
+		 * Return this projects 5 most recent developer reports
+		 *
+		 * @return array A list of TBGIssues
+		 */
+		public function getRecentDeveloperReports()
+		{
+			$this->_populateRecentDeveloperReports();
+			return $this->_recentdeveloperreports;
+		}
+
 
 		protected function _populateRecentActivities($limit = null, $important = true, $offset = null)
 		{

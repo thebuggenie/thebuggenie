@@ -98,11 +98,20 @@
 			switch ($target_type)
 			{
 				case self::TYPE_USER:
-					$this->clearViews($target_id);
+					$this->clearViews($target_id, $target_type);
 					$this->addView($target_id, $target_type, array('type' => TBGDashboard::DASHBOARD_VIEW_PREDEFINED_SEARCH, 'id' => TBGContext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES));
 					$this->addView($target_id, $target_type, array('type' => TBGDashboard::DASHBOARD_VIEW_PREDEFINED_SEARCH, 'id' => TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES));
 					$this->addView($target_id, $target_type, array('type' => TBGDashboard::DASHBOARD_VIEW_PREDEFINED_SEARCH, 'id' => TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES));
 					$this->addView($target_id, $target_type, array('type' => TBGDashboard::DASHBOARD_VIEW_LOGGED_ACTION, 'id' => 0));
+					break;
+				case self::TYPE_PROJECT:
+					$this->clearViews($target_id, $target_type);
+					$this->addView($target_id, $target_type, array('type' => TBGDashboard::DASHBOARD_PROJECT_INFO, 'id' => 0));
+					$this->addView($target_id, $target_type, array('type' => TBGDashboard::DASHBOARD_PROJECT_TEAM, 'id' => 0));
+					$this->addView($target_id, $target_type, array('type' => TBGDashboard::DASHBOARD_PROJECT_SUBPROJECTS, 'id' => 0));
+					$this->addView($target_id, $target_type, array('type' => TBGDashboard::DASHBOARD_PROJECT_CLIENT, 'id' => 0));
+					$this->addView($target_id, $target_type, array('type' => TBGDashboard::DASHBOARD_PROJECT_LAST15, 'id' => 0));
+					$this->addView($target_id, $target_type, array('type' => TBGDashboard::DASHBOARD_PROJECT_STATISTICS, 'id' => 0));
 					break;
 			}
 
