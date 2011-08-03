@@ -2515,7 +2515,7 @@
 						$edition->setReleased((int) $request->getParameter('released'));
 						$edition->setLocked((bool) $request->getParameter('locked'));
 						$edition->save();
-						return $this->renderJSON(array('failed' => false, 'message' => TBGContext::getI18n()->__('Edition details saved')));
+						return $this->renderJSON(array('edition_name' => $edition->getName(), 'message' => TBGContext::getI18n()->__('Edition details saved')));
 					}
 					else
 					{

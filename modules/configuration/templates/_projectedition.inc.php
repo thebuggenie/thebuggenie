@@ -106,7 +106,7 @@
 			</div>
 			<div id="edition_settings_pane"<?php if ($selected_section != 'general'): ?> style="display: none;"<?php endif; ?>>
 				<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-					<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_project_edition', array('project_id' => $edition->getProject()->getID(), 'edition_id' => $edition->getID(), 'mode' => 'general')); ?>" method="post" id="edition_settings_form" onsubmit="submitEditionSettings('<?php echo make_url('configure_project_edition', array('project_id' => $edition->getProject()->getID(), 'edition_id' => $edition->getID(), 'mode' => 'general')); ?>');return false;">
+					<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_project_edition', array('project_id' => $edition->getProject()->getID(), 'edition_id' => $edition->getID(), 'mode' => 'general')); ?>" method="post" id="edition_settings_form" onsubmit="TBG.Project.Edition.submitSettings('<?php echo make_url('configure_project_edition', array('project_id' => $edition->getProject()->getID(), 'edition_id' => $edition->getID(), 'mode' => 'general')); ?>', <?php echo $edition->getID(); ?>);return false;">
 						<table style="clear: both; width: 785px;" class="padded_table" cellpadding=0 cellspacing=0>
 							<tr>
 								<td style="width: 120px;"><label for="edition_name"><?php echo __('Name:') ?></label></td>

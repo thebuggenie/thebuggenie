@@ -1261,9 +1261,10 @@ TBG.Project.Edition.remove = function(url, eid) {
 	TBG.Main.Helpers.ajax(url, {
 		loading: {indicator: 'edition_'+eid+'_delete_indicator'},
 		success: {
-			remove: ['show_edition_'+eid, 'edit_edition_'+eid, 'edition_'+eid+'_permissions'],
+			remove: ['edition_'+eid+'_box', 'edition_'+eid+'_permissions'],
 			callback: function(json) {
 				if (json.itemcount == 0) $('no_editions').show();
+				TBG.Main.Helpers.Dialog.dismiss();
 			}
 		},
 		failure: {
@@ -1284,10 +1285,13 @@ TBG.Project.Edition.add = function(url) {
 	});
 }
 
-TBG.Project.Edition.submitSettings = function(url) {
+TBG.Project.Edition.submitSettings = function(url, edition_id) {
 	TBG.Main.Helpers.ajax(url, {
 		form: 'edition_settings_form',
-		loading: {indicator: 'edition_save_indicator'}
+		loading: {indicator: 'edition_save_indicator'},
+		success: {
+			update: {element: 'edition_' + edition_id + '_name', from: 'edition_name'}
+		}
 	});
 }
 
