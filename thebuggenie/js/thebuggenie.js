@@ -9,6 +9,7 @@ var TBG = {
 	Main: { // The "Main" namespace contains regular functions in use across the site
 		Helpers: {
 			Message: {},
+			Dialog: {},
 			Backdrop: {}
 		}, 
 		Profile: {},
@@ -291,6 +292,32 @@ TBG.Main.Helpers.Message.success = function(title, content) {
 		new Effect.Fade('thebuggenie_successmessage', {queue: {position: 'end', scope: TBG.effect_queues.successmessage, limit: 2}, duration: 0.2});
 	}
 };
+
+TBG.Main.Helpers.Dialog.show = function(title, content, options) {
+	$('dialog_title').update(title);
+	$('dialog_content').update(content);
+	$('dialog_yes').setAttribute('href', '#');
+	$('dialog_no').setAttribute('href', '#');
+	$('dialog_yes').stopObserving('click');
+	$('dialog_no').stopObserving('click');
+	if (options['yes']['click']) {
+		$('dialog_yes').observe('click', options['yes']['click']);
+	}
+	if (options['yes']['href']) {
+		$('dialog_yes').setAttribute('href', options['yes']['href']);
+	}
+	if (options['no']['click']) {
+		$('dialog_no').observe('click', options['no']['click']);
+	}
+	if (options['no']['href']) {
+		$('dialog_no').setAttribute('href', options['no']['href']);
+	}
+	$('dialog_backdrop').appear();
+}
+
+TBG.Main.Helpers.Dialog.dismiss = function() {
+	$('dialog_backdrop').fade();
+}
 
 /**
  * Convenience function for running an AJAX call and updating / showing / hiding
