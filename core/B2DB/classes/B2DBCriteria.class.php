@@ -955,6 +955,9 @@
 				}
 				if (!$a_crit['column'] instanceof B2DBCriterion)
 				{
+					if (!in_array($a_crit['operator'], array(self::DB_EQUALS, self::DB_GREATER_THAN, self::DB_GREATER_THAN_EQUAL, self::DB_ILIKE, self::DB_IN, self::DB_IS_NOT_NULL, self::DB_IS_NULL, self::DB_LESS_THAN, self::DB_LESS_THAN_EQUAL, self::DB_LIKE, self::DB_NOT_EQUALS, self::DB_NOT_ILIKE, self::DB_NOT_IN, self::DB_NOT_LIKE)))
+						throw new B2DBException("Invalid operator");
+					
 					if (isset($a_crit['special']) && $a_crit['special'] != '')
 					{
 						$sql .= $a_crit['special'] . '(';
@@ -1020,6 +1023,9 @@
 				$sql .= ' OR ';
 				if (!$an_or['column'] instanceof B2DBCriterion)
 				{
+					if (!in_array($an_or['operator'], array(self::DB_EQUALS, self::DB_GREATER_THAN, self::DB_GREATER_THAN_EQUAL, self::DB_ILIKE, self::DB_IN, self::DB_IS_NOT_NULL, self::DB_IS_NULL, self::DB_LESS_THAN, self::DB_LESS_THAN_EQUAL, self::DB_LIKE, self::DB_NOT_EQUALS, self::DB_NOT_ILIKE, self::DB_NOT_IN, self::DB_NOT_LIKE)))
+						throw new B2DBException("Invalid operator");
+					
 					$sql .= ($strip) ? $this->getColumnName($an_or['column']) : $this->getSelectionColumn($an_or['column']);
 					if (is_null($an_or['value']) && !in_array($an_or['operator'], array(self::DB_IS_NOT_NULL, self::DB_IS_NULL)))
 					{
