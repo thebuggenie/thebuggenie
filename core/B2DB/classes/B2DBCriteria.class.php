@@ -237,14 +237,6 @@
 		 */
 		public function addInsert($column, $value, $operator = self::DB_EQUALS, $variable = '')
 		{
-			/*if ($value === null)
-			{
-				throw new B2DBException('You must specify a value to insert');
-			}
-			elseif (is_bool($value))
-			{
-				$value = ($value) ? 1 : 0;
-			}*/
 			$this->criterias[$column] = array('column' => $column, 'value' => $value, 'operator' => $operator, 'variable' => $variable);
 			return $this;
 		}
