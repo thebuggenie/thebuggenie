@@ -239,6 +239,6 @@
 		</div>
 	</div>
 	<div class="backdrop_detail_footer">
-		<?php echo javascrip_link_tag(__('Close popup'), array('onclick' => 'TBG.Main.Helpers.Backdrop.reset();')); ?>
+		<?php echo javascript_link_tag(__('Close popup'), array('onclick' => 'TBG.Main.Helpers.Backdrop.reset();')); ?>
 	</div>
 </div>
