@@ -637,7 +637,7 @@ ul.workflow_actions li form { display: inline; margin: 0; padding: 0; }
 #fullpage_backdrop ul.duplicate_issues li { padding-left: 5px; margin-bottom: 5px; }
 #fullpage_backdrop ul.duplicate_issues { margin: 10px 0 5px 0; }
 
-.fullpage_backdrop_content { position: relative; z-index: 1000; }
+.fullpage_backdrop_content { position: relative; z-index: 100001; }
 
 .backdrop_box { background: #396BA7 !important; position: absolute; top: 37px; left: 50%; z-index: 100001; clear: both; padding: 0 !important; }
 .backdrop_box.small { width: 400px; margin: 0 -200px 0 -200px; }
@@ -1277,5 +1277,8 @@ a.action_button:hover { background-color: #FCFCFC; border-color: #AAA; }
 	background: -moz-linear-gradient(-90deg, #c5c5c5, #eaeaea);
 	filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr='#c5c5c5', EndColorStr='#eaeaea');        
 }
-/*.button-silver:active { background: #c5c5c5; }*/
 .button.disabled, .button.disabled span { color: #AAA; text-shadow: 1px 1px 0px #FFF; }
+
+#edit_build_download_options li { clear: both; }
+#edit_build_download_options input[type="radio"] { float: left; margin: 0 5px 0 0; }
+#edit_build_download_options label { float: left; margin: 0 5px 0 0; }

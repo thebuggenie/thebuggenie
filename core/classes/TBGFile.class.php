@@ -155,5 +155,5 @@
 		{
 			$this->_description = $description;
 		}
-
+		
 	}

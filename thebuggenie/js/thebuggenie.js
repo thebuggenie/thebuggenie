@@ -1208,7 +1208,7 @@ TBG.Project.Build.addToOpenIssues = function(url, bid) {
 	});
 }
 
-TBG.Project.Build.remove = function(url, bid) {
+TBG.Project.Build.remove = function(url, bid, b_type) {
 	TBG.Main.Helpers.ajax(url, {
 		loading: {
 			indicator: 'build_'+bid+'_indicator',
@@ -1218,9 +1218,10 @@ TBG.Project.Build.remove = function(url, bid) {
 			}
 		},
 		success: {
-			remove: ['build_list_'+bid, 'buildbox_'+bid],
+			remove: ['show_build_'+bid],
 			callback: function () {
-				if ($('build_table').childElements().size() == 0) $('no_builds').show();
+				if ($(b_type + '_builds').childElements().size() == 0) $('no_' + b_type + '_builds').show();
+				TBG.Main.Helpers.Dialog.dismiss();
 			}
 		},
 		failure: {

@@ -2577,6 +2577,12 @@
 					case 'relate_issue':
 						$template_name = 'main/relateissue';
 						break;
+					case 'project_build':
+						$template_name = 'configuration/build';
+						$options['project'] = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
+						if ($request->hasParameter('build_id'))
+							$options['build'] = TBGContext::factory()->TBGBuild($request->getParameter('build_id'));
+						break;
 					case 'markasduplicate_issue':
 						$template_name = 'main/markasduplicate';
 						break;

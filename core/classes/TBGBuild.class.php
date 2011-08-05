@@ -328,7 +328,12 @@
 		 */
 		public function setFile(TBGFile $file)
 		{
-			$this->_file = $file;
+			$this->_file_id = $file;
+		}
+		
+		public function clearFile()
+		{
+			$this->_file_id = null;
 		}
 		
 		/**

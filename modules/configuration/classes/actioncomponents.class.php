@@ -244,5 +244,19 @@
 			}
 			$this->available_assignees = $available_assignees;
 		}
+		
+		public function componentBuildbox()
+		{
+			$this->access_level = (TBGContext::getUser()->canSaveConfiguration(TBGSettings::CONFIGURATION_SECTION_PROJECTS)) ? TBGSettings::ACCESS_FULL : TBGSettings::ACCESS_READ;
+		}
+		
+		public function componentBuild()
+		{
+			if (!isset($this->build))
+			{
+				$this->build = new TBGBuild();
+				$this->build->setName(TBGContext::getI18n()->__('%project_name% version 0.0.0', array('%project_name%' => $this->project->getName())));
+			}
+		}
 
 	}

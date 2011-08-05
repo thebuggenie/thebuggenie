@@ -131,9 +131,11 @@
 		<div id="dialog_backdrop" style="display: none; background-color: transparent; width: 100%; height: 100%; position: fixed; top: 0; left: 0; margin: 0; padding: 0; text-align: center; z-index: 100000;">
 			<div id="dialog_backdrop_content" class="fullpage_backdrop_content">
 				<div class="rounded_box shadowed_box white cut_top bigger">
-					<h2 id="dialog_title"></h2>
-					<p id="dialog_content"></p>
-					<div style="text-align: center;">
+					<div style="width: 900px; text-align: left; margin: 0 auto; font-size: 13px;">
+						<h3 id="dialog_title"></h3>
+						<p id="dialog_content"></p>
+					</div>
+					<div style="text-align: center; padding: 10px;">
 						<a href="#" id="dialog_yes" class="button button-green"><span><?php echo __('Yes'); ?></span></a>
 						<a href="#" id="dialog_no" class="button button-red"><span><?php echo __('No'); ?></span></a>
 					</div>

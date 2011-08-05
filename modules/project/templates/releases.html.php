@@ -15,7 +15,7 @@
 					<li class="rounded_box invisible" style="line-height: 1.3;">
 						<div class="build_buttons" style="float: right; margin: 3px 3px 0 0;">
 							<?php if ($build->hasDownload()): ?>
-								<div class="button button-orange"><span><?php echo image_tag('icon_download.png').__('Download'); ?></span></div>
+								<div class="button button-orange"><span><?php echo image_tag('icon_download.png'); ?><?php echo ($build->hasFile()) ? link_tag(make_url('downloadfile', array('id' => $build->getFile()->getID())), __('Download')) : link_tag($build->getFileURL(), __('Download')); ?></span></div>
 							<?php endif; ?>
 						</div>
 						<?php echo image_tag('icon_build.png', array('style' => 'float: left; margin-right: 5px;')); ?> <?php echo '<b style="font-size: 15px;">' . $build->getName() . '</b>&nbsp;&nbsp;<span class="faded_out">(' . $build->getVersion() . ')</span>'; ?><br>
@@ -31,11 +31,15 @@
 				<ul class="simple_list">
 				<?php foreach ($archived_builds as $build): ?>
 					<li class="rounded_box invisible">
-						<div class="build_buttons" style="float: right; margin: 4px 4px 0 0;">
-							<?php if ($build->hasDownload()): ?>
-								<div class="button button-silver disabled" title="<?php echo __('This release is no longer available for download'); ?>"><span><?php echo __('Download'); ?></span></div>
-							<?php endif; ?>
-						</div>
+						<?php if ($build->hasDownload()): ?>
+							<div class="build_buttons" style="float: right; margin: 4px 4px 0 0;">
+								<?php if (!$build->isReleased()): ?>
+									<div class="button button-silver disabled" title="<?php echo __('This release is no longer available for download'); ?>"><span><?php echo __('Download'); ?></span></div>
+								<?php else: ?>
+									<div class="button button-orange"><span><?php echo image_tag('icon_download.png'); ?><?php echo ($build->hasFile()) ? link_tag(make_url('downloadfile', array('id' => $build->getFile()->getID())), __('Download')) : link_tag($build->getFileURL(), __('Download')); ?></span></div>
+								<?php endif; ?>
+							</div>
+						<?php endif; ?>
 						<?php echo image_tag('icon_build.png', array('style' => 'float: left; margin-right: 5px;')); ?> <?php echo $build->getName() . '&nbsp;&nbsp;<span class="faded_out">(' . $build->getVersion() . ')</span>'; ?><br>
 						<span class="faded_out" style="font-size: 11px;"><?php echo __('Released %timestamp%', array('%timestamp%' => tbg_formatTime($build->getReleaseDate(), 7))); ?></span>
 					</li>

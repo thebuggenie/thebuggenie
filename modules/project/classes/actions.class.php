@@ -1057,10 +1057,16 @@
 		
 		public function runReleaseCenter(TBGRequest $request)
 		{
-			
+			$this->build_error = TBGContext::getMessageAndClear('build_error');
+			$this->_setupBuilds();
 		}
 		
 		public function runReleases(TBGRequest $request)
+		{
+			$this->_setupBuilds();
+		}
+		
+		protected function _setupBuilds()
 		{
 			$builds = $this->selected_project->getBuilds();
 			

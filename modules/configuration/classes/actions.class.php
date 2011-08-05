@@ -1364,7 +1364,7 @@
 		 * 
 		 * @param TBGRequest $request The request object
 		 */
-		public function runAddBuild(TBGRequest $request)
+		public function runProjectBuild(TBGRequest $request)
 		{
 			$i18n = TBGContext::getI18n();
 
@@ -1379,34 +1379,43 @@
 						{
 							if (($b_name = $request->getParameter('build_name')) && trim($b_name) != '')
 							{
-								if (in_array($b_name, $project->getBuilds()))
-								{
-									throw new Exception($i18n->__('This release already exists for this project'));
-								}
-								if (($e_id = $request->getParameter('edition_id')) && $edition = TBGContext::factory()->TBGEdition($e_id))
-								{
-									if (in_array($b_name, $edition->getBuilds()))
-									{
-										throw new Exception($i18n->__('This release already exists for this edition'));
-									}
-								}								
-								$build = new TBGBuild();
+								$build = new TBGBuild($request->getParameter('build_id'));
 								$build->setName($b_name);
 								$build->setVersion($request->getParameter('ver_mj', 0), $request->getParameter('ver_mn', 0), $request->getParameter('ver_rev', 0));
-								if (isset($edition))
+								$build->setReleased((bool) $request->getParameter('isreleased'));
+								$build->setLocked((bool) $request->getParameter('locked'));
+								$release_date = mktime($request->getParameter('release_hour'), $request->getParameter('release_minute'), 1, $request->getParameter('release_month'), $request->getParameter('release_day'), $request->getParameter('release_year'));
+								$build->setReleaseDate($release_date);
+								switch ($request->getParameter('download', 'leave_file'))
 								{
-									$build->setEdition($edition);
+									case '0':
+										$build->clearFile();
+										$build->setFileURL('');
+										break;
+									case 'upload_file':
+										if ($build->hasFile())
+										{
+											$build->getFile()->delete();
+											$build->clearFile();
+										}
+										$file = TBGContext::getRequest()->handleUpload('upload_file');
+										$build->setFile($file);
+										$build->setFileURL('');
+										break;
+									case 'url':
+										$build->clearFile();
+										$build->setFileURL($request->getParameter('file_url'));
+										break;
 								}
-								else
-								{
-									$build->setProject($project);
-								}
+								
+								if ($request->getParameter('edition_id')) $build->setEdition($edition);
+								if (!$build->getID()) $build->setProject($project);
+								
 								$build->save();
-								return $this->renderJSON(array(/*'title' => $i18n->__('The release has been added'), */'html' => "<span id=\"build_list_{$build->getID()}\">".$this->getTemplateHTML('buildbox', array('build' => $build, 'access_level' => $this->access_level)).'</span>'));
 							}
 							else
 							{
-								throw new Exception($i18n->__('You need to specify a name for the new release'));
+								throw new Exception($i18n->__('You need to specify a name for the release'));
 							}
 						}
 						else
@@ -1421,10 +1430,11 @@
 				}
 				catch (Exception $e)
 				{
-					return $this->renderJSON(array('failed' => true, "error" => $i18n->__('The release could not be added').", ".$e->getMessage()));
+					TBGContext::setMessage('build_error', $e->getMessage());
 				}
+				$this->forward(TBGContext::getRouting()->generate('project_release_center', array('project_key' => $project->getKey())));
 			}
-			return $this->renderJSON(array('failed' => true, "error" => $i18n->__("You don't have access to add releases")));
+			return $this->forward403($i18n->__("You don't have access to add releases"));
 		}
 		
 		/**
@@ -1941,7 +1951,8 @@
 				{
 					if (!is_writable($request->getParameter('upload_localpath')))
 					{
-						return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__("The upload path isn't writable")));
+						$this->getResponse()->setHttpStatus(400);
+						return $this->renderJSON(array('error' => TBGContext::getI18n()->__("The upload path isn't writable")));
 					}
 				}
 				

@@ -203,7 +203,7 @@
 		 * 
 		 * @var boolean
 		 */
-		static protected $_minifyoff = false;
+		static protected $_minifyoff = true;
 
 		/**
 		 * Returns whether or not we're in install mode
