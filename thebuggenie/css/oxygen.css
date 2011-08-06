@@ -1107,7 +1107,7 @@ a.action_button:hover { background-color: #FCFCFC; border-color: #AAA; }
 	-webkit-border-radius: .3em;
 	border-radius: .3em;
 }
-.button input, .button button, .button input:hover, .button button:hover {
+.button input, .button button, .button input:hover {
 	background-color: transparent;
 	color: #FFF;
 	font-size: inherit;
