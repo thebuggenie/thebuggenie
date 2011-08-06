@@ -52,7 +52,7 @@
 			<?php endif; ?>
 		</td>
 	</tr>
-<tr><td colspan="2" class="config_explanation" style="padding-bottom: 10px;"><?php echo __('You can make this project a subproject of another one by selecting a parent project here. If you set a case where this project becomes a subproject of a project which is a subproject of this one, an exception will occur. Some options have been removed to avoid common causes of this.'); ?></td></tr>
+<tr><td colspan="2" class="config_explanation" style="padding-bottom: 10px;"><?php echo __('Some projects have been removed from this list to prevent cases where you make this project a subproject of its child. If you do create such a situation, an error will occur.'); ?></td></tr>
 	<tr>
 		<td><label for="client"><?php echo __('Client'); ?></label></td>
 		<td>
