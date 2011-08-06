@@ -1,4 +1,5 @@
 <div id="tab_vcs_pane"<?php if ($selected_tab != 'vcs'): ?> style="display: none;"<?php endif; ?>>
+<h3>Editing VCS connectivity settings</h3>
 	<?php if ($access_level != TBGSettings::ACCESS_FULL): ?>
 		<div class="rounded_box red" style="margin-top: 10px;">
 			<?php echo __('You do not have the relevant permissions to access VCS Integration settings'); ?>
@@ -122,7 +123,7 @@
 							<td colspan="2" id="vcs_custom_urls">
 								<div class="tab_header"><?php echo __('Custom browser URLs'); ?></div>
 								<div class="rounded_box lightgrey left" style="margin-top: 10px">
-									<div class="header"><?php echo __('In the Commit details page fields, this parameter will be replaced with a real value when link is generated:'); ?></div>
+									<div class="header"><?php echo __('In the Commit details page field, this parameter will be replaced with a real value when link is generated:'); ?></div>
 									<ul>
 										<li>%revno% - <?php echo __('Revision number of either the current or previous revision (the one to use is automatically chosen as appropriate)'); ?></li>
 									</ul>
@@ -167,8 +168,10 @@
 			<table style="clear: both; width: 780px; margin-top: 10px" class="padded_table" cellpadding=0 cellspacing=0>
 				<tr>
 					<td colspan="2" style="padding: 10px 0 10px 10px; text-align: right;">
-						<div style="float: left; font-size: 13px; padding-top: 2px; font-style: italic;" class="config_explanation"><?php echo __('When you are done, click "%save%" to save your changes', array('%save%' => __('Save'))); ?></div>
-						<input type="submit" id="vcs_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
+						<div style="float: left; font-size: 13px; padding-top: 2px; font-style: italic;" class="config_explanation"><?php echo __('When you are done, click "%save%" to save your changes on all tabs', array('%save%' => __('Save'))); ?></div>
+						<div class="button button-green" id="vcs_button" style="float: right; font-size: 14px; font-weight: bold;">
+							<input type="submit" value="<?php echo __('Save'); ?>">
+						</div>
 						<span id="vcs_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
 					</td>
 				</tr>

@@ -195,6 +195,7 @@ div.autocomplete ul li .hidden { display: none; }
 
 /* tabbed menu styles */
 .tab_menu { padding: 0px; margin: 0px; border: 0px; position: relative; border-bottom: 1px solid #BBB; }
+#project_config_menu_panes .tab_menu { margin-top: 35px; margin-bottom: 10px; }
 .tab_menu ul { position: absolute; bottom: -1px; padding: 0px; margin: 0; list-style: none; }
 .tab_menu ul.right { right: 10px; }
 .tab_menu li img { float: left; margin-right: 5px; }
