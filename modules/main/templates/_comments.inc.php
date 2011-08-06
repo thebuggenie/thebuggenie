@@ -3,7 +3,7 @@
 	<div style="float: right; padding: 5px;"><label><?php echo __('Show system-generated comments'); ?><input type="checkbox" id="comments_show_system_comments_toggle" onchange="$$('#comments_box .system_comment').each(function (elm) { $(elm).toggle(); })" /></label></div>
 <?php endif; ?>
 <?php if ($tbg_user->canPostComments()): ?>
-	<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px;" id="comment_add_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="$('comment_add_button').hide(); $('comment_add').show();$('comment_bodybox').focus();" value="<?php echo __('Add new comment'); ?>"></td></tr></table>
+	<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px;" id="comment_add_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><div class="button button-green"><input type="button" onclick="$('comment_add_button').hide(); $('comment_add').show();$('comment_bodybox').focus();" value="<?php echo __('Add new comment'); ?>"></div></td></tr></table>
 	<div id="comment_add" class="comment_add" style="<?php if (!(isset($comment_error) && $comment_error)): ?>display: none; <?php endif; ?>margin-top: 5px;">
 		<div class="comment_add_main">
 			<div class="comment_add_title"><?php echo __('Create a comment'); ?></div><br>
@@ -26,7 +26,7 @@
 						<br><br>
 					<?php endif; ?>
 					<input type="hidden" name="forward_url" value="<?php echo $forward_url; ?>">
-					<?php echo __('%create_comment% or %cancel%', array('%create_comment%' => '<input type="submit" class="comment_addsave" value="'.__('Create comment').'" />', '%cancel%' => '<a href="javascript:void(0);" onClick="$(\'comment_add\').hide();$(\'comment_add_button\').show();">'.__('cancel').'</a>')); ?>
+					<?php echo __('%create_comment% or %cancel%', array('%create_comment%' => '<div class="button button-green"><input type="submit" class="comment_addsave" value="'.__('Create comment').'" /></div>', '%cancel%' => '<div class="button button-blue"><button><a href="javascript:void(0);" onClick="$(\'comment_add\').hide();$(\'comment_add_button\').show();">'.__('cancel').'</a></button></div>')); ?>
 				</div>
 			</form>
 		</div>
