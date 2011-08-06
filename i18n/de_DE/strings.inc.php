@@ -1330,7 +1330,7 @@
 	$strings['Set priority']='Setze Priorität';
 	$strings['top']='oben';
 	$strings['"%project_name%" project planning']='"%project_name%" Projektplanung';
-	$strings['Closed vs open issues, last 30 days isolated']='Geschlossene vs. offene Fälle in den letzten 30 Tagen';
+	$strings['Closed vs open issues, last 15 days isolated']='Geschlossene vs. offene Fälle in den letzten 15 Tagen';
 	$strings['Open issues']='Offene Fälle';
 	$strings['Most voted for issues']='Am häufigsten bewertete Fälle';
 	$strings['There are no saved searches for this project']='Keine gespeicherten Suchen für dieses Projekt';

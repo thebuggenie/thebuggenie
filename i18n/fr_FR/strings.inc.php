@@ -1303,7 +1303,7 @@
 	$strings['Set priority'] = 'D&eacute;finir la priorit&eacute;';
 	$strings['top'] = 'haut';
 	$strings['"%project_name%" project planning'] = '"%project_name%" calendrier projet';
-	$strings['Closed vs open issues, last 30 days isolated'] = 'Demandes ferm&eacute;es vs ouvertes, les 30 derniers jours';
+	$strings['Closed vs open issues, last 15 days isolated'] = 'Demandes ferm&eacute;es vs ouvertes, les 15 derniers jours';
 	$strings['Open issues'] = 'Demandes ouvertes';
 	$strings['Most voted for issues'] = 'Demandes les plus vot&eacute;es';
 	$strings['There are no saved searches for this project'] = 'Il n\'y a pas de recherche enregistr&eacute;e pour ce projet';

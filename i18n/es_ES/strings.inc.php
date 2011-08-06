@@ -1294,7 +1294,7 @@
 	$strings['Set priority'] = 'Establecer prioridad';
 	$strings['top'] = 'arriba';
 	$strings['"%project_name%" project planning'] = 'Planificación del proyecto "%project_name%"';
-	$strings['Closed vs open issues, last 30 days isolated'] = 'Peticiones abiertas vs cerradas, sólo de los últimos 30 días';
+	$strings['Closed vs open issues, last 15 days isolated'] = 'Peticiones abiertas vs cerradas, sólo de los últimos 15 días';
 	$strings['Open issues'] = 'Peticiones abiertas';
 	$strings['Most voted for issues'] = 'La mayoría votó por estas peticiones';
 	$strings['There are no saved searches for this project'] = 'No hay búsquedas guardadas para este proyecto';

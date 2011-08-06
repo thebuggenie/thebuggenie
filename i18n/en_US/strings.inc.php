@@ -1294,7 +1294,7 @@
 	$strings['Set priority']='Set priority';
 	$strings['top']='top';
 	$strings['"%project_name%" project planning']='"%project_name%" project planning';
-	$strings['Closed vs open issues, last 30 days isolated']='Closed vs open issues, last 30 days isolated';
+	$strings['Closed vs open issues, last 15 days isolated']='Closed vs open issues, last 15 days isolated';
 	$strings['Open issues']='Open issues';
 	$strings['Most voted for issues']='Most voted for issues';
 	$strings['There are no saved searches for this project']='There are no saved searches for this project';
