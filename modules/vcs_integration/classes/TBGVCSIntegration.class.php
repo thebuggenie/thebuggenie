@@ -62,6 +62,7 @@
 			TBGEvent::listen('core', 'viewissue_tab_panes_back', array($this, 'listen_viewissue_panel'));
 			TBGEvent::listen('core', 'config_project_tabs', array($this, 'listen_projectconfig_tab'));
 			TBGEvent::listen('core', 'config_project_panes', array($this, 'listen_projectconfig_panel'));
+			TBGEvent::listen('core', 'project_header_buttons', array($this, 'listen_projectheader'));
 		}
 
 		protected function _addRoutes()
@@ -331,6 +332,11 @@
 		public function listen_breadcrumb_links(TBGEvent $event)
 		{
 			$event->addToReturnList(array('url' => TBGContext::getRouting()->generate('vcs_commitspage', array('project_key' => TBGContext::getCurrentProject()->getKey())), 'title' => TBGContext::getI18n()->__('Commits')));
+		}
+		
+		public function listen_projectheader(TBGEvent $event)
+		{
+			TBGActionComponent::includeTemplate('vcs_integration/projectheaderbutton');
 		}
 		
 		public function listen_projectconfig_tab(TBGEvent $event)
