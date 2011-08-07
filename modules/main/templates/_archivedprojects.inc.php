@@ -23,7 +23,11 @@
 			</ul>
 		<?php else: ?>
 			<p class="content faded_out">
-				<?php echo __('There are no top-level archived projects'); ?>.
+				<?php if (isset($parent)): ?>
+					<?php echo __('This project has no archived subprojects'); ?>
+				<?php else: ?>
+					<?php echo __('There are no top-level archived projects'); ?>
+				<?php endif; ?>
 			</p>
 		<?php endif; ?>
 	</div>
