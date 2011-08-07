@@ -180,6 +180,7 @@
 		 */
 		public function runScrumAddTask(TBGRequest $request)
 		{
+			$this->forward403if(TBGContext::getCurrentProject()->isArchived());
 			$this->forward403unless($this->_checkProjectPageAccess('project_scrum'));
 			$issue = TBGContext::factory()->TBGIssue($request->getParameter('story_id'));
 			try
@@ -283,6 +284,7 @@
 		 */
 		public function runScrumSetStoryDetail(TBGRequest $request)
 		{
+			$this->forward403if(TBGContext::getCurrentProject()->isArchived());
 			$this->forward403unless($this->_checkProjectPageAccess('project_scrum'));
 			$issue = TBGContext::factory()->TBGIssue($request->getParameter('story_id'));
 			if ($issue instanceof TBGIssue)
@@ -327,6 +329,7 @@
 		 */
 		public function runScrumAssignStory(TBGRequest $request)
 		{
+			$this->forward403if(TBGContext::getCurrentProject()->isArchived());
 			$this->forward403unless($this->_checkProjectPageAccess('project_scrum') && TBGContext::getUser()->canAssignScrumUserStories($this->selected_project));
 			try
 			{
@@ -371,6 +374,7 @@
 		 */
 		public function runScrumAddSprint(TBGRequest $request)
 		{
+			$this->forward403if(TBGContext::getCurrentProject()->isArchived());
 			$this->forward403unless($this->_checkProjectPageAccess('project_scrum'));
 			if (($sprint_name = $request->getParameter('sprint_name')) && trim($sprint_name) != '')
 			{
@@ -767,6 +771,7 @@
 
 		public function runUpdateIssueDetails(TBGRequest $request)
 		{
+			$this->forward403if(TBGContext::getCurrentProject()->isArchived());
 			$this->error = false;
 			try
 			{
@@ -1052,11 +1057,13 @@
 		
 		public function runSettings(TBGRequest $request)
 		{
+			$this->forward403if(TBGContext::getCurrentProject()->isArchived());
 			$this->settings_saved = TBGContext::getMessageAndClear('project_settings_saved');
 		}
 		
 		public function runReleaseCenter(TBGRequest $request)
 		{
+			$this->forward403if(TBGContext::getCurrentProject()->isArchived());
 			$this->build_error = TBGContext::getMessageAndClear('build_error');
 			$this->_setupBuilds();
 		}

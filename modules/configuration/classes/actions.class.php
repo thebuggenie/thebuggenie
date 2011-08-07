@@ -1751,6 +1751,53 @@
 			}
 			return $this->renderJSON(array('failed' => true, "error" => $i18n->__("You don't have access to remove projects")));
 		}
+		
+		/**
+		 * Handle archive functiions
+		 * 
+		 * @param bool $archived Status
+		 * @param TBGRequest $request The request object
+		 */
+		protected function _setArchived($archived, TBGRequest $request)
+		{
+			$i18n = TBGContext::getI18n();
+
+			if ($this->access_level == TBGSettings::ACCESS_FULL)
+			{
+				try
+				{
+					$theProject = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
+					$theProject->setArchived($archived);
+					$theProject->save();
+					return $this->forward(TBGContext::getRouting()->generate('configure_projects'));
+				}
+				catch (Exception $e)
+				{
+					return $this->renderJSON(array('failed' => true, 'error' => $i18n->__('An error occured') . ': ' . $e->getMessage()));
+				}
+			}
+			return $this->renderJSON(array('failed' => true, "error" => $i18n->__("You don't have access to archive projects")));
+		}
+		
+		/**
+		 * Archive
+		 * 
+		 * @param TBGRequest $request The request object
+		 */
+		public function runArchiveProject(TBGRequest $request)
+		{
+			return $this->_setArchived(true, $request);
+		}
+		
+		/**
+		 * Unarchive
+		 * 
+		 * @param TBGRequest $request The request object
+		 */
+		public function runUnarchiveProject(TBGRequest $request)
+		{
+			return $this->_setArchived(false, $request);
+		}
 
 		/**
 		 * Perform an action on a module

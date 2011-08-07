@@ -619,11 +619,47 @@
 		
 		public function canDelete()
 		{
+			$namespaces = $this->getNamespaces();
+			
+			if(count($namespaces) > 0)
+			{
+				$key = $namespaces[0];
+				$row = TBGProjectsTable::getTable()->getByKey($key);
+				
+				if ($row instanceof B2DBRow)
+				{
+					$project = TBGContext::factory()->TBGProject($row->get(TBGProjectsTable::ID), $row);
+					if ($project instanceof TBGProject)
+					{
+						if ($project->isArchived())
+							return false;
+					}
+				}
+			}
+			
 			return TBGContext::getModule('publish')->canUserDeleteArticle($this->getName());
 		}
 		
 		public function canEdit()
 		{
+			$namespaces = $this->getNamespaces();
+			
+			if(count($namespaces) > 0)
+			{
+				$key = $namespaces[0];
+				$row = TBGProjectsTable::getTable()->getByKey($key);
+				
+				if ($row instanceof B2DBRow)
+				{
+					$project = TBGContext::factory()->TBGProject($row->get(TBGProjectsTable::ID), $row);
+					if ($project instanceof TBGProject)
+					{
+						if ($project->isArchived())
+							return false;
+					}
+				}
+			}
+			
 			return TBGContext::getModule('publish')->canUserEditArticle($this->getName());
 		}
 		

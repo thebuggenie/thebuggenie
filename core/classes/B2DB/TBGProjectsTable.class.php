@@ -54,6 +54,7 @@
 		const ISSUETYPE_SCHEME_ID = 'projects.issuetype_scheme_id';
 		const AUTOASSIGN = 'projects.autoassign';
 		const PARENT_PROJECT_ID = 'projects.parent';
+		const ARCHIVED = 'projects.archived';
 		
 		public function __construct()
 		{
@@ -90,6 +91,7 @@
 			parent::_addForeignKeyColumn(self::PARENT_PROJECT_ID, $this, self::ID);
 			parent::_addBoolean(self::DELETED);
 			parent::_addBoolean(self::AUTOASSIGN);
+			parent::_addBoolean(self::ARCHIVED);
 		}
 		
 		public function clearDefaults()
@@ -191,6 +193,8 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addWhere(self::ISSUETYPE_SCHEME_ID, $scheme_id);
+			$crit->addWhere(self::DELETED, false);
+			$crit->addWhere(self::ARCHIVED, false);
 			
 			return $this->doCount($crit);
 		}
@@ -200,6 +204,8 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addWhere(self::WORKFLOW_SCHEME_ID, $scheme_id);
+			$crit->addWhere(self::DELETED, false);
+			$crit->addWhere(self::ARCHIVED, false);
 			
 			return $this->doCount($crit);
 		}
@@ -210,6 +216,7 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, $scope);
 			$crit->addWhere(self::DELETED, false);
+			$crit->addWhere(self::ARCHIVED, false);
 
 			return $this->doCount($crit);
 		}

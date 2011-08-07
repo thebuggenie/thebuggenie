@@ -50,7 +50,7 @@
 														<input type="radio" value="<?php echo $revision; ?>" <?php if ($revision == $revision_count - 1): ?>checked <?php endif; ?> name="from_revision" id="to_revision_<?php echo $revision; ?>">
 													<?php endif; ?>
 												</td>
-												<?php if ($revision < $revision_count && TBGContext::getModule('publish')->canUserEditArticle($article_name)): ?>
+												<?php if ($revision < $revision_count && $article->canEdit()): ?>
 													<td style="position: relative;">
 															<?php echo javascript_link_tag(__('Restore this version'), array('onclick' => "$('restore_article_revision_{$revision}').toggle();")); ?>
 															<div class="rounded_box white shadowed" style="width: 400px; position: absolute; right: 15px; display: none; z-index: 100;" id="restore_article_revision_<?php echo $revision; ?>">

@@ -1730,54 +1730,6 @@
 		{
 			$this->_timezone = $timezone;
 		}
-		
-		/**
-		 * Return whether the user can vote on issues for a specific product
-		 *  
-		 * @param integer $product_id The Product id
-		 * 
-		 * @return boolean
-		 */
-		public function canVoteOnIssuesForProduct($product_id)
-		{
-			return (bool) $this->hasPermission("b2canvote", $product_id);
-		}
-		
-		/**
-		 * Return whether the user can vote for a specific issue
-		 * 
-		 * @param integer $issue_id The issue id
-		 * 
-		 * @return boolean
-		 */
-		public function canVoteForIssue($issue_id)
-		{
-			return !(bool) $this->hasPermission("b2cantvote", $issue_id);
-		}
-
-		/**
-		 * Return if the user can add builds to an issue for a given project
-		 * 
-		 * @param integer $project_id The project id
-		 * 
-		 * @return boolean
-		 */
-		public function canAddBuildsToIssuesForProject($project_id)
-		{
-			return (bool) $this->hasPermission('b2canaddbuilds', $project_id);
-		}
-
-		/**
-		 * Return if the user can add components to an issue for a given project
-		 * 
-		 * @param integer $project_id The project id
-		 * 
-		 * @return boolean
-		 */
-		public function canAddComponentsToIssuesForProject($project_id)
-		{
-			return (bool) $this->hasPermission('b2canaddcomponents', $project_id);
-		}
 
 		/**
 		 * Return if the user can report new issues
@@ -1791,6 +1743,9 @@
 			if ($project_id !== null)
 			{
 				if (is_numeric($project_id)) $project_id = TBGContext::factory()->TBGProject($project_id);
+			
+				if ($project_id->isArchived()): return false; endif;
+				
 				$project_id = ($project_id instanceof TBGProject) ? $project_id->getID() : $project_id;
 				$retval = $this->hasPermission('cancreateissues', $project_id, 'core', true, null);
 				$retval = ($retval !== null) ? $retval : $this->hasPermission('cancreateandeditissues', $project_id, 'core', true, null);
@@ -1916,6 +1871,7 @@
 		 */
 		public function canManageProjectReleases(TBGProject $project)
 		{
+			if ($project->isArchived()): return false; endif;
 			return (bool) ($this->hasPermission('canmanageprojectreleases', $project->getID()) || $this->hasPermission('canmanageproject', $project->getID()));
 		}
 
@@ -1928,6 +1884,7 @@
 		 */
 		public function canEditProjectDetails(TBGProject $project)
 		{
+			if ($project->isArchived()): return false; endif;
 			return (bool) ($this->hasPermission('caneditprojectdetails', $project->getID(), 'core', true) || $this->hasPermission('canmanageproject', $project->getID(), 'core', true));
 		}
 
@@ -1940,6 +1897,7 @@
 		 */
 		public function canAddScrumUserStories(TBGProject $project)
 		{
+			if ($project->isArchived()): return false; endif;
 			return (bool) ($this->hasPermission('canaddscrumuserstories', $project->getID(), 'core', true) || $this->hasPermission('candoscrumplanning', $project->getID(), 'core', true) || $this->hasPermission('canaddscrumuserstories', 0, 'core', true) || $this->hasPermission('candoscrumplanning', 0, 'core', true));
 		}
 
@@ -1952,6 +1910,7 @@
 		 */
 		public function canAddScrumSprints(TBGProject $project)
 		{
+			if ($project->isArchived()): return false; endif;
 			return (bool) ($this->hasPermission('canaddscrumsprints', $project->getID(), 'core', true) || $this->hasPermission('candoscrumplanning', $project->getID(), 'core', true) || $this->hasPermission('canaddscrumsprints', 0, 'core', true) || $this->hasPermission('candoscrumplanning', 0, 'core', true));
 		}
 
@@ -1964,6 +1923,7 @@
 		 */
 		public function canAssignScrumUserStories(TBGProject $project)
 		{
+			if ($project->isArchived()): return false; endif;
 			return (bool) ($this->hasPermission('canassignscrumuserstoriestosprints', $project->getID(), 'core', true) || $this->hasPermission('candoscrumplanning', $project->getID(), 'core', true) || $this->hasPermission('canassignscrumuserstoriestosprints', 0, 'core', true) || $this->hasPermission('candoscrumplanning', 0, 'core', true));
 		}
 

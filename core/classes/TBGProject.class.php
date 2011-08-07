@@ -380,6 +380,13 @@
 		protected $_has_downloads = true;
 		
 		/**
+		 * Whether a project is archived (read-only mode)
+		 * 
+		 * @var boolean
+		 */
+		protected $_archived = false;
+		
+		/**
 		 * Make a project default
 		 * 
 		 * @param $p_id integer The id for the default project
@@ -498,6 +505,7 @@
 			return $final;
 		}
 
+		// Archived projects do not count
 		public static function getProjectsCount()
 		{
 			if (self::$_num_projects === null)
@@ -1088,6 +1096,26 @@
 		public function isDeleted()
 		{
 			return $this->_deleted;
+		}
+
+		/**
+		 * Returns whether or not the project has been archived
+		 *
+		 * @return boolean
+		 */
+		public function isArchived()
+		{
+			return $this->_archived;
+		}
+
+		/**
+		 * Set the archived state
+		 * 
+		 * @var boolean $archived
+		 */
+		public function setArchived($archived)
+		{
+			$this->_archived = $archived;
 		}
 
 		/**

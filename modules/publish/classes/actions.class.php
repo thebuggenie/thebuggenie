@@ -131,6 +131,7 @@
 		{
 			if ($this->article instanceof TBGWikiArticle)
 			{
+				$this->forward403unless($this->article->canEdit());
 				$namespaces = $this->article->getCombinedNamespaces();
 				$namespaces[] = $this->article->getName();
 				array_unshift($namespaces, 0);
@@ -142,7 +143,7 @@
 		{
 			$this->history_action = $request->getParameter('history_action');
 			if ($this->article instanceof TBGWikiArticle)
-			{
+			{	
 				$this->history = $this->article->getHistory();
 				$this->revision_count = count($this->history);
 
@@ -308,6 +309,7 @@
 
 			if ($this->article instanceof TBGWikiArticle)
 			{
+				$this->forward403unless($this->article->canEdit());
 				$this->article_title = $this->article->getTitle();
 				$this->article_content = $this->article->getContent();
 
@@ -329,6 +331,7 @@
 			}
 			else
 			{
+				$this->forward403if(TBGContext::isProjectContext() && TBGContext::getCurrentProject()->isArchived());
 				if ($request->hasParameter('new_article_content'))
 				{
 					$this->article_content = $request->getRawParameter('new_article_content');

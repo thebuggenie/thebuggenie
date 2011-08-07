@@ -1122,6 +1122,32 @@ TBG.Project.remove = function(url, pid) {
 	});
 }
 
+TBG.Project.archive = function(url, pid) {
+	TBG.Main.Helpers.ajax(url, {
+		loading: {
+			indicator: 'project_' + pid + '_archive_indicator',
+			hide: 'project_' + pid + '_archive'
+		},
+		failure: {
+			callback: function() {
+				TBG.Main.Helpers.Dialog.dismiss();
+			}
+		}
+	});
+}
+
+TBG.Project.unarchive = function(url, pid) {
+	TBG.Main.Helpers.ajax(url, {
+		loading: {
+			indicator: 'project_' + pid + '_unarchive_indicator',
+			hide: 'project_' + pid + '_unarchive'
+		},
+		failure: {
+			show: 'project_' + pid + '_unarchive'
+		}
+	});
+}
+
 TBG.Project.Milestone.add = function(url) {
 	TBG.Main.Helpers.ajax(url, {
 		form: 'add_milestone_form',

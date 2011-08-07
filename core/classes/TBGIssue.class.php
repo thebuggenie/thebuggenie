@@ -979,11 +979,13 @@
 		
 		public function isEditable()
 		{
+			if ($this->getProject()->isArchived()): return false; endif;
 			return ($this->isOpen() && ($this->getProject()->canChangeIssuesWithoutWorkingOnThem() || $this->getWorkflowStep()->isEditable()));
 		}
 		
 		public function isUpdateable()
 		{
+			if ($this->getProject()->isArchived()): return false; endif;
 			return ($this->isOpen() && ($this->getProject()->canChangeIssuesWithoutWorkingOnThem() || !$this->getWorkflowStep()->isClosed()));
 		}
 		
@@ -1054,6 +1056,7 @@
 		
 		public function isWorkflowTransitionsAvailable()
 		{
+			if ($this->getProject()->isArchived()): return false; endif;
 			return (bool) $this->_permissionCheck('caneditissue', true);
 		}
 

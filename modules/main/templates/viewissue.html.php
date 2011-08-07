@@ -161,6 +161,13 @@
 			</div>
 		</div>
 	<?php endif; ?>
+	<?php if ($issue->getProject()->isArchived()): ?>
+		<div class="rounded_box red borderless issue_info aligned" id="viewissue_archived">
+			<div style="padding: 5px;">
+				<?php echo __('The project this issue belongs to has been archived, and so this issue is now read only'); ?>
+			</div>
+		</div>
+	<?php endif; ?>
 	<div style="width: 1000px; padding: 5px; margin: 0 auto 0 auto;">
 		<div style="vertical-align: middle; padding: 5px 0 0 0;">
 			<table style="table-layout: fixed; width: 100%; margin: 0 0 10px 0; background-color: transparent;" cellpadding=0 cellspacing=0>
@@ -217,7 +224,7 @@
 							<table align="right">
 								<tr>
 									<td id="vote_down">
-										<?php $vote_down_options = ($issue->hasUserVoted($tbg_user, false)) ? 'display: none;' : ''; ?>
+										<?php $vote_down_options = ($issue->getProject()->isArchived() || $issue->hasUserVoted($tbg_user, false)) ? 'display: none;' : ''; ?>
 										<?php $vote_down_faded_options = ($vote_down_options == '') ? 'display: none;' : ''; ?>
 										<?php echo javascript_link_tag(image_tag('action_vote_minus.png'), array('onclick' => "TBG.Issues.voteDown('".make_url('issue_vote', array('issue_id' => $issue->getID(), 'vote' => 'down'))."');", 'id' => 'vote_down_link', 'class' => 'image', 'style' => $vote_down_options)); ?>
 										<?php echo image_tag('spinning_16.gif', array('id' => 'vote_down_indicator', 'style' => 'display: none;')); ?>
@@ -228,7 +235,7 @@
 										<div class="votes_header"><?php echo __('Votes'); ?></div>
 									</td>
 									<td id="vote_up">
-										<?php $vote_up_options = ($issue->hasUserVoted($tbg_user, true)) ? 'display: none;' : ''; ?>
+										<?php $vote_up_options = ($issue->getProject()->isArchived() || $issue->hasUserVoted($tbg_user, true)) ? 'display: none;' : ''; ?>
 										<?php $vote_up_faded_options = ($vote_up_options == '') ? 'display: none;' : ''; ?>
 										<?php echo javascript_link_tag(image_tag('action_vote_plus.png'), array('onclick' => "TBG.Issues.voteUp('".make_url('issue_vote', array('issue_id' => $issue->getID(), 'vote' => 'up'))."');", 'id' => 'vote_up_link', 'class' => 'image', 'style' => $vote_up_options)); ?>
 										<?php echo image_tag('spinning_16.gif', array('id' => 'vote_up_indicator', 'style' => 'display: none;')); ?>
