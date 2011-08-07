@@ -1,0 +1,29 @@
+<div class="rounded_box white borderless shadowed backdrop_box medium" id="client_users">
+	<div class="backdrop_detail_header"><?php echo __('Archived projects'); ?></div>
+	<div id="backdrop_detail_content">
+		<?php
+			if (isset($team))
+			{
+				echo __('Displaying archived projects for %team%', array('%team%' => '<b>'.$team->getName().'</b>'));
+			}
+			elseif (isset($client))
+			{
+				echo __('Displaying archived projects for %team%', array('%team%' => '<b>'.$client->getName().'</b>'));
+			}
+		?>
+		<?php if ($project_count > 0): ?>
+			<ul class="project_list simple_list">
+			<?php foreach ($projects as $project): ?>
+				<li><?php include_component('project/overview', array('project' => $project)); ?></li>
+			<?php endforeach; ?>
+			</ul>
+		<?php else: ?>
+			<p class="content">
+				<?php echo __('There are no top-level archived projects'); ?>.
+			</p>
+		<?php endif; ?>
+	</div>
+	<div class="backdrop_detail_footer">
+		<a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.reset();"><?php echo __('Close'); ?></a>
+	</div>
+</div>

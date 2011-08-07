@@ -487,19 +487,31 @@
 		}
 		
 		/**
-		 * Retrieve all projects with no parent
+		 * Retrieve all projects with no parent. If the parent is archived, the project will not be shown
+		 * 
+		 * @param bool $archived[optional] Show archived projects instead
 		 * 
 		 * @return array
 		 */
-		public static function getAllRootProjects()
+		public static function getAllRootProjects($archived = false)
 		{
 			self::_populateProjects();
 			$final = array();
 			foreach (self::$_projects as $project)
 			{
-				if (!($project->getParent() instanceof TBGProject))
+				if ($archived)
 				{
-					$final[] = $project;
+					if (!($project->getParent() instanceof TBGProject) && $project->isArchived())
+					{
+						$final[] = $project;
+					}
+				}
+				else
+				{
+					if (!($project->getParent() instanceof TBGProject) && !$project->isArchived())
+					{
+						$final[] = $project;
+					}
 				}
 			}
 			return $final;

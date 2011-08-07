@@ -25,6 +25,7 @@
 						<?php if ($show_project_config_link): ?>
 							<?php echo link_tag(make_url('configure_projects'), image_tag('cfg_icon_projectheader.png', array('style' => 'float: left; margin-right: 5px;'))); ?>
 						<?php endif; ?>
+						<a style="float: right;" href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'archived_projects')); ?>');"><?php echo __('View archived projects'); ?></a>
 						<?php echo __('Projects'); ?>
 					</div>
 					<?php if ($project_count > 0): ?>
@@ -35,7 +36,7 @@
 						</ul>
 					<?php else: ?>
 						<p class="content">
-							<?php echo __('There are no projects'); ?>.
+							<?php echo __('There are no top-level projects'); ?>.
 							<?php if ($show_project_config_link): ?>
 								<?php echo link_tag(make_url('configure_projects'), __('Go to project management').' &gt;&gt;'); ?>
 							<?php else: ?>

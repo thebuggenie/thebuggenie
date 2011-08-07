@@ -247,7 +247,7 @@
 			$this->show_project_config_link = TBGContext::getUser()->canAccessConfigurationPage(TBGSettings::CONFIGURATION_SECTION_PROJECTS);
 			if ($this->show_project_list)
 			{
-				$this->projects = TBGProject::getAllRootProjects();
+				$this->projects = TBGProject::getAllRootProjects(false);
 				$this->project_count = count($this->projects);
 			}
 		}
@@ -329,6 +329,17 @@
 			try
 			{
 				$this->client = TBGContext::factory()->TBGClient($request->getParameter('client_id'));
+				$projects = TBGProject::getAllByClientID($this->client->getID());
+				
+				$final_projects = array();
+				
+				foreach ($projects as $project)
+				{
+					if (!$project->isArchived()): $final_projects[] = $project; endif;
+				}
+				
+				$this->projects = $final_projects;
+				
 				$this->forward403Unless($this->client->hasAccess());
 			}
 			catch (Exception $e)
@@ -355,7 +366,16 @@
 				$qa = TBGProject::getAllByQaResponsible($this->team);
 				$proj = $this->team->getAssociatedProjects();
 				
-				$this->projects = array_unique(array_merge($proj, $own, $leader, $qa));
+				$projects = array_unique(array_merge($proj, $own, $leader, $qa));
+				$final_projects = array();
+				
+				foreach ($projects as $project)
+				{
+					if (!$project->isArchived()): $final_projects[] = $project; endif;
+				}
+				
+				$this->projects = $final_projects;
+				
 				$this->users = $this->team->getMembers();
 			}
 			catch (Exception $e)
@@ -2613,6 +2633,22 @@
 						$options['tid'] = $request->getParameter('tid');
 						$options['target_type'] = $request->getParameter('target_type');
 						$options['previous_route'] = $request->getParameter('previous_route');
+						$options['mandatory'] = true;
+						break;
+					case 'archived_projects':
+						$template_name = 'main/archivedprojects';
+						$options['mandatory'] = true;
+						break;
+					case 'team_archived_projects':
+						$template_name = 'main/archivedprojects';
+						$options['target'] = TBGIdentifiableClass::TYPE_TEAM;
+						$options['id'] = $request->getParameter('tid');
+						$options['mandatory'] = true;
+						break;
+					case 'client_archived_projects':
+						$template_name = 'main/archivedprojects';
+						$options['target'] = TBGIdentifiableClass::TYPE_CLIENT;
+						$options['id'] = $request->getParameter('cid');
 						$options['mandatory'] = true;
 						break;
 				}

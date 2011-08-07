@@ -43,6 +43,49 @@
 			}
 		}
 		
+		public function componentArchivedProjects()
+		{
+			if (!isset($this->target))
+			{
+				$this->projects = TBGProject::getAllRootProjects(true);
+				$this->project_count = count($this->projects);
+			}
+			elseif ($this->target == TBGIdentifiableClass::TYPE_TEAM)
+			{
+				$this->team = TBGContext::factory()->TBGTeam($this->id);
+				$own = TBGProject::getAllByOwner($this->team);
+				$leader = TBGProject::getAllByLeader($this->team);
+				$qa = TBGProject::getAllByQaResponsible($this->team);
+				$proj = $this->team->getAssociatedProjects();
+				
+				$projects = array_unique(array_merge($proj, $own, $leader, $qa));
+				$final_projects = array();
+				
+				foreach ($projects as $project)
+				{
+					if ($project->isArchived()): $final_projects[] = $project; endif;
+				}
+				
+				$this->projects = $final_projects;
+			}
+			elseif ($this->target == TBGIdentifiableClass::TYPE_CLIENT)
+			{
+				$this->client = TBGContext::factory()->TBGClient($this->id);
+				$projects = TBGProject::getAllByClientID($this->client->getID());
+				
+				$final_projects = array();
+				
+				foreach ($projects as $project)
+				{
+					if (!$project->isArchived()): $final_projects[] = $project; endif;
+				}
+				
+				$this->projects = $final_projects;
+			}
+			
+			$this->project_count = count($this->projects);
+		}
+		
 		public function componentTeamdropdown()
 		{
 			TBGLogging::log('team dropdown component');

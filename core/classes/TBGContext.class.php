@@ -1599,11 +1599,12 @@
 					}
 					else
 					{
+						$all_projects = array_merge(TBGProject::getAllRootProjects(true), TBGProject::getAllRootProjects(false));
 						// If this is a root project, display a list of other root projects, then t is null
-						if (!($t->hasParent()) && count(TBGProject::getAllRootProjects()) > 1)
+						if (!($t->hasParent()) && count($all_projects) > 1)
 						{
 							$itemsubmenulinks = array();
-							foreach (TBGProject::getAllRootProjects() as $child)
+							foreach ($all_projects as $child)
 							{
 								$itemsubmenulinks[] = array('url' => self::getRouting()->generate('project_dashboard', array('project_key' => $child->getKey())), 'title' => $child->getName());
 							}

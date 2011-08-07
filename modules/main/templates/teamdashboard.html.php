@@ -25,6 +25,7 @@
 			<td class="team_dashboard_projects padded">
 				<div class="header">
 					<?php echo __('Projects for %team%', array('%team%' => __($team->getName()))); ?>
+						<a style="float: right;" href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'team_archived_projects', 'tid' => $team->getID())); ?>');"><?php echo __('View archived projects'); ?></a>
 				</div>
 				<?php if (count($projects) > 0): ?>
 					<ul class="project_list simple_list">

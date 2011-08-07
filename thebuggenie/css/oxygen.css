@@ -532,7 +532,7 @@ table.cleantable th { text-align: center; }
 .side_bar .content { padding: 0 0 3px 5px; font-size: 0.9em; }
 
 /* project list, client/team dashboard and overview */
-ul.project_list { margin-bottom: 30px; }
+ul.project_list { margin-bottom: 30px; text-align: left; }
 ul.project_list li { margin: 0px; font-size: 1.0em; font-weight: bold; padding: 5px 0 5px 0; clear: both; }
 .client_dashboard, .project_overview { clear: both;  }
 .client_dashboard .header, .project_overview .header { padding: 5px; margin-bottom: 8px; border-bottom: 1px solid #DDD; font-size: 1.1em; }
