@@ -207,14 +207,15 @@
 		<?php break; ?>
 	<?php case TBGDashboard::DASHBOARD_PROJECT_SUBPROJECTS : ?>
 		<?php $selected_project = TBGContext::getCurrentProject(); ?>
-		<?php $subprojects = $selected_project->getChildren(); ?>
+		<?php $subprojects = $selected_project->getChildren(false); ?>
 		<div class="rounded_box lightgrey borderless cut_bottom dashboard_view_header" style="margin-top: 5px;">
 			<?php echo image_tag('collapse_small.png', array('id' => 'dashboard_'.$id.'_collapse', 'style' => 'float: left; margin: 3px 5px 0 2px;', 'onclick' => "\$('dashboard_{$id}').toggle(); this.src = (this.src == '" . image_url('collapse_small.png', false, 'core', false) . "') ? '" . image_url('expand_small.png', false, 'core', false) . "' : '" . image_url('collapse_small.png', false, 'core', false) . "'")); ?>
 			<?php echo __('Subprojects'); ?>
+			<a style="float: right;" href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'project_archived_projects', 'pid' => $selected_project->getID())); ?>');"><?php echo __('View archived subprojects'); ?></a>
 		</div>
 					
 		<div id="dashboard_<?php echo $id; ?>">			
-			<?php if ($selected_project->hasChildren()): ?>
+			<?php if (count($subprojects) > 0): ?>
 				<ul class="project_list simple_list">
 				<?php foreach ($subprojects as $project): ?>
 					<li><?php include_component('project/overview', array('project' => $project)); ?></li>

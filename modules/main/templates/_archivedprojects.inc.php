@@ -4,11 +4,15 @@
 		<?php
 			if (isset($team))
 			{
-				echo __('Displaying archived projects for %team%', array('%team%' => '<b>'.$team->getName().'</b>'));
+				echo __('Displaying archived projects for %item%', array('%item%' => '<b>'.$team->getName().'</b>'));
 			}
 			elseif (isset($client))
 			{
-				echo __('Displaying archived projects for %team%', array('%team%' => '<b>'.$client->getName().'</b>'));
+				echo __('Displaying archived projects for %item%', array('%item%' => '<b>'.$client->getName().'</b>'));
+			}
+			elseif (isset($parent))
+			{
+				echo __('Displaying archived subprojects for %project%', array('%project%' => '<b>'.$parent->getName().'</b>'));
 			}
 		?>
 		<?php if ($project_count > 0): ?>
@@ -18,7 +22,7 @@
 			<?php endforeach; ?>
 			</ul>
 		<?php else: ?>
-			<p class="content">
+			<p class="content faded_out">
 				<?php echo __('There are no top-level archived projects'); ?>.
 			</p>
 		<?php endif; ?>

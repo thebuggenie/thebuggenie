@@ -82,6 +82,11 @@
 				
 				$this->projects = $final_projects;
 			}
+			elseif ($this->target == 'project')
+			{
+				$this->parent = TBGContext::factory()->TBGProject($this->id);
+				$this->projects = $this->parent->getChildren(true);;
+			}
 			
 			$this->project_count = count($this->projects);
 		}

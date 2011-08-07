@@ -2863,10 +2863,28 @@
 			$this->_parent = $project;
 		}
 		
-		public function getChildren()
+		/**
+		 * Get all children
+		 * @param bool $archived[optional] Show archived projects
+		 */
+		public function getChildren($archived = false)
 		{
 			$this->_populateChildren();
-			return $this->_children;
+			$f_projects = array();
+			
+			foreach ($this->_children as $project)
+			{
+				if ($archived)
+				{
+					if ($project->isArchived()): $f_projects[] = $project; endif;
+				}
+				else
+				{
+					if (!$project->isArchived()): $f_projects[] = $project; endif;
+				}
+			}
+			
+			return $f_projects;
 		}
 		
 		protected function _populateChildren()

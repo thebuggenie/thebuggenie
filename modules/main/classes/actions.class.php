@@ -2651,6 +2651,12 @@
 						$options['id'] = $request->getParameter('cid');
 						$options['mandatory'] = true;
 						break;
+					case 'project_archived_projects':
+						$template_name = 'main/archivedprojects';
+						$options['target'] = 'project';
+						$options['id'] = $request->getParameter('pid');
+						$options['mandatory'] = true;
+						break;
 				}
 				if ($template_name !== null)
 				{
