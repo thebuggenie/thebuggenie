@@ -386,6 +386,8 @@
 			$output = '';
 			TBGContext::setCurrentProject($project);
 			
+			if ($project->isArchived()): return; endif;
+			
 			try
 			{
 				TBGContext::getI18n();
