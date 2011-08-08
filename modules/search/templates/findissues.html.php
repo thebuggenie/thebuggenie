@@ -96,10 +96,13 @@
 						<?php if (TBGContext::isProjectContext()): ?>
 							<div style="clear: both;">
 								<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
-								<?php echo javascript_link_tag(image_tag('icon_delete.png', array('title' => __('Delete saved search'), 'style' => 'float: right; margin-left: 2px;', 'class' => 'image')), array('onclick' => "$('delete_search_".$a_savedsearch->get(TBGSavedSearchesTable::ID)."').toggle();")); ?>
-								<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => 0)), image_tag('icon_edit.png'), array('title' => __('Edit saved search'), 'style' => 'float: right; margin-left: 5px;', 'class' => 'image')); ?>
+								<?php if (!TBGcontext::getCurrentProject()->isArchived()): ?>
+									<?php echo javascript_link_tag(image_tag('icon_delete.png', array('title' => __('Delete saved search'), 'style' => 'float: right; margin-left: 2px;', 'class' => 'image')), array('onclick' => "$('delete_search_".$a_savedsearch->get(TBGSavedSearchesTable::ID)."').toggle();")); ?>
+									<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => 0)), image_tag('icon_edit.png'), array('title' => __('Edit saved search'), 'style' => 'float: right; margin-left: 5px;', 'class' => 'image')); ?>
+								<?php endif; ?>
 								<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => true)), __($a_savedsearch->get(TBGSavedSearchesTable::NAME))); ?>
 							</div>
+							<?php if (!TBGcontext::getCurrentProject()->isArchived()): ?>
 							<div class="rounded_box white shadowed" style="position: absolute; width: 300px; display: none;" id="delete_search_<?php echo $a_savedsearch->get(TBGSavedSearchesTable::ID); ?>">
 								<div class="header"><?php echo __('Do you really want to delete this saved search?'); ?></div>
 								<div class="content">
@@ -111,6 +114,7 @@
 									</div>
 								</div>
 							</div>
+							<?php endif; ?>
 							<?php if ($a_savedsearch->get(TBGSavedSearchesTable::DESCRIPTION) != ''): ?>
 								<div style="clear: both; padding: 0 0 10px 3px;"><?php echo $a_savedsearch->get(TBGSavedSearchesTable::DESCRIPTION); ?></div>
 							<?php endif; ?>
@@ -262,10 +266,10 @@
 							<?php endforeach; ?>
 						</ul>
 						<div style="text-align: right;">
-							<?php if ($issavedsearch): ?>
+							<?php if ($issavedsearch && ((TBGContext::isProjectContext() && !TBGContext::getCurrentProject()->isArchived()) || !TBGContext::isProjectContext())): ?>
 								<button onclick="$('find_issues_form').method = 'post';$('saved_search_details').show();$('saved_search_name').enable();$('saved_search_description').enable();<?php if ($tbg_user->canCreatePublicSearches()): ?>$('saved_search_public').enable();<?php endif; ?>$('save_search').enable();$('search_button_bottom').disable();$('search_button_bottom').hide();$('search_button_top').disable();$('search_button_top').hide();$('saved_search_id').enable();$('search_button_save_new').hide();$('search_button_save').show();return false;"><?php echo __('Edit saved search details'); ?></button>
 								<button onclick="$('find_issues_form').method = 'post';$('save_search').enable();$('saved_search_name').enable();$('saved_search_description').enable();<?php if ($tbg_user->canCreatePublicSearches()): ?>$('saved_search_public').enable();<?php endif; ?>$('search_button_bottom').disable();$('search_button_bottom').hide();$('search_button_top').disable();$('search_button_top').hide();$('saved_search_id').disable();$('search_button_save_new').show();$('search_button_save').hide();if ($('saved_search_details').visible()) { return true; } else { $('saved_search_details').show(); return false; };"><?php echo __('Save as new saved search'); ?></button>
-							<?php else: ?>
+							<?php elseif (((TBGContext::isProjectContext() && !TBGContext::getCurrentProject()->isArchived()) || !TBGContext::isProjectContext())): ?>
 								<button onclick="$('find_issues_form').method = 'post';$('saved_search_details').show();$('saved_search_name').enable();$('saved_search_description').enable();<?php if ($tbg_user->canCreatePublicSearches()): ?>$('saved_search_public').enable();<?php endif; ?>$('save_search').enable();$('search_button_bottom').disable();$('search_button_bottom').hide();$('search_button_top').disable();$('search_button_save').hide();$('search_button_top').hide();return false;"><?php echo __('Save this search'); ?></button>
 							<?php endif; ?>
 							<input type="submit" value="<?php echo __('Search'); ?>" id="search_button_bottom" onclick="$('save_search').disable();$('saved_search_name').disable();$('saved_search_description').disable();<?php if ($tbg_user->canCreatePublicSearches()): ?>$('saved_search_public').disable();<?php endif; ?>$('find_issues_form').method = 'get';">
