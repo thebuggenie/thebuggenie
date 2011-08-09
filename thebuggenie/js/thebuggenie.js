@@ -1128,10 +1128,8 @@ TBG.Project.archive = function(url, pid) {
 			indicator: 'project_' + pid + '_archive_indicator',
 			hide: 'project_' + pid + '_archive'
 		},
-		failure: {
-			callback: function() {
-				TBG.Main.Helpers.Dialog.dismiss();
-			}
+		complete: {
+			callback: TBG.Main.Helpers.Dialog.dismiss
 		}
 	});
 }
