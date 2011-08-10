@@ -650,6 +650,9 @@ ul.workflow_actions li form { display: inline; margin: 0; padding: 0; }
 #backdrop_detail_content .tab_menu { margin-top: 30px; margin-bottom: 10px; font-size: 1.1em; }
 .backdrop_detail_footer { font-weight: bold; font-size: 0.9em; padding: 5px; text-align: right; }
 .backdrop_detail_footer a { color: #A4C0E4; }
+
+#dialog_title, #dialog_content {margin-left: 75px; }
+#dialog_yes, #dialog_no { border-bottom: none !important; }
 /* end backdrop styling */
 
 /* main issue view styling */

@@ -297,8 +297,8 @@ TBG.Main.Helpers.Message.success = function(title, content) {
 TBG.Main.Helpers.Dialog.show = function(title, content, options) {
 	$('dialog_title').update(title);
 	$('dialog_content').update(content);
-	$('dialog_yes').setAttribute('href', '#');
-	$('dialog_no').setAttribute('href', '#');
+	$('dialog_yes').setAttribute('href', 'javascript:void()');
+	$('dialog_no').setAttribute('href', 'javascript:void()');
 	$('dialog_yes').stopObserving('click');
 	$('dialog_no').stopObserving('click');
 	if (options['yes']['click']) {
@@ -313,11 +313,13 @@ TBG.Main.Helpers.Dialog.show = function(title, content, options) {
 	if (options['no']['href']) {
 		$('dialog_no').setAttribute('href', options['no']['href']);
 	}
-	$('dialog_backdrop').appear();
+	$('dialog_backdrop_content').show();
+	$('dialog_backdrop').appear({ duration: 0.2 });
 }
 
 TBG.Main.Helpers.Dialog.dismiss = function() {
-	$('dialog_backdrop').fade();
+	Effect.BlindUp(('dialog_backdrop_content'), { duration: 0.5 });
+	$('dialog_backdrop').fade({ duration: 0.2 });
 }
 
 /**
@@ -453,7 +455,9 @@ TBG.Main.Helpers.formSubmit = function(url, form_id) {
 };
 
 TBG.Main.Helpers.Backdrop.show = function(url) {
-	$('fullpage_backdrop').show();
+	$('fullpage_backdrop').appear({ duration: 0.2 });
+	$('fullpage_backdrop_indicator').show();
+
 	if (url != undefined) {
 		TBG.Main.Helpers.ajax(url, {
 			url_method: 'get',
@@ -465,8 +469,7 @@ TBG.Main.Helpers.Backdrop.show = function(url) {
 };
 
 TBG.Main.Helpers.Backdrop.reset = function() {
-	$('fullpage_backdrop').hide();
-	$('fullpage_backdrop_indicator').show();
+	$('fullpage_backdrop').fade({ duration: 0.2 });
 	$('fullpage_backdrop_content').update('');
 };
 
