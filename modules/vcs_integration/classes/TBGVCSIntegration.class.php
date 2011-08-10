@@ -405,17 +405,18 @@
 			}
 			
 			$fixes_grep = TBGTextParser::getIssueRegex();
-			
+
 			// Build list of affected issues
 			$temp = array();
 			$issues = array();
 			
 			if (preg_match_all($fixes_grep, $commit_msg, $temp))
 			{	
-				$temp = array_unique($temp[3]);
+				$temp = array_unique($temp[2]);
 				foreach ($temp as $issue_no)
 				{
-					$issues[] = TBGIssue::getIssueFromLink($issue_no);
+					$issue = TBGIssue::getIssueFromLink($issue_no);
+					if ($issue instanceof TBGIssue): $issues[] = $issue; endif;
 				}
 			}
 

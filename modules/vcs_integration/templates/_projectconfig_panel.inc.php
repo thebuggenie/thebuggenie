@@ -78,7 +78,7 @@
 						<input type="text" name="repository" style="width: 100%" id="repository" style="width: 100%;">
 					</td>
 				</tr>
-			<table style="clear: both; width: 780px;" class="padded_table" cellpadding=0 cellspacing=0>
+			</table>
 			<div id="vcs_custom_urls">
 				<h4><?php echo __('Custom browser URLs'); ?></h4>
 				<div class="header"><?php echo __('In the Commit details page field, this parameter will be replaced with a real value when link is generated:'); ?></div>

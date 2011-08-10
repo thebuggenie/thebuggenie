@@ -91,7 +91,6 @@
 			if (empty($author) || empty($new_rev) || empty($commit_msg) || empty($changed))
 			{
 				echo 'Error: One of the required fields were not specified. The required fields are the author, revision number (or hash), commit log and a list of changed files';
-var_dump($_GET);
 				exit;
 			}
 			
