@@ -2,7 +2,7 @@
 <div class="rounded_box round_canhover lightgrey projectbox" style="margin: 10px 0px 10px 0px; width: 690px;">
 	<div style="padding: 3px; font-size: 14px;">
 		<?php if ($project->isArchived()): ?>
-			<?php echo __('ARCHIVED').' - '; ?>
+			<span class="faded_out"><?php echo __('ARCHIVED'); ?> </span>
 		<?php endif; ?>
 		<strong><?php echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), $project->getName()); ?></strong>&nbsp;(<?php echo $project->getKey(); ?>)
 		<?php if ($project->usePrefix()): ?>

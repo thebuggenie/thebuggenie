@@ -1128,7 +1128,13 @@ TBG.Project.archive = function(url, pid) {
 			indicator: 'project_' + pid + '_archive_indicator',
 			hide: 'project_' + pid + '_archive'
 		},
-		complete: {
+		success: {
+			remove: 'project_box_' + pid,
+			update: {
+				element: 'project_table',
+				insertion: true,
+				from: 'box'
+			},
 			callback: TBG.Main.Helpers.Dialog.dismiss
 		}
 	});
@@ -1139,6 +1145,14 @@ TBG.Project.unarchive = function(url, pid) {
 		loading: {
 			indicator: 'project_' + pid + '_unarchive_indicator',
 			hide: 'project_' + pid + '_unarchive'
+		},
+		success: {
+			remove: 'project_box_' + pid,
+			update: {
+				element: 'project_table',
+				insertion: true,
+				from: 'box'
+			}
 		},
 		failure: {
 			show: 'project_' + pid + '_unarchive'

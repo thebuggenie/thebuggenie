@@ -1769,7 +1769,9 @@
 					$theProject = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
 					$theProject->setArchived($archived);
 					$theProject->save();
-					return $this->forward(TBGContext::getRouting()->generate('configure_projects'));
+					
+					$projectbox = $this->getTemplateHtml('projectbox', array('project' => $theProject, 'access_level' => $this->access_level));
+					return $this->renderJSON(array('failed' => false, 'message' => $i18n->__('Project successfully updated'), 'box' => $projectbox));
 				}
 				catch (Exception $e)
 				{
