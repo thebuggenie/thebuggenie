@@ -406,6 +406,17 @@
 							TBGVCSIntegrationTable::addEntry($theIssue->getID(), $afile[0], $commit_msg, $afile[1], $new_rev, $old_rev, $uid, $date);
 						}
 						$output .= 'Updated ' . $theIssue->getFormattedIssueNo() . "\n";
+						
+						if ($uid == 0)
+						{
+							$user = null;
+						}
+						else
+						{
+							$user = TBGContext::factory()->TBGUser($uid);
+						}
+						
+						TBGEvent::createNew('vcs_integration', 'new_commit')->trigger(array('issue' => $theIssue, 'user' => $user, 'date' => $date, 'revno' => $new_rev, 'commit_msg' => $commit_msg));
 					}
 					else
 					{
