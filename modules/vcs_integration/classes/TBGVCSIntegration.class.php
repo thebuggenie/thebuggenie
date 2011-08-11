@@ -581,6 +581,8 @@
 				$output .= '[VCS '.$project->getKey().'] Added with action '.$afile[0].' file ' . $afile[1] . "\n";
 			}
 
+			TBGEvent::createNew('vcs_integration', 'new_commit')->trigger(array('commit' => $commit));
+
 			return $output;
 		}
 	}
