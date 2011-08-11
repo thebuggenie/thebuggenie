@@ -416,7 +416,7 @@
 							$user = TBGContext::factory()->TBGUser($uid);
 						}
 						
-						TBGEvent::createNew('vcs_integration', 'new_commit')->trigger(array('issue' => $theIssue, 'user' => $user, 'date' => $date, 'revno' => $new_rev, 'commit_msg' => $commit_msg));
+						TBGEvent::createNew('vcs_integration', 'new_commit')->trigger(array('issue' => $theIssue, 'user' => $user, 'date' => $date, 'new_rev' => $new_rev, 'old_rev' => $old_rev, 'commit_msg' => $commit_msg));
 					}
 					else
 					{
