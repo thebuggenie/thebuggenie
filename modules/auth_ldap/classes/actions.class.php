@@ -17,7 +17,7 @@
 			{
 				$connection = TBGContext::getModule('auth_ldap')->connect();
 				
-				TBGLDAPAuthentication::getModule()->bind(TBGLDAPAuthentication::getModule()->getSetting('control_user'), TBGLDAPAuthentication::getModule()->getSetting('control_pass'), $connection);
+				TBGLDAPAuthentication::getModule()->bind($connection, TBGLDAPAuthentication::getModule()->getSetting('control_user'), TBGLDAPAuthentication::getModule()->getSetting('control_pass'));
 				
 				ldap_unbind($connection);
 				
@@ -68,8 +68,8 @@
 					
 					$username = $user->getUsername();
 					
-					$fields = array($fullname_attr, $email_attr, 'cn');
-					$filter = '(&(objectClass='.TBGLDAPAuthentication::getModule()->escape($user_class).')('.$username_attr.'='.TBGLDAPAuthentication::getModule()->escape($username2).'))';
+					$fields = array($fullname_attr, $email_attr, 'cn', 'distinguishedName');
+					$filter = '(&(objectClass='.TBGLDAPAuthentication::getModule()->escape($user_class).')('.$username_attr.'='.TBGLDAPAuthentication::getModule()->escape($username).'))';
 					
 					$results = ldap_search($connection, $base_dn, $filter, $fields);
 					
@@ -91,7 +91,7 @@
 						continue;
 					}
 	
-					$user_dn = 'CN='.$data[0]['cn'][0].','.$users_dn;
+					$user_dn = 'CN='.$data[0]['distinguishedname'][0];
 					
 					if ($validgroups != '')
 					{
@@ -195,9 +195,8 @@
 				 */
 				$fields = array($fullname_attr, $username_attr, $email_attr, 'cn', 'distinguishedName');
 				$filter = '(objectClass='.TBGLDAPAuthentication::getModule()->escape($user_class).')';
-				
+
 				$results = ldap_search($connection, $base_dn, $filter, $fields);
-				
 				if (!$results)
 				{
 					TBGLogging::log('failed to search for users: '.ldap_error($connection), 'ldap', TBGLogging::LEVEL_FATAL);
@@ -309,7 +308,6 @@
 			}
 			catch (Exception $e)
 			{
-				ldap_unbind($connection);
 				TBGContext::setMessage('module_error', TBGContext::getI18n()->__('Import failed'));
 				TBGContext::setMessage('module_error_details', $e->getMessage());
 				$this->forward(TBGContext::getRouting()->generate('configure_module', array('config_module' => 'auth_ldap')));

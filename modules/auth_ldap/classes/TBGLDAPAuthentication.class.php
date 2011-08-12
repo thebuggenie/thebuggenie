@@ -103,7 +103,8 @@
 
 			$connection = ldap_connect($host);
 			ldap_set_option($connection, LDAP_OPT_PROTOCOL_VERSION, 3);
-			
+			ldap_set_option($connection, LDAP_OPT_REFERRALS, 0);
+						
 			if ($connection == false): $failed = true; endif;
 
 			if ($failed)
@@ -116,14 +117,7 @@
 		
 		public function bind($connection, $lduser = null, $ldpass = null)
 		{
-			if ($ldpass == '' && $lduser == '')
-			{
-				$bind = ldap_bind($connection);
-			}
-			else
-			{
-				$bind = ldap_bind($connection, $lduser, $ldpass);
-			}
+			$bind = ldap_bind($connection, $lduser, $ldpass);
 			
 			if (!$bind)
 			{
@@ -180,7 +174,7 @@
 				$control_user = $this->getSetting('control_user');
 				$control_password = $this->getSetting('control_pass');
 
-				$this->bind($control_user, $control_password, $connection);
+				$this->bind($connection, $control_user, $control_password);
 				
 				// Assume bind successful, otherwise we would have had an exception
 				
@@ -193,7 +187,7 @@
 				 * and dn.
 				 */
 				$fields = array($fullname_attr, $email_attr, 'cn', 'distinguishedName');
-				$filter = '(&(objectClass='.TBGLDAPAuthentication::getModule()->escape($user_class).')('.$username_attr.'='.$this->escape($username2).'))';
+				$filter = '(&(objectClass='.TBGLDAPAuthentication::getModule()->escape($user_class).')('.$username_attr.'='.$this->escape($username).'))';
 				
 				$results = ldap_search($connection, $base_dn, $filter, $fields);
 				
@@ -319,7 +313,7 @@
 				{
 					try
 					{
-						$bind = $this->bind($connection, $data[0]['distinguishedname'][0], $password);
+						$bind = $this->bind($connection, $this->escape($data[0]['distinguishedname'][0]), $password);
 					}
 					catch (Exception $e)
 					{
@@ -341,7 +335,7 @@
 				 */
 				$user = TBGUser::getByUsername($username);
 				if ($user instanceof TBGUser)
-				{
+				{					
 					$user->setBuddyname($realname);
 					$user->setRealname($realname);
 					$user->setPassword($user->getJoinedDate().$username); // update password
@@ -355,7 +349,7 @@
 					 * if we are validating a log in, kick the user out as the session is invalid.
 					 */
 					if ($mode == 1)
-					{
+					{						
 						// create user
 						$user = new TBGUser();
 						$user->setUsername($username);
@@ -364,8 +358,8 @@
 						$user->setEmail('temporary');
 						$user->setEnabled();
 						$user->setActivated();
-						$user->setPassword($user->getJoinedDate().$username);
 						$user->setJoined();
+						$user->setPassword($user->getJoinedDate().$username);
 						$user->save();
 					}
 					else
