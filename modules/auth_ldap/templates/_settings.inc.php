@@ -23,11 +23,18 @@
 				<td class="config_explanation" colspan="2"><?php echo __('Use URL syntax (ldap://hostname:port). If your server requires SSL, use ldaps://hostname/ in this field.'); ?></td>
 			</tr>
 			<tr>
-				<td style="padding: 5px;"><label for="u_dn"><?php echo __('Users DN'); ?></label></td>
-				<td><input type="text"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> name="u_dn" id="u_dn" value="<?php echo $module->getSetting('u_dn'); ?>" style="width: 100%;"></td>
+				<td style="padding: 5px;"><label for="b_dn"><?php echo __('Base DN'); ?></label></td>
+				<td><input type="text"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> name="b_dn" id="b_dn" value="<?php echo $module->getSetting('b_dn'); ?>" style="width: 100%;"></td>
 			</tr>
 			<tr>
-				<td class="config_explanation" colspan="2"><?php echo __('This should be the DN string for the OU containing the user list. For example, OU=People,OU=staff,DN=ldap,DN=example,DN=com.'); ?></td>
+				<td class="config_explanation" colspan="2"><?php echo __('This should be the DN string for an OU where all user and group OUs can be found. For example, DN=ldap,DN=example,DN=com.'); ?></td>
+			</tr>
+			<tr>
+				<td style="padding: 5px;"><label for="u_type"><?php echo __('User class'); ?></label></td>
+				<td><input type="text"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> name="u_type" id="u_type" value="<?php echo $module->getSetting('u_type'); ?>" style="width: 100%;"></td>
+			</tr>
+			<tr>
+				<td class="config_explanation" colspan="2"><?php echo __('Enter the value to check for in objectClass for users. Leave blank to use the default of person'); ?></td>
 			</tr>
 			<tr>
 				<td style="padding: 5px;"><label for="u_attr"><?php echo __('Username attribute'); ?></label></td>
@@ -45,11 +52,11 @@
 				<td><input type="text"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> name="e_attr" id="e_attr" value="<?php echo $module->getSetting('e_attr'); ?>" style="width: 100%;"></td>
 			</tr>
 			<tr>
-				<td style="padding: 5px;"><label for="g_dn"><?php echo __('Groups DN'); ?></label></td>
-				<td><input type="text"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> name="g_dn" id="g_dn" value="<?php echo $module->getSetting('g_dn'); ?>" style="width: 100%;"></td>
+				<td style="padding: 5px;"><label for="g_type"><?php echo __('Group class'); ?></label></td>
+				<td><input type="text"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> name="g_type" id="g_type" value="<?php echo $module->getSetting('g_type'); ?>" style="width: 100%;"></td>
 			</tr>
 			<tr>
-				<td class="config_explanation" colspan="2"><?php echo __('This should be the DN string for the OU containing the group list.'); ?></td>
+				<td class="config_explanation" colspan="2"><?php echo __('Enter the value to check for in objectClass for groups. Leave blank to use the default of group'); ?></td>
 			</tr>
 			<tr>
 				<td style="padding: 5px;"><label for="g_attr"><?php echo __('Group members attribute'); ?></label></td>
@@ -67,14 +74,14 @@
 			</tr>
 			<tr>
 				<td style="padding: 5px;"><label for="control_user"><?php echo __('Control username'); ?></label></td>
-				<td><input type="text"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> name="control_user" id="control_pass" value="<?php echo $module->getSetting('control_user'); ?>" style="width: 100%;"></td>
+				<td><input type="text"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> name="control_user" id="control_user" value="<?php echo $module->getSetting('control_user'); ?>" style="width: 100%;"></td>
 			</tr>
 			<tr>
 				<td style="padding: 5px;"><label for="control_pass"><?php echo __('Control user password'); ?></label></td>
 				<td><input type="password"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> name="control_pass" id="control_pass" value="<?php echo $module->getSetting('control_pass'); ?>" style="width: 100%;"></td>
 			</tr>
 			<tr>
-				<td class="config_explanation" colspan="2"><?php echo __('Please insert the authentication details for a user who can access all LDAP records. Only read access is necessary, and this will be used to perform validation checks on users.'); ?></td>
+				<td class="config_explanation" colspan="2"><?php echo __('Please insert the authentication details for a user who can access all LDAP records. Only read only access is necessary, and for an anonyous bind leave this blank.'); ?></td>
 			</tr>
 		</table>
 	</div>
@@ -87,34 +94,31 @@
 </form>
 
 <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('ldap_test'); ?>" method="post">
-	<div class="rounded_box borderless mediumgrey" style="margin: 10px 0 0 0; width: 700px; padding: 5px 5px 30px 5px;">
+	<div class="rounded_box borderless mediumgrey cut_bottom" style="margin: 10px 0 0 0; width: 700px; padding: 5px;">
 		<div class="header"><?php echo __('Test connection'); ?></div>
 		<div class="content"><?php echo __('After configuring and saving your connection settings, you should test your connection to the LDAP server. This test does not check whether the DN and attributes can allow The Bug Genie to correctly find users, but it will give an indication if The Bug Genie can talk to your LDAP server.'); ?></div>
+	</div>
+	<div class="rounded_box iceblue borderless cut_top" style="margin: 0 0 5px 0; width: 700px; border-top: 0; padding: 8px 5px 2px 5px; height: 25px;">
 		<input type="submit" id="test_button"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> style="float: right; padding: 0 10px 0 10px; font-size: 13px; font-weight: bold;" value="<?php echo __('Test connection'); ?>">
 	</div>
 </form>
 
 <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('ldap_import'); ?>" method="post">
-	<div class="rounded_box borderless mediumgrey" style="margin: 10px 0 0 0; width: 700px; padding: 5px 5px 30px 5px;">
+	<div class="rounded_box borderless mediumgrey cut_bottom" style="margin: 10px 0 0 0; width: 700px; padding: 5px;">
 		<div class="header"><?php echo __('Import all users'); ?></div>
 		<div class="content"><?php echo __('So that you can ensure all users from LDAP exist in The Bug Genie exist for initial configuration (e.g. to set permissions), you can import all users who don\'t already exist using this tool. If you set a group restriction, this will be obyed here. Remember to make at least one an administrator so you can continue to configure The Bug Genie after switching.'); ?></div>
-		<table style="width: 680px;" class="padded_table" cellpadding=0 cellspacing=0 id="vcsintegration_settings_table">
-			<tr>
-				<td style="padding: 5px;"><label for="prefix"><?php echo __('Create users with prefix'); ?></label></td>
-				<td><input type="text"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> name="prefix" id="prefix" style="width: 100%;"></td>
-			</tr>
-			<tr>
-				<td class="config_explanation" colspan="2"><?php echo __('Some setups will require the username to have a prefix in order to log in. A common example is Active Directory, where the prefix DOMAIN\ must be supplied, where DOMAIN is your Active Directory Domain name. If this is not necessary, leave it blank.'); ?></td>
-			</tr>
-		</table>
+	</div>
+	<div class="rounded_box iceblue borderless cut_top" style="margin: 0 0 5px 0; width: 700px; border-top: 0; padding: 8px 5px 2px 5px; height: 25px;">
 		<input type="submit" id="import_button"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> style="float: right; padding: 0 10px 0 10px; font-size: 13px; font-weight: bold;" value="<?php echo __('Import users'); ?>">
 	</div>
 </form>
 
 <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('ldap_prune'); ?>" method="post">
-	<div class="rounded_box borderless mediumgrey" style="margin: 10px 0 0 0; width: 700px; padding: 5px 5px 30px 5px;">
+	<div class="rounded_box borderless mediumgrey cut_bottom" style="margin: 10px 0 0 0; width: 700px; padding: 5px;">
 		<div class="header"><?php echo __('Prune users'); ?></div>
 		<div class="content"><?php echo __('If a user is deleted from LDAP then they will not be able to log into The Bug Genie. However if you want to remove users from The Bug Genie who have been deleted from LDAP you may wish to prune the users list. This action will delete all users from The Bug Genie\'s user list who do not exist in the LDAP database, and can not be reversed. The default (typically the guest) user will not be removed. Users who would not be able to log in due to a group restriction will be deleted.'); ?></div>
+	</div>
+	<div class="rounded_box red borderless cut_top" style="margin: 0 0 5px 0; width: 700px; border-top: 0; padding: 8px 5px 2px 5px; height: 25px;">
 		<input type="submit"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> id="prune_button" style="float: right; padding: 0 10px 0 10px; font-size: 13px; font-weight: bold;" value="<?php echo __('Prune users'); ?>">
 	</div>
 </form>
