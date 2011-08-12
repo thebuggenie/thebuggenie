@@ -171,12 +171,14 @@
 		public function runImportUsers(TBGRequest $request)
 		{
 			$validgroups = TBGContext::getModule('auth_ldap')->getSetting('groups');
-			$users_dn = TBGContext::getModule('auth_ldap')->getSetting('u_dn');
+			$base_dn = TBGContext::getModule('auth_ldap')->getSetting('b_dn');
 			$username_attr = TBGContext::getModule('auth_ldap')->getSetting('u_attr');
 			$fullname_attr = TBGContext::getModule('auth_ldap')->getSetting('f_attr');
 			$email_attr = TBGContext::getModule('auth_ldap')->getSetting('e_attr');
-			$groups_dn = TBGContext::getModule('auth_ldap')->getSetting('g_dn');
 			$groups_members_attr = TBGContext::getModule('auth_ldap')->getSetting('g_attr');
+			
+			$user_class = TBGContext::getModule('auth_ldap')->getSetting('u_type');
+			$group_class = TBGContext::getModule('auth_ldap')->getSetting('g_type');
 			
 			$users = array();
 			$importcount = 0;
@@ -188,9 +190,9 @@
 				TBGContext::getModule('auth_ldap')->bind(TBGContext::getModule('auth_ldap')->getSetting('control_user'), TBGContext::getModule('auth_ldap')->getSetting('control_pass'), $connection);
 				
 				$fields = array($fullname_attr, $username_attr, $email_attr, 'cn');
-				$filter = '(objectClass=person)';
+				$filter = '(objectClass='.TBGLDAPAuthentication::getModule()->escape($user_class).')';
 				
-				$results = ldap_search($connection, $users_dn, $filter, $fields);
+				$results = ldap_search($connection, $base_dn, $filter, $fields);
 				
 				if (!$results)
 				{
@@ -221,9 +223,9 @@
 						foreach ($groups as $group)
 						{
 							$fields2 = array($groups_members_attr);
-							$filter2 = '(cn='.TBGLDAPAuthentication::getModule()->escape($group).')';
+							$filter2 = '&(cn='.TBGLDAPAuthentication::getModule()->escape($group).')(objectClass='.TBGLDAPAuthentication::getModule()->escape($group_class).')';
 							
-							$results2 = ldap_search($connection, $groups_dn, $filter2, $fields2);
+							$results2 = ldap_search($connection, $b_dn, $filter2, $fields2);
 							
 							if (!$results2)
 							{
@@ -285,7 +287,7 @@
 				
 			foreach ($users as $ldapuser)
 			{
-				$username = $request->getParameter('prefix').$ldapuser['username'];
+				$username = $ldapuser['username'];
 				$email = $ldapuser['email'];
 				$realname = $ldapuser['realname'];
 				

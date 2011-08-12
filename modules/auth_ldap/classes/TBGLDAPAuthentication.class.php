@@ -72,12 +72,26 @@
 
 		public function postConfigSettings(TBGRequest $request)
 		{
-			$settings = array('hostname', 'u_dn', 'groups', 'u_attr', 'g_attr', 'e_attr', 'f_attr', 'g_dn', 'control_user', 'control_pass');
+			$settings = array('hostname', 'u_type', 'g_type', 'b_dn', 'groups', 'u_attr', 'g_attr', 'e_attr', 'f_attr', 'g_dn', 'control_user', 'control_pass');
 			foreach ($settings as $setting)
 			{
-				if ($request->hasParameter($setting))
+				if (($setting == 'u_type' || $setting == 'g_type') && $request->getParameter($setting) == '')
 				{
-					$this->saveSetting($setting, $request->getParameter($setting));
+					if ($setting == 'u_type')
+					{
+						$this->saveSetting($setting, 'person');
+					}
+					else
+					{
+						$this->saveSetting($setting, 'group');
+					}
+				}
+				else
+				{
+					if ($request->hasParameter($setting))
+					{
+						$this->saveSetting($setting, $request->getParameter($setting));
+					}
 				}
 			}
 		}
