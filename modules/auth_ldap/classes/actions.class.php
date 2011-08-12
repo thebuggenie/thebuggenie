@@ -69,19 +69,22 @@
 					$username = $user->getUsername();
 					
 					$fields = array($fullname_attr, $email_attr, 'cn');
-					$filter = '&(objectClass='.TBGLDAPAuthentication::getModule()->escape($user_class).')('.$username_attr.'='.TBGLDAPAuthentication::getModule()->escape($username2).')';
+					$filter = '(&(objectClass='.TBGLDAPAuthentication::getModule()->escape($user_class).')('.$username_attr.'='.TBGLDAPAuthentication::getModule()->escape($username2).'))';
 					
 					$results = ldap_search($connection, $base_dn, $filter, $fields);
 					
 					if (!$results)
 					{
-						TBGLogging::log('failed to search for user after binding: '.ldap_error($connection), 'ldap', TBGLogging::LEVEL_FATAL);
-						throw new Exception(TBGContext::geti18n()->__('Search failed ').ldap_error($connection));
+						TBGLogging::log('failed to search for user: '.ldap_error($connection), 'ldap', TBGLogging::LEVEL_FATAL);
+						throw new Exception(TBGContext::geti18n()->__('Search failed: ').ldap_error($connection));
 					}
 					
 					$data = ldap_get_entries($connection, $results);
 					
-					if ($data['count'] == 0)
+					/*
+					 * If a user is not found, delete it
+					 */
+					if ($data['count'] != 1)
 					{
 						$user->delete();
 						$deletecount++;
@@ -107,23 +110,23 @@
 						foreach ($groups as $group)
 						{
 							$fields2 = array($groups_members_attr);
-							$filter2 = '&(objectClass='.TBGLDAPAuthentication::getModule()->escape($group_class).')(cn='.TBGLDAPAuthentication::getModule()->escape($group).')';
+							$filter2 = '(&(objectClass='.TBGLDAPAuthentication::getModule()->escape($group_class).')(cn='.TBGLDAPAuthentication::getModule()->escape($group).'))';
 							
 							$results2 = ldap_search($connection, $base_dn, $filter2, $fields2);
 							
 							if (!$results2)
 							{
-								TBGLogging::log('failed to search for user after binding: '.ldap_error($connection), 'ldap', TBGLogging::LEVEL_FATAL);
-								throw new Exception(TBGContext::geti18n()->__('Search failed ').ldap_error($connection));
+								TBGLogging::log('failed to search for user: '.ldap_error($connection), 'ldap', TBGLogging::LEVEL_FATAL);
+								throw new Exception(TBGContext::geti18n()->__('Search failed: ').ldap_error($connection));
 							}
 							
 							$data2 = ldap_get_entries($connection, $results2);
 							
-							if ($data2['count'] == 0)
+							if ($data2['count'] != 1)
 							{
 								continue;
 							}
-							
+
 							foreach ($data2[0][$groups_members_attr] as $member)
 							{
 								if ($member == $user_dn)
@@ -133,6 +136,9 @@
 							}
 						}
 						
+						/*
+						 * If a user is not allowed access, delete it
+						 */
 						if ($allowed == false)
 						{
 							$user->delete();
@@ -144,6 +150,7 @@
 			}
 			catch (Exception $e)
 			{
+				ldap_unbind($connection);
 				TBGContext::setMessage('module_error', TBGContext::getI18n()->__('Pruning failed'));
 				TBGContext::setMessage('module_error_details', $e->getMessage());
 				$this->forward(TBGContext::getRouting()->generate('configure_module', array('config_module' => 'auth_ldap')));
@@ -177,28 +184,43 @@
 			
 			try
 			{
+				/*
+				 * Connect and bind to the control user
+				 */
 				$connection = TBGContext::getModule('auth_ldap')->connect();
 				TBGContext::getModule('auth_ldap')->bind($connection, TBGContext::getModule('auth_ldap')->getSetting('control_user'), TBGContext::getModule('auth_ldap')->getSetting('control_pass'));
 				
-				$fields = array($fullname_attr, $username_attr, $email_attr, 'cn');
+				/*
+				 * Get a list of all users of a certain objectClass
+				 */
+				$fields = array($fullname_attr, $username_attr, $email_attr, 'cn', 'distinguishedName');
 				$filter = '(objectClass='.TBGLDAPAuthentication::getModule()->escape($user_class).')';
 				
 				$results = ldap_search($connection, $base_dn, $filter, $fields);
 				
 				if (!$results)
 				{
-					TBGLogging::log('failed to search for user after binding: '.ldap_error($connection), 'ldap', TBGLogging::LEVEL_FATAL);
-					throw new Exception(TBGContext::geti18n()->__('Search failed ').ldap_error($connection));
+					TBGLogging::log('failed to search for users: '.ldap_error($connection), 'ldap', TBGLogging::LEVEL_FATAL);
+					throw new Exception(TBGContext::geti18n()->__('Search failed: ').ldap_error($connection));
 				}
 				
 				$data = ldap_get_entries($connection, $results);
 				
+				/*
+				 * For every user that exists, process it.
+				 */
 				for ($i = 0; $i != $data['count']; $i++)
 				{
-					$user_dn = 'CN='.$data[$i]['cn'][0].','.$users_dn;
+					$user_dn = $data[$i]['distinguishedname'][0];
 					
+					/*
+					 * If groups are specified, perform group restriction tests
+					 */
 					if ($validgroups != '')
 					{
+						/*
+						 * We will repeat this for every group, but groups are supplied as a comma-separated list
+						 */
 						if (strstr($validgroups, ','))
 						{
 							$groups = explode(',', $validgroups);
@@ -209,28 +231,39 @@
 							$groups[] = $validgroups;
 						}
 						
+						// Assumed we are initially banned
 						$allowed = false;
 						
 						foreach ($groups as $group)
 						{
+							// No need to carry on looking if we have access
+							if ($allowed == true): continue; endif;
+							
+							/*
+							 * Find the group we are looking for, we search the entire directory
+							 * We want to find 1 group, if we don't get 1, silently ignore this group.
+							 */
 							$fields2 = array($groups_members_attr);
-							$filter2 = '&(cn='.TBGLDAPAuthentication::getModule()->escape($group).')(objectClass='.TBGLDAPAuthentication::getModule()->escape($group_class).')';
+							$filter2 = '(&(cn='.TBGLDAPAuthentication::getModule()->escape($group).')(objectClass='.TBGLDAPAuthentication::getModule()->escape($group_class).'))';
 							
 							$results2 = ldap_search($connection, $b_dn, $filter2, $fields2);
 							
 							if (!$results2)
 							{
-								TBGLogging::log('failed to search for user after binding: '.ldap_error($connection), 'ldap', TBGLogging::LEVEL_FATAL);
-								throw new Exception(TBGContext::geti18n()->__('Search failed ').ldap_error($connection));
+								TBGLogging::log('failed to search for user: '.ldap_error($connection), 'ldap', TBGLogging::LEVEL_FATAL);
+								throw new Exception(TBGContext::geti18n()->__('Search failed: ').ldap_error($connection));
 							}
 							
 							$data2 = ldap_get_entries($connection, $results2);
 							
-							if ($data2['count'] == 0)
+							if ($data2['count'] != 1)
 							{
 								continue;
 							}
 							
+							/*
+							 * Look through the group's member list. If we are found, grant access.
+							 */
 							foreach ($data2[0][strtolower($groups_members_attr)] as $member)
 							{
 								if ($member == $user_dn)
@@ -248,6 +281,11 @@
 
 					$users[$i] = array();
 	
+					/*
+					 * Set user's properties.
+					 * Realname is obtained from directory, if not found we set it to the username
+					 * Email is obtained from directory, if not found we set it to blank
+					 */
 					if (!array_key_exists(strtolower($fullname_attr), $data[$i]))
 					{
 						$users[$i]['realname'] = $data[$i]['cn'][0];
@@ -271,11 +309,16 @@
 			}
 			catch (Exception $e)
 			{
+				ldap_unbind($connection);
 				TBGContext::setMessage('module_error', TBGContext::getI18n()->__('Import failed'));
 				TBGContext::setMessage('module_error_details', $e->getMessage());
 				$this->forward(TBGContext::getRouting()->generate('configure_module', array('config_module' => 'auth_ldap')));
 			}
 				
+			/*
+			 * For every user that was found, either create a new user object, or update
+			 * the existing one. This will update the created and updated counts as appropriate.
+			 */
 			foreach ($users as $ldapuser)
 			{
 				$username = $ldapuser['username'];
@@ -310,6 +353,7 @@
 				}
 				catch (Exception $e)
 				{
+					ldap_unbind($connection);
 					TBGContext::setMessage('module_error', TBGContext::getI18n()->__('Import failed'));
 					TBGContext::setMessage('module_error_details', $e->getMessage());
 					$this->forward(TBGContext::getRouting()->generate('configure_module', array('config_module' => 'auth_ldap')));
