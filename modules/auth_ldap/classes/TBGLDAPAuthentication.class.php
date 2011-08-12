@@ -147,12 +147,14 @@
 		public function doLogin($username, $password, $mode = 1)
 		{	
 			$validgroups = $this->getSetting('groups');
-			$users_dn = $this->getSetting('u_dn');
+			$base_dn = $this->getSetting('b_dn');
 			$username_attr = $this->escape($this->getSetting('u_attr'));
 			$fullname_attr = $this->escape($this->getSetting('f_attr'));
 			$email_attr = $this->escape($this->getSetting('e_attr'));
-			$groups_dn = $this->getSetting('g_dn');
 			$groups_members_attr = $this->escape($this->getSetting('g_attr'));
+			
+			$user_class = TBGContext::getModule('auth_ldap')->getSetting('u_type');
+			$group_class = TBGContext::getModule('auth_ldap')->getSetting('g_type');
 			
 			$email = null;
 			
@@ -169,57 +171,62 @@
 			 */
 			try
 			{
+				/*
+				 * First job is to connect to our control user (may be an anonymous bind)
+				 * so we can find the user we want to log in as/validate.
+				 */
 				$connection = $this->connect();
 				
-				if ($mode == 1)
-				{
-					$this->bind($connection, $username, $password);
-				}
-				else
-				{
-					$control_user = $this->getSetting('control_user');
-					$control_password = $this->getSetting('control_pass');
+				$control_user = $this->getSetting('control_user');
+				$control_password = $this->getSetting('control_pass');
 
-					$this->bind($control_user, $control_password, $connection);
-				}
-				
+				$this->bind($control_user, $control_password, $connection);
 				
 				// Assume bind successful, otherwise we would have had an exception
 				
-				// Windows Domains require the username to be in the form DOMAIN\User, only we don't want that, strip domain
-				if (strstr($username, '\\'))
-				{
-					$data = explode('\\', $username);
-					$username2 = $data[1];
-				}
-				else
-				{
-					$username2 = $username;
-				}
+				/*
+				 * Search for a user with the username specified. We search in the base_dn, so we can
+				 * find users in multiple parts of the directory, and only return users of a specific
+				 * class (default person).
+				 * 
+				 * We want exactly 1 user to be returned. We get the user's full name, email, cn
+				 * and dn.
+				 */
+				$fields = array($fullname_attr, $email_attr, 'cn', 'distinguishedName');
+				$filter = '(&(objectClass='.TBGLDAPAuthentication::getModule()->escape($user_class).')('.$username_attr.'='.$this->escape($username2).'))';
 				
-				$fields = array($fullname_attr, $email_attr, 'cn');
-				$filter = '('.$username_attr.'='.$this->escape($username2).')';
-				
-				$results = ldap_search($connection, $users_dn, $filter, $fields);
+				$results = ldap_search($connection, $base_dn, $filter, $fields);
 				
 				if (!$results)
 				{
-					TBGLogging::log('failed to search for user after binding: '.ldap_error($connection), 'ldap', TBGLogging::LEVEL_FATAL);
-					throw new Exception(TBGContext::geti18n()->__('Search failed ').ldap_error($connection));
+					TBGLogging::log('failed to search for user: '.ldap_error($connection), 'ldap', TBGLogging::LEVEL_FATAL);
+					throw new Exception(TBGContext::geti18n()->__('Search failed: ').ldap_error($connection));
 				}
 				
 				$data = ldap_get_entries($connection, $results);
 				
+				// User does not exist
 				if ($data['count'] == 0)
 				{
-					TBGLogging::log('bind OK but user '.$username.' does not exist in DN '.$users_dn.', attribute '.$username_attr, 'ldap', TBGLogging::LEVEL_FATAL);
-					throw new Exception(TBGContext::geti18n()->__('User does not exist in DN'));
+					TBGLogging::log('could not find user '.$username.', class '.$user_class.', attribute '.$username_attr, 'ldap', TBGLogging::LEVEL_FATAL);
+					throw new Exception(TBGContext::geti18n()->__('User does not exist in the directory'));
+				}
+				
+				// If we have more than 1 user, something is seriously messed up...
+				if ($data['count'] > 1)
+				{
+					TBGLogging::log('too many users for '.$username.', class '.$user_class.', attribute '.$username_attr, 'ldap', TBGLogging::LEVEL_FATAL);
+					throw new Exception(TBGContext::geti18n()->__('This user was found multiple times in the directory, please contact your admimistrator'));
 				}
 
-				$user_dn = 'CN='.$data[0]['cn'][0].','.$users_dn;
-				
+				/*
+				 * If groups are specified, perform group restriction tests
+				 */
 				if ($validgroups != '')
 				{
+					/*
+					 * We will repeat this for every group, but groups are supplied as a comma-separated list
+					 */
 					if (strstr($validgroups, ','))
 					{
 						$groups = explode(',', $validgroups);
@@ -230,14 +237,22 @@
 						$groups[] = $validgroups;
 					}
 					
+					// Assumed we are initially banned
 					$allowed = false;
 					
 					foreach ($groups as $group)
 					{
-						$fields2 = array($groups_members_attr);
-						$filter2 = '(cn='.$this->escape($group).')';
+						// No need to carry on looking if we have access
+						if ($allowed == true): continue; endif;
 						
-						$results2 = ldap_search($connection, $groups_dn, $filter2, $fields2);
+						/*
+						 * Find the group we are looking for, we search the entire directory as per users (See that stuff)
+						 * We want to find 1 group, if we don't get 1, silently ignore this group.
+						 */
+						$fields2 = array($groups_members_attr);
+						$filter2 = '(&(objectClass='.TBGLDAPAuthentication::getModule()->escape($group_class).')(cn='.$this->escape($group).'))';
+						
+						$results2 = ldap_search($connection, $base_dn, $filter2, $fields2);
 						
 						if (!$results2)
 						{
@@ -247,14 +262,17 @@
 						
 						$data2 = ldap_get_entries($connection, $results2);
 						
-						if ($data2['count'] == 0)
+						if ($data2['count'] != 1)
 						{
 							continue;
 						}
 						
+						/*
+						 * Look through the group's member list. If we are found, grant access.
+						 */
 						foreach ($data2[0][strtolower($groups_members_attr)] as $member)
 						{
-							if ($member == $user_dn)
+							if ($member == $data[0]['distinguishedname'][0])
 							{
 								$allowed = true;
 							}
@@ -267,6 +285,11 @@
 					}
 				}
 
+				/*
+				 * Set user's properties.
+				 * Realname is obtained from directory, if not found we set it to the username
+				 * Email is obtained from directory, if not found we set it to blank
+				 */
 				if (!array_key_exists(strtolower($fullname_attr), $data[0]))
 				{
 					$realname = $username;
@@ -284,14 +307,38 @@
 				{
 					$email = $data[0][strtolower($email_attr)][0];
 				}
+				
+				/*
+				 * If we are performing a login, now bind to the user and see if the credentials
+				 * are valid. We bind using the full DN of the user, so no need for DOMAIN\ stuff
+				 * on Windows, and more importantly it fixes other servers.
+				 * 
+				 * If the bind fails (exception), we throw a nicer exception and don't continue.
+				 */
+				if ($mode == 1)
+				{
+					try
+					{
+						$bind = $this->bind($connection, $data[0]['distinguishedname'][0], $password);
+					}
+					catch (Exception $e)
+					{
+						throw new Exception(TBGContext::geti18n()->__('Your password was not accepted by the server'));
+					}
+				}
 			}
 			catch (Exception $e)
 			{
+				ldap_unbind($connection);
 				throw $e;
 			}
 			
 			try
 			{
+				/*
+				 * Get the user object. If the user exists, update the user's
+				 * data from the directory.
+				 */
 				$user = TBGUser::getByUsername($username);
 				if ($user instanceof TBGUser)
 				{
@@ -303,6 +350,10 @@
 				}
 				else
 				{
+					/*
+					 * If not, and we are performing an initial login, create the user object
+					 * if we are validating a log in, kick the user out as the session is invalid.
+					 */
 					if ($mode == 1)
 					{
 						// create user
@@ -325,9 +376,15 @@
 			}
 			catch (Exception $e)
 			{
+				ldap_unbind($connection);
 				throw $e;
 			}
 
+			ldap_unbind($connection);
+			
+			/*
+			 * Set cookies and return user row for general operations.
+			 */
 			TBGContext::getResponse()->setCookie('tbg3_username', $username);
 			TBGContext::getResponse()->setCookie('tbg3_password', TBGUser::hashPassword($user->getJoinedDate().$username));
 
