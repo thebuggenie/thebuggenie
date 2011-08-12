@@ -40,12 +40,14 @@
 		public function runPruneUsers(TBGRequest $request)
 		{
 			$validgroups = TBGContext::getModule('auth_ldap')->getSetting('groups');
-			$users_dn = TBGContext::getModule('auth_ldap')->getSetting('u_dn');
+			$base_dn = TBGContext::getModule('auth_ldap')->getSetting('b_dn');
 			$username_attr = TBGContext::getModule('auth_ldap')->getSetting('u_attr');
 			$fullname_attr = TBGContext::getModule('auth_ldap')->getSetting('f_attr');
 			$email_attr = TBGContext::getModule('auth_ldap')->getSetting('e_attr');
-			$groups_dn = TBGContext::getModule('auth_ldap')->getSetting('g_dn');
 			$groups_members_attr = TBGContext::getModule('auth_ldap')->getSetting('g_attr');
+			
+			$user_class = TBGContext::getModule('auth_ldap')->getSetting('u_type');
+			$group_class = TBGContext::getModule('auth_ldap')->getSetting('g_type');
 			
 			$users = TBGUser::getAll();
 			$deletecount = 0;
@@ -66,21 +68,10 @@
 					
 					$username = $user->getUsername();
 					
-					// Windows Domains require the username to be in the form DOMAIN\User, only we don't want that, strip domain
-					if (strstr($username, '\\'))
-					{
-						$data = explode('\\', $username);
-						$username2 = $data[1];
-					}
-					else
-					{
-						$username2 = $username;
-					}
-					
 					$fields = array($fullname_attr, $email_attr, 'cn');
-					$filter = '('.$username_attr.'='.TBGLDAPAuthentication::getModule()->escape($username2).')';
+					$filter = '&(objectClass='.TBGLDAPAuthentication::getModule()->escape($user_class).')('.$username_attr.'='.TBGLDAPAuthentication::getModule()->escape($username2).')';
 					
-					$results = ldap_search($connection, $users_dn, $filter, $fields);
+					$results = ldap_search($connection, $base_dn, $filter, $fields);
 					
 					if (!$results)
 					{
@@ -116,9 +107,9 @@
 						foreach ($groups as $group)
 						{
 							$fields2 = array($groups_members_attr);
-							$filter2 = '(cn='.TBGLDAPAuthentication::getModule()->escape($group).')';
+							$filter2 = '&(objectClass='.TBGLDAPAuthentication::getModule()->escape($group_class).')(cn='.TBGLDAPAuthentication::getModule()->escape($group).')';
 							
-							$results2 = ldap_search($connection, $groups_dn, $filter2, $fields2);
+							$results2 = ldap_search($connection, $base_dn, $filter2, $fields2);
 							
 							if (!$results2)
 							{
