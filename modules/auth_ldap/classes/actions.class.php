@@ -55,7 +55,7 @@
 			try
 			{
 				$connection = TBGContext::getModule('auth_ldap')->connect();
-				TBGContext::getModule('auth_ldap')->bind(TBGContext::getModule('auth_ldap')->getSetting('control_user'), TBGContext::getModule('auth_ldap')->getSetting('control_pass'), $connection);
+				TBGContext::getModule('auth_ldap')->bind($connection, TBGContext::getModule('auth_ldap')->getSetting('control_user'), TBGContext::getModule('auth_ldap')->getSetting('control_pass'));
 
 				$default = TBGSettings::getDefaultUserID();
 
@@ -178,7 +178,7 @@
 			try
 			{
 				$connection = TBGContext::getModule('auth_ldap')->connect();
-				TBGContext::getModule('auth_ldap')->bind(TBGContext::getModule('auth_ldap')->getSetting('control_user'), TBGContext::getModule('auth_ldap')->getSetting('control_pass'), $connection);
+				TBGContext::getModule('auth_ldap')->bind($connection, TBGContext::getModule('auth_ldap')->getSetting('control_user'), TBGContext::getModule('auth_ldap')->getSetting('control_pass'));
 				
 				$fields = array($fullname_attr, $username_attr, $email_attr, 'cn');
 				$filter = '(objectClass='.TBGLDAPAuthentication::getModule()->escape($user_class).')';

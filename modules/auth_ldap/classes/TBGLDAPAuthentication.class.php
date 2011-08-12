@@ -114,10 +114,17 @@
 			return $connection;
 		}
 		
-		public function bind($lduser, $ldpass, $connection)
+		public function bind($connection, $lduser = null, $ldpass = null)
 		{
-			$bind = ldap_bind($connection, $lduser, $ldpass);
-
+			if ($ldpass == '' && $lduser == '')
+			{
+				$bind = ldap_bind($connection);
+			}
+			else
+			{
+				$bind = ldap_bind($connection, $lduser, $ldpass);
+			}
+			
 			if (!$bind)
 			{
 				ldap_unbind($connection);
@@ -166,7 +173,7 @@
 				
 				if ($mode == 1)
 				{
-					$this->bind($username, $password, $connection);
+					$this->bind($connection, $username, $password);
 				}
 				else
 				{
