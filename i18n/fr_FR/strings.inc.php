@@ -7,7 +7,7 @@
 	$strings['Please enter your current password'] = 'Entrez le mot de passe actuel';
 	$strings['Configuration center'] = 'Centre de configuration';
 	$strings['General configuration'] = 'Configuration g&eacute;n&eacute;rale';
-	$strings['Scopes'] = 'BUGS 2 domaines';
+	$strings['Scopes'] = 'Domaines';
 	$strings['Manage projects'] = 'G&eacute;rer les projets';
 	$strings['Issue types'] = 'Types de demandes';
 	$strings['Resolution types'] = 'Types de r&eacute;solution';
@@ -284,7 +284,7 @@
 	$strings['Please select the project you are filing an issue for, as well as what kind of issue you are filing'] = 'Veuillez s&eacute;lectionner le projet pour lequel vous remplisser une demande, ainsi que le type de demande';
 	$strings['Select project'] = 'S&eacutelectionner un projet';
 	$strings['Please select a project from this list'] = 'Veuillez s&eacute;lectionner un projet depuis cette liste';
-	$strings['Select issue type'] = 'S&eacute;tionner le type de demande';
+	$strings['Select issue type'] = 'S&eacute;lectionner le type de demande';
 	$strings['Please select an issue type from this list'] = 'Veuillez s&eacute;lectionner un type de demande depuis cette liste';
 	$strings['Choose %issue_type%'] = 'Choisir %issue_type%';
 	$strings['More options will appear here as soon as you select a project and an issue type above'] = 'Plus d\'options seront disponibles ici quand vous aurez s&eacute;lectioner un projet et un type de demande ci-dessus';
