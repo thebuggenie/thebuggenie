@@ -271,7 +271,10 @@
 						 */
 						foreach ($data2[0][strtolower($groups_members_attr)] as $member)
 						{
-							if ($member == $data[0][$dn_attr][0])
+							$member = preg_replace('/(?<=,) (?=[a-zA-Z])/g', '', $member);
+							$user_dn = preg_replace('/(?<=,) (?=[a-zA-Z])/g', '', $data[0][strtolower($dn_attr)][0]);
+								
+							if (!is_numeric($member) && $member == $user_dn)
 							{
 								$allowed = true;
 							}
@@ -318,7 +321,7 @@
 				{
 					try
 					{
-						$bind = $this->bind($connection, $this->escape($data[0][$dn_attr][0]), $password);
+						$bind = $this->bind($connection, $this->escape($data[0][strtolower($dn_attr)][0]), $password);
 					}
 					catch (Exception $e)
 					{
