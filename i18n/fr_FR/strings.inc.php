@@ -965,12 +965,12 @@
 	$strings['Update user'] = 'Mettre &agrave; jour';
 	$strings['or %cancel%'] = 'ou %cancel%';
 	$strings['This project does not use editions'] = 'Ce projet n\'utilise pas les &eacute;ditions';
-	$strings['Editions can be enabled in project settings'] = 'Les &eacute;ditions peuvent &ecirc;tre activt&eacute;es dans les param&egrave;tres projet';
+	$strings['Editions can be enabled in project settings'] = 'Les &eacute;ditions peuvent &ecirc;tre activ&eacute;es dans les param&egrave;tres projet';
 	$strings['This project does not use components'] = 'Ce projet n\'utilise pas les composants';
-	$strings['Components can be enabled in project settings'] = 'Les composants peuvent &ecirc;tre activt&eacute;s dans les param&egrave;tres projet';
+	$strings['Components can be enabled in project settings'] = 'Les composants peuvent &ecirc;tre activ&eacute;s dans les param&egrave;tres projet';
 	$strings['Releases'] = 'Livraisons';
 	$strings['This project does not use releases'] = 'Ce projet n\'utilise pas les livraisons';
-	$strings['Releases can be enabled in project settings'] = 'Les livraisons peuvent &ecirc;tre activt&eacute;es dans les param&egrave;tres projet';
+	$strings['Releases can be enabled in project settings'] = 'Les livraisons peuvent &ecirc;tre activ&eacute;es dans les param&egrave;tres projet';
 	$strings['There are no milestones'] = 'Il n\'y a pas de jalon';
 	$strings['Regular milestone'] = 'Jalon r&eacute;gulier';
 	$strings['Scrum sprint'] = 'Sprint scrum';
