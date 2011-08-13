@@ -128,7 +128,10 @@
 
 							foreach ($data2[0][$groups_members_attr] as $member)
 							{
-								if ($member == $data[0][$dn_attr][0])
+								$member = preg_replace('/(?<=,) (?=[a-zA-Z])/g', '', $member);
+								$user_dn = preg_replace('/(?<=,) (?=[a-zA-Z])/g', '', $data[0][strtolower($dn_attr)][0]);
+								
+								if (!is_numeric($member) && $member == $user_dn)
 								{
 									$allowed = true;
 								}
@@ -210,7 +213,7 @@
 				 */
 				for ($i = 0; $i != $data['count']; $i++)
 				{
-					$user_dn = $data[$i][$dn_attr][0];
+					$user_dn = $data[$i][strtolower($dn_attr)][0];
 					
 					/*
 					 * If groups are specified, perform group restriction tests
@@ -265,7 +268,9 @@
 							 */
 							foreach ($data2[0][strtolower($groups_members_attr)] as $member)
 							{
-								if ($member == $user_dn)
+								$member = preg_replace('/(?<=,) (?=[a-zA-Z])/g', '', $member);
+								$user_dn = preg_replace('/(?<=,) (?=[a-zA-Z])/g', '', $user_dn);
+								if (!is_numeric($member) && $member == $user_dn)
 								{
 									$allowed = true;
 								}
