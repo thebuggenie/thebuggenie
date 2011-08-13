@@ -248,7 +248,7 @@
 							$fields2 = array($groups_members_attr);
 							$filter2 = '(&(cn='.TBGLDAPAuthentication::getModule()->escape($group).')(objectClass='.TBGLDAPAuthentication::getModule()->escape($group_class).'))';
 							
-							$results2 = ldap_search($connection, $b_dn, $filter2, $fields2);
+							$results2 = ldap_search($connection, $base_dn, $filter2, $fields2);
 							
 							if (!$results2)
 							{
