@@ -271,10 +271,10 @@
 						 */
 						foreach ($data2[0][strtolower($groups_members_attr)] as $member)
 						{
-							$member = preg_replace('/(?<=,) (?=[a-zA-Z])/g', '', $member);
-							$user_dn = preg_replace('/(?<=,) (?=[a-zA-Z])/g', '', $data[0][strtolower($dn_attr)][0]);
+							$member = preg_replace('/(?<=,) +(?=[a-zA-Z])/', '', $member);
+							$user_dn = preg_replace('/(?<=,) +(?=[a-zA-Z])/', '', $data[0][strtolower($dn_attr)][0]);
 								
-							if (!is_numeric($member) && $member == $user_dn)
+							if (!is_numeric($member) && strtolower($member) == strtolower($user_dn))
 							{
 								$allowed = true;
 							}
