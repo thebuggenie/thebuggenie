@@ -13,21 +13,89 @@
 		 */
 		public function runTestConnection(TBGRequest $request)
 		{
+			$validgroups = TBGContext::getModule('auth_ldap')->getSetting('groups');
+			$base_dn = TBGContext::getModule('auth_ldap')->getSetting('b_dn');
+			$groups_members_attr = TBGContext::getModule('auth_ldap')->getSetting('g_attr');
+			$group_class = TBGContext::getModule('auth_ldap')->getSetting('g_type');
+			
 			try
 			{
 				$connection = TBGContext::getModule('auth_ldap')->connect();
 				
 				TBGLDAPAuthentication::getModule()->bind($connection, TBGLDAPAuthentication::getModule()->getSetting('control_user'), TBGLDAPAuthentication::getModule()->getSetting('control_pass'));
-				
-				ldap_unbind($connection);
-				
-				TBGContext::setMessage('module_message', TBGContext::getI18n()->__('Connection test successful'));
-				$this->forward(TBGContext::getRouting()->generate('configure_module', array('config_module' => 'auth_ldap')));
 			}
 			catch (Exception $e)
 			{
 				TBGContext::setMessage('module_error', TBGContext::getI18n()->__('Failed to connect to server'));
 				TBGContext::setMessage('module_error_details', $e->getMessage());
+				$this->forward(TBGContext::getRouting()->generate('configure_module', array('config_module' => 'auth_ldap')));
+			}
+
+			$nonexisting = array();
+
+			try
+			{
+				if ($validgroups != '')
+				{
+					/*
+					 * We will repeat this for every group, but groups are supplied as a comma-separated list
+					 */
+					if (strstr($validgroups, ','))
+					{
+						$groups = explode(',', $validgroups);
+					}
+					else
+					{
+						$groups = array();
+						$groups[] = $validgroups;
+					}
+					
+					// Check if specified groups exist
+					foreach ($groups as $group)
+					{
+						/*
+						 * Find the group we are looking for, we search the entire directory
+						 * We want to find 1 group, if we don't get 1, silently ignore this group.
+						 */
+						$fields2 = array($groups_members_attr);
+						$filter2 = '(&(cn='.TBGLDAPAuthentication::getModule()->escape($group).')(objectClass='.TBGLDAPAuthentication::getModule()->escape($group_class).'))';
+						
+						$results2 = ldap_search($connection, $base_dn, $filter2, $fields2);
+						
+						if (!$results2)
+						{
+							TBGLogging::log('failed to search for user: '.ldap_error($connection), 'ldap', TBGLogging::LEVEL_FATAL);
+							throw new Exception(TBGContext::geti18n()->__('Search failed: ').ldap_error($connection));
+						}
+						
+						$data2 = ldap_get_entries($connection, $results2);
+						
+						if ($data2['count'] != 1)
+						{
+							$nonexisting[] = $group;
+						}
+					}
+				}
+			}
+			catch (Exception $e)
+			{
+				ldap_unbind($connection);
+				TBGContext::setMessage('module_error', TBGContext::getI18n()->__('Failed to validate groups'));
+				TBGContext::setMessage('module_error_details', $e->getMessage());
+				$this->forward(TBGContext::getRouting()->generate('configure_module', array('config_module' => 'auth_ldap')));
+			}
+			
+			if (count($nonexisting) == 0)
+			{
+				ldap_unbind($connection);
+				TBGContext::setMessage('module_message', TBGContext::getI18n()->__('Connection test successful'));
+				$this->forward(TBGContext::getRouting()->generate('configure_module', array('config_module' => 'auth_ldap')));
+			}
+			else
+			{
+				ldap_unbind($connection);
+				TBGContext::setMessage('module_error', TBGContext::getI18n()->__('Some of the groups you specified don\'t exist'));
+				TBGContext::setMessage('module_error_details', TBGContext::getI18n()->__('The following groups for the group restriction could not be found: %groups%', array('%groups%' => implode(', ', $nonexisting))));
 				$this->forward(TBGContext::getRouting()->generate('configure_module', array('config_module' => 'auth_ldap')));
 			}
 		}
