@@ -41,6 +41,7 @@
 		{
 			$validgroups = TBGContext::getModule('auth_ldap')->getSetting('groups');
 			$base_dn = TBGContext::getModule('auth_ldap')->getSetting('b_dn');
+			$dn_attr = TBGContext::getModule('auth_ldap')->getSetting('dn_attr');
 			$username_attr = TBGContext::getModule('auth_ldap')->getSetting('u_attr');
 			$fullname_attr = TBGContext::getModule('auth_ldap')->getSetting('f_attr');
 			$email_attr = TBGContext::getModule('auth_ldap')->getSetting('e_attr');
@@ -68,7 +69,7 @@
 					
 					$username = $user->getUsername();
 					
-					$fields = array($fullname_attr, $email_attr, 'cn', 'distinguishedName');
+					$fields = array($fullname_attr, $email_attr, 'cn', $dn_attr);
 					$filter = '(&(objectClass='.TBGLDAPAuthentication::getModule()->escape($user_class).')('.$username_attr.'='.TBGLDAPAuthentication::getModule()->escape($username).'))';
 					
 					$results = ldap_search($connection, $base_dn, $filter, $fields);
@@ -90,8 +91,6 @@
 						$deletecount++;
 						continue;
 					}
-	
-					$user_dn = 'CN='.$data[0]['distinguishedname'][0];
 					
 					if ($validgroups != '')
 					{
@@ -129,7 +128,7 @@
 
 							foreach ($data2[0][$groups_members_attr] as $member)
 							{
-								if ($member == $user_dn)
+								if ($member == $data[0][$dn_attr][0])
 								{
 									$allowed = true;
 								}
@@ -170,6 +169,7 @@
 		{
 			$validgroups = TBGContext::getModule('auth_ldap')->getSetting('groups');
 			$base_dn = TBGContext::getModule('auth_ldap')->getSetting('b_dn');
+			$dn_attr = TBGContext::getModule('auth_ldap')->getSetting('dn_attr');
 			$username_attr = TBGContext::getModule('auth_ldap')->getSetting('u_attr');
 			$fullname_attr = TBGContext::getModule('auth_ldap')->getSetting('f_attr');
 			$email_attr = TBGContext::getModule('auth_ldap')->getSetting('e_attr');
@@ -193,7 +193,7 @@
 				/*
 				 * Get a list of all users of a certain objectClass
 				 */
-				$fields = array($fullname_attr, $username_attr, $email_attr, 'cn', 'distinguishedName');
+				$fields = array($fullname_attr, $username_attr, $email_attr, 'cn', $dn_attr);
 				$filter = '(objectClass='.TBGLDAPAuthentication::getModule()->escape($user_class).')';
 
 				$results = ldap_search($connection, $base_dn, $filter, $fields);
@@ -210,7 +210,7 @@
 				 */
 				for ($i = 0; $i != $data['count']; $i++)
 				{
-					$user_dn = $data[$i]['distinguishedname'][0];
+					$user_dn = $data[$i][$dn_attr][0];
 					
 					/*
 					 * If groups are specified, perform group restriction tests

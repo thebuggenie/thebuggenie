@@ -27,7 +27,14 @@
 				<td><input type="text"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> name="b_dn" id="b_dn" value="<?php echo $module->getSetting('b_dn'); ?>" style="width: 100%;"></td>
 			</tr>
 			<tr>
-				<td class="config_explanation" colspan="2"><?php echo __('This should be the DN string for an OU where all user and group OUs can be found. For example, DN=ldap,DN=example,DN=com.'); ?></td>
+				<td class="config_explanation" colspan="2"><?php echo __('This should be the DN string for an OU where all user and group OUs can be found. For example, DC=ldap,DC=example,DC=com.'); ?></td>
+			</tr>
+			<tr>
+				<td style="padding: 5px;"><label for="dn_attr"><?php echo __('Object DN attribute'); ?></label></td>
+				<td><input type="text"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> name="dn_attr" id="dn_attr" value="<?php echo $module->getSetting('dn_attr'); ?>" style="width: 100%;"></td>
+			</tr>
+			<tr>
+				<td class="config_explanation" colspan="2"><?php echo __('Enter the name of the property containing the distinguished name of an object. On Linux systems this may be basedn (which is the default value if this is left blank), on Active Directory it is distinguishedName.'); ?></td>
 			</tr>
 			<tr>
 				<td style="padding: 5px;"><label for="u_type"><?php echo __('User class'); ?></label></td>
@@ -106,7 +113,7 @@
 <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('ldap_import'); ?>" method="post">
 	<div class="rounded_box borderless mediumgrey cut_bottom" style="margin: 10px 0 0 0; width: 700px; padding: 5px;">
 		<div class="header"><?php echo __('Import all users'); ?></div>
-		<div class="content"><?php echo __('So that you can ensure all users from LDAP exist in The Bug Genie exist for initial configuration (e.g. to set permissions), you can import all users who don\'t already exist using this tool. If you set a group restriction, this will be obyed here. Remember to make at least one an administrator so you can continue to configure The Bug Genie after switching.'); ?></div>
+		<div class="content"><?php echo __('You can import all users who can log in from LDAP into The Bug Genie with this tool. This will not let them log in without switching to LDAP Authentication. We recomemnd you do this before switching over, and make at least one of the new users an administrator. Already existing users with the same username will be updated.'); ?></div>
 	</div>
 	<div class="rounded_box iceblue borderless cut_top" style="margin: 0 0 5px 0; width: 700px; border-top: 0; padding: 8px 5px 2px 5px; height: 25px;">
 		<input type="submit" id="import_button"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> style="float: right; padding: 0 10px 0 10px; font-size: 13px; font-weight: bold;" value="<?php echo __('Import users'); ?>">
@@ -116,7 +123,7 @@
 <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('ldap_prune'); ?>" method="post">
 	<div class="rounded_box borderless mediumgrey cut_bottom" style="margin: 10px 0 0 0; width: 700px; padding: 5px;">
 		<div class="header"><?php echo __('Prune users'); ?></div>
-		<div class="content"><?php echo __('If a user is deleted from LDAP then they will not be able to log into The Bug Genie. However if you want to remove users from The Bug Genie who have been deleted from LDAP you may wish to prune the users list. This action will delete all users from The Bug Genie\'s user list who do not exist in the LDAP database, and can not be reversed. The default (typically the guest) user will not be removed. Users who would not be able to log in due to a group restriction will be deleted.'); ?></div>
+		<div class="content"><?php echo __('To remove the data from The Bug Genie of users who can no longer log in via LDAP, run this tool. These users would not be able to log in anyway, but it will keep your user list clean. The guest user is not affected, but it may affect your current user - if this is deleted you will be logged out.'); ?></div>
 	</div>
 	<div class="rounded_box red borderless cut_top" style="margin: 0 0 5px 0; width: 700px; border-top: 0; padding: 8px 5px 2px 5px; height: 25px;">
 		<input type="submit"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> id="prune_button" style="float: right; padding: 0 10px 0 10px; font-size: 13px; font-weight: bold;" value="<?php echo __('Prune users'); ?>">

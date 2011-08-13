@@ -72,18 +72,22 @@
 
 		public function postConfigSettings(TBGRequest $request)
 		{
-			$settings = array('hostname', 'u_type', 'g_type', 'b_dn', 'groups', 'u_attr', 'g_attr', 'e_attr', 'f_attr', 'g_dn', 'control_user', 'control_pass');
+			$settings = array('hostname', 'u_type', 'g_type', 'b_dn', 'groups', 'dn_attr', 'u_attr', 'g_attr', 'e_attr', 'f_attr', 'g_dn', 'control_user', 'control_pass');
 			foreach ($settings as $setting)
 			{
-				if (($setting == 'u_type' || $setting == 'g_type') && $request->getParameter($setting) == '')
+				if (($setting == 'u_type' || $setting == 'g_type' || $setting == 'dn_attr') && $request->getParameter($setting) == '')
 				{
 					if ($setting == 'u_type')
 					{
 						$this->saveSetting($setting, 'person');
 					}
-					else
+					elseif ($setting == 'g_type')
 					{
 						$this->saveSetting($setting, 'group');
+					}
+					else
+					{
+						$this->saveSetting($setting, 'entrydn');
 					}
 				}
 				else
@@ -142,6 +146,7 @@
 		{	
 			$validgroups = $this->getSetting('groups');
 			$base_dn = $this->getSetting('b_dn');
+			$dn_attr = $this->escape($this->getSetting('dn_attr'));
 			$username_attr = $this->escape($this->getSetting('u_attr'));
 			$fullname_attr = $this->escape($this->getSetting('f_attr'));
 			$email_attr = $this->escape($this->getSetting('e_attr'));
@@ -186,7 +191,7 @@
 				 * We want exactly 1 user to be returned. We get the user's full name, email, cn
 				 * and dn.
 				 */
-				$fields = array($fullname_attr, $email_attr, 'cn', 'distinguishedName');
+				$fields = array($fullname_attr, $email_attr, 'cn', $dn_attr);
 				$filter = '(&(objectClass='.TBGLDAPAuthentication::getModule()->escape($user_class).')('.$username_attr.'='.$this->escape($username).'))';
 				
 				$results = ldap_search($connection, $base_dn, $filter, $fields);
@@ -266,7 +271,7 @@
 						 */
 						foreach ($data2[0][strtolower($groups_members_attr)] as $member)
 						{
-							if ($member == $data[0]['distinguishedname'][0])
+							if ($member == $data[0][$dn_attr][0])
 							{
 								$allowed = true;
 							}
@@ -313,7 +318,7 @@
 				{
 					try
 					{
-						$bind = $this->bind($connection, $this->escape($data[0]['distinguishedname'][0]), $password);
+						$bind = $this->bind($connection, $this->escape($data[0][$dn_attr][0]), $password);
 					}
 					catch (Exception $e)
 					{
