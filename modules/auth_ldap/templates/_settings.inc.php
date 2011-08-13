@@ -34,7 +34,7 @@
 				<td><input type="text"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> name="dn_attr" id="dn_attr" value="<?php echo $module->getSetting('dn_attr'); ?>" style="width: 100%;"></td>
 			</tr>
 			<tr>
-				<td class="config_explanation" colspan="2"><?php echo __('Enter the name of the property containing the distinguished name of an object. On Linux systems this may be basedn (which is the default value if this is left blank), on Active Directory it is distinguishedName.'); ?></td>
+				<td class="config_explanation" colspan="2"><?php echo __('Enter the name of the property containing the distinguished name of an object. On Linux systems this may be entrydn (which is the default value if this is left blank), on Active Directory it is distinguishedName.'); ?></td>
 			</tr>
 			<tr>
 				<td style="padding: 5px;"><label for="u_type"><?php echo __('User class'); ?></label></td>
