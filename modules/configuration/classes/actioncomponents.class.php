@@ -57,7 +57,7 @@
 			{
 				if ($module->hasConfigSettings() && $module->isEnabled())
 				{
-					$config_sections[TBGSettings::CONFIGURATION_SECTION_MODULES][] = array('route' => array('configure_module', array('config_module' => $module->getName())), 'description' => $module->getConfigTitle(), 'icon' => $module->getName(), 'module' => $module->getName());
+					$config_sections[TBGSettings::CONFIGURATION_SECTION_MODULES][] = array('route' => array('configure_module', array('config_module' => $module->getName())), 'description' => TBGContext::geti18n()->__($module->getConfigTitle()), 'icon' => $module->getName(), 'module' => $module->getName());
 				}
 			}
 			$breadcrumblinks = array();
