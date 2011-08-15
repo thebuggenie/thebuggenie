@@ -37,7 +37,7 @@
 	</div>
 	<div class="project_header_left">
 		<div id="project_name">
-			<?php echo image_tag($selected_project->getIcon(true), array('class' => 'logo'), $selected_project->hasIcon(), 'core', !$selected_project->hasIcon()); ?>
+			<?php echo image_tag($selected_project->getIcon(true), array('class' => 'logo'), $selected_project->hasIcon(true), 'core'); ?>
 			<span id="project_name_span"><?php echo $selected_project->getName(); ?></span>
 			<span id="project_key_span">(<?php echo $selected_project->getKey(); ?>)</span>
 		</div>
