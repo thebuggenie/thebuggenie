@@ -204,7 +204,7 @@
 				{
 					echo("No server? $errno $errstr<br>");
 				}
-				throw new Exception(TBGContext::getI18n()->__('Could not open connection to server %server on port %port%', array('server' => $this->server, 'port' => $this->port)));
+				throw new Exception(TBGContext::getI18n()->__('Could not open connection to server %server on port %port%', array('%server%' => $this->server, '%port%' => $this->port)));
 			}
 			$this->_read_buffer($fp, 'open');
 
@@ -244,7 +244,7 @@
 					{
 						echo 'Not ready to authenticate. ('.$rv.') Try changing server type';
 					}
-					throw new Exception(TBGContext::getI18n()->__('Not ready to authenticate. (%rv%) Try changing server type', array('rv' => $rv)));
+					throw new Exception(TBGContext::getI18n()->__('Not ready to authenticate. (%rv%) Try changing server type', array('%rv%' => $rv)));
 				}
 
 				if (!preg_match("/^235/i",$rv))
@@ -254,7 +254,7 @@
 						echo('Username / password not accepted on server<br>');
 					}
 					fclose($fp);
-					throw new Exception(TBGContext::getI18n()->__('Username / password not accepted on server: %rv%', array('rv' => $rv)));
+					throw new Exception(TBGContext::getI18n()->__('Username / password not accepted on server: %rv%', array('%rv%' => $rv)));
 				}
 			}
 
@@ -275,7 +275,7 @@
 				{
 					echo "You are not allowed to send emails through this server.";
 				}
-				throw new Exception(TBGContext::getI18n()->__("You are not allowed to send emails through this server. \nThe error was: %rv%", array('rv' => $rv)));
+				throw new Exception(TBGContext::getI18n()->__("You are not allowed to send emails through this server. \nThe error was: %rv%", array('%rv%' => $rv)));
 			}
 
 			foreach ($email->getCC() as $cc)
@@ -318,7 +318,7 @@
 				{
 					echo "Did not receive a confirmation message from the mail server.";
 				}
-				throw new Exception(TBGContext::getI18n()->__("Did not receive a confirmation message from the mail server.. \nHowever, we received: %rv%", array('rv' => $rv)));
+				throw new Exception(TBGContext::getI18n()->__("Did not receive a confirmation message from the mail server.. \nHowever, we received: %rv%", array('%rv%' => $rv)));
 			}
 
 		}
