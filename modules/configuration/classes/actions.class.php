@@ -1798,6 +1798,12 @@
 		 */
 		public function runUnarchiveProject(TBGRequest $request)
 		{
+			// Don't unarchive if we will have too many projects
+			if (!TBGContext::getScope()->hasProjectsAvailable())
+			{
+				return $this->renderJSON(array('failed' => true, "error" => $i18n->__("There are no more projects available in this instance")));
+			}
+			
 			return $this->_setArchived(false, $request);
 		}
 
