@@ -12,7 +12,7 @@
 ?>
 <div class="rounded_box <?php if (!($project->isIssuelistVisibleInFrontpageSummary() && count($project->getVisibleIssuetypes()))): ?>invisible <?php else: ?> white borderless <?php endif; ?>project_strip">
 	<div style="float: left; font-weight: normal;">
-		<?php echo image_tag($project->getIcon(), array('style' => 'float: left; margin-right: 5px;'), $project->hasIcon(), 'core', false); ?>
+		<?php echo image_tag($project->getIcon(), array('style' => 'float: left; margin-right: 5px;'), $project->hasIcon(), 'core'); ?>
 		<b class="project_name"><?php echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), '<span id="project_name_span">'.$project->getName()."</span>"); ?> <?php if ($project->usePrefix()): ?>(<?php echo strtoupper($project->getPrefix()); ?>)<?php endif; ?></b><?php if ($tbg_user->canEditProjectDetails($project)): ?>&nbsp;&nbsp;<span class="faded_out"><?php echo javascript_link_tag(__('Edit project'), array('onclick' => "showFadedBackdrop('".make_url('get_partial_for_backdrop', array('key' => 'project_config', 'project_id' => $project->getID()))."');", 'style' => 'font-size: 12px;')); ?></span><?php endif; ?><br>
 		<?php if ($project->hasHomepage()): ?>
 			<a href="<?php echo $project->getHomepage(); ?>" target="_blank"><?php echo $project->getHomepage(); ?></a>
