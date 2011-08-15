@@ -57,7 +57,7 @@
 			foreach (TBGContext::getModules() as $module)
 			{
 				if ($module->hasConfigSettings() && $module->isEnabled())
-					$module_config_sections[TBGSettings::CONFIGURATION_SECTION_MODULES][] = array('route' => array('configure_module', array('config_module' => $module->getName())), 'description' => $module->getConfigTitle(), 'icon' => $module->getName(), 'details' => $module->getConfigDescription(), 'module' => $module->getName());
+					$module_config_sections[TBGSettings::CONFIGURATION_SECTION_MODULES][] = array('route' => array('configure_module', array('config_module' => $module->getName())), 'description' => TBGContext::geti18n()->__($module->getConfigTitle()), 'icon' => $module->getName(), 'details' => TBGContext::geti18n()->__($module->getConfigDescription()), 'module' => $module->getName());
 			}
 			$this->general_config_sections = $general_config_sections; 
 			$this->data_config_sections = $data_config_sections;
