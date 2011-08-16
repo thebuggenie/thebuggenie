@@ -18,6 +18,20 @@
 			<?php TBGEvent::createNew('core', 'index_left')->trigger(); ?>
 		</td>
 		<td class="main_area frontpage">
+			<?php
+				if (TBGContext::hasMessage('account_activate'))
+				{
+					if (TBGContext::getMessage('activate_success') == true)
+					{
+						echo '<div class="rounded_box green">'.__('Your account has been activated! You can now log in with the username %user% and the password in your activation email.', array('%user%' => '<b>'.TBGContext::getMessage('activate_uname').'</b>')).'</div>';
+					}
+					else
+					{
+						echo '<div class="rounded_box red">'.__('This activation link is not valid').'</div>';
+					}
+					echo '<br>';
+				}
+			?>
 			<?php TBGEvent::createNew('core', 'index_right_top')->trigger(); ?>
 			<?php if ($show_project_list): ?>
 				<div class="project_overview">
