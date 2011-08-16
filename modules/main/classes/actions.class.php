@@ -1142,7 +1142,7 @@
 
 			$this->_loadSelectedProjectAndIssueTypeFromRequestForReportIssueAction($request);
 			
-			$this->forward403unless(TBGContext::getUser()->canReportIssues(TBGContext::getCurrentProject()));
+			$this->forward403unless(TBGContext::getCurrentProject() instanceof TBGProject && TBGContext::getCurrentProject()->hasAccess() && TBGContext::getUser()->canReportIssues(TBGContext::getCurrentProject()));
 			
 			if ($request->isMethod(TBGRequest::POST))
 			{
