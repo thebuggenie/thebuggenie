@@ -321,7 +321,15 @@
 				{
 					try
 					{
-						$bind = $this->bind($connection, $this->escape($data[0][strtolower($dn_attr)][0]), $password);
+						if (!is_array($data[0][strtolower($dn_attr)]))
+						{
+							$dn = $data[0][strtolower($dn_attr)];
+						}
+						else
+						{
+							$dn = $data[0][strtolower($dn_attr)][0];
+						}
+						$bind = $this->bind($connection, $this->escape($dn), $password);
 					}
 					catch (Exception $e)
 					{
