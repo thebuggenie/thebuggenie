@@ -20,6 +20,13 @@
 				</td>
 			</tr>
 			<tr>
+				<td style="padding: 5px;"><label for="activation_needed"><?php echo __("Require email activation for new accounts"); ?></label></td>
+				<td><input type="checkbox" name="activation_needed" id="activation_needed" value="1" <?php if ($module->isActivationNeeded()): ?>checked<?php endif; ?> style="width: 100%;"<?php echo ($access_level != TBGSettings::ACCESS_FULL) ? ' disabled' : ''; ?>></td>
+			</tr>
+			<tr>
+				<td class="config_explanation" colspan="2"><?php echo __("If this option is ticked, new accounts will require activation by clicking a link in the email. If this is ticked, the user's password will also be provided in the email, instead of in the registration screen"); ?></td>
+			</tr>
+			<tr>
 				<td style="padding: 5px;"><label for="from_name"><?php echo __('Email "from"-name'); ?></label></td>
 				<td><input type="text" name="from_name" id="from_name" value="<?php echo $module->getSetting('from_name'); ?>" style="width: 100%;"<?php echo ($access_level != TBGSettings::ACCESS_FULL || !$module->isOutgoingNotificationsEnabled()) ? ' disabled' : ''; ?>></td>
 			</tr>
@@ -31,7 +38,7 @@
 				<td class="config_explanation" colspan="2"><?php echo __('This is the name and email address email notifications from The Bug Genie will be sent from'); ?></td>
 			</tr>
 			<tr>
-				<td style="padding: 5px;"><label for="from_address"><?php echo __("Don't use sendmail '-f'"); ?></label></td>
+				<td style="padding: 5px;"><label for="no_dash_f"><?php echo __("Don't use sendmail '-f'"); ?></label></td>
 				<td><input type="checkbox" name="no_dash_f" id="no_dash_f" value="1" <?php if ($module->getSetting('no_dash_f')): ?>checked<?php endif; ?> style="width: 100%;"<?php echo ($access_level != TBGSettings::ACCESS_FULL || !$module->isOutgoingNotificationsEnabled()) ? ' disabled' : ''; ?>></td>
 			</tr>
 			<tr>
