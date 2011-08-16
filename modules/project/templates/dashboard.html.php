@@ -6,6 +6,20 @@
 
 ?>
 			<?php include_template('project/projectinfosidebar', array('selected_project' => $selected_project)); ?>
+			<?php
+				if (TBGContext::hasMessage('account_activate'))
+				{
+					if (TBGContext::getMessage('activate_success') == true)
+					{
+						echo '<div class="rounded_box green">'.__('Your account has been activated! You can now log in with the username %user% and the password in your activation email.', array('%user%' => '<b>'.TBGContext::getMessage('activate_uname').'</b>')).'</div>';
+					}
+					else
+					{
+						echo '<div class="rounded_box red">'.__('This activation link is not valid').'</div>';
+					}
+					echo '<br>';
+				}
+			?>
 			<div id="project_client">
 				<?php if ($client instanceof TBGClient): ?>
 					<div class="project_client_info rounded_box lightgrey">

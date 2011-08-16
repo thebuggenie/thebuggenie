@@ -469,8 +469,8 @@
 			catch (Exception $e)
 			{
 				if (TBGContext::getRequest()->isAjaxCall() || TBGContext::getRequest()->getRequestedFormat() == 'json')
-				{
-					return $this->renderJSON(array('failed' => true, "error" => $i18n->__($e->getMessage()), 'referer' => $request->getParameter('tbg3_referer')));
+				{					
+						return $this->renderJSON(array('failed' => true, "error" => $i18n->__($e->getMessage()), 'referer' => $request->getParameter('tbg3_referer')));
 				}
 				else
 				{
@@ -668,6 +668,7 @@
 					$user->save();
 					TBGContext::setMessage('account_activate', true);
 					TBGContext::setMessage('activate_success', true);
+					TBGContext::setMessage('activate_uname', $user->getUsername());
 				}
 			}
 			else
@@ -675,7 +676,7 @@
 				TBGContext::setMessage('account_activate', true);
 				TBGContext::setMessage('activate_failure', true);
 			}
-			$this->forward(TBGContext::getRouting()->generate('login'));
+			$this->forward(TBGContext::getRouting()->generate('home'));
 		}
 
 		/**
