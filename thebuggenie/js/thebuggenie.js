@@ -318,7 +318,7 @@ TBG.Main.Helpers.Dialog.show = function(title, content, options) {
 }
 
 TBG.Main.Helpers.Dialog.dismiss = function() {
-	Effect.BlindUp(('dialog_backdrop_content'), { duration: 0.5 });
+	$('dialog_backdrop_content').fade({ duration: 0.2 });
 	$('dialog_backdrop').fade({ duration: 0.2 });
 }
 
@@ -462,15 +462,20 @@ TBG.Main.Helpers.Backdrop.show = function(url) {
 		TBG.Main.Helpers.ajax(url, {
 			url_method: 'get',
 			loading: {indicator: 'fullpage_backdrop_indicator'},
-			success: {update: 'fullpage_backdrop_content'},
+			success: {
+				update: 'fullpage_backdrop_content',
+				callback: function () {
+					$('fullpage_backdrop_content').appear({ duration: 0.2 });
+					$('fullpage_backdrop_indicator').fade({ duration: 0.2 });
+				}},
 			failure: {hide: 'fullpage_backdrop'}
 		});
 	}
 };
 
 TBG.Main.Helpers.Backdrop.reset = function() {
+	$('fullpage_backdrop_content').fade({ duration: 0.2 });
 	$('fullpage_backdrop').fade({ duration: 0.2 });
-	$('fullpage_backdrop_content').update('');
 };
 
 TBG.Main.Helpers.tabSwitcher = function(visibletab, menu) {
