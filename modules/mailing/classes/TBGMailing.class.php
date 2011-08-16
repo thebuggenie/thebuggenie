@@ -114,7 +114,7 @@
 		{
 			TBGContext::loadLibrary('common');
 			$settings = array('smtp_host', 'smtp_port', 'smtp_user', 'timeout', 'mail_type', 'enable_outgoing_notifications',
-								'smtp_pwd', 'headcharset', 'from_name', 'from_addr', 'ehlo', 'use_queue', 'no_dash_f');
+								'smtp_pwd', 'headcharset', 'from_name', 'from_addr', 'ehlo', 'use_queue', 'no_dash_f', 'activation_needed');
 			foreach ($settings as $setting)
 			{
 				if ($request->getParameter($setting) !== null || $setting = 'no_dash_f')
@@ -156,6 +156,7 @@
 							}							
 							break;	
 						case 'no_dash_f':
+						case 'activation_needed':
 							$value = (int) $request->getParameter($setting, 0);
 							break;
 					}
@@ -185,27 +186,30 @@
 		
 		public function listen_registerUser(TBGEvent $event)
 		{
-			$user = $event->getSubject();
-			$password = TBGUser::createPassword(8);
-			$user->setPassword($password);
-			$user->save();
-			if ($this->isOutgoingNotificationsEnabled())
+			if ($this->isActivationNeeded())
 			{
-				$subject = TBGContext::getI18n()->__('User account registered with The Bug Genie');
-				$message = $this->createNewTBGMimemailFromTemplate($subject, 'registeruser', array('user' => $user, 'password' => $password), null, array($user->getBuddyname(), $user->getEmail()));
-
-				$message->addReplacementValues(array('%user_buddyname%' => $user->getBuddyname()));
-				$message->addReplacementValues(array('%user_username%' => $user->getUsername()));
-				$message->addReplacementValues(array('%password%' => $password));
-
-				try
+				$user = $event->getSubject();
+				$password = TBGUser::createPassword(8);
+				$user->setPassword($password);
+				$user->save();
+				if ($this->isOutgoingNotificationsEnabled())
 				{
-					$this->sendMail($message);
-					$event->setProcessed();
-				}
-				catch (Exception $e)
-				{
-					throw $e;
+					$subject = TBGContext::getI18n()->__('User account registered with The Bug Genie');
+					$message = $this->createNewTBGMimemailFromTemplate($subject, 'registeruser', array('user' => $user, 'password' => $password), null, array($user->getBuddyname(), $user->getEmail()));
+	
+					$message->addReplacementValues(array('%user_buddyname%' => $user->getBuddyname()));
+					$message->addReplacementValues(array('%user_username%' => $user->getUsername()));
+					$message->addReplacementValues(array('%password%' => $password));
+	
+					try
+					{
+						$this->sendMail($message);
+						$event->setProcessed();
+					}
+					catch (Exception $e)
+					{
+						throw $e;
+					}
 				}
 			}
 		}
@@ -734,6 +738,11 @@
 		public function isOutgoingNotificationsEnabled()
 		{
 			return (bool) $this->getSetting('enable_outgoing_notifications');
+		}
+		
+		public function isActivationNeeded()
+		{
+			return (bool) $this->getSetting('activation_needed');
 		}
 
 		public function usesEmailQueue()
