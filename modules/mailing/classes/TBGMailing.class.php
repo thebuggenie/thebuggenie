@@ -74,7 +74,7 @@
 
 		protected function _addListeners()
 		{
-			TBGEvent::listen('core', 'user_registration', array($this, 'listen_registerUser'));
+			TBGEvent::listen('core', 'TBGUser::createNew', array($this, 'listen_registerUser'));
 			TBGEvent::listen('core', 'password_reset', array($this, 'listen_forgottenPassword'));
 			TBGEvent::listen('core', 'login_form_pane', array($this, 'listen_loginPane'));
 			TBGEvent::listen('core', 'login_form_tab', array($this, 'listen_loginTab'));
@@ -186,11 +186,17 @@
 		public function listen_registerUser(TBGEvent $event)
 		{
 			$user = $event->getSubject();
-			$password = $event->getParameter('password');
+			$password = TBGUser::createPassword(8);
+			$user->setPassword($password);
+			$user->save();
 			if ($this->isOutgoingNotificationsEnabled())
 			{
 				$subject = TBGContext::getI18n()->__('User account registered with The Bug Genie');
 				$message = $this->createNewTBGMimemailFromTemplate($subject, 'registeruser', array('user' => $user, 'password' => $password), null, array($user->getBuddyname(), $user->getEmail()));
+
+				$message->addReplacementValues(array('%user_buddyname%' => $user->getBuddyname()));
+				$message->addReplacementValues(array('%user_username%' => $user->getUsername()));
+				$message->addReplacementValues(array('%password%' => $password));
 
 				try
 				{
@@ -635,7 +641,6 @@
 		
 		protected function _setAdditionalMailValues(TBGMimemail $mail, array $parameters)
 		{
-			$mail->addReplacementValues(array('%password%' => isset($parameters['password']) ? $parameters['password'] : ''));
 			$mail->addReplacementValues(array('%link_to_reset_password%' => isset($parameters['user']) ? TBGContext::getRouting()->generate('reset', array('user' => str_replace('.', '%2E', $parameters['user']->getUsername()), 'reset_hash' => $parameters['user']->getHashPassword(), 'id' => $parameters['user']->getHashPassword()), false) : '' ));
 			$mail->addReplacementValues(array('%link_to_activate%' => isset($parameters['user']) ? TBGContext::getRouting()->generate('activate', array('user' => str_replace('.', '%2E', $parameters['user']->getUsername()), 'key' => $parameters['user']->getHashPassword()), false) : ''));
 		}
