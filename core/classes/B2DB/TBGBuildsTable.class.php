@@ -31,6 +31,7 @@
 		const RELEASE_DATE = 'builds.release_date';
 		const LOCKED = 'builds.locked';
 		const PROJECT = 'builds.project';
+		const MILESTONE = 'builds.milestone';
 		const RELEASED = 'builds.isreleased';
 		const FILE_ID = 'builds.file_id';
 		const FILE_URL = 'builds.file_url';
@@ -49,6 +50,7 @@
 			parent::_addForeignKeyColumn(self::EDITION, B2DB::getTable('TBGEditionsTable'), TBGEditionsTable::ID);
 			parent::_addForeignKeyColumn(self::PROJECT, TBGProjectsTable::getTable(), TBGProjectsTable::ID);
 			parent::_addForeignKeyColumn(self::FILE_ID, TBGFilesTable::getTable(), TBGFilesTable::ID);
+			parent::_addForeignKeyColumn(self::MILESTONE, TBGMilestonesTable::getTable(), TBGMilestonesTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 		

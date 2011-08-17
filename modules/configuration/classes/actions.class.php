@@ -1384,6 +1384,14 @@
 								$build->setVersion($request->getParameter('ver_mj', 0), $request->getParameter('ver_mn', 0), $request->getParameter('ver_rev', 0));
 								$build->setReleased((bool) $request->getParameter('isreleased'));
 								$build->setLocked((bool) $request->getParameter('locked'));
+								if ($request->getParameter('milestone') && $milestone = TBGContext::factory()->TBGMilestone($request->getParameter('milestone')))
+								{
+									$build->setMilestone($milestone);
+								}
+								else
+								{
+									$build->clearMilestone();
+								}
 								$release_date = mktime($request->getParameter('release_hour'), $request->getParameter('release_minute'), 1, $request->getParameter('release_month'), $request->getParameter('release_day'), $request->getParameter('release_year'));
 								$build->setReleaseDate($release_date);
 								switch ($request->getParameter('download', 'leave_file'))

@@ -38,6 +38,14 @@
 		protected $_project = null;
 		
 		/**
+		 * This builds milestone, if any
+		 *
+		 * @var TBGMilestone
+		 * @Class TBGMilestone
+		 */
+		protected $_milestone = null;
+		
+		/**
 		 * Whether this build is released or not
 		 * 
 		 * @var boolean
@@ -208,6 +216,26 @@
 		public function setProject(TBGProject $project)
 		{
 			$this->_project = $project;
+		}
+		
+		/**
+		 * Returns the milestone
+		 *
+		 * @return TBGMilestone
+		 */
+		public function getMilestone()
+		{
+			return $this->_getPopulatedObjectFromProperty('_milestone');
+		}
+
+		public function setMilestone(TBGMilestone $milestone)
+		{
+			$this->_milestone = $milestone;
+		}
+		
+		public function clearMilestone()
+		{
+			$this->_milestone = null;
 		}
 		
 		/**

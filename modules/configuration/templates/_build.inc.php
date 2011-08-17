@@ -51,6 +51,17 @@
 						<input type="text" name="release_minute" style="width: 20px; font-size: 0.9em; text-align: center;" value="<?php echo $build->getReleaseDateMinute(); ?>">
 					</td>
 				</tr>
+				<tr>
+					<td><label for="build_milestone_dropdown"><?php echo __('Milestone release'); ?></label></td>
+					<td>
+						<select name="milestone" id="build_milestone_dropdown">
+							<option value="0"<?php if (!$build->getMilestone() instanceof TBGMilestone) echo ' selected'; ?>><?php echo __('This release is not related to a milestone'); ?></option>
+							<?php foreach ($project->getMilestones() as $milestone): ?>
+								<option value="<?php echo $milestone->getID(); ?>"<?php if ($build->getMilestone() instanceof TBGMilestone && $build->getMilestone()->getID() == $milestone->getID()) echo ' selected'; ?>><?php echo __('This is a release of milestone %milestone_name%', array('%milestone_name%' => $milestone->getName())); ?></option>
+							<?php endforeach; ?>
+						</select>
+					</td>
+				</tr>
 			</table>
 			<div class="rounded_box lightgrey borderless" style="margin: 5px 0;">
 				<table style="clear: both; width: 780px;" cellpadding=0 cellspacing=0>
