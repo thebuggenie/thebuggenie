@@ -132,7 +132,7 @@
 				</li>
 			</ul>
 			<div style="text-align: right; margin-right: 5px;">
-				<input type="submit" value="<?php echo $transition->getName(); ?>">
+				<div class="button button-blue"><input type="submit" value="<?php echo $transition->getName(); ?>"></div>
 			</div>
 		</div>
 		<div class="backdrop_detail_footer">
