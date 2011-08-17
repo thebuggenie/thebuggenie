@@ -6,7 +6,7 @@
 				<?php $next_has_menu = (array_key_exists($index + 1, $breadcrumbs) && array_key_exists('subitems', $breadcrumbs[$index + 1]) && is_array($breadcrumbs[$index + 1]['subitems'])); ?>
 				<li class="breadcrumb">
 					<?php if (array_key_exists('subitems', $breadcrumb) && is_array($breadcrumb['subitems']) && count($breadcrumb['subitems'])): ?>
-						<div class="popoutmenu">
+						<div class="popoutmenu autodisappear">
 							<?php $first = true; ?>
 							<?php foreach ($breadcrumb['subitems'] as $subindex => $subitem): ?>
 								<?php if (array_key_exists('url', $subitem) || $subitem['title'] == $breadcrumb['title']): ?>
