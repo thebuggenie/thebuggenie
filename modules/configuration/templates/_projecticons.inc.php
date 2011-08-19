@@ -3,25 +3,49 @@
 		<?php echo __('Update project icons'); ?>
 	</div>
 	<div id="backdrop_detail_content">
-		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_projects_build', array('project_id' => $project->getID())); ?>" method="post" id="build_form" onsubmit="$('add_release_indicator').show();return true;" enctype="multipart/form-data">
-			<h4><?php echo __('Small icon'); ?></h4>
-			<div style="text-align: center; padding: 30px;">
-				<?php echo image_tag($project->getIcon(false), array(), $project->hasIcon(), 'core', !$project->hasIcon()); ?>
-			</div>
-			<div class="rounded_box lightgrey borderless" style="margin: 5px 0;">
-				<ul class="simple_list" style="margin-top: 0;" id="edit_build_download_options">
-					<li><input type="radio" id="download_none" name="download" value="0"<?php if (!$project->hasIcon()) echo ' checked'; ?>><label for="download_none"><?php echo __('Leave as is %no_icon%', array('%no_icon%' => '<span class="faded_out">('.__('no icon').')</span>')).'</span>'; ?></label></li>
-					<?php if ($project->hasIcon()): ?>
-						<li><input type="radio" id="download_leave_file" name="download" value="leave_file" checked><label for="download_leave_file"><?php echo __('Use existing file %filename%', array('%filename%' => '<span class="faded_out" style="font-weight: normal;">('.$build->getFile()->getOriginalFilename().')</span>')); ?></label></li>
-					<?php endif; ?>
-					<?php if (TBGSettings::isUploadsEnabled()): ?>
-						<li><input type="radio" id="download_upload" name="download" value="upload_file"><label for="download_upload"><?php echo __('Upload file for download'); ?>:</label>&nbsp;<input type="file" name="upload_file"></li>
-					<?php else: ?>
-						<li class="faded_out"><input type="radio" disabled><label><?php echo __('Upload file for download'); ?></label>&nbsp;<?php echo __('File uploads are not enabled'); ?></li>
-					<?php endif; ?>
-					<li><input type="radio" id="download_url" name="download" value="url"<?php if ($build->hasFileURL()) echo ' checked'; ?>><label for="download_url"><?php echo __('Specify download URL'); ?>:</label>&nbsp;<input type="text" style="width: 300px;" name="file_url"></li>
-				</ul>
-			</div>
+		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_projects_icons', array('project_id' => $project->getID())); ?>" method="post" id="build_form" onsubmit="$('update_icons_indicator').show();return true;" enctype="multipart/form-data">
+			<table cellpadding="0" cellspacing="0">
+				<tr>
+					<td style="width: 460px; padding-right: 10px;">
+						<h4><?php echo __('Small icon'); ?></h4>
+						<div style="text-align: center; padding: 30px; height: 60px;">
+							<?php echo image_tag($project->getSmallIconName(), array('style' => 'width: 16px; height: 16px;'), $project->hasSmallIcon()); ?>
+						</div>
+						<div class="rounded_box lightgrey borderless" style="margin: 5px 0;">
+							<ul class="simple_list" style="margin-top: 0;">
+								<li><input type="radio" id="small_no_change" name="small_icon_action" value="0"<?php if (!$project->hasSmallIcon()) echo ' checked'; ?>><label for="small_no_change"><?php echo __('Leave as is %no_icon%', array('%no_icon%' => '<span class="faded_out">('.__('Generic project icon').')</span>')).'</span>'; ?></label></li>
+								<?php if ($project->hasSmallIcon()): ?>
+									<li><input type="radio" id="small_clear_icon" name="small_icon_action" value="clear_file" checked><label for="small_clear_icon"><?php echo __('Clear small icon'); ?></label></li>
+								<?php endif; ?>
+								<?php if (TBGSettings::isUploadsEnabled()): ?>
+									<li><input type="radio" id="small_upload" name="small_icon_action" value="upload_file"><label for="small_upload"><?php echo __('Upload new icon'); ?>:</label><br><input type="file" name="small_icon"></li>
+								<?php else: ?>
+									<li class="faded_out"><input type="radio" disabled><label><?php echo __('Upload new icon'); ?></label>&nbsp;<?php echo __('File uploads are not enabled'); ?></li>
+								<?php endif; ?>
+							</ul>
+						</div>
+					</td>
+					<td style="width: 460px;">
+						<h4><?php echo __('Large icon'); ?></h4>
+						<div style="text-align: center; padding: 30px; height: 60px;">
+							<?php echo image_tag($project->getLargeIconName(), array('style' => 'width: 32px; height: 32px;'), $project->hasLargeIcon()); ?>
+						</div>
+						<div class="rounded_box lightgrey borderless" style="margin: 5px 0;">
+							<ul class="simple_list" style="margin-top: 0;">
+								<li><input type="radio" id="large_no_change" name="large_icon_action" value="0"<?php if (!$project->hasLargeIcon()) echo ' checked'; ?>><label for="large_no_change"><?php echo __('Leave as is %no_icon%', array('%no_icon%' => '<span class="faded_out">('.__('Generic project icon').')</span>')).'</span>'; ?></label></li>
+								<?php if ($project->hasLargeIcon()): ?>
+									<li><input type="radio" id="large_clear_icon" name="large_icon_action" value="clear_file" checked><label for="large_clear_icon"><?php echo __('Clear large icon'); ?></label></li>
+								<?php endif; ?>
+								<?php if (TBGSettings::isUploadsEnabled()): ?>
+									<li><input type="radio" id="large_upload" name="large_icon_action" value="upload_file"><label for="large_upload"><?php echo __('Upload new icon'); ?>:</label><br><input type="file" name="large_icon"></li>
+								<?php else: ?>
+									<li class="faded_out"><input type="radio" disabled><label><?php echo __('Upload new icon'); ?></label>&nbsp;<?php echo __('File uploads are not enabled'); ?></li>
+								<?php endif; ?>
+							</ul>
+						</div>
+					</td>
+				</tr>
+			</table>
 			<table style="clear: both; width: 780px;" class="padded_table" cellpadding=0 cellspacing=0>
 				<tr>
 					<td colspan="2" style="padding: 10px 0 10px 10px; text-align: right;">

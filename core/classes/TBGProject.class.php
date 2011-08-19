@@ -2293,24 +2293,6 @@
 			return TBGContext::getUser()->hasPermission('canseeproject', $this->getID());
 		}
 		
-		public function hasIcon($large = false)
-		{
-			if ($large)
-			{
-				return (bool) (file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DIRECTORY_SEPARATOR . 'project_icons' . DIRECTORY_SEPARATOR . $this->getKey() . '_large.png'));
-			}
-			return (bool) (file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DIRECTORY_SEPARATOR . 'project_icons' . DIRECTORY_SEPARATOR . $this->getKey() . '.png'));
-		}
-		
-		public function getIcon($large = false)
-		{
-			if ($large)
-			{
-				return ($this->hasIcon(true)) ? 'project_icons/' . $this->getKey() . '_large.png' : 'icon_project_large.png';
-			}
-			return ($this->hasIcon()) ? 'project_icons/' . $this->getKey() . '.png' : 'icon_project.png';			
-		}
-
 		protected function _populateLogItems($limit = null, $important = true, $offset = null)
 		{
 			$varname = ($important) ? '_recentimportantlogitems' : '_recentlogitems';

@@ -4300,5 +4300,51 @@
 				return $this->renderJSON(array('failed' => true, 'message' => $e->getMessage()));
 			}
 		}
+		
+		public function runProjectIcons(TBGRequest $request)
+		{
+			$project = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
+			if ($request->isMethod(TBGRequest::POST))
+			{
+				if ($request->getParameter('clear_icons'))
+				{
+					$project->clearSmallIcon();
+					$project->clearLargeIcon();
+				}
+				else
+				{
+					switch ($request->getParameter('small_icon_action'))
+					{
+						case 'upload_file':
+							$file = $request->handleUpload('small_icon');
+							$project->setSmallIcon($file);
+							break;
+						case 'clear_file':
+							$project->clearSmallIcon();
+							break;
+					}
+					switch ($request->getParameter('large_icon_action'))
+					{
+						case 'upload_file':
+							$file = $request->handleUpload('large_icon');
+							$project->setLargeIcon($file);
+							break;
+						case 'clear_file':
+							$project->clearLargeIcon();
+							break;
+					}
+				}
+				$project->save();
+			}
+			$route = TBGContext::getRouting()->generate('project_settings', array('project_key' => $project->getKey()));
+			if ($request->isAjaxCall())
+			{
+				return $this->renderJSON(array('forward' => $route));
+			}
+			else
+			{
+				$this->forward($route);
+			}
+		}
 
 	}

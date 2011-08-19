@@ -29,12 +29,12 @@
 	<tr>
 		<td><label><?php echo __('Project icons'); ?></label></td>
 		<td style="padding: 15px 0;">
-			<?php if (!$project->hasIcon()): ?>
-				<div class="button button-red" style="float: right; margin-left: 5px;"><span><?php echo __('Reset icons'); ?></span></div>
+			<?php if ($project->hasSmallIcon() || $project->hasLargeIcon()): ?>
+				<div class="button button-red" style="float: right; margin-left: 5px;" onclick="TBG.Main.Helpers.Dialog.show('<?php echo __('Reset project icons?'); ?>', '<?php echo __('Do you really want to reset the project icons? Please confirm.'); ?>', {yes: {click: function() {TBG.Project.resetIcons('<?php echo make_url('configure_projects_icons', array('project_id' => $project->getID())); ?>');}}, no: {click: TBG.Main.Helpers.Dialog.dismiss}});"><span><?php echo __('Reset icons'); ?></span></div>
 			<?php endif; ?>
-			<div class="button button-blue" style="float: right;"><span><?php echo __('Change project icons'); ?></span></div>
-			<?php echo image_tag($project->getIcon(false), array('style' => 'float: left; margin: 8px 10px 0 0;'), $project->hasIcon(), 'core', !$project->hasIcon()); ?>
-			<?php echo image_tag($project->getIcon(true), array(), $project->hasIcon(), 'core', !$project->hasIcon()); ?> &nbsp; 
+			<div class="button button-blue" style="float: right;" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'project_icons', 'project_id' => $project->getId())); ?>');"><span><?php echo ($project->hasSmallIcon() || $project->hasLargeIcon()) ? __('Change project icons') : __('Set project icons'); ?></span></div>
+			<?php echo image_tag($project->getSmallIconName(), array('style' => 'float: left; margin: 8px 10px 0 0; width: 16px; height: 16px;'), $project->hasSmallIcon()); ?>
+			<?php echo image_tag($project->getLargeIconName(), array('style' => 'width: 32px; height: 32px;'), $project->hasLargeIcon()); ?> &nbsp; 
 		</td>
 	</tr>
 	<tr>

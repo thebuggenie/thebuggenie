@@ -314,12 +314,12 @@ TBG.Main.Helpers.Dialog.show = function(title, content, options) {
 		$('dialog_no').setAttribute('href', options['no']['href']);
 	}
 	$('dialog_backdrop_content').show();
-	$('dialog_backdrop').appear({ duration: 0.2 });
+	$('dialog_backdrop').appear({duration: 0.2});
 }
 
 TBG.Main.Helpers.Dialog.dismiss = function() {
-	$('dialog_backdrop_content').fade({ duration: 0.2 });
-	$('dialog_backdrop').fade({ duration: 0.2 });
+	$('dialog_backdrop_content').fade({duration: 0.2});
+	$('dialog_backdrop').fade({duration: 0.2});
 }
 
 /**
@@ -455,7 +455,7 @@ TBG.Main.Helpers.formSubmit = function(url, form_id) {
 };
 
 TBG.Main.Helpers.Backdrop.show = function(url) {
-	$('fullpage_backdrop').appear({ duration: 0.2 });
+	$('fullpage_backdrop').appear({duration: 0.2});
 	$('fullpage_backdrop_indicator').show();
 
 	if (url != undefined) {
@@ -465,8 +465,8 @@ TBG.Main.Helpers.Backdrop.show = function(url) {
 			success: {
 				update: 'fullpage_backdrop_content',
 				callback: function () {
-					$('fullpage_backdrop_content').appear({ duration: 0.2 });
-					$('fullpage_backdrop_indicator').fade({ duration: 0.2 });
+					$('fullpage_backdrop_content').appear({duration: 0.2});
+					$('fullpage_backdrop_indicator').fade({duration: 0.2});
 				}},
 			failure: {hide: 'fullpage_backdrop'}
 		});
@@ -474,8 +474,8 @@ TBG.Main.Helpers.Backdrop.show = function(url) {
 };
 
 TBG.Main.Helpers.Backdrop.reset = function() {
-	$('fullpage_backdrop_content').fade({ duration: 0.2 });
-	$('fullpage_backdrop').fade({ duration: 0.2 });
+	$('fullpage_backdrop_content').fade({duration: 0.2});
+	$('fullpage_backdrop').fade({duration: 0.2});
 };
 
 TBG.Main.Helpers.tabSwitcher = function(visibletab, menu) {
@@ -1095,6 +1095,13 @@ TBG.Project.updateLinks = function(json) {
 	if ($('current_project_num_count')) $('current_project_num_count').update(json.total_count);
 	(json.more_available) ? $('add_project_div').show() : $('add_project_div').hide();
 }
+
+TBG.Project.resetIcons = function(url) {
+	TBG.Main.Helpers.ajax(url, {
+		url_method: 'post',
+		additional_params: '&clear_icons=1'
+	});
+};
 
 TBG.Project.add = function(url) {
 	TBG.Main.Helpers.ajax(url, {

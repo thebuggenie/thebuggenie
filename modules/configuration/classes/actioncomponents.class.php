@@ -258,5 +258,10 @@
 				$this->build->setName(TBGContext::getI18n()->__('%project_name% version 0.0.0', array('%project_name%' => $this->project->getName())));
 			}
 		}
+		
+		public function componentProjecticons()
+		{
+			
+		}
 
 	}

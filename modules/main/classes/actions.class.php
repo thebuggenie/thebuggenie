@@ -2604,6 +2604,10 @@
 						if ($request->hasParameter('build_id'))
 							$options['build'] = TBGContext::factory()->TBGBuild($request->getParameter('build_id'));
 						break;
+					case 'project_icons':
+						$template_name = 'configuration/projecticons';
+						$options['project'] = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
+						break;
 					case 'markasduplicate_issue':
 						$template_name = 'main/markasduplicate';
 						break;
