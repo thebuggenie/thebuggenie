@@ -30,7 +30,7 @@
 		<?php if (count($tbg_user->getFriends()) == 0): ?>
 			<span class="faded_out"><?php echo __("Your friends will appear here"); ?></span><br>
 		<?php else: ?>
-			<?php include_component('identifiableselectorresults', array('users' => $tbg_user->getFriends(), 'callback' => $callback, 'team_callback' => ((isset($team_callback)) ? $team_callback : null))); ?>
+			<?php include_component('main/identifiableselectorresults', array('users' => $tbg_user->getFriends(), 'callback' => $callback, 'team_callback' => ((isset($team_callback)) ? $team_callback : null))); ?>
 		<?php endif; ?>
 		<?php if (count($tbg_user->getTeams()) > 0): ?>
 		<br>
