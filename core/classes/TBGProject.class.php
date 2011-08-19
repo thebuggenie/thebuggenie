@@ -143,6 +143,22 @@
 		 * @var integer
 		 */
 		protected $_issuecounts = null;
+		
+		/**
+		 * The small project icon, if set
+		 * 
+		 * @Class TBGFile
+		 * @var TBGFile
+		 */
+		protected $_small_icon = null;
+		
+		/**
+		 * The large project icon, if set
+		 * 
+		 * @Class TBGFile
+		 * @var TBGFile
+		 */
+		protected $_large_icon = null;
 
 		/**
 		 * Issues registered for this project with no milestone assigned
@@ -2922,5 +2938,60 @@
 		{
 			$this->_has_downloads = $value;
 		}
+		
+		public function setSmallIcon(TBGFile $icon)
+		{
+			$this->_small_icon = $icon;
+		}
+		
+		public function clearSmallIcon()
+		{
+			$this->_small_icon = null;
+		}
+		
+		/**
+		 * Return the small icon file object
+		 * 
+		 * @return TBGFile
+		 */
+		public function getSmallIcon()
+		{
+			return $this->_getPopulatedObjectFromProperty('_small_icon');
+		}
+		
+		public function getSmallIconName()
+		{
+			return ($this->hasSmallIcon()) ? TBGContext::getRouting()->generate('showfile', array('id' => $this->getSmallIcon()->getID())) : 'icon_project.png';
+		}
 
+		public function hasSmallIcon()
+		{
+			return ($this->getSmallIcon() instanceof TBGFile);
+		}
+		
+		public function setLargeIcon(TBGFile $icon)
+		{
+			$this->_large_icon = $icon;
+		}
+		
+		public function clearLargeIcon()
+		{
+			$this->_large_icon = null;
+		}
+		
+		public function getLargeIcon()
+		{
+			return $this->_getPopulatedObjectFromProperty('_large_icon');
+		}
+		
+		public function getLargeIconName()
+		{
+			return ($this->hasLargeIcon()) ? TBGContext::getRouting()->generate('showfile', array('id' => $this->getLargeIcon()->getID())) : 'icon_project_large.png';
+		}
+
+		public function hasLargeIcon()
+		{
+			return ($this->getLargeIcon() instanceof TBGFile);
+		}
+		
 	}

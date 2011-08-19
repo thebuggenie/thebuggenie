@@ -49,6 +49,8 @@
 		const QA_TYPE = 'projects.qa_responsible_type';
 		const LOCKED = 'projects.locked';
 		const DELETED = 'projects.deleted';
+		const SMALL_ICON = 'projects.small_icon';
+		const LARGE_ICON = 'projects.large_icon';
 		const ALLOW_CHANGING_WITHOUT_WORKING = 'projects.allow_freelancing';
 		const WORKFLOW_SCHEME_ID = 'projects.workflow_scheme_id';
 		const ISSUETYPE_SCHEME_ID = 'projects.issuetype_scheme_id';
@@ -89,6 +91,8 @@
 			parent::_addForeignKeyColumn(self::ISSUETYPE_SCHEME_ID, TBGIssuetypeSchemesTable::getTable(), TBGIssuetypeSchemesTable::ID);
 			parent::_addForeignKeyColumn(self::CLIENT, TBGClientsTable::getTable(), TBGClientsTable::ID);
 			parent::_addForeignKeyColumn(self::PARENT_PROJECT_ID, $this, self::ID);
+			parent::_addForeignKeyColumn(self::SMALL_ICON, TBGFilesTable::getTable(), TBGFilesTable::ID);
+			parent::_addForeignKeyColumn(self::LARGE_ICON, TBGFilesTable::getTable(), TBGFilesTable::ID);
 			parent::_addBoolean(self::DELETED);
 			parent::_addBoolean(self::AUTOASSIGN);
 			parent::_addBoolean(self::ARCHIVED);
