@@ -2331,6 +2331,7 @@
 				$user = TBGContext::factory()->TBGUser($request->getParameter('user_id'));
 				if ($user instanceof TBGUser)
 				{
+					$password_changed = false;
 					if (!(TBGSettings::isUsingExternalAuthenticationBackend()))
 					{
 						$testuser = TBGUser::getByUsername($request->getParameter('username'));
@@ -2342,7 +2343,6 @@
 						{
 							return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('This username is already taken')));
 						}
-						$password_changed = false;
 						if ($request->getParameter('password_action') == 'change' && $request->getParameter('new_password_1') && $request->getParameter('new_password_2'))
 						{
 							if ($request->getParameter('new_password_1') == $request->getParameter('new_password_2'))
