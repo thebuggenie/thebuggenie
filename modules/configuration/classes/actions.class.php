@@ -2292,7 +2292,7 @@
 					throw new Exception(TBGContext::getI18n()->__('This instance of The Bug Genie cannot add more users'));
 				}
 				
-				if ($username = $request->getParameter('username'))
+				if (!(TBGSettings::isUsingExternalAuthenticationBackend()) && $username = $request->getParameter('username'))
 				{
 					$user = new TBGUser();
 					$user->setUsername($username);
@@ -2331,35 +2331,38 @@
 				$user = TBGContext::factory()->TBGUser($request->getParameter('user_id'));
 				if ($user instanceof TBGUser)
 				{
-					$testuser = TBGUser::getByUsername($request->getParameter('username'));
-					if (!$testuser instanceof TBGUser || $testuser->getID() == $user->getID())
+					if (!(TBGSettings::isUsingExternalAuthenticationBackend()))
 					{
-						$user->setUsername($request->getParameter('username'));
-					}
-					else
-					{
-						return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('This username is already taken')));
-					}
-					$password_changed = false;
-					if ($request->getParameter('password_action') == 'change' && $request->getParameter('new_password_1') && $request->getParameter('new_password_2'))
-					{
-						if ($request->getParameter('new_password_1') == $request->getParameter('new_password_2'))
+						$testuser = TBGUser::getByUsername($request->getParameter('username'));
+						if (!$testuser instanceof TBGUser || $testuser->getID() == $user->getID())
 						{
-							$user->setPassword($request->getParameter('new_password_1'));
-							$password_changed = true;
+							$user->setUsername($request->getParameter('username'));
 						}
 						else
 						{
-							return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please enter the new password twice')));
+							return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('This username is already taken')));
 						}
+						$password_changed = false;
+						if ($request->getParameter('password_action') == 'change' && $request->getParameter('new_password_1') && $request->getParameter('new_password_2'))
+						{
+							if ($request->getParameter('new_password_1') == $request->getParameter('new_password_2'))
+							{
+								$user->setPassword($request->getParameter('new_password_1'));
+								$password_changed = true;
+							}
+							else
+							{
+								return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please enter the new password twice')));
+							}
+						}
+						elseif ($request->getParameter('password_action') == 'random')
+						{
+							$random_password = TBGUser::createPassword();
+							$user->setPassword($random_password);
+							$password_changed = true;
+						}
+						$user->setRealname($request->getParameter('realname'));
 					}
-					elseif ($request->getParameter('password_action') == 'random')
-					{
-						$random_password = TBGUser::createPassword();
-						$user->setPassword($random_password);
-						$password_changed = true;
-					}
-					$user->setRealname($request->getParameter('realname'));
 					$return_options = array();
 					try
 					{
@@ -2413,9 +2416,13 @@
 					{
 						throw new Exception(TBGContext::getI18n()->__('One or more clients were invalid'));
 					}
-					$user->setBuddyname($request->getParameter('nickname'));
+					if (!(TBGSettings::isUsingExternalAuthenticationBackend()))
+					{
+						$user->setBuddyname($request->getParameter('nickname'));
+						$user->setEmail($request->getParameter('email'));
+					}
+
 					$user->setActivated((bool) $request->getParameter('activated'));
-					$user->setEmail($request->getParameter('email'));
 					$user->setEnabled((bool) $request->getParameter('enabled'));
 					$user->save();
 					if (isset($groups))

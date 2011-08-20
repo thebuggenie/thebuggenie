@@ -52,7 +52,7 @@
 								</form>
 							</td>
 						</tr>
-						<tr id="adduser_div"<?php if (!TBGContext::getScope()->hasUsersAvailable()): ?> style="display: none;"<?php endif; ?>>
+						<tr id="adduser_div"<?php if (!TBGContext::getScope()->hasUsersAvailable() || TBGSettings::isUsingExternalAuthenticationBackend()): ?> style="display: none;"<?php endif; ?>>
 							<td style="padding: 3px;"><label for="adduser_username"><?php echo __('Enter username'); ?>:</label></td>
 							<td style="padding: 3px;">
 								<form action="<?php echo make_url('configure_users_add_user'); ?>" method="post" onsubmit="createUser('<?php echo make_url('configure_users_add_user'); ?>');return false;" id="createuser_form">
