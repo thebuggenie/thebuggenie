@@ -11,8 +11,8 @@
 	$routes[] = array('dashboard', '/dashboard', 'main', 'dashboard');
 	$routes[] = array('dashboard_save', '/dashboard/save/:target_type/:tid', 'main', 'dashboardSave');
 	$routes[] = array('get_javascript', '/js/:js_file', 'main', 'index');
-	$routes[] = array('login', '/do/login', 'main', 'login');
-	$routes[] = array('login_page', '/login', 'main', 'login', array('continue' => true));
+	$routes[] = array('login', '/do/login', 'main', 'doLogin');
+	$routes[] = array('login_page', '/login', 'main', 'login');
 	$routes[] = array('login_redirect', '/login/redirect', 'main', 'login', array('redirect' => true, 'continue' => true));
 	$routes[] = array('login_section', '/login/section/:section/*', 'main', 'login');
 	$routes[] = array('register1', '/register1', 'main', 'register1');

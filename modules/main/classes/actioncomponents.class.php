@@ -301,19 +301,45 @@
 		{	
 		}
 
+		public function componentLoginpopup()
+		{
+			if (TBGContext::getRequest()->getParameter('redirect') == true)
+				$this->mandatory = true;
+		}
+
 		public function componentLogin()
 		{
 			$this->selected_tab = isset($this->section) ? $this->section : 'login';
 			$this->options = $this->getParameterHolder();
+			
+			if (array_key_exists('HTTP_REFERER', $_SERVER)):
+				$this->referer = $_SERVER['HTTP_REFERER'];
+			else:
+				$this->referer = TBGContext::getRouting()->generate('dashboard');
+			endif;
+			
 			try
 			{
 				$this->article = null;
 				$this->article = PublishFactory::articleName('LoginIntro');
 			}
 			catch (Exception $e) {}
-			if (TBGContext::getRequest()->getParameter('redirect') == true)
-				$this->mandatory = true;
-		}		
+
+			if (TBGSettings::isLoginRequired())
+			{
+				TBGContext::getResponse()->deleteCookie('tbg3_username');
+				TBGContext::getResponse()->deleteCookie('tbg3_password');
+				$this->error = TBGContext::geti18n()->__('You need to log in to access this site');
+			}
+			elseif (!TBGContext::getUser()->isAuthenticated())
+			{
+				$this->error = TBGContext::geti18n()->__('Please log in');
+			}
+			else
+			{
+			//$this->error = TBGContext::geti18n()->__('Please log in');
+			}
+		}
 		
 		public function componentLoginRegister()
 		{	

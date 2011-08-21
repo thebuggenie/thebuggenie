@@ -542,7 +542,14 @@
 		 */
 		protected function __sanitize_string($string)
 		{
-			$charset = (class_exists('TBGContext')) ? TBGContext::getI18n()->getCharset() : 'utf-8';
+			try
+			{
+				$charset = (class_exists('TBGContext')) ? TBGContext::getI18n()->getCharset() : 'utf-8';
+			}
+			catch (Exception $e)
+			{
+				$charset = 'utf-8';
+			}
 			return htmlspecialchars($string, ENT_QUOTES, $charset);
 		}
 		

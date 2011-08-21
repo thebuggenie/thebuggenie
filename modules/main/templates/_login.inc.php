@@ -1,5 +1,3 @@
-<div class="rounded_box white borderless shadowed backdrop_box large"  id="login_popup">
-	<div id="backdrop_detail_content" class="rounded_top login_content">
 		<div class="tab_menu">
 			<ul id="login_menu">
 				<li id="tab_login"<?php if ($selected_tab == 'login'): ?> class="selected"<?php endif; ?>><?php echo javascript_link_tag(image_tag('icon_login.png', array('style' => 'float: left;')).__('Login'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_login', 'login_menu');")); ?></li>
@@ -27,7 +25,7 @@
 				<div class="logindiv">			
 					<div class="rounded_box iceblue" style="vertical-align: middle; padding: 5px;">
 						<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('login'); ?>" method="post" id="login_form" onsubmit="TBG.Main.Login.login('<?php echo make_url('login'); ?>'); return false;">
-							<input type="hidden" id="tbg3_referer" name="tbg3_referer" value="" />
+							<input type="hidden" id="tbg3_referer" name="tbg3_referer" value="<?php echo $referer; ?>" />
 							<div class="login_boxheader"><?php echo __('Log in to an existing account'); ?></div>
 							<div>
 								<table border="0" class="login_fieldtable">
@@ -56,16 +54,9 @@
 		<div id="backdrop_detail_indicator" style="text-align: center; padding: 50px; display: none;">
 			<?php echo image_tag('spinning_32.gif'); ?>
 		</div>
-	</div>
-	<div class="backdrop_detail_footer">
-	<?php if ($mandatory != true): ?>
-		<a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.reset();"><?php echo __('Close'); ?></a>
-	<?php endif; ?>
-	</div>
-</div>
-<?php if (isset($options['error'])): ?>
+<?php if (isset($error)): ?>
 	<script type="text/javascript">
-		TBG.Main.Helpers.Message.error('<?php echo $options['error']; ?>');
+		TBG.Main.Helpers.Message.error('<?php echo $error; ?>');
 	</script>
 <?php endif; ?>
 <script type="text/javascript">

@@ -423,16 +423,29 @@
 		}
 		
 		/**
-		 * Login (AJAX call)
-		 *  
+		 * Static login page
 		 * @param TBGRequest $request
 		 */
 		public function runLogin(TBGRequest $request)
 		{
+			if (!TBGContext::getUser()->isGuest()):
+				return $this->forward(TBGContext::getRouting()->generate('home'));
+			else:
+				$this->content = $this->getComponentHtml('login', array('section' => $request->getParameter('section', 'login')));
+			endif;
+		}
+		
+		/**
+		 * Do login (AJAX call)
+		 *  
+		 * @param TBGRequest $request
+		 */
+		public function runDoLogin(TBGRequest $request)
+		{
 			$i18n = TBGContext::getI18n();
-			$this->login_referer = (array_key_exists('HTTP_REFERER', $_SERVER) && isset($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : '';
 			$options = $request->getParameters();
 			$forward_url = TBGContext::getRouting()->generate('home');
+
 			try
 			{
 				if ($request->getMethod() == TBGRequest::POST)
@@ -469,46 +482,21 @@
 					}
 					else
 					{
-						throw new Exception($i18n->__('Please enter a username and password'));
+						throw new Exception('Please enter a username and password');
 					}
 				}
-				elseif (TBGSettings::isLoginRequired())
+				else
 				{
-					TBGContext::getResponse()->deleteCookie('tbg3_username');
-					TBGContext::getResponse()->deleteCookie('tbg3_password');
-					throw new Exception($i18n->__('You need to log in to access this site'));
-				}
-				elseif (!TBGContext::getUser()->isAuthenticated())
-				{
-					throw new Exception($i18n->__('Please log in'));
-				}
-				elseif (TBGContext::hasMessage('forward'))
-				{
-					throw new Exception($i18n->__(TBGContext::getMessageAndClear('forward')));
+					throw new Exception('Please enter a username and password');
 				}
 			}
 			catch (Exception $e)
 			{
-				if (TBGContext::getRequest()->isAjaxCall() || TBGContext::getRequest()->getRequestedFormat() == 'json')
-				{					
-						return $this->renderJSON(array('failed' => true, "error" => $i18n->__($e->getMessage()), 'referer' => $request->getParameter('tbg3_referer')));
-				}
-				else
-				{
-					$options['error'] = $e->getMessage();
-				}
+				$this->getResponse()->setHttpStatus(500);
+				return $this->renderJSON(array('failed' => true, "error" => $i18n->__($e->getMessage())));
 			}
 
-			if (TBGContext::getRequest()->isAjaxCall() || TBGContext::getRequest()->getRequestedFormat() == 'json')
-			{
-				return $this->renderJSON(array('forward' => $forward_url));
-			}
-
-			elseif ($forward_url !== null && $request->getParameter('continue') != true)
-			{
-				$this->forward($forward_url);
-			}
-			$this->options = $options;
+			return $this->renderJSON(array('forward' => $forward_url));
 		}
 		
 		/**
@@ -2582,9 +2570,9 @@
 						}
 						break;
 					case 'login':
-						$template_name = 'main/login';
+						$template_name = 'main/loginpopup';
 						$options = $request->getParameters();
-						$options['section'] = $request->getParameter('section', 'login');
+						$options['content'] = $this->getComponentHTML('login', array('section' => $request->getParameter('section', 'login')));
 						$options['mandatory'] = $request->getParameter('mandatory', false);
 						break;
 					case 'workflow_transition':
