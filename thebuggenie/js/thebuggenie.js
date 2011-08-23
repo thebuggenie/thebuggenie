@@ -780,8 +780,8 @@ TBG.Main.Login.checkUsername = function(url)
 			hide: 'register1',
 			show: 'register2',
 			callback: function(json) {
-				$('username').value = json.message.unescapeHTML();
-				$('fieldusername').value = json.message.unescapeHTML();
+				$('username').value = json.username.unescapeHTML();
+				$('fieldusername').value = json.username.unescapeHTML();
 			}
 		},
 		failure: {

@@ -521,7 +521,7 @@
 					}
 					else
 					{
-						return $this->renderJSON(array('message' => $username));
+						return $this->renderJSON(array('username' => $username));
 					}
 				}
 				else
@@ -531,7 +531,8 @@
 			}
 			catch (Exception $e)
 			{
-				return $this->renderJSON(array('failed' => true, 'error' => $i18n->__($e->getMessage())));
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('error' => $i18n->__($e->getMessage())));
 			}
 		}		
 
@@ -2573,7 +2574,7 @@
 						$template_name = 'main/loginpopup';
 						$options = $request->getParameters();
 						$options['content'] = $this->getComponentHTML('login', array('section' => $request->getParameter('section', 'login')));
-						$options['mandatory'] = $request->getParameter('mandatory', false);
+						$options['mandatory'] = false;
 						break;
 					case 'workflow_transition':
 						$transition = TBGContext::factory()->TBGWorkflowTransition($request->getParameter('transition_id'));
