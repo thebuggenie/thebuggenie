@@ -4,7 +4,7 @@
 	</div>
 	<div class="backdrop_detail_footer">
 	<?php if ($mandatory != true): ?>
-		<a href="javascript:void(0);" onclick="resetFadedBackdrop();"><?php echo __('Close'); ?></a>
+		<a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.reset();"><?php echo __('Close'); ?></a>
 	<?php endif; ?>
 	</div>
 </div>
