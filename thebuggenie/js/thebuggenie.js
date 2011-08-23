@@ -419,7 +419,7 @@ TBG.Main.Helpers.ajax = function(url, options) {
 			}
 		},
 		onFailure: function (transport) {
-			var json = (transport.responseJSON) ? transport.responeJSON : undefined;
+			var json = (transport.responseJSON) ? transport.responseJSON : undefined;
 			if (transport.responseJSON) {
 				TBG.Main.Helpers.Message.error(json.error);
 			} else {
@@ -437,7 +437,7 @@ TBG.Main.Helpers.ajax = function(url, options) {
 			if (options.complete) {
 				TBG.Core._processCommonAjaxPostEvents(options.complete);
 				if (options.complete.callback) {
-					var json = (transport.responseJSON) ? transport.responeJSON : undefined;
+					var json = (transport.responseJSON) ? transport.responseJSON : undefined;
 					options.complete.callback(json);
 				}
 			}
