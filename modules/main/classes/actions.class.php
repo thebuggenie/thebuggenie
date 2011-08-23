@@ -492,8 +492,8 @@
 			}
 			catch (Exception $e)
 			{
-				$this->getResponse()->setHttpStatus(500);
-				return $this->renderJSON(array('failed' => true, "error" => $i18n->__($e->getMessage())));
+				$this->getResponse()->setHttpStatus(401);
+				return $this->renderJSON(array("error" => $i18n->__($e->getMessage())));
 			}
 
 			return $this->renderJSON(array('forward' => $forward_url));
