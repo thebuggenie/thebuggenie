@@ -84,6 +84,7 @@
 			TBGEvent::listen('core', 'TBGComment::createNew', array($this, 'listen_TBGComment_createNew'));
 			TBGEvent::listen('core', 'header_begins', array($this, 'listen_headerBegins'));
 			TBGEvent::listen('core', 'viewissue', array($this, 'listen_viewissue'));
+			TBGEvent::listen('core', 'user_dropdown_anon', array($this, 'listen_userDropdownAnon'));
 		}
 
 		protected function _addRoutes()
@@ -244,6 +245,14 @@
 		public function listen_headerBegins(TBGEvent $event)
 		{
 
+		}
+		
+		public function listen_userDropdownAnon(TBGEvent $event)
+		{
+			if ($this->isOutgoingNotificationsEnabled())
+			{
+				TBGActionComponent::includeTemplate('mailing/userDropdownAnon', $event->getParameters());
+			}
 		}
 		
 		public function sendforgottenPasswordEmail($user)
