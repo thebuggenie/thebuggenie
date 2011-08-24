@@ -640,25 +640,21 @@
 			{
 				if ($row->get(TBGUsersTable::PASSWORD) != $request->getParameter('key'))
 				{
-					TBGContext::setMessage('account_activate', true);
-					TBGContext::setMessage('activate_failure', true);
+					 TBGContext::setMessage('login_message_err', TBGContext::getI18n()->__('This activation link is not valid'));
 				}
 				else
 				{
 					$user = new TBGUser($row->get(TBGUsersTable::ID), $row);
 					$user->setValidated(true);
 					$user->save();
-					TBGContext::setMessage('account_activate', true);
-					TBGContext::setMessage('activate_success', true);
-					TBGContext::setMessage('activate_uname', $user->getUsername());
+					TBGContext::setMessage('login_message', TBGContext::getI18n()->__('Your account has been activated! You can now log in with the username %user% and the password in your activation email.', array('%user%' => $user->getUsername())));
 				}
 			}
 			else
 			{
-				TBGContext::setMessage('account_activate', true);
-				TBGContext::setMessage('activate_failure', true);
+				TBGContext::setMessage('login_message_err', TBGContext::getI18n()->__('This activation link is not valid'));
 			}
-			$this->forward(TBGContext::getRouting()->generate('home'));
+			$this->forward(TBGContext::getRouting()->generate('login_page'));
 		}
 
 		/**
