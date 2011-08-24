@@ -48,23 +48,11 @@
 			}
 			catch (Exception $e)
 			{
-				return $this->renderJSON(array('failed' => true, 'error' => $e->getMessage()));
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('error' => $e->getMessage()));
 			}
 		}
 
-		/**
-		 * Reset user password
-		 * 
-		 * @param TBGRequest $request
-		 */
-		public function runResetPassword(TBGRequest $request)
-		{
-			$this->user = TBGUser::getByUsername(str_replace('%2E', '.', $request->getParameter('user')));
-			$this->username = $request->getParameter('user');
-			$this->id = $request->getParameter('reset_hash');
-			$this->forward403unless($this->user instanceof TBGUser && $this->id == $this->user->getHashPassword(), 'Invalid password reset request');
-		}
-		
 		/**
 		 * Send a test email
 		 *

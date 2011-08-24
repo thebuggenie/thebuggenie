@@ -3250,31 +3250,23 @@
 		 * 
 		 */
 		public function runReset(TBGRequest $request)
-		{
+		{			
 			$i18n = TBGContext::getI18n();
 			
-			if ($request->hasParameter('user') && $request->hasParameter('id') && $request->hasParameter('forgot_password_mail'))
+			if ($request->hasParameter('user') && $request->hasParameter('reset_hash'))
 			{
 				try
 				{
-					$user = TBGUser::getByUsername($request->getParameter('user'));
+					$user = TBGUser::getByUsername(str_replace('%2E', '.', $request->getParameter('user')));
 					if ($user instanceof TBGUser)
 					{
-						if ($request->getParameter('id') == $user->getHashPassword())
+						if ($request->getParameter('reset_hash') == $user->getHashPassword())
 						{
-							if ($request->getParameter('forgot_password_mail') == $user->getEmail())
-							{
-								$password = $user->createPassword();
-								$user->changePassword($password);
-								$user->save();
-								$event = TBGEvent::createNew('core', 'password_reset', $user, array('password' => $password))->trigger();
-								return $this->renderJSON(array('message' => $i18n->__('An email has been sent to you with your new password.')));
-							}
-							else
-							{
-								throw new Exception('Invalid email address');
-							}
-							
+							$password = $user->createPassword();
+							$user->changePassword($password);
+							$user->save();
+							$event = TBGEvent::createNew('core', 'password_reset', $user, array('password' => $password))->trigger();
+							TBGContext::setMessage('login_message', $i18n->__('An email has been sent to you with your new password.'));
 						}
 						else
 						{
@@ -3288,13 +3280,14 @@
 				}
 				catch (Exception $e)
 				{
-					return $this->renderJSON(array('failed' => true, 'error' => $i18n->__($e->getMessage())));
+					TBGContext::setMessage('login_message_err', $i18n->__($e->getMessage()));
 				}
 			}
 			else
 			{
-				return $this->renderJSON(array('failed' => true, 'error' => 'An internal error has occured'));
+				TBGContext::setMessage('login_message_err', $i18n->__('An internal error has occured'));
 			}
+			return $this->forward(TBGContext::getRouting()->generate('login_page'));
 		}
 		
 		/**
