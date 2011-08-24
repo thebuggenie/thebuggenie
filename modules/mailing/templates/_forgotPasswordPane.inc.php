@@ -7,7 +7,7 @@ if (TBGSettings::getAuthenticationBackend() != 'tbg' && TBGSettings::getAuthenti
 else
 {
 ?>
-	<div style="vertical-align: middle; padding: 5px;">
+	<div style="vertical-align: middle; padding: 10px;">
 		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('forgot'); ?>" method="post" id="forgot_password_form" onsubmit="TBG.Main.Login.resetForgotPassword('<?php echo make_url('forgot'); ?>'); return false;">
 			<div class="login_boxheader"><?php echo __('Forgot password?'); ?></div>
 			<p><?php echo __('If you have forgot your password, enter your username here, and we will send you an email that will allow you to change your password'); ?>.</p><br>
