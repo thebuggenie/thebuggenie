@@ -39,7 +39,7 @@
 									</tr>
 								</table>
 								<br>
-								<input type="submit" id="login_button" value="<?php echo __('Continue'); ?>">
+								<input type="submit" id="login_button" class="button button-green" value="<?php echo __('Continue'); ?>">
 								<span id="login_indicator" style="display: none;"><?php echo image_tag('spinning_20.gif'); ?></span>
 							</div>
 						</form>

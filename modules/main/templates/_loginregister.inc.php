@@ -46,7 +46,7 @@ else
 					<br><b><?php echo __('Enter the above number in this box'); ?></b><br><br>
 					<label class="login_fieldheader" for="verification_no">*&nbsp;<?php echo __('Security check'); ?></label>
 					<input type="text" class="required" id="verification_no" name="verification_no" maxlength="6" style="width: 100px;"><br><br>
-					<input type="submit" id="register_button" value="<?php echo __('Register'); ?>">
+					<input type="submit" class="button button-green" id="register_button" value="<?php echo __('Register'); ?>">
 					<span id="register_indicator" style="display: none;"><?php echo image_tag('spinning_20.gif'); ?></span>
 				</div>
 			</form>

@@ -15,7 +15,7 @@ else
 				<label class="login_fieldheader" for="forgot_password_username"><?php echo __('Username'); ?></label>
 				<input type="text" id="forgot_password_username" name="forgot_password_username" style="width: 200px;"><br>
 				<br>
-				<input type="submit" id="forgot_password_button" value="<?php echo __('Send email'); ?>">
+				<input type="submit" class="button button-green" id="forgot_password_button" value="<?php echo __('Send email'); ?>">
 				<span id="forgot_password_indicator" style="display: none;"><?php echo image_tag('spinning_20.gif'); ?></span>
 			</div>
 		</form>
