@@ -335,7 +335,7 @@
 		public static function hashPassword($password, $salt = null)
 		{
 			$salt = ($salt !== null) ? $salt : TBGSettings::getPasswordSalt();
-			return sha1($password.$salt);
+			return crypt($password, '$2a$07$'.$salt.'$');
 		}
 		
 		/**
@@ -422,8 +422,9 @@
 
 						if(!$row)
 						{
-							// This is a legacy account from a 2.1 upgrade - try md5
-							$row = TBGUsersTable::getTable()->getByUsernameAndPassword($username, md5($password));
+							// This is a legacy account from a 3.1 upgrade - try sha1 salted
+							$salt = TBGSettings::getPasswordSalt();
+							$row = TBGUsersTable::getTable()->getByUsernameAndPassword($username, sha1($password.$salt));
 							if(!$row)
 							{
 								// Invalid
@@ -434,7 +435,7 @@
 							}
 							else 
 							{
-								// convert md5 to new password type
+								// convert sha1 to new password type
 								$user = new TBGUser($row->get(TBGUsersTable::ID), $row);
 								$user->changePassword($password);
 								$user->save();

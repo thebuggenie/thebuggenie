@@ -69,7 +69,7 @@
 			parent::__construct(self::B2DBNAME, self::ID);
 			
 			parent::_addVarchar(self::UNAME, 50);
-			parent::_addVarchar(self::PASSWORD, 50);
+			parent::_addVarchar(self::PASSWORD, 100);
 			parent::_addVarchar(self::BUDDYNAME, 50);
 			parent::_addVarchar(self::REALNAME, 100);
 			parent::_addVarchar(self::EMAIL, 200);
