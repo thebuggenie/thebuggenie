@@ -2187,7 +2187,8 @@
 					if (self::$_redirect_login)
 					{
 						TBGLogging::log('An error occurred setting up the user object, redirecting to login', 'main', TBGLogging::LEVEL_NOTICE);
-						self::getResponse()->headerRedirect(self::getRouting()->generate('login_redirect'), 403);
+						TBGContext::setMessage('login_message_err', TBGContext::geti18n()->__('Please log in'));
+						self::getResponse()->headerRedirect(self::getRouting()->generate('login_page'), 403);
 					}
 					if (is_dir(THEBUGGENIE_MODULES_PATH . $route['module']))
 					{
