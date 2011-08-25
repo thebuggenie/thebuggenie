@@ -314,6 +314,8 @@
 			
 			if (array_key_exists('HTTP_REFERER', $_SERVER)):
 				$this->referer = $_SERVER['HTTP_REFERER'];
+			elseif (TBGContext::hasMessage('login_referer')):
+				$this->referer = TBGContext::getMessage('login_referer');
 			else:
 				$this->referer = TBGContext::getRouting()->generate('dashboard');
 			endif;

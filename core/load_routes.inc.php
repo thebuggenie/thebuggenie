@@ -13,7 +13,6 @@
 	$routes[] = array('get_javascript', '/js/:js_file', 'main', 'index');
 	$routes[] = array('login', '/do/login', 'main', 'doLogin');
 	$routes[] = array('login_page', '/login', 'main', 'login');
-	$routes[] = array('login_redirect', '/login/redirect', 'main', 'login', array('redirect' => true, 'continue' => true));
 	$routes[] = array('login_section', '/login/section/:section/*', 'main', 'login');
 	$routes[] = array('register', '/do/register', 'main', 'register');
 	$routes[] = array('activate', '/activate/:user/:key', 'main', 'activate');

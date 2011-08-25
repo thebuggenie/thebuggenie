@@ -10,13 +10,9 @@
 		<div id="login_menu_panes">
 			<div id="tab_login_pane"<?php if ($selected_tab != 'login'): ?> style="display: none;"<?php endif; ?>>
 				<script language="text/javascript">
-					if (document.location.href.search('<?php echo make_url('login_redirect'); ?>') != -1)
+					if (document.location.href.search('<?php echo make_url('login_page'); ?>') != -1)
 					{
 						$('tbg3_referer').setValue('<?php echo make_url('dashboard'); ?>');
-					}
-					else
-					{
-						$('tbg3_referer').setValue(document.location.href);
 					}
 				</script>
 				<?php if ($article instanceof TBGWikiArticle): ?>
@@ -25,7 +21,11 @@
 				<div class="logindiv">			
 					<div class="rounded_box iceblue" style="vertical-align: middle; padding: 5px;">
 						<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('login'); ?>" method="post" id="login_form" onsubmit="TBG.Main.Login.login('<?php echo make_url('login'); ?>'); return false;">
-							<input type="hidden" id="tbg3_referer" name="tbg3_referer" value="<?php echo $referer; ?>" />
+							<?php if (!TBGContext::hasMessage('login_force_redirect') || TBGContext::getMessage('login_force_redirect') !== true): ?>
+								<input type="hidden" id="tbg3_referer" name="tbg3_referer" value="<?php echo $referer; ?>" />
+							<?php else: ?>
+								<input type="hidden" id="return_to" name="return_to" value="<?php echo $referer; ?>" />
+							<?php endif; ?>
 							<div class="login_boxheader"><?php echo __('Log in to an existing account'); ?></div>
 							<div>
 								<table border="0" class="login_fieldtable">

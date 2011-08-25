@@ -142,9 +142,18 @@
 			if (!$condition)
 			{
 				$message = ($message === null) ? TBGContext::getI18n()->__("You are not allowed to access to this page") : $message;
-				TBGContext::setMessage('forward', $message);
-
-				$this->forward(TBGContext::getRouting()->generate('login_redirect'), 403);
+				if (TBGContext::getUser()->isGuest())
+				{
+					TBGContext::setMessage('login_message_err', $message);
+					TBGContext::setMessage('login_force_redirect', true);
+					TBGContext::setMessage('login_referer', TBGContext::getRouting()->generate(TBGContext::getRouting()->getCurrentRouteName()));
+					$this->forward(TBGContext::getRouting()->generate('login_page'), 403);
+				}
+				else
+				{
+					$this->getResponse()->setHttpStatus(403);
+					$this->getResponse()->setTemplate('main/forbidden', array('message' => $message));
+				}
 			}
 		}
 		
