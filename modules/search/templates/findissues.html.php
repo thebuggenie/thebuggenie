@@ -336,7 +336,7 @@
 								<input type="hidden" name="template" value="" id="scs_current_template">
 								<ul class="simple_list scs_list">
 									<?php 
-										$columns = array('title' => __('Issue title'), 'assigned_to' => __('Assigned to'), 'status' => __('Status'), 'resolution' => __('Resolution'), 'category' => __('Category'), 'severity' => __('Severity'), 'percent_complete' => __('% completed'), 'reproducability' => __('Reproducability'), 'priority' => __('Priority'), 'last_updated' => __('Last updated time'), 'comments' => __('Number of comments')); 
+										$columns = array('title' => __('Issue title'), 'issuetype' => __('Issue type'), 'assigned_to' => __('Assigned to'), 'status' => __('Status'), 'resolution' => __('Resolution'), 'category' => __('Category'), 'severity' => __('Severity'), 'percent_complete' => __('% completed'), 'reproducability' => __('Reproducability'), 'priority' => __('Priority'), 'last_updated' => __('Last updated time'), 'comments' => __('Number of comments')); 
 									?>
 									<?php foreach ($columns as $c_key => $c_name): ?>
 										<li class="scs_<?php echo $c_key; ?>" style="display: none;"><label><input type="checkbox" onclick="TBG.Search.toggleColumn('<?php echo $c_key; ?>');" name="columns[<?php echo $c_key; ?>]" value="<?php echo $c_key; ?>"></input><div><?php echo $c_name; ?></div></label></li>
