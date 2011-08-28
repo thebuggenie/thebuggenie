@@ -52,7 +52,6 @@
 			<?php endif; ?>
 		</td>
 	</tr>
-<tr><td colspan="2" class="config_explanation" style="padding-bottom: 10px;"><?php echo __('Some projects have been removed from this list to prevent cases where you make this project a subproject of its child. If you do create such a situation, an error will occur.'); ?></td></tr>
 	<tr>
 		<td><label for="client"><?php echo __('Client'); ?></label></td>
 		<td>

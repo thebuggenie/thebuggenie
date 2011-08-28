@@ -20,7 +20,7 @@
 								<?php if (TBGSettings::isUploadsEnabled()): ?>
 									<li><input type="radio" id="small_upload" name="small_icon_action" value="upload_file"><label for="small_upload"><?php echo __('Upload new icon'); ?>:</label><br><input type="file" name="small_icon"></li>
 								<?php else: ?>
-									<li class="faded_out"><input type="radio" disabled><label><?php echo __('Upload new icon'); ?></label>&nbsp;<?php echo __('File uploads are not enabled'); ?></li>
+									<li class="faded_out" style="padding: 2px; font-style: italic;"><?php echo __('Enable file uploads to upload project icons'); ?></li>
 								<?php endif; ?>
 							</ul>
 						</div>
@@ -39,7 +39,7 @@
 								<?php if (TBGSettings::isUploadsEnabled()): ?>
 									<li><input type="radio" id="large_upload" name="large_icon_action" value="upload_file"><label for="large_upload"><?php echo __('Upload new icon'); ?>:</label><br><input type="file" name="large_icon"></li>
 								<?php else: ?>
-									<li class="faded_out"><input type="radio" disabled><label><?php echo __('Upload new icon'); ?></label>&nbsp;<?php echo __('File uploads are not enabled'); ?></li>
+									<li class="faded_out" style="padding: 2px; font-style: italic;"><?php echo __('Enable file uploads to upload project icons'); ?></li>
 								<?php endif; ?>
 							</ul>
 						</div>

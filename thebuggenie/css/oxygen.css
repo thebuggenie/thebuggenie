@@ -952,6 +952,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .project_information_sidebar .sidebar_links a.selected:hover { border: 1px solid #CCC; border-right-color: #FFF; background-color: #FFF; }
 .project_information_sidebar .sidebar_links .simple_list { margin: 0 0 0 25px; padding: 10px; border-top: 1px solid #DDD; background-color: #F1F1F1; }
 .project_information_sidebar .sidebar_links .simple_list li a { border: 0; padding: 3px; margin: 0; background-color: transparent; }
+.project_information_sidebar .sidebar_links .simple_list li.selected { font-style: italic; }
 .project_information_main { padding: 10px 15px 10px 15px; vertical-align: top; border-top: 1px solid #ccc; }
 .project_client_info .project_client_header { font-weight: bold; font-size: 1.5em; }
 .project_client_info .project_client_viewusers { float: right; }
@@ -959,7 +960,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .client_users_div_inner { padding: 10px; }
 .project_header { padding: 10px; }
 .project_header_right { float: right; margin-top: 5px; }
-.project_header_right .button { float: left; margin-left: 10px; }
+.project_header_right .button { float: left; margin-left: 10px; line-height: 1.4; }
 #project_website, #project_documentation { margin-top: 5px; }
 #edition_table { list-style: none; margin: 0; padding: 0; line-height: 1.2; }
 #edition_table li { list-style: none; margin: 0; padding: 3px; clear: both; margin-top: 5px; }
