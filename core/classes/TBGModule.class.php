@@ -55,7 +55,7 @@
 			$module_classpath = $module_basepath . DS . "classes";
 
 			if ($scope === null || $scope->getID() == TBGContext::getScope()->getID())
-				TBGContext::addClasspath($module_classpath);
+				TBGContext::addAutoloaderClassPath($module_classpath);
 			
 			$scope_id = ($scope) ? $scope->getID() : TBGContext::getScope()->getID();
 			$module_details = file_get_contents($module_basepath . DS . 'class');
@@ -168,7 +168,7 @@
 
 				if (TBGContext::getScope()->isDefault() && is_dir($b2db_classpath))
 				{
-					TBGContext::addClasspath($b2db_classpath);
+					TBGContext::addAutoloaderClassPath($b2db_classpath);
 					$b2db_classpath_handle = opendir($b2db_classpath);
 					while ($table_class_file = readdir($b2db_classpath_handle))
 					{

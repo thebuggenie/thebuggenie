@@ -194,7 +194,7 @@
 							B2DB::initialize();
 							$engine_path = B2DB::getEngineClassPath();
 							if ($engine_path !== null)
-								TBGContext::addClasspath($engine_path);
+								TBGContext::addAutoloaderClassPath($engine_path);
 							else
 								throw new Exception("Cannot initialize the B2DB engine");
 
@@ -353,7 +353,7 @@
 					$this->cliEcho("\n");
 					$this->cliEcho("Creating tables ...\n", 'white', 'bold');
 					$tables_path = THEBUGGENIE_CORE_PATH . 'classes' . DIRECTORY_SEPARATOR . 'B2DB' . DIRECTORY_SEPARATOR;
-					TBGContext::addClasspath($tables_path);
+					TBGContext::addAutoloaderClassPath($tables_path);
 					$tables_path_handle = opendir($tables_path);
 					$tables_created = array();
 					while ($table_class_file = readdir($tables_path_handle))

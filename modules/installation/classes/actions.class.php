@@ -237,7 +237,7 @@
 					B2DB::initialize(THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php');
 					$engine_path = B2DB::getEngineClassPath();
 					if ($engine_path !== null)
-						TBGContext::addClasspath($engine_path);
+						TBGContext::addAutoloaderClassPath($engine_path);
 					else
 						throw new Exception("Cannot initialize the B2DB engine");
 
@@ -255,7 +255,7 @@
 				
 				// Add table classes to classpath 
 				$tables_path = THEBUGGENIE_CORE_PATH . 'classes' . DS . 'B2DB' . DS;
-				TBGContext::addClasspath($tables_path);
+				TBGContext::addAutoloaderClassPath($tables_path);
 				$tables_path_handle = opendir($tables_path);
 				$tables_created = array();
 				while ($table_class_file = readdir($tables_path_handle))
@@ -393,7 +393,7 @@
 			TBGScopeHostnamesTable::getTable()->create();
 			
 			// Add classpath for existing old tables used for upgrade
-			TBGContext::addClasspath(THEBUGGENIE_MODULES_PATH . 'installation' . DS . 'classes' . DS . 'upgrade_3.0');
+			TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'installation' . DS . 'classes' . DS . 'upgrade_3.0');
 			
 			// Upgrade old tables
 			TBGScopesTable::getTable()->upgrade(TBGScopesTable3dot0::getTable());

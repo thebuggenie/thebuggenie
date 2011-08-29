@@ -430,23 +430,24 @@ echo "
 		//tbg_exception($error, array('code' => $code, 'file' => $file, 'line' => $line_number));
 	}
 	
-	/**
-	 * Magic autoload function to make sure classes are autoloaded when used
-	 *
-	 * @param $classname
-	 */
-	function __autoload($classname)
-	{
-		foreach (TBGContext::getClasspaths() as $path)
-		{
-			if (file_exists($path . $classname . '.class.php'))
-			{
-				require $path . $classname . '.class.php';
-				break;
-			}
-		}
-	}
+//	/**
+//	 * Magic autoload function to make sure classes are autoloaded when used
+//	 *
+//	 * @param $classname
+//	 */
+//	function __autoload($classname)
+//	{
+//		foreach (TBGContext::getClasspaths() as $path)
+//		{
+//			if (file_exists($path . $classname . '.class.php'))
+//			{
+//				require $path . $classname . '.class.php';
+//				break;
+//			}
+//		}
+//	}
 
+	
 	// Set up error and exception handling
 	set_error_handler('tbg_error_handler');
 	set_exception_handler('tbg_exception');
@@ -457,6 +458,8 @@ echo "
 
 	// Load the context class, which controls most of things
 	require THEBUGGENIE_CORE_PATH . 'classes' . DS . 'TBGContext.class.php';
+	
+	spl_autoload_register(array('TBGContext', 'autoload'));
 
 	// Load the logging class so we can log stuff
 	require THEBUGGENIE_CORE_PATH . 'classes' . DS . 'TBGLogging.class.php';
@@ -483,7 +486,7 @@ echo "
 		}
 
 		// Add classpath so we can find the TBG* classes
-		TBGContext::addClasspath(THEBUGGENIE_CORE_PATH . 'classes' . DS);
+		TBGContext::addAutoloaderClassPath(THEBUGGENIE_CORE_PATH . 'classes' . DS);
 
 		TBGLogging::log((TBGCache::isEnabled()) ? 'APC cache is enabled' : 'APC cache is not enabled');
 		
@@ -493,7 +496,7 @@ echo "
 			TBGLogging::log('Adding B2DB classes to autoload path');
 			define ('B2DB_BASEPATH', THEBUGGENIE_CORE_PATH . 'B2DB' . DS);
 			define ('B2DB_CACHEPATH', THEBUGGENIE_CORE_PATH . 'cache' . DS . 'B2DB' . DS);
-			TBGContext::addClasspath(THEBUGGENIE_CORE_PATH . 'B2DB' . DS . 'classes' . DS);
+			TBGContext::addAutoloaderClassPath(THEBUGGENIE_CORE_PATH . 'B2DB' . DS . 'classes' . DS);
 			TBGLogging::log('...done (Adding B2DB classes to autoload path)');
 
 			TBGLogging::log('Initializing B2DB');
@@ -507,7 +510,7 @@ echo "
 				B2DB::doConnect();
 				TBGLogging::log('...done (Database connection details found, connecting)');
 				TBGLogging::log('Adding core table classpath to autoload path');
-				TBGContext::addClasspath(THEBUGGENIE_CORE_PATH . 'classes' . DS . 'B2DB' . DS);
+				TBGContext::addAutoloaderClassPath(THEBUGGENIE_CORE_PATH . 'classes' . DS . 'B2DB' . DS);
 			}
 			
 		}

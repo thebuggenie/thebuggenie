@@ -239,28 +239,91 @@
 		 * Add a path to the list of searched paths in the autoloader
 		 * Class files must contain one class with the same name as the class
 		 * in the form of Classname.class.php
-		 *
-		 * @param string $classpath The path where the class files are
-		 *
+		 * 
+		 * @param string $path The path where the class files are
+		 * 
 		 * @return null
 		 */
-		public static function addClasspath($classpath)
+		public static function autoloadNamespace($namespace, $path)
 		{
-			if (!is_dir($classpath))
-				throw new Exception("Cannot add {$classpath} to classpaths, since it doesn't exist");
-
-			$classpath = realpath($classpath) . DS;
-			
-			if (file_exists($classpath . 'actions.class.php'))
-				require_once $classpath . 'actions.class.php';
-
-			if (file_exists($classpath . 'actioncomponents.class.php'))
-				require_once $classpath . 'actioncomponents.class.php';
-
-			self::$_classpaths[$classpath] = $classpath; // . $file;
-			return true;
+			$path = realpath($path);
+			if (!file_exists($path)) throw new Exception("Cannot add {$path} to autoload, since the path doesn't exist");
+			self::$_classpaths[$namespace] = $path;
 		}
+		
+		public static function addAutoloaderClassPath($path)
+		{
+			$path = realpath($path);
+			if (!file_exists($path)) throw new Exception("Cannot add {$path} to autoload, since the path doesn't exist");
 
+			if (file_exists($path . DS . 'actions.class.php'))
+				require_once $path . DS . 'actions.class.php';
+
+			if (file_exists($path . DS . 'actioncomponents.class.php'))
+				require_once $path . DS . 'actioncomponents.class.php';
+
+			self::$_classpaths[0][] = $path;
+		}
+		
+		/**
+		 * Returns the classpaths that has been registered to the autoloader
+		 *
+		 * @return array
+		 */
+		public static function getAutoloadedNamespaces()
+		{
+			if (!array_key_exists(0, self::$_classpaths)) self::$_classpaths[0] = array();
+			return self::$_classpaths;
+		}
+		
+		/**
+		 * Magic autoload function to make sure classes are autoloaded when used
+		 * 
+		 * @param $classname
+		 */
+		public static function autoload($classname)
+		{
+			$class_details = explode('\\', $classname);
+			$namespaces = self::getAutoloadedNamespaces();
+			
+			if (count($class_details) > 1)
+			{
+				$namespace = array_shift($class_details);
+				if (array_key_exists($namespace, $namespaces))
+				{
+					if (count($class_details) > 2 && $namespace == 'caspar' && current($class_details) == 'modules')
+					{
+						$basepath = realpath($namespaces[$namespace] . DS . '..');
+					}
+					else
+					{
+						$basepath = $namespaces[$namespace];
+					}
+					$filename = $basepath . DS . join(DS, $class_details) . '.class.php';
+					$classname_element = array_pop($class_details);
+					$filename_alternate = $basepath . DS . join(DS, $class_details) . DS . "classes" . DS . $classname_element . ".class.php";
+				}
+			}
+			else
+			{
+				foreach ($namespaces[0] as $classpath)
+				{
+					if (file_exists($classpath . DS . $classname . '.class.php'))
+					{
+						$filename = $classpath . DS . $classname . '.class.php';
+					}
+				}
+			}
+			if (isset($filename) && file_exists($filename))
+			{
+				require $filename;
+			}
+			elseif (isset($filename_alternate) && file_exists($filename_alternate))
+			{
+				require $filename_alternate;
+			}
+		}
+		
 		/**
 		 * Returns the classpaths that has been registered to the autoloader
 		 *
@@ -724,11 +787,11 @@
 							$moduleClassPath = THEBUGGENIE_MODULES_PATH . $module_name . DS . "classes" . DS;
 							try
 							{
-								self::addClasspath($moduleClassPath);
+								self::addAutoloaderClassPath($moduleClassPath);
 								$module_paths[] = $moduleClassPath;
 								if (file_exists($moduleClassPath . 'B2DB'))
 								{
-									self::addClasspath($moduleClassPath . 'B2DB' . DS);
+									self::addAutoloaderClassPath($moduleClassPath . 'B2DB' . DS);
 									$module_paths[] = $moduleClassPath . 'B2DB' . DS;
 								}
 							}
@@ -768,7 +831,7 @@
 					$module_paths = TBGCache::get(TBGCache::KEY_MODULE_PATHS);
 					foreach ($module_paths as $path)
 					{
-						self::addClasspath($path);
+						self::addAutoloaderClassPath($path);
 					}
 					self::$_modules = TBGCache::get(TBGCache::KEY_MODULES);
 					TBGLogging::log('done (using cached modules)');
@@ -2198,7 +2261,7 @@
 						}
 						if (!class_exists($route['module'].'Actions') && !class_exists($route['module'].'ActionComponents'))
 						{
-							self::addClasspath(THEBUGGENIE_MODULES_PATH . $route['module'] . DS . 'classes' . DS);
+							self::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . $route['module'] . DS . 'classes' . DS);
 						}
 						if (self::performAction($route['module'], $route['action']))
 						{
