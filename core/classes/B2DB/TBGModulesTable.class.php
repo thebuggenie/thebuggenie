@@ -1,5 +1,9 @@
 <?php
 
+	use b2db\Core,
+		b2db\Criteria,
+		b2db\Criterion;
+
 	/**
 	 * Modules table
 	 *
@@ -36,7 +40,7 @@
 		 */
 		public static function getTable()
 		{
-			return \b2db\Core::getTable('TBGModulesTable');
+			return Core::getTable('TBGModulesTable');
 		}
 
 		public function __construct()

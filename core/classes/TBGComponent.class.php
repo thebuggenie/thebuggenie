@@ -82,7 +82,7 @@
 		
 		public function setName($name)
 		{
-			$crit = new B2DBCriteria();
+			$crit = new \b2db\Criteria();
 			$crit->addUpdate(TBGComponentsTable::NAME, $name);
 			$res = \b2db\Core::getTable('TBGComponentsTable')->doUpdateById($crit, $this->getID());
 			
@@ -91,13 +91,13 @@
 
 		public function _preDelete()
 		{
-			$crit = new B2DBCriteria();
+			$crit = new \b2db\Criteria();
 			$crit->addWhere(TBGIssueAffectsComponentTable::COMPONENT, $this->getID());
 			\b2db\Core::getTable('TBGIssueAffectsComponentTable')->doDelete($crit);
-			$crit = new B2DBCriteria();
+			$crit = new \b2db\Criteria();
 			$crit->addWhere(TBGEditionComponentsTable::COMPONENT, $this->getID());
 			\b2db\Core::getTable('TBGEditionComponentsTable')->doDelete($crit);
-			$crit = new B2DBCriteria();
+			$crit = new \b2db\Criteria();
 			$crit->addWhere(TBGComponentAssigneesTable::COMPONENT_ID, $this->getID());
 			$crit->addWhere(TBGComponentAssigneesTable::SCOPE, TBGContext::getScope()->getID());
 			\b2db\Core::getTable('TBGComponentAssigneesTable')->doDelete($crit);

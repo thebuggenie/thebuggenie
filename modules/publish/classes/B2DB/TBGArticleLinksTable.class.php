@@ -1,5 +1,9 @@
 <?php
 
+	use b2db\Core,
+		b2db\Criteria,
+		b2db\Criterion;
+
 	class TBGArticleLinksTable extends TBGB2DBTable
 	{
 
@@ -17,7 +21,7 @@
 		 */
 		public static function getTable()
 		{
-			return \b2db\Core::getTable('TBGArticleLinksTable');
+			return Core::getTable('TBGArticleLinksTable');
 		}
 
 		public function __construct()

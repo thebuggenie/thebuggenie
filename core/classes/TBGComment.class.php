@@ -74,7 +74,7 @@
 		 * Returns all comments for a given item
 		 *
 		 */
-		static function getComments($target_id, $target_type, $sort_order = B2DBCriteria::SORT_ASC)
+		static function getComments($target_id, $target_type, $sort_order = \b2db\Criteria::SORT_ASC)
 		{
 			$retval = array();
 			if ($res = TBGCommentsTable::getTable()->getComments($target_id, $target_type, $sort_order))

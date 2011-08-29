@@ -648,9 +648,9 @@
 		/**
 		 * Class constructor
 		 *
-		 * @param B2DBRow $row
+		 * @param \b2db\Row $row
 		 */
-		public function _construct(B2DBRow $row, $foreign_key = null)
+		public function _construct(\b2db\Row $row, $foreign_key = null)
 		{
 			//$this->_populateCustomfields();
 			$this->_mergeChangedProperties();
@@ -3965,7 +3965,7 @@
 		public function whenClosed()
 		{
 			if (!$this->isClosed()) return false;
-			$crit = new B2DBCriteria();
+			$crit = new \b2db\Criteria();
 			$crit->addSelectionColumn(TBGLogTable::TIME);
 			$crit->addWhere(TBGLogTable::TARGET, $this->_id);
 			$crit->addWhere(TBGLogTable::TARGET_TYPE, 1);
@@ -3987,7 +3987,7 @@
 		public function whenReopened()
 		{
 			if ($this->isClosed()) return false;
-			$crit = new B2DBCriteria();
+			$crit = new \b2db\Criteria();
 			$crit->addSelectionColumn(TBGLogTable::TIME);
 			$crit->addWhere(TBGLogTable::TARGET, $this->_id);
 			$crit->addWhere(TBGLogTable::TARGET_TYPE, 1);

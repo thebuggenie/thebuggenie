@@ -24,7 +24,7 @@
 		 * 
 		 * @param integer $id
 		 * 
-		 * @return B2DBRow
+		 * @return \b2db\Row
 		 */
 		public function getByID($id)
 		{

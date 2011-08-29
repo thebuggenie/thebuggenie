@@ -1,5 +1,10 @@
 <?php
 
+	use b2db\Core,
+		b2db\Criteria,
+		b2db\Criterion,
+		b2db\Resultset;
+
 	/**
 	 * User dashboard views table
 	 *
@@ -41,7 +46,7 @@
 		 */
 		public static function getTable()
 		{
-			return \b2db\Core::getTable('TBGDashboardViewsTable');
+			return Core::getTable('TBGDashboardViewsTable');
 		}
 
 		public function __construct()
@@ -86,7 +91,7 @@
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addOrderBy(self::ID);
 			$res = $this->doSelect($crit);
-			if ($res instanceof B2DBResultset)
+			if ($res instanceof Resultset)
 			{
 				return $res->getAllRows();
 			}

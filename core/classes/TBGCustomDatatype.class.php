@@ -152,7 +152,7 @@
 		 * 
 		 * @param B2DBrow $row [optional] A B2DBrow to use
 		 */
-		public function _construct(B2DBRow $row, $foreign_key = null)
+		public function _construct(\b2db\Row $row, $foreign_key = null)
 		{
 			$this->_description = $this->_description ?: $this->_name;
 		}

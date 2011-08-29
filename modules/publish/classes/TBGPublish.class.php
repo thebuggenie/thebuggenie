@@ -268,91 +268,11 @@
 			}
 		}
 
-		public function getBillboardPosts($target_board = 0, $posts = 5)
-		{
-			$crit = new B2DBCriteria();
-			$crit->addWhere(TBGBillboardPostsTable::SCOPE, TBGContext::getScope()->getID());
-			$crit->addWhere(TBGBillboardPostsTable::IS_DELETED, 0);
-			$crit->setLimit($posts);
-			$crit->addOrderBy(TBGBillboardPostsTable::DATE, 'desc');
-			if (is_array($target_board))
-			{
-				$crit->addWhere(TBGBillboardPostsTable::TARGET_BOARD, $target_board, B2DBCriteria::DB_IN);
-			}
-			else
-			{
-				$crit->addWhere(TBGBillboardPostsTable::TARGET_BOARD, $target_board);
-			}
-	
-			$posts = array();
-	
-			$res = \b2db\Core::getTable('TBGBillboardPostsTable')->doSelect($crit);
-			while ($row = $res->getNextRow())
-			{
-				$posts[] = new PublishBillboardPost($row);
-			}
-	
-			return $posts;
-		}
-		
 		public function getLatestArticles($limit = 5)
 		{
-			return $this->getArticles($limit, true);
+			return TBGArticlesTable::getTable()->getArticles($limit, true);
 		}
 	
-		public function getAllArticles()
-		{
-			$crit = new B2DBCriteria();
-			$crit->addOrderBy(TBGArticlesTable::ORDER, 'asc');
-			$crit->addOrderBy(TBGArticlesTable::DATE, 'desc');
-			$res = TBGArticlesTable::getTable()->doSelect($crit);
-			$articles = array();
-			while ($row = $res->getNextRow())
-			{
-				$article = PublishFactory::article($row->get(TBGArticlesTable::ID), $row);
-				if ($article->hasAccess())
-				{
-					$articles[] = $article;
-				}
-			}
-			return $articles;
-		}
-		
-		public function getArticles($num_articles = 5, $news = false, $published = true)
-		{
-			$crit = new B2DBCriteria();
-			$crit->addWhere(TBGArticlesTable::SCOPE, TBGContext::getScope()->getID());
-			$crit->addWhere(TBGArticlesTable::NAME, 'Category:%', B2DBCriteria::DB_NOT_LIKE);
-			
-			$crit->addOrderBy(TBGArticlesTable::DATE, 'desc');
-			
-			if ($published) $crit->addWhere(TBGArticlesTable::IS_PUBLISHED, 1);
-	
-			$articles = array();
-			
-			if ($res = TBGArticlesTable::getTable()->doSelect($crit))
-			{
-				while (($row = $res->getNextRow()) && (count($articles) < $num_articles))
-				{
-					try
-					{
-						$article = PublishFactory::article($row->get(TBGArticlesTable::ID), $row);
-					}
-					catch (Exception $e) 
-					{
-						continue;
-					}
-					
-					if ($article->hasAccess())
-					{
-						$articles[] = $article;
-					}
-				}
-			}
-	
-			return $articles;
-		}
-
 		public function getMenuItems($target_id = 0)
 		{
 			return TBGLinksTable::getTable()->getLinks('wiki', $target_id);

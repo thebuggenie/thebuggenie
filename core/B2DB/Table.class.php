@@ -287,7 +287,7 @@
 		 * @param Criteria $crit
 		 * @param mixed $join
 		 * 
-		 * @return B2DBRow
+		 * @return \b2db\Row
 		 */
 		public function doSelectById($id, Criteria $crit = null, $join = 'all')
 		{
@@ -407,7 +407,7 @@
 		 *
 		 * @param Criteria $crit
 		 * 
-		 * @return B2DBRow
+		 * @return \b2db\Row
 		 */
 		public function doSelectOne(Criteria $crit, $join = 'all')
 		{
@@ -696,7 +696,7 @@
 			}
 		}
 		
-		public function saveObject(B2DBSaveable $object)
+		public function saveObject(\b2db\Saveable $object)
 		{
 			$crit = $this->getCriteria();
 			$id = $object->getB2DBID();

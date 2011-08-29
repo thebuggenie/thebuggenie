@@ -1,5 +1,9 @@
 <?php
 
+	use b2db\Core,
+		b2db\Criteria,
+		b2db\Criterion;
+
 	/**
 	 * Issues table
 	 *
@@ -76,7 +80,7 @@
 		 */
 		public static function getTable()
 		{
-			return \b2db\Core::getTable('TBGIssuesTable');
+			return Core::getTable('TBGIssuesTable');
 		}
 
 		public function __construct()
@@ -169,7 +173,7 @@
 		protected function _getCountByProjectIDAndColumn($project_id, $column)
 		{
 			$crit = $this->getCriteria();
-			$crit->addSelectionColumn(self::ID, 'column_count', B2DBCriteria::DB_COUNT);
+			$crit->addSelectionColumn(self::ID, 'column_count', Criteria::DB_COUNT);
 			$crit->addSelectionColumn($column);
 			$crit->addWhere(self::PROJECT_ID, $project_id);
 			$crit->addGroupBy($column);
@@ -280,7 +284,7 @@
 		
 		public function getIssuesByProjectID($id)
 		{
-			$crit = new B2DBCriteria();
+			$crit = new Criteria();
 			$crit->addWhere(self::PROJECT_ID, $id);
 			$crit->addWhere(self::DELETED, 0);
 			$results = $this->doSelect($crit);
@@ -324,7 +328,7 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::PROJECT_ID, $p_id);
 			$crit->addWhere(self::DELETED, 0);
-			$crit->addSelectionColumn(self::ISSUE_NO, 'issueno', B2DBCriteria::DB_MAX, '', '+1');
+			$crit->addSelectionColumn(self::ISSUE_NO, 'issueno', Criteria::DB_MAX, '', '+1');
 			$row = $this->doSelectOne($crit, 'none');
 			$issue_no = $row->get('issueno');
 			return ($issue_no < 1) ? 1 : $issue_no;
@@ -333,7 +337,7 @@
 		public function getByPrefixAndIssueNo($prefix, $issue_no)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(TBGProjectsTable::PREFIX, mb_strtolower($prefix), B2DBCriteria::DB_EQUALS, '', '', B2DBCriteria::DB_LOWER);
+			$crit->addWhere(TBGProjectsTable::PREFIX, mb_strtolower($prefix), Criteria::DB_EQUALS, '', '', Criteria::DB_LOWER);
 			$crit->addWhere(TBGProjectsTable::DELETED, false);
 			$crit->addWhere(self::ISSUE_NO, $issue_no);
 			$crit->addWhere(self::DELETED, 0);
@@ -381,7 +385,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::MILESTONE, null);
-			$crit->addWhere(self::ISSUE_TYPE, $issuetypes, B2DBCriteria::DB_IN);
+			$crit->addWhere(self::ISSUE_TYPE, $issuetypes, Criteria::DB_IN);
 			$crit->addWhere(self::PROJECT_ID, $project_id);
 			$crit->addWhere(self::DELETED, false);
 			$res = $this->doSelect($crit);
@@ -392,7 +396,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::MILESTONE, null);
-			$crit->addWhere(self::ISSUE_TYPE, $issuetypes, B2DBCriteria::DB_IN);
+			$crit->addWhere(self::ISSUE_TYPE, $issuetypes, Criteria::DB_IN);
 			$crit->addWhere(self::PROJECT_ID, $project_id);
 			$crit->addWhere(self::DELETED, false);
 			$crit->addWhere(self::STATE, $state);
@@ -438,7 +442,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::PROJECT_ID, $project_id);
-			$crit->addWhere(self::ISSUE_TYPE, $issuetypes, B2DBCriteria::DB_IN);
+			$crit->addWhere(self::ISSUE_TYPE, $issuetypes, Criteria::DB_IN);
 			$crit->addWhere(self::STATE, TBGIssue::STATE_OPEN);
 			$crit->addWhere(self::DELETED, 0);
 			
@@ -457,8 +461,8 @@
 			$crit = $this->getCriteria();
 			$crit->addJoin(TBGIssueTypesTable::getTable(), TBGIssueTypesTable::ID, self::ISSUE_TYPE);
 			$crit->addWhere(self::PROJECT_ID, $project_id);
-			$crit->addWhere(TBGIssueTypesTable::ICON, $issuetypes, B2DBCriteria::DB_IN);
-			$crit->addOrderBy(self::POSTED, B2DBCriteria::SORT_DESC);
+			$crit->addWhere(TBGIssueTypesTable::ICON, $issuetypes, Criteria::DB_IN);
+			$crit->addOrderBy(self::POSTED, Criteria::SORT_DESC);
 			if ($limit !== null)
 			{
 				$crit->setLimit($limit);
@@ -472,8 +476,8 @@
 		public function getTotalPointsByMilestoneID($milestone_id)
 		{
 			$crit = $this->getCriteria();
-			$crit->addSelectionColumn(self::ESTIMATED_POINTS, 'estimated_points', B2DBCriteria::DB_SUM);
-			$crit->addSelectionColumn(self::SPENT_POINTS, 'spent_points', B2DBCriteria::DB_SUM);
+			$crit->addSelectionColumn(self::ESTIMATED_POINTS, 'estimated_points', Criteria::DB_SUM);
+			$crit->addSelectionColumn(self::SPENT_POINTS, 'spent_points', Criteria::DB_SUM);
 			$crit->addWhere(self::MILESTONE, $milestone_id);
 			if ($res = $this->doSelectOne($crit))
 			{
@@ -488,8 +492,8 @@
 		public function getTotalHoursByMilestoneID($milestone_id)
 		{
 			$crit = $this->getCriteria();
-			$crit->addSelectionColumn(self::ESTIMATED_HOURS, 'estimated_hours', B2DBCriteria::DB_SUM);
-			$crit->addSelectionColumn(self::SPENT_HOURS, 'spent_hours', B2DBCriteria::DB_SUM);
+			$crit->addSelectionColumn(self::ESTIMATED_HOURS, 'estimated_hours', Criteria::DB_SUM);
+			$crit->addSelectionColumn(self::SPENT_HOURS, 'spent_hours', Criteria::DB_SUM);
 			$crit->addWhere(self::MILESTONE, $milestone_id);
 			if ($res = $this->doSelectOne($crit))
 			{
@@ -529,17 +533,17 @@
 								$searchterm = (mb_strpos($filter_info['value'], '%') !== false) ? $filter_info['value'] : "%{$filter_info['value']}%";
 								if ($filter_info['operator'] == '=')
 								{
-									$ctn = $crit->returnCriterion(self::TITLE, $searchterm, B2DBCriteria::DB_LIKE);
-									$ctn->addOr(self::DESCRIPTION, $searchterm, B2DBCriteria::DB_LIKE);
-									$ctn->addOr(self::REPRODUCTION_STEPS, $searchterm, B2DBCriteria::DB_LIKE);
-									$ctn->addOr(TBGIssueCustomFieldsTable::OPTION_VALUE, $searchterm, B2DBCriteria::DB_LIKE);
+									$ctn = $crit->returnCriterion(self::TITLE, $searchterm, Criteria::DB_LIKE);
+									$ctn->addOr(self::DESCRIPTION, $searchterm, Criteria::DB_LIKE);
+									$ctn->addOr(self::REPRODUCTION_STEPS, $searchterm, Criteria::DB_LIKE);
+									$ctn->addOr(TBGIssueCustomFieldsTable::OPTION_VALUE, $searchterm, Criteria::DB_LIKE);
 								}
 								else
 								{
-									$ctn = $crit->returnCriterion(self::TITLE, $searchterm, B2DBCriteria::DB_NOT_LIKE);
-									$ctn->addWhere(self::DESCRIPTION, $searchterm, B2DBCriteria::DB_NOT_LIKE);
-									$ctn->addWhere(self::REPRODUCTION_STEPS, $searchterm, B2DBCriteria::DB_NOT_LIKE);
-									$ctn->addOr(TBGIssueCustomFieldsTable::OPTION_VALUE, $searchterm, B2DBCriteria::DB_NOT_LIKE);
+									$ctn = $crit->returnCriterion(self::TITLE, $searchterm, Criteria::DB_NOT_LIKE);
+									$ctn->addWhere(self::DESCRIPTION, $searchterm, Criteria::DB_NOT_LIKE);
+									$ctn->addWhere(self::REPRODUCTION_STEPS, $searchterm, Criteria::DB_NOT_LIKE);
+									$ctn->addOr(TBGIssueCustomFieldsTable::OPTION_VALUE, $searchterm, Criteria::DB_NOT_LIKE);
 								}
 								$crit->addWhere($ctn);
 							}
@@ -569,15 +573,15 @@
 									$searchterm = (mb_strpos($filter_info['value'], '%') !== false) ? $filter_info['value'] : "%{$filter_info['value']}%";
 									if ($filter_info['operator'] == '=')
 									{
-										$ctn = $crit->returnCriterion(self::TITLE, $searchterm, B2DBCriteria::DB_LIKE);
-										$ctn->addOr(self::DESCRIPTION, $searchterm, B2DBCriteria::DB_LIKE);
-										$ctn->addOr(self::REPRODUCTION_STEPS, $searchterm, B2DBCriteria::DB_LIKE);
+										$ctn = $crit->returnCriterion(self::TITLE, $searchterm, Criteria::DB_LIKE);
+										$ctn->addOr(self::DESCRIPTION, $searchterm, Criteria::DB_LIKE);
+										$ctn->addOr(self::REPRODUCTION_STEPS, $searchterm, Criteria::DB_LIKE);
 									}
 									else
 									{
-										$ctn = $crit->returnCriterion(self::TITLE, $searchterm, B2DBCriteria::DB_NOT_LIKE);
-										$ctn->addWhere(self::DESCRIPTION, $searchterm, B2DBCriteria::DB_NOT_LIKE);
-										$ctn->addWhere(self::REPRODUCTION_STEPS, $searchterm, B2DBCriteria::DB_NOT_LIKE);
+										$ctn = $crit->returnCriterion(self::TITLE, $searchterm, Criteria::DB_NOT_LIKE);
+										$ctn->addWhere(self::DESCRIPTION, $searchterm, Criteria::DB_NOT_LIKE);
+										$ctn->addWhere(self::REPRODUCTION_STEPS, $searchterm, Criteria::DB_NOT_LIKE);
 									}
 									$crit->addWhere($ctn);
 								}
@@ -643,7 +647,7 @@
 
 				if ($groupby !== null)
 				{
-					$grouporder = ($grouporder !== null) ? (($grouporder == 'asc') ? B2DBCriteria::SORT_ASC : B2DBCriteria::SORT_DESC) : B2DBCriteria::SORT_ASC;
+					$grouporder = ($grouporder !== null) ? (($grouporder == 'asc') ? Criteria::SORT_ASC : Criteria::SORT_DESC) : Criteria::SORT_ASC;
 					switch ($groupby)
 					{
 						case 'category':
@@ -697,19 +701,19 @@
 							break;
 						case 'edition':
 							$crit->addJoin(TBGIssueAffectsEditionTable::getTable(), TBGIssueAffectsEditionTable::ISSUE, self::ID);
-							$crit->addJoin(TBGEditionsTable::getTable(), TBGEditionsTable::ID, TBGIssueAffectsEditionTable::EDITION, array(), B2DBCriteria::DB_LEFT_JOIN, TBGIssueAffectsEditionTable::getTable());
+							$crit->addJoin(TBGEditionsTable::getTable(), TBGEditionsTable::ID, TBGIssueAffectsEditionTable::EDITION, array(), Criteria::DB_LEFT_JOIN, TBGIssueAffectsEditionTable::getTable());
 							$crit->addSelectionColumn(TBGEditionsTable::NAME);
 							$crit->addOrderBy(TBGEditionsTable::NAME, $grouporder);
 							break;
 						case 'build':
 							$crit->addJoin(TBGIssueAffectsBuildTable::getTable(), TBGIssueAffectsBuildTable::ISSUE, self::ID);
-							$crit->addJoin(TBGBuildsTable::getTable(), TBGBuildsTable::ID, TBGIssueAffectsBuildTable::BUILD, array(), B2DBCriteria::DB_LEFT_JOIN, TBGIssueAffectsBuildTable::getTable());
+							$crit->addJoin(TBGBuildsTable::getTable(), TBGBuildsTable::ID, TBGIssueAffectsBuildTable::BUILD, array(), Criteria::DB_LEFT_JOIN, TBGIssueAffectsBuildTable::getTable());
 							$crit->addSelectionColumn(TBGBuildsTable::NAME);
 							$crit->addOrderBy(TBGBuildsTable::NAME, $grouporder);
 							break;
 						case 'component':
 							$crit->addJoin(TBGIssueAffectsComponentTable::getTable(), TBGIssueAffectsComponentTable::ISSUE, self::ID);
-							$crit->addJoin(TBGComponentsTable::getTable(), TBGComponentsTable::ID, TBGIssueAffectsComponentTable::COMPONENT, array(), B2DBCriteria::DB_LEFT_JOIN, TBGIssueAffectsComponentTable::getTable());
+							$crit->addJoin(TBGComponentsTable::getTable(), TBGComponentsTable::ID, TBGIssueAffectsComponentTable::COMPONENT, array(), Criteria::DB_LEFT_JOIN, TBGIssueAffectsComponentTable::getTable());
 							$crit->addSelectionColumn(TBGComponentsTable::NAME);
 							$crit->addOrderBy(TBGComponentsTable::NAME, $grouporder);
 							break;
@@ -730,7 +734,7 @@
 				$ids = array_reverse($ids);
 				
 				$crit2 = $this->getCriteria();
-				$crit2->addWhere(self::ID, $ids, B2DBCriteria::DB_IN);
+				$crit2->addWhere(self::ID, $ids, Criteria::DB_IN);
 				$crit2->addOrderBy(self::ID, $ids);
 				
 				$res = $this->doSelect($crit2);
@@ -766,12 +770,12 @@
 		 *
 		 * @param int $user_id user ID
 		 * @param int $limit number of issues to  retrieve [optional]
-		 * @param B2DBCriteria $sort sort order [optional]
+		 * @param Criteria $sort sort order [optional]
 		 *
 		 * @return B2DBResultset
 		 */
 		
-		public function getIssuesPostedByUser($user_id, $limit=null, $sort=B2DBCriteria::SORT_DESC)
+		public function getIssuesPostedByUser($user_id, $limit=null, $sort=Criteria::SORT_DESC)
 		{
 			$crit = $this->getCriteria();
 			$crit->addJoin(TBGProjectsTable::getTable(), TBGProjectsTable::ID, self::PROJECT_ID);

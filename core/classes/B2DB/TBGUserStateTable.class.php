@@ -1,5 +1,9 @@
 <?php
 
+	use b2db\Core,
+		b2db\Criteria,
+		b2db\Criterion;
+
 	/**
 	 * Userstate table
 	 *
@@ -38,7 +42,7 @@
 		 */
 		public static function getTable()
 		{
-			return \b2db\Core::getTable('TBGUserStateTable');
+			return Core::getTable('TBGUserStateTable');
 		}
 		
 		public function __construct()

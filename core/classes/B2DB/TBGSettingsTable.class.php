@@ -1,5 +1,9 @@
 <?php
 
+	use b2db\Core,
+		b2db\Criteria,
+		b2db\Criterion;
+
 	/**
 	 * Settings table
 	 *
@@ -35,7 +39,7 @@
 		 */
 		public static function getTable()
 		{
-			return \b2db\Core::getTable('TBGSettingsTable');
+			return Core::getTable('TBGSettingsTable');
 		}
 		
 		public function __construct()
@@ -76,15 +80,15 @@
 			$crit->addWhere(self::SCOPE, $scope);
 			$res = $this->doSelectOne($crit);
 
-			if ($res instanceof B2DBRow)
+			if ($res instanceof \b2db\Row)
 			{
 				$theID = $res->get(self::ID);
-				$crit2 = new B2DBCriteria();
+				$crit2 = new Criteria();
 				$crit2->addWhere(self::NAME, $name);
 				$crit2->addWhere(self::MODULE, $module);
 				$crit2->addWhere(self::UID, $uid);
 				$crit2->addWhere(self::SCOPE, $scope);
-				$crit2->addWhere(self::ID, $theID, B2DBCriteria::DB_NOT_EQUALS);
+				$crit2->addWhere(self::ID, $theID, Criteria::DB_NOT_EQUALS);
 				$res2 = $this->doDelete($crit2);
 				
 				$crit = $this->getCriteria();

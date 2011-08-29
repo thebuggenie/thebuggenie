@@ -102,8 +102,8 @@
 					\b2db\Core::getTable('TBGVCSIntegrationIssueLinksTable')->create();
 					
 					// Migrate data from old table to new tables
-					$crit = new B2DBCriteria();
-					$crit->addOrderBy(TBGVCSIntegrationTable::DATE, B2DBCriteria::SORT_DESC);
+					$crit = new \b2db\Criteria();
+					$crit->addOrderBy(TBGVCSIntegrationTable::DATE, \b2db\Criteria::SORT_DESC);
 					$results = TBGVCSIntegrationTable::getTable()->doSelect($crit);
 					
 					if (is_object($results) && $results->getNumberOfRows() > 0)
@@ -463,7 +463,7 @@
 				$email = $matches[0];
 
 				// a)
-				$crit = new B2DBCriteria();
+				$crit = new \b2db\Criteria();
 				$crit->setFromTable(TBGUsersTable::getTable());
 				$crit->addSelectionColumn(TBGUsersTable::ID);
 				$crit->addWhere(TBGUsersTable::EMAIL, $email);
@@ -485,7 +485,7 @@
 			
 			if ($uid == 0)
 			{
-				$crit = new B2DBCriteria();
+				$crit = new \b2db\Criteria();
 				$crit->setFromTable(TBGUsersTable::getTable());
 				$crit->addSelectionColumn(TBGUsersTable::ID);
 				$crit->addWhere(TBGUsersTable::REALNAME, $author);
@@ -501,7 +501,7 @@
 			
 			if ($uid == 0)
 			{
-				$crit = new B2DBCriteria();
+				$crit = new \b2db\Criteria();
 				$crit->setFromTable(TBGUsersTable::getTable());
 				$crit->addSelectionColumn(TBGUsersTable::ID);
 				$crit->addWhere(TBGUsersTable::BUDDYNAME, $author);
@@ -517,7 +517,7 @@
 			
 			if ($uid == 0)
 			{
-				$crit = new B2DBCriteria();
+				$crit = new \b2db\Criteria();
 				$crit->setFromTable(TBGUsersTable::getTable());
 				$crit->addSelectionColumn(TBGUsersTable::ID);
 				$crit->addWhere(TBGUsersTable::UNAME, $author);

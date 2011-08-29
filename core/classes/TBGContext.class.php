@@ -976,7 +976,7 @@
 		 */
 		public static function getAllPermissions($type, $uid, $tid, $gid, $target_id = null, $all = false)
 		{
-			$crit = new B2DBCriteria();
+			$crit = new \b2db\Criteria();
 			$crit->addWhere(TBGPermissionsTable::SCOPE, self::getScope()->getID());
 			$crit->addWhere(TBGPermissionsTable::PERMISSION_TYPE, $type);
 
@@ -1584,7 +1584,7 @@
 				if (!self::isUpgrademode() && !self::isInstallmode())
 					$row = TBGScopesTable::getTable()->getByHostnameOrDefault($hostname);
 				
-				if (!$row instanceof B2DBRow)
+				if (!$row instanceof \b2db\Row)
 				{
 					TBGLogging::log("It couldn't", 'main', TBGLogging::LEVEL_WARNING);
 					if (!self::isInstallmode())

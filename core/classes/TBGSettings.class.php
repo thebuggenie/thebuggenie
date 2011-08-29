@@ -287,7 +287,7 @@
 			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
 			$uid = ($uid === null) ? TBGContext::getUser()->getID() : $uid;
 
-			$crit = new B2DBCriteria();
+			$crit = new \b2db\Criteria();
 			$crit->addWhere(TBGSettingsTable::NAME, $name);
 			$crit->addWhere(TBGSettingsTable::MODULE, $module);
 			$crit->addWhere(TBGSettingsTable::SCOPE, $scope);
@@ -299,7 +299,7 @@
 	
 		private static function _loadSetting($name, $module = 'core', $scope = 0)
 		{
-			$crit = new B2DBCriteria();
+			$crit = new \b2db\Criteria();
 			$crit->addWhere(TBGSettingsTable::NAME, $name);
 			$crit->addWhere(TBGSettingsTable::MODULE, $module);
 			if ($scope == 0)

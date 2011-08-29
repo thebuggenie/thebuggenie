@@ -69,7 +69,7 @@
 			if ($request->hasParameter('saved_search'))
 			{
 				$savedsearch = \b2db\Core::getTable('TBGSavedSearchesTable')->doSelectById($request->getParameter('saved_search'));
-				if ($savedsearch instanceof B2DBRow && TBGContext::getUser()->canAccessSavedSearch($savedsearch))
+				if ($savedsearch instanceof \b2db\Row && TBGContext::getUser()->canAccessSavedSearch($savedsearch))
 				{
 					$this->issavedsearch = true;
 					$this->savedsearch = $savedsearch;

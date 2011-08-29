@@ -149,7 +149,7 @@
 		/**
 		 * Class constructor
 		 */
-		final public function _construct(B2DBRow $row, $foreign_key = null)
+		final public function _construct(\b2db\Row $row, $foreign_key = null)
 		{
 			if ($this->_version != $row->get(TBGModulesTable::VERSION))
 			{
@@ -214,7 +214,7 @@
 
 		public function enable()
 		{
-			$crit = new B2DBCriteria();
+			$crit = new \b2db\Criteria();
 			$crit->addUpdate(TBGModulesTable::ENABLED, 1);
 			\b2db\Core::getTable('TBGModulesTable')->doUpdateById($crit, $this->getID());
 			$this->_enabled = true;
@@ -421,7 +421,7 @@
 		public static function getAllModulePermissions($module, $uid, $tid, $gid)
 		{
 	
-			$crit = new B2DBCriteria();
+			$crit = new \b2db\Criteria();
 			$crit->addWhere(TBGModulePermissionsTable::MODULE_NAME, $module);
 			//$sql = "select b2mp.allowed from tbg_2_modulepermissions b2mp where b2mp.module_name = '$module'";
 			switch (true)

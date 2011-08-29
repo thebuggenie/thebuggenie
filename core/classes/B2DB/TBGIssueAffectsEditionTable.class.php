@@ -1,5 +1,9 @@
 <?php
 
+	use b2db\Core,
+		b2db\Criteria,
+		b2db\Criterion;
+
 	/**
 	 * Issue affects edition table
 	 *
@@ -35,14 +39,14 @@
 		 */
 		public static function getTable()
 		{
-			return \b2db\Core::getTable('TBGIssueAffectsEditionTable');
+			return Core::getTable('TBGIssueAffectsEditionTable');
 		}
 		
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
 			parent::_addBoolean(self::CONFIRMED);
-			parent::_addForeignKeyColumn(self::EDITION, \b2db\Core::getTable('TBGEditionsTable'), TBGEditionsTable::ID);
+			parent::_addForeignKeyColumn(self::EDITION, Core::getTable('TBGEditionsTable'), TBGEditionsTable::ID);
 			parent::_addForeignKeyColumn(self::ISSUE, TBGIssuesTable::getTable(), TBGIssuesTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 			parent::_addForeignKeyColumn(self::STATUS, TBGListTypesTable::getTable(), TBGListTypesTable::ID);

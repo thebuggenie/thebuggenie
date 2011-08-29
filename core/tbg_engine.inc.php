@@ -499,7 +499,7 @@ echo "
 			TBGLogging::log('Adding B2DB classes to autoload path');
 			define ('B2DB_BASEPATH', THEBUGGENIE_CORE_PATH . 'B2DB' . DS);
 			define ('B2DB_CACHEPATH', THEBUGGENIE_CORE_PATH . 'cache' . DS . 'B2DB' . DS);
-			TBGContext::addAutoloaderClassPath(THEBUGGENIE_CORE_PATH . 'B2DB' . DS . 'classes' . DS);
+//			TBGContext::addAutoloaderClassPath(THEBUGGENIE_CORE_PATH . 'B2DB' . DS . 'classes' . DS);
 			TBGLogging::log('...done (Adding B2DB classes to autoload path)');
 
 			TBGLogging::log('Initializing B2DB');

@@ -31,7 +31,7 @@
 		/**
 		 * PDO statement
 		 *
-		 * @var PDOStatement
+		 * @var \PDOStatement
 		 */
 		public $statement;
 
@@ -93,7 +93,7 @@
 			try
 			{
 				$values = ($this->getCriteria() instanceof Criteria) ? $this->getCriteria()->getValues() : array();
-				TBGLogging::log('executing PDO query (' . Core::getSQLCount() . ')', 'B2DB');
+				\TBGLogging::log('executing PDO query (' . Core::getSQLCount() . ') - ' . (($this->getCriteria() instanceof Criteria) ? $this->getCriteria()->action : 'unknown'), 'B2DB');
 
 				$time = explode(' ', microtime());
 				$pretime = $time[1] + $time[0];
@@ -112,7 +112,7 @@
 				}
 				if (Core::isDebugMode())
 				{
-					TBGLogging::log('done', 'B2DB');
+					\TBGLogging::log('done', 'B2DB');
 				}
 				if ($this->getCriteria() instanceof Criteria && $this->getCriteria()->action == 'insert')
 				{
@@ -122,9 +122,9 @@
 					}
 					elseif (Core::getDBtype() == 'pgsql')
 					{
-						TBGLogging::log('sequence: ' . Core::getTablePrefix() . $this->getCriteria()->getTable()->getB2DBName() . '_id_seq', 'b2db');
+						\TBGLogging::log('sequence: ' . Core::getTablePrefix() . $this->getCriteria()->getTable()->getB2DBName() . '_id_seq', 'b2db');
 						$this->insert_id = Core::getDBLink()->lastInsertId(Core::getTablePrefix() . $this->getCriteria()->getTable()->getB2DBName() . '_id_seq');
-						TBGLogging::log('id is: ' . $this->insert_id, 'b2db');
+						\TBGLogging::log('id is: ' . $this->insert_id, 'b2db');
 					}
 				}
 				$action = ($this->getCriteria() instanceof Criteria) ? $this->getCriteria()->action : '';
@@ -185,7 +185,7 @@
 		{
 			try
 			{
-				if ($this->values = $this->statement->fetch(PDO::FETCH_ASSOC))
+				if ($this->values = $this->statement->fetch(\PDO::FETCH_ASSOC))
 				{
 					return $this->values;
 				}
@@ -194,7 +194,7 @@
 					return false;
 				}
 			}
-			catch (PDOException $e)
+			catch (\PDOException $e)
 			{
 				throw new Exception('An error occured while trying to fetch the result: "' . $e->getMessage() . '"');
 			}
@@ -207,7 +207,7 @@
 		{
 			try
 			{
-				if (!Core::getDBLink() instanceof PDO)
+				if (!Core::getDBLink() instanceof \PDO)
 				{
 					throw new Exception('Connection not up, can\'t prepare the statement');
 				}
@@ -239,10 +239,6 @@
 				$str .= $this->crit->getSQL();
 				foreach ($this->crit->getValues() as $val)
 				{
-					if (is_object($val))
-					{
-						throw new Exception('waat');
-					}
 					if (is_int($val))
 					{
 						$val = $val;

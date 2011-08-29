@@ -235,12 +235,6 @@
 					}
 					
 					\b2db\Core::initialize(THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php');
-					$engine_path = \b2db\Core::getEngineClassPath();
-					if ($engine_path !== null)
-						TBGContext::addAutoloaderClassPath($engine_path);
-					else
-						throw new Exception("Cannot initialize the B2DB engine");
-
 					\b2db\Core::doConnect();
 					
 					if (\b2db\Core::getDBname() == '')

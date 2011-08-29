@@ -645,9 +645,9 @@
 		/**
 		 * Class constructor
 		 *
-		 * @param B2DBRow $row
+		 * @param \b2db\Row $row
 		 */
-		public function _construct(B2DBRow $row, $foreign_key = null)
+		public function _construct(\b2db\Row $row, $foreign_key = null)
 		{
 			TBGLogging::log("User with id {$this->getID()} set up successfully");
 		}
@@ -964,7 +964,7 @@
 					return true;
 				}
 				TBGLogging::log('Logged in and unstarred, continuing');
-				$crit = new B2DBCriteria();
+				$crit = new \b2db\Criteria();
 				$crit->addInsert(TBGUserIssuesTable::ISSUE, $issue_id);
 				$crit->addInsert(TBGUserIssuesTable::UID, $this->_id);
 				$crit->addInsert(TBGUserIssuesTable::SCOPE, TBGContext::getScope()->getID());
@@ -990,7 +990,7 @@
 		 */
 		public function removeStarredIssue($issue_id)
 		{
-			$crit = new B2DBCriteria();
+			$crit = new \b2db\Criteria();
 			$crit->addWhere(TBGUserIssuesTable::ISSUE, $issue_id);
 			$crit->addWhere(TBGUserIssuesTable::UID, $this->_id);
 				

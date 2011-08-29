@@ -2187,7 +2187,7 @@
 		public function runGetFile(TBGRequest $request)
 		{
 			$file = TBGFilesTable::getTable()->doSelectById((int) $request->getParameter('id'));
-			if ($file instanceof B2DBRow)
+			if ($file instanceof \b2db\Row)
 			{
 				$this->getResponse()->cleanBuffer();
 				$this->getResponse()->clearHeaders();

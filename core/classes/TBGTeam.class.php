@@ -147,8 +147,8 @@
 		
 		public static function findTeams($details)
 		{
-			$crit = new B2DBCriteria();
-			$crit->addWhere(TBGTeamsTable::NAME, "%$details%", B2DBCriteria::DB_LIKE);
+			$crit = new \b2db\Criteria();
+			$crit->addWhere(TBGTeamsTable::NAME, "%$details%", \b2db\Criteria::DB_LIKE);
 			$teams = array();
 			if ($res = \b2db\Core::getTable('TBGTeamsTable')->doSelect($crit))
 			{

@@ -1,5 +1,9 @@
 <?php
 
+	use b2db\Core,
+		b2db\Criteria,
+		b2db\Criterion;
+
 	/**
 	 * Workflow transition validation rules table
 	 *
@@ -36,7 +40,7 @@
 		 */
 		public static function getTable()
 		{
-			return \b2db\Core::getTable('TBGWorkflowTransitionValidationRulesTable');
+			return Core::getTable('TBGWorkflowTransitionValidationRulesTable');
 		}
 
 		public function __construct()

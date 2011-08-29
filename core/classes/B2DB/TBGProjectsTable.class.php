@@ -1,5 +1,9 @@
 <?php
 
+	use b2db\Core,
+		b2db\Criteria,
+		b2db\Criterion;
+
 	/**
 	 * Projects table
 	 *
@@ -140,7 +144,7 @@
 		public function getAll()
 		{
 			$crit = $this->getCriteria();
-			$crit->addOrderBy(self::NAME, B2DBCriteria::SORT_ASC);
+			$crit->addOrderBy(self::NAME, Criteria::SORT_ASC);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$res = $this->doSelect($crit);
 			return $res;
@@ -149,8 +153,8 @@
 		public function getAllSortedByIsDefault()
 		{
 			$crit = $this->getCriteria();
-			$crit->addOrderBy(self::IS_DEFAULT, B2DBCriteria::SORT_DESC);
-			$crit->addOrderBy(self::ID, B2DBCriteria::SORT_DESC);
+			$crit->addOrderBy(self::IS_DEFAULT, Criteria::SORT_DESC);
+			$crit->addOrderBy(self::ID, Criteria::SORT_DESC);
 			$crit->addWhere(self::LOCKED, false);
 			$res = $this->doSelect($crit);
 			return $res;
@@ -187,7 +191,7 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addWhere(self::KEY, $key);
-			$crit->addWhere(self::KEY, '', B2DBCriteria::DB_NOT_EQUALS);
+			$crit->addWhere(self::KEY, '', Criteria::DB_NOT_EQUALS);
 			$row = $this->doSelectOne($crit, false);
 			return $row;
 		}

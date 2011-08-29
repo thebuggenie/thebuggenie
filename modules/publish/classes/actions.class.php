@@ -35,7 +35,7 @@
 					$key = mb_strtolower($namespace);
 					$row = TBGProjectsTable::getTable()->getByKey($key);
 					
-					if ($row instanceof B2DBRow)
+					if ($row instanceof \b2db\Row)
 					{
 						$project = TBGContext::factory()->TBGProject($row->get(TBGProjectsTable::ID), $row);
 						

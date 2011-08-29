@@ -686,7 +686,7 @@
 			{
 				if ($a_crit instanceof Criterion)
 				{
-					throw new Exception('Please use B2DBCriteria::addInsert() when inserting values into a table.');
+					throw new Exception('Please use \b2db\Criteria::addInsert() when inserting values into a table.');
 				}
 			}
 			if (!$this->fromtable instanceof Table)

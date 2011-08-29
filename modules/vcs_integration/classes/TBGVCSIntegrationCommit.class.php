@@ -1,4 +1,10 @@
 <?php
+
+	use b2db\Core,
+		b2db\Criteria,
+		b2db\Criterion,
+		b2db\Resultset;
+
 	/**
 	 * Commit class, vcs_integration
 	 *
@@ -237,7 +243,7 @@
 				$this->_files = array();
 				$res = TBGVCSIntegrationFilesTable::getTable()->getByCommitID($this->_id);
 				
-				if ($res instanceof B2DBResultset)
+				if ($res instanceof Resultset)
 				{
 					foreach ($res->getAllRows() as $row)
 					{
@@ -254,7 +260,7 @@
 				$this->_issues = array();
 				$res = TBGVCSIntegrationIssueLinksTable::getTable()->getByCommitID($this->_id);
 				
-				if ($res instanceof B2DBResultset)
+				if ($res instanceof Resultset)
 				{
 					foreach ($res->getAllRows() as $row)
 					{

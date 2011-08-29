@@ -179,7 +179,7 @@
 			return $sprints;
 		}
 
-		protected function _construct(B2DBRow $row, $foreign_key = null)
+		protected function _construct(\b2db\Row $row, $foreign_key = null)
 		{
 			$this->_reached = ($this->_reacheddate > 0);
 		}

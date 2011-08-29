@@ -172,28 +172,13 @@
 		}
 		
 		/**
-		 * Creates a client
-		 *
-		 * @param unknown_type $groupname
-		 * @return TBGClient
-		 */
-		public static function createNew($clientname)
-		{
-			$crit = new B2DBCriteria();
-			$crit->addInsert(TBGClientsTable::NAME, $clientname);
-			$crit->addInsert(TBGClientsTable::SCOPE, TBGContext::getScope()->getID());
-			$res = \b2db\Core::getTable('TBGClientsTable')->doInsert($crit);
-			return TBGContext::factory()->TBGClient($res->getInsertID());
-		}
-		
-		/**
 		 * Adds a user to the client
 		 *
 		 * @param TBGUser $user
 		 */
 		public function addMember(TBGUser $user)
 		{
-			$crit = new B2DBCriteria();
+			$crit = new \b2db\Criteria();
 			$crit->addInsert(TBGClientMembersTable::SCOPE, TBGContext::getScope()->getID());
 			$crit->addInsert(TBGClientMembersTable::CID, $this->_id);
 			$crit->addInsert(TBGClientMembersTable::UID, $user->getID());
@@ -226,7 +211,7 @@
 		 */
 		public function removeMember($uid)
 		{
-			$crit = new B2DBCriteria();
+			$crit = new \b2db\Criteria();
 			$crit->addWhere(TBGClientMembersTable::UID, $uid);
 			$crit->addWhere(TBGClientMembersTable::CID, $this->_id);
 			\b2db\Core::getTable('TBGClientMembersTable')->doDelete($crit);
@@ -241,8 +226,8 @@
 		
 		public static function findClients($details)
 		{
-			$crit = new B2DBCriteria();
-			$crit->addWhere(TBGClientsTable::NAME, "%$details%", B2DBCriteria::DB_LIKE);
+			$crit = new \b2db\Criteria();
+			$crit->addWhere(TBGClientsTable::NAME, "%$details%", \b2db\Criteria::DB_LIKE);
 			$clients = array();
 			if ($res = \b2db\Core::getTable('TBGClientsTable')->doSelect($crit))
 			{

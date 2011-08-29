@@ -107,9 +107,9 @@
 			return $this->$property;
 		}
 		
-		protected function _populatePropertiesFromB2DBRow(B2DBRow $row, $traverse = true, $foreign_key = null)
+		protected function _populatePropertiesFromRow(\b2db\Row $row, $traverse = true, $foreign_key = null)
 		{
-			TBGLogging::log('Populating ' . get_class($this) . ' with id ' . $this->_id, 'B2DB');
+			\TBGLogging::log('Populating ' . get_class($this) . ' with id ' . $this->_id, 'B2DB');
 			$id_column = $this->getB2DBTable()->getIdColumn();
 			foreach ($this->getB2DBTable()->getColumns() as $column)
 			{
@@ -144,7 +144,7 @@
 				{
 					case 'class':
 						$value = (int) $row->get($column['name']);
-						TBGLogging::log('Populating foreign object of type ' . $type_name . ' with value ' . $value . ' for property ' . $property_name, 'B2DB');
+						\TBGLogging::log('Populating foreign object of type ' . $type_name . ' with value ' . $value . ' for property ' . $property_name, 'B2DB');
 						//if (!$row->get($column))
 						$this->$property_name = new $type_name($value, $row, false, $column['name']);
 						break;
@@ -165,12 +165,12 @@
 						$this->$property_name = $row->get($column['name'], $foreign_key);
 				}
 			}
-			TBGLogging::log('Done populating ' . get_class($this) . ' with id ' . $this->_id, 'B2DB');
+			\TBGLogging::log('Done populating ' . get_class($this) . ' with id ' . $this->_id, 'B2DB');
 		}
 		
 		protected function _preInitialize() {}
 		
-		protected function _construct(B2DBRow $row, $foreign_key = null) {}
+		protected function _construct(\b2db\Row $row, $foreign_key = null) {}
 
 		protected function _clone() {}
 		
@@ -229,7 +229,7 @@
 				{
 					$this->_preInitialize();
 					$this->_id = $id;
-					$this->_populatePropertiesFromB2DBRow($row, $traverse, $foreign_key);
+					$this->_populatePropertiesFromRow($row, $traverse, $foreign_key);
 					$this->_construct($row, $foreign_key);
 				}
 				catch (\Exception $e)

@@ -1,5 +1,9 @@
 <?php
 
+	use b2db\Core,
+		b2db\Criteria,
+		b2db\Criterion;
+
 	/**
 	 * Milestones table
 	 *
@@ -60,7 +64,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::PROJECT, $project_id);
-			$crit->addOrderBy(self::SCHEDULED, B2DBCriteria::SORT_ASC);
+			$crit->addOrderBy(self::SCHEDULED, Criteria::SORT_ASC);
 			$res = $this->doSelect($crit);
 			return $res;
 		}
@@ -70,7 +74,7 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::PROJECT, $project_id);
 			$crit->addWhere(self::MILESTONE_TYPE, TBGMilestone::TYPE_REGULAR);
-			$crit->addOrderBy(self::SCHEDULED, B2DBCriteria::SORT_ASC);
+			$crit->addOrderBy(self::SCHEDULED, Criteria::SORT_ASC);
 			$res = $this->doSelect($crit);
 			return $res;
 		}
@@ -80,7 +84,7 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::PROJECT, $project_id);
 			$crit->addWhere(self::MILESTONE_TYPE, TBGMilestone::TYPE_SCRUMSPRINT);
-			$crit->addOrderBy(self::SCHEDULED, B2DBCriteria::SORT_ASC);
+			$crit->addOrderBy(self::SCHEDULED, Criteria::SORT_ASC);
 			$res = $this->doSelect($crit);
 			return $res;
 		}

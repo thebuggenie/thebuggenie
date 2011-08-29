@@ -1,5 +1,9 @@
 <?php
 
+	use b2db\Core,
+		b2db\Criteria,
+		b2db\Criterion;
+
 	class TBGArticlesTable extends TBGB2DBTable 
 	{
 
@@ -20,7 +24,7 @@
 		 */
 		public static function getTable()
 		{
-			return \b2db\Core::getTable('TBGArticlesTable');
+			return Core::getTable('TBGArticlesTable');
 		}
 
 		public function __construct()
@@ -52,6 +56,41 @@
 				}
 			}
 
+			return $articles;
+		}
+		
+		public function getArticles($num_articles = 5, $news = false, $published = true)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$crit->addWhere(self::NAME, 'Category:%', Criteria::DB_NOT_LIKE);
+			
+			$crit->addOrderBy(self::DATE, 'desc');
+			
+			if ($published) $crit->addWhere(self::IS_PUBLISHED, 1);
+	
+			$articles = array();
+			
+			if ($res = self::getTable()->doSelect($crit))
+			{
+				while (($row = $res->getNextRow()) && (count($articles) < $num_articles))
+				{
+					try
+					{
+						$article = PublishFactory::article($row->get(self::ID), $row);
+					}
+					catch (Exception $e) 
+					{
+						continue;
+					}
+					
+					if ($article->hasAccess())
+					{
+						$articles[] = $article;
+					}
+				}
+			}
+	
 			return $articles;
 		}
 
@@ -111,7 +150,7 @@
 
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::NAME, $name);
-			$crit->addWhere(self::ID, $id, B2DBCriteria::DB_NOT_EQUALS);
+			$crit->addWhere(self::ID, $id, Criteria::DB_NOT_EQUALS);
 			$crit->addWhere(self::SCOPE, $scope);
 
 			return (bool) ($res = $this->doSelect($crit));
@@ -122,17 +161,17 @@
 			$crit = $this->getCriteria();
 			if ($project instanceof TBGProject)
 			{
-				$ctn = $crit->returnCriterion(self::NAME, "%{$name}%", B2DBCriteria::DB_LIKE);
-				$ctn->addWhere(self::NAME, "category:" . $project->getKey() . "%", B2DBCriteria::DB_LIKE);
+				$ctn = $crit->returnCriterion(self::NAME, "%{$name}%", Criteria::DB_LIKE);
+				$ctn->addWhere(self::NAME, "category:" . $project->getKey() . "%", Criteria::DB_LIKE);
 				$crit->addWhere($ctn);
 				
-				$ctn = $crit->returnCriterion(self::NAME, "%{$name}%", B2DBCriteria::DB_LIKE);
-				$ctn->addWhere(self::NAME, $project->getKey() . "%", B2DBCriteria::DB_LIKE);
+				$ctn = $crit->returnCriterion(self::NAME, "%{$name}%", Criteria::DB_LIKE);
+				$ctn->addWhere(self::NAME, $project->getKey() . "%", Criteria::DB_LIKE);
 				$crit->addOr($ctn);
 			}
 			else
 			{
-				$crit->addWhere(self::NAME, "%{$name}%", B2DBCriteria::DB_LIKE);
+				$crit->addWhere(self::NAME, "%{$name}%", Criteria::DB_LIKE);
 			}
 			
 			$resultcount = $this->doCount($crit);

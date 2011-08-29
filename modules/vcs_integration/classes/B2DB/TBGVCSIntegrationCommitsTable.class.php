@@ -1,4 +1,9 @@
 <?php
+
+	use b2db\Core,
+		b2db\Criteria,
+		b2db\Criterion;
+	
 	/**
 	 * B2DB Table, vcs_integration -> VCSIntegrationCommitsTable
 	 *
@@ -50,7 +55,7 @@
 		 */
 		public static function getTable()
 		{
-			return \b2db\Core::getTable('TBGVCSIntegrationCommitsTable');
+			return Core::getTable('TBGVCSIntegrationCommitsTable');
 		}
 		
 		/**
@@ -61,11 +66,11 @@
 		 */
 		public function getCommitsByProject($id, $limit = 40, $offset = null)
 		{
-			$crit = new B2DBCriteria();
+			$crit = new Criteria();
 			
 			$crit->addWhere(self::PROJECT_ID, $id);
 			$crit->addWhere(self::DATE, strtotime($limit), $crit::DB_GREATER_THAN_EQUAL);
-			$crit->addOrderBy(self::DATE, B2DBCriteria::SORT_DESC);
+			$crit->addOrderBy(self::DATE, Criteria::SORT_DESC);
 		
 			if ($limit !== null)
 			{
