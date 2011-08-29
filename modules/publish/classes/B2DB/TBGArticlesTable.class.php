@@ -20,7 +20,7 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGArticlesTable');
+			return \b2db\Core::getTable('TBGArticlesTable');
 		}
 
 		public function __construct()

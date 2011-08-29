@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage mvc
 	 */
-	class TBGB2DBTable extends B2DBTable
+	class TBGB2DBTable extends \b2db\Table
 	{
 		
 		/**

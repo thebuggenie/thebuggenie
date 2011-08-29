@@ -278,7 +278,7 @@
 			if (self::$_users === null)
 			{
 				self::$_users = array();
-				if ($res = B2DB::getTable('TBGUsersTable')->getAll())
+				if ($res = \b2db\Core::getTable('TBGUsersTable')->getAll())
 				{
 					while ($row = $res->getNextRow())
 					{
@@ -911,7 +911,7 @@
 			if ($this->_starredissues === null)
 			{
 				$this->_starredissues = array();
-				if ($res = B2DB::getTable('TBGUserIssuesTable')->getUserStarredIssues($this->getID()))
+				if ($res = \b2db\Core::getTable('TBGUserIssuesTable')->getUserStarredIssues($this->getID()))
 				{
 					while ($row = $res->getNextRow())
 					{
@@ -969,7 +969,7 @@
 				$crit->addInsert(TBGUserIssuesTable::UID, $this->_id);
 				$crit->addInsert(TBGUserIssuesTable::SCOPE, TBGContext::getScope()->getID());
 				
-				B2DB::getTable('TBGUserIssuesTable')->doInsert($crit);
+				\b2db\Core::getTable('TBGUserIssuesTable')->doInsert($crit);
 				$issue = TBGContext::factory()->TBGIssue($issue_id);
 				$this->_starredissues[$issue->getID()] = $issue;
 				ksort($this->_starredissues);
@@ -994,7 +994,7 @@
 			$crit->addWhere(TBGUserIssuesTable::ISSUE, $issue_id);
 			$crit->addWhere(TBGUserIssuesTable::UID, $this->_id);
 				
-			B2DB::getTable('TBGUserIssuesTable')->doDelete($crit);
+			\b2db\Core::getTable('TBGUserIssuesTable')->doDelete($crit);
 			unset($this->_starredissues[$issue_id]);
 			return true;
 		}
@@ -1243,7 +1243,7 @@
 		 */
 		public function clearTeams()
 		{
-			B2DB::getTable('TBGTeamMembersTable')->clearTeamsByUserID($this->getID());
+			\b2db\Core::getTable('TBGTeamMembersTable')->clearTeamsByUserID($this->getID());
 		}
 		
 		/**
@@ -1251,7 +1251,7 @@
 		 */
 		public function clearClients()
 		{
-			B2DB::getTable('TBGClientMembersTable')->clearClientsByUserID($this->getID());
+			\b2db\Core::getTable('TBGClientMembersTable')->clearClientsByUserID($this->getID());
 		}
 		
 		/**
@@ -1980,18 +1980,18 @@
 			{
 				$this->_associated_projects = array();
 				
-				$projects = B2DB::getTable('TBGProjectAssigneesTable')->getProjectsByUserID($this->getID());
-				$edition_projects = B2DB::getTable('TBGEditionAssigneesTable')->getProjectsByUserID($this->getID());
-				$component_projects = B2DB::getTable('TBGComponentAssigneesTable')->getProjectsByUserID($this->getID());
-				$lo_projects = B2DB::getTable('TBGProjectsTable')->getByUserID($this->getID());
+				$projects = \b2db\Core::getTable('TBGProjectAssigneesTable')->getProjectsByUserID($this->getID());
+				$edition_projects = \b2db\Core::getTable('TBGEditionAssigneesTable')->getProjectsByUserID($this->getID());
+				$component_projects = \b2db\Core::getTable('TBGComponentAssigneesTable')->getProjectsByUserID($this->getID());
+				$lo_projects = \b2db\Core::getTable('TBGProjectsTable')->getByUserID($this->getID());
 
 				$project_ids = array_merge(array_keys($projects), array_keys($edition_projects), array_keys($component_projects), array_keys($lo_projects));
 
 				foreach ($this->getTeams() as $team)
 				{
-					$projects_team = B2DB::getTable('TBGProjectAssigneesTable')->getProjectsByTeamID($team->getID());
-					$edition_projects_team = B2DB::getTable('TBGEditionAssigneesTable')->getProjectsByTeamID($team->getID());
-					$component_projects_team = B2DB::getTable('TBGComponentAssigneesTable')->getProjectsByTeamID($team->getID());
+					$projects_team = \b2db\Core::getTable('TBGProjectAssigneesTable')->getProjectsByTeamID($team->getID());
+					$edition_projects_team = \b2db\Core::getTable('TBGEditionAssigneesTable')->getProjectsByTeamID($team->getID());
+					$component_projects_team = \b2db\Core::getTable('TBGComponentAssigneesTable')->getProjectsByTeamID($team->getID());
 					$project_ids = array_merge(array_keys($projects_team), array_keys($edition_projects_team), array_keys($component_projects_team), $project_ids);	
 				}
 				
@@ -2040,7 +2040,7 @@
 		public function getIssues($number = null)
 		{
 			$retval = array();
-			if ($res = B2DB::getTable('TBGIssuesTable')->getIssuesPostedByUser($this->getID(), $number))
+			if ($res = \b2db\Core::getTable('TBGIssuesTable')->getIssuesPostedByUser($this->getID(), $number))
 			{
 				while ($row = $res->getNextRow())
 				{

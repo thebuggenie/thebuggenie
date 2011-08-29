@@ -42,7 +42,7 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGVCSIntegrationFilesTable');
+			return \b2db\Core::getTable('TBGVCSIntegrationFilesTable');
 		}
 		
 		/**

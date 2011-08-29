@@ -34,7 +34,7 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGWorkflowIssuetypeTable');
+			return \b2db\Core::getTable('TBGWorkflowIssuetypeTable');
 		}
 
 		public function __construct()

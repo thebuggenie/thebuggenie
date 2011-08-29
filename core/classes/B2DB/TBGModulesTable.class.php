@@ -36,7 +36,7 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGModulesTable');
+			return \b2db\Core::getTable('TBGModulesTable');
 		}
 
 		public function __construct()

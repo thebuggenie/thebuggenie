@@ -33,7 +33,7 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGBuddiesTable');
+			return \b2db\Core::getTable('TBGBuddiesTable');
 		}
 
 		public function __construct()

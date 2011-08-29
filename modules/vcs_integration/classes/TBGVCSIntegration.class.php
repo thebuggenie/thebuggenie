@@ -84,7 +84,7 @@
 				
 				try
 				{
-					B2DB::getTable('TBGVCSIntegrationTable')->drop();
+					\b2db\Core::getTable('TBGVCSIntegrationTable')->drop();
 				}
 				catch (Exception $e) { }
 			}
@@ -97,9 +97,9 @@
 			{
 				case "1.0":
 					// Upgrade tables
-					B2DB::getTable('TBGVCSIntegrationCommitsTable')->create();
-					B2DB::getTable('TBGVCSIntegrationFilesTable')->create();
-					B2DB::getTable('TBGVCSIntegrationIssueLinksTable')->create();
+					\b2db\Core::getTable('TBGVCSIntegrationCommitsTable')->create();
+					\b2db\Core::getTable('TBGVCSIntegrationFilesTable')->create();
+					\b2db\Core::getTable('TBGVCSIntegrationIssueLinksTable')->create();
 					
 					// Migrate data from old table to new tables
 					$crit = new B2DBCriteria();

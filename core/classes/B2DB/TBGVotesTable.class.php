@@ -34,7 +34,7 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGVotesTable');
+			return \b2db\Core::getTable('TBGVotesTable');
 		}
 
 		public function __construct()

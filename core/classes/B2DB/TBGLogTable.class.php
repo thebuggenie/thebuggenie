@@ -84,7 +84,7 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGLogTable');
+			return \b2db\Core::getTable('TBGLogTable');
 		}
 		
 		public function __construct()

@@ -50,7 +50,7 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGUsersTable');
+			return \b2db\Core::getTable('TBGUsersTable');
 		}
 		
 		public function getAll($scope = null)
@@ -73,7 +73,7 @@
 			parent::_addVarchar(self::BUDDYNAME, 50);
 			parent::_addVarchar(self::REALNAME, 100);
 			parent::_addVarchar(self::EMAIL, 200);
-			parent::_addForeignKeyColumn(self::USERSTATE, B2DB::getTable('TBGUserStateTable'), TBGUserStateTable::ID);
+			parent::_addForeignKeyColumn(self::USERSTATE, \b2db\Core::getTable('TBGUserStateTable'), TBGUserStateTable::ID);
 			parent::_addBoolean(self::CUSTOMSTATE);
 			parent::_addVarchar(self::HOMEPAGE, 250, '');
 			parent::_addVarchar(self::LANGUAGE, 100, '');

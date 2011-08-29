@@ -2161,7 +2161,7 @@
 						$issue = TBGContext::factory()->TBGIssue($request->getParameter('issue_id'));
 						if ($issue->canRemoveAttachments() && (int) $request->getParameter('file_id', 0))
 						{
-							B2DB::getTable('TBGIssueFilesTable')->removeByIssueIDAndFileID($issue->getID(), (int) $request->getParameter('file_id'));
+							\b2db\Core::getTable('TBGIssueFilesTable')->removeByIssueIDAndFileID($issue->getID(), (int) $request->getParameter('file_id'));
 							return $this->renderJSON(array('failed' => false, 'file_id' => $request->getParameter('file_id'), 'attachmentcount' => (count($issue->getFiles()) + count($issue->getLinks())), 'message' => TBGContext::getI18n()->__('The attachment has been removed')));
 						}
 						return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You can not remove items from this issue')));

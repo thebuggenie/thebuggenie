@@ -36,7 +36,7 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGCustomFieldsTable');
+			return \b2db\Core::getTable('TBGCustomFieldsTable');
 		}
 
 		public function __construct()

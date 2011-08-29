@@ -1,7 +1,9 @@
 <?php
 
+	namespace b2db;
+	
 	/**
-	 * B2DB Criteria Base class
+	 * Criteria class
 	 *
 	 * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
 	 * @version 2.0
@@ -11,12 +13,12 @@
 	 */
 
 	/**
-	 * B2DB Criteria Base class
+	 * Criteria class
 	 *
 	 * @package b2db
 	 * @subpackage core
 	 */
-	class B2DBCriteria
+	class Criteria
 	{
 		protected $criterias = array();
 		protected $jointables = array();
@@ -33,7 +35,7 @@
 		/**
 		 * Parent table
 		 *
-		 * @var B2DBTable
+		 * @var Table
 		 */
 		protected $fromtable;
 
@@ -90,7 +92,7 @@
 		/**
 		 * Set the "from" table
 		 *
-		 * @param B2DBtable $table The table
+		 * @param \b2db\Table $table The table
 		 * @param boolean $setupjointables [optional] Whether to automatically join other tables
 		 *
 		 * @return Base2DBCriteria
@@ -112,11 +114,11 @@
 		 * @param mixed  $value
 		 * @param string $operator
 		 *
-		 * @return B2DBCriterion
+		 * @return Criterion
 		 */
 		public function returnCriterion($column, $value, $operator = self::DB_EQUALS)
 		{
-			$ret = new B2DBCriterion($column, $value, $operator);
+			$ret = new Criterion($column, $value, $operator);
 
 			return $ret;
 		}
@@ -144,9 +146,9 @@
 		 */
 		public function addSelectionColumn($column, $alias = '', $special = '', $variable = '', $additional = '')
 		{
-			if (!$this->fromtable instanceof B2DBTable)
+			if (!$this->fromtable instanceof Table)
 			{
-				throw new Exception('You must set the from-table before adding selection columns');
+				throw new \Exception('You must set the from-table before adding selection columns');
 			}
 			$this->customsel = true;
 			$column = $this->getSelectionColumn($column);
@@ -157,7 +159,7 @@
 
 		protected function _addSelectionColumn($column, $alias = '', $special = '', $variable = '', $additional = '')
 		{
-			$this->selections[\b2db\Core::getTablePrefix() . $column] = array('column' => $column, 'alias' => $alias, 'special' => $special, 'variable' => $variable, 'additional' => $additional);
+			$this->selections[Core::getTablePrefix() . $column] = array('column' => $column, 'alias' => $alias, 'special' => $special, 'variable' => $variable, 'additional' => $additional);
 		}
 
 		/**
@@ -171,13 +173,13 @@
 		 */
 		public function addOr($column, $value = null, $operator = self::DB_EQUALS)
 		{
-			if ($column instanceof B2DBCriterion)
+			if ($column instanceof Criterion)
 			{
 				$this->ors[] = $column;
 			}
 			else
 			{
-				$this->ors[] = new B2DBCriterion($column, $value, $operator);
+				$this->ors[] = new Criterion($column, $value, $operator);
 			}
 			return $this;
 		}
@@ -194,7 +196,7 @@
 		{
 			if (is_object($value))
 			{
-				throw new B2DBException("Invalid value, can't be an object.");
+				throw new Exception("Invalid value, can't be an object.");
 			}
 			$this->updates[] = array('column' => $column, 'value' => $value);
 			return $this;
@@ -214,13 +216,13 @@
 		 */
 		public function addWhere($column, $value = '', $operator = self::DB_EQUALS, $variable = '', $additional = '', $special = '')
 		{
-			if ($column instanceof B2DBCriterion)
+			if ($column instanceof Criterion)
 			{
 				$this->criterias[] = $column;
 			}
 			else
 			{
-				$this->criterias[] = new B2DBCriterion($column, $value, $operator, $variable, $additional, $special);
+				$this->criterias[] = new Criterion($column, $value, $operator, $variable, $additional, $special);
 			}
 			return $this;
 		}
@@ -244,20 +246,20 @@
 		/**
 		 * Join one table on another
 		 *
-		 * @param B2DBTable $jointable The table to join
+		 * @param Table $jointable The table to join
 		 * @param string $col1 The left matching column
 		 * @param string $col2 The right matching column
 		 * @param array $criterias An array of criteria (ex: array(array(DB_FLD_ISSUE_ID, 1), array(DB_FLD_ISSUE_STATE, 1));
 		 * @param string $jointype Type of join
-		 * @param B2DBTable $ontable If different than the main table, specify the left side of the join here
+		 * @param Table $ontable If different than the main table, specify the left side of the join here
 		 *
 		 * @return Base2DBCriteria
 		 */
 		public function addJoin($jointable, $foreigncol, $tablecol, $criterias = array(), $jointype = self::DB_LEFT_JOIN, $ontable = null)
 		{
-			if (!$jointable instanceof B2DBTable)
+			if (!$jointable instanceof Table)
 			{
-				throw new B2DBException('Cannot join table ' . $jointable . ' since it is not a table');
+				throw new Exception('Cannot join table ' . $jointable . ' since it is not a table');
 			}
 			foreach ($this->jointables as $ajt)
 			{
@@ -267,9 +269,9 @@
 					break;
 				}
 			}
-			if (!$this->fromtable instanceof B2DBTable)
+			if (!$this->fromtable instanceof Table)
 			{
-				throw new B2DBException('Cannot use ' . print_r($this->fromtable) . ' as a table. You need to call setTable() before trying to join a new table');
+				throw new Exception('Cannot use ' . print_r($this->fromtable) . ' as a table. You need to call setTable() before trying to join a new table');
 			}
 			$col1 = $jointable->getB2DBAlias() . '.' . $this->getColumnName($foreigncol);
 			if ($ontable === null)
@@ -356,7 +358,7 @@
 		/**
 		 * Returns the table the criteria applies to
 		 *
-		 * @return B2DBTable
+		 * @return Table
 		 */
 		public function getTable()
 		{
@@ -433,7 +435,7 @@
 			
 			if ($throw_exceptions)
 			{
-				throw new B2DBException("Couldn't find table name '{$table_name}' for column '{$column_name}', column was '{$column}'. If this is a column from a foreign table, make sure the foreign table is joined.");
+				throw new Exception("Couldn't find table name '{$table_name}' for column '{$column_name}', column was '{$column}'. If this is a column from a foreign table, make sure the foreign table is joined.");
 			}
 			else
 			{
@@ -458,7 +460,7 @@
 				}
 				else
 				{
-					throw new B2DBException('Invalid column!');
+					throw new Exception('Invalid column!');
 				}
 			}
 			if (!isset($this->aliases[$column]))
@@ -597,9 +599,9 @@
 		 */
 		public function generateSelectSQL($all = false)
 		{
-			if (!$this->fromtable instanceof B2DBTable)
+			if (!$this->fromtable instanceof Table)
 			{
-				throw new B2DBException('Trying to run a query when no table is being used.');
+				throw new Exception('Trying to run a query when no table is being used.');
 			}
 			$this->values = array();
 			$this->sql = '';
@@ -619,9 +621,9 @@
 		 */
 		public function generateCountSQL()
 		{
-			if (!$this->fromtable instanceof B2DBTable)
+			if (!$this->fromtable instanceof Table)
 			{
-				throw new B2DBException('Trying to run a query when no table is being used.');
+				throw new Exception('Trying to run a query when no table is being used.');
 			}
 			$this->values = array();
 			$this->sql = '';
@@ -642,11 +644,11 @@
 		{
 			if (is_bool($value))
 			{
-				if (\b2db\Core::getDBtype() == 'mysql')
+				if (Core::getDBtype() == 'mysql')
 				{
 					$this->values[] = (int) $value;
 				}
-				elseif (\b2db\Core::getDBtype() == 'pgsql')
+				elseif (Core::getDBtype() == 'pgsql')
 				{
 					$this->values[] = ($value) ? 'true' : 'false';
 				}
@@ -662,9 +664,9 @@
 		 */
 		public function generateUpdateSQL()
 		{
-			if (!$this->fromtable instanceof B2DBTable)
+			if (!$this->fromtable instanceof Table)
 			{
-				throw new B2DBException('Trying to run a query when no table is being used.');
+				throw new Exception('Trying to run a query when no table is being used.');
 			}
 			$this->values = array();
 			$this->sql = '';
@@ -682,14 +684,14 @@
 		{
 			foreach ($this->criterias as $a_crit)
 			{
-				if ($a_crit instanceof B2DBCriterion)
+				if ($a_crit instanceof Criterion)
 				{
-					throw new B2DBException('Please use B2DBCriteria::addInsert() when inserting values into a table.');
+					throw new Exception('Please use B2DBCriteria::addInsert() when inserting values into a table.');
 				}
 			}
-			if (!$this->fromtable instanceof B2DBTable)
+			if (!$this->fromtable instanceof Table)
 			{
-				throw new B2DBException('Trying to run a query when no table is being used.');
+				throw new Exception('Trying to run a query when no table is being used.');
 			}
 			$this->values = array();
 			$this->sql = '';
@@ -704,9 +706,9 @@
 		 */
 		public function generateDeleteSQL()
 		{
-			if (!$this->fromtable instanceof B2DBTable)
+			if (!$this->fromtable instanceof Table)
 			{
-				throw new B2DBException('Trying to run a query when no table is being used.');
+				throw new Exception('Trying to run a query when no table is being used.');
 			}
 			$this->values = array();
 			$this->sql = '';
@@ -725,7 +727,7 @@
 		protected function _generateDeleteSQL()
 		{
 			$sql = 'DELETE FROM ';
-			$sql .= \b2db\Core::getTablePrefix() . $this->fromtable->getB2DBName();
+			$sql .= Core::getTablePrefix() . $this->fromtable->getB2DBName();
 
 			return $sql;
 		}
@@ -738,28 +740,28 @@
 		protected function _generateInsertSQL()
 		{
 			$sql = 'INSERT INTO ';
-			if (\b2db\Core::getDBtype() == 'mysql') $sql .= "`";
-			$sql .= \b2db\Core::getTablePrefix() . $this->fromtable->getB2DBName();
-			if (\b2db\Core::getDBtype() == 'mysql') $sql .= "`";
+			if (Core::getDBtype() == 'mysql') $sql .= "`";
+			$sql .= Core::getTablePrefix() . $this->fromtable->getB2DBName();
+			if (Core::getDBtype() == 'mysql') $sql .= "`";
 			$sql .= ' (';
 			$first_ins = true;
 			foreach ($this->criterias as $a_crit)
 			{
 				$sql .= (!$first_ins) ? ', ' : '';
-				if (\b2db\Core::getDBtype() == 'pgsql')
+				if (Core::getDBtype() == 'pgsql')
 				{
 					$sql .= '"';
 				}
-				elseif (\b2db\Core::getDBtype() == 'mysql')
+				elseif (Core::getDBtype() == 'mysql')
 				{
 					$sql .= '`';
 				}
 				$sql .= mb_substr($a_crit['column'], mb_strpos($a_crit['column'], '.') + 1);
-				if (\b2db\Core::getDBtype() == 'pgsql')
+				if (Core::getDBtype() == 'pgsql')
 				{
 					$sql .= '"';
 				}
-				elseif (\b2db\Core::getDBtype() == 'mysql')
+				elseif (Core::getDBtype() == 'mysql')
 				{
 					$sql .= '`';
 				}
@@ -794,15 +796,15 @@
 		protected function _generateUpdateSQL()
 		{
 			$sql = 'UPDATE ';
-			$sql .= \b2db\Core::getTablePrefix() . $this->fromtable->getB2DBName();
+			$sql .= Core::getTablePrefix() . $this->fromtable->getB2DBName();
 			$sql .= ' SET ';
 			$first_upd = true;
 			foreach ($this->updates as $an_upd)
 			{
 				$sql .= (!$first_upd) ? ', ' : '';
-				if (\b2db\Core::getDBtype() == 'mysql') $sql .= '`';
+				if (Core::getDBtype() == 'mysql') $sql .= '`';
 				$sql .= mb_substr($an_upd['column'], mb_strpos($an_upd['column'], '.') + 1);
-				if (\b2db\Core::getDBtype() == 'mysql') $sql .= '`';
+				if (Core::getDBtype() == 'mysql') $sql .= '`';
 				$sql .= self::DB_EQUALS;
 				$sql .= '?';
 				$this->_addValue($an_upd['value']);
@@ -826,7 +828,7 @@
 			}
 			if ($this->customsel)
 			{
-				if ($this->distinct && \b2db\Core::getDBtype() == 'pgsql')
+				if ($this->distinct && Core::getDBtype() == 'pgsql')
 				{
 					foreach ($this->sort_orders as $a_sort)
 					{
@@ -919,15 +921,15 @@
 		/**
 		 * Parses the given criterion and returns the SQL string
 		 *
-		 * @param B2DBCriterion $critn
+		 * @param Criterion $critn
 		 * @param boolean $strip
 		 * @return string
 		 */
 		protected function _parseCriterion($critn, $strip = false)
 		{
-			if (!$critn instanceof B2DBCriterion)
+			if (!$critn instanceof Criterion)
 			{
-				throw new B2DBException('The $critn parameter must be of type B2DBCriterion');
+				throw new Exception('The $critn parameter must be of type Criterion');
 			}
 			$sql = '';
 			if (count($critn->ors) > 0)
@@ -945,10 +947,10 @@
 				{
 					$sql .= ' AND ';
 				}
-				if (!$a_crit['column'] instanceof B2DBCriterion)
+				if (!$a_crit['column'] instanceof Criterion)
 				{
 					if (!in_array($a_crit['operator'], array(self::DB_EQUALS, self::DB_GREATER_THAN, self::DB_GREATER_THAN_EQUAL, self::DB_ILIKE, self::DB_IN, self::DB_IS_NOT_NULL, self::DB_IS_NULL, self::DB_LESS_THAN, self::DB_LESS_THAN_EQUAL, self::DB_LIKE, self::DB_NOT_EQUALS, self::DB_NOT_ILIKE, self::DB_NOT_IN, self::DB_NOT_LIKE)))
-						throw new B2DBException("Invalid operator");
+						throw new Exception("Invalid operator");
 					
 					if (isset($a_crit['special']) && $a_crit['special'] != '')
 					{
@@ -1013,10 +1015,10 @@
 			foreach ($critn->ors as $an_or)
 			{
 				$sql .= ' OR ';
-				if (!$an_or['column'] instanceof B2DBCriterion)
+				if (!$an_or['column'] instanceof Criterion)
 				{
 					if (!in_array($an_or['operator'], array(self::DB_EQUALS, self::DB_GREATER_THAN, self::DB_GREATER_THAN_EQUAL, self::DB_ILIKE, self::DB_IN, self::DB_IS_NOT_NULL, self::DB_IS_NULL, self::DB_LESS_THAN, self::DB_LESS_THAN_EQUAL, self::DB_LIKE, self::DB_NOT_EQUALS, self::DB_NOT_ILIKE, self::DB_NOT_IN, self::DB_NOT_LIKE)))
-						throw new B2DBException("Invalid operator");
+						throw new Exception("Invalid operator");
 					
 					$sql .= ($strip) ? $this->getColumnName($an_or['column']) : $this->getSelectionColumn($an_or['column']);
 					if (is_null($an_or['value']) && !in_array($an_or['operator'], array(self::DB_IS_NOT_NULL, self::DB_IS_NULL)))
@@ -1193,15 +1195,15 @@
 		 */
 		protected function _generateJoinSQL()
 		{
-			$sql = ' FROM ' . \b2db\Core::getTablePrefix() . $this->fromtable->getB2DBName() . ' ' . $this->fromtable->getB2DBAlias();
+			$sql = ' FROM ' . Core::getTablePrefix() . $this->fromtable->getB2DBName() . ' ' . $this->fromtable->getB2DBAlias();
 			foreach ($this->jointables as $a_jt)
 			{
-				$sql .= ' ' . $a_jt['jointype'] . ' ' . \b2db\Core::getTablePrefix() . $a_jt['jointable']->getB2DBName() . ' ' . $a_jt['jointable']->getB2DBAlias();
+				$sql .= ' ' . $a_jt['jointype'] . ' ' . Core::getTablePrefix() . $a_jt['jointable']->getB2DBName() . ' ' . $a_jt['jointable']->getB2DBAlias();
 				$sql .= ' ON (' . $a_jt['col1'] . self::DB_EQUALS . $a_jt['col2'];
 				foreach ($a_jt['criterias'] as $a_crit)
 				{
 					$sql .= ' AND ';
-					$a_crit = new B2DBCriterion($a_crit[0], $a_crit[1]);
+					$a_crit = new Criterion($a_crit[0], $a_crit[1]);
 					$sql .= $this->_parseCriterion($a_crit);
 				}
 				$sql .= ')';

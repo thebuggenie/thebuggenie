@@ -50,7 +50,7 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGVCSIntegrationCommitsTable');
+			return \b2db\Core::getTable('TBGVCSIntegrationCommitsTable');
 		}
 		
 		/**

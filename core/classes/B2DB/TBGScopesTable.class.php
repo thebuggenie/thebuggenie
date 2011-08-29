@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage tables
 	 */
-	class TBGScopesTable extends TBGB2DBTable 
+	class TBGScopesTable extends \TBGB2DBTable 
 	{
 		
 		const B2DB_TABLE_VERSION = 2;
@@ -50,7 +50,7 @@
 			parent::_addInteger(self::ADMINISTRATOR, 10);
 		}
 
-		protected function _migrateData(B2DBTable $old_table)
+		protected function _migrateData(\b2db\Table $old_table)
 		{
 			$crit = TBGScopeHostnamesTable::getTable()->getCriteria();
 			$crit->addInsert(TBGScopeHostnamesTable::HOSTNAME, '*');

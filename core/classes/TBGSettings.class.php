@@ -125,7 +125,7 @@
 				else
 				{
 					TBGLogging::log('Settings not cached or install mode enabled. Retrieving from database');
-					if ($res = B2DB::getTable('TBGSettingsTable')->getSettingsForScope(TBGContext::getScope()->getID(), $uid))
+					if ($res = \b2db\Core::getTable('TBGSettingsTable')->getSettingsForScope(TBGContext::getScope()->getID(), $uid))
 					{
 						$cc = 0;
 						while ($row = $res->getNextRow())
@@ -179,7 +179,7 @@
 				}
 			}
 
-			B2DB::getTable('TBGSettingsTable')->saveSetting($name, $module, $value, $uid, $scope);
+			\b2db\Core::getTable('TBGSettingsTable')->saveSetting($name, $module, $value, $uid, $scope);
 			
 			if ($scope != 0 && ((!TBGContext::getScope() instanceof TBGScope) || $scope == TBGContext::getScope()->getID()))
 			{
@@ -276,7 +276,7 @@
 			throw new Exception("This function is deprecated. Default scope is always 1");
 			if (self::$_defaultscope === null)
 			{
-				$row = B2DB::getTable('TBGSettingsTable')->getDefaultScope();
+				$row = \b2db\Core::getTable('TBGSettingsTable')->getDefaultScope();
 				self::$_defaultscope = TBGContext::factory()->TBGScope($row->get(TBGSettingsTable::VALUE));
 			}
 			return self::$_defaultscope;
@@ -293,7 +293,7 @@
 			$crit->addWhere(TBGSettingsTable::SCOPE, $scope);
 			$crit->addWhere(TBGSettingsTable::UID, $uid);
 			
-			B2DB::getTable('TBGSettingsTable')->doDelete($crit);
+			\b2db\Core::getTable('TBGSettingsTable')->doDelete($crit);
 			unset(self::$_settings[$name][$uid]);
 		}
 	
@@ -307,7 +307,7 @@
 				throw new Exception('BUGS has not been correctly installed. Please check that the default scope exists');
 			}
 			$crit->addWhere(TBGSettingsTable::SCOPE, $scope);
-			$res = B2DB::getTable('TBGSettingsTable')->doSelect($crit);
+			$res = \b2db\Core::getTable('TBGSettingsTable')->doSelect($crit);
 			if ($res->count() > 0)
 			{
 				$retarr = array();

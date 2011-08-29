@@ -37,7 +37,7 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGLinksTable');
+			return \b2db\Core::getTable('TBGLinksTable');
 		}
 		
 		public function __construct()

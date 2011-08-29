@@ -38,7 +38,7 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGFilesTable');
+			return \b2db\Core::getTable('TBGFilesTable');
 		}
 
 		public function __construct()

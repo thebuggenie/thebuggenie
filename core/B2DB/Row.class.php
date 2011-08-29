@@ -1,7 +1,9 @@
 <?php
 
+	namespace b2db;
+	
 	/**
-	 * B2DB Row Base class
+	 * Row class
 	 *
 	 * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
 	 * @version 2.0
@@ -11,26 +13,26 @@
 	 */
 
 	/**
-	 * B2DB Row Base class
+	 * Row class
 	 *
 	 * @package b2db
 	 * @subpackage core
 	 */
-	class B2DBRow
+	class Row
 	{
 		protected $_fields = array();
 		
 		/**
-		 * Criteria
+		 * Statement
 		 *
-		 * @var B2DBStatement
+		 * @var Statement
 		 */
 		protected $_statement = null;
 		
 		/**
 		 * Constructor
 		 * 
-		 * @param B2DBstatement $statement
+		 * @param Statement $statement
 		 */
 		public function __construct($row, $statement)
 		{
@@ -68,7 +70,7 @@
 		public function get($column, $foreign_key = null)
 		{
 			if ($this->_statement == null)
-				throw new B2DBException('Statement did not execute, cannot return unknown value for column ' . $column);
+				throw new Exception('Statement did not execute, cannot return unknown value for column ' . $column);
 
 			$column = $this->_getColumnName($column, $foreign_key);
 
@@ -79,9 +81,9 @@
 		}
 		
 		/**
-		 * Return the associated B2DBCriteria
+		 * Return the associated Criteria
 		 * 
-		 * @return B2DBCriteria
+		 * @return Criteria
 		 */
 		public function getCriteria()
 		{

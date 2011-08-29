@@ -1,7 +1,9 @@
 <?php
 
+	namespace b2db;
+	
 	/**
-	 * B2DB Table Base class
+	 * Table class
 	 *
 	 * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
 	 * @version 2.0
@@ -11,12 +13,12 @@
 	 */
 
 	/**
-	 * B2DB Table Base class
+	 * Table class
 	 *
 	 * @package b2db
 	 * @subpackage core
 	 */
-	class B2DBTable
+	class Table
 	{
 		protected $b2db_name;
 		protected $id_column;
@@ -29,13 +31,13 @@
 
 		public function __clone()
 		{
-			$this->b2db_alias = $this->b2db_name . \b2db\Core::addAlias();
+			$this->b2db_alias = $this->b2db_name . Core::addAlias();
 		}
 		
 		public function __construct($b2db_name, $id_column)
 		{
 			$this->b2db_name = $b2db_name;
-			$this->b2db_alias = $b2db_name . \b2db\Core::addAlias();
+			$this->b2db_alias = $b2db_name . Core::addAlias();
 			$this->id_column = $id_column;
 			$this->_addInteger($id_column, 10, 0, true, true, true);
 		}
@@ -43,12 +45,12 @@
 		/**
 		 * Return an instance of this table
 		 * 
-		 * @return B2DBTable 
+		 * @return Table 
 		 */
 		public static function getTable()
 		{
-			$tablename = get_called_class();
-			return \b2db\Core::getTable($tablename);
+			$tablename = \get_called_class();
+			return Core::getTable($tablename);
 		}
 		
 		protected function _addColumn($column, $details)
@@ -90,7 +92,7 @@
 		 * Adds a foreign table
 		 *
 		 * @param string $column
-		 * @param B2DBTable $table
+		 * @param Table $table
 		 * @param string $key
 		 */
 		protected function _addForeignKeyColumn($column, $table, $key)
@@ -113,7 +115,7 @@
 					break;
 				case 'boolean':
 				case 'blob':
-					throw new B2DBException('Cannot use a blob or boolean column as a foreign key');
+					throw new Exception('Cannot use a blob or boolean column as a foreign key');
 			}
 			$this->_foreigntables[$addtable->getB2DBAlias()] = array('table' => $addtable, 'key' => $key, 'column' => $column);
 			$this->_foreigncolumns[$column] = $column;
@@ -159,7 +161,7 @@
 		protected function getQC()
 		{
 			$qc = '`';
-			switch (\b2db\Core::getDBtype())
+			switch (Core::getDBtype())
 			{
 				case 'pgsql':
 					$qc = '"';
@@ -201,7 +203,7 @@
 		/**
 		 * Returns a foreign table
 		 *
-		 * @param B2DBTable $table
+		 * @param Table $table
 		 * 
 		 * @return array
 		 */
@@ -249,24 +251,24 @@
 		/**
 		 * Selects all records in this table
 		 *
-		 * @return B2DBResultset
+		 * @return Resultset
 		 */
 		public function doSelectAll()
 		{
 			try
 			{
-				$crit = new B2DBCriteria();
+				$crit = new Criteria();
 				$crit->setFromTable($this);
 				$crit->generateSelectSQL(true);
 	
-				$statement = B2DBStatement::getPreparedStatement($crit);
+				$statement = Statement::getPreparedStatement($crit);
 				$resultSet = $statement->performQuery();
 			}
-			catch (Exception $e)
+			catch (\Exception $e)
 			{
-				if (\b2db\Core::throwExceptionAsHTML())
+				if (Core::throwExceptionAsHTML())
 				{
-					\b2db\Core::fatalError($e);
+					Core::fatalError($e);
 					exit();
 				}
 				else
@@ -282,28 +284,28 @@
 		 * Returns one row from the current table based on a given id
 		 *
 		 * @param integer $id
-		 * @param B2DBCriteria $crit
+		 * @param Criteria $crit
 		 * @param mixed $join
 		 * 
 		 * @return B2DBRow
 		 */
-		public function doSelectById($id, B2DBCriteria $crit = null, $join = 'all')
+		public function doSelectById($id, Criteria $crit = null, $join = 'all')
 		{
 			try
 			{
 				if ($crit == null)
 				{
-					$crit = new B2DBCriteria();
+					$crit = new Criteria();
 				}
 				$crit->addWhere($this->id_column, $id);
 				$crit->setLimit(1);
 				return $this->doSelectOne($crit, $join);
 			}
-			catch (Exception $e)
+			catch (\Exception $e)
 			{
-				if (\b2db\Core::throwExceptionAsHTML())
+				if (Core::throwExceptionAsHTML())
 				{
-					\b2db\Core::fatalError($e);
+					Core::fatalError($e);
 					exit();
 				}
 				else
@@ -315,7 +317,7 @@
 			
 			if ($resultSet->count() == 0)
 			{
-				throw new B2DBException("The row $id does not exist");
+				throw new Exception("The row $id does not exist");
 			}
 
 			return $resultSet->getCurrentRow();
@@ -324,25 +326,25 @@
 		/**
 		 * Counts rows
 		 *
-		 * @param B2DBCriteria $crit
+		 * @param Criteria $crit
 		 * @return integer
 		 */
-		public function doCount(B2DBCriteria $crit)
+		public function doCount(Criteria $crit)
 		{
 			try
 			{
 				$crit->setFromTable($this);
 				$crit->generateCountSQL();
-				$statement = B2DBStatement::getPreparedStatement($crit);
+				$statement = Statement::getPreparedStatement($crit);
 	
 				$resultSet = $statement->performQuery();
 				$cnt = $resultSet->getCount();
 			}
-			catch (Exception $e)
+			catch (\Exception $e)
 			{
-				if (\b2db\Core::throwExceptionAsHTML())
+				if (Core::throwExceptionAsHTML())
 				{
-					\b2db\Core::fatalError($e);
+					Core::fatalError($e);
 					exit();
 				}
 				else
@@ -357,31 +359,31 @@
 		/**
 		 * Selects rows based on given criteria
 		 *
-		 * @param B2DBCriteria $crit
+		 * @param Criteria $crit
 		 * 
-		 * @return B2DBResultset
+		 * @return Resultset
 		 */
-		public function doSelect(B2DBCriteria $crit, $join = 'all')
+		public function doSelect(Criteria $crit, $join = 'all')
 		{
 			try
 			{
 				if ($crit == null)
 				{
-					$crit = new B2DBCriteria();
+					$crit = new Criteria();
 				}
 				$crit->setFromTable($this);
 				$crit->setupJoinTables($join);
 				$crit->generateSelectSQL();
 				
-				$statement = B2DBStatement::getPreparedStatement($crit);
+				$statement = Statement::getPreparedStatement($crit);
 	
 				$resultSet = $statement->performQuery();
 			}
-			catch (B2DBException $e)
+			catch (Exception $e)
 			{
-				if (\b2db\Core::throwExceptionAsHTML())
+				if (Core::throwExceptionAsHTML())
 				{
-					\b2db\Core::fatalError($e);
+					Core::fatalError($e);
 					exit();
 				}
 				else
@@ -403,11 +405,11 @@
 		/**
 		 * Selects one row from the table based on the given criteria
 		 *
-		 * @param B2DBCriteria $crit
+		 * @param Criteria $crit
 		 * 
 		 * @return B2DBRow
 		 */
-		public function doSelectOne(B2DBCriteria $crit, $join = 'all')
+		public function doSelectOne(Criteria $crit, $join = 'all')
 		{
 			try
 			{
@@ -416,15 +418,15 @@
 				$crit->setLimit(1);
 				$crit->generateSelectSQL();
 				
-				$statement = B2DBStatement::getPreparedStatement($crit);
+				$statement = Statement::getPreparedStatement($crit);
 				$resultset = $statement->performQuery();
 				$resultset->next();
 			}
-			catch (Exception $e)
+			catch (\Exception $e)
 			{
-				if (\b2db\Core::throwExceptionAsHTML())
+				if (Core::throwExceptionAsHTML())
 				{
-					\b2db\Core::fatalError($e);
+					Core::fatalError($e);
 					exit();
 				}
 				else
@@ -439,26 +441,26 @@
 		/**
 		 * Inserts a row into the table
 		 *
-		 * @param B2DBCriteria $crit
+		 * @param Criteria $crit
 		 * 
-		 * @return B2DBResultset
+		 * @return Resultset
 		 */
-		public function doInsert(B2DBCriteria $crit)
+		public function doInsert(Criteria $crit)
 		{
 			try
 			{
 				$crit->setFromTable($this);
 				$crit->generateInsertSQL();
 				
-				$statement = B2DBStatement::getPreparedStatement($crit);
+				$statement = Statement::getPreparedStatement($crit);
 	
 				$resultset = $statement->performQuery('insert');
 			}
-			catch (Exception $e)
+			catch (\Exception $e)
 			{
-				if (\b2db\Core::throwExceptionAsHTML())
+				if (Core::throwExceptionAsHTML())
 				{
-					\b2db\Core::fatalError($e);
+					Core::fatalError($e);
 					exit();
 				}
 				else
@@ -473,26 +475,26 @@
 		/**
 		 * Perform an SQL update
 		 *
-		 * @param B2DBCriteria $crit
+		 * @param Criteria $crit
 		 * 
-		 * @return B2DBResultset
+		 * @return Resultset
 		 */
-		public function doUpdate(B2DBCriteria $crit)
+		public function doUpdate(Criteria $crit)
 		{
 			try
 			{
 				$crit->setFromTable($this);
 				$crit->generateUpdateSQL();
 				
-				$statement = B2DBStatement::getPreparedStatement($crit);
+				$statement = Statement::getPreparedStatement($crit);
 	
 				$res = $statement->performQuery('update');
 			}
-			catch (Exception $e)
+			catch (\Exception $e)
 			{
-				if (\b2db\Core::throwExceptionAsHTML())
+				if (Core::throwExceptionAsHTML())
 				{
-					\b2db\Core::fatalError($e);
+					Core::fatalError($e);
 					exit();
 				}
 				else
@@ -507,12 +509,12 @@
 		/**
 		 * Perform an SQL update
 		 *
-		 * @param B2DBCriteria $crit
+		 * @param Criteria $crit
 		 * @param integer $id
 		 * 
-		 * @return B2DBResultset
+		 * @return Resultset
 		 */
-		public function doUpdateById(B2DBCriteria $crit, $id)
+		public function doUpdateById(Criteria $crit, $id)
 		{
 			try
 			{
@@ -521,15 +523,15 @@
 				$crit->setLimit(1);
 				$crit->generateUpdateSQL();
 				
-				$statement = B2DBStatement::getPreparedStatement($crit);
+				$statement = Statement::getPreparedStatement($crit);
 	
 				$resultset = $statement->performQuery('update');
 			}
-			catch (Exception $e)
+			catch (\Exception $e)
 			{
-				if (\b2db\Core::throwExceptionAsHTML())
+				if (Core::throwExceptionAsHTML())
 				{
-					\b2db\Core::fatalError($e);
+					Core::fatalError($e);
 					exit();
 				}
 				else
@@ -544,27 +546,27 @@
 		/**
 		 * Perform an SQL delete
 		 *
-		 * @param B2DBCriteria $crit
+		 * @param Criteria $crit
 		 * 
-		 * @return B2DBResultset
+		 * @return Resultset
 		 */
-		public function doDelete(B2DBCriteria $crit)
+		public function doDelete(Criteria $crit)
 		{
 			try
 			{
 				$crit->setFromTable($this);
 				$crit->generateDeleteSQL();
 				
-				$statement = B2DBStatement::getPreparedStatement($crit);
+				$statement = Statement::getPreparedStatement($crit);
 	
 				$resultset = $statement->performQuery('delete');
 				return $resultset;
 			}
-			catch (Exception $e)
+			catch (\Exception $e)
 			{
-				if (\b2db\Core::throwExceptionAsHTML())
+				if (Core::throwExceptionAsHTML())
 				{
-					\b2db\Core::fatalError($e);
+					Core::fatalError($e);
 					exit();
 				}
 				else
@@ -579,27 +581,27 @@
 		 *
 		 * @param integer $id
 		 * 
-		 * @return B2DBResultset
+		 * @return Resultset
 		 */
 		public function doDeleteById($id)
 		{
 			try
 			{
-				$crit = new B2DBCriteria();
+				$crit = new Criteria();
 				$crit->setFromTable($this);
 				$crit->addWhere($this->id_column, $id);
 				$crit->generateDeleteSQL();
 				
-				$statement = B2DBStatement::getPreparedStatement($crit);
+				$statement = Statement::getPreparedStatement($crit);
 	
 				$resultset = $statement->performQuery('delete');
 				return $resultset;
 			}
-			catch (Exception $e)
+			catch (\Exception $e)
 			{
-				if (\b2db\Core::throwExceptionAsHTML())
+				if (Core::throwExceptionAsHTML())
 				{
-					\b2db\Core::fatalError($e);
+					Core::fatalError($e);
 					exit();
 				}
 				else
@@ -612,7 +614,7 @@
 		/**
 		 * creates the table by executing the sql create statement
 		 *
-		 * @return B2DBResultset
+		 * @return Resultset
 		 */
 		public function create($debug = false)
 		{
@@ -626,12 +628,12 @@
 				{
 					echo $sql;
 				}
-				$statement = B2DBStatement::getPreparedStatement($sql);
+				$statement = Statement::getPreparedStatement($sql);
 				$res = $statement->performQuery('create');
 			}
-			catch (Exception $e)
+			catch (\Exception $e)
 			{
-				throw new B2DBException('Error creating table ' . $this->getB2DBName() . ': ' . $e->getMessage() . '. SQL was: ' . $sql);
+				throw new Exception('Error creating table ' . $this->getB2DBName() . ': ' . $e->getMessage() . '. SQL was: ' . $sql);
 			}
 			return $res;			
 		}
@@ -639,7 +641,7 @@
 		protected function _dropToSQL()
 		{
 			$sql = '';
-			$sql .= 'DROP TABLE IF EXISTS ' . \b2db\Core::getTablePrefix() . $this->b2db_name;
+			$sql .= 'DROP TABLE IF EXISTS ' . Core::getTablePrefix() . $this->b2db_name;
 			return $sql;
 		}
 
@@ -653,12 +655,12 @@
 			try
 			{
 				$sql = $this->_dropToSQL();
-				$statement = B2DBStatement::getPreparedStatement($sql);
+				$statement = Statement::getPreparedStatement($sql);
 				$res = $statement->performQuery('drop');
 			}
-			catch (Exception $e)
+			catch (\Exception $e)
 			{
-				throw new B2DBException('Error dropping table ' . $this->getB2DBName() . ': ' . $e->getMessage() . '. SQL was: ' . $sql);
+				throw new Exception('Error dropping table ' . $this->getB2DBName() . ': ' . $e->getMessage() . '. SQL was: ' . $sql);
 			}
 			return $res;			
 		}
@@ -668,11 +670,11 @@
 		 * 
 		 * @param boolean $setupjointables[optional] Whether to auto-join all related tables by default
 		 * 
-		 * @return B2DBCriteria
+		 * @return Criteria
 		 */
 		public function getCriteria($setupjointables = false)
 		{
-			$crit = new B2DBCriteria($this, $setupjointables);
+			$crit = new Criteria($this, $setupjointables);
 			return $crit;
 		}
 		
@@ -749,11 +751,11 @@
 			switch ($column['type'])
 			{
 				case 'integer':
-					if (\b2db\Core::getDBtype() == 'pgsql' && isset($column['auto_inc']) && $column['auto_inc'] == true)
+					if (Core::getDBtype() == 'pgsql' && isset($column['auto_inc']) && $column['auto_inc'] == true)
 					{
 						$fsql .= 'SERIAL';
 					}
-					elseif (\b2db\Core::getDBtype() == 'pgsql')
+					elseif (Core::getDBtype() == 'pgsql')
 					{
 						$fsql .= 'INTEGER';
 					}
@@ -761,21 +763,21 @@
 					{
 						$fsql .= 'INTEGER(' . $column['length'] . ')';
 					}
-					if ($column['unsigned'] && \b2db\Core::getDBtype() != 'pgsql') $fsql .= ' UNSIGNED';
+					if ($column['unsigned'] && Core::getDBtype() != 'pgsql') $fsql .= ' UNSIGNED';
 					break;
 				case 'varchar':
 					$fsql .= 'VARCHAR(' . $column['length'] . ')';
 					break;
 				case 'float':
 					$fsql .= 'FLOAT(' . $column['precision'] . ')';
-					if ($column['unsigned'] && \b2db\Core::getDBtype() != 'pgsql') $fsql .= ' UNSIGNED';
+					if ($column['unsigned'] && Core::getDBtype() != 'pgsql') $fsql .= ' UNSIGNED';
 					break;
 				case 'blob':
-					if (\b2db\Core::getDBtype() == 'mysql')
+					if (Core::getDBtype() == 'mysql')
 					{
 						$fsql .= 'LONGBLOB';
 					}
-					elseif (\b2db\Core::getDBtype() == 'pgsql')
+					elseif (Core::getDBtype() == 'pgsql')
 					{
 						$fsql .= 'BYTEA';
 					}
@@ -792,11 +794,11 @@
 			if ($column['not_null']) $fsql .= ' NOT NULL';
 			if ($column['type'] != 'text')
 			{
-				if (isset($column['auto_inc']) && $column['auto_inc'] == true && \b2db\Core::getDBtype() != 'pgsql')
+				if (isset($column['auto_inc']) && $column['auto_inc'] == true && Core::getDBtype() != 'pgsql')
 				{
 					$fsql .= ' AUTO_INCREMENT';
 				}
-				elseif (isset($column['default_value']) && $column['default_value'] !== null && !(isset($column['auto_inc']) && $column['auto_inc'] == true && \b2db\Core::getDBtype() == 'pgsql'))
+				elseif (isset($column['default_value']) && $column['default_value'] !== null && !(isset($column['auto_inc']) && $column['auto_inc'] == true && Core::getDBtype() == 'pgsql'))
 				{
 					if (is_int($column['default_value']))
 					{
@@ -822,7 +824,7 @@
 		protected function _getTableNameSQL()
 		{
 			$qc = $this->getQC();
-			$sql = $qc . \b2db\Core::getTablePrefix() . $this->b2db_name . $qc;
+			$sql = $qc . Core::getTablePrefix() . $this->b2db_name . $qc;
 
 			return $sql;
 		}
@@ -840,8 +842,8 @@
 			$sql .= join(",\n", $field_sql);
 			$sql .= ", PRIMARY KEY ($qc" . $this->_getRealColumnFieldName($this->id_column) . "$qc) ";
 			$sql .= ') ';
-			if (\b2db\Core::getDBtype() != 'pgsql') $sql .= 'AUTO_INCREMENT=' . $this->_autoincrement_start_at . ' ';
-			if (\b2db\Core::getDBtype() != 'pgsql') $sql .= 'CHARACTER SET ' . $this->_charset;
+			if (Core::getDBtype() != 'pgsql') $sql .= 'AUTO_INCREMENT=' . $this->_autoincrement_start_at . ' ';
+			if (Core::getDBtype() != 'pgsql') $sql .= 'CHARACTER SET ' . $this->_charset;
 
 			return $sql;
 		}
@@ -870,7 +872,7 @@
 			return $sql;
 		}
 
-		protected function _migrateData(B2DBTable $old_table)
+		protected function _migrateData(Table $old_table)
 		{
 			
 		}
@@ -879,12 +881,12 @@
 		 * Perform upgrade for a table, by comparing one table to an old version
 		 * of the same table
 		 *
-		 * @param B2DBTable $old_table
+		 * @param Table $old_table
 		 */
-		public function upgrade(B2DBTable $old_table)
+		public function upgrade(Table $old_table)
 		{
 			if ($old_table->getVersion() != ($this->getVersion() - 1))
-				throw new B2DBException('Cannot upgrade from ' . get_class($old_table) . ' version ' . $old_table->getVersion() . ', must be version ' . ($this->getVersion() - 1));
+				throw new Exception('Cannot upgrade from ' . get_class($old_table) . ' version ' . $old_table->getVersion() . ', must be version ' . ($this->getVersion() - 1));
 			
 			$old_columns = $old_table->getColumns();
 			$new_columns = $this->getColumns();
@@ -901,7 +903,7 @@
 			{
 				foreach ($sqls as $sqlStmt)
 				{
-					$statement = B2DBStatement::getPreparedStatement($sqlStmt);
+					$statement = Statement::getPreparedStatement($sqlStmt);
 					$res = $statement->performQuery('alter');
 				}
 			}
@@ -919,7 +921,7 @@
 			{
 				foreach ($sqls as $sqlStmt)
 				{
-					$statement = B2DBStatement::getPreparedStatement($sqlStmt);
+					$statement = Statement::getPreparedStatement($sqlStmt);
 					$res = $statement->performQuery('alter');
 				}
 			}

@@ -1,7 +1,9 @@
 <?php
 
+	namespace b2db;
+	
 	/**
-	 * B2DB saveable class, active record implementation for B2DB
+	 * B2DB Saveable class, active record implementation for B2DB
 	 *
 	 * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
 	 * @version 2.0
@@ -11,14 +13,14 @@
 	 */
 
 	/**
-	 * B2DB saveable class, active record implementation for B2DB
+	 * B2DB Saveable class, active record implementation for B2DB
 	 * Can be implemented by objects to allow them to be passed to a B2DB table 
 	 * class for saving
 	 *
 	 * @package b2db
 	 * @subpackage core
 	 */
-	class B2DBSaveable
+	class Saveable
 	{
 
 		/**
@@ -33,7 +35,7 @@
 				$b2dbtablename = get_class($this).'Table';
 				if (!class_exists($b2dbtablename))
 				{
-					throw new Exception("Cannot find B2DB table class. Please create or generate the '{$b2dbtablename}' class, or specify a B2DB table name for class " . get_class($this) . ' via the static \$_b2dbtablename property');
+					throw new \Exception("Cannot find B2DB table class. Please create or generate the '{$b2dbtablename}' class, or specify a B2DB table name for class " . get_class($this) . ' via the static \$_b2dbtablename property');
 				}
 			}
 			else
@@ -46,7 +48,7 @@
 		/**
 		 * Return the associated B2DBTable for this class
 		 * 
-		 * @return B2DBTable
+		 * @return Table
 		 */
 		public function getB2DBTable()
 		{
@@ -56,21 +58,21 @@
 
 		protected function _getForeignClassForProperty($property_name)
 		{
-			if (!$foreign_type = \b2db\Core::getCachedClassPropertyForeignClass(get_class($this), $property_name))
+			if (!$foreign_type = Core::getCachedClassPropertyForeignClass(\get_class($this), $property_name))
 			{
-				$reflection = new ReflectionProperty(get_class($this), $property_name);
+				$reflection = new \ReflectionProperty(\get_class($this), $property_name);
 				$docblock = $reflection->getDocComment();
 				if ($docblock)
 				{
-					$has_b2dbtype = mb_strpos($docblock, '@Class', 3);
-					$no_autopopulate = mb_strpos($docblock, '@NoAutoPopulation', 3);
+					$has_b2dbtype = \mb_strpos($docblock, '@Class', 3);
+					$no_autopopulate = \mb_strpos($docblock, '@NoAutoPopulation', 3);
 
 					if ($has_b2dbtype !== false && !$no_autopopulate)
 					{
-						$type_details = mb_substr($docblock, $has_b2dbtype + 7);
-						$type_details = explode(' ', $type_details);
-						$foreign_type = trim($type_details[0]);
-						\b2db\Core::addCachedClassPropertyForeignClass(get_class($this), $property_name, $foreign_type);
+						$type_details = \mb_substr($docblock, $has_b2dbtype + 7);
+						$type_details = \explode(' ', $type_details);
+						$foreign_type = \trim($type_details[0]);
+						Core::addCachedClassPropertyForeignClass(\get_class($this), $property_name, $foreign_type);
 					}
 				}
 			}
@@ -79,11 +81,11 @@
 		
 		protected function _getColumnProperty($column_name)
 		{
-			if (!$property_name = \b2db\Core::getCachedColumnClassProperty($column_name, get_class($this)))
+			if (!$property_name = Core::getCachedColumnClassProperty($column_name, \get_class($this)))
 			{
 				$property = explode('.', $column_name);
-				$property_name = "_".mb_strtolower($property[1]);
-				\b2db\Core::addCachedColumnClassProperty($column_name, get_class($this), $property_name);
+				$property_name = "_".\mb_strtolower($property[1]);
+				Core::addCachedColumnClassProperty($column_name, \get_class($this), $property_name);
 			}
 			return $property_name;
 		}
@@ -93,13 +95,13 @@
 			if (is_numeric($this->$property) && $this->$property > 0)
 			{
 				$type_name = $this->_getForeignClassForProperty($property);
-				if ($type_name && class_exists($type_name))
+				if ($type_name && \class_exists($type_name))
 				{
 					$this->$property = new $type_name($this->$property);
 				}
 				else
 				{
-					throw new Exception("Unknown class definition for property {$property} in class ".get_class($this));
+					throw new \Exception("Unknown class definition for property {$property} in class ".\get_class($this));
 				}
 			}
 			return $this->$property;
@@ -116,7 +118,7 @@
 				$property_type = $column['type'];
 				if (!property_exists($this, $property_name))
 				{
-					throw new Exception("Could not find class property {$property_name} in class ".get_class($this).". The class must have all properties from the corresponding B2DB table class available");
+					throw new \Exception("Could not find class property {$property_name} in class ".get_class($this).". The class must have all properties from the corresponding B2DB table class available");
 				}
 				if ($traverse && in_array($column['name'], $this->getB2DBTable()->getForeignColumns()))
 				{
@@ -186,7 +188,7 @@
 			$property_name = "_{$property[1]}";
 			if (!property_exists($this, $property_name))
 			{
-				throw new Exception("Could not find class property {$property_name} in class ".get_class($this).". The class must have all properties from the corresponding B2DB table class available");
+				throw new \Exception("Could not find class property {$property_name} in class ".get_class($this).". The class must have all properties from the corresponding B2DB table class available");
 			}
 			if (is_object($this->$property_name))
 			{
@@ -212,16 +214,16 @@
 			{
 				if (!is_numeric($id))
 				{
-					throw new Exception('Please specify a valid id for object of type ' . get_class($this));
+					throw new \Exception('Please specify a valid id for object of type ' . get_class($this));
 				}
 				if ($row === null)
 				{
 					$row = $this->getB2DBTable()->getByID($id);
 				}
 
-				if (!$row instanceof B2DBRow)
+				if (!$row instanceof Row)
 				{
-					throw new Exception('The specified id ('.$id.') does not exist in table ' . $this->getB2DBTableName());
+					throw new \Exception('The specified id ('.$id.') does not exist in table ' . $this->getB2DBTableName());
 				}
 				try
 				{
@@ -230,7 +232,7 @@
 					$this->_populatePropertiesFromB2DBRow($row, $traverse, $foreign_key);
 					$this->_construct($row, $foreign_key);
 				}
-				catch (Exception $e)
+				catch (\Exception $e)
 				{
 					throw $e;
 				}

@@ -17,7 +17,7 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGMailQueueTable');
+			return \b2db\Core::getTable('TBGMailQueueTable');
 		}
 
 		public function __construct()

@@ -40,7 +40,7 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGVCSIntegrationIssueLinksTable');
+			return \b2db\Core::getTable('TBGVCSIntegrationIssueLinksTable');
 		}
 
 		/**

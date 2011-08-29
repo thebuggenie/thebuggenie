@@ -97,7 +97,7 @@
 
 				$crit = $this->getCriteria();
 				$crit->addWhere(self::EDITED_AT, $enddate, B2DBCriteria::DB_LESS_THAN_EQUAL);
-				$crit->addJoin(B2DB::getTable('TBGIssueRelationsTable'), TBGIssueRelationsTable::PARENT_ID, self::ISSUE_ID);
+				$crit->addJoin(\b2db\Core::getTable('TBGIssueRelationsTable'), TBGIssueRelationsTable::PARENT_ID, self::ISSUE_ID);
 				$crit->addWhere(TBGIssueRelationsTable::PARENT_ID, $issue_ids, B2DBCriteria::DB_IN);
 				$crit->addOrderBy(self::EDITED_AT, B2DBCriteria::SORT_ASC);
 				$res = $this->doSelect($crit);

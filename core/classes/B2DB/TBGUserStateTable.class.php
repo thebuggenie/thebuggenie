@@ -38,7 +38,7 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGUserStateTable');
+			return \b2db\Core::getTable('TBGUserStateTable');
 		}
 		
 		public function __construct()

@@ -33,7 +33,7 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGClientMembersTable');
+			return \b2db\Core::getTable('TBGClientMembersTable');
 		}
 
 		public function __construct()
@@ -41,7 +41,7 @@
 			parent::__construct(self::B2DBNAME, self::ID);
 			
 			parent::_addForeignKeyColumn(self::UID, TBGUsersTable::getTable(), TBGUsersTable::ID);
-			parent::_addForeignKeyColumn(self::CID, B2DB::getTable('TBGClientsTable'), TBGClientsTable::ID);
+			parent::_addForeignKeyColumn(self::CID, \b2db\Core::getTable('TBGClientsTable'), TBGClientsTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 

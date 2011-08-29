@@ -660,7 +660,7 @@
 						}
 						else
 						{
-							B2DB::getTable('TBGCustomFieldOptionsTable')->doDeleteById($request->getParameter('id'));
+							\b2db\Core::getTable('TBGCustomFieldOptionsTable')->doDeleteById($request->getParameter('id'));
 							return $this->renderJSON(array('failed' => false, 'title' => $i18n->__('The option was deleted')));
 						}
 					}

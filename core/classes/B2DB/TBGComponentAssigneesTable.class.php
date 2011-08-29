@@ -32,9 +32,9 @@
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
 			parent::_addInteger(self::TARGET_TYPE, 5);
-			parent::_addForeignKeyColumn(self::COMPONENT_ID, B2DB::getTable('TBGComponentsTable'), TBGComponentsTable::ID);
+			parent::_addForeignKeyColumn(self::COMPONENT_ID, \b2db\Core::getTable('TBGComponentsTable'), TBGComponentsTable::ID);
 			parent::_addForeignKeyColumn(self::UID, TBGUsersTable::getTable(), TBGUsersTable::ID);
-			parent::_addForeignKeyColumn(self::TID, B2DB::getTable('TBGTeamsTable'), TBGTeamsTable::ID);
+			parent::_addForeignKeyColumn(self::TID, \b2db\Core::getTable('TBGTeamsTable'), TBGTeamsTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 		

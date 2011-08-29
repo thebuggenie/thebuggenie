@@ -22,7 +22,7 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGArticleHistoryTable');
+			return \b2db\Core::getTable('TBGArticleHistoryTable');
 		}
 
 		public function __construct()
@@ -50,7 +50,7 @@
 
 		public function addArticleHistory($article_name, $old_content, $new_content, $user_id, $reason = null)
 		{
-			$transaction = B2DB::startTransaction();
+			$transaction = \b2db\Core::startTransaction();
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::ARTICLE_NAME, $article_name);
 			$crit->addInsert(self::AUTHOR, $user_id);

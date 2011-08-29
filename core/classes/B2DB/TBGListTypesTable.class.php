@@ -39,7 +39,7 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGListTypesTable');
+			return \b2db\Core::getTable('TBGListTypesTable');
 		}
 
 		public function __construct()

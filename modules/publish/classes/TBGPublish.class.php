@@ -170,7 +170,7 @@
 			if (TBGContext::getScope()->getID() == 1)
 			{
 				TBGArticlesTable::getTable()->drop();
-				B2DB::getTable('TBGBillboardPostsTable')->drop();
+				\b2db\Core::getTable('TBGBillboardPostsTable')->drop();
 			}
 			TBGLinksTable::getTable()->removeByTargetTypeTargetIDandLinkID('wiki', 0);
 			parent::_uninstall();
@@ -286,7 +286,7 @@
 	
 			$posts = array();
 	
-			$res = B2DB::getTable('TBGBillboardPostsTable')->doSelect($crit);
+			$res = \b2db\Core::getTable('TBGBillboardPostsTable')->doSelect($crit);
 			while ($row = $res->getNextRow())
 			{
 				$posts[] = new PublishBillboardPost($row);

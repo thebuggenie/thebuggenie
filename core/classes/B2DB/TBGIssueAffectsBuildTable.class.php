@@ -35,14 +35,14 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGIssueAffectsBuildTable');
+			return \b2db\Core::getTable('TBGIssueAffectsBuildTable');
 		}
 		
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
 			parent::_addBoolean(self::CONFIRMED);
-			parent::_addForeignKeyColumn(self::BUILD, B2DB::getTable('TBGBuildsTable'), TBGBuildsTable::ID);
+			parent::_addForeignKeyColumn(self::BUILD, \b2db\Core::getTable('TBGBuildsTable'), TBGBuildsTable::ID);
 			parent::_addForeignKeyColumn(self::ISSUE, TBGIssuesTable::getTable(), TBGIssuesTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 			parent::_addForeignKeyColumn(self::STATUS, TBGListTypesTable::getTable(), TBGListTypesTable::ID);

@@ -34,7 +34,7 @@
 		public static function getAllByProjectID($project_id)
 		{
 			$retval = array();
-			if ($res = B2DB::getTable('TBGComponentsTable')->getByProjectID($project_id))
+			if ($res = \b2db\Core::getTable('TBGComponentsTable')->getByProjectID($project_id))
 			{
 				while ($row = $res->getNextRow())
 				{
@@ -84,7 +84,7 @@
 		{
 			$crit = new B2DBCriteria();
 			$crit->addUpdate(TBGComponentsTable::NAME, $name);
-			$res = B2DB::getTable('TBGComponentsTable')->doUpdateById($crit, $this->getID());
+			$res = \b2db\Core::getTable('TBGComponentsTable')->doUpdateById($crit, $this->getID());
 			
 			$this->_name = $name;
 		}
@@ -93,14 +93,14 @@
 		{
 			$crit = new B2DBCriteria();
 			$crit->addWhere(TBGIssueAffectsComponentTable::COMPONENT, $this->getID());
-			B2DB::getTable('TBGIssueAffectsComponentTable')->doDelete($crit);
+			\b2db\Core::getTable('TBGIssueAffectsComponentTable')->doDelete($crit);
 			$crit = new B2DBCriteria();
 			$crit->addWhere(TBGEditionComponentsTable::COMPONENT, $this->getID());
-			B2DB::getTable('TBGEditionComponentsTable')->doDelete($crit);
+			\b2db\Core::getTable('TBGEditionComponentsTable')->doDelete($crit);
 			$crit = new B2DBCriteria();
 			$crit->addWhere(TBGComponentAssigneesTable::COMPONENT_ID, $this->getID());
 			$crit->addWhere(TBGComponentAssigneesTable::SCOPE, TBGContext::getScope()->getID());
-			B2DB::getTable('TBGComponentAssigneesTable')->doDelete($crit);
+			\b2db\Core::getTable('TBGComponentAssigneesTable')->doDelete($crit);
 		}
 		
 		protected function _populateAssignees()

@@ -1,5 +1,7 @@
 <?php
 
+	namespace b2db;
+	
 	/**
 	 * B2DB Exception class
 	 *
@@ -16,7 +18,7 @@
 	 * @package b2db
 	 * @subpackage core
 	 */
-	class B2DBException extends Exception
+	class Exception extends \Exception
 	{
 		
 		protected $_sql = null;

@@ -44,7 +44,7 @@
 		{
 			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
 
-			$trans = B2DB::startTransaction();
+			$trans = \b2db\Core::startTransaction();
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::CUSTOMFIELDS_KEY, $key);
 			$crit->addSelectionColumn(self::SORT_ORDER, 'sortorder', B2DBCriteria::DB_MAX, '', '+1');

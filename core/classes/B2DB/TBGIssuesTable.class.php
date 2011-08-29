@@ -76,7 +76,7 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGIssuesTable');
+			return \b2db\Core::getTable('TBGIssuesTable');
 		}
 
 		public function __construct()

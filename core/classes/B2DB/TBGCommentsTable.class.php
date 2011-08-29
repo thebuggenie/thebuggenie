@@ -43,7 +43,7 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGCommentsTable');
+			return \b2db\Core::getTable('TBGCommentsTable');
 		}
 		
 		public function __construct()

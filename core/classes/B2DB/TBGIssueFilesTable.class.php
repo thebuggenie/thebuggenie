@@ -35,7 +35,7 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGIssueFilesTable');
+			return \b2db\Core::getTable('TBGIssueFilesTable');
 		}
 
 		public function __construct()

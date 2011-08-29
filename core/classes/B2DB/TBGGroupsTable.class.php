@@ -32,7 +32,7 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGGroupsTable');
+			return \b2db\Core::getTable('TBGGroupsTable');
 		}
 
 		public function __construct()

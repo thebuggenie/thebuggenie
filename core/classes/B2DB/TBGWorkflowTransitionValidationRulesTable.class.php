@@ -36,7 +36,7 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGWorkflowTransitionValidationRulesTable');
+			return \b2db\Core::getTable('TBGWorkflowTransitionValidationRulesTable');
 		}
 
 		public function __construct()

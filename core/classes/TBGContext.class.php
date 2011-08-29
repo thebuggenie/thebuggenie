@@ -455,7 +455,7 @@
 				self::$_installmode = true;
 			elseif (is_readable(THEBUGGENIE_PATH . 'upgrade'))
 				self::$_installmode = self::$_upgrademode = true;
-			elseif (!B2DB::isInitialized())
+			elseif (!\b2db\Core::isInitialized())
 				throw new Exception("The Bug Genie seems installed, but B2DB isn't configured. This usually indicates an error with the installation. Try removing the file ".THEBUGGENIE_PATH."installed and try again.");
 		}
 
@@ -778,7 +778,7 @@
 					TBGLogging::log('getting modules from database');
 					$module_paths = array();
 
-					if ($res = B2DB::getTable('TBGModulesTable')->getAll())
+					if ($res = \b2db\Core::getTable('TBGModulesTable')->getAll())
 					{
 						while ($moduleRow = $res->getNextRow())
 						{
@@ -1005,7 +1005,7 @@
 	
 			$permissions = array();
 
-			if ($res = B2DB::getTable('TBGPermissionsTable')->doSelect($crit))
+			if ($res = \b2db\Core::getTable('TBGPermissionsTable')->doSelect($crit))
 			{
 				while ($row = $res->getNextRow())
 				{
@@ -1034,7 +1034,7 @@
 				if (!$permissions = TBGCache::fileGet(TBGCache::KEY_PERMISSIONS_CACHE))
 				{
 					TBGLogging::log('starting to cache access permissions');
-					if ($res = B2DB::getTable('TBGPermissionsTable')->getAll())
+					if ($res = \b2db\Core::getTable('TBGPermissionsTable')->getAll())
 					{
 						while ($row = $res->getNextRow())
 						{
@@ -1103,7 +1103,7 @@
 		{
 			if ($scope === null) $scope = self::getScope()->getID();
 			
-			B2DB::getTable('TBGPermissionsTable')->removeSavedPermission($uid, $gid, $tid, $module, $permission_type, $target_id, $scope);
+			\b2db\Core::getTable('TBGPermissionsTable')->removeSavedPermission($uid, $gid, $tid, $module, $permission_type, $target_id, $scope);
 			
 			if ($recache) self::cacheAllPermissions();
 		}
@@ -2160,10 +2160,10 @@
 //				ob_start('mb_output_handler');
 //				ob_implicit_flush(0);
 				$load_time = self::getLoadtime();
-				if (B2DB::isInitialized())
+				if (\b2db\Core::isInitialized())
 				{
-					$tbg_summary['db_queries'] = B2DB::getSQLHits();
-					$tbg_summary['db_timing'] = B2DB::getSQLTiming();
+					$tbg_summary['db_queries'] = \b2db\Core::getSQLHits();
+					$tbg_summary['db_timing'] = \b2db\Core::getSQLTiming();
 				}
 				$tbg_summary['load_time'] = ($load_time >= 1) ? round($load_time, 2) . ' seconds' : round($load_time * 1000, 1) . 'ms';
 				$tbg_summary['scope_id'] = self::getScope() instanceof TBGScope ? self::getScope()->getID() : 'unknown';
@@ -2223,7 +2223,7 @@
 		{
 			if (!$links = TBGCache::get('core_main_links'))
 			{
-				$links = B2DB::getTable('TBGLinksTable')->getMainLinks();
+				$links = \b2db\Core::getTable('TBGLinksTable')->getMainLinks();
 				TBGCache::add('core_main_links', $links);
 			}
 			return $links;
@@ -2265,9 +2265,9 @@
 						}
 						if (self::performAction($route['module'], $route['action']))
 						{
-							if (B2DB::isInitialized())
+							if (\b2db\Core::isInitialized())
 							{
-								B2DB::closeDBLink();
+								\b2db\Core::closeDBLink();
 							}
 							return true;
 						}
@@ -2286,21 +2286,21 @@
 			}
 			catch (TBGTemplateNotFoundException $e)
 			{
-				B2DB::closeDBLink();
+				\b2db\Core::closeDBLink();
 				TBGContext::setLoadedAt();
 				header("HTTP/1.0 404 Not Found", true, 404);
 				tbg_exception($e->getMessage() /*'Template file does not exist for current action'*/, $e);
 			}
 			catch (TBGActionNotFoundException $e)
 			{
-				B2DB::closeDBLink();
+				\b2db\Core::closeDBLink();
 				TBGContext::setLoadedAt();
 				header("HTTP/1.0 404 Not Found", true, 404);
 				tbg_exception('Module action "' . $route['action'] . '" does not exist for module "' . $route['module'] . '"', $e);
 			}
 			catch (TBGCSRFFailureException $e)
 			{
-				B2DB::closeDBLink();
+				\b2db\Core::closeDBLink();
 				TBGContext::setLoadedAt();
 				self::$_response->setHttpStatus(301);
 				$message = $e->getMessage();
@@ -2316,7 +2316,7 @@
 			}
 			catch (Exception $e)
 			{
-				B2DB::closeDBLink();
+				\b2db\Core::closeDBLink();
 				TBGContext::setLoadedAt();
 				header("HTTP/1.0 404 Not Found", true, 404);
 				tbg_exception('An error occured', $e);

@@ -108,8 +108,8 @@
 				$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
 				$saved_search_id = $this->doInsert($crit)->getInsertID();
 			}
-			B2DB::getTable('TBGSavedSearchFiltersTable')->deleteBySearchID($saved_search_id);
-			B2DB::getTable('TBGSavedSearchFiltersTable')->saveFiltersForSavedSearch($saved_search_id, $filters);
+			\b2db\Core::getTable('TBGSavedSearchFiltersTable')->deleteBySearchID($saved_search_id);
+			\b2db\Core::getTable('TBGSavedSearchFiltersTable')->saveFiltersForSavedSearch($saved_search_id, $filters);
 			return $saved_search_id;
 		}
 

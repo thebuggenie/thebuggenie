@@ -164,21 +164,21 @@
 			{
 				try
 				{
-					B2DB::initialize(THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php');
+					\b2db\Core::initialize(THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php');
 				}
 				catch (Exception $e)
 				{
 				}
-				if (B2DB::isInitialized())
+				if (\b2db\Core::isInitialized())
 				{
 					$this->preloaded = true;
-					$this->username = B2DB::getUname();
-					$this->password = B2DB::getPasswd();
-					$this->dsn = B2DB::getDSN();
-					$this->hostname = B2DB::getHost();
-					$this->port = B2DB::getPort();
-					$this->b2db_dbtype = B2DB::getDBtype();
-					$this->db_name = B2DB::getDBname();
+					$this->username = \b2db\Core::getUname();
+					$this->password = \b2db\Core::getPasswd();
+					$this->dsn = \b2db\Core::getDSN();
+					$this->hostname = \b2db\Core::getHost();
+					$this->port = \b2db\Core::getPort();
+					$this->b2db_dbtype = \b2db\Core::getDBtype();
+					$this->db_name = \b2db\Core::getDBname();
 				}
 			}
 		}
@@ -198,15 +198,15 @@
 			{
 				if ($this->username = $request->getParameter('db_username'))
 				{
-					B2DB::setUname($this->username);
-					B2DB::setTablePrefix($request->getParameter('db_prefix'));
+					\b2db\Core::setUname($this->username);
+					\b2db\Core::setTablePrefix($request->getParameter('db_prefix'));
 					if ($this->password = $request->getRawParameter('db_password'))
-						B2DB::setPasswd($this->password);
+						\b2db\Core::setPasswd($this->password);
 
 					if ($this->selected_connection_detail == 'dsn')
 					{
 						if (($this->dsn = $request->getParameter('db_dsn')) != '')
-							B2DB::setDSN($this->dsn);
+							\b2db\Core::setDSN($this->dsn);
 						else
 							throw new Exception('You must provide a valid DSN');
 					}
@@ -214,17 +214,17 @@
 					{
 						if ($this->db_type = $request->getParameter('db_type'))
 						{
-							B2DB::setDBtype($this->db_type);
+							\b2db\Core::setDBtype($this->db_type);
 							if ($this->db_hostname = $request->getParameter('db_hostname'))
-								B2DB::setHost($this->db_hostname);
+								\b2db\Core::setHost($this->db_hostname);
 							else
 								throw new Exception('You must provide a database hostname');
 
 							if ($this->db_port = $request->getParameter('db_port'))
-								B2DB::setPort($this->db_port);
+								\b2db\Core::setPort($this->db_port);
 
 							if ($this->db_databasename = $request->getParameter('db_name'))
-								B2DB::setDBname($this->db_databasename);
+								\b2db\Core::setDBname($this->db_databasename);
 							else
 								throw new Exception('You must provide a database to use');
 						}
@@ -234,19 +234,19 @@
 						}
 					}
 					
-					B2DB::initialize(THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php');
-					$engine_path = B2DB::getEngineClassPath();
+					\b2db\Core::initialize(THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php');
+					$engine_path = \b2db\Core::getEngineClassPath();
 					if ($engine_path !== null)
 						TBGContext::addAutoloaderClassPath($engine_path);
 					else
 						throw new Exception("Cannot initialize the B2DB engine");
 
-					B2DB::doConnect();
+					\b2db\Core::doConnect();
 					
-					if (B2DB::getDBname() == '')
+					if (\b2db\Core::getDBname() == '')
 						throw new Exception('You must provide a database to use');
 
-					B2DB::saveConnectionParameters(THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php');
+					\b2db\Core::saveConnectionParameters(THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php');
 				}
 				else
 				{
@@ -262,7 +262,7 @@
 				{
 					if (($tablename = mb_substr($table_class_file, 0, mb_strpos($table_class_file, '.'))) != '') 
 					{
-						B2DB::getTable($tablename)->create();
+						\b2db\Core::getTable($tablename)->create();
 						$tables_created[] = $tablename;
 					}
 				}
@@ -409,7 +409,7 @@
 			}
 			
 			// Start a transaction to preserve the upgrade path
-			$transaction = B2DB::startTransaction();
+			$transaction = \b2db\Core::startTransaction();
 			
 			// Add votes to feature requests for default issue type scheme
 			$its = new TBGIssuetypeScheme(1);

@@ -36,7 +36,7 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGWorkflowTransitionsTable');
+			return \b2db\Core::getTable('TBGWorkflowTransitionsTable');
 		}
 
 		public function __construct()

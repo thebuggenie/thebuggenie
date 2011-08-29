@@ -98,7 +98,7 @@
 								<div class="log">
 									<ol class="simple_list">
 									<?php $cc = 1; ?>
-									<?php foreach (B2DB::getSQLHits() as $details): ?>
+									<?php foreach (\b2db\Core::getSQLHits() as $details): ?>
 										<li>
 											<b><?php echo $cc++; ?>
 											<span class="faded_out dark small">[<?php echo ($details['time'] >= 1) ? round($details['time'], 2) . ' seconds' : round($details['time'] * 1000, 1) . 'ms'; ?>]</span> </b> from <b><?php echo $details['filename']; ?>, line <?php echo $details['line']; ?></b>:<br>

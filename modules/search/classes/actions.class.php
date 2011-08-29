@@ -68,7 +68,7 @@
 
 			if ($request->hasParameter('saved_search'))
 			{
-				$savedsearch = B2DB::getTable('TBGSavedSearchesTable')->doSelectById($request->getParameter('saved_search'));
+				$savedsearch = \b2db\Core::getTable('TBGSavedSearchesTable')->doSelectById($request->getParameter('saved_search'));
 				if ($savedsearch instanceof B2DBRow && TBGContext::getUser()->canAccessSavedSearch($savedsearch))
 				{
 					$this->issavedsearch = true;
@@ -79,7 +79,7 @@
 					$this->grouporder = $savedsearch->get(TBGSavedSearchesTable::GROUPORDER);
 					$this->ipp = $savedsearch->get(TBGSavedSearchesTable::ISSUES_PER_PAGE);
 					$this->searchtitle = $savedsearch->get(TBGSavedSearchesTable::NAME);
-					$this->filters = B2DB::getTable('TBGSavedSearchFiltersTable')->getFiltersBySavedSearchID($savedsearch->get(TBGSavedSearchesTable::ID));
+					$this->filters = \b2db\Core::getTable('TBGSavedSearchFiltersTable')->getFiltersBySavedSearchID($savedsearch->get(TBGSavedSearchesTable::ID));
 				}
 			}
 		}
@@ -303,7 +303,7 @@
 			$this->appliedfilters = $this->filters;
 			$this->templates = $this->getTemplates();
 			
-			$this->savedsearches = B2DB::getTable('TBGSavedSearchesTable')->getAllSavedSearchesByUserIDAndPossiblyProjectID(TBGContext::getUser()->getID(), (TBGContext::isProjectContext()) ? TBGContext::getCurrentProject()->getID() : 0);
+			$this->savedsearches = \b2db\Core::getTable('TBGSavedSearchesTable')->getAllSavedSearchesByUserIDAndPossiblyProjectID(TBGContext::getUser()->getID(), (TBGContext::isProjectContext()) ? TBGContext::getCurrentProject()->getID() : 0);
 		}
 
 		public function runFindIssuesPaginated(TBGRequest $request)

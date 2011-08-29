@@ -1,7 +1,9 @@
 <?php
 
+	namespace b2db;
+	
 	/**
-	 * B2DB Transaction Base class
+	 * Transaction class
 	 *
 	 * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
 	 * @version 2.0
@@ -11,12 +13,12 @@
 	 */
 
 	/**
-	 * B2DB Transaction Base class
+	 * Transaction class
 	 *
 	 * @package b2db
 	 * @subpackage core
 	 */
-	class B2DBTransaction
+	class Transaction
 	{
 		protected $state = 0;
 		
@@ -26,17 +28,12 @@
 		const DB_TRANSACTION_ROLLEDBACK = 3;
 		const DB_TRANSACTION_ENDED = 4;
 		
-		/**
-		 * B2DBTransaction constructor
-		 *
-		 * @return B2DBTransaction
-		 */
 		public function __construct()
 		{
-			if (\b2db\Core::getDBLink()->beginTransaction())
+			if (Core::getDBLink()->beginTransaction())
 			{
 				$this->state = self::DB_TRANSACTION_STARTED;
-				\b2db\Core::setTransaction(true);
+				Core::setTransaction(true);
 			}
 			return $this;
 		}
@@ -54,7 +51,7 @@
 			if ($this->state == self::DB_TRANSACTION_COMMITED)
 			{
 				$this->state = self::DB_TRANSACTION_ENDED;
-				\b2db\Core::setTransaction(false);
+				Core::setTransaction(false);
 			}
 		}
 		
@@ -68,19 +65,19 @@
 		{
 			if ($this->state == self::DB_TRANSACTION_STARTED)
 			{
-				if (\b2db\Core::getDBLink()->commit())
+				if (Core::getDBLink()->commit())
 				{
 					$this->state = self::DB_TRANSACTION_COMMITED;
-					\b2db\Core::setTransaction(false);
+					Core::setTransaction(false);
 				}
 				else
 				{
-					throw new B2DBException('Error committing transaction: ' . \b2db\Core::getDBLink()->error);
+					throw new Exception('Error committing transaction: ' . Core::getDBLink()->error);
 				}
 			}
 			else
 			{
-				throw new B2DBException('There is no active transaction');
+				throw new Exception('There is no active transaction');
 			}
 		}
 		
@@ -88,19 +85,19 @@
 		{
 			if ($this->state == self::DB_TRANSACTION_STARTED)
 			{
-				if (\b2db\Core::getDBLink()->rollback())
+				if (Core::getDBLink()->rollback())
 				{
 					$this->state = self::DB_TRANSACTION_ROLLEDBACK;
-					\b2db\Core::setTransaction(false);
+					Core::setTransaction(false);
 				}
 				else
 				{
-					throw new B2DBException('Error rolling back transaction: ' . \b2db\Core::getDBLink()->error);
+					throw new Exception('Error rolling back transaction: ' . Core::getDBLink()->error);
 				}
 			}
 			else
 			{
-				throw new B2DBException('There is no active transaction');
+				throw new Exception('There is no active transaction');
 			}
 		}
 		

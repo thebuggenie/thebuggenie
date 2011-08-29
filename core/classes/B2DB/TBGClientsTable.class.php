@@ -36,7 +36,7 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGClientsTable');
+			return \b2db\Core::getTable('TBGClientsTable');
 		}
 		
 		public function __construct()

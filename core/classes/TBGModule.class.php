@@ -174,7 +174,7 @@
 					{
 						if (($tablename = mb_substr($table_class_file, 0, mb_strpos($table_class_file, '.'))) != '')
 						{
-							B2DB::getTable($tablename)->create();
+							\b2db\Core::getTable($tablename)->create();
 						}
 					}
 				}
@@ -216,7 +216,7 @@
 		{
 			$crit = new B2DBCriteria();
 			$crit->addUpdate(TBGModulesTable::ENABLED, 1);
-			B2DB::getTable('TBGModulesTable')->doUpdateById($crit, $this->getID());
+			\b2db\Core::getTable('TBGModulesTable')->doUpdateById($crit, $this->getID());
 			$this->_enabled = true;
 		}
 		
@@ -228,7 +228,7 @@
 			}
 			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
 			$this->_uninstall($scope);
-			B2DB::getTable('TBGModulesTable')->doDeleteById($this->getID());
+			\b2db\Core::getTable('TBGModulesTable')->doDeleteById($this->getID());
 			TBGSettings::deleteModuleSettings($this->getName(), $scope);
 			TBGContext::deleteModulePermissions($this->getName(), $scope);
 		}
@@ -286,8 +286,8 @@
 		public function setPermission($uid, $gid, $tid, $allowed, $scope = null)
 		{
 			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
-			B2DB::getTable('TBGModulePermissionsTable')->deleteByModuleAndUIDandGIDandTIDandScope($this->getName(), $uid, $gid, $tid, $scope);
-			B2DB::getTable('TBGModulePermissionsTable')->setPermissionByModuleAndUIDandGIDandTIDandScope($this->getName(), $uid, $gid, $tid, $allowed, $scope);
+			\b2db\Core::getTable('TBGModulePermissionsTable')->deleteByModuleAndUIDandGIDandTIDandScope($this->getName(), $uid, $gid, $tid, $scope);
+			\b2db\Core::getTable('TBGModulePermissionsTable')->setPermissionByModuleAndUIDandGIDandTIDandScope($this->getName(), $uid, $gid, $tid, $allowed, $scope);
 			if ($scope == TBGContext::getScope()->getID())
 			{
 				self::cacheAccessPermission($this->getName(), $uid, $gid, $tid, 0, $allowed);
@@ -447,12 +447,12 @@
 			//$sql .= " AND b2mp.scope = " . TBGContext::getScope()->getID();
 			$crit->addWhere(TBGModulePermissionsTable::SCOPE, TBGContext::getScope()->getID());
 	
-			//$res = b2db_sql_query($sql, B2DB::getDBlink());
+			//$res = b2db_sql_query($sql, \b2db\Core::getDBlink());
 	
 			#print $sql;
 	
 			$permissions = array();
-			$res = B2DB::getTable('TBGModulePermissionsTable')->doSelect($crit);
+			$res = \b2db\Core::getTable('TBGModulePermissionsTable')->doSelect($crit);
 	
 			while ($row = $res->getNextRow())
 			{

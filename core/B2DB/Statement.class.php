@@ -1,7 +1,9 @@
 <?php
 
+	namespace b2db;
+	
 	/**
-	 * B2DB Statement Base class
+	 * Statement class
 	 *
 	 * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
 	 * @version 2.0
@@ -11,18 +13,18 @@
 	 */
 
 	/**
-	 * B2DB Statement Base class
+	 * Statement class
 	 *
 	 * @package b2db
 	 * @subpackage core
 	 */
-	class B2DBStatement
+	class Statement
 	{
 
 		/**
-		 * Current B2DBCriteria
+		 * Current Criteria
 		 *
-		 * @var B2DBCriteria
+		 * @var Criteria
 		 */
 		protected $crit;
 		
@@ -44,17 +46,17 @@
 		/**
 		 * Returns a statement
 		 *
-		 * @param B2DBCriteria $crit
+		 * @param Criteria $crit
 		 *
-		 * @return B2DBStatement
+		 * @return Statement
 		 */
 		public static function getPreparedStatement($crit)
 		{
 			try
 			{
-				$statement = new B2DBStatement($crit);
+				$statement = new Statement($crit);
 			}
-			catch (Exception $e)
+			catch (\Exception $e)
 			{
 				throw $e;
 			}
@@ -66,14 +68,14 @@
 		{
 			try
 			{
-				if ($crit instanceof B2DBCriteria)
+				if ($crit instanceof Criteria)
 					$this->crit = $crit;
 				else
 					$this->custom_sql = $crit;
 				
 				$this->_prepare();
 			}
-			catch (Exception $e)
+			catch (\Exception $e)
 			{
 				throw $e;
 			}
@@ -84,14 +86,14 @@
 		 *
 		 * @param string $action[optional] The crud action performed (select, insert, update, delete, create, alter)
 		 *
-		 * @return B2DBResultset
+		 * @return Resultset
 		 */
 		public function performQuery($action = '')
 		{
 			try
 			{
-				$values = ($this->getCriteria() instanceof B2DBCriteria) ? $this->getCriteria()->getValues() : array();
-				TBGLogging::log('executing PDO query (' . \b2db\Core::getSQLCount() . ')', 'B2DB');
+				$values = ($this->getCriteria() instanceof Criteria) ? $this->getCriteria()->getValues() : array();
+				TBGLogging::log('executing PDO query (' . Core::getSQLCount() . ')', 'B2DB');
 
 				$time = explode(' ', microtime());
 				$pretime = $time[1] + $time[0];
@@ -100,38 +102,38 @@
 				if (!$res)
 				{
 					$error = $this->statement->errorInfo();
-					if (\b2db\Core::isDebugMode())
+					if (Core::isDebugMode())
 					{
 						$time = explode(' ', microtime());
 						$posttime = $time[1] + $time[0];
-						\b2db\Core::sqlHit($this->printSQL(), implode(', ', $values), $posttime - $pretime);
+						Core::sqlHit($this->printSQL(), implode(', ', $values), $posttime - $pretime);
 					}
-					throw new B2DBException($error[2], $this->printSQL());
+					throw new Exception($error[2], $this->printSQL());
 				}
-				if (\b2db\Core::isDebugMode())
+				if (Core::isDebugMode())
 				{
 					TBGLogging::log('done', 'B2DB');
 				}
-				if ($this->getCriteria() instanceof B2DBCriteria && $this->getCriteria()->action == 'insert')
+				if ($this->getCriteria() instanceof Criteria && $this->getCriteria()->action == 'insert')
 				{
-					if (\b2db\Core::getDBtype() == 'mysql')
+					if (Core::getDBtype() == 'mysql')
 					{
-						$this->insert_id = \b2db\Core::getDBLink()->lastInsertId();
+						$this->insert_id = Core::getDBLink()->lastInsertId();
 					}
-					elseif (\b2db\Core::getDBtype() == 'pgsql')
+					elseif (Core::getDBtype() == 'pgsql')
 					{
-						TBGLogging::log('sequence: ' . \b2db\Core::getTablePrefix() . $this->getCriteria()->getTable()->getB2DBName() . '_id_seq', 'b2db');
-						$this->insert_id = \b2db\Core::getDBLink()->lastInsertId(\b2db\Core::getTablePrefix() . $this->getCriteria()->getTable()->getB2DBName() . '_id_seq');
+						TBGLogging::log('sequence: ' . Core::getTablePrefix() . $this->getCriteria()->getTable()->getB2DBName() . '_id_seq', 'b2db');
+						$this->insert_id = Core::getDBLink()->lastInsertId(Core::getTablePrefix() . $this->getCriteria()->getTable()->getB2DBName() . '_id_seq');
 						TBGLogging::log('id is: ' . $this->insert_id, 'b2db');
 					}
 				}
-				$action = ($this->getCriteria() instanceof B2DBCriteria) ? $this->getCriteria()->action : '';
-				$retval = new B2DBResultset($this);
-				if (\b2db\Core::isDebugMode())
+				$action = ($this->getCriteria() instanceof Criteria) ? $this->getCriteria()->action : '';
+				$retval = new Resultset($this);
+				if (Core::isDebugMode())
 				{
 					$time = explode(' ', microtime());
 					$posttime = $time[1] + $time[0];
-					\b2db\Core::sqlHit($this->printSQL(), implode(', ', $values), $posttime - $pretime);
+					Core::sqlHit($this->printSQL(), implode(', ', $values), $posttime - $pretime);
 				}
 				if (!$this->getCriteria() || $this->getCriteria()->action != 'select')
 				{
@@ -139,7 +141,7 @@
 				}
 				return $retval;
 			}
-			catch (Exception $e)
+			catch (\Exception $e)
 			{
 				throw $e;
 			}
@@ -148,7 +150,7 @@
 		/**
 		 * Returns the criteria object
 		 *
-		 * @return B2DBCriteria
+		 * @return Criteria
 		 */
 		public function getCriteria()
 		{
@@ -194,7 +196,7 @@
 			}
 			catch (PDOException $e)
 			{
-				throw new B2DBException('An error occured while trying to fetch the result: "' . $e->getMessage() . '"');
+				throw new Exception('An error occured while trying to fetch the result: "' . $e->getMessage() . '"');
 			}
 		}
 
@@ -205,20 +207,20 @@
 		{
 			try
 			{
-				if (!\b2db\Core::getDBLink() instanceof PDO)
+				if (!Core::getDBLink() instanceof PDO)
 				{
-					throw new B2DBException('Connection not up, can\'t prepare the statement');
+					throw new Exception('Connection not up, can\'t prepare the statement');
 				}
-				if ($this->crit instanceof B2DBCriteria)
+				if ($this->crit instanceof Criteria)
 				{
-					$this->statement = \b2db\Core::getDBLink()->prepare($this->crit->getSQL());
+					$this->statement = Core::getDBLink()->prepare($this->crit->getSQL());
 				}
 				else
 				{
-					$this->statement = \b2db\Core::getDBLink()->prepare($this->custom_sql);
+					$this->statement = Core::getDBLink()->prepare($this->custom_sql);
 				}
 			}
-			catch (Exception $e)
+			catch (\Exception $e)
 			{
 				throw $e;
 			}
@@ -232,14 +234,14 @@
 		public function printSQL()
 		{
 			$str = '';
-			if ($this->getCriteria() instanceof B2DBCriteria)
+			if ($this->getCriteria() instanceof Criteria)
 			{
 				$str .= $this->crit->getSQL();
 				foreach ($this->crit->getValues() as $val)
 				{
 					if (is_object($val))
 					{
-						throw new B2DBException('waat');
+						throw new Exception('waat');
 					}
 					if (is_int($val))
 					{
