@@ -1,5 +1,9 @@
 <?php
 
+	use b2db\Core,
+		b2db\Criteria,
+		b2db\Criterion;
+
 	/**
 	 * Issues <-> Files table
 	 *
@@ -35,7 +39,7 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGIssueFilesTable');
+			return Core::getTable('TBGIssueFilesTable');
 		}
 
 		public function __construct()

@@ -177,11 +177,11 @@
 		{
 			try
 			{
-				$crit = new B2DBCriteria();
+				$crit = new \b2db\Criteria();
 				$crit->addWhere(TBGIssueTypesTable::ICON, 'task');
 				$crit->addWhere(TBGIssueTypesTable::SCOPE, TBGContext::getScope()->getID());
 				$row = TBGIssueTypesTable::getTable()->doSelectOne($crit);
-				if ($row instanceof B2DBRow)
+				if ($row instanceof \b2db\Row)
 				{
 					return TBGContext::factory()->TBGIssuetype($row->get(TBGIssueTypesTable::ID), $row);
 				}

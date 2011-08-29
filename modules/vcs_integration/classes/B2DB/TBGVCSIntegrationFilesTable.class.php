@@ -1,4 +1,9 @@
 <?php
+
+	use b2db\Core,
+		b2db\Criteria,
+		b2db\Criterion;
+	
 	/**
 	 * B2DB Table, vcs_integration -> VCSIntegrationFilesTable
 	 *
@@ -42,7 +47,7 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGVCSIntegrationFilesTable');
+			return Core::getTable('TBGVCSIntegrationFilesTable');
 		}
 		
 		/**

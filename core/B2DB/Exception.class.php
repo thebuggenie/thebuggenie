@@ -1,22 +1,24 @@
 <?php
 
+	namespace b2db;
+	
 	/**
 	 * B2DB Exception class
 	 *
 	 * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
 	 * @version 2.0
 	 * @license http://www.opensource.org/licenses/mozilla1.1.php Mozilla Public License 1.1 (MPL 1.1)
-	 * @package B2DB
+	 * @package b2db
 	 * @subpackage core
 	 */
 
 	/**
 	 * B2DB Exception class
 	 *
-	 * @package B2DB
+	 * @package b2db
 	 * @subpackage core
 	 */
-	class B2DBException extends Exception
+	class Exception extends \Exception
 	{
 		
 		protected $_sql = null;

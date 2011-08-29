@@ -1,5 +1,9 @@
 <?php
 
+	use b2db\Core,
+		b2db\Criteria,
+		b2db\Criterion;
+
 	/**
 	 * Issue estimates table
 	 *
@@ -78,9 +82,9 @@
 			if (count($issue_ids))
 			{
 				$crit = $this->getCriteria();
-				$crit->addWhere(self::EDITED_AT, $enddate, B2DBCriteria::DB_LESS_THAN_EQUAL);
-				$crit->addWhere(self::ISSUE_ID, $issue_ids, B2DBCriteria::DB_IN);
-				$crit->addOrderBy(self::EDITED_AT, B2DBCriteria::SORT_ASC);
+				$crit->addWhere(self::EDITED_AT, $enddate, \b2db\Criteria::DB_LESS_THAN_EQUAL);
+				$crit->addWhere(self::ISSUE_ID, $issue_ids, \b2db\Criteria::DB_IN);
+				$crit->addOrderBy(self::EDITED_AT, \b2db\Criteria::SORT_ASC);
 
 				if ($res = $this->doSelect($crit))
 				{

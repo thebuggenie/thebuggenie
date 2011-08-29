@@ -648,9 +648,9 @@
 		/**
 		 * Class constructor
 		 *
-		 * @param B2DBRow $row
+		 * @param \b2db\Row $row
 		 */
-		public function _construct(B2DBRow $row, $foreign_key = null)
+		public function _construct(\b2db\Row $row, $foreign_key = null)
 		{
 			//$this->_populateCustomfields();
 			$this->_mergeChangedProperties();
@@ -822,7 +822,7 @@
 				$this->_builds = array();
 				$this->_components = array();
 		
-				if ($res = B2DB::getTable('TBGIssueAffectsEditionTable')->getByIssueID($this->getID()))
+				if ($res = \b2db\Core::getTable('TBGIssueAffectsEditionTable')->getByIssueID($this->getID()))
 				{
 					while ($row = $res->getNextRow())
 					{
@@ -837,7 +837,7 @@
 					}
 				}
 				
-				if ($res = B2DB::getTable('TBGIssueAffectsBuildTable')->getByIssueID($this->getID()))
+				if ($res = \b2db\Core::getTable('TBGIssueAffectsBuildTable')->getByIssueID($this->getID()))
 				{
 					while ($row = $res->getNextRow())
 					{
@@ -852,7 +852,7 @@
 					}
 				}
 				
-				if ($res = B2DB::getTable('TBGIssueAffectsComponentTable')->getByIssueID($this->getID()))
+				if ($res = \b2db\Core::getTable('TBGIssueAffectsComponentTable')->getByIssueID($this->getID()))
 				{
 					while ($row = $res->getNextRow())
 					{
@@ -1623,7 +1623,7 @@
 		 */
 		public function attachLink($url, $description = null)
 		{
-			$link_id = B2DB::getTable('TBGLinksTable')->addLinkToIssue($this->getID(), $url, $description);
+			$link_id = \b2db\Core::getTable('TBGLinksTable')->addLinkToIssue($this->getID(), $url, $description);
 			return $link_id;
 		}
 
@@ -1651,7 +1651,7 @@
 				$this->_parent_issues = array();
 				$this->_child_issues = array();
 				
-				if ($res = B2DB::getTable('TBGIssueRelationsTable')->getRelatedIssues($this->getID()))
+				if ($res = \b2db\Core::getTable('TBGIssueRelationsTable')->getRelatedIssues($this->getID()))
 				{
 					while ($row = $res->getNextRow())
 					{
@@ -1816,7 +1816,7 @@
 				if ($this->_tasks == null)
 				{
 					$this->_tasks = array();
-					if ($res = B2DB::getTable('TBGIssueTasksTable')->getByIssueID($this->getID()))
+					if ($res = \b2db\Core::getTable('TBGIssueTasksTable')->getByIssueID($this->getID()))
 					{
 						while ($row = $resultset->getNextRow())
 						{
@@ -1839,7 +1839,7 @@
 			if ($this->_tags == null)
 			{
 				$this->_tags = array();
-				if ($res = B2DB::getTable('TBGIssueTagsTable')->getByIssueID($this->getID()))
+				if ($res = \b2db\Core::getTable('TBGIssueTagsTable')->getByIssueID($this->getID()))
 				{
 					while ($row = $resultset->getNextRow())
 					{
@@ -2161,7 +2161,7 @@
 		 */
 		public function removeDependantIssue($issue_id)
 		{
-			if ($row = B2DB::getTable('TBGIssueRelationsTable')->getIssueRelation($this->getID(), $issue_id))
+			if ($row = \b2db\Core::getTable('TBGIssueRelationsTable')->getIssueRelation($this->getID(), $issue_id))
 			{
 				$related_issue = TBGContext::factory()->TBGIssue($issue_id);
 				if ($row->get(TBGIssueRelationsTable::PARENT_ID) == $this->getID())
@@ -2228,9 +2228,9 @@
 		 */
 		public function addParentIssue(TBGIssue $related_issue)
 		{
-			if (!$row = B2DB::getTable('TBGIssueRelationsTable')->getIssueRelation($this->getID(), $related_issue->getID()))
+			if (!$row = \b2db\Core::getTable('TBGIssueRelationsTable')->getIssueRelation($this->getID(), $related_issue->getID()))
 			{
-				$res = B2DB::getTable('TBGIssueRelationsTable')->addParentIssue($this->getID(), $related_issue->getID());
+				$res = \b2db\Core::getTable('TBGIssueRelationsTable')->addParentIssue($this->getID(), $related_issue->getID());
 				$this->_parent_issues = null;
 				
 				$related_issue->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('This %this_issuetype% now depends on the solution of %issuetype% %issue_no%', array('%this_issuetype%' => $related_issue->getIssueType()->getName(), '%issuetype%' => $this->getIssueType()->getName(), '%issue_no%' => $this->getFormattedIssueNo())));
@@ -2253,9 +2253,9 @@
 		 */
 		public function addChildIssue(TBGIssue $related_issue)
 		{
-			if (!$row = B2DB::getTable('TBGIssueRelationsTable')->getIssueRelation($this->getID(), $related_issue->getID()))
+			if (!$row = \b2db\Core::getTable('TBGIssueRelationsTable')->getIssueRelation($this->getID(), $related_issue->getID()))
 			{
-				$res = B2DB::getTable('TBGIssueRelationsTable')->addChildIssue($this->getID(), $related_issue->getID());
+				$res = \b2db\Core::getTable('TBGIssueRelationsTable')->addChildIssue($this->getID(), $related_issue->getID());
 				$this->_child_issues = null;
 				
 				$related_issue->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('%issuetype% %issue_no% now depends on the solution of this %this_issuetype%', array('%this_issuetype%' => $related_issue->getIssueType()->getName(), '%issuetype%' => $this->getIssueType()->getName(), '%issue_no%' => $this->getFormattedIssueNo())));
@@ -3220,7 +3220,7 @@
 		{
 			if ($this->getProject() && $this->getProject()->isBuildsEnabled())
 			{
-				$retval = B2DB::getTable('TBGIssueAffectsBuildTable')->setIssueAffected($this->getID(), $build->getID());
+				$retval = \b2db\Core::getTable('TBGIssueAffectsBuildTable')->setIssueAffected($this->getID(), $build->getID());
 				if ($retval !== false)
 				{
 					$this->addLogEntry(TBGLogTable::LOG_AFF_ADD, TBGContext::getI18n()->__("'%release_name%' added", array('%release_name%' => $build->getName())));
@@ -3242,7 +3242,7 @@
 		{
 			if ($this->getProject() && $this->getProject()->isEditionsEnabled())
 			{
-				$retval = B2DB::getTable('TBGIssueAffectsEditionTable')->setIssueAffected($this->getID(), $edition->getID());
+				$retval = \b2db\Core::getTable('TBGIssueAffectsEditionTable')->setIssueAffected($this->getID(), $edition->getID());
 				if ($retval !== false)
 				{
 					$this->addLogEntry(TBGLogTable::LOG_AFF_ADD, TBGContext::getI18n()->__("'%edition_name%' added", array('%edition_name%' => $edition->getName())));
@@ -3264,7 +3264,7 @@
 		{
 			if ($this->getProject() && $this->getProject()->isComponentsEnabled())
 			{
-				$retval = B2DB::getTable('TBGIssueAffectsComponentTable')->setIssueAffected($this->getID(), $component->getID());
+				$retval = \b2db\Core::getTable('TBGIssueAffectsComponentTable')->setIssueAffected($this->getID(), $component->getID());
 				if ($retval !== false)
 				{
 					$this->addLogEntry(TBGLogTable::LOG_AFF_ADD, TBGContext::getI18n()->__("'%component_name%' added", array('%component_name%' => $component->getName())));
@@ -3288,7 +3288,7 @@
 		 */
 		public function removeAffectedEdition($item)
 		{
-			if (B2DB::getTable('TBGIssueAffectsEditionTable')->deleteByIssueIDandEditionID($this->getID(), $item->getID()))
+			if (\b2db\Core::getTable('TBGIssueAffectsEditionTable')->deleteByIssueIDandEditionID($this->getID(), $item->getID()))
 			{
 				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, TBGContext::getI18n()->__("'%item_name%' removed", array('%item_name%' => $item->getName())));
 				$this->addSystemComment(TBGContext::getI18n()->__('Affected edition removed'), TBGContext::getI18n()->__('Edition \'\'\'%edition%\'\'\' is no longer affected by issue', array('%edition%' => $item->getName())), TBGContext::getUser()->getID());
@@ -3310,7 +3310,7 @@
 		 */
 		public function removeAffectedBuild($item)
 		{
-			if (B2DB::getTable('TBGIssueAffectsBuildTable')->deleteByIssueIDandBuildID($this->getID(), $item->getID()))
+			if (\b2db\Core::getTable('TBGIssueAffectsBuildTable')->deleteByIssueIDandBuildID($this->getID(), $item->getID()))
 			{
 				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, TBGContext::getI18n()->__("'%item_name%' removed", array('%item_name%' => $item->getName())));
 				$this->addSystemComment(TBGContext::getI18n()->__('Affected build removed'), TBGContext::getI18n()->__('Build \'\'\'%build%\'\'\' is no longer affected by issue', array('%build%' => $item->getName())), TBGContext::getUser()->getID());
@@ -3332,7 +3332,7 @@
 		 */
 		public function removeAffectedComponent($item)
 		{
-			if (B2DB::getTable('TBGIssueAffectsComponentTable')->deleteByIssueIDandComponentID($this->getID(), $item->getID()))
+			if (\b2db\Core::getTable('TBGIssueAffectsComponentTable')->deleteByIssueIDandComponentID($this->getID(), $item->getID()))
 			{
 				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, TBGContext::getI18n()->__("'%item_name%' removed", array('%item_name%' => $item->getName())));
 				$this->addSystemComment(TBGContext::getI18n()->__('Affected component removed'), TBGContext::getI18n()->__('Component \'\'\'%component%\'\'\' is no longer affected by issue', array('%component%' => $item->getName())), TBGContext::getUser()->getID());
@@ -3355,7 +3355,7 @@
 		 */
 		public function confirmAffectedEdition($item, $confirmed = true)
 		{
-			if (B2DB::getTable('TBGIssueAffectsEditionTable')->confirmByIssueIDandEditionID($this->getID(), $item->getID(), $confirmed))
+			if (\b2db\Core::getTable('TBGIssueAffectsEditionTable')->confirmByIssueIDandEditionID($this->getID(), $item->getID(), $confirmed))
 			{
 				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, TBGContext::getI18n()->__("'%item_name%' confirmed", array('%item_name%' => $item->getName())));
 				if ($confirmed)
@@ -3385,7 +3385,7 @@
 		 */
 		public function confirmAffectedBuild($item, $confirmed = true)
 		{
-			if (B2DB::getTable('TBGIssueAffectsBuildTable')->confirmByIssueIDandBuildID($this->getID(), $item->getID(), $confirmed))
+			if (\b2db\Core::getTable('TBGIssueAffectsBuildTable')->confirmByIssueIDandBuildID($this->getID(), $item->getID(), $confirmed))
 			{
 				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, TBGContext::getI18n()->__("'%item_name%' confirmed", array('%item_name%' => $item->getName())));
 				if ($confirmed)
@@ -3415,7 +3415,7 @@
 		 */
 		public function confirmAffectedComponent($item, $confirmed = true)
 		{
-			if (B2DB::getTable('TBGIssueAffectsComponentTable')->confirmByIssueIDandComponentID($this->getID(), $item->getID(), $confirmed))
+			if (\b2db\Core::getTable('TBGIssueAffectsComponentTable')->confirmByIssueIDandComponentID($this->getID(), $item->getID(), $confirmed))
 			{
 				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, TBGContext::getI18n()->__("'%item_name%' confirmed", array('%item_name%' => $item->getName())));
 				
@@ -3446,7 +3446,7 @@
 		 */
 		public function setAffectedEditionStatus($item, $status)
 		{
-			if (B2DB::getTable('TBGIssueAffectsEditionTable')->setStatusByIssueIDandEditionID($this->getID(), $item->getID(), $status->getID()))
+			if (\b2db\Core::getTable('TBGIssueAffectsEditionTable')->setStatusByIssueIDandEditionID($this->getID(), $item->getID(), $status->getID()))
 			{
 				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, TBGContext::getI18n()->__("'%item_name%' -> '%status_name%", array('%item_name%' => $item->getName(), '%status_name%' => $status->getName())));
 				$this->addSystemComment(TBGContext::getI18n()->__('Affected edition updated'), TBGContext::getI18n()->__('Edition \'\'\'%edition%\'\'\' is now %status%', array('%edition%' => $item->getName(), '%status%' => $status->getName())), TBGContext::getUser()->getID());
@@ -3469,7 +3469,7 @@
 		 */
 		public function setAffectedBuildStatus($item, $status)
 		{
-			if (B2DB::getTable('TBGIssueAffectsBuildTable')->setStatusByIssueIDandBuildID($this->getID(), $item->getID(), $status->getID()))
+			if (\b2db\Core::getTable('TBGIssueAffectsBuildTable')->setStatusByIssueIDandBuildID($this->getID(), $item->getID(), $status->getID()))
 			{
 				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, TBGContext::getI18n()->__("'%item_name%' -> '%status_name%", array('%item_name%' => $item->getName(), '%status_name%' => $status->getName())));
 				$this->addSystemComment(TBGContext::getI18n()->__('Affected build updated'), TBGContext::getI18n()->__('Build \'\'\'%build%\'\'\' is now %status%', array('%build%' => $item->getName(), '%status%' => $status->getName())), TBGContext::getUser()->getID());
@@ -3492,7 +3492,7 @@
 		 */
 		public function setAffectedComponentStatus($item, $status)
 		{
-			if (B2DB::getTable('TBGIssueAffectsComponentTable')->setStatusByIssueIDandComponentID($this->getID(), $item->getID(), $status->getID()))
+			if (\b2db\Core::getTable('TBGIssueAffectsComponentTable')->setStatusByIssueIDandComponentID($this->getID(), $item->getID(), $status->getID()))
 			{
 				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, TBGContext::getI18n()->__("'%item_name%' -> '%status_name%", array('%item_name%' => $item->getName(), '%status_name%' => $status->getName())));
 				$this->addSystemComment(TBGContext::getI18n()->__('Affected component updated'), TBGContext::getI18n()->__('Component \'\'\'%component%\'\'\' is now %status%', array('%component%' => $item->getName(), '%status%' => $status->getName())), TBGContext::getUser()->getID());
@@ -3575,7 +3575,7 @@
 		{
 			if ($this->_links === null)
 			{
-				$this->_links = B2DB::getTable('TBGLinksTable')->getByIssueID($this->getID());
+				$this->_links = \b2db\Core::getTable('TBGLinksTable')->getByIssueID($this->getID());
 			}
 		}
 	
@@ -3586,7 +3586,7 @@
 		 */
 		public function removeLink($link_id)
 		{
-			if ($res = B2DB::getTable('TBGLinksTable')->removeByIssueIDandLinkID($this->getID(), $link_id))
+			if ($res = \b2db\Core::getTable('TBGLinksTable')->removeByIssueIDandLinkID($this->getID(), $link_id))
 			{
 				if (is_array($this->_links) && array_key_exists($link_id, $this->_links))
 				{
@@ -3965,7 +3965,7 @@
 		public function whenClosed()
 		{
 			if (!$this->isClosed()) return false;
-			$crit = new B2DBCriteria();
+			$crit = new \b2db\Criteria();
 			$crit->addSelectionColumn(TBGLogTable::TIME);
 			$crit->addWhere(TBGLogTable::TARGET, $this->_id);
 			$crit->addWhere(TBGLogTable::TARGET_TYPE, 1);
@@ -3987,7 +3987,7 @@
 		public function whenReopened()
 		{
 			if ($this->isClosed()) return false;
-			$crit = new B2DBCriteria();
+			$crit = new \b2db\Criteria();
 			$crit->addSelectionColumn(TBGLogTable::TIME);
 			$crit->addWhere(TBGLogTable::TARGET, $this->_id);
 			$crit->addWhere(TBGLogTable::TARGET_TYPE, 1);
@@ -4532,12 +4532,12 @@
 
 			if ($is_saved_estimated)
 			{
-				B2DB::getTable('TBGIssueEstimates')->saveEstimate($this->getID(), $this->_estimated_months, $this->_estimated_weeks, $this->_estimated_days, $this->_estimated_hours, $this->_estimated_points);
+				\b2db\Core::getTable('TBGIssueEstimates')->saveEstimate($this->getID(), $this->_estimated_months, $this->_estimated_weeks, $this->_estimated_days, $this->_estimated_hours, $this->_estimated_points);
 			}
 
 			if ($is_saved_spent)
 			{
-				B2DB::getTable('TBGIssueSpentTimes')->saveSpentTime($this->getID(), $this->_spent_months, $this->_spent_weeks, $this->_spent_days, $this->_spent_hours, $this->_spent_points);
+				\b2db\Core::getTable('TBGIssueSpentTimes')->saveSpentTime($this->getID(), $this->_spent_months, $this->_spent_weeks, $this->_spent_days, $this->_spent_hours, $this->_spent_points);
 			}
 
 			$this->related_issues_to_save = $related_issues_to_save;

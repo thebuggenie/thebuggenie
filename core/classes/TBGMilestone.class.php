@@ -179,7 +179,7 @@
 			return $sprints;
 		}
 
-		protected function _construct(B2DBRow $row, $foreign_key = null)
+		protected function _construct(\b2db\Row $row, $foreign_key = null)
 		{
 			$this->_reached = ($this->_reacheddate > 0);
 		}
@@ -826,8 +826,8 @@
 					}
 				}
 				
-				$estimations = B2DB::getTable('TBGIssueEstimates')->getEstimatesByDateAndIssueIDs($this->getStartingDate(), $this->getScheduledDate(), $child_issues);
-				$spent_times = B2DB::getTable('TBGIssueSpentTimes')->getSpentTimesByDateAndIssueIDs($this->getStartingDate(), $this->getScheduledDate(), $child_issues);
+				$estimations = \b2db\Core::getTable('TBGIssueEstimates')->getEstimatesByDateAndIssueIDs($this->getStartingDate(), $this->getScheduledDate(), $child_issues);
+				$spent_times = \b2db\Core::getTable('TBGIssueSpentTimes')->getSpentTimesByDateAndIssueIDs($this->getStartingDate(), $this->getScheduledDate(), $child_issues);
 
 				$burndowndata = array();
 				//var_dump($spent_times);var_dump($estimations);die();

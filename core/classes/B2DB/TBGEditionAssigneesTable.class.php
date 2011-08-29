@@ -1,5 +1,9 @@
 <?php
 
+	use b2db\Core,
+		b2db\Criteria,
+		b2db\Criterion;
+
 	/**
 	 * Edition assignees table
 	 *
@@ -32,16 +36,16 @@
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
 			parent::_addInteger(self::TARGET_TYPE, 5);
-			parent::_addForeignKeyColumn(self::EDITION_ID, B2DB::getTable('TBGEditionsTable'), TBGEditionsTable::ID);
+			parent::_addForeignKeyColumn(self::EDITION_ID, Core::getTable('TBGEditionsTable'), TBGEditionsTable::ID);
 			parent::_addForeignKeyColumn(self::UID, TBGUsersTable::getTable(), TBGUsersTable::ID);
-			parent::_addForeignKeyColumn(self::TID, B2DB::getTable('TBGTeamsTable'), TBGTeamsTable::ID);
+			parent::_addForeignKeyColumn(self::TID, Core::getTable('TBGTeamsTable'), TBGTeamsTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 		
 		public function getByEditionIDs($edition_ids)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::EDITION_ID, $edition_ids, B2DBCriteria::DB_IN);
+			$crit->addWhere(self::EDITION_ID, $edition_ids, Criteria::DB_IN);
 			$res = $this->doSelect($crit);
 			return $res;
 		}
@@ -125,7 +129,7 @@
 			}
 			$res = $this->doSelectOne($crit);
 
-			if (!$res instanceof B2DBRow)
+			if (!$res instanceof \b2db\Row)
 			{
 				$crit = $this->getCriteria();
 				switch (true)

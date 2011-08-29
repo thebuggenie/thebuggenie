@@ -43,7 +43,7 @@
 			if (self::$_teams === null)
 			{
 				self::$_teams = array();
-				if ($res = B2DB::getTable('TBGTeamsTable')->getAll())
+				if ($res = \b2db\Core::getTable('TBGTeamsTable')->getAll())
 				{
 					while ($row = $res->getNextRow())
 					{
@@ -147,10 +147,10 @@
 		
 		public static function findTeams($details)
 		{
-			$crit = new B2DBCriteria();
-			$crit->addWhere(TBGTeamsTable::NAME, "%$details%", B2DBCriteria::DB_LIKE);
+			$crit = new \b2db\Criteria();
+			$crit->addWhere(TBGTeamsTable::NAME, "%$details%", \b2db\Criteria::DB_LIKE);
 			$teams = array();
-			if ($res = B2DB::getTable('TBGTeamsTable')->doSelect($crit))
+			if ($res = \b2db\Core::getTable('TBGTeamsTable')->doSelect($crit))
 			{
 				while ($row = $res->getNextRow())
 				{
@@ -185,9 +185,9 @@
 			{
 				$this->_associated_projects = array();
 				
-				$projects = B2DB::getTable('TBGProjectAssigneesTable')->getProjectsByTeamID($this->getID());
-				$edition_projects = B2DB::getTable('TBGEditionAssigneesTable')->getProjectsByTeamID($this->getID());
-				$component_projects = B2DB::getTable('TBGComponentAssigneesTable')->getProjectsByTeamID($this->getID());
+				$projects = \b2db\Core::getTable('TBGProjectAssigneesTable')->getProjectsByTeamID($this->getID());
+				$edition_projects = \b2db\Core::getTable('TBGEditionAssigneesTable')->getProjectsByTeamID($this->getID());
+				$component_projects = \b2db\Core::getTable('TBGComponentAssigneesTable')->getProjectsByTeamID($this->getID());
 
 				$project_ids = array_merge(array_keys($projects), array_keys($edition_projects), array_keys($component_projects));
 				foreach ($project_ids as $project_id)

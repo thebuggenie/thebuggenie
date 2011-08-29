@@ -33,7 +33,7 @@
 			if (!array_key_exists($key, self::$_items))
 			{
 				self::$_items[$key] = array();
-				if ($items = B2DB::getTable('TBGCustomFieldOptionsTable')->getAllByKey($key))
+				if ($items = \b2db\Core::getTable('TBGCustomFieldOptionsTable')->getAllByKey($key))
 				{
 					foreach ($items as $row_id => $row)
 					{
@@ -54,7 +54,7 @@
 		 */
 		public static function getByValueAndKey($value, $key)
 		{
-			$row = B2DB::getTable('TBGCustomFieldOptionsTable')->getByValueAndKey($value, $key);
+			$row = \b2db\Core::getTable('TBGCustomFieldOptionsTable')->getByValueAndKey($value, $key);
 			if ($row)
 			{
 				return TBGContext::factory()->TBGCustomDatatypeOption($row->get(TBGCustomFieldOptionsTable::ID), $row);

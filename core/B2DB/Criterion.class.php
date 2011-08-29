@@ -1,22 +1,24 @@
 <?php
 
+	namespace b2db;
+	
 	/**
-	 * B2DB Criterion Base class
+	 * Criterion class
 	 *
 	 * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
 	 * @version 2.0
 	 * @license http://www.opensource.org/licenses/mozilla1.1.php Mozilla Public License 1.1 (MPL 1.1)
-	 * @package B2DB
+	 * @package b2db
 	 * @subpackage core
 	 */
 
 	/**
-	 * B2DB Criterion Base class
+	 * Criterion class
 	 *
-	 * @package B2DB
+	 * @package b2db
 	 * @subpackage core
 	 */
-	class B2DBCriterion
+	class Criterion
 	{
 		var $wheres = array();
 		var $ors = array();
@@ -28,7 +30,7 @@
 		 * @param mixed $value[optional]
 		 * @param string $operator[optional]
 		 */
-		public function addOr($column, $value = null, $operator = B2DBCriteria::DB_EQUALS)
+		public function addOr($column, $value = null, $operator = Criteria::DB_EQUALS)
 		{
 			if (!is_array($value))
 			{
@@ -47,7 +49,7 @@
 		 * @param mixed $value[optional]
 		 * @param string $operator[optional]
 		 */
-		public function addWhere($column, $value = null, $operator = B2DBCriteria::DB_EQUALS)
+		public function addWhere($column, $value = null, $operator = Criteria::DB_EQUALS)
 		{
 			if (!is_array($value))
 			{
@@ -69,7 +71,7 @@
 		 * @param string $additional[optional]
 		 * @param string $special[optional]
 		 */
-		public function __construct($column, $value = '', $operator = B2DBCriteria::DB_EQUALS, $variable = '', $additional = '', $special = '')
+		public function __construct($column, $value = '', $operator = Criteria::DB_EQUALS, $variable = '', $additional = '', $special = '')
 		{
 			if ($column != '')
 			{

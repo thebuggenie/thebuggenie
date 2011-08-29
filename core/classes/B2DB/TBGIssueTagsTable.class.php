@@ -1,5 +1,9 @@
 <?php
 
+	use b2db\Core,
+		b2db\Criteria,
+		b2db\Criterion;
+
 	/**
 	 * Issue tags table
 	 *
@@ -40,7 +44,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::ISSUE_ID, $issue_id);
-			$crit->addOrderBy(self::TAG_NAME, B2DBCriteria::SORT_ASC);
+			$crit->addOrderBy(self::TAG_NAME, Criteria::SORT_ASC);
 			$res = $this->doSelect($crit);
 			return $res;
 		}

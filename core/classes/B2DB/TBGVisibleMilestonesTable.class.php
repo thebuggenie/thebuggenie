@@ -1,5 +1,9 @@
 <?php
 
+	use b2db\Core,
+		b2db\Criteria,
+		b2db\Criterion;
+
 	/**
 	 * Visible milestones table
 	 *
@@ -39,7 +43,7 @@
 			$milestones = array();
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::PROJECT_ID, $project_id);
-			$crit->addOrderBy(TBGMilestonesTable::SCHEDULED, B2DBCriteria::SORT_ASC);
+			$crit->addOrderBy(TBGMilestonesTable::SCHEDULED, Criteria::SORT_ASC);
 			$res = $this->doSelect($crit);
 			return $res;
 		}

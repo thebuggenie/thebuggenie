@@ -1,5 +1,9 @@
 <?php
 
+	use b2db\Core,
+		b2db\Criteria,
+		b2db\Criterion;
+
 	/**
 	 * Workflow steps table
 	 *
@@ -37,7 +41,7 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGWorkflowStepsTable');
+			return Core::getTable('TBGWorkflowStepsTable');
 		}
 
 		public function __construct()

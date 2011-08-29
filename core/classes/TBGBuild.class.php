@@ -111,7 +111,7 @@
 			if (!array_key_exists($project_id, self::$_project_builds))
 			{
 				self::$_project_builds[$project_id] = array();
-				if ($res = B2DB::getTable('TBGBuildsTable')->getByProjectID($project_id))
+				if ($res = \b2db\Core::getTable('TBGBuildsTable')->getByProjectID($project_id))
 				{
 					while ($row = $res->getNextRow())
 					{
@@ -139,7 +139,7 @@
 			if (!array_key_exists($edition_id, self::$_edition_builds))
 			{
 				self::$_edition_builds[$edition_id] = array();
-				if ($res = B2DB::getTable('TBGBuildsTable')->getByEditionID($project_id))
+				if ($res = \b2db\Core::getTable('TBGBuildsTable')->getByEditionID($project_id))
 				{
 					$build = TBGContext::factory()->TBGBuild($row->get(TBGBuildsTable::ID), $row);
 					self::$_edition_builds[$edition_id][$build->getID()] = $build;
@@ -151,9 +151,9 @@
 		/**
 		 * Class constructor
 		 *
-		 * @param B2DBRow $row
+		 * @param \b2db\Row $row
 		 */
-		public function _construct(B2DBRow $row, $foreign_key = null)
+		public function _construct(\b2db\Row $row, $foreign_key = null)
 		{
 			try
 			{
@@ -275,13 +275,13 @@
 		{
 			if ($this->isEditionBuild())
 			{
-				B2DB::getTable('TBGBuildsTable')->clearDefaultsByEditionID($this->getParent()->getID());
+				\b2db\Core::getTable('TBGBuildsTable')->clearDefaultsByEditionID($this->getParent()->getID());
 			}
 			else
 			{
-				B2DB::getTable('TBGBuildsTable')->clearDefaultsByProjectID($this->getParent()->getID());
+				\b2db\Core::getTable('TBGBuildsTable')->clearDefaultsByProjectID($this->getParent()->getID());
 			}
-			$res = B2DB::getTable('TBGBuildsTable')->setDefaultBuild($this->getID());
+			$res = \b2db\Core::getTable('TBGBuildsTable')->setDefaultBuild($this->getID());
 			$this->_isdefault = true;
 		}
 		
@@ -290,7 +290,7 @@
 		 */
 		protected function _preDelete()
 		{
-			B2DB::getTable('TBGIssueAffectsBuildTable')->deleteByBuildID($this->getID());
+			\b2db\Core::getTable('TBGIssueAffectsBuildTable')->deleteByBuildID($this->getID());
 		}
 		
 		/**
@@ -307,7 +307,7 @@
 		{
 			if ($this->isEditionBuild())
 			{
-				$res = B2DB::getTable('TBGIssueAffectsEditionTable')->getOpenAffectedIssuesByEditionID($this->getParent()->getID(), $limit_status, $limit_category, $limit_issuetype);
+				$res = \b2db\Core::getTable('TBGIssueAffectsEditionTable')->getOpenAffectedIssuesByEditionID($this->getParent()->getID(), $limit_status, $limit_category, $limit_issuetype);
 			}
 			else
 			{
@@ -320,7 +320,7 @@
 				while ($row = $res->getNextRow())
 				{
 					$issue_id = $row->get(TBGIssuesTable::ID);
-					if (B2DB::getTable('TBGIssueAffectsBuildTable')->setIssueAffected($issue_id, $this->getID()))
+					if (\b2db\Core::getTable('TBGIssueAffectsBuildTable')->setIssueAffected($issue_id, $this->getID()))
 					{
 						$retval = true;
 					}

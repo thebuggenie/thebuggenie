@@ -1,5 +1,9 @@
 <?php
 
+	use b2db\Core,
+		b2db\Criteria,
+		b2db\Criterion;
+
 	/**
 	 * List types table
 	 *
@@ -39,7 +43,7 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGListTypesTable');
+			return Core::getTable('TBGListTypesTable');
 		}
 
 		public function __construct()
@@ -65,7 +69,7 @@
 				self::$_item_cache = array();
 				$crit = $this->getCriteria();
 				$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
-				$crit->addOrderBy(self::ORDER, B2DBCriteria::SORT_ASC);
+				$crit->addOrderBy(self::ORDER, Criteria::SORT_ASC);
 				if ($res = $this->doSelect($crit, false))
 				{
 					while ($row = $res->getNextRow())
@@ -95,7 +99,7 @@
 
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::ITEMTYPE, $itemtype);
-			$crit->addSelectionColumn(self::ORDER, 'sortorder', B2DBCriteria::DB_MAX, '', '+1');
+			$crit->addSelectionColumn(self::ORDER, 'sortorder', Criteria::DB_MAX, '', '+1');
 			$row = $this->doSelectOne($crit, 'none');
 			$sort_order = (int) $row->get('sortorder');
 			$sort_order = ($sort_order > 0) ? $sort_order : 1;

@@ -1,27 +1,29 @@
 <?php
 
+	namespace b2db;
+	
 	/**
-	 * B2DB Base class
+	 * B2DB Core class
 	 *
 	 * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
 	 * @version 2.0
 	 * @license http://www.opensource.org/licenses/mozilla1.1.php Mozilla Public License 1.1 (MPL 1.1)
-	 * @package B2DB
+	 * @package b2db
 	 * @subpackage core
 	 */
 
 	/**
-	 * B2DB Base class
+	 * B2DB Core class
 	 *
-	 * @package B2DB
+	 * @package b2db
 	 * @subpackage core
 	 */
-	class B2DB
+	class Core
 	{
 		/**
 		 * PDO object
 		 *
-		 * @var PDO
+		 * @var \PDO
 		 */
 		protected static $_db_connection = null;
 
@@ -42,13 +44,13 @@
 		/**
 		 * Loads a table and adds it to the B2DBObject stack
 		 * 
-		 * @param B2DBtable $tbl_name
+		 * @param Table $tbl_name
 		 * 
-		 * @return B2DBtable
+		 * @return Table
 		 */
-		public static function loadNewTable(B2DBtable $table)
+		public static function loadNewTable(Table $table)
 		{
-			self::$_tables[get_class($table)] = $table;
+			self::$_tables[\get_class($table)] = $table;
 			return $table;
 		}
 
@@ -90,15 +92,15 @@
 		public static function initialize($bootstrap_location = null)
 		{
 			if (!defined('B2DB_BASEPATH'))
-				throw new B2DBException('The constant B2DB_BASEPATH must be defined. B2DB_BASEPATH should be the full system path to B2DB');
+				throw new Exception('The constant B2DB_BASEPATH must be defined. B2DB_BASEPATH should be the full system path to B2DB');
 			
 			try
 			{
-				if ($bootstrap_location !== null && file_exists($bootstrap_location))
+				if ($bootstrap_location !== null && \file_exists($bootstrap_location))
 					require $bootstrap_location;
 				
 			}
-			catch (Exception $e)
+			catch (\Exception $e)
 			{
 				throw $e;
 			}
@@ -140,7 +142,7 @@
 			$string .= "\t * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>\n";
 			$string .= "\t * @version 2.0\n";
 			$string .= "\t * @license http://www.opensource.org/licenses/mozilla1.1.php Mozilla Public License 1.1 (MPL 1.1)\n";
-			$string .= "\t * @package B2DB\n";
+			$string .= "\t * @package b2db\n";
 			$string .= "\t * @subpackage core\n";
 			$string .= "\t */\n";
 			$string .= "\n";
@@ -152,23 +154,23 @@
 			$string .= "\n";
 			try
 			{
-				if (file_put_contents($bootstrap_location, $string) === false)
+				if (\file_put_contents($bootstrap_location, $string) === false)
 				{
-					throw new B2DBException('Could not save the database connection details');
+					throw new Exception('Could not save the database connection details');
 				}
 			}
-			catch (Exception $e)
+			catch (\Exception $e)
 			{
 				throw $e;
 			}
 		}
 		
 		/**
-		 * Returns the B2DBTable
+		 * Returns the Table object
 		 *
-		 * @param B2DBTable $tbl_name
+		 * @param Table $tbl_name
 		 * 
-		 * @return B2DBTable
+		 * @return Table
 		 */
 		public static function getTable($tbl_name)
 		{
@@ -176,20 +178,20 @@
 			{
 				try
 				{
-					if (!class_exists($tbl_name))
+					if (!\class_exists($tbl_name))
 					{
-						throw new B2DBException("Class $tbl_name does not exist, cannot load it");
+						throw new Exception("Class $tbl_name does not exist, cannot load it");
 					}
 					self::loadNewTable(new $tbl_name());
 				}
-				catch (Exception $e)
+				catch (\Exception $e)
 				{
 					throw $e;
 				}
 			}
 			if (!isset(self::$_tables[$tbl_name]))
 			{
-				throw new B2DBException('Table ' . $tbl_name . ' is not loaded');
+				throw new Exception('Table ' . $tbl_name . ' is not loaded');
 			}
 			return self::$_tables[$tbl_name];
 		}
@@ -219,13 +221,13 @@
 		 */
 		public static function sqlHit($sql, $values, $time)
 		{
-			$backtrace = debug_backtrace();
-			$reserved_names = array('B2DB.class.php', 'B2DBSaveable.class.php', 'B2DBCriteria.class.php', 'B2DBCriterion.class.php', 'B2DBResultset.class.php', 'B2DBRow.class.php', 'B2DBStatement.class.php', 'B2DBTransaction.class.php', 'B2DBTable.class.php', 'B2DB.class.php', 'B2DBCriteria.class.php', 'B2DBCriterion.class.php', 'B2DBResultset.class.php', 'B2DBRow.class.php', 'B2DBStatement.class.php', 'B2DBTransaction.class.php', 'B2DBTable.class.php', 'TBGB2DBTable.class.php');
+			$backtrace = \debug_backtrace();
+			$reserved_names = array('B2DB.class.php', 'B2DBSaveable.class.php', '\b2db\Criteria.class.php', 'B2DBCriterion.class.php', 'B2DBResultset.class.php', '\b2db\Row.class.php', '\b2db\Statement.class.php', 'B2DBTransaction.class.php', 'B2DBTable.class.php', 'B2DB.class.php', '\b2db\Criteria.class.php', 'B2DBCriterion.class.php', 'B2DBResultset.class.php', '\b2db\Row.class.php', '\b2db\Statement.class.php', 'B2DBTransaction.class.php', 'B2DBTable.class.php', 'TBGB2DBTable.class.php');
 
 			$trace = null;
 			foreach ($backtrace as $t)
 			{
-				if (!in_array(basename($t['file']), $reserved_names))
+				if (!\in_array(\basename($t['file']), $reserved_names))
 				{
 					$trace = $t;
 					break;
@@ -251,7 +253,7 @@
 		
 		public static function getSQLCount()
 		{
-			return count(self::$_sqlhits) +1;
+			return \count(self::$_sqlhits) +1;
 		}
 		
 		public static function getSQLTiming()
@@ -262,7 +264,7 @@
 		/**
 		 * Returns PDO object
 		 *
-		 * @return PDO
+		 * @return \PDO
 		 */
 		public static function getDBlink()
 		{
@@ -281,9 +283,9 @@
 			{
 				$res = self::getDBLink()->query($sql);
 			}
-			catch (PDOException $e)
+			catch (\PDOException $e)
 			{
-				throw new B2DBException($e->getMessage());
+				throw new Exception($e->getMessage());
 			}
 			return $res;
 		}
@@ -295,19 +297,19 @@
 		 */
 		public static function setDSN($dsn)
 		{
-			$dsn_details = parse_url($dsn);
-			if (!array_key_exists('scheme', $dsn_details))
+			$dsn_details = \parse_url($dsn);
+			if (!\array_key_exists('scheme', $dsn_details))
 			{
-				throw new B2DBException('This does not look like a valid DSN - cannot read the database type');
+				throw new Exception('This does not look like a valid DSN - cannot read the database type');
 			}
 			try
 			{
 				self::setDBtype($dsn_details['scheme']);
-				$dsn_details = explode(';', $dsn_details['path']);
+				$dsn_details = \explode(';', $dsn_details['path']);
 				foreach ($dsn_details as $dsn_detail)
 				{
-					$detail_info = explode('=', $dsn_detail);
-					if (count($detail_info) != 2)
+					$detail_info = \explode('=', $dsn_detail);
+					if (\count($detail_info) != 2)
 					{
 						throw new B2DBException('This does not look like a valid DSN - cannot read the connection details');
 					}
@@ -325,7 +327,7 @@
 					}
 				}
 			}
-			catch (Exception $e)
+			catch (\Exception $e)
 			{
 				throw $e;
 			}
@@ -490,7 +492,7 @@
 		{
 			if (self::hasDBEngine($dbtype) == false)
 			{
-				throw new B2DBException('The selected database is not supported: "' . $dbtype . '".');
+				throw new Exception('The selected database is not supported: "' . $dbtype . '".');
 			}
 			self::$_db_type = $dbtype;
 		}
@@ -502,7 +504,7 @@
 		 */
 		public static function getDBtype()
 		{
-			if (!self::$_db_type && defined('B2DB_SQLTYPE'))
+			if (!self::$_db_type && \defined('B2DB_SQLTYPE'))
 			{
 				self::setDBtype(B2DB_SQLTYPE);
 			}
@@ -519,7 +521,7 @@
 		 */
 		public static function doConnect()
 		{
-			if (!class_exists('PDO'))
+			if (!\class_exists('\\PDO'))
 			{
 				throw new B2DBException('B2DB needs the PDO PHP libraries installed. See http://php.net/PDO for more information.');
 			}
@@ -527,22 +529,22 @@
 			{
 				$uname = self::getUname();
 				$pwd = self::getPasswd();
-				if (self::$_db_connection instanceof PDO)
+				if (self::$_db_connection instanceof \PDO)
 				{
 					self::$_db_connection = null;
 				}
-				self::$_db_connection = new PDO(self::getDSN(), $uname, $pwd);
-				if (!self::$_db_connection instanceof PDO)
+				self::$_db_connection = new \PDO(self::getDSN(), $uname, $pwd);
+				if (!self::$_db_connection instanceof \PDO)
 				{
-					throw new B2DBException('Could not connect to the database, but not caught by PDO');
+					throw new Exception('Could not connect to the database, but not caught by PDO');
 				}
 				self::getDBLink()->query('SET NAMES UTF8');
 			}
-			catch (PDOException $e)
+			catch (\PDOException $e)
 			{
-				throw new B2DBException($e->getMessage());
+				throw new Exception($e->getMessage());
 			}
-			catch (B2DBException $e)
+			catch (Exception $e)
 			{
 				throw $e;
 			}
@@ -582,7 +584,7 @@
 		{
 			if (self::$_cache_dir === null)
 			{
-				$cache_dir = (defined('B2DB_CACHEPATH')) ? realpath(B2DB_CACHEPATH) : realpath(B2DB_BASEPATH . 'cache/');
+				$cache_dir = (\defined('B2DB_CACHEPATH')) ? \realpath(B2DB_CACHEPATH) : \realpath(B2DB_BASEPATH . 'cache/');
 				self::$_cache_dir = $cache_dir;
 			}
 			return self::$_cache_dir;
@@ -596,7 +598,7 @@
 			{
 				foreach (self::$_cached_column_class_properties as $class => $properties)
 				{
-					if ((!file_exists($cache_dir . "/{$class}.column_class_properties.cache.php") && is_writable($cache_dir)) || is_writable($cache_dir . "/{$class}.column_class_properties.cache.php"))
+					if ((!\file_exists($cache_dir . "/{$class}.column_class_properties.cache.php") && \is_writable($cache_dir)) || \is_writable($cache_dir . "/{$class}.column_class_properties.cache.php"))
 					{
 						$content = '<?php '."\n\n";
 						$content .= "\tself::\$_cached_column_class_properties['{$class}'] = array();\n";
@@ -605,13 +607,13 @@
 							$content .= "\tself::\$_cached_column_class_properties['{$class}']['{$property}'] = \"{$value}\";\n";
 						}
 						$content .= "\n\n";
-						file_put_contents($cache_dir . "/{$class}.column_class_properties.cache.php", $content);
+						\file_put_contents($cache_dir . "/{$class}.column_class_properties.cache.php", $content);
 					}
 				}
 				
 				foreach (self::$_cached_foreign_classes as $class => $properties)
 				{
-					if ((!file_exists($cache_dir . "/{$class}.foreign_classes.cache.php") && is_writable($cache_dir)) || is_writable($cache_dir . "/{$class}.foreign_classes.cache.php"))
+					if ((!\file_exists($cache_dir . "/{$class}.foreign_classes.cache.php") && \is_writable($cache_dir)) || \is_writable($cache_dir . "/{$class}.foreign_classes.cache.php"))
 					{
 						$content = '<?php '."\n\n";
 						$content .= "\tself::\$_cached_foreign_classes['{$class}'] = array();\n";
@@ -620,7 +622,7 @@
 							$content .= "\tself::\$_cached_foreign_classes['{$class}']['{$property}'] = \"{$value}\";\n";
 						}
 						$content .= "\n\n";
-						file_put_contents($cache_dir . "/{$class}.foreign_classes.cache.php", $content);
+						\file_put_contents($cache_dir . "/{$class}.foreign_classes.cache.php", $content);
 					}
 				}				
 			}
@@ -641,25 +643,25 @@
 		 */
 		public static function startTransaction()
 		{
-			return new B2DBTransaction();
+			return new Transaction();
 		}
 		
 		public static function isTransactionActive()
 		{
-			return (bool) self::$_transaction_active == B2DBTransaction::DB_TRANSACTION_STARTED;
+			return (bool) self::$_transaction_active == Transaction::STATE_STARTED;
 		}
 		
 		/**
 		 * Displays a nicely formatted exception message
 		 *  
-		 * @param B2DBException $exception
+		 * @param Exception $exception
 		 */
-		public static function fatalError(B2DBException $exception)
+		public static function fatalError(Exception $exception)
 		{
-			$ob_status = ob_get_status();
+			$ob_status = \ob_get_status();
 			if (!empty($ob_status) && $ob_status['status'] != PHP_OUTPUT_HANDLER_END)
 			{
-				ob_end_clean();
+				\ob_end_clean();
 			}
 			if (self::$_throwhtmlexception)
 			{
@@ -702,11 +704,11 @@
 					foreach ($exception->getTrace() as $trace_element)
 					{
 						echo '<li>';
-						if (array_key_exists('class', $trace_element))
+						if (\array_key_exists('class', $trace_element))
 						{
 							echo '<strong>'.$trace_element['class'].$trace_element['type'].$trace_element['function'].'()</strong><br>';
 						}
-						elseif (array_key_exists('function', $trace_element))
+						elseif (\array_key_exists('function', $trace_element))
 						{
 							echo '<strong>'.$trace_element['function'].'()</strong><br>';
 						}
@@ -714,7 +716,7 @@
 						{
 							echo '<strong>unknown function</strong><br>';
 						}
-						if (array_key_exists('file', $trace_element))
+						if (\array_key_exists('file', $trace_element))
 						{
 							echo '<span style="color: #55F;">'.$trace_element['file'].'</span>, line '.$trace_element['line'];
 						}
@@ -771,7 +773,7 @@
 		{
 			$retarr = array();
 			
-			if (class_exists('PDO'))
+			if (\class_exists('\PDO'))
 			{
 				$retarr['mysql'] = 'MySQL';
 				$retarr['pgsql'] = 'PostgreSQL';
@@ -785,7 +787,7 @@
 			}
 			else
 			{
-				throw new B2DBException('You need to have PHP PDO installed to be able to use B2DB');
+				throw new Exception('You need to have PHP PDO installed to be able to use B2DB');
 			}
 			
 			return $retarr;
@@ -800,18 +802,18 @@
 		 */
 		public static function hasDBEngine($driver)
 		{
-			return array_key_exists($driver, self::getDBtypes());
+			return \array_key_exists($driver, self::getDBtypes());
 		}
 
 		public static function loadCachedClassFiles($class)
 		{
 			$filename = self::getCacheDir() . "/{$class}.column_class_properties.cache.php";
-			if (file_exists($filename))
+			if (\file_exists($filename))
 			{
 				require $filename;
 			}
 			$filename = self::getCacheDir() . "/{$class}.foreign_classes.cache.php";
-			if (file_exists($filename))
+			if (\file_exists($filename))
 			{
 				require $filename;
 			}
@@ -819,7 +821,7 @@
 		
 		public static function addCachedColumnClassProperty($column, $class, $property)
 		{
-			if (!array_key_exists($class, self::$_cached_column_class_properties))
+			if (!\array_key_exists($class, self::$_cached_column_class_properties))
 			{
 				self::$_cached_column_class_properties[$class] = array();
 			}
@@ -829,9 +831,9 @@
 		public static function getCachedColumnClassProperty($column, $class)
 		{
 			self::loadCachedClassFiles($class);
-			if (array_key_exists($class, self::$_cached_column_class_properties))
+			if (\array_key_exists($class, self::$_cached_column_class_properties))
 			{
-				if (array_key_exists($column, self::$_cached_column_class_properties[$class]))
+				if (\array_key_exists($column, self::$_cached_column_class_properties[$class]))
 				{
 					return self::$_cached_column_class_properties[$class][$column];
 				}
@@ -841,7 +843,7 @@
 		
 		public static function addCachedClassPropertyForeignClass($class, $property, $foreign_class)
 		{
-			if (!array_key_exists($class, self::$_cached_foreign_classes))
+			if (!\array_key_exists($class, self::$_cached_foreign_classes))
 			{
 				self::$_cached_foreign_classes[$class] = array();
 			}
@@ -851,9 +853,9 @@
 		public static function getCachedClassPropertyForeignClass($class, $property)
 		{
 			self::loadCachedClassFiles($class);
-			if (array_key_exists($class, self::$_cached_foreign_classes))
+			if (\array_key_exists($class, self::$_cached_foreign_classes))
 			{
-				if (array_key_exists($property, self::$_cached_foreign_classes[$class]))
+				if (\array_key_exists($property, self::$_cached_foreign_classes[$class]))
 				{
 					return self::$_cached_foreign_classes[$class][$property];
 				}

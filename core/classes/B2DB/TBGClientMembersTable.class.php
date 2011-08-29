@@ -1,5 +1,9 @@
 <?php
 
+	use b2db\Core,
+		b2db\Criteria,
+		b2db\Criterion;
+
 	/**
 	 * Client members table
 	 *
@@ -33,7 +37,7 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGClientMembersTable');
+			return Core::getTable('TBGClientMembersTable');
 		}
 
 		public function __construct()
@@ -41,7 +45,7 @@
 			parent::__construct(self::B2DBNAME, self::ID);
 			
 			parent::_addForeignKeyColumn(self::UID, TBGUsersTable::getTable(), TBGUsersTable::ID);
-			parent::_addForeignKeyColumn(self::CID, B2DB::getTable('TBGClientsTable'), TBGClientsTable::ID);
+			parent::_addForeignKeyColumn(self::CID, Core::getTable('TBGClientsTable'), TBGClientsTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 

@@ -1,29 +1,29 @@
 <?php
 
+	namespace b2db;
+	
 	/**
-	 * B2DB Resultset Base class
+	 * Resultset class
 	 *
 	 * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
 	 * @version 2.0
 	 * @license http://www.opensource.org/licenses/mozilla1.1.php Mozilla Public License 1.1 (MPL 1.1)
-	 * @package B2DB
+	 * @package b2db
 	 * @subpackage core
 	 */
 
 	/**
-	 * B2DB Resultset Base class
+	 * Resultset class
 	 *
-	 * @package B2DB
+	 * @package b2db
 	 * @subpackage core
 	 */
-	class B2DBResultset
+	class Resultset
 	{
 		protected $rows = array();
 		
 		/**
-		 * b2dbcriteria
-		 *
-		 * @var B2DBCriteria
+		 * @var Criteria
 		 */
 		protected $crit;
 		protected $int_ptr;
@@ -31,12 +31,12 @@
 		protected $insert_id;
 		protected $num_col;
 
-		public function __construct(B2DBStatement $statement)
+		public function __construct(Statement $statement)
 		{
 			try
 			{
 				$this->crit = $statement->getCriteria();
-				if ($this->crit instanceof B2DBCriteria)
+				if ($this->crit instanceof Criteria)
 				{
 					if ($this->crit->action == 'insert')
 					{
@@ -46,7 +46,7 @@
 					{
 						while ($row = $statement->fetch())
 						{
-							$this->rows[] = new B2DBRow($row, $statement);
+							$this->rows[] = new Row($row, $statement);
 						}
 						$this->max_ptr = count($this->rows);
 						$this->int_ptr = 0;
@@ -58,7 +58,7 @@
 					}
 				}
 			}
-			catch (Exception $e)
+			catch (\Exception $e)
 			{
 				throw $e;
 			}
@@ -95,13 +95,13 @@
 		/**
 		 * Returns the current row
 		 *
-		 * @return B2DBRow
+		 * @return Row
 		 */
 		public function getCurrentRow()
 		{
 			if ($this->int_ptr == 0)
 			{
-				TBGLogging::log('This is not a valid row');
+				\TBGLogging::log('This is not a valid row');
 			}
 			if (isset($this->rows[($this->int_ptr - 1)]))
 			{
@@ -114,18 +114,18 @@
 		 * Advances through the resultset and returns the current row
 		 * Returns false when there are no more rows
 		 *
-		 * @return B2DBRow
+		 * @return Row
 		 */
 		public function getNextRow()
 		{
 			if ($this->next())
 			{
 				$theRow = $this->getCurrentRow();
-				if ($theRow instanceof B2DBRow)
+				if ($theRow instanceof Row)
 				{
 					return $theRow;
 				}
-				throw new B2DBException('This should never happen. Please file a bug report');
+				throw new Exception('This should never happen. Please file a bug report');
 			}
 			else
 			{
@@ -136,13 +136,13 @@
 		public function get($column, $foreign_key = null)
 		{
 			$theRow = $this->getCurrentRow();
-			if ($theRow instanceof B2DBRow)
+			if ($theRow instanceof Row)
 			{
 				return $theRow->get($column, $foreign_key);
 			}
 			else
 			{
-				throw new B2DBException('Cannot return value of ' . $column . ' on a row that doesn\' exist');
+				throw new Exception('Cannot return value of ' . $column . ' on a row that doesn\' exist');
 			}
 		}
 
@@ -158,13 +158,13 @@
 
 		public function getSQL()
 		{
-			return ($this->crit instanceof B2DBCriteria) ? $this->crit->getSQL() : '';
+			return ($this->crit instanceof Criteria) ? $this->crit->getSQL() : '';
 		}
 		
 		public function printSQL()
 		{
 			$str = '';
-			if ($this->crit instanceof B2DBCriteria)
+			if ($this->crit instanceof Criteria)
 			{
 				$str .= $this->crit->getSQL();
 				foreach ($this->crit->getValues() as $val)

@@ -1,5 +1,9 @@
 <?php
 
+	use b2db\Core,
+		b2db\Criteria,
+		b2db\Criterion;
+
 	class TBGArticleHistoryTable extends TBGB2DBTable
 	{
 
@@ -22,7 +26,7 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGArticleHistoryTable');
+			return Core::getTable('TBGArticleHistoryTable');
 		}
 
 		public function __construct()
@@ -41,7 +45,7 @@
 		protected function _getNextRevisionNumberForArticle($article_name)
 		{
 			$crit = $this->getCriteria();
-			$crit->addSelectionColumn(self::REVISION, 'next_revision', B2DBCriteria::DB_MAX, '', '+1');
+			$crit->addSelectionColumn(self::REVISION, 'next_revision', Criteria::DB_MAX, '', '+1');
 			$crit->addWhere(self::ARTICLE_NAME, $article_name);
 
 			$row = $this->doSelectOne($crit);
@@ -50,7 +54,7 @@
 
 		public function addArticleHistory($article_name, $old_content, $new_content, $user_id, $reason = null)
 		{
-			$transaction = B2DB::startTransaction();
+			$transaction = Core::startTransaction();
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::ARTICLE_NAME, $article_name);
 			$crit->addInsert(self::AUTHOR, $user_id);
@@ -128,7 +132,7 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::ARTICLE_NAME, $article_name);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
-			$crit->addWhere(self::REVISION, $revision, B2DBCriteria::DB_GREATER_THAN);
+			$crit->addWhere(self::REVISION, $revision, Criteria::DB_GREATER_THAN);
 			$res = $this->doDelete($crit);
 		}
 

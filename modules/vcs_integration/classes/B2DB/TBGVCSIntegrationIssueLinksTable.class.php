@@ -1,4 +1,9 @@
 <?php
+
+	use b2db\Core,
+		b2db\Criteria,
+		b2db\Criterion;
+	
 	/**
 	 * B2DB Table, vcs_integration -> VCSIntegrationIssueLinksTable
 	 *
@@ -40,13 +45,13 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGVCSIntegrationIssueLinksTable');
+			return Core::getTable('TBGVCSIntegrationIssueLinksTable');
 		}
 
 		/**
 		 * Get all rows by commit ID
 		 * @param integer $id
-		 * @return B2DBRow
+		 * @return \b2db\Row
 		 */
 		public function getByCommitID($id, $scope = null)
 		{
@@ -63,7 +68,7 @@
 		/**
 		 * Get all rows by issue ID
 		 * @param integer $id
-		 * @return B2DBRow
+		 * @return \b2db\Row
 		 */
 		public function getByIssueID($id, $scope = null)
 		{

@@ -1,5 +1,9 @@
 <?php
 
+	use b2db\Core,
+		b2db\Criteria,
+		b2db\Criterion;
+
 	class TBGMailQueueTable extends TBGB2DBTable
 	{
 		
@@ -17,7 +21,7 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGMailQueueTable');
+			return Core::getTable('TBGMailQueueTable');
 		}
 
 		public function __construct()
@@ -49,7 +53,7 @@
 			{
 				$crit->setLimit($limit);
 			}
-			$crit->addOrderBy(self::DATE, 'asc');
+			$crit->addOrderBy(self::DATE, Criteria::SORT_ASC);
 
 			$messages = array();
 			$res = $this->doSelect($crit);
@@ -69,7 +73,7 @@
 		public function deleteProcessedMessages($ids)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::ID, (array) $ids, B2DBCriteria::DB_IN);
+			$crit->addWhere(self::ID, (array) $ids, Criteria::DB_IN);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 
 			$res = $this->doDelete($crit);

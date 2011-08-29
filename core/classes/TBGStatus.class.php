@@ -97,7 +97,7 @@
 		
 		public function hasLinkedWorkflowStep()
 		{
-			return (bool) B2DB::getTable('TBGWorkflowStepsTable')->countByStatusID($this->getID());
+			return (bool) \b2db\Core::getTable('TBGWorkflowStepsTable')->countByStatusID($this->getID());
 		}
 		
 		public function canBeDeleted()

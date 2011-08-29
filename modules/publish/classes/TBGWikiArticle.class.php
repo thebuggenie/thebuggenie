@@ -100,7 +100,7 @@
 		 *
 		 * @param B2DBrow $row
 		 */
-		public function _construct(B2DBRow $row, $foreign_key = null)
+		public function _construct(\b2db\Row $row, $foreign_key = null)
 		{
 			$this->_content = str_replace("\r\n", "\n", $this->_content);
 			$this->_old_content = $this->_content;
@@ -142,7 +142,7 @@
 			{
 				$row = TBGArticlesTable::getTable()->getArticleByName($article_name);
 			}
-			if ($row instanceof B2DBRow)
+			if ($row instanceof \b2db\Row)
 			{
 				return PublishFactory::article($row->get(TBGArticlesTable::ID), $row);
 			}
@@ -626,7 +626,7 @@
 				$key = $namespaces[0];
 				$row = TBGProjectsTable::getTable()->getByKey($key);
 				
-				if ($row instanceof B2DBRow)
+				if ($row instanceof \b2db\Row)
 				{
 					$project = TBGContext::factory()->TBGProject($row->get(TBGProjectsTable::ID), $row);
 					if ($project instanceof TBGProject)
@@ -649,7 +649,7 @@
 				$key = $namespaces[0];
 				$row = TBGProjectsTable::getTable()->getByKey($key);
 				
-				if ($row instanceof B2DBRow)
+				if ($row instanceof \b2db\Row)
 				{
 					$project = TBGContext::factory()->TBGProject($row->get(TBGProjectsTable::ID), $row);
 					if ($project instanceof TBGProject)
@@ -677,7 +677,7 @@
 				$key = $namespaces[0];
 				$row = TBGProjectsTable::getTable()->getByKey($key);
 				
-				if ($row instanceof B2DBRow)
+				if ($row instanceof \b2db\Row)
 				{
 					$project = TBGContext::factory()->TBGProject($row->get(TBGProjectsTable::ID), $row);
 					if ($project instanceof TBGProject)

@@ -1,5 +1,9 @@
 <?php
 
+	use b2db\Core,
+		b2db\Criteria,
+		b2db\Criterion;
+
 	/**
 	 * Visible issue types table
 	 *
@@ -38,7 +42,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::PROJECT_ID, $project_id);
-			$crit->addOrderBy(TBGIssueTypesTable::NAME, B2DBCriteria::SORT_ASC);
+			$crit->addOrderBy(TBGIssueTypesTable::NAME, Criteria::SORT_ASC);
 			$res = $this->doSelect($crit);
 			return $res;
 		}

@@ -775,9 +775,9 @@
 		/**
 		 * Constructor function
 		 *
-		 * @param B2DBRow $row
+		 * @param \b2db\Row $row
  		 */
-		public function _construct(B2DBRow $row, $foreign_key = null)
+		public function _construct(\b2db\Row $row, $foreign_key = null)
 		{
 			TBGEvent::createNew('core', 'TBGProject::__construct', $this)->trigger();
 		}
@@ -1402,15 +1402,15 @@
 			switch (true)
 			{
 				case ($assignee instanceof TBGUser):
-					if (!$res = B2DB::getTable('TBGProjectAssigneesTable')->getByProjectAndRoleAndUser($this->getID(), $role, $assignee->getID()))
+					if (!$res = \b2db\Core::getTable('TBGProjectAssigneesTable')->getByProjectAndRoleAndUser($this->getID(), $role, $assignee->getID()))
 					{
-						B2DB::getTable('TBGProjectAssigneesTable')->addByProjectAndRoleAndUser($this->getID(), $role, $assignee->getID());
+						\b2db\Core::getTable('TBGProjectAssigneesTable')->addByProjectAndRoleAndUser($this->getID(), $role, $assignee->getID());
 					}
 					break;
 				case ($assignee instanceof TBGTeam):
-					if (!($res = B2DB::getTable('TBGProjectAssigneesTable')->getByProjectAndRoleAndTeam($this->getID(), $role, $assignee->getID())))
+					if (!($res = \b2db\Core::getTable('TBGProjectAssigneesTable')->getByProjectAndRoleAndTeam($this->getID(), $role, $assignee->getID())))
 					{
-						B2DB::getTable('TBGProjectAssigneesTable')->addByProjectAndRoleAndTeam($this->getID(), $role, $assignee->getID());
+						\b2db\Core::getTable('TBGProjectAssigneesTable')->addByProjectAndRoleAndTeam($this->getID(), $role, $assignee->getID());
 					}
 					break;
 			}
@@ -1614,7 +1614,7 @@
 			if ($this->_visible_milestones === null)
 			{
 				$this->_visible_milestones = array();
-				if ($res = B2DB::getTable('TBGVisibleMilestonesTable')->getAllByProjectID($this->getID()))
+				if ($res = \b2db\Core::getTable('TBGVisibleMilestonesTable')->getAllByProjectID($this->getID()))
 				{
 					while ($row = $res->getNextRow())
 					{
@@ -1647,7 +1647,7 @@
 		public function clearVisibleMilestones()
 		{
 			$this->_visible_milestones = null;
-			B2DB::getTable('TBGVisibleMilestonesTable')->clearByProjectID($this->getID());
+			\b2db\Core::getTable('TBGVisibleMilestonesTable')->clearByProjectID($this->getID());
 		}
 		
 		/**
@@ -1662,7 +1662,7 @@
 			try
 			{
 				$this->_visible_milestones = null;
-				B2DB::getTable('TBGVisibleMilestonesTable')->addByProjectIDAndMilestoneID($this->getID(), $milestone_id);
+				\b2db\Core::getTable('TBGVisibleMilestonesTable')->addByProjectIDAndMilestoneID($this->getID(), $milestone_id);
 				return true;
 			}
 			catch (Exception $e)
@@ -1780,7 +1780,7 @@
 		public function clearVisibleIssuetypes()
 		{
 			$this->_visible_issuetypes = null;
-			B2DB::getTable('TBGVisibleIssueTypesTable')->clearByProjectID($this->getID());
+			\b2db\Core::getTable('TBGVisibleIssueTypesTable')->clearByProjectID($this->getID());
 		}
 		
 		/**
@@ -1794,7 +1794,7 @@
 		{
 			try
 			{
-				B2DB::getTable('TBGVisibleIssueTypesTable')->addByProjectIDAndIssuetypeID($this->getID(), $issuetype_id);
+				\b2db\Core::getTable('TBGVisibleIssueTypesTable')->addByProjectIDAndIssuetypeID($this->getID(), $issuetype_id);
 				return true;
 			}
 			catch (Exception $e)
@@ -2142,7 +2142,7 @@
 			if (!isset($this->_fieldsarrays[$issue_type][(int) $reportable]))
 			{
 				$retval = array();
-				$res = B2DB::getTable('TBGIssueFieldsTable')->getBySchemeIDandIssuetypeID($this->getIssuetypeScheme()->getID(), $issue_type);
+				$res = \b2db\Core::getTable('TBGIssueFieldsTable')->getBySchemeIDandIssuetypeID($this->getIssuetypeScheme()->getID(), $issue_type);
 				if ($res)
 				{
 					$builtin_types = TBGDatatype::getAvailableFields(true);

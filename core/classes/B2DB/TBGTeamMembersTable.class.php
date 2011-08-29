@@ -1,5 +1,9 @@
 <?php
 
+	use b2db\Core,
+		b2db\Criteria,
+		b2db\Criterion;
+
 	/**
 	 * Team members table
 	 *
@@ -33,7 +37,7 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGTeamMembersTable');
+			return Core::getTable('TBGTeamMembersTable');
 		}
 
 		public function __construct()
@@ -41,7 +45,7 @@
 			parent::__construct(self::B2DBNAME, self::ID);
 			
 			parent::_addForeignKeyColumn(self::UID, TBGUsersTable::getTable(), TBGUsersTable::ID);
-			parent::_addForeignKeyColumn(self::TID, B2DB::getTable('TBGTeamsTable'), TBGTeamsTable::ID);
+			parent::_addForeignKeyColumn(self::TID, Core::getTable('TBGTeamsTable'), TBGTeamsTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 
@@ -83,7 +87,7 @@
 			{
 				$crit = $this->getCriteria();
 				$crit->addWhere(self::UID, $user_id);
-				$crit->addWhere(self::TID, array_keys($team_ids), B2DBCriteria::DB_IN);
+				$crit->addWhere(self::TID, array_keys($team_ids), Criteria::DB_IN);
 				$res = $this->doDelete($crit);
 			}
 		}

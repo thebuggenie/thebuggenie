@@ -40,7 +40,7 @@
 		
 		public static function getViews($tid, $target_type)
 		{
-			return B2DB::getTable('TBGDashboardViewsTable')->getViews($tid, $target_type);;
+			return \b2db\Core::getTable('TBGDashboardViewsTable')->getViews($tid, $target_type);;
 		}
 		
 		public static function getAvailableViews($target_type)
@@ -61,7 +61,7 @@
 						$searches[self::DASHBOARD_VIEW_LAST_COMMENTS] = array( 0 => TBGContext::geti18n()->__('Recent comments'));	
 					}
 					$searches[self::DASHBOARD_VIEW_SAVED_SEARCH] = array();
-					$allsavedsearches = B2DB::getTable('TBGSavedSearchesTable')->getAllSavedSearchesByUserIDAndPossiblyProjectID(TBGContext::getUser()->getID());
+					$allsavedsearches = \b2db\Core::getTable('TBGSavedSearchesTable')->getAllSavedSearchesByUserIDAndPossiblyProjectID(TBGContext::getUser()->getID());
 					foreach ($allsavedsearches as $savedsearches)
 					{
 						foreach ($savedsearches as $a_savedsearch)
@@ -96,10 +96,10 @@
 		
 		public static function setViews($tid, $target_type, $views)
 		{
-			B2DB::getTable('TBGDashboardViewsTable')->clearViews($tid, $target_type);
+			\b2db\Core::getTable('TBGDashboardViewsTable')->clearViews($tid, $target_type);
 			foreach($views as $key => $view)
 			{
-				B2DB::getTable('TBGDashboardViewsTable')->addView($tid, $target_type, $view);
+				\b2db\Core::getTable('TBGDashboardViewsTable')->addView($tid, $target_type, $view);
 			}
 		}
 		

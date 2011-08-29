@@ -78,7 +78,7 @@
 			list ($module_file, $actionClassName, $actionToRunName) = self::_getComponentDetails($template);
 			if (!class_exists($actionClassName))
 			{
-				TBGContext::addClasspath(THEBUGGENIE_MODULES_PATH . $module_file['module'] . DS . 'classes' . DS);
+				TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . $module_file['module'] . DS . 'classes' . DS);
 			}
 			if (!class_exists($actionClassName))
 			{

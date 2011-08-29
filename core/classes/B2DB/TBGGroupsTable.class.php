@@ -1,5 +1,9 @@
 <?php
 
+	use b2db\Core,
+		b2db\Criteria,
+		b2db\Criterion;
+
 	/**
 	 * Groups table
 	 *
@@ -32,7 +36,7 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGGroupsTable');
+			return Core::getTable('TBGGroupsTable');
 		}
 
 		public function __construct()

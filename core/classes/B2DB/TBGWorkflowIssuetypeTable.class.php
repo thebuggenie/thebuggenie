@@ -1,5 +1,9 @@
 <?php
 
+	use b2db\Core,
+		b2db\Criteria,
+		b2db\Criterion;
+
 	/**
 	 * Link table between workflow and issue type
 	 *
@@ -34,7 +38,7 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGWorkflowIssuetypeTable');
+			return Core::getTable('TBGWorkflowIssuetypeTable');
 		}
 
 		public function __construct()

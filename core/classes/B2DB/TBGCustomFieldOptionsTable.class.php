@@ -1,5 +1,9 @@
 <?php
 
+	use b2db\Core,
+		b2db\Criteria,
+		b2db\Criterion;
+
 	/**
 	 * Custom field options table
 	 *
@@ -44,10 +48,10 @@
 		{
 			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
 
-			$trans = B2DB::startTransaction();
+			$trans = Core::startTransaction();
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::CUSTOMFIELDS_KEY, $key);
-			$crit->addSelectionColumn(self::SORT_ORDER, 'sortorder', B2DBCriteria::DB_MAX, '', '+1');
+			$crit->addSelectionColumn(self::SORT_ORDER, 'sortorder', Criteria::DB_MAX, '', '+1');
 			$row = $this->doSelectOne($crit, 'none');
 			$sort_order = (int) $row->get('sortorder');
 			$sort_order = ($sort_order > 0) ? $sort_order : 1;
@@ -72,7 +76,7 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::CUSTOMFIELDS_KEY, $key);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
-			$crit->addOrderBy(self::SORT_ORDER, B2DBCriteria::SORT_ASC);
+			$crit->addOrderBy(self::SORT_ORDER, Criteria::SORT_ASC);
 			
 			$res = $this->doSelect($crit);
 			

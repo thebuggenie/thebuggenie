@@ -1,5 +1,9 @@
 <?php
 
+	use b2db\Core,
+		b2db\Criteria,
+		b2db\Criterion;
+
 	/**
 	 * Issue <-> custom fields relations table
 	 *
@@ -34,14 +38,14 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGIssueCustomFieldsTable');
+			return Core::getTable('TBGIssueCustomFieldsTable');
 		}
 
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
 			parent::_addForeignKeyColumn(self::ISSUE_ID, TBGIssuesTable::getTable(), TBGIssuesTable::ID);
-			parent::_addForeignKeyColumn(self::CUSTOMFIELDS_ID, B2DB::getTable('TBGCustomFieldsTable'), TBGCustomFieldsTable::ID);
+			parent::_addForeignKeyColumn(self::CUSTOMFIELDS_ID, Core::getTable('TBGCustomFieldsTable'), TBGCustomFieldsTable::ID);
 			parent::_addText(self::OPTION_VALUE, false);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
@@ -60,7 +64,7 @@
 		public function getRowByCustomFieldIDandIssueID($customdatatype_id, $issue_id)
 		{
 			$crit = $this->getCriteria();
-//			$crit->addJoin(B2DB::getTable('TBGCustomFieldOptionsTable'), TBGCustomFieldOptionsTable::ID, self::OPTION_VALUE);
+//			$crit->addJoin(Core::getTable('TBGCustomFieldOptionsTable'), TBGCustomFieldOptionsTable::ID, self::OPTION_VALUE);
 			$crit->addWhere(self::ISSUE_ID, $issue_id);
 			$crit->addWhere(self::CUSTOMFIELDS_ID, $customdatatype_id);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());

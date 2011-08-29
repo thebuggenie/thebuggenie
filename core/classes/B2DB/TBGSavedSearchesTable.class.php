@@ -1,5 +1,9 @@
 <?php
 
+	use b2db\Core,
+		b2db\Criteria,
+		b2db\Criterion;
+
 	class TBGSavedSearchesTable extends TBGB2DBTable 
 	{
 
@@ -108,8 +112,8 @@
 				$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
 				$saved_search_id = $this->doInsert($crit)->getInsertID();
 			}
-			B2DB::getTable('TBGSavedSearchFiltersTable')->deleteBySearchID($saved_search_id);
-			B2DB::getTable('TBGSavedSearchFiltersTable')->saveFiltersForSavedSearch($saved_search_id, $filters);
+			Core::getTable('TBGSavedSearchFiltersTable')->deleteBySearchID($saved_search_id);
+			Core::getTable('TBGSavedSearchFiltersTable')->saveFiltersForSavedSearch($saved_search_id, $filters);
 			return $saved_search_id;
 		}
 

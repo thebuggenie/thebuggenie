@@ -1,5 +1,9 @@
 <?php
 
+	use b2db\Core,
+		b2db\Criteria,
+		b2db\Criterion;
+
 	class TBGSavedSearchFiltersTable extends TBGB2DBTable
 	{
 
@@ -19,7 +23,7 @@
 			parent::_addVarchar(self::OPERATOR, 40);
 			parent::_addVarchar(self::FILTER_KEY, 100);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
-			parent::_addForeignKeyColumn(self::SEARCH_ID, B2DB::getTable('TBGSavedSearchesTable'), TBGSavedSearchesTable::ID);
+			parent::_addForeignKeyColumn(self::SEARCH_ID, Core::getTable('TBGSavedSearchesTable'), TBGSavedSearchesTable::ID);
 		}
 
 		public function getFiltersBySavedSearchID($savedsearch_id)
