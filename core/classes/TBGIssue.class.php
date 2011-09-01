@@ -710,6 +710,13 @@
 				TBGLogging::log('done checking, allowed since this user is assigned to it');
 				return true;
 			}
+			if (TBGContext::getUser()->hasPermission('canseegroupissues', 0, 'core', true, true) &&
+				$this->getPostedByType() == TBGIdentifiableClass::TYPE_USER && 
+				$this->getPostedBy()->getGroupID() == TBGContext::getUser()->getGroupID())
+			{
+				TBGLogging::log('done checking, allowed since this user is in same group as user that posted it');
+				return true;
+			}
 			if (!TBGContext::getUser()->hasPermission('canseeallissues', 0, 'core', true, true))
 			{
 				TBGLogging::log('done checking, not allowed to access issues not posted by themselves');
@@ -2473,6 +2480,17 @@
 		{
 			return (bool) ($this->getPostedBy() instanceof TBGIdentifiable);
 		}
+
+                /**
+                 * Returns the poster type
+                 *
+                 * @return integer
+                 */
+                public function getPostedByType()
+                {
+                        $poster = $this->getPostedBy();
+                        return ($poster instanceof TBGIdentifiableClass) ? $poster->getType() : null;
+                }
 		
 		/**
 		 * Return the poster id
