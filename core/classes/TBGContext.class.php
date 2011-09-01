@@ -1204,6 +1204,7 @@
 				self::$_available_permissions = array('user' => array(), 'general' => array(), 'project' => array());
 
 				self::$_available_permissions['user']['canseeallissues'] = array('description' => $i18n->__('Can see issues reported by other users'), 'mode' => 'permissive');
+				self::$_available_permissions['user']['canseegroupissues'] = array('description' => $i18n->__('Can see issues reported by users in the same group'), 'mode' => 'permissive');
 				self::$_available_permissions['configuration']['cansaveconfig'] = array('description' => $i18n->__('Can access the configuration page and edit all configuration'), 'details' => array());
 				self::$_available_permissions['configuration']['cansaveconfig']['details'][] = array('canviewconfig' => array('description' => $i18n->__('Read-only access: "Settings" configuration page'), 'target_id' => 12));
 				self::$_available_permissions['configuration']['cansaveconfig']['details'][] = array('cansaveconfig' => array('description' => $i18n->__('Read + write access: "Settings" configuration page'), 'target_id' => 12));
@@ -1401,6 +1402,12 @@
 				$return_values[] = 'canseecomponent';
 			}
 			
+			if(is_numeric($type))
+			{
+				$role = TBGProjectAssigneesTable::getTypeName($type);
+				$type = $role->getItemdata();
+			}
+
 			switch ($type)
 			{
 				case '_leader':
