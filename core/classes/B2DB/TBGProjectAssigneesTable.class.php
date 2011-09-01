@@ -32,10 +32,10 @@
 		const PROJECT_ID = 'projectassignees.project_id';
 		const TARGET_TYPE = 'projectassignees.target_type';
 
-		const TYPE_DEVELOPER = 1;
-		const TYPE_PROJECTMANAGER = 2;
-		const TYPE_TESTER = 3;
-		const TYPE_DOCUMENTOR = 4;
+		const TYPE_DEVELOPER = '_role_developer';
+		const TYPE_PROJECTMANAGER = '_role_manager';
+		const TYPE_TESTER = '_role_tester';
+		const TYPE_DOCUMENTOR = '_role_documentor';
 		
 		public function __construct()
 		{
@@ -49,10 +49,7 @@
 		
 		public static function getTypes()
 		{
-			return array(self::TYPE_DEVELOPER => TBGContext::getI18n()->__('Developer'), 
-						self::TYPE_PROJECTMANAGER => TBGContext::getI18n()->__('Project manager'),
-						self::TYPE_DOCUMENTOR => TBGContext::getI18n()->__('Documentation editor'),
-						self::TYPE_TESTER => TBGContext::getI18n()->__('Tester'));
+			return TBGProjectRole::getAll();
 		}
 		
 		public static function getTypeName($type)
@@ -60,7 +57,7 @@
 			$types = self::getTypes();
 			return $types[$type];
 		}
-		
+
 		public function getByProjectID($project_id)
 		{
 			$crit = $this->getCriteria();

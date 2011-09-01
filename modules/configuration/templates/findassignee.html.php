@@ -8,8 +8,8 @@
 				<form action="<?php echo make_url('configure_project_add_assignee', array('project_id' => $theProject->getID(), 'assignee_type' => 'team', 'assignee_id' => $team->getID())); ?>" onsubmit="TBG.Project.assign('<?php echo make_url('configure_project_add_assignee', array('project_id' => $theProject->getID(), 'assignee_type' => 'team', 'assignee_id' => $team->getID())); ?>', 'assign_team_<?php echo $team->getID(); ?>');return false;" method="post" id="assign_team_<?php echo $team->getID(); ?>">
 					<label for="role_team_<?php echo $team->getID(); ?>"><?php echo $team->getName(); ?>:</label>&nbsp;
 					<select name="role" id="role_team_<?php echo $team->getID(); ?>">
-						<?php foreach (TBGProjectAssigneesTable::getTypes() as $type_id => $type_desc): ?>
-							<option value="<?php echo $type_id; ?>"><?php echo $type_desc; ?></option>
+						<?php foreach (TBGProjectAssigneesTable::getTypes() as $role): ?>
+							<option value="<?php echo $role->getId(); ?>"><?php echo $role->getName(); ?></option>
 						<?php endforeach ;?>
 					</select>
 					<?php /*
