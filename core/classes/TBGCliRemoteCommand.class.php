@@ -54,9 +54,9 @@
 			{
 				$this->_current_remote_server = $this->getProvidedArgument('server');
 			}
-			elseif (file_exists(THEBUGGENIE_PATH . '.remote_server'))
+			elseif (file_exists(THEBUGGENIE_CONFIG_PATH . '.remote_server'))
 			{
-				$this->_current_remote_server = file_get_contents(THEBUGGENIE_PATH . '.remote_server');
+				$this->_current_remote_server = file_get_contents(THEBUGGENIE_CONFIG_PATH . '.remote_server');
 			}
 			else
 			{
@@ -67,18 +67,18 @@
 			{
 				$this->_current_remote_user = $this->getProvidedArgument('username');
 			}
-			elseif (file_exists(THEBUGGENIE_PATH . '.remote_username'))
+			elseif (file_exists(THEBUGGENIE_CONFIG_PATH . '.remote_username'))
 			{
-				$this->_current_remote_user = file_get_contents(THEBUGGENIE_PATH . '.remote_username');
+				$this->_current_remote_user = file_get_contents(THEBUGGENIE_CONFIG_PATH . '.remote_username');
 			}
 			else
 			{
 				$this->_current_remote_user = TBGContext::getCurrentCLIusername();
 			}
 
-			if (file_exists(THEBUGGENIE_PATH . '.remote_password_hash'))
+			if (file_exists(THEBUGGENIE_CONFIG_PATH . '.remote_password_hash'))
 			{
-				$this->_current_remote_password_hash = file_get_contents(THEBUGGENIE_PATH . '.remote_password_hash');
+				$this->_current_remote_password_hash = file_get_contents(THEBUGGENIE_CONFIG_PATH . '.remote_password_hash');
 			}
 			else
 			{
