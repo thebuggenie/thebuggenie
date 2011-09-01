@@ -294,7 +294,7 @@
 		public function componentUsercard()
 		{
 			$this->rnd_no = rand();
-			$this->issues = $this->user->getIssues(7);
+			$this->issues = $this->user->getIssues();
 		}
 		
 		public function componentIssueaffected()
