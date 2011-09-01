@@ -1402,6 +1402,12 @@
 				$return_values[] = 'canseecomponent';
 			}
 			
+			if(is_numeric($type))
+			{
+				$role = TBGProjectAssigneesTable::getTypeName($type);
+				$type = $role->getItemdata();
+			}
+
 			switch ($type)
 			{
 				case '_leader':

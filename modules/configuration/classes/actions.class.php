@@ -325,11 +325,12 @@
 					
 					$this->imported_data = true;
 
+					$developer = TBGProjectAssigneesTable::getByType(TBGProjectAssigneesTable::TYPE_DEVELOPER);
 					foreach (array($project1, $project2) as $project)
 					{
 						foreach ($users as $user)
 						{
-							$project->addAssignee($user, TBGProjectAssigneesTable::TYPE_DEVELOPER);
+							$project->addAssignee($user, $developer->getID());
 						}
 					}
 				}
@@ -420,6 +421,8 @@
 			$builtin_types['severity'] = array('description' => $i18n->__('Severity levels'), 'key' => 'severity');
 			$builtin_types['category'] = array('description' => $i18n->__('Categories'), 'key' => 'category');
 			$builtin_types['reproducability'] = array('description' => $i18n->__('Reproducability'), 'key' => 'reproducability');
+			// FIXME: editing of project roles should move to Users/Teams/... page?
+			$builtin_types['projectrole'] = array('description' => $i18n->__('Project role'), 'key' => 'projectrole');
 
 			$this->builtin_types = $builtin_types;
 			$this->custom_types = TBGCustomDatatype::getAll();
