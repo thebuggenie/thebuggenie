@@ -1,6 +1,8 @@
 #!/usr/bin/php
 <?php
 	// Define The Bug Genie paths and related constants
+	define('TBG_CLI', true);
+
 	defined('DS') || define('DS', DIRECTORY_SEPARATOR);
 	defined('THEBUGGENIE_PATH') || define ('THEBUGGENIE_PATH', dirname(realpath(__FILE__)) . DS);
 	defined('THEBUGGENIE_CORE_PATH') || define('THEBUGGENIE_CORE_PATH', THEBUGGENIE_PATH . 'core' . DS);
