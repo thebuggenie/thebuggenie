@@ -343,7 +343,7 @@
 		 */
 		protected static function _setTBGPath()
 		{
-			self::$_tbgpath = dirname($_SERVER['PHP_SELF']);
+			self::$_tbgpath = defined('THEBUGGENIE_PATH') ? '.' : dirname($_SERVER['PHP_SELF']);
 			if (stristr(PHP_OS, 'WIN')) { self::$_tbgpath = str_replace("\\", "/", self::$_tbgpath); /* Windows adds a \ to the URL which we don't want */ }
 			if (self::$_tbgpath[strlen(self::$_tbgpath) - 1] != '/') self::$_tbgpath .= '/';
 		}

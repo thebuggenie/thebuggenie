@@ -1,12 +1,19 @@
 #!/usr/bin/php
 <?php
-
 	// Define The Bug Genie paths and related constants
 	defined('DS') || define('DS', DIRECTORY_SEPARATOR);
-	defined('THEBUGGENIE_PATH') || define ('THEBUGGENIE_PATH', realpath(getcwd() . DS) . DS);
+	defined('THEBUGGENIE_PATH') || define ('THEBUGGENIE_PATH', dirname(realpath(__FILE__)) . DS);
 	defined('THEBUGGENIE_CORE_PATH') || define('THEBUGGENIE_CORE_PATH', THEBUGGENIE_PATH . 'core' . DS);
-	defined('THEBUGGENIE_CORE_PATH') || define('THEBUGGENIE_CORE_PATH', THEBUGGENIE_PATH . 'core' . DIRECTORY_SEPARATOR);
-	defined('THEBUGGENIE_MODULES_PATH') || define('THEBUGGENIE_MODULES_PATH', THEBUGGENIE_PATH . 'modules' . DIRECTORY_SEPARATOR);
+
+	if( !defined('THEBUGGENIE_CONFIG_PATH'))
+	{
+		if(file_exists(getenv('HOME') . DS . '.remote_server'))
+			define('THEBUGGENIE_CONFIG_PATH', getenv('HOME') . DS);
+		else
+			define('THEBUGGENIE_CONFIG_PATH', THEBUGGENIE_PATH);
+	}
+
+	defined('THEBUGGENIE_MODULES_PATH') || define('THEBUGGENIE_MODULES_PATH', THEBUGGENIE_PATH . 'modules' . DS);
 	defined('THEBUGGENIE_PUBLIC_FOLDER_NAME') || define('THEBUGGENIE_PUBLIC_FOLDER_NAME', '');
 
 	try
