@@ -136,7 +136,7 @@
 
 		public static function getValidSearchFilters()
 		{
-			return array('project_id', 'text', 'state', 'issuetype', 'status', 'resolution', 'category', 'severity', 'priority', 'posted_by', 'assigned_to', 'assigned_type');
+			return array('project_id', 'text', 'state', 'issuetype', 'status', 'resolution', 'category', 'severity', 'priority', 'posted_by', 'assigned_to', 'assigned_type', 'component', 'build', 'edition');
 		}
 
 		public function getCountsByProjectID($project_id)
@@ -521,9 +521,29 @@
 			if (count($filters) > 0)
 			{
 				$crit->addJoin(TBGIssueCustomFieldsTable::getTable(), TBGIssueCustomFieldsTable::ISSUE_ID, TBGIssuesTable::ID);
+				$crit->addJoin(TBGIssueAffectsComponentTable::getTable(), TBGIssueAffectsComponentTable::ISSUE, self::ID);
+				$crit->addJoin(TBGIssueAffectsEditionTable::getTable(), TBGIssueAffectsEditionTable::ISSUE, self::ID);
+				$crit->addJoin(TBGIssueAffectsBuildTable::getTable(), TBGIssueAffectsBuildTable::ISSUE, self::ID);
 
 				foreach ($filters as $filter => $filter_info)
 				{
+					if ($filter == 'component')
+					{
+						$dbname = TBGIssueAffectsComponentTable::getTable();
+					}
+					elseif ($filter == 'edition')
+					{
+						$dbname = TBGIssueAffectsEditionTable::getTable();
+					}
+					elseif ($filter == 'build')
+					{
+						$dbname = TBGIssueAffectsBuildTable::getTable();
+					}
+					else
+					{
+						$dbname = $this->getB2DBName();
+					}
+
 					if (array_key_exists('value', $filter_info) && in_array($filter_info['operator'], array('=', '!=', '<=', '>=', '<', '>')))
 					{
 						if ($filter == 'text')
@@ -550,7 +570,7 @@
 						}
 						elseif (in_array($filter, self::getValidSearchFilters()))
 						{
-							$crit->addWhere($this->getB2DBName().'.'.$filter, $filter_info['value'], $filter_info['operator']);
+							$crit->addWhere($dbname.'.'.$filter, $filter_info['value'], $filter_info['operator']);
 						}
 						elseif (TBGCustomDatatype::doesKeyExist($filter))
 						{
@@ -588,18 +608,18 @@
 							}
 							else
 							{
-								$ctn = $crit->returnCriterion($this->getB2DBName().'.'.$filter, $first_val['value'], $first_val['operator']);
+								$ctn = $crit->returnCriterion($dbname.'.'.$filter, $first_val['value'], $first_val['operator']);
 								if (count($filter_info) > 0)
 								{
 									foreach ($filter_info as $single_filter)
 									{
 										if (in_array($single_filter['operator'], array('=', '<=', '>=', '<', '>')))
 										{
-											$ctn->addOr($this->getB2DBName().'.'.$filter, $single_filter['value'], $single_filter['operator']);
+											$ctn->addOr($dbname.'.'.$filter, $single_filter['value'], $single_filter['operator']);
 										}
 										elseif ($single_filter['operator'] == '!=')
 										{
-											$ctn->addWhere($this->getB2DBName().'.'.$filter, $single_filter['value'], $single_filter['operator']);
+											$ctn->addWhere($dbname.'.'.$filter, $single_filter['value'], $single_filter['operator']);
 										}
 									}
 								}
