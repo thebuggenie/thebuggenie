@@ -45,6 +45,8 @@
 
 		public function componentFilter()
 		{
+			$pkey = TBGContext::getCurrentProject()->getID();
+
 			$i18n = TBGContext::getI18n();
 			$this->selected_value = (isset($this->selected_value)) ? $this->selected_value : 0;
 			$this->selected_operator = (isset($this->selected_operator)) ? $this->selected_operator : '=';
@@ -57,6 +59,9 @@
 			$filters['reproducability'] = array('description' => $i18n->__('Reproducability'), 'options' => TBGReproducability::getAll());
 			$filters['resolution'] = array('description' => $i18n->__('Resolution'), 'options' => TBGResolution::getAll());
 			$filters['issuetype'] = array('description' => $i18n->__('Issue type'), 'options' => TBGIssuetype::getAll());
+			$filters['component'] = array('description' => $i18n->__('Component'), 'options' => TBGComponent::getAllByProjectID($pkey));
+			$filters['build'] = array('description' => $i18n->__('Build'), 'options' => TBGBuild::getByProjectID($pkey));
+			$filters['edition'] = array('description' => $i18n->__('Edition'), 'options' => TBGEdition::getAllByProjectID($pkey));
 			$this->filters = $filters;
 
 		}
