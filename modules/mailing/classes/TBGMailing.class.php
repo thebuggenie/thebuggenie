@@ -37,6 +37,11 @@
 		 * Notify the user when an issue related to one of my assigned projects is updated
 		 */
 		const NOTIFY_ISSUE_PROJECT_ASSIGNED = 'notify_issue_project_vip';
+
+		/**
+		 * Notify the user when an issue he commented on is updated
+		 */
+		const NOTIFY_ISSUE_COMMENTED_ON = 'notify_issue_commented_on';
 		
 		protected $_longname = 'Email communication';
 		
@@ -180,7 +185,7 @@
 		public function listen_createUser(TBGEvent $event)
 		{
 			$uid = $event->getSubject()->getID();
-			$settings = array(self::NOTIFY_ISSUE_ASSIGNED_UPDATED, self::NOTIFY_ISSUE_ONCE, self::NOTIFY_ISSUE_POSTED_UPDATED, self::NOTIFY_ISSUE_PROJECT_ASSIGNED, self::NOTIFY_ISSUE_RELATED_PROJECT_TEAMASSIGNED, self::NOTIFY_ISSUE_TEAMASSIGNED_UPDATED);
+			$settings = array(self::NOTIFY_ISSUE_ASSIGNED_UPDATED, self::NOTIFY_ISSUE_ONCE, self::NOTIFY_ISSUE_POSTED_UPDATED, self::NOTIFY_ISSUE_PROJECT_ASSIGNED, self::NOTIFY_ISSUE_RELATED_PROJECT_TEAMASSIGNED, self::NOTIFY_ISSUE_TEAMASSIGNED_UPDATED, self::NOTIFY_ISSUE_COMMENTED_ON);
 
 			foreach ($settings as $setting)
 				$this->saveSetting($setting, 1, $uid);
@@ -316,6 +321,15 @@
 			{
 				if (!($issue->getPostedByID() == $cu && !$ns))
 					$uids[$issue->getPostedByID()] = $issue->getPostedByID();
+			}
+
+			// Add any users who created a comment
+			$cmts = $issue->getComments();
+			foreach ($cmts as $cmt)
+			{
+				$pbid = $cmt->getPostedByID();
+				if ($pbid && $this->getSetting(self::NOTIFY_ISSUE_COMMENTED_ON, $pbid))
+					$uids[$pbid] = $pbid;
 			}
 
 			// Add all users from the team assigned to the issue if valid
@@ -733,7 +747,7 @@
 
 		public function postAccountSettings(TBGRequest $request)
 		{
-			$settings = array(self::NOTIFY_ISSUE_ASSIGNED_UPDATED, self::NOTIFY_ISSUE_ONCE, self::NOTIFY_ISSUE_POSTED_UPDATED, self::NOTIFY_ISSUE_PROJECT_ASSIGNED, self::NOTIFY_ISSUE_RELATED_PROJECT_TEAMASSIGNED, self::NOTIFY_ISSUE_TEAMASSIGNED_UPDATED, self::NOTIFY_ISSUE_UPDATED_SELF);
+			$settings = array(self::NOTIFY_ISSUE_ASSIGNED_UPDATED, self::NOTIFY_ISSUE_ONCE, self::NOTIFY_ISSUE_POSTED_UPDATED, self::NOTIFY_ISSUE_PROJECT_ASSIGNED, self::NOTIFY_ISSUE_RELATED_PROJECT_TEAMASSIGNED, self::NOTIFY_ISSUE_TEAMASSIGNED_UPDATED, self::NOTIFY_ISSUE_UPDATED_SELF, self::NOTIFY_ISSUE_COMMENTED_ON);
 			$uid = TBGContext::getUser()->getID();
 			foreach ($settings as $setting)
 			{
@@ -764,7 +778,7 @@
 		
 		protected function addDefaultSettingsToAllUsers()
 		{
-			$settings = array(self::NOTIFY_ISSUE_ASSIGNED_UPDATED, self::NOTIFY_ISSUE_ONCE, self::NOTIFY_ISSUE_POSTED_UPDATED, self::NOTIFY_ISSUE_PROJECT_ASSIGNED, self::NOTIFY_ISSUE_RELATED_PROJECT_TEAMASSIGNED, self::NOTIFY_ISSUE_TEAMASSIGNED_UPDATED);
+			$settings = array(self::NOTIFY_ISSUE_ASSIGNED_UPDATED, self::NOTIFY_ISSUE_ONCE, self::NOTIFY_ISSUE_POSTED_UPDATED, self::NOTIFY_ISSUE_PROJECT_ASSIGNED, self::NOTIFY_ISSUE_RELATED_PROJECT_TEAMASSIGNED, self::NOTIFY_ISSUE_TEAMASSIGNED_UPDATED, self::NOTIFY_ISSUE_COMMENTED_ON);
 			foreach (TBGUsersTable::getTable()->getAllUserIDs() as $uid)
 			{
 				foreach ($settings as $setting)
