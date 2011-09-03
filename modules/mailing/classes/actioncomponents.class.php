@@ -33,6 +33,7 @@
 			$issues_settings[TBGMailing::NOTIFY_ISSUE_TEAMASSIGNED_UPDATED] = $i18n->__("Notify me when an issue assigned to one of my teams is updated or created");
 			$issues_settings[TBGMailing::NOTIFY_ISSUE_RELATED_PROJECT_TEAMASSIGNED] = $i18n->__("Notify me when an issue assigned to one of my team projects is updated or created");
 			$issues_settings[TBGMailing::NOTIFY_ISSUE_PROJECT_ASSIGNED] = $i18n->__("Notify me when an issue assigned to one of my projects is updated or created");
+			$issues_settings[TBGMailing::NOTIFY_ISSUE_COMMENTED_ON] = $i18n->__("Notify me when an issue I commented on gets updated");
 
 			$this->general_settings = $general_settings;
 			$this->issues_settings = $issues_settings;

@@ -804,7 +804,7 @@
 			// Thanks to Mike Smith (scgtrp) for the above regexp
 
 			$text = tbg_decodeUTF8($text, true);
-			$text = preg_replace('/&lt;((\/)?u|(\/)?strike|br)&gt;/ism', '<\\1>' ,$text);
+			$text = preg_replace('/&lt;((\/)?u|(\/)?strike|br|code)&gt;/ism', '<\\1>' ,$text);
 			
 			$lines = explode("\n", $text);
 			foreach ($lines as $line)
