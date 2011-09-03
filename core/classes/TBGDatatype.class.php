@@ -68,6 +68,12 @@
 		 */
 		const USERSTATE = 'userstate';
 		
+		/**
+		 * Item type project role
+		 *
+		 */
+		const PROJECTROLE = 'projectrole';
+		
 		public static function loadFixtures(TBGScope $scope)
 		{
 			TBGCategory::loadFixtures($scope);
@@ -76,6 +82,7 @@
 			TBGResolution::loadFixtures($scope);
 			TBGSeverity::loadFixtures($scope);
 			TBGStatus::loadFixtures($scope);
+			TBGProjectRole::loadFixtures($scope);
 		}
 		
 		/**
@@ -102,6 +109,7 @@
 			$types['severity'] = 'TBGSeverity';
 			$types['reproducability'] = 'TBGReproducability';
 			$types['resolution'] = 'TBGResolution';
+			$types['projectrole'] = 'TBGProjectRole';
 			
 			return $types;
 		}

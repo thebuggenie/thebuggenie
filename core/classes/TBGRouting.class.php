@@ -487,7 +487,6 @@
 			{
 				$real_url = rtrim($real_url, $divider);
 			}
-
 			if (!$relative)
 			{
 				return TBGContext::getURLhost() . TBGContext::getStrippedTBGPath() . $real_url;
