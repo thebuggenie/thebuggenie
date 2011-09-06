@@ -1,5 +1,5 @@
 <?php TBGContext::loadLibrary('publish/publish'); ?>
-<div style="margin: 10px 0 5px 5px;">
+<div class="container_div" style="margin: 0 0 5px 5px;">
 	<div class="header"><?php echo __('Recently edited pages'); ?></div>
 	<ul class="article_list">
 	<?php if (count($latest_articles) >= 1): ?>

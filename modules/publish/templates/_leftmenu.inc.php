@@ -1,7 +1,7 @@
 <?php include_template('main/menulinks', array('links' => $links, 'target_type' => 'wiki', 'target_id' => $links_target_id, 'title' => __('Wiki menu'))); ?>
 <?php if ($article instanceof TBGWikiArticle): ?>
-	<div style="margin: 10px 0 5px 5px;">
-	<div class="header"><?php echo __('Links to this article'); ?></div>
+	<div class="container_div" style="margin: 0 0 5px 5px;">
+		<div class="header"><?php echo __('Links to this article'); ?></div>
 		<?php if (count($whatlinkshere) > 0): ?>
 			<ul class="article_list">
 				<?php foreach ($whatlinkshere as $linking_article): ?>

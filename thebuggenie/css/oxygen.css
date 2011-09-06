@@ -76,7 +76,7 @@ div.image_container.thumb img.image { width: 220px; }
 .header_userlinks { font-size: 0.7em; line-height: 1.1; text-align: right; color: #6193CF }
 .submenu_strip .selected_project { font-size: 1em; font-weight: bold; color: #555; border-color: #D9D9BB; }
 
-.submenu_strip { background-color: transparent; border-bottom: 1px dotted #CCC; padding: 5px; height: 20px; }
+.submenu_strip { background-color: transparent; border-bottom: 1px dotted #CCC; padding: 5px; height: 20px; font-size: 0.9em; }
 .submenu_strip.project_context { background-color: #FAF3B8; color: #333; }
 /* End main header area */
 
@@ -97,7 +97,7 @@ div.image_container.thumb img.image { width: 220px; }
 
 /* main page layout dimensions and details */
 .side_bar { width: 310px; background-color: transparent; vertical-align: top; padding-top: 5px; }
-.main_area { text-align: left; vertical-align: top; padding: 5px 10px 10px 5px; width: auto; min-width: 700px; }
+.main_area { text-align: left; vertical-align: top; padding: 5px 5px 10px 5px; width: auto; min-width: 700px; }
 /* end main page layout */
 
 /* footer section */
@@ -218,7 +218,7 @@ div.autocomplete ul li .hidden { display: none; }
 .tab_menu li a { color: inherit; float: left; }
 .tab_menu li a:hover { border-bottom: 0; }
 a.not_clickable:hover { cursor: default; }
-.tab_menu .tab_menu_dropdown, .tab_menu_container .tab_menu_dropdown { display: none; position: absolute; top: 26px; margin-left: -5px; width: 250px; font-size: 1em; background-color: #A4C0E4; color: #FFF; padding: 5px 0; z-index: 10000; border-top-right-radius: 5px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px; -moz-border-radius-bottomleft: 5px; -moz-border-radius-topright: 5px; -moz-border-radius-bottomright: 5px; -webkit-border-bottom-left-radius: 5px; -webkit-border-bottom-right-radius: 5px; -webkit-border-top-right-radius: 5px; }
+.tab_menu .tab_menu_dropdown, .tab_menu_container .tab_menu_dropdown { display: none; position: absolute; top: 25px; margin-left: -5px; width: 250px; font-size: 1em; background-color: #A4C0E4; color: #FFF; padding: 5px 0; z-index: 10000; border-top-right-radius: 5px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px; -moz-border-radius-bottomleft: 5px; -moz-border-radius-topright: 5px; -moz-border-radius-bottomright: 5px; -webkit-border-bottom-left-radius: 5px; -webkit-border-bottom-right-radius: 5px; -webkit-border-top-right-radius: 5px; }
 #header_userinfo .tab_menu_dropdown { top: 33px; right: 7px; -webkit-border-top-right-radius: 0; border-top-right-radius: 0; -moz-border-radius-topright: 0; -webkit-border-top-left-radius: 5px; border-top-left-radius: 5px; -moz-border-radius-topleft: 5px; }
 .user_menu_dropdown { background: #396ba7 !important; }
 .user_menu_dropdown a { font-size: 0.9em; }
@@ -239,17 +239,17 @@ div.dropdown_separator { border-left: 1px dotted #EAEAF5; padding: 0 0 0 4px; ma
 /* end tabbed menu */
 
 /* header tabbed menu */
-.header_menu { background-color: #6193CF; width: auto; height: 45px; position: relative; color: #FFF; border-color: #396BA7; font-size: 1em; }
+.header_menu { background-color: #6193CF; width: auto; height: 45px; position: relative; color: #FFF; border-color: #396BA7; font-size: 0.9em; }
 .header_menu .selected, .header_menu li.selected:hover { font-weight: bold; background-color: #FFF; border-bottom: 1px solid #FFF; }
 .header_menu.project_context .selected, .header_menu li.selected:hover { border-bottom: 1px dotted #D9D9BB; }
 .header_menu li { background-color: transparent; border: 0px; margin: 0;  }
 .header_menu li { margin-left: 2px; }
 .header_menu li:hover { background-color: #A4C0E4; border-color: #396BA7; border-bottom: 1px solid #396BA7; }
 .header_menu .selected, .header_menu li.selected:hover { border: 1px solid #396BA7; border-bottom: 1px solid #FFF; }
-.header_menu li:hover, .header_menu li.selected:hover, .header_menu li.selected { padding: 3px 5px 4px 5px; color: #222;  }
+.header_menu li:hover, .header_menu li.selected:hover, .header_menu li.selected { padding: 4px 5px 5px 5px; color: #222;  }
 .header_menu li:hover { color: #FFF; }
 .header_menu li.nohover:hover { padding: 4px 6px 3px 7px; color: #FFF;  }
-.header_menu li { border-top: 0; padding: 4px 6px 5px 6px; color: #FFF;  }
+.header_menu li { border-top: 0; padding: 5px 6px 5px 6px; color: #FFF;  }
 /* end header menu */
 
 /* project menu strip */
@@ -403,8 +403,8 @@ table.cleantable th { text-align: center; }
 .config_explanation { color: #999; padding: 5px 0 10px 5px; }
 .config_explanation a { color: #549D54; font-weight: bold; }
 .config_buttons, .config_badges { list-style: none; padding: 0px; }
-.config_buttons { width: 235px; padding-top: 7px; padding-bottom: 7px; margin-left: 5px; }
-.config_buttons li { margin: 0; padding: 0px; text-align: left; width: 235px; font-size: 0.9em; border: 0; background-color: transparent; }
+.config_buttons { width: 235px; padding-top: 7px; padding-bottom: 7px; margin-left: 5px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; }
+.config_buttons li { margin: 0; padding: 0px; text-align: left; width: 235px; font-size: 0.9em; border: 0; background-color: transparent;  }
 .config_buttons li:hover { background-color: #E5E5E5; }
 .config_buttons li.config_selected { background-color: #FFF; font-weight: bold; }
 .config_buttons li a { display: block; height: 20px; padding: 5px 0 0px 5px; }
@@ -803,7 +803,7 @@ table.issue_affects td img { vertical-align: bottom; }
 /* end view issue styling */
 
 /* user dashboard styling */
-#dashboard { list-style-type: none; padding: 0; margin: 0 5px 0 10px; clear: both; }
+#dashboard { list-style-type: none; padding: 0; margin: 0 5px 0 0; clear: both; }
 #customize_dashboard_icon img, #customize_dashboard_icon span { float: right; margin-right: 10px; }
 #customize_dashboard_icon span { display: none; color: #AAA; font-size: 1.1em; }
 #customize_dashboard_icon:hover span { display: inherit; }
@@ -902,7 +902,7 @@ ul.scrum_container li .actions label { float: left; font-weight: bold; margin: 0
 /* end scrum page styling */
 
 /* menu links */
-.menu_links .header { font-size: 1.1em; border-bottom: 0; font-weight: bold; margin-bottom: 5px; }
+.menu_links .header { font-size: 1em; border-bottom: 0; font-weight: bold; margin-bottom: 5px; }
 .menu_links .content table td { font-size: 1.0em; padding: 1px; }
 .menu_links .content a { font-weight: bold; }
 .menu_links .content a.selected { font-weight: bold; color: #006700; }
@@ -1062,8 +1062,11 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 /* end results */
 
 /* saved searches */
-.saved_searches { padding: 2px 2px 5px 5px; width: 300px; vertical-align: top; }
+.saved_searches { font-size: 0.9em; padding: 2px 2px 5px 5px; width: 300px; vertical-align: top; }
 .saved_searches a { font-size: 0.9em; font-weight: bold; padding-left: 3px; }
+
+.container_div { margin: 5px 0; clear: both; font-size: 1em; display: block; padding: 2px; background-color: #FFF; border: 1px solid #CCC; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; }
+.container_div .header { margin-top: 0; height: 18px; padding: 2px 5px; border: none; border-bottom: 1px solid #CCC; background: -webkit-gradient(linear, left top, left bottom, from(transparent), to(#EEE)); background: -moz-linear-gradient(top, #FFF, #F1F1F1); filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='transparent', endColorstr='#EEEEEE'); }
 /* end search styling */
 
 /* non-link-styled issue titles */
@@ -1100,7 +1103,7 @@ a.action_button:hover { background-color: #FCFCFC; border-color: #AAA; }
 
 .button {
 	margin: 0;
-	line-height: 1.5;
+	line-height: 1.3;
 	text-decoration: none;
 	font-weight: bold;
 	display: inline-block;
@@ -1108,14 +1111,14 @@ a.action_button:hover { background-color: #FCFCFC; border-color: #AAA; }
 	color: #fff;
 	border: 1px solid #9c9c9c; /* Fallback style */
 	border: 1px solid rgba(0, 0, 0, 0.3);
-	box-shadow: 0 0 .05em rgba(0,0,0,0.4);
-	-moz-box-shadow: 0 0 .05em rgba(0,0,0,0.4);
-	-webkit-box-shadow: 0 0 .05em rgba(0,0,0,0.4);
+	box-shadow: 0 0 2px rgba(0,0,0,0.4);
+	-moz-box-shadow: 0 0 2px rgba(0,0,0,0.4);
+	-webkit-box-shadow: 0 0 2px rgba(0,0,0,0.4);
 }
 .button, .button span, .button input, .button input:hover, .button button {
-	-moz-border-radius: .3em;
-	-webkit-border-radius: .3em;
-	border-radius: .3em;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	border-radius: 2px;
 }
 .button input, .button button, .button input:hover {
 	background-color: transparent;
@@ -1132,7 +1135,7 @@ a.action_button:hover { background-color: #FCFCFC; border-color: #AAA; }
 	border-top: 1px solid #fff; /* Fallback style */
 	border-top: 1px solid rgba(255, 255, 255, 0.5);
 	display: block;
-	padding: 3px 7px; font-size: 14px;
+	padding: 1px 3px 1px 3px; font-size: 13px;
 	text-shadow: 0 1px 0 rgba(0,0,0,0.4);
 	/* The background pattern */
 /*	background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, rgba(0, 0, 0, 0.05)), color-stop(.25, transparent), to(transparent)),
@@ -1203,10 +1206,10 @@ a.action_button:hover { background-color: #FCFCFC; border-color: #AAA; }
 /*.button-brown:active { background: #8f3714; }*/
 /*----------------------------*/
 .button-green {
-	background: #428739;
-	background: -webkit-gradient(linear, left top, left bottom, from(#c8dd95), to(#428739) );
-	background: -moz-linear-gradient(-90deg, #c8dd95, #428739);
-	filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr='#c8dd95', EndColorStr='#428739');        
+	background: #92BA6F;
+	background: -webkit-gradient(linear, left top, left bottom, from(#92BA6F), to(#428739) );
+	background: -moz-linear-gradient(-90deg, #92BA6F, #428739);
+	filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr='#92BA6F', EndColorStr='#428739');        
 }
 .button-green:active {
 	background: #c8dd95;

@@ -1,4 +1,4 @@
-<div class="rounded_box borderless lightgrey menu_links" id="<?php echo $target_type; ?>_<?php echo $target_id; ?>_container" style="margin: 0 0 5px 5px; padding: 3px;">
+<div class="container_div menu_links" id="<?php echo $target_type; ?>_<?php echo $target_id; ?>_container" style="margin: 0 0 5px 5px;">
 	<div class="header">
 		<?php if ($tbg_user->canEditMainMenu() && ((TBGContext::isProjectContext() && !TBGContext::getCurrentProject()->isArchived()) || !TBGContext::isProjectContext())): ?>
 			<?php echo javascript_link_tag(image_tag('action_add_link.png'), array('style' => 'float: right;', 'class' => 'image', 'onclick' => "$('attach_link_{$target_type}_{$target_id}').toggle();", 'title' => __('Add an item to the menu'))); ?>

@@ -1,3 +1,4 @@
+<div class="container_div" style="margin: 0 0 5px 5px;">
 <?php switch ($type):
 		  case TBGDashboard::DASHBOARD_VIEW_PREDEFINED_SEARCH : ?>
 	<?php case TBGDashboard::DASHBOARD_VIEW_SAVED_SEARCH : ?>
@@ -5,7 +6,7 @@
 	<?php break; ?>		
 	
 	<?php case TBGDashboard::DASHBOARD_VIEW_LOGGED_ACTION : ?>
-		<div class="rounded_box lightgrey borderless cut_bottom dashboard_view_header" style="margin-top: 5px;">
+		<div class="header">
 			<?php echo image_tag('collapse_small.png', array('id' => 'dashboard_'.$id.'_collapse', 'style' => 'float: left; margin: 3px 5px 0 2px;', 'onclick' => "\$('dashboard_{$id}').toggle(); this.src = (this.src == '" . image_url('collapse_small.png', false, 'core', false) . "') ? '" . image_url('expand_small.png', false, 'core', false) . "' : '" . image_url('collapse_small.png', false, 'core', false) . "'")); ?>
 			<?php echo __('What you\'ve done recently'); ?>
 		</div>
@@ -35,7 +36,7 @@
 	<?php break; ?>
 	
 	<?php case TBGDashboard::DASHBOARD_VIEW_LAST_COMMENTS : ?>
-		<div class="rounded_box lightgrey borderless cut_bottom dashboard_view_header" style="margin-top: 5px;">
+		<div class="header">
 			<?php echo image_tag('collapse_small.png', array('id' => 'dashboard_'.$id.'_collapse', 'style' => 'float: left; margin: 3px 5px 0 2px;', 'onclick' => "\$('dashboard_{$id}').toggle(); this.src = (this.src == '" . image_url('collapse_small.png', false, 'core', false) . "') ? '" . image_url('expand_small.png', false, 'core', false) . "' : '" . image_url('collapse_small.png', false, 'core', false) . "'")); ?>
 			<?php echo __('Recent comments'); ?>
 		</div>
@@ -63,7 +64,7 @@
 	
 	<?php case TBGDashboard::DASHBOARD_PROJECT_INFO : ?>
 		<?php $selected_project = TBGContext::getCurrentProject(); ?>
-		<div class="rounded_box lightgrey borderless cut_bottom dashboard_view_header" style="margin-top: 5px;">
+		<div class="header">
 			<?php echo image_tag('collapse_small.png', array('id' => 'dashboard_'.$id.'_collapse', 'style' => 'float: left; margin: 3px 5px 0 2px;', 'onclick' => "\$('dashboard_{$id}').toggle(); this.src = (this.src == '" . image_url('collapse_small.png', false, 'core', false) . "') ? '" . image_url('expand_small.png', false, 'core', false) . "' : '" . image_url('collapse_small.png', false, 'core', false) . "'")); ?>
 			<?php echo __('About this project'); ?>
 		</div>
@@ -149,7 +150,7 @@
 	<?php case TBGDashboard::DASHBOARD_PROJECT_TEAM : ?>
 		<?php $selected_project = TBGContext::getCurrentProject(); ?>
 		<?php $assignees = $selected_project->getAssignees(); ?>
-		<div class="rounded_box lightgrey borderless cut_bottom dashboard_view_header" style="margin-top: 5px;">
+		<div class="header">
 			<?php echo image_tag('collapse_small.png', array('id' => 'dashboard_'.$id.'_collapse', 'style' => 'float: left; margin: 3px 5px 0 2px;', 'onclick' => "\$('dashboard_{$id}').toggle(); this.src = (this.src == '" . image_url('collapse_small.png', false, 'core', false) . "') ? '" . image_url('expand_small.png', false, 'core', false) . "' : '" . image_url('collapse_small.png', false, 'core', false) . "'")); ?>
 			<?php echo __('Project team'); ?>
 		</div>
@@ -188,7 +189,7 @@
 	<?php case TBGDashboard::DASHBOARD_PROJECT_CLIENT : ?>
 		<?php $selected_project = TBGContext::getCurrentProject(); ?>
 		<?php $client = $selected_project->getClient(); ?>
-		<div class="rounded_box lightgrey borderless cut_bottom dashboard_view_header" style="margin-top: 5px;">
+		<div class="header">
 			<?php echo image_tag('collapse_small.png', array('id' => 'dashboard_'.$id.'_collapse', 'style' => 'float: left; margin: 3px 5px 0 2px;', 'onclick' => "\$('dashboard_{$id}').toggle(); this.src = (this.src == '" . image_url('collapse_small.png', false, 'core', false) . "') ? '" . image_url('expand_small.png', false, 'core', false) . "' : '" . image_url('collapse_small.png', false, 'core', false) . "'")); ?>
 			<?php echo __('Client'); ?>
 		</div>
@@ -208,7 +209,7 @@
 	<?php case TBGDashboard::DASHBOARD_PROJECT_SUBPROJECTS : ?>
 		<?php $selected_project = TBGContext::getCurrentProject(); ?>
 		<?php $subprojects = $selected_project->getChildren(false); ?>
-		<div class="rounded_box lightgrey borderless cut_bottom dashboard_view_header" style="margin-top: 5px;">
+		<div class="header">
 			<?php echo image_tag('collapse_small.png', array('id' => 'dashboard_'.$id.'_collapse', 'style' => 'float: left; margin: 3px 5px 0 2px;', 'onclick' => "\$('dashboard_{$id}').toggle(); this.src = (this.src == '" . image_url('collapse_small.png', false, 'core', false) . "') ? '" . image_url('expand_small.png', false, 'core', false) . "' : '" . image_url('collapse_small.png', false, 'core', false) . "'")); ?>
 			<?php echo __('Subprojects'); ?>
 			<a style="float: right;" href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'project_archived_projects', 'pid' => $selected_project->getID())); ?>');"><?php echo __('View archived subprojects'); ?></a>
@@ -230,7 +231,7 @@
 		<?php break; ?>
 	<?php case TBGDashboard::DASHBOARD_PROJECT_LAST15 : ?>
 		<?php $selected_project = TBGContext::getCurrentProject(); ?>
-		<div class="rounded_box lightgrey borderless cut_bottom dashboard_view_header" style="margin-top: 5px;">
+		<div class="header">
 			<?php echo image_tag('collapse_small.png', array('id' => 'dashboard_'.$id.'_collapse', 'style' => 'float: left; margin: 3px 5px 0 2px;', 'onclick' => "\$('dashboard_{$id}').toggle(); this.src = (this.src == '" . image_url('collapse_small.png', false, 'core', false) . "') ? '" . image_url('expand_small.png', false, 'core', false) . "' : '" . image_url('collapse_small.png', false, 'core', false) . "'")); ?>
 			<?php echo __('Last 15 days'); ?>
 		</div>
@@ -282,7 +283,7 @@
 			}
 		?>
 		
-		<div class="rounded_box lightgrey borderless cut_bottom dashboard_view_header" style="margin-top: 5px;">
+		<div class="header">
 			<?php echo image_tag('collapse_small.png', array('id' => 'dashboard_'.$id.'_collapse', 'style' => 'float: left; margin: 3px 5px 0 2px;', 'onclick' => "\$('dashboard_{$id}').toggle(); this.src = (this.src == '" . image_url('collapse_small.png', false, 'core', false) . "') ? '" . image_url('expand_small.png', false, 'core', false) . "' : '" . image_url('collapse_small.png', false, 'core', false) . "'")); ?>
 			<?php echo TBGContext::geti18n()->__('Recent issues: %type%', array('%type%' => $issuetype_icons[$view]['descr'])); ?>
 		</div>
@@ -295,7 +296,7 @@
 	<?php case TBGDashboard::DASHBOARD_PROJECT_RECENT_ACTIVITIES : ?>
 		<?php $selected_project = TBGContext::getCurrentProject(); ?>
 		<?php $recent_activities = $selected_project->getRecentActivities(5); ?>
-		<div class="rounded_box lightgrey borderless cut_bottom dashboard_view_header" style="margin-top: 5px;">
+		<div class="header">
 			<?php echo link_tag(make_url('project_timeline', array('project_key' => $selected_project->getKey(), 'format' => 'rss')), image_tag('icon_rss.png', array('style' => 'float: right; margin-right: 5px;'))); ?>
 			<?php echo image_tag('collapse_small.png', array('id' => 'dashboard_'.$id.'_collapse', 'style' => 'float: left; margin: 3px 5px 0 2px;', 'onclick' => "\$('dashboard_{$id}').toggle(); this.src = (this.src == '" . image_url('collapse_small.png', false, 'core', false) . "') ? '" . image_url('expand_small.png', false, 'core', false) . "' : '" . image_url('collapse_small.png', false, 'core', false) . "'")); ?>
 			<?php echo __('Recent activities'); ?>
@@ -312,7 +313,7 @@
 		<?php break; ?>
 	<?php case TBGDashboard::DASHBOARD_PROJECT_UPCOMING : ?>
 		<?php $selected_project = TBGContext::getCurrentProject(); ?>
-		<div class="rounded_box lightgrey borderless cut_bottom dashboard_view_header" style="margin-top: 5px;">
+		<div class="header">
 			<?php echo image_tag('collapse_small.png', array('id' => 'dashboard_'.$id.'_collapse', 'style' => 'float: left; margin: 3px 5px 0 2px;', 'onclick' => "\$('dashboard_{$id}').toggle(); this.src = (this.src == '" . image_url('collapse_small.png', false, 'core', false) . "') ? '" . image_url('expand_small.png', false, 'core', false) . "' : '" . image_url('collapse_small.png', false, 'core', false) . "'")); ?>
 			<?php echo __('Upcoming milestones and deadlines'); ?>
 		</div>
@@ -344,7 +345,7 @@
 		<?php break; ?>
 	<?php case TBGDashboard::DASHBOARD_PROJECT_DOWNLOADS : ?>
 		<?php $selected_project = TBGContext::getCurrentProject(); ?>
-		<div class="rounded_box lightgrey borderless cut_bottom dashboard_view_header" style="margin-top: 5px;">
+		<div class="header">
 			<?php echo image_tag('collapse_small.png', array('id' => 'dashboard_'.$id.'_collapse', 'style' => 'float: left; margin: 3px 5px 0 2px;', 'onclick' => "\$('dashboard_{$id}').toggle(); this.src = (this.src == '" . image_url('collapse_small.png', false, 'core', false) . "') ? '" . image_url('expand_small.png', false, 'core', false) . "' : '" . image_url('collapse_small.png', false, 'core', false) . "'")); ?>
 			<?php echo __('Latest downloads'); ?>
 		</div>
@@ -356,7 +357,7 @@
 	<?php case TBGDashboard::DASHBOARD_PROJECT_STATISTICS : ?>
 		<?php $selected_project = TBGContext::getCurrentProject(); ?>
 		<?php $priority_count = $selected_project->getPriorityCount(); ?>
-		<div class="rounded_box lightgrey borderless cut_bottom dashboard_view_header" style="margin-top: 5px;">
+		<div class="header">
 			<?php echo image_tag('collapse_small.png', array('id' => 'dashboard_'.$id.'_collapse', 'style' => 'float: left; margin: 3px 5px 0 2px;', 'onclick' => "\$('dashboard_{$id}').toggle(); this.src = (this.src == '" . image_url('collapse_small.png', false, 'core', false) . "') ? '" . image_url('expand_small.png', false, 'core', false) . "' : '" . image_url('collapse_small.png', false, 'core', false) . "'")); ?>
 			<?php echo __('Statistics'); ?>
 		</div>
@@ -385,5 +386,5 @@
 		</div>
 		<?php break; ?>
 	<?php endswitch;?>
-
-<?php TBGEvent::createNew('core', 'dashboard_main_' . $id)->trigger(); ?>
+	<?php TBGEvent::createNew('core', 'dashboard_main_' . $id)->trigger(); ?>
+</div>

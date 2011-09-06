@@ -16,6 +16,7 @@
 				</select>
 				<a class="image" href="javascript:void(0);" onclick="TBG.Search.Filter.remove(<?php echo $key; ?>);"><?php echo image_tag('action_remove_small.png', array('style' => 'margin-left: 5px;')); ?></a>
 			<?php endif; ?>
+		<?php elseif (in_array($filter, array('assigned_to', 'posted_by', 'lead_by'))): ?>
 		<?php elseif (in_array($filter, array_keys($filters))): ?>
 			<label for="filter_<?php echo $filter; ?>_<?php echo $key; ?>"><?php echo $filters[$filter]['description']; ?></label>
 			<select name="filters[<?php echo $filter; ?>][<?php echo $key; ?>][operator]">
