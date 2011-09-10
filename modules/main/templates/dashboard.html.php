@@ -75,7 +75,7 @@
 						<div class="faded_out"><?php echo __('There are no upcoming milestones for any of your associated projects'); ?></div>
 					<?php endif; ?>
 				<?php else: ?>
-					<div class="faded_out" style="padding: 5px 5px 15px 5px;"><?php echo __('You are not associated with any projects'); ?></div>
+					<div class="faded_out" style="font-size: 0.9em; padding: 5px 5px 10px 5px;"><?php echo __('You are not associated with any projects'); ?></div>
 				<?php endif; ?>
 			</div>
 		</td>

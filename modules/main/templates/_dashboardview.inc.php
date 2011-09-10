@@ -30,7 +30,7 @@
 				<?php endforeach; ?>
 			</table>
 		<?php else: ?>
-			<div class="faded_out" style="padding: 5px 5px 15px 5px;"><?php echo __("You haven't done anything recently"); ?></div>
+			<div class="faded_out" style="padding: 5px 5px 10px 5px;"><?php echo __("You haven't done anything recently"); ?></div>
 		<?php endif; ?>
 		</div>
 	<?php break; ?>
@@ -57,7 +57,7 @@
 				<?php endforeach; ?>
 			</table>
 		<?php else: ?>
-			<div class="faded_out" style="padding: 5px 5px 15px 5px;"><?php echo __('No issues recently commented'); ?></div>
+			<div class="faded_out" style="padding: 5px 5px 10px 5px;"><?php echo __('No issues recently commented'); ?></div>
 		<?php endif; ?>
 		</div>
 	<?php break; ?>

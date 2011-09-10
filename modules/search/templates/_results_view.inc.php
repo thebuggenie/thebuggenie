@@ -25,6 +25,6 @@
 		<?php endforeach; ?>
 		</table>
 	<?php else: ?>
-		<div class="faded_out" style="padding: 5px 5px 15px 5px;"><?php echo __($default_message); ?></div>
+		<div class="faded_out" style="padding: 5px 5px 10px 5px;"><?php echo __($default_message); ?></div>
 	<?php endif; ?>
 </div>
