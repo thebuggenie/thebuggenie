@@ -489,7 +489,7 @@
 
 		public function getAccountSettingsName()
 		{
-			return $this->_account_settings_name;
+			return TBGContext::geti18n()->__($this->_account_settings_name);
 		}
 
 		public function setAccountSettingsLogo($logo)
