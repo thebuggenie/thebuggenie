@@ -25,6 +25,7 @@ a:active, a:focus { outline: none; outline-style: none; }
 form, p { margin: 0px; padding: 0px; }
 
 input, select, textarea, button { font-family: 'Open Sans', sans-serif; font-size: 1em; color: #555; border: 1px solid #BBB; padding: 2px; }
+select { font-family: sans-serif !important; } /* Safari 5.1 mac fix */
 input, select, textarea { background-color: #FFF; }
 input[type="submit"], button, input[type="file"] { background-color: #E5E5E5; }
 input[type="submit"]:hover, button:hover { background-color: #F5F5F5; }
