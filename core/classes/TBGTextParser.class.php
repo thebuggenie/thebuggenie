@@ -367,6 +367,10 @@
 						$caption = ($caption != '') ? $caption : $file->getOriginalFilename();
 						$file_link = make_url('showfile', array('id' => $file->getID()));
 					}
+					else
+					{
+						$caption = (!empty($options)) ? array_pop($options) : false;
+					}
 
 					if ((($file instanceof TBGFile && $file->isImage()) || $articlemode) && (mb_strtolower($namespace) == 'image' || $issuemode) && TBGSettings::isCommentImagePreviewEnabled())
 					{
@@ -379,12 +383,12 @@
 							{
 								if (is_numeric($option[0]))
 								{
-									$style_dimensions = ' width: '.$option[0].';';
+									$style_dimensions = ' width: '.$option.';';
 									break;
 								}
 								else
 								{
-									$style_dimensions = ' height: '.mb_substr($option[0], 1).';';
+									$style_dimensions = ' height: '.mb_substr($option, 1).';';
 									break;
 								}
 							}
