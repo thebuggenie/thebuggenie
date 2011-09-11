@@ -243,6 +243,7 @@
 			{
 				$subject = TBGContext::getI18n()->__('Password reset');
 				$message = $this->createNewTBGMimemailFromTemplate($subject, 'passwordreset', array('password' => $event->getParameter('password')));
+				$message->addReplacementValues(array('%password%' => $event->getParameter('password')));
 				$this->_sendToUsers($event->getSubject(), $message);
 			}
 		}
