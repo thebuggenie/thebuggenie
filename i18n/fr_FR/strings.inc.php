@@ -1653,7 +1653,7 @@
 	$strings['These permissions control what you can do, and which pages you can access in The Bug Genie - on a project-specific basis. Some of these permissions are also available as site-wide permissions in the %permissions_configuration% page.'] = 'Ces permissions contr&ocirc;lent ce que vous pouvez faire et &agrave; quelles pages vous pouvez acc&eacute;der dans The Bug Genie - dans un contexte projet. Certaines de ces permissions sont aussi disponibles dans la page %permissions_configuration%.';
 	$strings['Can see all editions'] = 'Peut voir toutes les &eacute;ditions';
 	$strings['Can see all components'] = 'Peut voir tous les composants';
-	$strings['Can see all release'] = 'Peut voir toutes les livraisons';
+	$strings['Can see all releases'] = 'Peut voir toutes les livraisons';
 	$strings['Can see all milestones'] = 'Peut voir tous les jalons';
 	$strings['Updating, please wait'] = 'Mise &agrave; jour, veuillez patienter';
 	$strings['No issues in this list'] = 'Pas de demande dans cette liste';
