@@ -116,6 +116,7 @@
 			{
 				if ($request->getParameter('import_sample_data'))
 				{
+					ini_set('memory_limit','64M');
 					$users = array();
 					
 					$user1 = new TBGUser();
