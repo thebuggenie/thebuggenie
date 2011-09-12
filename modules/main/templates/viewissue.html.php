@@ -248,7 +248,7 @@
 				</tr>
 			</table>
 		</div>
-		<div class="rounded_box verylightyellow shadowed" id="viewissue_left_box_top">
+		<div class="rounded_box verylightgrey slightly-rounded shadowed" id="viewissue_left_box_top">
 			<table style="table-layout: auto; width: 100%; clear: both;" cellpadding=0 cellspacing=0 id="issue_view">
 				<tr>
 					<td class="issue_lefthand">
@@ -263,7 +263,7 @@
 								<ul class="workflow_actions simple_list">
 									<?php $cc = 1; $num_transitions = count($issue->getAvailableWorkflowTransitions()); ?>
 									<?php foreach ($issue->getAvailableWorkflowTransitions() as $transition): ?>
-										<li class="nice_button workflow<?php if ($cc == 1): ?> first<?php endif; if ($cc == $num_transitions): ?> last<?php endif; ?>">
+										<li class="button button-silver workflow<?php if ($cc == 1): ?> first<?php endif; if ($cc == $num_transitions): ?> last<?php endif; ?>">
 											<?php if ($transition->hasTemplate()): ?>
 												<input type="button" value="<?php echo $transition->getName(); ?>" onclick="TBG.Issues.showWorkflowTransition(<?php echo $transition->getID(); ?>);">
 											<?php else: ?>

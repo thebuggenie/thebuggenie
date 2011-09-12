@@ -315,6 +315,7 @@ a.shadowed:active { box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); -webkit-box-shad
 
 /* rounded boxes styling */
 .rounded_box { border-width: 1px; border-style: solid; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; padding: 5px; }
+.rounded_box.slightly-rounded { border-width: 1px; border-style: solid; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; padding: 3px; }
 .rounded_box.green { background-color: #CFE8CF; border-color: #aaC6aa; color: #242; }
 .rounded_box.yellow { background-color: #F9EF9E; border-color: #D9D9BB; }
 .rounded_box.lightyellow { background-color: #F9F5B2; border-color: #D9D9BB; }
@@ -622,17 +623,17 @@ a.friend:hover { border-bottom: 1px dotted #0000a4; }
 .nice_button.workflow input { border: 0; border-top: 0; border-left: 1px solid #CDC895; border-bottom: 1px solid #CDC895; color: #6E6E53; padding: 2px 3px; font-weight: normal; background-color: #E3DDA5; cursor: pointer; }
 .nice_button.workflow input:active { background-color: #E9E9B0; }
 .nice_button.workflow input:hover { background-color: #D3CE99; }
-.nice_button.workflow.first, .nice_button.workflow.first input { border-bottom-left-radius: 5px; -moz-border-radius-bottomleft: 5px; -webkit-border-bottom-left-radius: 5px; }
-.nice_button.workflow.last, .nice_button.workflow.last input { border-top-right-radius: 5px; -moz-border-radius-topright: 5px; -webkit-border-top-right-radius: 5px;  }
+.workflow_actions .button.workflow.last input { border-top-right-radius: 3px; -moz-border-radius-topright: 3px; -webkit-border-top-right-radius: 3px; border-bottom-right-radius: 3px; -moz-border-radius-bottomright: 3px; -webkit-border-bottom-right-radius: 3px; border-top-left-radius: 0; -moz-border-radius-topleft: 0; -webkit-border-top-left-radius: 0; border-bottom-left-radius: 0; -moz-border-radius-bottomleft: 0; -webkit-border-bottom-left-radius: 0; }
 /* end very visible button */
 
 .rounded_list_first_item { border-top-right-radius: 5px; -moz-border-radius-topright: 5px; -webkit-border-top-right-radius: 5px; border-top-left-radius: 5px; -moz-border-radius-topleft: 5px; -webkit-border-top-left-radius: 5px; }
 .rounded_list_last_item { border-bottom-right-radius: 5px; -moz-border-radius-bottomright: 5px; -webkit-border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; -moz-border-radius-bottomleft: 5px; -webkit-border-bottom-left-radius: 5px; }
 
 /* workflow actions */
-ul.workflow_actions { margin: -11px -11px 0 0; height: 25px; float: right; }
+ul.workflow_actions { margin: -3px -3px 0 0; height: 25px; float: right; }
 ul.workflow_actions li { display: block; float: left; }
 ul.workflow_actions li form { display: inline; margin: 0; padding: 0; }
+ul.workflow_actions li input { padding: 0 2px 1px 2px; color: #555; text-shadow: 1px 1px #FFF; }
 /* end workflow actions */
 
 /* fullpage (faded out) backdrop styling */
@@ -712,7 +713,7 @@ dl { margin: 0; font-size: 0.85em; padding: 0 0 0 0; position: relative; min-hei
 dt { width: 85px; font-weight: bold; padding: 3px 2px 2px 2px; clear: both; }
 dd { float: left; display: block; width: 195px; font-weight: normal; margin: 0; padding: 3px 5px 1px 2px; min-height: 16px; }
 
-#viewissue_left_box_top { margin: 0; }
+#viewissue_left_box_top { margin: 0; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); }
 #viewissue_left_box_bottom { margin: 0; }
 #viewissue_left_box_issuetype, #viewissue_left_box_status { margin: 0 5px 0 2px; }
 #viewissue_left_box_issuetype table tr td { font-size: 1.1em; font-weight: bold; }
