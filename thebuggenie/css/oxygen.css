@@ -77,7 +77,7 @@ div.image_container.thumb img.image { width: 220px; }
 .submenu_strip .selected_project { font-size: 1em; font-weight: bold; color: #555; border-color: #D9D9BB; }
 
 .submenu_strip { background-color: transparent; border-bottom: 1px dotted #CCC; padding: 5px; height: 20px; font-size: 0.9em; }
-.submenu_strip.project_context { background-color: #FAF3B8; color: #333; }
+.submenu_strip.project_context { background-color: #FAF3B8; color: #333; box-shadow: 0 0 4px rgba(0, 0, 0, 0.4); -webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.4); -moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.4); }
 /* End main header area */
 
 /* error and success message popups / slidedowns */
@@ -623,7 +623,8 @@ a.friend:hover { border-bottom: 1px dotted #0000a4; }
 .nice_button.workflow input { border: 0; border-top: 0; border-left: 1px solid #CDC895; border-bottom: 1px solid #CDC895; color: #6E6E53; padding: 2px 3px; font-weight: normal; background-color: #E3DDA5; cursor: pointer; }
 .nice_button.workflow input:active { background-color: #E9E9B0; }
 .nice_button.workflow input:hover { background-color: #D3CE99; }
-.workflow_actions .button.workflow.last input { border-top-right-radius: 3px; -moz-border-radius-topright: 3px; -webkit-border-top-right-radius: 3px; border-bottom-right-radius: 3px; -moz-border-radius-bottomright: 3px; -webkit-border-bottom-right-radius: 3px; border-top-left-radius: 0; -moz-border-radius-topleft: 0; -webkit-border-top-left-radius: 0; border-bottom-left-radius: 0; -moz-border-radius-bottomleft: 0; -webkit-border-bottom-left-radius: 0; }
+.workflow_actions li.first { border-top-right-radius: 0; -moz-border-radius-topright: 0; -webkit-border-top-right-radius: 0; border-bottom-right-radius: 0; -moz-border-radius-bottomright: 0; -webkit-border-bottom-right-radius: 0; border-top-left-radius: 4px; -moz-border-radius-topleft: 4px; -webkit-border-top-left-radius: 4px; border-bottom-left-radius: 4px; -moz-border-radius-bottomleft: 4px; -webkit-border-bottom-left-radius: 4px; }
+.workflow_actions li.last { border-top-right-radius: 4px; -moz-border-radius-topright: 4px; -webkit-border-top-right-radius: 4px; border-bottom-right-radius: 4px; -moz-border-radius-bottomright: 4px; -webkit-border-bottom-right-radius: 4px; border-top-left-radius: 0; -moz-border-radius-topleft: 0; -webkit-border-top-left-radius: 0; border-bottom-left-radius: 0; -moz-border-radius-bottomleft: 0; -webkit-border-bottom-left-radius: 0; }
 /* end very visible button */
 
 .rounded_list_first_item { border-top-right-radius: 5px; -moz-border-radius-topright: 5px; -webkit-border-top-right-radius: 5px; border-top-left-radius: 5px; -moz-border-radius-topleft: 5px; -webkit-border-top-left-radius: 5px; }
@@ -633,7 +634,8 @@ a.friend:hover { border-bottom: 1px dotted #0000a4; }
 ul.workflow_actions { margin: -3px -3px 0 0; height: 25px; float: right; }
 ul.workflow_actions li { display: block; float: left; }
 ul.workflow_actions li form { display: inline; margin: 0; padding: 0; }
-ul.workflow_actions li input { padding: 0 2px 1px 2px; color: #555; text-shadow: 1px 1px #FFF; }
+ul.workflow_actions li input, ul.workflow_actions li:hover input { padding: 0 2px 1px 2px; font-weight: normal; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); }
+ul.workflow_actions li:hover { box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); -webkit-box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); -moz-box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); }
 /* end workflow actions */
 
 /* fullpage (faded out) backdrop styling */
@@ -664,10 +666,12 @@ ul.workflow_actions li input { padding: 0 2px 1px 2px; color: #555; text-shadow:
 /* main issue view styling */
 /* issue info boxes */
 #viewissue_menu li a { font-size: 1em; }
-.issue_info { text-align: left; vertical-align: middle; font-weight: bold; color: #222; font-size: 1em; }
-.issue_info input[type="submit"], .issue_info button { float: right; margin-top: 6px; margin-left: 5px; }
+.issue_info_container { text-align: left; vertical-align: middle; font-size: 0.9em; font-weight: normal; color: #F5F5F5; width: auto; position: relative; }
+.issue_info_backdrop { background-color: #333; z-index: 100; filter:alpha(opacity=40); -moz-opacity:.40; opacity:.40; width: 100%; height: 100%; position: absolute; top: 0; left: 0; }
+.issue_info { z-index: 110; color: #FFF; position: relative; padding: 7px 3px 5px 5px; }
+.issue_info .button { float: right; margin-top: 6px; margin-left: 5px; }
 .issue_info a { font-size: 0.95em; font-weight: bold; }
-.issue_info.aligned { margin: 10px auto 5px auto; padding: 3px; width: 990px; text-align: center; }
+.issue_info.aligned { margin: 10px auto 5px auto; padding: 3px; width: auto; text-align: center; }
 .issue_info.full_width { margin: 5px 5px 0 5px; padding: 5px; position: relative; }
 .issue_info.full_width img { float: left; margin: 0 10px 0 5px; }
 .issue_info .header { font-size: 1.1em; line-height: 1.3; }
@@ -677,8 +681,6 @@ ul.workflow_actions li input { padding: 0 2px 1px 2px; color: #555; text-shadow:
 #notfound_error .header { text-align: center; }
 #viewissue_changed { height: 35px; padding: 5px 10px 5px 10px; color: #222; }
 #viewissue_saved { cursor: pointer; }
-#viewissue_being_worked_on { height: 33px; }
-#viewissue_being_worked_on .header { padding-top: 7px; }
 #viewissue_error .content { font-size: 1.1em; padding-top: 5px; padding-bottom: 5px; text-align: left; }
 /* end issue info boxes */
 
@@ -1128,8 +1130,8 @@ a.action_button:hover { background-color: #FCFCFC; border-color: #AAA; }
 	font-size: inherit;
 	font-weight: inherit;
 	cursor: pointer;
-	margin: inherit;
-	padding: inherit;
+	margin: 0;
+	padding: 0;
 	border: 0;
 }
 
@@ -1279,14 +1281,16 @@ a.action_button:hover { background-color: #FCFCFC; border-color: #AAA; }
 /*----------------------------*/
 .button-silver, .button.disabled, .button.disabled:active, .button.disabled:hover {
 	background: #c5c5c5;
-	background: -webkit-gradient(linear, left top, left bottom, from(#F1F1F1), to(#DADADA) );
-	background: -moz-linear-gradient(-90deg, #F1F1F1, #DADADA);
-	filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr='#f1f1f1', EndColorStr='#dadada');
+	background: -webkit-gradient(linear, left top, left bottom, from(#F5F5F5), to(#E5E5E5) );
+	background: -moz-linear-gradient(-90deg, #F5F5F5, #E5E5E5);
+	filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr='#f5f5f5', EndColorStr='#e5e5e5');
 	box-shadow: 0 0 .05em rgba(0,0,0,0.4);
 	-moz-box-shadow: 0 0 .05em rgba(0,0,0,0.4);
 	-webkit-box-shadow: 0 0 .05em rgba(0,0,0,0.4);	
+	color: #333; text-shadow: 1px 1px #FFF; 
 }
 .button-silver:active {
+	color: #333; text-shadow: 1px 1px #FFF;
 	background: #eaeaea;
 	background: -webkit-gradient(linear, left top, left bottom, from(#c5c5c5), to(#eaeaea) );
 	background: -moz-linear-gradient(-90deg, #c5c5c5, #eaeaea);

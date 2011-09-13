@@ -10,7 +10,7 @@
 	<?php if (TBGSettings::isUploadsEnabled() && $issue->canAttachFiles()): ?>
 		<?php include_component('main/uploader', array('issue' => $issue, 'mode' => 'issue')); ?>
 	<?php endif; ?>
-	<?php include_component('main/hideableInfoBox', array('key' => 'viewissue_helpbox', 'title' => __('Editing issues'), 'content' => __('To edit any of the details in this issue, move your mouse over that detail and press the icon that appears. Changes you make will stay unsaved until you either press the "%save%" button that appears when you change the issue, or until you log out (the changes are then lost).', array('%save%' => __('Save'))))); ?>
+	<?php //include_component('main/hideableInfoBox', array('key' => 'viewissue_helpbox', 'title' => __('Editing issues'), 'content' => __('To edit any of the details in this issue, move your mouse over that detail and press the icon that appears. Changes you make will stay unsaved until you either press the "%save%" button that appears when you change the issue, or until you log out (the changes are then lost).', array('%save%' => __('Save'))))); ?>
 	<div id="issuetype_indicator_fullpage" style="background-color: transparent; width: 100%; height: 100%; position: absolute; top: 0; left: 0; margin: 0; padding: 0; text-align: center; display: none;">
 		<div style="position: absolute; top: 45%; left: 40%; z-index: 100001; color: #FFF; font-size: 15px; font-weight: bold;">
 			<?php echo image_tag('spinning_32.gif'); ?><br>
@@ -18,135 +18,131 @@
 		</div>
 		<div style="background-color: #000; width: 100%; height: 100%; position: absolute; top: 0; left: 0; margin: 0; padding: 0; z-index: 100000;" class="semi_transparent"> </div>
 	</div>
-	<div class="rounded_box red borderless issue_info aligned" id="viewissue_unsaved"<?php if (!isset($issue_unsaved)): ?> style="display: none;"<?php endif; ?>>
-		<div class="header"><?php echo __('Could not save your changes'); ?></div>
-	</div>
-	<div class="rounded_box red borderless issue_info full_width" id="viewissue_merge_errors"<?php if (!$issue->hasMergeErrors()): ?> style="display: none;"<?php endif; ?>>
-		<div class="header"><?php echo __('This issue has been changed since you started editing it'); ?></div>
-		<div class="content"><?php echo __('Data that has been changed is highlighted in red below. Undo your changes to see the updated information'); ?></div>
-	</div>
+	<div class="issue_info_container">
+		<div class="issue_info error" id="viewissue_unsaved"<?php if (!isset($issue_unsaved)): ?> style="display: none;"<?php endif; ?>>
+			<div class="header"><?php echo __('Could not save your changes'); ?></div>
+		</div>
+		<div class="issue_info error" id="viewissue_merge_errors"<?php if (!$issue->hasMergeErrors()): ?> style="display: none;"<?php endif; ?>>
+			<div class="header"><?php echo __('This issue has been changed since you started editing it'); ?></div>
+			<div class="content"><?php echo __('Data that has been changed is highlighted in red below. Undo your changes to see the updated information'); ?></div>
+		</div>
 
-	<div class="rounded_box iceblue borderless issue_info full_width" id="viewissue_changed" <?php if (!$issue->hasUnsavedChanges()): ?>style="display: none;"<?php endif; ?>>
-		<button onclick="$('comment_add_button').hide(); $('comment_add').show();$('comment_save_changes').checked = true;$('comment_bodybox').focus();return false;"><?php echo __('Add comment and save changes'); ?></button>
-		<form action="<?php echo make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())); ?>" method="post">
-			<input type="submit" value="<?php echo __('Save changes'); ?>">
-			<div class="header"><?php echo __('You have unsaved changes'); ?></div>
-			<div class="content">
+		<div class="issue_info important" id="viewissue_changed" <?php if ($issue->hasUnsavedChanges()): ?>style="display: none;"<?php endif; ?>>
+			<button onclick="$('comment_add_button').hide(); $('comment_add').show();$('comment_save_changes').checked = true;$('comment_bodybox').focus();return false;"><?php echo __('Add comment and save changes'); ?></button>
+			<form action="<?php echo make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())); ?>" method="post">
+				<div class="button button-silver"><input type="submit" value="<?php echo __('Save changes'); ?>"></div>
 				<input type="hidden" name="issue_action" value="save">
 				<?php echo __("You have changed this issue, but haven't saved your changes yet. To save it, press the %save_changes% button to the right", array('%save_changes%' => '<b>' . __("Save changes") . '</b>')); ?>
+			</form>
+		</div>
+		<?php if (isset($error) && $error): ?>
+			<div class="issue_info error" id="viewissue_error">
+				<?php if ($error == 'transition_error'): ?>
+					<div class="header"><?php echo __('There was an error trying to move this issue to the next step in the workflow'); ?></div>
+					<div class="content" style="text-align: left;">
+						<?php echo __('The following actions could not be performed because of missing or invalid values: %list%', array('%list%' => '')); ?><br>
+						<ul>
+							<?php foreach (TBGContext::getMessageAndClear('issue_workflow_errors') as $error_field): ?>
+								<li><?php 
+
+									switch ($error_field)
+									{
+										case TBGWorkflowTransitionValidationRule::RULE_MAX_ASSIGNED_ISSUES:
+											echo __('Could not assign issue to the selected user because this users assigned issues limit is reached');
+											break;
+										case TBGWorkflowTransitionValidationRule::RULE_PRIORITY_VALID:
+											echo __('Could not set priority');
+											break;
+										case TBGWorkflowTransitionValidationRule::RULE_REPRODUCABILITY_VALID:
+											echo __('Could not set reproducability');
+											break;
+										case TBGWorkflowTransitionValidationRule::RULE_RESOLUTION_VALID:
+											echo __('Could not set resolution');
+											break;
+										case TBGWorkflowTransitionValidationRule::RULE_STATUS_VALID:
+											echo __('Could not set status');
+											break;
+										case TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE:
+											echo __('Could not assign issue to the any user or team because none were provided');
+											break;
+										case TBGWorkflowTransitionAction::ACTION_SET_MILESTONE:
+											echo __('Could not assign the issue to a milestone because none was provided');
+											break;
+										case TBGWorkflowTransitionAction::ACTION_SET_PRIORITY:
+											echo __('Could not set issue priority because none was provided');
+											break;
+										case TBGWorkflowTransitionAction::ACTION_SET_REPRODUCABILITY:
+											echo __('Could not set issue reproducability because none was provided');
+											break;
+										case TBGWorkflowTransitionAction::ACTION_SET_RESOLUTION:
+											echo __('Could not set issue resolution because none was provided');
+											break;
+										case TBGWorkflowTransitionAction::ACTION_SET_STATUS:
+											echo __('Could not set issue status because none was provided');
+											break;
+										default:
+											echo $error_field;
+											break;
+									}
+
+								?></li>
+							<?php endforeach; ?>
+						</ul>
+					</div>
+				<?php else: ?>
+					<div class="header"><?php echo __('There was an error trying to save changes to this issue'); ?></div>
+					<div class="content">
+						<?php if (isset($workflow_error) && $workflow_error): ?>
+							<?php echo __('No workflow step matches this issue after changes are saved. Please either use the workflow action buttons, or make sure your changes are valid within the current project workflow for this issue type.'); ?>
+						<?php else: ?>
+							<?php echo $error; ?>
+						<?php endif; ?>
+					</div>
+				<?php endif; ?>
 			</div>
-		</form>
-	</div>
-	<?php if (isset($error) && $error): ?>
-		<div class="rounded_box red borderless issue_info aligned" id="viewissue_error">
-			<?php if ($error == 'transition_error'): ?>
-				<div class="header"><?php echo __('There was an error trying to move this issue to the next step in the workflow'); ?></div>
-				<div class="content" style="text-align: left;">
-					<?php echo __('The following actions could not be performed because of missing or invalid values: %list%', array('%list%' => '')); ?><br>
-					<ul>
-						<?php foreach (TBGContext::getMessageAndClear('issue_workflow_errors') as $error_field): ?>
-							<li><?php 
-							
-								switch ($error_field)
-								{
-									case TBGWorkflowTransitionValidationRule::RULE_MAX_ASSIGNED_ISSUES:
-										echo __('Could not assign issue to the selected user because this users assigned issues limit is reached');
-										break;
-									case TBGWorkflowTransitionValidationRule::RULE_PRIORITY_VALID:
-										echo __('Could not set priority');
-										break;
-									case TBGWorkflowTransitionValidationRule::RULE_REPRODUCABILITY_VALID:
-										echo __('Could not set reproducability');
-										break;
-									case TBGWorkflowTransitionValidationRule::RULE_RESOLUTION_VALID:
-										echo __('Could not set resolution');
-										break;
-									case TBGWorkflowTransitionValidationRule::RULE_STATUS_VALID:
-										echo __('Could not set status');
-										break;
-									case TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE:
-										echo __('Could not assign issue to the any user or team because none were provided');
-										break;
-									case TBGWorkflowTransitionAction::ACTION_SET_MILESTONE:
-										echo __('Could not assign the issue to a milestone because none was provided');
-										break;
-									case TBGWorkflowTransitionAction::ACTION_SET_PRIORITY:
-										echo __('Could not set issue priority because none was provided');
-										break;
-									case TBGWorkflowTransitionAction::ACTION_SET_REPRODUCABILITY:
-										echo __('Could not set issue reproducability because none was provided');
-										break;
-									case TBGWorkflowTransitionAction::ACTION_SET_RESOLUTION:
-										echo __('Could not set issue resolution because none was provided');
-										break;
-									case TBGWorkflowTransitionAction::ACTION_SET_STATUS:
-										echo __('Could not set issue status because none was provided');
-										break;
-									default:
-										echo $error_field;
-										break;
-								}
-							
-							?></li>
-						<?php endforeach; ?>
-					</ul>
-				</div>
-			<?php else: ?>
-				<div class="header"><?php echo __('There was an error trying to save changes to this issue'); ?></div>
-				<div class="content">
-					<?php if (isset($workflow_error) && $workflow_error): ?>
-						<?php echo __('No workflow step matches this issue after changes are saved. Please either use the workflow action buttons, or make sure your changes are valid within the current project workflow for this issue type.'); ?>
-					<?php else: ?>
-						<?php echo $error; ?>
-					<?php endif; ?>
-				</div>
-			<?php endif; ?>
-		</div>
-	<?php endif; ?>
-	<?php if (isset($issue_saved)): ?>
-		<div class="rounded_box green borderless issue_info aligned" id="viewissue_saved" onclick="$(this).fade({duration: 0.5});">
-			<?php echo __('Your changes has been saved'); ?>
-		</div>
-	<?php endif; ?>
-	<?php if (isset($issue_message)): ?>
-		<div class="rounded_box green borderless issue_info aligned" id="viewissue_saved" onclick="$(this).fade({duration: 0.5});">
-			<?php echo $issue_message; ?>
-		</div>
-	<?php endif; ?>
-	<?php if (isset($issue_file_uploaded)): ?>
-		<div class="rounded_box green borderless issue_info aligned" id="viewissue_saved" onclick="$(this).fade({duration: 0.5});">
-			<?php echo __('The file was attached to this issue'); ?>
-		</div>
-	<?php endif; ?>
-	<?php if ($issue->isBeingWorkedOn()): ?>
-		<div class="rounded_box lightgrey borderless issue_info aligned" id="viewissue_being_worked_on">
-			<?php echo image_tag('action_start_working.png', array('style' => 'float: left; margin: 0 5px 0 5px;')); ?>
-			<?php if ($issue->getUserWorkingOnIssue()->getID() == $tbg_user->getID()): ?>
-				<div class="header"><?php echo __('You have been working on this issue since %time%', array('%time%' => tbg_formatTime($issue->getWorkedOnSince(), 6))); ?></div>
-			<?php elseif ($issue->getAssignee() instanceof TBGTeam): ?>
-				<div class="header"><?php echo __('%teamname% has been working on this issue since %time%', array('%teamname%' => $issue->getAssignee()->getName(), '%time%' => tbg_formatTime($issue->getWorkedOnSince(), 6))); ?></div>
-			<?php else: ?>
-				<div class="header"><?php echo __('%user% has been working on this issue since %time%', array('%user%' => $issue->getUserWorkingOnIssue()->getNameWithUsername(), '%time%' => tbg_formatTime($issue->getWorkedOnSince(), 6))); ?></div>
-			<?php endif; ?>
-		</div>
-	<?php endif; ?>
-	<?php if ($issue->isBlocking()): ?>
-		<div class="rounded_box red borderless issue_info aligned" id="blocking_div">
-			<?php echo __('This issue is blocking the next release'); ?>
-		</div>
-	<?php endif; ?>
-	<?php if ($issue->isDuplicate()): ?>
-		<div class="rounded_box iceblue borderless infobox issue_info aligned" id="viewissue_duplicate">
-			<div style="padding: 5px;">
-				<?php echo image_tag('icon_info_big.png', array('style' => 'float: left; margin: 0 5px 0 5px;')); ?>
-				<div class="header"><?php echo __('This issue is a duplicate of issue %link_to_duplicate_issue%', array('%link_to_duplicate_issue%' => link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getDuplicateOf()->getFormattedIssueNo())), $issue->getDuplicateOf()->getFormattedIssueNo(true)) . ' - "' . $issue->getDuplicateOf()->getTitle() . '"')); ?></div>
-				<div class="content"><?php echo __('For more information you should visit the issue mentioned above, as this issue is not likely to be updated'); ?></div>
+		<?php endif; ?>
+		<?php if (isset($issue_saved)): ?>
+			<div class="issue_info successful" id="viewissue_saved" onclick="$(this).fade({duration: 0.5});">
+				<?php echo __('Your changes has been saved'); ?>
 			</div>
-		</div>								
-	<?php endif; ?>
-	<?php if ($issue->isClosed()): ?>
-		<div class="rounded_box iceblue borderless infobox issue_info aligned" id="viewissue_closed">
-			<div style="padding: 5px;">
+		<?php endif; ?>
+		<?php if (isset($issue_message)): ?>
+			<div class="issue_info successful" id="viewissue_saved" onclick="$(this).fade({duration: 0.5});">
+				<?php echo $issue_message; ?>
+			</div>
+		<?php endif; ?>
+		<?php if (isset($issue_file_uploaded)): ?>
+			<div class="issue_info successful" id="viewissue_saved" onclick="$(this).fade({duration: 0.5});">
+				<?php echo __('The file was attached to this issue'); ?>
+			</div>
+		<?php endif; ?>
+		<?php if ($issue->isBeingWorkedOn()): ?>
+			<div class="issue_info information" id="viewissue_being_worked_on">
+				<?php if ($issue->getUserWorkingOnIssue()->getID() == $tbg_user->getID()): ?>
+					<?php echo __('You have been working on this issue since %time%', array('%time%' => tbg_formatTime($issue->getWorkedOnSince(), 6))); ?>
+				<?php elseif ($issue->getAssignee() instanceof TBGTeam): ?>
+					<?php echo __('%teamname% has been working on this issue since %time%', array('%teamname%' => $issue->getAssignee()->getName(), '%time%' => tbg_formatTime($issue->getWorkedOnSince(), 6))); ?>
+				<?php else: ?>
+					<?php echo __('%user% has been working on this issue since %time%', array('%user%' => $issue->getUserWorkingOnIssue()->getNameWithUsername(), '%time%' => tbg_formatTime($issue->getWorkedOnSince(), 6))); ?>
+				<?php endif; ?>
+			</div>
+		<?php endif; ?>
+		<?php if ($issue->isBlocking()): ?>
+			<div class="issue_info error" id="blocking_div">
+				<?php echo __('This issue is blocking the next release'); ?>
+			</div>
+		<?php endif; ?>
+		<?php if ($issue->isDuplicate()): ?>
+			<div class="issue_info information" id="viewissue_duplicate">
+				<div style="padding: 5px;">
+					<?php echo image_tag('icon_info_big.png', array('style' => 'float: left; margin: 0 5px 0 5px;')); ?>
+					<div class="header"><?php echo __('This issue is a duplicate of issue %link_to_duplicate_issue%', array('%link_to_duplicate_issue%' => link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getDuplicateOf()->getFormattedIssueNo())), $issue->getDuplicateOf()->getFormattedIssueNo(true)) . ' - "' . $issue->getDuplicateOf()->getTitle() . '"')); ?></div>
+					<div class="content"><?php echo __('For more information you should visit the issue mentioned above, as this issue is not likely to be updated'); ?></div>
+				</div>
+			</div>								
+		<?php endif; ?>
+		<?php if ($issue->isClosed()): ?>
+			<div class="issue_info information" id="viewissue_closed">
 				<?php echo image_tag('icon_info_big.png', array('style' => 'float: left; margin: 0 5px 0 5px;')); ?>
 				<div class="header"><?php echo __('This issue has been closed with status "%status_name%" and resolution "%resolution%".', array('%status_name%' => (($issue->getStatus() instanceof TBGStatus) ? $issue->getStatus()->getName() : __('Not determined')), '%resolution%' => (($issue->getResolution() instanceof TBGResolution) ? $issue->getResolution()->getName() : __('Not determined')))); ?></div>
 				<div class="content">
@@ -159,16 +155,13 @@
 					<?php endif; ?>
 				</div>
 			</div>
-		</div>
-	<?php endif; ?>
-	<?php if ($issue->getProject()->isArchived()): ?>
-		<div class="rounded_box red borderless issue_info aligned" id="viewissue_archived">
-			<div style="padding: 5px;">
-				<?php echo __('The project this issue belongs to has been archived, and so this issue is now read only'); ?>
-			</div>
-		</div>
-	<?php endif; ?>
-	<div style="width: 1000px; padding: 5px; margin: 0 auto 0 auto;">
+		<?php endif; ?>
+		<?php if ($issue->getProject()->isArchived()): ?>
+			<div class="issue_info important" id="viewissue_archived"><?php echo __('The project this issue belongs to has been archived, and so this issue is now read only'); ?></div>
+		<?php endif; ?>
+		<div class="issue_info_backdrop"></div>
+	</div>
+	<div style="width: auto; text-align: left; padding: 5px; margin: 0 auto 0 auto;">
 		<div style="vertical-align: middle; padding: 5px 0 0 0;">
 			<table style="table-layout: fixed; width: 100%; margin: 0 0 10px 0; background-color: transparent;" cellpadding=0 cellspacing=0>
 				<tr>
