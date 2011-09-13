@@ -25,8 +25,10 @@
 			<?php endif; ?>
 			<?php if ($article instanceof TBGWikiArticle): ?>
 				<?php include_component('articledisplay', array('article' => $article, 'show_article' => $preview, 'show_category_contains' => false, 'show_actions' => true, 'mode' => 'edit')); ?>
+				<?php $art_name = $article->getName(); ?>
 			<?php else: ?>
 				<?php include_template('publish/header', array('article_name' => $article_name, 'show_actions' => true, 'mode' => 'edit')); ?>
+				<?php $art_name = $article_name; ?>
 			<?php endif; ?>
 			<a name="edit_article"></a>
 			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('publish_article_edit', array('article_name' => $article_name)); ?>" method="post" id="edit_article_form" onsubmit="Event.stopObserving(window, 'beforeunload');">
@@ -38,7 +40,7 @@
 						<tr>
 							<td style="padding: 5px;"><label for="article_name"><?php echo __('Article name'); ?></label></td>
 							<td>
-								<input type="text" name="new_article_name" id="article_name" value="<?php echo $article_name; ?>" style="width: 250px;">
+								<input type="text" name="new_article_name" id="new_article_name" value="<?php echo $art_name; ?>" style="width: 250px;">
 								&nbsp;<span style="font-size: 13px;" class="faded_out"><?php echo __('This is the name you use when you link to this article'); ?></span>
 							</td>
 						</tr>
