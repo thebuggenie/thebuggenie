@@ -492,6 +492,11 @@
 //				var_dump(self::getUser());die();
 				self::setupI18n();
 				
+				if (!is_writable(THEBUGGENIE_CORE_PATH . DIRECTORY_SEPARATOR . 'cache'))
+				{
+					throw new Exception(self::geti18n()->__('The cache directory is not writable. Please correct the permissions of core/cache, and try again'));
+				}
+				
 				self::loadPostModuleRoutes();
 				TBGLogging::log('...done initializing');
 			}
