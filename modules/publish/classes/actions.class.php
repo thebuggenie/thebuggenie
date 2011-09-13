@@ -280,8 +280,7 @@
 								$article = new TBGWikiArticle();
 								$article->setContent($request->getRawParameter('new_article_content'));
 								$article->setName($request->getParameter('new_article_name'));
-								$this->article = $article;
-							}
+								$this->article = $article;							}
 							else
 							{
 								$article_id = TBGWikiArticle::createNew($request->getParameter('new_article_name'), $request->getRawParameter('new_article_content', ''), true);
@@ -306,7 +305,7 @@
 			$this->article_content = null;
 			$this->article_intro = null;
 			$this->change_reason = null;
-
+			
 			if ($this->article instanceof TBGWikiArticle)
 			{
 				$this->forward403unless($this->article->canEdit());
@@ -318,6 +317,7 @@
 					if ($request->hasParameter('new_article_name'))
 					{
 						$this->article_title = $request->getParameter('new_article_name');
+						$this->article->setName($request->getParameter('new_article_name'));
 					}
 					if ($request->hasParameter('new_article_content'))
 					{
