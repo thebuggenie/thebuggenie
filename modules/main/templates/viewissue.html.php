@@ -20,7 +20,7 @@
 	</div>
 	<div style="width: auto; text-align: left; padding: 5px; margin: 0 auto 0 auto;">
 		<div id="viewissue_header_container">
-			<table cellpadding=0 cellspacing=0>
+			<table cellpadding=0 cellspacing=0 class="title_area">
 				<tr>
 					<td style="width: 80px;<?php if (!$issue->isUserPainVisible()): ?> display: none;<?php endif; ?>" id="user_pain_additional">
 						<div class="rounded_box green borderless" title="<?php echo __('This is the user pain value for this issue'); ?>" id="viewissue_triaging" style="margin: 0 5px 0 0; vertical-align: middle; padding: 5px; font-weight: bold; font-size: 13px; text-align: center">
@@ -37,7 +37,7 @@
 							<?php echo image_tag('star.png', array('id' => 'issue_favourite_normal_'.$issue->getId(), 'style' => 'cursor: pointer;'.((!$tbg_user->isIssueStarred($issue->getID())) ? 'display: none;' : ''), 'title' => __('Click to stop following this issue'), 'onclick' => "TBG.Issues.toggleFavourite('".make_url('toggle_favourite_issue', array('issue_id' => $issue->getID()))."', ".$issue->getID().");")); ?>
 						<?php endif; ?>
 					</td>
-					<td style="font-size: 17px; width: auto; padding: 0 0 5px 7px;" id="title_field">
+					<td style="font-size: 17px; width: auto; padding: 5px 0 10px 7px;" id="title_field">
 						<div class="viewissue_title hoverable">
 							<span class="faded_out <?php if ($issue->isTitleChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isTitleMerged()): ?> issue_detail_unmerged<?php endif; ?>" id="title_header">
 								<?php if ($issue->isEditable() && $issue->canEditTitle()): ?>
@@ -206,7 +206,7 @@
 						</div>
 					</div>
 				<?php endif; ?>
-				<?php if ($issue->isBeingWorkedOn()): ?>
+				<?php if ($issue->isBeingWorkedOn() && $issue->isOpen()): ?>
 					<div class="issue_info information" id="viewissue_being_worked_on">
 						<?php if ($issue->getUserWorkingOnIssue()->getID() == $tbg_user->getID()): ?>
 							<?php echo __('You have been working on this issue since %time%', array('%time%' => tbg_formatTime($issue->getWorkedOnSince(), 6))); ?>
@@ -228,16 +228,17 @@
 				<?php if ($issue->isDuplicate()): ?>
 					<div class="issue_info information" id="viewissue_duplicate">
 						<div style="padding: 5px;">
-							<?php echo image_tag('icon_info_big.png', array('style' => 'float: left; margin: 0 5px 0 5px;')); ?>
+							<?php echo image_tag('icon_info.png', array('style' => 'float: left; margin: 0 5px 0 5px;')); ?>
 							<div class="header"><?php echo __('This issue is a duplicate of issue %link_to_duplicate_issue%', array('%link_to_duplicate_issue%' => link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getDuplicateOf()->getFormattedIssueNo())), $issue->getDuplicateOf()->getFormattedIssueNo(true)) . ' - "' . $issue->getDuplicateOf()->getTitle() . '"')); ?></div>
 							<div class="content"><?php echo __('For more information you should visit the issue mentioned above, as this issue is not likely to be updated'); ?></div>
 						</div>
-					</div>								
+					</div>
 				<?php endif; ?>
 				<?php if ($issue->isClosed()): ?>
 					<div class="issue_info information" id="viewissue_closed">
-						<?php echo image_tag('icon_info_big.png', array('style' => 'float: left; margin: 0 5px 0 5px;')); ?>
-						<div class="header"><?php echo __('This issue has been closed with status "%status_name%" and resolution "%resolution%".', array('%status_name%' => (($issue->getStatus() instanceof TBGStatus) ? $issue->getStatus()->getName() : __('Not determined')), '%resolution%' => (($issue->getResolution() instanceof TBGResolution) ? $issue->getResolution()->getName() : __('Not determined')))); ?></div>
+						<?php echo image_tag('icon_info.png', array('style' => 'float: left; margin: 0 5px 0 5px;')); ?>
+						<?php echo __('This issue has been closed with status "%status_name%" and resolution "%resolution%".', array('%status_name%' => (($issue->getStatus() instanceof TBGStatus) ? $issue->getStatus()->getName() : __('Not determined')), '%resolution%' => (($issue->getResolution() instanceof TBGResolution) ? $issue->getResolution()->getName() : __('Not determined')))); ?>
+						<?php /*
 						<div class="content">
 							<?php if ($issue->canPostComments() && $tbg_user->canReportIssues($issue->getProjectID())): ?>
 								<?php echo __('A closed issue will usually not be further updated - try %posting_a_comment%, or %report_a_new_issue%', array('%posting_a_comment%' => '<a href="#add_comment_location_core_1_' . $issue->getID() . '">' . __('posting a comment') . '</a>', '%report_a_new_issue%' => link_tag(make_url('project_reportissue', array('project_key' => $issue->getProject()->getKey())), __('report a new issue')))); ?>
@@ -247,114 +248,109 @@
 								<?php echo __('A closed issue will usually not be further updated - try %reporting_a_new_issue%', array('%reporting_a_new_issue%' => link_tag(make_url('project_reportissue', array('project_key' => $issue->getProject()->getKey())), __('reporting a new issue')))); ?>
 							<?php endif; ?>
 						</div>
+						*/ ?>
 					</div>
 				<?php endif; ?>
 				<?php if ($issue->getProject()->isArchived()): ?>
-					<div class="issue_info important" id="viewissue_archived"><?php echo __('The project this issue belongs to has been archived, and so this issue is now read only'); ?></div>
+					<div class="issue_info important" id="viewissue_archived">
+						<?php echo image_tag('icon_important.png', array('style' => 'float: left; margin: 0 5px 0 5px;')); ?>
+						<?php echo __('The project this issue belongs to has been archived, and so this issue is now read only'); ?>
+					</div>
 				<?php endif; ?>
 				<div class="issue_info_backdrop"></div>
 			</div>
 		</div>
 		<div id="viewissue_left_box_top">
-			<table style="table-layout: auto; width: 100%; clear: both;" cellpadding=0 cellspacing=0 id="issue_view">
-				<tr>
-					<td class="issue_lefthand">
-						<?php TBGEvent::createNew('core', 'viewissue_left_top', $issue)->trigger(); ?>
-						<?php include_component('main/issuedetailslisteditable', array('issue' => $issue)); ?>
-						<div style="clear: both; margin-bottom: 5px;"> </div>
-						<?php TBGEvent::createNew('core', 'viewissue_left_bottom', $issue)->trigger(); ?>
-					</td>
-					<td valign="top" align="left" style="padding: 5px; height: 100%;" class="issue_main">
-						<?php if ($issue->isWorkflowTransitionsAvailable()): ?>
-							<div id="workflow_actions">
-								<ul class="workflow_actions simple_list">
-									<?php $cc = 1; $num_transitions = count($issue->getAvailableWorkflowTransitions()); ?>
-									<?php foreach ($issue->getAvailableWorkflowTransitions() as $transition): ?>
-										<li class="button button-silver workflow<?php if ($cc == 1): ?> first<?php endif; if ($cc == $num_transitions): ?> last<?php endif; ?>">
-											<?php if ($transition->hasTemplate()): ?>
-												<input type="button" value="<?php echo $transition->getName(); ?>" onclick="TBG.Issues.showWorkflowTransition(<?php echo $transition->getID(); ?>);">
-											<?php else: ?>
-												<form action="<?php echo make_url('transition_issue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'transition_id' => $transition->getID())); ?>" method="post">
-													<input type="submit" value="<?php echo $transition->getName(); ?>">
-												</form>
-											<?php endif; ?>
-										</li>
-										<?php $cc++; ?>
-									<?php endforeach; ?>
-								</ul>
+			<div id="issue_view">
+				<fieldset id="issue_details">
+					<legend><?php echo __('Issue details'); ?></legend>
+					<?php if ($issue->isWorkflowTransitionsAvailable()): ?>
+						<div id="workflow_actions">
+							<ul class="workflow_actions simple_list">
+								<?php $cc = 1; $num_transitions = count($issue->getAvailableWorkflowTransitions()); ?>
+								<?php foreach ($issue->getAvailableWorkflowTransitions() as $transition): ?>
+									<li class="button button-silver workflow<?php if ($cc == 1): ?> first<?php endif; if ($cc == $num_transitions): ?> last<?php endif; ?>">
+										<?php if ($transition->hasTemplate()): ?>
+											<input type="button" value="<?php echo $transition->getName(); ?>" onclick="TBG.Issues.showWorkflowTransition(<?php echo $transition->getID(); ?>);">
+										<?php else: ?>
+											<form action="<?php echo make_url('transition_issue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'transition_id' => $transition->getID())); ?>" method="post">
+												<input type="submit" value="<?php echo $transition->getName(); ?>">
+											</form>
+										<?php endif; ?>
+									</li>
+									<?php $cc++; ?>
+								<?php endforeach; ?>
+							</ul>
+						</div>
+					<?php endif; ?>
+					<?php TBGEvent::createNew('core', 'viewissue_left_top', $issue)->trigger(); ?>
+					<?php include_component('main/issuedetailslisteditable', array('issue' => $issue)); ?>
+					<div style="clear: both; margin-bottom: 5px;"> </div>
+					<?php TBGEvent::createNew('core', 'viewissue_left_bottom', $issue)->trigger(); ?>
+				</fieldset>
+				<div class="issue_main">
+					<?php TBGEvent::createNew('core', 'viewissue_right_top', $issue)->trigger(); ?>
+					<fieldset id="description_field"<?php if (!$issue->isDescriptionVisible()): ?> style="display: none;"<?php endif; ?> class="viewissue_description<?php if ($issue->isDescriptionChanged()): ?> issue_detail_changed<?php endif; ?><?php if (!$issue->isDescriptionMerged()): ?> issue_detail_unmerged<?php endif; ?> hoverable">
+						<legend id="description_header">
+							<?php if ($issue->isEditable() && $issue->canEditDescription()): ?>
+								<a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'description')); ?>', 'description');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a> <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'description_undo_spinning')); ?>
+								<?php echo image_tag('icon_edit.png', array('class' => 'dropdown', 'id' => 'description_edit', 'onclick' => "$('description_change').show(); $('description_name').hide(); $('no_description').hide();", 'title' => __('Click here to edit description'))); ?>
+							<?php endif; ?>
+							<?php echo __('Issue description'); ?>
+						</legend>
+						<div id="description_content" class="<?php if ($issue->isDescriptionChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isDescriptionMerged()): ?> issue_detail_unmerged<?php endif; ?>">
+							<div class="faded_out" id="no_description" <?php if ($issue->getDescription() != ''):?> style="display: none;" <?php endif; ?>><?php echo __('Nothing entered.'); ?></div>
+							<div id="description_name" class="issue_inline_description">
+								<?php if ($issue->getDescription()): ?>
+									<?php echo tbg_parse_text($issue->getDescription(), false, null, array('headers' => false, 'issue' => $issue)); ?>
+								<?php endif; ?>
+							</div>
+						</div>
+						<?php if ($issue->isEditable() && $issue->canEditDescription()): ?>
+							<div id="description_change" style="display: none;">
+								<form id="description_form" action="<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'description')); ?>" method="post" onSubmit="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'description')) ?>', 'description'); return false;">
+									<?php include_template('main/textarea', array('area_name' => 'value', 'area_id' => 'description_form_value', 'height' => '100px', 'width' => '100%', 'value' => ($issue->getDescription()))); ?>
+									<br>
+									<input type="submit" value="<?php echo __('Save'); ?>" style="font-weight: bold;"><?php echo __('%save% or %cancel%', array('%save%' => '', '%cancel%' => javascript_link_tag(__('cancel'), array('style' => 'font-weight: bold;', 'onclick' => "$('description_change').hide();".(($issue->getDescription() != '') ? "$('description_name').show();" : "$('no_description').show();")."return false;")))); ?>
+								</form>
+								<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'description_spinning')); ?>
+								<div id="description_change_error" class="error_message" style="display: none;"></div>
 							</div>
 						<?php endif; ?>
-						<br style="clear: both;">
-						<?php TBGEvent::createNew('core', 'viewissue_right_top', $issue)->trigger(); ?>
-						<div id="description_field"<?php if (!$issue->isDescriptionVisible()): ?> style="display: none;"<?php endif; ?> class="hoverable">
-							<div class="rounded_box invisible nohover viewissue_description<?php if ($issue->isDescriptionChanged()): ?> issue_detail_changed<?php endif; ?><?php if (!$issue->isDescriptionMerged()): ?> issue_detail_unmerged<?php endif; ?>" id="description_header" style="margin: 0;">
-								<div class="viewissue_description_header">
-									<?php if ($issue->isEditable() && $issue->canEditDescription()): ?>
-										<a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'description')); ?>', 'description');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a> <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'description_undo_spinning')); ?>
-										<?php echo image_tag('icon_edit.png', array('class' => 'dropdown', 'id' => 'description_edit', 'onclick' => "$('description_change').show(); $('description_name').hide(); $('no_description').hide();", 'title' => __('Click here to edit description'))); ?>
-									<?php endif; ?>
-									<?php echo __('Description'); ?>:
-								</div>
-								<div id="description_content" class="<?php if ($issue->isDescriptionChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isDescriptionMerged()): ?> issue_detail_unmerged<?php endif; ?>">
-									<div class="faded_out" id="no_description" <?php if ($issue->getDescription() != ''):?> style="display: none;" <?php endif; ?>><?php echo __('Nothing entered.'); ?></div>
-									<div id="description_name" class="issue_inline_description">
-										<?php if ($issue->getDescription()): ?>
-											<?php echo tbg_parse_text($issue->getDescription(), false, null, array('headers' => false, 'issue' => $issue)); ?>
-										<?php endif; ?>
-									</div>
-								</div>
-								<?php if ($issue->isEditable() && $issue->canEditDescription()): ?>
-									<div id="description_change" style="display: none;">
-										<form id="description_form" action="<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'description')); ?>" method="post" onSubmit="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'description')) ?>', 'description'); return false;">
-											<?php include_template('main/textarea', array('area_name' => 'value', 'area_id' => 'description_form_value', 'height' => '100px', 'width' => '100%', 'value' => ($issue->getDescription()))); ?>
-											<br>
-											<input type="submit" value="<?php echo __('Save'); ?>" style="font-weight: bold;"><?php echo __('%save% or %cancel%', array('%save%' => '', '%cancel%' => javascript_link_tag(__('cancel'), array('style' => 'font-weight: bold;', 'onclick' => "$('description_change').hide();".(($issue->getDescription() != '') ? "$('description_name').show();" : "$('no_description').show();")."return false;")))); ?>
-										</form>
-										<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'description_spinning')); ?>
-										<div id="description_change_error" class="error_message" style="display: none;"></div>
-									</div>
+					</fieldset>
+					<fieldset id="reproduction_steps_field"<?php if (!$issue->isReproductionStepsVisible()): ?> style="display: none;"<?php endif; ?> class="hoverable<?php if ($issue->isReproduction_StepsChanged()): ?> issue_detail_changed<?php endif; ?><?php if (!$issue->isReproduction_StepsMerged()): ?> issue_detail_unmerged<?php endif; ?>">
+						<legend id="reproduction_steps_header">
+							<?php if ($issue->isEditable() && $issue->canEditReproductionSteps()): ?>
+								<a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'reproduction_steps')); ?>', 'reproduction_steps');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a> <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'reproduction_steps_undo_spinning')); ?>
+								<?php echo image_tag('icon_edit.png', array('class' => 'dropdown', 'id' => 'reproduction_steps_edit', 'onclick' => "$('reproduction_steps_change').show(); $('reproduction_steps_name').hide(); $('no_reproduction_steps').hide();", 'title' => __('Click here to edit reproduction steps'))); ?>
+							<?php endif; ?>
+							<?php echo __('Steps to reproduce this issue'); ?>
+						</legend>
+						<div id="reproduction_steps_content" class="<?php if ($issue->isReproduction_StepsChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isReproduction_StepsMerged()): ?> issue_detail_unmerged<?php endif; ?>">
+							<div class="faded_out" id="no_reproduction_steps" <?php if ($issue->getReproductionSteps() != ''):?> style="display: none;" <?php endif; ?>><?php echo __('Nothing entered.'); ?></div>
+							<div id="reproduction_steps_name" class="issue_inline_description">
+								<?php if ($issue->getReproductionSteps()): ?>
+									<?php echo tbg_parse_text($issue->getReproductionSteps(), false, null, array('headers' => false, 'issue' => $issue)); ?>
 								<?php endif; ?>
-								<br style="clear: both;">
 							</div>
 						</div>
-						<br />
-						<div id="reproduction_steps_field"<?php if (!$issue->isReproductionStepsVisible()): ?> style="display: none;"<?php endif; ?> class="hoverable">
-							<div id="reproduction_steps_header" class="rounded_box invisible nohover viewissue_reproduction_steps<?php if ($issue->isReproduction_StepsChanged()): ?> issue_detail_changed<?php endif; ?><?php if (!$issue->isReproduction_StepsMerged()): ?> issue_detail_unmerged<?php endif; ?>" style="margin: 0;">
-								<div class="viewissue_reproduction_steps_header">
-									<?php if ($issue->isEditable() && $issue->canEditReproductionSteps()): ?>
-										<a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'reproduction_steps')); ?>', 'reproduction_steps');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a> <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'reproduction_steps_undo_spinning')); ?>
-										<?php echo image_tag('icon_edit.png', array('class' => 'dropdown', 'id' => 'reproduction_steps_edit', 'onclick' => "$('reproduction_steps_change').show(); $('reproduction_steps_name').hide(); $('no_reproduction_steps').hide();", 'title' => __('Click here to edit reproduction steps'))); ?>
-									<?php endif; ?>
-									<?php echo __('Reproduction steps'); ?>:
-								</div>
-								<div id="reproduction_steps_content" class="<?php if ($issue->isReproduction_StepsChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isReproduction_StepsMerged()): ?> issue_detail_unmerged<?php endif; ?>">
-									<div class="faded_out" id="no_reproduction_steps" <?php if ($issue->getReproductionSteps() != ''):?> style="display: none;" <?php endif; ?>><?php echo __('Nothing entered.'); ?></div>
-									<div id="reproduction_steps_name" class="issue_inline_description">
-										<?php if ($issue->getReproductionSteps()): ?>
-											<?php echo tbg_parse_text($issue->getReproductionSteps(), false, null, array('headers' => false, 'issue' => $issue)); ?>
-										<?php endif; ?>
-									</div>
-								</div>
-								<?php if ($issue->isEditable() && $issue->canEditReproductionSteps()): ?>
-									<div id="reproduction_steps_change" style="display: none;">
-										<form id="reproduction_steps_form" action="<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'reproduction_steps')); ?>" method="post" onSubmit="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'reproduction_steps')) ?>', 'reproduction_steps'); return false;">
-											<?php include_template('main/textarea', array('area_name' => 'value', 'area_id' => 'reproduction_steps_form_value', 'height' => '100px', 'width' => '100%', 'value' => ($issue->getReproductionSteps()))); ?>
-											<br>
-											<input type="submit" value="<?php echo __('Save'); ?>" style="font-weight: bold;"><?php echo __('%save% or %cancel%', array('%save%' => '', '%cancel%' => javascript_link_tag(__('cancel'), array('style' => 'font-weight: bold;', 'onclick' => "$('reproduction_steps_change').hide();".(($issue->getReproductionSteps() != '') ? "$('reproduction_steps_name').show();" : "$('no_reproduction_steps').show();")."return false;")))); ?>
-										</form>
-										<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'reproduction_steps_spinning')); ?>
-										<div id="reproduction_steps_change_error" class="error_message" style="display: none;"></div>
-									</div>
-								<?php endif; ?>
-								<br style="clear: both;">
+						<?php if ($issue->isEditable() && $issue->canEditReproductionSteps()): ?>
+							<div id="reproduction_steps_change" style="display: none;">
+								<form id="reproduction_steps_form" action="<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'reproduction_steps')); ?>" method="post" onSubmit="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'reproduction_steps')) ?>', 'reproduction_steps'); return false;">
+									<?php include_template('main/textarea', array('area_name' => 'value', 'area_id' => 'reproduction_steps_form_value', 'height' => '100px', 'width' => '100%', 'value' => ($issue->getReproductionSteps()))); ?>
+									<br>
+									<input type="submit" value="<?php echo __('Save'); ?>" style="font-weight: bold;"><?php echo __('%save% or %cancel%', array('%save%' => '', '%cancel%' => javascript_link_tag(__('cancel'), array('style' => 'font-weight: bold;', 'onclick' => "$('reproduction_steps_change').hide();".(($issue->getReproductionSteps() != '') ? "$('reproduction_steps_name').show();" : "$('no_reproduction_steps').show();")."return false;")))); ?>
+								</form>
+								<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'reproduction_steps_spinning')); ?>
+								<div id="reproduction_steps_change_error" class="error_message" style="display: none;"></div>
 							</div>
-						</div>
-						<br />
-						<?php include_component('main/issuemaincustomfields', array('issue' => $issue)); ?>
-						<?php TBGEvent::createNew('core', 'viewissue_right_bottom', $issue)->trigger(); ?>
-					</td>
-				</tr>
-			</table>
+						<?php endif; ?>
+					</fieldset>
+					<br />
+					<?php include_component('main/issuemaincustomfields', array('issue' => $issue)); ?>
+					<?php TBGEvent::createNew('core', 'viewissue_right_bottom', $issue)->trigger(); ?>
+				</div>
+			</div>
 		</div>
 		<?php TBGEvent::createNew('core', 'viewissue_before_tabs', $issue)->trigger(); ?>
 		<div style="clear: both; height: 30px; margin: 20px 5px 0 5px;" class="tab_menu">

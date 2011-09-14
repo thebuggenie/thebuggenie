@@ -1,4 +1,4 @@
-<div class="backdrop_box mediumsmall issuedetailspopup" style="padding: 5px; text-align: left; font-size: 13px; display: none;" id="issue_transition_container_<?php echo $transition->getId(); ?>">
+<div class="backdrop_box medium issuedetailspopup" style="padding: 5px; text-align: left; font-size: 13px; display: none;" id="issue_transition_container_<?php echo $transition->getId(); ?>">
 	<div class="backdrop_detail_header"><?php echo $transition->getDescription(); ?></div>
 	<form action="<?php echo make_url('transition_issue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'transition_id' => $transition->getID())); ?>" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>">
 		<div id="backdrop_detail_content">

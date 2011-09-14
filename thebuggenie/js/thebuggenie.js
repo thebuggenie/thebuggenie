@@ -2586,18 +2586,15 @@ TBG.Issues.markAsChanged = function(field)
 		Effect.Pulsate($('issue_info_container'), {pulses: 6, duration: 2});
 	}
 	
-	$(field + '_header').addClassName('issue_detail_changed');
-	$(field + '_content').addClassName('issue_detail_changed');
+	$(field + '_field').addClassName('issue_detail_changed');
 	
 	if ($('comment_save_changes')) $('comment_save_changes').checked = true;
 }
 
 TBG.Issues.markAsUnchanged = function(field)
 {
-	$(field + '_header').removeClassName('issue_detail_changed');
-	$(field + '_header').removeClassName('issue_detail_unmerged');
-	$(field + '_content').removeClassName('issue_detail_changed');
-	$(field + '_content').removeClassName('issue_detail_unmerged');
+	$(field + '_field').removeClassName('issue_detail_changed');
+	$(field + '_field').removeClassName('issue_detail_unmerged');
 	if ($('issue_view').select('.issue_detail_changed').size() == 0) {
 		$('viewissue_changed').hide();
 		$('viewissue_merge_errors').hide();
