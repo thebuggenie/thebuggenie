@@ -49,7 +49,7 @@
 	</div>
 </div>
 <?php if ($issue->isUpdateable() && $issue->canEditStatus()): ?>
-	<div class="rounded_box white shadowed dropdown_box dropdown_box" id="status_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0; padding: 5px;">
+	<div class="rounded_box white shadowed dropdown_box" id="status_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0; padding: 5px;">
 		<div class="dropdown_header"><?php echo __('Set status'); ?></div>
 		<div class="dropdown_content">
 			<a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'status', 'status_id' => 0)); ?>', 'status');"><?php echo __('Clear the status'); ?></a><br>

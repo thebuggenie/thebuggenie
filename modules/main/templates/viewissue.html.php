@@ -183,18 +183,27 @@
 					</div>
 				<?php endif; ?>
 				<?php if (isset($issue_saved)): ?>
-					<div class="issue_info successful" id="viewissue_saved" onclick="$(this).fade({duration: 0.5});">
+					<div class="issue_info successful" id="viewissue_saved">
 						<?php echo __('Your changes has been saved'); ?>
+						<div class="buttons">
+							<div class="button button-silver"><button onclick="$('viewissue_saved').hide();"><?php echo __('OK'); ?></button></div>
+						</div>
 					</div>
 				<?php endif; ?>
 				<?php if (isset($issue_message)): ?>
-					<div class="issue_info successful" id="viewissue_saved" onclick="$(this).fade({duration: 0.5});">
+					<div class="issue_info successful" id="viewissue_saved">
 						<?php echo $issue_message; ?>
+						<div class="buttons">
+							<div class="button button-silver"><button onclick="$('viewissue_saved').hide();"><?php echo __('OK'); ?></button></div>
+						</div>
 					</div>
 				<?php endif; ?>
 				<?php if (isset($issue_file_uploaded)): ?>
-					<div class="issue_info successful" id="viewissue_saved" onclick="$(this).fade({duration: 0.5});">
+					<div class="issue_info successful" id="viewissue_saved">
 						<?php echo __('The file was attached to this issue'); ?>
+						<div class="buttons">
+							<div class="button button-silver"><button onclick="$('viewissue_saved').hide();"><?php echo __('OK'); ?></button></div>
+						</div>
 					</div>
 				<?php endif; ?>
 				<?php if ($issue->isBeingWorkedOn()): ?>
@@ -206,6 +215,9 @@
 						<?php else: ?>
 							<?php echo __('%user% has been working on this issue since %time%', array('%user%' => $issue->getUserWorkingOnIssue()->getNameWithUsername(), '%time%' => tbg_formatTime($issue->getWorkedOnSince(), 6))); ?>
 						<?php endif; ?>
+						<div class="buttons">
+							<div class="button button-silver"><button onclick="$('viewissue_being_worked_on').hide();"><?php echo __('OK'); ?></button></div>
+						</div>
 					</div>
 				<?php endif; ?>
 				<?php if ($issue->isBlocking()): ?>
