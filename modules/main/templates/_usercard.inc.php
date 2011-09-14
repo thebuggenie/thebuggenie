@@ -1,4 +1,4 @@
-<div class="rounded_box white borderless shadowed backdrop_box large backdrop_detail_content" id="user_details_popup">
+<div class="backdrop_box large backdrop_detail_content" id="user_details_popup">
 	<div id="backdrop_detail_content" class="rounded_top" style="padding: 10px; text-align: left;">
 		<div class="user_id"><?php echo $user->getID(); ?></div>
 		<div style="padding: 2px; width: 48px; height: 48px; text-align: center; background-color: #FFF; border: 1px solid #DDD; float: left;">

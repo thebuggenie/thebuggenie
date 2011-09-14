@@ -1,4 +1,4 @@
-<div class="rounded_box white borderless shadowed backdrop_box large" style="text-align: left;">
+<div class="backdrop_box large" style="text-align: left;">
 	<div class="backdrop_detail_header">
 		<?php echo __('Import content from CSV'); ?>
 	</div>

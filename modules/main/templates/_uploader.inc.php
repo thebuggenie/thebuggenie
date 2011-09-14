@@ -1,6 +1,6 @@
 <?php $apc_enabled = TBGRequest::CanGetUploadStatus(); ?>
 <div id="attach_file" style="display: none;">
-	<div class="rounded_box white borderless shadowed backdrop_box medium">
+	<div class="backdrop_box medium">
 		<div class="backdrop_detail_header">
 			<?php if ($mode == 'issue'): ?>
 				<?php echo __('Attach one or more file(s) to this issue'); ?>

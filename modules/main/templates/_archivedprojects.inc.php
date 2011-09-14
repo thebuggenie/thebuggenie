@@ -1,4 +1,4 @@
-<div class="rounded_box white borderless shadowed backdrop_box medium" id="client_users">
+<div class="backdrop_box medium" id="client_users">
 	<div class="backdrop_detail_header"><?php echo __('Archived projects'); ?></div>
 	<div id="backdrop_detail_content">
 		<?php
