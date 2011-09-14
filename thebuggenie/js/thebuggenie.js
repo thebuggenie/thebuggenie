@@ -134,6 +134,21 @@ TBG.Core._resizeWatcher = function() {
 };
 
 /**
+ * Monitors viewport scrolling to adapt fixed positioners
+ */
+TBG.Core._scrollWatcher = function() {
+	if ($('viewissue_header_container')) {
+		if (document.viewport.getScrollOffsets().top >= $('issue_view').offsetTop) {
+			$('viewissue_header_container').addClassName('fixed');
+			$('workflow_actions').addClassName('fixed');
+		} else {
+			$('viewissue_header_container').removeClassName('fixed');
+			$('workflow_actions').removeClassName('fixed');
+		}
+	}
+};
+
+/**
  * Toggles one breadcrumb item in the breadcrumb bar
  */
 TBG.Core._toggleBreadcrumbItem = function(item) {
@@ -226,6 +241,7 @@ TBG.initialize = function(options) {
 	}
 	TBG.Core._initializeAutocompleter();
 	Event.observe(window, 'resize', TBG.Core._resizeWatcher);
+	Event.observe(window, 'scroll', TBG.Core._scrollWatcher);
 	TBG.Core._resizeWatcher();
 	$('fullpage_backdrop_content').observe('click', TBG.Core._resizeWatcher);
 	document.observe('click', TBG.Main.toggleBreadcrumbMenuPopout);
