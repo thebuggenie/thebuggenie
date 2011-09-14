@@ -243,7 +243,7 @@
 				<div class="issue_info_backdrop"></div>
 			</div>
 		</div>
-		<div class="rounded_box verylightgrey slightly-rounded shadowed" id="viewissue_left_box_top">
+		<div id="viewissue_left_box_top">
 			<table style="table-layout: auto; width: 100%; clear: both;" cellpadding=0 cellspacing=0 id="issue_view">
 				<tr>
 					<td class="issue_lefthand">
