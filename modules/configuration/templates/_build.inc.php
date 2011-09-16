@@ -1,4 +1,4 @@
-<div class="rounded_box white borderless shadowed backdrop_box large">
+<div class="backdrop_box large">
 	<div class="backdrop_detail_header">
 		<?php echo ($build->getId()) ? __('Edit release details') : __('Add new release'); ?>
 	</div>

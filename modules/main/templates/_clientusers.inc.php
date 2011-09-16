@@ -1,4 +1,4 @@
-<div class="rounded_box white borderless shadowed backdrop_box medium" id="client_users">
+<div class="backdrop_box medium" id="client_users">
 	<div class="backdrop_detail_header"><?php echo __('Users for %clientname%', array('%clientname%' => $client->getName())); ?></div>
 	<div id="backdrop_detail_content">
 		<?php echo __('Click a user to view more details, such as view his/her user card.'); ?>

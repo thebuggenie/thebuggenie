@@ -1,4 +1,4 @@
-<div class="rounded_box white borderless shadowed backdrop_box medium" style="padding: 5px; text-align: left; font-size: 13px;">
+<div class="backdrop_box medium" style="padding: 5px; text-align: left; font-size: 13px;">
 	<div class="backdrop_detail_header"><?php echo __('Mark this issue as a duplicate'); ?></div>
 	<div id="backdrop_detail_content">
 		<?php echo __('Please enter some details to search for, and then the issue you want this to be a duplicate of.'); ?>

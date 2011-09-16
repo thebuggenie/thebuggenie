@@ -134,6 +134,40 @@ TBG.Core._resizeWatcher = function() {
 };
 
 /**
+ * Monitors viewport scrolling to adapt fixed positioners
+ */
+TBG.Core._scrollWatcher = function() {
+	if ($('viewissue_header_container')) {
+		var y = document.viewport.getScrollOffsets().top;
+		if (y >= $('issue_view').offsetTop) {
+			$('viewissue_header_container').addClassName('fixed');
+			$('workflow_actions').addClassName('fixed');
+			if (y >= $('viewissue_menu_panes').offsetTop) {
+				var button = $('comment_add_button').remove();
+//				button.addClassName('fixed');
+				button.addClassName('button-silver');
+				button.removeClassName('button-green');
+				$('workflow_actions').down('ul').insert(button);
+			} else {
+				var button = $('comment_add_button').remove();
+//				button.removeClassName('fixed');
+				button.removeClassName('button-silver');
+				button.addClassName('button-green');
+				$('add_comment_button_container').update(button);
+			}
+		} else {
+			$('viewissue_header_container').removeClassName('fixed');
+			$('workflow_actions').removeClassName('fixed');
+			var button = $('comment_add_button').remove();
+//			button.removeClassName('fixed');
+			button.removeClassName('button-silver');
+			button.addClassName('button-green');
+			$('add_comment_button_container').update(button);
+		}
+	}
+};
+
+/**
  * Toggles one breadcrumb item in the breadcrumb bar
  */
 TBG.Core._toggleBreadcrumbItem = function(item) {
@@ -226,6 +260,7 @@ TBG.initialize = function(options) {
 	}
 	TBG.Core._initializeAutocompleter();
 	Event.observe(window, 'resize', TBG.Core._resizeWatcher);
+	Event.observe(window, 'scroll', TBG.Core._scrollWatcher);
 	TBG.Core._resizeWatcher();
 	$('fullpage_backdrop_content').observe('click', TBG.Core._resizeWatcher);
 	document.observe('click', TBG.Main.toggleBreadcrumbMenuPopout);
@@ -363,7 +398,7 @@ TBG.Main.Helpers.Dialog.dismiss = function() {
  */
 TBG.Main.Helpers.ajax = function(url, options) {
 	var params = (options.params) ? options.params : '';
-	if (options.form) params = Form.serialize(options.form);
+	if (options.form && options.form != undefined) params = Form.serialize(options.form);
 	if (options.additional_params) params += options.additional_params;
 	var url_method = (options.url_method) ? options.url_method : 'post';
 	
@@ -577,7 +612,7 @@ TBG.Main.reloadImage = function(id) {
    var src = $(id).src;
    var date = new Date();
    
-   src = (src.indexOf('?') >= 0) ? src.substr(0, pos) : src;
+   src = (src.indexOf('?') != -1) ? src.substr(0, pos) : src;
    $(id).src = src + '?v=' + date.getTime();
    
    return false;
@@ -2440,7 +2475,7 @@ TBG.Issues.Field.Updaters.allVisible = function(visible_fields) {
  */
 TBG.Issues.Field.set = function(url, field, serialize_form) {
 	var post_form = undefined;
-	if (['description', 'reproduction_steps', 'title'].indexOf(field)) {
+	if (['description', 'reproduction_steps', 'title'].indexOf(field) != -1) {
 		post_form = field + '_form';
 	} else if (serialize_form != undefined) {
 		post_form = serialize_form + '_form';
@@ -2548,21 +2583,18 @@ TBG.Issues.markAsChanged = function(field)
 {
 	if (!$('viewissue_changed').visible()) {
 		$('viewissue_changed').show();
-		Effect.Pulsate($('viewissue_changed'));
+		Effect.Pulsate($('issue_info_container'), {pulses: 6, duration: 2});
 	}
 	
-	$(field + '_header').addClassName('issue_detail_changed');
-	$(field + '_content').addClassName('issue_detail_changed');
+	$(field + '_field').addClassName('issue_detail_changed');
 	
 	if ($('comment_save_changes')) $('comment_save_changes').checked = true;
 }
 
 TBG.Issues.markAsUnchanged = function(field)
 {
-	$(field + '_header').removeClassName('issue_detail_changed');
-	$(field + '_header').removeClassName('issue_detail_unmerged');
-	$(field + '_content').removeClassName('issue_detail_changed');
-	$(field + '_content').removeClassName('issue_detail_unmerged');
+	$(field + '_field').removeClassName('issue_detail_changed');
+	$(field + '_field').removeClassName('issue_detail_unmerged');
 	if ($('issue_view').select('.issue_detail_changed').size() == 0) {
 		$('viewissue_changed').hide();
 		$('viewissue_merge_errors').hide();
