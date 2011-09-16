@@ -101,10 +101,10 @@
 				</tr>
 			</table>
 			<div id="issue_info_container">
-				<div class="issue_info error" id="viewissue_unsaved"<?php if (!isset($issue_unsaved)): ?> style="display: none;"<?php endif; ?>>
+				<div class="issue_info error<?php if (isset($issue_unsaved)): ?> active<?php endif; ?>" id="viewissue_unsaved"<?php if (!isset($issue_unsaved)): ?> style="display: none;"<?php endif; ?>>
 					<div class="header"><?php echo __('Could not save your changes'); ?></div>
 				</div>
-				<div class="issue_info error" id="viewissue_merge_errors"<?php if (!$issue->hasMergeErrors()): ?> style="display: none;"<?php endif; ?>>
+				<div class="issue_info error<?php if ($issue->hasMergeErrors()): ?> active<?php endif; ?>" id="viewissue_merge_errors"<?php if (!$issue->hasMergeErrors()): ?> style="display: none;"<?php endif; ?>>
 					<div class="header"><?php echo __('This issue has been changed since you started editing it'); ?></div>
 					<div class="content"><?php echo __('Data that has been changed is highlighted in red below. Undo your changes to see the updated information'); ?></div>
 				</div>
@@ -288,56 +288,46 @@
 								</li>
 							</ul>
 							<?php if (!$issue->getProject()->isArchived() && (TBGContext::getUser()->hasPermission('caneditissue') || TBGContext::getUser()->hasPermission('caneditissuebasic'))): ?>
-								<div id="more_actions" style="display: none;">
-									<div class="rounded_box white shadowed">
-										<div style="padding: 5px;">
-											<ul>
-												<?php if ($issue->isBlocking()): ?>
-													<li><?php echo link_tag(make_url('unblock', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getId())), image_tag('icon_unblock.png', array('style' => 'float: left; margin-right: 5px;')) . __("Mark as not blocking the next release")); ?></li>
-												<?php else: ?>
-													<li><?php echo link_tag(make_url('block', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getId())), image_tag('icon_block.png', array('style' => 'float: left; margin-right: 5px;')) . __("Mark as blocking the next release")); ?></li>
-												<?php endif; ?>
-												<?php if (!$issue->isDuplicate()): ?>
-													<li><a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'markasduplicate_issue', 'issue_id' => $issue->getID())); ?>');"><?php echo image_tag('icon_duplicate_issues.png', array('style' => 'float: left; margin-right: 5px;')); ?><?php echo __('Mark this issue as a duplicate of another'); ?></a></li>
-												<?php else: ?>
-													<li><a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'markasduplicate_issue', 'issue_id' => $issue->getID())); ?>');"><?php echo image_tag('icon_duplicate_issues.png', array('style' => 'float: left; margin-right: 5px;')); ?><?php echo __('Change the issue this is a duplicate of'); ?></a></li>
-													<li><?php echo link_tag(make_url('notduplicate', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getId())), image_tag('icon_duplicate_issues.png', array('style' => 'float: left; margin-right: 5px;')) . __("Unmark this issue as a duplicate")); ?></li>
-												<?php endif; ?>
-												<li><a href="javascript:void(0)" onClick="$('move_issue').toggle();"><?php echo image_tag('icon_move.png', array('style' => 'float: left; margin-right: 5px;')) . __("Move issue to another project"); ?></a></li>
-												<li style="display: none;" id="move_issue">
-													<form action="<?php echo make_url('move_issue', array('issue_id' => $issue->getID())); ?>" method="post">
-														<div class="rounded_box borderless yellow" style="margin: 5px 0 20px 0;">
-															<b><?php echo __('Move issue to a different project'); ?></b>
-															<p><?php echo __('Please be aware that moving this issue to a different project will reset details such as status, category, etc., and may also make some fields invisible, depending on the issue type configuration for that project. The issue will also be renumbered.'); ?></p>
-															<br>
-															<label for="move_issue_project"><?php echo __('Move issue to'); ?></label><br>
-															<select name="project_id">
-																<?php foreach (TBGProject::getAll() as $project): ?>
-																	<?php if (!$tbg_user->canReportIssues($project) && $project->getID() != $issue->getProject()->getID()) continue; ?>
-																	<option value="<?php echo $project->getID(); ?>"<?php if ($project->getID() == $issue->getProject()->getID()): ?> selected<?php endif; ?>><?php echo $project->getName(); ?></option>
-																<?php endforeach; ?>
-															</select>
-															<div style="text-align: right; padding-top: 5px;">
-																<input type="submit" value="<?php echo __('Move issue'); ?>" onclick="$(this).hide();$('move_issue_indicator').show();">
-																<?php echo image_tag('spinning_16.gif', array('id' => 'move_issue_indicator', 'style' => 'display: none; margin-right: 5px;')); ?>
-																<?php echo __('%move_issue% or %cancel%', array('%move_issue%' => '', '%cancel%' => '')); ?>
-																<a href="javascript:void(0)" onclick="$('move_issue').hide();"><?php echo __('cancel'); ?></a>
-															</div>
-														</div>
-													</form>
-												</li>
-												<?php if (TBGContext::getUser()->hasPermission('candeleteissues') || TBGContext::getUser()->hasPermission('caneditissue')): ?>
-													<li><a href="javascript:void(0)" onClick="$('delete_issue').toggle();"><?php echo image_tag('icon_delete.png', array('style' => 'float: left; margin-right: 5px;')) . __("Permanently delete this issue"); ?></a></li>
-												<?php endif; ?>
-											</ul>
-											<div class="rounded_box borderless red" style="display: none;" id="delete_issue"> 
-												<b><?php echo __('Permanently delete this issue'); ?></b>
-												<p><?php echo __('Are you sure you wish to delete this issue? It will remain in the database for your records, but will not be accessible via The Bug Genie.'); ?></p>
-												<?php echo link_tag(make_url('deleteissue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getId())), __('Yes')); ?> | <a href="javascript:void(0)" onClick="$('delete_issue').hide();"><?php echo __('No'); ?></a>
+								<ul id="more_actions" style="display: none; position: absolute; width: 300px; top: 21px; right: 0; z-index: 1000;" class="simple_list rounded_box white shadowed">
+									<li class="header"><?php echo __('Additional actions available'); ?></li>
+									<?php if ($issue->isBlocking()): ?>
+										<li><?php echo link_tag(make_url('unblock', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getId())), image_tag('icon_unblock.png', array('style' => 'float: left; margin-right: 5px;')) . __("Mark as not blocking the next release")); ?></li>
+									<?php else: ?>
+										<li><?php echo link_tag(make_url('block', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getId())), image_tag('icon_block.png', array('style' => 'float: left; margin-right: 5px;')) . __("Mark as blocking the next release")); ?></li>
+									<?php endif; ?>
+									<?php if (!$issue->isDuplicate()): ?>
+										<li><a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'markasduplicate_issue', 'issue_id' => $issue->getID())); ?>');"><?php echo image_tag('icon_duplicate_issues.png', array('style' => 'float: left; margin-right: 5px;')); ?><?php echo __('Mark this issue as a duplicate of another'); ?></a></li>
+									<?php else: ?>
+										<li><a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'markasduplicate_issue', 'issue_id' => $issue->getID())); ?>');"><?php echo image_tag('icon_duplicate_issues.png', array('style' => 'float: left; margin-right: 5px;')); ?><?php echo __('Change the issue this is a duplicate of'); ?></a></li>
+										<li><?php echo link_tag(make_url('notduplicate', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getId())), image_tag('icon_duplicate_issues.png', array('style' => 'float: left; margin-right: 5px;')) . __("Unmark this issue as a duplicate")); ?></li>
+									<?php endif; ?>
+									<li><a href="javascript:void(0)" onClick="$('move_issue').toggle();"><?php echo image_tag('icon_move.png', array('style' => 'float: left; margin-right: 5px;')) . __("Move issue to another project"); ?></a></li>
+									<li style="display: none;" id="move_issue">
+										<form action="<?php echo make_url('move_issue', array('issue_id' => $issue->getID())); ?>" method="post">
+											<div class="rounded_box borderless yellow" style="margin: 5px 0 20px 0;">
+												<b><?php echo __('Move issue to a different project'); ?></b>
+												<p><?php echo __('Please be aware that moving this issue to a different project will reset details such as status, category, etc., and may also make some fields invisible, depending on the issue type configuration for that project. The issue will also be renumbered.'); ?></p>
+												<br>
+												<label for="move_issue_project"><?php echo __('Move issue to'); ?></label><br>
+												<select name="project_id">
+													<?php foreach (TBGProject::getAll() as $project): ?>
+														<?php if (!$tbg_user->canReportIssues($project) && $project->getID() != $issue->getProject()->getID()) continue; ?>
+														<option value="<?php echo $project->getID(); ?>"<?php if ($project->getID() == $issue->getProject()->getID()): ?> selected<?php endif; ?>><?php echo $project->getName(); ?></option>
+													<?php endforeach; ?>
+												</select>
+												<div style="text-align: right; padding-top: 5px;">
+													<input type="submit" value="<?php echo __('Move issue'); ?>" onclick="$(this).hide();$('move_issue_indicator').show();">
+													<?php echo image_tag('spinning_16.gif', array('id' => 'move_issue_indicator', 'style' => 'display: none; margin-right: 5px;')); ?>
+													<?php echo __('%move_issue% or %cancel%', array('%move_issue%' => '', '%cancel%' => '')); ?>
+													<a href="javascript:void(0)" onclick="$('move_issue').hide();"><?php echo __('cancel'); ?></a>
+												</div>
 											</div>
-										</div>
-									</div>
-								</div>
+										</form>
+									</li>
+									<?php if (TBGContext::getUser()->hasPermission('candeleteissues') || TBGContext::getUser()->hasPermission('caneditissue')): ?>
+										<li><a href="javascript:void(0)" onClick="TBG.Main.Helpers.Dialog.show('<?php echo __('Permanently delete this issue?'); ?>', '<?php echo __('Are you sure you wish to delete this issue? It will remain in the database for your records, but will not be accessible via The Bug Genie.'); ?>', {yes: {href: '<?php echo make_url('deleteissue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getId())); ?>' }, no: {click: TBG.Main.Helpers.Dialog.dismiss}});"><?php echo image_tag('icon_delete.png', array('style' => 'float: left; margin-right: 5px;')) . __("Permanently delete this issue"); ?></a></li>
+									<?php endif; ?>
+								</ul>
 							<?php endif; ?>
 						</div>
 					<?php endif; ?>

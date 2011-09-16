@@ -636,7 +636,8 @@ a.friend:hover { border-bottom: 1px dotted #0000a4; }
 
 #issue_details { position: relative; }
 #issue_details dl { font-size: 1em; }
-.issue_detail_field { margin: 0; padding: 0; width: 50%; float: left; }
+#issue_details ul.issue_details { margin: 0; }
+.issue_detail_field { margin: 0 5px 0 0; padding: 0; width: 48%; float: left; }
 .issue_detail_field dl { border-bottom: 1px solid transparent; height: 24px; }
 .issue_detail_field dt { min-width: 150px; }
 .issue_detail_field:hover dl { background-color: #F1F1F1; border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; }
@@ -679,7 +680,7 @@ ul.workflow_actions li:hover { box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); -webkit-b
 #viewissue_menu li { box-shadow: 1px -1px 1px rgba(50, 50, 50, 0.2); -webkit-box-shadow: 1px -1px 1px rgba(50, 50, 50, 0.2); -moz-box-shadow: 1px -1px 1px rgba(50, 50, 50, 0.2); }
 #viewissue_menu li.selected { box-shadow: 2px -2px 2px rgba(50, 50, 50, 0.2); -webkit-box-shadow: 2px -2px 2px rgba(50, 50, 50, 0.2); -moz-box-shadow: 2px -2px 2px rgba(50, 50, 50, 0.2); }
 #viewissue_menu li a { font-size: 1em; }
-#issue_info_container { text-align: left; vertical-align: middle; font-size: 1em; font-weight: normal; color: #F5F5F5; width: auto; position: relative; margin: 0 5px 3px 5px; }
+#issue_info_container { text-align: left; z-index: 0; vertical-align: middle; font-size: 1em; font-weight: normal; color: #F5F5F5; width: auto; position: relative; margin: 0 5px 3px 5px; }
 .issue_info_backdrop { background-color: #DDD; z-index: 100; filter:alpha(opacity=90); -moz-opacity:.90; opacity:.90; width: 100%; height: 100%; position: absolute; top: 0; left: 0; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; border-top-left-radius: 0; -moz-border-radius-topleft: 0; -webkit-border-top-left-radius: 0; border-top-right-radius: 0; -moz-border-radius-topright: 0; -webkit-border-top-right-radius: 0; }
 .issue_info { z-index: 110; color: #333; text-shadow: 1px 1px 1px #FFF; position: relative; padding: 3px 3px 3px 5px; font-weight: normal; height: 22px; }
 .issue_info .buttons { float: right; margin: 0; }
@@ -690,6 +691,7 @@ ul.workflow_actions li:hover { box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); -webkit-b
 .issue_info.full_width img { float: left; margin: 0 10px 0 5px; }
 .issue_info .header { font-size: 1.1em; line-height: 1.3; }
 .issue_info .content, .notfound_error .content { font-weight: normal; font-size: 0.95em; line-height: 1; }
+.issue_info.error.active ~ .issue_info_backdrop { background-color: #FAA; }
 #notfound_error { vertical-align: middle; text-align: center; padding: 5px; color: #222; font-weight: bold; font-size: 1.1em; width: 700px; }
 #notfound_error .content { font-weight: normal; }
 #notfound_error .header { text-align: center; }
@@ -742,10 +744,10 @@ dd { float: left; display: block; width: 195px; font-weight: normal; margin: 0; 
 #viewissue_left_box_status { font-weight: normal; }
 #viewissue_left_box_status table tr td { font-weight: normal; }
 #viewissue_left_box_top #status_header { padding: 2px; }
-.issue_lefthand #more_actions { padding: 10px 5px 5px 10px; }
-.issue_lefthand #more_actions .box_header { font-weight: bold; padding: 5px 0 5px 0; }
-.issue_lefthand #more_actions ul { list-style-type: none; padding: 0; margin: 0; clear: both; }
-.issue_lefthand #more_actions ul li { min-height: 18px; font-weight: normal; margin: 0 0 3px 0; text-align: left; }
+#issue_details #more_actions { padding: 10px 5px 5px 10px; }
+#issue_details #more_actions li.header { font-size: 14px; font-weight: bold; margin: 0 0 5px 0; }
+#issue_details #more_actions li { padding: 2px; line-height: 1.3; }
+#issue_details #more_actions li img { float: left; margin-right: 2px; }
 
 /* left hand dropdown boxes */
 .dropdown_header { font-weight: bold; }
