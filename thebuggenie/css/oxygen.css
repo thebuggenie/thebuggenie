@@ -36,7 +36,7 @@ input[disabled], button[disabled], select[disabled] { background-color: #F9F9F9;
 pre { overflow: auto; }
 
 select { height: 22px; }
-textarea { font-family: 'Droid Sans Mono', monospace; }
+textarea { padding: 0; font-family: 'Droid Sans Mono', monospace; }
 
 input#login_button, input#register_button { cursor: pointer; font-weight: bold; }
 

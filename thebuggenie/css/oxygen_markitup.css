@@ -73,7 +73,7 @@
 }
 .markItUpEditor {
 	font:12px 'Droid Sans Mono', monospace;
-	padding:5px;
+	padding:0;
 	width:690px;
 	height:320px;
 	clear:both;
