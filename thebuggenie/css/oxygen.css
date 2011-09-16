@@ -628,6 +628,7 @@ a.friend:hover { border-bottom: 1px dotted #0000a4; }
 .nice_button.workflow input:hover { background-color: #D3CE99; }
 .workflow_actions li.first { border-top-left-radius: 4px; -moz-border-radius-topleft: 4px; -webkit-border-top-left-radius: 4px; border-bottom-left-radius: 4px; -moz-border-radius-bottomleft: 4px; -webkit-border-bottom-left-radius: 4px; }
 .workflow_actions li.last { border-top-right-radius: 4px; -moz-border-radius-topright: 4px; -webkit-border-top-right-radius: 4px; border-bottom-right-radius: 4px; -moz-border-radius-bottomright: 4px; -webkit-border-bottom-right-radius: 4px; }
+.workflow_actions li.more_actions { margin-left: 5px; }
 /* end very visible button */
 
 .rounded_list_first_item { border-top-right-radius: 5px; -moz-border-radius-topright: 5px; -webkit-border-top-right-radius: 5px; border-top-left-radius: 5px; -moz-border-radius-topleft: 5px; -webkit-border-top-left-radius: 5px; }
@@ -635,6 +636,10 @@ a.friend:hover { border-bottom: 1px dotted #0000a4; }
 
 #issue_details { position: relative; }
 #issue_details dl { font-size: 1em; }
+.issue_detail_field { margin: 0; padding: 0; width: 50%; float: left; }
+.issue_detail_field dl { border-bottom: 1px solid transparent; height: 24px; }
+.issue_detail_field dt { min-width: 150px; }
+.issue_detail_field:hover dl { background-color: #F1F1F1; border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; }
 
 /* workflow actions */
 #workflow_actions { position: absolute; top: -32px; right: 10px; margin-top: 0; height: 25px; }
