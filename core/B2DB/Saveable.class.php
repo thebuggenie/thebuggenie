@@ -42,7 +42,7 @@
 			{
 				$b2dbtablename = static::$_b2dbtablename;
 			}
-			return static::$_b2dbtablename;
+			return $b2dbtablename;
 		}
 		
 		/**
