@@ -32,11 +32,14 @@
 		protected $_required_arguments = array();
 
 		protected $_optional_arguments = array();
+		
+		protected $_module = null;
 
 		abstract protected function do_execute();
 
-		final public function __construct()
+		final public function __construct($module = null)
 		{
+			$this->_module = $module;
 			$this->_setup();
 		}
 
@@ -45,6 +48,16 @@
 			$this->_processArguments();
 			$this->_prepare();
 			$this->do_execute();
+		}
+		
+		/**
+		 * Return the associated module for this command if any
+		 * 
+		 * @return TBGModule 
+		 */
+		final protected function getModule()
+		{
+			return $this->_module;
 		}
 
 		public function getDescription()

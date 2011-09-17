@@ -47,13 +47,14 @@
 	$commands = array('main' => array());
 	foreach ($command_paths as $module_name => $command_path)
 	{
-		TBGContext::addClasspath($command_path);
+		TBGContext::addAutoloaderClasspath($command_path);
 		$_path_handle = opendir($command_path);
 		while ($command_class_file = readdir($_path_handle))
 		{
 			if (($classname = substr($command_class_file, 0, strpos($command_class_file, '.'))) != '')
 			{
-				$command = new $classname();
+				$module = (TBGContext::isModuleLoaded($module_name)) ? TBGContext::getModule($module_name) : null;
+				$command = new $classname($module);
 				if ($command instanceof TBGCliCommand)
 				{
 					$commands[$module_name][$command->getCommandName()] = $command;
