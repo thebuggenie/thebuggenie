@@ -1,13 +1,12 @@
 <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_module', array('config_module' => $module->getName())); ?>" enctype="multipart/form-data" method="post">
-<?php /*<div style="margin-top: 5px; width: 750px; clear: both; height: 30px;" class="tab_menu">
+<div style="margin-top: 5px; width: 750px; clear: both; height: 30px;" class="tab_menu">
 	<ul id="mailing_settings_menu">
 		<li class="selected" id="tab_outgoing_settings"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_outgoing_settings', 'mailing_settings_menu');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_general.png', array('style' => 'float: left;')).__('Outgoing settings'); ?></a></li>
 		<li id="tab_incoming_settings"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_incoming_settings', 'mailing_settings_menu');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_server.png', array('style' => 'float: left;')).__('Incoming settings'); ?></a></li>
 	</ul>
 </div>
-<div id="mailing_settings_menu_panes"> */ ?>
+<div id="mailing_settings_menu_panes">
 	<div id="tab_outgoing_settings_pane" class="rounded_box borderless mediumgrey<?php if ($access_level == TBGSettings::ACCESS_FULL): ?> cut_bottom<?php endif; ?>" style="margin: 10px 0 0 0; width: 700px;<?php if ($access_level == TBGSettings::ACCESS_FULL): ?> border-bottom: 0;<?php endif; ?>">
-		<div class="header"><?php echo __('Outgoing emails'); ?></div>
 		<div class="content" style="padding-bottom: 10px;"><?php echo __('These are the settings for outgoing emails, such as notification emails and registration emails.'); ?></div>
 		<table style="width: 680px;" class="padded_table" cellpadding=0 cellspacing=0 id="mailnotification_settings_table">
 			<tr>
@@ -116,10 +115,14 @@
 				<td colspan="2" style="padding: 5px; text-align: right;">&nbsp;</td>
 			</tr>
 		</table>
-	<?php /*</div>
+	</div>
 	<div id="tab_incoming_settings_pane" class="rounded_box borderless mediumgrey<?php if ($access_level == TBGSettings::ACCESS_FULL): ?> cut_bottom<?php endif; ?>" style="margin: 10px 0 0 0; display: none; width: 700px;<?php if ($access_level == TBGSettings::ACCESS_FULL): ?> border-bottom: 0;<?php endif; ?>">
-		<span class="faded_out"><?php echo __("This section doesn't have any settings yet"); ?></span>
-	</div> */ ?>
+		<h4><?php echo __('Incoming email accounts'); ?></h4>
+		<ul class="simple_list">
+			<?php foreach ($module->getIncomingEmailAccounts() as $account): ?>
+			<?php endforeach; ?>
+		</ul>
+	</div>
 </div>
 <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 	<div class="rounded_box iceblue borderless cut_top" style="margin: 0 0 5px 0; width: 700px; border-top: 0; padding: 8px 5px 2px 5px; height: 25px;">

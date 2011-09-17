@@ -43,6 +43,10 @@
 		 */
 		const NOTIFY_ISSUE_COMMENTED_ON = 'notify_issue_commented_on';
 		
+		const MAIL_ENCODING_BASE64 = 3;
+		const MAIL_ENCODING_QUOTED = 4;
+		const MAIL_ENCODING_UTF7 = 0;
+		
 		protected $_longname = 'Email communication';
 		
 		protected $_description = 'Enables in- and outgoing email functionality';
@@ -792,6 +796,114 @@
 		public function upgradeFrom3dot0()
 		{
 			$this->addDefaultSettingsToAllUsers();
+		}
+
+		function getMailMimeType($structure)
+		{
+			$primary_mime_type = array("TEXT", "MULTIPART", "MESSAGE", "APPLICATION", "AUDIO", "IMAGE", "VIDEO", "OTHER");
+			if ($structure->subtype)
+			{
+				$type = $primary_mime_type[(int) $structure->type] . '/' . $structure->subtype;
+			}
+			else
+			{
+				$type = "TEXT/PLAIN";
+			}
+			return $type;
+		}
+		
+		function getMailPart($stream, $msg_number, $mime_type, $structure, $part_number = false)
+		{
+			if ($mime_type == $this->getMailMimeType($structure))
+			{
+				if (!$part_number)
+				{
+					$part_number = "1";
+				}
+				$text = imap_fetchbody($stream, $msg_number, $part_number);
+				if ($structure->encoding == self::MAIL_ENCODING_BASE64)
+				{
+					$ret_val = imap_base64($text);
+				}
+				elseif ($structure->encoding == self::MAIL_ENCODING_QUOTED)
+				{
+					$ret_val = imap_qprint($text);
+				}
+				else
+				{
+					$ret_val = $text;
+				}
+				
+				return $ret_val;
+			}
+
+			if ($structure->type == 1) /* multipart */
+			{
+				while (list($index, $sub_structure) = each($structure->parts))
+				{
+					if ($part_number)
+					{
+						$prefix = $part_number . '.';
+					}
+					$data = $this->getMailPart($stream, $msg_number, $mime_type, $sub_structure, $prefix . ($index + 1));
+					if ($data)
+					{
+						return $data;
+					}
+				} // END OF WHILE
+			} // END OF MULTIPART
+			return false;
+		}
+		
+		public function getIncomingEmailAccounts()
+		{
+			return TBGIncomingEmailAccount::getAll();
+		}
+		
+		public function processIncomingEmails($limit = 25)
+		{
+			foreach ($this->getIncomingEmailAccounts() as $account)
+			{
+				$this->processIncomingEmailAccount($account, $limit);
+			}
+		}
+		
+		public function processIncomingEmailAccount(TBGIncomingEmailAccount $account, $limit = 25)
+		{
+			$mbox = imap_open($account->getConnectionString(), $account->getUsername(), $account->getPassword());
+
+			$mail_details = imap_check($mbox);
+			$limit = ($limit === null) ? $mail_details->Nmsgs : $limit;
+			
+//			$limit = $this->getProvidedArgument('limit', $mail_details->Nmsgs);
+//			$this->cliEcho("Will process {$limit} emails of {$mail_details->Nmsgs} emails left to process\n");
+//			echo "{$mail_details->Nmsgs}:" . ($mail_details->Nmsgs - $limit);
+
+			$emails = imap_fetch_overview($mbox, "{$mail_details->Nmsgs}:" . ($mail_details->Nmsgs - $limit), 0);
+
+			/* if emails are returned, cycle through each... */
+			if ($emails)
+			{
+				/* put the newest emails on top */
+	//				rsort($emails);
+
+				/* for every email... */
+				foreach ($emails as $email)
+				{
+					if (!$email->seen)
+					{
+						$structure = imap_fetchstructure($mbox, $email->msgno);
+						$type = TBGContext::getModule('mailing')->getMailMimeType($structure);
+
+						$data = TBGContext::getModule('mailing')->getMailPart($mbox, $email->msgno, $type, $structure);
+						if ($type != "TEXT/PLAIN") $data = strip_tags($data);
+
+						$issue = new TBGIssue();
+						$issue->setDescription($data);
+					}
+				}
+			}
+			imap_close($mbox);
 		}
 		
 	}
