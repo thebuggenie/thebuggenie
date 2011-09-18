@@ -860,6 +860,11 @@
 			return TBGIncomingEmailAccount::getAll();
 		}
 		
+		public function getIncomingEmailAccountsForProject(TBGProject $project)
+		{
+			return TBGIncomingEmailAccount::getAllByProjectID($project->getID());
+		}
+		
 		public function processIncomingEmails($limit = 25)
 		{
 			foreach ($this->getIncomingEmailAccounts() as $account)
@@ -868,42 +873,86 @@
 			}
 		}
 		
+		public function getEmailAdressFromSenderString($from)
+		{
+			$tokens = explode(" ", $from);
+			foreach ($tokens as $email)
+			{
+				$email = str_replace(array("<", ">"), array("", ""), $email);
+				if (filter_var($email, FILTER_VALIDATE_EMAIL))
+					return $email;
+			}
+		}
+		
+		public function getOrCreateUserFromEmailString($email_string)
+		{
+			$email = $this->getEmailAdressFromSenderString($email_string);
+			if (!$user = TBGUser::findUser($email))
+			{
+				$name = $email;
+
+				if (($q_pos = strpos($email, "<")) !== false)
+				{
+					$name = trim(substr($email, 0, $q_pos - 1));
+				}
+
+				$user = new TBGUser();
+				$user->setName($name);
+				$user->setEmail($email);
+				$user->setUsername($email);
+				$user->setValidated();
+				$user->setActivated();
+				$user->setEnabled();
+				$user->save();
+			}
+			
+			return $user;
+		}
+		
 		public function processIncomingEmailAccount(TBGIncomingEmailAccount $account, $limit = 25)
 		{
-			$mbox = imap_open($account->getConnectionString(), $account->getUsername(), $account->getPassword());
-
-			$mail_details = imap_check($mbox);
-			$limit = ($limit === null) ? $mail_details->Nmsgs : $limit;
-			
-//			$limit = $this->getProvidedArgument('limit', $mail_details->Nmsgs);
-//			$this->cliEcho("Will process {$limit} emails of {$mail_details->Nmsgs} emails left to process\n");
-//			echo "{$mail_details->Nmsgs}:" . ($mail_details->Nmsgs - $limit);
-
-			$emails = imap_fetch_overview($mbox, "{$mail_details->Nmsgs}:" . ($mail_details->Nmsgs - $limit), 0);
-
-			/* if emails are returned, cycle through each... */
-			if ($emails)
+			$count = 0;
+			if ($emails = $account->getUnprocessedEmails())
 			{
-				/* put the newest emails on top */
-	//				rsort($emails);
-
-				/* for every email... */
 				foreach ($emails as $email)
 				{
-					if (!$email->seen)
+					$user = $this->getOrCreateUserFromEmailString($email->from);
+					list($type, $data) = $account->getEmailDetails($email);
+					if ($type != "TEXT/PLAIN") $data = strip_tags($data);
+
+					$matches = array();
+					preg_match(TBGTextParser::getIssueRegex(), $email->subject, $matches);
+					
+					$issue = ($matches) ? TBGIssue::getIssueFromLink($matches[0], $account->getProject()) : null;
+					
+					if ($issue instanceof TBGIssue)
 					{
-						$structure = imap_fetchstructure($mbox, $email->msgno);
-						$type = TBGContext::getModule('mailing')->getMailMimeType($structure);
-
-						$data = TBGContext::getModule('mailing')->getMailPart($mbox, $email->msgno, $type, $structure);
-						if ($type != "TEXT/PLAIN") $data = strip_tags($data);
-
-						$issue = new TBGIssue();
-						$issue->setDescription($data);
+						$text = preg_replace('#(^\w.+:\n)?(^>.*(\n|$))+#mi', "", $data);
+						$text = trim($text);
+						$comment = new TBGComment();
+						$comment->setContent($text);
+						$comment->setPostedBy($user);
+						$comment->setTargetID($issue->getID());
+						$comment->setTargetType(TBGComment::TYPE_ISSUE);
+						$comment->save();
 					}
+					else
+					{
+						$issue = new TBGIssue();
+						$issue->setProject($account->getProject());
+						$issue->setTitle($email->subject);
+						$issue->setDescription($data);
+						$issue->setPostedBy($user);
+						$issue->setIssuetype($account->getIssuetype());
+						$issue->save();
+					}
+					
+					$count++;
 				}
 			}
-			imap_close($mbox);
+			$account->setTimeLastFetched(time());
+			$account->setNumberOfEmailsLastFetched($count);
+			$account->save();
 		}
 		
 	}

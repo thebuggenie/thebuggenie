@@ -570,8 +570,9 @@
 		 * 
 		 * @return TBGIssue
 		 */
-		public static function getIssueFromLink($issue_no)
+		public static function getIssueFromLink($issue_no, $project = null)
 		{
+			$project = ($project !== null) ? $project : TBGContext::getCurrentProject();
 			$theIssue = null;
 			$issue_no = mb_strtolower($issue_no);
 			if (mb_strpos($issue_no, ' ') !== false)
@@ -583,10 +584,12 @@
 			{
 				try
 				{
-					if (!TBGContext::isProjectContext()) return null;
-					if (TBGContext::getCurrentProject()->usePrefix()) return null;
-					if ($row = TBGIssuesTable::getTable()->getByProjectIDAndIssueNo(TBGContext::getCurrentProject()->getID(), $issue_no))
-					$theIssue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
+					if (!$project instanceof TBGProject) return null;
+					if ($project->usePrefix()) return null;
+					if ($row = TBGIssuesTable::getTable()->getByProjectIDAndIssueNo($project->getID(), (integer) $issue_no))
+					{
+						$theIssue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
+					}
 				}
 				catch (Exception $e)
 				{

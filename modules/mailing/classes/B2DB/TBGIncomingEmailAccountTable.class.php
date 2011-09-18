@@ -18,6 +18,10 @@
 		const SERVER_TYPE = 'mailing_incoming_email_account.server_type';
 		const SSL = 'mailing_incoming_email_account.ssl';
 		const KEEP_EMAIL = 'mailing_incoming_email_account.keep_email';
+		const PROJECT = 'mailing_incoming_email_account.project';
+		const ISSUETYPE = 'mailing_incoming_email_account.issuetype';
+		const NUM_LAST_FETCHED = 'mailing_incoming_email_account.num_last_fetched';
+		const TIME_LAST_FETCHED = 'mailing_incoming_email_account.time_last_fetched';
 		const SCOPE = 'mailing_incoming_email_account.scope';
 
 		/**
@@ -39,9 +43,21 @@
 			parent::_addVarchar(self::PASSWORD, 200);
 			parent::_addInteger(self::SERVER_TYPE);
 			parent::_addInteger(self::PORT);
+			parent::_addInteger(self::NUM_LAST_FETCHED);
+			parent::_addInteger(self::TIME_LAST_FETCHED);
 			parent::_addBoolean(self::SSL);
 			parent::_addBoolean(self::KEEP_EMAIL);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
+			parent::_addForeignKeyColumn(self::PROJECT, TBGProjectsTable::getTable(), TBGProjectsTable::ID);
+			parent::_addForeignKeyColumn(self::ISSUETYPE, TBGIssueTypesTable::getTable(), TBGIssueTypesTable::ID);
+		}
+		
+		public function getAllByProjectID($project_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::PROJECT, $project_id);
+			
+			return $this->doSelect($crit);
 		}
 		
 	}
