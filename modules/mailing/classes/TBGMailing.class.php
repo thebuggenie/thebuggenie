@@ -94,12 +94,17 @@
 			TBGEvent::listen('core', 'header_begins', array($this, 'listen_headerBegins'));
 			TBGEvent::listen('core', 'viewissue', array($this, 'listen_viewissue'));
 			TBGEvent::listen('core', 'user_dropdown_anon', array($this, 'listen_userDropdownAnon'));
+			TBGEvent::listen('core', 'config_project_tabs', array($this, 'listen_projectconfig_tab'));
+			TBGEvent::listen('core', 'config_project_panes', array($this, 'listen_projectconfig_panel'));
+			TBGEvent::listen('core', 'get_backdrop_partial', array($this, 'listen_get_backdrop_partial'));
 		}
 
 		protected function _addRoutes()
 		{
 			$this->addRoute('forgot', '/forgot', 'forgot');
 			$this->addRoute('mailing_test_email', '/mailing/test', 'testEmail');
+			$this->addRoute('mailing_save_incoming_account', '/mailing/:project_key/incoming_account/*', 'saveIncomingAccount');
+			$this->addRoute('mailing_check_account', '/mailing/incoming_account/:account_id/check', 'checkIncomingAccount');
 		}
 		
 		protected function _install($scope)
@@ -547,6 +552,27 @@
 				}
 			}
 		}
+
+		public function listen_projectconfig_tab(TBGEvent $event)
+		{
+			TBGActionComponent::includeTemplate('mailing/projectconfig_tab', array('selected_tab' => $event->getParameter('selected_tab')));
+		}
+		
+		public function listen_get_backdrop_partial(TBGEvent $event)
+		{
+			if ($event->getSubject() == 'mailing_editincomingemailaccount')
+			{
+				$account = new TBGIncomingEmailAccount(TBGContext::getRequest()->getParameter('account_id'));
+				$event->addToReturnList($account, 'account');
+				$event->setReturnValue('mailing/editincomingemailaccount');
+				$event->setProcessed();
+			}
+		}
+		
+		public function listen_projectconfig_panel(TBGEvent $event)
+		{
+			TBGActionComponent::includeTemplate('mailing/projectconfig_panel', array('selected_tab' => $event->getParameter('selected_tab'), 'access_level' => $event->getParameter('access_level'), 'project' => $event->getParameter('project')));
+		}
 		
 		public function listen_TBGComment_createNew(TBGEvent $event)
 		{
@@ -953,6 +979,7 @@
 			$account->setTimeLastFetched(time());
 			$account->setNumberOfEmailsLastFetched($count);
 			$account->save();
+			return $count;
 		}
 		
 	}

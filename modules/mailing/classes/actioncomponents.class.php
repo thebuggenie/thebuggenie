@@ -41,5 +41,10 @@
 			$this->uid = TBGContext::getUser()->getID();
 		}
 		
+		public function componentEditIncomingEmailAccount()
+		{
+			$this->project = TBGContext::getCurrentProject();
+		}
+		
 	}
 

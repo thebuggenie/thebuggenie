@@ -2619,6 +2619,11 @@
 						$options['id'] = $request->getParameter('pid');
 						$options['mandatory'] = true;
 						break;
+					default:
+						$event = new TBGEvent('core', 'get_backdrop_partial', $request->getParameter('key'));
+						$event->triggerUntilProcessed();
+						$options = $event->getReturnList();
+						$template_name = $event->getReturnValue();
 				}
 				if ($template_name !== null)
 				{

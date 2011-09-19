@@ -210,7 +210,7 @@
 
 		final public function __construct($id = null, $row = null, $traverse = true, $foreign_key = null)
 		{
-			if ($id !== null)
+			if ($id != null)
 			{
 				if (!is_numeric($id))
 				{
