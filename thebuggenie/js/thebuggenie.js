@@ -20,6 +20,7 @@ var TBG = {
 		Link: {},
 		Login: {}
 	},
+	Modules: {},
 	Project: {
 		Statistics: {},
 		Milestone: {},

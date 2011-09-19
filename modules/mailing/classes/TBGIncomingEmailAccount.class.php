@@ -120,6 +120,16 @@
 		{
 			$this->_server_type = $server_type;
 		}
+		
+		public function isImap()
+		{
+			return (bool) $this->getServerType() == self::SERVER_IMAP;
+		}
+
+		public function isPop3()
+		{
+			return (bool) $this->getServerType() == self::SERVER_POP3;
+		}
 
 		public function usesSSL()
 		{
@@ -303,6 +313,12 @@
 		public function getIssuetype()
 		{
 			return $this->_getPopulatedObjectFromProperty('_issuetype');
+		}
+		
+		public function getIssuetypeID()
+		{
+			$issuetype = $this->getIssuetype();
+			return ($issuetype instanceof TBGIssuetype) ? $issuetype->getID() : null;
 		}
 
 	}

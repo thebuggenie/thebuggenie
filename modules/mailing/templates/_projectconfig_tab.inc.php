@@ -1,1 +1,1 @@
-<li id="tab_vcs"<?php if ($selected_tab == 'vcs'): ?> class="selected"<?php endif; ?>><?php echo javascript_link_tag(__('VCS Integration'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_vcs', 'project_config_menu');")); ?></li>
+<li id="tab_mailing"<?php if ($selected_tab == 'mailing'): ?> class="selected"<?php endif; ?>><?php echo javascript_link_tag(__('Email settings'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_mailing', 'project_config_menu');")); ?></li>
