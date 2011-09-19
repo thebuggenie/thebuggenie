@@ -105,6 +105,7 @@
 			$this->addRoute('mailing_test_email', '/mailing/test', 'testEmail');
 			$this->addRoute('mailing_save_incoming_account', '/mailing/:project_key/incoming_account/*', 'saveIncomingAccount');
 			$this->addRoute('mailing_check_account', '/mailing/incoming_account/:account_id/check', 'checkIncomingAccount');
+			$this->addRoute('mailing_delete_account', '/mailing/incoming_account/:account_id/delete', 'deleteIncomingAccount');
 		}
 		
 		protected function _install($scope)
@@ -935,6 +936,50 @@
 			return $user;
 		}
 		
+		public function processIncomingEmailCommand($content, TBGIssue $issue)
+		{
+			$lines = preg_split("/(\r?\n)/", $content);
+			$first_line = array_shift($lines);
+			var_dump($first_line);
+			$commands = explode(" ", trim($first_line));
+			$command = array_shift($commands);
+			var_dump($command);
+			foreach ($issue->getAvailableWorkflowTransitions() as $transition)
+			{
+				var_dump(mb_strtolower($transition->getName()));
+				if (strpos(mb_strtolower($transition->getName()), str_replace(array(' ', '/'), array('', ''), mb_strtolower($command))) !== false)
+				{
+					foreach ($commands as $single_command)
+					{
+						var_dump($single_command);
+						if (mb_strpos($single_command, '='))
+						{
+							list($key, $val) = explode('=', $single_command);
+							var_dump($key);
+							var_dump($val);
+							switch ($key)
+							{
+								case 'resolution':
+									if (($resolution = TBGResolution::getResolutionByKeyish($val)) instanceof TBGResolution)
+									{
+										TBGContext::getRequest()->setParameter('resolution_id', $resolution->getID());
+									}
+									break;
+								case 'status':
+									if (($status = TBGStatus::getStatusByKeyish($val)) instanceof TBGStatus)
+									{
+										TBGContext::getRequest()->setParameter('status_id', $status->getID());
+									}
+									break;
+							}
+						}
+					}
+					TBGContext::getRequest()->setParameter('comment_body', join("\n", $lines));
+					return $transition->transitionIssueToOutgoingStepFromRequest($issue, TBGContext::getRequest());
+				}
+			}
+		}
+		
 		public function processIncomingEmailAccount(TBGIncomingEmailAccount $account, $limit = 25)
 		{
 			$count = 0;
@@ -955,12 +1000,15 @@
 					{
 						$text = preg_replace('#(^\w.+:\n)?(^>.*(\n|$))+#mi', "", $data);
 						$text = trim($text);
-						$comment = new TBGComment();
-						$comment->setContent($text);
-						$comment->setPostedBy($user);
-						$comment->setTargetID($issue->getID());
-						$comment->setTargetType(TBGComment::TYPE_ISSUE);
-						$comment->save();
+						if (!$this->processIncomingEmailCommand($text, $issue))
+						{
+							$comment = new TBGComment();
+							$comment->setContent($text);
+							$comment->setPostedBy($user);
+							$comment->setTargetID($issue->getID());
+							$comment->setTargetType(TBGComment::TYPE_ISSUE);
+							$comment->save();
+						}
 					}
 					else
 					{

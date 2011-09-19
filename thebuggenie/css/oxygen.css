@@ -711,7 +711,7 @@ ul.workflow_actions li:hover { box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); -webkit-b
 .backdrop_box.mediumsmall { width: 500px; margin: 0 -250px 0 -250px; }
 .backdrop_box.medium { width: 600px; margin: 0 -300px 0 -300px; }
 .backdrop_box.large { width: 800px; margin: 0 -400px 200px -400px; }
-.backdrop_box .backdrop_detail_header { font-weight: bold; padding: 7px; font-size: 0.9em; text-align: left; }
+.backdrop_box .backdrop_detail_header { font-weight: bold; padding: 7px; font-size: 0.9em; text-align: left; color: #333; }
 #backdrop_detail_content { font-weight: normal; font-size: 1.0em; padding: 5px; background: white; }
 #backdrop_detail_content .tab_menu { margin-top: 30px; margin-bottom: 10px; font-size: 1.1em; }
 .backdrop_detail_footer { font-weight: bold; font-size: 0.9em; padding: 5px; text-align: right; background-color: #FFF; }
@@ -1046,7 +1046,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .client_users_div_inner { padding: 10px; }
 .project_header { padding: 10px; }
 .project_header_right { float: right; margin-top: 5px; }
-.project_header_right .button { float: left; margin-left: 10px; line-height: 1.4; }
+.project_header_right .button { float: left; margin-left: 10px; line-height: 1.6; }
 #project_website, #project_documentation { margin-top: 5px; }
 #edition_table { list-style: none; margin: 0; padding: 0; line-height: 1.2; }
 #edition_table li { list-style: none; margin: 0; padding: 3px; clear: both; margin-top: 5px; }

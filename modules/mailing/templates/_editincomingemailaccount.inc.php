@@ -1,5 +1,4 @@
 <script type="text/javascript">
-	TBG.Modules.mailing = {};
 	TBG.Modules.mailing.saveIncomingEmailAccount = function(url) {
 		TBG.Main.Helpers.ajax(url, {
 			form: 'incoming_email_account_form',

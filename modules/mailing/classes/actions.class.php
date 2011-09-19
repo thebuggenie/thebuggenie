@@ -135,5 +135,16 @@
 				return $this->renderJSON(array('account_id' => $account->getID(), 'time' => tbg_formatTime($account->getTimeLastFetched(), 6), 'count' => $account->getNumberOfEmailsLastFetched()));
 			}
 		}
+		
+		public function runDeleteIncomingAccount(TBGRequest $request)
+		{
+			if ($account_id = $request->getParameter('account_id'))
+			{
+				$account = new TBGIncomingEmailAccount($account_id);
+				$account->delete();
+				
+				return $this->renderText('ok');
+			}
+		}
 
 	}

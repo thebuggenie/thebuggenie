@@ -1,14 +1,23 @@
 <script type="text/javascript">
 	TBG.Modules.mailing = {};
-	TBG.Modules.mailing.checkIncomingAccount = function(url) {
+	TBG.Modules.mailing.checkIncomingAccount = function(url, account_id) {
 		TBG.Main.Helpers.ajax(url, {
-			loading: {indicator: 'add_account_indicator'},
+			loading: {indicator: 'mailing_account_' + account_id + '_indicator'},
 			success: {
 				callback: function(json) {
-					var ac_id = json.account_id;
-					$('mailing_account_' + ac_id + '_time').update(json.time);
-					$('mailing_account_' + ac_id + '_count').update(json.count);
+					$('mailing_account_' + account_id + '_time').update(json.time);
+					$('mailing_account_' + account_id + '_count').update(json.count);
 				}
+			}
+		});
+	};
+	
+	TBG.Modules.mailing.deleteIncomingAccount = function(url, account_id) {
+		TBG.Main.Helpers.ajax(url, {
+			loading: {indicator: 'mailing_account_' + account_id + '_indicator'},
+			success: {
+				remove: 'incoming_email_account_' + account_id,
+				callback: TBG.Main.Helpers.Dialog.dismiss
 			}
 		});
 	};
