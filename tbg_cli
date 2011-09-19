@@ -89,6 +89,8 @@
 			$module_command = explode(':', $argv[1]);
 			$module_name = (count($module_command) == 2) ? $module_command[0] : 'main';
 			$command = (count($module_command) == 2) ? $module_command[1] : $module_command[0];
+			
+			TBGContext::reinitializeI18n();
 
 			if (array_key_exists($module_name, $commands) && array_key_exists($command, $commands[$module_name]))
 			{

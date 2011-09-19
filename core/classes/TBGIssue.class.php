@@ -1066,7 +1066,7 @@
 		
 		public function isWorkflowTransitionsAvailable()
 		{
-			if ($this->getProject()->isArchived()): return false; endif;
+			if ($this->getProject()->isArchived()) return false;
 			return (bool) $this->_permissionCheck('caneditissue', true);
 		}
 
@@ -2361,7 +2361,7 @@
 		 */
 		public function unsetAssignee()
 		{
-			if ($this->getAssigneeType() == TBGIdentifiableClass::TYPE_USER && $this->getUserWorkingOnIssue() == $this->getAssignee())
+			if ($this->isBeingWorkedOn() && $this->getAssigneeType() == TBGIdentifiableClass::TYPE_USER && $this->getUserWorkingOnIssue()->getID() == $this->getAssignee()->getID())
 			{
 				$this->stopWorkingOnIssue();
 			}
@@ -4629,19 +4629,7 @@
 		 */
 		public function getUserWorkingOnIssue()
 		{
-			if (is_numeric($this->_being_worked_on_by_user))
-			{
-				try
-				{
-					$this->_being_worked_on_by_user = TBGContext::factory()->TBGUser($this->_being_worked_on_by_user);
-				}
-				catch (Exception $e)
-				{
-					$this->_being_worked_on_by_user = null;
-				}
-			}
-	
-			return $this->_being_worked_on_by_user;
+			return $this->_getPopulatedObjectFromProperty('_being_worked_on_by_user');
 		}
 		
 		/**

@@ -924,39 +924,47 @@
 				}
 
 				$user = new TBGUser();
-				$user->setName($name);
-				$user->setEmail($email);
-				$user->setUsername($email);
-				$user->setValidated();
-				$user->setActivated();
-				$user->setEnabled();
-				$user->save();
+				
+				try
+				{
+					$user->setName($name);
+					$user->setEmail($email);
+					$user->setUsername($email);
+					$user->setValidated();
+					$user->setActivated();
+					$user->setEnabled();
+					$user->save();
+				}
+				catch (Exception $e)
+				{
+					return null;
+				}
 			}
 			
 			return $user;
 		}
 		
-		public function processIncomingEmailCommand($content, TBGIssue $issue)
+		public function processIncomingEmailCommand($content, TBGIssue $issue, TBGUser $user)
 		{
+			TBGContext::setUser($user);
+			TBGSettings::forceSettingsReload();
+			TBGContext::cacheAllPermissions();
+			
+			if (!$issue->isWorkflowTransitionsAvailable()) return false;
+			
 			$lines = preg_split("/(\r?\n)/", $content);
 			$first_line = array_shift($lines);
-			var_dump($first_line);
 			$commands = explode(" ", trim($first_line));
 			$command = array_shift($commands);
-			var_dump($command);
 			foreach ($issue->getAvailableWorkflowTransitions() as $transition)
 			{
-				var_dump(mb_strtolower($transition->getName()));
-				if (strpos(mb_strtolower($transition->getName()), str_replace(array(' ', '/'), array('', ''), mb_strtolower($command))) !== false)
+				if (strpos(str_replace(array(' ', '/'), array('', ''), mb_strtolower($transition->getName())), str_replace(array(' ', '/'), array('', ''), mb_strtolower($command))) !== false)
 				{
 					foreach ($commands as $single_command)
 					{
-						var_dump($single_command);
 						if (mb_strpos($single_command, '='))
 						{
 							list($key, $val) = explode('=', $single_command);
-							var_dump($key);
-							var_dump($val);
 							switch ($key)
 							{
 								case 'resolution':
@@ -988,40 +996,44 @@
 				foreach ($emails as $email)
 				{
 					$user = $this->getOrCreateUserFromEmailString($email->from);
-					list($type, $data) = $account->getEmailDetails($email);
-					if ($type != "TEXT/PLAIN") $data = strip_tags($data);
+					
+					if ($user instanceof TBGUser) 
+					{
+						list($type, $data) = $account->getEmailDetails($email);
+						if ($type != "TEXT/PLAIN") $data = strip_tags($data);
 
-					$matches = array();
-					preg_match(TBGTextParser::getIssueRegex(), $email->subject, $matches);
-					
-					$issue = ($matches) ? TBGIssue::getIssueFromLink($matches[0], $account->getProject()) : null;
-					
-					if ($issue instanceof TBGIssue)
-					{
-						$text = preg_replace('#(^\w.+:\n)?(^>.*(\n|$))+#mi', "", $data);
-						$text = trim($text);
-						if (!$this->processIncomingEmailCommand($text, $issue))
+						$matches = array();
+						preg_match(TBGTextParser::getIssueRegex(), $email->subject, $matches);
+
+						$issue = ($matches) ? TBGIssue::getIssueFromLink($matches[0], $account->getProject()) : null;
+
+						if ($issue instanceof TBGIssue)
 						{
-							$comment = new TBGComment();
-							$comment->setContent($text);
-							$comment->setPostedBy($user);
-							$comment->setTargetID($issue->getID());
-							$comment->setTargetType(TBGComment::TYPE_ISSUE);
-							$comment->save();
+							$text = preg_replace('#(^\w.+:\n)?(^>.*(\n|$))+#mi', "", $data);
+							$text = trim($text);
+							if (!$this->processIncomingEmailCommand($text, $issue, $user) && $user->canPostComments())
+							{
+								$comment = new TBGComment();
+								$comment->setContent($text);
+								$comment->setPostedBy($user);
+								$comment->setTargetID($issue->getID());
+								$comment->setTargetType(TBGComment::TYPE_ISSUE);
+								$comment->save();
+							}
 						}
+						elseif ($user->canReportIssues($account->getProject()->getID()))
+						{
+							$issue = new TBGIssue();
+							$issue->setProject($account->getProject());
+							$issue->setTitle($email->subject);
+							$issue->setDescription($data);
+							$issue->setPostedBy($user);
+							$issue->setIssuetype($account->getIssuetype());
+							$issue->save();
+						}
+
+						$count++;
 					}
-					else
-					{
-						$issue = new TBGIssue();
-						$issue->setProject($account->getProject());
-						$issue->setTitle($email->subject);
-						$issue->setDescription($data);
-						$issue->setPostedBy($user);
-						$issue->setIssuetype($account->getIssuetype());
-						$issue->save();
-					}
-					
-					$count++;
 				}
 			}
 			$account->setTimeLastFetched(time());

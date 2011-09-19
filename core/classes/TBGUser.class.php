@@ -1611,7 +1611,7 @@
 		public static function findUser($details)
 		{
 			$res = TBGUsersTable::getTable()->getByDetails($details);
-			
+
 			if (!$res || $res->count() > 1) return false;
 			$row = $res->getNextRow();
 			
