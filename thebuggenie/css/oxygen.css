@@ -94,7 +94,7 @@ div.image_container.thumb img.image { width: 220px; }
 	box-shadow: 0 -5px 4px rgba(0, 0, 0, 0.4); -webkit-box-shadow: 0 -5px 4px rgba(0, 0, 0, 0.4); -moz-box-shadow: 0 -5px 4px rgba(0, 0, 0, 0.4);
 }
 #header_userinfo a { color: #A4C0E4; }
-#header_username { width: auto; font-size: 1.1em; color: #FFF; padding: 0 25px 0 0; }
+#header_username { width: auto; color: #FFF; padding: 0 25px 0 0; }
 #header_username a { font-weight: normal; color: #FFF; }
 .header_userlinks { font-size: 0.7em; line-height: 1.1; text-align: right; color: #6193CF }
 .submenu_strip .selected_project { font-size: 1em; font-weight: bold; color: #555; border-color: #D9D9BB; }
@@ -262,10 +262,10 @@ div.dropdown_separator { border-left: 1px dotted #EAEAF5; padding: 0 0 0 4px; ma
 /* end tabbed menu */
 
 /* header tabbed menu */
-.header_menu { background-color: transparent; width: auto; height: 35px; color: #FFF; border-bottom: none; font-size: 0.9em; }
+.header_menu { background-color: transparent; width: auto; height: 35px; color: #FFF; border-bottom: none; }
 .header_menu .selected, .header_menu li.selected:hover { background-color: #FFF; }
 .header_menu ul { height: 100%; bottom: 0px; }
-.header_menu li div { color: #fff; padding-top: 7px; }
+.header_menu li div { color: #fff; padding-top: 9px; }
 .header_menu li:hover div { color: #333; }
 .header_menu li.selected div { color: #333; }
 .header_menu li.selected {
@@ -902,7 +902,7 @@ table.issue_affects td img { vertical-align: bottom; }
 #dashboard li .header { margin: 2px 0 5px 0; padding: 3px 3px 3px 0; font-weight: bold; border-bottom: 1px solid #CCC; background-color: #FFF; }
 #dashboard li .milestone_box .header { margin: 0; padding: 0; border: none; background: none; }
 #dashboard .dashboard_view_header { font-weight: bold; color: #666; font-size: 1em; padding: 4px; }
-#dashboard .dashboard_view_content { padding: 10px; }
+#dashboard .dashboard_view_content { padding: 10px; padding-top: 0; }
 #dashboard .dashboard_view_header img { margin-right: 2px; }
 #dashboard .latest_action_dates{ font-weight: bold; padding: 10px 0 0 0; }
 #dashboard .faded_out.smaller { font-size: 0.8em; padding-right: 5px; }
@@ -1015,7 +1015,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 #timeline td { vertical-align: top; }
 .download_links { margin: 10px 0 15px 0; }
 #project_settings_popout .button { cursor: pointer; float: none; margin: none; }
-.dashboard_view_content a.more { padding: 5px; float: right; font-weight: bold; }
+.dashboard_view_content a.more { float: right; font-weight: bold; padding-top: 5px; }
 #project_dashboard_menu_panes a.more:hover { border: 0; }
 #project_header_container { clear: both; position: relative; }
 #project_header_container .config_link { float: right; margin: 1px 20px 0 0; }
@@ -1090,7 +1090,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 
 /* search styling */
 /* search boxes */
-#find_issues .main_header { font-weight: bold; font-size: 1.1em; padding: 5px 0 3px 2px; border-bottom: 1px solid #AAA; color: #333; background-color: transparent; }
+#find_issues .main_header { font-weight: bold; font-size: 1.1em; padding: 5px 0 3px 2px; border-bottom: 1px solid #AAA; color: #333; background: transparent; box-shadow: none; -webkit-box-shadow: none; -moz-box-shadow: none; }
 .searchbox_container { margin: 5px 0 5px 0; padding: 3px 10px 3px 10px; font-size: 0.9em; }
 /*.searchbox_container label { font-size: 0.9em; }
 .searchbox_container input[type="text"], .searchbox_container select { font-size: 0.9em; }*/
@@ -1150,7 +1150,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .saved_searches { font-size: 0.9em; padding: 2px 2px 5px 5px; width: 300px; vertical-align: top; }
 .saved_searches a { font-size: 0.9em; font-weight: bold; padding-left: 3px; }
 
-.container_div, .backdrop_box { margin: 5px 0; clear: both; font-size: 1em; display: block; padding: 2px; background-color: #FFF; border: 1px solid #CCC; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; }
+.container_div, .backdrop_box { margin: 5px 0; clear: both; font-size: 1em; display: block; padding: 0px; padding-bottom: 2px; background-color: #FFF; border: 1px solid #CCC; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; }
 .container_div .header, .backdrop_detail_header, .metallic_header { 
 	margin-top: 0; 
 	height: 18px; 
