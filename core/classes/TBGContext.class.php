@@ -703,13 +703,29 @@
 			
 			while ($theme = readdir($theme_path_handle))
 			{
-				if (mb_strstr($theme, '.') == '' && $theme != 'modules') 
+				if ($theme != '.' && $theme != '..' && is_dir(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'themes' . DS . $theme) && file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'themes' . DS . $theme . DS . 'theme.php')) 
 				{ 
 					$themes[] = $theme; 
 				}
 			}
 			
 			return $themes;
+		}
+
+		public static function getIconSets()
+		{
+			$icon_path_handle = opendir(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'iconsets' . DS);
+			$icons = array();
+			
+			while ($icon = readdir($icon_path_handle))
+			{
+				if ($icon != '.' && $icon != '..' && is_dir(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'iconsets' . DS . $icon)) 
+				{ 
+					$icons[] = $icon; 
+				}
+			}
+			
+			return $icons;
 		}
 		
 		/**

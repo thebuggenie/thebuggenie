@@ -10,14 +10,27 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="config_explanation" colspan="2"><?php echo __('The selected theme used. Depending on other settings, users might be able to use another theme for their account.'); ?></td>
+		<td class="config_explanation" colspan="2"><?php echo __('Themes provide the look and feel of The Bug Genie, other than the icons. Therefore, changing the theme will change the colours, fonts and layout of your installation'); ?></td>
+	</tr>
+	<tr>
+		<td><label for="theme_name"><?php echo __('Selected iconset'); ?></label></td>
+		<td>
+			<select name="<?php echo TBGSettings::SETTING_ICONSET; ?>" id="iconset" style="width: 300px;"<?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>>
+			<?php foreach ($icons as $anIcon): ?>
+				<option value="<?php echo $anIcon; ?>"<?php if (TBGSettings::getIconsetName() == $anIcon): ?> selected<?php endif; ?><?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>><?php echo $anIcon; ?></option>
+			<?php endforeach; ?>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td class="config_explanation" colspan="2"><?php echo __('An iconset contains all the icons used in The Bug Genie. You can change the icons to be used using this option'); ?></td>
 	</tr>
 	<tr>
 		<td><label for="icon_header"><?php echo __('Custom header icon'); ?></label></td>
 		<td>
 			<select name="<?php echo TBGSettings::SETTING_HEADER_ICON_TYPE; ?>" id="icon_header" onchange="if ($('icon_header').getValue() == 2) { $('icon_header_url').enable() } else { $('icon_header_url').disable() }" style="width: 300px;"<?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>>
-				<option value="<?php echo TBGSettings::APPEARANCE_HEADER_USE_THEME; ?>"<?php if (TBGSettings::isUsingCustomHeaderIcon() == TBGSettings::APPEARANCE_HEADER_USE_THEME): ?> selected<?php endif; ?><?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>><?php echo __("Use the theme's default icon in the header"); ?></option>
-				<option value="<?php echo TBGSettings::APPEARANCE_HEADER_CUSTOM; ?>"<?php if (TBGSettings::isUsingCustomHeaderIcon() == TBGSettings::APPEARANCE_HEADER_CUSTOM): ?> selected<?php endif; ?><?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>><?php echo __("Use the file header.png in the '%thebuggenie%' directory", array('%thebuggenie%', THEBUGGENIE_PUBLIC_FOLDER_NAME)); ?></option>
+				<option value="<?php echo TBGSettings::APPEARANCE_HEADER_USE_THEME; ?>"<?php if (TBGSettings::isUsingCustomHeaderIcon() == TBGSettings::APPEARANCE_HEADER_USE_THEME): ?> selected<?php endif; ?><?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>><?php echo __("Use the iconset's default icon in the header"); ?></option>
+				<option value="<?php echo TBGSettings::APPEARANCE_HEADER_CUSTOM; ?>"<?php if (TBGSettings::isUsingCustomHeaderIcon() == TBGSettings::APPEARANCE_HEADER_CUSTOM): ?> selected<?php endif; ?><?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>><?php echo __("Use the file header.png in the '%thebuggenie%' directory", array('%thebuggenie%' => THEBUGGENIE_PUBLIC_FOLDER_NAME)); ?></option>
 				<option value="<?php echo TBGSettings::APPEARANCE_HEADER_URL; ?>"<?php if (TBGSettings::isUsingCustomHeaderIcon() == TBGSettings::APPEARANCE_HEADER_URL): ?> selected<?php endif; ?><?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>><?php echo __('Load an image from a specified URL'); ?></option>
 			</select>
 		</td>

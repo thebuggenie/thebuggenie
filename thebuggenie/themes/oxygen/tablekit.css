@@ -6,11 +6,13 @@
 }
 .sortasc {
 	background-color: #D4E5FF !important;
-	background-image: url('../themes/oxygen/sort_up.png') !important;
+	background-image: url('../../iconsets/oxygen/sort_up.png') !important;
+	background-repeat: no-repeat;
 }
 .sortdesc {
 	background-color: #FAF3B8 !important;
-	background-image: url('../themes/oxygen/sort_down.png') !important;
+	background-image: url('../../iconsets/oxygen/sort_down.png') !important;
+	background-repeat: no-repeat;
 }
 .nosort {
 	cursor: default;
@@ -30,7 +32,7 @@ div.resize-handle {
 
 table.sortable tr th {
 	padding-left: 25px !important;
-	background-image: url('../themes/oxygen/sort_none.png');
+	background-image: url('../../iconsets/oxygen/sort_none.png');
 }
 
 table.sortable tr th.nosort {

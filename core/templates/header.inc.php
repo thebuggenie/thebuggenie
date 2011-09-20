@@ -31,8 +31,8 @@
 			{
 				foreach (TBGContext::getModules() as $module)
 				{
-					$css_name = TBGSettings::getThemeName() . "_" . $module->getName() . ".css";
-					if (file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DIRECTORY_SEPARATOR . 'css' . DIRECTORY_SEPARATOR . $css_name)):
+					$css_name = $module->getName() . ".css";
+					if (file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DIRECTORY_SEPARATOR . 'themes' . DIRECTORY_SEPARATOR . TBGSettings::getThemeName() . DIRECTORY_SEPARATOR . $css_name)):
 						$tbg_response->addStylesheet($css_name);
 					endif;
 				}
@@ -60,9 +60,9 @@
 			// Add stylesheets to minify and non-minify lists
 			foreach ($tbg_response->getStylesheets() as $stylesheet => $minify)
 			{
-				if ($minify == true && file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DIRECTORY_SEPARATOR . 'css' . DIRECTORY_SEPARATOR . $stylesheet))
+				if ($minify == true && file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DIRECTORY_SEPARATOR . 'themes' . DIRECTORY_SEPARATOR . TBGSettings::getThemeName() . DIRECTORY_SEPARATOR .$stylesheet))
 				{
-					$cssstring .= ',css/'.$stylesheet;
+					$cssstring .= ',themes/'.TBGSettings::getThemeName().'/'.$stylesheet;
 				}
 				else
 				{

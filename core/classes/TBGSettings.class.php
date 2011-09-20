@@ -95,6 +95,7 @@
 		const SETTING_AUTH_BACKEND = 'auth_backend';
 		const SETTING_MAINTENANCE_MODE = 'offline';
 		const SETTING_MAINTENANCE_MESSAGE = 'offline_msg';
+		const SETTING_ICONSET = 'iconset';
 
 		static protected $_ver_mj = 3;
 		static protected $_ver_mn = 2;
@@ -401,6 +402,11 @@
 		public static function getThemeName()
 		{
 			return self::get(self::SETTING_THEME_NAME);
+		}
+	
+		public static function getIconsetName()
+		{
+			return self::get(self::SETTING_ICONSET);
 		}
 		
 		public static function isUserThemesEnabled()

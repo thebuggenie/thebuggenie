@@ -24,6 +24,7 @@
 		public function componentAppearance()
 		{
 			$this->themes = TBGContext::getThemes();
+			$this->icons = TBGContext::getIconSets();
 		}
 
 		public function componentReglang()
