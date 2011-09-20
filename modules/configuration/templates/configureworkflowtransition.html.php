@@ -1,13 +1,9 @@
 <?php
 
 	if ($workflow instanceof TBGWorkflow)
-	{
 		$tbg_response->setTitle(__('Configure workflow "%workflow_name%"', array('%workflow_name%' => $workflow->getName())));
-	}
 	else
-	{
 		$tbg_response->setTitle(__('Configure workflows'));
-	}
 	
 ?>
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
@@ -187,6 +183,8 @@
 											<option <?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_REPRODUCABILITY)): ?>style="display: none;"<?php endif; ?> id="add_workflowtransitionaction_<?php echo TBGWorkflowTransitionAction::ACTION_SET_REPRODUCABILITY; ?>" value="<?php echo TBGWorkflowTransitionAction::ACTION_SET_REPRODUCABILITY; ?>"><?php echo __('Set issue reproducability'); ?></option>
 											<option <?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_CLEAR_RESOLUTION)): ?>style="display: none;"<?php endif; ?> id="add_workflowtransitionaction_<?php echo TBGWorkflowTransitionAction::ACTION_CLEAR_RESOLUTION; ?>" value="<?php echo TBGWorkflowTransitionAction::ACTION_CLEAR_RESOLUTION; ?>"><?php echo __('Clear issue resolution'); ?></option>
 											<option <?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_RESOLUTION)): ?>style="display: none;"<?php endif; ?> id="add_workflowtransitionaction_<?php echo TBGWorkflowTransitionAction::ACTION_SET_RESOLUTION; ?>" value="<?php echo TBGWorkflowTransitionAction::ACTION_SET_RESOLUTION; ?>"><?php echo __('Set issue resolution'); ?></option>
+											<option <?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_CLEAR_DUPLICATE)): ?>style="display: none;"<?php endif; ?> id="add_workflowtransitionaction_<?php echo TBGWorkflowTransitionAction::ACTION_CLEAR_DUPLICATE; ?>" value="<?php echo TBGWorkflowTransitionAction::ACTION_CLEAR_DUPLICATE; ?>"><?php echo __('Mark as not duplicate'); ?></option>
+											<option <?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_DUPLICATE)): ?>style="display: none;"<?php endif; ?> id="add_workflowtransitionaction_<?php echo TBGWorkflowTransitionAction::ACTION_SET_DUPLICATE; ?>" value="<?php echo TBGWorkflowTransitionAction::ACTION_SET_DUPLICATE; ?>"><?php echo __('Mark as duplicate'); ?></option>
 											<option <?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_STATUS)): ?>style="display: none;"<?php endif; ?> id="add_workflowtransitionaction_<?php echo TBGWorkflowTransitionAction::ACTION_SET_STATUS; ?>" value="<?php echo TBGWorkflowTransitionAction::ACTION_SET_STATUS; ?>"><?php echo __('Set issue status'); ?></option>
 											<option <?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_MILESTONE)): ?>style="display: none;"<?php endif; ?> id="add_workflowtransitionaction_<?php echo TBGWorkflowTransitionAction::ACTION_SET_MILESTONE; ?>" value="<?php echo TBGWorkflowTransitionAction::ACTION_SET_MILESTONE; ?>"><?php echo __('Set issue milestone'); ?></option>
 										</select>
