@@ -510,7 +510,6 @@ TBG.Main.Helpers.Backdrop.show = function(url) {
 };
 
 TBG.Main.Helpers.Backdrop.reset = function() {
-	$('fullpage_backdrop_content').fade({duration: 0.2});
 	$('fullpage_backdrop').fade({duration: 0.2});
 };
 
