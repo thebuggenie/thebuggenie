@@ -230,11 +230,8 @@
 				<?php endif; ?>
 				<?php if ($issue->isDuplicate()): ?>
 					<div class="issue_info information" id="viewissue_duplicate">
-						<div style="padding: 5px;">
-							<?php echo image_tag('icon_info.png', array('style' => 'float: left; margin: 0 5px 0 5px;')); ?>
-							<div class="header"><?php echo __('This issue is a duplicate of issue %link_to_duplicate_issue%', array('%link_to_duplicate_issue%' => link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getDuplicateOf()->getFormattedIssueNo())), $issue->getDuplicateOf()->getFormattedIssueNo(true)) . ' - "' . $issue->getDuplicateOf()->getTitle() . '"')); ?></div>
-							<div class="content"><?php echo __('For more information you should visit the issue mentioned above, as this issue is not likely to be updated'); ?></div>
-						</div>
+						<?php echo image_tag('icon_info.png', array('style' => 'float: left; margin: 0 5px 0 5px;')); ?>
+						<?php echo __('This issue is a duplicate of issue %link_to_duplicate_issue%', array('%link_to_duplicate_issue%' => link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getDuplicateOf()->getFormattedIssueNo())), $issue->getDuplicateOf()->getFormattedIssueNo(true)) . ' - "' . $issue->getDuplicateOf()->getTitle() . '"')); ?>
 					</div>
 				<?php endif; ?>
 				<?php if ($issue->isClosed()): ?>
@@ -288,16 +285,12 @@
 						<?php if (!$issue->getProject()->isArchived() && (TBGContext::getUser()->hasPermission('caneditissue') || TBGContext::getUser()->hasPermission('caneditissuebasic'))): ?>
 							<ul id="more_actions" style="display: none; position: absolute; width: 300px; top: 21px; right: 0; z-index: 1000;" class="simple_list rounded_box white shadowed">
 								<li class="header"><?php echo __('Additional actions available'); ?></li>
-								<?php if ($issue->isBlocking()): ?>
-									<li><?php echo link_tag(make_url('unblock', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getId())), image_tag('icon_unblock.png', array('style' => 'float: left; margin-right: 5px;')) . __("Mark as not blocking the next release")); ?></li>
-								<?php else: ?>
-									<li><?php echo link_tag(make_url('block', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getId())), image_tag('icon_block.png', array('style' => 'float: left; margin-right: 5px;')) . __("Mark as blocking the next release")); ?></li>
-								<?php endif; ?>
-								<?php if (!$issue->isDuplicate()): ?>
-									<li><a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'markasduplicate_issue', 'issue_id' => $issue->getID())); ?>');"><?php echo image_tag('icon_duplicate_issues.png', array('style' => 'float: left; margin-right: 5px;')); ?><?php echo __('Mark this issue as a duplicate of another'); ?></a></li>
-								<?php else: ?>
-									<li><a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'markasduplicate_issue', 'issue_id' => $issue->getID())); ?>');"><?php echo image_tag('icon_duplicate_issues.png', array('style' => 'float: left; margin-right: 5px;')); ?><?php echo __('Change the issue this is a duplicate of'); ?></a></li>
-									<li><?php echo link_tag(make_url('notduplicate', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getId())), image_tag('icon_duplicate_issues.png', array('style' => 'float: left; margin-right: 5px;')) . __("Unmark this issue as a duplicate")); ?></li>
+								<?php if ($issue->isOpen()): ?>
+									<?php if ($issue->isBlocking()): ?>
+										<li><?php echo link_tag(make_url('unblock', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getId())), image_tag('icon_unblock.png', array('style' => 'float: left; margin-right: 5px;')) . __("Mark as not blocking the next release")); ?></li>
+									<?php else: ?>
+										<li><?php echo link_tag(make_url('block', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getId())), image_tag('icon_block.png', array('style' => 'float: left; margin-right: 5px;')) . __("Mark as blocking the next release")); ?></li>
+									<?php endif; ?>
 								<?php endif; ?>
 								<li><a href="javascript:void(0)" onClick="$('move_issue').toggle();"><?php echo image_tag('icon_move.png', array('style' => 'float: left; margin-right: 5px;')) . __("Move issue to another project"); ?></a></li>
 								<li style="display: none;" id="move_issue">

@@ -165,7 +165,7 @@
 					$issue->setDuplicateOf(null);
 					break;
 				case self::ACTION_SET_DUPLICATE:
-					$issue->setResolution($request->getParameter('duplicate_issue_id'));
+					$issue->setDuplicateOf($request->getParameter('duplicate_issue_id'));
 					break;
 				case self::ACTION_CLEAR_RESOLUTION:
 					$issue->setResolution(null);
