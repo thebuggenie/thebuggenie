@@ -22,6 +22,22 @@
 						<div class="faded_out" id="popup_assigned_to_teamup_info" style="clear: both; display: none;"><?php echo __('You will be teamed up with this user'); ?></div>
 					</li>
 				<?php endif; ?>
+				<?php if ($issue->isEditable() && !$issue->isDuplicate() && $transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_DUPLICATE)): ?>
+					<li class="duplicate_search">
+						<h6><?php echo __('Mark as duplicate of another, existing issue'); ?></h6>
+						<label for="viewissue_find_issue_<?php echo $transition->getID(); ?>_input"><?php echo __('Find issue(s)'); ?>&nbsp;</label>
+						<div class="button button-blue" style="float: right;">
+							<input type="button" value="<?php echo __('Find'); ?>" id="viewissue_find_issue_<?php echo $transition->getID(); ?>_submit">
+						</div>
+						<input type="text" name="searchfor" id="viewissue_find_issue_<?php echo $transition->getID(); ?>_input">
+						<?php echo image_tag('spinning_20.gif', array('id' => 'find_issue_'.$transition->getID().'_indicator', 'style' => 'display: none;')); ?><br>
+						<div id="viewissue_<?php echo $transition->getID(); ?>_duplicate_results"></div>
+						<input type="hidden" name="transition_duplicate_ulr[<?php echo $transition->getID(); ?>]" id="duplicate_finder_transition_<?php echo $transition->getID(); ?>" value="<?php echo make_url('viewissue_find_issue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'type' => 'duplicate')); ?>">
+					</li>
+					<li class="faded_out">
+						<?php echo __('If you want to mark this issue as duplicate of another, existing issue, find the issue by entering details to search for, in the box above.'); ?>
+					</li>
+				<?php endif; ?>
 				<?php if ($issue->isUpdateable() && $issue->canEditStatus() && $transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_STATUS) && !$transition->getAction(TBGWorkflowTransitionAction::ACTION_SET_STATUS)->hasTargetValue()): ?>
 					<li>
 						<label for="transition_popup_set_status"><?php echo __('Status'); ?></label>
@@ -128,7 +144,7 @@
 				<?php endif; ?>
 				<li style="margin-top: 10px;">
 					<label for="transition_popup_comment_body"><?php echo __('Write a comment if you want it to be added'); ?></label><br>
-					<?php include_template('main/textarea', array('area_name' => 'comment_body', 'area_id' => 'transition_popup_comment_body', 'height' => '120px', 'width' => '480px', 'value' => '')); ?>
+					<?php include_template('main/textarea', array('area_name' => 'comment_body', 'area_id' => 'transition_popup_comment_body', 'height' => '120px', 'width' => '585px', 'value' => '')); ?>
 				</li>
 			</ul>
 			<div style="text-align: right; margin-right: 5px;">

@@ -27,8 +27,13 @@
 		 */
 		protected static $_db_connection = null;
 
-		static protected $_db_host, $_db_uname, $_db_pwd, $_db_name, $_db_type, $_db_port = null;
-		static protected $_dsn = null;
+		static protected $_db_host;
+		static protected $_db_uname;
+		static protected $_db_pwd;
+		static protected $_db_name;
+		static protected $_db_type;
+		static protected $_db_port;
+		static protected $_dsn;
 		static protected $_tableprefix = '';
 		static protected $_sqlhits;
 		static protected $_sqltiming;
@@ -37,7 +42,7 @@
 		static protected $_transaction_active = false;
 		static protected $_tables = array();
 		static protected $_debug_mode = true;
-		static protected $_cache_dir = null;
+		static protected $_cache_dir;
 		static protected $_cached_column_class_properties = array();
 		static protected $_cached_foreign_classes = array();
 

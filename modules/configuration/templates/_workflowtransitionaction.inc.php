@@ -9,9 +9,11 @@
 			case TBGWorkflowTransitionAction::ACTION_CLEAR_PERCENT:
 			case TBGWorkflowTransitionAction::ACTION_CLEAR_REPRODUCABILITY:
 			case TBGWorkflowTransitionAction::ACTION_CLEAR_RESOLUTION:
+			case TBGWorkflowTransitionAction::ACTION_CLEAR_DUPLICATE:
 			case TBGWorkflowTransitionAction::ACTION_USER_START_WORKING:
 			case TBGWorkflowTransitionAction::ACTION_USER_STOP_WORKING:
 			case TBGWorkflowTransitionAction::ACTION_SET_MILESTONE:
+			case TBGWorkflowTransitionAction::ACTION_SET_DUPLICATE:
 				?>
 				<td id="workflowtransitionaction_<?php echo $action->getID(); ?>_description" style="padding: 2px;">
 					<?php if ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE_SELF): ?>
@@ -32,6 +34,10 @@
 						<?php echo __('Mark issue as being worked on by the assigned user'); ?>
 					<?php elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_USER_STOP_WORKING): ?>
 						<?php echo __('Mark issue as no longer being worked on, and optionally add time spent'); ?>
+					<?php elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_SET_DUPLICATE): ?>
+						<?php echo __('Mark issue as duplicate of another, existing issue'); ?>
+					<?php elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_CLEAR_DUPLICATE): ?>
+						<?php echo __('Mark issue as unique (no longer a duplicate) issue'); ?>
 					<?php endif; ?>
 				</td>
 				<?php if (!$action->getTransition()->isCore()): ?>
