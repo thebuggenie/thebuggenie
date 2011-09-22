@@ -238,17 +238,6 @@
 					<div class="issue_info information" id="viewissue_closed">
 						<?php echo image_tag('icon_info.png', array('style' => 'float: left; margin: 0 5px 0 5px;')); ?>
 						<?php echo __('This issue has been closed with status "%status_name%" and resolution "%resolution%".', array('%status_name%' => (($issue->getStatus() instanceof TBGStatus) ? $issue->getStatus()->getName() : __('Not determined')), '%resolution%' => (($issue->getResolution() instanceof TBGResolution) ? $issue->getResolution()->getName() : __('Not determined')))); ?>
-						<?php /*
-						<div class="content">
-							<?php if ($issue->canPostComments() && $tbg_user->canReportIssues($issue->getProjectID())): ?>
-								<?php echo __('A closed issue will usually not be further updated - try %posting_a_comment%, or %report_a_new_issue%', array('%posting_a_comment%' => '<a href="#add_comment_location_core_1_' . $issue->getID() . '">' . __('posting a comment') . '</a>', '%report_a_new_issue%' => link_tag(make_url('project_reportissue', array('project_key' => $issue->getProject()->getKey())), __('report a new issue')))); ?>
-							<?php elseif ($issue->canPostComments()): ?>
-								<?php echo __('A closed issue will usually not be further updated - try %posting_a_comment%', array('%posting_a_comment%' => '<a href="#add_comment_location_core_1_' . $issue->getID() . '">' . __('posting a comment') . '</a>')); ?>
-							<?php elseif ($tbg_user->canReportIssues($issue->getProjectID())): ?>
-								<?php echo __('A closed issue will usually not be further updated - try %reporting_a_new_issue%', array('%reporting_a_new_issue%' => link_tag(make_url('project_reportissue', array('project_key' => $issue->getProject()->getKey())), __('reporting a new issue')))); ?>
-							<?php endif; ?>
-						</div>
-						*/ ?>
 					</div>
 				<?php endif; ?>
 				<?php if ($issue->getProject()->isArchived()): ?>

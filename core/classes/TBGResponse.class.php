@@ -570,7 +570,7 @@
 					break;
 				case 'project_summary':
 					$links[] = array('url' => TBGContext::getRouting()->generate('project_dashboard', array('project_key' => $project->getKey())), 'title' => $i18n->__('Dashboard'));
-					$links[] = array('url' => TBGContext::getRouting()->generate('project_scrum', array('project_key' => $project->getKey())), 'title' => $i18n->__('Sprint planning'));
+					$links[] = array('url' => TBGContext::getRouting()->generate('project_planning', array('project_key' => $project->getKey())), 'title' => $i18n->__('Planning'));
 					$links[] = array('url' => TBGContext::getRouting()->generate('project_roadmap', array('project_key' => $project->getKey())), 'title' => $i18n->__('Roadmap'));
 					$links[] = array('url' => TBGContext::getRouting()->generate('project_team', array('project_key' => $project->getKey())), 'title' => $i18n->__('Team overview'));
 					$links[] = array('url' => TBGContext::getRouting()->generate('project_statistics', array('project_key' => $project->getKey())), 'title' => $i18n->__('Statistics'));

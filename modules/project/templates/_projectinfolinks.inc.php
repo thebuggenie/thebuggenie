@@ -4,7 +4,6 @@
 	{
 		$selected_project = TBGContext::getCurrentProject();
 	}
-	$scrum_additional_array = (!TBGContext::getCurrentProject()->usesScrum()) ? array('id' => 'sidebar_link_scrum', 'style' => 'display: none;') : array('id' => 'sidebar_link_scrum');
 
 	if(!isset($submenu)): $submenu = false; endif;
 ?>
@@ -21,16 +20,16 @@
 	<?php echo link_tag(make_url('project_releases', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Releases'), (($tbg_response->getPage() == 'project_releases') ? array('class' => 'selected') : null)); ?>
 	<?php TBGEvent::createNew('core', 'project_sidebar_links_releases')->trigger(array('submenu' => $submenu)); ?>
 <?php endif; ?>
-<?php if ($tbg_user->hasProjectPageAccess('project_scrum', $selected_project->getID())): ?>
-	<?php echo link_tag(make_url('project_scrum', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Sprint planning'), ((in_array($tbg_response->getPage(), array('project_scrum', 'project_scrum_sprint_details'))) ? array_merge($scrum_additional_array, array('class' => 'selected')) : $scrum_additional_array)); ?>
-	<?php if (!isset($submenu) && (count($selected_project->getSprints()) > 0) && TBGContext::getCurrentProject()->usesScrum() && in_array($tbg_response->getPage(), array('project_scrum', 'project_scrum_sprint_details'))): ?>
+<?php if ($tbg_user->hasProjectPageAccess('project_planning', $selected_project->getID())): ?>
+	<?php echo link_tag(make_url('project_planning', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Planning'), ((in_array($tbg_response->getPage(), array('project_planning', 'project_milestone_details'))) ? array('class' => 'selected') : array())); ?>
+	<?php if (!isset($submenu) && (count($selected_project->getAllMilestones()) > 0) && in_array($tbg_response->getPage(), array('project_planning', 'project_milestones_details'))): ?>
 		<ul class="simple_list">
-			<?php foreach ($selected_project->getSprints() as $sprint): ?>
-				<li><?php echo link_tag(make_url('project_scrum_sprint_details', array('project_key' => $selected_project->getKey(), 'sprint_id' => $sprint->getID())), $sprint->getName()); ?></li>
+			<?php foreach ($selected_project->getAllMilestones() as $milestone): ?>
+				<li><?php echo link_tag(make_url('project_milestone_details', array('project_key' => $selected_project->getKey(), 'milestone_id' => $milestone->getID())), $milestone->getName()); ?></li>
 			<?php endforeach; ?>
 		</ul>
 	<?php endif; ?>
-	<?php TBGEvent::createNew('core', 'project_sidebar_links_scrum')->trigger(array('submenu' => $submenu)); ?>
+	<?php TBGEvent::createNew('core', 'project_sidebar_links_milestone')->trigger(array('submenu' => $submenu)); ?>
 <?php endif; ?>
 <?php if ($tbg_user->hasProjectPageAccess('project_roadmap', $selected_project->getID())): ?>
 	<?php echo link_tag(make_url('project_roadmap', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Roadmap'), (($tbg_response->getPage() == 'project_roadmap') ? array('class' => 'selected') : array())); ?>

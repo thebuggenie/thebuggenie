@@ -75,19 +75,6 @@
 		}
 
 		/**
-		 * The project planning page
-		 *
-		 * @param TBGRequest $request
-		 */
-		public function runPlanning(TBGRequest $request)
-		{
-			$this->forward403unless($this->_checkProjectPageAccess('project_planning'));
-
-			$this->recent_ideas = $this->selected_project->getRecentIdeas();
-
-		}
-
-		/**
 		 * The project files page
 		 *
 		 * @param TBGRequest $request
@@ -138,10 +125,11 @@
 		 *
 		 * @param TBGRequest $request
 		 */
-		public function runScrum(TBGRequest $request)
+		public function runPlanning(TBGRequest $request)
 		{
-			$this->forward403unless($this->_checkProjectPageAccess('project_scrum'));
-			$this->unassigned_issues = $this->selected_project->getUnassignedStories();
+			$this->forward403unless($this->_checkProjectPageAccess('project_planning'));
+//			$this->unassigned_issues = $this->selected_project->getUnassignedStories();
+			$this->unassigned_issues = array();
 		}
 
 		/**
