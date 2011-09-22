@@ -27,5 +27,14 @@
 			$this->prev_timestamp = null;
 			$this->prev_issue = null;
 		}
+		
+		public function componentMilestone()
+		{
+			if (!isset($this->milestone)) 
+			{
+				$this->milestone = new TBGMilestone();
+				$this->milestone->setProject($this->project);
+			}
+		}
 
 	}

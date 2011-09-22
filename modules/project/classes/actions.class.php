@@ -1009,6 +1009,12 @@
 			}
 
 		}
+		
+		public function runMilestone(TBGRequest $request)
+		{
+			$milestone = new TBGMilestone($request->getParameter('milestone_id'));
+			
+		}
 
 		public function runMenuLinks(TBGRequest $request)
 		{

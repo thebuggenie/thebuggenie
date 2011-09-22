@@ -26,6 +26,7 @@
 	$routes[] = array('project_reportissue', '/:project_key/issues/new/*', 'main', 'reportIssue');
 	$routes[] = array('transition_issue', '/:project_key/:issue_id/transition/:transition_id', 'project', 'transitionIssue');
 	$routes[] = array('project_planning', '/:project_key/planning', 'project', 'planning');
+	$routes[] = array('project_milestone', '/:project_key/milestone', 'project', 'milestone');
 	$routes[] = array('project_settings', '/:project_key/settings', 'project', 'settings');
 	$routes[] = array('project_releases', '/:project_key/releases', 'project', 'releases');
 	$routes[] = array('project_release_center', '/:project_key/release_center', 'project', 'releaseCenter');

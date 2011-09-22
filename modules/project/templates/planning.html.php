@@ -9,56 +9,12 @@
 		<div id="scrum_sprints" class="planning_container">
 			<h3>
 				<?php if ($tbg_user->canAddScrumSprints($selected_project)): ?>
-					<div style="float: right;" id="add_milestone_button" class="button button-green">
-						<input type="button" onclick="$('sprint_add_div').toggle();" value="<?php echo __('Add new sprint'); ?>">
-					</div>
+					<div class="button button-green" style="float: right;"><span onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'milestone', 'project_id' => $selected_project->getId())); ?>');"><?php echo __('Add new milestone'); ?></span></div>
 				<?php endif; ?>
 				<?php echo __('Project milestones'); ?>
 			</h3>
 			<?php if ($tbg_user->canAddScrumSprints($selected_project)): ?>
 				<div class="rounded_box lightyellow" style="margin-top: 5px; display: none; padding: 7px;" id="sprint_add_div">
-					<form id="add_sprint_form" action="<?php echo make_url('project_scrum_add_sprint', array('project_key' => $project_key)); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="addSprint('<?php echo make_url('project_scrum_add_sprint', array('project_key' => $project_key)); ?>', '<?php echo make_url('project_scrum_assign_story', array('project_key' => $selected_project->getKey())); ?>');return false;">
-						<div id="add_sprint">
-							<label for="sprint_name"><?php echo __('Add sprint'); ?></label>
-							<input type="text" id="sprint_name" name="sprint_name">
-							<input type="submit" value="<?php echo __('Add'); ?>">
-							<br style="clear: both;">
-							<label for="sprint_starting_day"><?php echo __('Sprint starts'); ?></label>
-							<select name="starting_day" id="sprint_starting_day">
-								<?php for ($cc = 1;$cc <= 31;$cc++): ?>
-									<option value=<?php echo $cc; ?><?php echo ((date('d') == $cc) ? " selected" : ""); ?>><?php echo $cc; ?></option>
-								<?php endfor; ?>
-							</select>
-							<select name="starting_month" id="sprint_starting_month">
-								<?php for ($cc = 1;$cc <= 12;$cc++): ?>
-									<option value=<?php echo $cc; ?><?php echo ((date('m') == $cc) ? " selected" : ""); ?>><?php echo tbg_formatTime(mktime(0, 0, 0, $cc, 1), 15); ?></option>
-								<?php endfor; ?>
-							</select>
-							<select name="starting_year" id="sprint_starting_year">
-								<?php for ($cc = 2000;$cc <= (date("Y") + 5);$cc++): ?>
-									<option value=<?php echo $cc; ?><?php echo ((date('Y') == $cc) ? " selected" : ""); ?>><?php echo $cc; ?></option>
-								<?php endfor; ?>
-							</select>
-							<br style="clear: both;">
-							<label for="sprint_scheduled_day"><?php echo __('Sprint ends'); ?></label>
-							<select name="scheduled_day" id="sprint_scheduled_day">
-								<?php for ($cc = 1;$cc <= 31;$cc++): ?>
-									<option value=<?php echo $cc; ?><?php echo ((date('d') == $cc) ? " selected" : ""); ?>><?php echo $cc; ?></option>
-								<?php endfor; ?>
-							</select>
-							<select name="scheduled_month" id="sprint_scheduled_month">
-								<?php for ($cc = 1;$cc <= 12;$cc++): ?>
-									<option value=<?php echo $cc; ?><?php echo ((date('m') == $cc) ? " selected" : ""); ?>><?php echo tbg_formatTime(mktime(0, 0, 0, $cc, 1), 15); ?></option>
-								<?php endfor; ?>
-							</select>
-							<select name="scheduled_year" id="sprint_scheduled_year">
-								<?php for ($cc = 2000;$cc <= (date("Y") + 5);$cc++): ?>
-									<option value=<?php echo $cc; ?><?php echo ((date('Y') == $cc) ? " selected" : ""); ?>><?php echo $cc; ?></option>
-								<?php endfor; ?>
-							</select>
-							<br style="clear: both;">
-						</div>
-					</form>
 				</div>
 				<table cellpadding=0 cellspacing=0 style="display: none; margin-left: 5px; width: 300px;" id="sprint_add_indicator">
 					<tr>

@@ -3,7 +3,7 @@
 		<?php echo ($milestone->getId()) ? __('Edit milestone details') : __('Add milestone'); ?>
 	</div>
 	<div id="backdrop_detail_content">
-		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_project_milestone_action', array('project_id' => $milestone->getProject()->getID(), 'milestone_id' => $milestone->getID(), 'milestone_action' => 'update')); ?>" method="post" id="edit_milestone_<?php echo $milestone->getID(); ?>" style="display: none;" onsubmit="updateMilestone('<?php echo make_url('configure_project_milestone', array('project_id' => $milestone->getProject()->getID())); ?>', <?php echo $milestone->getID(); ?>);return false;">
+		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('project_milestone', array('project_key' => $milestone->getProject()->getKey())); ?>" method="post" id="edit_milestone_form" onsubmit="TBG.Project.Milestone.<?php echo ($milestone->getID()) ? 'update' : 'add'; ?>('<?php echo make_url('project_milestone', array('project_key' => $milestone->getProject()->getKey())); ?>'<?php if ($milestone->getID()): ?>, <?php echo $milestone->getID(); ?><?php endif; ?>);return false;">
 			<table style="width: 750px;" cellpadding=0 cellspacing=0>
 				<tr>
 					<td style="width: 100px;"><label for="milestone_name_<?php echo $milestone->getID(); ?>"><?php echo __('Name:'); ?></label></td>

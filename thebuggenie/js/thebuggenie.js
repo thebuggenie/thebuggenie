@@ -1189,7 +1189,7 @@ TBG.Project.unarchive = function(url, pid) {
 
 TBG.Project.Milestone.add = function(url) {
 	TBG.Main.Helpers.ajax(url, {
-		form: 'add_milestone_form',
+		form: 'edit_milestone_form',
 		loading: {indicator: 'milestone_add_indicator'},
 		success: {
 			reset: 'add_milestone_form',
@@ -1199,16 +1199,15 @@ TBG.Project.Milestone.add = function(url) {
 	});
 }
 
-TBG.Project.Milestone.update = function(url, mid) {
+TBG.Project.Milestone.update = function(url, milestone_id) {
 	TBG.Main.Helpers.ajax(url, {
-		form: 'edit_milestone_' + mid,
+		form: 'edit_milestone_form',
 		loading: {
-			indicator: 'milestone_' + mid + '_indicator'
+			indicator: 'milestone_add_indicator'
 		},
 		success: {
-			hide: 'edit_milestone_' + mid,
-			update: 'milestone_span_' + mid,
-			show: 'show_milestone_' + mid
+			callback: TBG.Main.Helpers.Backdrop.reset,
+			update: {element: 'milestone_' + milestone_id + '_name', from: 'name'},
 		}
 	});
 }

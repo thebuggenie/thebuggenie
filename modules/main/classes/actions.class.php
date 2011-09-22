@@ -2555,6 +2555,12 @@
 					case 'relate_issue':
 						$template_name = 'main/relateissue';
 						break;
+					case 'milestone':
+						$template_name = 'project/milestone';
+						$options['project'] = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
+						if ($request->hasParameter('milestone_id'))
+							$options['milestone'] = TBGContext::factory()->TBGMilestone($request->getParameter('milestone_id'));
+						break;
 					case 'project_build':
 						$template_name = 'configuration/build';
 						$options['project'] = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
