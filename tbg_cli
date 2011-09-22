@@ -1,6 +1,5 @@
 #!/usr/bin/php
 <?php
-
 	// Define The Bug Genie paths and related constants
 	defined('DS') || define('DS', DIRECTORY_SEPARATOR);
 	defined('THEBUGGENIE_PATH') || define ('THEBUGGENIE_PATH', realpath(getcwd() . DS) . DS);
@@ -8,6 +7,12 @@
 	defined('THEBUGGENIE_CORE_PATH') || define('THEBUGGENIE_CORE_PATH', THEBUGGENIE_PATH . 'core' . DIRECTORY_SEPARATOR);
 	defined('THEBUGGENIE_MODULES_PATH') || define('THEBUGGENIE_MODULES_PATH', THEBUGGENIE_PATH . 'modules' . DIRECTORY_SEPARATOR);
 	defined('THEBUGGENIE_PUBLIC_FOLDER_NAME') || define('THEBUGGENIE_PUBLIC_FOLDER_NAME', '');
+
+  // Workaround for issue dealing with undefined index
+  // http://goo.gl/Y8vu5
+  if(!@$_SERVER['HTTP_HOST']) $_SERVER['HTTP_HOST'] = "localhost";
+  if(!@$_SERVER['SERVER_NAME']) $_SERVER['SERVER_NAME'] = "localhost";
+  if(!@$_SERVER['SERVER_PORT']) $_SERVER['SERVER_PORT'] = "80";
 
 	try
 	{
