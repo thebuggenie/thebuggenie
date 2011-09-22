@@ -512,11 +512,11 @@
 			if (TBGContext::isCLI())
 				return null;
 
-			$language = (self::$_user instanceof TBGUser) ? self::$_user->getLanguage() : 'en_US';
+			$language = (self::$_user instanceof TBGUser) ? self::$_user->getLanguage() : TBGSettings::getLanguage();
 			
 			if (self::$_user instanceof TBGUser && self::$_user->getLanguage() == 'sys')
 			{
-				$language = 'en_US';
+				$language = TBGSettings::getLanguage();
 			}
 			
 			TBGLogging::log('Loading i18n strings');
