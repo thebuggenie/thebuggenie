@@ -4248,11 +4248,7 @@
 								$new_name = ($this->getAssignee() instanceof TBGIdentifiableClass) ? $this->getAssignee()->getName() : TBGContext::getI18n()->__('Not assigned');
 								
 								
-								if (!$this->isAssigned() || $this->getAssigneeType() == TBGIdentifiableClass::TYPE_TEAM)
-								{
-									$this->stopWorkingOnIssue();
-								}
-								elseif ($this->getAssigneeType() == TBGIdentifiableClass::TYPE_USER)
+								if ($this->getAssigneeType() == TBGIdentifiableClass::TYPE_USER)
 								{
 									$this->startWorkingOnIssue($this->getAssignee());
 								}
