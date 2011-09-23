@@ -129,7 +129,7 @@
 		{
 			$this->forward403unless($this->_checkProjectPageAccess('project_planning'));
 //			$this->unassigned_issues = $this->selected_project->getUnassignedStories();
-			$this->unassigned_issues = array();
+			$this->unassigned_issues = $this->selected_project->getIssuesWithoutMilestone();
 		}
 
 		/**
@@ -1012,8 +1012,34 @@
 		
 		public function runMilestone(TBGRequest $request)
 		{
-			$milestone = new TBGMilestone($request->getParameter('milestone_id'));
-			
+			if ($request->isMethod(TBGRequest::POST)) {
+				$milestone = new TBGMilestone($request->getParameter('milestone_id'));
+				$milestone->setName($request->getParameter('name'));
+				$milestone->setProject($this->selected_project);
+				$milestone->setStarting((bool) $request->getParameter('is_starting'));
+				$milestone->setScheduled((bool) $request->getParameter('is_scheduled'));
+				$milestone->setDescription($request->getParameter('description'));
+				$milestone->setType($request->getParameter('milestone_type', TBGMilestone::TYPE_REGULAR));
+				if ($milestone->isScheduled() && $request->hasParameter('sch_month') && $request->hasParameter('sch_day') && $request->hasParameter('sch_year'))
+				{
+					$scheduled_date = mktime(23, 59, 59, TBGContext::getRequest()->getParameter('sch_month'), TBGContext::getRequest()->getParameter('sch_day'), TBGContext::getRequest()->getParameter('sch_year'));
+					$milestone->setScheduledDate($scheduled_date);
+				}
+				else
+					$milestone->setScheduledDate(0);
+
+				if ($milestone->isStarting() && $request->hasParameter('starting_month') && $request->hasParameter('starting_day') && $request->hasParameter('starting_year'))
+				{
+					$starting_date = mktime(0, 0, 1, TBGContext::getRequest()->getParameter('starting_month'), TBGContext::getRequest()->getParameter('starting_day'), TBGContext::getRequest()->getParameter('starting_year'));
+					$milestone->setStartingDate($starting_date);
+				}
+				else
+					$milestone->setStartingDate(0);
+
+				$milestone->save();
+				$message = ($request->getParameter('milestone_id')) ? TBGContext::getI18n()->__('Milestone updated') : TBGContext::getI18n()->__('Milestone created');
+				return $this->renderJSON(array('content' => $this->getTemplateHTML('milestonebox', array('milestone' => $milestone))));
+			}
 		}
 
 		public function runMenuLinks(TBGRequest $request)

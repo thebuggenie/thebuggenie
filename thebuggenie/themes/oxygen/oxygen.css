@@ -1,6 +1,6 @@
 /* General styles */
-@import url("http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700&subset=latin,cyrillic,greek");
-@import url("http://fonts.googleapis.com/css?family=Droid+Sans+Mono&subset=latin,cyrillic,greek");
+/*@import url("http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700&subset=latin,cyrillic,greek");
+@import url("http://fonts.googleapis.com/css?family=Droid+Sans+Mono&subset=latin,cyrillic,greek");*/
 
 body, td, th { padding: 0px; margin: 0px; font-family: 'Open Sans', sans-serif; font-style: normal; font-weight: normal; text-align: left; font-size: 13px; line-height: 1.5; color: #555;}
 html, body { padding: 0px; margin: 0px; height: 100%; }
@@ -936,32 +936,37 @@ table.issue_affects td img { vertical-align: bottom; }
 
 /* scrum page styling */
 #project_planning td { vertical-align: top; }
-ul.planning_container, #project_dashboard ul, #dashboard_righthand #associated_projects { list-style-type: none; padding: 0; margin: 5px 0 0 0; clear: both; }
-ul.planning_container { padding: 0; }
-ul.planning_container li { padding: 0; background-color: #FFF; border: 1px solid #BBB; position: relative; margin: 0; clear: both; }
+ul.milestone_issues_container, #project_dashboard ul, #dashboard_righthand #associated_projects { list-style-type: none; padding: 0; margin: 5px 0 0 0; clear: both; }
+ul.milestone_issues_container { padding: 0; }
+ul.milestone_issues_container li { padding: 0; background-color: #FFF; border: 1px solid #BBB; position: relative; margin: 0; clear: both; }
 .moveable { cursor: move; }
-ul.planning_container li .header, .infobox .header { font-size: 1.1em; font-weight: bold; }
-ul.planning_container li .content { padding-top: 3px; line-height: 15px; font-weight: normal; margin-bottom: 12px; }
-ul.planning_container li .story_title { font-size: 0.9em; font-weight: bold; padding-top: 1px; height: 18px; overflow: hidden; }
-ul.planning_container li .story_color { float: left; width: 13px; height: 19px; font-size: 1px; font-weight: normal; padding: 0; border-right: 1px solid #BBB; margin-right: 3px; }
-ul.planning_container li:hover .story_color { border-bottom: 1px solid #BBB; }
-ul.planning_container li .story_color_selector { position: absolute; top: 0px; left: 0px; width: 385px; height: 60px; z-index: 999; border: 1px solid #BBB; padding: 1px; background-color: #FFF; }
+.milestone_box { }
+.milestone_box .header { padding: 4px 0; border-bottom: 1px dotted #CCC; font-size: 1.1em; font-weight: bold; }
+.milestone_box .header .issue_count { font-size: 0.9em; font-weight: normal; color: #888; }
+.milestone_box .header .button a { font-size: 0.8em; font-weight: normal; padding: 2px 5px; }
+.milestone_box .header .button { margin-left: 5px; }
+ul.milestone_issues_container li .header, .infobox .header { font-size: 1.1em; font-weight: bold; }
+ul.milestone_issues_container li .content { padding-top: 3px; line-height: 15px; font-weight: normal; margin-bottom: 12px; }
+ul.milestone_issues_container li .story_title { font-size: 0.9em; font-weight: bold; padding-top: 1px; height: 18px; overflow: hidden; }
+ul.milestone_issues_container li .story_color { float: left; width: 13px; height: 19px; font-size: 1px; font-weight: normal; padding: 0; border-right: 1px solid #BBB; margin-right: 3px; }
+ul.milestone_issues_container li:hover .story_color { border-bottom: 1px solid #BBB; }
+ul.milestone_issues_container li .story_color_selector { position: absolute; top: 0px; left: 0px; width: 385px; height: 60px; z-index: 999; border: 1px solid #BBB; padding: 1px; background-color: #FFF; }
 .story_estimation_div, .scrum_sprint_details_actions .quickaddtask { position: absolute; top: 0px; right: 10px; width: 300px; z-index: 999; text-align: left; margin: 1px; }
 .scrum_sprint_details_actions a:hover { border: 0; }
 .story_estimation_div .header { float: left; padding-top: 3px; font-weight: bold; }
 .story_estimation_div a { font-weight: bold; }
 .story_estimation_div input[type="text"] { width: 30px; }
-ul.planning_container li .story_color_selector_item { cursor: pointer; float: left; width: 12px; height: 60px; font-size: 1px; font-weight: normal; padding: 0; border: 0; border-right: 1px solid #555; }
-ul.planning_container li .story_no { float: left; font-size: 1.1em; font-weight: bold; font-style: italic; background-color: transparent; color: #AAA; padding: 1px 2px 1px 2px; margin-right: 3px; }
-ul.planning_container li .story_estimate { float: right; margin-left: 3px; font-weight: normal; padding: 1px 0 0 0; }
-ul.planning_container li .story_estimate img { float: right; margin: 0 2px 0 3px; }
-ul.planning_container li .story_owner { position: absolute; bottom: 1px; left: 8px; font-size: 1.1em; font-weight: normal; padding: 1px 4px 1px 1px; }
-ul.planning_container li .story_tags { padding-top: 3px; line-height: 15px; font-weight: normal; }
-ul.planning_container li .actions { display: none; clear: both; padding: 3px; }
-ul.planning_container li .actions a:hover { border: 0; }
-ul.planning_container li .actions .task_count { font-size: 1.1em; font-weight: normal; color: #AAA; }
-ul.planning_container li:hover .actions { display: block; }
-ul.planning_container li .actions label { float: left; font-weight: bold; margin: 0 5px 0 0; padding: 0; font-size: 0.9em; }
+ul.milestone_issues_container li .story_color_selector_item { cursor: pointer; float: left; width: 12px; height: 60px; font-size: 1px; font-weight: normal; padding: 0; border: 0; border-right: 1px solid #555; }
+ul.milestone_issues_container li .story_no { float: left; font-size: 1.1em; font-weight: bold; font-style: italic; background-color: transparent; color: #AAA; padding: 1px 2px 1px 2px; margin-right: 3px; }
+ul.milestone_issues_container li .story_estimate { float: right; margin-left: 3px; font-weight: normal; padding: 1px 0 0 0; }
+ul.milestone_issues_container li .story_estimate img { float: right; margin: 0 2px 0 3px; }
+ul.milestone_issues_container li .story_owner { position: absolute; bottom: 1px; left: 8px; font-size: 1.1em; font-weight: normal; padding: 1px 4px 1px 1px; }
+ul.milestone_issues_container li .story_tags { padding-top: 3px; line-height: 15px; font-weight: normal; }
+ul.milestone_issues_container li .actions { display: none; clear: both; padding: 3px; }
+ul.milestone_issues_container li .actions a:hover { border: 0; }
+ul.milestone_issues_container li .actions .task_count { font-size: 1.1em; font-weight: normal; color: #AAA; }
+ul.milestone_issues_container li:hover .actions { display: block; }
+ul.milestone_issues_container li .actions label { float: left; font-weight: bold; margin: 0 5px 0 0; padding: 0; font-size: 0.9em; }
 #scrum .story_card { position: relative; }
 #scrum .story_task_list .faded_out { padding: 5px; }
 #scrum #scrum_menu .header { font-weight: bold; margin-bottom: 5px; }
@@ -971,22 +976,22 @@ ul.planning_container li .actions label { float: left; font-weight: bold; margin
 #related_parent_issues_inline td, #related_child_issues_inline td { font-size: 0.9em; }
 #related_issues_this_issue { font-size: 1.1em; font-weight: bold; text-align: center; }
 #no_child_issues, #no_parent_issues { text-align: center; }
-#scrum_unassigned #add_story, #scrum_sprints #add_sprint { text-align: right; padding-top: 3px; }
+#scrum_unassigned #add_story, .planning_container #add_sprint { text-align: right; padding-top: 3px; }
 #scrum_unassigned { width: 440px; border-top: 1px solid #ccc; padding: 10px 5px; vertical-align: top; }
 #scrum_unassigned .header_div { border: 0; margin: 0; font-size: 1.2em; }
-#scrum_sprints label { float: left; padding-top: 4px; }
-#scrum_unassigned label, #scrum_unassigned input[type="submit"], #scrum_sprints label, #scrum_sprints input[type="submit"] { font-size: 0.9em; font-weight: bold; }
+.planning_container label { float: left; padding-top: 4px; }
+#scrum_unassigned label, #scrum_unassigned input[type="submit"], .planning_container label, .planning_container input[type="submit"] { font-size: 0.9em; font-weight: bold; }
 #scrum_unassigned #story_title { width: 300px; }
 #scrum_unassigned .add_story_header { font-weight: bold; float: left; }
-#scrum_sprints #sprint_name { width: 250px; }
-#scrum .sprint_date { font-weight: normal; color: #555; }
-#scrum .sprint_header { background-color: transparent; padding: 3px; font-weight: normal; font-size: 0.8em; color: #888; position: relative; }
-#scrum .sprint_header b { font-size: 1.1em; color: #555; }
-#scrum .sprint_points { position: absolute; top: 0; right: 0; font-weight: bold; background-color: #FaFaFa; border: 1px solid #EaEaEa; padding: 2px 5px 2px 5px; }
-#scrum .sprint_header a { color: #555; text-decoration: none; border: 0; font-weight: bold; }
-#scrum .sprint_header a.issue_count { font-size: 0.8em; font-weight: normal; color: #888; }
-#scrum .sprint_header a.issue_count:hover { color: #BBB; }
-#scrum .sprint_header a:hover { color: #888; text-decoration: none; border: 0; }
+.planning_container #sprint_name { width: 250px; }
+.planning_container .sprint_date { font-weight: normal; color: #555; }
+.planning_container .sprint_header { background-color: transparent; padding: 3px; font-weight: normal; font-size: 0.9em; line-height: 1.2; color: #888; position: relative; }
+.planning_container .sprint_header b { font-size: 1.1em; color: #555; }
+.planning_container .milestone_estimates { float: left; font-weight: bold; background-color: #F5F5F5; border: 1px solid #DDD; padding: 1px 5px; color: #666; font-size: 0.9em; margin-right: 5px; }
+.planning_container .sprint_header a { color: #555; text-decoration: none; border: 0; font-weight: bold; }
+.planning_container .sprint_header a.issue_count { font-size: 1em; font-weight: normal; color: #888; }
+.planning_container .sprint_header a.issue_count:hover { color: #BBB; }
+.planning_container .sprint_header a:hover { color: #888; text-decoration: none; border: 0; }
 #scrum_sprint_burndown a { color: #555; border-bottom: 1px dotted #AAA; }
 #scrum_sprint_burndown .faded_out a { color: #888; border-bottom: 0; }
 #scrum_sprint_burndown a:hover { color: #777; border-bottom: 1px dotted #BBB; }
