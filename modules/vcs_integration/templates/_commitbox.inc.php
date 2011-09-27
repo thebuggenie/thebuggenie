@@ -54,7 +54,7 @@
 		<div id="commit_<?php echo $commit->getID(); ?>_header" class="commentheader">
 			<a href="<?php echo $link_rev; ?>" class="comment_hash"><?php if (!is_numeric($commit->getRevision())): echo mb_substr($commit->getRevision(), 0, 7); else: echo $commit->getRevision(); endif; ?></a>
 			<div class="commenttitle">
-				<?php if ($branchname !== null): ?>[<?php echo $branchname; ?>] <?php endif; ?><?php echo __('Revision %rev% by %user%', array('%rev%' => "<a href=".$link_rev.">".$commit->getRevision()."</a>", '%user%' => '<div style="display: inline;">'.get_component_html('main/userdropdown', array('user' => $commit->getAuthor(), 'size' => 'small')).'</div>')); ?>
+				<?php if ($branchname !== null): ?><span class="commitbranch"><?php echo $branchname; ?></span> <?php endif; ?><?php echo __('Revision %rev% by %user%', array('%rev%' => "<a href=".$link_rev.">".$commit->getRevision()."</a>", '%user%' => '<div style="display: inline;">'.get_component_html('main/userdropdown', array('user' => $commit->getAuthor(), 'size' => 'small')).'</div>')); ?>
 			</div>
 			<div class="commentdate" id="commit_<?php echo $commit->getID(); ?>_date"><?php echo tbg_formattime($commit->getDate(), 12); ?> - <?php echo __('Preceeded by %prev%', array('%prev%' => "<a href=".$link_old.">".$commit->getPreviousRevision()."</a>"))?></div>
 		</div>

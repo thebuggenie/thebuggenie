@@ -4,6 +4,7 @@
 	$tbg_response->setTitle(__('"%project_name%" commits', array('%project_name%' => $selected_project->getName())));
 
 ?>
+			<?php include_template('project/projectheader', array('selected_project' => $selected_project)); ?>
 			<?php include_template('project/projectinfosidebar', array('selected_project' => $selected_project)); ?>
 			<div id="project_commits">
 				<?php
