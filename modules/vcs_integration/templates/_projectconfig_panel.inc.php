@@ -81,12 +81,14 @@
 			</table>
 			<div id="vcs_custom_urls">
 				<h4><?php echo __('Custom browser URLs'); ?></h4>
-				<div class="header"><?php echo __('In the Commit details page field, this parameter will be replaced with a real value when link is generated:'); ?></div>
+				<div class="header"><?php echo __('In the Commit details page field, the following parameters will be replaced with a real value when link is generated:'); ?></div>
 				<ul>
 					<li>%revno% - <?php echo __('Revision number/hash of either the current or previous revision (the one to use is automatically chosen as appropriate)'); ?></li>
+					<li>%branch% - <?php echo __('Branch (if provided by the hook). If no branch is provided, this will be left unchanged'); ?></li>
 				</ul>
 				<div class="header"><?php echo __('In the other fields, these parameters will be replaced with real values when links are generated:'); ?></div>
 				<ul>
+					<li>%branch% - <?php echo __('Branch (if provided by the hook). If no branch is provided, this will be left unchanged'); ?></li>
 					<li>%revno% - <?php echo __('Revision number/hash'); ?></li>
 					<li>%oldrev% - <?php echo __('Revision number/hash of previous commit'); ?></li>
 					<li>%file% - <?php echo __('Filename and path, from root of repository'); ?></li>
