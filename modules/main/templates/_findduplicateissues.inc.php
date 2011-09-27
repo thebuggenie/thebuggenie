@@ -3,6 +3,7 @@
 	<input type="hidden" name="issue_action" value="duplicate">
 	<select name="duplicate_issue_id" style="width: 100%">
 		<?php foreach ($issues as $aissue): ?>
+			<?php if ($aIssue->getID() == $issue->getID()): continue; endif; ?>
 			<option value="<?php echo $aissue->getID(); ?>">[<?php if ($aissue->getState() == TBGIssue::STATE_OPEN): echo __('OPEN'); else: echo __('CLOSED'); endif; ?>] <?php echo $aissue->getFormattedTitle(); ?></option>
 		<?php endforeach; ?>
 	</select>

@@ -4248,11 +4248,7 @@
 								$new_name = ($this->getAssignee() instanceof TBGIdentifiableClass) ? $this->getAssignee()->getName() : TBGContext::getI18n()->__('Not assigned');
 								
 								
-								if (!$this->isAssigned() || $this->getAssigneeType() == TBGIdentifiableClass::TYPE_TEAM)
-								{
-									$this->stopWorkingOnIssue();
-								}
-								elseif ($this->getAssigneeType() == TBGIdentifiableClass::TYPE_USER)
+								if ($this->getAssigneeType() == TBGIdentifiableClass::TYPE_USER)
 								{
 									$this->startWorkingOnIssue($this->getAssignee());
 								}
@@ -4662,16 +4658,21 @@
 		public function stopWorkingOnIssue()
 		{
 			$time_spent = NOW - $this->_being_worked_on_by_user_since;
-			$user_working_on_it = $this->getUserWorkingOnIssue();
 			$this->clearUserWorkingOnIssue();
 			if ($time_spent > 0)
 			{
 				$weeks_spent = 0;
 				$days_spent = 0;
 				$hours_spent = 0;
-				$time_spent = ceil($time_spent / 3600);
-				$hours_spent = $time_spent - ($days_spent * 24);
+				
+				$weeks_spent = floor($time_spent / 604800);
+				$days_spent = floor(($time_spent - ($weeks_spent * 604800)) / 86400);
+				$hours_spent = floor(($time_spent - ($weeks_spent * 604800) - ($days_spent * 86400)) / 3600);
+
 				if ($hours_spent < 0) $hours_spent = 0;
+				if ($weeks_spent < 0) $weeks_spent = 0;
+				if ($days_spent < 0) $days_spent = 0;
+								
 				$this->_addChangedProperty('_spent_hours', $this->_spent_hours + $hours_spent);
 				$this->_addChangedProperty('_spent_days', $this->_spent_days + $days_spent);
 				$this->_addChangedProperty('_spent_weeks', $this->_spent_weeks + $weeks_spent);

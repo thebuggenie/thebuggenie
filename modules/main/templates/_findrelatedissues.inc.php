@@ -5,6 +5,7 @@
 		<div style="height: 400px; overflow: auto">
 		<table style="width: auto; border: 0;" cellpadding="0" cellspacing="0">
 			<?php foreach ($issues as $aissue): ?>
+				<?php if ($aissue->getID() == $issue->getID()): continue; endif; ?>
 				<tr>
 					<td style="width: 20px;"><input type="checkbox" value="<?php echo $aissue->getID(); ?>" name="relate_issues[<?php echo $aissue->getID(); ?>]"></td>
 					<td class="issue_title">
