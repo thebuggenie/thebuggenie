@@ -381,7 +381,7 @@
 			}
 		}
 		
-		public static function processCommit(TBGProject $project, $commit_msg, $old_rev, $new_rev, $date = null, $changed, $author)
+		public static function processCommit(TBGProject $project, $commit_msg, $old_rev, $new_rev, $date = null, $changed, $author, $branch = null)
 		{
 			$output = '';
 			TBGContext::setCurrentProject($project);
@@ -552,6 +552,13 @@
 			$commit->setPreviousRevision($old_rev);
 			$commit->setRevision($new_rev);
 			$commit->setProject($project);
+			
+			if ($branch !== null)
+			{
+				$data = 'branch:'.$branch;
+				$commit->setMiscData($data);
+			}
+			
 			$commit->save();
 			
 			$output .= '[VCS '.$project->getKey().'] Commit logged with revision ' . $commit->getRevision() . "\n";

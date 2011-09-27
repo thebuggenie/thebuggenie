@@ -31,6 +31,7 @@
 			
 			$this->addOptionalArgument('oldrev', "Revision number or hash of previous revision");
 			$this->addOptionalArgument('date', "POSIX timestamp of commit");
+			$this->addOptionalArgument('branch', "Branch this commit affects");
 		}
 
 		public function do_execute()
@@ -51,6 +52,7 @@
 			$changed = $this->getProvidedArgument('changed');
 			$old_rev = $this->getProvidedArgument('oldrev', $new_rev - 1);
 			$date = $this->getProvidedArgument('date', null);
+			$branch = $this->getProvidedArgument('branch', null);
 			
 			if (TBGSettings::get('access_method_'.$project->getKey()) == TBGVCSIntegration::ACCESS_HTTP)
 			{
@@ -64,7 +66,7 @@
 				exit;
 			}
 			
-			$output = TBGVCSIntegration::processCommit($project, $commit_msg, $old_rev, $new_rev, $date, $changed, $author);
+			$output = TBGVCSIntegration::processCommit($project, $commit_msg, $old_rev, $new_rev, $date, $changed, $author, $branch);
 			$this->cliEcho($output);
 		}
 	}

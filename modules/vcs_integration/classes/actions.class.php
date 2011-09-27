@@ -47,6 +47,15 @@
 			$commit_msg = trim(html_entity_decode(urldecode(TBGContext::getRequest()->getParameter('commit_msg')), ENT_QUOTES), '"');
 			$changed = trim(html_entity_decode(urldecode(TBGContext::getRequest()->getParameter('changed')), ENT_QUOTES), '"');
 			
+			if (TBGContext::getRequest()->hasParameter('branch'))
+			{
+				$branch = trim(html_entity_decode(urldecode(TBGContext::getRequest()->getParameter('branch')), ENT_QUOTES), '"');
+			}
+			else
+			{
+				$branch = null;
+			}
+			
 			$project = TBGProject::getByKey($project_key);
 			
 			if (!$project)
@@ -101,7 +110,7 @@
 			}
 			
 			// Add commit
-			echo TBGVCSIntegration::processCommit($project, $commit_msg, $old_rev, $new_rev, $date, $changed, $author);
+			echo TBGVCSIntegration::processCommit($project, $commit_msg, $old_rev, $new_rev, $date, $changed, $author, $branch);
 			exit;
 		}
 		
@@ -147,6 +156,19 @@
 			}
 	
 			$previous = $entries->before;
+				
+			// Branch is stored in the ref
+			$rev = $entries->ref;
+			$parts = explode('/', $ref);
+			
+			if (count($parts) == 3)
+			{
+				$branch = $parts[3];
+			}
+			else
+			{
+				$branch = null;
+			}
 		
 			// Parse each commit individually
 			foreach ($entries->commits as $commit)
@@ -206,7 +228,7 @@
 				}
 				
 				// Add commit
-				echo TBGContext::getModule('vcs_integration')->addNewCommit($project, $commit_msg, $old_rev, $new_rev, $time, $changed, $author);
+				echo TBGVCSIntegration::processCommit($project, $commit_msg, $old_rev, $new_rev, $time, $changed, $author, $branch);
 				$previous = $commit->id;
 			}
 			exit();
@@ -255,7 +277,21 @@
 
 			$entries = json_decode($data);
 
-			$previous = $entries->before;			
+			$previous = $entries->before;	
+			
+			// Branch is stored in the ref
+			$rev = $entries->ref;
+			$parts = explode('/', $ref);
+			
+			if (count($parts) == 3)
+			{
+				$branch = $parts[3];
+			}
+			else
+			{
+				$branch = null;
+			}
+					
 			// Parse each commit individually
 			foreach (array_reverse($entries->commits) as $commit)
 			{
@@ -267,7 +303,7 @@
 				$time = strtotime($commit->timestamp);
 				
 				// Add commit
-				echo TBGContext::getModule('vcs_integration')->addNewCommit($project, $commit_msg, $old_rev, $previous, $time, "", $author);
+				echo TBGVCSIntegration::processCommit($project, $commit_msg, $old_rev, $previous, $time, "", $author, $branch);
 				$previous = $new_rev;
 				exit;
 			}
