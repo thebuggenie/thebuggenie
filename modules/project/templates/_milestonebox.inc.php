@@ -25,7 +25,6 @@
 		<table cellpadding="0" cellspacing="0" class="milestone_issues">
 			<thead>
 				<tr>
-					<th></th>
 					<th><?php echo __('Issue'); ?></th>
 					<th><?php echo __('Status'); ?></th>
 					<th><?php echo __('Priority'); ?></th>

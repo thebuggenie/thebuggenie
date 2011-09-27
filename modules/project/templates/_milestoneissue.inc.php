@@ -1,9 +1,9 @@
 <tr class="milestone_issue_row" id="milestone_issue_<?php echo $issue->getID(); ?>">
-	<td class="draggable" id="milestone_issue_<?php echo $issue->getID(); ?>_handle">
-		<span></span><span></span><span></span>
-	</td>
 	<td>
 		<div id="milestone_issue_<?php echo $issue->getID(); ?>_draggable">
+			<div class="draggable" id="milestone_issue_<?php echo $issue->getID(); ?>_handle">
+				<span></span><span></span><span></span>
+			</div>
 			<?php echo $issue->getFormattedTitle(); ?>
 			<input type="hidden" id="milestone_issue_<?php echo $issue->getID(); ?>_id" value="<?php echo $issue->getID(); ?>">
 		</div>

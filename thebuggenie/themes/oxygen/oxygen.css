@@ -940,8 +940,8 @@ table.issue_affects td img { vertical-align: bottom; }
 
 .milestone_box .milestone_issues { width: 100%; }
 .milestone_box .milestone_issues th { background-color: #EAEAEA; border-left: 1px solid #FFF; color: #555; font-size: 0.8em; padding: 2px; font-weight: bold; border-right: 1px solid #CCC; }
-.milestone_box .milestone_issues td.draggable span { border-left: 1px solid #DDD; border-right: 1px solid #AAA; margin: 3px 1px; display: block; float: left; height: 10px; }
-.milestone_box .milestone_issues td.draggable { padding-left: 3px; width: 15px; }
+.milestone_box .milestone_issues div.draggable span { border-left: 1px solid #DDD; border-right: 1px solid #AAA; margin: 0 1px; display: block; float: left; height: 10px; }
+.milestone_box .milestone_issues div.draggable { float: left; padding-left: 3px; width: 15px; margin: 5px 5px 0 0; }
 .milestone_box .milestone_issues td { padding: 2px; font-size: 0.95em; border-bottom: 1px dotted #D5D5D5; }
 .milestone_box .milestone_issues .pointsandtime { font-size: 0.8em; text-align: center; }
 .milestone_issues_container { margin-bottom: 20px; }
