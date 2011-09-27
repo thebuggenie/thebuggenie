@@ -4,7 +4,7 @@
 			<div class="draggable" id="milestone_issue_<?php echo $issue->getID(); ?>_handle">
 				<span></span><span></span><span></span>
 			</div>
-			<?php echo $issue->getFormattedTitle(); ?>
+			<?php echo link_tag(make_url('viewissue', array('issue_no' => $issue->getFormattedIssueNo(), 'project_key' => $issue->getProject()->getKey())), $issue->getFormattedTitle()); ?>
 			<input type="hidden" id="milestone_issue_<?php echo $issue->getID(); ?>_id" value="<?php echo $issue->getID(); ?>">
 		</div>
 	</td>
