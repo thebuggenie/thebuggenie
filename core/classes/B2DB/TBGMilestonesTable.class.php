@@ -64,7 +64,9 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::PROJECT, $project_id);
+			$crit->addOrderBy(self::STARTING, Criteria::SORT_ASC);
 			$crit->addOrderBy(self::SCHEDULED, Criteria::SORT_ASC);
+			$crit->addOrderBy(self::NAME, Criteria::SORT_ASC);
 			$res = $this->doSelect($crit);
 			return $res;
 		}

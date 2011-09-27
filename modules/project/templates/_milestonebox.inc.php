@@ -1,37 +1,50 @@
 <div id="milestone_<?php echo $milestone->getID(); ?>" class="milestone_box">
 	<div class="header">
+		<?php if ($milestone->getID()): ?>
+			<div class="button button-blue" style="float: right;">
+				<?php echo link_tag(make_url('project_milestone_details', array('project_key' => $milestone->getProject()->getKey(), 'milestone_id' => $milestone->getID())), __('Open overview')); ?>
+			</div>
+		<?php endif; ?>
 		<div class="button button-blue" style="float: right;">
-			<?php echo link_tag(make_url('project_scrum_sprint_details', array('project_key' => $milestone->getProject()->getKey(), 'sprint_id' => $milestone->getID())), __('Open overview')); ?>
+			<button onclick="TBG.Project.Planning.toggleIssues('<?php echo make_url('project_planning_milestone_issues', array('project_key' => $milestone->getProject()->getKey(), 'milestone_id' => $milestone->getID())); ?>', <?php echo $milestone->getID(); ?>);" title="<?php echo __('Click to show assigned stories for this sprint'); ?>"><?php echo __('Issues'); ?></button>
 		</div>
-		<div class="button button-blue" style="float: right;">
-			<a onclick="$('scrum_sprint_<?php echo $milestone->getID(); ?>_container').toggle();" title="<?php echo __('Click to show assigned stories for this sprint'); ?>"><?php echo __('Show issues'); ?></a>
-		</div>
+		<?php echo image_tag('spinning_20.gif', array('id' => 'milestone_'.$milestone->getID().'_issues_indicator', 'class' => 'milestone_issues_indicator', 'style' => 'display: none;')); ?>
 		<b><?php echo $milestone->getName(); ?></b>
-		<span class="sprint_date">
+		<span class="date">
 			<?php if ($milestone->getStartingDate() && $milestone->isScheduled()): ?>
 				(<?php echo tbg_formatTime($milestone->getStartingDate(), 22); ?> - <?php echo tbg_formatTime($milestone->getScheduledDate(), 22); ?>)
 			<?php elseif ($milestone->getStartingDate() && !$milestone->isScheduled()): ?>
-				<?php echo __('Starting %start_date%', array('%start_date%' => tbg_formatTime($milestone->getStartingDate(), 22))); ?>
+				(<?php echo __('Starting %start_date%', array('%start_date%' => tbg_formatTime($milestone->getStartingDate(), 22))); ?>)
 			<?php elseif (!$milestone->getStartingDate() && $milestone->isScheduled()): ?>
-				<?php echo __('Ends %end_date%', array('%end_date%' => tbg_formatTime($milestone->getScheduledDate(), 22))); ?>
+				(<?php echo __('Ends %end_date%', array('%end_date%' => tbg_formatTime($milestone->getScheduledDate(), 22))); ?>)
 			<?php endif; ?>
 		</span>
-		&nbsp;&nbsp;<span class="issue_count"><?php echo __('%number_of% issue(s)', array('%number_of%' => '<span style="font-weight: bold;" id="milestone_'.$milestone->getID().'_issues">'.$milestone->countIssues().'</span>')); ?></span>&nbsp;
-		<div class="milestone_estimates"><?php echo __('%hours% hrs / %points% pts', array('%points%' => '<span id="scrum_sprint_'.$milestone->getID().'_estimated_points">' . $milestone->getPointsEstimated() . '</span>', '%hours%' => '<span id="scrum_sprint_'.$milestone->getID().'_estimated_hours">' . $milestone->getHoursEstimated() . '</span>')); ?></div>
+		&nbsp;&nbsp;<span class="counts"><?php echo __('%number_of% issue(s), %hours% hrs, %points% pts', array('%points%' => '<span id="milestone_'.$milestone->getID().'_estimated_points">' . $milestone->getPointsEstimated() . '</span>', '%hours%' => '<span id="milestone_'.$milestone->getID().'_estimated_hours">' . $milestone->getHoursEstimated() . '</span>', '%number_of%' => '<span id="milestone_'.$milestone->getID().'_issues">'.$milestone->countIssues().'</span>')); ?></span>&nbsp;
 	</div>
-	<div id="scrum_sprint_<?php echo $milestone->getID(); ?>_container" style="display: none;">
-		<ul id="scrum_sprint_<?php echo $milestone->getID(); ?>_list" class="milestone_issues_container">
-			<?php foreach ($milestone->getIssues() as $issue): ?>
-				<?php include_component('scrumcard', array('issue' => $issue)); ?>
-			<?php endforeach; ?>
-		</ul>
-		<input type="hidden" id="scrum_sprint_<?php echo $milestone->getID(); ?>_id" value="<?php echo $milestone->getID(); ?>">
-		<table cellpadding=0 cellspacing=0 style="display: none; margin-left: 5px; width: 300px;" id="scrum_sprint_<?php echo $milestone->getID(); ?>_indicator">
+	<div id="milestone_<?php echo $milestone->getID(); ?>_container" style="display: none;">
+		<table cellpadding="0" cellspacing="0" class="milestone_issues">
+			<thead>
+				<tr>
+					<th></th>
+					<th><?php echo __('Issue'); ?></th>
+					<th><?php echo __('Status'); ?></th>
+					<th><?php echo __('Priority'); ?></th>
+					<th><?php echo __('Assigned to'); ?></th>
+					<th class="pointsandtime"><?php echo __('Est. hrs'); ?></th>
+					<th class="pointsandtime"><?php echo __('Est. pts'); ?></th>
+					<th class="pointsandtime"><?php echo __('Spent hrs'); ?></th>
+					<th class="pointsandtime"><?php echo __('Spent pts'); ?></th>
+				</tr>
+			</thead>
+			<tbody id="milestone_<?php echo $milestone->getID(); ?>_list" class="milestone_issues_container"></tbody> 
+		</table>
+		<input type="hidden" id="milestone_<?php echo $milestone->getID(); ?>_id" value="<?php echo $milestone->getID(); ?>">
+		<table cellpadding=0 cellspacing=0 style="display: none; margin-left: 5px; width: 300px;" id="milestone_<?php echo $milestone->getID(); ?>_indicator">
 			<tr>
 				<td style="width: 20px; padding: 2px;"><?php echo image_tag('spinning_20.gif'); ?></td>
 				<td style="padding: 0px; text-align: left; font-size: 13px;"><?php echo __('Reassigning, please wait'); ?>...</td>
 			</tr>
 		</table>
-		<div class="faded_out" style="font-size: 13px;<?php if (count($milestone->getIssues()) > 0): ?> display: none;<?php endif; ?>" id="scrum_sprint_<?php echo $milestone->getID(); ?>_unassigned"><?php echo __('No user stories assigned to this sprint'); ?></div>
+		<div class="faded_out" style="font-size: 13px;<?php if ($milestone->countIssues() > 0): ?> display: none;<?php endif; ?>" id="milestone_<?php echo $milestone->getID(); ?>_unassigned"><?php echo __('No issues assigned to this milestone'); ?></div>
 	</div>
 </div>

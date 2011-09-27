@@ -129,7 +129,11 @@
 		{
 			$this->forward403unless($this->_checkProjectPageAccess('project_planning'));
 //			$this->unassigned_issues = $this->selected_project->getUnassignedStories();
-			$this->unassigned_issues = $this->selected_project->getIssuesWithoutMilestone();
+//			$this->unassigned_issues = $this->selected_project->getIssuesWithoutMilestone();
+			$this->unassigned_milestone = new TBGMilestone();
+			$this->unassigned_milestone->setName(TBGContext::getI18n()->__('Unassigned items / backlog'));
+			$this->unassigned_milestone->setId(0);
+			$this->unassigned_milestone->setProject($this->selected_project);
 		}
 
 		/**
@@ -960,8 +964,19 @@
 				$i18n = TBGContext::getI18n();
 				if ($request->hasParameter('milestone_id'))
 				{
-					$milestone = TBGContext::factory()->TBGMilestone($request->getParameter('milestone_id'));
-					return $this->renderJSON(array('failed' => false, 'content' => $this->getTemplateHTML('project/milestoneissues', array('milestone' => $milestone))));
+					if ($request->getParameter('milestone_id'))
+					{
+						$milestone = new TBGMilestone($request->getParameter('milestone_id'));
+					}
+					else
+					{
+						$milestone = new TBGMilestone();
+						$milestone->setName(TBGContext::getI18n()->__('Unassigned items / backlog'));
+						$milestone->setId(0);
+						$milestone->setProject($this->selected_project);
+					}
+					$template = ($request->getParameter('mode', 'roadmap') == 'roadmap') ? 'project/milestoneissues' : 'project/planning_milestoneissues';
+					return $this->renderJSON(array('failed' => false, 'content' => $this->getTemplateHTML($template, array('milestone' => $milestone))));
 				}
 				else
 				{

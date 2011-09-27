@@ -8,9 +8,6 @@
 	<div id="tab_hierarchy_pane"<?php if ($selected_tab != 'hierarchy'): ?> style="display: none;"<?php endif; ?>>
 		<?php include_template('configuration/projecthierarchy', array('access_level' => $access_level, 'project' => $project)); ?>
 	</div>
-	<div id="tab_milestones_pane"<?php if ($selected_tab != 'milestones'): ?> style="display: none;"<?php endif; ?>>
-		<?php include_component('configuration/projectmilestones', array('access_level' => $access_level, 'project' => $project)); ?>
-	</div>
 	<div id="tab_developers_pane"<?php if ($selected_tab != 'developers'): ?> style="display: none;"<?php endif; ?>>
 		<?php include_template('configuration/projectdevelopers', array('access_level' => $access_level, 'project' => $project)); ?>
 	</div>

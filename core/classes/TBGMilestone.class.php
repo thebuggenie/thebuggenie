@@ -96,14 +96,14 @@
 		protected $_closed_issues;
 		
 		/**
-		 * Estimated points total
+		 * Points spent or estimated
 		 *
 		 * @var integer
 		 */
 		protected $_points;
 
 		/**
-		 * Estimated hours total
+		 * Hours spent or estimated
 		 *
 		 * @var integer
 		 */
@@ -215,19 +215,22 @@
 			return $this->_issues;
 		}
 		
-		protected function _populatePoints()
+		protected function _populatePointsAndTime()
 		{
 			if ($this->_points === null)
 			{
-				$this->_points = array();
+				$this->_points = array('estimated' => 0, 'spent' => 0);
+				$this->_hours = array('estimated' => 0, 'spent' => 0);
 				
-				$this->_points['estimated'] = 0;
-				$this->_points['spent'] = 0;
-				
-				foreach ($this->getIssues() as $issue)
+				if ($res = TBGIssuesTable::getTable()->getPointsAndTimeByMilestone($this->getID()))
 				{
-					$this->_points['estimated'] += $issue->getEstimatedPoints();
-					$this->_points['spent'] += $issue->getSpentPoints();
+					while ($row = $res->getNextRow())
+					{
+						$this->_points['estimated'] += $res->get('estimated_points');
+						$this->_points['spent'] += $res->get('spent_points');
+						$this->_hours['estimated'] += $res->get('estimated_hours');
+						$this->_hours['spent'] += $res->get('spent_hours');
+					}
 				}
 			}
 		}
@@ -239,7 +242,7 @@
 		 */
 		public function getPointsEstimated()
 		{
-			$this->_populatePoints();
+			$this->_populatePointsAndTime();
 			return (int) $this->_points['estimated'];
 		}
 
@@ -250,17 +253,8 @@
 		 */
 		public function getPointsSpent()
 		{
-			$this->_populatePoints();
+			$this->_populatePointsAndTime();
 			return (int) $this->_points['spent'];
-		}
-
-		protected function _populateHours()
-		{
-			if ($this->_hours === null)
-			{
-				$this->_hours = array();
-				list($this->_hours['estimated'], $this->_hours['spent']) = TBGIssuesTable::getTable()->getTotalHoursByMilestoneID($this->getID());
-			}
 		}
 
 		/**
@@ -270,14 +264,8 @@
 		 */
 		public function getHoursEstimated()
 		{
-			$this->_populateHours();
+			$this->_populatePointsAndTime();
 			return (int) $this->_hours['estimated'];
-		}
-
-		public function clearEstimates()
-		{
-			$this->_hours = null;
-			$this->_points = null;
 		}
 
 		/**
@@ -287,8 +275,14 @@
 		 */
 		public function getHoursSpent()
 		{
-			$this->_populateHours();
+			$this->_populatePointsAndTime();
 			return (int) $this->_hours['spent'];
+		}
+
+		public function clearEstimates()
+		{
+			$this->_hours = null;
+			$this->_points = null;
 		}
 
 		/**
@@ -329,7 +323,7 @@
 			if ($this->_issues == null)
 			{
 				$this->_issues = array();
-				if ($res = TBGIssuesTable::getTable()->getByMilestone($this->getID()))
+				if ($res = TBGIssuesTable::getTable()->getByMilestone($this->getID(), $this->getProject()->getID()))
 				{
 					while ($row = $res->getNextRow())
 					{

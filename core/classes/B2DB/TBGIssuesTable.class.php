@@ -227,7 +227,14 @@
 			$crit->addWhere(self::PROJECT_ID, $project_id);
 			$crit->addWhere(self::DELETED, false);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
-			$crit->addWhere(self::MILESTONE, $milestone_id);
+			if (!$milestone_id)
+			{
+				$crit->addWhere(self::MILESTONE, null);
+			}
+			else
+			{
+				$crit->addWhere(self::MILESTONE, $milestone_id);
+			}
 			$crit->addWhere(self::DELETED, 0);
 			if ($exclude_tasks)
 			{
@@ -362,11 +369,45 @@
 			$this->doUpdateById($crit, $issue_id);
 		}
 		
-		public function getByMilestone($milestone_id)
+		public function getByMilestone($milestone_id, $project_id)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::MILESTONE, $milestone_id);
+			if (!$milestone_id)
+			{
+				$crit->addWhere(self::MILESTONE, null);
+				$crit->addWhere(self::PROJECT_ID, $project_id);
+			}
+			else
+			{
+				$crit->addWhere(self::MILESTONE, $milestone_id);
+			}
 			$crit->addWhere(self::DELETED, 0);
+			$res = $this->doSelect($crit);
+			return $res;
+		}
+		
+		public function getPointsAndTimeByMilestone($milestone_id)
+		{
+			$crit = $this->getCriteria();
+			if (!$milestone_id)
+			{
+				$crit->addWhere(self::MILESTONE, null);
+			}
+			else
+			{
+				$crit->addWhere(self::MILESTONE, $milestone_id);
+			}
+			$crit->addWhere(self::DELETED, 0);
+			$crit->addSelectionColumn(self::ESTIMATED_POINTS, 'estimated_points');
+			$crit->addSelectionColumn(self::ESTIMATED_HOURS, 'estimated_hours');
+			$crit->addSelectionColumn(self::ESTIMATED_DAYS, 'estimated_days');
+			$crit->addSelectionColumn(self::ESTIMATED_WEEKS, 'estimated_weeks');
+			$crit->addSelectionColumn(self::ESTIMATED_MONTHS, 'estimated_months');
+			$crit->addSelectionColumn(self::SPENT_POINTS, 'spent_points');
+			$crit->addSelectionColumn(self::SPENT_HOURS, 'spent_hours');
+			$crit->addSelectionColumn(self::SPENT_DAYS, 'spent_days');
+			$crit->addSelectionColumn(self::SPENT_WEEKS, 'spent_weeks');
+			$crit->addSelectionColumn(self::SPENT_MONTHS, 'spent_months');
 			$res = $this->doSelect($crit);
 			return $res;
 		}
@@ -478,7 +519,14 @@
 			$crit = $this->getCriteria();
 			$crit->addSelectionColumn(self::ESTIMATED_POINTS, 'estimated_points', Criteria::DB_SUM);
 			$crit->addSelectionColumn(self::SPENT_POINTS, 'spent_points', Criteria::DB_SUM);
-			$crit->addWhere(self::MILESTONE, $milestone_id);
+			if (!$milestone_id)
+			{
+				$crit->addWhere(self::MILESTONE, null);
+			}
+			else
+			{
+				$crit->addWhere(self::MILESTONE, $milestone_id);
+			}
 			if ($res = $this->doSelectOne($crit))
 			{
 				return array($res->get('estimated_points'), $res->get('spent_points'));
@@ -494,7 +542,14 @@
 			$crit = $this->getCriteria();
 			$crit->addSelectionColumn(self::ESTIMATED_HOURS, 'estimated_hours', Criteria::DB_SUM);
 			$crit->addSelectionColumn(self::SPENT_HOURS, 'spent_hours', Criteria::DB_SUM);
-			$crit->addWhere(self::MILESTONE, $milestone_id);
+			if (!$milestone_id)
+			{
+				$crit->addWhere(self::MILESTONE, null);
+			}
+			else
+			{
+				$crit->addWhere(self::MILESTONE, $milestone_id);
+			}
 			if ($res = $this->doSelectOne($crit))
 			{
 				return array($res->get('estimated_hours'), $res->get('spent_hours'));

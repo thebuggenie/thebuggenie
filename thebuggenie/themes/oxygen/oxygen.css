@@ -1,6 +1,6 @@
 /* General styles */
-/*@import url("http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700&subset=latin,cyrillic,greek");
-@import url("http://fonts.googleapis.com/css?family=Droid+Sans+Mono&subset=latin,cyrillic,greek");*/
+@import url("http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700&subset=latin,cyrillic,greek");
+@import url("http://fonts.googleapis.com/css?family=Droid+Sans+Mono&subset=latin,cyrillic,greek");
 
 body, td, th { padding: 0px; margin: 0px; font-family: 'Open Sans', sans-serif; font-style: normal; font-weight: normal; text-align: left; font-size: 13px; line-height: 1.5; color: #555;}
 html, body { padding: 0px; margin: 0px; height: 100%; }
@@ -923,12 +923,28 @@ table.issue_affects td img { vertical-align: bottom; }
 #dashboard_lefthand a.friend { color: #00a400; }
 #dashboard_lefthand a.friend:hover { border-bottom: 1px solid #CCC; }
 
-.milestone_box { margin: 5px 5px 5px 0; }
-.milestone_box .header { font-weight: normal; }
-.milestone_box .date { font-size: 0.8em; font-weight: bold; }
+.milestone_box { margin: 5px 5px 5px 0; font-size: 1em; position: relative; }
+.milestone_box.highlighted { background-color: #FFF299; }
+.milestone_box .date { font-size: 0.9em; color: #888; font-weight: normal; }
 .milestone_box .status { font-weight: normal; text-align: right; margin-top: 10px; }
 .milestone_box .percentage { position: relative; margin-top: 5px; }
 .milestone_box .percentage .numbers { position: absolute; right: 2px; text-align: right; font-size: 0.8em; }
+.milestone_box .header { padding: 4px 0; border-bottom: 1px dotted #CCC; font-size: 1.1em; font-weight: bold; }
+.milestone_box .header .counts { font-size: 0.8em; font-weight: normal; color: #555; }
+.milestone_box .header .counts span { font-weight: bold; }
+.milestone_box .header .button button, .milestone_box .header .button a { font-size: 0.9em; line-height: 1; padding: 2px 5px; }
+.milestone_box .header .button a { display: block; padding: 3px 5px; }
+.milestone_box .header .button { margin-left: 5px; }
+
+.milestone_box .milestone_issues { width: 100%; }
+.milestone_box .milestone_issues th { background-color: #EAEAEA; border-left: 1px solid #FFF; color: #555; font-size: 0.8em; padding: 2px; font-weight: bold; border-right: 1px solid #CCC; }
+.milestone_box .milestone_issues td.draggable span { border-left: 1px solid #DDD; border-right: 1px solid #AAA; margin: 3px 1px; display: block; float: left; height: 10px; }
+.milestone_box .milestone_issues td.draggable { padding-left: 3px; width: 15px; }
+.milestone_box .milestone_issues td { padding: 2px; font-size: 0.95em; border-bottom: 1px dotted #D5D5D5; }
+.milestone_box .milestone_issues .pointsandtime { font-size: 0.8em; text-align: center; }
+.milestone_issues_container { margin-bottom: 20px; }
+.milestone_issue_row:hover { background-color: #EFEFEF; }
+.milestone_issues_indicator { float: right; margin: 0 5px 0 0; }
 
 #dashboard_righthand #associated_projects li { padding: 0 5px 5px 0; border: 0; position: relative; margin: 0; }
 #dashboard_righthand #associated_projects li .project_name { text-align: left; padding: 0; font-weight: bold; }
@@ -939,12 +955,7 @@ table.issue_affects td img { vertical-align: bottom; }
 ul.milestone_issues_container, #project_dashboard ul, #dashboard_righthand #associated_projects { list-style-type: none; padding: 0; margin: 5px 0 0 0; clear: both; }
 ul.milestone_issues_container { padding: 0; }
 ul.milestone_issues_container li { padding: 0; background-color: #FFF; border: 1px solid #BBB; position: relative; margin: 0; clear: both; }
-.moveable { cursor: move; }
-.milestone_box { }
-.milestone_box .header { padding: 4px 0; border-bottom: 1px dotted #CCC; font-size: 1.1em; font-weight: bold; }
-.milestone_box .header .issue_count { font-size: 0.9em; font-weight: normal; color: #888; }
-.milestone_box .header .button a { font-size: 0.8em; font-weight: normal; padding: 2px 5px; }
-.milestone_box .header .button { margin-left: 5px; }
+.moveable, .draggable { cursor: move; }
 ul.milestone_issues_container li .header, .infobox .header { font-size: 1.1em; font-weight: bold; }
 ul.milestone_issues_container li .content { padding-top: 3px; line-height: 15px; font-weight: normal; margin-bottom: 12px; }
 ul.milestone_issues_container li .story_title { font-size: 0.9em; font-weight: bold; padding-top: 1px; height: 18px; overflow: hidden; }
@@ -1247,7 +1258,7 @@ a.action_button:hover { background-color: #FCFCFC; border-color: #AAA; }
 	border: 0;
 }
 
-.button span, .button input, .button input:hover, .button button {
+.button span, .button input, .button input:hover, .button button, .button a, .button a:hover {
 	border-top: 1px solid #fff; /* Fallback style */
 	border-top: 1px solid rgba(255, 255, 255, 0.5);
 	display: block;
@@ -1277,7 +1288,7 @@ a.action_button:hover { background-color: #FCFCFC; border-color: #AAA; }
 .button-icon span { padding: 0 4px; line-height: 1; }
 .button img { float: left; margin: 2px 7px -3px 0; }
 .button-icon img { margin: 0; float: none; }
-.button a, .button a:hover, .button a:visited, .button a:active { color: #FFF; border: 0; }
+.button a, .button a:hover, .button a:visited, .button a:active { color: #FFF; border-bottom: 0; }
 /*----------------------------*/
 .button-khaki {
 	background: #A2B598;

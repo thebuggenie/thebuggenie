@@ -30,7 +30,7 @@
 	$routes[] = array('project_settings', '/:project_key/settings', 'project', 'settings');
 	$routes[] = array('project_releases', '/:project_key/releases', 'project', 'releases');
 	$routes[] = array('project_release_center', '/:project_key/release_center', 'project', 'releaseCenter');
-	$routes[] = array('project_scrum_sprint_details', '/:project_key/scrum/sprint/details/*', 'project', 'scrumShowDetails');
+	$routes[] = array('project_milestone_details', '/:project_key/milestone/:milestone_id/details/*', 'project', 'scrumShowDetails');
 	$routes[] = array('project_scrum_release_burndown', '/:project_key/scrum/burndown/release', 'project', 'scrumShowBurndown', array('mode' => 'release'));
 	$routes[] = array('project_scrum_sprint_burndown_image', '/:project_key/scrum/burndown/sprint/image/*', 'project', 'scrumShowBurndownImage', array('mode' => 'sprint'));
 	$routes[] = array('project_scrum_release_burndown_image', '/:project_key/scrum/burndown/release/image/*', 'project', 'scrumShowBurndownImage', array('mode' => 'release'));
@@ -53,6 +53,7 @@
 	$routes[] = array('project_timeline', '/:project_key/timeline/*', 'project', 'timeline');
 	$routes[] = array('project_timeline_important', '/:project_key/timeline/show/important/*', 'project', 'timeline');
 	$routes[] = array('project_files', '/:project_key/files', 'project', 'files');
+	$routes[] = array('project_planning_milestone_issues', '/:project_key/planning/milestone/:milestone_id/get/issues', 'project', 'getMilestoneIssues', array('mode' => 'planning'));
 	$routes[] = array('project_roadmap', '/:project_key/roadmap', 'project', 'roadmap');
 	$routes[] = array('project_roadmap_milestone_issues', '/:project_key/milestone/:milestone_id/get/issues', 'project', 'getMilestoneIssues');
 	$routes[] = array('project_roadmap_milestone_refresh', '/:project_key/milestone/:milestone_id/get/details', 'project', 'getMilestoneDetails');

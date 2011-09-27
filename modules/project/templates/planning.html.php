@@ -21,15 +21,31 @@
 					</tr>
 				</table>
 			<?php endif; ?>
-			<?php if ($tbg_user->canEditProjectDetails($selected_project)): ?><div class="faded_out" style="margin-top: 10px;"><?php echo __("Sprints are created as milestones for this project, which can be edited in the %project_configuration%.", array('%project_configuration%' => javascript_link_tag(__('project configuration'), array('onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'project_config', 'section' => 'milestones', 'project_id' => $selected_project->getID()))."');")))); ?></div><?php endif; ?>
-			<div class="faded_out" style="margin-top: 10px; font-size: 13px;<?php if (count($selected_project->getSprints()) > 0): ?> display: none;<?php endif; ?>" id="no_milestones"><?php echo __('No sprints have been defined for this project'); ?></div>
+			<div class="faded_out" style="margin-top: 10px; font-size: 13px;<?php if (count($selected_project->getAllMilestones()) > 0): ?> display: none;<?php endif; ?>" id="no_milestones"><?php echo __('No milestones have been created yet.'); ?></div>
 			<div id="milestone_list">
 				<?php foreach ($selected_project->getAllMilestones() as $milestone): ?>
 					<?php include_template('milestonebox', array('milestone' => $milestone)); ?>
 				<?php endforeach; ?>
+				<?php include_template('milestonebox', array('milestone' => $unassigned_milestone)); ?>
 			</div>
 		</div>
+		<?php if ($tbg_user->canAssignScrumUserStories($selected_project)): ?>
+			<script type="text/javascript">
+				<?php foreach ($selected_project->getAllMilestones() as $milestone): ?>
+					Droppables.add('milestone_<?php echo $milestone->getID(); ?>', { hoverclass: 'highlighted', onDrop: function (dragged, dropped, event) { TBG.Project.Planning.assign('<?php echo make_url('project_scrum_assign_story', array('project_key' => $selected_project->getKey())); ?>', dragged, dropped)}});
+				<?php endforeach; ?>
+					<?php /* foreach ($milestone->getIssues() as $issue): ?>
+					new Draggable('scrum_story_<?php echo $issue->getID(); ?>', { revert: true });
+					<?php endforeach; ?>
+				<?php foreach ($unassigned_issues as $issue): ?>
+				new Draggable('scrum_story_<?php echo $issue->getID(); ?>', { revert: true });
+				<?php endforeach; */ ?>
+				Droppables.add('milestone_0', { hoverclass: 'highlighted', onDrop: function (dragged, dropped, event) { TBG.Project.Planning.assign('<?php echo make_url('project_scrum_assign_story', array('project_key' => $selected_project->getKey())); ?>', dragged, dropped)}});
+			</script>
+		<?php endif; ?>
 	</td>
+	<?php 
+	/*
 	<td id="scrum_unassigned" class="milestone_issues_container">
 		<div class="rounded_box lightgrey borderless" style="margin-top: 5px; padding: 7px;" id="scrum_sprint_0">
 			<div class="header_div"><?php echo __('Unassigned items / project backlog'); ?></div>
@@ -86,20 +102,6 @@
 			<span id="scrum_sprint_0_estimated_points" style="display: none;"></span>
 			<span id="scrum_sprint_0_estimated_hours" style="display: none;"></span>
 		</div>
-		<?php if ($tbg_user->canAssignScrumUserStories($selected_project)): ?>
-			<script type="text/javascript">
-				<?php foreach ($selected_project->getAllMilestones() as $milestone): ?>
-				Droppables.add('milestone_<?php echo $milestone->getID(); ?>', { hoverclass: 'highlighted', onDrop: function (dragged, dropped, event) { TBG.Project.Scrum.Story.assign('<?php echo make_url('project_scrum_assign_story', array('project_key' => $selected_project->getKey())); ?>', dragged, dropped)}});
-					<?php foreach ($milestone->getIssues() as $issue): ?>
-					new Draggable('scrum_story_<?php echo $issue->getID(); ?>', { revert: true });
-					<?php endforeach; ?>
-				<?php endforeach; ?>
-				<?php foreach ($unassigned_issues as $issue): ?>
-				new Draggable('scrum_story_<?php echo $issue->getID(); ?>', { revert: true });
-				<?php endforeach; ?>
-				Droppables.add('scrum_sprint_0', { hoverclass: 'highlighted', onDrop: function (dragged, dropped, event) { TBG.Project.Scrum.Story.assign('<?php echo make_url('project_scrum_assign_story', array('project_key' => $selected_project->getKey())); ?>', dragged, dropped)}});
-			</script>
-		<?php endif; ?>
-		</td>
+		</td> */ ?>
 	</tr>
 </table>
