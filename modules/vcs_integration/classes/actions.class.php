@@ -348,25 +348,29 @@
 						$link_view = '/file/%revno%/%file%';
 						break;
 					case 'github':
-						$base_url = 'http://github.com/';
+						$base_url = $request->getParameter('browser_url');
 						$link_rev = '/commit/%revno%';
-						$link_file = '/commits/master/%file%';
+						$link_file = '/commits/%branch%/%file%';
 						$link_diff = '/commit/%revno%';
 						$link_view = '/blob/%revno%/%file%';
 						break;
 					case 'gitorious':
 						$base_url = $request->getParameter('browser_url');
 						$link_rev = '/commit/%revno%';
-						$link_file = '/blobs/history/master/%file%';
+						$link_file = '/blobs/history/%branch%/%file%';
 						$link_diff = '/commit/%revno%';
 						$link_view = '/blobs/%revno%/%file%';
 						break;
 				}
-				TBGContext::getModule('vcs_integration')->saveSetting('browser_url_'.$project_id, $base_url);
-				TBGContext::getModule('vcs_integration')->saveSetting('log_url_'.$project_id, $link_file);
-				TBGContext::getModule('vcs_integration')->saveSetting('blob_url_'.$project_id, $link_diff);
-				TBGContext::getModule('vcs_integration')->saveSetting('diff_url_'.$project_id, $link_view);
-				TBGContext::getModule('vcs_integration')->saveSetting('commit_url_'.$project_id, $link_rev);
+
+				if ($request->getParameter('browser_type') != 'other')
+				{
+					TBGContext::getModule('vcs_integration')->saveSetting('browser_url_'.$project_id, $base_url);
+					TBGContext::getModule('vcs_integration')->saveSetting('log_url_'.$project_id, $link_file);
+					TBGContext::getModule('vcs_integration')->saveSetting('blob_url_'.$project_id, $link_diff);
+					TBGContext::getModule('vcs_integration')->saveSetting('diff_url_'.$project_id, $link_view);
+					TBGContext::getModule('vcs_integration')->saveSetting('commit_url_'.$project_id, $link_rev);
+				}
 				
 				return $this->renderJSON(array('failed' => false, 'message' => TBGContext::getI18n()->__('Settings saved')));
 			}

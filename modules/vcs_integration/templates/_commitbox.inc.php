@@ -21,8 +21,32 @@
 		$oldrevision = $commit->getPreviousRevision();
 	}
 	
-	$link_rev = $base_url.str_replace('%revno%', $revision, TBGContext::getModule('vcs_integration')->getSetting('commit_url_' . $projectId));
-	$link_old = $base_url.str_replace('%revno%', $oldrevision, TBGContext::getModule('vcs_integration')->getSetting('commit_url_' . $projectId));
+	$misc_data = explode('|', $commit->getMiscData());
+	
+	$branchname = null;
+	
+	foreach ($misc_data as $data)
+	{
+		if (mb_strstr($data, 'branch'))
+		{
+			$branch = explode(':', $data);
+			if (count($branch) == 2)
+			{
+				$branchname = $branch[1];
+			}
+		}
+	}
+	
+	$link_base = TBGContext::getModule('vcs_integration')->getSetting('commit_url_' . $projectId);
+	
+	if ($branchname !== null)
+	{
+		$link_base = str_replace('%branch%', $branchname, $link_base);
+	}
+	
+	$link_rev = $base_url.str_replace('%revno%', $revision, $link_base);
+	$link_old = $base_url.str_replace('%revno%', $oldrevision, $link_base);
+	
 	
 ?>
 <div class="comment" id="commit_<?php echo $commit->getID(); ?>">
@@ -30,7 +54,7 @@
 		<div id="commit_<?php echo $commit->getID(); ?>_header" class="commentheader">
 			<a href="<?php echo $link_rev; ?>" class="comment_hash"><?php if (!is_numeric($commit->getRevision())): echo mb_substr($commit->getRevision(), 0, 7); else: echo $commit->getRevision(); endif; ?></a>
 			<div class="commenttitle">
-				<?php echo __('Revision %rev% by %user%', array('%rev%' => "<a href=".$link_rev.">".$commit->getRevision()."</a>", '%user%' => '<div style="display: inline;">'.get_component_html('main/userdropdown', array('user' => $commit->getAuthor(), 'size' => 'small')).'</div>')); ?>
+				<?php if ($branchname !== null): ?>[<?php echo $branchname; ?>] <?php endif; ?><?php echo __('Revision %rev% by %user%', array('%rev%' => "<a href=".$link_rev.">".$commit->getRevision()."</a>", '%user%' => '<div style="display: inline;">'.get_component_html('main/userdropdown', array('user' => $commit->getAuthor(), 'size' => 'small')).'</div>')); ?>
 			</div>
 			<div class="commentdate" id="commit_<?php echo $commit->getID(); ?>_date"><?php echo tbg_formattime($commit->getDate(), 12); ?> - <?php echo __('Preceeded by %prev%', array('%prev%' => "<a href=".$link_old.">".$commit->getPreviousRevision()."</a>"))?></div>
 		</div>
@@ -66,14 +90,32 @@
 									
 							$link_file = str_replace('%revno%', $revision, TBGContext::getModule('vcs_integration')->getSetting('log_url_' . $projectId));
 							$link_file = str_replace('%oldrev%', $oldrevision, $link_file);
+							
+							if ($branchname !== null)
+							{
+								$link_file = str_replace('%branch%', $branchname, $link_file);
+							}
+							
 							$link_file = $base_url.str_replace('%file%', $file->getFile(), $link_file);
 							
 							$link_diff = str_replace('%revno%', $revision, TBGContext::getModule('vcs_integration')->getSetting('blob_url_' . $projectId));
 							$link_diff = str_replace('%oldrev%', $oldrevision, $link_diff);
+							
+							if ($branchname !== null)
+							{
+								$link_diff = str_replace('%branch%', $branchname, $link_diff);
+							}
+							
 							$link_diff = $base_url.str_replace('%file%', $file->getFile(), $link_diff);
 							
 							$link_view = str_replace('%revno%', $revision, TBGContext::getModule('vcs_integration')->getSetting('diff_url_' . $projectId));
 							$link_view = str_replace('%oldrev%', $oldrevision, $link_view);
+							
+							if ($branchname !== null)
+							{
+								$link_view = str_replace('%branch%', $branchname, $link_view);
+							}
+							
 							$link_view = $base_url.str_replace('%file%', $file->getFile(), $link_view);
 					
 							echo '<td><a href="' . $link_file . '" target="_new"><b>' . $file->getFile() . '</b></a></td>';
