@@ -1061,6 +1061,8 @@ TBG.Project.Scrum.Story.add = function(url)
 
 TBG.Project.Planning.assign = function(url, dragged, dropped)
 {
+	if (dropped.id == dragged.up('.milestone_box').id) return;
+	
 	TBG.Main.Helpers.ajax(url, {
 		params: {story_id: $(dragged.down('input')).getValue(), sprint_id: $(dropped.id + '_id').getValue()},
 		loading: {
