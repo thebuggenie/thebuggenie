@@ -8,7 +8,12 @@
 	<?php endif; ?>
 	<?php $current_count++; ?>
 	<?php if ($showheader): ?>
-		<h5><?php echo $groupby_description; ?></h5>
+		<h5>
+			<?php if ($groupby == 'issuetype'): ?>
+				<?php echo image_tag($issue->getIssueType()->getIcon() . '_small.png', array('title' => $issue->getIssueType()->getName())); ?>
+			<?php endif; ?>
+			<?php echo $groupby_description; ?>
+		</h5>
 	<?php endif; ?>
 	<?php if ($showtablestart): ?>
 		<table style="width: 100%;" cellpadding="0" cellspacing="0" class="results_container resizable sortable">
@@ -17,7 +22,6 @@
 					<?php if (!TBGContext::isProjectContext() && $show_project == true): ?>
 						<th style="padding-left: 3px;"><?php echo __('Project'); ?></th>
 					<?php endif; ?>
-					<th style="width: 16px; text-align: right; padding: 0;<?php if (TBGContext::isProjectContext()): ?> padding-left: 3px;<?php endif; ?>" class="nosort">&nbsp;</th>
 					<th class="sc_issuetype"<?php if (!in_array('issuetype', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Issue type'); ?></th>
 					<th><span class="sc_title"<?php if (!in_array('title', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Issue'); ?></span></th>
 					<th class="sc_assigned_to"<?php if (!in_array('assigned_to', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Assigned to'); ?></th>
@@ -38,10 +42,8 @@
 				<?php if (!TBGContext::isProjectContext() && $show_project == true): ?>
 					<td style="padding-left: 5px;"><?php echo link_tag(make_url('project_issues', array('project_key' => $issue->getProject()->getKey())), $issue->getProject()->getName()); ?></td>
 				<?php endif; ?>
-				<td>
-					<?php echo image_tag($issue->getIssueType()->getIcon() . '_tiny.png', array('title' => $issue->getIssueType()->getName())); ?>
-				</td>
 				<td class="sc_issuetype"<?php if (!in_array('issuetype', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
+					<?php echo image_tag($issue->getIssueType()->getIcon() . '_tiny.png', array('title' => $issue->getIssueType()->getName())); ?>
 					<?php echo $issue->getIssuetype()->getName(); ?>
 				</td>
 				<td class="result_issue"<?php if (TBGContext::isProjectContext()): ?> style="padding-left: 3px;"<?php endif; ?>>
@@ -78,19 +80,19 @@
 					<?php echo ($issue->getResolution() instanceof TBGResolution) ? mb_strtoupper($issue->getResolution()->getName()) : '-'; ?>
 				</td>
 				<td class="sc_category<?php if (!$issue->getCategory() instanceof TBGCategory): ?> faded_out<?php endif; ?>"<?php if (!in_array('category', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
-					<?php echo ($issue->getCategory() instanceof TBGCategory) ? mb_strtoupper($issue->getCategory()->getName()) : '-'; ?>
+					<?php echo ($issue->getCategory() instanceof TBGCategory) ? $issue->getCategory()->getName() : '-'; ?>
 				</td>
 				<td class="sc_severity<?php if (!$issue->getSeverity() instanceof TBGSeverity): ?> faded_out<?php endif; ?>"<?php if (!in_array('severity', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
-					<?php echo ($issue->getSeverity() instanceof TBGSeverity) ? mb_strtoupper($issue->getSeverity()->getName()) : '-'; ?>
+					<?php echo ($issue->getSeverity() instanceof TBGSeverity) ? $issue->getSeverity()->getName() : '-'; ?>
 				</td>
 				<td class="smaller sc_percent_complete"<?php if (!in_array('percent_complete', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
 					<span style="display: none;"><?php echo $issue->getPercentComplete(); ?></span><?php include_template('main/percentbar', array('percent' => $issue->getPercentComplete(), 'height' => 15)) ?>
 				</td>
 				<td class="sc_reproducability<?php if (!$issue->getReproducability() instanceof TBGReproducability): ?> faded_out<?php endif; ?>"<?php if (!in_array('reproducability', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
-					<?php echo ($issue->getReproducability() instanceof TBGReproducability) ? mb_strtoupper($issue->getReproducability()->getName()) : '-'; ?>
+					<?php echo ($issue->getReproducability() instanceof TBGReproducability) ? $issue->getReproducability()->getName() : '-'; ?>
 				</td>
 				<td class="sc_priority<?php if (!$issue->getPriority() instanceof TBGPriority): ?> faded_out<?php endif; ?>"<?php if (!in_array('priority', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
-					<?php echo ($issue->getPriority() instanceof TBGPriority) ? mb_strtoupper($issue->getPriority()->getName()) : '-'; ?>
+					<?php echo ($issue->getPriority() instanceof TBGPriority) ? $issue->getPriority()->getName() : '-'; ?>
 				</td>
 				<td class="smaller sc_last_updated" title="<?php echo tbg_formatTime($issue->getLastUpdatedTime(), 21); ?>"<?php if (!in_array('last_updated', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo tbg_formatTime($issue->getLastUpdatedTime(), 20); ?></td>
 				<td class="smaller sc_comments" style="text-align: center;<?php if (!in_array('comments', $visible_columns)): ?> display: none;<?php endif; ?>">

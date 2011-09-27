@@ -1149,10 +1149,12 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 
 /* search results */
 .search_results { margin: 0 0 5px 0; }
-.search_results h5 { margin: 0; padding-left: 5px; border-bottom: 0; background-color: #F5F5F5; }
+.search_results h5 { margin: 10px 0 0 0; padding-left: 5px; padding-bottom: 10px; border-bottom: 1px dotted #CCC; background-color: #FFF; }
+.search_results h5 img { float: left; margin-right: 5px; }
 .search_results table.results_container { margin-bottom: 15px; }
-.search_results th { background-color: #F5F5F5; padding: 3px 3px 3px 0; font-size: 0.9em; }
-.search_results td { font-size: 0.9em; padding: 3px 3px 3px 0; }
+.search_results th { background-color: #EAEAEA; padding: 2px; font-size: 0.8em; border-left: 1px solid #FFF; border-right: 1px solid #DDD; }
+.search_results th img { width: 12px; height: 12px; }
+.search_results td { font-size: 0.9em; padding: 2px; }
 .search_results tbody tr:hover { background-color: #F1F1F1; }
 .search_results tbody tr.closed td { color: #777; text-decoration: line-through; }
 .search_results tbody tr.changed { background-color: #FFFBE2; }
@@ -1167,6 +1169,8 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .search_results td.smaller { font-size: 0.85em; }
 .search_results div.results_summary { border-top: 1px dotted #CCC; font-size: small; margin-top: -15px; padding-top: 3px; padding-bottom: 10px; }
 .search_results tr.priority_0 td { background-color: transparent; }
+.search_results .sc_issuetype img { float: left; margin-right: 3px; }
+.search_results td.sc_status { font-size: 0.9em; }
 /*.search_results tr.priority_1 td { background-color: #EFE; }
 .search_results tr.priority_2 td { background-color: #DFD; }
 .search_results tr.priority_3 td { background-color: #FFD; }

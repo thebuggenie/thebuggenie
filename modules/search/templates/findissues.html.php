@@ -355,7 +355,7 @@
 								</ul>
 								<div style="text-align: right; clear: both;">
 									<div style="float: left; padding: 8px;"><?php echo javascript_link_tag(__('Reset columns'), array('onclick' => 'TBG.Search.resetColumns()')); ?></div>
-									<div id="search_column_settings_button" class="button button-green smaller" onclick="TBG.Search.saveVisibleColumns('<?php echo make_url('search_save_column_settings'); ?>');"><span><?php echo __('Ok'); ?></span></div>
+									<div id="search_column_settings_button" class="button button-green smaller" onclick="TBG.Search.saveVisibleColumns('<?php echo make_url('search_save_column_settings'); ?>');" style="margin-top: 7px;"><span><?php echo __('Ok'); ?></span></div>
 									<div id="search_column_settings_indicator" style="display: none; float: right; margin: 7px 5px 0 10px;"><?php echo image_tag('spinning_20.gif'); ?></div>
 								</div>
 							</form>
