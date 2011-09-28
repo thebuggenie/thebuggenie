@@ -23,7 +23,7 @@
 		{
 			$this->_command_name = 'report_commit';
 			$this->_description = "Report a new commit to an issue";
-			$this->addRequiredArgument('projectkey', "Project Key");
+			$this->addRequiredArgument('projectid', "Project ID");
 			$this->addRequiredArgument('author', "Username of the committer");
 			$this->addRequiredArgument('revno', "Revision number or hash of this commit");
 			$this->addRequiredArgument('log', "Log entry from commit");
@@ -37,12 +37,11 @@
 		public function do_execute()
 		{
 			/* Prepare variables */
-			//$project = TBGProject::getByKey($this->getProvidedArgument('projectkey'));
-			$project = TBGContext::factory()->TBGProject($this->getProvidedArgument('projectkey'));
+			$project = TBGContext::factory()->TBGProject($this->getProvidedArgument('projectid'));
 			
 			if (!($project instanceof TBGProject))
 			{
-				$this->cliEcho("The project with the key ".$this->getProvidedArgument('projectkey')." does not exist\n", 'red', 'bold');
+				$this->cliEcho("The project with the ID ".$this->getProvidedArgument('projectid')." does not exist\n", 'red', 'bold');
 				exit;
 			}
 			

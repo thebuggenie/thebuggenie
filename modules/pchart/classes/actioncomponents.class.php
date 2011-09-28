@@ -120,7 +120,7 @@
 
 			// Initialise the graph
 			$Test = new pChart($this->width, $this->height);
-			$Test->setFontProperties(THEBUGGENIE_MODULES_PATH . 'pchart' . DS . 'fonts' . DS . 'DroidSans.ttf', 8);
+			$Test->setFontProperties(THEBUGGENIE_MODULES_PATH . 'pchart' . DS . 'fonts' . DS . 'OpenSans-Regular.ttf', 8);
 
 			$Test->drawFilledRoundedRectangle(2, 2, $this->width - 3, $this->height - 3, 5, 240, 240, 240);
 			$Test->drawRoundedRectangle(0, 0, $this->width - 1, $this->height - 1, 5, 230, 230, 230);
@@ -147,7 +147,7 @@
 				$Test->drawPieGraph($DataSet->GetData(), $DataSet->GetDataDescription(), floor($left), floor($this->height / 2), floor(($this->width + $this->height) / 6), $pie_labels, TRUE, 40, 10, 3);
 			}
 
-			$Test->setFontProperties(THEBUGGENIE_MODULES_PATH . 'pchart' . DS . 'fonts' . DS . 'DroidSansBold.ttf', $title_font_size);
+			$Test->setFontProperties(THEBUGGENIE_MODULES_PATH . 'pchart' . DS . 'fonts' . DS . 'OpenSans-Bold.ttf', $title_font_size);
 			$Test->drawTitle(50, 22, $this->title, 50, 50, 50, $this->width - 30);
 			$Test->Stroke();//("example2.png");
 		}

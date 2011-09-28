@@ -26,6 +26,14 @@
 		<td class="config_explanation" colspan="2"><?php echo __('An iconset contains all the icons used in The Bug Genie. You can change the icons to be used using this option'); ?></td>
 	</tr>
 	<tr>
+		<td>
+			<label><?php echo __('Custom header and favicons'); ?></label>
+		</td>
+		<td>
+			<div class="button button-blue" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'project_icons')); ?>');"><span><?php echo __('Configure icons'); ?></span></div>
+		</td>
+	</tr><!--
+	<tr>
 		<td><label for="icon_header"><?php echo __('Custom header icon'); ?></label></td>
 		<td>
 			<select name="<?php echo TBGSettings::SETTING_HEADER_ICON_TYPE; ?>" id="icon_header" onchange="if ($('icon_header').getValue() == 2) { $('icon_header_url').enable() } else { $('icon_header_url').disable() }" style="width: 300px;"<?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>>
@@ -47,6 +55,8 @@
 	<tr>
 		<td class="config_explanation" colspan="2"><?php echo __('If you want to load your header icon from a URL, specify the URL to an image here.'); ?></td>
 	</tr>
+	-->
+	
 	<tr>
 		<td><label for="header_link"><?php echo __('Custom header link'); ?></label></td>
 		<td>
@@ -56,6 +66,7 @@
 	<tr>
 		<td class="config_explanation" colspan="2"><?php echo __('You can alter the webpage that clicking on the header icon navigates to. If left blank it will link to the main page of this installation.'); ?></td>
 	</tr>
+	<!--
 	<tr>
 		<td><label for="icon_fav"><?php echo __('Custom favicon'); ?></label></td>
 		<td>
@@ -77,5 +88,5 @@
 	</tr>
 	<tr>
 		<td class="config_explanation" colspan="2"><?php echo __('If you want to load your favicon from a URL, specify the URL to an image here.'); ?></td>
-	</tr>
+	</tr>-->
 </table>
