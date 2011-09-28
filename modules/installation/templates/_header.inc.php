@@ -18,8 +18,8 @@
 		<meta name="keywords" content="">
 		<meta name="author" content="zegenie">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<link rel="shortcut icon" href="themes/oxygen/favicon.png">
-		<link rel="stylesheet" type="text/css" href="css/oxygen.css">
+		<link rel="shortcut icon" href="iconsets/oxygen/favicon.png">
+		<link rel="stylesheet" type="text/css" href="themes/oxygen/oxygen.css">
 		<script type="text/javascript" src="js/prototype.js"></script>
 		<script type="text/javascript" src="js/scriptaculous.js"></script>
 		<script type="text/javascript" src="js/install.js"></script>
@@ -64,7 +64,7 @@
 					<table class="main_header_print" cellpadding=0 cellspacing=0 width="100%" style="table-layout: fixed;">
 						<tr class="logo_back">
 						    <td style="width: 70px; height: 65px; text-align: center;" align="center" valign="middle">
-						        <img width=48 height=48 SRC="themes/oxygen/logo_48.png" alt="The Bug Genie - Installation">
+						        <img width=48 height=48 SRC="iconsets/oxygen/logo_48.png" alt="The Bug Genie - Installation">
 						    </td>
 						    <td align="left" valign="middle" style="width: 300px;"><div class="logo_large">The Bug Genie</div><div class="logo_small"><b>Friendly</b> issue tracking and project management</div></td>
 						    <td style="width: auto;">

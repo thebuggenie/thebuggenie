@@ -75,7 +75,7 @@
 			</fieldset>
 			<div style="padding-top: 20px; clear: both; text-align: center;">
 				<label for="continue_button" style="font-size: 13px; margin-right: 10px;">Click this button to continue and enable the selected modules</label>
-				<img src="themes/oxygen/spinning_30.gif" id="next_indicator" style="display: none;">
+				<img src="iconsets/oxygen/spinning_30.gif" id="next_indicator" style="display: none;">
 				<input type="hidden" name="modules[publish]" value="1" id="modules_publish_yes">
 				<input type="submit" id="continue_button" onclick="$('continue_button').hide();$('next_indicator').show();" value="Continue">
 			</div>
