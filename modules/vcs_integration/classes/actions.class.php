@@ -41,7 +41,7 @@
 			
 			/* Prepare variables */
 			$passkey = TBGContext::getRequest()->getParameter('passkey');
-			$project_key = urldecode(TBGContext::getRequest()->getParameter('project_key'));
+			$project_id = urldecode(TBGContext::getRequest()->getParameter('project_id'));
 			$author = trim(html_entity_decode(urldecode(TBGContext::getRequest()->getParameter('author')), ENT_QUOTES), '"');
 			$new_rev = TBGContext::getRequest()->getParameter('rev');
 			$commit_msg = trim(html_entity_decode(urldecode(TBGContext::getRequest()->getParameter('commit_msg')), ENT_QUOTES), '"');
@@ -56,11 +56,11 @@
 				$branch = null;
 			}
 			
-			$project = TBGProject::getByKey($project_key);
+			$project = TBGContext::factory()->TBGProject($project_id);
 			
 			if (!$project)
 			{
-				echo 'Error: The project with the key '.$project_key.' does not exist';
+				echo 'Error: The project with the ID '.$project_id.' does not exist';
 				exit;
 			}
 			
@@ -120,13 +120,13 @@
 			TBGContext::getResponse()->renderHeaders();
 				
 			$passkey = TBGContext::getRequest()->getParameter('passkey');
-			$project_key = urldecode(TBGContext::getRequest()->getParameter('project_key'));
-			$project = TBGProject::getByKey($project_key);
+			$project_id = urldecode(TBGContext::getRequest()->getParameter('project_id'));
+			$project = TBGContext::factory()->TBGProject($project_id);
 			
 			// Validate access
 			if (!$project)
 			{
-				echo 'Error: The project with the key '.$project_key.' does not exist';
+				echo 'Error: The project with the ID '.$project_id.' does not exist';
 				exit;
 			}
 			
@@ -240,13 +240,13 @@
 			TBGContext::getResponse()->renderHeaders();
 			
 			$passkey = TBGContext::getRequest()->getParameter('passkey');
-			$project_key = urldecode(TBGContext::getRequest()->getParameter('project_key'));
-			$project = TBGProject::getByKey($project_key);
+			$project_id = urldecode(TBGContext::getRequest()->getParameter('project_id'));
+			$project = TBGContext::factory()->TBGProject($project_id);
 			
 			// Validate access
 			if (!$project)
 			{
-				echo 'Error: The project with the key '.$project_key.' does not exist';
+				echo 'Error: The project with the ID '.$project_id.' does not exist';
 				exit;
 			}
 			

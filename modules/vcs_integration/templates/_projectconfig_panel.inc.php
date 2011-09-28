@@ -5,6 +5,8 @@
 			<?php echo __('You do not have the relevant permissions to access VCS Integration settings'); ?>
 		</div>
 	<?php else: ?>
+		<div class="rounded_box lightgrey"><?php echo __("Remember to set up the hook after saving these settings - see the documentation. You will need this project's ID number: %id%", array('%id%' => '<b>'.$project->getID().'</b>')); ?></div>
+		<br>
 		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_vcs_settings', array('project_id' => $project->getID())); ?>" method="post" onsubmit="TBG.Main.Helpers.formSubmit('<?php echo make_url('configure_vcs_settings', array('project_id' => $project->getID())); ?>', 'vcs'); return false;" id="vcs">
 			<input type="hidden" name="project_id" value="<?php echo $project->getID(); ?>">
 			<table style="clear: both; width: 780px;" class="padded_table" cellpadding=0 cellspacing=0>
