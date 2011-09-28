@@ -1582,6 +1582,30 @@ TBG.Project.edit = function(url) {
 	});
 }
 
+TBG.Project.workflow = function(url) {
+	TBG.Main.Helpers.ajax(url, {
+		loading: {indicator: 'update_workflow_indicator'},
+		success: {callback: function() { TBG.Main.Helpers.Backdrop.reset(); }}
+	});
+}
+
+TBG.Project.workflowtable = function(url) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'workflow_form',
+		loading: {
+			indicator: 'change_workflow_spinner',
+			hide: 'change_workflow_box'
+		},
+		success: {
+			update: 'change_workflow_table',
+			show: 'change_workflow_table'
+		},
+		failure: {
+			show: 'change_workflow_box'
+		}
+	});
+}
+
 TBG.Project.updatePrefix = function(url, project_id) {
 	TBG.Main.Helpers.ajax(url, {
 		form: 'project_info',

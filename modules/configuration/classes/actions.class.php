@@ -4351,4 +4351,27 @@
 			}
 		}
 
+		public function runProjectWorkflow(TBGRequest $request)
+		{
+			$this->getResponse()->setHTTPStatus(500);
+			return $this->renderJSON(array('error' => 'not implemented'));
+		}
+
+		public function runProjectWorkflowTable(TBGRequest $request)
+		{
+			$project = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
+			if ($request->isMethod(TBGRequest::POST))
+			{
+				try
+				{
+					$workflow_scheme = TBGContext::factory()->TBGWorkflowScheme($request->getParameter('new_workflow'));
+					return $this->renderJSON(array('content' => $this->getTemplateHtml('projectworkflow_table', array('project' => $project, 'new_workflow' => $workflow_scheme))));
+				}
+				catch (Exception $e)
+				{
+					$this->getResponse()->setHTTPStatus(500);
+					return $this->renderJSON(array('error' => TBGContext::geti18n()->__('This workflow scheme is not valid')));
+				}
+			}
+		}
 	}
