@@ -125,7 +125,7 @@
 			<td style="padding: 5px;">
 				<?php echo $project->getWorkflowScheme()->getName(); ?>
 				<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-				<div class="button button-blue" style="float: right; margin-top: -10px;"><span><?php echo __('Change workflow scheme'); ?></span></div>
+				<div class="button button-blue" style="float: right; margin-top: -10px;" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'project_workflow', 'project_id' => $project->getId())); ?>');"><span><?php echo __('Change workflow scheme'); ?></span></div>
 					<?php /*<select name="workflow_scheme" id="workflow_scheme">
 						<?php foreach (TBGWorkflowScheme::getAll() as $workflow_scheme): ?>
 							<option value=<?php echo $workflow_scheme->getID(); ?><?php if ($project->getWorkflowScheme()->getID() == $workflow_scheme->getID()): ?> selected<?php endif; ?>><?php echo $workflow_scheme->getName(); ?></option>

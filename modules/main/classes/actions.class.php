@@ -2571,6 +2571,10 @@
 						$template_name = 'configuration/projecticons';
 						$options['project'] = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
 						break;
+					case 'project_workflow':
+						$template_name = 'configuration/projectworkflow';
+						$options['project'] = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
+						break;
 					case 'markasduplicate_issue':
 						$template_name = 'main/markasduplicate';
 						break;

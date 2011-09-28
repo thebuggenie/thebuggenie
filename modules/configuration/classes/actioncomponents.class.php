@@ -264,5 +264,10 @@
 		{
 			
 		}
+		
+		public function componentProjectworkflow()
+		{
+			
+		}
 
 	}
