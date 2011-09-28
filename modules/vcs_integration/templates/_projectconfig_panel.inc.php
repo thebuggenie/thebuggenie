@@ -16,7 +16,6 @@
 						<select name="vcs_mode" id="vcs_mode" style="width: 100%">
 							<option value="0"<?php if (TBGSettings::get('vcs_mode_'.$project->getID(), 'vcs_integration') == 0): ?> selected="selected"<?php endif;?>>Disable for this project</option>
 							<option value="1"<?php if (TBGSettings::get('vcs_mode_'.$project->getID(), 'vcs_integration') == 1): ?> selected="selected"<?php endif;?>>Enable for commits applying to existing issues only</option>
-							<option value="2"<?php if (TBGSettings::get('vcs_mode_'.$project->getID(), 'vcs_integration') == 2): ?> selected="selected"<?php endif;?>>Enable for all commits</option>
 						</select>
 					</td>
 				</tr>

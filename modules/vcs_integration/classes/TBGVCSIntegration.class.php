@@ -19,7 +19,6 @@
 	{
 		const MODE_DISABLED = 0;
 		const MODE_ISSUECOMMITS = 1;
-		const MODE_ALLCOMMITS = 2;
 		
 		const ACCESS_DIRECT = 0;
 		const ACCESS_HTTP = 1;
@@ -423,11 +422,8 @@
 			// If no issues exist, we may not be able to continue
 			if (count($issues) == 0)
 			{
-				if (TBGSettings::get('vcs_mode_'.$project->getID(), 'vcs_integration') == TBGVCSIntegration::MODE_ISSUECOMMITS)
-				{
-					$output .= '[VCS '.$project->getKey().'] This project only accepts commits which affect issues' . "\n";
-					return $output;
-				}
+				$output .= '[VCS '.$project->getKey().'] This project only accepts commits which affect issues' . "\n";
+				return $output;
 			}
 			
 			// Build list of affected files
