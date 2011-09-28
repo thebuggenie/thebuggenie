@@ -1074,7 +1074,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .client_users_div_inner { padding: 10px; }
 .project_header { padding: 10px; }
 .project_header_right { float: right; margin-top: 5px; }
-.project_header_right .button { float: left; margin-left: 10px; line-height: 1.6; }
+.project_header_right .button { float: left; margin-left: 10px; line-height: 1.6; height: 25px; }
 #project_website, #project_documentation { margin-top: 5px; }
 #edition_table { list-style: none; margin: 0; padding: 0; line-height: 1.2; }
 #edition_table li { list-style: none; margin: 0; padding: 3px; clear: both; margin-top: 5px; }
@@ -1244,6 +1244,7 @@ a.action_button:hover { background-color: #FCFCFC; border-color: #AAA; }
 	box-shadow: 0 0 2px rgba(0,0,0,0.4);
 	-moz-box-shadow: 0 0 2px rgba(0,0,0,0.4);
 	-webkit-box-shadow: 0 0 2px rgba(0,0,0,0.4);
+	height: 20px;
 }
 .button, .button span, .button input, .button button {
 	color: #FFF;
