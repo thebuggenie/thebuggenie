@@ -137,8 +137,8 @@
 						<p id="dialog_content"></p>
 					</div>
 					<div style="text-align: center; padding: 10px;">
-						<a href="javascript:void(0)" id="dialog_yes" class="button button-green"><span><?php echo __('Yes'); ?></span></a>
-						<a href="javascript:void(0)" id="dialog_no" class="button button-red"><span><?php echo __('No'); ?></span></a>
+						<a href="javascript:void(0)" id="dialog_yes" class="button button-green"><?php echo __('Yes'); ?></a>
+						<a href="javascript:void(0)" id="dialog_no" class="button button-red"><?php echo __('No'); ?></a>
 					</div>
 				</div>
 			</div>
