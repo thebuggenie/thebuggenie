@@ -540,7 +540,7 @@ table.cleantable th { text-align: center; }
 .workflow_description, .workflow_name span.builtin { font-weight: normal; font-style: italic; font-size: 0.9em; }
 .workflow_name span.builtin { color: #AAA; }
 .workflow_description { color: #777; }
-.workflow_change_div { height: 400px; overflow: auto; }
+.workflow_change_div { height: 400px; overflow: auto; margin-top: 10px; }
 
 #no_such_workflow_error { margin-top: 10px; }
 

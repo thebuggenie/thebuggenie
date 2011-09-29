@@ -1,3 +1,4 @@
+			<?php echo __("Issues in the workflow step on the left will have their workflow step changed to the one on the right. This will change the issue's status to the one assigned to the new step."); ?>
 			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" onsubmit="TBG.Project.workflow('<?php echo make_url('configure_projects_workflow', array('project_id' => $project->getID())); ?>');return false;" action="<?php echo make_url('configure_projects_workflow', array('project_id' => $project->getID())); ?>" method="post" id="workflow_form2" enctype="multipart/form-data">
 				<div class="workflow_change_div">
 					<table cellpadding="0" cellspacing="0" class="padded_table">
@@ -22,7 +23,7 @@
 										<td>
 											<select style="width: 100%" name="new_step_<?php echo $issuetype->getID(); ?>_<?php echo $step->getID(); ?>">
 												<?php foreach ($new_workflow->getWorkflowForIssuetype($issuetype)->getSteps() as $new_step): ?>
-													<option value="<?php echo $new_step->getID(); ?>"><?php echo $new_step->getName(); ?></option>
+													<option value="<?php echo $new_step->getID(); ?>"<?php if (mb_strtolower(trim($new_step->getName())) == mb_strtolower(trim($step->getName()))): ?> selected="selected"<?php endif; ?>><?php echo $new_step->getName(); ?></option>
 												<?php endforeach; ?>
 											</select>
 										</td>
