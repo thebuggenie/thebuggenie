@@ -2976,4 +2976,19 @@
 			return ($this->getLargeIcon() instanceof TBGFile);
 		}
 		
+		/**
+		 * Move issues from one step to another for a given issue type and conversions
+		 * @param TBGIssuetype $issuetype
+		 * @param array $conversions
+		 * 
+		 * $conversions should be an array containing arrays:
+		 * array (
+		 * 		array(oldstep, newstep)
+		 * 		...
+		 * )
+		 */
+		public function convertIssueStepPerIssuetype(TBGIssuetype $issuetype, array $conversions)
+		{
+			TBGIssuesTable::getTable()->convertIssueStepPerIssuetype($this, $issuetype, $conversions);
+		}
 	}

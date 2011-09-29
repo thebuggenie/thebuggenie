@@ -1,4 +1,6 @@
 			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" onsubmit="TBG.Project.workflow('<?php echo make_url('configure_projects_workflow', array('project_id' => $project->getID())); ?>');return false;" action="<?php echo make_url('configure_projects_workflow', array('project_id' => $project->getID())); ?>" method="post" id="workflow_form2" enctype="multipart/form-data">
+				<input type="hidden" name="workflow_id" value="<?php echo $new_workflow->getID(); ?>" />
+				<input type="hidden" name="project_id" value="<?php echo $project->getID(); ?>" />
 				<div class="workflow_change_div">
 					<table cellpadding="0" cellspacing="0" class="padded_table">
 						<tbody class="hover_highlight">

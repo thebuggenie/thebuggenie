@@ -849,7 +849,6 @@
 		 *
 		 * @return B2DBResultset
 		 */
-		
 		public function getIssuesPostedByUser($user_id, $limit=null, $sort=Criteria::SORT_DESC)
 		{
 			$crit = $this->getCriteria();
@@ -863,6 +862,33 @@
 			}
 			
 			return $this->doSelect($crit);
-		}			
+		}
+
+		/**
+		 * Move issues from one step to another for a given issue type and conversions
+		 * @param TBGProject $project
+		 * @param TBGIssuetype $type
+		 * @param array $conversions
+		 * 
+		 * $conversions should be an array containing arrays:
+		 * array (
+		 * 		array(oldstep, newstep)
+		 * 		...
+		 * )
+		 */
+		public function convertIssueStepByIssuetype(TBGProject $project, TBGIssuetype $type, array $conversions)
+		{
+			foreach ($conversions as $conversion)
+			{
+				$crit = $this->getCriteria();
+				$crit->addWhere(self::PROJECT_ID, $project->getID());
+				$crit->addWhere(self::ISSUE_TYPE, $type->getID());
+				$crit->addWhere(self::WORKFLOW_STEP_ID, $conversion[0]);
+				
+				$crit->addUpdate(self::WORKFLOW_STEP_ID, $conversion[1]);
+				
+				$this->doUpdate($crit);
+			}
+		}
 
 	}

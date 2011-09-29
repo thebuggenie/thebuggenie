@@ -4353,8 +4353,31 @@
 
 		public function runProjectWorkflow(TBGRequest $request)
 		{
-			$this->getResponse()->setHTTPStatus(500);
-			return $this->renderJSON(array('error' => 'not implemented'));
+			$project = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
+			
+			try
+			{
+				foreach ($project->getIssuetypeScheme()->getIssuetypes() as $type)
+				{
+					$data = array();
+					foreach ($project->getWorkflowScheme()->getWorkflowForIssuetype($type)->getSteps() as $step)
+					{
+						$data[] = array($step->getID(), $request->getParameter('new_step_'.$type->getID().'_'.$step->getID()));
+					}
+					
+					$project->convertIssueStepPerIssuetype($type, $data);
+				}
+				
+				$project->setWorkflowScheme(TBGContext::factory()->TBGWorkflowScheme($request->getParameter('workflow_id')));
+				$project->save();
+				
+				return $this->renderJSON(array('message' => TBGContext::geti18n()->__('Workflow scheme changed and issues updated')));
+			}
+			catch (Exception $e)
+			{
+				$this->getResponse()->setHTTPStatus(500);
+				return $this->renderJSON(array('error' => TBGContext::geti18n()->__('An internal error occured')));
+			}
 		}
 
 		public function runProjectWorkflowTable(TBGRequest $request)
