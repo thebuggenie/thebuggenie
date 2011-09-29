@@ -82,23 +82,17 @@ div.image_container.thumb img.image { width: 220px; }
 #header_userinfo { float: right; width: auto; padding: 0px 5px 0px 0px; height: 100%; text-shadow: 1px 1px 2px #000000; filter: dropshadow(color=#000000, offx=1, offy=1); }
 #header_userinfo table { height: 100%; padding-left: 5px; }
 #header_userinfo:hover {
-	background: #cccccc; /* Old browsers */
-	background: -moz-linear-gradient(top, #cccccc 0%, #eeeeee 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#cccccc), color-stop(100%,#eeeeee)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top, #cccccc 0%,#eeeeee 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top, #cccccc 0%,#eeeeee 100%); /* Opera11.10+ */
-	background: -ms-linear-gradient(top, #cccccc 0%,#eeeeee 100%); /* IE10+ */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cccccc', endColorstr='#eeeeee',GradientType=0 ); /* IE6-9 */
-	background: linear-gradient(top, #cccccc 0%,#eeeeee 100%); /* W3C */
+	background: #11437f;
+	color: white;
 	border-bottom: none !important;
 	box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.8); -webkit-box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.8); -moz-box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.8);
-	text-shadow: 1px 1px 2px #ffffff;
-	filter: dropshadow(color=#ffffff, offx=1, offy=1);
+	text-shadow: 1px 1px 2px #000000;
+	filter: dropshadow(color=#000000, offx=1, offy=1);
 }
-#header_userinfo a { color: #A4C0E4; }
+#header_userinfo a { color: #fff; }
 #header_username { width: auto; color: #FFF; padding: 0 25px 0 0; }
 #header_username a { font-weight: normal; color: #FFF; }
-.header_userlinks { font-size: 0.7em; line-height: 1.1; text-align: right; color: #6193CF }
+.header_userlinks { font-size: 0.7em; line-height: 1.1; text-align: right; }
 .submenu_strip .selected_project { font-size: 1em; font-weight: bold; color: #555; border-color: #D9D9BB; }
 
 .submenu_strip { background-color: #FAF3B8; color: #333; box-shadow: 0 0 4px rgba(0, 0, 0, 0.4); -webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.4); -moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.4); padding: 5px; height: 20px; font-size: 0.9em; margin-left: 10px; margin-right: 10px; }
@@ -247,10 +241,9 @@ a.not_clickable:hover { cursor: default; }
 #header_userinfo .tab_menu_dropdown { top: 25px; right: 0; -webkit-border-top-right-radius: 0; border-top-right-radius: 0; -moz-border-radius-topright: 0; -webkit-border-top-left-radius: 0px; border-top-left-radius: 0px; -moz-border-radius-topleft: 0px; }
 .user_menu_dropdown a { font-size: 0.9em; }
 .tab_menu .tab_menu_dropdown a, .tab_menu_container .tab_menu_dropdown a { float: none; }
-#header_userinfo .tab_menu_dropdown a { color: #333; font-weight: normal; }
+#header_userinfo .tab_menu_dropdown a { font-weight: normal; }
 #header_userinfo .tab_menu_dropdown .userstate { font-weight: normal; }
 #header_userinfo:hover img.dropdown { background-color: #669BDA; }
-#header_userinfo:hover #header_username a { color: #333; }
 div.dropdown_separator { border-left: 1px dotted #EAEAF5; padding: 0 0 0 4px; margin: 0; float: right; font-size: 0; }
 .tab_menu_dropdown { box-shadow: 0 0 4px rgba(0, 0, 0, 0.4); -webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.4); -moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.4); }
 .tab_menu_dropdown a img { float: left; margin-right: 5px; }
@@ -270,8 +263,8 @@ div.dropdown_separator { border-left: 1px dotted #EAEAF5; padding: 0 0 0 4px; ma
 .header_menu ul { height: 100%; bottom: 0px; }
 .header_menu li { text-shadow: 1px 1px 2px #000000; filter: dropshadow(color=#000000, offx=1, offy=1); }
 .header_menu li div { color: #fff; padding-top: 9px; }
-.header_menu li:hover div { color: #333; }
 .header_menu li.selected div { color: #333; }
+.header_menu li.selected:hover div { color: white; }
 .header_menu li.selected {
 	background: #f1da36; /* Old browsers */
 	background: -moz-linear-gradient(top, #f1da36 0%, #faf3b8 100%); /* FF3.6+ */
@@ -289,21 +282,11 @@ div.dropdown_separator { border-left: 1px dotted #EAEAF5; padding: 0 0 0 4px; ma
 .header_menu li, .header_menu li:hover { margin-right: 10px !important; border-top: none !important; }
 .header_menu li:hover, .header_menu li.selected:hover {
 	box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.8); -webkit-box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.8); -moz-box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.8); 
-	background: #cccccc; /* Old browsers */
-	background: -moz-linear-gradient(top, #cccccc 0%, #eeeeee 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#cccccc), color-stop(100%,#eeeeee)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top, #cccccc 0%,#eeeeee 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top, #cccccc 0%,#eeeeee 100%); /* Opera11.10+ */
-	background: -ms-linear-gradient(top, #cccccc 0%,#eeeeee 100%); /* IE10+ */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cccccc', endColorstr='#eeeeee',GradientType=0 ); /* IE6-9 */
-	background: linear-gradient(top, #cccccc 0%,#eeeeee 100%); /* W3C */
-	border-bottom: none !important;
-	color: #333;
-	text-shadow: 1px 1px 2px #ffffff;
-	filter: dropshadow(color=#ffffff, offx=1, offy=1);
+	background: #11437f; /* Old browsers */
+	text-shadow: 1px 1px 2px #000000; filter: dropshadow(color=#000000, offx=1, offy=1);
 }
-.header_menu .tab_menu_dropdown, .header_menu li.selected .tab_menu_dropdown { color: #333 !important; margin-top: 10px; border-top-right-radius: 0px; border-top-left-radius: 0px; -moz-border-radius-topleft: 0px; -moz-border-radius-topright: 0px; -webkit-border-top-left-radius: 0px; -webkit-border-top-right-radius: 0px;background: #eeeeee; }
-.header_menu .tab_menu_dropdown a:hover, .header_menu li.selected .tab_menu_dropdown a:hover { background-color: #cccccc; }
+.header_menu .tab_menu_dropdown, .header_menu li.selected .tab_menu_dropdown { margin-top: 10px; border-top-right-radius: 0px; border-top-left-radius: 0px; -moz-border-radius-topleft: 0px; -moz-border-radius-topright: 0px; -webkit-border-top-left-radius: 0px; -webkit-border-top-right-radius: 0px; background: #396BA7; }
+.header_menu .tab_menu_dropdown a:hover, .header_menu li.selected .tab_menu_dropdown a:hover { background-color: #11437f; }
 /* end header menu */
 
 /* project menu strip */
