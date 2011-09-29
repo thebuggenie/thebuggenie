@@ -1584,6 +1584,7 @@ TBG.Project.edit = function(url) {
 
 TBG.Project.workflow = function(url) {
 	TBG.Main.Helpers.ajax(url, {
+		form: 'workflow_form2',
 		loading: {indicator: 'update_workflow_indicator'},
 		success: {callback: function() { TBG.Main.Helpers.Backdrop.reset(); }}
 	});

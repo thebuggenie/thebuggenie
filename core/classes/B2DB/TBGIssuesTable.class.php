@@ -886,7 +886,6 @@
 				$crit->addWhere(self::WORKFLOW_STEP_ID, $conversion[0]);
 				
 				$crit->addUpdate(self::WORKFLOW_STEP_ID, $conversion[1]);
-				
 				$this->doUpdate($crit);
 			}
 		}

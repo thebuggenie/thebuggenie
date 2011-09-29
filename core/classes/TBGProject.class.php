@@ -2989,6 +2989,6 @@
 		 */
 		public function convertIssueStepPerIssuetype(TBGIssuetype $issuetype, array $conversions)
 		{
-			TBGIssuesTable::getTable()->convertIssueStepPerIssuetype($this, $issuetype, $conversions);
+			TBGIssuesTable::getTable()->convertIssueStepByIssuetype($this, $issuetype, $conversions);
 		}
 	}

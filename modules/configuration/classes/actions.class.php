@@ -4362,9 +4362,8 @@
 					$data = array();
 					foreach ($project->getWorkflowScheme()->getWorkflowForIssuetype($type)->getSteps() as $step)
 					{
-						$data[] = array($step->getID(), $request->getParameter('new_step_'.$type->getID().'_'.$step->getID()));
+						$data[] = array((string)$step->getID(), $request->getParameter('new_step_'.$type->getID().'_'.$step->getID()));
 					}
-					
 					$project->convertIssueStepPerIssuetype($type, $data);
 				}
 				
