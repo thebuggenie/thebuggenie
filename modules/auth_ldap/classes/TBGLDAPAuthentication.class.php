@@ -405,5 +405,28 @@
 		{
 			return $this->doLogin($username, 'a', 2);
 		}
+		
+		/*
+		 * Actions on logout
+		 */
+		public function logout()
+		{
+			
+		}
+		
+		/*
+		 * Actions on login - if there are no credentials supplied try an autologin
+		 * Not applicable for this module
+		 * 
+		 * Return:
+		 * true - succeeded operation but no autologin
+		 * false - invalid cookies found
+		 * Row from TBGUsersTable - succeeded operation, user found
+		 * 
+		 */
+		public function autoLogin()
+		{
+			return true;
+		}
 	}
 

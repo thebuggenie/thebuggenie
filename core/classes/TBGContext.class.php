@@ -1573,6 +1573,12 @@
 		 */
 		public static function logout()
 		{
+			if (TBGSettings::isUsingExternalAuthenticationBackend())
+			{
+				$mod = TBGContext::getModule(TBGSettings::getAuthenticationBackend());
+				$mod->logout();
+			}
+			
 			TBGEvent::createNew('core', 'pre_logout')->trigger();
 			self::getResponse()->deleteCookie('tbg3_username');
 			self::getResponse()->deleteCookie('tbg3_password');

@@ -366,8 +366,7 @@
 
 						if (!$row)
 						{
-							TBGContext::getResponse()->deleteCookie('tbg3_username');
-							TBGContext::getResponse()->deleteCookie('tbg3_password');
+							TBGContext::logout();
 							throw new Exception('No such login');
 							//TBGContext::getResponse()->headerRedirect(TBGContext::getRouting()->generate('login'));
 						}
@@ -397,8 +396,35 @@
 						if(!$row)
 						{
 							// Invalid
-							TBGContext::getResponse()->deleteCookie('tbg3_username');
-							TBGContext::getResponse()->deleteCookie('tbg3_password');
+							TBGContext::logout();
+							throw new Exception('No such login');
+							//TBGContext::getResponse()->headerRedirect(TBGContext::getRouting()->generate('login'));
+						}
+					}
+					catch (Exception $e)
+					{
+						throw $e;
+					}
+				}
+				// If we don't have login details, the backend may autologin from cookies or something
+				elseif (TBGSettings::isUsingExternalAuthenticationBackend())
+				{
+					$external = true;
+					TBGLogging::log('Authenticating without credentials with backend: '.TBGSettings::getAuthenticationBackend(), 'auth', TBGLogging::LEVEL_INFO);
+					try
+					{
+						$mod = TBGContext::getModule(TBGSettings::getAuthenticationBackend());
+						if ($mod->getType() !== TBGModule::MODULE_AUTH)
+						{
+							TBGLogging::log('Auth module is not the right type', 'auth', TBGLogging::LEVEL_FATAL);
+						}
+
+						$row = $mod->doAutoLogin();
+						
+						if(!$row)
+						{
+							// Invalid
+							TBGContext::logout();
 							throw new Exception('No such login');
 							//TBGContext::getResponse()->headerRedirect(TBGContext::getRouting()->generate('login'));
 						}
@@ -428,8 +454,7 @@
 							if(!$row)
 							{
 								// Invalid
-								TBGContext::getResponse()->deleteCookie('tbg3_username');
-								TBGContext::getResponse()->deleteCookie('tbg3_password');
+								TBGContext::logout();
 								throw new Exception('No such login');
 								//TBGContext::getResponse()->headerRedirect(TBGContext::getRouting()->generate('login'));
 							}
