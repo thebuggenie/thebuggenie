@@ -112,10 +112,10 @@
 			$this->_author = TBGContext::getUser();
 		}
 		
-		public static function findByArticleNameAndProject($name, $project, $limit = 5, $offset = 0)
+		public static function findArticlesByContentAndProject($content, $project, $limit = 5, $offset = 0)
 		{
 			$articles = array();
-			list ($resultcount, $res) = TBGArticlesTable::getTable()->findArticlesLikeName($name, $project, $limit, $offset);
+			list ($resultcount, $res) = TBGArticlesTable::getTable()->findArticlesContaining($content, $project, $limit, $offset);
 			
 			if ($res)
 			{

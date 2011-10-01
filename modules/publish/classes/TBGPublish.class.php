@@ -433,7 +433,7 @@
 		public function listen_quicksearchDropdownFoundItems(TBGEvent $event)
 		{
 			$searchterm = $event->getSubject();
-			list ($resultcount, $articles) = TBGWikiArticle::findByArticleNameAndProject($searchterm, TBGContext::getCurrentProject());
+			list ($resultcount, $articles) = TBGWikiArticle::findArticlesByContentAndProject($searchterm, TBGContext::getCurrentProject());
 			TBGActionComponent::includeTemplate('publish/quicksearch_dropdown_founditems', array('searchterm' => $searchterm, 'articles' => $articles, 'resultcount' => $resultcount));
 		}
 		

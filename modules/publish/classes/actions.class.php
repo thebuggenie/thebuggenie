@@ -348,7 +348,7 @@
 			
 			if ($this->articlename)
 			{
-				list ($this->resultcount, $this->articles) = TBGWikiArticle::findByArticleNameAndProject($this->articlename, TBGContext::getCurrentProject(), 10);
+				list ($this->resultcount, $this->articles) = TBGWikiArticle::findArticlesByContentAndProject($this->articlename, TBGContext::getCurrentProject(), 10);
 			}
 		}
 

@@ -156,22 +156,27 @@
 			return (bool) ($res = $this->doSelect($crit));
 		}
 		
-		public function findArticlesLikeName($name, $project, $limit = 5, $offset = 0)
+		public function findArticlesContaining($content, $project = null, $limit = 5, $offset = 0)
 		{
 			$crit = $this->getCriteria();
 			if ($project instanceof TBGProject)
 			{
-				$ctn = $crit->returnCriterion(self::NAME, "%{$name}%", Criteria::DB_LIKE);
+				$ctn = $crit->returnCriterion(self::NAME, "%{$content}%", Criteria::DB_LIKE);
 				$ctn->addWhere(self::NAME, "category:" . $project->getKey() . "%", Criteria::DB_LIKE);
 				$crit->addWhere($ctn);
 				
-				$ctn = $crit->returnCriterion(self::NAME, "%{$name}%", Criteria::DB_LIKE);
+				$ctn = $crit->returnCriterion(self::NAME, "%{$content}%", Criteria::DB_LIKE);
+				$ctn->addWhere(self::NAME, $project->getKey() . "%", Criteria::DB_LIKE);
+				$crit->addOr($ctn);
+				
+				$ctn = $crit->returnCriterion(self::CONTENT, "%{$content}%", Criteria::DB_LIKE);
 				$ctn->addWhere(self::NAME, $project->getKey() . "%", Criteria::DB_LIKE);
 				$crit->addOr($ctn);
 			}
 			else
 			{
-				$crit->addWhere(self::NAME, "%{$name}%", Criteria::DB_LIKE);
+				$crit->addWhere(self::NAME, "%{$content}%", Criteria::DB_LIKE);
+				$crit->addOr(self::CONTENT, "%{$content}%", Criteria::DB_LIKE);
 			}
 			
 			$resultcount = $this->doCount($crit);
