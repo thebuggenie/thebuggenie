@@ -4,6 +4,7 @@
 			<?php echo link_tag(make_url('project_milestone_details', array('project_key' => $milestone->getProject()->getKey(), 'milestone_id' => $milestone->getID())), __('Open overview'), array('class' => 'button button-silver')); ?>
 		<?php endif; ?>
 		<?php echo javascript_link_tag(__('Issues'), array('onclick' => "TBG.Project.Planning.toggleIssues('".make_url('project_planning_milestone_issues', array('project_key' => $milestone->getProject()->getKey(), 'milestone_id' => $milestone->getID()))."', {$milestone->getID()});", 'class' => 'button button-silver', 'title' => __('Click to show assigned stories for this sprint'))); ?>
+		<?php echo javascript_link_tag(__('Reload issues'), array('onclick' => "$('milestone_{$milestone->getID()}_container').hide();$('milestone_{$milestone->getID()}_list').update('');TBG.Project.Planning.toggleIssues('".make_url('project_planning_milestone_issues', array('project_key' => $milestone->getProject()->getKey(), 'milestone_id' => $milestone->getID()))."', {$milestone->getID()});", 'class' => 'button button-silver', 'style' => 'display: none;', 'id' => "milestone_{$milestone->getID()}_reload_button", 'title' => __('Click to show assigned stories for this sprint'))); ?>
 		<?php echo image_tag('spinning_20.gif', array('id' => 'milestone_'.$milestone->getID().'_issues_indicator', 'class' => 'milestone_issues_indicator', 'style' => 'display: none;')); ?>
 		<b><?php echo $milestone->getName(); ?></b>
 		<span class="date">

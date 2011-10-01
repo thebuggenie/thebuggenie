@@ -923,7 +923,7 @@ TBG.Project.Planning.toggleIssues = function(url, milestone_id) {
 				loading: {indicator: 'milestone_' + milestone_id + '_issues_indicator'},
 				success: {
 					update: 'milestone_' + milestone_id + '_list',
-					show: 'milestone_' + milestone_id + '_container',
+					show: ['milestone_' + milestone_id + '_container', 'milestone_' + milestone_id + '_reload_button'],
 					callback: function(json) {
 						$('milestone_' + milestone_id + '_list').childElements().each(function(element) {
 							new Draggable(element.id + '_draggable', {revert: true, handle: element.id + '_handle'});
