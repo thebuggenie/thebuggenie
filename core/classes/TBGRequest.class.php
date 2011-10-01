@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage mvc
 	 */
-	class TBGRequest
+	class TBGRequest implements ArrayAccess
 	{
 		
 		const POST = 1;
@@ -569,4 +569,26 @@
 		{
 			return $this->getParameter('format', 'html');
 		}
+		
+		public function offsetExists($offset)
+		{
+			return $this->hasParameter($offset);
+		}
+
+		public function offsetGet($offset)
+		{
+			return $this->getParameter($offset);
+		}
+
+		public function offsetSet($offset, $value)
+		{
+			$this->setParameter($offset, $value);
+		}
+
+		public function offsetUnset($offset)
+		{
+			$this->setParameter($offset, null);
+		}
+
+		
 	}

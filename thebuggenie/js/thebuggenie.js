@@ -1089,6 +1089,22 @@ TBG.Project.Planning.assign = function(url, dragged, dropped)
 	});
 }
 
+TBG.Project.Planning.updateIssues = function(url, milestone_id)
+{
+	TBG.Main.Helpers.ajax(url, {
+		form: 'milestone_' + milestone_id + '_issues_form',
+		loading: {
+			indicator: 'milestone_'+milestone_id+'_update_issues_indicator',
+		},
+		success: {
+			callback: function(json) {
+				$('milestone_' + milestone_id + '_estimated_points').update(json.estimated_points);
+				$('milestone_' + milestone_id + '_estimated_hours').update(json.estimated_hours);
+			}
+		}
+	});
+}
+
 TBG.Project.Scrum.Story.setColor = function(url, story_id, color)
 {
 	TBG.Main.Helpers.ajax(url, {

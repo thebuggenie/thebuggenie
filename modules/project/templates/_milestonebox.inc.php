@@ -18,7 +18,7 @@
 		&nbsp;&nbsp;<span class="counts"><?php echo __('%number_of% issue(s), %hours% hrs, %points% pts', array('%points%' => '<span id="milestone_'.$milestone->getID().'_estimated_points">' . $milestone->getPointsEstimated() . '</span>', '%hours%' => '<span id="milestone_'.$milestone->getID().'_estimated_hours">' . $milestone->getHoursEstimated() . '</span>', '%number_of%' => '<span id="milestone_'.$milestone->getID().'_issues">'.$milestone->countIssues().'</span>')); ?></span>&nbsp;
 	</div>
 	<div id="milestone_<?php echo $milestone->getID(); ?>_container" style="display: none;">
-		<form action="<?php echo make_url('project_planning_update_milestone_issues', array('project_key' => $milestone->getProject()->getKey(), 'milestone_id' => $milestone->getID())); ?>" onsubmit="TBG.Project.Planning.updateIssues('<?php echo make_url('project_planning_update_milestone_issues', array('project_key' => $milestone->getProject()->getKey(), 'milestone_id' => $milestone->getID())); ?>', <?php echo $milestone->getID(); ?>);return false;" method="POST">
+		<form action="<?php echo make_url('project_planning_update_milestone_issues', array('project_key' => $milestone->getProject()->getKey(), 'milestone_id' => $milestone->getID())); ?>" onsubmit="TBG.Project.Planning.updateIssues('<?php echo make_url('project_planning_update_milestone_issues', array('project_key' => $milestone->getProject()->getKey(), 'milestone_id' => $milestone->getID())); ?>', <?php echo $milestone->getID(); ?>);return false;" method="post" id="milestone_<?php echo $milestone->getID(); ?>_issues_form">
 			<table cellpadding="0" cellspacing="0" class="milestone_issues">
 				<thead>
 					<tr>

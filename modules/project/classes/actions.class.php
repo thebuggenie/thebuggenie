@@ -314,6 +314,22 @@
 			return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Invalid user story')));
 		}
 		
+		public function runUpdateMilestoneIssues(TBGRequest $request)
+		{
+			$milestone = new TBGMilestone($request->getParameter('milestone_id'));
+			foreach ($request['issue_id'] as $issue_id)
+			{
+				$issue = new TBGIssue($issue_id);
+				$issue->setEstimatedHours($request['estimated_hours'][$issue_id]);
+				$issue->setEstimatedPoints($request['estimated_points'][$issue_id]);
+				$issue->setSpentHours($request['spent_hours'][$issue_id]);
+				$issue->setSpentPoints($request['spent_points'][$issue_id]);
+				$issue->setPriority($request['priority'][$issue_id]);
+				$issue->save();
+			}
+			return $this->renderJSON(array('estimated_hours' => $milestone->getHoursEstimated(), 'estimated_points' => $milestone->getPointsEstimated(), 'message' => TBGContext::getI18n()->__('%num% issue(s) updated', array('%num%' => count($request['issue_id'])))));
+		}
+		
 		/**
 		 * Assign a user story to a milestone id
 		 *
