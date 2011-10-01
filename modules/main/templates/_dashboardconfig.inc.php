@@ -34,16 +34,13 @@
 				</div>
 			</li>
 		</ul>
-
-		<ul style="margin: 0; padding: 0; list-style:none; clear: both;">
-			<li class="rounded_box white" style="margin: 5px 15px 5px 10px; text-align: center;">
-				<?php echo javascript_link_tag(__('Add a view to dashboard'), array('onclick' => "TBG.Main.Dashboard.View.add();")); ?>
-				<?php echo javascript_link_tag(image_tag('action_add_small.png', array('class' => 'menu_dropdown', 'style' => 'float: right; margin-left: 5px;')), array('onclick' => "TBG.Main.Dashboard.View.add();")); ?>
-			</li>
-		</ul>
+		<br style="clear: both;">
+		<div style="clear: both; margin: 20px auto; text-align: center;">
+			<?php echo javascript_link_tag(__('Add a view to dashboard'), array('onclick' => "TBG.Main.Dashboard.View.add();", 'class' => 'button button-green')); ?>
+		</div>
 		<div id="save_dashboard" style="text-align: right; padding: 10px;">
 			<?php echo __("When you're happy, save your changes"); ?>
-			<button onclick="TBG.Main.Dashboard.save('<?php echo make_url('dashboard_save', array('target_type' => $target_type, 'tid' => $tid)); ?>');" style="float: right; margin-left: 10px;"><?php echo __('Save dashboard'); ?></button>
+			<button onclick="TBG.Main.Dashboard.save('<?php echo make_url('dashboard_save', array('target_type' => $target_type, 'tid' => $tid)); ?>');" class="button button-silver" style="float: right; margin-left: 10px;"><?php echo __('Save dashboard'); ?></button>
 		</div>
 		<span id="save_dashboard_indicator" style="display: none;"><?php echo image_tag('spinning_20.gif'); ?></span>
 	</div>
