@@ -106,11 +106,11 @@ div.image_container.thumb img.image { width: 220px; }
 .medium_transparent { filter:alpha(opacity=85); -moz-opacity:.85; opacity:.85; }
 .medium_transparent img { vertical-align: middle; }
 .almost_not_transparent { filter:alpha(opacity=90); -moz-opacity:.90; opacity:.90; }
-.popup_message { margin: -30px 0 0 -406px; position: fixed; top: 50%; left: 50%; width: 800px; padding: 0; font-size: 1em; color: #000; border-color: #555; cursor: pointer; text-align: center; }
-.dismiss_me { position: absolute; top: 5px; right: 5px; text-align: right; font-size: 0.8em; line-height: 1; padding: 0; margin: 0; }
+.popup_message { margin: 0; position: fixed; top: 0; left: 0; width: 100%; padding: 0 !important; font-size: 1em; color: #000; border: 1px solid rgba(100, 100, 100, 0.3); cursor: pointer; text-align: center; }
+.dismiss_me { position: absolute; top: 5px; right: 5px; text-align: right; font-size: 0.9em; line-height: 1; padding: 0; margin: 0; }
 .popup_message.failure { z-index: 200001; background-color: #E84545; }
 .popup_message.failure .dismiss_me { color: #822323; }
-.popup_message.success { z-index: 200000; background-color: #45E845; }
+.popup_message.success { z-index: 200000; background-color: #FFF; }
 .popup_message.success .dismiss_me { color: #238223; }
 
 /* end slidedowns */
