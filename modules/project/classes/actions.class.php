@@ -316,7 +316,17 @@
 		
 		public function runUpdateMilestoneIssues(TBGRequest $request)
 		{
-			$milestone = new TBGMilestone($request->getParameter('milestone_id'));
+			if ($request->getParameter('milestone_id'))
+			{
+				$milestone = new TBGMilestone($request->getParameter('milestone_id'));
+			}
+			else
+			{
+				$milestone = new TBGMilestone();
+				$milestone->setName(TBGContext::getI18n()->__('Unassigned items / backlog'));
+				$milestone->setId(0);
+				$milestone->setProject($this->selected_project);
+			}
 			foreach ($request['issue_id'] as $issue_id)
 			{
 				$issue = new TBGIssue($issue_id);
