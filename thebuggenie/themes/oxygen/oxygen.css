@@ -24,7 +24,7 @@ a:active, a:focus { outline: none; outline-style: none; }
 
 form, p { margin: 0px; padding: 0px; }
 
-input, select, textarea, button { font-family: 'Open Sans', sans-serif; font-size: 1em; color: #555; border: 1px solid #BBB; padding: 2px; }
+input, select, textarea, button { font-family: 'Open Sans', sans-serif; font-size: 1em; color: #555; border: 1px solid #AAA; padding: 2px; }
 select { font-family: sans-serif !important; } /* Safari 5.1 mac fix */
 input, select, textarea { background-color: #FFF; }
 input[type="submit"], button, input[type="file"] { background-color: #E5E5E5; }
@@ -646,7 +646,7 @@ a.friend:hover { border-bottom: 1px dotted #0000a4; }
 #reportissue_extrafields li { font-weight: normal; clear: none; margin: 5px; min-height: 24px; width: 310px; text-align: left; float: left; }
 #reportissue_extrafields li img { margin: 2px 5px 0 0; float: left; }
 #reportissue_extrafields li div { clear: none; margin-top: 2px; }
-#reportissue_extrafields li select, #reportissue_extrafields input[type=text] { width: 255px; font-size: 0.8em; height: 20px; padding: 1px; float: left; }
+#reportissue_extrafields li select, #reportissue_extrafields input[type="text"] { width: 255px; font-size: 0.8em; height: 20px; padding: 1px; float: left; }
 #reportissue_extrafields li a.img:hover { border-bottom: 0; }
 /* end report issue styling */
 
@@ -664,8 +664,9 @@ a.friend:hover { border-bottom: 1px dotted #0000a4; }
 .nice_button.workflow input { border: 0; border-top: 0; border-left: 1px solid #CDC895; border-bottom: 1px solid #CDC895; color: #6E6E53; padding: 2px 3px; font-weight: normal; background-color: #E3DDA5; cursor: pointer; }
 .nice_button.workflow input:active { background-color: #E9E9B0; }
 .nice_button.workflow input:hover { background-color: #D3CE99; }
-.workflow_actions li.first { border-top-left-radius: 4px; -moz-border-radius-topleft: 4px; -webkit-border-top-left-radius: 4px; border-bottom-left-radius: 4px; -moz-border-radius-bottomleft: 4px; -webkit-border-bottom-left-radius: 4px; }
-.workflow_actions li.last { border-top-right-radius: 4px; -moz-border-radius-topright: 4px; -webkit-border-top-right-radius: 4px; border-bottom-right-radius: 4px; -moz-border-radius-bottomright: 4px; -webkit-border-bottom-right-radius: 4px; }
+.workflow_actions .button { border-radius: 0; -moz-border-radius: 0; -webkit-border-radius: 0; }
+.workflow_actions .button.first { border-top-left-radius: 4px; -moz-border-radius-topleft: 4px; -webkit-border-top-left-radius: 4px; border-bottom-left-radius: 4px; -moz-border-radius-bottomleft: 4px; -webkit-border-bottom-left-radius: 4px; }
+.workflow_actions .button.last { border-top-right-radius: 4px; -moz-border-radius-topright: 4px; -webkit-border-top-right-radius: 4px; border-bottom-right-radius: 4px; -moz-border-radius-bottomright: 4px; -webkit-border-bottom-right-radius: 4px; }
 .workflow_actions li.more_actions { margin-left: 5px; }
 /* end very visible button */
 

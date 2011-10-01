@@ -256,19 +256,19 @@
 						<ul class="workflow_actions simple_list">
 							<?php $cc = 1; $num_transitions = count($issue->getAvailableWorkflowTransitions()); ?>
 							<?php foreach ($issue->getAvailableWorkflowTransitions() as $transition): ?>
-								<li class="button button-silver workflow<?php if ($cc == 1): ?> first<?php endif; if ($cc == $num_transitions): ?> last<?php endif; ?>">
+								<li class="workflow">
 									<?php if ($transition->hasTemplate()): ?>
-										<input type="button" value="<?php echo $transition->getName(); ?>" onclick="TBG.Issues.showWorkflowTransition(<?php echo $transition->getID(); ?>);">
+										<input class="button button-silver<?php if ($cc == 1): ?> first<?php endif; if ($cc == $num_transitions): ?> last<?php endif; ?>" type="button" value="<?php echo $transition->getName(); ?>" onclick="TBG.Issues.showWorkflowTransition(<?php echo $transition->getID(); ?>);">
 									<?php else: ?>
 										<form action="<?php echo make_url('transition_issue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'transition_id' => $transition->getID())); ?>" method="post">
-											<input type="submit" value="<?php echo $transition->getName(); ?>">
+											<input type="submit" class="button button-silver<?php if ($cc == 1): ?> first<?php endif; if ($cc == $num_transitions): ?> last<?php endif; ?>" value="<?php echo $transition->getName(); ?>">
 										</form>
 									<?php endif; ?>
 								</li>
 								<?php $cc++; ?>
 							<?php endforeach; ?>
-							<li class="button button-silver first last more_actions">
-								<input type="button" value="<?php echo __('More actions'); ?>" onclick="$('more_actions').toggle();">
+							<li class="more_actions">
+								<input class="button button-silver first last" type="button" value="<?php echo __('More actions'); ?>" onclick="$('more_actions').toggle();">
 							</li>
 						</ul>
 						<?php if (!$issue->getProject()->isArchived() && (TBGContext::getUser()->hasPermission('caneditissue') || TBGContext::getUser()->hasPermission('caneditissuebasic'))): ?>

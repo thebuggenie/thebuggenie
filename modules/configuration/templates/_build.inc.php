@@ -95,9 +95,7 @@
 						<?php if ($build->getID()): ?>
 							<input type="hidden" name="build_id" value="<?php echo $build->getID(); ?>">
 						<?php endif; ?>
-						<div class="button button-green" style="float: right;">
-							<input type="submit" value="<?php echo ($build->getId()) ? __('Update release') : __('Add release'); ?>">
-						</div>
+							<input class="button button-green" style="float: right;" type="submit" value="<?php echo ($build->getId()) ? __('Update release') : __('Add release'); ?>">
 						<span id="add_release_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
 					</td>
 				</tr>

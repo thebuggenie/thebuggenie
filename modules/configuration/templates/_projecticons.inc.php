@@ -52,9 +52,7 @@
 						<div style="float: left; font-size: 13px; padding-top: 2px; font-style: italic;" class="config_explanation">
 							<?php echo __('When you are done, click "%update_icons%" to upload the new project icons', array('%update_icons%' => __('Update icons'))); ?>
 						</div>
-						<div class="button button-green" style="float: right;">
-							<input type="submit" value="<?php echo __('Update icons'); ?>">
-						</div>
+						<input class="button button-green" style="float: right;" type="submit" value="<?php echo __('Update icons'); ?>">
 						<span id="update_icons_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
 					</td>
 				</tr>

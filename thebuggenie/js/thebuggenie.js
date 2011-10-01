@@ -147,14 +147,14 @@ TBG.Core._scrollWatcher = function() {
 			if (y >= $('viewissue_menu_panes').offsetTop) {
 				var button = $('comment_add_button').remove();
 //				button.addClassName('fixed');
-				button.addClassName('button-silver');
-				button.removeClassName('button-green');
+				button.down('input').addClassName('button-silver');
+				button.down('input').removeClassName('button-green');
 				$('workflow_actions').down('ul').insert(button);
 			} else {
 				var button = $('comment_add_button').remove();
 //				button.removeClassName('fixed');
-				button.removeClassName('button-silver');
-				button.addClassName('button-green');
+				button.down('input').removeClassName('button-silver');
+				button.down('input').addClassName('button-green');
 				$('add_comment_button_container').update(button);
 			}
 		} else {
@@ -162,8 +162,8 @@ TBG.Core._scrollWatcher = function() {
 			$('workflow_actions').removeClassName('fixed');
 			var button = $('comment_add_button').remove();
 //			button.removeClassName('fixed');
-			button.removeClassName('button-silver');
-			button.addClassName('button-green');
+			button.down('input').removeClassName('button-silver');
+			button.down('input').addClassName('button-green');
 			$('add_comment_button_container').update(button);
 		}
 	}

@@ -14,9 +14,7 @@
 						<option disabled="disabled" value="0"><?php echo __('No other workflows'); ?></option>
 					<?php endif; ?>
 				</select></h3>
-				<div class="button button-silver">
-					<input type="submit" value="<?php echo __('Continue'); ?>">
-				</div>
+				<input class="button button-silver" type="submit" value="<?php echo __('Continue'); ?>">
 			</form>
 		</div>
 		<div id="change_workflow_table" style="display: none;">
