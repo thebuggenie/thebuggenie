@@ -9,7 +9,7 @@
 			<?php //$url = make_url('configure_edition_add_build', array('project_id' => $selected_project->getProject()->getID(), 'edition_id' => $selected_project->getID())); ?>
 			<h3>
 				<?php if ($tbg_user->canManageProjectReleases($selected_project)): ?>
-				<div class="button button-green" style="float: right; margin-top: -5px;"><span onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'project_build', 'project_id' => $selected_project->getId())); ?>');"><?php echo __('Add new release'); ?></span></div>
+				<div class="button button-green" style="float: right; margin-top: -5px;" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'project_build', 'project_id' => $selected_project->getId())); ?>');"><?php echo __('Add new release'); ?></div>
 				<?php endif; ?>
 				<?php echo __('Active releases'); ?>
 			</h3>
