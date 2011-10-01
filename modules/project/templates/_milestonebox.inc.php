@@ -1,13 +1,9 @@
 <div id="milestone_<?php echo $milestone->getID(); ?>" class="milestone_box">
 	<div class="header">
 		<?php if ($milestone->getID()): ?>
-			<div class="button button-blue" style="float: right;">
-				<?php echo link_tag(make_url('project_milestone_details', array('project_key' => $milestone->getProject()->getKey(), 'milestone_id' => $milestone->getID())), __('Open overview')); ?>
-			</div>
+			<?php echo link_tag(make_url('project_milestone_details', array('project_key' => $milestone->getProject()->getKey(), 'milestone_id' => $milestone->getID())), __('Open overview'), array('class' => 'button button-silver')); ?>
 		<?php endif; ?>
-		<div class="button button-blue" style="float: right;">
-			<button onclick="TBG.Project.Planning.toggleIssues('<?php echo make_url('project_planning_milestone_issues', array('project_key' => $milestone->getProject()->getKey(), 'milestone_id' => $milestone->getID())); ?>', <?php echo $milestone->getID(); ?>);" title="<?php echo __('Click to show assigned stories for this sprint'); ?>"><?php echo __('Issues'); ?></button>
-		</div>
+		<?php echo javascript_link_tag(__('Issues'), array('onclick' => "TBG.Project.Planning.toggleIssues('".make_url('project_planning_milestone_issues', array('project_key' => $milestone->getProject()->getKey(), 'milestone_id' => $milestone->getID()))."', {$milestone->getID()});", 'class' => 'button button-silver', 'title' => __('Click to show assigned stories for this sprint'))); ?>
 		<?php echo image_tag('spinning_20.gif', array('id' => 'milestone_'.$milestone->getID().'_issues_indicator', 'class' => 'milestone_issues_indicator', 'style' => 'display: none;')); ?>
 		<b><?php echo $milestone->getName(); ?></b>
 		<span class="date">

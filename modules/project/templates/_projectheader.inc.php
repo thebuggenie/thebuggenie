@@ -26,14 +26,6 @@
 				</div>
 			</div>
 		<?php endif; ?>
-		<?php if ($tbg_user->canEditProjectDetails($selected_project) && $tbg_response->getPage() != 'project_settings'): ?>
-			<div class="button button-silver config_link" title="<?php echo __('Edit project settings'); ?>"><?php echo link_tag(make_url('project_settings', array('project_key' => $selected_project->getKey())), image_tag('icon_edit.png').__('Edit project')); ?></div>
-			<div id="project_settings_popout" class="rounded_box shadowed white" style="display: none; width: 500px; text-align: center; position: absolute; right: 15px; top: 125px; padding: 6px;">
-				<div class="button button-blue" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'project_config', 'project_id' => $selected_project->getID())); ?>');$('project_settings_popout').toggle();" ><span><?php echo image_tag('quickopen.png').__('Quick edit project'); ?></span></div>
-				<div class="button button-blue"><?php echo link_tag(make_url('project_settings', array('project_key' => $selected_project->getKey())), '<span>'.image_tag('icon_edit.png').__('Edit project').'</span>'); ?></div>
-				<div class="button button-green"><?php echo link_tag(make_url('project_release_center', array('project_key' => $selected_project->getKey())), '<span>'.image_tag('icon_releasecenter.png').__('Release center').'</span>'); ?></a></div>
-			</div>
-		<?php endif; ?>
 	</div>
 	<div class="project_header_left">
 		<div id="project_name">

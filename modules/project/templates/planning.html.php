@@ -9,7 +9,7 @@
 		<div class="planning_container">
 			<h3>
 				<?php if ($tbg_user->canAddScrumSprints($selected_project)): ?>
-					<div class="button button-green" style="float: right;"><span onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'milestone', 'project_id' => $selected_project->getId())); ?>');"><?php echo __('Add new milestone'); ?></span></div>
+					<?php echo javascript_link_tag(__('Add new milestone'), array('onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'milestone', 'project_id' => $selected_project->getId()))."');", 'class' => 'button button-green')); ?>
 				<?php endif; ?>
 				<?php echo __('Project milestones'); ?>
 			</h3>
