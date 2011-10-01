@@ -35,7 +35,7 @@
 	</div>
 	<?php if ($tbg_user->canSearchForIssues()): ?>
 		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo (TBGContext::isProjectContext()) ? make_url('search', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('search'); ?>" method="get" name="quicksearchform" style="float: right;">
-			<div style="width: auto; padding: 0; text-align: right; position: relative;">
+			<div style="width: auto; padding: 0; text-align: right; position: relative;" id="quicksearch_container">
 				<?php $quicksearch_title = __('Search for anything here'); ?>
 				<input type="hidden" name="filters[text][operator]" value="=">
 				<?php echo image_tag('spinning_16.gif', array('id' => 'quicksearch_indicator', 'style' => 'position: absolute; left: 305px; top: 2px; display: none; z-index: 10;')); ?>
