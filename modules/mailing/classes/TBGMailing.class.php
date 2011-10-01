@@ -1003,7 +1003,7 @@
 						if ($type != "TEXT/PLAIN") $data = strip_tags($data);
 
 						$matches = array();
-						preg_match(TBGTextParser::getIssueRegex(), $email->subject, $matches);
+						preg_match(TBGTextParser::getIssueRegex(), mb_decode_mimeheader($email->subject), $matches);
 
 						$issue = ($matches) ? TBGIssue::getIssueFromLink($matches[0], $account->getProject()) : null;
 
@@ -1025,7 +1025,7 @@
 						{
 							$issue = new TBGIssue();
 							$issue->setProject($account->getProject());
-							$issue->setTitle($email->subject);
+							$issue->setTitle(mb_decode_mimeheader($email->subject));
 							$issue->setDescription($data);
 							$issue->setPostedBy($user);
 							$issue->setIssuetype($account->getIssuetype());
