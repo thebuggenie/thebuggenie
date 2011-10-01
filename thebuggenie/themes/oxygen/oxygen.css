@@ -932,8 +932,12 @@ table.issue_affects td img { vertical-align: bottom; }
 .milestone_box .milestone_issues div.draggable { float: left; padding-left: 3px; width: 15px; margin: 5px 5px 0 0; }
 .milestone_box .milestone_issues td { padding: 2px; font-size: 0.95em; border-bottom: 1px dotted #D5D5D5; }
 .milestone_box .milestone_issues .pointsandtime { font-size: 0.8em; text-align: center; }
+.milestone_box .milestone_issues .milestoneupdateable { background-color: #F5F5F5; }
+.milestone_box .milestone_issues .milestoneupdateable.first { border-left: 1px dotted #CCC; }
+.milestone_box .milestone_issues .milestoneupdateable.last { border-right: 1px dotted #CCC; }
+.milestone_box .milestone_issues .milestone_summary .milestoneupdateable { border: 1px dotted #CCC; border-top: 0; }
 .milestone_box .milestone_issues .pointsandtime input[type="text"] { width: 30px; text-align: center; }
-.milestone_box .milestone_summary td { text-align: right; padding-bottom: 30px; border: none; }
+.milestone_box .milestone_summary td { text-align: right; border: none; }
 .milestone_issues_container { margin-bottom: 20px; }
 .milestone_issue_row:hover { background-color: #EFEFEF; }
 .milestone_issue_row select { font-size: 0.9em; }

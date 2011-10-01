@@ -26,8 +26,9 @@
 			<input type="hidden" id="milestone_issue_<?php echo $issue->getID(); ?>_id" value="<?php echo $issue->getID(); ?>">
 		</div>
 	</td>
+	<td><?php echo ($issue->isAssigned()) ? $issue->getAssignee()->getName() : '-' ?></td>
 	<td><?php echo ($issue->getStatus() instanceof TBGStatus) ? $issue->getStatus()->getName() : '-' ?></td>
-	<td>
+	<td class="milestoneupdateable first">
 		<select name="priority[<?php echo $issue->getID(); ?>]">
 			<option value="0"<?php if (!$issue->getPriority() instanceof TBGPriority): ?> selected<?php endif; ?>><?php echo __('Not prioritized'); ?></option>
 			<?php foreach (TBGPriority::getAll() as $p_id => $priority): ?>
@@ -35,11 +36,10 @@
 			<?php endforeach; ?>
 		</select>
 	</td>
-	<td><?php echo ($issue->isAssigned()) ? $issue->getAssignee()->getName() : '-' ?></td>
-	<td class="pointsandtime"><input type="text" value="<?php echo $issue->getEstimatedHours(); ?>" name="estimated_hours[<?php echo $issue->getID(); ?>]"></td>
-	<td class="pointsandtime"><input type="text" value="<?php echo $issue->getEstimatedPoints(); ?>" name="estimated_points[<?php echo $issue->getID(); ?>]"></td>
-	<td class="pointsandtime"><input type="text" value="<?php echo $issue->getSpentHours(); ?>" name="spent_hours[<?php echo $issue->getID(); ?>]"></td>
-	<td class="pointsandtime"><input type="text" value="<?php echo $issue->getSpentPoints(); ?>" name="spent_points[<?php echo $issue->getID(); ?>]"></td>
+	<td class="milestoneupdateable pointsandtime"><input type="text" value="<?php echo $issue->getEstimatedHours(); ?>" name="estimated_hours[<?php echo $issue->getID(); ?>]"></td>
+	<td class="milestoneupdateable pointsandtime"><input type="text" value="<?php echo $issue->getEstimatedPoints(); ?>" name="estimated_points[<?php echo $issue->getID(); ?>]"></td>
+	<td class="milestoneupdateable pointsandtime"><input type="text" value="<?php echo $issue->getSpentHours(); ?>" name="spent_hours[<?php echo $issue->getID(); ?>]"></td>
+	<td class="milestoneupdateable pointsandtime last"><input type="text" value="<?php echo $issue->getSpentPoints(); ?>" name="spent_points[<?php echo $issue->getID(); ?>]"></td>
 	<?php
 	/*
 	<div style="display: none;" class="story_color_selector" id="color_selector_<?php echo $issue->getID(); ?>">

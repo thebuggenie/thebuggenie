@@ -7,8 +7,8 @@
 					<tr>
 						<th><?php echo __('Issue'); ?></th>
 						<th><?php echo __('Status'); ?></th>
-						<th><?php echo __('Priority'); ?></th>
 						<th><?php echo __('Assigned to'); ?></th>
+						<th><?php echo __('Priority'); ?></th>
 						<th class="pointsandtime"><?php echo __('Est. hrs'); ?></th>
 						<th class="pointsandtime"><?php echo __('Est. pts'); ?></th>
 						<th class="pointsandtime"><?php echo __('Spent hrs'); ?></th>
