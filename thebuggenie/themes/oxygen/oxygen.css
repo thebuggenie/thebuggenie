@@ -932,7 +932,9 @@ table.issue_affects td img { vertical-align: bottom; }
 .milestone_box .milestone_issues div.draggable { float: left; padding-left: 3px; width: 15px; margin: 5px 5px 0 0; }
 .milestone_box .milestone_issues td { padding: 2px; font-size: 0.95em; border-bottom: 1px dotted #D5D5D5; }
 .milestone_box .milestone_issues .pointsandtime { font-size: 0.8em; text-align: center; }
-.milestone_box .milestone_issues .milestoneupdateable { background-color: #F5F5F5; }
+.milestone_box .milestone_issues .milestoneupdateable { background-color: #F5F5F5; border-bottom-color: #DDD; }
+.milestone_box .milestone_issues tr:hover .milestoneupdateable { background-color: #EAEAEA; }
+.milestone_box .milestone_issues tr.milestone_summary:hover .milestoneupdateable { background-color: #F5F5F5; }
 .milestone_box .milestone_issues .milestoneupdateable.first { border-left: 1px dotted #CCC; }
 .milestone_box .milestone_issues .milestoneupdateable.last { border-right: 1px dotted #CCC; }
 .milestone_box .milestone_issues .milestone_summary .milestoneupdateable { border: 1px dotted #CCC; border-top: 0; }
