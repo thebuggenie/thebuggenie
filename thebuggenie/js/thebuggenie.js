@@ -1074,7 +1074,7 @@ TBG.Project.Planning.assign = function(url, dragged, dropped)
 			callback: function(json) {
 				var elm = Element.remove(dragged.up('tr'));
 				if ($(dropped.id + '_list').childElements().size() > 0) {
-					$(dropped.id + '_list').insert({'top': elm});
+					$(dropped.id + '_list').insert({'top':elm});
 				}
 				$('milestone_' + json.old_sprint_id + '_issues').update(json.old_issues);
 				$('milestone_' + json.new_sprint_id + '_issues').update(json.new_issues);
@@ -1092,7 +1092,7 @@ TBG.Project.Planning.assign = function(url, dragged, dropped)
 TBG.Project.Scrum.Story.setColor = function(url, story_id, color)
 {
 	TBG.Main.Helpers.ajax(url, {
-		parameters: {color: color},
+		params: {color: color},
 		loading: {indicator: 'color_selector_' + story_id + '_indicator'},
 		success: {
 			callback: function() {
@@ -1107,17 +1107,17 @@ TBG.Project.Scrum.Story.setColor = function(url, story_id, color)
 
 TBG.Project.Scrum.Story.setEstimates = function(url, story_id)
 {
-	var params = {};
+	var parameters = {};
 	if ($('milestone_issue_' + story_id + '_points_input') && $('milestone_issue_' + story_id + '_hours_input')) {
-		params = {estimated_points: $('milestone_issue_' + story_id + '_points_input').getValue(), estimated_hours: $('milestone_issue_' + story_id + '_hours_input').getValue()};
+		parameters = {estimated_points: $('milestone_issue_' + story_id + '_points_input').getValue(), estimated_hours: $('milestone_issue_' + story_id + '_hours_input').getValue()};
 	} else if ($('milestone_issue_' + story_id + '_hours_input')) {
-		params = {estimated_hours: $('milestone_issue_' + story_id + '_hours_input').getValue()};
+		parameters = {estimated_hours: $('milestone_issue_' + story_id + '_hours_input').getValue()};
 	} else if ($('milestone_issue_' + story_id + '_points_input')) {
-		params = {estimated_points: $('milestone_issue_' + story_id + '_points_input').getValue()};
+		parameters = {estimated_points: $('milestone_issue_' + story_id + '_points_input').getValue()};
 	}
 	
 	TBG.Main.Helpers.ajax(url, {
-		parameters: params,
+		params: parameters,
 		loading: {indicator: 'point_selector_' + story_id + '_indicator'},
 		success: {
 			callback: function(json) {
