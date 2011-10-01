@@ -1147,15 +1147,21 @@
 		{
 			$builds = $this->selected_project->getBuilds();
 			
-			$active_builds = array();
-			$archived_builds = array();
+			$active_builds = array(0 => array());
+			$archived_builds = array(0 => array());
+			
+			foreach ($this->selected_project->getEditions() as $edition_id => $edition)
+			{
+				$active_builds[$edition_id] = array();
+				$archived_builds[$edition_id] = array();
+			}
 			
 			foreach ($builds as $build)
 			{
 				if ($build->isLocked())
-					$archived_builds[$build->getID()] = $build;
+					$archived_builds[$build->getEditionID()][$build->getID()] = $build;
 				else
-					$active_builds[$build->getID()] = $build;
+					$active_builds[$build->getEditionID()][$build->getID()] = $build;
 			}
 			
 			$this->active_builds = $active_builds;

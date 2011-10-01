@@ -8,45 +8,53 @@
 ?>
 			<?php include_template('project/projectheader', array('selected_project' => $selected_project)); ?>
 			<?php include_template('project/projectinfosidebar', array('selected_project' => $selected_project)); ?>
-			<h3><?php echo __('Active releases'); ?></h3>
-			<?php if (count($active_builds)): ?>
+			<h3><?php echo __('Active project releases'); ?></h3>
+			<?php if (count($active_builds[0])): ?>
 				<ul class="simple_list">
-				<?php foreach ($active_builds as $build): ?>
-					<li class="rounded_box invisible" style="line-height: 1.3;">
-						<div class="build_buttons" style="float: right; margin: 6px 3px 0 0;">
-							<?php if ($build->hasDownload()): ?>
-								<?php echo ($build->hasFile()) ? link_tag(make_url('downloadfile', array('id' => $build->getFile()->getID())), image_tag('icon_download.png').__('Download'), array('class' => 'button button-orange')) : link_tag($build->getFileURL(), image_tag('icon_download.png').__('Download'), array('class' => 'button button-orange')); ?>
-							<?php endif; ?>
-						</div>
-						<?php echo image_tag('icon_build.png', array('style' => 'float: left; margin: 2px 5px 0 0;')); ?> <?php echo '<b style="font-size: 15px;">' . $build->getName() . '</b>&nbsp;&nbsp;<span class="faded_out">(' . $build->getVersion() . ')</span>'; ?><br>
-						<span class="faded_out" style="font-size: 11px;"><?php echo __('Released %timestamp%', array('%timestamp%' => tbg_formatTime($build->getReleaseDate(), 7))); ?></span>
-					</li>
+				<?php foreach ($active_builds[0] as $build): ?>
+					<?php include_template('project/release', array('build' => $build)); ?>
 				<?php endforeach; ?>
 				</ul>
 			<?php else: ?>
 				<div class="faded_out"><?php echo __('There are no active releases for this project'); ?></div>
 			<?php endif; ?>
+			<?php if ($selected_project->isEditionsEnabled()): ?>
+				<?php foreach ($selected_project->getEditions() as $edition_id => $edition): ?>
+					<h4 style="margin-top: 30px;"><?php echo __('Active %edition_name% releases', array('%edition_name%' => $edition->getName())); ?></h4>
+					<?php if (count($active_builds[$edition_id])): ?>
+						<ul class="simple_list">
+						<?php foreach ($active_builds[$edition_id] as $build): ?>
+							<?php include_template('project/release', array('build' => $build)); ?>
+						<?php endforeach; ?>
+						</ul>
+					<?php else: ?>
+						<div class="faded_out"><?php echo __('There are no active releases for this edition'); ?></div>
+					<?php endif; ?>
+				<?php endforeach; ?>
+			<?php endif; ?>
 			<h3 style="margin-top: 30px;"><?php echo __('Archived releases'); ?></h3>
-			<?php if (count($archived_builds)): ?>
+			<?php if (count($archived_builds[0])): ?>
 				<ul class="simple_list">
-				<?php foreach ($archived_builds as $build): ?>
-					<li class="rounded_box invisible">
-						<?php if ($build->hasDownload()): ?>
-							<div class="build_buttons" style="float: right; margin: 4px 4px 0 0;">
-								<?php if (!$build->isReleased()): ?>
-									<div class="button button-silver disabled" title="<?php echo __('This release is no longer available for download'); ?>"><?php echo __('Download'); ?></div>
-								<?php else: ?>
-									<?php echo ($build->hasFile()) ? link_tag(make_url('downloadfile', array('id' => $build->getFile()->getID())), image_tag('icon_download.png').__('Download'), array('class' => 'button button-orange')) : link_tag($build->getFileURL(), image_tag('icon_download.png').__('Download'), array('class' => 'button button-orange')); ?>
-								<?php endif; ?>
-							</div>
-						<?php endif; ?>
-						<?php echo image_tag('icon_build.png', array('style' => 'float: left; margin: 2px 5px 0 0;')); ?> <?php echo $build->getName() . '&nbsp;&nbsp;<span class="faded_out">(' . $build->getVersion() . ')</span>'; ?><br>
-						<span class="faded_out" style="font-size: 11px;"><?php echo __('Released %timestamp%', array('%timestamp%' => tbg_formatTime($build->getReleaseDate(), 7))); ?></span>
-					</li>
+				<?php foreach ($archived_builds[0] as $build): ?>
+					<?php include_template('project/release', array('build' => $build)); ?>
 				<?php endforeach; ?>
 				</ul>
 			<?php else: ?>
 				<div class="faded_out"><?php echo __('There are no archived releases for this project'); ?></div>
+			<?php endif; ?>
+			<?php if ($selected_project->isEditionsEnabled()): ?>
+				<?php foreach ($selected_project->getEditions() as $edition_id => $edition): ?>
+					<h4 style="margin-top: 30px;"><?php echo __('Archived %edition_name% releases', array('%edition_name%' => $edition->getName())); ?></h4>
+					<?php if (count($archived_builds[$edition_id])): ?>
+						<ul class="simple_list">
+						<?php foreach ($archived_builds[$edition_id] as $build): ?>
+							<?php include_template('project/release', array('build' => $build)); ?>
+						<?php endforeach; ?>
+						</ul>
+					<?php else: ?>
+						<div class="faded_out"><?php echo __('There are no archived releases for this edition'); ?></div>
+					<?php endif; ?>
+				<?php endforeach; ?>
 			<?php endif; ?>
 		</td>
 	</tr>

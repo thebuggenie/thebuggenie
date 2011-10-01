@@ -1396,6 +1396,14 @@
 								{
 									$build->clearMilestone();
 								}
+								if ($request->getParameter('edition') && $edition = TBGContext::factory()->TBGEdition($request->getParameter('edition')))
+								{
+									$build->setEdition($edition);
+								}
+								else
+								{
+									$build->clearEdition();
+								}
 								$release_date = mktime($request->getParameter('release_hour'), $request->getParameter('release_minute'), 1, $request->getParameter('release_month'), $request->getParameter('release_day'), $request->getParameter('release_year'));
 								$build->setReleaseDate($release_date);
 								switch ($request->getParameter('download', 'leave_file'))

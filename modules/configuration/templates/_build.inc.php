@@ -62,6 +62,19 @@
 						</select>
 					</td>
 				</tr>
+				<?php if ($build->getProject()->isEditionsEnabled() || $build->getEdition() instanceof TBGEdition): ?>
+					<tr>
+						<td><label for="build_edition_dropdown"><?php echo __('Edition release'); ?></label></td>
+						<td>
+							<select name="edition" id="build_edition_dropdown">
+								<option value="0"<?php if (!$build->getEdition() instanceof TBGEdition) echo ' selected'; ?>><?php echo __('This release is not related to a edition'); ?></option>
+								<?php foreach ($project->getEditions() as $edition): ?>
+									<option value="<?php echo $edition->getID(); ?>"<?php if ($build->getEdition() instanceof TBGEdition && $build->getEdition()->getID() == $edition->getID()) echo ' selected'; ?>><?php echo __('This is a release of edition %edition_name%', array('%edition_name%' => $edition->getName())); ?></option>
+								<?php endforeach; ?>
+							</select>
+						</td>
+					</tr>
+				<?php endif; ?>
 			</table>
 			<div class="rounded_box lightgrey borderless" style="margin: 5px 0;">
 				<table style="clear: both; width: 780px;" cellpadding=0 cellspacing=0>
@@ -94,6 +107,9 @@
 						</div>
 						<?php if ($build->getID()): ?>
 							<input type="hidden" name="build_id" value="<?php echo $build->getID(); ?>">
+						<?php endif; ?>
+						<?php if (!$build->getProject()->isEditionsEnabled() && !$build->getEdition() instanceof TBGEdition): ?>
+							<input type="hidden" name="edition" value="0">
 						<?php endif; ?>
 							<input class="button button-green" style="float: right;" type="submit" value="<?php echo ($build->getId()) ? __('Update release') : __('Add release'); ?>">
 						<span id="add_release_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>

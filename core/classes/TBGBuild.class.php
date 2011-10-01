@@ -197,6 +197,11 @@
 		{
 			return $this->_edition;
 		}
+		
+		public function getEditionID()
+		{
+			return ($this->getEdition() instanceof TBGEdition) ? $this->getEdition()->getID() : 0;
+		}
 
 		public function setEdition(TBGEdition $edition)
 		{
@@ -236,6 +241,11 @@
 		public function clearMilestone()
 		{
 			$this->_milestone = null;
+		}
+		
+		public function clearEdition()
+		{
+			$this->_edition = null;
 		}
 		
 		/**
@@ -412,6 +422,16 @@
 		public function hasDownload()
 		{
 			return (bool) ($this->getFile() instanceof TBGFile || $this->_file_url != '');
+		}
+		
+		public function isArchived()
+		{
+			return $this->isLocked();
+		}
+		
+		public function isActive()
+		{
+			return !$this->isLocked();
 		}
 		
 	}

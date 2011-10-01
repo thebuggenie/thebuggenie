@@ -2,25 +2,7 @@
 <li id="show_build_<?php print $b_id; ?>" class="rounded_box invisible buildbox">
 	<?php if ($tbg_user->canManageProjectReleases($build->getProject())): ?>
 		<div class="build_buttons">
-			<?php /*<a href="javascript:void(0);" onclick="$('build_<?php echo $build->getID(); ?>_permissions').toggle();" class="image" title="<?php echo __('Set permissions for this build'); ?>" style="margin-right: 5px;"><?php echo image_tag('cfg_icon_permissions.png'); ?></a>
-			<a href="javascript:void(0);" onclick="$('show_build_<?php print $b_id; ?>').addClassName('selected_green');$('show_build_<?php print $b_id; ?>').removeClassName('hover_highlight');$('addtoopen_build_<?php print $b_id; ?>').show();" class="image"><?php echo image_tag('icon_build_addtoopen.png'); ?></a>
-			<?php if (!$build->isReleased()): ?>
-				<a href="javascript:void(0);" onclick="TBG.Project.Build.doAction('<?php echo make_url('configure_build_action', array('build_id' => $b_id, 'build_action' => 'release')); ?>', <?php print $b_id; ?>, 'release', 'one');" class="image"><?php echo image_tag('icon_release.png'); ?></a>
-			<?php else: ?>
-				<a href="javascript:void(0);" onclick="TBG.Project.Build.doAction('<?php echo make_url('configure_build_action', array('build_id' => $b_id, 'build_action' => 'retract')); ?>', <?php print $b_id; ?>, 'retract', 'one');" class="image"><?php echo image_tag('icon_retract.png'); ?></a>
-			<?php endif; ?>
-			<?php if ($build->isLocked()): ?>
-				<a href="javascript:void(0);" onclick="TBG.Project.Build.doAction('<?php echo make_url('configure_build_action', array('build_id' => $b_id, 'build_action' => 'unlock')); ?>', <?php print $b_id; ?>, 'unlock', 'one');" class="image"><?php echo image_tag('icon_locked.png'); ?></a>
-			<?php else: ?>
-				<a href="javascript:void(0);" onclick="TBG.Project.Build.doAction('<?php echo make_url('configure_build_action', array('build_id' => $b_id, 'build_action' => 'lock')); ?>', <?php print $b_id; ?>, 'lock', 'one');" class="image"><?php echo image_tag('icon_unlocked.png'); ?></a>
-			<?php endif; ?>
-			<a href="javascript:void(0);" onclick="$('edit_build_<?php print $b_id; ?>').show();$('show_build_<?php print $b_id; ?>').hide();" class="image"><?php echo image_tag('icon_edit.png'); ?></a> */ ?>
 			<button class="button button-silver" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'project_build', 'project_id' => $build->getProject()->getId(), 'build_id' => $build->getId())); ?>');"><?php echo __('Edit'); ?></button>
-			<?php /*if ($build->isLocked()): ?>
-				<div class="button button-blue"><span><?php echo __('Activate'); ?></span></div>
-			<?php else: ?>
-				<div class="button button-blue"><span><?php echo __('Archive'); ?></span></div>
-			<?php endif;*/ ?>
 			<button class="button button-silver" onclick="TBG.Main.Helpers.Dialog.show('<?php echo __('Delete this release?'); ?>', '<?php echo __('Do you really want to delete this release?').'<br>'.__('Deleting this release will make it unavailable for download, and remove it from any associated issue reports or feature requests.').'<br><b>'.__('This action cannot be reverted').'</b>'; ?>', {yes: {click: function() {TBG.Project.Build.remove('<?php echo make_url('configure_build_action', array('build_id' => $b_id, 'build_action' => 'delete')); ?>', <?php print $b_id; ?>, '<?php echo ($build->isLocked()) ? "active" : "archived"; ?>');}}, no: {click: TBG.Main.Helpers.Dialog.dismiss}});"><?php echo __('Delete'); ?></button>
 		</div>
 	<?php endif; ?>

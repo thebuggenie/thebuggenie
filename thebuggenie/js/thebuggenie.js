@@ -1360,14 +1360,14 @@ TBG.Project.Build.remove = function(url, bid, b_type) {
 	});
 }
 
-TBG.Project.Build.add = function(url) {
+TBG.Project.Build.add = function(url, edition_id) {
 	TBG.Main.Helpers.ajax(url, {
 		form: 'add_build_form',
 		loading: {indicator: 'build_add_indicator'},
 		success: {
 			reset: 'add_build_form',
-			hide: 'no_builds',
-			update: {element: 'build_table', insertion: true, from: 'html'}
+			hide: 'no_active_builds_' + edition_id,
+			update: {element: 'active_builds_' + edition_id, insertion: true, from: 'html'}
 		}
 	});
 }
