@@ -28,6 +28,7 @@ input, select, textarea, button { font-family: 'Open Sans', sans-serif; font-siz
 select { font-family: sans-serif !important; } /* Safari 5.1 mac fix */
 input, select, textarea { background-color: #FFF; }
 input[type="submit"], button, input[type="file"] { background-color: #E5E5E5; }
+input[type="text"], input[type="password"], textarea, select { box-shadow: inset 0 0 6px rgba(200, 200, 200, 0.4); -webkit-box-shadow: inset 0 0 6px rgba(200, 200, 200, 0.4); -moz-box-shadow: inset 0 0 6px rgba(200, 200, 200, 0.4); }
 input[type="submit"]:hover, button:hover { background-color: #F5F5F5; }
 input[type="submit"]:active , button:active { background-color: #D5D5D5; }
 input[type="image"] { border: 0px; padding: 0px; width: 16px; height: 16px; background-color: transparent; }
