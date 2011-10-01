@@ -287,6 +287,34 @@
 		protected $_prioritycount = null;
 
 		/**
+		 * Status count
+		 *
+		 * @var array
+		 */
+		protected $_statuscount = null;
+
+		/**
+		 * Category count
+		 *
+		 * @var array
+		 */
+		protected $_categorycount = null;
+
+		/**
+		 * Resolution count
+		 *
+		 * @var array
+		 */
+		protected $_resolutioncount = null;
+
+		/**
+		 * State count
+		 *
+		 * @var array
+		 */
+		protected $_statecount = null;
+
+		/**
 		 * Recent new features / enhancements reported
 		 *
 		 * @var array
@@ -2347,6 +2375,93 @@
 		{
 			$this->_populatePriorityCount();
 			return $this->_prioritycount;
+		}
+
+		protected function _populateStatusCount()
+		{
+			if ($this->_statuscount === null)
+			{
+				$this->_statuscount = array();
+				$this->_statuscount[0] = array('open' => 0, 'closed' => 0, 'percentage' => 0);
+				foreach (TBGStatus::getAll() as $status_id => $status)
+				{
+					$this->_statuscount[$status_id] = array('open' => 0, 'closed' => 0, 'percentage' => 0);
+				}
+				foreach (TBGIssuesTable::getTable()->getStatusCountByProjectID($this->getID()) as $status_id => $status_count)
+				{
+					$this->_statuscount[$status_id] = $status_count;
+				}
+			}
+		}
+
+		public function getStatusCount()
+		{
+			$this->_populateStatusCount();
+			return $this->_statuscount;
+		}
+
+		protected function _populateResolutionCount()
+		{
+			if ($this->_resolutioncount === null)
+			{
+				$this->_resolutioncount = array();
+				$this->_resolutioncount[0] = array('open' => 0, 'closed' => 0, 'percentage' => 0);
+				foreach (TBGResolution::getAll() as $resolution_id => $resolution)
+				{
+					$this->_resolutioncount[$resolution_id] = array('open' => 0, 'closed' => 0, 'percentage' => 0);
+				}
+				foreach (TBGIssuesTable::getTable()->getResolutionCountByProjectID($this->getID()) as $resolution_id => $resolution_count)
+				{
+					$this->_resolutioncount[$resolution_id] = $resolution_count;
+				}
+			}
+		}
+
+		public function getResolutionCount()
+		{
+			$this->_populateResolutionCount();
+			return $this->_resolutioncount;
+		}
+
+		protected function _populateCategoryCount()
+		{
+			if ($this->_categorycount === null)
+			{
+				$this->_categorycount = array();
+				$this->_categorycount[0] = array('open' => 0, 'closed' => 0, 'percentage' => 0);
+				foreach (TBGCategory::getAll() as $category_id => $category)
+				{
+					$this->_categorycount[$category_id] = array('open' => 0, 'closed' => 0, 'percentage' => 0);
+				}
+				foreach (TBGIssuesTable::getTable()->getCategoryCountByProjectID($this->getID()) as $category_id => $category_count)
+				{
+					$this->_categorycount[$category_id] = $category_count;
+				}
+			}
+		}
+
+		public function getCategoryCount()
+		{
+			$this->_populateCategoryCount();
+			return $this->_categorycount;
+		}
+
+		protected function _populateStateCount()
+		{
+			if ($this->_statecount === null)
+			{
+				$this->_statecount = array();
+				foreach (TBGIssuesTable::getTable()->getStateCountByProjectID($this->getID()) as $state_id => $state_count)
+				{
+					$this->_statecount[$state_id] = $state_count;
+				}
+			}
+		}
+
+		public function getStateCount()
+		{
+			$this->_populateStateCount();
+			return $this->_statecount;
 		}
 
 		protected function _populateRecentIssues()

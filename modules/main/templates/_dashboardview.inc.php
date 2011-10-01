@@ -354,18 +354,14 @@
 			<span class="faded_out">This is coming soon...</span>
 		</div>
 		<?php break; ?>
-	<?php case TBGDashboard::DASHBOARD_PROJECT_STATISTICS : ?>
+	<?php case TBGDashboard::DASHBOARD_PROJECT_STATISTICS_PRIORITY: ?>
 		<?php $selected_project = TBGContext::getCurrentProject(); ?>
 		<?php $priority_count = $selected_project->getPriorityCount(); ?>
 		<div class="header">
 			<?php echo image_tag('collapse_small.png', array('id' => 'dashboard_'.$id.'_collapse', 'style' => 'float: left; margin: 3px 5px 0 2px;', 'onclick' => "\$('dashboard_{$id}').toggle(); this.src = (this.src == '" . image_url('collapse_small.png', false, 'core', false) . "') ? '" . image_url('expand_small.png', false, 'core', false) . "' : '" . image_url('collapse_small.png', false, 'core', false) . "'")); ?>
-			<?php echo __('Statistics'); ?>
+			<?php echo __('Open issues by priority'); ?>
 		</div>
 		<div class="dashboard_view_content" id="dashboard_<?php echo $id; ?>">
-			<?php echo link_tag(make_url('project_statistics', array('project_key' => $selected_project->getKey())), __('More statistics') . ' &raquo;', array('class' => 'more', 'title' => __('More statistics'))); ?>
-			<div class="header_div">
-				<?php echo __('Open issues by priority'); ?>
-			</div>
 			<table cellpadding=0 cellspacing=0 class="priority_percentage" style="margin: 5px 0 10px 0; width: 100%;">
 				<?php foreach (TBGPriority::getAll() as $priority_id => $priority): ?>
 					<tr class="hover_highlight">
@@ -382,7 +378,96 @@
 					<td style="text-align: right; font-weight: normal; font-size: 11px; padding-left: 5px; vertical-align: middle;" class="faded_out">&nbsp;<?php echo (int) $priority_count[0]['percentage']; ?>%</td>
 				</tr>
 			</table>
-			<?php echo link_tag(make_url('project_issues', array('project_key' => $selected_project->getKey(), 'search' => true, 'filters[state]' => array('operator' => '=', 'value' => TBGIssue::STATE_OPEN), 'groupby' => 'priority', 'grouporder' => 'desc')), __('Show details'), array('title' => __('Show more issues'))); ?>
+			<?php echo link_tag(make_url('project_statistics', array('project_key' => $selected_project->getKey())), __('Show more statistics'), array('class' => 'button button-silver', 'title' => __('More statistics'))); ?>
+			<?php echo link_tag(make_url('project_issues', array('project_key' => $selected_project->getKey(), 'search' => true, 'filters[state]' => array('operator' => '=', 'value' => TBGIssue::STATE_OPEN), 'groupby' => 'priority', 'grouporder' => 'desc')), __('Show details'), array('class' => 'button button-silver', 'title' => __('Show more issues'))); ?>
+			<br style="clear: both;">
+		</div>
+		<?php break; ?>
+	<?php case TBGDashboard::DASHBOARD_PROJECT_STATISTICS_CATEGORY: ?>
+		<?php $selected_project = TBGContext::getCurrentProject(); ?>
+		<?php $category_count = $selected_project->getCategoryCount(); ?>
+		<div class="header">
+			<?php echo image_tag('collapse_small.png', array('id' => 'dashboard_'.$id.'_collapse', 'style' => 'float: left; margin: 3px 5px 0 2px;', 'onclick' => "\$('dashboard_{$id}').toggle(); this.src = (this.src == '" . image_url('collapse_small.png', false, 'core', false) . "') ? '" . image_url('expand_small.png', false, 'core', false) . "' : '" . image_url('collapse_small.png', false, 'core', false) . "'")); ?>
+			<?php echo __('Open issues by category'); ?>
+		</div>
+		<div class="dashboard_view_content" id="dashboard_<?php echo $id; ?>">
+			<table cellpadding=0 cellspacing=0 class="category_percentage" style="margin: 5px 0 10px 0; width: 100%;">
+				<?php foreach (TBGCategory::getAll() as $category_id => $category): ?>
+					<tr class="hover_highlight">
+						<td style="font-weight: normal; font-size: 13px; padding-left: 3px;"><?php echo $category->getName(); ?></td>
+						<td style="text-align: right; font-weight: bold; padding-right: 5px; vertical-align: middle;"><?php echo $category_count[$category_id]['open']; ?></td>
+						<td style="width: 40%; vertical-align: middle;"><?php include_template('main/percentbar', array('percent' => $category_count[$category_id]['percentage'], 'height' => 14)); ?></td>
+						<td style="text-align: right; font-weight: normal; font-size: 11px; padding-left: 5px; vertical-align: middle;">&nbsp;<?php echo (int) $category_count[$category_id]['percentage']; ?>%</td>
+					</tr>
+				<?php endforeach; ?>
+				<tr class="hover_highlight">
+					<td style="font-weight: normal; font-size: 13px; padding-left: 3px;" class="faded_out"><?php echo __('Category not set'); ?></td>
+					<td style="text-align: right; font-weight: bold; padding-right: 5px; vertical-align: middle;" class="faded_out"><?php echo $category_count[0]['open']; ?></td>
+					<td style="width: 40%; vertical-align: middle;" class="faded_out"><?php include_template('main/percentbar', array('percent' => $category_count[0]['percentage'], 'height' => 14)); ?></td>
+					<td style="text-align: right; font-weight: normal; font-size: 11px; padding-left: 5px; vertical-align: middle;" class="faded_out">&nbsp;<?php echo (int) $category_count[0]['percentage']; ?>%</td>
+				</tr>
+			</table>
+			<?php echo link_tag(make_url('project_statistics', array('project_key' => $selected_project->getKey())), __('Show more statistics'), array('class' => 'button button-silver', 'title' => __('More statistics'))); ?>
+			<?php echo link_tag(make_url('project_issues', array('project_key' => $selected_project->getKey(), 'search' => true, 'filters[state]' => array('operator' => '=', 'value' => TBGIssue::STATE_OPEN), 'groupby' => 'category', 'grouporder' => 'desc')), __('Show details'), array('class' => 'button button-silver', 'title' => __('Show more issues'))); ?>
+			<br style="clear: both;">
+		</div>
+		<?php break; ?>
+	<?php case TBGDashboard::DASHBOARD_PROJECT_STATISTICS_STATUS: ?>
+		<?php $selected_project = TBGContext::getCurrentProject(); ?>
+		<?php $status_count = $selected_project->getStatusCount(); ?>
+		<div class="header">
+			<?php echo image_tag('collapse_small.png', array('id' => 'dashboard_'.$id.'_collapse', 'style' => 'float: left; margin: 3px 5px 0 2px;', 'onclick' => "\$('dashboard_{$id}').toggle(); this.src = (this.src == '" . image_url('collapse_small.png', false, 'core', false) . "') ? '" . image_url('expand_small.png', false, 'core', false) . "' : '" . image_url('collapse_small.png', false, 'core', false) . "'")); ?>
+			<?php echo __('Open issues by status'); ?>
+		</div>
+		<div class="dashboard_view_content" id="dashboard_<?php echo $id; ?>">
+			<table cellpadding=0 cellspacing=0 class="status_percentage" style="margin: 5px 0 10px 0; width: 100%;">
+				<?php foreach (TBGStatus::getAll() as $status_id => $status): ?>
+					<tr class="hover_highlight">
+						<td style="font-weight: normal; font-size: 13px; padding-left: 3px;"><?php echo $status->getName(); ?></td>
+						<td style="text-align: right; font-weight: bold; padding-right: 5px; vertical-align: middle;"><?php echo $status_count[$status_id]['open']; ?></td>
+						<td style="width: 40%; vertical-align: middle;"><?php include_template('main/percentbar', array('percent' => $status_count[$status_id]['percentage'], 'height' => 14)); ?></td>
+						<td style="text-align: right; font-weight: normal; font-size: 11px; padding-left: 5px; vertical-align: middle;">&nbsp;<?php echo (int) $status_count[$status_id]['percentage']; ?>%</td>
+					</tr>
+				<?php endforeach; ?>
+				<tr class="hover_highlight">
+					<td style="font-weight: normal; font-size: 13px; padding-left: 3px;" class="faded_out"><?php echo __('Status not set'); ?></td>
+					<td style="text-align: right; font-weight: bold; padding-right: 5px; vertical-align: middle;" class="faded_out"><?php echo $status_count[0]['open']; ?></td>
+					<td style="width: 40%; vertical-align: middle;" class="faded_out"><?php include_template('main/percentbar', array('percent' => $status_count[0]['percentage'], 'height' => 14)); ?></td>
+					<td style="text-align: right; font-weight: normal; font-size: 11px; padding-left: 5px; vertical-align: middle;" class="faded_out">&nbsp;<?php echo (int) $status_count[0]['percentage']; ?>%</td>
+				</tr>
+			</table>
+			<?php echo link_tag(make_url('project_statistics', array('project_key' => $selected_project->getKey())), __('Show more statistics'), array('class' => 'button button-silver', 'title' => __('More statistics'))); ?>
+			<?php echo link_tag(make_url('project_issues', array('project_key' => $selected_project->getKey(), 'search' => true, 'filters[state]' => array('operator' => '=', 'value' => TBGIssue::STATE_OPEN), 'groupby' => 'status', 'grouporder' => 'desc')), __('Show details'), array('class' => 'button button-silver', 'title' => __('Show more issues'))); ?>
+			<br style="clear: both;">
+		</div>
+		<?php break; ?>
+	<?php case TBGDashboard::DASHBOARD_PROJECT_STATISTICS_RESOLUTION: ?>
+		<?php $selected_project = TBGContext::getCurrentProject(); ?>
+		<?php $resolution_count = $selected_project->getResolutionCount(); ?>
+		<div class="header">
+			<?php echo image_tag('collapse_small.png', array('id' => 'dashboard_'.$id.'_collapse', 'style' => 'float: left; margin: 3px 5px 0 2px;', 'onclick' => "\$('dashboard_{$id}').toggle(); this.src = (this.src == '" . image_url('collapse_small.png', false, 'core', false) . "') ? '" . image_url('expand_small.png', false, 'core', false) . "' : '" . image_url('collapse_small.png', false, 'core', false) . "'")); ?>
+			<?php echo __('Open issues by resolution'); ?>
+		</div>
+		<div class="dashboard_view_content" id="dashboard_<?php echo $id; ?>">
+			<table cellpadding=0 cellspacing=0 class="resolution_percentage" style="margin: 5px 0 10px 0; width: 100%;">
+				<?php foreach (TBGResolution::getAll() as $resolution_id => $resolution): ?>
+					<tr class="hover_highlight">
+						<td style="font-weight: normal; font-size: 13px; padding-left: 3px;"><?php echo $resolution->getName(); ?></td>
+						<td style="text-align: right; font-weight: bold; padding-right: 5px; vertical-align: middle;"><?php echo $resolution_count[$resolution_id]['open']; ?></td>
+						<td style="width: 40%; vertical-align: middle;"><?php include_template('main/percentbar', array('percent' => $resolution_count[$resolution_id]['percentage'], 'height' => 14)); ?></td>
+						<td style="text-align: right; font-weight: normal; font-size: 11px; padding-left: 5px; vertical-align: middle;">&nbsp;<?php echo (int) $resolution_count[$resolution_id]['percentage']; ?>%</td>
+					</tr>
+				<?php endforeach; ?>
+				<tr class="hover_highlight">
+					<td style="font-weight: normal; font-size: 13px; padding-left: 3px;" class="faded_out"><?php echo __('Resolution not set'); ?></td>
+					<td style="text-align: right; font-weight: bold; padding-right: 5px; vertical-align: middle;" class="faded_out"><?php echo $resolution_count[0]['open']; ?></td>
+					<td style="width: 40%; vertical-align: middle;" class="faded_out"><?php include_template('main/percentbar', array('percent' => $resolution_count[0]['percentage'], 'height' => 14)); ?></td>
+					<td style="text-align: right; font-weight: normal; font-size: 11px; padding-left: 5px; vertical-align: middle;" class="faded_out">&nbsp;<?php echo (int) $resolution_count[0]['percentage']; ?>%</td>
+				</tr>
+			</table>
+			<?php echo link_tag(make_url('project_statistics', array('project_key' => $selected_project->getKey())), __('Show more statistics'), array('class' => 'button button-silver', 'title' => __('More statistics'))); ?>
+			<?php echo link_tag(make_url('project_issues', array('project_key' => $selected_project->getKey(), 'search' => true, 'filters[state]' => array('operator' => '=', 'value' => TBGIssue::STATE_OPEN), 'groupby' => 'resolution', 'grouporder' => 'desc')), __('Show details'), array('class' => 'button button-silver', 'title' => __('Show more issues'))); ?>
+			<br style="clear: both;">
 		</div>
 		<?php break; ?>
 	<?php endswitch;?>

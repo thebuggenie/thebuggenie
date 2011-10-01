@@ -32,7 +32,11 @@
 		const DASHBOARD_PROJECT_CLIENT = 103;
 		const DASHBOARD_PROJECT_SUBPROJECTS = 104;
 		const DASHBOARD_PROJECT_LAST15 = 105;
-		const DASHBOARD_PROJECT_STATISTICS = 106;
+		const DASHBOARD_PROJECT_STATISTICS_PRIORITY = 106;
+		const DASHBOARD_PROJECT_STATISTICS_STATUS = 111;
+		const DASHBOARD_PROJECT_STATISTICS_RESOLUTION = 112;
+		const DASHBOARD_PROJECT_STATISTICS_STATE = 113;
+		const DASHBOARD_PROJECT_STATISTICS_CATEGORY = 114;
 		const DASHBOARD_PROJECT_RECENT_ISSUES = 107;
 		const DASHBOARD_PROJECT_RECENT_ACTIVITIES = 108;
 		const DASHBOARD_PROJECT_UPCOMING = 109;
@@ -55,7 +59,7 @@
 																				TBGContext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES => TBGContext::geti18n()->__('Open issues'),
 																				TBGContext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES => TBGContext::geti18n()->__('Closed issues'),
 																				TBGContext::PREDEFINED_SEARCH_PROJECT_MOST_VOTED => TBGContext::geti18n()->__('Most voted issues'));
-					$searches[self::DASHBOARD_VIEW_LOGGED_ACTION] = array( 0 => TBGContext::geti18n()->__('What you\'ve done recently'));
+					$searches[self::DASHBOARD_VIEW_LOGGED_ACTION] = array( 0 => TBGContext::geti18n()->__("What you've done recently"));
 					if (TBGContext::getUser()->canViewComments())
 					{
 						$searches[self::DASHBOARD_VIEW_LAST_COMMENTS] = array( 0 => TBGContext::geti18n()->__('Recent comments'));	
@@ -83,7 +87,10 @@
 					$searches[self::DASHBOARD_PROJECT_CLIENT] = array( 0 => TBGContext::geti18n()->__('Project client'));
 					$searches[self::DASHBOARD_PROJECT_SUBPROJECTS] = array( 0 => TBGContext::geti18n()->__('Subprojects'));
 					$searches[self::DASHBOARD_PROJECT_LAST15] = array( 0 => TBGContext::geti18n()->__('Graph of closed vs open issues, past 15 days'));
-					$searches[self::DASHBOARD_PROJECT_STATISTICS] = array( 0 => TBGContext::geti18n()->__('Basic statistics'));
+					$searches[self::DASHBOARD_PROJECT_STATISTICS_PRIORITY] = array( 0 => TBGContext::geti18n()->__('Statistics by priority'));
+					$searches[self::DASHBOARD_PROJECT_STATISTICS_CATEGORY] = array( 0 => TBGContext::geti18n()->__('Statistics by category'));
+					$searches[self::DASHBOARD_PROJECT_STATISTICS_STATUS] = array( 0 => TBGContext::geti18n()->__('Statistics by status'));
+					$searches[self::DASHBOARD_PROJECT_STATISTICS_RESOLUTION] = array( 0 => TBGContext::geti18n()->__('Statistics by resolution'));
 					$searches[self::DASHBOARD_PROJECT_RECENT_ISSUES] = $issuetype_icons;
 					$searches[self::DASHBOARD_PROJECT_RECENT_ACTIVITIES] = array( 0 => TBGContext::geti18n()->__('Recent activities'));
 					$searches[self::DASHBOARD_PROJECT_UPCOMING] = array( 0 => TBGContext::geti18n()->__('Upcoming milestones and deadlines'));

@@ -903,6 +903,7 @@ table.issue_affects td img { vertical-align: bottom; }
 #dashboard li .milestone_box .header { margin: 0; padding: 0; border: none; background: none; }
 #dashboard .dashboard_view_header { font-weight: bold; color: #666; font-size: 1em; padding: 4px; }
 #dashboard .dashboard_view_content { padding: 10px; padding-top: 0; }
+#dashboard .dashboard_view_content .button { float: right; margin-left: 5px; overflow: visible; }
 #dashboard .dashboard_view_header img { margin-right: 2px; }
 #dashboard .latest_action_dates{ font-weight: bold; padding: 10px 0 0 0; }
 #dashboard .faded_out.smaller { font-size: 0.8em; padding-right: 5px; }
@@ -1256,6 +1257,7 @@ a.action_button:hover { background-color: #FCFCFC; border-color: #AAA; }
 }
 
 input[type=submit], button, .button { line-height: 18px !important; height: auto; font-size: 13px; padding: 2px 5px !important; }
+a.button:hover { border-bottom-style: solid; }
 
 .button span, .button a, .button span:hover, .button a:hover, input[type=submit], input[type=submit]:hover { padding-top: 1px; }
 

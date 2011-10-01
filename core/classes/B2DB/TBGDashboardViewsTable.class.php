@@ -116,7 +116,7 @@
 					$this->addView($target_id, $target_type, array('type' => TBGDashboard::DASHBOARD_PROJECT_SUBPROJECTS, 'id' => 0));
 					$this->addView($target_id, $target_type, array('type' => TBGDashboard::DASHBOARD_PROJECT_CLIENT, 'id' => 0));
 					$this->addView($target_id, $target_type, array('type' => TBGDashboard::DASHBOARD_PROJECT_LAST15, 'id' => 0));
-					$this->addView($target_id, $target_type, array('type' => TBGDashboard::DASHBOARD_PROJECT_STATISTICS, 'id' => 0));
+					$this->addView($target_id, $target_type, array('type' => TBGDashboard::DASHBOARD_PROJECT_STATISTICS_PRIORITY, 'id' => 0));
 					break;
 			}
 
