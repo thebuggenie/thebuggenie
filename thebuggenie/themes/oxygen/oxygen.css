@@ -181,8 +181,10 @@ div.image_container.thumb img.image { width: 220px; }
 /* end comments and commits styling */
 
 /* generic closed and blocking issue styling */
-.issue_closed TD { text-decoration: line-through; }
-.issue_blocking TD { color: #F44; font-weight: bold; }
+.issue_closed td { text-decoration: line-through; }
+.planning_container .issue_closed td { text-decoration: none; color: #999; }
+.planning_container .issue_closed a { color: #9C9; }
+.issue_blocking td { color: #F44; font-weight: bold; }
 /* end closed / blocking */
 
 /* faded text styles */

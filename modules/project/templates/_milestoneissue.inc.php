@@ -1,4 +1,4 @@
-<tr class="milestone_issue_row" id="milestone_issue_<?php echo $issue->getID(); ?>">
+<tr class="milestone_issue_row<?php if ($issue->isClosed()): ?> issue_closed<?php endif; ?>" id="milestone_issue_<?php echo $issue->getID(); ?>">
 	<td>
 		<div id="milestone_issue_<?php echo $issue->getID(); ?>_draggable">
 			<div class="draggable" id="milestone_issue_<?php echo $issue->getID(); ?>_handle">
