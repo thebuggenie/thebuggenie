@@ -46,16 +46,12 @@
 					<div class="sub_header"><?php echo __('Actions available'); ?></div>
 					<?php if ((isset($article) && $article->canEdit()) || (!isset($article) && TBGContext::isProjectContext() && !TBGContext::getProject()->isArchived())): ?>
 							<form action="<?php echo make_url('publish_article_edit', array('article_name' => $article_name)); ?>" method="get" style="float: left; margin-right: 10px;">
-								<div class="button button-green">
-									<input type="submit" value="<?php echo ($article instanceof TBGWikiArticle) ? __('Edit this article') : __('Create this article'); ?>">
-								</div>
+								<input class="button button-green" type="submit" value="<?php echo ($article instanceof TBGWikiArticle) ? __('Edit this article') : __('Create this article'); ?>">
 							</form>
 					<?php endif; ?>
 					<?php if ((isset($article) && $article->canDelete()) || (!isset($article) && TBGContext::isProjectContext() && !TBGContext::getCurrentProject()->isArchived())): ?>
 						<?php if ($article instanceof TBGWikiArticle): ?>
-							<div class="button button-red">
-								<button onclick="$('delete_article_confirm').toggle();"><?php echo __('Delete this article'); ?></button>
-							</div>
+							<button class="button button-red" onclick="$('delete_article_confirm').toggle();"><?php echo __('Delete this article'); ?></button>
 							<div class="rounded_box yellow" style="margin: 10px 0 5px; width: 720px; display: none; padding: 3px 10px 3px 10px; font-size: 14px;" id="delete_article_confirm">
 								<h4><?php echo __('Really delete this article?'); ?></h4>
 								<span class="question_header"><?php echo __('Deleting this article will remove it from the system.'); ?></span><br>

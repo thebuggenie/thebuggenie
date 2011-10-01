@@ -2,15 +2,15 @@
 	<div class="project_header_right">
 		<?php TBGEvent::createNew('core', 'project_header_buttons')->trigger(); ?>
 		<?php if ($tbg_response->getPage() != 'project_releases'): ?>
-			<div class="button button-orange"><?php echo link_tag(make_url('project_releases', array('project_key' => $selected_project->getKey())), image_tag('icon_download.png').__('Download')); ?></div>
+			<?php echo link_tag(make_url('project_releases', array('project_key' => $selected_project->getKey())), image_tag('icon_download.png').__('Download'), array('class' => 'button button-orange')); ?>
 		<?php endif; ?>
 		<?php if (TBGContext::getUser()->canReportIssues($selected_project)): ?>
-			<div class="button button-green report_button" style="overflow: visible; position: relative;">
-				<span><?php echo image_tag('tab_reportissue.png'); ?> <?php echo __('Report an issue'); ?></span>
+			<div class="report_button">
+				<span class="button button-green"><?php echo image_tag('tab_reportissue.png'); ?> <?php echo __('Report an issue'); ?></span>
 				<div class="report_button_hover rounded_box green shadowed borderless">
 					<div class="tab_menu_dropdown">
 						<?php $cc = 1; ?>
-						<?php foreach ($selected_project->getIssuetypeScheme()->getIssuetypes() as $issuetype): ?>
+						<?php foreach ($selected_project->getIssuetypeScheme()->getReportableIssuetypes() as $issuetype): ?>
 							<?php if ($cc == 1)
 									$class = 'first';
 								elseif ($cc == count($selected_project->getIssuetypeScheme()->getIssuetypes()))

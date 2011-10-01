@@ -1059,7 +1059,8 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .client_users_div_inner { padding: 10px; }
 .project_header { padding: 10px; }
 .project_header_right { float: right; margin-top: 5px; }
-.project_header_right .button { float: left; margin-left: 10px; line-height: 1.6; height: 25px; }
+.project_header_right .button { float: left; margin-left: 10px; line-height: 1.6; }
+.project_header_right .report_button { float: right; overflow: visible; position: relative; }
 #project_website, #project_documentation { margin-top: 5px; }
 #edition_table { list-style: none; margin: 0; padding: 0; line-height: 1.2; }
 #edition_table li { list-style: none; margin: 0; padding: 3px; clear: both; margin-top: 5px; }
@@ -1238,7 +1239,7 @@ a.action_button:hover { background-color: #FCFCFC; border-color: #AAA; }
 	-webkit-border-radius: 2px;
 	border-radius: 2px;
 }
-.button input, .button button, .button input:hover {
+/*.button input, .button button, .button input:hover {
 	background-color: transparent;
 	font-size: inherit;
 	font-weight: inherit;
@@ -1246,15 +1247,13 @@ a.action_button:hover { background-color: #FCFCFC; border-color: #AAA; }
 	margin: 0;
 	padding: 0;
 	border: 0;
-}
-
-.button span, .button input, .button input:hover, .button button, .button a, .button a:hover { height: 100%; display: block; height: 20px;}
+}*/
 
 .button span, .button input, .button input:hover, .button button, .button a, .button a:hover, input[type=submit], input[type=submit]:hover {
 	padding: 0px 7px 5px 7px; font-size: 13px;
 }
 
-input[type=submit] { height: 25px; padding-top: 3px !important; }
+input[type=submit], button, .button { line-height: 18px !important; height: auto; font-size: 13px; padding: 2px 5px !important; }
 
 .button span, .button a, .button span:hover, .button a:hover, input[type=submit], input[type=submit]:hover { padding-top: 1px; }
 
@@ -1264,7 +1263,7 @@ input[type=submit] { height: 25px; padding-top: 3px !important; }
 /* When pressed, move it down 1px */ 
 /*----------------------------*/
 .button-icon span { padding: 0 4px; line-height: 1; }
-.button img { float: left; margin: 3px 7px 0px 0; }
+.button img { float: left; margin: 1px 5px 0 0; }
 .button-icon img { margin: 0; float: none; }
 .button a, .button a:hover, .button a:visited, .button a:active { color: #FFF; border-bottom: 0; }
 
