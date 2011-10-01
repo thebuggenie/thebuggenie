@@ -96,6 +96,7 @@ div.image_container.thumb img.image { width: 220px; }
 .submenu_strip .selected_project { font-size: 1em; font-weight: bold; color: #555; border-color: #D9D9BB; }
 
 .submenu_strip { background-color: #FAF3B8; color: #333; box-shadow: 0 0 4px rgba(0, 0, 0, 0.4); -webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.4); -moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.4); padding: 5px; height: 20px; font-size: 0.9em; margin-left: 10px; margin-right: 10px; }
+#quicksearch_container input[type="submit"] { padding: 1px 5px 0 5px !important; height: auto; float: right; margin-left: 2px; font-size: 0.9em; }
 /* End main header area */
 
 /* error and success message popups / slidedowns */
@@ -918,9 +919,7 @@ table.issue_affects td img { vertical-align: bottom; }
 .milestone_box .header { padding: 4px 0; border-bottom: 1px dotted #CCC; font-size: 1.1em; font-weight: bold; }
 .milestone_box .header .counts { font-size: 0.8em; font-weight: normal; color: #555; }
 .milestone_box .header .counts span { font-weight: bold; }
-.milestone_box .header .button button, .milestone_box .header .button a { font-size: 0.9em; line-height: 1; padding: 2px 5px; }
-.milestone_box .header .button a { display: block; padding: 3px 5px; }
-.milestone_box .header .button { margin-left: 5px; }
+.milestone_box .header .button { font-size: 0.8em; font-weight: normal; line-height: 1; padding: 3px 5px; margin-left: 5px; float: right; }
 
 .milestone_box .milestone_issues { width: 100%; }
 .milestone_box .milestone_issues th { background-color: #EAEAEA; border-left: 1px solid #FFF; color: #555; font-size: 0.8em; padding: 2px; font-weight: bold; border-right: 1px solid #CCC; }
@@ -938,6 +937,7 @@ table.issue_affects td img { vertical-align: bottom; }
 
 /* scrum page styling */
 #project_planning td { vertical-align: top; }
+
 ul.milestone_issues_container, #project_dashboard ul, #dashboard_righthand #associated_projects { list-style-type: none; padding: 0; margin: 5px 0 0 0; clear: both; }
 ul.milestone_issues_container { padding: 0; }
 ul.milestone_issues_container li { padding: 0; background-color: #FFF; border: 1px solid #BBB; position: relative; margin: 0; clear: both; }
@@ -977,6 +977,7 @@ ul.milestone_issues_container li .actions label { float: left; font-weight: bold
 #scrum_unassigned { width: 440px; border-top: 1px solid #ccc; padding: 10px 5px; vertical-align: top; }
 #scrum_unassigned .header_div { border: 0; margin: 0; font-size: 1.2em; }
 .planning_container label { float: left; padding-top: 4px; }
+.planning_container h3 .button { float: right; font-size: 0.7em; padding: 3px 5px; }
 #scrum_unassigned label, #scrum_unassigned input[type="submit"], .planning_container label, .planning_container input[type="submit"] { font-size: 0.9em; font-weight: bold; }
 #scrum_unassigned #story_title { width: 300px; }
 #scrum_unassigned .add_story_header { font-weight: bold; float: left; }
@@ -1285,7 +1286,7 @@ input[type=submit] { height: 25px; padding-top: 3px !important; }
 	background: -moz-linear-gradient(-90deg, #c5c5c5, #eaeaea);
 	filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr='#c5c5c5', EndColorStr='#eaeaea');    
 }
-.button-silver input, .button-silver button, .button-silver a, .button-silver span, .button-silver:active input, .button-silver:active button, .button-silver a:active, .button-silver span:active, input[type=submit] { color: #333; text-shadow: 1px 1px #FFF; }
+.button-silver, .button-silver input, .button-silver button, .button-silver a, .button-silver span, .button-silver:active input, .button-silver:active button, .button-silver a:active, .button-silver span:active, input[type=submit] { color: #555; text-shadow: 1px 1px #FFF; }
 .button.disabled, .button.disabled span { color: #AAA; text-shadow: 1px 1px 0px #FFF; }
 /*----------------------------*/
 .button-khaki, input[type=submit].button-khaki {
