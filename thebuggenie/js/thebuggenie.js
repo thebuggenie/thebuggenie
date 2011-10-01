@@ -926,7 +926,7 @@ TBG.Project.Planning.toggleIssues = function(url, milestone_id) {
 					show: 'milestone_' + milestone_id + '_container',
 					callback: function(json) {
 						$('milestone_' + milestone_id + '_list').childElements().each(function(element) {
-							new Draggable(element.id + '_draggable', { revert: true, handle: element.id + '_handle' });
+							new Draggable(element.id + '_draggable', {revert: true, handle: element.id + '_handle'});
 						});
 					}
 				}
@@ -1074,7 +1074,7 @@ TBG.Project.Planning.assign = function(url, dragged, dropped)
 			callback: function(json) {
 				var elm = Element.remove(dragged.up('tr'));
 				if ($(dropped.id + '_list').childElements().size() > 0) {
-					$(dropped.id + '_list').insert(elm);
+					$(dropped.id + '_list').insert({'top': elm});
 				}
 				$('milestone_' + json.old_sprint_id + '_issues').update(json.old_issues);
 				$('milestone_' + json.new_sprint_id + '_issues').update(json.new_issues);
@@ -1586,7 +1586,7 @@ TBG.Project.workflow = function(url) {
 	TBG.Main.Helpers.ajax(url, {
 		form: 'workflow_form2',
 		loading: {indicator: 'update_workflow_indicator'},
-		success: {callback: function() { TBG.Main.Helpers.Backdrop.reset(); }}
+		success: {callback: function() {TBG.Main.Helpers.Backdrop.reset();}}
 	});
 }
 

@@ -18,28 +18,24 @@
 		&nbsp;&nbsp;<span class="counts"><?php echo __('%number_of% issue(s), %hours% hrs, %points% pts', array('%points%' => '<span id="milestone_'.$milestone->getID().'_estimated_points">' . $milestone->getPointsEstimated() . '</span>', '%hours%' => '<span id="milestone_'.$milestone->getID().'_estimated_hours">' . $milestone->getHoursEstimated() . '</span>', '%number_of%' => '<span id="milestone_'.$milestone->getID().'_issues">'.$milestone->countIssues().'</span>')); ?></span>&nbsp;
 	</div>
 	<div id="milestone_<?php echo $milestone->getID(); ?>_container" style="display: none;">
-		<table cellpadding="0" cellspacing="0" class="milestone_issues">
-			<thead>
-				<tr>
-					<th><?php echo __('Issue'); ?></th>
-					<th><?php echo __('Status'); ?></th>
-					<th><?php echo __('Priority'); ?></th>
-					<th><?php echo __('Assigned to'); ?></th>
-					<th class="pointsandtime"><?php echo __('Est. hrs'); ?></th>
-					<th class="pointsandtime"><?php echo __('Est. pts'); ?></th>
-					<th class="pointsandtime"><?php echo __('Spent hrs'); ?></th>
-					<th class="pointsandtime"><?php echo __('Spent pts'); ?></th>
-				</tr>
-			</thead>
-			<tbody id="milestone_<?php echo $milestone->getID(); ?>_list" class="milestone_issues_container"></tbody> 
-		</table>
+		<form action="<?php echo make_url('project_planning_update_milestone_issues', array('project_key' => $milestone->getProject()->getKey(), 'milestone_id' => $milestone->getID())); ?>" onsubmit="TBG.Project.Planning.updateIssues('<?php echo make_url('project_planning_update_milestone_issues', array('project_key' => $milestone->getProject()->getKey(), 'milestone_id' => $milestone->getID())); ?>', <?php echo $milestone->getID(); ?>);return false;" method="POST">
+			<table cellpadding="0" cellspacing="0" class="milestone_issues">
+				<thead>
+					<tr>
+						<th><?php echo __('Issue'); ?></th>
+						<th><?php echo __('Status'); ?></th>
+						<th><?php echo __('Priority'); ?></th>
+						<th><?php echo __('Assigned to'); ?></th>
+						<th class="pointsandtime"><?php echo __('Est. hrs'); ?></th>
+						<th class="pointsandtime"><?php echo __('Est. pts'); ?></th>
+						<th class="pointsandtime"><?php echo __('Spent hrs'); ?></th>
+						<th class="pointsandtime"><?php echo __('Spent pts'); ?></th>
+					</tr>
+				</thead>
+				<tbody id="milestone_<?php echo $milestone->getID(); ?>_list" class="milestone_issues_container"></tbody> 
+			</table>
+		</form>
 		<input type="hidden" id="milestone_<?php echo $milestone->getID(); ?>_id" value="<?php echo $milestone->getID(); ?>">
-		<table cellpadding=0 cellspacing=0 style="display: none; margin-left: 5px; width: 300px;" id="milestone_<?php echo $milestone->getID(); ?>_indicator">
-			<tr>
-				<td style="width: 20px; padding: 2px;"><?php echo image_tag('spinning_20.gif'); ?></td>
-				<td style="padding: 0px; text-align: left; font-size: 13px;"><?php echo __('Reassigning, please wait'); ?>...</td>
-			</tr>
-		</table>
 		<div class="faded_out" style="font-size: 13px;<?php if ($milestone->countIssues() > 0): ?> display: none;<?php endif; ?>" id="milestone_<?php echo $milestone->getID(); ?>_unassigned"><?php echo __('No issues assigned to this milestone'); ?></div>
 	</div>
 </div>

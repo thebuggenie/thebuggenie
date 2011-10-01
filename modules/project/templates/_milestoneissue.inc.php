@@ -9,12 +9,19 @@
 		</div>
 	</td>
 	<td><?php echo ($issue->getStatus() instanceof TBGStatus) ? $issue->getStatus()->getName() : '-' ?></td>
-	<td><?php echo ($issue->getPriority() instanceof TBGPriority) ? $issue->getPriority()->getName() : '-' ?></td>
+	<td>
+		<select name="priority">
+			<option value="0"<?php if (!$issue->getPriority() instanceof TBGPriority): ?> selected<?php endif; ?>><?php echo __('Not prioritized'); ?></option>
+			<?php foreach (TBGPriority::getAll() as $p_id => $priority): ?>
+				<option value="<?php echo $p_id; ?>"<?php if ($issue->getPriority() instanceof TBGPriority && $issue->getPriority()->getID() == $p_id): ?> selected<?php endif; ?>><?php echo $priority->getName(); ?></option>
+			<?php endforeach; ?>
+		</select>
+	</td>
 	<td><?php echo ($issue->isAssigned()) ? $issue->getAssignee()->getName() : '-' ?></td>
-	<td class="pointsandtime"><?php echo $issue->getEstimatedHours(); ?></td>
-	<td class="pointsandtime"><?php echo $issue->getEstimatedPoints(); ?></td>
-	<td class="pointsandtime"><?php echo $issue->getSpentHours(); ?></td>
-	<td class="pointsandtime"><?php echo $issue->getSpentPoints(); ?></td>
+	<td class="pointsandtime"><input type="text" value="<?php echo $issue->getEstimatedHours(); ?>" name="estimated_hours"></td>
+	<td class="pointsandtime"><input type="text" value="<?php echo $issue->getEstimatedPoints(); ?>" name="estimated_points"></td>
+	<td class="pointsandtime"><input type="text" value="<?php echo $issue->getSpentHours(); ?>" name="spent_hours"></td>
+	<td class="pointsandtime"><input type="text" value="<?php echo $issue->getSpentPoints(); ?>" name="spent_points"></td>
 	<?php
 	/*
 	<div style="display: none;" class="story_color_selector" id="color_selector_<?php echo $issue->getID(); ?>">
