@@ -1285,6 +1285,27 @@
 				{
 					$this->_allmilestones[$milestone->getID()] = $milestone;
 				}
+				uasort($this->_allmilestones, function($milestone_a, $milestone_b) {
+					if (!$milestone_a->isScheduled() && !$milestone_a->isStarting() && !$milestone_b->isScheduled() && !$milestone_b->isStarting()) return 1;
+					if ($milestone_a->isStarting() && $milestone_b->isStarting())
+						return ($milestone_a->getStartingDate() < $milestone_b->getStartingDate()) ? -1 : 1;
+					
+					if ($milestone_a->isScheduled() && $milestone_b->isScheduled())
+						return ($milestone_a->getScheduledDate() < $milestone_b->getScheduledDate()) ? -1 : 1;
+					
+					if ($milestone_a->isStarting()) return -1;
+					if ($milestone_b->isStarting()) return 1;
+					
+					if ($milestone_a->isScheduled()) return -1;
+					if ($milestone_b->isScheduled()) return 1;
+					
+					if ($milestone_a->isOverdue()) return -1;
+					if ($milestone_b->isOverdue()) return 1;
+					
+					if (!$milestone_b->isStarting() && !$milestone_b->isScheduled()) return -1;
+					
+					return 0;
+				});
 			}
 		}
 

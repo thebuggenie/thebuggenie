@@ -41,9 +41,8 @@
 								<?php echo image_tag('spinning_32.gif'); ?>
 								<?php echo __('Please wait'); ?>...
 							</div>
-							<?php $show_issues = ((!$milestone->isScheduled() && !$milestone->isReached()) || $milestone->getScheduledDate() > NOW || $milestone->isOverdue()) ? true : false; ?>
-							<div class="roadmap_issues" id="milestone_<?php echo $milestone->getID(); ?>_issues"<?php if (!$show_issues): ?> style="display: none;"<?php endif; ?>>
-								<?php if ($show_issues): ?>
+							<div class="roadmap_issues" id="milestone_<?php echo $milestone->getID(); ?>_issues"<?php if (!$milestone->isCurrent()): ?> style="display: none;"<?php endif; ?>>
+								<?php if ($milestone->isCurrent()): ?>
 									<?php include_template('project/milestoneissues', array('milestone' => $milestone)); ?>
 								<?php endif; ?>
 							</div>

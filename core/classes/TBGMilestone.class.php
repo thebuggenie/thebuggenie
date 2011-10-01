@@ -761,8 +761,9 @@
 		 */
 		public function isCurrent()
 		{
-			if (!$this->getStartingDate() || !$this->isScheduled()) return false;
+			if (!$this->isScheduled()) return false;
 			if ($this->getStartingDate() <= time() && $this->getScheduledDate() >= time()) return true;
+			if (!$this->isStarting() && $this->isScheduled()) return true;
 			return $this->isOverdue();
 		}
 
@@ -898,7 +899,7 @@
 				return $i18n->__('%milestone_name% (reached: %date%)', array('%milestone_name%' => '', '%date%' => tbg_formatTime($this->getReachedDate(), 23)));
 			}
 
-			return $i18n->__('In progress');
+			return $i18n->__('Not scheduled');
 		}
 
 	}
