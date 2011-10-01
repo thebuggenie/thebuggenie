@@ -6,7 +6,7 @@
 		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('project_milestone', array('project_key' => $milestone->getProject()->getKey())); ?>" method="post" id="edit_milestone_form" onsubmit="TBG.Project.Milestone.<?php echo ($milestone->getID()) ? 'update' : 'add'; ?>('<?php echo make_url('project_milestone', array('project_key' => $milestone->getProject()->getKey())); ?>'<?php if ($milestone->getID()): ?>, <?php echo $milestone->getID(); ?><?php endif; ?>);return false;">
 			<table style="width: 750px;" cellpadding=0 cellspacing=0>
 				<tr>
-					<td style="width: 100px;"><label for="milestone_name_<?php echo $milestone->getID(); ?>"><?php echo __('Name:'); ?></label></td>
+					<td style="width: 150px;"><label for="milestone_name_<?php echo $milestone->getID(); ?>"><?php echo __('Name:'); ?></label></td>
 					<td style="width: auto;"><input type="text" style="width: 100%;" value="<?php echo $milestone->getName(); ?>" name="name" id="milestone_name_<?php echo $milestone->getID(); ?>"></td>
 				</tr>
 				<tr>
@@ -86,9 +86,7 @@
 						<?php if ($milestone->getID()): ?>
 							<input type="hidden" name="milestone_id" value="<?php echo $milestone->getID(); ?>">
 						<?php endif; ?>
-						<div class="button button-green" style="float: right;">
-							<input type="submit" value="<?php echo ($milestone->getId()) ? __('Update milestone') : __('Add milestone'); ?>">
-						</div>
+						<input class="button button-green" style="float: right;" type="submit" value="<?php echo ($milestone->getId()) ? __('Update milestone') : __('Add milestone'); ?>">
 						<span id="add_milestone_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
 					</td>
 				</tr>

@@ -987,7 +987,7 @@ ul.milestone_issues_container li .actions label { float: left; font-weight: bold
 #scrum_unassigned { width: 440px; border-top: 1px solid #ccc; padding: 10px 5px; vertical-align: top; }
 #scrum_unassigned .header_div { border: 0; margin: 0; font-size: 1.2em; }
 .planning_container label { float: left; padding-top: 4px; }
-.planning_container h3 .button { float: right; font-size: 0.7em; padding: 3px 5px; }
+.planning_container h3 .button { float: right; margin-top: -5px; }
 .planning_container label, .planning_container input[type="submit"], .planning_container input[type="submit"]:hover { font-size: 0.9em; font-weight: bold; }
 #scrum_unassigned #story_title { width: 300px; }
 #scrum_unassigned .add_story_header { font-weight: bold; float: left; }

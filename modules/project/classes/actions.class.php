@@ -1078,8 +1078,17 @@
 					$milestone->setStartingDate(0);
 
 				$milestone->save();
-				$message = ($request->getParameter('milestone_id')) ? TBGContext::getI18n()->__('Milestone updated') : TBGContext::getI18n()->__('Milestone created');
-				return $this->renderJSON(array('content' => $this->getTemplateHTML('milestonebox', array('milestone' => $milestone))));
+				if ($request->getParameter('milestone_id'))
+				{
+					$message = TBGContext::getI18n()->__('Milestone updated');
+					$template = 'milestoneboxheader';
+				}
+				else
+				{
+					$message = TBGContext::getI18n()->__('Milestone created');
+					$template = 'milestonebox';
+				}
+				return $this->renderJSON(array('content' => $this->getTemplateHTML($template, array('milestone' => $milestone))));
 			}
 		}
 

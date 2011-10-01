@@ -386,6 +386,8 @@ TBG.Main.Helpers.Dialog.dismiss = function() {
  *   Options for the onSuccess event instruction set:
  *     update: either an element id which will receive the value of the 
  *             json.content property or an object with instructions:
+ *     replace: either an element id which will be replace with the value of the 
+ *             json.content property or an object with instructions:
  *             
  *     Available instructions for the success "update" object:
  *       element: the id of the element to update
@@ -437,6 +439,16 @@ TBG.Main.Helpers.ajax = function(url, options) {
 							} else {
 								$(update_element).update(content);
 							}
+						}
+						if (json && json.message) {
+							TBG.Main.Helpers.Message.success(json.message);
+						}
+					} else if (options.success && options.success.replace) {
+						var json_content_element = (is_string(options.success.replace) || options.success.replace.from == undefined) ? 'content' : options.success.replace.from;
+						var content = (json) ? json[json_content_element] : transport.responseText;
+						var replace_element = (is_string(options.success.replace)) ? options.success.replace : options.success.replace.element;
+						if ($(replace_element)) {
+							Element.replace(replace_element, content);
 						}
 						if (json && json.message) {
 							TBG.Main.Helpers.Message.success(json.message);
@@ -1243,6 +1255,7 @@ TBG.Project.Milestone.add = function(url) {
 		success: {
 			reset: 'add_milestone_form',
 			hide: 'no_milestones',
+			callback: TBG.Main.Helpers.Backdrop.reset,
 			update: {element: 'milestone_list', insertion: true}
 		}
 	});
@@ -1256,7 +1269,7 @@ TBG.Project.Milestone.update = function(url, milestone_id) {
 		},
 		success: {
 			callback: TBG.Main.Helpers.Backdrop.reset,
-			update: {element: 'milestone_' + milestone_id + '_name', from: 'name'},
+			replace: 'milestone_' + milestone_id + '_header'
 		}
 	});
 }
