@@ -60,7 +60,7 @@
 			$this->groupby = $request->getParameter('groupby');
 			$this->grouporder = $request->getParameter('grouporder', 'asc');
 			$this->predefined_search = $request->getParameter('predefined_search', false);
-			$this->templatename = ($request->hasParameter('template') && in_array($request->getParameter('template'), array_keys($this->getTemplates(false)))) ? $request->getParameter('template') : 'results_normal';
+			$this->templatename = ($request->hasParameter('template') && in_array($request->getParameter('template'), array_keys(self::getTemplates(false)))) ? $request->getParameter('template') : 'results_normal';
 			$this->template_parameter = $request->getParameter('template_parameter');
 			$this->searchtitle = TBGContext::getI18n()->__('Search results');
 			$this->issavedsearch = false;
@@ -217,7 +217,7 @@
 
 		}
 
-		protected function getTemplates($display_only = true)
+		public static function getTemplates($display_only = true)
 		{
 			$templates = array();
 			$templates['results_normal'] = TBGContext::getI18n()->__('Standard search results');
@@ -301,9 +301,7 @@
 			$this->search_error = TBGContext::getMessageAndClear('search_error');
 			$this->search_message = TBGContext::getMessageAndClear('search_message');
 			$this->appliedfilters = $this->filters;
-			$this->templates = $this->getTemplates();
-			
-			$this->savedsearches = \b2db\Core::getTable('TBGSavedSearchesTable')->getAllSavedSearchesByUserIDAndPossiblyProjectID(TBGContext::getUser()->getID(), (TBGContext::isProjectContext()) ? TBGContext::getCurrentProject()->getID() : 0);
+			$this->templates = self::getTemplates();
 		}
 
 		public function runFindIssuesPaginated(TBGRequest $request)
@@ -316,7 +314,7 @@
 				$this->issues = $this->foundissues;
 			}
 			$this->appliedfilters = $this->filters;
-			$this->templates = $this->getTemplates();
+			$this->templates = self::getTemplates();
 		}
 
 		public function runAddFilter(TBGRequest $request)

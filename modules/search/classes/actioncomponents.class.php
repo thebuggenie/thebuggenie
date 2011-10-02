@@ -115,4 +115,22 @@
 			$this->parameters = $request->getParameters();
 		}		
 		
+		public function componentSidebar()
+		{
+			$savedsearches = \b2db\Core::getTable('TBGSavedSearchesTable')->getAllSavedSearchesByUserIDAndPossiblyProjectID(TBGContext::getUser()->getID(), (TBGContext::isProjectContext()) ? TBGContext::getCurrentProject()->getID() : 0);
+			foreach ($savedsearches['user'] as $a_savedsearch)
+				$this->getResponse()->addFeed(make_url('search', array('saved_search' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => true, 'format' => 'rss')), __($a_savedsearch->get(TBGSavedSearchesTable::NAME)));
+
+			foreach ($savedsearches['public'] as $a_savedsearch)
+				$this->getResponse()->addFeed(make_url('search', array('saved_search' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => true, 'format' => 'rss')), __($a_savedsearch->get(TBGSavedSearchesTable::NAME)));
+			
+			$this->savedsearches = $savedsearches;
+		}
+		
+		public function componentSearchbuilder()
+		{
+			$this->templates = searchActions::getTemplates();
+			$this->filters = $this->appliedfilters;
+		}
+		
 	}
