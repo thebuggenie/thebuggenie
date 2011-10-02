@@ -41,13 +41,13 @@
 					<?php endif; ?>
 				</div>
 			<?php endif; ?>
-			<?php if (((isset($article) && ($article->canEdit() || $article->canDelete()) || (!isset($article) && TBGContext::isProjectContext() && !TBGContext::getCurrentProject()->isArchived())))): ?>
+			<?php if ((isset($article) && ($article->canEdit() || $article->canDelete())) || (!isset($article) && ((TBGContext::isProjectContext() && !TBGContext::getCurrentProject()->isArchived()) || (!TBGContext::isProjectContext() && TBGContext::getModule('publish')->canUserEditArticle($article_name))))): ?>
 				<div class="publish_article_actions">
 					<div class="sub_header"><?php echo __('Actions available'); ?></div>
-					<?php if ((isset($article) && $article->canEdit()) || (!isset($article) && TBGContext::isProjectContext() && !TBGContext::getProject()->isArchived())): ?>
-							<form action="<?php echo make_url('publish_article_edit', array('article_name' => $article_name)); ?>" method="get" style="float: left; margin-right: 10px;">
-								<input class="button button-green" type="submit" value="<?php echo ($article instanceof TBGWikiArticle) ? __('Edit this article') : __('Create this article'); ?>">
-							</form>
+					<?php if ((isset($article) && $article->canEdit()) || (!isset($article) && ((TBGContext::isProjectContext() && !TBGContext::getCurrentProject()->isArchived()) || (!TBGContext::isProjectContext() && TBGContext::getModule('publish')->canUserEditArticle($article_name))))): ?>
+						<form action="<?php echo make_url('publish_article_edit', array('article_name' => $article_name)); ?>" method="get" style="float: left; margin-right: 10px;">
+							<input class="button button-green" type="submit" value="<?php echo ($article instanceof TBGWikiArticle) ? __('Edit this article') : __('Create this article'); ?>">
+						</form>
 					<?php endif; ?>
 					<?php if ((isset($article) && $article->canDelete()) || (!isset($article) && TBGContext::isProjectContext() && !TBGContext::getCurrentProject()->isArchived())): ?>
 						<?php if ($article instanceof TBGWikiArticle): ?>

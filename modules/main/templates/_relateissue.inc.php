@@ -6,7 +6,7 @@
 			<div>
 				<label for="viewissue_find_issue_input"><?php echo __('Find issue(s)'); ?>&nbsp;</label>
 				<input type="text" name="searchfor" id="viewissue_find_issue_input">
-				<input type="submit" value="<?php echo __('Find'); ?>">
+				<input type="submit" value="<?php echo __('Find'); ?>" style="margin-top: -3px;">
 				<?php echo __('%find% or %cancel%', array('%find%' => '', '%cancel%' => '<a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.reset();">' . __('cancel') . '</a>')); ?>
 				<?php echo image_tag('spinning_20.gif', array('id' => 'find_issue_indicator', 'style' => 'display: none;')); ?><br>
 			</div>

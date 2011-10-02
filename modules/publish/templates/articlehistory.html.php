@@ -13,7 +13,7 @@
 		<td class="main_area article">
 			<a name="top"></a>
 			<div class="article" style="width: auto; padding: 5px; position: relative;">
-				<?php include_template('publish/header', array('article_name' => $article_name, 'show_actions' => true, 'mode' => 'history')); ?>
+				<?php include_template('publish/header', array('article' => $article, 'article_name' => $article_name, 'show_actions' => true, 'mode' => 'history')); ?>
 				<?php if ($article instanceof TBGWikiArticle): ?>
 					<?php if ($history_action == 'list'): ?>
 						<form action="<?php echo make_url('publish_article_diff', array('article_name' => $article->getName())); ?>" method="post">

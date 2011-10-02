@@ -26,9 +26,7 @@
 					<li class="duplicate_search">
 						<h6><?php echo __('Mark as duplicate of another, existing issue'); ?></h6>
 						<label for="viewissue_find_issue_<?php echo $transition->getID(); ?>_input"><?php echo __('Find issue(s)'); ?>&nbsp;</label>
-						<div class="button button-blue" style="float: right;">
-							<input type="button" value="<?php echo __('Find'); ?>" id="viewissue_find_issue_<?php echo $transition->getID(); ?>_submit">
-						</div>
+						<input class="button button-blue" style="float: right;" type="button" value="<?php echo __('Find'); ?>" id="viewissue_find_issue_<?php echo $transition->getID(); ?>_submit">
 						<input type="text" name="searchfor" id="viewissue_find_issue_<?php echo $transition->getID(); ?>_input">
 						<?php echo image_tag('spinning_20.gif', array('id' => 'find_issue_'.$transition->getID().'_indicator', 'style' => 'display: none;')); ?><br>
 						<div id="viewissue_<?php echo $transition->getID(); ?>_duplicate_results"></div>
@@ -148,7 +146,7 @@
 				</li>
 			</ul>
 			<div style="text-align: right; margin-right: 5px;">
-				<div class="button button-blue"><input type="submit" value="<?php echo $transition->getName(); ?>"></div>
+				<input type="submit" value="<?php echo $transition->getName(); ?>">
 			</div>
 		</div>
 		<div class="backdrop_detail_footer">

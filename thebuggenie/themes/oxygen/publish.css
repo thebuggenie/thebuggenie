@@ -1,9 +1,9 @@
-.article_list { list-style-type: none; margin: 5px 0 0 5px; padding: 0; font-size: 0.9em; }
-.article_list img { float: left; margin-right: 5px; }
-.article_list span { font-size: 0.8em; }
+.article_list { list-style-type: none; margin: 10px 0 0 5px; padding: 0; font-size: 0.9em; }
+.article_list img { float: left; margin: 3px 5px 0 0; }
+.article_list span { font-size: 0.9em; }
 .article_list span a { font-size: 0.8em; font-weight: normal; }
 .article_list .more_news { margin: 10px 0 0 0; }
-.article_list li { margin-bottom: 8px; }
+.article_list li { margin: 0 5px 8px 0; }
 
 .toc .publish_toc_1 { margin: 15px 0 3px 0; font-size: 1.1em; font-weight: bold; }
 .toc .publish_toc_2 { margin: 0 0 3px 4px; font-size: 1.0em; }
@@ -31,7 +31,7 @@
 
 .article pre { border: 1px dotted #AAA; background-color: #F1F1F1; padding: 3px; margin: 5px 0 5px 0; font-family: "DroidSansMono", monospace; font-size: 12px; }
 
-.article .publish_article_actions .sub_header { font-size: 13px; font-weight: bold; padding: 5px; margin-right: 5px; float: left; }
+.article .publish_article_actions .sub_header { font-size: 13px; font-weight: bold; padding: 0 5px; margin-right: 5px; float: left; }
 
 .article.edit label { font-size: 1.2em; }
 .article.edit label.small { font-size: 1em; }
@@ -43,13 +43,14 @@
 
 .article .details { color: #AAA; padding-bottom: 5px; }
 
-.article .toc { float: right; margin: -20px 5px 15px 5px; width: 300px; padding: 5px; font-size: 12px; position: relative; }
+.article .toc { float: right; margin: -20px 5px 15px 5px; width: 300px; box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); padding: 5px; font-size: 12px; position: relative; }
 .article .toc .header { margin: 0 0 5px 0; padding: 2px 3px 3px 0; font-weight: bold; font-size: 15px; border-bottom: 1px solid #99C; }
 .article .toc .header a { color: #555; font-size: 16px; }
 .article .toc .content { display: none; }
 .article .toc .faded_out { font-size: 11px; margin-bottom: 0; display: inherit; }
-.article .toc:hover .content { display: block; position: absolute; left: 0; width: 300px; margin-top: -5px; }
+.article .toc:hover .content { display: block; }
 .article .toc:hover .faded_out { display: none; }
+.article .toc:hover { overflow: visible; }
 .article .toc a, .article .toc a:hover { border-bottom: 0; }
 .article .textarea_hint .header { font-size: 1.2em; color: #999; border: 0; }
 .article .textarea_hint { color: #999; font-size: 1.1em; }

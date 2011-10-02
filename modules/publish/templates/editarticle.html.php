@@ -59,15 +59,9 @@
 				<div class="rounded_box lightgrey borderless" style="margin: 0 5px 5px 5px; padding: 7px; min-height: 27px;">
 					<div class="publish_article_actions">
 						<div class="sub_header"><?php echo __('Actions available'); ?></div>
-						<div class="button button-green">
-							<input type="submit" value="<?php echo ($article instanceof TBGWikiArticle) ? __('Save changes') : __('Create article'); ?>">
-						</div>
-						<div class="button button-blue">
-							<input type="submit" onclick="$('article_preview').value = 1;" value="<?php echo ($article instanceof TBGWikiArticle) ? __('Preview changes') : __('Preview article'); ?>">
-						</div>
-						<div class="button button-blue small-button">
-							<?php echo link_tag((($article instanceof TBGWikiArticle) ? make_url('publish_article', array('article_name' => $article_name)) : make_url('publish')), __('Cancel')); ?>
-						</div>
+						<input class="button button-green" type="submit" value="<?php echo ($article instanceof TBGWikiArticle) ? __('Save changes') : __('Create article'); ?>">
+						<input class="button button-blue" type="submit" onclick="$('article_preview').value = 1;" value="<?php echo ($article instanceof TBGWikiArticle) ? __('Preview changes') : __('Preview article'); ?>">
+						<?php echo link_tag((($article instanceof TBGWikiArticle) ? make_url('publish_article', array('article_name' => $article_name)) : make_url('publish')), __('Cancel'), array('class' => 'button button-silver')); ?>
 					</div>
 				</div>
 				<br style="clear: both;">

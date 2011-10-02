@@ -16,7 +16,7 @@
 		<td class="main_area article">
 			<a name="top"></a>
 			<div class="article" style="width: auto; padding: 5px; position: relative;">
-				<?php include_template('publish/header', array('article_name' => $article_name, 'show_actions' => true, 'mode' => 'attachments')); ?>
+				<?php include_template('publish/header', array('article' => $article, 'article_name' => $article_name, 'show_actions' => true, 'mode' => 'attachments')); ?>
 				<?php if ($article instanceof TBGWikiArticle): ?>
 					<?php if (TBGSettings::isUploadsEnabled() && $article->canEdit()): ?>
 						<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px; float: left;" id="article_attach_file_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="$('attach_file').show();" value="<?php echo __('Attach a file'); ?>"></td></tr></table>

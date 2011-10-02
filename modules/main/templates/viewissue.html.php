@@ -112,8 +112,8 @@
 				<div class="issue_info important" id="viewissue_changed" <?php if (!$issue->hasUnsavedChanges()): ?>style="display: none;"<?php endif; ?>>
 					<form action="<?php echo make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())); ?>" method="post">
 						<div class="buttons">
-							<div class="button button-silver"><input type="submit" value="<?php echo __('Save changes'); ?>"></div>
-							<div class="button button-silver"><button onclick="$('comment_add_button').hide(); $('comment_add').show();$('comment_save_changes').checked = true;$('comment_bodybox').focus();return false;"><?php echo __('Add comment and save changes'); ?></button></div>
+							<input class="button button-silver" type="submit" value="<?php echo __('Save changes'); ?>">
+							<button class="button button-silver" onclick="$('comment_add_button').hide(); $('comment_add').show();$('comment_save_changes').checked = true;$('comment_bodybox').focus();return false;"><?php echo __('Add comment and save changes'); ?></button>
 						</div>
 						<input type="hidden" name="issue_action" value="save">
 					</form>
@@ -189,7 +189,7 @@
 					<div class="issue_info successful" id="viewissue_saved">
 						<?php echo __('Your changes has been saved'); ?>
 						<div class="buttons">
-							<div class="button button-silver"><button onclick="$('viewissue_saved').hide();"><?php echo __('OK'); ?></button></div>
+							<button class="button button-silver" onclick="$('viewissue_saved').hide();"><?php echo __('OK'); ?></button>
 						</div>
 					</div>
 				<?php endif; ?>
@@ -197,7 +197,7 @@
 					<div class="issue_info successful" id="viewissue_saved">
 						<?php echo $issue_message; ?>
 						<div class="buttons">
-							<div class="button button-silver"><button onclick="$('viewissue_saved').hide();"><?php echo __('OK'); ?></button></div>
+							<button class="button button-silver" onclick="$('viewissue_saved').hide();"><?php echo __('OK'); ?></button>
 						</div>
 					</div>
 				<?php endif; ?>
@@ -205,7 +205,7 @@
 					<div class="issue_info successful" id="viewissue_saved">
 						<?php echo __('The file was attached to this issue'); ?>
 						<div class="buttons">
-							<div class="button button-silver"><button onclick="$('viewissue_saved').hide();"><?php echo __('OK'); ?></button></div>
+							<button class="button button-silver" onclick="$('viewissue_saved').hide();"><?php echo __('OK'); ?></button>
 						</div>
 					</div>
 				<?php endif; ?>
@@ -219,7 +219,7 @@
 							<?php echo __('%user% has been working on this issue since %time%', array('%user%' => $issue->getUserWorkingOnIssue()->getNameWithUsername(), '%time%' => tbg_formatTime($issue->getWorkedOnSince(), 6))); ?>
 						<?php endif; ?>
 						<div class="buttons">
-							<div class="button button-silver"><button onclick="$('viewissue_being_worked_on').hide();"><?php echo __('OK'); ?></button></div>
+							<button class="button button-silver" onclick="$('viewissue_being_worked_on').hide();"><?php echo __('OK'); ?></button>
 						</div>
 					</div>
 				<?php endif; ?>
@@ -341,7 +341,7 @@
 								<form id="description_form" action="<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'description')); ?>" method="post" onSubmit="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'description')) ?>', 'description'); return false;">
 									<?php include_template('main/textarea', array('area_name' => 'value', 'area_id' => 'description_form_value', 'height' => '250px', 'width' => '100%', 'value' => ($issue->getDescription()))); ?>
 									<br>
-									<div class="button button-silver" style="float: left; margin: -3px 5px 0 0;"><input type="submit" value="<?php echo __('Save'); ?>" style="font-weight: bold;"></div><?php echo __('%save% or %cancel%', array('%save%' => '', '%cancel%' => javascript_link_tag(__('cancel'), array('style' => 'font-weight: bold;', 'onclick' => "$('description_change').hide();".(($issue->getDescription() != '') ? "$('description_name').show();" : "$('no_description').show();")."return false;")))); ?>
+									<input class="button button-silver" style="float: left; margin: -3px 5px 0 0; font-weight: bold;" type="submit" value="<?php echo __('Save'); ?>"><?php echo __('%save% or %cancel%', array('%save%' => '', '%cancel%' => javascript_link_tag(__('cancel'), array('style' => 'font-weight: bold;', 'onclick' => "$('description_change').hide();".(($issue->getDescription() != '') ? "$('description_name').show();" : "$('no_description').show();")."return false;")))); ?>
 								</form>
 								<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'description_spinning')); ?>
 								<div id="description_change_error" class="error_message" style="display: none;"></div>
@@ -369,7 +369,7 @@
 								<form id="reproduction_steps_form" action="<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'reproduction_steps')); ?>" method="post" onSubmit="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'reproduction_steps')) ?>', 'reproduction_steps'); return false;">
 									<?php include_template('main/textarea', array('area_name' => 'value', 'area_id' => 'reproduction_steps_form_value', 'height' => '250px', 'width' => '100%', 'value' => ($issue->getReproductionSteps()))); ?>
 									<br>
-									<div class="button button-silver" style="float: left; margin: -3px 5px 0 0;"><input type="submit" value="<?php echo __('Save'); ?>" style="font-weight: bold;"></div><?php echo __('%save% or %cancel%', array('%save%' => '', '%cancel%' => javascript_link_tag(__('cancel'), array('style' => 'font-weight: bold;', 'onclick' => "$('reproduction_steps_change').hide();".(($issue->getReproductionSteps() != '') ? "$('reproduction_steps_name').show();" : "$('no_reproduction_steps').show();")."return false;")))); ?>
+									<input class="button button-silver" style="float: left; margin: -3px 5px 0 0; font-weight: bold;" type="submit" value="<?php echo __('Save'); ?>"><?php echo __('%save% or %cancel%', array('%save%' => '', '%cancel%' => javascript_link_tag(__('cancel'), array('style' => 'font-weight: bold;', 'onclick' => "$('reproduction_steps_change').hide();".(($issue->getReproductionSteps() != '') ? "$('reproduction_steps_name').show();" : "$('no_reproduction_steps').show();")."return false;")))); ?>
 								</form>
 								<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'reproduction_steps_spinning')); ?>
 								<div id="reproduction_steps_change_error" class="error_message" style="display: none;"></div>
@@ -426,27 +426,28 @@
 				<div id="viewissue_attached_information">
 					<?php if ($issue->isUpdateable() && ($issue->canAttachLinks() || (TBGSettings::isUploadsEnabled() && $issue->canAttachFiles()))): ?>
 						<?php if ($issue->canAttachLinks()): ?>
-							<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px; float: left;" id="attach_link_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="$('attach_link').show();" value="<?php echo __('Attach a link'); ?>"></td></tr></table>
+							<button class="button button-green" style="margin: 5px 5px 5px 0; float: left;" id="attach_link_button" onclick="$('attach_link').toggle();"><?php echo __('Attach a link'); ?></button>
 						<?php endif; ?>
 						<?php if (TBGSettings::isUploadsEnabled() && $issue->canAttachFiles()): ?>
-							<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px; float: left;" id="attach_file_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="$('attach_file').show();" value="<?php echo __('Attach a file'); ?>"></td></tr></table>
+							<button class="button button-green" style="margin: 5px 5px 5px 0; float: left;" id="attach_file_button" onclick="$('attach_file').toggle();"><?php echo __('Attach a file'); ?></button>
 						<?php else: ?>
-							<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px; float: left;" id="attach_file_button"><tr><td class="nice_button disabled" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="TBG.Main.Helpers.Message.error('<?php echo __('File uploads are not enabled'); ?>');" value="<?php echo __('Attach a file'); ?>"></td></tr></table>
+							<button class="button button-green disabled" style="margin: 5px 5px 5px 0; float: left;" id="attach_file_button" onclick="TBG.Main.Helpers.Message.error('<?php echo __('File uploads are not enabled'); ?>');"><?php echo __('Attach a file'); ?></button>
 						<?php endif; ?>
 						<br style="clear: both;">
 					<?php endif; ?>
 					<div class="rounded_box mediumgrey shadowed" id="attach_link" style="margin: 5px 0 5px 0; display: none; position: absolute; width: 350px;">
 						<div class="header_div" style="margin: 0 0 5px 0;"><?php echo __('Attach a link'); ?>:</div>
 						<form action="<?php echo make_url('issue_attach_link', array('issue_id' => $issue->getID())); ?>" method="post" onsubmit="attachLink('<?php echo make_url('issue_attach_link', array('issue_id' => $issue->getID())); ?>');return false;" id="attach_link_form">
-							<dl style="margin: 0;">
+							<dl style="margin: 0; clear: both;">
 								<dt style="width: 80px; padding-top: 3px;"><label for="attach_link_url"><?php echo __('URL'); ?>:</label></dt>
 								<dd style="margin-bottom: 0px;"><input type="text" name="link_url" id="attach_link_url" style="width: 235px;"></dd>
 								<dt style="width: 80px; font-size: 10px; padding-top: 4px;"><label for="attach_link_description"><?php echo __('Description'); ?>:</label></dt>
 								<dd style="margin-bottom: 0px;"><input type="text" name="description" id="attach_link_description" style="width: 235px;"></dd>
 							</dl>
-							<div style="font-size: 12px; padding: 15px 2px 10px 2px;" class="faded_out" id="attach_link_submit"><?php echo __('Enter the link URL here, along with an optional description. Press "%attach_link%" to attach it to the issue.', array('%attach_link%' => __('Attach link'))); ?></div>
+							<br style="clear: both;">
+							<div style="font-size: 12px; clear: both; padding: 15px 2px 10px 2px;"><?php echo __('Enter the link URL here, along with an optional description. Press "%attach_link%" to attach it to the issue.', array('%attach_link%' => __('Attach link'))); ?></div>
 							<div style="text-align: center; padding: 10px; display: none;" id="attach_link_indicator"><?php echo image_tag('spinning_26.gif'); ?></div>
-							<div style="text-align: center;"><input type="submit" value="<?php echo __('Attach link'); ?>" style="font-weight: bold;"><?php echo __('%attach_link% or %cancel%', array('%attach_link%' => '', '%cancel%' => '<b>'.javascript_link_tag(__('cancel'), array('onclick' => "$('attach_link').toggle();")).'</b>')); ?></div>
+							<div style="text-align: center;"><input type="submit" value="<?php echo __('Attach link'); ?>" style="font-weight: bold;" id="attach_link_submit"><?php echo __('%attach_link% or %cancel%', array('%attach_link%' => '', '%cancel%' => '<b>'.javascript_link_tag(__('cancel'), array('onclick' => "$('attach_link').toggle();")).'</b>')); ?></div>
 						</form>
 					</div>
 					<div class="no_items" id="viewissue_no_uploaded_files"<?php if (count($issue->getFiles()) + count($issue->getLinks()) > 0): ?> style="display: none;"<?php endif; ?>><?php echo __('There is nothing attached to this issue'); ?></div>
@@ -469,8 +470,8 @@
 			<div id="tab_related_issues_and_tasks_pane" style="padding-top: 5px; margin: 0 5px 0 5px; display: none;">
 				<div id="viewissue_related">
 					<?php if ($issue->isUpdateable()): ?>
-						<table border="0" cellpadding="0" cellspacing="0" style="margin-left: 5px; margin-right: 5px; float: left;" id="add_task_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="$('viewissue_add_task_div').toggle();" value="<?php echo __('Add a task to this issue'); ?>"></td></tr></table>
-						<table border="0" cellpadding="0" cellspacing="0" style="margin-left: 5px; float: left;" id="relate_to_existing_issue_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'relate_issue', 'issue_id' => $issue->getID())); ?>');" value="<?php echo __('Relate to an existing issue'); ?>"></td></tr></table>
+						<button id="add_task_button" style="margin-left: 5px; margin-right: 5px; float: left; margin-left: 0;" class="button button-green" onclick="$('viewissue_add_task_div').toggle();"><?php echo __('Add a task to this issue'); ?></button>
+						<button id="relate_to_existing_issue_button" class="button button-green" style="margin-left: 5px; float: left; margin-left: 0;" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'relate_issue', 'issue_id' => $issue->getID())); ?>');"><?php echo __('Relate to an existing issue'); ?></button>
 						<br style="clear: both;">
 						<div class="rounded_box mediumgrey shadowed" id="viewissue_add_task_div" style="margin: 5px 0 5px 0; display: none; position: absolute; font-size: 12px; width: 400px;">
 							<form id="viewissue_add_task_form" action="<?php echo make_url('project_scrum_story_addtask', array('project_key' => $issue->getProject()->getKey(), 'story_id' => $issue->getID(), 'mode' => 'issue')); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="TBG.Issues.addUserStoryTask('<?php echo make_url('project_scrum_story_addtask', array('project_key' => $issue->getProject()->getKey(), 'story_id' => $issue->getID(), 'mode' => 'issue')); ?>', <?php echo $issue->getID(); ?>, 'issue');return false;">
