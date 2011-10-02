@@ -47,7 +47,7 @@
 		<td class="saved_searches side_bar">
 			<div class="container_div">
 				<div class="header"><?php echo __('Predefined searches'); ?></div>
-				<ul class="simple_list" style="padding: 2px 2px 5px 2px;">
+				<ul class="simple_list content" style="font-size: 1em;">
 					<?php if (TBGContext::isProjectContext()): ?>
 						<li style="clear: both;">
 							<?php echo link_tag(make_url('project_open_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
@@ -95,107 +95,111 @@
 			</div>
 			<div class="container_div">
 				<div class="header"><?php echo (TBGContext::isProjectContext()) ? __('Your saved searches for this project') : __('Your saved searches'); ?></div>
-				<?php if (count($savedsearches['user']) > 0): ?>
-					<?php foreach ($savedsearches['user'] as $a_savedsearch): ?>
-						<div id="saved_search_<?php echo $a_savedsearch->get(TBGSavedSearchesTable::ID); ?>_container">
-							<?php if (TBGContext::isProjectContext()): ?>
-								<div style="clear: both;">
-									<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
+				<div class="content">
+					<?php if (count($savedsearches['user']) > 0): ?>
+						<?php foreach ($savedsearches['user'] as $a_savedsearch): ?>
+							<div id="saved_search_<?php echo $a_savedsearch->get(TBGSavedSearchesTable::ID); ?>_container">
+								<?php if (TBGContext::isProjectContext()): ?>
+									<div style="clear: both;">
+										<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
+										<?php if (!TBGcontext::getCurrentProject()->isArchived()): ?>
+											<?php echo javascript_link_tag(image_tag('icon_delete.png', array('title' => __('Delete saved search'), 'style' => 'float: right; margin-left: 2px;', 'class' => 'image')), array('onclick' => "$('delete_search_".$a_savedsearch->get(TBGSavedSearchesTable::ID)."').toggle();")); ?>
+											<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => 0)), image_tag('icon_edit.png'), array('title' => __('Edit saved search'), 'style' => 'float: right; margin-left: 5px;', 'class' => 'image')); ?>
+										<?php endif; ?>
+										<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => true)), __($a_savedsearch->get(TBGSavedSearchesTable::NAME))); ?>
+									</div>
 									<?php if (!TBGcontext::getCurrentProject()->isArchived()): ?>
-										<?php echo javascript_link_tag(image_tag('icon_delete.png', array('title' => __('Delete saved search'), 'style' => 'float: right; margin-left: 2px;', 'class' => 'image')), array('onclick' => "$('delete_search_".$a_savedsearch->get(TBGSavedSearchesTable::ID)."').toggle();")); ?>
-										<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => 0)), image_tag('icon_edit.png'), array('title' => __('Edit saved search'), 'style' => 'float: right; margin-left: 5px;', 'class' => 'image')); ?>
+									<div class="rounded_box white shadowed" style="position: absolute; width: 300px; display: none;" id="delete_search_<?php echo $a_savedsearch->get(TBGSavedSearchesTable::ID); ?>">
+										<div class="header"><?php echo __('Do you really want to delete this saved search?'); ?></div>
+										<div class="content">
+											<?php echo __('This action cannot be reverted. Note: this will not modify any issues affected by this search'); ?>
+											<div style="text-align: right; margin-top: 10px;">
+												<?php echo image_tag('spinning_16.gif', array('style' => 'margin-left: 5px; display: none;', 'id' => 'delete_search_'.$a_savedsearch->get(TBGSavedSearchesTable::ID).'_indicator')); ?>
+												<input type="submit" onclick="TBG.Search.deleteSavedSearch('<?php echo make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'saved_search_id' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => 0, 'delete_saved_search' => true)); ?>', <?php echo $a_savedsearch->get(TBGSavedSearchesTable::ID); ?>);" value="<?php echo __('Yes, delete'); ?>" style="font-weight: bold;">
+												<?php echo __('%yes_delete% or %cancel%', array('%yes_delete%' => '', '%cancel%' => javascript_link_tag(__('cancel'), array('onclick' => "$('delete_search_".$a_savedsearch->get(TBGSavedSearchesTable::ID)."').toggle();")))); ?>
+											</div>
+										</div>
+									</div>
 									<?php endif; ?>
-									<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => true)), __($a_savedsearch->get(TBGSavedSearchesTable::NAME))); ?>
-								</div>
-								<?php if (!TBGcontext::getCurrentProject()->isArchived()): ?>
-								<div class="rounded_box white shadowed" style="position: absolute; width: 300px; display: none;" id="delete_search_<?php echo $a_savedsearch->get(TBGSavedSearchesTable::ID); ?>">
-									<div class="header"><?php echo __('Do you really want to delete this saved search?'); ?></div>
-									<div class="content">
-										<?php echo __('This action cannot be reverted. Note: this will not modify any issues affected by this search'); ?>
-										<div style="text-align: right; margin-top: 10px;">
-											<?php echo image_tag('spinning_16.gif', array('style' => 'margin-left: 5px; display: none;', 'id' => 'delete_search_'.$a_savedsearch->get(TBGSavedSearchesTable::ID).'_indicator')); ?>
-											<input type="submit" onclick="TBG.Search.deleteSavedSearch('<?php echo make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'saved_search_id' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => 0, 'delete_saved_search' => true)); ?>', <?php echo $a_savedsearch->get(TBGSavedSearchesTable::ID); ?>);" value="<?php echo __('Yes, delete'); ?>" style="font-weight: bold;">
-											<?php echo __('%yes_delete% or %cancel%', array('%yes_delete%' => '', '%cancel%' => javascript_link_tag(__('cancel'), array('onclick' => "$('delete_search_".$a_savedsearch->get(TBGSavedSearchesTable::ID)."').toggle();")))); ?>
+									<?php if ($a_savedsearch->get(TBGSavedSearchesTable::DESCRIPTION) != ''): ?>
+										<div style="clear: both; padding: 0 0 10px 3px;"><?php echo $a_savedsearch->get(TBGSavedSearchesTable::DESCRIPTION); ?></div>
+									<?php endif; ?>
+								<?php else: ?>
+									<div style="clear: both;">
+										<?php echo link_tag(make_url('search', array('saved_search' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
+										<?php echo javascript_link_tag(image_tag('icon_delete.png', array('title' => __('Delete saved search'), 'style' => 'float: right; margin-left: 2px;', 'class' => 'image')), array('onclick' => "$('delete_search_".$a_savedsearch->get(TBGSavedSearchesTable::ID)."').toggle();")); ?>
+										<?php echo link_tag(make_url('search', array('saved_search' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => 0)), image_tag('icon_edit.png'), array('title' => __('Edit saved search'), 'style' => 'float: right; margin-left: 5px;', 'class' => 'image')); ?>
+										<?php echo link_tag(make_url('search', array('saved_search' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => true)), __($a_savedsearch->get(TBGSavedSearchesTable::NAME))); ?>
+									</div>
+									<div class="rounded_box white shadowed" style="position: absolute; width: 300px; display: none;" id="delete_search_<?php echo $a_savedsearch->get(TBGSavedSearchesTable::ID); ?>">
+										<div class="header"><?php echo __('Do you really want to delete this saved search?'); ?></div>
+										<div class="content">
+											<?php echo __('This action cannot be reverted. Note: this will not modify any issues affected by this search'); ?>
+											<div style="text-align: right; margin-top: 10px;">
+												<?php echo image_tag('spinning_16.gif', array('style' => 'margin-left: 5px; display: none;', 'id' => 'delete_search_'.$a_savedsearch->get(TBGSavedSearchesTable::ID).'_indicator')); ?>
+												<input type="submit" onclick="TBG.Search.deleteSavedSearch('<?php echo make_url('search', array('saved_search_id' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => 0, 'delete_saved_search' => true)); ?>', <?php echo $a_savedsearch->get(TBGSavedSearchesTable::ID); ?>);" value="<?php echo __('Yes, delete'); ?>" style="font-weight: bold;">
+												<?php echo __('%yes_delete% or %cancel%', array('%yes_delete%' => '', '%cancel%' => javascript_link_tag(__('cancel'), array('onclick' => "$('delete_search_".$a_savedsearch->get(TBGSavedSearchesTable::ID)."').toggle();")))); ?>
+											</div>
 										</div>
 									</div>
-								</div>
+									<?php if ($a_savedsearch->get(TBGSavedSearchesTable::DESCRIPTION) != ''): ?>
+										<div style="clear: both; padding: 0 0 10px 3px;"><?php echo $a_savedsearch->get(TBGSavedSearchesTable::DESCRIPTION); ?></div>
+									<?php endif; ?>
 								<?php endif; ?>
-								<?php if ($a_savedsearch->get(TBGSavedSearchesTable::DESCRIPTION) != ''): ?>
-									<div style="clear: both; padding: 0 0 10px 3px;"><?php echo $a_savedsearch->get(TBGSavedSearchesTable::DESCRIPTION); ?></div>
-								<?php endif; ?>
-							<?php else: ?>
-								<div style="clear: both;">
-									<?php echo link_tag(make_url('search', array('saved_search' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
-									<?php echo javascript_link_tag(image_tag('icon_delete.png', array('title' => __('Delete saved search'), 'style' => 'float: right; margin-left: 2px;', 'class' => 'image')), array('onclick' => "$('delete_search_".$a_savedsearch->get(TBGSavedSearchesTable::ID)."').toggle();")); ?>
-									<?php echo link_tag(make_url('search', array('saved_search' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => 0)), image_tag('icon_edit.png'), array('title' => __('Edit saved search'), 'style' => 'float: right; margin-left: 5px;', 'class' => 'image')); ?>
-									<?php echo link_tag(make_url('search', array('saved_search' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => true)), __($a_savedsearch->get(TBGSavedSearchesTable::NAME))); ?>
-								</div>
-								<div class="rounded_box white shadowed" style="position: absolute; width: 300px; display: none;" id="delete_search_<?php echo $a_savedsearch->get(TBGSavedSearchesTable::ID); ?>">
-									<div class="header"><?php echo __('Do you really want to delete this saved search?'); ?></div>
-									<div class="content">
-										<?php echo __('This action cannot be reverted. Note: this will not modify any issues affected by this search'); ?>
-										<div style="text-align: right; margin-top: 10px;">
-											<?php echo image_tag('spinning_16.gif', array('style' => 'margin-left: 5px; display: none;', 'id' => 'delete_search_'.$a_savedsearch->get(TBGSavedSearchesTable::ID).'_indicator')); ?>
-											<input type="submit" onclick="TBG.Search.deleteSavedSearch('<?php echo make_url('search', array('saved_search_id' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => 0, 'delete_saved_search' => true)); ?>', <?php echo $a_savedsearch->get(TBGSavedSearchesTable::ID); ?>);" value="<?php echo __('Yes, delete'); ?>" style="font-weight: bold;">
-											<?php echo __('%yes_delete% or %cancel%', array('%yes_delete%' => '', '%cancel%' => javascript_link_tag(__('cancel'), array('onclick' => "$('delete_search_".$a_savedsearch->get(TBGSavedSearchesTable::ID)."').toggle();")))); ?>
-										</div>
-									</div>
-								</div>
-								<?php if ($a_savedsearch->get(TBGSavedSearchesTable::DESCRIPTION) != ''): ?>
-									<div style="clear: both; padding: 0 0 10px 3px;"><?php echo $a_savedsearch->get(TBGSavedSearchesTable::DESCRIPTION); ?></div>
-								<?php endif; ?>
-							<?php endif; ?>
-						</div>
-					<?php endforeach; ?>
-				<?php else: ?>
-					<div class="faded_out" style="padding-left: 3px;" id="no_user_saved_searches"><?php echo (TBGContext::isProjectContext()) ? __("You don't have any saved searches for this project") : __("You don't have any saved searches"); ?></div>
-				<?php endif; ?>
+							</div>
+						<?php endforeach; ?>
+					<?php else: ?>
+						<div class="no_items" style="font-size: 1em;" id="no_user_saved_searches"><?php echo (TBGContext::isProjectContext()) ? __("You don't have any saved searches for this project") : __("You don't have any saved searches"); ?></div>
+					<?php endif; ?>
+				</div>
 			</div>
 			<div class="container_div">
 				<div class="header"><?php echo (TBGContext::isProjectContext()) ? __('Public saved searches for this project') : __('Public saved searches'); ?></div>
-				<?php if (count($savedsearches['public']) > 0): ?>
-					<?php foreach ($savedsearches['public'] as $a_savedsearch): ?>
-						<div id="saved_search_<?php echo $a_savedsearch->get(TBGSavedSearchesTable::ID); ?>_container">
-							<div style="clear: both;">
-								<?php if (TBGContext::isProjectContext()): ?>
-									<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
-									<?php if ($tbg_user->canCreatePublicSearches()): ?>
-										<?php echo javascript_link_tag(image_tag('icon_delete.png', array('title' => __('Delete saved search'), 'style' => 'float: right; margin-left: 2px;', 'class' => 'image')), array('onclick' => "$('delete_search_".$a_savedsearch->get(TBGSavedSearchesTable::ID)."').toggle();")); ?>
-										<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => 0)), image_tag('icon_edit.png'), array('title' => __('Edit saved search'), 'style' => 'float: right; margin-left: 5px;', 'class' => 'image')); ?>
-									<?php endif; ?>
-									<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => true)), __($a_savedsearch->get(TBGSavedSearchesTable::NAME))); ?>
-								<?php else: ?>
-									<?php echo link_tag(make_url('search', array('saved_search' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
-									<?php if ($tbg_user->canCreatePublicSearches()): ?>
-										<?php echo javascript_link_tag(image_tag('icon_delete.png', array('title' => __('Delete saved search'), 'style' => 'float: right; margin-left: 2px;', 'class' => 'image')), array('onclick' => "$('delete_search_".$a_savedsearch->get(TBGSavedSearchesTable::ID)."').toggle();")); ?>
-										<?php echo link_tag(make_url('search', array('saved_search' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => 0)), image_tag('icon_edit.png'), array('title' => __('Edit saved search'), 'style' => 'float: right; margin-left: 5px;', 'class' => 'image')); ?>
-									<?php endif; ?>
-									<?php echo link_tag(make_url('search', array('saved_search' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => true)), __($a_savedsearch->get(TBGSavedSearchesTable::NAME))); ?>
-								<?php endif; ?>
-							</div>
-							<div class="rounded_box white shadowed" style="position: absolute; width: 300px; display: none;" id="delete_search_<?php echo $a_savedsearch->get(TBGSavedSearchesTable::ID); ?>">
-								<div class="header"><?php echo __('Do you really want to delete this saved search?'); ?></div>
-								<div class="content">
-									<?php echo __('This action cannot be reverted. Note: this will not modify any issues affected by this search'); ?>
-									<div style="text-align: right; margin-top: 10px;">
-										<?php echo image_tag('spinning_16.gif', array('style' => 'margin-left: 5px; display: none;', 'id' => 'delete_search_'.$a_savedsearch->get(TBGSavedSearchesTable::ID).'_indicator')); ?>
-										<?php if (TBGContext::isProjectContext()): ?>
-											<input type="submit" onclick="TBG.Search.deleteSavedSearch('<?php echo make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'saved_search_id' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => 0, 'delete_saved_search' => true)); ?>', <?php echo $a_savedsearch->get(TBGSavedSearchesTable::ID); ?>);" value="<?php echo __('Yes, delete'); ?>" style="font-weight: bold;">
-										<?php else: ?>
-											<input type="submit" onclick="TBG.Search.deleteSavedSearch('<?php echo make_url('search', array('saved_search_id' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => 0, 'delete_saved_search' => true)); ?>', <?php echo $a_savedsearch->get(TBGSavedSearchesTable::ID); ?>);" value="<?php echo __('Yes, delete'); ?>" style="font-weight: bold;">
+				<div class="content">
+					<?php if (count($savedsearches['public']) > 0): ?>
+						<?php foreach ($savedsearches['public'] as $a_savedsearch): ?>
+							<div id="saved_search_<?php echo $a_savedsearch->get(TBGSavedSearchesTable::ID); ?>_container">
+								<div style="clear: both;">
+									<?php if (TBGContext::isProjectContext()): ?>
+										<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
+										<?php if ($tbg_user->canCreatePublicSearches()): ?>
+											<?php echo javascript_link_tag(image_tag('icon_delete.png', array('title' => __('Delete saved search'), 'style' => 'float: right; margin-left: 2px;', 'class' => 'image')), array('onclick' => "$('delete_search_".$a_savedsearch->get(TBGSavedSearchesTable::ID)."').toggle();")); ?>
+											<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => 0)), image_tag('icon_edit.png'), array('title' => __('Edit saved search'), 'style' => 'float: right; margin-left: 5px;', 'class' => 'image')); ?>
 										<?php endif; ?>
-										<?php echo __('%yes_delete% or %cancel%', array('%yes_delete%' => '', '%cancel%' => javascript_link_tag(__('cancel'), array('onclick' => "$('delete_search_".$a_savedsearch->get(TBGSavedSearchesTable::ID)."').toggle();")))); ?>
+										<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => true)), __($a_savedsearch->get(TBGSavedSearchesTable::NAME))); ?>
+									<?php else: ?>
+										<?php echo link_tag(make_url('search', array('saved_search' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
+										<?php if ($tbg_user->canCreatePublicSearches()): ?>
+											<?php echo javascript_link_tag(image_tag('icon_delete.png', array('title' => __('Delete saved search'), 'style' => 'float: right; margin-left: 2px;', 'class' => 'image')), array('onclick' => "$('delete_search_".$a_savedsearch->get(TBGSavedSearchesTable::ID)."').toggle();")); ?>
+											<?php echo link_tag(make_url('search', array('saved_search' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => 0)), image_tag('icon_edit.png'), array('title' => __('Edit saved search'), 'style' => 'float: right; margin-left: 5px;', 'class' => 'image')); ?>
+										<?php endif; ?>
+										<?php echo link_tag(make_url('search', array('saved_search' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => true)), __($a_savedsearch->get(TBGSavedSearchesTable::NAME))); ?>
+									<?php endif; ?>
+								</div>
+								<div class="rounded_box white shadowed" style="position: absolute; width: 300px; display: none;" id="delete_search_<?php echo $a_savedsearch->get(TBGSavedSearchesTable::ID); ?>">
+									<div class="header"><?php echo __('Do you really want to delete this saved search?'); ?></div>
+									<div class="content">
+										<?php echo __('This action cannot be reverted. Note: this will not modify any issues affected by this search'); ?>
+										<div style="text-align: right; margin-top: 10px;">
+											<?php echo image_tag('spinning_16.gif', array('style' => 'margin-left: 5px; display: none;', 'id' => 'delete_search_'.$a_savedsearch->get(TBGSavedSearchesTable::ID).'_indicator')); ?>
+											<?php if (TBGContext::isProjectContext()): ?>
+												<input type="submit" onclick="TBG.Search.deleteSavedSearch('<?php echo make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'saved_search_id' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => 0, 'delete_saved_search' => true)); ?>', <?php echo $a_savedsearch->get(TBGSavedSearchesTable::ID); ?>);" value="<?php echo __('Yes, delete'); ?>" style="font-weight: bold;">
+											<?php else: ?>
+												<input type="submit" onclick="TBG.Search.deleteSavedSearch('<?php echo make_url('search', array('saved_search_id' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => 0, 'delete_saved_search' => true)); ?>', <?php echo $a_savedsearch->get(TBGSavedSearchesTable::ID); ?>);" value="<?php echo __('Yes, delete'); ?>" style="font-weight: bold;">
+											<?php endif; ?>
+											<?php echo __('%yes_delete% or %cancel%', array('%yes_delete%' => '', '%cancel%' => javascript_link_tag(__('cancel'), array('onclick' => "$('delete_search_".$a_savedsearch->get(TBGSavedSearchesTable::ID)."').toggle();")))); ?>
+										</div>
 									</div>
 								</div>
+								<?php if ($a_savedsearch->get(TBGSavedSearchesTable::DESCRIPTION) != ''): ?>
+									<div style="clear: both; padding: 0 0 10px 3px;"><?php echo $a_savedsearch->get(TBGSavedSearchesTable::DESCRIPTION); ?></div>
+								<?php endif; ?>
 							</div>
-							<?php if ($a_savedsearch->get(TBGSavedSearchesTable::DESCRIPTION) != ''): ?>
-								<div style="clear: both; padding: 0 0 10px 3px;"><?php echo $a_savedsearch->get(TBGSavedSearchesTable::DESCRIPTION); ?></div>
-							<?php endif; ?>
-						</div>
-					<?php endforeach; ?>
-				<?php else: ?>
-					<div class="faded_out" style="padding-left: 3px;" id="no_public_saved_searches"><?php echo (TBGContext::isProjectContext()) ? __("There are no saved searches for this project") : __("There are no public saved searches"); ?></div>
-				<?php endif; ?>
+						<?php endforeach; ?>
+					<?php else: ?>
+						<div class="no_items" style="font-size: 1em;" id="no_public_saved_searches"><?php echo (TBGContext::isProjectContext()) ? __("There are no saved searches for this project") : __("There are no public saved searches"); ?></div>
+					<?php endif; ?>
+				</div>
 			</div>
 		</td>
 		<td style="width: auto; padding: 5px; vertical-align: top;" id="find_issues">
@@ -218,7 +222,7 @@
 						<option value="!="<?php if (array_key_exists('text', $appliedfilters) && ((array_key_exists('operator', $appliedfilters['text']) && $appliedfilters['text']['operator'] == '!=') || (!array_key_exists('operator', $appliedfilters['text']) && $appliedfilters['text'][0]['operator'] == '!='))): ?> selected<?php endif; ?>><?php echo __('Issues not containing'); ?></option>
 					</select>
 					<input type="text" name="filters[text][value]" value="<?php echo $searchterm; ?>" id="issues_searchfor" style="width: 450px;">
-					<input type="submit" value="<?php echo __('Search'); ?>" id="search_button_top" onclick="$('save_search').disable();">
+					<input type="submit" value="<?php echo __('Search'); ?>" id="search_button_top" onclick="$('save_search').disable();" style="margin-top: -3px;">
 					<div class="faded_out" style="padding: 2px 0 5px 2px; font-size: 12px;"><p><?php echo __('Leave this input field blank to list all issues based on filters below'); ?></p></div>
 					<div style="<?php if ($show_results): ?>display: none; <?php endif; ?>padding: 5px;" id="search_filters">
 						<label for="result_template"><?php echo __('Display results as'); ?></label>
@@ -280,7 +284,7 @@
 							<?php elseif (((TBGContext::isProjectContext() && !TBGContext::getCurrentProject()->isArchived()) || !TBGContext::isProjectContext())): ?>
 								<button onclick="$('find_issues_form').method = 'post';$('saved_search_details').show();$('saved_search_name').enable();$('saved_search_description').enable();<?php if ($tbg_user->canCreatePublicSearches()): ?>$('saved_search_public').enable();<?php endif; ?>$('save_search').enable();$('search_button_bottom').disable();$('search_button_bottom').hide();$('search_button_top').disable();$('search_button_save').hide();$('search_button_top').hide();return false;"><?php echo __('Save this search'); ?></button>
 							<?php endif; ?>
-							<input type="submit" value="<?php echo __('Search'); ?>" id="search_button_bottom" onclick="$('save_search').disable();$('saved_search_name').disable();$('saved_search_description').disable();<?php if ($tbg_user->canCreatePublicSearches()): ?>$('saved_search_public').disable();<?php endif; ?>$('find_issues_form').method = 'get';">
+							<input type="submit" value="<?php echo __('Search'); ?>" id="search_button_bottom" onclick="$('save_search').disable();$('saved_search_name').disable();$('saved_search_description').disable();<?php if ($tbg_user->canCreatePublicSearches()): ?>$('saved_search_public').disable();<?php endif; ?>$('find_issues_form').method = 'get';" style="margin-top: -1px;">
 						</div>
 						<div class="rounded_box white borderless" style="display: none; margin: 5px 0 5px 0; padding: 3px 10px 3px 10px; font-size: 14px;" id="saved_search_details">
 							<?php if (TBGContext::isProjectContext()): ?>
@@ -329,7 +333,7 @@
 							<option value="<?php echo $customdatatype->getKey(); ?>"><?php echo __($customdatatype->getDescription()); ?></option>
 						<?php endforeach; ?>
 					</select>
-					<?php echo image_submit_tag('action_add_small.png'); ?>
+					<input type="submit" class="button button-silver" value="<?php echo __('Add filter'); ?>">
 					<?php echo image_tag('spinning_16.gif', array('style' => 'margin-left: 5px; display: none;', 'id' => 'add_filter_indicator')); ?>
 					<div class="faded_out" style="padding: 10px 0 5px 0;"><?php echo __('Adding the same filter more than once means that any of the given values for that filter will return a match if you are matching with "is", and neither of the given values if you are matching with "is not"'); ?></div>
 				</form>

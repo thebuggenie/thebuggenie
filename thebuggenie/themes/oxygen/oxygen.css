@@ -1138,11 +1138,11 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 #find_issues .search_column_settings li { clear: both; }
 #find_issues #search_filters ul { list-style-type: none; margin: 0; padding: 0; }
 #find_issues #search_filters ul li { margin: 0; padding: 0; }
-#find_issues #search_filters { }
+#search_filters_list button { margin-top: -1px; }
 #find_issues #add_filter_form label { display: inline-block; min-width: 200px; }
 #find_issues #search_filters label { display: inline-block; min-width: 200px; }
 #find_issues #add_filter_form { margin-left: 7px; }
-#find_issues #search_button_bottom, #find_issues button { font-weight: bold; font-size: 1.1em; }
+#find_issues #search_button_bottom, #find_issues button { font-weight: bold; font-size: 1em; }
 #find_issues button { font-weight: normal; }
 /* end boxes */
 
