@@ -68,7 +68,7 @@
 					<?php if ($issue->getStatus() instanceof TBGDatatype): ?>
 						<table style="table-layout: auto; width: auto;" cellpadding=0 cellspacing=0>
 							<tr>
-								<td style="width: 12px; height: 12px;"><div style="border: 1px solid #AAA; background-color: <?php echo ($issue->getStatus() instanceof TBGDatatype) ? $issue->getStatus()->getColor() : '#FFF'; ?>; font-size: 1px; width: 11px; height: 11px; margin-right: 2px;">&nbsp;</div></td>
+								<td style="width: 12px; height: 12px;"><div style="border: 1px solid rgba(0, 0, 0, 0.3); background-color: <?php echo ($issue->getStatus() instanceof TBGDatatype) ? $issue->getStatus()->getColor() : '#FFF'; ?>; font-size: 1px; width: 11px; height: 11px; margin-right: 2px;">&nbsp;</div></td>
 								<td style="padding-left: 0px; font-size: 1em;"><?php echo $issue->getStatus()->getName(); ?></td>
 							</tr>
 						</table>

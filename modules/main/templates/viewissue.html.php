@@ -20,7 +20,7 @@
 	</div>
 	<div style="width: auto; text-align: left; padding: 5px; margin: 0 auto 0 auto;">
 		<div id="viewissue_header_container">
-			<table cellpadding=0 cellspacing=0 class="title_area">
+			<table cellpadding=0 cellspacing=0 class="title_area" style="table-layout: fixed;">
 				<tr>
 					<td style="width: 80px;<?php if (!$issue->isUserPainVisible()): ?> display: none;<?php endif; ?>" id="user_pain_additional">
 						<div class="rounded_box green borderless" title="<?php echo __('This is the user pain value for this issue'); ?>" id="viewissue_triaging" style="margin: 0 5px 0 0; vertical-align: middle; padding: 5px; font-weight: bold; font-size: 13px; text-align: center">
@@ -28,7 +28,7 @@
 							<div class="user_pain_calculated" id="issue_user_pain_calculated"><?php echo $issue->getUserPainDiffText(); ?></div>
 						</div>
 					</td>
-					<td style="width: 22px; padding: 5px 5px 0 5px;">
+					<td class="title_left_images">
 						<?php if ($tbg_user->isGuest()): ?>
 							<?php echo image_tag('star_faded.png', array('id' => 'issue_favourite_faded_'.$issue->getId(), 'title' => __('Please log in to bookmark issues'))); ?>
 						<?php else: ?>
@@ -37,7 +37,7 @@
 							<?php echo image_tag('star.png', array('id' => 'issue_favourite_normal_'.$issue->getId(), 'style' => 'cursor: pointer;'.((!$tbg_user->isIssueStarred($issue->getID())) ? 'display: none;' : ''), 'title' => __('Click to stop following this issue'), 'onclick' => "TBG.Issues.toggleFavourite('".make_url('toggle_favourite_issue', array('issue_id' => $issue->getID()))."', ".$issue->getID().");")); ?>
 						<?php endif; ?>
 					</td>
-					<td style="width: 22px; padding: 5px 5px 0 5px;">
+					<td class="title_left_images">
 						<?php echo image_tag($issue->getIssueType()->getIcon() . '_small.png', array('id' => 'issuetype_image')); ?>
 					</td>
 					<td style="font-size: 17px; width: auto; padding: 5px 0 10px 7px;" id="title_field">
