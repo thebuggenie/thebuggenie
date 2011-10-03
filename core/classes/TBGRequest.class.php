@@ -27,6 +27,7 @@
 		protected $_get_parameters = array();
 		protected $_files = array();
 		protected $_cookies = array();
+		protected $_querystring = null;
 
 		protected $_hasfiles = false;
 
@@ -372,6 +373,8 @@
                 $_SESSION['__upload_status'] = array();
             }
 
+			$this->_querystring = $_SERVER['QUERY_STRING'];
+
 		}
 
 		public function hasFileUploads()
@@ -590,5 +593,9 @@
 			$this->setParameter($offset, null);
 		}
 
+		public function getQueryString()
+		{
+			return $this->_querystring;
+		}
 		
 	}

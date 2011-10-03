@@ -29,6 +29,7 @@ select { font-family: sans-serif !important; } /* Safari 5.1 mac fix */
 input, select, textarea { background-color: #FFF; }
 input[type="text"], input[type="password"], textarea, select { box-shadow: inset 0 0 6px rgba(200, 200, 200, 0.4); -webkit-box-shadow: inset 0 0 6px rgba(200, 200, 200, 0.4); -moz-box-shadow: inset 0 0 6px rgba(200, 200, 200, 0.4); }
 input[type="image"] { border: 0px; padding: 0px; width: 16px; height: 16px; background-color: transparent; }
+input[type="checkbox"] { margin: 0; }
 input[type="text"][disabled], input[type="password"][disabled], textarea[disabled], select[disabled] { background-color: #F9F9F9; color: #BBB; }
 
 pre { overflow: auto; }
@@ -1130,7 +1131,8 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 #find_issues .main_header .faded_out { font-weight: normal; }
 #find_issues .main_content { font-size: 0.9em; font-weight: normal; padding: 3px; }
 #find_issues #no_issues { padding: 4px; }
-#find_issues .search_export_links { float: right; font-size: 0.9em; }
+#find_issues .search_export_links { float: right; font-size: 0.8em; }
+#find_issues .search_export_links img { margin: 0 3px -4px 10px; }
 #find_issues .search_column_settings { float: right; font-size: 0.9em; margin: -2px 0 3px 10px; }
 #find_issues .search_column_settings .button-icon { cursor: pointer; }
 #find_issues .search_column_settings h4 { margin-bottom: 5px; }

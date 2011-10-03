@@ -75,43 +75,7 @@
 							</form>
 						</div>
 					</div>
-					<div class="search_export_links">
-						<?php
-							if (TBGContext::getRequest()->hasParameter('quicksearch'))
-							{
-								$searchfor = TBGContext::getRequest()->getParameter('searchfor');
-								$project_key = (TBGContext::getCurrentProject() instanceof TBGProject) ? TBGContext::getCurrentProject()->getKey() : 0; 
-								echo __('Export results as:').'&nbsp;&nbsp;<a href="'.make_url('project_issues', array('project_key' => $project_key, 'quicksearch' => 'true', 'format' => 'csv')).'?searchfor='.$searchfor.'"> '.image_tag('icon_csv.png', array('class' => 'image', 'style' => 'vertical-align: top')).'&nbsp;CSV</a>&nbsp;&nbsp;<a href="'.make_url('project_issues', array('project_key' => $project_key, 'quicksearch' => 'true', 'format' => 'rss')).'?searchfor='.$searchfor.'"> '.image_tag('icon_rss.png', array('class' => 'image', 'style' => 'vertical-align: top')).'&nbsp;RSS</a>';
-							}
-							elseif (TBGContext::getRequest()->hasParameter('predefined_search'))
-							{
-								$searchno = TBGContext::getRequest()->getParameter('predefined_search');
-								$project_key = (TBGContext::getCurrentProject() instanceof TBGProject) ? TBGContext::getCurrentProject()->getKey() : 0; 
-								$url = (TBGContext::getCurrentProject() instanceof TBGProject) ? 'project_issues' : 'search';
-								echo __('Export results as:').'&nbsp;&nbsp;<a href="'.make_url($url, array('project_key' => $project_key, 'predefined_search' => $searchno, 'search' => '1', 'format' => 'csv')).'"> '.image_tag('icon_csv.png', array('class' => 'image', 'style' => 'vertical-align: top')).'&nbsp;CSV</a>&nbsp;&nbsp;<a href="'.make_url($url, array('project_key' => $project_key, 'predefined_search' => $searchno, 'search' => '1', 'format' => 'rss')).'"> '.image_tag('icon_rss.png', array('class' => 'image', 'style' => 'vertical-align: top')).'&nbsp;RSS</a>';
-							}
-							else
-							{
-								/* Produce get parameters for query */
-								preg_match('/((?<=\/)issues).+$/i', $_SERVER['QUERY_STRING'], $get);
-								if (!isset($get[0]))
-								{
-									preg_match('/((?<=url=)issues).+$/i', $_SERVER['QUERY_STRING'], $get);
-								}
-								if (isset($get[0])) // prevent unhandled error
-								{
-									if (TBGContext::isProjectContext())
-									{
-										echo __('Export results as:').'&nbsp;&nbsp;<a href="'.make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'csv')).'/'.$get[0].'"> '.image_tag('icon_csv.png', array('class' => 'image', 'style' => 'vertical-align: top')).'&nbsp;CSV</a>&nbsp;&nbsp;<a href="'.make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'rss')).'?'.$get[0].'"> '.image_tag('icon_rss.png', array('class' => 'image', 'style' => 'vertical-align: top')).'&nbsp;RSS</a>';
-									}
-									else
-									{
-										echo __('Export results as:').'&nbsp;&nbsp;<a href="'.make_url('search', array('format' => 'csv')).'/'.$get[0].'"> '.image_tag('icon_csv.png', array('class' => 'image', 'style' => 'vertical-align: top')).'&nbsp;CSV</a>&nbsp;&nbsp;<a href="'.make_url('search', array('format' => 'rss')).'?'.$get[0].'"> '.image_tag('icon_rss.png', array('class' => 'image', 'style' => 'vertical-align: top')).'&nbsp;RSS</a>';
-									}
-								}
-							}
-						?>
-					</div>
+					<?php include_component('search/exportlinks'); ?>
 				</div>
 				<?php if (count($issues) > 0): ?>
 					<div id="search_results" class="search_results">

@@ -132,5 +132,45 @@
 			$this->templates = searchActions::getTemplates();
 			$this->filters = $this->appliedfilters;
 		}
+
+		public function componentExportlinks()
+		{
+			switch (true)
+			{
+				case TBGContext::getRequest()->hasParameter('quicksearch'):
+					$searchfor = TBGContext::getRequest()->getParameter('searchfor');
+					$project_key = (TBGContext::getCurrentProject() instanceof TBGProject) ? TBGContext::getCurrentProject()->getKey() : 0;
+					$this->csv_url = TBGContext::getRouting()->generate('project_issues', array('project_key' => $project_key, 'quicksearch' => 'true', 'format' => 'csv')).'?searchfor='.$searchfor;
+					$this->rss_url = TBGContext::getRouting()->generate('project_issues', array('project_key' => $project_key, 'quicksearch' => 'true', 'format' => 'rss')).'?searchfor='.$searchfor;
+					break;
+				case TBGContext::getRequest()->hasParameter('predefined_search'):
+					$searchno = TBGContext::getRequest()->getParameter('predefined_search');
+					$project_key = (TBGContext::getCurrentProject() instanceof TBGProject) ? TBGContext::getCurrentProject()->getKey() : 0;
+					$url = (TBGContext::getCurrentProject() instanceof TBGProject) ? 'project_issues' : 'search';
+					$this->csv_url = TBGContext::getRouting()->generate($url, array('project_key' => $project_key, 'predefined_search' => $searchno, 'search' => '1', 'format' => 'csv'));
+					$this->rss_url = TBGContext::getRouting()->generate($url, array('project_key' => $project_key, 'predefined_search' => $searchno, 'search' => '1', 'format' => 'rss'));
+					break;
+				default:
+					preg_match('/((?<=\/)issues).+$/i', TBGContext::getRequest()->getQueryString(), $get);
+					
+					if (!isset($get[0])) preg_match('/((?<=url=)issues).+$/i', TBGContext::getRequest()->getQueryString(), $get);
+
+					if (isset($get[0]))
+					{
+						if (TBGContext::isProjectContext())
+						{
+							$this->csv_url = TBGContext::getRouting()->generate('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'csv')).'/'.$get[0];
+							$this->rss_url = TBGContext::getRouting()->generate('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'rss')).'?'.$get[0];
+						}
+						else
+						{
+							$this->csv_url = TBGContext::getRouting()->generate('search', array('format' => 'csv')).'/'.$get[0];
+							$this->rss_url = TBGContext::getRouting()->generate('search', array('format' => 'rss')).'?'.$get[0];
+						}
+					}
+					break;
+			}
+			
+		}
 		
 	}
