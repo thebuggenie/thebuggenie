@@ -535,4 +535,61 @@
 			return $this->renderJSON('template '.$request->getParameter('template').' columns saved ok');
 		}
 
+		public function runBulkUpdateIssues(TBGRequest $request)
+		{
+			$issue_ids = $request['issue_ids'];
+			$options = array('issue_ids' => array_values($issue_ids));
+
+			if (!empty($issue_ids))
+			{
+				$options['bulk_action'] = $request['bulk_action'];
+				switch ($request['bulk_action'])
+				{
+					case 'assign_milestone':
+						$milestone = null;
+						if ($request['milestone'] == 'new')
+						{
+							$milestone = new TBGMilestone();
+							$milestone->setProject(TBGContext::getCurrentProject());
+							$milestone->setName($request['milestone_name']);
+							$milestone->save();
+						}
+						elseif ($request['milestone'])
+						{
+							$milestone = new TBGMilestone($request['milestone']);
+						}
+						$milestone_id = ($milestone instanceof TBGMilestone) ? $milestone->getID() : null;
+						foreach (array_keys($issue_ids) as $issue_id)
+						{
+							if (is_numeric($issue_id))
+							{
+								$issue = new TBGIssue($issue_id);
+								$issue->setMilestone($milestone_id);
+								$issue->save();
+							}
+						}
+						$options['milestone_id'] = $milestone_id;
+						$options['milestone_name'] = ($milestone_id) ? $milestone->getName() : '-';
+						break;
+					case 'set_status':
+						if (is_numeric($request['status']))
+						{
+							$status = new TBGStatus($request['status']);
+							foreach (array_keys($issue_ids) as $issue_id)
+							{
+								if (is_numeric($issue_id))
+								{
+									$issue = new TBGIssue($issue_id);
+									$issue->setStatus($status->getID());
+									$issue->save();
+								}
+							}
+							$options['status'] = array('color' => $status->getColor(), 'name' => $status->getName());
+						}
+						break;
+				}
+			}
+			return $this->renderJSON($options);
+		}
+
 	}

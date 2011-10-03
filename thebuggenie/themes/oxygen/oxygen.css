@@ -1123,7 +1123,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 
 /* search styling */
 /* search boxes */
-#find_issues .main_header { font-weight: bold; font-size: 1.1em; padding: 5px 0 3px 2px; margin-bottom: 5px; border-bottom: 1px solid #AAA; color: #333; background: transparent; box-shadow: none; -webkit-box-shadow: none; -moz-box-shadow: none; }
+#find_issues .main_header { font-weight: bold; font-size: 1.1em; padding: 5px 0 3px 2px; margin-bottom: 0; border-bottom: 1px solid #AAA; color: #333; background: transparent; box-shadow: none; -webkit-box-shadow: none; -moz-box-shadow: none; }
 .searchbox_container { margin: 5px 0 5px 0; padding: 3px 10px 3px 10px; font-size: 0.9em; }
 /*.searchbox_container label { font-size: 0.9em; }
 .searchbox_container input[type="text"], .searchbox_container select { font-size: 0.9em; }*/
@@ -1160,6 +1160,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .search_results h5 { margin: 0; padding-left: 5px; padding-bottom: 10px; border-bottom: 1px dotted #CCC; background-color: #FFF; }
 .search_results h5 img { float: left; margin-right: 5px; }
 .search_results table.results_container { margin-bottom: 0; }
+.search_results table.results_container tbody { border-collapse: collapse; }
 .search_results th { background-color: #EAEAEA; padding: 2px; font-size: 0.8em; border-left: 1px solid #FFF; border-right: 1px solid #DDD; }
 .search_results th img { width: 12px; height: 12px; }
 .search_results td { font-size: 0.9em; padding: 2px; }
@@ -1179,6 +1180,13 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .search_results tr.priority_0 td { background-color: transparent; }
 .search_results .sc_issuetype img { float: left; margin-right: 3px; }
 .search_results td.sc_status { font-size: 0.9em; }
+.search_bulk_container { font-size: 0.9em; border: 1px dotted #DDD; background-color: #FAFAFA; padding: 5px; }
+.search_bulk_container input[type=text] { padding-top: 1px; }
+.search_bulk_container.top { border-top: none; margin-bottom: 5px; }
+.planning_container .search_bulk_container.top { border-top: 1px dotted #DDD; }
+.search_bulk_container.bottom { margin-top: 5px; }
+.search_bulk_container.unavailable { filter:alpha(opacity=40); -moz-opacity:.40; opacity:.40; }
+.search_bulk_container input[type=submit], .search_bulk_container input[type=submit]:hover { margin-top: -3px; }
 /*.search_results tr.priority_1 td { background-color: #EFE; }
 .search_results tr.priority_2 td { background-color: #DFD; }
 .search_results tr.priority_3 td { background-color: #FFD; }

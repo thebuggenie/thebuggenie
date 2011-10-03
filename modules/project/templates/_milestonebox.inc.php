@@ -5,6 +5,7 @@
 			<table cellpadding="0" cellspacing="0" class="milestone_issues">
 				<thead>
 					<tr>
+						<th class="nosort" style="width: 20px; padding: 1px !important;"><input type="checkbox" onclick="TBG.Search.toggleCheckboxes(this);"></th>
 						<th><?php echo __('Issue'); ?></th>
 						<th><?php echo __('Status'); ?></th>
 						<th><?php echo __('Assigned to'); ?></th>

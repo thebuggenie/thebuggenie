@@ -1,7 +1,8 @@
-<tr class="milestone_issue_row<?php if ($issue->isClosed()): ?> issue_closed<?php endif; ?>" id="milestone_issue_<?php echo $issue->getID(); ?>">
+<tr class="milestone_issue_row<?php if ($issue->isClosed()): ?> issue_closed<?php endif; ?>" id="issue_<?php echo $issue->getID(); ?>">
+	<td style="padding: 2px;"><input type="checkbox" name="update_issue[<?php echo $issue->getID(); ?>]" onclick="TBG.Search.toggleCheckbox(this);" value="<?php echo $issue->getID(); ?>"></td>
 	<td>
 		<input type="hidden" name="issue_id[<?php echo $issue->getID(); ?>]" value="<?php echo $issue->getID(); ?>">
-		<div id="milestone_issue_<?php echo $issue->getID(); ?>_draggable">
+		<div id="issue_<?php echo $issue->getID(); ?>_draggable">
 			<div style="display: none;" class="rounded_box shadowed white story_color_selector" id="color_selector_<?php echo $issue->getID(); ?>">
 				<div>
 					<div class="header" style="margin-left: 5px;"><?php echo __('Pick a planning color for this issue'); ?></div>
@@ -19,15 +20,15 @@
 				</div>
 			</div>
 			<div class="story_color" id="story_color_<?php echo $issue->getID(); ?>" <?php if ($issue->canEditIssue()): ?>onclick="$('color_selector_<?php echo $issue->getID(); ?>').toggle();"<?php endif; ?> style="cursor: pointer; background-color: <?php echo $issue->getScrumColor(); ?>;">&nbsp;</div>
-			<div class="draggable" id="milestone_issue_<?php echo $issue->getID(); ?>_handle">
+			<div class="draggable" id="issue_<?php echo $issue->getID(); ?>_handle">
 				<span></span><span></span><span></span>
 			</div>
 			<?php echo link_tag(make_url('viewissue', array('issue_no' => $issue->getFormattedIssueNo(), 'project_key' => $issue->getProject()->getKey())), $issue->getFormattedTitle()); ?>
-			<input type="hidden" id="milestone_issue_<?php echo $issue->getID(); ?>_id" value="<?php echo $issue->getID(); ?>">
+			<input type="hidden" id="issue_<?php echo $issue->getID(); ?>_id" value="<?php echo $issue->getID(); ?>">
 		</div>
 	</td>
 	<td><?php echo ($issue->isAssigned()) ? $issue->getAssignee()->getName() : '-' ?></td>
-	<td><?php echo ($issue->getStatus() instanceof TBGStatus) ? $issue->getStatus()->getName() : '-' ?></td>
+	<td class="sc_status"><span class="sc_status_name"><?php echo ($issue->getStatus() instanceof TBGStatus) ? $issue->getStatus()->getName() : '-' ?></span></td>
 	<td class="milestoneupdateable first">
 		<select name="priority[<?php echo $issue->getID(); ?>]">
 			<option value="0"<?php if (!$issue->getPriority() instanceof TBGPriority): ?> selected<?php endif; ?>><?php echo __('Not prioritized'); ?></option>
