@@ -1264,7 +1264,7 @@ input[type=submit], input[type=submit]:hover, button, .button, .button:hover {
 .button-icon { padding: 0 4px; line-height: 1; }
 .button-icon, .button-icon:hover { line-height: 1 !important; }
 .button img { float: left; margin: 1px 5px 0 0; }
-.button-icon img, .button-icon:hover img { margin: 2px 3px; float: none; }
+.button-icon img, .button-icon:hover img { margin: 1px; float: none; }
 .button a, .button a:hover, .button a:visited, .button a:active { color: #FFF; }
 
 .button-silver, .button.disabled, .button.disabled:active, .button.disabled:hover, button, input[type=submit], input[type=submit]:hover {
@@ -1274,7 +1274,7 @@ input[type=submit], input[type=submit]:hover, button, .button, .button:hover {
 	filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr='#f5f5f5', EndColorStr='#e5e5e5');
 }
 
-.button-silver:active, input[type=submit]:active {
+.button-silver:active, input[type=submit]:active, button:active, input[type=submit].button-pressed, button.button-pressed, .button-silver.button-pressed {
 	background: #eaeaea;
 	background: -webkit-gradient(linear, left top, left bottom, from(#c5c5c5), to(#eaeaea) );
 	background: -moz-linear-gradient(-90deg, #c5c5c5, #eaeaea);

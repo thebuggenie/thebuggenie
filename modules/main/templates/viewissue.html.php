@@ -268,11 +268,11 @@
 								<?php $cc++; ?>
 							<?php endforeach; ?>
 							<li class="more_actions">
-								<input class="button button-silver first last" type="button" value="<?php echo __('More actions'); ?>" onclick="$('more_actions').toggle();">
+								<input class="button button-silver first last" id="more_actions_button" type="button" value="<?php echo __('More actions'); ?>" onclick="$(this).toggleClassName('button-pressed');$('more_actions').toggle();">
 							</li>
 						</ul>
 						<?php if (!$issue->getProject()->isArchived() && (TBGContext::getUser()->hasPermission('caneditissue') || TBGContext::getUser()->hasPermission('caneditissuebasic'))): ?>
-							<ul id="more_actions" style="display: none; position: absolute; width: 300px; top: 21px; right: 0; z-index: 1000;" class="simple_list rounded_box white shadowed">
+							<ul id="more_actions" style="display: none; position: absolute; width: 300px; top: 21px; right: 0; z-index: 1000;" class="simple_list rounded_box white shadowed" onclick="$('more_actions_button').toggleClassName('button-pressed');$('more_actions').toggle();">
 								<li class="header"><?php echo __('Additional actions available'); ?></li>
 								<?php if ($issue->isOpen()): ?>
 									<?php if ($issue->isBlocking()): ?>

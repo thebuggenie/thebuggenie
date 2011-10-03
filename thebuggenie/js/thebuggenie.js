@@ -2892,11 +2892,14 @@ TBG.Search.saveVisibleColumns = function(url) {
 			}
 		},
 		success: {
-			hide: 'search_column_settings_container'
+			hide: 'search_column_settings_container',
+			callback: function() {
+				$('search_column_settings_button').toggleClassName('button-pressed');
+			}
 		},
 		complete: {
 			callback: function() {
-				$('search_column_settings_button').addClassName('disabled');
+				$('search_column_settings_button').removeClassName('disabled');
 			}
 		}
 	});
