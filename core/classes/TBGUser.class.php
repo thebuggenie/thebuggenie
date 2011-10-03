@@ -1526,7 +1526,7 @@
 		public function getAvatarURL($small = true)
 		{
 			$url = '';
-			if ($this->usesGravatar())
+			if ($this->usesGravatar() && $this->getEmail())
 			{
 				$url = 'http://www.gravatar.com/avatar/' . md5(trim($this->getEmail())) . '.png?d=wavatar&amp;s=';
 				$url .= ($small) ? 22 : 48; 
