@@ -2904,3 +2904,40 @@ TBG.Search.saveVisibleColumns = function(url) {
 		}
 	});
 };
+
+TBG.Search.toggleCheckboxes = function(chk_box) {
+	var do_check = true;
+
+	if ($(chk_box).hasClassName('semi-checked')) {
+		$(chk_box).removeClassName('semi-checked');
+		$(chk_box).checked = true;
+		do_check = true;
+	} else {
+		do_check = $(chk_box).checked;
+	}
+
+	$(chk_box).up('table').down('tbody').select('input[type=checkbox]').each(function(element) {
+		element.checked = do_check;
+	});
+};
+
+TBG.Search.toggleCheckbox = function(element) {
+	var num_unchecked = 0;
+	var num_checked = 0;
+	element.up('tbody').select('input[type=checkbox]').each(function(elm) {
+		if (!elm.checked) num_unchecked++;
+		if (elm.checked) num_checked++;
+	});
+
+	var chk_box = element.up('table').down('thead').down('input[type=checkbox]');
+	if (num_unchecked == 0) {
+		chk_box.checked = true;
+		chk_box.removeClassName('semi-checked');
+	} else if (num_checked > 0) {
+		chk_box.checked = true;
+		chk_box.addClassName('semi-checked');
+	} else {
+		chk_box.checked = false;
+		chk_box.removeClassName('semi-checked');
+	}
+};

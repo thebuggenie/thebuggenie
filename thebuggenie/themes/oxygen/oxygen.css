@@ -98,6 +98,7 @@ div.image_container.thumb img.image { width: 220px; }
 /* End main header area */
 
 /* error and success message popups / slidedowns */
+input[type=checkbox].semi-checked { filter:alpha(opacity=40); -moz-opacity:.40; opacity:.40; }
 .semi_transparent { filter:alpha(opacity=40); -moz-opacity:.40; opacity:.40; }
 .semi_transparent img { vertical-align: middle; }
 .medium_transparent { filter:alpha(opacity=85); -moz-opacity:.85; opacity:.85; }
