@@ -143,7 +143,7 @@
 								<tr>
 									<td style="padding: 5px;"><label for="profile_email">* <?php echo __('Email address'); ?></label></td>
 									<td>
-										<input type="text" name="email" id="profile_email" value="<?php echo $tbg_user->getEmail(); ?>" style="width: 300px;">
+										<input type="email" name="email" id="profile_email" value="<?php echo $tbg_user->getEmail(); ?>" style="width: 300px;">
 									</td>
 								</tr>
 								<tr>
@@ -159,7 +159,7 @@
 								<tr>
 									<td style="padding: 5px;"><label for="profile_homepage"><?php echo __('Homepage'); ?></label></td>
 									<td>
-										<input type="text" name="homepage" id="profile_homepage" value="<?php echo $tbg_user->getHomepage(); ?>" style="width: 300px;">
+										<input type="url" name="homepage" id="profile_homepage" value="<?php echo $tbg_user->getHomepage(); ?>" style="width: 300px;">
 									</td>
 								</tr>
 								<tr>

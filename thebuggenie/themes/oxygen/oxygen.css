@@ -27,10 +27,10 @@ form, p { margin: 0px; padding: 0px; }
 input, select, textarea, button { font-family: 'Open Sans', sans-serif; font-size: 1em; color: #555; border: 1px solid #AAA; padding: 2px; }
 select { font-family: sans-serif !important; } /* Safari 5.1 mac fix */
 input, select, textarea { background-color: #FFF; }
-input[type="text"], input[type="password"], textarea, select { box-shadow: inset 0 0 6px rgba(200, 200, 200, 0.4); -webkit-box-shadow: inset 0 0 6px rgba(200, 200, 200, 0.4); -moz-box-shadow: inset 0 0 6px rgba(200, 200, 200, 0.4); }
+input[type="text"], input[type="email"], input[type="search"], input[type="password"], input[type="url"], textarea, select { box-shadow: inset 0 0 6px rgba(200, 200, 200, 0.4); -webkit-box-shadow: inset 0 0 6px rgba(200, 200, 200, 0.4); -moz-box-shadow: inset 0 0 6px rgba(200, 200, 200, 0.4); }
 input[type="image"] { border: 0px; padding: 0px; width: 16px; height: 16px; background-color: transparent; }
 input[type="checkbox"] { margin: 0; }
-input[type="text"][disabled], input[type="password"][disabled], textarea[disabled], select[disabled] { background-color: #F9F9F9; color: #BBB; }
+input[type="text"][disabled], input[type="email"][disabled], input[type="url"][disabled], input[type="search"][disabled], input[type="password"][disabled], textarea[disabled], select[disabled] { background-color: #F9F9F9; color: #BBB; }
 
 pre { overflow: auto; }
 
@@ -1123,7 +1123,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 
 /* search styling */
 /* search boxes */
-#find_issues .main_header { font-weight: bold; font-size: 1.1em; padding: 5px 0 3px 2px; border-bottom: 1px solid #AAA; color: #333; background: transparent; box-shadow: none; -webkit-box-shadow: none; -moz-box-shadow: none; }
+#find_issues .main_header { font-weight: bold; font-size: 1.1em; padding: 5px 0 3px 2px; margin-bottom: 5px; border-bottom: 1px solid #AAA; color: #333; background: transparent; box-shadow: none; -webkit-box-shadow: none; -moz-box-shadow: none; }
 .searchbox_container { margin: 5px 0 5px 0; padding: 3px 10px 3px 10px; font-size: 0.9em; }
 /*.searchbox_container label { font-size: 0.9em; }
 .searchbox_container input[type="text"], .searchbox_container select { font-size: 0.9em; }*/
@@ -1133,13 +1133,16 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 #find_issues #no_issues { padding: 4px; }
 #find_issues .search_export_links { float: right; font-size: 0.8em; }
 #find_issues .search_export_links img { margin: 0 3px -4px 10px; }
-#find_issues .search_column_settings { float: right; font-size: 0.9em; margin: -2px 0 3px 10px; }
+#find_issues .search_column_settings { float: right; font-size: 0.8em; margin: -2px 0 3px 10px; }
 #find_issues .search_column_settings .button-icon { cursor: pointer; }
 #find_issues .search_column_settings h4 { margin-bottom: 5px; }
 #find_issues .search_column_settings input { float: left; margin: 0 3px 0 0; padding: 0; }
 #find_issues .search_column_settings label div { float: left; padding: 3px; }
 #find_issues .search_column_settings label { padding: 3px; }
 #find_issues .search_column_settings li { clear: both; }
+#search_column_settings_save_button { margin-right: 10px; }
+#search_builder_toggler { float: right; margin: -2px 0 0 5px; padding-bottom: 2px !important; font-size: 1em !important; }
+#search_column_settings_container { width: 400px; position: absolute; right: 5px; }
 #find_issues #search_filters ul { list-style-type: none; margin: 0; padding: 0; }
 #find_issues #search_filters ul li { margin: 0; padding: 0; }
 #search_filters_list button { margin-top: -1px; }
@@ -1154,9 +1157,9 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 
 /* search results */
 .search_results { margin: 0 0 5px 0; }
-.search_results h5 { margin: 10px 0 0 0; padding-left: 5px; padding-bottom: 10px; border-bottom: 1px dotted #CCC; background-color: #FFF; }
+.search_results h5 { margin: 0; padding-left: 5px; padding-bottom: 10px; border-bottom: 1px dotted #CCC; background-color: #FFF; }
 .search_results h5 img { float: left; margin-right: 5px; }
-.search_results table.results_container { margin-bottom: 15px; }
+.search_results table.results_container { margin-bottom: 0; }
 .search_results th { background-color: #EAEAEA; padding: 2px; font-size: 0.8em; border-left: 1px solid #FFF; border-right: 1px solid #DDD; }
 .search_results th img { width: 12px; height: 12px; }
 .search_results td { font-size: 0.9em; padding: 2px; }
@@ -1172,7 +1175,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .search_results td.result_issue a:hover .issue_title { color: #555; }
 .search_results td.result_issue a, .search_results td.result_issue a:hover { font-weight: normal; font-size: 1.0em; }
 .search_results td.smaller { font-size: 0.85em; }
-.search_results div.results_summary { border-top: 1px dotted #CCC; font-size: 0.9em; margin-top: -15px; padding-top: 3px; padding-bottom: 10px; }
+.search_results div.results_summary { border-top: 1px dotted #CCC; font-size: 0.9em; padding-top: 3px; padding-bottom: 20px; }
 .search_results tr.priority_0 td { background-color: transparent; }
 .search_results .sc_issuetype img { float: left; margin-right: 3px; }
 .search_results td.sc_status { font-size: 0.9em; }
@@ -1185,8 +1188,9 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 /* end results */
 
 /* saved searches */
-.saved_searches { font-size: 0.9em; padding: 2px 2px 5px 5px; width: 300px; vertical-align: top; }
+.saved_searches { font-size: 0.9em; padding: 5px 5px 5px 10px; width: 280px; vertical-align: top; }
 .saved_searches a { font-size: 0.9em; font-weight: bold; padding-left: 3px; }
+.saved_searches .container_div { margin-bottom: 10px; }
 
 .container_div, .backdrop_box { margin: 5px 0; clear: both; font-size: 1em; display: block; padding: 0px; padding-bottom: 2px; background-color: #FFF; border: 1px solid #CCC; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; }
 .container_div .header, .metallic_header { 
@@ -1275,6 +1279,9 @@ input[type=submit], input[type=submit]:hover, button, .button, .button:hover {
 	background: -webkit-gradient(linear, left top, left bottom, from(#F5F5F5), to(#E5E5E5) );
 	background: -moz-linear-gradient(-90deg, #F5F5F5, #E5E5E5);
 	filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr='#f5f5f5', EndColorStr='#e5e5e5');
+	box-shadow: none;
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
 }
 
 .button-silver:active, input[type=submit]:active, button:active, input[type=submit].button-pressed, button.button-pressed, .button-silver.button-pressed {
