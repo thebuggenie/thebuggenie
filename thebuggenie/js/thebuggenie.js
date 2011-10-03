@@ -177,6 +177,16 @@ TBG.Core._toggleBreadcrumbItem = function(item) {
 	item.toggleClassName('activated');
 };
 
+/**
+ * Toggles one breadcrumb item in the breadcrumb bar
+ */
+TBG.Core._hideBreadcrumbItem = function() {
+	$('submenu').select('.popped_out').each(function(element) {
+		element.removeClassName('popped_out');
+		element.previous().down('.activated').removeClassName('activated');
+	});
+};
+
 TBG.Core._detachFile = function(url, file_id, base_id) {
 	TBG.Main.Helpers.ajax(url, {
 		loading: {
@@ -535,7 +545,7 @@ TBG.Main.Helpers.tabSwitcher = function(visibletab, menu) {
 
 TBG.Main.toggleBreadcrumbMenuPopout = function(event) {
 	var item = event.findElement('a');
-	if (TBG.activated_popoutmenu != undefined && TBG.activated_popoutmenu != item) {
+	if (TBG.activated_popoutmenu != undefined && TBG.activated_popoutmenu != item && item != undefined) {
 		TBG.Core._toggleBreadcrumbItem(TBG.activated_popoutmenu);
 		TBG.activated_popoutmenu = undefined;
 	}
@@ -544,6 +554,10 @@ TBG.Main.toggleBreadcrumbMenuPopout = function(event) {
 		TBG.activated_popoutmenu = item;
 	} else {
 		TBG.activated_popoutmenu = undefined;
+	}
+
+	if (item == undefined) {
+		TBG.Core._hideBreadcrumbItem();
 	}
 };
 
