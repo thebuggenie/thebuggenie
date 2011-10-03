@@ -131,7 +131,7 @@
 //			$this->unassigned_issues = $this->selected_project->getUnassignedStories();
 //			$this->unassigned_issues = $this->selected_project->getIssuesWithoutMilestone();
 			$this->unassigned_milestone = new TBGMilestone();
-			$this->unassigned_milestone->setName(TBGContext::getI18n()->__('Unassigned items / backlog'));
+			$this->unassigned_milestone->setName(TBGContext::getI18n()->__('Unassigned issues / backlog'));
 			$this->unassigned_milestone->setId(0);
 			$this->unassigned_milestone->setProject($this->selected_project);
 		}
@@ -323,7 +323,7 @@
 			else
 			{
 				$milestone = new TBGMilestone();
-				$milestone->setName(TBGContext::getI18n()->__('Unassigned items / backlog'));
+				$milestone->setName(TBGContext::getI18n()->__('Unassigned issues / backlog'));
 				$milestone->setId(0);
 				$milestone->setProject($this->selected_project);
 			}
@@ -997,7 +997,7 @@
 					else
 					{
 						$milestone = new TBGMilestone();
-						$milestone->setName(TBGContext::getI18n()->__('Unassigned items / backlog'));
+						$milestone->setName(TBGContext::getI18n()->__('Unassigned issues / backlog'));
 						$milestone->setId(0);
 						$milestone->setProject($this->selected_project);
 					}
