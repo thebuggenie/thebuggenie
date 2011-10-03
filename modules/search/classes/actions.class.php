@@ -539,6 +539,8 @@
 		{
 			$issue_ids = $request['issue_ids'];
 			$options = array('issue_ids' => array_values($issue_ids));
+			TBGContext::loadLibrary('common');
+			$options['last_updated'] = tbg_formatTime(time(), 20);
 
 			if (!empty($issue_ids))
 			{
@@ -553,6 +555,7 @@
 							$milestone->setProject(TBGContext::getCurrentProject());
 							$milestone->setName($request['milestone_name']);
 							$milestone->save();
+							$options['milestone_url'] = TBGContext::getRouting()->generate('project_planning_milestone', array('project_key' => $milestone->getProject()->getKey(), 'milestone_id' => $milestone->getID()));
 						}
 						elseif ($request['milestone'])
 						{

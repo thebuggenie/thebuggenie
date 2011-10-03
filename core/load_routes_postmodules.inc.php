@@ -53,6 +53,7 @@
 	$routes[] = array('project_timeline', '/:project_key/timeline/*', 'project', 'timeline');
 	$routes[] = array('project_timeline_important', '/:project_key/timeline/show/important/*', 'project', 'timeline');
 	$routes[] = array('project_files', '/:project_key/files', 'project', 'files');
+	$routes[] = array('project_planning_milestone', '/:project_key/planning/milestone/:milestone_id', 'project', 'getMilestone');
 	$routes[] = array('project_planning_milestone_issues', '/:project_key/planning/milestone/:milestone_id/get/issues', 'project', 'getMilestoneIssues', array('mode' => 'planning'));
 	$routes[] = array('project_planning_update_milestone_issues', '/:project_key/planning/milestone/:milestone_id/update/issues', 'project', 'updateMilestoneIssues');
 	$routes[] = array('project_roadmap', '/:project_key/roadmap', 'project', 'roadmap');

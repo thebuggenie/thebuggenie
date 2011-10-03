@@ -1051,6 +1051,12 @@
 
 		}
 		
+		public function runGetMilestone(TBGRequest $request)
+		{
+			$milestone = new TBGMilestone($request['milestone_id']);
+			return $this->renderJSON(array('content' => TBGAction::returnTemplateHTML('project/milestonebox', array('milestone' => $milestone))));
+		}
+		
 		public function runMilestone(TBGRequest $request)
 		{
 			if ($request->isMethod(TBGRequest::POST)) {
