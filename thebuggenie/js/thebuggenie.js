@@ -2866,10 +2866,14 @@ TBG.Search.toggleColumn = function(column) {
 };
 
 TBG.Search.resetColumns = function() {
-	TBG.Search.ResultViews[TBG.Search.current_result_view].default_visible.each(function(column) {
+	TBG.Search.ResultViews[TBG.Search.current_result_view].visible.each(function(column) {
 		$$('.scs_' + column).each(function(element) {
 			element.show();
-			element.down('input').checked = true;
+			if (TBG.Search.ResultViews[TBG.Search.current_result_view].default_visible.indexOf(column) != -1) {
+				element.down('input').checked = true;
+			} else {
+				element.down('input').checked = false;
+			}
 		});
 		$$('.sc_' + column).each(function(element) {
 			element.show();
