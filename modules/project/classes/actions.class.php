@@ -1054,7 +1054,7 @@
 		public function runGetMilestone(TBGRequest $request)
 		{
 			$milestone = new TBGMilestone($request['milestone_id']);
-			return $this->renderJSON(array('content' => TBGAction::returnTemplateHTML('project/milestonebox', array('milestone' => $milestone))));
+			return $this->renderJSON(array('content' => TBGAction::returnTemplateHTML('project/milestonebox', array('milestone' => $milestone)), 'milestone_order' => array_keys($milestone->getProject()->getAllMilestones())));
 		}
 		
 		public function runMilestone(TBGRequest $request)
@@ -1094,7 +1094,7 @@
 					$message = TBGContext::getI18n()->__('Milestone created');
 					$template = 'milestonebox';
 				}
-				return $this->renderJSON(array('content' => $this->getTemplateHTML($template, array('milestone' => $milestone))));
+				return $this->renderJSON(array('content' => $this->getTemplateHTML($template, array('milestone' => $milestone)), 'milestone_order' => array_keys($this->selected_project->getAllMilestones())));
 			}
 		}
 

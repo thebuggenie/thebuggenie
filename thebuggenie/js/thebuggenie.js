@@ -1231,6 +1231,13 @@ TBG.Project.unarchive = function(url, pid) {
 	});
 }
 
+TBG.Project.Planning.sortMilestones = function(milestone_order) {
+	milestone_order.each(function(milestone_id) {
+		$('milestone_list').appendChild($('milestone_' + milestone_id));
+	});
+	$('milestone_list').appendChild($('milestone_0'));
+};
+
 TBG.Project.Milestone.add = function(url) {
 	TBG.Main.Helpers.ajax(url, {
 		form: 'edit_milestone_form',
@@ -1238,7 +1245,10 @@ TBG.Project.Milestone.add = function(url) {
 		success: {
 			reset: 'add_milestone_form',
 			hide: 'no_milestones',
-			callback: TBG.Main.Helpers.Backdrop.reset,
+			callback: function(json) {
+				TBG.Project.Planning.sortMilestones(json.milestone_order);
+				TBG.Main.Helpers.Backdrop.reset();
+			},
 			update: {element: 'milestone_list', insertion: true}
 		}
 	});
@@ -1254,6 +1264,7 @@ TBG.Project.Milestone.retrieve = function(url, milestone_id, issue_ids) {
 		success: {
 			update: {element: 'milestone_list', insertion: true},
 			callback: function(json) {
+				TBG.Project.Planning.sortMilestones(json.milestone_order);
 				issue_ids.each(function(issue_id) {
 					var issue_elm = $('issue_' + issue_id);
 					if (issue_elm != undefined) {
@@ -1272,7 +1283,10 @@ TBG.Project.Milestone.update = function(url, milestone_id) {
 			indicator: 'milestone_add_indicator'
 		},
 		success: {
-			callback: TBG.Main.Helpers.Backdrop.reset,
+			callback: function(json) {
+				TBG.Project.Planning.sortMilestones(json.milestone_order);
+				TBG.Main.Helpers.Backdrop.reset();
+			},
 			replace: 'milestone_' + milestone_id + '_header'
 		}
 	});
