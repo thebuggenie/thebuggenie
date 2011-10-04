@@ -177,6 +177,7 @@
 		public function componentBulkWorkflow()
 		{
 			$workflow_items = array();
+			$project = null;
 			$issues = array();
 			$first = true;
 			foreach ($this->issue_ids as $issue_id)
@@ -186,6 +187,7 @@
 				if ($first)
 				{
 					$workflow_items = $issue->getAvailableWorkflowTransitions();
+					$project = $issue->getProject();
 					$first = false;
 				}
 				else
@@ -196,11 +198,17 @@
 						if (!array_key_exists($transition_id, $transitions))
 							unset($workflow_items[$transition_id]);
 					}
+					if ($issue->getProject()->getID() != $project->getID())
+					{
+						$project = null;
+						break;
+					}
 				}
 				if (!count($workflow_items)) break;
 			}
 
 			$this->issues = $issues;
+			$this->project = $project;
 			$this->available_transitions = $workflow_items;
 		}
 		

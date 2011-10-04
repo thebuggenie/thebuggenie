@@ -2553,6 +2553,7 @@
 						{
 							$options['issues'][$issue_id] = new TBGIssue($issue_id);
 						}
+						$options['project'] = $this->selected_project;
 						break;
 					case 'close_issue':
 						$template_name = 'main/closeissue';

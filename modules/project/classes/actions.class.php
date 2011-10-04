@@ -1140,6 +1140,34 @@
 			}
 		}
 		
+		public function runTransitionIssues(TBGRequest $request)
+		{
+			try
+			{
+				$transition = TBGContext::factory()->TBGWorkflowTransition($request->getParameter('transition_id'));
+				$issue_ids = $request['issue_ids'];
+				foreach ($issue_ids as $issue_id) 
+				{
+					$issue = TBGContext::factory()->TBGIssue($issue_id);
+					if (!$issue->isWorkflowTransitionsAvailable() || !$transition->validateFromRequest($request))
+					{
+						unset($issue_ids[$issue_id]);
+						continue;
+					}
+
+					$transition->transitionIssueToOutgoingStepFromRequest($issue);
+				}
+				
+				TBGContext::loadLibrary('common');
+				return $this->renderJSON(array('issue_ids' => array_keys($issue_ids), 'last_updated' => tbg_formatTime(time(), 20)));
+			}
+			catch (Exception $e)
+			{
+				throw $e;
+				return $this->return404();
+			}
+		}
+		
 		public function runSettings(TBGRequest $request)
 		{
 			$this->forward403if(TBGContext::getCurrentProject()->isArchived());

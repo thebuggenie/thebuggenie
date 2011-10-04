@@ -3104,6 +3104,19 @@ TBG.Search.bulkPostProcess = function(json) {
 	}
 }
 
+TBG.Search.bulkWorkflowTransition = function(url, transition_id) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'bulk_workflow_transition_form',
+		loading: {indicator: 'transition_working_'+transition_id+'_indicator'},
+		success: {
+			callback: TBG.Search.bulkPostProcess
+		},
+		complete: {
+			callback: TBG.Main.Helpers.Backdrop.reset
+		}
+	});
+};
+
 TBG.Search.bulkUpdate = function(url, mode) {
 	var issues = '';
 	$('search_results').select('tbody input[type=checkbox]').each(function(element) {

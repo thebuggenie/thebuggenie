@@ -133,7 +133,8 @@
 			$this->statuses = TBGStatus::getAll();
 			if ($this->issue instanceof TBGIssue)
 			{
-				$this->issuetypes = $this->issue->getProject()->getIssuetypeScheme()->getIssuetypes();
+				$this->project = $this->issue->getProject();
+				$this->issuetypes = $this->project->getIssuetypeScheme()->getIssuetypes();
 				$fields_list = array();
 				$fields_list['category'] = array('title' => $i18n->__('Category'), 'visible' => $this->issue->isCategoryVisible(), 'changed' => $this->issue->isCategoryChanged(), 'merged' => $this->issue->isCategoryMerged(), 'name' => (($this->issue->getCategory() instanceof TBGCategory) ? $this->issue->getCategory()->getName() : ''), 'name_visible' => (bool) ($this->issue->getCategory() instanceof TBGCategory), 'noname_visible' => (bool) (!$this->issue->getCategory() instanceof TBGCategory), 'icon' => false, 'change_tip' => $i18n->__('Click to change category'), 'change_header' => $i18n->__('Change category'), 'clear' => $i18n->__('Clear the category'), 'select' => $i18n->__('%clear_the_category% or click to select a new category', array('%clear_the_category%' => '')));
 				if ($this->issue->isEditable() && $this->issue->canEditCategory()) $fields_list['category']['choices'] = TBGCategory::getAll();
@@ -146,7 +147,7 @@
 				$fields_list['severity'] = array('title' => $i18n->__('Severity'), 'visible' => $this->issue->isSeverityVisible(), 'changed' => $this->issue->isSeverityChanged(), 'merged' => $this->issue->isSeverityMerged(), 'name' => (($this->issue->getSeverity() instanceof TBGSeverity) ? $this->issue->getSeverity()->getName() : ''), 'name_visible' => (bool) ($this->issue->getSeverity() instanceof TBGSeverity), 'noname_visible' => (bool) (!$this->issue->getSeverity() instanceof TBGSeverity), 'icon' => false, 'change_tip' => $i18n->__('Click to change severity'), 'change_header' => $i18n->__('Change severity'), 'clear' => $i18n->__('Clear the severity'), 'select' => $i18n->__('%clear_the_severity% or click to select a new severity', array('%clear_the_severity%' => '')));
 				if ($this->issue->isUpdateable() && $this->issue->canEditSeverity()) $fields_list['severity']['choices'] = TBGSeverity::getAll();
 				$fields_list['milestone'] = array('title' => $i18n->__('Targetted for'), 'visible' => $this->issue->isMilestoneVisible(), 'changed' => $this->issue->isMilestoneChanged(), 'merged' => $this->issue->isMilestoneMerged(), 'name' => (($this->issue->getMilestone() instanceof TBGMilestone) ? $this->issue->getMilestone()->getName() : ''), 'name_visible' => (bool) ($this->issue->getMilestone() instanceof TBGMilestone), 'noname_visible' => (bool) (!$this->issue->getMilestone() instanceof TBGMilestone), 'icon' => true, 'icon_name' => 'icon_milestones.png', 'change_tip' => $i18n->__('Click to change which milestone this issue is targetted for'), 'change_header' => $i18n->__('Set issue target / milestone'), 'clear' => $i18n->__('Set as not targetted'), 'select' => $i18n->__('%set_as_not_targetted% or click to set a new target milestone', array('%set_as_not_targetted%' => '')));
-				if ($this->issue->isUpdateable() && $this->issue->canEditMilestone()) $fields_list['milestone']['choices'] = $this->issue->getProject()->getAllMilestones();
+				if ($this->issue->isUpdateable() && $this->issue->canEditMilestone()) $fields_list['milestone']['choices'] = $this->project->getAllMilestones();
 
 				$customfields_list = array();
 				foreach (TBGCustomDatatype::getAll() as $key => $customdatatype)
@@ -177,10 +178,26 @@
 						$customfields_list[$key]['noname_visible'] = (bool) ($this->issue->getCustomField($key) == '');
 					}
 				}
-
-				$this->fields_list = $fields_list;
 				$this->customfields_list = $customfields_list;
 			}
+			else
+			{
+				$fields_list = array();
+				$fields_list['category'] = array();
+				$fields_list['category']['choices'] = TBGCategory::getAll();
+				$fields_list['resolution'] = array();
+				$fields_list['resolution']['choices'] = TBGResolution::getAll();
+				$fields_list['priority'] = array();
+				$fields_list['priority']['choices'] = TBGPriority::getAll();
+				$fields_list['reproducability'] = array();
+				$fields_list['reproducability']['choices'] = TBGReproducability::getAll();
+				$fields_list['severity'] = array();
+				$fields_list['severity']['choices'] = TBGSeverity::getAll();
+				$fields_list['milestone'] = array();
+				$fields_list['milestone']['choices'] = $this->project->getAllMilestones();
+			}
+
+			$this->fields_list = $fields_list;
 			if (isset($this->transition) && $this->transition->hasAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE))
 			{
 				$available_assignees = array();
@@ -250,6 +267,7 @@
 
 		public function componentUpdateissueproperties()
 		{
+			$this->issue = null;
 			$this->setupVariables();
 		}
 		
