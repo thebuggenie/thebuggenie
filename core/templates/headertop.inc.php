@@ -123,7 +123,7 @@
 								<?php echo link_tag(make_url('configure'), image_tag('tab_config.png').__('Configure The Bug Genie')); ?>
 							<?php endif; ?>
 							<?php TBGEvent::createNew('core', 'user_dropdown_reg')->trigger(); ?>
-							<?php echo link_tag(make_url('publish_article', array('article_name' => 'Category:Help')), image_tag('help.png').__('Help')); ?>
+							<?php echo link_tag('http://www.thebuggenie.com/help.php?subject='.TBGContext::getRouting()->getCurrentRouteName(), image_tag('help.png').__('Help')); ?>
 							<?php echo link_tag(make_url('logout'), image_tag('logout.png').__('Logout')); ?>
 							<div class="header"><?php echo __('Your issues'); ?></div>
 							<?php echo link_tag(make_url('my_reported_issues'), image_tag('icon_savedsearch.png') . __('Issues reported by me')); ?>

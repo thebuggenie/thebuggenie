@@ -88,6 +88,7 @@
 		public function renderJSON($text = array())
 		{
 			$this->getResponse()->setContentType('application/json');
+			$this->getResponse()->setDecoration(TBGResponse::DECORATE_NONE);
 			echo json_encode($text);
 			return true;
 		}
