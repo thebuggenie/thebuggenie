@@ -1103,7 +1103,7 @@
 					$message = TBGContext::getI18n()->__('Milestone created');
 					$template = 'milestonebox';
 				}
-				return $this->renderJSON(array('content' => $this->getTemplateHTML($template, array('milestone' => $milestone)), 'milestone_order' => array_keys($this->selected_project->getAllMilestones())));
+				return $this->renderJSON(array('content' => $this->getTemplateHTML($template, array('milestone' => $milestone)), 'milestone_id' => $milestone->getID(), 'milestone_name' => $milestone->getName(), 'milestone_order' => array_keys($this->selected_project->getAllMilestones())));
 			}
 		}
 

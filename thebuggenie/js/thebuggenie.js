@@ -1246,6 +1246,12 @@ TBG.Project.Milestone.add = function(url) {
 			reset: 'add_milestone_form',
 			hide: 'no_milestones',
 			callback: function(json) {
+				if ($('bulk_action_assign_milestone_top') != undefined) {
+					$('bulk_action_assign_milestone_top').insert('<option value="'+json.milestone_id+'" id="bulk_action_assign_milestone_top_'+milestone_id+'">'+json.milestone_name+'</option>');
+				}
+				if ($('bulk_action_assign_milestone_bottom') != undefined) {
+					$('bulk_action_assign_milestone_bottom').insert('<option value="'+json.milestone_id+'" id="bulk_action_assign_milestone_bottom_'+milestone_id+'">'+json.milestone_name+'</option>');
+				}
 				TBG.Project.Planning.sortMilestones(json.milestone_order);
 				TBG.Main.Helpers.Backdrop.reset();
 			},
@@ -1305,6 +1311,7 @@ TBG.Project.Milestone.update = function(url, milestone_id) {
 }
 
 TBG.Project.Milestone.remove = function (url, milestone_id) {
+	TBG.Main.Helpers.Dialog.dismiss();
 	TBG.Main.Helpers.ajax(url, {
 		loading: {
 			indicator: 'fullpage_backdrop',
