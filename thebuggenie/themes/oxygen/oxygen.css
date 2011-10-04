@@ -87,7 +87,7 @@ header nav ul { position: relative !important; }
 
 .submenu_strip .selected_project { font-size: 1em; font-weight: bold; color: #555; border-color: #D9D9BB; }
 
-.submenu_strip { background-color: #FAF3B8; color: #333; box-shadow: 0 0 4px rgba(0, 0, 0, 0.4); -webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.4); -moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.4); padding: 5px; height: 20px; font-size: 0.9em; margin-left: 10px; margin-right: 10px; }
+.submenu_strip { background-color: #FAF3B8; color: #333; box-shadow: 0 0 4px rgba(0, 0, 0, 0.4); -webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.4); -moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.4); padding: 5px; height: 20px; font-size: 0.9em; margin: 0px; }
 #quicksearch_container input[type="submit"] { padding: 1px 5px 0 5px !important; height: auto; margin: -3px 0 0 0; display: inline; font-size: 0.9em; }
 /* End main header area */
 
@@ -285,22 +285,21 @@ div.dropdown_separator { border-left: 1px dotted #EAEAF5; padding: 0 0 0 4px; ma
 /* end header menu */
 
 /* project menu strip */
-.project_stuff { float: left; position: relative; height: 25px; border-color: transparent; }
-.project_stuff ul { list-style-type: none; margin: 0; padding: 0; }
-.project_stuff ul img.dropdown_activator { float: left; margin: 0 3px 0 2px; border: 1px solid transparent; }
-.project_stuff ul img.dropdown_activator.clickable:hover { background-color: #FFF; border: 1px dotted #CCC; }
-.project_stuff ul a.activated img.dropdown_activator { background-color: #FFF; border: 1px dotted #CCC; border-right-color: #FFF; }
-.project_stuff ul li div.popoutmenu { display: none; white-space: nowrap; }
-.project_stuff ul li.popped_out div.popoutmenu { background-color: #FFF; z-index: 100; padding: 2px; position: absolute; border: 1px solid #FFF; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; margin-top: -4px; margin-left: -4px; display: block; box-shadow: 4px 4px 3px rgba(0, 0, 0, 0.2); -webkit-box-shadow: 4px 4px 3px rgba(0, 0, 0, 0.2); -moz-box-shadow: 4px 4px 3px rgba(0, 0, 0, 0.2); }
-.project_stuff ul li.popped_out div.popoutmenu a { border: 0; padding: 3px 5px; display: block; color: #333; }
-.project_stuff ul li.popped_out div.popoutmenu a.selected { font-weight: normal; color: #AAA; }
-.project_stuff ul li.popped_out div.popoutmenu a:hover { font-weight: normal; background-color: #F5F5F5; }
-.project_stuff ul li { height: 23px; float: left; margin: 0; padding-bottom: 0; }
-.project_stuff ul li.project_name { font-size: 1em; font-weight: bold; padding-top: 1px; }
-.project_stuff ul li.no_project_name { font-size: 0.9em; font-weight: normal; padding-top: 2px; color: #888; }
-.project_stuff ul li.project_name span { font-weight: normal; font-size: 0.9em; color: #886; }
-.project_stuff ul li.project_name a { color: #555; }
-.project_stuff ul li.breadcrumb { color: #886; font-size: 0.9em; padding-top: 2px; }
+.project_stuff { float: left; position: relative; height: 25px; border-color: transparent; list-style-type: none; margin: 0; padding: 0; }
+.project_stuff img.dropdown_activator { float: left; margin: 0 3px 0 2px; border: 1px solid transparent; }
+.project_stuff img.dropdown_activator.clickable:hover { background-color: #FFF; border: 1px dotted #CCC; }
+.project_stuff a.activated img.dropdown_activator { background-color: #FFF; border: 1px dotted #CCC; border-right-color: #FFF; }
+.project_stuff li div.popoutmenu { display: none; white-space: nowrap; }
+.project_stuff li.popped_out div.popoutmenu { background-color: #FFF; z-index: 100; padding: 2px; position: absolute; border: 1px solid #FFF; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; margin-top: -4px; margin-left: -4px; display: block; box-shadow: 4px 4px 3px rgba(0, 0, 0, 0.2); -webkit-box-shadow: 4px 4px 3px rgba(0, 0, 0, 0.2); -moz-box-shadow: 4px 4px 3px rgba(0, 0, 0, 0.2); }
+.project_stuff li.popped_out div.popoutmenu a { border: 0; padding: 3px 5px; display: block; color: #333; }
+.project_stuff li.popped_out div.popoutmenu a.selected { font-weight: normal; color: #AAA; }
+.project_stuff li.popped_out div.popoutmenu a:hover { font-weight: normal; background-color: #F5F5F5; }
+.project_stuff li { height: 23px; float: left; margin: 0; padding-bottom: 0; }
+.project_stuff li.project_name { font-size: 1em; font-weight: bold; padding-top: 1px; }
+.project_stuff li.no_project_name { font-size: 0.9em; font-weight: normal; padding-top: 2px; color: #888; }
+.project_stuff li.project_name span { font-weight: normal; font-size: 0.9em; color: #886; }
+.project_stuff li.project_name a { color: #555; }
+.project_stuff li.breadcrumb { color: #886; font-size: 0.9em; padding-top: 2px; }
 .menu_project_strip .faded_out dark { color: #B0aa64; }
 /* end project menu */
 
