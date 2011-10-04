@@ -2548,6 +2548,11 @@
 						$transition = TBGContext::factory()->TBGWorkflowTransition($request->getParameter('transition_id'));
 						$template_name = $transition->getTemplate();
 						$options['transition'] = $transition;
+						$options['issues'] = array();
+						foreach ($request['issue_ids'] as $issue_id)
+						{
+							$options['issues'][$issue_id] = new TBGIssue($issue_id);
+						}
 						break;
 					case 'close_issue':
 						$template_name = 'main/closeissue';
@@ -2628,6 +2633,10 @@
 						$options['target'] = 'project';
 						$options['id'] = $request->getParameter('pid');
 						$options['mandatory'] = true;
+						break;
+					case 'bulk_workflow':
+						$template_name = 'search/bulkworkflow';
+						$options['issue_ids'] = $request['issue_ids'];
 						break;
 					default:
 						$event = new TBGEvent('core', 'get_backdrop_partial', $request->getParameter('key'));

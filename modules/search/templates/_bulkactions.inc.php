@@ -68,6 +68,7 @@
 			</select>
 		</span>
 		<span class="bulk_action_subcontainer" id="bulk_action_subcontainer_perform_workflow_step_<?php echo $mode; ?>" style="display: none;">
+			<input type="hidden" id="bulk_action_subcontainer_perform_workflow_step_<?php echo $mode; ?>_url" value="<?php echo make_url('get_partial_for_backdrop', array('key' => 'bulk_workflow')); ?>">
 		</span>
 		<input type="submit" class="button button-silver" value="<?php echo __('Apply'); ?>">
 	</div>
