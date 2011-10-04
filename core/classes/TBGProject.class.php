@@ -1293,6 +1293,12 @@
 					if ($milestone_a->isScheduled() && $milestone_b->isScheduled())
 						return ($milestone_a->getScheduledDate() < $milestone_b->getScheduledDate()) ? -1 : 1;
 					
+					if ($milestone_a->isStarting() && $milestone_b->isScheduled())
+						return ($milestone_a->getStartingDate() < $milestone_b->getScheduledDate()) ? -1 : 1;
+
+					if ($milestone_a->isScheduled() && $milestone_b->isStarting())
+						return ($milestone_a->getScheduledDate() < $milestone_b->getStartingDate()) ? -1 : 1;
+
 					if ($milestone_a->isStarting()) return -1;
 					if ($milestone_b->isStarting()) return 1;
 					
