@@ -10,6 +10,10 @@
 				<option value="assign_milestone"><?php echo __('Assign to milestone'); ?></option>
 			<?php endif; ?>
 			<option value="set_status"><?php echo __('Set status'); ?></option>
+			<option value="set_resolution"><?php echo __('Set resolution'); ?></option>
+			<option value="set_priority"><?php echo __('Set priority'); ?></option>
+			<option value="set_category"><?php echo __('Set category'); ?></option>
+			<option value="set_severity"><?php echo __('Set severity'); ?></option>
 			<option value="perform_workflow_step"><?php echo __('Choose workflow step to perform'); ?></option>
 		</select>
 		<?php if (TBGContext::isProjectContext()): ?>
@@ -28,6 +32,38 @@
 			<select name="status" id="bulk_action_set_status_<?php echo $mode; ?>" class="focusable" onchange="TBG.Search.bulkChanger('<?php echo $mode; ?>');">
 				<?php foreach (TBGStatus::getAll() as $status_id => $status): ?>
 					<option value="<?php echo $status_id; ?>"><?php echo $status->getName(); ?></option>
+				<?php endforeach; ?>
+			</select>
+		</span>
+		<span class="bulk_action_subcontainer" id="bulk_action_subcontainer_set_resolution_<?php echo $mode; ?>" style="display: none;">
+			<select name="resolution" id="bulk_action_set_resolution_<?php echo $mode; ?>" class="focusable" onchange="TBG.Search.bulkChanger('<?php echo $mode; ?>');">
+				<option value="0"><?php echo __('No resolution'); ?></option>
+				<?php foreach (TBGResolution::getAll() as $resolution_id => $resolution): ?>
+					<option value="<?php echo $resolution_id; ?>"><?php echo $resolution->getName(); ?></option>
+				<?php endforeach; ?>
+			</select>
+		</span>
+		<span class="bulk_action_subcontainer" id="bulk_action_subcontainer_set_priority_<?php echo $mode; ?>" style="display: none;">
+			<select name="priority" id="bulk_action_set_priority_<?php echo $mode; ?>" class="focusable" onchange="TBG.Search.bulkChanger('<?php echo $mode; ?>');">
+				<option value="0"><?php echo __('No priority'); ?></option>
+				<?php foreach (TBGPriority::getAll() as $priority_id => $priority): ?>
+					<option value="<?php echo $priority_id; ?>"><?php echo $priority->getName(); ?></option>
+				<?php endforeach; ?>
+			</select>
+		</span>
+		<span class="bulk_action_subcontainer" id="bulk_action_subcontainer_set_category_<?php echo $mode; ?>" style="display: none;">
+			<select name="category" id="bulk_action_set_category_<?php echo $mode; ?>" class="focusable" onchange="TBG.Search.bulkChanger('<?php echo $mode; ?>');">
+				<option value="0"><?php echo __('No category'); ?></option>
+				<?php foreach (TBGCategory::getAll() as $category_id => $category): ?>
+					<option value="<?php echo $category_id; ?>"><?php echo $category->getName(); ?></option>
+				<?php endforeach; ?>
+			</select>
+		</span>
+		<span class="bulk_action_subcontainer" id="bulk_action_subcontainer_set_severity_<?php echo $mode; ?>" style="display: none;">
+			<select name="severity" id="bulk_action_set_severity_<?php echo $mode; ?>" class="focusable" onchange="TBG.Search.bulkChanger('<?php echo $mode; ?>');">
+				<option value="0"><?php echo __('No severity'); ?></option>
+				<?php foreach (TBGSeverity::getAll() as $severity_id => $severity): ?>
+					<option value="<?php echo $severity_id; ?>"><?php echo $severity->getName(); ?></option>
 				<?php endforeach; ?>
 			</select>
 		</span>

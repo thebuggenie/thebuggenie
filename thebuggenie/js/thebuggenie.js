@@ -3073,10 +3073,6 @@ TBG.Search.bulkUpdate = function(url, mode) {
 										milestone_container.addClassName('faded_out');
 									}
 								}
-								var last_updated_container = issue_elm.down('.sc_last_updated');
-								if (last_updated_container != undefined) {
-									last_updated_container.update(json.last_updated);
-								}
 							}
 						});
 					} else if (json.bulk_action == 'set_status') {
@@ -3089,13 +3085,37 @@ TBG.Search.bulkUpdate = function(url, mode) {
 									var status_color_item = status_container.down('.sc_status_color');
 									if (status_color_item) status_color_item.setStyle({backgroundColor: json.status['color']});
 								}
-								var last_updated_container = issue_elm.down('.sc_last_updated');
-								if (last_updated_container != undefined) {
-									last_updated_container.update(json.last_updated);
-								}
+							}
+						});
+					} else {
+						['resolution', 'priority', 'category', 'severity'].each(function(action) {
+							if (json.bulk_action == 'set_' + action) {
+								json.issue_ids.each(function(issue_id) {
+									var issue_elm = $('issue_' + issue_id);
+									if (issue_elm != undefined) {
+										var data_container = issue_elm.down('.sc_' + action);
+										if (data_container != undefined) {
+											data_container.update(json[action]['name']);
+											if (json[action]['name'] != '-') {
+												data_container.removeClassName('faded_out');
+											} else {
+												data_container.addClassName('faded_out');
+											}
+										}
+									}
+								});
 							}
 						});
 					}
+					json.issue_ids.each(function(issue_id) {
+						var issue_elm = $('issue_' + issue_id);
+						if (issue_elm != undefined) {
+							var last_updated_container = issue_elm.down('.sc_last_updated');
+							if (last_updated_container != undefined) {
+								last_updated_container.update(json.last_updated);
+							}
+						}
+					});
 				}
 			}
 		}

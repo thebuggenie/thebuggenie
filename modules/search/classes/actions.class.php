@@ -590,6 +590,74 @@
 							$options['status'] = array('color' => $status->getColor(), 'name' => $status->getName());
 						}
 						break;
+					case 'set_severity':
+						if (is_numeric($request['severity']))
+						{
+							$severity = ($request['severity']) ? new TBGSeverity($request['severity']) : null;
+							foreach (array_keys($issue_ids) as $issue_id)
+							{
+								if (is_numeric($issue_id))
+								{
+									$issue = new TBGIssue($issue_id);
+									$severity_id = ($severity instanceof TBGSeverity) ? $severity->getID() : 0;
+									$issue->setSeverity($severity_id);
+									$issue->save();
+								}
+							}
+							$options['severity'] = array('name' => ($severity instanceof TBGSeverity) ? $severity->getName() : '-');
+						}
+						break;
+					case 'set_resolution':
+						if (is_numeric($request['resolution']))
+						{
+							$resolution = ($request['resolution']) ? new TBGResolution($request['resolution']) : null;
+							foreach (array_keys($issue_ids) as $issue_id)
+							{
+								if (is_numeric($issue_id))
+								{
+									$issue = new TBGIssue($issue_id);
+									$resolution_id = ($resolution instanceof TBGResolution) ? $resolution->getID() : 0;
+									$issue->setResolution($resolution_id);
+									$issue->save();
+								}
+							}
+							$options['resolution'] = array('name' => ($resolution instanceof TBGResolution) ? $resolution->getName() : '-');
+						}
+						break;
+					case 'set_priority':
+						if (is_numeric($request['priority']))
+						{
+							$priority = ($request['priority']) ? new TBGPriority($request['priority']) : null;
+							foreach (array_keys($issue_ids) as $issue_id)
+							{
+								if (is_numeric($issue_id))
+								{
+									$issue = new TBGIssue($issue_id);
+									$priority_id = ($priority instanceof TBGPriority) ? $priority->getID() : 0;
+									$issue->setPriority($priority_id);
+									$issue->save();
+								}
+							}
+							$options['priority'] = array('name' => ($priority instanceof TBGPriority) ? $priority->getName() : '-');
+						}
+						break;
+					case 'set_category':
+						if (is_numeric($request['category']))
+						{
+							$category = ($request['category']) ? new TBGCategory($request['category']) : null;
+							foreach (array_keys($issue_ids) as $issue_id)
+							{
+								if (is_numeric($issue_id))
+								{
+									$issue = new TBGIssue($issue_id);
+									$category_id = ($category instanceof TBGCategory) ? $category->getID() : 0;
+									$issue->setCategory($category_id);
+									$issue->save();
+								}
+							}
+							$options['category'] = array('name' => ($category instanceof TBGCategory) ? $category->getName() : '-');
+						}
+						break;
 				}
 			}
 			return $this->renderJSON($options);
