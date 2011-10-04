@@ -1265,6 +1265,12 @@ TBG.Project.Milestone.retrieve = function(url, milestone_id, issue_ids) {
 			update: {element: 'milestone_list', insertion: true},
 			callback: function(json) {
 				TBG.Project.Planning.sortMilestones(json.milestone_order);
+				if ($('bulk_action_assign_milestone_top') != undefined) {
+					$('bulk_action_assign_milestone_top').insert('<option value="'+json.milestone_id+'" id="bulk_action_assign_milestone_top_'+milestone_id+'">'+json.milestone_name+'</option>');
+				}
+				if ($('bulk_action_assign_milestone_bottom') != undefined) {
+					$('bulk_action_assign_milestone_bottom').insert('<option value="'+json.milestone_id+'" id="bulk_action_assign_milestone_bottom_'+milestone_id+'">'+json.milestone_name+'</option>');
+				}
 				issue_ids.each(function(issue_id) {
 					var issue_elm = $('issue_' + issue_id);
 					if (issue_elm != undefined) {
@@ -1285,6 +1291,12 @@ TBG.Project.Milestone.update = function(url, milestone_id) {
 		success: {
 			callback: function(json) {
 				TBG.Project.Planning.sortMilestones(json.milestone_order);
+				if ($('bulk_action_assign_milestone_top_' + milestone_id) != undefined) {
+					$('bulk_action_assign_milestone_top_' + milestone_id).update(json.milestone_name);
+				}
+				if ($('bulk_action_assign_milestone_bottom_' + milestone_id) != undefined) {
+					$('bulk_action_assign_milestone_bottom_' + milestone_id).update(json.milestone_name);
+				}
 				TBG.Main.Helpers.Backdrop.reset();
 			},
 			replace: 'milestone_' + milestone_id + '_header'
@@ -1292,12 +1304,31 @@ TBG.Project.Milestone.update = function(url, milestone_id) {
 	});
 }
 
-TBG.Project.Milestone.remove = function (url, mid) {
+TBG.Project.Milestone.remove = function (url, milestone_id) {
 	TBG.Main.Helpers.ajax(url, {
-		loading: {indicator: 'milestone_'+mid+'_indicator'},
+		loading: {
+			indicator: 'fullpage_backdrop',
+			clear: 'fullpage_backdrop_content',
+			show: 'fullpage_backdrop_indicator'
+		},
 		success: {
-			remove: 'milestone_span_' + mid,
-			callback: function() {
+			callback: function(json) {
+				if ($('milestone_0_list').childElements().size() > 0) {
+					$('milestone_' + milestone_id + '_list').childElements().each(function(element) {
+						$('milestone_0_list').insert({'top': element.remove()});
+					});
+				}
+				$('milestone_' + milestone_id).remove();
+				if ($('bulk_action_assign_milestone_top_' + milestone_id) != undefined) {
+					$('bulk_action_assign_milestone_top_' + milestone_id).remove();
+				}
+				if ($('bulk_action_assign_milestone_bottom_' + milestone_id) != undefined) {
+					$('bulk_action_assign_milestone_bottom_' + milestone_id).remove();
+				}
+				$('milestone_0_issues').update(json.issue_count);
+				$('milestone_0_estimated_hours').update(json.hours);
+				$('milestone_0_estimated_points').update(json.points);
+				TBG.Main.Helpers.Backdrop.reset();
 				if ($('milestone_list').childElements().size() == 0) $('no_milestones').show();
 			}
 		}

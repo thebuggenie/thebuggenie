@@ -1,5 +1,6 @@
 <div class="header" id="milestone_<?php echo $milestone->getID(); ?>_header">
 	<?php if ($milestone->getID()): ?>
+		<?php echo javascript_link_tag(__('Delete'), array('onclick' => "TBG.Project.Milestone.remove('".make_url('project_planning_milestone_remove', array('project_key' => $milestone->getProject()->getKey(), 'milestone_id' => $milestone->getID()))."', ".$milestone->getID().");", 'class' => 'button button-red')); ?>
 		<?php echo javascript_link_tag(__('Edit'), array('onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'milestone', 'project_id' => $milestone->getProject()->getId(), 'milestone_id' => $milestone->getID()))."');", 'class' => 'button button-blue')); ?>
 		<?php echo link_tag(make_url('project_milestone_details', array('project_key' => $milestone->getProject()->getKey(), 'milestone_id' => $milestone->getID())), __('Open overview'), array('class' => 'button button-silver')); ?>
 	<?php endif; ?>

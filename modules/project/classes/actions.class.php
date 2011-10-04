@@ -1054,9 +1054,18 @@
 		public function runGetMilestone(TBGRequest $request)
 		{
 			$milestone = new TBGMilestone($request['milestone_id']);
-			return $this->renderJSON(array('content' => TBGAction::returnTemplateHTML('project/milestonebox', array('milestone' => $milestone)), 'milestone_order' => array_keys($milestone->getProject()->getAllMilestones())));
+			return $this->renderJSON(array('content' => TBGAction::returnTemplateHTML('project/milestonebox', array('milestone' => $milestone)), 'milestone_id' => $milestone->getID(), 'milestone_name' => $milestone->getName(), 'milestone_order' => array_keys($milestone->getProject()->getAllMilestones())));
 		}
 		
+		public function runRemoveMilestone(TBGRequest $request)
+		{
+			$milestone = new TBGMilestone($request['milestone_id']);
+			$no_milestone = new TBGMilestone(0);
+			$no_milestone->setProject($milestone->getProject());
+			$milestone->delete();
+			return $this->renderJSON(array('issue_count' => $no_milestone->countIssues(), 'hours' => $no_milestone->getHoursEstimated(), 'points' => $no_milestone->getPointsEstimated()));
+		}
+
 		public function runMilestone(TBGRequest $request)
 		{
 			if ($request->isMethod(TBGRequest::POST)) {

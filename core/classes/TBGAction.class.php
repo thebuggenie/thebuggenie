@@ -85,7 +85,7 @@
 		 *  
 		 * @return boolean
 		 */
-		public function renderJSON($text)
+		public function renderJSON($text = array())
 		{
 			$this->getResponse()->setContentType('application/json');
 			echo json_encode($text);
