@@ -2175,69 +2175,59 @@
 				}
 
 				self::loadLibrary('common');
-				
-				// Render header template if any, and store the output in a variable
-				if (!self::getRequest()->isAjaxCall() && self::getResponse()->doDecorateHeader())
-				{
-					ob_start('mb_output_handler');
-					ob_implicit_flush(0);
-					TBGLogging::log('decorating with header');
-					if (!file_exists(self::getResponse()->getHeaderDecoration()))
-					{
-						throw new TBGTemplateNotFoundException('Can not find header decoration: '. self::getResponse()->getHeaderDecoration());
-					}
-					require self::getResponse()->getHeaderDecoration();
-					$decoration_header = ob_get_clean();
-				}
-
-				// Set up the run summary, and store it in a variable
-//				ob_start('mb_output_handler');
-//				ob_implicit_flush(0);
-				$load_time = self::getLoadtime();
-				if (\b2db\Core::isInitialized())
-				{
-					$tbg_summary['db_queries'] = \b2db\Core::getSQLHits();
-					$tbg_summary['db_timing'] = \b2db\Core::getSQLTiming();
-				}
-				$tbg_summary['load_time'] = ($load_time >= 1) ? round($load_time, 2) . ' seconds' : round($load_time * 1000, 1) . 'ms';
-				$tbg_summary['scope_id'] = self::getScope() instanceof TBGScope ? self::getScope()->getID() : 'unknown';
-				self::ping();
-
 				TBGLogging::log('rendering content');
-
-				// Render output in correct order
-				self::getResponse()->renderHeaders();
-
-				if (isset($decoration_header))
-					echo $decoration_header;
-
+				
 				if (TBGSettings::isMaintenanceModeEnabled() && !mb_strstr(self::getRouting()->getCurrentRouteName(), 'configure'))
 				{
 					if (!file_exists(THEBUGGENIE_CORE_PATH . 'templates/offline.inc.php'))
 					{
 						throw new TBGTemplateNotFoundException('Can not find offline mode template');
 					}
+					ob_start('mb_output_handler');
+					ob_implicit_flush(0);
 					require THEBUGGENIE_CORE_PATH . 'templates/offline.inc.php';
+					$content = ob_get_clean();
+				}
+
+				// Render output in correct order
+				self::getResponse()->renderHeaders();
+
+				if (self::getResponse()->getDecoration() == TBGResponse::DECORATE_DEFAULT)
+				{
+					require THEBUGGENIE_CORE_PATH . 'templates/layout.php';
 				}
 				else
 				{
-					echo $content;
-				}
-				
-				TBGLogging::log('...done (rendering content)');
-				
-				// Render footer template if any, and store the output in a variable
-				if (!self::getRequest()->isAjaxCall() && self::getResponse()->doDecorateFooter())
-				{
-					TBGLogging::log('decorating with footer');
-					require self::getResponse()->getFooterDecoration();
-//					$decoration_footer = ob_get_clean();
-				}
-				
-				TBGLogging::log('...done');
+					// Render header template if any, and store the output in a variable
+					if (!self::getRequest()->isAjaxCall() && self::getResponse()->doDecorateHeader())
+					{
+						TBGLogging::log('decorating with header');
+						if (!file_exists(self::getResponse()->getHeaderDecoration()))
+						{
+							throw new TBGTemplateNotFoundException('Can not find header decoration: '. self::getResponse()->getHeaderDecoration());
+						}
+						require self::getResponse()->getHeaderDecoration();
+					}
 
-				if (self::isDebugMode())
-					self::getI18n()->addMissingStringsToStringsFile();
+					echo $content;
+
+					TBGLogging::log('...done (rendering content)');
+
+					// Render footer template if any
+					if (!self::getRequest()->isAjaxCall() && self::getResponse()->doDecorateFooter())
+					{
+						TBGLogging::log('decorating with footer');
+						if (!file_exists(self::getResponse()->getFooterDecoration()))
+						{
+							throw new TBGTemplateNotFoundException('Can not find footer decoration: '. self::getResponse()->getFooterDecoration());
+						}
+						require self::getResponse()->getFooterDecoration();
+					}
+
+					TBGLogging::log('...done');
+				}
+
+				if (self::isDebugMode()) self::getI18n()->addMissingStringsToStringsFile();
 				
 				return true;
 			}
@@ -2246,6 +2236,19 @@
 				TBGLogging::log("Cannot find the method {$actionToRunName}() in class {$actionClassName}.", 'core', TBGLogging::LEVEL_FATAL);
 				throw new TBGActionNotFoundException("Cannot find the method {$actionToRunName}() in class {$actionClassName}. Make sure the method exists.");
 			}
+		}
+
+		public static function calculateTimings(&$tbg_summary)
+		{
+			$load_time = self::getLoadtime();
+			if (\b2db\Core::isInitialized())
+			{
+				$tbg_summary['db_queries'] = \b2db\Core::getSQLHits();
+				$tbg_summary['db_timing'] = \b2db\Core::getSQLTiming();
+			}
+			$tbg_summary['load_time'] = ($load_time >= 1) ? round($load_time, 2) . ' seconds' : round($load_time * 1000, 1) . 'ms';
+			$tbg_summary['scope_id'] = self::getScope() instanceof TBGScope ? self::getScope()->getID() : 'unknown';
+			self::ping();
 		}
 		
 		/**

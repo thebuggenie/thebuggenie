@@ -22,7 +22,7 @@
 		const DECORATE_NONE = 0;
 		const DECORATE_HEADER = 1;
 		const DECORATE_FOOTER = 2;
-		const DECORATE_BOTH = 3;
+		const DECORATE_DEFAULT = 3;
 		const DECORATE_CUSTOM = 4;
 
 		/**
@@ -155,7 +155,7 @@
 					$this->setContentType('text/csv');
 					break;
 				default:
-					$this->setDecoration(self::DECORATE_BOTH, array('header' => THEBUGGENIE_CORE_PATH . 'templates/header.inc.php', 'footer' => THEBUGGENIE_CORE_PATH . 'templates/footer.inc.php'));
+					$this->setDecoration(self::DECORATE_DEFAULT);
 					break;
 			}
 
@@ -400,7 +400,7 @@
 		 */
 		public function doDecorateHeader()
 		{
-			return ($this->_decoration == self::DECORATE_HEADER || $this->_decoration == self::DECORATE_BOTH || ($this->_decoration == self::DECORATE_CUSTOM && $this->_decor_header)) ? true : false;
+			return ($this->_decoration == self::DECORATE_HEADER || ($this->_decoration == self::DECORATE_CUSTOM && $this->_decor_header)) ? true : false;
 		}
 		
 		/**
@@ -409,7 +409,7 @@
 		 */
 		public function doDecorateFooter()
 		{
-			return ($this->_decoration == self::DECORATE_FOOTER || $this->_decoration == self::DECORATE_BOTH || ($this->_decoration == self::DECORATE_CUSTOM && $this->_decor_footer)) ? true : false;
+			return ($this->_decoration == self::DECORATE_FOOTER || ($this->_decoration == self::DECORATE_CUSTOM && $this->_decor_footer)) ? true : false;
 		}
 		
 		/**
@@ -428,6 +428,11 @@
 				if (array_key_exists('header', $params)) $this->_decor_header = $params['header'];
 				if (array_key_exists('footer', $params)) $this->_decor_footer = $params['footer'];
 			}
+		}
+
+		public function getDecoration()
+		{
+			return $this->_decoration;
 		}
 		
 		public function getHeaderDecoration()

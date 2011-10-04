@@ -114,9 +114,9 @@ input[type=checkbox].semi-checked { filter:alpha(opacity=40); -moz-opacity:.40; 
 
 /* footer section */
 .footer_bar { height: 35px; vertical-align: bottom; }
-.footer_container { background-color: #F5F5F5; width: 100%; border-top: 1px solid #DDD; text-align: center; margin-top: 10px; }
-.footer_container img { float: left; margin: 0 5px 0 0; }
-.footer_container td { font-size: 0.9em; line-height: 1.2; padding: 5px; text-shadow: 1px 1px 0px #FFF; }
+footer { background-color: #F5F5F5; width: 100%; border-top: 1px solid #DDD; text-align: center; margin-top: 10px; }
+footer img { float: left; margin: 0 5px 0 0; }
+footer td { font-size: 0.9em; line-height: 1.2; padding: 5px; text-shadow: 1px 1px 0px #FFF; }
 /* footer section */
 
 /* login and registration page styling */
@@ -309,6 +309,9 @@ div.dropdown_separator { border-left: 1px dotted #EAEAF5; padding: 0 0 0 4px; ma
 .project_strip .search_results { padding-top: 5px; }
 .project_strip .subprojects_list { clear: both; padding-top: 10px; }
 .project_strip .subprojects_list .subproject_link { font-weight: normal; margin-left: 10px;}
+.project_strip nav { float: right; margin: 10px; position: relative; text-align: right; }
+.project_strip nav a { font-weight: normal; }
+.project_strip nav a.button { font-weight: bold; }
 /* end project frontpage menu */
 
 /* unformatted lists */
@@ -601,10 +604,7 @@ a.friend { color: #0000a4; }
 a.friend:hover { border-bottom: 1px dotted #0000a4; }
 
 /* reporting an issue styles */
-.report_button:hover .report_button_hover { display: block; }
-.report_button_hover { display: none; position: absolute; width: 200px; background: #5a5; text-align: left; margin-top: 5px; clear: both; padding: 0; right: -2px; z-index: 5; top: -6px; }
-.report_button_hover a { display: block; color: white; padding: 2px 3px 2px 3px; font-size: 0.9em; border: 0 !important; }
-.report_button_hover a:hover { background: #9d9; text-decoration: none; }
+.report_button { float: right; }
 .issuetype_list { list-style-type: none; padding: 0; margin: 10px auto 0 auto; width: 1010px; clear: both; }
 .issuetype_list li { font-size: 0.9em; font-weight: normal; clear: both; margin: 0 0 5px 0; text-align: left; }
 .issuetype_list li img { margin: 0 10px 0 0; float: left; }

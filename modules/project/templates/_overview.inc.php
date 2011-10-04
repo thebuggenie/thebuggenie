@@ -22,50 +22,18 @@
 			<span class="faded_out" style="font-weight: normal;"><?php echo __('No documentation URL provided'); ?></span>
 		<?php endif; ?>
 	</div>
-	<div style="text-align: right; padding-top: 3px;">
-		<form action="<?php echo make_url('project_reportissue', array('project_key' => $project->getKey())); ?>" method="get" style="clear: none; display: inline; width: 160px;">
-			<table border="0" cellpadding="0" cellspacing="0" style="float: right;">
-				<tr>
-					<td style="font-weight: normal; vertical-align: top; padding-top: 2px; position: relative;">
-						<?php /*if ($tbg_user->hasPageAccess('project_dashboard', $project->getID()) || $tbg_user->hasPageAccess('project_allpages', $project->getID())): ?>
-							<?php echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), __('Overview')); ?>&nbsp;&nbsp;&nbsp;&nbsp;
-						<?php endif;*/ ?>
-						<?php if ($tbg_user->canSearchForIssues() && ($tbg_user->hasPageAccess('project_issues', $project->getID()) || $tbg_user->hasPageAccess('project_allpages', $project->getID()))): ?>
-							<?php echo link_tag(make_url('project_open_issues', array('project_key' => $project->getKey())), __('Issues')); ?>&nbsp;&nbsp;&nbsp;&nbsp;
-						<?php endif; ?>
-						<?php if ($tbg_user->hasPageAccess('project_roadmap', $project->getID()) || $tbg_user->hasPageAccess('project_allpages', $project->getID())): ?>
-							<?php echo link_tag(make_url('project_roadmap', array('project_key' => $project->getKey())), __('Show roadmap')); ?>&nbsp;&nbsp;&nbsp;&nbsp;
-						<?php endif; ?>
-						<?php TBGEvent::createNew('core', 'project_overview_item_links', $project)->trigger(); ?>
-					</td>
-					<td style="font-weight: normal; vertical-align: top; position: relative;">
-						<?php if ($tbg_user->canReportIssues($project)): ?>
-							<div class="report_button" style="float: right; overflow: visible; position: relative;">
-								<input class="button button-green" type="submit" value="<?php echo __('Report an issue'); ?>">
-								<div class="report_button_hover rounded_box green shadowed borderless">
-									<div class="tab_menu_dropdown">
-										<?php $cc = 1; ?>
-										<?php foreach ($issuetypes as $issuetype): ?>
-											<?php if ($cc == 1)
-													$class = 'first';
-												elseif ($cc == count($issuetypes))
-													$class = 'last';
-												else
-													$class = '';
-
-												$cc++;
-											?>
-											<?php echo link_tag(make_url('project_reportissue_with_issuetype', array('project_key' => $project->getKey(), 'issuetype' => $issuetype->getKey())), image_tag($issuetype->getIcon() . '_tiny.png' ) . __($issuetype->getName()), array('class' => $class)); ?>
-										<?php endforeach;?>
-									</div>
-								</div>
-							</div>
-						<?php endif; ?>
-					</td>
-				</tr>
-			</table>
-		</form>
-	</div>
+	<nav>
+		<?php if ($tbg_user->canSearchForIssues() && ($tbg_user->hasPageAccess('project_issues', $project->getID()) || $tbg_user->hasPageAccess('project_allpages', $project->getID()))): ?>
+			<?php echo link_tag(make_url('project_open_issues', array('project_key' => $project->getKey())), __('Issues')); ?>&nbsp;&nbsp;&nbsp;&nbsp;
+		<?php endif; ?>
+		<?php if ($tbg_user->hasPageAccess('project_roadmap', $project->getID()) || $tbg_user->hasPageAccess('project_allpages', $project->getID())): ?>
+			<?php echo link_tag(make_url('project_roadmap', array('project_key' => $project->getKey())), __('Show roadmap')); ?>&nbsp;&nbsp;&nbsp;&nbsp;
+		<?php endif; ?>
+		<?php TBGEvent::createNew('core', 'project_overview_item_links', $project)->trigger(); ?>
+		<?php if ($tbg_user->canReportIssues($project)): ?>
+			<a href="<?php echo make_url('project_reportissue', array('project_key' => $project->getKey())); ?>" class="report_button button button-green"><?php echo __('Report an issue'); ?></a>
+		<?php endif; ?>
+	</nav>
 	<?php if ($project->hasChildren()): ?>
 	<div class="subprojects_list">
 		<?php echo __('Subprojects'); ?>
