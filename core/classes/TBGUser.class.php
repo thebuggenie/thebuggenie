@@ -1465,6 +1465,11 @@
 		{
 			return $this->getBuddyname();
 		}
+
+		public function getDisplayName()
+		{
+			return ($this->getRealname() == '') ? $this->getBuddyname() : $this->getRealname();
+		}
 		
 		/**
 		 * Returns the email of the user

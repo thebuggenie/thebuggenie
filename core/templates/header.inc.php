@@ -32,6 +32,9 @@
 		<?php foreach ($sepjs as $js): ?>
 			<script type="text/javascript" src="<?php echo $js; ?>"></script>
 		<?php endforeach; ?>
+		  <!--[if lt IE 9]>
+			  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+		  <![endif]-->
 		<?php TBGEvent::createNew('core', 'header_ends')->trigger(); ?>
 	</head>
 	<body>

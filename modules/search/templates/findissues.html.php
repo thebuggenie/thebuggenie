@@ -49,7 +49,7 @@
 			<?php endif; ?>
 			<?php include_component('search/searchbuilder', compact('appliedfilters', 'ipp', 'groupby', 'grouporder', 'issavedsearch', 'savedsearch', 'searchterm', 'show_results', 'templatename', 'template_parameter')); ?>
 			<?php if ($show_results): ?>
-				<div class="main_header">
+				<div class="results_header">
 					<?php echo $searchtitle; ?>
 					&nbsp;&nbsp;<span class="faded_out"><?php echo __('%number_of% issue(s)', array('%number_of%' => (int) $resultcount)); ?></span>
 					<?php include_component('search/extralinks', compact('show_results')); ?>

@@ -1,4 +1,4 @@
-<div class="submenu_strip<?php if (TBGContext::isProjectContext()): ?> project_context<?php endif; ?>">
+<nav class="submenu_strip<?php if (TBGContext::isProjectContext()): ?> project_context<?php endif; ?>">
 	<div class="project_stuff">
 		<ul id="submenu">
 			<?php $breadcrumbs = $tbg_response->getBreadcrumbs(); ?>
@@ -43,4 +43,4 @@
 			</div>
 		</form>
 	<?php endif; ?>
-</div>
+</nav>
