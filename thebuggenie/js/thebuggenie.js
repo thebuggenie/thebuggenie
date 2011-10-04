@@ -3060,7 +3060,8 @@ TBG.Search.bulkPostProcess = function(json) {
 					}
 				}
 			});
-		} else if (json.bulk_action == 'set_status') {
+		} 
+		if (json.bulk_action == 'set_status') {
 			json.issue_ids.each(function(issue_id) {
 				var issue_elm = $('issue_' + issue_id);
 				if (issue_elm != undefined) {
@@ -3072,26 +3073,25 @@ TBG.Search.bulkPostProcess = function(json) {
 					}
 				}
 			});
-		} else {
-			['resolution', 'priority', 'category', 'severity'].each(function(action) {
-				if (json.bulk_action == 'set_' + action) {
-					json.issue_ids.each(function(issue_id) {
-						var issue_elm = $('issue_' + issue_id);
-						if (issue_elm != undefined) {
-							var data_container = issue_elm.down('.sc_' + action);
-							if (data_container != undefined) {
-								data_container.update(json[action]['name']);
-								if (json[action]['name'] != '-') {
-									data_container.removeClassName('faded_out');
-								} else {
-									data_container.addClassName('faded_out');
-								}
+		}
+		['resolution', 'priority', 'category', 'severity'].each(function(action) {
+			if (json.bulk_action == 'set_' + action) {
+				json.issue_ids.each(function(issue_id) {
+					var issue_elm = $('issue_' + issue_id);
+					if (issue_elm != undefined) {
+						var data_container = issue_elm.down('.sc_' + action);
+						if (data_container != undefined) {
+							data_container.update(json[action]['name']);
+							if (json[action]['name'] != '-') {
+								data_container.removeClassName('faded_out');
+							} else {
+								data_container.addClassName('faded_out');
 							}
 						}
-					});
-				}
-			});
-		}
+					}
+				});
+			}
+		});
 		json.issue_ids.each(function(issue_id) {
 			var issue_elm = $('issue_' + issue_id);
 			if (issue_elm != undefined) {
