@@ -1,108 +1,37 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
-   "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="<?php echo TBGSettings::getHTMLLanguage(); ?>">
 	<head>
-		<title><?php echo ($tbg_response->hasTitle()) ? strip_tags(TBGSettings::getTBGname() . ' ~ ' . $tbg_response->getTitle()) : strip_tags(TBGSettings::getTBGname()); ?></title>
+		<meta charset="<?php echo TBGContext::getI18n()->getCharset(); ?>">
 		<?php TBGEvent::createNew('core', 'header_begins')->trigger(); ?>
 		<meta name="description" content="The bug genie, friendly issue tracking">
 		<meta name="keywords" content="thebuggenie friendly issue tracking">
 		<meta name="author" content="thebuggenie.com">
-		<meta http-equiv="Content-Type" content="<?php echo $tbg_response->getContentType(); ?> charset=<?php echo TBGContext::getI18n()->getCharset(); ?>">
-		<?php if (TBGSettings::getFaviconType() == '2'): ?>
-			<link rel="shortcut icon" href="<?php print TBGSettings::getFaviconURL(); ?>">
-		<?php elseif (TBGSettings::getFaviconType() == '1'): ?>
-			<link rel="shortcut icon" href="<?php print TBGContext::getTBGPath(); ?>favicon.png">
-		<?php else: ?>
-			<link rel="shortcut icon" href="<?php print TBGContext::getTBGPath(); ?>themes/<?php print TBGSettings::getThemeName(); ?>/favicon.png">
-		<?php endif; ?>
-		
-		<link rel="shortcut icon" href="<?php print TBGContext::getTBGPath(); ?>themes/<?php print TBGSettings::getThemeName(); ?>/favicon.png">
+		<title><?php echo ($tbg_response->hasTitle()) ? strip_tags(TBGSettings::getTBGname() . ' ~ ' . $tbg_response->getTitle()) : strip_tags(TBGSettings::getTBGname()); ?></title>
+		<link rel="shortcut icon" href="<?php print TBGSettings::getFaviconURL(); ?>">
 		<link title="<?php echo (TBGContext::isProjectContext()) ? __('%project_name% search', array('%project_name%' => TBGContext::getCurrentProject()->getName())) : __('%site_name% search', array('%site_name%' => TBGSettings::getTBGname())); ?>" href="<?php echo (TBGContext::isProjectContext()) ? make_url('project_opensearch', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('opensearch'); ?>" type="application/opensearchdescription+xml" rel="search">
 		<?php foreach ($tbg_response->getFeeds() as $feed_url => $feed_title): ?>
-<link rel="alternate" type="application/rss+xml" title="<?php echo str_replace('"', '\'', $feed_title); ?>" href="<?php echo $feed_url; ?>">
+			<link rel="alternate" type="application/rss+xml" title="<?php echo str_replace('"', '\'', $feed_title); ?>" href="<?php echo $feed_url; ?>">
 		<?php endforeach; ?>
-		
-		<?php
-			// Load theme specific code - includes core CSS
-			include(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DIRECTORY_SEPARATOR . 'themes' . DIRECTORY_SEPARATOR . TBGSettings::getThemeName() . DIRECTORY_SEPARATOR . 'theme.php');
-			
-			// Module CSS files
-			if (count(TBGContext::getModules()))
-			{
-				foreach (TBGContext::getModules() as $module)
-				{
-					$css_name = $module->getName() . ".css";
-					if (file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DIRECTORY_SEPARATOR . 'themes' . DIRECTORY_SEPARATOR . TBGSettings::getThemeName() . DIRECTORY_SEPARATOR . $css_name)):
-						$tbg_response->addStylesheet($css_name);
-					endif;
-				}
-			}
-	
-			// Core JS scripts
-			$tbg_response->addJavascript('jquery-1.6.2.min.js');
-			$tbg_response->addJavascript('prototype.js');
-			$tbg_response->addJavascript('builder.js');
-			$tbg_response->addJavascript('effects.js');
-			$tbg_response->addJavascript('dragdrop.js');
-			$tbg_response->addJavascript('controls.js');
-			$tbg_response->addJavascript('jquery.markitup.js');
-			$tbg_response->addJavascript('thebuggenie.js');
-			$tbg_response->addJavascript('markitup.js');
-			$tbg_response->addJavascript(TBGContext::getStrippedTBGPath().'/js/tablekit.js', false);
-	
-			$cssstring = '';
-			$jsstring = '';
-			
-			$sepcss = array();
-			$sepjs = array();
-			
-			
-			// Add stylesheets to minify and non-minify lists
-			foreach ($tbg_response->getStylesheets() as $stylesheet => $minify)
-			{
-				if ($minify == true && file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DIRECTORY_SEPARATOR . 'themes' . DIRECTORY_SEPARATOR . TBGSettings::getThemeName() . DIRECTORY_SEPARATOR .$stylesheet))
-				{
-					$cssstring .= ',themes/'.TBGSettings::getThemeName().'/'.$stylesheet;
-				}
-				else
-				{
-					$sepcss[] = $stylesheet;
-				}
-			}
-			
-			// Add scripts to minify and non-minify lists
-			foreach ($tbg_response->getJavascripts() as $script => $minify)
-			{
-				if ($minify == true && file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DIRECTORY_SEPARATOR . 'js' . DIRECTORY_SEPARATOR . $script))
-				{
-					$jsstring .= ',js/'.$script;
-				}
-				else
-				{
-					$sepjs[] = $script;
-				}
-			}
-			
-			$cssstring = ltrim($cssstring, ',');
-			$jsstring = ltrim($jsstring, ',');
-		?>
-		
-		<link rel="stylesheet" type="text/css" href="<?php print make_url('serve'); ?>&g=css&files=<?php print base64_encode($cssstring); ?>">
+		<?php include THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'themes' . DS . TBGSettings::getThemeName() . DS . 'theme.php'; ?>
+		<?php if (count(TBGContext::getModules())): ?>
+			<?php foreach (TBGContext::getModules() as $module): ?>
+				<?php if (file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'themes' . DS . TBGSettings::getThemeName() . DS . "{$module->getName()}.css")): ?>
+					<?php $tbg_response->addStylesheet("{$module->getName()}.css"); ?>
+				<?php endif; ?>
+			<?php endforeach; ?>
+		<?php endif; ?>
+
+		<?php list ($cssstring, $sepcss) = tbg_get_stylesheets(); ?>
+		<link rel="stylesheet" href="<?php print make_url('serve'); ?>&g=css&files=<?php print base64_encode($cssstring); ?>">
+		<?php foreach ($sepcss as $css): ?>
+			<link rel="stylesheet" href="<?php echo $css; ?>">
+		<?php endforeach; ?>
+
+		<?php list ($jsstring, $sepjs) = tbg_get_javascripts(); ?>
 		<script type="text/javascript" src="<?php print make_url('serve'); ?>&g=js&files=<?php print base64_encode($jsstring); ?>"></script>
-
-		<?php
-			// Load CSS and scripts manually which have opted out of minification
-			foreach ($sepcss as $css)
-			{
-				echo '<link rel="stylesheet" type="text/css" href="'.$css.'">';
-			}
-			
-			foreach ($sepjs as $js)
-			{
-				echo '<script type="text/javascript" src="'.$js.'"></script>';
-			}
-		?>
-
+		<?php foreach ($sepjs as $js): ?>
+			<script type="text/javascript" src="<?php echo $js; ?>"></script>
+		<?php endforeach; ?>
 		<?php TBGEvent::createNew('core', 'header_ends')->trigger(); ?>
 </head>
 	<body>

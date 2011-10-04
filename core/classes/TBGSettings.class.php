@@ -348,6 +348,12 @@
 		{
 			return self::get(self::SETTING_DEFAULT_LANGUAGE);
 		}
+
+		public static function getHTMLLanguage()
+		{
+			$lang = explode('_', self::getLanguage());
+			return $lang[0];
+		}
 		
 		public static function getCharset()
 		{
@@ -366,7 +372,15 @@
 		
 		public static function getFaviconURL()
 		{
-			return self::get(self::SETTING_FAVICON_URL);
+			switch (self::getFaviconType())
+			{
+				case self::FAVICON_CUSTOM_URL:
+					return self::get(self::SETTING_FAVICON_URL);
+				case self::FAVICON_PUBLIC:
+					return TBGContext::getTBGPath()."favicon.png";
+				default:
+					return TBGContext::getTBGPath()."themes/".TBGSettings::getThemeName()."/favicon.png";
+			}
 		}
 		
 		public static function getTBGname()
