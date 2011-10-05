@@ -30,7 +30,7 @@
 	<td><?php echo ($issue->isAssigned()) ? $issue->getAssignee()->getName() : '-' ?></td>
 	<td class="sc_status"><span class="sc_status_name"><?php echo ($issue->getStatus() instanceof TBGStatus) ? $issue->getStatus()->getName() : '-' ?></span></td>
 	<td class="milestoneupdateable first">
-		<select name="priority[<?php echo $issue->getID(); ?>]">
+		<select name="priority[<?php echo $issue->getID(); ?>]" id="priority_selector_<?php echo $issue->getID(); ?>">
 			<option value="0"<?php if (!$issue->getPriority() instanceof TBGPriority): ?> selected<?php endif; ?>><?php echo __('Not prioritized'); ?></option>
 			<?php foreach (TBGPriority::getAll() as $p_id => $priority): ?>
 				<option value="<?php echo $p_id; ?>"<?php if ($issue->getPriority() instanceof TBGPriority && $issue->getPriority()->getID() == $p_id): ?> selected<?php endif; ?>><?php echo $priority->getName(); ?></option>

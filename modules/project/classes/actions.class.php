@@ -1164,7 +1164,7 @@
 				
 				TBGContext::loadLibrary('common');
 				$options = array('issue_ids' => array_keys($issue_ids), 'last_updated' => tbg_formatTime(time(), 20), 'closed' => $closed);
-				$options['status'] = array('color' => $status->getColor(), 'name' => $status->getName());
+				$options['status'] = array('color' => $status->getColor(), 'name' => $status->getName(), 'id' => $status->getID());
 				if ($request->hasParameter('milestone_id'))
 				{
 					$milestone = new TBGMilestone($request['milestone_id']);
@@ -1183,9 +1183,10 @@
 						}
 						else
 						{
+							$item_id = 0;
 							$itemname = '-';
 						}
-						$options[$item] = array('name' => $itemname);
+						$options[$item] = array('name' => $itemname, 'id' => $item_id);
 					}
 				}
 
