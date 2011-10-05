@@ -763,43 +763,6 @@
 			}
 		}
 
-		protected function _setupReportIssueProperties()
-		{
-			$this->selected_project = null;
-			$this->selected_issuetype = null;
-			$this->selected_edition = null;
-			$this->selected_build = null;
-			$this->selected_component = null;
-			$this->selected_category = null;
-			$this->selected_status = null;
-			$this->selected_resolution = null;
-			$this->selected_priority = null;
-			$this->selected_reproducability = null;
-			$this->selected_severity = null;
-			$this->selected_estimated_time = null;
-			$this->selected_spent_time = null;
-			$this->selected_percent_complete = null;
-			$this->selected_pain_bug_type = null;
-			$this->selected_pain_likelihood = null;
-			$this->selected_pain_effect = null;
-			$selected_customdatatype = array();
-			foreach (TBGCustomDatatype::getAll() as $customdatatype)
-			{
-				$selected_customdatatype[$customdatatype->getKey()] = null;
-			}
-			$this->selected_customdatatype = $selected_customdatatype;
-			$this->issuetypes = array();
-			$this->issuetype_id = null;
-			$this->issue = null;
-			$this->categories = TBGCategory::getAll();
-			$this->severities = TBGSeverity::getAll();
-			$this->priorities = TBGPriority::getAll();
-			$this->reproducabilities = TBGReproducability::getAll();
-			$this->resolutions = TBGResolution::getAll();
-			$this->statuses = TBGStatus::getAll();
-//			$this->projects = TBGProject::getAll();
-		}
-
 		protected function _clearReportIssueProperties()
 		{
 			$this->title = null;
@@ -1088,14 +1051,10 @@
 		public function runReportIssue(TBGRequest $request)
 		{
 			$i18n = TBGContext::getI18n();
-			$this->_setupReportIssueProperties();
 			$errors = array();
 			$permission_errors = array();
+			$this->issue = null;
 			$this->getResponse()->setPage('reportissue');
-			$this->uniqid = $request->getParameter('uniqid', uniqid());
-			$this->default_title = $i18n->__('Enter a short, but descriptive summary of the issue here');
-			$this->default_estimated_time = $i18n->__('Enter an estimate here');
-			$this->default_spent_time = $i18n->__('Enter time spent here');
 
 			$this->_loadSelectedProjectAndIssueTypeFromRequestForReportIssueAction($request);
 			
@@ -2554,6 +2513,13 @@
 							$options['issues'][$issue_id] = new TBGIssue($issue_id);
 						}
 						$options['project'] = $this->selected_project;
+						break;
+					case 'reportissue':
+						$template_name = 'main/reportissuecontainer';
+						$this->_loadSelectedProjectAndIssueTypeFromRequestForReportIssueAction($request);
+						$options['selected_project'] = $this->selected_project;
+						$options['issuetypes'] = $this->issuetypes;
+						$options['errors'] = array();
 						break;
 					case 'close_issue':
 						$template_name = 'main/closeissue';

@@ -390,4 +390,50 @@
 			$this->views = TBGDashboard::getAvailableViews($this->target_type);
 			$this->dashboardViews = TBGDashboard::getViews($this->tid, $this->target_type);
 		}
+
+		protected function _setupReportIssueProperties()
+		{
+			$this->selected_issuetype = null;
+			$this->selected_edition = null;
+			$this->selected_build = null;
+			$this->selected_component = null;
+			$this->selected_category = null;
+			$this->selected_status = null;
+			$this->selected_resolution = null;
+			$this->selected_priority = null;
+			$this->selected_reproducability = null;
+			$this->selected_severity = null;
+			$this->selected_estimated_time = null;
+			$this->selected_spent_time = null;
+			$this->selected_percent_complete = null;
+			$this->selected_pain_bug_type = null;
+			$this->selected_pain_likelihood = null;
+			$this->selected_pain_effect = null;
+			$selected_customdatatype = array();
+			foreach (TBGCustomDatatype::getAll() as $customdatatype)
+			{
+				$selected_customdatatype[$customdatatype->getKey()] = null;
+			}
+			$this->selected_customdatatype = $selected_customdatatype;
+			$this->issuetype_id = null;
+			$this->issue = null;
+			$this->categories = TBGCategory::getAll();
+			$this->severities = TBGSeverity::getAll();
+			$this->priorities = TBGPriority::getAll();
+			$this->reproducabilities = TBGReproducability::getAll();
+			$this->resolutions = TBGResolution::getAll();
+			$this->statuses = TBGStatus::getAll();
+		}
+
+		public function componentReportIssue()
+		{
+			$this->uniqid = TBGContext::getRequest()->getParameter('uniqid', uniqid());
+			$this->_setupReportIssueProperties();
+		}
+
+		public function componentReportIssueContainer()
+		{
+			
+		}
+
 	}
