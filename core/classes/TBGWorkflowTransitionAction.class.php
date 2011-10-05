@@ -264,9 +264,6 @@
 				case self::ACTION_SET_REPRODUCABILITY:
 					return (bool) $request->hasParameter('reproducability_id');
 					break;
-				case self::ACTION_SET_DUPLICATE:
-					return (bool) $request->hasParameter('duplicate_issue_id');
-					break;
 				case self::ACTION_SET_RESOLUTION:
 					return (bool) $request->hasParameter('resolution_id');
 					break;
