@@ -1292,7 +1292,7 @@ input[type=submit], input[type=submit]:hover, button, .button, .button:hover {
 	filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr='#c5c5c5', EndColorStr='#eaeaea');    
 }
 .button-silver, input[type=submit], button, input[type=submit].button-silver, button.button-silver, a.button-silver, .button-silver:active, button.button-silver:active, input[type=submit].button-silver:active, a.button-silver:active { color: #555; text-shadow: 1px 1px #FFF; }
-.button.disabled { color: #AAA; text-shadow: 1px 1px 0px #FFF; }
+.button.disabled { color: #AAA !important; text-shadow: 1px 1px 0px #FFF; }
 /*----------------------------*/
 .button-khaki, input[type=submit].button-khaki {
 	background: #A2B598;

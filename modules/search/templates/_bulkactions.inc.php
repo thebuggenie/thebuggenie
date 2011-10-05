@@ -3,7 +3,7 @@
 		<?php if (TBGContext::isProjectContext()): ?>
 			<input type="hidden" name="project_key" value="<?php echo TBGContext::getCurrentProject()->getKey(); ?>">
 		<?php endif; ?>
-		<div class="search_bulk_container <?php echo $mode; ?> unavailable">
+		<div class="search_bulk_container <?php echo $mode; ?> unavailable" id="search_bulk_container_<?php echo $mode; ?>">
 			<label for="bulk_action_selector_<?php echo $mode; ?>"><?php echo __('With selected issue(s): %action%', array('%action%' => '')); ?></label>
 			<select name="bulk_action" id="bulk_action_selector_<?php echo $mode; ?>" onchange="TBG.Search.bulkContainerChanger('<?php echo $mode; ?>');">
 				<option value=""><?php echo __('Do nothing'); ?></option>
@@ -71,7 +71,14 @@
 			<span class="bulk_action_subcontainer" id="bulk_action_subcontainer_perform_workflow_step_<?php echo $mode; ?>" style="display: none;">
 				<input type="hidden" id="bulk_action_subcontainer_perform_workflow_step_<?php echo $mode; ?>_url" value="<?php echo make_url('get_partial_for_backdrop', array('key' => 'bulk_workflow')); ?>">
 			</span>
-			<input type="submit" class="button button-silver" value="<?php echo __('Apply'); ?>">
+			<input type="submit" class="button button-silver disabled" value="<?php echo __('Apply'); ?>" id="bulk_action_submit_<?php echo $mode; ?>">
 		</div>
 	</form>
+	<?php if ($mode == 'bottom'): ?>
+		<script type="text/javascript">
+			document.observe('dom:loaded', function() {
+				TBG.Search.checkToggledCheckboxes();
+			})
+		</script>
+	<?php endif; ?>
 </div>

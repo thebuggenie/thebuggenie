@@ -2964,6 +2964,28 @@ TBG.Search.saveVisibleColumns = function(url) {
 	});
 };
 
+TBG.Search.checkToggledCheckboxes = function() {
+	var num_checked = 0;
+	$('search_results').select('input[type=checkbox]').each(function(elm) {
+		if (elm.checked) num_checked++;
+	});
+
+	if (num_checked == 0) {
+		$('search_bulk_container_top').addClassName('unavailable');
+		$('search_bulk_container_bottom').addClassName('unavailable');
+		$('bulk_action_submit_top').addClassName('disabled');
+		$('bulk_action_submit_bottom').addClassName('disabled');
+	} else {
+		$('search_bulk_container_top').removeClassName('unavailable');
+		$('search_bulk_container_bottom').removeClassName('unavailable');
+		if ($('bulk_action_selector_top').getValue() != '') 
+			$('bulk_action_submit_top').removeClassName('disabled');
+
+		if ($('bulk_action_selector_bottom').getValue() != '')
+			$('bulk_action_submit_bottom').removeClassName('disabled');
+	}
+}
+
 TBG.Search.toggleCheckboxes = function(chk_box) {
 	var do_check = true;
 
@@ -2979,13 +3001,7 @@ TBG.Search.toggleCheckboxes = function(chk_box) {
 		element.checked = do_check;
 	});
 
-	$('search_results').select('.search_bulk_container').each(function(element) {
-		if ($(chk_box).checked) {
-			element.removeClassName('unavailable');
-		} else {
-			element.addClassName('unavailable');
-		}
-	});
+	TBG.Search.checkToggledCheckboxes();
 };
 
 TBG.Search.toggleCheckbox = function(element) {
@@ -3007,14 +3023,8 @@ TBG.Search.toggleCheckbox = function(element) {
 		chk_box.checked = false;
 		chk_box.removeClassName('semi-checked');
 	}
-	
-	$('search_results').select('.search_bulk_container').each(function(element) {
-		if ($(chk_box).checked) {
-			element.removeClassName('unavailable');
-		} else {
-			element.addClassName('unavailable');
-		}
-	});
+
+	TBG.Search.checkToggledCheckboxes();
 };
 
 TBG.Search.bulkContainerChanger = function(mode) {
@@ -3024,9 +3034,14 @@ TBG.Search.bulkContainerChanger = function(mode) {
 	});
 	if ($(sub_container_id + '_top')) {
 		$(sub_container_id + '_top').show();
+		$('bulk_action_submit_top').removeClassName('disabled');
 		$(sub_container_id + '_bottom').show();
+		$('bulk_action_submit_bottom').removeClassName('disabled');
 		var dropdown_element = $(sub_container_id + '_' + mode).down('.focusable');
 		if (dropdown_element != undefined) dropdown_element.focus();
+	} else {
+		$('bulk_action_submit_top').addClassName('disabled');
+		$('bulk_action_submit_bottom').addClassName('disabled');
 	}
 };
 
@@ -3034,6 +3049,13 @@ TBG.Search.bulkChanger = function(mode) {
 	var sub_container_id = 'bulk_action_' + $('bulk_action_selector_' + mode).getValue();
 	var opp_mode = (mode == 'top') ? 'bottom' : 'top';
 
+	if ($('bulk_action_selector_' + mode).getValue() == '') {
+		$('bulk_action_submit_' + mode).addClassName('disabled');
+		$('bulk_action_submit_' + opp_mode).addClassName('disabled');
+	} else if (!$('search_bulk_container_' + mode).hasClassName('unavailable')) {
+		$('bulk_action_submit_' + mode).removeClassName('disabled');
+		$('bulk_action_submit_' + opp_mode).removeClassName('disabled');
+	}
 	$(sub_container_id + '_' + opp_mode).value = $(sub_container_id + '_' + mode).getValue();
 }
 
@@ -3117,6 +3139,7 @@ TBG.Search.bulkWorkflowTransition = function(url, transition_id) {
 };
 
 TBG.Search.bulkUpdate = function(url, mode) {
+	if ($('bulk_action_selector_' + mode).getValue() == '') return;
 	var issues = '';
 	$('search_results').select('tbody input[type=checkbox]').each(function(element) {
 		if (element.checked) issues += '&issue_ids['+element.getValue()+']='+element.getValue();
