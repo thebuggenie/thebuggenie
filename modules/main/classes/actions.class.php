@@ -2675,7 +2675,7 @@
 					$message = TBGContext::getI18n()->__('Could not find this issue');
 				}
 			}
-			else
+			elseif ($request->hasParameter('issue_id'))
 			{
 				$status = 400;
 				$message = TBGContext::getI18n()->__('Please provide an issue number');
@@ -2685,18 +2685,25 @@
 
 			if (mb_strlen(trim($searchfor)) < 3 && !is_numeric($searchfor) && mb_substr($searchfor, 0, 1) != '#')
 			{
-				$status = 400;
-				$message = TBGContext::getI18n()->__('Please enter something to search for (3 characters or more) %searchfor%', array('searchfor' => $searchfor));
+//				$status = 400;
+//				$message = TBGContext::getI18n()->__('Please enter something to search for (3 characters or more) %searchfor%', array('searchfor' => $searchfor));
+				$issues = array();
+				$count = 0;
 			}
-
-			$this->getResponse()->setHttpStatus($status);
-			if ($status == 400)
+			else
 			{
-				return $this->renderJSON(array('failed' => true, 'error' => $message));
+				$this->getResponse()->setHttpStatus($status);
+				if ($status == 400)
+				{
+					return $this->renderJSON(array('failed' => true, 'error' => $message));
+				}
+
+				list ($issues, $count) = TBGIssue::findIssuesByText($searchfor, $this->selected_project);
 			}
+			$options = array('project' => $this->selected_project, 'issues' => $issues, 'count' => $count);
+			if (isset($issue)) $options['issue'] = $issue;
 			
-			list ($issues, $count) = TBGIssue::findIssuesByText($searchfor, $this->selected_project);
-			return $this->renderJSON(array('failed' => false, 'content' => $this->getComponentHTML('main/find'.$request->getParameter('type').'issues', array('issue' => $issue, 'issues' => $issues, 'count' => $count))));
+			return $this->renderJSON(array('failed' => false, 'content' => $this->getComponentHTML('main/find'.$request->getParameter('type').'issues', $options)));
 		}
 		
 		public function runFindDuplicateIssue(TBGRequest $request)

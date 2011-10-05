@@ -40,7 +40,19 @@
 						<input type="text" name="searchfor" id="viewissue_find_issue_<?php echo $transition->getID(); ?>_input">
 						<?php echo image_tag('spinning_20.gif', array('id' => 'find_issue_'.$transition->getID().'_indicator', 'style' => 'display: none;')); ?><br>
 						<div id="viewissue_<?php echo $transition->getID(); ?>_duplicate_results"></div>
-						<input type="hidden" name="transition_duplicate_ulr[<?php echo $transition->getID(); ?>]" id="duplicate_finder_transition_<?php echo $transition->getID(); ?>" value="<?php echo make_url('viewissue_find_issue', array('project_key' => $project->getKey(), 'issue_id' => $issue->getID(), 'type' => 'duplicate')); ?>">
+						<input type="hidden" name="transition_duplicate_ulr[<?php echo $transition->getID(); ?>]" id="duplicate_finder_transition_<?php echo $transition->getID(); ?>" value="<?php echo ($issue instanceof TBGIssue) ? make_url('viewissue_find_issue', array('project_key' => $project->getKey(), 'issue_id' => $issue->getID(), 'type' => 'duplicate')) : make_url('viewissue_find_issue', array('project_key' => $project->getKey(), 'type' => 'duplicate')); ?>">
+						<?php if (!$issue instanceof TBGIssue): ?>
+						<script type="text/javascript">
+							var transition_id = <?php echo $transition->getID(); ?>;
+							$('viewissue_find_issue_' + transition_id + '_input').observe('keypress', function(event) {
+								console.log(event.keyCode);
+								if (event.keyCode == Event.KEY_RETURN) {
+									TBG.Issues.findDuplicate($('duplicate_finder_transition_' + transition_id).getValue(), transition_id);
+									event.stop();
+								}
+							});
+						</script>
+						<?php endif; ?>
 					</li>
 					<li class="faded_out">
 						<?php echo __('If you want to mark this issue as duplicate of another, existing issue, find the issue by entering details to search for, in the box above.'); ?>

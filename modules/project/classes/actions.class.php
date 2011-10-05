@@ -1146,20 +1146,50 @@
 			{
 				$transition = TBGContext::factory()->TBGWorkflowTransition($request->getParameter('transition_id'));
 				$issue_ids = $request['issue_ids'];
+				$status = null;
+				$closed = false;
 				foreach ($issue_ids as $issue_id) 
 				{
 					$issue = TBGContext::factory()->TBGIssue($issue_id);
 					if (!$issue->isWorkflowTransitionsAvailable() || !$transition->validateFromRequest($request))
 					{
-						unset($issue_ids[$issue_id]);
-						continue;
+						$this->getResponse()->setHttpStatus(400);
+						return $this->renderJSON(array('error' => TBGContext::getI18n()->__('The transition could not be applied to issue %issue_number% because of %errors%', array('%issue_number%' => $issue->getFormattedIssueNo(), '%errors%' => join(', ', $transition->getValidationErrors())))));
 					}
 
 					$transition->transitionIssueToOutgoingStepFromRequest($issue);
+					if ($status === null) $status = $issue->getStatus();
+					$closed = $issue->isClosed();
 				}
 				
 				TBGContext::loadLibrary('common');
-				return $this->renderJSON(array('issue_ids' => array_keys($issue_ids), 'last_updated' => tbg_formatTime(time(), 20)));
+				$options = array('issue_ids' => array_keys($issue_ids), 'last_updated' => tbg_formatTime(time(), 20), 'closed' => $closed);
+				$options['status'] = array('color' => $status->getColor(), 'name' => $status->getName());
+				if ($request->hasParameter('milestone_id'))
+				{
+					$milestone = new TBGMilestone($request['milestone_id']);
+					$options['milestone_id'] = $milestone->getID();
+					$options['milestone_name'] = $milestone->getName();
+				}
+				foreach (array('resolution', 'priority', 'category', 'severity') as $item)
+				{
+					if ($request->hasParameter($item . '_id'))
+					{
+						if ($item_id = $request[$item . '_id'])
+						{
+							$class = "TBG".ucfirst($item);
+							$itemobject = new $class($item_id);
+							$itemname = $itemobject->getName();
+						}
+						else
+						{
+							$itemname = '-';
+						}
+						$options[$item] = array('name' => $itemname);
+					}
+				}
+
+				return $this->renderJSON($options);
 			}
 			catch (Exception $e)
 			{
