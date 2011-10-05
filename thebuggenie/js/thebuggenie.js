@@ -146,13 +146,11 @@ TBG.Core._scrollWatcher = function() {
 			$('workflow_actions').addClassName('fixed');
 			if (y >= $('viewissue_menu_panes').offsetTop) {
 				var button = $('comment_add_button').remove();
-//				button.addClassName('fixed');
 				button.down('input').addClassName('button-silver');
 				button.down('input').removeClassName('button-green');
 				$('workflow_actions').down('ul').insert(button);
 			} else {
 				var button = $('comment_add_button').remove();
-//				button.removeClassName('fixed');
 				button.down('input').removeClassName('button-silver');
 				button.down('input').addClassName('button-green');
 				$('add_comment_button_container').update(button);
@@ -161,10 +159,17 @@ TBG.Core._scrollWatcher = function() {
 			$('viewissue_header_container').removeClassName('fixed');
 			$('workflow_actions').removeClassName('fixed');
 			var button = $('comment_add_button').remove();
-//			button.removeClassName('fixed');
 			button.down('input').removeClassName('button-silver');
 			button.down('input').addClassName('button-green');
 			$('add_comment_button_container').update(button);
+		}
+	}
+	if ($('bulk_action_form_top')) {
+		var y = document.viewport.getScrollOffsets().top;
+		if (y >= $('bulk_action_form_top').up('.bulk_action_container').offsetTop) {
+			$('bulk_action_form_top').addClassName('fixed');
+		} else {
+			$('bulk_action_form_top').removeClassName('fixed');
 		}
 	}
 };

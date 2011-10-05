@@ -1171,6 +1171,8 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .search_results tr.priority_0 td { background-color: transparent; }
 .search_results .sc_issuetype img { float: left; margin-right: 3px; }
 .search_results td.sc_status { font-size: 0.9em; }
+.bulk_action_container { height: 35px; position: relative; }
+.bulk_action_form.fixed { position: fixed; width: 100%; top: 0; left: 0; margin: 0; z-index: 100; }
 .search_bulk_container { font-size: 0.9em; border: 1px dotted #DDD; background-color: #FAFAFA; padding: 5px; }
 .search_bulk_container input[type=text] { padding-top: 1px; }
 .search_bulk_container.top { border-top: none; margin-bottom: 5px; }
