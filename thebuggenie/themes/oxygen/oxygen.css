@@ -1067,8 +1067,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .client_users_div_inner { padding: 10px; }
 .project_header { padding: 10px; }
 .project_header_right { float: right; margin-top: 5px; }
-.project_header_right .button { float: left; margin-left: 10px; line-height: 1.6; }
-.project_header_right .report_button { float: right; overflow: visible; position: relative; }
+.project_header_right .button, .project_header_right .button:hover { float: left; margin-left: 10px; font-size: 1.1em !important; padding: 3px 6px !important; }
 #project_website, #project_documentation { margin-top: 5px; }
 #edition_table { list-style: none; margin: 0; padding: 0; line-height: 1.2; }
 #edition_table li { list-style: none; margin: 0; padding: 3px; clear: both; margin-top: 5px; }
