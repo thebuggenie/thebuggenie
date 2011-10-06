@@ -45,7 +45,7 @@
 
 		public function componentFilter()
 		{
-			$pkey = TBGContext::getCurrentProject()->getID();
+			$pkey = (TBGContext::isProjectContext()) ? TBGContext::getCurrentProject()->getID() : null;
 
 			$i18n = TBGContext::getI18n();
 			$this->selected_value = (isset($this->selected_value)) ? $this->selected_value : 0;
