@@ -45,7 +45,7 @@
 
 		protected function _getSearchDetailsFromRequest(TBGRequest $request)
 		{
-			$this->ipp = $request->getParameter('issues_per_page', 30);
+			$this->ipp = $request->getParameter('issues_per_page', 50);
 			$this->offset = $request->getParameter('offset', 0);
 			$filters = $request->getParameter('filters', array());
 			if ($request->getParameter('quicksearch'))
@@ -307,6 +307,7 @@
 		public function runFindIssuesPaginated(TBGRequest $request)
 		{
 			$this->_getSearchDetailsFromRequest($request);
+			$this->getResponse()->setDecoration(TBGResponse::DECORATE_NONE);
 
 			if ($this->show_results)
 			{

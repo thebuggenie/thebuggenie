@@ -19,6 +19,6 @@
 				<button class="button button-silver" onclick="TBG.Search.toPage('<?php echo $route; ?>', '<?php echo $parameters; ?>', <?php echo ($pagecount - 1) * $ipp; ?>);"><?php echo __('Last page'); ?></button>
 			<?php endif; ?>
 		<?php endif; ?>
-		<?php echo image_tag('spinning_20.gif', array('id' => 'paging_spinning', 'style' => 'display: none;')); ?>
+		<?php echo image_tag('spinning_20.gif', array('id' => 'paging_spinning', 'style' => 'display: none; margin: 0 0 -6px 5px;')); ?>
 	</div>
 </div>
