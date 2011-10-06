@@ -12,7 +12,7 @@
 		<span id="thebuggenie_successmessage_content"></span>
 	</div>
 </div>
-<div id="fullpage_backdrop" style="display: none; background-color: transparent; z-index: 1; width: 100%; height: 100%; position: fixed; top: 0; left: 0; margin: 0; padding: 0; text-align: center;">
+<div id="fullpage_backdrop" style="display: none; background-color: transparent; z-index: 100000; width: 100%; height: 100%; position: fixed; top: 0; left: 0; margin: 0; padding: 0; text-align: center;">
 	<div style="position: absolute; top: 45%; left: 40%; z-index: 100001; color: #FFF; font-size: 15px; font-weight: bold;" id="fullpage_backdrop_indicator">
 		<?php echo image_tag('spinning_32.gif'); ?><br>
 		<?php echo __('Please wait ...'); ?>
