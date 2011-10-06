@@ -7,8 +7,8 @@
 					<tr>
 						<th class="nosort" style="width: 20px; padding: 1px !important;"><input type="checkbox" onclick="TBG.Search.toggleCheckboxes(this);"></th>
 						<th><?php echo __('Issue'); ?></th>
-						<th><?php echo __('Status'); ?></th>
 						<th><?php echo __('Assigned to'); ?></th>
+						<th><?php echo __('Status'); ?></th>
 						<th><?php echo __('Priority'); ?></th>
 						<th class="pointsandtime"><?php echo __('Est. hrs'); ?></th>
 						<th class="pointsandtime"><?php echo __('Est. pts'); ?></th>
