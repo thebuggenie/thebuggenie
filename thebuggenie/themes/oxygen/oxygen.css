@@ -680,7 +680,7 @@ a.friend:hover { border-bottom: 1px dotted #0000a4; }
 .rounded_list_last_item { border-bottom-right-radius: 3px; -moz-border-radius-bottomright: 5px; -webkit-border-bottom-right-radius: 3px; border-bottom-left-radius: 3px; -moz-border-radius-bottomleft: 5px; -webkit-border-bottom-left-radius: 3px; }
 
 #issue_details { position: relative; }
-#issue_details dl { font-size: 1em; }
+#issue_details dl { font-size: 0.9em; }
 #issue_details ul.issue_details { margin: 0; }
 .issue_detail_field { margin: 0 5px 0 0; padding: 0; width: 48%; float: left; }
 .issue_detail_field dl { border-bottom: 1px solid transparent; height: 24px; }
@@ -688,7 +688,7 @@ a.friend:hover { border-bottom: 1px dotted #0000a4; }
 .issue_detail_field:hover dl { background-color: #F1F1F1; border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; }
 
 /* workflow actions */
-#workflow_actions { position: absolute; top: 3px; right: 10px; margin-top: 0; height: 25px; z-index: 2; }
+#workflow_actions { position: absolute; margin-top: 3px; right: 10px; height: 25px; z-index: 2; }
 ul.workflow_actions { margin-top: 0; }
 ul.workflow_actions li { display: block; float: left; border-radius: 0; -moz-border-radius: 0; -webkit-border-radius: 0; }
 ul.workflow_actions li form { display: inline; margin: 0; padding: 0; }
