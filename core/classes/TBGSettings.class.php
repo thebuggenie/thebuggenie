@@ -379,7 +379,7 @@
 				case self::FAVICON_PUBLIC:
 					return TBGContext::getTBGPath()."favicon.png";
 				default:
-					return TBGContext::getTBGPath()."themes/".TBGSettings::getThemeName()."/favicon.png";
+					return TBGContext::getTBGPath()."iconsets/".TBGSettings::getThemeName()."/favicon.png";
 			}
 		}
 		
