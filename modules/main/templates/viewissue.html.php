@@ -551,6 +551,6 @@
 <?php endif; ?>
 <?php foreach ($issue->getAvailableWorkflowTransitions() as $transition): ?>
 	<?php if ($transition instanceof TBGWorkflowTransition && $transition->hasTemplate()): ?>
-		<?php include_component($transition->getTemplate(), array('issue' => $issue, 'transition' => $transition)); ?>
+		<?php include_component($transition->getTemplate(), compact('issue', 'transition')); ?>
 	<?php endif; ?>
 <?php endforeach; ?>

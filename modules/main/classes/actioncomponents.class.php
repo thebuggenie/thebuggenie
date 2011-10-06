@@ -267,7 +267,7 @@
 
 		public function componentUpdateissueproperties()
 		{
-			$this->issue = null;
+			$this->issue = $this->issue ?: null;
 			$this->setupVariables();
 		}
 		

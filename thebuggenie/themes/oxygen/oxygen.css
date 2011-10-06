@@ -935,6 +935,11 @@ table.issue_affects td img { vertical-align: bottom; }
 .milestone_box .header .counts { font-size: 0.8em; font-weight: normal; color: #555; }
 .milestone_box .header .counts span { font-weight: bold; }
 .milestone_box .header .button { font-size: 0.8em; font-weight: bold; line-height: 1; padding: 2px 5px !important; margin-left: 5px; float: right; }
+.milestone_box .milestone_moreactions, #more_actions { position: absolute; margin-top: 23px; right: 0; padding: 0; z-index: 10; text-align: left; }
+#more_actions { margin-top: 2px; }
+.milestone_box .milestone_moreactions, #more_actions .header { padding: 5px; }
+.milestone_box .milestone_moreactions a, #more_actions a { display: block; padding: 3px 5px; font-size: 0.85em; color: #555; font-weight: normal; }
+.milestone_box .milestone_moreactions a:hover, #more_actions a:hover { background-color: #F5F5F5; text-decoration: none; border: none; color: #555; }
 
 .milestone_box .milestone_issues { width: 100%; }
 .milestone_box .milestone_issues th { background-color: #EAEAEA; border-left: 1px solid #FFF; color: #555; font-size: 0.8em; padding: 2px; font-weight: bold; border-right: 1px solid #CCC; }
