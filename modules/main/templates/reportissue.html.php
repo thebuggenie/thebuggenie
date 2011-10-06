@@ -25,5 +25,7 @@
 	<div class="report_issue_header">
 		<?php echo __("What's the issue?"); ?>
 	</div>
-	<?php include_component('main/reportissue', compact('issue', 'errors', 'selected_project', 'issuetypes')); ?>
+	<div id="reportissue_content">
+		<?php include_component('main/reportissue', compact('issue', 'errors', 'permission_errors', 'selected_project', 'issuetypes')); ?>
+	</div>
 </div>

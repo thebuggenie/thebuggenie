@@ -485,7 +485,7 @@ TBG.Main.Helpers.ajax = function(url, options) {
 		onFailure: function (transport) {
 			var json = (transport.responseJSON) ? transport.responseJSON : undefined;
 			if (transport.responseJSON) {
-				TBG.Main.Helpers.Message.error(json.error);
+				TBG.Main.Helpers.Message.error(json.error, json.message);
 			} else {
 				TBG.Main.Helpers.Message.error(transport.responseText);
 			}
@@ -598,6 +598,29 @@ TBG.Main.updatePercentageLayout = function(tds, percent) {
 		}
 	});
 };
+
+TBG.Main.submitIssue = function(url) {
+	if ($('report_issue_submit_button').hasClassName('disabled')) return;
+	
+	TBG.Main.Helpers.ajax(url, {
+		form: 'report_issue_form',
+		url_method: 'post',
+		loading: {
+			indicator: 'report_issue_indicator',
+			callback: function() {
+				$('report_issue_submit_button').addClassName('disabled');
+			}
+		},
+		success: {
+			update: 'fullpage_backdrop_content'
+		},
+		complete: {
+			callback: function() {
+				$('report_issue_submit_button').removeClassName('disabled');
+			}
+		}
+	});
+}
 
 TBG.Main.Link.add = function(url, target_type, target_id) {
 	TBG.Main.Helpers.ajax(url, {
@@ -2294,7 +2317,6 @@ TBG.Issues.updateFields = function(url)
 {
 	if ($('issuetype_id').getValue() != 0) {
 		$('issuetype_list').hide();
-		$('issuetype_dropdown').show();
 	}
 	if ($('project_id').getValue() != 0 && $('issuetype_id').getValue() != 0) {
 		$('report_more_here').hide();

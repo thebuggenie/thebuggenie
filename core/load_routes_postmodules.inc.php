@@ -22,7 +22,7 @@
 	$routes[] = array('main_find_identifiable', '/find/identifiable/by/*', 'main', 'findIdentifiable');
 	$routes[] = array('toggle_favourite_issue', '/toggle_favourite_issue/:issue_id', 'main', 'toggleFavouriteIssue', array('format' => 'json'));
 	$routes[] = array('project_getmenulinks', '/:project_key/menulinks', 'project', 'menuLinks');
-	$routes[] = array('project_reportissue_with_issuetype', '/:project_key/issues/new/:issuetype/*', 'main', 'reportIssue');
+//	$routes[] = array('project_reportissue', '/:project_key/issues/new/:issuetype/*', 'main', 'reportIssue');
 	$routes[] = array('project_reportissue', '/:project_key/issues/new/*', 'main', 'reportIssue');
 	$routes[] = array('transition_issue', '/:project_key/:issue_id/transition/:transition_id', 'project', 'transitionIssue');
 	$routes[] = array('transition_issues', '/:project_key/transition/:transition_id', 'project', 'transitionIssues');

@@ -37,7 +37,7 @@
 							</div>
 							<div id="project_issue_menu" class="tab_menu_dropdown">
 							<?php foreach (TBGContext::getCurrentProject()->getIssuetypeScheme()->getReportableIssuetypes() as $issuetype): ?>
-								<?php echo link_tag(make_url('project_reportissue_with_issuetype', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'issuetype' => $issuetype->getKey())), image_tag($issuetype->getIcon() . '_tiny.png' ) . __($issuetype->getName())); ?>
+								<?php echo link_tag(make_url('project_reportissue', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'issuetype' => $issuetype->getKey())), image_tag($issuetype->getIcon() . '_tiny.png' ) . __($issuetype->getName())); ?>
 							<?php endforeach;?>
 						</div>
 					</li>

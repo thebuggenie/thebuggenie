@@ -854,7 +854,7 @@
 					$errors['title'] = true;
 				if (isset($fields_array['description']) && $fields_array['description']['required'] && trim($this->selected_description) == '')
 					$errors['description'] = true;
-				if (isset($fields_array['reproduction_steps']) && $fields_array['reproduction_steps']['required'] && trim($this->selected_reproduction_steps) == '')
+				if (isset($fields_array['reproduction_steps']) && !$request->isAjaxCall() && $fields_array['reproduction_steps']['required'] && trim($this->selected_reproduction_steps) == '')
 					$errors['reproduction_steps'] = true;
 
 				if (isset($fields_array['edition']) && $edition_id && !in_array($edition_id, array_keys($fields_array['edition']['values'])))
@@ -1067,9 +1067,16 @@
 					try
 					{
 						$issue = $this->_postIssue();
-						if ($request->getParameter('return_format') == 'scrum')
+						if ($request->getParameter('return_format') == 'planning')
 						{
-							return $this->renderJSON(array('failed' => false, 'story_id' => $issue->getID(), 'content' => $this->getComponentHTML('project/scrumcard', array('issue' => $issue))));
+							$this->_loadSelectedProjectAndIssueTypeFromRequestForReportIssueAction($request);
+							$options['selected_issuetype'] = $issue->getIssueType();
+							$options['selected_project'] = $this->selected_project;
+							$options['issuetypes'] = $this->issuetypes;
+							$options['issue'] = $issue;
+							$options['errors'] = $errors;
+							$options['permission_errors'] = $permission_errors;
+							return $this->renderJSON(array('content' => $this->getComponentHTML('main/reportissuecontainer', $options)));
 						}
 						if ($issue->getProject()->getIssuetypeScheme()->isIssuetypeRedirectedAfterReporting($this->selected_issuetype))
 						{
@@ -1083,22 +1090,24 @@
 					}
 					catch (Exception $e)
 					{
-						if ($request->getParameter('return_format') == 'scrum')
+						if ($request->getParameter('return_format') == 'planning')
 						{
-							return $this->renderJSON(array('failed' => true, 'error' => $e->getMessage()));
+							$this->getResponse()->setHttpStatus(400);
+							return $this->renderJSON(array('error' => $e->getMessage()));
 						}
 						$errors[] = $e->getMessage();
 					}
 				}
 			}
-			if ($request->getParameter('return_format') == 'scrum')
+			if ($request->getParameter('return_format') == 'planning')
 			{
-				$err_msg = '';
+				$err_msg = array();
 				foreach ($errors as $field => $value)
 				{
-					$err_msg .= '<br>'.$i18n->__('Please provide a %field%', array('%field%' => $field));
+					$err_msg[] = $i18n->__('Please provide a value for the %field_name% field', array('%field_name%' => $field));
 				}
-				return $this->renderJSON(array('failed' => true, 'error' => $i18n->__('An error occured while creating this story').$err_msg));
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('error' => $i18n->__('An error occured while creating this story: %errors%', array('%errors%' => '')), 'message' => join('<br>', $err_msg)));
 			}
 			$this->errors = $errors;
 			$this->permission_errors = $permission_errors;

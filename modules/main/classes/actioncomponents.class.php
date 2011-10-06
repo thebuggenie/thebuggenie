@@ -393,7 +393,7 @@
 
 		protected function _setupReportIssueProperties()
 		{
-			$this->selected_issuetype = null;
+			$this->selected_issuetype = $this->selected_issuetype ?: null;
 			$this->selected_edition = null;
 			$this->selected_build = null;
 			$this->selected_component = null;
@@ -415,8 +415,8 @@
 				$selected_customdatatype[$customdatatype->getKey()] = null;
 			}
 			$this->selected_customdatatype = $selected_customdatatype;
-			$this->issuetype_id = null;
-			$this->issue = null;
+			$this->issuetype_id = $this->issuetype_id ?: null;
+			$this->issue = $this->issue ?: null;
 			$this->categories = TBGCategory::getAll();
 			$this->severities = TBGSeverity::getAll();
 			$this->priorities = TBGPriority::getAll();
