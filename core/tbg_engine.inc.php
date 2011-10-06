@@ -133,7 +133,10 @@
 		<html>
 		<head>
 		<style>
-		body { background-color: #DFDFDF; font-family: \"Droid Sans\", \"Trebuchet MS\", \"Liberation Sans\", \"Nimbus Sans L\", \"Luxi Sans\", Verdana, sans-serif; font-size: 13px; }
+		@import url(\"http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700&subset=latin,cyrillic,greek\");
+		@import url(\"http://fonts.googleapis.com/css?family=Droid+Sans+Mono&subset=latin,cyrillic,greek\");
+
+		body, td, th { padding: 0px; margin: 0px; background-color: #DFDFDF; font-family: 'Open Sans', sans-serif; font-style: normal; font-weight: normal; text-align: left; font-size: 13px; line-height: 1.3; color: #222;}
 		h1 { margin: 5px 0 0 0; font-size: 19px; }
 		h2 { margin: 0 0 15px 0; font-size: 16px; }
 		h3 { margin: 15px 0 0 0; font-size: 14px; }
