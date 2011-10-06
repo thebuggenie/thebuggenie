@@ -449,6 +449,7 @@
 
 			TBGProjectsTable::getTable()->upgrade(TBGProjectsTable3dot1::getTable());
 			TBGBuildsTable::getTable()->upgrade(TBGBuildsTable3dot1::getTable());
+			TBGDashboardViewsTable::getTable()->create();
 
 			TBGSettings::saveSetting(TBGSettings::SETTING_ICONSET, TBGSettings::get(TBGSettings::SETTING_THEME_NAME));
 			
