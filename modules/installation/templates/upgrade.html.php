@@ -15,7 +15,7 @@
 <?php endif; ?>
 <div class="installation_box">
 	<?php if ($upgrade_available): ?>
-		<h2>You are performing the following upgrade: <?php echo $current_version; ?>.x => 3.1<br>
+		<h2>You are performing the following upgrade: <?php echo $current_version; ?>.x => 3.2<br>
 			Make a backup of your installation before you continue!</h2>
 		<br>
 		<br>

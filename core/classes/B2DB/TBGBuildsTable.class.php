@@ -23,7 +23,7 @@
 	class TBGBuildsTable extends TBGB2DBTable 
 	{
 
-		const B2DB_TABLE_VERSION = 1;
+		const B2DB_TABLE_VERSION = 2;
 		const B2DBNAME = 'builds';
 		const ID = 'builds.id';
 		const SCOPE = 'builds.scope';
@@ -51,7 +51,7 @@
 			parent::_addInteger(self::RELEASE_DATE, 10);
 			parent::_addBoolean(self::RELEASED);
 			parent::_addBoolean(self::LOCKED);
-			parent::_addForeignKeyColumn(self::EDITION, Core::getTable('TBGEditionsTable'), TBGEditionsTable::ID);
+			parent::_addForeignKeyColumn(self::EDITION, TBGEditionsTable::getTable(), TBGEditionsTable::ID);
 			parent::_addForeignKeyColumn(self::PROJECT, TBGProjectsTable::getTable(), TBGProjectsTable::ID);
 			parent::_addForeignKeyColumn(self::FILE_ID, TBGFilesTable::getTable(), TBGFilesTable::ID);
 			parent::_addForeignKeyColumn(self::MILESTONE, TBGMilestonesTable::getTable(), TBGMilestonesTable::ID);

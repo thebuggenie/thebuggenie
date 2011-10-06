@@ -1584,7 +1584,6 @@
 			self::getResponse()->deleteCookie('tbg3_password');
 			self::getResponse()->deleteCookie('THEBUGGENIE');
 			session_regenerate_id(true);
-			session_destroy();
 			TBGEvent::createNew('core', 'post_logout')->trigger();
 		}
 
