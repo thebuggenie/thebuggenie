@@ -145,11 +145,13 @@ TBG.Core._scrollWatcher = function() {
 			$('viewissue_header_container').addClassName('fixed');
 			$('workflow_actions').addClassName('fixed');
 			if (y >= $('viewissue_menu_panes').offsetTop) {
-				var button = $('comment_add_button').remove();
-				button.down('input').addClassName('button-silver');
-				button.down('input').removeClassName('button-green');
-				$('workflow_actions').down('ul').insert(button);
-			} else {
+				if ($('comment_add_button') != undefined) {
+					var button = $('comment_add_button').remove();
+					button.down('input').addClassName('button-silver');
+					button.down('input').removeClassName('button-green');
+					$('workflow_actions').down('ul').insert(button);
+				}
+			} else if ($('comment_add_button') != undefined) {
 				var button = $('comment_add_button').remove();
 				button.down('input').removeClassName('button-silver');
 				button.down('input').addClassName('button-green');
@@ -158,10 +160,12 @@ TBG.Core._scrollWatcher = function() {
 		} else {
 			$('viewissue_header_container').removeClassName('fixed');
 			$('workflow_actions').removeClassName('fixed');
-			var button = $('comment_add_button').remove();
-			button.down('input').removeClassName('button-silver');
-			button.down('input').addClassName('button-green');
-			$('add_comment_button_container').update(button);
+			if ($('comment_add_button') != undefined) {
+				var button = $('comment_add_button').remove();
+				button.down('input').removeClassName('button-silver');
+				button.down('input').addClassName('button-green');
+				$('add_comment_button_container').update(button);
+			}
 		}
 	}
 	if ($('bulk_action_form_top')) {
@@ -2918,7 +2922,12 @@ TBG.Search.toPage = function(url, parameters, offset) {
 	TBG.Main.Helpers.ajax(url, {
 		params: parameters,
 		loading: {indicator: 'paging_spinning'},
-		success: {update: 'search_results'}
+		success: {update: 'search_results'},
+		complete: {
+			callback: function() {
+				TableKit.load();
+			}
+		}
 	});
 };
 

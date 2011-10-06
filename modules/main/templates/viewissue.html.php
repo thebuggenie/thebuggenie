@@ -249,9 +249,9 @@
 				<div class="issue_info_backdrop"></div>
 			</div>
 		</div>
-		<?php if ($issue->isWorkflowTransitionsAvailable()): ?>
-			<div id="workflow_actions">
-				<ul class="workflow_actions simple_list">
+		<div id="workflow_actions">
+			<ul class="workflow_actions simple_list">
+				<?php if ($issue->isWorkflowTransitionsAvailable()): ?>
 					<?php $cc = 1; $num_transitions = count($issue->getAvailableWorkflowTransitions()); ?>
 					<?php foreach ($issue->getAvailableWorkflowTransitions() as $transition): ?>
 						<li class="workflow">
@@ -307,8 +307,8 @@
 						<?php endif; ?>
 					</ul>
 				<?php endif; ?>
-			</div>
-		<?php endif; ?>
+			<?php endif; ?>
+		</div>
 		<div id="viewissue_left_box_top">
 			<div id="issue_view">
 				<fieldset id="issue_details">
@@ -549,8 +549,10 @@
 	</div>
 	<?php return; ?>
 <?php endif; ?>
-<?php foreach ($issue->getAvailableWorkflowTransitions() as $transition): ?>
-	<?php if ($transition instanceof TBGWorkflowTransition && $transition->hasTemplate()): ?>
-		<?php include_component($transition->getTemplate(), compact('issue', 'transition')); ?>
-	<?php endif; ?>
-<?php endforeach; ?>
+<?php if ($issue->isWorkflowTransitionsAvailable()): ?>
+	<?php foreach ($issue->getAvailableWorkflowTransitions() as $transition): ?>
+		<?php if ($transition instanceof TBGWorkflowTransition && $transition->hasTemplate()): ?>
+			<?php include_component($transition->getTemplate(), compact('issue', 'transition')); ?>
+		<?php endif; ?>
+	<?php endforeach; ?>
+<?php endif; ?>
