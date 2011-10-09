@@ -24,6 +24,7 @@
 		protected $id_column;
 		protected $b2db_alias;
 		protected $_columns;
+		protected $_indexes = array();
 		protected $_charset = 'utf8';
 		protected $_autoincrement_start_at = 1;
 		protected $_foreigntables = array();
@@ -86,6 +87,11 @@
 		protected function _addBoolean($column, $default_value = false, $not_null = false)
 		{
 			$this->_addColumn($column, array('type' => 'boolean', 'name' => $column, 'default_value' => ($default_value) ? 1 : 0, 'not_null' => $not_null));
+		}
+		
+		protected function _addIndex($index_name, $columns, $index_type = null)
+		{
+			$this->_indexes[$index_name] = array('columns' => $columns, 'type' => $index_type);
 		}
 
 		/**
@@ -637,6 +643,40 @@
 			}
 			return $res;			
 		}
+		
+		protected function _setupIndexes()
+		{
+		}
+		
+		public function createIndexes()
+		{
+			$this->_setupIndexes();
+			$qc = $this->getQC();
+			
+			foreach ($this->_indexes as $index_name => $details)
+			{
+				$sql = '';
+				switch (Core::getDBtype())
+				{
+					case 'pgsql':
+						$sql .= " CREATE INDEX " . Core::getTablePrefix() . $this->b2db_name . "_{$index_name} ON " . $this->_getTableNameSQL() . " (";
+						break;
+					case 'mysql':
+						$sql .= " ALTER TABLE " . $this->_getTableNameSQL() . " ADD INDEX " . Core::getTablePrefix() . $this->b2db_name . "_{$index_name}(";
+						break;
+				}
+				$index_column_sqls = array();
+				foreach ($details['columns'] as $column)
+				{
+					$index_column_sqls[] = "$qc" . $this->_getRealColumnFieldName($column) . "$qc";
+				}
+				$sql .= join (', ', $index_column_sqls);
+				$sql .= ");";
+				
+				$statement = Statement::getPreparedStatement($sql);
+				$res = $statement->performQuery('create index');
+			}
+		}
 
 		protected function _dropToSQL()
 		{
@@ -746,8 +786,7 @@
 
 		protected function _getColumnDefinitionSQL($column)
 		{
-			$qc = $this->getQC();
-			$fsql = " $qc" . $this->_getRealColumnFieldName($column['name']) . "$qc ";
+			$fsql = '';
 			switch ($column['type'])
 			{
 				case 'integer':
@@ -837,7 +876,8 @@
 			$field_sql = array();
 			foreach ($this->_columns as $column)
 			{
-				$field_sql[] = $this->_getColumnDefinitionSQL($column);
+				$_sql = " $qc" . $this->_getRealColumnFieldName($column['name']) . "$qc ";
+				$field_sql[] = $_sql . $this->_getColumnDefinitionSQL($column);
 			}
 			$sql .= join(",\n", $field_sql);
 			$sql .= ", PRIMARY KEY ($qc" . $this->_getRealColumnFieldName($this->id_column) . "$qc) ";
@@ -850,16 +890,31 @@
 
 		protected function _getAddColumnSQL($column, $details)
 		{
+			$qc = $this->getQC();
+
 			$sql = 'ALTER TABLE ' . $this->_getTableNameSQL();
-			$sql .= ' ADD COLUMN ' . $this->_getColumnDefinitionSQL($details);
+			$sql .= " ADD COLUMN $qc" . $this->_getRealColumnFieldName($details['name']) . "$qc " . $this->_getColumnDefinitionSQL($details);
 
 			return $sql;
 		}
 
-		protected function _getAlterColumnSQL($old_column_details, $new_column_details)
+		protected function _getAlterColumnSQL($column, $details)
 		{
 			$sql = 'ALTER TABLE ' . $this->_getTableNameSQL();
-			$sql .= ' ALTER COLUMN ' . $this->_getColumnDefinitionSQL($new_column_details);
+			$qc = $this->getQC();
+			switch (Core::getDBtype())
+			{
+				case 'mysql':
+					$sql .= ' MODIFY ';
+					$sql .= " $qc" . $this->_getRealColumnFieldName($details['name']) . "$qc ";
+					break;
+				case 'pgsql':
+					$sql .= ' ALTER COLUMN ';
+					$sql .= " $qc" . $this->_getRealColumnFieldName($details['name']) . "$qc ";
+					$sql .= ' TYPE ';
+					break;
+			}
+			$sql .= $this->_getColumnDefinitionSQL($details);
 			
 			return $sql;
 		}
@@ -891,9 +946,9 @@
 			$old_columns = $old_table->getColumns();
 			$new_columns = $this->getColumns();
 			
-			$added_columns = array_diff_key($new_columns, $old_columns);
-			$altered_columns = array_diff($old_columns, $new_columns);
-			$dropped_columns = array_keys(array_diff_key($old_columns, $new_columns));
+			$added_columns = \array_diff_key($new_columns, $old_columns);
+			$altered_columns = Tools::array_diff_recursive($old_columns, $new_columns);
+			$dropped_columns = \array_keys(array_diff_key($old_columns, $new_columns));
 
 			$sqls = array();
 			foreach ($added_columns as $column => $details)
@@ -911,10 +966,10 @@
 			$this->_migrateData($old_table);
 
 			$sqls = array();
-			foreach ($altered_columns as $column)
+			foreach ($altered_columns as $column => $details)
 				$sqls[] = $this->_getAlterColumnSQL($column, $new_columns[$column]);
 
-			foreach ($dropped_columns as $column)
+			foreach ($dropped_columns as $column => $details)
 				$sqls[] = $this->_getDropColumnSQL($column);
 
 			if (count($sqls))
