@@ -11,13 +11,13 @@
 		<?php echo image_tag($project->getSmallIconName(), array('style' => 'float: left; margin-right: 5px; width: 16px; height: 16px;'), $project->hasSmallIcon()); ?>
 		<b class="project_name"><?php echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), '<span id="project_name_span">'.$project->getName()."</span>"); ?> <?php if ($project->usePrefix()): ?>(<?php echo mb_strtoupper($project->getPrefix()); ?>)<?php endif; ?></b><?php if ($tbg_user->canEditProjectDetails($project)): ?>&nbsp;&nbsp;<span class="faded_out"><?php echo javascript_link_tag(__('Edit project'), array('onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'project_config', 'project_id' => $project->getID()))."');", 'style' => 'font-size: 12px;')); ?></span><?php endif; ?><br>
 		<?php if ($project->hasHomepage()): ?>
-			<a href="<?php echo $project->getHomepage(); ?>" target="_blank"><?php echo $project->getHomepage(); ?></a>
+			<a href="<?php echo $project->getHomepage(); ?>" target="_blank"><?php echo __('Go to project website'); ?></a>
 		<?php else: ?>
 			<span class="faded_out" style="font-weight: normal;"><?php echo __('No homepage provided'); ?></span>
 		<?php endif; ?>
 		|
 		<?php if ($project->hasDocumentationURL()): ?>
-			<a href="<?php echo $project->getDocumentationURL(); ?>" target="_blank"><?php echo $project->getDocumentationURL(); ?></a>
+			<a href="<?php echo $project->getDocumentationURL(); ?>" target="_blank"><?php echo __('Open documentation'); ?></a>
 		<?php else: ?>
 			<span class="faded_out" style="font-weight: normal;"><?php echo __('No documentation URL provided'); ?></span>
 		<?php endif; ?>
