@@ -59,6 +59,11 @@
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 		
+		protected function _setupIndexes()
+		{
+			$this->_addIndex('scope', array(self::SCOPE));
+		}
+
 		public function getAll($scope_id = null)
 		{
 			$scope_id = ($scope_id === null) ? TBGContext::getScope()->getID() : $scope_id;

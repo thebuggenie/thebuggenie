@@ -67,6 +67,11 @@
 			parent::_addForeignKeyColumn(self::UPDATED_BY, TBGUsersTable::getTable(), TBGUsersTable::ID);
 			parent::_addForeignKeyColumn(self::POSTED_BY, TBGUsersTable::getTable(), TBGUsersTable::ID);
 		}
+		
+		protected function _setupIndexes()
+		{
+			$this->_addIndex('type_target', array(self::TARGET_TYPE, self::TARGET_ID));
+		}
 
 		public function getComments($target_id, $target_type, $sort_order = Criteria::SORT_ASC)
 		{
