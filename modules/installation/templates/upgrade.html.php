@@ -41,10 +41,12 @@
 		<?php endif; ?>
 	<?php elseif ($upgrade_complete): ?>
 		<h2>Upgrade successfully completed!</h2>
-		If the file <b><?php echo THEBUGGENIE_PATH . 'upgrade'; ?></b> exists, please remove this file and reload this page.
+		If the file <b><?php echo THEBUGGENIE_PATH . 'upgrade'; ?></b> exists, please remove this file and click the "Finish" button below.<br>
+		<a href="index.php" class="button button-silver">Finish</a>
 	<?php else: ?>
 		<h2>No upgrade necessary!</h2>
-		If the file <b><?php echo THEBUGGENIE_PATH . 'upgrade'; ?></b> exists, please remove this file and reload this page.
+		If the file <b><?php echo THEBUGGENIE_PATH . 'upgrade'; ?></b> exists, please remove this file and click the "Finish" button below.<br>
+		<a href="index.php" class="button button-silver">Finish</a>
 	<?php endif; ?>
 </div>
 <?php include_template('installation/footer'); ?>
