@@ -97,7 +97,7 @@
 				$type_name = $this->_getForeignClassForProperty($property);
 				if ($type_name && \class_exists($type_name))
 				{
-					$this->$property = new $type_name($this->$property);
+					$this->$property = \TBGContext::factory()->$type_name($this->$property);
 				}
 				else
 				{
