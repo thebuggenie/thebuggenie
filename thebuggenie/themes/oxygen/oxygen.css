@@ -343,7 +343,7 @@ a.shadowed:active { box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); -webkit-box-shad
 .account_details .user_username { font-size: 0.9em; line-height: 1.2; }
 .account_details .user_status { font-size: 0.9em; line-height: 1.2; }
 #account_user_info img { float: left; margin: -3px 5px 0 0; }
-#account_user_info { font-size: 1.2em; font-weight: normal; color: #CCC; margin: 15px 0 0 15px; line-height: 1.2; }
+#account_user_info { font-size: 1.2em; font-weight: normal; color: #CCC; margin: 15px 0 0 0; line-height: 1.2; }
 #account_user_info:first-line { font-size: 1.5em; font-weight: bold; color: #333; }
 #account_info_container { width: 900px; margin: 0 auto; }
 .profile_buttons { padding: 15px 0 0 15px; position: relative; float: right; }
@@ -1349,7 +1349,7 @@ input[type=submit], input[type=submit]:hover, button, .button, .button:hover {
 	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#81a8cb', endColorstr='#4477a1');
 	color: #fff; text-shadow: 1px 1px 1px #666; 
 }
-.button-blue:active, input[type=submit].button-blue:active {
+.button-blue:active, input[type=submit].button-blue:active, .button-blue.button-pressed {
 	background: #81a8cb;
 	background: -webkit-gradient(linear, left top, left bottom, from(#4477a1), to(#81a8cb) );
 	background: -moz-linear-gradient(-90deg, #4477a1, #81a8cb);
