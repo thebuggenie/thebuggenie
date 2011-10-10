@@ -782,13 +782,15 @@
 			{
 				$retarr['mysql'] = 'MySQL';
 				$retarr['pgsql'] = 'PostgreSQL';
-				/*$retarr['mssql'] = 'MsSQL (PDO)';
-				$retarr['sybase'] = 'Sybase (PDO)';
-				$retarr['dblib'] = 'DBLib (PDO)';
-				$retarr['firebird'] = 'Firebird (PDO)';
-				$retarr['ibm'] = 'IBM (PDO)';
-				$retarr['oci'] = 'Oracle (PDO)';
-				$retarr['sqlite'] = 'SQLite (PDO)';*/
+				$retarr['mssql'] = 'Microsoft SQL Server';
+				/*
+				$retarr['sqlite'] = 'SQLite';
+				$retarr['sybase'] = 'Sybase';
+				$retarr['dblib'] = 'DBLib';
+				$retarr['firebird'] = 'Firebird';
+				$retarr['ibm'] = 'IBM';
+				$retarr['oci'] = 'Oracle';
+				 */
 			}
 			else
 			{

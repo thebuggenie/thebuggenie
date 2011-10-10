@@ -1,4 +1,4 @@
-<table style="width: 680px; margin-bottom: 15px;" class="padded_table" cellpadding=0 cellspacing=0>
+<table style="width: 895px; margin-bottom: 15px;" class="padded_table" cellpadding=0 cellspacing=0>
 	<tr>
 		<td style="border-bottom: 1px solid #CCC; font-size: 12px; font-weight: bold;"><?php echo __('General'); ?></td>
 		<td style="width: 50px; text-align: center; border-bottom: 1px solid #CCC;"><?php echo image_tag('notification_settings.png', array(), false, 'mailing'); ?></td>
@@ -12,7 +12,7 @@
 		</tr>
 	<?php endforeach; ?>
 </table>
-<table style="width: 680px; margin-bottom: 15px;" class="padded_table" cellpadding=0 cellspacing=0>
+<table style="width: 895px; margin-bottom: 15px;" class="padded_table" cellpadding=0 cellspacing=0>
 	<tr>
 		<td style="border-bottom: 1px solid #CCC; font-size: 12px; font-weight: bold;"><?php echo __('Issues'); ?></td>
 		<td style="width: 50px; text-align: center; border-bottom: 1px solid #CCC;">&nbsp;</td>

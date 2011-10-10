@@ -165,42 +165,33 @@
 		
 		protected function loadStrings($module = null)
 		{
-			$strings_key = ($module !== null) ? 'i18n_strings' : "i18n_strings_{$module}";
-			if (!$strings = TBGCache::get($strings_key))
+			$filename = '';
+			if ($module !== null)
 			{
-				$filename = '';
-				if ($module !== null)
+				if (file_exists(THEBUGGENIE_PATH . 'i18n' . DS . $this->_language . DS . "{$module}.inc.php"))
 				{
-					if (file_exists(THEBUGGENIE_PATH . 'i18n' . DS . $this->_language . DS . "{$module}.inc.php"))
-					{
-						$filename = THEBUGGENIE_PATH . 'i18n' . DS . $this->_language . DS . "{$module}.inc.php";
-					}
-					else
-					{
-						$filename = THEBUGGENIE_MODULES_PATH . $module . DS . 'i18n' . DS . $this->_language . DS . "{$module}.inc.php";
-					}
+					$filename = THEBUGGENIE_PATH . 'i18n' . DS . $this->_language . DS . "{$module}.inc.php";
 				}
 				else
 				{
-					$filename = $this->getStringsFilename();
-				}
-
-				if (file_exists($filename))
-				{
-					TBGLogging::log("Loading strings from file '{$filename}", 'i18n');
-					$strings = array();
-					require $filename;
-					TBGCache::add($strings_key, $strings);
-				}
-				else
-				{
-					$message = 'Could not find language file ' . $filename;
-					TBGLogging::log($message, 'i18n', TBGLogging::LEVEL_NOTICE);
+					$filename = THEBUGGENIE_MODULES_PATH . $module . DS . 'i18n' . DS . $this->_language . DS . "{$module}.inc.php";
 				}
 			}
 			else
 			{
-				TBGLogging::log('Using cached strings', 'i18n');
+				$filename = $this->getStringsFilename();
+			}
+
+			if (file_exists($filename))
+			{
+				TBGLogging::log("Loading strings from file '{$filename}", 'i18n');
+				$strings = array();
+				require $filename;
+			}
+			else
+			{
+				$message = 'Could not find language file ' . $filename;
+				TBGLogging::log($message, 'i18n', TBGLogging::LEVEL_NOTICE);
 			}
 			$this->addStrings($strings);
 		}

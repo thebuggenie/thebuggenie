@@ -29,8 +29,8 @@
 		const KEY_SETTINGS = '_settings';
 		const KEY_TEXTPARSER_ISSUE_REGEX = 'TBGTextParser::getIssueRegex';
 		
-		protected static $_enabled = false;
-		protected static $_filecache_enabled = false;
+		protected static $_enabled = true;
+		protected static $_filecache_enabled = true;
 		
 		public static function get($key)
 		{
@@ -95,7 +95,7 @@
 		
 		public static function isEnabled()
 		{
-			if (self::$_enabled === null || self::$_enabled == true)
+			if (self::$_enabled)
 			{
 				self::$_enabled = function_exists('apc_add');
 			}

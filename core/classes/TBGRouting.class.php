@@ -385,6 +385,7 @@
 		 * 
 		 * @param string $name The route key
 		 * @param array $params key=>value pairs of route parameters
+		 * @param boolean $relative Whether to generate an url relative to web root or an absolute 
 		 * 
 		 * @return string
 		 */

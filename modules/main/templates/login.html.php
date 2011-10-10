@@ -3,9 +3,7 @@
 	TBGContext::loadLibrary('ui');
 ?>
 <div class="login_page_div">
-<?php
-	echo $content;
-?>
+<?php include_component('main/login', compact('section', 'error')); ?>
 </div>
 <?php if (TBGContext::hasMessage('login_message')): ?>
 <script type="text/javascript">

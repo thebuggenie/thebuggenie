@@ -1,4 +1,4 @@
-<div class="backdrop_box large"  id="login_popup">
+<div class="backdrop_box large" id="login_popup">
 	<div id="backdrop_detail_content" class="rounded_top login_content">
 		<?php echo $content; ?>
 	</div>

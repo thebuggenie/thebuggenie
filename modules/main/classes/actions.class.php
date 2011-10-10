@@ -428,11 +428,8 @@
 		 */
 		public function runLogin(TBGRequest $request)
 		{
-			if (!TBGContext::getUser()->isGuest()):
-				return $this->forward(TBGContext::getRouting()->generate('home'));
-			else:
-				$this->content = $this->getComponentHtml('login', array('section' => $request->getParameter('section', 'login')));
-			endif;
+			if (!TBGContext::getUser()->isGuest()) return $this->forward(TBGContext::getRouting()->generate('home'));
+			$this->section = $request->getParameter('section', 'login');
 		}
 		
 		/**
@@ -446,9 +443,65 @@
 			$options = $request->getParameters();
 			$forward_url = TBGContext::getRouting()->generate('home');
 
-			try
+			$openid = new LightOpenID(TBGContext::getRouting()->generate('login_page', array(), false));
+			if (!$openid->mode && $request->isMethod(TBGRequest::POST) && $request->hasParameter('openid_identifier')) 
 			{
-				if ($request->getMethod() == TBGRequest::POST)
+				$openid->identity = $request->getRawParameter('openid_identifier');
+				$openid->required = array('contact/email');
+				$openid->optional = array('namePerson/first', 'namePerson/friendly');
+				return $this->forward($openid->authUrl());
+			}
+			elseif ($openid->mode == 'cancel') 
+			{
+				$this->error = TBGContext::getI18n()->__("OpenID authentication cancelled");
+			} 
+			elseif ($openid->mode)
+			{
+				try
+				{
+					if ($openid->validate())
+					{
+						$user = TBGUser::getByOpenID($openid->identity);
+						if ($user instanceof TBGUser)
+						{
+							if (!$user->getEmail())
+							{
+								$attributes = $openid->getAttributes();
+								$user->setEmail($attributes['contact/email']);
+								$user->setOpenIdLocked();
+								$user->setUsername(TBGUser::createPassword() . TBGUser::createPassword());
+								if (array_key_exists('namePerson/first', $attributes)) $user->setRealname($attributes['namePerson/first']);
+								if (array_key_exists('namePerson/friendly', $attributes)) $user->setBuddyname($attributes['namePerson/friendly']);
+
+								if (!$user->getNickname()) $user->setBuddyname($user->getEmail());
+								if (!$user->getRealname()) $user->setRealname($user->getBuddyname());
+
+								$user->save();
+								TBGOpenIdAccountsTable::getTable()->addIdentity($openid->identity, $user->getEmail(), $user->getID());
+
+							}
+							TBGContext::getResponse()->setCookie('tbg3_password', $user->getPassword());
+							TBGContext::getResponse()->setCookie('tbg3_username', $user->getUsername());
+							return $this->forward(TBGContext::getRouting()->generate('account'));
+						}
+						else
+						{
+							$this->error = TBGContext::getI18n()->__("Didn't recognize this OpenID. Please log in using your username and password, associate it with your user account in your account settings and try again.");
+						}
+					}
+					else
+					{
+						$this->error = TBGContext::getI18n()->__("Could not validate against the OpenID provider");
+					}
+				}
+				catch (Exception $e)
+				{
+					throw $e;
+				}
+			}
+			elseif ($request->getMethod() == TBGRequest::POST)
+			{
+				try
 				{
 					if ($request->hasParameter('tbg3_username') && $request->hasParameter('tbg3_password') && $request->getParameter('tbg3_username') != '' && $request->getParameter('tbg3_password') != '')
 					{
@@ -465,14 +518,7 @@
 						{
 							if (TBGSettings::get('returnfromlogin') == 'referer')
 							{
-								if ($request->getParameter('tbg3_referer'))
-								{
-									$forward_url = $request->getParameter('tbg3_referer');
-								}
-								else
-								{
-									$forward_url = TBGContext::getRouting()->generate('dashboard');
-								}
+								$forward_url = $request->getParameter('tbg3_referer', TBGContext::getRouting()->generate('dashboard'));
 							}
 							else
 							{
@@ -485,15 +531,16 @@
 						throw new Exception('Please enter a username and password');
 					}
 				}
-				else
+				catch (Exception $e)
 				{
-					throw new Exception('Please enter a username and password');
+					$this->getResponse()->setHttpStatus(401);
+					return $this->renderJSON(array("error" => $i18n->__($e->getMessage())));
 				}
 			}
-			catch (Exception $e)
+			else
 			{
 				$this->getResponse()->setHttpStatus(401);
-				return $this->renderJSON(array("error" => $i18n->__($e->getMessage())));
+				return $this->renderJSON(array("error" => $i18n->__('Please enter a username and password')));
 			}
 
 			return $this->renderJSON(array('forward' => $forward_url));
@@ -2097,7 +2144,7 @@
 			}
 			else
 			{
-				$this->getResponse()->setHttpStatus(401);
+//				$this->getResponse()->setHttpStatus(401);
 				$this->error = TBGContext::getI18n()->__('You are not allowed to attach files here');
 			}
 			if (!$apc_exists)

@@ -447,11 +447,16 @@
 			// Add classpath for existing old tables used for upgrade
 			TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'installation' . DS . 'classes' . DS . 'upgrade_3.1');
 
+			// Upgrade existing tables
 			TBGProjectsTable::getTable()->upgrade(TBGProjectsTable3dot1::getTable());
 			TBGBuildsTable::getTable()->upgrade(TBGBuildsTable3dot1::getTable());
 			TBGUsersTable::getTable()->upgrade(TBGUsersTable3dot1::getTable());
-			TBGDashboardViewsTable::getTable()->create();
 			
+			// Create new tables
+			TBGDashboardViewsTable::getTable()->create();
+			TBGOpenIdAccountsTable::getTable()->create();
+			
+			// Add new indexes
 			TBGCommentsTable::getTable()->createIndexes();
 			TBGPermissionsTable::getTable()->createIndexes();
 
@@ -503,7 +508,7 @@
 					$this->permissions_ok = true;
 				}
 			}
-			else
+			elseif ($this->upgrade_complete)
 			{
 				$this->forward(TBGContext::getRouting()->generate('home'));
 			}
