@@ -29,8 +29,8 @@
 		const KEY_SETTINGS = '_settings';
 		const KEY_TEXTPARSER_ISSUE_REGEX = 'TBGTextParser::getIssueRegex';
 		
-		protected static $_enabled = true;
-		protected static $_filecache_enabled = true;
+		protected static $_enabled = false;
+		protected static $_filecache_enabled = false;
 		
 		public static function get($key)
 		{

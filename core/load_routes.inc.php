@@ -50,6 +50,7 @@
 	$routes[] = array('upload_status', '/upload/get/status/for/:mode', 'main', 'getUploadStatus');
 	$routes[] = array('upload', '/upload/:mode', 'main', 'upload');
 	$routes[] = array('account_change_password', '/account/change/password/*', 'main', 'accountChangePassword', array(), true);
+	$routes[] = array('account_check_username', '/account/check/username', 'main', 'accountCheckUsername', array(), true);
 	$routes[] = array('account_save_information', '/account/save/information/*', 'main', 'myAccount', array('mode' => 'information'), true);
 	$routes[] = array('account_save_settings', '/account/save/settings/*', 'main', 'myAccount', array('mode' => 'settings'), true);
 	$routes[] = array('account_save_module_settings', '/account/save/module/:target_module/settings/*', 'main', 'myAccount', array('mode' => 'module'), true);
