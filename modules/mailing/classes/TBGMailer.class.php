@@ -139,11 +139,11 @@
 
 			if (!$this->no_dash_f)
 			{
-				$retval = mail($email->getRecipientAddressesAsString(), $email->getSubject(), $email->getBodyAsString(), $email->getHeadersAsString(false), '-f'.$email->getFromAddress());
+				$retval = mb_send_mail($email->getRecipientAddressesAsString(), $email->getSubject(), $email->getBodyAsString(), $email->getHeadersAsString(false), '-f'.$email->getFromAddress());
 			}
 			else
 			{
-				$retval = mail($email->getRecipientAddressesAsString(), $email->getSubject(), $email->getBodyAsString(), $email->getHeadersAsString(false));
+				$retval = mb_send_mail($email->getRecipientAddressesAsString(), $email->getSubject(), $email->getBodyAsString(), $email->getHeadersAsString(false));
 			}
 			if ($retval)
 			{
@@ -187,6 +187,14 @@
 
 		protected function _mail2(TBGMimemail $email)
 		{
+			if (TBGContext::isCLI())
+			{
+				$server = php_uname('n');
+			}
+			else
+			{
+				$server = $_SERVER['SERVER_NAME'];
+			}
 
 			/* Open a socket connection to the mail server SMTP port (25) and read the welcome message. */
 			$fp = fsockopen($this->server, $this->port, $errno, $errstr, $this->timeout);
@@ -196,19 +204,19 @@
 				{
 					echo("No server? $errno $errstr<br>");
 				}
-				throw new Exception(TBGContext::getI18n()->__('Could not open connection to server %server on port %port%', array('server' => $this->server, 'port' => $this->port)));
+				throw new Exception(TBGContext::getI18n()->__('Could not open connection to server %server on port %port%', array('%server%' => $this->server, '%port%' => $this->port)));
 			}
 			$this->_read_buffer($fp, 'open');
 
 			/* Standard "ehlo" message. */
 			if ($this->ehlo)
 			{
-				fputs($fp, "ehlo {$_SERVER['SERVER_NAME']}\r\n");
+				fputs($fp, "ehlo {$server}\r\n");
 				$this->_read_buffer($fp, 'ehlo');
 			}
 			else /* MS Exchange "helo" message. */
 			{
-				fputs($fp, "helo {$_SERVER['SERVER_NAME']}\r\n");
+				fputs($fp, "helo {$server}\r\n");
 				$this->_read_buffer($fp, 'helo');
 			}
 
@@ -219,13 +227,13 @@
 				$rv = fgets($fp, 4096);
 				if ($this->debug)
 				{
-					echo(base64_decode(substr($rv,4)) . $this->username . ' ' . $rv . '<br>');
+					echo(base64_decode(mb_substr($rv,4)) . $this->username . ' ' . $rv . '<br>');
 				}
 				fputs($fp,base64_encode($this->username) . "\r\n");
 				$rv = fgets($fp, 4096);
 				if ($this->debug)
 				{
-					echo(base64_decode(substr($rv,4)) . $this->password . ' ' . $rv . '<br>');
+					echo(base64_decode(mb_substr($rv,4)) . $this->password . ' ' . $rv . '<br>');
 				}
 				fputs($fp,base64_encode($this->password) . "\r\n");
 				$rv = $this->_read_buffer($fp, 'user/pass');
@@ -236,7 +244,7 @@
 					{
 						echo 'Not ready to authenticate. ('.$rv.') Try changing server type';
 					}
-					throw new Exception(TBGContext::getI18n()->__('Not ready to authenticate. (%rv%) Try changing server type', array('rv' => $rv)));
+					throw new Exception(TBGContext::getI18n()->__('Not ready to authenticate. (%rv%) Try changing server type', array('%rv%' => $rv)));
 				}
 
 				if (!preg_match("/^235/i",$rv))
@@ -246,7 +254,7 @@
 						echo('Username / password not accepted on server<br>');
 					}
 					fclose($fp);
-					throw new Exception(TBGContext::getI18n()->__('Username / password not accepted on server: %rv%', array('rv' => $rv)));
+					throw new Exception(TBGContext::getI18n()->__('Username / password not accepted on server: %rv%', array('%rv%' => $rv)));
 				}
 			}
 
@@ -267,7 +275,7 @@
 				{
 					echo "You are not allowed to send emails through this server.";
 				}
-				throw new Exception(TBGContext::getI18n()->__("You are not allowed to send emails through this server. \nThe error was: %rv%", array('rv' => $rv)));
+				throw new Exception(TBGContext::getI18n()->__("You are not allowed to send emails through this server. \nThe error was: %rv%", array('%rv%' => $rv)));
 			}
 
 			foreach ($email->getCC() as $cc)
@@ -310,7 +318,7 @@
 				{
 					echo "Did not receive a confirmation message from the mail server.";
 				}
-				throw new Exception(TBGContext::getI18n()->__("Did not receive a confirmation message from the mail server.. \nHowever, we received: %rv%", array('rv' => $rv)));
+				throw new Exception(TBGContext::getI18n()->__("Did not receive a confirmation message from the mail server.. \nHowever, we received: %rv%", array('%rv%' => $rv)));
 			}
 
 		}

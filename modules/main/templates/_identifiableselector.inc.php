@@ -1,5 +1,5 @@
 <div class="rounded_box white<?php if (isset($absolute) && $absolute): ?> shadowed<?php endif; ?><?php if (isset($classes)): echo ' '.$classes; endif; ?>" id="<?php echo $html_id; ?>" style="<?php if (isset($absolute) && $absolute): ?>position: absolute;<?php else: ?>margin: 5px 0 5px 0; clear: both;<?php endif; ?> display: none; width: 324px; z-index: 10001; <?php if (isset($style)): foreach ($style as $key => $val): echo ' ' . $key . ': ' . $val . ';'; endforeach; endif; ?>">
-	<form id="<?php echo $base_id; ?>_form" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" method="post" action="" onsubmit="findIdentifiable('<?php echo make_url('main_find_identifiable'); ?>', '<?php echo $base_id; ?>');return false;">
+	<form id="<?php echo $base_id; ?>_form" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" method="post" action="" onsubmit="TBG.Main.findIdentifiable('<?php echo make_url('main_find_identifiable'); ?>', '<?php echo $base_id; ?>');return false;">
 		<div class="dropdown_header"><?php echo $header; ?></div>
 		<?php if ($allow_clear): ?>
 			<div class="dropdown_content">
@@ -30,7 +30,7 @@
 		<?php if (count($tbg_user->getFriends()) == 0): ?>
 			<span class="faded_out"><?php echo __("Your friends will appear here"); ?></span><br>
 		<?php else: ?>
-			<?php include_component('identifiableselectorresults', array('users' => $tbg_user->getFriends(), 'callback' => $callback, 'team_callback' => ((isset($team_callback)) ? $team_callback : null))); ?>
+			<?php include_component('main/identifiableselectorresults', array('users' => $tbg_user->getFriends(), 'callback' => $callback, 'team_callback' => ((isset($team_callback)) ? $team_callback : null))); ?>
 		<?php endif; ?>
 		<?php if (count($tbg_user->getTeams()) > 0): ?>
 		<br>

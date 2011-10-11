@@ -1,8 +1,8 @@
 <?php if ($issue instanceof TBGIssue && $issue->isEditable()): ?>
 	<?php if ($issue->canEditAffectedComponents() || $issue->canEditAffectedBuilds() || $issue->canEditAffectedEditions()): ?>
-		<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px; float: left;" id="affected_add_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'issue_add_item', 'issue_id' => $issue->getID())); ?>');" value="<?php echo __('Add an item'); ?>" value="<?php echo __('Add an item'); ?>"></td></tr></table>
+		<button id="affected_add_button" class="button button-green" style="margin: 5px; float: left; margin-left: 0;" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'issue_add_item', 'issue_id' => $issue->getID())); ?>');"><?php echo __('Add an item'); ?></button>
 	<?php else: ?>
-		<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px; float: left;" id="affected_add_button"><tr><td class="nice_button disabled" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="failedMessage('<?php echo __('You are not allowed to add an item to this list'); ?>');" value="<?php echo __('Add an item'); ?>"></td></tr></table>
+		<button id="affected_add_button" class="button button-green disabled" style="margin: 5px; float: left; margin-left: 0;" onclick="TBG.Main.Helpers.Message.error('<?php echo __('You are not allowed to add an item to this list'); ?>');"><?php echo __('Add an item'); ?></button>
 	<?php endif; ?>
 	<br>
 <?php endif; ?>

@@ -1,5 +1,5 @@
 <div id="tab_<?php echo $id ?>_pane"<?php if ($default_displayed !== true): ?> style="display: none;"<?php endif;?>>
-	<?php echo $link; ?>
+	<?php if (isset($link)): echo $link; endif; ?>
 	<?php if (count($issues) > 0): ?>
 		<table cellpadding=0 cellspacing=0 class="recent_activities" style="margin-top: 5px;">
 		<?php foreach ($issues as $issue): ?>

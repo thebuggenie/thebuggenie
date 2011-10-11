@@ -9,6 +9,6 @@ class B2DB
 
 	public function getByID($id)
 	{
-		return new B2DBRow();
+		return new \b2db\Row();
 	}
 }

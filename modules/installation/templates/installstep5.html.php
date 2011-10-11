@@ -4,7 +4,7 @@
 		<div class="error"><?php echo nl2br($error); ?></div>
 		<h2>An error occured</h2>
 		<div style="font-size: 13px;">An error occured and the installation has been stopped. Please try to fix the error based on the information above, then click back, and try again.<br>
-		If you think this is a bug, please report it in our <a href="http://b2.thebuggenie.com" target="_new">online bug tracker</a>.</div>
+		If you think this is a bug, please report it in our <a href="http://thebuggenie.com/thebuggenie" target="_new">online bug tracker</a>.</div>
 	</div>
 <?php else: ?>
 	<div class="installation_box">
@@ -25,7 +25,7 @@
 		<form accept-charset="utf-8" action="index.php" method="post" id="finalize_settings">
 			<input type="hidden" name="step" value="6">
 			<div style="padding-top: 20px; clear: both; text-align: center;">
-				<img src="themes/oxygen/spinning_30.gif" id="next_indicator" style="display: none;">
+				<img src="iconsets/oxygen/spinning_30.gif" id="next_indicator" style="display: none;">
 				<input type="submit" id="continue_button" style="clear: both; font-size: 17px; margin-top: 10px; padding: 10px; height: 40px;" onclick="$('continue_button').hide();$('next_indicator').show();" value="Finalize installation">
 			</div>
 		</form>

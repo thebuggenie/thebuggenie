@@ -90,17 +90,17 @@
 		
 		public function __call($method, $parameters = null)
 		{
-			if (strpos($method, 'is') == 0 && strpos($method, 'Changed') == strlen($method) - 7)
+			if (mb_strpos($method, 'is') == 0 && mb_strpos($method, 'Changed') == mb_strlen($method) - 7)
 			{
-				return $this->_isPropertyChanged('_' . strtolower(substr($method, 2, strlen($method) - 9)));
+				return $this->_isPropertyChanged('_' . mb_strtolower(mb_substr($method, 2, mb_strlen($method) - 9)));
 			}
-			if (strpos($method, 'is') == 0 && strpos($method, 'Merged') == strlen($method) - 6)
+			if (mb_strpos($method, 'is') == 0 && mb_strpos($method, 'Merged') == mb_strlen($method) - 6)
 			{
-				return $this->_isPropertyMerged('_' . strtolower(substr($method, 2, strlen($method) - 8)));
+				return $this->_isPropertyMerged('_' . mb_strtolower(mb_substr($method, 2, mb_strlen($method) - 8)));
 			}
-			elseif (strpos($method, 'revert') == 0)
+			elseif (mb_strpos($method, 'revert') == 0)
 			{
-				return $this->_revertPropertyChange('_' . strtolower(substr($method, 6)));
+				return $this->_revertPropertyChange('_' . mb_strtolower(mb_substr($method, 6)));
 			}
 		}
 		

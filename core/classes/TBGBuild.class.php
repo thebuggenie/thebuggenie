@@ -38,6 +38,14 @@
 		protected $_project = null;
 		
 		/**
+		 * This builds milestone, if any
+		 *
+		 * @var TBGMilestone
+		 * @Class TBGMilestone
+		 */
+		protected $_milestone = null;
+		
+		/**
 		 * Whether this build is released or not
 		 * 
 		 * @var boolean
@@ -45,11 +53,33 @@
 		protected $_isreleased = null;
 		
 		/**
+		 * Whether this build is active or not
+		 * 
+		 * @var boolean
+		 */
+		protected $_isactive = null;
+		
+		/**
 		 * The builds release date
 		 * 
 		 * @var integer
 		 */
 		protected $_release_date = null;
+		
+		/**
+		 * An attached file, if exists
+		 * 
+		 * @var TBGFile
+		 * @Class TBGFile
+		 */
+		protected $_file_id = null;
+		
+		/**
+		 * An url to download this releases file, if any
+		 * 
+		 * @var string
+		 */
+		protected $_file_url = null;
 		
 		/**
 		 * Project builds cache
@@ -81,7 +111,7 @@
 			if (!array_key_exists($project_id, self::$_project_builds))
 			{
 				self::$_project_builds[$project_id] = array();
-				if ($res = B2DB::getTable('TBGBuildsTable')->getByProjectID($project_id))
+				if ($res = \b2db\Core::getTable('TBGBuildsTable')->getByProjectID($project_id))
 				{
 					while ($row = $res->getNextRow())
 					{
@@ -109,7 +139,7 @@
 			if (!array_key_exists($edition_id, self::$_edition_builds))
 			{
 				self::$_edition_builds[$edition_id] = array();
-				if ($res = B2DB::getTable('TBGBuildsTable')->getByEditionID($project_id))
+				if ($res = \b2db\Core::getTable('TBGBuildsTable')->getByEditionID($project_id))
 				{
 					$build = TBGContext::factory()->TBGBuild($row->get(TBGBuildsTable::ID), $row);
 					self::$_edition_builds[$edition_id][$build->getID()] = $build;
@@ -121,9 +151,9 @@
 		/**
 		 * Class constructor
 		 *
-		 * @param B2DBRow $row
+		 * @param \b2db\Row $row
 		 */
-		public function _construct(B2DBRow $row, $foreign_key = null)
+		public function _construct(\b2db\Row $row, $foreign_key = null)
 		{
 			try
 			{
@@ -167,6 +197,11 @@
 		{
 			return $this->_edition;
 		}
+		
+		public function getEditionID()
+		{
+			return ($this->getEdition() instanceof TBGEdition) ? $this->getEdition()->getID() : 0;
+		}
 
 		public function setEdition(TBGEdition $edition)
 		{
@@ -186,6 +221,31 @@
 		public function setProject(TBGProject $project)
 		{
 			$this->_project = $project;
+		}
+		
+		/**
+		 * Returns the milestone
+		 *
+		 * @return TBGMilestone
+		 */
+		public function getMilestone()
+		{
+			return $this->_getPopulatedObjectFromProperty('_milestone');
+		}
+
+		public function setMilestone(TBGMilestone $milestone)
+		{
+			$this->_milestone = $milestone;
+		}
+		
+		public function clearMilestone()
+		{
+			$this->_milestone = null;
+		}
+		
+		public function clearEdition()
+		{
+			$this->_edition = null;
 		}
 		
 		/**
@@ -225,13 +285,13 @@
 		{
 			if ($this->isEditionBuild())
 			{
-				B2DB::getTable('TBGBuildsTable')->clearDefaultsByEditionID($this->getParent()->getID());
+				\b2db\Core::getTable('TBGBuildsTable')->clearDefaultsByEditionID($this->getParent()->getID());
 			}
 			else
 			{
-				B2DB::getTable('TBGBuildsTable')->clearDefaultsByProjectID($this->getParent()->getID());
+				\b2db\Core::getTable('TBGBuildsTable')->clearDefaultsByProjectID($this->getParent()->getID());
 			}
-			$res = B2DB::getTable('TBGBuildsTable')->setDefaultBuild($this->getID());
+			$res = \b2db\Core::getTable('TBGBuildsTable')->setDefaultBuild($this->getID());
 			$this->_isdefault = true;
 		}
 		
@@ -240,7 +300,7 @@
 		 */
 		protected function _preDelete()
 		{
-			B2DB::getTable('TBGIssueAffectsBuildTable')->deleteByBuildID($this->getID());
+			\b2db\Core::getTable('TBGIssueAffectsBuildTable')->deleteByBuildID($this->getID());
 		}
 		
 		/**
@@ -257,7 +317,7 @@
 		{
 			if ($this->isEditionBuild())
 			{
-				$res = B2DB::getTable('TBGIssueAffectsEditionTable')->getOpenAffectedIssuesByEditionID($this->getParent()->getID(), $limit_status, $limit_category, $limit_issuetype);
+				$res = \b2db\Core::getTable('TBGIssueAffectsEditionTable')->getOpenAffectedIssuesByEditionID($this->getParent()->getID(), $limit_status, $limit_category, $limit_issuetype);
 			}
 			else
 			{
@@ -270,7 +330,7 @@
 				while ($row = $res->getNextRow())
 				{
 					$issue_id = $row->get(TBGIssuesTable::ID);
-					if (B2DB::getTable('TBGIssueAffectsBuildTable')->setIssueAffected($issue_id, $this->getID()))
+					if (\b2db\Core::getTable('TBGIssueAffectsBuildTable')->setIssueAffected($issue_id, $this->getID()))
 					{
 						$retval = true;
 					}
@@ -287,6 +347,91 @@
 		public function hasAccess()
 		{
 			return (($this->getProject() instanceof TBGProject && $this->getProject()->canSeeAllBuilds()) || TBGContext::getUser()->hasPermission('canseebuild', $this->getID()));
+		}
+
+		/**
+		 * Return the file associated with this build, if any
+		 * 
+		 * @return TBGFile
+		 */
+		public function getFile()
+		{
+			return $this->_getPopulatedObjectFromProperty('_file_id');
+		}
+		
+		/**
+		 * Set the file associated with this build
+		 * 
+		 * @param TBGFile $file 
+		 */
+		public function setFile(TBGFile $file)
+		{
+			$this->_file_id = $file;
+		}
+		
+		public function clearFile()
+		{
+			$this->_file_id = null;
+		}
+		
+		/**
+		 * Return whether this build has a file associated to it
+		 * 
+		 * @return boolean
+		 */
+		public function hasFile()
+		{
+			return (bool) ($this->getFile() instanceof TBGFile);
+		}
+		
+		/**
+		 * Return the file download url for this build
+		 * 
+		 * @return string
+		 */
+		public function getFileURL()
+		{
+			return $this->_file_url;
+		}
+		
+		/**
+		 * Set the file download url for this build
+		 * 
+		 * @param string $file_url 
+		 */
+		public function setFileURL($file_url)
+		{
+			$this->_file_url = $file_url;
+		}
+		
+		/**
+		 * Return whether this build has a file url
+		 * 
+		 * @return boolean
+		 */
+		public function hasFileURL()
+		{
+			return (bool) ($this->_file_url != '');
+		}
+		
+		/**
+		 * Whether this build has any download associated with it
+		 * 
+		 * @return boolean
+		 */
+		public function hasDownload()
+		{
+			return (bool) ($this->getFile() instanceof TBGFile || $this->_file_url != '');
+		}
+		
+		public function isArchived()
+		{
+			return $this->isLocked();
+		}
+		
+		public function isActive()
+		{
+			return !$this->isLocked();
 		}
 		
 	}

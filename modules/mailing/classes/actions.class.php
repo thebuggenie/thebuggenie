@@ -48,23 +48,11 @@
 			}
 			catch (Exception $e)
 			{
-				return $this->renderJSON(array('failed' => true, 'error' => $e->getMessage()));
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('error' => $e->getMessage()));
 			}
 		}
 
-		/**
-		 * Reset user password
-		 * 
-		 * @param TBGRequest $request
-		 */
-		public function runResetPassword(TBGRequest $request)
-		{
-			$this->user = TBGUser::getByUsername(str_replace('%2E', '.', $request->getParameter('user')));
-			$this->username = $request->getParameter('user');
-			$this->id = $request->getParameter('reset_hash');
-			$this->forward403unless($this->user instanceof TBGUser && $this->id == $this->user->getHashPassword(), 'Invalid password reset request');
-		}
-		
 		/**
 		 * Send a test email
 		 *
@@ -97,6 +85,66 @@
 				TBGContext::setMessage('module_error', TBGContext::getI18n()->__('Please specify an email address'));
 			}
 			$this->forward(TBGContext::getRouting()->generate('configure_module', array('config_module' => 'mailing')));
+		}
+		
+		public function runSaveIncomingAccount(TBGRequest $request)
+		{
+			$project = null;
+			if ($project_key = $request->getParameter('project_key'))
+			{
+				try
+				{
+					$project = TBGProject::getByKey($project_key);
+				}
+				catch (Exception $e) {}
+			}
+			if ($project instanceof TBGProject)
+			{
+				$account_id = $request->getParameter('account_id');
+				$account = new TBGIncomingEmailAccount($account_id);
+				$account->setIssuetype((integer) $request->getParameter('issuetype'));
+				$account->setProject($project);
+				$account->setPort((integer) $request->getParameter('port'));
+				$account->setName($request->getParameter('name'));
+				$account->setServer($request->getParameter('servername'));
+				$account->setUsername($request->getParameter('username'));
+				$account->setPassword($request->getParameter('password'));
+				$account->setSSL((boolean) $request->getParameter('ssl'));
+				$account->setServerType((integer) $request->getParameter('account_type'));
+				$account->save();
+				
+				if (!$account_id)
+				{
+					return $this->renderTemplate('mailing/incomingemailaccount', array('project' => $project, 'account' => $account));
+				}
+				else
+				{
+					return $this->renderJSON(array('name' => $account->getName()));
+				}
+			}
+		}
+		
+		public function runCheckIncomingAccount(TBGRequest $request)
+		{
+			TBGContext::loadLibrary('common');
+			if ($account_id = $request->getParameter('account_id'))
+			{
+				$account = new TBGIncomingEmailAccount($account_id);
+				TBGContext::getModule('mailing')->processIncomingEmailAccount($account);
+				
+				return $this->renderJSON(array('account_id' => $account->getID(), 'time' => tbg_formatTime($account->getTimeLastFetched(), 6), 'count' => $account->getNumberOfEmailsLastFetched()));
+			}
+		}
+		
+		public function runDeleteIncomingAccount(TBGRequest $request)
+		{
+			if ($account_id = $request->getParameter('account_id'))
+			{
+				$account = new TBGIncomingEmailAccount($account_id);
+				$account->delete();
+				
+				return $this->renderText('ok');
+			}
 		}
 
 	}

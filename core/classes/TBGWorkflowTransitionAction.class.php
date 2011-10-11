@@ -22,6 +22,8 @@
 		const ACTION_ASSIGN_ISSUE_SELF = 'assign_self';
 		const ACTION_ASSIGN_ISSUE = 'assign_user';
 		const ACTION_CLEAR_ASSIGNEE = 'clear_assignee';
+		const ACTION_SET_DUPLICATE = 'set_duplicate';
+		const ACTION_CLEAR_DUPLICATE = 'clear_duplicate';
 		const ACTION_SET_RESOLUTION = 'set_resolution';
 		const ACTION_CLEAR_RESOLUTION = 'clear_resolution';
 		const ACTION_SET_STATUS = 'set_status';
@@ -158,6 +160,12 @@
 						$issue->setPercentCompleted((int) $this->getTargetValue());
 					else
 						$issue->setPercentCompleted((int) $request->getParameter('percent_complete_id'));
+					break;
+				case self::ACTION_CLEAR_DUPLICATE:
+					$issue->setDuplicateOf(null);
+					break;
+				case self::ACTION_SET_DUPLICATE:
+					$issue->setDuplicateOf($request->getParameter('duplicate_issue_id'));
 					break;
 				case self::ACTION_CLEAR_RESOLUTION:
 					$issue->setResolution(null);

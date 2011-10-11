@@ -76,7 +76,7 @@
 				$key = str_replace(' ', '', mb_strtolower($transition));
 				foreach ($response as $available_transition)
 				{
-					if (strpos(str_replace(' ', '', mb_strtolower($available_transition->name)), $key) !== false)
+					if (mb_strpos(str_replace(' ', '', mb_strtolower($available_transition->name)), $key) !== false)
 					{
 						$color = ($available_transition->template) ? 'yellow' : 'cyan';
 						$this->cliEcho($available_transition->name . ": ", $color, 'bold');

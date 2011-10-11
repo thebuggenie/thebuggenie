@@ -2,7 +2,7 @@
 		<table style="width: 100%;">
 			<tr>
 				<td><label for="username_<?php echo $user->getID(); ?>"><?php echo __('Username'); ?></label></td>
-				<td><input type="text" name="username" id="username_<?php echo $user->getID(); ?>" style="width: 120px;" value="<?php echo $user->getUsername(); ?>"></td>
+				<td><?php if (TBGSettings::isUsingExternalAuthenticationBackend()): echo $user->getUsername(); else: ?><input type="text" name="username" id="username_<?php echo $user->getID(); ?>" style="width: 120px;" value="<?php echo $user->getUsername(); ?>"><?php endif; ?></td>
 				<td><label for="activated_<?php echo $user->getID(); ?>_yes"><?php echo __('Activated'); ?></label></td>
 				<td valign="middle">
 					<input type="radio" name="activated" id="activated_<?php echo $user->getID(); ?>_yes" value="1"<?php if ($user->isActivated()): ?> checked<?php endif; ?>>
@@ -13,7 +13,7 @@
 			</tr>
 			<tr>
 				<td><label for="realname_<?php echo $user->getID(); ?>"><?php echo __('Real name'); ?></label></td>
-				<td><input type="text" name="realname" id="realname_<?php echo $user->getID(); ?>" style="width: 220px;" value="<?php echo $user->getRealname(); ?>"></td>
+				<td><?php if (TBGSettings::isUsingExternalAuthenticationBackend()): if ($user->getRealname() == null): echo '-'; else: echo $user->getRealname(); endif; else: ?><input type="text" name="realname" id="realname_<?php echo $user->getID(); ?>" style="width: 220px;" value="<?php echo $user->getRealname(); ?>"><?php endif; ?></td>
 				<td><label for="enabled_<?php echo $user->getID(); ?>_yes"><?php echo __('Enabled'); ?></label></td>
 				<td valign="middle">
 					<input type="radio" name="enabled" id="enabled_<?php echo $user->getID(); ?>_yes" value="1"<?php if ($user->isEnabled()): ?> checked<?php endif; ?>>
@@ -24,11 +24,11 @@
 			</tr>
 			<tr>
 				<td><label for="buddyname_<?php echo $user->getID(); ?>"><?php echo __('Nickname'); ?></label></td>
-				<td colspan="3"><input type="text" name="nickname" id="nickname_<?php echo $user->getID(); ?>" style="width: 220px;" value="<?php echo $user->getNickname(); ?>"></td>
+				<td colspan="3"><?php if (TBGSettings::isUsingExternalAuthenticationBackend()): if ($user->getNickname() == null): echo '-'; else: echo $user->getNickname(); endif; else: ?><input type="text" name="nickname" id="nickname_<?php echo $user->getID(); ?>" style="width: 220px;" value="<?php echo $user->getNickname(); ?>"><?php endif; ?></td>
 			</tr>
 			<tr>
 				<td><label for="email_<?php echo $user->getID(); ?>"><?php echo __('Email address'); ?></label></td>
-				<td><input type="text" name="email" id="email_<?php echo $user->getID(); ?>" style="width: 220px;" value="<?php echo $user->getEmail(); ?>"></td>
+				<td><?php if (TBGSettings::isUsingExternalAuthenticationBackend()): if ($user->getEmail() == null): echo '-'; else: echo $user->getEmail(); endif; else: ?><input type="text" name="email" id="email_<?php echo $user->getID(); ?>" style="width: 220px;" value="<?php echo $user->getEmail(); ?>"><?php endif; ?></td>
 				<td><label for="user_<?php echo $user->getID(); ?>_group"><?php echo __('In group'); ?></label></td>
 				<td>
 					<select name="group" id="user_<?php echo $user->getID(); ?>_group">
@@ -44,25 +44,41 @@
 			</tr>
 			<tr>
 				<td style="vertical-align: top; padding-top: 4px; padding-top: 15px;" colspan="4">
+					<?php if (TBGSettings::isUsingExternalAuthenticationBackend()): ?>
+						<?php echo __('The password setting, along with a number of other settings for this user, have been disabled due to use of an alternative authentictation mechanism'); ?>
+					<?php else: ?>
 					<input onchange="if($(this).checked) { $('new_password_<?php echo $user->getID(); ?>_1').disable(); $('new_password_<?php echo $user->getID(); ?>_2').disable(); }" type="radio" name="password_action" value="leave" id="password_<?php echo $user->getID(); ?>_leave" checked><label for="password_<?php echo $user->getID(); ?>_leave"><?php echo __("Don't change the password"); ?></label>
 					<input onchange="if($(this).checked) { $('new_password_<?php echo $user->getID(); ?>_1').enable(); $('new_password_<?php echo $user->getID(); ?>_2').enable(); }" type="radio" name="password_action" value="change" id="password_<?php echo $user->getID(); ?>_change"><label for="password_<?php echo $user->getID(); ?>_change"><?php echo __("Input new password"); ?></label>
 					<input onchange="if($(this).checked) { $('new_password_<?php echo $user->getID(); ?>_1').disable(); $('new_password_<?php echo $user->getID(); ?>_2').disable(); }" type="radio" name="password_action" value="random" id="password_<?php echo $user->getID(); ?>_random"><label for="password_<?php echo $user->getID(); ?>_random"><?php echo __("Generate random new password"); ?></label>
+					<?php endif; ?>
 				</td>
 			</tr>
 			<tr>
+				<?php if (TBGSettings::isUsingExternalAuthenticationBackend()): ?>
+				<td colspan="2">
+				</td>
+				<?php else: ?>
 				<td style="vertical-align: top; padding-top: 4px;"><label for="new_password_<?php echo $user->getID(); ?>_1"><?php echo __('New password'); ?></label></td>
 				<td style="vertical-align: top;" colspan="3"><input type="password" name="new_password_1" id="new_password_<?php echo $user->getID(); ?>_1" style="width: 250px;" value="" disabled></td>
+				<?php endif; ?>
 			</tr>
 			<tr>
+				<?php if (TBGSettings::isUsingExternalAuthenticationBackend()): ?>
+				<td colspan="2">
+				</td>
+				<?php else: ?>
 				<td style="vertical-align: top; padding-top: 4px;"><label for="new_password_<?php echo $user->getID(); ?>_2"><?php echo __('Repeat password'); ?></label></td>
 				<td style="vertical-align: top;" colspan="3"><input type="password" name="new_password_2" id="new_password_<?php echo $user->getID(); ?>_2" style="width: 250px;" value="" disabled></td>
+				<?php endif; ?>
 			</tr>
 			<tr>
 				<td style="vertical-align: top; padding-top: 4px;"><label><?php echo __('Member of team(s)'); ?></label></td>
 				<td colspan="3">
 					<?php foreach (TBGTeam::getAll() as $team): ?>
-						<input type="checkbox" name="teams[<?php echo $team->getID(); ?>]" id="team_<?php echo $user->getID(); ?>_<?php echo $team->getID(); ?>" value="<?php echo $team->getID(); ?>"<?php if ($user->isMemberOfTeam($team)): ?> checked<?php endif; ?>>
-						<label for="team_<?php echo $user->getID(); ?>_<?php echo $team->getID(); ?>" style="font-weight: normal;"><?php echo $team->getName(); ?></label>&nbsp;&nbsp;
+						<div>
+							<input type="checkbox" name="teams[<?php echo $team->getID(); ?>]" id="team_<?php echo $user->getID(); ?>_<?php echo $team->getID(); ?>" value="<?php echo $team->getID(); ?>"<?php if ($user->isMemberOfTeam($team)): ?> checked<?php endif; ?>>
+							<label for="team_<?php echo $user->getID(); ?>_<?php echo $team->getID(); ?>" style="font-weight: normal;"><?php echo $team->getName(); ?></label>&nbsp;&nbsp;
+						</div>
 					<?php endforeach; ?>
 					<?php if (count(TBGTeam::getAll()) == 0): ?>
 						<?php echo __('No teams exist'); ?>
@@ -73,8 +89,10 @@
 				<td style="vertical-align: top; padding-top: 4px;"><label><?php echo __('Member of client(s)'); ?></label></td>
 				<td colspan="3">
 					<?php foreach (TBGClient::getAll() as $client): ?>
-						<input type="checkbox" name="clients[<?php echo $client->getID(); ?>]" id="client_<?php echo $user->getID(); ?>_<?php echo $client->getID(); ?>" value="<?php echo $client->getID(); ?>"<?php if ($user->isMemberOfClient($client)): ?> checked<?php endif; ?>>
-						<label for="client_<?php echo $user->getID(); ?>_<?php echo $client->getID(); ?>" style="font-weight: normal;"><?php echo $client->getName(); ?></label>&nbsp;&nbsp;
+						<div>
+							<input type="checkbox" name="clients[<?php echo $client->getID(); ?>]" id="client_<?php echo $user->getID(); ?>_<?php echo $client->getID(); ?>" value="<?php echo $client->getID(); ?>"<?php if ($user->isMemberOfClient($client)): ?> checked<?php endif; ?>>
+							<label for="client_<?php echo $user->getID(); ?>_<?php echo $client->getID(); ?>" style="font-weight: normal;"><?php echo $client->getName(); ?></label>&nbsp;&nbsp;
+						</div>
 					<?php endforeach; ?>
 					<?php if (count(TBGClient::getAll()) == 0): ?>
 						<?php echo __('No clients exist'); ?>
@@ -83,7 +101,7 @@
 			</tr>
 			<tr>
 				<td colspan="4" style="text-align: right; font-size: 13px; padding-top: 10px;">
-					<div style="padding: 10px 0 10px 0; display: none;" id="edit_user_<?php echo $user->getID(); ?>_indicator"><span style="float: left;"><?php echo image_tag('spinning_16.gif'); ?></span>&nbsp;<?php echo __('Please wait'); ?></div>
+					<div style="padding: 10px 0 10px 0; display: none;" id="edit_user_<?php echo $user->getID(); ?>_indicator"><span style="float: left;"><?php echo image_tag('spinning_16.gif'); ?>&nbsp;<?php echo __('Please wait'); ?></span></div>
 					<input type="submit" value="<?php echo __('Update user'); ?>" style="font-size: 13px; font-weight: bold;">
 					<?php echo __('or %cancel%', array('%cancel%' => javascript_link_tag('<b>'.__('cancel').'</b>', array('onclick' => "$('user_".$user->getID()."_edit_tr').hide();$('users_results_user_".$user->getID()."').toggle();$('users_results_user_".$user->getID()."').removeClassName('selected_green');")))); ?>
 				</td>

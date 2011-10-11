@@ -138,9 +138,9 @@
 					{
 						$this->cliEcho("The Bug Genie uses a database to store information. To be able to connect\nto your database, The Bug Genie needs some information, such as\ndatabase type, username, password, etc.\n\n");
 						$this->cliEcho("Please select what kind of database you are installing The Bug Genie on:\n");
-						B2DB::setHTMLException(false);
+						\b2db\Core::setHTMLException(false);
 						$db_types = array();
-						foreach (B2DB::getDBtypes() as $db_type => $db_desc)
+						foreach (\b2db\Core::getDBtypes() as $db_type => $db_desc)
 						{
 							$db_types[] = $db_type;
 							$this->cliEcho(count($db_types) . ': ' . $db_desc . "\n", 'white', 'bold');
@@ -187,41 +187,41 @@
 						while (!$e_ok);
 						try
 						{
-							B2DB::setHost($db_hostname);
-							B2DB::setUname($db_username);
-							B2DB::setPasswd($db_password);
-							B2DB::setDBtype($db_type);
-							B2DB::initialize();
-							$engine_path = B2DB::getEngineClassPath();
+							\b2db\Core::setHost($db_hostname);
+							\b2db\Core::setUname($db_username);
+							\b2db\Core::setPasswd($db_password);
+							\b2db\Core::setDBtype($db_type);
+							\b2db\Core::initialize();
+							$engine_path = \b2db\Core::getEngineClassPath();
 							if ($engine_path !== null)
-								TBGContext::addClasspath($engine_path);
+								TBGContext::addAutoloaderClassPath($engine_path);
 							else
 								throw new Exception("Cannot initialize the B2DB engine");
 
-							B2DB::doConnect();
-							B2DB::createDatabase($db_name);
-							B2DB::setDBname($db_name);
-							B2DB::doConnect();
+							\b2db\Core::doConnect();
+							\b2db\Core::createDatabase($db_name);
+							\b2db\Core::setDBname($db_name);
+							\b2db\Core::doConnect();
 						}
 						catch (Exception $e)
 						{
 							throw new Exception("Could not connect to the database:\n" . $e->getMessage());
 						}
-						B2DB::setDBname($db_name);
-						B2DB::doSelectDB();
+						\b2db\Core::setDBname($db_name);
+						\b2db\Core::doSelectDB();
 						$this->cliEcho("\nSuccessfully connected to the database.\n", 'green');
 						$this->cliEcho("Press ENTER to continue ... ");
 						$this->pressEnterToContinue();
 						$this->cliEcho("\n");
 						$this->cliEcho("Saving database connection information ... ", 'white', 'bold');
 						$this->cliEcho("\n");
-						B2DB::saveConnectionParameters(THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php');
+						\b2db\Core::saveConnectionParameters(THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php');
 						$this->cliEcho("Successfully saved database connection information.\n", 'green');
 						$this->cliEcho("\n");
 					}
 					else
 					{
-						B2DB::initialize(THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php');
+						\b2db\Core::initialize(THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php');
 						$this->cliEcho("Successfully connected to the database.\n", 'green');
 						if ($this->getProvidedArgument('use_existing_db_info') != 'yes')
 						{
@@ -353,14 +353,14 @@
 					$this->cliEcho("\n");
 					$this->cliEcho("Creating tables ...\n", 'white', 'bold');
 					$tables_path = THEBUGGENIE_CORE_PATH . 'classes' . DIRECTORY_SEPARATOR . 'B2DB' . DIRECTORY_SEPARATOR;
-					TBGContext::addClasspath($tables_path);
+					TBGContext::addAutoloaderClassPath($tables_path);
 					$tables_path_handle = opendir($tables_path);
 					$tables_created = array();
 					while ($table_class_file = readdir($tables_path_handle))
 					{
-						if (($tablename = substr($table_class_file, 0, strpos($table_class_file, '.'))) != '')
+						if (($tablename = mb_substr($table_class_file, 0, mb_strpos($table_class_file, '.'))) != '')
 						{
-							B2DB::getTable($tablename)->create();
+							\b2db\Core::getTable($tablename)->create();
 							$this->cliEcho("Creating table {$tablename}\n", 'white', 'bold');
 						}
 					}

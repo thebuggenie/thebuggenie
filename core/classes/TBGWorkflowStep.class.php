@@ -293,7 +293,7 @@
 			foreach ($this->getOutgoingTransitions() as $transition)
 			{
 				if ($transition->isAvailableForIssue($issue))
-					$return_array[] = $transition;
+					$return_array[$transition->getID()] = $transition;
 			}
 			
 			return $return_array;

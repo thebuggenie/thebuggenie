@@ -1,5 +1,9 @@
 <?php
 
+	use b2db\Core,
+		b2db\Criteria,
+		b2db\Criterion;
+
 	/**
 	 * Users table
 	 *
@@ -50,7 +54,7 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGUsersTable');
+			return Core::getTable('TBGUsersTable');
 		}
 		
 		public function getAll($scope = null)
@@ -69,11 +73,11 @@
 			parent::__construct(self::B2DBNAME, self::ID);
 			
 			parent::_addVarchar(self::UNAME, 50);
-			parent::_addVarchar(self::PASSWORD, 50);
+			parent::_addVarchar(self::PASSWORD, 100);
 			parent::_addVarchar(self::BUDDYNAME, 50);
 			parent::_addVarchar(self::REALNAME, 100);
 			parent::_addVarchar(self::EMAIL, 200);
-			parent::_addForeignKeyColumn(self::USERSTATE, B2DB::getTable('TBGUserStateTable'), TBGUserStateTable::ID);
+			parent::_addForeignKeyColumn(self::USERSTATE, Core::getTable('TBGUserStateTable'), TBGUserStateTable::ID);
 			parent::_addBoolean(self::CUSTOMSTATE);
 			parent::_addVarchar(self::HOMEPAGE, 250, '');
 			parent::_addVarchar(self::LANGUAGE, 100, '');
@@ -121,7 +125,7 @@
 		public function getByUserIDs($userids)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::ID, $userids, B2DBCriteria::DB_IN);
+			$crit->addWhere(self::ID, $userids, Criteria::DB_IN);
 			$crit->addWhere(self::DELETED, false);
 			return $this->doSelect($crit);
 		}
@@ -130,13 +134,13 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::DELETED, false);
-			if (stristr($details, "@"))
+			if (mb_stristr($details, "@"))
 			{
-				$crit->addWhere(self::EMAIL, "%$details%", B2DBCriteria::DB_LIKE);
+				$crit->addWhere(self::EMAIL, "%$details%", Criteria::DB_LIKE);
 			}
 			else
 			{
-				$crit->addWhere(self::UNAME, "%$details%", B2DBCriteria::DB_LIKE);
+				$crit->addWhere(self::UNAME, "%$details%", Criteria::DB_LIKE);
 			}
 	
 			if ($limit)
@@ -147,10 +151,10 @@
 			{
 				$crit = $this->getCriteria();
 				$crit->addWhere(self::DELETED, false);
-				$crit->addWhere(self::UNAME, "%$details%", B2DBCriteria::DB_LIKE);
-				$crit->addOr(self::BUDDYNAME, "%$details%", B2DBCriteria::DB_LIKE);
-				$crit->addOr(self::REALNAME, "%$details%", B2DBCriteria::DB_LIKE);
-				$crit->addOr(self::EMAIL, "%$details%", B2DBCriteria::DB_LIKE);
+				$crit->addWhere(self::UNAME, "%$details%", Criteria::DB_LIKE);
+				$crit->addOr(self::BUDDYNAME, "%$details%", Criteria::DB_LIKE);
+				$crit->addOr(self::REALNAME, "%$details%", Criteria::DB_LIKE);
+				$crit->addOr(self::EMAIL, "%$details%", Criteria::DB_LIKE);
 				if ($limit)
 				{
 					$crit->setLimit($limit);
@@ -170,22 +174,22 @@
 					$crit->addWhere(self::ACTIVATED, false);
 					break;
 				case 'newusers':
-					$crit->addWhere(self::JOINED, NOW - 1814400, B2DBCriteria::DB_GREATER_THAN_EQUAL);
+					$crit->addWhere(self::JOINED, NOW - 1814400, Criteria::DB_GREATER_THAN_EQUAL);
 					break;
 				case '0-9':
-					$ctn = $crit->returnCriterion(self::UNAME, array('0%', '1%', '2%', '3%', '4%', '5%', '6%', '7%', '8%', '9%'), B2DBCriteria::DB_IN);
-					$ctn->addOr(self::BUDDYNAME, array('0%', '1%', '2%', '3%', '4%', '5%', '6%', '7%', '8%', '9%'), B2DBCriteria::DB_IN);
-					$ctn->addOr(self::REALNAME, array('0%', '1%', '2%', '3%', '4%', '5%', '6%', '7%', '8%', '9%'), B2DBCriteria::DB_IN);
+					$ctn = $crit->returnCriterion(self::UNAME, array('0%', '1%', '2%', '3%', '4%', '5%', '6%', '7%', '8%', '9%'), Criteria::DB_IN);
+					$ctn->addOr(self::BUDDYNAME, array('0%', '1%', '2%', '3%', '4%', '5%', '6%', '7%', '8%', '9%'), Criteria::DB_IN);
+					$ctn->addOr(self::REALNAME, array('0%', '1%', '2%', '3%', '4%', '5%', '6%', '7%', '8%', '9%'), Criteria::DB_IN);
 					$crit->addWhere($ctn);
 					break;
 				case 'all':
 					break;
 				default:
-					$details = (strlen($details) == 1) ? strtolower("$details%") : strtolower("%$details%");
-					$ctn = $crit->returnCriterion(self::UNAME, $details, B2DBCriteria::DB_LIKE);
-					$ctn->addOr(self::BUDDYNAME, $details, B2DBCriteria::DB_LIKE);
-					$ctn->addOr(self::REALNAME, $details, B2DBCriteria::DB_LIKE);
-					$ctn->addOr(self::EMAIL, $details, B2DBCriteria::DB_LIKE);
+					$details = (mb_strlen($details) == 1) ? mb_strtolower("$details%") : mb_strtolower("%$details%");
+					$ctn = $crit->returnCriterion(self::UNAME, $details, Criteria::DB_LIKE);
+					$ctn->addOr(self::BUDDYNAME, $details, Criteria::DB_LIKE);
+					$ctn->addOr(self::REALNAME, $details, Criteria::DB_LIKE);
+					$ctn->addOr(self::EMAIL, $details, Criteria::DB_LIKE);
 					$crit->addWhere($ctn);
 					break;
 			}

@@ -1,5 +1,9 @@
 <?php
 
+	use b2db\Core,
+		b2db\Criteria,
+		b2db\Criterion;
+
 	/**
 	 * Builds table
 	 *
@@ -19,7 +23,7 @@
 	class TBGBuildsTable extends TBGB2DBTable 
 	{
 
-		const B2DB_TABLE_VERSION = 1;
+		const B2DB_TABLE_VERSION = 2;
 		const B2DBNAME = 'builds';
 		const ID = 'builds.id';
 		const SCOPE = 'builds.scope';
@@ -31,20 +35,26 @@
 		const RELEASE_DATE = 'builds.release_date';
 		const LOCKED = 'builds.locked';
 		const PROJECT = 'builds.project';
+		const MILESTONE = 'builds.milestone';
 		const RELEASED = 'builds.isreleased';
+		const FILE_ID = 'builds.file_id';
+		const FILE_URL = 'builds.file_url';
 		
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
 			parent::_addVarchar(self::NAME, 100);
+			parent::_addText(self::FILE_URL);
 			parent::_addInteger(self::VERSION_MAJOR, 3);
 			parent::_addInteger(self::VERSION_MINOR, 3);
 			parent::_addInteger(self::VERSION_REVISION, 5);
 			parent::_addInteger(self::RELEASE_DATE, 10);
 			parent::_addBoolean(self::RELEASED);
 			parent::_addBoolean(self::LOCKED);
-			parent::_addForeignKeyColumn(self::EDITION, B2DB::getTable('TBGEditionsTable'), TBGEditionsTable::ID);
+			parent::_addForeignKeyColumn(self::EDITION, TBGEditionsTable::getTable(), TBGEditionsTable::ID);
 			parent::_addForeignKeyColumn(self::PROJECT, TBGProjectsTable::getTable(), TBGProjectsTable::ID);
+			parent::_addForeignKeyColumn(self::FILE_ID, TBGFilesTable::getTable(), TBGFilesTable::ID);
+			parent::_addForeignKeyColumn(self::MILESTONE, TBGMilestonesTable::getTable(), TBGMilestonesTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 		
@@ -52,9 +62,9 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::PROJECT, $project_id);
-			$crit->addOrderBy(self::VERSION_MAJOR, B2DBCriteria::SORT_DESC);
-			$crit->addOrderBy(self::VERSION_MINOR, B2DBCriteria::SORT_DESC);
-			$crit->addOrderBy(self::VERSION_REVISION, B2DBCriteria::SORT_DESC);
+			$crit->addOrderBy(self::VERSION_MAJOR, Criteria::SORT_DESC);
+			$crit->addOrderBy(self::VERSION_MINOR, Criteria::SORT_DESC);
+			$crit->addOrderBy(self::VERSION_REVISION, Criteria::SORT_DESC);
 			$res = $this->doSelect($crit);
 			return $res;
 		}
@@ -63,9 +73,9 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::EDITION, $edition_id);
-			$crit->addOrderBy(self::VERSION_MAJOR, B2DBCriteria::SORT_DESC);
-			$crit->addOrderBy(self::VERSION_MINOR, B2DBCriteria::SORT_DESC);
-			$crit->addOrderBy(self::VERSION_REVISION, B2DBCriteria::SORT_DESC);
+			$crit->addOrderBy(self::VERSION_MAJOR, Criteria::SORT_DESC);
+			$crit->addOrderBy(self::VERSION_MINOR, Criteria::SORT_DESC);
+			$crit->addOrderBy(self::VERSION_REVISION, Criteria::SORT_DESC);
 			$res = $this->doSelect($crit);
 			
 			return $res;

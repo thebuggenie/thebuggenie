@@ -1,5 +1,7 @@
 <?php
 
+	use b2db\Saveable;
+
 	/**
 	 * An identifiable class
 	 *
@@ -16,7 +18,7 @@
 	 * @package thebuggenie
 	 * @subpackage core
 	 */
-	abstract class TBGIdentifiableClass extends B2DBSaveable implements TBGIdentifiable
+	abstract class TBGIdentifiableClass extends Saveable implements TBGIdentifiable
 	{
 		
 		const TYPE_USER = 1;

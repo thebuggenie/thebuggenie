@@ -65,15 +65,11 @@
 	function tbg_formatTime($tstamp, $format = 0)
 	{
 		// offset the timestamp properly
-		if (TBGSettings::getGMToffset() > 0)
+		if (TBGSettings::getGMToffset() != 0)
 			$tstamp += TBGSettings::getGMToffset() * 60 * 60;
-		elseif (TBGSettings::getGMToffset() < 0)
-			$tstamp -= TBGSettings::getGMToffset() * 60 * 60;
 
-		if (TBGSettings::getUserTimezone() > 0)
+		if ((TBGSettings::getUserTimezone() != 0) && TBGSettings::getUserTimezone() != 'sys')
 			$tstamp += TBGSettings::getUserTimezone() * 60 * 60;
-		elseif (TBGSettings::getUserTimezone() < 0)
-			$tstamp -= TBGSettings::getUserTimezone() * 60 * 60;
 			
 		switch ($format)
 		{
@@ -179,10 +175,7 @@
 				$tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(13), $tstamp);
 				break;
 			case 18:
-				$old = date_default_timezone_get();
-				date_default_timezone_set('UTC');
 				$tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(16), $tstamp);
-				date_default_timezone_set($old);
 				break;
 			case 19:
 				$tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(14), $tstamp);
@@ -237,7 +230,7 @@
 			default:
 				return $tstamp;
 		}
-		return htmlentities($tstring);
+		return htmlentities($tstring, ENT_COMPAT, TBGContext::getI18n()->getCharset());
 	}
 
 	function tbg_parse_text($text, $toc = false, $article_id = null, $options = array())
@@ -263,7 +256,7 @@
 	 */
 	function tbg_decodeUTF8($str, $htmlentities = false)
 	{
-		if (tbg_isUTF8($str) && !stristr(TBGContext::getI18n()->getCharset(), 'UTF-8'))
+		if (tbg_isUTF8($str) && !mb_stristr(TBGContext::getI18n()->getCharset(), 'UTF-8'))
 		{
 			$str = utf8_decode($str);
 		}
@@ -340,4 +333,55 @@
 	function tbg_get_breadcrumblinks($type, $project = null)
 	{
 		return TBGContext::getResponse()->getPredefinedBreadcrumbLinks($type, $project);
+	}
+
+	function tbg_get_javascripts()
+	{
+		$tbg_response = TBGContext::getResponse();
+		$tbg_response->addJavascript('jquery-1.6.2.min.js');
+		$tbg_response->addJavascript('prototype.js');
+		$tbg_response->addJavascript('builder.js');
+		$tbg_response->addJavascript('effects.js');
+		$tbg_response->addJavascript('dragdrop.js');
+		$tbg_response->addJavascript('controls.js');
+		$tbg_response->addJavascript('jquery.markitup.js');
+		$tbg_response->addJavascript('thebuggenie.js');
+		$tbg_response->addJavascript('markitup.js');
+		$tbg_response->addJavascript('tablekit.js');
+
+		$jsstrings = array();
+		$sepjs = array();
+
+		// Add scripts to minify and non-minify lists
+		foreach ($tbg_response->getJavascripts() as $script => $minify)
+		{
+			if ($minify == true && file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DIRECTORY_SEPARATOR . 'js' . DIRECTORY_SEPARATOR . $script))
+				$jsstrings[] = 'js/'.$script;
+			else
+				$sepjs[] = $script;
+		}
+
+		$jsstrings = join(',', $jsstrings);
+
+		return array($jsstrings, $sepjs);
+	}
+
+	function tbg_get_stylesheets()
+	{
+		$tbg_response = TBGContext::getResponse();
+		$cssstrings = array();
+		$sepcss = array();
+
+		// Add stylesheets to minify and non-minify lists
+		foreach ($tbg_response->getStylesheets() as $stylesheet => $minify)
+		{
+			if ($minify == true && file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DIRECTORY_SEPARATOR . 'themes' . DIRECTORY_SEPARATOR . TBGSettings::getThemeName() . DIRECTORY_SEPARATOR .$stylesheet))
+				$cssstrings[] = 'themes/'.TBGSettings::getThemeName().'/'.$stylesheet;
+			else
+				$sepcss[] = $stylesheet;
+		}
+
+		$cssstrings = join(',', $cssstrings);
+
+		return array($cssstrings, $sepcss);
 	}

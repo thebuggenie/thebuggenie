@@ -45,7 +45,7 @@
 
 		protected function _getSearchDetailsFromRequest(TBGRequest $request)
 		{
-			$this->ipp = $request->getParameter('issues_per_page', 30);
+			$this->ipp = $request->getParameter('issues_per_page', 50);
 			$this->offset = $request->getParameter('offset', 0);
 			$filters = $request->getParameter('filters', array());
 			if ($request->getParameter('quicksearch'))
@@ -60,7 +60,7 @@
 			$this->groupby = $request->getParameter('groupby');
 			$this->grouporder = $request->getParameter('grouporder', 'asc');
 			$this->predefined_search = $request->getParameter('predefined_search', false);
-			$this->templatename = ($request->hasParameter('template') && in_array($request->getParameter('template'), array_keys($this->getTemplates(false)))) ? $request->getParameter('template') : 'results_normal';
+			$this->templatename = ($request->hasParameter('template') && in_array($request->getParameter('template'), array_keys(self::getTemplates(false)))) ? $request->getParameter('template') : 'results_normal';
 			$this->template_parameter = $request->getParameter('template_parameter');
 			$this->searchtitle = TBGContext::getI18n()->__('Search results');
 			$this->issavedsearch = false;
@@ -68,8 +68,8 @@
 
 			if ($request->hasParameter('saved_search'))
 			{
-				$savedsearch = B2DB::getTable('TBGSavedSearchesTable')->doSelectById($request->getParameter('saved_search'));
-				if ($savedsearch instanceof B2DBRow && TBGContext::getUser()->canAccessSavedSearch($savedsearch))
+				$savedsearch = \b2db\Core::getTable('TBGSavedSearchesTable')->doSelectById($request->getParameter('saved_search'));
+				if ($savedsearch instanceof \b2db\Row && TBGContext::getUser()->canAccessSavedSearch($savedsearch))
 				{
 					$this->issavedsearch = true;
 					$this->savedsearch = $savedsearch;
@@ -79,7 +79,7 @@
 					$this->grouporder = $savedsearch->get(TBGSavedSearchesTable::GROUPORDER);
 					$this->ipp = $savedsearch->get(TBGSavedSearchesTable::ISSUES_PER_PAGE);
 					$this->searchtitle = $savedsearch->get(TBGSavedSearchesTable::NAME);
-					$this->filters = B2DB::getTable('TBGSavedSearchFiltersTable')->getFiltersBySavedSearchID($savedsearch->get(TBGSavedSearchesTable::ID));
+					$this->filters = \b2db\Core::getTable('TBGSavedSearchFiltersTable')->getFiltersBySavedSearchID($savedsearch->get(TBGSavedSearchesTable::ID));
 				}
 			}
 		}
@@ -217,7 +217,7 @@
 
 		}
 
-		protected function getTemplates($display_only = true)
+		public static function getTemplates($display_only = true)
 		{
 			$templates = array();
 			$templates['results_normal'] = TBGContext::getI18n()->__('Standard search results');
@@ -301,14 +301,13 @@
 			$this->search_error = TBGContext::getMessageAndClear('search_error');
 			$this->search_message = TBGContext::getMessageAndClear('search_message');
 			$this->appliedfilters = $this->filters;
-			$this->templates = $this->getTemplates();
-			
-			$this->savedsearches = B2DB::getTable('TBGSavedSearchesTable')->getAllSavedSearchesByUserIDAndPossiblyProjectID(TBGContext::getUser()->getID(), (TBGContext::isProjectContext()) ? TBGContext::getCurrentProject()->getID() : 0);
+			$this->templates = self::getTemplates();
 		}
 
 		public function runFindIssuesPaginated(TBGRequest $request)
 		{
 			$this->_getSearchDetailsFromRequest($request);
+			$this->getResponse()->setDecoration(TBGResponse::DECORATE_NONE);
 
 			if ($this->show_results)
 			{
@@ -316,7 +315,7 @@
 				$this->issues = $this->foundissues;
 			}
 			$this->appliedfilters = $this->filters;
-			$this->templates = $this->getTemplates();
+			$this->templates = self::getTemplates();
 		}
 
 		public function runAddFilter(TBGRequest $request)
@@ -520,7 +519,7 @@
 			return array($showtablestart, $showheader, $prevgroup_id, $groupby_description);
 		}
 
-		static function userPainSort(TBGIssue $first_issue, TBGIssue $second_issue)
+		static public function userPainSort(TBGIssue $first_issue, TBGIssue $second_issue)
 		{
 			$first_issue_pain = $first_issue->getUserPain();
 			$second_issue_pain = $second_issue->getUserPain();
@@ -529,6 +528,140 @@
 				return 0;
 			}
 			return ($first_issue_pain < $second_issue_pain) ? -1 : 1;
+		}
+		
+		public function runSaveColumnSettings(TBGRequest $request)
+		{
+			TBGSettings::saveSetting('search_scs_'.$request->getParameter('template'), join(',', $request->getParameter('columns')));
+			return $this->renderJSON('template '.$request->getParameter('template').' columns saved ok');
+		}
+
+		public function runBulkUpdateIssues(TBGRequest $request)
+		{
+			$issue_ids = $request['issue_ids'];
+			$options = array('issue_ids' => array_values($issue_ids));
+			TBGContext::loadLibrary('common');
+			$options['last_updated'] = tbg_formatTime(time(), 20);
+
+			if (!empty($issue_ids))
+			{
+				$options['bulk_action'] = $request['bulk_action'];
+				switch ($request['bulk_action'])
+				{
+					case 'assign_milestone':
+						$milestone = null;
+						if ($request['milestone'] == 'new')
+						{
+							$milestone = new TBGMilestone();
+							$milestone->setProject(TBGContext::getCurrentProject());
+							$milestone->setName($request['milestone_name']);
+							$milestone->save();
+							$options['milestone_url'] = TBGContext::getRouting()->generate('project_planning_milestone', array('project_key' => $milestone->getProject()->getKey(), 'milestone_id' => $milestone->getID()));
+						}
+						elseif ($request['milestone'])
+						{
+							$milestone = new TBGMilestone($request['milestone']);
+						}
+						$milestone_id = ($milestone instanceof TBGMilestone) ? $milestone->getID() : null;
+						foreach (array_keys($issue_ids) as $issue_id)
+						{
+							if (is_numeric($issue_id))
+							{
+								$issue = new TBGIssue($issue_id);
+								$issue->setMilestone($milestone_id);
+								$issue->save();
+							}
+						}
+						$options['milestone_id'] = $milestone_id;
+						$options['milestone_name'] = ($milestone_id) ? $milestone->getName() : '-';
+						break;
+					case 'set_status':
+						if (is_numeric($request['status']))
+						{
+							$status = new TBGStatus($request['status']);
+							foreach (array_keys($issue_ids) as $issue_id)
+							{
+								if (is_numeric($issue_id))
+								{
+									$issue = new TBGIssue($issue_id);
+									$issue->setStatus($status->getID());
+									$issue->save();
+								}
+							}
+							$options['status'] = array('color' => $status->getColor(), 'name' => $status->getName(), 'id' => $status->getID());
+						}
+						break;
+					case 'set_severity':
+						if (is_numeric($request['severity']))
+						{
+							$severity = ($request['severity']) ? new TBGSeverity($request['severity']) : null;
+							foreach (array_keys($issue_ids) as $issue_id)
+							{
+								if (is_numeric($issue_id))
+								{
+									$issue = new TBGIssue($issue_id);
+									$severity_id = ($severity instanceof TBGSeverity) ? $severity->getID() : 0;
+									$issue->setSeverity($severity_id);
+									$issue->save();
+								}
+							}
+							$options['severity'] = array('name' => ($severity instanceof TBGSeverity) ? $severity->getName() : '-', 'id' => ($severity instanceof TBGSeverity) ? $severity->getID() : 0);
+						}
+						break;
+					case 'set_resolution':
+						if (is_numeric($request['resolution']))
+						{
+							$resolution = ($request['resolution']) ? new TBGResolution($request['resolution']) : null;
+							foreach (array_keys($issue_ids) as $issue_id)
+							{
+								if (is_numeric($issue_id))
+								{
+									$issue = new TBGIssue($issue_id);
+									$resolution_id = ($resolution instanceof TBGResolution) ? $resolution->getID() : 0;
+									$issue->setResolution($resolution_id);
+									$issue->save();
+								}
+							}
+							$options['resolution'] = array('name' => ($resolution instanceof TBGResolution) ? $resolution->getName() : '-', 'id' => ($resolution instanceof TBGResolution) ? $resolution->getID() : 0);
+						}
+						break;
+					case 'set_priority':
+						if (is_numeric($request['priority']))
+						{
+							$priority = ($request['priority']) ? new TBGPriority($request['priority']) : null;
+							foreach (array_keys($issue_ids) as $issue_id)
+							{
+								if (is_numeric($issue_id))
+								{
+									$issue = new TBGIssue($issue_id);
+									$priority_id = ($priority instanceof TBGPriority) ? $priority->getID() : 0;
+									$issue->setPriority($priority_id);
+									$issue->save();
+								}
+							}
+							$options['priority'] = array('name' => ($priority instanceof TBGPriority) ? $priority->getName() : '-', 'id' => ($priority instanceof TBGPriority) ? $priority->getID() : 0);
+						}
+						break;
+					case 'set_category':
+						if (is_numeric($request['category']))
+						{
+							$category = ($request['category']) ? new TBGCategory($request['category']) : null;
+							foreach (array_keys($issue_ids) as $issue_id)
+							{
+								if (is_numeric($issue_id))
+								{
+									$issue = new TBGIssue($issue_id);
+									$category_id = ($category instanceof TBGCategory) ? $category->getID() : 0;
+									$issue->setCategory($category_id);
+									$issue->save();
+								}
+							}
+							$options['category'] = array('name' => ($category instanceof TBGCategory) ? $category->getName() : '-', 'id' => ($category instanceof TBGCategory) ? $category->getID() : 0);
+						}
+						break;
+				}
+			}
+			return $this->renderJSON($options);
 		}
 
 	}

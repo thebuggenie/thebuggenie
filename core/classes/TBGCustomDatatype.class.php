@@ -58,7 +58,7 @@
 			if (self::$_types === null)
 			{
 				self::$_types = array();
-				if ($items = B2DB::getTable('TBGCustomFieldsTable')->getAll())
+				if ($items = \b2db\Core::getTable('TBGCustomFieldsTable')->getAll())
 				{
 					foreach ($items as $row_id => $row)
 					{
@@ -116,8 +116,8 @@
 		 */
 		public function _preDelete()
 		{
-			$key = B2DB::getTable('TBGCustomFieldsTable')->getKeyFromId($this->getID());
-			B2DB::getTable('TBGCustomFieldOptionsTable')->doDeleteByFieldKey($key);
+			$key = \b2db\Core::getTable('TBGCustomFieldsTable')->getKeyFromId($this->getID());
+			\b2db\Core::getTable('TBGCustomFieldOptionsTable')->doDeleteByFieldKey($key);
 		}
 
 		public static function doesKeyExist($key)
@@ -134,7 +134,7 @@
 		 */
 		public static function getByKey($key)
 		{
-			$row = B2DB::getTable('TBGCustomFieldsTable')->getByKey($key);
+			$row = \b2db\Core::getTable('TBGCustomFieldsTable')->getByKey($key);
 			if ($row)
 			{
 				return TBGContext::factory()->TBGCustomDatatype($row->get(TBGCustomFieldsTable::ID), $row);
@@ -152,7 +152,7 @@
 		 * 
 		 * @param B2DBrow $row [optional] A B2DBrow to use
 		 */
-		public function _construct(B2DBRow $row, $foreign_key = null)
+		public function _construct(\b2db\Row $row, $foreign_key = null)
 		{
 			$this->_description = $this->_description ?: $this->_name;
 		}

@@ -1,4 +1,4 @@
-<table style="width: 100%;" cellpadding="0" cellspacing="0" class="search_results">
+<table style="width: 100%;" cellpadding="0" cellspacing="0" class="search_results resizable sortable">
 	<thead>
 		<tr>
 			<th style="text-align: center; width: 50px;"><?php echo __('User pain'); ?></th>

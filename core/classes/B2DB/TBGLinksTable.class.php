@@ -1,5 +1,9 @@
 <?php
 
+	use b2db\Core,
+		b2db\Criteria,
+		b2db\Criterion;
+
 	/**
 	 * Links table
 	 *
@@ -37,7 +41,7 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGLinksTable');
+			return Core::getTable('TBGLinksTable');
 		}
 		
 		public function __construct()
@@ -58,7 +62,7 @@
 			if ($link_order === null)
 			{
 				$crit = $this->getCriteria();
-				$crit->addSelectionColumn(self::LINK_ORDER, 'max_order', B2DBCriteria::DB_MAX, '', '+1');
+				$crit->addSelectionColumn(self::LINK_ORDER, 'max_order', Criteria::DB_MAX, '', '+1');
 				$crit->addWhere(self::TARGET_TYPE, $target_type);
 				$crit->addWhere(self::TARGET_ID, $target_id);
 				$crit->addWhere(self::SCOPE, $scope);
@@ -87,7 +91,7 @@
 			$crit->addWhere(self::TARGET_TYPE, $target_type);
 			$crit->addWhere(self::TARGET_ID, $target_id);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
-			$crit->addOrderBy(self::LINK_ORDER, B2DBCriteria::SORT_ASC);
+			$crit->addOrderBy(self::LINK_ORDER, Criteria::SORT_ASC);
 			if ($res = $this->doSelect($crit, 'none'))
 			{
 				while ($row = $res->getNextRow())

@@ -6,7 +6,7 @@
 			<?php else: ?>
 				<?php echo link_tag(make_url('publish_article', array('article_name' => $link['url'])), (($link['description'] != '') ? $link['description'] : $link['url'])); ?>
 			<?php endif; ?>
-		<?php elseif (substr($link['url'], 0, 1) == '@'): ?>
+		<?php elseif (mb_substr($link['url'], 0, 1) == '@'): ?>
 			<?php echo link_tag(make_url($link['url']), (($link['description'] != '') ? $link['description'] : $link['url'])); ?>
 		<?php elseif ($link['url'] != ''): ?>
 			<?php echo link_tag($link['url'], (($link['description'] != '') ? $link['description'] : $link['url'])); ?>
@@ -31,7 +31,7 @@
 				<div class="content" style="padding: 3px;">
 					<?php echo __('Do you really want to remove this item from the menu?'); ?>
 					<div style="text-align: right;">
-						<?php echo javascript_link_tag(__('Yes'), array('onclick' => "$('{$link['target_type']}_{$link['target_id']}_links_{$link_id}_remove_confirm').toggle();removeLink('".make_url('remove_link', array('target_type' => $link['target_type'], 'target_id' => $link['target_id'], 'link_id' => $link_id))."', '{$link['target_type']}', '{$link['target_id']}', ".$link_id.");")); ?> ::
+						<?php echo javascript_link_tag(__('Yes'), array('onclick' => "$('{$link['target_type']}_{$link['target_id']}_links_{$link_id}_remove_confirm').toggle();TBG.Main.Link.remove('".make_url('remove_link', array('target_type' => $link['target_type'], 'target_id' => $link['target_id'], 'link_id' => $link_id))."', '{$link['target_type']}', '{$link['target_id']}', ".$link_id.");")); ?> ::
 						<?php echo javascript_link_tag('<b>'.__('No').'</b>', array('onclick' => "$('{$link['target_type']}_{$link['target_id']}_links_{$link_id}_remove_confirm').toggle();")); ?>
 					</div>
 				</div>

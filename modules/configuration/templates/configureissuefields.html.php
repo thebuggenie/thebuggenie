@@ -1,9 +1,6 @@
 <?php
 
 	$tbg_response->setTitle(__('Configure data types'));
-	$tbg_response->addJavascript('config/issuefields.js');
-	$tbg_response->addJavascript('prototype.js');
-	//$tbg_response->addJavascript('scriptaculous.js');
 	$tbg_response->addJavascript('cpicker/cpicker.js');
 	$tbg_response->addStylesheet('cpicker/cpicker.css');
 ?>
@@ -18,7 +15,7 @@
 		<?php foreach ($builtin_types as $type_key => $type): ?>
 			<div class="rounded_box borderless mediumgrey" style="margin: 5px 0 0 0; font-size: 12px;">
 				<?php echo image_tag('spinning_32.gif', array('style' => 'float: right; margin-left: 5px; display: none;', 'id' => $type_key . '_indicator')); ?>
-				<div class="header"><a href="javascript:void(0);" onclick="showIssuefieldOptions('<?php echo make_url('configure_issuefields_getoptions', array('type' => $type_key)); ?>', '<?php echo $type_key; ?>');"><?php echo $type['description']; ?></a>&nbsp;<span class="faded_out dark" style="font-weight: normal; font-size: 12px;"><?php echo $type['key']; ?></span></div>
+				<div class="header"><a href="javascript:void(0);" onclick="TBG.Issues.Field.Options.show('<?php echo make_url('configure_issuefields_getoptions', array('type' => $type_key)); ?>', '<?php echo $type_key; ?>');"><?php echo $type['description']; ?></a>&nbsp;<span class="faded_out dark" style="font-weight: normal; font-size: 12px;"><?php echo $type['key']; ?></span></div>
 				<div class="content" id="<?php echo $type_key; ?>_content" style="display: none;"> </div>
 			</div>
 		<?php endforeach; ?>
@@ -28,7 +25,7 @@
 			<div class="content" style="padding: 2px; margin-bottom: 15px;">
 				<?php echo __('Enter a name for the field (same as ex. "%resolution_types%" above), then click %add%', array('%resolution_types%' => __('Resolution types'), '%add%' => '<b>' . __('Add') . '</b>')); ?>
 			</div>
-			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuefields_add_customtype'); ?>" onsubmit="addIssuefieldCustom('<?php echo make_url('configure_issuefields_add_customtype'); ?>');return false;" id="add_custom_type_form">
+			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuefields_add_customtype'); ?>" onsubmit="TBG.Issues.Field.Custom.add('<?php echo make_url('configure_issuefields_add_customtype'); ?>');return false;" id="add_custom_type_form">
 				<label for="new_custom_field_name" style="width: 100px; display: block; float: left;"><?php echo __('Custom type'); ?></label>
 				<select id="new_custom_field_type" name="field_type" style="width: 375px;">
 					<?php foreach (TBGCustomDatatype::getFieldTypes() as $type => $description): ?>

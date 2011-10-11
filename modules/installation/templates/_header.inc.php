@@ -18,8 +18,8 @@
 		<meta name="keywords" content="">
 		<meta name="author" content="zegenie">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<link rel="shortcut icon" href="themes/oxygen/favicon.png">
-		<link rel="stylesheet" type="text/css" href="css/oxygen.css">
+		<link rel="shortcut icon" href="iconsets/oxygen/favicon.png">
+		<link rel="stylesheet" type="text/css" href="themes/oxygen/oxygen.css">
 		<script type="text/javascript" src="js/prototype.js"></script>
 		<script type="text/javascript" src="js/scriptaculous.js"></script>
 		<script type="text/javascript" src="js/install.js"></script>
@@ -28,13 +28,13 @@
 			.install_progress:first-line { font-weight: bold; }
 			.install_progress img { float: right; }
 			.prereq_ok { border: 1px solid #aaC6aa; background-color: #CFE8CF; font-size: 11px; }
-			.prereq_fail { border: 1px solid #B76B6B; color: #FFF; font-size: 13px; background-color: #F38888; }
+			.prereq_fail { border: 1px solid #B76B6B; color: #FFF; font-size: 13px; background-color: #F38888; margin-top: 10px; }
 			.prereq_warn { border: 1px solid #FF9900; background-color: #FFFF99; font-size: 12px; }
 			.installation_box { padding: 3px 10px 10px 10px; width: 950px; margin-left: auto; margin-right: auto; margin-top: 15px; position: relative; font-size: 12px; }
 			.installation_box input[type="submit"] { padding: 5px; font-weight: bold; height: 30px; font-size: 15px; }
 			.donate { border: 1px solid #aaC6aa; background-color: #CFE8CF; }
 			.grey_box { border: 1px solid #DDD; background-color: #F5F5F5; }
-			.command_box { border: 1px dashed #DDD; background-color: #F5F5F5; padding: 4px; font-family: 'Droid Sans Mono', monospace; width: 500px; margin-top: 5px; }
+			.command_box { border: 1px dashed #DDD; background-color: #F5F5F5; padding: 4px; font-family: 'Droid Sans Mono', monospace; width: 928px; margin-top: 5px; margin-bottom: 15px; }
 			.features { width: 400px; float: right; margin-left: 10px; }
 			.feature { border: 1px solid #DDD; background-color: #F5F5F5; padding: 10px; margin-bottom: 5px; }
 			.feature .description { background-color: #FFF; padding: 10px; }
@@ -64,7 +64,7 @@
 					<table class="main_header_print" cellpadding=0 cellspacing=0 width="100%" style="table-layout: fixed;">
 						<tr class="logo_back">
 						    <td style="width: 70px; height: 65px; text-align: center;" align="center" valign="middle">
-						        <img width=48 height=48 SRC="themes/oxygen/logo_48.png" alt="The Bug Genie - Installation">
+						        <img width=48 height=48 SRC="iconsets/oxygen/logo_48.png" alt="The Bug Genie - Installation">
 						    </td>
 						    <td align="left" valign="middle" style="width: 300px;"><div class="logo_large">The Bug Genie</div><div class="logo_small"><b>Friendly</b> issue tracking and project management</div></td>
 						    <td style="width: auto;">

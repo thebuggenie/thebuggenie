@@ -2,9 +2,12 @@
 	<div class="header"><?php echo link_tag(make_url('project_roadmap', array('project_key' => $milestone->getProject()->getKey())).'#roadmap_milestone_'.$milestone->getID(), $milestone->getProject()->getName() . ' - ' . $milestone->getName()); ?></div>
 	<div class="date">
 		<?php if ($milestone->getStartingDate()): ?>
-			<?php echo tbg_formatTime($milestone->getStartingDate(), 20) . ' - ' . tbg_formatTime($milestone->getScheduledDate(), 20); ?>
+			<?php
+				echo tbg_formatTime($milestone->getStartingDate(), 20) . ' - ';
+				if ($milestone->getScheduledDate() > 0): echo tbg_formatTime($milestone->getScheduledDate(), 20); else: echo __('No scheduled date specified'); endif;
+			?>
 		<?php else: ?>
-			<?php echo __('Scheduled for %scheduled_date%', array('%scheduled_date%' => tbg_formatTime($milestone->getScheduledDate(), 20))); ?>
+			<?php if ($milestone->getScheduledDate() > 0): echo __('Scheduled for %scheduled_date%', array('%scheduled_date%' => tbg_formatTime($milestone->getScheduledDate(), 20))); else: echo __('No scheduled date specified'); endif; ?>
 		<?php endif; ?>
 	</div>
 	<div class="percentage">

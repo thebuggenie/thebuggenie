@@ -93,11 +93,14 @@
 		const SETTING_USER_TIMEZONE = 'timezone';
 		const SETTING_USER_LANGUAGE = 'language';
 		const SETTING_AUTH_BACKEND = 'auth_backend';
+		const SETTING_MAINTENANCE_MODE = 'offline';
+		const SETTING_MAINTENANCE_MESSAGE = 'offline_msg';
+		const SETTING_ICONSET = 'iconset';
 
 		static protected $_ver_mj = 3;
-		static protected $_ver_mn = 1;
-		static protected $_ver_rev = 3;
-		static protected $_ver_name = "Triple Reyo";
+		static protected $_ver_mn = 2;
+		static protected $_ver_rev = '0-pre';
+		static protected $_ver_name = "Borg";
 		static protected $_defaultscope = null;
 		static protected $_settings = null;
 		static protected $_loadedsettings = array();
@@ -123,7 +126,7 @@
 				else
 				{
 					TBGLogging::log('Settings not cached or install mode enabled. Retrieving from database');
-					if ($res = B2DB::getTable('TBGSettingsTable')->getSettingsForScope(TBGContext::getScope()->getID(), $uid))
+					if ($res = \b2db\Core::getTable('TBGSettingsTable')->getSettingsForScope(TBGContext::getScope()->getID(), $uid))
 					{
 						$cc = 0;
 						while ($row = $res->getNextRow())
@@ -177,7 +180,7 @@
 				}
 			}
 
-			B2DB::getTable('TBGSettingsTable')->saveSetting($name, $module, $value, $uid, $scope);
+			\b2db\Core::getTable('TBGSettingsTable')->saveSetting($name, $module, $value, $uid, $scope);
 			
 			if ($scope != 0 && ((!TBGContext::getScope() instanceof TBGScope) || $scope == TBGContext::getScope()->getID()))
 			{
@@ -274,7 +277,7 @@
 			throw new Exception("This function is deprecated. Default scope is always 1");
 			if (self::$_defaultscope === null)
 			{
-				$row = B2DB::getTable('TBGSettingsTable')->getDefaultScope();
+				$row = \b2db\Core::getTable('TBGSettingsTable')->getDefaultScope();
 				self::$_defaultscope = TBGContext::factory()->TBGScope($row->get(TBGSettingsTable::VALUE));
 			}
 			return self::$_defaultscope;
@@ -285,19 +288,19 @@
 			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
 			$uid = ($uid === null) ? TBGContext::getUser()->getID() : $uid;
 
-			$crit = new B2DBCriteria();
+			$crit = new \b2db\Criteria();
 			$crit->addWhere(TBGSettingsTable::NAME, $name);
 			$crit->addWhere(TBGSettingsTable::MODULE, $module);
 			$crit->addWhere(TBGSettingsTable::SCOPE, $scope);
 			$crit->addWhere(TBGSettingsTable::UID, $uid);
 			
-			B2DB::getTable('TBGSettingsTable')->doDelete($crit);
+			\b2db\Core::getTable('TBGSettingsTable')->doDelete($crit);
 			unset(self::$_settings[$name][$uid]);
 		}
 	
 		private static function _loadSetting($name, $module = 'core', $scope = 0)
 		{
-			$crit = new B2DBCriteria();
+			$crit = new \b2db\Criteria();
 			$crit->addWhere(TBGSettingsTable::NAME, $name);
 			$crit->addWhere(TBGSettingsTable::MODULE, $module);
 			if ($scope == 0)
@@ -305,7 +308,7 @@
 				throw new Exception('BUGS has not been correctly installed. Please check that the default scope exists');
 			}
 			$crit->addWhere(TBGSettingsTable::SCOPE, $scope);
-			$res = B2DB::getTable('TBGSettingsTable')->doSelect($crit);
+			$res = \b2db\Core::getTable('TBGSettingsTable')->doSelect($crit);
 			if ($res->count() > 0)
 			{
 				$retarr = array();
@@ -345,6 +348,12 @@
 		{
 			return self::get(self::SETTING_DEFAULT_LANGUAGE);
 		}
+
+		public static function getHTMLLanguage()
+		{
+			$lang = explode('_', self::getLanguage());
+			return $lang[0];
+		}
 		
 		public static function getCharset()
 		{
@@ -363,7 +372,15 @@
 		
 		public static function getFaviconURL()
 		{
-			return self::get(self::SETTING_FAVICON_URL);
+			switch (self::getFaviconType())
+			{
+				case self::FAVICON_CUSTOM_URL:
+					return self::get(self::SETTING_FAVICON_URL);
+				case self::FAVICON_PUBLIC:
+					return TBGContext::getTBGPath()."favicon.png";
+				default:
+					return TBGContext::getTBGPath()."iconsets/".TBGSettings::getThemeName()."/favicon.png";
+			}
 		}
 		
 		public static function getTBGname()
@@ -399,6 +416,11 @@
 		public static function getThemeName()
 		{
 			return self::get(self::SETTING_THEME_NAME);
+		}
+	
+		public static function getIconsetName()
+		{
+			return self::get(self::SETTING_ICONSET);
 		}
 		
 		public static function isUserThemesEnabled()
@@ -471,6 +493,25 @@
 		public static function getLogoutReturnRoute()
 		{
 			return self::get(self::SETTING_RETURN_FROM_LOGOUT);
+		}
+		
+		public static function isMaintenanceModeEnabled()
+		{
+			return (bool)self::get(self::SETTING_MAINTENANCE_MODE);
+		}
+		
+		public static function hasMaintenanceMessage()
+		{
+			if (self::get(self::SETTING_MAINTENANCE_MESSAGE) == '')
+			{
+				return false;
+			}
+			return true;
+		}
+		
+		public static function getMaintenanceMessage()
+		{
+			return self::get(self::SETTING_MAINTENANCE_MESSAGE);
 		}
 		
 		public static function getOnlineState()
@@ -557,10 +598,10 @@
 
 			switch (true)
 			{
-				case (strpos($extensions, ',') !== false):
+				case (mb_strpos($extensions, ',') !== false):
 					$delimiter = ',';
 					break;
-				case (strpos($extensions, ';') !== false):
+				case (mb_strpos($extensions, ';') !== false):
 					$delimiter = ';';
 					break;
 			}
@@ -622,32 +663,14 @@
 			return self::getPasswordSalt();
 		}
 		
-		public static function setTimezone()
-		{
-			$offset = null;
-			if (TBGContext::getUser() instanceof TBGUser)
-			{
-				$offset = self::get(self::SETTING_USER_TIMEZONE, 'core', null, TBGContext::getUser()->getID());
-			}
-			
-			if ($offset === null || $offset == 'sys')
-			{
-				$offset = self::get(self::SETTING_SERVER_TIMEZONE);
-			}
-			
-			if ($offset == 0)
-				$tz_string = "GMT";
-			elseif ($offset > 0)
-				$tz_string = "Etc/GMT+" . $offset;
-			else
-				$tz_string = "Etc/GMT" . $offset;
-
-			date_default_timezone_set($tz_string);
-		}
-		
 		public static function getAuthenticationBackend()
 		{
 			return self::get(self::SETTING_AUTH_BACKEND);
+		}
+		
+		public static function isUsingExternalAuthenticationBackend()
+		{
+			if (TBGSettings::getAuthenticationBackend() !== null && TBGSettings::getAuthenticationBackend() !== 'tbg'): return true; else: return false; endif;
 		}
 
 	}

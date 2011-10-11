@@ -132,7 +132,7 @@
 				return $matches[0] . "\n";
 			}
 			
-			$level = strlen($matches[1]);
+			$level = mb_strlen($matches[1]);
 			$content = $matches[2];
 			$this->stop = true;
 
@@ -170,12 +170,12 @@
 			$listtypes = array('*' => 'ul', '#' => 'ol');
 			$output = "";
 
-			$newlevel = ($close) ? 0 : strlen($matches[1]);
+			$newlevel = ($close) ? 0 : mb_strlen($matches[1]);
 
 			while ($this->list_level != $newlevel)
 			{
-				$listchar = substr($matches[1], -1);
-				if (is_string($listchar) || is_numeric($listchar))
+				$listchar = mb_substr($matches[1], -1);
+				if ((is_string($listchar) || is_numeric($listchar)) && array_key_exists($listchar, $listtypes))
 				{
 					$listtype = $listtypes[$listchar];
 				}
@@ -224,7 +224,7 @@
 			{
 				case ';':
 					$term = $matches[2];
-					$p = strpos($term, ' :');
+					$p = mb_strpos($term, ' :');
 					if ($p !== false)
 					{
 						list($term, $definition) = explode(':', $term);
@@ -320,26 +320,26 @@
 			}
 			$namespace = $matches[3];
 
-			if (strtolower($namespace) == 'category')
+			if (mb_strtolower($namespace) == 'category')
 			{
-				if (substr($matches[2], 0, 1) != ':')
+				if (mb_substr($matches[2], 0, 1) != ':')
 				{
 					$this->addCategorizer($href);
 					return '';
 				}
 			}
 
-			if (strtolower($namespace) == 'wikipedia')
+			if (mb_strtolower($namespace) == 'wikipedia')
 			{
 				if (TBGContext::isCLI()) return $href;
 				
 				$options = explode('|', $title);
-				$title = (array_key_exists(5, $matches) && (strpos($matches[5], '|') !== false) ? '' : $namespace.':') . array_pop($options);
+				$title = (array_key_exists(5, $matches) && (mb_strpos($matches[5], '|') !== false) ? '' : $namespace.':') . array_pop($options);
 
 				return link_tag('http://en.wikipedia.org/wiki/'.$href, $title);
 			}
 
-			if (in_array(strtolower($namespace), array('image', 'file')))
+			if (in_array(mb_strtolower($namespace), array('image', 'file')))
 			{
 				$retval = $namespace . ':' . $href;
 				if (!TBGContext::isCLI())
@@ -367,24 +367,28 @@
 						$caption = ($caption != '') ? $caption : $file->getOriginalFilename();
 						$file_link = make_url('showfile', array('id' => $file->getID()));
 					}
+					else
+					{
+						$caption = (!empty($options)) ? array_pop($options) : false;
+					}
 
-					if ((($file instanceof TBGFile && $file->isImage()) || $articlemode) && (strtolower($namespace) == 'image' || $issuemode) && TBGSettings::isCommentImagePreviewEnabled())
+					if ((($file instanceof TBGFile && $file->isImage()) || $articlemode) && (mb_strtolower($namespace) == 'image' || $issuemode) && TBGSettings::isCommentImagePreviewEnabled())
 					{
 						$divclasses = array('image_container');
 						$style_dimensions = '';
 						foreach ($options as $option)
 						{
-							$optionlen = strlen($option);
-							if (substr($option, $optionlen - 2) == 'px')
+							$optionlen = mb_strlen($option);
+							if (mb_substr($option, $optionlen - 2) == 'px')
 							{
 								if (is_numeric($option[0]))
 								{
-									$style_dimensions = ' width: '.$option[0].';';
+									$style_dimensions = ' width: '.$option.';';
 									break;
 								}
 								else
 								{
-									$style_dimensions = ' height: '.substr($option[0], 1).';';
+									$style_dimensions = ' height: '.mb_substr($option, 1).';';
 									break;
 								}
 							}
@@ -438,7 +442,7 @@
 				return link_tag(make_url($href), $title); // $this->parse_image($href,$title,$options);
 			}
 
-			if (substr($href, 0, 1) == '/')
+			if (mb_substr($href, 0, 1) == '/')
 			{
 				if (TBGContext::isCLI()) return $href;
 				
@@ -517,7 +521,7 @@
 
 		protected function _parse_emphasize($matches)
 		{
-			$amount = strlen($matches[1]);
+			$amount = mb_strlen($matches[1]);
 			return $this->_emphasize($amount);
 		}
 
@@ -600,9 +604,9 @@
 			{
 				$output .= $matches[1];
 			}
-			if (strpos($output, "cellspacing") === false)
+			if (mb_strpos($output, "cellspacing") === false)
 			{
-				$output .= " cellspacing=0";
+				$output .= " class=\"sortable resizable\" cellspacing=0";
 			}
 			$output .= ">";
 			$this->tablemode = true;
@@ -767,7 +771,7 @@
 				}
 			}
 
-			$isline = (bool) (strlen(trim($line)) > 0);
+			$isline = (bool) (mb_strlen(trim($line)) > 0);
 
 			// if this wasn't a list item, and we are in a list, close the list tag(s)
 			if (($this->list_level > 0) && !array_key_exists('list', $called)) $line = $this->_parse_list(false, true) . $line;
@@ -778,7 +782,7 @@
 			// suppress linebreaks for the next line if we just displayed one; otherwise re-enable them
 			if ($isline) $this->ignore_newline = (array_key_exists('newline', $called) || array_key_exists('headers', $called));
 
-			if (substr($line, -1) != "\n")
+			if (mb_substr($line, -1) != "\n")
 			{
 				$line = $line . " \n";
 			}
@@ -809,9 +813,9 @@
 			$lines = explode("\n", $text);
 			foreach ($lines as $line)
 			{
-				if (substr($line, -1) == "\r")
+				if (mb_substr($line, -1) == "\r")
 				{
-					$line = substr($line, 0, -1);
+					$line = mb_substr($line, 0, -1);
 				}
 				$output .= $this->_parse_line($line, $options);
 			}

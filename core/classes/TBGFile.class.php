@@ -125,7 +125,7 @@
 
 		public function getFullpath()
 		{
-			return TBGSettings::getUploadsLocalpath() . $this->getOriginalFilename();
+			return TBGSettings::getUploadsLocalpath() . $this->getRealFilename();
 		}
 
 		public function doesFileExistOnDisk()
@@ -155,5 +155,15 @@
 		{
 			$this->_description = $description;
 		}
-
+		
+		public function move($target_path)
+		{
+			if (TBGSettings::getUploadStorage() == 'files')
+			{
+				rename($this->getFullpath(), TBGSettings::getUploadsLocalpath() . $target_path);
+			}
+			$this->setRealFilename($target_path);
+			$this->save();
+		}
+		
 	}

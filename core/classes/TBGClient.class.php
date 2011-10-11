@@ -65,7 +65,7 @@
 			if (self::$_clients === null)
 			{
 				self::$_clients = array();
-				if ($res = B2DB::getTable('TBGClientsTable')->getAll())
+				if ($res = \b2db\Core::getTable('TBGClientsTable')->getAll())
 				{
 					while ($row = $res->getNextRow())
 					{
@@ -172,32 +172,17 @@
 		}
 		
 		/**
-		 * Creates a client
-		 *
-		 * @param unknown_type $groupname
-		 * @return TBGClient
-		 */
-		public static function createNew($clientname)
-		{
-			$crit = new B2DBCriteria();
-			$crit->addInsert(TBGClientsTable::NAME, $clientname);
-			$crit->addInsert(TBGClientsTable::SCOPE, TBGContext::getScope()->getID());
-			$res = B2DB::getTable('TBGClientsTable')->doInsert($crit);
-			return TBGContext::factory()->TBGClient($res->getInsertID());
-		}
-		
-		/**
 		 * Adds a user to the client
 		 *
 		 * @param TBGUser $user
 		 */
 		public function addMember(TBGUser $user)
 		{
-			$crit = new B2DBCriteria();
+			$crit = new \b2db\Criteria();
 			$crit->addInsert(TBGClientMembersTable::SCOPE, TBGContext::getScope()->getID());
 			$crit->addInsert(TBGClientMembersTable::CID, $this->_id);
 			$crit->addInsert(TBGClientMembersTable::UID, $user->getID());
-			B2DB::getTable('TBGClientMembersTable')->doInsert($crit);
+			\b2db\Core::getTable('TBGClientMembersTable')->doInsert($crit);
 			if ($this->_members === null)
 			{
 				$this->_members = array();
@@ -226,10 +211,10 @@
 		 */
 		public function removeMember($uid)
 		{
-			$crit = new B2DBCriteria();
+			$crit = new \b2db\Criteria();
 			$crit->addWhere(TBGClientMembersTable::UID, $uid);
 			$crit->addWhere(TBGClientMembersTable::CID, $this->_id);
-			B2DB::getTable('TBGClientMembersTable')->doDelete($crit);
+			\b2db\Core::getTable('TBGClientMembersTable')->doDelete($crit);
 		}
 		
 		public function _preDelete()
@@ -241,10 +226,10 @@
 		
 		public static function findClients($details)
 		{
-			$crit = new B2DBCriteria();
-			$crit->addWhere(TBGClientsTable::NAME, "%$details%", B2DBCriteria::DB_LIKE);
+			$crit = new \b2db\Criteria();
+			$crit->addWhere(TBGClientsTable::NAME, "%$details%", \b2db\Criteria::DB_LIKE);
 			$clients = array();
-			if ($res = B2DB::getTable('TBGClientsTable')->doSelect($crit))
+			if ($res = \b2db\Core::getTable('TBGClientsTable')->doSelect($crit))
 			{
 				while ($row = $res->getNextRow())
 				{

@@ -8,3 +8,8 @@ installed
 thebuggenie/.htaccess
 nbproject
 *.kdev4
+.DS_Store
+.idea
+web.config
+files/
+

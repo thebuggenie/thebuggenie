@@ -81,7 +81,7 @@
 			if (!array_key_exists($project_id, self::$_editions))
 			{
 				self::$_editions[$project_id] = array();
-				if ($res = B2DB::getTable('TBGEditionsTable')->getByProjectID($project_id))
+				if ($res = \b2db\Core::getTable('TBGEditionsTable')->getByProjectID($project_id))
 				{
 					while ($row = $res->getNextRow())
 					{
@@ -96,9 +96,9 @@
 		/**
 		 * Constructor function
 		 *
-		 * @param B2DBRow $row
+		 * @param \b2db\Row $row
 		 */
-		public function _construct(B2DBRow $row, $foreign_key = null)
+		public function _construct(\b2db\Row $row, $foreign_key = null)
 		{
 			TBGEvent::createNew('core', 'TBGEdition::__construct', $this)->trigger();
 		}
@@ -113,7 +113,7 @@
 			if ($this->_components === null)
 			{
 				$this->_components = array();
-				if ($res = B2DB::getTable('TBGEditionComponentsTable')->getByEditionID($this->getID()))
+				if ($res = \b2db\Core::getTable('TBGEditionComponentsTable')->getByEditionID($this->getID()))
 				{
 					while ($row = $res->getNextRow())
 					{
@@ -171,7 +171,7 @@
 			{
 				$c_id = $c_id->getID();
 			}
-			return B2DB::getTable('TBGEditionComponentsTable')->addEditionComponent($this->getID(), $c_id);
+			return \b2db\Core::getTable('TBGEditionComponentsTable')->addEditionComponent($this->getID(), $c_id);
 		}
 		
 		/**
@@ -185,7 +185,7 @@
 			{
 				$c_id = $c_id->getID();
 			}
-			B2DB::getTable('TBGEditionComponentsTable')->removeEditionComponent($this->getID(), $c_id);
+			\b2db\Core::getTable('TBGEditionComponentsTable')->removeEditionComponent($this->getID(), $c_id);
 		}
 		
 		/**
@@ -236,7 +236,7 @@
 			if ($this->_builds === null)
 			{
 				$this->_builds = array();
-				if ($res = B2DB::getTable('TBGBuildsTable')->getByEditionID($this->getID()))
+				if ($res = \b2db\Core::getTable('TBGBuildsTable')->getByEditionID($this->getID()))
 				{
 					while ($row = $res->getNextRow())
 					{
@@ -398,7 +398,7 @@
 
 		public function _preDelete()
 		{
-			B2DB::getTable('TBGEditionAssigneesTable')->deleteByEditionID($this->getID());
+			\b2db\Core::getTable('TBGEditionAssigneesTable')->deleteByEditionID($this->getID());
 		}
 		
 		/**

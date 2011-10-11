@@ -1,4 +1,9 @@
 <?php
+
+	use b2db\Core,
+		b2db\Criteria,
+		b2db\Criterion;
+	
 	/**
 	 * B2DB Table, vcs_integration -> VCSIntegrationTable
 	 *
@@ -52,153 +57,7 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGVCSIntegrationTable');
-		}
-
-		/**
-		 * Return number commits associated to a given issue
-		 *
-		 * @param $id ID number of issue
-		 *
-		 * @return integer
-		 */
-		public function getNumberOfCommitsByIssue($id)
-		{
-			$commits = $this->getCommitsByIssue($id);
-			
-			if ($commits === false)
-			{
-				return 0;
-			}
-			
-			return count($commits);
-		}
-		
-		/**
-		 * Return all commits associated to a given issue
-		 *
-		 * @param $id ID number of issue
-		 *
-		 * @return false if no commits, otherwise array
-		 */
-		public function getCommitsByIssue($id)
-		{
-			$crit = new B2DBCriteria();
-			$crit->addWhere(self::ISSUE_NO, $id);
-			$crit->addOrderBy(self::DATE, B2DBCriteria::SORT_DESC);
-			$results = $this->doSelect($crit);
-
-			if (!is_object($results) || $results->getNumberOfRows() == 0)
-			{
-				return false;
-			}
-			
-			$data = array();
-			
-			/* Build revision details */
-			while ($results->next())
-			{
-				$file = array($results->get(TBGVCSIntegrationTable::FILE_NAME), $results->get(TBGVCSIntegrationTable::ACTION), $results->get(TBGVCSIntegrationTable::NEW_REV), $results->get(TBGVCSIntegrationTable::OLD_REV));
-				if (array_key_exists($results->get(TBGVCSIntegrationTable::NEW_REV), $data))
-				{
-					$data[$results->get(TBGVCSIntegrationTable::NEW_REV)][1][] = $file;
-				}
-				else
-				{
-					// one array for revision details, other for files
-					$data[$results->get(TBGVCSIntegrationTable::NEW_REV)] = array(array(), array());
-					$data[$results->get(TBGVCSIntegrationTable::NEW_REV)][0] = array($results->get(TBGVCSIntegrationTable::ID), $results->get(TBGVCSIntegrationTable::AUTHOR), $results->get(TBGVCSIntegrationTable::DATE), $results->get(TBGVCSIntegrationTable::LOG), $results->get(TBGVCSIntegrationTable::ISSUE_NO));
-					$data[$results->get(TBGVCSIntegrationTable::NEW_REV)][1][] = $file;
-				}
-			}
-			
-			return $data;
-		}
-		
-		/**
-		 * Return all commits associated to a given project
-		 *
-		 * @param $id ID number of project
-		 * @param $limit Maximum age of commits to show, use strtotime format (default is 2 weeks ago)
-		 *
-		 * @return false if no commits, otherwise array
-		 */
-		public function getCommitsByProject($id, $limit = '-2 weeks')
-		{
-			$crit = new B2DBCriteria();
-			
-			$issues = TBGIssuesTable::getTable()->getIssuesByProjectId($id);
-			
-			$crit->addWhere(self::ISSUE_NO, $issues[0]->getID());
-			for($i = 1; $i != count($issues); $i++)
-			{
-				$crit->addOr(self::ISSUE_NO, $issues[$i]->getID());
-			}
-			
-			$crit->addWhere(self::DATE, strtotime($limit), $crit::DB_GREATER_THAN_EQUAL);
-			
-			$crit->addOrderBy(self::DATE, B2DBCriteria::SORT_DESC);
-			$results = $this->doSelect($crit);
-
-			if (!is_object($results) || $results->getNumberOfRows() == 0)
-			{
-				return false;
-			}
-			
-			$data = array();
-			
-			/* Build revision details */
-			while ($results->next())
-			{
-				$file = array($results->get(TBGVCSIntegrationTable::FILE_NAME), $results->get(TBGVCSIntegrationTable::ACTION), $results->get(TBGVCSIntegrationTable::NEW_REV), $results->get(TBGVCSIntegrationTable::OLD_REV));
-				if (array_key_exists($results->get(TBGVCSIntegrationTable::NEW_REV), $data))
-				{
-					$data[$results->get(TBGVCSIntegrationTable::NEW_REV)][1][] = $file;
-				}
-				else
-				{
-					// one array for revision details, other for files
-					$data[$results->get(TBGVCSIntegrationTable::NEW_REV)] = array(array(), array());
-					$data[$results->get(TBGVCSIntegrationTable::NEW_REV)][0] = array($results->get(TBGVCSIntegrationTable::ID), $results->get(TBGVCSIntegrationTable::AUTHOR), $results->get(TBGVCSIntegrationTable::DATE), $results->get(TBGVCSIntegrationTable::LOG), $results->get(TBGVCSIntegrationTable::ISSUE_NO));
-					$data[$results->get(TBGVCSIntegrationTable::NEW_REV)][1][] = $file;
-				}
-			}
-			
-			return $data;
-		}
-
-		/**
-		 * Add a commit entry to the database
-		 *
-		 * @param $id Issue ID
-		 * @param $action A/D/U action applied to file
-		 * @param $commit_msg Log message
-		 * @param $file File changed
-		 * @param $new_rev New revision
-		 * @param $old_rev Old revision
-		 * @param $uid UID of changer
-		 * @param $date POSIX timestamp of change
-		 */
-		public static function addEntry($id, $action, $commit_msg, $file, $new_rev, $old_rev, $uid, $date)
-		{
-			$crit = new B2DBCriteria();
-			$crit->addInsert(TBGVCSIntegrationTable::ISSUE_NO, $id); 
-			$crit->addInsert(TBGVCSIntegrationTable::ACTION, $action);
-			$crit->addInsert(TBGVCSIntegrationTable::LOG, $commit_msg);
-			$crit->addInsert(TBGVCSIntegrationTable::FILE_NAME, $file); 
-			$crit->addInsert(TBGVCSIntegrationTable::NEW_REV, $new_rev);
-			$crit->addInsert(TBGVCSIntegrationTable::OLD_REV, $old_rev);
-			$crit->addInsert(TBGVCSIntegrationTable::AUTHOR, $uid);
-			if ($date == null)
-			{
-				$crit->addInsert(TBGVCSIntegrationTable::DATE, time());
-			}
-			else
-			{
-				$crit->addInsert(TBGVCSIntegrationTable::DATE, $date);
-			}
-			$crit->addInsert(TBGVCSIntegrationTable::SCOPE, TBGContext::getScope()->getID());
-			B2DB::getTable('TBGVCSIntegrationTable')->doInsert($crit);
+			return Core::getTable('TBGVCSIntegrationTable');
 		}
 	}
 

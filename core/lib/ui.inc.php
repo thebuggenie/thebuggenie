@@ -28,17 +28,17 @@
 		}
 		else
 		{
-			if ($module != 'core' && !file_exists(THEBUGGENIE_PATH . 'themes/' . TBGSettings::getThemeName() . "/{$module}/" . $image))
+			if ($module != 'core' && !file_exists(THEBUGGENIE_PATH . 'iconsets/' . TBGSettings::getIconsetName() . "/{$module}/" . $image))
 			{
-				$params['src'] = TBGContext::getTBGPath() . "themes/modules/{$module}/" . TBGSettings::getThemeName() . '/' . $image;
+				$params['src'] = TBGContext::getTBGPath() . "iconsets/" . TBGSettings::getIconsetName() . "/modules/{$module}/" . $image;
 			}
 			elseif ($module != 'core')
 			{
-				$params['src'] = TBGContext::getTBGPath() . 'themes/' . TBGSettings::getThemeName() . "/{$module}/" . $image;
+				$params['src'] = TBGContext::getTBGPath() . 'iconsets/' . TBGSettings::getIconsetName() . "/{$module}/" . $image;
 			}
 			else
 			{
-				$params['src'] = TBGContext::getTBGPath() . 'themes/' . TBGSettings::getThemeName() . '/' . $image;
+				$params['src'] = TBGContext::getTBGPath() . 'iconsets/' . TBGSettings::getIconsetName() . '/' . $image;
 			}
 		}
 		if (!$relative)

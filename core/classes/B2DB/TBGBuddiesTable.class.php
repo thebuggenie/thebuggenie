@@ -1,5 +1,9 @@
 <?php
 
+	use b2db\Core,
+		b2db\Criteria,
+		b2db\Criterion;
+
 	/**
 	 * Buddies table
 	 *
@@ -33,7 +37,7 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGBuddiesTable');
+			return Core::getTable('TBGBuddiesTable');
 		}
 
 		public function __construct()

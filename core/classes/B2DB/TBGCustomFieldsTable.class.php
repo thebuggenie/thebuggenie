@@ -1,5 +1,9 @@
 <?php
 
+	use b2db\Core,
+		b2db\Criteria,
+		b2db\Criterion;
+
 	/**
 	 * Custom fields table
 	 *
@@ -36,7 +40,7 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGCustomFieldsTable');
+			return Core::getTable('TBGCustomFieldsTable');
 		}
 
 		public function __construct()
@@ -104,7 +108,7 @@
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 
 			$row = $this->doSelectOne($crit);
-			if ($row instanceof B2DBRow)
+			if ($row instanceof \b2db\Row)
 			{
 				return $row->get(self::FIELD_KEY);
 			}

@@ -278,7 +278,7 @@
 			if (self::$_users === null)
 			{
 				self::$_users = array();
-				if ($res = B2DB::getTable('TBGUsersTable')->getAll())
+				if ($res = \b2db\Core::getTable('TBGUsersTable')->getAll())
 				{
 					while ($row = $res->getNextRow())
 					{
@@ -335,7 +335,7 @@
 		public static function hashPassword($password, $salt = null)
 		{
 			$salt = ($salt !== null) ? $salt : TBGSettings::getPasswordSalt();
-			return sha1($password.$salt);
+			return crypt($password, '$2a$07$'.$salt.'$');
 		}
 		
 		/**
@@ -351,6 +351,8 @@
 			try
 			{
 				$row = null;
+				$external = false;
+				$raw = true;
 
 				// If no username and password specified, check if we have a session that exists already
 				if ($username === null && $password === null)
@@ -360,11 +362,11 @@
 						$username = TBGContext::getRequest()->getCookie('tbg3_username');
 						$password = TBGContext::getRequest()->getCookie('tbg3_password');
 						$row = TBGUsersTable::getTable()->getByUsernameAndPassword($username, $password);
+						$raw = false;
 
 						if (!$row)
 						{
-							TBGContext::getResponse()->deleteCookie('tbg3_username');
-							TBGContext::getResponse()->deleteCookie('tbg3_password');
+							TBGContext::logout();
 							throw new Exception('No such login');
 							//TBGContext::getResponse()->headerRedirect(TBGContext::getRouting()->generate('login'));
 						}
@@ -372,8 +374,9 @@
 				}
 				
 				// If we have authentication details, validate them
-				if (TBGSettings::getAuthenticationBackend() !== null && TBGSettings::getAuthenticationBackend() !== 'tbg' && $username !== null && $password !== null)
+				if (TBGSettings::isUsingExternalAuthenticationBackend() && $username !== null && $password !== null)
 				{
+					$external = true;
 					TBGLogging::log('Authenticating with backend: '.TBGSettings::getAuthenticationBackend(), 'auth', TBGLogging::LEVEL_INFO);
 					try
 					{
@@ -381,7 +384,6 @@
 						if ($mod->getType() !== TBGModule::MODULE_AUTH)
 						{
 							TBGLogging::log('Auth module is not the right type', 'auth', TBGLogging::LEVEL_FATAL);
-							throw new Exception('Invalid module type');
 						}
 						if (TBGContext::getRequest()->hasCookie('tbg3_username') && TBGContext::getRequest()->hasCookie('tbg3_password'))
 						{
@@ -394,8 +396,35 @@
 						if(!$row)
 						{
 							// Invalid
-							TBGContext::getResponse()->deleteCookie('tbg3_username');
-							TBGContext::getResponse()->deleteCookie('tbg3_password');
+							TBGContext::logout();
+							throw new Exception('No such login');
+							//TBGContext::getResponse()->headerRedirect(TBGContext::getRouting()->generate('login'));
+						}
+					}
+					catch (Exception $e)
+					{
+						throw $e;
+					}
+				}
+				// If we don't have login details, the backend may autologin from cookies or something
+				elseif (TBGSettings::isUsingExternalAuthenticationBackend())
+				{
+					$external = true;
+					TBGLogging::log('Authenticating without credentials with backend: '.TBGSettings::getAuthenticationBackend(), 'auth', TBGLogging::LEVEL_INFO);
+					try
+					{
+						$mod = TBGContext::getModule(TBGSettings::getAuthenticationBackend());
+						if ($mod->getType() !== TBGModule::MODULE_AUTH)
+						{
+							TBGLogging::log('Auth module is not the right type', 'auth', TBGLogging::LEVEL_FATAL);
+						}
+
+						$row = $mod->doAutoLogin();
+						
+						if(!$row)
+						{
+							// Invalid
+							TBGContext::logout();
 							throw new Exception('No such login');
 							//TBGContext::getResponse()->headerRedirect(TBGContext::getRouting()->generate('login'));
 						}
@@ -407,6 +436,7 @@
 				}
 				elseif ($username !== null && $password !== null)
 				{
+					$external = false;
 					TBGLogging::log('Using internal authentication', 'auth', TBGLogging::LEVEL_INFO);
 					// First test a pre-encrypted password
 					$row = TBGUsersTable::getTable()->getByUsernameAndPassword($username, $password);
@@ -418,19 +448,19 @@
 
 						if(!$row)
 						{
-							// This is a legacy account from a 2.1 upgrade - try md5
-							$row = TBGUsersTable::getTable()->getByUsernameAndPassword($username, md5($password));
+							// This is a legacy account from a 3.1 upgrade - try sha1 salted
+							$salt = TBGSettings::getPasswordSalt();
+							$row = TBGUsersTable::getTable()->getByUsernameAndPassword($username, sha1($password.$salt));
 							if(!$row)
 							{
 								// Invalid
-								TBGContext::getResponse()->deleteCookie('tbg3_username');
-								TBGContext::getResponse()->deleteCookie('tbg3_password');
+								TBGContext::logout();
 								throw new Exception('No such login');
 								//TBGContext::getResponse()->headerRedirect(TBGContext::getRouting()->generate('login'));
 							}
 							else 
 							{
-								// convert md5 to new password type
+								// convert sha1 to new password type
 								$user = new TBGUser($row->get(TBGUsersTable::ID), $row);
 								$user->changePassword($password);
 								$user->save();
@@ -465,6 +495,19 @@
 						throw new Exception('This account has been suspended');
 					}
 					$user = TBGContext::factory()->TBGUser($row->get(TBGUsersTable::ID), $row);
+					
+					if ($external == false)
+					{
+						if ($raw == false)
+						{
+							TBGContext::getResponse()->setCookie('tbg3_password', $password);
+						}
+						else
+						{
+							TBGContext::getResponse()->setCookie('tbg3_password', TBGUser::hashPassword($password));
+						}
+						TBGContext::getResponse()->setCookie('tbg3_username', $username);
+					}
 				}
 				elseif (TBGSettings::isLoginRequired())
 				{
@@ -479,7 +522,6 @@
 			{
 				throw $e;
 			}
-			
 			return $user;
 	
 		}
@@ -586,9 +628,7 @@
 				}
 				
 				// Set up a default dashboard for the user
-				TBGUserDashboardViewsTable::getTable()->addView($this->getID(), array('type' => TBGDashboard::DASHBOARD_VIEW_PREDEFINED_SEARCH, 'id' => TBGContext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES));
-				TBGUserDashboardViewsTable::getTable()->addView($this->getID(), array('type' => TBGDashboard::DASHBOARD_VIEW_PREDEFINED_SEARCH, 'id' => TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES));
-				TBGUserDashboardViewsTable::getTable()->addView($this->getID(), array('type' => TBGDashboard::DASHBOARD_VIEW_LOGGED_ACTION, 'id' => 0));
+				TBGDashboardViewsTable::getTable()->setDefaultViews($this->getID(), TBGDashboardViewsTable::TYPE_USER);
 			}
 			
 			if ($this->_timezone !== null)
@@ -630,9 +670,9 @@
 		/**
 		 * Class constructor
 		 *
-		 * @param B2DBRow $row
+		 * @param \b2db\Row $row
 		 */
-		public function _construct(B2DBRow $row, $foreign_key = null)
+		public function _construct(\b2db\Row $row, $foreign_key = null)
 		{
 			TBGLogging::log("User with id {$this->getID()} set up successfully");
 		}
@@ -896,7 +936,7 @@
 			if ($this->_starredissues === null)
 			{
 				$this->_starredissues = array();
-				if ($res = B2DB::getTable('TBGUserIssuesTable')->getUserStarredIssues($this->getID()))
+				if ($res = \b2db\Core::getTable('TBGUserIssuesTable')->getUserStarredIssues($this->getID()))
 				{
 					while ($row = $res->getNextRow())
 					{
@@ -949,12 +989,12 @@
 					return true;
 				}
 				TBGLogging::log('Logged in and unstarred, continuing');
-				$crit = new B2DBCriteria();
+				$crit = new \b2db\Criteria();
 				$crit->addInsert(TBGUserIssuesTable::ISSUE, $issue_id);
 				$crit->addInsert(TBGUserIssuesTable::UID, $this->_id);
 				$crit->addInsert(TBGUserIssuesTable::SCOPE, TBGContext::getScope()->getID());
 				
-				B2DB::getTable('TBGUserIssuesTable')->doInsert($crit);
+				\b2db\Core::getTable('TBGUserIssuesTable')->doInsert($crit);
 				$issue = TBGContext::factory()->TBGIssue($issue_id);
 				$this->_starredissues[$issue->getID()] = $issue;
 				ksort($this->_starredissues);
@@ -975,11 +1015,11 @@
 		 */
 		public function removeStarredIssue($issue_id)
 		{
-			$crit = new B2DBCriteria();
+			$crit = new \b2db\Criteria();
 			$crit->addWhere(TBGUserIssuesTable::ISSUE, $issue_id);
 			$crit->addWhere(TBGUserIssuesTable::UID, $this->_id);
 				
-			B2DB::getTable('TBGUserIssuesTable')->doDelete($crit);
+			\b2db\Core::getTable('TBGUserIssuesTable')->doDelete($crit);
 			unset($this->_starredissues[$issue_id]);
 			return true;
 		}
@@ -1228,7 +1268,7 @@
 		 */
 		public function clearTeams()
 		{
-			B2DB::getTable('TBGTeamMembersTable')->clearTeamsByUserID($this->getID());
+			\b2db\Core::getTable('TBGTeamMembersTable')->clearTeamsByUserID($this->getID());
 		}
 		
 		/**
@@ -1236,7 +1276,7 @@
 		 */
 		public function clearClients()
 		{
-			B2DB::getTable('TBGClientMembersTable')->clearClientsByUserID($this->getID());
+			\b2db\Core::getTable('TBGClientMembersTable')->clearClientsByUserID($this->getID());
 		}
 		
 		/**
@@ -1425,6 +1465,11 @@
 		{
 			return $this->getBuddyname();
 		}
+
+		public function getDisplayName()
+		{
+			return ($this->getRealname() == '') ? $this->getBuddyname() : $this->getRealname();
+		}
 		
 		/**
 		 * Returns the email of the user
@@ -1486,7 +1531,7 @@
 		public function getAvatarURL($small = true)
 		{
 			$url = '';
-			if ($this->usesGravatar())
+			if ($this->usesGravatar() && $this->getEmail())
 			{
 				$url = 'http://www.gravatar.com/avatar/' . md5(trim($this->getEmail())) . '.png?d=wavatar&amp;s=';
 				$url .= ($small) ? 22 : 48; 
@@ -1596,7 +1641,7 @@
 		public static function findUser($details)
 		{
 			$res = TBGUsersTable::getTable()->getByDetails($details);
-			
+
 			if (!$res || $res->count() > 1) return false;
 			$row = $res->getNextRow();
 			
@@ -1716,54 +1761,6 @@
 		{
 			$this->_timezone = $timezone;
 		}
-		
-		/**
-		 * Return whether the user can vote on issues for a specific product
-		 *  
-		 * @param integer $product_id The Product id
-		 * 
-		 * @return boolean
-		 */
-		public function canVoteOnIssuesForProduct($product_id)
-		{
-			return (bool) $this->hasPermission("b2canvote", $product_id);
-		}
-		
-		/**
-		 * Return whether the user can vote for a specific issue
-		 * 
-		 * @param integer $issue_id The issue id
-		 * 
-		 * @return boolean
-		 */
-		public function canVoteForIssue($issue_id)
-		{
-			return !(bool) $this->hasPermission("b2cantvote", $issue_id);
-		}
-
-		/**
-		 * Return if the user can add builds to an issue for a given project
-		 * 
-		 * @param integer $project_id The project id
-		 * 
-		 * @return boolean
-		 */
-		public function canAddBuildsToIssuesForProject($project_id)
-		{
-			return (bool) $this->hasPermission('b2canaddbuilds', $project_id);
-		}
-
-		/**
-		 * Return if the user can add components to an issue for a given project
-		 * 
-		 * @param integer $project_id The project id
-		 * 
-		 * @return boolean
-		 */
-		public function canAddComponentsToIssuesForProject($project_id)
-		{
-			return (bool) $this->hasPermission('b2canaddcomponents', $project_id);
-		}
 
 		/**
 		 * Return if the user can report new issues
@@ -1777,6 +1774,9 @@
 			if ($project_id !== null)
 			{
 				if (is_numeric($project_id)) $project_id = TBGContext::factory()->TBGProject($project_id);
+			
+				if ($project_id->isArchived()): return false; endif;
+				
 				$project_id = ($project_id instanceof TBGProject) ? $project_id->getID() : $project_id;
 				$retval = $this->hasPermission('cancreateissues', $project_id, 'core', true, null);
 				$retval = ($retval !== null) ? $retval : $this->hasPermission('cancreateandeditissues', $project_id, 'core', true, null);
@@ -1902,6 +1902,7 @@
 		 */
 		public function canManageProjectReleases(TBGProject $project)
 		{
+			if ($project->isArchived()): return false; endif;
 			return (bool) ($this->hasPermission('canmanageprojectreleases', $project->getID()) || $this->hasPermission('canmanageproject', $project->getID()));
 		}
 
@@ -1914,6 +1915,7 @@
 		 */
 		public function canEditProjectDetails(TBGProject $project)
 		{
+			if ($project->isArchived()): return false; endif;
 			return (bool) ($this->hasPermission('caneditprojectdetails', $project->getID(), 'core', true) || $this->hasPermission('canmanageproject', $project->getID(), 'core', true));
 		}
 
@@ -1926,6 +1928,7 @@
 		 */
 		public function canAddScrumUserStories(TBGProject $project)
 		{
+			if ($project->isArchived()): return false; endif;
 			return (bool) ($this->hasPermission('canaddscrumuserstories', $project->getID(), 'core', true) || $this->hasPermission('candoscrumplanning', $project->getID(), 'core', true) || $this->hasPermission('canaddscrumuserstories', 0, 'core', true) || $this->hasPermission('candoscrumplanning', 0, 'core', true));
 		}
 
@@ -1938,6 +1941,7 @@
 		 */
 		public function canAddScrumSprints(TBGProject $project)
 		{
+			if ($project->isArchived()): return false; endif;
 			return (bool) ($this->hasPermission('canaddscrumsprints', $project->getID(), 'core', true) || $this->hasPermission('candoscrumplanning', $project->getID(), 'core', true) || $this->hasPermission('canaddscrumsprints', 0, 'core', true) || $this->hasPermission('candoscrumplanning', 0, 'core', true));
 		}
 
@@ -1950,6 +1954,7 @@
 		 */
 		public function canAssignScrumUserStories(TBGProject $project)
 		{
+			if ($project->isArchived()): return false; endif;
 			return (bool) ($this->hasPermission('canassignscrumuserstoriestosprints', $project->getID(), 'core', true) || $this->hasPermission('candoscrumplanning', $project->getID(), 'core', true) || $this->hasPermission('canassignscrumuserstoriestosprints', 0, 'core', true) || $this->hasPermission('candoscrumplanning', 0, 'core', true));
 		}
 
@@ -2005,18 +2010,18 @@
 			{
 				$this->_associated_projects = array();
 				
-				$projects = B2DB::getTable('TBGProjectAssigneesTable')->getProjectsByUserID($this->getID());
-				$edition_projects = B2DB::getTable('TBGEditionAssigneesTable')->getProjectsByUserID($this->getID());
-				$component_projects = B2DB::getTable('TBGComponentAssigneesTable')->getProjectsByUserID($this->getID());
-				$lo_projects = B2DB::getTable('TBGProjectsTable')->getByUserID($this->getID());
+				$projects = \b2db\Core::getTable('TBGProjectAssigneesTable')->getProjectsByUserID($this->getID());
+				$edition_projects = \b2db\Core::getTable('TBGEditionAssigneesTable')->getProjectsByUserID($this->getID());
+				$component_projects = \b2db\Core::getTable('TBGComponentAssigneesTable')->getProjectsByUserID($this->getID());
+				$lo_projects = \b2db\Core::getTable('TBGProjectsTable')->getByUserID($this->getID());
 
 				$project_ids = array_merge(array_keys($projects), array_keys($edition_projects), array_keys($component_projects), array_keys($lo_projects));
 
 				foreach ($this->getTeams() as $team)
 				{
-					$projects_team = B2DB::getTable('TBGProjectAssigneesTable')->getProjectsByTeamID($team->getID());
-					$edition_projects_team = B2DB::getTable('TBGEditionAssigneesTable')->getProjectsByTeamID($team->getID());
-					$component_projects_team = B2DB::getTable('TBGComponentAssigneesTable')->getProjectsByTeamID($team->getID());
+					$projects_team = \b2db\Core::getTable('TBGProjectAssigneesTable')->getProjectsByTeamID($team->getID());
+					$edition_projects_team = \b2db\Core::getTable('TBGEditionAssigneesTable')->getProjectsByTeamID($team->getID());
+					$component_projects_team = \b2db\Core::getTable('TBGComponentAssigneesTable')->getProjectsByTeamID($team->getID());
 					$project_ids = array_merge(array_keys($projects_team), array_keys($edition_projects_team), array_keys($component_projects_team), $project_ids);	
 				}
 				
@@ -2065,7 +2070,7 @@
 		public function getIssues($number = null)
 		{
 			$retval = array();
-			if ($res = B2DB::getTable('TBGIssuesTable')->getIssuesPostedByUser($this->getID(), $number))
+			if ($res = \b2db\Core::getTable('TBGIssuesTable')->getIssuesPostedByUser($this->getID(), $number))
 			{
 				while ($row = $res->getNextRow())
 				{

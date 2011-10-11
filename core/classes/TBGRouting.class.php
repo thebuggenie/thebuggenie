@@ -81,7 +81,7 @@
 					$elements[count($elements) - 1] = $matches[1];
 					$route = '/'.implode('/', $elements);
 				}
-				else if ($route{strlen($route) - 1} == '/')
+				else if ($route{mb_strlen($route) - 1} == '/')
 				{
 					$suffix = '/';
 				}
@@ -100,13 +100,13 @@
 						if (isset($requirements[$element]))
 						{
 							$regex = $requirements[$element];
-							if (0 === strpos($regex, '^'))
+							if (0 === mb_strpos($regex, '^'))
 							{
-								$regex = substr($regex, 1);
+								$regex = mb_substr($regex, 1);
 							}
-							if (strlen($regex) - 1 === strpos($regex, '$'))
+							if (mb_strlen($regex) - 1 === mb_strpos($regex, '$'))
 							{
-								$regex = substr($regex, 0, -1);
+								$regex = mb_substr($regex, 0, -1);
 							}
 						}
 						else
@@ -144,16 +144,16 @@
 		{
 			TBGLogging::log('URL is ' . $url, 'routing');
 			// an URL should start with a '/', mod_rewrite doesn't respect that, but no-mod_rewrite version does.
-			if (strlen($url) == 0 || '/' != $url[0])
+			if (mb_strlen($url) == 0 || '/' != $url[0])
 			{
 				$url = '/'.$url;
 			}
 			TBGLogging::log('URL is now ' . $url, 'routing');
 	
 			// we remove the query string
-			if ($pos = strpos($url, '?'))
+			if ($pos = mb_strpos($url, '?'))
 			{
-				$url = substr($url, 0, $pos);
+				$url = mb_substr($url, 0, $pos);
 			}
 	
 			$break = false;
@@ -390,9 +390,9 @@
 		 */
 		public function generate($name, $params = array(), $relative = true, $querydiv = '/', $divider = '/', $equals = '/')
 		{
-			if (substr($name, 0, 1) == '@')
+			if (mb_substr($name, 0, 1) == '@')
 			{
-				$name = substr($name, 1);
+				$name = mb_substr($name, 1);
 				$details = explode('?', $name);
 				$name = array_shift($details);
 				if (count($details))
@@ -435,7 +435,7 @@
 			$real_url = preg_replace('/\:([^\/]+)/e', 'urlencode($params["\\1"])', $url);
 	
 			// we add all other params if *
-			if (strpos($real_url, '*'))
+			if (mb_strpos($real_url, '*'))
 			{
 				$tmp = array();
 				foreach ($params as $key => $value)
@@ -475,7 +475,7 @@
 					}
 				}
 				$tmp = implode($divider, $tmp);
-				if (strlen($tmp) > 0)
+				if (mb_strlen($tmp) > 0)
 				{
 					$tmp = $querydiv.$tmp;
 				}
@@ -483,11 +483,10 @@
 			}
 	
 			// strip off last divider character
-			if (strlen($real_url) > 1)
+			if (mb_strlen($real_url) > 1)
 			{
 				$real_url = rtrim($real_url, $divider);
 			}
-
 			if (!$relative)
 			{
 				return TBGContext::getURLhost() . TBGContext::getStrippedTBGPath() . $real_url;

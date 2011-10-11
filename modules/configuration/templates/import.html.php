@@ -1,7 +1,6 @@
 <?php
 
 	$tbg_response->setTitle(__('Import data'));
-	$tbg_response->addJavascript('config/settings.js');
 
 ?>
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
@@ -15,9 +14,9 @@
 			<div class="config_header" style="width: 750px;"><?php echo __('Import data'); ?></div>
 			<div style="width: 750px; clear: both; height: 30px;" class="tab_menu">
 				<ul id="import_menu">
-					<li id="tab_csv" class="selected"><?php echo javascript_link_tag(image_tag('icon_csv.png', array('style' => 'float: left; margin-right: 5px;')) . __('CSV'), array('onclick' => "switchSubmenuTab('tab_csv', 'import_menu');")); ?></li>
-					<li id="tab_tbg"><?php echo javascript_link_tag(image_tag('favicon.png', array('style' => 'float: left; margin-right: 5px;')) . __('BUGS 1.x/The Bug Genie 2'), array('onclick' => "switchSubmenuTab('tab_tbg', 'import_menu');")); ?></li>
-					<li id="tab_sample"><?php echo javascript_link_tag(image_tag('icon_project.png', array('style' => 'float: left; margin-right: 5px;')) . __('Sample data'), array('onclick' => "switchSubmenuTab('tab_sample', 'import_menu');")); ?></li>
+					<li id="tab_csv" class="selected"><?php echo javascript_link_tag(image_tag('icon_csv.png', array('style' => 'float: left; margin-right: 5px;')) . __('CSV'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_csv', 'import_menu');")); ?></li>
+					<li id="tab_tbg"><?php echo javascript_link_tag(image_tag('favicon.png', array('style' => 'float: left; margin-right: 5px;')) . __('BUGS 1.x/The Bug Genie 2'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_tbg', 'import_menu');")); ?></li>
+					<li id="tab_sample"><?php echo javascript_link_tag(image_tag('icon_project.png', array('style' => 'float: left; margin-right: 5px;')) . __('Sample data'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_sample', 'import_menu');")); ?></li>
 				</ul>
 			</div>
 			<div id="import_menu_panes">
@@ -26,12 +25,12 @@
 						<?php echo __('You can import data from a CSV file copied into a text box in The Bug Genie, exported from other sources. Please see the %CSVImport% wiki article for further details and instructions.', array('%CSVImport%' => link_tag(make_url('publish_article', array('article_name' => 'CSVImport')), __('CSVImport'), array('target' => '_blank')))); ?>
 						<div class="tab_header"><?php echo __('What data would you like to import?'); ?></div>
 						<ul>
-							<li><a href="javascript:void(0);" onClick="showFadedBackdrop('<?php echo make_url('configure_import_csv', array('type' => 'issues')); ?>');"><?php echo __('Issues'); ?></a></li>
-							<li><a href="javascript:void(0);" onClick="showFadedBackdrop('<?php echo make_url('configure_import_csv', array('type' => 'projects')); ?>');"><?php echo __('Projects'); ?></a></li>
-							<!--<li><a href="javascript:void(0);" onClick="showFadedBackdrop('<?php echo make_url('configure_import_csv', array('type' => 'users')); ?>');"><?php echo __('Users'); ?></a></li>
-							<li><a href="javascript:void(0);" onClick="showFadedBackdrop('<?php echo make_url('configure_import_csv', array('type' => 'teams')); ?>');"><?php echo __('Teams'); ?></a></li>-->
-							<li><a href="javascript:void(0);" onClick="showFadedBackdrop('<?php echo make_url('configure_import_csv', array('type' => 'clients')); ?>');"><?php echo __('Clients'); ?></a></li>
-							<!--<li><a href="javascript:void(0);" onClick="showFadedBackdrop('<?php echo make_url('configure_import_csv', array('type' => 'groups')); ?>');"><?php echo __('Groups'); ?></a></li>-->
+							<li><a href="javascript:void(0);" onClick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('configure_import_csv', array('type' => 'issues')); ?>');"><?php echo __('Issues'); ?></a></li>
+							<li><a href="javascript:void(0);" onClick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('configure_import_csv', array('type' => 'projects')); ?>');"><?php echo __('Projects'); ?></a></li>
+							<!--<li><a href="javascript:void(0);" onClick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('configure_import_csv', array('type' => 'users')); ?>');"><?php echo __('Users'); ?></a></li>
+							<li><a href="javascript:void(0);" onClick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('configure_import_csv', array('type' => 'teams')); ?>');"><?php echo __('Teams'); ?></a></li>-->
+							<li><a href="javascript:void(0);" onClick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('configure_import_csv', array('type' => 'clients')); ?>');"><?php echo __('Clients'); ?></a></li>
+							<!--<li><a href="javascript:void(0);" onClick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('configure_import_csv', array('type' => 'groups')); ?>');"><?php echo __('Groups'); ?></a></li>-->
 						</ul>
 						<?php echo __('When you select a type, you will be given the opportunity to copy in your CSV file, and import the data.'); ?>
 						<div class="tab_header"><?php echo __('Field IDs'); ?></div>
@@ -99,7 +98,7 @@
 					<div class="tab_header"><?php echo __('BUGS 1.x'); ?></div>
 					<div class="tab_content"><?php echo __('Please upgrade to BUGS 1.9, followed by The Bug Genie 2 (an upgrade script is included in the installation package for The Bug Genie 2). After upgrading, then follow the instructions below to upgrade from The Bug Genie 2.'); ?></div>
 					<div class="tab_header"><?php echo __('The Bug Genie 2'); ?></div>
-					<div class="tab_content"><?php echo __('Please upgrade to The Bug Genie 2.1 if you haven\'t already done so, then follow the instructions on The Bug Genie wiki to upgrade your data. There is not a built in upgrade script.'); ?></div>
+					<div class="tab_content"><?php echo __("Please upgrade to The Bug Genie 2.1 if you haven't already done so, then follow the %upgrade_instructions% on The Bug Genie wiki to upgrade your data. There is not a built in upgrade script.", array('%upgrade_instructions%' => link_tag('http://thebuggenie.com/thebuggenie/wiki/TheBugGenie:ImportFromTheBugGenieVersion2x', __('upgrade instructions')))); ?></div>
 				</div>
 				<div id="tab_sample_pane" style="padding-top: 0; width: 750px; display: none;">
 					<div class="tab_header"><?php echo __('Importing sample data'); ?></div>
@@ -121,7 +120,7 @@
 			</div>
 			<?php if (isset($imported_data)): ?>
 				<script type="text/javascript">
-					successMessage('<?php echo __('Sample data loaded!'); ?>', '<?php echo __('Sample data was loaded. You can now browse around The Bug Genie and try it out!'); ?>');
+					TBG.Main.Helpers.Message.success('<?php echo __('Sample data loaded!'); ?>', '<?php echo __('Sample data was loaded. You can now browse around The Bug Genie and try it out!'); ?>');
 				</script>
 			<?php endif; ?>
 		</td>

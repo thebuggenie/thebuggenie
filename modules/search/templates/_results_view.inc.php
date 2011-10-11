@@ -1,4 +1,4 @@
-<div class="rounded_box lightgrey borderless cut_bottom dashboard_view_header" style="margin-top: 5px;">
+<div class="header">
 	<?php if ($rss == true): ?>
 		<?php echo link_tag(make_url('search', array_merge($parameters, array('format' => 'rss'))), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: right; margin-left: 5px;', 'class' => 'image')); ?>
 	<?php endif; ?>
@@ -25,6 +25,6 @@
 		<?php endforeach; ?>
 		</table>
 	<?php else: ?>
-		<div class="faded_out" style="padding: 5px 5px 15px 5px;"><?php echo __($default_message); ?></div>
+		<div class="faded_out" style="padding: 5px 5px 10px 5px;"><?php echo __($default_message); ?></div>
 	<?php endif; ?>
 </div>

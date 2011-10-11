@@ -19,7 +19,7 @@
 			}
 		}
 		
-		public function _construct(B2DBRow $row, $foreign_key = null)
+		public function _construct(\b2db\Row $row, $foreign_key = null)
 		{
 			//echo '<pre>';
 			//var_dump($row);

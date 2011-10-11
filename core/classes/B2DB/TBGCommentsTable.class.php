@@ -1,5 +1,9 @@
 <?php
 
+	use b2db\Core,
+		b2db\Criteria,
+		b2db\Criterion;
+
 	/**
 	 * Comments table
 	 *
@@ -43,7 +47,7 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGCommentsTable');
+			return Core::getTable('TBGCommentsTable');
 		}
 		
 		public function __construct()
@@ -64,7 +68,7 @@
 			parent::_addForeignKeyColumn(self::POSTED_BY, TBGUsersTable::getTable(), TBGUsersTable::ID);
 		}
 
-		public function getComments($target_id, $target_type, $sort_order = B2DBCriteria::SORT_ASC)
+		public function getComments($target_id, $target_type, $sort_order = Criteria::SORT_ASC)
 		{
 			$crit = $this->getCriteria();
 			if($target_id != 0) 
@@ -96,7 +100,7 @@
 		public function getNextCommentNumber($target_id, $target_type)
 		{
 			$crit = $this->getCriteria();
-			$crit->addSelectionColumn(self::COMMENT_NUMBER, 'max_no', B2DBCriteria::DB_MAX, '', '+1');
+			$crit->addSelectionColumn(self::COMMENT_NUMBER, 'max_no', Criteria::DB_MAX, '', '+1');
 			$crit->addWhere(self::TARGET_ID, $target_id);
 			$crit->addWhere(self::TARGET_TYPE, $target_type);
 
@@ -110,7 +114,7 @@
 			$crit->addWhere(self::POSTED_BY, $user_id);
 			$crit->addWhere(self::TARGET_TYPE, $target_type);
 			$crit->addWhere(self::SYSTEM_COMMENT, false);
-			$crit->addOrderBy(self::POSTED, B2DBCriteria::SORT_DESC);
+			$crit->addOrderBy(self::POSTED, Criteria::SORT_DESC);
 			$crit->setLimit($limit);
 			
 			return $this->doSelect($crit);

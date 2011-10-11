@@ -19,24 +19,23 @@
 			$this->article = null;
 			$this->article_name = $request->getParameter('article_name');
 
-			if ($request->hasParameter('article_name') && strpos($request->getParameter('article_name'), ':') !== false)
+			if ($request->hasParameter('article_name') && mb_strpos($request->getParameter('article_name'), ':') !== false)
 			{
-
-				$namespace = substr($this->article_name, 0, strpos($this->article_name, ':'));
-				$article_name = substr($this->article_name, strpos($this->article_name, ':') + 1);
+				$namespace = mb_substr($this->article_name, 0, mb_strpos($this->article_name, ':'));
+				$article_name = mb_substr($this->article_name, mb_strpos($this->article_name, ':') + 1);
 
 				if ($namespace == 'Category')
 				{
-					$namespace = substr($article_name, 0, strpos($article_name, ':'));
-					$article_name = substr($article_name, strpos($article_name, ':') + 1);
+					$namespace = mb_substr($article_name, 0, mb_strpos($article_name, ':'));
+					$article_name = mb_substr($article_name, mb_strpos($article_name, ':') + 1);
 				}
 				
 				if ($namespace != '')
 				{
-					$key = strtolower($namespace);
+					$key = mb_strtolower($namespace);
 					$row = TBGProjectsTable::getTable()->getByKey($key);
 					
-					if ($row instanceof B2DBRow)
+					if ($row instanceof \b2db\Row)
 					{
 						$project = TBGContext::factory()->TBGProject($row->get(TBGProjectsTable::ID), $row);
 						
@@ -96,10 +95,10 @@
 				}
 				else
 				{
-					if (!$request->hasParameter('no_redirect') && substr($this->article->getContent(), 0, 10) == "#REDIRECT ")
+					if (!$request->hasParameter('no_redirect') && mb_substr($this->article->getContent(), 0, 10) == "#REDIRECT ")
 					{
 						$content = explode("\n", $this->article->getContent());
-						preg_match('/(\[\[([^\]]*?)\]\])$/im', substr(array_shift($content), 10), $matches);
+						preg_match('/(\[\[([^\]]*?)\]\])$/im', mb_substr(array_shift($content), 10), $matches);
 						if (count($matches) == 3)
 						{
 							$redirect_article = $matches[2];
@@ -132,6 +131,7 @@
 		{
 			if ($this->article instanceof TBGWikiArticle)
 			{
+				$this->forward403unless($this->article->canEdit());
 				$namespaces = $this->article->getCombinedNamespaces();
 				$namespaces[] = $this->article->getName();
 				array_unshift($namespaces, 0);
@@ -143,7 +143,7 @@
 		{
 			$this->history_action = $request->getParameter('history_action');
 			if ($this->article instanceof TBGWikiArticle)
-			{
+			{	
 				$this->history = $this->article->getHistory();
 				$this->revision_count = count($this->history);
 
@@ -280,8 +280,7 @@
 								$article = new TBGWikiArticle();
 								$article->setContent($request->getRawParameter('new_article_content'));
 								$article->setName($request->getParameter('new_article_name'));
-								$this->article = $article;
-							}
+								$this->article = $article;							}
 							else
 							{
 								$article_id = TBGWikiArticle::createNew($request->getParameter('new_article_name'), $request->getRawParameter('new_article_content', ''), true);
@@ -306,9 +305,10 @@
 			$this->article_content = null;
 			$this->article_intro = null;
 			$this->change_reason = null;
-
+			
 			if ($this->article instanceof TBGWikiArticle)
 			{
+				$this->forward403unless($this->article->canEdit());
 				$this->article_title = $this->article->getTitle();
 				$this->article_content = $this->article->getContent();
 
@@ -317,6 +317,7 @@
 					if ($request->hasParameter('new_article_name'))
 					{
 						$this->article_title = $request->getParameter('new_article_name');
+						$this->article->setName($request->getParameter('new_article_name'));
 					}
 					if ($request->hasParameter('new_article_content'))
 					{
@@ -330,6 +331,7 @@
 			}
 			else
 			{
+				$this->forward403if(TBGContext::isProjectContext() && TBGContext::getCurrentProject()->isArchived());
 				if ($request->hasParameter('new_article_content'))
 				{
 					$this->article_content = $request->getRawParameter('new_article_content');
@@ -346,7 +348,7 @@
 			
 			if ($this->articlename)
 			{
-				list ($this->resultcount, $this->articles) = TBGWikiArticle::findByArticleNameAndProject($this->articlename, TBGContext::getCurrentProject(), 10);
+				list ($this->resultcount, $this->articles) = TBGWikiArticle::findArticlesByContentAndProject($this->articlename, TBGContext::getCurrentProject(), 10);
 			}
 		}
 

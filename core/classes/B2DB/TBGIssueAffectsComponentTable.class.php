@@ -1,5 +1,9 @@
 <?php
 
+	use b2db\Core,
+		b2db\Criteria,
+		b2db\Criterion;
+
 	/**
 	 * Issue affects component table
 	 *
@@ -35,14 +39,14 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGIssueAffectsComponentTable');
+			return Core::getTable('TBGIssueAffectsComponentTable');
 		}
 		
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
 			parent::_addBoolean(self::CONFIRMED);
-			parent::_addForeignKeyColumn(self::COMPONENT, B2DB::getTable('TBGComponentsTable'), TBGComponentsTable::ID);
+			parent::_addForeignKeyColumn(self::COMPONENT, Core::getTable('TBGComponentsTable'), TBGComponentsTable::ID);
 			parent::_addForeignKeyColumn(self::ISSUE, TBGIssuesTable::getTable(), TBGIssuesTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 			parent::_addForeignKeyColumn(self::STATUS, TBGListTypesTable::getTable(), TBGListTypesTable::ID);

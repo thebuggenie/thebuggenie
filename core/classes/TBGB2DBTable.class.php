@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage mvc
 	 */
-	class TBGB2DBTable extends B2DBTable
+	class TBGB2DBTable extends \b2db\Table
 	{
 		
 		/**
@@ -24,7 +24,7 @@
 		 * 
 		 * @param integer $id
 		 * 
-		 * @return B2DBRow
+		 * @return \b2db\Row
 		 */
 		public function getByID($id)
 		{

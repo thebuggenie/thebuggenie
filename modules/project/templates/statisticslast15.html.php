@@ -1,0 +1,1 @@
+<?php include_component('pchart/lineGraph', array('width' => 450, 'height' => 275, 'style' => 'single_bar', 'labels' => $labels, 'values_title' => __('Number of issues', array(), true), 'labels_title' => __('# days ago', array(), true), 'datasets' => $datasets, 'title' => __('Closed vs open issues, last 15 days isolated', array(), true)));

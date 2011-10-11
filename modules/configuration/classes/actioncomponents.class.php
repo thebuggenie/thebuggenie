@@ -9,7 +9,7 @@
 			$geshi_languages = array();
 			foreach ($files as $file)
 			{
-				if (strstr($file, '.php') === false) continue;
+				if (mb_strstr($file, '.php') === false) continue;
 				$lang = str_replace('.php', '', $file);
 				$geshi_languages[$lang] = $lang;
 			}
@@ -24,11 +24,17 @@
 		public function componentAppearance()
 		{
 			$this->themes = TBGContext::getThemes();
+			$this->icons = TBGContext::getIconSets();
 		}
 
 		public function componentReglang()
 		{
 			$this->languages = TBGI18n::getLanguages();
+		}
+		
+		public function componentOffline()
+		{
+			
 		}
 
 		public function componentLeftmenu()
@@ -57,7 +63,7 @@
 			{
 				if ($module->hasConfigSettings() && $module->isEnabled())
 				{
-					$config_sections[TBGSettings::CONFIGURATION_SECTION_MODULES][] = array('route' => array('configure_module', array('config_module' => $module->getName())), 'description' => $module->getConfigTitle(), 'icon' => $module->getName(), 'module' => $module->getName());
+					$config_sections[TBGSettings::CONFIGURATION_SECTION_MODULES][] = array('route' => array('configure_module', array('config_module' => $module->getName())), 'description' => TBGContext::geti18n()->__($module->getConfigTitle()), 'icon' => $module->getName(), 'module' => $module->getName());
 				}
 			}
 			$breadcrumblinks = array();
@@ -202,6 +208,11 @@
 			$this->statustypes = TBGStatus::getAll();
 			$this->selected_tab = isset($this->section) ? $this->section : 'info';
 		}
+		
+		public function componentProjectInfo()
+		{
+			$this->valid_subproject_targets = TBGProject::getValidSubprojects($this->project);
+		}
 
 		public function componentProjectSettings()
 		{
@@ -233,6 +244,35 @@
 				$available_assignees[$user->getID()] = $user;
 			}
 			$this->available_assignees = $available_assignees;
+		}
+		
+		public function componentBuildbox()
+		{
+			$this->access_level = (TBGContext::getUser()->canSaveConfiguration(TBGSettings::CONFIGURATION_SECTION_PROJECTS)) ? TBGSettings::ACCESS_FULL : TBGSettings::ACCESS_READ;
+		}
+		
+		public function componentBuild()
+		{
+			if (!isset($this->build))
+			{
+				$this->build = new TBGBuild();
+				$this->build->setProject(TBGContext::getCurrentProject());
+				$this->build->setName(TBGContext::getI18n()->__('%project_name% version 0.0.0', array('%project_name%' => $this->project->getName())));
+				if (TBGContext::getRequest()->getParameter('edition_id') && $edition = TBGContext::factory()->TBGEdition(TBGContext::getRequest()->getParameter('edition_id')))
+				{
+					$this->build->setEdition($edition);
+				}
+			}
+		}
+		
+		public function componentProjecticons()
+		{
+			
+		}
+		
+		public function componentProjectworkflow()
+		{
+			
 		}
 
 	}

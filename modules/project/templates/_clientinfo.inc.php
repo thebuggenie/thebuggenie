@@ -1,4 +1,4 @@
-<span class="project_client_header"><?php echo $client->getName(); ?></span><span class="project_client_viewusers"><a href="javascript:void(0);" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'client_users', 'client_id' => $client->getID())); ?>');"><?php echo __('View users'); ?></a> :: <a href="<?php echo make_url('client_dashboard', array('client_id' => $client->getID())); ?>"><?php echo __('View client dashboard'); ?></a></span><br />
+<span class="project_client_header"><a href="<?php echo make_url('client_dashboard', array('client_id' => $client->getID())); ?>"><?php echo $client->getName(); ?></a></span><span class="project_client_viewusers"><a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'client_users', 'client_id' => $client->getID())); ?>');"><?php echo __('View users'); ?></a></span><br />
 <table>
 	<tr>
 		<td style="padding-right: 10px">

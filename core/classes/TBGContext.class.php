@@ -29,9 +29,16 @@
 		
 		static protected $_environment = 2;
 
-		static protected $debug_mode = false;
+		static protected $debug_mode = true;
 		
 		static protected $_partials_visited = array();
+		
+		/**
+		 * Outdated modules
+		 * 
+		 * @var array
+		 */
+		static protected $_outdated_modules = null;
 
 		/**
 		 * The current user
@@ -196,7 +203,7 @@
 		 * 
 		 * @var boolean
 		 */
-		static protected $_minifyoff = false;
+		static protected $_minifyoff = true;
 
 		/**
 		 * Returns whether or not we're in install mode
@@ -232,28 +239,91 @@
 		 * Add a path to the list of searched paths in the autoloader
 		 * Class files must contain one class with the same name as the class
 		 * in the form of Classname.class.php
-		 *
-		 * @param string $classpath The path where the class files are
-		 *
+		 * 
+		 * @param string $path The path where the class files are
+		 * 
 		 * @return null
 		 */
-		public static function addClasspath($classpath)
+		public static function autoloadNamespace($namespace, $path)
 		{
-			if (!is_dir($classpath))
-				throw new Exception("Cannot add {$classpath} to classpaths, since it doesn't exist");
-
-			$classpath = realpath($classpath) . DS;
-			
-			if (file_exists($classpath . 'actions.class.php'))
-				require_once $classpath . 'actions.class.php';
-
-			if (file_exists($classpath . 'actioncomponents.class.php'))
-				require_once $classpath . 'actioncomponents.class.php';
-
-			self::$_classpaths[$classpath] = $classpath; // . $file;
-			return true;
+			$path = realpath($path);
+			if (!file_exists($path)) throw new Exception("Cannot add {$path} to autoload, since the path doesn't exist");
+			self::$_classpaths[$namespace] = $path;
 		}
+		
+		public static function addAutoloaderClassPath($path)
+		{
+			$path = realpath($path);
+			if (!file_exists($path)) throw new Exception("Cannot add {$path} to autoload, since the path doesn't exist");
 
+			if (file_exists($path . DS . 'actions.class.php'))
+				require_once $path . DS . 'actions.class.php';
+
+			if (file_exists($path . DS . 'actioncomponents.class.php'))
+				require_once $path . DS . 'actioncomponents.class.php';
+
+			self::$_classpaths[0][] = $path;
+		}
+		
+		/**
+		 * Returns the classpaths that has been registered to the autoloader
+		 *
+		 * @return array
+		 */
+		public static function getAutoloadedNamespaces()
+		{
+			if (!array_key_exists(0, self::$_classpaths)) self::$_classpaths[0] = array();
+			return self::$_classpaths;
+		}
+		
+		/**
+		 * Magic autoload function to make sure classes are autoloaded when used
+		 * 
+		 * @param $classname
+		 */
+		public static function autoload($classname)
+		{
+			$class_details = explode('\\', $classname);
+			$namespaces = self::getAutoloadedNamespaces();
+			
+			if (count($class_details) > 1)
+			{
+				$namespace = array_shift($class_details);
+				if (array_key_exists($namespace, $namespaces))
+				{
+					if (count($class_details) > 2 && $namespace == 'caspar' && current($class_details) == 'modules')
+					{
+						$basepath = realpath($namespaces[$namespace] . DS . '..');
+					}
+					else
+					{
+						$basepath = $namespaces[$namespace];
+					}
+					$filename = $basepath . DS . join(DS, $class_details) . '.class.php';
+					$classname_element = array_pop($class_details);
+					$filename_alternate = $basepath . DS . join(DS, $class_details) . DS . "classes" . DS . $classname_element . ".class.php";
+				}
+			}
+			else
+			{
+				foreach ($namespaces[0] as $classpath)
+				{
+					if (file_exists($classpath . DS . $classname . '.class.php'))
+					{
+						$filename = $classpath . DS . $classname . '.class.php';
+					}
+				}
+			}
+			if (isset($filename) && file_exists($filename))
+			{
+				require $filename;
+			}
+			elseif (isset($filename_alternate) && file_exists($filename_alternate))
+			{
+				require $filename_alternate;
+			}
+		}
+		
 		/**
 		 * Returns the classpaths that has been registered to the autoloader
 		 *
@@ -333,7 +403,7 @@
 		{
 			if (self::$_stripped_tbgpath === null)
 			{
-				self::$_stripped_tbgpath = substr(self::getTBGPath(), 0, strlen(self::getTBGPath()) - 1);
+				self::$_stripped_tbgpath = mb_substr(self::getTBGPath(), 0, mb_strlen(self::getTBGPath()) - 1);
 			}
 			return self::$_stripped_tbgpath;
 		}
@@ -343,7 +413,7 @@
 		 */
 		protected static function _setTBGPath()
 		{
-			self::$_tbgpath = dirname($_SERVER['PHP_SELF']);
+			self::$_tbgpath = defined('TBG_CLI') ? '.' : dirname($_SERVER['PHP_SELF']);
 			if (stristr(PHP_OS, 'WIN')) { self::$_tbgpath = str_replace("\\", "/", self::$_tbgpath); /* Windows adds a \ to the URL which we don't want */ }
 			if (self::$_tbgpath[strlen(self::$_tbgpath) - 1] != '/') self::$_tbgpath .= '/';
 		}
@@ -385,7 +455,7 @@
 				self::$_installmode = true;
 			elseif (is_readable(THEBUGGENIE_PATH . 'upgrade'))
 				self::$_installmode = self::$_upgrademode = true;
-			elseif (!B2DB::isInitialized())
+			elseif (!\b2db\Core::isInitialized())
 				throw new Exception("The Bug Genie seems installed, but B2DB isn't configured. This usually indicates an error with the installation. Try removing the file ".THEBUGGENIE_PATH."installed and try again.");
 		}
 
@@ -398,6 +468,10 @@
 		{
 			try
 			{
+				mb_internal_encoding("UTF-8");
+				mb_language('uni');
+				mb_http_output("UTF-8");
+				
 				self::$_request = new TBGRequest();
 				self::$_response = new TBGResponse();
 				self::$_factory = new TBGFactory();
@@ -410,13 +484,18 @@
 				{
 					self::loadModules();
 					self::initializeUser();
-					TBGSettings::setTimezone();
 				}
+				
 				else
 					self::$_modules = array();
 				
 //				var_dump(self::getUser());die();
 				self::setupI18n();
+				
+				if (!is_writable(THEBUGGENIE_CORE_PATH . DIRECTORY_SEPARATOR . 'cache'))
+				{
+					throw new Exception(self::geti18n()->__('The cache directory is not writable. Please correct the permissions of core/cache, and try again'));
+				}
 				
 				self::loadPostModuleRoutes();
 				TBGLogging::log('...done initializing');
@@ -433,11 +512,11 @@
 			if (TBGContext::isCLI())
 				return null;
 
-			$language = (self::$_user instanceof TBGUser) ? self::$_user->getLanguage() : 'en_US';
+			$language = (self::$_user instanceof TBGUser) ? self::$_user->getLanguage() : TBGSettings::getLanguage();
 			
 			if (self::$_user instanceof TBGUser && self::$_user->getLanguage() == 'sys')
 			{
-				$language = 'en_US';
+				$language = TBGSettings::getLanguage();
 			}
 			
 			TBGLogging::log('Loading i18n strings');
@@ -487,7 +566,7 @@
 			catch (Exception $e)
 			{
 				TBGLogging::log("Something happened while setting up user: ". $e->getMessage(), 'main', TBGLogging::LEVEL_WARNING);
-				if (!self::isCLI() && (self::getRouting()->getCurrentRouteModule() != 'main' || self::getRouting()->getCurrentRouteAction() != 'register1' && self::getRouting()->getCurrentRouteAction() != 'register2' && self::getRouting()->getCurrentRouteAction() != 'activate' && self::getRouting()->getCurrentRouteAction() != 'reset_password' && self::getRouting()->getCurrentRouteAction() != 'captcha' && self::getRouting()->getCurrentRouteAction() != 'login' && self::getRouting()->getCurrentRouteAction() != 'getBackdropPartial' && self::getRouting()->getCurrentRouteAction() != 'serve'))
+				if (!self::isCLI() && (self::getRouting()->getCurrentRouteModule() != 'main' || self::getRouting()->getCurrentRouteAction() != 'register1' && self::getRouting()->getCurrentRouteAction() != 'register2' && self::getRouting()->getCurrentRouteAction() != 'activate' && self::getRouting()->getCurrentRouteAction() != 'reset_password' && self::getRouting()->getCurrentRouteAction() != 'captcha' && self::getRouting()->getCurrentRouteAction() != 'login' && self::getRouting()->getCurrentRouteAction() != 'getBackdropPartial' && self::getRouting()->getCurrentRouteAction() != 'serve' && self::getRouting()->getCurrentRouteAction() != 'doLogin'))
 					self::$_redirect_login = true;
 				else
 					self::$_user = self::factory()->TBGUser(TBGSettings::getDefaultUserID());
@@ -624,13 +703,29 @@
 			
 			while ($theme = readdir($theme_path_handle))
 			{
-				if (strstr($theme, '.') == '' && $theme != 'modules') 
+				if ($theme != '.' && $theme != '..' && is_dir(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'themes' . DS . $theme) && file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'themes' . DS . $theme . DS . 'theme.php')) 
 				{ 
 					$themes[] = $theme; 
 				}
 			}
 			
 			return $themes;
+		}
+
+		public static function getIconSets()
+		{
+			$icon_path_handle = opendir(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'iconsets' . DS);
+			$icons = array();
+			
+			while ($icon = readdir($icon_path_handle))
+			{
+				if ($icon != '.' && $icon != '..' && is_dir(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'iconsets' . DS . $icon)) 
+				{ 
+					$icons[] = $icon; 
+				}
+			}
+			
+			return $icons;
 		}
 		
 		/**
@@ -704,7 +799,7 @@
 					TBGLogging::log('getting modules from database');
 					$module_paths = array();
 
-					if ($res = B2DB::getTable('TBGModulesTable')->getAll())
+					if ($res = \b2db\Core::getTable('TBGModulesTable')->getAll())
 					{
 						while ($moduleRow = $res->getNextRow())
 						{
@@ -713,11 +808,11 @@
 							$moduleClassPath = THEBUGGENIE_MODULES_PATH . $module_name . DS . "classes" . DS;
 							try
 							{
-								self::addClasspath($moduleClassPath);
+								self::addAutoloaderClassPath($moduleClassPath);
 								$module_paths[] = $moduleClassPath;
 								if (file_exists($moduleClassPath . 'B2DB'))
 								{
-									self::addClasspath($moduleClassPath . 'B2DB' . DS);
+									self::addAutoloaderClassPath($moduleClassPath . 'B2DB' . DS);
 									$module_paths[] = $moduleClassPath . 'B2DB' . DS;
 								}
 							}
@@ -757,7 +852,7 @@
 					$module_paths = TBGCache::get(TBGCache::KEY_MODULE_PATHS);
 					foreach ($module_paths as $path)
 					{
-						self::addClasspath($path);
+						self::addAutoloaderClassPath($path);
 					}
 					self::$_modules = TBGCache::get(TBGCache::KEY_MODULES);
 					TBGLogging::log('done (using cached modules)');
@@ -806,6 +901,28 @@
 		public static function getModules()
 		{
 			return self::$_modules;
+		}
+		
+		/**
+		 * Returns an array of modules which need upgrading
+		 * 
+		 * @return array
+		 */
+		public static function getOutdatedModules()
+		{
+			if (self::$_outdated_modules == null)
+			{
+				self::$_outdated_modules = array();
+				foreach (self::getModules() as $module)
+				{
+					if ($module->isOutdated())
+					{
+						self::$_outdated_modules[] = $module;
+					}
+				}
+			}
+			
+			return self::$_outdated_modules;
 		}
 
 		/**
@@ -880,7 +997,7 @@
 		 */
 		public static function getAllPermissions($type, $uid, $tid, $gid, $target_id = null, $all = false)
 		{
-			$crit = new B2DBCriteria();
+			$crit = new \b2db\Criteria();
 			$crit->addWhere(TBGPermissionsTable::SCOPE, self::getScope()->getID());
 			$crit->addWhere(TBGPermissionsTable::PERMISSION_TYPE, $type);
 
@@ -909,7 +1026,7 @@
 	
 			$permissions = array();
 
-			if ($res = B2DB::getTable('TBGPermissionsTable')->doSelect($crit))
+			if ($res = \b2db\Core::getTable('TBGPermissionsTable')->doSelect($crit))
 			{
 				while ($row = $res->getNextRow())
 				{
@@ -938,7 +1055,7 @@
 				if (!$permissions = TBGCache::fileGet(TBGCache::KEY_PERMISSIONS_CACHE))
 				{
 					TBGLogging::log('starting to cache access permissions');
-					if ($res = B2DB::getTable('TBGPermissionsTable')->getAll())
+					if ($res = \b2db\Core::getTable('TBGPermissionsTable')->getAll())
 					{
 						while ($row = $res->getNextRow())
 						{
@@ -1007,7 +1124,7 @@
 		{
 			if ($scope === null) $scope = self::getScope()->getID();
 			
-			B2DB::getTable('TBGPermissionsTable')->removeSavedPermission($uid, $gid, $tid, $module, $permission_type, $target_id, $scope);
+			\b2db\Core::getTable('TBGPermissionsTable')->removeSavedPermission($uid, $gid, $tid, $module, $permission_type, $target_id, $scope);
 			
 			if ($recache) self::cacheAllPermissions();
 		}
@@ -1251,7 +1368,7 @@
 				self::$_available_permissions['project']['canseeprojecthierarchy'] = array('description' => $i18n->__('Can see complete project hierarchy'));
 				self::$_available_permissions['project']['canseeprojecthierarchy']['details']['canseeallprojecteditions'] = array('description' => $i18n->__('Can see all editions'));
 				self::$_available_permissions['project']['canseeprojecthierarchy']['details']['canseeallprojectcomponents'] = array('description' => $i18n->__('Can see all components'));
-				self::$_available_permissions['project']['canseeprojecthierarchy']['details']['canseeallprojectbuilds'] = array('description' => $i18n->__('Can see all release'));
+				self::$_available_permissions['project']['canseeprojecthierarchy']['details']['canseeallprojectbuilds'] = array('description' => $i18n->__('Can see all releases'));
 				self::$_available_permissions['project']['canseeprojecthierarchy']['details']['canseeallprojectmilestones'] = array('description' => $i18n->__('Can see all milestones'));
 				self::$_available_permissions['project']['candoscrumplanning'] = array('description' => $i18n->__('Can manage stories, tasks, sprints and backlog on the sprint planning page'), 'details' => array());
 				self::$_available_permissions['project']['candoscrumplanning']['details']['canaddscrumuserstories'] = array('description' => $i18n->__('Can add new user stories to the backlog on the sprint planning page'));
@@ -1368,9 +1485,9 @@
 			{
 				return self::$_available_permissions[$applies_to];
 			}
-			elseif (substr($applies_to, 0, 7) == 'module_')
+			elseif (mb_substr($applies_to, 0, 7) == 'module_')
 			{
-				$module_name = substr($applies_to, 7);
+				$module_name = mb_substr($applies_to, 7);
 				if (self::isModuleLoaded($module_name))
 				{
 					return self::getModule($module_name)->getAvailablePermissions();
@@ -1456,12 +1573,17 @@
 		 */
 		public static function logout()
 		{
+			if (TBGSettings::isUsingExternalAuthenticationBackend())
+			{
+				$mod = TBGContext::getModule(TBGSettings::getAuthenticationBackend());
+				$mod->logout();
+			}
+			
 			TBGEvent::createNew('core', 'pre_logout')->trigger();
 			self::getResponse()->deleteCookie('tbg3_username');
 			self::getResponse()->deleteCookie('tbg3_password');
 			self::getResponse()->deleteCookie('THEBUGGENIE');
 			session_regenerate_id(true);
-			session_destroy();
 			TBGEvent::createNew('core', 'post_logout')->trigger();
 		}
 
@@ -1495,7 +1617,7 @@
 				if (!self::isUpgrademode() && !self::isInstallmode())
 					$row = TBGScopesTable::getTable()->getByHostnameOrDefault($hostname);
 				
-				if (!$row instanceof B2DBRow)
+				if (!$row instanceof \b2db\Row)
 				{
 					TBGLogging::log("It couldn't", 'main', TBGLogging::LEVEL_WARNING);
 					if (!self::isInstallmode())
@@ -1551,19 +1673,82 @@
 		{
 			self::getResponse()->setBreadcrumb(null);
 			self::$_selected_project = $project;
+			
+			$childbreadcrumbs = array();
+			
 			if ($project instanceof TBGProject)
 			{
-				$projectsubmenulinks = null;
-				$clientsubmenulinks = null;
-				if (count(TBGProject::getAll()) > 1)
+				$t = $project;
+				
+				$hierarchy_breadcrumbs = array();
+				$projects_processed = array();
+				
+				while ($t instanceof TBGProject)
 				{
-					$projectsubmenulinks = array();
-					foreach (TBGProject::getAll() as $existing_project)
+					if (array_key_exists($t->getKey(), $projects_processed))
 					{
-						if (!$project->hasClient() || ($existing_project->hasClient() && $project->getClient()->getID() == $existing_project->getClient()->getID()))
-							$projectsubmenulinks[] = array('url' => self::getRouting()->generate('project_dashboard', array('project_key' => $existing_project->getKey())), 'title' => $existing_project->getName());
+						// We have a cyclic dependency! Oh no!
+						// If this happens, throw an exception
+						
+						throw new Exception(TBGContext::geti18n()->__('A loop has been found in the project heirarchy. Go to project configuration, and alter the subproject setting for this project so that this project is not a subproject of one which is a subproject of this one.'));
+						continue;
+					}
+					else
+					{
+						$all_projects = array_merge(TBGProject::getAllRootProjects(true), TBGProject::getAllRootProjects(false));
+						// If this is a root project, display a list of other root projects, then t is null
+						if (!($t->hasParent()) && count($all_projects) > 1)
+						{
+							$itemsubmenulinks = array();
+							foreach ($all_projects as $child)
+							{
+								$itemsubmenulinks[] = array('url' => self::getRouting()->generate('project_dashboard', array('project_key' => $child->getKey())), 'title' => $child->getName());
+							}
+							
+							$hierarchy_breadcrumbs[] = array($t, $itemsubmenulinks);
+							
+							$projects_processed[$t->getKey()] = $t;
+							
+							$t = null;
+							continue;
+						}
+						elseif (!($t->hasParent()))
+						{
+							$hierarchy_breadcrumbs[] = array($t, null);
+							
+							$projects_processed[$t->getKey()] = $t;
+							
+							$t = null;
+							continue;
+						}
+						else
+						{
+							// What we want to do here is to build a list of the children of the parent unless we are the only one
+							$parent = $t->getParent();
+							$children = $parent->getChildren();
+							
+							$itemsubmenulinks = null;
+							
+							if ($parent->hasChildren() && count($children) > 1)
+							{
+								$itemsubmenulinks = array();
+								foreach ($children as $child)
+								{
+									$itemsubmenulinks[] = array('url' => self::getRouting()->generate('project_dashboard', array('project_key' => $child->getKey())), 'title' => $child->getName());
+								}
+							}
+							
+							$hierarchy_breadcrumbs[] = array($t, $itemsubmenulinks);
+							
+							$projects_processed[$t->getKey()] = $t;
+							
+							$t = $parent;
+							continue;
+						}
 					}
 				}
+				
+				$clientsubmenulinks = null;
 				if (self::$_selected_project->hasClient())
 				{
 					$clientsubmenulinks = array();
@@ -1574,7 +1759,7 @@
 					}
 					self::setCurrentClient(self::$_selected_project->getClient());
 				}
-				if (strtolower(TBGSettings::getTBGname()) != strtolower($project->getName()) || self::isClientContext())
+				if (mb_strtolower(TBGSettings::getTBGname()) != mb_strtolower($project->getName()) || self::isClientContext())
 				{
 					self::getResponse()->addBreadcrumb(TBGSettings::getTBGName(), self::getRouting()->generate('home'));
 					if (self::isClientContext())
@@ -1582,7 +1767,19 @@
 						self::getResponse()->addBreadcrumb(self::getCurrentClient()->getName(), self::getRouting()->generate('client_dashboard', array('client_id' => self::getCurrentClient()->getID())), $clientsubmenulinks);
 					}
 				}
-				self::getResponse()->addBreadcrumb($project->getName(), self::getRouting()->generate('project_dashboard', array('project_key' => TBGContext::getCurrentProject()->getKey())), $projectsubmenulinks, 'selected_project');
+				
+				// Add root breadcrumb first, so reverse order
+				$hierarchy_breadcrumbs = array_reverse($hierarchy_breadcrumbs);
+				
+				foreach ($hierarchy_breadcrumbs as $breadcrumb)
+				{
+					$class = null;
+					if ($breadcrumb[0]->getKey() == self::getCurrentProject()->getKey())
+					{
+						$class = 'selected_project';
+					}
+					self::getResponse()->addBreadcrumb($breadcrumb[0]->getName(), self::getRouting()->generate('project_dashboard', array('project_key' => $breadcrumb[0]->getKey())), $breadcrumb[1], $class);					
+				}
 			}
 			else
 			{
@@ -1758,7 +1955,7 @@
 		 */
 		public static function loadLibrary($lib_name)
 		{
-			if (strpos($lib_name, '/') !== false)
+			if (mb_strpos($lib_name, '/') !== false)
 			{
 				list ($module, $lib_name) = explode('/', $lib_name);
 			}
@@ -1835,7 +2032,7 @@
 
 			// Set up the response object, responsible for controlling any output
 			self::getResponse()->setPage(self::getRouting()->getCurrentRouteName());
-			self::getResponse()->setTemplate(strtolower($method) . '.' . TBGContext::getRequest()->getRequestedFormat() . '.php');
+			self::getResponse()->setTemplate(mb_strtolower($method) . '.' . TBGContext::getRequest()->getRequestedFormat() . '.php');
 			self::getResponse()->setupResponseContentType(self::getRequest()->getRequestedFormat());
 			self::setCurrentProject(null);
 			
@@ -1846,7 +2043,7 @@
 			if (method_exists($actionObject, $actionToRunName))
 			{
 				// Turning on output buffering
-				ob_start();
+				ob_start('mb_output_handler');
 				ob_implicit_flush(0);
 
 				if (self::getRouting()->isCurrentRouteCSRFenabled())
@@ -1923,7 +2120,7 @@
 						{
 							// Check to see if the template has been changed, and whether it's in a
 							// different module, specified by "module/templatename"
-							if (strpos(self::getResponse()->getTemplate(), '/'))
+							if (mb_strpos(self::getResponse()->getTemplate(), '/'))
 							{
 								$newPath = explode('/', self::getResponse()->getTemplate());
 								$templateName = THEBUGGENIE_MODULES_PATH . $newPath[0] . DS . 'templates' . DS . $newPath[1] . '.' . TBGContext::getRequest()->getRequestedFormat() . '.php';
@@ -1977,58 +2174,59 @@
 				}
 
 				self::loadLibrary('common');
-				
-				// Render header template if any, and store the output in a variable
-				ob_start();
-				ob_implicit_flush(0);
-				if (!self::getRequest()->isAjaxCall() && self::getResponse()->doDecorateHeader())
-				{
-					TBGLogging::log('decorating with header');
-					if (!file_exists(self::getResponse()->getHeaderDecoration()))
-					{
-						throw new TBGTemplateNotFoundException('Can not find header decoration: '. self::getResponse()->getHeaderDecoration());
-					}
-					require self::getResponse()->getHeaderDecoration();
-					$decoration_header = ob_get_clean();
-				}
-
-				// Set up the run summary, and store it in a variable
-				ob_start();
-				ob_implicit_flush(0);
-				$load_time = self::getLoadtime();
-				if (B2DB::isInitialized())
-				{
-					$tbg_summary['db_queries'] = B2DB::getSQLHits();
-					$tbg_summary['db_timing'] = B2DB::getSQLTiming();
-				}
-				$tbg_summary['load_time'] = ($load_time >= 1) ? round($load_time, 2) . ' seconds' : round($load_time * 1000, 1) . 'ms';
-				$tbg_summary['scope_id'] = self::getScope() instanceof TBGScope ? self::getScope()->getID() : 'unknown';
-				self::ping();
-
-				// Render footer template if any, and store the output in a variable
-				if (!self::getRequest()->isAjaxCall() && self::getResponse()->doDecorateFooter())
-				{
-					TBGLogging::log('decorating with footer');
-					require self::getResponse()->getFooterDecoration();
-					$decoration_footer = ob_get_clean();
-				}
-				TBGLogging::log('...done');
 				TBGLogging::log('rendering content');
+				
+				if (TBGSettings::isMaintenanceModeEnabled() && !mb_strstr(self::getRouting()->getCurrentRouteName(), 'configure'))
+				{
+					if (!file_exists(THEBUGGENIE_CORE_PATH . 'templates/offline.inc.php'))
+					{
+						throw new TBGTemplateNotFoundException('Can not find offline mode template');
+					}
+					ob_start('mb_output_handler');
+					ob_implicit_flush(0);
+					require THEBUGGENIE_CORE_PATH . 'templates/offline.inc.php';
+					$content = ob_get_clean();
+				}
 
 				// Render output in correct order
 				self::getResponse()->renderHeaders();
 
-				if (isset($decoration_header))
-					echo $decoration_header;
+				if (self::getResponse()->getDecoration() == TBGResponse::DECORATE_DEFAULT)
+				{
+					require THEBUGGENIE_CORE_PATH . 'templates/layout.php';
+				}
+				else
+				{
+					// Render header template if any, and store the output in a variable
+					if (!self::getRequest()->isAjaxCall() && self::getResponse()->doDecorateHeader())
+					{
+						TBGLogging::log('decorating with header');
+						if (!file_exists(self::getResponse()->getHeaderDecoration()))
+						{
+							throw new TBGTemplateNotFoundException('Can not find header decoration: '. self::getResponse()->getHeaderDecoration());
+						}
+						require self::getResponse()->getHeaderDecoration();
+					}
 
-				echo $content;
-				if (isset($decoration_footer))
-					echo $decoration_footer;
+					echo $content;
 
-				TBGLogging::log('...done (rendering content)');
+					TBGLogging::log('...done (rendering content)');
 
-				if (self::isDebugMode())
-					self::getI18n()->addMissingStringsToStringsFile();
+					// Render footer template if any
+					if (!self::getRequest()->isAjaxCall() && self::getResponse()->doDecorateFooter())
+					{
+						TBGLogging::log('decorating with footer');
+						if (!file_exists(self::getResponse()->getFooterDecoration()))
+						{
+							throw new TBGTemplateNotFoundException('Can not find footer decoration: '. self::getResponse()->getFooterDecoration());
+						}
+						require self::getResponse()->getFooterDecoration();
+					}
+
+					TBGLogging::log('...done');
+				}
+
+				if (self::isDebugMode()) self::getI18n()->addMissingStringsToStringsFile();
 				
 				return true;
 			}
@@ -2037,6 +2235,19 @@
 				TBGLogging::log("Cannot find the method {$actionToRunName}() in class {$actionClassName}.", 'core', TBGLogging::LEVEL_FATAL);
 				throw new TBGActionNotFoundException("Cannot find the method {$actionToRunName}() in class {$actionClassName}. Make sure the method exists.");
 			}
+		}
+
+		public static function calculateTimings(&$tbg_summary)
+		{
+			$load_time = self::getLoadtime();
+			if (\b2db\Core::isInitialized())
+			{
+				$tbg_summary['db_queries'] = \b2db\Core::getSQLHits();
+				$tbg_summary['db_timing'] = \b2db\Core::getSQLTiming();
+			}
+			$tbg_summary['load_time'] = ($load_time >= 1) ? round($load_time, 2) . ' seconds' : round($load_time * 1000, 1) . 'ms';
+			$tbg_summary['scope_id'] = self::getScope() instanceof TBGScope ? self::getScope()->getID() : 'unknown';
+			self::ping();
 		}
 		
 		/**
@@ -2048,7 +2259,7 @@
 		{
 			if (!$links = TBGCache::get('core_main_links'))
 			{
-				$links = B2DB::getTable('TBGLinksTable')->getMainLinks();
+				$links = \b2db\Core::getTable('TBGLinksTable')->getMainLinks();
 				TBGCache::add('core_main_links', $links);
 			}
 			return $links;
@@ -2075,7 +2286,8 @@
 					if (self::$_redirect_login)
 					{
 						TBGLogging::log('An error occurred setting up the user object, redirecting to login', 'main', TBGLogging::LEVEL_NOTICE);
-						self::getResponse()->headerRedirect(self::getRouting()->generate('login_redirect'), 403);
+						TBGContext::setMessage('login_message_err', TBGContext::geti18n()->__('Please log in'));
+						self::getResponse()->headerRedirect(self::getRouting()->generate('login_page'), 403);
 					}
 					if (is_dir(THEBUGGENIE_MODULES_PATH . $route['module']))
 					{
@@ -2085,13 +2297,13 @@
 						}
 						if (!class_exists($route['module'].'Actions') && !class_exists($route['module'].'ActionComponents'))
 						{
-							self::addClasspath(THEBUGGENIE_MODULES_PATH . $route['module'] . DS . 'classes' . DS);
+							self::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . $route['module'] . DS . 'classes' . DS);
 						}
 						if (self::performAction($route['module'], $route['action']))
 						{
-							if (B2DB::isInitialized())
+							if (\b2db\Core::isInitialized())
 							{
-								B2DB::closeDBLink();
+								\b2db\Core::closeDBLink();
 							}
 							return true;
 						}
@@ -2110,21 +2322,21 @@
 			}
 			catch (TBGTemplateNotFoundException $e)
 			{
-				B2DB::closeDBLink();
+				\b2db\Core::closeDBLink();
 				TBGContext::setLoadedAt();
 				header("HTTP/1.0 404 Not Found", true, 404);
 				tbg_exception($e->getMessage() /*'Template file does not exist for current action'*/, $e);
 			}
 			catch (TBGActionNotFoundException $e)
 			{
-				B2DB::closeDBLink();
+				\b2db\Core::closeDBLink();
 				TBGContext::setLoadedAt();
 				header("HTTP/1.0 404 Not Found", true, 404);
 				tbg_exception('Module action "' . $route['action'] . '" does not exist for module "' . $route['module'] . '"', $e);
 			}
 			catch (TBGCSRFFailureException $e)
 			{
-				B2DB::closeDBLink();
+				\b2db\Core::closeDBLink();
 				TBGContext::setLoadedAt();
 				self::$_response->setHttpStatus(301);
 				$message = $e->getMessage();
@@ -2140,7 +2352,7 @@
 			}
 			catch (Exception $e)
 			{
-				B2DB::closeDBLink();
+				\b2db\Core::closeDBLink();
 				TBGContext::setLoadedAt();
 				header("HTTP/1.0 404 Not Found", true, 404);
 				tbg_exception('An error occured', $e);

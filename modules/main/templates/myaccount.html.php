@@ -31,7 +31,7 @@
 					{
 					?>
 					<?php if ($tbg_user->canChangePassword()): ?>
-					<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_change_password'); ?>" onsubmit="changePassword('<?php echo make_url('account_change_password'); ?>'); return false;" method="post" id="change_password_form" style="display: none;">
+					<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_change_password'); ?>" onsubmit="TBG.Main.Profile.changePassword('<?php echo make_url('account_change_password'); ?>'); return false;" method="post" id="change_password_form" style="display: none;">
 						<div class="rounded_box white shadowed" style="position: absolute; padding: 5px 10px 5px 10px; font-size: 13px; width: 300px;" id="change_password_div">
 							<b><?php echo __('Changing your password'); ?></b><br>
 							<div style="font-size: 13px; margin-bottom: 10px;"><?php echo __('Enter your current password in the first box, then enter your new password twice (to prevent you from typing mistakes).'); ?><br>
@@ -86,7 +86,7 @@
 					</div>
 					<div style="clear: both; margin-top: 10px;">
 						<?php echo image_tag('icon_user.png', array('style' => 'float: left; margin-right: 5px;')); ?>
-						<a href="javascript:void(0);" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'usercard', 'user_id' => $tbg_user->getID())); ?>');"><?php echo __('Preview my user card'); ?></a>
+						<a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'usercard', 'user_id' => $tbg_user->getID())); ?>');"><?php echo __('Preview my user card'); ?></a>
 					</div>
 				</div>
 			</div>
@@ -98,12 +98,12 @@
 		<td valign="top" align="left" style="padding: 0 10px 0 5px;">
 			<div style="margin: 10px 0 0 0; clear: both; height: 30px; width: 700px;" class="tab_menu">
 				<ul id="account_tabs">
-					<li class="selected" id="tab_profile"><a onclick="switchSubmenuTab('tab_profile', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_users.png', array('style' => 'float: left;')).__('Profile information'); ?></a></li>
-					<li id="tab_settings"><a onclick="switchSubmenuTab('tab_settings', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_general.png', array('style' => 'float: left;')).__('Settings'); ?></a></li>
+					<li class="selected" id="tab_profile"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_profile', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_users.png', array('style' => 'float: left;')).__('Profile information'); ?></a></li>
+					<li id="tab_settings"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_settings', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_general.png', array('style' => 'float: left;')).__('Settings'); ?></a></li>
 					<?php TBGEvent::createNew('core', 'account_tabs')->trigger(); ?>
 					<?php foreach (TBGContext::getModules() as $module_name => $module): ?>
 						<?php if ($module->hasAccountSettings()): ?>
-							<li id="tab_settings_<?php echo $module_name; ?>"><a onclick="switchSubmenuTab('tab_settings_<?php echo $module_name; ?>', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag($module->getAccountSettingsLogo(), array('style' => 'float: left;'), false, $module_name).$module->getAccountSettingsName(); ?></a></li>
+							<li id="tab_settings_<?php echo $module_name; ?>"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_settings_<?php echo $module_name; ?>', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag($module->getAccountSettingsLogo(), array('style' => 'float: left;'), false, $module_name).$module->getAccountSettingsName(); ?></a></li>
 						<?php endif; ?>
 					<?php endforeach; ?>
 				</ul>
@@ -118,7 +118,7 @@
 					else
 					{
 					?>
-					<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_save_information'); ?>" onsubmit="updateProfileInformation('<?php echo make_url('account_save_information'); ?>'); return false;" method="post" id="profile_information_form">
+					<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_save_information'); ?>" onsubmit="TBG.Main.Profile.updateInformation('<?php echo make_url('account_save_information'); ?>'); return false;" method="post" id="profile_information_form">
 						<div class="rounded_box borderless lightgrey cut_bottom" style="margin: 5px 0 0 0; width: 690px; border-bottom: 0;">
 							<p class="content"><?php echo __('Edit your profile details here, including additional information.'); ?><br><?php echo __('Required fields are marked with a little star.'); ?></p>
 							<table style="width: 680px;" class="padded_table" cellpadding=0 cellspacing=0>
@@ -143,7 +143,7 @@
 								<tr>
 									<td style="padding: 5px;"><label for="profile_email">* <?php echo __('Email address'); ?></label></td>
 									<td>
-										<input type="text" name="email" id="profile_email" value="<?php echo $tbg_user->getEmail(); ?>" style="width: 300px;">
+										<input type="email" name="email" id="profile_email" value="<?php echo $tbg_user->getEmail(); ?>" style="width: 300px;">
 									</td>
 								</tr>
 								<tr>
@@ -159,7 +159,7 @@
 								<tr>
 									<td style="padding: 5px;"><label for="profile_homepage"><?php echo __('Homepage'); ?></label></td>
 									<td>
-										<input type="text" name="homepage" id="profile_homepage" value="<?php echo $tbg_user->getHomepage(); ?>" style="width: 300px;">
+										<input type="url" name="homepage" id="profile_homepage" value="<?php echo $tbg_user->getHomepage(); ?>" style="width: 300px;">
 									</td>
 								</tr>
 								<tr>
@@ -178,7 +178,7 @@
 					?>
 				</div>
 				<div id="tab_settings_pane" style="display: none;">
-					<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_save_settings'); ?>" onsubmit="updateProfileSettings('<?php echo make_url('account_save_settings'); ?>'); return false;" method="post" id="profile_settings_form">
+					<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_save_settings'); ?>" onsubmit="TBG.Main.Profile.updateSettings('<?php echo make_url('account_save_settings'); ?>'); return false;" method="post" id="profile_settings_form">
 						<div class="rounded_box borderless lightgrey cut_bottom" style="margin: 5px 0 0 0; width: 690px; border-bottom: 0;">
 							<table style="width: 680px;" class="padded_table" cellpadding=0 cellspacing=0>
 								<tr>
@@ -248,7 +248,7 @@
 				<?php foreach (TBGContext::getModules() as $module_name => $module): ?>
 					<?php if ($module->hasAccountSettings()): ?>
 						<div id="tab_settings_<?php echo $module_name; ?>_pane" style="display: none;">
-							<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_save_module_settings', array('target_module' => $module_name)); ?>" onsubmit="updateProfileModuleSettings('<?php echo make_url('account_save_module_settings', array('target_module' => $module_name)); ?>', '<?php echo $module_name; ?>'); return false;" method="post" id="profile_<?php echo $module_name; ?>_form">
+							<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_save_module_settings', array('target_module' => $module_name)); ?>" onsubmit="TBG.Main.Profile.updateModuleSettings('<?php echo make_url('account_save_module_settings', array('target_module' => $module_name)); ?>', '<?php echo $module_name; ?>'); return false;" method="post" id="profile_<?php echo $module_name; ?>_form">
 								<div class="rounded_box borderless lightgrey cut_bottom" style="margin: 5px 0 0 0; width: 690px; border-bottom: 0;">
 									<?php include_component("{$module_name}/accountsettings", array('module' => $module)); ?>
 								</div>

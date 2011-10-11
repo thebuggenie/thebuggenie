@@ -1,12 +1,21 @@
 #!/usr/bin/php
 <?php
-
 	// Define The Bug Genie paths and related constants
+	define('TBG_CLI', true);
+
 	defined('DS') || define('DS', DIRECTORY_SEPARATOR);
-	defined('THEBUGGENIE_PATH') || define ('THEBUGGENIE_PATH', realpath(getcwd() . DS) . DS);
+	defined('THEBUGGENIE_PATH') || define ('THEBUGGENIE_PATH', dirname(realpath(__FILE__)) . DS);
 	defined('THEBUGGENIE_CORE_PATH') || define('THEBUGGENIE_CORE_PATH', THEBUGGENIE_PATH . 'core' . DS);
-	defined('THEBUGGENIE_CORE_PATH') || define('THEBUGGENIE_CORE_PATH', THEBUGGENIE_PATH . 'core' . DIRECTORY_SEPARATOR);
-	defined('THEBUGGENIE_MODULES_PATH') || define('THEBUGGENIE_MODULES_PATH', THEBUGGENIE_PATH . 'modules' . DIRECTORY_SEPARATOR);
+
+	if( !defined('THEBUGGENIE_CONFIG_PATH'))
+	{
+		if(file_exists(getenv('HOME') . DS . '.remote_server'))
+			define('THEBUGGENIE_CONFIG_PATH', getenv('HOME') . DS);
+		else
+			define('THEBUGGENIE_CONFIG_PATH', THEBUGGENIE_PATH);
+	}
+
+	defined('THEBUGGENIE_MODULES_PATH') || define('THEBUGGENIE_MODULES_PATH', THEBUGGENIE_PATH . 'modules' . DS);
 	defined('THEBUGGENIE_PUBLIC_FOLDER_NAME') || define('THEBUGGENIE_PUBLIC_FOLDER_NAME', '');
 
 	try
@@ -38,13 +47,14 @@
 	$commands = array('main' => array());
 	foreach ($command_paths as $module_name => $command_path)
 	{
-		TBGContext::addClasspath($command_path);
+		TBGContext::addAutoloaderClasspath($command_path);
 		$_path_handle = opendir($command_path);
 		while ($command_class_file = readdir($_path_handle))
 		{
 			if (($classname = substr($command_class_file, 0, strpos($command_class_file, '.'))) != '')
 			{
-				$command = new $classname();
+				$module = (TBGContext::isModuleLoaded($module_name)) ? TBGContext::getModule($module_name) : null;
+				$command = new $classname($module);
 				if ($command instanceof TBGCliCommand)
 				{
 					$commands[$module_name][$command->getCommandName()] = $command;
@@ -79,6 +89,8 @@
 			$module_command = explode(':', $argv[1]);
 			$module_name = (count($module_command) == 2) ? $module_command[0] : 'main';
 			$command = (count($module_command) == 2) ? $module_command[1] : $module_command[0];
+			
+			TBGContext::reinitializeI18n();
 
 			if (array_key_exists($module_name, $commands) && array_key_exists($command, $commands[$module_name]))
 			{

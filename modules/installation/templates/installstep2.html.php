@@ -60,7 +60,7 @@
 				</dt>
 				<dd>
 					<select name="db_type" id="db_type">
-					<?php foreach (B2DB::getDBtypes() as $db_type => $db_desc): ?>
+					<?php foreach (\b2db\Core::getDBtypes() as $db_type => $db_desc): ?>
 						<?php if (extension_loaded("pdo_{$db_type}")): ?>
 							<option value="<?php echo $db_type; ?>"<?php if (isset($b2db_dbtype) && $b2db_dbtype == $db_type): ?> selected<?php endif; ?>><?php echo $db_desc; ?></option>
 						<?php endif; ?>
@@ -86,7 +86,7 @@
 		</fieldset>
 		<div style="padding-top: 20px; clear: both; text-align: center;">
 			<label for="continue_button" style="font-size: 13px; margin-right: 10px;">Click this button to test the database connection details</label>
-			<img src="themes/oxygen/spinning_30.gif" id="next_indicator" style="display: none;">
+			<img src="iconsets/oxygen/spinning_30.gif" id="next_indicator" style="display: none;">
 			<input type="submit" id="continue_button" onclick="$('continue_button').hide();$('next_indicator').show();" value="Continue">
 		</div>
 	</form>

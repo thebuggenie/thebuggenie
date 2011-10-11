@@ -87,10 +87,16 @@
 				$this->all_well = false;
 			}
 			
-			if (!file_exists(THEBUGGENIE_CORE_PATH . 'cache')) mkdir(THEBUGGENIE_CORE_PATH . 'cache');
-			if (!file_exists(THEBUGGENIE_CORE_PATH . 'cache' . DS . 'B2DB')) mkdir(THEBUGGENIE_CORE_PATH . 'cache' . DS . 'B2DB');
+			if (!is_writable(THEBUGGENIE_PATH))
+			{
+				$this->base_folder_perm_ok = false;
+				$this->all_well = false;
+			}
 			
-			if (!is_writable(THEBUGGENIE_CORE_PATH . 'cache' . DS) || !is_writable(THEBUGGENIE_CORE_PATH . 'cache' . DS .'B2DB' . DS))
+			if (!file_exists(THEBUGGENIE_CORE_PATH . 'cache') && is_writable(THEBUGGENIE_CORE_PATH)) mkdir(THEBUGGENIE_CORE_PATH . 'cache');
+			if (!file_exists(THEBUGGENIE_CORE_PATH . 'cache' . DS . 'B2DB') && is_writable(THEBUGGENIE_CORE_PATH . 'cache')) mkdir(THEBUGGENIE_CORE_PATH . 'cache' . DS . 'B2DB');
+			
+			if (!file_exists(THEBUGGENIE_CORE_PATH . 'cache') || !file_exists(THEBUGGENIE_CORE_PATH . 'cache' . DS . 'B2DB') || !is_writable(THEBUGGENIE_CORE_PATH . 'cache' . DS) || !is_writable(THEBUGGENIE_CORE_PATH . 'cache' . DS .'B2DB' . DS))
 			{
 				$this->cache_folder_perm_ok = false;
 				$this->all_well = false;
@@ -158,21 +164,21 @@
 			{
 				try
 				{
-					B2DB::initialize(THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php');
+					\b2db\Core::initialize(THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php');
 				}
 				catch (Exception $e)
 				{
 				}
-				if (B2DB::isInitialized())
+				if (\b2db\Core::isInitialized())
 				{
 					$this->preloaded = true;
-					$this->username = B2DB::getUname();
-					$this->password = B2DB::getPasswd();
-					$this->dsn = B2DB::getDSN();
-					$this->hostname = B2DB::getHost();
-					$this->port = B2DB::getPort();
-					$this->b2db_dbtype = B2DB::getDBtype();
-					$this->db_name = B2DB::getDBname();
+					$this->username = \b2db\Core::getUname();
+					$this->password = \b2db\Core::getPasswd();
+					$this->dsn = \b2db\Core::getDSN();
+					$this->hostname = \b2db\Core::getHost();
+					$this->port = \b2db\Core::getPort();
+					$this->b2db_dbtype = \b2db\Core::getDBtype();
+					$this->db_name = \b2db\Core::getDBname();
 				}
 			}
 		}
@@ -192,15 +198,15 @@
 			{
 				if ($this->username = $request->getParameter('db_username'))
 				{
-					B2DB::setUname($this->username);
-					B2DB::setTablePrefix($request->getParameter('db_prefix'));
+					\b2db\Core::setUname($this->username);
+					\b2db\Core::setTablePrefix($request->getParameter('db_prefix'));
 					if ($this->password = $request->getRawParameter('db_password'))
-						B2DB::setPasswd($this->password);
+						\b2db\Core::setPasswd($this->password);
 
 					if ($this->selected_connection_detail == 'dsn')
 					{
 						if (($this->dsn = $request->getParameter('db_dsn')) != '')
-							B2DB::setDSN($this->dsn);
+							\b2db\Core::setDSN($this->dsn);
 						else
 							throw new Exception('You must provide a valid DSN');
 					}
@@ -208,17 +214,17 @@
 					{
 						if ($this->db_type = $request->getParameter('db_type'))
 						{
-							B2DB::setDBtype($this->db_type);
+							\b2db\Core::setDBtype($this->db_type);
 							if ($this->db_hostname = $request->getParameter('db_hostname'))
-								B2DB::setHost($this->db_hostname);
+								\b2db\Core::setHost($this->db_hostname);
 							else
 								throw new Exception('You must provide a database hostname');
 
 							if ($this->db_port = $request->getParameter('db_port'))
-								B2DB::setPort($this->db_port);
+								\b2db\Core::setPort($this->db_port);
 
 							if ($this->db_databasename = $request->getParameter('db_name'))
-								B2DB::setDBname($this->db_databasename);
+								\b2db\Core::setDBname($this->db_databasename);
 							else
 								throw new Exception('You must provide a database to use');
 						}
@@ -228,19 +234,13 @@
 						}
 					}
 					
-					B2DB::initialize(THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php');
-					$engine_path = B2DB::getEngineClassPath();
-					if ($engine_path !== null)
-						TBGContext::addClasspath($engine_path);
-					else
-						throw new Exception("Cannot initialize the B2DB engine");
-
-					B2DB::doConnect();
+					\b2db\Core::initialize(THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php');
+					\b2db\Core::doConnect();
 					
-					if (B2DB::getDBname() == '')
+					if (\b2db\Core::getDBname() == '')
 						throw new Exception('You must provide a database to use');
 
-					B2DB::saveConnectionParameters(THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php');
+					\b2db\Core::saveConnectionParameters(THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php');
 				}
 				else
 				{
@@ -249,14 +249,14 @@
 				
 				// Add table classes to classpath 
 				$tables_path = THEBUGGENIE_CORE_PATH . 'classes' . DS . 'B2DB' . DS;
-				TBGContext::addClasspath($tables_path);
+				TBGContext::addAutoloaderClassPath($tables_path);
 				$tables_path_handle = opendir($tables_path);
 				$tables_created = array();
 				while ($table_class_file = readdir($tables_path_handle))
 				{
-					if (($tablename = substr($table_class_file, 0, strpos($table_class_file, '.'))) != '') 
+					if (($tablename = mb_substr($table_class_file, 0, mb_strpos($table_class_file, '.'))) != '') 
 					{
-						B2DB::getTable($tablename)->create();
+						\b2db\Core::getTable($tablename)->create();
 						$tables_created[] = $tablename;
 					}
 				}
@@ -387,7 +387,7 @@
 			TBGScopeHostnamesTable::getTable()->create();
 			
 			// Add classpath for existing old tables used for upgrade
-			TBGContext::addClasspath(THEBUGGENIE_MODULES_PATH . 'installation' . DS . 'classes' . DS . 'upgrade_3.0');
+			TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'installation' . DS . 'classes' . DS . 'upgrade_3.0');
 			
 			// Upgrade old tables
 			TBGScopesTable::getTable()->upgrade(TBGScopesTable3dot0::getTable());
@@ -403,7 +403,7 @@
 			}
 			
 			// Start a transaction to preserve the upgrade path
-			$transaction = B2DB::startTransaction();
+			$transaction = \b2db\Core::startTransaction();
 			
 			// Add votes to feature requests for default issue type scheme
 			$its = new TBGIssuetypeScheme(1);
@@ -442,11 +442,25 @@
 			$this->upgrade_complete = true;
 		}
 
+		protected function _upgradeFrom3dot1()
+		{
+			// Add classpath for existing old tables used for upgrade
+			TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'installation' . DS . 'classes' . DS . 'upgrade_3.1');
+
+			TBGProjectsTable::getTable()->upgrade(TBGProjectsTable3dot1::getTable());
+			TBGBuildsTable::getTable()->upgrade(TBGBuildsTable3dot1::getTable());
+			TBGDashboardViewsTable::getTable()->create();
+
+			TBGSettings::saveSetting(TBGSettings::SETTING_ICONSET, TBGSettings::get(TBGSettings::SETTING_THEME_NAME));
+			
+			$this->upgrade_complete = true;
+		}
+
 		public function runUpgrade(TBGRequest $request)
 		{
 			$version_info = explode(',', file_get_contents(THEBUGGENIE_PATH . 'installed'));
 			$this->current_version = $version_info[0];
-			$this->upgrade_available = ($this->current_version != '3.1');
+			$this->upgrade_available = ($this->current_version != '3.2');
 			
 			if ($this->upgrade_available)
 			{
@@ -464,7 +478,8 @@
 				{
 					case '3.0':
 						$this->_upgradeFrom3dot0();
-						break;
+					case '3.1':
+						$this->_upgradeFrom3dot1();
 				}
 				
 				if ($this->upgrade_complete)
@@ -472,11 +487,11 @@
 					$existing_installed_content = file_get_contents(THEBUGGENIE_PATH . 'installed');
 					file_put_contents(THEBUGGENIE_PATH . 'installed', TBGSettings::getVersion(false, false) . ', upgraded ' . date('d.m.Y H:i') . "\n" . $existing_installed_content);
 					unlink(THEBUGGENIE_PATH . 'upgrade');
-					$this->current_version = '3.1';
+					$this->current_version = '3.2';
 					$this->upgrade_available = false;
 				}
 			}
-			elseif ($this->current_version != '3.1')
+			elseif ($this->upgrade_available)
 			{
 				$this->permissions_ok = false;
 				if (is_writable(THEBUGGENIE_PATH . 'installed') && is_writable(THEBUGGENIE_PATH . 'upgrade'))

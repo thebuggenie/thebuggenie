@@ -1,6 +1,6 @@
 <?php $apc_enabled = TBGRequest::CanGetUploadStatus(); ?>
 <div id="attach_file" style="display: none;">
-	<div class="rounded_box white borderless shadowed backdrop_box medium">
+	<div class="backdrop_box medium">
 		<div class="backdrop_detail_header">
 			<?php if ($mode == 'issue'): ?>
 				<?php echo __('Attach one or more file(s) to this issue'); ?>
@@ -174,11 +174,11 @@
 							$('viewissue_uploaded_files').insert({bottom: json.content_inline});
 							$('viewissue_uploaded_attachments_count').update(json.attachmentcount);
 						<?php elseif ($mode == 'article'): ?>
-							$('article_<?php echo strtolower($article->getName()); ?>_no_files').hide();
-							$('article_<?php echo strtolower($article->getName()); ?>_files').insert({bottom: json.content_inline});
+							$('article_<?php echo mb_strtolower($article->getName()); ?>_no_files').hide();
+							$('article_<?php echo mb_strtolower($article->getName()); ?>_files').insert({bottom: json.content_inline});
 						<?php endif; ?>
 						this.error = false;
-						successMessage('File attached successfully');
+						TBG.Main.Helpers.Message.success('File attached successfully');
 					}
 					else if (json.error)
 					{
@@ -186,7 +186,7 @@
 						this.status.hide();
 						this.form.hide();
 						this.error = true;
-						failedMessage(json.error);
+						TBG.Main.Helpers.Message.error(json.error);
 					}
 				}
 			},
@@ -200,11 +200,11 @@
 				this.poller.stop();
 				if (json && (json.failed || json.error))
 				{
-					failedMessage(json.error);
+					TBG.Main.Helpers.Message.error(json.error);
 				}
 				else
 				{
-					failedMessage(transport.responseText);
+					TBG.Main.Helpers.Message.error(transport.responseText);
 				}
 			}
 

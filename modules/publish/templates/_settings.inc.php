@@ -1,7 +1,7 @@
 <div style="margin-top: 5px; width: 750px; clear: both; height: 30px;" class="tab_menu">
 	<ul id="publish_settings_menu">
-		<li class="selected" id="publish_tab_settings"><a onclick="switchSubmenuTab('publish_tab_settings', 'publish_settings_menu');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_general.png', array('style' => 'float: left;')).__('General wiki settings'); ?></a></li>
-		<li id="publish_tab_import"><a onclick="switchSubmenuTab('publish_tab_import', 'publish_settings_menu');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_import.png', array('style' => 'float: left;')).__('Import wiki articles'); ?></a></li>
+		<li class="selected" id="publish_tab_settings"><a onclick="TBG.Main.Helpers.tabSwitcher('publish_tab_settings', 'publish_settings_menu');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_general.png', array('style' => 'float: left;')).__('General wiki settings'); ?></a></li>
+		<li id="publish_tab_import"><a onclick="TBG.Main.Helpers.tabSwitcher('publish_tab_import', 'publish_settings_menu');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_import.png', array('style' => 'float: left;')).__('Import wiki articles'); ?></a></li>
 	</ul>
 </div>
 <div id="publish_settings_menu_panes">
@@ -88,8 +88,8 @@
 			<ul class="simple_list" id="import_articles_list">
 			<?php foreach ($articles as $article_name => $details): ?>
 				<li class="article_category_<?php echo $details['category']; ?>">
-					<input type="checkbox" value="1" name="import_article[<?php echo $article_name; ?>]" id="import_article_<?php echo strtolower($article_name); ?>"<?php if (!$details['exists']) echo ' selected'; ?>>&nbsp;
-					<label for="import_article_<?php echo strtolower($article_name); ?>"><?php echo urldecode($article_name); ?></label>
+					<input type="checkbox" value="1" name="import_article[<?php echo $article_name; ?>]" id="import_article_<?php echo mb_strtolower($article_name); ?>"<?php if (!$details['exists']) echo ' selected'; ?>>&nbsp;
+					<label for="import_article_<?php echo mb_strtolower($article_name); ?>"><?php echo urldecode($article_name); ?></label>
 					<?php if ($details['exists']): ?>
 						&nbsp;<?php echo link_tag(make_url('publish_article', array('article_name' => $article_name)), __('Open existing article in new window'), array('style' => 'font-size: 0.8em;', 'target' => "_{$article_name}")); ?>
 						<div class="faded_out"><?php echo __('Importing this article will overwrite an existing article in the database'); ?></div>

@@ -10,7 +10,7 @@
 				</td>
 				<?php if (!$rule->getTransition()->isCore()): ?>
 					<td id="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_edit" style="display: none; padding: 2px;">
-						<form action="<?php echo make_url('configure_workflow_transition_update_validation_rule', array('workflow_id' => $rule->getWorkflow()->getID(), 'transition_id' => $rule->getTransition()->getID(), 'rule_id' => $rule->getID())); ?>" onsubmit="updateWorkflowTransitionValidationRule('<?php echo make_url('configure_workflow_transition_update_validation_rule', array('workflow_id' => $rule->getWorkflow()->getID(), 'transition_id' => $rule->getTransition()->getID(), 'rule_id' => $rule->getID())); ?>', <?php echo $rule->getID(); ?>);return false;" id="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_form">
+						<form action="<?php echo make_url('configure_workflow_transition_update_validation_rule', array('workflow_id' => $rule->getWorkflow()->getID(), 'transition_id' => $rule->getTransition()->getID(), 'rule_id' => $rule->getID())); ?>" onsubmit="TBG.Config.Workflows.Transition.Validations.update('<?php echo make_url('configure_workflow_transition_update_validation_rule', array('workflow_id' => $rule->getWorkflow()->getID(), 'transition_id' => $rule->getTransition()->getID(), 'rule_id' => $rule->getID())); ?>', <?php echo $rule->getID(); ?>);return false;" id="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_form">
 							<input type="submit" value="<?php echo __('Update'); ?>" style="float: right;">
 							<label for="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_input"><?php echo __('Current user can have no more than this many issues assigned'); ?></label>
 							<select id="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_input" name="rule_value">
@@ -47,7 +47,7 @@
 				</td>
 				<?php if (!$rule->getTransition()->isCore()): ?>
 					<td id="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_edit" style="display: none; padding: 2px;">
-						<form action="<?php echo make_url('configure_workflow_transition_update_validation_rule', array('workflow_id' => $rule->getWorkflow()->getID(), 'transition_id' => $rule->getTransition()->getID(), 'rule_id' => $rule->getID())); ?>" onsubmit="updateWorkflowTransitionValidationRule('<?php echo make_url('configure_workflow_transition_update_validation_rule', array('workflow_id' => $rule->getWorkflow()->getID(), 'transition_id' => $rule->getTransition()->getID(), 'rule_id' => $rule->getID())); ?>', <?php echo $rule->getID(); ?>);return false;" id="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_form">
+						<form action="<?php echo make_url('configure_workflow_transition_update_validation_rule', array('workflow_id' => $rule->getWorkflow()->getID(), 'transition_id' => $rule->getTransition()->getID(), 'rule_id' => $rule->getID())); ?>" onsubmit="TBG.Config.Workflows.Transition.Validations.update('<?php echo make_url('configure_workflow_transition_update_validation_rule', array('workflow_id' => $rule->getWorkflow()->getID(), 'transition_id' => $rule->getTransition()->getID(), 'rule_id' => $rule->getID())); ?>', <?php echo $rule->getID(); ?>);return false;" id="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_form">
 							<input type="submit" value="<?php echo __('Update'); ?>" style="float: right;">
 							<label>
 								<?php if ($rule->getRule() == TBGWorkflowTransitionValidationRule::RULE_STATUS_VALID): ?>
@@ -100,7 +100,7 @@
 			<div class="content">
 				<?php echo __('Do you really want to delete this validation rule?'); ?>
 				<div style="text-align: right;">
-					<?php echo javascript_link_tag(__('Yes'), array('onclick' => "deleteWorkflowTransitionValidationRule('".make_url('configure_workflow_transition_delete_validation_rule', array('workflow_id' => $rule->getWorkflow()->getID(), 'transition_id' => $rule->getTransition()->getID(), 'rule_id' => $rule->getID()))."', {$rule->getID()}, '{$rule->isPreOrPost()}', '{$rule->getRule()}');")); ?> ::
+					<?php echo javascript_link_tag(__('Yes'), array('onclick' => "TBG.Config.Workflows.Transition.Validations.remove('".make_url('configure_workflow_transition_delete_validation_rule', array('workflow_id' => $rule->getWorkflow()->getID(), 'transition_id' => $rule->getTransition()->getID(), 'rule_id' => $rule->getID()))."', {$rule->getID()}, '{$rule->isPreOrPost()}', '{$rule->getRule()}');")); ?> ::
 					<b><?php echo javascript_link_tag(__('No'), array('onclick' => "\$('workflowtransitionvalidationrule_{$rule->getID()}_delete').toggle();")); ?></b>
 				</div>
 				<div style="padding: 10px 0 10px 0; display: none;" id="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_delete_indicator"><span style="float: left;"><?php echo image_tag('spinning_16.gif'); ?></span>&nbsp;<?php echo __('Please wait'); ?></div>

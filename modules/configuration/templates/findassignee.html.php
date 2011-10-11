@@ -5,7 +5,7 @@
 	<?php if ($teams): ?>
 		<div style="margin: 5px 0 0 10px;">
 			<?php foreach ($teams as $team): ?>
-				<form action="<?php echo make_url('configure_project_add_assignee', array('project_id' => $theProject->getID(), 'assignee_type' => 'team', 'assignee_id' => $team->getID())); ?>" onsubmit="assignToProject('<?php echo make_url('configure_project_add_assignee', array('project_id' => $theProject->getID(), 'assignee_type' => 'team', 'assignee_id' => $team->getID())); ?>', 'assign_team_<?php echo $team->getID(); ?>');return false;" method="post" id="assign_team_<?php echo $team->getID(); ?>">
+				<form action="<?php echo make_url('configure_project_add_assignee', array('project_id' => $theProject->getID(), 'assignee_type' => 'team', 'assignee_id' => $team->getID())); ?>" onsubmit="TBG.Project.assign('<?php echo make_url('configure_project_add_assignee', array('project_id' => $theProject->getID(), 'assignee_type' => 'team', 'assignee_id' => $team->getID())); ?>', 'assign_team_<?php echo $team->getID(); ?>');return false;" method="post" id="assign_team_<?php echo $team->getID(); ?>">
 					<label for="role_team_<?php echo $team->getID(); ?>"><?php echo $team->getName(); ?>:</label>&nbsp;
 					<select name="role" id="role_team_<?php echo $team->getID(); ?>">
 						<?php foreach (TBGProjectAssigneesTable::getTypes() as $role): ?>
@@ -44,7 +44,7 @@
 	<?php if ($users): ?>
 		<div style="margin: 5px 0 0 10px;">
 			<?php foreach ($users as $user): ?>
-				<form action="<?php echo make_url('configure_project_add_assignee', array('project_id' => $theProject->getID(), 'assignee_type' => 'user', 'assignee_id' => $user->getID())); ?>" onsubmit="assignToProject('<?php echo make_url('configure_project_add_assignee', array('project_id' => $theProject->getID(), 'assignee_type' => 'user', 'assignee_id' => $user->getID())); ?>', 'assign_user_<?php echo $user->getID(); ?>');return false;" method="post" id="assign_user_<?php echo $user->getID(); ?>">
+				<form action="<?php echo make_url('configure_project_add_assignee', array('project_id' => $theProject->getID(), 'assignee_type' => 'user', 'assignee_id' => $user->getID())); ?>" onsubmit="TBG.Project.assign('<?php echo make_url('configure_project_add_assignee', array('project_id' => $theProject->getID(), 'assignee_type' => 'user', 'assignee_id' => $user->getID())); ?>', 'assign_user_<?php echo $user->getID(); ?>');return false;" method="post" id="assign_user_<?php echo $user->getID(); ?>">
 					<label for="role_<?php echo $user->getID(); ?>"><?php echo $user->getNameWithUsername(); ?>:</label>&nbsp;
 					<select name="role" id="role_<?php echo $user->getID(); ?>">
 						<?php foreach (TBGProjectAssigneesTable::getTypes() as $type_id => $type_desc): ?>

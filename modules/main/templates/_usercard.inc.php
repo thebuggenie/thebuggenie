@@ -1,4 +1,4 @@
-<div class="rounded_box white borderless shadowed backdrop_box large backdrop_detail_content" id="user_details_popup">
+<div class="backdrop_box large backdrop_detail_content" id="user_details_popup">
 	<div id="backdrop_detail_content" class="rounded_top" style="padding: 10px; text-align: left;">
 		<div class="user_id"><?php echo $user->getID(); ?></div>
 		<div style="padding: 2px; width: 48px; height: 48px; text-align: center; background-color: #FFF; border: 1px solid #DDD; float: left;">
@@ -17,11 +17,11 @@
 			<?php if ($user->getID() != TBGContext::getUser()->getID() && !(TBGContext::getUser()->isFriend($user)) && !$user->isGuest()): ?>
 				<div id="friends_link_<?php echo $user->getUsername() . '_' . $rnd_no; ?>">
 					<span style="padding: 2px; <?php if (TBGContext::getUser()->isFriend($user)): ?> display: none;<?php endif; ?>" id="add_friend_<?php echo $user->getID() . '_' . $rnd_no; ?>">
-						<?php echo javascript_link_tag(__('Become friends'), array('onclick' => "_updateDivWithJSONFeedback('".make_url('toggle_friend', array('mode' => 'add', 'user_id' => $user->getID()))."', null, 'toggle_friend_{$user->getID()}_{$rnd_no}_indicator', null, null, 'add_friend_{$user->getID()}_{$rnd_no}', ['add_friend_{$user->getID()}_{$rnd_no}'], ['remove_friend_{$user->getID()}_{$rnd_no}']);")); ?>
+						<?php echo javascript_link_tag(__('Become friends'), array('onclick' => "TBG.Main.Profile.addFriend('".make_url('toggle_friend', array('mode' => 'add', 'user_id' => $user->getID()))."', {$user->getID()}, {$rnd_no});")); ?>
 					</span>
 					<?php echo image_tag('spinning_16.gif', array('id' => "toggle_friend_{$user->getID()}_{$rnd_no}_indicator", 'style' => 'display: none;')); ?>
 					<span style="padding: 2px; <?php if (!TBGContext::getUser()->isFriend($user)): ?> display: none;<?php endif; ?>" id="remove_friend_<?php echo $user->getID() . '_' . $rnd_no; ?>">
-						<?php echo javascript_link_tag(__('Remove this friend'), array('onclick' => "_updateDivWithJSONFeedback('".make_url('toggle_friend', array('mode' => 'remove', 'user_id' => $user->getID()))."', null, 'toggle_friend_{$user->getID()}_{$rnd_no}_indicator', null, null, 'remove_friend_{$user->getID()}_{$rnd_no}', ['remove_friend_{$user->getID()}_{$rnd_no}'], ['add_friend_{$user->getID()}_{$rnd_no}']);")); ?>
+						<?php echo javascript_link_tag(__('Remove this friend'), array('onclick' => "TBG.Main.Profile.removeFriend('".make_url('toggle_friend', array('mode' => 'remove', 'user_id' => $user->getID()))."', {$user->getID()}, {$rnd_no});")); ?>
 					</span>
 				</div>
 			<?php endif; ?>
@@ -50,14 +50,18 @@
 			<?php endif; ?>	
 			<br>	
 			<?php if (count($issues)): ?>	
-				<?php echo __('This user has reported %issues% issue(s)', array('%issues%' => '<b>'.count($user->getIssues()).'</b>')); ?>
+				<?php echo __('This user has reported %issues% issue(s)', array('%issues%' => '<b>'.count($issues).'</b>')); ?>
+				<?php $seen = 0; ?>
 				<h4><?php echo __('Last reported issues:') . ' '; ?></h4>
 					<ul class="simple_list">
 					<?php foreach ($issues as $issue): ?>
-						<li>
-							<span class="faded_out smaller">[<?php echo link_tag(make_url('project_dashboard', array('project_key' => $issue->getProject()->getKey())), $issue->getProject()->getKey()); ?>]</span>
-							<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), tbg_truncateText($issue->getFormattedTitle(true), 100)); ?>
-						</li>
+						<?php if ($issue->hasAccess()): ?>
+							<li>
+								<span class="faded_out smaller">[<?php echo link_tag(make_url('project_dashboard', array('project_key' => $issue->getProject()->getKey())), $issue->getProject()->getKey()); ?>]</span>
+								<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), tbg_truncateText($issue->getFormattedTitle(true), 100)); ?>
+							</li>
+							<?php if (++$seen == 7) break; ?>
+						<?php endif; ?>
 					<?php endforeach; ?>
 					</ul>
 			<?php else: ?>
@@ -77,6 +81,6 @@
 		<?php TBGEvent::createNew('core', 'usercardactions_bottom', $user)->trigger(); ?>
 	</div>
 	<div class="backdrop_detail_footer">
-		<a href="javascript:void(0);" onclick="resetFadedBackdrop();"><?php echo __('Close'); ?></a>
+		<a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.reset();"><?php echo __('Close'); ?></a>
 	</div>
 </div>

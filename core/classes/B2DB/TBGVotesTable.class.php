@@ -1,5 +1,9 @@
 <?php
 
+	use b2db\Core,
+		b2db\Criteria,
+		b2db\Criterion;
+
 	/**
 	 * Votes table
 	 *
@@ -34,7 +38,7 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGVotesTable');
+			return Core::getTable('TBGVotesTable');
 		}
 
 		public function __construct()
@@ -49,7 +53,7 @@
 		public function getVoteSumForIssue($issue_id)
 		{
 			$crit = $this->getCriteria();
-			$crit->addSelectionColumn(self::VOTE, 'votes_total', B2DBCriteria::DB_SUM);
+			$crit->addSelectionColumn(self::VOTE, 'votes_total', Criteria::DB_SUM);
 			$crit->addWhere(self::TARGET, $issue_id);
 			$res = $this->doSelectOne($crit);
 

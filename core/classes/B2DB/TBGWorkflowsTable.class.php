@@ -1,5 +1,9 @@
 <?php
 
+	use b2db\Core,
+		b2db\Criteria,
+		b2db\Criterion;
+
 	/**
 	 * Workflows table
 	 *
@@ -34,7 +38,7 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGWorkflowsTable');
+			return Core::getTable('TBGWorkflowsTable');
 		}
 
 		public function __construct()
@@ -51,7 +55,7 @@
 			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, $scope);
-			$crit->addOrderBy(self::ID, B2DBCriteria::SORT_ASC);
+			$crit->addOrderBy(self::ID, Criteria::SORT_ASC);
 
 			$res = $this->doSelect($crit);
 

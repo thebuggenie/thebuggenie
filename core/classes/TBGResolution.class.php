@@ -53,7 +53,7 @@
 		{
 			foreach (self::getAll() as $resolution)
 			{
-				if ($resolution->getKey() == str_replace(array(' ', '/', "'"), array('', '', ''), strtolower($key)))
+				if ($resolution->getKey() == str_replace(array(' ', '/', "'"), array('', '', ''), mb_strtolower($key)))
 				{
 					return $resolution;
 				}
@@ -76,7 +76,7 @@
 
 		protected function _generateKey()
 		{
-			$this->_key = str_replace(array(' ', '/', "'"), array('', '', ''), strtolower($this->getName()));
+			$this->_key = str_replace(array(' ', '/', "'"), array('', '', ''), mb_strtolower($this->getName()));
 		}
 		
 		public function getKey()

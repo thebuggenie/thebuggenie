@@ -100,7 +100,7 @@
 		 *
 		 * @param B2DBrow $row
 		 */
-		public function _construct(B2DBRow $row, $foreign_key = null)
+		public function _construct(\b2db\Row $row, $foreign_key = null)
 		{
 			$this->_content = str_replace("\r\n", "\n", $this->_content);
 			$this->_old_content = $this->_content;
@@ -112,10 +112,10 @@
 			$this->_author = TBGContext::getUser();
 		}
 		
-		public static function findByArticleNameAndProject($name, $project, $limit = 5, $offset = 0)
+		public static function findArticlesByContentAndProject($content, $project, $limit = 5, $offset = 0)
 		{
 			$articles = array();
-			list ($resultcount, $res) = TBGArticlesTable::getTable()->findArticlesLikeName($name, $project, $limit, $offset);
+			list ($resultcount, $res) = TBGArticlesTable::getTable()->findArticlesContaining($content, $project, $limit, $offset);
 			
 			if ($res)
 			{
@@ -142,7 +142,7 @@
 			{
 				$row = TBGArticlesTable::getTable()->getArticleByName($article_name);
 			}
-			if ($row instanceof B2DBRow)
+			if ($row instanceof \b2db\Row)
 			{
 				return PublishFactory::article($row->get(TBGArticlesTable::ID), $row);
 			}
@@ -167,7 +167,6 @@
 			$article = new TBGWikiArticle();
 			$article->setName($name);
 			$article->setContent($content);
-			$article->setIsPublished($published);
 			
 			if (!isset($options['noauthor']))
 				$article->setAuthor($user_id);
@@ -224,7 +223,11 @@
 				{
 					while ($row = $res->getNextRow())
 					{
-						$this->_linking_articles[$row->get(TBGArticleLinksTable::ARTICLE_NAME)] = PublishFactory::articleName($row->get(TBGArticleLinksTable::ARTICLE_NAME));
+						try
+						{
+							$this->_linking_articles[$row->get(TBGArticleLinksTable::ARTICLE_NAME)] = PublishFactory::articleName($row->get(TBGArticleLinksTable::ARTICLE_NAME));
+						}
+						catch (Exception $e) {}
 					}
 				}
 			}
@@ -351,7 +354,7 @@
 		{
 			if ($this->_category_name === null)
 			{
-				$this->_category_name = substr($this->_name, strpos($this->_name, ':') + 1);
+				$this->_category_name = mb_substr($this->_name, mb_strpos($this->_name, ':') + 1);
 			}
 			return $this->_category_name;
 		}
@@ -381,7 +384,7 @@
 		}
 
 		public function doSave($options = array(), $reason = null)
-		{
+		{	
 			if (TBGArticlesTable::getTable()->doesNameConflictExist($this->_name, $this->_id, TBGContext::getScope()->getID()))
 			{
 				if (!array_key_exists('overwrite', $options) || !$options['overwrite'])
@@ -395,17 +398,18 @@
 			{
 				TBGArticleHistoryTable::getTable()->addArticleHistory($this->_name, $this->_old_content, $this->_content, $user_id, $reason);
 			}
-			$this->save();
-
-			$this->_old_content = $this->_content;
 
 			TBGArticleLinksTable::getTable()->deleteLinksByArticle($this->_name);
 			TBGArticleCategoriesTable::getTable()->deleteCategoriesByArticle($this->_name);
 
-			if (substr($this->getContent(), 0, 10) == "#REDIRECT ")
+			$this->save();
+
+			$this->_old_content = $this->_content;
+
+			if (mb_substr($this->getContent(), 0, 10) == "#REDIRECT ")
 			{
 				$content = explode("\n", $this->getContent());
-				preg_match('/(\[\[([^\]]*?)\]\])$/im', substr(array_shift($content), 10), $matches);
+				preg_match('/(\[\[([^\]]*?)\]\])$/im', mb_substr(array_shift($content), 10), $matches);
 				if (count($matches) == 3)
 				{
 					return;
@@ -427,82 +431,7 @@
 
 			return true;
 		}
-
-		public function retract()
-		{
-			$crit = new B2DBCriteria();
-			$crit->addUpdate(TBGArticlesTable::IS_PUBLISHED, 0);
-			$res = TBGArticlesTable::getTable()->doUpdateById($crit, $this->_id);
-			$this->is_published = false;
-		}
-
-		public function publish()
-		{
-			$crit = new B2DBCriteria();
-			$crit->addUpdate(TBGArticlesTable::IS_PUBLISHED, 1);
-			$res = TBGArticlesTable::getTable()->doUpdateById($crit, $this->_id);
-			$this->is_published = true;
-		}
-
-		public function hideFromNews()
-		{
-			$crit = new B2DBCriteria();
-			$crit->addUpdate(TBGArticlesTable::IS_NEWS, 0);
-			$res = TBGArticlesTable::getTable()->doUpdateById($crit, $this->_id);
-			$this->is_news = false;
-		}
 		
-		public function view()
-		{
-			$crit = new B2DBCriteria();
-			$crit->addWhere(TBGArticleViewsTable::ARTICLE_ID, $this->getID());
-			$crit->addWhere(TBGArticleViewsTable::USER_ID, TBGContext::getUser()->getID());
-			if (B2DB::getTable('TBGArticleViewsTable')->doCount($crit) == 0)
-			{
-				$crit = new B2DBCriteria();
-				$crit->addInsert(TBGArticleViewsTable::ARTICLE_ID, $this->getID());
-				$crit->addInsert(TBGArticleViewsTable::USER_ID, TBGContext::getUser()->getID());
-				$crit->addInsert(TBGArticleViewsTable::SCOPE, TBGContext::getScope()->getID());
-				B2DB::getTable('TBGArticleViewsTable')->doInsert($crit);
-			}
-		}
-		
-		public function getViews()
-		{
-			$crit = new B2DBCriteria();
-			$crit->addWhere(TBGArticleViewsTable::ARTICLE_ID, $this->getID());
-			return B2DB::getTable('TBGArticleViewsTable')->doCount($crit);
-		}
-		
-		public function hasIntro()
-		{
-			return ($this->_intro_text != '') ? true : false;
-		}
-		
-		public function hasAnyContent()
-		{
-			if ($this->hasIntro() || $this->hasContent())
-			{
-				return true;
-			}
-			return false;
-		}
-		
-		public function canRead()
-		{
-			return true;
-		}
-
-		public function isPublished()
-		{
-			return $this->_is_published;
-		}
-
-		public function setIsPublished($published = true)
-		{
-			$this->_is_published = $published;
-		}
-
 		public function getPostedDate()
 		{
 			return $this->_date;
@@ -649,7 +578,7 @@
 		{
 			foreach ($this->getFiles() as $file_id => $file)
 			{
-				if (strtolower($filename) == strtolower($file->getOriginalFilename()))
+				if (mb_strtolower($filename) == mb_strtolower($file->getOriginalFilename()))
 				{
 					return $file;
 				}
@@ -690,35 +619,76 @@
 		
 		public function canDelete()
 		{
+			$namespaces = $this->getNamespaces();
+			
+			if(count($namespaces) > 0)
+			{
+				$key = $namespaces[0];
+				$row = TBGProjectsTable::getTable()->getByKey($key);
+				
+				if ($row instanceof \b2db\Row)
+				{
+					$project = TBGContext::factory()->TBGProject($row->get(TBGProjectsTable::ID), $row);
+					if ($project instanceof TBGProject)
+					{
+						if ($project->isArchived())
+							return false;
+					}
+				}
+			}
+			
 			return TBGContext::getModule('publish')->canUserDeleteArticle($this->getName());
 		}
 		
 		public function canEdit()
 		{
+			$namespaces = $this->getNamespaces();
+			
+			if(count($namespaces) > 0)
+			{
+				$key = $namespaces[0];
+				$row = TBGProjectsTable::getTable()->getByKey($key);
+				
+				if ($row instanceof \b2db\Row)
+				{
+					$project = TBGContext::factory()->TBGProject($row->get(TBGProjectsTable::ID), $row);
+					if ($project instanceof TBGProject)
+					{
+						if ($project->isArchived())
+							return false;
+					}
+				}
+			}
+			
 			return TBGContext::getModule('publish')->canUserEditArticle($this->getName());
+		}
+		
+		public function canRead()
+		{
+			return TBGContext::getModule('publish')->canUserReadArticle($this->getName());
 		}
 		
 		public function hasAccess()
 		{
-				$namespaces = $this->getNamespaces();
+			$namespaces = $this->getNamespaces();
+			
+			if(count($namespaces) > 0)
+			{
+				$key = $namespaces[0];
+				$row = TBGProjectsTable::getTable()->getByKey($key);
 				
-				if(count($namespaces) > 0)
+				if ($row instanceof \b2db\Row)
 				{
-					$key = $namespaces[0];
-					$row = TBGProjectsTable::getTable()->getByKey($key);
-					
-					if ($row instanceof B2DBRow)
+					$project = TBGContext::factory()->TBGProject($row->get(TBGProjectsTable::ID), $row);
+					if ($project instanceof TBGProject)
 					{
-						$project = TBGContext::factory()->TBGProject($row->get(TBGProjectsTable::ID), $row);
-						if ($project instanceof TBGProject)
-						{
-							if (!$project->hasAccess())
-								return false;
-						}
+						if (!$project->hasAccess())
+							return false;
 					}
 				}
+			}
 			
-			return true;
+			return $this->canRead();
 		}
 
 	}

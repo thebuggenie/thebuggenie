@@ -54,9 +54,9 @@
 			{
 				$this->_current_remote_server = $this->getProvidedArgument('server');
 			}
-			elseif (file_exists(THEBUGGENIE_PATH . '.remote_server'))
+			elseif (file_exists(THEBUGGENIE_CONFIG_PATH . '.remote_server'))
 			{
-				$this->_current_remote_server = file_get_contents(THEBUGGENIE_PATH . '.remote_server');
+				$this->_current_remote_server = file_get_contents(THEBUGGENIE_CONFIG_PATH . '.remote_server');
 			}
 			else
 			{
@@ -67,18 +67,18 @@
 			{
 				$this->_current_remote_user = $this->getProvidedArgument('username');
 			}
-			elseif (file_exists(THEBUGGENIE_PATH . '.remote_username'))
+			elseif (file_exists(THEBUGGENIE_CONFIG_PATH . '.remote_username'))
 			{
-				$this->_current_remote_user = file_get_contents(THEBUGGENIE_PATH . '.remote_username');
+				$this->_current_remote_user = file_get_contents(THEBUGGENIE_CONFIG_PATH . '.remote_username');
 			}
 			else
 			{
 				$this->_current_remote_user = TBGContext::getCurrentCLIusername();
 			}
 
-			if (file_exists(THEBUGGENIE_PATH . '.remote_password_hash'))
+			if (file_exists(THEBUGGENIE_CONFIG_PATH . '.remote_password_hash'))
 			{
-				$this->_current_remote_password_hash = file_get_contents(THEBUGGENIE_PATH . '.remote_password_hash');
+				$this->_current_remote_password_hash = file_get_contents(THEBUGGENIE_CONFIG_PATH . '.remote_password_hash');
 			}
 			else
 			{
@@ -115,7 +115,7 @@
 			if (!empty($postdata))
 			{
 				$content = '';
-				$boundary = "---------------------".substr(md5(rand(0,32000)), 0, 10); 
+				$boundary = "---------------------".mb_substr(md5(rand(0,32000)), 0, 10); 
 				$headers .= 'Content-Type: multipart/form-data; boundary='.$boundary."\r\n";
 				$options['http']['header'] = $headers;
 
@@ -155,9 +155,9 @@
 		{
 			$url = TBGContext::getRouting()->generate($route_name, $params, true);
 			$host = $this->_getCurrentRemoteServer();
-			if (substr($host, strlen($host) - 2) != '/') $host .= '/';
+			if (mb_substr($host, mb_strlen($host) - 2) != '/') $host .= '/';
 
-			return $host . substr($url, 2);
+			return $host . mb_substr($url, 2);
 		}
 
 	}

@@ -32,13 +32,24 @@
 			$this->cliEcho('Saving remote server: ');
 			$this->cliEcho($this->getProvidedArgument('server_url'), 'white', 'bold');
 			$this->cliEcho("\n");
-			file_put_contents(THEBUGGENIE_PATH . '.remote_server', $this->getProvidedArgument('server_url'));
+
+			$path = THEBUGGENIE_CONFIG_PATH;
+			try 
+			{
+				file_put_contents($path . '.remote_server', $this->getProvidedArgument('server_url'));
+			}
+			catch (Exception $e)
+			{
+				$path = getenv('HOME') . DS;
+				file_put_contents($path . '.remote_server', $this->getProvidedArgument('server_url'));
+			}
+
 			if ($this->hasProvidedArgument('username'))
 			{
 				$this->cliEcho('Saving remote username: ');
 				$this->cliEcho($this->getProvidedArgument('username'), 'white', 'bold');
 				$this->cliEcho("\n");
-				file_put_contents(THEBUGGENIE_PATH . '.remote_username', $this->getProvidedArgument('username'));
+				file_put_contents($path . '.remote_username', $this->getProvidedArgument('username'));
 				$this->cliEcho("\n");
 				$this->cliEcho('To avoid being asked for a password, please enter the password for the remote user ');
 				$this->cliEcho($this->getProvidedArgument('username'), 'white', 'bold');
@@ -49,7 +60,7 @@
 				$salt = $this->_getCliInput();
 				if ($password != '' && $salt != '')
 				{
-					file_put_contents(THEBUGGENIE_PATH . '.remote_password_hash', TBGUser::hashPassword($password, $salt));
+					file_put_contents($path . '.remote_password_hash', TBGUser::hashPassword($password, $salt));
 					$this->cliEcho("Authentication details saved.\n", 'white', 'bold');
 				}
 				else

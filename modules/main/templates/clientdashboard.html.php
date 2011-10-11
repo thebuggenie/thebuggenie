@@ -42,17 +42,18 @@
 				<td class="client_dashboard_projects padded">
 					<div class="header">
 						<?php echo __('Projects for %client%', array('%client%' => $client->getName())); ?>
+						<a style="float: right;" href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'client_archived_projects', 'cid' => $team->getID())); ?>');"><?php echo __('View archived projects'); ?></a>
 					</div>
 		
-					<?php if (count(TBGProject::getAllByClientID($client->getID())) > 0): ?>
+					<?php if (count($projects) > 0): ?>
 						<ul class="project_list simple_list">
-						<?php foreach (TBGProject::getAllByClientID($client->getID()) as $aProject): ?>
+						<?php foreach ($projects as $aProject): ?>
 							<li><?php include_component('project/overview', array('project' => $aProject)); ?></li>
 						<?php endforeach; ?>
 						</ul>
 						<div class="header" style="margin: 5px 5px 5px 0;"><?php echo __('Milestones / sprints'); ?></div>
 						<?php $milestone_cc = 0; ?>
-						<?php foreach (TBGProject::getAllByClientID($client->getID()) as $project): ?>
+						<?php foreach ($projects as $project): ?>
 							<?php foreach ($project->getUpcomingMilestonesAndSprints() as $milestone): ?>
 								<?php if ($milestone->isScheduled()): ?>
 									<?php include_template('main/milestonedashboardbox', array('milestone' => $milestone)); ?>

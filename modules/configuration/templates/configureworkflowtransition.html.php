@@ -1,14 +1,9 @@
 <?php
 
 	if ($workflow instanceof TBGWorkflow)
-	{
 		$tbg_response->setTitle(__('Configure workflow "%workflow_name%"', array('%workflow_name%' => $workflow->getName())));
-		$tbg_response->addJavascript('config/workflow.js');
-	}
 	else
-	{
 		$tbg_response->setTitle(__('Configure workflows'));
-	}
 	
 ?>
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
@@ -106,11 +101,11 @@
 					<br style="clear: both;">
 					<div class="tab_menu" style="margin-top: 55px;">
 						<ul id="transition_menu">
-							<li class="selected" id="pre_validation_tab"><a href="javascript:void(0);" onclick="switchSubmenuTab('pre_validation_tab', 'transition_menu');"><?php echo __('Pre-transition validation'); ?></a></li>
+							<li class="selected" id="pre_validation_tab"><a href="javascript:void(0);" onclick="TBG.Main.Helpers.tabSwitcher('pre_validation_tab', 'transition_menu');"><?php echo __('Pre-transition validation'); ?></a></li>
 							<?php if ($transition->hasTemplate()): ?>
-								<li id="post_validation_tab"><a href="javascript:void(0);" onclick="switchSubmenuTab('post_validation_tab', 'transition_menu');"><?php echo __('Post-transition validation'); ?></a></li>
+								<li id="post_validation_tab"><a href="javascript:void(0);" onclick="TBG.Main.Helpers.tabSwitcher('post_validation_tab', 'transition_menu');"><?php echo __('Post-transition validation'); ?></a></li>
 							<?php endif; ?>
-							<li id="actions_tab"><a href="javascript:void(0);" onclick="switchSubmenuTab('actions_tab', 'transition_menu');"><?php echo __('Post-transition actions'); ?></a></li>
+							<li id="actions_tab"><a href="javascript:void(0);" onclick="TBG.Main.Helpers.tabSwitcher('actions_tab', 'transition_menu');"><?php echo __('Post-transition actions'); ?></a></li>
 						</ul>
 					</div>
 					<div id="transition_menu_panes" style="margin-bottom: 100px;">
@@ -120,7 +115,7 @@
 							</div>
 							<?php if (!$transition->isCore()): ?>
 								<div class="rounded_box lightyellow" style="margin-bottom: 15px;">
-									<form action="<?php echo make_url('configure_workflow_transition_add_validation_rule', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'postorpre' => 'pre')); ?>" onsubmit="addWorkflowTransitionValidationRule('<?php echo make_url('configure_workflow_transition_add_validation_rule', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'postorpre' => 'pre')); ?>', 'pre');return false;" id="workflowtransitionprevalidationrule_add_form">
+									<form action="<?php echo make_url('configure_workflow_transition_add_validation_rule', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'postorpre' => 'pre')); ?>" onsubmit="TBG.Config.Workflows.Transition.Validations.add('<?php echo make_url('configure_workflow_transition_add_validation_rule', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'postorpre' => 'pre')); ?>', 'pre');return false;" id="workflowtransitionprevalidationrule_add_form">
 										<label for="workflowtransitionprevalidationrule_add_type"><?php echo __('Add pre transition validation rule'); ?></label>
 										<select name="rule" id="workflowtransitionprevalidationrule_add_type">
 											<option <?php if ($transition->hasPreValidationRule(TBGWorkflowTransitionValidationRule::RULE_MAX_ASSIGNED_ISSUES)): ?>style="display: none;"<?php endif; ?> id="add_workflowtransitionprevalidationrule_<?php echo TBGWorkflowTransitionValidationRule::RULE_MAX_ASSIGNED_ISSUES; ?>" value="<?php echo TBGWorkflowTransitionValidationRule::RULE_MAX_ASSIGNED_ISSUES; ?>"><?php echo __('Max number of assigned issues'); ?></option>
@@ -146,7 +141,7 @@
 								</div>
 								<?php if (!$transition->isCore()): ?>
 									<div class="rounded_box lightyellow" style="margin-bottom: 15px;">
-										<form action="<?php echo make_url('configure_workflow_transition_add_validation_rule', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'postorpre' => 'post')); ?>" onsubmit="addWorkflowTransitionValidationRule('<?php echo make_url('configure_workflow_transition_add_validation_rule', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'postorpre' => 'post')); ?>', 'post');return false;" id="workflowtransitionpostvalidationrule_add_form">
+										<form action="<?php echo make_url('configure_workflow_transition_add_validation_rule', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'postorpre' => 'post')); ?>" onsubmit="TBG.Config.Workflows.Transition.Validations.add('<?php echo make_url('configure_workflow_transition_add_validation_rule', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'postorpre' => 'post')); ?>', 'post');return false;" id="workflowtransitionpostvalidationrule_add_form">
 											<label for="workflowtransitionpostvalidationrule_add_type"><?php echo __('Add post transition validation rule'); ?></label>
 											<select name="rule" id="workflowtransitionpostvalidationrule_add_type">
 												<option <?php if ($transition->hasPostValidationRule(TBGWorkflowTransitionValidationRule::RULE_PRIORITY_VALID)): ?>style="display: none;"<?php endif; ?> id="add_workflowtransitionpostvalidationrule_<?php echo TBGWorkflowTransitionValidationRule::RULE_PRIORITY_VALID; ?>" value="<?php echo TBGWorkflowTransitionValidationRule::RULE_PRIORITY_VALID; ?>"><?php echo __('Validate specified priority'); ?></option>
@@ -175,11 +170,12 @@
 							</div>
 							<?php if (!$transition->isCore()): ?>
 								<div class="rounded_box lightyellow" style="margin-bottom: 15px;">
-									<form action="<?php echo make_url('configure_workflow_transition_add_action', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID())); ?>" onsubmit="addWorkflowTransitionAction('<?php echo make_url('configure_workflow_transition_add_action', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID())); ?>');return false;" id="workflowtransitionaction_add_form">
+									<form action="<?php echo make_url('configure_workflow_transition_add_action', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID())); ?>" onsubmit="TBG.Config.Workflows.Transition.Actions.add('<?php echo make_url('configure_workflow_transition_add_action', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID())); ?>');return false;" id="workflowtransitionaction_add_form">
 										<label for="workflowtransitionaction_add_type"><?php echo __('Add transition action'); ?></label>
 										<select name="action_type" id="workflowtransitionaction_add_type">
 											<option <?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE)): ?>style="display: none;"<?php endif; ?> id="add_workflowtransitionaction_<?php echo TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE; ?>" value="<?php echo TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE; ?>"><?php echo __('Assign the issue to a user'); ?></option>
 											<option <?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE_SELF)): ?>style="display: none;"<?php endif; ?> id="add_workflowtransitionaction_<?php echo TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE_SELF; ?>" value="<?php echo TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE_SELF; ?>"><?php echo __('Assign the issue to the current user'); ?></option>
+											<option <?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_CLEAR_ASSIGNEE)): ?>style="display: none;"<?php endif; ?> id="add_workflowtransitionaction_<?php echo TBGWorkflowTransitionAction::ACTION_CLEAR_ASSIGNEE; ?>" value="<?php echo TBGWorkflowTransitionAction::ACTION_CLEAR_ASSIGNEE; ?>"><?php echo __('Clear issue assignee'); ?></option>
 											<option <?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_CLEAR_PRIORITY)): ?>style="display: none;"<?php endif; ?> id="add_workflowtransitionaction_<?php echo TBGWorkflowTransitionAction::ACTION_CLEAR_PRIORITY; ?>" value="<?php echo TBGWorkflowTransitionAction::ACTION_CLEAR_PRIORITY; ?>"><?php echo __('Clear issue priority'); ?></option>
 											<option <?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_PRIORITY)): ?>style="display: none;"<?php endif; ?> id="add_workflowtransitionaction_<?php echo TBGWorkflowTransitionAction::ACTION_SET_PRIORITY; ?>" value="<?php echo TBGWorkflowTransitionAction::ACTION_SET_PRIORITY; ?>"><?php echo __('Set issue priority'); ?></option>
 											<option <?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_CLEAR_PERCENT)): ?>style="display: none;"<?php endif; ?> id="add_workflowtransitionaction_<?php echo TBGWorkflowTransitionAction::ACTION_CLEAR_PERCENT; ?>" value="<?php echo TBGWorkflowTransitionAction::ACTION_CLEAR_PERCENT; ?>"><?php echo __('Clear issue percent completed'); ?></option>
@@ -188,6 +184,8 @@
 											<option <?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_REPRODUCABILITY)): ?>style="display: none;"<?php endif; ?> id="add_workflowtransitionaction_<?php echo TBGWorkflowTransitionAction::ACTION_SET_REPRODUCABILITY; ?>" value="<?php echo TBGWorkflowTransitionAction::ACTION_SET_REPRODUCABILITY; ?>"><?php echo __('Set issue reproducability'); ?></option>
 											<option <?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_CLEAR_RESOLUTION)): ?>style="display: none;"<?php endif; ?> id="add_workflowtransitionaction_<?php echo TBGWorkflowTransitionAction::ACTION_CLEAR_RESOLUTION; ?>" value="<?php echo TBGWorkflowTransitionAction::ACTION_CLEAR_RESOLUTION; ?>"><?php echo __('Clear issue resolution'); ?></option>
 											<option <?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_RESOLUTION)): ?>style="display: none;"<?php endif; ?> id="add_workflowtransitionaction_<?php echo TBGWorkflowTransitionAction::ACTION_SET_RESOLUTION; ?>" value="<?php echo TBGWorkflowTransitionAction::ACTION_SET_RESOLUTION; ?>"><?php echo __('Set issue resolution'); ?></option>
+											<option <?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_CLEAR_DUPLICATE)): ?>style="display: none;"<?php endif; ?> id="add_workflowtransitionaction_<?php echo TBGWorkflowTransitionAction::ACTION_CLEAR_DUPLICATE; ?>" value="<?php echo TBGWorkflowTransitionAction::ACTION_CLEAR_DUPLICATE; ?>"><?php echo __('Mark as not duplicate'); ?></option>
+											<option <?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_DUPLICATE)): ?>style="display: none;"<?php endif; ?> id="add_workflowtransitionaction_<?php echo TBGWorkflowTransitionAction::ACTION_SET_DUPLICATE; ?>" value="<?php echo TBGWorkflowTransitionAction::ACTION_SET_DUPLICATE; ?>"><?php echo __('Mark as duplicate'); ?></option>
 											<option <?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_STATUS)): ?>style="display: none;"<?php endif; ?> id="add_workflowtransitionaction_<?php echo TBGWorkflowTransitionAction::ACTION_SET_STATUS; ?>" value="<?php echo TBGWorkflowTransitionAction::ACTION_SET_STATUS; ?>"><?php echo __('Set issue status'); ?></option>
 											<option <?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_MILESTONE)): ?>style="display: none;"<?php endif; ?> id="add_workflowtransitionaction_<?php echo TBGWorkflowTransitionAction::ACTION_SET_MILESTONE; ?>" value="<?php echo TBGWorkflowTransitionAction::ACTION_SET_MILESTONE; ?>"><?php echo __('Set issue milestone'); ?></option>
 										</select>

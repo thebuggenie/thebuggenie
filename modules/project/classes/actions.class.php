@@ -70,25 +70,8 @@
 		public function runDashboard(TBGRequest $request)
 		{
 			$this->forward403unless($this->_checkProjectPageAccess('project_dashboard'));
-			$this->recent_issues = $this->selected_project->getRecentIssues(10);
-			$this->recent_features = $this->selected_project->getRecentFeatures();
-			$this->recent_ideas = $this->selected_project->getRecentIdeas();
-			$this->priority_count = $this->selected_project->getPriorityCount();
-			$this->assignees = $this->selected_project->getAssignees();
-			$this->client = $this->selected_project->getClient();
-		}
-
-		/**
-		 * The project planning page
-		 *
-		 * @param TBGRequest $request
-		 */
-		public function runPlanning(TBGRequest $request)
-		{
-			$this->forward403unless($this->_checkProjectPageAccess('project_planning'));
-
-			$this->recent_ideas = $this->selected_project->getRecentIdeas();
-
+			
+			$this->dashboardViews = TBGDashboard::getViews($this->selected_project->getID(), TBGDashboardViewsTable::TYPE_PROJECT);
 		}
 
 		/**
@@ -142,10 +125,15 @@
 		 *
 		 * @param TBGRequest $request
 		 */
-		public function runScrum(TBGRequest $request)
+		public function runPlanning(TBGRequest $request)
 		{
-			$this->forward403unless($this->_checkProjectPageAccess('project_scrum'));
-			$this->unassigned_issues = $this->selected_project->getUnassignedStories();
+			$this->forward403unless($this->_checkProjectPageAccess('project_planning'));
+//			$this->unassigned_issues = $this->selected_project->getUnassignedStories();
+//			$this->unassigned_issues = $this->selected_project->getIssuesWithoutMilestone();
+			$this->unassigned_milestone = new TBGMilestone();
+			$this->unassigned_milestone->setName(TBGContext::getI18n()->__('Unassigned issues / backlog'));
+			$this->unassigned_milestone->setId(0);
+			$this->unassigned_milestone->setProject($this->selected_project);
 		}
 
 		/**
@@ -184,6 +172,7 @@
 		 */
 		public function runScrumAddTask(TBGRequest $request)
 		{
+			$this->forward403if(TBGContext::getCurrentProject()->isArchived());
 			$this->forward403unless($this->_checkProjectPageAccess('project_scrum'));
 			$issue = TBGContext::factory()->TBGIssue($request->getParameter('story_id'));
 			try
@@ -287,6 +276,7 @@
 		 */
 		public function runScrumSetStoryDetail(TBGRequest $request)
 		{
+			$this->forward403if(TBGContext::getCurrentProject()->isArchived());
 			$this->forward403unless($this->_checkProjectPageAccess('project_scrum'));
 			$issue = TBGContext::factory()->TBGIssue($request->getParameter('story_id'));
 			if ($issue instanceof TBGIssue)
@@ -324,6 +314,32 @@
 			return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Invalid user story')));
 		}
 		
+		public function runUpdateMilestoneIssues(TBGRequest $request)
+		{
+			if ($request->getParameter('milestone_id'))
+			{
+				$milestone = new TBGMilestone($request->getParameter('milestone_id'));
+			}
+			else
+			{
+				$milestone = new TBGMilestone();
+				$milestone->setName(TBGContext::getI18n()->__('Unassigned issues / backlog'));
+				$milestone->setId(0);
+				$milestone->setProject($this->selected_project);
+			}
+			foreach ($request['issue_id'] as $issue_id)
+			{
+				$issue = new TBGIssue($issue_id);
+				$issue->setEstimatedHours($request['estimated_hours'][$issue_id]);
+				$issue->setEstimatedPoints($request['estimated_points'][$issue_id]);
+				$issue->setSpentHours($request['spent_hours'][$issue_id]);
+				$issue->setSpentPoints($request['spent_points'][$issue_id]);
+				$issue->setPriority($request['priority'][$issue_id]);
+				$issue->save();
+			}
+			return $this->renderJSON(array('estimated_hours' => $milestone->getHoursEstimated(), 'estimated_points' => $milestone->getPointsEstimated(), 'message' => TBGContext::getI18n()->__('%num% issue(s) updated', array('%num%' => count($request['issue_id'])))));
+		}
+		
 		/**
 		 * Assign a user story to a milestone id
 		 *
@@ -331,6 +347,7 @@
 		 */
 		public function runScrumAssignStory(TBGRequest $request)
 		{
+			$this->forward403if(TBGContext::getCurrentProject()->isArchived());
 			$this->forward403unless($this->_checkProjectPageAccess('project_scrum') && TBGContext::getUser()->canAssignScrumUserStories($this->selected_project));
 			try
 			{
@@ -375,6 +392,7 @@
 		 */
 		public function runScrumAddSprint(TBGRequest $request)
 		{
+			$this->forward403if(TBGContext::getCurrentProject()->isArchived());
 			$this->forward403unless($this->_checkProjectPageAccess('project_scrum'));
 			if (($sprint_name = $request->getParameter('sprint_name')) && trim($sprint_name) != '')
 			{
@@ -421,7 +439,7 @@
 			$this->forward403unless($this->_checkProjectPageAccess('project_statistics'));
 		}
 
-		public function runStatisticsLast30(TBGRequest $request)
+		public function runStatisticsLast15(TBGRequest $request)
 		{
 			$this->forward403unless($this->_checkProjectPageAccess('project_statistics'));
 
@@ -433,11 +451,11 @@
 			$this->getResponse()->setContentType('image/png');
 			$this->getResponse()->setDecoration(TBGResponse::DECORATE_NONE);
 			$datasets = array();
-			$issues = $this->selected_project->getLast30Counts();
+			$issues = $this->selected_project->getLast15Counts();
 			$datasets[] = array('values' => $issues['open'], 'label' => TBGContext::getI18n()->__('Open issues', array(), true));
 			$datasets[] = array('values' => $issues['closed'], 'label' => TBGContext::getI18n()->__('Issues closed', array(), true));
 			$this->datasets = $datasets;
-			$this->labels = array(30,'','','','',25,'','','','',20,'','','','',15,'','','','',10,'','','','',5,'','','','',0);
+			$this->labels = array(15,'','','','',10,'','','','',5,'','','','',0);
 		}
 
 		public function runStatisticsImagesets(TBGRequest $request)
@@ -677,16 +695,16 @@
 			$filter_issuetype = $request->getParameter('issuetype', 'all');
 			$filter_assigned_to = $request->getParameter('assigned_to', 'all');
 
-			if (strtolower($filter_state) != 'all')
+			if (mb_strtolower($filter_state) != 'all')
 			{
 				$filters['state'] = array('operator' => '=', 'value' => '');
-				if (strtolower($filter_state) == 'open')
+				if (mb_strtolower($filter_state) == 'open')
 					$filters['state']['value'] = TBGIssue::STATE_OPEN;
-				elseif (strtolower($filter_state) == 'closed')
+				elseif (mb_strtolower($filter_state) == 'closed')
 					$filters['state']['value'] = TBGIssue::STATE_CLOSED;
 			}
 
-			if (strtolower($filter_issuetype) != 'all')
+			if (mb_strtolower($filter_issuetype) != 'all')
 			{
 				$issuetype = TBGIssuetype::getIssuetypeByKeyish($filter_issuetype);
 				if ($issuetype instanceof TBGIssuetype)
@@ -695,10 +713,10 @@
 				}
 			}
 
-			if (strtolower($filter_assigned_to) != 'all')
+			if (mb_strtolower($filter_assigned_to) != 'all')
 			{
 				$user_id = 0;
-				switch (strtolower($filter_assigned_to))
+				switch (mb_strtolower($filter_assigned_to))
 				{
 					case 'me':
 						$user_id = TBGContext::getUser()->getID();
@@ -709,7 +727,7 @@
 					default:
 						try
 						{
-							$user = TBGUser::findUser(strtolower($filter_assigned_to));
+							$user = TBGUser::findUser(mb_strtolower($filter_assigned_to));
 							if ($user instanceof TBGUser) $user_id = $user->getID();
 						}
 						catch (Exception $e) {}
@@ -771,6 +789,7 @@
 
 		public function runUpdateIssueDetails(TBGRequest $request)
 		{
+			$this->forward403if(TBGContext::getCurrentProject()->isArchived());
 			$this->error = false;
 			try
 			{
@@ -791,7 +810,7 @@
 					foreach ($issue->getAvailableWorkflowTransitions() as $transition)
 					{
 						//echo str_replace(' ', '', mb_strtolower($transition->getName())) . "?";
-						if (strpos(str_replace(' ', '', mb_strtolower($transition->getName())), $key) !== false)
+						if (mb_strpos(str_replace(' ', '', mb_strtolower($transition->getName())), $key) !== false)
 						{
 							$workflow_transition = $transition;
 							//echo "found transition " . $transition->getID();
@@ -815,7 +834,7 @@
 						$found = false;
 						foreach ($choices as $choice_key => $choice)
 						{
-							if (strpos(str_replace(' ', '', strtolower($choice->getName())), str_replace(' ', '', strtolower($field_value))) !== false)
+							if (mb_strpos(str_replace(' ', '', mb_strtolower($choice->getName())), str_replace(' ', '', mb_strtolower($field_value))) !== false)
 							{
 								$request->setParameter($field_key . '_id', $choice->getId());
 								break;
@@ -871,7 +890,7 @@
 										$found = false;
 										foreach ($choices as $choice_key => $choice)
 										{
-											if (str_replace(' ', '', strtolower($choice->getName())) == str_replace(' ', '', strtolower($field_value)))
+											if (str_replace(' ', '', mb_strtolower($choice->getName())) == str_replace(' ', '', mb_strtolower($field_value)))
 											{
 												$issue->$method($choice);
 												$found = true;
@@ -889,7 +908,7 @@
 									case 'assignee':
 										$set_method = "set".ucfirst($field_key);
 										$unset_method = "un{$set_method}";
-										switch (strtolower($field_value))
+										switch (mb_strtolower($field_value))
 										{
 											case 'me':
 												$issue->$set_method(TBGContext::getUser());
@@ -900,7 +919,7 @@
 											default:
 												try
 												{
-													$user = TBGUser::findUser(strtolower($field_value));
+													$user = TBGUser::findUser(mb_strtolower($field_value));
 													if ($user instanceof TBGUser) $issue->$set_method($user);
 												}
 												catch (Exception $e)
@@ -919,7 +938,7 @@
 										$found = false;
 										foreach ($this->selected_project->getAllMilestones() as $milestone)
 										{
-											if (str_replace(' ', '', strtolower($milestone->getName())) == str_replace(' ', '', strtolower($field_value)))
+											if (str_replace(' ', '', mb_strtolower($milestone->getName())) == str_replace(' ', '', mb_strtolower($field_value)))
 											{
 												$issue->setMilestone($milestone->getID());
 												$found = true;
@@ -971,8 +990,19 @@
 				$i18n = TBGContext::getI18n();
 				if ($request->hasParameter('milestone_id'))
 				{
-					$milestone = TBGContext::factory()->TBGMilestone($request->getParameter('milestone_id'));
-					return $this->renderJSON(array('failed' => false, 'content' => $this->getTemplateHTML('project/milestoneissues', array('milestone' => $milestone))));
+					if ($request->getParameter('milestone_id'))
+					{
+						$milestone = new TBGMilestone($request->getParameter('milestone_id'));
+					}
+					else
+					{
+						$milestone = new TBGMilestone();
+						$milestone->setName(TBGContext::getI18n()->__('Unassigned issues / backlog'));
+						$milestone->setId(0);
+						$milestone->setProject($this->selected_project);
+					}
+					$template = ($request->getParameter('mode', 'roadmap') == 'roadmap') ? 'project/milestoneissues' : 'project/planning_milestoneissues';
+					return $this->renderJSON(array('failed' => false, 'content' => $this->getTemplateHTML($template, array('milestone' => $milestone))));
 				}
 				else
 				{
@@ -1020,6 +1050,62 @@
 			}
 
 		}
+		
+		public function runGetMilestone(TBGRequest $request)
+		{
+			$milestone = new TBGMilestone($request['milestone_id']);
+			return $this->renderJSON(array('content' => TBGAction::returnTemplateHTML('project/milestonebox', array('milestone' => $milestone)), 'milestone_id' => $milestone->getID(), 'milestone_name' => $milestone->getName(), 'milestone_order' => array_keys($milestone->getProject()->getAllMilestones())));
+		}
+		
+		public function runRemoveMilestone(TBGRequest $request)
+		{
+			$milestone = new TBGMilestone($request['milestone_id']);
+			$no_milestone = new TBGMilestone(0);
+			$no_milestone->setProject($milestone->getProject());
+			$milestone->delete();
+			return $this->renderJSON(array('issue_count' => $no_milestone->countIssues(), 'hours' => $no_milestone->getHoursEstimated(), 'points' => $no_milestone->getPointsEstimated()));
+		}
+
+		public function runMilestone(TBGRequest $request)
+		{
+			if ($request->isMethod(TBGRequest::POST)) {
+				$milestone = new TBGMilestone($request->getParameter('milestone_id'));
+				$milestone->setName($request->getParameter('name'));
+				$milestone->setProject($this->selected_project);
+				$milestone->setStarting((bool) $request->getParameter('is_starting'));
+				$milestone->setScheduled((bool) $request->getParameter('is_scheduled'));
+				$milestone->setDescription($request->getParameter('description'));
+				$milestone->setType($request->getParameter('milestone_type', TBGMilestone::TYPE_REGULAR));
+				if ($request->hasParameter('sch_month') && $request->hasParameter('sch_day') && $request->hasParameter('sch_year'))
+				{
+					$scheduled_date = mktime(23, 59, 59, TBGContext::getRequest()->getParameter('sch_month'), TBGContext::getRequest()->getParameter('sch_day'), TBGContext::getRequest()->getParameter('sch_year'));
+					$milestone->setScheduledDate($scheduled_date);
+				}
+				else
+					$milestone->setScheduledDate(0);
+
+				if ($request->hasParameter('starting_month') && $request->hasParameter('starting_day') && $request->hasParameter('starting_year'))
+				{
+					$starting_date = mktime(0, 0, 1, TBGContext::getRequest()->getParameter('starting_month'), TBGContext::getRequest()->getParameter('starting_day'), TBGContext::getRequest()->getParameter('starting_year'));
+					$milestone->setStartingDate($starting_date);
+				}
+				else
+					$milestone->setStartingDate(0);
+
+				$milestone->save();
+				if ($request->getParameter('milestone_id'))
+				{
+					$message = TBGContext::getI18n()->__('Milestone updated');
+					$template = 'milestoneboxheader';
+				}
+				else
+				{
+					$message = TBGContext::getI18n()->__('Milestone created');
+					$template = 'milestonebox';
+				}
+				return $this->renderJSON(array('content' => $this->getTemplateHTML($template, array('milestone' => $milestone)), 'milestone_id' => $milestone->getID(), 'milestone_name' => $milestone->getName(), 'milestone_order' => array_keys($this->selected_project->getAllMilestones())));
+			}
+		}
 
 		public function runMenuLinks(TBGRequest $request)
 		{
@@ -1053,4 +1139,107 @@
 				return $this->return404();
 			}
 		}
+		
+		public function runTransitionIssues(TBGRequest $request)
+		{
+			try
+			{
+				$transition = TBGContext::factory()->TBGWorkflowTransition($request->getParameter('transition_id'));
+				$issue_ids = $request['issue_ids'];
+				$status = null;
+				$closed = false;
+				foreach ($issue_ids as $issue_id) 
+				{
+					$issue = TBGContext::factory()->TBGIssue($issue_id);
+					if (!$issue->isWorkflowTransitionsAvailable() || !$transition->validateFromRequest($request))
+					{
+						$this->getResponse()->setHttpStatus(400);
+						return $this->renderJSON(array('error' => TBGContext::getI18n()->__('The transition could not be applied to issue %issue_number% because of %errors%', array('%issue_number%' => $issue->getFormattedIssueNo(), '%errors%' => join(', ', $transition->getValidationErrors())))));
+					}
+
+					$transition->transitionIssueToOutgoingStepFromRequest($issue);
+					if ($status === null) $status = $issue->getStatus();
+					$closed = $issue->isClosed();
+				}
+				
+				TBGContext::loadLibrary('common');
+				$options = array('issue_ids' => array_keys($issue_ids), 'last_updated' => tbg_formatTime(time(), 20), 'closed' => $closed);
+				$options['status'] = array('color' => $status->getColor(), 'name' => $status->getName(), 'id' => $status->getID());
+				if ($request->hasParameter('milestone_id'))
+				{
+					$milestone = new TBGMilestone($request['milestone_id']);
+					$options['milestone_id'] = $milestone->getID();
+					$options['milestone_name'] = $milestone->getName();
+				}
+				foreach (array('resolution', 'priority', 'category', 'severity') as $item)
+				{
+					if ($request->hasParameter($item . '_id'))
+					{
+						if ($item_id = $request[$item . '_id'])
+						{
+							$class = "TBG".ucfirst($item);
+							$itemobject = new $class($item_id);
+							$itemname = $itemobject->getName();
+						}
+						else
+						{
+							$item_id = 0;
+							$itemname = '-';
+						}
+						$options[$item] = array('name' => $itemname, 'id' => $item_id);
+					}
+				}
+
+				return $this->renderJSON($options);
+			}
+			catch (Exception $e)
+			{
+				throw $e;
+				return $this->return404();
+			}
+		}
+		
+		public function runSettings(TBGRequest $request)
+		{
+			$this->forward403if(TBGContext::getCurrentProject()->isArchived());
+			$this->settings_saved = TBGContext::getMessageAndClear('project_settings_saved');
+		}
+		
+		public function runReleaseCenter(TBGRequest $request)
+		{
+			$this->forward403if(TBGContext::getCurrentProject()->isArchived());
+			$this->build_error = TBGContext::getMessageAndClear('build_error');
+			$this->_setupBuilds();
+		}
+		
+		public function runReleases(TBGRequest $request)
+		{
+			$this->_setupBuilds();
+		}
+		
+		protected function _setupBuilds()
+		{
+			$builds = $this->selected_project->getBuilds();
+			
+			$active_builds = array(0 => array());
+			$archived_builds = array(0 => array());
+			
+			foreach ($this->selected_project->getEditions() as $edition_id => $edition)
+			{
+				$active_builds[$edition_id] = array();
+				$archived_builds[$edition_id] = array();
+			}
+			
+			foreach ($builds as $build)
+			{
+				if ($build->isLocked())
+					$archived_builds[$build->getEditionID()][$build->getID()] = $build;
+				else
+					$active_builds[$build->getEditionID()][$build->getID()] = $build;
+			}
+			
+			$this->active_builds = $active_builds;
+			$this->archived_builds = $archived_builds;
+		}
+		
 	}

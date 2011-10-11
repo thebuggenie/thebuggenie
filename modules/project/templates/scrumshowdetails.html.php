@@ -10,9 +10,9 @@
 		$tbg_response->addBreadcrumb(__('No sprint selected'));
 	}
 	$tbg_response->setTitle(__('"%project_name%" sprint overview', array('%project_name%' => $selected_project->getName())));
-	$tbg_response->addJavascript('scrum.js');
 
 ?>
+			<?php include_template('project/projectheader', array('selected_project' => $selected_project)); ?>
 			<?php include_template('project/projectinfosidebar', array('selected_project' => $selected_project)); ?>
 			<div style="width: auto; padding-right: 5px; position: relative;" id="scrum_sprint_burndown">
 				<?php if (!$selected_sprint instanceof TBGMilestone): ?>

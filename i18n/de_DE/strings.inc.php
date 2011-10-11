@@ -1330,7 +1330,7 @@
 	$strings['Set priority']='Setze Priorität';
 	$strings['top']='oben';
 	$strings['"%project_name%" project planning']='"%project_name%" Projektplanung';
-	$strings['Closed vs open issues, last 30 days isolated']='Geschlossene vs. offene Fälle in den letzten 30 Tagen';
+	$strings['Closed vs open issues, last 15 days isolated']='Geschlossene vs. offene Fälle in den letzten 15 Tagen';
 	$strings['Open issues']='Offene Fälle';
 	$strings['Most voted for issues']='Am häufigsten bewertete Fälle';
 	$strings['There are no saved searches for this project']='Keine gespeicherten Suchen für dieses Projekt';
@@ -1685,7 +1685,7 @@
 	$strings['These permissions control what you can do, and which pages you can access in The Bug Genie - on a project-specific basis. Some of these permissions are also available as site-wide permissions in the %permissions_configuration% page.'] = 'Diese Berechtigungen legen fest, auf welche Seiten im Bug Genie -projektspezifisch- zugegriffen werden kann. Einige dieser Bereichtigungen sind außerdem verfügbar in den sytemweiten Berechtigungen auf der %permissions_configuration% -Seite';
 	$strings['Can see all editions'] = 'Kann alle Editionen sehen';
 	$strings['Can see all components'] = 'Kann alle Komponenten sehen';
-	$strings['Can see all release'] = 'Kann alle Releases sehen';
+	$strings['Can see all releases'] = 'Kann alle Releases sehen';
 	$strings['Can see all milestones'] = 'Kann alle Meilensteine sehen';
 	$strings['Updating, please wait'] = 'Aktualisierung, bitte warten';
 	$strings['No issues in this list'] = 'Keine Fälle in dieser Liste';

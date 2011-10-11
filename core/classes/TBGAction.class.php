@@ -57,7 +57,7 @@
 		public function redirect($redirect_to)
 		{
 			$actionName = 'run' . ucfirst($redirect_to);
-			$this->getResponse()->setTemplate(strtolower($redirect_to) . '.' . TBGContext::getRequest()->getRequestedFormat() . '.php');
+			$this->getResponse()->setTemplate(mb_strtolower($redirect_to) . '.' . TBGContext::getRequest()->getRequestedFormat() . '.php');
 			if (method_exists($this, $actionName))
 			{
 				return $this->$actionName(TBGContext::getRequest());
@@ -85,9 +85,10 @@
 		 *  
 		 * @return boolean
 		 */
-		public function renderJSON($text)
+		public function renderJSON($text = array())
 		{
 			$this->getResponse()->setContentType('application/json');
+			$this->getResponse()->setDecoration(TBGResponse::DECORATE_NONE);
 			echo json_encode($text);
 			return true;
 		}
@@ -142,9 +143,18 @@
 			if (!$condition)
 			{
 				$message = ($message === null) ? TBGContext::getI18n()->__("You are not allowed to access to this page") : $message;
-				TBGContext::setMessage('forward', $message);
-
-				$this->forward(TBGContext::getRouting()->generate('login_redirect'), 403);
+				if (TBGContext::getUser()->isGuest())
+				{
+					TBGContext::setMessage('login_message_err', $message);
+					TBGContext::setMessage('login_force_redirect', true);
+					TBGContext::setMessage('login_referer', TBGContext::getRouting()->generate(TBGContext::getRouting()->getCurrentRouteName()));
+					$this->forward(TBGContext::getRouting()->generate('login_page'), 403);
+				}
+				else
+				{
+					$this->getResponse()->setHttpStatus(403);
+					$this->getResponse()->setTemplate('main/forbidden', array('message' => $message));
+				}
 			}
 		}
 		
@@ -192,10 +202,10 @@
 		public static function returnComponentHTML($template, $params = array())
 		{
 			$current_content = ob_get_clean();
-			ob_start();
+			ob_start('mb_output_handler');
 			echo TBGActionComponent::includeComponent($template, $params);
 			$component_content = ob_get_clean();
-			ob_start();
+			ob_start('mb_output_handler');
 			echo $current_content;
 			return $component_content;
 		}
@@ -224,10 +234,10 @@
 		public static function returnTemplateHTML($template, $params = array())
 		{
 			$current_content = ob_get_clean();
-			ob_start();
+			ob_start('mb_output_handler');
 			echo TBGActionComponent::includeTemplate($template, $params);
 			$template_content = ob_get_clean();
-			ob_start();
+			ob_start('mb_output_handler');
 			echo $current_content;
 			return $template_content;
 		}

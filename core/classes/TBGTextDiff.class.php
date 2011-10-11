@@ -105,12 +105,12 @@
 					if ($val['+'])
 					{
 						$changes[] = array("type" => "+", "val" => $val['+'], "pos" => $index);
-						$index += strlen($val['+']);
+						$index += mb_strlen($val['+']);
 					}
 				}
 				else
 				{
-					$index += strlen($val);
+					$index += mb_strlen($val);
 				}
 			}
 			return $changes;
@@ -141,11 +141,11 @@
 			{
 				if ($change['type'] === "+")
 				{
-					$str = substr_replace($str, $change['val'], $change['pos'], 0);
+					$str = str_replace($str, $change['val'], $change['pos'], 0);
 				}
 				if ($change['type'] === "-")
 				{
-					$str = substr_replace($str, "", $change['pos'], strlen($change['val']));
+					$str = str_replace($str, "", $change['pos'], mb_strlen($change['val']));
 				}
 			}
 			return $str;

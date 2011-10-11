@@ -315,4 +315,19 @@
 			return date("j", $this->_release_date);
 		}
 		
+		public function getReleaseDateHour()
+		{
+			return date("h", $this->_release_date);
+		}
+		
+		public function getReleaseDateMinute()
+		{
+			return date("i", $this->_release_date);
+		}
+		
+		public function getReleaseDateAMPM()
+		{
+			return date("A", $this->_release_date);
+		}
+		
 	}

@@ -7,21 +7,8 @@ if (TBGSettings::getAuthenticationBackend() != 'tbg' && TBGSettings::getAuthenti
 else
 {
 ?>
-		<div style="vertical-align: middle; padding: 10px;" id="register1">
-			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('register1'); ?>" method="post" id="register1_form" onsubmit="loginRegister1('<?php echo make_url('register1'); ?>'); return false;">
-				<div class="login_boxheader"><?php echo __('Register a new account'); ?></div>
-				<div>
-					<label class="login_fieldheader"  for="desired_username"><?php echo __('Desired username'); ?></label>&nbsp;
-					<input type="text" id="desired_username" name="desired_username" style="width: 200px;">
-					<br><br>
-					<input type="submit" id="register1_button" value="<?php echo __('Check availability'); ?>">
-					<span id="register1_indicator" style="display: none;"><?php echo image_tag('spinning_20.gif'); ?></span>
-				</div>
-			</form>
-		</div>
-		<div style="vertical-align: middle; padding: 10px; display: none;" id="register2">
-			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('register2'); ?>" method="post" id="register2_form" onsubmit="loginRegister2('<?php echo make_url('register2'); ?>'); return false;">
-				<input type="hidden" id="username" name="username">
+		<div style="vertical-align: middle; padding: 10px;" id="register">
+			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('register'); ?>" method="post" id="register_form" onsubmit="TBG.Main.Login.register('<?php echo make_url('register'); ?>'); return false;">
 				<div class="login_boxheader"><?php echo __('Register a new account'); ?></div>
 				<div>
 					<?php echo __('To register, please fill out the information below.'); ?>
@@ -29,8 +16,8 @@ else
 					<i>(<?php echo __('Required information is marked with an asterisk'); ?>: <b>*</b>)</i><br><br>
 					<table border="0" class="login_fieldtable">
 						<tr>
-							<td><label class="login_fieldheader" for="fieldusername">&nbsp;<?php echo __('Username'); ?></label></td>
-							<td><input type="text" id="fieldusername" name="fieldusername" style="width: 200px;" disabled></td>
+							<td><label class="login_fieldheader" for="fieldusername">*&nbsp;<?php echo __('Username'); ?></label></td>
+							<td><input type="text" class="required" id="fieldusername" name="fieldusername" style="width: 200px;"></td>
 						</tr>					
 						<tr>
 							<td><label class="login_fieldheader" for="buddyname">*&nbsp;<?php echo __('Display name'); ?></label></td>
@@ -59,12 +46,12 @@ else
 					<br><b><?php echo __('Enter the above number in this box'); ?></b><br><br>
 					<label class="login_fieldheader" for="verification_no">*&nbsp;<?php echo __('Security check'); ?></label>
 					<input type="text" class="required" id="verification_no" name="verification_no" maxlength="6" style="width: 100px;"><br><br>
-					<input type="submit" id="register2_button" value="<?php echo __('Register'); ?>">
-					<span id="register2_indicator" style="display: none;"><?php echo image_tag('spinning_20.gif'); ?></span>
+					<input type="submit" class="button button-green" id="register_button" value="<?php echo __('Register'); ?>">
+					<span id="register_indicator" style="display: none;"><?php echo image_tag('spinning_20.gif'); ?></span>
 				</div>
 			</form>
 		</div>
-		<div class="rounded_box green borderless" style="display: none; vertical-align: middle; padding: 5px;" id="register3">
+		<div class="rounded_box green borderless register_success" style="display: none; vertical-align: middle; padding: 5px;" id="register2">
 			<div class="login_boxheader"><?php echo __('Register a new account'); ?></div>
 			<span class="login_fieldheader"><?php echo __('Thank you for registering!'); ?></span>
 			<br>

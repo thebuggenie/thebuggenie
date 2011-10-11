@@ -1,5 +1,9 @@
 <?php
 
+	use b2db\Core,
+		b2db\Criteria,
+		b2db\Criterion;
+
 	/**
 	 * Projects table
 	 *
@@ -19,7 +23,7 @@
 	class TBGProjectsTable extends TBGB2DBTable 
 	{
 
-		const B2DB_TABLE_VERSION = 1;
+		const B2DB_TABLE_VERSION = 2;
 		const B2DBNAME = 'projects';
 		const ID = 'projects.id';
 		const SCOPE = 'projects.scope';
@@ -44,14 +48,19 @@
 		const ENABLE_COMPONENTS = 'projects.enable_components';
 		const SHOW_IN_SUMMARY = 'projects.show_in_summary';
 		const SUMMARY_DISPLAY = 'projects.summary_display';
+		const HAS_DOWNLOADS = 'projects.has_downloads';
 		const QA = 'projects.qa_responsible';
 		const QA_TYPE = 'projects.qa_responsible_type';
 		const LOCKED = 'projects.locked';
 		const DELETED = 'projects.deleted';
+		const SMALL_ICON = 'projects.small_icon';
+		const LARGE_ICON = 'projects.large_icon';
 		const ALLOW_CHANGING_WITHOUT_WORKING = 'projects.allow_freelancing';
 		const WORKFLOW_SCHEME_ID = 'projects.workflow_scheme_id';
 		const ISSUETYPE_SCHEME_ID = 'projects.issuetype_scheme_id';
 		const AUTOASSIGN = 'projects.autoassign';
+		const PARENT_PROJECT_ID = 'projects.parent';
+		const ARCHIVED = 'projects.archived';
 		
 		public function __construct()
 		{
@@ -61,6 +70,7 @@
 			parent::_addVarchar(self::PREFIX, 5, '');
 			parent::_addBoolean(self::USE_PREFIX);
 			parent::_addBoolean(self::USE_SCRUM);
+			parent::_addBoolean(self::HAS_DOWNLOADS);
 			parent::_addVarchar(self::HOMEPAGE, 200, '');
 			parent::_addInteger(self::OWNER, 10);
 			parent::_addInteger(self::OWNER_TYPE, 3);
@@ -84,8 +94,12 @@
 			parent::_addForeignKeyColumn(self::WORKFLOW_SCHEME_ID, TBGWorkflowSchemesTable::getTable(), TBGWorkflowSchemesTable::ID);
 			parent::_addForeignKeyColumn(self::ISSUETYPE_SCHEME_ID, TBGIssuetypeSchemesTable::getTable(), TBGIssuetypeSchemesTable::ID);
 			parent::_addForeignKeyColumn(self::CLIENT, TBGClientsTable::getTable(), TBGClientsTable::ID);
+			parent::_addForeignKeyColumn(self::PARENT_PROJECT_ID, $this, self::ID);
+			parent::_addForeignKeyColumn(self::SMALL_ICON, TBGFilesTable::getTable(), TBGFilesTable::ID);
+			parent::_addForeignKeyColumn(self::LARGE_ICON, TBGFilesTable::getTable(), TBGFilesTable::ID);
 			parent::_addBoolean(self::DELETED);
 			parent::_addBoolean(self::AUTOASSIGN);
+			parent::_addBoolean(self::ARCHIVED);
 		}
 		
 		public function clearDefaults()
@@ -111,7 +125,7 @@
 				$crit->addInsert(self::ID, $p_id);
 			}
 			$crit->addInsert(self::NAME, $name);
-			$crit->addInsert(self::KEY, strtolower(str_replace(' ', '', $name)));
+			$crit->addInsert(self::KEY, mb_strtolower(str_replace(' ', '', $name)));
 			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addInsert(self::WORKFLOW_SCHEME_ID, 1);
 			$res = $this->doInsert($crit);
@@ -130,7 +144,7 @@
 		public function getAll()
 		{
 			$crit = $this->getCriteria();
-			$crit->addOrderBy(self::NAME, B2DBCriteria::SORT_ASC);
+			$crit->addOrderBy(self::NAME, Criteria::SORT_ASC);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$res = $this->doSelect($crit);
 			return $res;
@@ -139,8 +153,8 @@
 		public function getAllSortedByIsDefault()
 		{
 			$crit = $this->getCriteria();
-			$crit->addOrderBy(self::IS_DEFAULT, B2DBCriteria::SORT_DESC);
-			$crit->addOrderBy(self::ID, B2DBCriteria::SORT_DESC);
+			$crit->addOrderBy(self::IS_DEFAULT, Criteria::SORT_DESC);
+			$crit->addOrderBy(self::ID, Criteria::SORT_DESC);
 			$crit->addWhere(self::LOCKED, false);
 			$res = $this->doSelect($crit);
 			return $res;
@@ -163,12 +177,21 @@
 			return $row;
 		}
 		
+		public function getByParentID($id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$crit->addWhere(self::PARENT_PROJECT_ID, $id);
+			$row = $this->doSelect($crit, false);
+			return $row;
+		}
+		
 		public function getByKey($key)
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addWhere(self::KEY, $key);
-			$crit->addWhere(self::KEY, '', B2DBCriteria::DB_NOT_EQUALS);
+			$crit->addWhere(self::KEY, '', Criteria::DB_NOT_EQUALS);
 			$row = $this->doSelectOne($crit, false);
 			return $row;
 		}
@@ -178,6 +201,8 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addWhere(self::ISSUETYPE_SCHEME_ID, $scheme_id);
+			$crit->addWhere(self::DELETED, false);
+			$crit->addWhere(self::ARCHIVED, false);
 			
 			return $this->doCount($crit);
 		}
@@ -187,6 +212,8 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addWhere(self::WORKFLOW_SCHEME_ID, $scheme_id);
+			$crit->addWhere(self::DELETED, false);
+			$crit->addWhere(self::ARCHIVED, false);
 			
 			return $this->doCount($crit);
 		}
@@ -197,6 +224,7 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, $scope);
 			$crit->addWhere(self::DELETED, false);
+			$crit->addWhere(self::ARCHIVED, false);
 
 			return $this->doCount($crit);
 		}

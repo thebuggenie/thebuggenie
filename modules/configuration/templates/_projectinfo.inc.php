@@ -1,114 +1,19 @@
-<?php include_component('main/hideableInfoBox', array('key' => 'projectinfo_didyouknow', 'title' => __('You can set a project icon too'), 'content' => __('By creating a PNG image in the project_icons directory of your installation, with the same name as the project key, this image will be shown next to your project throughout The Bug Genie. We recommend images are 16x16 in size. For further information please see the documentation.'))); ?>
-<table style="table-layout: fixed; width: 790px;" cellpadding=0 cellspacing=0>
-	<tr class="hover_highlight">
-		<td style="padding: 4px; width: 192px;">
-			<b><?php echo __('Project owner'); ?></b>
-			<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-				<?php include_component('main/identifiableselector', array(	'html_id'		=> 'owned_by_change',
-																		'header' 			=> __('Change / set owner'),
-																		'clear_link_text'	=> __('Set owned by noone'),
-																		'style'				=> array('position' => 'absolute'),
-																		'callback'		 	=> "setUser('" . make_url('configure_project_set_leadby', array('project_id' => $project->getID(), 'field' => 'owned_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'owned_by');",
-																		'base_id'			=> 'owned_by',
-																		'absolute'			=> true,
-																		'include_teams'		=> true)); ?>
-			<?php endif; ?>
-		</td>
-		<td style="<?php if (!$project->hasOwner()): ?>display: none; <?php endif; ?>padding: 2px; width: 470px;" id="owned_by_name">
-			<div style="width: 270px; display: <?php if ($project->hasOwner()): ?>inline<?php else: ?>none<?php endif; ?>;" id="owned_by_name">
-				<?php if ($project->getOwnerType() == TBGIdentifiableClass::TYPE_USER): ?>
-					<?php echo include_component('main/userdropdown', array('user' => $project->getOwner())); ?>
-				<?php elseif ($project->getOwnerType() == TBGIdentifiableClass::TYPE_TEAM): ?>
-					<?php echo include_component('main/teamdropdown', array('team' => $project->getOwner())); ?>
-				<?php endif; ?>
-			</div>
-		</td>
-		<td style="<?php if ($project->hasOwner()): ?>display: none; <?php endif; ?>padding: 2px;" class="faded_out" id="no_owned_by">
-			<?php echo __('Noone'); ?>
-		</td>
-		<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-			<td style="padding: 2px; width: 100px; font-size: 0.9em; text-align: right;"><a href="javascript:void(0);" class="image" onclick="Effect.toggle('owned_by_change', 'appear', { duration: 0.5 }); return false;" title="<?php echo __('Change project owner'); ?>"><?php echo __('Change / set'); ?></a></td>
-		<?php endif; ?>
-	</tr>
-	<tr><td colspan="3" class="config_explanation" style="padding-bottom: 10px;"><?php echo __('The project owner has total control over this project and can edit information, settings, and anything about it'); ?></td></tr>
-	<tr class="hover_highlight">
-		<td style="padding: 4px;">
-			<b><?php echo __('Lead by'); ?></b>
-			<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-				<?php include_component('main/identifiableselector', array(	'html_id'		=> 'lead_by_change',
-																		'header' 			=> __('Change / set leader'),
-																		'clear_link_text'	=> __('Set lead by noone'),
-																		'style'				=> array('position' => 'absolute'),
-																		'callback'		 	=> "setUser('" . make_url('configure_project_set_leadby', array('project_id' => $project->getID(), 'field' => 'lead_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'lead_by');",
-																		'base_id'			=> 'lead_by',
-																		'absolute'			=> true,
-																		'include_teams'		=> true)); ?>
-			<?php endif; ?>
-		</td>
-		<td style="<?php if (!$project->hasLeader()): ?>display: none; <?php endif; ?>padding: 2px;" id="lead_by_name">
-			<div style="width: 270px; display: <?php if ($project->hasLeader()): ?>inline<?php else: ?>none<?php endif; ?>;" id="lead_by_name">
-				<?php if ($project->getLeaderType() == TBGIdentifiableClass::TYPE_USER): ?>
-					<?php echo include_component('main/userdropdown', array('user' => $project->getLeader())); ?>
-				<?php elseif ($project->getLeaderType() == TBGIdentifiableClass::TYPE_TEAM): ?>
-					<?php echo include_component('main/teamdropdown', array('team' => $project->getLeader())); ?>
-				<?php endif; ?>
-			</div>
-		</td>
-		<td style="<?php if ($project->hasLeader()): ?>display: none; <?php endif; ?>padding: 2px;" class="faded_out" id="no_lead_by">
-			<?php echo __('Noone'); ?>
-		</td>
-		<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-			<td style="padding: 2px; width: 100px; font-size: 0.9em; text-align: right;"><a href="javascript:void(0);" class="image" onclick="Effect.toggle('lead_by_change', 'appear', { duration: 0.5 }); return false;" title="<?php echo __('Change project leader'); ?>"><?php echo __('Change / set'); ?></a></td>
-		<?php endif; ?>
-	</tr>
-<?php /*	<tr><td colspan="3" class="config_explanation" style="padding-bottom: 10px;"><?php echo __('The project lead will automatically be assigned issues. This can be overriden by component and edition leads, as well as manually specifing when creating an issue.'); ?></td></tr> */ ?>
-	<tr class="hover_highlight">
-		<td style="padding: 4px;">
-			<b><?php echo __('QA responsible'); ?></b>
-			<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-				<?php include_component('main/identifiableselector', array(	'html_id'		=> 'qa_by_change',
-																		'header' 			=> __('Change / set QA responsible'),
-																		'clear_link_text'	=> __('Set QA responsible to noone'),
-																		'style'				=> array('position' => 'absolute'),
-																		'callback'		 	=> "setUser('" . make_url('configure_project_set_leadby', array('project_id' => $project->getID(), 'field' => 'qa_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'qa_by');",
-																		'base_id'			=> 'qa_by',
-																		'absolute'			=> true,
-																		'include_teams'		=> true)); ?>
-			<?php endif; ?>
-		</td>
-		<td style="<?php if (!$project->hasQaResponsible()): ?>display: none; <?php endif; ?>padding: 2px;" id="qa_by_name">
-			<div style="width: 270px; display: <?php if ($project->hasQaResponsible()): ?>inline<?php else: ?>none<?php endif; ?>;" id="qa_by_name">
-				<?php if ($project->getQaResponsibleType() == TBGIdentifiableClass::TYPE_USER): ?>
-					<?php echo include_component('main/userdropdown', array('user' => $project->getQaResponsible())); ?>
-				<?php elseif ($project->getQaResponsibleType() == TBGIdentifiableClass::TYPE_TEAM): ?>
-					<?php echo include_component('main/teamdropdown', array('team' => $project->getQaResponsible())); ?>
-				<?php endif; ?>
-			</div>
-		</td>
-		<td style="<?php if ($project->hasQaResponsible()): ?>display: none; <?php endif; ?>padding: 2px;" class="faded_out" id="no_qa_by">
-			<?php echo __('Noone'); ?>
-		</td>
-		<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-			<td style="padding: 2px; width: 100px; font-size: 0.9em; text-align: right;;"><a href="javascript:void(0);" class="image" onclick="Effect.toggle('qa_by_change', 'appear', { duration: 0.5 }); return false;" title="<?php echo __('Change Qa responsible'); ?>"><?php echo __('Change / set'); ?></a></td>
-		<?php endif; ?>
-	</tr>
-</table>
-
 <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-	<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_project_settings', array('project_id' => $project->getID())); ?>" method="post" onsubmit="submitProjectInfo('<?php echo make_url('configure_project_settings', array('project_id' => $project->getID())); ?>', <?php echo $project->getID(); ?>); return false;" id="project_info">
+	<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_project_settings', array('project_id' => $project->getID())); ?>" method="post" id="project_info">
 <?php endif; ?>
+<h3><?php echo __('Editing project details'); ?></h3>
+<?php //include_component('main/hideableInfoBox', array('key' => 'projectinfo_didyouknow', 'title' => __('You can set a project icon too'), 'content' => __('By creating a PNG image in the project_icons directory of your installation, with the same name as the project key, this image will be shown next to your project throughout The Bug Genie. We recommend images are 16x16 in size. For further information please see the documentation.'))); ?>
 <table style="clear: both; width: 780px;" class="padded_table" cellpadding=0 cellspacing=0>
 	<tr>
 		<td style="width: 200px;"><label for="project_name"><?php echo __('Project name'); ?></label></td>
 		<td style="width: 580px;">
 			<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-				<input type="text" name="project_name" id="project_name_input" onblur="updateProjectPrefix('<?php echo make_url('configure_project_get_updated_key', array('project_id' => $project->getID())); ?>', <?php echo $project->getID(); ?>);" value="<?php print $project->getName(); ?>" style="width: 100%;">
+				<input type="text" name="project_name" id="project_name_input" onblur="TBG.Project.updatePrefix('<?php echo make_url('configure_project_get_updated_key', array('project_id' => $project->getID())); ?>', <?php echo $project->getID(); ?>);" value="<?php print $project->getName(); ?>" style="width: 100%;">
 			<?php else: ?>
 				<?php echo $project->getName(); ?>
 			<?php endif; ?>
 		</td>
 	</tr>
-	<tr>
 	<tr>
 		<td style="width: 200px;"><label for="project_name"><?php echo __('Project key'); ?></label></td>
 		<td style="width: 580px; position: relative;">
@@ -119,6 +24,32 @@
 				<?php echo $project->getKey(); ?>
 			<?php endif; ?>
 			<div style="float: right; margin-right: 5px;" class="faded_out"><?php echo __('This is a part of all urls referring to this project'); ?></div>
+		</td>
+	</tr>
+	<tr>
+		<td><label><?php echo __('Project icons'); ?></label></td>
+		<td style="padding: 15px 0;">
+			<?php if ($project->hasSmallIcon() || $project->hasLargeIcon()): ?>
+				<div class="button button-red" style="float: right; margin-left: 5px;" onclick="TBG.Main.Helpers.Dialog.show('<?php echo __('Reset project icons?'); ?>', '<?php echo __('Do you really want to reset the project icons? Please confirm.'); ?>', {yes: {click: function() {TBG.Project.resetIcons('<?php echo make_url('configure_projects_icons', array('project_id' => $project->getID())); ?>');}}, no: {click: TBG.Main.Helpers.Dialog.dismiss}});"><span><?php echo __('Reset icons'); ?></span></div>
+			<?php endif; ?>
+			<div class="button button-blue" style="float: right;" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'project_icons', 'project_id' => $project->getId())); ?>');"><span><?php echo ($project->hasSmallIcon() || $project->hasLargeIcon()) ? __('Change project icons') : __('Set project icons'); ?></span></div>
+			<?php echo image_tag($project->getSmallIconName(), array('style' => 'float: left; margin: 8px 10px 0 0; width: 16px; height: 16px;'), $project->hasSmallIcon()); ?>
+			<?php echo image_tag($project->getLargeIconName(), array('style' => 'width: 32px; height: 32px;'), $project->hasLargeIcon()); ?> &nbsp; 
+		</td>
+	</tr>
+	<tr>
+		<td><label for="client"><?php echo __('Subproject of'); ?></label></td>
+		<td>
+			<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
+				<select name="client" id="client" style="width: 100%">
+					<option value="0"<?php if (!($project->hasParent())): ?> selected<?php endif; ?>><?php echo __('Not a subproject'); ?></option>
+					<?php foreach ($valid_subproject_targets as $aproject): ?>
+						<option value=<?php echo $aproject->getID(); ?><?php if ($project->hasParent() && $project->getParent()->getID() == $aproject->getID()): ?> selected<?php endif; ?>><?php echo $aproject->getName(); ?></option>
+					<?php endforeach; ?>
+				</select>
+			<?php else: ?>
+				<?php if (!($project->hasParent())): echo __('Not a subproject'); else: echo $project->getParent()->getName(); endif; ?>
+			<?php endif; ?>
 		</td>
 	</tr>
 	<tr>
@@ -153,7 +84,7 @@
 		<td><label for="prefix"><?php echo __('Issue prefix'); ?></label></td>
 		<td>
 			<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-				<input type="text" name="prefix" id="prefix" value="<?php print $project->getPrefix(); ?>" style="width: 70px;"<?php if (!$project->usePrefix()): ?> disabled<?php endif; ?>>
+				<input type="text" name="prefix" id="prefix" maxlength="5" value="<?php print $project->getPrefix(); ?>" style="width: 70px;"<?php if (!$project->usePrefix()): ?> disabled<?php endif; ?>>
 			<?php elseif ($project->hasPrefix()): ?>
 				<?php echo $project->getPrefix(); ?>
 			<?php else: ?>
@@ -203,7 +134,7 @@
 	<tr>
 		<td colspan="2" style="padding: 10px 0 10px 10px; text-align: right;">
 			<div style="float: left; font-size: 13px; padding-top: 2px; font-style: italic;" class="config_explanation"><?php echo __('When you are done, click "%save%" to save your changes', array('%save%' => __('Save'))); ?></div>
-			<input type="submit" id="project_submit_settings_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
+			<input class="button button-green" style="float: right;" type="submit" id="project_submit_settings_button" value="<?php echo __('Save'); ?>">
 			<span id="project_info_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
 		</td>
 	</tr>

@@ -3,7 +3,7 @@
 		<?php echo image_tag('client_large.png', array('style' => 'float: left; margin-right: 5px;')); ?>
 		<?php echo javascript_link_tag(image_tag('action_delete.png'), array('title' => __('Delete this user client'), 'onclick' => '$(\'confirm_client_'.$client->getID().'_delete\').toggle();', 'style' => 'float: right;', 'class' => 'image')); ?>
 		<?php echo javascript_link_tag(image_tag('icon_edit.png'), array('title' => __('Edit this user client'), 'onclick' => '$(\'edit_client_'.$client->getID().'\').toggle();', 'style' => 'float: right; margin-right: 5px;', 'class' => 'image')); ?>
-		<?php echo javascript_link_tag(image_tag('client_list_users.png'), array('title' => __('List users in this client'), 'onclick' => 'showClientMembers(\''.make_url('configure_users_get_client_members', array('client_id' => $client->getID())).'\', '.$client->getID().');', 'style' => 'float: right; margin-right: 5px;', 'class' => 'image')); ?>
+		<?php echo javascript_link_tag(image_tag('client_list_users.png'), array('title' => __('List users in this client'), 'onclick' => 'TBG.Config.Client.showMembers(\''.make_url('configure_users_get_client_members', array('client_id' => $client->getID())).'\', '.$client->getID().');', 'style' => 'float: right; margin-right: 5px;', 'class' => 'image')); ?>
 		<p class="clientbox_header"><?php echo $client->getName(); ?></p>
 		<p class="clientbox_membercount"><?php echo __('ID: %id%', array('%id%' => $client->getID())); ?> - <?php echo __('%number_of% member(s)', array('%number_of%' => '<span id="client_'.$client->getID().'_membercount">'.$client->getNumberOfMembers().'</span>')); ?></p>
 		<div class="rounded_box white shadowed" style="margin: 5px; display: none;" id="edit_client_<?php echo $client->getID(); ?>">
@@ -72,7 +72,7 @@
 			<div class="dropdown_content">
 				<?php echo __('If you delete this client, any projects this client is assigned to will be set to having no client.'); ?>
 				<div style="text-align: right;">
-					<?php echo javascript_link_tag(__('Yes'), array('onclick' => 'deleteClient(\''.make_url('configure_users_delete_client', array('client_id' => $client->getID())).'\', '.$client->getID().');')); ?> :: <b><?php echo javascript_link_tag(__('No'), array('onclick' => '$(\'confirm_client_'.$client->getID().'_delete\').toggle();')); ?></b>
+					<?php echo javascript_link_tag(__('Yes'), array('onclick' => 'TBG.Config.Client.remove(\''.make_url('configure_users_delete_client', array('client_id' => $client->getID())).'\', '.$client->getID().');')); ?> :: <b><?php echo javascript_link_tag(__('No'), array('onclick' => '$(\'confirm_client_'.$client->getID().'_delete\').toggle();')); ?></b>
 				</div>
 				<table cellpadding=0 cellspacing=0 style="display: none; margin-left: 5px; width: 300px;" id="delete_client_<?php echo $client->getID(); ?>_indicator">
 					<tr>

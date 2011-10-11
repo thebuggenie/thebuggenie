@@ -65,7 +65,7 @@
 		 *
 		 * @var boolean
 		 */
-		protected $_enable_builds = null;
+		protected $_enable_builds = true;
 
 		/**
 		 * Edition builds
@@ -143,6 +143,22 @@
 		 * @var integer
 		 */
 		protected $_issuecounts = null;
+		
+		/**
+		 * The small project icon, if set
+		 * 
+		 * @Class TBGFile
+		 * @var TBGFile
+		 */
+		protected $_small_icon = null;
+		
+		/**
+		 * The large project icon, if set
+		 * 
+		 * @Class TBGFile
+		 * @var TBGFile
+		 */
+		protected $_large_icon = null;
 
 		/**
 		 * Issues registered for this project with no milestone assigned
@@ -271,6 +287,34 @@
 		protected $_prioritycount = null;
 
 		/**
+		 * Status count
+		 *
+		 * @var array
+		 */
+		protected $_statuscount = null;
+
+		/**
+		 * Category count
+		 *
+		 * @var array
+		 */
+		protected $_categorycount = null;
+
+		/**
+		 * Resolution count
+		 *
+		 * @var array
+		 */
+		protected $_resolutioncount = null;
+
+		/**
+		 * State count
+		 *
+		 * @var array
+		 */
+		protected $_statecount = null;
+
+		/**
 		 * Recent new features / enhancements reported
 		 *
 		 * @var array
@@ -285,11 +329,39 @@
 		protected $_recentideas = null;
 
 		/**
-		 * Recent activities
+		 * Recent documentation requests
 		 *
 		 * @var array
 		 */
-		protected $_recentactivities = null;
+		protected $_recentdocumentationrequests = null;
+		
+		/**
+		 * Recent new enhancements
+		 *
+		 * @var array
+		 */
+		protected $_recentenhancements = null;
+
+		/**
+		 * Recent support requests
+		 *
+		 * @var array
+		 */
+		protected $_recentsupportrequests = null;
+		
+		/**
+		 * Recent tasks
+		 *
+		 * @var array
+		 */
+		protected $_recenttasks = null;
+
+		/**
+		 * Recent developer reports
+		 *
+		 * @var array
+		 */
+		protected $_recentdeveloperreports = null;
 		
 		/**
 		 * The selected workflow scheme
@@ -323,6 +395,42 @@
 		protected $_autoassign = null;
 		
 		/**
+		 * Parent project
+		 * 
+		 * @var TBGProject
+		 * @Class TBGProject
+		 */
+		protected $_parent = null;
+		
+		/**
+		 * Child projects
+		 * 
+		 * @var Array
+		 */
+		protected $_children = null;
+		
+		/**
+		 * Recent activities
+		 * 
+		 * @var Array
+		 */
+		protected $_recentactivities = null;
+		
+		/**
+		 * Whether to show a "Download" link and corresponding section
+		 * 
+		 * @var boolean
+		 */
+		protected $_has_downloads = true;
+		
+		/**
+		 * Whether a project is archived (read-only mode)
+		 * 
+		 * @var boolean
+		 */
+		protected $_archived = false;
+		
+		/**
 		 * Make a project default
 		 * 
 		 * @param $p_id integer The id for the default project
@@ -347,6 +455,27 @@
 		{
 			self::_populateProjects();
 			return (array_key_exists($key, self::$_projects)) ? self::$_projects[$key] : null;
+		}
+		
+		public static function getValidSubprojects(TBGProject $project)
+		{
+			$valid_subproject_targets = array();
+			foreach (self::getAll() as $aproject)
+			{
+				if ($aproject->getId() == $project->getId()) continue;
+				$valid_subproject_targets[$aproject->getKey()] = $aproject;
+			}
+
+			// if this project has no children, life is made easy
+			if ($project->hasChildren())
+			{
+				foreach ($project->getChildren() as $child)
+				{
+					unset($valid_subproject_targets[$child->getKey()]);
+				}
+			}
+			
+			return $valid_subproject_targets;
 		}
 		
 		/**
@@ -381,7 +510,58 @@
 			self::_populateProjects();
 			return self::$_projects;
 		}
+		
+		/**
+		 * Retrieve all projects by parent ID
+		 * 
+		 * @return array
+		 */
+		public static function getAllByParentID($id)
+		{
+			self::_populateProjects();
+			$final = array();
+			foreach (self::$_projects as $project)
+			{
+				if (($project->getParent() instanceof TBGProject) && $project->getParent()->getID() == $id)
+				{
+					$final[] = $project;
+				}
+			}
+			return $final;
+		}
+		
+		/**
+		 * Retrieve all projects with no parent. If the parent is archived, the project will not be shown
+		 * 
+		 * @param bool $archived[optional] Show archived projects instead
+		 * 
+		 * @return array
+		 */
+		public static function getAllRootProjects($archived = false)
+		{
+			self::_populateProjects();
+			$final = array();
+			foreach (self::$_projects as $project)
+			{
+				if ($archived)
+				{
+					if (!($project->getParent() instanceof TBGProject) && $project->isArchived())
+					{
+						$final[] = $project;
+					}
+				}
+				else
+				{
+					if (!($project->getParent() instanceof TBGProject) && !$project->isArchived())
+					{
+						$final[] = $project;
+					}
+				}
+			}
+			return $final;
+		}
 
+		// Archived projects do not count
 		public static function getProjectsCount()
 		{
 			if (self::$_num_projects === null)
@@ -583,6 +763,8 @@
 				self::$_num_projects = null;
 				self::$_projects = null;
 
+				TBGDashboardViewsTable::getTable()->setDefaultViews($this->getID(), TBGDashboardViewsTable::TYPE_PROJECT);
+
 				TBGContext::setPermission("canseeproject", $this->getID(), "core", TBGContext::getUser()->getID(), 0, 0, true);
 				TBGContext::setPermission("canseeprojecthierarchy", $this->getID(), "core", TBGContext::getUser()->getID(), 0, 0, true);
 				TBGContext::setPermission("canmanageproject", $this->getID(), "core", TBGContext::getUser()->getID(), 0, 0, true);
@@ -621,9 +803,9 @@
 		/**
 		 * Constructor function
 		 *
-		 * @param B2DBRow $row
+		 * @param \b2db\Row $row
  		 */
-		public function _construct(B2DBRow $row, $foreign_key = null)
+		public function _construct(\b2db\Row $row, $foreign_key = null)
 		{
 			TBGEvent::createNew('core', 'TBGProject::__construct', $this)->trigger();
 		}
@@ -724,7 +906,7 @@
 		public function setName($name)
 		{
 			parent::setName($name);
-			$this->_key = strtolower($this->getStrippedProjectName());
+			$this->_key = mb_strtolower($this->getStrippedProjectName());
 			if ($this->_key == '') $this->_key = 'project'.$this->getID();
 		}
 		
@@ -973,6 +1155,26 @@
 		}
 
 		/**
+		 * Returns whether or not the project has been archived
+		 *
+		 * @return boolean
+		 */
+		public function isArchived()
+		{
+			return $this->_archived;
+		}
+
+		/**
+		 * Set the archived state
+		 * 
+		 * @var boolean $archived
+		 */
+		public function setArchived($archived)
+		{
+			$this->_archived = $archived;
+		}
+
+		/**
 		 * Set whether or not the project uses prefix
 		 *
 		 * @param boolean $use_prefix
@@ -1083,6 +1285,33 @@
 				{
 					$this->_allmilestones[$milestone->getID()] = $milestone;
 				}
+				uasort($this->_allmilestones, function($milestone_a, $milestone_b) {
+					if (!$milestone_a->isScheduled() && !$milestone_a->isStarting() && !$milestone_b->isScheduled() && !$milestone_b->isStarting()) return 1;
+					if ($milestone_a->isStarting() && $milestone_b->isStarting())
+						return ($milestone_a->getStartingDate() < $milestone_b->getStartingDate()) ? -1 : 1;
+					
+					if ($milestone_a->isScheduled() && $milestone_b->isScheduled())
+						return ($milestone_a->getScheduledDate() < $milestone_b->getScheduledDate()) ? -1 : 1;
+					
+					if ($milestone_a->isStarting() && $milestone_b->isScheduled())
+						return ($milestone_a->getStartingDate() < $milestone_b->getScheduledDate()) ? -1 : 1;
+
+					if ($milestone_a->isScheduled() && $milestone_b->isStarting())
+						return ($milestone_a->getScheduledDate() < $milestone_b->getStartingDate()) ? -1 : 1;
+
+					if ($milestone_a->isStarting()) return -1;
+					if ($milestone_b->isStarting()) return 1;
+					
+					if ($milestone_a->isScheduled()) return -1;
+					if ($milestone_b->isScheduled()) return 1;
+					
+					if ($milestone_a->isOverdue()) return -1;
+					if ($milestone_b->isOverdue()) return 1;
+					
+					if (!$milestone_b->isStarting() && !$milestone_b->isScheduled()) return -1;
+					
+					return 0;
+				});
 			}
 		}
 
@@ -1178,6 +1407,30 @@
 			return $ret_arr;
 		}
 		
+		/**
+		 * Returns a list of milestones and sprints starting soon
+		 * 
+		 * @param integer $days[optional] Number of days, default 21 
+		 * 
+		 * @return array
+		 */
+		public function getStartingMilestonesAndSprints($days = 21)
+		{
+			$ret_arr = array();
+			if ($allmilestones = $this->getAllMilestones())
+			{
+				$curr_day = time();
+				foreach ($allmilestones as $milestone)
+				{
+					if (($milestone->getStartingDate() > $curr_day) && ($milestone->getStartingDate() < ($curr_day + (86400 * $days))))
+					{
+						$ret_arr[$milestone->getID()] = $milestone;
+					}
+				}
+			}
+			return $ret_arr;
+		}
+		
 		public function removeAssignee($assignee_type, $assignee_id)
 		{
 			TBGProjectAssigneesTable::getTable()->removeAssigneeFromProject($assignee_type, $assignee_id, $this->getID());
@@ -1204,15 +1457,15 @@
 			switch (true)
 			{
 				case ($assignee instanceof TBGUser):
-					if (!$res = B2DB::getTable('TBGProjectAssigneesTable')->getByProjectAndRoleAndUser($this->getID(), $role, $assignee->getID()))
+					if (!$res = \b2db\Core::getTable('TBGProjectAssigneesTable')->getByProjectAndRoleAndUser($this->getID(), $role, $assignee->getID()))
 					{
-						B2DB::getTable('TBGProjectAssigneesTable')->addByProjectAndRoleAndUser($this->getID(), $role, $assignee->getID());
+						\b2db\Core::getTable('TBGProjectAssigneesTable')->addByProjectAndRoleAndUser($this->getID(), $role, $assignee->getID());
 					}
 					break;
 				case ($assignee instanceof TBGTeam):
-					if (!($res = B2DB::getTable('TBGProjectAssigneesTable')->getByProjectAndRoleAndTeam($this->getID(), $role, $assignee->getID())))
+					if (!($res = \b2db\Core::getTable('TBGProjectAssigneesTable')->getByProjectAndRoleAndTeam($this->getID(), $role, $assignee->getID())))
 					{
-						B2DB::getTable('TBGProjectAssigneesTable')->addByProjectAndRoleAndTeam($this->getID(), $role, $assignee->getID());
+						\b2db\Core::getTable('TBGProjectAssigneesTable')->addByProjectAndRoleAndTeam($this->getID(), $role, $assignee->getID());
 					}
 					break;
 			}
@@ -1310,6 +1563,17 @@
 			$this->_populateBuilds();
 			return $this->_builds;
 		}
+		
+		public function getActiveBuilds()
+		{
+			$builds = $this->getBuilds();
+			foreach ($builds as $id => $build)
+			{
+				if ($build->isLocked()) unset($builds[$id]);
+			}
+			
+			return $builds;
+		}
 
 		/**
 		 * Populates issue types inside the project
@@ -1360,11 +1624,14 @@
 					}
 				}
 				
-				if ($res = TBGIssuesTable::getTable()->getByProjectIDandNoMilestoneandTypesAndState($this->getID(), $issuetypes, TBGIssue::STATE_OPEN))
+				if (count($issuetypes) > 0)
 				{
-					while ($row = $res->getNextRow())
+					if ($res = TBGIssuesTable::getTable()->getByProjectIDandNoMilestoneandTypesAndState($this->getID(), $issuetypes, TBGIssue::STATE_OPEN))
 					{
-						$this->_unassignedstories[$row->get(TBGIssuesTable::ID)] = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID));
+						while ($row = $res->getNextRow())
+						{
+							$this->_unassignedstories[$row->get(TBGIssuesTable::ID)] = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID));
+						}
 					}
 				}
 			}
@@ -1402,7 +1669,7 @@
 			if ($this->_visible_milestones === null)
 			{
 				$this->_visible_milestones = array();
-				if ($res = B2DB::getTable('TBGVisibleMilestonesTable')->getAllByProjectID($this->getID()))
+				if ($res = \b2db\Core::getTable('TBGVisibleMilestonesTable')->getAllByProjectID($this->getID()))
 				{
 					while ($row = $res->getNextRow())
 					{
@@ -1435,7 +1702,7 @@
 		public function clearVisibleMilestones()
 		{
 			$this->_visible_milestones = null;
-			B2DB::getTable('TBGVisibleMilestonesTable')->clearByProjectID($this->getID());
+			\b2db\Core::getTable('TBGVisibleMilestonesTable')->clearByProjectID($this->getID());
 		}
 		
 		/**
@@ -1450,7 +1717,7 @@
 			try
 			{
 				$this->_visible_milestones = null;
-				B2DB::getTable('TBGVisibleMilestonesTable')->addByProjectIDAndMilestoneID($this->getID(), $milestone_id);
+				\b2db\Core::getTable('TBGVisibleMilestonesTable')->addByProjectIDAndMilestoneID($this->getID(), $milestone_id);
 				return true;
 			}
 			catch (Exception $e)
@@ -1486,11 +1753,11 @@
 			{
 				list ($this->_issuecounts['all']['closed'], $this->_issuecounts['all']['open']) = TBGIssue::getIssueCountsByProjectID($this->getID());
 			}
-			if (empty($this->_issuecounts['last30']))
+			if (empty($this->_issuecounts['last15']))
 			{
-				list ($closed, $open) = TBGLogTable::getTable()->getLast30IssueCountsByProjectID($this->getID());
-				$this->_issuecounts['last30']['open'] = $open;
-				$this->_issuecounts['last30']['closed'] = $closed;
+				list ($closed, $open) = TBGLogTable::getTable()->getLast15IssueCountsByProjectID($this->getID());
+				$this->_issuecounts['last15']['open'] = $open;
+				$this->_issuecounts['last15']['closed'] = $closed;
 			}
 		}
 		
@@ -1568,7 +1835,7 @@
 		public function clearVisibleIssuetypes()
 		{
 			$this->_visible_issuetypes = null;
-			B2DB::getTable('TBGVisibleIssueTypesTable')->clearByProjectID($this->getID());
+			\b2db\Core::getTable('TBGVisibleIssueTypesTable')->clearByProjectID($this->getID());
 		}
 		
 		/**
@@ -1582,7 +1849,7 @@
 		{
 			try
 			{
-				B2DB::getTable('TBGVisibleIssueTypesTable')->addByProjectIDAndIssuetypeID($this->getID(), $issuetype_id);
+				\b2db\Core::getTable('TBGVisibleIssueTypesTable')->addByProjectIDAndIssuetypeID($this->getID(), $issuetype_id);
 				return true;
 			}
 			catch (Exception $e)
@@ -1615,10 +1882,10 @@
 			return $this->_issuecounts['all']['closed'] + $this->_issuecounts['all']['open'];
 		}
 
-		public function getLast30Counts()
+		public function getLast15Counts()
 		{
 			$this->_populateIssueCounts();
-			return $this->_issuecounts['last30'];
+			return $this->_issuecounts['last15'];
 		}
 		
 		/**
@@ -1930,7 +2197,7 @@
 			if (!isset($this->_fieldsarrays[$issue_type][(int) $reportable]))
 			{
 				$retval = array();
-				$res = B2DB::getTable('TBGIssueFieldsTable')->getBySchemeIDandIssuetypeID($this->getIssuetypeScheme()->getID(), $issue_type);
+				$res = \b2db\Core::getTable('TBGIssueFieldsTable')->getBySchemeIDandIssuetypeID($this->getIssuetypeScheme()->getID(), $issue_type);
 				if ($res)
 				{
 					$builtin_types = TBGDatatype::getAvailableFields(true);
@@ -2048,6 +2315,7 @@
 								$retval[$key]['values'][''] = TBGContext::getI18n()->__('None');
 								foreach ($this->getBuilds() as $build)
 								{
+									if ($build->isLocked()) continue;
 									$retval[$key]['values'][$build->getID()] = $build->getName().' ('.$build->getVersion().')';
 								}
 								if (!$this->isBuildsEnabled() || empty($retval[$key]['values']))
@@ -2081,16 +2349,6 @@
 			return TBGContext::getUser()->hasPermission('canseeproject', $this->getID());
 		}
 		
-		public function hasIcon()
-		{
-			return (bool) (file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DIRECTORY_SEPARATOR . 'project_icons' . DIRECTORY_SEPARATOR . $this->getKey() . '.png'));
-		}
-		
-		public function getIcon()
-		{
-			return ($this->hasIcon()) ? 'project_icons/' . $this->getKey() . '.png' : 'icon_project.png';			
-		}
-
 		protected function _populateLogItems($limit = null, $important = true, $offset = null)
 		{
 			$varname = ($important) ? '_recentimportantlogitems' : '_recentlogitems';
@@ -2146,20 +2404,157 @@
 			return $this->_prioritycount;
 		}
 
+		protected function _populateStatusCount()
+		{
+			if ($this->_statuscount === null)
+			{
+				$this->_statuscount = array();
+				$this->_statuscount[0] = array('open' => 0, 'closed' => 0, 'percentage' => 0);
+				foreach (TBGStatus::getAll() as $status_id => $status)
+				{
+					$this->_statuscount[$status_id] = array('open' => 0, 'closed' => 0, 'percentage' => 0);
+				}
+				foreach (TBGIssuesTable::getTable()->getStatusCountByProjectID($this->getID()) as $status_id => $status_count)
+				{
+					$this->_statuscount[$status_id] = $status_count;
+				}
+			}
+		}
+
+		public function getStatusCount()
+		{
+			$this->_populateStatusCount();
+			return $this->_statuscount;
+		}
+
+		protected function _populateResolutionCount()
+		{
+			if ($this->_resolutioncount === null)
+			{
+				$this->_resolutioncount = array();
+				$this->_resolutioncount[0] = array('open' => 0, 'closed' => 0, 'percentage' => 0);
+				foreach (TBGResolution::getAll() as $resolution_id => $resolution)
+				{
+					$this->_resolutioncount[$resolution_id] = array('open' => 0, 'closed' => 0, 'percentage' => 0);
+				}
+				foreach (TBGIssuesTable::getTable()->getResolutionCountByProjectID($this->getID()) as $resolution_id => $resolution_count)
+				{
+					$this->_resolutioncount[$resolution_id] = $resolution_count;
+				}
+			}
+		}
+
+		public function getResolutionCount()
+		{
+			$this->_populateResolutionCount();
+			return $this->_resolutioncount;
+		}
+
+		protected function _populateCategoryCount()
+		{
+			if ($this->_categorycount === null)
+			{
+				$this->_categorycount = array();
+				$this->_categorycount[0] = array('open' => 0, 'closed' => 0, 'percentage' => 0);
+				foreach (TBGCategory::getAll() as $category_id => $category)
+				{
+					$this->_categorycount[$category_id] = array('open' => 0, 'closed' => 0, 'percentage' => 0);
+				}
+				foreach (TBGIssuesTable::getTable()->getCategoryCountByProjectID($this->getID()) as $category_id => $category_count)
+				{
+					$this->_categorycount[$category_id] = $category_count;
+				}
+			}
+		}
+
+		public function getCategoryCount()
+		{
+			$this->_populateCategoryCount();
+			return $this->_categorycount;
+		}
+
+		protected function _populateStateCount()
+		{
+			if ($this->_statecount === null)
+			{
+				$this->_statecount = array();
+				foreach (TBGIssuesTable::getTable()->getStateCountByProjectID($this->getID()) as $state_id => $state_count)
+				{
+					$this->_statecount[$state_id] = $state_count;
+				}
+			}
+		}
+
+		public function getStateCount()
+		{
+			$this->_populateStateCount();
+			return $this->_statecount;
+		}
+
 		protected function _populateRecentIssues()
 		{
 			if ($this->_recentissues === null)
 			{
 				$this->_recentissues = array();
-				if ($res = TBGIssuesTable::getTable()->getRecentByProjectIDandIssueType($this->getID(), array('bug_report'), 10))
+				if ($res = TBGIssuesTable::getTable()->getRecentByProjectIDandIssueType($this->getID(), array('bug_report'), 5))
 				{
 					while ($row = $res->getNextRow())
 					{
-						$recentissue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
-						if ($recentissue->hasAccess())
+						try
 						{
-							$this->_recentissues[$recentissue->getID()] = $recentissue;
+							$recentissue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
+							if ($recentissue->hasAccess())
+							{
+								$this->_recentissues[$recentissue->getID()] = $recentissue;
+							}
 						}
+						catch (Exception $e) {}
+					}
+				}
+			}
+		}
+
+		protected function _populateRecentDocumentationRequests()
+		{
+			if ($this->_recentdocumentationrequests === null)
+			{
+				$this->_recentdocumentationrequests = array();
+				if ($res = TBGIssuesTable::getTable()->getRecentByProjectIDandIssueType($this->getID(), array('documentation_request')))
+				{
+					while ($row = $res->getNextRow())
+					{
+						try
+						{
+							$recentissue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
+							if ($recentissue->hasAccess())
+							{
+								$this->_recentdocumentationrequests[$recentissue->getID()] = $recentissue;
+							}
+						}
+						catch (Exception $e) {}
+					}
+				}
+			}
+		}
+		
+		protected function _populateRecentEnhancements()
+		{
+			if ($this->_recentenhancements === null)
+			{
+				$this->_recentenhancements = array();
+				if ($res = TBGIssuesTable::getTable()->getRecentByProjectIDandIssueType($this->getID(), array('enhancement')))
+				{
+					while ($row = $res->getNextRow())
+					{
+						try
+						{
+							$recentissue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
+							if ($recentissue->hasAccess())
+							{
+								$this->_recentenhancements[$recentissue->getID()] = $recentissue;
+							}
+						}
+						catch (Exception $e) {}
 					}
 				}
 			}
@@ -2170,15 +2565,19 @@
 			if ($this->_recentfeatures === null)
 			{
 				$this->_recentfeatures = array();
-				if ($res = TBGIssuesTable::getTable()->getRecentByProjectIDandIssueType($this->getID(), array('feature_request', 'enhancement')))
+				if ($res = TBGIssuesTable::getTable()->getRecentByProjectIDandIssueType($this->getID(), array('feature_request')))
 				{
 					while ($row = $res->getNextRow())
 					{
-						$recentissue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
-						if ($recentissue->hasAccess())
+						try
 						{
-							$this->_recentfeatures[$recentissue->getID()] = $recentissue;
+							$recentissue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
+							if ($recentissue->hasAccess())
+							{
+								$this->_recentfeatures[$recentissue->getID()] = $recentissue;
+							}
 						}
+						catch (Exception $e) {}
 					}
 				}
 			}
@@ -2193,11 +2592,84 @@
 				{
 					while ($row = $res->getNextRow())
 					{
-						$recentissue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
-						if ($recentissue->hasAccess())
+						try
 						{
-							$this->_recentideas[$recentissue->getID()] = $recentissue;
+							$recentissue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
+							if ($recentissue->hasAccess())
+							{
+								$this->_recentideas[$recentissue->getID()] = $recentissue;
+							}
 						}
+						catch (Exception $e) {}
+					}
+				}
+			}
+		}
+		
+		protected function _populateRecentSupportRequests()
+		{
+			if ($this->_recentsupportrequests === null)
+			{
+				$this->_recentsupportrequests = array();
+				if ($res = TBGIssuesTable::getTable()->getRecentByProjectIDandIssueType($this->getID(), array('support_request')))
+				{
+					while ($row = $res->getNextRow())
+					{
+						try
+						{
+							$recentissue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
+							if ($recentissue->hasAccess())
+							{
+								$this->_recentsupportrequests[$recentissue->getID()] = $recentissue;
+							}
+						}
+						catch (Exception $e) {}
+					}
+				}
+			}
+		}
+		
+		protected function _populateRecentTasks()
+		{
+			if ($this->_recenttasks === null)
+			{
+				$this->_recenttasks = array();
+				if ($res = TBGIssuesTable::getTable()->getRecentByProjectIDandIssueType($this->getID(), array('task')))
+				{
+					while ($row = $res->getNextRow())
+					{
+						try
+						{
+							$recentissue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
+							if ($recentissue->hasAccess())
+							{
+								$this->_recenttasks[$recentissue->getID()] = $recentissue;
+							}
+						}
+						catch (Exception $e) {}
+					}
+				}
+			}
+		}
+		
+		protected function _populateRecentDeveloperReports()
+		{
+			if ($this->_recentdeveloperreports === null)
+			{
+				$this->_recentdeveloperreports = array();
+				if ($res = TBGIssuesTable::getTable()->getRecentByProjectIDandIssueType($this->getID(), array('developer_reports')))
+				{
+					while ($row = $res->getNextRow())
+					{
+						try
+						{
+							$recentissue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
+							if ($recentissue->hasAccess())
+							{
+								$this->_recentdeveloperreports[$recentissue->getID()] = $recentissue;
+							}
+						}
+						catch (Exception $e) {}
 					}
 				}
 			}
@@ -2215,7 +2687,7 @@
 		}
 
 		/**
-		 * Return this projects 5 most recent feature requests / enhancements
+		 * Return this projects 5 most recent feature requests
 		 *
 		 * @return array A list of TBGIssues
 		 */
@@ -2235,6 +2707,62 @@
 			$this->_populateRecentIdeas();
 			return $this->_recentideas;
 		}
+		
+		/**
+		 * Return this projects 5 most recent documentation requests
+		 *
+		 * @return array A list of TBGIssues
+		 */
+		public function getRecentDocumentationRequests()
+		{
+			$this->_populateRecentDocumentationRequests();
+			return $this->_recentdocumentationrequests;
+		}
+
+		/**
+		 * Return this projects 5 most recent enhancements
+		 *
+		 * @return array A list of TBGIssues
+		 */
+		public function getRecentEnhancements()
+		{
+			$this->_populateRecentEnhancements();
+			return $this->_recentenhancements;
+		}
+		
+		/**
+		 * Return this projects 5 most recent tasks
+		 *
+		 * @return array A list of TBGIssues
+		 */
+		public function getRecentTasks()
+		{
+			$this->_populateRecentTasks();
+			return $this->_recenttasks;
+		}
+
+		/**
+		 * Return this projects 5 most recent support requests
+		 *
+		 * @return array A list of TBGIssues
+		 */
+		public function getRecentSupportRequests()
+		{
+			$this->_populateRecentSupportRequests();
+			return $this->_recentsupportrequests;
+		}
+
+		/**
+		 * Return this projects 5 most recent developer reports
+		 *
+		 * @return array A list of TBGIssues
+		 */
+		public function getRecentDeveloperReports()
+		{
+			$this->_populateRecentDeveloperReports();
+			return $this->_recentdeveloperreports;
+		}
+
 
 		protected function _populateRecentActivities($limit = null, $important = true, $offset = null)
 		{
@@ -2454,5 +2982,156 @@
 		{
 			return (bool) ($this->_autoassign);
 		}
+		
+		public function hasParent()
+		{
+			return ($this->getParent() instanceof TBGProject);
+		}
+		
+		public function hasChildren()
+		{
+			return (bool) count($this->getChildren());
+		}
+		
+		public function getParent()
+		{
+//			if ($this->getKey() == 'sampleproject2'): return TBGProject::getByKey('sampleproject1'); endif;
+			return $this->_getPopulatedObjectFromProperty('_parent');
+		}
+		
+		public function setParent(TBGProject $project)
+		{
+			$this->_parent = $project;
+		}
+		
+		/**
+		 * Get all children
+		 * @param bool $archived[optional] Show archived projects
+		 */
+		public function getChildren($archived = false)
+		{
+			$this->_populateChildren();
+			$f_projects = array();
+			
+			foreach ($this->_children as $project)
+			{
+				if ($archived)
+				{
+					if ($project->isArchived()): $f_projects[] = $project; endif;
+				}
+				else
+				{
+					if (!$project->isArchived()): $f_projects[] = $project; endif;
+				}
+			}
+			
+			return $f_projects;
+		}
+		
+		protected function _populateChildren()
+		{
+			if ($this->_children === null)
+			{
+				$this->_children = array();
+				$res = TBGProjectsTable::getTable()->getByParentID($this->getID());
 
+				if ($res == false): return; endif;
+
+				foreach ($res->getAllRows() as $row)
+				{
+					$this->_children[] = TBGContext::factory()->TBGProject($row->get(TBGProjectsTable::ID), $row);
+				}
+			}
+		}
+		
+		/**
+		 * Whether or not this project has downloads enabled
+		 * 
+		 * @return boolean
+		 */
+		public function hasDownloads() 
+		{
+			return (bool) $this->_has_downloads;
+		}
+		
+		/**
+		 * Set whether this project has downloads enabled
+		 * 
+		 * @param boolean $value
+		 */
+		public function setDownloadsEnabled($value = true)
+		{
+			$this->_has_downloads = $value;
+		}
+		
+		public function setSmallIcon(TBGFile $icon)
+		{
+			$this->_small_icon = $icon;
+		}
+		
+		public function clearSmallIcon()
+		{
+			$this->_small_icon = null;
+		}
+		
+		/**
+		 * Return the small icon file object
+		 * 
+		 * @return TBGFile
+		 */
+		public function getSmallIcon()
+		{
+			return $this->_getPopulatedObjectFromProperty('_small_icon');
+		}
+		
+		public function getSmallIconName()
+		{
+			return ($this->hasSmallIcon()) ? TBGContext::getRouting()->generate('showfile', array('id' => $this->getSmallIcon()->getID())) : 'icon_project.png';
+		}
+
+		public function hasSmallIcon()
+		{
+			return ($this->getSmallIcon() instanceof TBGFile);
+		}
+		
+		public function setLargeIcon(TBGFile $icon)
+		{
+			$this->_large_icon = $icon;
+		}
+		
+		public function clearLargeIcon()
+		{
+			$this->_large_icon = null;
+		}
+		
+		public function getLargeIcon()
+		{
+			return $this->_getPopulatedObjectFromProperty('_large_icon');
+		}
+		
+		public function getLargeIconName()
+		{
+			return ($this->hasLargeIcon()) ? TBGContext::getRouting()->generate('showfile', array('id' => $this->getLargeIcon()->getID())) : 'icon_project_large.png';
+		}
+
+		public function hasLargeIcon()
+		{
+			return ($this->getLargeIcon() instanceof TBGFile);
+		}
+		
+		/**
+		 * Move issues from one step to another for a given issue type and conversions
+		 * @param TBGIssuetype $issuetype
+		 * @param array $conversions
+		 * 
+		 * $conversions should be an array containing arrays:
+		 * array (
+		 * 		array(oldstep, newstep)
+		 * 		...
+		 * )
+		 */
+		public function convertIssueStepPerIssuetype(TBGIssuetype $issuetype, array $conversions)
+		{
+			TBGIssuesTable::getTable()->convertIssueStepByIssuetype($this, $issuetype, $conversions);
+		}
 	}

@@ -64,7 +64,7 @@
 		public static function createNew($name, $itemdata = null)
 		{
 			$itemdata = ($itemdata === null || trim($itemdata) == '') ? '#FFF' : $itemdata;
-			if (substr($itemdata, 0, 1) != '#')
+			if (mb_substr($itemdata, 0, 1) != '#')
 			{
 				$itemdata = '#'.$itemdata;
 			}
@@ -77,7 +77,7 @@
 		{
 			foreach (self::getAll() as $status)
 			{
-				if ($status->getKey() == str_replace(array(' ', '/'), array('', ''), strtolower($key)))
+				if ($status->getKey() == str_replace(array(' ', '/'), array('', ''), mb_strtolower($key)))
 				{
 					return $status;
 				}
@@ -97,7 +97,7 @@
 		
 		public function hasLinkedWorkflowStep()
 		{
-			return (bool) B2DB::getTable('TBGWorkflowStepsTable')->countByStatusID($this->getID());
+			return (bool) \b2db\Core::getTable('TBGWorkflowStepsTable')->countByStatusID($this->getID());
 		}
 		
 		public function canBeDeleted()

@@ -1,7 +1,6 @@
 <?php
 
 	$tbg_response->setTitle(__('Configure issue types'));
-	$tbg_response->addJavascript('config/issuetypes.js');
 
 ?>
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
@@ -22,7 +21,7 @@
 			<?php if ($mode == 'issuetypes'): ?>
 				<div id="tab_types_pane" style="padding-top: 0; width: 750px;">
 					<div class="content">
-						<?php echo __('In this tab you can add/remove/edit what issue types are available to issue type schemes. If you add a new issue type on this page, remember to associate it to an issue type scheme on the %issue_type_schemes% tab to get it to show up for users.', array('%issue_type_schemes%' => javascript_link_tag(__('Issue type schemes'), array('onclick' => "switchSubmenuTab('tab_schemes', 'issuetypes_menu');")))); ?>
+						<?php echo __('In this tab you can add/remove/edit what issue types are available to issue type schemes. If you add a new issue type on this page, remember to associate it to an issue type scheme on the %issue_type_schemes% tab to get it to show up for users.', array('%issue_type_schemes%' => javascript_link_tag(__('Issue type schemes'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_schemes', 'issuetypes_menu');")))); ?>
 					</div>
 					<div id="issuetypes_list">
 						<?php foreach ($issue_types as $type): ?>
@@ -31,7 +30,7 @@
 					</div>
 					<div class="header_div" style="margin-top: 20px;"><?php echo __('Add a new issue type'); ?></div>
 					<div class="rounded_box yellow borderless" style="margin: 5px 0 0 0; padding: 3px; font-size: 12px;">
-						<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuetypes_add'); ?>" onsubmit="addIssuetype('<?php echo make_url('configure_issuetypes_add'); ?>');return false;" id="add_issuetype_form">
+						<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuetypes_add'); ?>" onsubmit="TBG.Config.Issuetype.add('<?php echo make_url('configure_issuetypes_add'); ?>');return false;" id="add_issuetype_form">
 							<label for="new_issuetype_name"><?php echo __('Issue type name'); ?></label>
 							<input type="text" name="name" id="new_issuetype_name" style="width: 200px;">
 							<label for="new_issuetype_icon"><?php echo __('Type'); ?></label>

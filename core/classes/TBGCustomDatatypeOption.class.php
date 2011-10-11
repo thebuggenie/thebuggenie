@@ -33,7 +33,7 @@
 			if (!array_key_exists($key, self::$_items))
 			{
 				self::$_items[$key] = array();
-				if ($items = B2DB::getTable('TBGCustomFieldOptionsTable')->getAllByKey($key))
+				if ($items = \b2db\Core::getTable('TBGCustomFieldOptionsTable')->getAllByKey($key))
 				{
 					foreach ($items as $row_id => $row)
 					{
@@ -54,7 +54,7 @@
 		 */
 		public static function getByValueAndKey($value, $key)
 		{
-			$row = B2DB::getTable('TBGCustomFieldOptionsTable')->getByValueAndKey($value, $key);
+			$row = \b2db\Core::getTable('TBGCustomFieldOptionsTable')->getByValueAndKey($value, $key);
 			if ($row)
 			{
 				return TBGContext::factory()->TBGCustomDatatypeOption($row->get(TBGCustomFieldOptionsTable::ID), $row);
@@ -79,7 +79,7 @@
 			elseif (in_array($this->getItemtype(), array(TBGCustomDatatype::DROPDOWN_CHOICE_TEXT_COLORED, TBGCustomDatatype::DROPDOWN_CHOICE_TEXT_COLOR)))
 			{
 				$itemdata = ($this->getItemdata() === null || trim($this->getItemdata()) == '') ? '#FFF' : $this->getItemdata();
-				if (substr($itemdata, 0, 1) != '#')
+				if (mb_substr($itemdata, 0, 1) != '#')
 				{
 					$itemdata = '#'.$itemdata;
 				}

@@ -1,15 +1,15 @@
-<div class="rounded_box borderless lightgrey menu_links" id="<?php echo $target_type; ?>_<?php echo $target_id; ?>_container" style="margin: 0 0 5px 5px; padding: 3px;">
+<div class="container_div menu_links" id="<?php echo $target_type; ?>_<?php echo $target_id; ?>_container" style="margin: 0 0 5px 5px;">
 	<div class="header">
-		<?php if ($tbg_user->canEditMainMenu()): ?>
+		<?php if ($tbg_user->canEditMainMenu() && ((TBGContext::isProjectContext() && !TBGContext::getCurrentProject()->isArchived()) || !TBGContext::isProjectContext())): ?>
 			<?php echo javascript_link_tag(image_tag('action_add_link.png'), array('style' => 'float: right;', 'class' => 'image', 'onclick' => "$('attach_link_{$target_type}_{$target_id}').toggle();", 'title' => __('Add an item to the menu'))); ?>
 			<?php echo javascript_link_tag(image_tag('icon_edit.png'), array('style' => 'float: right;', 'class' => 'image', 'onclick' => "$('{$target_type}_{$target_id}_container').toggleClassName('menu_editing');", 'title' => __('Toggle menu edit mode'))); ?>
 		<?php endif; ?>
 		<?php echo $title; ?>
 	</div>
-	<?php if ($tbg_user->canEditMainMenu()): ?>
+	<?php if ($tbg_user->canEditMainMenu() && ((TBGContext::isProjectContext() && !TBGContext::getCurrentProject()->isArchived()) || !TBGContext::isProjectContext())): ?>
 		<div class="rounded_box lightgrey shadowed" id="attach_link_<?php echo $target_type; ?>_<?php echo $target_id; ?>" style="position: absolute; width: 300px; z-index: 10001; margin: 5px 0 5px 5px; display: none">
 			<div class="header_div" style="margin: 0 0 5px 0;"><?php echo __('Add a link'); ?>:</div>
-			<form action="<?php echo make_url('attach_link', array('target_type' => $target_type, 'target_id' => $target_id)); ?>" method="post" onsubmit="addLink('<?php echo make_url('attach_link', array('target_type' => $target_type, 'target_id' => $target_id)); ?>', '<?php echo $target_type; ?>', '<?php echo $target_id; ?>');return false;" id="attach_link_<?php echo $target_type; ?>_<?php echo $target_id; ?>_form">
+			<form action="<?php echo make_url('attach_link', array('target_type' => $target_type, 'target_id' => $target_id)); ?>" method="post" onsubmit="TBG.Main.Link.add('<?php echo make_url('attach_link', array('target_type' => $target_type, 'target_id' => $target_id)); ?>', '<?php echo $target_type; ?>', '<?php echo $target_id; ?>');return false;" id="attach_link_<?php echo $target_type; ?>_<?php echo $target_id; ?>_form">
 				<dl style="margin: 0;">
 					<dt style="width: 80px; padding-top: 3px;"><label for="attach_link_<?php echo $target_type; ?>_<?php echo $target_id; ?>_url"><?php echo ($target_type == 'wiki') ? __('Article name') : __('URL'); ?>:</label></dt>
 					<dd style="margin-bottom: 0px;"><input type="text" name="link_url" id="attach_link_<?php echo $target_type; ?>_<?php echo $target_id; ?>_url" style="width: 95%;"></dd>

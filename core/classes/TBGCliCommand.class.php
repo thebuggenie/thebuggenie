@@ -32,11 +32,14 @@
 		protected $_required_arguments = array();
 
 		protected $_optional_arguments = array();
+		
+		protected $_module = null;
 
 		abstract protected function do_execute();
 
-		final public function __construct()
+		final public function __construct($module = null)
 		{
+			$this->_module = $module;
 			$this->_setup();
 		}
 
@@ -45,6 +48,16 @@
 			$this->_processArguments();
 			$this->_prepare();
 			$this->do_execute();
+		}
+		
+		/**
+		 * Return the associated module for this command if any
+		 * 
+		 * @return TBGModule 
+		 */
+		final protected function getModule()
+		{
+			return $this->_module;
 		}
 
 		public function getDescription()
@@ -78,7 +91,7 @@
 					$argument_parts = explode('=', $argument, 2);
 					if (count($argument_parts) == 2)
 					{
-						$key = substr($argument_parts[0], 2);
+						$key = mb_substr($argument_parts[0], 2);
 						self::$_provided_arguments[$key] = $argument_parts[1];
 						if (!is_numeric($key))
 						{
@@ -100,7 +113,7 @@
 				if ($this->hasProvidedArgument($key)) continue;
 				if ($this->hasProvidedArgument($cc))
 				{
-					if (substr(self::$_provided_arguments[$cc], 0, 2) == '--' && substr(self::$_provided_arguments[$cc], 2, strpos(self::$_provided_arguments[$cc], '=') - 1) != $key) continue;
+					if (mb_substr(self::$_provided_arguments[$cc], 0, 2) == '--' && mb_substr(self::$_provided_arguments[$cc], 2, mb_strpos(self::$_provided_arguments[$cc], '=') - 1) != $key) continue;
 					self::$_provided_arguments[$key] = self::$_provided_arguments[$cc];
 					if (!is_numeric($key))
 					{
@@ -124,7 +137,7 @@
 				if ($this->hasProvidedArgument($key)) continue;
 				if ($this->hasProvidedArgument($cc))
 				{
-					if (substr(self::$_provided_arguments[$cc], 0, 2) == '--' && substr(self::$_provided_arguments[$cc], 2, strpos(self::$_provided_arguments[$cc], '=') - 1) != $key) continue;
+					if (mb_substr(self::$_provided_arguments[$cc], 0, 2) == '--' && mb_substr(self::$_provided_arguments[$cc], 2, mb_strpos(self::$_provided_arguments[$cc], '=') - 1) != $key) continue;
 					self::$_provided_arguments[$key] = self::$_provided_arguments[$cc];
 					if (!is_numeric($key))
 					{
@@ -200,7 +213,7 @@
 		public function getInputConfirmation()
 		{
 			$retval = $this->_getCliInput();
-			return (bool) (strtolower(trim($retval)) == 'yes');
+			return (bool) (mb_strtolower(trim($retval)) == 'yes');
 		}
 
 		public function askToAccept()
@@ -211,7 +224,7 @@
 		public function askToDecline()
 		{
 			$retval = $this->_getCliInput();
-			return !(bool) (strtolower(trim($retval)) == 'no');
+			return !(bool) (mb_strtolower(trim($retval)) == 'no');
 		}
 
 		public function getInput($default = '')

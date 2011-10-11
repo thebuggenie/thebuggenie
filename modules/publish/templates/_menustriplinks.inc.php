@@ -6,7 +6,7 @@
 		<?php endif; ?>
 	</div>
 	<?php if (count(TBGProject::getAll())): ?>
-		<div id="wiki_dropdown_menu" class="tab_menu_dropdown shadowed">
+		<div id="wiki_dropdown_menu" class="tab_menu_dropdown">
 			<?php if (TBGContext::isProjectContext()): ?>
 				<div class="header"><?php echo __('Currently selected project'); ?></div>
 				<?php echo link_tag($project_url, __('Project wiki frontpage')); ?>

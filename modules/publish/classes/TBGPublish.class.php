@@ -19,6 +19,10 @@
 	class TBGPublish extends TBGModule 
 	{
 		
+		const PERMISSION_READ_ARTICLE = 'readarticle';
+		const PERMISSION_EDIT_ARTICLE = 'editarticle';
+		const PERMISSION_DELETE_ARTICLE = 'deletearticle';
+
 		protected $_longname = 'Wiki';
 		
 		protected $_description = 'Enables Wiki-functionality';
@@ -94,37 +98,37 @@
 		public function loadArticles($namespace = '', $overwrite = true, $scope = null)
 		{
 			$scope = TBGContext::getScope()->getID();
-			$namespace = strtolower($namespace);
+			$namespace = mb_strtolower($namespace);
 			$_path_handle = opendir(THEBUGGENIE_MODULES_PATH . 'publish' . DS . 'fixtures' . DS);
 			while ($original_article_name = readdir($_path_handle))
 			{
-				if (strpos($original_article_name, '.') === false)
+				if (mb_strpos($original_article_name, '.') === false)
 				{
-					$article_name = strtolower($original_article_name);
+					$article_name = mb_strtolower($original_article_name);
 					$imported = false;
 					$import = false;
 					if ($namespace)
 					{
-						if (strpos(urldecode($article_name), "{$namespace}:") === 0 || (strpos(urldecode($article_name), "category:") === 0 && strpos(urldecode($article_name), "{$namespace}:") === 9))
+						if (mb_strpos(urldecode($article_name), "{$namespace}:") === 0 || (mb_strpos(urldecode($article_name), "category:") === 0 && mb_strpos(urldecode($article_name), "{$namespace}:") === 9))
 						{
 							$import = true;
 						}
 					}
 					else
 					{
-						if (strpos(urldecode($article_name), "category:help:") === 0)
+						if (mb_strpos(urldecode($article_name), "category:help:") === 0)
 						{
-							$name_test = substr(urldecode($article_name), 14);
+							$name_test = mb_substr(urldecode($article_name), 14);
 						}
-						elseif (strpos(urldecode($article_name), "category:") === 0)
+						elseif (mb_strpos(urldecode($article_name), "category:") === 0)
 						{
-							$name_test = substr(urldecode($article_name), 9);
+							$name_test = mb_substr(urldecode($article_name), 9);
 						}
 						else
 						{
 							$name_test = urldecode($article_name);
 						}
-						if (strpos($name_test, ':') === false) 
+						if (mb_strpos($name_test, ':') === false) 
 							$import = true;
 					}
 					if ($import)
@@ -156,8 +160,9 @@
 			TBGLinksTable::getTable()->addLink('wiki', 0, 'MainPage', 'Wiki Frontpage', 1, $scope);
 			TBGLinksTable::getTable()->addLink('wiki', 0, 'WikiFormatting', 'Formatting help', 2, $scope);
 			TBGLinksTable::getTable()->addLink('wiki', 0, 'Category:Help', 'Help topics', 3, $scope);
-			TBGContext::setPermission('editarticle', 0, 'publish', 0, 1, 0, true, $scope);
-			TBGContext::setPermission('deletearticle', 0, 'publish', 0, 1, 0, true, $scope);
+			TBGContext::setPermission(self::PERMISSION_READ_ARTICLE, 0, 'publish', 0, 1, 0, true, $scope);
+			TBGContext::setPermission(self::PERMISSION_EDIT_ARTICLE, 0, 'publish', 0, 1, 0, true, $scope);
+			TBGContext::setPermission(self::PERMISSION_DELETE_ARTICLE, 0, 'publish', 0, 1, 0, true, $scope);
 		}
 		
 		protected function _uninstall()
@@ -165,7 +170,7 @@
 			if (TBGContext::getScope()->getID() == 1)
 			{
 				TBGArticlesTable::getTable()->drop();
-				B2DB::getTable('TBGBillboardPostsTable')->drop();
+				\b2db\Core::getTable('TBGBillboardPostsTable')->drop();
 			}
 			TBGLinksTable::getTable()->removeByTargetTypeTargetIDandLinkID('wiki', 0);
 			parent::_uninstall();
@@ -243,7 +248,7 @@
 
 		public function stripExclamationMark($matches)
 		{
-			return substr($matches[0], 1);
+			return mb_substr($matches[0], 1);
 		}
 
 		public function getArticleLinkTag($matches)
@@ -263,91 +268,11 @@
 			}
 		}
 
-		public function getBillboardPosts($target_board = 0, $posts = 5)
-		{
-			$crit = new B2DBCriteria();
-			$crit->addWhere(TBGBillboardPostsTable::SCOPE, TBGContext::getScope()->getID());
-			$crit->addWhere(TBGBillboardPostsTable::IS_DELETED, 0);
-			$crit->setLimit($posts);
-			$crit->addOrderBy(TBGBillboardPostsTable::DATE, 'desc');
-			if (is_array($target_board))
-			{
-				$crit->addWhere(TBGBillboardPostsTable::TARGET_BOARD, $target_board, B2DBCriteria::DB_IN);
-			}
-			else
-			{
-				$crit->addWhere(TBGBillboardPostsTable::TARGET_BOARD, $target_board);
-			}
-	
-			$posts = array();
-	
-			$res = B2DB::getTable('TBGBillboardPostsTable')->doSelect($crit);
-			while ($row = $res->getNextRow())
-			{
-				$posts[] = new PublishBillboardPost($row);
-			}
-	
-			return $posts;
-		}
-		
 		public function getLatestArticles($limit = 5)
 		{
-			return $this->getArticles($limit, true);
+			return TBGArticlesTable::getTable()->getArticles($limit, true);
 		}
 	
-		public function getAllArticles()
-		{
-			$crit = new B2DBCriteria();
-			$crit->addOrderBy(TBGArticlesTable::ORDER, 'asc');
-			$crit->addOrderBy(TBGArticlesTable::DATE, 'desc');
-			$res = TBGArticlesTable::getTable()->doSelect($crit);
-			$articles = array();
-			while ($row = $res->getNextRow())
-			{
-				$article = PublishFactory::article($row->get(TBGArticlesTable::ID), $row);
-				if ($article->hasAccess())
-				{
-					$articles[] = $article;
-				}
-			}
-			return $articles;
-		}
-		
-		public function getArticles($num_articles = 5, $news = false, $published = true)
-		{
-			$crit = new B2DBCriteria();
-			$crit->addWhere(TBGArticlesTable::SCOPE, TBGContext::getScope()->getID());
-			$crit->addWhere(TBGArticlesTable::NAME, 'Category:%', B2DBCriteria::DB_NOT_LIKE);
-			
-			$crit->addOrderBy(TBGArticlesTable::DATE, 'desc');
-			
-			if ($published) $crit->addWhere(TBGArticlesTable::IS_PUBLISHED, 1);
-	
-			$articles = array();
-			
-			if ($res = TBGArticlesTable::getTable()->doSelect($crit))
-			{
-				while (($row = $res->getNextRow()) && (count($articles) < $num_articles))
-				{
-					try
-					{
-						$article = PublishFactory::article($row->get(TBGArticlesTable::ID), $row);
-					}
-					catch (Exception $e) 
-					{
-						continue;
-					}
-					
-					if ($article->hasAccess())
-					{
-						$articles[] = $article;
-					}
-				}
-			}
-	
-			return $articles;
-		}
-
 		public function getMenuItems($target_id = 0)
 		{
 			return TBGLinksTable::getTable()->getLinks('wiki', $target_id);
@@ -484,14 +409,19 @@
 			return $user->hasPermission($permission_name, 0, 'publish', false, $permissive);
 		}
 		
+		public function canUserReadArticle($article_name)
+		{
+			return $this->_checkArticlePermissions($article_name, self::PERMISSION_READ_ARTICLE);
+		}
+		
 		public function canUserEditArticle($article_name)
 		{
-			return $this->_checkArticlePermissions($article_name, 'editarticle');
+			return $this->_checkArticlePermissions($article_name, self::PERMISSION_EDIT_ARTICLE);
 		}
 		
 		public function canUserDeleteArticle($article_name)
 		{
-			return $this->_checkArticlePermissions($article_name, 'deletearticle');
+			return $this->_checkArticlePermissions($article_name, self::PERMISSION_DELETE_ARTICLE);
 		}
 		
 		public function listen_quicksearchDropdownFirstItems(TBGEvent $event)
@@ -503,7 +433,7 @@
 		public function listen_quicksearchDropdownFoundItems(TBGEvent $event)
 		{
 			$searchterm = $event->getSubject();
-			list ($resultcount, $articles) = TBGWikiArticle::findByArticleNameAndProject($searchterm, TBGContext::getCurrentProject());
+			list ($resultcount, $articles) = TBGWikiArticle::findArticlesByContentAndProject($searchterm, TBGContext::getCurrentProject());
 			TBGActionComponent::includeTemplate('publish/quicksearch_dropdown_founditems', array('searchterm' => $searchterm, 'articles' => $articles, 'resultcount' => $resultcount));
 		}
 		

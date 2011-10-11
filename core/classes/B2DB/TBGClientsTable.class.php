@@ -1,5 +1,9 @@
 <?php
 
+	use b2db\Core,
+		b2db\Criteria,
+		b2db\Criterion;
+
 	/**
 	 * Clients table
 	 *
@@ -36,7 +40,7 @@
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGClientsTable');
+			return Core::getTable('TBGClientsTable');
 		}
 		
 		public function __construct()

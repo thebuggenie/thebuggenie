@@ -56,8 +56,8 @@
 		protected function __construct($subject, $template, $parameters = array(), $language = null, $message_plain = null, $message_html = null, $recipients = array(), $charset = 'utf-8')
 		{
 			/* Prepare two separators. $sep1 for the html/text message part. $sep2 for the attachment part. */
-			for ($len = 10, $sep1 = ""; strlen($sep1) < $len; $sep1 .= chr(!mt_rand(0, 2) ? mt_rand(48, 57) : (!mt_rand(0, 1) ? mt_rand(65, 90) : mt_rand(97, 122))));
-			for ($len = 10, $sep2 = ""; strlen($sep2) < $len; $sep2 .= chr(!mt_rand(0, 2) ? mt_rand(48, 57) : (!mt_rand(0, 1) ? mt_rand(65, 90) : mt_rand(97, 122))));
+			for ($len = 10, $sep1 = ""; mb_strlen($sep1) < $len; $sep1 .= chr(!mt_rand(0, 2) ? mt_rand(48, 57) : (!mt_rand(0, 1) ? mt_rand(65, 90) : mt_rand(97, 122))));
+			for ($len = 10, $sep2 = ""; mb_strlen($sep2) < $len; $sep2 .= chr(!mt_rand(0, 2) ? mt_rand(48, 57) : (!mt_rand(0, 1) ? mt_rand(65, 90) : mt_rand(97, 122))));
 			$this->sep1 = "_1_" . bin2hex($sep1);
 			$this->sep2 = "_2_" . bin2hex($sep2);
 			
@@ -162,7 +162,7 @@
 			$header = '';
 			foreach ($headers as $key => $val)
 			{
-				if (!$include_subject && strtolower($key) == 'subject') continue;
+				if (!$include_subject && mb_strtolower($key) == 'subject') continue;
 				$header .= "{$key}: {$val}\r\n";
 			}
 			return $header;
@@ -199,7 +199,7 @@
 		public function getSubject()
 		{
 			$this->_translateSubject();
-			return $this->subject_translated;
+			return html_entity_decode($this->subject_translated);
 		}
 		
 		public function setMessagePlain($message)

@@ -2,7 +2,7 @@
 	<td style="width: 20px; padding: 2px;"><?php echo image_tag('icon_components.png'); ?>
 		<div style="display: none; border: 1px solid #DDD; padding: 5px; text-align: center; width: 300px; position: absolute; background-color: #FFF;" id="del_component_<?php print $component->getID(); ?>">
 			<?php echo __('Are you sure you want to delete this component?'); ?><br>
-			<?php echo image_tag('spinning_16.gif', array('id' => 'component_'.$component->getID().'_delete_indicator', 'style' => 'margin-right: 5px; display: none;')); ?> <a href="javascript:void(0);" onclick="deleteComponent('<?php echo make_url('configure_delete_component', array('component_id' => $component->getID())); ?>', <?php print $component->getID(); ?>);return false;"><?php echo __('Yes'); ?></a> | <a href="javascript:void(0);" onclick="Effect.Fade('del_component_<?php print $component->getID(); ?>', { duration: 0.5 });"><b><?php echo __('No'); ?></b></a>
+			<?php echo image_tag('spinning_16.gif', array('id' => 'component_'.$component->getID().'_delete_indicator', 'style' => 'margin-right: 5px; display: none;')); ?> <a href="javascript:void(0);" onclick="TBG.Project.Component.remove('<?php echo make_url('configure_delete_component', array('component_id' => $component->getID())); ?>', <?php print $component->getID(); ?>);return false;"><?php echo __('Yes'); ?></a> | <a href="javascript:void(0);" onclick="Effect.Fade('del_component_<?php print $component->getID(); ?>', { duration: 0.5 });"><b><?php echo __('No'); ?></b></a>
 		</div>
 	</td>
 	<td style="width: auto; padding: 2px;" id="component_<?php echo $component->getID(); ?>_name"><?php print $component->getName(); ?></td>
@@ -13,9 +13,9 @@
 	</td>
 </tr>
 <tr id="edit_component_<?php print $component->getID(); ?>" style="display: none;">
-	<td colspan="2">
+	<td colspan="3">
 		<div class="rounded_box white">
-			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_update_component', array('component_id' => $component->getID())); ?>" method="post" id="edit_component_<?php echo $component->getID(); ?>_form" onsubmit="updateComponent('<?php echo make_url('configure_update_component', array('component_id' => $component->getID())); ?>', <?php echo $component->getID(); ?>);return false;"> 
+			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_update_component', array('component_id' => $component->getID())); ?>" method="post" id="edit_component_<?php echo $component->getID(); ?>_form" onsubmit="TBG.Project.Component.update('<?php echo make_url('configure_update_component', array('component_id' => $component->getID())); ?>', <?php echo $component->getID(); ?>);return false;"> 
 			<table>
 				<tr><td><label for="cname_<?php print $component->getID(); ?>"><?php echo __('Name'); ?></label></td><td colspan="2"><input type="text" name="c_name" id="c_name_<?php echo $component->getID(); ?>" value="<?php print $component->getName(); ?>" style="width: 260px;"></td></tr>
 				<tr>
@@ -39,13 +39,13 @@
 				<tr><td class="config_explanation" colspan="3"><?php echo __('You can optionally set a user to automatically assign issues filed against this component to. This setting is independant of the save button below.')?></td></tr>
 			</table>
 			<?php echo image_tag('spinning_20.gif', array('id' => 'component_'.$component->getID().'_indicator', 'style' => 'display: none;')); ?>
-			<input type="submit" value="<?php echo __('Save'); ?>"> <a href="javascript:void(0);" class="image" onclick="$('show_component_<?php print $component->getID(); ?>').show();$('edit_component_<?php print $component->getID(); ?>').hide();"><?php echo __('or cancel'); ?></a>
+			<input type="submit" value="<?php echo __('Save'); ?>"><?php echo __('%save% or %cancel%', array('%save%' => '', '%cancel%' => '<a href="javascript:void(0);" class="image" onclick="$(\'show_component_'.$component->getID().'\').show();$(\'edit_component_'.$component->getID().'\').hide();">'.__('cancel').'</a>')); ?>
 			</form>
 			<?php include_component('main/identifiableselector', array(	'html_id'		=> 'comp_'.$component->getID().'_auto_assign_change',
 																	'header' 			=> __('Change / set auto assignee'),
 																	'clear_link_text'	=> __('Set auto assignee by noone'),
 																	'style'				=> array('position' => 'absolute'),
-																	'callback'			=> "setUser('" . make_url('configure_component_set_assignedto', array('project_id' => $component->getProject()->getID(), 'component_id' => $component->getID(), 'field' => 'lead_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'comp_".$component->getID()."_auto_assign');",
+																	'callback'			=> "TBG.Project.setUser('" . make_url('configure_component_set_assignedto', array('project_id' => $component->getProject()->getID(), 'component_id' => $component->getID(), 'field' => 'lead_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'comp_".$component->getID()."_auto_assign');",
 																	'base_id'			=> 'comp_'.$component->getID().'_auto_assign',
 																	'absolute'			=> true,
 																	'include_teams'		=> true)); ?>

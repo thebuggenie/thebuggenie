@@ -28,10 +28,10 @@
 		 */
 		protected static function getModuleAndTemplate($template)
 		{
-			if ($separator_pos = strpos($template, '/'))
+			if ($separator_pos = mb_strpos($template, '/'))
 			{
-				$module = substr($template, 0, $separator_pos);
-				$template = substr($template, $separator_pos + 1);
+				$module = mb_substr($template, 0, $separator_pos);
+				$template = mb_substr($template, $separator_pos + 1);
 			}
 			else
 			{
@@ -78,7 +78,7 @@
 			list ($module_file, $actionClassName, $actionToRunName) = self::_getComponentDetails($template);
 			if (!class_exists($actionClassName))
 			{
-				TBGContext::addClasspath(THEBUGGENIE_MODULES_PATH . $module_file['module'] . DS . 'classes' . DS);
+				TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . $module_file['module'] . DS . 'classes' . DS);
 			}
 			if (!class_exists($actionClassName))
 			{

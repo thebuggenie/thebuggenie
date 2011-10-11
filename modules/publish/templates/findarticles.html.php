@@ -37,7 +37,7 @@
 							<?php echo link_tag(make_url('publish_article', array('article_name' => $article->getName())), $article->getName(), array('style' => 'font-size: 1.1em;')); ?><br>
 							<div class="faded_out"><?php echo __('Last updated %updated_at%', array('%updated_at%' => tbg_formatTime($article->getLastUpdatedDate(), 6))); ?></div>
 							<div class="article_preview">
-								<?php echo tbg_parse_text(substr($article->getContent(), 0, 300), false, null, array('headers' => false, 'show_title' => false, 'show_details' => false, 'show_actions' => false, 'embedded' => true)); ?>
+								<?php echo tbg_parse_text(mb_substr($article->getContent(), 0, 300), false, null, array('headers' => false, 'show_title' => false, 'show_details' => false, 'show_actions' => false, 'embedded' => true)); ?>
 							</div>
 						</li>
 						<?php endforeach; ?>

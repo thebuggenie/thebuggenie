@@ -57,11 +57,12 @@
 			foreach (TBGContext::getModules() as $module)
 			{
 				if ($module->hasConfigSettings() && $module->isEnabled())
-					$module_config_sections[TBGSettings::CONFIGURATION_SECTION_MODULES][] = array('route' => array('configure_module', array('config_module' => $module->getName())), 'description' => $module->getConfigTitle(), 'icon' => $module->getName(), 'details' => $module->getConfigDescription(), 'module' => $module->getName());
+					$module_config_sections[TBGSettings::CONFIGURATION_SECTION_MODULES][] = array('route' => array('configure_module', array('config_module' => $module->getName())), 'description' => TBGContext::geti18n()->__($module->getConfigTitle()), 'icon' => $module->getName(), 'details' => TBGContext::geti18n()->__($module->getConfigDescription()), 'module' => $module->getName());
 			}
 			$this->general_config_sections = $general_config_sections; 
 			$this->data_config_sections = $data_config_sections;
 			$this->module_config_sections = $module_config_sections;
+			$this->outdated_modules = TBGContext::getOutdatedModules();
 		}
 		
 		/**
@@ -115,6 +116,7 @@
 			{
 				if ($request->getParameter('import_sample_data'))
 				{
+					ini_set('memory_limit','64M');
 					$users = array();
 					
 					$user1 = new TBGUser();
@@ -210,7 +212,7 @@
 							for ($ll = 1; $ll <= $rand_length; $ll++)
 							{
 								$word = str_replace(array(',', '.', "\r", "\n"), array('', '', '', ''), $lorem_words[array_rand($lorem_words)]);
-								$word = ($ucnext || (rand(1, 40) == 19)) ? ucfirst($word) : strtolower($word);
+								$word = ($ucnext || (rand(1, 40) == 19)) ? ucfirst($word) : mb_strtolower($word);
 								$title_string .= $word;
 								$ucnext = false;
 								if ($ll == $rand_length || rand(1, 15) == 5) 
@@ -225,7 +227,7 @@
 							for ($ll = 1; $ll <= $rand_length; $ll++)
 							{
 								$word = str_replace(array(',', '.', "\r", "\n"), array('', '', '', ''), $lorem_words[array_rand($lorem_words)]);
-								$word = ($ucnext || (rand(1, 40) == 19)) ? ucfirst($word) : strtolower($word);
+								$word = ($ucnext || (rand(1, 40) == 19)) ? ucfirst($word) : mb_strtolower($word);
 								$description_string .= $word;
 								$ucnext = false;
 								if ($ll == $rand_length || rand(1, 15) == 5) 
@@ -265,7 +267,7 @@
 							for ($ll = 1; $ll <= $rand_length; $ll++)
 							{
 								$word = str_replace(array(',', '.', "\r", "\n"), array('', '', '', ''), $lorem_words[array_rand($lorem_words)]);
-								$word = ($ucnext || (rand(1, 40) == 19)) ? ucfirst($word) : strtolower($word);
+								$word = ($ucnext || (rand(1, 40) == 19)) ? ucfirst($word) : mb_strtolower($word);
 								$title_string .= $word;
 								$ucnext = false;
 								if ($ll == $rand_length || rand(1, 15) == 5) 
@@ -280,7 +282,7 @@
 							for ($ll = 1; $ll <= $rand_length; $ll++)
 							{
 								$word = str_replace(array(',', '.', "\r", "\n"), array('', '', '', ''), $lorem_words[array_rand($lorem_words)]);
-								$word = ($ucnext || (rand(1, 40) == 19)) ? ucfirst($word) : strtolower($word);
+								$word = ($ucnext || (rand(1, 40) == 19)) ? ucfirst($word) : mb_strtolower($word);
 								$description_string .= $word;
 								$ucnext = false;
 								if ($ll == $rand_length || rand(1, 15) == 5) 
@@ -359,7 +361,8 @@
 								TBGSettings::SETTING_TBG_NAME, TBGSettings::SETTING_TBG_TAGLINE, TBGSettings::SETTING_DEFAULT_CHARSET, TBGSettings::SETTING_DEFAULT_LANGUAGE,
 								TBGSettings::SETTING_SERVER_TIMEZONE, TBGSettings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_LANGUAGE, TBGSettings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_INTERVAL,
 								TBGSettings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_NUMBERING, TBGSettings::SETTING_HEADER_ICON_TYPE, TBGSettings::SETTING_FAVICON_TYPE,
-								TBGSettings::SETTING_HEADER_ICON_URL, TBGSettings::SETTING_FAVICON_URL, TBGSettings::SETTING_PREVIEW_COMMENT_IMAGES, TBGSettings::SETTING_HEADER_LINK);
+								TBGSettings::SETTING_HEADER_ICON_URL, TBGSettings::SETTING_FAVICON_URL, TBGSettings::SETTING_PREVIEW_COMMENT_IMAGES, TBGSettings::SETTING_HEADER_LINK,
+								TBGSettings::SETTING_MAINTENANCE_MESSAGE, TBGSettings::SETTING_MAINTENANCE_MODE, TBGSettings::SETTING_ICONSET);
 				
 				foreach ($settings as $setting)
 				{
@@ -393,7 +396,6 @@
 				}
 				return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('All settings saved')));
 			}
-			
 		}
 
 		/**
@@ -662,7 +664,7 @@
 						}
 						else
 						{
-							B2DB::getTable('TBGCustomFieldOptionsTable')->doDeleteById($request->getParameter('id'));
+							\b2db\Core::getTable('TBGCustomFieldOptionsTable')->doDeleteById($request->getParameter('id'));
 							return $this->renderJSON(array('failed' => false, 'title' => $i18n->__('The option was deleted')));
 						}
 					}
@@ -738,6 +740,7 @@
 			$this->module_error = TBGContext::getMessageAndClear('module_error');
 			$this->modules = TBGContext::getModules();
 			$this->uninstalled_modules = TBGContext::getUninstalledModules();
+			$this->outdated_modules = TBGContext::getOutdatedModules();
 		}
 
 		/**
@@ -1051,119 +1054,116 @@
 			
 			if (!$this->project instanceof TBGProject) return $this->return404(TBGContext::getI18n()->__("This project doesn't exist"));
 			
-			if ($request->isAjaxCall() && $request->isMethod(TBGRequest::POST))
+			if ($request->isMethod(TBGRequest::POST))
 			{
-				if ($this->access_level == TBGSettings::ACCESS_FULL)
+				$this->forward403unless($this->access_level == TBGSettings::ACCESS_FULL, TBGContext::getI18n()->__('You do not have access to update these settings'));
+				
+				if ($request->hasParameter('release_month') && $request->hasParameter('release_day') && $request->hasParameter('release_year'))
 				{
-					if ($request->hasParameter('release_month') && $request->hasParameter('release_day') && $request->hasParameter('release_year'))
-					{
-						$release_date = mktime(0, 0, 1, $request->getParameter('release_month'), $request->getParameter('release_day'), $request->getParameter('release_year'));
-						$this->project->setReleaseDate($release_date);
-					}
-
-					$old_key = $this->project->getKey();
-
-					if ($request->hasParameter('project_name'))
-					{
-						if (trim($request->getParameter('project_name')) == '')
-						{
-							return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please specify a valid project name')));
-						}
-						else
-						{
-							$this->project->setName($request->getParameter('project_name'));
-						}
-					}
-						
-
-					$message = ($old_key != $this->project->getKey()) ? TBGContext::getI18n()->__('%IMPORTANT%: The project key has changed. Remember to replace the current url with the new project key', array('%IMPORTANT%' => '<b>'.TBGContext::getI18n()->__('IMPORTANT').'</b>')) : '';
-					
-					if ($request->hasParameter('project_key'))
-						$this->project->setKey($request->getParameter('project_key'));
-					
-					if ($request->hasParameter('use_prefix'))
-						$this->project->setUsePrefix((bool) $request->getParameter('use_prefix'));
-					
-					if ($request->hasParameter('use_prefix') && $this->project->doesUsePrefix())
-					{
-						if (!$this->project->setPrefix($request->getParameter('prefix')))
-							return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__("Project prefixes may only contain letters and numbers")));
-					}
-					
-					if ($request->hasParameter('client'))
-					{
-						if ($request->getParameter('client') == 0)
-						{
-							$this->project->setClient(null);
-						}
-						else
-						{
-							$this->project->setClient(TBGContext::factory()->TBGClient($request->getParameter('client')));
-						}
-					}
-					
-					if ($request->hasParameter('workflow_scheme'))
-					{
-						try
-						{
-							$workflow_scheme = TBGContext::factory()->TBGWorkflowScheme($request->getParameter('workflow_scheme'));
-							$this->project->setWorkflowScheme($workflow_scheme);
-						}
-						catch (Exception $e) {}
-					}
-					
-					if ($request->hasParameter('issuetype_scheme'))
-					{
-						try
-						{
-							$issuetype_scheme = TBGContext::factory()->TBGIssuetypeScheme($request->getParameter('issuetype_scheme'));
-							$this->project->setIssuetypeScheme($issuetype_scheme);
-						}
-						catch (Exception $e) {}
-					}
-					
-					if ($request->hasParameter('use_scrum'))
-						$this->project->setUsesScrum((bool) $request->getParameter('use_scrum'));
-					
-					if ($request->hasParameter('description'))
-						$this->project->setDescription($request->getParameter('description', null, false));
-					
-					if ($request->hasParameter('homepage'))
-						$this->project->setHomepage($request->getParameter('homepage'));
-					
-					if ($request->hasParameter('doc_url'))
-						$this->project->setDocumentationURL($request->getParameter('doc_url'));
-					
-					if ($request->hasParameter('planned_release'))
-						$this->project->setPlannedReleased($request->getParameter('planned_release'));
-					
-					if ($request->hasParameter('released'))
-						$this->project->setReleased((int) $request->getParameter('released'));
-					
-					if ($request->hasParameter('locked'))
-						$this->project->setLocked((bool) $request->getParameter('locked'));
-					
-					if ($request->hasParameter('enable_builds'))
-						$this->project->setBuildsEnabled((bool) $request->getParameter('enable_builds'));
-					
-					if ($request->hasParameter('enable_editions'))
-						$this->project->setEditionsEnabled((bool) $request->getParameter('enable_editions'));
-					
-					if ($request->hasParameter('enable_components'))
-						$this->project->setComponentsEnabled((bool) $request->getParameter('enable_components'));
-					
-					if ($request->hasParameter('allow_changing_without_working'))
-						$this->project->setChangeIssuesWithoutWorkingOnThem((bool) $request->getParameter('allow_changing_without_working'));
-
-					if ($request->hasParameter('allow_autoassignment'))
-						$this->project->setAutoassign((bool) $request->getParameter('allow_autoassignment'));
-					
-					$this->project->save();
-					$project_description = new TBGTextParser($this->project->getDescription());
-					$project_description = $project_description->getParsedText();
-					return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('Your changes has been saved'), 'message' => $message, 'project_key' => $this->project->getKey(), 'project_description' => $project_description, 'content' => get_template_html('projectbox', array('project' => $this->project, 'access_level' => $this->access_level))));
+					$release_date = mktime(0, 0, 1, $request->getParameter('release_month'), $request->getParameter('release_day'), $request->getParameter('release_year'));
+					$this->project->setReleaseDate($release_date);
 				}
-				return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__("You don't have access to save settings")));
+
+				$old_key = $this->project->getKey();
+
+				if ($request->hasParameter('project_name'))
+				{
+					if (trim($request->getParameter('project_name')) == '')
+					{
+						return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please specify a valid project name')));
+					}
+					else
+					{
+						$this->project->setName($request->getParameter('project_name'));
+					}
+				}
+
+
+				$message = ($old_key != $this->project->getKey()) ? TBGContext::getI18n()->__('%IMPORTANT%: The project key has changed. Remember to replace the current url with the new project key', array('%IMPORTANT%' => '<b>'.TBGContext::getI18n()->__('IMPORTANT').'</b>')) : '';
+
+				if ($request->hasParameter('project_key'))
+					$this->project->setKey($request->getParameter('project_key'));
+
+				if ($request->hasParameter('use_prefix'))
+					$this->project->setUsePrefix((bool) $request->getParameter('use_prefix'));
+
+				if ($request->hasParameter('use_prefix') && $this->project->doesUsePrefix())
+				{
+					if (!$this->project->setPrefix($request->getParameter('prefix')))
+						return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__("Project prefixes may only contain letters and numbers")));
+				}
+
+				if ($request->hasParameter('client'))
+				{
+					if ($request->getParameter('client') == 0)
+					{
+						$this->project->setClient(null);
+					}
+					else
+					{
+						$this->project->setClient(TBGContext::factory()->TBGClient($request->getParameter('client')));
+					}
+				}
+
+				if ($request->hasParameter('workflow_scheme'))
+				{
+					try
+					{
+						$workflow_scheme = TBGContext::factory()->TBGWorkflowScheme($request->getParameter('workflow_scheme'));
+						$this->project->setWorkflowScheme($workflow_scheme);
+					}
+					catch (Exception $e) {}
+				}
+
+				if ($request->hasParameter('issuetype_scheme'))
+				{
+					try
+					{
+						$issuetype_scheme = TBGContext::factory()->TBGIssuetypeScheme($request->getParameter('issuetype_scheme'));
+						$this->project->setIssuetypeScheme($issuetype_scheme);
+					}
+					catch (Exception $e) {}
+				}
+
+				if ($request->hasParameter('use_scrum'))
+					$this->project->setUsesScrum((bool) $request->getParameter('use_scrum'));
+
+				if ($request->hasParameter('description'))
+					$this->project->setDescription($request->getParameter('description', null, false));
+
+				if ($request->hasParameter('homepage'))
+					$this->project->setHomepage($request->getParameter('homepage'));
+
+				if ($request->hasParameter('doc_url'))
+					$this->project->setDocumentationURL($request->getParameter('doc_url'));
+
+				if ($request->hasParameter('planned_release'))
+					$this->project->setPlannedReleased($request->getParameter('planned_release'));
+
+				if ($request->hasParameter('released'))
+					$this->project->setReleased((int) $request->getParameter('released'));
+
+				if ($request->hasParameter('locked'))
+					$this->project->setLocked((bool) $request->getParameter('locked'));
+
+				if ($request->hasParameter('enable_builds'))
+					$this->project->setBuildsEnabled((bool) $request->getParameter('enable_builds'));
+
+				if ($request->hasParameter('enable_editions'))
+					$this->project->setEditionsEnabled((bool) $request->getParameter('enable_editions'));
+
+				if ($request->hasParameter('enable_components'))
+					$this->project->setComponentsEnabled((bool) $request->getParameter('enable_components'));
+
+				if ($request->hasParameter('allow_changing_without_working'))
+					$this->project->setChangeIssuesWithoutWorkingOnThem((bool) $request->getParameter('allow_changing_without_working'));
+
+				if ($request->hasParameter('allow_autoassignment'))
+					$this->project->setAutoassign((bool) $request->getParameter('allow_autoassignment'));
+
+				$this->project->save();
+				TBGContext::setMessage('project_settings_saved', true);
+				$this->forward(TBGContext::getRouting()->generate('project_settings', array('project_key' => $this->project->getKey())));
 			}
 		}
 		
@@ -1368,7 +1368,7 @@
 		 * 
 		 * @param TBGRequest $request The request object
 		 */
-		public function runAddBuild(TBGRequest $request)
+		public function runProjectBuild(TBGRequest $request)
 		{
 			$i18n = TBGContext::getI18n();
 
@@ -1383,34 +1383,59 @@
 						{
 							if (($b_name = $request->getParameter('build_name')) && trim($b_name) != '')
 							{
-								if (in_array($b_name, $project->getBuilds()))
-								{
-									throw new Exception($i18n->__('This release already exists for this project'));
-								}
-								if (($e_id = $request->getParameter('edition_id')) && $edition = TBGContext::factory()->TBGEdition($e_id))
-								{
-									if (in_array($b_name, $edition->getBuilds()))
-									{
-										throw new Exception($i18n->__('This release already exists for this edition'));
-									}
-								}								
-								$build = new TBGBuild();
+								$build = new TBGBuild($request->getParameter('build_id'));
 								$build->setName($b_name);
 								$build->setVersion($request->getParameter('ver_mj', 0), $request->getParameter('ver_mn', 0), $request->getParameter('ver_rev', 0));
-								if (isset($edition))
+								$build->setReleased((bool) $request->getParameter('isreleased'));
+								$build->setLocked((bool) $request->getParameter('locked'));
+								if ($request->getParameter('milestone') && $milestone = TBGContext::factory()->TBGMilestone($request->getParameter('milestone')))
+								{
+									$build->setMilestone($milestone);
+								}
+								else
+								{
+									$build->clearMilestone();
+								}
+								if ($request->getParameter('edition') && $edition = TBGContext::factory()->TBGEdition($request->getParameter('edition')))
 								{
 									$build->setEdition($edition);
 								}
 								else
 								{
-									$build->setProject($project);
+									$build->clearEdition();
 								}
+								$release_date = mktime($request->getParameter('release_hour'), $request->getParameter('release_minute'), 1, $request->getParameter('release_month'), $request->getParameter('release_day'), $request->getParameter('release_year'));
+								$build->setReleaseDate($release_date);
+								switch ($request->getParameter('download', 'leave_file'))
+								{
+									case '0':
+										$build->clearFile();
+										$build->setFileURL('');
+										break;
+									case 'upload_file':
+										if ($build->hasFile())
+										{
+											$build->getFile()->delete();
+											$build->clearFile();
+										}
+										$file = TBGContext::getRequest()->handleUpload('upload_file');
+										$build->setFile($file);
+										$build->setFileURL('');
+										break;
+									case 'url':
+										$build->clearFile();
+										$build->setFileURL($request->getParameter('file_url'));
+										break;
+								}
+								
+								if ($request->getParameter('edition_id')) $build->setEdition($edition);
+								if (!$build->getID()) $build->setProject($project);
+								
 								$build->save();
-								return $this->renderJSON(array(/*'title' => $i18n->__('The release has been added'), */'html' => "<span id=\"build_list_{$build->getID()}\">".$this->getTemplateHTML('buildbox', array('build' => $build, 'access_level' => $this->access_level)).'</span>'));
 							}
 							else
 							{
-								throw new Exception($i18n->__('You need to specify a name for the new release'));
+								throw new Exception($i18n->__('You need to specify a name for the release'));
 							}
 						}
 						else
@@ -1425,10 +1450,11 @@
 				}
 				catch (Exception $e)
 				{
-					return $this->renderJSON(array('failed' => true, "error" => $i18n->__('The release could not be added').", ".$e->getMessage()));
+					TBGContext::setMessage('build_error', $e->getMessage());
 				}
+				$this->forward(TBGContext::getRouting()->generate('project_release_center', array('project_key' => $project->getKey())));
 			}
-			return $this->renderJSON(array('failed' => true, "error" => $i18n->__("You don't have access to add releases")));
+			return $this->forward403($i18n->__("You don't have access to add releases"));
 		}
 		
 		/**
@@ -1601,7 +1627,7 @@
 										}
 										else
 										{
-											$theMilestone->setScheduledDate(0);
+											$theMilestone->setStartingDate(0);
 										}
 										
 										$theMilestone->save();
@@ -1745,6 +1771,61 @@
 			}
 			return $this->renderJSON(array('failed' => true, "error" => $i18n->__("You don't have access to remove projects")));
 		}
+		
+		/**
+		 * Handle archive functiions
+		 * 
+		 * @param bool $archived Status
+		 * @param TBGRequest $request The request object
+		 */
+		protected function _setArchived($archived, TBGRequest $request)
+		{
+			$i18n = TBGContext::getI18n();
+
+			if ($this->access_level == TBGSettings::ACCESS_FULL)
+			{
+				try
+				{
+					$theProject = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
+					$theProject->setArchived($archived);
+					$theProject->save();
+					
+					$projectbox = $this->getTemplateHtml('projectbox', array('project' => $theProject, 'access_level' => $this->access_level));
+					return $this->renderJSON(array('failed' => false, 'message' => $i18n->__('Project successfully updated'), 'box' => $projectbox));
+				}
+				catch (Exception $e)
+				{
+					return $this->renderJSON(array('failed' => true, 'error' => $i18n->__('An error occured') . ': ' . $e->getMessage()));
+				}
+			}
+			return $this->renderJSON(array('failed' => true, "error" => $i18n->__("You don't have access to archive projects")));
+		}
+		
+		/**
+		 * Archive
+		 * 
+		 * @param TBGRequest $request The request object
+		 */
+		public function runArchiveProject(TBGRequest $request)
+		{
+			return $this->_setArchived(true, $request);
+		}
+		
+		/**
+		 * Unarchive
+		 * 
+		 * @param TBGRequest $request The request object
+		 */
+		public function runUnarchiveProject(TBGRequest $request)
+		{
+			// Don't unarchive if we will have too many projects
+			if (!TBGContext::getScope()->hasProjectsAvailable())
+			{
+				return $this->renderJSON(array('failed' => true, "error" => $i18n->__("There are no more projects available in this instance")));
+			}
+			
+			return $this->_setArchived(false, $request);
+		}
 
 		/**
 		 * Perform an action on a module
@@ -1801,11 +1882,22 @@
 								$module->uninstall();
 								TBGContext::setMessage('module_message', TBGContext::getI18n()->__('The module "%module_name%" was uninstalled successfully', array('%module_name%' => $module->getName())));
 								break;
+							case 'update':
+								try
+								{
+									$module->upgrade();
+									TBGContext::setMessage('module_message', TBGContext::getI18n()->__('The module "%module_name%" was successfully upgraded and can now be used again', array('%module_name%' => $module->getName())));
+								}
+								catch (Exception $e)
+								{ throw $e;
+									TBGContext::setMessage('module_error', TBGContext::getI18n()->__('The module "%module_name%" was not successfully upgraded', array('%module_name%' => $module->getName())));	
+								}
+								break;
 						}
 				}
 			}
 			catch (Exception $e)
-			{
+			{ throw $e;
 				TBGLogging::log('Trying to run action ' . $request->getParameter('mode') . ' on module ' . $request->getParameter('module_key') . ' made an exception: ' . $e->getMessage(), TBGLogging::LEVEL_FATAL);
 				TBGContext::setMessage('module_error', TBGContext::getI18n()->__('This module (%module_name%) does not exist', array('%module_name%' => $request->getParameter('module_key'))));
 			}
@@ -1934,7 +2026,8 @@
 				{
 					if (!is_writable($request->getParameter('upload_localpath')))
 					{
-						return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__("The upload path isn't writable")));
+						$this->getResponse()->setHttpStatus(400);
+						return $this->renderJSON(array('error' => TBGContext::getI18n()->__("The upload path isn't writable")));
 					}
 				}
 				
@@ -2261,7 +2354,7 @@
 		{
 			$this->too_short = false;
 			$findstring = $request->getParameter('findstring');
-			if (strlen($findstring) >= 1)
+			if (mb_strlen($findstring) >= 1)
 			{
 				list ($this->users, $this->total_results) = TBGUsersTable::getTable()->findInConfig($findstring);
 			}
@@ -2508,7 +2601,7 @@
 						$edition->setReleased((int) $request->getParameter('released'));
 						$edition->setLocked((bool) $request->getParameter('locked'));
 						$edition->save();
-						return $this->renderJSON(array('failed' => false, 'message' => TBGContext::getI18n()->__('Edition details saved')));
+						return $this->renderJSON(array('edition_name' => $edition->getName(), 'message' => TBGContext::getI18n()->__('Edition details saved')));
 					}
 					else
 					{
@@ -2542,8 +2635,12 @@
 			{
 				if ($project_id = $request->getParameter('project_id'))
 				{
+					// Build list of valid targets for the subproject dropdown
+					// The following items are banned from the list: current project, children of the current project
+					// Any further tests and things get silly, so we will trap it when building breadcrumbs
 					$project = TBGContext::factory()->TBGProject($project_id);
-					$content = $this->getComponentHTML('configuration/projectconfig', array('project' => $project, 'access_level' => $this->access_level, 'section' => 'hierarchy'));
+					$valid_subproject_targets = TBGProject::getValidSubprojects($project);					
+					$content = $this->getComponentHTML('configuration/projectconfig', array('valid_subproject_targets' => $valid_subproject_targets, 'project' => $project, 'access_level' => $this->access_level, 'section' => 'hierarchy'));
 					return $this->renderJSON(array('failed' => false, 'content' => $content));
 				}
 				else
@@ -3356,7 +3453,7 @@
 								// Check if project exists
 								$key = trim($activerow[$namecol], '" ');
 								$key = str_replace(' ', '', $key);
-								$key = strtolower($key);
+								$key = mb_strtolower($key);
 								
 								$tmp = TBGProject::getByKey($key);
 								
@@ -4215,5 +4312,96 @@
 				return $this->renderJSON(array('failed' => true, 'message' => $e->getMessage()));
 			}
 		}
+		
+		public function runProjectIcons(TBGRequest $request)
+		{
+			$project = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
+			if ($request->isMethod(TBGRequest::POST))
+			{
+				if ($request->getParameter('clear_icons'))
+				{
+					$project->clearSmallIcon();
+					$project->clearLargeIcon();
+				}
+				else
+				{
+					switch ($request->getParameter('small_icon_action'))
+					{
+						case 'upload_file':
+							$file = $request->handleUpload('small_icon');
+							$project->setSmallIcon($file);
+							break;
+						case 'clear_file':
+							$project->clearSmallIcon();
+							break;
+					}
+					switch ($request->getParameter('large_icon_action'))
+					{
+						case 'upload_file':
+							$file = $request->handleUpload('large_icon');
+							$project->setLargeIcon($file);
+							break;
+						case 'clear_file':
+							$project->clearLargeIcon();
+							break;
+					}
+				}
+				$project->save();
+			}
+			$route = TBGContext::getRouting()->generate('project_settings', array('project_key' => $project->getKey()));
+			if ($request->isAjaxCall())
+			{
+				return $this->renderJSON(array('forward' => $route));
+			}
+			else
+			{
+				$this->forward($route);
+			}
+		}
 
+		public function runProjectWorkflow(TBGRequest $request)
+		{
+			$project = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
+			
+			try
+			{
+				foreach ($project->getIssuetypeScheme()->getIssuetypes() as $type)
+				{
+					$data = array();
+					foreach ($project->getWorkflowScheme()->getWorkflowForIssuetype($type)->getSteps() as $step)
+					{
+						$data[] = array((string)$step->getID(), $request->getParameter('new_step_'.$type->getID().'_'.$step->getID()));
+					}
+					$project->convertIssueStepPerIssuetype($type, $data);
+				}
+				
+				$project->setWorkflowScheme(TBGContext::factory()->TBGWorkflowScheme($request->getParameter('workflow_id')));
+				$project->save();
+				
+				return $this->renderJSON(array('message' => TBGContext::geti18n()->__('Workflow scheme changed and issues updated')));
+			}
+			catch (Exception $e)
+			{
+				$this->getResponse()->setHTTPStatus(500);
+				return $this->renderJSON(array('error' => TBGContext::geti18n()->__('An internal error occured')));
+			}
+		}
+
+		public function runProjectWorkflowTable(TBGRequest $request)
+		{
+			$project = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
+			if ($request->isMethod(TBGRequest::POST))
+			{
+				try
+				{
+					$workflow_scheme = TBGContext::factory()->TBGWorkflowScheme($request->getParameter('new_workflow'));
+					return $this->renderJSON(array('content' => $this->getTemplateHtml('projectworkflow_table', array('project' => $project, 'new_workflow' => $workflow_scheme))));
+				}
+				catch (Exception $e)
+				{
+					$this->getResponse()->setHTTPStatus(500);
+					return $this->renderJSON(array('error' => TBGContext::geti18n()->__('This workflow scheme is not valid')));
+				}
+			}
+		}
 	}
