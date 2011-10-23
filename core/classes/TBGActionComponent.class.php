@@ -203,4 +203,34 @@
 			return TBGContext::getResponse();
 		}
 		
+		/**
+		 * Return the routing object
+		 * 
+		 * @return TBGRouting
+		 */
+		protected function getRouting()
+		{
+			return TBGContext::getRouting();
+		}
+		
+		/**
+		 * Return the i18n object
+		 * 
+		 * @return TBGI18n
+		 */
+		protected function getI18n()
+		{
+			return TBGContext::getI18n();
+		}
+		
+		/**
+		 * Return the current logged in user
+		 * 
+		 * @return TBGUser
+		 */
+		protected function getUser()
+		{
+			return TBGContext::getUser();
+		}
+
 	}
