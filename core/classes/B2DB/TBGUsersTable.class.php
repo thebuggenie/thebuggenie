@@ -97,6 +97,15 @@
 			
 			return $this->doSelectOne($crit);
 		}
+		
+		public function isUsernameAvailable($username)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::UNAME, $username);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			
+			return !(bool) $this->doCount($crit);
+		}
 
 		public function getByUsernameAndPassword($username, $password)
 		{

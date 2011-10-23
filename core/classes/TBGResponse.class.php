@@ -124,11 +124,7 @@
 
 		public function ajaxResponseText($code, $error)
 		{
-			$ob_status = ob_get_status();
-			if (!empty($ob_status) && $ob_status['status'] != PHP_OUTPUT_HANDLER_END)
-			{
-				ob_end_clean();
-			}
+			$this->cleanBuffer();
 			$this->setContentType('application/json');
 			$this->setHttpStatus($code);
 			$this->renderHeaders();

@@ -32,6 +32,12 @@ input[type="image"] { border: 0px; padding: 0px; width: 16px; height: 16px; back
 input[type="checkbox"] { margin: 0; }
 input[type="text"][disabled], input[type="email"][disabled], input[type="url"][disabled], input[type="search"][disabled], input[type="password"][disabled], textarea[disabled], select[disabled] { background-color: #F9F9F9; color: #BBB; }
 
+button::-moz-focus-inner,
+input[type="reset"]::-moz-focus-inner,
+input[type="button"]::-moz-focus-inner,
+input[type="submit"]::-moz-focus-inner,
+input[type="file"] > input[type="button"]::-moz-focus-inner {border:0;padding:0;margin:0;}
+
 pre { overflow: auto; }
 
 select { height: 22px; }
@@ -346,6 +352,8 @@ a.shadowed:active { box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); -webkit-box-shad
 #account_user_info { font-size: 1.2em; font-weight: normal; color: #CCC; margin: 15px 0 0 0; line-height: 1.2; }
 #account_user_info:first-line { font-size: 1.5em; font-weight: bold; color: #333; }
 #account_info_container { width: 900px; margin: 0 auto; }
+#username_unavailable { padding: 10px 5px; font-size: 0.9em; color: darkred; font-weight: bold; }
+#username_confirmation_popup { text-align: left; }
 .profile_buttons { padding: 15px 0 0 15px; position: relative; float: right; }
 .profile_buttons .button, .profile_buttons .button:hover { font-weight: normal !important; padding: 2px 3px 3px 3px !important; }
 #user_details_popup .user_username { font-weight: normal; font-size: 0.9em; color: #AAA; font-style: italic; line-height: 1.2; }

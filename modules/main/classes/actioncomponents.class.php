@@ -436,4 +436,9 @@
 			
 		}
 
+		public function componentConfirmUsername()
+		{
+			
+		}
+
 	}

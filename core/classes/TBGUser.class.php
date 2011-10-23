@@ -324,6 +324,11 @@
 			return self::$_users;
 		}
 		
+		public static function isUsernameAvailable($username)
+		{
+			return TBGUsersTable::getTable()->isUsernameAvailable($username);
+		}
+		
 		/**
 		 * Load user fixtures for a specified scope
 		 * 

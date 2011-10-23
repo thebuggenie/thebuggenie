@@ -709,6 +709,26 @@ TBG.Main.Profile.changePassword = function(url) {
 	});
 };
 
+TBG.Main.Profile.checkUsernameAvailability = function(url) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'check_username_form',
+		loading: {
+			indicator: 'pick_username_indicator',
+			hide: 'username_unavailable'
+		},
+		complete: {
+			callback: function(json) {
+				if (json.available) {
+					TBG.Main.Helpers.Backdrop.show(json.url);
+				} else {
+					$('username_unavailable').show();
+					$('username_unavailable').pulsate({pulses: 3, duration: 1});
+				}
+			}
+		}
+	});
+};
+
 TBG.Main.Dashboard.View.swap = function(source_elm)
 {
 	source_elm = $(source_elm);

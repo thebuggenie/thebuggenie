@@ -38,7 +38,9 @@
 					<div style="font-size: 13px; margin-bottom: 10px;"><?php echo __('Since this account was created via an OpenID login, you will have to pick a username to be able to log in with a username or password. You can continue to use your account with your OpenID login, so this is only if you want to pick a username for your account.'); ?><br>
 					<br><?php echo __('Click "%check_availability%" to see if your desired username is available.', array('%check_availability%' => __('Check availability'))); ?></div>
 					<label for="username_pick" class="smaller"><?php echo __('Type desired username'); ?></label><br>
-					<input type="text" name="username" id="username_pick" style="width: 390px;"><br>
+					<input type="text" name="desired_username" id="username_pick" style="width: 390px;"><br>
+					<?php echo csrf_tag(); ?>
+					<div id="username_unavailable" style="display: none;"><?php echo __('This username is not available'); ?></div>
 					<div class="smaller" style="text-align: right; margin: 10px 2px 5px 0; height: 23px;">
 						<div style="float: right; padding: 3px;"><?php echo __('%check_availability% or %cancel%', array('%check_availability%' => '', '%cancel%' => '<a href="javascript:void(0);" onclick="$(\'pick_username_div\').toggle();$(\'pick_username_button\').toggleClassName(\'button-pressed\');"><b>' . __('cancel') . '</b></a>')); ?></div>
 						<input type="submit" value="<?php echo __('Check availability'); ?>" style="font-weight: bold; float: right;">
@@ -151,7 +153,7 @@
 						<p class="content"><?php echo __('Edit your profile details here, including additional information.'); ?><br><?php echo __('Required fields are marked with a little star.'); ?></p>
 						<table style="width: 680px;" class="padded_table" cellpadding=0 cellspacing=0>
 							<tr>
-								<td style="padding: 5px;"><label for="profile_buddyname">* <?php echo __('"Friendly" name / nickname'); ?></label></td>
+								<td style="padding: 5px;"><label for="profile_buddyname">* <?php echo __('Display name'); ?></label></td>
 								<td>
 									<input type="text" name="buddyname" id="profile_buddyname" value="<?php echo $tbg_user->getBuddyname(); ?>" style="width: 200px;">
 								</td>
@@ -292,3 +294,13 @@
 		</div>
 	</div>
 </div>
+<?php if ($error): ?>
+	<script type="text/javascript">
+		TBG.Main.Helpers.Message.error('<?php echo __('An error occurred'); ?>', '<?php echo $error; ?>');
+	</script>
+<?php endif; ?>
+<?php if ($username_chosen): ?>
+	<script type="text/javascript">
+		TBG.Main.Helpers.Message.message('<?php echo __("You've chosen the username '%username%'", array('%username%' => $tbg_user->getUsername())); ?>', '<?php echo __('Before you can use the new username to log in, you must pick a password via the "%change_password%" button.', array('%change_password%' => __('Change password'))); ?>');
+	</script>
+<?php endif; ?>
