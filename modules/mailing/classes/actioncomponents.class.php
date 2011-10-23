@@ -18,13 +18,54 @@
 		{
 		}
 
+		protected function _getNotificationPreset()
+		{
+			$uid = TBGContext::getUser()->getID();
+			$module = TBGContext::getModule('mailing');
+			
+			if ($module->getSetting(TBGMailing::NOTIFY_ISSUE_POSTED_UPDATED, $uid) &&
+				$module->getSetting(TBGMailing::NOTIFY_ISSUE_ONCE, $uid) && 
+				!$module->getSetting(TBGMailing::NOTIFY_ISSUE_ASSIGNED_UPDATED, $uid) && 
+				!$module->getSetting(TBGMailing::NOTIFY_ISSUE_UPDATED_SELF, $uid) && 
+				!$module->getSetting(TBGMailing::NOTIFY_ISSUE_TEAMASSIGNED_UPDATED, $uid) && 
+				!$module->getSetting(TBGMailing::NOTIFY_ISSUE_RELATED_PROJECT_TEAMASSIGNED, $uid) && 
+				!$module->getSetting(TBGMailing::NOTIFY_ISSUE_PROJECT_ASSIGNED, $uid) && 
+				!$module->getSetting(TBGMailing::NOTIFY_ISSUE_COMMENTED_ON, $uid)) 
+			{
+				return 'silent';
+			}
+			elseif ($module->getSetting(TBGMailing::NOTIFY_ISSUE_POSTED_UPDATED, $uid) &&
+				$module->getSetting(TBGMailing::NOTIFY_ISSUE_ONCE, $uid) && 
+				$module->getSetting(TBGMailing::NOTIFY_ISSUE_ASSIGNED_UPDATED, $uid) && 
+				!$module->getSetting(TBGMailing::NOTIFY_ISSUE_UPDATED_SELF, $uid) && 
+				$module->getSetting(TBGMailing::NOTIFY_ISSUE_TEAMASSIGNED_UPDATED, $uid) && 
+				!$module->getSetting(TBGMailing::NOTIFY_ISSUE_RELATED_PROJECT_TEAMASSIGNED, $uid) && 
+				$module->getSetting(TBGMailing::NOTIFY_ISSUE_PROJECT_ASSIGNED, $uid) && 
+				$module->getSetting(TBGMailing::NOTIFY_ISSUE_COMMENTED_ON, $uid)) 
+			{
+				return 'recommended';
+			}
+			elseif ($module->getSetting(TBGMailing::NOTIFY_ISSUE_POSTED_UPDATED, $uid) &&
+				!$module->getSetting(TBGMailing::NOTIFY_ISSUE_ONCE, $uid) && 
+				$module->getSetting(TBGMailing::NOTIFY_ISSUE_ASSIGNED_UPDATED, $uid) && 
+				$module->getSetting(TBGMailing::NOTIFY_ISSUE_UPDATED_SELF, $uid) && 
+				$module->getSetting(TBGMailing::NOTIFY_ISSUE_TEAMASSIGNED_UPDATED, $uid) && 
+				$module->getSetting(TBGMailing::NOTIFY_ISSUE_RELATED_PROJECT_TEAMASSIGNED, $uid) && 
+				$module->getSetting(TBGMailing::NOTIFY_ISSUE_PROJECT_ASSIGNED, $uid) && 
+				$module->getSetting(TBGMailing::NOTIFY_ISSUE_COMMENTED_ON, $uid)) 
+			{
+				return 'verbose';
+			}
+			else
+			{
+				return 'custom';
+			}
+		}
+		
 		public function componentAccountSettings()
 		{
 			$i18n = TBGContext::getI18n();
-			$general_settings = array();
 			$issues_settings = array();
-			
-			$general_settings['notify_add_friend'] = $i18n->__('Notify me when someone adds me as their friend');
 			
 			$issues_settings[TBGMailing::NOTIFY_ISSUE_POSTED_UPDATED] = $i18n->__('Notify me when an issue I posted gets updated or created');
 			$issues_settings[TBGMailing::NOTIFY_ISSUE_ONCE] = $i18n->__('Only notify me once per issue until I open the issue');
@@ -35,9 +76,8 @@
 			$issues_settings[TBGMailing::NOTIFY_ISSUE_PROJECT_ASSIGNED] = $i18n->__("Notify me when an issue assigned to one of my projects is updated or created");
 			$issues_settings[TBGMailing::NOTIFY_ISSUE_COMMENTED_ON] = $i18n->__("Notify me when an issue I commented on gets updated");
 
-			$this->general_settings = $general_settings;
 			$this->issues_settings = $issues_settings;
-
+			$this->selected_preset = $this->_getNotificationPreset();
 			$this->uid = TBGContext::getUser()->getID();
 		}
 		

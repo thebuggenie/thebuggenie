@@ -729,6 +729,14 @@ TBG.Main.Profile.checkUsernameAvailability = function(url) {
 	});
 };
 
+TBG.Main.Profile.toggleNotificationSettings = function(preset) {
+	if (preset == 'custom') {
+		$('notification_settings_selectors').show();
+	} else {
+		$('notification_settings_selectors').hide();
+	}
+}
+
 TBG.Main.Dashboard.View.swap = function(source_elm)
 {
 	source_elm = $(source_elm);

@@ -55,7 +55,7 @@
 		
 		protected $_module_config_description = 'Set up in- and outgoing email communication from this section';
 		
-		protected $_account_settings_name = 'Notifications';
+		protected $_account_settings_name = 'Notification settings';
 		
 		protected $_account_settings_logo = 'notification_settings.png';
 		
@@ -80,7 +80,7 @@
 		protected function _initialize()
 		{
 		}
-
+		
 		protected function _addListeners()
 		{
 			TBGEvent::listen('core', 'TBGUser::createNew', array($this, 'listen_registerUser'));
@@ -779,11 +779,45 @@
 
 		public function postAccountSettings(TBGRequest $request)
 		{
-			$settings = array(self::NOTIFY_ISSUE_ASSIGNED_UPDATED, self::NOTIFY_ISSUE_ONCE, self::NOTIFY_ISSUE_POSTED_UPDATED, self::NOTIFY_ISSUE_PROJECT_ASSIGNED, self::NOTIFY_ISSUE_RELATED_PROJECT_TEAMASSIGNED, self::NOTIFY_ISSUE_TEAMASSIGNED_UPDATED, self::NOTIFY_ISSUE_UPDATED_SELF, self::NOTIFY_ISSUE_COMMENTED_ON);
 			$uid = TBGContext::getUser()->getID();
-			foreach ($settings as $setting)
+			switch ($request->getParameter('notification_settings_preset'))
 			{
-				$this->saveSetting($setting, (int) $request->getParameter($setting, 0), $uid);
+				case 'silent':
+					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_POSTED_UPDATED, true, $uid);
+					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_ONCE, true, $uid); 
+					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_ASSIGNED_UPDATED, false, $uid); 
+					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_UPDATED_SELF, false, $uid); 
+					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_TEAMASSIGNED_UPDATED, false, $uid); 
+					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_RELATED_PROJECT_TEAMASSIGNED, false, $uid); 
+					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_PROJECT_ASSIGNED, false, $uid); 
+					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_COMMENTED_ON, false, $uid); 
+					break;
+				case 'recommended':
+					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_POSTED_UPDATED, true, $uid);
+					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_ONCE, true, $uid); 
+					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_ASSIGNED_UPDATED, true, $uid); 
+					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_UPDATED_SELF, false, $uid); 
+					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_TEAMASSIGNED_UPDATED, true, $uid); 
+					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_RELATED_PROJECT_TEAMASSIGNED, false, $uid); 
+					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_PROJECT_ASSIGNED, true, $uid); 
+					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_COMMENTED_ON, true, $uid); 
+					break;
+				case 'verbose':
+					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_POSTED_UPDATED, true, $uid);
+					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_ONCE, false, $uid); 
+					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_ASSIGNED_UPDATED, true, $uid); 
+					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_UPDATED_SELF, true, $uid); 
+					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_TEAMASSIGNED_UPDATED, true, $uid); 
+					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_RELATED_PROJECT_TEAMASSIGNED, true, $uid); 
+					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_PROJECT_ASSIGNED, true, $uid); 
+					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_COMMENTED_ON, true, $uid); 
+					break;
+				default:
+					$settings = array(self::NOTIFY_ISSUE_ASSIGNED_UPDATED, self::NOTIFY_ISSUE_ONCE, self::NOTIFY_ISSUE_POSTED_UPDATED, self::NOTIFY_ISSUE_PROJECT_ASSIGNED, self::NOTIFY_ISSUE_RELATED_PROJECT_TEAMASSIGNED, self::NOTIFY_ISSUE_TEAMASSIGNED_UPDATED, self::NOTIFY_ISSUE_UPDATED_SELF, self::NOTIFY_ISSUE_COMMENTED_ON);
+					foreach ($settings as $setting)
+					{
+						$this->saveSetting($setting, (int) $request->getParameter($setting, 0), $uid);
+					}
 			}
 			return true;
 		}
@@ -1041,5 +1075,5 @@
 			$account->save();
 			return $count;
 		}
-		
+
 	}

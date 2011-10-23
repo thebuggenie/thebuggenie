@@ -129,11 +129,11 @@
 		<div style="margin: 0; clear: both; height: 30px; width: 100%;" class="tab_menu">
 			<ul id="account_tabs">
 				<li class="selected" id="tab_profile"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_profile', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_users.png', array('style' => 'float: left;')).__('Profile information'); ?></a></li>
-				<li id="tab_settings"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_settings', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_general.png', array('style' => 'float: left;')).__('Settings'); ?></a></li>
+				<li id="tab_settings"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_settings', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_general.png', array('style' => 'float: left;')).__('General settings'); ?></a></li>
 				<?php TBGEvent::createNew('core', 'account_tabs')->trigger(); ?>
 				<?php foreach (TBGContext::getModules() as $module_name => $module): ?>
 					<?php if ($module->hasAccountSettings()): ?>
-						<li id="tab_settings_<?php echo $module_name; ?>"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_settings_<?php echo $module_name; ?>', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag($module->getAccountSettingsLogo(), array('style' => 'float: left;'), false, $module_name).$module->getAccountSettingsName(); ?></a></li>
+						<li id="tab_settings_<?php echo $module_name; ?>"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_settings_<?php echo $module_name; ?>', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag($module->getAccountSettingsLogo(), array('style' => 'float: left;'), false, $module_name).__($module->getAccountSettingsName()); ?></a></li>
 					<?php endif; ?>
 				<?php endforeach; ?>
 			</ul>
@@ -283,7 +283,7 @@
 								<?php include_component("{$module_name}/accountsettings", array('module' => $module)); ?>
 							</div>
 							<div class="rounded_box iceblue borderless cut_top" style="margin: 0 0 5px 0; width: 895px; border-top: 0; padding: 3px; height: 26px;">
-								<div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "%save%" to save your %module_settings_name% settings', array('%save%' => __('Save'), '%module_settings_name%' => $module->getAccountSettingsName())); ?></div>
+								<div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "%save%" to save changes in the "%module_settings_name%" category', array('%save%' => __('Save'), '%module_settings_name%' => $module->getAccountSettingsName())); ?></div>
 								<input type="submit" id="submit_settings_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
 								<span id="profile_<?php echo $module_name; ?>_save_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
 							</div>
