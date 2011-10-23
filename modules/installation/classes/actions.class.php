@@ -462,6 +462,11 @@
 
 			TBGSettings::saveSetting(TBGSettings::SETTING_ICONSET, TBGSettings::get(TBGSettings::SETTING_THEME_NAME));
 			
+			foreach (TBGProject::getAll() as $project)
+			{
+				TBGDashboardViewsTable::getTable()->setDefaultViews($project->getID(), TBGDashboardViewsTable::TYPE_PROJECT);
+			}
+			
 			$this->upgrade_complete = true;
 		}
 
