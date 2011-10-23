@@ -228,7 +228,7 @@
 							<tr>
 								<td style="width: 200px; padding: 5px;"><label for="profile_timezone"><?php echo __('Current timezone'); ?></label></td>
 								<td>
-									<select name="timezone" id="profile_timezone" style="width: 150px;">
+									<select name="timezone" id="profile_timezone" style="width: 300px;">
 										<option value="sys"<?php if ($tbg_user->getTimezone() == 'sys'): ?> selected<?php endif; ?>><?php echo __('Use global setting - GMT%time%', array('%time%' => ' '.TBGSettings::getGMTOffset())); ?></option>
 										<?php for ($cc = 12;$cc >= 1;$cc--): ?>
 											<option value="-<?php echo $cc; ?>"<?php if ($tbg_user->getTimezone() == -$cc): ?> selected<?php endif; ?>>GMT -<?php echo $cc; ?></option>

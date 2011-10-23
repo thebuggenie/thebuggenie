@@ -12,12 +12,12 @@
 	<tr>
 		<td id="dashboard_lefthand" class="side_bar">
 			<?php TBGEvent::createNew('core', 'dashboard_left_top')->trigger(); ?>
-			<div class="container_div" style="margin: 5px 0 5px 10px;">
+			<div class="container_div" style="margin: 0 0 5px 10px;">
 				<?php include_component('main/myfriends'); ?>
 			</div>
 			<?php TBGEvent::createNew('core', 'dashboard_left_bottom')->trigger();?>
 		</td>
-		<td class="main_area">
+		<td class="main_area" style="padding-right: 5px;">
 			<?php TBGEvent::createNew('core', 'dashboard_main_top')->trigger(); ?>
 			<?php if (empty($dashboardViews)) :?>
 				<p class="content faded_out"><?php echo __("This dashboard doesn't contain any views. To add views in this dashboard, press the 'Customize dashboard'-icon to the far right."); ?></p>
@@ -35,7 +35,7 @@
 			<?php TBGEvent::createNew('core', 'dashboard_main_bottom')->trigger(); ?>
 		</td>
 		<td id="dashboard_righthand" class="side_bar">
-			<div class="container_div" style="margin-right: 10px;">
+			<div class="container_div" style="margin-right: 10px; margin-top: 0;">
 				<div class="header" style="margin: 2px 0 5px 0; padding: 3px 3px 3px 5px;"><?php echo __('Your projects'); ?></div>
 				<?php if (count($tbg_user->getAssociatedProjects()) > 0): ?>
 					<ul id="associated_projects">

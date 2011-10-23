@@ -939,6 +939,7 @@ table.issue_affects td img { vertical-align: bottom; }
 #dashboard .faded_out.smaller { font-size: 0.8em; padding-right: 5px; }
 
 #dashboard_lefthand, #dashboard_righthand { font-size: 0.95em; position: relative; }
+#dashboard_righthand { padding-left: 0; }
 #dashboard_lefthand { width: 250px; }
 #dashboard_lefthand a.friend { color: #00a400; }
 #dashboard_lefthand a.friend:hover { border-bottom: 1px solid #CCC; }

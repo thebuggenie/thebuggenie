@@ -128,7 +128,7 @@ TBG.Core._resizeWatcher = function() {
 	}
 	if ($('dashboard')) {
 		var dashboard_width = $('dashboard').getWidth();
-		var element_width = (dashboard_width > 600) ? ((dashboard_width / 2) - 5) : (dashboard_width - 5);
+		var element_width = (dashboard_width > 600) ? ((dashboard_width / 2) - 5) : dashboard_width;
 		$('dashboard').childElements().each(function(item) {
 			item.setStyle({width: element_width + 'px'});
 		});
