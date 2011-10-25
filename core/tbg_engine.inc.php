@@ -13,17 +13,13 @@
 	 * @param string $title
 	 * @param Exception $exception
 	 */
-	function tbg_exception($title, $exception)
+	function tbg_exception($title, $exception = null)
 	{
 		if (TBGContext::getRequest() instanceof TBGRequest && TBGContext::getRequest()->isAjaxCall())
 		{
 			TBGContext::getResponse()->ajaxResponseText(404, $title);
 		}
-		$ob_status = ob_get_status();
-		if (!empty($ob_status) && $ob_status['status'] != PHP_OUTPUT_HANDLER_END)
-		{
-			ob_end_clean();
-		}
+		TBGContext::getResponse()->cleanBuffer();
 		
 		if (TBGContext::isCLI())
 		{
