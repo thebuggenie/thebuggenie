@@ -174,6 +174,39 @@
 			return $this->insert_id;
 		}
 
+		public function rewind()
+		{
+			$this->resetPtr();
+		}
+
+		public function current()
+		{
+			$row = $this->getCurrentRow();
+			
+			return $row;
+		}
+
+		public function key()
+		{
+			if ($this->id_col === null)
+				$this->id_col = $this->crit->getTable()->getIdColumn();
+
+			$row = $this->getCurrentRow();
+
+			return ($row instanceof Row) ? $row->get($this->id_col) : null;
+		}
+
+		public function next()
+		{
+			$this->_next();
+		}
+
+		public function valid()
+		{
+			$val = (boolean) $this->int_ptr < $this->max_ptr;
+			return $val;
+		}
+
 		public function count()
 		{
 			return (integer) $this->max_ptr;
