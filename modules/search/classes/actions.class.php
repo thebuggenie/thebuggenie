@@ -68,7 +68,7 @@
 
 			if ($request->hasParameter('saved_search'))
 			{
-				$savedsearch = \b2db\Core::getTable('TBGSavedSearchesTable')->doSelectById($request->getParameter('saved_search'));
+				$savedsearch = TBGSavedSearchesTable::getTable()->doSelectById($request->getParameter('saved_search'));
 				if ($savedsearch instanceof \b2db\Row && TBGContext::getUser()->canAccessSavedSearch($savedsearch))
 				{
 					$this->issavedsearch = true;
@@ -106,44 +106,7 @@
 			{
 				if ($request->hasParameter('predefined_search'))
 				{
-					switch ((int) $request->getParameter('predefined_search'))
-					{
-						case TBGContext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES:
-							$this->filters['state'] = array('operator' => '=', 'value' => TBGIssue::STATE_OPEN);
-							$this->groupby = 'issuetype';
-							break;
-						case TBGContext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES:
-							$this->filters['state'] = array('operator' => '=', 'value' => TBGIssue::STATE_CLOSED);
-							$this->groupby = 'issuetype';
-							break;
-						case TBGContext::PREDEFINED_SEARCH_PROJECT_MILESTONE_TODO:
-							$this->groupby = 'milestone';
-							break;
-						case TBGContext::PREDEFINED_SEARCH_PROJECT_MOST_VOTED:
-							$this->filters['state'] = array('operator' => '=', 'value' => TBGIssue::STATE_OPEN);
-							$this->groupby = 'votes';
-							$this->grouporder = 'desc';
-							break;
-						case TBGContext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES:
-							$this->filters['posted_by'] = array('operator' => '=', 'value' => TBGContext::getUser()->getID());
-							$this->groupby = 'issuetype';
-							break;
-						case TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES:
-							$this->filters['state'] = array('operator' => '=', 'value' => TBGIssue::STATE_OPEN);
-							$this->filters['assigned_type'] = array('operator' => '=', 'value' => TBGIdentifiableClass::TYPE_USER);
-							$this->filters['assigned_to'] = array('operator' => '=', 'value' => TBGContext::getUser()->getID());
-							$this->groupby = 'issuetype';
-							break;
-						case TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES:
-							$this->filters['state'] = array('operator' => '=', 'value' => TBGIssue::STATE_OPEN);
-							$this->filters['assigned_type'] = array('operator' => '=', 'value' => TBGIdentifiableClass::TYPE_TEAM);
-							foreach (TBGContext::getUser()->getTeams() as $team_id => $team)
-							{
-								$this->filters['assigned_to'][] = array('operator' => '=', 'value' => $team_id);
-							}
-							$this->groupby = 'issuetype';
-							break;
-					}
+					list($this->filters, $this->groupby, $this->grouporder) = TBGSavedSearchesTable::getPredefinedVariables($request->getParameter('predefined_search'));
 				}
 				elseif (in_array($this->templatename, array('results_userpain_singlepainthreshold', 'results_userpain_totalpainthreshold')))
 				{

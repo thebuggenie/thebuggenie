@@ -71,7 +71,7 @@
 		{
 			$this->forward403unless($this->_checkProjectPageAccess('project_dashboard'));
 			
-			$this->dashboardViews = TBGDashboard::getViews($this->selected_project->getID(), TBGDashboardViewsTable::TYPE_PROJECT);
+			$this->dashboardViews = TBGDashboardView::getViews($this->selected_project->getID(), TBGDashboardViewsTable::TYPE_PROJECT);
 		}
 
 		/**

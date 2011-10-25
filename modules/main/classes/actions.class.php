@@ -272,7 +272,7 @@
 				TBGDashboardViewsTable::getTable()->setDefaultViews($this->getUser()->getID(), TBGDashboardViewsTable::TYPE_USER);
 				$this->forward($this->getRouting()->generate('dashboard'));
 			}
-			$this->dashboardViews = TBGDashboard::getViews(TBGContext::getUser()->getID(), TBGDashboardViewsTable::TYPE_USER);
+			$this->views = TBGDashboardView::getUserViews(TBGContext::getUser()->getID());
 		}
 		
 		/**
@@ -299,7 +299,7 @@
 								array_push($views, array('type' => strrev(mb_strstr(strrev($view), '_', true)), 'id' => mb_strstr($view, '_', true)));
 							}
 							array_pop($views);
-							TBGDashboard::setViews($request->getParameter('tid'), $request->getParameter('target_type'), $views);
+							TBGDashboardView::setViews($request->getParameter('tid'), $request->getParameter('target_type'), $views);
 							return $this->renderJSON(array('message' => $i18n->__('Dashboard configuration saved')));
 						}
 						else
@@ -3567,5 +3567,10 @@
 			TBGContext::setMessage('error', $this->getI18n()->__('Could not pick the username "%username%"', array('%username%' => $request['selected_username'])));
 			$this->forward($this->getRouting()->generate('account'));
 		}
-		
+
+		public function runDashboardView(TBGRequest $request)
+		{
+			$view = new TBGDashboardView($request['view_id']);
+			return $this->renderJSON(array('content' => $this->returnTemplateHTML('main/dashboardviewcontent', array('view' => $view))));
+		}
 }

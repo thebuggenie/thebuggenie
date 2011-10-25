@@ -1,6 +1,4 @@
 <?php
-/** NOTE : may be integrated to user class **/
-
 
 	/**
 	 * Dashboard class
@@ -18,101 +16,230 @@
 	 * @package thebuggenie
 	 * @subpackage main
 	 */
-	class TBGDashboard extends TBGB2DBTable
+	class TBGDashboardView extends TBGIdentifiableClass
 	{
-		
-		const B2DB_TABLE_VERSION = 1;
-		const DASHBOARD_VIEW_PREDEFINED_SEARCH = 1;
-		const DASHBOARD_VIEW_SAVED_SEARCH = 2;
-		const DASHBOARD_VIEW_LOGGED_ACTION = 3;
-		const DASHBOARD_VIEW_LAST_COMMENTS = 4;
-		
-		const DASHBOARD_PROJECT_INFO = 101;
-		const DASHBOARD_PROJECT_TEAM = 102;
-		const DASHBOARD_PROJECT_CLIENT = 103;
-		const DASHBOARD_PROJECT_SUBPROJECTS = 104;
-		const DASHBOARD_PROJECT_LAST15 = 105;
-		const DASHBOARD_PROJECT_STATISTICS_PRIORITY = 106;
-		const DASHBOARD_PROJECT_STATISTICS_STATUS = 111;
-		const DASHBOARD_PROJECT_STATISTICS_RESOLUTION = 112;
-		const DASHBOARD_PROJECT_STATISTICS_STATE = 113;
-		const DASHBOARD_PROJECT_STATISTICS_CATEGORY = 114;
-		const DASHBOARD_PROJECT_RECENT_ISSUES = 107;
-		const DASHBOARD_PROJECT_RECENT_ACTIVITIES = 108;
-		const DASHBOARD_PROJECT_UPCOMING = 109;
-		const DASHBOARD_PROJECT_DOWNLOADS = 110;
-		
+
+		const VIEW_PREDEFINED_SEARCH = 1;
+		const VIEW_SAVED_SEARCH = 2;
+		const VIEW_LOGGED_ACTION = 3;
+		const VIEW_LAST_COMMENTS = 4;
+		const VIEW_FRIENDS = 5;
+		const VIEW_PROJECTS = 6;
+		const VIEW_MILESTONES = 7;
+
+		const VIEW_PROJECT_INFO = 101;
+		const VIEW_PROJECT_TEAM = 102;
+		const VIEW_PROJECT_CLIENT = 103;
+		const VIEW_PROJECT_SUBPROJECTS = 104;
+		const VIEW_PROJECT_LAST15 = 105;
+		const VIEW_PROJECT_STATISTICS_PRIORITY = 106;
+		const VIEW_PROJECT_STATISTICS_STATUS = 111;
+		const VIEW_PROJECT_STATISTICS_RESOLUTION = 112;
+		const VIEW_PROJECT_STATISTICS_STATE = 113;
+		const VIEW_PROJECT_STATISTICS_CATEGORY = 114;
+		const VIEW_PROJECT_RECENT_ISSUES = 107;
+		const VIEW_PROJECT_RECENT_ACTIVITIES = 108;
+		const VIEW_PROJECT_UPCOMING = 109;
+		const VIEW_PROJECT_DOWNLOADS = 110;
+
+		const TYPE_USER = 1;
+		const TYPE_PROJECT = 2;
+		const TYPE_TEAM = 3;
+		const TYPE_CLIENT = 4;
+
+		public static $_b2dbtablename = 'TBGDashboardViewsTable';
+
+		protected $_type;
+
+		protected $_view;
+
+		protected $_pid;
+
+		protected $_tid;
+
+		protected $_target_type;
+
 		public static function getViews($tid, $target_type)
 		{
-			return \b2db\Core::getTable('TBGDashboardViewsTable')->getViews($tid, $target_type);;
+			$views = array();
+			if ($res = TBGDashboardViewsTable::getTable()->getViews($tid, $target_type))
+			{
+				while ($row = $res->getNextRow())
+				{
+					$id = $row->getID();
+					$view = new TBGDashboardView($id, $row);
+					$views[$id] = $view;
+				}
+			}
+//die();
+			return $views;
 		}
-		
+
+		public static function getUserViews($user_id)
+		{
+			return self::getViews($user_id, self::TYPE_USER);
+		}
+
 		public static function getAvailableViews($target_type)
 		{
 			switch ($target_type)
 			{
-				case TBGDashboardViewsTable::TYPE_USER:
+				case TBGDashboardView::TYPE_USER:
 					$searches = array();
-					$searches[self::DASHBOARD_VIEW_PREDEFINED_SEARCH] = array(	TBGContext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES => TBGContext::geti18n()->__('Issues reported by me'),
-																				TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES => TBGContext::geti18n()->__('Open issues assigned to me'),
-																				TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES => TBGContext::geti18n()->__('Open issues assigned to my teams'),
-																				TBGContext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES => TBGContext::geti18n()->__('Open issues'),
-																				TBGContext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES => TBGContext::geti18n()->__('Closed issues'),
-																				TBGContext::PREDEFINED_SEARCH_PROJECT_MOST_VOTED => TBGContext::geti18n()->__('Most voted issues'));
-					$searches[self::DASHBOARD_VIEW_LOGGED_ACTION] = array( 0 => TBGContext::geti18n()->__("What you've done recently"));
+					$searches[self::VIEW_PREDEFINED_SEARCH] = array(TBGContext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES => TBGContext::getI18n()->__('Issues reported by me'),
+																	TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES => TBGContext::getI18n()->__('Open issues assigned to me'),
+																	TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES => TBGContext::getI18n()->__('Open issues assigned to my teams'),
+																	TBGContext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES => TBGContext::getI18n()->__('Open issues'),
+																	TBGContext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES => TBGContext::getI18n()->__('Closed issues'),
+																	TBGContext::PREDEFINED_SEARCH_PROJECT_MOST_VOTED => TBGContext::getI18n()->__('Most voted issues'));
+					$searches[self::VIEW_LOGGED_ACTION] = array(0 => TBGContext::getI18n()->__("What you've done recently"));
 					if (TBGContext::getUser()->canViewComments())
 					{
-						$searches[self::DASHBOARD_VIEW_LAST_COMMENTS] = array( 0 => TBGContext::geti18n()->__('Recent comments'));	
+						$searches[self::VIEW_LAST_COMMENTS] = array(0 => TBGContext::getI18n()->__('Recent comments'));
 					}
-					$searches[self::DASHBOARD_VIEW_SAVED_SEARCH] = array();
-					$allsavedsearches = \b2db\Core::getTable('TBGSavedSearchesTable')->getAllSavedSearchesByUserIDAndPossiblyProjectID(TBGContext::getUser()->getID());
+					$searches[self::VIEW_SAVED_SEARCH] = array();
+					$allsavedsearches = TBGSavedSearchesTable::getTable()->getAllSavedSearchesByUserIDAndPossiblyProjectID(TBGContext::getUser()->getID());
 					foreach ($allsavedsearches as $savedsearches)
 					{
 						foreach ($savedsearches as $a_savedsearch)
 						{
-							$searches[self::DASHBOARD_VIEW_SAVED_SEARCH][$a_savedsearch->get(TBGSavedSearchesTable::ID)] = $a_savedsearch->get(TBGSavedSearchesTable::NAME);
+							$searches[self::VIEW_SAVED_SEARCH][$a_savedsearch->get(TBGSavedSearchesTable::ID)] = $a_savedsearch->get(TBGSavedSearchesTable::NAME);
 						}
 					}
 					break;
-				case TBGDashboardViewsTable::TYPE_PROJECT:
+				case TBGDashboardView::TYPE_PROJECT:
 					$issuetype_icons = array();
-					foreach (TBGIssuetype::getIcons() as $key => $descr)
+					foreach (\thebuggenie\entities\Issuetype::getIcons() as $key => $descr)
 					{
-						$issuetype_icons[] = TBGContext::geti18n()->__('Recent issues: %type%', array('%type%' => $descr));
+						$issuetype_icons[] = TBGContext::getI18n()->__('Recent issues: %type%', array('%type%' => $descr));
 					}
-					
+
 					$searches = array();
-					$searches[self::DASHBOARD_PROJECT_INFO] = array( 0 => TBGContext::geti18n()->__('About this project'));
-					$searches[self::DASHBOARD_PROJECT_TEAM] = array( 0 => TBGContext::geti18n()->__('Project team'));
-					$searches[self::DASHBOARD_PROJECT_CLIENT] = array( 0 => TBGContext::geti18n()->__('Project client'));
-					$searches[self::DASHBOARD_PROJECT_SUBPROJECTS] = array( 0 => TBGContext::geti18n()->__('Subprojects'));
-					$searches[self::DASHBOARD_PROJECT_LAST15] = array( 0 => TBGContext::geti18n()->__('Graph of closed vs open issues, past 15 days'));
-					$searches[self::DASHBOARD_PROJECT_STATISTICS_PRIORITY] = array( 0 => TBGContext::geti18n()->__('Statistics by priority'));
-					$searches[self::DASHBOARD_PROJECT_STATISTICS_CATEGORY] = array( 0 => TBGContext::geti18n()->__('Statistics by category'));
-					$searches[self::DASHBOARD_PROJECT_STATISTICS_STATUS] = array( 0 => TBGContext::geti18n()->__('Statistics by status'));
-					$searches[self::DASHBOARD_PROJECT_STATISTICS_RESOLUTION] = array( 0 => TBGContext::geti18n()->__('Statistics by resolution'));
-					$searches[self::DASHBOARD_PROJECT_RECENT_ISSUES] = $issuetype_icons;
-					$searches[self::DASHBOARD_PROJECT_RECENT_ACTIVITIES] = array( 0 => TBGContext::geti18n()->__('Recent activities'));
-					$searches[self::DASHBOARD_PROJECT_UPCOMING] = array( 0 => TBGContext::geti18n()->__('Upcoming milestones and deadlines'));
-					$searches[self::DASHBOARD_PROJECT_DOWNLOADS] = array( 0 => TBGContext::geti18n()->__('Latest downloads'));
-					break;				
+					$searches[self::VIEW_PROJECT_INFO] = array(0 => TBGContext::getI18n()->__('About this project'));
+					$searches[self::VIEW_PROJECT_TEAM] = array(0 => TBGContext::getI18n()->__('Project team'));
+					$searches[self::VIEW_PROJECT_CLIENT] = array(0 => TBGContext::getI18n()->__('Project client'));
+					$searches[self::VIEW_PROJECT_SUBPROJECTS] = array(0 => TBGContext::getI18n()->__('Subprojects'));
+					$searches[self::VIEW_PROJECT_LAST15] = array(0 => TBGContext::getI18n()->__('Graph of closed vs open issues, past 15 days'));
+					$searches[self::VIEW_PROJECT_STATISTICS_PRIORITY] = array(0 => TBGContext::getI18n()->__('Statistics by priority'));
+					$searches[self::VIEW_PROJECT_STATISTICS_CATEGORY] = array(0 => TBGContext::getI18n()->__('Statistics by category'));
+					$searches[self::VIEW_PROJECT_STATISTICS_STATUS] = array(0 => TBGContext::getI18n()->__('Statistics by status'));
+					$searches[self::VIEW_PROJECT_STATISTICS_RESOLUTION] = array(0 => TBGContext::getI18n()->__('Statistics by resolution'));
+					$searches[self::VIEW_PROJECT_RECENT_ISSUES] = $issuetype_icons;
+					$searches[self::VIEW_PROJECT_RECENT_ACTIVITIES] = array(0 => TBGContext::getI18n()->__('Recent activities'));
+					$searches[self::VIEW_PROJECT_UPCOMING] = array(0 => TBGContext::getI18n()->__('Upcoming milestones and deadlines'));
+					$searches[self::VIEW_PROJECT_DOWNLOADS] = array(0 => TBGContext::getI18n()->__('Latest downloads'));
+					break;
 			}
 
 			return $searches;
 		}
-		
+
 		public static function setViews($tid, $target_type, $views)
 		{
-			\b2db\Core::getTable('TBGDashboardViewsTable')->clearViews($tid, $target_type);
+			TBGDashboardViewsTable::getTable()->clearViews($tid, $target_type);
 			foreach($views as $key => $view)
 			{
-				\b2db\Core::getTable('TBGDashboardViewsTable')->addView($tid, $target_type, $view);
+				TBGDashboardViewsTable::getTable()->addView($tid, $target_type, $view);
 			}
 		}
-		
+
 		public static function resetViews($tid, $target_type)
 		{
 			$views = array();
 			self::setUserViews($tid, $target_type, $views);
 		}
+
+		public function getType()
+		{
+			return $this->_type;
+		}
+
+		public function setType($_type)
+		{
+			$this->_type = $_type;
+		}
+
+		public function getDetail()
+		{
+			return $this->_view;
+		}
+
+		public function setDetail($detail)
+		{
+			$this->_view = $view;
+		}
+
+		public function getProjectID()
+		{
+			return $this->_pid;
+		}
+
+		public function setProjectID($pid)
+		{
+			$this->_pid = $pid;
+		}
+
+		public function getTargetID()
+		{
+			return $this->_tid;
+		}
+
+		public function setTargetID($tid)
+		{
+			$this->_tid = $tid;
+		}
+
+		public function getTargetType()
+		{
+			return $this->_target_type;
+		}
+
+		public function setTargetType($target_type)
+		{
+			$this->_target_type = $target_type;
+		}
+
+		public function isSearchView()
+		{
+			return (in_array($this->getType(), array(
+				self::VIEW_PREDEFINED_SEARCH,
+				self::VIEW_SAVED_SEARCH
+			)));
+		}
+
+		public function getSearchParameters($rss = false)
+		{
+			$paramaters = ($rss) ? array('format' => 'rss') : array();
+			switch ($this->getType())
+			{
+				case TBGDashboardView::VIEW_PREDEFINED_SEARCH :
+					$parameters['predefined_search'] = $this->getDetail();
+					break;
+				case TBGDashboardView::VIEW_SAVED_SEARCH :
+					$parameters['saved_search'] = $this->getDetail();
+					break;
+			}
+			return $parameters;
+		}
+
+		public function shouldBePreloaded()
+		{
+			return (boolean) in_array($this->getType(), array(self::VIEW_FRIENDS,
+																self::VIEW_PROJECT_DOWNLOADS,
+																self::VIEW_PROJECT_INFO));
+		}
+
+		public function getTitle()
+		{
+			$titles = self::getAvailableViews($this->getTargetType());
+			if (array_key_exists($this->getType(), $titles) && array_key_exists($this->getDetail(), $titles[$this->getType()]))
+			{
+				return $titles[$this->getType()][$this->getDetail()];
+			}
+			else
+			{
+				return TBGContext::getI18n()->__('Unknown dashboard item');
+			}
+		}
+
 	}

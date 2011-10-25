@@ -15,11 +15,11 @@
 			<div class="container_div" style="margin: 0 0 5px 10px;">
 				<?php include_component('main/myfriends'); ?>
 			</div>
-			<?php TBGEvent::createNew('core', 'dashboard_left_bottom')->trigger();?>
+			<?php TBGEvent::createNew('core', 'dashboard_left_bottom')->trigger(); ?>
 		</td>
 		<td class="main_area" style="padding-right: 5px;">
 			<?php TBGEvent::createNew('core', 'dashboard_main_top')->trigger(); ?>
-			<?php if (empty($dashboardViews)) :?>
+			<?php if (!count($views)):?>
 				<div style="text-align: center; padding: 40px;">
 					<p class="content faded_out"><?php echo __("This dashboard doesn't contain any views."); ?></p>
 					<br>
@@ -29,15 +29,23 @@
 					</form>
 				</div>
 			<?php else: ?>
-				<ul id="dashboard">
+				<ul id="dashboard" class="column-4s" style="margin: 10px 5px;">
 					<?php $clearleft = true; ?>
-					<?php foreach($dashboardViews as $view): ?>
-					<li style="clear: <?php echo ($clearleft) ? 'left' : 'right'; ?>;">
-						<?php include_component('dashboardview', array('type' => $view->get(TBGDashboardViewsTable::TYPE), 'id' => $view->get(TBGDashboardViewsTable::ID), 'view' => $view->get(TBGDashboardViewsTable::VIEW), 'rss' => true)); ?>
+					<?php foreach($views as $_id => $view): ?>
+					<li style="clear: none;" id="dashboard_container_<?php echo $_id; ?>">
+						<?php include_component('dashboardview', array('view' => $view, 'show' => false)); ?>
+						<?php // include_component('dashboardview', array('type' => $view->get(TBGDashboardViewsTable::TYPE), 'id' => $view->get(TBGDashboardViewsTable::ID), 'view' => $view->get(TBGDashboardViewsTable::VIEW), 'rss' => true)); ?>
 					</li>
 					<?php $clearleft = !$clearleft; ?>
 					<?php endforeach; ?>
 				</ul>
+				<script type="text/javascript">
+					document.observe('dom:loaded', function() {
+						TBG.Main.Dashboard.views.each(function(view_id) {
+							TBG.Main.Dashboard.View.init('<?php echo make_url('dashboard_view'); ?>', view_id);
+						});
+					});
+				</script>
 			<?php endif; ?>
 			<?php TBGEvent::createNew('core', 'dashboard_main_bottom')->trigger(); ?>
 		</td>

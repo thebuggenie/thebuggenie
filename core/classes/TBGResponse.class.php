@@ -124,6 +124,7 @@
 
 		public function ajaxResponseText($code, $error)
 		{
+			return true;
 			$this->cleanBuffer();
 			$this->setContentType('application/json');
 			$this->setHttpStatus($code);

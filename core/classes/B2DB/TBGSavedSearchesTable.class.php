@@ -22,6 +22,53 @@
 		const IS_PUBLIC = 'savedsearches.is_public';
 		const UID = 'savedsearches.uid';
 
+		public static function getPredefinedVariables($type)
+		{
+			$filters = array();
+			$groupby = '';
+			$grouporder = 'asc';
+			switch ($type)
+			{
+				case TBGContext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES:
+					$filters['state'] = array('operator' => '=', 'value' => TBGIssue::STATE_OPEN);
+					$groupby = 'issuetype';
+					break;
+				case TBGContext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES:
+					$filters['state'] = array('operator' => '=', 'value' => TBGIssue::STATE_CLOSED);
+					$groupby = 'issuetype';
+					break;
+				case TBGContext::PREDEFINED_SEARCH_PROJECT_MILESTONE_TODO:
+					$groupby = 'milestone';
+					break;
+				case TBGContext::PREDEFINED_SEARCH_PROJECT_MOST_VOTED:
+					$filters['state'] = array('operator' => '=', 'value' => TBGIssue::STATE_OPEN);
+					$groupby = 'votes';
+					$grouporder = 'desc';
+					break;
+				case TBGContext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES:
+					$filters['posted_by'] = array('operator' => '=', 'value' => TBGContext::getUser()->getID());
+					$groupby = 'issuetype';
+					break;
+				case TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES:
+					$filters['state'] = array('operator' => '=', 'value' => TBGIssue::STATE_OPEN);
+					$filters['assigned_type'] = array('operator' => '=', 'value' => TBGIdentifiableClass::TYPE_USER);
+					$filters['assigned_to'] = array('operator' => '=', 'value' => TBGContext::getUser()->getID());
+					$groupby = 'issuetype';
+					break;
+				case TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES:
+					$filters['state'] = array('operator' => '=', 'value' => TBGIssue::STATE_OPEN);
+					$filters['assigned_type'] = array('operator' => '=', 'value' => TBGIdentifiableClass::TYPE_TEAM);
+					foreach (TBGContext::getUser()->getTeams() as $team_id => $team)
+					{
+						$filters['assigned_to'][] = array('operator' => '=', 'value' => $team_id);
+					}
+					$groupby = 'issuetype';
+					break;
+			}
+
+			return array($filters, $groupby, $grouporder);
+		}
+
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);

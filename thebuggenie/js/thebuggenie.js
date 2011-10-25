@@ -14,6 +14,7 @@ var TBG = {
 		}, 
 		Profile: {},
 		Dashboard: {
+			views: [],
 			View: {}
 		},
 		Comment: {},
@@ -769,6 +770,16 @@ TBG.Main.Dashboard.View.add = function()
 	
 	Sortable.create('views_list');
 }
+
+TBG.Main.Dashboard.View.init = function(url, view_id) {
+	TBG.Main.Helpers.ajax(url, {
+		method: 'get',
+		additional_params: '&view_id=' + view_id,
+		loading: { indicator: 'dashboard_' + view_id + '_indicator' },
+		success: { update: 'dashboard_' + view_id },
+		complete: { callback: TBG.Core._resizeWatcher }
+	});
+};
 
 TBG.Main.Dashboard.save = function(url)
 {

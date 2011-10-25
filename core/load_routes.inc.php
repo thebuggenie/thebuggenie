@@ -10,6 +10,7 @@
 	$routes[] = array('team_dashboard', '/teams/:team_id', 'main', 'teamdashboard');	
 	$routes[] = array('dashboard', '/dashboard', 'main', 'dashboard');
 	$routes[] = array('dashboard_save', '/dashboard/save/:target_type/:tid', 'main', 'dashboardSave');
+	$routes[] = array('dashboard_view', '/dashboard/views', 'main', 'dashboardView');
 	$routes[] = array('get_javascript', '/js/:js_file', 'main', 'index');
 	$routes[] = array('login', '/do/login', 'main', 'doLogin');
 	$routes[] = array('login_page', '/login', 'main', 'login');

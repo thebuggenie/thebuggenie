@@ -380,15 +380,14 @@
 			$this->builds = $project->getBuilds();
 		}
 		
-		public function componentDashboardView()
+		public function componentDashboardview()
 		{
-			$this->parameters = $this->getParameterHolder();
 		}
 		
 		public function componentDashboardConfig()
 		{	
-			$this->views = TBGDashboard::getAvailableViews($this->target_type);
-			$this->dashboardViews = TBGDashboard::getViews($this->tid, $this->target_type);
+			$this->views = TBGDashboardView::getAvailableViews($this->target_type);
+			$this->dashboardViews = TBGDashboardView::getViews($this->tid, $this->target_type);
 		}
 
 		protected function _setupReportIssueProperties()

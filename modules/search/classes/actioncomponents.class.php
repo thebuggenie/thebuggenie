@@ -95,24 +95,15 @@
 
 		public function componentResults_view()
 		{
-			$request = new TBGRequest();
-			switch ($this->type)
+			if ($this->view->getType() == TBGDashboardView::VIEW_PREDEFINED_SEARCH)
 			{
-				case TBGDashboard::DASHBOARD_VIEW_PREDEFINED_SEARCH :
-					$request->setParameter('predefined_search', $this->view);
-				break;
-				
-				case TBGDashboard::DASHBOARD_VIEW_SAVED_SEARCH :
-					$request->setParameter('saved_search', $this->view);
-				break;
+				list($filters, $groupby, $grouporder) = TBGSavedSearchesTable::getPredefinedVariables($this->view->getDetail());
 			}
-			$request->setParameter('search', $this->search);
-			
-			$search = TBGContext::factory()->manufacture('searchActions', uniqid(rand(), true));
-			$search->runFindIssues($request);
-			$this->issues = $search->issues;
-			$this->title = $search->searchtitle;
-			$this->parameters = $request->getParameters();
+			elseif ($this->view->getType() == TBGDashboardView::VIEW_SAVED_SEARCH)
+			{
+				$filters = TBGSavedSearchFiltersTable::getTable()->getFiltersBySavedSearchID($request->getParameter('saved_search'));
+			}
+			list ($this->issues, $this->resultcount) = TBGIssue::findIssues($filters);
 		}		
 		
 		public function componentSidebar()
