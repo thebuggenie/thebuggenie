@@ -258,6 +258,8 @@
 		 * @var boolean
 		 */
 		protected $_deleted = false;
+
+		protected $_openid_accounts;
 		
 		/**
 		 * Retrieve a user by username
@@ -2142,5 +2144,24 @@
 		{
 			$this->_openid_locked = (bool) $value;
 		}
-		
+
+		/**
+		 * Populates openid accounts array when needed
+		 */
+		protected function _populateOpenIDAccounts()
+		{
+			if ($this->_openid_accounts === null)
+			{
+				TBGLogging::log('Populating openid accounts');
+				$this->_openid_accounts = TBGOpenIdAccountsTable::getTable()->getIdentitiesForUserID($this->getID());
+				TBGLogging::log('...done (Populating user clients)');
+			}
+		}
+
+		public function getOpenIDAccounts()
+		{
+			$this->_populateOpenIDAccounts();
+			return $this->_openid_accounts;
+		}
+
 	}

@@ -1840,6 +1840,7 @@
 		/**
 		 * Set a message to be retrieved in the next request
 		 * 
+		 * @param string $key The key
 		 * @param string $message The message
 		 */
 		public static function setMessage($key, $message)

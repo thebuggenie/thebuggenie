@@ -1,6 +1,6 @@
 /* General styles */
-@import url("http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700&subset=latin,cyrillic,greek");
-@import url("http://fonts.googleapis.com/css?family=Droid+Sans+Mono&subset=latin,cyrillic,greek");
+/*@import url("http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700&subset=latin,cyrillic,greek");
+@import url("http://fonts.googleapis.com/css?family=Droid+Sans+Mono&subset=latin,cyrillic,greek");*/
 
 body, td, th { padding: 0px; margin: 0px; font-family: 'Open Sans', sans-serif; font-style: normal; font-weight: normal; text-align: left; font-size: 13px; line-height: 1.5; color: #555;}
 html, body { padding: 0px; margin: 0px; height: 100%; }
@@ -1534,3 +1534,6 @@ input[type=submit], input[type=submit]:hover, button, .button, .button:hover {
 	top: 5px;
 	left: 7px;
 }
+
+.openid_accounts_list img { float: left; margin-right: 5px; }
+.openid_provider_name { font-weight: bold; }

@@ -440,4 +440,8 @@
 			
 		}
 
+		public function componentOpenID()
+		{
+		}
+
 	}

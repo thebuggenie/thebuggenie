@@ -130,6 +130,7 @@
 			<ul id="account_tabs">
 				<li class="selected" id="tab_profile"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_profile', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_users.png', array('style' => 'float: left;')).__('Profile information'); ?></a></li>
 				<li id="tab_settings"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_settings', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_general.png', array('style' => 'float: left;')).__('General settings'); ?></a></li>
+				<li id="tab_openid"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_openid', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag('icon_openid.png', array('style' => 'float: left;')).__('Login accounts'); ?></a></li>
 				<?php TBGEvent::createNew('core', 'account_tabs')->trigger(); ?>
 				<?php foreach (TBGContext::getModules() as $module_name => $module): ?>
 					<?php if ($module->hasAccountSettings()): ?>
@@ -274,6 +275,33 @@
 					</div>
 				</form>
 			</div>
+			<div id="tab_openid_pane" style="display: none;">
+				<div style="padding: 10px;">
+					<?php echo __('The Bug Genie supports logging in via external authentication providers via %openid%. This means you can use your account details from other services (such as Google, Wordpress, etc.) to log in here, without having to remember another set of login details.', array('%openid%' => link_tag('http://openid.net', 'OpenID'))); ?><br>
+					<div style="padding: 15px 0;"><button class="button button-blue" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'openid')); ?>');"><?php echo __('Add login from another provider'); ?></button></div>
+					<?php if (!count($tbg_user->getOpenIDAccounts())): ?>
+						<div class="faded_out"><?php echo __('You have not linked your account with any external authentication providers.'); ?></div>
+					<?php else: ?>
+						<ul class="simple_list openid_accounts_list">
+						<?php foreach ($tbg_user->getOpenIDAccounts() as $identity): ?>
+							<li>
+								<button class="button button-silver" style="float: right;"><?php echo __('Delete'); ?></button>
+								<?php echo image_tag('openid_providers.small/'.$identity['type'].'.ico.png'); ?>
+								<span class="openid_provider_name">
+									<?php if ($identity['type'] == 'google'): ?>
+										<?php echo __('Google account'); ?>
+									<?php elseif ($identity['type'] == 'yahoo'): ?>
+										<?php echo __('Yahoo account'); ?>
+									<?php else: ?>
+										<?php echo __('Other OpenID provider'); ?>
+									<?php endif; ?>
+								</span>
+							</li>
+						<?php endforeach; ?>
+						</ul>
+					<?php endif; ?>
+				</div>
+			</div>
 			<?php TBGEvent::createNew('core', 'account_tab_panes')->trigger(); ?>
 			<?php foreach (TBGContext::getModules() as $module_name => $module): ?>
 				<?php if ($module->hasAccountSettings()): ?>
@@ -301,6 +329,11 @@
 <?php endif; ?>
 <?php if ($username_chosen): ?>
 	<script type="text/javascript">
-		TBG.Main.Helpers.Message.message('<?php echo __("You've chosen the username '%username%'", array('%username%' => $tbg_user->getUsername())); ?>', '<?php echo __('Before you can use the new username to log in, you must pick a password via the "%change_password%" button.', array('%change_password%' => __('Change password'))); ?>');
+		TBG.Main.Helpers.Message.success('<?php echo __("You've chosen the username '%username%'", array('%username%' => $tbg_user->getUsername())); ?>', '<?php echo __('Before you can use the new username to log in, you must pick a password via the "%change_password%" button.', array('%change_password%' => __('Change password'))); ?>');
+	</script>
+<?php endif; ?>
+<?php if ($openid_used): ?>
+	<script type="text/javascript">
+		TBG.Main.Helpers.Message.error('<?php echo __('This OpenID identity is already in use'); ?>', '<?php echo __('Someone is already using this identity. Check to see if you have already added this account.'); ?>');
 	</script>
 <?php endif; ?>

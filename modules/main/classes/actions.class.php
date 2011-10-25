@@ -467,12 +467,26 @@
 				{
 					if ($openid->validate())
 					{
-						$user = TBGUser::getByOpenID($openid->identity);
+						if (TBGContext::getUser()->isAuthenticated())
+						{
+							$check_user = TBGUser::getByOpenID($openid->identity);
+							if ($check_user instanceof TBGUser)
+							{
+								TBGContext::setMessage('openid_used', true);
+								throw new Exception('OpenID already in use');
+							}
+							$user = TBGContext::getUser();
+						}
+						else
+						{
+							$user = TBGUser::getByOpenID($openid->identity);
+						}
 						if ($user instanceof TBGUser)
 						{
+							$attributes = $openid->getAttributes();
+							$email = (array_key_exists('contact/email', $attributes)) ? $attributes['contact/email'] : null;
 							if (!$user->getEmail())
 							{
-								$attributes = $openid->getAttributes();
 								$user->setOpenIdLocked();
 								$user->setUsername(TBGUser::createPassword() . TBGUser::createPassword());
 								if (array_key_exists('contact/email', $attributes)) $user->setEmail($attributes['contact/email']);
@@ -483,9 +497,8 @@
 								if (!$user->getRealname()) $user->setRealname($user->getBuddyname());
 
 								$user->save();
-								TBGOpenIdAccountsTable::getTable()->addIdentity($openid->identity, $user->getEmail(), $user->getID());
-
 							}
+							TBGOpenIdAccountsTable::getTable()->addIdentity($openid->identity, $email, $user->getID());
 							TBGContext::getResponse()->setCookie('tbg3_password', $user->getPassword());
 							TBGContext::getResponse()->setCookie('tbg3_username', $user->getUsername());
 							return $this->forward(TBGContext::getRouting()->generate('account'));
@@ -502,7 +515,7 @@
 				}
 				catch (Exception $e)
 				{
-					throw $e;
+					$this->error = TBGContext::getI18n()->__("Could not validate against the OpenID provider");
 				}
 			}
 			elseif ($request->getMethod() == TBGRequest::POST)
@@ -549,7 +562,14 @@
 				return $this->renderJSON(array("error" => $i18n->__('Please enter a username and password')));
 			}
 
-			return $this->renderJSON(array('forward' => $forward_url));
+			if ($request->isAjaxCall())
+			{
+				return $this->renderJSON(array('forward' => $forward_url));
+			}
+			else
+			{
+				$this->forward($this->getRouting()->generate('account'));
+			}
 		}
 
 		/**
@@ -776,6 +796,7 @@
 			$this->languages = TBGI18n::getLanguages();
 			$this->error = TBGContext::getMessageAndClear('error');
 			$this->username_chosen = TBGContext::getMessageAndClear('username_chosen');
+			$this->openid_used = TBGContext::getMessageAndClear('openid_used');
 		}
 
 		/**
@@ -2589,6 +2610,9 @@
 						$options = $request->getParameters();
 						$options['content'] = $this->getComponentHTML('login', array('section' => $request->getParameter('section', 'login')));
 						$options['mandatory'] = false;
+						break;
+					case 'openid':
+						$template_name = 'main/openid';
 						break;
 					case 'workflow_transition':
 						$transition = TBGContext::factory()->TBGWorkflowTransition($request->getParameter('transition_id'));
