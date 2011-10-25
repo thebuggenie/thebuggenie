@@ -491,7 +491,7 @@
 					while ($row = $res->getNextRow())
 					{
 						$project = TBGContext::factory()->TBGProject($row->get(TBGProjectsTable::ID), $row);
-						if ($project->hasAccess() && !$project->isDeleted())
+						if (TBGContext::isUpgrademode() || ($project->hasAccess() && !$project->isDeleted()))
 						{
 							self::$_projects[$project->getKey()] = $project;
 						}

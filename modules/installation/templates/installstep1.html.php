@@ -13,7 +13,7 @@
 		<h5>If you are upgrading from version 1.x</h5>
 		Users of The Bug Genie 1.x will need to upgrade to the latest release of The Bug Genie 2.1 before attempting to upgrade to this version.
 		<div style="text-align: center;">
-			<button onclick="$('upgrade_warning').hide();$('installation_main_box').show();" style="font-size: 16px; font-weight: bold; padding: 5px; margin: 25px auto 10px auto;">I am not upgrading from a previous version</button>
+			<button onclick="$('upgrade_warning').hide();$('installation_main_box').show();" style="font-size: 16px; font-weight: bold; padding: 10px !important; margin: 25px auto 10px auto;">I am not upgrading from a previous version</button>
 		</div>
 	</div>
 	<div id="installation_main_box" style="display: none;">
