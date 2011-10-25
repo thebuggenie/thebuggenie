@@ -267,6 +267,11 @@
 					TBGContext::setCurrentProject($project);
 				}
 			}
+			if ($request->isMethod(TBGRequest::POST) && $request->getParameter('setup_default_dashboard'))
+			{
+				TBGDashboardViewsTable::getTable()->setDefaultViews($this->getUser()->getID(), TBGDashboardViewsTable::TYPE_USER);
+				$this->forward($this->getRouting()->generate('dashboard'));
+			}
 			$this->dashboardViews = TBGDashboard::getViews(TBGContext::getUser()->getID(), TBGDashboardViewsTable::TYPE_USER);
 		}
 		

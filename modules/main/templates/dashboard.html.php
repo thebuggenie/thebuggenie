@@ -20,7 +20,14 @@
 		<td class="main_area" style="padding-right: 5px;">
 			<?php TBGEvent::createNew('core', 'dashboard_main_top')->trigger(); ?>
 			<?php if (empty($dashboardViews)) :?>
-				<p class="content faded_out"><?php echo __("This dashboard doesn't contain any views. To add views in this dashboard, press the 'Customize dashboard'-icon to the far right."); ?></p>
+				<div style="text-align: center; padding: 40px;">
+					<p class="content faded_out"><?php echo __("This dashboard doesn't contain any views."); ?></p>
+					<br>
+					<form action="<?php echo make_url('dashboard'); ?>" method="post">
+						<input type="hidden" name="setup_default_dashboard" value="1">
+						<input type="submit" value="<?php echo __('Setup my dashboard'); ?>" class="button button-green" style="font-size: 1.1em; padding: 5px !important;">
+					</form>
+				</div>
 			<?php else: ?>
 				<ul id="dashboard">
 					<?php $clearleft = true; ?>
@@ -52,7 +59,7 @@
 									<?php echo link_tag(make_url('project_open_issues', array('project_key' => $project->getKey())), __('Issues')); ?>
 									|
 									<?php if ($project->usesScrum()): ?>
-										<?php echo link_tag(make_url('project_scrum', array('project_key' => $project->getKey())), __('Scrum')); ?>
+										<?php echo link_tag(make_url('project_planning', array('project_key' => $project->getKey())), __('Planning')); ?>
 										|
 									<?php endif; ?>
 									<?php echo link_tag(make_url('project_roadmap', array('project_key' => $project->getKey())), __('Roadmap')); ?>
