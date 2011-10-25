@@ -170,13 +170,13 @@
 	$strings['%num_seconds% seconds'] = '%num_seconds% segundos';
 	$strings['Enter a short, but descriptive summary of the issue here'] = 'Aquí escriba un resumen corto pero descriptivo del pedido';
 	$strings['Enter an estimate here'] = 'Ingrese una estimación aquí';
-	$strings['What\'s the issue?'] = '¿Cuál es la petición?';
+	$strings['What\'s the issue?'] = '¿Cuál es el tipo de petición?';
 	$strings['Please select the project you are filing an issue for, as well as what kind of issue you are filing'] = 'Por favor seleccione el proyecto para registrar la petición, como así también que clase de pedido está informando';
 	$strings['Select project'] = 'Seleccione un proyecto';
 	$strings['Please select a project from this list'] = 'Por favor seleccione un proyecto de la lista';
 	$strings['Select issue type'] = 'Seleccione el tipo de pedido';
 	$strings['Please select an issue type from this list'] = 'Por favor seleccione un tipo de pedido desde esta lista';
-	$strings['Choose %issue_type%'] = 'Es %issue_type%';
+	$strings['Choose %issuetype_name%'] = 'Es %issuetype_name%';
 	$strings['More options will appear here as soon as you select a project and an issue type above'] = 'Más opciones aparecerán aquí luego que seleccione un proyecto y el tipo de petición';
 	$strings['Short summary'] = 'Breve resumen';
 	$strings['Checking fields, please wait'] = 'Verificando campos, espere por favor';
@@ -2270,7 +2270,7 @@
 	$strings['Update issue details'] = 'Actualizar detalles de pedidos';
 	$strings['%num% issue(s) updated'] = '%num% petición(es) actualizada(s)';
 	$strings['Close this popup'] = 'Cerrar esta ventana';
-	$strings['More options will appear here as soon as you select an issue type above...']='Más opciones aparecerán aquí inmediatamente después que haya seleccionado el tipo...';
+	$strings['More options will appear here as soon as you select an issue type above']='Más opciones aparecerán aquí inmediatamente después que haya seleccionado el tipo';
 	$strings['Not scheduled'] = 'Sin programar';
 	$strings['"%project_name%" release center'] = 'Centro de liberación de "%project_name%"';
 	$strings['Add new release'] = 'Agregar una nueva liberación'; 
