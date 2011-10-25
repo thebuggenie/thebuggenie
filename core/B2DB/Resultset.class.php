@@ -1,7 +1,7 @@
 <?php
 
 	namespace b2db;
-	
+
 	/**
 	 * Resultset class
 	 *
@@ -21,7 +21,7 @@
 	class Resultset
 	{
 		protected $rows = array();
-		
+
 		/**
 		 * @var Criteria
 		 */
@@ -29,7 +29,7 @@
 		protected $int_ptr;
 		protected $max_ptr;
 		protected $insert_id;
-		protected $num_col;
+		protected $id_col;
 
 		public function __construct(Statement $statement)
 		{
@@ -54,7 +54,7 @@
 					elseif ($this->crit->action = 'count')
 					{
 						$value = $statement->fetch();
-						$this->num_col = $value['num_col'];
+						$this->max_ptr = $value['num_col'];
 					}
 				}
 			}
@@ -63,8 +63,8 @@
 				throw $e;
 			}
 		}
-		
-		public function next()
+
+		protected function _next()
 		{
 			if ($this->int_ptr == $this->max_ptr)
 			{
@@ -77,19 +77,9 @@
 			}
 		}
 
-		public function count()
-		{
-			return $this->max_ptr;
-		}
-		
-		public function getNumberOfRows()
-		{
-			return $this->count();
-		}
-		
 		public function getCount()
 		{
-			return $this->num_col;
+			return $this->max_ptr;
 		}
 
 		/**
@@ -109,7 +99,7 @@
 			}
 			return null;
 		}
-		
+
 		/**
 		 * Advances through the resultset and returns the current row
 		 * Returns false when there are no more rows
@@ -118,31 +108,31 @@
 		 */
 		public function getNextRow()
 		{
-			if ($this->next())
+			if ($this->_next())
 			{
-				$theRow = $this->getCurrentRow();
-				if ($theRow instanceof Row)
+				$row = $this->getCurrentRow();
+				if ($row instanceof Row)
 				{
-					return $theRow;
+					return $row;
 				}
-				throw new Exception('This should never happen. Please file a bug report');
+				throw new \Exception('This should never happen. Please file a bug report');
 			}
 			else
 			{
 				return false;
 			}
 		}
-		
+
 		public function get($column, $foreign_key = null)
 		{
-			$theRow = $this->getCurrentRow();
-			if ($theRow instanceof Row)
+			$row = $this->getCurrentRow();
+			if ($row instanceof Row)
 			{
-				return $theRow->get($column, $foreign_key);
+				return $row->get($column, $foreign_key);
 			}
 			else
 			{
-				throw new Exception('Cannot return value of ' . $column . ' on a row that doesn\' exist');
+				throw new \Exception("Cannot return value of {$column} on a row that doesn't exist");
 			}
 		}
 
@@ -160,7 +150,7 @@
 		{
 			return ($this->crit instanceof Criteria) ? $this->crit->getSQL() : '';
 		}
-		
+
 		public function printSQL()
 		{
 			$str = '';
@@ -178,9 +168,15 @@
 			}
 			return $str;
 		}
-	
+
 		public function getInsertID()
 		{
 			return $this->insert_id;
 		}
+
+		public function count()
+		{
+			return (integer) $this->max_ptr;
+		}
+
 	}
