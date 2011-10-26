@@ -216,7 +216,7 @@
 				}
 			}
 
-			$num_results = (is_object($res)) ? $res->getNumberOfRows() : 0;
+			$num_results = (is_object($res)) ? count($res) : 0;
 
 			return array($users, $num_results);
 		}

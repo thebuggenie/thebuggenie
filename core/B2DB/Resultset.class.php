@@ -18,7 +18,7 @@
 	 * @package b2db
 	 * @subpackage core
 	 */
-	class Resultset
+	class Resultset implements \Countable
 	{
 		protected $rows = array();
 

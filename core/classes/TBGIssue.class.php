@@ -4018,7 +4018,7 @@
 			
 			$ret_arr = array();
 
-			if ($res->getNumberOfRows() == 0)
+			if (count($res) == 0)
 			{
 				return false;
 			}

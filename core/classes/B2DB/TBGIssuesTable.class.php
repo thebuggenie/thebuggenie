@@ -296,7 +296,7 @@
 			$crit->addWhere(self::DELETED, 0);
 			$results = $this->doSelect($crit);
 
-			if (!is_object($results) || $results->getNumberOfRows() == 0)
+			if (!is_object($results) || count($results) == 0)
 			{
 				return false;
 			}

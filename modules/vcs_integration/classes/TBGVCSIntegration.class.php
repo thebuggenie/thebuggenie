@@ -105,7 +105,7 @@
 					$crit->addOrderBy(TBGVCSIntegrationTable::DATE, \b2db\Criteria::SORT_DESC);
 					$results = TBGVCSIntegrationTable::getTable()->doSelect($crit);
 					
-					if (is_object($results) && $results->getNumberOfRows() > 0)
+					if (is_object($results) && count($results) > 0)
 					{
 						$commits = array();
 
