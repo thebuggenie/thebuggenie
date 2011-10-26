@@ -2192,7 +2192,7 @@
 				// Render output in correct order
 				self::getResponse()->renderHeaders();
 
-				if (self::getResponse()->getDecoration() == TBGResponse::DECORATE_DEFAULT)
+				if (self::getResponse()->getDecoration() == TBGResponse::DECORATE_DEFAULT && !self::getRequest()->isAjaxCall())
 				{
 					require THEBUGGENIE_CORE_PATH . 'templates/layout.php';
 				}
