@@ -3596,6 +3596,10 @@
 		public function runDashboardView(TBGRequest $request)
 		{
 			$view = new TBGDashboardView($request['view_id']);
+			if ($view->getTargetType() == TBGDashboardView::TYPE_PROJECT)
+			{
+				TBGContext::setCurrentProject(new TBGProject($view->getProjectID()));
+			}
 			return $this->renderJSON(array('content' => $this->returnTemplateHTML('main/dashboardviewcontent', array('view' => $view))));
 		}
 

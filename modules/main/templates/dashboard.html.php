@@ -17,7 +17,7 @@
 			</div>
 			<?php TBGEvent::createNew('core', 'dashboard_left_bottom')->trigger(); ?>
 		</td>
-		<td class="main_area" style="padding-right: 5px;">
+		<td class="main_area" style="padding-right: 5px; padding-top: 0;">
 			<?php TBGEvent::createNew('core', 'dashboard_main_top')->trigger(); ?>
 			<?php if (!count($views)):?>
 				<div style="text-align: center; padding: 40px;">
@@ -30,13 +30,10 @@
 				</div>
 			<?php else: ?>
 				<ul id="dashboard" class="column-4s" style="margin: 10px 5px;">
-					<?php $clearleft = true; ?>
 					<?php foreach($views as $_id => $view): ?>
-					<li style="clear: none;" id="dashboard_container_<?php echo $_id; ?>">
-						<?php include_component('dashboardview', array('view' => $view, 'show' => false)); ?>
-						<?php // include_component('dashboardview', array('type' => $view->get(TBGDashboardViewsTable::TYPE), 'id' => $view->get(TBGDashboardViewsTable::ID), 'view' => $view->get(TBGDashboardViewsTable::VIEW), 'rss' => true)); ?>
-					</li>
-					<?php $clearleft = !$clearleft; ?>
+						<li style="clear: none;" id="dashboard_container_<?php echo $_id; ?>">
+							<?php include_component('dashboardview', array('view' => $view, 'show' => false)); ?>
+						</li>
 					<?php endforeach; ?>
 				</ul>
 				<script type="text/javascript">

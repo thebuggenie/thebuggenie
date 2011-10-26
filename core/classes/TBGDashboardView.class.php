@@ -80,6 +80,11 @@
 			return self::getViews($user_id, self::TYPE_USER);
 		}
 
+		public static function getProjectViews($project_id)
+		{
+			return self::getViews($project_id, self::TYPE_PROJECT);
+		}
+
 		public static function getAvailableViews($target_type)
 		{
 			switch ($target_type)
@@ -109,7 +114,7 @@
 					break;
 				case TBGDashboardView::TYPE_PROJECT:
 					$issuetype_icons = array();
-					foreach (\thebuggenie\entities\Issuetype::getIcons() as $key => $descr)
+					foreach (TBGIssuetype::getIcons() as $key => $descr)
 					{
 						$issuetype_icons[] = TBGContext::getI18n()->__('Recent issues: %type%', array('%type%' => $descr));
 					}
@@ -171,7 +176,7 @@
 
 		public function getProjectID()
 		{
-			return $this->_pid;
+			return $this->_tid;
 		}
 
 		public function setProjectID($pid)

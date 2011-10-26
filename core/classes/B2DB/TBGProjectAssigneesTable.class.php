@@ -55,7 +55,7 @@
 		public static function getTypeName($type)
 		{
 			$types = self::getTypes();
-			return $types[$type];
+			return (array_key_exists($type, $types)) ? $types[$type] : 'unknown';
 		}
 
 		public function getByProjectID($project_id)

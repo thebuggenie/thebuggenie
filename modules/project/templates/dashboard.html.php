@@ -8,20 +8,25 @@
 			<?php include_template('project/projectheader', array('selected_project' => $selected_project)); ?>
 			<?php include_template('project/projectinfosidebar', array('selected_project' => $selected_project)); ?>
 			<?php TBGEvent::createNew('core', 'project_dashboard_top')->trigger(); ?>
-			<?php if (empty($dashboardViews) && TBGContext::getUser()->canEditProjectDetails($selected_project)) :?>
+			<?php if (!count($views) && TBGContext::getUser()->canEditProjectDetails($selected_project)) :?>
 				<p class="content faded_out"><?php echo __("This dashboard doesn't contain any views. To add views in this dashboard, press 'Customize' on the left."); ?></p>
-			<?php elseif (empty($dashboardViews)): ?>
+			<?php elseif (!count($views)): ?>
 				<p class="content faded_out"><?php echo __("This dashboard doesn't contain any views."); ?></p>
 			<?php else: ?>
 				<ul id="dashboard">
-					<?php $clearleft = true; ?>
-					<?php foreach($dashboardViews as $view): ?>
-					<li style="clear: <?php echo ($clearleft) ? 'left' : 'right'; ?>;">
-						<?php include_component('main/dashboardview', array('type' => $view->get(TBGDashboardViewsTable::TYPE), 'id' => $view->get(TBGDashboardViewsTable::ID), 'view' => $view->get(TBGDashboardViewsTable::VIEW), 'rss' => true)); ?>
-					</li>
-					<?php $clearleft = !$clearleft; ?>
+					<?php foreach($views as $_id => $view): ?>
+						<li style="clear: none;" id="dashboard_container_<?php echo $_id; ?>">
+							<?php include_component('main/dashboardview', array('view' => $view, 'show' => false)); ?>
+						</li>
 					<?php endforeach; ?>
 				</ul>
+				<script type="text/javascript">
+					document.observe('dom:loaded', function() {
+						TBG.Main.Dashboard.views.each(function(view_id) {
+							TBG.Main.Dashboard.View.init('<?php echo make_url('dashboard_view'); ?>', view_id);
+						});
+					});
+				</script>
 			<?php endif; ?>
 			<?php TBGEvent::createNew('core', 'project_dashboard_bottom')->trigger(); ?>
 		</td>

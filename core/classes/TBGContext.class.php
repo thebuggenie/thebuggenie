@@ -1664,21 +1664,13 @@
 			return self::$_scope;
 		}
 		
-		/**
-		 * Set the currently selected project
-		 * 
-		 * @param TBGProject $project The project, or null if none
-		 */
-		public static function setCurrentProject($project)
+		public static function populateBreadcrumbs()
 		{
-			self::getResponse()->setBreadcrumb(null);
-			self::$_selected_project = $project;
-			
 			$childbreadcrumbs = array();
 			
-			if ($project instanceof TBGProject)
+			if (self::$_selected_project instanceof TBGProject)
 			{
-				$t = $project;
+				$t = self::$_selected_project;
 				
 				$hierarchy_breadcrumbs = array();
 				$projects_processed = array();
@@ -1759,7 +1751,7 @@
 					}
 					self::setCurrentClient(self::$_selected_project->getClient());
 				}
-				if (mb_strtolower(TBGSettings::getTBGname()) != mb_strtolower($project->getName()) || self::isClientContext())
+				if (mb_strtolower(TBGSettings::getTBGname()) != mb_strtolower(self::$_selected_project->getName()) || self::isClientContext())
 				{
 					self::getResponse()->addBreadcrumb(TBGSettings::getTBGName(), self::getRouting()->generate('home'));
 					if (self::isClientContext())
@@ -1785,6 +1777,17 @@
 			{
 				self::getResponse()->addBreadcrumb(TBGSettings::getTBGName(), self::getRouting()->generate('home'));
 			}
+		}
+		
+		/**
+		 * Set the currently selected project
+		 * 
+		 * @param TBGProject $project The project, or null if none
+		 */
+		public static function setCurrentProject($project)
+		{
+			self::getResponse()->setBreadcrumb(null);
+			self::$_selected_project = $project;
 		}
 		
 		/**
