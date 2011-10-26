@@ -158,7 +158,7 @@ TBG.Core._scrollWatcher = function() {
 				button.down('input').addClassName('button-green');
 				$('add_comment_button_container').update(button);
 			}
-		} else {
+		}else {
 			$('viewissue_header_container').removeClassName('fixed');
 			$('workflow_actions').removeClassName('fixed');
 			if ($('comment_add_button') != undefined) {
@@ -491,7 +491,7 @@ TBG.Main.Helpers.ajax = function(url, options) {
 			var json = (transport.responseJSON) ? transport.responseJSON : undefined;
 			if (transport.responseJSON) {
 				TBG.Main.Helpers.Message.error(json.error, json.message);
-			} else {
+			}else {
 				TBG.Main.Helpers.Message.error(transport.responseText);
 			}
 			if (options.failure) {
@@ -740,7 +740,7 @@ TBG.Main.Profile.toggleNotificationSettings = function(preset) {
 
 TBG.Main.Profile.removeOpenIDIdentity = function(url, oid) {
 	TBG.Main.Helpers.ajax(url, {
-		loading: { indicator: 'dialog_indicator' },
+		loading: {indicator: 'dialog_indicator'},
 		success: {
 			remove: 'openid_account_'+oid,
 			callback: function () {
@@ -1022,7 +1022,7 @@ TBG.Project.Milestone.toggle = function(url, milestone_id) {
 				show: 'milestone_' + milestone_id + '_issues'
 			}
 		});
-	} else {
+	}else {
 		$('milestone_' + milestone_id + '_issues').toggle();
 	}
 };
@@ -1267,6 +1267,7 @@ TBG.Project.remove = function(url, pid) {
 			callback: function(json) {
 				if ($('project_table').childElements().size() == 0) $('noprojects_tr').show();
 				TBG.Project.updateLinks(json);
+				TBG.Main.Helpers.Dialog.dismiss();
 			}
 		},
 		failure: {
