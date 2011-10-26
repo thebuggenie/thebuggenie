@@ -293,6 +293,10 @@
 										<?php echo __('Google account'); ?>
 									<?php elseif ($details['type'] == 'yahoo'): ?>
 										<?php echo __('Yahoo account'); ?>
+									<?php elseif ($details['type'] == 'blogger'): ?>
+										<?php echo __('Blogger (google) account'); ?>
+									<?php elseif ($details['type'] == 'wordpress'): ?>
+										<?php echo __('Wordpress account'); ?>
 									<?php else: ?>
 										<?php echo __('Other OpenID provider'); ?>
 									<?php endif; ?>
