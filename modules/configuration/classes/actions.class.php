@@ -4207,6 +4207,8 @@
 			if ($request->isMethod(TBGRequest::POST))
 			{
 				$hostname = $request->getParameter('hostname');
+				$hostname = str_replace(array('http://', 'https://'), array('', ''), $hostname);
+				
 				$scopename = $request->getParameter('name');
 				if (!$hostname || TBGScopesTable::getTable()->getByHostname($hostname) instanceof TBGScope)
 				{
