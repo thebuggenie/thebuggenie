@@ -80,4 +80,14 @@
 			return $hostnames;
 		}
 
+		public function getScopeIDForHostname($hostname)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::HOSTNAME, $hostname);
+
+			$row = $this->doSelectOne($crit);
+
+			return ($row instanceof \b2db\Row) ? $row->get(self::SCOPE_ID) : null;
+		}
+
 	}
