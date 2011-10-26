@@ -101,6 +101,15 @@
 			return null;
 		}
 		
+		public function getIdentityFromID($id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addSelectionColumn(self::IDENTITY);
+			$row = $this->doSelectById($id, $crit);
+			
+			return ($row instanceof \b2db\Row) ? $row->get(self::IDENTITY) : null;
+		}
+
 		public function getIdentitiesForUserID($user_id)
 		{
 			$crit = $this->getCriteria();
@@ -111,7 +120,7 @@
 			{
 				while ($row = $res->getNextRow())
 				{
-					$identities[] = array('identity' => $row->get(self::IDENTITY), 'email' => $row->get(self::EMAIL), 'type' => $row->get(self::TYPE));
+					$identities[$row->get(self::IDENTITY)] = array('identity' => $row->get(self::IDENTITY), 'email' => $row->get(self::EMAIL), 'type' => $row->get(self::TYPE), 'id' => $row->getID());
 				}
 			}
 			

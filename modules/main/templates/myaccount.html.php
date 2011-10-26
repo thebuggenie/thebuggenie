@@ -279,18 +279,17 @@
 				<div style="padding: 10px;">
 					<?php echo __('The Bug Genie supports logging in via external authentication providers via %openid%. This means you can use your account details from other services (such as Google, Wordpress, etc.) to log in here, without having to remember another set of login details.', array('%openid%' => link_tag('http://openid.net', 'OpenID'))); ?><br>
 					<div style="padding: 15px 0;"><button class="button button-blue" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'openid')); ?>');"><?php echo __('Add login from another provider'); ?></button></div>
-					<?php if (!count($tbg_user->getOpenIDAccounts())): ?>
-						<div class="faded_out"><?php echo __('You have not linked your account with any external authentication providers.'); ?></div>
-					<?php else: ?>
-						<ul class="simple_list openid_accounts_list">
-						<?php foreach ($tbg_user->getOpenIDAccounts() as $identity): ?>
-							<li>
-								<button class="button button-silver" style="float: right;"><?php echo __('Delete'); ?></button>
-								<?php echo image_tag('openid_providers.small/'.$identity['type'].'.ico.png'); ?>
+					<div class="faded_out" id="no_openid_accounts"<?php if (count($tbg_user->getOpenIDAccounts())): ?> style="display: none;"<?php endif; ?>><?php echo __('You have not linked your account with any external authentication providers.'); ?></div>
+					<?php if (count($tbg_user->getOpenIDAccounts())): ?>
+						<ul class="simple_list openid_accounts_list hover_highlight" id="openid_accounts_list">
+						<?php foreach ($tbg_user->getOpenIDAccounts() as $identity => $details): ?>
+							<li id="openid_account_<?php echo $details['id']; ?>">
+								<button class="button button-silver" onclick="TBG.Main.Helpers.Dialog.show('<?php echo __('Remove this account link?'); ?>', '<?php echo __('Do you really want to remove the link to this external account?').'<br>'.__('By doing this, it will not be possible to log into this account via this authentication provider'); ?>', {yes: {click: function() {TBG.Main.Profile.removeOpenIDIdentity('<?php echo make_url('account_remove_openid', array('openid' => $details['id'], 'csrf_token' => TBGContext::generateCSRFtoken())); ?>', <?php echo $details['id']; ?>);}}, no: {click: TBG.Main.Helpers.Dialog.dismiss}});"><?php echo __('Delete'); ?></button>
+								<?php echo image_tag('openid_providers.small/'.$details['type'].'.ico.png'); ?>
 								<span class="openid_provider_name">
-									<?php if ($identity['type'] == 'google'): ?>
+									<?php if ($details['type'] == 'google'): ?>
 										<?php echo __('Google account'); ?>
-									<?php elseif ($identity['type'] == 'yahoo'): ?>
+									<?php elseif ($details['type'] == 'yahoo'): ?>
 										<?php echo __('Yahoo account'); ?>
 									<?php else: ?>
 										<?php echo __('Other OpenID provider'); ?>

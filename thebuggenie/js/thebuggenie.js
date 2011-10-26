@@ -738,6 +738,19 @@ TBG.Main.Profile.toggleNotificationSettings = function(preset) {
 	}
 }
 
+TBG.Main.Profile.removeOpenIDIdentity = function(url, oid) {
+	TBG.Main.Helpers.ajax(url, {
+		loading: { indicator: 'dialog_indicator' },
+		success: {
+			remove: 'openid_account_'+oid,
+			callback: function () {
+				if ($('openid_accounts_list').childElements().size() == 0) $('no_openid_accounts').show();
+				TBG.Main.Helpers.Dialog.dismiss();
+			}
+		}
+	});
+}
+
 TBG.Main.Dashboard.View.swap = function(source_elm)
 {
 	source_elm = $(source_elm);
@@ -775,9 +788,9 @@ TBG.Main.Dashboard.View.init = function(url, view_id) {
 	TBG.Main.Helpers.ajax(url, {
 		method: 'get',
 		additional_params: '&view_id=' + view_id,
-		loading: { indicator: 'dashboard_' + view_id + '_indicator' },
-		success: { update: 'dashboard_' + view_id },
-		complete: { callback: TBG.Core._resizeWatcher }
+		loading: {indicator: 'dashboard_' + view_id + '_indicator'},
+		success: {update: 'dashboard_' + view_id},
+		complete: {callback: TBG.Core._resizeWatcher}
 	});
 };
 

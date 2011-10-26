@@ -29,6 +29,7 @@
 				<p id="dialog_content"></p>
 			</div>
 			<div style="text-align: center; padding: 10px;">
+				<?php echo image_tag('spinning_20.gif', array('style' => 'float: right; display: none;', 'id' => 'dialog_indicator')); ?>
 				<a href="javascript:void(0)" id="dialog_yes" class="button button-green"><?php echo __('Yes'); ?></a>
 				<a href="javascript:void(0)" id="dialog_no" class="button button-red"><?php echo __('No'); ?></a>
 			</div>

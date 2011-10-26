@@ -467,10 +467,9 @@
 				{
 					if ($openid->validate())
 					{
-						if (TBGContext::getUser()->isAuthenticated())
+						if (TBGContext::getUser()->isAuthenticated() && !TBGContext::getUser()->isGuest())
 						{
-							$check_user = TBGUser::getByOpenID($openid->identity);
-							if ($check_user instanceof TBGUser)
+							if (TBGOpenIdAccountsTable::getTable()->getUserIDfromIdentity($openid->identity))
 							{
 								TBGContext::setMessage('openid_used', true);
 								throw new Exception('OpenID already in use');
@@ -498,7 +497,10 @@
 
 								$user->save();
 							}
-							TBGOpenIdAccountsTable::getTable()->addIdentity($openid->identity, $email, $user->getID());
+							if (!$user->hasOpenIDIdentity($openid->identity))
+							{
+								TBGOpenIdAccountsTable::getTable()->addIdentity($openid->identity, $email, $user->getID());
+							}
 							TBGContext::getResponse()->setCookie('tbg3_password', $user->getPassword());
 							TBGContext::getResponse()->setCookie('tbg3_username', $user->getUsername());
 							return $this->forward(TBGContext::getRouting()->generate('account'));
@@ -3597,4 +3599,18 @@
 			$view = new TBGDashboardView($request['view_id']);
 			return $this->renderJSON(array('content' => $this->returnTemplateHTML('main/dashboardviewcontent', array('view' => $view))));
 		}
+
+		public function runRemoveOpenIDIdentity(TBGRequest $request)
+		{
+			$identity = TBGOpenIdAccountsTable::getTable()->getIdentityFromID($request['openid']);
+			if ($identity && $this->getUser()->hasOpenIDIdentity($identity))
+			{
+				TBGOpenIdAccountsTable::getTable()->doDeleteById($request['openid']);
+				return $this->renderJSON(array('message' => $this->getI18n()->__('The OpenID identity has been removed from this user account')));
+			}
+
+			$this->getResponse()->setHttpStatus(400);
+			return $this->renderJSON(array('error' => $this->getI18n()->__('Could not remove this OpenID account')));
+		}
+
 }

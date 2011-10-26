@@ -2164,4 +2164,10 @@
 			return $this->_openid_accounts;
 		}
 
+		public function hasOpenIDIdentity($identity)
+		{
+			$this->_populateOpenIDAccounts();
+			return array_key_exists($identity, $this->_openid_accounts);
+		}
+
 	}
