@@ -166,16 +166,13 @@
 		protected function loadStrings($module = null)
 		{
 			$filename = '';
+			$strings = array();
 			if ($module !== null)
 			{
 				if (file_exists(THEBUGGENIE_PATH . 'i18n' . DS . $this->_language . DS . "{$module}.inc.php"))
-				{
 					$filename = THEBUGGENIE_PATH . 'i18n' . DS . $this->_language . DS . "{$module}.inc.php";
-				}
 				else
-				{
 					$filename = THEBUGGENIE_MODULES_PATH . $module . DS . 'i18n' . DS . $this->_language . DS . "{$module}.inc.php";
-				}
 			}
 			else
 			{
@@ -185,7 +182,6 @@
 			if (file_exists($filename))
 			{
 				TBGLogging::log("Loading strings from file '{$filename}", 'i18n');
-				$strings = array();
 				require $filename;
 			}
 			else
