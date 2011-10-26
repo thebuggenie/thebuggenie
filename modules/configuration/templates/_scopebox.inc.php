@@ -1,7 +1,7 @@
 <div class="rounded_box<?php if ($scope->isDefault()): ?> lightgrey<?php else: ?> lightyellow<?php endif; ?> borderless" style="margin-bottom: 5px; min-height: 25px;">
 	<?php if (!$scope->isDefault()): ?>
-		<a href="javascript:void(0);" onclick="$('delete_scope_<?php echo $scope->getID(); ?>').toggle();" class="rounded_box action_button"><?php echo image_tag('icon_delete.png', array('title' => __('Delete this scope'))); ?></a>
-		<?php echo link_tag(make_url('configure_scope', array('id' => $scope->getID())), image_tag('icon_edit.png', array('title' => __('Edit scope settings'))), array('class' => 'rounded_box action_button')); ?></a>
+		<a href="javascript:void(0);" onclick="$('delete_scope_<?php echo $scope->getID(); ?>').toggle();" class="button button-icon button-silver" style="float: right;"><?php echo image_tag('icon_delete.png', array('title' => __('Delete this scope'))); ?></a>
+		<?php echo link_tag(make_url('configure_scope', array('id' => $scope->getID())), image_tag('icon_edit.png', array('title' => __('Edit scope settings'))), array('class' => 'button button-silver button-icon', 'style' => 'float: right; margin-right: 3px;')); ?></a>
 	<?php endif; ?>
 	<div class="header">
 		<?php echo $scope->getName(); ?>

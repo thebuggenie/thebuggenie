@@ -10,7 +10,7 @@
 					<?php echo __('The default scope (which is created during the first installation) is used for all hostnames where there is no other scope defined. Read more about scopes in %ConfigureScopes%.', array('%ConfigureScopes%' => link_Tag(make_url('publish_article', array('article_name' => 'ConfigureScopes')), 'ConfigureScopes'))); ?>
 				</div>
 				<div class="header" style="margin: 15px 0 10px 0;">
-					<a href="javascript:void(0);" onclick="$('new_scope_hostname').toggle();" class="rounded_box action_button"><?php echo image_tag('action_add_small.png', array('title' => __('Create a new scope for a new hostname'))); ?></a>
+					<a href="javascript:void(0);" onclick="$('new_scope_hostname').toggle();" style="float: right;" class="button button-icon button-silver"><?php echo image_tag('action_add_small.png', array('title' => __('Create a new scope for a new hostname'))); ?></a>
 					<?php echo __('Scopes available on this installation'); ?>
 				</div>
 				<?php if (isset($scope_deleted)): ?>
