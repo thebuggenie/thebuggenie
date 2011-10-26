@@ -296,6 +296,8 @@
 			{
 				$user = new TBGUser();
 				$user->setPassword(TBGUser::createPassword());
+				$user->setUsername(TBGUser::createPassword() . TBGUser::createPassword());
+				$user->setOpenIdLocked();
 				$user->setActivated();
 				$user->setEnabled();
 				$user->setValidated();

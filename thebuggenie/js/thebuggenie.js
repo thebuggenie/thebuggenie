@@ -745,6 +745,7 @@ TBG.Main.Profile.removeOpenIDIdentity = function(url, oid) {
 			remove: 'openid_account_'+oid,
 			callback: function () {
 				if ($('openid_accounts_list').childElements().size() == 0) $('no_openid_accounts').show();
+				if ($('openid_accounts_list').childElements().size() == 1 && $('pick_username_button')) $('openid_accounts_list').down('.button').remove();
 				TBG.Main.Helpers.Dialog.dismiss();
 			}
 		}

@@ -486,13 +486,11 @@
 							$email = (array_key_exists('contact/email', $attributes)) ? $attributes['contact/email'] : null;
 							if (!$user->getEmail())
 							{
-								$user->setOpenIdLocked();
-								$user->setUsername(TBGUser::createPassword() . TBGUser::createPassword());
 								if (array_key_exists('contact/email', $attributes)) $user->setEmail($attributes['contact/email']);
 								if (array_key_exists('namePerson/first', $attributes)) $user->setRealname($attributes['namePerson/first']);
 								if (array_key_exists('namePerson/friendly', $attributes)) $user->setBuddyname($attributes['namePerson/friendly']);
 
-								if (!$user->getNickname()) $user->setBuddyname($user->getEmail());
+								if (!$user->getNickname() || $user->isOpenIdLocked()) $user->setBuddyname($user->getEmail());
 								if (!$user->getRealname()) $user->setRealname($user->getBuddyname());
 
 								$user->save();
@@ -517,6 +515,7 @@
 				}
 				catch (Exception $e)
 				{
+					die($e);
 					$this->error = TBGContext::getI18n()->__("Could not validate against the OpenID provider");
 				}
 			}
