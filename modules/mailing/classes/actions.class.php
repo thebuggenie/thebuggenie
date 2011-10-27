@@ -14,7 +14,7 @@
 
 			try
 			{
-				$username = str_replace('%2E', '.', $request->getParameter('forgot_password_username'));
+				$username = str_replace('%2E', '.', $request['forgot_password_username']);
 				if (!empty($username))
 				{
 					if (($user = TBGUser::getByUsername($username)) instanceof TBGUser)
@@ -60,7 +60,7 @@
 		 */
 		public function runTestEmail(TBGRequest $request)
 		{
-			if ($email_to = $request->getParameter('test_email_to'))
+			if ($email_to = $request['test_email_to'])
 			{
 				try
 				{
@@ -90,7 +90,7 @@
 		public function runSaveIncomingAccount(TBGRequest $request)
 		{
 			$project = null;
-			if ($project_key = $request->getParameter('project_key'))
+			if ($project_key = $request['project_key'])
 			{
 				try
 				{
@@ -100,17 +100,17 @@
 			}
 			if ($project instanceof TBGProject)
 			{
-				$account_id = $request->getParameter('account_id');
+				$account_id = $request['account_id'];
 				$account = new TBGIncomingEmailAccount($account_id);
-				$account->setIssuetype((integer) $request->getParameter('issuetype'));
+				$account->setIssuetype((integer) $request['issuetype']);
 				$account->setProject($project);
-				$account->setPort((integer) $request->getParameter('port'));
-				$account->setName($request->getParameter('name'));
-				$account->setServer($request->getParameter('servername'));
-				$account->setUsername($request->getParameter('username'));
-				$account->setPassword($request->getParameter('password'));
-				$account->setSSL((boolean) $request->getParameter('ssl'));
-				$account->setServerType((integer) $request->getParameter('account_type'));
+				$account->setPort((integer) $request['port']);
+				$account->setName($request['name']);
+				$account->setServer($request['servername']);
+				$account->setUsername($request['username']);
+				$account->setPassword($request['password']);
+				$account->setSSL((boolean) $request['ssl']);
+				$account->setServerType((integer) $request['account_type']);
 				$account->save();
 				
 				if (!$account_id)
@@ -127,7 +127,7 @@
 		public function runCheckIncomingAccount(TBGRequest $request)
 		{
 			TBGContext::loadLibrary('common');
-			if ($account_id = $request->getParameter('account_id'))
+			if ($account_id = $request['account_id'])
 			{
 				$account = new TBGIncomingEmailAccount($account_id);
 				TBGContext::getModule('mailing')->processIncomingEmailAccount($account);
@@ -138,7 +138,7 @@
 		
 		public function runDeleteIncomingAccount(TBGRequest $request)
 		{
-			if ($account_id = $request->getParameter('account_id'))
+			if ($account_id = $request['account_id'])
 			{
 				$account = new TBGIncomingEmailAccount($account_id);
 				$account->delete();

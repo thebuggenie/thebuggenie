@@ -17,7 +17,7 @@
 				$this->forward403unless(TBGContext::getUser()->canAccessConfigurationPage());
 			}
 			
-			$this->access_level = $this->getAccessLevel($request->getParameter('section'), 'core');
+			$this->access_level = $this->getAccessLevel($request['section'], 'core');
 			
 			$this->getResponse()->setPage('config');
 			TBGContext::loadLibrary('ui');
@@ -114,7 +114,7 @@
 		{
 			if ($request->isPost())
 			{
-				if ($request->getParameter('import_sample_data'))
+				if ($request['import_sample_data'])
 				{
 					ini_set('memory_limit','64M');
 					$users = array();
@@ -449,10 +449,10 @@
 			}
 			if ($request->hasParameter('scheme_id'))
 			{
-				$this->scheme = TBGContext::factory()->TBGIssuetypeScheme((int) $request->getParameter('scheme_id'));
+				$this->scheme = TBGContext::factory()->TBGIssuetypeScheme((int) $request['scheme_id']);
 				if ($this->mode == 'copy_scheme')
 				{
-					if ($new_name = $request->getParameter('new_name'))
+					if ($new_name = $request['new_name'])
 					{
 						$new_scheme = new TBGIssuetypeScheme();
 						$new_scheme->setName($new_name);
@@ -486,7 +486,7 @@
 		 */
 		public function runConfigureIssuetypesGetOptionsForScheme(TBGRequest $request)
 		{
-			return $this->renderComponent('issuetypeschemeoptions', array('id' => $request->getParameter('id'), 'scheme_id' => $request->getParameter('scheme_id')));
+			return $this->renderComponent('issuetypeschemeoptions', array('id' => $request['id'], 'scheme_id' => $request['scheme_id']));
 		}
 
 		/**
@@ -498,36 +498,36 @@
 		{
 			if ($request->hasParameter('scheme_id'))
 			{
-				$this->scheme = TBGContext::factory()->TBGIssuetypeScheme((int) $request->getParameter('scheme_id'));
+				$this->scheme = TBGContext::factory()->TBGIssuetypeScheme((int) $request['scheme_id']);
 			}
 			$this->forward403unless($this->access_level == TBGSettings::ACCESS_FULL);
-			switch ($request->getParameter('mode'))
+			switch ($request['mode'])
 			{
 				case 'add':
-					if ($request->getParameter('name'))
+					if ($request['name'])
 					{
 						$issuetype = new TBGIssuetype();
-						$issuetype->setName($request->getParameter('name'));
-						$issuetype->setIcon($request->getParameter('icon'));
+						$issuetype->setName($request['name']);
+						$issuetype->setIcon($request['icon']);
 						$issuetype->save();
 						return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('Issue type created'), 'content' => $this->getComponentHTML('issuetype', array('type' => $issuetype))));
 					}
 					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please provide a valid name for the issue type')));
 					break;
 				case 'update':
-					if (($issuetype = TBGContext::factory()->TBGIssuetype($request->getParameter('id'))) instanceof TBGIssuetype)
+					if (($issuetype = TBGContext::factory()->TBGIssuetype($request['id'])) instanceof TBGIssuetype)
 					{
 						if ($this->scheme instanceof TBGIssuetypeScheme)
 						{
-							$this->scheme->setIssuetypeRedirectedAfterReporting($issuetype, $request->getParameter('redirect_after_reporting'));
-							$this->scheme->setIssuetypeReportable($issuetype, $request->getParameter('reportable'));
+							$this->scheme->setIssuetypeRedirectedAfterReporting($issuetype, $request['redirect_after_reporting']);
+							$this->scheme->setIssuetypeReportable($issuetype, $request['reportable']);
 							return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('The issue type details were updated'), 'description' => $issuetype->getDescription(), 'name' => $issuetype->getName()));
 						}
-						elseif ($request->getParameter('name'))
+						elseif ($request['name'])
 						{
-							$issuetype->setDescription($request->getParameter('description'));
-							$issuetype->setName($request->getParameter('name'));
-							$issuetype->setIcon($request->getParameter('icon'));
+							$issuetype->setDescription($request['description']);
+							$issuetype->setName($request['name']);
+							$issuetype->setIcon($request['icon']);
 							$issuetype->save();
 							return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('The issue type was updated'), 'description' => $issuetype->getDescription(), 'name' => $issuetype->getName()));
 						}
@@ -539,7 +539,7 @@
 					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please provide a valid issue type')));
 					break;
 				case 'updatechoices':
-					if (($issuetype = TBGContext::factory()->TBGIssuetype($request->getParameter('id'))) instanceof TBGIssuetype)
+					if (($issuetype = TBGContext::factory()->TBGIssuetype($request['id'])) instanceof TBGIssuetype)
 					{
 						$this->scheme->clearAvailableFieldsForIssuetype($issuetype);
 						foreach ($request->getParameter('field', array()) as $key => $details)
@@ -555,7 +555,7 @@
 					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Not implemented yet')));
 					break;
 				case 'delete':
-					if (($issuetype = TBGContext::factory()->TBGIssuetype($request->getParameter('id'))) instanceof TBGIssuetype)
+					if (($issuetype = TBGContext::factory()->TBGIssuetype($request['id'])) instanceof TBGIssuetype)
 					{
 						$issuetype->delete();
 						return $this->renderJSON(array('failed' => false, 'message' => TBGContext::getI18n()->__('Issue type deleted')));
@@ -566,11 +566,11 @@
 					}
 					break;
 				case 'toggletype':
-					if (($issuetype = TBGContext::factory()->TBGIssuetype($request->getParameter('id'))) instanceof TBGIssuetype)
+					if (($issuetype = TBGContext::factory()->TBGIssuetype($request['id'])) instanceof TBGIssuetype)
 					{
 						if ($this->scheme instanceof TBGIssuetypeScheme)
 						{
-							$this->scheme->setIssuetypeEnabled($issuetype, ($request->getParameter('state') == 'enable'));
+							$this->scheme->setIssuetypeEnabled($issuetype, ($request['state'] == 'enable'));
 							return $this->renderJSON(array('failed' => false, 'issuetype_id' => $issuetype->getID()));
 						}
 					}
@@ -588,7 +588,7 @@
 		 */
 		public function runConfigureIssuefieldsGetOptions(TBGRequest $request)
 		{
-			return $this->renderComponent('issuefields', array('type' => $request->getParameter('type'), 'access_level' => $this->access_level));
+			return $this->renderComponent('issuefields', array('type' => $request['type'], 'access_level' => $this->access_level));
 		}
 
 		/**
@@ -602,47 +602,47 @@
 			$this->forward403unless($this->access_level == TBGSettings::ACCESS_FULL);
 			$types = TBGDatatype::getTypes();
 
-			switch ($request->getParameter('mode'))
+			switch ($request['mode'])
 			{
 				case 'add':
-					if ($request->getParameter('name'))
+					if ($request['name'])
 					{
-						if (array_key_exists($request->getParameter('type'), $types))
+						if (array_key_exists($request['type'], $types))
 						{
-							$type_name = $types[$request->getParameter('type')];
+							$type_name = $types[$request['type']];
 							$item = new $type_name();
-							$item->setName($request->getParameter('name'));
-							$item->setItemdata($request->getParameter('itemdata'));
+							$item->setName($request['name']);
+							$item->setItemdata($request['itemdata']);
 							$item->save();
 						}
 						else
 						{
-							$customtype = TBGCustomDatatype::getByKey($request->getParameter('type'));
-							$item = $customtype->createNewOption($request->getParameter('name'), $request->getParameter('value'), $request->getParameter('itemdata'));
+							$customtype = TBGCustomDatatype::getByKey($request['type']);
+							$item = $customtype->createNewOption($request['name'], $request['value'], $request['itemdata']);
 						}
-						return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('The option was added'), 'content' => $this->getTemplateHTML('issuefield', array('item' => $item, 'access_level' => $this->access_level, 'type' => $request->getParameter('type')))));
+						return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('The option was added'), 'content' => $this->getTemplateHTML('issuefield', array('item' => $item, 'access_level' => $this->access_level, 'type' => $request['type']))));
 					}
 					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please provide a valid name')));
 				case 'edit':
-					if ($request->getParameter('name'))
+					if ($request['name'])
 					{
-						if (array_key_exists($request->getParameter('type'), $types))
+						if (array_key_exists($request['type'], $types))
 						{
-							$labname = $types[$request->getParameter('type')];
-							$item = TBGContext::factory()->$labname($request->getParameter('id'));
+							$labname = $types[$request['type']];
+							$item = TBGContext::factory()->$labname($request['id']);
 						}
 						else
 						{
-							$customtype = TBGCustomDatatype::getByKey($request->getParameter('type'));
-							$item = TBGContext::factory()->TBGCustomDatatypeOption($request->getParameter('id'));
+							$customtype = TBGCustomDatatype::getByKey($request['type']);
+							$item = TBGContext::factory()->TBGCustomDatatypeOption($request['id']);
 						}
 						if ($item instanceof TBGDatatypeBase && $item->getItemtype() == $item->getType())
 						{
-							$item->setName($request->getParameter('name'));
-							$item->setItemdata($request->getParameter('itemdata'));
+							$item->setName($request['name']);
+							$item->setItemdata($request['itemdata']);
 							if (!$item->isBuiltin())
 							{
-								$item->setValue($request->getParameter('value'));
+								$item->setValue($request['value']);
 							}
 							$item->save();
 							return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('The option was updated')));
@@ -656,15 +656,15 @@
 				case 'delete':
 					if ($request->hasParameter('id'))
 					{
-						if (array_key_exists($request->getParameter('type'), $types))
+						if (array_key_exists($request['type'], $types))
 						{
-							$classname = 'TBG'.ucfirst($request->getParameter('type'));
-							$item = TBGContext::factory()->$classname($request->getParameter('id'))->delete();
+							$classname = 'TBG'.ucfirst($request['type']);
+							$item = TBGContext::factory()->$classname($request['id'])->delete();
 							return $this->renderJSON(array('failed' => false, 'title' => $i18n->__('The option was deleted')));
 						}
 						else
 						{
-							\b2db\Core::getTable('TBGCustomFieldOptionsTable')->doDeleteById($request->getParameter('id'));
+							\b2db\Core::getTable('TBGCustomFieldOptionsTable')->doDeleteById($request['id']);
 							return $this->renderJSON(array('failed' => false, 'title' => $i18n->__('The option was deleted')));
 						}
 					}
@@ -680,17 +680,17 @@
 		 */
 		public function runConfigureIssuefieldsCustomTypeAction(TBGRequest $request)
 		{
-			switch ($request->getParameter('mode'))
+			switch ($request['mode'])
 			{
 				case 'add':
-					if ($request->getParameter('name') != '')
+					if ($request['name'] != '')
 					{
 						try
 						{
 							$customtype = new TBGCustomDatatype();
-							$customtype->setName($request->getParameter('name'));
-							$customtype->setItemdata($request->getParameter('label'));
-							$customtype->setType($request->getParameter('field_type'));
+							$customtype->setName($request['name']);
+							$customtype->setItemdata($request['label']);
+							$customtype->setType($request['field_type']);
 							$customtype->save();
 							return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('The custom field was added'), 'content' => $this->getComponentHTML('issuefields_customtype', array('type_key' => $customtype->getKey(), 'type' => $customtype))));
 						}
@@ -702,14 +702,14 @@
 					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please provide a valid name')));
 					break;
 				case 'update':
-					if ($request->getParameter('name') != '')
+					if ($request['name'] != '')
 					{
-						$customtype = TBGCustomDatatype::getByKey($request->getParameter('type'));
+						$customtype = TBGCustomDatatype::getByKey($request['type']);
 						if ($customtype instanceof TBGCustomDatatype)
 						{
-							$customtype->setDescription($request->getParameter('description'));
-							$customtype->setInstructions($request->getParameter('instructions'));
-							$customtype->setName($request->getParameter('name'));
+							$customtype->setDescription($request['description']);
+							$customtype->setInstructions($request['instructions']);
+							$customtype->setName($request['name']);
 							$customtype->save();
 							return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('The custom field was updated'), 'description' => $customtype->getDescription(), 'instructions' => $customtype->getInstructions(), 'name' => $customtype->getName()));
 						}
@@ -718,7 +718,7 @@
 					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please provide a valid name')));
 					break;
 				case 'delete':
-					$customtype = TBGCustomDatatype::getByKey($request->getParameter('type'));
+					$customtype = TBGCustomDatatype::getByKey($request['type']);
 					if ($customtype instanceof TBGCustomDatatype)
 					{
 						$customtype->delete();
@@ -754,11 +754,11 @@
 
 			$this->message = false;
 			
-			if ($request->getParameter('find_by'))
+			if ($request['find_by'])
 			{
-				$this->theProject = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
-				$this->users = TBGUser::findUsers($request->getParameter('find_by'), 10);
-				$this->teams = TBGTeam::findTeams($request->getParameter('find_by'));
+				$this->theProject = TBGContext::factory()->TBGProject($request['project_id']);
+				$this->users = TBGUser::findUsers($request['find_by'], 10);
+				$this->teams = TBGTeam::findTeams($request['find_by']);
 			}
 			else
 			{
@@ -779,14 +779,14 @@
 			{
 				try
 				{
-					$this->theProject = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
+					$this->theProject = TBGContext::factory()->TBGProject($request['project_id']);
 				}
 				catch (Exception $e) {}
 				
 				$this->forward403unless($this->theProject instanceof TBGProject);
 				
-				$assignee_type = $request->getParameter('assignee_type');
-				$assignee_id = $request->getParameter('assignee_id');
+				$assignee_type = $request['assignee_type'];
+				$assignee_id = $request['assignee_id'];
 				
 				try
 				{
@@ -808,8 +808,8 @@
 					$this->forward403();
 				}
 				
-				$assignee_role = $request->getParameter('role');
-				$target_info = explode('_', $request->getParameter('target'));
+				$assignee_role = $request['role'];
+				$target_info = explode('_', $request['target']);
 				$this->forward403unless(count($target_info) == 2);
 				
 				switch ($target_info[0])
@@ -858,7 +858,7 @@
 		{
 			try
 			{
-				$this->theProject = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
+				$this->theProject = TBGContext::factory()->TBGProject($request['project_id']);
 			}
 			catch (Exception $e) {}
 			
@@ -874,7 +874,7 @@
 		{
 			try
 			{
-				$this->theProject = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
+				$this->theProject = TBGContext::factory()->TBGProject($request['project_id']);
 			}
 			catch (Exception $e) {}
 			
@@ -890,7 +890,7 @@
 		{
 			try
 			{
-				$this->theProject = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
+				$this->theProject = TBGContext::factory()->TBGProject($request['project_id']);
 			}
 			catch (Exception $e) {}
 			
@@ -907,7 +907,7 @@
 		{
 			try
 			{
-				$this->theProject = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
+				$this->theProject = TBGContext::factory()->TBGProject($request['project_id']);
 			}
 			catch (Exception $e)
 			{
@@ -920,11 +920,11 @@
 			{
 				if ($this->access_level == TBGSettings::ACCESS_FULL)
 				{
-					switch ($request->getParameter('frontpage_summary'))
+					switch ($request['frontpage_summary'])
 					{
 						case 'issuelist':
 						case 'issuetypes':
-							$this->theProject->setFrontpageSummaryType($request->getParameter('frontpage_summary'));
+							$this->theProject->setFrontpageSummaryType($request['frontpage_summary']);
 							$this->theProject->save();
 							$this->theProject->clearVisibleIssuetypes();
 							foreach ($request->getParameter('showissuetype', array()) as $issuetype_id)
@@ -965,7 +965,7 @@
 		{
 			try
 			{
-				$this->theProject = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
+				$this->theProject = TBGContext::factory()->TBGProject($request['project_id']);
 			}
 			catch (Exception $e) {}
 			
@@ -981,16 +981,16 @@
 		{
 			try
 			{
-				switch ($request->getParameter('item_type'))
+				switch ($request['item_type'])
 				{
 					case 'project':
-						$item = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
+						$item = TBGContext::factory()->TBGProject($request['project_id']);
 						break;
 					case 'edition':
-						$item = TBGContext::factory()->TBGEdition($request->getParameter('edition_id'));
+						$item = TBGContext::factory()->TBGEdition($request['edition_id']);
 						break;
 					case 'component':
-						$item = TBGContext::factory()->TBGComponent($request->getParameter('component_id'));
+						$item = TBGContext::factory()->TBGComponent($request['component_id']);
 						break;
 				}
 			}
@@ -1003,38 +1003,38 @@
 				$this->forward403unless($this->access_level == TBGSettings::ACCESS_FULL);
 				if ($request->hasParameter('identifiable_type'))
 				{
-					if (in_array($request->getParameter('identifiable_type'), array(TBGIdentifiableClass::TYPE_USER, TBGIdentifiableClass::TYPE_TEAM)))
+					if (in_array($request['identifiable_type'], array(TBGIdentifiableClass::TYPE_USER, TBGIdentifiableClass::TYPE_TEAM)))
 					{
-						switch ($request->getParameter('identifiable_type'))
+						switch ($request['identifiable_type'])
 						{
 							case TBGIdentifiableClass::TYPE_USER:
-								$identified = TBGContext::factory()->TBGUser($request->getParameter('value'));
+								$identified = TBGContext::factory()->TBGUser($request['value']);
 								break;
 							case TBGIdentifiableClass::TYPE_TEAM:
-								$identified = TBGContext::factory()->TBGTeam($request->getParameter('value'));
+								$identified = TBGContext::factory()->TBGTeam($request['value']);
 								break;
 						}
 						if ($identified instanceof TBGIdentifiableClass)
 						{
-							if ($request->getParameter('field') == 'owned_by') $item->setOwner($identified);
-							elseif ($request->getParameter('field') == 'qa_by') $item->setQaResponsible($identified);
-							elseif ($request->getParameter('field') == 'lead_by') $item->setLeader($identified);
+							if ($request['field'] == 'owned_by') $item->setOwner($identified);
+							elseif ($request['field'] == 'qa_by') $item->setQaResponsible($identified);
+							elseif ($request['field'] == 'lead_by') $item->setLeader($identified);
 							$item->save();
 						}
 					}
 					else
 					{
-						if ($request->getParameter('field') == 'owned_by') $item->unsetOwner();
-						elseif ($request->getParameter('field') == 'qa_by') $item->unsetQaResponsible();
-						elseif ($request->getParameter('field') == 'lead_by') $item->unsetLeader();
+						if ($request['field'] == 'owned_by') $item->unsetOwner();
+						elseif ($request['field'] == 'qa_by') $item->unsetQaResponsible();
+						elseif ($request['field'] == 'lead_by') $item->unsetLeader();
 						$item->save();
 					}
 				}
-				if ($request->getParameter('field') == 'owned_by')
+				if ($request['field'] == 'owned_by')
 					return $this->renderJSON(array('field' => (($item->hasOwner()) ? array('id' => $item->getOwnerID(), 'name' => (($item->getOwnerType() == TBGIdentifiableClass::TYPE_USER) ? $this->getComponentHTML('main/userdropdown', array('user' => $item->getOwner())) : $this->getComponentHTML('main/teamdropdown', array('team' => $item->getOwner())))) : array('id' => 0))));
-				elseif ($request->getParameter('field') == 'lead_by')
+				elseif ($request['field'] == 'lead_by')
 					return $this->renderJSON(array('field' => (($item->hasLeader()) ? array('id' => $item->getLeaderID(), 'name' => (($item->getLeaderType() == TBGIdentifiableClass::TYPE_USER) ? $this->getComponentHTML('main/userdropdown', array('user' => $item->getLeader())) : $this->getComponentHTML('main/teamdropdown', array('team' => $item->getLeader())))) : array('id' => 0))));
-				elseif ($request->getParameter('field') == 'qa_by')
+				elseif ($request['field'] == 'qa_by')
 					return $this->renderJSON(array('field' => (($item->hasQaResponsible()) ? array('id' => $item->getQaResponsibleID(), 'name' => (($item->getQaResponsibleType() == TBGIdentifiableClass::TYPE_USER) ? $this->getComponentHTML('main/userdropdown', array('user' => $item->getQaResponsible())) : $this->getComponentHTML('main/teamdropdown', array('team' => $item->getQaResponsible())))) : array('id' => 0))));
 			}
 		}
@@ -1048,7 +1048,7 @@
 		{
 			try
 			{
-				$this->project = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
+				$this->project = TBGContext::factory()->TBGProject($request['project_id']);
 			}
 			catch (Exception $e) {}
 			
@@ -1060,7 +1060,7 @@
 				
 				if ($request->hasParameter('release_month') && $request->hasParameter('release_day') && $request->hasParameter('release_year'))
 				{
-					$release_date = mktime(0, 0, 1, $request->getParameter('release_month'), $request->getParameter('release_day'), $request->getParameter('release_year'));
+					$release_date = mktime(0, 0, 1, $request['release_month'], $request['release_day'], $request['release_year']);
 					$this->project->setReleaseDate($release_date);
 				}
 
@@ -1068,13 +1068,13 @@
 
 				if ($request->hasParameter('project_name'))
 				{
-					if (trim($request->getParameter('project_name')) == '')
+					if (trim($request['project_name']) == '')
 					{
 						return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please specify a valid project name')));
 					}
 					else
 					{
-						$this->project->setName($request->getParameter('project_name'));
+						$this->project->setName($request['project_name']);
 					}
 				}
 
@@ -1082,26 +1082,26 @@
 				$message = ($old_key != $this->project->getKey()) ? TBGContext::getI18n()->__('%IMPORTANT%: The project key has changed. Remember to replace the current url with the new project key', array('%IMPORTANT%' => '<b>'.TBGContext::getI18n()->__('IMPORTANT').'</b>')) : '';
 
 				if ($request->hasParameter('project_key'))
-					$this->project->setKey($request->getParameter('project_key'));
+					$this->project->setKey($request['project_key']);
 
 				if ($request->hasParameter('use_prefix'))
-					$this->project->setUsePrefix((bool) $request->getParameter('use_prefix'));
+					$this->project->setUsePrefix((bool) $request['use_prefix']);
 
 				if ($request->hasParameter('use_prefix') && $this->project->doesUsePrefix())
 				{
-					if (!$this->project->setPrefix($request->getParameter('prefix')))
+					if (!$this->project->setPrefix($request['prefix']))
 						return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__("Project prefixes may only contain letters and numbers")));
 				}
 
 				if ($request->hasParameter('client'))
 				{
-					if ($request->getParameter('client') == 0)
+					if ($request['client'] == 0)
 					{
 						$this->project->setClient(null);
 					}
 					else
 					{
-						$this->project->setClient(TBGContext::factory()->TBGClient($request->getParameter('client')));
+						$this->project->setClient(TBGContext::factory()->TBGClient($request['client']));
 					}
 				}
 
@@ -1109,7 +1109,7 @@
 				{
 					try
 					{
-						$workflow_scheme = TBGContext::factory()->TBGWorkflowScheme($request->getParameter('workflow_scheme'));
+						$workflow_scheme = TBGContext::factory()->TBGWorkflowScheme($request['workflow_scheme']);
 						$this->project->setWorkflowScheme($workflow_scheme);
 					}
 					catch (Exception $e) {}
@@ -1119,47 +1119,47 @@
 				{
 					try
 					{
-						$issuetype_scheme = TBGContext::factory()->TBGIssuetypeScheme($request->getParameter('issuetype_scheme'));
+						$issuetype_scheme = TBGContext::factory()->TBGIssuetypeScheme($request['issuetype_scheme']);
 						$this->project->setIssuetypeScheme($issuetype_scheme);
 					}
 					catch (Exception $e) {}
 				}
 
 				if ($request->hasParameter('use_scrum'))
-					$this->project->setUsesScrum((bool) $request->getParameter('use_scrum'));
+					$this->project->setUsesScrum((bool) $request['use_scrum']);
 
 				if ($request->hasParameter('description'))
 					$this->project->setDescription($request->getParameter('description', null, false));
 
 				if ($request->hasParameter('homepage'))
-					$this->project->setHomepage($request->getParameter('homepage'));
+					$this->project->setHomepage($request['homepage']);
 
 				if ($request->hasParameter('doc_url'))
-					$this->project->setDocumentationURL($request->getParameter('doc_url'));
+					$this->project->setDocumentationURL($request['doc_url']);
 
 				if ($request->hasParameter('planned_release'))
-					$this->project->setPlannedReleased($request->getParameter('planned_release'));
+					$this->project->setPlannedReleased($request['planned_release']);
 
 				if ($request->hasParameter('released'))
-					$this->project->setReleased((int) $request->getParameter('released'));
+					$this->project->setReleased((int) $request['released']);
 
 				if ($request->hasParameter('locked'))
-					$this->project->setLocked((bool) $request->getParameter('locked'));
+					$this->project->setLocked((bool) $request['locked']);
 
 				if ($request->hasParameter('enable_builds'))
-					$this->project->setBuildsEnabled((bool) $request->getParameter('enable_builds'));
+					$this->project->setBuildsEnabled((bool) $request['enable_builds']);
 
 				if ($request->hasParameter('enable_editions'))
-					$this->project->setEditionsEnabled((bool) $request->getParameter('enable_editions'));
+					$this->project->setEditionsEnabled((bool) $request['enable_editions']);
 
 				if ($request->hasParameter('enable_components'))
-					$this->project->setComponentsEnabled((bool) $request->getParameter('enable_components'));
+					$this->project->setComponentsEnabled((bool) $request['enable_components']);
 
 				if ($request->hasParameter('allow_changing_without_working'))
-					$this->project->setChangeIssuesWithoutWorkingOnThem((bool) $request->getParameter('allow_changing_without_working'));
+					$this->project->setChangeIssuesWithoutWorkingOnThem((bool) $request['allow_changing_without_working']);
 
 				if ($request->hasParameter('allow_autoassignment'))
-					$this->project->setAutoassign((bool) $request->getParameter('allow_autoassignment'));
+					$this->project->setAutoassign((bool) $request['allow_autoassignment']);
 
 				$this->project->save();
 				TBGContext::setMessage('project_settings_saved', true);
@@ -1182,7 +1182,7 @@
 			}
 			if ($this->access_level == TBGSettings::ACCESS_FULL)
 			{
-				if (($p_name = $request->getParameter('p_name')) && trim($p_name) != '')
+				if (($p_name = $request['p_name']) && trim($p_name) != '')
 				{
 					try
 					{
@@ -1218,12 +1218,12 @@
 			{
 				try
 				{
-					$p_id = $request->getParameter('project_id');
+					$p_id = $request['project_id'];
 					if ($project = TBGContext::factory()->TBGProject($p_id))
 					{
 						if (TBGContext::getUser()->canManageProjectReleases($project))
 						{
-							if (($e_name = $request->getParameter('e_name')) && trim($e_name) != '')
+							if (($e_name = $request['e_name']) && trim($e_name) != '')
 							{
 								$project = TBGContext::factory()->TBGProject($p_id);
 								if (in_array($e_name, $project->getEditions()))
@@ -1269,19 +1269,19 @@
 			{
 				try
 				{
-					if ($b_id = $request->getParameter('build_id'))
+					if ($b_id = $request['build_id'])
 					{
 						$build = TBGContext::factory()->TBGBuild($b_id);
 						if ($build->hasAccess())
 						{
-							switch ($request->getParameter('build_action'))
+							switch ($request['build_action'])
 							{
 								case 'delete':
 									$build->delete();
 									return $this->renderJSON(array('deleted' => true, 'message' => $i18n->__('The release was deleted')));
 									break;
 								case 'addtoopen':
-									$build->addToOpenParentIssues((int) $request->getParameter('status'), (int) $request->getParameter('category'), (int) $request->getParameter('issuetype'));
+									$build->addToOpenParentIssues((int) $request['status'], (int) $request['category'], (int) $request['issuetype']);
 									return $this->renderJSON(array('failed' => false, 'title' => $i18n->__('The selected build has been added to open issues based on your selections'), 'message' => ''));
 									break;
 								case 'release':
@@ -1307,19 +1307,19 @@
 									$this->show_mode = 'one';
 									break;
 								case 'update':
-									if (($b_name = $request->getParameter('build_name')) && trim($b_name) != '')
+									if (($b_name = $request['build_name']) && trim($b_name) != '')
 									{
 										if ($build->getProject() instanceof TBGProject && in_array($b_name, $build->getProject()->getBuilds()) && !($b_name == $build->getName()))
 										{
 											throw new Exception($i18n->__('This build already exists for this project'));
 										}
 										$build->setName($b_name);
-										$build->setVersionMajor($request->getParameter('ver_mj'));
-										$build->setVersionMinor($request->getParameter('ver_mn'));
-										$build->setVersionRevision($request->getParameter('ver_rev'));
+										$build->setVersionMajor($request['ver_mj']);
+										$build->setVersionMinor($request['ver_mn']);
+										$build->setVersionRevision($request['ver_rev']);
 										if ($request->hasParameter('release_month') && $request->hasParameter('release_day') && $request->hasParameter('release_year'))
 										{
-											$release_date = mktime(0, 0, 1, $request->getParameter('release_month'), $request->getParameter('release_day'), $request->getParameter('release_year'));
+											$release_date = mktime(0, 0, 1, $request['release_month'], $request['release_day'], $request['release_year']);
 											$build->setReleaseDate($release_date);
 										}
 										$build->save();
@@ -1360,7 +1360,7 @@
 		 */
 		public function runGetUserEditForm(TBGRequest $request)
 		{
-			return $this->renderJSON(array('failed' => false, "content" => get_template_html('finduser_row_editable', array('user' => TBGContext::factory()->TBGUser($request->getParameter('user_id'))))));
+			return $this->renderJSON(array('failed' => false, "content" => get_template_html('finduser_row_editable', array('user' => TBGContext::factory()->TBGUser($request['user_id'])))));
 		}	
 			
 		/**
@@ -1376,19 +1376,19 @@
 			{
 				try
 				{
-					$p_id = $request->getParameter('project_id');
+					$p_id = $request['project_id'];
 					if ($project = TBGContext::factory()->TBGProject($p_id))
 					{
 						if (TBGContext::getUser()->canManageProjectReleases($project))
 						{
-							if (($b_name = $request->getParameter('build_name')) && trim($b_name) != '')
+							if (($b_name = $request['build_name']) && trim($b_name) != '')
 							{
-								$build = new TBGBuild($request->getParameter('build_id'));
+								$build = new TBGBuild($request['build_id']);
 								$build->setName($b_name);
 								$build->setVersion($request->getParameter('ver_mj', 0), $request->getParameter('ver_mn', 0), $request->getParameter('ver_rev', 0));
-								$build->setReleased((bool) $request->getParameter('isreleased'));
-								$build->setLocked((bool) $request->getParameter('locked'));
-								if ($request->getParameter('milestone') && $milestone = TBGContext::factory()->TBGMilestone($request->getParameter('milestone')))
+								$build->setReleased((bool) $request['isreleased']);
+								$build->setLocked((bool) $request['locked']);
+								if ($request['milestone'] && $milestone = TBGContext::factory()->TBGMilestone($request['milestone']))
 								{
 									$build->setMilestone($milestone);
 								}
@@ -1396,7 +1396,7 @@
 								{
 									$build->clearMilestone();
 								}
-								if ($request->getParameter('edition') && $edition = TBGContext::factory()->TBGEdition($request->getParameter('edition')))
+								if ($request['edition'] && $edition = TBGContext::factory()->TBGEdition($request['edition']))
 								{
 									$build->setEdition($edition);
 								}
@@ -1404,7 +1404,7 @@
 								{
 									$build->clearEdition();
 								}
-								$release_date = mktime($request->getParameter('release_hour'), $request->getParameter('release_minute'), 1, $request->getParameter('release_month'), $request->getParameter('release_day'), $request->getParameter('release_year'));
+								$release_date = mktime($request['release_hour'], $request['release_minute'], 1, $request['release_month'], $request['release_day'], $request['release_year']);
 								$build->setReleaseDate($release_date);
 								switch ($request->getParameter('download', 'leave_file'))
 								{
@@ -1424,11 +1424,11 @@
 										break;
 									case 'url':
 										$build->clearFile();
-										$build->setFileURL($request->getParameter('file_url'));
+										$build->setFileURL($request['file_url']);
 										break;
 								}
 								
-								if ($request->getParameter('edition_id')) $build->setEdition($edition);
+								if ($request['edition_id']) $build->setEdition($edition);
 								if (!$build->getID()) $build->setProject($project);
 								
 								$build->save();
@@ -1470,12 +1470,12 @@
 			{
 				try
 				{
-					$p_id = $request->getParameter('project_id');
+					$p_id = $request['project_id'];
 					if ($project = TBGContext::factory()->TBGProject($p_id))
 					{
 						if (TBGContext::getUser()->canManageProjectReleases($project))
 						{
-							if (($c_name = $request->getParameter('c_name')) && trim($c_name) != '')
+							if (($c_name = $request['c_name']) && trim($c_name) != '')
 							{
 								$project = TBGContext::factory()->TBGProject($p_id);
 								if (in_array($c_name, $project->getComponents()))
@@ -1521,12 +1521,12 @@
 			{
 				try
 				{
-					$p_id = $request->getParameter('project_id');
+					$p_id = $request['project_id'];
 					if ($project = TBGContext::factory()->TBGProject($p_id))
 					{
 						if (TBGContext::getUser()->canManageProjectReleases($project))
 						{
-							if (($m_name = $request->getParameter('name')) && trim($m_name) != '')
+							if (($m_name = $request['name']) && trim($m_name) != '')
 							{
 								$theProject = TBGContext::factory()->TBGProject($p_id);
 								if (in_array($m_name, $theProject->getAllMilestones()))
@@ -1572,15 +1572,15 @@
 			{
 				try
 				{
-					if ($m_id = $request->getParameter('milestone_id'))
+					if ($m_id = $request['milestone_id'])
 					{
 						$theMilestone = TBGContext::factory()->TBGMilestone($m_id);
 						if ($theMilestone->hasAccess())
 						{
-							switch ($request->getParameter('milestone_action'))
+							switch ($request['milestone_action'])
 							{
 								case 'update':
-									if (($m_name = $request->getParameter('name')) && trim($m_name) != '')
+									if (($m_name = $request['name']) && trim($m_name) != '')
 									{
 										if ($m_name != $theMilestone->getName())
 										{
@@ -1592,14 +1592,14 @@
 											}
 										}
 										$theMilestone->setName($m_name);
-										if ($request->getParameter('is_starting'))
+										if ($request['is_starting'])
 										{
-											$theMilestone->setStarting((bool) $request->getParameter('is_starting'));
+											$theMilestone->setStarting((bool) $request['is_starting']);
 										}
 										
-										if ($request->getParameter('is_scheduled'))
+										if ($request['is_scheduled'])
 										{
-											$theMilestone->setScheduled((bool) $request->getParameter('is_scheduled'));
+											$theMilestone->setScheduled((bool) $request['is_scheduled']);
 										}
 										
 										$theMilestone->setDescription($request->getParameter('description', null));
@@ -1676,14 +1676,14 @@
 			{
 				try
 				{
-					$theEdition   = TBGContext::factory()->TBGEdition($request->getParameter('edition_id'));
-					if ($request->getParameter('mode') == 'add')
+					$theEdition   = TBGContext::factory()->TBGEdition($request['edition_id']);
+					if ($request['mode'] == 'add')
 					{
-						$theEdition->addComponent($request->getParameter('component_id'));
+						$theEdition->addComponent($request['component_id']);
 					}
-					elseif ($request->getParameter('mode') == 'remove')
+					elseif ($request['mode'] == 'remove')
 					{
-						$theEdition->removeComponent($request->getParameter('component_id'));
+						$theEdition->removeComponent($request['component_id']);
 					}
 					return $this->renderJSON(array('failed' => false));
 				}
@@ -1709,10 +1709,10 @@
 			{
 				try
 				{
-					$theComponent = TBGContext::factory()->TBGComponent($request->getParameter('component_id'));
-					if ($request->getParameter('mode') == 'update')
+					$theComponent = TBGContext::factory()->TBGComponent($request['component_id']);
+					if ($request['mode'] == 'update')
 					{
-						if (($c_name = $request->getParameter('c_name')) && trim($c_name) != '')
+						if (($c_name = $request['c_name']) && trim($c_name) != '')
 						{
 							if($c_name == $theComponent->getName())
 							{
@@ -1730,7 +1730,7 @@
 							throw new Exception($i18n->__('You need to specify a name for this component'));
 						}
 					}
-					elseif ($request->getParameter('mode') == 'delete')
+					elseif ($request['mode'] == 'delete')
 					{
 						$project = $theComponent->getProject();
 						$theComponent->delete();
@@ -1759,7 +1759,7 @@
 			{
 				try
 				{
-					$theProject = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
+					$theProject = TBGContext::factory()->TBGProject($request['project_id']);
 					$theProject->setDeleted();
 					$theProject->save();
 					return $this->renderJSON(array('failed' => false, 'title' => $i18n->__('The project was deleted'), 'total_count' => TBGProject::getProjectsCount(), 'more_available' => TBGContext::getScope()->hasProjectsAvailable()));
@@ -1786,7 +1786,7 @@
 			{
 				try
 				{
-					$theProject = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
+					$theProject = TBGContext::factory()->TBGProject($request['project_id']);
 					$theProject->setArchived($archived);
 					$theProject->save();
 					
@@ -1838,18 +1838,18 @@
 			
 			try
 			{
-				if ($request->getParameter('mode') == 'install' && file_exists(THEBUGGENIE_MODULES_PATH . $request->getParameter('module_key') . DS . 'module'))
+				if ($request['mode'] == 'install' && file_exists(THEBUGGENIE_MODULES_PATH . $request['module_key'] . DS . 'module'))
 				{
-					if (TBGModule::installModule($request->getParameter('module_key')))
+					if (TBGModule::installModule($request['module_key']))
 					{
-						TBGContext::setMessage('module_message', TBGContext::getI18n()->__('The module "%module_name%" was installed successfully', array('%module_name%' => $request->getParameter('module_key'))));
+						TBGContext::setMessage('module_message', TBGContext::getI18n()->__('The module "%module_name%" was installed successfully', array('%module_name%' => $request['module_key'])));
 					}
 					else
 					{
-						TBGContext::setMessage('module_error', TBGContext::getI18n()->__('There was an error install the module %module_name%', array('%module_name%' => $request->getParameter('module_key'))));
+						TBGContext::setMessage('module_error', TBGContext::getI18n()->__('There was an error install the module %module_name%', array('%module_name%' => $request['module_key'])));
 					}
 				}
-				else if ($request->getParameter('mode') == 'upload')
+				else if ($request['mode'] == 'upload')
 				{
 					$archive = $request->getUploadedFile('archive');	
 					if ($archive == null || $archive['error'] != UPLOAD_ERR_OK || !preg_match('/application\/(x-)?zip/i', $archive['type']))
@@ -1864,9 +1864,9 @@
 				}				
 				else
 				{
-					$module = TBGContext::getModule($request->getParameter('module_key'));
+					$module = TBGContext::getModule($request['module_key']);
 					if (!$module->isCore())
-						switch ($request->getParameter('mode'))
+						switch ($request['mode'])
 						{
 							case 'disable':
 								if ($module->getType() !== TBGModule::MODULE_AUTH):
@@ -1898,8 +1898,8 @@
 			}
 			catch (Exception $e)
 			{ throw $e;
-				TBGLogging::log('Trying to run action ' . $request->getParameter('mode') . ' on module ' . $request->getParameter('module_key') . ' made an exception: ' . $e->getMessage(), TBGLogging::LEVEL_FATAL);
-				TBGContext::setMessage('module_error', TBGContext::getI18n()->__('This module (%module_name%) does not exist', array('%module_name%' => $request->getParameter('module_key'))));
+				TBGLogging::log('Trying to run action ' . $request['mode'] . ' on module ' . $request['module_key'] . ' made an exception: ' . $e->getMessage(), TBGLogging::LEVEL_FATAL);
+				TBGContext::setMessage('module_error', TBGContext::getI18n()->__('This module (%module_name%) does not exist', array('%module_name%' => $request['module_key'])));
 			}
 			$this->forward(TBGContext::getRouting()->generate('configure_modules'));
 		}
@@ -1915,7 +1915,7 @@
 
 			if ($this->access_level == TBGSettings::ACCESS_FULL)
 			{
-				return $this->renderJSON(array('failed' => false, 'content' => $this->getComponentHTML('configuration/permissionsblock', array('base_id' => $request->getParameter('base_id'), 'permissions_list' => $request->getParameter('permissions_list'), 'mode' => $request->getParameter('mode'), 'target_id' => $request->getParameter('target_id'), 'user_id' => $request->getParameter('user_id'), 'module' => $request->getParameter('target_module'), 'access_level' => $this->access_level))));
+				return $this->renderJSON(array('failed' => false, 'content' => $this->getComponentHTML('configuration/permissionsblock', array('base_id' => $request['base_id'], 'permissions_list' => $request['permissions_list'], 'mode' => $request['mode'], 'target_id' => $request['target_id'], 'user_id' => $request['user_id'], 'module' => $request['target_module'], 'access_level' => $this->access_level))));
 			}
 			return $this->renderJSON(array('failed' => true, "error" => $i18n->__("You don't have access to modify permissions")));
 		}
@@ -1929,32 +1929,32 @@
 				$uid = 0;
 				$gid = 0;
 				$tid = 0;
-				switch ($request->getParameter('target_type'))
+				switch ($request['target_type'])
 				{
 					case 'user':
-						$uid = $request->getParameter('item_id');
+						$uid = $request['item_id'];
 						break;
 					case 'group':
-						$gid = $request->getParameter('item_id');
+						$gid = $request['item_id'];
 						break;
 					case 'team':
-						$tid = $request->getParameter('item_id');
+						$tid = $request['item_id'];
 						break;
 				}
 
-				switch ($request->getParameter('mode'))
+				switch ($request['mode'])
 				{
 					case 'allowed':
-						TBGContext::setPermission($request->getParameter('key'), $request->getParameter('target_id'), $request->getParameter('target_module'), $uid, $gid, $tid, true);
+						TBGContext::setPermission($request['key'], $request['target_id'], $request['target_module'], $uid, $gid, $tid, true);
 						break;
 					case 'denied':
-						TBGContext::setPermission($request->getParameter('key'), $request->getParameter('target_id'), $request->getParameter('target_module'), $uid, $gid, $tid, false);
+						TBGContext::setPermission($request['key'], $request['target_id'], $request['target_module'], $uid, $gid, $tid, false);
 						break;
 					case 'unset':
-						TBGContext::removePermission($request->getParameter('key'), $request->getParameter('target_id'), $request->getParameter('target_module'), $uid, $gid, $tid);
+						TBGContext::removePermission($request['key'], $request['target_id'], $request['target_module'], $uid, $gid, $tid);
 						break;
 				}
-				return $this->renderJSON(array('failed' => false, 'content' => $this->getComponentHTML('configuration/permissionsinfoitem', array('key' => $request->getParameter('key'), 'target_id' => $request->getParameter('target_id'), 'type' => $request->getParameter('target_type'), 'mode' => $request->getParameter('template_mode'), 'item_id' => $request->getParameter('item_id'), 'module' => $request->getParameter('target_module'), 'access_level' => $this->access_level))));
+				return $this->renderJSON(array('failed' => false, 'content' => $this->getComponentHTML('configuration/permissionsinfoitem', array('key' => $request['key'], 'target_id' => $request['target_id'], 'type' => $request['target_type'], 'mode' => $request['template_mode'], 'item_id' => $request['item_id'], 'module' => $request['target_module'], 'access_level' => $this->access_level))));
 			}
 			return $this->renderJSON(array('failed' => true, "error" => $i18n->__("You don't have access to modify permissions")));
 		}
@@ -1970,7 +1970,7 @@
 			
 			try
 			{
-				$module = TBGContext::getModule($request->getParameter('config_module'));
+				$module = TBGContext::getModule($request['config_module']);
 				if (!$module->isEnabled())
 				{
 					throw new Exception('disabled');
@@ -1995,15 +1995,15 @@
 						{
 							TBGContext::setMessage('module_error', $e->getMessage());
 						}
-						$this->forward(TBGContext::getRouting()->generate('configure_module', array('config_module' => $request->getParameter('config_module'))));
+						$this->forward(TBGContext::getRouting()->generate('configure_module', array('config_module' => $request['config_module'])));
 					}
 					$this->module = $module;
 				}
 			}
 			catch (Exception $e)
 			{
-				TBGLogging::log('Trying to configure module ' . $request->getParameter('config_module') . " which isn't configurable", 'main', TBGLogging::LEVEL_FATAL);
-				TBGContext::setMessage('module_error', TBGContext::getI18n()->__('The module "%module_name%" is not configurable', array('%module_name%' => $request->getParameter('config_module'))));
+				TBGLogging::log('Trying to configure module ' . $request['config_module'] . " which isn't configurable", 'main', TBGLogging::LEVEL_FATAL);
+				TBGContext::setMessage('module_error', TBGContext::getI18n()->__('The module "%module_name%" is not configurable', array('%module_name%' => $request['config_module'])));
 				$this->forward(TBGContext::getRouting()->generate('configure_modules'));
 			}
 			$this->module_message = TBGContext::getMessageAndClear('module_message');
@@ -2022,16 +2022,16 @@
 			if ($this->uploads_enabled && $request->isPost())
 			{
 				$this->forward403unless($this->access_level == TBGSettings::ACCESS_FULL);
-				if ($request->getParameter('upload_storage') == 'files' && (bool) $request->getParameter('enable_uploads'))
+				if ($request['upload_storage'] == 'files' && (bool) $request['enable_uploads'])
 				{
-					if (!is_writable($request->getParameter('upload_localpath')))
+					if (!is_writable($request['upload_localpath']))
 					{
 						$this->getResponse()->setHttpStatus(400);
 						return $this->renderJSON(array('error' => TBGContext::getI18n()->__("The upload path isn't writable")));
 					}
 				}
 				
-				if (!is_numeric($request->getParameter('upload_max_file_size')))
+				if (!is_numeric($request['upload_max_file_size']))
 				{
 					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__("The maximum file size must be a number")));
 				}
@@ -2086,21 +2086,21 @@
 			$this->groups = TBGGroup::getAll();
 			$this->teams = TBGTeam::getAll();
 			$this->clients = TBGClient::getall();
-			$this->finduser = $request->getParameter('finduser');
+			$this->finduser = $request['finduser'];
 		}
 
 		public function runDeleteGroup(TBGRequest $request)
 		{
 			try
 			{
-				if (!(!in_array($request->getParameter('group_id'), TBGSettings::getDefaultGroupIDs())))
+				if (!(!in_array($request['group_id'], TBGSettings::getDefaultGroupIDs())))
 				{
 					throw new Exception(TBGContext::getI18n()->__("You cannot delete the default groups"));
 				}
 				
 				try
 				{
-					$group = TBGContext::factory()->TBGGroup($request->getParameter('group_id'));
+					$group = TBGContext::factory()->TBGGroup($request['group_id']);
 				}
 				catch (Exception $e) { }
 				if (!$group instanceof TBGGroup)
@@ -2121,14 +2121,14 @@
 		{
 			try
 			{
-				$mode = $request->getParameter('mode');
-				if ($group_name = $request->getParameter('group_name'))
+				$mode = $request['mode'];
+				if ($group_name = $request['group_name'])
 				{
 					if ($mode == 'clone')
 					{
 						try
 						{
-							$old_group = TBGContext::factory()->TBGGroup($request->getParameter('group_id'));
+							$old_group = TBGContext::factory()->TBGGroup($request['group_id']);
 						}
 						catch (Exception $e) { }
 						if (!$old_group instanceof TBGGroup)
@@ -2145,7 +2145,7 @@
 					$group->save();
 					if ($mode == 'clone')
 					{
-						if ($request->getParameter('clone_permissions'))
+						if ($request['clone_permissions'])
 						{
 							TBGPermissionsTable::getTable()->cloneGroupPermissions($old_group->getID(), $group->getID());
 						}
@@ -2173,7 +2173,7 @@
 		{
 			try
 			{
-				$group = TBGContext::factory()->TBGGroup((int) $request->getParameter('group_id'));
+				$group = TBGContext::factory()->TBGGroup((int) $request['group_id']);
 				$users = $group->getMembers();
 				return $this->renderJSON(array('failed' => false, 'content' => $this->getTemplateHTML('configuration/groupuserlist', array('users' => $users))));
 			}
@@ -2190,7 +2190,7 @@
 			{
 				try
 				{
-					$theEdition = TBGContext::factory()->TBGEdition($request->getParameter('edition_id'));
+					$theEdition = TBGContext::factory()->TBGEdition($request['edition_id']);
 					
 					$project = $theEdition->getProject();
 					$theEdition->delete();
@@ -2213,7 +2213,7 @@
 				try
 				{
 					$return_options = array('success' => true);
-					$user = TBGContext::factory()->TBGUser($request->getParameter('user_id'));
+					$user = TBGContext::factory()->TBGUser($request['user_id']);
 					if ($user->getGroup() instanceof TBGGroup)
 					{
 						$return_options['update_groups'] = array('ids' => array(), 'membercounts' => array());
@@ -2262,7 +2262,7 @@
 			{
 				try
 				{
-					$team = TBGContext::factory()->TBGTeam($request->getParameter('team_id'));
+					$team = TBGContext::factory()->TBGTeam($request['team_id']);
 				}
 				catch (Exception $e) { }
 				if (!$team instanceof TBGTeam)
@@ -2283,14 +2283,14 @@
 		{
 			try
 			{
-				$mode = $request->getParameter('mode');
-				if ($team_name = $request->getParameter('team_name'))
+				$mode = $request['mode'];
+				if ($team_name = $request['team_name'])
 				{
 					if ($mode == 'clone')
 					{
 						try
 						{
-							$old_team = TBGContext::factory()->TBGTeam($request->getParameter('team_id'));
+							$old_team = TBGContext::factory()->TBGTeam($request['team_id']);
 						}
 						catch (Exception $e) { }
 						if (!$old_team instanceof TBGTeam)
@@ -2307,11 +2307,11 @@
 					$team->save();
 					if ($mode == 'clone')
 					{
-						if ($request->getParameter('clone_permissions'))
+						if ($request['clone_permissions'])
 						{
 							TBGPermissionsTable::getTable()->cloneTeamPermissions($old_team->getID(), $team->getID());
 						}
-						if ($request->getParameter('clone_memberships'))
+						if ($request['clone_memberships'])
 						{
 							TBGTeamMembersTable::getTable()->cloneTeamMemberships($old_team->getID(), $team->getID());
 						}
@@ -2339,7 +2339,7 @@
 		{
 			try
 			{
-				$team = TBGContext::factory()->TBGTeam((int) $request->getParameter('team_id'));
+				$team = TBGContext::factory()->TBGTeam((int) $request['team_id']);
 				$users = $team->getMembers();
 				return $this->renderJSON(array('failed' => false, 'content' => $this->getTemplateHTML('configuration/teamuserlist', array('users' => $users))));
 			}
@@ -2353,7 +2353,7 @@
 		public function runFindUsers(TBGRequest $request)
 		{
 			$this->too_short = false;
-			$findstring = $request->getParameter('findstring');
+			$findstring = $request['findstring'];
 			if (mb_strlen($findstring) >= 1)
 			{
 				list ($this->users, $this->total_results) = TBGUsersTable::getTable()->findInConfig($findstring);
@@ -2388,7 +2388,7 @@
 					throw new Exception(TBGContext::getI18n()->__('This instance of The Bug Genie cannot add more users'));
 				}
 				
-				if ($username = $request->getParameter('username'))
+				if ($username = $request['username'])
 				{
 					$user = new TBGUser();
 					$user->setUsername($username);
@@ -2424,24 +2424,24 @@
 		{
 			try
 			{
-				$user = TBGContext::factory()->TBGUser($request->getParameter('user_id'));
+				$user = TBGContext::factory()->TBGUser($request['user_id']);
 				if ($user instanceof TBGUser)
 				{
-					$testuser = TBGUser::getByUsername($request->getParameter('username'));
+					$testuser = TBGUser::getByUsername($request['username']);
 					if (!$testuser instanceof TBGUser || $testuser->getID() == $user->getID())
 					{
-						$user->setUsername($request->getParameter('username'));
+						$user->setUsername($request['username']);
 					}
 					else
 					{
 						return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('This username is already taken')));
 					}
 					$password_changed = false;
-					if ($request->getParameter('password_action') == 'change' && $request->getParameter('new_password_1') && $request->getParameter('new_password_2'))
+					if ($request['password_action'] == 'change' && $request['new_password_1'] && $request['new_password_2'])
 					{
-						if ($request->getParameter('new_password_1') == $request->getParameter('new_password_2'))
+						if ($request['new_password_1'] == $request['new_password_2'])
 						{
-							$user->setPassword($request->getParameter('new_password_1'));
+							$user->setPassword($request['new_password_1']);
 							$password_changed = true;
 						}
 						else
@@ -2449,17 +2449,17 @@
 							return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please enter the new password twice')));
 						}
 					}
-					elseif ($request->getParameter('password_action') == 'random')
+					elseif ($request['password_action'] == 'random')
 					{
 						$random_password = TBGUser::createPassword();
 						$user->setPassword($random_password);
 						$password_changed = true;
 					}
-					$user->setRealname($request->getParameter('realname'));
+					$user->setRealname($request['realname']);
 					$return_options = array();
 					try
 					{
-						if ($group = TBGContext::factory()->TBGGroup($request->getParameter('group')))
+						if ($group = TBGContext::factory()->TBGGroup($request['group']))
 						{
 							if ($user->getGroupID() != $group->getID())
 							{
@@ -2509,10 +2509,10 @@
 					{
 						throw new Exception(TBGContext::getI18n()->__('One or more clients were invalid'));
 					}
-					$user->setBuddyname($request->getParameter('nickname'));
-					$user->setActivated((bool) $request->getParameter('activated'));
-					$user->setEmail($request->getParameter('email'));
-					$user->setEnabled((bool) $request->getParameter('enabled'));
+					$user->setBuddyname($request['nickname']);
+					$user->setActivated((bool) $request['activated']);
+					$user->setEmail($request['email']);
+					$user->setEnabled((bool) $request['enabled']);
 					$user->save();
 					if (isset($groups))
 					{
@@ -2568,18 +2568,18 @@
 		{
 			try
 			{
-				if ($edition_id = $request->getParameter('edition_id'))
+				if ($edition_id = $request['edition_id'])
 				{
 					$edition = TBGContext::factory()->TBGEdition($edition_id);
 					if ($request->isPost())
 					{
 						if ($request->hasParameter('release_month') && $request->hasParameter('release_day') && $request->hasParameter('release_year'))
 						{
-							$release_date = mktime(0, 0, 1, $request->getParameter('release_month'), $request->getParameter('release_day'), $request->getParameter('release_year'));
+							$release_date = mktime(0, 0, 1, $request['release_month'], $request['release_day'], $request['release_year']);
 							$edition->setReleaseDate($release_date);
 						}
 						
-						if (($e_name = $request->getParameter('edition_name')) && trim($e_name) != '')
+						if (($e_name = $request['edition_name']) && trim($e_name) != '')
 						{
 							if ($e_name != $edition->getName())
 							{
@@ -2596,20 +2596,20 @@
 						}
 							
 						$edition->setDescription($request->getParameter('description', null, false));
-						$edition->setDocumentationURL($request->getParameter('doc_url'));
-						$edition->setPlannedReleased($request->getParameter('planned_release'));
-						$edition->setReleased((int) $request->getParameter('released'));
-						$edition->setLocked((bool) $request->getParameter('locked'));
+						$edition->setDocumentationURL($request['doc_url']);
+						$edition->setPlannedReleased($request['planned_release']);
+						$edition->setReleased((int) $request['released']);
+						$edition->setLocked((bool) $request['locked']);
 						$edition->save();
 						return $this->renderJSON(array('edition_name' => $edition->getName(), 'message' => TBGContext::getI18n()->__('Edition details saved')));
 					}
 					else
 					{
-						switch ($request->getParameter('mode'))
+						switch ($request['mode'])
 						{
 							case 'releases':
 							case 'components':
-								$this->selected_section = $request->getParameter('mode');
+								$this->selected_section = $request['mode'];
 								break;
 							default:
 								$this->selected_section = 'general';
@@ -2633,7 +2633,7 @@
 		{
 			try
 			{
-				if ($project_id = $request->getParameter('project_id'))
+				if ($project_id = $request['project_id'])
 				{
 					// Build list of valid targets for the subproject dropdown
 					// The following items are banned from the list: current project, children of the current project
@@ -2666,7 +2666,7 @@
 			{
 				try
 				{
-					$workflow_name = $request->getParameter('workflow_name');
+					$workflow_name = $request['workflow_name'];
 					$workflow = new TBGWorkflow();
 					$workflow->setName($workflow_name);
 					$workflow->save();
@@ -2689,11 +2689,11 @@
 			$this->mode = $request->getParameter('mode', 'list');
 			try
 			{
-				$this->workflow_scheme = TBGContext::factory()->TBGWorkflowScheme($request->getParameter('scheme_id'));
+				$this->workflow_scheme = TBGContext::factory()->TBGWorkflowScheme($request['scheme_id']);
 				$this->issuetypes = TBGIssuetype::getAll();
 				if (TBGContext::getScope()->isCustomWorkflowsEnabled() && $this->mode == 'copy_scheme')
 				{
-					if ($new_name = $request->getParameter('new_name'))
+					if ($new_name = $request['new_name'])
 					{
 						$new_scheme = new TBGWorkflowScheme();
 						$new_scheme->setName($new_name);
@@ -2755,10 +2755,10 @@
 			$this->mode = $request->getParameter('mode', 'list');
 			try
 			{
-				$this->workflow = TBGContext::factory()->TBGWorkflow($request->getParameter('workflow_id'));
+				$this->workflow = TBGContext::factory()->TBGWorkflow($request['workflow_id']);
 				if ($this->mode == 'copy_workflow')
 				{
-					if ($new_name = $request->getParameter('new_name'))
+					if ($new_name = $request['new_name'])
 					{
 						$new_workflow = $this->workflow->copy($new_name);
 						return $this->renderJSON(array('content' => $this->getTemplateHTML('configuration/workflow', array('workflow' => $new_workflow)), 'total_count' => TBGWorkflow::getCustomWorkflowsCount(), 'more_available' => TBGContext::getScope()->hasCustomWorkflowsAvailable()));
@@ -2794,34 +2794,34 @@
 			$this->step = null;
 			try
 			{
-				$this->workflow = TBGContext::factory()->TBGWorkflow($request->getParameter('workflow_id'));
-				if ($request->getParameter('mode') == 'edit' && !$request->hasParameter('step_id'))
+				$this->workflow = TBGContext::factory()->TBGWorkflow($request['workflow_id']);
+				if ($request['mode'] == 'edit' && !$request->hasParameter('step_id'))
 				{
 					$this->step = new TBGWorkflowStep();
 					$this->step->setWorkflow($this->workflow);
 				}
 				else
 				{
-					$this->step = TBGContext::factory()->TBGWorkflowStep($request->getParameter('step_id'));
+					$this->step = TBGContext::factory()->TBGWorkflowStep($request['step_id']);
 				}
-				if ($request->isPost() && $request->getParameter('mode') == 'delete_outgoing_transitions')
+				if ($request->isPost() && $request['mode'] == 'delete_outgoing_transitions')
 				{
 					$this->step->deleteOutgoingTransitions();
 					$this->forward(TBGContext::getRouting()->generate('configure_workflow_steps', array('workflow_id' => $this->workflow->getID())));
 				}
-				if ($request->isPost() && $request->getParameter('mode') == 'delete' && !$this->step->hasIncomingTransitions())
+				if ($request->isPost() && $request['mode'] == 'delete' && !$this->step->hasIncomingTransitions())
 				{
 					$this->step->deleteOutgoingTransitions();
 					$this->step->delete();
 					$this->forward(TBGContext::getRouting()->generate('configure_workflow_steps', array('workflow_id' => $this->workflow->getID())));
 				}
-				elseif ($request->isPost() && ($request->hasParameter('edit') || $request->getParameter('mode') == 'edit'))
+				elseif ($request->isPost() && ($request->hasParameter('edit') || $request['mode'] == 'edit'))
 				{
-					$this->step->setName($request->getParameter('name'));
-					$this->step->setDescription($request->getParameter('description'));
-					$this->step->setLinkedStatusID($request->getParameter('status_id'));
-					$this->step->setIsEditable((bool) $request->getParameter('is_editable'));
-					$this->step->setIsClosed((bool) ($request->getParameter('state') == TBGIssue::STATE_CLOSED));
+					$this->step->setName($request['name']);
+					$this->step->setDescription($request['description']);
+					$this->step->setLinkedStatusID($request['status_id']);
+					$this->step->setIsEditable((bool) $request['is_editable']);
+					$this->step->setIsClosed((bool) ($request['state'] == TBGIssue::STATE_CLOSED));
 					$this->step->save();
 					$this->forward(TBGContext::getRouting()->generate('configure_workflow_step', array('workflow_id' => $this->workflow->getID(), 'step_id' => $this->step->getID())));
 				}
@@ -2839,28 +2839,28 @@
 			
 			try
 			{
-				$this->workflow = TBGContext::factory()->TBGWorkflow($request->getParameter('workflow_id'));
+				$this->workflow = TBGContext::factory()->TBGWorkflow($request['workflow_id']);
 				if ($request->hasParameter('transition_id'))
 				{
-					$mode = $request->getParameter('mode');
-					$this->transition = TBGContext::factory()->TBGWorkflowTransition($request->getParameter('transition_id'));
+					$mode = $request['mode'];
+					$this->transition = TBGContext::factory()->TBGWorkflowTransition($request['transition_id']);
 					if ($request->isPost())
 					{
 						if ($mode == 'delete')
 						{
-							$this->transition->deleteTransition($request->getParameter('direction'));
+							$this->transition->deleteTransition($request['direction']);
 							return $this->renderJSON(array('failed' => false));
 						}
 						elseif ($mode == 'delete_action')
 						{
-							$this->action = TBGContext::factory()->TBGWorkflowTransitionAction($request->getParameter('action_id'));
+							$this->action = TBGContext::factory()->TBGWorkflowTransitionAction($request['action_id']);
 							$this->action->delete();
 							return $this->renderJSON(array('failed' => false, 'message' => TBGContext::getI18n()->__('The action has been deleted')));
 						}
 						elseif ($mode == 'new_action')
 						{
 							$action = new TBGWorkflowTransitionAction();
-							$action->setActionType($request->getParameter('action_type'));
+							$action->setActionType($request['action_type']);
 							$action->setTransition($this->transition);
 							$action->setWorkflow($this->workflow);
 							$action->setTargetValue('');
@@ -2869,10 +2869,10 @@
 						}
 						elseif ($mode == 'update_action')
 						{
-							$this->action = TBGContext::factory()->TBGWorkflowTransitionAction($request->getParameter('action_id'));
-							$this->action->setTargetValue($request->getParameter('target_value'));
+							$this->action = TBGContext::factory()->TBGWorkflowTransitionAction($request['action_id']);
+							$this->action->setTargetValue($request['target_value']);
 							$this->action->save();
-							$text = $request->getParameter('target_value');
+							$text = $request['target_value'];
 							switch ($this->action->getActionType())
 							{
 								case TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE:
@@ -2898,21 +2898,21 @@
 						}
 						elseif ($mode == 'delete_validation_rule')
 						{
-							$this->rule = TBGContext::factory()->TBGWorkflowTransitionValidationRule($request->getParameter('rule_id'));
+							$this->rule = TBGContext::factory()->TBGWorkflowTransitionValidationRule($request['rule_id']);
 							$this->rule->delete();
 							return $this->renderJSON(array('failed' => false, 'message' => TBGContext::getI18n()->__('The validation rule has been deleted')));
 						}
 						elseif ($mode == 'new_validation_rule')
 						{
 							$rule = new TBGWorkflowTransitionValidationRule();
-							if ($request->getParameter('postorpre') == 'post')
+							if ($request['postorpre'] == 'post')
 							{
-								$exists = (bool) ($this->transition->hasPostValidationRule($request->getParameter('rule')));
+								$exists = (bool) ($this->transition->hasPostValidationRule($request['rule']));
 								if (!$exists) $rule->setPost();
 							}
-							elseif ($request->getParameter('postorpre') == 'pre')
+							elseif ($request['postorpre'] == 'pre')
 							{
-								$exists = (bool) ($this->transition->hasPreValidationRule($request->getParameter('rule')));
+								$exists = (bool) ($this->transition->hasPreValidationRule($request['rule']));
 								if (!$exists) $rule->setPre();
 							}
 							if ($exists)
@@ -2920,7 +2920,7 @@
 								$this->getResponse()->setHttpStatus(400);
 								return $this->renderJSON(array('failed' => true, 'message' => TBGContext::getI18n()->__('This validation rule already exist')));
 							}
-							$rule->setRule($request->getParameter('rule'));
+							$rule->setRule($request['rule']);
 							$rule->setRuleValue('');
 							$rule->setTransition($this->transition);
 							$rule->setWorkflow($this->workflow);
@@ -2930,19 +2930,19 @@
 						}
 						elseif ($mode == 'update_validation_rule')
 						{
-							$this->rule = TBGContext::factory()->TBGWorkflowTransitionValidationRule($request->getParameter('rule_id'));
+							$this->rule = TBGContext::factory()->TBGWorkflowTransitionValidationRule($request['rule_id']);
 							$text = null;
 							switch ($this->rule->getRule())
 							{
 								case TBGWorkflowTransitionValidationRule::RULE_MAX_ASSIGNED_ISSUES:
-									$this->rule->setRuleValue($request->getParameter('rule_value'));
+									$this->rule->setRuleValue($request['rule_value']);
 									$text = ($this->rule->getRuleValue()) ? $this->rule->getRuleValue() : TBGContext::getI18n()->__('Unlimited');
 									break;
 								case TBGWorkflowTransitionValidationRule::RULE_PRIORITY_VALID:
 								case TBGWorkflowTransitionValidationRule::RULE_REPRODUCABILITY_VALID:
 								case TBGWorkflowTransitionValidationRule::RULE_RESOLUTION_VALID:
 								case TBGWorkflowTransitionValidationRule::RULE_STATUS_VALID:
-									$this->rule->setRuleValue(join(',', $request->getParameter('rule_value')));
+									$this->rule->setRuleValue(join(',', $request['rule_value']));
 									$text = ($this->rule->getRuleValue()) ? $this->rule->getRuleValueAsJoinedString() : TBGContext::getI18n()->__('Any valid value');
 									break;
 								//case TBGWorkflowTransitionValidationRule::RULE_:
@@ -2952,13 +2952,13 @@
 							$this->rule->save();
 							return $this->renderJSON(array('failed' => false, 'content' => $text));
 						}
-						elseif ($request->getParameter('transition_name') && $request->getParameter('outgoing_step_id') && $request->hasParameter('template'))
+						elseif ($request['transition_name'] && $request['outgoing_step_id'] && $request->hasParameter('template'))
 						{
-							$this->transition->setName($request->getParameter('transition_name'));
-							$this->transition->setDescription($request->getParameter('transition_description'));
-							if ($request->getParameter('template'))
+							$this->transition->setName($request['transition_name']);
+							$this->transition->setDescription($request['transition_description']);
+							if ($request['template'])
 							{
-								$this->transition->setTemplate($request->getParameter('template'));
+								$this->transition->setTemplate($request['template']);
 							}
 							else
 							{
@@ -2966,7 +2966,7 @@
 							}
 							try
 							{
-								$step = TBGContext::factory()->TBGWorkflowStep($request->getParameter('outgoing_step_id'));
+								$step = TBGContext::factory()->TBGWorkflowStep($request['outgoing_step_id']);
 							}
 							catch (Exception $e) {}
 							$this->transition->setOutgoingStep($step);
@@ -2978,30 +2978,30 @@
 				}
 				elseif ($request->isPost() && $request->hasParameter('step_id'))
 				{
-					$step = TBGContext::factory()->TBGWorkflowStep($request->getParameter('step_id'));
+					$step = TBGContext::factory()->TBGWorkflowStep($request['step_id']);
 					/*if ($step->isCore() || $workflow->isCore())
 					{
 						throw new InvalidArgumentException("The default workflow cannot be edited");
 					}*/
-					if ($request->getParameter('add_transition_type') == 'existing' && $request->hasParameter('existing_transition_id'))
+					if ($request['add_transition_type'] == 'existing' && $request->hasParameter('existing_transition_id'))
 					{
-						$transition = TBGContext::factory()->TBGWorkflowTransition($request->getParameter('existing_transition_id'));
+						$transition = TBGContext::factory()->TBGWorkflowTransition($request['existing_transition_id']);
 						$redirect_transition = false;
 					}
 					else
 					{
-						if ($request->getParameter('transition_name') && $request->getParameter('outgoing_step_id') && $request->hasParameter('template'))
+						if ($request['transition_name'] && $request['outgoing_step_id'] && $request->hasParameter('template'))
 						{
-							if (($outgoing_step = TBGContext::factory()->TBGWorkflowStep((int) $request->getParameter('outgoing_step_id'))) && $step instanceof TBGWorkflowStep)
+							if (($outgoing_step = TBGContext::factory()->TBGWorkflowStep((int) $request['outgoing_step_id'])) && $step instanceof TBGWorkflowStep)
 							{
-								if (array_key_exists($request->getParameter('template'), TBGWorkflowTransition::getTemplates()))
+								if (array_key_exists($request['template'], TBGWorkflowTransition::getTemplates()))
 								{
 									$transition = new TBGWorkflowTransition();
 									$transition->setWorkflow($this->workflow);
-									$transition->setName($request->getParameter('transition_name'));
-									$transition->setDescription($request->getParameter('transition_description'));
+									$transition->setName($request['transition_name']);
+									$transition->setDescription($request['transition_description']);
 									$transition->setOutgoingStep($outgoing_step);
-									$transition->setTemplate($request->getParameter('template'));
+									$transition->setTemplate($request['template']);
 									$transition->save();
 									$step->addOutgoingTransition($transition);
 									$redirect_transition = true;
@@ -3057,15 +3057,15 @@
 		{
 			try
 			{
-				$mode = $request->getParameter('mode');
-				if ($client_name = $request->getParameter('client_name'))
+				$mode = $request['mode'];
+				if ($client_name = $request['client_name'])
 				{
-					if (TBGClient::doesClientNameExist(trim($request->getParameter('client_name'))))
+					if (TBGClient::doesClientNameExist(trim($request['client_name'])))
 					{
 						throw new Exception(TBGContext::getI18n()->__("Please enter a client name that doesn't already exist"));
 					}
 					$client = new TBGClient();
-					$client->setName($request->getParameter('client_name'));
+					$client->setName($request['client_name']);
 					$client->save();
 
 					$message = TBGContext::getI18n()->__('The client was added');
@@ -3089,7 +3089,7 @@
 			{
 				try
 				{
-					$client = TBGContext::factory()->TBGClient($request->getParameter('client_id'));
+					$client = TBGContext::factory()->TBGClient($request['client_id']);
 				}
 				catch (Exception $e) { }
 				if (!$client instanceof TBGClient)
@@ -3120,7 +3120,7 @@
 		{
 			try
 			{
-				$client = TBGContext::factory()->TBGClient((int) $request->getParameter('client_id'));
+				$client = TBGContext::factory()->TBGClient((int) $request['client_id']);
 				$users = $client->getMembers();
 				return $this->renderJSON(array('failed' => false, 'content' => $this->getTemplateHTML('configuration/clientuserlist', array('users' => $users))));
 			}
@@ -3137,7 +3137,7 @@
 			{
 				try
 				{
-					$client = TBGContext::factory()->TBGClient($request->getParameter('client_id'));
+					$client = TBGContext::factory()->TBGClient($request['client_id']);
 				}
 				catch (Exception $e) { }
 				if (!$client instanceof TBGClient)
@@ -3145,16 +3145,16 @@
 					throw new Exception(TBGContext::getI18n()->__("You cannot edit this client"));
 				}
 				
-				if (TBGClient::doesClientNameExist(trim($request->getParameter('client_name'))) && $request->getParameter('client_name') != $client->getName())
+				if (TBGClient::doesClientNameExist(trim($request['client_name'])) && $request['client_name'] != $client->getName())
 				{
 					throw new Exception(TBGContext::getI18n()->__("Please enter a client name that doesn't already exist"));
 				}
 				
-				$client->setName($request->getParameter('client_name'));
-				$client->setEmail($request->getParameter('client_email'));
-				$client->setWebsite($request->getParameter('client_website'));
-				$client->setTelephone($request->getParameter('client_telephone'));
-				$client->setFax($request->getParameter('client_fax'));
+				$client->setName($request['client_name']);
+				$client->setEmail($request['client_email']);
+				$client->setWebsite($request['client_website']);
+				$client->setTelephone($request['client_telephone']);
+				$client->setFax($request['client_fax']);
 				$client->save();
 				return $this->renderJSON(array('success' => true, 'content' => $this->getTemplateHTML('configuration/clientbox', array('client' => $client)), 'message' => TBGContext::getI18n()->__('The client was saved')));
 			}
@@ -3167,7 +3167,7 @@
 		
 		public function runImportCSV(TBGRequest $request)
 		{
-			$content = $this->getTemplateHTML('configuration/importcsv', array('type' => $request->getParameter('type')));
+			$content = $this->getTemplateHTML('configuration/importcsv', array('type' => $request['type']));
 			return $this->renderJSON(array('failed' => false, 'content' => $content));
 		}
 		
@@ -3175,13 +3175,13 @@
 		{
 			try
 			{
-				if ($request->getParameter('csv_data') == '')
+				if ($request['csv_data'] == '')
 				{
 					throw new Exception(TBGContext::getI18n()->__('No data supplied to import'));
 				}
 				
 				// Split data into individual lines
-				$data = str_replace("\r\n", "\n", $request->getParameter('csv_data'));
+				$data = str_replace("\r\n", "\n", $request['csv_data']);
 				$data = explode("\n", $data);
 				if (count($data) <= 1)
 				{
@@ -3199,7 +3199,7 @@
 				$errors = array();
 				
 				// inspect for correct rows
-				switch ($request->getParameter('type'))
+				switch ($request['type'])
 				{
 					case 'clients':
 						$namecol = null;
@@ -3441,7 +3441,7 @@
 				if (count($errors) == 0)
 				{
 					// Check if fields are valid
-					switch ($request->getParameter('type'))
+					switch ($request['type'])
 					{
 						case 'projects':
 							for ($i = 1; $i != count($data); $i++)
@@ -3896,13 +3896,13 @@
 				return $this->renderJSON(array('failed' => true, 'errordetail' => $e->getMessage(), 'error' => $e->getMessage()));
 			}
 				
-			if ($request->getParameter('csv_dry_run'))
+			if ($request['csv_dry_run'])
 			{
 				return $this->renderJSON(array('failed' => false, 'message' => TBGContext::getI18n()->__('Dry-run successful, you can now uncheck the dry-run box and import your data.')));
 			}
 			else
 			{
-				switch ($request->getParameter('type'))
+				switch ($request['type'])
 				{
 					case 'clients':
 						for ($i = 1; $i != count($data); $i++)
@@ -4192,12 +4192,12 @@
 		{
 			try
 			{
-				$this->project = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
+				$this->project = TBGContext::factory()->TBGProject($request['project_id']);
 			}
 			catch (Exception $e) {}
 			
 			if (!$this->project instanceof TBGProject) return $this->return404(TBGContext::getI18n()->__("This project doesn't exist"));
-			$this->project->setName($request->getParameter('project_name'));
+			$this->project->setName($request['project_name']);
 			
 			return $this->renderJSON(array('content' => $this->project->getKey()));
 		}
@@ -4206,10 +4206,10 @@
 		{
 			if ($request->isPost())
 			{
-				$hostname = $request->getParameter('hostname');
+				$hostname = $request['hostname'];
 				$hostname = str_replace(array('http://', 'https://'), array('', ''), $hostname);
 				
-				$scopename = $request->getParameter('name');
+				$scopename = $request['name'];
 				if (!$hostname || TBGScopesTable::getTable()->getByHostname($hostname) instanceof TBGScope)
 				{
 					$this->scope_hostname_error = true;
@@ -4234,7 +4234,7 @@
 
 		public function runScope(TBGRequest $request)
 		{
-			$this->scope = new TBGScope($request->getParameter('id'));
+			$this->scope = new TBGScope($request['id']);
 			$modules = TBGModulesTable::getTable()->getModulesForScope($this->scope->getID());
 			$this->modules = $modules;
 			$this->scope_save_error = TBGContext::getMessageAndClear('scope_save_error');
@@ -4244,7 +4244,7 @@
 			{
 				try
 				{
-					if ($request->getParameter('scope_action') == 'delete')
+					if ($request['scope_action'] == 'delete')
 					{
 						if (!$this->scope->isDefault())
 						{
@@ -4259,22 +4259,22 @@
 					}
 					else
 					{
-						if (!$request->getParameter('name'))
+						if (!$request['name'])
 						{
 							throw new Exception(TBGContext::getI18n()->__('Please specify a scope name'));
 						}
-						$this->scope->setName($request->getParameter('name'));
-						$this->scope->setDescription($request->getParameter('description'));
-						$this->scope->setCustomWorkflowsEnabled((bool) $request->getParameter('custom_workflows_enabled'));
-						$this->scope->setMaxWorkflowsLimit((int) $request->getParameter('workflow_limit'));
-						$this->scope->setUploadsEnabled((bool) $request->getParameter('file_uploads_enabled'));
-						$this->scope->setMaxUploadLimit((int) $request->getParameter('upload_limit'));
-						$this->scope->setMaxProjects((int) $request->getParameter('project_limit'));
-						$this->scope->setMaxUsers((int) $request->getParameter('user_limit'));
-						$this->scope->setMaxTeams((int) $request->getParameter('team_limit'));
+						$this->scope->setName($request['name']);
+						$this->scope->setDescription($request['description']);
+						$this->scope->setCustomWorkflowsEnabled((bool) $request['custom_workflows_enabled']);
+						$this->scope->setMaxWorkflowsLimit((int) $request['workflow_limit']);
+						$this->scope->setUploadsEnabled((bool) $request['file_uploads_enabled']);
+						$this->scope->setMaxUploadLimit((int) $request['upload_limit']);
+						$this->scope->setMaxProjects((int) $request['project_limit']);
+						$this->scope->setMaxUsers((int) $request['user_limit']);
+						$this->scope->setMaxTeams((int) $request['team_limit']);
 						$this->scope->save();
 
-						$enabled_modules = $request->getParameter('module_enabled');
+						$enabled_modules = $request['module_enabled'];
 						$prev_scope = TBGContext::getScope();
 						foreach ($enabled_modules as $module => $enabled)
 						{
@@ -4305,8 +4305,8 @@
 		{
 			try
 			{
-				$project = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
-				$project->removeAssignee($request->getParameter('assignee_type'), $request->getParameter('assignee_id'));
+				$project = TBGContext::factory()->TBGProject($request['project_id']);
+				$project->removeAssignee($request['assignee_type'], $request['assignee_id']);
 				return $this->renderJSON(array('failed' => false, 'message' => TBGContext::getI18n()->__('The assignee has been removed')));
 			}
 			catch (Exception $e)
@@ -4317,17 +4317,17 @@
 		
 		public function runProjectIcons(TBGRequest $request)
 		{
-			$project = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
+			$project = TBGContext::factory()->TBGProject($request['project_id']);
 			if ($request->isPost())
 			{
-				if ($request->getParameter('clear_icons'))
+				if ($request['clear_icons'])
 				{
 					$project->clearSmallIcon();
 					$project->clearLargeIcon();
 				}
 				else
 				{
-					switch ($request->getParameter('small_icon_action'))
+					switch ($request['small_icon_action'])
 					{
 						case 'upload_file':
 							$file = $request->handleUpload('small_icon');
@@ -4337,7 +4337,7 @@
 							$project->clearSmallIcon();
 							break;
 					}
-					switch ($request->getParameter('large_icon_action'))
+					switch ($request['large_icon_action'])
 					{
 						case 'upload_file':
 							$file = $request->handleUpload('large_icon');
@@ -4363,7 +4363,7 @@
 
 		public function runProjectWorkflow(TBGRequest $request)
 		{
-			$project = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
+			$project = TBGContext::factory()->TBGProject($request['project_id']);
 			
 			try
 			{
@@ -4377,7 +4377,7 @@
 					$project->convertIssueStepPerIssuetype($type, $data);
 				}
 				
-				$project->setWorkflowScheme(TBGContext::factory()->TBGWorkflowScheme($request->getParameter('workflow_id')));
+				$project->setWorkflowScheme(TBGContext::factory()->TBGWorkflowScheme($request['workflow_id']));
 				$project->save();
 				
 				return $this->renderJSON(array('message' => TBGContext::geti18n()->__('Workflow scheme changed and issues updated')));
@@ -4391,12 +4391,12 @@
 
 		public function runProjectWorkflowTable(TBGRequest $request)
 		{
-			$project = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
+			$project = TBGContext::factory()->TBGProject($request['project_id']);
 			if ($request->isPost())
 			{
 				try
 				{
-					$workflow_scheme = TBGContext::factory()->TBGWorkflowScheme($request->getParameter('new_workflow'));
+					$workflow_scheme = TBGContext::factory()->TBGWorkflowScheme($request['new_workflow']);
 					return $this->renderJSON(array('content' => $this->getTemplateHtml('projectworkflow_table', array('project' => $project, 'new_workflow' => $workflow_scheme))));
 				}
 				catch (Exception $e)

@@ -1,7 +1,7 @@
 <tr id="<?php echo $link['target_type']; ?>_<?php echo $link['target_id']; ?>_links_<?php echo $link_id; ?>">
 	<td>
 		<?php if ($link['target_type'] == 'wiki' && $link['url'] != ''): ?>
-			<?php if ($tbg_routing->getCurrentRouteModule() == 'publish' && $tbg_request->getParameter('article_name') == $link['url']): ?>
+			<?php if ($tbg_routing->getCurrentRouteModule() == 'publish' && $tbg_request['article_name'] == $link['url']): ?>
 				<?php echo link_tag(make_url('publish_article', array('article_name' => $link['url'])), (($link['description'] != '') ? $link['description'] : $link['url']), array('class' => 'selected')); ?>
 			<?php else: ?>
 				<?php echo link_tag(make_url('publish_article', array('article_name' => $link['url'])), (($link['description'] != '') ? $link['description'] : $link['url'])); ?>

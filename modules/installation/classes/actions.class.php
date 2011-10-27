@@ -24,7 +24,7 @@
 		{
 			$this->getResponse()->setDecoration(TBGResponse::DECORATE_NONE);
 			
-			if (($step = $request->getParameter('step')) && $step >= 1 && $step <= 6)
+			if (($step = $request['step']) && $step >= 1 && $step <= 6)
 			{
 				if ($step >= 5)
 				{
@@ -193,37 +193,37 @@
 		 */
 		public function runInstallStep3(TBGRequest $request)
 		{
-			$this->selected_connection_detail = $request->getParameter('connection_type');
+			$this->selected_connection_detail = $request['connection_type'];
 			try
 			{
-				if ($this->username = $request->getParameter('db_username'))
+				if ($this->username = $request['db_username'])
 				{
 					\b2db\Core::setUname($this->username);
-					\b2db\Core::setTablePrefix($request->getParameter('db_prefix'));
+					\b2db\Core::setTablePrefix($request['db_prefix']);
 					if ($this->password = $request->getRawParameter('db_password'))
 						\b2db\Core::setPasswd($this->password);
 
 					if ($this->selected_connection_detail == 'dsn')
 					{
-						if (($this->dsn = $request->getParameter('db_dsn')) != '')
+						if (($this->dsn = $request['db_dsn']) != '')
 							\b2db\Core::setDSN($this->dsn);
 						else
 							throw new Exception('You must provide a valid DSN');
 					}
 					else
 					{
-						if ($this->db_type = $request->getParameter('db_type'))
+						if ($this->db_type = $request['db_type'])
 						{
 							\b2db\Core::setDBtype($this->db_type);
-							if ($this->db_hostname = $request->getParameter('db_hostname'))
+							if ($this->db_hostname = $request['db_hostname'])
 								\b2db\Core::setHost($this->db_hostname);
 							else
 								throw new Exception('You must provide a database hostname');
 
-							if ($this->db_port = $request->getParameter('db_port'))
+							if ($this->db_port = $request['db_port'])
 								\b2db\Core::setPort($this->db_port);
 
-							if ($this->db_databasename = $request->getParameter('db_name'))
+							if ($this->db_databasename = $request['db_name'])
 								\b2db\Core::setDBname($this->db_databasename);
 							else
 								throw new Exception('You must provide a database to use');
@@ -300,9 +300,9 @@
 				TBGSettings::saveSetting('language', 'en_US', 'core', 1);
 
 				$this->htaccess_error = false;
-				$this->htaccess_ok = (bool) $request->getParameter('apache_autosetup');
+				$this->htaccess_ok = (bool) $request['apache_autosetup'];
 
-				if ($request->getParameter('apache_autosetup'))
+				if ($request['apache_autosetup'])
 				{
 					if (!is_writable(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/') || (file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.htaccess') && !is_writable(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.htaccess')))
 					{
@@ -310,7 +310,7 @@
 					}
 					else
 					{
-						$content = str_replace('###PUT URL SUBDIRECTORY HERE###', $request->getParameter('url_subdir'), file_get_contents(THEBUGGENIE_CORE_PATH . '/templates/htaccess.template'));
+						$content = str_replace('###PUT URL SUBDIRECTORY HERE###', $request['url_subdir'], file_get_contents(THEBUGGENIE_CORE_PATH . '/templates/htaccess.template'));
 						file_put_contents(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.htaccess', $content);
 						if (file_get_contents(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.htaccess') != $content)
 						{

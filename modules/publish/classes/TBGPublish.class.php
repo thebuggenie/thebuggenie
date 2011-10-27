@@ -201,7 +201,7 @@
 			if ($request->hasParameter('import_articles'))
 			{
 				$cc = 0;
-				foreach ($request->getParameter('import_article') as $article_name => $import)
+				foreach ($request['import_article'] as $article_name => $import)
 				{
 					$cc++;
 					TBGArticlesTable::getTable()->deleteArticleByName(urldecode($article_name));

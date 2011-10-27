@@ -17,9 +17,9 @@
 		{
 			try
 			{
-				if ($project_key = $request->getParameter('project_key'))
+				if ($project_key = $request['project_key'])
 					$this->selected_project = TBGProject::getByKey($project_key);
-				elseif ($project_id = (int) $request->getParameter('project_id'))
+				elseif ($project_id = (int) $request['project_id'])
 					$this->selected_project = TBGContext::factory()->TBGProject($project_id);
 				
 				TBGContext::setCurrentProject($this->selected_project);
@@ -55,7 +55,7 @@
 
 		public function runListFieldvalues(TBGRequest $request)
 		{
-			$field_key = $request->getParameter('field_key');
+			$field_key = $request['field_key'];
 			$return_array = array('description' => null, 'type' => null, 'choices' => null);
 			if ($field_key == 'title' || in_array($field_key, TBGDatatypeBase::getAvailableFields(true)))
 			{

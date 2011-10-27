@@ -135,13 +135,13 @@
 					if ($this->getTargetValue())
 						$issue->setStatus(TBGContext::factory()->TBGStatus((int) $this->getTargetValue()));
 					else
-						$issue->setStatus($request->getParameter('status_id'));
+						$issue->setStatus($request['status_id']);
 					break;
 				case self::ACTION_SET_MILESTONE:
 					if ($this->getTargetValue())
 						$issue->setMilestone(TBGContext::factory()->TBGMilestone((int) $this->getTargetValue()));
 					else
-						$issue->setMilestone($request->getParameter('milestone_id'));
+						$issue->setMilestone($request['milestone_id']);
 					break;
 				case self::ACTION_CLEAR_PRIORITY:
 					$issue->setPriority(null);
@@ -150,7 +150,7 @@
 					if ($this->getTargetValue())
 						$issue->setPriority(TBGContext::factory()->TBGPriority((int) $this->getTargetValue()));
 					else
-						$issue->setPriority($request->getParameter('priority_id'));
+						$issue->setPriority($request['priority_id']);
 					break;
 				case self::ACTION_CLEAR_PERCENT:
 					$issue->setPercentCompleted(0);
@@ -159,13 +159,13 @@
 					if ($this->getTargetValue())
 						$issue->setPercentCompleted((int) $this->getTargetValue());
 					else
-						$issue->setPercentCompleted((int) $request->getParameter('percent_complete_id'));
+						$issue->setPercentCompleted((int) $request['percent_complete_id']);
 					break;
 				case self::ACTION_CLEAR_DUPLICATE:
 					$issue->setDuplicateOf(null);
 					break;
 				case self::ACTION_SET_DUPLICATE:
-					$issue->setDuplicateOf($request->getParameter('duplicate_issue_id'));
+					$issue->setDuplicateOf($request['duplicate_issue_id']);
 					break;
 				case self::ACTION_CLEAR_RESOLUTION:
 					$issue->setResolution(null);
@@ -174,7 +174,7 @@
 					if ($this->getTargetValue())
 						$issue->setResolution(TBGContext::factory()->TBGResolution((int) $this->getTargetValue()));
 					else
-						$issue->setResolution($request->getParameter('resolution_id'));
+						$issue->setResolution($request['resolution_id']);
 					break;
 				case self::ACTION_CLEAR_REPRODUCABILITY:
 					$issue->setReproducability(null);
@@ -183,7 +183,7 @@
 					if ($this->getTargetValue())
 						$issue->setReproducability(TBGContext::factory()->TBGReproducability((int) $this->getTargetValue()));
 					else
-						$issue->setReproducability($request->getParameter('reproducability_id'));
+						$issue->setReproducability($request['reproducability_id']);
 					break;
 				case self::ACTION_CLEAR_ASSIGNEE:
 					$issue->unsetAssignee();
@@ -196,13 +196,13 @@
 					else
 					{
 						$assignee = null;
-						switch ($request->getParameter('assignee_type'))
+						switch ($request['assignee_type'])
 						{
 							case TBGIdentifiableClass::TYPE_USER:
-								$assignee = TBGContext::factory()->TBGUser($request->getParameter('assignee_id'));
+								$assignee = TBGContext::factory()->TBGUser($request['assignee_id']);
 								break;
 							case TBGIdentifiableClass::TYPE_TEAM:
-								$assignee = TBGContext::factory()->TBGTeam($request->getParameter('assignee_id'));
+								$assignee = TBGContext::factory()->TBGTeam($request['assignee_id']);
 								break;
 						}
 						if ((bool) $request->getParameter('assignee_teamup', false))
@@ -250,7 +250,7 @@
 			switch ($this->_action_type)
 			{
 				case self::ACTION_ASSIGN_ISSUE:
-					return (bool) $request->getParameter('assignee_type') && $request->getParameter('assignee_id');
+					return (bool) $request['assignee_type'] && $request['assignee_id'];
 					break;
 				case self::ACTION_SET_MILESTONE:
 					return (bool) $request->hasParameter('milestone_id');

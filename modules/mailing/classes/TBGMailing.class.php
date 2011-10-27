@@ -140,7 +140,7 @@
 					switch($setting)
 					{
 						case 'smtp_host':
-							if ($request->getParameter('mail_type') == TBGMailer::MAIL_TYPE_B2M && !tbg_check_syntax($value, "MAILSERVER"))
+							if ($request['mail_type'] == TBGMailer::MAIL_TYPE_B2M && !tbg_check_syntax($value, "MAILSERVER"))
 							{
 								throw new Exception(TBGContext::getI18n()->__('Please provide a valid setting for SMTP server address'));
 							}
@@ -152,13 +152,13 @@
 							}
 							break;
 						case 'timeout':
-							if ($request->getParameter('mail_type') == TBGMailer::MAIL_TYPE_B2M && !is_numeric($value) || $value < 0)
+							if ($request['mail_type'] == TBGMailer::MAIL_TYPE_B2M && !is_numeric($value) || $value < 0)
 							{
 								throw new Exception(TBGContext::getI18n()->__('Please provide a valid setting for SMTP server timeout'));
 							}
 							break;
 						case 'smtp_port':
-							if ($request->getParameter('mail_type') == TBGMailer::MAIL_TYPE_B2M && !is_numeric($value) || $value < 1)
+							if ($request['mail_type'] == TBGMailer::MAIL_TYPE_B2M && !is_numeric($value) || $value < 1)
 							{
 								throw new Exception(TBGContext::getI18n()->__('Please provide a valid setting for SMTP server port'));
 							}							
@@ -780,7 +780,7 @@
 		public function postAccountSettings(TBGRequest $request)
 		{
 			$uid = TBGContext::getUser()->getID();
-			switch ($request->getParameter('notification_settings_preset'))
+			switch ($request['notification_settings_preset'])
 			{
 				case 'silent':
 					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_POSTED_UPDATED, true, $uid);
