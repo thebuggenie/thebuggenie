@@ -526,6 +526,11 @@
 			return ($this->getMethod() == $method) ? true : false;
 		}
 
+		public function isPost()
+		{
+			return $this->isMethod(self::POST);
+		}
+
 		/**
 		 * Check if the current request is an ajax call
 		 *

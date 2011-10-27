@@ -78,7 +78,7 @@
 			$message = TBGContext::getMessageAndClear('issue_saved');
 			$uploaded = TBGContext::getMessageAndClear('issue_file_uploaded');
 			
-			if ($request->isMethod(TBGRequest::POST) && $issue instanceof TBGIssue && $request->hasParameter('issue_action'))
+			if ($request->isPost() && $issue instanceof TBGIssue && $request->hasParameter('issue_action'))
 			{
 				switch ($request->getParameter('issue_action'))
 				{
@@ -267,7 +267,7 @@
 					TBGContext::setCurrentProject($project);
 				}
 			}
-			if ($request->isMethod(TBGRequest::POST) && $request->getParameter('setup_default_dashboard'))
+			if ($request->isPost() && $request->getParameter('setup_default_dashboard'))
 			{
 				TBGDashboardViewsTable::getTable()->setDefaultViews($this->getUser()->getID(), TBGDashboardViewsTable::TYPE_USER);
 				$this->forward($this->getRouting()->generate('dashboard'));
@@ -450,7 +450,7 @@
 			$forward_url = TBGContext::getRouting()->generate('home');
 
 			$openid = new LightOpenID(TBGContext::getRouting()->generate('login_page', array(), false));
-			if (!$openid->mode && $request->isMethod(TBGRequest::POST) && $request->hasParameter('openid_identifier')) 
+			if (!$openid->mode && $request->isPost() && $request->hasParameter('openid_identifier')) 
 			{
 				$openid->identity = $request->getRawParameter('openid_identifier');
 				$openid->required = array('contact/email');
@@ -739,7 +739,7 @@
 		public function runMyAccount(TBGRequest $request)
 		{
 			$this->forward403unless(TBGContext::getUser()->hasPageAccess('account'));
-			if ($request->isMethod(TBGRequest::POST) && $request->hasParameter('mode'))
+			if ($request->isPost() && $request->hasParameter('mode'))
 			{
 				switch ($request->getParameter('mode'))
 				{
@@ -808,7 +808,7 @@
 		public function runAccountChangePassword(TBGRequest $request)
 		{
 			$this->forward403unless(TBGContext::getUser()->hasPageAccess('account'));
-			if ($request->isMethod(TBGRequest::POST))
+			if ($request->isPost())
 			{
 				if (TBGContext::getUser()->canChangePassword() == false)
 				{
@@ -1144,7 +1144,7 @@
 			
 			$this->forward403unless(TBGContext::getCurrentProject() instanceof TBGProject && TBGContext::getCurrentProject()->hasAccess() && TBGContext::getUser()->canReportIssues(TBGContext::getCurrentProject()));
 			
-			if ($request->isMethod(TBGRequest::POST))
+			if ($request->isPost())
 			{
 				if ($this->_postIssueValidation($request, $errors, $permission_errors))
 				{
@@ -2051,7 +2051,7 @@
 		 */		
 		public function runFindIdentifiable(TBGRequest $request)
 		{
-			$this->forward403unless($request->isMethod(TBGRequest::POST));
+			$this->forward403unless($request->isPost());
 			$this->users = array();
 			
 			if ($find_identifiable_by = $request->getParameter('find_identifiable_by'))

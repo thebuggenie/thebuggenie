@@ -112,7 +112,7 @@
 		 */
 		public function runImport(TBGRequest $request)
 		{
-			if ($request->isMethod(TBGRequest::POST))
+			if ($request->isPost())
 			{
 				if ($request->getParameter('import_sample_data'))
 				{
@@ -350,7 +350,7 @@
 		 */
 		public function runSettings(TBGRequest $request)
 		{
-			if (TBGContext::getRequest()->isMethod(TBGRequest::POST))
+			if (TBGContext::getRequest()->isPost())
 			{
 				$this->forward403unless($this->access_level == TBGSettings::ACCESS_FULL);
 				$settings = array(TBGSettings::SETTING_THEME_NAME, TBGSettings::SETTING_ALLOW_USER_THEMES, TBGSettings::SETTING_ONLINESTATE, TBGSettings::SETTING_ENABLE_GRAVATARS,
@@ -750,7 +750,7 @@
 		 */		
 		public function runFindAssignee(TBGRequest $request)
 		{
-			$this->forward403unless($request->isMethod(TBGRequest::POST));
+			$this->forward403unless($request->isPost());
 
 			$this->message = false;
 			
@@ -773,7 +773,7 @@
 		 */
 		public function runAssignToProject(TBGRequest $request)
 		{
-			$this->forward403unless($request->isMethod(TBGRequest::POST));
+			$this->forward403unless($request->isPost());
 									
 			if ($this->access_level == TBGSettings::ACCESS_FULL)
 			{
@@ -1054,7 +1054,7 @@
 			
 			if (!$this->project instanceof TBGProject) return $this->return404(TBGContext::getI18n()->__("This project doesn't exist"));
 			
-			if ($request->isMethod(TBGRequest::POST))
+			if ($request->isPost())
 			{
 				$this->forward403unless($this->access_level == TBGSettings::ACCESS_FULL, TBGContext::getI18n()->__('You do not have access to update these settings'));
 				
@@ -1981,7 +1981,7 @@
 				}
 				else
 				{
-					if ($request->isMethod(TBGRequest::POST) && $this->access_level == TBGSettings::ACCESS_FULL)
+					if ($request->isPost() && $this->access_level == TBGSettings::ACCESS_FULL)
 					{
 						try
 						{
@@ -2019,7 +2019,7 @@
 		public function runConfigureUploads(TBGRequest $request)
 		{
 			$this->uploads_enabled = TBGContext::getScope()->isUploadsEnabled();
-			if ($this->uploads_enabled && $request->isMethod(TBGRequest::POST))
+			if ($this->uploads_enabled && $request->isPost())
 			{
 				$this->forward403unless($this->access_level == TBGSettings::ACCESS_FULL);
 				if ($request->getParameter('upload_storage') == 'files' && (bool) $request->getParameter('enable_uploads'))
@@ -2065,7 +2065,7 @@
 		
 		public function runSaveAuthentication(TBGRequest $request)
 		{
-			if (TBGContext::getRequest()->isMethod(TBGRequest::POST))
+			if (TBGContext::getRequest()->isPost())
 			{
 				$this->forward403unless($this->access_level == TBGSettings::ACCESS_FULL);
 				$settings = array(TBGSettings::SETTING_AUTH_BACKEND, 'register_message', 'forgot_message', 'changepw_message', 'changedetails_message');
@@ -2571,7 +2571,7 @@
 				if ($edition_id = $request->getParameter('edition_id'))
 				{
 					$edition = TBGContext::factory()->TBGEdition($edition_id);
-					if ($request->isMethod(TBGRequest::POST))
+					if ($request->isPost())
 					{
 						if ($request->hasParameter('release_month') && $request->hasParameter('release_day') && $request->hasParameter('release_year'))
 						{
@@ -2662,7 +2662,7 @@
 		public function runConfigureWorkflows(TBGRequest $request)
 		{
 			$this->workflows = TBGWorkflow::getAll();
-			if ($request->isMethod(TBGRequest::POST))
+			if ($request->isPost())
 			{
 				try
 				{
@@ -2717,7 +2717,7 @@
 					$this->workflow_scheme->delete();
 					return $this->renderJSON(array('success' => true, 'message' => TBGContext::getI18n()->__('The workflow scheme was deleted')));
 				}
-				elseif (TBGContext::getScope()->isCustomWorkflowsEnabled() && $request->isMethod(TBGRequest::POST))
+				elseif (TBGContext::getScope()->isCustomWorkflowsEnabled() && $request->isPost())
 				{
 					foreach ($request->getParameter('workflow_id', array()) as $issuetype_id => $workflow_id)
 					{
@@ -2804,18 +2804,18 @@
 				{
 					$this->step = TBGContext::factory()->TBGWorkflowStep($request->getParameter('step_id'));
 				}
-				if ($request->isMethod(TBGRequest::POST) && $request->getParameter('mode') == 'delete_outgoing_transitions')
+				if ($request->isPost() && $request->getParameter('mode') == 'delete_outgoing_transitions')
 				{
 					$this->step->deleteOutgoingTransitions();
 					$this->forward(TBGContext::getRouting()->generate('configure_workflow_steps', array('workflow_id' => $this->workflow->getID())));
 				}
-				if ($request->isMethod(TBGRequest::POST) && $request->getParameter('mode') == 'delete' && !$this->step->hasIncomingTransitions())
+				if ($request->isPost() && $request->getParameter('mode') == 'delete' && !$this->step->hasIncomingTransitions())
 				{
 					$this->step->deleteOutgoingTransitions();
 					$this->step->delete();
 					$this->forward(TBGContext::getRouting()->generate('configure_workflow_steps', array('workflow_id' => $this->workflow->getID())));
 				}
-				elseif ($request->isMethod(TBGRequest::POST) && ($request->hasParameter('edit') || $request->getParameter('mode') == 'edit'))
+				elseif ($request->isPost() && ($request->hasParameter('edit') || $request->getParameter('mode') == 'edit'))
 				{
 					$this->step->setName($request->getParameter('name'));
 					$this->step->setDescription($request->getParameter('description'));
@@ -2844,7 +2844,7 @@
 				{
 					$mode = $request->getParameter('mode');
 					$this->transition = TBGContext::factory()->TBGWorkflowTransition($request->getParameter('transition_id'));
-					if ($request->isMethod(TBGRequest::POST))
+					if ($request->isPost())
 					{
 						if ($mode == 'delete')
 						{
@@ -2976,7 +2976,7 @@
 						}
 					}
 				}
-				elseif ($request->isMethod(TBGRequest::POST) && $request->hasParameter('step_id'))
+				elseif ($request->isPost() && $request->hasParameter('step_id'))
 				{
 					$step = TBGContext::factory()->TBGWorkflowStep($request->getParameter('step_id'));
 					/*if ($step->isCore() || $workflow->isCore())
@@ -4204,7 +4204,7 @@
 
 		public function runScopes(TBGRequest $request)
 		{
-			if ($request->isMethod(TBGRequest::POST))
+			if ($request->isPost())
 			{
 				$hostname = $request->getParameter('hostname');
 				$hostname = str_replace(array('http://', 'https://'), array('', ''), $hostname);
@@ -4240,7 +4240,7 @@
 			$this->scope_save_error = TBGContext::getMessageAndClear('scope_save_error');
 			$this->scope_saved = TBGContext::getMessageAndClear('scope_saved');
 
-			if ($request->isMethod(TBGRequest::POST))
+			if ($request->isPost())
 			{
 				try
 				{
@@ -4318,7 +4318,7 @@
 		public function runProjectIcons(TBGRequest $request)
 		{
 			$project = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
-			if ($request->isMethod(TBGRequest::POST))
+			if ($request->isPost())
 			{
 				if ($request->getParameter('clear_icons'))
 				{
@@ -4392,7 +4392,7 @@
 		public function runProjectWorkflowTable(TBGRequest $request)
 		{
 			$project = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
-			if ($request->isMethod(TBGRequest::POST))
+			if ($request->isPost())
 			{
 				try
 				{

@@ -1068,7 +1068,7 @@
 
 		public function runMilestone(TBGRequest $request)
 		{
-			if ($request->isMethod(TBGRequest::POST)) {
+			if ($request->isPost()) {
 				$milestone = new TBGMilestone($request->getParameter('milestone_id'));
 				$milestone->setName($request->getParameter('name'));
 				$milestone->setProject($this->selected_project);

@@ -485,7 +485,7 @@
 			}
 			$this->upgrade_complete = false;
 
-			if ($this->upgrade_available && $request->isMethod(TBGRequest::POST))
+			if ($this->upgrade_available && $request->isPost())
 			{
 				$this->upgrade_complete = false;
 				switch ($this->current_version)

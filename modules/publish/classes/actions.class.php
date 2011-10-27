@@ -226,7 +226,7 @@
 				TBGContext::setMessage('publish_article_error', TBGContext::getI18n()->__('You do not have permission to edit this article'));
 				$this->forward(TBGContext::getRouting()->generate('publish_article', array('article_name' => $article_name)));
 			}
-			if ($request->isMethod(TBGRequest::POST))
+			if ($request->isPost())
 			{
 				if ($request->hasParameter('new_article_name') && $request->getParameter('new_article_name') != '')
 				{
@@ -312,7 +312,7 @@
 				$this->article_title = $this->article->getTitle();
 				$this->article_content = $this->article->getContent();
 
-				if ($request->isMethod(TBGRequest::POST))
+				if ($request->isPost())
 				{
 					if ($request->hasParameter('new_article_name'))
 					{

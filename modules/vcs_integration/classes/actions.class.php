@@ -311,7 +311,7 @@
 		
 		public function runConfigureProjectSettings(TBGRequest $request)
 		{
-			$this->forward403unless($request->isMethod(TBGRequest::POST));
+			$this->forward403unless($request->isPost());
 									
 			if ($this->access_level != TBGSettings::ACCESS_FULL)
 			{

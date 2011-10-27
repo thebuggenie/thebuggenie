@@ -204,7 +204,7 @@
 		{
 			$this->_getSearchDetailsFromRequest($request);
 
-			if ($request->isMethod(TBGRequest::POST) && !$request->getParameter('quicksearch'))
+			if ($request->isPost() && !$request->getParameter('quicksearch'))
 			{
 				if ($request->getParameter('delete_saved_search'))
 				{
