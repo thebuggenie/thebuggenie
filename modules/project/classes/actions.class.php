@@ -71,6 +71,11 @@
 		{
 			$this->forward403unless($this->_checkProjectPageAccess('project_dashboard'));
 			
+			if ($request->isPost() && $request['setup_default_dashboard'] && $this->getUser()->canEditProjectDetails($this->selected_project))
+			{
+				TBGDashboardViewsTable::getTable()->setDefaultViews($this->selected_project->getID(), TBGDashboardViewsTable::TYPE_PROJECT);
+				$this->forward($this->getRouting()->generate('project_dashboard', array('project_key' => $this->selected_project->getKey())));
+			}
 			$this->views = TBGDashboardView::getViews($this->selected_project->getID(), TBGDashboardViewsTable::TYPE_PROJECT);
 		}
 
