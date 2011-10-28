@@ -124,7 +124,8 @@
 
 		public function ajaxResponseText($code, $error)
 		{
-			return true;
+			if (TBGContext::isDebugMode()) return true;
+
 			$this->cleanBuffer();
 			$this->setContentType('application/json');
 			$this->setHttpStatus($code);
