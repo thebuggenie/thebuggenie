@@ -231,7 +231,7 @@
 
 		public function getJS()
 		{
-			return 'jquery.flot.js';
+			return array('jquery.flot.min.js', 'jquery.flot.resize.min.js');
 		}
 
 		public function getRSSUrl()

@@ -382,7 +382,13 @@
 		
 		public function componentDashboardview()
 		{
-			if ($this->view->hasJS()) $this->getResponse()->addJavascript($this->view->getJS(), false);
+			if ($this->view->hasJS()) 
+			{
+				$js = $this->view->getJS();
+				$jss = (is_array($js)) ? $js : array($js);
+				foreach ($jss as $js)
+					$this->getResponse()->addJavascript($js, false);
+			}
 		}
 		
 		public function componentDashboardConfig()
