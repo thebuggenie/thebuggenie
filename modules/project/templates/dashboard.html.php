@@ -21,8 +21,8 @@
 				<p class="content faded_out"><?php echo __("This dashboard doesn't contain any views."); ?></p>
 			<?php else: ?>
 				<ul id="dashboard">
-					<?php foreach($views as $_id => $view): ?>
-						<li style="clear: none;" id="dashboard_container_<?php echo $_id; ?>">
+					<?php foreach($views as $id => $view): ?>
+						<li style="clear: none;" id="dashboard_container_<?php echo $id; ?>">
 							<?php include_component('main/dashboardview', array('view' => $view, 'show' => false)); ?>
 						</li>
 					<?php endforeach; ?>
