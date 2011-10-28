@@ -277,7 +277,7 @@
 		 *
 		 * @var array
 		 */
-		protected $_recentissues = null;
+		protected $_recentissues = array();
 
 		/**
 		 * Priority count
@@ -2491,183 +2491,21 @@
 			return $this->_statecount;
 		}
 
-		protected function _populateRecentIssues()
+		protected function _populateRecentIssues($issuetype)
 		{
-			if ($this->_recentissues === null)
-			{
-				$this->_recentissues = array();
-				if ($res = TBGIssuesTable::getTable()->getRecentByProjectIDandIssueType($this->getID(), array('bug_report'), 5))
-				{
-					while ($row = $res->getNextRow())
-					{
-						try
-						{
-							$recentissue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
-							if ($recentissue->hasAccess())
-							{
-								$this->_recentissues[$recentissue->getID()] = $recentissue;
-							}
-						}
-						catch (Exception $e) {}
-					}
-				}
-			}
-		}
+			$issuetype_id = (is_object($issuetype)) ? $issuetype->getID() : $issuetype;
 
-		protected function _populateRecentDocumentationRequests()
-		{
-			if ($this->_recentdocumentationrequests === null)
+			if (!array_key_exists($issuetype_id, $this->_recentissues))
 			{
-				$this->_recentdocumentationrequests = array();
-				if ($res = TBGIssuesTable::getTable()->getRecentByProjectIDandIssueType($this->getID(), array('documentation_request')))
+				$this->_recentissues[$issuetype_id] = array();
+				if ($res = TBGIssuesTable::getTable()->getRecentByProjectIDandIssueType($this->getID(), $issuetype_id))
 				{
 					while ($row = $res->getNextRow())
 					{
 						try
 						{
-							$recentissue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
-							if ($recentissue->hasAccess())
-							{
-								$this->_recentdocumentationrequests[$recentissue->getID()] = $recentissue;
-							}
-						}
-						catch (Exception $e) {}
-					}
-				}
-			}
-		}
-		
-		protected function _populateRecentEnhancements()
-		{
-			if ($this->_recentenhancements === null)
-			{
-				$this->_recentenhancements = array();
-				if ($res = TBGIssuesTable::getTable()->getRecentByProjectIDandIssueType($this->getID(), array('enhancement')))
-				{
-					while ($row = $res->getNextRow())
-					{
-						try
-						{
-							$recentissue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
-							if ($recentissue->hasAccess())
-							{
-								$this->_recentenhancements[$recentissue->getID()] = $recentissue;
-							}
-						}
-						catch (Exception $e) {}
-					}
-				}
-			}
-		}
-
-		protected function _populateRecentFeatures()
-		{
-			if ($this->_recentfeatures === null)
-			{
-				$this->_recentfeatures = array();
-				if ($res = TBGIssuesTable::getTable()->getRecentByProjectIDandIssueType($this->getID(), array('feature_request')))
-				{
-					while ($row = $res->getNextRow())
-					{
-						try
-						{
-							$recentissue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
-							if ($recentissue->hasAccess())
-							{
-								$this->_recentfeatures[$recentissue->getID()] = $recentissue;
-							}
-						}
-						catch (Exception $e) {}
-					}
-				}
-			}
-		}
-
-		protected function _populateRecentIdeas()
-		{
-			if ($this->_recentideas === null)
-			{
-				$this->_recentideas = array();
-				if ($res = TBGIssuesTable::getTable()->getRecentByProjectIDandIssueType($this->getID(), array('idea')))
-				{
-					while ($row = $res->getNextRow())
-					{
-						try
-						{
-							$recentissue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
-							if ($recentissue->hasAccess())
-							{
-								$this->_recentideas[$recentissue->getID()] = $recentissue;
-							}
-						}
-						catch (Exception $e) {}
-					}
-				}
-			}
-		}
-		
-		protected function _populateRecentSupportRequests()
-		{
-			if ($this->_recentsupportrequests === null)
-			{
-				$this->_recentsupportrequests = array();
-				if ($res = TBGIssuesTable::getTable()->getRecentByProjectIDandIssueType($this->getID(), array('support_request')))
-				{
-					while ($row = $res->getNextRow())
-					{
-						try
-						{
-							$recentissue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
-							if ($recentissue->hasAccess())
-							{
-								$this->_recentsupportrequests[$recentissue->getID()] = $recentissue;
-							}
-						}
-						catch (Exception $e) {}
-					}
-				}
-			}
-		}
-		
-		protected function _populateRecentTasks()
-		{
-			if ($this->_recenttasks === null)
-			{
-				$this->_recenttasks = array();
-				if ($res = TBGIssuesTable::getTable()->getRecentByProjectIDandIssueType($this->getID(), array('task')))
-				{
-					while ($row = $res->getNextRow())
-					{
-						try
-						{
-							$recentissue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
-							if ($recentissue->hasAccess())
-							{
-								$this->_recenttasks[$recentissue->getID()] = $recentissue;
-							}
-						}
-						catch (Exception $e) {}
-					}
-				}
-			}
-		}
-		
-		protected function _populateRecentDeveloperReports()
-		{
-			if ($this->_recentdeveloperreports === null)
-			{
-				$this->_recentdeveloperreports = array();
-				if ($res = TBGIssuesTable::getTable()->getRecentByProjectIDandIssueType($this->getID(), array('developer_reports')))
-				{
-					while ($row = $res->getNextRow())
-					{
-						try
-						{
-							$recentissue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
-							if ($recentissue->hasAccess())
-							{
-								$this->_recentdeveloperreports[$recentissue->getID()] = $recentissue;
-							}
+							$issue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
+							if ($issue->hasAccess()) $this->_recentissues[$issuetype_id][$issue->getID()] = $issue;
 						}
 						catch (Exception $e) {}
 					}
@@ -2680,89 +2518,12 @@
 		 *
 		 * @return array A list of TBGIssues
 		 */
-		public function getRecentIssues()
+		public function getRecentIssues($issuetype)
 		{
-			$this->_populateRecentIssues();
-			return $this->_recentissues;
+			$issuetype_id = (is_object($issuetype)) ? $issuetype->getID() : $issuetype;
+			$this->_populateRecentIssues($issuetype_id);
+			return $this->_recentissues[$issuetype_id];
 		}
-
-		/**
-		 * Return this projects 5 most recent feature requests
-		 *
-		 * @return array A list of TBGIssues
-		 */
-		public function getRecentFeatures()
-		{
-			$this->_populateRecentFeatures();
-			return $this->_recentfeatures;
-		}
-
-		/**
-		 * Return this projects 5 most recent ideas / suggestions
-		 *
-		 * @return array A list of TBGIssues
-		 */
-		public function getRecentIdeas()
-		{
-			$this->_populateRecentIdeas();
-			return $this->_recentideas;
-		}
-		
-		/**
-		 * Return this projects 5 most recent documentation requests
-		 *
-		 * @return array A list of TBGIssues
-		 */
-		public function getRecentDocumentationRequests()
-		{
-			$this->_populateRecentDocumentationRequests();
-			return $this->_recentdocumentationrequests;
-		}
-
-		/**
-		 * Return this projects 5 most recent enhancements
-		 *
-		 * @return array A list of TBGIssues
-		 */
-		public function getRecentEnhancements()
-		{
-			$this->_populateRecentEnhancements();
-			return $this->_recentenhancements;
-		}
-		
-		/**
-		 * Return this projects 5 most recent tasks
-		 *
-		 * @return array A list of TBGIssues
-		 */
-		public function getRecentTasks()
-		{
-			$this->_populateRecentTasks();
-			return $this->_recenttasks;
-		}
-
-		/**
-		 * Return this projects 5 most recent support requests
-		 *
-		 * @return array A list of TBGIssues
-		 */
-		public function getRecentSupportRequests()
-		{
-			$this->_populateRecentSupportRequests();
-			return $this->_recentsupportrequests;
-		}
-
-		/**
-		 * Return this projects 5 most recent developer reports
-		 *
-		 * @return array A list of TBGIssues
-		 */
-		public function getRecentDeveloperReports()
-		{
-			$this->_populateRecentDeveloperReports();
-			return $this->_recentdeveloperreports;
-		}
-
 
 		protected function _populateRecentActivities($limit = null, $important = true, $offset = null)
 		{

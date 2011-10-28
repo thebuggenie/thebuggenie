@@ -382,6 +382,7 @@
 		
 		public function componentDashboardview()
 		{
+			if ($this->view->hasJS()) $this->getResponse()->addJavascript($this->view->getJS(), false);
 		}
 		
 		public function componentDashboardConfig()
@@ -442,6 +443,11 @@
 
 		public function componentOpenID()
 		{
+		}
+
+		public function componentDashboardViewLoggedActions()
+		{
+			$this->actions = $this->getUser()->getLatestActions();
 		}
 
 	}

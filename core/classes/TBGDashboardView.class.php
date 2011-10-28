@@ -21,8 +21,8 @@
 
 		const VIEW_PREDEFINED_SEARCH = 1;
 		const VIEW_SAVED_SEARCH = 2;
-		const VIEW_LOGGED_ACTION = 3;
-		const VIEW_LAST_COMMENTS = 4;
+		const VIEW_LOGGED_ACTIONS = 3;
+		const VIEW_RECENT_COMMENTS = 4;
 		const VIEW_FRIENDS = 5;
 		const VIEW_PROJECTS = 6;
 		const VIEW_MILESTONES = 7;
@@ -31,7 +31,7 @@
 		const VIEW_PROJECT_TEAM = 102;
 		const VIEW_PROJECT_CLIENT = 103;
 		const VIEW_PROJECT_SUBPROJECTS = 104;
-		const VIEW_PROJECT_LAST15 = 105;
+		const VIEW_PROJECT_STATISTICS_LAST15 = 105;
 		const VIEW_PROJECT_STATISTICS_PRIORITY = 106;
 		const VIEW_PROJECT_STATISTICS_STATUS = 111;
 		const VIEW_PROJECT_STATISTICS_RESOLUTION = 112;
@@ -97,10 +97,10 @@
 																	TBGContext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES => TBGContext::getI18n()->__('Open issues'),
 																	TBGContext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES => TBGContext::getI18n()->__('Closed issues'),
 																	TBGContext::PREDEFINED_SEARCH_PROJECT_MOST_VOTED => TBGContext::getI18n()->__('Most voted issues'));
-					$searches[self::VIEW_LOGGED_ACTION] = array(0 => TBGContext::getI18n()->__("What you've done recently"));
+					$searches[self::VIEW_LOGGED_ACTIONS] = array(0 => TBGContext::getI18n()->__("What you've done recently"));
 					if (TBGContext::getUser()->canViewComments())
 					{
-						$searches[self::VIEW_LAST_COMMENTS] = array(0 => TBGContext::getI18n()->__('Recent comments'));
+						$searches[self::VIEW_RECENT_COMMENTS] = array(0 => TBGContext::getI18n()->__('Recent comments'));
 					}
 					$searches[self::VIEW_SAVED_SEARCH] = array();
 					$allsavedsearches = TBGSavedSearchesTable::getTable()->getAllSavedSearchesByUserIDAndPossiblyProjectID(TBGContext::getUser()->getID());
@@ -114,9 +114,9 @@
 					break;
 				case TBGDashboardView::TYPE_PROJECT:
 					$issuetype_icons = array();
-					foreach (TBGIssuetype::getIcons() as $key => $descr)
+					foreach (TBGIssuetype::getAll() as $id => $issuetype)
 					{
-						$issuetype_icons[] = TBGContext::getI18n()->__('Recent issues: %type%', array('%type%' => $descr));
+						$issuetype_icons[$id] = TBGContext::getI18n()->__('Recent issues: %issuetype%', array('%issuetype%' => $issuetype->getName()));
 					}
 
 					$searches = array();
@@ -124,7 +124,7 @@
 					$searches[self::VIEW_PROJECT_TEAM] = array(0 => TBGContext::getI18n()->__('Project team'));
 					$searches[self::VIEW_PROJECT_CLIENT] = array(0 => TBGContext::getI18n()->__('Project client'));
 					$searches[self::VIEW_PROJECT_SUBPROJECTS] = array(0 => TBGContext::getI18n()->__('Subprojects'));
-					$searches[self::VIEW_PROJECT_LAST15] = array(0 => TBGContext::getI18n()->__('Graph of closed vs open issues, past 15 days'));
+					$searches[self::VIEW_PROJECT_STATISTICS_LAST15] = array(0 => TBGContext::getI18n()->__('Graph of closed vs open issues, past 15 days'));
 					$searches[self::VIEW_PROJECT_STATISTICS_PRIORITY] = array(0 => TBGContext::getI18n()->__('Statistics by priority'));
 					$searches[self::VIEW_PROJECT_STATISTICS_CATEGORY] = array(0 => TBGContext::getI18n()->__('Statistics by category'));
 					$searches[self::VIEW_PROJECT_STATISTICS_STATUS] = array(0 => TBGContext::getI18n()->__('Statistics by status'));
@@ -212,6 +212,39 @@
 			)));
 		}
 
+		public function hasRSS()
+		{
+			return (in_array($this->getType(), array(
+				self::VIEW_PREDEFINED_SEARCH,
+				self::VIEW_SAVED_SEARCH,
+				self::VIEW_PROJECT_RECENT_ACTIVITIES,
+				self::VIEW_PROJECT_RECENT_ISSUES
+			)));
+		}
+
+		public function hasJS()
+		{
+			return (in_array($this->getType(), array(
+				self::VIEW_PROJECT_STATISTICS_LAST15,
+			)));
+		}
+
+		public function getJS()
+		{
+			return 'jquery.flot.js';
+		}
+
+		public function getRSSUrl()
+		{
+			switch ($this->getType())
+			{
+				case self::VIEW_PREDEFINED_SEARCH:
+				case self::VIEW_SAVED_SEARCH:
+					return TBGContext::getRouting()->generate('search', $this->getSearchParameters(true));
+					break;
+			}
+		}
+
 		public function getSearchParameters($rss = false)
 		{
 			$paramaters = ($rss) ? array('format' => 'rss') : array();
@@ -231,7 +264,8 @@
 		{
 			return (boolean) in_array($this->getType(), array(self::VIEW_FRIENDS,
 																self::VIEW_PROJECT_DOWNLOADS,
-																self::VIEW_PROJECT_INFO));
+																self::VIEW_PROJECT_INFO,
+																self::VIEW_PROJECT_UPCOMING));
 		}
 
 		public function getTitle()
@@ -244,6 +278,44 @@
 			else
 			{
 				return TBGContext::getI18n()->__('Unknown dashboard item');
+			}
+		}
+
+		public function getTemplate()
+		{
+			switch ($this->getType())
+			{
+				case TBGDashboardView::VIEW_PREDEFINED_SEARCH:
+				case TBGDashboardView::VIEW_SAVED_SEARCH:
+					return 'search/results_view';
+				case self::VIEW_PROJECT_INFO:
+					return 'project/dashboardviewprojectinfo';
+				case self::VIEW_PROJECT_TEAM:
+					return 'project/dashboardviewprojectteam';
+				case self::VIEW_PROJECT_CLIENT:
+					return 'project/dashboardviewprojectclient';
+				case self::VIEW_PROJECT_SUBPROJECTS:
+					return 'project/dashboardviewprojectsubprojects';
+				case self::VIEW_PROJECT_STATISTICS_LAST15:
+					return 'project/dashboardviewprojectstatisticslast15';
+				case self::VIEW_PROJECT_RECENT_ISSUES:
+					return 'project/dashboardviewprojectrecentissues';
+				case self::VIEW_PROJECT_RECENT_ACTIVITIES:
+					return 'project/dashboardviewprojectrecentactivities';
+				case self::VIEW_PROJECT_STATISTICS_CATEGORY:
+				case self::VIEW_PROJECT_STATISTICS_PRIORITY:
+				case self::VIEW_PROJECT_STATISTICS_RESOLUTION:
+				case self::VIEW_PROJECT_STATISTICS_STATE:
+				case self::VIEW_PROJECT_STATISTICS_STATUS:
+					return 'project/dashboardviewprojectstatistics';
+				case self::VIEW_PROJECT_UPCOMING:
+					return 'project/dashboardviewprojectupcoming';
+				case self::VIEW_PROJECT_DOWNLOADS:
+					return 'project/dashboardviewprojectdownloads';
+				case self::VIEW_RECENT_COMMENTS:
+					return 'main/dashboardviewprojectrecentcomments';
+				case self::VIEW_LOGGED_ACTIONS:
+					return 'main/dashboardviewloggedactions';
 			}
 		}
 

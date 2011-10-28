@@ -3600,7 +3600,7 @@
 			{
 				TBGContext::setCurrentProject(new TBGProject($view->getProjectID()));
 			}
-			return $this->renderJSON(array('content' => $this->returnTemplateHTML('main/dashboardviewcontent', array('view' => $view))));
+			return $this->renderJSON(array('content' => $this->returnComponentHTML($view->getTemplate(), array('view' => $view))));
 		}
 
 		public function runRemoveOpenIDIdentity(TBGRequest $request)

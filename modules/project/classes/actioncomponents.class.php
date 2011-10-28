@@ -42,4 +42,87 @@
 			}
 		}
 
+		public function componentDashboardViewProjectInfo()
+		{
+
+		}
+
+		public function componentDashboardViewProjectTeam()
+		{
+			$this->assignees = TBGContext::getCurrentProject()->getAssignees();
+		}
+
+		public function componentDashboardViewProjectClient()
+		{
+			$this->client = TBGContext::getCurrentProject()->getClient();
+		}
+
+		public function componentDashboardViewProjectSubprojects()
+		{
+			$this->subprojects = TBGContext::getCurrentProject()->getChildren(false);
+		}
+
+		public function componentDashboardViewProjectStatisticsLast15()
+		{
+			$this->issues = TBGContext::getCurrentProject()->getLast15Counts();
+		}
+
+		public function componentDashboardViewProjectStatistics()
+		{
+			switch ($this->view->getType())
+			{
+				case TBGDashboardView::VIEW_PROJECT_STATISTICS_PRIORITY:
+					$counts = TBGContext::getCurrentProject()->getPriorityCount();
+					$items = TBGPriority::getAll();
+					$key = 'priority';
+					break;
+				case TBGDashboardView::VIEW_PROJECT_STATISTICS_CATEGORY:
+					$counts = TBGContext::getCurrentProject()->getCategoryCount();
+					$items = TBGCategory::getAll();
+					$key = 'category';
+					break;
+				case TBGDashboardView::VIEW_PROJECT_STATISTICS_RESOLUTION:
+					$counts = TBGContext::getCurrentProject()->getResolutionCount();
+					$items = TBGResolution::getAll();
+					$key = 'resolution';
+					break;
+				case TBGDashboardView::VIEW_PROJECT_STATISTICS_STATUS:
+					$counts = TBGContext::getCurrentProject()->getStatusCount();
+					$items = TBGStatus::getAll();
+					$key = 'status';
+					break;
+				case TBGDashboardView::VIEW_PROJECT_STATISTICS_STATE:
+					$counts = TBGContext::getCurrentProject()->getStateCount();
+					$items = array('open' => $this->getI18n()->__('Open'), 'closed' => $this->getI18n()->__('Closed'));
+					$key = 'state';
+					break;
+			}
+			$this->counts = $counts;
+			$this->key = $key;
+			$this->items = $items;
+		}
+
+		public function componentDashboardViewProjectUpcoming()
+		{
+		}
+
+		public function componentDashboardViewProjectRecentIssues()
+		{
+			$this->issues = TBGContext::getCurrentProject()->getRecentIssues($this->view->getDetail());
+		}
+
+		public function componentDashboardViewProjectRecentActivities()
+		{
+			$this->recent_activities = TBGContext::getCurrentProject()->getRecentActivities(10);
+		}
+
+		public function componentDashboardViewRecentComments()
+		{
+			$this->comments = TBGComment::getRecentCommentsByAuthor($this->getUser()->getID());
+		}
+
+		public function componentDashboardViewProjectDownloads()
+		{
+		}
+
 	}

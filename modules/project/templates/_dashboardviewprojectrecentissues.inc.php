@@ -1,0 +1,1 @@
+<?php include_component('project/recentactivities', array('id' => '10_recent_issues', 'issues' => $issues, 'empty' => __('No issues of this type has been posted yet'), 'default_displayed' => true)); ?>

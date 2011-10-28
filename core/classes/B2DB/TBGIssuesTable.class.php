@@ -497,17 +497,14 @@
 			return $res;
 		}
 
-		public function getRecentByProjectIDandIssueType($project_id, $issuetypes, $limit = 5)
+		public function getRecentByProjectIDandIssueType($project_id, $issuetype, $limit = 10)
 		{
 			$crit = $this->getCriteria();
-			$crit->addJoin(TBGIssueTypesTable::getTable(), TBGIssueTypesTable::ID, self::ISSUE_TYPE);
 			$crit->addWhere(self::PROJECT_ID, $project_id);
-			$crit->addWhere(TBGIssueTypesTable::ICON, $issuetypes, Criteria::DB_IN);
+			$crit->addWhere(self::ISSUE_TYPE, $issuetype);
 			$crit->addOrderBy(self::POSTED, Criteria::SORT_DESC);
 			if ($limit !== null)
-			{
 				$crit->setLimit($limit);
-			}
 
 			$res = $this->doSelect($crit);
 
@@ -726,10 +723,12 @@
 					switch ($groupby)
 					{
 						case 'category':
+							$crit->addJoin(TBGListTypesTable::getTable(), TBGListTypesTable::ID, self::CATEGORY);
 							$crit->addSelectionColumn(TBGListTypesTable::NAME);
 							$crit->addOrderBy(TBGListTypesTable::NAME, $grouporder);
 							break;
 						case 'status':
+							$crit->addJoin(TBGListTypesTable::getTable(), TBGListTypesTable::ID, self::STATUS);
 							$crit->addSelectionColumn(self::STATUS);
 							$crit->addOrderBy(self::STATUS, $grouporder);
 							break;
@@ -750,6 +749,7 @@
 							$crit->addOrderBy(self::STATE, $grouporder);
 							break;
 						case 'severity':
+							$crit->addJoin(TBGListTypesTable::getTable(), TBGListTypesTable::ID, self::SEVERITY);
 							$crit->addSelectionColumn(self::SEVERITY);
 							$crit->addOrderBy(self::SEVERITY, $grouporder);
 							break;
@@ -762,10 +762,12 @@
 							$crit->addOrderBy(self::VOTES_TOTAL, $grouporder);
 							break;
 						case 'resolution':
+							$crit->addJoin(TBGListTypesTable::getTable(), TBGListTypesTable::ID, self::RESOLUTION);
 							$crit->addSelectionColumn(self::RESOLUTION);
 							$crit->addOrderBy(self::RESOLUTION, $grouporder);
 							break;
 						case 'priority':
+							$crit->addJoin(TBGListTypesTable::getTable(), TBGListTypesTable::ID, self::PRIORITY);
 							$crit->addSelectionColumn(self::PRIORITY);
 							$crit->addOrderBy(self::PRIORITY, $grouporder);
 							break;
