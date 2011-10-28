@@ -7,7 +7,3 @@
 		<a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.reset();"><?php echo __('Close'); ?></a>
 	</div>
 </div>
-<script type="text/javascript">
-	openid.no_sprite = true;
-	openid.init('openid_identifier');
-</script>
