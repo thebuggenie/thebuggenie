@@ -455,6 +455,7 @@
 			// Create new tables
 			TBGDashboardViewsTable::getTable()->create();
 			TBGOpenIdAccountsTable::getTable()->create();
+			TBGIncomingEmailAccountTable::getTable()->create();
 			
 			// Add new indexes
 			TBGCommentsTable::getTable()->createIndexes();
