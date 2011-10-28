@@ -32,7 +32,9 @@ div.resize-handle {
 
 table.sortable tr th {
 	padding-left: 25px !important;
+	background-repeat: no-repeat;
 	background-image: url('../../iconsets/oxygen/sort_none.png');
+	background-position: 5px center;
 }
 
 table.sortable tr th.nosort {
