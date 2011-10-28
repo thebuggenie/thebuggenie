@@ -48,18 +48,16 @@
 		</td>
 		<td id="dashboard_righthand" class="side_bar">
 			<div class="container_div" style="margin-right: 10px; margin-top: 0;">
-				<div class="header" style="margin: 2px 0 5px 0; padding: 3px 3px 3px 5px;"><?php echo __('Your projects'); ?></div>
+				<div class="header" style="padding-left: 5px"><?php echo __('Your projects'); ?></div>
 				<?php if (count($tbg_user->getAssociatedProjects()) > 0): ?>
 					<ul id="associated_projects">
 						<?php foreach ($tbg_user->getAssociatedProjects() as $project): ?>
 							<?php if ($project->isDeleted()): continue; endif; ?>
 							<li style="text-align: right;">
-								<div class="rounded_box white cut_bottom" style="border-bottom: 0;">
+								<div style="padding: 5px;">
 									<div class="project_name">
 										<?php echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), $project->getName()); ?>
 									</div>
-								</div>
-								<div class="rounded_box lightgrey cut_top" style="border-top: 0;">
 									<div style="float: left; font-weight: bold;"><?php echo __('Go to'); ?>:</div>
 									<?php echo link_tag(make_url('project_open_issues', array('project_key' => $project->getKey())), __('Issues')); ?>
 									|
@@ -72,8 +70,14 @@
 							</li>
 						<?php endforeach; ?>
 					</ul>
-					<div class="header" style="margin: 5px 5px 5px 0;"><?php echo __('Upcoming milestones / sprints'); ?></div>
-					<div class="faded_out" style="font-size: 11px;"><?php echo __('Showing milestones and sprint for the next 21 days'); ?></div>
+				<?php else: ?>
+					<div class="faded_out" style="font-size: 0.9em; padding: 5px 5px 10px 5px;"><?php echo __('You are not associated with any projects'); ?></div>
+				<?php endif; ?>
+			</div>
+			<div class="container_div" style="margin-right: 10px; margin-top: 0;">
+				<div class="header" style="padding-left: 5px"><?php echo __('Upcoming milestones / sprints'); ?></div>
+				<?php if (count($tbg_user->getAssociatedProjects()) > 0): ?>
+					<div class="faded_out" style="padding: 5px;"><?php echo __('Showing milestones and sprint for the next 21 days'); ?></div>
 					<?php $milestone_cc = 0; ?>
 					<?php foreach ($tbg_user->getAssociatedProjects() as $project): ?>
 						<?php foreach ($project->getUpcomingMilestonesAndSprints() as $milestone): ?>
@@ -84,7 +88,7 @@
 						<?php endforeach; ?>
 					<?php endforeach; ?>
 					<?php if ($milestone_cc == 0): ?>
-						<div class="faded_out"><?php echo __('There are no upcoming milestones for any of your associated projects'); ?></div>
+						<div class="faded_out" style="padding: 5px;"><?php echo __('There are no upcoming milestones for any of your associated projects'); ?></div>
 					<?php endif; ?>
 				<?php else: ?>
 					<div class="faded_out" style="font-size: 0.9em; padding: 5px 5px 10px 5px;"><?php echo __('You are not associated with any projects'); ?></div>
