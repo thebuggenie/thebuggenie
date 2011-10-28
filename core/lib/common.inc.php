@@ -338,18 +338,15 @@
 	function tbg_get_javascripts()
 	{
 		$tbg_response = TBGContext::getResponse();
-//		$tbg_response->addJavascript('jquery-1.6.2.min.js');
+		$tbg_response->addJavascript('jquery-1.6.2.min.js');
 		$tbg_response->addJavascript('prototype.js');
 		$tbg_response->addJavascript('builder.js');
-		$tbg_response->addJavascript('openid-prototype.js');
-		$tbg_response->addJavascript('openid-en.js');
 		$tbg_response->addJavascript('effects.js');
-//		$tbg_response->addJavascript('dragdrop.js');
+		$tbg_response->addJavascript('dragdrop.js');
 		$tbg_response->addJavascript('controls.js');
-//		$tbg_response->addJavascript('jquery.markitup.js');
+		$tbg_response->addJavascript('jquery.markitup.js');
 		$tbg_response->addJavascript('thebuggenie.js');
-//		$tbg_response->addJavascript('markitup.js');
-//		$tbg_response->addJavascript('tablekit.js');
+		$tbg_response->addJavascript('tablekit.js');
 
 		$jsstrings = array();
 		$sepjs = array();
@@ -360,7 +357,7 @@
 			if ($minify == true && file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DIRECTORY_SEPARATOR . 'js' . DIRECTORY_SEPARATOR . $script))
 				$jsstrings[] = 'js/'.$script;
 			else
-				$sepjs[] = $script;
+				$sepjs[] = 'js/' . $script;
 		}
 
 		$jsstrings = join(',', $jsstrings);
