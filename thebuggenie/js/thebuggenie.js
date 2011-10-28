@@ -2474,7 +2474,7 @@ TBG.Issues.addUserStoryTask = function(url, story_id, mode) {
 	var indicator_prefix = (mode == 'scrum') ? 'add_task_' + story_id : 'add_task';
 	var success_arr = {};
 	
-	if (mode == scrum) {
+	if (mode == 'scrum') {
 		success_arr = {
 			reset: prefix + '_add_task_form',
 			hide: 'no_tasks_' + story_id,

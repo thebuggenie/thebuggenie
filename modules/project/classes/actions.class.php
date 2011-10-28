@@ -146,28 +146,19 @@
 		 *
 		 * @param TBGRequest $request
 		 */
-		public function runScrumShowDetails(TBGRequest $request)
+		public function runMilestoneDetails(TBGRequest $request)
 		{
 			$this->forward403unless($this->_checkProjectPageAccess('project_scrum'));
-			$selected_sprint = null;
-			if ($s_id = $request['sprint_id'])
+			$milestone = null;
+			if ($m_id = $request['milestone_id'])
 			{
-				$selected_sprint = TBGContext::factory()->TBGMilestone($s_id);
+				$milestone = TBGContext::factory()->TBGMilestone($m_id);
 			}
-			else
-			{
-				$sprints = $this->selected_project->getUpcomingMilestonesAndSprints();
-				if (count($sprints))
-				{
-					$selected_sprint = array_shift($sprints);
-				}
-			}
-			$this->selected_sprint = $selected_sprint;
+			$this->milestone = $milestone;
 			$this->total_estimated_points = 0;
 			$this->total_spent_points = 0;
 			$this->total_estimated_hours = 0;
 			$this->total_spent_hours = 0;
-			//$this->unassigned_issues = $this->selected_project->getUnassignedStories();
 		}
 
 		/**

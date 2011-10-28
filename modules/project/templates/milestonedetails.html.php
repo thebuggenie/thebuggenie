@@ -1,9 +1,9 @@
 <?php
 
-	$tbg_response->addBreadcrumb(link_tag(make_url('project_scrum', array('project_key' => $selected_project->getKey())), __('Project sprint planning')));
-	if ($selected_sprint instanceof TBGMilestone)
+	$tbg_response->addBreadcrumb(link_tag(make_url('project_planning', array('project_key' => $selected_project->getKey())), __('Project sprint planning')));
+	if ($milestone instanceof TBGMilestone)
 	{
-		$tbg_response->addBreadcrumb(__('%sprint_name% overview', array('%sprint_name%' => $selected_sprint->getName())));
+		$tbg_response->addBreadcrumb(__('%sprint_name% overview', array('%sprint_name%' => $milestone->getName())));
 	}
 	else
 	{
@@ -15,15 +15,15 @@
 			<?php include_template('project/projectheader', array('selected_project' => $selected_project)); ?>
 			<?php include_template('project/projectinfosidebar', array('selected_project' => $selected_project)); ?>
 			<div style="width: auto; padding-right: 5px; position: relative;" id="scrum_sprint_burndown">
-				<?php if (!$selected_sprint instanceof TBGMilestone): ?>
+				<?php if (!$milestone instanceof TBGMilestone): ?>
 					<div class="header_div">
-						<?php //echo __('Sprint details, "%sprint_name%"', array('%sprint_name%' => $selected_sprint->getName())); ?>
+						<?php //echo __('Sprint details, "%sprint_name%"', array('%sprint_name%' => $milestone->getName())); ?>
 					<?php //else: ?>
 						<?php echo __('No sprint selected'); ?>
 					</div>
 				<?php endif; ?>
-				<?php if ($selected_sprint instanceof TBGMilestone): ?>
-					<?php echo image_tag(make_url('project_scrum_sprint_burndown_image', array('project_key' => $selected_project->getKey(), 'sprint_id' => $selected_sprint->getID())), array('style' => 'margin: 15px 0 15px 0;', 'id' => 'selected_burndown_image'), true); ?>
+				<?php if ($milestone instanceof TBGMilestone): ?>
+					<?php echo image_tag(make_url('project_scrum_sprint_burndown_image', array('project_key' => $selected_project->getKey(), 'sprint_id' => $milestone->getID())), array('style' => 'margin: 15px 0 15px 0;', 'id' => 'selected_burndown_image'), true); ?>
 					<table style="width: 800px; position: relative; margin-bottom: 20px;" cellpadding="0" cellspacing="0" border="0">
 						<tr>
 							<td style="width: 20px; border-bottom: 1px solid #DDD;">&nbsp;</td>
@@ -32,7 +32,7 @@
 							<td style="width: 50px; border-bottom: 1px solid #DDD; font-size: 11px; font-weight: bold; text-align: center; padding: 5px;"><?php echo __('Hours'); ?></td>
 							<td style="width: 50px; border-bottom: 1px solid #DDD; font-size: 11px; font-weight: bold; text-align: center; padding: 5px;"><?php echo __('Actions'); ?></td>
 						</tr>
-					<?php foreach ($selected_sprint->getIssues() as $issue): ?>
+					<?php foreach ($milestone->getIssues() as $issue): ?>
 						<?php if (!$issue->getIssueType()->isTask()): ?>
 							<tr class="hover_highlight">
 								<td style="padding: 3px 0 3px 3px;"><?php echo image_tag($issue->getIssueType()->getIcon() . '_tiny.png', array('title' => $issue->getIssueType()->getName())); ?></td>
@@ -46,7 +46,7 @@
 											<?php include_template('project/quickestimate', array('issue' => $issue)); ?>
 										<?php endif; ?>
 										<?php if ($issue->canAddRelatedIssues()): ?>
-											<a href="javascript:void(0);" class="img" onclick="$('scrum_story_<?php echo $issue->getID(); ?>_add_task_div').toggle();"><?php echo image_tag('scrum_add_task.png', array('title' => __('Add a task to this user story'))); ?></a>
+											<a href="javascript:void(0);" class="img" onclick="$('scrum_story_<?php echo $issue->getID(); ?>_add_task_div').toggle();"><?php echo image_tag('scrum_add_task.png', array('title' => __('Add a task to this issue'))); ?></a>
 											<?php include_template('project/quickaddtask', array('issue' => $issue, 'mode' => 'sprint')); ?>
 										<?php endif; ?>
 									</div>
@@ -67,25 +67,25 @@
 									<?php endforeach; ?>
 								<?php endif; ?>
 							</tbody>
-							<tr id="no_tasks_<?php echo $issue->getID(); ?>"<?php if ($hastasks): ?> style="display: none;"<?php endif; ?>><td>&nbsp;</td><td colspan="5" class="faded_out" style="padding: 0 0 10px 3px; font-size: 13px;"><?php echo __("This story doesn't have any tasks"); ?></td></tr>
+							<tr id="no_tasks_<?php echo $issue->getID(); ?>"<?php if ($hastasks): ?> style="display: none;"<?php endif; ?>><td>&nbsp;</td><td colspan="5" class="faded_out" style="padding: 0 0 10px 3px; font-size: 0.9em;"><?php echo __("This issue doesn't have any tasks"); ?></td></tr>
 						<?php endif; ?>
 					<?php endforeach; ?>
 						<tr>
 							<td style="padding: 5px; border-top: 1px dotted #AAA; border-bottom: 0; font-weight: bold; font-size: 12px;" colspan="2"><?php echo __('Total estimated effort'); ?></td>
-							<td style="width: 50px; border-top: 1px dotted #AAA; border-bottom: 0; font-size: 13px; font-weight: bold; text-align: center; padding: 5px;" id="scrum_sprint_<?php echo $selected_sprint->getID(); ?>_estimated_points"><?php echo $total_estimated_points; ?></td>
-							<td style="width: 50px; border-top: 1px dotted #AAA; border-bottom: 0; font-size: 13px; font-weight: bold; text-align: center; padding: 5px;" id="scrum_sprint_<?php echo $selected_sprint->getID(); ?>_estimated_hours"><?php echo $total_estimated_hours; ?></td>
+							<td style="width: 50px; border-top: 1px dotted #AAA; border-bottom: 0; font-size: 13px; font-weight: bold; text-align: center; padding: 5px;" id="scrum_sprint_<?php echo $milestone->getID(); ?>_estimated_points"><?php echo $total_estimated_points; ?></td>
+							<td style="width: 50px; border-top: 1px dotted #AAA; border-bottom: 0; font-size: 13px; font-weight: bold; text-align: center; padding: 5px;" id="scrum_sprint_<?php echo $milestone->getID(); ?>_estimated_hours"><?php echo $total_estimated_hours; ?></td>
 							<td style="padding: 5px; border-top: 1px dotted #AAA; border-bottom: 0; font-weight: bold; font-size: 12px;" colspan="2">&nbsp;</td>
 						</tr>
 						<tr>
 							<td style="padding: 5px; border-top: 1px dotted #AAA; border-bottom: 0; font-weight: bold; font-size: 12px;" colspan="2"><?php echo __('Current effort'); ?></td>
-							<td style="width: 50px; border-top: 1px dotted #AAA; border-bottom: 0; font-size: 13px; font-weight: bold; text-align: center; padding: 5px;" id="scrum_sprint_<?php echo $selected_sprint->getID(); ?>_spent_points"><?php echo $total_spent_points; ?></td>
-							<td style="width: 50px; border-top: 1px dotted #AAA; border-bottom: 0; font-size: 13px; font-weight: bold; text-align: center; padding: 5px;" id="scrum_sprint_<?php echo $selected_sprint->getID(); ?>_spent_hours"><?php echo $total_spent_hours; ?></td>
+							<td style="width: 50px; border-top: 1px dotted #AAA; border-bottom: 0; font-size: 13px; font-weight: bold; text-align: center; padding: 5px;" id="scrum_sprint_<?php echo $milestone->getID(); ?>_spent_points"><?php echo $total_spent_points; ?></td>
+							<td style="width: 50px; border-top: 1px dotted #AAA; border-bottom: 0; font-size: 13px; font-weight: bold; text-align: center; padding: 5px;" id="scrum_sprint_<?php echo $milestone->getID(); ?>_spent_hours"><?php echo $total_spent_hours; ?></td>
 							<td style="padding: 5px; border-top: 1px dotted #AAA; border-bottom: 0; font-weight: bold; font-size: 12px;" colspan="2">&nbsp;</td>
 						</tr>
 						<tr>
 							<td style="padding: 5px; border-top: 1px dotted #AAA; border-bottom: 1px dotted #AAA; font-weight: bold; font-size: 12px;" colspan="2"><?php echo __('Total remaining effort'); ?></td>
-							<td style="width: 50px; border-top: 1px dotted #AAA; border-bottom: 1px dotted #AAA; font-size: 13px; font-weight: bold; text-align: center; padding: 5px;" id="scrum_sprint_<?php echo $selected_sprint->getID(); ?>_remaining_points"><?php echo $total_estimated_points - $total_spent_points; ?></td>
-							<td style="width: 50px; border-top: 1px dotted #AAA; border-bottom: 1px dotted #AAA; font-size: 13px; font-weight: bold; text-align: center; padding: 5px;" id="scrum_sprint_<?php echo $selected_sprint->getID(); ?>_remaining_hours"><?php echo $total_estimated_hours - $total_spent_hours; ?></td>
+							<td style="width: 50px; border-top: 1px dotted #AAA; border-bottom: 1px dotted #AAA; font-size: 13px; font-weight: bold; text-align: center; padding: 5px;" id="scrum_sprint_<?php echo $milestone->getID(); ?>_remaining_points"><?php echo $total_estimated_points - $total_spent_points; ?></td>
+							<td style="width: 50px; border-top: 1px dotted #AAA; border-bottom: 1px dotted #AAA; font-size: 13px; font-weight: bold; text-align: center; padding: 5px;" id="scrum_sprint_<?php echo $milestone->getID(); ?>_remaining_hours"><?php echo $total_estimated_hours - $total_spent_hours; ?></td>
 							<td style="padding: 5px; border-top: 1px dotted #AAA; border-bottom: 1px dotted #AAA; font-weight: bold; font-size: 12px;" colspan="2">&nbsp;</td>
 						</tr>
 					</table>

@@ -22,7 +22,7 @@
 <?php endif; ?>
 <?php if ($tbg_user->hasProjectPageAccess('project_planning', $selected_project->getID())): ?>
 	<?php echo link_tag(make_url('project_planning', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Planning'), ((in_array($tbg_response->getPage(), array('project_planning', 'project_milestone_details'))) ? array('class' => 'selected') : array())); ?>
-	<?php if (!isset($submenu) && (count($selected_project->getAllMilestones()) > 0) && in_array($tbg_response->getPage(), array('project_planning', 'project_milestones_details'))): ?>
+	<?php if (!$submenu && (count($selected_project->getAllMilestones()) > 0) && in_array($tbg_response->getPage(), array('project_planning', 'project_milestone_details'))): ?>
 		<ul class="simple_list">
 			<?php foreach ($selected_project->getAllMilestones() as $milestone): ?>
 				<li><?php echo link_tag(make_url('project_milestone_details', array('project_key' => $selected_project->getKey(), 'milestone_id' => $milestone->getID())), $milestone->getName()); ?></li>

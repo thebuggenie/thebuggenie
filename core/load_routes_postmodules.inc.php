@@ -31,7 +31,7 @@
 	$routes[] = array('project_settings', '/:project_key/settings', 'project', 'settings');
 	$routes[] = array('project_releases', '/:project_key/releases', 'project', 'releases');
 	$routes[] = array('project_release_center', '/:project_key/release_center', 'project', 'releaseCenter');
-	$routes[] = array('project_milestone_details', '/:project_key/milestone/:milestone_id/details/*', 'project', 'scrumShowDetails');
+	$routes[] = array('project_milestone_details', '/:project_key/milestone/:milestone_id/details/*', 'project', 'milestoneDetails');
 	$routes[] = array('project_scrum_release_burndown', '/:project_key/scrum/burndown/release', 'project', 'scrumShowBurndown', array('mode' => 'release'));
 	$routes[] = array('project_scrum_sprint_burndown_image', '/:project_key/scrum/burndown/sprint/image/*', 'project', 'scrumShowBurndownImage', array('mode' => 'sprint'));
 	$routes[] = array('project_scrum_release_burndown_image', '/:project_key/scrum/burndown/release/image/*', 'project', 'scrumShowBurndownImage', array('mode' => 'release'));

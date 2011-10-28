@@ -4,7 +4,7 @@
 			<?php if (isset($show_hours) && $show_hours): ?>
 				<?php echo __('New task estimate'); ?>
 			<?php else: ?>
-				<?php echo __('New story estimate'); ?>
+				<?php echo __('New estimate'); ?>
 			<?php endif; ?>
 		</div>
 		<?php echo image_tag('spinning_20.gif', array('id' => 'point_selector_'.$issue->getID().'_indicator', 'style' => 'display: none;')); ?>
