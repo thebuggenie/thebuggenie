@@ -42,20 +42,8 @@
 							<span id="login_indicator" style="display: none;"><?php echo image_tag('spinning_20.gif'); ?></span>
 						</div>
 					</form>
-				</div>				
-				<div class="logindiv openid_container">			
-					<form action="<?php echo make_url('login'); ?>" method="post" id="openid_form" onclick="return openid.submit();">
-						<input type="hidden" name="action" value="verify" />
-						<div id="openid_choice">
-							<div class="login_boxheader"><?php echo __('Log in with your OpenID'); ?></div>
-							<div id="openid_btns"></div>
-						</div>
-						<div id="openid_input_area">
-							<input id="openid_identifier" name="openid_identifier" type="text" value="http://" />
-						</div>
-						<input type="submit" value="<?php echo __('Sign in'); ?>" class="button button-silver">
-					</form>
-				</div>				
+				</div>
+				<?php include_template('main/openidbuttons'); ?>
 			</div>
 			<br style="clear: both;">
 			<?php TBGEvent::createNew('core', 'login_form_pane')->trigger(array_merge(array('selected_tab' => $selected_tab), $options)); ?>
