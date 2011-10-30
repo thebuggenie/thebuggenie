@@ -2133,7 +2133,7 @@
 	$strings['Could not set issue priority because none was provided'] = 'No se pudo establecer la prioridad a la petición porque ninguno fue provisto';
 	$strings['Please wait ...'] = 'Por favor espere ...';
 	$strings['There are no top-level projects']='No hay proyectos de alto nivel';
-	$strings['View archived projects'] = 'Ver proyectos archivados';
+	$strings['Show archived projects'] = 'Ver proyectos archivados';
 	$strings['Archived projects'] = 'Proyectos archivados';
 	$strings['There are no top-level archived projects'] = 'No hay proyectos archivados de alto nivel';
 	$strings['%site_name% search'] = 'Buscar en %site_name%';
