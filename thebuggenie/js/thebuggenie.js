@@ -2767,6 +2767,7 @@ TBG.Issues.Field.setTime = function(url, field) {
 		success: {
 			callback: function(json) {
 				TBG.Issues.Field.Updaters.timeFromObject(json.field, json.values, field);
+				(json.changed == true) ? TBG.Issues.markAsChanged(field) : TBG.Issues.markAsUnchanged(field);
 			},
 			hide: field + '_change'
 		},
