@@ -2458,7 +2458,6 @@ TBG.Issues.showWorkflowTransition = function(transition_id) {
 	workflow_div.appear({duration: 0.2, afterFinish: function() {
 		if ($('duplicate_finder_transition_' + transition_id)) {
 			$('viewissue_find_issue_' + transition_id + '_input').observe('keypress', function(event) {
-				console.log(event.keyCode);
 				if (event.keyCode == Event.KEY_RETURN) {
 					TBG.Issues.findDuplicate($('duplicate_finder_transition_' + transition_id).getValue(), transition_id);
 					event.stop();
@@ -2648,8 +2647,8 @@ TBG.Issues.Field.Updaters.dualFromJSON = function(dualfield, field) {
 		$(field + '_content').update(dualfield.name);
 		if (field == 'status') $('status_color').setStyle({backgroundColor: dualfield.color});
 		else if (field == 'issuetype') $('issuetype_image').src = dualfield.src;
-		$('no_' + field).hide();
-		$(field + '_table').show();
+		if ($('no_' + field)) $('no_' + field).hide();
+		if ($(field + '_table')) $(field + '_table').show();
 	}
 }
 
@@ -2744,7 +2743,7 @@ TBG.Issues.Field.set = function(url, field, serialize_form) {
 				}
 				(json.changed == true) ? TBG.Issues.markAsChanged(field) : TBG.Issues.markAsUnchanged(field);
 			},
-			hide: field + '_change'
+			hide: [field + '_change', loading_show]
 		},
 		failure: {
 			update: field + '_change_error',

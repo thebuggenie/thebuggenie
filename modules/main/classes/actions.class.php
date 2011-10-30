@@ -1528,7 +1528,7 @@
 									if ($classname == 'TBGIssuetype')
 									{
 										TBGContext::loadLibrary('ui');
-										$field['src'] = htmlspecialchars(TBGContext::getTBGPath() . 'themes/' . TBGSettings::getThemeName() . '/' . $issue->getIssuetype()->getIcon() . '_small.png');
+										$field['src'] = htmlspecialchars(TBGContext::getTBGPath() . 'iconsets/' . TBGSettings::getThemeName() . '/' . $issue->getIssuetype()->getIcon() . '_small.png');
 									}
 									if ($parameter_id == 0) 
 									{
@@ -1740,7 +1740,7 @@
 					break;
 				case 'issuetype':
 					$issue->revertIssuetype();
-					$field = ($issue->getIssuetype() instanceof TBGIssuetype) ? array('id' => $issue->getIssuetype()->getID(), 'name' => $issue->getIssuetype()->getName(), 'src' => htmlspecialchars(TBGContext::getTBGPath() . 'themes/' . TBGSettings::getThemeName() . '/' . $issue->getIssuetype()->getIcon() . '_small.png')) : array('id' => 0);
+					$field = ($issue->getIssuetype() instanceof TBGIssuetype) ? array('id' => $issue->getIssuetype()->getID(), 'name' => $issue->getIssuetype()->getName(), 'src' => htmlspecialchars(TBGContext::getTBGPath() . 'iconsets/' . TBGSettings::getThemeName() . '/' . $issue->getIssuetype()->getIcon() . '_small.png')) : array('id' => 0);
 					$visible_fields = ($issue->getIssuetype() instanceof TBGIssuetype) ? $issue->getProject()->getVisibleFieldsArray($issue->getIssuetype()->getID()) : array();
 					return $this->renderJSON(array('ok' => true, 'field' => $field, 'visible_fields' => $visible_fields));
 					break;
@@ -3438,11 +3438,11 @@
 			$this->getResponse()->setContentType('image/png');
 			$this->getResponse()->setDecoration(TBGResponse::DECORATE_NONE);
 			$chain = str_split($_SESSION['activation_number'],1);
-			$size = getimagesize(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'themes' . DS . TBGSettings::getThemeName() . DS . 'numbers/0.png');
+			$size = getimagesize(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'iconsets' . DS . TBGSettings::getThemeName() . DS . 'numbers/0.png');
 			$captcha = imagecreatetruecolor($size[0]*sizeof($chain), $size[1]);
 			foreach ($chain as $n => $number)
 			{
-				$pic = imagecreatefrompng(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'themes' . DS . TBGSettings::getThemeName() . DS . 'numbers/' . $number . '.png');
+				$pic = imagecreatefrompng(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'iconsets' . DS . TBGSettings::getThemeName() . DS . 'numbers/' . $number . '.png');
 				imagecopymerge($captcha, $pic, $size[0]*$n, 0, 0, 0, imagesx($pic), imagesy($pic), 100);
 				imagedestroy($pic);
 			}
