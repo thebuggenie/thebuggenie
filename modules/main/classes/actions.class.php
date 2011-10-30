@@ -1530,7 +1530,18 @@
 										TBGContext::loadLibrary('ui');
 										$field['src'] = htmlspecialchars(TBGContext::getTBGPath() . 'themes/' . TBGSettings::getThemeName() . '/' . $issue->getIssuetype()->getIcon() . '_small.png');
 									}
-									return ($parameter_id == 0) ? $this->renderJSON(array('changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('changed' => true, 'visible_fields' => $visible_fields, 'field' => $field));
+									if ($parameter_id == 0) 
+									{
+										return $this->renderJSON(array('changed' => true, 'field' => array('id' => 0)));
+									}
+									else
+									{
+										$options = array('changed' => true, 'visible_fields' => $visible_fields, 'field' => $field);
+										if ($request['field'] == 'milestone')
+											$options['field']['url'] = $this->getRouting()->generate('project_milestone_details', array('project_key' => $issue->getProject()->getKey(), 'milestone_id' => $issue->getMilestone()->getID()));
+
+										return $this->renderJSON($options);
+									}
 								}
 							}
 						}

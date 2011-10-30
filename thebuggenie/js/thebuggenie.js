@@ -2659,6 +2659,7 @@ TBG.Issues.Field.Updaters.fromObject = function(object, field) {
 		$('no_' + field).show();
 	} else {
 		$(field + '_name').update(object.name);
+		if (object.url) $(field + '_name').href = object.url;
 		$('no_' + field).hide();
 		$(field + '_name').show();
 	}
