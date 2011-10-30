@@ -42,7 +42,7 @@
 				<td class="client_dashboard_projects padded">
 					<div class="header">
 						<?php echo __('Projects for %client%', array('%client%' => $client->getName())); ?>
-						<a style="float: right;" href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'client_archived_projects', 'cid' => $team->getID())); ?>');"><?php echo __('View archived projects'); ?></a>
+						<a style="float: right;" class="button button-silver" href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'client_archived_projects', 'cid' => $team->getID())); ?>');"><?php echo __('Show archived projects'); ?></a>
 					</div>
 		
 					<?php if (count($projects) > 0): ?>

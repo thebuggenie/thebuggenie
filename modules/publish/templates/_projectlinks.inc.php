@@ -1,1 +1,1 @@
-<?php echo link_tag(make_url('publish_article', array('article_name' => ucfirst($project->getKey()).':MainPage')), __('Wiki')); ?>&nbsp;&nbsp;&nbsp;&nbsp;
+<?php echo link_tag(make_url('publish_article', array('article_name' => ucfirst($project->getKey()).':MainPage')), __('Wiki'), array('class' => 'button button-silver')); ?>

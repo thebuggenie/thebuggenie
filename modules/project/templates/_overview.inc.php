@@ -8,8 +8,8 @@
 ?>
 <div class="rounded_box <?php if (!($project->isIssuelistVisibleInFrontpageSummary() && count($project->getVisibleIssuetypes()))): ?>invisible <?php else: ?> white borderless <?php endif; ?>project_strip">
 	<div style="float: left; font-weight: normal;">
-		<?php echo image_tag($project->getSmallIconName(), array('style' => 'float: left; margin-right: 5px; width: 16px; height: 16px;'), $project->hasSmallIcon()); ?>
-		<b class="project_name"><?php echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), '<span id="project_name_span">'.$project->getName()."</span>"); ?> <?php if ($project->usePrefix()): ?>(<?php echo mb_strtoupper($project->getPrefix()); ?>)<?php endif; ?></b><?php if ($tbg_user->canEditProjectDetails($project)): ?>&nbsp;&nbsp;<span class="faded_out"><?php echo javascript_link_tag(__('Edit project'), array('onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'project_config', 'project_id' => $project->getID()))."');", 'style' => 'font-size: 12px;')); ?></span><?php endif; ?><br>
+		<?php echo image_tag($project->getSmallIconName(), array('style' => 'float: left; margin: 3px 5px 0 0; width: 16px; height: 16px;'), $project->hasSmallIcon()); ?>
+		<b class="project_name"><?php echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), '<span id="project_name_span">'.$project->getName()."</span>"); ?> <?php if ($project->usePrefix()): ?>(<?php echo mb_strtoupper($project->getPrefix()); ?>)<?php endif; ?></b><?php if ($tbg_user->canEditProjectDetails($project)): ?>&nbsp;&nbsp;<span class="faded_out"><?php echo javascript_link_tag(__('Quick edit'), array('class' => 'button button-silver', 'onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'project_config', 'project_id' => $project->getID()))."');", 'style' => 'font-size: 0.85em !important; padding: 0 3px !important;')); ?></span><?php endif; ?><br>
 		<?php if ($project->hasHomepage()): ?>
 			<a href="<?php echo $project->getHomepage(); ?>" target="_blank"><?php echo __('Go to project website'); ?></a>
 		<?php else: ?>
@@ -22,17 +22,11 @@
 			<span class="faded_out" style="font-weight: normal;"><?php echo __('No documentation URL provided'); ?></span>
 		<?php endif; ?>
 	</div>
-	<nav>
-		<?php if ($tbg_user->canSearchForIssues() && ($tbg_user->hasPageAccess('project_issues', $project->getID()) || $tbg_user->hasPageAccess('project_allpages', $project->getID()))): ?>
-			<?php echo link_tag(make_url('project_open_issues', array('project_key' => $project->getKey())), __('Issues')); ?>&nbsp;&nbsp;&nbsp;&nbsp;
-		<?php endif; ?>
-		<?php if ($tbg_user->hasPageAccess('project_roadmap', $project->getID()) || $tbg_user->hasPageAccess('project_allpages', $project->getID())): ?>
-			<?php echo link_tag(make_url('project_roadmap', array('project_key' => $project->getKey())), __('Show roadmap')); ?>&nbsp;&nbsp;&nbsp;&nbsp;
-		<?php endif; ?>
-		<?php TBGEvent::createNew('core', 'project_overview_item_links', $project)->trigger(); ?>
-		<?php if ($tbg_user->canReportIssues($project)): ?>
-			<a href="<?php echo make_url('project_reportissue', array('project_key' => $project->getKey())); ?>" class="report_button button button-green"><?php echo __('Report an issue'); ?></a>
-		<?php endif; ?>
+	<nav class="button_group">
+<?php if ($tbg_user->canSearchForIssues() && ($tbg_user->hasPageAccess('project_issues', $project->getID()) || $tbg_user->hasPageAccess('project_allpages', $project->getID()))) echo link_tag(make_url('project_open_issues', array('project_key' => $project->getKey())), __('Issues'), array('class' => 'button button-silver')); ?>
+<?php if ($tbg_user->hasPageAccess('project_roadmap', $project->getID()) || $tbg_user->hasPageAccess('project_allpages', $project->getID())) echo link_tag(make_url('project_roadmap', array('project_key' => $project->getKey())), __('Show roadmap'), array('class' => 'button button-silver')); ?>
+<?php TBGEvent::createNew('core', 'project_overview_item_links', $project)->trigger(); ?>
+<?php if ($tbg_user->canReportIssues($project)) echo link_tag(make_url('project_reportissue', array('project_key' => $project->getKey())), __('Report an issue'), array('class' => 'button button-green')); ?>
 	</nav>
 	<?php if ($project->hasChildren()): ?>
 	<div class="subprojects_list">
