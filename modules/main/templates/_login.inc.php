@@ -43,7 +43,9 @@
 						</div>
 					</form>
 				</div>
-				<?php include_template('main/openidbuttons'); ?>
+				<?php if (TBGSettings::isOpenIDavailable()): ?>
+					<?php include_template('main/openidbuttons'); ?>
+				<?php endif; ?>
 			</div>
 			<br style="clear: both;">
 			<?php TBGEvent::createNew('core', 'login_form_pane')->trigger(array_merge(array('selected_tab' => $selected_tab), $options)); ?>

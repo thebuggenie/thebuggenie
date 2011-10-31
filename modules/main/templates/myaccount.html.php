@@ -73,64 +73,13 @@
 	</div>
 	<br style="clear: both;">
 	<div style="margin: 0 0 20px 0; table-layout: fixed; width: 100%; height: 100%;">
-		<?php /* TBGEvent::createNew('core', 'account_left_top')->trigger(); ?>
-		<div class="rounded_box iceblue borderless account_details">
-			<?php echo image_tag($tbg_user->getAvatarURL(false), array('style' => 'float: left; margin-right: 5px;'), true); ?>
-			<div class="user_realname"><?php echo $tbg_user->getRealname(); ?></div>
-			<div class="user_username">
-				(<?php echo $tbg_user->getUsername(); ?>)
-			</div>
-			<div class="user_status">
-				<?php echo '<b>' . __('Status: %status%', array('%status%' => '</b>' . (($tbg_user->getState() instanceof TBGUserstate) ? $tbg_user->getState()->getName() : '<span class="faded_out">' . __('Unknown') . '</span>'))); ?>
-			</div>
-			<div style="font-size: 13px;">
-				<div style="clear: both; margin-top: 15px;">
-					<?php echo image_tag('icon_change_password.png', array('style' => 'float: left; margin-right: 5px;')); ?>
-					<a href="javascript:void(0);" onclick="$('change_password_form').toggle();"><?php echo __('Change my password'); ?></a>
-				</div>
-				<?php
-				if (TBGSettings::getAuthenticationBackend() != 'tbg' && TBGSettings::getAuthenticationBackend() != null)
-				{
-					echo tbg_parse_text(TBGSettings::get('changepw_message'), null, null, array('embedded' => true));
-				}
-				else
-				{
-				}
-				?>
-				<div style="<?php if (!$tbg_user->usesGravatar()): ?>display: none; <?php endif; ?>clear: both; margin: 3px 0 15px 0;" id="gravatar_change">
-					<?php echo image_tag('gravatar.png', array('style' => 'float: left; margin-right: 5px;')); ?>
-					<?php echo link_tag('http://en.gravatar.com/emails/', __('Change my profile picture / avatar'), array('target' => '_blank')); ?>
-					<p class="faded_out" style="font-size: 11px; padding-top: 3px;">
-						<?php echo __('This will open up gravatar.com, which will let you change your avatar in The Bug Genie, and other webpages that uses Gravatar.'); ?>&nbsp;<?php echo link_tag('http://en.gravatar.com/', __('Read more ...'), array('target' => '_blank')); ?>
-					</p>
-				</div>
-				<div style="clear: both; margin-top: 3px;">
-					<?php echo image_tag('tab_search.png', array('style' => 'float: left; margin-right: 5px;')); ?>
-					<?php echo link_tag(make_url('my_reported_issues'), __("Show a list of all issues I've reported")); ?>
-				</div>
-				<div style="clear: both; margin-top: 3px;">
-					<?php echo image_tag('tab_search.png', array('style' => 'float: left; margin-right: 5px;')); ?>
-					<?php echo link_tag(make_url('my_assigned_issues'), __("Show a list of all open issues assigned to me")); ?>
-				</div>
-				<div style="clear: both; margin-top: 3px;">
-					<?php echo image_tag('tab_search.png', array('style' => 'float: left; margin-right: 5px;')); ?>
-					<?php echo link_tag(make_url('my_teams_assigned_issues'), __("Show a list of all open issues assigned to my teams")); ?>
-				</div>
-				<div style="clear: both; margin-top: 10px;">
-					<?php echo image_tag('icon_user.png', array('style' => 'float: left; margin-right: 5px;')); ?>
-					<a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'usercard', 'user_id' => $tbg_user->getID())); ?>');"><?php echo __('Preview my user card'); ?></a>
-				</div>
-			</div>
-		</div>
-		<div class="container_div" style="margin-top: 0;">
-			<?php include_component('main/myfriends'); ?>
-		</div>
-		<?php TBGEvent::createNew('core', 'account_left_bottom')->trigger(); */ ?>
 		<div style="margin: 0; clear: both; height: 30px; width: 100%;" class="tab_menu">
 			<ul id="account_tabs">
 				<li class="selected" id="tab_profile"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_profile', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_users.png', array('style' => 'float: left;')).__('Profile information'); ?></a></li>
 				<li id="tab_settings"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_settings', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_general.png', array('style' => 'float: left;')).__('General settings'); ?></a></li>
-				<li id="tab_openid"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_openid', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag('icon_openid.png', array('style' => 'float: left;')).__('Login accounts'); ?></a></li>
+				<?php if (TBGSettings::isOpenIDavailable()): ?>
+					<li id="tab_openid"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_openid', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag('icon_openid.png', array('style' => 'float: left;')).__('Login accounts'); ?></a></li>
+				<?php endif; ?>
 				<?php TBGEvent::createNew('core', 'account_tabs')->trigger(); ?>
 				<?php foreach (TBGContext::getModules() as $module_name => $module): ?>
 					<?php if ($module->hasAccountSettings()): ?>
@@ -275,38 +224,40 @@
 					</div>
 				</form>
 			</div>
-			<div id="tab_openid_pane" style="display: none;">
-				<div style="padding: 10px;">
-					<?php echo __('The Bug Genie supports logging in via external authentication providers via %openid%. This means you can use your account details from other services (such as Google, Wordpress, etc.) to log in here, without having to remember another set of login details.', array('%openid%' => link_tag('http://openid.net', 'OpenID'))); ?><br>
-					<div style="padding: 15px 0;"><button class="button button-blue" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'openid')); ?>');"><?php echo __('Add login from another provider'); ?></button></div>
-					<div class="faded_out" id="no_openid_accounts"<?php if (count($tbg_user->getOpenIDAccounts())): ?> style="display: none;"<?php endif; ?>><?php echo __('You have not linked your account with any external authentication providers.'); ?></div>
-					<?php if (count($tbg_user->getOpenIDAccounts())): ?>
-						<ul class="simple_list openid_accounts_list hover_highlight" id="openid_accounts_list">
-						<?php foreach ($tbg_user->getOpenIDAccounts() as $identity => $details): ?>
-							<li id="openid_account_<?php echo $details['id']; ?>">
-								<?php if (count($tbg_user->getOpenIDAccounts()) > 1 || !$tbg_user->isOpenIDLocked()): ?>
-									<button class="button button-silver" onclick="TBG.Main.Helpers.Dialog.show('<?php echo __('Remove this account link?'); ?>', '<?php echo __('Do you really want to remove the link to this external account?').'<br>'.__('By doing this, it will not be possible to log into this account via this authentication provider'); ?>', {yes: {click: function() {TBG.Main.Profile.removeOpenIDIdentity('<?php echo make_url('account_remove_openid', array('openid' => $details['id'], 'csrf_token' => TBGContext::generateCSRFtoken())); ?>', <?php echo $details['id']; ?>);}}, no: {click: TBG.Main.Helpers.Dialog.dismiss}});"><?php echo __('Delete'); ?></button>
-								<?php endif; ?>
-								<?php echo image_tag('openid_providers.small/'.$details['type'].'.ico.png'); ?>
-								<span class="openid_provider_name">
-									<?php if ($details['type'] == 'google'): ?>
-										<?php echo __('Google account'); ?>
-									<?php elseif ($details['type'] == 'yahoo'): ?>
-										<?php echo __('Yahoo account'); ?>
-									<?php elseif ($details['type'] == 'blogger'): ?>
-										<?php echo __('Blogger (google) account'); ?>
-									<?php elseif ($details['type'] == 'wordpress'): ?>
-										<?php echo __('Wordpress account'); ?>
-									<?php else: ?>
-										<?php echo __('Other OpenID provider'); ?>
+			<?php if (TBGSettings::isOpenIDavailable()): ?>
+				<div id="tab_openid_pane" style="display: none;">
+					<div style="padding: 10px;">
+						<?php echo __('The Bug Genie supports logging in via external authentication providers via %openid%. This means you can use your account details from other services (such as Google, Wordpress, etc.) to log in here, without having to remember another set of login details.', array('%openid%' => link_tag('http://openid.net', 'OpenID'))); ?><br>
+						<div style="padding: 15px 0;"><button class="button button-blue" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'openid')); ?>');"><?php echo __('Add login from another provider'); ?></button></div>
+						<div class="faded_out" id="no_openid_accounts"<?php if (count($tbg_user->getOpenIDAccounts())): ?> style="display: none;"<?php endif; ?>><?php echo __('You have not linked your account with any external authentication providers.'); ?></div>
+						<?php if (count($tbg_user->getOpenIDAccounts())): ?>
+							<ul class="simple_list openid_accounts_list hover_highlight" id="openid_accounts_list">
+							<?php foreach ($tbg_user->getOpenIDAccounts() as $identity => $details): ?>
+								<li id="openid_account_<?php echo $details['id']; ?>">
+									<?php if (count($tbg_user->getOpenIDAccounts()) > 1 || !$tbg_user->isOpenIDLocked()): ?>
+										<button class="button button-silver" onclick="TBG.Main.Helpers.Dialog.show('<?php echo __('Remove this account link?'); ?>', '<?php echo __('Do you really want to remove the link to this external account?').'<br>'.__('By doing this, it will not be possible to log into this account via this authentication provider'); ?>', {yes: {click: function() {TBG.Main.Profile.removeOpenIDIdentity('<?php echo make_url('account_remove_openid', array('openid' => $details['id'], 'csrf_token' => TBGContext::generateCSRFtoken())); ?>', <?php echo $details['id']; ?>);}}, no: {click: TBG.Main.Helpers.Dialog.dismiss}});"><?php echo __('Delete'); ?></button>
 									<?php endif; ?>
-								</span>
-							</li>
-						<?php endforeach; ?>
-						</ul>
-					<?php endif; ?>
+									<?php echo image_tag('openid_providers.small/'.$details['type'].'.ico.png'); ?>
+									<span class="openid_provider_name">
+										<?php if ($details['type'] == 'google'): ?>
+											<?php echo __('Google account'); ?>
+										<?php elseif ($details['type'] == 'yahoo'): ?>
+											<?php echo __('Yahoo account'); ?>
+										<?php elseif ($details['type'] == 'blogger'): ?>
+											<?php echo __('Blogger (google) account'); ?>
+										<?php elseif ($details['type'] == 'wordpress'): ?>
+											<?php echo __('Wordpress account'); ?>
+										<?php else: ?>
+											<?php echo __('Other OpenID provider'); ?>
+										<?php endif; ?>
+									</span>
+								</li>
+							<?php endforeach; ?>
+							</ul>
+						<?php endif; ?>
+					</div>
 				</div>
-			</div>
+			<?php endif; ?>
 			<?php TBGEvent::createNew('core', 'account_tab_panes')->trigger(); ?>
 			<?php foreach (TBGContext::getModules() as $module_name => $module): ?>
 				<?php if ($module->hasAccountSettings()): ?>
