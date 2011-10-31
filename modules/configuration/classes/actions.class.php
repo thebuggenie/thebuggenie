@@ -920,6 +920,7 @@
 			{
 				if ($this->access_level == TBGSettings::ACCESS_FULL)
 				{
+					$this->theProject->setDownloadsEnabled((bool) $request['has_downloads']);
 					switch ($request['frontpage_summary'])
 					{
 						case 'issuelist':
