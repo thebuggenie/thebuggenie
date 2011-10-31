@@ -449,19 +449,21 @@
 			$options = $request->getParameters();
 			$forward_url = TBGContext::getRouting()->generate('home');
 
-			$openid = new LightOpenID(TBGContext::getRouting()->generate('login_page', array(), false));
-			if (!$openid->mode && $request->isPost() && $request->hasParameter('openid_identifier')) 
+			if (TBGSettings::isOpenIDavailable())
+				$openid = new LightOpenID(TBGContext::getRouting()->generate('login_page', array(), false));
+
+			if (TBGSettings::isOpenIDavailable() && !$openid->mode && $request->isPost() && $request->hasParameter('openid_identifier')) 
 			{
 				$openid->identity = $request->getRawParameter('openid_identifier');
 				$openid->required = array('contact/email');
 				$openid->optional = array('namePerson/first', 'namePerson/friendly');
 				return $this->forward($openid->authUrl());
 			}
-			elseif ($openid->mode == 'cancel') 
+			elseif (TBGSettings::isOpenIDavailable() && $openid->mode == 'cancel') 
 			{
 				$this->error = TBGContext::getI18n()->__("OpenID authentication cancelled");
 			} 
-			elseif ($openid->mode)
+			elseif (TBGSettings::isOpenIDavailable() && $openid->mode)
 			{
 				try
 				{

@@ -292,7 +292,7 @@
 			{
 				$user = TBGContext::factory()->TBGUser($user_id);
 			}
-			elseif (!TBGSettings::isUsingExternalAuthenticationBackend())
+			elseif (!TBGSettings::isUsingExternalAuthenticationBackend() && TBGSettings::getOpenIDStatus() == 'all')
 			{
 				$user = new TBGUser();
 				$user->setPassword(TBGUser::createPassword());
