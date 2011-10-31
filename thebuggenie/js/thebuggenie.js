@@ -134,6 +134,15 @@ TBG.Core._resizeWatcher = function() {
 			item.setStyle({width: element_width + 'px'});
 		});
 	}
+	if ($('issue_details')) {
+		var il = $('issue_details').getLayout();
+		var container_width = il.get('width') - il.get('padding-left') - il.get('padding-right');
+		var element_width = (container_width > 650) ? parseInt(container_width / 2) : container_width;
+		$('issue_details_fieldslist').childElements().each(function(item) {
+			var l = $(item).getLayout();
+			item.setStyle({width: element_width + 'px'});
+		});
+	}
 };
 
 /**

@@ -1,4 +1,4 @@
-<ul style="width: 100%;" class="issue_details simple_list">
+<ul style="width: 100%;" class="issue_details simple_list" id="issue_details_fieldslist">
 	<li id="issuetype_field" class="issue_detail_field <?php if ($issue->isIssuetypeChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isIssuetypeMerged()): ?> issue_detail_unmerged<?php endif; ?>">
 		<dl class="viewissue_list">
 			<dt id="issuetype_header">

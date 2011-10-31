@@ -4,7 +4,7 @@
 <?php endif; ?>
 <?php if ($tbg_user->canPostComments() && ((TBGContext::isProjectContext() && !TBGContext::getCurrentProject()->isArchived()) || !TBGContext::isProjectContext())): ?>
 	<ul class="simple_list" id="add_comment_button_container">
-		<li id="comment_add_button"><input class="button button-green" type="button" onclick="$('comment_add_button').hide(); $('comment_add').show();$('comment_bodybox').focus();" value="<?php echo __('Add new comment'); ?>"></li>
+		<li id="comment_add_button"><input class="button button-green" type="button" onclick="$('comment_add_button').hide(); $('comment_add').show();$('comment_bodybox').focus();" value="<?php echo __('Post comment'); ?>"></li>
 	</ul>
 	<div id="comment_add" class="comment_add" style="<?php if (!(isset($comment_error) && $comment_error)): ?>display: none; <?php endif; ?>margin-top: 5px;">
 		<div class="comment_add_main">

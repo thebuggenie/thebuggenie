@@ -688,8 +688,8 @@ a.friend:hover { border-bottom: 1px dotted #0000a4; }
 .nice_button.workflow input { border: 0; border-top: 0; border-left: 1px solid #CDC895; border-bottom: 1px solid #CDC895; color: #6E6E53; padding: 2px 3px; font-weight: normal; background-color: #E3DDA5; cursor: pointer; }
 .nice_button.workflow input:active { background-color: #E9E9B0; }
 .nice_button.workflow input:hover { background-color: #D3CE99; }
-.workflow_actions .button, .button_group .button, .button_group .button:hover { border-radius: 0; border-left-width: 0; -moz-border-radius: 0; -webkit-border-radius: 0; }
-.workflow_actions .button.first, .button_group .button:first-child, .button_group .button:first-child:hover { border-left-width: 1px; border-top-left-radius: 3px; -moz-border-radius-topleft: 3px; -webkit-border-top-left-radius: 3px; border-bottom-left-radius: 3px; -moz-border-radius-bottomleft: 3px; -webkit-border-bottom-left-radius: 3px; }
+.workflow_actions .button, .workflow_actions .button:hover, .button_group .button, .button_group .button:hover { border-radius: 0; border-left-width: 0; -moz-border-radius: 0; -webkit-border-radius: 0; }
+.workflow_actions .button.first, .workflow_actions .button.first:hover, .button_group .button:first-child, .button_group .button:first-child:hover { border-left-width: 1px; border-top-left-radius: 3px; -moz-border-radius-topleft: 3px; -webkit-border-top-left-radius: 3px; border-bottom-left-radius: 3px; -moz-border-radius-bottomleft: 3px; -webkit-border-bottom-left-radius: 3px; }
 .workflow_actions .button.last, .button_group .button:last-child { border-top-right-radius: 3px; -moz-border-radius-topright: 3px; -webkit-border-top-right-radius: 3px; border-bottom-right-radius: 3px; -moz-border-radius-bottomright: 3px; -webkit-border-bottom-right-radius: 3px; }
 .workflow_actions li.more_actions { margin-left: 5px; }
 .project_strip .button_group .button, .project_strip .button_group .button:hover { padding: 4px 10px !important; font-size: 1em; font-weight: normal !important; }
@@ -709,7 +709,7 @@ a.friend:hover { border-bottom: 1px dotted #0000a4; }
 /* workflow actions */
 #workflow_actions { position: absolute; margin-top: 3px; right: 10px; height: 25px; z-index: 2; }
 ul.workflow_actions { margin-top: 0; }
-ul.workflow_actions li { display: block; float: left; border-radius: 0; -moz-border-radius: 0; -webkit-border-radius: 0; }
+ul.workflow_actions li { display: block; float: left; border-radius: 0; -moz-border-radius: 0; -webkit-border-radius: 0; padding: 0; line-height: 1; }
 ul.workflow_actions li form { display: inline; margin: 0; padding: 0; }
 ul.workflow_actions li input, ul.workflow_actions li:hover input { padding: 0 2px 1px 2px; font-weight: normal; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); }
 ul.workflow_actions li:hover { box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); -webkit-box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); -moz-box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); }
@@ -794,6 +794,7 @@ ul.workflow_actions li:hover { box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); -webkit-b
 #viewissue_header_container.fixed #votes_additional { display: none; }
 #workflow_actions.fixed #comment_add_button { margin-left: 5px; border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; }
 #comment_add_button { padding: 0; }
+#viewissue_comments #comment_add_button .button { padding: 2px 10px !important; font-size: 1em; }
 .user_pain, .votes { font-size: 2.3em; font-weight: bold; line-height: 1.2; }
 .user_pain { color: #91A291; }
 #votes_additional { vertical-align: middle; }
@@ -831,10 +832,8 @@ dd { float: left; display: block; width: 195px; font-weight: normal; margin: 0; 
 #viewissue_left_box_status { font-weight: normal; }
 #viewissue_left_box_status table tr td { font-weight: normal; }
 #viewissue_left_box_top #status_header { padding: 2px; }
-#issue_details #more_actions { padding: 10px 5px 5px 10px; }
-#issue_details #more_actions li.header { font-size: 14px; font-weight: bold; margin: 0 0 5px 0; }
-#issue_details #more_actions li { padding: 2px; line-height: 1.3; }
-#issue_details #more_actions li img { float: left; margin-right: 2px; }
+#more_actions li img { float: left; margin-right: 5px; }
+#more_actions li.disabled a { color: #AAA; text-shadow: 1px 1px 1px #FFF; }
 .title_left_images { width: 32px; padding: 0; }
 .title_left_images img { margin-left: 5px; }
 

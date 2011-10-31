@@ -2644,8 +2644,8 @@
 						$options['issuetypes'] = $this->issuetypes;
 						$options['errors'] = array();
 						break;
-					case 'close_issue':
-						$template_name = 'main/closeissue';
+					case 'move_issue':
+						$template_name = 'main/moveissue';
 						break;
 					case 'relate_issue':
 						$template_name = 'main/relateissue';

@@ -451,6 +451,10 @@
 		{
 		}
 
+		public function componentMoveIssue()
+		{
+		}
+
 		public function componentDashboardViewLoggedActions()
 		{
 			$this->actions = $this->getUser()->getLatestActions();

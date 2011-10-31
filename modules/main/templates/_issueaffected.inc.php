@@ -1,12 +1,3 @@
-<?php if ($issue instanceof TBGIssue && $issue->isEditable()): ?>
-	<?php if ($issue->canEditAffectedComponents() || $issue->canEditAffectedBuilds() || $issue->canEditAffectedEditions()): ?>
-		<button id="affected_add_button" class="button button-green" style="margin: 5px; float: left; margin-left: 0;" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'issue_add_item', 'issue_id' => $issue->getID())); ?>');"><?php echo __('Add an item'); ?></button>
-	<?php else: ?>
-		<button id="affected_add_button" class="button button-green disabled" style="margin: 5px; float: left; margin-left: 0;" onclick="TBG.Main.Helpers.Message.error('<?php echo __('You are not allowed to add an item to this list'); ?>');"><?php echo __('Add an item'); ?></button>
-	<?php endif; ?>
-	<br>
-<?php endif; ?>
-<br>
 <?php
 	$editions = array();
 	$components = array();
