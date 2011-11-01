@@ -920,6 +920,7 @@
 			{
 				if ($this->access_level == TBGSettings::ACCESS_FULL)
 				{
+					$this->theProject->setDownloadsEnabled((bool) $request['has_downloads']);
 					switch ($request['frontpage_summary'])
 					{
 						case 'issuelist':
@@ -2428,14 +2429,16 @@
 				$user = TBGContext::factory()->TBGUser($request['user_id']);
 				if ($user instanceof TBGUser)
 				{
-					$testuser = TBGUser::getByUsername($request['username']);
-					if (!$testuser instanceof TBGUser || $testuser->getID() == $user->getID())
-					{
-						$user->setUsername($request['username']);
-					}
-					else
-					{
-						return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('This username is already taken')));
+					if (!empty($request['username'])) {
+						$testuser = TBGUser::getByUsername($request['username']);
+						if (!$testuser instanceof TBGUser || $testuser->getID() == $user->getID())
+						{
+							$user->setUsername($request['username']);
+						}
+						else
+						{
+							return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('This username is already taken')));
+						}
 					}
 					$password_changed = false;
 					if ($request['password_action'] == 'change' && $request['new_password_1'] && $request['new_password_2'])
@@ -2456,7 +2459,9 @@
 						$user->setPassword($random_password);
 						$password_changed = true;
 					}
-					$user->setRealname($request['realname']);
+					if (isset($request['realname'])) {
+						$user->setRealname($request['realname']);
+					}
 					$return_options = array();
 					try
 					{
@@ -2510,9 +2515,13 @@
 					{
 						throw new Exception(TBGContext::getI18n()->__('One or more clients were invalid'));
 					}
-					$user->setBuddyname($request['nickname']);
+					if (isset($request['nickname'])) {
+						$user->setBuddyname($request['nickname']);
+					}
+					if (isset($request['email'])) {
+						$user->setEmail($request['email']);
+					}
 					$user->setActivated((bool) $request['activated']);
-					$user->setEmail($request['email']);
 					$user->setEnabled((bool) $request['enabled']);
 					$user->save();
 					if (isset($groups))
