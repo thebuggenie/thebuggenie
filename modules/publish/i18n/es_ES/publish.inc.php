@@ -172,5 +172,7 @@
 	$strings['Recently edited pages here'] = 'Páginas editadas últimamente';
 	$strings['There are no recent pages here'] = 'No hay páginas';
 	$strings['Initial import'] = 'Importación inicial';
+	$strings['Edit read permissions'] = 'Editar permisos de lectura';
+	$strings['Post comment'] = 'Publicar comentario';
 
   ?>
