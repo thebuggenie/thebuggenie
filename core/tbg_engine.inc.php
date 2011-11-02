@@ -26,8 +26,7 @@
 	// This code requires PHP 5.3 or newer, so if we don't have it - complain
 	if (PHP_VERSION_ID < 50300)
 	{
-		$e = new Exception('This software requires PHP 5.3.0 or newer, but you have an older version. Please upgrade');
-		return tbg_exception('Startup error', $e);
+		throw new Exception('This software requires PHP 5.3.0 or newer, but you have an older version. Please upgrade');
 	}
 
 	// Start loading The Bug Genie
@@ -77,7 +76,7 @@
 		}
 		catch (Exception $e)
 		{
-			tbg_exception('Could not load and initiate the B2DB subsystem', $e);
+			TBGContext::exceptionHandler($e);
 		}
 		TBGLogging::log('...done');
 		
@@ -94,7 +93,7 @@
 	{
 		if (!isset($argc))
 		{
-			tbg_exception('Exception caught', $e);
+			TBGContext::exceptionHandler($e);
 			exit();
 		}
 		else
