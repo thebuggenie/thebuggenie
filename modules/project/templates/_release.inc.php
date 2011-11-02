@@ -4,6 +4,7 @@
 			<?php if ($build->hasDownload()): ?>
 				<?php echo ($build->hasFile()) ? link_tag(make_url('downloadfile', array('id' => $build->getFile()->getID())), image_tag('icon_download.png').__('Download'), array('class' => 'button button-orange')) : link_tag($build->getFileURL(), image_tag('icon_download.png').__('Download'), array('class' => 'button button-orange')); ?>
 			<?php endif; ?>
+			<?php echo javascript_link_tag(__('Report an issue'), array('onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'reportissue', 'project_id' => $build->getProject()->getId(), 'build_id' => $build->getID()))."');", 'class' => 'button button-green')); ?>
 		</div>
 		<?php echo image_tag('icon_build.png', array('style' => 'float: left; margin: 3px 5px 0 0;')); ?> <?php echo '<b style="font-size: 15px;">' . $build->getName() . '</b>&nbsp;&nbsp;<span class="faded_out">(' . $build->getVersion() . ')</span>'; ?><br>
 	<?php else: ?>

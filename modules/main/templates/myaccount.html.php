@@ -15,16 +15,22 @@
 		</span>
 	</div>
 	<div class="profile_buttons">
-		<a style="<?php if (!$tbg_user->usesGravatar()): ?>display: none; <?php endif; ?>" id="gravatar_change" href="http://en.gravatar.com/emails/" class="button button-silver">
-			<?php echo image_tag('gravatar.png'); ?>
-			<?php echo __('Change my profile picture / avatar'); ?>
-		</a>
-		<?php if ($tbg_user->canChangePassword() && !$tbg_user->isOpenIdLocked()): ?>
-			<a href="javascript:void(0);" onclick="$(this).toggleClassName('button-pressed');$('change_password_div').toggle();" id="change_password_button" class="button button-silver"><?php echo __('Change my password'); ?></a>
-		<?php elseif (!$tbg_user->isOpenIdLocked()): ?>
-			<a href="javascript:void(0);" onclick="TBG.Main.Helpers.Message.error('<?php echo __('Changing password disabled'); ?>', '<?php echo __('Changing your password can not be done via this interface. Please contact your administrator to change your password.'); ?>')" class="button button-silver disabled"><?php echo __('Change my password'); ?></a>
-		<?php endif; ?>
-		<a class="button button-silver first last" id="more_actions_button" type="button" href="javascript:void(0);" onclick="$(this).toggleClassName('button-pressed');$('more_actions').toggle();"><?php echo image_tag('tab_search.png').__('Show my issues'); ?></a>
+		<div class="button_group">
+			<a style="<?php if (!$tbg_user->usesGravatar()): ?>display: none; <?php endif; ?>" id="gravatar_change" href="http://en.gravatar.com/emails/" class="button button-silver">
+				<?php echo image_tag('gravatar.png'); ?>
+				<?php echo __('Change my profile picture / avatar'); ?>
+			</a>
+			<?php if ($tbg_user->canChangePassword() && !$tbg_user->isOpenIdLocked()): ?>
+				<a href="javascript:void(0);" onclick="$(this).toggleClassName('button-pressed');$('change_password_div').toggle();" id="change_password_button" class="button button-silver"><?php echo __('Change my password'); ?></a>
+			<?php elseif (!$tbg_user->isOpenIdLocked()): ?>
+				<a href="javascript:void(0);" onclick="TBG.Main.Helpers.Message.error('<?php echo __('Changing password disabled'); ?>', '<?php echo __('Changing your password can not be done via this interface. Please contact your administrator to change your password.'); ?>')" class="button button-silver disabled"><?php echo __('Change my password'); ?></a>
+			<?php endif; ?>
+			<a class="button button-silver first" id="security_key_button" type="button" href="javascript:void(0);" onclick="$(this).toggleClassName('button-pressed');$('security_key').toggle();"><?php echo __('My security key'); ?></a>
+			<a class="button button-silver first last" id="more_actions_button" type="button" href="javascript:void(0);" onclick="$(this).toggleClassName('button-pressed');$('more_actions').toggle();"><?php echo image_tag('tab_search.png').__('Show my issues'); ?></a>
+		</div>
+		<div id="security_key" style="display: none; position: absolute; width: 350px; padding: 10px; top: 36px; right: 0; z-index: 1000;" class="rounded_box white shadowed">
+			<?php echo __('Your security key is %securitykey%', array('%securitykey%' => '<b>'.TBGSettings::getRemoteSecurityKey().'</b>')); ?>
+		</div>
 		<ul id="more_actions" style="display: none; position: absolute; width: 300px; top: 36px; right: 0; z-index: 1000;" class="simple_list rounded_box white shadowed" onclick="$('more_actions_button').toggleClassName('button-pressed');$('more_actions').toggle();">
 			<li><?php echo link_tag(make_url('my_reported_issues'), image_tag('tab_search.png', array('style' => 'float: left; margin-right: 5px;')).__("Show issues I've reported")); ?></li>
 			<li><?php echo link_tag(make_url('my_assigned_issues'), image_tag('tab_search.png', array('style' => 'float: left; margin-right: 5px;')).__("Show open issues assigned to me")); ?></li>

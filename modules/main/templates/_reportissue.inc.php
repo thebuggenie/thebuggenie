@@ -163,6 +163,16 @@
 	<form action="<?php echo make_url('project_reportissue', array('project_key' => $selected_project->getKey())); ?>" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>">
 <?php endif; ?>
 	<input type="hidden" name="project_id" id="project_id" value="<?php echo $selected_project->getID(); ?>">
+	<?php if (isset($selected_milestone)): ?>
+		<div class="rounded_box lightyellow borderless">
+			<?php echo __('You are adding an issue to %milestone_name%', array('%milestone_name%' => '<b>'.$selected_milestone->getName().'</b>')); ?>
+		</div>
+	<?php endif; ?>
+	<?php if (isset($selected_build)): ?>
+		<div class="rounded_box lightyellow borderless" style="font-size: 1.1em;">
+			<?php echo __('You are adding an issue to release %release_name%', array('%release_name%' => '<b>'.$selected_build->getName().'</b>')); ?>
+		</div>
+	<?php endif; ?>
 	<?php if (count($issuetypes) > 0): ?>
 		<div class="issuetype_list" id="issuetype_list"<?php if ($selected_issuetype instanceof TBGIssuetype): ?> style="display: none;"<?php endif; ?>>
 		<?php foreach ($issuetypes as $issuetype): ?>
