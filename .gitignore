@@ -13,3 +13,9 @@ nbproject
 web.config
 files/
 
+.remote_password_hash
+.remote_server
+.remote_username
+
+.gitignore
+
