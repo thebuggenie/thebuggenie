@@ -235,6 +235,152 @@
 			return self::$_upgrademode;
 		}
 
+		protected static function cliError($title, $exception)
+		{
+			$trace_elements = null;
+			if ($exception instanceof Exception)
+			{
+				if ($exception instanceof TBGActionNotFoundException)
+				{
+					TBGCliCommand::cli_echo("Could not find the specified action\n", 'white', 'bold');
+				}
+				elseif ($exception instanceof TBGTemplateNotFoundException)
+				{
+					TBGCliCommand::cli_echo("Could not find the template file for the specified action\n", 'white', 'bold');
+				}
+				elseif ($exception instanceof \b2db\Exception)
+				{
+					TBGCliCommand::cli_echo("An exception was thrown in the B2DB framework\n", 'white', 'bold');
+				}
+				else
+				{
+					TBGCliCommand::cli_echo("An unhandled exception occurred:\n", 'white', 'bold');
+				}
+				echo TBGCliCommand::cli_echo($exception->getMessage(), 'red', 'bold')."\n";
+				echo "\n";
+				TBGCliCommand::cli_echo('Stack trace').":\n";
+				$trace_elements = $exception->getTrace();
+			}
+			else
+			{
+				if ($exception['code'] == 8)
+				{
+					TBGCliCommand::cli_echo('The following notice has stopped further execution:', 'white', 'bold');
+				}
+				else
+				{
+					TBGCliCommand::cli_echo('The following error occured:', 'white', 'bold');
+				}
+				echo "\n";
+				echo "\n";
+				TBGCliCommand::cli_echo($title, 'red', 'bold');
+				echo "\n";
+				TBGCliCommand::cli_echo("occured in\n");
+				TBGCliCommand::cli_echo($exception['file'].', line '.$exception['line'], 'blue', 'bold');
+				echo "\n";
+				echo "\n";
+				TBGCliCommand::cli_echo("Backtrace:\n", 'white', 'bold');
+				$trace_elements = debug_backtrace();
+			}
+			foreach ($trace_elements as $trace_element)
+			{
+				if (array_key_exists('class', $trace_element))
+				{
+					if (array_key_exists('class', $trace_element) && $trace_element['class'] == 'TBGContext' && array_key_exists('function', $trace_element) && in_array($trace_element['function'], array('errorHandler', 'cliError'))) continue;
+					TBGCliCommand::cli_echo($trace_element['class'].$trace_element['type'].$trace_element['function'].'()');
+				}
+				elseif (array_key_exists('function', $trace_element))
+				{
+					if (in_array($trace_element['function'], array('tbg_error_handler', 'tbg_exception'))) continue;
+					TBGCliCommand::cli_echo($trace_element['function'].'()');
+				}
+				else
+				{
+					TBGCliCommand::cli_echo('unknown function');
+				}
+				echo "\n";
+				if (array_key_exists('file', $trace_element))
+				{
+					TBGCliCommand::cli_echo($trace_element['file'].', line '.$trace_element['line'], 'blue', 'bold');
+				}
+				else
+				{
+					TBGCliCommand::cli_echo('unknown file', 'red', 'bold');
+				}
+				echo "\n";
+			}
+			if (class_exists('\\b2db\\Core'))
+			{
+				echo "\n";
+				$sqlhits = \b2db\Core::getSQLHits();
+				if (count($sqlhits))
+				{
+					TBGCliCommand::cli_echo("SQL queries:\n", 'white', 'bold');
+					try
+					{
+						$cc = 1;
+						foreach ($sqlhits as $details)
+						{
+							TBGCliCommand::cli_echo("(".$cc++.") [");
+							$str = ($details['time'] >= 1) ? round($details['time'], 2) . ' seconds' : round($details['time'] * 1000, 1) . 'ms';
+							TBGCliCommand::cli_echo($str);
+							TBGCliCommand::cli_echo("] from ");
+							TBGCliCommand::cli_echo($details['filename'], 'blue');
+							TBGCliCommand::cli_echo(", line ");
+							TBGCliCommand::cli_echo($details['line'], 'white', 'bold');
+							TBGCliCommand::cli_echo(":\n");
+							TBGCliCommand::cli_echo("{$details['sql']}\n");
+						}
+						echo "\n";
+					}
+					catch (Exception $e)
+					{
+						TBGCliCommand::cli_echo("Could not generate query list (there may be no database connection)", "red", "bold");
+					}
+				}
+			}
+			echo "\n";
+		}
+
+		/**
+		 * Displays a nicely formatted exception message
+		 *
+		 * @param string $title
+		 * @param \Exception $exception
+		 */
+		public static function exceptionHandler($exception)
+		{
+			if (self::getRequest() instanceof TBGRequest && self::getRequest()->isAjaxCall()) {
+				self::getResponse()->ajaxResponseText(404, $exception->getMessage());
+			}
+
+
+			if (self::isCLI()) {
+				self::cliError($exception->getMessage(), $exception);
+			} else {
+				self::getResponse()->cleanBuffer();
+				require THEBUGGENIE_CORE_PATH . 'templates' . DS . 'error.php';
+			}
+			die();
+		}
+
+		public static function errorHandler($code, $error, $file, $line)
+		{
+			if (self::getRequest() instanceof TBGRequest && self::getRequest()->isAjaxCall()) {
+				self::getResponse()->ajaxResponseText(404, $error);
+			}
+
+			$details = compact('code', 'error', 'file', 'line');
+
+			if (self::isCLI()) {
+				self::cliError($error, $details);
+			} else {
+				self::getResponse()->cleanBuffer();
+				require THEBUGGENIE_CORE_PATH . 'templates' . DS . 'error.php';
+			}
+			die();
+		}
+
 		/**
 		 * Add a path to the list of searched paths in the autoloader
 		 * Class files must contain one class with the same name as the class

@@ -373,7 +373,7 @@
                 $_SESSION['__upload_status'] = array();
             }
 
-			$this->_querystring = $_SERVER['QUERY_STRING'];
+			$this->_querystring = array_key_exists('QUERY_STRING', $_SERVER) ? $_SERVER['QUERY_STRING'] : '';
 
 		}
 

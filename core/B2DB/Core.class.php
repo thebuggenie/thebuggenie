@@ -35,7 +35,7 @@
 		static protected $_db_port;
 		static protected $_dsn;
 		static protected $_tableprefix = '';
-		static protected $_sqlhits;
+		static protected $_sqlhits = array();
 		static protected $_sqltiming;
 		static protected $_throwhtmlexception = false;
 		static protected $_aliascnt = 0;
