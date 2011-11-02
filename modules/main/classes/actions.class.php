@@ -895,6 +895,7 @@
 			else
 				$this->issuetypes = TBGIssuetype::getAll();
 
+			$this->selected_issuetype = null;
 			if ($request->hasParameter('issuetype'))
 				$this->selected_issuetype = TBGIssuetype::getIssuetypeByKeyish($request['issuetype']);
 
@@ -2643,6 +2644,23 @@
 						$template_name = 'main/reportissuecontainer';
 						$this->_loadSelectedProjectAndIssueTypeFromRequestForReportIssueAction($request);
 						$options['selected_project'] = $this->selected_project;
+						$options['selected_issuetype'] = $this->selected_issuetype;
+						if ($request->hasParameter('milestone_id'))
+						{
+							try
+							{
+								$options['selected_milestone'] = TBGContext::factory()->TBGMilestone((int) $request['milestone_id']);
+							}
+							catch (Exception $e) {}
+						}
+						if ($request->hasParameter('build_id'))
+						{
+							try
+							{
+								$options['selected_build'] = TBGContext::factory()->TBGBuild((int) $request['build_id']);
+							}
+							catch (Exception $e) {}
+						}
 						$options['issuetypes'] = $this->issuetypes;
 						$options['errors'] = array();
 						break;

@@ -295,7 +295,7 @@
 								<li class="disabled"><a id="affected_add_button" href="javascript:void(0);" onclick="TBG.Main.Helpers.Message.error('<?php echo __('You are not allowed to add an item to this list'); ?>');"><?php echo image_tag('action_add_affected.png').__('Add affected item'); ?></a></li>
 							<?php endif; ?>
 						<?php endif; ?>
-						<li><a href="javascript:void(0)" id="add_task_button" onclick="$('viewissue_add_task_div').toggle();"><?php echo image_tag('action_add_task.png').__('Add a task to this issue'); ?></a></li>
+						<li><?php echo javascript_link_tag(image_tag('action_add_task.png').__('Add a task to this issue'), array('onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'reportissue', 'project_id' => $issue->getProject()->getId(), 'parent_issue_id' => $issue->getID()))."');")); ?></li>
 						<li><a href="javascript:void(0)" id="relate_to_existing_issue_button" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'relate_issue', 'issue_id' => $issue->getID())); ?>');"><?php echo image_tag('action_add_related.png').__('Relate to an existing issue'); ?></a></li>
 						<li><a href="javascript:void(0)" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'move_issue', 'issue_id' => $issue->getID())); ?>');"><?php echo image_tag('icon_move.png').__("Move issue to another project"); ?></a></li>
 						<?php if (TBGContext::getUser()->hasPermission('candeleteissues') || TBGContext::getUser()->hasPermission('caneditissue')): ?>
@@ -405,7 +405,7 @@
 					
 					$count = count($editions) + count($components) + count($builds);				
 				?>
-				<li id="tab_affected"><?php echo javascript_link_tag(image_tag('cfg_icon_projecteditionsbuilds.png', array('style' => 'float: left; margin-right: 5px;')) . __('Affected items (%count%)', array('%count%' => '<span id="viewissue_affects_count">'.$count.'</span>')), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_affected', 'viewissue_menu');")); ?></li>
+				<li id="tab_affected"><?php echo javascript_link_tag(image_tag('icon_affected_items.png', array('style' => 'float: left; margin-right: 5px;')) . __('Affected items (%count%)', array('%count%' => '<span id="viewissue_affects_count">'.$count.'</span>')), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_affected', 'viewissue_menu');")); ?></li>
 				<li id="tab_related_issues_and_tasks"><?php echo javascript_link_tag(image_tag('icon_related_issues.png', array('style' => 'float: left; margin-right: 5px;')) . __('Related issues and tasks (%count%)', array('%count%' => '<span id="viewissue_duplicate_issues_count">'.(count($issue->getParentIssues())+count($issue->getChildIssues())).'</span>')), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_related_issues_and_tasks', 'viewissue_menu');")); ?></li>
 				<li id="tab_duplicate_issues"><?php echo javascript_link_tag(image_tag('icon_duplicate_issues.png', array('style' => 'float: left; margin-right: 5px;')) . __('Duplicate issues (%count%)', array('%count%' => '<span id="viewissue_duplicate_issues_count">'.(count($issue->getDuplicateIssues())).'</span>')), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_duplicate_issues', 'viewissue_menu');")); ?></li>
 				<?php TBGEvent::createNew('core', 'viewissue_tabs', $issue)->trigger(); ?>
@@ -454,19 +454,6 @@
 			</div>
 			<div id="tab_related_issues_and_tasks_pane" style="padding-top: 5px; margin: 0 5px 0 5px; display: none;">
 				<div id="viewissue_related">
-					<?php if ($issue->isUpdateable()): ?>
-						<div class="rounded_box mediumgrey shadowed" id="viewissue_add_task_div" style="margin: 5px 0 5px 0; display: none; position: absolute; font-size: 12px; width: 400px;">
-							<form id="viewissue_add_task_form" action="<?php echo make_url('project_scrum_story_addtask', array('project_key' => $issue->getProject()->getKey(), 'story_id' => $issue->getID(), 'mode' => 'issue')); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="TBG.Issues.addUserStoryTask('<?php echo make_url('project_scrum_story_addtask', array('project_key' => $issue->getProject()->getKey(), 'story_id' => $issue->getID(), 'mode' => 'issue')); ?>', <?php echo $issue->getID(); ?>, 'issue');return false;">
-								<div>
-									<label for="viewissue_task_name_input"><?php echo __('Add task'); ?>&nbsp;</label>
-									<input type="text" name="task_name" id="viewissue_task_name_input">
-									<input type="submit" value="<?php echo __('Add task'); ?>">
-									<a class="close_micro_popup_link" href="javascript:void(0);" onclick="$('viewissue_add_task_div').toggle();"><?php echo __('Done'); ?></a>
-									<?php echo image_tag('spinning_20.gif', array('id' => 'add_task_indicator', 'style' => 'display: none;')); ?><br>
-								</div>
-							</form>
-						</div>
-					<?php endif; ?>
 					<table border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
 						<tr>
 							<td id="related_parent_issues_inline" style="width: 360px;">

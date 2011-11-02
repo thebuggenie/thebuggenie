@@ -320,6 +320,11 @@
 		
 		public function componentIssueaffected()
 		{	
+			$this->editions = ($this->issue->getProject()->isEditionsEnabled()) ? $this->issue->getEditions() : array();
+			$this->components = ($this->issue->getProject()->isComponentsEnabled()) ? $this->issue->getComponents() : array();
+			$this->builds = ($this->issue->getProject()->isBuildsEnabled()) ? $this->issue->getBuilds() : array();
+			$this->statuses = TBGStatus::getAll();
+			$this->count = count($this->editions) + count($this->components) + count($this->builds);
 		}
 
 		public function componentLoginpopup()
@@ -401,7 +406,8 @@
 		{
 			$this->selected_issuetype = $this->selected_issuetype ?: null;
 			$this->selected_edition = null;
-			$this->selected_build = null;
+			$this->selected_build = $this->selected_build ?: null;
+			$this->selected_milestone = $this->selected_milestone ?: null;
 			$this->selected_component = null;
 			$this->selected_category = null;
 			$this->selected_status = null;

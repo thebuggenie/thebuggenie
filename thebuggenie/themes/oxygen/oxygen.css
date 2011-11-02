@@ -162,7 +162,8 @@ footer td { font-size: 0.9em; line-height: 1.2; padding: 5px; text-shadow: 1px 1
 .comment_add_title { font-size: 1.1em; font-weight: bold; }
 .commentbody { padding: 5px 5px 5px 0; font-size: 0.9em; }
 .commentbody .image_container.thumb img.image { width: 130px; }
-.commenttools { float: right; padding: 5px; margin: 5px; font-size: 0.9em; text-align: right; width: 150px; }
+.commenttools { float: right; padding: 5px; margin: 5px; font-size: 0.9em; text-align: right; }
+.commenttools .button { font-weight: normal !important; }
 .commenttools img { vertical-align: bottom; margin-right: 5px; }
 .comment_controls { margin-top: 10px; }
 .comment_edit, .comment_add_main { padding: 5px; background-color: #F1F1F1; border: 1px dotted #CCC; }
@@ -692,6 +693,7 @@ a.friend:hover { border-bottom: 1px dotted #0000a4; }
 .workflow_actions .button.first, .workflow_actions .button.first:hover, .button_group .button:first-child, .button_group .button:first-child:hover { border-left-width: 1px; border-top-left-radius: 3px; -moz-border-radius-topleft: 3px; -webkit-border-top-left-radius: 3px; border-bottom-left-radius: 3px; -moz-border-radius-bottomleft: 3px; -webkit-border-bottom-left-radius: 3px; }
 .workflow_actions .button.last, .button_group .button:last-child { border-top-right-radius: 3px; -moz-border-radius-topright: 3px; -webkit-border-top-right-radius: 3px; border-bottom-right-radius: 3px; -moz-border-radius-bottomright: 3px; -webkit-border-bottom-right-radius: 3px; }
 .workflow_actions li.more_actions { margin-left: 5px; }
+.button_group .button { float: left; }
 .project_strip .button_group .button, .project_strip .button_group .button:hover { padding: 4px 10px !important; font-size: 1em; font-weight: normal !important; }
 /* end very visible button */
 
@@ -881,6 +883,7 @@ dd { float: left; display: block; width: 195px; font-weight: normal; margin: 0; 
 
 #upload_error_div { margin: 10px 5px 5px 5px; }
 #viewissue_attached_information, #viewissue_comments, #viewissue_related, #viewissue_duplicates, #viewissue_affected { margin: 5px 0 0 0; }
+#affected_list th { font-size: 0.85em; }
 #viewissue_commits { margin: 10px 0 0 0; }
 #viewissue_attached_information .header_div a { float: right; margin-left: 5px; }
 #viewissue_attached_information .header_div a:hover { border: 0; }
