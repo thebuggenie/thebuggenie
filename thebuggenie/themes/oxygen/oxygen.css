@@ -660,6 +660,7 @@ a.friend:hover { border-bottom: 1px dotted #0000a4; }
 #backdrop_detail_content .reportissue_additional_information_container { border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; padding: 3px; background-color: #F5F5F5; margin-top: 10px; margin-bottom: 0; }
 #backdrop_detail_content .additional_information { float: left; width: 323px; margin: 0 0 10px 5px; }
 #backdrop_detail_content .additional_information .report_issue_help { display: none; }
+reportissue_additional_information_container .markItUp { display: none; }
 .report_issue_submit_container { font-size: 1.1em; }
 .report_issue_submit_container .button, .report_issue_submit_container .button:hover { float: right; font-size: 1.1em; padding: 0 5px !important; }
 .report_issue_submit_container img { float: right; margin-right: 5px; }

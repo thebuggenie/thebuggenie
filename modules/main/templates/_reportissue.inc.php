@@ -520,7 +520,7 @@
 										case TBGCustomDatatype::INPUT_TEXTAREA_SMALL:
 										case TBGCustomDatatype::INPUT_TEXTAREA_MAIN:
 											?>
-											<?php include_template('main/textarea', array('area_name' => $customdatatype->getKey().'_value', 'area_id' => $customdatatype->getKey().'_value', 'height' => '125px', 'width' => '100%', 'value' => $selected_customdatatype[$customdatatype->getKey()])); ?>
+											<?php include_template('main/textarea', array('area_name' => $customdatatype->getKey().'_value', 'area_id' => $customdatatype->getKey().'_value', 'height' => '75px', 'width' => '100%', 'value' => $selected_customdatatype[$customdatatype->getKey()])); ?>
 											<?php
 											break;
 									}
