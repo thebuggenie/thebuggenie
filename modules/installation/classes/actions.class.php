@@ -468,6 +468,7 @@
 			TBGIssueFilesTable::getTable()->createIndexes();
 
 			TBGSettings::saveSetting(TBGSettings::SETTING_ICONSET, TBGSettings::get(TBGSettings::SETTING_THEME_NAME));
+			TBGContext::setPermission('readarticle', 0, 'core', 0, 0, 0, true);
 			
 			foreach (TBGProject::getAll() as $project)
 			{
