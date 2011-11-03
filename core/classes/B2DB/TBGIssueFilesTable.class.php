@@ -52,6 +52,11 @@
 			parent::_addInteger(self::ATTACHED_AT, 10);
 		}
 
+		protected function _setupIndexes()
+		{
+			$this->_addIndex('issueid', self::ISSUE_ID);
+		}
+
 		public function addByIssueIDandFileID($issue_id, $file_id)
 		{
 			$crit = $this->getCriteria();

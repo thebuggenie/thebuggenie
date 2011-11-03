@@ -134,6 +134,12 @@
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 
+		protected function _setupIndexes()
+		{
+			$this->_addIndex('deleted_project', array(self::DELETED, self::PROJECT_ID));
+			$this->_addIndex('deleted_state_project', array(self::DELETED, self::STATE, self::PROJECT_ID));
+		}
+
 		public static function getValidSearchFilters()
 		{
 			return array('project_id', 'text', 'state', 'issuetype', 'status', 'resolution', 'category', 'severity', 'priority', 'posted_by', 'assigned_to', 'assigned_type', 'component', 'build', 'edition');

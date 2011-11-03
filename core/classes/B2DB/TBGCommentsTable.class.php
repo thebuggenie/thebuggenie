@@ -71,6 +71,7 @@
 		protected function _setupIndexes()
 		{
 			$this->_addIndex('type_target', array(self::TARGET_TYPE, self::TARGET_ID));
+			$this->_addIndex('type_target_deleted_system', array(self::TARGET_TYPE, self::TARGET_ID, self::DELETED, self::SYSTEM_COMMENT));
 		}
 
 		public function getComments($target_id, $target_type, $sort_order = Criteria::SORT_ASC)
