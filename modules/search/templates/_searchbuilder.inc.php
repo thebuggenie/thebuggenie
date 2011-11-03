@@ -42,6 +42,8 @@
 						<option value="assigned_to"><?php echo __("Assigned to - who is an issue assigned to"); ?></option>
 						<option value="owned_by"><?php echo __("Owned by - who owns an issue"); ?></option>
 						<option value="posted_by"><?php echo __("Posted by user - which user posted the issue"); ?></option>
+						<option value="posted"><?php echo __("Date reported - when was the issue reported"); ?></option>
+						<option value="last_updated"><?php echo __("Date last updated - when was the issue last updated"); ?></option>
 						<?php foreach (TBGCustomDatatype::getAll() as $customdatatype): ?>
 							<option value="<?php echo $customdatatype->getKey(); ?>"><?php echo __($customdatatype->getDescription()); ?></option>
 						<?php endforeach; ?>

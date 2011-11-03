@@ -48,11 +48,18 @@
 			$pkey = (TBGContext::isProjectContext()) ? TBGContext::getCurrentProject()->getID() : null;
 
 			$i18n = TBGContext::getI18n();
-			$this->selected_value = (isset($this->selected_value)) ? $this->selected_value : 0;
 			$this->selected_operator = (isset($this->selected_operator)) ? $this->selected_operator : '=';
 			$this->key = (isset($this->key)) ? $this->key : null;
 			$this->allfilters = (isset($this->allfilters)) ? $this->allfilters : null;
 			$this->filter = (isset($this->filter)) ? $this->filter : null;
+			if (in_array($this->filter, array('posted', 'last_updated')))
+			{
+				$this->selected_value = ($this->selected_value) ? $this->selected_value : time();
+			}
+			else
+			{
+				$this->selected_value = (isset($this->selected_value)) ? $this->selected_value : 0;
+			}
 			$this->filter_info = (isset($this->filter_info)) ? $this->filter_info : null;
 
 			$filters = array();
@@ -69,6 +76,8 @@
 			$filters['assigned_to'] = array('description' => $i18n->__('Assigned to'));
 			$filters['posted_by'] = array('description' => $i18n->__('Posted by'));
 			$filters['owned_by'] = array('description' => $i18n->__('Owned by'));
+			$filters['posted'] = array('description' => $i18n->__('Date reported'));
+			$filters['last_updated'] = array('description' => $i18n->__('Date last updated'));
 			$this->filters = $filters;
 
 		}

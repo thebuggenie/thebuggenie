@@ -142,7 +142,7 @@
 
 		public static function getValidSearchFilters()
 		{
-			return array('project_id', 'text', 'state', 'issuetype', 'status', 'resolution', 'reproducability', 'category', 'severity', 'priority', 'posted_by', 'assigned_to', 'assigned_type', 'owned_by', 'owned_type', 'component', 'build', 'edition');
+			return array('project_id', 'text', 'state', 'issuetype', 'status', 'resolution', 'reproducability', 'category', 'severity', 'priority', 'posted_by', 'assigned_to', 'assigned_type', 'owned_by', 'owned_type', 'component', 'build', 'edition', 'posted', 'last_updated');
 		}
 
 		public function getCountsByProjectID($project_id)
@@ -628,7 +628,7 @@
 						}
 						elseif (in_array($filter, self::getValidSearchFilters()))
 						{
-							$crit->addWhere($dbname.'.'.$filter, $filter_info['value'], $filter_info['operator']);
+							$crit->addWhere($dbname.'.'.$filter, $filter_info['value'], urldecode($filter_info['operator']));
 						}
 						elseif (TBGCustomDatatype::doesKeyExist($filter))
 						{
@@ -666,18 +666,18 @@
 							}
 							else
 							{
-								$ctn = $crit->returnCriterion($dbname.'.'.$filter, $first_val['value'], $first_val['operator']);
+								$ctn = $crit->returnCriterion($dbname.'.'.$filter, $first_val['value'], urldecode($first_val['operator']));
 								if (count($filter_info) > 0)
 								{
 									foreach ($filter_info as $single_filter)
 									{
 										if (in_array($single_filter['operator'], array('=', '<=', '>=', '<', '>')))
 										{
-											$ctn->addOr($dbname.'.'.$filter, $single_filter['value'], $single_filter['operator']);
+											$ctn->addOr($dbname.'.'.$filter, $single_filter['value'], urldecode($single_filter['operator']));
 										}
 										elseif ($single_filter['operator'] == '!=')
 										{
-											$ctn->addWhere($dbname.'.'.$filter, $single_filter['value'], $single_filter['operator']);
+											$ctn->addWhere($dbname.'.'.$filter, $single_filter['value'], urldecode($single_filter['operator']));
 										}
 									}
 								}
