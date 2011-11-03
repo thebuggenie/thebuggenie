@@ -80,40 +80,32 @@
 			
 			if ($request->isPost() && $issue instanceof TBGIssue && $request->hasParameter('issue_action'))
 			{
-				switch ($request['issue_action'])
+				if ($request['issue_action'] == 'save')
 				{
-					case 'save':
-						if ($issue->hasUnsavedChanges())
+					if (!$issue->hasMergeErrors())
+					{
+						try
 						{
-							if (!$issue->hasMergeErrors())
-							{
-								try
-								{
-									$issue->getWorkflowStep()->getWorkflow()->moveIssueToMatchingWorkflowStep($issue);
-									$issue->save();
-									TBGContext::setMessage('issue_saved', true);
-									$this->forward(TBGContext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
-								}
-								catch (TBGWorkflowException $e)
-								{
-									$this->error = $e->getMessage();
-									$this->workflow_error = true;
-								}
-								catch (Exception $e)
-								{
-									$this->error = $e->getMessage();
-								}
-							}
-							else
-							{
-								$this->issue_unsaved = true;
-							}
-						}
-						else
-						{
+							$issue->getWorkflowStep()->getWorkflow()->moveIssueToMatchingWorkflowStep($issue);
+							$issue->save();
+							TBGContext::setMessage('issue_saved', true);
 							$this->forward(TBGContext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
 						}
-						break;
+						catch (TBGWorkflowException $e)
+						{
+							$this->error = $e->getMessage();
+							$this->workflow_error = true;
+						}
+						catch (Exception $e)
+						{
+							$this->error = $e->getMessage();
+						}
+					}
+					else
+					{
+						$this->issue_unsaved = true;
+					}
+					break;
 				}
 			}
 			elseif ($message == true)
