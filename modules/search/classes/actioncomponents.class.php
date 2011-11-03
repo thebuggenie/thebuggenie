@@ -50,6 +50,10 @@
 			$i18n = TBGContext::getI18n();
 			$this->selected_value = (isset($this->selected_value)) ? $this->selected_value : 0;
 			$this->selected_operator = (isset($this->selected_operator)) ? $this->selected_operator : '=';
+			$this->key = (isset($this->key)) ? $this->key : null;
+			$this->allfilters = (isset($this->allfilters)) ? $this->allfilters : null;
+			$this->filter = (isset($this->filter)) ? $this->filter : null;
+			$this->filter_info = (isset($this->filter_info)) ? $this->filter_info : null;
 
 			$filters = array();
 			$filters['status'] = array('description' => $i18n->__('Status'), 'options' => TBGStatus::getAll());
@@ -62,6 +66,9 @@
 			$filters['component'] = array('description' => $i18n->__('Component'), 'options' => TBGComponent::getAllByProjectID($pkey));
 			$filters['build'] = array('description' => $i18n->__('Build'), 'options' => TBGBuild::getByProjectID($pkey));
 			$filters['edition'] = array('description' => $i18n->__('Edition'), 'options' => TBGEdition::getAllByProjectID($pkey));
+			$filters['assigned_to'] = array('description' => $i18n->__('Assigned to'));
+			$filters['posted_by'] = array('description' => $i18n->__('Posted by'));
+			$filters['owned_by'] = array('description' => $i18n->__('Owned by'));
 			$this->filters = $filters;
 
 		}

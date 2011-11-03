@@ -2974,6 +2974,26 @@ TBG.Search.Filter.remove = function(key) {
 	}
 };
 
+TBG.Search.Filter.setIdentifiable = function(url, filter, key, i_id, i_type)
+{
+	TBG.Main.Helpers.ajax(url, {
+		additional_params: '&i_id=' + i_id + '&i_type=' + i_type,
+		loading: {
+			indicator: 'filter_'+filter+'_'+key+'_indicator'
+		},
+		success: {
+			update: 'filter_'+filter+'_'+key+'_name'
+		},
+		complete: {
+			callback: function() {
+				$('filter_'+filter+'_'+key).setValue(i_id);
+				$('filter_'+filter+'_'+key+'_type').setValue(i_id);
+			},
+			hide: 'filter_'+filter+'_'+key+'_popup'
+		}
+	});
+}
+
 TBG.Search.deleteSavedSearch = function(url, id) {
 	TBG.Main.Helpers.ajax(url, {
 		loading: {indicator: 'delete_search_' + id + '_indicator'},

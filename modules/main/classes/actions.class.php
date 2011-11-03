@@ -3647,4 +3647,13 @@
 			return $this->renderJSON(array('error' => $this->getI18n()->__('Could not remove this OpenID account')));
 		}
 
+		public function runGetTempIdentifiable(TBGRequest $request)
+		{
+			if ($request['i_type'] == TBGIdentifiableClass::TYPE_USER)
+				return $this->renderComponent('main/userdropdown', array('user' => $request['i_id']));
+			else
+				return $this->renderComponent('main/teamdropdown', array('team' => $request['i_id']));
+
+		}
+
 }

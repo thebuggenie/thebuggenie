@@ -17,7 +17,69 @@
 				</select>
 				<?php $show_button = true; ?>
 			<?php endif; ?>
-		<?php elseif (in_array($filter, array('assigned_to', 'posted_by', 'lead_by'))): ?>
+		<?php elseif (in_array($filter, array('assigned_to', 'posted_by', 'owned_by'))): ?>
+			<label for="filter_<?php echo $filter; ?>_<?php echo $key; ?>"><?php echo $filters[$filter]['description']; ?></label>
+			<select name="filters[<?php echo $filter; ?>][<?php echo $key; ?>][operator]">
+				<option value="="<?php if ($selected_operator == '='): ?> selected<?php endif; ?>><?php echo __('%field% is %value%', array('%field%' => '', '%value%' => '')); ?></option>
+				<option value="!="<?php if ($selected_operator == '!='): ?> selected<?php endif; ?>><?php echo __('%field% is not %value%', array('%field%' => '', '%value%' => '')); ?></option>
+			</select>
+			<?php echo image_tag('spinning_16.gif', array('style' => 'float: left; margin: 0 5px; display: none;', 'id' => 'filter_'.$filter.'_'.$key.'_indicator')); ?>
+			<div id="filter_<?php echo $filter; ?>_<?php echo $key; ?>_name" style="display: block; float: left; margin: 3px 10px;"><?php
+
+				$type_value = '';
+				$component = null;
+				if ($allfilters) {
+					if ($filter == 'assigned_to') {
+						$type_value = $allfilters['assigned_type'][$key]['value'];
+						if ($type_value == TBGIdentifiableClass::TYPE_USER) {
+							$component = 'main/userdropdown';
+							$options = array('user' => $selected_value);
+
+						} else {
+							$component = 'main/teamdropdown';
+							$options = array('team' => $selected_value);
+						}
+					}
+					if ($filter == 'owned_by') {
+						$type_value = $allfilters['owned_type'][$key]['value'];
+						if ($type_value == TBGIdentifiableClass::TYPE_USER) {
+							$component = 'main/userdropdown';
+							$options = array('user' => $selected_value);
+						} else {
+							$component = 'main/teamdropdown';
+							$options = array('team' => $selected_value);
+						}
+					}
+					if ($filter == 'owned_by') {
+						$component = 'main/userdropdown';
+						$options = array('user' => $selected_value);
+						$type_value = TBGIdentifiableClass::TYPE_USER;
+					}
+					include_component($component, $options);
+				}
+
+			?></div>
+			<input type="hidden" name="filters[<?php echo $filter; ?>][<?php echo $key; ?>][value]" id="filter_<?php echo $filter; ?>_<?php echo $key; ?>" value="<?php echo $selected_value; ?>">
+			<?php if ($filter == 'assigned_to'): ?>
+				<input type="hidden" name="filters[assigned_type][<?php echo $key; ?>][value]" id="filter_<?php echo $filter; ?>_<?php echo $key; ?>_type" value="<?php echo $type_value; ?>">
+				<input type="hidden" name="filters[assigned_type][<?php echo $key; ?>][operator]" value="=">
+			<?php elseif ($filter == 'posted_by'): ?>
+				<input type="hidden" name="filters[posted_type][<?php echo $key; ?>][value]" id="filter_<?php echo $filter; ?>_<?php echo $key; ?>_type" value="<?php echo $type_value; ?>">
+				<input type="hidden" name="filters[posted_type][<?php echo $key; ?>][operator]" value="=">
+			<?php else: ?>
+				<input type="hidden" name="filters[owned_type][<?php echo $key; ?>][value]" id="filter_<?php echo $filter; ?>_<?php echo $key; ?>_type" value="<?php echo $type_value; ?>">
+				<input type="hidden" name="filters[owned_type][<?php echo $key; ?>][operator]" value="=">
+			<?php endif; ?>
+			<?php include_component('main/identifiableselector', array(	'html_id' 			=> 'filter_'.$filter.'_'.$key.'_popup',
+																		'header' 			=> __('Please select'),
+																		'callback'		 	=> "TBG.Search.Filter.setIdentifiable('" . make_url('get_temp_identifiable') . "', '".$filter."', '".$key."', %identifiable_value%, %identifiable_type%);",
+																		'clear_link_text'	=> __('Clear selected user'),
+																		'base_id'			=> 'filter_'.$filter.'_'.$key.'_popup',
+																		'include_teams'		=> ($filter != 'posted_by'),
+																		'allow_clear'		=> false,
+																		'absolute'			=> true)); ?>
+			<button onclick="$('filter_<?php echo $filter; ?>_<?php echo $key; ?>_popup').toggle(); return false;" class="button button-silver"><?php echo __('Select'); ?></button>
+			<?php $show_button = true; ?>
 		<?php elseif (in_array($filter, array_keys($filters))): ?>
 			<label for="filter_<?php echo $filter; ?>_<?php echo $key; ?>"><?php echo $filters[$filter]['description']; ?></label>
 			<select name="filters[<?php echo $filter; ?>][<?php echo $key; ?>][operator]">
