@@ -1,4 +1,4 @@
-<?php include_template('search/bulkactions', array('mode' => 'top')); ?>
+<?php if (!$tbg_user->isGuest()) include_template('search/bulkactions', array('mode' => 'top')); ?>
 <?php $current_count = 0; ?>
 <?php foreach ($issues as $issue): ?>
 	<?php list ($showtablestart, $showheader, $prevgroup_id, $groupby_description) = searchActions::resultGrouping($issue, $groupby, $cc, $prevgroup_id); ?>
@@ -20,7 +20,9 @@
 		<table style="width: 100%;" cellpadding="0" cellspacing="0" class="results_container resizable sortable">
 			<thead>
 				<tr>
-					<th class="nosort" style="width: 20px; padding: 1px !important;"><input type="checkbox" onclick="TBG.Search.toggleCheckboxes(this);"></th>
+					<?php if (!$tbg_user->isGuest()): ?>
+						<th class="nosort" style="width: 20px; padding: 1px !important;"><input type="checkbox" onclick="TBG.Search.toggleCheckboxes(this);"></th>
+					<?php endif; ?>
 					<?php if (!TBGContext::isProjectContext() && $show_project == true): ?>
 						<th style="padding-left: 3px;"><?php echo __('Project'); ?></th>
 					<?php endif; ?>
@@ -42,11 +44,13 @@
 			<tbody>
 	<?php endif; ?>
 				<tr class="<?php if ($issue->isClosed()): ?> closed<?php endif; ?><?php if ($issue->hasUnsavedChanges()): ?> changed<?php endif; ?><?php if ($issue->isBlocking()): ?> blocking<?php endif; ?> priority_<?php echo ($issue->getPriority() instanceof TBGPriority) ? $issue->getPriority()->getValue() : 0; ?>" id="issue_<?php echo $issue->getID(); ?>">
-					<td style="padding: 2px;">
-						<?php if ($issue->isWorkflowTransitionsAvailable()): ?>
-							<input type="checkbox" name="update_issue[<?php echo $issue->getID(); ?>]" onclick="TBG.Search.toggleCheckbox(this);" value="<?php echo $issue->getID(); ?>">
-						<?php endif; ?>
-					</td>
+					<?php if (!$tbg_user->isGuest()): ?>
+						<td style="padding: 2px;">
+							<?php if ($issue->isWorkflowTransitionsAvailable()): ?>
+								<input type="checkbox" name="update_issue[<?php echo $issue->getID(); ?>]" onclick="TBG.Search.toggleCheckbox(this);" value="<?php echo $issue->getID(); ?>">
+							<?php endif; ?>
+						</td>
+					<?php endif; ?>
 				<?php if (!TBGContext::isProjectContext() && $show_project == true): ?>
 					<td style="padding-left: 5px;"><?php echo link_tag(make_url('project_issues', array('project_key' => $issue->getProject()->getKey())), $issue->getProject()->getName()); ?></td>
 				<?php endif; ?>
@@ -117,7 +121,7 @@
 	<?php endif; ?>
 	<?php $cc++; ?>
 <?php endforeach; ?>
-<?php include_template('search/bulkactions', array('mode' => 'bottom')); ?>
+<?php if (!$tbg_user->isGuest()) include_template('search/bulkactions', array('mode' => 'bottom')); ?>
 <script type="text/javascript">
 	document.observe('dom:loaded', function() {
 		TBG.Search.setColumns('results_normal', ['title', 'issuetype', 'assigned_to', 'status', 'resolution', 'category', 'severity', 'percent_complete', 'reproducability', 'priority', 'milestone', 'last_updated', 'comments'], [<?php echo "'".join("', '", $visible_columns)."'"; ?>], [<?php echo "'".join("', '", $default_columns)."'"; ?>]);
