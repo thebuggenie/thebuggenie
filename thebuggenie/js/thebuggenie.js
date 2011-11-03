@@ -2955,8 +2955,7 @@ TBG.Issues.updateWorkflowAssigneeTeamup = function(url, assignee_id, assignee_ty
 
 TBG.Search.Filter.add = function(url) {
 	TBG.Main.Helpers.ajax(url, {
-		form: 'add_filter_form',
-		additional_params: '&key=' + $('max_filters').value,
+		params: '&filter_name=' + $('add_search_filter_dropdown').value + '&key=' + $('max_filters').value,
 		loading: {indicator: 'add_filter_indicator'},
 		success: {
 			update: {element: 'search_filters_list', insertion: true},

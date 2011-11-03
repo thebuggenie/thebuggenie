@@ -52,7 +52,7 @@
 				<div class="results_header">
 					<?php echo $searchtitle; ?>
 					&nbsp;&nbsp;<span class="faded_out"><?php echo __('%number_of% issue(s)', array('%number_of%' => (int) $resultcount)); ?></span>
-					<?php include_component('search/extralinks', compact('show_results')); ?>
+					<?php include_component('search/extralinks', compact('show_results', 'issavedsearch')); ?>
 				</div>
 				<?php if ($resultcount > 0): ?>
 					<div id="search_results" class="search_results">

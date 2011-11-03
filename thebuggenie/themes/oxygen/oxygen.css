@@ -38,6 +38,13 @@ input[type="button"]::-moz-focus-inner,
 input[type="submit"]::-moz-focus-inner,
 input[type="file"] > input[type="button"]::-moz-focus-inner {border:0;padding:0;margin:0;}
 
+input::-webkit-input-placeholder {
+    color:    #BBB;
+}
+input:-moz-placeholder {
+    color:    #BBB;
+}
+
 pre { overflow: auto; }
 
 select { height: 22px; }
@@ -1187,16 +1194,18 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 #find_issues .search_column_settings label { padding: 3px; }
 #find_issues .search_column_settings li { clear: both; }
 #search_column_settings_save_button { margin-right: 10px; }
-#search_builder_toggler { float: right; margin: -2px 0 0 5px; padding-bottom: 2px !important; font-size: 1em !important; }
+#search_builder_toggler, #save_search_builder_toggler { float: right; margin: -2px 0 0 5px; padding-bottom: 2px !important; font-size: 1em !important; }
+.search_buttons { float: right; }
+.search_buttons .button, .search_buttons .button:hover { font-size: 1.15em !important; padding: 2px 10px !important; font-weight: normal !important; }
 #search_column_settings_container { width: 400px; position: absolute; right: 5px; }
 #find_issues #search_filters ul { list-style-type: none; margin: 0; padding: 0; }
 #find_issues #search_filters ul li { margin: 0; padding: 0; }
-#search_filters_list button { margin-top: -1px; }
+#search_filters_list li { clear: both; }
+#search_filters_list button, #search_filters_list label, #search_filters_list input, #search_filters_list select { float: left; }
 #find_issues #add_filter_form label { display: inline-block; min-width: 200px; }
-#find_issues #search_filters label { display: inline-block; min-width: 200px; }
-#find_issues #add_filter_form { margin-left: 7px; }
-#find_issues #search_button_bottom, #find_issues button { font-weight: bold; font-size: 1em; }
-#find_issues button { font-weight: normal; }
+#find_issues #search_filters label { display: block; min-width: 200px; float: left; }
+#search_button_bottom, #search_button_bottom:hover { font-weight: bold !important; }
+#find_issues button { font-weight: normal; padding: 2px 5px 1px 5px !important; }
 /* end boxes */
 
 #search_error, #search_message { font-weight: bold; color: #333; }
@@ -1315,10 +1324,10 @@ input[type=submit], input[type=submit]:hover, button, .button, .button:hover {
 	vertical-align: middle;
 	text-align: center;
 }
-.button:hover, input[type=submit]:hover, button:hover { 
-	box-shadow: 0 0 2px rgba(0,0,0,0.3); 
-	-moz-box-shadow: 0 0 2px rgba(0,0,0,0.3); 
-	-webkit-box-shadow: 0 0 2px rgba(0,0,0,0.3); 
+.button:hover, input[type=submit]:hover, input[type=button]:hover, button:hover {
+	box-shadow: 0 0 2px rgba(0,0,0,0.3) !important;
+	-moz-box-shadow: 0 0 2px rgba(0,0,0,0.3) !important;
+	-webkit-box-shadow: 0 0 2px rgba(0,0,0,0.3) !important;
 	cursor: pointer; }
 
 .smaller_buttons .button span, .button.big-button span, .smaller_buttons .button input, .smaller_buttons .button button, .button.big-button input, .button.big-button button { padding: 8px 15px; font-size: 18px; }
@@ -1336,9 +1345,6 @@ input[type=submit], input[type=submit]:hover, button, .button, .button:hover {
 	background: -webkit-gradient(linear, left top, left bottom, from(#F5F5F5), to(#E5E5E5) );
 	background: -moz-linear-gradient(-90deg, #F5F5F5, #E5E5E5);
 	filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr='#f5f5f5', EndColorStr='#e5e5e5');
-	box-shadow: none;
-	-moz-box-shadow: none;
-	-webkit-box-shadow: none;
 }
 
 .button-silver:active, input[type=submit]:active, button:active, input[type=submit].button-pressed, button.button-pressed, .button-silver.button-pressed {
@@ -1347,7 +1353,7 @@ input[type=submit], input[type=submit]:hover, button, .button, .button:hover {
 	background: -moz-linear-gradient(-90deg, #c5c5c5, #eaeaea);
 	filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr='#c5c5c5', EndColorStr='#eaeaea');    
 }
-.button-silver, input[type=submit], button, input[type=submit].button-silver, button.button-silver, a.button-silver, .button-silver:active, button.button-silver:active, input[type=submit].button-silver:active, a.button-silver:active { color: #555; text-shadow: 1px 1px #FFF; }
+.button-silver, input[type=submit], button, input[type=submit].button-silver, button.button-silver, a.button-silver, .button-silver:active, button.button-silver:active, input[type=submit].button-silver:active, a.button-silver:active { color: #555; text-shadow: 1px 1px #FFF; box-shadow: none; -moz-box-shadow: none; -webkit-box-shadow: none; }
 .button.disabled { color: #AAA !important; text-shadow: 1px 1px 0px #FFF; }
 /*----------------------------*/
 .button-khaki, input[type=submit].button-khaki {

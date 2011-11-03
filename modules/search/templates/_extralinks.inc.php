@@ -1,5 +1,8 @@
 <?php if ($show_results): ?>
-	<button id="search_builder_toggler" class="button button-silver" style="float: right;" onclick="$('search_builder').toggle();"><?php echo __('Refine search'); ?></button>
+	<button id="search_builder_toggler" class="button button-silver" onclick="$('search_builder').toggle();"><?php echo __('Refine search'); ?></button>
+	<?php if (!$issavedsearch): ?>
+		<button id="save_search_builder_toggler" class="button button-silver" onclick="$(this).toggle();$('search_builder').toggle();$('find_issues_form').method = 'post';$('saved_search_details').show();$('saved_search_name').enable();$('saved_search_name').focus();$('saved_search_description').enable();<?php if ($tbg_user->canCreatePublicSearches()): ?>$('saved_search_public').enable();<?php endif; ?>$('save_search').enable();$('search_button_bottom').disable();$('search_button_bottom').hide();$('search_button_top').disable();$('search_button_save').hide();$('search_button_top').hide();return false;"><?php echo __('Save this search'); ?></button>
+	<?php endif; ?>
 <?php endif; ?>
 <div class="search_column_settings" id="search_column_settings_toggler" style="display: none;">
 	<div id="search_column_settings_button" onclick="$(this).toggleClassName('button-pressed');$('search_column_settings_container').toggle();" class="button button-silver button-icon" title="<?php echo __('Configure visible columns'); ?>"><span><?php echo image_tag('cfg_icon_general.png'); ?></span></div>
