@@ -2017,11 +2017,12 @@ TBG.Config.Issuefields.Custom.update = function(url, type) {
 
 TBG.Config.Issuefields.Custom.remove = function(url, type, id) {
 	TBG.Config.Issuefields.Options.remove(url, type, id);
-}
+};
 
 TBG.Config.Permissions.set = function(url, field) {
 	TBG.Main.Helpers.ajax(url, {
-		loading: {indicator: field + '_indicator'}
+		loading: {indicator: field + '_indicator'},
+		success: {update: field}
 	});
 };
 
