@@ -142,7 +142,7 @@
 
 		public static function getValidSearchFilters()
 		{
-			return array('project_id', 'text', 'state', 'issuetype', 'status', 'resolution', 'category', 'severity', 'priority', 'posted_by', 'assigned_to', 'assigned_type', 'owned_by', 'owned_type', 'component', 'build', 'edition');
+			return array('project_id', 'text', 'state', 'issuetype', 'status', 'resolution', 'reproducability', 'category', 'severity', 'priority', 'posted_by', 'assigned_to', 'assigned_type', 'owned_by', 'owned_type', 'component', 'build', 'edition');
 		}
 
 		public function getCountsByProjectID($project_id)
