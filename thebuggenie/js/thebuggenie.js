@@ -2996,7 +2996,7 @@ TBG.Search.Filter.setIdentifiable = function(url, filter, key, i_id, i_type)
 TBG.Search.Filter.setTimestamp = function(filter, key) {
 	var d = new Date();
 	d.setFullYear($('filter_'+filter+'_'+key+'_year').value, $('filter_'+filter+'_'+key+'_month').value, $('filter_'+filter+'_'+key+'_day').value);
-	$('filter_'+filter+'_'+key).setValue(+d / 1000);
+	$('filter_'+filter+'_'+key).setValue(parseInt(+d / 1000));
 };
 
 TBG.Search.deleteSavedSearch = function(url, id) {

@@ -18,8 +18,8 @@
 		<?php elseif (in_array($filter, array('posted', 'last_updated'))): ?>
 			<label for="filter_<?php echo $filter; ?>_<?php echo $key; ?>"><?php echo $filters[$filter]['description']; ?></label>
 			<select name="filters[<?php echo $filter; ?>][<?php echo $key; ?>][operator]">
-				<option value="<?php echo urlencode('<='); ?>"<?php if ($selected_operator == '<='): ?> selected<?php endif; ?>><?php echo __('%posted_or_updated% before %value%', array('%posted_or_updated%' => '', '%value%' => '')); ?></option>
-				<option value="<?php echo urlencode('>='); ?>"<?php if ($selected_operator == '>='): ?> selected<?php endif; ?>><?php echo __('%posted_or_updated% on or after %value%', array('%posted_or_updated%' => '', '%value%' => '')); ?></option>
+				<option value="<?php echo urlencode('<='); ?>"<?php if (urldecode($selected_operator) == '<='): ?> selected<?php endif; ?>><?php echo __('%posted_or_updated% before %value%', array('%posted_or_updated%' => '', '%value%' => '')); ?></option>
+				<option value="<?php echo urlencode('>='); ?>"<?php if (urldecode($selected_operator) == '>='): ?> selected<?php endif; ?>><?php echo __('%posted_or_updated% on or after %value%', array('%posted_or_updated%' => '', '%value%' => '')); ?></option>
 			</select>
 			<select id="filter_<?php echo $filter; ?>_<?php echo $key; ?>_day" onchange="TBG.Search.Filter.setTimestamp('<?php echo $filter; ?>', '<?php echo $key; ?>');">
 				<?php for($cc = 1; $cc <= 31; $cc++): ?>

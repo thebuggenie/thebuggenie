@@ -671,11 +671,11 @@
 								{
 									foreach ($filter_info as $single_filter)
 									{
-										if (in_array($single_filter['operator'], array('=', '<=', '>=', '<', '>')))
+										if (in_array($single_filter['operator'], array('=', '<=', '>=', '<', '>')) && !in_array($filter, array('posted', 'last_updated')))
 										{
 											$ctn->addOr($dbname.'.'.$filter, $single_filter['value'], urldecode($single_filter['operator']));
 										}
-										elseif ($single_filter['operator'] == '!=')
+										elseif ($single_filter['operator'] == '!=' || in_array($filter, array('posted', 'last_updated')))
 										{
 											$ctn->addWhere($dbname.'.'.$filter, $single_filter['value'], urldecode($single_filter['operator']));
 										}
