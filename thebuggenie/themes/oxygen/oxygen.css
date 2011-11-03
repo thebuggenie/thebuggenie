@@ -820,6 +820,7 @@ ul.workflow_actions li:hover { box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); -webkit-b
 /* end issue pain and votes */
 
 /* issue edit and undo link styling - also what makes them appear and disappear */
+#title_edit { margin-top: 5px; }
 img.dropdown { float: left; margin-right: 5px; display: none; cursor: pointer; }
 img.spinning { float: right; margin-right: 5px; }
 dd:hover img.dropdown, .hoverable:hover img.dropdown { float: left; margin-right: 5px; display: inline; }
@@ -866,8 +867,8 @@ dd { float: left; display: block; width: 195px; font-weight: normal; margin: 0; 
 #title_content.issue_detail_changed { background-color: #FFF299; }
 /* end changed, merged, unmerged */
 
-#title_form { display: inline; font-size: 1.1em}
-#title_form input[type="text"] { font-size: 1.2em; margin-right: 5px; width: 500px; }
+#title_form { display: inline; }
+#title_form input[type="text"] { font-size: 1em; margin-right: 5px; width: 500px; }
 .viewissue_description_header, .viewissue_affects_header, .viewissue_reproduction_steps_header, .viewissue_customfield_header { font-weight: bold; font-size: 1.1em; padding: 0 0 5px 0; }
 .viewissue_description, .viewissue_affects, .viewissue_reproduction_steps, .viewissue_customfield { font-weight: normal; padding: 0; margin: 0; }
 .issue_inline_description { width: auto; overflow: auto; }
