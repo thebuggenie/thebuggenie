@@ -463,6 +463,8 @@
 			// Add new indexes
 			TBGCommentsTable::getTable()->createIndexes();
 			TBGPermissionsTable::getTable()->createIndexes();
+			TBGIssuesTable::getTable()->createIndexes();
+			TBGIssueFilesTable::getTable()->createIndexes();
 
 			TBGSettings::saveSetting(TBGSettings::SETTING_ICONSET, TBGSettings::get(TBGSettings::SETTING_THEME_NAME));
 			
