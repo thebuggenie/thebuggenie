@@ -19,14 +19,14 @@
 							<dd style="margin-bottom: 3px;"><input type="file" name="uploader_file" id="uploader_file"></dd>
 							<dd style="width: 100%;"><?php echo __('Files bigger than %max_filesize% can not be attached. Please check that the file you are attaching is not bigger than this.', array('%max_filesize%' => '<b>'.TBGSettings::getUploadsMaxSize().'MB</b>')); ?></dd>
 							<dt style="width: 120px;"><label for="upload_file_description"><?php echo __('Describe the file'); ?></label></dt>
-							<dd style="margin-bottom: 3px;"><input type="text" name="uploader_file_description" id="upload_file_description" style="width: 340px;"></dd>
+							<dd style="margin-bottom: 3px;"><input type="text" name="uploader_file_description" id="upload_file_description" style="width: 440px;"></dd>
 							<dd class="faded_out" style="width: 100%;"><?php echo __('Enter a few words about the file, so people can understand what it is/does'); ?></dd>
-							<?php if ($mode == 'issue'): ?>
-								<dt style="width: 120px;"><label for="upload_file_comment"><?php echo __('Comment'); ?></label> (<?php echo __('optional'); ?>)</dt><br>
-								<dd style="margin-bottom: 3px;"><textarea name="comment" cols="70" rows="3" id="upload_file_comment" style="width: 340px; height: 50px;"></textarea></dd>
-								<dd class="faded_out" style="width: 100%;"><?php echo __('If you want to add a comment with the file, enter the comment here, and it will automatically be added to the issue with the file'); ?></dd>
-							<?php endif; ?>
 						</dl>
+						<?php if ($mode == 'issue'): ?>
+							<label for="upload_file_comment"><?php echo __('Comment'); ?></label> (<?php echo __('optional'); ?>)<br>
+							<textarea name="comment" cols="70" rows="10" id="upload_file_comment" style="width: 560px; height: 150px;"></textarea></dd>
+							<div class="faded_out" style="width: auto;"><?php echo __('If you want to add a comment with the file, enter the comment here, and it will automatically be added to the issue with the file'); ?></div>
+						<?php endif; ?>
 					</div>
 					<div style="text-align: center; clear: both;" id="upload_and_attach">
 						<p style="margin-bottom: 5px;"><?php echo __('Press the %upload_and_attach% button to upload and attach the file', array('%upload_and_attach%' => '<i>'.__('Upload and attach').'</i>')); ?></p>

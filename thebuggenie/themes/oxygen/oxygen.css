@@ -744,7 +744,7 @@ ul.workflow_actions li:hover { box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); -webkit-b
 .backdrop_box.large { width: 800px; margin: 0 -400px 200px -400px; }
 .backdrop_box.huge { width: 1010px; margin: 0 -500px 200px -500px; }
 .backdrop_box .backdrop_detail_header { font-weight: bold; padding: 7px; font-size: 0.9em; text-align: left; color: white; text-shadow: 1px 1px 2px #000000; filter: dropshadow(color=#000000, offx=1, offy=1); }
-#backdrop_detail_content { font-weight: normal; font-size: 1.0em; padding: 5px; background: white; }
+#backdrop_detail_content { font-weight: normal; font-size: 1.0em; padding: 5px; background: white; text-align: left; }
 #reportissue_container #backdrop_detail_content { padding: 5px; font-size: 0.9em; }
 #reportissue_container .backdrop_detail_footer { padding: 5px; font-size: 1.1em; }
 #reportissue_container .backdrop_detail_footer a { font-weight: normal; }
