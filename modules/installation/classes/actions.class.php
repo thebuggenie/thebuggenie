@@ -446,6 +446,7 @@
 		{
 			// Add classpath for existing old tables used for upgrade
 			TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'installation' . DS . 'classes' . DS . 'upgrade_3.1');
+			TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'mailing' . DS . 'classes' . DS . 'B2DB');
 
 			// Upgrade existing tables
 			TBGProjectsTable::getTable()->upgrade(TBGProjectsTable3dot1::getTable());
@@ -455,6 +456,8 @@
 			// Create new tables
 			TBGDashboardViewsTable::getTable()->create();
 			TBGOpenIdAccountsTable::getTable()->create();
+
+			// Create new module tables
 			TBGIncomingEmailAccountTable::getTable()->create();
 			
 			// Add new indexes
