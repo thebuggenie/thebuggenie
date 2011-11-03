@@ -31,16 +31,20 @@
 			{
 				case TBGContext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES:
 					$filters['state'] = array('operator' => '=', 'value' => TBGIssue::STATE_OPEN);
+					$filters['project_id'] = array('operator' => '=', 'value' => TBGContext::getCurrentProject()->getID());
 					$groupby = 'issuetype';
 					break;
 				case TBGContext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES:
 					$filters['state'] = array('operator' => '=', 'value' => TBGIssue::STATE_CLOSED);
+					$filters['project_id'] = array('operator' => '=', 'value' => TBGContext::getCurrentProject()->getID());
 					$groupby = 'issuetype';
 					break;
 				case TBGContext::PREDEFINED_SEARCH_PROJECT_MILESTONE_TODO:
+					$filters['project_id'] = array('operator' => '=', 'value' => TBGContext::getCurrentProject()->getID());
 					$groupby = 'milestone';
 					break;
 				case TBGContext::PREDEFINED_SEARCH_PROJECT_MOST_VOTED:
+					$filters['project_id'] = array('operator' => '=', 'value' => TBGContext::getCurrentProject()->getID());
 					$filters['state'] = array('operator' => '=', 'value' => TBGIssue::STATE_OPEN);
 					$groupby = 'votes';
 					$grouporder = 'desc';
