@@ -39,6 +39,20 @@
 					$filters['project_id'] = array('operator' => '=', 'value' => TBGContext::getCurrentProject()->getID());
 					$groupby = 'issuetype';
 					break;
+				case TBGContext::PREDEFINED_SEARCH_PROJECT_REPORTED_LAST_NUMBEROF_DAYS:
+					$filters['project_id'] = array('operator' => '=', 'value' => TBGContext::getCurrentProject()->getID());
+					$filters['posted'] = array(
+						array('operator' => '<=', 'value' => NOW),
+						array('operator' => '>=', 'value' => NOW - (86400 * (int) TBGContext::getRequest()->getParameter('days')))
+					);
+					break;
+				case TBGContext::PREDEFINED_SEARCH_PROJECT_REPORTED_THIS_MONTH:
+					$filters['project_id'] = array('operator' => '=', 'value' => TBGContext::getCurrentProject()->getID());
+					$filters['posted'] = array(
+						array('operator' => '<=', 'value' => mktime(date('H'), date('i'), date('s'), date('n'))),
+						array('operator' => '>=', 'value' => mktime(date('H'), date('i'), date('s'), date('n'), 1))
+					);
+					break;
 				case TBGContext::PREDEFINED_SEARCH_PROJECT_MILESTONE_TODO:
 					$filters['project_id'] = array('operator' => '=', 'value' => TBGContext::getCurrentProject()->getID());
 					$groupby = 'milestone';
