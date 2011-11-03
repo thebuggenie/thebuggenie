@@ -285,15 +285,17 @@
 		{
 			if ($request['filter_name'] == 'project_id' && count(TBGProject::getAll()) == 0)
 			{
-				return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('No projects exist so this filter can not be added')));
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('error' => TBGContext::getI18n()->__('No projects exist so this filter can not be added')));
 			}
 			elseif (in_array($request['filter_name'], TBGIssuesTable::getValidSearchFilters()) || TBGCustomDatatype::doesKeyExist($request['filter_name']))
 			{
-				return $this->renderJSON(array('failed' => false, 'content' => $this->getComponentHTML('search/filter', array('filter' => $request['filter_name'], 'key' => $request->getParameter('key', 0)))));
+				return $this->renderJSON(array('content' => $this->getComponentHTML('search/filter', array('filter' => $request['filter_name'], 'key' => $request->getParameter('key', 0)))));
 			}
 			else
 			{
-				return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('This is not a valid search field')));
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('error' => TBGContext::getI18n()->__('This is not a valid search field')));
 			}
 		}
 

@@ -19,6 +19,8 @@
 						<?php endforeach; ?>
 					<?php endif; ?>
 				<?php endforeach; ?>
+			</ul>
+			<ul class="simple_list" style="clear: both;">
 				<li>
 					<input type="hidden" id="max_filters" name="max_filters" value="<?php echo count($appliedfilters); ?>">
 					<label for="add_filter"><?php echo __('Add filter'); ?></label>
@@ -44,7 +46,7 @@
 							<option value="<?php echo $customdatatype->getKey(); ?>"><?php echo __($customdatatype->getDescription()); ?></option>
 						<?php endforeach; ?>
 					</select>
-					<button class="button button-silver" onclick="TBG.Search.Filter.add('<?php echo (TBGContext::isProjectContext()) ? make_url('project_search_add_filter', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('search_add_filter'); ?>');"><?php echo __('Add filter'); ?></button>
+					<button class="button button-silver" onclick="TBG.Search.Filter.add('<?php echo (TBGContext::isProjectContext()) ? make_url('project_search_add_filter', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('search_add_filter'); ?>'); return false;"><?php echo __('Add filter'); ?></button>
 					<?php echo image_tag('spinning_16.gif', array('style' => 'margin-left: 5px; display: none;', 'id' => 'add_filter_indicator')); ?>
 					<div class="faded_out" style="clear: both; padding: 0 0 5px 2px;"><?php echo __('Adding the same filter more than once means that any of the given values for that filter will return a match if you are matching with "is", and neither of the given values if you are matching with "is not"'); ?></div>
 				</li>
