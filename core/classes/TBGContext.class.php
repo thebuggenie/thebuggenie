@@ -291,7 +291,6 @@
 				}
 				elseif (array_key_exists('function', $trace_element))
 				{
-					if (in_array($trace_element['function'], array('tbg_error_handler', 'tbg_exception'))) continue;
 					TBGCliCommand::cli_echo($trace_element['function'].'()');
 				}
 				else
@@ -2475,14 +2474,15 @@
 				\b2db\Core::closeDBLink();
 				TBGContext::setLoadedAt();
 				header("HTTP/1.0 404 Not Found", true, 404);
-				tbg_exception($e->getMessage() /*'Template file does not exist for current action'*/, $e);
+				throw $e;
 			}
 			catch (TBGActionNotFoundException $e)
 			{
 				\b2db\Core::closeDBLink();
 				TBGContext::setLoadedAt();
 				header("HTTP/1.0 404 Not Found", true, 404);
-				tbg_exception('Module action "' . $route['action'] . '" does not exist for module "' . $route['module'] . '"', $e);
+				throw $e;
+				//throw new Exception('Module action "' . $route['action'] . '" does not exist for module "' . $route['module'] . '"', $e);
 			}
 			catch (TBGCSRFFailureException $e)
 			{
@@ -2505,7 +2505,7 @@
 				\b2db\Core::closeDBLink();
 				TBGContext::setLoadedAt();
 				header("HTTP/1.0 404 Not Found", true, 404);
-				tbg_exception('An error occured', $e);
+				throw $e;
 			}
 		}
 

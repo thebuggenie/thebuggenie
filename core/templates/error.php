@@ -37,7 +37,7 @@ body { background-color: #DFDFDF; font-family: sans-serif; font-size: 13px; }
 </head>
 <body>
 	<div class="rounded_box" style="margin: 30px auto 0 auto; width: 700px;">
-		<img style="float: left; margin-right: 10px;" src="<?php echo TBGContext::getTBGPath(); ?>header.png"><h1>An error occured in The Bug Genie</h1>
+		<img style="float: left; margin: 10px;" src="<?php echo TBGContext::getTBGPath(); ?>header.png"><h1>An error occured in The Bug Genie</h1>
 		<div class="error_content">
 			<h2><?php echo (isset($exception)) ? $exception->getMessage() : $error; ?></h2>
 			<?php if ($exception instanceof Exception): ?>
@@ -70,7 +70,7 @@ body { background-color: #DFDFDF; font-family: sans-serif; font-size: 13px; }
 						<li>
 						<?php if (array_key_exists('class', $trace_element)): ?>
 							<strong><?php echo $trace_element['class'].$trace_element['type'].$trace_element['function']; ?>()</strong>
-						<?php elseif (array_key_exists('function', $trace_element) && !in_array($trace_element['function'], array('tbg_error_handler', 'tbg_exception'))): ?>
+						<?php elseif (array_key_exists('function', $trace_element)): ?>
 							<strong><?php echo $trace_element['function']; ?>()</strong>
 						<?php else: ?>
 							<strong>unknown function</strong>
