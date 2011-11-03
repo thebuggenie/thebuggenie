@@ -149,6 +149,8 @@
 		{
 			$crit = new \b2db\Criteria();
 			$crit->addWhere(TBGTeamsTable::NAME, "%$details%", \b2db\Criteria::DB_LIKE);
+			$crit->addWhere(TBGTeamsTable::ONDEMAND, false);
+
 			$teams = array();
 			if ($res = \b2db\Core::getTable('TBGTeamsTable')->doSelect($crit))
 			{
