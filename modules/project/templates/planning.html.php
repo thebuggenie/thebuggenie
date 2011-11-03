@@ -23,14 +23,14 @@
 			<?php endif; ?>
 			<div class="faded_out" style="margin-top: 10px; font-size: 13px;<?php if (count($selected_project->getAllMilestones()) > 0): ?> display: none;<?php endif; ?>" id="no_milestones"><?php echo __('No milestones have been created yet.'); ?></div>
 			<div id="search_results">
-				<?php include_template('search/bulkactions', array('mode' => 'top')); ?>
+				<?php if ($tbg_user->canEditProjectDetails($selected_project)) include_template('search/bulkactions', array('mode' => 'top')); ?>
 				<div id="milestone_list">
 					<?php foreach ($selected_project->getAllMilestones() as $milestone): ?>
 						<?php include_template('milestonebox', array('milestone' => $milestone)); ?>
 					<?php endforeach; ?>
 					<?php include_template('milestonebox', array('milestone' => $unassigned_milestone)); ?>
 				</div>
-				<?php include_template('search/bulkactions', array('mode' => 'bottom')); ?>
+				<?php if ($tbg_user->canEditProjectDetails($selected_project)) include_template('search/bulkactions', array('mode' => 'bottom')); ?>
 			</div>
 		</div>
 		<?php if ($tbg_user->canAssignScrumUserStories($selected_project)): ?>

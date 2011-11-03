@@ -1,7 +1,7 @@
 <?php foreach ($milestone->getIssues() as $issue): ?>
 	<?php include_component('project/milestoneissue', array('issue' => $issue)); ?>
 <?php endforeach; ?>
-<?php if ($milestone->countIssues()): ?>
+<?php if ($tbg_user->canEditProjectDetails(TBGContext::getCurrentProject()) && $milestone->countIssues()): ?>
 	<tr class="milestone_summary">
 		<td colspan="4">
 		</td>
