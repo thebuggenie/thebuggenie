@@ -2,7 +2,13 @@
 	<form action="<?php echo make_url('login'); ?>" method="post" id="openid_form" onclick="return openid.submit();">
 		<input type="hidden" name="action" value="verify" />
 		<div id="openid_choice">
-			<div class="login_boxheader"><?php echo __('Log in with your OpenID'); ?></div>
+			<div class="login_boxheader">
+				<?php if (TBGSettings::get('allowreg') && TBGSettings::getOpenIDStatus() == 'all'): ?>
+					<?php echo __('Log in or register with your OpenID'); ?>
+				<?php else: ?>
+					<?php echo __('Log in with your OpenID'); ?>
+				<?php endif; ?>
+			</div>
 			<div id="openid_btns"></div>
 		</div>
 		<div id="openid_input_area">
@@ -307,7 +313,6 @@
 
 	openid.locale = 'en';
 	openid.sprite = 'en'; // reused in german& japan localization
-	openid.demo_text = 'In client demo mode. Normally would have submitted OpenID:';
 	openid.signin_text = 'Sign-In';
 	openid.image_title = 'log in with {provider}';
 	openid.no_sprite = true;
