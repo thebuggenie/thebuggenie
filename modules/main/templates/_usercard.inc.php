@@ -51,6 +51,7 @@
 			<br>	
 			<?php if (count($issues)): ?>	
 				<?php echo __('This user has reported %issues% issue(s)', array('%issues%' => '<b>'.count($issues).'</b>')); ?>
+				<?php echo link_tag(make_url('search', array('search' => true, 'filters[posted_by]' => array('operator' => '=', 'value' => $user->getID()))), __('Show issues'), array('class' => 'button button-silver', 'title' => __('Show issues reported by this user'))); ?>
 				<?php $seen = 0; ?>
 				<h4><?php echo __('Last reported issues:') . ' '; ?></h4>
 					<ul class="simple_list">
