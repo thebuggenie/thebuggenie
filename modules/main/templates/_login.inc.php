@@ -67,8 +67,6 @@
 	document.observe('dom:loaded', function() {
 	<?php endif; ?>
 		$('tbg3_username').focus();
-		openid.no_sprite = true;
-		openid.init('openid_identifier');
 	<?php if (!$tbg_request->isAjaxCall()): ?>
 	});
 	<?php endif; ?>
