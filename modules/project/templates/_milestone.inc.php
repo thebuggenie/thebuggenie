@@ -41,7 +41,7 @@
 						<?php endfor; ?>
 						</select>
 						<select style="width: 60px;" name="starting_year" id="starting_year_<?php echo $milestone->getID(); ?>"<?php if (!$milestone->hasStartingDate()): ?> disabled<?php endif; ?>>
-						<?php for ($cc = 2000;$cc <= (date("Y") + 5);$cc++): ?>
+						<?php for ($cc = 1990;$cc <= (date("Y") + 10);$cc++): ?>
 							<option value=<?php echo $cc; ?><?php echo (($milestone->getStartingYear() == $cc) ? " selected" : ""); ?>><?php echo $cc; ?></option>
 						<?php endfor; ?>
 						</select>
@@ -66,7 +66,7 @@
 						<?php endfor; ?>
 						</select>
 						<select style="width: 60px;" name="sch_year" id="sch_year_<?php echo $milestone->getID(); ?>" <?php print (!$milestone->hasScheduledDate()) ? "disabled" : ""; ?>>
-						<?php for ($cc = 2000;$cc <= (date("Y") + 5);$cc++): ?>
+						<?php for ($cc = 1990;$cc <= (date("Y") + 10);$cc++): ?>
 							<option value=<?php echo $cc; ?><?php echo (($milestone->getScheduledYear() == $cc) ? " selected" : ""); ?>><?php echo $cc; ?></option>
 						<?php endfor; ?>
 						</select>

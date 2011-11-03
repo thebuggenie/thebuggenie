@@ -49,7 +49,7 @@
 						<?php endfor; ?>
 						</select>
 						<select style="width: 55px;" name="release_year" id="release_year_<?php print $b_id; ?>"<?php if (!$build->isReleased()): ?> disabled<?php endif; ?>>
-						<?php for($cc = 2000;$cc <= (date("Y") + 5);$cc++): ?>
+						<?php for($cc = 1990;$cc <= (date("Y") + 10);$cc++): ?>
 							<option value=<?php print $cc; ?><?php echo ($build->getReleaseDateYear() == $cc) ? " selected" : "" ?>><?php echo $cc; ?></option>
 						<?php endfor; ?>
 						</select>

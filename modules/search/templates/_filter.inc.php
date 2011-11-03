@@ -32,7 +32,7 @@
 				<?php endfor; ?>
 			</select>
 			<select id="filter_<?php echo $filter; ?>_<?php echo $key; ?>_year" onchange="TBG.Search.Filter.setTimestamp('<?php echo $filter; ?>', '<?php echo $key; ?>');">
-				<?php for($cc = 1990; $cc <= date('Y'); $cc++): ?>
+				<?php for($cc = 1990; $cc <= date('Y') + 10; $cc++): ?>
 				<option value="<?php echo $cc; ?>"<?php if ($cc == date('Y', $selected_value)): ?> selected<?php endif; ?>><?php echo $cc; ?></option>
 				<?php endfor; ?>
 			</select>
