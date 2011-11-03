@@ -1,4 +1,10 @@
-<td class="saved_searches side_bar">
+<td class="saved_searches side_bar<?php if ($hide): ?> collapsed<?php endif; ?>" id="search_sidebar">
+	<div class="collapser_link" onclick="$('search_sidebar').toggleClassName('collapsed');">
+		<a href="javascript:void(0);">
+			<?php echo image_tag('sidebar_collapse.png', array('class' => 'collapser')); ?>
+			<?php echo image_tag('sidebar_expand.png', array('class' => 'expander')); ?>
+		</a>
+	</div>
 	<div class="container_div">
 		<div class="header"><?php echo __('Predefined searches'); ?></div>
 		<ul class="simple_list content" style="font-size: 1em;">

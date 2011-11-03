@@ -35,7 +35,7 @@
 ?>
 <table style="width: 100%;" cellpadding="0" cellspacing="0">
 	<tr>
-		<?php include_component('search/sidebar'); ?>
+		<?php include_component('search/sidebar', array('hide' => ($show_results && $resultcount))); ?>
 		<td style="width: auto; padding: 5px; vertical-align: top;" id="find_issues">
 			<?php if ($search_error !== null): ?>
 				<div class="rounded_box red borderless" style="margin: 0; vertical-align: middle;" id="search_error">
@@ -54,7 +54,7 @@
 					&nbsp;&nbsp;<span class="faded_out"><?php echo __('%number_of% issue(s)', array('%number_of%' => (int) $resultcount)); ?></span>
 					<?php include_component('search/extralinks', compact('show_results')); ?>
 				</div>
-				<?php if (count($issues) > 0): ?>
+				<?php if ($resultcount > 0): ?>
 					<div id="search_results" class="search_results">
 						<?php include_template('search/issues_paginated', array('issues' => $issues, 'templatename' => $templatename, 'template_parameter' => $template_parameter, 'searchterm' => $searchterm, 'filters' => $appliedfilters, 'groupby' => $groupby, 'grouporder' => $grouporder, 'resultcount' => $resultcount, 'ipp' => $ipp, 'offset' => $offset)); ?>
 					</div>
