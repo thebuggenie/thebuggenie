@@ -4,7 +4,7 @@
 			<td style="font-weight: normal; font-size: 13px; padding-left: 3px;"><?php echo (is_object($item)) ? $item->getName() : $item; ?></td>
 			<td style="text-align: right; font-weight: bold; padding-right: 5px; vertical-align: middle;"><?php echo $counts[$item_id]['open']; ?></td>
 			<td style="width: 40%; vertical-align: middle;"><?php include_template('main/percentbar', array('percent' => $counts[$item_id]['percentage'], 'height' => 14)); ?></td>
-			<td style="text-align: right; font-weight: normal; font-size: 11px; padding-left: 5px; vertical-align: middle;">&nbsp;<?php echo (int) $counts[$item_id]['percentage']; ?>%</td>
+			<td style="text-align: right; font-weight: normal; font-size: 11px; padding-left: 5px; vertical-align: middle; width: 30px;">&nbsp;<?php echo (int) $counts[$item_id]['percentage']; ?>%</td>
 		</tr>
 	<?php endforeach; ?>
 	<tr class="hover_highlight">

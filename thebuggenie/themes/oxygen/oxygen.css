@@ -1123,7 +1123,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .project_information_sidebar .sidebar_links .simple_list { margin: 0 0 0 25px; padding: 10px; border-top: none; background-color: #F1F1F1; box-shadow: -3px 3px 3px -3px rgba(0, 0, 0, 0.3) inset; }
 .project_information_sidebar .sidebar_links .simple_list li a { border: 0; padding: 3px; margin: 0; background-color: transparent; box-shadow: none; }
 .project_information_sidebar .sidebar_links .simple_list li.selected { font-style: italic; }
-.project_information_sidebar .sidebar_links { box-shadow: -3px 0 3px -3px rgba(0, 0, 0, 0.2) inset; height: 100%; }
+.project_information_sidebar .sidebar_links { box-shadow: -3px 0 3px -3px rgba(0, 0, 0, 0.3) inset; height: 100%; }
 .project_information_main { padding: 10px 15px 10px 15px; vertical-align: top; border-top: 1px solid #ccc; }
 .project_client_info .project_client_header { font-weight: bold; font-size: 1.5em; }
 .project_client_info .project_client_viewusers { float: right; }
