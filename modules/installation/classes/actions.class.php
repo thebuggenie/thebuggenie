@@ -257,6 +257,7 @@
 					if (($tablename = mb_substr($table_class_file, 0, mb_strpos($table_class_file, '.'))) != '') 
 					{
 						\b2db\Core::getTable($tablename)->create();
+						\b2db\Core::getTable($tablename)->createIndexes();
 						$tables_created[] = $tablename;
 					}
 				}
