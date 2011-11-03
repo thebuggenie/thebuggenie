@@ -466,8 +466,8 @@
 								<?php endforeach; ?>
 								<div class="no_items" id="no_parent_issues"<?php if ($p_issues > 0): ?> style="display: none;"<?php endif; ?>><?php echo __('No other issues depends on this issue'); ?></div>
 							</td>
-							<td style="width: 40px; text-align: center; padding: 0;"><?php echo image_tag('left.png'); ?></td>
-							<td style="width: auto;">
+							<td style="width: 40px; text-align: center; padding: 0;"><?php echo image_tag('right.png'); ?></td>
+							<td style="width: 200px;">
 								<div class="rounded_box mediumgrey borderless" id="related_issues_this_issue" style="margin: 5px auto 5px auto;">
 									<?php echo __('This issue'); ?>
 								</div>

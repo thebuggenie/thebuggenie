@@ -7,7 +7,7 @@
 	$routes[] = array('project_my_teams_assigned_issues', '/:project_key/issues/my/assigned/teams', 'search', 'findIssues', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true));
 	$routes[] = array('project_my_assigned_issues', '/:project_key/issues/my/assigned/*', 'search', 'findIssues', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true));
 	$routes[] = array('project_my_reported_issues', '/:project_key/issues/my/*', 'search', 'findIssues', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES, 'search' => true));
-	$routes[] = array('viewissue_find_issue', '/:project_key/findissues/:type', 'main', 'findIssue', array('format' => 'json'));
+	$routes[] = array('viewissue_find_issue', '/:project_key/findissues/:issue_id/:type', 'main', 'findIssue', array('format' => 'json'));
 	$routes[] = array('viewissue_relate_issues', '/:project_key/issues/:issue_id/relate', 'main', 'relateIssues', array('format' => 'json'));
 	$routes[] = array('closeissue', '/:project_key/issues/:issue_id/close', 'main', 'closeIssue');
 	$routes[] = array('markasduplicate', '/:project_key/issues/:issue_id/markasduplicate', 'main', 'markAsDuplicate');
