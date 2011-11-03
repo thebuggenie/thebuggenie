@@ -91,6 +91,7 @@
 		
 		protected function _addIndex($index_name, $columns, $index_type = null)
 		{
+			if (!is_array($columns)) $columns = array($columns);
 			$this->_indexes[$index_name] = array('columns' => $columns, 'type' => $index_type);
 		}
 
