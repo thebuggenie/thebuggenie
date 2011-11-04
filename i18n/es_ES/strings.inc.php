@@ -2111,7 +2111,7 @@
 	$strings['Find articles'] = 'Encontrar artículos';
 	$strings['Find articles by name'] = 'Encontrar artículos por nombre';
 	$strings['No articles found'] = 'No se encontraron artículos';
-	$strings['No articles found matching your query'] = 'No se econtraron artículos';
+	$strings['No articles found matching your query'] = 'No se encontraron artículos concordantes con la consulta';
 	$strings['%num% article(s) found'] = '%num% artículo(s) encontrado(s)';
 	$strings['Find project article (press enter to search)'] = 'Encuentre artículos del proyecto (Enter para buscar)';
 	$strings['Press enter twice to search'] = 'Presione Enter 2 veces para buscar';
@@ -2402,3 +2402,19 @@
 	$strings['ARCHIVED'] = 'ARCHIVADO';
 	$strings['Unarchive'] = 'Desarchivar';
 	$strings['Resolution: %resolution%']  = 'Resolución: %resolution%';
+	$strings['The "display name" is the name shown to others'] = 'El "nombre a mostrar" es el nombre que ve el resto';
+	$strings['Log in or register with your OpenID'] = 'Acceda o registrese con su OpenID';
+	$strings['Search for (text)'] = 'Buscar (texto)';
+	$strings['More search details'] = 'Más opciones de búsqueda';	
+	$strings['Assigned to - who is an issue assigned to'] = 'Asignado a - quien tiene un pedido asignado';
+	$strings['Owned by - who owns an issue'] = 'Propiedad - quien es propietario de una petición';
+	$strings['Posted by user - which user posted the issue'] = 'Publicado por usuario - que usuario publicó el pedido';
+	$strings['Date reported - when was the issue reported'] = 'Fecha informe - cuando fue informado el pedido';
+	$strings['Date last updated - when was the issue last updated'] = 'Fecha última actualización - cuando fue modificado el pedido';
+	$strings['Select'] = 'Seleccionar';
+	$strings['Please select'] = 'Elija por favor';
+	$strings['Teams found'] = 'Equipos encontrados';
+	$strings['Couldn\'t find any users'] = 'No se encontró ningún usuario';		 
+	$strings['Couldn\'t find any teams'] = 'No se encontró ningún equipo';
+	$strings['You have to specify a name for the saved search'] = 'Tiene que definir un nombre para la búsqueda';	
+	
