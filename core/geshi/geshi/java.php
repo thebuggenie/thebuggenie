@@ -4,7 +4,7 @@
  * --------
  * Author: Nigel McNie (nigel@geshi.org)
  * Copyright: (c) 2004 Nigel McNie (http://qbnz.com/highlighter/)
- * Release Version: 1.0.8.4
+ * Release Version: 1.0.8.10
  * Date Started: 2004/07/10
  *
  * Java language file for GeSHi.
@@ -19,7 +19,7 @@
  *   -  Added support for multiple object splitters
  * 2004/08/05 (1.0.2)
  *   -  Added URL support
- *   -  Added keyword "this", as tbg_ in GeSHi class ironed out
+ *   -  Added keyword "this", as bugs in GeSHi class ironed out
  * 2004/08/05 (1.0.1)
  *   -  Added support for symbols
  *   -  Added extra missed keywords

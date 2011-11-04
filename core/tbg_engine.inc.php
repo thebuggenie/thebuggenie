@@ -85,8 +85,7 @@
 		TBGContext::initialize();
 		TBGLogging::log('...done');
 		
-		//require THEBUGGENIE_CORE_PATH . 'common_functions.inc.php';
-		require THEBUGGENIE_CORE_PATH . 'geshi/geshi.php';
+		define('GESHI_ROOT', THEBUGGENIE_CORE_PATH . 'geshi' . DS);
 		
 		TBGLogging::log('Caspar framework loaded');
 	}
