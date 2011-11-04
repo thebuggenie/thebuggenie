@@ -56,45 +56,11 @@
 			return $b2dbtablename::getTable();
 		}
 
-		protected function _getForeignClassForProperty($property_name)
-		{
-			if (!$foreign_type = Core::getCachedClassPropertyForeignClass(\get_class($this), $property_name))
-			{
-				$reflection = new \ReflectionProperty(\get_class($this), $property_name);
-				$docblock = $reflection->getDocComment();
-				if ($docblock)
-				{
-					$has_b2dbtype = \mb_strpos($docblock, '@Class', 3);
-					$no_autopopulate = \mb_strpos($docblock, '@NoAutoPopulation', 3);
-
-					if ($has_b2dbtype !== false && !$no_autopopulate)
-					{
-						$type_details = \mb_substr($docblock, $has_b2dbtype + 7);
-						$type_details = \explode(' ', $type_details);
-						$foreign_type = \trim($type_details[0]);
-						Core::addCachedClassPropertyForeignClass(\get_class($this), $property_name, $foreign_type);
-					}
-				}
-			}
-			return $foreign_type;
-		}
-		
-		protected function _getColumnProperty($column_name)
-		{
-			if (!$property_name = Core::getCachedColumnClassProperty($column_name, \get_class($this)))
-			{
-				$property = explode('.', $column_name);
-				$property_name = "_".\mb_strtolower($property[1]);
-				Core::addCachedColumnClassProperty($column_name, \get_class($this), $property_name);
-			}
-			return $property_name;
-		}
-
 		protected function _getPopulatedObjectFromProperty($property)
 		{
 			if (is_numeric($this->$property) && $this->$property > 0)
 			{
-				$type_name = $this->_getForeignClassForProperty($property);
+				$type_name = Core::getCachedClassPropertyForeignClass($this, $property);
 				if ($type_name && \class_exists($type_name))
 				{
 					$this->$property = \TBGContext::factory()->$type_name($this->$property);
@@ -114,7 +80,7 @@
 			foreach ($this->getB2DBTable()->getColumns() as $column)
 			{
 				if ($column['name'] == $this->getB2DBTable()->getIdColumn()) continue;
-				$property_name = $this->_getColumnProperty($column['name']);
+				$property_name = Core::getCachedColumnClassProperty($this, $column['name']);
 				$property_type = $column['type'];
 				if (!property_exists($this, $property_name))
 				{
@@ -124,7 +90,7 @@
 				{
 					if ($row->get($column['name']) > 0)
 					{
-						$type_name = $this->_getForeignClassForProperty($property_name);
+						$type_name = Core::getCachedClassPropertyForeignClass($this, $property_name);
 						if ($type_name && class_exists($type_name))
 						{
 							$b2dbtablename = $type_name::$_b2dbtablename;

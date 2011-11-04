@@ -581,7 +581,6 @@
 		 */
 		public static function closeDBLink()
 		{
-			self::saveCache();
 			self::$_db_connection = null;
 		}
 
@@ -595,41 +594,32 @@
 			return self::$_cache_dir;
 		}
 		
-		public static function saveCache()
+		protected static function saveCache($class)
 		{
 			$cache_dir = self::getCacheDir();
 			
 			if ($cache_dir !== false)
 			{
-				foreach (self::$_cached_column_class_properties as $class => $properties)
+				$cache_filename = $cache_dir . "/{$class}.cache.php";
+				if ((!\file_exists($cache_filename) && \is_writable($cache_dir)) || \is_writable($cache_filename))
 				{
-					if ((!\file_exists($cache_dir . "/{$class}.column_class_properties.cache.php") && \is_writable($cache_dir)) || \is_writable($cache_dir . "/{$class}.column_class_properties.cache.php"))
+					$content = '<?php '."\n\n";
+					$content .= "\t// Class properties\n";
+					$content .= "\tself::\$_cached_column_class_properties['{$class}'] = array();\n";
+					foreach (self::$_cached_column_class_properties[$class] as $property => $value)
 					{
-						$content = '<?php '."\n\n";
-						$content .= "\tself::\$_cached_column_class_properties['{$class}'] = array();\n";
-						foreach ($properties as $property => $value)
-						{
-							$content .= "\tself::\$_cached_column_class_properties['{$class}']['{$property}'] = \"{$value}\";\n";
-						}
-						$content .= "\n\n";
-						\file_put_contents($cache_dir . "/{$class}.column_class_properties.cache.php", $content);
+						$content .= "\tself::\$_cached_column_class_properties['{$class}']['{$property}'] = \"{$value}\";\n";
 					}
+					$content .= "\n";
+					$content .= "\t// Foreign class properties\n";
+					$content .= "\tself::\$_cached_foreign_classes['{$class}'] = array();\n";
+					foreach (self::$_cached_foreign_classes[$class] as $property => $value)
+					{
+						$content .= "\tself::\$_cached_foreign_classes['{$class}']['{$property}'] = \"".str_replace('\\', '\\\\', $value)."\";\n";
+					}
+					$content .= "\n";
+					\file_put_contents($cache_filename, $content);
 				}
-				
-				foreach (self::$_cached_foreign_classes as $class => $properties)
-				{
-					if ((!\file_exists($cache_dir . "/{$class}.foreign_classes.cache.php") && \is_writable($cache_dir)) || \is_writable($cache_dir . "/{$class}.foreign_classes.cache.php"))
-					{
-						$content = '<?php '."\n\n";
-						$content .= "\tself::\$_cached_foreign_classes['{$class}'] = array();\n";
-						foreach ($properties as $property => $value)
-						{
-							$content .= "\tself::\$_cached_foreign_classes['{$class}']['{$property}'] = \"{$value}\";\n";
-						}
-						$content .= "\n\n";
-						\file_put_contents($cache_dir . "/{$class}.foreign_classes.cache.php", $content);
-					}
-				}				
 			}
 		}
 
@@ -812,60 +802,70 @@
 			return \array_key_exists($driver, self::getDBtypes());
 		}
 
-		public static function loadCachedClassFiles($class)
+		protected static function cacheClass(Saveable $class)
 		{
-			$filename = self::getCacheDir() . "/{$class}.column_class_properties.cache.php";
-			if (\file_exists($filename))
+			$classname = \get_class($class);
+			self::$_cached_column_class_properties[$classname] = array();
+			self::$_cached_foreign_classes[$classname] = array();
+
+			$reflection = new \ReflectionClass($classname);
+			foreach ($reflection->getProperties() as $property)
 			{
-				require $filename;
-			}
-			$filename = self::getCacheDir() . "/{$class}.foreign_classes.cache.php";
-			if (\file_exists($filename))
-			{
-				require $filename;
-			}
-		}
-		
-		public static function addCachedColumnClassProperty($column, $class, $property)
-		{
-			if (!\array_key_exists($class, self::$_cached_column_class_properties))
-			{
-				self::$_cached_column_class_properties[$class] = array();
-			}
-			self::$_cached_column_class_properties[$class][$column] = $property;
-		}
-		
-		public static function getCachedColumnClassProperty($column, $class)
-		{
-			self::loadCachedClassFiles($class);
-			if (\array_key_exists($class, self::$_cached_column_class_properties))
-			{
-				if (\array_key_exists($column, self::$_cached_column_class_properties[$class]))
+				$docblock = $property->getDocComment();
+				if ($docblock)
 				{
-					return self::$_cached_column_class_properties[$class][$column];
+					$has_b2dbtype = \mb_strpos($docblock, '@Class', 3);
+					$no_autopopulate = \mb_strpos($docblock, '@NoAutoPopulation', 3);
+
+					if ($has_b2dbtype !== false && !$no_autopopulate)
+					{
+						$type_details = \mb_substr($docblock, $has_b2dbtype + 7);
+						$type_details = \explode(' ', $type_details);
+						$foreign_type = \trim($type_details[0]);
+						self::$_cached_foreign_classes[$classname][$property->getName()] = $foreign_type;
+					}
 				}
+			}
+			$table = $class->getB2DBTable();
+			foreach ($table->getColumns() as $column)
+			{
+				if ($column['name'] == $table->getIdColumn()) continue;
+				$property = explode('.', $column['name']);
+				$property_name = "_".\mb_strtolower($property[1]);
+				self::$_cached_column_class_properties[$classname][$column['name']] = $property_name;
+			}
+			self::saveCache($classname);
+		}
+
+		protected static function _populateCachedClassFiles(Saveable $class)
+		{
+			$classname = \get_class($class);
+			if (!array_key_exists($classname, self::$_cached_column_class_properties))
+			{
+				$filename = self::getCacheDir() . "/{$classname}.cache.php";
+				if (!\file_exists($filename)) self::cacheClass($class);
+				require $filename;
+			}
+		}
+		
+		public static function getCachedColumnClassProperty(Saveable $class, $column)
+		{
+			self::_populateCachedClassFiles($class);
+			$classname = \get_class($class);
+			if (\array_key_exists($classname, self::$_cached_column_class_properties) && \array_key_exists($column, self::$_cached_column_class_properties[$classname]))
+			{
+				return self::$_cached_column_class_properties[$classname][$column];
 			}
 			return null;
 		}
 		
-		public static function addCachedClassPropertyForeignClass($class, $property, $foreign_class)
+		public static function getCachedClassPropertyForeignClass(Saveable $class, $property)
 		{
-			if (!\array_key_exists($class, self::$_cached_foreign_classes))
+			self::_populateCachedClassFiles($class);
+			$classname = \get_class($class);
+			if (\array_key_exists($classname, self::$_cached_foreign_classes) && \array_key_exists($property, self::$_cached_foreign_classes[$classname]))
 			{
-				self::$_cached_foreign_classes[$class] = array();
-			}
-			self::$_cached_foreign_classes[$class][$property] = $foreign_class;
-		}
-		
-		public static function getCachedClassPropertyForeignClass($class, $property)
-		{
-			self::loadCachedClassFiles($class);
-			if (\array_key_exists($class, self::$_cached_foreign_classes))
-			{
-				if (\array_key_exists($property, self::$_cached_foreign_classes[$class]))
-				{
-					return self::$_cached_foreign_classes[$class][$property];
-				}
+				return self::$_cached_foreign_classes[$classname][$property];
 			}
 			return null;
 		}
