@@ -2257,7 +2257,7 @@
 	$strings['Removing this milestone will unassign all issues from this milestone and remove it from all available lists. This action cannot be undone.'] = 'Quitando este punto de control desasignará todas las peticiones y lo eliminará de todas las listas disponibles. Esta acción no puede revertirse.';
 	$strings['Show milestone overview'] = 'Mostrar resumen del punto de control';
 	$strings['Add issue'] = 'Agregar petición';
-	$strings['Ends %end_date%'] = 'Finaliza';
+	$strings['Ends %end_date%'] = 'Finaliza %end_date%';
 	$strings['%number_of% issue(s), %hours% hrs, %points% pts'] = '%number_of% petición(es), %hours% hrs, %points% pts';
 	$strings['Est. hrs'] = 'Hrs. est.';
 	$strings['Est. pts'] = 'Pts. est.';
@@ -2388,12 +2388,19 @@
 	$strings['Update project icons'] = 'Actualizar íconos del proyecto';
 	$strings['Small icon'] = 'Icono pequeño';
 	$strings['Large icon'] = 'Icono grande';
-	$strings['Leave as is'] = 'Dejarlo así';
+	$strings['Leave as is %no_icon%'] = 'Dejarlo así %no_icon%';
+	$strings['Reset project icons?'] = '¿Limpia los íconos del proyecto?';
+	$strings['Do you really want to reset the project icons? Please confirm.'] = '¿Está seguro de querer eliminar los íconos del proyecto? Confirme por favor.';
+	$strings['Reset icons'] = 'Limpiar íconos';
+	$strings['Change project icons'] = 'Cambiar íconos del proyecto';
+	$strings['Upload new icon'] = 'Subir nuevo ícono';
 	$strings['Update icons'] = 'Actualizar íconos';
 	$strings['Generic project icon'] = 'Icono genérico del proyecto';
 	$strings['Enable file uploads to upload project icons'] = 'Habilite la subida de archivos para cargar íconos al proyecto';
 	$strings['When you are done, click "%update_icons%" to upload the new project icons'] = 'Cuando haya terminado, haga clic en "%update_icons%" para subir los nuevos íconos al proyecto';
 	$strings['Close popup'] = 'Cerrar ventana';
+	$strings['Clear small icon'] = 'Limpiar ícono pequeño';
+	$strings['Clear large icon'] = 'Limpiar ícono grande';
 	$strings['Archive this project?'] = '¿Archiva este proyecto?';
 	$strings['Archive project'] = 'Archivado de proyecto';
 	$strings['If you archive a project, it is placed into a read only mode, where the project and its issues can no longer be edited. This will also prevent you from creating new issues, and will hide it from project lists (it can be viewed from an Archived Projects list). This will not, however, affect any subprojects this one has.'] = 'Si archiva un proyecto, será puesto en modo solo lectura, tanto el proyecto como sus peticiones no podrán ser editadas. Esto también impedirá la creación de nuevos pedidos, y se ocultará de la lista de proyectos (puede ser visto desde la lista de Proyectos Archivados). Esto no afectará a ningún subproyecto si tuviera uno.';
@@ -2417,4 +2424,5 @@
 	$strings['Couldn\'t find any users'] = 'No se encontró ningún usuario';		 
 	$strings['Couldn\'t find any teams'] = 'No se encontró ningún equipo';
 	$strings['You have to specify a name for the saved search'] = 'Tiene que definir un nombre para la búsqueda';	
-	
+	$strings['Milestones finishing in the next 21 days'] = 'Puntos de control que finalizan en los próximos 21 días';
+	$strings['Milestones starting in the next 21 days'] = 'Puntos de control que comienzan en los próximos 21 días';
