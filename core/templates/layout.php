@@ -65,6 +65,7 @@
 				<?php if (TBGContext::isDebugMode()): ?>
 					TBG.debug = true;
 					TBG.debugUrl = '<?php echo make_url('debug', array('debug_id' => '___debugid___')); ?>';
+					TBG.Core.AjaxCalls.push({location: 'Page loaded', time: new Date(), debug_id: '<?php echo TBGContext::getDebugID(); ?>'});
 					TBG.loadDebugInfo('<?php echo TBGContext::getDebugID(); ?>', f_init);
 				<?php else: ?>
 					f_init();
