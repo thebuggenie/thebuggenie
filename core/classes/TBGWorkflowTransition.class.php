@@ -292,7 +292,7 @@
 			}
 		}
 		
-		public function _preDelete()
+		protected function _preDelete()
 		{
 			TBGWorkflowStepTransitionsTable::getTable()->deleteByTransitionID($this->getID());
 		}

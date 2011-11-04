@@ -138,7 +138,7 @@
 			}
 		}
 		
-		public function _preDelete()
+		protected function _preDelete()
 		{
 			$crit = TBGTeamMembersTable::getTable()->getCriteria();
 			$crit->addWhere(TBGTeamMembersTable::TID, $this->getID());

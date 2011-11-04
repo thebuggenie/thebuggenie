@@ -189,7 +189,7 @@
 			TBGContext::loadLibrary('common');
 			TBGContext::loadLibrary('ui');
 
-			TBGLogging::log('rendering template output');
+			TBGLogging::log("rendering template '{$template_file}'");
 			require $template_file;
 		}
 

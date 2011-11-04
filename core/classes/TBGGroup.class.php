@@ -90,7 +90,7 @@
 			TBGPermissionsTable::getTable()->loadFixtures($scope, $admin_group->getID(), $guest_group->getID());
 		}
 		
-		public function _preDelete()
+		protected function _preDelete()
 		{
 			$crit = TBGUsersTable::getTable()->getCriteria();
 			$crit->addWhere(TBGUsersTable::GROUP_ID, $this->getID());

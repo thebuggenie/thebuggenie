@@ -3,6 +3,7 @@
 	$routes = array();
 	$routes[] = array('serve', '/serve', 'main', 'serve');
 	$routes[] = array('home', '/', 'main', 'index');
+	$routes[] = array('debug', '/debug/:debug_id', 'main', 'debug');
 	$routes[] = array('upgrade', '/upgrade', 'installation', 'upgrade');
 	$routes[] = array('attach_link', '/attach/link/to/:target_type/:target_id', 'main', 'attachLink');
 	$routes[] = array('remove_link', '/upload/remove/link/:link_id/from/other/:target_type/:target_id', 'main', 'removeLink');

@@ -40,7 +40,7 @@ body { background-color: #DFDFDF; font-family: sans-serif; font-size: 13px; }
 		<img style="float: left; margin: 10px;" src="<?php echo TBGContext::getTBGPath(); ?>header.png"><h1>An error occured in The Bug Genie</h1>
 		<div class="error_content">
 			<h2><?php echo (isset($exception)) ? $exception->getMessage() : $error; ?></h2>
-			<?php if ($exception instanceof Exception): ?>
+			<?php if (isset($exception) && $exception instanceof Exception): ?>
 				<?php if ($exception instanceof ActionNotFoundException): ?>
 					<h3>Could not find the specified action</h3>
 				<?php elseif ($exception instanceof TemplateNotFoundException): ?>

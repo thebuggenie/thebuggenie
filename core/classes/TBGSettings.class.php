@@ -120,36 +120,28 @@
 				if (self::$_settings === null)
 					self::$_settings = array();
 				
-				if (!TBGContext::isInstallmode() && $uid == 0 && self::$_settings = TBGCache::get(TBGCache::KEY_SETTINGS))
+				TBGLogging::log('Settings not cached or install mode enabled. Retrieving from database');
+				if ($res = \b2db\Core::getTable('TBGSettingsTable')->getSettingsForScope(TBGContext::getScope()->getID(), $uid))
 				{
-					TBGLogging::log('Using cached settings');
+					$cc = 0;
+					while ($row = $res->getNextRow())
+					{
+						$cc++;
+						self::$_settings[$row->get(TBGSettingsTable::MODULE)][$row->get(TBGSettingsTable::NAME)][$row->get(TBGSettingsTable::UID)] = $row->get(TBGSettingsTable::VALUE);
+					}
+					if ($cc == 0 && !TBGContext::isInstallmode() && $uid == 0)
+					{
+						TBGLogging::log('There were no settings stored in the database!', 'main', TBGLogging::LEVEL_FATAL);
+						throw new TBGSettingsException('Could not retrieve settings from database (no settings stored)');
+					}
 				}
-				else
+				elseif (!TBGContext::isInstallmode() && $uid == 0)
 				{
-					TBGLogging::log('Settings not cached or install mode enabled. Retrieving from database');
-					if ($res = \b2db\Core::getTable('TBGSettingsTable')->getSettingsForScope(TBGContext::getScope()->getID(), $uid))
-					{
-						$cc = 0;
-						while ($row = $res->getNextRow())
-						{
-							$cc++;
-							self::$_settings[$row->get(TBGSettingsTable::MODULE)][$row->get(TBGSettingsTable::NAME)][$row->get(TBGSettingsTable::UID)] = $row->get(TBGSettingsTable::VALUE);
-						}
-						if ($cc == 0 && !TBGContext::isInstallmode() && $uid == 0)
-						{
-							TBGLogging::log('There were no settings stored in the database!', 'main', TBGLogging::LEVEL_FATAL);
-							throw new TBGSettingsException('Could not retrieve settings from database (no settings stored)');
-						}
-					}
-					elseif (!TBGContext::isInstallmode() && $uid == 0)
-					{
-						TBGLogging::log('Settings could not be retrieved from the database!', 'main', TBGLogging::LEVEL_FATAL);
-						throw new TBGSettingsException('Could not retrieve settings from database');
-					}
-					self::$_loadedsettings[$uid] = true;
-					TBGLogging::log('Retrieved');
-					TBGCache::add(TBGCache::KEY_SETTINGS, self::$_settings);
+					TBGLogging::log('Settings could not be retrieved from the database!', 'main', TBGLogging::LEVEL_FATAL);
+					throw new TBGSettingsException('Could not retrieve settings from database');
 				}
+				self::$_loadedsettings[$uid] = true;
+				TBGLogging::log('Retrieved');
 			}
 			
 			TBGLogging::log("...done");
@@ -187,7 +179,6 @@
 			{
 				self::$_settings[$module][$name][$uid] = $value;
 			}
-			TBGCache::delete(TBGCache::KEY_SETTINGS);
 		}
 		
 		public static function set($name, $value, $uid = 0, $module = 'core')

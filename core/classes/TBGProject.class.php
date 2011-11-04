@@ -742,7 +742,7 @@
 		 * 
 		 * @return TBGProject
 		 */
-		public function _preSave($is_new)
+		protected function _preSave($is_new)
 		{
 			$project = self::getByKey($this->getKey()); // TBGProjectsTable::getTable()->getByKey($this->getKey());
 			if ($project instanceof TBGProject && $project->getID() != $this->getID())
@@ -756,7 +756,7 @@
 			}
 		}
 
-		public function _postSave($is_new)
+		protected function _postSave($is_new)
 		{
 			if ($is_new)
 			{

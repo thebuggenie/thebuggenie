@@ -62,6 +62,11 @@
 				}
 			}
 		}
+
+		protected function _postSave($is_new)
+		{
+			TBGCache::delete(TBGCache::KEY_TEXTPARSER_ISSUE_REGEX);
+		}
 		
 		/**
 		 * Return all issuetypes in the system

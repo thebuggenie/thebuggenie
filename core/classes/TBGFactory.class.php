@@ -60,7 +60,7 @@
 				try
 				{
 					// Check if the class is cacheable as well
-					$cacheable = in_array($classname, array('TBGProject', 'TBGStatus', 'TBGPriority', 'TBGCategory', 'TBGUserstate'));
+					$cacheable = false; // in_array($classname, array('TBGProject', 'TBGStatus', 'TBGPriority', 'TBGCategory', 'TBGUserstate'));
 					$item = null;
 
 					// If the class is cacheable, check if it exists in the cache

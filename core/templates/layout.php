@@ -42,14 +42,18 @@
 		<table style="width: 100%; height: 100%; table-layout: fixed; min-width: 1020px;" cellpadding=0 cellspacing=0>
 			<tr>
 				<td style="height: auto; overflow: hidden;" valign="top" id="maintd">
+					<?php TBGLogging::log('Rendering header'); ?>
 					<?php require THEBUGGENIE_CORE_PATH . 'templates/headertop.inc.php'; ?>
+					<?php TBGLogging::log('done (rendering header)'); ?>
 					<?php if (!TBGSettings::isMaintenanceModeEnabled()) require THEBUGGENIE_CORE_PATH . 'templates/submenu.inc.php'; ?>
+					<?php TBGLogging::log('Rendering content'); ?>
 					<?php echo $content; ?>
-					<?php TBGEvent::createNew('core', 'footer_begin')->trigger(); ?>
+					<?php TBGLogging::log('done (rendering content)'); ?>
 				</td>
 			</tr>
 			<tr>
 				<td class="footer_bar">
+					<?php TBGEvent::createNew('core', 'footer_begin')->trigger(); ?>
 					<?php require THEBUGGENIE_CORE_PATH . 'templates/footer.inc.php'; ?>
 					<?php TBGEvent::createNew('core', 'footer_end')->trigger(); ?>
 				</td>

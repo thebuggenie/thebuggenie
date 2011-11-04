@@ -48,6 +48,7 @@
 		TBGContext::autoloadNamespace('thebuggenie', THEBUGGENIE_CORE_PATH . 'classes' . DS);
 		TBGContext::autoloadNamespace('b2db', THEBUGGENIE_CORE_PATH . 'B2DB' . DS);
 
+		TBGCache::checkEnabled();
 		TBGLogging::log((TBGCache::isEnabled()) ? 'APC cache is enabled' : 'APC cache is not enabled');
 		
 		TBGLogging::log('Loading B2DB');

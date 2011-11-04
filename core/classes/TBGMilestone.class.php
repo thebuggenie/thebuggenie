@@ -184,7 +184,7 @@
 			$this->_reached = ($this->_reacheddate > 0);
 		}
 
-		public function _postSave($is_new)
+		protected function _postSave($is_new)
 		{
 			if ($is_new)
 			{
@@ -739,7 +739,7 @@
 		/**
 		 * Delete this milestone
 		 */
-		public function _preDelete()
+		protected function _preDelete()
 		{
 			TBGIssuesTable::getTable()->clearMilestone($this->getID());
 		}

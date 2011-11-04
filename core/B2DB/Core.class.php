@@ -596,11 +596,7 @@
 		
 		protected static function saveCache($class)
 		{
-			$cache_dir = self::getCacheDir();
-			
-			if ($cache_dir !== false)
-			{
-				$cache_filename = $cache_dir . "/{$class}.cache.php";
+			/* $cache_filename = $cache_dir . "/{$class}.cache.php";
 				if ((!\file_exists($cache_filename) && \is_writable($cache_dir)) || \is_writable($cache_filename))
 				{
 					$content = '<?php '."\n\n";
@@ -619,8 +615,7 @@
 					}
 					$content .= "\n";
 					\file_put_contents($cache_filename, $content);
-				}
-			}
+				} */
 		}
 
 		/**
@@ -834,7 +829,9 @@
 				$property_name = "_".\mb_strtolower($property[1]);
 				self::$_cached_column_class_properties[$classname][$column['name']] = $property_name;
 			}
-			self::saveCache($classname);
+			$key = 'b2db_cache_'.$classname;
+			\TBGCache::add($key, array(self::$_cached_column_class_properties[$classname], self::$_cached_foreign_classes[$classname]));
+			\TBGCache::fileAdd($key, array(self::$_cached_column_class_properties[$classname], self::$_cached_foreign_classes[$classname]));
 		}
 
 		protected static function _populateCachedClassFiles(Saveable $class)
@@ -842,9 +839,14 @@
 			$classname = \get_class($class);
 			if (!array_key_exists($classname, self::$_cached_column_class_properties))
 			{
-				$filename = self::getCacheDir() . "/{$classname}.cache.php";
-				if (!\file_exists($filename)) self::cacheClass($class);
-				require $filename;
+				$key = 'b2db_cache_'.$classname;
+				if (\TBGCache::has($key)) {
+					list (self::$_cached_column_class_properties[$classname], self::$_cached_foreign_classes[$classname]) = \TBGCache::get($key);
+				} elseif (\TBGCache::fileHas($key)) {
+					list (self::$_cached_column_class_properties[$classname], self::$_cached_foreign_classes[$classname]) = \TBGCache::fileGet($key);
+				} else {
+					self::cacheClass($class);
+				}
 			}
 		}
 		

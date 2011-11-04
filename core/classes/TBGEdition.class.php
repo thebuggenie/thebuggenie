@@ -56,7 +56,7 @@
 						
 		static protected $_editions = null;
 		
-		public function _postSave($is_new)
+		protected function _postSave($is_new)
 		{
 			if ($is_new)
 			{
@@ -396,7 +396,7 @@
 			$this->_doc_url = $doc_url;
 		}
 
-		public function _preDelete()
+		protected function _preDelete()
 		{
 			\b2db\Core::getTable('TBGEditionAssigneesTable')->deleteByEditionID($this->getID());
 		}

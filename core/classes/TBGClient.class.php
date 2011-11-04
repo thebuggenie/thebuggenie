@@ -217,7 +217,7 @@
 			\b2db\Core::getTable('TBGClientMembersTable')->doDelete($crit);
 		}
 		
-		public function _preDelete()
+		protected function _preDelete()
 		{
 			$crit = TBGClientMembersTable::getTable()->getCriteria();
 			$crit->addWhere(TBGClientMembersTable::CID, $this->getID());

@@ -133,7 +133,7 @@
 			return file_exists($this->getFullpath());
 		}
 
-		public function _preDelete()
+		protected function _preDelete()
 		{
 			if ($this->doesFileExistOnDisk())
 			{

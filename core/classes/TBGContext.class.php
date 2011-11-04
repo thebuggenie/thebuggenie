@@ -32,6 +32,8 @@
 		static protected $_environment = 2;
 
 		static protected $debug_mode = true;
+
+		static protected $debug_id = null;
 		
 		static protected $_partials_visited = array();
 		
@@ -162,13 +164,6 @@
 		 * @var integer
 		 */
 		static protected $_loadstart = null;
-		
-		/**
-		 * Used for timing purposes
-		 * 
-		 * @var integer
-		 */
-		static protected $_loadend = null;
 		
 		/**
 		 * List of classpaths
@@ -351,10 +346,11 @@
 		 */
 		public static function exceptionHandler($exception)
 		{
+			if (self::isDebugMode()) self::generateDebugInfo();
+
 			if (self::getRequest() instanceof TBGRequest && self::getRequest()->isAjaxCall()) {
 				self::getResponse()->ajaxResponseText(404, $exception->getMessage());
 			}
-
 
 			if (self::isCLI()) {
 				self::cliError($exception->getMessage(), $exception);
@@ -367,6 +363,8 @@
 
 		public static function errorHandler($code, $error, $file, $line)
 		{
+			if (self::isDebugMode()) self::generateDebugInfo();
+
 			if (self::getRequest() instanceof TBGRequest && self::getRequest()->isAjaxCall()) {
 				self::getResponse()->ajaxResponseText(404, $error);
 			}
@@ -376,7 +374,7 @@
 			if (self::isCLI()) {
 				self::cliError($error, $details);
 			} else {
-				self::getResponse()->cleanBuffer();
+				if (self::getResponse() instanceof TBGResponse) self::getResponse()->cleanBuffer();
 				require THEBUGGENIE_CORE_PATH . 'templates' . DS . 'error.php';
 			}
 			die();
@@ -401,7 +399,7 @@
 		public static function addAutoloaderClassPath($path)
 		{
 			$path = realpath($path);
-			if (!file_exists($path)) throw new Exception("Cannot add {$path} to autoload, since the path doesn't exist");
+			if (!file_exists($path)) return; // throw new Exception("Cannot add {$path} to autoload, since the path doesn't exist");
 
 			if (file_exists($path . DS . 'actions.class.php'))
 				require_once $path . DS . 'actions.class.php';
@@ -510,24 +508,6 @@
 		}
 		
 		/**
-		 * Get when we last loaded the engine
-		 * 
-		 * @return integer
-		 */
-		public static function getLastLoadedAt()
-		{
-			return $_SESSION['b2lastreloadtime'];
-		}
-		
-		/**
-		 * Set when we last loaded the engine
-		 */
-		public static function setLoadedAt()
-		{
-			$_SESSION['b2lastreloadtime'] = NOW;
-		}
-		
-		/**
 		 * Get the subdirectory part of the url
 		 * 
 		 * @return string
@@ -576,15 +556,6 @@
 		}
 		
 		/**
-		 * Manually ping the loader
-		 */
-		public static function ping()
-		{
-			$endtime = explode(' ', microtime());
-			self::$_loadend = $endtime[1] + $endtime[0];
-		}
-
-		/**
 		 * Get the time from when we started loading
 		 * 
 		 * @param integer $precision
@@ -592,8 +563,8 @@
 		 */
 		public static function getLoadtime($precision = 5)
 		{
-			self::ping();
-			return round((self::$_loadend - self::$_loadstart), $precision);
+			$endtime = explode(' ', microtime());
+			return round((($endtime[1] + $endtime[0]) - self::$_loadstart), $precision);
 		}
 		
 		public static function checkInstallMode()
@@ -613,6 +584,7 @@
 		 */
 		public static function initialize()
 		{
+			if (self::$debug_mode) self::$debug_id = uniqid();
 			try
 			{
 				mb_internal_encoding("UTF-8");
@@ -939,72 +911,28 @@
 				self::$_modules = array();
 				if (self::isInstallmode()) return;
 
-				if (!TBGCache::has(TBGCache::KEY_MODULE_PATHS) || !TBGCache::has(TBGCache::KEY_MODULES))
+				$modules = array();
+
+				TBGLogging::log('getting modules from database');
+				$module_paths = array();
+
+				if ($res = \b2db\Core::getTable('TBGModulesTable')->getAll())
 				{
-					$modules = array();
-
-					TBGLogging::log('getting modules from database');
-					$module_paths = array();
-
-					if ($res = \b2db\Core::getTable('TBGModulesTable')->getAll())
+					while ($moduleRow = $res->getNextRow())
 					{
-						while ($moduleRow = $res->getNextRow())
-						{
-							$module_name = $moduleRow->get(TBGModulesTable::MODULE_NAME);
-							$modules[$module_name] = $moduleRow;
-							$moduleClassPath = THEBUGGENIE_MODULES_PATH . $module_name . DS . "classes" . DS;
-							try
-							{
-								self::addAutoloaderClassPath($moduleClassPath);
-								$module_paths[] = $moduleClassPath;
-								if (file_exists($moduleClassPath . 'B2DB'))
-								{
-									self::addAutoloaderClassPath($moduleClassPath . 'B2DB' . DS);
-									$module_paths[] = $moduleClassPath . 'B2DB' . DS;
-								}
-							}
-							catch (Exception $e) { } // ignore "dir not exists" errors
-						}
-					}
-					TBGLogging::log('done (getting modules from database)');
-					TBGCache::add(TBGCache::KEY_MODULE_PATHS, $module_paths);
-					TBGLogging::log('setting up module objects');
-					foreach ($modules as $module_name => $moduleRow)
-					{
+						$module_name = $moduleRow->get(TBGModulesTable::MODULE_NAME);
 						$classname = $moduleRow->get(TBGModulesTable::CLASSNAME);
-						if ($classname != '' && $classname != 'TBGModule')
-						{
-							if (class_exists($classname))
-							{
-								self::$_modules[$module_name] = new $classname($moduleRow->get(TBGModulesTable::ID), $moduleRow);
-							}
-							else
-							{
-								TBGLogging::log('Cannot load module "' . $module_name . '" as class "' . $classname . '", the class is not defined in the classpaths.', 'modules', TBGLogging::LEVEL_WARNING_RISK);
-								TBGLogging::log('Removing module "' . $module_name . '" as it cannot be loaded', 'modules', TBGLogging::LEVEL_NOTICE);
-								TBGModule::removeModule($moduleRow->get(TBGModulesTable::ID));
-							}
-						}
-						else
-						{
+						$moduleClassPath = THEBUGGENIE_MODULES_PATH . $module_name . DS . "classes" . DS;
+						self::addAutoloaderClassPath($moduleClassPath);
+						self::addAutoloaderClassPath($moduleClassPath . 'B2DB' . DS);
+						self::addAutoloaderClassPath($moduleClassPath . 'cli' . DS);
+						if ($classname == '' || $classname == 'TBGModule')
 							throw new Exception('Cannot load module "' . $module_name . '" as class TBGModule - modules should extend the TBGModule class with their own class.');
-						}
-					}
-					TBGCache::add(TBGCache::KEY_MODULES, self::$_modules);
-					TBGLogging::log('done (setting up module objects)');
-				}
-				else
-				{
-					TBGLogging::log('using cached modules');
-					$module_paths = TBGCache::get(TBGCache::KEY_MODULE_PATHS);
-					foreach ($module_paths as $path)
-					{
-						self::addAutoloaderClassPath($path);
-					}
-					self::$_modules = TBGCache::get(TBGCache::KEY_MODULES);
-					TBGLogging::log('done (using cached modules)');
-				}
 
+						self::$_modules[$module_name] = new $classname($moduleRow->get(TBGModulesTable::ID), $moduleRow);
+					}
+				}
+				TBGLogging::log('done (setting up module objects)');
 				TBGLogging::log('initializing modules');
 				if (!empty(self::$_modules))
 				{
@@ -1022,6 +950,7 @@
 			else
 			{
 				TBGLogging::log('Modules already loaded', 'core', TBGLogging::LEVEL_FATAL);
+				throw new Exception('Modules alread loaded!');
 			}
 			TBGLogging::log('...done');
 		}
@@ -1192,7 +1121,7 @@
 			TBGLogging::log('caches permissions');
 			self::$_permissions = array();
 			
-			if ($permissions = TBGCache::get('permissions'))
+			if ($permissions = TBGCache::get(TBGCache::KEY_PERMISSIONS_CACHE))
 			{
 				self::$_permissions = $permissions;
 				TBGLogging::log('Using cached permissions');
@@ -1228,7 +1157,7 @@
 				{
 					self::$_permissions = $permissions;
 				}
-				TBGCache::add('permissions', self::$_permissions);
+				TBGCache::add(TBGCache::KEY_PERMISSIONS_CACHE, self::$_permissions);
 			}
 			TBGLogging::log('...cached');
 		}
@@ -1243,16 +1172,6 @@
 				}
 			}
 			TBGPermissionsTable::getTable()->deleteModulePermissions($module_name, $scope);
-		}
-
-		/**
-		 * Cache a permission
-		 * 
-		 * @param array $perm_cache
-		 */
-		public static function cachePermission($perm_cache)
-		{
-			self::$_permissions[] = $perm_cache; 
 		}
 
 		/**
@@ -1272,7 +1191,8 @@
 			if ($scope === null) $scope = self::getScope()->getID();
 			
 			\b2db\Core::getTable('TBGPermissionsTable')->removeSavedPermission($uid, $gid, $tid, $module, $permission_type, $target_id, $scope);
-			
+			TBGCache::delete(TBGCache::KEY_PERMISSIONS_CACHE);
+
 			if ($recache) self::cacheAllPermissions();
 		}
 
@@ -1294,7 +1214,8 @@
 			
 			self::removePermission($permission_type, $target_id, $module, $uid, $gid, $tid, false, $scope);
 			TBGPermissionsTable::getTable()->setPermission($uid, $gid, $tid, $allowed, $module, $permission_type, $target_id, $scope);
-			
+			TBGCache::delete(TBGCache::KEY_PERMISSIONS_CACHE);
+
 			self::cacheAllPermissions();
 		}
 
@@ -2157,7 +2078,7 @@
 			}
 		}
 		
-		public static function getVisitedPartials()
+		protected static function getVisitedPartials()
 		{
 			return self::$_partials_visited;
 		}
@@ -2325,7 +2246,7 @@
 				}
 
 				self::loadLibrary('common');
-				TBGLogging::log('rendering content');
+				TBGLogging::log('rendering final content');
 				
 				if (TBGSettings::isMaintenanceModeEnabled() && !mb_strstr(self::getRouting()->getCurrentRouteName(), 'configure'))
 				{
@@ -2376,6 +2297,7 @@
 
 					TBGLogging::log('...done');
 				}
+				TBGLogging::log('done (rendering final content)');
 
 				if (self::isDebugMode()) self::getI18n()->addMissingStringsToStringsFile();
 				
@@ -2388,19 +2310,6 @@
 			}
 		}
 
-		public static function calculateTimings(&$tbg_summary)
-		{
-			$load_time = self::getLoadtime();
-			if (\b2db\Core::isInitialized())
-			{
-				$tbg_summary['db_queries'] = \b2db\Core::getSQLHits();
-				$tbg_summary['db_timing'] = \b2db\Core::getSQLTiming();
-			}
-			$tbg_summary['load_time'] = ($load_time >= 1) ? round($load_time, 2) . ' seconds' : round($load_time * 1000, 1) . 'ms';
-			$tbg_summary['scope_id'] = self::getScope() instanceof TBGScope ? self::getScope()->getID() : 'unknown';
-			self::ping();
-		}
-		
 		/**
 		 * Returns all the links on the frontpage
 		 * 
@@ -2452,6 +2361,7 @@
 						}
 						if (self::performAction($route['module'], $route['action']))
 						{
+							if (self::isDebugMode()) self::generateDebugInfo();
 							if (\b2db\Core::isInitialized())
 							{
 								\b2db\Core::closeDBLink();
@@ -2462,34 +2372,31 @@
 					else
 					{
 						throw new Exception('Cannot load the ' . $route['module'] . ' module');
-						return;
 					}
 				}
 				else
 				{
 					require THEBUGGENIE_MODULES_PATH . 'main' . DS . 'classes' . DS . 'actions.class.php';
 					self::performAction('main', 'notFound');
+					if (self::isDebugMode()) self::generateDebugInfo();
 				}
 			}
 			catch (TBGTemplateNotFoundException $e)
 			{
 				\b2db\Core::closeDBLink();
-				TBGContext::setLoadedAt();
 				header("HTTP/1.0 404 Not Found", true, 404);
 				throw $e;
 			}
 			catch (TBGActionNotFoundException $e)
 			{
 				\b2db\Core::closeDBLink();
-				TBGContext::setLoadedAt();
 				header("HTTP/1.0 404 Not Found", true, 404);
 				throw $e;
-				//throw new Exception('Module action "' . $route['action'] . '" does not exist for module "' . $route['module'] . '"', $e);
 			}
 			catch (TBGCSRFFailureException $e)
 			{
 				\b2db\Core::closeDBLink();
-				TBGContext::setLoadedAt();
+				if (self::isDebugMode()) self::generateDebugInfo();
 				self::$_response->setHttpStatus(301);
 				$message = $e->getMessage();
 
@@ -2505,10 +2412,52 @@
 			catch (Exception $e)
 			{
 				\b2db\Core::closeDBLink();
-				TBGContext::setLoadedAt();
 				header("HTTP/1.0 404 Not Found", true, 404);
 				throw $e;
 			}
+		}
+
+		protected static function generateDebugInfo()
+		{
+			$tbg_summary = array();
+			$load_time = self::getLoadtime();
+			if (\b2db\Core::isInitialized())
+			{
+				$tbg_summary['db']['queries'] = \b2db\Core::getSQLHits();
+				$tbg_summary['db']['timing'] = \b2db\Core::getSQLTiming();
+			}
+			$tbg_summary['load_time'] = ($load_time >= 1) ? round($load_time, 2) . ' seconds' : round($load_time * 1000, 1) . 'ms';
+			$tbg_summary['scope'] = array();
+			$scope = self::getScope();
+			$tbg_summary['scope']['id'] = $scope instanceof TBGScope ? $scope->getID() : 'unknown';
+			$tbg_summary['scope']['hostnames'] = $scope instanceof TBGScope ? implode(', ', $scope->getHostnames()) : 'none';
+			$tbg_summary['settings'] = TBGSettings::getAll();
+			$tbg_summary['partials'] = self::getVisitedPartials();
+			foreach (self::getI18n()->getMissingStrings() as $text) {
+				TBGLogging::log('The text "' . $text . '" does not exist in list of translated strings, and was added automatically', 'i18n', TBGLogging::LEVEL_NOTICE);
+			}
+			$tbg_summary['log'] = TBGLogging::getEntries();
+			$tbg_summary['routing'] = array('name' => self::getRouting()->getCurrentRouteName(), 'module' => self::getRouting()->getCurrentRouteModule(), 'action' => self::getRouting()->getCurrentRouteAction());
+			if (!array_key_exists('___DEBUGINFO___', $_SESSION))
+			{
+				$_SESSION['___DEBUGINFO___'] = array();
+			}
+			$_SESSION['___DEBUGINFO___'][self::$debug_id] = $tbg_summary;
+			while (count($_SESSION['___DEBUGINFO___']) > 10)
+				array_shift($_SESSION['___DEBUGINFO___']);
+		}
+
+		public static function getDebugData($debug_id)
+		{
+			if (!array_key_exists('___DEBUGINFO___', $_SESSION)) return null;
+			if (!array_key_exists($debug_id, $_SESSION['___DEBUGINFO___'])) return null;
+			
+			return $_SESSION['___DEBUGINFO___'][$debug_id];
+		}
+
+		public static function getDebugID()
+		{
+			return self::$debug_id;
 		}
 
 		public static function getURLhost()

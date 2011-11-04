@@ -3648,4 +3648,10 @@
 
 		}
 
+		public function runDebug(TBGRequest $request)
+		{
+			$this->getResponse()->setDecoration(TBGResponse::DECORATE_NONE);
+			$this->tbg_summary = TBGContext::getDebugData($request['debug_id']);
+		}
+
 }

@@ -169,7 +169,7 @@
 			catch (Exception $e) {}
 		}
 		
-		public function _postSave($is_new)
+		protected function _postSave($is_new)
 		{
 			if ($is_new)
 			{

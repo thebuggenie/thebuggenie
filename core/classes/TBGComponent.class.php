@@ -48,7 +48,7 @@
 			return $retval;
 		}
 		
-		public function _postSave($is_new)
+		protected function _postSave($is_new)
 		{
 			if ($is_new)
 			{
@@ -89,7 +89,7 @@
 			$this->_name = $name;
 		}
 
-		public function _preDelete()
+		protected function _preDelete()
 		{
 			$crit = new \b2db\Criteria();
 			$crit->addWhere(TBGIssueAffectsComponentTable::COMPONENT, $this->getID());

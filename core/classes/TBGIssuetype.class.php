@@ -235,10 +235,16 @@
 			return self::$_issuetypes;
 		}
 		
-		public function _preDelete()
+		protected function _preDelete()
 		{
 			TBGIssuetypeSchemeLinkTable::getTable()->deleteByIssuetypeID($this->getID());
 			TBGVisibleIssueTypesTable::getTable()->deleteByIssuetypeID($this->getID());
 		}
+
+		protected function _postSave($is_new)
+		{
+			TBGCache::delete(TBGCache::KEY_TEXTPARSER_ISSUE_REGEX);
+		}
+
 	}
 	

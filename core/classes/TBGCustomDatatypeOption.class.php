@@ -70,7 +70,7 @@
 		 *
 		 * @return TBGStatus
 		 */
-		public function _preSave($is_new)
+		protected function _preSave($is_new)
 		{
 			if ($this->getItemtype() == TBGCustomDatatype::DROPDOWN_CHOICE_TEXT_ICON)
 			{

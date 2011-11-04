@@ -23,14 +23,11 @@
 		const KEY_PREMODULES_ROUTES_CACHE = '_routes';
 		const KEY_POSTMODULES_ROUTES_CACHE = '_routes_postmodules';
 		const KEY_PERMISSIONS_CACHE = '_permissions';
-		const KEY_USERSTATES_CACHE = 'TBGUserstate::getAll';
-		const KEY_MODULE_PATHS = '_module_paths';
-		const KEY_MODULES = '_modules';
-		const KEY_SETTINGS = '_settings';
 		const KEY_TEXTPARSER_ISSUE_REGEX = 'TBGTextParser::getIssueRegex';
 		
 		protected static $_enabled = false;
-		protected static $_filecache_enabled = false;
+
+		protected static $_logging = false;
 		
 		public static function get($key)
 		{
@@ -52,11 +49,11 @@
 		{
 			if (!self::isEnabled())
 			{
-				TBGLogging::log('Key "' . $key . '" not cached', 'cache');
+				if (self::$_logging) TBGLogging::log('Key "' . $key . '" not available when cache is disabled', 'cache');
 				return false;
 			}
 			apc_store($key, $value);
-			TBGLogging::log('Caching value for key "' . $key . '"', 'cache');
+			if (self::$_logging) TBGLogging::log('Caching value for key "' . $key . '"', 'cache');
 			return true;
 		}
 		
@@ -66,39 +63,46 @@
 			apc_delete($key);
 		}
 		
+		protected static function _getFilenameForKey($key)
+		{
+			return THEBUGGENIE_CORE_PATH . 'cache' . DS . $key . '.cache';
+		}
+
+		public static function fileHas($key)
+		{
+			if (!self::isEnabled()) return false;
+			$filename = self::_getFilenameForKey($key);
+			return file_exists($filename);
+		}
+
 		public static function fileGet($key)
 		{
-			if (!self::$_filecache_enabled) return null;
-			$filename = THEBUGGENIE_CORE_PATH . 'cache' . DS . $key . '.cache';
-			if (!file_exists($filename))
-			{
-				return null;
-			}
-			
+			if (!self::isEnabled()) return null;
+			if (!self::fileHas($key)) return null;
+			$filename = self::_getFilenameForKey($key);
 			$value = unserialize(file_get_contents($filename));
 			return $value;
 		}
 		
 		public static function fileAdd($key, $value)
 		{
-			if (!self::$_filecache_enabled) return null;
-			$filename = THEBUGGENIE_CORE_PATH . 'cache' . DS . $key . '.cache';
+			$filename = self::_getFilenameForKey($key);
 			file_put_contents($filename, serialize($value));
 		}
 		
 		public static function fileDelete($key)
 		{
-			if (!self::$_filecache_enabled) return null;
-			$filename = THEBUGGENIE_CORE_PATH . 'cache' . DS . $key . '.cache';
+			$filename = self::_getFilenameForKey($key);
 			unlink($filename);
 		}
 		
+		public static function checkEnabled()
+		{
+			if (self::$_enabled) self::$_enabled = function_exists('apc_add');
+		}
+
 		public static function isEnabled()
 		{
-			if (self::$_enabled)
-			{
-				self::$_enabled = function_exists('apc_add');
-			}
 			return self::$_enabled;
 		}
 	}

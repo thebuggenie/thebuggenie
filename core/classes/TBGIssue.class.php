@@ -4079,7 +4079,7 @@
 		 * 
 		 * @return boolean
 		 */
-		public function _preSave($is_new)
+		protected function _preSave($is_new)
 		{
 			if ($is_new)
 			{

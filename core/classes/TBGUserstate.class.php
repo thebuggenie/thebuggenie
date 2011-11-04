@@ -34,15 +34,11 @@
 		{
 			if (self::$_userstates === null)
 			{
-				if (!($states = TBGCache::get(TBGCache::KEY_USERSTATES_CACHE)))
+				$res = TBGUserStateTable::getTable()->doSelectAll();
+				$states = array();
+				while ($row = $res->getNextRow())
 				{
-					$res = TBGUserStateTable::getTable()->doSelectAll();
-					$states = array();
-					while ($row = $res->getNextRow())
-					{
-						$states[$row->get(TBGUserStateTable::ID)] = TBGContext::factory()->TBGUserstate($row->get(TBGUserStateTable::ID), $row);
-					}
-					TBGCache::add(TBGCache::KEY_USERSTATES_CACHE, $states);
+					$states[$row->get(TBGUserStateTable::ID)] = TBGContext::factory()->TBGUserstate($row->get(TBGUserStateTable::ID), $row);
 				}
 				self::$_userstates = $states;
 			}

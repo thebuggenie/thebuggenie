@@ -97,7 +97,7 @@
 
 		}
 
-		public function _preSave($is_new)
+		protected function _preSave($is_new)
 		{
 			if ($is_new)
 			{
@@ -114,7 +114,7 @@
 		 *
 		 * @param integer $id
 		 */
-		public function _preDelete()
+		protected function _preDelete()
 		{
 			$key = \b2db\Core::getTable('TBGCustomFieldsTable')->getKeyFromId($this->getID());
 			\b2db\Core::getTable('TBGCustomFieldOptionsTable')->doDeleteByFieldKey($key);
