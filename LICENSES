@@ -1,0 +1,21 @@
+The Bug Genie is distributed under the Mozilla Public License v1.1.
+The license is included in the file LICENSE, and can also be read here:
+http://www.opensource.org/licenses/mozilla1.1.php
+
+The Bug Genie uses icons from the Oxygen icon set.
+These icons may be freely distributed under the LGPLv3. The LGPLv3 license
+can be read here:
+http://www.opensource.org/licenses/lgpl-3.0.html
+
+The Bug Genie includes the "Droid Sans Mono" and "Open Sans" fonts.
+These fonts are distributed under the Apache License 2.0, which can be read
+here:
+http://www.opensource.org/licenses/Apache-2.0
+
+The Bug Genie includes the GeSHi syntax highlighting library for code coloring.
+This library is distributed under the GPL license, which can be read here:
+http://www.gnu.org/copyleft/gpl.html
+
+The Bug Genie includes the LightOpenID library for OpenID login functionality.
+This library is distributed under the MIT license, which can be read here:
+http://www.opensource.org/licenses/MIT
