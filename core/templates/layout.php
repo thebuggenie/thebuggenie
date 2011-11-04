@@ -7,6 +7,7 @@
 		<meta name="keywords" content="thebuggenie friendly issue tracking">
 		<meta name="author" content="thebuggenie.com">
 		<title><?php echo ($tbg_response->hasTitle()) ? strip_tags(TBGSettings::getTBGname() . ' ~ ' . $tbg_response->getTitle()) : strip_tags(TBGSettings::getTBGname()); ?></title>
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,700italic|Droid+Sans+Mono&subset=latin,cyrillic,greek' rel='stylesheet' type='text/css'>
 		<link rel="shortcut icon" href="<?php print TBGSettings::getFaviconURL(); ?>">
 		<link title="<?php echo (TBGContext::isProjectContext()) ? __('%project_name% search', array('%project_name%' => TBGContext::getCurrentProject()->getName())) : __('%site_name% search', array('%site_name%' => TBGSettings::getTBGname())); ?>" href="<?php echo (TBGContext::isProjectContext()) ? make_url('project_opensearch', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('opensearch'); ?>" type="application/opensearchdescription+xml" rel="search">
 		<?php foreach ($tbg_response->getFeeds() as $feed_url => $feed_title): ?>
