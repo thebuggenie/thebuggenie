@@ -28,11 +28,7 @@
 					<?php endforeach; ?>
 				</ul>
 				<script type="text/javascript">
-					document.observe('dom:loaded', function() {
-						TBG.Main.Dashboard.views.each(function(view_id) {
-							TBG.Main.Dashboard.View.init('<?php echo make_url('dashboard_view'); ?>', view_id);
-						});
-					});
+					TBG.Main.Dashboard.url = '<?php echo make_url('dashboard_view'); ?>';
 				</script>
 			<?php endif; ?>
 			<?php TBGEvent::createNew('core', 'project_dashboard_bottom')->trigger(); ?>
