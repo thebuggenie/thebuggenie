@@ -584,6 +584,11 @@
 			self::$_db_connection = null;
 		}
 
+		public static function isConnected()
+		{
+			return (bool) (self::$_db_connection instanceof \PDO);
+		}
+
 		public static function getCacheDir()
 		{
 			if (self::$_cache_dir === null)

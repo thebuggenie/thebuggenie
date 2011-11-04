@@ -2430,7 +2430,7 @@
 			$tbg_summary['scope'] = array();
 			$scope = self::getScope();
 			$tbg_summary['scope']['id'] = $scope instanceof TBGScope ? $scope->getID() : 'unknown';
-			$tbg_summary['scope']['hostnames'] = $scope instanceof TBGScope ? implode(', ', $scope->getHostnames()) : 'none';
+			$tbg_summary['scope']['hostnames'] = ($scope instanceof TBGScope && \b2db\Core::isConnected()) ? implode(', ', $scope->getHostnames()) : 'unknown';
 			$tbg_summary['settings'] = TBGSettings::getAll();
 			$tbg_summary['partials'] = self::getVisitedPartials();
 			foreach (self::getI18n()->getMissingStrings() as $text) {
