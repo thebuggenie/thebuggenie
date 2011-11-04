@@ -485,6 +485,7 @@
 			header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT"); // always modified
 			header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 			header("Pragma: no-cache"); // HTTP/1.0
+			header("x-tbg-debugid: ".TBGContext::getDebugID());
 			header("Content-Type: " . $this->_content_type . "; charset=" . TBGContext::getI18n()->getCharset());
 
 			foreach ($this->_headers as $header)

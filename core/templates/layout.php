@@ -60,7 +60,16 @@
 			</tr>
 		</table>
 		<script type="text/javascript">
-			document.observe('dom:loaded', TBG.initialize({ autocompleter_url: '<?php echo (TBGContext::isProjectContext()) ? make_url('project_quicksearch', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('quicksearch'); ?>'}));
+			document.observe('dom:loaded', function() {
+				var f_init = function() {TBG.initialize({ autocompleter_url: '<?php echo (TBGContext::isProjectContext()) ? make_url('project_quicksearch', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('quicksearch'); ?>'})};
+				<?php if (TBGContext::isDebugMode()): ?>
+					TBG.debug = true;
+					TBG.debugUrl = '<?php echo make_url('debug', array('debug_id' => '___debugid___')); ?>';
+					TBG.loadDebugInfo('<?php echo TBGContext::getDebugID(); ?>', f_init);
+				<?php else: ?>
+					f_init();
+				<?php endif; ?>
+			});
 		</script>
 	</body>
 </html>

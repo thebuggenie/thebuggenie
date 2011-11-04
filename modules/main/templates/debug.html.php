@@ -1,6 +1,6 @@
 <?php if (is_array($tbg_summary)): ?>
 	<style type="text/css">
-		#log_messages, #scope_settings, #log_timing, #log_sql { filter:alpha(opacity=90); -moz-opacity:0.9; -khtml-opacity: 0.9; opacity: 0.9; position: fixed; bottom: 24px; border: 1px solid #DDD; border-bottom: 0; width: 98%; margin: 5px auto; padding: 5px; background-color: #F5F5F5; height: 540px; left: 10px; color: #000; font-size: 12px; box-shadow: 0 -3px 3px -3px rgba(0, 0, 0, 0.2) inset; }
+		#log_messages, #scope_settings, #log_timing, #log_sql, #log_ajax { filter:alpha(opacity=90); -moz-opacity:0.9; -khtml-opacity: 0.9; opacity: 0.9; position: fixed; bottom: 24px; border: 1px solid #DDD; border-bottom: 0; width: 98%; margin: 5px auto; padding: 5px; background-color: #F5F5F5; height: 540px; left: 10px; color: #000; font-size: 12px; box-shadow: 0 -3px 3px -3px rgba(0, 0, 0, 0.2) inset; }
 		#log_messages div.log, #scope_settings div.log, #log_timing div.log, #log_sql div.log { height: 500px; overflow: auto; font-size: 12px; text-align: left; }
 		#scope_settings div.log table tr:hover td { background-color: #DDD; }
 	</style>
@@ -17,6 +17,10 @@
 				<td style="width: 100px; cursor: pointer; padding: 3px; font-size: 11px; font-family: Ubuntu;" onclick="$('log_timing').toggle();" title="Click to toggle timing overview">
 					<?php echo image_tag('debug_time.png', array('style' => 'float: left; margin-right: 5px;')); ?>
 					<?php echo $tbg_summary['load_time']; ?>
+				</td>
+				<td style="width: 100px; cursor: pointer; padding: 3px; font-size: 11px; font-family: Ubuntu;" onclick="$('log_ajax').toggle();" title="Click to toggle ajax calls list">
+					<?php echo image_tag('debug_ajax.png', array('style' => 'float: left; margin-right: 5px;')); ?>
+					<span id="debug_ajax_count">1</span>
 				</td>
 				<td onclick="$('scope_settings').toggle();" style="width: 80px; padding: 3px; cursor: pointer; font-size: 11px; font-family: Ubuntu;" title="Generated hostname: <?php echo $tbg_summary['scope']['hostnames']; ?>">
 					<?php echo image_tag('debug_scope.png', array('style' => 'float: left; margin-right: 5px;')); ?>
@@ -57,6 +61,11 @@
 					<?php endforeach; ?>
 				</table>
 			<?php endforeach; ?>
+		</div>
+	</div>
+	<div id="log_ajax" style="display: none;">
+		<div style="font-size: 16px; font-weight: bold; border-bottom: 1px solid #DDD; padding: 4px;">Ajax calls</div>
+		<ul class="simple_list hover_highlight" id="log_ajax_items" style="text-align: left;">
 		</div>
 	</div>
 	<div id="log_timing" style="display: none;">

@@ -5,7 +5,9 @@ function is_string(element) {
 
 // The core js class used by thebuggenie
 var TBG = {
-	Core: {}, // The "Core" namespace is for functions used by thebuggenie core, not to be invoked outside the js class
+	Core: {
+		AjaxCalls: []
+	}, // The "Core" namespace is for functions used by thebuggenie core, not to be invoked outside the js class
 	Main: { // The "Main" namespace contains regular functions in use across the site
 		Helpers: {
 			Message: {},
@@ -80,6 +82,7 @@ var TBG = {
 		successmessage: 'TBG_successmessage',
 		failedmessage: 'TBG_failedmessage'
 	},
+	debug: false,
 	activated_popoutmenu: undefined,
 	autocompleter_url: undefined,
 	available_fields: ['description', 'user_pain', 'reproduction_steps', 'category', 'resolution', 'priority', 'reproducability', 'percent_complete', 'severity', 'edition', 'build', 'component', 'estimated_time', 'spent_time', 'milestone']
@@ -293,17 +296,22 @@ TBG.initialize = function(options) {
 	Event.observe(window, 'resize', TBG.Core._resizeWatcher);
 	Event.observe(window, 'scroll', TBG.Core._scrollWatcher);
 	TBG.Core._resizeWatcher();
+	if (TBG.Main.Dashboard.views.size() > 0) {
+		TBG.Main.Dashboard.views.each(function(view_id) {
+			TBG.Main.Dashboard.View.init(TBG.Main.Dashboard.url, view_id);
+		});
+	}
 	$('fullpage_backdrop_content').observe('click', TBG.Core._resizeWatcher);
 	document.observe('click', TBG.Main.toggleBreadcrumbMenuPopout);
 };
 
-TBG.loadDebugInfo = function(url, debug_id) {
-	if (debug_id) {
-		url = text.replace('%debugid%', debug_id);
-	}
+TBG.loadDebugInfo = function(debug_id, cb) {
+	url = TBG.debugUrl.replace('___debugid___', debug_id);
 	TBG.Main.Helpers.ajax(url, {
 		loading: {indicator: 'tbg___DEBUGINFO___indicator'},
-		success: {update: 'tbg___DEBUGINFO___'}
+		success: {update: 'tbg___DEBUGINFO___'},
+		complete: {callback: cb},
+		debug: false
 	});
 };
 
@@ -452,6 +460,9 @@ TBG.Main.Helpers.ajax = function(url, options) {
 		evalScripts: true,
 		onLoading: function () {
 			if (options.loading) {
+				if (TBG.debug) {
+					$('tbg___DEBUGINFO___indicator').show();
+				}
 				if ($(options.loading.indicator)) {
 					$(options.loading.indicator).show();
 				}
@@ -461,15 +472,15 @@ TBG.Main.Helpers.ajax = function(url, options) {
 				}
 			}
 		},
-		onSuccess: function (transport) {
-			var json = transport.responseJSON;
+		onSuccess: function (response) {
+			var json = response.responseJSON;
 			if (json || (options.success && options.success.update)) {
 				if (json && json.forward != undefined) {
 					document.location = json.forward;
 				} else {
 					if (options.success && options.success.update) {
 						var json_content_element = (is_string(options.success.update) || options.success.update.from == undefined) ? 'content' : options.success.update.from;
-						var content = (json) ? json[json_content_element] : transport.responseText;
+						var content = (json) ? json[json_content_element] : response.responseText;
 						var update_element = (is_string(options.success.update)) ? options.success.update : options.success.update.element;
 						if ($(update_element)) {
 							var insertion = (is_string(options.success.update)) ? false : (options.success.update.insertion) ? options.success.update.insertion : false;
@@ -484,7 +495,7 @@ TBG.Main.Helpers.ajax = function(url, options) {
 						}
 					} else if (options.success && options.success.replace) {
 						var json_content_element = (is_string(options.success.replace) || options.success.replace.from == undefined) ? 'content' : options.success.replace.from;
-						var content = (json) ? json[json_content_element] : transport.responseText;
+						var content = (json) ? json[json_content_element] : response.responseText;
 						var replace_element = (is_string(options.success.replace)) ? options.success.replace : options.success.replace.element;
 						if ($(replace_element)) {
 							Element.replace(replace_element, content);
@@ -506,30 +517,50 @@ TBG.Main.Helpers.ajax = function(url, options) {
 				}
 			}
 		},
-		onFailure: function (transport) {
-			var json = (transport.responseJSON) ? transport.responseJSON : undefined;
-			if (transport.responseJSON) {
+		onFailure: function (response) {
+			var json = (response.responseJSON) ? response.responseJSON : undefined;
+			if (response.responseJSON) {
 				TBG.Main.Helpers.Message.error(json.error, json.message);
-			}else {
-				TBG.Main.Helpers.Message.error(transport.responseText);
+			} else {
+				TBG.Main.Helpers.Message.error(response.responseText);
 			}
 			if (options.failure) {
 				TBG.Core._processCommonAjaxPostEvents(options.failure);
 				if (options.failure.callback) {
-					options.failure.callback(transport);
+					options.failure.callback(response);
 				}
 			}
 		},
-		onComplete: function (transport) {
+		onComplete: function (response) {
+			if (TBG.debug) {
+				$('tbg___DEBUGINFO___indicator').hide();
+				var d = new Date(),
+					d_id = response.getHeader('x-tbg-debugid');
+
+				TBG.Core.AjaxCalls.push({location: url, time: d, debug_id: d_id});
+				TBG.updateDebugInfo();
+			}
 			$(options.loading.indicator).hide();
 			if (options.complete) {
 				TBG.Core._processCommonAjaxPostEvents(options.complete);
 				if (options.complete.callback) {
-					var json = (transport.responseJSON) ? transport.responseJSON : undefined;
+					var json = (response.responseJSON) ? response.responseJSON : undefined;
 					options.complete.callback(json);
 				}
 			}
 		}
+	});
+};
+
+TBG.updateDebugInfo = function() {
+	if ($('log_ajax_items')) $('log_ajax_items').update('');
+	if ($('debug_ajax_count')) $('debug_ajax_count').update(TBG.Core.AjaxCalls.size());
+	var ct = function(time) {
+		return (time < 10) ? '0'+time : time;
+	};
+	TBG.Core.AjaxCalls.each(function(info) {
+		var content = '<li style="clear: both;"><span class="faded_out dark small">'+ct(info.time.getHours())+':'+ct(info.time.getMinutes())+':'+ct(info.time.getSeconds())+'</span> '+info.location+' <a class="button button-silver" style="float: right;" href="javascript:void(0);" onclick="TBG.loadDebugInfo(\''+info.debug_id+'\');">Show debug info</a></li>';
+		$('log_ajax_items').insert(content, 'top');
 	});
 };
 

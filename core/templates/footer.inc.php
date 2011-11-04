@@ -16,8 +16,5 @@
 		</div>
 		<?php echo image_tag('spinning_16.gif', array('style' => 'position: fixed; bottom: 5px; right: 23px;', 'id' => 'tbg___DEBUGINFO___indicator')); ?>
 		<?php echo image_tag('debug_show.png', array('style' => 'position: fixed; bottom: 5px; right: 3px; cursor: pointer;', 'onclick' => "$('tbg___DEBUGINFO___').toggle();", 'title' => 'Show debug bar')); ?>
-		<script type="text/javascript">
-			document.observe('dom:loaded', TBG.loadDebugInfo('<?php echo make_url('debug', array('debug_id' => TBGContext::getDebugID())); ?>'));
-		</script>
 	<?php endif; ?>
 </footer>
