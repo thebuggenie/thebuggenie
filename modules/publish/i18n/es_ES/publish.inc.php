@@ -29,7 +29,7 @@
 	$strings['Basic information'] = 'Información básica';
 	$strings['This is the basic settings for the wiki'] = 'Esta es la configuración básica para el wiki';
 	$strings['Menu title'] = 'Título del menú';
-	$strings['Archive'] = 'Archivo';
+	$strings['Archive'] = 'Archivar';
 	$strings['Documents'] = 'Documentos';
 	$strings['Help'] = 'Ayuda';
 	$strings['Specify here if you want to show a different menu title than "Wiki" in the header menu'] = 'Especifique aquí si quiere mostrar un título distinto a "Wiki" en el menú de la cabecera';
