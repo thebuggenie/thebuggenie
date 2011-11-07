@@ -9,7 +9,7 @@
 	defined('THEBUGGENIE_PUBLIC_FOLDER_NAME') || define('THEBUGGENIE_PUBLIC_FOLDER_NAME', mb_substr($path, strrpos($path, DIRECTORY_SEPARATOR) + 1));
 	
 	// Include the "engine" script, which initializes and sets up stuff
-	require THEBUGGENIE_CORE_PATH . 'tbg_engine.inc.php';
+	require THEBUGGENIE_CORE_PATH . 'bootstrap.php';
 	
 	// Trigger the framework's start function
 	TBGContext::go();
