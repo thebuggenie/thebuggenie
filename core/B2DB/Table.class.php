@@ -102,10 +102,10 @@
 		 * @param Table $table
 		 * @param string $key
 		 */
-		protected function _addForeignKeyColumn($column, $table, $key)
+		protected function _addForeignKeyColumn($column, $table, $key = null)
 		{
 			$addtable = clone $table;
-			$foreign_column = $addtable->getColumn($key);
+			$foreign_column = ($key !== null) ?  $addtable->getColumn($key) : $addtable->getIdColumn();
 			switch ($foreign_column['type'])
 			{
 				case 'integer':
