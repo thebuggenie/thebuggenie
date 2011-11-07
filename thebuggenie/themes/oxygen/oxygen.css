@@ -602,6 +602,8 @@ ul.project_list li { margin: 0px; font-size: 1.0em; font-weight: bold; padding: 
 .client_dashboard { padding: 10px; }
 .team_dashboard, .project_overview { clear: both; }
 .team_dashboard .header, .project_overview .header { padding: 5px; margin-bottom: 8px; border-bottom: 1px solid #DDD; font-size: 1.1em; }
+.project_overview .button_group { float: right; }
+.project_overview .button_group .button { font-weight: normal !important; }
 .team_dashboard { padding: 10px; }
 .dashboard_client_info { margin-bottom: 10px; width: 100%; }
 .dashboard_client_info .dashboard_client_header { font-weight: bold; font-size: 2.1em; }
