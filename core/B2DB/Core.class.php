@@ -227,7 +227,7 @@
 		public static function sqlHit($sql, $values, $time)
 		{
 			$backtrace = \debug_backtrace();
-			$reserved_names = array('B2DB.class.php', 'B2DBSaveable.class.php', '\b2db\Criteria.class.php', 'B2DBCriterion.class.php', 'B2DBResultset.class.php', '\b2db\Row.class.php', '\b2db\Statement.class.php', 'B2DBTransaction.class.php', 'B2DBTable.class.php', 'B2DB.class.php', '\b2db\Criteria.class.php', 'B2DBCriterion.class.php', 'B2DBResultset.class.php', '\b2db\Row.class.php', '\b2db\Statement.class.php', 'B2DBTransaction.class.php', 'B2DBTable.class.php', 'TBGB2DBTable.class.php');
+			$reserved_names = array('Core.class.php', 'Saveable.class.php', 'Criteria.class.php', 'Criterion.class.php', 'Resultset.class.php', 'Row.class.php', 'Statement.class.php', 'Transaction.class.php', 'B2DBTable.class.php', 'B2DB.class.php', 'Criteria.class.php', 'B2DBCriterion.class.php', 'B2DBResultset.class.php', 'Row.class.php', 'Statement.class.php', 'Transaction.class.php', 'Table.class.php', 'TBGB2DBTable.class.php');
 
 			$trace = null;
 			foreach ($backtrace as $t)
