@@ -37,7 +37,7 @@
 		static protected $_tableprefix = '';
 		static protected $_sqlhits = array();
 		static protected $_sqltiming;
-		static protected $_throwhtmlexception = false;
+		static protected $_throwhtmlexception = true;
 		static protected $_aliascnt = 0;
 		static protected $_transaction_active = false;
 		static protected $_tables = array();

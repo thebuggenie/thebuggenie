@@ -56,7 +56,7 @@
 		 * 
 		 * @var array
 		 */
-		static protected $_modules = null;
+		static protected $_modules = array();
 		
 		/**
 		 * List of permissions
@@ -430,23 +430,26 @@
 		{
 			$class_details = explode('\\', $classname);
 			$namespaces = self::getAutoloadedNamespaces();
-			
 			if (count($class_details) > 1)
 			{
-				$namespace = array_shift($class_details);
-				if (array_key_exists($namespace, $namespaces))
+				$classname_element = array_pop($class_details);
+				$orig_class_details = $class_details;
+				$cc = count($class_details);
+				while (!empty($class_details))
 				{
-					if (count($class_details) > 2 && $namespace == 'caspar' && current($class_details) == 'modules')
+					$namespace = join('\\', $class_details);
+					if (array_key_exists($namespace, $namespaces))
 					{
-						$basepath = realpath($namespaces[$namespace] . DS . '..');
-					}
-					else
-					{
+						for ($ccc = 1; $ccc <= $cc; $ccc++) array_shift($orig_class_details);
+
+						$classpath = (count($orig_class_details)) ? join(DS, $orig_class_details) . DS : '';
 						$basepath = $namespaces[$namespace];
+						$filename = $basepath . DS . $classpath . $classname_element . '.class.php';
+						$filename_alternate = $basepath . DS . $classpath . "classes" . DS . $classname_element . ".class.php";
+						break;
 					}
-					$filename = $basepath . DS . join(DS, $class_details) . '.class.php';
-					$classname_element = array_pop($class_details);
-					$filename_alternate = $basepath . DS . join(DS, $class_details) . DS . "classes" . DS . $classname_element . ".class.php";
+					array_pop($class_details);
+					$cc--;
 				}
 			}
 			else
@@ -456,19 +459,22 @@
 					if (file_exists($classpath . DS . $classname . '.class.php'))
 					{
 						$filename = $classpath . DS . $classname . '.class.php';
+						break;
 					}
 				}
 			}
 			if (isset($filename) && file_exists($filename))
 			{
 				require $filename;
+				return;
 			}
 			elseif (isset($filename_alternate) && file_exists($filename_alternate))
 			{
 				require $filename_alternate;
+				return;
 			}
 		}
-		
+
 		/**
 		 * Returns the classpaths that has been registered to the autoloader
 		 *
@@ -577,6 +583,14 @@
 				throw new Exception("The Bug Genie seems installed, but B2DB isn't configured. This usually indicates an error with the installation. Try removing the file ".THEBUGGENIE_PATH."installed and try again.");
 		}
 
+		public static function initializeSession()
+		{
+			TBGLogging::log('Initializing session');
+			session_name(THEBUGGENIE_SESSION_NAME);
+			session_start();
+			TBGLogging::log('done (initializing session)');
+		}
+
 		/**
 		 * Initialize the context
 		 * 
@@ -587,37 +601,77 @@
 			if (self::$debug_mode) self::$debug_id = uniqid();
 			try
 			{
+				// The time the script was loaded
+				$starttime = explode(' ', microtime());
+				define('NOW', $starttime[1]);
+
+				// Set up error and exception handling
+				set_exception_handler(array(self, 'exceptionHandler'));
+				set_error_handler(array(self, 'errorHandler'));
+				error_reporting(E_ALL | E_NOTICE | E_STRICT);
+
+				// Set the start time
+				self::setLoadStart($starttime[1] + $starttime[0]);
+				TBGLogging::log('Initializing Caspar framework');
+				TBGLogging::log('PHP_SAPI says "' . PHP_SAPI . '"');
+
+				if (!is_writable(THEBUGGENIE_CORE_PATH . DIRECTORY_SEPARATOR . 'cache'))
+					throw new Exception(self::geti18n()->__('The cache directory is not writable. Please correct the permissions of core/cache, and try again'));
+
+				if (!self::isCLI() && !ini_get('session.auto_start'))
+					self::initializeSession();
+
+				TBGCache::checkEnabled();
+				TBGLogging::log((TBGCache::isEnabled()) ? 'APC cache is enabled' : 'APC cache is not enabled');
+
+				TBGLogging::log('Loading B2DB');
+				if (self::isCLI()) \b2db\Core::setHTMLException(false);
+				\b2db\Core::initialize(THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php');
+				TBGLogging::log('...done (Initializing B2DB)');
+
+				if (\b2db\Core::isInitialized())
+				{
+					TBGLogging::log('Database connection details found, connecting');
+					\b2db\Core::doConnect();
+					TBGLogging::log('...done (Database connection details found, connecting)');
+				}
+
+				TBGLogging::log('...done');
+
+				TBGLogging::log('Initializing context');
+
 				mb_internal_encoding("UTF-8");
 				mb_language('uni');
 				mb_http_output("UTF-8");
-				
-				self::$_request = new TBGRequest();
-				self::$_response = new TBGResponse();
-				self::$_factory = new TBGFactory();
-				
-				self::checkInstallMode();
-				self::loadPreModuleRoutes();
-				self::setScope();
 
-				if (!self::$_installmode)
-				{
-					self::loadModules();
-					self::initializeUser();
-				}
-				
-				else
-					self::$_modules = array();
-				
-//				var_dump(self::getUser());die();
+				self::checkInstallMode();
+
+				TBGLogging::log('Loading pre-module routes');
+				self::loadPreModuleRoutes();
+				TBGLogging::log('done (loading pre-module routes)');
+
+				TBGLogging::log('Loading scope');
+				self::setScope();
+				TBGLogging::log('done (loading scope)');
+
+				TBGLogging::log('Loading modules');
+				self::loadModules();
+				TBGLogging::log('done (loading modules)');
+
+				if (!self::$_installmode) self::initializeUser();
+
+				TBGLogging::log('Initializing i18n');
 				self::setupI18n();
-				
-				if (!is_writable(THEBUGGENIE_CORE_PATH . DIRECTORY_SEPARATOR . 'cache'))
-				{
-					throw new Exception(self::geti18n()->__('The cache directory is not writable. Please correct the permissions of core/cache, and try again'));
-				}
-				
+				TBGLogging::log('done (initializing i18n)');
+
+				TBGLogging::log('Loading post-module routes');
 				self::loadPostModuleRoutes();
+				TBGLogging::log('done (loading post-module routes)');
+
+				TBGLogging::log('...done');
 				TBGLogging::log('...done initializing');
+
+				TBGLogging::log('Caspar framework loaded');
 			}
 			catch (Exception $e)
 			{
@@ -752,6 +806,10 @@
 		 */
 		public static function factory()
 		{
+			if (!self::$_factory instanceof TBGFactory)
+			{
+				self::$_factory = new TBGFactory();
+			}
 			return self::$_factory;
 		}
 
@@ -762,6 +820,10 @@
 		 */
 		public static function getRequest()
 		{
+			if (!self::$_request instanceof TBGRequest)
+			{
+				self::$_request = new TBGRequest();
+			}
 			return self::$_request;
 		}
 		
@@ -772,6 +834,10 @@
 		 */
 		public static function getResponse()
 		{
+			if (!self::$_response instanceof TBGResponse)
+			{
+				self::$_response = new TBGResponse();
+			}
 			return self::$_response;
 		}
 		
@@ -906,51 +972,42 @@
 		public static function loadModules()
 		{
 			TBGLogging::log('Loading modules');
-			if (self::$_modules === null)
+			if (self::isInstallmode()) return;
+
+			$modules = array();
+
+			TBGLogging::log('getting modules from database');
+			$module_paths = array();
+
+			if ($res = \b2db\Core::getTable('TBGModulesTable')->getAll())
 			{
-				self::$_modules = array();
-				if (self::isInstallmode()) return;
-
-				$modules = array();
-
-				TBGLogging::log('getting modules from database');
-				$module_paths = array();
-
-				if ($res = \b2db\Core::getTable('TBGModulesTable')->getAll())
+				while ($moduleRow = $res->getNextRow())
 				{
-					while ($moduleRow = $res->getNextRow())
-					{
-						$module_name = $moduleRow->get(TBGModulesTable::MODULE_NAME);
-						$classname = $moduleRow->get(TBGModulesTable::CLASSNAME);
-						$moduleClassPath = THEBUGGENIE_MODULES_PATH . $module_name . DS . "classes" . DS;
-						self::addAutoloaderClassPath($moduleClassPath);
-						self::addAutoloaderClassPath($moduleClassPath . 'B2DB' . DS);
-						self::addAutoloaderClassPath($moduleClassPath . 'cli' . DS);
-						if ($classname == '' || $classname == 'TBGModule')
-							throw new Exception('Cannot load module "' . $module_name . '" as class TBGModule - modules should extend the TBGModule class with their own class.');
+					$module_name = $moduleRow->get(TBGModulesTable::MODULE_NAME);
+					$classname = $moduleRow->get(TBGModulesTable::CLASSNAME);
+					$moduleClassPath = THEBUGGENIE_MODULES_PATH . $module_name . DS . "classes" . DS;
+					self::addAutoloaderClassPath($moduleClassPath);
+					self::addAutoloaderClassPath($moduleClassPath . 'B2DB' . DS);
+					self::addAutoloaderClassPath($moduleClassPath . 'cli' . DS);
+					if ($classname == '' || $classname == 'TBGModule')
+						throw new Exception('Cannot load module "' . $module_name . '" as class TBGModule - modules should extend the TBGModule class with their own class.');
 
-						self::$_modules[$module_name] = new $classname($moduleRow->get(TBGModulesTable::ID), $moduleRow);
-					}
+					self::$_modules[$module_name] = new $classname($moduleRow->get(TBGModulesTable::ID), $moduleRow);
 				}
-				TBGLogging::log('done (setting up module objects)');
-				TBGLogging::log('initializing modules');
-				if (!empty(self::$_modules))
+			}
+			TBGLogging::log('done (setting up module objects)');
+			TBGLogging::log('initializing modules');
+			if (!empty(self::$_modules))
+			{
+				foreach (self::$_modules as $module_name => $module)
 				{
-					foreach (self::$_modules as $module_name => $module)
-					{
-						$module->initialize();
-					}
-					TBGLogging::log('done (initializing modules)');
+					$module->initialize();
 				}
-				else
-				{
-					TBGLogging::log('no modules found');
-				}
+				TBGLogging::log('done (initializing modules)');
 			}
 			else
 			{
-				TBGLogging::log('Modules already loaded', 'core', TBGLogging::LEVEL_FATAL);
-				throw new Exception('Modules alread loaded!');
+				TBGLogging::log('no modules found');
 			}
 			TBGLogging::log('...done');
 		}
@@ -2000,24 +2057,7 @@
 			if ($token == self::getRequest()->getParameter('csrf_token')) return true;
 
 			$message = self::getI18n()->__('An authentication error occured. Please reload your page and try again');
-			/*if ($handle_response)
-			{
-				self::$_response->setHttpStatus(301);
-				if (self::getRequest()->getRequestedFormat() == 'json')
-				{
-					self::$_response->setContentType('application/json');
-					echo json_encode(array('message' => $message));
-				}
-				else
-				{
-					echo $message;
-				}
-			}
-			else
-			{*/
-				throw new TBGCSRFFailureException($message);
-			//}
-			return false;
+			throw new TBGCSRFFailureException($message);
 		}
 
 		/**
@@ -2397,16 +2437,16 @@
 			{
 				\b2db\Core::closeDBLink();
 				if (self::isDebugMode()) self::generateDebugInfo();
-				self::$_response->setHttpStatus(301);
+				$this->getResponse()->setHttpStatus(301);
 				$message = $e->getMessage();
 
 				if (self::getRequest()->getRequestedFormat() == 'json')
 				{
-					self::$_response->setContentType('application/json');
+					$this->getResponse()->setContentType('application/json');
 					$message = json_encode(array('message' => $message));
 				}
 
-				self::$_response->renderHeaders();
+				$this->getResponse()->renderHeaders();
 				echo $message;
 			}
 			catch (Exception $e)

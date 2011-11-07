@@ -239,6 +239,8 @@
      */
     function geshi_highlight($string, $language, $path = null, $return = false)
 	{
+		defined('GESHI_ROOT') || define('GESHI_ROOT', THEBUGGENIE_CORE_PATH . 'geshi' . DS);
+
         $geshi = new GeSHi($string, $language, $path);
         $geshi->set_header_type(GESHI_HEADER_NONE);
 
