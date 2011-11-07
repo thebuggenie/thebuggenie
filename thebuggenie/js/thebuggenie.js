@@ -2494,6 +2494,7 @@ TBG.Issues.updateFields = function(url)
 	} else {
 		$('report_form').hide();
 		$('report_more_here').show();
+		$('issuetype_list').show();
 	}
 	
 }
