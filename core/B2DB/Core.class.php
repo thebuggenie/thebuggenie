@@ -599,30 +599,6 @@
 			return self::$_cache_dir;
 		}
 		
-		protected static function saveCache($class)
-		{
-			/* $cache_filename = $cache_dir . "/{$class}.cache.php";
-				if ((!\file_exists($cache_filename) && \is_writable($cache_dir)) || \is_writable($cache_filename))
-				{
-					$content = '<?php '."\n\n";
-					$content .= "\t// Class properties\n";
-					$content .= "\tself::\$_cached_column_class_properties['{$class}'] = array();\n";
-					foreach (self::$_cached_column_class_properties[$class] as $property => $value)
-					{
-						$content .= "\tself::\$_cached_column_class_properties['{$class}']['{$property}'] = \"{$value}\";\n";
-					}
-					$content .= "\n";
-					$content .= "\t// Foreign class properties\n";
-					$content .= "\tself::\$_cached_foreign_classes['{$class}'] = array();\n";
-					foreach (self::$_cached_foreign_classes[$class] as $property => $value)
-					{
-						$content .= "\tself::\$_cached_foreign_classes['{$class}']['{$property}'] = \"".str_replace('\\', '\\\\', $value)."\";\n";
-					}
-					$content .= "\n";
-					\file_put_contents($cache_filename, $content);
-				} */
-		}
-
 		/**
 		 * Toggle the transaction state
 		 *
