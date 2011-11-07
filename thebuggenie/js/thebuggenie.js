@@ -2489,6 +2489,11 @@ TBG.Issues.updateFields = function(url)
 						}
 					});				
 				}
+			},
+			complete: {
+				callback: function() {
+					$('title').focus();
+				}
 			}
 		});
 	} else {
