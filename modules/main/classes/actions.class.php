@@ -86,7 +86,7 @@
 					{
 						try
 						{
-							$issue->getWorkflowStep()->getWorkflow()->moveIssueToMatchingWorkflowStep($issue);
+							$issue->getWorkflow()->moveIssueToMatchingWorkflowStep($issue);
 							$issue->save();
 							TBGContext::setMessage('issue_saved', true);
 							$this->forward(TBGContext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));

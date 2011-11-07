@@ -965,7 +965,7 @@
 				});
 				
 				if (!$workflow_transition instanceof TBGWorkflowTransition)
-					$issue->getWorkflowStep()->getWorkflow()->moveIssueToMatchingWorkflowStep($issue);
+					$issue->getWorkflow()->moveIssueToMatchingWorkflowStep($issue);
 
 				if (!array_key_exists('transition_ok', $return_values) || $return_values['transition_ok'])
 					$issue->save();

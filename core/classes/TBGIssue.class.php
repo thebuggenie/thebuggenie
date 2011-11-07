@@ -767,11 +767,12 @@
 		 */
 		public function getWorkflowStep()
 		{
-			if (is_numeric($this->_workflow_step_id))
-			{
-				$this->_workflow_step_id = TBGContext::factory()->TBGWorkflowStep($this->_workflow_step_id);
-			}
-			return $this->_workflow_step_id;
+			return $this->_getPopulatedObjectFromProperty('_workflow_step_id');
+		}
+
+		public function getWorkflow()
+		{
+			return $this->getProject()->getWorkflowScheme()->getWorkflowForIssuetype($this->getIssueType());
 		}
 		
 		public function setWorkflowStep(TBGWorkflowStep $step)
@@ -781,7 +782,7 @@
 		
 		public function getAvailableWorkflowTransitions()
 		{
-			return $this->getWorkflowStep()->getAvailableTransitionsForIssue($this);
+			return ($this->getWorkflowStep() instanceof TBGWorkflowStep) ? $this->getWorkflowStep()->getAvailableTransitionsForIssue($this) : array();
 		}
 
 		/**
@@ -990,13 +991,13 @@
 		public function isEditable()
 		{
 			if ($this->getProject()->isArchived()): return false; endif;
-			return ($this->isOpen() && ($this->getProject()->canChangeIssuesWithoutWorkingOnThem() || $this->getWorkflowStep()->isEditable()));
+			return ($this->isOpen() && ($this->getProject()->canChangeIssuesWithoutWorkingOnThem() || ($this->getWorkflowStep() instanceof TBGWorkflowStep && $this->getWorkflowStep()->isEditable())));
 		}
 		
 		public function isUpdateable()
 		{
 			if ($this->getProject()->isArchived()): return false; endif;
-			return ($this->isOpen() && ($this->getProject()->canChangeIssuesWithoutWorkingOnThem() || !$this->getWorkflowStep()->isClosed()));
+			return ($this->isOpen() && ($this->getProject()->canChangeIssuesWithoutWorkingOnThem() || !($this->getWorkflowStep() instanceof TBGWorkflowStep) || !$this->getWorkflowStep()->isClosed()));
 		}
 		
 		/**
