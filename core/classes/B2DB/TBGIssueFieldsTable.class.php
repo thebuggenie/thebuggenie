@@ -46,6 +46,11 @@
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 		
+		protected function _setupIndexes()
+		{
+			$this->_addIndex('scope_issuetypescheme_issuetype', array(self::SCOPE, self::ISSUETYPE_SCHEME_ID, self::ISSUETYPE_ID));
+		}
+
 		public function getSchemeVisibleFieldsArrayByIssuetypeID($scheme_id, $issuetype_id)
 		{
 			$res = $this->getBySchemeIDandIssuetypeID($scheme_id, $issuetype_id);

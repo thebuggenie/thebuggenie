@@ -49,6 +49,11 @@
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 
+		protected function _setupIndexes()
+		{
+			$this->_addIndex('scope_uid', array(self::UID, self::SCOPE));
+		}
+
 		public function getUIDsForTeamID($team_id)
 		{
 			$crit = $this->getCriteria();

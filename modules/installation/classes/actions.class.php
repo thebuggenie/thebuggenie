@@ -468,12 +468,14 @@
 			TBGIssueAffectsBuildTable::getTable()->createIndexes();
 			TBGIssueAffectsCopmponentTable::getTable()->createIndexes();
 			TBGIssueAffectsEditionTable::getTable()->createIndexes();
+			TBGIssueFieldsTable::getTable()->createIndexes();
 			TBGIssueFilesTable::getTable()->createIndexes();
 			TBGIssuesTable::getTable()->createIndexes();
 			TBGIssuetypeSchemesTable::getTable()->createIndexes();
 			TBGPermissionsTable::getTable()->createIndexes();
 			TBGProjectsTable::getTable()->createIndexes();
 			TBGSettingsTable::getTable()->createIndexes();
+			TBGTeamMembersTable::getTable()->createIndexes();
 			TBGUserIssuesTable::getTable()->createIndexes();
 			TBGUsersTable::getTable()->createIndexes();
 

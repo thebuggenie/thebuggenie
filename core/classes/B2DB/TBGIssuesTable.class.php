@@ -134,6 +134,7 @@
 			$this->_addIndex('deleted', self::DELETED);
 			$this->_addIndex('deleted_project', array(self::DELETED, self::PROJECT_ID));
 			$this->_addIndex('deleted_state_project', array(self::DELETED, self::STATE, self::PROJECT_ID));
+			$this->_addIndex('deleted_project_issueno', array(self::DELETED, self::ISSUE_NO, self::PROJECT_ID));
 		}
 
 		public static function getValidSearchFilters()
