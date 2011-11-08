@@ -310,7 +310,10 @@ TBG.loadDebugInfo = function(debug_id, cb) {
 	TBG.Main.Helpers.ajax(url, {
 		loading: {indicator: 'tbg___DEBUGINFO___indicator'},
 		success: {update: 'tbg___DEBUGINFO___'},
-		complete: {callback: cb},
+		complete: {
+			callback: cb,
+			show: 'tbg___DEBUGINFO___'
+		},
 		debug: false
 	});
 };
