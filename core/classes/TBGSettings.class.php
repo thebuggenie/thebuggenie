@@ -98,13 +98,13 @@
 		const SETTING_MAINTENANCE_MESSAGE = 'offline_msg';
 		const SETTING_ICONSET = 'iconset';
 
-		static protected $_ver_mj = 3;
-		static protected $_ver_mn = 2;
-		static protected $_ver_rev = '0-pre';
-		static protected $_ver_name = "Borg";
-		static protected $_defaultscope = null;
-		static protected $_settings = null;
-		static protected $_loadedsettings = array();
+		protected static $_ver_mj = 3;
+		protected static $_ver_mn = 2;
+		protected static $_ver_rev = '0-pre';
+		protected static $_ver_name = "Borg";
+		protected static $_defaultscope = null;
+		protected static $_settings = null;
+		protected static $_loadedsettings = array();
 	
 		public static function forceSettingsReload()
 		{

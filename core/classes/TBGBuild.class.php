@@ -86,14 +86,14 @@
 		 * 
 		 * @var array
 		 */
-		static protected $_project_builds = null;
+		protected static $_project_builds = null;
 
 		/**
 		 * Edition builds cache
 		 * 
 		 * @var array
 		 */
-		static protected $_edition_builds = null;
+		protected static $_edition_builds = null;
 		
 		/**
 		 * Get all builds for a specific project

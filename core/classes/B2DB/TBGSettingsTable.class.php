@@ -41,6 +41,11 @@
 		{
 			return Core::getTable('TBGSettingsTable');
 		}
+
+		public function _setupIndexes()
+		{
+			$this->_addIndex('scope_uid', array(self::SCOPE, self::UID));
+		}
 		
 		public function __construct()
 		{

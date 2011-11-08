@@ -17,7 +17,4 @@
 	TBGContext::addAutoloaderClassPath(THEBUGGENIE_CORE_PATH . 'classes' . DS . 'B2DB' . DS);
 	TBGContext::autoloadNamespace('b2db', THEBUGGENIE_CORE_PATH . 'B2DB' . DS);
 
-	TBGLogging::log('Initializing Caspar framework');
-	TBGLogging::log('PHP_SAPI says "' . PHP_SAPI . '"');
-	
 	TBGContext::initialize();

@@ -43,7 +43,7 @@
 		
 		protected $_time_last_fetched = 0;
 		
-		static public function getAll()
+		public static function getAll()
 		{
 			$accounts = array();
 			if ($res = TBGIncomingEmailAccountTable::getTable()->doSelectAll())
@@ -57,7 +57,7 @@
 			return $accounts;
 		}
 
-		static public function getAllByProjectID($project_id)
+		public static function getAllByProjectID($project_id)
 		{
 			$accounts = array();
 			if ($res = TBGIncomingEmailAccountTable::getTable()->getAllByProjectID($project_id))

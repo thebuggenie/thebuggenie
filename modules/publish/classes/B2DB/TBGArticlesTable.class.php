@@ -38,6 +38,11 @@
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 
+		public function _setupIndexes()
+		{
+			$this->_addIndex('name_scope', array(self::NAME, self::SCOPE));
+		}
+
 		public function getAllArticles()
 		{
 			$crit = $this->getCriteria();

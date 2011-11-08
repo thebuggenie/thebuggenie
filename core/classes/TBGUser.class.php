@@ -21,14 +21,14 @@
 	class TBGUser extends TBGIdentifiableClass 
 	{
 		
-		static protected $_num_users = null;
+		protected static $_num_users = null;
 		
 		/**
 		 * All users
 		 * 
 		 * @var array
 		 */
-		static protected $_users = null;
+		protected static $_users = null;
 		
 		/**
 		 * Unique username (login name)

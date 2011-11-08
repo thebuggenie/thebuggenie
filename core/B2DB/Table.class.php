@@ -705,7 +705,7 @@
 				}
 				$sql .= join (', ', $index_column_sqls);
 				$sql .= ");";
-				
+
 				$statement = Statement::getPreparedStatement($sql);
 				$res = $statement->performQuery('create index');
 			}

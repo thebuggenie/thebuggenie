@@ -127,6 +127,11 @@
 
 		protected function _setupIndexes()
 		{
+			$this->_addIndex('project', self::PROJECT_ID);
+			$this->_addIndex('project', self::PROJECT_ID);
+			$this->_addIndex('last_updated', self::LAST_UPDATED);
+			$this->_addIndex('title_description_reproductionsteps', array(self::TITLE, self::DESCRIPTION, self::REPRODUCTION_STEPS));
+			$this->_addIndex('deleted', self::DELETED);
 			$this->_addIndex('deleted_project', array(self::DELETED, self::PROJECT_ID));
 			$this->_addIndex('deleted_state_project', array(self::DELETED, self::STATE, self::PROJECT_ID));
 		}

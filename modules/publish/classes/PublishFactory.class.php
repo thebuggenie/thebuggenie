@@ -3,8 +3,8 @@
 	class PublishFactory
 	{
 		
-		static protected $_articles = array();
-		static protected $_article_names = array();
+		protected static $_articles = array();
+		protected static $_article_names = array();
 		
 		/**
 		 * Returns a publish article

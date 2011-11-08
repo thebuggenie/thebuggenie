@@ -38,6 +38,11 @@
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 
+		public function _setupIndexes()
+		{
+			$this->_addIndex('uid_scope', array(self::UID, self::SCOPE));
+		}
+
 		public function getUserIDsByIssueID($issue_id)
 		{
 			$uids = array();
@@ -61,6 +66,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::UID, $user_id);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addWhere(TBGIssuesTable::DELETED, 0);
 			
 			$res = $this->doSelect($crit);

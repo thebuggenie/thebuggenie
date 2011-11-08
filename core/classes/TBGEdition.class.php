@@ -54,7 +54,7 @@
 		 */
 		protected $_doc_url = '';
 						
-		static protected $_editions = null;
+		protected static $_editions = null;
 		
 		protected function _postSave($is_new)
 		{

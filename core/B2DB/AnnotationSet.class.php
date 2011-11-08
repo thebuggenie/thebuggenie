@@ -5,7 +5,7 @@
 	class AnnotationSet
 	{
 
-		static protected $_ignored_annotations = array('var', 'access', 'package', 'subpackage', 'author', 'license', 'verison', 'copyright');
+		protected static $_ignored_annotations = array('var', 'access', 'package', 'subpackage', 'author', 'license', 'verison', 'copyright');
 
 		protected $_annotations = array();
 

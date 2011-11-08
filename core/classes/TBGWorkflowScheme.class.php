@@ -26,7 +26,7 @@
 		 * 
 		 * @var TBGWorkflowScheme
 		 */
-		static protected $_core_scheme = null;
+		protected static $_core_scheme = null;
 		
 		protected static $_schemes = null;
 

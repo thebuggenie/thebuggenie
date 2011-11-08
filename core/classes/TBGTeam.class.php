@@ -21,9 +21,9 @@
 	class TBGTeam extends TBGIdentifiableClass 
 	{
 		
-		static protected $_teams = null;
+		protected static $_teams = null;
 		
-		static protected $_num_teams = null;
+		protected static $_num_teams = null;
 
 		protected $_members = null;
 

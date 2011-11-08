@@ -52,6 +52,11 @@
 			parent::_addForeignKeyColumn(self::STATUS, TBGListTypesTable::getTable(), TBGListTypesTable::ID);
 		}
 		
+		protected function _setupIndexes()
+		{
+			$this->_addIndex('issue', self::ISSUE);
+		}
+
 		public function getByIssueID($issue_id)
 		{
 			$crit = $this->getCriteria();

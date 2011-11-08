@@ -32,16 +32,6 @@
 		const CONFIRMED = 'issueaffectscomponent.confirmed';
 		const STATUS = 'issueaffectscomponent.status';
 		
-		/**
-		 * Return an instance of TBGIssueAffectsComponentTable
-		 * 
-		 * @return TBGIssueAffectsComponentTable
-		 */
-		public static function getTable()
-		{
-			return Core::getTable('TBGIssueAffectsComponentTable');
-		}
-		
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
@@ -52,6 +42,11 @@
 			parent::_addForeignKeyColumn(self::STATUS, TBGListTypesTable::getTable(), TBGListTypesTable::ID);
 		}
 		
+		protected function _setupIndexes()
+		{
+			$this->_addIndex('issue', self::ISSUE);
+		}
+
 		public function getByIssueID($issue_id)
 		{
 			$crit = $this->getCriteria();

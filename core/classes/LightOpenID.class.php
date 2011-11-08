@@ -59,7 +59,7 @@ class LightOpenID
     private $identity, $claimed_id;
     protected $server, $version, $trustRoot, $aliases, $identifier_select = false
             , $ax = false, $sreg = false, $setup_url = null;
-    static protected $ax_to_sreg = array(
+    protected static $ax_to_sreg = array(
         'namePerson/friendly'     => 'nickname',
         'contact/email'           => 'email',
         'namePerson'              => 'fullname',

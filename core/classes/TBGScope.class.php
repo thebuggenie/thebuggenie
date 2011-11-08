@@ -21,7 +21,7 @@
 	class TBGScope extends TBGIdentifiableClass
 	{
 		
-		static protected $_scopes = null;
+		protected static $_scopes = null;
 
 		protected $_description = '';
 		

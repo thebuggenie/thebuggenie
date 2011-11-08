@@ -29,62 +29,62 @@
 		const PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES = 4;
 		const PREDEFINED_SEARCH_MY_REPORTED_ISSUES = 5;
 		
-		static protected $_environment = 2;
+		protected static $_environment = 2;
 
-		static protected $debug_mode = true;
+		protected static $debug_mode = true;
 
-		static protected $debug_id = null;
+		protected static $debug_id = null;
 		
-		static protected $_partials_visited = array();
+		protected static $_partials_visited = array();
 		
 		/**
 		 * Outdated modules
 		 * 
 		 * @var array
 		 */
-		static protected $_outdated_modules = null;
+		protected static $_outdated_modules = null;
 
 		/**
 		 * The current user
 		 *
 		 * @var TBGUser
 		 */
-		static protected $_user = null;
+		protected static $_user = null;
 		
 		/**
 		 * List of modules 
 		 * 
 		 * @var array
 		 */
-		static protected $_modules = array();
+		protected static $_modules = array();
 		
 		/**
 		 * List of permissions
 		 *  
 		 * @var array
 		 */
-		static protected $_permissions = array();
+		protected static $_permissions = array();
 		
 		/**
 		 * List of available permissions
 		 * 
 		 * @var array
 		 */
-		static protected $_available_permissions = null;
+		protected static $_available_permissions = null;
 		
 		/**
 		 * The include path
 		 * 
 		 * @var string
 		 */
-		static protected $_includepath = null;
+		protected static $_includepath = null;
 		
 		/**
 		 * The path to thebuggenie relative from url server root
 		 * 
 		 * @var string
 		 */
-		static protected $_tbgpath = null;
+		protected static $_tbgpath = null;
 		
 		/**
 		 * Stripped version of the $_tbgpath
@@ -93,114 +93,114 @@
 		 * 
 		 * @var string
 		 */
-		static protected $_stripped_tbgpath = null;
+		protected static $_stripped_tbgpath = null;
 		
 		/**
 		 * Whether we're in installmode or not
 		 * 
 		 * @var boolean
 		 */
-		static protected $_installmode = false;
+		protected static $_installmode = false;
 		
 		/**
 		 * Whether we're in upgrademode or not
 		 * 
 		 * @var boolean
 		 */
-		static protected $_upgrademode = false;
+		protected static $_upgrademode = false;
 		
 		/**
 		 * The i18n object
 		 *
 		 * @var TBGI18n
 		 */
-		static protected $_i18n = null;
+		protected static $_i18n = null;
 		
 		/**
 		 * The request object
 		 * 
 		 * @var TBGRequest
 		 */
-		static protected $_request = null;
+		protected static $_request = null;
 		
 		/**
 		 * The response object
 		 * 
 		 * @var TBGResponse
 		 */
-		static protected $_response = null;
+		protected static $_response = null;
 		
 		/**
 		 * The current scope object
 		 *
 		 * @var TBGScope
 		 */
-		static protected $_scope = null;
+		protected static $_scope = null;
 
 		/**
 		 * The TBGFactory instance
 		 *
 		 * @var TBGFactory
 		 */
-		static protected $_factory = null;
+		protected static $_factory = null;
 		
 		/**
 		 * The currently selected project, if any
 		 * 
 		 * @var TBGProject
 		 */
-		static protected $_selected_project = null;
+		protected static $_selected_project = null;
 		
 		/**
 		 * The currently selected client, if any
 		 * 
 		 * @var TBGClient
 		 */
-		static protected $_selected_client = null;
+		protected static $_selected_client = null;
 		
 		/**
 		 * Used to determine when the b2 engine started loading
 		 * 
 		 * @var integer
 		 */
-		static protected $_loadstart = null;
+		protected static $_loadstart = null;
 		
 		/**
 		 * List of classpaths
 		 * 
 		 * @var array
 		 */
-		static protected $_classpaths = array();
+		protected static $_classpaths = array();
 		
 		/**
 		 * List of loaded libraries
 		 * 
 		 * @var string
 		 */
-		static protected $_libs = array();
+		protected static $_libs = array();
 		
 		/**
 		 * The routing object
 		 * 
 		 * @var TBGRouting
 		 */
-		static protected $_routing = null;
+		protected static $_routing = null;
 
 		/**
 		 * Messages passed on from the previous request
 		 *
 		 * @var array
 		 */
-		static protected $_messages = null;
+		protected static $_messages = null;
 
-		static protected $_redirect_login = null;
+		protected static $_redirect_login = null;
 		
 		/**
 		 * Do you want to disable minifcation of javascript and css?
 		 * 
 		 * @var boolean
 		 */
-		static protected $_minifyoff = true;
+		protected static $_minifyoff = true;
 
 		/**
 		 * Returns whether or not we're in install mode

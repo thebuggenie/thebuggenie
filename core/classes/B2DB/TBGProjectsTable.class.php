@@ -104,6 +104,16 @@
 			parent::_addBoolean(self::ARCHIVED);
 		}
 		
+		public function _setupIndexes()
+		{
+			$this->_addIndex('scope', self::SCOPE);
+			$this->_addIndex('scope_name', array(self::SCOPE, self::NAME));
+			$this->_addIndex('workflow_scheme_id', self::WORKFLOW_SCHEME_ID);
+			$this->_addIndex('issuetype_scheme_id', self::ISSUETYPE_SCHEME_ID);
+			$this->_addIndex('parent', self::PARENT_PROJECT_ID);
+			$this->_addIndex('parent_scope', array(self::PARENT_PROJECT_ID, self::SCOPE));
+		}
+
 		public function clearDefaults()
 		{
 			$crit = $this->getCriteria();

@@ -26,9 +26,9 @@
 		 *
 		 * @var array
 		 */
-		static protected $_projects = null;
+		protected static $_projects = null;
 
-		static protected $_num_projects = null;
+		protected static $_num_projects = null;
 
 		/**
 		 * The project prefix
@@ -482,7 +482,7 @@
 		/**
 		 * Populates the projects array
 		 */
-		static protected function _populateProjects()
+		protected static function _populateProjects()
 		{
 			if (self::$_projects === null)
 			{

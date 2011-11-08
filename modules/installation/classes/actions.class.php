@@ -448,6 +448,7 @@
 			// Add classpath for existing old tables used for upgrade
 			TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'installation' . DS . 'classes' . DS . 'upgrade_3.1');
 			TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'mailing' . DS . 'classes' . DS . 'B2DB');
+			TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'publish' . DS . 'classes' . DS . 'B2DB');
 
 			// Upgrade existing tables
 			TBGProjectsTable::getTable()->upgrade(TBGProjectsTable3dot1::getTable());
@@ -462,10 +463,19 @@
 			TBGIncomingEmailAccountTable::getTable()->create();
 			
 			// Add new indexes
+			TBGArticlesTable::getTable()->createIndexes();
 			TBGCommentsTable::getTable()->createIndexes();
-			TBGPermissionsTable::getTable()->createIndexes();
-			TBGIssuesTable::getTable()->createIndexes();
+			TBGIssueAffectsBuildTable::getTable()->createIndexes();
+			TBGIssueAffectsCopmponentTable::getTable()->createIndexes();
+			TBGIssueAffectsEditionTable::getTable()->createIndexes();
 			TBGIssueFilesTable::getTable()->createIndexes();
+			TBGIssuesTable::getTable()->createIndexes();
+			TBGIssuetypeSchemesTable::getTable()->createIndexes();
+			TBGPermissionsTable::getTable()->createIndexes();
+			TBGProjectsTable::getTable()->createIndexes();
+			TBGSettingsTable::getTable()->createIndexes();
+			TBGUserIssuesTable::getTable()->createIndexes();
+			TBGUsersTable::getTable()->createIndexes();
 
 			TBGSettings::saveSetting(TBGSettings::SETTING_ICONSET, TBGSettings::get(TBGSettings::SETTING_THEME_NAME));
 			TBGContext::setPermission('readarticle', 0, 'core', 0, 0, 0, true);

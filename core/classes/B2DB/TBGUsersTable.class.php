@@ -59,6 +59,16 @@
 			return $res;
 		}
 
+		public function _setupIndexes()
+		{
+			$this->_addIndex('userstate', self::USERSTATE);
+			$this->_addIndex('group', self::GROUP_ID);
+			$this->_addIndex('scope', self::SCOPE);
+			$this->_addIndex('id_scope', array(self::ID, self::SCOPE));
+			$this->_addIndex('username_password_scope', array(self::UNAME, self::PASSWORD, self::SCOPE));
+			$this->_addIndex('username_deleted_scope', array(self::UNAME, self::DELETED, self::SCOPE));
+		}
+
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);

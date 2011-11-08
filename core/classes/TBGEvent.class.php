@@ -24,7 +24,7 @@
 		 *
 		 * @var array
 		 */
-		static protected $_registeredlisteners = array();
+		protected static $_registeredlisteners = array();
 
 		protected $_module = null;
 

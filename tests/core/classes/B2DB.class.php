@@ -2,7 +2,7 @@
 
 class B2DB
 {
-	static public function getTable($tablename)
+	public static function getTable($tablename)
 	{
 		return new B2DB();
 	}

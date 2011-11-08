@@ -484,7 +484,7 @@
 			return array($showtablestart, $showheader, $prevgroup_id, $groupby_description);
 		}
 
-		static public function userPainSort(TBGIssue $first_issue, TBGIssue $second_issue)
+		public static function userPainSort(TBGIssue $first_issue, TBGIssue $second_issue)
 		{
 			$first_issue_pain = $first_issue->getUserPain();
 			$second_issue_pain = $second_issue->getUserPain();

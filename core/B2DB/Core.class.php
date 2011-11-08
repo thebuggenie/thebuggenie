@@ -26,25 +26,24 @@
 		 * @var \PDO
 		 */
 		protected static $_db_connection = null;
-
-		static protected $_db_host;
-		static protected $_db_uname;
-		static protected $_db_pwd;
-		static protected $_db_name;
-		static protected $_db_type;
-		static protected $_db_port;
-		static protected $_dsn;
-		static protected $_tableprefix = '';
-		static protected $_sqlhits = array();
-		static protected $_sqltiming;
-		static protected $_throwhtmlexception = true;
-		static protected $_aliascnt = 0;
-		static protected $_transaction_active = false;
-		static protected $_tables = array();
-		static protected $_debug_mode = true;
-		static protected $_cache_dir;
-		static protected $_cached_entity_classes = array();
-		static protected $_cached_table_classes = array();
+		protected static $_db_host;
+		protected static $_db_uname;
+		protected static $_db_pwd;
+		protected static $_db_name;
+		protected static $_db_type;
+		protected static $_db_port;
+		protected static $_dsn;
+		protected static $_tableprefix = '';
+		protected static $_sqlhits = array();
+		protected static $_sqltiming;
+		protected static $_throwhtmlexception = true;
+		protected static $_aliascnt = 0;
+		protected static $_transaction_active = false;
+		protected static $_tables = array();
+		protected static $_debug_mode = true;
+		protected static $_cache_dir;
+		protected static $_cached_entity_classes = array();
+		protected static $_cached_table_classes = array();
 
 		/**
 		 * Loads a table and adds it to the B2DBObject stack
@@ -181,44 +180,13 @@
 		{
 			if (!isset(self::$_tables[$tbl_name]))
 			{
-				try
-				{
-					if (!\class_exists($tbl_name))
-					{
-						throw new Exception("Class $tbl_name does not exist, cannot load it");
-					}
-					self::loadNewTable(new $tbl_name());
-				}
-				catch (\Exception $e)
-				{
-					throw $e;
-				}
+				self::loadNewTable(new $tbl_name());
 			}
 			if (!isset(self::$_tables[$tbl_name]))
 			{
 				throw new Exception('Table ' . $tbl_name . ' is not loaded');
 			}
 			return self::$_tables[$tbl_name];
-		}
-
-		/**
-		 * Return all tables registered
-		 *
-		 * @return array
-		 */
-		public static function getTables()
-		{
-			return self::$_tables;
-		}
-
-		/**
-		 * Set tables
-		 *
-		 * @param array $tables
-		 */
-		public static function setTables($tables)
-		{
-			self::$_tables = $tables;
 		}
 
 		/**

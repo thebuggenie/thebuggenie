@@ -38,7 +38,7 @@
 		protected $_account_settings_logo = null;
 		protected $_has_config_settings = false;
 		
-		static protected $_permissions = array();
+		protected static $_permissions = array();
 		
 		const MODULE_NORMAL = 1;
 		const MODULE_AUTH = 2;
