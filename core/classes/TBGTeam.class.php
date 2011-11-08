@@ -15,12 +15,12 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage main
+	 *
+	 * @Table(name="TBGTeamsTable")
 	 */
 	class TBGTeam extends TBGIdentifiableClass 
 	{
 		
-		static protected $_b2dbtablename = 'TBGTeamsTable';
-
 		static protected $_teams = null;
 		
 		static protected $_num_teams = null;

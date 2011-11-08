@@ -19,6 +19,8 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 * 
+	 * @Class(name="TBGProject")
 	 */
 	class TBGProjectsTable extends TBGB2DBTable 
 	{
@@ -146,7 +148,8 @@
 			$crit = $this->getCriteria();
 			$crit->addOrderBy(self::NAME, Criteria::SORT_ASC);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
-			$res = $this->doSelect($crit);
+			$crit->indexBy(self::KEY);
+			$res = $this->select($crit);
 			return $res;
 		}
 		

@@ -15,11 +15,11 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage core
+	 *
+	 * @Table(name="TBGScopesTable")
 	 */
 	class TBGScope extends TBGIdentifiableClass
 	{
-		
-		static protected $_b2dbtablename = 'TBGScopesTable';
 		
 		static protected $_scopes = null;
 

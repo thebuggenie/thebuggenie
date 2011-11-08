@@ -1,15 +1,16 @@
 <?php
 
+	/**
+	 * @Table(name="TBGArticlesTable")
+	 */
 	class TBGWikiArticle extends TBGIdentifiableClass
 	{
 
-		static protected $_b2dbtablename = 'TBGArticlesTable';
-		
 		/**
 		 * The article author
 		 *
 		 * @var TBGUser
-		 * @Class TBGUser
+		 * @Relates(class="TBGUser")
 		 */
 		protected $_author = null;
 

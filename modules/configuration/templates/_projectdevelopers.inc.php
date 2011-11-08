@@ -91,7 +91,7 @@
 			<?php echo __('Noone'); ?>
 		</td>
 		<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-			<td style="padding: 2px; width: 100px; font-size: 0.9em; text-align: right;;"><a href="javascript:void(0);" class="image" onclick="Effect.toggle('qa_by_change', 'appear', { duration: 0.5 }); return false;" title="<?php echo __('Change Qa responsible'); ?>"><?php echo __('Change / set'); ?></a></td>
+			<td style="padding: 2px; width: 100px; font-size: 0.9em; text-align: right;"><a href="javascript:void(0);" class="image" onclick="Effect.toggle('qa_by_change', 'appear', { duration: 0.5 }); return false;" title="<?php echo __('Change Qa responsible'); ?>"><?php echo __('Change / set'); ?></a></td>
 		<?php endif; ?>
 	</tr>
 </table>

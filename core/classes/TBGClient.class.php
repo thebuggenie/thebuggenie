@@ -15,11 +15,11 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage main
+	 *
+	 * @Table(name="TBGClientsTable")
 	 */
 	class TBGClient extends TBGIdentifiableClass 
 	{
-		
-		static protected $_b2dbtablename = 'TBGClientsTable';
 		
 		protected $_members = null;
 

@@ -20,10 +20,11 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage vcs_integration
+	 *
+	 * @Table(name="TBGVCSIntegrationCommitsTable")
 	 */
 	class TBGVCSIntegrationCommit extends TBGIdentifiableClass
 	{
-		protected static $_b2dbtablename = 'TBGVCSIntegrationCommitsTable';
 		
 		/**
 		 * Commit log.
@@ -46,7 +47,7 @@
 		/**
 		 * Commit author
 		 * @var TBGUser
-		 * @Class TBGUser
+		 * @Relates(class="TBGUser")
 		 */
 		protected $_author = null;
 		
@@ -77,7 +78,7 @@
 		/**
 		 * Project
 		 * @var TBGProject
-		 * @Class TBGProject
+		 * @Relates(class="TBGProject")
 		 */
 		protected $_project_id = null;
 		

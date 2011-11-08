@@ -1,10 +1,11 @@
 <?php
 
+	/**
+	 * @Table(name="TBGFilesTable")
+	 */
 	class TBGFile extends TBGIdentifiableClass
 	{
 		
-		static protected $_b2dbtablename = 'TBGFilesTable';
-
 		protected $_content_type;
 
 		protected $_uploaded_by;

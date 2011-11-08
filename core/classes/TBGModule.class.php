@@ -15,11 +15,12 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage core
+	 *
+	 * @Table(name="TBGModulesTable")
 	 */
 	abstract class TBGModule extends TBGIdentifiableClass 
 	{
 
-		static protected $_b2dbtablename = 'TBGModulesTable';
 		protected $_classname = '';
 		protected $_description = '';
 		protected $_enabled = false;

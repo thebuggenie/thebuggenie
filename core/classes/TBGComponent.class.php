@@ -15,6 +15,8 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage main
+	 *
+	 * @Table(name="TBGComponentsTable")
 	 */
 	class TBGComponent extends TBGOwnableItem 
 	{
@@ -25,7 +27,7 @@
 		 * This components project
 		 *
 		 * @var unknown_type
-		 * @Class TBGProject
+		 * @Relates(class="TBGProject")
 		 */
 		protected $_project = null;
 		

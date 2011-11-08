@@ -15,12 +15,12 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage core
+	 *
+	 * @Table(name="TBGWorkflowTransitionsTable")
 	 */
 	class TBGWorkflowTransition extends TBGIdentifiableClass
 	{
 
-		static protected $_b2dbtablename = 'TBGWorkflowTransitionsTable';
-		
 		/**
 		 * The workflow description
 		 *
@@ -38,7 +38,7 @@
 		 * The outgoing step from this transition
 		 *
 		 * @var TBGWorkflowStep
-		 * @Class TBGWorkflowStep
+		 * @Relates(class="TBGWorkflowStep")
 		 */
 		protected $_outgoing_step_id = null;
 
@@ -59,7 +59,7 @@
 		 * The associated workflow object
 		 *
 		 * @var TBGWorkflow
-		 * @Class TBGWorkflow
+		 * @Relates(class="TBGWorkflow")
 		 */
 		protected $_workflow_id = null;
 

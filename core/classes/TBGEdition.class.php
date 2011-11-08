@@ -15,17 +15,17 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage main
+	 *
+	 * @Table(name="TBGEditionsTable")
 	 */
 	class TBGEdition extends TBGOwnableItem 
 	{
-		
-		protected static $_b2dbtablename = 'TBGEditionsTable';
 		
 		/**
 		 * The project
 		 *
 		 * @var TBGProject
-		 * @Class TBGProject
+		 * @Relates(class="TBGProject")
 		 */
 		protected $_project = null;
 		

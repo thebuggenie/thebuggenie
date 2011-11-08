@@ -25,7 +25,7 @@
 		const KEY_PERMISSIONS_CACHE = '_permissions';
 		const KEY_TEXTPARSER_ISSUE_REGEX = 'TBGTextParser::getIssueRegex';
 		
-		protected static $_enabled = false;
+		protected static $_enabled = true;
 
 		protected static $_logging = false;
 		

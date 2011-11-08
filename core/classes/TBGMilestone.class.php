@@ -15,6 +15,8 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage main
+	 *
+	 * @Table(name="TBGMilestonesTable")
 	 */
 	class TBGMilestone extends TBGIdentifiableClass  
 	{
@@ -22,13 +24,11 @@
 		const TYPE_REGULAR = 1;
 		const TYPE_SCRUMSPRINT = 2;
 
-		static protected $_b2dbtablename = 'TBGMilestonesTable';
-		
 		/**
 		 * This components project
 		 *
 		 * @var TBGProject
-		 * @Class TBGProject
+		 * @Relates(class="TBGProject")
 		 */
 		protected $_project;
 

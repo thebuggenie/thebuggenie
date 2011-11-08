@@ -1,5 +1,8 @@
 <?php
 
+	/**
+	 * @Table(name="TBGListTypesTable")
+	 */
 	class TBGReproducability extends TBGDatatype 
 	{
 

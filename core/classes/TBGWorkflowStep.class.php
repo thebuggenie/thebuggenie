@@ -15,12 +15,12 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage core
+	 *
+	 * @Table(name="TBGWorkflowStepsTable")
 	 */
 	class TBGWorkflowStep extends TBGIdentifiableClass
 	{
 
-		static protected $_b2dbtablename = 'TBGWorkflowStepsTable';
-		
 		/**
 		 * The workflow description
 		 *
@@ -83,7 +83,7 @@
 		 * The associated workflow object
 		 *
 		 * @var TBGWorkflow
-		 * @Class TBGWorkflow
+		 * @Relates(class="TBGWorkflow")
 		 */
 		protected $_workflow_id = null;
 

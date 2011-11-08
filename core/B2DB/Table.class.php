@@ -269,7 +269,7 @@
 				$crit->generateSelectSQL(true);
 	
 				$statement = Statement::getPreparedStatement($crit);
-				$resultSet = $statement->performQuery();
+				$resultset = $statement->performQuery();
 			}
 			catch (\Exception $e)
 			{
@@ -284,7 +284,13 @@
 				}
 			}
 
-			return $resultSet;
+			return $resultset;
+		}
+
+		public function selectAll()
+		{
+			$resultset = $this->doSelectAll();
+			return $this->_populateFromResultset($resultset);
 		}
 
 		/**
@@ -322,12 +328,26 @@
 			}
 			
 			
-			if ($resultSet->count() == 0)
+			if ($resultset->count() == 0)
 			{
 				throw new Exception("The row $id does not exist");
 			}
 
-			return $resultSet->getCurrentRow();
+			return $resultset->getCurrentRow();
+		}
+
+		/**
+		 *
+		 * @param type $id
+		 * @param Criteria $crit
+		 * @param type $join
+		 *
+		 * @return Saveable
+		 */
+		public function selectById($id, Criteria $crit = null, $join = 'all')
+		{
+			$row = $this->doSelectById($id, $crit, $join);
+			return $this->_populateFromRow($row);
 		}
 
 		/**
@@ -344,8 +364,8 @@
 				$crit->generateCountSQL();
 				$statement = Statement::getPreparedStatement($crit);
 	
-				$resultSet = $statement->performQuery();
-				$cnt = $resultSet->getCount();
+				$resultset = $statement->performQuery();
+				$cnt = $resultset->getCount();
 			}
 			catch (\Exception $e)
 			{
@@ -384,7 +404,7 @@
 				
 				$statement = Statement::getPreparedStatement($crit);
 	
-				$resultSet = $statement->performQuery();
+				$resultset = $statement->performQuery();
 			}
 			catch (Exception $e)
 			{
@@ -399,14 +419,20 @@
 				}
 			}
 
-			if ($resultSet->count())
+			if ($resultset->count())
 			{
-				return $resultSet;
+				return $resultset;
 			}
 			else
 			{
 				return null;
 			}
+		}
+
+		public function select(Criteria $crit, $join = 'all')
+		{
+			$resultset = $this->doSelect($crit, $join);
+			return $this->_populateFromResultset($resultset);
 		}
 
 		/**
@@ -443,6 +469,12 @@
 			}
 
 			return $resultset->getCurrentRow();
+		}
+
+		public function selectOne(Criteria $crit, $join = 'all')
+		{
+			$row = $this->doSelectOne($crit, $join);
+			return $this->_populateFromRow($row);
 		}
 
 		/**
@@ -981,6 +1013,37 @@
 					$res = $statement->performQuery('alter');
 				}
 			}
+		}
+
+		protected function _populateFromRow($row = null, $classname = null, $id_column = null)
+		{
+			$item = null;
+			if ($row) {
+				$classname = ($classname !== null) ? $classname : Core::getCachedTableEntityClass(\get_class($this));
+				if (!$classname)
+					throw new Exception("Classname '{$classname}' for table '{$this->getB2DBName()}' is not valid");
+
+				$id_column = ($id_column !== null) ? $id_column : $resultset->getCriteria()->getTable()->getIdColumn();
+				$row_id = $row->get($id_column);
+				$item = new $classname($row_id, $row);
+			}
+			return $item;
+		}
+
+		protected function _populateFromResultset($resultset = null)
+		{
+			$items = array();
+			if ($resultset instanceof Resultset) {
+				$criteria = $resultset->getCriteria();
+				$id_column = $criteria->getTable()->getIdColumn();
+				$index_column = ($criteria->getIndexBy()) ? $criteria->getIndexBy() : $id_column;
+				$classname = Core::getCachedTableEntityClass(\get_class($this));
+				while ($row = $resultset->getNextRow()) {
+					$item = $this->_populateFromRow($row, $classname, $id_column);
+					$items[$row->get($index_column)] = $item;
+				}
+			}
+			return $items;
 		}
 
 	}

@@ -19,6 +19,7 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 * @Class(name="TBGIssue")
 	 */
 	class TBGIssuesTable extends TBGB2DBTable 
 	{
@@ -72,16 +73,6 @@
 		const WORKFLOW_STEP_ID = 'issues.workflow_step_id';
 		const MILESTONE = 'issues.milestone';
 		const VOTES_TOTAL = 'issues.votes_total';
-
-		/**
-		 * Return an instance of this table
-		 *
-		 * @return TBGIssuesTable
-		 */
-		public static function getTable()
-		{
-			return Core::getTable('TBGIssuesTable');
-		}
 
 		public function __construct()
 		{

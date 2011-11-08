@@ -1,5 +1,8 @@
 <?php
 
+	/**
+	 * @Table(name="TBGListTypesTable")
+	 */
 	class TBGSeverity extends TBGDatatype 
 	{
 

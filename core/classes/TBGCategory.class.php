@@ -1,5 +1,8 @@
 <?php
 
+	/**
+	 * @Table(name="TBGListTypesTable")
+	 */
 	class TBGCategory extends TBGDatatype 
 	{
 

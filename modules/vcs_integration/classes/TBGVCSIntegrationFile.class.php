@@ -14,10 +14,11 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage vcs_integration
+	 *
+	 * @Table(name="TBGVCSIntegrationFilesTable")
 	 */
 	class TBGVCSIntegrationFile extends TBGIdentifiableClass
 	{
-		protected static $_b2dbtablename = 'TBGVCSIntegrationFilesTable';
 		
 		/**
 		 * File path
@@ -34,7 +35,7 @@
 		/**
 		 * Associated commit
 		 * @var TBGVCSIntegrationCommit
-		 * @Class TBGVCSIntegrationCommit
+		 * @Relates(class="TBGVCSIntegrationCommit")
 		 */
 		protected $_commit_id = null;
 		

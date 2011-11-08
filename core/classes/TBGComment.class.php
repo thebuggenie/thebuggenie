@@ -15,11 +15,11 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage main
+	 *
+	 * @Table(name="TBGCommentsTable")
 	 */
 	class TBGComment extends TBGIdentifiableClass 
 	{
-		
-		static protected $_b2dbtablename = 'TBGCommentsTable';
 		
 		/**
 		 * Issue comment
@@ -37,7 +37,7 @@
 		 * Who posted the comment
 		 * 
 		 * @var TBGUser
-		 * @Class TBGUser
+		 * @Relates(class="TBGUser")
 		 */
 		protected $_posted_by;
 		
@@ -45,7 +45,7 @@
 		 * Who last updated the comment
 		 * 
 		 * @var TBGUser
-		 * @Class TBGUser
+		 * @Relates(class="TBGUser")
 		 */
 		protected $_updated_by;
 		

@@ -212,4 +212,9 @@
 			return (integer) $this->max_ptr;
 		}
 
+		public function getCriteria()
+		{
+			return $this->crit;
+		}
+
 	}

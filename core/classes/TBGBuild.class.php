@@ -15,17 +15,17 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage main
+	 *
+	 * @Table(name="TBGBuildsTable")
 	 */
 	class TBGBuild extends TBGVersionItem 
 	{
-		
-		static protected $_b2dbtablename = 'TBGBuildsTable';
 		
 		/**
 		 * This builds edition
 		 *
 		 * @var TBGEdition
-		 * @Class TBGEdition
+		 * @Relates(class="TBGEdition")
 		 */
 		protected $_edition = null;
 
@@ -33,7 +33,7 @@
 		 * This builds project
 		 *
 		 * @var TBGProject
-		 * @Class TBGProject
+		 * @Relates(class="TBGProject")
 		 */
 		protected $_project = null;
 		
@@ -41,7 +41,7 @@
 		 * This builds milestone, if any
 		 *
 		 * @var TBGMilestone
-		 * @Class TBGMilestone
+		 * @Relates(class="TBGMilestone")
 		 */
 		protected $_milestone = null;
 		
@@ -70,7 +70,7 @@
 		 * An attached file, if exists
 		 * 
 		 * @var TBGFile
-		 * @Class TBGFile
+		 * @Relates(class="TBGFile")
 		 */
 		protected $_file_id = null;
 		

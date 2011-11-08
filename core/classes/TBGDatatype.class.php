@@ -15,11 +15,11 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage main
+	 *
+	 * @Table(name="TBGListTypesTable")
 	 */
 	abstract class TBGDatatype extends TBGDatatypeBase
 	{
-		static protected $_b2dbtablename = 'TBGListTypesTable';
-
 		/**
 		 * Item type status
 		 *

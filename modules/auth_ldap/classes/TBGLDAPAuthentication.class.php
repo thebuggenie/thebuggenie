@@ -15,6 +15,8 @@
 	 *
 	 * @package auth_ldap
 	 * @subpackage core
+	 *
+	 * @Table(name="TBGModulesTable")
 	 */
 	class TBGLDAPAuthentication extends TBGModule
 	{

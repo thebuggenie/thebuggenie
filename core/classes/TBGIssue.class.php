@@ -15,6 +15,8 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage main
+	 *
+	 * @Table(name="TBGIssuesTable")
 	 */
 	class TBGIssue extends TBGChangeableItem
 	{
@@ -33,8 +35,6 @@
 		 */
 		const STATE_CLOSED = 1;
 	
-		static protected $_b2dbtablename = 'TBGIssuesTable';
-		
 		/**
 		 * Array of links attached to this issue
 		 *
@@ -74,7 +74,7 @@
 		 * The issue type
 		 *
 		 * @var TBGIssuetype
-		 * @Class TBGIssuetype
+		 * @Relates(class="TBGIssuetype")
 		 */
 		protected $_issuetype;
 		
@@ -83,7 +83,7 @@
 		 *
 		 * @var TBGProject
 		 * @access protected
-		 * @Class TBGProject
+		 * @Relates(class="TBGProject")
 		 */
 		protected $_project_id;
 		
@@ -140,7 +140,7 @@
 		 * Who posted the issue
 		 * 
 		 * @var TBGUser
-		 * @Class TBGUser
+		 * @Relates(class="TBGUser")
 		 */
 		protected $_posted_by;
 		
@@ -190,7 +190,7 @@
 		 * The resolution
 		 * 
 		 * @var TBGResolution
-		 * @Class TBGResolution
+		 * @Relates(class="TBGResolution")
 		 */
 		protected $_resolution;
 		
@@ -205,7 +205,7 @@
 		 * The category
 		 * 
 		 * @var TBGCategory
-		 * @Class TBGCategory
+		 * @Relates(class="TBGCategory")
 		 */
 		protected $_category;
 		
@@ -213,7 +213,7 @@
 		 * The status
 		 * 
 		 * @var TBGStatus
-		 * @Class TBGStatus
+		 * @Relates(class="TBGStatus")
 		 */
 		protected $_status;
 		
@@ -221,7 +221,7 @@
 		 * The prioroty
 		 * 
 		 * @var TBGPriority
-		 * @Class TBGPriority
+		 * @Relates(class="TBGPriority")
 		 */
 		protected $_priority;
 		
@@ -229,7 +229,7 @@
 		 * The reproducability
 		 * 
 		 * @var TBGReproducability
-		 * @Class TBGReproducability
+		 * @Relates(class="TBGReproducability")
 		 */
 		protected $_reproducability;
 		
@@ -237,7 +237,7 @@
 		 * The severity
 		 * 
 		 * @var TBGSeverity
-		 * @Class TBGSeverity
+		 * @Relates(class="TBGSeverity")
 		 */
 		protected $_severity;
 
@@ -329,7 +329,7 @@
 		 * Which user is currently working on this issue
 		 * 
 		 * @var TBGUser
-		 * @Class TBGUser
+		 * @Relates(class="TBGUser")
 		 */
 		protected $_being_worked_on_by_user;
 		
@@ -386,7 +386,7 @@
 		 * The issue this issue is a duplicate of
 		 * 
 		 * @var TBGIssue
-		 * @Class TBGIssue
+		 * @Relates(class="TBGIssue")
 		 */
 		protected $_duplicate_of;
 		
@@ -394,7 +394,7 @@
 		 * The milestone this issue is assigned to
 		 * 
 		 * @var TBGMilestone
-		 * @Class TBGMilestone
+		 * @Relates(class="TBGMilestone")
 		 */
 		protected $_milestone;
 		
@@ -437,7 +437,7 @@
 		 * The issues current step in the associated workflow
 		 *
 		 * @var TBGWorkflowStep
-		 * @Class TBGWorkflowStep
+		 * @Relates(class="TBGWorkflowStep")
 		 */
 		protected $_workflow_step_id;
 

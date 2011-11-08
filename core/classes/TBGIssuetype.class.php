@@ -15,11 +15,11 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage core
+	 *
+	 * @Table(name="TBGIssueTypesTable")
 	 */
 	class TBGIssuetype extends TBGDatatype 
 	{
-		
-		static protected $_b2dbtablename = 'TBGIssueTypesTable';
 		
 		/**
 		 * If true, is the default issue type when promoting tasks to issues

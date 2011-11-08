@@ -1,5 +1,8 @@
 <?php
 
+	/**
+	 * @Table(name="TBGListTypesTable")
+	 */
 	class TBGStatus extends TBGDatatype 
 	{
 

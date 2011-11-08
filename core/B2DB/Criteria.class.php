@@ -31,6 +31,7 @@
 		protected $updates = array();
 		protected $aliases = array();
 		protected $return_selections = array();
+		protected $indexby = null;
 
 		/**
 		 * Parent table
@@ -308,6 +309,16 @@
 				}
 			}
 			return "{$real_table_name}.{$column}";
+		}
+
+		public function indexBy($column)
+		{
+			$this->indexby = $column;
+		}
+
+		public function getIndexBy()
+		{
+			return $this->indexby;
 		}
 
 		/**

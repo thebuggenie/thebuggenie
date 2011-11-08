@@ -606,8 +606,8 @@
 				define('NOW', $starttime[1]);
 
 				// Set up error and exception handling
-				set_exception_handler(array(self, 'exceptionHandler'));
-				set_error_handler(array(self, 'errorHandler'));
+				set_exception_handler(array('TBGContext', 'exceptionHandler'));
+				set_error_handler(array('TBGContext', 'errorHandler'));
 				error_reporting(E_ALL | E_NOTICE | E_STRICT);
 
 				// Set the start time
@@ -2473,8 +2473,10 @@
 			$tbg_summary['scope']['hostnames'] = ($scope instanceof TBGScope && \b2db\Core::isConnected()) ? implode(', ', $scope->getHostnames()) : 'unknown';
 			$tbg_summary['settings'] = TBGSettings::getAll();
 			$tbg_summary['partials'] = self::getVisitedPartials();
-			foreach (self::getI18n()->getMissingStrings() as $text) {
-				TBGLogging::log('The text "' . $text . '" does not exist in list of translated strings, and was added automatically', 'i18n', TBGLogging::LEVEL_NOTICE);
+			if (self::$_i18n instanceof TBGI18n) {
+				foreach (self::getI18n()->getMissingStrings() as $text) {
+					TBGLogging::log('The text "' . $text . '" does not exist in list of translated strings, and was added automatically', 'i18n', TBGLogging::LEVEL_NOTICE);
+				}
 			}
 			$tbg_summary['log'] = TBGLogging::getEntries();
 			$tbg_summary['routing'] = array('name' => self::getRouting()->getCurrentRouteName(), 'module' => self::getRouting()->getCurrentRouteModule(), 'action' => self::getRouting()->getCurrentRouteAction());

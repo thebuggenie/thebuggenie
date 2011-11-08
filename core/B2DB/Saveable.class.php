@@ -30,19 +30,7 @@
 		 */
 		public function getB2DBTableName()
 		{
-			if (!isset(static::$_b2dbtablename))
-			{
-				$b2dbtablename = get_class($this).'Table';
-				if (!class_exists($b2dbtablename))
-				{
-					throw new \Exception("Cannot find B2DB table class. Please create or generate the '{$b2dbtablename}' class, or specify a B2DB table name for class " . get_class($this) . ' via the static \$_b2dbtablename property');
-				}
-			}
-			else
-			{
-				$b2dbtablename = static::$_b2dbtablename;
-			}
-			return $b2dbtablename;
+			return Core::getCachedB2DBTableClass(\get_class($this));
 		}
 		
 		/**
@@ -60,7 +48,7 @@
 		{
 			if (is_numeric($this->$property) && $this->$property > 0)
 			{
-				$type_name = Core::getCachedClassPropertyForeignClass($this, $property);
+				$type_name = Core::getCachedClassPropertyForeignClass(\get_class($this), $property);
 				if ($type_name && \class_exists($type_name))
 				{
 					$this->$property = \TBGContext::factory()->$type_name($this->$property);
@@ -75,25 +63,25 @@
 		
 		protected function _populatePropertiesFromRow(\b2db\Row $row, $traverse = true, $foreign_key = null)
 		{
-			\TBGLogging::log('Populating ' . get_class($this) . ' with id ' . $this->_id, 'B2DB');
 			$id_column = $this->getB2DBTable()->getIdColumn();
+			$this_class = \get_class($this);
 			foreach ($this->getB2DBTable()->getColumns() as $column)
 			{
-				if ($column['name'] == $this->getB2DBTable()->getIdColumn()) continue;
-				$property_name = Core::getCachedColumnClassProperty($this, $column['name']);
+				if ($column['name'] == $id_column) continue;
+				$property_name = Core::getCachedColumnClassProperty($this_class, $column['name']);
 				$property_type = $column['type'];
 				if (!property_exists($this, $property_name))
 				{
-					throw new \Exception("Could not find class property {$property_name} in class ".get_class($this).". The class must have all properties from the corresponding B2DB table class available");
+					throw new \Exception("Could not find class property {$property_name} in class ".$this_class.". The class must have all properties from the corresponding B2DB table class available");
 				}
 				if ($traverse && in_array($column['name'], $this->getB2DBTable()->getForeignColumns()))
 				{
 					if ($row->get($column['name']) > 0)
 					{
-						$type_name = Core::getCachedClassPropertyForeignClass($this, $property_name);
+						$type_name = Core::getCachedClassPropertyForeignClass($this_class, $property_name);
 						if ($type_name && class_exists($type_name))
 						{
-							$b2dbtablename = $type_name::$_b2dbtablename;
+							$b2dbtablename = Core::getCachedB2DBTableClass($type_name);
 							$b2dbtable = $b2dbtablename::getTable();
 							foreach ($row->getJoinedTables() as $join_details)
 							{
@@ -110,8 +98,6 @@
 				{
 					case 'class':
 						$value = (int) $row->get($column['name']);
-						\TBGLogging::log('Populating foreign object of type ' . $type_name . ' with value ' . $value . ' for property ' . $property_name, 'B2DB');
-						//if (!$row->get($column))
 						$this->$property_name = new $type_name($value, $row, false, $column['name']);
 						break;
 					case 'boolean':
@@ -131,7 +117,6 @@
 						$this->$property_name = $row->get($column['name'], $foreign_key);
 				}
 			}
-			\TBGLogging::log('Done populating ' . get_class($this) . ' with id ' . $this->_id, 'B2DB');
 		}
 		
 		protected function _preInitialize() {}

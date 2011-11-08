@@ -1,5 +1,8 @@
 <?php
 
+	/**
+	 * @Table(name="TBGModulesTable")
+	 */
 	class TBGMailing extends TBGModule
 	{
 

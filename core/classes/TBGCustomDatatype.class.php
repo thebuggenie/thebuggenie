@@ -1,10 +1,11 @@
 <?php
 
+	/**
+	 * @Table(name="TBGCustomFieldsTable")
+	 */
 	class TBGCustomDatatype extends TBGDatatypeBase
 	{
 		
-		static protected $_b2dbtablename = 'TBGCustomFieldsTable';
-
 		const DROPDOWN_CHOICE_TEXT = 1;
 		const INPUT_TEXT = 2;
 		const INPUT_TEXTAREA_MAIN = 3;

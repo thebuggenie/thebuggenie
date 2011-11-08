@@ -15,12 +15,12 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage core
+	 *
+	 * @Table(name="TBGIssuetypeSchemesTable")
 	 */
 	class TBGIssuetypeScheme extends TBGIdentifiableClass
 	{
 
-		static protected $_b2dbtablename = 'TBGIssuetypeSchemesTable';
-		
 		/**
 		 * The default (core) issuetype scheme
 		 * 

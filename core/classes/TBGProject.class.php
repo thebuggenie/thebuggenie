@@ -15,12 +15,12 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage main
+	 *
+	 * @Table(name="TBGProjectsTable")
 	 */
 	class TBGProject extends TBGOwnableItem
 	{
 
-		static protected $_b2dbtablename = 'TBGProjectsTable';
-		
 		/**
 		 * Project list cache
 		 *
@@ -106,8 +106,9 @@
 		 * The projects homepage 
 		 * 
 		 * @var string
+		 * @Column(name="homepage")
 		 */
-		protected $_homepage = '';
+		protected $_homeage = '';
 		
 		/**
 		 * List of milestones + sprints for this project
@@ -147,7 +148,7 @@
 		/**
 		 * The small project icon, if set
 		 * 
-		 * @Class TBGFile
+		 * @Relates(class="TBGFile")
 		 * @var TBGFile
 		 */
 		protected $_small_icon = null;
@@ -155,7 +156,7 @@
 		/**
 		 * The large project icon, if set
 		 * 
-		 * @Class TBGFile
+		 * @Relates(class="TBGFile")
 		 * @var TBGFile
 		 */
 		protected $_large_icon = null;
@@ -367,7 +368,7 @@
 		 * The selected workflow scheme
 		 * 
 		 * @var TBGWorkflowScheme
-		 * @Class TBGWorkflowScheme
+		 * @Relates(class="TBGWorkflowScheme")
 		 */
 		protected $_workflow_scheme_id = 1;
 		
@@ -375,7 +376,7 @@
 		 * The selected workflow scheme
 		 * 
 		 * @var TBGIssuetypeScheme
-		 * @Class TBGIssuetypeScheme
+		 * @Relates(class="TBGIssuetypeScheme")
 		 */
 		protected $_issuetype_scheme_id = 1;
 		
@@ -383,7 +384,7 @@
 		 * Assigned client
 		 * 
 		 * @var TBGClient
-		 * @Class TBGClient
+		 * @Relates(class="TBGClient")
 		 */
 		protected $_client = null;
 		
@@ -398,7 +399,7 @@
 		 * Parent project
 		 * 
 		 * @var TBGProject
-		 * @Class TBGProject
+		 * @Relates(class="TBGProject")
 		 */
 		protected $_parent = null;
 		
@@ -485,18 +486,7 @@
 		{
 			if (self::$_projects === null)
 			{
-				self::$_projects = array();
-				if ($res = TBGProjectsTable::getTable()->getAll())
-				{
-					while ($row = $res->getNextRow())
-					{
-						$project = TBGContext::factory()->TBGProject($row->get(TBGProjectsTable::ID), $row);
-						if (TBGContext::isUpgrademode() || ($project->hasAccess() && !$project->isDeleted()))
-						{
-							self::$_projects[$project->getKey()] = $project;
-						}
-					}
-				}
+				self::$_projects = TBGProjectsTable::getTable()->getAll();
 			}
 		}
 		
@@ -932,7 +922,7 @@
 		 */
 		public function getHomepage()
 		{
-			return $this->_homepage;
+			return $this->_homeage;
 		}
 		
 		/**
@@ -942,7 +932,7 @@
 		 */
 		public function hasHomepage()
 		{
-			return ($this->_homepage != '') ? true : false;
+			return ($this->_homeage != '') ? true : false;
 		}
 		
 		/**
@@ -962,7 +952,7 @@
 		 */
 		public function setHomepage($homepage)
 		{
-			$this->_homepage = $homepage;
+			$this->_homeage = $homepage;
 		}
 		
 		/**

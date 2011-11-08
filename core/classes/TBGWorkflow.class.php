@@ -15,12 +15,12 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage core
+	 *
+	 * @Table(name="TBGWorkflowsTable")
 	 */
 	class TBGWorkflow extends TBGIdentifiableClass
 	{
 
-		static protected $_b2dbtablename = 'TBGWorkflowsTable';
-		
 		protected static $_workflows = null;
 		
 		/**

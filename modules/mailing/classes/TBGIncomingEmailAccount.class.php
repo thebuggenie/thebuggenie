@@ -28,13 +28,13 @@
 		protected $_connection;
 
 		/**
-		 * @Class TBGProject
+		 * @Relates(class="TBGProject")
 		 * @var TBGProject
 		 */
 		protected $_project;
 		
 		/**
-		 * @Class TBGIssuetype
+		 * @Relates(class="TBGIssuetype")
 		 * @var TBGIssuetype
 		 */
 		protected $_issuetype;

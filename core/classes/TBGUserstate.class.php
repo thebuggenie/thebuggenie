@@ -15,11 +15,12 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage core
+	 *
+	 * @Table(name="TBGUserStateTable")
 	 */
 	class TBGUserstate extends TBGDatatype 
 	{
-		static protected $_b2dbtablename = 'TBGUserStateTable';
-		
+
 		protected $_is_online = false;
 		protected $_is_unavailable = false;
 		protected $_is_busy = false;

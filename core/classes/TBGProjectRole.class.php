@@ -1,5 +1,8 @@
 <?php
 
+	/**
+	 * @Table(name="TBGListTypesTable")
+	 */
 	class TBGProjectRole extends TBGDatatype 
 	{
 
@@ -52,6 +55,11 @@
 				}
 			}
 			return self::$_items;
+		}
+
+		public static function getAllForProject(TBGProject $project)
+		{
+			//
 		}
 
 	}

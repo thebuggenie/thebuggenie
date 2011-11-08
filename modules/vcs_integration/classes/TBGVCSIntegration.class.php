@@ -14,6 +14,8 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage vcs_integration
+	 * 
+	 * @Table(name="TBGModulesTable")
 	 */
 	class TBGVCSIntegration extends TBGModule 
 	{

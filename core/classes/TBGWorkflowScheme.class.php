@@ -15,12 +15,12 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage core
+	 *
+	 * @Table(name="TBGWorkflowSchemesTable")
 	 */
 	class TBGWorkflowScheme extends TBGIdentifiableClass
 	{
 
-		static protected $_b2dbtablename = 'TBGWorkflowSchemesTable';
-		
 		/**
 		 * The default (core) workflow scheme
 		 * 

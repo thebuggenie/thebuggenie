@@ -15,12 +15,12 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage core
+	 *
+	 * @Table(name="TBGUsersTable")
 	 */
 	class TBGUser extends TBGIdentifiableClass 
 	{
 		
-		static protected $_b2dbtablename = 'TBGUsersTable';
-
 		static protected $_num_users = null;
 		
 		/**
@@ -91,7 +91,7 @@
 		 * The user state
 		 *
 		 * @var TBGUserstate
-		 * @Class TBGUserstate
+		 * @Relates(class="TBGUserstate")
 		 */
 		protected $_userstate = null;
 		
@@ -185,7 +185,7 @@
 		 * The users group 
 		 * 
 		 * @var TBGGroup
-		 * @Class TBGGroup
+		 * @Relates(class="TBGGroup")
 		 */
 		protected $_group_id = null;
 	

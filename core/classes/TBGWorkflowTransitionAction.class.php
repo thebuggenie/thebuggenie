@@ -15,6 +15,8 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage core
+	 *
+	 * @Table(name="TBGWorkflowTransitionActionsTable")
 	 */
 	class TBGWorkflowTransitionAction extends TBGIdentifiableClass
 	{
@@ -37,8 +39,6 @@
 		const ACTION_USER_START_WORKING = 'user_start_working';
 		const ACTION_USER_STOP_WORKING = 'user_stop_working';
 		
-		static protected $_b2dbtablename = 'TBGWorkflowTransitionActionsTable';
-		
 		protected $_action_type = null;
 
 		protected $_target_value = null;
@@ -47,7 +47,7 @@
 		 * The connected transition
 		 *
 		 * @var TBGWorkflowTransition
-		 * @Class TBGWorkflowTransition
+		 * @Relates(class="TBGWorkflowTransition")
 		 */
 		protected $_transition_id = null;
 
@@ -55,7 +55,7 @@
 		 * The associated workflow object
 		 *
 		 * @var TBGWorkflow
-		 * @Class TBGWorkflow
+		 * @Relates(class="TBGWorkflow")
 		 */
 		protected $_workflow_id = null;
 

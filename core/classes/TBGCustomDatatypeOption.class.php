@@ -1,9 +1,10 @@
 <?php
 
+	/**
+	 * @Table(name="TBGCustomFieldOptionsTable")
+	 */
 	class TBGCustomDatatypeOption extends TBGDatatypeBase
 	{
-
-		protected static $_b2dbtablename = 'TBGCustomFieldOptionsTable';
 
 		protected static $_items = array();
 

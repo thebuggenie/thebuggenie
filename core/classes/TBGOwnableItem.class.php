@@ -30,7 +30,7 @@
 		 * The lead for the project
 		 *  
 		 * @var TBGUser
-		 * @Class TBGUser
+		 * @Relates(class="TBGUser")
 		 */
 		protected $_leader = 0;
 		

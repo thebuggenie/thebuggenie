@@ -14,22 +14,23 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage vcs_integration
+	 *
+	 * @Table(name="TBGVCSIntegrationIssueLinksTable")
 	 */
 	class TBGVCSIntegrationIssueLink extends TBGIdentifiableClass
 	{
-		protected static $_b2dbtablename = 'TBGVCSIntegrationIssueLinksTable';
 		
 		/**
 		 * Affected issue
 		 * @var TBGIssue
-		 * @Class TBGIssue
+		 * @Relates(class="TBGIssue")
 		 */
 		protected $_issue_no = null;
 		
 		/**
 		 * Associated commit
 		 * @var TBGVCSIntegrationCommit
-		 * @Class TBGVCSIntegrationCommit
+		 * @Relates(class="TBGVCSIntegrationCommit")
 		 */
 		protected $_commit_id = null;
 		

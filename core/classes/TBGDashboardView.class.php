@@ -15,6 +15,8 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage main
+	 *
+	 * @Table(name="TBGDashboardViewsTable")
 	 */
 	class TBGDashboardView extends TBGIdentifiableClass
 	{
@@ -46,8 +48,6 @@
 		const TYPE_PROJECT = 2;
 		const TYPE_TEAM = 3;
 		const TYPE_CLIENT = 4;
-
-		public static $_b2dbtablename = 'TBGDashboardViewsTable';
 
 		protected $_type;
 

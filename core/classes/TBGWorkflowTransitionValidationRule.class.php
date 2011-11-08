@@ -15,6 +15,8 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage core
+	 *
+	 * @Table(name="TBGWorkflowTransitionValidationRulesTable")
 	 */
 	class TBGWorkflowTransitionValidationRule extends TBGIdentifiableClass
 	{
@@ -25,8 +27,6 @@
 		const RULE_REPRODUCABILITY_VALID = 'valid_reproducability';
 		const RULE_PRIORITY_VALID = 'valid_priority';
 
-		static protected $_b2dbtablename = 'TBGWorkflowTransitionValidationRulesTable';
-		
 		protected $_rule = null;
 
 		protected $_rule_value = null;
@@ -37,7 +37,7 @@
 		 * The connected transition
 		 *
 		 * @var TBGWorkflowTransition
-		 * @Class TBGWorkflowTransition
+		 * @Relates(class="TBGWorkflowTransition")
 		 */
 		protected $_transition_id = null;
 
@@ -45,7 +45,7 @@
 		 * The associated workflow object
 		 *
 		 * @var TBGWorkflow
-		 * @Class TBGWorkflow
+		 * @Relates(class="TBGWorkflow")
 		 */
 		protected $_workflow_id = null;
 

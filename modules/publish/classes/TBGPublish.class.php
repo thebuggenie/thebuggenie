@@ -15,6 +15,8 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage publish
+	 * 
+	 * @Table(name="TBGModulesTable")
 	 */
 	class TBGPublish extends TBGModule 
 	{

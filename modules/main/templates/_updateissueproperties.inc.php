@@ -160,6 +160,7 @@
 						<label for="transition_popup_set_stop_working"><?php echo __('Log time spent'); ?></label>
 						<input type="radio" name="did" id="transition_popup_set_stop_working" value="something" checked><label for="transition_popup_set_stop_working" class="simple"><?php echo __('Yes'); ?></label>&nbsp;
 						<input type="radio" name="did" id="transition_popup_set_stop_working_no_log" value="nothing"><label for="transition_popup_set_stop_working_no_log" class="simple"><?php echo __('No'); ?></label>
+						<input type="radio" name="did" id="transition_popup_set_stop_working_specify_log" value="this"><label for="transition_popup_set_stop_working_specify_log" class="simple"><?php echo __('Yes, this amount'); ?></label>
 					</li>
 				<?php endif; ?>
 				<li style="margin-top: 10px;">
