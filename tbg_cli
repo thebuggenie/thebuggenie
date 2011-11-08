@@ -3,9 +3,15 @@
 	// Define The Bug Genie paths and related constants
 	define('TBG_CLI', true);
 
+	$path = realpath(getcwd());
 	defined('DS') || define('DS', DIRECTORY_SEPARATOR);
-	defined('THEBUGGENIE_PATH') || define ('THEBUGGENIE_PATH', dirname(realpath(__FILE__)) . DS);
+	defined('THEBUGGENIE_SESSION_NAME') || define('THEBUGGENIE_SESSION_NAME', 'THEBUGGENIE');
+	defined('THEBUGGENIE_PATH') || define('THEBUGGENIE_PATH', realpath(getcwd() . DS) . DS);
 	defined('THEBUGGENIE_CORE_PATH') || define('THEBUGGENIE_CORE_PATH', THEBUGGENIE_PATH . 'core' . DS);
+	defined('THEBUGGENIE_MODULES_PATH') || define('THEBUGGENIE_MODULES_PATH', THEBUGGENIE_PATH . 'modules' . DS);
+	defined('THEBUGGENIE_PUBLIC_FOLDER_NAME') || define('THEBUGGENIE_PUBLIC_FOLDER_NAME', '');
+	defined('B2DB_BASEPATH') || define ('B2DB_BASEPATH', THEBUGGENIE_CORE_PATH . 'B2DB' . DS);
+	defined('B2DB_CACHEPATH') || define ('B2DB_CACHEPATH', THEBUGGENIE_CORE_PATH . 'cache' . DS . 'B2DB' . DS);
 
 	if( !defined('THEBUGGENIE_CONFIG_PATH'))
 	{
@@ -15,13 +21,10 @@
 			define('THEBUGGENIE_CONFIG_PATH', THEBUGGENIE_PATH);
 	}
 
-	defined('THEBUGGENIE_MODULES_PATH') || define('THEBUGGENIE_MODULES_PATH', THEBUGGENIE_PATH . 'modules' . DS);
-	defined('THEBUGGENIE_PUBLIC_FOLDER_NAME') || define('THEBUGGENIE_PUBLIC_FOLDER_NAME', '');
-
 	try
 	{
 		// Include the "engine" script, which initializes and sets up stuff
-		require THEBUGGENIE_PATH . 'core/tbg_engine.inc.php';
+		require THEBUGGENIE_CORE_PATH . 'bootstrap.php';
 	}
 	catch (Exception $e)
 	{
