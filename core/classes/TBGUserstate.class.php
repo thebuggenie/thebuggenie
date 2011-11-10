@@ -21,10 +21,29 @@
 	class TBGUserstate extends TBGDatatype 
 	{
 
+		/**
+		 * @Column(type="boolean")
+		 */
 		protected $_is_online = false;
+
+		/**
+		 * @Column(type="boolean")
+		 */
 		protected $_is_unavailable = false;
+
+		/**
+		 * @Column(type="boolean")
+		 */
 		protected $_is_busy = false;
+
+		/**
+		 * @Column(type="boolean")
+		 */
 		protected $_is_in_meeting = false;
+
+		/**
+		 * @Column(type="boolean")
+		 */
 		protected $_is_absent = false;
 		
 		static $_userstates = null;

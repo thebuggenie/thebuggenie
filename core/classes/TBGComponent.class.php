@@ -18,7 +18,7 @@
 	 *
 	 * @Table(name="TBGComponentsTable")
 	 */
-	class TBGComponent extends TBGOwnableItem 
+	class TBGComponent extends TBGVersionItem
 	{
 		
 		protected static $_b2dbtablename = 'TBGComponentsTable';
@@ -66,7 +66,7 @@
 		 */
 		public function getProject()
 		{
-			return $this->_getPopulatedObjectFromProperty('_project');
+			return $this->_b2dbLazyload('_project');
 		}
 		
 		public function setProject($project)

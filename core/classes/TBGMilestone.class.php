@@ -18,7 +18,7 @@
 	 *
 	 * @Table(name="TBGMilestonesTable")
 	 */
-	class TBGMilestone extends TBGIdentifiableClass  
+	class TBGMilestone extends TBGIdentifiableTypeClass
 	{
 
 		const TYPE_REGULAR = 1;
@@ -28,6 +28,7 @@
 		 * This components project
 		 *
 		 * @var TBGProject
+		 * @Column(type="integer")
 		 * @Relates(class="TBGProject")
 		 */
 		protected $_project;
@@ -43,6 +44,7 @@
 		 * When the milestone was reached
 		 * 
 		 * @var integer
+		 * @Column(type="integer")
 		 */
 		protected $_reacheddate;
 
@@ -57,6 +59,7 @@
 		 * When the milestone is scheduled for release
 		 * 
 		 * @var integer
+		 * @Column(type="integer")
 		 */
 		protected $_scheduleddate;
 		
@@ -71,6 +74,7 @@
 		 * When the milestone is scheduled to start
 		 * 
 		 * @var integer
+		 * @Column(type="integer")
 		 */
 		protected $_startingdate;
 		
@@ -78,6 +82,7 @@
 		 * The milestone description
 		 * 
 		 * @var string
+		 * @Column(type="string")
 		 */
 		protected $_description;
 		
@@ -416,7 +421,7 @@
 		 */
 		public function getProject()
 		{
-			return $this->_getPopulatedObjectFromProperty('_project');
+			return $this->_b2dbLazyload('_project');
 		}
 		
 		public function setProject($project)
@@ -825,18 +830,6 @@
 				$spent_times = \b2db\Core::getTable('TBGIssueSpentTimes')->getSpentTimesByDateAndIssueIDs($this->getStartingDate(), $this->getScheduledDate(), $child_issues);
 
 				$burndowndata = array();
-				//var_dump($spent_times);var_dump($estimations);die();
-				/*foreach ($estimations as $key => $sum)
-				{
-					if ($estimations[$key] !== null)
-					{
-						$burndowndata[$key] = $estimations[$key] - $spent_times[$key];
-					}
-					else
-					{
-						$burndowndata[$key] = '';
-					}
-				}*/
 
 				$this->_burndowndata = array('estimations' => $estimations, 'spent_times' => $spent_times);
 			}

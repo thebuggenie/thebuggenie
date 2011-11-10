@@ -16,42 +16,14 @@
 	 * @package thebuggenie
 	 * @subpackage core
 	 */
-	class TBGOwnableItem extends TBGVersionItem
+	class TBGOwnableItem extends TBGIdentifiableTypeClass
 	{
 
-		/**
-		 * The lead type for the project, TBGIdentifiableClass::TYPE_USER or TBGIdentifiableClass::TYPE_TEAM
-		 * 
-		 * @var integer
-		 */
-		protected $_leader_type = 0;
-
-		/**
-		 * The lead for the project
-		 *  
-		 * @var TBGUser
-		 * @Relates(class="TBGUser")
-		 */
-		protected $_leader = 0;
-		
-		/**
-		 * The QA type for the project, TBGIdentifiableClass::TYPE_USER or TBGIdentifiableClass::TYPE_TEAM
-		 * 
-		 * @var integer
-		 */
-		protected $_qa_responsible_type = 0;
-		
-		/**
-		 * The QA for the project
-		 *  
-		 * @var TBGIdentifiable
-		 */
-		protected $_qa_responsible = 0;
-		
 		/**
 		 * The owner type for the project, TBGIdentifiableClass::TYPE_USER or TBGIdentifiableClass::TYPE_TEAM
 		 * 
 		 * @var integer
+		 * @Column(type="integer")
 		 */
 		protected $_owner_type = 0;
 		
@@ -59,6 +31,7 @@
 		 * The owner of the project
 		 *  
 		 * @var TBGIdentifiable
+		 * @Column(type="integer")
 		 */
 		protected $_owner = 0;
 
@@ -76,11 +49,11 @@
 				$type_field = "{$field}_type";
 				try
 				{
-					if ($this->$type_field == TBGIdentifiableClass::TYPE_USER)
+					if ($this->$type_field == TBGIdentifiableTypeClass::TYPE_USER)
 					{
 						$this->$field = TBGContext::factory()->TBGUser($this->$field);
 					}
-					elseif ($this->$type_field == TBGIdentifiableClass::TYPE_TEAM)
+					elseif ($this->$type_field == TBGIdentifiableTypeClass::TYPE_TEAM)
 					{
 						$this->$field = TBGContext::factory()->TBGTeam($this->$field);
 					}
@@ -105,7 +78,7 @@
 		protected function _getFieldType($field)
 		{
 			$identifiable = $this->_getIdentifiable($field);
-			return ($identifiable instanceof TBGIdentifiableClass) ? $identifiable->getType() : null;
+			return ($identifiable instanceof TBGIdentifiableTypeClass) ? $identifiable->getType() : null;
 		}
 		
 		/**
@@ -118,7 +91,7 @@
 		protected function _getFieldID($field)
 		{
 			$identifiable = $this->_getIdentifiable($field);
-			return ($identifiable instanceof TBGIdentifiableClass) ? $identifiable->getID() : null;
+			return ($identifiable instanceof TBGIdentifiableTypeClass) ? $identifiable->getID() : null;
 		}
 		
 		/**
@@ -136,10 +109,10 @@
 		/**
 		 * Set an identifiable field
 		 * 
-		 * @param TBGIdentifiableClass $identifiable
+		 * @param TBGIdentifiableTypeClass $identifiable
 		 * @param string $field
 		 */
-		protected function _setIdentifiable(TBGIdentifiableClass $identifiable, $field)
+		protected function _setIdentifiable(TBGIdentifiableTypeClass $identifiable, $field)
 		{
 			$type_field = "{$field}_type";
 			
@@ -170,9 +143,9 @@
 		/**
 		 * Set the leader
 		 * 
-		 * @param TBGIdentifiableClass $leader
+		 * @param TBGIdentifiableTypeClass $leader
 		 */
-		public function setLeader(TBGIdentifiableClass $leader)
+		public function setLeader(TBGIdentifiableTypeClass $leader)
 		{
 			$this->_setIdentifiable($leader, '_leader');
 		}
@@ -228,9 +201,9 @@
 		/**
 		 * Set the owner
 		 * 
-		 * @param TBGIdentifiableClass $owner
+		 * @param TBGIdentifiableTypeClass $owner
 		 */
-		public function setOwner(TBGIdentifiableClass $owner)
+		public function setOwner(TBGIdentifiableTypeClass $owner)
 		{
 			$this->_setIdentifiable($owner, '_owner');
 		}
@@ -286,9 +259,9 @@
 		/**
 		 * Set the qa responsible
 		 * 
-		 * @param TBGIdentifiableClass $qa responsible
+		 * @param TBGIdentifiableTypeClass $qa responsible
 		 */
-		public function setQaResponsible(TBGIdentifiableClass $qa_responsible)
+		public function setQaResponsible(TBGIdentifiableTypeClass $qa_responsible)
 		{
 			$this->_setIdentifiable($qa_responsible, '_qa_responsible');
 		}
@@ -334,8 +307,8 @@
 		public function applyInitialPermissionSet(TBGIdentifiable $identifiable, $type)
 		{
 			$permission_set = TBGContext::getProjectAssigneeDefaultPermissionSet($this, $type);
-			$uid = ($identifiable->getType() == TBGIdentifiableClass::TYPE_USER) ? $identifiable->getID() : null;
-			$tid = ($identifiable->getType() == TBGIdentifiableClass::TYPE_TEAM) ? $identifiable->getID() : null;
+			$uid = ($identifiable->getType() == TBGIdentifiableTypeClass::TYPE_USER) ? $identifiable->getID() : null;
+			$tid = ($identifiable->getType() == TBGIdentifiableTypeClass::TYPE_TEAM) ? $identifiable->getID() : null;
 			
 			foreach ($permission_set as $permission)
 			{

@@ -18,7 +18,7 @@
 	 *
 	 * @Table(name="TBGEditionsTable")
 	 */
-	class TBGEdition extends TBGOwnableItem 
+	class TBGEdition extends TBGVersionItem
 	{
 		
 		/**
@@ -311,7 +311,7 @@
 		 */
 		public function getProject()
 		{
-			return $this->_getPopulatedObjectFromProperty('_project');
+			return $this->_b2dbLazyload('_project');
 		}
 		
 		public function setProject($project)
@@ -322,12 +322,12 @@
 		/**
 		 * Add an assignee to the edition
 		 *
-		 * @param TBGIdentifiableClass $assignee
+		 * @param TBGIdentifiableTypeClass $assignee
 		 * @param integer $role
 		 * 
 		 * @return boolean
 		 */
-		public function addAssignee(TBGIdentifiableClass $assignee, $role)
+		public function addAssignee(TBGIdentifiableTypeClass $assignee, $role)
 		{
 			$retval = TBGEditionAssigneesTable::getTable()->addAssigneeToEdition($this->getID(), $assignee, $role);
 			$this->applyInitialPermissionSet($assignee, $role);

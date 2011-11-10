@@ -230,7 +230,7 @@
 		 */
 		public function getMilestone()
 		{
-			return $this->_getPopulatedObjectFromProperty('_milestone');
+			return $this->_b2dbLazyload('_milestone');
 		}
 
 		public function setMilestone(TBGMilestone $milestone)
@@ -356,7 +356,7 @@
 		 */
 		public function getFile()
 		{
-			return $this->_getPopulatedObjectFromProperty('_file_id');
+			return $this->_b2dbLazyload('_file_id');
 		}
 		
 		/**

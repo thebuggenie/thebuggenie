@@ -18,7 +18,7 @@
 	 *
 	 * @Table(name="TBGClientsTable")
 	 */
-	class TBGClient extends TBGIdentifiableClass 
+	class TBGClient extends TBGIdentifiableTypeClass
 	{
 		
 		protected $_members = null;
@@ -29,6 +29,7 @@
 		 * Email of client
 		 * 
 		 * @param string
+		 * @Column(type="string")
 		 */
 		protected $_email = null;
 		
@@ -36,6 +37,7 @@
 		 * Telephone number of client
 		 * 
 		 * @param integer
+		 * @Column(type="string")
 		 */
 		protected $_telephone = null;
 		
@@ -43,6 +45,7 @@
 		 * URL for client website
 		 * 
 		 * @param string
+		 * @Column(type="string")
 		 */
 		protected $_website = null;
 		
@@ -50,6 +53,7 @@
 		 * Fax number of client
 		 * 
 		 * @param integer
+		 * @Column(type="string")
 		 */
 		protected $_fax = null;
 		

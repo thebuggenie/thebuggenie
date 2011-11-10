@@ -16,16 +16,15 @@
 	 * @package thebuggenie
 	 * @subpackage core
 	 */
-	interface TBGIdentifiable
+	interface TBGTypeable
 	{
 
 		/**
-		 * Returns the id of the item
+		 * Returns the type of object
 		 *
 		 * @return integer
-		 *
 		 */
-		public function getID();
+		public function getType();
 
 	}
 	

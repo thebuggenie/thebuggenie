@@ -3,23 +3,40 @@
 	/**
 	 * @Table(name="TBGFilesTable")
 	 */
-	class TBGFile extends TBGIdentifiableClass
+	class TBGFile extends TBGIdentifiableScopedClass
 	{
-		
+
+		/**
+		 * @Column(type="string")
+		 */
 		protected $_content_type;
 
 		protected $_uploaded_by;
 
+		/**
+		 * @Column(type="integer")
+		 */
 		protected $_uploaded_at;
 
+		/**
+		 * @Column(type="string")
+		 */
 		protected $_real_filename;
 
-		protected $_original_filename;
-
+		/**
+		 * @Column(type="blob")
+		 */
 		protected $_content;
 
+		/**
+		 * @Column(type="string")
+		 */
 		protected $_description;
 		
+		/**
+		 * @Column(type="integer")
+		 * @Relates(class="TBGUser")
+		 */
 		protected $_uid;
 
 		public static function getByIssueID($issue_id)
@@ -106,12 +123,12 @@
 
 		public function getOriginalFilename()
 		{
-			return $this->_original_filename;
+			return $this->_name;
 		}
 
 		public function setOriginalFilename($original_filename)
 		{
-			$this->_original_filename = $original_filename;
+			$this->_name = $original_filename;
 		}
 
 		public function getContent()

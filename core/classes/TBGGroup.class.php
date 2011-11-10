@@ -18,7 +18,7 @@
 	 *
 	 * @Table(name="TBGGroupsTable")
 	 */
-	class TBGGroup extends TBGIdentifiableClass 
+	class TBGGroup extends TBGIdentifiableScopedClass
 	{
 		
 		protected static $_groups = null;

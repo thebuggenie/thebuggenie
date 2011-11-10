@@ -23,49 +23,145 @@
 		
 		protected static $_scopes = null;
 
+		/**
+		 * The id for this item, usually identified by a record in the database
+		 *
+		 * @var integer
+		 * @Id
+		 * @Column(type="integer")
+		 */
+		protected $_id;
+
+		/**
+		 * The name of the object
+		 *
+		 * @var string
+		 * @Column(type="string")
+		 */
+		protected $_name;
+
+		/**
+		 * @var string
+		 * @Column(type="string")
+		 */
 		protected $_description = '';
 		
+		/**
+		 * @var boolean
+		 * @Column(type="boolean")
+		 */
 		protected $_enabled = false;
 		
+		/**
+		 * @var string
+		 */
 		protected $_shortname = '';
 		
 		protected $_administrator = null;
 		
 		protected $_hostnames = null;
 
+		/**
+		 * @var boolean
+		 * @Column(type="boolean")
+		 */
 		protected $_uploads_enabled = true;
 
+		/**
+		 * @var integer
+		 * @Column(type="integer")
+		 */
 		protected $_max_upload_limit = 0;
 
+		/**
+		 * @var boolean
+		 * @Column(type="boolean")
+		 */
 		protected $_custom_workflows_enabled = true;
 
+		/**
+		 * @var integer
+		 * @Column(type="integer")
+		 */
 		protected $_max_workflows = 0;
 
+		/**
+		 * @var integer
+		 * @Column(type="integer")
+		 */
 		protected $_max_users = 0;
 
+		/**
+		 * @var integer
+		 * @Column(type="integer")
+		 */
 		protected $_max_projects = 0;
 
+		/**
+		 * @var integer
+		 * @Column(type="integer")
+		 */
 		protected $_max_teams = 0;
 
 		static function getAll()
 		{
 			if (self::$_scopes === null)
 			{
-				$res = TBGScopesTable::getTable()->doSelectAll();
-				$scopes = array();
+//				$res = TBGScopesTable::getTable()->doSelectAll();
+//				$scopes = array();
+//
+//				while ($row = $res->getNextRow())
+//				{
+//					$scope = TBGContext::factory()->TBGScope($row->get(TBGScopesTable::ID), $row);
+//					$scopes[$scope->getID()] = $scope;
+//				}
 
-				while ($row = $res->getNextRow())
-				{
-					$scope = TBGContext::factory()->TBGScope($row->get(TBGScopesTable::ID), $row);
-					$scopes[$scope->getID()] = $scope;
-				}
-
-				self::$_scopes = $scopes;
+				self::$_scopes = TBGScopesTable::getTable()->selectAll();
 			}
 
 			return self::$_scopes;
 		}
 		
+		/**
+		 * Return the items id
+		 *
+		 * @return integer
+		 */
+		public function getID()
+		{
+			return (int) $this->_id;
+		}
+
+		/**
+		 * Set the items id
+		 *
+		 * @param integer $id
+		 */
+		public function setID($id)
+		{
+			$this->_id = $id;
+		}
+
+		/**
+		 * Return the items name
+		 *
+		 * @return string
+		 */
+		public function getName()
+		{
+			return $this->_name;
+		}
+
+		/**
+		 * Set the edition name
+		 *
+		 * @param string $name
+		 */
+		public function setName($name)
+		{
+			$this->_name = $name;
+		}
+
 		public function isEnabled()
 		{
 			return $this->_enabled;

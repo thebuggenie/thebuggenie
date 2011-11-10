@@ -1,7 +1,5 @@
 <?php
 
-	use b2db\Saveable;
-
 	/**
 	 * An identifiable class
 	 *
@@ -18,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage core
 	 */
-	abstract class TBGIdentifiableClass extends Saveable implements TBGIdentifiable
+	abstract class TBGIdentifiableScopedClass extends TBGScopedClass implements TBGIdentifiable
 	{
 		
 		/**
@@ -34,6 +32,7 @@
 		 * The name of the object
 		 *
 		 * @var string
+		 * @Column(type="string")
 		 */
 		protected $_name;
 		
@@ -75,6 +74,37 @@
 		public function setName($name)
 		{
 			$this->_name = $name;
+		}
+
+		/**
+		 * Returns whether or not the object is locked
+		 *
+		 * @return boolean
+		 * @access public
+		 */
+		public function isLocked()
+		{
+			return $this->_locked;
+		}
+
+		/**
+		 * Set if the edition is locked
+		 *
+		 * @param boolean $locked[optional]
+		 */
+		public function setLocked($locked = true)
+		{
+			$this->_locked = (bool) $locked;
+		}
+
+		public function lock()
+		{
+			$this->setLocked(true);
+		}
+
+		public function unlock()
+		{
+			$this->setLocked(false);
 		}
 
 	}

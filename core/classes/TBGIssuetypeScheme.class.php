@@ -18,7 +18,7 @@
 	 *
 	 * @Table(name="TBGIssuetypeSchemesTable")
 	 */
-	class TBGIssuetypeScheme extends TBGIdentifiableClass
+	class TBGIssuetypeScheme extends TBGIdentifiableTypeClass
 	{
 
 		/**
@@ -40,6 +40,7 @@
 		 * The issuetype description
 		 *
 		 * @var string
+		 * @Column(type="string")
 		 */
 		protected $_description = null;
 

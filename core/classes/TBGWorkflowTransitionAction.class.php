@@ -18,7 +18,7 @@
 	 *
 	 * @Table(name="TBGWorkflowTransitionActionsTable")
 	 */
-	class TBGWorkflowTransitionAction extends TBGIdentifiableClass
+	class TBGWorkflowTransitionAction extends TBGIdentifiableTypeClass
 	{
 		
 		const ACTION_ASSIGN_ISSUE_SELF = 'assign_self';
@@ -38,15 +38,17 @@
 		const ACTION_CLEAR_REPRODUCABILITY = 'clear_reproducability';
 		const ACTION_USER_START_WORKING = 'user_start_working';
 		const ACTION_USER_STOP_WORKING = 'user_stop_working';
-		
-		protected $_action_type = null;
 
+		/**
+		 * @Column(type="string")
+		 */
 		protected $_target_value = null;
 		
 		/**
 		 * The connected transition
 		 *
 		 * @var TBGWorkflowTransition
+		 * @Column(type="integer")
 		 * @Relates(class="TBGWorkflowTransition")
 		 */
 		protected $_transition_id = null;
@@ -55,6 +57,7 @@
 		 * The associated workflow object
 		 *
 		 * @var TBGWorkflow
+		 * @Column(type="integer")
 		 * @Relates(class="TBGWorkflow")
 		 */
 		protected $_workflow_id = null;
@@ -81,7 +84,7 @@
 		 */
 		public function getWorkflow()
 		{
-			return $this->_getPopulatedObjectFromProperty('_workflow_id');
+			return $this->_b2dbLazyload('_workflow_id');
 		}
 
 		public function setWorkflow(TBGWorkflow $workflow)
@@ -96,17 +99,17 @@
 		
 		public function getTransition()
 		{
-			return $this->_getPopulatedObjectFromProperty('_transition_id');
+			return $this->_b2dbLazyload('_transition_id');
 		}
 
 		public function setActionType($action_type)
 		{
-			$this->_action_type = $action_type;
+			$this->_name = $action_type;
 		}
 		
 		public function getActionType()
 		{
-			return $this->_action_type;
+			return $this->_name;
 		}
 		
 		public function setTargetValue($target_value)
@@ -126,7 +129,7 @@
 		
 		public function perform(TBGIssue $issue, $request = null)
 		{
-			switch ($this->_action_type)
+			switch ($this->_name)
 			{
 				case self::ACTION_ASSIGN_ISSUE_SELF:
 					$issue->setAssignee(TBGContext::getUser());
@@ -198,10 +201,10 @@
 						$assignee = null;
 						switch ($request['assignee_type'])
 						{
-							case TBGIdentifiableClass::TYPE_USER:
+							case TBGIdentifiableTypeClass::TYPE_USER:
 								$assignee = TBGContext::factory()->TBGUser($request['assignee_id']);
 								break;
-							case TBGIdentifiableClass::TYPE_TEAM:
+							case TBGIdentifiableTypeClass::TYPE_TEAM:
 								$assignee = TBGContext::factory()->TBGTeam($request['assignee_id']);
 								break;
 						}
@@ -247,7 +250,7 @@
 		{
 			if ($this->_target_value) return true;
 			
-			switch ($this->_action_type)
+			switch ($this->_name)
 			{
 				case self::ACTION_ASSIGN_ISSUE:
 					return (bool) $request['assignee_type'] && $request['assignee_id'];

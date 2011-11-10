@@ -18,7 +18,7 @@
 	 *
 	 * @Table(name="TBGWorkflowsTable")
 	 */
-	class TBGWorkflow extends TBGIdentifiableClass
+	class TBGWorkflow extends TBGIdentifiableTypeClass
 	{
 
 		protected static $_workflows = null;
@@ -36,6 +36,7 @@
 		 * The workflow description
 		 *
 		 * @var string
+		 * @Column(type="string")
 		 */
 		protected $_description = null;
 
@@ -43,6 +44,7 @@
 		 * Whether the workflow is active or not
 		 *
 		 * @var boolean
+		 * @Column(type="boolean")
 		 */
 		protected $_is_active = true;
 

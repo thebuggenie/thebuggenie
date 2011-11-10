@@ -18,13 +18,14 @@
 	 *
 	 * @Table(name="TBGWorkflowTransitionsTable")
 	 */
-	class TBGWorkflowTransition extends TBGIdentifiableClass
+	class TBGWorkflowTransition extends TBGIdentifiableTypeClass
 	{
 
 		/**
 		 * The workflow description
 		 *
 		 * @var string
+		 * @Column(type="string")
 		 */
 		protected $_description = null;
 
@@ -38,10 +39,14 @@
 		 * The outgoing step from this transition
 		 *
 		 * @var TBGWorkflowStep
+		 * @Column(type="integer")
 		 * @Relates(class="TBGWorkflowStep")
 		 */
 		protected $_outgoing_step_id = null;
 
+		/**
+		 * @Column(type="string")
+		 */
 		protected $_template = null;
 		
 		/**
@@ -59,6 +64,7 @@
 		 * The associated workflow object
 		 *
 		 * @var TBGWorkflow
+		 * @Column(type="integer")
 		 * @Relates(class="TBGWorkflow")
 		 */
 		protected $_workflow_id = null;
@@ -184,7 +190,7 @@
 		 */
 		public function getWorkflow()
 		{
-			return $this->_getPopulatedObjectFromProperty('_workflow_id');
+			return $this->_b2dbLazyload('_workflow_id');
 		}
 
 		public function setWorkflow(TBGWorkflow $workflow)
@@ -267,7 +273,7 @@
 		 */
 		public function getOutgoingStep()
 		{
-			return $this->_getPopulatedObjectFromProperty('_outgoing_step_id');
+			return $this->_b2dbLazyload('_outgoing_step_id');
 		}
 		
 		/**

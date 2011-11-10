@@ -18,7 +18,7 @@
 	 *
 	 * @Table(name="TBGCommentsTable")
 	 */
-	class TBGComment extends TBGIdentifiableClass 
+	class TBGComment extends TBGIdentifiableTypeClass
 	{
 		
 		/**
@@ -31,12 +31,16 @@
 		 */
 		const TYPE_ARTICLE = 2;
 
+		/**
+		 * @Column(type="text")
+		 */
 		protected $_content;
 		
 		/**
 		 * Who posted the comment
 		 * 
 		 * @var TBGUser
+		 * @Column(type="integer")
 		 * @Relates(class="TBGUser")
 		 */
 		protected $_posted_by;
@@ -45,26 +49,54 @@
 		 * Who last updated the comment
 		 * 
 		 * @var TBGUser
+		 * @Column(type="integer")
 		 * @Relates(class="TBGUser")
 		 */
 		protected $_updated_by;
-		
+
+		/**
+		 * @Column(type="integer")
+		 */
 		protected $_posted;
 
+		/**
+		 * @Column(type="integer")
+		 */
 		protected $_updated;
 		
+		/**
+		 * @Column(type="integer")
+		 */
 		protected $_target_id;
 		
+		/**
+		 * @Column(type="integer")
+		 */
 		protected $_target_type = self::TYPE_ISSUE;
 		
+		/**
+		 * @Column(type="boolean")
+		 */
 		protected $_is_public = true;
 		
+		/**
+		 * @Column(type="string")
+		 */
 		protected $_module = 'core';
 		
+		/**
+		 * @Column(type="boolean")
+		 */
 		protected $_deleted = false;
 		
+		/**
+		 * @Column(type="boolean")
+		 */
 		protected $_system_comment = false;
 
+		/**
+		 * @Column(type="integer")
+		 */
 		protected $_comment_number = 0;
 
 		protected static $_comment_count = array();
@@ -237,16 +269,6 @@
 		public function __toString()
 		{
 			return $this->_name;
-		}
-		
-		public function getName()
-		{
-			return $this->_name;
-		}
-		
-		public function getID()
-		{
-			return $this->_id;
 		}
 		
 		/**

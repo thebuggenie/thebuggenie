@@ -365,7 +365,6 @@
 				$this->_files[$key] = $file;
 				$this->_hasfiles = true;
 			}
-			//var_dump($this->_request_parameters);die();
 			$this->_is_ajax_call = (array_key_exists("HTTP_X_REQUESTED_WITH", $_SERVER) && mb_strtolower($_SERVER["HTTP_X_REQUESTED_WITH"]) == 'xmlhttprequest');
 
             if (isset($_SESSION) && !array_key_exists('__upload_status', $_SESSION))

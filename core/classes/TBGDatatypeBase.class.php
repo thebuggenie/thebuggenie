@@ -15,15 +15,17 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage main
+	 *
+	 * @Table(name="TBGListTypesTable")
 	 */
-	abstract class TBGDatatypeBase extends TBGIdentifiableClass
+	abstract class TBGDatatypeBase extends TBGIdentifiableTypeClass
 	{
 
 		/**
 		 * Item type
 		 *
 		 * @var integer
-		 * @access protected
+		 * @Column(type="integer")
 		 */
 		protected $_itemtype = null;
 		
@@ -31,7 +33,7 @@
 		 * Extra data for that data type (if any)
 		 *
 		 * @var string
-		 * @access protected
+		 * @Column(type="string")
 		 */
 		protected $_itemdata = null;
 		
@@ -39,7 +41,6 @@
 		 * ID of project which this item applies to (if any)
 		 *
 		 * @var integer
-		 * @access protected
 		 */
 		protected $_applies_to = null;
 
@@ -47,10 +48,12 @@
 		 * Sort order of this item
 		 *
 		 * @var integer
-		 * @access protected
 		 */
 		protected $_sort_order = null;
 
+		/**
+		 * @var string
+		 */
 		protected $_key = null;
 
 		/**

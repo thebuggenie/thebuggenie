@@ -18,21 +18,37 @@
 	 *
 	 * @Table(name="TBGModulesTable")
 	 */
-	abstract class TBGModule extends TBGIdentifiableClass 
+	abstract class TBGModule extends TBGIdentifiableScopedClass
 	{
 
+		/**
+		 * @var string
+		 * @Column(type="string")
+		 */
 		protected $_classname = '';
-		protected $_description = '';
+
+		/**
+		 * @var boolean
+		 * @Column(type="boolean")
+		 */
 		protected $_enabled = false;
+
+		/**
+		 * @var string
+		 * @Column(type="string")
+		 */
+		protected $_version = '';
+
 		protected $_longname = '';
-		protected $_showinconfig = false;
 		protected $_shortname = '';
+		protected $_showinconfig = false;
 		protected $_module_config_title = '';
 		protected $_module_config_description = '';
-		protected $_version = '';
+		protected $_description = '';
 		protected $_availablepermissions = array();
 		protected $_settings = array();
 		protected $_routes = array();
+
 		protected $_has_account_settings = false;
 		protected $_account_settings_name = null;
 		protected $_account_settings_logo = null;

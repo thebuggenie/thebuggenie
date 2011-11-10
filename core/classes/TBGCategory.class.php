@@ -22,15 +22,6 @@
 			}
 		}
 		
-		public function _construct(\b2db\Row $row, $foreign_key = null)
-		{
-			//echo '<pre>';
-			//var_dump($row);
-			//var_dump($foreign_key);
-			//var_dump($row->get(TBGListTypesTable::NAME, $foreign_key));
-			//die();
-		}
-
 		/**
 		 * Returns all categories available
 		 * 

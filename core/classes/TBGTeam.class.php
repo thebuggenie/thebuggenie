@@ -18,7 +18,7 @@
 	 *
 	 * @Table(name="TBGTeamsTable")
 	 */
-	class TBGTeam extends TBGIdentifiableClass 
+	class TBGTeam extends TBGIdentifiableTypeClass
 	{
 		
 		protected static $_teams = null;
@@ -28,7 +28,10 @@
 		protected $_members = null;
 
 		protected $_num_members = null;
-		
+
+		/**
+		 * @Column(type="boolean")
+		 */
 		protected $_ondemand = false;
 		
 		protected $_associated_projects = null;

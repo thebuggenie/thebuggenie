@@ -18,7 +18,7 @@
 	 *
 	 * @Table(name="TBGWorkflowSchemesTable")
 	 */
-	class TBGWorkflowScheme extends TBGIdentifiableClass
+	class TBGWorkflowScheme extends TBGIdentifiableTypeClass
 	{
 
 		/**
@@ -40,6 +40,7 @@
 		 * The workflow description
 		 *
 		 * @var string
+		 * @Column(type="string")
 		 */
 		protected $_description = null;
 

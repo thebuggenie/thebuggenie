@@ -16,13 +16,15 @@
 	 * @package thebuggenie
 	 * @subpackage core
 	 */
-	class TBGVersionItem extends TBGIdentifiableClass
+	class TBGVersionItem extends TBGIdentifiableTypeClass
 	{
+
 		/**
 		 * Major version
 		 *
 		 * @var integer
 		 * @access protected
+		 * @Column(type="integer")
 		 */
 		protected $_version_major = 0;
 		
@@ -31,6 +33,7 @@
 		 *
 		 * @var integer
 		 * @access protected
+		 * @Column(type="integer")
 		 */
 		protected $_version_minor = 0;
 		
@@ -39,6 +42,7 @@
 		 *
 		 * @var integer
 		 * @access protected
+		 * @Column(type="string")
 		 */
 		protected $_version_revision = 0;
 		
@@ -51,18 +55,11 @@
 		protected $_isdefault = null;
 		
 		/**
-		 * Item type
-		 *
-		 * @var integer
-		 * @access protected
-		 */
-		protected $_itemtype = 0;
-		
-		/**
 		 * Whether the item is locked or not
 		 *
 		 * @var boolean
 		 * @access protected
+		 * @Column(type="boolean")
 		 */
 		protected $_locked = null;
 		
@@ -71,14 +68,6 @@
 		protected $_isplannedreleased = null;
 		
 		protected $_release_date = 0;
-		
-		const PROJECT = 1;
-		
-		const EDITION = 2;
-		
-		const BUILD = 3;
-		
-		const COMPONENT = 4;
 		
 		/**
 		 * Invoked when trying to print the object
@@ -113,17 +102,6 @@
 		}
 		
 		/**
-		 * Returns whether or not the object is locked
-		 *
-		 * @return boolean
-		 * @access public
-		 */
-		public function isLocked()
-		{
-			return $this->_locked;
-		}
-
-		/**
 		 * Release the edition
 		 *
 		 * @uses self::setReleased()
@@ -136,6 +114,17 @@
 		public function retract()
 		{
 			$this->setReleased(false);
+		}
+
+		/**
+		 * Returns whether or not the object is locked
+		 *
+		 * @return boolean
+		 * @access public
+		 */
+		public function isLocked()
+		{
+			return $this->_locked;
 		}
 
 		/**

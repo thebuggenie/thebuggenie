@@ -18,7 +18,7 @@
 	 *
 	 * @Table(name="TBGDashboardViewsTable")
 	 */
-	class TBGDashboardView extends TBGIdentifiableClass
+	class TBGDashboardView extends TBGIdentifiableScopedClass
 	{
 
 		const VIEW_PREDEFINED_SEARCH = 1;
@@ -49,14 +49,24 @@
 		const TYPE_TEAM = 3;
 		const TYPE_CLIENT = 4;
 
-		protected $_type;
-
+		/**
+		 * @Column(type="integer")
+		 */
 		protected $_view;
 
+		/**
+		 * @Column(type="integer")
+		 */
 		protected $_pid;
 
+		/**
+		 * @Column(type="integer")
+		 */
 		protected $_tid;
 
+		/**
+		 * @Column(type="integer")
+		 */
 		protected $_target_type;
 
 		public static function getViews($tid, $target_type)
@@ -156,12 +166,12 @@
 
 		public function getType()
 		{
-			return $this->_type;
+			return $this->_name;
 		}
 
 		public function setType($_type)
 		{
-			$this->_type = $_type;
+			$this->_name = $_type;
 		}
 
 		public function getDetail()

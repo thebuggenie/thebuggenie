@@ -18,7 +18,7 @@
 	 *
 	 * @Table(name="TBGProjectsTable")
 	 */
-	class TBGProject extends TBGOwnableItem
+	class TBGProject extends TBGIdentifiableScopedClass
 	{
 
 		/**
@@ -31,10 +31,64 @@
 		protected static $_num_projects = null;
 
 		/**
+		 * The lead type for the project, TBGIdentifiableClass::TYPE_USER or TBGIdentifiableClass::TYPE_TEAM
+		 *
+		 * @var TBGTeam
+		 * @Column(type="integer")
+		 * @Relates(class="TBGTeam")
+		 */
+		protected $_leader_team;
+
+		/**
+		 * The lead for the project
+		 *
+		 * @var TBGUser
+		 * @Column(type="integer")
+		 * @Relates(class="TBGUser")
+		 */
+		protected $_leader_user;
+
+		/**
+		 * The project owner if team
+		 *
+		 * @var TBGTeam
+		 * @Column(type="integer")
+		 * @Relates(class="TBGTeam")
+		 */
+		protected $_owner_team;
+
+		/**
+		 * The project owner if user
+		 *
+		 * @var TBGUser
+		 * @Column(type="integer")
+		 * @Relates(class="TBGUser")
+		 */
+		protected $_owner_user;
+
+		/**
+		 * The QA responsible for the project, TBGIdentifiableClass::TYPE_USER or TBGIdentifiableClass::TYPE_TEAM
+		 *
+		 * @var TBGTeam
+		 * @Column(type="integer")
+		 * @Relates(class="TBGTeam")
+		 */
+		protected $_qa_responsible_team;
+
+		/**
+		 * The QA responsible for the project
+		 *
+		 * @var TBGUser
+		 * @Column(type="integer")
+		 * @Relates(class="TBGUser")
+		 */
+		protected $_qa_responsible_user;
+
+		/**
 		 * The project prefix
 		 *
 		 * @var string
-		 * @access protected
+		 * @Column(type="string")
 		 */
 		protected $_prefix = '';
 		
@@ -42,14 +96,24 @@
 		 * Whether or not the project uses prefix
 		 *
 		 * @var boolean
-		 * @access protected
+		 * @Column(type="boolean")
 		 */
 		protected $_use_prefix = false;
+
+		/**
+		 * Whether the item is locked or not
+		 *
+		 * @var boolean
+		 * @access protected
+		 * @Column(type="boolean")
+		 */
+		protected $_locked = null;
 
 		/**
 		 * Whether or not the project uses sprint planning
 		 *
 		 * @var boolean
+		 * @Column(type="boolean")
 		 */
 		protected $_use_scrum = true;
 
@@ -64,6 +128,7 @@
 		 * Whether or not the project uses builds
 		 *
 		 * @var boolean
+		 * @Column(type="boolean")
 		 */
 		protected $_enable_builds = true;
 
@@ -78,6 +143,7 @@
 		 * Whether or not the project uses editions
 		 *
 		 * @var boolean
+		 * @Column(type="boolean")
 		 */
 		protected $_enable_editions = null;
 		
@@ -85,6 +151,7 @@
 		 * Whether or not the project uses components
 		 *
 		 * @var boolean
+		 * @Column(type="boolean")
 		 */
 		protected $_enable_components = null;
 		
@@ -92,6 +159,7 @@
 		 * Project key
 		 *
 		 * @var string
+		 * @Column(type="string")
 		 */
 		protected $_key = null;
 		
@@ -106,9 +174,9 @@
 		 * The projects homepage 
 		 * 
 		 * @var string
-		 * @Column(name="homepage")
+		 * @Column(type="string")
 		 */
-		protected $_homeage = '';
+		protected $_homepage = '';
 		
 		/**
 		 * List of milestones + sprints for this project
@@ -148,16 +216,18 @@
 		/**
 		 * The small project icon, if set
 		 * 
-		 * @Relates(class="TBGFile")
 		 * @var TBGFile
+		 * @Column(type="integer")
+		 * @Relates(class="TBGFile")
 		 */
 		protected $_small_icon = null;
 		
 		/**
 		 * The large project icon, if set
 		 * 
-		 * @Relates(class="TBGFile")
 		 * @var TBGFile
+		 * @Column(type="integer")
+		 * @Relates(class="TBGFile")
 		 */
 		protected $_large_icon = null;
 
@@ -179,6 +249,7 @@
 		 * The projects documentation URL
 		 * 
 		 * @var string
+		 * @Column(type="string")
 		 */
 		protected $_doc_url = '';
 		
@@ -186,6 +257,7 @@
 		 * The project description
 		 * 
 		 * @var string
+		 * @Column(type="string")
 		 */
 		protected $_description = '';
 		
@@ -214,6 +286,7 @@
 		 * Whether or not this project is visible in the frontpage summary
 		 * 
 		 * @var boolean
+		 * @Column(type="boolean")
 		 */
 		protected $_show_in_summary = null;
 		
@@ -221,6 +294,7 @@
 		 * What to show on the frontpage summary
 		 * 
 		 * @var string
+		 * @Column(type="boolean")
 		 */
 		protected $_summary_display = null;
 		
@@ -242,6 +316,7 @@
 		 * Whether a user can change details about an issue without working on the issue
 		 * 
 		 * @var boolean
+		 * @Column(type="boolean")
 		 */
 		protected $_allow_freelancing = false;
 		
@@ -249,6 +324,7 @@
 		 * Is project deleted
 		 * 
 		 * @var boolean
+		 * @Column(type="boolean")
 		 */
 		protected $_deleted = 0;
 
@@ -368,6 +444,7 @@
 		 * The selected workflow scheme
 		 * 
 		 * @var TBGWorkflowScheme
+		 * @Column(type="integer")
 		 * @Relates(class="TBGWorkflowScheme")
 		 */
 		protected $_workflow_scheme_id = 1;
@@ -376,6 +453,7 @@
 		 * The selected workflow scheme
 		 * 
 		 * @var TBGIssuetypeScheme
+		 * @Column(type="integer")
 		 * @Relates(class="TBGIssuetypeScheme")
 		 */
 		protected $_issuetype_scheme_id = 1;
@@ -384,6 +462,7 @@
 		 * Assigned client
 		 * 
 		 * @var TBGClient
+		 * @Column(type="integer")
 		 * @Relates(class="TBGClient")
 		 */
 		protected $_client = null;
@@ -392,6 +471,7 @@
 		 * Autoassignment
 		 * 
 		 * @var boolean
+		 * @Column(type="boolean")
 		 */
 		protected $_autoassign = null;
 		
@@ -399,6 +479,7 @@
 		 * Parent project
 		 * 
 		 * @var TBGProject
+		 * @Column(type="integer")
 		 * @Relates(class="TBGProject")
 		 */
 		protected $_parent = null;
@@ -421,6 +502,7 @@
 		 * Whether to show a "Download" link and corresponding section
 		 * 
 		 * @var boolean
+		 * @Column(type="boolean")
 		 */
 		protected $_has_downloads = true;
 		
@@ -428,6 +510,7 @@
 		 * Whether a project is archived (read-only mode)
 		 * 
 		 * @var boolean
+		 * @Column(type="boolean")
 		 */
 		protected $_archived = false;
 		
@@ -594,34 +677,18 @@
 		{
 			self::_populateProjects();
 			$final = array();
+			$class = get_class($leader);
+
+			if (!($leader instanceof TBGUser) && !($leader instanceof TBGTeam)) return false;
 			
-			if (!($leader instanceof TBGUser) && !($leader instanceof TBGTeam))
+			foreach (self::$_projects as $project)
 			{
-				return false;
-			}
-			
-			if ($leader instanceof TBGUser)
-			{
-				foreach (self::$_projects as $project)
+				if ($project->getLeader() instanceof $class && $project->getLeader()->getID() == $leader->getID())
 				{
-					if (($project->getLeaderID() == $leader->getID()) && ($project->getLeaderType() == TBGIdentifiableClass::TYPE_USER))
-					{
-						$final[] = $project;
-					}
+					$final[] = $project;
 				}
-				return $final;
 			}
-			else
-			{
-				foreach (self::$_projects as $project)
-				{
-					if (($project->getLeaderID() == $leader->getID()) && ($project->getLeaderType() == TBGIdentifiableClass::TYPE_TEAM))
-					{
-						$final[] = $project;
-					}
-				}
-				return $final;
-			}
+			return $final;
 		}
 		
 		/**
@@ -634,34 +701,18 @@
 		{
 			self::_populateProjects();
 			$final = array();
+			$class = get_class($owner);
 			
-			if (!($owner instanceof TBGUser) && !($owner instanceof TBGTeam))
-			{
-				return false;
-			}
+			if (!($owner instanceof TBGUser) && !($owner instanceof TBGTeam)) return false;
 			
-			if ($owner instanceof TBGUser)
+			foreach (self::$_projects as $project)
 			{
-				foreach (self::$_projects as $project)
+				if ($project->getOwner() instanceof $class && $project->getOwner()->getID() == $owner->getID())
 				{
-					if (($project->getOwnerID() == $owner->getID()) && ($project->getOwnerType() == TBGIdentifiableClass::TYPE_USER))
-					{
-						$final[] = $project;
-					}
+					$final[] = $project;
 				}
-				return $final;
 			}
-			else
-			{
-				foreach (self::$_projects as $project)
-				{
-					if (($project->getOwnerID() == $owner->getID()) && ($project->getOwnerType() == TBGIdentifiableClass::TYPE_TEAM))
-					{
-						$final[] = $project;
-					}
-				}
-				return $final;
-			}
+			return $final;
 		}
 		
 		/**
@@ -674,34 +725,18 @@
 		{
 			self::_populateProjects();
 			$final = array();
-			
-			if (!($qa instanceof TBGUser) && !($qa instanceof TBGTeam))
+			$class = get_class($qa);
+
+			if (!($qa instanceof TBGUser) && !($qa instanceof TBGTeam)) return false;
+
+			foreach (self::$_projects as $project)
 			{
-				return false;
-			}
-			
-			if ($qa instanceof TBGUser)
-			{
-				foreach (self::$_projects as $project)
+				if ($project->getQaResponsible() instanceof $class && $project->getQaResponsible()->getID() == $qa->getID())
 				{
-					if (($project->getQaResponsibleID() == $qa->getID()) && ($project->getQaResponsibleType() == TBGIdentifiableClass::TYPE_USER))
-					{
-						$final[] = $project;
-					}
+					$final[] = $project;
 				}
-				return $final;
 			}
-			else
-			{
-				foreach (self::$_projects as $project)
-				{
-					if (($project->getQaResponsibleID() == $qa->getID()) && ($project->getQaResponsibleType() == TBGIdentifiableClass::TYPE_TEAM))
-					{
-						$final[] = $project;
-					}
-				}
-				return $final;
-			}
+			return $final;
 		}
 				
 		/**
@@ -922,7 +957,7 @@
 		 */
 		public function getHomepage()
 		{
-			return $this->_homeage;
+			return $this->_homepage;
 		}
 		
 		/**
@@ -932,7 +967,7 @@
 		 */
 		public function hasHomepage()
 		{
-			return ($this->_homeage != '') ? true : false;
+			return ($this->_homepage != '') ? true : false;
 		}
 		
 		/**
@@ -952,7 +987,7 @@
 		 */
 		public function setHomepage($homepage)
 		{
-			$this->_homeage = $homepage;
+			$this->_homepage = $homepage;
 		}
 		
 		/**
@@ -2608,7 +2643,7 @@
 		 */
 		public function getWorkflowScheme()
 		{
-			return $this->_getPopulatedObjectFromProperty('_workflow_scheme_id');
+			return $this->_b2dbLazyload('_workflow_scheme_id');
 		}
 		
 		public function setWorkflowScheme(TBGWorkflowScheme $scheme)
@@ -2628,7 +2663,7 @@
 		 */
 		public function getIssuetypeScheme()
 		{
-			return $this->_getPopulatedObjectFromProperty('_issuetype_scheme_id');
+			return $this->_b2dbLazyload('_issuetype_scheme_id');
 		}
 		
 		public function setIssuetypeScheme(TBGIssuetypeScheme $scheme)
@@ -2643,7 +2678,7 @@
 		 */
 		public function getClient()
 		{
-			return $this->_getPopulatedObjectFromProperty('_client');
+			return $this->_b2dbLazyload('_client');
 		}
 		
 		/**
@@ -2747,7 +2782,7 @@
 		public function getParent()
 		{
 //			if ($this->getKey() == 'sampleproject2'): return TBGProject::getByKey('sampleproject1'); endif;
-			return $this->_getPopulatedObjectFromProperty('_parent');
+			return $this->_b2dbLazyload('_parent');
 		}
 		
 		public function setParent(TBGProject $project)
@@ -2832,7 +2867,7 @@
 		 */
 		public function getSmallIcon()
 		{
-			return $this->_getPopulatedObjectFromProperty('_small_icon');
+			return $this->_b2dbLazyload('_small_icon');
 		}
 		
 		public function getSmallIconName()
@@ -2857,7 +2892,7 @@
 		
 		public function getLargeIcon()
 		{
-			return $this->_getPopulatedObjectFromProperty('_large_icon');
+			return $this->_b2dbLazyload('_large_icon');
 		}
 		
 		public function getLargeIconName()
@@ -2885,4 +2920,122 @@
 		{
 			TBGIssuesTable::getTable()->convertIssueStepByIssuetype($this, $issuetype, $conversions);
 		}
+
+		public function getLeader()
+		{
+			if ($this->_leader_team !== null) {
+				$this->_b2dbLazyload('_leader_team');
+			} elseif ($this->_leader_user !== null) {
+				$this->_b2dbLazyload('_leader_user');
+			}
+			
+			if ($this->_leader_team instanceof TBGTeam) {
+				return $this->_leader_team;
+			} elseif ($this->_leader_user instanceof TBGUser) {
+				return $this->_leader_user;
+			} else {
+				return null;
+			}
+		}
+
+		public function hasLeader()
+		{
+			return (bool) ($this->getLeader() instanceof TBGIdentifiable);
+		}
+
+		public function setLeader(TBGIdentifiable $leader)
+		{
+			if ($leader instanceof TBGTeam) {
+				$this->_leader_user = null;
+				$this->_leader_team = $leader;
+			} else {
+				$this->_leader_team = null;
+				$this->_leader_user = $leader;
+			}
+		}
+
+		public function clearLeader()
+		{
+			$this->_leader_team = null;
+			$this->_leader_user = null;
+		}
+
+		public function getOwner()
+		{
+			if ($this->_owner_team !== null) {
+				$this->_b2dbLazyload('_owner_team');
+			} elseif ($this->_owner_user !== null) {
+				$this->_b2dbLazyload('_owner_user');
+			}
+
+			if ($this->_owner_team instanceof TBGTeam) {
+				return $this->_owner_team;
+			} elseif ($this->_owner_user instanceof TBGUser) {
+				return $this->_owner_user;
+			} else {
+				return null;
+			}
+		}
+
+		public function hasOwner()
+		{
+			return (bool) ($this->getOwner() instanceof TBGIdentifiable);
+		}
+
+		public function setOwner(TBGIdentifiable $owner)
+		{
+			if ($owner instanceof TBGTeam) {
+				$this->_owner_user = null;
+				$this->_owner_team = $owner;
+			} else {
+				$this->_owner_team = null;
+				$this->_owner_user = $owner;
+			}
+		}
+
+		public function clearOwner()
+		{
+			$this->_owner_team = null;
+			$this->_owner_user = null;
+		}
+
+		public function getQaResponsible()
+		{
+			if ($this->_qa_responsible_team !== null) {
+				$this->_b2dbLazyload('_qa_responsible_team');
+			} elseif ($this->_qa_responsible_user !== null) {
+				$this->_b2dbLazyload('_qa_responsible_user');
+			}
+
+			if ($this->_qa_responsible_team instanceof TBGTeam) {
+				return $this->_qa_responsible_team;
+			} elseif ($this->_qa_responsible_user instanceof TBGUser) {
+				return $this->_qa_responsible_user;
+			} else {
+				return null;
+			}
+		}
+
+		public function hasQaResponsible()
+		{
+			return (bool) ($this->getQaResponsible() instanceof TBGIdentifiable);
+		}
+
+		public function setQaResponsible(TBGIdentifiable $qa_responsible)
+		{
+			if ($qa_responsible instanceof TBGTeam) {
+				$this->_qa_responsible_user = null;
+				$this->_qa_responsible_team = $qa_responsible;
+			} else {
+				$this->_qa_responsible_team = null;
+				$this->_qa_responsible_user = $qa_responsible;
+			}
+		}
+
+		public function clearQaResponsible()
+		{
+			$this->_qa_responsible_team = null;
+			$this->_qa_responsible_user = null;
+		}
+
 	}

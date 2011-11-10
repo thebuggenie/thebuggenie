@@ -374,7 +374,8 @@
 			if (self::isCLI()) {
 				self::cliError($error, $details);
 			} else {
-				if (self::getResponse() instanceof TBGResponse) self::getResponse()->cleanBuffer();
+				//if (self::getResponse() instanceof TBGResponse) self::getResponse()->cleanBuffer();
+				self::getResponse()->cleanBuffer();
 				require THEBUGGENIE_CORE_PATH . 'templates' . DS . 'error.php';
 			}
 			die();
@@ -743,6 +744,8 @@
 					self::$_redirect_login = true;
 				else
 					self::$_user = self::factory()->TBGUser(TBGSettings::getDefaultUserID());
+
+				throw $e;
 			}
 			TBGLogging::log('...done');
 		}
@@ -1740,9 +1743,9 @@
 				}
 				
 				if (!self::isUpgrademode() && !self::isInstallmode())
-					$row = TBGScopesTable::getTable()->getByHostnameOrDefault($hostname);
+					$scope = TBGScopesTable::getTable()->getByHostnameOrDefault($hostname);
 				
-				if (!$row instanceof \b2db\Row)
+				if (!$scope instanceof TBGScope)
 				{
 					TBGLogging::log("It couldn't", 'main', TBGLogging::LEVEL_WARNING);
 					if (!self::isInstallmode())
@@ -1752,7 +1755,7 @@
 				}
 				
 				TBGLogging::log("Setting scope from hostname");
-				self::$_scope = TBGContext::factory()->TBGScope($row->get(TBGScopesTable::ID), $row);
+				self::$_scope = $scope;
 				TBGSettings::forceSettingsReload();
 				TBGSettings::loadSettings();
 				TBGLogging::log("...done (Setting scope from hostname)");
@@ -2305,7 +2308,10 @@
 
 				if (self::getResponse()->getDecoration() == TBGResponse::DECORATE_DEFAULT && !self::getRequest()->isAjaxCall())
 				{
+					ob_start('mb_output_handler');
+					ob_implicit_flush(0);
 					require THEBUGGENIE_CORE_PATH . 'templates/layout.php';
+					ob_flush();
 				}
 				else
 				{
@@ -2383,7 +2389,7 @@
 					{
 						$route = array('module' => 'installation', 'action' => 'installIntro');
 					}
-					if (self::$_redirect_login)
+					if (self::$_redirect_login && !self::getRouting()->getCurrentRouteName('debug'))
 					{
 						TBGLogging::log('An error occurred setting up the user object, redirecting to login', 'main', TBGLogging::LEVEL_NOTICE);
 						TBGContext::setMessage('login_message_err', TBGContext::geti18n()->__('Please log in'));
