@@ -595,7 +595,7 @@
 		 *  
 		 * @param Exception $exception
 		 */
-		public static function fatalError(Exception $exception)
+		public static function fatalError(\Exception $exception)
 		{
 			$ob_status = \ob_get_status();
 			if (!empty($ob_status) && $ob_status['status'] != PHP_OUTPUT_HANDLER_END)
@@ -748,69 +748,121 @@
 
 		protected static function cacheTableClass($classname)
 		{
-			self::$_cached_table_classes[$classname] = array();
+			if (!\class_exists($classname)) {
+				throw new Exception("The class '{$classname}' does not exist");
+			}
+			self::$_cached_table_classes[$classname] = array('entity' => null, 'name' => null, 'discriminator' => null);
+
 			$reflection = new \ReflectionClass($classname);
 			$docblock = $reflection->getDocComment();
 			$annotationset = new AnnotationSet($docblock);
-			if ($annotationset->hasAnnotations())
-			{
-				if ($annotation = $annotationset->getAnnotation('Class'))
-				{
-					self::$_cached_table_classes[$classname]['entity'] = $annotation->getProperty('name');
-				}
+			if (!$table_annotation = $annotationset->getAnnotation('Table')) {
+				throw new Exception("The class '{$classname}' does not have a proper @Table annotation");
 			}
+			$table_name = $table_annotation->getProperty('name');
+
+			if ($entity_annotation = $annotationset->getAnnotation('Entity'))
+				self::$_cached_table_classes[$classname]['entity'] = $entity_annotation->getProperty('class');
+
+			if ($entities_annotation = $annotationset->getAnnotation('Entities')) {
+				$details = array('identifier' => $entities_annotation->getProperty('identifier'), 'classes' => $annotationset->getAnnotation('SubClasses')->getProperties());
+				self::$_cached_table_classes[$classname]['entities'] = $details;
+			}
+
+			if ($discriminator_annotation = $annotationset->getAnnotation('Discriminator')) {
+				$details = array('column' => "{$table_name}." . $discriminator_annotation->getProperty('column'), 'discriminators' => $annotationset->getAnnotation('Discriminators')->getProperties());
+				self::$_cached_table_classes[$classname]['discriminator'] = $details;
+			}
+
+			if (!$table_annotation->hasProperty('name')) {
+				throw new Exception("The class @Table annotation in '{$classname}' is missing required 'name' property");
+			}
+
+			self::$_cached_table_classes[$classname]['name'] = $table_name;
+
 			$key = 'b2db_cache_'.$classname;
 			\TBGCache::add($key, self::$_cached_table_classes[$classname]);
 			\TBGCache::fileAdd($key, self::$_cached_table_classes[$classname]);
 		}
 
-		protected static function cacheEntityClass($classname)
+		protected static function cacheEntityClass($classname, $reflection_classname = null)
 		{
-			self::$_cached_entity_classes[$classname] = array('columns' => array(), 'relations' => array());
-
-			$reflection = new \ReflectionClass($classname);
+			$rc_name = ($reflection_classname !== null) ? $reflection_classname : $classname;
+			$reflection = new \ReflectionClass($rc_name);
 			$annotationset = new AnnotationSet($reflection->getDocComment());
 
-			if (!$annotation = $annotationset->getAnnotation('Table')) {
-				throw new Exception("The class '{$classname}' is missing a valid @Table annotation");
-			} else {
-				$tablename = $annotation->getProperty('name');
-			}
-			self::$_cached_entity_classes[$classname]['table'] = $tablename;
-
-			$table = $tablename::getTable();
-			$table_columns = $table->getColumns();
-			foreach ($reflection->getProperties() as $property)
-			{
-				$annotationset = new AnnotationSet($property->getDocComment());
-				if ($annotationset->hasAnnotations())
-				{
-					if (!$annotationset->hasAnnotation('NoAutoPopulation')) {
-						$property_name = $property->getName();
-						if ($annotation = $annotationset->getAnnotation('Column'))
-						{
-							$column_name = (array_key_exists($property_name, $table_columns)) ? $property_name : substr($property_name, 1);
-							$column_name = ($annotation->hasProperty('name')) ? $annotation->getProperty('name') : $column_name;
-							$column_name = $table->getB2DBName() . '.' . $column_name;
-							if (array_key_exists($column_name, $table_columns)) {
-								self::$_cached_entity_classes[$classname]['columns'][$column_name] = $property_name;
-							}
-						}
-						if ($annotation = $annotationset->getAnnotation('Relates'))
-						{
-							self::$_cached_entity_classes[$classname]['relations'][$property_name] = $annotation->getProperty('class');
-						}
+			if ($reflection_classname === null) {
+				self::$_cached_entity_classes[$classname] = array('columns' => array(), 'relations' => array(), 'foreign_columns' => array(), );
+				if (!$annotation = $annotationset->getAnnotation('Table')) {
+					throw new Exception("The class '{$classname}' is missing a valid @Table annotation");
+				} else {
+					$tablename = $annotation->getProperty('name');
+				}
+				if (!\class_exists($tablename)) {
+					throw new Exception("The class table class '{$tablename}' for class '{$classname}' does not exist");
+				}
+				self::$_cached_entity_classes[$classname]['table'] = $tablename;
+				self::_populateCachedTableClassFiles($tablename);
+				if (($re = $reflection->getExtension()) && $classnames = $re->getClassNames()) {
+					foreach ($classnames as $extends_classname) {
+						self::cacheEntityClass($classname, $extends_classname);
 					}
 				}
 			}
-			foreach ($table_columns as $column)
-			{
-				if ($column['name'] == $table->getIdColumn() || 
-					array_key_exists($column['name'], self::$_cached_entity_classes[$classname]['columns'])) continue;
+			if (!\array_key_exists('name', self::$_cached_table_classes[self::$_cached_entity_classes[$classname]['table']])) {
+				throw new Exception("The class @Table annotation in '".self::$_cached_entity_classes[$classname]['table']."' is missing required 'name' property");
+			}
+			$column_prefix = self::$_cached_table_classes[self::$_cached_entity_classes[$classname]['table']]['name'].'.';
 
-				$property = explode('.', $column['name']);
-				$property_name = "_".\mb_strtolower($property[1]);
-				self::$_cached_entity_classes[$classname]['columns'][$column['name']] = $property_name;
+			foreach ($reflection->getProperties() as $property)
+			{
+				if ($property instanceof \ReflectionProperty);
+				$annotationset = new AnnotationSet($property->getDocComment());
+				if ($annotationset->hasAnnotations())
+				{
+					$property_name = $property->getName();
+					if ($column_annotation = $annotationset->getAnnotation('Column'))
+					{
+						$column_name = $column_prefix . (($column_annotation->hasProperty('name')) ? $column_annotation->getProperty('name') : substr($property_name, 1));
+						$column = array('property' => $property_name, 'default_value' => (($column_annotation->hasProperty('default_value')) ? $column_annotation->getProperty('default_value') : null), 'not_null' => (($column_annotation->hasProperty('not_null')) ? $column_annotation->getProperty('not_null') : false), 'name' => $column_name, 'type' => $column_annotation->getProperty('type'));
+						switch ($column['type']) {
+							case 'varchar':
+							case 'string':
+								$column['type'] = 'varchar';
+								$column['length'] = ($column_annotation->hasProperty('length')) ? $column_annotation->getProperty('length') : null;
+								break;
+							case 'float':
+								$column['precision'] = ($column_annotation->hasProperty('precision')) ? $column_annotation->getProperty('precision') : 2;
+							case 'integer':
+								$column['auto_inc'] = ($column_annotation->hasProperty('auto_increment')) ? $column_annotation->getProperty('auto_increment') : 2;
+								$column['unsigned'] = ($column_annotation->hasProperty('unsigned')) ? $column_annotation->getProperty('unsigned') : false;
+								$column['length'] = ($column_annotation->hasProperty('length')) ? $column_annotation->getProperty('length') : 10;
+								break;
+						}
+						self::$_cached_entity_classes[$classname]['columns'][$column_name] = $column;
+					}
+					if ($annotation = $annotationset->getAnnotation('Id')) {
+						self::$_cached_entity_classes[$classname]['id_column'] = $column_name;
+					}
+					if ($annotation = $annotationset->getAnnotation('Relates'))
+					{
+						$value = $annotation->getProperty('class');
+						$collection = (bool) $annotation->getProperty('collection');
+						$manytomany = (bool) $annotation->getProperty('manytomany');
+						$joinclass = $annotation->getProperty('joinclass');
+						$foreign_column = $annotation->getProperty('foreign_column');
+						self::$_cached_entity_classes[$classname]['relations'][$property_name] = array('collection' => $collection, 'property' => $property_name, 'foreign_column' => $foreign_column, 'manytomany' => $manytomany, 'joinclass' => $joinclass, 'class' => $annotation->getProperty('class'));
+						if (!$collection) {
+							if (!$column_annotation) {
+								throw new Exception("The property '{$property_name}' in class '{$classname}' is missing an @Column annotation, or is improperly marked as not being a collection");
+							}
+							$column_name = $column_prefix . (($annotation->hasProperty('name')) ? $annotation->getProperty('name') : substr($property_name, 1));
+							$column['class'] = self::getCachedB2DBTableClass($value);
+							$column['key'] = ($annotation->hasProperty('key')) ? $annotation->getProperty('key') : null;
+							self::$_cached_entity_classes[$classname]['foreign_columns'][$column_name] = $column;
+						}
+					}
+				}
 			}
 			$key = 'b2db_cache_'.$classname;
 			\TBGCache::add($key, self::$_cached_entity_classes[$classname]);
@@ -821,11 +873,11 @@
 		{
 			if (!array_key_exists($classname, self::$_cached_entity_classes))
 			{
-				$key = 'b2db_cache_'.$classname;
-				if (\TBGCache::has($key)) {
-					self::$_cached_entity_classes[$classname] = \TBGCache::get($key);
-				} elseif (\TBGCache::fileHas($key)) {
-					self::$_cached_entity_classes[$classname] = \TBGCache::fileGet($key);
+				$entity_key = 'b2db_cache_'.$classname;
+				if (\TBGCache::has($entity_key)) {
+					self::$_cached_entity_classes[$classname] = \TBGCache::get($entity_key);
+				} elseif (\TBGCache::fileHas($entity_key)) {
+					self::$_cached_entity_classes[$classname] = \TBGCache::fileGet($entity_key);
 				} else {
 					self::cacheEntityClass($classname);
 				}
@@ -847,17 +899,22 @@
 			}
 		}
 
-		public static function getCachedColumnClassProperty($classname, $column)
+		public static function getCachedTableDetails($classname)
 		{
 			self::_populateCachedClassFiles($classname);
-			if (\array_key_exists($classname, self::$_cached_entity_classes) && \array_key_exists($column, self::$_cached_entity_classes[$classname]['columns']))
+			if (\array_key_exists($classname, self::$_cached_entity_classes) && \array_key_exists('columns', self::$_cached_entity_classes[$classname]))
 			{
-				return self::$_cached_entity_classes[$classname]['columns'][$column];
+				return array('columns' => self::$_cached_entity_classes[$classname]['columns'],
+							'foreign_columns' => self::$_cached_entity_classes[$classname]['foreign_columns'],
+							'id' => self::$_cached_entity_classes[$classname]['id_column'],
+							'discriminator' => self::$_cached_table_classes[self::$_cached_entity_classes[$classname]['table']]['discriminator'],
+							'name' => self::$_cached_table_classes[self::$_cached_entity_classes[$classname]['table']]['name']
+							);
 			}
 			return null;
 		}
 		
-		public static function getCachedClassPropertyForeignClass($classname, $property)
+		public static function getCachedEntityRelationDetails($classname, $property)
 		{
 			self::_populateCachedClassFiles($classname);
 			if (\array_key_exists($classname, self::$_cached_entity_classes) && \array_key_exists($property, self::$_cached_entity_classes[$classname]['relations']))
@@ -867,6 +924,26 @@
 			return null;
 		}
 	
+		public static function getCachedColumnDetails($classname, $column)
+		{
+			self::_populateCachedClassFiles($classname);
+			if (\array_key_exists($classname, self::$_cached_entity_classes) && \array_key_exists($column, self::$_cached_entity_classes[$classname]['columns']))
+			{
+				return self::$_cached_entity_classes[$classname]['columns'][$column];
+			}
+			return null;
+		}
+
+		public static function getCachedColumnPropertyName($classname, $column)
+		{
+			self::_populateCachedClassFiles($classname);
+			if (\array_key_exists($classname, self::$_cached_entity_classes) && \array_key_exists($column, self::$_cached_entity_classes[$classname]['columns']))
+			{
+				return self::$_cached_entity_classes[$classname]['columns'][$column]['property'];
+			}
+			return null;
+		}
+
 		public static function getCachedB2DBTableClass($classname)
 		{
 			self::_populateCachedClassFiles($classname);
@@ -876,6 +953,18 @@
 					throw new Exception("The class '{$classname}' is missing a valid @Table annotation");
 				}
 				return self::$_cached_entity_classes[$classname]['table'];
+			}
+			return null;
+		}
+
+		public static function getCachedTableEntityClasses($classname)
+		{
+			self::_populateCachedTableClassFiles($classname);
+			if (\array_key_exists($classname, self::$_cached_table_classes))
+			{
+				if (\array_key_exists('entities', self::$_cached_table_classes[$classname])) {
+					return self::$_cached_table_classes[$classname]['entities'];
+				}
 			}
 			return null;
 		}

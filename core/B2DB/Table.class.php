@@ -27,7 +27,7 @@
 		protected $_indexes = array();
 		protected $_charset = 'utf8';
 		protected $_autoincrement_start_at = 1;
-		protected $_foreigntables = array();
+		protected $_foreigntables = null;
 		protected $_foreigncolumns = array();
 
 		public function __clone()
@@ -35,7 +35,27 @@
 			$this->b2db_alias = $this->b2db_name . Core::addAlias();
 		}
 		
-		public function __construct($b2db_name, $id_column)
+		final public function __construct()
+		{
+			if ($entity_class = Core::getCachedTableEntityClass(\get_called_class())) {
+				if ($details = Core::getCachedTableDetails($entity_class)) {
+					$this->_columns = $details['columns'];
+					$this->_foreigncolumns = $details['foreign_columns'];
+					$this->b2db_name = $details['name'];
+					$this->b2db_alias = $details['name'] . Core::addAlias();
+					$this->id_column = $details['id'];
+				}
+			} else {
+				$this->_initialize();
+			}
+		}
+
+		protected function _initialize()
+		{
+			throw new Exception('The table "'.\get_class($this).'" has no corresponding entity class. You must override the _initialize() method to set up the table details.');
+		}
+
+		protected function _setup($b2db_name, $id_column)
 		{
 			$this->b2db_name = $b2db_name;
 			$this->b2db_alias = $b2db_name . Core::addAlias();
@@ -102,10 +122,11 @@
 		 * @param Table $table
 		 * @param string $key
 		 */
-		protected function _addForeignKeyColumn($column, $table, $key = null)
+		protected function _addForeignKeyColumn($column, Table $table, $key = null)
 		{
 			$addtable = clone $table;
-			$foreign_column = ($key !== null) ?  $addtable->getColumn($key) : $addtable->getIdColumn();
+			$key = ($key !== null) ? $key : $addtable->getIdColumn();
+			$foreign_column = $addtable->getColumn($key);
 			switch ($foreign_column['type'])
 			{
 				case 'integer':
@@ -118,14 +139,14 @@
 					$this->_addVarchar($column, $foreign_column['length'], $foreign_column['default_value'], false);
 					break;
 				case 'text':
-					$this->_addText($column, $foreign_column['default_value'], false);
-					break;
+//					$this->_addText($column, $foreign_column['default_value'], false);
+//					break;
 				case 'boolean':
 				case 'blob':
-					throw new Exception('Cannot use a blob or boolean column as a foreign key');
+					throw new Exception('Cannot use a text, blob or boolean column as a foreign key');
 			}
-			$this->_foreigntables[$addtable->getB2DBAlias()] = array('table' => $addtable, 'key' => $key, 'column' => $column);
-			$this->_foreigncolumns[$column] = $column;
+			//$this->_foreigntables[$addtable->getB2DBAlias()] = array('table' => $addtable, 'key' => $key, 'column' => $column);
+			$this->_foreigncolumns[$column] = array('class' => \get_class($table), 'key' => $key, 'name' => $column);
 		}
 
 		public function getForeignTableByLocalColumn($column)
@@ -197,8 +218,22 @@
 			return $this->b2db_alias;
 		}
 		
+		protected function _initializeForeignTables()
+		{
+			$this->_foreigntables = array();
+			foreach ($this->_foreigncolumns as $column) {
+				$table_classname = $column['class'];
+				$table = clone $table_classname::getTable();
+				$key = ($column['key'] !== null) ? $column['key'] : $table->getIdColumn();
+				$this->_foreigntables[$table->getB2DBAlias()] = array('table' => $table, 'key' => $key, 'column' => $column['name']);
+			}
+		}
+
 		public function getForeignTables()
 		{
+			if ($this->_foreigntables === null) {
+				$this->_initializeForeignTables();
+			}
 			return $this->_foreigntables;
 		}
 		
@@ -444,30 +479,15 @@
 		 */
 		public function doSelectOne(Criteria $crit, $join = 'all')
 		{
-			try
-			{
-				$crit->setFromTable($this);
-				$crit->setupJoinTables($join);
-				$crit->setLimit(1);
-				$crit->generateSelectSQL();
-				
-				$statement = Statement::getPreparedStatement($crit);
-				$resultset = $statement->performQuery();
-				$resultset->next();
-			}
-			catch (\Exception $e)
-			{
-				if (Core::throwExceptionAsHTML())
-				{
-					Core::fatalError($e);
-					exit();
-				}
-				else
-				{
-					throw $e;
-				}
-			}
+			$crit->setFromTable($this);
+			$crit->setupJoinTables($join);
+			$crit->setLimit(1);
+			$crit->generateSelectSQL();
 
+			$statement = Statement::getPreparedStatement($crit);
+			$resultset = $statement->performQuery();
+			$resultset->next();
+			
 			return $resultset->getCurrentRow();
 		}
 
@@ -775,7 +795,7 @@
 			$id = $object->getB2DBID();
 			foreach ($this->getColumns() as $property)
 			{
-				$property = $property['name'];
+				$property = $property['property'];
 				$value = $this->formatify($object->getB2DBSaveablePropertyValue(mb_strtolower($property)), $property['type']);
 				if ($property == $this->getIdColumn())
 				{
@@ -801,7 +821,7 @@
 			if ($id)
 			{
 				$res = $this->doUpdateById($crit, $id);
-				return $res_id;
+				$res_id = $id;
 			}
 			else
 			{
@@ -1023,27 +1043,88 @@
 				if (!$classname)
 					throw new Exception("Classname '{$classname}' for table '{$this->getB2DBName()}' is not valid");
 
-				$id_column = ($id_column !== null) ? $id_column : $resultset->getCriteria()->getTable()->getIdColumn();
+				$id_column = ($id_column !== null) ? $id_column : $row->getCriteria()->getTable()->getIdColumn();
 				$row_id = $row->get($id_column);
 				$item = new $classname($row_id, $row);
 			}
 			return $item;
 		}
 
-		protected function _populateFromResultset($resultset = null)
+		protected function _populateFromResultset($resultset = null, $classname = null, $id_column = null, $index_column = null)
 		{
 			$items = array();
 			if ($resultset instanceof Resultset) {
 				$criteria = $resultset->getCriteria();
-				$id_column = $criteria->getTable()->getIdColumn();
-				$index_column = ($criteria->getIndexBy()) ? $criteria->getIndexBy() : $id_column;
-				$classname = Core::getCachedTableEntityClass(\get_class($this));
+				$id_column = ($id_column !== null) ? $id_column : $criteria->getTable()->getIdColumn();
+				if ($index_column === null) {
+					$index_column = ($criteria->getIndexBy()) ? $criteria->getIndexBy() : $id_column;
+				}
+				if ($classname === null && $classnames = Core::getCachedTableEntityClasses(\get_class($this))) {
+					$identifier = $row->get($classnames['identifier']);
+					$classname = (\array_key_exists($identifier, $classnames['classes'])) ? $classnames['classes'][$identifier] : null;
+					if (!$classname) {
+						throw new Exception("No classname has been specified in the @SubClasses annotation for identifier '{$identifier}'");
+					}
+				} elseif ($classname === null) {
+					$classname = Core::getCachedTableEntityClass(\get_class($this));
+				}
 				while ($row = $resultset->getNextRow()) {
 					$item = $this->_populateFromRow($row, $classname, $id_column);
 					$items[$row->get($index_column)] = $item;
 				}
 			}
 			return $items;
+		}
+
+		public function generateForeignItemsCriteria(Saveable $class, $relation_details)
+		{
+			$criteria = $this->getCriteria();
+			$foreign_table = $class->getB2DBTable();
+			$foreign_table_class = \get_class($foreign_table);
+			$item_class = null;
+			$item_column = null;
+			$item_class = $relation_details['class'];
+			if ($relation_details['manytomany']) {
+				$item_table_class = Core::getCachedB2DBTableClass($item_class);
+			}
+			if ($relation_details['foreign_column']) {
+				$saveable_class = \get_class($class);
+				$table_details = Core::getCachedTableDetails($item_class);
+				$criteria->addWhere("{$table_details['name']}.".$relation_details['foreign_column'], $class->getB2DBSaveablePropertyValue(Core::getCachedColumnPropertyName($saveable_class, $foreign_table->getIdColumn())));
+				if (array_key_exists('discriminator', $table_details) && $table_details['discriminator'] && array_key_exists($saveable_class, $table_details['discriminator']['discriminators'])) {
+					$criteria->addWhere($table_details['discriminator']['column'], $table_details['discriminator']['discriminators'][$saveable_class]);
+				}
+			} else {
+				foreach ($this->getForeignColumns() as $column => $details) {
+					if ($details['class'] == $foreign_table_class) {
+						$foreign_column = ($details['key']) ? $details['key'] : $foreign_table->getIdColumn();
+						$property_name = Core::getCachedColumnPropertyName(Core::getCachedTableEntityClass($details['class']), $foreign_column);
+						$value = $class->getB2DBSaveablePropertyValue($property_name);
+						$criteria->addWhere($column, $value);
+					} elseif ($item_class && $details['class'] == $item_table_class) {
+						$item_column = $column;
+					}
+				}
+			}
+			return array($criteria, $item_class, $item_column);
+		}
+
+		public function getForeignItems(Saveable $class, $relation_details)
+		{
+			list ($criteria, $item_class, $item_column) = $this->generateForeignItemsCriteria($class, $relation_details);
+			if (!$relation_details['manytomany']) {
+				return $this->select($criteria);
+			} else {
+				$resultset = $this->doSelect($criteria);
+				return $this->_populateFromResultset($resultset, $item_class, $item_column, $item_column);
+			}
+		}
+
+		public function countForeignItems(Saveable $class, $relation_details)
+		{
+			list ($criteria, $item_class, $item_column) = $this->generateForeignItemsCriteria($class, $relation_details);
+			$result = $this->doCount($criteria);
+			return $result;
 		}
 
 	}

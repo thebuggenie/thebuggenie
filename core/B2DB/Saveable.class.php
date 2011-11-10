@@ -24,34 +24,45 @@
 	{
 
 		/**
-		 * Return the B2DB table name for this class
-		 * 
-		 * @return string
-		 */
-		public function getB2DBTableName()
-		{
-			return Core::getCachedB2DBTableClass(\get_class($this));
-		}
-		
-		/**
 		 * Return the associated B2DBTable for this class
 		 * 
 		 * @return Table
 		 */
-		public function getB2DBTable()
+		public static function getB2DBTable()
 		{
-			$b2dbtablename = $this->getB2DBTableName();
+			$b2dbtablename = Core::getCachedB2DBTableClass(\get_called_class());
 			return $b2dbtablename::getTable();
 		}
 
-		protected function _getPopulatedObjectFromProperty($property)
+		protected function _b2dbLazycount($property)
 		{
-			if (is_numeric($this->$property) && $this->$property > 0)
-			{
-				$type_name = Core::getCachedClassPropertyForeignClass(\get_class($this), $property);
-				if ($type_name && \class_exists($type_name))
+			$relation_details = Core::getCachedEntityRelationDetails(\get_class($this), $property);
+			if (array_key_exists('manytomany', $relation_details) && $relation_details['manytomany']) {
+				$table = $relation_details['joinclass'];
+			} else {
+				$table = Core::getCachedB2DBTableClass($relation_details['class']);
+			}
+			$count = $table::getTable()->countForeignItems($this, $relation_details);
+			return $count;
+		}
+
+		protected function _b2dbLazyload($property)
+		{
+			$relation_details = Core::getCachedEntityRelationDetails(\get_class($this), $property);
+			if ($relation_details['collection']) {
+				if (array_key_exists('manytomany', $relation_details) && $relation_details['manytomany']) {
+					$table = $relation_details['joinclass'];
+				} else {
+					$table = Core::getCachedB2DBTableClass($relation_details['class']);
+				}
+				$items = $table::getTable()->getForeignItems($this, $relation_details);
+				$value = ($items !== null) ? $items : array();
+				$this->$property = $value;
+			} elseif (is_numeric($this->$property) && $this->$property > 0) {
+				if ($relation_details && \class_exists($relation_details['class']))
 				{
-					$this->$property = \TBGContext::factory()->$type_name($this->$property);
+					$classname = $relation_details['class'];
+					$this->$property = new $classname($this->$property);
 				}
 				else
 				{
@@ -63,25 +74,27 @@
 		
 		protected function _populatePropertiesFromRow(\b2db\Row $row, $traverse = true, $foreign_key = null)
 		{
-			$id_column = $this->getB2DBTable()->getIdColumn();
+			$table = self::getB2DBTable();
+			$table_name = $table->getB2DBName();
+			$id_column = $table->getIdColumn();
 			$this_class = \get_class($this);
-			foreach ($this->getB2DBTable()->getColumns() as $column)
+			foreach ($table->getColumns() as $column)
 			{
 				if ($column['name'] == $id_column) continue;
-				$property_name = Core::getCachedColumnClassProperty($this_class, $column['name']);
+				$property_name = $column['property']; //Core::getCachedColumnClassProperty($this_class, $column['name']);
 				$property_type = $column['type'];
 				if (!property_exists($this, $property_name))
 				{
 					throw new \Exception("Could not find class property {$property_name} in class ".$this_class.". The class must have all properties from the corresponding B2DB table class available");
 				}
-				if ($traverse && in_array($column['name'], $this->getB2DBTable()->getForeignColumns()))
+				if ($traverse && in_array($column['name'], $table->getForeignColumns()))
 				{
 					if ($row->get($column['name']) > 0)
 					{
-						$type_name = Core::getCachedClassPropertyForeignClass($this_class, $property_name);
-						if ($type_name && class_exists($type_name))
+						$relation_details = Core::getCachedEntityRelationDetails($this_class, $property_name);
+						if ($relation_details && class_exists($relation_details['class']))
 						{
-							$b2dbtablename = Core::getCachedB2DBTableClass($type_name);
+							$b2dbtablename = Core::getCachedB2DBTableClass($relation_details['class']);
 							$b2dbtable = $b2dbtablename::getTable();
 							foreach ($row->getJoinedTables() as $join_details)
 							{
@@ -132,14 +145,16 @@
 		protected function _preDelete() {}
 		
 		protected function _postDelete() {}
-		
-		public function getB2DBSaveablePropertyValue($property)
+
+		public function getB2DBSaveablePropertyValue($property_name)
 		{
-			$property = explode('.', $property);
-			$property_name = "_{$property[1]}";
+//			$column = explode('.', $column);
+//			if (!array_key_exists(1, $column)) {
+//				throw new \Exception("Could not find class property");
+//			}
 			if (!property_exists($this, $property_name))
 			{
-				throw new \Exception("Could not find class property {$property_name} in class ".get_class($this).". The class must have all properties from the corresponding B2DB table class available");
+				throw new \Exception("Could not find class property '{$property_name}' in class ".get_class($this).". The class must have all properties from the corresponding B2DB table class available");
 			}
 			if (is_object($this->$property_name))
 			{
@@ -153,7 +168,7 @@
 
 		public function getB2DBID()
 		{
-			$column = $this->getB2DBTable()->getIdColumn();
+			$column = self::getB2DBTable()->getIdColumn();
 			$property = explode('.', $column);
 			$property_name = "_{$property[1]}";
 			return $this->$property_name;
@@ -169,17 +184,17 @@
 				}
 				if ($row === null)
 				{
-					$row = $this->getB2DBTable()->getByID($id);
+					$row = self::getB2DBTable()->getByID($id);
 				}
 
 				if (!$row instanceof Row)
 				{
-					throw new \Exception('The specified id ('.$id.') does not exist in table ' . $this->getB2DBTableName());
+					throw new \Exception('The specified id ('.$id.') does not exist in table ' . self::getB2DBTable()->getB2DBName());
 				}
 				try
 				{
 					$this->_preInitialize();
-					$this->_id = $id;
+					$this->_id = (integer) $id;
 					$this->_populatePropertiesFromRow($row, $traverse, $foreign_key);
 					$this->_construct($row, $foreign_key);
 				}
@@ -204,7 +219,7 @@
 		{
 			$is_new = !(bool) $this->_id;
 			$this->_preSave($is_new);
-			$res_id = $this->getB2DBTable()->saveObject($this);
+			$res_id = self::getB2DBTable()->saveObject($this);
 			$this->_id = $res_id;
 			$this->_postSave($is_new);
 		}
@@ -212,7 +227,7 @@
 		final public function delete()
 		{
 			$this->_preDelete();
-			$this->getB2DBTable()->doDeleteById($this->getB2DBID());
+			self::getB2DBTable()->doDeleteById($this->getB2DBID());
 			$this->_postDelete();
 		}
 		
