@@ -17,9 +17,9 @@
 	<td style="padding-left: 3px; width: 80px;"><b><?php echo __('Owner: %user_or_team%', array('%user_or_team%' => '')); ?></b></td>
 	<td style="padding-left: 3px; width: auto;">
 		<?php if ($project->getOwner() != null): ?>
-			<?php if ($project->getOwnerType() == TBGIdentifiableTypeClass::TYPE_USER): ?>
+			<?php if ($project->getOwner() instanceof TBGUser): ?>
 				<?php echo include_component('main/userdropdown', array('user' => $project->getOwner())); ?>
-			<?php elseif ($project->getOwnerType() == TBGIdentifiableTypeClass::TYPE_TEAM): ?>
+			<?php elseif ($project->getOwner() instanceof TBGTeam): ?>
 				<?php echo include_component('main/teamdropdown', array('team' => $project->getOwner())); ?>
 			<?php endif; ?>
 		<?php else: ?>

@@ -24,8 +24,8 @@
 		/**
 		 * Item type
 		 *
-		 * @var integer
-		 * @Column(type="integer")
+		 * @var string
+		 * @Column(type="string")
 		 */
 		protected $_itemtype = null;
 		

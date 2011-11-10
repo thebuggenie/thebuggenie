@@ -34,18 +34,7 @@
 		 */		
 		public static function getAll()
 		{
-			if (self::$_items === NULL)
-			{
-				self::$_items = array();
-				if ($items = TBGListTypesTable::getTable()->getAllByItemType(self::PROJECTROLE))
-				{
-					foreach ($items as $row_id => $row)
-					{
-						self::$_items[$row_id] = TBGContext::factory()->TBGProjectRole($row_id, $row);
-					}
-				}
-			}
-			return self::$_items;
+			return TBGListTypesTable::getTable()->getAllByItemType(self::PROJECTROLE);
 		}
 
 		public static function getAllForProject(TBGProject $project)

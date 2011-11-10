@@ -66,5 +66,4 @@
 			$this->doDelete($crit);
 		}
 
-
 	}

@@ -203,6 +203,7 @@
 		 * List of components for this project
 		 *
 		 * @var array
+		 * @Relates(class="TBGComponent", collection=true, foreign_column="project")
 		 */
 		protected $_components = null;
 		
@@ -1143,14 +1144,7 @@
 		{
 			if ($this->_editions === null)
 			{
-				$this->_editions = array();
-				foreach (TBGEdition::getAllByProjectID($this->getID()) as $edition)
-				{
-					if ($edition->hasAccess())
-					{
-						$this->_editions[$edition->getID()] = $edition;
-					}
-				}
+				$this->_b2dbLazyload('_editions');
 			}
 		}
 
@@ -1219,6 +1213,15 @@
 			$this->_populateEditions();
 			return $this->_editions;
 		}
+
+		public function countEditions()
+		{
+			if ($this->_editions === null)
+			{
+				return count($this->_editions);
+			}
+			return $this->_b2dbLazycount('_editions');
+		}
 		
 		/**
 		 * Adds an edition to the project
@@ -1247,7 +1250,7 @@
 		{
 			if ($this->_components === null)
 			{
-				$this->_components = TBGComponent::getAllByProjectID($this->getID());
+				$this->_b2dbLazyload('_components');
 			}
 		}
 		
@@ -1260,6 +1263,15 @@
 		{
 			$this->_populateComponents();
 			return $this->_components;
+		}
+
+		public function countComponents()
+		{
+			if ($this->_components !== null)
+			{
+				return count($this->_components);
+			}
+			return $this->_b2dbLazycount('_components');
 		}
 		
 		/**

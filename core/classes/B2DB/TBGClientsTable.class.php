@@ -48,15 +48,11 @@
 //			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 //		}
 
-		public function getAll($scope = null)
+		public function getAll()
 		{
-			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::SCOPE, $scope);
-			
-			$res = $this->doSelect($crit, 'none');
-			
-			return $res;
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			return $this->select($crit);
 		}
 
 		public function doesClientNameExist($client_name)

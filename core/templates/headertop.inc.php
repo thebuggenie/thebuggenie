@@ -76,7 +76,7 @@
 						</div>
 					</li>
 				<?php endif; ?>
-				<?php if (!TBGContext::isProjectContext() && ($tbg_user->hasPageAccess('clientlist') || count($tbg_user->getClients())) && !is_null(TBGClientsTable::getTable()->getAll())): ?>
+				<?php if (!TBGContext::isProjectContext() && ($tbg_user->hasPageAccess('clientlist') || count($tbg_user->getClients())) && !is_null(TBGClient::getAll())): ?>
 					<li<?php if ($tbg_response->getPage() == 'client'): ?> class="selected"<?php endif; ?>>
 						<div>
 							<?php echo link_tag('javascript:void(0)', image_tag('tab_clients.png') . __('Clients'), array('class' => 'not_clickable')); ?>

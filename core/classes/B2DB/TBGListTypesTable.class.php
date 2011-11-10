@@ -23,7 +23,7 @@
 	 * @Table(name="listtypes")
 	 * @Entity(class="TBGDatatypeBase")
 	 * @Entities(identifier="itemtype")
-	 * @SubClasses(status="TBGStatus")
+	 * @SubClasses(status="TBGStatus", category="TBGCategory", priority="TBGPriority", projectrole="TBGProjectRole", resolution="TBGResolution", reproducability="TBGReproducability", severity="TBGSeverity")
 	 */
 	class TBGListTypesTable extends TBGB2DBTable 
 	{
@@ -65,12 +65,10 @@
 				$crit = $this->getCriteria();
 				$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 				$crit->addOrderBy(self::ORDER, Criteria::SORT_ASC);
-				if ($res = $this->doSelect($crit, false))
+				$items = $this->select($crit);
+				foreach ($items as $item)
 				{
-					while ($row = $res->getNextRow())
-					{
-						self::$_item_cache[$row->get(self::ITEMTYPE)][$row->get(self::ID)] = $row;
-					}
+					self::$_item_cache[$item->getItemtype()][$item->getID()] = $item;
 				}
 			}
 		}
@@ -78,14 +76,7 @@
 		public function getAllByItemType($itemtype)
 		{
 			$this->_populateItemCache();
-			if (array_key_exists($itemtype, self::$_item_cache))
-			{
-				return self::$_item_cache[$itemtype];
-			}
-			else
-			{
-				return null;
-			}
+			return (array_key_exists($itemtype, self::$_item_cache)) ? self::$_item_cache[$itemtype] : null;
 		}
 
 		public function createNew($name, $itemtype, $itemdata = null, $scope = null)

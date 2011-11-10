@@ -25,6 +25,7 @@
 		 * This builds edition
 		 *
 		 * @var TBGEdition
+		 * @Column(type="integer")
 		 * @Relates(class="TBGEdition")
 		 */
 		protected $_edition = null;
@@ -33,6 +34,7 @@
 		 * This builds project
 		 *
 		 * @var TBGProject
+		 * @Column(type="integer")
 		 * @Relates(class="TBGProject")
 		 */
 		protected $_project = null;
@@ -41,6 +43,7 @@
 		 * This builds milestone, if any
 		 *
 		 * @var TBGMilestone
+		 * @Column(type="integer")
 		 * @Relates(class="TBGMilestone")
 		 */
 		protected $_milestone = null;
@@ -49,6 +52,7 @@
 		 * Whether this build is released or not
 		 * 
 		 * @var boolean
+		 * @Column(type="boolean")
 		 */
 		protected $_isreleased = null;
 		
@@ -56,6 +60,7 @@
 		 * Whether this build is active or not
 		 * 
 		 * @var boolean
+		 * @Column(type="boolean", name="locked")
 		 */
 		protected $_isactive = null;
 		
@@ -63,6 +68,7 @@
 		 * The builds release date
 		 * 
 		 * @var integer
+		 * @Column(type="integer")
 		 */
 		protected $_release_date = null;
 		
@@ -70,6 +76,7 @@
 		 * An attached file, if exists
 		 * 
 		 * @var TBGFile
+		 * @Column(type="integer")
 		 * @Relates(class="TBGFile")
 		 */
 		protected $_file_id = null;
@@ -78,6 +85,7 @@
 		 * An url to download this releases file, if any
 		 * 
 		 * @var string
+		 * @Column(type="string")
 		 */
 		protected $_file_url = null;
 		
@@ -110,15 +118,7 @@
 			}
 			if (!array_key_exists($project_id, self::$_project_builds))
 			{
-				self::$_project_builds[$project_id] = array();
-				if ($res = \b2db\Core::getTable('TBGBuildsTable')->getByProjectID($project_id))
-				{
-					while ($row = $res->getNextRow())
-					{
-						$build = TBGContext::factory()->TBGBuild($row->get(TBGBuildsTable::ID), $row);
-						self::$_project_builds[$project_id][$build->getID()] = $build;
-					}
-				}
+				self::$_project_builds[$project_id] = TBGBuildsTable::getTable()->getByProjectID($project_id);
 			}
 			return self::$_project_builds[$project_id];
 		}

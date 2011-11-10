@@ -44,13 +44,13 @@
 
 		public function loadFixtures(TBGScope $scope)
 		{
-			foreach (TBGIssuetype::getAll(null, $scope->getID()) as $issuetype)
+			foreach (TBGIssueTypesTable::getTable()->getAllIDsByScopeID($scope->getID()) as $issuetype_id)
 			{
 				$crit = $this->getCriteria();
 				$crit->addInsert(self::SCOPE, $scope->getID());
 				$crit->addInsert(self::WORKFLOW_ID, 1);
 				$crit->addInsert(self::WORKFLOW_SCHEME_ID, 1);
-				$crit->addInsert(self::ISSUETYPE_ID, $issuetype->getID());
+				$crit->addInsert(self::ISSUETYPE_ID, $issuetype_id);
 				$this->doInsert($crit);
 			}
 		}

@@ -202,35 +202,11 @@
 		 * @param integer $scope_id  The ID number of the scope to load issue types from
 		 * @return array
 		 */
-		public static function getAll($scope_id = null)
+		public static function getAll()
 		{
 			if (self::$_issuetypes === null)
 			{
-				self::$_issuetypes = array();
-				$crit = TBGIssueTypesTable::getTable()->getCriteria();
-				if ($scope_id === null)
-				{
-					$crit->addWhere(TBGIssueTypesTable::SCOPE, TBGContext::getScope()->getID());
-				}
-				else
-				{
-					$crit->addWhere(TBGIssueTypesTable::SCOPE, $scope_id);
-				}
-				
-				$issuetypes = array();
-				if ($res = TBGIssueTypesTable::getTable()->doSelect($crit, 'none'))
-				{
-					while ($row = $res->getNextRow())
-					{
-						$issuetypes[$row->get(TBGIssueTypesTable::ID)] = TBGContext::factory()->TBGIssuetype($res->get(TBGIssueTypesTable::ID), $row);
-					}
-				}
-				else
-				{
-					TBGLogging::log('There are no issue types', 'main', TBGLogging::LEVEL_NOTICE);
-				}
-		
-				self::$_issuetypes = $issuetypes;
+				self::$_issuetypes = TBGIssueTypesTable::getTable()->getAll();
 			}
 			return self::$_issuetypes;
 		}

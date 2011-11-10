@@ -35,16 +35,6 @@
 		const ICON = 'issuetypes.itemdata';
 		const TASK = 'issuetypes.task';
 		
-//		public function __construct()
-//		{
-//			parent::__construct(self::B2DBNAME, self::ID);
-//			parent::_addVarchar(self::NAME, 50);
-//			parent::_addVarchar(self::ICON, 30, 'bug_report');
-//			parent::_addText(self::DESCRIPTION, false);
-//			parent::_addBoolean(self::TASK);
-//			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
-//		}
-
 		public function createNew($name, $icon = 'bug_report')
 		{
 			$crit = $this->getCriteria();
@@ -55,6 +45,29 @@
 			$res = $this->doInsert($crit);
 
 			return $res;
+		}
+
+		public function getAll()
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			return $this->select($crit);
+		}
+
+		public function getAllIDsByScopeID($scope_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::SCOPE, $scope_id);
+			$crit->addSelectionColumn(self::ID, 'id');
+			$res = $this->doSelect($crit);
+
+			$ids = array();
+			while ($row = $res->getNextRow()) {
+				$id = $row->get('id');
+				$ids[$id] = $id;
+			}
+
+			return $ids;
 		}
 
 		public function getBugReportTypeIDs()

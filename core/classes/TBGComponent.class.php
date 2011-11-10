@@ -21,34 +21,16 @@
 	class TBGComponent extends TBGVersionItem
 	{
 		
-		protected static $_b2dbtablename = 'TBGComponentsTable';
-		
 		/**
 		 * This components project
 		 *
 		 * @var unknown_type
+		 * @Column(type="integer")
 		 * @Relates(class="TBGProject")
 		 */
 		protected $_project = null;
 		
 		protected $_assignees = null;
-		
-		public static function getAllByProjectID($project_id)
-		{
-			$retval = array();
-			if ($res = \b2db\Core::getTable('TBGComponentsTable')->getByProjectID($project_id))
-			{
-				while ($row = $res->getNextRow())
-				{
-					$component = TBGContext::factory()->TBGComponent($row->get(TBGComponentsTable::ID), $row);
-					if ($component->hasAccess())
-					{
-						$retval[$component->getID()] = $component;
-					}
-				}
-			}
-			return $retval;
-		}
 		
 		protected function _postSave($is_new)
 		{

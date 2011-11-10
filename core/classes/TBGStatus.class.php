@@ -42,18 +42,7 @@
 		 */		
 		public static function getAll()
 		{
-			if (self::$_items === null)
-			{
-				self::$_items = array();
-				if ($items = TBGListTypesTable::getTable()->getAllByItemType(self::STATUS))
-				{
-					foreach ($items as $row_id => $row)
-					{
-						self::$_items[$row_id] = TBGContext::factory()->TBGStatus($row_id, $row);
-					}
-				}
-			}
-			return self::$_items;
+			return TBGListTypesTable::getTable()->getAllByItemType(self::STATUS);
 		}
 
 		/**

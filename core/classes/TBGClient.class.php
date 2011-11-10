@@ -68,14 +68,7 @@
 		{
 			if (self::$_clients === null)
 			{
-				self::$_clients = array();
-				if ($res = \b2db\Core::getTable('TBGClientsTable')->getAll())
-				{
-					while ($row = $res->getNextRow())
-					{
-						self::$_clients[$row->get(TBGClientsTable::ID)] = TBGContext::factory()->TBGClient($row->get(TBGClientsTable::ID), $row);
-					}
-				}
+				self::$_clients = TBGClientsTable::getTable()->getAll();
 			}
 			return self::$_clients;
 		}

@@ -37,7 +37,7 @@
 			$data_config_sections = array();
 			$module_config_sections = array();
 			
-			if (TBGContext::getUser()->getScope()->getID() == 1)
+			if (TBGContext::getScope()->getID() == 1)
 				$general_config_sections[TBGSettings::CONFIGURATION_SECTION_SCOPES] = array('route' => 'configure_scopes', 'description' => $i18n->__('Scopes'), 'icon' => 'scopes', 'details' => $i18n->__('Scopes are self-contained Bug Genie environments. Configure them here.'));
 
 			$general_config_sections[TBGSettings::CONFIGURATION_SECTION_SETTINGS] = array('route' => 'configure_settings', 'description' => $i18n->__('Settings'), 'icon' => 'general', 'details' => $i18n->__('Every setting in the bug genie can be adjusted in this section.'));
@@ -1736,7 +1736,7 @@
 					{
 						$project = $theComponent->getProject();
 						$theComponent->delete();
-						$count = count(TBGComponent::getAllByProjectID($project->getID()));
+						$count = $project->countComponents();
 						return $this->renderJSON(array('failed' => false, 'deleted' => true, 'itemcount' => $count, 'message' => TBGContext::getI18n()->__('Component deleted')));
 					}
 				}
@@ -2197,7 +2197,7 @@
 					
 					$project = $theEdition->getProject();
 					$theEdition->delete();
-					$count = count(TBGEdition::getAllByProjectID($project->getID()));
+					$count = $project->countEditions();
 					return $this->renderJSON(array('failed' => false, 'deleted' => true, 'itemcount' => $count, 'message' => TBGContext::getI18n()->__('Edition deleted')));
 				}
 				catch (Exception $e)

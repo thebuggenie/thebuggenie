@@ -25,6 +25,7 @@
 		 * The project
 		 *
 		 * @var TBGProject
+		 * @Column(type="integer")
 		 * @Relates(class="TBGProject")
 		 */
 		protected $_project = null;
@@ -33,6 +34,7 @@
 		 * Editions components
 		 *
 		 * @var array|TBGComponent
+		 * @Relates(class="TBGComponent", collection=true, manytomany=true, joinclass="TBGEditionComponents")
 		 */
 		protected $_components = null;
 		
@@ -40,9 +42,13 @@
 		 * Edition builds
 		 *
 		 * @var array|TBGBuild
+		 * @Relates(class="TBGBuild", collection=true, foreign_column="edition_id")
 		 */
 		protected $_builds = null;
-		
+
+		/**
+		 * @Column(type="string")
+		 */
 		protected $_description = '';
 		
 		protected $_assignees = null;
@@ -51,6 +57,7 @@
 		 * The editions documentation URL
 		 * 
 		 * @var string
+		 * @Column(type="string")
 		 */
 		protected $_doc_url = '';
 						
@@ -66,44 +73,6 @@
 		}
 
 		/**
-		 * Retrieve all editions for a specific project
-		 *
-		 * @param integer $project_id
-		 * 
-		 * @return array
-		 */
-		public static function getAllByProjectID($project_id)
-		{
-			if (self::$_editions === null)
-			{
-				self::$_editions = array();
-			}
-			if (!array_key_exists($project_id, self::$_editions))
-			{
-				self::$_editions[$project_id] = array();
-				if ($res = \b2db\Core::getTable('TBGEditionsTable')->getByProjectID($project_id))
-				{
-					while ($row = $res->getNextRow())
-					{
-						$edition = TBGContext::factory()->TBGEdition($row->get(TBGEditionsTable::ID), $row);
-						self::$_editions[$project_id][$edition->getID()] = $edition;
-					}
-				}
-			}
-			return self::$_editions[$project_id];
-		}
-		
-		/**
-		 * Constructor function
-		 *
-		 * @param \b2db\Row $row
-		 */
-		public function _construct(\b2db\Row $row, $foreign_key = null)
-		{
-			TBGEvent::createNew('core', 'TBGEdition::__construct', $this)->trigger();
-		}
-		
-		/**
 		 * Populates components inside the edition
 		 *
 		 * @return void
@@ -112,14 +81,7 @@
 		{
 			if ($this->_components === null)
 			{
-				$this->_components = array();
-				if ($res = \b2db\Core::getTable('TBGEditionComponentsTable')->getByEditionID($this->getID()))
-				{
-					while ($row = $res->getNextRow())
-					{
-						$this->_components[$row->get(TBGEditionComponentsTable::COMPONENT)] = TBGContext::factory()->TBGComponent($row->get(TBGEditionComponentsTable::COMPONENT));
-					}
-				}
+				$this->_components = $this->_b2dbLazyload('_components');
 			}
 		}
 		
@@ -235,14 +197,7 @@
 		{
 			if ($this->_builds === null)
 			{
-				$this->_builds = array();
-				if ($res = \b2db\Core::getTable('TBGBuildsTable')->getByEditionID($this->getID()))
-				{
-					while ($row = $res->getNextRow())
-					{
-						$this->_builds[$row->get(TBGBuildsTable::ID)] = TBGContext::factory()->TBGBuild($row->get(TBGBuildsTable::ID), $row);
-					}
-				}
+				$this->_builds = $this->_b2dbLazyload('_builds');
 			}
 		}
 
