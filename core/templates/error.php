@@ -61,6 +61,10 @@ body { background-color: #DFDFDF; font-family: sans-serif; font-size: 13px; }
 				<i><?php echo $error; ?></i> in <span style="color: #55F;"><?php echo $file; ?></span>, line <?php echo $line; ?>
 			<?php endif; ?>
 			<br>
+			<?php if (isset($exception) && $exception instanceof \b2db\Exception): ?>
+				<h3>SQL:</h3>
+				<?php echo $exception->getSQL(); ?>
+			<?php endif; ?>
 			<?php if (class_exists("TBGContext") && TBGContext::isDebugMode()): ?>
 				<h3>Stack trace:</h3>
 				<ul>
