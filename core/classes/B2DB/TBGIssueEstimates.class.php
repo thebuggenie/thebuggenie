@@ -77,8 +77,6 @@
 				$sd += 86400;
 			}
 			
-			//var_dump($issue_ids);die();
-			
 			if (count($issue_ids))
 			{
 				$crit = $this->getCriteria();

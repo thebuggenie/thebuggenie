@@ -19,6 +19,11 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name="listtypes")
+	 * @Entity(class="TBGDatatypeBase")
+	 * @Entities(identifier="itemtype")
+	 * @SubClasses(status="TBGStatus")
 	 */
 	class TBGListTypesTable extends TBGB2DBTable 
 	{
@@ -36,26 +41,16 @@
 		
 		protected static $_item_cache = null;
 
-		/**
-		 * Return an instance of this table
-		 *
-		 * @return TBGListTypesTable
-		 */
-		public static function getTable()
-		{
-			return Core::getTable('TBGListTypesTable');
-		}
-
-		public function __construct()
-		{
-			parent::__construct(self::B2DBNAME, self::ID);
-			parent::_addVarchar(self::NAME, 100);
-			parent::_addVarchar(self::ITEMTYPE, 25);
-			parent::_addText(self::ITEMDATA, false);
-			parent::_addInteger(self::APPLIES_TO, 10);
-			parent::_addInteger(self::ORDER, 3);
-			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
-		}
+//		public function __construct()
+//		{
+//			parent::__construct(self::B2DBNAME, self::ID);
+//			parent::_addVarchar(self::NAME, 100);
+//			parent::_addVarchar(self::ITEMTYPE, 25);
+//			parent::_addText(self::ITEMDATA, false);
+//			parent::_addInteger(self::APPLIES_TO, 10);
+//			parent::_addInteger(self::ORDER, 3);
+//			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
+//		}
 		
 		public function clearListTypeCache()
 		{

@@ -19,6 +19,8 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name="projectassignees")
 	 */
 	class TBGProjectAssigneesTable extends TBGB2DBTable 
 	{
@@ -37,9 +39,9 @@
 		const TYPE_TESTER = '_role_tester';
 		const TYPE_DOCUMENTOR = '_role_documentor';
 		
-		public function __construct()
+		public function _initialize()
 		{
-			parent::__construct(self::B2DBNAME, self::ID);
+			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addInteger(self::TARGET_TYPE, 5);
 			parent::_addForeignKeyColumn(self::PROJECT_ID, TBGProjectsTable::getTable(), TBGProjectsTable::ID);
 			parent::_addForeignKeyColumn(self::UID, TBGUsersTable::getTable(), TBGUsersTable::ID);
@@ -127,7 +129,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::PROJECT_ID, $project_id);
-			if ($assignee_type == TBGIdentifiableClass::TYPE_TEAM)
+			if ($assignee_type == TBGIdentifiableTypeClass::TYPE_TEAM)
 				$crit->addWhere(self::TID, $assignee_id);
 			else
 				$crit->addWhere(self::UID, $assignee_id);

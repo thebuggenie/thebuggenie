@@ -19,7 +19,9 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
-	 * @Class(name="TBGIssue")
+	 * 
+	 * @Entity(class="TBGIssue")
+	 * @Table(name='issues')
 	 */
 	class TBGIssuesTable extends TBGB2DBTable 
 	{
@@ -74,56 +76,56 @@
 		const MILESTONE = 'issues.milestone';
 		const VOTES_TOTAL = 'issues.votes_total';
 
-		public function __construct()
-		{
-			parent::__construct(self::B2DBNAME, self::ID);
-			parent::_addInteger(self::ISSUE_NO, 10);
-			parent::_addVarchar(self::TITLE, 200);
-			parent::_addInteger(self::POSTED, 10);
-			parent::_addInteger(self::LAST_UPDATED, 10);
-			parent::_addForeignKeyColumn(self::PROJECT_ID, TBGProjectsTable::getTable(), TBGProjectsTable::ID);
-			parent::_addText(self::DESCRIPTION, false);
-			parent::_addBoolean(self::STATE);
-			parent::_addForeignKeyColumn(self::POSTED_BY, TBGUsersTable::getTable(), TBGUsersTable::ID);
-			parent::_addInteger(self::OWNER, 10);
-			parent::_addInteger(self::OWNER_TYPE, 2);
-			parent::_addFloat(self::USER_PAIN, 3);
-			parent::_addInteger(self::PAIN_BUG_TYPE, 3);
-			parent::_addInteger(self::PAIN_EFFECT, 3);
-			parent::_addInteger(self::PAIN_LIKELIHOOD, 3);
-			parent::_addInteger(self::ASSIGNED_TO, 10);
-			parent::_addText(self::REPRODUCTION_STEPS, false);
-			parent::_addForeignKeyColumn(self::RESOLUTION, TBGListTypesTable::getTable(), TBGListTypesTable::ID);
-			parent::_addForeignKeyColumn(self::ISSUE_TYPE, TBGIssueTypesTable::getTable(), TBGIssueTypesTable::ID);
-			parent::_addForeignKeyColumn(self::STATUS, TBGListTypesTable::getTable(), TBGListTypesTable::ID);
-			parent::_addForeignKeyColumn(self::PRIORITY, TBGListTypesTable::getTable(), TBGListTypesTable::ID);
-			parent::_addForeignKeyColumn(self::CATEGORY, TBGListTypesTable::getTable(), TBGListTypesTable::ID);
-			parent::_addForeignKeyColumn(self::SEVERITY, TBGListTypesTable::getTable(), TBGListTypesTable::ID);
-			parent::_addForeignKeyColumn(self::REPRODUCABILITY, TBGListTypesTable::getTable(), TBGListTypesTable::ID);
-			parent::_addVarchar(self::SCRUMCOLOR, 7, '#FFFFFF');
-			parent::_addInteger(self::ESTIMATED_MONTHS, 10);
-			parent::_addInteger(self::ESTIMATED_WEEKS, 10);
-			parent::_addInteger(self::ESTIMATED_DAYS, 10);
-			parent::_addInteger(self::ESTIMATED_HOURS, 10);
-			parent::_addInteger(self::ESTIMATED_POINTS);
-			parent::_addInteger(self::SPENT_MONTHS, 10);
-			parent::_addInteger(self::SPENT_WEEKS, 10);
-			parent::_addInteger(self::SPENT_DAYS, 10);
-			parent::_addInteger(self::SPENT_HOURS, 10);
-			parent::_addInteger(self::VOTES_TOTAL, 10);
-			parent::_addInteger(self::SPENT_POINTS);
-			parent::_addInteger(self::PERCENT_COMPLETE, 2);
-			parent::_addInteger(self::ASSIGNED_TYPE, 2);
-			parent::_addInteger(self::DUPLICATE_OF, 10);
-			parent::_addBoolean(self::DELETED);
-			parent::_addBoolean(self::BLOCKING);
-			parent::_addBoolean(self::LOCKED);
-			parent::_addForeignKeyColumn(self::BEING_WORKED_ON_BY_USER, TBGUsersTable::getTable(), TBGUsersTable::ID);
-			parent::_addInteger(self::BEING_WORKED_ON_BY_USER_SINCE, 10);
-			parent::_addForeignKeyColumn(self::MILESTONE, TBGMilestonesTable::getTable(), TBGMilestonesTable::ID);
-			parent::_addForeignKeyColumn(self::WORKFLOW_STEP_ID, TBGWorkflowStepsTable::getTable(), TBGWorkflowStepsTable::ID);
-			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
-		}
+//		public function __construct()
+//		{
+//			parent::__construct(self::B2DBNAME, self::ID);
+//			parent::_addInteger(self::ISSUE_NO, 10);
+//			parent::_addVarchar(self::TITLE, 200);
+//			parent::_addInteger(self::POSTED, 10);
+//			parent::_addInteger(self::LAST_UPDATED, 10);
+//			parent::_addForeignKeyColumn(self::PROJECT_ID, TBGProjectsTable::getTable(), TBGProjectsTable::ID);
+//			parent::_addText(self::DESCRIPTION, false);
+//			parent::_addBoolean(self::STATE);
+//			parent::_addForeignKeyColumn(self::POSTED_BY, TBGUsersTable::getTable(), TBGUsersTable::ID);
+//			parent::_addInteger(self::OWNER, 10);
+//			parent::_addInteger(self::OWNER_TYPE, 2);
+//			parent::_addFloat(self::USER_PAIN, 3);
+//			parent::_addInteger(self::PAIN_BUG_TYPE, 3);
+//			parent::_addInteger(self::PAIN_EFFECT, 3);
+//			parent::_addInteger(self::PAIN_LIKELIHOOD, 3);
+//			parent::_addInteger(self::ASSIGNED_TO, 10);
+//			parent::_addText(self::REPRODUCTION_STEPS, false);
+//			parent::_addForeignKeyColumn(self::RESOLUTION, TBGListTypesTable::getTable(), TBGListTypesTable::ID);
+//			parent::_addForeignKeyColumn(self::ISSUE_TYPE, TBGIssueTypesTable::getTable(), TBGIssueTypesTable::ID);
+//			parent::_addForeignKeyColumn(self::STATUS, TBGListTypesTable::getTable(), TBGListTypesTable::ID);
+//			parent::_addForeignKeyColumn(self::PRIORITY, TBGListTypesTable::getTable(), TBGListTypesTable::ID);
+//			parent::_addForeignKeyColumn(self::CATEGORY, TBGListTypesTable::getTable(), TBGListTypesTable::ID);
+//			parent::_addForeignKeyColumn(self::SEVERITY, TBGListTypesTable::getTable(), TBGListTypesTable::ID);
+//			parent::_addForeignKeyColumn(self::REPRODUCABILITY, TBGListTypesTable::getTable(), TBGListTypesTable::ID);
+//			parent::_addVarchar(self::SCRUMCOLOR, 7, '#FFFFFF');
+//			parent::_addInteger(self::ESTIMATED_MONTHS, 10);
+//			parent::_addInteger(self::ESTIMATED_WEEKS, 10);
+//			parent::_addInteger(self::ESTIMATED_DAYS, 10);
+//			parent::_addInteger(self::ESTIMATED_HOURS, 10);
+//			parent::_addInteger(self::ESTIMATED_POINTS);
+//			parent::_addInteger(self::SPENT_MONTHS, 10);
+//			parent::_addInteger(self::SPENT_WEEKS, 10);
+//			parent::_addInteger(self::SPENT_DAYS, 10);
+//			parent::_addInteger(self::SPENT_HOURS, 10);
+//			parent::_addInteger(self::VOTES_TOTAL, 10);
+//			parent::_addInteger(self::SPENT_POINTS);
+//			parent::_addInteger(self::PERCENT_COMPLETE, 2);
+//			parent::_addInteger(self::ASSIGNED_TYPE, 2);
+//			parent::_addInteger(self::DUPLICATE_OF, 10);
+//			parent::_addBoolean(self::DELETED);
+//			parent::_addBoolean(self::BLOCKING);
+//			parent::_addBoolean(self::LOCKED);
+//			parent::_addForeignKeyColumn(self::BEING_WORKED_ON_BY_USER, TBGUsersTable::getTable(), TBGUsersTable::ID);
+//			parent::_addInteger(self::BEING_WORKED_ON_BY_USER_SINCE, 10);
+//			parent::_addForeignKeyColumn(self::MILESTONE, TBGMilestonesTable::getTable(), TBGMilestonesTable::ID);
+//			parent::_addForeignKeyColumn(self::WORKFLOW_STEP_ID, TBGWorkflowStepsTable::getTable(), TBGWorkflowStepsTable::ID);
+//			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
+//		}
 
 		protected function _setupIndexes()
 		{
@@ -361,8 +363,8 @@
 			$crit->addWhere(self::PROJECT_ID, $project_id);
 			$crit->addWhere(self::ISSUE_NO, $issue_no);
 			$crit->addWhere(self::DELETED, 0);
-			$row = $this->doSelectOne($crit);
-			return $row;
+			return $this->selectOne($crit);
+//			return $row;
 		}
 
 		public function setDuplicate($issue_id, $duplicate_of)
@@ -460,7 +462,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::ASSIGNED_TO, $team_id);
-			$crit->addWhere(self::ASSIGNED_TYPE, TBGIdentifiableClass::TYPE_TEAM);
+			$crit->addWhere(self::ASSIGNED_TYPE, TBGIdentifiableTypeClass::TYPE_TEAM);
 			$crit->addWhere(self::STATE, TBGIssue::STATE_OPEN);
 			$crit->addWhere(self::DELETED, 0);
 			
@@ -473,7 +475,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::ASSIGNED_TO, $user_id);
-			$crit->addWhere(self::ASSIGNED_TYPE, TBGIdentifiableClass::TYPE_USER);
+			$crit->addWhere(self::ASSIGNED_TYPE, TBGIdentifiableTypeClass::TYPE_USER);
 			$crit->addWhere(self::STATE, TBGIssue::STATE_OPEN);
 			$crit->addWhere(self::DELETED, 0);
 			
@@ -579,6 +581,7 @@
 				$crit->addJoin(TBGIssueAffectsComponentTable::getTable(), TBGIssueAffectsComponentTable::ISSUE, self::ID);
 				$crit->addJoin(TBGIssueAffectsEditionTable::getTable(), TBGIssueAffectsEditionTable::ISSUE, self::ID);
 				$crit->addJoin(TBGIssueAffectsBuildTable::getTable(), TBGIssueAffectsBuildTable::ISSUE, self::ID);
+//				$crit->addJoin(TBGMilestonesTable::getTable(), TBGMilestonesTable::ID, self::MILESTONE);
 
 				foreach ($filters as $filter => $filter_info)
 				{

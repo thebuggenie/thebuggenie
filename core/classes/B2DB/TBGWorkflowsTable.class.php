@@ -19,6 +19,9 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name="workflows")
+	 * @Entity(class="TBGWorkflow")
 	 */
 	class TBGWorkflowsTable extends TBGB2DBTable
 	{
@@ -31,24 +34,14 @@
 		const DESCRIPTION = 'workflows.description';
 		const IS_ACTIVE = 'workflows.is_active';
 
-		/**
-		 * Return an instance of this table
-		 *
-		 * @return TBGWorkflowsTable
-		 */
-		public static function getTable()
-		{
-			return Core::getTable('TBGWorkflowsTable');
-		}
-
-		public function __construct()
-		{
-			parent::__construct(self::B2DBNAME, self::ID);
-			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
-			parent::_addVarchar(self::NAME, 200);
-			parent::_addText(self::DESCRIPTION, false);
-			parent::_addBoolean(self::IS_ACTIVE);
-		}
+//		public function __construct()
+//		{
+//			parent::__construct(self::B2DBNAME, self::ID);
+//			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
+//			parent::_addVarchar(self::NAME, 200);
+//			parent::_addText(self::DESCRIPTION, false);
+//			parent::_addBoolean(self::IS_ACTIVE);
+//		}
 
 		public function getAll($scope = null)
 		{

@@ -19,6 +19,9 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name="workflow_schemes")
+	 * @Entity(class="TBGWorkflowScheme")
 	 */
 	class TBGWorkflowSchemesTable extends TBGB2DBTable
 	{
@@ -30,23 +33,13 @@
 		const NAME = 'workflow_schemes.name';
 		const DESCRIPTION = 'workflow_schemes.description';
 
-		/**
-		 * Return an instance of this table
-		 *
-		 * @return TBGWorkflowSchemesTable
-		 */
-		public static function getTable()
-		{
-			return Core::getTable('TBGWorkflowSchemesTable');
-		}
-
-		public function __construct()
-		{
-			parent::__construct(self::B2DBNAME, self::ID);
-			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
-			parent::_addVarchar(self::NAME, 200);
-			parent::_addText(self::DESCRIPTION, false);
-		}
+//		public function __construct()
+//		{
+//			parent::__construct(self::B2DBNAME, self::ID);
+//			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
+//			parent::_addVarchar(self::NAME, 200);
+//			parent::_addText(self::DESCRIPTION, false);
+//		}
 
 		public function loadFixtures(TBGScope $scope)
 		{

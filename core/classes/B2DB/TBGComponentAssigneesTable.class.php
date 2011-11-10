@@ -19,6 +19,8 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name="componentassignees")
 	 */
 	class TBGComponentAssigneesTable extends TBGB2DBTable 
 	{
@@ -32,9 +34,9 @@
 		const COMPONENT_ID = 'componentassignees.component_id';
 		const TARGET_TYPE = 'componentassignees.target_type';
 		
-		public function __construct()
+		public function _initialize()
 		{
-			parent::__construct(self::B2DBNAME, self::ID);
+			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addInteger(self::TARGET_TYPE, 5);
 			parent::_addForeignKeyColumn(self::COMPONENT_ID, Core::getTable('TBGComponentsTable'), TBGComponentsTable::ID);
 			parent::_addForeignKeyColumn(self::UID, TBGUsersTable::getTable(), TBGUsersTable::ID);

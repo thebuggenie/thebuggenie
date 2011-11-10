@@ -19,6 +19,8 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name="issuetype_scheme_link")
 	 */
 	class TBGIssuetypeSchemeLinkTable extends TBGB2DBTable
 	{
@@ -32,9 +34,9 @@
 		const REPORTABLE = 'issuetype_scheme_link.reportable';
 		const REDIRECT_AFTER_REPORTING = 'issuetype_scheme_link.redirect_after_reporting';
 
-		public function __construct()
+		public function _initialize()
 		{
-			parent::__construct(self::B2DBNAME, self::ID);
+			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addForeignKeyColumn(self::ISSUETYPE_SCHEME_ID, TBGIssuetypeSchemesTable::getTable(), TBGIssuetypeSchemesTable::ID);
 			parent::_addForeignKeyColumn(self::ISSUETYPE_ID, TBGIssueTypesTable::getTable(), TBGIssueTypesTable::ID);
 			parent::_addBoolean(self::REPORTABLE, true);

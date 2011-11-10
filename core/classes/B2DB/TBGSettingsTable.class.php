@@ -19,6 +19,8 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name="settings")
 	 */
 	class TBGSettingsTable extends TBGB2DBTable 
 	{
@@ -47,15 +49,14 @@
 			$this->_addIndex('scope_uid', array(self::SCOPE, self::UID));
 		}
 		
-		public function __construct()
+		public function _initialize()
 		{
-			parent::__construct(self::B2DBNAME, self::ID);
-			
+			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addVarchar(self::NAME, 45);
 			parent::_addVarchar(self::MODULE, 45);
 			parent::_addVarchar(self::VALUE, 200);
 			parent::_addInteger(self::UID, 10);
-			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
+			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable());
 		}
 		
 		public function getDefaultScope()

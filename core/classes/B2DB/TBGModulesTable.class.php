@@ -19,6 +19,9 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name="modules")
+	 * @Entity(class="TBGModule")
 	 */
 	class TBGModulesTable extends TBGB2DBTable
 	{
@@ -43,15 +46,15 @@
 			return Core::getTable('TBGModulesTable');
 		}
 
-		public function __construct()
-		{
-			parent::__construct(self::B2DBNAME, self::ID);
-			parent::_addVarchar(self::MODULE_NAME, 50);
-			parent::_addBoolean(self::ENABLED);
-			parent::_addVarchar(self::VERSION, 10);
-			parent::_addVarchar(self::CLASSNAME, 50);
-			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
-		}
+//		public function __construct()
+//		{
+//			parent::__construct(self::B2DBNAME, self::ID);
+//			parent::_addVarchar(self::MODULE_NAME, 50);
+//			parent::_addBoolean(self::ENABLED);
+//			parent::_addVarchar(self::VERSION, 10);
+//			parent::_addVarchar(self::CLASSNAME, 50);
+//			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
+//		}
 		
 		public function getAll()
 		{

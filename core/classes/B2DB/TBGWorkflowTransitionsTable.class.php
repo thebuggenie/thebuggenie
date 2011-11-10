@@ -19,6 +19,9 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name="workflow_transitions")
+	 * @Entity(class="TBGWorkflowTransition")
 	 */
 	class TBGWorkflowTransitionsTable extends TBGB2DBTable
 	{
@@ -33,26 +36,16 @@
 		const OUTGOING_STEP_ID = 'workflow_transitions.outgoing_step_id';
 		const TEMPLATE = 'workflow_transitions.template';
 
-		/**
-		 * Return an instance of this table
-		 *
-		 * @return TBGWorkflowTransitionsTable
-		 */
-		public static function getTable()
-		{
-			return Core::getTable('TBGWorkflowTransitionsTable');
-		}
-
-		public function __construct()
-		{
-			parent::__construct(self::B2DBNAME, self::ID);
-			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
-			parent::_addForeignKeyColumn(self::WORKFLOW_ID, TBGWorkflowsTable::getTable(), TBGWorkflowsTable::ID);
-			parent::_addVarchar(self::NAME, 200);
-			parent::_addText(self::DESCRIPTION, false);
-			parent::_addForeignKeyColumn(self::OUTGOING_STEP_ID, TBGWorkflowStepsTable::getTable(), TBGWorkflowStepsTable::ID);
-			parent::_addVarchar(self::TEMPLATE, 200);
-		}
+//		public function _initialize()
+//		{
+//			parent::_setup(self::B2DBNAME, self::ID);
+//			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
+//			parent::_addForeignKeyColumn(self::WORKFLOW_ID, TBGWorkflowsTable::getTable(), TBGWorkflowsTable::ID);
+//			parent::_addVarchar(self::NAME, 200);
+//			parent::_addText(self::DESCRIPTION, false);
+//			parent::_addForeignKeyColumn(self::OUTGOING_STEP_ID, TBGWorkflowStepsTable::getTable(), TBGWorkflowStepsTable::ID);
+//			parent::_addVarchar(self::TEMPLATE, 200);
+//		}
 
 		public function createNew($workflow_id, $name, $description, $to_step_id, $template, $scope = null)
 		{

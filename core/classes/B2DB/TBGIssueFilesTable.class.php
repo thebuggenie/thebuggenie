@@ -19,6 +19,8 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name="issuefiles")
 	 */
 	class TBGIssueFilesTable extends TBGB2DBTable
 	{
@@ -32,19 +34,9 @@
 		const FILE_ID = 'issuefiles.file_id';
 		const ISSUE_ID = 'issuefiles.issue_id';
 
-		/**
-		 * Return an instance of this table
-		 *
-		 * @return TBGIssueFilesTable
-		 */
-		public static function getTable()
+		public function _initialize()
 		{
-			return Core::getTable('TBGIssueFilesTable');
-		}
-
-		public function __construct()
-		{
-			parent::__construct(self::B2DBNAME, self::ID);
+			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addForeignKeyColumn(self::UID, TBGUsersTable::getTable(), TBGUsersTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 			parent::_addForeignKeyColumn(self::ISSUE_ID, TBGIssuesTable::getTable(), TBGIssuesTable::ID);

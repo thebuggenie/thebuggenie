@@ -19,6 +19,8 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name="customfieldoptions")
 	 */
 	class TBGCustomFieldOptionsTable extends TBGB2DBTable
 	{
@@ -33,9 +35,9 @@
 		const CUSTOMFIELDS_KEY = 'customfieldoptions.customfield_key';
 		const SCOPE = 'customfieldoptions.scope';
 
-		public function __construct()
+		public function _initialize()
 		{
-			parent::__construct(self::B2DBNAME, self::ID);
+			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addVarchar(self::NAME, 100);
 			parent::_addVarchar(self::OPTION_VALUE, 100);
 			parent::_addVarchar(self::ITEMDATA, 100);

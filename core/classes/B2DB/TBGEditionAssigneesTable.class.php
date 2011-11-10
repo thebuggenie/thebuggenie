@@ -19,6 +19,8 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name="editionassignees")
 	 */
 	class TBGEditionAssigneesTable extends TBGB2DBTable
 	{
@@ -32,9 +34,9 @@
 		const EDITION_ID = 'editionassignees.edition_id';
 		const TARGET_TYPE = 'editionassignees.target_type';
 		
-		public function __construct()
+		public function _initialize()
 		{
-			parent::__construct(self::B2DBNAME, self::ID);
+			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addInteger(self::TARGET_TYPE, 5);
 			parent::_addForeignKeyColumn(self::EDITION_ID, Core::getTable('TBGEditionsTable'), TBGEditionsTable::ID);
 			parent::_addForeignKeyColumn(self::UID, TBGUsersTable::getTable(), TBGUsersTable::ID);

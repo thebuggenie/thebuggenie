@@ -19,6 +19,8 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name="workflow_step_transitions")
 	 */
 	class TBGWorkflowStepTransitionsTable extends TBGB2DBTable
 	{
@@ -31,19 +33,9 @@
 		const TRANSITION_ID = 'workflow_step_transitions.transition_id';
 		const WORKFLOW_ID = 'workflow_step_transitions.workflow_id';
 
-		/**
-		 * Return an instance of this table
-		 *
-		 * @return TBGWorkflowStepTransitionsTable
-		 */
-		public static function getTable()
+		public function _initialize()
 		{
-			return Core::getTable('TBGWorkflowStepTransitionsTable');
-		}
-
-		public function __construct()
-		{
-			parent::__construct(self::B2DBNAME, self::ID);
+			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 			parent::_addForeignKeyColumn(self::WORKFLOW_ID, TBGWorkflowsTable::getTable(), TBGWorkflowsTable::ID);
 			parent::_addForeignKeyColumn(self::FROM_STEP_ID, TBGWorkflowStepsTable::getTable(), TBGWorkflowStepsTable::ID);
@@ -71,6 +63,7 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addWhere((($type == 'step') ? self::FROM_STEP_ID : self::TRANSITION_ID), $id);
+		//	$crit->addJoin(self::TRANSITION_ID, TBGWorkflowTransitionsTable::getTable());
 
 			$return_array = array();
 			if ($res = $this->doSelect($crit))

@@ -19,6 +19,8 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name="issuecustomfields")
 	 */
 	class TBGIssueCustomFieldsTable extends TBGB2DBTable
 	{
@@ -31,19 +33,9 @@
 		const OPTION_VALUE = 'issuecustomfields.option_value';
 		const CUSTOMFIELDS_ID = 'issuecustomfields.customfields_id';
 
-		/**
-		 * Return an instance of this table
-		 *
-		 * @return TBGIssueCustomFieldsTable
-		 */
-		public static function getTable()
+		public function _initialize()
 		{
-			return Core::getTable('TBGIssueCustomFieldsTable');
-		}
-
-		public function __construct()
-		{
-			parent::__construct(self::B2DBNAME, self::ID);
+			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addForeignKeyColumn(self::ISSUE_ID, TBGIssuesTable::getTable(), TBGIssuesTable::ID);
 			parent::_addForeignKeyColumn(self::CUSTOMFIELDS_ID, Core::getTable('TBGCustomFieldsTable'), TBGCustomFieldsTable::ID);
 			parent::_addText(self::OPTION_VALUE, false);

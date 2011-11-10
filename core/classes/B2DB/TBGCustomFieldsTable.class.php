@@ -19,6 +19,8 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name="customfields")
 	 */
 	class TBGCustomFieldsTable extends TBGB2DBTable
 	{
@@ -33,19 +35,9 @@
 		const FIELD_TYPE = 'customfields.itemtype';
 		const SCOPE = 'customfields.scope';
 
-		/**
-		 * Return an instance of this table
-		 *
-		 * @return TBGCustomFieldsTable
-		 */
-		public static function getTable()
+		public function _initialize()
 		{
-			return Core::getTable('TBGCustomFieldsTable');
-		}
-
-		public function __construct()
-		{
-			parent::__construct(self::B2DBNAME, self::ID);
+			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addVarchar(self::FIELD_NAME, 100);
 			parent::_addVarchar(self::FIELD_KEY, 100);
 			parent::_addVarchar(self::FIELD_DESCRIPTION, 200);

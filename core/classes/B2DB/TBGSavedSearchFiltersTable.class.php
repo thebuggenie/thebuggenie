@@ -4,6 +4,9 @@
 		b2db\Criteria,
 		b2db\Criterion;
 
+	/**
+	 * @Table(name="savedsearchfilters")
+	 */
 	class TBGSavedSearchFiltersTable extends TBGB2DBTable
 	{
 
@@ -16,9 +19,9 @@
 		const SEARCH_ID = 'savedsearchfilters.search_id';
 		const FILTER_KEY = 'savedsearchfilters.filter_key';
 		
-		public function __construct()
+		public function _initialize()
 		{
-			parent::__construct(self::B2DBNAME, self::ID);
+			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addVarchar(self::VALUE, 200);
 			parent::_addVarchar(self::OPERATOR, 40);
 			parent::_addVarchar(self::FILTER_KEY, 100);

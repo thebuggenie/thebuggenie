@@ -19,6 +19,8 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name="issuetags")
 	 */
 	class TBGIssueTagsTable extends TBGB2DBTable
 	{
@@ -31,9 +33,9 @@
 		const ADDED = 'issuetags.added';
 		const SCOPE = 'issuetags.scope';
 		
-		public function __construct()
+		public function _initialize()
 		{
-			parent::__construct(self::B2DBNAME, self::ID);
+			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addForeignKeyColumn(self::ISSUE_ID, TBGIssuesTable::getTable(), TBGIssuesTable::ID);
 			parent::_addVarchar(self::TAG_NAME, 50);
 			parent::_addInteger(self::ADDED, 10);

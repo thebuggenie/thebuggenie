@@ -19,6 +19,9 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name="users")
+	 * @Entity(class="TBGUser")
 	 */
 	class TBGUsersTable extends TBGB2DBTable 
 	{
@@ -69,32 +72,32 @@
 			$this->_addIndex('username_deleted_scope', array(self::UNAME, self::DELETED, self::SCOPE));
 		}
 
-		public function __construct()
-		{
-			parent::__construct(self::B2DBNAME, self::ID);
-			
-			parent::_addVarchar(self::UNAME, 50);
-			parent::_addVarchar(self::PASSWORD, 100);
-			parent::_addVarchar(self::BUDDYNAME, 50);
-			parent::_addVarchar(self::REALNAME, 100);
-			parent::_addVarchar(self::EMAIL, 200);
-			parent::_addForeignKeyColumn(self::USERSTATE, Core::getTable('TBGUserStateTable'), TBGUserStateTable::ID);
-			parent::_addBoolean(self::CUSTOMSTATE);
-			parent::_addVarchar(self::HOMEPAGE, 250, '');
-			parent::_addVarchar(self::LANGUAGE, 100, '');
-			parent::_addInteger(self::LASTSEEN, 10);
-			parent::_addInteger(self::QUOTA);
-			parent::_addBoolean(self::ACTIVATED);
-			parent::_addBoolean(self::ENABLED);
-			parent::_addBoolean(self::DELETED);
-			parent::_addVarchar(self::AVATAR, 30, '');
-			parent::_addBoolean(self::USE_GRAVATAR, true);
-			parent::_addBoolean(self::PRIVATE_EMAIL);
-			parent::_addBoolean(self::OPENID_LOCKED);
-			parent::_addInteger(self::JOINED, 10);
-			parent::_addForeignKeyColumn(self::GROUP_ID, TBGGroupsTable::getTable(), TBGGroupsTable::ID);
-			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
-		}
+//		public function __construct()
+//		{
+//			parent::__construct(self::B2DBNAME, self::ID);
+//
+//			parent::_addVarchar(self::UNAME, 50);
+//			parent::_addVarchar(self::PASSWORD, 100);
+//			parent::_addVarchar(self::BUDDYNAME, 50);
+//			parent::_addVarchar(self::REALNAME, 100);
+//			parent::_addVarchar(self::EMAIL, 200);
+//			parent::_addForeignKeyColumn(self::USERSTATE, Core::getTable('TBGUserStateTable'), TBGUserStateTable::ID);
+//			parent::_addBoolean(self::CUSTOMSTATE);
+//			parent::_addVarchar(self::HOMEPAGE, 250, '');
+//			parent::_addVarchar(self::LANGUAGE, 100, '');
+//			parent::_addInteger(self::LASTSEEN, 10);
+//			parent::_addInteger(self::QUOTA);
+//			parent::_addBoolean(self::ACTIVATED);
+//			parent::_addBoolean(self::ENABLED);
+//			parent::_addBoolean(self::DELETED);
+//			parent::_addVarchar(self::AVATAR, 30, '');
+//			parent::_addBoolean(self::USE_GRAVATAR, true);
+//			parent::_addBoolean(self::PRIVATE_EMAIL);
+//			parent::_addBoolean(self::OPENID_LOCKED);
+//			parent::_addInteger(self::JOINED, 10);
+//			parent::_addForeignKeyColumn(self::GROUP_ID, TBGGroupsTable::getTable(), TBGGroupsTable::ID);
+//			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
+//		}
 
 		public function getByUsername($username, $scope = null)
 		{

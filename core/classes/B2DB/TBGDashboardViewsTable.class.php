@@ -20,6 +20,9 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name="dashboard_views")
+	 * @Entity(class="TBGDashboardView")
 	 */
 	class TBGDashboardViewsTable extends TBGB2DBTable
 	{
@@ -39,26 +42,16 @@
 		const TYPE_TEAM = 3;
 		const TYPE_CLIENT = 4;
 
-		/**
-		 * Return an instance of this table
-		 *
-		 * @return TBGDashboardViewsTable
-		 */
-		public static function getTable()
-		{
-			return Core::getTable('TBGDashboardViewsTable');
-		}
-
-		public function __construct()
-		{
-			parent::__construct(self::B2DBNAME, self::ID);
-			parent::_addInteger(self::TYPE);
-			parent::_addInteger(self::VIEW);
-			parent::_addInteger(self::PID);
-			parent::_addInteger(self::TARGET_TYPE);
-			parent::_addInteger(self::TID);
-			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
-		}
+//		public function __construct()
+//		{
+//			parent::__construct(self::B2DBNAME, self::ID);
+//			parent::_addInteger(self::TYPE);
+//			parent::_addInteger(self::VIEW);
+//			parent::_addInteger(self::PID);
+//			parent::_addInteger(self::TARGET_TYPE);
+//			parent::_addInteger(self::TID);
+//			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
+//		}
 		
 		public function addView($target_id, $target_type, $view)
 		{

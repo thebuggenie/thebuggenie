@@ -19,6 +19,9 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name="issuetypes")
+	 * @Entity(class="TBGIssuetype")
 	 */
 	class TBGIssueTypesTable extends TBGB2DBTable 
 	{
@@ -32,15 +35,15 @@
 		const ICON = 'issuetypes.itemdata';
 		const TASK = 'issuetypes.task';
 		
-		public function __construct()
-		{
-			parent::__construct(self::B2DBNAME, self::ID);
-			parent::_addVarchar(self::NAME, 50);
-			parent::_addVarchar(self::ICON, 30, 'bug_report');
-			parent::_addText(self::DESCRIPTION, false);
-			parent::_addBoolean(self::TASK);
-			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
-		}
+//		public function __construct()
+//		{
+//			parent::__construct(self::B2DBNAME, self::ID);
+//			parent::_addVarchar(self::NAME, 50);
+//			parent::_addVarchar(self::ICON, 30, 'bug_report');
+//			parent::_addText(self::DESCRIPTION, false);
+//			parent::_addBoolean(self::TASK);
+//			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
+//		}
 
 		public function createNew($name, $icon = 'bug_report')
 		{

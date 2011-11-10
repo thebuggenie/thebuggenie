@@ -4,6 +4,9 @@
 		b2db\Criteria,
 		b2db\Criterion;
 
+	/**
+	 * @Table(name="savedsearches")
+	 */
 	class TBGSavedSearchesTable extends TBGB2DBTable 
 	{
 
@@ -69,13 +72,13 @@
 					break;
 				case TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES:
 					$filters['state'] = array('operator' => '=', 'value' => TBGIssue::STATE_OPEN);
-					$filters['assigned_type'] = array('operator' => '=', 'value' => TBGIdentifiableClass::TYPE_USER);
+					$filters['assigned_type'] = array('operator' => '=', 'value' => TBGIdentifiableTypeClass::TYPE_USER);
 					$filters['assigned_to'] = array('operator' => '=', 'value' => TBGContext::getUser()->getID());
 					$groupby = 'issuetype';
 					break;
 				case TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES:
 					$filters['state'] = array('operator' => '=', 'value' => TBGIssue::STATE_OPEN);
-					$filters['assigned_type'] = array('operator' => '=', 'value' => TBGIdentifiableClass::TYPE_TEAM);
+					$filters['assigned_type'] = array('operator' => '=', 'value' => TBGIdentifiableTypeClass::TYPE_TEAM);
 					foreach (TBGContext::getUser()->getTeams() as $team_id => $team)
 					{
 						$filters['assigned_to'][] = array('operator' => '=', 'value' => $team_id);
@@ -87,9 +90,9 @@
 			return array($filters, $groupby, $grouporder);
 		}
 
-		public function __construct()
+		public function _initialize()
 		{
-			parent::__construct(self::B2DBNAME, self::ID);
+			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addVarchar(self::NAME, 200);
 			parent::_addVarchar(self::DESCRIPTION, 255, '');
 			parent::_addBoolean(self::IS_PUBLIC);

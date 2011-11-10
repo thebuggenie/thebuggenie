@@ -19,6 +19,9 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name="userstate")
+	 * @Entity(class="TBGUserstate")
 	 */
 	class TBGUserStateTable extends TBGB2DBTable 
 	{
@@ -35,29 +38,19 @@
 		const COLOR = 'userstate.itemdata';
 		const ABSENT = 'userstate.is_absent';
 
-		/**
-		 * Return an instance of this table
-		 *
-		 * @return TBGUserStateTable
-		 */
-		public static function getTable()
-		{
-			return Core::getTable('TBGUserStateTable');
-		}
-		
-		public function __construct()
-		{
-			parent::__construct(self::B2DBNAME, self::ID);
-			
-			parent::_addVarchar(self::NAME, 100);
-			parent::_addBoolean(self::UNAVAILABLE);
-			parent::_addBoolean(self::BUSY);
-			parent::_addBoolean(self::ONLINE);
-			parent::_addBoolean(self::MEETING);
-			parent::_addBoolean(self::ABSENT);
-			parent::_addVarchar(self::COLOR, 7, '');
-			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
-		}
+//		public function __construct()
+//		{
+//			parent::__construct(self::B2DBNAME, self::ID);
+//
+//			parent::_addVarchar(self::NAME, 100);
+//			parent::_addBoolean(self::UNAVAILABLE);
+//			parent::_addBoolean(self::BUSY);
+//			parent::_addBoolean(self::ONLINE);
+//			parent::_addBoolean(self::MEETING);
+//			parent::_addBoolean(self::ABSENT);
+//			parent::_addVarchar(self::COLOR, 7, '');
+//			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
+//		}
 
 		public function getAll()
 		{
