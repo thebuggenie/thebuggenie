@@ -10,7 +10,7 @@
 		<div class="content">
 			<?php echo __('Do you really want to delete this transition? If this transition is used by more than one step, it will be removed from these steps as well!'); ?>
 			<div style="text-align: right;">
-				<?php echo javascript_link_tag(__('Yes'), array('onclick' => "deleteTransition('".make_url('configure_workflow_delete_transition', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID()))."', {$transition->getID()}, '{$direction}');")); ?> ::
+				<?php echo javascript_link_tag(__('Yes'), array('onclick' => "TBG.Config.Workflows.Transition.remove('".make_url('configure_workflow_delete_transition', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID()))."', {$transition->getID()}, '{$direction}');")); ?> ::
 				<b><?php echo javascript_link_tag(__('No'), array('onclick' => "\$('delete_transition_{$transition->getID()}_confirm').toggle();")); ?></b>
 			</div>
 			<div style="padding: 10px 0 10px 0; display: none;" id="delete_transition_<?php echo $transition->getID(); ?>_indicator"><span style="float: left;"><?php echo image_tag('spinning_16.gif'); ?></span>&nbsp;<?php echo __('Please wait'); ?></div>
