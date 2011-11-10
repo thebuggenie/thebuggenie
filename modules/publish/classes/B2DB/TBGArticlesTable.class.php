@@ -4,6 +4,10 @@
 		b2db\Criteria,
 		b2db\Criterion;
 
+	/**
+	 * @Table(name="articles")
+	 * @Entity(class="TBGWikiArticle")
+	 */
 	class TBGArticlesTable extends TBGB2DBTable 
 	{
 
@@ -27,16 +31,16 @@
 			return Core::getTable('TBGArticlesTable');
 		}
 
-		public function __construct()
-		{
-			parent::__construct(self::B2DBNAME, self::ID);
-			parent::_addVarchar(self::NAME, 255);
-			parent::_addText(self::CONTENT, false);
-			parent::_addBoolean(self::IS_PUBLISHED);
-			parent::_addInteger(self::DATE, 10);
-			parent::_addForeignKeyColumn(self::AUTHOR, TBGUsersTable::getTable(), TBGUsersTable::ID);
-			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
-		}
+//		public function __construct()
+//		{
+//			parent::__construct(self::B2DBNAME, self::ID);
+//			parent::_addVarchar(self::NAME, 255);
+//			parent::_addText(self::CONTENT, false);
+//			parent::_addBoolean(self::IS_PUBLISHED);
+//			parent::_addInteger(self::DATE, 10);
+//			parent::_addForeignKeyColumn(self::AUTHOR, TBGUsersTable::getTable(), TBGUsersTable::ID);
+//			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
+//		}
 
 		public function _setupIndexes()
 		{

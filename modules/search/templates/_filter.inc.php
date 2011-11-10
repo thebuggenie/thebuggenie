@@ -52,7 +52,7 @@
 				if ($allfilters) {
 					if ($filter == 'assigned_to') {
 						$type_value = $allfilters['assigned_type'][$key]['value'];
-						if ($type_value == TBGIdentifiableClass::TYPE_USER) {
+						if ($type_value == TBGIdentifiableTypeClass::TYPE_USER) {
 							$component = 'main/userdropdown';
 							$options = array('user' => $selected_value);
 
@@ -63,7 +63,7 @@
 					}
 					if ($filter == 'owned_by') {
 						$type_value = $allfilters['owned_type'][$key]['value'];
-						if ($type_value == TBGIdentifiableClass::TYPE_USER) {
+						if ($type_value == TBGIdentifiableTypeClass::TYPE_USER) {
 							$component = 'main/userdropdown';
 							$options = array('user' => $selected_value);
 						} else {
@@ -74,7 +74,7 @@
 					if ($filter == 'owned_by') {
 						$component = 'main/userdropdown';
 						$options = array('user' => $selected_value);
-						$type_value = TBGIdentifiableClass::TYPE_USER;
+						$type_value = TBGIdentifiableTypeClass::TYPE_USER;
 					}
 					include_component($component, $options);
 				}

@@ -50,15 +50,23 @@
 				$this->projects = TBGProject::getAllRootProjects(true);
 				$this->project_count = count($this->projects);
 			}
-			elseif ($this->target == TBGIdentifiableClass::TYPE_TEAM)
+			elseif ($this->target == TBGIdentifiableTypeClass::TYPE_TEAM)
 			{
 				$this->team = TBGContext::factory()->TBGTeam($this->id);
-				$own = TBGProject::getAllByOwner($this->team);
-				$leader = TBGProject::getAllByLeader($this->team);
-				$qa = TBGProject::getAllByQaResponsible($this->team);
-				$proj = $this->team->getAssociatedProjects();
+				$projects = array();
+				foreach (TBGProject::getAllByOwner($this->team) as $project) {
+					$projects[$project->getID()] = $project;
+				}
+				foreach (TBGProject::getAllByLeader($this->team) as $project) {
+					$projects[$project->getID()] = $project;
+				}
+				foreach (TBGProject::getAllByQaResponsible($this->team) as $project) {
+					$projects[$project->getID()] = $project;
+				}
+				foreach ($this->team->getAssociatedProjects() as $project_id => $project) {
+					$projects[$project_id] = $project;
+				}
 				
-				$projects = array_unique(array_merge($proj, $own, $leader, $qa));
 				$final_projects = array();
 				
 				foreach ($projects as $project)
@@ -68,7 +76,7 @@
 				
 				$this->projects = $final_projects;
 			}
-			elseif ($this->target == TBGIdentifiableClass::TYPE_CLIENT)
+			elseif ($this->target == TBGIdentifiableTypeClass::TYPE_CLIENT)
 			{
 				$this->client = TBGContext::factory()->TBGClient($this->id);
 				$projects = TBGProject::getAllByClientID($this->client->getID());

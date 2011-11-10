@@ -434,7 +434,6 @@
 			{
 				$this->cliEcho("\n\nThe installation was interrupted\n", 'red');
 				$this->cliEcho($e->getMessage() . "\n");
-				var_dump($e->getTraceAsString());die();
 			}
 			$this->cliEcho("\n");
 		}

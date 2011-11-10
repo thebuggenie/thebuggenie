@@ -20,9 +20,9 @@
 						<input type="hidden" name="assignee_teamup" id="popup_assigned_to_teamup" value="<?php echo $issue->getAssigneeType(); ?>">
 						<label for="transition_popup_set_assignee"><?php echo __('Assignee'); ?></label>
 						<span style="width: 170px; display: <?php if ($issue->isAssigned()): ?>inline<?php else: ?>none<?php endif; ?>;" id="popup_assigned_to_name">
-							<?php if ($issue->getAssigneeType() == TBGIdentifiableClass::TYPE_USER): ?>
+							<?php if ($issue->getAssigneeType() == TBGIdentifiableTypeClass::TYPE_USER): ?>
 								<?php echo include_component('main/userdropdown', array('user' => $issue->getAssignee())); ?>
-							<?php elseif ($issue->getAssigneeType() == TBGIdentifiableClass::TYPE_TEAM): ?>
+							<?php elseif ($issue->getAssigneeType() == TBGIdentifiableTypeClass::TYPE_TEAM): ?>
 								<?php echo include_component('main/teamdropdown', array('team' => $issue->getAssignee())); ?>
 							<?php endif; ?>
 						</span>

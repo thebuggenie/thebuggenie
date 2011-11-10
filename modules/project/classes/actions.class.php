@@ -536,7 +536,7 @@
 						}
 						if ($this->key != 'issues_per_state')
 						{
-							$labels[] = ($item instanceof TBGIdentifiableClass) ? html_entity_decode($item->getName()) : $i18n->__('Unknown', array(), true);
+							$labels[] = ($item instanceof TBGIdentifiableTypeClass) ? html_entity_decode($item->getName()) : $i18n->__('Unknown', array(), true);
 						}
 						else
 						{
@@ -733,7 +733,7 @@
 				$filters['assigned_to'] = array('operator' => '=', 'value' => $user_id);
 				if ($user_id > 0)
 				{
-					$filters['assigned_type'] = array('operator' => '=', 'value' => TBGIdentifiableClass::TYPE_USER);
+					$filters['assigned_type'] = array('operator' => '=', 'value' => TBGIdentifiableTypeClass::TYPE_USER);
 				}
 			}
 

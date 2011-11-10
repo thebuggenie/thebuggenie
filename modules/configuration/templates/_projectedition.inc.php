@@ -28,9 +28,9 @@
 						</td>
 						<td style="<?php if (!$edition->hasOwner()): ?>display: none; <?php endif; ?>padding: 2px;" id="owned_by_name">
 							<div style="width: 270px; display: <?php if ($edition->hasOwner()): ?>inline<?php else: ?>none<?php endif; ?>;" id="owned_by_name">
-								<?php if ($edition->getOwnerType() == TBGIdentifiableClass::TYPE_USER): ?>
+								<?php if ($edition->getOwnerType() == TBGIdentifiableTypeClass::TYPE_USER): ?>
 									<?php echo include_component('main/userdropdown', array('user' => $edition->getOwner())); ?>
-								<?php elseif ($edition->getOwnerType() == TBGIdentifiableClass::TYPE_TEAM): ?>
+								<?php elseif ($edition->getOwnerType() == TBGIdentifiableTypeClass::TYPE_TEAM): ?>
 									<?php echo include_component('main/teamdropdown', array('team' => $edition->getOwner())); ?>
 								<?php endif; ?>
 							</div>
@@ -58,9 +58,9 @@
 						</td>
 						<td style="<?php if (!$edition->hasLeader()): ?>display: none; <?php endif; ?>padding: 2px;" id="lead_by_name">
 							<div style="width: 270px; display: <?php if ($edition->hasLeader()): ?>inline<?php else: ?>none<?php endif; ?>;" id="lead_by_name">
-								<?php if ($edition->getLeaderType() == TBGIdentifiableClass::TYPE_USER): ?>
+								<?php if ($edition->getLeaderType() == TBGIdentifiableTypeClass::TYPE_USER): ?>
 									<?php echo include_component('main/userdropdown', array('user' => $edition->getLeader())); ?>
-								<?php elseif ($edition->getLeaderType() == TBGIdentifiableClass::TYPE_TEAM): ?>
+								<?php elseif ($edition->getLeaderType() == TBGIdentifiableTypeClass::TYPE_TEAM): ?>
 									<?php echo include_component('main/teamdropdown', array('team' => $edition->getLeader())); ?>
 								<?php endif; ?>
 							</div>
@@ -88,9 +88,9 @@
 						</td>
 						<td style="<?php if (!$edition->hasQaResponsible()): ?>display: none; <?php endif; ?>padding: 2px;" id="qa_by_name">
 							<div style="width: 270px; display: <?php if ($edition->hasQaResponsible()): ?>inline<?php else: ?>none<?php endif; ?>;" id="qa_by_name">
-								<?php if ($edition->getQaResponsibleType() == TBGIdentifiableClass::TYPE_USER): ?>
+								<?php if ($edition->getQaResponsibleType() == TBGIdentifiableTypeClass::TYPE_USER): ?>
 									<?php echo include_component('main/userdropdown', array('user' => $edition->getQaResponsible())); ?>
-								<?php elseif ($edition->getQaResponsibleType() == TBGIdentifiableClass::TYPE_TEAM): ?>
+								<?php elseif ($edition->getQaResponsibleType() == TBGIdentifiableTypeClass::TYPE_TEAM): ?>
 									<?php echo include_component('main/teamdropdown', array('team' => $edition->getQaResponsible())); ?>
 								<?php endif; ?>
 							</div>

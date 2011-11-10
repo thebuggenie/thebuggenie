@@ -10,23 +10,23 @@
 		 * The article author
 		 *
 		 * @var TBGUser
+		 * @Column(type="integer")
 		 * @Relates(class="TBGUser")
 		 */
 		protected $_author = null;
 
 		/**
+		 * @Column(type="string")
+		 */
+		protected $_name;
+
+		/**
 		 * When the article was posted
 		 *
 		 * @var integer
+		 * @Column(type="integer")
 		 */
 		protected $_date = null;
-
-		/**
-		 * The article name
-		 *
-		 * @var string
-		 */
-		protected $_name = null;
 
 		/**
 		 * The old article content, used for history when saving
@@ -39,12 +39,15 @@
 		 * The article content
 		 *
 		 * @var string
+		 * @Column(type="string")
 		 */
 		protected $_content = null;
 
 		/**
 		 * Whether the article is published or not
+		 * 
 		 * @var boolean
+		 * @Column(type="boolean")
 		 */
 		protected $_is_published = false;
 

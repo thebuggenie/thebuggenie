@@ -1,7 +1,7 @@
 <?php
 
 
-	class TBGIncomingEmailAccount extends TBGIdentifiableClass
+	class TBGIncomingEmailAccount extends TBGIdentifiableTypeClass
 	{
 		
 		const SERVER_IMAP = 0;
@@ -302,7 +302,7 @@
 		 */
 		public function getProject()
 		{
-			return $this->_getPopulatedObjectFromProperty('_project');
+			return $this->_b2dbLazyload('_project');
 		}
 		
 		/**
@@ -312,7 +312,7 @@
 		 */
 		public function getIssuetype()
 		{
-			return $this->_getPopulatedObjectFromProperty('_issuetype');
+			return $this->_b2dbLazyload('_issuetype');
 		}
 		
 		public function getIssuetypeID()

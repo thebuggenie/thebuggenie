@@ -17,7 +17,7 @@
 	 *
 	 * @Table(name="TBGVCSIntegrationIssueLinksTable")
 	 */
-	class TBGVCSIntegrationIssueLink extends TBGIdentifiableClass
+	class TBGVCSIntegrationIssueLink extends TBGIdentifiableTypeClass
 	{
 		
 		/**

@@ -17,7 +17,7 @@
 	 *
 	 * @Table(name="TBGVCSIntegrationFilesTable")
 	 */
-	class TBGVCSIntegrationFile extends TBGIdentifiableClass
+	class TBGVCSIntegrationFile extends TBGIdentifiableTypeClass
 	{
 		
 		/**

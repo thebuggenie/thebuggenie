@@ -86,9 +86,9 @@
 					<a href="javascript:void(0);" onclick="if ($('assigned_to_change').visible()) { $$('div.dropdown_box').each(Element.hide); } else { $$('div.dropdown_box').each(Element.hide); $('assigned_to_change').toggle(); }" title="<?php echo __('Click to change assignee'); ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
 				<?php endif; ?>
 				<div style="width: 170px; display: <?php if ($issue->isAssigned()): ?>inline<?php else: ?>none<?php endif; ?>;" id="assigned_to_name">
-					<?php if ($issue->getAssigneeType() == TBGIdentifiableClass::TYPE_USER): ?>
+					<?php if ($issue->getAssigneeType() == TBGIdentifiableTypeClass::TYPE_USER): ?>
 						<?php echo include_component('main/userdropdown', array('user' => $issue->getAssignee())); ?>
-					<?php elseif ($issue->getAssigneeType() == TBGIdentifiableClass::TYPE_TEAM): ?>
+					<?php elseif ($issue->getAssigneeType() == TBGIdentifiableTypeClass::TYPE_TEAM): ?>
 						<?php echo include_component('main/teamdropdown', array('team' => $issue->getAssignee())); ?>
 					<?php endif; ?>
 				</div>
@@ -277,9 +277,9 @@
 					<a href="javascript:void(0);" onclick="if ($('owned_by_change').visible()) { $$('div.dropdown_box').each(Element.hide); } else { $$('div.dropdown_box').each(Element.hide); $('owned_by_change').toggle(); }" title="<?php echo __('Click to change owner'); ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
 				<?php endif; ?>
 				<div style="width: 170px; display: <?php if ($issue->isOwned()): ?>inline<?php else: ?>none<?php endif; ?>;" id="owned_by_name">
-					<?php if ($issue->getOwnerType() == TBGIdentifiableClass::TYPE_USER): ?>
+					<?php if ($issue->getOwnerType() == TBGIdentifiableTypeClass::TYPE_USER): ?>
 						<?php echo include_component('main/userdropdown', array('user' => $issue->getOwner())); ?>
-					<?php elseif ($issue->getOwnerType() == TBGIdentifiableClass::TYPE_TEAM): ?>
+					<?php elseif ($issue->getOwnerType() == TBGIdentifiableTypeClass::TYPE_TEAM): ?>
 						<?php echo include_component('main/teamdropdown', array('team' => $issue->getOwner())); ?>
 					<?php endif; ?>
 				</div>

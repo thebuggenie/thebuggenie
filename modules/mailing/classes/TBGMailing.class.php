@@ -316,7 +316,7 @@
 	
 			// Add all users from the team owning the issue if valid
 			// or add the owning user if a user owns the issue
-			if ($issue->getOwnerType() == TBGIdentifiableClass::TYPE_TEAM)
+			if ($issue->getOwnerType() == TBGIdentifiableTypeClass::TYPE_TEAM)
 			{
 				foreach ($issue->getOwner()->getMembers() as $member)
 				{
@@ -324,7 +324,7 @@
 					$uids[$member->getID()] = $member->getID();
 				}
 			}
-			elseif ($issue->getOwnerType() == TBGIdentifiableClass::TYPE_USER)
+			elseif ($issue->getOwnerType() == TBGIdentifiableTypeClass::TYPE_USER)
 			{
 				if (!($issue->getOwnerID() == $cu && !$ns))
 					$uids[$issue->getOwnerID()] = $issue->getOwnerID();
@@ -348,7 +348,7 @@
 
 			// Add all users from the team assigned to the issue if valid
 			// or add the assigned user if a user is assigned to the issue
-			if ($issue->getAssigneeType() == TBGIdentifiableClass::TYPE_TEAM)
+			if ($issue->getAssigneeType() == TBGIdentifiableTypeClass::TYPE_TEAM)
 			{
 				// Get team member IDs
 				foreach ($issue->getAssignee()->getMembers() as $member)
@@ -358,7 +358,7 @@
 					$uids[$member->getID()] = $member->getID();
 				}
 			}
-			elseif ($issue->getAssigneeType() == TBGIdentifiableClass::TYPE_USER)
+			elseif ($issue->getAssigneeType() == TBGIdentifiableTypeClass::TYPE_USER)
 			{
 				if (!($issue->getAssigneeID() == $cu && !$ns) && !(!$this->getSetting(self::NOTIFY_ISSUE_ASSIGNED_UPDATED, $issue->getAssigneeID())))
 					$uids[$issue->getAssigneeID()] = $issue->getAssigneeID();
@@ -366,7 +366,7 @@
 			
 			// Add all users in the team who leads the project, if valid
 			// or add the user who leads the project, if valid
-			if ($issue->getProject()->getLeaderType() == TBGIdentifiableClass::TYPE_TEAM)
+			if ($issue->getProject()->getLeaderType() == TBGIdentifiableTypeClass::TYPE_TEAM)
 			{
 				foreach ($issue->getProject()->getLeader()->getMembers() as $member)
 				{
@@ -375,14 +375,14 @@
 					$uids[$member->getID()] = $member->getID();
 				}
 			}
-			elseif ($issue->getProject()->getLeaderType() == TBGIdentifiableClass::TYPE_USER)
+			elseif ($issue->getProject()->getLeaderType() == TBGIdentifiableTypeClass::TYPE_USER)
 			{
 				if (!($issue->getProject()->getLeaderID() == $cu && !$ns) && !(!$this->getSetting(self::NOTIFY_ISSUE_PROJECT_ASSIGNED, $issue->getProject()->getLeaderID())))
 					$uids[$issue->getProject()->getLeaderID()] = $issue->getProject()->getLeaderID();
 			}
 	
 			// Same for QA
-			if ($issue->getProject()->getQaResponsibleType() == TBGIdentifiableClass::TYPE_TEAM)
+			if ($issue->getProject()->getQaResponsibleType() == TBGIdentifiableTypeClass::TYPE_TEAM)
 			{
 				foreach ($issue->getProject()->getQaResponsible()->getMembers() as $member)
 				{
@@ -391,7 +391,7 @@
 					$uids[$member->getID()] = $member->getID();
 				}
 			}
-			elseif ($issue->getProject()->getQaResponsibleType() == TBGIdentifiableClass::TYPE_USER)
+			elseif ($issue->getProject()->getQaResponsibleType() == TBGIdentifiableTypeClass::TYPE_USER)
 			{
 				if (!($issue->getProject()->getQaResponsibleID() == $cu && !$ns) && !(!$this->getSetting(self::NOTIFY_ISSUE_PROJECT_ASSIGNED, $issue->getProject()->getQaResponsibleID())))
 					$uids[$issue->getProject()->getQaResponsibleID()] = $issue->getProject()->getQaResponsibleID();
@@ -416,7 +416,7 @@
 			// Add all users relevant for all affected editions
 			foreach ($issue->getEditions() as $edition_list)
 			{
-				if ($edition_list['edition']->getLeaderType() == TBGIdentifiableClass::TYPE_TEAM)
+				if ($edition_list['edition']->getLeaderType() == TBGIdentifiableTypeClass::TYPE_TEAM)
 				{
 					foreach ($edition_list['edition']->getLeader()->getMembers() as $member)
 					{
@@ -425,13 +425,13 @@
 						$uids[$member->getID()] = $member->getID();
 					}
 				}
-				elseif ($edition_list['edition']->getLeaderType() == TBGIdentifiableClass::TYPE_USER)
+				elseif ($edition_list['edition']->getLeaderType() == TBGIdentifiableTypeClass::TYPE_USER)
 				{
 					if (!($edition_list['edition']->getLeaderID() == $cu && !$ns) && !(!$this->getSetting(self::NOTIFY_ISSUE_PROJECT_ASSIGNED, $edition_list['edition']->getLeaderID())))
 						$uids[$edition_list['edition']->getLeaderID()] = $edition_list['edition']->getLeaderID();
 				}
 				
-				if ($edition_list['edition']->getQaResponsibleType() == TBGIdentifiableClass::TYPE_TEAM)
+				if ($edition_list['edition']->getQaResponsibleType() == TBGIdentifiableTypeClass::TYPE_TEAM)
 				{
 					foreach ($edition_list['edition']->getQaResponsible()->getMembers() as $member)
 					{
@@ -440,7 +440,7 @@
 						$uids[$member->getID()] = $member->getID();
 					}
 				}
-				elseif ($edition_list['edition']->getQaResponsibleType() == TBGIdentifiableClass::TYPE_USER)
+				elseif ($edition_list['edition']->getQaResponsibleType() == TBGIdentifiableTypeClass::TYPE_USER)
 				{
 					if (!($edition_list['edition']->getQaResponsibleID() == $cu && !$ns) && !(!$this->getSetting(self::NOTIFY_ISSUE_PROJECT_ASSIGNED, $edition_list['edition']->getQaResponsibleID())))
 						$uids[$edition_list['edition']->getQaResponsibleID()] = $edition_list['edition']->getQaResponsibleID();
@@ -594,16 +594,10 @@
 						
 						$subject = TBGContext::getI18n()->__('[%project_name%] %issue_type% %issue_no% - "%issue_title%" updated', array('%project_name%' => $issue->getProject()->getKey(), '%issue_type%' => TBGContext::getI18n()->__($issue->getIssueType()->getName()), '%issue_no%' => $issue->getFormattedIssueNo(true), '%issue_title%' => $issue->getTitle()));
 						$message = $this->createNewTBGMimemailFromTemplate($subject, 'issueupdate', array('issue' => $issue, 'comment' => $content, 'updated_by' => $comment->getPostedBy()));
-//						var_dump($message);
 						$this->_sendToUsers($to_users, $message);
-//						$subject = TBGContext::getI18n()->__('[%project_name%] %issue_type% %issue_no% - Comment added by %comment_user%', array('%project_name%' => $issue->getProject()->getKey(), '%issue_type%' => TBGContext::getI18n()->__($issue->getIssueType()->getName()), '%issue_no%' => $issue->getFormattedIssueNo(true), '%comment_user%' => $comment->getPostedBy()->getName()));
-//						$message = $this->createNewTBGMimemailFromTemplate($subject, 'issuecomment', array('issue' => $issue, 'comment' => $comment));
-//						$this->_sendToUsers($to_users, $message);
 					}
 					catch (Exception $e)
 					{
-//						var_dump('fu');
-//						var_dump($e);die();
 						throw $e;
 					}
 				}

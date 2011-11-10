@@ -1005,18 +1005,18 @@
 				$this->forward403unless($this->access_level == TBGSettings::ACCESS_FULL);
 				if ($request->hasParameter('identifiable_type'))
 				{
-					if (in_array($request['identifiable_type'], array(TBGIdentifiableClass::TYPE_USER, TBGIdentifiableClass::TYPE_TEAM)))
+					if (in_array($request['identifiable_type'], array(TBGIdentifiableTypeClass::TYPE_USER, TBGIdentifiableTypeClass::TYPE_TEAM)))
 					{
 						switch ($request['identifiable_type'])
 						{
-							case TBGIdentifiableClass::TYPE_USER:
+							case TBGIdentifiableTypeClass::TYPE_USER:
 								$identified = TBGContext::factory()->TBGUser($request['value']);
 								break;
-							case TBGIdentifiableClass::TYPE_TEAM:
+							case TBGIdentifiableTypeClass::TYPE_TEAM:
 								$identified = TBGContext::factory()->TBGTeam($request['value']);
 								break;
 						}
-						if ($identified instanceof TBGIdentifiableClass)
+						if ($identified instanceof TBGIdentifiableTypeClass)
 						{
 							if ($request['field'] == 'owned_by') $item->setOwner($identified);
 							elseif ($request['field'] == 'qa_by') $item->setQaResponsible($identified);
@@ -1033,11 +1033,11 @@
 					}
 				}
 				if ($request['field'] == 'owned_by')
-					return $this->renderJSON(array('field' => (($item->hasOwner()) ? array('id' => $item->getOwnerID(), 'name' => (($item->getOwnerType() == TBGIdentifiableClass::TYPE_USER) ? $this->getComponentHTML('main/userdropdown', array('user' => $item->getOwner())) : $this->getComponentHTML('main/teamdropdown', array('team' => $item->getOwner())))) : array('id' => 0))));
+					return $this->renderJSON(array('field' => (($item->hasOwner()) ? array('id' => $item->getOwnerID(), 'name' => (($item->getOwnerType() == TBGIdentifiableTypeClass::TYPE_USER) ? $this->getComponentHTML('main/userdropdown', array('user' => $item->getOwner())) : $this->getComponentHTML('main/teamdropdown', array('team' => $item->getOwner())))) : array('id' => 0))));
 				elseif ($request['field'] == 'lead_by')
-					return $this->renderJSON(array('field' => (($item->hasLeader()) ? array('id' => $item->getLeaderID(), 'name' => (($item->getLeaderType() == TBGIdentifiableClass::TYPE_USER) ? $this->getComponentHTML('main/userdropdown', array('user' => $item->getLeader())) : $this->getComponentHTML('main/teamdropdown', array('team' => $item->getLeader())))) : array('id' => 0))));
+					return $this->renderJSON(array('field' => (($item->hasLeader()) ? array('id' => $item->getLeaderID(), 'name' => (($item->getLeaderType() == TBGIdentifiableTypeClass::TYPE_USER) ? $this->getComponentHTML('main/userdropdown', array('user' => $item->getLeader())) : $this->getComponentHTML('main/teamdropdown', array('team' => $item->getLeader())))) : array('id' => 0))));
 				elseif ($request['field'] == 'qa_by')
-					return $this->renderJSON(array('field' => (($item->hasQaResponsible()) ? array('id' => $item->getQaResponsibleID(), 'name' => (($item->getQaResponsibleType() == TBGIdentifiableClass::TYPE_USER) ? $this->getComponentHTML('main/userdropdown', array('user' => $item->getQaResponsible())) : $this->getComponentHTML('main/teamdropdown', array('team' => $item->getQaResponsible())))) : array('id' => 0))));
+					return $this->renderJSON(array('field' => (($item->hasQaResponsible()) ? array('id' => $item->getQaResponsibleID(), 'name' => (($item->getQaResponsibleType() == TBGIdentifiableTypeClass::TYPE_USER) ? $this->getComponentHTML('main/userdropdown', array('user' => $item->getQaResponsible())) : $this->getComponentHTML('main/teamdropdown', array('team' => $item->getQaResponsible())))) : array('id' => 0))));
 			}
 		}
 		
@@ -3973,11 +3973,11 @@
 								{
 									switch (trim($activerow[$owner_type], '"'))
 									{
-										case TBGIdentifiableClass::TYPE_USER:
+										case TBGIdentifiableTypeClass::TYPE_USER:
 											$user = new TBGUser(trim($activerow[$owner], '" '));
 											$project->setOwner($user);
 											break;
-										case TBGIdentifiableClass::TYPE_TEAM:
+										case TBGIdentifiableTypeClass::TYPE_TEAM:
 											$team = new TBGTeam(trim($activerow[$owner], '" '));
 											$project->setOwner($team);
 											break;
@@ -3988,11 +3988,11 @@
 								{
 									switch (trim($activerow[$lead_type], '"'))
 									{
-										case TBGIdentifiableClass::TYPE_USER:
+										case TBGIdentifiableTypeClass::TYPE_USER:
 											$user = new TBGUser(trim($activerow[$lead], '" '));
 											$project->setLeader($user);
 											break;
-										case TBGIdentifiableClass::TYPE_TEAM:
+										case TBGIdentifiableTypeClass::TYPE_TEAM:
 											$team = new TBGTeam(trim($activerow[$lead], '" '));
 											$project->setLeader($team);
 											break;
@@ -4003,11 +4003,11 @@
 								{
 									switch (trim($activerow[$qa_type], '"'))
 									{
-										case TBGIdentifiableClass::TYPE_USER:
+										case TBGIdentifiableTypeClass::TYPE_USER:
 											$user = new TBGUser(trim($activerow[$qa], '" '));
 											$project->setQaResponsible($user);
 											break;
-										case TBGIdentifiableClass::TYPE_TEAM:
+										case TBGIdentifiableTypeClass::TYPE_TEAM:
 											$team = new TBGTeam(trim($activerow[$qa], '" '));
 											$project->setQaResponsible($team);
 											break;
@@ -4117,11 +4117,11 @@
 								{
 									switch (trim($activerow[$owner_type], '"'))
 									{
-										case TBGIdentifiableClass::TYPE_USER:
+										case TBGIdentifiableTypeClass::TYPE_USER:
 											$user = new TBGUser(trim($activerow[$owner], '" '));
 											$issue->setOwner($user);
 											break;
-										case TBGIdentifiableClass::TYPE_TEAM:
+										case TBGIdentifiableTypeClass::TYPE_TEAM:
 											$team = new TBGTeam(trim($activerow[$owner], '" '));
 											$issue->setOwner($team);
 											break;
@@ -4132,11 +4132,11 @@
 								{
 									switch (trim($activerow[$assigned_type], '"'))
 									{
-										case TBGIdentifiableClass::TYPE_USER:
+										case TBGIdentifiableTypeClass::TYPE_USER:
 											$user = new TBGUser(trim($activerow[$assigned], '" '));
 											$issue->setAssignee($user);
 											break;
-										case TBGIdentifiableClass::TYPE_TEAM:
+										case TBGIdentifiableTypeClass::TYPE_TEAM:
 											$team = new TBGTeam(trim($activerow[$assigned], '" '));
 											$issue->setAssignee($team);
 											break;

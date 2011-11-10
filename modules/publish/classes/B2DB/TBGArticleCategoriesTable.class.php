@@ -4,6 +4,9 @@
 		b2db\Criteria,
 		b2db\Criterion;
 
+	/**
+	 * @Table(name="articlecategories")
+	 */
 	class TBGArticleCategoriesTable extends TBGB2DBTable
 	{
 
@@ -15,19 +18,9 @@
 		const CATEGORY_NAME = 'articlecategories.category_name';
 		const SCOPE = 'articlecategories.scope';
 		
-		/**
-		 * Return an instance of this table
-		 *
-		 * @return TBGArticleCategoriesTable
-		 */
-		public static function getTable()
+		public function _initialize()
 		{
-			return Core::getTable('TBGArticleCategoriesTable');
-		}
-
-		public function __construct()
-		{
-			parent::__construct(self::B2DBNAME, self::ID);
+			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addVarchar(self::ARTICLE_NAME, 300);
 			parent::_addBoolean(self::ARTICLE_IS_CATEGORY);
 			parent::_addVarchar(self::CATEGORY_NAME, 300);

@@ -17,9 +17,9 @@
 					<tr>
 						<td valign="middle" class="faded_out">
 						<?php if ($related_issue->isAssigned()): ?>
-							<?php if ($related_issue->getAssignee()->getType() == TBGIdentifiableClass::TYPE_USER): ?>
+							<?php if ($related_issue->getAssignee()->getType() == TBGIdentifiableTypeClass::TYPE_USER): ?>
 								<?php echo __('Assigned to %user%', array('%user%' => '</td><td style="padding-left: 5px;" class="faded_out">' . get_component_html('main/userdropdown', array('user' => $related_issue->getAssignee(), 'size' => 'small')))); ?>
-							<?php elseif ($related_issue->getAssignee()->getType() == TBGIdentifiableClass::TYPE_TEAM): ?>
+							<?php elseif ($related_issue->getAssignee()->getType() == TBGIdentifiableTypeClass::TYPE_TEAM): ?>
 								<?php echo __('Assigned to %team%', array('%team%' => '</td><td style="padding-left: 5px;" class="faded_out">' . get_component_html('main/teamdropdown', array('team' => $related_issue->getAssignee(), 'size' => 'small')))); ?>
 							<?php endif; ?>
 						<?php endif; ?>

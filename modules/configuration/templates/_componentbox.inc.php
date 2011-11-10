@@ -24,9 +24,9 @@
 					</td>
 					<td style="<?php if (!$component->hasLeader()): ?>display: none; <?php endif; ?>padding: 2px;" id="comp_<?php echo $component->getID(); ?>_auto_assign_name">
 						<div style="width: 270px; display: <?php if ($component->hasLeader()): ?>inline<?php else: ?>none<?php endif; ?>;" id="comp_<?php echo $component->getID(); ?>_auto_assign_name">
-							<?php if ($component->getLeaderType() == TBGIdentifiableClass::TYPE_USER): ?>
+							<?php if ($component->getLeaderType() == TBGIdentifiableTypeClass::TYPE_USER): ?>
 								<?php echo include_component('main/userdropdown', array('user' => $component->getLeader())); ?>
-							<?php elseif ($component->getLeaderType() == TBGIdentifiableClass::TYPE_TEAM): ?>
+							<?php elseif ($component->getLeaderType() == TBGIdentifiableTypeClass::TYPE_TEAM): ?>
 								<?php echo include_component('main/teamdropdown', array('team' => $component->getLeader())); ?>
 							<?php endif; ?>
 						</div>
