@@ -44,9 +44,9 @@
 			return array_key_exists($property, $this->_data);
 		}
 
-		public function getProperty($property)
+		public function getProperty($property, $default_value = null)
 		{
-			return ($this->hasProperty($property)) ? $this->_data[$property] : null;
+			return ($this->hasProperty($property)) ? $this->_data[$property] : $default_value;
 		}
 
 		public function getProperties()
