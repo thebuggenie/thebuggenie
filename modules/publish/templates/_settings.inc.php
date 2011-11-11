@@ -44,6 +44,16 @@
 					<td class="config_explanation" colspan="2"><?php echo __('Setting this to "%no%" will hide all "Wiki" tabs and links', array('%no%' => __('No'))); ?></td>
 				</tr>
 				<tr>
+					<td style="padding: 5px;"><label for="require_change_reason_yes"><?php echo __('Require change reason'); ?></label></td>
+					<td>
+						<input type="radio" name="require_change_reason" value="1" id="require_change_reason_yes"<?php if ($module->getSetting('require_change_reason') == 1): ?> checked<?php endif; ?>>&nbsp;<label for="require_change_reason_yes"><?php echo __('Yes'); ?></label>&nbsp;
+						<input type="radio" name="require_change_reason" value="0" id="require_change_reason_no"<?php if ($module->getSetting('require_change_reason') != 1): ?> checked<?php endif; ?>>&nbsp;<label for="require_change_reason_no"><?php echo __('No'); ?></label>
+					</td>
+				</tr>
+				<tr>
+					<td class="config_explanation" colspan="2"><?php echo __('Setting this to "%no%" will not require users to enter a reason when saving Wiki changes', array('%no%' => __('No'))); ?></td>
+				</tr>
+				<tr>
 					<td style="padding: 5px;"><label for="hide_wiki_links_no"><?php echo __('Wiki permissions'); ?></label></td>
 					<td>
 						<select name="free_edit">

@@ -230,7 +230,7 @@
 			{
 				if ($request->hasParameter('new_article_name') && $request['new_article_name'] != '')
 				{
-					if ($request->hasParameter('change_reason') && trim($request['change_reason']) != '')
+					if (($request->hasParameter('change_reason') && trim($request['change_reason']) != '') || TBGPublish::getModule()->getSetting('require_change_reason') == 0)
 					{
 						try
 						{
