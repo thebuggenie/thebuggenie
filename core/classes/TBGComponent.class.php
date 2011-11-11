@@ -18,7 +18,7 @@
 	 *
 	 * @Table(name="TBGComponentsTable")
 	 */
-	class TBGComponent extends TBGVersionItem
+	class TBGComponent extends TBGReleaseableItem
 	{
 		
 		/**

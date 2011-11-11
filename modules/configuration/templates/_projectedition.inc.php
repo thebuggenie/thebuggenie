@@ -139,28 +139,23 @@
 								</td>
 							</tr>
 							<tr>
-								<td><label for="planned_release"><?php echo __('Planned release'); ?></label></td>
+								<td><label for="has_release_date"><?php echo __('Release date'); ?></label></td>
 								<td style="padding: 2px;">
-									<select name="planned_release" id="planned_release" style="width: 70px;" onchange="bB = document.getElementById('planned_release'); cB = document.getElementById('release_day'); dB = document.getElementById('release_month'); eB = document.getElementById('release_year'); if (bB.value == '0') { cB.disabled = true; dB.disabled = true; eB.disabled = true; } else { cB.disabled = false; dB.disabled = false; eB.disabled = false; }">
-										<option value=1<?php if ($edition->isPlannedReleased()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
-										<option value=0<?php if (!$edition->isPlannedReleased()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
+									<select name="has_release_date" id="has_release_date" style="width: 70px;" onchange="var val = $(this).getValue(); ['day', 'month', 'year'].each(function(item) { (val) ? $('release_'+item).enable() : $('release_'+item).disable(); });">
+										<option value=1<?php if ($edition->hasReleaseDate()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
+										<option value=0<?php if (!$edition->hasReleaseDate()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
 									</select>
-								</td>
-							</tr>
-							<tr>
-								<td><label for="release_month"><?php echo __('Release date'); ?></label></td>
-								<td style="padding: 2px;">
-									<select style="width: 85px;" name="release_month" id="release_month"<?php if (!$edition->isPlannedReleased()): ?> disabled<?php endif; ?>>
+									<select style="width: 85px;" name="release_month" id="release_month"<?php if (!$edition->hasReleaseDate()): ?> disabled<?php endif; ?>>
 									<?php for($cc = 1;$cc <= 12;$cc++): ?>
 										<option value=<?php print $cc; ?><?php print (($edition->getReleaseDateMonth() == $cc) ? " selected" : "") ?>><?php echo tbg_formatTime(mktime(0, 0, 0, $cc, 1), 15); ?></option>
 									<?php endfor; ?>
 									</select>
-									<select style="width: 40px;" name="release_day" id="release_day"<?php if (!$edition->isPlannedReleased()): ?> disabled<?php endif; ?>>
+									<select style="width: 40px;" name="release_day" id="release_day"<?php if (!$edition->hasReleaseDate()): ?> disabled<?php endif; ?>>
 									<?php for($cc = 1;$cc <= 31;$cc++): ?>
 										<option value=<?php print $cc; ?><?php echo (($edition->getReleaseDateDay() == $cc) ? " selected" : "") ?>><?php echo $cc; ?></option>
 									<?php endfor; ?>
 									</select>
-									<select style="width: 55px;" name="release_year" id="release_year"<?php if (!$edition->isPlannedReleased()): ?> disabled<?php endif; ?>>
+									<select style="width: 55px;" name="release_year" id="release_year"<?php if (!$edition->hasReleaseDate()): ?> disabled<?php endif; ?>>
 									<?php for($cc = 1990;$cc <= (date("Y") + 10);$cc++): ?>
 										<option value=<?php print $cc; ?><?php echo (($edition->getReleaseDateYear() == $cc) ? " selected" : "") ?>><?php echo $cc; ?></option>
 									<?php endfor; ?>

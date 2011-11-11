@@ -28,24 +28,27 @@
 					</td>
 				</tr>
 				<tr>
-					<td><label for="release_month"><?php echo __('Release date'); ?></label></td>
-					<td>
-						<select style="width: 85px;" name="release_month" id="release_month">
-						<?php for ($cc = 1;$cc <= 12;$cc++): ?>
-							<option value=<?php print $cc; ?><?php echo (($build->getReleaseDateMonth() == $cc) ? " selected" : "") ?>><?php echo tbg_formatTime(mktime(0, 0, 0, $cc, 1), 15); ?></option>
+					<td><label for="has_release_date"><?php echo __('Release date'); ?></label></td>
+					<td style="padding: 2px;">
+						<select name="has_release_date" id="has_release_date" style="width: 70px;" onchange="var val = $(this).getValue(); ['day', 'month', 'year'].each(function(item) { (val) ? $('release_'+item).enable() : $('release_'+item).disable(); });">
+							<option value=1<?php if ($build->hasReleaseDate()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
+							<option value=0<?php if (!$build->hasReleaseDate()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
+						</select>
+						<select style="width: 85px;" name="release_month" id="release_month"<?php if (!$build->hasReleaseDate()): ?> disabled<?php endif; ?>>
+						<?php for($cc = 1;$cc <= 12;$cc++): ?>
+							<option value=<?php print $cc; ?><?php print (($build->getReleaseDateMonth() == $cc) ? " selected" : "") ?>><?php echo tbg_formatTime(mktime(0, 0, 0, $cc, 1), 15); ?></option>
 						<?php endfor; ?>
 						</select>
-						<select style="width: 40px;" name="release_day" id="release_day">
-						<?php for ($cc = 1;$cc <= 31;$cc++): ?>
+						<select style="width: 40px;" name="release_day" id="release_day"<?php if (!$build->hasReleaseDate()): ?> disabled<?php endif; ?>>
+						<?php for($cc = 1;$cc <= 31;$cc++): ?>
 							<option value=<?php print $cc; ?><?php echo (($build->getReleaseDateDay() == $cc) ? " selected" : "") ?>><?php echo $cc; ?></option>
 						<?php endfor; ?>
 						</select>
-						<select style="width: 55px;" name="release_year" id="release_year">
-						<?php for ($cc = 1990;$cc <= (date("Y") + 10);$cc++): ?>
+						<select style="width: 55px;" name="release_year" id="release_year"<?php if (!$build->hasReleaseDate()): ?> disabled<?php endif; ?>>
+						<?php for($cc = 1990;$cc <= (date("Y") + 10);$cc++): ?>
 							<option value=<?php print $cc; ?><?php echo (($build->getReleaseDateYear() == $cc) ? " selected" : "") ?>><?php echo $cc; ?></option>
 						<?php endfor; ?>
 						</select>
-						&nbsp;
 						<b><?php echo __('%release_date_input% - time: %time_input%', array('%release_date_input%' => '', '%time_input%' => '')); ?></b>
 						<input type="text" name="release_hour" style="width: 20px; font-size: 0.9em; text-align: center;" value="<?php echo $build->getReleaseDateHour(); ?>">&nbsp;:&nbsp;
 						<input type="text" name="release_minute" style="width: 20px; font-size: 0.9em; text-align: center;" value="<?php echo $build->getReleaseDateMinute(); ?>">

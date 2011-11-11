@@ -49,24 +49,6 @@
 		protected $_leader_user;
 
 		/**
-		 * The project owner if team
-		 *
-		 * @var TBGTeam
-		 * @Column(type="integer")
-		 * @Relates(class="TBGTeam")
-		 */
-		protected $_owner_team;
-
-		/**
-		 * The project owner if user
-		 *
-		 * @var TBGUser
-		 * @Column(type="integer")
-		 * @Relates(class="TBGUser")
-		 */
-		protected $_owner_user;
-
-		/**
 		 * The QA responsible for the project, TBGIdentifiableClass::TYPE_USER or TBGIdentifiableClass::TYPE_TEAM
 		 *
 		 * @var TBGTeam
@@ -1052,30 +1034,6 @@
 		}
 		
 		/**
-		 * Return the default edition
-		 *
-		 * @return TBGEdition
-		 */
-		public function getDefaultEdition()
-		{
-			foreach ($this->getEditions() as $edition)
-			{
-				if ($edition->isDefault() && !$edition->isLocked())
-				{
-					return $edition;
-				}
-			}
-			foreach ($this->getEditions() as $edition)
-			{
-				if ($edition->isLocked() == false)
-				{
-					return $edition;
-				}
-			}
-			return 0;
-		}
-		
-		/**
 		 * Is builds enabled
 		 *
 		 * @return boolean
@@ -1580,7 +1538,7 @@
 			if ($this->_builds === null)
 			{
 				$this->_builds = array();
-				foreach (TBGBuild::getByProjectID($this->getID()) as $build)
+				foreach (TBGBuildsTable::getTable()->getByProjectID($this->getID()) as $build)
 				{
 					if ($build->hasAccess())
 					{
@@ -2972,45 +2930,6 @@
 			$this->_leader_user = null;
 		}
 
-		public function getOwner()
-		{
-			if ($this->_owner_team !== null) {
-				$this->_b2dbLazyload('_owner_team');
-			} elseif ($this->_owner_user !== null) {
-				$this->_b2dbLazyload('_owner_user');
-			}
-
-			if ($this->_owner_team instanceof TBGTeam) {
-				return $this->_owner_team;
-			} elseif ($this->_owner_user instanceof TBGUser) {
-				return $this->_owner_user;
-			} else {
-				return null;
-			}
-		}
-
-		public function hasOwner()
-		{
-			return (bool) ($this->getOwner() instanceof TBGIdentifiable);
-		}
-
-		public function setOwner(TBGIdentifiable $owner)
-		{
-			if ($owner instanceof TBGTeam) {
-				$this->_owner_user = null;
-				$this->_owner_team = $owner;
-			} else {
-				$this->_owner_team = null;
-				$this->_owner_user = $owner;
-			}
-		}
-
-		public function clearOwner()
-		{
-			$this->_owner_team = null;
-			$this->_owner_user = null;
-		}
-
 		public function getQaResponsible()
 		{
 			if ($this->_qa_responsible_team !== null) {
@@ -3048,6 +2967,27 @@
 		{
 			$this->_qa_responsible_team = null;
 			$this->_qa_responsible_user = null;
+		}
+
+		/**
+		 * Returns whether or not this item is locked
+		 *
+		 * @return boolean
+		 * @access public
+		 */
+		public function isLocked()
+		{
+			return $this->_locked;
+		}
+
+		/**
+		 * Specify whether or not this item is locked
+		 *
+		 * @param boolean $locked[optional]
+		 */
+		public function setLocked($locked = true)
+		{
+			$this->_locked = (bool) $locked;
 		}
 
 	}

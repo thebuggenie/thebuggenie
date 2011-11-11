@@ -1139,9 +1139,6 @@
 				if ($request->hasParameter('doc_url'))
 					$this->project->setDocumentationURL($request['doc_url']);
 
-				if ($request->hasParameter('planned_release'))
-					$this->project->setPlannedReleased($request['planned_release']);
-
 				if ($request->hasParameter('released'))
 					$this->project->setReleased((int) $request['released']);
 
@@ -2608,7 +2605,6 @@
 							
 						$edition->setDescription($request->getParameter('description', null, false));
 						$edition->setDocumentationURL($request['doc_url']);
-						$edition->setPlannedReleased($request['planned_release']);
 						$edition->setReleased((int) $request['released']);
 						$edition->setLocked((bool) $request['locked']);
 						$edition->save();

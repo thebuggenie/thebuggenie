@@ -18,7 +18,7 @@
 	 *
 	 * @Table(name="TBGBuildsTable")
 	 */
-	class TBGBuild extends TBGVersionItem 
+	class TBGBuild extends TBGReleaseableItem 
 	{
 		
 		/**
@@ -88,87 +88,43 @@
 		 * @Column(type="string")
 		 */
 		protected $_file_url = null;
-		
-		/**
-		 * Project builds cache
-		 * 
-		 * @var array
-		 */
-		protected static $_project_builds = null;
 
 		/**
-		 * Edition builds cache
-		 * 
-		 * @var array
-		 */
-		protected static $_edition_builds = null;
-		
-		/**
-		 * Get all builds for a specific project
-		 * 
-		 * @param integer $project_id The project ID
-		 * 
-		 * @return array
-		 */
-		public static function getByProjectID($project_id)
-		{
-			if (self::$_project_builds === null)
-			{
-				self::$_project_builds = array();
-			}
-			if (!array_key_exists($project_id, self::$_project_builds))
-			{
-				self::$_project_builds[$project_id] = TBGBuildsTable::getTable()->getByProjectID($project_id);
-			}
-			return self::$_project_builds[$project_id];
-		}
-
-		/**
-		 * Get all builds for a specific edition
-		 * 
-		 * @param integer $edition_id The edition ID
-		 * 
-		 * @return array
-		 */
-		public static function getByEditionID($edition_id)
-		{
-			if (self::$_edition_builds === null)
-			{
-				self::$_edition_builds = array();
-			}
-			if (!array_key_exists($edition_id, self::$_edition_builds))
-			{
-				self::$_edition_builds[$edition_id] = array();
-				if ($res = \b2db\Core::getTable('TBGBuildsTable')->getByEditionID($project_id))
-				{
-					$build = TBGContext::factory()->TBGBuild($row->get(TBGBuildsTable::ID), $row);
-					self::$_edition_builds[$edition_id][$build->getID()] = $build;
-				}
-			}
-			return self::$_edition_builds[$edition_id];
-		}
-		
-		/**
-		 * Class constructor
+		 * Major version
 		 *
-		 * @param \b2db\Row $row
+		 * @var integer
+		 * @access protected
+		 * @Column(type="integer")
 		 */
-		public function _construct(\b2db\Row $row, $foreign_key = null)
-		{
-			try
-			{
-				if ($this->_edition && is_numeric($this->_edition))
-				{
-					$this->_edition = TBGContext::factory()->TBGEdition($row->get(TBGBuildsTable::EDITION), $row);
-				}
-				elseif ($this->_project && is_numeric($this->_project))
-				{
-					$this->_project = TBGContext::factory()->TBGProject($row->get(TBGBuildsTable::PROJECT), $row);
-				}
-			}
-			catch (Exception $e) {}
-		}
-		
+		protected $_version_major = 0;
+
+		/**
+		 * Minor version
+		 *
+		 * @var integer
+		 * @access protected
+		 * @Column(type="integer")
+		 */
+		protected $_version_minor = 0;
+
+		/**
+		 * Revision
+		 *
+		 * @var integer
+		 * @access protected
+		 * @Column(type="string")
+		 */
+		protected $_version_revision = 0;
+
+		/**
+		 * Whether the item is locked or not
+		 *
+		 * @var boolean
+		 * @access protected
+		 * @Column(type="boolean")
+		 */
+		protected $_locked;
+
 		protected function _postSave($is_new)
 		{
 			if ($is_new)
@@ -271,7 +227,7 @@
 		/**
 		 * Returns the parent object
 		 * 
-		 * @return TBGVersionItem
+		 * @return TBGReleaseableItem
 		 */
 		public function getParent()
 		{
@@ -434,4 +390,116 @@
 			return !$this->isLocked();
 		}
 		
+		/**
+		 * Returns the complete version number
+		 *
+		 * @return string
+		 */
+		public function getVersion()
+		{
+			return $this->_version_major . '.' . $this->_version_minor . '.' . $this->_version_revision;
+		}
+
+		/**
+		 * Set the version
+		 *
+		 * @param integer $ver_mj Major version number
+		 * @param integer $ver_mn Minor version number
+		 * @param integer $ver_rev Version revision
+		 */
+		public function setVersion($ver_mj, $ver_mn, $ver_rev)
+		{
+			$ver_mj = ((int) $ver_mj > 0) ? (int) $ver_mj : 0;
+			$ver_mn = ((int) $ver_mn > 0) ? (int) $ver_mn : 0;
+			$ver_rev = ((int) $ver_rev > 0) ? (int) $ver_rev : 0;
+
+			$this->_version_major = $ver_mj;
+			$this->_version_minor = $ver_mn;
+			$this->_version_revision = $ver_rev;
+		}
+
+		/**
+		 * Set the major version number
+		 *
+		 * @param $ver_mj
+		 */
+		public function setVersionMajor($ver_mj)
+		{
+			$ver_mj = ((int) $ver_mj > 0) ? (int) $ver_mj : 0;
+			$this->_version_major = $ver_mj;
+		}
+
+		/**
+		 * Set the minor version number
+		 *
+		 * @param $ver_mn
+		 */
+		public function setVersionMinor($ver_mn)
+		{
+			$ver_mn = ((int) $ver_mn > 0) ? (int) $ver_mn : 0;
+			$this->_version_minor = $ver_mn;
+		}
+
+		/**
+		 * Set the version revision number
+		 *
+		 * @param $ver_rev
+		 */
+		public function setVersionRevision($ver_rev)
+		{
+			$ver_rev = ((int) $ver_rev > 0) ? (int) $ver_rev : 0;
+			$this->_version_revision = $ver_rev;
+		}
+
+		/**
+		 * Returns the major version number
+		 *
+		 * @return integer
+		 */
+		public function getVersionMajor()
+		{
+			return $this->_version_major;
+		}
+
+		/**
+		 * Returns the minor version number
+		 *
+		 * @return integer
+		 */
+		public function getVersionMinor()
+		{
+			return $this->_version_minor;
+		}
+
+		/**
+		 * Returns revision number
+		 *
+		 * @return mixed
+		 */
+		public function getVersionRevision()
+		{
+			return $this->_version_revision;
+		}
+
+		/**
+		 * Returns whether or not this item is locked
+		 *
+		 * @return boolean
+		 * @access public
+		 */
+		public function isLocked()
+		{
+			return $this->_locked;
+		}
+
+		/**
+		 * Specify whether or not this item is locked
+		 *
+		 * @param boolean $locked[optional]
+		 */
+		public function setLocked($locked = true)
+		{
+			$this->_locked = (bool) $locked;
+		}
+
 	}

@@ -18,7 +18,7 @@
 	 *
 	 * @Table(name="TBGEditionsTable")
 	 */
-	class TBGEdition extends TBGVersionItem
+	class TBGEdition extends TBGReleaseableItem
 	{
 		
 		/**
@@ -28,7 +28,7 @@
 		 * @Column(type="integer")
 		 * @Relates(class="TBGProject")
 		 */
-		protected $_project = null;
+		protected $_project;
 		
 		/**
 		 * Editions components
@@ -36,7 +36,7 @@
 		 * @var array|TBGComponent
 		 * @Relates(class="TBGComponent", collection=true, manytomany=true, joinclass="TBGEditionComponents")
 		 */
-		protected $_components = null;
+		protected $_components;
 		
 		/**
 		 * Edition builds
@@ -44,25 +44,40 @@
 		 * @var array|TBGBuild
 		 * @Relates(class="TBGBuild", collection=true, foreign_column="edition_id")
 		 */
-		protected $_builds = null;
+		protected $_builds;
 
 		/**
 		 * @Column(type="string")
 		 */
-		protected $_description = '';
+		protected $_description;
+
+		/**
+		 * @Relates(class="TBGUser", collection=true, manytomany=true, joinclass="TBGEditionAssignedUsers")
+		 */
+		protected $_assigned_users;
 		
-		protected $_assignees = null;
-		
+		/**
+		 * @Relates(class="TBGTeam", collection=true, manytomany=true, joinclass="TBGEditionAssignedTeams")
+		 */
+		protected $_assigned_teams;
+
 		/**
 		 * The editions documentation URL
 		 * 
 		 * @var string
 		 * @Column(type="string")
 		 */
-		protected $_doc_url = '';
+		protected $_doc_url;
 						
-		protected static $_editions = null;
-		
+		/**
+		 * Whether the item is locked or not
+		 *
+		 * @var boolean
+		 * @access protected
+		 * @Column(type="boolean")
+		 */
+		protected $_locked;
+
 		protected function _postSave($is_new)
 		{
 			if ($is_new)
@@ -212,28 +227,6 @@
 			return $this->_builds;
 		}
 
-		/**
-		 * Returns the default build
-		 *
-		 * @return TBGBuild
-		 */
-		public function getDefaultBuild()
-		{
-			$this->_populateBuilds();
-			if (count($this->_builds) > 0)
-			{
-				foreach ($this->_builds as $build)
-				{
-					if ($build->isDefault() && $build->isLocked() == false)
-					{
-						return $build;
-					}
-				}
-				return array_slice($this->_builds, 0, 1);
-			}
-			return 0;
-		}
-
 		public function _sortBuildsByReleaseDate(TBGBuild $build1, TBGBuild $build2)
 		{
 			if ($build1->getReleaseDate() == $build2->getReleaseDate())
@@ -366,4 +359,25 @@
 			return ($this->getProject()->canSeeAllEditions() || TBGContext::getUser()->hasPermission('canseeedition', $this->getID()));
 		}
 		
+		/**
+		 * Returns whether or not this item is locked
+		 *
+		 * @return boolean
+		 * @access public
+		 */
+		public function isLocked()
+		{
+			return $this->_locked;
+		}
+
+		/**
+		 * Specify whether or not this item is locked
+		 *
+		 * @param boolean $locked[optional]
+		 */
+		public function setLocked($locked = true)
+		{
+			$this->_locked = (bool) $locked;
+		}
+
 	}

@@ -76,35 +76,4 @@
 			$this->_name = $name;
 		}
 
-		/**
-		 * Returns whether or not the object is locked
-		 *
-		 * @return boolean
-		 * @access public
-		 */
-		public function isLocked()
-		{
-			return $this->_locked;
-		}
-
-		/**
-		 * Set if the edition is locked
-		 *
-		 * @param boolean $locked[optional]
-		 */
-		public function setLocked($locked = true)
-		{
-			$this->_locked = (bool) $locked;
-		}
-
-		public function lock()
-		{
-			$this->setLocked(true);
-		}
-
-		public function unlock()
-		{
-			$this->setLocked(false);
-		}
-
 	}

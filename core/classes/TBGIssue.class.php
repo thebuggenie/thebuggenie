@@ -178,20 +178,6 @@
 		protected $_user_pain = 0.00;
 		
 		/**
-		 * Whos assigned the issue
-		 * 
-		 * @var TBGIdentifiable
-		 */
-		protected $_assigned_to;
-		
-		/**
-		 * Assignee type
-		 * 
-		 * @var TBGIdentifiable
-		 */
-		protected $_assigned_type;
-		
-		/**
 		 * The resolution
 		 * 
 		 * @var TBGResolution
@@ -1008,21 +994,26 @@
 		}
 		
 		/**
-		 * Return or set whether the issue is locked
-		 * 
-		 * @param boolean $val[optional]
-		 * 
+		 * Returns whether or not this item is locked
+		 *
 		 * @return boolean
+		 * @access public
 		 */
-		public function isLocked($val = null)
+		public function isLocked()
 		{
-			if ($val !== null)
-			{
-				$this->setLocked($val);
-			}
-			return (bool) $this->_locked;
+			return $this->_locked;
 		}
-		
+
+		/**
+		 * Specify whether or not this item is locked
+		 *
+		 * @param boolean $locked[optional]
+		 */
+		public function setLocked($locked = true)
+		{
+			$this->_locked = (bool) $locked;
+		}
+
 		public function isEditable()
 		{
 			if ($this->getProject()->isArchived()): return false; endif;
@@ -1035,26 +1026,6 @@
 			return ($this->isOpen() && ($this->getProject()->canChangeIssuesWithoutWorkingOnThem() || !($this->getWorkflowStep() instanceof TBGWorkflowStep) || !$this->getWorkflowStep()->isClosed()));
 		}
 		
-		/**
-		 * Set whether the issue is locked
-		 * 
-		 * @param boolean $val[optional]
-		 */
-		public function setLocked($val = true)
-		{
-			$this->_locked = $val;
-		}
-		
-		/**
-		 * Set whether the issue is unlocked
-		 * 
-		 * @param boolean $val[optional]
-		 */
-		public function setUnlocked($val = true)
-		{
-			$this->_locked = !$val;
-		}
-
 		/**
 		 * Perform a permission check based on a key, and whether or not to
 		 * check for the equivalent "*own" permission if the issue is posted
@@ -2316,179 +2287,6 @@
 		}
 
 		/**
-		 * Return the assignee
-		 *
-		 * @return TBGIdentifiableTypeClass
-		 */
-		public function getAssignee()
-		{
-			if (is_numeric($this->_assigned_to))
-			{
-				try
-				{
-					if ($this->_assigned_type == TBGIdentifiableTypeClass::TYPE_USER)
-					{
-						$this->_assigned_to = TBGContext::factory()->TBGUser($this->_assigned_to);
-					}
-					elseif ($this->_assigned_type == TBGIdentifiableTypeClass::TYPE_TEAM)
-					{
-						$this->_assigned_to = TBGContext::factory()->TBGTeam($this->_assigned_to);
-					}
-				}
-				catch (Exception $e)
-				{
-					$this->_assigned_to = null;
-					$this->_assigned_type = null;
-				}
-			}
-	
-			return $this->_assigned_to;
-		}
-		
-		/**
-		 * Whether or not the issue is assigned to someone
-		 *
-		 * @return boolean
-		 */
-		public function isAssigned()
-		{
-			return (bool) ($this->getAssignee() instanceof TBGIdentifiableTypeClass);
-		}
-		
-		/**
-		 * Returns the assignee type
-		 *
-		 * @return integer
-		 */
-		public function getAssigneeType()
-		{
-			$assignee = $this->getAssignee();
-			return ($assignee instanceof TBGIdentifiableTypeClass) ? $assignee->getType() : null;
-		}
-		
-		/**
-		 * Return the assignee id
-		 *
-		 * @return integer
-		 */
-		public function getAssigneeID()
-		{
-			$assignee = $this->getAssignee();
-			return ($assignee instanceof TBGIdentifiableTypeClass) ? $assignee->getID() : null;
-		}
-		
-		/**
-		 * Assign the issue
-		 * 
-		 * @param TBGIdentifiableTypeClass $assignee The user/team you want to assign it to
-		 */
-		public function setAssignee(TBGIdentifiableTypeClass $assignee)
-		{
-			$this->_addChangedProperty('_assigned_to', $assignee->getID());
-			$this->_addChangedProperty('_assigned_type', $assignee->getType());
-			if ($assignee->getType() == TBGIdentifiableTypeClass::TYPE_USER)
-			{
-				$this->startWorkingOnIssue($assignee);
-			}
-		}
-		
-		/**
-		 * Set issue assignee to noone
-		 */
-		public function unsetAssignee()
-		{
-			if ($this->isBeingWorkedOn() && $this->getAssigneeType() == TBGIdentifiableTypeClass::TYPE_USER && $this->getUserWorkingOnIssue()->getID() == $this->getAssignee()->getID())
-			{
-				$this->stopWorkingOnIssue();
-			}
-			
-			$this->_addChangedProperty('_assigned_to', 0);
-			$this->_addChangedProperty('_assigned_type', 0);
-		}
-		
-		/**
-		 * Return the owner
-		 *
-		 * @return TBGIdentifiableTypeClass
-		 */
-		public function getOwner()
-		{
-			if (is_numeric($this->_owner))
-			{
-				try
-				{
-					if ($this->_owner_type == TBGIdentifiableTypeClass::TYPE_USER)
-					{
-						$this->_owner = TBGContext::factory()->TBGUser($this->_owner);
-					}
-					elseif ($this->_owner_type == TBGIdentifiableTypeClass::TYPE_TEAM)
-					{
-						$this->_owner = TBGContext::factory()->TBGTeam($this->_owner);
-					}
-				}
-				catch (Exception $e)
-				{
-					$this->_owner = null;
-					$this->_owner_type = null;
-				}
-			}
-	
-			return $this->_owner;
-		}
-		
-		/**
-		 * Whether or not the issue is owned by someone
-		 *
-		 * @return boolean
-		 */
-		public function isOwned()
-		{
-			return (bool) ($this->getOwner() instanceof TBGIdentifiableTypeClass);
-		}
-		
-		/**
-		 * Returns the owner type
-		 *
-		 * @return integer
-		 */
-		public function getOwnerType()
-		{
-			$owner = $this->getOwner();
-			return ($owner instanceof TBGIdentifiableTypeClass) ? $owner->getType() : null;
-		}
-		
-		/**
-		 * Return the owner id
-		 *
-		 * @return integer
-		 */
-		public function getOwnerID()
-		{
-			$owner = $this->getOwner();
-			return ($owner instanceof TBGIdentifiableTypeClass) ? $owner->getID() : null;
-		}
-		
-		/**
-		 * Set issue owner
-		 * 
-		 * @param TBGIdentifiableTypeClass $owner The user/team you want to own the issue
-		 */
-		public function setOwner(TBGIdentifiableTypeClass $owner)
-		{
-			$this->_addChangedProperty('_owner', $owner->getID());
-			$this->_addChangedProperty('_owner_type', $owner->getType());
-		}
-		
-		/**
-		 * Set issue owner to noone
-		 */
-		public function unsetOwner()
-		{
-			$this->_addChangedProperty('_owner', 0);
-			$this->_addChangedProperty('_owner_type', 0);
-		}
-		
-		/**
 		 * Return the poster
 		 *
 		 * @return TBGUser
@@ -2856,9 +2654,9 @@
 		 * 
 		 * @return boolean
 		 */
-		public function isOwnedByChanged()
+		public function isOwnerUserChanged()
 		{
-			return (bool) ($this->isOwnedTypeChanged() || $this->_isPropertyChanged('_owner'));
+			return $this->_isPropertyChanged('_owner_user');
 		}
 
 		/**
@@ -2866,18 +2664,45 @@
 		 * 
 		 * @return boolean
 		 */
-		public function isOwnedByMerged()
+		public function isOwnerUserMerged()
 		{
-			return (bool) ($this->isOwnedTypeMerged() || $this->_isPropertyMerged('_owner'));
+			return $this->_isPropertyMerged('_owner_user');
 		}
 		
 		/**
 		 * Reverts estimated time
 		 */
-		public function revertOwnedBy()
+		public function revertOwnerUser()
 		{
-			$this->revertOwnedType();
-			$this->_revertPropertyChange('_owner');
+			$this->_revertPropertyChange('_owner_user');
+		}
+
+		/**
+		 * Check to see whether the owner is changed
+		 *
+		 * @return boolean
+		 */
+		public function isOwnerTeamChanged()
+		{
+			return $this->_isPropertyChanged('_owner_team');
+		}
+
+		/**
+		 * Check to see whether the owner is merged
+		 *
+		 * @return boolean
+		 */
+		public function isOwnerTeamMerged()
+		{
+			return $this->_isPropertyMerged('_owner_team');
+		}
+
+		/**
+		 * Reverts estimated time
+		 */
+		public function revertOwnerTeam()
+		{
+			$this->_revertPropertyChange('_owner_team');
 		}
 
 		/**
@@ -2885,9 +2710,9 @@
 		 * 
 		 * @return boolean
 		 */
-		public function isAssignedToChanged()
+		public function isAssignedToUserChanged()
 		{
-			return (bool) ($this->isAssignedTypeChanged() || $this->_isPropertyChanged('_assigned_to'));
+			return $this->_isPropertyChanged('_assigned_user');
 		}
 
 		/**
@@ -2895,18 +2720,45 @@
 		 * 
 		 * @return boolean
 		 */
-		public function isAssignedToMerged()
+		public function isAssignedToUserMerged()
 		{
-			return (bool) ($this->isAssignedTypeMerged() || $this->_isPropertyMerged('_assigned_to'));
+			return $this->_isPropertyMerged('_assigned_user');
 		}
 		
 		/**
 		 * Reverts estimated time
 		 */
-		public function revertAssignedTo()
+		public function revertAssignedToUser()
 		{
-			$this->revertAssignedType();
-			$this->_revertPropertyChange('_assigned_to');
+			$this->_revertPropertyChange('_assigned_user');
+		}
+
+		/**
+		 * Check to see whether the assignee is changed
+		 *
+		 * @return boolean
+		 */
+		public function isAssignedToTeamChanged()
+		{
+			return $this->_isPropertyChanged('_assigned_team');
+		}
+
+		/**
+		 * Check to see whether the owner is merged
+		 *
+		 * @return boolean
+		 */
+		public function isAssignedToTeamMerged()
+		{
+			return $this->_isPropertyMerged('_assigned_team');
+		}
+
+		/**
+		 * Reverts estimated time
+		 */
+		public function revertAssignedToTeam()
+		{
+			$this->_revertPropertyChange('_assigned_team');
 		}
 
 		/**
