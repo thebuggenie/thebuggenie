@@ -72,15 +72,6 @@
 			return $retval;
 		}
 		
-		public function setName($name)
-		{
-			$crit = new \b2db\Criteria();
-			$crit->addUpdate(TBGComponentsTable::NAME, $name);
-			$res = \b2db\Core::getTable('TBGComponentsTable')->doUpdateById($crit, $this->getID());
-			
-			$this->_name = $name;
-		}
-
 		protected function _preDelete()
 		{
 			$crit = new \b2db\Criteria();
