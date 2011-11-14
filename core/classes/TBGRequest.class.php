@@ -143,7 +143,6 @@
 										$file->setContent(file_get_contents($files_dir.$new_filename));
 									}
 									$file->save();
-									//$file = TBGFile::createNew($new_filename, basename($thefile['name']), $content_type, $this->getParameter($key.'_description'), ((TBGSettings::getUploadStorage() == 'database') ? file_get_contents($files_dir.$new_filename) : null));
 									if ($apc_exists)
 									{
 										$_SESSION['__upload_status'][$this->getParameter('APC_UPLOAD_PROGRESS')] = array(

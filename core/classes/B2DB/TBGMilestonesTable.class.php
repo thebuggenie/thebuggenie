@@ -51,18 +51,6 @@
 //			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 //		}
 		
-		public function createNew($name, $type, $project_id)
-		{
-			$crit = $this->getCriteria();
-			$crit->addInsert(self::NAME, $name);
-			$crit->addInsert(self::MILESTONE_TYPE, $type);
-			$crit->addInsert(self::PROJECT, $project_id);
-			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
-			$res = $this->doInsert($crit);
-			
-			return $res->getInsertID();
-		}
-		
 		public function getAllByProjectID($project_id)
 		{
 			$crit = $this->getCriteria();

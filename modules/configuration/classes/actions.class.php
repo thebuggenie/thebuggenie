@@ -896,7 +896,7 @@
 			catch (Exception $e) {}
 			
 			$this->forward403unless($this->theProject instanceof TBGProject);
-			$this->milestones = $this->theProject->getAllMilestones();
+			$this->milestones = $this->theProject->getMilestones();
 		}
 		
 		/**
@@ -1033,11 +1033,11 @@
 					}
 				}
 				if ($request['field'] == 'owned_by')
-					return $this->renderJSON(array('field' => (($item->hasOwner()) ? array('id' => $item->getOwnerID(), 'name' => (($item->getOwnerType() == TBGIdentifiableTypeClass::TYPE_USER) ? $this->getComponentHTML('main/userdropdown', array('user' => $item->getOwner())) : $this->getComponentHTML('main/teamdropdown', array('team' => $item->getOwner())))) : array('id' => 0))));
+					return $this->renderJSON(array('field' => (($item->hasOwner()) ? array('id' => $item->getOwner()->getID(), 'name' => (($item->getOwner() instanceof TBGUser) ? $this->getComponentHTML('main/userdropdown', array('user' => $item->getOwner())) : $this->getComponentHTML('main/teamdropdown', array('team' => $item->getOwner())))) : array('id' => 0))));
 				elseif ($request['field'] == 'lead_by')
-					return $this->renderJSON(array('field' => (($item->hasLeader()) ? array('id' => $item->getLeaderID(), 'name' => (($item->getLeaderType() == TBGIdentifiableTypeClass::TYPE_USER) ? $this->getComponentHTML('main/userdropdown', array('user' => $item->getLeader())) : $this->getComponentHTML('main/teamdropdown', array('team' => $item->getLeader())))) : array('id' => 0))));
+					return $this->renderJSON(array('field' => (($item->hasLeader()) ? array('id' => $item->getLeaderID(), 'name' => (($item->getLeader() instanceof TBGUser) ? $this->getComponentHTML('main/userdropdown', array('user' => $item->getLeader())) : $this->getComponentHTML('main/teamdropdown', array('team' => $item->getLeader())))) : array('id' => 0))));
 				elseif ($request['field'] == 'qa_by')
-					return $this->renderJSON(array('field' => (($item->hasQaResponsible()) ? array('id' => $item->getQaResponsibleID(), 'name' => (($item->getQaResponsibleType() == TBGIdentifiableTypeClass::TYPE_USER) ? $this->getComponentHTML('main/userdropdown', array('user' => $item->getQaResponsible())) : $this->getComponentHTML('main/teamdropdown', array('team' => $item->getQaResponsible())))) : array('id' => 0))));
+					return $this->renderJSON(array('field' => (($item->hasQaResponsible()) ? array('id' => $item->getQaResponsibleID(), 'name' => (($item->getQaResponsible() instanceof TBGUser) ? $this->getComponentHTML('main/userdropdown', array('user' => $item->getQaResponsible())) : $this->getComponentHTML('main/teamdropdown', array('team' => $item->getQaResponsible())))) : array('id' => 0))));
 			}
 		}
 		
@@ -1527,13 +1527,17 @@
 						{
 							if (($m_name = $request['name']) && trim($m_name) != '')
 							{
-								$theProject = TBGContext::factory()->TBGProject($p_id);
-								if (in_array($m_name, $theProject->getAllMilestones()))
+								$milestone = TBGContext::factory()->TBGProject($p_id);
+								if (in_array($m_name, $milestone->getMilestones()))
 								{
 									throw new Exception($i18n->__('This milestone already exists for this project'));
 								}
-								$theMilestone = $theProject->addMilestone($m_name, $request->getParameter('milestone_type', 1));
-								return $this->renderJSON(array('title' => $i18n->__('The milestone has been added'), 'content' => $this->getTemplateHTML('milestonebox', array('milestone' => $theMilestone))));
+								$milestone = new TBGMilestone();
+								$milestone->setName($m_name);
+								$milestone->setType($request->getParameter('milestone_type', 1));
+								$milestone->setProject($project);
+								$milestone->save();
+								return $this->renderJSON(array('title' => $i18n->__('The milestone has been added'), 'content' => $this->getTemplateHTML('milestonebox', array('milestone' => $milestone))));
 							}
 							else
 							{
@@ -1583,7 +1587,7 @@
 									{
 										if ($m_name != $theMilestone->getName())
 										{
-											$check_milestones = $theMilestone->getProject()->getAllMilestones();
+											$check_milestones = $theMilestone->getProject()->getMilestones();
 											unset($check_milestones[$theMilestone->getID()]);
 											if (in_array($m_name, $check_milestones))
 											{
@@ -2270,7 +2274,7 @@
 					throw new Exception(TBGContext::getI18n()->__("You cannot delete this team"));
 				}
 				$team->delete();
-				return $this->renderJSON(array('success' => true, 'message' => TBGContext::getI18n()->__('The team was deleted'), 'total_count' => TBGTeam::getTeamsCount(), 'more_available' => TBGContext::getScope()->hasTeamsAvailable()));
+				return $this->renderJSON(array('success' => true, 'message' => TBGContext::getI18n()->__('The team was deleted'), 'total_count' => TBGTeam::countAll(), 'more_available' => TBGContext::getScope()->hasTeamsAvailable()));
 			}
 			catch (Exception $e)
 			{
@@ -2321,7 +2325,7 @@
 					{
 						$message = TBGContext::getI18n()->__('The team was added');
 					}
-					return $this->renderJSON(array('failed' => false, 'message' => $message, 'content' => $this->getTemplateHTML('configuration/teambox', array('team' => $team)), 'total_count' => TBGTeam::getTeamsCount(), 'more_available' => TBGContext::getScope()->hasTeamsAvailable()));
+					return $this->renderJSON(array('failed' => false, 'message' => $message, 'content' => $this->getTemplateHTML('configuration/teambox', array('team' => $team)), 'total_count' => TBGTeam::countAll(), 'more_available' => TBGContext::getScope()->hasTeamsAvailable()));
 				}
 				else
 				{

@@ -18,9 +18,17 @@
 	 *
 	 * @Table(name="TBGIssueTypesTable")
 	 */
-	class TBGIssuetype extends TBGDatatype 
+	class TBGIssuetype extends TBGKeyable
 	{
 		
+		/**
+		 * The name of the object
+		 *
+		 * @var string
+		 * @Column(type="string", length=200)
+		 */
+		protected $_name;
+
 		/**
 		 * If true, is the default issue type when promoting tasks to issues
 		 *
@@ -28,9 +36,15 @@
 		 * @access protected
 		 */
 		protected $_task = false;
-		
-		protected $_itemtype = TBGDatatype::ISSUETYPE;
-		
+
+		/**
+		 * @Column(type="string", length=100)
+		 */
+		protected $_icon;
+
+		/**
+		 * @Column(type="text")
+		 */
 		protected $_description;
 		
 		static $_issuetypes = null;
@@ -86,17 +100,18 @@
 		}
 		
 		/**
-		 * Create a new issue type and return it
+		 * Returns an array of issue types
 		 *
-		 * @param string $name
-		 * @param string $icon
-		 *
-		 * @return TBGIssuetype
+		 * @param integer $scope_id  The ID number of the scope to load issue types from
+		 * @return array
 		 */
-		public static function createNew($name, $icon = 'bug_report')
+		public static function getAll()
 		{
-			$res = TBGIssueTypesTable::getTable()->createNew($name, $icon);
-			return TBGContext::factory()->TBGIssuetype($res->getInsertID());
+			if (self::$_issuetypes === null)
+			{
+				self::$_issuetypes = TBGIssueTypesTable::getTable()->getAll();
+			}
+			return self::$_issuetypes;
 		}
 
 		/**
@@ -132,12 +147,6 @@
 			return null;
 		}
 
-		public function setName($name)
-		{
-			parent::setName($name);
-			$this->_generateKey();
-		}
-		
 		/**
 		 * Returns whether or not this issue type is the default for promoting tasks to issues
 		 *
@@ -155,12 +164,12 @@
 
 		public function getIcon()
 		{
-			return $this->_itemdata;
+			return $this->_icon;
 		}
 
 		public function setIcon($icon)
 		{
-			$this->_itemdata = $icon;
+			$this->_icon = $icon;
 		}
 		
 		public function getDescription()
@@ -196,21 +205,6 @@
 			}
 		}
 		
-		/**
-		 * Returns an array of issue types
-		 *
-		 * @param integer $scope_id  The ID number of the scope to load issue types from
-		 * @return array
-		 */
-		public static function getAll()
-		{
-			if (self::$_issuetypes === null)
-			{
-				self::$_issuetypes = TBGIssueTypesTable::getTable()->getAll();
-			}
-			return self::$_issuetypes;
-		}
-		
 		protected function _preDelete()
 		{
 			TBGIssuetypeSchemeLinkTable::getTable()->deleteByIssuetypeID($this->getID());
@@ -220,6 +214,27 @@
 		protected function _postSave($is_new)
 		{
 			TBGCache::delete(TBGCache::KEY_TEXTPARSER_ISSUE_REGEX);
+		}
+
+		/**
+		 * Return the items name
+		 *
+		 * @return string
+		 */
+		public function getName()
+		{
+			return $this->_name;
+		}
+
+		/**
+		 * Set the edition name
+		 *
+		 * @param string $name
+		 */
+		public function setName($name)
+		{
+			$this->_name = $name;
+			$this->_generateKey();
 		}
 
 	}

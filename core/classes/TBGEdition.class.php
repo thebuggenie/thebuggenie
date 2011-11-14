@@ -22,6 +22,14 @@
 	{
 		
 		/**
+		 * The name of the object
+		 *
+		 * @var string
+		 * @Column(type="string", length=200)
+		 */
+		protected $_name;
+
+		/**
 		 * The project
 		 *
 		 * @var TBGProject
@@ -96,7 +104,7 @@
 		{
 			if ($this->_components === null)
 			{
-				$this->_components = $this->_b2dbLazyload('_components');
+				$this->_b2dbLazyload('_components');
 			}
 		}
 		
@@ -212,7 +220,7 @@
 		{
 			if ($this->_builds === null)
 			{
-				$this->_builds = $this->_b2dbLazyload('_builds');
+				$this->_b2dbLazyload('_builds');
 			}
 		}
 
@@ -378,6 +386,26 @@
 		public function setLocked($locked = true)
 		{
 			$this->_locked = (bool) $locked;
+		}
+
+		/**
+		 * Return the items name
+		 *
+		 * @return string
+		 */
+		public function getName()
+		{
+			return $this->_name;
+		}
+
+		/**
+		 * Set the edition name
+		 *
+		 * @param string $name
+		 */
+		public function setName($name)
+		{
+			$this->_name = $name;
 		}
 
 	}

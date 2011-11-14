@@ -403,7 +403,7 @@
 
 		public function hasTeamsAvailable()
 		{
-			return ($this->getMaxTeams()) ? (TBGTeam::getTeamsCount() < $this->getMaxTeams()) : true;
+			return ($this->getMaxTeams()) ? (TBGTeam::countAll() < $this->getMaxTeams()) : true;
 		}
 		
 	}

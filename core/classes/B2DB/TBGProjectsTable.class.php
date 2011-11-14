@@ -130,21 +130,6 @@
 			$res = $this->doUpdateById($crit, $project_id);
 		}
 		
-		public function createNew($name, $p_id = null)
-		{
-			$crit = $this->getCriteria();
-			if ($p_id !== null)
-			{
-				$crit->addInsert(self::ID, $p_id);
-			}
-			$crit->addInsert(self::NAME, $name);
-			$crit->addInsert(self::KEY, mb_strtolower(str_replace(' ', '', $name)));
-			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
-			$crit->addInsert(self::WORKFLOW_SCHEME_ID, 1);
-			$res = $this->doInsert($crit);
-			return $res->getInsertID();
-		}
-		
 		public function getByPrefix($prefix)
 		{
 			$crit = $this->getCriteria();

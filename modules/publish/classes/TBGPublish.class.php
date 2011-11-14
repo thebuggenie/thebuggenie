@@ -67,7 +67,7 @@
 				TBGEvent::listen('core', 'breadcrumb_main_links', array($this, 'listen_BreadcrumbMainLinks'));
 				TBGEvent::listen('core', 'breadcrumb_project_links', array($this, 'listen_BreadcrumbProjectLinks'));
 			}
-			TBGEvent::listen('core', 'TBGProject::createNew', array($this, 'listen_createNewProject'));
+			TBGEvent::listen('core', 'TBGProject::_postSave', array($this, 'listen_createNewProject'));
 			TBGEvent::listen('core', 'upload', array($this, 'listen_upload'));
 			TBGEvent::listen('core', 'quicksearch_dropdown_firstitems', array($this, 'listen_quicksearchDropdownFirstItems'));
 			TBGEvent::listen('core', 'quicksearch_dropdown_founditems', array($this, 'listen_quicksearchDropdownFoundItems'));

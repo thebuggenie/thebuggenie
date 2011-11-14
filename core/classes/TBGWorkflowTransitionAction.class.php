@@ -18,7 +18,7 @@
 	 *
 	 * @Table(name="TBGWorkflowTransitionActionsTable")
 	 */
-	class TBGWorkflowTransitionAction extends TBGIdentifiableTypeClass
+	class TBGWorkflowTransitionAction extends TBGIdentifiableScopedClass
 	{
 		
 		const ACTION_ASSIGN_ISSUE_SELF = 'assign_self';

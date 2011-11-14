@@ -781,8 +781,8 @@
 			self::$_cached_table_classes[$classname]['name'] = $table_name;
 
 			$key = 'b2db_cache_'.$classname;
-			\TBGCache::add($key, self::$_cached_table_classes[$classname]);
-			\TBGCache::fileAdd($key, self::$_cached_table_classes[$classname]);
+//			\TBGCache::add($key, self::$_cached_table_classes[$classname]);
+//			\TBGCache::fileAdd($key, self::$_cached_table_classes[$classname]);
 		}
 
 		protected static function cacheEntityClass($classname, $reflection_classname = null)
@@ -865,8 +865,8 @@
 				}
 			}
 			$key = 'b2db_cache_'.$classname;
-			\TBGCache::add($key, self::$_cached_entity_classes[$classname]);
-			\TBGCache::fileAdd($key, self::$_cached_entity_classes[$classname]);
+//			\TBGCache::add($key, self::$_cached_entity_classes[$classname]);
+//			\TBGCache::fileAdd($key, self::$_cached_entity_classes[$classname]);
 		}
 
 		protected static function _populateCachedClassFiles($classname)

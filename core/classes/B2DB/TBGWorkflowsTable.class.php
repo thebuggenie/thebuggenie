@@ -43,16 +43,13 @@
 //			parent::_addBoolean(self::IS_ACTIVE);
 //		}
 
-		public function getAll($scope = null)
+		public function getAll()
 		{
-			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::SCOPE, $scope);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addOrderBy(self::ID, Criteria::SORT_ASC);
 
-			$res = $this->doSelect($crit);
-
-			return $res;
+			return $this->select($crit);
 		}
 
 		public function getByID($id)

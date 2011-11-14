@@ -18,17 +18,22 @@
 	 *
 	 * @Table(name="TBGIssuetypeSchemesTable")
 	 */
-	class TBGIssuetypeScheme extends TBGIdentifiableTypeClass
+	class TBGIssuetypeScheme extends TBGIdentifiableScopedClass
 	{
 
 		/**
 		 * The default (core) issuetype scheme
-		 * 
+		 *
 		 * @var TBGIssuetypeScheme
 		 */
 		protected static $_core_scheme = null;
-		
+
 		protected static $_schemes = null;
+
+		/**
+		 * @Column(type="string")
+		 */
+		protected $_name;
 
 		protected $_visiblefields = array();
 		
@@ -48,17 +53,13 @@
 		{
 			if (self::$_schemes === null)
 			{
-				self::$_schemes = array();
-				if ($res = TBGIssuetypeSchemesTable::getTable()->getAll())
+				self::$_schemes = TBGIssuetypeSchemesTable::getTable()->getAll();
+				foreach (self::$_schemes as $scheme)
 				{
-					while ($row = $res->getNextRow())
+					if ($scheme->isCore())
 					{
-						$scheme = TBGContext::factory()->TBGIssuetypeScheme($row->get(TBGIssuetypeSchemesTable::ID), $row);
-						
-						if (self::$_core_scheme === null)
-							self::$_core_scheme = $scheme;
-						
-						self::$_schemes[$row->get(TBGIssuetypeSchemesTable::ID)] = $scheme;
+						self::$_core_scheme = $scheme;
+						break;
 					}
 				}
 			}
@@ -285,4 +286,24 @@
 			return $this->_number_of_projects;
 		}
 		
+		/**
+		 * Return the items name
+		 *
+		 * @return string
+		 */
+		public function getName()
+		{
+			return $this->_name;
+		}
+
+		/**
+		 * Set the edition name
+		 *
+		 * @param string $name
+		 */
+		public function setName($name)
+		{
+			$this->_name = $name;
+		}
+
 	}

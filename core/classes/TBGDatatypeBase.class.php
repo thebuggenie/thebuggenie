@@ -18,8 +18,16 @@
 	 *
 	 * @Table(name="TBGListTypesTable")
 	 */
-	abstract class TBGDatatypeBase extends TBGIdentifiableTypeClass
+	abstract class TBGDatatypeBase extends TBGKeyable
 	{
+
+		/**
+		 * The name of the object
+		 *
+		 * @var string
+		 * @Column(type="string")
+		 */
+		protected $_name;
 
 		/**
 		 * Item type
@@ -38,29 +46,37 @@
 		protected $_itemdata = null;
 		
 		/**
-		 * ID of project which this item applies to (if any)
-		 *
-		 * @var integer
-		 */
-		protected $_applies_to = null;
-
-		/**
 		 * Sort order of this item
 		 *
 		 * @var integer
+		 * @Column(type="integer")
 		 */
 		protected $_sort_order = null;
 
 		/**
-		 * @var string
+		 * Return the items name
+		 *
+		 * @return string
 		 */
-		protected $_key = null;
+		public function getName()
+		{
+			return $this->_name;
+		}
+
+		/**
+		 * Set the edition name
+		 *
+		 * @param string $name
+		 */
+		public function setName($name)
+		{
+			$this->_name = $name;
+		}
 
 		/**
 		 * Returns the itemdata associated with the datatype (if any)
 		 *
 		 * @return string
-		 * @access public
 		 */
 		public function getItemdata()
 		{
@@ -127,23 +143,6 @@
 		public function getOrder()
 		{
 			return (int) $this->_sort_order;
-		}
-
-		protected function _generateKey()
-		{
-			if ($this->_key === null)
-				$this->_key = preg_replace("/[^0-9a-zA-Z]/i", '', mb_strtolower($this->getName()));
-		}
-		
-		public function getKey()
-		{
-			$this->_generateKey();
-			return $this->_key;
-		}		
-
-		public function setKey($key)
-		{
-			$this->_key = $key;
 		}
 
 		public function toJSON()

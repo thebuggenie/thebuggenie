@@ -41,9 +41,8 @@
 		const RESOLUTION = 'issues.resolution';
 		const STATE = 'issues.state';
 		const POSTED_BY = 'issues.posted_by';
-		const OWNER = 'issues.owner';
-		const OWNER_TYPE = 'issues.owner_type';
-		const ASSIGNED_TO = 'issues.assigned_to';
+		const OWNER_USER = 'issues.owner_user';
+		const OWNER_TEAM = 'issues.owner_team';
 		const STATUS = 'issues.status';
 		const PRIORITY = 'issues.priority';
 		const SEVERITY = 'issues.severity';
@@ -61,7 +60,8 @@
 		const SPENT_HOURS = 'issues.spent_hours';
 		const SPENT_POINTS = 'issues.spent_points';
 		const PERCENT_COMPLETE = 'issues.percent_complete';
-		const ASSIGNED_TYPE = 'issues.assigned_type';
+		const ASSIGNEE_USER = 'issues.assignee_user';
+		const ASSIGNEE_TEAM = 'issues.assigned_team';
 		const BEING_WORKED_ON_BY_USER = 'issues.being_worked_on_by_user';
 		const BEING_WORKED_ON_BY_USER_SINCE = 'issues.being_worked_on_by_user_since';
 		const USER_PAIN = 'issues.user_pain';
@@ -461,8 +461,7 @@
 		public function getOpenIssuesByTeamAssigned($team_id)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::ASSIGNED_TO, $team_id);
-			$crit->addWhere(self::ASSIGNED_TYPE, TBGIdentifiableTypeClass::TYPE_TEAM);
+			$crit->addWhere(self::ASSIGNED_TEAM, $team_id);
 			$crit->addWhere(self::STATE, TBGIssue::STATE_OPEN);
 			$crit->addWhere(self::DELETED, 0);
 			
@@ -474,8 +473,7 @@
 		public function getOpenIssuesByUserAssigned($user_id)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::ASSIGNED_TO, $user_id);
-			$crit->addWhere(self::ASSIGNED_TYPE, TBGIdentifiableTypeClass::TYPE_USER);
+			$crit->addWhere(self::ASSIGNEE_USER, $user_id);
 			$crit->addWhere(self::STATE, TBGIssue::STATE_OPEN);
 			$crit->addWhere(self::DELETED, 0);
 			
@@ -745,10 +743,10 @@
 							$crit->addOrderBy(self::PERCENT_COMPLETE, 'desc');
 							break;
 						case 'assignee':
-							$crit->addSelectionColumn(self::ASSIGNED_TYPE);
-							$crit->addSelectionColumn(self::ASSIGNED_TO);
-							$crit->addOrderBy(self::ASSIGNED_TYPE);
-							$crit->addOrderBy(self::ASSIGNED_TO, $grouporder);
+							$crit->addSelectionColumn(self::ASSIGNEE_TEAM);
+							$crit->addSelectionColumn(self::ASSIGNEE_USER);
+							$crit->addOrderBy(self::ASSIGNEE_TEAM);
+							$crit->addOrderBy(self::ASSIGNEE_USER, $grouporder);
 							break;
 						case 'state':
 							$crit->addSelectionColumn(self::STATE);

@@ -22,6 +22,14 @@
 	{
 		
 		/**
+		 * The name of the object
+		 *
+		 * @var string
+		 * @Column(type="string", length=200)
+		 */
+		protected $_name;
+
+		/**
 		 * This components project
 		 *
 		 * @var unknown_type
@@ -138,4 +146,24 @@
 			return ($this->getProject()->canSeeAllComponents() || TBGContext::getUser()->hasPermission('canseecomponent', $this->getID()));
 		}
 		
+		/**
+		 * Return the items name
+		 *
+		 * @return string
+		 */
+		public function getName()
+		{
+			return $this->_name;
+		}
+
+		/**
+		 * Set the edition name
+		 *
+		 * @param string $name
+		 */
+		public function setName($name)
+		{
+			$this->_name = $name;
+		}
+
 	}

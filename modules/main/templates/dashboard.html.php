@@ -76,7 +76,7 @@
 					<div class="faded_out" style="padding: 5px;"><?php echo __('Showing milestones and sprint for the next 21 days'); ?></div>
 					<?php $milestone_cc = 0; ?>
 					<?php foreach ($tbg_user->getAssociatedProjects() as $project): ?>
-						<?php foreach ($project->getUpcomingMilestonesAndSprints() as $milestone): ?>
+						<?php foreach ($project->getUpcomingMilestones() as $milestone): ?>
 							<?php if ($milestone->isScheduled()): ?>
 								<?php include_template('main/milestonedashboardbox', array('milestone' => $milestone)); ?>
 								<?php $milestone_cc++; ?>

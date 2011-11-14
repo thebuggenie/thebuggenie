@@ -22,6 +22,14 @@
 	{
 		
 		/**
+		 * The name of the object
+		 *
+		 * @var string
+		 * @Column(type="string", length=200)
+		 */
+		protected $_name;
+
+		/**
 		 * This builds edition
 		 *
 		 * @var TBGEdition
@@ -49,28 +57,12 @@
 		protected $_milestone = null;
 		
 		/**
-		 * Whether this build is released or not
-		 * 
-		 * @var boolean
-		 * @Column(type="boolean")
-		 */
-		protected $_isreleased = null;
-		
-		/**
 		 * Whether this build is active or not
 		 * 
 		 * @var boolean
 		 * @Column(type="boolean", name="locked")
 		 */
 		protected $_isactive = null;
-		
-		/**
-		 * The builds release date
-		 * 
-		 * @var integer
-		 * @Column(type="integer")
-		 */
-		protected $_release_date = null;
 		
 		/**
 		 * An attached file, if exists
@@ -130,7 +122,7 @@
 			if ($is_new)
 			{
 				TBGContext::setPermission("canseebuild", $this->getID(), "core", 0, TBGContext::getUser()->getGroup()->getID(), 0, true);
-				TBGEvent::createNew('core', 'TBGBuild::createNew', $this)->trigger();
+				TBGEvent::createNew('core', 'TBGBuild::_postSave', $this)->trigger();
 			}
 		}
 
@@ -500,6 +492,26 @@
 		public function setLocked($locked = true)
 		{
 			$this->_locked = (bool) $locked;
+		}
+
+		/**
+		 * Return the items name
+		 *
+		 * @return string
+		 */
+		public function getName()
+		{
+			return $this->_name;
+		}
+
+		/**
+		 * Set the edition name
+		 *
+		 * @param string $name
+		 */
+		public function setName($name)
+		{
+			$this->_name = $name;
 		}
 
 	}

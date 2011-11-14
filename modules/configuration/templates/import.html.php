@@ -58,7 +58,7 @@
 							foreach (TBGProject::getAll() as $item)
 							{
 								echo '<tr><td>'.__('Project').'</td><td>'.$item->getName().'</td><td>'.$item->getID().'</td></tr>';
-								foreach (TBGMilestone::getAllByProjectID($item->getID()) as $item2)
+								foreach ($item->getMilestones() as $item2)
 								{
 									echo '<tr><td>'.__('Milestone for project').' '.$item->getID().'</td><td>'.$item2->getName().'</td><td>'.$item2->getID().'</td></tr>';
 								}

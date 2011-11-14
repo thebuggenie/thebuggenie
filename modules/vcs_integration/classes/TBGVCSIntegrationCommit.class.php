@@ -23,7 +23,7 @@
 	 *
 	 * @Table(name="TBGVCSIntegrationCommitsTable")
 	 */
-	class TBGVCSIntegrationCommit extends TBGIdentifiableTypeClass
+	class TBGVCSIntegrationCommit extends TBGIdentifiableScopedClass
 	{
 		
 		/**

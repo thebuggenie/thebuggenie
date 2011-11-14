@@ -22,6 +22,14 @@
 	{
 
 		/**
+		 * The name of the object
+		 *
+		 * @var string
+		 * @Column(type="string", length=200)
+		 */
+		protected $_name;
+
+		/**
 		 * @var string
 		 * @Column(type="string")
 		 */
@@ -265,16 +273,6 @@
 			throw new Exception('Trying to call function ' . $func . '() in module ' . $this->_shortname . ', but the function does not exist');
 		}
 		
-		public function getID()
-		{
-			return $this->_id;
-		}
-		
-		public function getName()
-		{
-			return $this->_name;
-		}
-
 		public function setLongName($name)
 		{
 			$this->_longname = $name;
@@ -550,6 +548,26 @@
 		public function postAccountSettings(TBGRequest $request)
 		{
 
+		}
+
+		/**
+		 * Return the items name
+		 *
+		 * @return string
+		 */
+		public function getName()
+		{
+			return $this->_name;
+		}
+
+		/**
+		 * Set the edition name
+		 *
+		 * @param string $name
+		 */
+		public function setName($name)
+		{
+			$this->_name = $name;
 		}
 
 	}

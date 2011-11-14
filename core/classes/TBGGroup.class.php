@@ -27,6 +27,14 @@
 
 		protected $_num_members = null;
 
+		/**
+		 * The name of the object
+		 *
+		 * @var string
+		 * @Column(type="string", length=200)
+		 */
+		protected $_name;
+
 		public static function doesGroupNameExist($group_name)
 		{
 			return TBGGroupsTable::getTable()->doesGroupNameExist($group_name);
@@ -46,11 +54,6 @@
 				}
 			}
 			return self::$_groups;
-		}
-		
-		public function __toString()
-		{
-			return $this->_name;
 		}
 		
 		public static function postSave($is_new)
@@ -90,6 +93,26 @@
 			TBGPermissionsTable::getTable()->loadFixtures($scope, $admin_group->getID(), $guest_group->getID());
 		}
 		
+		/**
+		 * Return the items name
+		 *
+		 * @return string
+		 */
+		public function getName()
+		{
+			return $this->_name;
+		}
+
+		/**
+		 * Set the edition name
+		 *
+		 * @param string $name
+		 */
+		public function setName($name)
+		{
+			$this->_name = $name;
+		}
+
 		protected function _preDelete()
 		{
 			$crit = TBGUsersTable::getTable()->getCriteria();

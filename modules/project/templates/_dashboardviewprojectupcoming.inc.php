@@ -1,6 +1,6 @@
 <div class="sub_header"><?php echo __('Milestones finishing in the next 21 days'); ?></div>
 <?php $milestone_cc = 0; ?>
-<?php foreach (TBGContext::getCurrentProject()->getUpcomingMilestonesAndSprints(21) as $milestone): ?>
+<?php foreach (TBGContext::getCurrentProject()->getUpcomingMilestones(21) as $milestone): ?>
 	<?php if ($milestone->isScheduled()): ?>
 		<?php include_template('main/milestonedashboardbox', array('milestone' => $milestone)); ?>
 		<?php $milestone_cc++; ?>
@@ -11,7 +11,7 @@
 <?php endif; ?>
 <div class="sub_header"><?php echo __('Milestones starting in the next 21 days'); ?></div>
 <?php $milestone_cc = 0; ?>
-<?php foreach (TBGContext::getCurrentProject()->getStartingMilestonesAndSprints(21) as $milestone): ?>
+<?php foreach (TBGContext::getCurrentProject()->getStartingMilestones(21) as $milestone): ?>
 	<?php if ($milestone->isStarting()): ?>
 		<?php include_template('main/milestonedashboardbox', array('milestone' => $milestone)); ?>
 		<?php $milestone_cc++; ?>

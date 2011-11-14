@@ -18,7 +18,7 @@
 	 *
 	 * @Table(name="TBGClientsTable")
 	 */
-	class TBGClient extends TBGIdentifiableTypeClass
+	class TBGClient extends TBGIdentifiableScopedClass
 	{
 		
 		protected $_members = null;

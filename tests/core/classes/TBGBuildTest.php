@@ -24,7 +24,7 @@ class TBGBuildsTable
 	const RELEASED = 'builds.released';
 }
 
-class \b2db\Row
+class Row
 {
 	public function get($fieldname)
 	{

@@ -221,7 +221,7 @@
 		
 		public function componentProjectMilestones()
 		{
-			$this->milestones = $this->project->getAllMilestones();
+			$this->milestones = $this->project->getMilestones();
 		}
 
 		public function componentProjectEdition()

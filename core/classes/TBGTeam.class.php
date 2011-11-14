@@ -18,7 +18,7 @@
 	 *
 	 * @Table(name="TBGTeamsTable")
 	 */
-	class TBGTeam extends TBGIdentifiableTypeClass
+	class TBGTeam extends TBGIdentifiableScopedClass
 	{
 		
 		protected static $_teams = null;
@@ -28,6 +28,14 @@
 		protected $_members = null;
 
 		protected $_num_members = null;
+
+		/**
+		 * The name of the object
+		 *
+		 * @var string
+		 * @Column(type="string", length=200)
+		 */
+		protected $_name;
 
 		/**
 		 * @Column(type="boolean")
@@ -45,14 +53,7 @@
 		{
 			if (self::$_teams === null)
 			{
-				self::$_teams = array();
-				if ($res = \b2db\Core::getTable('TBGTeamsTable')->getAll())
-				{
-					while ($row = $res->getNextRow())
-					{
-						self::$_teams[$row->get(TBGTeamsTable::ID)] = TBGContext::factory()->TBGTeam($row->get(TBGTeamsTable::ID), $row);
-					}
-				}
+				self::$_teams = TBGTeamsTable::getTable()->getAll();
 			}
 			return self::$_teams;
 		}
@@ -80,7 +81,7 @@
 			$translators->save();
 		}
 
-		public static function getTeamsCount()
+		public static function countAll()
 		{
 			if (self::$_num_teams === null)
 			{
@@ -217,6 +218,26 @@
 		public function hasAccess()
 		{
 			return (bool) (TBGContext::getUser()->hasPageAccess('teamlist') || TBGContext::getUser()->isMemberOfTeam($this));
+		}
+
+		/**
+		 * Return the items name
+		 *
+		 * @return string
+		 */
+		public function getName()
+		{
+			return $this->_name;
+		}
+
+		/**
+		 * Set the edition name
+		 *
+		 * @param string $name
+		 */
+		public function setName($name)
+		{
+			$this->_name = $name;
 		}
 
 	}

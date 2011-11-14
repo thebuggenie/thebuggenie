@@ -36,17 +36,4 @@
 			return TBGListTypesTable::getTable()->getAllByItemType(self::SEVERITY);
 		}
 
-		/**
-		 * Create a new resolution
-		 *
-		 * @param string $name The status description
-		 *
-		 * @return TBGResolution
-		 */
-		public static function createNew($name)
-		{
-			$res = parent::_createNew($name, self::SEVERITY);
-			return TBGContext::factory()->TBGSeverity($res->getInsertID());
-		}
-
 	}

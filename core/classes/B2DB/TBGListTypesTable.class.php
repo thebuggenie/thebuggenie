@@ -79,41 +79,6 @@
 			return (array_key_exists($itemtype, self::$_item_cache)) ? self::$_item_cache[$itemtype] : null;
 		}
 
-		public function createNew($name, $itemtype, $itemdata = null, $scope = null)
-		{
-			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
-
-			$crit = $this->getCriteria();
-			$crit->addWhere(self::ITEMTYPE, $itemtype);
-			$crit->addSelectionColumn(self::ORDER, 'sortorder', Criteria::DB_MAX, '', '+1');
-			$row = $this->doSelectOne($crit, 'none');
-			$sort_order = (int) $row->get('sortorder');
-			$sort_order = ($sort_order > 0) ? $sort_order : 1;
-
-			$crit = $this->getCriteria();
-			$crit->addInsert(self::NAME, $name);
-			$crit->addInsert(self::ITEMTYPE, $itemtype);
-			$crit->addInsert(self::ORDER, $sort_order);
-			if ($itemdata !== null)
-			{
-				$crit->addInsert(self::ITEMDATA, $itemdata);
-			}
-			$crit->addInsert(self::SCOPE, $scope);
-			$res = $this->doInsert($crit);
-			
-			return $res;
-		}
-
-		public function saveById($name, $itemdata, $order, $id)
-		{
-			$crit = $this->getCriteria();
-			$crit->addUpdate(self::NAME, $name);
-			$crit->addUpdate(self::ITEMDATA, $itemdata);
-			$crit->addUpdate(self::ORDER, $order);
-
-			$res = $this->doUpdateById($crit, $id);
-		}
-
 		public function deleteByTypeAndId($type, $id)
 		{
 			$crit = $this->getCriteria();

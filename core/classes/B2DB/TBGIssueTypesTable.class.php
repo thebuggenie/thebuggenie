@@ -32,21 +32,9 @@
 		const SCOPE = 'issuetypes.scope';
 		const NAME = 'issuetypes.name';
 		const DESCRIPTION = 'issuetypes.description';
-		const ICON = 'issuetypes.itemdata';
+		const ICON = 'issuetypes.icon';
 		const TASK = 'issuetypes.task';
 		
-		public function createNew($name, $icon = 'bug_report')
-		{
-			$crit = $this->getCriteria();
-			$crit->addInsert(self::NAME, $name);
-			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
-			$crit->addInsert(self::ICON, $icon);
-			$crit->addInsert(self::DESCRIPTION, $name);
-			$res = $this->doInsert($crit);
-
-			return $res;
-		}
-
 		public function getAll()
 		{
 			$crit = $this->getCriteria();

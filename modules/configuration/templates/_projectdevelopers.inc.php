@@ -49,9 +49,9 @@
 		</td>
 		<td style="<?php if (!$project->hasLeader()): ?>display: none; <?php endif; ?>padding: 2px;" id="lead_by_name">
 			<div style="width: 270px; display: <?php if ($project->hasLeader()): ?>inline<?php else: ?>none<?php endif; ?>;" id="lead_by_name">
-				<?php if ($project->getLeaderType() == TBGIdentifiableTypeClass::TYPE_USER): ?>
+				<?php if ($project->getLeader() instanceof TBGUser): ?>
 					<?php echo include_component('main/userdropdown', array('user' => $project->getLeader())); ?>
-				<?php elseif ($project->getLeaderType() == TBGIdentifiableTypeClass::TYPE_TEAM): ?>
+				<?php elseif ($project->getLeader() instanceof TBGTeam): ?>
 					<?php echo include_component('main/teamdropdown', array('team' => $project->getLeader())); ?>
 				<?php endif; ?>
 			</div>
@@ -80,9 +80,9 @@
 		</td>
 		<td style="<?php if (!$project->hasQaResponsible()): ?>display: none; <?php endif; ?>padding: 2px;" id="qa_by_name">
 			<div style="width: 270px; display: <?php if ($project->hasQaResponsible()): ?>inline<?php else: ?>none<?php endif; ?>;" id="qa_by_name">
-				<?php if ($project->getQaResponsibleType() == TBGIdentifiableTypeClass::TYPE_USER): ?>
+				<?php if ($project->getQaResponsible() instanceof TBGUser): ?>
 					<?php echo include_component('main/userdropdown', array('user' => $project->getQaResponsible())); ?>
-				<?php elseif ($project->getQaResponsibleType() == TBGIdentifiableTypeClass::TYPE_TEAM): ?>
+				<?php elseif ($project->getQaResponsible() instanceof TBGTeam): ?>
 					<?php echo include_component('main/teamdropdown', array('team' => $project->getQaResponsible())); ?>
 				<?php endif; ?>
 			</div>

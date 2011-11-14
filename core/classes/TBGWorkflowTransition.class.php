@@ -18,8 +18,16 @@
 	 *
 	 * @Table(name="TBGWorkflowTransitionsTable")
 	 */
-	class TBGWorkflowTransition extends TBGIdentifiableTypeClass
+	class TBGWorkflowTransition extends TBGIdentifiableScopedClass
 	{
+
+		/**
+		 * The name of the object
+		 *
+		 * @var string
+		 * @Column(type="string", length=200)
+		 */
+		protected $_name;
 
 		/**
 		 * The workflow description
@@ -163,6 +171,26 @@
 			return $transitions;
 		}
 		
+		/**
+		 * Return the items name
+		 *
+		 * @return string
+		 */
+		public function getName()
+		{
+			return $this->_name;
+		}
+
+		/**
+		 * Set the edition name
+		 *
+		 * @param string $name
+		 */
+		public function setName($name)
+		{
+			$this->_name = $name;
+		}
+
 		/**
 		 * Returns the workflows description
 		 *

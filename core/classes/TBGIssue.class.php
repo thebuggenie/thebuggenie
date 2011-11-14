@@ -34,7 +34,12 @@
 		 * @static integer
 		 */
 		const STATE_CLOSED = 1;
-	
+
+		/**
+		 * @Column(type="string", name="name", length=255)
+		 */
+		protected $_title;
+
 		/**
 		 * Array of links attached to this issue
 		 *
@@ -145,6 +150,24 @@
 		 */
 		protected $_posted_by;
 		
+		/**
+		 * The project assignee if team
+		 *
+		 * @var TBGTeam
+		 * @Column(type="integer")
+		 * @Relates(class="TBGTeam")
+		 */
+		protected $_assignee_team;
+
+		/**
+		 * The project assignee if user
+		 *
+		 * @var TBGUser
+		 * @Column(type="integer")
+		 * @Relates(class="TBGUser")
+		 */
+		protected $_assignee_user;
+
 		/**
 		 * What kind of bug this is
 		 * 
@@ -571,20 +594,6 @@
 		}
 		
 		/**
-		 * Creates a new issue and returns it
-		 *
-		 * @param string $title The title
-		 * @param integer $issuetype The issue type
-		 * @param integer $p_id The Project ID for the issue
-		 * @param integer $issue_id[optional] specific issue_id
-		 * 
-		 * @return TBGIssue
-		 */
-		public static function createNew($title, $issuetype, $p_id, $issue_id = null, $notify = true)
-		{
-		}
-
-		/**
 		 * Returns a TBGIssue from an issue no
 		 *
 		 * @param string $issue_no An integer or issue number
@@ -724,18 +733,18 @@
 				TBGLogging::log('done checking, allowed since this user posted it');
 				return true;
 			}
-			if ($this->getOwnerType() == TBGIdentifiableTypeClass::TYPE_USER && $this->getOwnerID() == TBGContext::getUser()->getID())
+			if ($this->getOwner() instanceof TBGUser && $this->getOwner()->getID() == TBGContext::getUser()->getID())
 			{
 				TBGLogging::log('done checking, allowed since this user owns it');
 				return true;
 			}
-			if ($this->getAssigneeType() == TBGIdentifiableTypeClass::TYPE_USER && $this->getAssigneeID() == TBGContext::getUser()->getID())
+			if ($this->getAssignee() instanceof TBGUser && $this->getAssignee()->getID() == TBGContext::getUser()->getID())
 			{
 				TBGLogging::log('done checking, allowed since this user is assigned to it');
 				return true;
 			}
 			if (TBGContext::getUser()->hasPermission('canseegroupissues', 0, 'core', true, true) &&
-				$this->getPostedByType() == TBGIdentifiableTypeClass::TYPE_USER &&
+				$this->getPostedBy() instanceof TBGUser &&
 				$this->getPostedBy()->getGroupID() == TBGContext::getUser()->getGroupID())
 			{
 				TBGLogging::log('done checking, allowed since this user is in same group as user that posted it');
@@ -1080,7 +1089,7 @@
 		public function isInvolved()
 		{
 			$user_id = TBGContext::getUser()->getID();
-			return (bool) ($this->getPostedByID() == $user_id || ($this->isAssigned() && $this->getAssignee()->getID() == $user_id && $this->getAssignee()->getType() == TBGIdentifiableTypeClass::TYPE_USER) || ($this->isOwned() && $this->getOwner()->getID() == $user_id && $this->getOwner()->getType() == TBGIdentifiableTypeClass::TYPE_USER));
+			return (bool) ($this->getPostedByID() == $user_id || ($this->isAssigned() && $this->getAssignee()->getID() == $user_id && $this->getAssignee()->get() instanceof TBGUser) || ($this->isOwned() && $this->getOwner()->getID() == $user_id && $this->getOwner()->get() instanceof TBGUser));
 		}
 		
 		/**
@@ -1885,7 +1894,7 @@
 		 */
 		public function getTitle()
 		{
-			return htmlentities($this->_name, ENT_COMPAT, TBGContext::getI18n()->getCharset());
+			return htmlentities($this->_title, ENT_COMPAT, TBGContext::getI18n()->getCharset());
 		}
 		
 		/**
@@ -1895,7 +1904,7 @@
 		 */
 		public function getRawTitle()
 		{
-			return $this->_name;
+			return $this->_title;
 		}
 		
 		/**
@@ -3461,7 +3470,7 @@
 			{
 				$comment->save();
 			}
-			TBGEvent::createNew('core', 'TBGComment::createNew', $this, array('comment' => $comment))->trigger();
+			TBGEvent::createNew('core', 'TBGIssue::addSystemComment', $this, array('comment' => $comment))->trigger();
 			return $comment;
 		}
 	
@@ -4133,7 +4142,7 @@
 								$new_name = ($this->getAssignee() instanceof TBGIdentifiableTypeClass) ? $this->getAssignee()->getName() : TBGContext::getI18n()->__('Not assigned');
 								
 								
-								if ($this->getAssigneeType() == TBGIdentifiableTypeClass::TYPE_USER)
+								if ($this->getAssignee() instanceof TBGUser)
 								{
 									$this->startWorkingOnIssue($this->getAssignee());
 								}
@@ -4806,6 +4815,45 @@
 			$return_values['visible_fields'] = $fields;
 
 			return $return_values;
+		}
+
+		public function getAssignee()
+		{
+			if ($this->_assignee_team !== null) {
+				$this->_b2dbLazyload('_assignee_team');
+			} elseif ($this->_assignee_user !== null) {
+				$this->_b2dbLazyload('_assignee_user');
+			}
+
+			if ($this->_assignee_team instanceof TBGTeam) {
+				return $this->_assignee_team;
+			} elseif ($this->_assignee_user instanceof TBGUser) {
+				return $this->_assignee_user;
+			} else {
+				return null;
+			}
+		}
+
+		public function hasAssignee()
+		{
+			return (bool) ($this->getAssignee() instanceof TBGIdentifiable);
+		}
+
+		public function setAssignee(TBGIdentifiable $assignee)
+		{
+			if ($assignee instanceof TBGTeam) {
+				$this->_addChangedProperty('_assignee_user', null);
+				$this->_addChangedProperty('_assignee_team', $assignee->getID());
+			} else {
+				$this->_addChangedProperty('_assignee_user', $assignee->getID());
+				$this->_addChangedProperty('_assignee_team', null);
+			}
+		}
+
+		public function clearAssignee()
+		{
+			$this->_assignee_team = null;
+			$this->_assignee_user = null;
 		}
 
 	}

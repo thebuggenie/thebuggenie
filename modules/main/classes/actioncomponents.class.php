@@ -155,7 +155,7 @@
 				$fields_list['severity'] = array('title' => $i18n->__('Severity'), 'choices' => array(), 'visible' => $this->issue->isSeverityVisible(), 'changed' => $this->issue->isSeverityChanged(), 'merged' => $this->issue->isSeverityMerged(), 'name' => (($this->issue->getSeverity() instanceof TBGSeverity) ? $this->issue->getSeverity()->getName() : ''), 'name_visible' => (bool) ($this->issue->getSeverity() instanceof TBGSeverity), 'noname_visible' => (bool) (!$this->issue->getSeverity() instanceof TBGSeverity), 'icon' => false, 'change_tip' => $i18n->__('Click to change severity'), 'change_header' => $i18n->__('Change severity'), 'clear' => $i18n->__('Clear the severity'), 'select' => $i18n->__('%clear_the_severity% or click to select a new severity', array('%clear_the_severity%' => '')));
 				if ($this->issue->isUpdateable() && $this->issue->canEditSeverity()) $fields_list['severity']['choices'] = TBGSeverity::getAll();
 				$fields_list['milestone'] = array('title' => $i18n->__('Targetted for'), 'choices' => array(), 'visible' => $this->issue->isMilestoneVisible(), 'changed' => $this->issue->isMilestoneChanged(), 'merged' => $this->issue->isMilestoneMerged(), 'name' => (($this->issue->getMilestone() instanceof TBGMilestone) ? $this->issue->getMilestone()->getName() : ''), 'name_visible' => (bool) ($this->issue->getMilestone() instanceof TBGMilestone), 'noname_visible' => (bool) (!$this->issue->getMilestone() instanceof TBGMilestone), 'icon' => true, 'icon_name' => 'icon_milestones.png', 'change_tip' => $i18n->__('Click to change which milestone this issue is targetted for'), 'change_header' => $i18n->__('Set issue target / milestone'), 'clear' => $i18n->__('Set as not targetted'), 'select' => $i18n->__('%set_as_not_targetted% or click to set a new target milestone', array('%set_as_not_targetted%' => '')), 'url' => true, 'current_url' => (($this->issue->getMilestone() instanceof TBGMilestone) ? $this->getRouting()->generate('project_milestone_details', array('project_key' => $this->issue->getProject()->getKey(), 'milestone_id' => $this->issue->getMilestone()->getID())) : ''));
-				if ($this->issue->isUpdateable() && $this->issue->canEditMilestone()) $fields_list['milestone']['choices'] = $this->project->getAllMilestones();
+				if ($this->issue->isUpdateable() && $this->issue->canEditMilestone()) $fields_list['milestone']['choices'] = $this->project->getMilestones();
 
 				$customfields_list = array();
 				foreach (TBGCustomDatatype::getAll() as $key => $customdatatype)
@@ -202,7 +202,7 @@
 				$fields_list['severity'] = array();
 				$fields_list['severity']['choices'] = TBGSeverity::getAll();
 				$fields_list['milestone'] = array();
-				$fields_list['milestone']['choices'] = $this->project->getAllMilestones();
+				$fields_list['milestone']['choices'] = $this->project->getMilestones();
 			}
 
 			$this->fields_list = $fields_list;

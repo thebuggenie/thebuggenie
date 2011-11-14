@@ -57,7 +57,7 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 
-			return $this->doSelect($crit);
+			return $this->select($crit);
 		}
 		
 	}

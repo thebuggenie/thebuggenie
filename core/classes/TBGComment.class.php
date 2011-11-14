@@ -18,7 +18,7 @@
 	 *
 	 * @Table(name="TBGCommentsTable")
 	 */
-	class TBGComment extends TBGIdentifiableTypeClass
+	class TBGComment extends TBGIdentifiableScopedClass
 	{
 		
 		/**

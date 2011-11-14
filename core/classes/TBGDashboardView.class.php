@@ -50,6 +50,14 @@
 		const TYPE_CLIENT = 4;
 
 		/**
+		 * The name of the object
+		 *
+		 * @var string
+		 * @Column(type="string", length=200)
+		 */
+		protected $_name;
+
+		/**
 		 * @Column(type="integer")
 		 */
 		protected $_view;
@@ -162,6 +170,26 @@
 		{
 			$views = array();
 			self::setUserViews($tid, $target_type, $views);
+		}
+
+		/**
+		 * Return the items name
+		 *
+		 * @return string
+		 */
+		public function getName()
+		{
+			return $this->_name;
+		}
+
+		/**
+		 * Set the edition name
+		 *
+		 * @param string $name
+		 */
+		public function setName($name)
+		{
+			$this->_name = $name;
 		}
 
 		public function getType()

@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage core
 	 */
-	abstract class TBGIdentifiableScopedClass extends TBGScopedClass implements TBGIdentifiable
+	abstract class TBGIdentifiableScopedClass extends \b2db\Saveable implements TBGIdentifiable
 	{
 		
 		/**
@@ -24,17 +24,41 @@
 		 *
 		 * @var integer
 		 * @Id
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_id;
-		
+
 		/**
-		 * The name of the object
+		 * The related scope
 		 *
-		 * @var string
-		 * @Column(type="string")
+		 * @var integer
+		 * @Column(type="integer")
+		 * @Relates(class="TBGScope")
 		 */
-		protected $_name;
+		protected $_scope;
+
+		/**
+		 * Set the scope this item is in
+		 *
+		 * @param TBGScope $scope
+		 */
+		public function setScope($scope)
+		{
+			$this->_scope = $scope;
+		}
+
+		/**
+		 * Retrieve the scope this item is in
+		 *
+		 * @return TBGScope
+		 */
+		public function getScope()
+		{
+			if (!$this->_scope instanceof TBGScope)
+				$this->_b2dbLazyload('_scope');
+
+			return $this->_scope;
+		}
 		
 		/**
 		 * Return the items id
@@ -43,7 +67,7 @@
 		 */
 		public function getID()
 		{
-			return (int) $this->_id;
+			return (integer) $this->_id;
 		}
 
 		/**
@@ -53,27 +77,7 @@
 		 */
 		public function setID($id)
 		{
-			$this->_id = $id;
-		}
-
-		/**
-		 * Return the items name
-		 * 
-		 * @return string
-		 */
-		public function getName()
-		{
-			return $this->_name;
-		}
-
-		/**
-		 * Set the edition name
-		 *
-		 * @param string $name
-		 */
-		public function setName($name)
-		{
-			$this->_name = $name;
+			$this->_id = (integer) $id;
 		}
 
 	}

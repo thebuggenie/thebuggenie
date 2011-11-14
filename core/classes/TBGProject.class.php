@@ -18,7 +18,7 @@
 	 *
 	 * @Table(name="TBGProjectsTable")
 	 */
-	class TBGProject extends TBGIdentifiableScopedClass
+	class TBGProject extends TBGOwnableItem
 	{
 
 		/**
@@ -29,6 +29,14 @@
 		protected static $_projects = null;
 
 		protected static $_num_projects = null;
+
+		/**
+		 * The name of the object
+		 *
+		 * @var string
+		 * @Column(type="string", length=200)
+		 */
+		protected $_name;
 
 		/**
 		 * The lead type for the project, TBGIdentifiableClass::TYPE_USER or TBGIdentifiableClass::TYPE_TEAM
@@ -149,6 +157,7 @@
 		 * List of editions for this project
 		 *
 		 * @var array
+		 * @Relates(class="TBGEdition", collection=true, foreign_column="project")
 		 */
 		protected $_editions = null;
 		
@@ -161,26 +170,13 @@
 		protected $_homepage = '';
 		
 		/**
-		 * List of milestones + sprints for this project
-		 *
-		 * @var array
-		 */
-		protected $_allmilestones = null;
-
-		/**
 		 * List of milestones for this project
 		 *
 		 * @var array
+		 * @Relates(class="TBGMilestone", collection=true, foreign_column="project")
 		 */
 		protected $_milestones = null;
 
-		/**
-		 * List of sprints for this project
-		 *
-		 * @var array
-		 */
-		protected $_sprints = null;
-		
 		/**
 		 * List of components for this project
 		 *
@@ -744,11 +740,9 @@
 		}
 		
 		/**
-		 * Create a new project and return it
+		 * Pre save check for conflicting keys
 		 *
-		 * @param string $name
-		 * 
-		 * @return TBGProject
+		 * @param boolean $is_new
 		 */
 		protected function _preSave($is_new)
 		{
@@ -785,7 +779,7 @@
 				TBGContext::setPermission("canaddextrainformationtoissues", $this->getID(), "core", TBGContext::getUser()->getID(), 0, 0, true);
 				TBGContext::setPermission("canpostseeandeditallcomments", $this->getID(), "core", TBGContext::getUser()->getID(), 0, 0, true);
 
-				TBGEvent::createNew('core', 'TBGProject::createNew', $this)->trigger();
+				TBGEvent::createNew('core', 'TBGProject::_postSave', $this)->trigger();
 			}
 			if ($this->_dodelete)
 			{
@@ -806,16 +800,6 @@
 				return TBGContext::factory()->TBGProject($row->get(TBGProjectsTable::ID), $row);
 			}
 			return null;
-		}
-		
-		/**
-		 * Constructor function
-		 *
-		 * @param \b2db\Row $row
- 		 */
-		public function _construct(\b2db\Row $row, $foreign_key = null)
-		{
-			TBGEvent::createNew('core', 'TBGProject::__construct', $this)->trigger();
 		}
 		
 		/**
@@ -918,6 +902,16 @@
 			if ($this->_key == '') $this->_key = 'project'.$this->getID();
 		}
 		
+		/**
+		 * Return the items name
+		 *
+		 * @return string
+		 */
+		public function getName()
+		{
+			return $this->_name;
+		}
+
 		/**
 		 * Return project key
 		 * 
@@ -1258,93 +1252,37 @@
 		{
 			if ($this->_milestones === null)
 			{
-				$this->_milestones = array();
-				foreach (TBGMilestone::getMilestonesByProjectID($this->getID()) as $milestone)
-				{
-					$this->_milestones[$milestone->getID()] = $milestone;
-				}
+				$this->_b2dbLazyload('_milestones');
 			}
+			uasort($this->_milestones, function($milestone_a, $milestone_b) {
+				if (!$milestone_a->isScheduled() && !$milestone_a->isStarting() && !$milestone_b->isScheduled() && !$milestone_b->isStarting()) return 1;
+				if ($milestone_a->isStarting() && $milestone_b->isStarting())
+					return ($milestone_a->getStartingDate() < $milestone_b->getStartingDate()) ? -1 : 1;
+
+				if ($milestone_a->isScheduled() && $milestone_b->isScheduled())
+					return ($milestone_a->getScheduledDate() < $milestone_b->getScheduledDate()) ? -1 : 1;
+
+				if ($milestone_a->isStarting() && $milestone_b->isScheduled())
+					return ($milestone_a->getStartingDate() < $milestone_b->getScheduledDate()) ? -1 : 1;
+
+				if ($milestone_a->isScheduled() && $milestone_b->isStarting())
+					return ($milestone_a->getScheduledDate() < $milestone_b->getStartingDate()) ? -1 : 1;
+
+				if ($milestone_a->isStarting()) return -1;
+				if ($milestone_b->isStarting()) return 1;
+
+				if ($milestone_a->isScheduled()) return -1;
+				if ($milestone_b->isScheduled()) return 1;
+
+				if ($milestone_a->isOverdue()) return -1;
+				if ($milestone_b->isOverdue()) return 1;
+
+				if (!$milestone_b->isStarting() && !$milestone_b->isScheduled()) return -1;
+
+				return 0;
+			});
 		}
 
-		/**
-		 * Populates the milestones + sprints array
-		 *
-		 * @return void
-		 */
-		protected function _populateAllMilestones()
-		{
-			if ($this->_allmilestones === null)
-			{
-				$this->_allmilestones = array();
-				foreach (TBGMilestone::getAllByProjectID($this->getID()) as $milestone)
-				{
-					$this->_allmilestones[$milestone->getID()] = $milestone;
-				}
-				uasort($this->_allmilestones, function($milestone_a, $milestone_b) {
-					if (!$milestone_a->isScheduled() && !$milestone_a->isStarting() && !$milestone_b->isScheduled() && !$milestone_b->isStarting()) return 1;
-					if ($milestone_a->isStarting() && $milestone_b->isStarting())
-						return ($milestone_a->getStartingDate() < $milestone_b->getStartingDate()) ? -1 : 1;
-					
-					if ($milestone_a->isScheduled() && $milestone_b->isScheduled())
-						return ($milestone_a->getScheduledDate() < $milestone_b->getScheduledDate()) ? -1 : 1;
-					
-					if ($milestone_a->isStarting() && $milestone_b->isScheduled())
-						return ($milestone_a->getStartingDate() < $milestone_b->getScheduledDate()) ? -1 : 1;
-
-					if ($milestone_a->isScheduled() && $milestone_b->isStarting())
-						return ($milestone_a->getScheduledDate() < $milestone_b->getStartingDate()) ? -1 : 1;
-
-					if ($milestone_a->isStarting()) return -1;
-					if ($milestone_b->isStarting()) return 1;
-					
-					if ($milestone_a->isScheduled()) return -1;
-					if ($milestone_b->isScheduled()) return 1;
-					
-					if ($milestone_a->isOverdue()) return -1;
-					if ($milestone_b->isOverdue()) return 1;
-					
-					if (!$milestone_b->isStarting() && !$milestone_b->isScheduled()) return -1;
-					
-					return 0;
-				});
-			}
-		}
-
-		/**
-		 * Populates the sprints array
-		 *
-		 * @return void
-		 */
-		protected function _populateSprints()
-		{
-			if ($this->_sprints === null)
-			{
-				$this->_sprints = array();
-				foreach (TBGMilestone::getSprintsByProjectID($this->getID()) as $sprint)
-				{
-					$this->_sprints[$sprint->getID()] = $sprint;
-				}
-			}
-		}
-
-		/**
-		 * Adds a new milestone to the project
-		 *
-		 * @param string $m_name
-		 * @return TBGMilestone
-		 */
-		public function addMilestone($m_name, $type)
-		{
-			$this->_milestones = null;
-			$milestone = new TBGMilestone();
-			$milestone->setName($m_name);
-			$milestone->setType($type);
-			$milestone->setProject($this);
-			$milestone->save();
-			
-			return $milestone;
-		}
-		
 		/**
 		 * Returns an array with all the milestones
 		 *
@@ -1357,73 +1295,51 @@
 		}
 
 		/**
-		 * Returns an array with all the milestones + sprints
-		 *
-		 * @return array
-		 */
-		public function getAllMilestones()
-		{
-			$this->_populateAllMilestones();
-			return $this->_allmilestones;
-		}
-
-		/**
-		 * Returns an array with all the sprints
-		 *
-		 * @return array
-		 */
-		public function getSprints()
-		{
-			$this->_populateSprints();
-			return $this->_sprints;
-		}
-
-		/**
-		 * Returns a list of upcoming milestones and sprints
+		 * Returns a list of upcoming milestones
 		 * 
 		 * @param integer $days[optional] Number of days, default 21 
 		 * 
 		 * @return array
 		 */
-		public function getUpcomingMilestonesAndSprints($days = 21)
+		public function getUpcomingMilestones($days = 21)
 		{
-			$ret_arr = array();
-			if ($allmilestones = $this->getAllMilestones())
+			$return_array = array();
+			if ($milestones = $this->getMilestones())
 			{
 				$curr_day = time();
-				foreach ($allmilestones as $milestone)
+				foreach ($milestones as $milestone)
 				{
 					if (($milestone->getScheduledDate() >= $curr_day || $milestone->isOverdue()) && (($milestone->getScheduledDate() <= ($curr_day + (86400 * $days))) || ($milestone->getType() == TBGMilestone::TYPE_SCRUMSPRINT && $milestone->isCurrent())))
 					{
-						$ret_arr[$milestone->getID()] = $milestone;
+						$return_array[$milestone->getID()] = $milestone;
 					}
 				}
 			}
-			return $ret_arr;
+			return $return_array;
 		}
 		
 		/**
-		 * Returns a list of milestones and sprints starting soon
+		 * Returns a list of milestones starting soon
 		 * 
 		 * @param integer $days[optional] Number of days, default 21 
 		 * 
 		 * @return array
 		 */
-		public function getStartingMilestonesAndSprints($days = 21)
+		public function getStartingMilestones($days = 21)
 		{
-			$ret_arr = array();
-			if ($allmilestones = $this->getAllMilestones())
+			$return_array = array();
+			if ($milestones = $this->getMilestones())
 			{
 				$curr_day = time();
-				foreach ($allmilestones as $milestone)
+				foreach ($milestones as $milestone)
 				{
 					if (($milestone->getStartingDate() > $curr_day) && ($milestone->getStartingDate() < ($curr_day + (86400 * $days))))
 					{
-						$ret_arr[$milestone->getID()] = $milestone;
+						$return_array[$milestone->getID()] = $milestone;
 					}
 				}
 			}
-			return $ret_arr;
+			return $return_array;
 		}
 		
 		public function removeAssignee($assignee_type, $assignee_id)
@@ -2537,7 +2453,7 @@
 						$this->_recentactivities[$build->getReleaseDate()][] = array('change_type' => 'build_release', 'info' => $build->getName());
 					}
 				}
-				foreach ($this->getAllMilestones() as $milestone)
+				foreach ($this->getMilestones() as $milestone)
 				{
 					if ($milestone->isStarting() && $milestone->isSprint())
 					{

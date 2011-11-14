@@ -53,19 +53,6 @@
 			return null;
 		}
 
-		/**
-		 * Create a new resolution
-		 *
-		 * @param string $name The status description
-		 *
-		 * @return TBGResolution
-		 */
-		public static function createNew($name)
-		{
-			$res = parent::_createNew($name, self::RESOLUTION);
-			return TBGContext::factory()->TBGResolution($res->getInsertID());
-		}
-
 		protected function _generateKey()
 		{
 			$this->_key = str_replace(array(' ', '/', "'"), array('', '', ''), mb_strtolower($this->getName()));

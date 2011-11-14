@@ -664,7 +664,7 @@
 		{
 			if ($is_new)
 			{
-				$event = TBGEvent::createNew('core', 'TBGUser::createNew', $this);
+				$event = TBGEvent::createNew('core', 'TBGUser::_postSave', $this);
 				$event->trigger();
 				
 				// If the event isn't processed we automatically enable the user
@@ -869,7 +869,7 @@
 		{
 			if ($this->clients === null)
 			{
-				$this->clients = $this->_b2dbLazyload('clients');
+				$this->_b2dbLazyload('clients');
 			}
 		}
 	
@@ -1065,7 +1065,7 @@
 		{
 			if ($this->_friends === null)
 			{
-				$this->_friends = $this->_b2dbLazyload('_friends');
+				$this->_b2dbLazyload('_friends');
 			}
 		}
 

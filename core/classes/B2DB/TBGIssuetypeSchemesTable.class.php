@@ -41,24 +41,13 @@
 //			parent::_addText(self::DESCRIPTION, false);
 //		}
 
-		public function getAll($scope = null)
-		{
-			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
-			$crit = $this->getCriteria();
-			$crit->addWhere(self::SCOPE, $scope);
-			$crit->addOrderBy(self::ID, Criteria::SORT_ASC);
-
-			$res = $this->doSelect($crit);
-
-			return $res;
-		}
-
-		public function getByID($id)
+		public function getAll()
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
-			$row = $this->doSelectById($id, $crit, 'none');
-			return $row;
+			$crit->addOrderBy(self::ID, Criteria::SORT_ASC);
+
+			return $this->select($crit);
 		}
 
 	}

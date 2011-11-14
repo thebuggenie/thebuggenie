@@ -38,19 +38,6 @@
 			return TBGListTypesTable::getTable()->getAllByItemType(self::PRIORITY);
 		}
 
-		/**
-		 * Create a new resolution
-		 *
-		 * @param string $name The status description
-		 *
-		 * @return TBGResolution
-		 */
-		public static function createNew($name)
-		{
-			$res = parent::_createNew($name, self::PRIORITY);
-			return TBGContext::factory()->TBGPriority($res->getInsertID());
-		}
-		
 		public function getValue()
 		{
 			return $this->_itemdata;

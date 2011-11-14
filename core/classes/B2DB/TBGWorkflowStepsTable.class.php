@@ -84,24 +84,6 @@
 			return $this->doCount($crit);
 		}
 
-		public function getByWorkflowID($workflow_id)
-		{
-			$crit = $this->getCriteria();
-			$crit->addWhere(self::WORKFLOW_ID, $workflow_id);
-			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
-
-			$return_array = array();
-			if ($res = $this->doSelect($crit))
-			{
-				while ($row = $res->getNextRow())
-				{
-					$return_array[$row->get(self::ID)] = TBGContext::factory()->TBGWorkflowStep($row->get(self::ID), $row);
-				}
-			}
-
-			return $return_array;
-		}
-
 		public function getByID($id)
 		{
 			$crit = $this->getCriteria();

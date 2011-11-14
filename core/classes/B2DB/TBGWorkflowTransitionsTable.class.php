@@ -47,22 +47,6 @@
 //			parent::_addVarchar(self::TEMPLATE, 200);
 //		}
 
-		public function createNew($workflow_id, $name, $description, $to_step_id, $template, $scope = null)
-		{
-			$scope = ($scope !== null) ? $scope : TBGContext::getScope()->getID();
-			$crit = $this->getCriteria();
-			$crit->addInsert(self::SCOPE, $scope);
-			$crit->addInsert(self::WORKFLOW_ID, $workflow_id);
-			$crit->addInsert(self::NAME, $name);
-			$crit->addInsert(self::DESCRIPTION, $description);
-			$crit->addInsert(self::OUTGOING_STEP_ID, $to_step_id);
-			$crit->addInsert(self::TEMPLATE, $template);
-
-			$res = $this->doInsert($crit);
-
-			return $res->getInsertID();
-		}
-
 		protected function _deleteByTypeID($type, $id)
 		{
 			$crit = $this->getCriteria();
@@ -115,16 +99,6 @@
 		public function getByWorkflowID($workflow_id)
 		{
 			return $this->_getByTypeID('workflow', $workflow_id);
-		}
-		
-		public function saveByID($name, $description, $outgoing_step_id, $template, $transition_id)
-		{
-			$crit = $this->getCriteria();
-			$crit->addUpdate(self::NAME, $name);
-			$crit->addUpdate(self::DESCRIPTION, $description);
-			$crit->addUpdate(self::OUTGOING_STEP_ID, $outgoing_step_id);
-			$crit->addUpdate(self::TEMPLATE, $template);
-			$res = $this->doUpdateById($crit, $transition_id);
 		}
 		
 		public function reMapByWorkflowID($workflow_id, $mapper_array)

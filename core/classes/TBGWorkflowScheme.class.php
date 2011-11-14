@@ -18,7 +18,7 @@
 	 *
 	 * @Table(name="TBGWorkflowSchemesTable")
 	 */
-	class TBGWorkflowScheme extends TBGIdentifiableTypeClass
+	class TBGWorkflowScheme extends TBGIdentifiableScopedClass
 	{
 
 		/**
@@ -30,11 +30,25 @@
 		
 		protected static $_schemes = null;
 
+		/**
+		 * The name of the object
+		 *
+		 * @var string
+		 * @Column(type="string", length=200)
+		 */
+		protected $_name;
+
 		protected $_issuetype_workflows = null;
 
 		protected $_num_issuetype_workflows = null;
-		
-		protected $_number_of_projects = null;
+
+		/**
+		 * Projects using this workflow scheme
+		 *
+		 * @var array|TBGProject
+		 * @Relates(class="TBGProject", collection=true, foreign_column="workflow_id")
+		 */
+		protected $_projects = null;
 
 		/**
 		 * The workflow description
@@ -178,16 +192,36 @@
 
 		public function isInUse()
 		{
-			if ($this->_number_of_projects === null)
-			{
-				$this->_number_of_projects = TBGProjectsTable::getTable()->countByWorkflowSchemeID($this->getID());
-			}
-			return (bool) $this->_number_of_projects;
+			return (bool) $this->getNumberOfProjects();
 		}
 		
 		public function getNumberOfProjects()
 		{
-			return $this->_number_of_projects;
+			if ($this->_projects === null)
+			{
+				$this->_b2dbLazycount('_projects');
+			}
+			return $this->_projects;
 		}
 		
+		/**
+		 * Return the items name
+		 *
+		 * @return string
+		 */
+		public function getName()
+		{
+			return $this->_name;
+		}
+
+		/**
+		 * Set the edition name
+		 *
+		 * @param string $name
+		 */
+		public function setName($name)
+		{
+			$this->_name = $name;
+		}
+
 	}

@@ -18,7 +18,7 @@
 	 *
 	 * @Table(name="TBGWorkflowTransitionValidationRulesTable")
 	 */
-	class TBGWorkflowTransitionValidationRule extends TBGIdentifiableTypeClass
+	class TBGWorkflowTransitionValidationRule extends TBGIdentifiableScopedClass
 	{
 		
 		const RULE_MAX_ASSIGNED_ISSUES = 'max_assigned_issues';

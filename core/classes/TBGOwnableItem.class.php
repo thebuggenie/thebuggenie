@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage core
 	 */
-	class TBGOwnableItem extends TBGIdentifiableTypeClass
+	class TBGOwnableItem extends TBGIdentifiableScopedClass
 	{
 
 		/**

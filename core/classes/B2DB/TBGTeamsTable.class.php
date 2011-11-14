@@ -41,16 +41,13 @@
 //			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 //		}
 
-		public function getAll($scope = null)
+		public function getAll()
 		{
-			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::SCOPE, $scope);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addWhere(self::ONDEMAND, false);
 			
-			$res = $this->doSelect($crit, 'none');
-			
-			return $res;
+			return $this->select($crit);
 		}
 
 		public function doesTeamNameExist($team_name)
@@ -61,11 +58,10 @@
 			return (bool) $this->doCount($crit);
 		}
 
-		public function countTeams($scope = null)
+		public function countTeams()
 		{
-			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::SCOPE, $scope);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addWhere(self::ONDEMAND, false);
 
 			return $this->doCount($crit);

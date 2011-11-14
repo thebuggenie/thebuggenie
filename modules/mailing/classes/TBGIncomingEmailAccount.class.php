@@ -1,46 +1,81 @@
 <?php
 
-
-	class TBGIncomingEmailAccount extends TBGIdentifiableTypeClass
+	/**
+	 * @Table(name="TBGIncomingEmailAccountTable")
+	 */
+	class TBGIncomingEmailAccount extends TBGIdentifiableScopedClass
 	{
 		
 		const SERVER_IMAP = 0;
 		const SERVER_POP3 = 1;
-		
-		protected $_id;
-		
+
+		/**
+		 * @Column(type="string")
+		 */
 		protected $_name;
 		
+		/**
+		 * @Column(type="string")
+		 */
 		protected $_server;
 		
+		/**
+		 * @Column(type="integer")
+		 */
 		protected $_port;
 		
+		/**
+		 * @Column(type="integer")
+		 */
 		protected $_server_type;
 		
+		/**
+		 * @Column(type="boolean")
+		 */
 		protected $_ssl;
 		
+		/**
+		 * @Column(type="boolean")
+		 */
 		protected $_keep_email;
 		
+		/**
+		 * @Column(type="string")
+		 */
 		protected $_username;
 		
+		/**
+		 * @Column(type="string")
+		 */
 		protected $_password;
 		
+		/**
+		 * @Column(type="string")
+		 */
 		protected $_connection;
 
 		/**
-		 * @Relates(class="TBGProject")
 		 * @var TBGProject
+		 * @Column(type="integer")
+		 * @Relates(class="TBGProject")
 		 */
 		protected $_project;
 		
 		/**
-		 * @Relates(class="TBGIssuetype")
 		 * @var TBGIssuetype
+		 * @Column(type="integer")
+		 * @Relates(class="TBGIssuetype")
 		 */
 		protected $_issuetype;
 		
+		/**
+		 * @Column(type="integer")
+		 */
 		protected $_num_last_fetched = 0;
 		
+		/**
+		 * @Column(type="integer")
+		 */
 		protected $_time_last_fetched = 0;
 		
 		public static function getAll()
@@ -71,21 +106,21 @@
 			return $accounts;
 		}
 
-		public function getId()
-		{
-			return $this->_id;
-		}
-
-		public function setID($id)
-		{
-			$this->_id = $id;
-		}
-
+		/**
+		 * Return the items name
+		 *
+		 * @return string
+		 */
 		public function getName()
 		{
 			return $this->_name;
 		}
 
+		/**
+		 * Set the edition name
+		 *
+		 * @param string $name
+		 */
 		public function setName($name)
 		{
 			$this->_name = $name;

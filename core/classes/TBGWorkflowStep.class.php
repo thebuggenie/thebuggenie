@@ -18,7 +18,7 @@
 	 *
 	 * @Table(name="TBGWorkflowStepsTable")
 	 */
-	class TBGWorkflowStep extends TBGIdentifiableTypeClass
+	class TBGWorkflowStep extends TBGIdentifiableScopedClass
 	{
 
 		/**
