@@ -98,8 +98,9 @@
 		<?php if ($issue->canEditAssignedTo() && $issue->isEditable()): ?>
 			<?php include_component('identifiableselector', array(	'html_id' 			=> 'assigned_to_change', 
 																	'header' 			=> __('Assign this issue'),
-																	'callback'		 	=> "TBG.Issues.Field.set('" . make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'assigned_to', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'assigned_to');",
-																	'teamup_callback' 	=> "TBG.Issues.Field.set('" . make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'assigned_to', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%', 'teamup' => true)) . "', 'assigned_to');",
+																	'callback'		 	=> "TBG.Issues.Field.set('" . make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'assigned_to', 'identifiable_type' => 'user', 'value' => '%identifiable_value%')) . "', 'assigned_to');",
+																	'team_callback'	 	=> "TBG.Issues.Field.set('" . make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'assigned_to', 'identifiable_type' => 'team', 'value' => '%identifiable_value%')) . "', 'assigned_to');",
+																	'teamup_callback' 	=> "TBG.Issues.Field.set('" . make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'assigned_to', 'identifiable_type' => 'team', 'value' => '%identifiable_value%', 'teamup' => true)) . "', 'assigned_to');",
 																	'clear_link_text'	=> __('Clear current assignee'),
 																	'base_id'			=> 'assigned_to',
 																	'include_teams'		=> true,

@@ -40,10 +40,15 @@
 		const ACTION_USER_STOP_WORKING = 'user_stop_working';
 
 		/**
+		 * @Column(type="string", length=200)
+		 */
+		protected $_action_type;
+		
+		/**
 		 * @Column(type="string")
 		 */
 		protected $_target_value = null;
-		
+
 		/**
 		 * The connected transition
 		 *
@@ -104,12 +109,12 @@
 
 		public function setActionType($action_type)
 		{
-			$this->_name = $action_type;
+			$this->_action_type = $action_type;
 		}
 		
 		public function getActionType()
 		{
-			return $this->_name;
+			return $this->_action_type;
 		}
 		
 		public function setTargetValue($target_value)
@@ -129,7 +134,7 @@
 		
 		public function perform(TBGIssue $issue, $request = null)
 		{
-			switch ($this->_name)
+			switch ($this->_action_type)
 			{
 				case self::ACTION_ASSIGN_ISSUE_SELF:
 					$issue->setAssignee(TBGContext::getUser());
@@ -250,7 +255,7 @@
 		{
 			if ($this->_target_value) return true;
 			
-			switch ($this->_name)
+			switch ($this->_action_type)
 			{
 				case self::ACTION_ASSIGN_ISSUE:
 					return (bool) $request['assignee_type'] && $request['assignee_id'];
