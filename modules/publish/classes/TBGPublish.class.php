@@ -84,6 +84,7 @@
 			TBGContext::setPermission('publish_postonteambillboard', 0, 'publish', 0, 1, 0, true, $scope);
 			TBGContext::setPermission('manage_billboard', 0, 'publish', 0, 1, 0, true, $scope);
 			$this->saveSetting('allow_camelcase_links', 1);
+			$this->saveSetting('require_change_reason', 1);
 
 			TBGContext::getRouting()->addRoute('publish_article', '/wiki/:article_name', 'publish', 'showArticle');
 			TBGTextParser::addRegex('/(?<![\!|\"|\[|\>|\/\:])\b[A-Z]+[a-z]+[A-Z][A-Za-z]*\b/', array($this, 'getArticleLinkTag'));
@@ -214,7 +215,7 @@
 			}
 			else
 			{
-				$settings = array('allow_camelcase_links', 'menu_title', 'hide_wiki_links', 'free_edit');
+				$settings = array('allow_camelcase_links', 'menu_title', 'hide_wiki_links', 'free_edit', 'require_change_reason');
 				foreach ($settings as $setting)
 				{
 					if ($request->hasParameter($setting))
