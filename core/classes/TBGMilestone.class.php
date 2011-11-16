@@ -28,7 +28,7 @@
 		 * This components project
 		 *
 		 * @var TBGProject
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGProject")
 		 */
 		protected $_project;
@@ -60,7 +60,7 @@
 		 * When the milestone was reached
 		 * 
 		 * @var integer
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_reacheddate;
 
@@ -75,7 +75,7 @@
 		 * When the milestone is scheduled for release
 		 * 
 		 * @var integer
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_scheduleddate;
 		
@@ -90,7 +90,7 @@
 		 * When the milestone is scheduled to start
 		 * 
 		 * @var integer
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_startingdate;
 		

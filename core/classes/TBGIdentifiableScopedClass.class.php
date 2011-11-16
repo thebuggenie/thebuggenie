@@ -32,7 +32,7 @@
 		 * The related scope
 		 *
 		 * @var integer
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGScope")
 		 */
 		protected $_scope;

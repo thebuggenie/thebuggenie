@@ -33,7 +33,7 @@
 		 * This components project
 		 *
 		 * @var unknown_type
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGProject")
 		 */
 		protected $_project = null;

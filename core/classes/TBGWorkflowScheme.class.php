@@ -54,7 +54,7 @@
 		 * The workflow description
 		 *
 		 * @var string
-		 * @Column(type="string")
+		 * @Column(type="string", length=200)
 		 */
 		protected $_description = null;
 

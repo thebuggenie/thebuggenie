@@ -25,7 +25,7 @@
 		 * The workflow description
 		 *
 		 * @var string
-		 * @Column(type="string")
+		 * @Column(type="string", length=200)
 		 */
 		protected $_description = null;
 
@@ -40,7 +40,7 @@
 		protected $_closed = null;
 
 		/**
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGStatus")
 		 */
 		protected $_status_id = null;
@@ -57,7 +57,7 @@
 		 * The associated workflow object
 		 *
 		 * @var TBGWorkflow
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGWorkflow")
 		 */
 		protected $_workflow_id = null;

@@ -58,22 +58,22 @@
 		protected $_name;
 
 		/**
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_view;
 
 		/**
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_pid;
 
 		/**
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_tid;
 
 		/**
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_target_type;
 

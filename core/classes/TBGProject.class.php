@@ -42,7 +42,7 @@
 		 * The lead type for the project, TBGIdentifiableClass::TYPE_USER or TBGIdentifiableClass::TYPE_TEAM
 		 *
 		 * @var TBGTeam
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGTeam")
 		 */
 		protected $_leader_team;
@@ -51,7 +51,7 @@
 		 * The lead for the project
 		 *
 		 * @var TBGUser
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGUser")
 		 */
 		protected $_leader_user;
@@ -60,7 +60,7 @@
 		 * The QA responsible for the project, TBGIdentifiableClass::TYPE_USER or TBGIdentifiableClass::TYPE_TEAM
 		 *
 		 * @var TBGTeam
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGTeam")
 		 */
 		protected $_qa_responsible_team;
@@ -78,7 +78,7 @@
 		 * The project prefix
 		 *
 		 * @var string
-		 * @Column(type="string")
+		 * @Column(type="string", length=25)
 		 */
 		protected $_prefix = '';
 		
@@ -107,13 +107,6 @@
 		 */
 		protected $_use_scrum = true;
 
-		/**
-		 * Time unit for this project
-		 *
-		 * @var integer
-		 */
-		protected $_timeunit;
-		
 		/**
 		 * Whether or not the project uses builds
 		 *
@@ -149,7 +142,7 @@
 		 * Project key
 		 *
 		 * @var string
-		 * @Column(type="string")
+		 * @Column(type="string", length=200)
 		 */
 		protected $_key = null;
 		
@@ -165,7 +158,7 @@
 		 * The projects homepage 
 		 * 
 		 * @var string
-		 * @Column(type="string")
+		 * @Column(type="string", length=200)
 		 */
 		protected $_homepage = '';
 		
@@ -196,7 +189,7 @@
 		 * The small project icon, if set
 		 * 
 		 * @var TBGFile
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGFile")
 		 */
 		protected $_small_icon = null;
@@ -205,7 +198,7 @@
 		 * The large project icon, if set
 		 * 
 		 * @var TBGFile
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGFile")
 		 */
 		protected $_large_icon = null;
@@ -228,7 +221,7 @@
 		 * The projects documentation URL
 		 * 
 		 * @var string
-		 * @Column(type="string")
+		 * @Column(type="string", length=200)
 		 */
 		protected $_doc_url = '';
 		
@@ -236,7 +229,7 @@
 		 * The project description
 		 * 
 		 * @var string
-		 * @Column(type="string")
+		 * @Column(type="string", length=200)
 		 */
 		protected $_description = '';
 		
@@ -371,59 +364,10 @@
 		protected $_statecount = null;
 
 		/**
-		 * Recent new features / enhancements reported
-		 *
-		 * @var array
-		 */
-		protected $_recentfeatures = null;
-
-		/**
-		 * Recent ideas suggested
-		 *
-		 * @var array
-		 */
-		protected $_recentideas = null;
-
-		/**
-		 * Recent documentation requests
-		 *
-		 * @var array
-		 */
-		protected $_recentdocumentationrequests = null;
-		
-		/**
-		 * Recent new enhancements
-		 *
-		 * @var array
-		 */
-		protected $_recentenhancements = null;
-
-		/**
-		 * Recent support requests
-		 *
-		 * @var array
-		 */
-		protected $_recentsupportrequests = null;
-		
-		/**
-		 * Recent tasks
-		 *
-		 * @var array
-		 */
-		protected $_recenttasks = null;
-
-		/**
-		 * Recent developer reports
-		 *
-		 * @var array
-		 */
-		protected $_recentdeveloperreports = null;
-		
-		/**
 		 * The selected workflow scheme
 		 * 
 		 * @var TBGWorkflowScheme
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGWorkflowScheme")
 		 */
 		protected $_workflow_scheme_id = 1;
@@ -432,7 +376,7 @@
 		 * The selected workflow scheme
 		 * 
 		 * @var TBGIssuetypeScheme
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGIssuetypeScheme")
 		 */
 		protected $_issuetype_scheme_id = 1;
@@ -441,7 +385,7 @@
 		 * Assigned client
 		 * 
 		 * @var TBGClient
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGClient")
 		 */
 		protected $_client = null;
@@ -458,7 +402,7 @@
 		 * Parent project
 		 * 
 		 * @var TBGProject
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGProject")
 		 */
 		protected $_parent = null;

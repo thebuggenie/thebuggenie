@@ -12,7 +12,7 @@
 		 * This options value
 		 *
 		 * @var string|integer
-		 * @Column(type="string")
+		 * @Column(type="string", length=200)
 		 */
 		protected $_value = null;
 		
@@ -20,7 +20,7 @@
 		 * Custom field key value
 		 *
 		 * @var integer
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGCustomDatatype")
 		 */
 		protected $_customdatatype;

@@ -65,7 +65,7 @@
 		 * The issue number
 		 *
 		 * @var integer
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_issue_no;
 		
@@ -73,7 +73,7 @@
 		 * The issue type
 		 *
 		 * @var TBGIssuetype
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGIssuetype")
 		 */
 		protected $_issuetype;
@@ -83,7 +83,7 @@
 		 *
 		 * @var TBGProject
 		 * @access protected
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGProject")
 		 */
 		protected $_project_id;
@@ -113,7 +113,7 @@
 		 * This issues long description
 		 * 
 		 * @var string
-		 * @Column(type="string")
+		 * @Column(type="text")
 		 */
 		protected $_description;
 		
@@ -121,7 +121,7 @@
 		 * This issues reproduction steps
 		 * 
 		 * @var string
-		 * @Column(type="string")
+		 * @Column(type="text")
 		 */
 		protected $_reproduction_steps;
 		
@@ -129,7 +129,7 @@
 		 * When the issue was posted
 		 * 
 		 * @var integer
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_posted;
 		
@@ -137,7 +137,7 @@
 		 * When the issue was last updated
 		 * 
 		 * @var integer
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_last_updated;
 		
@@ -145,7 +145,7 @@
 		 * Who posted the issue
 		 * 
 		 * @var TBGUser
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGUser")
 		 */
 		protected $_posted_by;
@@ -154,7 +154,7 @@
 		 * The project assignee if team
 		 *
 		 * @var TBGTeam
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGTeam")
 		 */
 		protected $_assignee_team;
@@ -163,7 +163,7 @@
 		 * The project assignee if user
 		 *
 		 * @var TBGUser
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGUser")
 		 */
 		protected $_assignee_user;
@@ -172,7 +172,7 @@
 		 * What kind of bug this is
 		 * 
 		 * @var integer
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=5)
 		 */
 		protected $_pain_bug_type;
 
@@ -180,7 +180,7 @@
 		 * What effect this bug has on users
 		 *
 		 * @var integer
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=5)
 		 */
 		protected $_pain_effect;
 
@@ -188,7 +188,7 @@
 		 * How likely users are to experience this bug
 		 *
 		 * @var integer
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=5)
 		 */
 		protected $_pain_likelihood;
 
@@ -204,7 +204,7 @@
 		 * The resolution
 		 * 
 		 * @var TBGResolution
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGResolution")
 		 */
 		protected $_resolution;
@@ -213,7 +213,7 @@
 		 * The issues' state (open or closed)
 		 * 
 		 * @var integer
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=2)
 		 */
 		protected $_state = self::STATE_OPEN;
 		
@@ -221,7 +221,7 @@
 		 * The category
 		 * 
 		 * @var TBGCategory
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGCategory")
 		 */
 		protected $_category;
@@ -230,7 +230,7 @@
 		 * The status
 		 * 
 		 * @var TBGStatus
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGStatus")
 		 */
 		protected $_status;
@@ -239,7 +239,7 @@
 		 * The prioroty
 		 * 
 		 * @var TBGPriority
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGPriority")
 		 */
 		protected $_priority;
@@ -248,7 +248,7 @@
 		 * The reproducability
 		 * 
 		 * @var TBGReproducability
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGReproducability")
 		 */
 		protected $_reproducability;
@@ -257,7 +257,7 @@
 		 * The severity
 		 * 
 		 * @var TBGSeverity
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGSeverity")
 		 */
 		protected $_severity;
@@ -266,7 +266,7 @@
 		 * The scrum color
 		 *
 		 * @var string
-		 * @Column(type="string")
+		 * @Column(type="string", length=10)
 		 */
 		protected $_scrumcolor;
 
@@ -274,7 +274,7 @@
 		 * The estimated time (months) to fix this issue
 		 * 
 		 * @var integer
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=5)
 		 */
 		protected $_estimated_months;
 
@@ -282,7 +282,7 @@
 		 * The estimated time (weeks) to fix this issue
 		 * 
 		 * @var integer
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=5)
 		 */
 		protected $_estimated_weeks;
 
@@ -290,7 +290,7 @@
 		 * The estimated time (days) to fix this issue
 		 * 
 		 * @var integer
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=5)
 		 */
 		protected $_estimated_days;
 
@@ -298,7 +298,7 @@
 		 * The estimated time (hours) to fix this issue
 		 * 
 		 * @var integer
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=5)
 		 */
 		protected $_estimated_hours;
 
@@ -306,7 +306,7 @@
 		 * The estimated time (points) to fix this issue
 		 * 
 		 * @var integer
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=5)
 		 */
 		protected $_estimated_points;
 
@@ -314,7 +314,7 @@
 		 * The time spent (months) to fix this issue
 		 * 
 		 * @var integer
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=5)
 		 */
 		protected $_spent_months;
 
@@ -322,7 +322,7 @@
 		 * The time spent (weeks) to fix this issue
 		 * 
 		 * @var integer
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=5)
 		 */
 		protected $_spent_weeks;
 
@@ -330,7 +330,7 @@
 		 * The time spent (days) to fix this issue
 		 * 
 		 * @var integer
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=5)
 		 */
 		protected $_spent_days;
 
@@ -338,7 +338,7 @@
 		 * The time spent (hours) to fix this issue
 		 * 
 		 * @var integer
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=5)
 		 */
 		protected $_spent_hours;
 
@@ -346,7 +346,7 @@
 		 * The time spent (points) to fix this issue
 		 * 
 		 * @var integer
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=5)
 		 */
 		protected $_spent_points;
 		
@@ -354,7 +354,7 @@
 		 * How far along the issus is
 		 * 
 		 * @var integer
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=5)
 		 */
 		protected $_percent_complete;
 		
@@ -362,7 +362,7 @@
 		 * Which user is currently working on this issue
 		 * 
 		 * @var TBGUser
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGUser")
 		 */
 		protected $_being_worked_on_by_user;
@@ -371,7 +371,7 @@
 		 * When the last user started working on the issue
 		 * 
 		 * @var integer
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGUser")
 		 */
 		protected $_being_worked_on_by_user_since;
@@ -417,7 +417,7 @@
 		 * Sum of votes for this issue
 		 *
 		 * @var integer
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_votes_total = null;
 		
@@ -425,7 +425,7 @@
 		 * The issue this issue is a duplicate of
 		 * 
 		 * @var TBGIssue
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGIssue")
 		 */
 		protected $_duplicate_of;
@@ -434,7 +434,7 @@
 		 * The milestone this issue is assigned to
 		 * 
 		 * @var TBGMilestone
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGMilestone")
 		 */
 		protected $_milestone;
@@ -479,7 +479,7 @@
 		 * The issues current step in the associated workflow
 		 *
 		 * @var TBGWorkflowStep
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGWorkflowStep")
 		 */
 		protected $_workflow_step_id;

@@ -31,7 +31,7 @@
 
 		/**
 		 * @var string
-		 * @Column(type="string")
+		 * @Column(type="string", length=100)
 		 */
 		protected $_classname = '';
 
@@ -43,7 +43,7 @@
 
 		/**
 		 * @var string
-		 * @Column(type="string")
+		 * @Column(type="string", length=10)
 		 */
 		protected $_version = '';
 

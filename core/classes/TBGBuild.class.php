@@ -33,7 +33,7 @@
 		 * This builds edition
 		 *
 		 * @var TBGEdition
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGEdition")
 		 */
 		protected $_edition = null;
@@ -42,7 +42,7 @@
 		 * This builds project
 		 *
 		 * @var TBGProject
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGProject")
 		 */
 		protected $_project = null;
@@ -51,7 +51,7 @@
 		 * This builds milestone, if any
 		 *
 		 * @var TBGMilestone
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGMilestone")
 		 */
 		protected $_milestone = null;
@@ -68,7 +68,7 @@
 		 * An attached file, if exists
 		 * 
 		 * @var TBGFile
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGFile")
 		 */
 		protected $_file_id = null;
@@ -77,7 +77,7 @@
 		 * An url to download this releases file, if any
 		 * 
 		 * @var string
-		 * @Column(type="string")
+		 * @Column(type="string", length=255)
 		 */
 		protected $_file_url = null;
 
@@ -86,7 +86,7 @@
 		 *
 		 * @var integer
 		 * @access protected
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=5)
 		 */
 		protected $_version_major = 0;
 
@@ -95,7 +95,7 @@
 		 *
 		 * @var integer
 		 * @access protected
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=5)
 		 */
 		protected $_version_minor = 0;
 
@@ -104,7 +104,7 @@
 		 *
 		 * @var integer
 		 * @access protected
-		 * @Column(type="string")
+		 * @Column(type="string", length=30)
 		 */
 		protected $_version_revision = 0;
 

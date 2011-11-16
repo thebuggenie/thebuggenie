@@ -40,7 +40,7 @@
 		 * Who posted the comment
 		 * 
 		 * @var TBGUser
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGUser")
 		 */
 		protected $_posted_by;
@@ -49,28 +49,28 @@
 		 * Who last updated the comment
 		 * 
 		 * @var TBGUser
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGUser")
 		 */
 		protected $_updated_by;
 
 		/**
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_posted;
 
 		/**
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_updated;
 		
 		/**
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_target_id;
 		
 		/**
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=5)
 		 */
 		protected $_target_type = self::TYPE_ISSUE;
 		
@@ -80,7 +80,7 @@
 		protected $_is_public = true;
 		
 		/**
-		 * @Column(type="string")
+		 * @Column(type="string", length=100)
 		 */
 		protected $_module = 'core';
 		
@@ -95,7 +95,7 @@
 		protected $_system_comment = false;
 
 		/**
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_comment_number = 0;
 

@@ -45,7 +45,7 @@
 		protected $_action_type;
 		
 		/**
-		 * @Column(type="string")
+		 * @Column(type="string", length=200)
 		 */
 		protected $_target_value = null;
 
@@ -53,7 +53,7 @@
 		 * The connected transition
 		 *
 		 * @var TBGWorkflowTransition
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGWorkflowTransition")
 		 */
 		protected $_transition_id = null;
@@ -62,7 +62,7 @@
 		 * The associated workflow object
 		 *
 		 * @var TBGWorkflow
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGWorkflow")
 		 */
 		protected $_workflow_id = null;

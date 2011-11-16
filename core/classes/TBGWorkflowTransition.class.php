@@ -33,7 +33,7 @@
 		 * The workflow description
 		 *
 		 * @var string
-		 * @Column(type="string")
+		 * @Column(type="string", length=200)
 		 */
 		protected $_description = null;
 
@@ -47,13 +47,13 @@
 		 * The outgoing step from this transition
 		 *
 		 * @var TBGWorkflowStep
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGWorkflowStep")
 		 */
 		protected $_outgoing_step_id = null;
 
 		/**
-		 * @Column(type="string")
+		 * @Column(type="string", length=200)
 		 */
 		protected $_template = null;
 		
@@ -72,7 +72,7 @@
 		 * The associated workflow object
 		 *
 		 * @var TBGWorkflow
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGWorkflow")
 		 */
 		protected $_workflow_id = null;

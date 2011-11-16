@@ -28,7 +28,7 @@
 		 *
 		 * @var integer
 		 * @Id
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_id;
 
@@ -36,13 +36,13 @@
 		 * The name of the object
 		 *
 		 * @var string
-		 * @Column(type="string")
+		 * @Column(type="string", length=200)
 		 */
 		protected $_name;
 
 		/**
 		 * @var string
-		 * @Column(type="string")
+		 * @Column(type="string", length=200)
 		 */
 		protected $_description = '';
 		
@@ -69,7 +69,7 @@
 
 		/**
 		 * @var integer
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_max_upload_limit = 0;
 
@@ -81,25 +81,25 @@
 
 		/**
 		 * @var integer
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_max_workflows = 0;
 
 		/**
 		 * @var integer
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_max_users = 0;
 
 		/**
 		 * @var integer
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_max_projects = 0;
 
 		/**
 		 * @var integer
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_max_teams = 0;
 

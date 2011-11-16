@@ -26,16 +26,9 @@
 		 *
 		 * @var integer
 		 * @Id
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_id;
-		
-		/**
-		 * The name of the object
-		 *
-		 * @var string
-		 */
-		protected $_name;
 		
 		/**
 		 * Return the items id
@@ -55,26 +48,6 @@
 		public function setID($id)
 		{
 			$this->_id = $id;
-		}
-
-		/**
-		 * Return the items name
-		 * 
-		 * @return string
-		 */
-		public function getName()
-		{
-			return $this->_name;
-		}
-
-		/**
-		 * Set the edition name
-		 *
-		 * @param string $name
-		 */
-		public function setName($name)
-		{
-			$this->_name = $name;
 		}
 
 	}

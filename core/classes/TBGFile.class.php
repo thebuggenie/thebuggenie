@@ -7,19 +7,19 @@
 	{
 
 		/**
-		 * @Column(type="string")
+		 * @Column(type="string", length=200)
 		 */
 		protected $_content_type;
 
 		protected $_uploaded_by;
 
 		/**
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_uploaded_at;
 
 		/**
-		 * @Column(type="string")
+		 * @Column(type="string", length=200)
 		 */
 		protected $_real_filename;
 
@@ -29,12 +29,12 @@
 		protected $_content;
 
 		/**
-		 * @Column(type="string")
+		 * @Column(type="string", length=200)
 		 */
 		protected $_description;
 		
 		/**
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGUser")
 		 */
 		protected $_uid;

@@ -33,7 +33,7 @@
 		 * The project
 		 *
 		 * @var TBGProject
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGProject")
 		 */
 		protected $_project;
@@ -55,7 +55,7 @@
 		protected $_builds;
 
 		/**
-		 * @Column(type="string")
+		 * @Column(type="string", length=200)
 		 */
 		protected $_description;
 
@@ -73,7 +73,7 @@
 		 * The editions documentation URL
 		 * 
 		 * @var string
-		 * @Column(type="string")
+		 * @Column(type="string", length=200)
 		 */
 		protected $_doc_url;
 						

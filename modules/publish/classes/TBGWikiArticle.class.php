@@ -10,13 +10,13 @@
 		 * The article author
 		 *
 		 * @var TBGUser
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGUser")
 		 */
 		protected $_author = null;
 
 		/**
-		 * @Column(type="string")
+		 * @Column(type="string", length=200)
 		 */
 		protected $_name;
 
@@ -24,7 +24,7 @@
 		 * When the article was posted
 		 *
 		 * @var integer
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_date = null;
 
@@ -39,7 +39,7 @@
 		 * The article content
 		 *
 		 * @var string
-		 * @Column(type="string")
+		 * @Column(type="text")
 		 */
 		protected $_content = null;
 

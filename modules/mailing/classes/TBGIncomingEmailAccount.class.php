@@ -10,22 +10,22 @@
 		const SERVER_POP3 = 1;
 
 		/**
-		 * @Column(type="string")
+		 * @Column(type="string", length=200)
 		 */
 		protected $_name;
 		
 		/**
-		 * @Column(type="string")
+		 * @Column(type="string", length=200)
 		 */
 		protected $_server;
 		
 		/**
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_port;
 		
 		/**
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_server_type;
 		
@@ -40,41 +40,41 @@
 		protected $_keep_email;
 		
 		/**
-		 * @Column(type="string")
+		 * @Column(type="string", length=200)
 		 */
 		protected $_username;
 		
 		/**
-		 * @Column(type="string")
+		 * @Column(type="string", length=200)
 		 */
 		protected $_password;
 		
 		/**
-		 * @Column(type="string")
+		 * @Column(type="string", length=200)
 		 */
 		protected $_connection;
 
 		/**
 		 * @var TBGProject
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGProject")
 		 */
 		protected $_project;
 		
 		/**
 		 * @var TBGIssuetype
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGIssuetype")
 		 */
 		protected $_issuetype;
 		
 		/**
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_num_last_fetched = 0;
 		
 		/**
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_time_last_fetched = 0;
 		

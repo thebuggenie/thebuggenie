@@ -25,7 +25,7 @@
 		 * The name of the object
 		 *
 		 * @var string
-		 * @Column(type="string")
+		 * @Column(type="string", length=200)
 		 */
 		protected $_name;
 
@@ -33,7 +33,7 @@
 		 * Item type
 		 *
 		 * @var string
-		 * @Column(type="string")
+		 * @Column(type="string", length=200)
 		 */
 		protected $_itemtype = null;
 		
@@ -41,7 +41,7 @@
 		 * Extra data for that data type (if any)
 		 *
 		 * @var string
-		 * @Column(type="string")
+		 * @Column(type="string", length=200)
 		 */
 		protected $_itemdata = null;
 		
@@ -49,7 +49,7 @@
 		 * Sort order of this item
 		 *
 		 * @var integer
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_sort_order = null;
 

@@ -23,7 +23,7 @@
 		 * The key for this item
 		 *
 		 * @var string
-		 * @Column(type="string")
+		 * @Column(type="string", length=100)
 		 */
 		protected $_key = null;
 

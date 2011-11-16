@@ -29,7 +29,7 @@
 		 * Email of client
 		 * 
 		 * @param string
-		 * @Column(type="string")
+		 * @Column(type="string", length=200)
 		 */
 		protected $_email = null;
 		
@@ -37,7 +37,7 @@
 		 * Telephone number of client
 		 * 
 		 * @param integer
-		 * @Column(type="string")
+		 * @Column(type="string", length=200)
 		 */
 		protected $_telephone = null;
 		
@@ -45,7 +45,7 @@
 		 * URL for client website
 		 * 
 		 * @param string
-		 * @Column(type="string")
+		 * @Column(type="string", length=200)
 		 */
 		protected $_website = null;
 		
@@ -53,7 +53,7 @@
 		 * Fax number of client
 		 * 
 		 * @param integer
-		 * @Column(type="string")
+		 * @Column(type="string", length=200)
 		 */
 		protected $_fax = null;
 		

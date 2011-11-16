@@ -34,22 +34,15 @@
 		 * Unique username (login name)
 		 *
 		 * @var string
-		 * @Column(type="string")
+		 * @Column(type="string", length=200)
 		 */
 		protected $_username = '';
-		
-		/**
-		 * Whether or not the user has authenticated
-		 * 
-		 * @var boolean
-		 */
-		protected $authenticated = false;
 		
 		/**
 		 * Hashed password
 		 *
 		 * @var string
-		 * @Column(type="string")
+		 * @Column(type="string", length=200)
 		 */
 		protected $_password = '';
 		
@@ -57,7 +50,7 @@
 		 * User real name
 		 *
 		 * @var string
-		 * @Column(type="string")
+		 * @Column(type="string", length=200)
 		 */
 		protected $_realname = '';
 		
@@ -65,7 +58,7 @@
 		 * User short name (buddyname)
 		 *
 		 * @var string
-		 * @Column(type="string")
+		 * @Column(type="string", length=200)
 		 */
 		protected $_buddyname = '';
 		
@@ -73,7 +66,7 @@
 		 * User email
 		 *
 		 * @var string
-		 * @Column(type="string")
+		 * @Column(type="string", length=200)
 		 */
 		protected $_email = '';
 		
@@ -89,7 +82,7 @@
 		 * The user state
 		 *
 		 * @var TBGUserstate
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGUserstate")
 		 */
 		protected $_userstate = null;
@@ -106,7 +99,7 @@
 		 * User homepage
 		 *
 		 * @var string
-		 * @Column(type="string")
+		 * @Column(type="string", length=200)
 		 */
 		protected $_homepage = '';
 
@@ -114,7 +107,7 @@
 		 * Users language
 		 *
 		 * @var string
-		 * @Column(type="string")
+		 * @Column(type="string", length=20)
 		 */
 		protected $_language = '';
 		
@@ -122,8 +115,6 @@
 		 * Array of team ids where the current user is a member
 		 *
 		 * @var array
-		 * 
-		 * @access protected
 		 * @Relates(class="TBGTeam", collection=true, manytomany=true, joinclass="TBGTeamMembersTable")
 		 */
 		protected $teams = null;
@@ -140,7 +131,7 @@
 		 * The users avatar
 		 *
 		 * @var string
-		 * @Column(type="string")
+		 * @Column(type="string", length=200)
 		 */
 		protected $_avatar = null;
 		
@@ -175,17 +166,10 @@
 		protected $teamassigned = array();
 		
 		/**
-		 * Array of saved searches to show on the frontpage
-		 *
-		 * @var array
-		 */
-		protected $indexsearches = array();
-		
-		/**
 		 * The users group 
 		 * 
 		 * @var TBGGroup
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGGroup")
 		 */
 		protected $_group_id = null;
@@ -201,7 +185,7 @@
 		 * Timestamp of when the user was last seen
 		 *
 		 * @var integer
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_lastseen = 0;
 
@@ -209,6 +193,7 @@
 		 * The timezone this user is in
 		 *
 		 * @var integer
+		 * @Colum(type="string", length=10)
 		 */
 		protected $_timezone = null;
 
@@ -216,7 +201,7 @@
 		 * This users upload quota (MB)
 		 * 
 		 * @var integer 
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_quota;
 
@@ -224,7 +209,7 @@
 		 * When this user joined
 		 * 
 		 * @var integer
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_joined = 0;
 		

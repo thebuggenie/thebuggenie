@@ -23,7 +23,7 @@
 		 * The project owner if team
 		 *
 		 * @var TBGTeam
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGTeam")
 		 */
 		protected $_owner_team;
@@ -32,7 +32,7 @@
 		 * The project owner if user
 		 *
 		 * @var TBGUser
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGUser")
 		 */
 		protected $_owner_user;

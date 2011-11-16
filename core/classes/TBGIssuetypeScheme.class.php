@@ -31,7 +31,7 @@
 		protected static $_schemes = null;
 
 		/**
-		 * @Column(type="string")
+		 * @Column(type="string", length=200)
 		 */
 		protected $_name;
 
@@ -45,7 +45,7 @@
 		 * The issuetype description
 		 *
 		 * @var string
-		 * @Column(type="string")
+		 * @Column(type="string", length=200)
 		 */
 		protected $_description = null;
 

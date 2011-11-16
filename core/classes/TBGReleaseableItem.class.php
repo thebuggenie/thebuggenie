@@ -31,7 +31,7 @@
 		 * The items release date
 		 *
 		 * @var integer
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_release_date = 0;
 		
