@@ -2447,4 +2447,11 @@
 	$strings['This action cannot be reverted'] = 'Esta acción es irreversible';
 	$strings['This is a release of milestone %milestone_name%'] = 'Esta es una liberación del punto de control %milestone_name%';
 	$strings['Clear download information'] = 'Limpiar información de descarga';
-	$strings['%release_date%, download: %download_filename%'] = '%release_date%, descarga: %download_filename%';	
+	$strings['%release_date%, download: %download_filename%'] = '%release_date%, descarga: %download_filename%';
+	$strings['You have %count% outdated modules. They have been disabled until you upgrade them, you can upgrade them from Module settings.'] = 'Tiene %count% módulo(s) desactualizado(s). Han sido deshabilitados hasta que los actualice desde las opciones de Módulos.';
+	$strings['You have %count% outdated modules. They have been disabled until you upgrade them, you can upgrade them on this page.'] = 'Tiene %count% módulo(s) desactualizado(s). Han sido deshabilitados hasta que los actualice desde esta página.';
+	$strings['This issue doesn\'t have any tasks'] = 'Esta petición no tienen ninguna tarea';	
+	$strings['This is a list of modules available and installed, but have been disabled until you upgrade them.'] = 'Esta es una lista de los módulos disponibles e instalados, pero han sido desactivados hasta que los actualice.';
+	$strings['Upgrade'] = 'Actualizar';
+	$strings['To upgrade a module, select it from the dropdown list and press the %upgrade%-button. This will likely involve changes to the database, so you may want to back up your database first'] ='Para actualizar un módulo, selecciónelo de la lista y presione el botón %upgrade%. Esto probablemente implicará cambios en la base de datos, por lo que debe hacer copias de seguridad de su base de datos antes';
+	$strings['Open documentation'] = 'Abrir documentación';		
