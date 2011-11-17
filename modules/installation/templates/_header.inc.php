@@ -24,6 +24,7 @@
 		<script type="text/javascript" src="js/scriptaculous.js"></script>
 		<script type="text/javascript" src="js/install.js"></script>
 		<style type="text/css">
+			body, html, div, p, td, input { font-family: "Ubuntu", "Droid Sans", arial; font-size: 13px; }
 			.install_progress { font-weight: normal; border: 1px solid #DDD; padding: 3px; font-size: 11px; margin-bottom: 2px; width: 930px; background-color: #FDFDFD; }
 			.install_progress:first-line { font-weight: bold; }
 			.install_progress img { float: right; }
@@ -48,7 +49,7 @@
 			.ok { padding: 4px; border: 1px solid #aaC6aa; background-color: #CFE8CF; margin: 10px 0 10px 0; }
 			.error:first-line, .ok:first-line { font-weight: bold; }
 			
-			.logo_large, .logo_small { color: black; }
+			.logo_large, .logo_small { color: black; white-space: nowrap; }
 
 			fieldset { border: 1px solid #DDD; margin: 10px 0 10px 0; background-color: #F5F5F5; padding: 0 0 0 8px; }
 			legend { font-weight: bold;  }
