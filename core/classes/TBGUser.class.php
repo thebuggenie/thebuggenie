@@ -2034,19 +2034,16 @@
 			{
 				$this->_associated_projects = array();
 				
-				$projects = \b2db\Core::getTable('TBGProjectAssigneesTable')->getProjectsByUserID($this->getID());
-				$edition_projects = \b2db\Core::getTable('TBGEditionAssigneesTable')->getProjectsByUserID($this->getID());
-				$component_projects = \b2db\Core::getTable('TBGComponentAssigneesTable')->getProjectsByUserID($this->getID());
-				$lo_projects = \b2db\Core::getTable('TBGProjectsTable')->getByUserID($this->getID());
+				$projects = TBGProjectAssignedTeamsTable::getTable()->getProjectsByUserID($this->getID());
+				$edition_projects = TBGEditionAssignedTeamsTable::getTable()->getProjectsByUserID($this->getID());
+				$component_projects = TBGComponentAssignedTeamsTable::getTable()->getProjectsByUserID($this->getID());
+				$lo_projects = TBGProjectsTable::getTable()->getByUserID($this->getID());
 
 				$project_ids = array_merge(array_keys($projects), array_keys($edition_projects), array_keys($component_projects), array_keys($lo_projects));
 
 				foreach ($this->getTeams() as $team)
 				{
-					$projects_team = \b2db\Core::getTable('TBGProjectAssigneesTable')->getProjectsByTeamID($team->getID());
-					$edition_projects_team = \b2db\Core::getTable('TBGEditionAssigneesTable')->getProjectsByTeamID($team->getID());
-					$component_projects_team = \b2db\Core::getTable('TBGComponentAssigneesTable')->getProjectsByTeamID($team->getID());
-					$project_ids = array_merge(array_keys($projects_team), array_keys($edition_projects_team), array_keys($component_projects_team), $project_ids);	
+					$project_ids = array_keys($team->getAssociatedProjects());
 				}
 				
 				$project_ids = array_unique($project_ids);

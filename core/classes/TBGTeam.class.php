@@ -191,9 +191,9 @@
 			{
 				$this->_associated_projects = array();
 				
-				$projects = \b2db\Core::getTable('TBGProjectAssigneesTable')->getProjectsByTeamID($this->getID());
-				$edition_projects = \b2db\Core::getTable('TBGEditionAssigneesTable')->getProjectsByTeamID($this->getID());
-				$component_projects = \b2db\Core::getTable('TBGComponentAssigneesTable')->getProjectsByTeamID($this->getID());
+				$projects = TBGProjectAssignedTeamsTable::getTable()->getProjectsByTeamID($this->getID());
+				$edition_projects = TBGEditionAssignedTeamsTable::getTable()->getProjectsByTeamID($this->getID());
+				$component_projects = TBGComponentAssignedTeamsTable::getTable()->getProjectsByTeamID($this->getID());
 
 				$project_ids = array_merge(array_keys($projects), array_keys($edition_projects), array_keys($component_projects));
 				foreach ($project_ids as $project_id)

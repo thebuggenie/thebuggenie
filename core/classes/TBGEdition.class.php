@@ -285,51 +285,53 @@
 		 */
 		public function addAssignee(TBGIdentifiableTypeClass $assignee, $role)
 		{
-			$retval = TBGEditionAssigneesTable::getTable()->addAssigneeToEdition($this->getID(), $assignee, $role);
+			if ($assignee instanceof TBGUser)
+				$retval = TBGEditionAssignedUsersTable::getTable()->addUserToEdition($this->getID(), $assignee, $role);
+			elseif ($assignee instanceof TBGTeam)
+				$retval = TBGEditionAssignedTeamsTable::getTable()->addTeamToEdition($this->getID(), $assignee, $role);
+
 			$this->applyInitialPermissionSet($assignee, $role);
 			
 			return $retval;
 		}
 
+		/**
+		 * Add an assignee to the edition
+		 *
+		 * @param TBGIdentifiableTypeClass $assignee
+		 * @param integer $role
+		 *
+		 * @return boolean
+		 */
+		public function removeAssignee(TBGIdentifiableTypeClass $assignee)
+		{
+			if ($assignee instanceof TBGUser)
+				$retval = TBGEditionAssignedUsersTable::getTable()->removeUserFromEdition($this->getID(), $assignee, $role);
+			elseif ($assignee instanceof TBGTeam)
+				$retval = TBGEditionAssignedTeamsTable::getTable()->removeTeamFromEdition($this->getID(), $assignee, $role);
+
+			return $retval;
+		}
+
 		protected function _populateAssignees()
 		{
-			if ($this->_assignees === null)
-			{
-				$this->_assignees = TBGEditionAssigneesTable::getTable()->getByEditionID($this->getID());
-			}
-		}
-		
-		/**
-		 * Get assignees for this edition
-		 * 
-		 * @return array
-		 */
-		public function getAssignees()
-		{
-			$this->_populateAssignees();
-			return $this->_assignees;
+			if ($this->_assigned_users === null)
+				$this->_b2dbLazyload('_assigned_users');
+
+			if ($this->_assigned_teams === null)
+				$this->_b2dbLazyload('_assigned_teams');
 		}
 		
 		public function getAssignedUsers()
 		{
 			$this->_populateAssignees();
-			$users = array();
-			foreach (array_keys($this->_assignees['users']) as $user_id)
-			{
-				$users[$user_id] = TBGContext::factory()->TBGUser($user_id);
-			}
-			return $users;
+			return $this->_assigned_users;
 		}
 		
 		public function getAssignedTeams()
 		{
 			$this->_populateAssignees();
-			$teams = array();
-			foreach (array_keys($this->_assignees['teams']) as $team_id)
-			{
-				$teams[$team_id] = TBGContext::factory()->TBGTeam($team_id);
-			}
-			return $teams;
+			return $this->_assigned_teams;
 		}
 
 		/**

@@ -1289,14 +1289,6 @@
 		public function removeAssignee($assignee_type, $assignee_id)
 		{
 			TBGProjectAssigneesTable::getTable()->removeAssigneeFromProject($assignee_type, $assignee_id, $this->getID());
-			foreach ($this->getEditions() as $edition)
-			{
-				TBGEditionAssigneesTable::getTable()->removeAssigneeFromEdition($assignee_type, $assignee_id, $edition->getID());
-			}
-			foreach ($this->getComponents() as $component)
-			{
-				TBGComponentAssigneesTable::getTable()->removeAssigneeFromComponent($assignee_type, $assignee_id, $component->getID());
-			}
 		}
 
 		/**
