@@ -346,7 +346,7 @@
 		 */
 		public static function exceptionHandler($exception)
 		{
-			if (self::isDebugMode()) self::generateDebugInfo();
+			if (self::isDebugMode() && !self::isInstallmode()) self::generateDebugInfo();
 
 			if (self::getRequest() instanceof TBGRequest && self::getRequest()->isAjaxCall()) {
 				self::getResponse()->ajaxResponseText(404, $exception->getMessage());
@@ -617,7 +617,7 @@
 				TBGLogging::log('PHP_SAPI says "' . PHP_SAPI . '"');
 
 				if (!is_writable(THEBUGGENIE_CORE_PATH . DIRECTORY_SEPARATOR . 'cache'))
-					throw new Exception(self::geti18n()->__('The cache directory is not writable. Please correct the permissions of core/cache, and try again'));
+					throw new Exception('The cache directory is not writable. Please correct the permissions of core/cache, and try again');
 
 				if (!self::isCLI() && !ini_get('session.auto_start'))
 					self::initializeSession();
@@ -2486,13 +2486,16 @@
 			}
 			$tbg_summary['log'] = TBGLogging::getEntries();
 			$tbg_summary['routing'] = array('name' => self::getRouting()->getCurrentRouteName(), 'module' => self::getRouting()->getCurrentRouteModule(), 'action' => self::getRouting()->getCurrentRouteAction());
-			if (!array_key_exists('___DEBUGINFO___', $_SESSION))
+			if (isset($_SESSION))
 			{
-				$_SESSION['___DEBUGINFO___'] = array();
+				if (!array_key_exists('___DEBUGINFO___', $_SESSION))
+				{
+					$_SESSION['___DEBUGINFO___'] = array();
+				}
+				$_SESSION['___DEBUGINFO___'][self::$debug_id] = $tbg_summary;
+				while (count($_SESSION['___DEBUGINFO___']) > 10)
+					array_shift($_SESSION['___DEBUGINFO___']);
 			}
-			$_SESSION['___DEBUGINFO___'][self::$debug_id] = $tbg_summary;
-			while (count($_SESSION['___DEBUGINFO___']) > 10)
-				array_shift($_SESSION['___DEBUGINFO___']);
 		}
 
 		public static function getDebugData($debug_id)
