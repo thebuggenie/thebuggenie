@@ -4,6 +4,9 @@
 		b2db\Criteria,
 		b2db\Criterion;
 
+	/**
+	 * @Table(name="articlehistory")
+	 */
 	class TBGArticleHistoryTable extends TBGB2DBTable
 	{
 
@@ -19,19 +22,9 @@
 		const AUTHOR = 'articlehistory.author';
 		const SCOPE = 'articlehistory.scope';
 		
-		/**
-		 * Return an instance of this table
-		 *
-		 * @return TBGArticleHistoryTable
-		 */
-		public static function getTable()
+		public function _initialize()
 		{
-			return Core::getTable('TBGArticleHistoryTable');
-		}
-
-		public function __construct()
-		{
-			parent::__construct(self::B2DBNAME, self::ID);
+			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addVarchar(self::ARTICLE_NAME, 255);
 			parent::_addText(self::OLD_CONTENT, false);
 			parent::_addText(self::NEW_CONTENT, false);

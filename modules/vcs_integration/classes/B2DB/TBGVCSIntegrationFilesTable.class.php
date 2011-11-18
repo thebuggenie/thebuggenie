@@ -19,6 +19,8 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage vcs_integration
+	 *
+	 * @Table(name="vcsintegration_files")
 	 */
 	class TBGVCSIntegrationFilesTable extends TBGB2DBTable 
 	{
@@ -31,23 +33,13 @@
 		const FILE_NAME = 'vcsintegration_files.file_name';
 		const ACTION = 'vcsintegration_files.action';
 					
-		public function __construct()
+		public function _initialize()
 		{
-			parent::__construct(self::B2DBNAME, self::ID);
+			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addText(self::FILE_NAME, false);
 			parent::_addVarchar(self::ACTION, 1);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(),  TBGScopesTable::ID);
 			parent::_addForeignKeyColumn(self::COMMIT_ID, TBGVCSIntegrationCommitsTable::getTable(),  TBGVCSIntegrationCommitsTable::ID);
-		}
-		
-		/**
-		 * Return an instance of this table
-		 *
-		 * @return TBGVCSIntegrationFilesTable
-		 */
-		public static function getTable()
-		{
-			return Core::getTable('TBGVCSIntegrationFilesTable');
 		}
 		
 		/**

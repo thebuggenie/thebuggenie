@@ -53,6 +53,7 @@
 		 */
 		protected function _preSave($is_new)
 		{
+			parent::_preSave($is_new);
 			if ($this->getItemtype() == TBGCustomDatatype::DROPDOWN_CHOICE_TEXT_ICON)
 			{
 

@@ -56,6 +56,7 @@
 			$bug_report = new TBGIssuetype();
 			$bug_report->setName('Bug report');
 			$bug_report->setIcon('bug_report');
+			$bug_report->setScope($scope_id);
 			$bug_report->setDescription('Have you discovered a bug in the application, or is something not working as expected?');
 			$bug_report->save();
 			TBGSettings::saveSetting('defaultissuetypefornewissues', $bug_report->getID(), 'core', $scope_id);
@@ -65,6 +66,7 @@
 			$feature_request->setName('Feature request');
 			$feature_request->setIcon('feature_request');
 			$feature_request->setDescription('Are you missing some specific feature, or is your favourite part of the application a bit lacking?');
+			$feature_request->setScope($scope_id);
 			$feature_request->save();
 			TBGSettings::saveSetting('issuetype_feature_request', $feature_request->getID(), 'core', $scope_id);
 
@@ -72,6 +74,7 @@
 			$enhancement->setName('Enhancement');
 			$enhancement->setIcon('enhancement');
 			$enhancement->setDescription('Have you found something that is working in a way that could be improved?');
+			$enhancement->setScope($scope_id);
 			$enhancement->save();
 			TBGSettings::saveSetting('issuetype_enhancement', $enhancement->getID(), 'core', $scope_id);
 
@@ -79,6 +82,7 @@
 			$task->setName('Task');
 			$task->setIcon('task');
 			$task->setIsTask();
+			$task->setScope($scope_id);
 			$task->save();
 			TBGSettings::saveSetting('issuetype_task', $task->getID(), 'core', $scope_id);
 
@@ -86,6 +90,7 @@
 			$user_story->setName('User story');
 			$user_story->setIcon('developer_report');
 			$user_story->setDescription('Doing it Agile-style. Issue type perfectly suited for entering user stories');
+			$user_story->setScope($scope_id);
 			$user_story->save();
 			TBGSettings::saveSetting('issuetype_user_story', $user_story->getID(), 'core', $scope_id);
 
@@ -93,6 +98,7 @@
 			$idea->setName('Idea');
 			$idea->setIcon('idea');
 			$idea->setDescription('Express yourself - share your ideas with the rest of the team!');
+			$idea->setScope($scope_id);
 			$idea->save();
 			TBGSettings::saveSetting('issuetype_idea', $idea->getID(), 'core', $scope_id);
 

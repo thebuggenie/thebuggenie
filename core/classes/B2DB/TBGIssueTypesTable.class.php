@@ -50,9 +50,11 @@
 			$res = $this->doSelect($crit);
 
 			$ids = array();
-			while ($row = $res->getNextRow()) {
-				$id = $row->get('id');
-				$ids[$id] = $id;
+			if ($res) {
+				while ($row = $res->getNextRow()) {
+					$id = $row->get('id');
+					$ids[$id] = $id;
+				}
 			}
 
 			return $ids;

@@ -278,12 +278,12 @@
 		/**
 		 * Add an assignee to the edition
 		 *
-		 * @param TBGIdentifiableTypeClass $assignee
+		 * @param TBGIdentifiableClass $assignee
 		 * @param integer $role
 		 * 
 		 * @return boolean
 		 */
-		public function addAssignee(TBGIdentifiableTypeClass $assignee, $role)
+		public function addAssignee(TBGIdentifiableClass $assignee, $role)
 		{
 			if ($assignee instanceof TBGUser)
 				$retval = TBGEditionAssignedUsersTable::getTable()->addUserToEdition($this->getID(), $assignee, $role);
@@ -298,12 +298,12 @@
 		/**
 		 * Add an assignee to the edition
 		 *
-		 * @param TBGIdentifiableTypeClass $assignee
+		 * @param TBGIdentifiableClass $assignee
 		 * @param integer $role
 		 *
 		 * @return boolean
 		 */
-		public function removeAssignee(TBGIdentifiableTypeClass $assignee)
+		public function removeAssignee(TBGIdentifiableClass $assignee)
 		{
 			if ($assignee instanceof TBGUser)
 				$retval = TBGEditionAssignedUsersTable::getTable()->removeUserFromEdition($this->getID(), $assignee, $role);

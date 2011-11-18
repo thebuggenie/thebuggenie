@@ -48,8 +48,8 @@
 			{
 				$crit = $this->getCriteria();
 				$crit->addInsert(self::SCOPE, $scope->getID());
-				$crit->addInsert(self::WORKFLOW_ID, 1);
-				$crit->addInsert(self::WORKFLOW_SCHEME_ID, 1);
+				$crit->addInsert(self::WORKFLOW_ID, TBGSettings::getCoreWorkflow()->getID());
+				$crit->addInsert(self::WORKFLOW_SCHEME_ID, TBGSettings::getCoreWorkflowScheme()->getID());
 				$crit->addInsert(self::ISSUETYPE_ID, $issuetype_id);
 				$this->doInsert($crit);
 			}

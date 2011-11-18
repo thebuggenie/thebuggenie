@@ -3,7 +3,7 @@
 	/**
 	 * @Table(name="TBGArticlesTable")
 	 */
-	class TBGWikiArticle extends TBGIdentifiableClass
+	class TBGWikiArticle extends TBGIdentifiableScopedClass
 	{
 
 		/**
@@ -112,6 +112,7 @@
 		
 		protected function _preSave($is_new)
 		{
+			parent::_preSave($is_new);
 			$this->_date = NOW;
 			$this->_author = TBGContext::getUser();
 		}
@@ -693,6 +694,26 @@
 			}
 			
 			return $this->canRead();
+		}
+
+		/**
+		 * Return the items name
+		 *
+		 * @return string
+		 */
+		public function getName()
+		{
+			return $this->_name;
+		}
+
+		/**
+		 * Set the edition name
+		 *
+		 * @param string $name
+		 */
+		public function setName($name)
+		{
+			$this->_name = $name;
 		}
 
 	}

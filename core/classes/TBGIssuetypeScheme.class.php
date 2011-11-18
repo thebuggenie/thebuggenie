@@ -21,13 +21,6 @@
 	class TBGIssuetypeScheme extends TBGIdentifiableScopedClass
 	{
 
-		/**
-		 * The default (core) issuetype scheme
-		 *
-		 * @var TBGIssuetypeScheme
-		 */
-		protected static $_core_scheme = null;
-
 		protected static $_schemes = null;
 
 		/**
@@ -54,14 +47,6 @@
 			if (self::$_schemes === null)
 			{
 				self::$_schemes = TBGIssuetypeSchemesTable::getTable()->getAll();
-				foreach (self::$_schemes as $scheme)
-				{
-					if ($scheme->isCore())
-					{
-						self::$_core_scheme = $scheme;
-						break;
-					}
-				}
 			}
 		}
 
@@ -81,17 +66,6 @@
 			return self::$_schemes;
 		}
 		
-		/**
-		 * Return the default (core) issuetype scheme
-		 * 
-		 * @return TBGIssuetypeScheme
-		 */
-		public static function getCoreScheme()
-		{
-			self::_populateSchemes();
-			return self::$_core_scheme;
-		}
-
 		public static function loadFixtures(TBGScope $scope)
 		{
 			$scheme = new TBGIssuetypeScheme();
@@ -99,6 +73,8 @@
 			$scheme->setName("Default issuetype scheme");
 			$scheme->setDescription("This is the default issuetype scheme. It is used by all projects with no specific issuetype scheme selected. This scheme cannot be edited or removed.");
 			$scheme->save();
+
+			TBGSettings::saveSetting(TBGSettings::SETTING_DEFAULT_ISSUETYPESCHEME, $scheme->getID());
 			
 			foreach (TBGIssuetype::getAll() as $issuetype)
 			{
@@ -144,7 +120,7 @@
 		 */
 		public function isCore()
 		{
-			return ($this->getID() == self::getCoreScheme()->getID());
+			return ($this->getID() == TBGSettings::getCoreIssuetypeScheme()->getID());
 		}
 
 		protected function _populateAssociatedIssuetypes()

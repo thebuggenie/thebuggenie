@@ -4,6 +4,9 @@
 		b2db\Criteria,
 		b2db\Criterion;
 
+	/**
+	 * @Table(name="mailing_queue")
+	 */
 	class TBGMailQueueTable extends TBGB2DBTable
 	{
 		
@@ -14,19 +17,9 @@
 		const DATE = 'mailing_queue.date';
 		const SCOPE = 'mailing_queue.scope';
 
-		/**
-		 * Return an instance of this table
-		 *
-		 * @return TBGMailQueueTable
-		 */
-		public static function getTable()
+		public function _initialize()
 		{
-			return Core::getTable('TBGMailQueueTable');
-		}
-
-		public function __construct()
-		{
-			parent::__construct(self::B2DBNAME, self::ID);
+			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addText(self::MESSAGE);
 			parent::_addInteger(self::DATE, 10);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);

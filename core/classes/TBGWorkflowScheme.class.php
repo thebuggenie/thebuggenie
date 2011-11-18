@@ -21,13 +21,6 @@
 	class TBGWorkflowScheme extends TBGIdentifiableScopedClass
 	{
 
-		/**
-		 * The default (core) workflow scheme
-		 * 
-		 * @var TBGWorkflowScheme
-		 */
-		protected static $_core_scheme = null;
-		
 		protected static $_schemes = null;
 
 		/**
@@ -62,19 +55,7 @@
 		{
 			if (self::$_schemes === null)
 			{
-				self::$_schemes = array();
-				if ($res = TBGWorkflowSchemesTable::getTable()->getAll())
-				{
-					while ($row = $res->getNextRow())
-					{
-						$scheme = TBGContext::factory()->TBGWorkflowScheme($row->get(TBGWorkflowSchemesTable::ID), $row);
-						
-						if (self::$_core_scheme === null)
-							self::$_core_scheme = $scheme;
-						
-						self::$_schemes[$row->get(TBGWorkflowSchemesTable::ID)] = $scheme;
-					}
-				}
+				self::$_schemes = TBGWorkflowSchemesTable::getTable()->getAll();
 			}
 		}
 		
@@ -89,17 +70,17 @@
 			return self::$_schemes;
 		}
 		
-		/**
-		 * Return the default (core) workflow scheme
-		 * 
-		 * @return TBGWorkflowScheme
-		 */
-		public static function getCoreScheme()
+		public static function loadFixtures(TBGScope $scope)
 		{
-			self::_populateSchemes();
-			return self::$_core_scheme;
+			$scheme = new TBGWorkflowScheme();
+			$scheme->setScope($scope);
+			$scheme->setName("Default workflow scheme");
+			$scheme->setDescription("This is the default workflow scheme. It is used by all projects with no specific workflow scheme selected. This scheme cannot be edited or removed.");
+			$scheme->save();
+
+			TBGSettings::saveSetting(TBGSettings::SETTING_DEFAULT_WORKFLOWSCHEME, $scheme->getID());
 		}
-		
+
 		protected function _preDelete()
 		{
 			TBGWorkflowIssuetypeTable::getTable()->deleteByWorkflowSchemeID($this->getID());
@@ -133,7 +114,7 @@
 		 */
 		public function isCore()
 		{
-			return ($this->getID() == self::getCoreScheme()->getID());
+			return ($this->getID() == TBGSettings::getCoreWorkflowScheme()->getID());
 		}
 
 		protected function _populateAssociatedWorkflows()
@@ -186,7 +167,7 @@
 			}
 			else
 			{
-				return TBGWorkflow::getCoreWorkflow();
+				return TBGSettings::getCoreWorkflow();
 			}
 		}
 

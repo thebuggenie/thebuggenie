@@ -19,6 +19,8 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name="articlefiles")
 	 */
 	class TBGArticleFilesTable extends TBGB2DBTable
 	{
@@ -32,9 +34,9 @@
 		const FILE_ID = 'articlefiles.file_id';
 		const ARTICLE_ID = 'articlefiles.article_id';
 
-		public function __construct()
+		public function _initialize()
 		{
-			parent::__construct(self::B2DBNAME, self::ID);
+			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addForeignKeyColumn(self::UID, TBGUsersTable::getTable(), TBGUsersTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 			parent::_addForeignKeyColumn(self::ARTICLE_ID, TBGArticlesTable::getTable(), TBGArticlesTable::ID);

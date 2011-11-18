@@ -96,6 +96,7 @@
 
 		protected function _preSave($is_new)
 		{
+			parent::_preSave($is_new);
 			if ($is_new)
 			{
 				$this->_generateKey();

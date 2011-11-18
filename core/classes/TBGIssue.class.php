@@ -2352,9 +2352,9 @@
 		/**
 		 * Set issue poster
 		 * 
-		 * @param TBGIdentifiableTypeClass $poster The user/team you want to have posted the issue
+		 * @param TBGIdentifiableClass $poster The user/team you want to have posted the issue
 		 */
-		public function setPostedBy(TBGIdentifiableTypeClass $poster)
+		public function setPostedBy(TBGIdentifiableClass $poster)
 		{
 			$this->_addChangedProperty('_posted_by', $poster->getID());
 		}
@@ -3975,6 +3975,7 @@
 		 */
 		protected function _preSave($is_new)
 		{
+			parent::_preSave($is_new);
 			if ($is_new)
 			{
 				if (!$this->_issue_no)

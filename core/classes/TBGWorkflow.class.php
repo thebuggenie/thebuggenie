@@ -23,13 +23,6 @@
 
 		protected static $_workflows = null;
 		
-		/**
-		 * The default (core) workflow
-		 * 
-		 * @var TBGWorkflow
-		 */
-		protected static $_core_workflow = null;
-
 		protected static $_num_workflows = null;
 
 		/**
@@ -87,14 +80,6 @@
 			if (self::$_workflows === null)
 			{
 				self::$_workflows = TBGWorkflowsTable::getTable()->getAll();
-				foreach (self::$_workflows as $workflow)
-				{
-					if ($workflow->isCore())
-					{
-						self::$_core_workflow = $workflow;
-						break;
-					}
-				}
 			}
 		}
 		
@@ -109,24 +94,15 @@
 			return self::$_workflows;
 		}
 		
-		/**
-		 * Return the default (core) workflow
-		 * 
-		 * @return TBGWorkflow
-		 */
-		public static function getCoreWorkflow()
-		{
-			self::_populateWorkflows();
-			return self::$_core_workflow;
-		}
-
 		public static function loadFixtures(TBGScope $scope)
 		{
 			$workflow = new TBGWorkflow();
 			$workflow->setName("Default workflow");
 			$workflow->setDescription("This is the default workflow. It is used by all projects with no specific workflow selected, and for issue types with no specific workflow specified. This workflow cannot be edited or removed.");
+			$workflow->setScope($scope->getID());
 			$workflow->save();
-			
+
+			TBGSettings::saveSetting(TBGSettings::SETTING_DEFAULT_WORKFLOW, $workflow->getID());
 			TBGWorkflowStep::loadFixtures($scope, $workflow);
 		}
 
@@ -176,7 +152,7 @@
 		 */
 		public function isCore()
 		{
-			return ($this->getID() == self::getCoreWorkflow()->getID());
+			return ($this->getID() == TBGSettings::getCoreWorkflow()->getID());
 		}
 
 		/**

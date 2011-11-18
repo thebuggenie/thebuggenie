@@ -277,7 +277,7 @@
 			
 			// Set up workflows
 			TBGWorkflow::loadFixtures($this);
-			TBGWorkflowSchemesTable::getTable()->loadFixtures($this);
+			TBGWorkflowScheme::loadFixtures($this);
 			TBGWorkflowIssuetypeTable::getTable()->loadFixtures($this);
 			
 			// Set up left menu links

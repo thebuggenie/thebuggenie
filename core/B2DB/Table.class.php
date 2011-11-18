@@ -607,16 +607,16 @@
 		{
 			$crit = $this->getCriteria();
 			$id = $object->getB2DBID();
-			foreach ($this->getColumns() as $property) {
-				$property = $property['property'];
-				$value = $this->formatify($object->getB2DBSaveablePropertyValue(mb_strtolower($property)), $property['type']);
-				if ($property == $this->getIdColumn()) $res_id = $value;
+			foreach ($this->getColumns() as $column) {
+				$property = $column['property'];
+				$value = $this->formatify($object->getB2DBSaveablePropertyValue(mb_strtolower($property)), $column['type']);
+				if ($column['name'] == $this->getIdColumn()) $res_id = $value;
 				if (is_object($value)) $value = (int) $value->getID();
-				if (in_array($property, $this->_foreigncolumns)) $value = ($value) ? (int) $value : null;
+				if (in_array($column['name'], $this->_foreigncolumns)) $value = ($value) ? (int) $value : null;
 				if ($id) {
-					$crit->addUpdate($property, $value);
-				} elseif ($property != $this->getIdColumn()) {
-					$crit->addInsert($property, $value);
+					$crit->addUpdate($column['name'], $value);
+				} elseif ($column != $this->getIdColumn()) {
+					$crit->addInsert($column['name'], $value);
 				}
 			}
 			if ($id) {

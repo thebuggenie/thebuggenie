@@ -41,18 +41,6 @@
 //			parent::_addText(self::DESCRIPTION, false);
 //		}
 
-		public function loadFixtures(TBGScope $scope)
-		{
-			$i18n = TBGContext::getI18n();
-
-			$crit = $this->getCriteria();
-			$crit->addInsert(self::SCOPE, $scope->getID());
-			$crit->addInsert(self::NAME, "Default workflow scheme");
-			$crit->addInsert(self::DESCRIPTION, "This is the default workflow scheme. It is used by all projects with no specific workflow scheme selected. This scheme cannot be edited or removed.");
-			$this->doInsert($crit);
-
-		}
-
 		public function getAll($scope = null)
 		{
 			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
@@ -60,7 +48,7 @@
 			$crit->addWhere(self::SCOPE, $scope);
 			$crit->addOrderBy(self::ID, Criteria::SORT_ASC);
 
-			$res = $this->doSelect($crit);
+			$res = $this->select($crit);
 
 			return $res;
 		}

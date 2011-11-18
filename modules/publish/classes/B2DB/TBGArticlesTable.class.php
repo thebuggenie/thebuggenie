@@ -21,16 +21,6 @@
 		const AUTHOR = 'articles.author';
 		const SCOPE = 'articles.scope';
 		
-		/**
-		 * Return an instance of this table
-		 *
-		 * @return TBGArticlesTable
-		 */
-		public static function getTable()
-		{
-			return Core::getTable('TBGArticlesTable');
-		}
-
 //		public function __construct()
 //		{
 //			parent::__construct(self::B2DBNAME, self::ID);

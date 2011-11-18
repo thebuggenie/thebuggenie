@@ -58,6 +58,9 @@
 		const SETTING_DEFAULT_LANGUAGE = 'language';
 		const SETTING_DEFAULT_USER_IS_GUEST = 'defaultisguest';
 		const SETTING_DEFAULT_USER_ID = 'defaultuserid';
+		const SETTING_DEFAULT_WORKFLOW = 'defaultworkflow';
+		const SETTING_DEFAULT_WORKFLOWSCHEME = 'defaultworkflowscheme';
+		const SETTING_DEFAULT_ISSUETYPESCHEME = 'defaultissuetypescheme';
 		const SETTING_ENABLE_UPLOADS = 'enable_uploads';
 		const SETTING_ENABLE_GRAVATARS = 'enable_gravatars';
 		const SETTING_FAVICON_TYPE = 'icon_fav';
@@ -105,6 +108,10 @@
 		protected static $_defaultscope = null;
 		protected static $_settings = null;
 		protected static $_loadedsettings = array();
+
+		protected static $_core_workflow = null;
+		protected static $_core_workflowscheme = null;
+		protected static $_core_issuetypescheme = null;
 	
 		public static function forceSettingsReload()
 		{
@@ -674,6 +681,33 @@
 		public static function isUsingExternalAuthenticationBackend()
 		{
 			if (TBGSettings::getAuthenticationBackend() !== null && TBGSettings::getAuthenticationBackend() !== 'tbg'): return true; else: return false; endif;
+		}
+
+		public static function getCoreWorkflow()
+		{
+			if (self::$_core_workflow === null)
+			{
+				self::$_core_workflow = new TBGWorkflow(self::get(self::SETTING_DEFAULT_WORKFLOW));
+			}
+			return self::$_core_workflow;
+		}
+
+		public static function getCoreWorkflowScheme()
+		{
+			if (self::$_core_workflowscheme === null)
+			{
+				self::$_core_workflowscheme = new TBGWorkflowScheme(self::get(self::SETTING_DEFAULT_WORKFLOWSCHEME));
+			}
+			return self::$_core_workflowscheme;
+		}
+
+		public static function getCoreIssuetypeScheme()
+		{
+			if (self::$_core_issuetypescheme === null)
+			{
+				self::$_core_issuetypescheme = new TBGIssuetypeScheme(self::get(self::SETTING_DEFAULT_ISSUETYPESCHEME));
+			}
+			return self::$_core_issuetypescheme;
 		}
 
 	}

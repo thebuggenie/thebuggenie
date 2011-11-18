@@ -80,4 +80,10 @@
 			$this->_id = (integer) $id;
 		}
 
+		protected function _preSave($is_new)
+		{
+			if ($is_new && $this->_scope === null)
+				$this->_scope = TBGContext::getScope();
+		}
+
 	}

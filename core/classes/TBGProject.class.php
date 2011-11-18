@@ -690,6 +690,7 @@
 		 */
 		protected function _preSave($is_new)
 		{
+			parent::_preSave($is_new);
 			$project = self::getByKey($this->getKey()); // TBGProjectsTable::getTable()->getByKey($this->getKey());
 			if ($project instanceof TBGProject && $project->getID() != $this->getID())
 			{
@@ -697,8 +698,8 @@
 			}
 			if ($is_new)
 			{
-				$this->setIssuetypeScheme(TBGIssuetypeScheme::getCoreScheme());
-				$this->setWorkflowScheme(TBGWorkflowScheme::getCoreScheme());
+				$this->setIssuetypeScheme(TBGSettings::getCoreIssuetypeScheme());
+				$this->setWorkflowScheme(TBGSettings::getCoreWorkflowScheme());
 			}
 		}
 
@@ -841,7 +842,7 @@
 		 */
 		public function setName($name)
 		{
-			parent::setName($name);
+			$this->_name = $name;
 			$this->_key = mb_strtolower($this->getStrippedProjectName());
 			if ($this->_key == '') $this->_key = 'project'.$this->getID();
 		}
@@ -2465,7 +2466,10 @@
 		 */
 		public function getWorkflowScheme()
 		{
-			return $this->_b2dbLazyload('_workflow_scheme_id');
+			if (!$this->_workflow_scheme_id instanceof TBGWorkflowScheme)
+				$this->_b2dbLazyload('_workflow_scheme_id');
+
+			return $this->_workflow_scheme_id;
 		}
 		
 		public function setWorkflowScheme(TBGWorkflowScheme $scheme)
@@ -2485,7 +2489,10 @@
 		 */
 		public function getIssuetypeScheme()
 		{
-			return $this->_b2dbLazyload('_issuetype_scheme_id');
+			if (!$this->_issuetype_scheme_id instanceof TBGIssuetypeScheme)
+				$this->_b2dbLazyload('_issuetype_scheme_id');
+
+			return $this->_issuetype_scheme_id;
 		}
 		
 		public function setIssuetypeScheme(TBGIssuetypeScheme $scheme)
@@ -2840,6 +2847,12 @@
 		public function setLocked($locked = true)
 		{
 			$this->_locked = (bool) $locked;
+		}
+
+		protected function _generateKey()
+		{
+			if ($this->_key === null)
+				$this->_key = preg_replace("/[^0-9a-zA-Z]/i", '', mb_strtolower($this->getName()));
 		}
 
 	}

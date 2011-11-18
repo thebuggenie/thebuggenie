@@ -112,12 +112,12 @@
 
 		public function setRule($rule)
 		{
-			$this->_name = $rule;
+			$this->_namen = $rule;
 		}
 		
 		public function getRule()
 		{
-			return $this->_name;
+			return $this->_namen;
 		}
 		
 		public function setRuleValue($rule_value)
@@ -132,19 +132,19 @@
 		
 		public function getRuleValueAsJoinedString()
 		{
-			if ($this->_name == self::RULE_STATUS_VALID)
+			if ($this->_namen == self::RULE_STATUS_VALID)
 			{
 				$fieldname = 'TBGStatus';
 			}
-			elseif ($this->_name == self::RULE_RESOLUTION_VALID)
+			elseif ($this->_namen == self::RULE_RESOLUTION_VALID)
 			{
 				$fieldname = 'TBGResolution';
 			}
-			elseif ($this->_name == self::RULE_REPRODUCABILITY_VALID)
+			elseif ($this->_namen == self::RULE_REPRODUCABILITY_VALID)
 			{
 				$fieldname = 'TBGReproducability';
 			}
-			elseif ($this->_name == self::RULE_PRIORITY_VALID)
+			elseif ($this->_namen == self::RULE_PRIORITY_VALID)
 			{
 				$fieldname = 'TBGPriority';
 			}
@@ -163,23 +163,23 @@
 		
 		public function isValueValid($value)
 		{
-			if ($this->_name == self::RULE_STATUS_VALID)
+			if ($this->_namen == self::RULE_STATUS_VALID)
 			{
 				$fieldname = 'TBGStatus';
 			}
-			elseif ($this->_name == self::RULE_RESOLUTION_VALID)
+			elseif ($this->_namen == self::RULE_RESOLUTION_VALID)
 			{
 				$fieldname = 'TBGResolution';
 			}
-			elseif ($this->_name == self::RULE_REPRODUCABILITY_VALID)
+			elseif ($this->_namen == self::RULE_REPRODUCABILITY_VALID)
 			{
 				$fieldname = 'TBGReproducability';
 			}
-			elseif ($this->_name == self::RULE_PRIORITY_VALID)
+			elseif ($this->_namen == self::RULE_PRIORITY_VALID)
 			{
 				$fieldname = 'TBGPriority';
 			}
-			switch ($this->_name)
+			switch ($this->_namen)
 			{
 				case self::RULE_STATUS_VALID:
 				case self::RULE_RESOLUTION_VALID:
@@ -194,7 +194,7 @@
 		
 		public function isValid($input)
 		{
-			switch ($this->_name)
+			switch ($this->_namen)
 			{
 				case self::RULE_MAX_ASSIGNED_ISSUES:
 					$num_issues = (int) $this->getRuleValue();
@@ -208,22 +208,22 @@
 					$valid = false;
 					foreach ($valid_items as $item)
 					{
-						if ($this->_name == self::RULE_STATUS_VALID)
+						if ($this->_namen == self::RULE_STATUS_VALID)
 						{
 							$fieldname = 'Status';
 							$fieldname_small = 'status';
 						}
-						elseif ($this->_name == self::RULE_RESOLUTION_VALID)
+						elseif ($this->_namen == self::RULE_RESOLUTION_VALID)
 						{
 							$fieldname = 'Resolution';
 							$fieldname_small = 'resolution';
 						}
-						elseif ($this->_name == self::RULE_REPRODUCABILITY_VALID)
+						elseif ($this->_namen == self::RULE_REPRODUCABILITY_VALID)
 						{
 							$fieldname = 'Reproducability';
 							$fieldname_small = 'reproducability';
 						}
-						elseif ($this->_name == self::RULE_PRIORITY_VALID)
+						elseif ($this->_namen == self::RULE_PRIORITY_VALID)
 						{
 							$fieldname = 'Priority';
 							$fieldname_small = 'priority';
