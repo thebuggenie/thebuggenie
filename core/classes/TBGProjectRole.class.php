@@ -23,6 +23,7 @@
 				$role = new TBGProjectRole();
 				$role->setName($name);
 				$role->setItemdata($itemdata);
+				$role->setScope($scope);
 				$role->save();
 			}
 		}

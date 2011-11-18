@@ -34,7 +34,7 @@
 		 * Unique username (login name)
 		 *
 		 * @var string
-		 * @Column(type="string", length=200)
+		 * @Column(type="string", length=50)
 		 */
 		protected $_username = '';
 		
@@ -42,7 +42,7 @@
 		 * Hashed password
 		 *
 		 * @var string
-		 * @Column(type="string", length=200)
+		 * @Column(type="string", length=100)
 		 */
 		protected $_password = '';
 		
@@ -262,13 +262,9 @@
 		 *
 		 * @return TBGUser
 		 */
-		public static function getByUsername($username, $scope = null)
+		public static function getByUsername($username)
 		{
-			if ($row = TBGUsersTable::getTable()->getByUsername($username, $scope))
-			{
-				return TBGContext::factory()->TBGUser($row->get(TBGUsersTable::ID), $row);
-			}
-			return null;
+			return TBGUsersTable::getTable()->getByUsername($username);
 		}
 		
 		/**
@@ -346,7 +342,6 @@
 			$adminuser->setActivated();
 			$adminuser->setEnabled();
 			$adminuser->setAvatar('admin');
-			$adminuser->setScope($scope);
 			$adminuser->save();
 			
 			$guestuser = new TBGUser();
@@ -357,7 +352,6 @@
 			$guestuser->setPassword('password'); // Settings not active yet
 			$guestuser->setActivated();
 			$guestuser->setEnabled();
-			$guestuser->setScope($scope);
 			$guestuser->save();
 
 			TBGSettings::saveSetting('defaultuserid', $guestuser->getID(), 'core', $scope->getID());
@@ -602,7 +596,7 @@
 		 */
 		protected function _preSave($is_new)
 		{
-			$compare_user = self::getByUsername($this->getUsername(), TBGContext::getScope());
+			$compare_user = self::getByUsername($this->getUsername());
 			if ($compare_user instanceof TBGUser && $compare_user->getID() && $compare_user->getID() != $this->getID())
 			{
 				throw new Exception(TBGContext::getI18n()->__('This username already exists'));
@@ -1664,12 +1658,11 @@
 		 */
 		public static function findUser($details)
 		{
-			$res = TBGUsersTable::getTable()->getByDetails($details);
+			$users = TBGUsersTable::getTable()->getByDetails($details);
+			if (is_array($users) && count($users) == 1)
+				return array_shift($users);
 
-			if (!$res || $res->count() > 1) return false;
-			$row = $res->getNextRow();
-			
-			return TBGContext::factory()->TBGUser($row->get(TBGUsersTable::ID), $row);
+			return null;
 		}
 
 		/**
@@ -1682,16 +1675,7 @@
 		 */
 		public static function findUsers($details, $limit = null)
 		{
-			$retarr = array();
-			
-			if ($res = TBGUsersTable::getTable()->getByDetails($details))
-			{
-				while ($row = $res->getNextRow())
-				{
-					$retarr[$row->get(TBGUsersTable::ID)] = TBGContext::factory()->TBGUser($row->get(TBGUsersTable::ID), $row);
-				}
-			}
-			return $retarr;
+			return TBGUsersTable::getTable()->getByDetails($details);
 		}
 	
 		/**

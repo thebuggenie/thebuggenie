@@ -27,6 +27,7 @@
 				$resolution = new TBGResolution();
 				$resolution->setName($name);
 				$resolution->setItemdata($itemdata);
+				$resolution->setScope($scope);
 				$resolution->save();
 			}
 		}

@@ -31,6 +31,7 @@
 				$status = new TBGStatus();
 				$status->setName($name);
 				$status->setItemdata($itemdata);
+				$status->setScope($scope);
 				$status->save();
 			}
 		}

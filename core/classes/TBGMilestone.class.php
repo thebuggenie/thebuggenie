@@ -98,7 +98,7 @@
 		 * The milestone description
 		 * 
 		 * @var string
-		 * @Column(type="string")
+		 * @Column(type="text")
 		 */
 		protected $_description;
 		

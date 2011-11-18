@@ -71,6 +71,7 @@
 		public function setName($name)
 		{
 			$this->_name = $name;
+			$this->_generateKey();
 		}
 
 		/**

@@ -24,7 +24,7 @@
 		 *
 		 * @var integer
 		 * @Id
-		 * @Column(type="integer", length=10)
+		 * @Column(type="integer", auto_increment=1, length=10)
 		 */
 		protected $_id;
 

@@ -30,7 +30,7 @@
 		const B2DB_TABLE_VERSION = 1;
 		const B2DBNAME = 'dashboard_views';
 		const ID = 'dashboard_views.id';
-		const TYPE = 'dashboard_views.type';
+		const NAME = 'dashboard_views.name';
 		const VIEW = 'dashboard_views.view';
 		const TID = 'dashboard_views.tid';
 		const PID = 'dashboard_views.pid';
@@ -61,7 +61,7 @@
 				$crit = $this->getCriteria();
 				$crit->addInsert(self::TID, $target_id);
 				$crit->addInsert(self::TARGET_TYPE, $target_type);
-				$crit->addInsert(self::TYPE, $view['type']);
+				$crit->addInsert(self::NAME, $view['type']);
 				$crit->addInsert(self::VIEW, $view_id);
 				$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
 				$this->doInsert($crit);

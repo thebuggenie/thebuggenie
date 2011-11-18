@@ -22,7 +22,10 @@
 	{
 		
 		protected static $_groups = null;
-		
+
+		/**
+		 * @Relates(class="TBGUser", collection=true, foreign_column="group_id")
+		 */
 		protected $_members = null;
 
 		protected $_num_members = null;
@@ -135,15 +138,7 @@
 		{
 			if ($this->_members === null)
 			{
-				$this->_members = array();
-				if ($res = TBGUsersTable::getTable()->getUsersByGroupID($this->getID()))
-				{
-					while ($row = $res->getNextRow())
-					{
-						$uid = $row->get(TBGUsersTable::ID);
-						$this->_members[$uid] = TBGContext::factory()->TBGUser($uid);
-					}
-				}
+				$this->_b2dbLazyload('_members');
 			}
 			return $this->_members;
 		}
@@ -156,7 +151,7 @@
 			}
 			elseif ($this->_num_members === null)
 			{
-				$this->_num_members = TBGUsersTable::getTable()->getNumberOfMembersByGroupID($this->getID());
+				$this->_num_members = $this->_b2dbLazycount('_members');
 			}
 
 			return $this->_num_members;

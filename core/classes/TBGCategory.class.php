@@ -16,6 +16,7 @@
 			{
 				$category = new TBGCategory();
 				$category->setName($name);
+				$category->setScope($scope);
 				$category->save();
 			}
 		}

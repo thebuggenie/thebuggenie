@@ -22,6 +22,7 @@
 				$severity = new TBGSeverity();
 				$severity->setName($name);
 				$severity->setItemdata($itemdata);
+				$severity->setScope($scope);
 				$severity->save();
 			}
 		}

@@ -24,6 +24,7 @@
 				$priority = new TBGPriority();
 				$priority->setName($name);
 				$priority->setItemdata($itemdata);
+				$priority->setScope($scope);
 				$priority->save();
 			}
 		}

@@ -28,7 +28,7 @@
 		const RULE_PRIORITY_VALID = 'valid_priority';
 
 		/**
-		 * @Column(type="string", name="rule")
+		 * @Column(type="string", length=100, name="rule")
 		 */
 		protected $_name = null;
 

@@ -76,7 +76,7 @@
 		public function getAllByItemType($itemtype)
 		{
 			$this->_populateItemCache();
-			return (array_key_exists($itemtype, self::$_item_cache)) ? self::$_item_cache[$itemtype] : null;
+			return (array_key_exists($itemtype, self::$_item_cache)) ? self::$_item_cache[$itemtype] : array();
 		}
 
 		public function deleteByTypeAndId($type, $id)

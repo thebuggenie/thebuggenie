@@ -23,6 +23,7 @@
 				$reproducability = new TBGReproducability();
 				$reproducability->setName($name);
 				$reproducability->setItemdata($itemdata);
+				$reproducability->setScope($scope);
 				$reproducability->save();
 			}
 		}

@@ -19,6 +19,8 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name='issue_estimates')
 	 */
 	class TBGIssueEstimates extends TBGB2DBTable
 	{
@@ -36,9 +38,9 @@
 		const ESTIMATED_HOURS = 'issue_estimates.estimated_hours';
 		const ESTIMATED_POINTS = 'issue_estimates.estimated_points';
 
-		public function __construct()
+		public function _initialize()
 		{
-			parent::__construct(self::B2DBNAME, self::ID);
+			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addForeignKeyColumn(self::ISSUE_ID, TBGIssuesTable::getTable(), TBGIssuesTable::ID);
 			parent::_addForeignKeyColumn(self::EDITED_BY, TBGUsersTable::getTable(), TBGUsersTable::ID);
 			parent::_addInteger(self::EDITED_AT, 10);

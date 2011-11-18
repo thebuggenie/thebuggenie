@@ -353,6 +353,11 @@
 			return $resultset->getCount();
 		}
 
+		public function count(Criteria $crit)
+		{
+			return $this->doCount($crit);
+		}
+
 		/**
 		 * Selects rows based on given criteria
 		 *
@@ -518,28 +523,32 @@
 		
 		public function createIndexes()
 		{
-			$this->_setupIndexes();
-			$qc = $this->getQC();
-			
-			foreach ($this->_indexes as $index_name => $details) {
-				$sql = '';
-				switch (Core::getDBtype()) {
-					case 'pgsql':
-						$sql .= " CREATE INDEX " . Core::getTablePrefix() . $this->b2db_name . "_{$index_name} ON " . $this->_getTableNameSQL() . " (";
-						break;
-					case 'mysql':
-						$sql .= " ALTER TABLE " . $this->_getTableNameSQL() . " ADD INDEX " . Core::getTablePrefix() . $this->b2db_name . "_{$index_name}(";
-						break;
-				}
-				$index_column_sqls = array();
-				foreach ($details['columns'] as $column) {
-					$index_column_sqls[] = "$qc" . $this->_getRealColumnFieldName($column) . "$qc";
-				}
-				$sql .= join (', ', $index_column_sqls);
-				$sql .= ");";
+			try {
+				$this->_setupIndexes();
+				$qc = $this->getQC();
 
-				$statement = Statement::getPreparedStatement($sql);
-				$res = $statement->performQuery('create index');
+				foreach ($this->_indexes as $index_name => $details) {
+					$sql = '';
+					switch (Core::getDBtype()) {
+						case 'pgsql':
+							$sql .= " CREATE INDEX " . Core::getTablePrefix() . $this->b2db_name . "_{$index_name} ON " . $this->_getTableNameSQL() . " (";
+							break;
+						case 'mysql':
+							$sql .= " ALTER TABLE " . $this->_getTableNameSQL() . " ADD INDEX " . Core::getTablePrefix() . $this->b2db_name . "_{$index_name}(";
+							break;
+					}
+					$index_column_sqls = array();
+					foreach ($details['columns'] as $column) {
+						$index_column_sqls[] = "$qc" . $this->_getRealColumnFieldName($column) . "$qc";
+					}
+					$sql .= join (', ', $index_column_sqls);
+					$sql .= ");";
+
+					$statement = Statement::getPreparedStatement($sql);
+					$res = $statement->performQuery('create index');
+				}
+			} catch (Exception $e) {
+				throw new Exception('An error occured when trying to create indexes for table "'.$this->getB2DBName().'" (defined in "'.\get_class($this).')": '.$e->getMessage(), $e->getSQL());
 			}
 		}
 
@@ -641,6 +650,7 @@
 					if ($column['unsigned'] && Core::getDBtype() != 'pgsql') $fsql .= ' UNSIGNED';
 					break;
 				case 'varchar':
+					if (!$column['length']) throw new Exception("Column '{$column['name']}' (defined in ".\get_class($this).") is missing required 'length' property");
 					$fsql .= 'VARCHAR(' . $column['length'] . ')';
 					break;
 				case 'float':

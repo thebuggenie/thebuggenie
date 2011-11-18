@@ -24,15 +24,6 @@
 		protected static $_scopes = null;
 
 		/**
-		 * The id for this item, usually identified by a record in the database
-		 *
-		 * @var integer
-		 * @Id
-		 * @Column(type="integer", length=10)
-		 */
-		protected $_id;
-
-		/**
 		 * The name of the object
 		 *
 		 * @var string
@@ -122,26 +113,6 @@
 			return self::$_scopes;
 		}
 		
-		/**
-		 * Return the items id
-		 *
-		 * @return integer
-		 */
-		public function getID()
-		{
-			return (int) $this->_id;
-		}
-
-		/**
-		 * Set the items id
-		 *
-		 * @param integer $id
-		 */
-		public function setID($id)
-		{
-			$this->_id = $id;
-		}
-
 		/**
 		 * Return the items name
 		 *
