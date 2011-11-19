@@ -1,6 +1,6 @@
 <li id="edition_<?php echo $edition->getID(); ?>_box" class="rounded_box invisible borderless">
 	<?php echo image_tag('icon_edition.png', array('style' => 'float: left; margin: 1px 5px 0 0;')); ?>
-	<span id="edition_<?php echo $edition->getID(); ?>_name"><?php echo $edition->getName(); ?></span><?php if ($edition->isDefault()): echo __('%edition_name% (default)', array('%edition_name%' => '')); endif; ?>
+	<span id="edition_<?php echo $edition->getID(); ?>_name"><?php echo $edition->getName(); ?></span>
 	<div style="float: right; padding: 2px;">
 		<?php echo javascript_link_tag(image_tag('icon_edit.png'), array('class' => 'image', 'onclick' => "TBG.Project.Edition.edit('".make_url('configure_project_edition', array('project_id' => $edition->getProject()->getID(), 'edition_id' => $edition->getID()))."', '".$edition->getID()."');", 'title' => __('Edit edition'))); ?>
 		<a href="javascript:void(0);" onclick="$('edition_<?php echo $edition->getID(); ?>_permissions').toggle();" class="image" title="<?php echo __('Set permissions for this edition'); ?>" style="margin-right: 5px;"><?php echo image_tag('cfg_icon_permissions.png'); ?></a>

@@ -24,6 +24,7 @@
 				$priority = new TBGPriority();
 				$priority->setName($name);
 				$priority->setItemdata($itemdata);
+				$priority->setScope($scope);
 				$priority->save();
 			}
 		}
@@ -35,33 +36,9 @@
 		 */		
 		public static function getAll()
 		{
-			if (self::$_items === NULL)
-			{
-				self::$_items = array();
-				if ($items = TBGListTypesTable::getTable()->getAllByItemType(self::PRIORITY))
-				{
-					foreach ($items as $row_id => $row)
-					{
-						self::$_items[$row_id] = TBGContext::factory()->TBGPriority($row_id, $row);
-					}
-				}
-			}
-			return self::$_items;
+			return TBGListTypesTable::getTable()->getAllByItemType(self::PRIORITY);
 		}
 
-		/**
-		 * Create a new resolution
-		 *
-		 * @param string $name The status description
-		 *
-		 * @return TBGResolution
-		 */
-		public static function createNew($name)
-		{
-			$res = parent::_createNew($name, self::PRIORITY);
-			return TBGContext::factory()->TBGPriority($res->getInsertID());
-		}
-		
 		public function getValue()
 		{
 			return $this->_itemdata;

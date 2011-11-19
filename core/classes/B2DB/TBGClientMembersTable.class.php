@@ -19,6 +19,8 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name="clientmembers")
 	 */
 	class TBGClientMembersTable extends TBGB2DBTable 
 	{
@@ -30,23 +32,12 @@
 		const UID = 'clientmembers.uid';
 		const CID = 'clientmembers.cid';
 		
-		/**
-		 * Return an instance of this table
-		 *
-		 * @return TBGClientMembersTable
-		 */
-		public static function getTable()
+		public function _initialize()
 		{
-			return Core::getTable('TBGClientMembersTable');
-		}
-
-		public function __construct()
-		{
-			parent::__construct(self::B2DBNAME, self::ID);
-			
-			parent::_addForeignKeyColumn(self::UID, TBGUsersTable::getTable(), TBGUsersTable::ID);
-			parent::_addForeignKeyColumn(self::CID, Core::getTable('TBGClientsTable'), TBGClientsTable::ID);
-			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
+			parent::_setup(self::B2DBNAME, self::ID);
+			parent::_addForeignKeyColumn(self::UID, TBGUsersTable::getTable());
+			parent::_addForeignKeyColumn(self::CID, TBGClientsTable::getTable());
+			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable());
 		}
 
 		public function getUIDsForClientID($client_id)

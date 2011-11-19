@@ -28,9 +28,9 @@
 						</td>
 						<td style="<?php if (!$edition->hasOwner()): ?>display: none; <?php endif; ?>padding: 2px;" id="owned_by_name">
 							<div style="width: 270px; display: <?php if ($edition->hasOwner()): ?>inline<?php else: ?>none<?php endif; ?>;" id="owned_by_name">
-								<?php if ($edition->getOwnerType() == TBGIdentifiableClass::TYPE_USER): ?>
+								<?php if ($edition->getOwner() instanceof TBGUser): ?>
 									<?php echo include_component('main/userdropdown', array('user' => $edition->getOwner())); ?>
-								<?php elseif ($edition->getOwnerType() == TBGIdentifiableClass::TYPE_TEAM): ?>
+								<?php elseif ($edition->getOwner() instanceof TBGTeam): ?>
 									<?php echo include_component('main/teamdropdown', array('team' => $edition->getOwner())); ?>
 								<?php endif; ?>
 							</div>
@@ -58,9 +58,9 @@
 						</td>
 						<td style="<?php if (!$edition->hasLeader()): ?>display: none; <?php endif; ?>padding: 2px;" id="lead_by_name">
 							<div style="width: 270px; display: <?php if ($edition->hasLeader()): ?>inline<?php else: ?>none<?php endif; ?>;" id="lead_by_name">
-								<?php if ($edition->getLeaderType() == TBGIdentifiableClass::TYPE_USER): ?>
+								<?php if ($edition->getLeader() instanceof TBGUser): ?>
 									<?php echo include_component('main/userdropdown', array('user' => $edition->getLeader())); ?>
-								<?php elseif ($edition->getLeaderType() == TBGIdentifiableClass::TYPE_TEAM): ?>
+								<?php elseif ($edition->getLeader() instanceof TBGTeam): ?>
 									<?php echo include_component('main/teamdropdown', array('team' => $edition->getLeader())); ?>
 								<?php endif; ?>
 							</div>
@@ -88,9 +88,9 @@
 						</td>
 						<td style="<?php if (!$edition->hasQaResponsible()): ?>display: none; <?php endif; ?>padding: 2px;" id="qa_by_name">
 							<div style="width: 270px; display: <?php if ($edition->hasQaResponsible()): ?>inline<?php else: ?>none<?php endif; ?>;" id="qa_by_name">
-								<?php if ($edition->getQaResponsibleType() == TBGIdentifiableClass::TYPE_USER): ?>
+								<?php if ($edition->getQaResponsible() instanceof TBGUser): ?>
 									<?php echo include_component('main/userdropdown', array('user' => $edition->getQaResponsible())); ?>
-								<?php elseif ($edition->getQaResponsibleType() == TBGIdentifiableClass::TYPE_TEAM): ?>
+								<?php elseif ($edition->getQaResponsible() instanceof TBGTeam): ?>
 									<?php echo include_component('main/teamdropdown', array('team' => $edition->getQaResponsible())); ?>
 								<?php endif; ?>
 							</div>
@@ -139,28 +139,23 @@
 								</td>
 							</tr>
 							<tr>
-								<td><label for="planned_release"><?php echo __('Planned release'); ?></label></td>
+								<td><label for="has_release_date"><?php echo __('Release date'); ?></label></td>
 								<td style="padding: 2px;">
-									<select name="planned_release" id="planned_release" style="width: 70px;" onchange="bB = document.getElementById('planned_release'); cB = document.getElementById('release_day'); dB = document.getElementById('release_month'); eB = document.getElementById('release_year'); if (bB.value == '0') { cB.disabled = true; dB.disabled = true; eB.disabled = true; } else { cB.disabled = false; dB.disabled = false; eB.disabled = false; }">
-										<option value=1<?php if ($edition->isPlannedReleased()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
-										<option value=0<?php if (!$edition->isPlannedReleased()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
+									<select name="has_release_date" id="has_release_date" style="width: 70px;" onchange="var val = $(this).getValue(); ['day', 'month', 'year'].each(function(item) { (val) ? $('release_'+item).enable() : $('release_'+item).disable(); });">
+										<option value=1<?php if ($edition->hasReleaseDate()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
+										<option value=0<?php if (!$edition->hasReleaseDate()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
 									</select>
-								</td>
-							</tr>
-							<tr>
-								<td><label for="release_month"><?php echo __('Release date'); ?></label></td>
-								<td style="padding: 2px;">
-									<select style="width: 85px;" name="release_month" id="release_month"<?php if (!$edition->isPlannedReleased()): ?> disabled<?php endif; ?>>
+									<select style="width: 85px;" name="release_month" id="release_month"<?php if (!$edition->hasReleaseDate()): ?> disabled<?php endif; ?>>
 									<?php for($cc = 1;$cc <= 12;$cc++): ?>
 										<option value=<?php print $cc; ?><?php print (($edition->getReleaseDateMonth() == $cc) ? " selected" : "") ?>><?php echo tbg_formatTime(mktime(0, 0, 0, $cc, 1), 15); ?></option>
 									<?php endfor; ?>
 									</select>
-									<select style="width: 40px;" name="release_day" id="release_day"<?php if (!$edition->isPlannedReleased()): ?> disabled<?php endif; ?>>
+									<select style="width: 40px;" name="release_day" id="release_day"<?php if (!$edition->hasReleaseDate()): ?> disabled<?php endif; ?>>
 									<?php for($cc = 1;$cc <= 31;$cc++): ?>
 										<option value=<?php print $cc; ?><?php echo (($edition->getReleaseDateDay() == $cc) ? " selected" : "") ?>><?php echo $cc; ?></option>
 									<?php endfor; ?>
 									</select>
-									<select style="width: 55px;" name="release_year" id="release_year"<?php if (!$edition->isPlannedReleased()): ?> disabled<?php endif; ?>>
+									<select style="width: 55px;" name="release_year" id="release_year"<?php if (!$edition->hasReleaseDate()): ?> disabled<?php endif; ?>>
 									<?php for($cc = 1990;$cc <= (date("Y") + 10);$cc++): ?>
 										<option value=<?php print $cc; ?><?php echo (($edition->getReleaseDateYear() == $cc) ? " selected" : "") ?>><?php echo $cc; ?></option>
 									<?php endfor; ?>

@@ -19,6 +19,9 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name="clients")
+	 * @Entity(class="TBGClient")
 	 */
 	class TBGClientsTable extends TBGB2DBTable 
 	{
@@ -33,37 +36,23 @@
 		const TELEPHONE = 'clients.telephone';
 		const FAX = 'clients.fax';
 
-		/**
-		 * Return an instance of this table
-		 *
-		 * @return TBGClientsTable
-		 */
-		public static function getTable()
-		{
-			return Core::getTable('TBGClientsTable');
-		}
-		
-		public function __construct()
-		{
-			parent::__construct(self::B2DBNAME, self::ID);
-			
-			parent::_addVarchar(self::NAME, 50);
-			parent::_addVarchar(self::WEBSITE, 200);
-			parent::_addVarchar(self::EMAIL, 100);
-			parent::_addVarchar(self::TELEPHONE, 20, null);
-			parent::_addVarchar(self::FAX, 20, null);
-			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
-		}
+//		public function __construct()
+//		{
+//			parent::__construct(self::B2DBNAME, self::ID);
+//
+//			parent::_addVarchar(self::NAME, 50);
+//			parent::_addVarchar(self::WEBSITE, 200);
+//			parent::_addVarchar(self::EMAIL, 100);
+//			parent::_addVarchar(self::TELEPHONE, 20, null);
+//			parent::_addVarchar(self::FAX, 20, null);
+//			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
+//		}
 
-		public function getAll($scope = null)
+		public function getAll()
 		{
-			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::SCOPE, $scope);
-			
-			$res = $this->doSelect($crit, 'none');
-			
-			return $res;
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			return $this->select($crit);
 		}
 
 		public function doesClientNameExist($client_name)

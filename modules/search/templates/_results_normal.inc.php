@@ -67,7 +67,7 @@
 					</td>
 					<td class="sc_assigned_to<?php if (!$issue->isAssigned()): ?> faded_out<?php endif; ?>"<?php if (!in_array('assigned_to', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
 						<?php if ($issue->isAssigned()): ?>
-							<?php if ($issue->getAssigneeType() == TBGIdentifiableClass::TYPE_USER): ?>
+							<?php if ($issue->getAssignee() instanceof TBGUser): ?>
 								<?php echo include_component('main/userdropdown', array('user' => $issue->getAssignee())); ?>
 							<?php else: ?>
 								<?php echo include_component('main/teamdropdown', array('team' => $issue->getAssignee())); ?>

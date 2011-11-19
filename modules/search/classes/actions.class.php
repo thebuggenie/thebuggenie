@@ -452,7 +452,7 @@
 					case 'assignee':
 						if ($issue->getAssignee() instanceof TBGIdentifiableClass)
 						{
-							$groupby_id = $issue->getAssigneeID();
+							$groupby_id = $issue->getAssignee()->getID();
 							$groupby_description = $issue->getAssignee()->getName();
 						}
 						else

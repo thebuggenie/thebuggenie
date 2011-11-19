@@ -37,7 +37,7 @@
 			$data_config_sections = array();
 			$module_config_sections = array();
 			
-			if (TBGContext::getUser()->getScope()->getID() == 1)
+			if (TBGContext::getScope()->getID() == 1)
 				$general_config_sections[TBGSettings::CONFIGURATION_SECTION_SCOPES] = array('route' => 'configure_scopes', 'description' => $i18n->__('Scopes'), 'icon' => 'scopes', 'details' => $i18n->__('Scopes are self-contained Bug Genie environments. Configure them here.'));
 
 			$general_config_sections[TBGSettings::CONFIGURATION_SECTION_SETTINGS] = array('route' => 'configure_settings', 'description' => $i18n->__('Settings'), 'icon' => 'general', 'details' => $i18n->__('Every setting in the bug genie can be adjusted in this section.'));
@@ -896,7 +896,7 @@
 			catch (Exception $e) {}
 			
 			$this->forward403unless($this->theProject instanceof TBGProject);
-			$this->milestones = $this->theProject->getAllMilestones();
+			$this->milestones = $this->theProject->getMilestones();
 		}
 		
 		/**
@@ -1005,18 +1005,18 @@
 				$this->forward403unless($this->access_level == TBGSettings::ACCESS_FULL);
 				if ($request->hasParameter('identifiable_type'))
 				{
-					if (in_array($request['identifiable_type'], array(TBGIdentifiableClass::TYPE_USER, TBGIdentifiableClass::TYPE_TEAM)))
+					if (in_array($request['identifiable_type'], array(TBGIdentifiableTypeClass::TYPE_USER, TBGIdentifiableTypeClass::TYPE_TEAM)))
 					{
 						switch ($request['identifiable_type'])
 						{
-							case TBGIdentifiableClass::TYPE_USER:
+							case TBGIdentifiableTypeClass::TYPE_USER:
 								$identified = TBGContext::factory()->TBGUser($request['value']);
 								break;
-							case TBGIdentifiableClass::TYPE_TEAM:
+							case TBGIdentifiableTypeClass::TYPE_TEAM:
 								$identified = TBGContext::factory()->TBGTeam($request['value']);
 								break;
 						}
-						if ($identified instanceof TBGIdentifiableClass)
+						if ($identified instanceof TBGIdentifiableTypeClass)
 						{
 							if ($request['field'] == 'owned_by') $item->setOwner($identified);
 							elseif ($request['field'] == 'qa_by') $item->setQaResponsible($identified);
@@ -1033,11 +1033,11 @@
 					}
 				}
 				if ($request['field'] == 'owned_by')
-					return $this->renderJSON(array('field' => (($item->hasOwner()) ? array('id' => $item->getOwnerID(), 'name' => (($item->getOwnerType() == TBGIdentifiableClass::TYPE_USER) ? $this->getComponentHTML('main/userdropdown', array('user' => $item->getOwner())) : $this->getComponentHTML('main/teamdropdown', array('team' => $item->getOwner())))) : array('id' => 0))));
+					return $this->renderJSON(array('field' => (($item->hasOwner()) ? array('id' => $item->getOwner()->getID(), 'name' => (($item->getOwner() instanceof TBGUser) ? $this->getComponentHTML('main/userdropdown', array('user' => $item->getOwner())) : $this->getComponentHTML('main/teamdropdown', array('team' => $item->getOwner())))) : array('id' => 0))));
 				elseif ($request['field'] == 'lead_by')
-					return $this->renderJSON(array('field' => (($item->hasLeader()) ? array('id' => $item->getLeaderID(), 'name' => (($item->getLeaderType() == TBGIdentifiableClass::TYPE_USER) ? $this->getComponentHTML('main/userdropdown', array('user' => $item->getLeader())) : $this->getComponentHTML('main/teamdropdown', array('team' => $item->getLeader())))) : array('id' => 0))));
+					return $this->renderJSON(array('field' => (($item->hasLeader()) ? array('id' => $item->getLeaderID(), 'name' => (($item->getLeader() instanceof TBGUser) ? $this->getComponentHTML('main/userdropdown', array('user' => $item->getLeader())) : $this->getComponentHTML('main/teamdropdown', array('team' => $item->getLeader())))) : array('id' => 0))));
 				elseif ($request['field'] == 'qa_by')
-					return $this->renderJSON(array('field' => (($item->hasQaResponsible()) ? array('id' => $item->getQaResponsibleID(), 'name' => (($item->getQaResponsibleType() == TBGIdentifiableClass::TYPE_USER) ? $this->getComponentHTML('main/userdropdown', array('user' => $item->getQaResponsible())) : $this->getComponentHTML('main/teamdropdown', array('team' => $item->getQaResponsible())))) : array('id' => 0))));
+					return $this->renderJSON(array('field' => (($item->hasQaResponsible()) ? array('id' => $item->getQaResponsibleID(), 'name' => (($item->getQaResponsible() instanceof TBGUser) ? $this->getComponentHTML('main/userdropdown', array('user' => $item->getQaResponsible())) : $this->getComponentHTML('main/teamdropdown', array('team' => $item->getQaResponsible())))) : array('id' => 0))));
 			}
 		}
 		
@@ -1138,9 +1138,6 @@
 
 				if ($request->hasParameter('doc_url'))
 					$this->project->setDocumentationURL($request['doc_url']);
-
-				if ($request->hasParameter('planned_release'))
-					$this->project->setPlannedReleased($request['planned_release']);
 
 				if ($request->hasParameter('released'))
 					$this->project->setReleased((int) $request['released']);
@@ -1530,13 +1527,17 @@
 						{
 							if (($m_name = $request['name']) && trim($m_name) != '')
 							{
-								$theProject = TBGContext::factory()->TBGProject($p_id);
-								if (in_array($m_name, $theProject->getAllMilestones()))
+								$milestone = TBGContext::factory()->TBGProject($p_id);
+								if (in_array($m_name, $milestone->getMilestones()))
 								{
 									throw new Exception($i18n->__('This milestone already exists for this project'));
 								}
-								$theMilestone = $theProject->addMilestone($m_name, $request->getParameter('milestone_type', 1));
-								return $this->renderJSON(array('title' => $i18n->__('The milestone has been added'), 'content' => $this->getTemplateHTML('milestonebox', array('milestone' => $theMilestone))));
+								$milestone = new TBGMilestone();
+								$milestone->setName($m_name);
+								$milestone->setType($request->getParameter('milestone_type', 1));
+								$milestone->setProject($project);
+								$milestone->save();
+								return $this->renderJSON(array('title' => $i18n->__('The milestone has been added'), 'content' => $this->getTemplateHTML('milestonebox', array('milestone' => $milestone))));
 							}
 							else
 							{
@@ -1586,7 +1587,7 @@
 									{
 										if ($m_name != $theMilestone->getName())
 										{
-											$check_milestones = $theMilestone->getProject()->getAllMilestones();
+											$check_milestones = $theMilestone->getProject()->getMilestones();
 											unset($check_milestones[$theMilestone->getID()]);
 											if (in_array($m_name, $check_milestones))
 											{
@@ -1736,7 +1737,7 @@
 					{
 						$project = $theComponent->getProject();
 						$theComponent->delete();
-						$count = count(TBGComponent::getAllByProjectID($project->getID()));
+						$count = $project->countComponents();
 						return $this->renderJSON(array('failed' => false, 'deleted' => true, 'itemcount' => $count, 'message' => TBGContext::getI18n()->__('Component deleted')));
 					}
 				}
@@ -2197,7 +2198,7 @@
 					
 					$project = $theEdition->getProject();
 					$theEdition->delete();
-					$count = count(TBGEdition::getAllByProjectID($project->getID()));
+					$count = $project->countEditions();
 					return $this->renderJSON(array('failed' => false, 'deleted' => true, 'itemcount' => $count, 'message' => TBGContext::getI18n()->__('Edition deleted')));
 				}
 				catch (Exception $e)
@@ -2273,7 +2274,7 @@
 					throw new Exception(TBGContext::getI18n()->__("You cannot delete this team"));
 				}
 				$team->delete();
-				return $this->renderJSON(array('success' => true, 'message' => TBGContext::getI18n()->__('The team was deleted'), 'total_count' => TBGTeam::getTeamsCount(), 'more_available' => TBGContext::getScope()->hasTeamsAvailable()));
+				return $this->renderJSON(array('success' => true, 'message' => TBGContext::getI18n()->__('The team was deleted'), 'total_count' => TBGTeam::countAll(), 'more_available' => TBGContext::getScope()->hasTeamsAvailable()));
 			}
 			catch (Exception $e)
 			{
@@ -2324,7 +2325,7 @@
 					{
 						$message = TBGContext::getI18n()->__('The team was added');
 					}
-					return $this->renderJSON(array('failed' => false, 'message' => $message, 'content' => $this->getTemplateHTML('configuration/teambox', array('team' => $team)), 'total_count' => TBGTeam::getTeamsCount(), 'more_available' => TBGContext::getScope()->hasTeamsAvailable()));
+					return $this->renderJSON(array('failed' => false, 'message' => $message, 'content' => $this->getTemplateHTML('configuration/teambox', array('team' => $team)), 'total_count' => TBGTeam::countAll(), 'more_available' => TBGContext::getScope()->hasTeamsAvailable()));
 				}
 				else
 				{
@@ -2608,7 +2609,6 @@
 							
 						$edition->setDescription($request->getParameter('description', null, false));
 						$edition->setDocumentationURL($request['doc_url']);
-						$edition->setPlannedReleased($request['planned_release']);
 						$edition->setReleased((int) $request['released']);
 						$edition->setLocked((bool) $request['locked']);
 						$edition->save();
@@ -3973,11 +3973,11 @@
 								{
 									switch (trim($activerow[$owner_type], '"'))
 									{
-										case TBGIdentifiableClass::TYPE_USER:
+										case TBGIdentifiableTypeClass::TYPE_USER:
 											$user = new TBGUser(trim($activerow[$owner], '" '));
 											$project->setOwner($user);
 											break;
-										case TBGIdentifiableClass::TYPE_TEAM:
+										case TBGIdentifiableTypeClass::TYPE_TEAM:
 											$team = new TBGTeam(trim($activerow[$owner], '" '));
 											$project->setOwner($team);
 											break;
@@ -3988,11 +3988,11 @@
 								{
 									switch (trim($activerow[$lead_type], '"'))
 									{
-										case TBGIdentifiableClass::TYPE_USER:
+										case TBGIdentifiableTypeClass::TYPE_USER:
 											$user = new TBGUser(trim($activerow[$lead], '" '));
 											$project->setLeader($user);
 											break;
-										case TBGIdentifiableClass::TYPE_TEAM:
+										case TBGIdentifiableTypeClass::TYPE_TEAM:
 											$team = new TBGTeam(trim($activerow[$lead], '" '));
 											$project->setLeader($team);
 											break;
@@ -4003,11 +4003,11 @@
 								{
 									switch (trim($activerow[$qa_type], '"'))
 									{
-										case TBGIdentifiableClass::TYPE_USER:
+										case TBGIdentifiableTypeClass::TYPE_USER:
 											$user = new TBGUser(trim($activerow[$qa], '" '));
 											$project->setQaResponsible($user);
 											break;
-										case TBGIdentifiableClass::TYPE_TEAM:
+										case TBGIdentifiableTypeClass::TYPE_TEAM:
 											$team = new TBGTeam(trim($activerow[$qa], '" '));
 											$project->setQaResponsible($team);
 											break;
@@ -4117,11 +4117,11 @@
 								{
 									switch (trim($activerow[$owner_type], '"'))
 									{
-										case TBGIdentifiableClass::TYPE_USER:
+										case TBGIdentifiableTypeClass::TYPE_USER:
 											$user = new TBGUser(trim($activerow[$owner], '" '));
 											$issue->setOwner($user);
 											break;
-										case TBGIdentifiableClass::TYPE_TEAM:
+										case TBGIdentifiableTypeClass::TYPE_TEAM:
 											$team = new TBGTeam(trim($activerow[$owner], '" '));
 											$issue->setOwner($team);
 											break;
@@ -4132,11 +4132,11 @@
 								{
 									switch (trim($activerow[$assigned_type], '"'))
 									{
-										case TBGIdentifiableClass::TYPE_USER:
+										case TBGIdentifiableTypeClass::TYPE_USER:
 											$user = new TBGUser(trim($activerow[$assigned], '" '));
 											$issue->setAssignee($user);
 											break;
-										case TBGIdentifiableClass::TYPE_TEAM:
+										case TBGIdentifiableTypeClass::TYPE_TEAM:
 											$team = new TBGTeam(trim($activerow[$assigned], '" '));
 											$issue->setAssignee($team);
 											break;

@@ -32,6 +32,7 @@
 		 * This custom types options (if any)
 		 *
 		 * @var array
+		 * @Relates(class="TBGCustomDatatypeOption", collection=true, foreign_column="customdatatype")
 		 */
 		protected $_options = null;
 
@@ -39,6 +40,7 @@
 		 * The custom types description
 		 *
 		 * @var string
+		 * @Column(type="string", length=200)
 		 */
 		protected $_description = null;
 
@@ -46,6 +48,7 @@
 		 * The custom types instructions
 		 *
 		 * @var string
+		 * @Column(type="text")
 		 */
 		protected $_instructions = null;
 
@@ -58,14 +61,7 @@
 		{
 			if (self::$_types === null)
 			{
-				self::$_types = array();
-				if ($items = \b2db\Core::getTable('TBGCustomFieldsTable')->getAll())
-				{
-					foreach ($items as $row_id => $row)
-					{
-						self::$_types[$row->get(TBGCustomFieldsTable::FIELD_KEY)] = TBGContext::factory()->TBGCustomDatatype($row_id, $row);
-					}
-				}
+				self::$_types = TBGCustomFieldsTable::getTable()->getAll();
 			}
 			return self::$_types;
 		}
@@ -100,6 +96,7 @@
 
 		protected function _preSave($is_new)
 		{
+			parent::_preSave($is_new);
 			if ($is_new)
 			{
 				$this->_generateKey();
@@ -162,7 +159,7 @@
 		{
 			if ($this->_options === null)
 			{
-				$this->_options = TBGCustomDatatypeOption::getAllByKey($this->_key);
+				$this->_b2dbLazyload('_options');
 			}
 		}
 

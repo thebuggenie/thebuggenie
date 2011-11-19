@@ -18,7 +18,7 @@
 	 *
 	 * @Table(name="TBGMilestonesTable")
 	 */
-	class TBGMilestone extends TBGIdentifiableClass  
+	class TBGMilestone extends TBGIdentifiableScopedClass
 	{
 
 		const TYPE_REGULAR = 1;
@@ -28,9 +28,26 @@
 		 * This components project
 		 *
 		 * @var TBGProject
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGProject")
 		 */
 		protected $_project;
+
+		/**
+		 * The name of the object
+		 *
+		 * @var string
+		 * @Column(type="string", length=200)
+		 */
+		protected $_name;
+
+		/**
+		 * The name of the object
+		 *
+		 * @var string
+		 * @Column(type="string", length=200)
+		 */
+		protected $_itemtype;
 
 		/**
 		 * Whether the milestone has been reached
@@ -43,6 +60,7 @@
 		 * When the milestone was reached
 		 * 
 		 * @var integer
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_reacheddate;
 
@@ -57,6 +75,7 @@
 		 * When the milestone is scheduled for release
 		 * 
 		 * @var integer
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_scheduleddate;
 		
@@ -71,6 +90,7 @@
 		 * When the milestone is scheduled to start
 		 * 
 		 * @var integer
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_startingdate;
 		
@@ -78,6 +98,7 @@
 		 * The milestone description
 		 * 
 		 * @var string
+		 * @Column(type="text")
 		 */
 		protected $_description;
 		
@@ -116,69 +137,6 @@
 		 */
 		protected $_burndowndata;
 
-		/**
-		 * Get milestones + sprints by a project id
-		 *
-		 * @param integer $project_id The project id
-		 *
-		 * @return array
-		 */
-		public static function getAllByProjectID($project_id)
-		{
-			$milestones = array();
-			if ($res = TBGMilestonesTable::getTable()->getAllByProjectID($project_id))
-			{
-				while ($row = $res->getNextRow())
-				{
-					$milestone = TBGContext::factory()->TBGMilestone($row->get(TBGMilestonesTable::ID), $row);
-					$milestones[$milestone->getID()] = $milestone;
-				}
-			}
-			return $milestones;
-		}
-
-		/**
-		 * Get regular milestones by a project id
-		 *
-		 * @param integer $project_id The project id
-		 *
-		 * @return array
-		 */
-		public static function getMilestonesByProjectID($project_id)
-		{
-			$milestones = array();
-			if ($res = TBGMilestonesTable::getTable()->getMilestonesByProjectID($project_id))
-			{
-				while ($row = $res->getNextRow())
-				{
-					$milestone = TBGContext::factory()->TBGMilestone($row->get(TBGMilestonesTable::ID), $row);
-					$milestones[$milestone->getID()] = $milestone;
-				}
-			}
-			return $milestones;
-		}
-
-		/**
-		 * Get all sprints by a project id
-		 *
-		 * @param integer $project_id The project id
-		 *
-		 * @return array
-		 */
-		public static function getSprintsByProjectID($project_id)
-		{
-			$sprints = array();
-			if ($res = TBGMilestonesTable::getTable()->getSprintsByProjectID($project_id))
-			{
-				while ($row = $res->getNextRow())
-				{
-					$sprint = TBGContext::factory()->TBGMilestone($row->get(TBGMilestonesTable::ID), $row);
-					$sprints[$sprint->getID()] = $sprint;
-				}
-			}
-			return $sprints;
-		}
-
 		protected function _construct(\b2db\Row $row, $foreign_key = null)
 		{
 			$this->_reached = ($this->_reacheddate > 0);
@@ -189,19 +147,8 @@
 			if ($is_new)
 			{
 				TBGContext::setPermission("canseemilestone", $this->getID(), "core", 0, TBGContext::getUser()->getGroup()->getID(), 0, true);
-				TBGEvent::createNew('core', 'TBGMilestone::createNew', $this)->trigger();
+				TBGEvent::createNew('core', 'TBGMilestone::_postSave', $this)->trigger();
 			}
-		}
-		
-		/**
-		 * @see getName()
-		 * @deprecated
-		 */
-		public function __toString() // required for few functions such in_array()
-		{
-			// magic methods cannot throw exception
-			//throw new Exception("Don't print the object, use the getName() function instead");
-			return $this->getName();
 		}
 		
 		/**
@@ -350,16 +297,6 @@
 		}
 
 		/**
-		 * Set the milestone name
-		 * 
-		 * @param string $name The new name
-		 */
-		public function setName($name)
-		{
-			$this->_name = $name;
-		}
-
-		/**
 		 * Get the description
 		 * 
 		 * @return string
@@ -416,7 +353,7 @@
 		 */
 		public function getProject()
 		{
-			return $this->_getPopulatedObjectFromProperty('_project');
+			return $this->_b2dbLazyload('_project');
 		}
 		
 		public function setProject($project)
@@ -575,124 +512,6 @@
 		}
 		
 		/**
-		 * Return this milestones scheduled status, as an array
-		 * 		array('color' => '#code', 'status' => 'description')
-		 * 
-		 * @return array
-		 */
-		public function getScheduledStatus()
-		{
-			if ($this->_isscheduled)
-			{
-				if ($this->_reached == false)
-				{
-					if ($this->_scheduleddate < NOW)
-					{
-						for ($dcc = 1;$dcc <= 7;$dcc++)
-						{
-							if ($this->_scheduleddate > mktime(0, 0, 0, date('m'), date('d') - $dcc, date('Y')))
-							{
-								if ($dcc - 1 == 0)
-								{
-									return array('color' => 'D55', 'status' => 'This milestone is about a day late');
-								}
-								else
-								{
-									return array('color' => 'D55', 'status' => 'This milestone is ' . ($dcc - 1) . ' day(s) late');
-								}
-							}
-						}
-						for ($dcc = 1;$dcc <= 4;$dcc++)
-						{
-							if ($this->_scheduleddate > mktime(0, 0, 0, date('m'), date('d') - ($dcc * 7), date('Y')))
-							{
-								return array('color' => 'D55', 'status' => 'This milestone is about ' . $dcc . ' week(s) late');
-							}
-						}
-						for ($dcc = 1;$dcc <= 12;$dcc++)
-						{
-							if ($this->_scheduleddate > mktime(0, 0, 0, date('m') - $dcc, date('d'), date('Y')))
-							{
-								return array('color' => 'D55', 'status' => 'This milestone is about ' . $dcc . ' month(s) late');
-							}
-						}
-						return array('color' => 'D55', 'status' => 'This milestone is more than a year late');
-					}
-					else
-					{
-						for ($dcc = 0;$dcc <= 7;$dcc++)
-						{
-							if ($this->_scheduleddate < mktime(0, 0, 0, date('m'), date('d') + $dcc, date('Y')))
-							{
-								if ($dcc - 2 == 0)
-								{
-									return array('color' => '000', 'status' => 'This milestone is due today');
-								}
-								else
-								{
-									return array('color' => '000', 'status' => 'This milestone is scheduled for ' . ($dcc - 2) . ' days from today');
-								}
-							}
-						}
-						for ($dcc = 1;$dcc <= 4;$dcc++)
-						{
-							if ($this->_scheduleddate < mktime(0, 0, 0, date('m'), date('d') + ($dcc * 7), date('Y')))
-							{
-								return array('color' => '000', 'status' => 'This milestone is scheduled for ' . $dcc . ' week(s) from today');
-							}
-						}
-						for ($dcc = 1;$dcc <= 12;$dcc++)
-						{
-							if ($this->_scheduleddate < mktime(0, 0, 0, date('m') + $dcc, date('d'), date('Y')))
-							{
-								return array('color' => '000', 'status' => 'This milestone is scheduled for ' . $dcc . ' month(s) from today');
-							}
-						}
-						return array('color' => '000', 'status' => 'This milestone is scheduled for more than a year from today');
-					}
-				}
-				elseif ($this->_reacheddate <= $this->_scheduleddate)
-				{
-					return array('color' => '3A3', 'status' => '<b>Reached: </b> ' . tbg_formatTime($this->_reacheddate, 6));
-				}
-				else
-				{
-					$ret_text = '<b>Reached: </b> ' . tbg_formatTime($this->_reacheddate, 6) . ', ';
-					for ($dcc = 1;$dcc <= 7;$dcc++)
-					{
-						if ($this->_reacheddate < ($this->_scheduleddate + (86400 * $dcc)))
-						{
-							$ret_text .= '<b>' . ($dcc - 1) . ' day(s) late</b>';
-							return array('color' => 'C33', 'status' => $ret_text);
-						}
-					}
-					for ($dcc = 1;$dcc <= 4;$dcc++)
-					{
-						if ($this->_reacheddate < ($this->_scheduleddate + (604800 * $dcc)))
-						{
-							$ret_text .= '<b>about ' . ($dcc - 1) . ' week(s) late</b>';
-							return array('color' => 'C33', 'status' => $ret_text);
-						}
-					}
-					for ($dcc = 1;$dcc <= 12;$dcc++)
-					{
-						if ($this->_reacheddate < ($this->_scheduleddate + (2592000 * $dcc)))
-						{
-							$ret_text .= '<b>about ' . ($dcc - 1) . ' month(s) late</b>';
-							return array('color' => 'C33', 'status' => $ret_text);
-						}
-					}
-					$ret_text .= '<b>more than a year late</b>';
-					return array('color' => 'C33', 'status' => $ret_text);
-				}
-			}
-			else
-			{
-				return array('color' => '000', 'status' => '');
-			}
-		}
-		
-		/**
 		 * Returns the milestones progress
 		 * 
 		 * @return integer
@@ -723,8 +542,7 @@
 		 */
 		public function updateStatus()
 		{
-			$this->_populateIssues();
-			if (($this->countClosedIssues() == $this->countIssues()) && !$this->isSprint())
+			if ($this->countClosedIssues() == $this->countIssues())
 			{
 				TBGMilestonesTable::getTable()->setReached($this->getID());
 				$this->_reacheddate = NOW;
@@ -821,22 +639,10 @@
 					}
 				}
 				
-				$estimations = \b2db\Core::getTable('TBGIssueEstimates')->getEstimatesByDateAndIssueIDs($this->getStartingDate(), $this->getScheduledDate(), $child_issues);
-				$spent_times = \b2db\Core::getTable('TBGIssueSpentTimes')->getSpentTimesByDateAndIssueIDs($this->getStartingDate(), $this->getScheduledDate(), $child_issues);
+				$estimations = TBGIssueEstimates::getTable()->getEstimatesByDateAndIssueIDs($this->getStartingDate(), $this->getScheduledDate(), $child_issues);
+				$spent_times = TBGIssueSpentTimes::getTable()->getSpentTimesByDateAndIssueIDs($this->getStartingDate(), $this->getScheduledDate(), $child_issues);
 
 				$burndowndata = array();
-				//var_dump($spent_times);var_dump($estimations);die();
-				/*foreach ($estimations as $key => $sum)
-				{
-					if ($estimations[$key] !== null)
-					{
-						$burndowndata[$key] = $estimations[$key] - $spent_times[$key];
-					}
-					else
-					{
-						$burndowndata[$key] = '';
-					}
-				}*/
 
 				$this->_burndowndata = array('estimations' => $estimations, 'spent_times' => $spent_times);
 			}
@@ -900,6 +706,26 @@
 			}
 
 			return $i18n->__('Not scheduled');
+		}
+
+		/**
+		 * Return the items name
+		 *
+		 * @return string
+		 */
+		public function getName()
+		{
+			return $this->_name;
+		}
+
+		/**
+		 * Set the edition name
+		 *
+		 * @param string $name
+		 */
+		public function setName($name)
+		{
+			$this->_name = $name;
 		}
 
 	}

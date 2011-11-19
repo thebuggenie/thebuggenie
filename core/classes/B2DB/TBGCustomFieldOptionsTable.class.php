@@ -19,6 +19,9 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name="customfieldoptions")
+	 * @Entity(class="TBGCustomDatatypeOption")
 	 */
 	class TBGCustomFieldOptionsTable extends TBGB2DBTable
 	{
@@ -33,43 +36,16 @@
 		const CUSTOMFIELDS_KEY = 'customfieldoptions.customfield_key';
 		const SCOPE = 'customfieldoptions.scope';
 
-		public function __construct()
-		{
-			parent::__construct(self::B2DBNAME, self::ID);
-			parent::_addVarchar(self::NAME, 100);
-			parent::_addVarchar(self::OPTION_VALUE, 100);
-			parent::_addVarchar(self::ITEMDATA, 100);
-			parent::_addInteger(self::SORT_ORDER, 100);
-			parent::_addVarchar(self::CUSTOMFIELDS_KEY, 100);
-			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
-		}
-
-		public function createNew($key, $name, $value, $itemdata = null, $scope = null)
-		{
-			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
-
-			$trans = Core::startTransaction();
-			$crit = $this->getCriteria();
-			$crit->addWhere(self::CUSTOMFIELDS_KEY, $key);
-			$crit->addSelectionColumn(self::SORT_ORDER, 'sortorder', Criteria::DB_MAX, '', '+1');
-			$row = $this->doSelectOne($crit, 'none');
-			$sort_order = (int) $row->get('sortorder');
-			$sort_order = ($sort_order > 0) ? $sort_order : 1;
-
-			$crit = $this->getCriteria();
-			$crit->addInsert(self::NAME, $name);
-			$crit->addInsert(self::OPTION_VALUE, $value);
-			$crit->addInsert(self::CUSTOMFIELDS_KEY, $key);
-			$crit->addInsert(self::SORT_ORDER, $sort_order);
-			if ($itemdata !== null)
-			{
-				$crit->addInsert(self::ITEMDATA, $itemdata);
-			}
-			$crit->addInsert(self::SCOPE, $scope);
-			$trans->commitAndEnd();
-
-			return $this->doInsert($crit);
-		}
+//		public function _initialize()
+//		{
+//			parent::_setup(self::B2DBNAME, self::ID);
+//			parent::_addVarchar(self::NAME, 100);
+//			parent::_addVarchar(self::OPTION_VALUE, 100);
+//			parent::_addVarchar(self::ITEMDATA, 100);
+//			parent::_addInteger(self::SORT_ORDER, 100);
+//			parent::_addVarchar(self::CUSTOMFIELDS_KEY, 100);
+//			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
+//		}
 
 		public function getAllByKey($key)
 		{
@@ -105,17 +81,6 @@
 			return $row;
 		}
 
-		public function saveById($name, $value, $itemdata, $sortorder, $id)
-		{
-			$crit = $this->getCriteria();
-			$crit->addUpdate(self::NAME, $name);
-			$crit->addUpdate(self::OPTION_VALUE, $value);
-			$crit->addUpdate(self::ITEMDATA, $itemdata);
-			$crit->addUpdate(self::SORT_ORDER, $sortorder);
-
-			$res = $this->doUpdateById($crit, $id);
-		}
-		
 		public function doDeleteByFieldKey($key)
 		{
 			$crit = $this->getCriteria();

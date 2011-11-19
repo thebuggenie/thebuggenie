@@ -26,17 +26,17 @@
 	</form>
 	<div class="dropdown_content">
 		<b><?php echo __('Select yourself or a friend below'); ?>:</b><br>
-		<a href="javascript:void(0);" onclick="<?php echo str_replace(array(urlencode('%identifiable_type%'), '%identifiable_type%', urlencode('%identifiable_value%'), '%identifiable_value%'), array(TBGIdentifiableClass::TYPE_USER, TBGIdentifiableClass::TYPE_USER, $tbg_user->getID(), $tbg_user->getID()), $callback); ?>"><?php echo __('Select yourself'); ?> (<?php echo $tbg_user->getUsername(); ?>)</a><br>
+		<a href="javascript:void(0);" onclick="<?php echo str_replace(array(urlencode('%identifiable_value%'), '%identifiable_value%'), array($tbg_user->getID(), $tbg_user->getID()), $callback); ?>"><?php echo __('Select yourself'); ?> (<?php echo $tbg_user->getUsername(); ?>)</a><br>
 		<?php if (count($tbg_user->getFriends()) == 0): ?>
 			<span class="faded_out"><?php echo __("Your friends will appear here"); ?></span><br>
 		<?php else: ?>
 			<?php include_component('main/identifiableselectorresults', array('users' => $tbg_user->getFriends(), 'callback' => $callback, 'team_callback' => ((isset($team_callback)) ? $team_callback : null))); ?>
 		<?php endif; ?>
-		<?php if (count($tbg_user->getTeams()) > 0): ?>
-		<br>
-		<b><?php echo __('Or select one of your teams'); ?>:</b><br>
+		<?php if (isset($team_callback) && count($tbg_user->getTeams()) > 0): ?>
+			<br>
+			<b><?php echo __('Or select one of your teams'); ?>:</b><br>
 			<?php foreach ($tbg_user->getTeams() as $team): ?>
-				<a href="javascript:void(0);" onclick="<?php echo str_replace(array(urlencode('%identifiable_type%'), '%identifiable_type%', urlencode('%identifiable_value%'), '%identifiable_value%'), array(TBGIdentifiableClass::TYPE_TEAM, TBGIdentifiableClass::TYPE_TEAM, $team->getID(), $team->getID()), $callback); ?>"><?php echo __('Select %teamname%', array('%teamname%' => $team->getName())); ?> (<?php echo $team->getName(); ?>)</a><br>
+				<a href="javascript:void(0);" onclick="<?php echo str_replace(array(urlencode('%identifiable_value%'), '%identifiable_value%'), array($team->getID(), $team->getID()), $team_callback); ?>"><?php echo __('Select %teamname%', array('%teamname%' => $team->getName())); ?> (<?php echo $team->getName(); ?>)</a><br>
 			<?php endforeach; ?>
 		<?php endif; ?>
 	</div>

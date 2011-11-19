@@ -19,6 +19,9 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name="workflow_transitions")
+	 * @Entity(class="TBGWorkflowTransition")
 	 */
 	class TBGWorkflowTransitionsTable extends TBGB2DBTable
 	{
@@ -33,42 +36,16 @@
 		const OUTGOING_STEP_ID = 'workflow_transitions.outgoing_step_id';
 		const TEMPLATE = 'workflow_transitions.template';
 
-		/**
-		 * Return an instance of this table
-		 *
-		 * @return TBGWorkflowTransitionsTable
-		 */
-		public static function getTable()
-		{
-			return Core::getTable('TBGWorkflowTransitionsTable');
-		}
-
-		public function __construct()
-		{
-			parent::__construct(self::B2DBNAME, self::ID);
-			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
-			parent::_addForeignKeyColumn(self::WORKFLOW_ID, TBGWorkflowsTable::getTable(), TBGWorkflowsTable::ID);
-			parent::_addVarchar(self::NAME, 200);
-			parent::_addText(self::DESCRIPTION, false);
-			parent::_addForeignKeyColumn(self::OUTGOING_STEP_ID, TBGWorkflowStepsTable::getTable(), TBGWorkflowStepsTable::ID);
-			parent::_addVarchar(self::TEMPLATE, 200);
-		}
-
-		public function createNew($workflow_id, $name, $description, $to_step_id, $template, $scope = null)
-		{
-			$scope = ($scope !== null) ? $scope : TBGContext::getScope()->getID();
-			$crit = $this->getCriteria();
-			$crit->addInsert(self::SCOPE, $scope);
-			$crit->addInsert(self::WORKFLOW_ID, $workflow_id);
-			$crit->addInsert(self::NAME, $name);
-			$crit->addInsert(self::DESCRIPTION, $description);
-			$crit->addInsert(self::OUTGOING_STEP_ID, $to_step_id);
-			$crit->addInsert(self::TEMPLATE, $template);
-
-			$res = $this->doInsert($crit);
-
-			return $res->getInsertID();
-		}
+//		public function _initialize()
+//		{
+//			parent::_setup(self::B2DBNAME, self::ID);
+//			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
+//			parent::_addForeignKeyColumn(self::WORKFLOW_ID, TBGWorkflowsTable::getTable(), TBGWorkflowsTable::ID);
+//			parent::_addVarchar(self::NAME, 200);
+//			parent::_addText(self::DESCRIPTION, false);
+//			parent::_addForeignKeyColumn(self::OUTGOING_STEP_ID, TBGWorkflowStepsTable::getTable(), TBGWorkflowStepsTable::ID);
+//			parent::_addVarchar(self::TEMPLATE, 200);
+//		}
 
 		protected function _deleteByTypeID($type, $id)
 		{
@@ -122,16 +99,6 @@
 		public function getByWorkflowID($workflow_id)
 		{
 			return $this->_getByTypeID('workflow', $workflow_id);
-		}
-		
-		public function saveByID($name, $description, $outgoing_step_id, $template, $transition_id)
-		{
-			$crit = $this->getCriteria();
-			$crit->addUpdate(self::NAME, $name);
-			$crit->addUpdate(self::DESCRIPTION, $description);
-			$crit->addUpdate(self::OUTGOING_STEP_ID, $outgoing_step_id);
-			$crit->addUpdate(self::TEMPLATE, $template);
-			$res = $this->doUpdateById($crit, $transition_id);
 		}
 		
 		public function reMapByWorkflowID($workflow_id, $mapper_array)

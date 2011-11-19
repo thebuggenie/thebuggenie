@@ -19,6 +19,8 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name="issueaffectsbuild")
 	 */
 	class TBGIssueAffectsBuildTable extends TBGB2DBTable 
 	{
@@ -32,19 +34,9 @@
 		const CONFIRMED = 'issueaffectsbuild.confirmed';
 		const STATUS = 'issueaffectsbuild.status';
 
-		/**
-		 * Return an instance of TBGIssueAffectsBuildTable
-		 * 
-		 * @return TBGIssueAffectsBuildTable
-		 */
-		public static function getTable()
+		public function _initialize()
 		{
-			return Core::getTable('TBGIssueAffectsBuildTable');
-		}
-		
-		public function __construct()
-		{
-			parent::__construct(self::B2DBNAME, self::ID);
+			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addBoolean(self::CONFIRMED);
 			parent::_addForeignKeyColumn(self::BUILD, Core::getTable('TBGBuildsTable'), TBGBuildsTable::ID);
 			parent::_addForeignKeyColumn(self::ISSUE, TBGIssuesTable::getTable(), TBGIssuesTable::ID);

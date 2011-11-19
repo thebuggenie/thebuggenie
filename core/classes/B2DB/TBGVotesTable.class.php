@@ -19,6 +19,8 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name="votes")
 	 */
 	class TBGVotesTable extends TBGB2DBTable 
 	{
@@ -31,19 +33,9 @@
 		const VOTE = 'votes.vote';
 		const UID = 'votes.uid';
 
-		/**
-		 * Return an instance of this table
-		 *
-		 * @return TBGVotesTable
-		 */
-		public static function getTable()
+		public function _initialize()
 		{
-			return Core::getTable('TBGVotesTable');
-		}
-
-		public function __construct()
-		{
-			parent::__construct(self::B2DBNAME, self::ID);
+			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addInteger(self::TARGET, 10);
 			parent::_addInteger(self::VOTE, 2);
 			parent::_addForeignKeyColumn(self::UID, TBGUsersTable::getTable(), TBGUsersTable::ID);

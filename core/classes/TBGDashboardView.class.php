@@ -18,7 +18,7 @@
 	 *
 	 * @Table(name="TBGDashboardViewsTable")
 	 */
-	class TBGDashboardView extends TBGIdentifiableClass
+	class TBGDashboardView extends TBGIdentifiableScopedClass
 	{
 
 		const VIEW_PREDEFINED_SEARCH = 1;
@@ -49,14 +49,32 @@
 		const TYPE_TEAM = 3;
 		const TYPE_CLIENT = 4;
 
-		protected $_type;
+		/**
+		 * The name of the object
+		 *
+		 * @var string
+		 * @Column(type="string", length=200)
+		 */
+		protected $_name;
 
+		/**
+		 * @Column(type="integer", length=10)
+		 */
 		protected $_view;
 
+		/**
+		 * @Column(type="integer", length=10)
+		 */
 		protected $_pid;
 
+		/**
+		 * @Column(type="integer", length=10)
+		 */
 		protected $_tid;
 
+		/**
+		 * @Column(type="integer", length=10)
+		 */
 		protected $_target_type;
 
 		public static function getViews($tid, $target_type)
@@ -154,14 +172,34 @@
 			self::setUserViews($tid, $target_type, $views);
 		}
 
+		/**
+		 * Return the items name
+		 *
+		 * @return string
+		 */
+		public function getName()
+		{
+			return $this->_name;
+		}
+
+		/**
+		 * Set the edition name
+		 *
+		 * @param string $name
+		 */
+		public function setName($name)
+		{
+			$this->_name = $name;
+		}
+
 		public function getType()
 		{
-			return $this->_type;
+			return $this->_name;
 		}
 
 		public function setType($_type)
 		{
-			$this->_type = $_type;
+			$this->_name = $_type;
 		}
 
 		public function getDetail()

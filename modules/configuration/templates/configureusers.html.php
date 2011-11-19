@@ -2,7 +2,7 @@
 
 	$tbg_response->setTitle(__('Configure users, teams and groups'));
 	$users_text = (TBGContext::getScope()->getMaxUsers()) ? __('Users (%num%/%max%)', array('%num%' => '<span id="current_user_num_count">'.TBGUser::getUsersCount().'</span>', '%max%' => TBGContext::getScope()->getMaxUsers())) : __('Users');
-	$teams_text = (TBGContext::getScope()->getMaxTeams()) ? __('Teams (%num%/%max%)', array('%num%' => '<span id="current_team_num_count">'.TBGTeam::getTeamsCount().'</span>', '%max%' => TBGContext::getScope()->getMaxTeams())) : __('Teams');
+	$teams_text = (TBGContext::getScope()->getMaxTeams()) ? __('Teams (%num%/%max%)', array('%num%' => '<span id="current_team_num_count">'.TBGTeam::countAll().'</span>', '%max%' => TBGContext::getScope()->getMaxTeams())) : __('Teams');
 
 ?>
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>

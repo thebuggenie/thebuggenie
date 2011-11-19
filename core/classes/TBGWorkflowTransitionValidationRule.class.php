@@ -18,7 +18,7 @@
 	 *
 	 * @Table(name="TBGWorkflowTransitionValidationRulesTable")
 	 */
-	class TBGWorkflowTransitionValidationRule extends TBGIdentifiableClass
+	class TBGWorkflowTransitionValidationRule extends TBGIdentifiableScopedClass
 	{
 		
 		const RULE_MAX_ASSIGNED_ISSUES = 'max_assigned_issues';
@@ -27,16 +27,26 @@
 		const RULE_REPRODUCABILITY_VALID = 'valid_reproducability';
 		const RULE_PRIORITY_VALID = 'valid_priority';
 
-		protected $_rule = null;
+		/**
+		 * @Column(type="string", length=100, name="rule")
+		 */
+		protected $_name = null;
 
+		/**
+		 * @Column(type="string", length=200)
+		 */
 		protected $_rule_value = null;
 		
+		/**
+		 * @Column(type="string", length=200)
+		 */
 		protected $_pre_or_post;
 
 		/**
 		 * The connected transition
 		 *
 		 * @var TBGWorkflowTransition
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGWorkflowTransition")
 		 */
 		protected $_transition_id = null;
@@ -45,6 +55,7 @@
 		 * The associated workflow object
 		 *
 		 * @var TBGWorkflow
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGWorkflow")
 		 */
 		protected $_workflow_id = null;
@@ -56,7 +67,7 @@
 		 */
 		public function getWorkflow()
 		{
-			return $this->_getPopulatedObjectFromProperty('_workflow_id');
+			return $this->_b2dbLazyload('_workflow_id');
 		}
 
 		public function setWorkflow(TBGWorkflow $workflow)
@@ -71,7 +82,7 @@
 		
 		public function getTransition()
 		{
-			return $this->_getPopulatedObjectFromProperty('_transition_id');
+			return $this->_b2dbLazyload('_transition_id');
 		}
 
 		public function setPost()
@@ -101,12 +112,12 @@
 
 		public function setRule($rule)
 		{
-			$this->_rule = $rule;
+			$this->_namen = $rule;
 		}
 		
 		public function getRule()
 		{
-			return $this->_rule;
+			return $this->_namen;
 		}
 		
 		public function setRuleValue($rule_value)
@@ -121,19 +132,19 @@
 		
 		public function getRuleValueAsJoinedString()
 		{
-			if ($this->_rule == self::RULE_STATUS_VALID)
+			if ($this->_namen == self::RULE_STATUS_VALID)
 			{
 				$fieldname = 'TBGStatus';
 			}
-			elseif ($this->_rule == self::RULE_RESOLUTION_VALID)
+			elseif ($this->_namen == self::RULE_RESOLUTION_VALID)
 			{
 				$fieldname = 'TBGResolution';
 			}
-			elseif ($this->_rule == self::RULE_REPRODUCABILITY_VALID)
+			elseif ($this->_namen == self::RULE_REPRODUCABILITY_VALID)
 			{
 				$fieldname = 'TBGReproducability';
 			}
-			elseif ($this->_rule == self::RULE_PRIORITY_VALID)
+			elseif ($this->_namen == self::RULE_PRIORITY_VALID)
 			{
 				$fieldname = 'TBGPriority';
 			}
@@ -152,23 +163,23 @@
 		
 		public function isValueValid($value)
 		{
-			if ($this->_rule == self::RULE_STATUS_VALID)
+			if ($this->_namen == self::RULE_STATUS_VALID)
 			{
 				$fieldname = 'TBGStatus';
 			}
-			elseif ($this->_rule == self::RULE_RESOLUTION_VALID)
+			elseif ($this->_namen == self::RULE_RESOLUTION_VALID)
 			{
 				$fieldname = 'TBGResolution';
 			}
-			elseif ($this->_rule == self::RULE_REPRODUCABILITY_VALID)
+			elseif ($this->_namen == self::RULE_REPRODUCABILITY_VALID)
 			{
 				$fieldname = 'TBGReproducability';
 			}
-			elseif ($this->_rule == self::RULE_PRIORITY_VALID)
+			elseif ($this->_namen == self::RULE_PRIORITY_VALID)
 			{
 				$fieldname = 'TBGPriority';
 			}
-			switch ($this->_rule)
+			switch ($this->_namen)
 			{
 				case self::RULE_STATUS_VALID:
 				case self::RULE_RESOLUTION_VALID:
@@ -183,7 +194,7 @@
 		
 		public function isValid($input)
 		{
-			switch ($this->_rule)
+			switch ($this->_namen)
 			{
 				case self::RULE_MAX_ASSIGNED_ISSUES:
 					$num_issues = (int) $this->getRuleValue();
@@ -197,22 +208,22 @@
 					$valid = false;
 					foreach ($valid_items as $item)
 					{
-						if ($this->_rule == self::RULE_STATUS_VALID)
+						if ($this->_namen == self::RULE_STATUS_VALID)
 						{
 							$fieldname = 'Status';
 							$fieldname_small = 'status';
 						}
-						elseif ($this->_rule == self::RULE_RESOLUTION_VALID)
+						elseif ($this->_namen == self::RULE_RESOLUTION_VALID)
 						{
 							$fieldname = 'Resolution';
 							$fieldname_small = 'resolution';
 						}
-						elseif ($this->_rule == self::RULE_REPRODUCABILITY_VALID)
+						elseif ($this->_namen == self::RULE_REPRODUCABILITY_VALID)
 						{
 							$fieldname = 'Reproducability';
 							$fieldname_small = 'reproducability';
 						}
-						elseif ($this->_rule == self::RULE_PRIORITY_VALID)
+						elseif ($this->_namen == self::RULE_PRIORITY_VALID)
 						{
 							$fieldname = 'Priority';
 							$fieldname_small = 'priority';

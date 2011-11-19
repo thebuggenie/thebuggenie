@@ -63,12 +63,6 @@
 		const CATEGORY = 'category';
 		
 		/**
-		 * Item type user state 
-		 *
-		 */
-		const USERSTATE = 'userstate';
-		
-		/**
 		 * Item type project role
 		 *
 		 */
@@ -85,21 +79,6 @@
 			TBGProjectRole::loadFixtures($scope);
 		}
 		
-		/**
-		 * Create a new field option and return the row
-		 *
-		 * @param string $name
-		 * @param string $itemtype
-		 * @param mixed $itemdata
-		 *
-		 * @return B2DBResultset
-		 */
-		protected static function _createNew($name, $itemtype, $itemdata = null)
-		{
-			$res = TBGListTypesTable::getTable()->createNew($name, $itemtype, $itemdata);
-			return $res;
-		}
-
 		public static function getTypes()
 		{
 			$types = array();

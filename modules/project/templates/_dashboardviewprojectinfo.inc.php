@@ -5,7 +5,7 @@
 <div id="project_owner">
 	<?php if (TBGContext::getCurrentProject()->hasOwner()): ?>
 		<div style="font-weight: bold; float: left; margin: 0 10px 0 0;"><?php echo __('Owned by: %name%', array('%name%' => '')); ?></div>
-		<?php if (TBGContext::getCurrentProject()->getOwnerType() == TBGIdentifiableClass::TYPE_USER): ?>
+		<?php if (TBGContext::getCurrentProject()->getOwner() instanceof TBGUser): ?>
 			<div style="width: auto; display: table-cell; clear: none; padding: 0 10px 0 0; ">
 				<?php echo include_component('main/userdropdown', array('user' => TBGContext::getCurrentProject()->getOwner())); ?>
 			</div>
@@ -21,7 +21,7 @@
 <div id="project_leader">
 	<?php if (TBGContext::getCurrentProject()->hasLeader()): ?>
 		<div style="font-weight: bold; float: left; margin: 0 10px 0 0;"><?php echo __('Lead by: %name%', array('%name%' => '')); ?></div>
-		<?php if (TBGContext::getCurrentProject()->getLeaderType() == TBGIdentifiableClass::TYPE_USER): ?>
+		<?php if (TBGContext::getCurrentProject()->getLeader() instanceof TBGUser): ?>
 			<div style="width: auto; display: table-cell; clear: none; padding: 0 10px 0 0; ">
 				<?php echo include_component('main/userdropdown', array('user' => TBGContext::getCurrentProject()->getLeader())); ?>
 			</div>
@@ -37,7 +37,7 @@
 <div id="project_qa">
 	<?php if (TBGContext::getCurrentProject()->hasQaResponsible()): ?>
 		<div style="font-weight: bold; float: left; margin: 0 10px 0 0;"><?php echo __('QA responsible: %name%', array('%name%' => '')); ?></div>
-		<?php if (TBGContext::getCurrentProject()->getQaResponsibleType() == TBGIdentifiableClass::TYPE_USER): ?>
+		<?php if (TBGContext::getCurrentProject()->getQaResponsible() instanceof TBGUser): ?>
 			<div style="width: auto; display: table-cell; clear: none; padding: 0 10px 0 0; ">
 				<?php echo include_component('main/userdropdown', array('user' => TBGContext::getCurrentProject()->getQaResponsible())); ?>
 			</div>

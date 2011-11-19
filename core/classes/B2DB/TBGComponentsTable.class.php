@@ -19,6 +19,8 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name="components")
 	 */
 	class TBGComponentsTable extends TBGB2DBTable 
 	{
@@ -35,9 +37,9 @@
 		const LEAD_BY = 'components.leader';
 		const LEAD_TYPE = 'components.leader_type';
 		
-		public function __construct()
+		public function _initialize()
 		{
-			parent::__construct(self::B2DBNAME, self::ID);
+			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addVarchar(self::NAME, 100);
 			parent::_addInteger(self::VERSION_MAJOR, 3);
 			parent::_addInteger(self::VERSION_MINOR, 3);

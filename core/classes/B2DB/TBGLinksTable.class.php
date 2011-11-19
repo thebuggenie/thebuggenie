@@ -19,6 +19,8 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name="links")
 	 */
 	class TBGLinksTable extends TBGB2DBTable 
 	{
@@ -34,19 +36,9 @@
 		const TARGET_ID = 'links.target_id';
 		const SCOPE = 'links.scope';
 
-		/**
-		 * Return an instance of this table
-		 * 
-		 * @return TBGLinksTable
-		 */
-		public static function getTable()
+		public function _initialize()
 		{
-			return Core::getTable('TBGLinksTable');
-		}
-		
-		public function __construct()
-		{
-			parent::__construct(self::B2DBNAME, self::ID);
+			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addVarchar(self::URL, 300);
 			parent::_addInteger(self::LINK_ORDER, 3);
 			parent::_addVarchar(self::TARGET_TYPE, 30);

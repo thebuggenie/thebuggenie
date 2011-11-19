@@ -19,6 +19,8 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name="userissues")
 	 */
 	class TBGUserIssuesTable extends TBGB2DBTable 
 	{
@@ -30,9 +32,9 @@
 		const ISSUE = 'userissues.issue';
 		const UID = 'userissues.uid';
 
-		public function __construct()
+		public function _initialize()
 		{
-			parent::__construct(self::B2DBNAME, self::ID);
+			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addForeignKeyColumn(self::ISSUE, TBGIssuesTable::getTable(), TBGIssuesTable::ID);
 			parent::_addForeignKeyColumn(self::UID, TBGUsersTable::getTable(), TBGUsersTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
@@ -67,6 +69,7 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::UID, $user_id);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$crit->addJoin(TBGIssuesTable::getTable(), TBGIssuesTable::ID, self::ISSUE);
 			$crit->addWhere(TBGIssuesTable::DELETED, 0);
 			
 			$res = $this->doSelect($crit);

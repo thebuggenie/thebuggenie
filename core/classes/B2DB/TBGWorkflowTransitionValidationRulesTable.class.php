@@ -19,6 +19,9 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name="workflow_transition_validation_rules")
+	 * @Entity(class="TBGWorkflowTransitionValidationRule")
 	 */
 	class TBGWorkflowTransitionValidationRulesTable extends TBGB2DBTable
 	{
@@ -33,26 +36,16 @@
 		const RULE_VALUE = 'workflow_transition_validation_rules.rule_value';
 		const PRE_OR_POST = 'workflow_transition_validation_rules.pre_or_post';
 
-		/**
-		 * Return an instance of this table
-		 *
-		 * @return TBGWorkflowTransitionValidationRulesTable
-		 */
-		public static function getTable()
-		{
-			return Core::getTable('TBGWorkflowTransitionValidationRulesTable');
-		}
-
-		public function __construct()
-		{
-			parent::__construct(self::B2DBNAME, self::ID);
-			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
-			parent::_addVarchar(self::PRE_OR_POST, 4);
-			parent::_addVarchar(self::RULE, 100);
-			parent::_addVarchar(self::RULE_VALUE, 200);
-			parent::_addForeignKeyColumn(self::TRANSITION_ID, TBGWorkflowTransitionsTable::getTable(), TBGWorkflowTransitionsTable::ID);
-			parent::_addForeignKeyColumn(self::WORKFLOW_ID, TBGWorkflowsTable::getTable(), TBGWorkflowsTable::ID);
-		}
+//		public function _initialize()
+//		{
+//			parent::_setup(self::B2DBNAME, self::ID);
+//			parent::_addVarchar(self::PRE_OR_POST, 4);
+//			parent::_addVarchar(self::RULE, 100);
+//			parent::_addVarchar(self::RULE_VALUE, 200);
+//			parent::_addForeignKeyColumn(self::TRANSITION_ID, TBGWorkflowTransitionsTable::getTable(), TBGWorkflowTransitionsTable::ID);
+//			parent::_addForeignKeyColumn(self::WORKFLOW_ID, TBGWorkflowsTable::getTable(), TBGWorkflowsTable::ID);
+//			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
+//		}
 		
 		public function getByTransitionID($transition_id)
 		{

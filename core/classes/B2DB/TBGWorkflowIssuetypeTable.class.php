@@ -19,6 +19,8 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name="workflow_issuetype")
 	 */
 	class TBGWorkflowIssuetypeTable extends TBGB2DBTable
 	{
@@ -31,34 +33,24 @@
 		const WORKFLOW_ID = 'workflow_issuetype.workflow_id';
 		const ISSUETYPE_ID = 'workflow_issuetype.issutype_id';
 
-		/**
-		 * Return an instance of this table
-		 *
-		 * @return TBGWorkflowIssuetypeTable
-		 */
-		public static function getTable()
+		public function _initialize()
 		{
-			return Core::getTable('TBGWorkflowIssuetypeTable');
-		}
-
-		public function __construct()
-		{
-			parent::__construct(self::B2DBNAME, self::ID);
-			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
-			parent::_addForeignKeyColumn(self::WORKFLOW_ID, TBGWorkflowsTable::getTable(), TBGWorkflowsTable::ID);
-			parent::_addForeignKeyColumn(self::WORKFLOW_SCHEME_ID, TBGWorkflowSchemesTable::getTable(), TBGWorkflowSchemesTable::ID);
-			parent::_addForeignKeyColumn(self::ISSUETYPE_ID, TBGIssueTypesTable::getTable(), TBGIssueTypesTable::ID);
+			parent::_setup(self::B2DBNAME, self::ID);
+			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable());
+			parent::_addForeignKeyColumn(self::WORKFLOW_ID, TBGWorkflowsTable::getTable());
+			parent::_addForeignKeyColumn(self::WORKFLOW_SCHEME_ID, TBGWorkflowSchemesTable::getTable());
+			parent::_addForeignKeyColumn(self::ISSUETYPE_ID, TBGIssueTypesTable::getTable());
 		}
 
 		public function loadFixtures(TBGScope $scope)
 		{
-			foreach (TBGIssuetype::getAll(null, $scope->getID()) as $issuetype)
+			foreach (TBGIssueTypesTable::getTable()->getAllIDsByScopeID($scope->getID()) as $issuetype_id)
 			{
 				$crit = $this->getCriteria();
 				$crit->addInsert(self::SCOPE, $scope->getID());
-				$crit->addInsert(self::WORKFLOW_ID, 1);
-				$crit->addInsert(self::WORKFLOW_SCHEME_ID, 1);
-				$crit->addInsert(self::ISSUETYPE_ID, $issuetype->getID());
+				$crit->addInsert(self::WORKFLOW_ID, TBGSettings::getCoreWorkflow()->getID());
+				$crit->addInsert(self::WORKFLOW_SCHEME_ID, TBGSettings::getCoreWorkflowScheme()->getID());
+				$crit->addInsert(self::ISSUETYPE_ID, $issuetype_id);
 				$this->doInsert($crit);
 			}
 		}

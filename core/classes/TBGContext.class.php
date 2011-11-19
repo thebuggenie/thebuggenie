@@ -346,7 +346,7 @@
 		 */
 		public static function exceptionHandler($exception)
 		{
-			if (self::isDebugMode()) self::generateDebugInfo();
+			if (self::isDebugMode() && !self::isInstallmode()) self::generateDebugInfo();
 
 			if (self::getRequest() instanceof TBGRequest && self::getRequest()->isAjaxCall()) {
 				self::getResponse()->ajaxResponseText(404, $exception->getMessage());
@@ -374,7 +374,8 @@
 			if (self::isCLI()) {
 				self::cliError($error, $details);
 			} else {
-				if (self::getResponse() instanceof TBGResponse) self::getResponse()->cleanBuffer();
+				//if (self::getResponse() instanceof TBGResponse) self::getResponse()->cleanBuffer();
+				self::getResponse()->cleanBuffer();
 				require THEBUGGENIE_CORE_PATH . 'templates' . DS . 'error.php';
 			}
 			die();
@@ -616,7 +617,7 @@
 				TBGLogging::log('PHP_SAPI says "' . PHP_SAPI . '"');
 
 				if (!is_writable(THEBUGGENIE_CORE_PATH . DIRECTORY_SEPARATOR . 'cache'))
-					throw new Exception(self::geti18n()->__('The cache directory is not writable. Please correct the permissions of core/cache, and try again'));
+					throw new Exception('The cache directory is not writable. Please correct the permissions of core/cache, and try again');
 
 				if (!self::isCLI() && !ini_get('session.auto_start'))
 					self::initializeSession();
@@ -743,6 +744,8 @@
 					self::$_redirect_login = true;
 				else
 					self::$_user = self::factory()->TBGUser(TBGSettings::getDefaultUserID());
+
+				throw $e;
 			}
 			TBGLogging::log('...done');
 		}
@@ -1740,9 +1743,9 @@
 				}
 				
 				if (!self::isUpgrademode() && !self::isInstallmode())
-					$row = TBGScopesTable::getTable()->getByHostnameOrDefault($hostname);
+					$scope = TBGScopesTable::getTable()->getByHostnameOrDefault($hostname);
 				
-				if (!$row instanceof \b2db\Row)
+				if (!$scope instanceof TBGScope)
 				{
 					TBGLogging::log("It couldn't", 'main', TBGLogging::LEVEL_WARNING);
 					if (!self::isInstallmode())
@@ -1752,7 +1755,7 @@
 				}
 				
 				TBGLogging::log("Setting scope from hostname");
-				self::$_scope = TBGContext::factory()->TBGScope($row->get(TBGScopesTable::ID), $row);
+				self::$_scope = $scope;
 				TBGSettings::forceSettingsReload();
 				TBGSettings::loadSettings();
 				TBGLogging::log("...done (Setting scope from hostname)");
@@ -2305,7 +2308,10 @@
 
 				if (self::getResponse()->getDecoration() == TBGResponse::DECORATE_DEFAULT && !self::getRequest()->isAjaxCall())
 				{
+					ob_start('mb_output_handler');
+					ob_implicit_flush(0);
 					require THEBUGGENIE_CORE_PATH . 'templates/layout.php';
+					ob_flush();
 				}
 				else
 				{
@@ -2383,7 +2389,7 @@
 					{
 						$route = array('module' => 'installation', 'action' => 'installIntro');
 					}
-					if (self::$_redirect_login)
+					if (self::$_redirect_login && !self::getRouting()->getCurrentRouteName('debug'))
 					{
 						TBGLogging::log('An error occurred setting up the user object, redirecting to login', 'main', TBGLogging::LEVEL_NOTICE);
 						TBGContext::setMessage('login_message_err', TBGContext::geti18n()->__('Please log in'));
@@ -2480,13 +2486,16 @@
 			}
 			$tbg_summary['log'] = TBGLogging::getEntries();
 			$tbg_summary['routing'] = array('name' => self::getRouting()->getCurrentRouteName(), 'module' => self::getRouting()->getCurrentRouteModule(), 'action' => self::getRouting()->getCurrentRouteAction());
-			if (!array_key_exists('___DEBUGINFO___', $_SESSION))
+			if (isset($_SESSION))
 			{
-				$_SESSION['___DEBUGINFO___'] = array();
+				if (!array_key_exists('___DEBUGINFO___', $_SESSION))
+				{
+					$_SESSION['___DEBUGINFO___'] = array();
+				}
+				$_SESSION['___DEBUGINFO___'][self::$debug_id] = $tbg_summary;
+				while (count($_SESSION['___DEBUGINFO___']) > 10)
+					array_shift($_SESSION['___DEBUGINFO___']);
 			}
-			$_SESSION['___DEBUGINFO___'][self::$debug_id] = $tbg_summary;
-			while (count($_SESSION['___DEBUGINFO___']) > 10)
-				array_shift($_SESSION['___DEBUGINFO___']);
 		}
 
 		public static function getDebugData($debug_id)

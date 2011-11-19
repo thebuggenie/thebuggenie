@@ -471,7 +471,7 @@
 										case TBGCustomDatatype::EDITIONS_CHOICE: ?>
 											<select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id" style="width: 100%;">
 											<?php if ($selected_project instanceof TBGProject): ?>
-												<?php foreach (TBGEdition::getAllByProjectID($selected_project->getID()) as $option): ?>
+												<?php foreach ($selected_project->getEditions() as $option): ?>
 												<option value="<?php echo $option->getID(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] == $option->getID()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
 												<?php endforeach; ?>
 											<?php endif; ?>
@@ -489,7 +489,7 @@
 										case TBGCustomDatatype::COMPONENTS_CHOICE: ?>
 											<select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id" style="width: 100%;">
 											<?php if ($selected_project instanceof TBGProject): ?>
-												<?php foreach (TBGComponent::getAllByProjectID($selected_project->getID()) as $option): ?>
+												<?php foreach ($selected_project->getComponents() as $option): ?>
 												<option value="<?php echo $option->getID(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] == $option->getID()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
 												<?php endforeach; ?>
 											<?php endif; ?>
@@ -499,7 +499,7 @@
 										case TBGCustomDatatype::RELEASES_CHOICE: ?>
 											<select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id" style="width: 100%;">
 											<?php if ($selected_project instanceof TBGProject): ?>
-												<?php foreach (TBGBuild::getByProjectID($selected_project->getID()) as $option): ?>
+												<?php foreach ($selected_project->getBuilds() as $option): ?>
 												<option value="<?php echo $option->getID(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] == $option->getID()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
 												<?php endforeach; ?>
 											<?php endif; ?>
@@ -670,7 +670,7 @@
 											?>
 											<select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id_additional">
 												<?php if ($selected_project instanceof TBGProject): ?>
-													<?php foreach (TBGEdition::getAllByProjectID($selected_project->getID()) as $option): ?>
+													<?php foreach ($selected_project->getEditions() as $option): ?>
 													<option value="<?php echo $option->getID(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] == $option->getID()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
 													<?php endforeach; ?>
 												<?php endif; ?>
@@ -690,7 +690,7 @@
 											?>
 											<select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id_additional">
 												<?php if ($selected_project instanceof TBGProject): ?>
-													<?php foreach (TBGComponent::getAllByProjectID($selected_project->getID()) as $option): ?>
+													<?php foreach ($selected_project->getComponents() as $option): ?>
 													<option value="<?php echo $option->getID(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] == $option->getID()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
 													<?php endforeach; ?>
 												<?php endif; ?>
@@ -701,7 +701,7 @@
 											?>
 											<select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id_additional">
 												<?php if ($selected_project instanceof TBGProject): ?>
-													<?php foreach (TBGBuild::getByProjectID($selected_project->getID()) as $option): ?>
+													<?php foreach ($selected_project->getBuilds() as $option): ?>
 													<option value="<?php echo $option->getID(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] == $option->getID()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
 													<?php endforeach; ?>
 												<?php endif; ?>

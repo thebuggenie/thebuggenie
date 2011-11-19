@@ -18,21 +18,45 @@
 	 *
 	 * @Table(name="TBGModulesTable")
 	 */
-	abstract class TBGModule extends TBGIdentifiableClass 
+	abstract class TBGModule extends TBGIdentifiableScopedClass
 	{
 
+		/**
+		 * The name of the object
+		 *
+		 * @var string
+		 * @Column(type="string", length=200)
+		 */
+		protected $_name;
+
+		/**
+		 * @var string
+		 * @Column(type="string", length=100)
+		 */
 		protected $_classname = '';
-		protected $_description = '';
+
+		/**
+		 * @var boolean
+		 * @Column(type="boolean")
+		 */
 		protected $_enabled = false;
+
+		/**
+		 * @var string
+		 * @Column(type="string", length=10)
+		 */
+		protected $_version = '';
+
 		protected $_longname = '';
-		protected $_showinconfig = false;
 		protected $_shortname = '';
+		protected $_showinconfig = false;
 		protected $_module_config_title = '';
 		protected $_module_config_description = '';
-		protected $_version = '';
+		protected $_description = '';
 		protected $_availablepermissions = array();
 		protected $_settings = array();
 		protected $_routes = array();
+
 		protected $_has_account_settings = false;
 		protected $_account_settings_name = null;
 		protected $_account_settings_logo = null;
@@ -249,16 +273,6 @@
 			throw new Exception('Trying to call function ' . $func . '() in module ' . $this->_shortname . ', but the function does not exist');
 		}
 		
-		public function getID()
-		{
-			return $this->_id;
-		}
-		
-		public function getName()
-		{
-			return $this->_name;
-		}
-
 		public function setLongName($name)
 		{
 			$this->_longname = $name;
@@ -534,6 +548,26 @@
 		public function postAccountSettings(TBGRequest $request)
 		{
 
+		}
+
+		/**
+		 * Return the items name
+		 *
+		 * @return string
+		 */
+		public function getName()
+		{
+			return $this->_name;
+		}
+
+		/**
+		 * Set the edition name
+		 *
+		 * @param string $name
+		 */
+		public function setName($name)
+		{
+			$this->_name = $name;
 		}
 
 	}

@@ -460,7 +460,6 @@
        if ( $DataDescription["Format"]["Y"] == "metric" )
         $Value = $this->ToMetric($Value);        
 
-	   //var_dump($this->FontName);die();
        $Position  = imageftbbox($this->FontSize,0,$this->FontName,$Value);
        $TextWidth = $Position[2]-$Position[0];
        imagettftext($this->Picture,$this->FontSize,0,$this->GArea_X1-10-$TextWidth,$YPos+($this->FontSize/2),$C_TextColor,$this->FontName,$Value);

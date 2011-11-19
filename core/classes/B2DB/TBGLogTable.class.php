@@ -19,6 +19,8 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name="log")
 	 */
 	class TBGLogTable extends TBGB2DBTable 
 	{
@@ -81,19 +83,9 @@
 		const TIME = 'log.time';
 		const UID = 'log.uid';
 
-		/**
-		 * Return an instance of TBGLogTable
-		 * 
-		 * @return TBGLogTable
-		 */
-		public static function getTable()
+		public function _initialize()
 		{
-			return Core::getTable('TBGLogTable');
-		}
-		
-		public function __construct()
-		{
-			parent::__construct(self::B2DBNAME, self::ID);
+			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addInteger(self::TARGET, 10);
 			parent::_addInteger(self::TARGET_TYPE, 3);
 			parent::_addInteger(self::CHANGE_TYPE, 3);

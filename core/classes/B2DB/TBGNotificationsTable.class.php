@@ -19,6 +19,8 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name="notifications")
 	 */
 	class TBGNotificationsTable extends TBGB2DBTable 
 	{
@@ -37,9 +39,9 @@
 		const CONTENTS = 'notifications.contents';
 		const STATUS = 'notifications.status';
 
-		public function __construct()
+		public function _initialize()
 		{
-			parent::__construct(self::B2DBNAME, self::ID);
+			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addVarchar(self::MODULE_NAME, 50);
 			parent::_addInteger(self::NOTIFY_TYPE, 5);
 			parent::_addInteger(self::TARGET_ID, 10);

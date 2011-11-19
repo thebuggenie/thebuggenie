@@ -19,6 +19,8 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name="modulepermissions")
 	 */
 	class TBGModulePermissionsTable extends TBGB2DBTable 
 	{
@@ -33,9 +35,9 @@
 		const TID = 'modulepermissions.tid';
 		const ALLOWED = 'modulepermissions.allowed';
 
-		public function __construct()
+		public function _initialize()
 		{
-			parent::__construct(self::B2DBNAME, self::ID);
+			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addVarchar(self::MODULE_NAME, 50);
 			parent::_addBoolean(self::ALLOWED);
 			parent::_addForeignKeyColumn(self::UID, TBGUsersTable::getTable(), TBGUsersTable::ID);

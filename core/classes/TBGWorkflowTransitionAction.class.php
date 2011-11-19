@@ -18,7 +18,7 @@
 	 *
 	 * @Table(name="TBGWorkflowTransitionActionsTable")
 	 */
-	class TBGWorkflowTransitionAction extends TBGIdentifiableClass
+	class TBGWorkflowTransitionAction extends TBGIdentifiableScopedClass
 	{
 		
 		const ACTION_ASSIGN_ISSUE_SELF = 'assign_self';
@@ -38,15 +38,22 @@
 		const ACTION_CLEAR_REPRODUCABILITY = 'clear_reproducability';
 		const ACTION_USER_START_WORKING = 'user_start_working';
 		const ACTION_USER_STOP_WORKING = 'user_stop_working';
-		
-		protected $_action_type = null;
 
-		protected $_target_value = null;
+		/**
+		 * @Column(type="string", length=200)
+		 */
+		protected $_action_type;
 		
+		/**
+		 * @Column(type="string", length=200)
+		 */
+		protected $_target_value = null;
+
 		/**
 		 * The connected transition
 		 *
 		 * @var TBGWorkflowTransition
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGWorkflowTransition")
 		 */
 		protected $_transition_id = null;
@@ -55,6 +62,7 @@
 		 * The associated workflow object
 		 *
 		 * @var TBGWorkflow
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGWorkflow")
 		 */
 		protected $_workflow_id = null;
@@ -81,7 +89,7 @@
 		 */
 		public function getWorkflow()
 		{
-			return $this->_getPopulatedObjectFromProperty('_workflow_id');
+			return $this->_b2dbLazyload('_workflow_id');
 		}
 
 		public function setWorkflow(TBGWorkflow $workflow)
@@ -96,7 +104,7 @@
 		
 		public function getTransition()
 		{
-			return $this->_getPopulatedObjectFromProperty('_transition_id');
+			return $this->_b2dbLazyload('_transition_id');
 		}
 
 		public function setActionType($action_type)
@@ -198,10 +206,10 @@
 						$assignee = null;
 						switch ($request['assignee_type'])
 						{
-							case TBGIdentifiableClass::TYPE_USER:
+							case TBGIdentifiableTypeClass::TYPE_USER:
 								$assignee = TBGContext::factory()->TBGUser($request['assignee_id']);
 								break;
-							case TBGIdentifiableClass::TYPE_TEAM:
+							case TBGIdentifiableTypeClass::TYPE_TEAM:
 								$assignee = TBGContext::factory()->TBGTeam($request['assignee_id']);
 								break;
 						}

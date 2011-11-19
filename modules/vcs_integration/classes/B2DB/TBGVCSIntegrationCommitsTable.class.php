@@ -19,6 +19,8 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage vcs_integration
+	 *
+	 * @Table(name="vcsintegration_commits")
 	 */
 	class TBGVCSIntegrationCommitsTable extends TBGB2DBTable 
 	{
@@ -35,9 +37,9 @@
 		const DATA = 'vcsintegration_commits.data';
 		const PROJECT_ID = 'vcsintegration_commits.project_id';
 					
-		public function __construct()
+		public function _initialize()
 		{
-			parent::__construct(self::B2DBNAME, self::ID);
+			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addText(self::LOG, false);
 			parent::_addVarchar(self::OLD_REV, 40);
 			parent::_addVarchar(self::NEW_REV, 40);
@@ -46,16 +48,6 @@
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(),  TBGScopesTable::ID);
 			parent::_addForeignKeyColumn(self::AUTHOR, TBGUsersTable::getTable(), TBGUsersTable::ID);
 			parent::_addForeignKeyColumn(self::PROJECT_ID, TBGProjectsTable::getTable(), TBGProjectsTable::ID);
-		}
-		
-		/**
-		 * Return an instance of this table
-		 *
-		 * @return TBGVCSIntegrationCommitsTable
-		 */
-		public static function getTable()
-		{
-			return Core::getTable('TBGVCSIntegrationCommitsTable');
 		}
 		
 		/**

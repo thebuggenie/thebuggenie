@@ -19,8 +19,9 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
-	 * 
-	 * @Class(name="TBGProject")
+	 *
+	 * @Table(name="projects")
+	 * @Entity(class="TBGProject")
 	 */
 	class TBGProjectsTable extends TBGB2DBTable 
 	{
@@ -35,10 +36,10 @@
 		const USE_PREFIX = 'projects.use_prefix';
 		const USE_SCRUM = 'projects.use_scrum';
 		const HOMEPAGE = 'projects.homepage';
-		const OWNER = 'projects.owner';
-		const OWNER_TYPE = 'projects.owner_type';
-		const LEAD_BY = 'projects.leader';
-		const LEAD_TYPE = 'projects.leader_type';
+		const OWNER_USER = 'projects.owner_user';
+		const OWNER_TEAM = 'projects.owner_team';
+		const LEADER_TEAM = 'projects.leader_team';
+		const LEADER_USER = 'projects.leader_user';
 		const CLIENT = 'projects.client';
 		const DESCRIPTION = 'projects.description';
 		const DOC_URL = 'projects.doc_url';
@@ -64,45 +65,45 @@
 		const PARENT_PROJECT_ID = 'projects.parent';
 		const ARCHIVED = 'projects.archived';
 		
-		public function __construct()
-		{
-			parent::__construct(self::B2DBNAME, self::ID);
-			parent::_addVarchar(self::NAME, 100);
-			parent::_addVarchar(self::KEY, 100);
-			parent::_addVarchar(self::PREFIX, 5, '');
-			parent::_addBoolean(self::USE_PREFIX);
-			parent::_addBoolean(self::USE_SCRUM);
-			parent::_addBoolean(self::HAS_DOWNLOADS);
-			parent::_addVarchar(self::HOMEPAGE, 200, '');
-			parent::_addInteger(self::OWNER, 10);
-			parent::_addInteger(self::OWNER_TYPE, 3);
-			parent::_addInteger(self::LEAD_BY, 10);
-			parent::_addInteger(self::LEAD_TYPE, 3);
-			parent::_addText(self::DESCRIPTION, false);
-			parent::_addVarchar(self::DOC_URL, 200, '');
-			parent::_addBoolean(self::ALLOW_CHANGING_WITHOUT_WORKING);
-			parent::_addBoolean(self::RELEASED);
-			parent::_addBoolean(self::PLANNED_RELEASED);
-			parent::_addInteger(self::RELEASE_DATE, 10);
-			parent::_addBoolean(self::ENABLE_BUILDS);
-			parent::_addBoolean(self::ENABLE_EDITIONS);
-			parent::_addBoolean(self::ENABLE_COMPONENTS);
-			parent::_addBoolean(self::SHOW_IN_SUMMARY, true);
-			parent::_addVarchar(self::SUMMARY_DISPLAY, 15, 'issuetypes');
-			parent::_addInteger(self::QA, 10);
-			parent::_addInteger(self::QA_TYPE, 3);
-			parent::_addBoolean(self::LOCKED);
-			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
-			parent::_addForeignKeyColumn(self::WORKFLOW_SCHEME_ID, TBGWorkflowSchemesTable::getTable(), TBGWorkflowSchemesTable::ID);
-			parent::_addForeignKeyColumn(self::ISSUETYPE_SCHEME_ID, TBGIssuetypeSchemesTable::getTable(), TBGIssuetypeSchemesTable::ID);
-			parent::_addForeignKeyColumn(self::CLIENT, TBGClientsTable::getTable(), TBGClientsTable::ID);
-			parent::_addForeignKeyColumn(self::PARENT_PROJECT_ID, $this, self::ID);
-			parent::_addForeignKeyColumn(self::SMALL_ICON, TBGFilesTable::getTable(), TBGFilesTable::ID);
-			parent::_addForeignKeyColumn(self::LARGE_ICON, TBGFilesTable::getTable(), TBGFilesTable::ID);
-			parent::_addBoolean(self::DELETED);
-			parent::_addBoolean(self::AUTOASSIGN);
-			parent::_addBoolean(self::ARCHIVED);
-		}
+//		public function __construct()
+//		{
+//			parent::__construct(self::B2DBNAME, self::ID);
+//			parent::_addVarchar(self::NAME, 100);
+//			parent::_addVarchar(self::KEY, 100);
+//			parent::_addVarchar(self::PREFIX, 5, '');
+//			parent::_addBoolean(self::USE_PREFIX);
+//			parent::_addBoolean(self::USE_SCRUM);
+//			parent::_addBoolean(self::HAS_DOWNLOADS);
+//			parent::_addVarchar(self::HOMEPAGE, 200, '');
+//			parent::_addInteger(self::OWNER, 10);
+//			parent::_addInteger(self::OWNER_TYPE, 3);
+//			parent::_addInteger(self::LEAD_BY, 10);
+//			parent::_addInteger(self::LEAD_TYPE, 3);
+//			parent::_addText(self::DESCRIPTION, false);
+//			parent::_addVarchar(self::DOC_URL, 200, '');
+//			parent::_addBoolean(self::ALLOW_CHANGING_WITHOUT_WORKING);
+//			parent::_addBoolean(self::RELEASED);
+//			parent::_addBoolean(self::PLANNED_RELEASED);
+//			parent::_addInteger(self::RELEASE_DATE, 10);
+//			parent::_addBoolean(self::ENABLE_BUILDS);
+//			parent::_addBoolean(self::ENABLE_EDITIONS);
+//			parent::_addBoolean(self::ENABLE_COMPONENTS);
+//			parent::_addBoolean(self::SHOW_IN_SUMMARY, true);
+//			parent::_addVarchar(self::SUMMARY_DISPLAY, 15, 'issuetypes');
+//			parent::_addInteger(self::QA, 10);
+//			parent::_addInteger(self::QA_TYPE, 3);
+//			parent::_addBoolean(self::LOCKED);
+//			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
+//			parent::_addForeignKeyColumn(self::WORKFLOW_SCHEME_ID, TBGWorkflowSchemesTable::getTable(), TBGWorkflowSchemesTable::ID);
+//			parent::_addForeignKeyColumn(self::ISSUETYPE_SCHEME_ID, TBGIssuetypeSchemesTable::getTable(), TBGIssuetypeSchemesTable::ID);
+//			parent::_addForeignKeyColumn(self::CLIENT, TBGClientsTable::getTable(), TBGClientsTable::ID);
+//			parent::_addForeignKeyColumn(self::PARENT_PROJECT_ID, $this, self::ID);
+//			parent::_addForeignKeyColumn(self::SMALL_ICON, TBGFilesTable::getTable(), TBGFilesTable::ID);
+//			parent::_addForeignKeyColumn(self::LARGE_ICON, TBGFilesTable::getTable(), TBGFilesTable::ID);
+//			parent::_addBoolean(self::DELETED);
+//			parent::_addBoolean(self::AUTOASSIGN);
+//			parent::_addBoolean(self::ARCHIVED);
+//		}
 		
 		public function _setupIndexes()
 		{
@@ -127,21 +128,6 @@
 			$crit = $this->getCriteria();
 			$crit->addUpdate(self::IS_DEFAULT, true);
 			$res = $this->doUpdateById($crit, $project_id);
-		}
-		
-		public function createNew($name, $p_id = null)
-		{
-			$crit = $this->getCriteria();
-			if ($p_id !== null)
-			{
-				$crit->addInsert(self::ID, $p_id);
-			}
-			$crit->addInsert(self::NAME, $name);
-			$crit->addInsert(self::KEY, mb_strtolower(str_replace(' ', '', $name)));
-			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
-			$crit->addInsert(self::WORKFLOW_SCHEME_ID, 1);
-			$res = $this->doInsert($crit);
-			return $res->getInsertID();
 		}
 		
 		public function getByPrefix($prefix)
@@ -245,24 +231,14 @@
 		public function getByUserID($user_id)
 		{
 			$crit = $this->getCriteria();
-			$ctn = $crit->returnCriterion(self::LEAD_BY, $user_id);
-			$ctn->addWhere(self::LEAD_TYPE, TBGIdentifiableClass::TYPE_USER);
+			$ctn = $crit->returnCriterion(self::LEADER_USER, $user_id);
 			$ctn->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addWhere($ctn);
-			$ctn = $crit->returnCriterion(self::OWNER, $user_id);
+			$ctn = $crit->returnCriterion(self::OWNER_USER, $user_id);
 			$ctn->addWhere(self::SCOPE, TBGContext::getScope()->getID());
-			$ctn->addWhere(self::OWNER_TYPE, TBGIdentifiableClass::TYPE_USER);
 			$crit->addOr($ctn);
-			
-			$return_array = array();
-			if ($res = $this->doSelect($crit))
-			{
-				while ($row = $res->getNextRow())
-				{
-					$return_array[$row->get(self::ID)] = TBGContext::factory()->TBGProject($row->get(self::ID), $row);
-				}
-			}
-			return $return_array;
+
+			return $this->select($crit);
 		}
 
 		public function updateByIssuetypeSchemeID($scheme_id)

@@ -12,38 +12,18 @@
 		 * This options value
 		 *
 		 * @var string|integer
+		 * @Column(type="string", length=200)
 		 */
 		protected $_value = null;
-		
-		protected $_sort_order = null;
 		
 		/**
 		 * Custom field key value
 		 *
-		 * @var string
+		 * @var integer
+		 * @Column(type="integer", length=10)
+		 * @Relates(class="TBGCustomDatatype")
 		 */
-		protected $_customfield_key;
-
-		/**
-		 * Returns all options available for a custom type
-		 * 
-		 * @return array 
-		 */		
-		public static function getAllByKey($key)
-		{
-			if (!array_key_exists($key, self::$_items))
-			{
-				self::$_items[$key] = array();
-				if ($items = \b2db\Core::getTable('TBGCustomFieldOptionsTable')->getAllByKey($key))
-				{
-					foreach ($items as $row_id => $row)
-					{
-						self::$_items[$key][$row_id] = TBGContext::factory()->TBGCustomDatatypeOption($row_id, $row);
-					}
-				}
-			}
-			return self::$_items[$key];
-		}
+		protected $_customdatatype;
 
 		/**
 		 * Return a custom data type option by value and key
@@ -73,6 +53,7 @@
 		 */
 		protected function _preSave($is_new)
 		{
+			parent::_preSave($is_new);
 			if ($this->getItemtype() == TBGCustomDatatype::DROPDOWN_CHOICE_TEXT_ICON)
 			{
 
@@ -88,16 +69,6 @@
 			}
 		}
 
-		public function getKey()
-		{
-			return $this->_customfield_key;
-		}
-		
-		public function setKey($key)
-		{
-			$this->_customfield_key = $key;
-		}
-		
 		/**
 		 * Return the options color (if applicable)
 		 * 

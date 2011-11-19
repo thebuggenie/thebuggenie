@@ -70,9 +70,12 @@
 			$filters['reproducability'] = array('description' => $i18n->__('Reproducability'), 'options' => TBGReproducability::getAll());
 			$filters['resolution'] = array('description' => $i18n->__('Resolution'), 'options' => TBGResolution::getAll());
 			$filters['issuetype'] = array('description' => $i18n->__('Issue type'), 'options' => TBGIssuetype::getAll());
-			$filters['component'] = array('description' => $i18n->__('Component'), 'options' => TBGComponent::getAllByProjectID($pkey));
-			$filters['build'] = array('description' => $i18n->__('Build'), 'options' => TBGBuild::getByProjectID($pkey));
-			$filters['edition'] = array('description' => $i18n->__('Edition'), 'options' => TBGEdition::getAllByProjectID($pkey));
+			if (TBGContext::isProjectContext())
+			{
+				$filters['component'] = array('description' => $i18n->__('Component'), 'options' => TBGContext::getCurrentProject()->getComponents());
+				$filters['build'] = array('description' => $i18n->__('Build'), 'options' => TBGContext::getCurrentProject()->getBuilds());
+				$filters['edition'] = array('description' => $i18n->__('Edition'), 'options' => TBGContext::getCurrentProject()->getEditions());
+			}
 			$filters['assigned_to'] = array('description' => $i18n->__('Assigned to'));
 			$filters['posted_by'] = array('description' => $i18n->__('Posted by'));
 			$filters['owned_by'] = array('description' => $i18n->__('Owned by'));

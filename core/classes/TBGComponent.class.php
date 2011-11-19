@@ -18,37 +18,27 @@
 	 *
 	 * @Table(name="TBGComponentsTable")
 	 */
-	class TBGComponent extends TBGOwnableItem 
+	class TBGComponent extends TBGReleaseableItem
 	{
 		
-		protected static $_b2dbtablename = 'TBGComponentsTable';
-		
+		/**
+		 * The name of the object
+		 *
+		 * @var string
+		 * @Column(type="string", length=200)
+		 */
+		protected $_name;
+
 		/**
 		 * This components project
 		 *
 		 * @var unknown_type
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGProject")
 		 */
 		protected $_project = null;
 		
 		protected $_assignees = null;
-		
-		public static function getAllByProjectID($project_id)
-		{
-			$retval = array();
-			if ($res = \b2db\Core::getTable('TBGComponentsTable')->getByProjectID($project_id))
-			{
-				while ($row = $res->getNextRow())
-				{
-					$component = TBGContext::factory()->TBGComponent($row->get(TBGComponentsTable::ID), $row);
-					if ($component->hasAccess())
-					{
-						$retval[$component->getID()] = $component;
-					}
-				}
-			}
-			return $retval;
-		}
 		
 		protected function _postSave($is_new)
 		{
@@ -66,7 +56,7 @@
 		 */
 		public function getProject()
 		{
-			return $this->_getPopulatedObjectFromProperty('_project');
+			return $this->_b2dbLazyload('_project');
 		}
 		
 		public function setProject($project)
@@ -82,15 +72,6 @@
 			return $retval;
 		}
 		
-		public function setName($name)
-		{
-			$crit = new \b2db\Criteria();
-			$crit->addUpdate(TBGComponentsTable::NAME, $name);
-			$res = \b2db\Core::getTable('TBGComponentsTable')->doUpdateById($crit, $this->getID());
-			
-			$this->_name = $name;
-		}
-
 		protected function _preDelete()
 		{
 			$crit = new \b2db\Criteria();
@@ -156,4 +137,24 @@
 			return ($this->getProject()->canSeeAllComponents() || TBGContext::getUser()->hasPermission('canseecomponent', $this->getID()));
 		}
 		
+		/**
+		 * Return the items name
+		 *
+		 * @return string
+		 */
+		public function getName()
+		{
+			return $this->_name;
+		}
+
+		/**
+		 * Set the edition name
+		 *
+		 * @param string $name
+		 */
+		public function setName($name)
+		{
+			$this->_name = $name;
+		}
+
 	}

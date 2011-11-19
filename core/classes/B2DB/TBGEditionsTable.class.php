@@ -19,6 +19,8 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name="editions")
 	 */
 	class TBGEditionsTable extends TBGB2DBTable 
 	{
@@ -42,9 +44,9 @@
 		const RELEASE_DATE = 'editions.release_date';
 		const LOCKED = 'editions.locked';
 		
-		public function __construct()
+		public function _initialize()
 		{
-			parent::__construct(self::B2DBNAME, self::ID);
+			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addVarchar(self::NAME, 100);
 			parent::_addText(self::DESCRIPTION, false);
 			parent::_addInteger(self::LEAD_BY, 10);

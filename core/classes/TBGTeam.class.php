@@ -18,7 +18,7 @@
 	 *
 	 * @Table(name="TBGTeamsTable")
 	 */
-	class TBGTeam extends TBGIdentifiableClass 
+	class TBGTeam extends TBGIdentifiableScopedClass
 	{
 		
 		protected static $_teams = null;
@@ -28,7 +28,18 @@
 		protected $_members = null;
 
 		protected $_num_members = null;
-		
+
+		/**
+		 * The name of the object
+		 *
+		 * @var string
+		 * @Column(type="string", length=200)
+		 */
+		protected $_name;
+
+		/**
+		 * @Column(type="boolean")
+		 */
 		protected $_ondemand = false;
 		
 		protected $_associated_projects = null;
@@ -42,14 +53,7 @@
 		{
 			if (self::$_teams === null)
 			{
-				self::$_teams = array();
-				if ($res = \b2db\Core::getTable('TBGTeamsTable')->getAll())
-				{
-					while ($row = $res->getNextRow())
-					{
-						self::$_teams[$row->get(TBGTeamsTable::ID)] = TBGContext::factory()->TBGTeam($row->get(TBGTeamsTable::ID), $row);
-					}
-				}
+				self::$_teams = TBGTeamsTable::getTable()->getAll();
 			}
 			return self::$_teams;
 		}
@@ -77,7 +81,7 @@
 			$translators->save();
 		}
 
-		public static function getTeamsCount()
+		public static function countAll()
 		{
 			if (self::$_num_teams === null)
 			{
@@ -187,9 +191,9 @@
 			{
 				$this->_associated_projects = array();
 				
-				$projects = \b2db\Core::getTable('TBGProjectAssigneesTable')->getProjectsByTeamID($this->getID());
-				$edition_projects = \b2db\Core::getTable('TBGEditionAssigneesTable')->getProjectsByTeamID($this->getID());
-				$component_projects = \b2db\Core::getTable('TBGComponentAssigneesTable')->getProjectsByTeamID($this->getID());
+				$projects = TBGProjectAssignedTeamsTable::getTable()->getProjectsByTeamID($this->getID());
+				$edition_projects = TBGEditionAssignedTeamsTable::getTable()->getProjectsByTeamID($this->getID());
+				$component_projects = TBGComponentAssignedTeamsTable::getTable()->getProjectsByTeamID($this->getID());
 
 				$project_ids = array_merge(array_keys($projects), array_keys($edition_projects), array_keys($component_projects));
 				foreach ($project_ids as $project_id)
@@ -214,6 +218,26 @@
 		public function hasAccess()
 		{
 			return (bool) (TBGContext::getUser()->hasPageAccess('teamlist') || TBGContext::getUser()->isMemberOfTeam($this));
+		}
+
+		/**
+		 * Return the items name
+		 *
+		 * @return string
+		 */
+		public function getName()
+		{
+			return $this->_name;
+		}
+
+		/**
+		 * Set the edition name
+		 *
+		 * @param string $name
+		 */
+		public function setName($name)
+		{
+			$this->_name = $name;
 		}
 
 	}

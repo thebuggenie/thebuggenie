@@ -15,15 +15,25 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage main
+	 *
+	 * @Table(name="TBGListTypesTable")
 	 */
-	abstract class TBGDatatypeBase extends TBGIdentifiableClass
+	abstract class TBGDatatypeBase extends TBGKeyable
 	{
+
+		/**
+		 * The name of the object
+		 *
+		 * @var string
+		 * @Column(type="string", length=200)
+		 */
+		protected $_name;
 
 		/**
 		 * Item type
 		 *
-		 * @var integer
-		 * @access protected
+		 * @var string
+		 * @Column(type="string", length=200)
 		 */
 		protected $_itemtype = null;
 		
@@ -31,33 +41,43 @@
 		 * Extra data for that data type (if any)
 		 *
 		 * @var string
-		 * @access protected
+		 * @Column(type="string", length=200)
 		 */
 		protected $_itemdata = null;
 		
 		/**
-		 * ID of project which this item applies to (if any)
-		 *
-		 * @var integer
-		 * @access protected
-		 */
-		protected $_applies_to = null;
-
-		/**
 		 * Sort order of this item
 		 *
 		 * @var integer
-		 * @access protected
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_sort_order = null;
 
-		protected $_key = null;
+		/**
+		 * Return the items name
+		 *
+		 * @return string
+		 */
+		public function getName()
+		{
+			return $this->_name;
+		}
+
+		/**
+		 * Set the edition name
+		 *
+		 * @param string $name
+		 */
+		public function setName($name)
+		{
+			$this->_name = $name;
+			$this->_generateKey();
+		}
 
 		/**
 		 * Returns the itemdata associated with the datatype (if any)
 		 *
 		 * @return string
-		 * @access public
 		 */
 		public function getItemdata()
 		{
@@ -124,23 +144,6 @@
 		public function getOrder()
 		{
 			return (int) $this->_sort_order;
-		}
-
-		protected function _generateKey()
-		{
-			if ($this->_key === null)
-				$this->_key = preg_replace("/[^0-9a-zA-Z]/i", '', mb_strtolower($this->getName()));
-		}
-		
-		public function getKey()
-		{
-			$this->_generateKey();
-			return $this->_key;
-		}		
-
-		public function setKey($key)
-		{
-			$this->_key = $key;
 		}
 
 		public function toJSON()

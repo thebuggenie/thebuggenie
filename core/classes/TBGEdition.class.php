@@ -18,44 +18,74 @@
 	 *
 	 * @Table(name="TBGEditionsTable")
 	 */
-	class TBGEdition extends TBGOwnableItem 
+	class TBGEdition extends TBGReleaseableItem
 	{
 		
+		/**
+		 * The name of the object
+		 *
+		 * @var string
+		 * @Column(type="string", length=200)
+		 */
+		protected $_name;
+
 		/**
 		 * The project
 		 *
 		 * @var TBGProject
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGProject")
 		 */
-		protected $_project = null;
+		protected $_project;
 		
 		/**
 		 * Editions components
 		 *
 		 * @var array|TBGComponent
+		 * @Relates(class="TBGComponent", collection=true, manytomany=true, joinclass="TBGEditionComponents")
 		 */
-		protected $_components = null;
+		protected $_components;
 		
 		/**
 		 * Edition builds
 		 *
 		 * @var array|TBGBuild
+		 * @Relates(class="TBGBuild", collection=true, foreign_column="edition_id")
 		 */
-		protected $_builds = null;
+		protected $_builds;
+
+		/**
+		 * @Column(type="string", length=200)
+		 */
+		protected $_description;
+
+		/**
+		 * @Relates(class="TBGUser", collection=true, manytomany=true, joinclass="TBGEditionAssignedUsers")
+		 */
+		protected $_assigned_users;
 		
-		protected $_description = '';
-		
-		protected $_assignees = null;
-		
+		/**
+		 * @Relates(class="TBGTeam", collection=true, manytomany=true, joinclass="TBGEditionAssignedTeams")
+		 */
+		protected $_assigned_teams;
+
 		/**
 		 * The editions documentation URL
 		 * 
 		 * @var string
+		 * @Column(type="string", length=200)
 		 */
-		protected $_doc_url = '';
+		protected $_doc_url;
 						
-		protected static $_editions = null;
-		
+		/**
+		 * Whether the item is locked or not
+		 *
+		 * @var boolean
+		 * @access protected
+		 * @Column(type="boolean")
+		 */
+		protected $_locked;
+
 		protected function _postSave($is_new)
 		{
 			if ($is_new)
@@ -66,44 +96,6 @@
 		}
 
 		/**
-		 * Retrieve all editions for a specific project
-		 *
-		 * @param integer $project_id
-		 * 
-		 * @return array
-		 */
-		public static function getAllByProjectID($project_id)
-		{
-			if (self::$_editions === null)
-			{
-				self::$_editions = array();
-			}
-			if (!array_key_exists($project_id, self::$_editions))
-			{
-				self::$_editions[$project_id] = array();
-				if ($res = \b2db\Core::getTable('TBGEditionsTable')->getByProjectID($project_id))
-				{
-					while ($row = $res->getNextRow())
-					{
-						$edition = TBGContext::factory()->TBGEdition($row->get(TBGEditionsTable::ID), $row);
-						self::$_editions[$project_id][$edition->getID()] = $edition;
-					}
-				}
-			}
-			return self::$_editions[$project_id];
-		}
-		
-		/**
-		 * Constructor function
-		 *
-		 * @param \b2db\Row $row
-		 */
-		public function _construct(\b2db\Row $row, $foreign_key = null)
-		{
-			TBGEvent::createNew('core', 'TBGEdition::__construct', $this)->trigger();
-		}
-		
-		/**
 		 * Populates components inside the edition
 		 *
 		 * @return void
@@ -112,14 +104,7 @@
 		{
 			if ($this->_components === null)
 			{
-				$this->_components = array();
-				if ($res = \b2db\Core::getTable('TBGEditionComponentsTable')->getByEditionID($this->getID()))
-				{
-					while ($row = $res->getNextRow())
-					{
-						$this->_components[$row->get(TBGEditionComponentsTable::COMPONENT)] = TBGContext::factory()->TBGComponent($row->get(TBGEditionComponentsTable::COMPONENT));
-					}
-				}
+				$this->_b2dbLazyload('_components');
 			}
 		}
 		
@@ -235,14 +220,7 @@
 		{
 			if ($this->_builds === null)
 			{
-				$this->_builds = array();
-				if ($res = \b2db\Core::getTable('TBGBuildsTable')->getByEditionID($this->getID()))
-				{
-					while ($row = $res->getNextRow())
-					{
-						$this->_builds[$row->get(TBGBuildsTable::ID)] = TBGContext::factory()->TBGBuild($row->get(TBGBuildsTable::ID), $row);
-					}
-				}
+				$this->_b2dbLazyload('_builds');
 			}
 		}
 
@@ -255,28 +233,6 @@
 		{
 			$this->_populateBuilds();
 			return $this->_builds;
-		}
-
-		/**
-		 * Returns the default build
-		 *
-		 * @return TBGBuild
-		 */
-		public function getDefaultBuild()
-		{
-			$this->_populateBuilds();
-			if (count($this->_builds) > 0)
-			{
-				foreach ($this->_builds as $build)
-				{
-					if ($build->isDefault() && $build->isLocked() == false)
-					{
-						return $build;
-					}
-				}
-				return array_slice($this->_builds, 0, 1);
-			}
-			return 0;
 		}
 
 		public function _sortBuildsByReleaseDate(TBGBuild $build1, TBGBuild $build2)
@@ -311,7 +267,7 @@
 		 */
 		public function getProject()
 		{
-			return $this->_getPopulatedObjectFromProperty('_project');
+			return $this->_b2dbLazyload('_project');
 		}
 		
 		public function setProject($project)
@@ -329,51 +285,53 @@
 		 */
 		public function addAssignee(TBGIdentifiableClass $assignee, $role)
 		{
-			$retval = TBGEditionAssigneesTable::getTable()->addAssigneeToEdition($this->getID(), $assignee, $role);
+			if ($assignee instanceof TBGUser)
+				$retval = TBGEditionAssignedUsersTable::getTable()->addUserToEdition($this->getID(), $assignee, $role);
+			elseif ($assignee instanceof TBGTeam)
+				$retval = TBGEditionAssignedTeamsTable::getTable()->addTeamToEdition($this->getID(), $assignee, $role);
+
 			$this->applyInitialPermissionSet($assignee, $role);
 			
 			return $retval;
 		}
 
+		/**
+		 * Add an assignee to the edition
+		 *
+		 * @param TBGIdentifiableClass $assignee
+		 * @param integer $role
+		 *
+		 * @return boolean
+		 */
+		public function removeAssignee(TBGIdentifiableClass $assignee)
+		{
+			if ($assignee instanceof TBGUser)
+				$retval = TBGEditionAssignedUsersTable::getTable()->removeUserFromEdition($this->getID(), $assignee, $role);
+			elseif ($assignee instanceof TBGTeam)
+				$retval = TBGEditionAssignedTeamsTable::getTable()->removeTeamFromEdition($this->getID(), $assignee, $role);
+
+			return $retval;
+		}
+
 		protected function _populateAssignees()
 		{
-			if ($this->_assignees === null)
-			{
-				$this->_assignees = TBGEditionAssigneesTable::getTable()->getByEditionID($this->getID());
-			}
-		}
-		
-		/**
-		 * Get assignees for this edition
-		 * 
-		 * @return array
-		 */
-		public function getAssignees()
-		{
-			$this->_populateAssignees();
-			return $this->_assignees;
+			if ($this->_assigned_users === null)
+				$this->_b2dbLazyload('_assigned_users');
+
+			if ($this->_assigned_teams === null)
+				$this->_b2dbLazyload('_assigned_teams');
 		}
 		
 		public function getAssignedUsers()
 		{
 			$this->_populateAssignees();
-			$users = array();
-			foreach (array_keys($this->_assignees['users']) as $user_id)
-			{
-				$users[$user_id] = TBGContext::factory()->TBGUser($user_id);
-			}
-			return $users;
+			return $this->_assigned_users;
 		}
 		
 		public function getAssignedTeams()
 		{
 			$this->_populateAssignees();
-			$teams = array();
-			foreach (array_keys($this->_assignees['teams']) as $team_id)
-			{
-				$teams[$team_id] = TBGContext::factory()->TBGTeam($team_id);
-			}
-			return $teams;
+			return $this->_assigned_teams;
 		}
 
 		/**
@@ -411,4 +369,45 @@
 			return ($this->getProject()->canSeeAllEditions() || TBGContext::getUser()->hasPermission('canseeedition', $this->getID()));
 		}
 		
+		/**
+		 * Returns whether or not this item is locked
+		 *
+		 * @return boolean
+		 * @access public
+		 */
+		public function isLocked()
+		{
+			return $this->_locked;
+		}
+
+		/**
+		 * Specify whether or not this item is locked
+		 *
+		 * @param boolean $locked[optional]
+		 */
+		public function setLocked($locked = true)
+		{
+			$this->_locked = (bool) $locked;
+		}
+
+		/**
+		 * Return the items name
+		 *
+		 * @return string
+		 */
+		public function getName()
+		{
+			return $this->_name;
+		}
+
+		/**
+		 * Set the edition name
+		 *
+		 * @param string $name
+		 */
+		public function setName($name)
+		{
+			$this->_name = $name;
+		}
+
 	}

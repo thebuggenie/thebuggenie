@@ -27,6 +27,7 @@
 				$resolution = new TBGResolution();
 				$resolution->setName($name);
 				$resolution->setItemdata($itemdata);
+				$resolution->setScope($scope);
 				$resolution->save();
 			}
 		}
@@ -38,18 +39,7 @@
 		 */		
 		public static function getAll()
 		{
-			if (self::$_items === NULL)
-			{
-				self::$_items = array();
-				if ($items = TBGListTypesTable::getTable()->getAllByItemType(self::RESOLUTION))
-				{
-					foreach ($items as $row_id => $row)
-					{
-						self::$_items[$row_id] = TBGContext::factory()->TBGResolution($row_id, $row);
-					}
-				}
-			}
-			return self::$_items;
+			return TBGListTypesTable::getTable()->getAllByItemType(self::RESOLUTION);
 		}
 
 		public static function getResolutionByKeyish($key)
@@ -62,19 +52,6 @@
 				}
 			}
 			return null;
-		}
-
-		/**
-		 * Create a new resolution
-		 *
-		 * @param string $name The status description
-		 *
-		 * @return TBGResolution
-		 */
-		public static function createNew($name)
-		{
-			$res = parent::_createNew($name, self::RESOLUTION);
-			return TBGContext::factory()->TBGResolution($res->getInsertID());
 		}
 
 		protected function _generateKey()

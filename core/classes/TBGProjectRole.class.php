@@ -23,19 +23,11 @@
 				$role = new TBGProjectRole();
 				$role->setName($name);
 				$role->setItemdata($itemdata);
+				$role->setScope($scope);
 				$role->save();
 			}
 		}
 		
-		public function _construct(\b2db\Row $row, $foreign_key = null)
-		{
-			//echo '<pre>';
-			//var_dump($row);
-			//var_dump($foreign_key);
-			//var_dump($row->get(TBGListTypesTable::NAME, $foreign_key));
-			//die();
-		}
-
 		/**
 		 * Returns all project roles available
 		 * 
@@ -43,18 +35,7 @@
 		 */		
 		public static function getAll()
 		{
-			if (self::$_items === NULL)
-			{
-				self::$_items = array();
-				if ($items = TBGListTypesTable::getTable()->getAllByItemType(self::PROJECTROLE))
-				{
-					foreach ($items as $row_id => $row)
-					{
-						self::$_items[$row_id] = TBGContext::factory()->TBGProjectRole($row_id, $row);
-					}
-				}
-			}
-			return self::$_items;
+			return TBGListTypesTable::getTable()->getAllByItemType(self::PROJECTROLE);
 		}
 
 		public static function getAllForProject(TBGProject $project)

@@ -19,6 +19,9 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name="customfields")
+	 * @Entity(class="TBGCustomDatatype")
 	 */
 	class TBGCustomFieldsTable extends TBGB2DBTable
 	{
@@ -33,44 +36,23 @@
 		const FIELD_TYPE = 'customfields.itemtype';
 		const SCOPE = 'customfields.scope';
 
-		/**
-		 * Return an instance of this table
-		 *
-		 * @return TBGCustomFieldsTable
-		 */
-		public static function getTable()
-		{
-			return Core::getTable('TBGCustomFieldsTable');
-		}
-
-		public function __construct()
-		{
-			parent::__construct(self::B2DBNAME, self::ID);
-			parent::_addVarchar(self::FIELD_NAME, 100);
-			parent::_addVarchar(self::FIELD_KEY, 100);
-			parent::_addVarchar(self::FIELD_DESCRIPTION, 200);
-			parent::_addText(self::FIELD_INSTRUCTIONS);
-			parent::_addInteger(self::FIELD_TYPE);
-			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
-		}
+//		public function _initialize()
+//		{
+//			parent::_setup(self::B2DBNAME, self::ID);
+//			parent::_addVarchar(self::FIELD_NAME, 100);
+//			parent::_addVarchar(self::FIELD_KEY, 100);
+//			parent::_addVarchar(self::FIELD_DESCRIPTION, 200);
+//			parent::_addText(self::FIELD_INSTRUCTIONS);
+//			parent::_addInteger(self::FIELD_TYPE);
+//			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
+//		}
 
 		public function getAll()
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
-
-			$res = $this->doSelect($crit);
-			$retval = array();
-
-			if ($res)
-			{
-				while ($row = $res->getNextRow())
-				{
-					$retval[$row->get(self::ID)] = $row;
-				}
-			}
-
-			return $retval;
+			$crit->indexBy(self::FIELD_KEY);
+			return $this->select($crit);
 		}
 
 		public function countByKey($key)
@@ -89,16 +71,6 @@
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 
 			return $this->doSelectOne($crit);
-		}
-
-		public function saveById($name, $description, $instructions, $id)
-		{
-			$crit = $this->getCriteria();
-			$crit->addUpdate(self::FIELD_NAME, $name);
-			$crit->addUpdate(self::FIELD_DESCRIPTION, $description);
-			$crit->addUpdate(self::FIELD_INSTRUCTIONS, $instructions);
-
-			$res = $this->doUpdateById($crit, $id);
 		}
 
 		public function getKeyFromID($id)

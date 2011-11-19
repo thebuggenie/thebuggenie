@@ -18,30 +18,49 @@
 	 *
 	 * @Table(name="TBGUserStateTable")
 	 */
-	class TBGUserstate extends TBGDatatype 
+	class TBGUserstate extends TBGIdentifiableScopedClass
 	{
 
+		/**
+		 * The name of the object
+		 *
+		 * @var string
+		 * @Column(type="string", length=200)
+		 */
+		protected $_name;
+
+		/**
+		 * @Column(type="boolean")
+		 */
 		protected $_is_online = false;
+
+		/**
+		 * @Column(type="boolean")
+		 */
 		protected $_is_unavailable = false;
+
+		/**
+		 * @Column(type="boolean")
+		 */
 		protected $_is_busy = false;
+
+		/**
+		 * @Column(type="boolean")
+		 */
 		protected $_is_in_meeting = false;
+
+		/**
+		 * @Column(type="boolean")
+		 */
 		protected $_is_absent = false;
 		
 		static $_userstates = null;
-		
-		protected $_itemtype = TBGDatatype::USERSTATE;
 		
 		public static function getAll()
 		{
 			if (self::$_userstates === null)
 			{
-				$res = TBGUserStateTable::getTable()->doSelectAll();
-				$states = array();
-				while ($row = $res->getNextRow())
-				{
-					$states[$row->get(TBGUserStateTable::ID)] = TBGContext::factory()->TBGUserstate($row->get(TBGUserStateTable::ID), $row);
-				}
-				self::$_userstates = $states;
+				self::$_userstates = TBGUserStateTable::getTable()->getAll();
 			}
 			return self::$_userstates;
 		}
@@ -159,4 +178,24 @@
 			return $this->_is_absent;
 		}
 		
+		/**
+		 * Return the items name
+		 *
+		 * @return string
+		 */
+		public function getName()
+		{
+			return $this->_name;
+		}
+
+		/**
+		 * Set the edition name
+		 *
+		 * @param string $name
+		 */
+		public function setName($name)
+		{
+			$this->_name = $name;
+		}
+
 	}

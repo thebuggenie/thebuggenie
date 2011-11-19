@@ -31,10 +31,54 @@
 		protected static $_num_projects = null;
 
 		/**
+		 * The name of the object
+		 *
+		 * @var string
+		 * @Column(type="string", length=200)
+		 */
+		protected $_name;
+
+		/**
+		 * The lead type for the project, TBGIdentifiableClass::TYPE_USER or TBGIdentifiableClass::TYPE_TEAM
+		 *
+		 * @var TBGTeam
+		 * @Column(type="integer", length=10)
+		 * @Relates(class="TBGTeam")
+		 */
+		protected $_leader_team;
+
+		/**
+		 * The lead for the project
+		 *
+		 * @var TBGUser
+		 * @Column(type="integer", length=10)
+		 * @Relates(class="TBGUser")
+		 */
+		protected $_leader_user;
+
+		/**
+		 * The QA responsible for the project, TBGIdentifiableClass::TYPE_USER or TBGIdentifiableClass::TYPE_TEAM
+		 *
+		 * @var TBGTeam
+		 * @Column(type="integer", length=10)
+		 * @Relates(class="TBGTeam")
+		 */
+		protected $_qa_responsible_team;
+
+		/**
+		 * The QA responsible for the project
+		 *
+		 * @var TBGUser
+		 * @Column(type="integer")
+		 * @Relates(class="TBGUser")
+		 */
+		protected $_qa_responsible_user;
+
+		/**
 		 * The project prefix
 		 *
 		 * @var string
-		 * @access protected
+		 * @Column(type="string", length=25)
 		 */
 		protected $_prefix = '';
 		
@@ -42,28 +86,32 @@
 		 * Whether or not the project uses prefix
 		 *
 		 * @var boolean
-		 * @access protected
+		 * @Column(type="boolean")
 		 */
 		protected $_use_prefix = false;
+
+		/**
+		 * Whether the item is locked or not
+		 *
+		 * @var boolean
+		 * @access protected
+		 * @Column(type="boolean")
+		 */
+		protected $_locked = null;
 
 		/**
 		 * Whether or not the project uses sprint planning
 		 *
 		 * @var boolean
+		 * @Column(type="boolean")
 		 */
 		protected $_use_scrum = true;
 
 		/**
-		 * Time unit for this project
-		 *
-		 * @var integer
-		 */
-		protected $_timeunit;
-		
-		/**
 		 * Whether or not the project uses builds
 		 *
 		 * @var boolean
+		 * @Column(type="boolean")
 		 */
 		protected $_enable_builds = true;
 
@@ -78,6 +126,7 @@
 		 * Whether or not the project uses editions
 		 *
 		 * @var boolean
+		 * @Column(type="boolean")
 		 */
 		protected $_enable_editions = null;
 		
@@ -85,6 +134,7 @@
 		 * Whether or not the project uses components
 		 *
 		 * @var boolean
+		 * @Column(type="boolean")
 		 */
 		protected $_enable_components = null;
 		
@@ -92,6 +142,7 @@
 		 * Project key
 		 *
 		 * @var string
+		 * @Column(type="string", length=200)
 		 */
 		protected $_key = null;
 		
@@ -99,6 +150,7 @@
 		 * List of editions for this project
 		 *
 		 * @var array
+		 * @Relates(class="TBGEdition", collection=true, foreign_column="project")
 		 */
 		protected $_editions = null;
 		
@@ -106,35 +158,23 @@
 		 * The projects homepage 
 		 * 
 		 * @var string
-		 * @Column(name="homepage")
+		 * @Column(type="string", length=200)
 		 */
-		protected $_homeage = '';
+		protected $_homepage = '';
 		
-		/**
-		 * List of milestones + sprints for this project
-		 *
-		 * @var array
-		 */
-		protected $_allmilestones = null;
-
 		/**
 		 * List of milestones for this project
 		 *
 		 * @var array
+		 * @Relates(class="TBGMilestone", collection=true, foreign_column="project")
 		 */
 		protected $_milestones = null;
 
 		/**
-		 * List of sprints for this project
-		 *
-		 * @var array
-		 */
-		protected $_sprints = null;
-		
-		/**
 		 * List of components for this project
 		 *
 		 * @var array
+		 * @Relates(class="TBGComponent", collection=true, foreign_column="project")
 		 */
 		protected $_components = null;
 		
@@ -148,16 +188,18 @@
 		/**
 		 * The small project icon, if set
 		 * 
-		 * @Relates(class="TBGFile")
 		 * @var TBGFile
+		 * @Column(type="integer", length=10)
+		 * @Relates(class="TBGFile")
 		 */
 		protected $_small_icon = null;
 		
 		/**
 		 * The large project icon, if set
 		 * 
-		 * @Relates(class="TBGFile")
 		 * @var TBGFile
+		 * @Column(type="integer", length=10)
+		 * @Relates(class="TBGFile")
 		 */
 		protected $_large_icon = null;
 
@@ -179,6 +221,7 @@
 		 * The projects documentation URL
 		 * 
 		 * @var string
+		 * @Column(type="string", length=200)
 		 */
 		protected $_doc_url = '';
 		
@@ -186,6 +229,7 @@
 		 * The project description
 		 * 
 		 * @var string
+		 * @Column(type="string", length=200)
 		 */
 		protected $_description = '';
 		
@@ -214,6 +258,7 @@
 		 * Whether or not this project is visible in the frontpage summary
 		 * 
 		 * @var boolean
+		 * @Column(type="boolean")
 		 */
 		protected $_show_in_summary = null;
 		
@@ -221,6 +266,7 @@
 		 * What to show on the frontpage summary
 		 * 
 		 * @var string
+		 * @Column(type="boolean")
 		 */
 		protected $_summary_display = null;
 		
@@ -242,6 +288,7 @@
 		 * Whether a user can change details about an issue without working on the issue
 		 * 
 		 * @var boolean
+		 * @Column(type="boolean")
 		 */
 		protected $_allow_freelancing = false;
 		
@@ -249,6 +296,7 @@
 		 * Is project deleted
 		 * 
 		 * @var boolean
+		 * @Column(type="boolean")
 		 */
 		protected $_deleted = 0;
 
@@ -316,58 +364,10 @@
 		protected $_statecount = null;
 
 		/**
-		 * Recent new features / enhancements reported
-		 *
-		 * @var array
-		 */
-		protected $_recentfeatures = null;
-
-		/**
-		 * Recent ideas suggested
-		 *
-		 * @var array
-		 */
-		protected $_recentideas = null;
-
-		/**
-		 * Recent documentation requests
-		 *
-		 * @var array
-		 */
-		protected $_recentdocumentationrequests = null;
-		
-		/**
-		 * Recent new enhancements
-		 *
-		 * @var array
-		 */
-		protected $_recentenhancements = null;
-
-		/**
-		 * Recent support requests
-		 *
-		 * @var array
-		 */
-		protected $_recentsupportrequests = null;
-		
-		/**
-		 * Recent tasks
-		 *
-		 * @var array
-		 */
-		protected $_recenttasks = null;
-
-		/**
-		 * Recent developer reports
-		 *
-		 * @var array
-		 */
-		protected $_recentdeveloperreports = null;
-		
-		/**
 		 * The selected workflow scheme
 		 * 
 		 * @var TBGWorkflowScheme
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGWorkflowScheme")
 		 */
 		protected $_workflow_scheme_id = 1;
@@ -376,6 +376,7 @@
 		 * The selected workflow scheme
 		 * 
 		 * @var TBGIssuetypeScheme
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGIssuetypeScheme")
 		 */
 		protected $_issuetype_scheme_id = 1;
@@ -384,6 +385,7 @@
 		 * Assigned client
 		 * 
 		 * @var TBGClient
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGClient")
 		 */
 		protected $_client = null;
@@ -392,6 +394,7 @@
 		 * Autoassignment
 		 * 
 		 * @var boolean
+		 * @Column(type="boolean")
 		 */
 		protected $_autoassign = null;
 		
@@ -399,6 +402,7 @@
 		 * Parent project
 		 * 
 		 * @var TBGProject
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGProject")
 		 */
 		protected $_parent = null;
@@ -421,6 +425,7 @@
 		 * Whether to show a "Download" link and corresponding section
 		 * 
 		 * @var boolean
+		 * @Column(type="boolean")
 		 */
 		protected $_has_downloads = true;
 		
@@ -428,6 +433,7 @@
 		 * Whether a project is archived (read-only mode)
 		 * 
 		 * @var boolean
+		 * @Column(type="boolean")
 		 */
 		protected $_archived = false;
 		
@@ -594,34 +600,18 @@
 		{
 			self::_populateProjects();
 			$final = array();
+			$class = get_class($leader);
+
+			if (!($leader instanceof TBGUser) && !($leader instanceof TBGTeam)) return false;
 			
-			if (!($leader instanceof TBGUser) && !($leader instanceof TBGTeam))
+			foreach (self::$_projects as $project)
 			{
-				return false;
-			}
-			
-			if ($leader instanceof TBGUser)
-			{
-				foreach (self::$_projects as $project)
+				if ($project->getLeader() instanceof $class && $project->getLeader()->getID() == $leader->getID())
 				{
-					if (($project->getLeaderID() == $leader->getID()) && ($project->getLeaderType() == TBGIdentifiableClass::TYPE_USER))
-					{
-						$final[] = $project;
-					}
+					$final[] = $project;
 				}
-				return $final;
 			}
-			else
-			{
-				foreach (self::$_projects as $project)
-				{
-					if (($project->getLeaderID() == $leader->getID()) && ($project->getLeaderType() == TBGIdentifiableClass::TYPE_TEAM))
-					{
-						$final[] = $project;
-					}
-				}
-				return $final;
-			}
+			return $final;
 		}
 		
 		/**
@@ -634,34 +624,18 @@
 		{
 			self::_populateProjects();
 			$final = array();
+			$class = get_class($owner);
 			
-			if (!($owner instanceof TBGUser) && !($owner instanceof TBGTeam))
-			{
-				return false;
-			}
+			if (!($owner instanceof TBGUser) && !($owner instanceof TBGTeam)) return false;
 			
-			if ($owner instanceof TBGUser)
+			foreach (self::$_projects as $project)
 			{
-				foreach (self::$_projects as $project)
+				if ($project->getOwner() instanceof $class && $project->getOwner()->getID() == $owner->getID())
 				{
-					if (($project->getOwnerID() == $owner->getID()) && ($project->getOwnerType() == TBGIdentifiableClass::TYPE_USER))
-					{
-						$final[] = $project;
-					}
+					$final[] = $project;
 				}
-				return $final;
 			}
-			else
-			{
-				foreach (self::$_projects as $project)
-				{
-					if (($project->getOwnerID() == $owner->getID()) && ($project->getOwnerType() == TBGIdentifiableClass::TYPE_TEAM))
-					{
-						$final[] = $project;
-					}
-				}
-				return $final;
-			}
+			return $final;
 		}
 		
 		/**
@@ -674,34 +648,18 @@
 		{
 			self::_populateProjects();
 			$final = array();
-			
-			if (!($qa instanceof TBGUser) && !($qa instanceof TBGTeam))
+			$class = get_class($qa);
+
+			if (!($qa instanceof TBGUser) && !($qa instanceof TBGTeam)) return false;
+
+			foreach (self::$_projects as $project)
 			{
-				return false;
-			}
-			
-			if ($qa instanceof TBGUser)
-			{
-				foreach (self::$_projects as $project)
+				if ($project->getQaResponsible() instanceof $class && $project->getQaResponsible()->getID() == $qa->getID())
 				{
-					if (($project->getQaResponsibleID() == $qa->getID()) && ($project->getQaResponsibleType() == TBGIdentifiableClass::TYPE_USER))
-					{
-						$final[] = $project;
-					}
+					$final[] = $project;
 				}
-				return $final;
 			}
-			else
-			{
-				foreach (self::$_projects as $project)
-				{
-					if (($project->getQaResponsibleID() == $qa->getID()) && ($project->getQaResponsibleType() == TBGIdentifiableClass::TYPE_TEAM))
-					{
-						$final[] = $project;
-					}
-				}
-				return $final;
-			}
+			return $final;
 		}
 				
 		/**
@@ -726,14 +684,13 @@
 		}
 		
 		/**
-		 * Create a new project and return it
+		 * Pre save check for conflicting keys
 		 *
-		 * @param string $name
-		 * 
-		 * @return TBGProject
+		 * @param boolean $is_new
 		 */
 		protected function _preSave($is_new)
 		{
+			parent::_preSave($is_new);
 			$project = self::getByKey($this->getKey()); // TBGProjectsTable::getTable()->getByKey($this->getKey());
 			if ($project instanceof TBGProject && $project->getID() != $this->getID())
 			{
@@ -741,8 +698,8 @@
 			}
 			if ($is_new)
 			{
-				$this->setIssuetypeScheme(TBGIssuetypeScheme::getCoreScheme());
-				$this->setWorkflowScheme(TBGWorkflowScheme::getCoreScheme());
+				$this->setIssuetypeScheme(TBGSettings::getCoreIssuetypeScheme());
+				$this->setWorkflowScheme(TBGSettings::getCoreWorkflowScheme());
 			}
 		}
 
@@ -767,7 +724,7 @@
 				TBGContext::setPermission("canaddextrainformationtoissues", $this->getID(), "core", TBGContext::getUser()->getID(), 0, 0, true);
 				TBGContext::setPermission("canpostseeandeditallcomments", $this->getID(), "core", TBGContext::getUser()->getID(), 0, 0, true);
 
-				TBGEvent::createNew('core', 'TBGProject::createNew', $this)->trigger();
+				TBGEvent::createNew('core', 'TBGProject::_postSave', $this)->trigger();
 			}
 			if ($this->_dodelete)
 			{
@@ -788,16 +745,6 @@
 				return TBGContext::factory()->TBGProject($row->get(TBGProjectsTable::ID), $row);
 			}
 			return null;
-		}
-		
-		/**
-		 * Constructor function
-		 *
-		 * @param \b2db\Row $row
- 		 */
-		public function _construct(\b2db\Row $row, $foreign_key = null)
-		{
-			TBGEvent::createNew('core', 'TBGProject::__construct', $this)->trigger();
 		}
 		
 		/**
@@ -895,11 +842,21 @@
 		 */
 		public function setName($name)
 		{
-			parent::setName($name);
+			$this->_name = $name;
 			$this->_key = mb_strtolower($this->getStrippedProjectName());
 			if ($this->_key == '') $this->_key = 'project'.$this->getID();
 		}
 		
+		/**
+		 * Return the items name
+		 *
+		 * @return string
+		 */
+		public function getName()
+		{
+			return $this->_name;
+		}
+
 		/**
 		 * Return project key
 		 * 
@@ -922,7 +879,7 @@
 		 */
 		public function getHomepage()
 		{
-			return $this->_homeage;
+			return $this->_homepage;
 		}
 		
 		/**
@@ -932,7 +889,7 @@
 		 */
 		public function hasHomepage()
 		{
-			return ($this->_homeage != '') ? true : false;
+			return ($this->_homepage != '') ? true : false;
 		}
 		
 		/**
@@ -952,7 +909,7 @@
 		 */
 		public function setHomepage($homepage)
 		{
-			$this->_homeage = $homepage;
+			$this->_homepage = $homepage;
 		}
 		
 		/**
@@ -1013,30 +970,6 @@
 		public function setDocumentationURL($doc_url)
 		{
 			$this->_doc_url = $doc_url;
-		}
-		
-		/**
-		 * Return the default edition
-		 *
-		 * @return TBGEdition
-		 */
-		public function getDefaultEdition()
-		{
-			foreach ($this->getEditions() as $edition)
-			{
-				if ($edition->isDefault() && !$edition->isLocked())
-				{
-					return $edition;
-				}
-			}
-			foreach ($this->getEditions() as $edition)
-			{
-				if ($edition->isLocked() == false)
-				{
-					return $edition;
-				}
-			}
-			return 0;
 		}
 		
 		/**
@@ -1108,14 +1041,7 @@
 		{
 			if ($this->_editions === null)
 			{
-				$this->_editions = array();
-				foreach (TBGEdition::getAllByProjectID($this->getID()) as $edition)
-				{
-					if ($edition->hasAccess())
-					{
-						$this->_editions[$edition->getID()] = $edition;
-					}
-				}
+				$this->_b2dbLazyload('_editions');
 			}
 		}
 
@@ -1184,6 +1110,15 @@
 			$this->_populateEditions();
 			return $this->_editions;
 		}
+
+		public function countEditions()
+		{
+			if ($this->_editions === null)
+			{
+				return count($this->_editions);
+			}
+			return $this->_b2dbLazycount('_editions');
+		}
 		
 		/**
 		 * Adds an edition to the project
@@ -1212,7 +1147,7 @@
 		{
 			if ($this->_components === null)
 			{
-				$this->_components = TBGComponent::getAllByProjectID($this->getID());
+				$this->_b2dbLazyload('_components');
 			}
 		}
 		
@@ -1225,6 +1160,15 @@
 		{
 			$this->_populateComponents();
 			return $this->_components;
+		}
+
+		public function countComponents()
+		{
+			if ($this->_components !== null)
+			{
+				return count($this->_components);
+			}
+			return $this->_b2dbLazycount('_components');
 		}
 		
 		/**
@@ -1253,93 +1197,37 @@
 		{
 			if ($this->_milestones === null)
 			{
-				$this->_milestones = array();
-				foreach (TBGMilestone::getMilestonesByProjectID($this->getID()) as $milestone)
-				{
-					$this->_milestones[$milestone->getID()] = $milestone;
-				}
+				$this->_b2dbLazyload('_milestones');
 			}
+			uasort($this->_milestones, function($milestone_a, $milestone_b) {
+				if (!$milestone_a->isScheduled() && !$milestone_a->isStarting() && !$milestone_b->isScheduled() && !$milestone_b->isStarting()) return 1;
+				if ($milestone_a->isStarting() && $milestone_b->isStarting())
+					return ($milestone_a->getStartingDate() < $milestone_b->getStartingDate()) ? -1 : 1;
+
+				if ($milestone_a->isScheduled() && $milestone_b->isScheduled())
+					return ($milestone_a->getScheduledDate() < $milestone_b->getScheduledDate()) ? -1 : 1;
+
+				if ($milestone_a->isStarting() && $milestone_b->isScheduled())
+					return ($milestone_a->getStartingDate() < $milestone_b->getScheduledDate()) ? -1 : 1;
+
+				if ($milestone_a->isScheduled() && $milestone_b->isStarting())
+					return ($milestone_a->getScheduledDate() < $milestone_b->getStartingDate()) ? -1 : 1;
+
+				if ($milestone_a->isStarting()) return -1;
+				if ($milestone_b->isStarting()) return 1;
+
+				if ($milestone_a->isScheduled()) return -1;
+				if ($milestone_b->isScheduled()) return 1;
+
+				if ($milestone_a->isOverdue()) return -1;
+				if ($milestone_b->isOverdue()) return 1;
+
+				if (!$milestone_b->isStarting() && !$milestone_b->isScheduled()) return -1;
+
+				return 0;
+			});
 		}
 
-		/**
-		 * Populates the milestones + sprints array
-		 *
-		 * @return void
-		 */
-		protected function _populateAllMilestones()
-		{
-			if ($this->_allmilestones === null)
-			{
-				$this->_allmilestones = array();
-				foreach (TBGMilestone::getAllByProjectID($this->getID()) as $milestone)
-				{
-					$this->_allmilestones[$milestone->getID()] = $milestone;
-				}
-				uasort($this->_allmilestones, function($milestone_a, $milestone_b) {
-					if (!$milestone_a->isScheduled() && !$milestone_a->isStarting() && !$milestone_b->isScheduled() && !$milestone_b->isStarting()) return 1;
-					if ($milestone_a->isStarting() && $milestone_b->isStarting())
-						return ($milestone_a->getStartingDate() < $milestone_b->getStartingDate()) ? -1 : 1;
-					
-					if ($milestone_a->isScheduled() && $milestone_b->isScheduled())
-						return ($milestone_a->getScheduledDate() < $milestone_b->getScheduledDate()) ? -1 : 1;
-					
-					if ($milestone_a->isStarting() && $milestone_b->isScheduled())
-						return ($milestone_a->getStartingDate() < $milestone_b->getScheduledDate()) ? -1 : 1;
-
-					if ($milestone_a->isScheduled() && $milestone_b->isStarting())
-						return ($milestone_a->getScheduledDate() < $milestone_b->getStartingDate()) ? -1 : 1;
-
-					if ($milestone_a->isStarting()) return -1;
-					if ($milestone_b->isStarting()) return 1;
-					
-					if ($milestone_a->isScheduled()) return -1;
-					if ($milestone_b->isScheduled()) return 1;
-					
-					if ($milestone_a->isOverdue()) return -1;
-					if ($milestone_b->isOverdue()) return 1;
-					
-					if (!$milestone_b->isStarting() && !$milestone_b->isScheduled()) return -1;
-					
-					return 0;
-				});
-			}
-		}
-
-		/**
-		 * Populates the sprints array
-		 *
-		 * @return void
-		 */
-		protected function _populateSprints()
-		{
-			if ($this->_sprints === null)
-			{
-				$this->_sprints = array();
-				foreach (TBGMilestone::getSprintsByProjectID($this->getID()) as $sprint)
-				{
-					$this->_sprints[$sprint->getID()] = $sprint;
-				}
-			}
-		}
-
-		/**
-		 * Adds a new milestone to the project
-		 *
-		 * @param string $m_name
-		 * @return TBGMilestone
-		 */
-		public function addMilestone($m_name, $type)
-		{
-			$this->_milestones = null;
-			$milestone = new TBGMilestone();
-			$milestone->setName($m_name);
-			$milestone->setType($type);
-			$milestone->setProject($this);
-			$milestone->save();
-			
-			return $milestone;
-		}
-		
 		/**
 		 * Returns an array with all the milestones
 		 *
@@ -1352,86 +1240,56 @@
 		}
 
 		/**
-		 * Returns an array with all the milestones + sprints
-		 *
-		 * @return array
-		 */
-		public function getAllMilestones()
-		{
-			$this->_populateAllMilestones();
-			return $this->_allmilestones;
-		}
-
-		/**
-		 * Returns an array with all the sprints
-		 *
-		 * @return array
-		 */
-		public function getSprints()
-		{
-			$this->_populateSprints();
-			return $this->_sprints;
-		}
-
-		/**
-		 * Returns a list of upcoming milestones and sprints
+		 * Returns a list of upcoming milestones
 		 * 
 		 * @param integer $days[optional] Number of days, default 21 
 		 * 
 		 * @return array
 		 */
-		public function getUpcomingMilestonesAndSprints($days = 21)
+		public function getUpcomingMilestones($days = 21)
 		{
-			$ret_arr = array();
-			if ($allmilestones = $this->getAllMilestones())
+			$return_array = array();
+			if ($milestones = $this->getMilestones())
 			{
 				$curr_day = time();
-				foreach ($allmilestones as $milestone)
+				foreach ($milestones as $milestone)
 				{
 					if (($milestone->getScheduledDate() >= $curr_day || $milestone->isOverdue()) && (($milestone->getScheduledDate() <= ($curr_day + (86400 * $days))) || ($milestone->getType() == TBGMilestone::TYPE_SCRUMSPRINT && $milestone->isCurrent())))
 					{
-						$ret_arr[$milestone->getID()] = $milestone;
+						$return_array[$milestone->getID()] = $milestone;
 					}
 				}
 			}
-			return $ret_arr;
+			return $return_array;
 		}
 		
 		/**
-		 * Returns a list of milestones and sprints starting soon
+		 * Returns a list of milestones starting soon
 		 * 
 		 * @param integer $days[optional] Number of days, default 21 
 		 * 
 		 * @return array
 		 */
-		public function getStartingMilestonesAndSprints($days = 21)
+		public function getStartingMilestones($days = 21)
 		{
-			$ret_arr = array();
-			if ($allmilestones = $this->getAllMilestones())
+			$return_array = array();
+			if ($milestones = $this->getMilestones())
 			{
 				$curr_day = time();
-				foreach ($allmilestones as $milestone)
+				foreach ($milestones as $milestone)
 				{
 					if (($milestone->getStartingDate() > $curr_day) && ($milestone->getStartingDate() < ($curr_day + (86400 * $days))))
 					{
-						$ret_arr[$milestone->getID()] = $milestone;
+						$return_array[$milestone->getID()] = $milestone;
 					}
 				}
 			}
-			return $ret_arr;
+			return $return_array;
 		}
 		
 		public function removeAssignee($assignee_type, $assignee_id)
 		{
 			TBGProjectAssigneesTable::getTable()->removeAssigneeFromProject($assignee_type, $assignee_id, $this->getID());
-			foreach ($this->getEditions() as $edition)
-			{
-				TBGEditionAssigneesTable::getTable()->removeAssigneeFromEdition($assignee_type, $assignee_id, $edition->getID());
-			}
-			foreach ($this->getComponents() as $component)
-			{
-				TBGComponentAssigneesTable::getTable()->removeAssigneeFromComponent($assignee_type, $assignee_id, $component->getID());
-			}
 		}
 
 		/**
@@ -1533,7 +1391,7 @@
 			if ($this->_builds === null)
 			{
 				$this->_builds = array();
-				foreach (TBGBuild::getByProjectID($this->getID()) as $build)
+				foreach (TBGBuildsTable::getTable()->getByProjectID($this->getID()) as $build)
 				{
 					if ($build->hasAccess())
 					{
@@ -2532,7 +2390,7 @@
 						$this->_recentactivities[$build->getReleaseDate()][] = array('change_type' => 'build_release', 'info' => $build->getName());
 					}
 				}
-				foreach ($this->getAllMilestones() as $milestone)
+				foreach ($this->getMilestones() as $milestone)
 				{
 					if ($milestone->isStarting() && $milestone->isSprint())
 					{
@@ -2608,7 +2466,10 @@
 		 */
 		public function getWorkflowScheme()
 		{
-			return $this->_getPopulatedObjectFromProperty('_workflow_scheme_id');
+			if (!$this->_workflow_scheme_id instanceof TBGWorkflowScheme)
+				$this->_b2dbLazyload('_workflow_scheme_id');
+
+			return $this->_workflow_scheme_id;
 		}
 		
 		public function setWorkflowScheme(TBGWorkflowScheme $scheme)
@@ -2628,7 +2489,10 @@
 		 */
 		public function getIssuetypeScheme()
 		{
-			return $this->_getPopulatedObjectFromProperty('_issuetype_scheme_id');
+			if (!$this->_issuetype_scheme_id instanceof TBGIssuetypeScheme)
+				$this->_b2dbLazyload('_issuetype_scheme_id');
+
+			return $this->_issuetype_scheme_id;
 		}
 		
 		public function setIssuetypeScheme(TBGIssuetypeScheme $scheme)
@@ -2643,7 +2507,7 @@
 		 */
 		public function getClient()
 		{
-			return $this->_getPopulatedObjectFromProperty('_client');
+			return $this->_b2dbLazyload('_client');
 		}
 		
 		/**
@@ -2747,7 +2611,7 @@
 		public function getParent()
 		{
 //			if ($this->getKey() == 'sampleproject2'): return TBGProject::getByKey('sampleproject1'); endif;
-			return $this->_getPopulatedObjectFromProperty('_parent');
+			return $this->_b2dbLazyload('_parent');
 		}
 		
 		public function setParent(TBGProject $project)
@@ -2832,7 +2696,7 @@
 		 */
 		public function getSmallIcon()
 		{
-			return $this->_getPopulatedObjectFromProperty('_small_icon');
+			return $this->_b2dbLazyload('_small_icon');
 		}
 		
 		public function getSmallIconName()
@@ -2857,7 +2721,7 @@
 		
 		public function getLargeIcon()
 		{
-			return $this->_getPopulatedObjectFromProperty('_large_icon');
+			return $this->_b2dbLazyload('_large_icon');
 		}
 		
 		public function getLargeIconName()
@@ -2885,4 +2749,110 @@
 		{
 			TBGIssuesTable::getTable()->convertIssueStepByIssuetype($this, $issuetype, $conversions);
 		}
+
+		public function getLeader()
+		{
+			if ($this->_leader_team !== null) {
+				$this->_b2dbLazyload('_leader_team');
+			} elseif ($this->_leader_user !== null) {
+				$this->_b2dbLazyload('_leader_user');
+			}
+			
+			if ($this->_leader_team instanceof TBGTeam) {
+				return $this->_leader_team;
+			} elseif ($this->_leader_user instanceof TBGUser) {
+				return $this->_leader_user;
+			} else {
+				return null;
+			}
+		}
+
+		public function hasLeader()
+		{
+			return (bool) ($this->getLeader() instanceof TBGIdentifiable);
+		}
+
+		public function setLeader(TBGIdentifiable $leader)
+		{
+			if ($leader instanceof TBGTeam) {
+				$this->_leader_user = null;
+				$this->_leader_team = $leader;
+			} else {
+				$this->_leader_team = null;
+				$this->_leader_user = $leader;
+			}
+		}
+
+		public function clearLeader()
+		{
+			$this->_leader_team = null;
+			$this->_leader_user = null;
+		}
+
+		public function getQaResponsible()
+		{
+			if ($this->_qa_responsible_team !== null) {
+				$this->_b2dbLazyload('_qa_responsible_team');
+			} elseif ($this->_qa_responsible_user !== null) {
+				$this->_b2dbLazyload('_qa_responsible_user');
+			}
+
+			if ($this->_qa_responsible_team instanceof TBGTeam) {
+				return $this->_qa_responsible_team;
+			} elseif ($this->_qa_responsible_user instanceof TBGUser) {
+				return $this->_qa_responsible_user;
+			} else {
+				return null;
+			}
+		}
+
+		public function hasQaResponsible()
+		{
+			return (bool) ($this->getQaResponsible() instanceof TBGIdentifiable);
+		}
+
+		public function setQaResponsible(TBGIdentifiable $qa_responsible)
+		{
+			if ($qa_responsible instanceof TBGTeam) {
+				$this->_qa_responsible_user = null;
+				$this->_qa_responsible_team = $qa_responsible;
+			} else {
+				$this->_qa_responsible_team = null;
+				$this->_qa_responsible_user = $qa_responsible;
+			}
+		}
+
+		public function clearQaResponsible()
+		{
+			$this->_qa_responsible_team = null;
+			$this->_qa_responsible_user = null;
+		}
+
+		/**
+		 * Returns whether or not this item is locked
+		 *
+		 * @return boolean
+		 * @access public
+		 */
+		public function isLocked()
+		{
+			return $this->_locked;
+		}
+
+		/**
+		 * Specify whether or not this item is locked
+		 *
+		 * @param boolean $locked[optional]
+		 */
+		public function setLocked($locked = true)
+		{
+			$this->_locked = (bool) $locked;
+		}
+
+		protected function _generateKey()
+		{
+			if ($this->_key === null)
+				$this->_key = preg_replace("/[^0-9a-zA-Z]/i", '', mb_strtolower($this->getName()));
+		}
+
 	}

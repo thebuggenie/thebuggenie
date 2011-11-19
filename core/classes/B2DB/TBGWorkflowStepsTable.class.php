@@ -19,6 +19,9 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name="workflow_steps")
+	 * @Entity(class="TBGWorkflowStep")
 	 */
 	class TBGWorkflowStepsTable extends TBGB2DBTable
 	{
@@ -34,27 +37,17 @@
 		const DESCRIPTION = 'workflow_steps.description';
 		const EDITABLE = 'workflow_steps.editable';
 
-		/**
-		 * Return an instance of this table
-		 *
-		 * @return TBGWorkflowStepsTable
-		 */
-		public static function getTable()
-		{
-			return Core::getTable('TBGWorkflowStepsTable');
-		}
-
-		public function __construct()
-		{
-			parent::__construct(self::B2DBNAME, self::ID);
-			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
-			parent::_addForeignKeyColumn(self::STATUS_ID, TBGListTypesTable::getTable(), TBGListTypesTable::ID);
-			parent::_addForeignKeyColumn(self::WORKFLOW_ID, TBGWorkflowsTable::getTable(), TBGWorkflowsTable::ID);
-			parent::_addVarchar(self::NAME, 200);
-			parent::_addText(self::DESCRIPTION, false);
-			parent::_addBoolean(self::EDITABLE);
-			parent::_addBoolean(self::CLOSED);
-		}
+//		public function __construct()
+//		{
+//			parent::__construct(self::B2DBNAME, self::ID);
+//			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
+//			parent::_addForeignKeyColumn(self::STATUS_ID, TBGListTypesTable::getTable(), TBGListTypesTable::ID);
+//			parent::_addForeignKeyColumn(self::WORKFLOW_ID, TBGWorkflowsTable::getTable(), TBGWorkflowsTable::ID);
+//			parent::_addVarchar(self::NAME, 200);
+//			parent::_addText(self::DESCRIPTION, false);
+//			parent::_addBoolean(self::EDITABLE);
+//			parent::_addBoolean(self::CLOSED);
+//		}
 
 		public function loadFixtures(TBGScope $scope)
 		{
@@ -89,24 +82,6 @@
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 
 			return $this->doCount($crit);
-		}
-
-		public function getByWorkflowID($workflow_id)
-		{
-			$crit = $this->getCriteria();
-			$crit->addWhere(self::WORKFLOW_ID, $workflow_id);
-			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
-
-			$return_array = array();
-			if ($res = $this->doSelect($crit))
-			{
-				while ($row = $res->getNextRow())
-				{
-					$return_array[$row->get(self::ID)] = TBGContext::factory()->TBGWorkflowStep($row->get(self::ID), $row);
-				}
-			}
-
-			return $return_array;
 		}
 
 		public function getByID($id)

@@ -149,7 +149,7 @@
 		{
 			if (!$this->fromtable instanceof Table)
 			{
-				throw new \Exception('You must set the from-table before adding selection columns');
+				throw new \Exception('You must set the from-table before adding selection columns', $this->getSQL());
 			}
 			$this->customsel = true;
 			$column = $this->getSelectionColumn($column);
@@ -197,7 +197,7 @@
 		{
 			if (is_object($value))
 			{
-				throw new Exception("Invalid value, can't be an object.");
+				throw new Exception("Invalid value, can't be an object.", $this->getSQL());
 			}
 			$this->updates[] = array('column' => $column, 'value' => $value);
 			return $this;
@@ -260,7 +260,7 @@
 		{
 			if (!$jointable instanceof Table)
 			{
-				throw new Exception('Cannot join table ' . $jointable . ' since it is not a table');
+				throw new Exception('Cannot join table ' . $jointable . ' since it is not a table', $this->getSQL());
 			}
 			foreach ($this->jointables as $ajt)
 			{
@@ -272,7 +272,7 @@
 			}
 			if (!$this->fromtable instanceof Table)
 			{
-				throw new Exception('Cannot use ' . print_r($this->fromtable) . ' as a table. You need to call setTable() before trying to join a new table');
+				throw new Exception('Cannot use ' . print_r($this->fromtable) . ' as a table. You need to call setTable() before trying to join a new table', $this->getSQL());
 			}
 			$col1 = $jointable->getB2DBAlias() . '.' . $this->getColumnName($foreigncol);
 			if ($ontable === null)
@@ -446,7 +446,7 @@
 			
 			if ($throw_exceptions)
 			{
-				throw new Exception("Couldn't find table name '{$table_name}' for column '{$column_name}', column was '{$column}'. If this is a column from a foreign table, make sure the foreign table is joined.");
+				throw new Exception("Couldn't find table name '{$table_name}' for column '{$column_name}', column was '{$column}'. If this is a column from a foreign table, make sure the foreign table is joined.", $this->getSQL());
 			}
 			else
 			{
@@ -471,7 +471,7 @@
 				}
 				else
 				{
-					throw new Exception('Invalid column!');
+					throw new Exception('Invalid column!', $this->getSQL());
 				}
 			}
 			if (!isset($this->aliases[$column]))
@@ -585,7 +585,8 @@
 		{
 			if (!is_array($join) && $join == 'all')
 			{
-				foreach ($this->fromtable->getForeignTables() as $aForeign)
+				$foreign_tables = $this->fromtable->getForeignTables();
+				foreach ($foreign_tables as $aForeign)
 				{
 					$fTable = array_shift($aForeign);
 					$fKey = $fTable->getB2DBAlias() . '.' . $this->getColumnName(array_shift($aForeign));
@@ -612,7 +613,7 @@
 		{
 			if (!$this->fromtable instanceof Table)
 			{
-				throw new Exception('Trying to run a query when no table is being used.');
+				throw new Exception('Trying to run a query when no table is being used.', $this->getSQL());
 			}
 			$this->values = array();
 			$this->sql = '';
@@ -634,7 +635,7 @@
 		{
 			if (!$this->fromtable instanceof Table)
 			{
-				throw new Exception('Trying to run a query when no table is being used.');
+				throw new Exception('Trying to run a query when no table is being used.', $this->getSQL());
 			}
 			$this->values = array();
 			$this->sql = '';
@@ -677,7 +678,7 @@
 		{
 			if (!$this->fromtable instanceof Table)
 			{
-				throw new Exception('Trying to run a query when no table is being used.');
+				throw new Exception('Trying to run a query when no table is being used.', $this->getSQL());
 			}
 			$this->values = array();
 			$this->sql = '';
@@ -697,12 +698,12 @@
 			{
 				if ($a_crit instanceof Criterion)
 				{
-					throw new Exception('Please use \b2db\Criteria::addInsert() when inserting values into a table.');
+					throw new Exception('Please use \b2db\Criteria::addInsert() when inserting values into a table.', $this->getSQL());
 				}
 			}
 			if (!$this->fromtable instanceof Table)
 			{
-				throw new Exception('Trying to run a query when no table is being used.');
+				throw new Exception('Trying to run a query when no table is being used.', $this->getSQL());
 			}
 			$this->values = array();
 			$this->sql = '';
@@ -719,7 +720,7 @@
 		{
 			if (!$this->fromtable instanceof Table)
 			{
-				throw new Exception('Trying to run a query when no table is being used.');
+				throw new Exception('Trying to run a query when no table is being used.', $this->getSQL());
 			}
 			$this->values = array();
 			$this->sql = '';
@@ -940,7 +941,7 @@
 		{
 			if (!$critn instanceof Criterion)
 			{
-				throw new Exception('The $critn parameter must be of type Criterion');
+				throw new Exception('The $critn parameter must be of type Criterion', $this->getSQL());
 			}
 			$sql = '';
 			if (count($critn->ors) > 0)
@@ -961,7 +962,7 @@
 				if (!$a_crit['column'] instanceof Criterion)
 				{
 					if (!in_array($a_crit['operator'], array(self::DB_EQUALS, self::DB_GREATER_THAN, self::DB_GREATER_THAN_EQUAL, self::DB_ILIKE, self::DB_IN, self::DB_IS_NOT_NULL, self::DB_IS_NULL, self::DB_LESS_THAN, self::DB_LESS_THAN_EQUAL, self::DB_LIKE, self::DB_NOT_EQUALS, self::DB_NOT_ILIKE, self::DB_NOT_IN, self::DB_NOT_LIKE)))
-						throw new Exception("Invalid operator");
+						throw new Exception("Invalid operator", $this->getSQL());
 					
 					if (isset($a_crit['special']) && $a_crit['special'] != '')
 					{
@@ -1016,7 +1017,6 @@
 				{
 					$sql .= $this->_parseCriterion($a_crit['column']);
 				}
-				//var_dump($this->values);
 				$first_crit = false;
 			}
 			if (count($critn->wheres) > 0)
@@ -1029,7 +1029,7 @@
 				if (!$an_or['column'] instanceof Criterion)
 				{
 					if (!in_array($an_or['operator'], array(self::DB_EQUALS, self::DB_GREATER_THAN, self::DB_GREATER_THAN_EQUAL, self::DB_ILIKE, self::DB_IN, self::DB_IS_NOT_NULL, self::DB_IS_NULL, self::DB_LESS_THAN, self::DB_LESS_THAN_EQUAL, self::DB_LIKE, self::DB_NOT_EQUALS, self::DB_NOT_ILIKE, self::DB_NOT_IN, self::DB_NOT_LIKE)))
-						throw new Exception("Invalid operator");
+						throw new Exception("Invalid operator", $this->getSQL());
 					
 					$sql .= ($strip) ? $this->getColumnName($an_or['column']) : $this->getSelectionColumn($an_or['column']);
 					if (is_null($an_or['value']) && !in_array($an_or['operator'], array(self::DB_IS_NOT_NULL, self::DB_IS_NULL)))

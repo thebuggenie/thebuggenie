@@ -19,6 +19,8 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name="buddies")
 	 */
 	class TBGBuddiesTable extends TBGB2DBTable 
 	{
@@ -30,19 +32,9 @@
 		const UID = 'buddies.uid';
 		const BID = 'buddies.bid';
 
-		/**
-		 * Return an instance of this table
-		 *
-		 * @return TBGBuddiesTable
-		 */
-		public static function getTable()
+		public function _initialize()
 		{
-			return Core::getTable('TBGBuddiesTable');
-		}
-
-		public function __construct()
-		{
-			parent::__construct(self::B2DBNAME, self::ID);
+			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addForeignKeyColumn(self::UID, TBGUsersTable::getTable(), TBGUsersTable::ID);
 			parent::_addForeignKeyColumn(self::BID, TBGUsersTable::getTable(), TBGUsersTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
@@ -73,6 +65,5 @@
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$this->doDelete($crit);
 		}
-
 
 	}

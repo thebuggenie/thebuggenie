@@ -19,6 +19,9 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name="files")
+	 * @Entity(class="TBGFile")
 	 */
 	class TBGFilesTable extends TBGB2DBTable
 	{
@@ -35,28 +38,18 @@
 		const CONTENT = 'files.content';
 		const DESCRIPTION = 'files.description';
 
-		/**
-		 * Return an instance of this table
-		 *
-		 * @return TBGFilesTable
-		 */
-		public static function getTable()
-		{
-			return Core::getTable('TBGFilesTable');
-		}
-
-		public function __construct()
-		{
-			parent::__construct(self::B2DBNAME, self::ID);
-			parent::_addForeignKeyColumn(self::UID, TBGUsersTable::getTable(), TBGUsersTable::ID);
-			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
-			parent::_addVarchar(self::REAL_FILENAME, 250);
-			parent::_addVarchar(self::CONTENT_TYPE, 250);
-			parent::_addVarchar(self::ORIGINAL_FILENAME, 250);
-			parent::_addInteger(self::UPLOADED_AT, 10);
-			parent::_addBlob(self::CONTENT);
-			parent::_addText(self::DESCRIPTION, false);
-		}
+//		public function __construct()
+//		{
+//			parent::__construct(self::B2DBNAME, self::ID);
+//			parent::_addForeignKeyColumn(self::UID, TBGUsersTable::getTable(), TBGUsersTable::ID);
+//			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
+//			parent::_addVarchar(self::REAL_FILENAME, 250);
+//			parent::_addVarchar(self::CONTENT_TYPE, 250);
+//			parent::_addVarchar(self::ORIGINAL_FILENAME, 250);
+//			parent::_addInteger(self::UPLOADED_AT, 10);
+//			parent::_addBlob(self::CONTENT);
+//			parent::_addText(self::DESCRIPTION, false);
+//		}
 		
 		public function saveFile($real_filename, $original_filename, $content_type, $description = null, $content = null)
 		{

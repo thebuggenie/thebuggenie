@@ -18,20 +18,39 @@
 	 *
 	 * @Table(name="TBGWorkflowStepsTable")
 	 */
-	class TBGWorkflowStep extends TBGIdentifiableClass
+	class TBGWorkflowStep extends TBGIdentifiableScopedClass
 	{
+
+		/**
+		 * The name of the object
+		 *
+		 * @var string
+		 * @Column(type="string", length=200)
+		 */
+		protected $_name;
 
 		/**
 		 * The workflow description
 		 *
 		 * @var string
+		 * @Column(type="string", length=200)
 		 */
 		protected $_description = null;
 
+		/**
+		 * @Column(type="boolean")
+		 */
 		protected $_editable = null;
 
+		/**
+		 * @Column(type="boolean")
+		 */
 		protected $_closed = null;
 
+		/**
+		 * @Column(type="integer", length=10)
+		 * @Relates(class="TBGStatus")
+		 */
 		protected $_status_id = null;
 
 		protected $_incoming_transitions = null;
@@ -41,6 +60,15 @@
 		protected $_outgoing_transitions = null;
 
 		protected $_num_outgoing_transitions = null;
+
+		/**
+		 * The associated workflow object
+		 *
+		 * @var TBGWorkflow
+		 * @Column(type="integer", length=10)
+		 * @Relates(class="TBGWorkflow")
+		 */
+		protected $_workflow_id = null;
 
 		public static function loadFixtures(TBGScope $scope, TBGWorkflow $workflow)
 		{
@@ -80,14 +108,6 @@
 		}
 
 		/**
-		 * The associated workflow object
-		 *
-		 * @var TBGWorkflow
-		 * @Relates(class="TBGWorkflow")
-		 */
-		protected $_workflow_id = null;
-
-		/**
 		 * Returns the workflows description
 		 *
 		 * @return string
@@ -114,7 +134,7 @@
 		 */
 		public function getWorkflow()
 		{
-			return $this->_getPopulatedObjectFromProperty('_workflow_id');
+			return $this->_b2dbLazyload('_workflow_id');
 		}
 
 		public function setWorkflow(TBGWorkflow $workflow)
@@ -324,4 +344,24 @@
 			return $new_step;
 		}
 		
+		/**
+		 * Return the items name
+		 *
+		 * @return string
+		 */
+		public function getName()
+		{
+			return $this->_name;
+		}
+
+		/**
+		 * Set the edition name
+		 *
+		 * @param string $name
+		 */
+		public function setName($name)
+		{
+			$this->_name = $name;
+		}
+
 	}

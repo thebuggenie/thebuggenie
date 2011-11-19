@@ -18,6 +18,7 @@
 	 */
 	interface TBGIdentifiable
 	{
+
 		/**
 		 * Returns the id of the item
 		 *
@@ -25,21 +26,6 @@
 		 *
 		 */
 		public function getID();
-
-		/**
-		 * Returns the name of the item
-		 *
-		 * @return string
-		 *
-		 */
-		public function getName();
-
-		/**
-		 * Returns the type of object
-		 *
-		 * @return integer
-		 */
-		public function getType();
 
 	}
 	

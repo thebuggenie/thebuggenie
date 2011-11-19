@@ -19,6 +19,8 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name="issue_spenttimes")
 	 */
 	class TBGIssueSpentTimes extends TBGB2DBTable
 	{
@@ -36,9 +38,9 @@
 		const SPENT_HOURS = 'issue_spenttimes.spent_hours';
 		const SPENT_POINTS = 'issue_spenttimes.spent_points';
 
-		public function __construct()
+		public function _initialize()
 		{
-			parent::__construct(self::B2DBNAME, self::ID);
+			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addForeignKeyColumn(self::ISSUE_ID, TBGIssuesTable::getTable(), TBGIssuesTable::ID);
 			parent::_addForeignKeyColumn(self::EDITED_BY, TBGUsersTable::getTable(), TBGUsersTable::ID);
 			parent::_addInteger(self::EDITED_AT, 10);

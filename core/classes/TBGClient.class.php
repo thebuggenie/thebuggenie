@@ -18,7 +18,7 @@
 	 *
 	 * @Table(name="TBGClientsTable")
 	 */
-	class TBGClient extends TBGIdentifiableClass 
+	class TBGClient extends TBGIdentifiableScopedClass
 	{
 		
 		protected $_members = null;
@@ -29,6 +29,7 @@
 		 * Email of client
 		 * 
 		 * @param string
+		 * @Column(type="string", length=200)
 		 */
 		protected $_email = null;
 		
@@ -36,6 +37,7 @@
 		 * Telephone number of client
 		 * 
 		 * @param integer
+		 * @Column(type="string", length=200)
 		 */
 		protected $_telephone = null;
 		
@@ -43,6 +45,7 @@
 		 * URL for client website
 		 * 
 		 * @param string
+		 * @Column(type="string", length=200)
 		 */
 		protected $_website = null;
 		
@@ -50,6 +53,7 @@
 		 * Fax number of client
 		 * 
 		 * @param integer
+		 * @Column(type="string", length=200)
 		 */
 		protected $_fax = null;
 		
@@ -64,14 +68,7 @@
 		{
 			if (self::$_clients === null)
 			{
-				self::$_clients = array();
-				if ($res = \b2db\Core::getTable('TBGClientsTable')->getAll())
-				{
-					while ($row = $res->getNextRow())
-					{
-						self::$_clients[$row->get(TBGClientsTable::ID)] = TBGContext::factory()->TBGClient($row->get(TBGClientsTable::ID), $row);
-					}
-				}
+				self::$_clients = TBGClientsTable::getTable()->getAll();
 			}
 			return self::$_clients;
 		}

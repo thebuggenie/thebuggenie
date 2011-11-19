@@ -19,6 +19,8 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage vcs_integration
+	 *
+	 * @Table(name="vcsintegration")
 	 */
 	class TBGVCSIntegrationTable extends TBGB2DBTable 
 	{
@@ -36,9 +38,9 @@
 		const DATE = 'vcsintegration.date';
 		const ACTION = 'vcsintegration.action';
 					
-		public function __construct()
+		public function _initialize()
 		{
-			parent::__construct(self::B2DBNAME, self::ID);
+			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addText(self::FILE_NAME, false);
 			parent::_addText(self::LOG, false);
 			parent::_addVarchar(self::OLD_REV, 40);
@@ -50,14 +52,5 @@
 			parent::_addForeignKeyColumn(self::ISSUE_NO, TBGIssuesTable::getTable(),  TBGIssuesTable::ID);
 		}
 		
-		/**
-		 * Return an instance of this table
-		 *
-		 * @return TBGVCSIntegrationTable
-		 */
-		public static function getTable()
-		{
-			return Core::getTable('TBGVCSIntegrationTable');
-		}
 	}
 

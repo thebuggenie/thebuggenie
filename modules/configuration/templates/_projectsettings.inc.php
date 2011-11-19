@@ -18,42 +18,27 @@
 			</td>
 		</tr>
 		<tr>
-			<td><label for="planned_release"><?php echo __('Planned release'); ?></label></td>
-			<td>
-				<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-					<select name="planned_release" id="planned_release" style="width: 70px;" onchange="bB = $('planned_release'); cB = $('release_day'); dB = $('release_month'); eB = $('release_year'); if (bB.value == '0') { cB.disabled = true; dB.disabled = true; eB.disabled = true; } else { cB.disabled = false; dB.disabled = false; eB.disabled = false; }">
-						<option value=1<?php if ($project->isPlannedReleased()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
-						<option value=0<?php if (!$project->isPlannedReleased()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
-					</select>
-				<?php else: ?>
-					<?php echo ($project->isPlannedReleased()) ? __('Yes') : __('No'); ?>
-				<?php endif; ?>
-			</td>
-		</tr>
-		<tr>
-			<td><label for="release_month"><?php echo __('Release date'); ?></label></td>
-			<td>
-				<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-					<select style="width: 85px;" name="release_month" id="release_month"<?php if (!$project->isPlannedReleased()): ?> disabled<?php endif; ?>>
-					<?php for ($cc = 1;$cc <= 12;$cc++): ?>
-						<option value=<?php print $cc; ?><?php echo (($project->getReleaseDateMonth() == $cc) ? " selected" : "") ?>><?php echo tbg_formatTime(mktime(0, 0, 0, $cc, 1), 15); ?></option>
-					<?php endfor; ?>
-					</select>
-					<select style="width: 40px;" name="release_day" id="release_day"<?php if (!$project->isPlannedReleased()): ?> disabled<?php endif; ?>>
-					<?php for ($cc = 1;$cc <= 31;$cc++): ?>
-						<option value=<?php print $cc; ?><?php echo (($project->getReleaseDateDay() == $cc) ? " selected" : "") ?>><?php echo $cc; ?></option>
-					<?php endfor; ?>
-					</select>
-					<select style="width: 55px;" name="release_year" id="release_year"<?php if (!$project->isPlannedReleased()): ?> disabled<?php endif; ?>>
-					<?php for ($cc = 1990;$cc <= (date("Y") + 10);$cc++): ?>
-						<option value=<?php print $cc; ?><?php echo (($project->getReleaseDateYear() == $cc) ? " selected" : "") ?>><?php echo $cc; ?></option>
-					<?php endfor; ?>
-					</select>
-				<?php elseif ($project->isPlannedReleased()): ?>
-					<?php echo tbg_formatTime($project->getReleaseDate(), 14); ?>
-				<?php else: ?>
-					<span class="faded_out"><?php echo __('No planned release date'); ?></span>
-				<?php endif; ?>
+			<td><label for="has_release_date"><?php echo __('Release date'); ?></label></td>
+			<td style="padding: 2px;">
+				<select name="has_release_date" id="has_release_date" style="width: 70px;" onchange="var val = $(this).getValue(); ['day', 'month', 'year'].each(function(item) { (val) ? $('release_'+item).enable() : $('release_'+item).disable(); });">
+					<option value=1<?php if ($project->hasReleaseDate()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
+					<option value=0<?php if (!$project->hasReleaseDate()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
+				</select>
+				<select style="width: 85px;" name="release_month" id="release_month"<?php if (!$project->hasReleaseDate()): ?> disabled<?php endif; ?>>
+				<?php for($cc = 1;$cc <= 12;$cc++): ?>
+					<option value=<?php print $cc; ?><?php print (($project->getReleaseDateMonth() == $cc) ? " selected" : "") ?>><?php echo tbg_formatTime(mktime(0, 0, 0, $cc, 1), 15); ?></option>
+				<?php endfor; ?>
+				</select>
+				<select style="width: 40px;" name="release_day" id="release_day"<?php if (!$project->hasReleaseDate()): ?> disabled<?php endif; ?>>
+				<?php for($cc = 1;$cc <= 31;$cc++): ?>
+					<option value=<?php print $cc; ?><?php echo (($project->getReleaseDateDay() == $cc) ? " selected" : "") ?>><?php echo $cc; ?></option>
+				<?php endfor; ?>
+				</select>
+				<select style="width: 55px;" name="release_year" id="release_year"<?php if (!$project->hasReleaseDate()): ?> disabled<?php endif; ?>>
+				<?php for($cc = 1990;$cc <= (date("Y") + 10);$cc++): ?>
+					<option value=<?php print $cc; ?><?php echo (($project->getReleaseDateYear() == $cc) ? " selected" : "") ?>><?php echo $cc; ?></option>
+				<?php endfor; ?>
+				</select>
 			</td>
 		</tr>
 		<tr>

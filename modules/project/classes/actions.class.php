@@ -96,7 +96,7 @@
 		public function runRoadmap(TBGRequest $request)
 		{
 			$this->forward403unless($this->_checkProjectPageAccess('project_roadmap'));
-			$this->milestones = $this->selected_project->getAllMilestones();
+			$this->milestones = $this->selected_project->getMilestones();
 		}
 
 		/**
@@ -223,7 +223,7 @@
 			}
 			else
 			{
-				$milestones = $this->selected_project->getUpcomingMilestonesAndSprints();
+				$milestones = $this->selected_project->getUpcomingMilestones();
 				if (count($milestones))
 				{
 					$milestone = array_shift($milestones);
@@ -536,7 +536,7 @@
 						}
 						if ($this->key != 'issues_per_state')
 						{
-							$labels[] = ($item instanceof TBGIdentifiableClass) ? html_entity_decode($item->getName()) : $i18n->__('Unknown', array(), true);
+							$labels[] = ($item instanceof TBGIdentifiableTypeClass) ? html_entity_decode($item->getName()) : $i18n->__('Unknown', array(), true);
 						}
 						else
 						{
@@ -733,7 +733,7 @@
 				$filters['assigned_to'] = array('operator' => '=', 'value' => $user_id);
 				if ($user_id > 0)
 				{
-					$filters['assigned_type'] = array('operator' => '=', 'value' => TBGIdentifiableClass::TYPE_USER);
+					$filters['assigned_type'] = array('operator' => '=', 'value' => TBGIdentifiableTypeClass::TYPE_USER);
 				}
 			}
 
@@ -932,7 +932,7 @@
 										break;
 									case 'milestone':
 										$found = false;
-										foreach ($this->selected_project->getAllMilestones() as $milestone)
+										foreach ($this->selected_project->getMilestones() as $milestone)
 										{
 											if (str_replace(' ', '', mb_strtolower($milestone->getName())) == str_replace(' ', '', mb_strtolower($field_value)))
 											{
@@ -1050,7 +1050,7 @@
 		public function runGetMilestone(TBGRequest $request)
 		{
 			$milestone = new TBGMilestone($request['milestone_id']);
-			return $this->renderJSON(array('content' => TBGAction::returnTemplateHTML('project/milestonebox', array('milestone' => $milestone)), 'milestone_id' => $milestone->getID(), 'milestone_name' => $milestone->getName(), 'milestone_order' => array_keys($milestone->getProject()->getAllMilestones())));
+			return $this->renderJSON(array('content' => TBGAction::returnTemplateHTML('project/milestonebox', array('milestone' => $milestone)), 'milestone_id' => $milestone->getID(), 'milestone_name' => $milestone->getName(), 'milestone_order' => array_keys($milestone->getProject()->getMilestones())));
 		}
 		
 		public function runRemoveMilestone(TBGRequest $request)
@@ -1099,7 +1099,7 @@
 					$message = TBGContext::getI18n()->__('Milestone created');
 					$template = 'milestonebox';
 				}
-				return $this->renderJSON(array('content' => $this->getTemplateHTML($template, array('milestone' => $milestone)), 'milestone_id' => $milestone->getID(), 'milestone_name' => $milestone->getName(), 'milestone_order' => array_keys($this->selected_project->getAllMilestones())));
+				return $this->renderJSON(array('content' => $this->getTemplateHTML($template, array('milestone' => $milestone)), 'milestone_id' => $milestone->getID(), 'milestone_name' => $milestone->getName(), 'milestone_order' => array_keys($this->selected_project->getMilestones())));
 			}
 		}
 

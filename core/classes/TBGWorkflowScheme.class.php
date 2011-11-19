@@ -18,28 +18,36 @@
 	 *
 	 * @Table(name="TBGWorkflowSchemesTable")
 	 */
-	class TBGWorkflowScheme extends TBGIdentifiableClass
+	class TBGWorkflowScheme extends TBGIdentifiableScopedClass
 	{
 
-		/**
-		 * The default (core) workflow scheme
-		 * 
-		 * @var TBGWorkflowScheme
-		 */
-		protected static $_core_scheme = null;
-		
 		protected static $_schemes = null;
+
+		/**
+		 * The name of the object
+		 *
+		 * @var string
+		 * @Column(type="string", length=200)
+		 */
+		protected $_name;
 
 		protected $_issuetype_workflows = null;
 
 		protected $_num_issuetype_workflows = null;
-		
-		protected $_number_of_projects = null;
+
+		/**
+		 * Projects using this workflow scheme
+		 *
+		 * @var array|TBGProject
+		 * @Relates(class="TBGProject", collection=true, foreign_column="workflow_id")
+		 */
+		protected $_projects = null;
 
 		/**
 		 * The workflow description
 		 *
 		 * @var string
+		 * @Column(type="string", length=200)
 		 */
 		protected $_description = null;
 
@@ -47,19 +55,7 @@
 		{
 			if (self::$_schemes === null)
 			{
-				self::$_schemes = array();
-				if ($res = TBGWorkflowSchemesTable::getTable()->getAll())
-				{
-					while ($row = $res->getNextRow())
-					{
-						$scheme = TBGContext::factory()->TBGWorkflowScheme($row->get(TBGWorkflowSchemesTable::ID), $row);
-						
-						if (self::$_core_scheme === null)
-							self::$_core_scheme = $scheme;
-						
-						self::$_schemes[$row->get(TBGWorkflowSchemesTable::ID)] = $scheme;
-					}
-				}
+				self::$_schemes = TBGWorkflowSchemesTable::getTable()->getAll();
 			}
 		}
 		
@@ -74,17 +70,17 @@
 			return self::$_schemes;
 		}
 		
-		/**
-		 * Return the default (core) workflow scheme
-		 * 
-		 * @return TBGWorkflowScheme
-		 */
-		public static function getCoreScheme()
+		public static function loadFixtures(TBGScope $scope)
 		{
-			self::_populateSchemes();
-			return self::$_core_scheme;
+			$scheme = new TBGWorkflowScheme();
+			$scheme->setScope($scope);
+			$scheme->setName("Default workflow scheme");
+			$scheme->setDescription("This is the default workflow scheme. It is used by all projects with no specific workflow scheme selected. This scheme cannot be edited or removed.");
+			$scheme->save();
+
+			TBGSettings::saveSetting(TBGSettings::SETTING_DEFAULT_WORKFLOWSCHEME, $scheme->getID());
 		}
-		
+
 		protected function _preDelete()
 		{
 			TBGWorkflowIssuetypeTable::getTable()->deleteByWorkflowSchemeID($this->getID());
@@ -118,7 +114,7 @@
 		 */
 		public function isCore()
 		{
-			return ($this->getID() == self::getCoreScheme()->getID());
+			return ($this->getID() == TBGSettings::getCoreWorkflowScheme()->getID());
 		}
 
 		protected function _populateAssociatedWorkflows()
@@ -171,22 +167,42 @@
 			}
 			else
 			{
-				return TBGWorkflow::getCoreWorkflow();
+				return TBGSettings::getCoreWorkflow();
 			}
 		}
 
 		public function isInUse()
 		{
-			if ($this->_number_of_projects === null)
-			{
-				$this->_number_of_projects = TBGProjectsTable::getTable()->countByWorkflowSchemeID($this->getID());
-			}
-			return (bool) $this->_number_of_projects;
+			return (bool) $this->getNumberOfProjects();
 		}
 		
 		public function getNumberOfProjects()
 		{
-			return $this->_number_of_projects;
+			if ($this->_projects === null)
+			{
+				$this->_b2dbLazycount('_projects');
+			}
+			return $this->_projects;
 		}
 		
+		/**
+		 * Return the items name
+		 *
+		 * @return string
+		 */
+		public function getName()
+		{
+			return $this->_name;
+		}
+
+		/**
+		 * Set the edition name
+		 *
+		 * @param string $name
+		 */
+		public function setName($name)
+		{
+			$this->_name = $name;
+		}
+
 	}

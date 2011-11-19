@@ -3,7 +3,7 @@
 require THEBUGGENIE_PATH . 'tests/core/classes/B2DB.class.php';
 require THEBUGGENIE_CORE_PATH . 'classes/generics.class.php';
 require THEBUGGENIE_CORE_PATH . 'classes/TBGIdentifiableClass.class.php';
-require THEBUGGENIE_CORE_PATH . 'classes/TBGVersionItem.class.php';
+require THEBUGGENIE_CORE_PATH . 'classes/TBGReleaseableItem.class.php';
 require THEBUGGENIE_CORE_PATH . 'classes/TBGBuild.class.php';
 
 class TBGBuildsTable
@@ -24,7 +24,7 @@ class TBGBuildsTable
 	const RELEASED = 'builds.released';
 }
 
-class \b2db\Row
+class Row
 {
 	public function get($fieldname)
 	{

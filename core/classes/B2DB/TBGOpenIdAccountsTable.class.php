@@ -19,6 +19,8 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name="openid_accounts")
 	 */
 	class TBGOpenIdAccountsTable extends TBGB2DBTable 
 	{
@@ -48,9 +50,9 @@
 			return $providers;
 		}
 
-		public function __construct()
+		public function _initialize()
 		{
-			parent::__construct(self::B2DBNAME, self::ID);
+			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addVarchar(self::IDENTITY, 300);
 			parent::_addVarchar(self::IDENTITY_HASH, 300);
 			parent::_addVarchar(self::EMAIL, 300);

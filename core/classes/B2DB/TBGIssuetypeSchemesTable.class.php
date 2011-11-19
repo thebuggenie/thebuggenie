@@ -19,6 +19,9 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name="issuetype_schemes")
+	 * @Entity(class="TBGIssuetypeScheme")
 	 */
 	class TBGIssuetypeSchemesTable extends TBGB2DBTable
 	{
@@ -30,32 +33,21 @@
 		const NAME = 'issuetype_schemes.name';
 		const DESCRIPTION = 'issuetype_schemes.description';
 
-		public function __construct()
-		{
-			parent::__construct(self::B2DBNAME, self::ID);
-			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
-			parent::_addVarchar(self::NAME, 200);
-			parent::_addText(self::DESCRIPTION, false);
-		}
+//		public function __construct()
+//		{
+//			parent::__construct(self::B2DBNAME, self::ID);
+//			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
+//			parent::_addVarchar(self::NAME, 200);
+//			parent::_addText(self::DESCRIPTION, false);
+//		}
 
-		public function getAll($scope = null)
-		{
-			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
-			$crit = $this->getCriteria();
-			$crit->addWhere(self::SCOPE, $scope);
-			$crit->addOrderBy(self::ID, Criteria::SORT_ASC);
-
-			$res = $this->doSelect($crit);
-
-			return $res;
-		}
-
-		public function getByID($id)
+		public function getAll()
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
-			$row = $this->doSelectById($id, $crit, 'none');
-			return $row;
+			$crit->addOrderBy(self::ID, Criteria::SORT_ASC);
+
+			return $this->select($crit);
 		}
 
 	}

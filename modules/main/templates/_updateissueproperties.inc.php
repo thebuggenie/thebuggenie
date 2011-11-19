@@ -15,14 +15,14 @@
 			<ul class="simple_list">
 				<?php if ((($issue instanceof TBGIssue && $issue->isEditable() && $issue->canEditCategory()) || isset($issues)) && $transition->hasAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE) && !$transition->getAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE)->hasTargetValue()): ?>
 					<li id="transition_popup_assignee_div">
-						<input type="hidden" name="assignee_id" id="popup_assigned_to_id" value="<?php echo $issue->getAssigneeID(); ?>">
+						<input type="hidden" name="assignee_id" id="popup_assigned_to_id" value="<?php echo $issue->getAssignee()->getID(); ?>">
 						<input type="hidden" name="assignee_type" id="popup_assigned_to_type" value="<?php echo $issue->getAssigneeType(); ?>">
 						<input type="hidden" name="assignee_teamup" id="popup_assigned_to_teamup" value="<?php echo $issue->getAssigneeType(); ?>">
 						<label for="transition_popup_set_assignee"><?php echo __('Assignee'); ?></label>
 						<span style="width: 170px; display: <?php if ($issue->isAssigned()): ?>inline<?php else: ?>none<?php endif; ?>;" id="popup_assigned_to_name">
-							<?php if ($issue->getAssigneeType() == TBGIdentifiableClass::TYPE_USER): ?>
+							<?php if ($issue->getAssignee() instanceof TBGUser): ?>
 								<?php echo include_component('main/userdropdown', array('user' => $issue->getAssignee())); ?>
-							<?php elseif ($issue->getAssigneeType() == TBGIdentifiableClass::TYPE_TEAM): ?>
+							<?php elseif ($issue->getAssignee() instanceof TBGTeam): ?>
 								<?php echo include_component('main/teamdropdown', array('team' => $issue->getAssignee())); ?>
 							<?php endif; ?>
 						</span>
@@ -141,7 +141,7 @@
 						<label for="transition_popup_set_milestone"><?php echo __('Milestone'); ?></label>
 						<select name="milestone_id" id="transition_popup_set_milestone">
 							<option value="0"<?php if (!$issue->getMilestone() instanceof TBGMilestone): ?> selected<?php endif; ?>><?php echo __('Not determined') ?></option>
-							<?php foreach ($project->getAllMilestones() as $milestone): ?>
+							<?php foreach ($project->getMilestones() as $milestone): ?>
 								<option value="<?php echo $milestone->getID(); ?>"<?php if ($issue instanceof TBGIssue && $issue->getMilestone() instanceof TBGMilestone && $issue->getMilestone()->getID() == $milestone->getID()): ?> selected<?php endif; ?>><?php echo $milestone->getName(); ?></option>
 							<?php endforeach; ?>
 						</select>
