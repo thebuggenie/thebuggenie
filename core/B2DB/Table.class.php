@@ -852,15 +852,14 @@
 			$criteria = $this->getCriteria();
 			$foreign_table = $class->getB2DBTable();
 			$foreign_table_class = \get_class($foreign_table);
-			$item_class = null;
+			$item_class = (array_key_exists('class', $relation_data)) ? $relation_details['class'] : null;
 			$item_column = null;
-			$item_class = $relation_details['class'];
 			if ($relation_details['manytomany']) {
 				$item_table_class = Core::getCachedB2DBTableClass($item_class);
 			}
 			if ($relation_details['foreign_column']) {
 				$saveable_class = \get_class($class);
-				$table_details = Core::getCachedTableDetails($item_class);
+				$table_details = ($item_class) ? Core::getCachedTableDetails($item_class) : Core::getCachedTableDetails($relation_details['joinclass']);
 				$criteria->addWhere("{$table_details['name']}.".$relation_details['foreign_column'], $class->getB2DBSaveablePropertyValue(Core::getCachedColumnPropertyName($saveable_class, $foreign_table->getIdColumn())));
 				if (array_key_exists('discriminator', $table_details) && $table_details['discriminator'] && array_key_exists($saveable_class, $table_details['discriminator']['discriminators'])) {
 					$criteria->addWhere($table_details['discriminator']['column'], $table_details['discriminator']['discriminators'][$saveable_class]);
@@ -883,7 +882,17 @@
 		public function getForeignItems(Saveable $class, $relation_details)
 		{
 			list ($criteria, $item_class, $item_column) = $this->generateForeignItemsCriteria($class, $relation_details);
-			if (!$relation_details['manytomany']) {
+			if (!$item_class) {
+				$items = array();
+				$resultset = $this->doSelect($criteria);
+				if ($resultset) {
+					$column = "{$this->getB2DBName()}.".$relation_details['foreign_column'];
+					while ($row = $resulset->getNextRow()) {
+						$items[] = $row->get($column);
+					}
+				}
+				return $items;
+			} elseif (!$relation_details['manytomany']) {
 				return $this->select($criteria);
 			} else {
 				$resultset = $this->doSelect($criteria);
