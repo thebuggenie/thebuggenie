@@ -3,12 +3,17 @@
 	/**
 	 * @Table(name="TBGListTypesTable")
 	 */
-	class TBGProjectRole extends TBGDatatype 
+	class TBGRole extends TBGDatatype 
 	{
 
 		protected static $_items = null;
 		
-		protected $_itemtype = TBGDatatype::PROJECTROLE;
+		protected $_itemtype = TBGDatatype::ROLE;
+
+		/**
+		 * @Relates(collection=true, joinclass="TBGRolePermissionsTable", foreign_column="permission")
+		 */
+		protected $_permissions = null;
 
 		public static function loadFixtures(TBGScope $scope)
 		{
@@ -20,7 +25,7 @@
 			
 			foreach ($roles as $name => $itemdata)
 			{
-				$role = new TBGProjectRole();
+				$role = new TBGRole();
 				$role->setName($name);
 				$role->setItemdata($itemdata);
 				$role->setScope($scope);
@@ -35,7 +40,7 @@
 		 */		
 		public static function getAll()
 		{
-			return TBGListTypesTable::getTable()->getAllByItemType(self::PROJECTROLE);
+			return TBGListTypesTable::getTable()->getAllByItemType(self::ROLE);
 		}
 
 		public static function getAllForProject(TBGProject $project)

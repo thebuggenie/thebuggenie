@@ -271,11 +271,14 @@
 		protected $_summary_display = null;
 		
 		/**
-		 * List of assigned users and teams
-		 * 
-		 * @var array
+		 * @Relates(class="TBGUser", collection=true, manytomany=true, joinclass="TBGEditionAssignedUsers")
 		 */
-		protected $_assignees = null;
+		protected $_assigned_users;
+
+		/**
+		 * @Relates(class="TBGTeam", collection=true, manytomany=true, joinclass="TBGEditionAssignedTeams")
+		 */
+		protected $_assigned_teams;
 
 		/**
 		 * List of issue fields per issue type
@@ -1287,9 +1290,16 @@
 			return $return_array;
 		}
 		
-		public function removeAssignee($assignee_type, $assignee_id)
+		public function removeAssignee(TBGIdentifiableClass $assignee)
 		{
-			TBGProjectAssigneesTable::getTable()->removeAssigneeFromProject($assignee_type, $assignee_id, $this->getID());
+			if ($assignee instanceof TBGUser)
+			{
+				TBGProjectAssignedUsersTable::getTable()->removeUserFromProject($this->getID(), $assignee->getID());
+			}
+			else
+			{
+				TBGProjectAssignedTeamsTable::getTable()->removeTeamFromProject($this->getID(), $assignee->getID());
+			}
 		}
 
 		/**
@@ -1302,63 +1312,41 @@
 		 */
 		public function addAssignee($assignee, $role)
 		{
-			switch (true)
+			if ($assignee instanceof TBGUser)
 			{
-				case ($assignee instanceof TBGUser):
-					if (!$res = \b2db\Core::getTable('TBGProjectAssigneesTable')->getByProjectAndRoleAndUser($this->getID(), $role, $assignee->getID()))
-					{
-						\b2db\Core::getTable('TBGProjectAssigneesTable')->addByProjectAndRoleAndUser($this->getID(), $role, $assignee->getID());
-					}
-					break;
-				case ($assignee instanceof TBGTeam):
-					if (!($res = \b2db\Core::getTable('TBGProjectAssigneesTable')->getByProjectAndRoleAndTeam($this->getID(), $role, $assignee->getID())))
-					{
-						\b2db\Core::getTable('TBGProjectAssigneesTable')->addByProjectAndRoleAndTeam($this->getID(), $role, $assignee->getID());
-					}
-					break;
+				TBGProjectAssignedUsersTable::getTable()->addUserToProject($this->getID(), $assignee->getID(), $role);
+			}
+			elseif ($assignee instanceof TBGTeam)
+			{
+				TBGProjectAssignedTeamsTable::getTable()->addTeamToProject($this->getID(), $assignee->getID(), $role);
 			}
 			$this->applyInitialPermissionSet($assignee, $role);
 		}
 
-		protected function _populateAssignees()
+		protected function _populateAssignedUsers()
 		{
-			if ($this->_assignees === null)
-			{
-				$this->_assignees = TBGProjectAssigneesTable::getTable()->getByProjectID($this->getID());
+			if ($this->_assigned_users === null) {
+				$this->_b2dbLazyload('_assigned_users');
 			}
 		}
-		
-		/**
-		 * Get assignees for this project, including components and editions
-		 * 
-		 * @return array
-		 */
-		public function getAssignees()
-		{
-			$this->_populateAssignees();
-			return $this->_assignees;
-		}
-		
+
 		public function getAssignedUsers()
 		{
-			$this->_populateAssignees();
-			$users = array();
-			foreach (array_keys($this->_assignees['users']) as $user_id)
-			{
-				$users[$user_id] = TBGContext::factory()->TBGUser($user_id);
-			}
-			return $users;
+			$this->_populateAssignedUsers();
+			return $this->_assigned_teams;
 		}
 		
+		protected function _populateAssignedTeams()
+		{
+			if ($this->_assigned_teams === null) {
+				$this->_b2dbLazyload('_assigned_teams');
+			}
+		}
+
 		public function getAssignedTeams()
 		{
-			$this->_populateAssignees();
-			$teams = array();
-			foreach (array_keys($this->_assignees['teams']) as $team_id)
-			{
-				$teams[$team_id] = TBGContext::factory()->TBGTeam($team_id);
-			}
-			return $teams;
+			$this->_populateAssignedTeams();
+			return $this->_assigned_teams;
 		}
 
 		/**

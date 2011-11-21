@@ -5,7 +5,7 @@
 		b2db\Criterion;
 
 	/**
-	 * Issues <-> Files table
+	 * Roles <- permissions table
 	 *
 	 * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
 	 * @version 3.1
@@ -15,33 +15,28 @@
 	 */
 
 	/**
-	 * Issues <-> Files table
+	 * Roles <- permissions table
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
 	 *
-	 * @Table(name="issuefiles")
+	 * @Table(name="rolepermissions")
 	 */
-	class TBGIssueFilesTable extends TBGB2DBTable
+	class TBGRolePermissionsTable extends TBGB2DBTable
 	{
 
 		const B2DB_TABLE_VERSION = 1;
-		const B2DBNAME = 'issuefiles';
-		const ID = 'issuefiles.id';
-		const SCOPE = 'issuefiles.scope';
-		const UID = 'issuefiles.uid';
-		const ATTACHED_AT = 'issuefiles.attached_at';
-		const FILE_ID = 'issuefiles.file_id';
-		const ISSUE_ID = 'issuefiles.issue_id';
+		const B2DBNAME = 'rolepermissions';
+		const ID = 'rolepermissions.id';
+		const SCOPE = 'rolepermissions.scope';
+		const ROLE_ID = 'rolepermissions.role_id';
+		const PERMISSION = 'rolepermissions.permission';
 
 		public function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
-			parent::_addForeignKeyColumn(self::UID, TBGUsersTable::getTable(), TBGUsersTable::ID);
-			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
-			parent::_addForeignKeyColumn(self::ISSUE_ID, TBGIssuesTable::getTable(), TBGIssuesTable::ID);
-			parent::_addForeignKeyColumn(self::FILE_ID, TBGFilesTable::getTable(), TBGFilesTable::ID);
-			parent::_addInteger(self::ATTACHED_AT, 10);
+			parent::_addForeignKeyColumn(self::ROLE_ID, TBGListTypesTable::getTable());
+			parent::_addVarchar(self::PERMISSION, 100);
 		}
 
 		protected function _setupIndexes()

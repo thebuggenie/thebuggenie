@@ -66,7 +66,7 @@
 		 * Item type project role
 		 *
 		 */
-		const PROJECTROLE = 'projectrole';
+		const ROLE = 'role';
 		
 		public static function loadFixtures(TBGScope $scope)
 		{
@@ -76,7 +76,7 @@
 			TBGResolution::loadFixtures($scope);
 			TBGSeverity::loadFixtures($scope);
 			TBGStatus::loadFixtures($scope);
-			TBGProjectRole::loadFixtures($scope);
+			TBGRole::loadFixtures($scope);
 		}
 		
 		public static function getTypes()
@@ -88,7 +88,6 @@
 			$types['severity'] = 'TBGSeverity';
 			$types['reproducability'] = 'TBGReproducability';
 			$types['resolution'] = 'TBGResolution';
-			$types['projectrole'] = 'TBGProjectRole';
 			
 			return $types;
 		}

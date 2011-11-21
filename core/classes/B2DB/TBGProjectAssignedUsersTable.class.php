@@ -31,11 +31,13 @@
 		const SCOPE = 'projectassignedusers.scope';
 		const USER_ID = 'projectassignedusers.uid';
 		const PROJECT_ID = 'projectassignedusers.project_id';
+		const ROLE_ID = 'projectassignedusers.role_id';
 		
 		public function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addForeignKeyColumn(self::PROJECT_ID, TBGProjectsTable::getTable());
+			parent::_addForeignKeyColumn(self::USER_ID, TBGUsersTable::getTable());
 			parent::_addForeignKeyColumn(self::USER_ID, TBGUsersTable::getTable());
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable());
 		}
@@ -52,6 +54,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::PROJECT_ID, $project_id);
+			$crit->addWhere(self::PROJECT_ID, $project_id);
 			$crit->addWhere(self::USER_ID, $user->getID());
 			if (!$this->doCount($crit))
 			{
@@ -65,7 +68,7 @@
 			return false;
 		}
 
-		public function removeUserFromProject($user, $project_id)
+		public function removeUserFromProject($project_id, $user)
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::PROJECT_ID, $project_id);
