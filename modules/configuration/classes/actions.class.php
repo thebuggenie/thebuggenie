@@ -808,39 +808,7 @@
 				}
 				
 				$assignee_role = new TBGRole($request['role_id']);
-				$target_info = explode('_', $request['target']);
-				$this->forward403unless(count($target_info) == 2);
-				
-				switch ($target_info[0])
-				{
-					case 'project':
-						$this->theProject->addAssignee($assignee, $assignee_role);
-						break;
-					case 'edition':
-						foreach ($this->theProject->getEditions() as $e_id => $edition)
-						{
-							if ($e_id == $target_info[1])
-							{
-								$edition->addAssignee($assignee, $assignee_role);
-								break;
-							}
-						}
-						break;
-					case 'component':
-						foreach ($this->theProject->getComponents() as $c_id => $component)
-						{
-							if ($c_id == $target_info[1])
-							{
-								$component->addAssignee($assignee, $assignee_role);
-								break;
-							}
-						}
-						break;
-						break;
-					default:
-						$this->forward403();
-						break;
-				}
+				$this->theProject->addAssignee($assignee, $assignee_role);
 				
 				return $this->renderTemplate('projects_assignees', array('project' => $this->theProject));
 			}
