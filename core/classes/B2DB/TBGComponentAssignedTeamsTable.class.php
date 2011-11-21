@@ -30,6 +30,7 @@
 		const ID = 'componentassignedteams.id';
 		const SCOPE = 'componentassignedteams.scope';
 		const TEAM_ID = 'componentassignedteams.uid';
+		const ROLE_ID = 'componentassignedteams.role_id';
 		const COMPONENT_ID = 'componentassignedteams.component_id';
 		
 		public function _initialize()
@@ -37,6 +38,7 @@
 			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addForeignKeyColumn(self::COMPONENT_ID, TBGComponentsTable::getTable());
 			parent::_addForeignKeyColumn(self::TEAM_ID, TBGTeamsTable::getTable());
+			parent::_addForeignKeyColumn(self::ROLE_ID, TBGListTypesTable::getTable());
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable());
 		}
 		

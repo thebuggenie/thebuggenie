@@ -38,7 +38,7 @@
 			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addForeignKeyColumn(self::PROJECT_ID, TBGProjectsTable::getTable());
 			parent::_addForeignKeyColumn(self::USER_ID, TBGUsersTable::getTable());
-			parent::_addForeignKeyColumn(self::USER_ID, TBGUsersTable::getTable());
+			parent::_addForeignKeyColumn(self::ROLE_ID, TBGListTypesTable::getTable());
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable());
 		}
 		
@@ -74,6 +74,24 @@
 			$crit->addWhere(self::PROJECT_ID, $project_id);
 			$crit->addWhere(self::USER_ID, $user);
 			$this->doDelete($crit);
+		}
+
+		public function getRolesForProject($project_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::PROJECT_ID, $project_id);
+			$res = $this->doSelect($crit);
+
+			$roles = array();
+			if ($res)
+			{
+				while ($row = $res->getNextRow())
+				{
+					$roles[$row->get(self::USER_ID)][] = new TBGRole($row->get(self::ROLE_ID));
+				}
+			}
+
+			return $roles;
 		}
 
 	}

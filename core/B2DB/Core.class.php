@@ -819,9 +819,10 @@
 				$annotationset = new AnnotationSet($property->getDocComment());
 				if ($annotationset->hasAnnotations()) {
 					$property_name = $property->getName();
-					if ($column_annotation = $annotationset->getAnnotation('Column')) {
-						$column_name = ($column_annotation->hasProperty('name')) ? $column_annotation->getProperty('name') : substr($property_name, 1);
-						$column = array('property' => $property_name, 'default_value' => (($column_annotation->hasProperty('default_value')) ? $column_annotation->getProperty('default_value') : null), 'not_null' => (($column_annotation->hasProperty('not_null')) ? $column_annotation->getProperty('not_null') : false), 'type' => $column_annotation->getProperty('type'));
+					if ($column_annotation = $annotationset->getAnnotation('Column'))
+					{
+						$column_name = $column_prefix . (($column_annotation->hasProperty('name')) ? $column_annotation->getProperty('name') : substr($property_name, 1));
+						$column = array('property' => $property_name, 'default_value' => (($column_annotation->hasProperty('default_value')) ? $column_annotation->getProperty('default_value') : null), 'not_null' => (($column_annotation->hasProperty('not_null')) ? $column_annotation->getProperty('not_null') : false), 'name' => $column_name, 'type' => $column_annotation->getProperty('type'));
 						switch ($column['type']) {
 							case 'varchar':
 							case 'string':
@@ -836,14 +837,7 @@
 								$column['length'] = ($column_annotation->hasProperty('length')) ? $column_annotation->getProperty('length') : 10;
 								break;
 						}
-						if ($annotation = $annotationset->getAnnotation('Meta')) {
-							$column['name'] = $column_name;
-							$collection_property = $annotation->getProperty('collection');
-							self::$_cached_entity_classes[$classname]['meta_properties'][$collection_property] = $column;
-						} else {
-							$column['name'] = $column_prefix . $column_name;
-							self::$_cached_entity_classes[$classname]['columns'][$column_name] = $column;
-						}
+						self::$_cached_entity_classes[$classname]['columns'][$column_name] = $column;
 					}
 					if ($annotation = $annotationset->getAnnotation('Id')) {
 						self::$_cached_entity_classes[$classname]['id_column'] = $column_name;

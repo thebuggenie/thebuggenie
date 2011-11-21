@@ -5,36 +5,17 @@
 	<?php if ($teams): ?>
 		<div style="margin: 5px 0 0 10px;">
 			<?php foreach ($teams as $team): ?>
-				<form action="<?php echo make_url('configure_project_add_assignee', array('project_id' => $theProject->getID(), 'assignee_type' => 'team', 'assignee_id' => $team->getID())); ?>" onsubmit="TBG.Project.assign('<?php echo make_url('configure_project_add_assignee', array('project_id' => $theProject->getID(), 'assignee_type' => 'team', 'assignee_id' => $team->getID())); ?>', 'assign_team_<?php echo $team->getID(); ?>');return false;" method="post" id="assign_team_<?php echo $team->getID(); ?>">
+				<div id="assign_team_<?php echo $user->getID(); ?>">
 					<label for="role_team_<?php echo $team->getID(); ?>"><?php echo $team->getName(); ?>:</label>&nbsp;
 					<select name="role" id="role_team_<?php echo $team->getID(); ?>">
-						<?php foreach (TBGProjectAssigneesTable::getTypes() as $role): ?>
+						<?php foreach ($roles as $role): ?>
 							<option value="<?php echo $role->getId(); ?>"><?php echo $role->getName(); ?></option>
 						<?php endforeach ;?>
 					</select>
-					<?php /*
-					&nbsp;<label for="target"><?php echo __('%role% for %item%', array('%role%' => '', '%item%' => '')); ?></label>&nbsp;
-					<select name="target" id="target">
-						<option value="project_<?php echo $theProject->getID(); ?>"><?php echo $theProject->getName(); ?></option>
-						<?php if ($theProject->isEditionsEnabled()): ?>
-							<optgroup label="<?php echo __('Editions'); ?>">
-							<?php foreach ($theProject->getEditions() as $anEdition): ?>
-								<option value="edition_<?php echo $anEdition->getID(); ?>"><?php echo $anEdition->getName(); ?></option>
-							<?php endforeach; ?>
-							</optgroup>
-						<?php endif; ?>
-						<?php if ($theProject->isComponentsEnabled()): ?>
-							<optgroup label="<?php echo __('Components'); ?>">
-							<?php foreach ($theProject->getComponents() as $aComponent): ?>
-								<option value="component_<?php echo $aComponent->getID(); ?>"><?php echo $aComponent->getName(); ?></option>
-							<?php endforeach; ?>
-							</optgroup>
-						<?php endif; ?>
-					</select> */ ?>
 					<input type="hidden" name="target" value="project_<?php echo $theProject->getID(); ?>">
 					&nbsp;
-					<input type="submit" value="<?php echo __('Add team'); ?>">
-				</form>
+					<button onclick="TBG.Project.assign('<?php echo make_url('configure_project_add_assignee', array('project_id' => $theProject->getID(), 'assignee_type' => 'team', 'assignee_id' => $team->getID())); ?>', 'assign_team_<?php echo $team->getID(); ?>');return false;"><?php echo __('Add team'); ?></button>
+				</div>
 			<?php endforeach; ?>
 		</div>
 	<?php else: ?>
@@ -44,36 +25,17 @@
 	<?php if ($users): ?>
 		<div style="margin: 5px 0 0 10px;">
 			<?php foreach ($users as $user): ?>
-				<form action="<?php echo make_url('configure_project_add_assignee', array('project_id' => $theProject->getID(), 'assignee_type' => 'user', 'assignee_id' => $user->getID())); ?>" onsubmit="TBG.Project.assign('<?php echo make_url('configure_project_add_assignee', array('project_id' => $theProject->getID(), 'assignee_type' => 'user', 'assignee_id' => $user->getID())); ?>', 'assign_user_<?php echo $user->getID(); ?>');return false;" method="post" id="assign_user_<?php echo $user->getID(); ?>">
+				 <div id="assign_user_<?php echo $user->getID(); ?>">
 					<label for="role_<?php echo $user->getID(); ?>"><?php echo $user->getNameWithUsername(); ?>:</label>&nbsp;
 					<select name="role" id="role_<?php echo $user->getID(); ?>">
-						<?php foreach (TBGProjectAssigneesTable::getTypes() as $type_id => $type_desc): ?>
-							<option value="<?php echo $type_id; ?>"><?php echo $type_desc; ?></option>
+						<?php foreach ($roles as $role): ?>
+							<option value="<?php echo $role->getId(); ?>"><?php echo $role->getName(); ?></option>
 						<?php endforeach ;?>
 					</select>
-					<?php /*
-					&nbsp;<label for="target"><?php echo __('%role% for %item%', array('%role%' => '', '%item%' => '')); ?></label>&nbsp;
-					<select name="target" id="target">
-						<option value="project_<?php echo $theProject->getID(); ?>"><?php echo $theProject->getName(); ?></option>
-						<?php if ($theProject->isEditionsEnabled()): ?>
-							<optgroup label="<?php echo __('Editions'); ?>">
-							<?php foreach ($theProject->getEditions() as $anEdition): ?>
-								<option value="edition_<?php echo $anEdition->getID(); ?>"><?php echo $anEdition->getName(); ?></option>
-							<?php endforeach; ?>
-							</optgroup>
-						<?php endif; ?>
-						<?php if ($theProject->isComponentsEnabled()): ?>
-							<optgroup label="<?php echo __('Components'); ?>">
-							<?php foreach ($theProject->getComponents() as $aComponent): ?>
-								<option value="component_<?php echo $aComponent->getID(); ?>"><?php echo $aComponent->getName(); ?></option>
-							<?php endforeach; ?>
-							</optgroup>
-						<?php endif; ?>
-					</select> */ ?>
 					<input type="hidden" name="target" value="project_<?php echo $theProject->getID(); ?>">
 					&nbsp;
-					<input type="submit" value="<?php echo __('Add user'); ?>">
-				</form>
+					<button onclick="TBG.Project.assign('<?php echo make_url('configure_project_add_assignee', array('project_id' => $theProject->getID(), 'assignee_type' => 'user', 'assignee_id' => $user->getID())); ?>', 'assign_user_<?php echo $user->getID(); ?>');return false;"><?php echo __('Add user'); ?></button>
+				</div>
 			<?php endforeach; ?>
 		</div>
 	<?php else: ?>

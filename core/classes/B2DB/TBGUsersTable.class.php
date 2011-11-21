@@ -142,7 +142,7 @@
 			{
 				$crit->setLimit($limit);
 			}
-			if (!$res = $this->doSelect($crit))
+			if (!$res = $this->select($crit))
 			{
 				$crit = $this->getCriteria();
 				$crit->addWhere(self::DELETED, false);

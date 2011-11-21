@@ -18,7 +18,7 @@
 	 *
 	 * @Table(name="TBGProjectsTable")
 	 */
-	class TBGProject extends TBGOwnableItem
+	class TBGProject extends TBGReleaseableItem
 	{
 
 		/**
@@ -271,14 +271,18 @@
 		protected $_summary_display = null;
 		
 		/**
-		 * @Relates(class="TBGUser", collection=true, manytomany=true, joinclass="TBGEditionAssignedUsers")
+		 * @Relates(class="TBGUser", collection=true, manytomany=true, joinclass="TBGProjectAssignedUsersTable")
 		 */
 		protected $_assigned_users;
 
+		protected $_user_roles = null;
+
 		/**
-		 * @Relates(class="TBGTeam", collection=true, manytomany=true, joinclass="TBGEditionAssignedTeams")
+		 * @Relates(class="TBGTeam", collection=true, manytomany=true, joinclass="TBGProjectAssignedTeamsTable")
 		 */
 		protected $_assigned_teams;
+
+		protected $_team_roles = null;
 
 		/**
 		 * List of issue fields per issue type
@@ -1292,14 +1296,27 @@
 		
 		public function removeAssignee(TBGIdentifiableClass $assignee)
 		{
+			$user_id = 0;
+			$team_id = 0;
 			if ($assignee instanceof TBGUser)
 			{
+				$user_id = $assignee->getID();
 				TBGProjectAssignedUsersTable::getTable()->removeUserFromProject($this->getID(), $assignee->getID());
+				foreach ($this->getAssignedUsers() as $user)
+				{
+					if ($user->getID() == $user_id) return;
+				}
 			}
 			else
 			{
+				$team_id = $assignee->getID();
 				TBGProjectAssignedTeamsTable::getTable()->removeTeamFromProject($this->getID(), $assignee->getID());
+				foreach ($this->getAssignedTeams() as $team)
+				{
+					if ($team->getID() == $team_id) return;
+				}
 			}
+			TBGContext::removeAllPermissionsForCombination($user_id, 0, $team_id, $this->getID());
 		}
 
 		/**
@@ -1310,17 +1327,27 @@
 		 *  
 		 * @return null
 		 */
-		public function addAssignee($assignee, $role)
+		public function addAssignee($assignee, $role = null)
 		{
+			$user_id = 0;
+			$team_id = 0;
 			if ($assignee instanceof TBGUser)
 			{
+				$user_id = $assignee->getID();
 				TBGProjectAssignedUsersTable::getTable()->addUserToProject($this->getID(), $assignee->getID(), $role);
 			}
 			elseif ($assignee instanceof TBGTeam)
 			{
+				$team_id = $assignee->getID();
 				TBGProjectAssignedTeamsTable::getTable()->addTeamToProject($this->getID(), $assignee->getID(), $role);
 			}
-			$this->applyInitialPermissionSet($assignee, $role);
+			if ($role instanceof TBGRole)
+			{
+				foreach ($role->getPermissions() as $permission)
+				{
+					TBGContext::setPermission($permission, $this->getID(), 'core', $user_id, 0, $team_id, true);
+				}
+			}
 		}
 
 		protected function _populateAssignedUsers()
@@ -2841,6 +2868,34 @@
 		{
 			if ($this->_key === null)
 				$this->_key = preg_replace("/[^0-9a-zA-Z]/i", '', mb_strtolower($this->getName()));
+		}
+
+		protected function _populateUserRoles()
+		{
+			if ($this->_user_roles === null)
+			{
+				$this->_user_roles = TBGProjectAssignedUsersTable::getTable()->getRolesForProject($this->getID());
+			}
+		}
+
+		public function getRolesForUser($user)
+		{
+			$this->_populateUserRoles();
+			return (array_key_exists($user->getID(), $this->_user_roles)) ? $this->_user_roles[$user->getID()] : array();
+		}
+
+		protected function _populateTeamRoles()
+		{
+			if ($this->_team_roles === null)
+			{
+				$this->_team_roles = TBGProjectAssignedTeamsTable::getTable()->getRolesForProject($this->getID());
+			}
+		}
+
+		public function getRolesForTeam($team)
+		{
+			$this->_populateTeamRoles();
+			return (array_key_exists($team->getID(), $this->_team_roles)) ? $this->_team_roles[$team->getID()] : array();
 		}
 
 	}

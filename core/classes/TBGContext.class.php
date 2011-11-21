@@ -1250,10 +1250,16 @@
 		{
 			if ($scope === null) $scope = self::getScope()->getID();
 			
-			\b2db\Core::getTable('TBGPermissionsTable')->removeSavedPermission($uid, $gid, $tid, $module, $permission_type, $target_id, $scope);
+			TBGPermissionsTable::getTable()->removeSavedPermission($uid, $gid, $tid, $module, $permission_type, $target_id, $scope);
 			TBGCache::delete(TBGCache::KEY_PERMISSIONS_CACHE);
 
 			if ($recache) self::cacheAllPermissions();
+		}
+
+		public static function removeAllPermissionsForCombination($uid, $gid, $tid, $target_id = 0, $module = 'core', $scope = null)
+		{
+			$scope = ($scope !== null) ? $scope : self::getScope()->getID();
+			TBGPermissionsTable::getTable()->deleteAllPermissionsForCombination($uid, $gid, $tid, $target_id, $module, $scope);
 		}
 
 		/**
@@ -1473,7 +1479,6 @@
 				self::$_available_permissions['configuration']['cansaveconfig']['details'][] = array('cansaveconfig' => array('description' => $i18n->__('Read + write access: "Modules" configuration page and any modules'), 'target_id' => 15));
 				self::$_available_permissions['general']['canfindissuesandsavesearches'] = array('description' => $i18n->__('Can search for issues and create saved searches'), 'details' => array());
 				self::$_available_permissions['general']['canfindissuesandsavesearches']['details']['canfindissues'] = array('description' => $i18n->__('Can search for issues'));
-				//self::$_available_permissions['general']['canfindissuesandsavesearches']['details']['cancreatesavedsearches'] = array('description' => $i18n->__('Can create saved searches'));
 				self::$_available_permissions['general']['canfindissuesandsavesearches']['details']['cancreatepublicsearches'] = array('description' => $i18n->__('Can create saved searches that are public'));
 				self::$_available_permissions['general']['caneditmainmenu'] = array('description' => $i18n->__('Can edit main menu'));
 				self::$_available_permissions['pages']['page_home_access'] = array('description' => $i18n->__('Can access the frontpage'));

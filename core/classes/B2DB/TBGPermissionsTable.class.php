@@ -78,6 +78,20 @@
 			$res = $this->doDelete($crit);
 		}
 
+		public function deleteAllPermissionsForCombination($uid, $gid, $tid, $target_id = 0, $module = 'core', $scope = null)
+		{
+			$scope = ($scope !== null) ? $scope : TBGContext::getScope()->getID();
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::UID, $uid);
+			$crit->addWhere(self::GID, $gid);
+			$crit->addWhere(self::TID, $tid);
+			$crit->addWhere(self::MODULE, $module);
+			$crit->addWhere(self::TARGET_ID, $target_id);
+			$crit->addWhere(self::SCOPE, $scope);
+
+			$res = $this->doDelete($crit);
+		}
+
 		public function setPermission($uid, $gid, $tid, $allowed, $module, $permission_type, $target_id, $scope)
 		{
 			$crit = $this->getCriteria();

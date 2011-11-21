@@ -1,104 +1,53 @@
 <?php 
 
 	TBGContext::loadLibrary('ui'); 
-	$assignees = $project->getAssignees(); 
+	$assigned_users = $project->getAssignedUsers();
+	$assigned_teams = $project->getAssignedTeams();
 
 ?>
 <div class="config_header" style="border-bottom: 0; margin-top: 0; padding-top: 0;"><b><?php echo __('Assigned users'); ?></b></div>
-<?php if (count($assignees['users']) == 0): ?>
+<?php if (count($assigned_users) == 0): ?>
 	<div style="padding-left: 5px; padding-top: 3px; color: #AAA;"><?php echo __('There are no users assigned to this project'); ?></div>
 <?php else: ?>
 	<table cellpadding=0 cellspacing=0 width="100%">
-		<?php foreach ($assignees['users'] as $u_id => $assigns): ?>
-			<tr id="assignee_user_<?php echo $u_id; ?>_row" class="hoverable">
+		<?php foreach ($assigned_users as $user): ?>
+			<tr id="assignee_user_<?php echo $user->getID(); ?>_row" class="hoverable">
 				<td style="width: 20px;">
-					<?php echo javascript_link_tag(image_tag('action_delete.png'), array('class' => 'image', 'onclick' => "TBG.Project.removeAssignee('".make_url('configure_project_remove_assignee', array('project_id' => $project->getID(), 'assignee_type' => TBGIdentifiableTypeClass::TYPE_USER, 'assignee_id' => $u_id))."', 'user', {$u_id});", 'id' => 'assignee_user_'.$u_id.'_link')); ?>
-					<?php echo image_tag('spinning_16.gif', array('id' => 'remove_assignee_user_'.$u_id.'_indicator', 'style' => 'float: left; display: none;')); ?>
+					<?php echo javascript_link_tag(image_tag('action_delete.png'), array('class' => 'image', 'onclick' => "TBG.Project.removeAssignee('".make_url('configure_project_remove_assignee', array('project_id' => $project->getID(), 'assignee_type' => 'user', 'assignee_id' => $user->getID()))."', 'user', {$user->getID()});", 'id' => 'assignee_user_'.$user->getID().'_link')); ?>
+					<?php echo image_tag('spinning_16.gif', array('id' => 'remove_assignee_user_'.$user->getID().'_indicator', 'style' => 'float: left; display: none;')); ?>
 				</td>
 				<td style="vertical-align: top; font-size: 0.9em;">
-					<?php echo include_component('main/userdropdown', array('user' => $u_id)); ?>
+					<?php echo include_component('main/userdropdown', array('user' => $user)); ?>
 				</td>
 				<td style="vertical-align: top; padding: 3px; font-size: 0.9em;">
-					<?php //if (array_key_exists('projects', $assigns)): ?>
-						<?php // <b><?php echo $project->getName(); </b>:&nbsp; ?>
-						<?php $types_array = array(); ?>
-						<?php foreach ($assigns as $type => $bool): ?>
-							<?php $types_array[] = TBGProjectAssigneesTable::getTypeName($type); ?>
-						<?php endforeach; ?>
-						<?php echo join(', ', $types_array); ?><br>
-					<?php //endif; ?>
-					<?php /*if (array_key_exists('editions', $assigns)): ?>
-						<?php foreach ($assigns['editions'] as $e_id => $types): ?>
-							<?php $types_array = array(); ?>
-							<?php $theEdition = TBGContext::factory()->TBGEdition($e_id); ?>
-							<b><?php echo $theEdition->getName(); ?></b>:&nbsp;
-							<?php foreach ($types as $type => $bool): ?>
-								<?php $types_array[] = TBGProjectAssigneesTable::getTypeName($type); ?>
-							<?php endforeach; ?>
-							<?php echo join(', ', $types_array); ?><br>
-						<?php endforeach; ?>
-					<?php endif; ?>
-					<?php if (array_key_exists('components', $assigns)): ?>
-						<?php foreach ($assigns['components'] as $cp_id => $types): ?>
-							<?php $types_array = array(); ?>
-							<?php $theComponent = TBGContext::factory()->TBGComponent($cp_id); ?>
-							<b><?php echo $theComponent->getName(); ?></b>:&nbsp;
-							<?php foreach ($types as $type => $bool): ?>
-								<?php $types_array[] = TBGProjectAssigneesTable::getTypeName($type); ?>
-							<?php endforeach; ?>
-							<?php echo join(', ', $types_array); ?><br>
-						<?php endforeach; ?>
-					<?php endif;*/ ?>
+					<?php $roles = $project->getRolesForUser($user); ?>
+					<?php $role_names = array(); ?>
+					<?php foreach ($roles as $role) $role_names[] = $role->getName(); ?>
+					<?php echo join(',', $role_names); ?>
 				</td>
 			</tr>
 		<?php endforeach; ?>
 	</table>
 <?php endif; ?>
 <div class="config_header" style="border-bottom: 0;"><b><?php echo __('Assigned teams'); ?></b></div>
-<?php if (count($assignees['teams']) == 0): ?>
+<?php if (count($assigned_teams) == 0): ?>
 	<div style="padding-left: 5px; padding-top: 3px; color: #AAA;"><?php echo __('There are no teams assigned to this project'); ?></div>
 <?php else: ?>
 	<table cellpadding=0 cellspacing=0 width="100%">
-		<?php foreach ($assignees['teams'] as $c_id => $assigns): ?>
-			<tr id="assignee_team_<?php echo $c_id; ?>_row" style="font-size: 0.9em;" class="hoverable">
+		<?php foreach ($assigned_teams as $team): ?>
+			<tr id="assignee_team_<?php echo $team->getID(); ?>_row" class="hoverable">
 				<td style="width: 20px;">
-					<?php echo javascript_link_tag(image_tag('action_delete.png'), array('class' => 'image', 'onclick' => "TBG.Project.removeAssignee('".make_url('configure_project_remove_assignee', array('project_id' => $project->getID(), 'assignee_type' => TBGIdentifiableTypeClass::TYPE_TEAM, 'assignee_id' => $c_id))."', 'team', {$c_id});", 'style' => 'float: left;', 'id' => 'assignee_team_'.$c_id.'_link')); ?>
-					<?php echo image_tag('spinning_16.gif', array('id' => 'remove_assignee_team_'.$c_id.'_indicator', 'style' => 'float: left; display: none;')); ?>
+					<?php echo javascript_link_tag(image_tag('action_delete.png'), array('class' => 'image', 'onclick' => "TBG.Project.removeAssignee('".make_url('configure_project_remove_assignee', array('project_id' => $project->getID(), 'assignee_type' => 'team', 'assignee_id' => $team->getID()))."', 'team', {$team->getID()});", 'id' => 'assignee_team_'.$team->getID().'_link')); ?>
+					<?php echo image_tag('spinning_16.gif', array('id' => 'remove_assignee_team_'.$team->getID().'_indicator', 'style' => 'float: left; display: none;')); ?>
 				</td>
 				<td style="vertical-align: top; font-size: 0.9em;">
-					<?php echo include_component('main/teamdropdown', array('team' => $c_id)); ?>
+					<?php echo include_component('main/teamdropdown', array('team' => $team)); ?>
 				</td>
 				<td style="vertical-align: top; padding: 3px; font-size: 0.9em;">
-					<?php //if (array_key_exists('projects', $assigns)): ?>
-						<?php // <b><?php echo $project->getName(); </b>:&nbsp; ?>
-						<?php $types_array = array(); ?>
-						<?php foreach ($assigns as $type => $bool): ?>
-							<?php $types_array[] = TBGProjectAssigneesTable::getTypeName($type); ?>
-						<?php endforeach; ?>
-						<?php echo join(', ', $types_array); ?><br>
-					<?php //endif; ?>
-					<?php /*if (array_key_exists('editions', $assigns)): ?>
-						<?php foreach ($assigns['editions'] as $e_id => $types): ?>
-							<?php $types_array = array(); ?>
-							<?php $theEdition = TBGContext::factory()->TBGEdition($e_id); ?>
-							<b><?php echo $theEdition->getName(); ?></b>:&nbsp;
-							<?php foreach ($types as $type => $bool): ?>
-								<?php $types_array[] = TBGProjectAssigneesTable::getTypeName($type); ?>
-							<?php endforeach; ?>
-							<?php echo join(', ', $types_array); ?><br>
-						<?php endforeach; ?>
-					<?php endif; ?>
-					<?php if (array_key_exists('components', $assigns)): ?>
-						<?php foreach ($assigns['components'] as $cp_id => $types): ?>
-							<?php $types_array = array(); ?>
-							<?php $theComponent = TBGContext::factory()->TBGComponent($cp_id); ?>
-							<b><?php echo $theComponent->getName(); ?></b>:&nbsp;
-							<?php foreach ($types as $type => $bool): ?>
-								<?php $types_array[] = TBGProjectAssigneesTable::getTypeName($type); ?>
-							<?php endforeach; ?>
-							<?php echo join(', ', $types_array); ?><br>
-						<?php endforeach; ?>
-					<?php endif;*/ ?>
+					<?php $roles = $project->getRolesForTeam($team); ?>
+					<?php $role_names = array(); ?>
+					<?php foreach ($roles as $role) $role_names[] = $role->getName(); ?>
+					<?php echo join(',', $role_names); ?>
 				</td>
 			</tr>
 		<?php endforeach; ?>

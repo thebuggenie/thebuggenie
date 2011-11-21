@@ -18,18 +18,21 @@
 		public static function loadFixtures(TBGScope $scope)
 		{
 			$roles = array();
-			$roles['Developer'] = TBGProjectAssigneesTable::TYPE_DEVELOPER;
-			$roles['Project manager'] = TBGProjectAssigneesTable::TYPE_PROJECTMANAGER;
-			$roles['Tester'] = TBGProjectAssigneesTable::TYPE_TESTER;
-			$roles['Documentation editor'] = TBGProjectAssigneesTable::TYPE_DOCUMENTOR;
+			$roles['Developer'] = array();
+			$roles['Project manager'] = array();
+			$roles['Tester'] = array();
+			$roles['Documentation editor'] = array();
 			
-			foreach ($roles as $name => $itemdata)
+			foreach ($roles as $name => $permissions)
 			{
 				$role = new TBGRole();
 				$role->setName($name);
-				$role->setItemdata($itemdata);
 				$role->setScope($scope);
 				$role->save();
+				foreach ($permissions as $permission)
+				{
+					$this->getB2DBTable()->addPermissionToRole($this->getID(), $permission);
+				}
 			}
 		}
 		
@@ -43,9 +46,18 @@
 			return TBGListTypesTable::getTable()->getAllByItemType(self::ROLE);
 		}
 
-		public static function getAllForProject(TBGProject $project)
+		protected function _populatePermissions()
 		{
-			//
+			if ($this->_permissions === null)
+			{
+				$this->_b2dbLazyload('_permissions');
+			}
+		}
+
+		public function getPermissions()
+		{
+			$this->_populatePermissions();
+			return $this->_permissions;
 		}
 
 	}

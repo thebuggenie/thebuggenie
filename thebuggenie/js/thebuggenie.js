@@ -1773,9 +1773,11 @@ TBG.Project.setUser = function(url, field) {
 	});
 }
 
-TBG.Project.assign = function(url, form_id) {
+TBG.Project.assign = function(url, container_id) {
+	var role_id = $(container_id).down('select').getValue();
+	var parameters = "&role_id="+role_id;
 	TBG.Main.Helpers.ajax(url, {
-		form: form_id,
+		params: parameters,
 		loading: {indicator: 'assign_dev_indicator'},
 		success: {update: 'assignees_list'}
 	});

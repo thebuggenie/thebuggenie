@@ -757,7 +757,7 @@
 				$this->theProject = TBGContext::factory()->TBGProject($request['project_id']);
 				$this->users = TBGUser::findUsers($request['find_by'], 10);
 				$this->teams = TBGTeam::findTeams($request['find_by']);
-				$this->roles = TBGRole::getAllForProject($this->theProject);
+				$this->roles = TBGRole::getAll();
 			}
 			else
 			{
@@ -807,7 +807,7 @@
 					$this->forward403();
 				}
 				
-				$assignee_role = $request['role'];
+				$assignee_role = new TBGRole($request['role_id']);
 				$target_info = explode('_', $request['target']);
 				$this->forward403unless(count($target_info) == 2);
 				

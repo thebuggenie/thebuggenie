@@ -41,65 +41,22 @@
 
 		protected function _setupIndexes()
 		{
-			$this->_addIndex('issueid', self::ISSUE_ID);
+			$this->_addIndex('role_id', self::ROLE_ID);
 		}
 
-		public function addByIssueIDandFileID($issue_id, $file_id)
+		public function clearPermissionsForRole($role_id)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::ISSUE_ID, $issue_id);
-			$crit->addWhere(self::FILE_ID, $file_id);
-			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
-			if ($this->doCount($crit) == 0)
-			{
-				$crit = $this->getCriteria();
-				$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
-				$crit->addInsert(self::ATTACHED_AT, time());
-				$crit->addInsert(self::ISSUE_ID, $issue_id);
-				$crit->addInsert(self::FILE_ID, $file_id);
-				$this->doInsert($crit);
-			}
+			$crit->addWhere(self::ROLE_ID, $role_id);
+			$this->doDelete($crit);
 		}
 
-		public function getByIssueID($issue_id)
+		public function addPermissionForRole($role_id, $permission)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::ISSUE_ID, $issue_id);
-			$res = $this->doSelect($crit);
-			
-			$ret_arr = array();
-
-			if ($res)
-			{
-				while ($row = $res->getNextRow())
-				{
-					$file = TBGContext::factory()->TBGFile($row->get(TBGFilesTable::ID), $row);
-					$file->setUploadedAt($row->get(self::ATTACHED_AT));
-					$ret_arr[$row->get(TBGFilesTable::ID)] = $file;
-				}
-			}
-			
-			return $ret_arr;
+			$crit->addInsert(self::ROLE_ID, $role_id);
+			$crit->addInsert(self::PERMISSION, $permission);
+			$this->doInsert($crit);
 		}
 
-		public function countByIssueID($issue_id)
-		{
-			$crit = $this->getCriteria();
-			$crit->addWhere(self::ISSUE_ID, $issue_id);
-			return $this->doCount($crit);
-		}
-
-		public function removeByIssueIDandFileID($issue_id, $file_id)
-		{
-			$crit = $this->getCriteria();
-			$crit->addWhere(self::ISSUE_ID, $issue_id);
-			$crit->addWhere(self::FILE_ID, $file_id);
-			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
-			if ($res = $this->doSelectOne($crit))
-			{
-				$this->doDelete($crit);
-			}
-			return $res;
-		}
-		
 	}

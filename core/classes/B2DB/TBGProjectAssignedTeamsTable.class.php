@@ -31,11 +31,13 @@
 		const SCOPE = 'projectassignedteams.scope';
 		const TEAM_ID = 'projectassignedteams.uid';
 		const PROJECT_ID = 'projectassignedteams.project_id';
+		const ROLE_ID = 'projectassignedteams.role_id';
 		
 		public function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addForeignKeyColumn(self::PROJECT_ID, TBGProjectsTable::getTable());
+			parent::_addForeignKeyColumn(self::ROLE_ID, TBGListTypesTable::getTable());
 			parent::_addForeignKeyColumn(self::TEAM_ID, TBGTeamsTable::getTable());
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable());
 		}
@@ -87,6 +89,24 @@
 			}
 			
 			return $projects;
+		}
+
+		public function getRolesForProject($project_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::PROJECT_ID, $project_id);
+			$res = $this->doSelect($crit);
+
+			$roles = array();
+			if ($res)
+			{
+				while ($row = $res->getNextRow())
+				{
+					$roles[$row->get(self::TEAM_ID)][] = new TBGRole($row->get(self::ROLE_ID));
+				}
+			}
+
+			return $roles;
 		}
 
 	}

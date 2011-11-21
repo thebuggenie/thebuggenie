@@ -30,6 +30,7 @@
 		const ID = 'editionassignedteams.id';
 		const SCOPE = 'editionassignedteams.scope';
 		const TEAM_ID = 'editionassignedteams.uid';
+		const ROLE_ID = 'editionassignedteams.role_id';
 		const EDITION_ID = 'editionassignedteams.edition_id';
 		
 		public function _initialize()
@@ -37,6 +38,7 @@
 			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addForeignKeyColumn(self::EDITION_ID, TBGEditionsTable::getTable());
 			parent::_addForeignKeyColumn(self::TEAM_ID, TBGTeamsTable::getTable());
+			parent::_addForeignKeyColumn(self::ROLE_ID, TBGListTypesTable::getTable());
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable());
 		}
 		
