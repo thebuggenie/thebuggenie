@@ -22,12 +22,12 @@
 	var providers_large = {
 		openid : {
 			name : 'OpenID',
-			label : 'Enter your OpenID.',
+			label : '<?php echo __('Enter your OpenID'); ?>',
 			url : null
 		},
 		myopenid : {
 			name : 'MyOpenID',
-			label : 'Enter your MyOpenID username.',
+			label : '<?php echo __('Enter your MyOpenID username'); ?>',
 			url : 'http://{username}.myopenid.com/'
 		},
 		yahoo : {
@@ -40,7 +40,7 @@
 		}
 		/* aol : {
 			name : 'AOL',
-			label : 'Enter your AOL screenname.',
+			label : '<?php echo __('Enter your AOL screenname'); ?>',
 			url : 'http://openid.aol.com/{username}'
 		}, */
 	};
@@ -48,7 +48,7 @@
 	var providers_small = {
 		livejournal : {
 			name : 'LiveJournal',
-			label : 'Enter your Livejournal username.',
+			label : '<?php echo __('Enter your Livejournal username'); ?>',
 			url : 'http://{username}.livejournal.com/'
 		},
 		/* flickr: {
@@ -63,17 +63,17 @@
 		}, */
 		wordpress : {
 			name : 'Wordpress',
-			label : 'Enter your Wordpress.com username.',
+			label : '<?php echo __('Enter your Wordpress.com username'); ?>',
 			url : 'http://{username}.wordpress.com/'
 		},
 		blogger : {
 			name : 'Blogger',
-			label : 'Your Blogger account',
+			label : '<?php echo __('Your Blogger account'); ?>',
 			url : 'http://{username}.blogspot.com/'
 		},
 		verisign : {
 			name : 'Verisign',
-			label : 'Your Verisign username',
+			label : '<?php echo __('Your Verisign username'); ?>',
 			url : 'http://{username}.pip.verisignlabs.com/'
 		},
 		/* vidoop: {
@@ -88,25 +88,25 @@
 		}, */
 		claimid : {
 			name : 'ClaimID',
-			label : 'Your ClaimID username',
+			label : '<?php echo __('Your ClaimID username'); ?>',
 			url : 'http://claimid.com/{username}'
 		},
 		clickpass : {
 			name : 'ClickPass',
-			label : 'Enter your ClickPass username',
+			label : '<?php echo __('Enter your ClickPass username'); ?>',
 			url : 'http://clickpass.com/public/{username}'
 		},
 		google_profile : {
 			name : 'Google Profile',
-			label : 'Enter your Google Profile username',
+			label : '<?php echo __('Enter your Google Profile username'); ?>',
 			url : 'http://www.google.com/profiles/{username}'
 		}
 	};
 
 	openid.locale = 'en';
 	openid.sprite = 'en'; // reused in german& japan localization
-	openid.signin_text = 'Sign-In';
-	openid.image_title = 'log in with {provider}';
+	openid.signin_text = '<?php echo __('Sign in'); ?>';
+	openid.image_title = '<?php echo __('Log in with %openid_provider_name%'); ?>';
 	openid.no_sprite = true;
 	openid.providers_small = providers_small;
 	openid.providers_large = providers_large;
