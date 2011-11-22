@@ -2105,7 +2105,7 @@
 				}
 			}
 			$teamup_callback = $request['teamup_callback'];
-			return $this->renderComponent('identifiableselectorresults', array('users' => $this->users, 'teams' => $this->teams, 'callback' => $request['callback'], 'teamup_callback' => $teamup_callback));
+			return $this->renderComponent('identifiableselectorresults', array('users' => $this->users, 'teams' => $this->teams, 'callback' => $request['callback'], 'teamup_callback' => $teamup_callback, 'team_callback' => $request['team_callback']));
 		}
 		
 		/**
@@ -3673,7 +3673,7 @@
 
 		public function runGetTempIdentifiable(TBGRequest $request)
 		{
-			if ($request['i_type'] == TBGIdentifiableTypeClass::TYPE_USER)
+			if ($request['i_type'] == 'user')
 				return $this->renderComponent('main/userdropdown', array('user' => $request['i_id']));
 			else
 				return $this->renderComponent('main/teamdropdown', array('team' => $request['i_id']));

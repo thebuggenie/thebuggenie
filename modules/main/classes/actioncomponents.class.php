@@ -122,6 +122,8 @@
 		public function componentIdentifiableselector()
 		{
 			$this->include_teams = (isset($this->include_teams)) ? $this->include_teams : false;
+			$this->include_users = (isset($this->include_users)) ? $this->include_users : true;
+			$this->callback = (isset($this->callback)) ? $this->callback : null;
 			$this->allow_clear = (isset($this->allow_clear)) ? $this->allow_clear : true;
 		}
 		

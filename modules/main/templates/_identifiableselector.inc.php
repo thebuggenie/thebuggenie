@@ -7,10 +7,12 @@
 			</div>
 		<?php endif; ?>
 		<div class="dropdown_content">
-			<?php if ($include_teams): ?>
-			<label for="<?php echo $base_id; ?>_input"><?php echo __('Find a user or team'); ?>:</label><br>
+			<?php if ($include_teams && $include_users): ?>
+				<label for="<?php echo $base_id; ?>_input"><?php echo __('Find a user or team'); ?>:</label><br>
+			<?php elseif ($include_teams): ?>
+				<label for="<?php echo $base_id; ?>_input"><?php echo __('Find a team'); ?>:</label><br>
 			<?php else: ?>
-			<label for="<?php echo $base_id; ?>_input"><?php echo __('Find a user'); ?>:</label><br>
+				<label for="<?php echo $base_id; ?>_input"><?php echo __('Find a user'); ?>:</label><br>
 			<?php endif; ?>
 			<?php $text_title = __('Enter a name here'); ?>
 			<?php if (isset($teamup_callback)): ?>
@@ -28,16 +30,22 @@
 		</div>
 	</form>
 	<div class="dropdown_content">
-		<b><?php echo __('Select yourself or a friend below'); ?>:</b><br>
-		<a href="javascript:void(0);" onclick="<?php echo str_replace(array(urlencode('%identifiable_value%'), '%identifiable_value%'), array($tbg_user->getID(), $tbg_user->getID()), $callback); ?>"><?php echo __('Select yourself'); ?> (<?php echo $tbg_user->getUsername(); ?>)</a><br>
-		<?php if (count($tbg_user->getFriends()) == 0): ?>
-			<span class="faded_out"><?php echo __("Your friends will appear here"); ?></span><br>
-		<?php else: ?>
-			<?php include_component('main/identifiableselectorresults', array('users' => $tbg_user->getFriends(), 'callback' => $callback, 'team_callback' => ((isset($team_callback)) ? $team_callback : null))); ?>
+		<?php if ($include_users): ?>
+			<b><?php echo __('Select yourself or a friend below'); ?>:</b><br>
+			<a href="javascript:void(0);" onclick="<?php echo str_replace(array(urlencode('%identifiable_value%'), '%identifiable_value%'), array($tbg_user->getID(), $tbg_user->getID()), $callback); ?>"><?php echo __('Select yourself'); ?> (<?php echo $tbg_user->getUsername(); ?>)</a><br>
+			<?php if (count($tbg_user->getFriends()) == 0): ?>
+				<span class="faded_out"><?php echo __("Your friends will appear here"); ?></span><br>
+			<?php else: ?>
+				<?php include_component('main/identifiableselectorresults', array('users' => $tbg_user->getFriends(), 'callback' => $callback, 'team_callback' => ((isset($team_callback)) ? $team_callback : null))); ?>
+			<?php endif; ?>
 		<?php endif; ?>
 		<?php if (isset($team_callback) && count($tbg_user->getTeams()) > 0): ?>
 			<br>
-			<b><?php echo __('Or select one of your teams'); ?>:</b><br>
+			<?php if ($include_users): ?>
+				<b><?php echo __('%select_yourself_or_a_friend% or select one of your teams', array('%select_yourself_or_a_friend%' => '')); ?>:</b><br>
+			<?php else: ?>
+				<b><?php echo __('Select one of your teams'); ?>:</b><br>
+			<?php endif; ?>
 			<?php foreach ($tbg_user->getTeams() as $team): ?>
 				<a href="javascript:void(0);" onclick="<?php echo str_replace(array(urlencode('%identifiable_value%'), '%identifiable_value%'), array($team->getID(), $team->getID()), $team_callback); ?>"><?php echo __('Select %teamname%', array('%teamname%' => $team->getName())); ?> (<?php echo $team->getName(); ?>)</a><br>
 			<?php endforeach; ?>

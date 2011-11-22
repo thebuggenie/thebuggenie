@@ -54,7 +54,7 @@
 																		'callback'		 	=> "TBG.Search.Filter.setIdentifiable('" . make_url('get_temp_identifiable') . "', '".$filter."', '".$key."', %identifiable_value%, 'user');",
 																		'clear_link_text'	=> __('Clear selected user'),
 																		'base_id'			=> 'filter_'.$filter.'_'.$key.'_popup',
-																		'include_teams'		=> ($filter != 'posted_by'),
+																		'include_teams'		=> false,
 																		'allow_clear'		=> false,
 																		'absolute'			=> true)); ?>
 			<button onclick="$('filter_<?php echo $filter; ?>_<?php echo $key; ?>_popup').toggle(); return false;" class="button button-silver"><?php echo __('Select'); ?></button>
@@ -72,10 +72,11 @@
 			<input type="hidden" name="filters[<?php echo $filter; ?>][<?php echo $key; ?>][value]" id="filter_<?php echo $filter; ?>_<?php echo $key; ?>" value="<?php echo $selected_value; ?>">
 			<?php include_component('main/identifiableselector', array(	'html_id' 			=> 'filter_'.$filter.'_'.$key.'_popup',
 																		'header' 			=> __('Please select'),
-																		'callback'		 	=> "TBG.Search.Filter.setIdentifiable('" . make_url('get_temp_identifiable') . "', '".$filter."', '".$key."', %identifiable_value%, 'team');",
+																		'team_callback'	 	=> "TBG.Search.Filter.setIdentifiable('" . make_url('get_temp_identifiable') . "', '".$filter."', '".$key."', %identifiable_value%, 'team');",
 																		'clear_link_text'	=> __('Clear selected team'),
 																		'base_id'			=> 'filter_'.$filter.'_'.$key.'_popup',
-																		'include_teams'		=> ($filter != 'posted_by'),
+																		'include_teams'		=> true,
+																		'include_users'		=> false,
 																		'allow_clear'		=> false,
 																		'absolute'			=> true)); ?>
 			<button onclick="$('filter_<?php echo $filter; ?>_<?php echo $key; ?>_popup').toggle(); return false;" class="button button-silver"><?php echo __('Select'); ?></button>
