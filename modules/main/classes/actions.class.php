@@ -202,7 +202,7 @@
 				$issue->setProject($project);
 				$issue->clearUserWorkingOnIssue();
 				$issue->unsetAssignee();
-				$issue->unsetOwner();
+				$issue->clearOwner();
 				$issue->setPercentCompleted(0);
 				$issue->setMilestone(null);
 				$issue->setIssueNumber(TBGIssuesTable::getTable()->getNextIssueNumberForProductID($project->getID()));
@@ -1383,7 +1383,7 @@
 							}
 							else
 							{
-								if ($request['field'] == 'owned_by') $issue->unsetOwner();
+								if ($request['field'] == 'owned_by') $issue->clearOwner();
 								elseif ($request['field'] == 'assigned_to') $issue->unsetAssignee();
 							}
 						}

@@ -49,7 +49,16 @@
 
 		public function componentDashboardViewProjectTeam()
 		{
-			$this->assignees = TBGContext::getCurrentProject()->getAssignees();
+			$assignees = array();
+			foreach (TBGContext::getCurrentProject()->getAssignedUsers() as $user)
+			{
+				$assignees[] = $user;
+			}
+			foreach (TBGContext::getCurrentProject()->getAssignedTeams() as $team)
+			{
+				$assignees[] = $team;
+			}
+			$this->assignees = $assignees;
 		}
 
 		public function componentDashboardViewProjectClient()

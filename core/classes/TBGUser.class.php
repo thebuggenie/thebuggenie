@@ -2019,12 +2019,10 @@
 			{
 				$this->_associated_projects = array();
 				
-				$projects = TBGProjectAssignedTeamsTable::getTable()->getProjectsByUserID($this->getID());
-				$edition_projects = TBGEditionAssignedTeamsTable::getTable()->getProjectsByUserID($this->getID());
-				$component_projects = TBGComponentAssignedTeamsTable::getTable()->getProjectsByUserID($this->getID());
+				$projects = TBGProjectAssignedUsersTable::getTable()->getProjectsByUserID($this->getID());
 				$lo_projects = TBGProjectsTable::getTable()->getByUserID($this->getID());
 
-				$project_ids = array_merge(array_keys($projects), array_keys($edition_projects), array_keys($component_projects), array_keys($lo_projects));
+				$project_ids = array_merge(array_keys($projects), array_keys($lo_projects));
 
 				foreach ($this->getTeams() as $team)
 				{

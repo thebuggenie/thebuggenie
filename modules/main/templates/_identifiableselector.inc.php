@@ -3,7 +3,7 @@
 		<div class="dropdown_header"><?php echo $header; ?></div>
 		<?php if ($allow_clear): ?>
 			<div class="dropdown_content">
-				<a href="javascript:void(0);" onclick="<?php echo str_replace(array(urlencode('%identifiable_type%'), '%identifiable_type%', urlencode('%identifiable_value%'), '%identifiable_value%'), array(0, 0, 0, 0), $callback); ?>"><?php echo $clear_link_text; ?></a><br>
+				<a href="javascript:void(0);" onclick="<?php echo str_replace(array(urlencode('%identifiable_value%'), '%identifiable_value%'), array(0, 0), $callback); ?>"><?php echo $clear_link_text; ?></a><br>
 			</div>
 		<?php endif; ?>
 		<div class="dropdown_content">
@@ -17,6 +17,9 @@
 				<input type="hidden" name="teamup_callback" value="<?php echo $teamup_callback; ?>">
 			<?php endif; ?>
 			<input type="hidden" name="callback" value="<?php echo $callback; ?>">
+			<?php if (isset($team_callback)): ?>
+				<input type="hidden" name="team_callback" value="<?php echo $team_callback; ?>">
+			<?php endif; ?>
 			<input type="hidden" name="include_teams" value="<?php echo (int) $include_teams; ?>">
 			<input type="text" name="find_identifiable_by" id="<?php echo $base_id; ?>_input" value="<?php echo $text_title; ?>" style="width: 240px; padding: 1px 1px 1px;" onblur="if (this.getValue() == '') { this.value = '<?php echo $text_title; ?>'; this.addClassName('faded_out'); }" onfocus="if (this.getValue() == '<?php echo $text_title; ?>') { this.clear(); } this.removeClassName('faded_out');" class="faded_out">
 			<input type="submit" style="width: 60px;" value="<?php echo __('Find'); ?>"></input>

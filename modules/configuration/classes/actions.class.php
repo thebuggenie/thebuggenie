@@ -971,14 +971,14 @@
 				$this->forward403unless($this->access_level == TBGSettings::ACCESS_FULL);
 				if ($request->hasParameter('identifiable_type'))
 				{
-					if (in_array($request['identifiable_type'], array(TBGIdentifiableTypeClass::TYPE_USER, TBGIdentifiableTypeClass::TYPE_TEAM)))
+					if (in_array($request['identifiable_type'], array('team', 'user')))
 					{
 						switch ($request['identifiable_type'])
 						{
-							case TBGIdentifiableTypeClass::TYPE_USER:
+							case 'user':
 								$identified = TBGContext::factory()->TBGUser($request['value']);
 								break;
-							case TBGIdentifiableTypeClass::TYPE_TEAM:
+							case 'team':
 								$identified = TBGContext::factory()->TBGTeam($request['value']);
 								break;
 						}
@@ -992,9 +992,9 @@
 					}
 					else
 					{
-						if ($request['field'] == 'owned_by') $item->unsetOwner();
-						elseif ($request['field'] == 'qa_by') $item->unsetQaResponsible();
-						elseif ($request['field'] == 'lead_by') $item->unsetLeader();
+						if ($request['field'] == 'owned_by') $item->clearOwner();
+						elseif ($request['field'] == 'qa_by') $item->clearQaResponsible();
+						elseif ($request['field'] == 'lead_by') $item->clearLeader();
 						$item->save();
 					}
 				}
