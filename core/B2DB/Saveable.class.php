@@ -52,8 +52,10 @@
 			if ($relation_details['collection']) {
 				if (array_key_exists('manytomany', $relation_details) && $relation_details['manytomany']) {
 					$table = $relation_details['joinclass'];
-				} else {
+				} elseif (array_key_exists('class', $relation_details) && $relation_details['class']) {
 					$table = Core::getCachedB2DBTableClass($relation_details['class']);
+				} elseif (array_key_exists('joinclass', $relation_details) && $relation_details['joinclass']) {
+					$table = $relation_details['joinclass'];
 				}
 				$items = $table::getTable()->getForeignItems($this, $relation_details);
 				$value = ($items !== null) ? $items : array();

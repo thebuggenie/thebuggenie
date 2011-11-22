@@ -859,7 +859,7 @@
 			}
 			if ($relation_details['foreign_column']) {
 				$saveable_class = \get_class($class);
-				$table_details = ($item_class) ? Core::getCachedTableDetails($item_class) : Core::getCachedTableDetails($relation_details['joinclass']);
+				$table_details = ($item_class) ? Core::getCachedTableDetails($item_class) : Core::getTableDetails($relation_details['joinclass']);
 				$criteria->addWhere("{$table_details['name']}.".$relation_details['foreign_column'], $class->getB2DBSaveablePropertyValue(Core::getCachedColumnPropertyName($saveable_class, $foreign_table->getIdColumn())));
 				if (array_key_exists('discriminator', $table_details) && $table_details['discriminator'] && array_key_exists($saveable_class, $table_details['discriminator']['discriminators'])) {
 					$criteria->addWhere($table_details['discriminator']['column'], $table_details['discriminator']['discriminators'][$saveable_class]);

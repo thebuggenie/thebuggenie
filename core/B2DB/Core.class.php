@@ -896,6 +896,20 @@
 			}
 		}
 
+		public static function getTableDetails($classname)
+		{
+			$table = $classname::getTable();
+			if ($table instanceof Table) {
+				self::_populateCachedTableClassFiles($classname);
+				return array('columns' => $table->getColumns(),
+							'foreign_columns' => $table->getForeignColumns(),
+							'id' => $table->getIdColumn(),
+							'discriminator' => self::$_cached_table_classes[$classname]['discriminator'],
+							'name' => self::$_cached_table_classes[$classname]['name']
+							);
+			}
+		}
+
 		public static function getCachedTableDetails($classname)
 		{
 			self::_populateCachedClassFiles($classname);
