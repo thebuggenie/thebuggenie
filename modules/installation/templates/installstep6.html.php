@@ -25,7 +25,7 @@
 		<input type="hidden" name="tbg3_password" value="admin">
 		<input type="hidden" name="tbg3_referer" value="<?php echo make_url('about'); ?>">
 		<div style="font-size: 15px; text-align: center; padding: 25px;">
-			<input type="submit" value="Now, stop nagging and let me use this thing!" style="padding: 7px; font-weight: normal;">
+			<input type="submit" value="Now, stop nagging and let me use this thing!" style="font-size: 15px; margin-top: 10px; padding: 8px; height: 35px; font-weight: normal;">
 		</div>
 	</form>
 <?php endif; ?>
