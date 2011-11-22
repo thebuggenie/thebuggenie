@@ -13,6 +13,8 @@
 	$routes[] = array('dashboard_save', '/dashboard/save/:target_type/:tid', 'main', 'dashboardSave');
 	$routes[] = array('dashboard_view', '/dashboard/views', 'main', 'dashboardView');
 	$routes[] = array('get_javascript', '/js/:js_file', 'main', 'index');
+	$routes[] = array('switch_to_user', '/switch/to/user/:user_id', 'main', 'switchUser');
+	$routes[] = array('switch_back_user', '/switch/back', 'main', 'switchUser');
 	$routes[] = array('login', '/do/login', 'main', 'doLogin');
 	$routes[] = array('login_page', '/login', 'main', 'login');
 	$routes[] = array('login_section', '/login/section/:section/*', 'main', 'login');

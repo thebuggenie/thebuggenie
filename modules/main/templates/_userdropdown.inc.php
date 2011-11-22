@@ -34,6 +34,11 @@
 			<?php endif; ?>
 			<?php if ($tbg_user->canAccessConfigurationPage(TBGSettings::CONFIGURATION_SECTION_USERS)): ?>
 				<div style="padding: 2px;"><?php echo link_tag(make_url('configure_users', array('finduser' => $user->getUsername())), __('Edit this user'), array('target' => '_new')); ?></div>
+				<?php if (!$tbg_request->hasCookie('tbg3_original_username')): ?>
+					<div style="padding: 2px;"><?php echo link_tag(make_url('switch_to_user', array('user_id' => $user->getID())), __('Switch to this user')); ?></div>
+				<?php else: ?>
+					<div style="padding: 2px;"><?php echo link_tag(make_url('switch_back_user'), __('Switch back to original user')); ?></div>
+				<?php endif; ?>
 			<?php endif; ?>
 			<div style="padding: 2px;">
 				<a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'usercard', 'user_id' => $user->getID())); ?>');$('bud_<?php echo $user->getUsername() . "_" . $rnd_no; ?>').hide();"><?php echo __('Show user details'); ?></a>

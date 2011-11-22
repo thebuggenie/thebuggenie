@@ -438,6 +438,30 @@
 			$this->section = $request->getParameter('section', 'login');
 		}
 		
+		public function runSwitchUser(TBGRequest $request)
+		{
+			if (!$this->getUser()->canAccessConfigurationPage(TBGSettings::CONFIGURATION_SECTION_USERS) && !$request->hasCookie('tbg3_original_username'))
+				return $this->forward403();
+
+			$response = $this->getResponse();
+			if ($request['user_id'])
+			{
+				$user = new TBGUser($request['user_id']);
+				$response->setCookie('tbg3_original_username', $request->getCookie('tbg3_username'));
+				$response->setCookie('tbg3_original_password', $request->getCookie('tbg3_password'));
+				TBGContext::getResponse()->setCookie('tbg3_password', $user->getPassword());
+				TBGContext::getResponse()->setCookie('tbg3_username', $user->getUsername());
+			}
+			else
+			{
+				$response->setCookie('tbg3_username', $request->getCookie('tbg3_original_username'));
+				$response->setCookie('tbg3_password', $request->getCookie('tbg3_original_password'));
+				TBGContext::getResponse()->deleteCookie('tbg3_original_password');
+				TBGContext::getResponse()->deleteCookie('tbg3_original_username');
+			}
+			$this->forward($this->getRouting()->generate('home'));
+		}
+
 		/**
 		 * Do login (AJAX call)
 		 *  

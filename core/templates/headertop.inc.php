@@ -96,7 +96,7 @@
 		</nav>
 		<nav class="tab_menu header_menu" id="header_userinfo">
 			<ul>
-				<li>
+				<li<?php if ($tbg_request->hasCookie('tbg3_original_username')): ?> class="temporarily_switched"<?php endif; ?>>
 					<div>
 						<?php if ($tbg_user->isGuest()): ?>
 							<a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'login')); ?>')"><?php echo image_tag($tbg_user->getAvatarURL(true), array('alt' => '[avatar]'), true) . __('You are not logged in'); ?></a>
@@ -121,6 +121,10 @@
 								<?php echo javascript_link_tag(image_tag('icon_dashboard_config.png').__('Customize your dashboard'), array('title' => __('Customize your dashboard'), 'onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'dashboard_config', 'tid' => TBGContext::getUser()->getID(), 'target_type' => TBGDashboardViewsTable::TYPE_USER))."')")); ?>
 							<?php endif; ?>
 							<?php echo link_tag(make_url('account'), image_tag('icon_account.png').__('Your account')); ?>
+							<?php if ($tbg_request->hasCookie('tbg3_original_username')): ?>
+							<div class="header"><?php echo __('You are temporarily this user'); ?></div>
+							<?php echo link_tag(make_url('switch_back_user'), image_tag('switchuser.png').__('Switch back to original user')); ?>
+							<?php endif; ?>
 							<?php if ($tbg_user->canAccessConfigurationPage()): ?>
 								<?php echo link_tag(make_url('configure'), image_tag('tab_config.png').__('Configure The Bug Genie')); ?>
 							<?php endif; ?>
