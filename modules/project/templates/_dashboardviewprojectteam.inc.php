@@ -1,25 +1,16 @@
-<?php if ((count($assignees['users']) > 0) || (count($assignees['teams']) > 0)): ?>
-	<?php foreach ($assignees['users'] as $user_id => $info): ?>
+<?php if (count($assignees) > 0): ?>
+	<?php foreach ($assignees as $assignee): ?>
 		<div style="width: auto; display: table-cell; clear: none; padding: 0 10px 0 0; ">
-			<?php echo include_component('main/userdropdown', array('user' => $user_id)); ?>
+			<?php if ($assignee instanceof TBGUser): ?>
+				<?php echo include_component('main/userdropdown', array('user' => $assignee)); ?>
+			<?php else: ?>
+				<?php echo include_component('main/teamdropdown', array('team' => $assignee)); ?>
+			<?php endif; ?>
 			<span class="faded_out"> -
-			<?php foreach ($info as $type => $bool): ?>
-				<?php if ($bool == true): ?>
-					<?php echo ' '.TBGProjectAssigneesTable::getTypeName($type); ?>
-				<?php endif; ?>
-			<?php endforeach; ?>
-			</span>
-		</div>
-	<?php endforeach; ?>
-	<?php foreach ($assignees['teams'] as $team_id => $info): ?>
-		<div style="width: auto; display: table-cell; clear: none; padding: 0 10px 0 0; ">
-			<?php echo include_component('main/teamdropdown', array('team' => $team_id)); ?>
-			<span class="faded_out"> -
-			<?php foreach ($info as $type => $bool): ?>
-				<?php if ($bool == true): ?>
-					<?php echo ' '.TBGProjectAssigneesTable::getTypeName($type); ?>
-				<?php endif; ?>
-			<?php endforeach; ?>
+				<?php $roles = ($assignee instanceof TBGUser) ? $project->getRolesForUser($assignee) : $project->getRolesForTeam($assignee); ?>
+				<?php $role_names = array(); ?>
+				<?php foreach ($roles as $role) $role_names[] = $role->getName(); ?>
+				<?php echo join(',', $role_names); ?>
 			</span>
 		</div>
 	<?php endforeach; ?>

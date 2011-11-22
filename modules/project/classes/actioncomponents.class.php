@@ -59,6 +59,7 @@
 				$assignees[] = $team;
 			}
 			$this->assignees = $assignees;
+			$this->project = TBGContext::getCurrentProject();
 		}
 
 		public function componentDashboardViewProjectClient()
