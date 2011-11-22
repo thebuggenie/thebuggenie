@@ -116,13 +116,13 @@
 			{
 				if (property_exists($this, $property))
 				{
-					if ($this->$property instanceof TBGIdentifiableClass) $this->$property = $this->$property->getID();
+					if ($this->$property instanceof TBGIdentifiable) $this->$property = $this->$property->getID();
 				}
 				else
 				{
 					$this->$property = null;
 				}
-				if ($value instanceof TBGIdentifiableClass) $value = $value->getID();
+				if ($value instanceof TBGIdentifiable) $value = $value->getID();
 				if ($this->$property != $value)
 				{
 					if (array_key_exists($property, $this->_changed_items))
@@ -296,7 +296,7 @@
 				{
 					if (property_exists($this, $property))
 					{
-						if ($this->$property instanceof TBGIdentifiableClass)
+						if ($this->$property instanceof TBGIdentifiable)
 						{
 							$unmergeable = (bool) ($this->$property->getID() != $value['original_value']);
 						}

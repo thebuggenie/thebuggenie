@@ -1367,29 +1367,29 @@
 					}
 					return $this->renderJSON(array('changed' => $issue->isEstimatedTimeChanged(), 'field' => (($issue->hasEstimatedTime()) ? array('id' => 1, 'name' => $issue->getFormattedTime($issue->getEstimatedTime())) : array('id' => 0)), 'values' => $issue->getEstimatedTime()));
 					break;
-				case 'owned_by':
 				case 'posted_by':
+				case 'owned_by':
 				case 'assigned_to':
-					if ($request['field'] == 'owned_by' && !$issue->canEditOwnedBy()) return $this->renderJSON(array('changed' => false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
-					elseif ($request['field'] == 'posted_by' && !$issue->canEditPostedBy()) return $this->renderJSON(array('changed' => false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
+					if ($request['field'] == 'posted_by' && !$issue->canEditPostedBy()) return $this->renderJSON(array('changed' => false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
+					elseif ($request['field'] == 'owned_by' && !$issue->canEditOwnedBy()) return $this->renderJSON(array('changed' => false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
 					elseif ($request['field'] == 'assigned_to' && !$issue->canEditAssignedTo()) return $this->renderJSON(array('changed' => false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
 					
 					if ($request->hasParameter('value'))
 					{
 						if ($request->hasParameter('identifiable_type'))
 						{
-							if (in_array($request['identifiable_type'], array(TBGIdentifiableTypeClass::TYPE_USER, TBGIdentifiableTypeClass::TYPE_TEAM)))
+							if (in_array($request['identifiable_type'], array('team', 'user')) && $request['value'] != 0)
 							{
 								switch ($request['identifiable_type'])
 								{
-									case TBGIdentifiableTypeClass::TYPE_USER:
+									case 'user':
 										$identified = TBGContext::factory()->TBGUser($request['value']);
 										break;
-									case TBGIdentifiableTypeClass::TYPE_TEAM:
+									case 'team':
 										$identified = TBGContext::factory()->TBGTeam($request['value']);
 										break;
 								}
-								if ($identified instanceof TBGIdentifiableTypeClass)
+								if ($identified instanceof TBGUser || $identifiable instanceof TBGTeam)
 								{
 									if ((bool) $request->getParameter('teamup', false))
 									{
@@ -1408,21 +1408,21 @@
 							else
 							{
 								if ($request['field'] == 'owned_by') $issue->clearOwner();
-								elseif ($request['field'] == 'assigned_to') $issue->unsetAssignee();
+								elseif ($request['field'] == 'assigned_to') $issue->clearAssignee();
 							}
 						}
 						elseif ($request['field'] == 'posted_by')
 						{
 							$identified = TBGContext::factory()->TBGUser($request['value']);
-							if ($identified instanceof TBGIdentifiableTypeClass)
+							if ($identified instanceof TBGUser)
 							{
 								$issue->setPostedBy($identified);
 							}
 						}
-						if ($request['field'] == 'owned_by')
-							return $this->renderJSON(array('changed' => $issue->isOwnedByChanged(), 'field' => (($issue->isOwned()) ? array('id' => $issue->getOwner()->getID(), 'name' => (($issue->getOwner() instanceof TBGUser) ? $this->getComponentHTML('main/userdropdown', array('user' => $issue->getOwner())) : $this->getComponentHTML('main/teamdropdown', array('team' => $issue->getOwner())))) : array('id' => 0))));
 						if ($request['field'] == 'posted_by')
 							return $this->renderJSON(array('changed' => $issue->isPostedByChanged(), 'field' => array('id' => $issue->getPostedByID(), 'name' => $this->getComponentHTML('main/userdropdown', array('user' => $issue->getPostedBy())))));
+						if ($request['field'] == 'owned_by')
+							return $this->renderJSON(array('changed' => $issue->isOwnedByChanged(), 'field' => (($issue->isOwned()) ? array('id' => $issue->getOwner()->getID(), 'name' => (($issue->getOwner() instanceof TBGUser) ? $this->getComponentHTML('main/userdropdown', array('user' => $issue->getOwner())) : $this->getComponentHTML('main/teamdropdown', array('team' => $issue->getOwner())))) : array('id' => 0))));
 						if ($request['field'] == 'assigned_to')
 							return $this->renderJSON(array('changed' => $issue->isAssignedToChanged(), 'field' => (($issue->isAssigned()) ? array('id' => $issue->getAssignee()->getID(), 'name' => (($issue->getAssignee() instanceof TBGUser) ? $this->getComponentHTML('main/userdropdown', array('user' => $issue->getAssignee())) : $this->getComponentHTML('main/teamdropdown', array('team' => $issue->getAssignee())))) : array('id' => 0))));
 					}
@@ -1520,7 +1520,7 @@
 							$parameter_id = $request->getParameter($parameter_id_name);
 							if ($parameter_id !== 0)
 							{
-								$is_valid = ($is_pain) ? in_array($parameter_id, array_keys(TBGIssue::getPainTypesOrLabel($parameter_name))) : ($parameter_id == 0 || (($parameter = TBGContext::factory()->$lab_function_name($parameter_id)) instanceof TBGIdentifiableTypeClass));
+								$is_valid = ($is_pain) ? in_array($parameter_id, array_keys(TBGIssue::getPainTypesOrLabel($parameter_name))) : ($parameter_id == 0 || (($parameter = TBGContext::factory()->$lab_function_name($parameter_id)) instanceof $classname));
 							}
 							if ($parameter_id == 0 || ($parameter_id !== 0 && $is_valid))
 							{
@@ -2752,13 +2752,13 @@
 						break;
 					case 'team_archived_projects':
 						$template_name = 'main/archivedprojects';
-						$options['target'] = TBGIdentifiableTypeClass::TYPE_TEAM;
+						$options['target'] = 'team';
 						$options['id'] = $request['tid'];
 						$options['mandatory'] = true;
 						break;
 					case 'client_archived_projects':
 						$template_name = 'main/archivedprojects';
-						$options['target'] = TBGIdentifiableTypeClass::TYPE_CLIENT;
+						$options['target'] = 'client';
 						$options['id'] = $request['cid'];
 						$options['mandatory'] = true;
 						break;
@@ -3501,17 +3501,17 @@
 			switch ($request['field'])
 			{
 				case 'assigned_to':
-					if ($request['identifiable_type'] == TBGIdentifiableTypeClass::TYPE_USER)
+					if ($request['identifiable_type'] == 'user')
 					{
 						$identifiable = TBGContext::factory()->TBGUser($request['value']);
 						$content = $this->getComponentHTML('main/userdropdown', array('user' => $identifiable));
 					}
-					elseif ($request['identifiable_type'] == TBGIdentifiableTypeClass::TYPE_TEAM)
+					elseif ($request['identifiable_type'] == 'team')
 					{
 						$identifiable = TBGContext::factory()->TBGTeam($request['value']);
 						$content = $this->getComponentHTML('main/teamdropdown', array('team' => $identifiable));
 					}
-					
+
 					return $this->renderJSON(array('content' => $content));
 					break;
 			}
