@@ -50,16 +50,18 @@
 			return $res;
 		}
 
-		public function addTeamToProject($project_id, $team, $role)
+		public function addTeamToProject($project_id, $team_id, $role_id)
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::PROJECT_ID, $project_id);
-			$crit->addWhere(self::TEAM_ID, $team->getID());
+			$crit->addWhere(self::TEAM_ID, $team_id);
+			$crit->addWhere(self::ROLE_ID, $role_id);
 			if (!$this->doCount($crit))
 			{
 				$crit = $this->getCriteria();
-				$crit->addInsert(self::TEAM_ID, $team->getID());
 				$crit->addInsert(self::PROJECT_ID, $project_id);
+				$crit->addInsert(self::TEAM_ID, $team_id);
+				$crit->addInsert(self::ROLE_ID, $role_id);
 				$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
 				$this->doInsert($crit);
 				return true;

@@ -50,17 +50,18 @@
 			return $res;
 		}
 
-		public function addUserToProject($project_id, $user, $role)
+		public function addUserToProject($project_id, $user_id, $role_id)
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::PROJECT_ID, $project_id);
-			$crit->addWhere(self::PROJECT_ID, $project_id);
-			$crit->addWhere(self::USER_ID, $user->getID());
+			$crit->addWhere(self::USER_ID, $user_id);
+			$crit->addWhere(self::ROLE_ID, $role_id);
 			if (!$this->doCount($crit))
 			{
 				$crit = $this->getCriteria();
-				$crit->addInsert(self::USER_ID, $user->getID());
 				$crit->addInsert(self::PROJECT_ID, $project_id);
+				$crit->addInsert(self::USER_ID, $user_id);
+				$crit->addInsert(self::ROLE_ID, $role_id);
 				$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
 				$this->doInsert($crit);
 				return true;

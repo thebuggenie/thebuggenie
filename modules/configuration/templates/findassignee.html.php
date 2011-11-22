@@ -5,8 +5,8 @@
 	<?php if ($teams): ?>
 		<div style="margin: 5px 0 0 10px;">
 			<?php foreach ($teams as $team): ?>
-				<div id="assign_team_<?php echo $user->getID(); ?>">
-					<label for="role_team_<?php echo $team->getID(); ?>"><?php echo $team->getName(); ?>:</label>&nbsp;
+				<div id="assign_team_<?php echo $team->getID(); ?>">
+					<label for="role_team_<?php echo $team->getID(); ?>"><?php echo image_tag('icon_team.png', array('style' => "width: 16px; height: 16px; margin: 2px 5px -2px 0;")); ?><?php echo $team->getName(); ?>:</label>&nbsp;
 					<select name="role" id="role_team_<?php echo $team->getID(); ?>">
 						<?php foreach ($roles as $role): ?>
 							<option value="<?php echo $role->getId(); ?>"><?php echo $role->getName(); ?></option>
@@ -26,7 +26,7 @@
 		<div style="margin: 5px 0 0 10px;">
 			<?php foreach ($users as $user): ?>
 				 <div id="assign_user_<?php echo $user->getID(); ?>">
-					<label for="role_<?php echo $user->getID(); ?>"><?php echo $user->getNameWithUsername(); ?>:</label>&nbsp;
+					<label for="role_<?php echo $user->getID(); ?>"><?php echo image_tag($user->getAvatarURL(), array('style' => "width: 16px; height: 16px; margin: 2px 5px -2px 0"), true); ?><?php echo $user->getNameWithUsername(); ?>:</label>&nbsp;
 					<select name="role" id="role_<?php echo $user->getID(); ?>">
 						<?php foreach ($roles as $role): ?>
 							<option value="<?php echo $role->getId(); ?>"><?php echo $role->getName(); ?></option>

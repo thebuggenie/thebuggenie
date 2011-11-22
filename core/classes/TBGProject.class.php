@@ -1334,12 +1334,12 @@
 			if ($assignee instanceof TBGUser)
 			{
 				$user_id = $assignee->getID();
-				TBGProjectAssignedUsersTable::getTable()->addUserToProject($this->getID(), $assignee->getID(), $role);
+				TBGProjectAssignedUsersTable::getTable()->addUserToProject($this->getID(), $user_id, $role->getID());
 			}
 			elseif ($assignee instanceof TBGTeam)
 			{
 				$team_id = $assignee->getID();
-				TBGProjectAssignedTeamsTable::getTable()->addTeamToProject($this->getID(), $assignee->getID(), $role);
+				TBGProjectAssignedTeamsTable::getTable()->addTeamToProject($this->getID(), $team_id, $role->getID());
 			}
 			if ($role instanceof TBGRole)
 			{
@@ -1360,7 +1360,7 @@
 		public function getAssignedUsers()
 		{
 			$this->_populateAssignedUsers();
-			return $this->_assigned_teams;
+			return $this->_assigned_users;
 		}
 		
 		protected function _populateAssignedTeams()

@@ -4283,12 +4283,14 @@
 			try
 			{
 				$project = TBGContext::factory()->TBGProject($request['project_id']);
-				$project->removeAssignee($request['assignee_type'], $request['assignee_id']);
-				return $this->renderJSON(array('failed' => false, 'message' => TBGContext::getI18n()->__('The assignee has been removed')));
+				$assignee = ($request['assignee_type'] == 'user') ? new TBGUser($request['assignee_id']) : new TBGTeam($request['assignee_id']);
+				$project->removeAssignee($assignee);
+				return $this->renderJSON(array('message' => TBGContext::getI18n()->__('The assignee has been removed')));
 			}
 			catch (Exception $e)
 			{
-				return $this->renderJSON(array('failed' => true, 'message' => $e->getMessage()));
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('message' => $e->getMessage()));
 			}
 		}
 		
