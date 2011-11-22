@@ -15,7 +15,7 @@
 						<?php include_component('search/filter', array('filter' => $filter, 'selected_operator' => $filter_info['operator'], 'selected_value' => $filter_info['value'], 'key' => 0)); ?>
 					<?php elseif ($filter != 'text'): ?>
 						<?php foreach ($filter_info as $k => $single_filter): ?>
-							<?php include_component('search/filter', array('filter' => $filter, 'allfilters' => $appliedfilters, 'selected_operator' => $single_filter['operator'], 'selected_value' => $single_filter['value'], 'filter_info' => $filter_info, 'key' => $k)); ?>
+							<?php include_component('search/filter', array('filter' => $filter, 'selected_operator' => $single_filter['operator'], 'selected_value' => $single_filter['value'], 'filter_info' => $filter_info, 'key' => $k)); ?>
 						<?php endforeach; ?>
 					<?php endif; ?>
 				<?php endforeach; ?>
@@ -39,9 +39,11 @@
 						<option value="component"><?php echo __("Component - which components have been affected"); ?></option>
 						<option value="build"><?php echo __("Build - which builds have been affected"); ?></option>
 						<option value="edition"><?php echo __("Edition - which editions have been affected"); ?></option>
-						<option value="assigned_to"><?php echo __("Assigned to - who is an issue assigned to"); ?></option>
-						<option value="owned_by"><?php echo __("Owned by - who owns an issue"); ?></option>
 						<option value="posted_by"><?php echo __("Posted by user - which user posted the issue"); ?></option>
+						<option value="owner_user"><?php echo __("Owned by user - which user owns an issue"); ?></option>
+						<option value="owner_team"><?php echo __("Owned by team - which team owns an issue"); ?></option>
+						<option value="assignee_user"><?php echo __("Assigned to user - which user is an issue assigned to"); ?></option>
+						<option value="assignee_team"><?php echo __("Assigned to team - which team is an issue assigned to"); ?></option>
 						<option value="posted"><?php echo __("Date reported - when was the issue reported"); ?></option>
 						<option value="last_updated"><?php echo __("Date last updated - when was the issue last updated"); ?></option>
 						<?php foreach (TBGCustomDatatype::getAll() as $customdatatype): ?>

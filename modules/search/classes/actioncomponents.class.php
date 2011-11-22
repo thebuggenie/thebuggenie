@@ -50,7 +50,6 @@
 			$i18n = TBGContext::getI18n();
 			$this->selected_operator = (isset($this->selected_operator)) ? $this->selected_operator : '=';
 			$this->key = (isset($this->key)) ? $this->key : null;
-			$this->allfilters = (isset($this->allfilters)) ? $this->allfilters : null;
 			$this->filter = (isset($this->filter)) ? $this->filter : null;
 			if (in_array($this->filter, array('posted', 'last_updated')))
 			{
@@ -76,13 +75,14 @@
 				$filters['build'] = array('description' => $i18n->__('Build'), 'options' => TBGContext::getCurrentProject()->getBuilds());
 				$filters['edition'] = array('description' => $i18n->__('Edition'), 'options' => TBGContext::getCurrentProject()->getEditions());
 			}
-			$filters['assigned_to'] = array('description' => $i18n->__('Assigned to'));
 			$filters['posted_by'] = array('description' => $i18n->__('Posted by'));
-			$filters['owned_by'] = array('description' => $i18n->__('Owned by'));
+			$filters['assignee_user'] = array('description' => $i18n->__('Assigned to user'));
+			$filters['assignee_team'] = array('description' => $i18n->__('Assigned to team'));
+			$filters['owner_user'] = array('description' => $i18n->__('Owned by user'));
+			$filters['owner_team'] = array('description' => $i18n->__('Owned by team'));
 			$filters['posted'] = array('description' => $i18n->__('Date reported'));
 			$filters['last_updated'] = array('description' => $i18n->__('Date last updated'));
 			$this->filters = $filters;
-
 		}
 
 		public function componentResults_normal()
