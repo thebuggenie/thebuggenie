@@ -326,13 +326,13 @@
 					}
 					
 					$this->imported_data = true;
+					$roles = TBGRole::getAll();
 
-					$developer = TBGProjectAssigneesTable::getByType(TBGProjectAssigneesTable::TYPE_DEVELOPER);
 					foreach (array($project1, $project2) as $project)
 					{
 						foreach ($users as $user)
 						{
-							$project->addAssignee($user, $developer->getID());
+							$project->addAssignee($user, $roles[array_rand($roles)]);
 						}
 					}
 				}
