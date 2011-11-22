@@ -590,7 +590,7 @@
 		{
 			switch ($type) {
 				case 'float':
-					return settype(gmp_strval($value));
+					return ($value) ? settype(gmp_strval($value)) : $value;
 				case 'varchar':
 				case 'text':
 					return (string) $value;
