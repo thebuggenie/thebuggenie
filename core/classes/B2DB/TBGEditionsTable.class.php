@@ -21,6 +21,7 @@
 	 * @subpackage tables
 	 *
 	 * @Table(name="editions")
+	 * @Entity(class="TBGEdition")
 	 */
 	class TBGEditionsTable extends TBGB2DBTable 
 	{
@@ -44,25 +45,25 @@
 		const RELEASE_DATE = 'editions.release_date';
 		const LOCKED = 'editions.locked';
 		
-		public function _initialize()
-		{
-			parent::_setup(self::B2DBNAME, self::ID);
-			parent::_addVarchar(self::NAME, 100);
-			parent::_addText(self::DESCRIPTION, false);
-			parent::_addInteger(self::LEAD_BY, 10);
-			parent::_addInteger(self::LEAD_TYPE, 3);
-			parent::_addInteger(self::OWNED_BY, 10);
-			parent::_addInteger(self::OWNED_TYPE, 3);
-			parent::_addVarchar(self::DOC_URL, 200, '');
-			parent::_addInteger(self::QA, 10);
-			parent::_addInteger(self::QA_TYPE, 3);
-			parent::_addInteger(self::RELEASE_DATE, 10);
-			parent::_addBoolean(self::RELEASED);
-			parent::_addBoolean(self::PLANNED_RELEASED);
-			parent::_addBoolean(self::LOCKED);
-			parent::_addForeignKeyColumn(self::PROJECT, TBGProjectsTable::getTable(), TBGProjectsTable::ID);
-			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
-		}
+//		public function _initialize()
+//		{
+//			parent::_setup(self::B2DBNAME, self::ID);
+//			parent::_addVarchar(self::NAME, 100);
+//			parent::_addText(self::DESCRIPTION, false);
+//			parent::_addInteger(self::LEAD_BY, 10);
+//			parent::_addInteger(self::LEAD_TYPE, 3);
+//			parent::_addInteger(self::OWNED_BY, 10);
+//			parent::_addInteger(self::OWNED_TYPE, 3);
+//			parent::_addVarchar(self::DOC_URL, 200, '');
+//			parent::_addInteger(self::QA, 10);
+//			parent::_addInteger(self::QA_TYPE, 3);
+//			parent::_addInteger(self::RELEASE_DATE, 10);
+//			parent::_addBoolean(self::RELEASED);
+//			parent::_addBoolean(self::PLANNED_RELEASED);
+//			parent::_addBoolean(self::LOCKED);
+//			parent::_addForeignKeyColumn(self::PROJECT, TBGProjectsTable::getTable(), TBGProjectsTable::ID);
+//			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
+//		}
 		
 		public function getByProjectID($project_id)
 		{

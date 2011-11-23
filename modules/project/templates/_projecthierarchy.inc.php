@@ -23,7 +23,7 @@
 	<div class="faded_out" id="no_editions" style="padding: 5px;<?php if (count($project->getEditions()) > 0): ?> display: none;<?php endif; ?>"><?php echo __('There are no editions'); ?></div>
 	<ul style="margin: 10px 0 30px;" id="edition_table">
 		<?php foreach ($project->getEditions() as $edition): ?>
-			<?php include_template('configuration/editionbox', array('theProject' => $project, 'edition' => $edition, 'access_level' => $access_level)); ?>
+			<?php include_template('project/editionbox', array('theProject' => $project, 'edition' => $edition, 'access_level' => $access_level)); ?>
 		<?php endforeach; ?>
 	</ul>
 </div>
@@ -54,10 +54,10 @@
 	<table cellpadding=0 cellspacing=0 style="width: 100%; margin-top: 10px;">
 		<tbody id="component_table">
 		<?php foreach ($project->getComponents() as $component): ?>
-			<?php include_template('configuration/componentbox', array('component' => $component, 'access_level' => $access_level)); ?>
+			<?php include_template('project/componentbox', array('component' => $component, 'access_level' => $access_level)); ?>
 		<?php endforeach; ?>
 		</tbody>
 	</table>
 </div>
 <div style="padding: 2px 5px 5px 5px;<?php if ($project->isComponentsEnabled()): ?> display: none;<?php endif; ?>" id="project_components_disabled" class="faded_out"><?php echo __('This project does not use components. Components can be enabled in %advanced_settings%', array('%advanced_settings%' => javascript_link_tag(__('Advanced settings'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_settings', 'project_config_menu');")))); ?>.</div>
-<?php //include_template('configuration/builds', array('parent' => $project, 'access_level' => $access_level)); ?>
+<?php //include_template('project/builds', array('parent' => $project, 'access_level' => $access_level)); ?>

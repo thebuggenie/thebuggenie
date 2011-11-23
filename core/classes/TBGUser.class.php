@@ -1899,7 +1899,7 @@
 		 */
 		public function canManageProject(TBGProject $project)
 		{
-			return (bool) $this->hasPermission('canmanageproject', $project->getID());
+			return (bool) $this->hasPermission('canmanageproject', $project->getID()) || $this->canSaveConfiguration(TBGSettings::CONFIGURATION_SECTION_PROJECTS);
 		}
 
 		/**
@@ -1912,7 +1912,7 @@
 		public function canManageProjectReleases(TBGProject $project)
 		{
 			if ($project->isArchived()): return false; endif;
-			return (bool) ($this->hasPermission('canmanageprojectreleases', $project->getID()) || $this->hasPermission('canmanageproject', $project->getID()));
+			return (bool) ($this->hasPermission('canmanageprojectreleases', $project->getID()) || $this->hasPermission('canmanageproject', $project->getID()) || $this->canSaveConfiguration(TBGSettings::CONFIGURATION_SECTION_PROJECTS));
 		}
 
 		/**
@@ -1925,33 +1925,7 @@
 		public function canEditProjectDetails(TBGProject $project)
 		{
 			if ($project->isArchived()): return false; endif;
-			return (bool) ($this->hasPermission('caneditprojectdetails', $project->getID(), 'core', true) || $this->hasPermission('canmanageproject', $project->getID(), 'core', true));
-		}
-
-		/**
-		 * Return if the user can add scrum user stories
-		 *
-		 * @param TBGProject $project
-		 *
-		 * @return boolean
-		 */
-		public function canAddScrumUserStories(TBGProject $project)
-		{
-			if ($project->isArchived()): return false; endif;
-			return (bool) ($this->hasPermission('canaddscrumuserstories', $project->getID(), 'core', true) || $this->hasPermission('candoscrumplanning', $project->getID(), 'core', true) || $this->hasPermission('canaddscrumuserstories', 0, 'core', true) || $this->hasPermission('candoscrumplanning', 0, 'core', true));
-		}
-
-		/**
-		 * Return if the user can add scrum sprints
-		 *
-		 * @param TBGProject $project
-		 *
-		 * @return boolean
-		 */
-		public function canAddScrumSprints(TBGProject $project)
-		{
-			if ($project->isArchived()): return false; endif;
-			return (bool) ($this->hasPermission('canaddscrumsprints', $project->getID(), 'core', true) || $this->hasPermission('candoscrumplanning', $project->getID(), 'core', true) || $this->hasPermission('canaddscrumsprints', 0, 'core', true) || $this->hasPermission('candoscrumplanning', 0, 'core', true));
+			return (bool) ($this->hasPermission('caneditprojectdetails', $project->getID(), 'core', true) || $this->hasPermission('canmanageproject', $project->getID(), 'core', true) || $this->canSaveConfiguration(TBGSettings::CONFIGURATION_SECTION_PROJECTS));
 		}
 
 		/**

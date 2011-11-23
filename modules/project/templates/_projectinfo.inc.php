@@ -129,7 +129,7 @@
 			<?php endif; ?>
 		</td>
 	</tr>
-	<?php TBGEvent::createNew('core', 'configuration/projectinfo', $project)->trigger(); ?>
+	<?php TBGEvent::createNew('core', 'project/projectinfo', $project)->trigger(); ?>
 <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 	<tr>
 		<td colspan="2" style="padding: 10px 0 10px 10px; text-align: right;">

@@ -8,12 +8,12 @@
 		<?php include_template('project/projectinfosidebar', array('selected_project' => $selected_project, 'table_id' => 'project_planning')); ?>
 		<div class="planning_container">
 			<h3>
-				<?php if ($tbg_user->canAddScrumSprints($selected_project)): ?>
+				<?php if ($tbg_user->canManageProjectReleases($selected_project)): ?>
 					<?php echo javascript_link_tag(__('Add new milestone'), array('onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'milestone', 'project_id' => $selected_project->getId()))."');", 'class' => 'button button-green')); ?>
 				<?php endif; ?>
 				<?php echo __('Project milestones'); ?>
 			</h3>
-			<?php if ($tbg_user->canAddScrumSprints($selected_project)): ?>
+			<?php if ($tbg_user->canManageProjectReleases($selected_project)): ?>
 				<table cellpadding=0 cellspacing=0 style="display: none; margin-left: 5px; width: 300px;" id="sprint_add_indicator">
 					<tr>
 						<td style="width: 20px; padding: 2px;"><?php echo image_tag('spinning_20.gif'); ?></td>

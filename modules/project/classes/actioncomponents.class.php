@@ -135,4 +135,61 @@
 		{
 		}
 
+		public function componentProjectConfig_Container()
+		{
+			$this->access_level = ($this->getUser()->canEditProjectDetails(TBGContext::getCurrentProject())) ? TBGSettings::ACCESS_FULL : TBGSettings::ACCESS_READ;
+			$this->section = isset($this->section) ? $this->section : 'info';
+		}
+
+		public function componentProjectConfig()
+		{
+			$this->access_level = ($this->getUser()->canEditProjectDetails(TBGContext::getCurrentProject())) ? TBGSettings::ACCESS_FULL : TBGSettings::ACCESS_READ;
+			$this->statustypes = TBGStatus::getAll();
+			$this->selected_tab = isset($this->section) ? $this->section : 'info';
+		}
+
+		public function componentProjectInfo()
+		{
+			$this->valid_subproject_targets = TBGProject::getValidSubprojects($this->project);
+		}
+
+		public function componentProjectSettings()
+		{
+			$this->statustypes = TBGStatus::getAll();
+		}
+
+		public function componentProjectEdition()
+		{
+			$this->access_level = ($this->getUser()->canManageProject(TBGContext::getCurrentProject())) ? TBGSettings::ACCESS_FULL : TBGSettings::ACCESS_READ;
+		}
+
+		public function componentProjecticons()
+		{
+
+		}
+
+		public function componentProjectworkflow()
+		{
+
+		}
+
+		public function componentBuildbox()
+		{
+			$this->access_level = ($this->getUser()->canManageProject(TBGContext::getCurrentProject())) ? TBGSettings::ACCESS_FULL : TBGSettings::ACCESS_READ;
+		}
+
+		public function componentBuild()
+		{
+			if (!isset($this->build))
+			{
+				$this->build = new TBGBuild();
+				$this->build->setProject(TBGContext::getCurrentProject());
+				$this->build->setName(TBGContext::getI18n()->__('%project_name% version 0.0.0', array('%project_name%' => $this->project->getName())));
+				if (TBGContext::getRequest()->getParameter('edition_id') && $edition = TBGContext::factory()->TBGEdition(TBGContext::getRequest()->getParameter('edition_id')))
+				{
+					$this->build->setEdition($edition);
+				}
+			}
+		}
+
 	}

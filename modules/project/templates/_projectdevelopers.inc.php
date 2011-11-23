@@ -121,5 +121,5 @@
 	</div>
 <?php endif; ?>
 <div id="assignees_list">
-	<?php include_template('configuration/projects_assignees', array('project' => $project)); ?>
+	<?php include_template('project/projects_assignees', array('project' => $project)); ?>
 </div>

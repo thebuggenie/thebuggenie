@@ -7,7 +7,7 @@
 			<?php include_template('project/projectheader', array('selected_project' => $selected_project)); ?>
 			<?php include_template('project/projectinfosidebar', array('selected_project' => $selected_project)); ?>
 			<div style="width: 790px;">
-				<?php include_component('configuration/projectconfig', array('project' => $selected_project)); ?>
+				<?php include_component('project/projectconfig', array('project' => $selected_project)); ?>
 			</div>
 		</td>
 	</tr>

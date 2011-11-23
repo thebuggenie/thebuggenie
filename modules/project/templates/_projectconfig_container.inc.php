@@ -8,9 +8,9 @@
 			<?php echo __('Only showing basic project details. More settings available in the main project configuration.'); ?>
 		</h5>
 		<?php /* if (isset($edition)): ?>
-			<?php include_component('configuration/projectedition', array('edition' => $edition, 'selected_section' => $selected_section)); ?>
+			<?php include_component('project/projectedition', array('edition' => $edition, 'selected_section' => $selected_section)); ?>
 		<?php else: ?>
-			<?php include_component('configuration/projectconfig', array('project' => $project, 'section' => $section)); ?>
+			<?php include_component('project/projectconfig', array('project' => $project, 'section' => $section)); ?>
 		<?php endif; */ ?>
 		<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_project_settings', array('project_id' => $project->getID())); ?>" method="post" onsubmit="TBG.Project.submitInfo('<?php echo make_url('configure_project_settings', array('project_id' => $project->getID())); ?>', <?php echo $project->getID(); ?>); return false;" id="project_info">
