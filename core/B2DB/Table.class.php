@@ -608,6 +608,9 @@
 			$crit = $this->getCriteria();
 			$id = $object->getB2DBID();
 			foreach ($this->getColumns() as $column) {
+				if (!array_key_exists('property', $column)) {
+					throw new Exception('Could not match all columns to properties for object of type '.\get_class($object).". Make sure you're not mixing between initializing the table manually and using column (property) annotations");
+				}
 				$property = $column['property'];
 				$value = $this->formatify($object->getB2DBSaveablePropertyValue(mb_strtolower($property)), $column['type']);
 				if ($column['name'] == $this->getIdColumn()) $res_id = $value;
