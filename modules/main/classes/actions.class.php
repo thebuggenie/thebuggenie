@@ -398,6 +398,7 @@
 		 */
 		public function runAbout(TBGRequest $request)
 		{
+			TBGComponentsTable::getTable()->create();
 			$this->forward403unless(TBGContext::getUser()->hasPageAccess('about'));
 		}
 		
@@ -2701,17 +2702,17 @@
 							$options['milestone'] = TBGContext::factory()->TBGMilestone($request['milestone_id']);
 						break;
 					case 'project_build':
-						$template_name = 'configuration/build';
+						$template_name = 'project/build';
 						$options['project'] = TBGContext::factory()->TBGProject($request['project_id']);
 						if ($request->hasParameter('build_id'))
 							$options['build'] = TBGContext::factory()->TBGBuild($request['build_id']);
 						break;
 					case 'project_icons':
-						$template_name = 'configuration/projecticons';
+						$template_name = 'project/projecticons';
 						$options['project'] = TBGContext::factory()->TBGProject($request['project_id']);
 						break;
 					case 'project_workflow':
-						$template_name = 'configuration/projectworkflow';
+						$template_name = 'project/projectworkflow';
 						$options['project'] = TBGContext::factory()->TBGProject($request['project_id']);
 						break;
 					case 'markasduplicate_issue':
@@ -2720,7 +2721,7 @@
 					case 'permissions':
 						break;
 					case 'project_config':
-						$template_name = 'configuration/projectconfig_container';
+						$template_name = 'project/projectconfig_container';
 						$project = TBGContext::factory()->TBGProject($request['project_id']);
 						$options['project'] = $project;
 						$options['section'] = $request->getParameter('section', 'info');

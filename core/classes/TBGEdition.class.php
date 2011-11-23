@@ -18,7 +18,7 @@
 	 *
 	 * @Table(name="TBGEditionsTable")
 	 */
-	class TBGEdition extends TBGReleaseableItem
+	class TBGEdition extends TBGQaLeadableItem
 	{
 		
 		/**
@@ -42,7 +42,7 @@
 		 * Editions components
 		 *
 		 * @var array|TBGComponent
-		 * @Relates(class="TBGComponent", collection=true, manytomany=true, joinclass="TBGEditionComponents")
+		 * @Relates(class="TBGComponent", collection=true, manytomany=true, joinclass="TBGEditionComponentsTable")
 		 */
 		protected $_components;
 		
@@ -60,12 +60,12 @@
 		protected $_description;
 
 		/**
-		 * @Relates(class="TBGUser", collection=true, manytomany=true, joinclass="TBGEditionAssignedUsers")
+		 * @Relates(class="TBGUser", collection=true, manytomany=true, joinclass="TBGEditionAssignedUsersTable")
 		 */
 		protected $_assigned_users;
 		
 		/**
-		 * @Relates(class="TBGTeam", collection=true, manytomany=true, joinclass="TBGEditionAssignedTeams")
+		 * @Relates(class="TBGTeam", collection=true, manytomany=true, joinclass="TBGEditionAssignedTeamsTable")
 		 */
 		protected $_assigned_teams;
 

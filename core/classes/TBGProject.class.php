@@ -18,7 +18,7 @@
 	 *
 	 * @Table(name="TBGProjectsTable")
 	 */
-	class TBGProject extends TBGReleaseableItem
+	class TBGProject extends TBGQaLeadableItem
 	{
 
 		/**
@@ -37,42 +37,6 @@
 		 * @Column(type="string", length=200)
 		 */
 		protected $_name;
-
-		/**
-		 * The lead type for the project, TBGIdentifiableClass::TYPE_USER or TBGIdentifiableClass::TYPE_TEAM
-		 *
-		 * @var TBGTeam
-		 * @Column(type="integer", length=10)
-		 * @Relates(class="TBGTeam")
-		 */
-		protected $_leader_team;
-
-		/**
-		 * The lead for the project
-		 *
-		 * @var TBGUser
-		 * @Column(type="integer", length=10)
-		 * @Relates(class="TBGUser")
-		 */
-		protected $_leader_user;
-
-		/**
-		 * The QA responsible for the project, TBGIdentifiableClass::TYPE_USER or TBGIdentifiableClass::TYPE_TEAM
-		 *
-		 * @var TBGTeam
-		 * @Column(type="integer", length=10)
-		 * @Relates(class="TBGTeam")
-		 */
-		protected $_qa_responsible_team;
-
-		/**
-		 * The QA responsible for the project
-		 *
-		 * @var TBGUser
-		 * @Column(type="integer")
-		 * @Relates(class="TBGUser")
-		 */
-		protected $_qa_responsible_user;
 
 		/**
 		 * The project prefix
@@ -2763,84 +2727,6 @@
 		public function convertIssueStepPerIssuetype(TBGIssuetype $issuetype, array $conversions)
 		{
 			TBGIssuesTable::getTable()->convertIssueStepByIssuetype($this, $issuetype, $conversions);
-		}
-
-		public function getLeader()
-		{
-			if ($this->_leader_team !== null) {
-				$this->_b2dbLazyload('_leader_team');
-			} elseif ($this->_leader_user !== null) {
-				$this->_b2dbLazyload('_leader_user');
-			}
-			
-			if ($this->_leader_team instanceof TBGTeam) {
-				return $this->_leader_team;
-			} elseif ($this->_leader_user instanceof TBGUser) {
-				return $this->_leader_user;
-			} else {
-				return null;
-			}
-		}
-
-		public function hasLeader()
-		{
-			return (bool) ($this->getLeader() instanceof TBGIdentifiable);
-		}
-
-		public function setLeader(TBGIdentifiable $leader)
-		{
-			if ($leader instanceof TBGTeam) {
-				$this->_leader_user = null;
-				$this->_leader_team = $leader;
-			} else {
-				$this->_leader_team = null;
-				$this->_leader_user = $leader;
-			}
-		}
-
-		public function clearLeader()
-		{
-			$this->_leader_team = null;
-			$this->_leader_user = null;
-		}
-
-		public function getQaResponsible()
-		{
-			if ($this->_qa_responsible_team !== null) {
-				$this->_b2dbLazyload('_qa_responsible_team');
-			} elseif ($this->_qa_responsible_user !== null) {
-				$this->_b2dbLazyload('_qa_responsible_user');
-			}
-
-			if ($this->_qa_responsible_team instanceof TBGTeam) {
-				return $this->_qa_responsible_team;
-			} elseif ($this->_qa_responsible_user instanceof TBGUser) {
-				return $this->_qa_responsible_user;
-			} else {
-				return null;
-			}
-		}
-
-		public function hasQaResponsible()
-		{
-			return (bool) ($this->getQaResponsible() instanceof TBGIdentifiable);
-		}
-
-		public function setQaResponsible(TBGIdentifiable $qa_responsible)
-		{
-			if ($qa_responsible instanceof TBGTeam) {
-				$this->_qa_responsible_user = null;
-				$this->_qa_responsible_team = $qa_responsible;
-			} else {
-				$this->_qa_responsible_team = null;
-				$this->_qa_responsible_user = $qa_responsible;
-			}
-		}
-
-		public function clearQaResponsible()
-		{
-			$this->_qa_responsible_team = null;
-			$this->_qa_responsible_user = null;
 		}
 
 		/**
