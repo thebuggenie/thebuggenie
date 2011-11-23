@@ -1,6 +1,8 @@
 <?php if (!$issue->getProject()->isArchived() && ($tbg_user->hasPermission('caneditissue') || $tbg_user->hasPermission('caneditissuebasic'))): ?>
 	<ul id="more_actions_<?php echo $issue->getID(); ?>" style="display: none; position: absolute; width: 300px; top: 0; right: 0; z-index: 1000;" class="simple_list rounded_box white shadowed more_actions_dropdown" onclick="$('more_actions_button').toggleClassName('button-pressed');$('more_actions_<?php echo $issue->getID(); ?>').toggle();">
-		<li class="header"><?php echo __('Additional actions available'); ?></li>
+		<?php if (!isset($multi) || !$multi): ?>
+			<li class="header"><?php echo __('Additional actions available'); ?></li>
+		<?php endif; ?>
 		<?php if ($issue->isOpen()): ?>
 			<li id="more_actions_mark_notblocking_link_<?php echo $issue->getID(); ?>"<?php if (!$issue->isBlocking()): ?> style="display: none;"<?php endif; ?>><?php echo javascript_link_tag(image_tag('icon_unblock.png').__("Mark as not blocking the next release"), array('onclick' => "TBG.Issues.toggleBlocking('".make_url('unblock', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getId()))."', ".$issue->getID().");")); ?></li>
 			<li id="more_actions_mark_blocking_link_<?php echo $issue->getID(); ?>"<?php if ($issue->isBlocking()): ?> style="display: none;"<?php endif; ?>><?php echo javascript_link_tag(image_tag('icon_block.png').__("Mark as blocking the next release"), array('onclick' => "TBG.Issues.toggleBlocking('".make_url('block', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getId()))."', ".$issue->getID().");")); ?></li>
