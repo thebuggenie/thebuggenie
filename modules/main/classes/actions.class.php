@@ -398,7 +398,6 @@
 		 */
 		public function runAbout(TBGRequest $request)
 		{
-			TBGComponentsTable::getTable()->create();
 			$this->forward403unless(TBGContext::getUser()->hasPageAccess('about'));
 		}
 		
@@ -2007,18 +2006,20 @@
 				}
 				catch (Exception $e)
 				{
-					return $this->return404(TBGContext::getI18n()->__('This issue does not exist'));
+					$this->getResponse()->setHttpStatus(400);
+					return $this->renderJSON(array('message' => TBGContext::getI18n()->__('This issue does not exist')));
 				}
 			}
 			else
 			{
-				return $this->return404(TBGContext::getI18n()->__('This issue does not exist'));
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('message' => TBGContext::getI18n()->__('This issue does not exist')));
 			}
 
 			$issue->setBlocking(false);
 			$issue->save();
 			
-			$this->forward(TBGContext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
+			return $this->renderJSON('not blocking');
 		}
 		
 		/**
@@ -2038,18 +2039,20 @@
 				}
 				catch (Exception $e)
 				{
-					return $this->return404(TBGContext::getI18n()->__('This issue does not exist'));
+					$this->getResponse()->setHttpStatus(400);
+					return $this->renderJSON(array('message' => TBGContext::getI18n()->__('This issue does not exist')));
 				}
 			}
 			else
 			{
-				return $this->return404(TBGContext::getI18n()->__('This issue does not exist'));
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('message' => TBGContext::getI18n()->__('This issue does not exist')));
 			}
 
 			$issue->setBlocking();
 			$issue->save();
 			
-			$this->forward(TBGContext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
+			return $this->renderJSON('blocking');
 		}
 		
 		/**

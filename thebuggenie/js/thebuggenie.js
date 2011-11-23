@@ -2645,6 +2645,30 @@ TBG.Issues.toggleFavourite = function(url, issue_id)
 	});
 }
 
+TBG.Issues.toggleBlocking = function(url, issue_id)
+{
+	TBG.Main.Helpers.ajax(url, {
+		loading: {
+			indicator: 'fullpage_backdrop',
+			clear: 'fullpage_backdrop_content',
+			show: 'fullpage_backdrop_indicator'
+		},
+		success: {
+			callback: function(json) {
+				$('more_actions_mark_notblocking_link_'+issue_id).toggle();
+				$('more_actions_mark_blocking_link_'+issue_id).toggle();
+
+				if ($('blocking_div')) {
+					$('blocking_div').toggle();
+				}
+				if ($('issue_'+issue_id)) {
+					$('issue_'+issue_id).toggleClassName('blocking');
+				}
+			}
+		}
+	});
+}
+
 TBG.Issues.Link.add = function(url) {
 	TBG.Main.Helpers.ajax(url, {
 		form: 'attach_link_form',

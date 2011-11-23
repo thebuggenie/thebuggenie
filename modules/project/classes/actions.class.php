@@ -422,7 +422,8 @@
 		public function runTeam(TBGRequest $request)
 		{
 			$this->forward403unless($this->_checkProjectPageAccess('project_team'));
-			$this->assignees = $this->selected_project->getAssignees();
+			$this->assigned_users = $this->selected_project->getAssignedUsers();
+			$this->assigned_teams = $this->selected_project->getAssignedTeams();
 		}
 
 		/**

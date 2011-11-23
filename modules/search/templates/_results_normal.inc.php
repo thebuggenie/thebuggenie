@@ -39,6 +39,7 @@
 					<th class="sc_milestone"<?php if (!in_array('milestone', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Milestone'); ?></th>
 					<th class="sc_last_updated"<?php if (!in_array('last_updated', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Last updated'); ?></th>
 					<th class="sc_comments" style="width: 20px; padding-bottom: 0; text-align: center;<?php if (!in_array('comments', $visible_columns)): ?> display: none;<?php endif; ?>"><?php echo image_tag('icon_comments.png', array('title' => __('Number of user comments on this issue'))); ?></th>
+					<th class="sc_actions nosort" style="width: 20px; padding-bottom: 0; text-align: center;">&nbsp;</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -112,6 +113,12 @@
 					<td class="smaller sc_last_updated" title="<?php echo tbg_formatTime($issue->getLastUpdatedTime(), 21); ?>"<?php if (!in_array('last_updated', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo tbg_formatTime($issue->getLastUpdatedTime(), 20); ?></td>
 					<td class="smaller sc_comments" style="text-align: center;<?php if (!in_array('comments', $visible_columns)): ?> display: none;<?php endif; ?>">
 						<?php echo $issue->countUserComments(); ?>
+					</td>
+					<td class="sc_actions">
+						<div style="position: relative;">
+							<a class="image" id="more_actions_button" href="javascript:void(0);" onclick="$(this).toggleClassName('button-pressed');$('more_actions_<?php echo $issue->getID(); ?>').toggle();"><?php echo image_tag('action_dropdown_small.png', array('title' => __('Show more actions'))); ?></a>
+							<?php include_template('main/issuemoreactions', array('issue' => $issue, 'multi' => true)); ?>
+						</div>
 					</td>
 				</tr>
 	<?php if ($cc == count($issues)): ?>
