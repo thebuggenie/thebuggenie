@@ -125,6 +125,9 @@
 	$routes[] = array('configure_workflow_transition_delete_action', '/configure/workflow/:workflow_id/transition/:transition_id/delete/action/:action_id', 'configuration', 'configureWorkflowTransition', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_WORKFLOW, 'mode' => 'delete_action'));
 	$routes[] = array('configure_workflow_workflows', '/configure/workflow/workflows', 'configuration', 'configureWorkflows', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_WORKFLOW));
 	$routes[] = array('configure_files', '/configure/files', 'configuration', 'configureUploads', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_UPLOADS));
+	$routes[] = array('configure_roles', '/configure/roles', 'configuration', 'configureRoles', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_PERMISSIONS));
+	$routes[] = array('configure_role_permissions', '/configure/role/:role_id/permissions', 'configuration', 'configureRolePermissions', array('mode' => 'edit'));
+	$routes[] = array('configure_role_permissions_list', '/configure/role/:role_id/permissions/list', 'configuration', 'configureRolePermissions', array('mode' => 'list'));
 	$routes[] = array('configure_permissions', '/configure/permissions', 'configuration', 'configurePermissions', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_PERMISSIONS));
 	$routes[] = array('configure_permissions_get_configurator', '/configure/permissions/get/configurator/*', 'configuration', 'getPermissionsConfigurator', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_PERMISSIONS));
 	$routes[] = array('configure_permissions_get_permissions', '/configure/permissions/get/permissions/*', 'configuration', 'getPermissionsInfo', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_PERMISSIONS));

@@ -1447,6 +1447,21 @@
 			return TBGSettings::isPermissive();
 		}
 		
+		public static function getPermissionDetails($permission, $permissions_list = null)
+		{
+			$permissions_list = ($permissions_list === null) ? self::$_available_permissions : $permissions_list;
+			foreach ($permissions_list as $permission_key => $permission_info)
+			{
+				if ($permission_key == $permission) return $permission_info;
+				
+				if (is_array($permission_info['details']) && count($permission_info['details']))
+				{
+					$retval = self::getPermissionDetails($permission, $permissions_info['details']);
+					if ($retval) return $retval;
+				}
+			}
+		}
+
 		protected static function _cacheAvailablePermissions()
 		{
 			if (self::$_available_permissions === null)

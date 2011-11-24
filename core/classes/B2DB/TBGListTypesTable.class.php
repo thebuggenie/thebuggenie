@@ -68,6 +68,18 @@
 			return (array_key_exists($itemtype, self::$_item_cache)) ? self::$_item_cache[$itemtype] : array();
 		}
 
+		public function getAllByItemTypeAndItemdata($itemtype, $itemdata)
+		{
+			$this->_populateItemCache();
+			$items = (array_key_exists($itemtype, self::$_item_cache)) ? self::$_item_cache[$itemtype] : array();
+			foreach ($items as $id => $item)
+			{
+				if ($item->getItemdata() != $itemdata) unset($items[$id]);
+			}
+
+			return $items;
+		}
+
 		public function deleteByTypeAndId($type, $id)
 		{
 			$crit = $this->getCriteria();

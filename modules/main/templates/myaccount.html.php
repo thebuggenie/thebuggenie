@@ -15,7 +15,7 @@
 		</span>
 	</div>
 	<div class="profile_buttons">
-		<div class="button_group">
+		<div class="button-group">
 			<a style="<?php if (!$tbg_user->usesGravatar()): ?>display: none; <?php endif; ?>" id="gravatar_change" href="http://en.gravatar.com/emails/" class="button button-silver">
 				<?php echo image_tag('gravatar.png'); ?>
 				<?php echo __('Change my profile picture / avatar'); ?>

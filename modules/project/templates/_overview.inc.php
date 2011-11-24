@@ -22,7 +22,7 @@
 			<span class="faded_out" style="font-weight: normal;"><?php echo __('No documentation URL provided'); ?></span>
 		<?php endif; ?>
 	</div>
-	<nav class="button_group">
+	<nav class="button-group">
 <?php if ($tbg_user->canSearchForIssues() && ($tbg_user->hasPageAccess('project_issues', $project->getID()) || $tbg_user->hasPageAccess('project_allpages', $project->getID()))) echo link_tag(make_url('project_open_issues', array('project_key' => $project->getKey())), __('Issues'), array('class' => 'button button-silver')); ?>
 <?php if ($tbg_user->hasPageAccess('project_roadmap', $project->getID()) || $tbg_user->hasPageAccess('project_allpages', $project->getID())) echo link_tag(make_url('project_roadmap', array('project_key' => $project->getKey())), __('Show roadmap'), array('class' => 'button button-silver')); ?>
 <?php TBGEvent::createNew('core', 'project_overview_item_links', $project)->trigger(); ?>

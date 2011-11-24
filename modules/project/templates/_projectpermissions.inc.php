@@ -6,6 +6,14 @@
 	<div class="content faded_out">
 		<p><?php echo __("These roles acts as permission templates and can be applied when assigning people (or teams) to the project. When people (or teams) are unassigned from the project they will keep all permissions applied by any roles until their last role in the project is unassigned. Read more about roles and permissions in the %online_documentation%", array('%online_documentation%' => link_tag('http://issues.thebuggenie.com/wiki/TheBugGenie:RolesAndPermissions', '<b>'.__('online documentation').'</b>'))); ?></p>
 	</div>
+	<ul id="roles_list" class="simple_list" style="margin-top: 10px;">
+		<?php foreach (TBGRole::getAll() as $role): ?>
+			<?php include_template('configuration/role', array('role' => $role)); ?>
+		<?php endforeach; ?>
+		<?php foreach (TBGRole::getByProjectID($project->getID()) as $role): ?>
+			<?php include_template('configuration/role', array('role' => $role)); ?>
+		<?php endforeach; ?>
+	</ul>
 </div>
 <div class="permission_list" id="project_settings_advanced_permissions" style="display: none;">
 	<h3>

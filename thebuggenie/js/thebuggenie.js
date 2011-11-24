@@ -42,6 +42,7 @@ var TBG = {
 	},
 	Config: {
 		Permissions: {},
+		Roles: {},
 		User: {},
 		Collection: {},
 		Issuefields: {
@@ -2073,6 +2074,26 @@ TBG.Config.Permissions.set = function(url, field) {
 };
 
 TBG.Config.Permissions.getOptions = function(url, field) {
+	$(field).toggle();
+	if ($(field).childElements().size() == 0) {
+		TBG.Main.Helpers.ajax(url, {
+			loading: {indicator: field + '_indicator'},
+			success: {update: field}
+		});
+	}
+}
+
+TBG.Config.Roles.getPermissions = function(url, field) {
+	$(field).toggle();
+	if ($(field).childElements().size() == 0) {
+		TBG.Main.Helpers.ajax(url, {
+			loading: {indicator: field + '_indicator'},
+			success: {update: field}
+		});
+	}
+}
+
+TBG.Config.Roles.getPermissionsEdit = function(url, field) {
 	$(field).toggle();
 	if ($(field).childElements().size() == 0) {
 		TBG.Main.Helpers.ajax(url, {

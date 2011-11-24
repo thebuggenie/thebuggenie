@@ -4,7 +4,7 @@
 		<div id="comment_<?php echo $comment->getID(); ?>_header" class="commentheader">
 			<a href="#comment_<?php echo $comment->getTargetType(); ?>_<?php echo $comment->getTargetID(); ?>_<?php echo $comment->getID(); ?>" class="comment_hash">#<?php echo $comment->getCommentNumber(); ?></a>
 			<?php if (($comment->canUserEditComment() || $comment->canUserDeleteComment()) && ((TBGContext::isProjectContext() && !TBGContext::getCurrentProject()->isArchived()) || !TBGContext::isProjectContext())) : ?>
-				<div class="commenttools button_group">
+				<div class="commenttools button-group">
 					<?php if ($comment->canUserEditComment()): ?><a href="javascript:void(0)" class="button button-silver" onclick="$('comment_view_<?php echo $comment->getID(); ?>').hide();$('comment_edit_<?php echo $comment->getID(); ?>').show();"><?php echo image_tag('icon_edit.png', array('title' => __('Edit'))); ?><?php echo __('Edit'); ?></a><?php endif; ?>
 					<?php if ($comment->canUserDeleteComment()): ?><a href="javascript:void(0)" class="button button-silver" onclick="$('comment_delete_confirm_<?php echo $comment->getID(); ?>').toggle();"><?php echo image_tag('icon_comment_delete.png', array('title' => __('Delete'))); ?><?php echo __('Delete'); ?></a><?php endif; ?>
 				</div>

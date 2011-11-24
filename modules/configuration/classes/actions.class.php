@@ -11,6 +11,8 @@
 		 */
 		public function preExecute(TBGRequest $request, $action)
 		{
+			if (!$request->hasParameter('section')) return;
+
 			// forward 403 if you're not allowed here
 			if ($request->isAjaxCall() == false) // for avoiding empty error when an user disables himself its own permissions
 			{
@@ -19,9 +21,12 @@
 			
 			$this->access_level = $this->getAccessLevel($request['section'], 'core');
 			
-			$this->getResponse()->setPage('config');
-			TBGContext::loadLibrary('ui');
-			$this->getResponse()->addBreadcrumb(TBGContext::getI18n()->__('Configure The Bug Genie'), TBGContext::getRouting()->generate('configure'), $this->getResponse()->getPredefinedBreadcrumbLinks('main_links'));
+			if (!$request->isAjaxCall())
+			{
+				$this->getResponse()->setPage('config');
+				TBGContext::loadLibrary('ui');
+				$this->getResponse()->addBreadcrumb(TBGContext::getI18n()->__('Configure The Bug Genie'), TBGContext::getRouting()->generate('configure'), $this->getResponse()->getPredefinedBreadcrumbLinks('main_links'));
+			}
 			
 		}
 		
@@ -3222,6 +3227,33 @@
 				{
 					TBGContext::setMessage('scope_save_error', $e->getMessage());
 				}
+			}
+		}
+
+		public function runConfigureRolePermissions(TBGRequest $request)
+		{
+			$role = new TBGRole($request['role_id']);
+			if ($role->isSystemRole())
+			{
+				$access_level = $this->getAccessLevel($request['section'], 'core');
+			}
+			else
+			{
+				$access_level = ($this->getUser()->canManageProject($role->getProject())) ? TBGSettings::ACCESS_FULL : TBGSettings::ACCESS_READ;
+			}
+
+			switch ($request['mode'])
+			{
+				case 'list':
+					return $this->renderTemplate('configuration/rolepermissionslist', array('role' => $role));
+					break;
+				case 'edit':
+					if (!$access_level == TBGSettings::ACCESS_FULL)
+					{
+						$this->getResponse()->setHttpStatus(400);
+						return $this->renderJSON(array('message' => $this->getI18n()->__('You do not have access to edit these permissions')));
+					}
+					return $this->renderTemplate('configuration/rolepermissionsedit', array('role' => $role));
 			}
 		}
 

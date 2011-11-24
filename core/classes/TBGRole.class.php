@@ -46,6 +46,22 @@
 			return TBGListTypesTable::getTable()->getAllByItemType(self::ROLE);
 		}
 
+		public static function getByProjectID($project_id)
+		{
+			return TBGListTypesTable::getTable()->getAllByItemTypeAndItemdata(self::ROLE, $project_id);
+		}
+
+		public function isSystemRole()
+		{
+			return false;
+			return !(bool) $this->getItemdata();
+		}
+
+		public function getProject()
+		{
+			return TBGContext::getFactory()->TBGProject((int) $this->getItemdata());
+		}
+
 		protected function _populatePermissions()
 		{
 			if ($this->_permissions === null)

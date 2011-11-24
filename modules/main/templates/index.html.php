@@ -22,7 +22,7 @@
 			<?php if ($show_project_list): ?>
 				<div class="project_overview">
 					<div class="header">
-						<div class="button_group">
+						<div class="button-group">
 							<?php echo link_tag(make_url('configure_projects'), __('Manage projects'), array('class' => 'button button-silver')); ?>
 							<a class="button button-silver" href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'archived_projects')); ?>');"><?php echo __('Show archived projects'); ?></a>
 						</div>
