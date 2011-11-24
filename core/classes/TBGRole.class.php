@@ -11,7 +11,7 @@
 		protected $_itemtype = TBGDatatype::ROLE;
 
 		/**
-		 * @Relates(collection=true, joinclass="TBGRolePermissionsTable", foreign_column="permission")
+		 * @Relates(collection=true, joinclass="TBGRolePermissionsTable", foreign_column="role_id", column="permission")
 		 */
 		protected $_permissions = null;
 
@@ -29,10 +29,7 @@
 				$role->setName($name);
 				$role->setScope($scope);
 				$role->save();
-				foreach ($permissions as $permission)
-				{
-					$this->getB2DBTable()->addPermissionToRole($this->getID(), $permission);
-				}
+				$role->setPermissions($permissions);
 			}
 		}
 		
@@ -43,7 +40,7 @@
 		 */		
 		public static function getAll()
 		{
-			return TBGListTypesTable::getTable()->getAllByItemType(self::ROLE);
+			return TBGListTypesTable::getTable()->getAllByItemTypeAndItemdata(self::ROLE, null);
 		}
 
 		public static function getByProjectID($project_id)
@@ -53,13 +50,17 @@
 
 		public function isSystemRole()
 		{
-			return false;
 			return !(bool) $this->getItemdata();
 		}
 
 		public function getProject()
 		{
-			return TBGContext::getFactory()->TBGProject((int) $this->getItemdata());
+			return ($this->getItemdata()) ? TBGContext::factory()->TBGProject((int) $this->getItemdata()) : null;
+		}
+
+		public function setProject($project)
+		{
+			$this->setItemdata((is_object($project)) ? $project->getID() : $project);
 		}
 
 		protected function _populatePermissions()
@@ -70,10 +71,25 @@
 			}
 		}
 
+		public function setPermissions($permissions)
+		{
+			TBGRolePermissionsTable::getTable()->clearPermissionsForRole($this->getID());
+			foreach ($permissions as $permission)
+			{
+				TBGRolePermissionsTable::getTable()->addPermissionForRole($this->getID(), $permission);
+			}
+		}
+
 		public function getPermissions()
 		{
 			$this->_populatePermissions();
 			return $this->_permissions;
+		}
+
+		public function hasPermission($permission_key)
+		{
+			$permissions = $this->getPermissions();
+			return in_array($permission_key, $permissions);
 		}
 
 	}

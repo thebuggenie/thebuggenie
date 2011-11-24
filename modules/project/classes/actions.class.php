@@ -2277,4 +2277,23 @@
 			}
 		}
 
+		public function runAddRole(TBGRequest $request)
+		{
+			if ($this->getUser()->canManageProject($this->selected_project))
+			{
+				if ($request['role_name'])
+				{
+					$role = new TBGRole();
+					$role->setName($request['role_name']);
+					$role->setProject($this->selected_project);
+					$role->save();
+					return $this->renderJSON(array('content' => $this->getTemplateHTML('configuration/role', array('role' => $role))));
+				}
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('message' => $this->getI18n()->__('You must provide a role name')));
+			}
+			$this->getResponse()->setHttpStatus(400);
+			return $this->renderJSON(array('message' => $this->getI18n()->__('You do not have access to create new project roles')));
+		}
+
 	}

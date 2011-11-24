@@ -165,12 +165,16 @@
 
 		public function componentProjecticons()
 		{
-
 		}
 
 		public function componentProjectworkflow()
 		{
+		}
 
+		public function componentProjectPermissions()
+		{
+			$this->roles = TBGRole::getAll();
+			$this->project_roles = TBGRole::getByProjectID($this->project->getID());
 		}
 
 		public function componentBuildbox()

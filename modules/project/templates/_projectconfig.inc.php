@@ -14,8 +14,8 @@
 	<div id="tab_other_pane"<?php if ($selected_tab != 'other'): ?> style="display: none;"<?php endif; ?>>
 		<?php include_template('project/projectother', array('access_level' => $access_level, 'project' => $project)); ?>
 	</div>
-	<div id="tab_permissions_pane" style="text-align: left;<?php if ($selected_tab != 'permissions'): ?> display: none;<?php endif; ?>" class="permission_list" style="">
-		<?php include_template('project/projectpermissions', array('access_level' => $access_level, 'project' => $project)); ?>
+	<div id="tab_permissions_pane" style="text-align: left;<?php if ($selected_tab != 'permissions'): ?> display: none;<?php endif; ?>">
+		<?php include_component('project/projectpermissions', array('access_level' => $access_level, 'project' => $project)); ?>
 	</div>
 	<?php TBGEvent::createNew('core', 'config_project_panes')->trigger(array('selected_tab' => $selected_tab, 'access_level' => $access_level, 'project' => $project)); ?>
 </div>

@@ -3253,6 +3253,11 @@
 						$this->getResponse()->setHttpStatus(400);
 						return $this->renderJSON(array('message' => $this->getI18n()->__('You do not have access to edit these permissions')));
 					}
+					if ($request->isPost())
+					{
+						$role->setPermissions(array_keys($request['permissions']));
+						return $this->renderJSON(array('message' => $this->getI18n()->__('Permissions updated'), 'permissions_count' => count($request['permissions'])));
+					}
 					return $this->renderTemplate('configuration/rolepermissionsedit', array('role' => $role));
 			}
 		}

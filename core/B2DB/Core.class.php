@@ -848,7 +848,8 @@
 						$manytomany = (bool) $annotation->getProperty('manytomany');
 						$joinclass = $annotation->getProperty('joinclass');
 						$foreign_column = $annotation->getProperty('foreign_column');
-						self::$_cached_entity_classes[$classname]['relations'][$property_name] = array('collection' => $collection, 'property' => $property_name, 'foreign_column' => $foreign_column, 'manytomany' => $manytomany, 'joinclass' => $joinclass, 'class' => $annotation->getProperty('class'));
+						$f_column = $annotation->getProperty('column');
+						self::$_cached_entity_classes[$classname]['relations'][$property_name] = array('collection' => $collection, 'property' => $property_name, 'foreign_column' => $foreign_column, 'manytomany' => $manytomany, 'joinclass' => $joinclass, 'class' => $annotation->getProperty('class'), 'column' => $f_column);
 						if (!$collection) {
 							if (!$column_annotation) {
 								throw new Exception("The property '{$property_name}' in class '{$classname}' is missing an @Column annotation, or is improperly marked as not being a collection");

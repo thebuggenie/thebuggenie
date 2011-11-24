@@ -33,6 +33,7 @@ var TBG = {
 			Story: {},
 			Sprint: {}
 		},
+		Roles: {},
 		Build: {},
 		Component: {},
 		Edition: {
@@ -2087,6 +2088,7 @@ TBG.Config.Roles.getPermissions = function(url, field) {
 	$(field).toggle();
 	if ($(field).childElements().size() == 0) {
 		TBG.Main.Helpers.ajax(url, {
+			url_method: 'get',
 			loading: {indicator: field + '_indicator'},
 			success: {update: field}
 		});
@@ -2097,10 +2099,34 @@ TBG.Config.Roles.getPermissionsEdit = function(url, field) {
 	$(field).toggle();
 	if ($(field).childElements().size() == 0) {
 		TBG.Main.Helpers.ajax(url, {
+			url_method: 'get',
 			loading: {indicator: field + '_indicator'},
 			success: {update: field}
 		});
 	}
+}
+
+TBG.Config.Roles.setPermissions = function(url, role_id) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'role_' + role_id + '_form',
+		loading: {indicator: 'role_' + role_id + '_form_indicator'},
+		success: {
+			hide: 'role_' + role_id + '_permissions_edit',
+			clear: 'role_' + role_id + '_permissions_list',
+			update: {element: 'role_'+role_id+'_permissions_count', from: 'permissions_count'}
+		}
+	});
+}
+
+TBG.Project.Roles.add = function(url) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'new_project_role_form',
+		loading: {indicator: 'new_project_role_form_indicator'},
+		success: {
+			update: {element: 'project_roles_list', insertion: true},
+			hide: ['project_roles_no_roles', 'new_project_role']
+		}
+	});
 }
 
 TBG.Config.User.show = function(url, findstring) {

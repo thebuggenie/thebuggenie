@@ -31,6 +31,7 @@
 	$routes[] = array('project_planning', '/:project_key/planning', 'project', 'planning');
 	$routes[] = array('project_milestone', '/:project_key/milestone', 'project', 'milestone');
 	$routes[] = array('project_settings', '/:project_key/settings', 'project', 'settings');
+	$routes[] = array('project_create_role', '/:project_key/roles/new', 'project', 'addRole');
 	$routes[] = array('project_releases', '/:project_key/releases', 'project', 'releases');
 	$routes[] = array('project_release_center', '/:project_key/release_center', 'project', 'releaseCenter');
 	$routes[] = array('project_milestone_details', '/:project_key/milestone/:milestone_id/details/*', 'project', 'milestoneDetails');

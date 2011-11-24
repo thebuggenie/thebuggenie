@@ -889,8 +889,8 @@
 				$items = array();
 				$resultset = $this->doSelect($criteria);
 				if ($resultset) {
-					$column = "{$this->getB2DBName()}.".$relation_details['foreign_column'];
-					while ($row = $resulset->getNextRow()) {
+					$column = "{$this->getB2DBName()}.".$relation_details['column'];
+					while ($row = $resultset->getNextRow()) {
 						$items[] = $row->get($column);
 					}
 				}
