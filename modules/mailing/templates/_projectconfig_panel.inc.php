@@ -33,7 +33,7 @@
 		</div>
 	<?php else: ?>
 		<h4>
-			<div class="button button-green" style="float: right;"><span onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'mailing_editincomingemailaccount', 'project_id' => $project->getId())); ?>');"><?php echo __('Add new account'); ?></span></div>
+			<div class="button button-green" style="float: right;" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'mailing_editincomingemailaccount', 'project_id' => $project->getId())); ?>');"><?php echo __('Add new account'); ?></div>
 			<?php echo __('Incoming email accounts'); ?>
 		</h4>
 		<div id="mailing_incoming_accounts">
