@@ -72,17 +72,16 @@
 					break;
 				case TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES:
 					$filters['state'] = array('operator' => '=', 'value' => TBGIssue::STATE_OPEN);
-					$filters['assigned_type'] = array('operator' => '=', 'value' => TBGIdentifiableTypeClass::TYPE_USER);
-					$filters['assigned_to'] = array('operator' => '=', 'value' => TBGContext::getUser()->getID());
+					$filters['assignee_user'] = array('operator' => '=', 'value' => TBGContext::getUser()->getID());
 					$groupby = 'issuetype';
 					break;
 				case TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES:
 					$filters['state'] = array('operator' => '=', 'value' => TBGIssue::STATE_OPEN);
-					$filters['assigned_type'] = array('operator' => '=', 'value' => TBGIdentifiableTypeClass::TYPE_TEAM);
 					foreach (TBGContext::getUser()->getTeams() as $team_id => $team)
 					{
-						$filters['assigned_to'][] = array('operator' => '=', 'value' => $team_id);
+						$filters['assignee_team'][] = array('operator' => '=', 'value' => $team_id);
 					}
+					$filters['assignee_team'][] = array('operator' => '!=', 'value' => 0);
 					$groupby = 'issuetype';
 					break;
 			}

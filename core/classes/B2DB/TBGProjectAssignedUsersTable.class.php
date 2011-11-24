@@ -32,7 +32,7 @@
 		const USER_ID = 'projectassignedusers.uid';
 		const PROJECT_ID = 'projectassignedusers.project_id';
 		const ROLE_ID = 'projectassignedusers.role_id';
-		
+
 		public function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
@@ -41,7 +41,7 @@
 			parent::_addForeignKeyColumn(self::ROLE_ID, TBGListTypesTable::getTable());
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable());
 		}
-		
+
 		public function deleteByProjectID($project_id)
 		{
 			$crit = $this->getCriteria();
@@ -67,6 +67,26 @@
 				return true;
 			}
 			return false;
+		}
+
+		public function getProjectsByUserID($user_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addSelectionColumn(self::PROJECT_ID, 'pid');
+			$crit->addWhere(self::USER_ID, $user_id);
+			$projects = array();
+
+			if ($res = $this->doSelect($crit, 'none'))
+			{
+				while ($row = $res->getNextRow())
+				{
+					$pid = $row['pid'];
+					if (!array_key_exists($pid, $projects))
+						$projects[$pid] = new TBGProject($pid);
+				}
+			}
+
+			return $projects;
 		}
 
 		public function removeUserFromProject($project_id, $user)
