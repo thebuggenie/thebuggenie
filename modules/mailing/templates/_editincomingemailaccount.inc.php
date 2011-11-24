@@ -17,6 +17,9 @@
 		<?php echo ($account->getId()) ? __('Edit incoming email account') : __('Add new incoming email account'); ?>
 	</div>
 	<div id="backdrop_detail_content">
+		<div class="content" style="padding: 4px;">
+			<?php echo __('The Bug Genie can check email accounts and create issues from incoming emails. Set up a new account here, and check the %online_documentation% for more information.', array('%online_documentation%' => link_tag('http://issues.thebuggenie.com/wiki/TheBugGenie:IncomingEmail', '<b>'.__('online documentation').'</b>'))); ?>
+		</div>
 		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" id="incoming_email_account_form" action="<?php echo make_url('mailing_save_incoming_account', array('project_key' => $project->getKey())); ?>" method="post" id="build_form" onsubmit="TBG.Modules.mailing.saveIncomingEmailAccount('<?php echo make_url('mailing_save_incoming_account', array('project_key' => $project->getKey())); ?>');return false;">
 			<input type="hidden" name="account_id" value="<?php echo $account->getID(); ?>">
 			<table style="clear: both; width: 780px;" class="padded_table" cellpadding=0 cellspacing=0>
@@ -25,12 +28,20 @@
 					<td style="width: 580px;"><input type="text" name="name" id="account_name" style="width: 570px;" value="<?php echo $account->getName(); ?>"></td>
 				</tr>
 				<tr>
+					<td>&nbsp;</td>
+					<td class="faded_out"><?php echo __('Enter a short, descriptive name for this incoming email account'); ?></td>
+				</tr>
+				<tr>
 					<td><label for="account_servername"><?php echo __('Server name:'); ?></label></td>
 					<td><input type="text" name="servername" id="account_servername" style="width: 300px;" value="<?php echo $account->getServer(); ?>"></td>
 				</tr>
 				<tr>
+					<td>&nbsp;</td>
+					<td class="faded_out"><?php echo __('Enter the name of the incoming email server'); ?></td>
+				</tr>
+				<tr>
 					<td><label for="account_port"><?php echo __('Port number:'); ?></label></td>
-					<td><input type="text" name="port" id="account_port" style="width: 100px;" value="<?php echo $account->getPort(); ?>"></td>
+					<td><input type="text" name="port" id="account_port" style="width: 50px;" value="<?php echo $account->getPort(); ?>"></td>
 				</tr>
 				<tr>
 					<td><label for="account_username"><?php echo __('Email username:'); ?></label></td>
@@ -64,6 +75,10 @@
 						</select>
 					</td>
 				</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td class="faded_out"><?php echo __('Any issues created will be set to this issuetype, and its first workflow step will be applied'); ?></td>
+				</tr>
 			</table>
 			<table style="clear: both; width: 780px;" class="padded_table" cellpadding=0 cellspacing=0>
 				<tr>
@@ -79,9 +94,7 @@
 							<input type="hidden" name="account_id" value="<?php echo $account->getID(); ?>">
 							<input type="hidden" name="project_id" value="<?php echo $project->getID(); ?>">
 						<?php endif; ?>
-						<div class="button button-green" style="float: right;">
-							<input type="submit" value="<?php echo ($account->getId()) ? __('Save changes') : __('Add account'); ?>">
-						</div>
+						<input type="submit" class="button button-green" style="float: right;" value="<?php echo ($account->getId()) ? __('Save changes') : __('Add account'); ?>">
 						<span id="add_account_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
 					</td>
 				</tr>
