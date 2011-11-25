@@ -1255,7 +1255,8 @@
 				$this->selected_project = TBGContext::factory()->TBGProject($request['project_id']);
 				$this->users = TBGUser::findUsers($request['find_by'], 10);
 				$this->teams = TBGTeam::findTeams($request['find_by']);
-				$this->roles = TBGRole::getAll();
+				$this->global_roles = TBGRole::getAll();
+				$this->project_roles = TBGRole::getByProjectID($this->selected_project->getID());
 			}
 			else
 			{

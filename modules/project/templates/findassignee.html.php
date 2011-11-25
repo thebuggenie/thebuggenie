@@ -8,13 +8,20 @@
 				<div id="assign_team_<?php echo $team->getID(); ?>">
 					<label for="role_team_<?php echo $team->getID(); ?>"><?php echo image_tag('icon_team.png', array('style' => "width: 16px; height: 16px; margin: 2px 5px -2px 0;")); ?><?php echo $team->getName(); ?>:</label>&nbsp;
 					<select name="role" id="role_team_<?php echo $team->getID(); ?>">
-						<?php foreach ($roles as $role): ?>
-							<option value="<?php echo $role->getId(); ?>"><?php echo $role->getName(); ?></option>
-						<?php endforeach ;?>
+						<optgroup label="<?php echo __('Globally available roles'); ?>">
+							<?php foreach ($global_roles as $role): ?>
+								<option value="<?php echo $role->getId(); ?>"><?php echo $role->getName(); ?></option>
+							<?php endforeach ;?>
+						</optgroup>
+						<optgroup label="<?php echo __('Project-specific roles'); ?>">
+							<?php foreach ($project_roles as $role): ?>
+								<option value="<?php echo $role->getId(); ?>"><?php echo $role->getName(); ?></option>
+							<?php endforeach ;?>
+						</optgroup>
 					</select>
-					<input type="hidden" name="target" value="project_<?php echo $theProject->getID(); ?>">
+					<input type="hidden" name="target" value="project_<?php echo $selected_project->getID(); ?>">
 					&nbsp;
-					<button onclick="TBG.Project.assign('<?php echo make_url('configure_project_add_assignee', array('project_id' => $theProject->getID(), 'assignee_type' => 'team', 'assignee_id' => $team->getID())); ?>', 'assign_team_<?php echo $team->getID(); ?>');return false;"><?php echo __('Add team'); ?></button>
+					<button onclick="TBG.Project.assign('<?php echo make_url('configure_project_add_assignee', array('project_id' => $selected_project->getID(), 'assignee_type' => 'team', 'assignee_id' => $team->getID())); ?>', 'assign_team_<?php echo $team->getID(); ?>');return false;"><?php echo __('Add team'); ?></button>
 				</div>
 			<?php endforeach; ?>
 		</div>
@@ -28,13 +35,20 @@
 				 <div id="assign_user_<?php echo $user->getID(); ?>">
 					<label for="role_<?php echo $user->getID(); ?>"><?php echo image_tag($user->getAvatarURL(), array('style' => "width: 16px; height: 16px; margin: 2px 5px -2px 0"), true); ?><?php echo $user->getNameWithUsername(); ?>:</label>&nbsp;
 					<select name="role" id="role_<?php echo $user->getID(); ?>">
-						<?php foreach ($roles as $role): ?>
-							<option value="<?php echo $role->getId(); ?>"><?php echo $role->getName(); ?></option>
-						<?php endforeach ;?>
+						<optgroup label="<?php echo __('Globally available roles'); ?>">
+							<?php foreach ($global_roles as $role): ?>
+								<option value="<?php echo $role->getId(); ?>"><?php echo $role->getName(); ?></option>
+							<?php endforeach ;?>
+						</optgroup>
+						<optgroup label="<?php echo __('Project-specific roles'); ?>">
+							<?php foreach ($project_roles as $role): ?>
+								<option value="<?php echo $role->getId(); ?>"><?php echo $role->getName(); ?></option>
+							<?php endforeach ;?>
+						</optgroup>
 					</select>
-					<input type="hidden" name="target" value="project_<?php echo $theProject->getID(); ?>">
+					<input type="hidden" name="target" value="project_<?php echo $selected_project->getID(); ?>">
 					&nbsp;
-					<button onclick="TBG.Project.assign('<?php echo make_url('configure_project_add_assignee', array('project_id' => $theProject->getID(), 'assignee_type' => 'user', 'assignee_id' => $user->getID())); ?>', 'assign_user_<?php echo $user->getID(); ?>');return false;"><?php echo __('Add user'); ?></button>
+					<button onclick="TBG.Project.assign('<?php echo make_url('configure_project_add_assignee', array('project_id' => $selected_project->getID(), 'assignee_type' => 'user', 'assignee_id' => $user->getID())); ?>', 'assign_user_<?php echo $user->getID(); ?>');return false;"><?php echo __('Add user'); ?></button>
 				</div>
 			<?php endforeach; ?>
 		</div>
