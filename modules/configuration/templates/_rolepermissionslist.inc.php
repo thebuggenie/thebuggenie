@@ -3,7 +3,7 @@
 	<?php foreach ($role->getPermissions() as $permission): ?>
 		<?php $permission_details = TBGContext::getPermissionDetails($permission); ?>
 		<li>
-			<?php echo image_tag('action_ok.png', array('style' => 'margin: 2px 5px -2px 0;')).$permission_details['description']; ?>
+			<?php echo image_tag('action_ok.png', array('style' => 'margin: 2px 5px -2px 0;')); ?><?php echo (array_key_exists('description', $permission_details)) ? $permission_details['description'] : $permission; ?>
 		</li>
 	<?php endforeach; ?>
 <?php else: ?>

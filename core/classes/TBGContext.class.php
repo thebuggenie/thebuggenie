@@ -1451,14 +1451,12 @@
 		{
 			self::_cacheAvailablePermissions();
 			$permissions_list = ($permissions_list === null) ? self::$_available_permissions : $permissions_list;
-			if (!is_array($permissions_list)) {
-				var_dump($permissions_list);die();
-			}
 			foreach ($permissions_list as $permission_key => $permission_info)
 			{
+				if (is_numeric($permission_key)) return null;
 				if ($permission_key == $permission) return $permission_info;
 				
-				if (in_array($permission_key, array_keys(self::$_available_permissions)) || array_key_exists('details', $permission_info) && is_array($permission_info['details']) && count($permission_info['details']))
+				if (in_array($permission_key, array_keys(self::$_available_permissions)) || (array_key_exists('details', $permission_info) && is_array($permission_info['details']) && count($permission_info['details'])))
 				{
 					$p_info = (in_array($permission_key, array_keys(self::$_available_permissions))) ? $permission_info : $permission_info['details'];
 					$retval = self::getPermissionDetails($permission, $p_info);
