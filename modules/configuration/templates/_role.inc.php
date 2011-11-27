@@ -1,7 +1,7 @@
 <?php if ($role instanceof TBGRole): ?>
 	<li class="rounded_box lightgrey" style="padding: 3px 5px; margin-bottom: 5px;">
 		<div class="button-group" style="float: right; margin-left: 10px;">
-			<?php echo javascript_link_tag(__('Show/hide permissions'), array('onclick' => "TBG.Config.Roles.getPermissions('".make_url('configure_role_permissions_list', array('role_id' => $role->getID()))."', 'role_{$role->getID()}_permissions_list');", 'class' => 'button button-silver')); ?>
+			<?php echo javascript_link_tag(__('Details'), array('onclick' => "TBG.Config.Roles.getPermissions('".make_url('configure_role_permissions_list', array('role_id' => $role->getID()))."', 'role_{$role->getID()}_permissions_list');", 'class' => 'button button-silver')); ?>
 			<?php if (!TBGContext::isProjectContext() || !$role->isSystemRole()): ?>
 				<?php echo javascript_link_tag(__('Edit'), array('onclick' => "TBG.Config.Roles.getPermissionsEdit('".make_url('configure_role_permissions', array('role_id' => $role->getID()))."', 'role_{$role->getID()}_permissions_edit');", 'class' => 'button button-silver')); ?>
 			<?php endif; ?>
