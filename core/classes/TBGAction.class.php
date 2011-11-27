@@ -177,7 +177,7 @@
 				{
 					TBGContext::setMessage('login_message_err', $message);
 					TBGContext::setMessage('login_force_redirect', true);
-					TBGContext::setMessage('login_referer', TBGContext::getRouting()->generate(TBGContext::getRouting()->getCurrentRouteName()));
+					TBGContext::setMessage('login_referer', TBGContext::getRouting()->generate(TBGContext::getRouting()->getCurrentRouteName(), TBGContext::getRequest()->getParameters()));
 					$this->forward(TBGContext::getRouting()->generate('login_page'), 403);
 				}
 				else
