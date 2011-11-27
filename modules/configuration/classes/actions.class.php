@@ -3230,7 +3230,7 @@
 			}
 		}
 
-		public function runConfigureRolePermissions(TBGRequest $request)
+		public function runConfigureRole(TBGRequest $request)
 		{
 			$role = new TBGRole($request['role_id']);
 			if ($role->isSystemRole())
@@ -3244,7 +3244,7 @@
 
 			switch ($request['mode'])
 			{
-				case 'list':
+				case 'list_permissions':
 					return $this->renderTemplate('configuration/rolepermissionslist', array('role' => $role));
 					break;
 				case 'edit':
@@ -3255,10 +3255,20 @@
 					}
 					if ($request->isPost())
 					{
+						$role->setName($request['name']);
+						$role->save();
 						$role->setPermissions(array_keys($request['permissions']));
-						return $this->renderJSON(array('message' => $this->getI18n()->__('Permissions updated'), 'permissions_count' => count($request['permissions'])));
+						return $this->renderJSON(array('message' => $this->getI18n()->__('Permissions updated'), 'permissions_count' => count($request['permissions']), 'role_name' => $role->getName()));
 					}
 					return $this->renderTemplate('configuration/rolepermissionsedit', array('role' => $role));
+				case 'delete':
+					if (!$access_level == TBGSettings::ACCESS_FULL || !$request->isPost())
+					{
+						$this->getResponse()->setHttpStatus(400);
+						return $this->renderJSON(array('message' => $this->getI18n()->__('This role cannot be removed')));
+					}
+					$role->delete();
+					return $this->renderJSON(array('message' => $this->getI18n()->__('Role deleted')));
 			}
 		}
 

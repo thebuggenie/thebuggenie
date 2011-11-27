@@ -48,6 +48,16 @@
 			return TBGListTypesTable::getTable()->getAllByItemTypeAndItemdata(self::ROLE, $project_id);
 		}
 
+		protected function _preDelete()
+		{
+			TBGProjectAssignedTeamsTable::getTable()->deleteByRoleID($this->getID());
+			TBGProjectAssignedUsersTable::getTable()->deleteByRoleID($this->getID());
+			TBGEditionAssignedTeamsTable::getTable()->deleteByRoleID($this->getID());
+			TBGEditionAssignedUsersTable::getTable()->deleteByRoleID($this->getID());
+			TBGComponentAssignedTeamsTable::getTable()->deleteByRoleID($this->getID());
+			TBGComponentAssignedUsersTable::getTable()->deleteByRoleID($this->getID());
+		}
+
 		public function isSystemRole()
 		{
 			return !(bool) $this->getItemdata();

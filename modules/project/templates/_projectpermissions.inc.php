@@ -29,7 +29,7 @@
 		<?php foreach ($project_roles as $role): ?>
 			<?php include_template('configuration/role', array('role' => $role)); ?>
 		<?php endforeach; ?>
-		<li class="faded_out" id="project_roles_no_roles"<?php if (count($project_roles)): ?> style="display: none;"<?php endif; ?>><?php echo __('There are no project-specific roles available'); ?></li>
+		<li class="faded_out no_roles" id="project_roles_no_roles"<?php if (count($project_roles)): ?> style="display: none;"<?php endif; ?>><?php echo __('There are no project-specific roles available'); ?></li>
 	</ul>
 </div>
 <div class="permission_list" id="project_settings_advanced_permissions" style="display: none;">

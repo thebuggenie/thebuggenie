@@ -2106,14 +2106,39 @@ TBG.Config.Roles.getPermissionsEdit = function(url, field) {
 	}
 }
 
-TBG.Config.Roles.setPermissions = function(url, role_id) {
+TBG.Config.Roles.update = function(url, role_id) {
 	TBG.Main.Helpers.ajax(url, {
 		form: 'role_' + role_id + '_form',
 		loading: {indicator: 'role_' + role_id + '_form_indicator'},
 		success: {
 			hide: 'role_' + role_id + '_permissions_edit',
-			clear: 'role_' + role_id + '_permissions_list',
-			update: {element: 'role_'+role_id+'_permissions_count', from: 'permissions_count'}
+			callback: function(json) {
+				$('role_'+role_id+'_permissions_count').update(json.permissions_count);
+				$('role_'+role_id+'_permissions_list').update('');
+				$('role_'+role_id+'_permissions_list').hide();
+				$('role_'+role_id+'_name').update(json.role_name);
+			}
+		}
+	});
+}
+
+TBG.Config.Roles.remove = function(url, role_id) {
+	TBG.Main.Helpers.ajax(url, {
+		url_method: 'post',
+		loading: {
+			indicator: 'fullpage_backdrop',
+			clear: 'fullpage_backdrop_content',
+			show: 'fullpage_backdrop_indicator',
+			hide: 'dialog_backdrop'
+		},
+		success: {
+			callback: function() {
+				var rc = $('role_' + role_id + '_container');
+				if (rc.up('ul').childElements().size() == 2) {
+					rc.up('ul').down('li.no_roles').show();
+				}
+				rc.remove();
+			}
 		}
 	});
 }

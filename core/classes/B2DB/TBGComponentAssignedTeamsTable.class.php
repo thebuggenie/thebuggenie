@@ -50,6 +50,14 @@
 			return $res;
 		}
 
+		public function deleteByRoleID($role_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::ROLE_ID, $role_id);
+			$res = $this->doDelete($crit);
+			return $res;
+		}
+
 		public function addTeamToComponent($component_id, $team, $role)
 		{
 			$crit = $this->getCriteria();
