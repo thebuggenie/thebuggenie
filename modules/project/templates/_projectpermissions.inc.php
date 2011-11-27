@@ -1,6 +1,6 @@
 <div id="project_settings_roles">
 	<h3>
-		<div class="button button-green" style="float: right;" onclick="$('project_settings_roles').toggle();$('project_settings_advanced_permissions').toggle();"><?php echo __('Switch to advanded permissions'); ?></div>
+		<div class="button button-green" style="float: right;" onclick="$('project_settings_roles').toggle();$('project_settings_advanced_permissions').toggle();"><?php echo __('Show advanded permissions'); ?></div>
 		<?php echo __('Editing project roles and permissions'); ?>
 	</h3>
 	<div class="content faded_out">
@@ -34,7 +34,7 @@
 </div>
 <div class="permission_list" id="project_settings_advanced_permissions" style="display: none;">
 	<h3>
-		<div class="button button-green" style="float: right;" onclick="$('project_settings_roles').toggle();$('project_settings_advanced_permissions').toggle();"><?php echo __('Switch to role-based permissions'); ?></div>
+		<div class="button button-green" style="float: right;" onclick="$('project_settings_roles').toggle();$('project_settings_advanced_permissions').toggle();"><?php echo __('Show roles'); ?></div>
 		<?php echo __('Editing advanced project permissions'); ?>
 	</h3>
 	<div class="content faded_out">
