@@ -1198,13 +1198,13 @@
 		
 		public function runSettings(TBGRequest $request)
 		{
-			$this->forward403if(TBGContext::getCurrentProject()->isArchived());
+			$this->forward403if(TBGContext::getCurrentProject()->isArchived() || !$this->getUser()->canEditProjectDetails(TBGContext::getCurrentProject()));
 			$this->settings_saved = TBGContext::getMessageAndClear('project_settings_saved');
 		}
 		
 		public function runReleaseCenter(TBGRequest $request)
 		{
-			$this->forward403if(TBGContext::getCurrentProject()->isArchived());
+			$this->forward403if(TBGContext::getCurrentProject()->isArchived() || !$this->getUser()->canManageProjectReleases(TBGContext::getCurrentProject()));
 			$this->build_error = TBGContext::getMessageAndClear('build_error');
 			$this->_setupBuilds();
 		}
