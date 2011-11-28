@@ -55,6 +55,6 @@
 	</tr>
 	</table>
 	<div class="rounded_box white shadowed config_permissions" id="project_<?php echo $project->getID(); ?>_permissions" style="display: none;">
-		<?php include_template('configuration/projectpermissions', array('access_level' => $access_level, 'project' => $project)); ?>
+		<?php include_template('project/projectpermissions', array('access_level' => $access_level, 'project' => $project)); ?>
 	</div>
 </div>
