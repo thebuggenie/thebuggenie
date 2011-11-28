@@ -54,9 +54,9 @@
 					<td class="config_explanation" colspan="2"><?php echo __('Setting this to "%no%" will not require users to enter a reason when saving Wiki changes', array('%no%' => __('No'))); ?></td>
 				</tr>
 				<tr>
-					<td style="padding: 5px;"><label for="hide_wiki_links_no"><?php echo __('Wiki permissions'); ?></label></td>
+					<td style="padding: 5px;"><label for="wiki_free_edit"><?php echo __('Wiki permissions'); ?></label></td>
 					<td>
-						<select name="free_edit">
+						<select name="free_edit" id="wiki_free_edit">
 							<option value="2" id="free_edit_everyone"<?php if ($module->getSetting('free_edit') == 2): ?> selected<?php endif; ?>><?php echo __('Open for everyone with access to add / remove content'); ?></label><br>
 							<option value="1" id="free_edit_registered"<?php if ($module->getSetting('free_edit') == 1): ?> selected<?php endif; ?>><?php echo __('Only registered users can add / remove content'); ?></label>
 							<option value="0" id="free_edit_permissions"<?php if ($module->getSetting('free_edit') == 0): ?> selected<?php endif; ?>><?php echo __('Set wiki permissions manually'); ?></label>
