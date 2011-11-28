@@ -47,6 +47,7 @@
 
 			$general_config_sections[TBGSettings::CONFIGURATION_SECTION_SETTINGS] = array('route' => 'configure_settings', 'description' => $i18n->__('Settings'), 'icon' => 'general', 'details' => $i18n->__('Every setting in the bug genie can be adjusted in this section.'));
 			$general_config_sections[TBGSettings::CONFIGURATION_SECTION_PERMISSIONS] = array('route' => 'configure_permissions', 'description' => $i18n->__('Permissions'), 'icon' => 'permissions', 'details' => $i18n->__('Configure permissions in this section'));
+			$general_config_sections[TBGSettings::CONFIGURATION_SECTION_ROLES] = array('route' => 'configure_roles', 'description' => $i18n->__('Roles'), 'icon' => 'roles', 'details' => $i18n->__('Configure roles (permission templates) in this section'));
 			$general_config_sections[TBGSettings::CONFIGURATION_SECTION_AUTHENTICATION] = array('route' => 'configure_authentication', 'description' => $i18n->__('Authentication'), 'icon' => 'authentication', 'details' => $i18n->__('Configure the authentication method in this section'));
 			
 			if (TBGContext::getScope()->isUploadsEnabled())
@@ -3232,7 +3233,15 @@
 
 		public function runConfigureRole(TBGRequest $request)
 		{
-			$role = new TBGRole($request['role_id']);
+			try
+			{
+				$role = new TBGRole($request['role_id']);
+			}
+			catch (Exception $e)
+			{
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('error' => $this->getI18n()->__('This is not a valid role')));
+			}
 			if ($role->isSystemRole())
 			{
 				$access_level = $this->getAccessLevel($request['section'], 'core');
@@ -3251,7 +3260,7 @@
 					if (!$access_level == TBGSettings::ACCESS_FULL)
 					{
 						$this->getResponse()->setHttpStatus(400);
-						return $this->renderJSON(array('message' => $this->getI18n()->__('You do not have access to edit these permissions')));
+						return $this->renderJSON(array('error' => $this->getI18n()->__('You do not have access to edit these permissions')));
 					}
 					if ($request->isPost())
 					{
@@ -3265,11 +3274,28 @@
 					if (!$access_level == TBGSettings::ACCESS_FULL || !$request->isPost())
 					{
 						$this->getResponse()->setHttpStatus(400);
-						return $this->renderJSON(array('message' => $this->getI18n()->__('This role cannot be removed')));
+						return $this->renderJSON(array('error' => $this->getI18n()->__('This role cannot be removed')));
 					}
 					$role->delete();
 					return $this->renderJSON(array('message' => $this->getI18n()->__('Role deleted')));
 			}
+		}
+
+		public function runConfigureRoles(TBGRequest $request)
+		{
+			if ($request->isPost())
+			{
+				if (trim($request['role_name']) == '')
+				{
+					$this->getResponse()->setHttpStatus(400);
+					return $this->renderJSON(array('error' => $this->getI18n()->__('You have to specify a name for this role')));
+				}
+				$role = new TBGRole();
+				$role->setName($request['role_name']);
+				$role->save();
+				return $this->renderJSON(array('content' => $this->getTemplateHTML('configuration/role', array('role' => $role))));
+			}
+			$this->roles = TBGRole::getAll();
 		}
 
 	}

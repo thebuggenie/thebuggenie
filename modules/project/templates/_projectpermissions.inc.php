@@ -1,4 +1,4 @@
-<div id="project_settings_roles">
+<div id="project_settings_roles" style="position: relative;">
 	<h3>
 		<div class="button button-green" style="float: right;" onclick="$('project_settings_roles').toggle();$('project_settings_advanced_permissions').toggle();"><?php echo __('Show advanded permissions'); ?></div>
 		<?php echo __('Editing project roles and permissions'); ?>
@@ -14,13 +14,13 @@
 		<li class="faded_out" id="global_roles_no_roles"<?php if (count($roles)): ?> style="display: none;"<?php endif; ?>><?php echo __('There are no globally available roles'); ?></li>
 	</ul>
 	<h5 style="margin-top: 10px;">
-		<button class="button button-green" onclick="$('new_project_role').toggle();" style="float: right;"><?php echo __('Add new project-specific role'); ?></button>
+		<button class="button button-green" onclick="$('new_project_role').toggle();if ($('new_project_role').visible()) { $('add_new_role_input').focus(); }" style="float: right;"><?php echo __('Create new project-specific role'); ?></button>
 		<?php echo __('Project-specific roles'); ?>
 	</h5>
-	<div class="rounded_box white shadowed" id="new_project_role" style="display: none; position: absolute;">
+	<div class="rounded_box white shadowed" id="new_project_role" style="display: none; position: absolute; right: 0;">
 		<form id="new_project_role_form" method="post" action="<?php echo make_url('project_create_role', array('project_key' => $project->getKey())); ?>" onsubmit="TBG.Project.Roles.add('<?php echo make_url('project_create_role', array('project_key' => $project->getKey())); ?>'); return false;" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>">
 			<label for="new_project_role_name"><?php echo __('Role name'); ?></label>
-			<input type="text" style="width: 300px;" name="role_name">
+			<input type="text" style="width: 300px;" name="role_name" id="add_new_role_input">
 			<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: right; margin: 2px 5px 2px 5px;', 'id' => 'new_project_role_form_indicator')); ?>
 			<input type="submit" value="<?php echo __('Create role'); ?>" class="button button-silver" style="float: right; margin: 1px 1px 1px 5px;">
 		</form>

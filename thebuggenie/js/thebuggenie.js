@@ -384,10 +384,11 @@ TBG.Main.Helpers.Message.success = function(title, content) {
 };
 
 TBG.Main.Helpers.Dialog.show = function(title, content, options) {
+	TBG.Main.Helpers.Message.clear();
 	$('dialog_title').update(title);
 	$('dialog_content').update(content);
-	$('dialog_yes').setAttribute('href', 'javascript:void()');
-	$('dialog_no').setAttribute('href', 'javascript:void()');
+	$('dialog_yes').setAttribute('href', 'javascript:void(0)');
+	$('dialog_no').setAttribute('href', 'javascript:void(0)');
 	$('dialog_yes').stopObserving('click');
 	$('dialog_no').stopObserving('click');
 	if (options['yes']['click']) {
@@ -2143,6 +2144,17 @@ TBG.Config.Roles.remove = function(url, role_id) {
 	});
 }
 
+TBG.Config.Roles.add = function(url) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'new_role_form',
+		loading: {indicator: 'new_role_form_indicator'},
+		success: {
+			update: {element: 'global_roles_list', insertion: true},
+			hide: ['global_roles_no_roles', 'new_role']
+		}
+	});
+};
+
 TBG.Project.Roles.add = function(url) {
 	TBG.Main.Helpers.ajax(url, {
 		form: 'new_project_role_form',
@@ -2152,7 +2164,7 @@ TBG.Project.Roles.add = function(url) {
 			hide: ['project_roles_no_roles', 'new_project_role']
 		}
 	});
-}
+};
 
 TBG.Config.User.show = function(url, findstring) {
 	TBG.Main.Helpers.ajax(url, {
