@@ -130,4 +130,11 @@
 			$this->doUpdate($crit);
 		}
 
+		public function countByIssuetypeID($issuetype_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::ISSUETYPE_ID, $issuetype_id);
+			return $this->count($crit);
+		}
+
 	}

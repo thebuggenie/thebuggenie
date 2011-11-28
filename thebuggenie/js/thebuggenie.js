@@ -1900,8 +1900,15 @@ TBG.Config.Issuetype.update = function(url, id) {
 
 TBG.Config.Issuetype.remove = function(url, id) {
 	TBG.Main.Helpers.ajax(url, {
-		loading: {indicator: 'delete_issuetype_' + id + '_indicator'},
-		success: {remove: 'issuetype_' + id + '_box'}
+		loading: {
+			indicator: 'fullpage_backdrop',
+			clear: 'fullpage_backdrop_content',
+			show: 'fullpage_backdrop_indicator'
+		},
+		success: {
+			remove: 'issuetype_' + id + '_box',
+			callback: TBG.Main.Helpers.Dialog.dismiss
+		}
 	});
 }
 

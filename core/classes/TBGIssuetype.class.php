@@ -243,5 +243,10 @@
 			$this->_generateKey();
 		}
 
+		public function isAssociatedWithAnySchemes()
+		{
+			return (bool) TBGIssuetypeSchemeLinkTable::getTable()->countByIssuetypeID($this->getID());
+		}
+
 	}
 	

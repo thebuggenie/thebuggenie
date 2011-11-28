@@ -15,7 +15,10 @@
 		<?php endif; ?>
 		<?php if (!isset($scheme) || !$scheme->isCore()): ?>
 			<?php echo image_tag('spinning_16.gif', array('style' => 'margin-right: 5px; float: right; display: none;', 'id' => 'delete_issuetype_'.$type->getID().'_indicator')); ?>
-			<a title="<?php echo __('Show / edit issue type settings'); ?>" href="javascript:void(0);" onclick="$('edit_issuetype_<?php echo $type->getID(); ?>_form').toggle();" class="image" style="float: right; margin-right: 5px;"><?php echo image_tag('icon_edit.png'); ?></a>
+			<div class="button-group" style="float: right;">
+				<a class="button button-silver button-icon" title="<?php echo __('Show / edit issue type settings'); ?>" href="javascript:void(0);" onclick="$('edit_issuetype_<?php echo $type->getID(); ?>_form').toggle();" class="image"><?php echo image_tag('icon_edit.png'); ?></a>
+				<button class="button button-silver button-icon" title="<?php echo __('Remove issuetype'); ?>" onclick="<?php if (!$type->isAssociatedWithAnySchemes()): ?>TBG.Main.Helpers.Dialog.show('<?php echo __('Delete this issue type?'); ?>', '<?php echo __('Do you really want to delete this issue type? Issues with this issue type will be unavailable.').'<br><b>'.__('This action cannot be reverted').'</b>'; ?>', {yes: {click: function() {TBG.Config.Issuetype.remove('<?php echo make_url('configure_issuetypes_delete', array('id' => $type->getID())); ?>', <?php echo $type->getID(); ?>);}}, no: {click: TBG.Main.Helpers.Dialog.dismiss}});<?php else: ?>TBG.Main.Helpers.Message.error('<?php echo __('Cannot remove this issue type'); ?>', '<?php echo __('Issue types associated with an issue type scheme cannot be removed'); ?>');<?php endif; ?>"><?php echo image_tag('icon_delete.png'); ?></button>
+			</div>
 		<?php endif; ?>
 	</div>
 	<?php if (!isset($scheme)): ?>
