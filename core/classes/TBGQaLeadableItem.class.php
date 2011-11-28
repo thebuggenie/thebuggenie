@@ -57,11 +57,8 @@
 
 		public function getLeader()
 		{
-			if ($this->_leader_team !== null) {
-				$this->_b2dbLazyload('_leader_team');
-			} elseif ($this->_leader_user !== null) {
-				$this->_b2dbLazyload('_leader_user');
-			}
+			$this->_b2dbLazyload('_leader_team');
+			$this->_b2dbLazyload('_leader_user');
 
 			if ($this->_leader_team instanceof TBGTeam) {
 				return $this->_leader_team;

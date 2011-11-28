@@ -177,7 +177,7 @@
 			<?php echo '<a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.reset();">' . __('Cancel and close this pop-up') . '</a>'; ?>
 		</div>
 	</form>
-	<?php if (($issue instanceof TBGIssue && ($issue->canEditAssignedTo()) || isset($issues)) && $transition->hasAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE) && !$transition->getAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE)->hasTargetValue()): ?>
+	<?php if (($issue instanceof TBGIssue && ($issue->canEditAssignee()) || isset($issues)) && $transition->hasAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE) && !$transition->getAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE)->hasTargetValue()): ?>
 		<?php include_component('identifiableselector', array(	'html_id' 			=> 'popup_assigned_to_change', 
 																'header' 			=> __('Assign this issue'),
 																'callback'		 	=> "TBG.Issues.updateWorkflowAssignee('" . make_url('issue_gettempfieldvalue', array('project_key' => $project->getKey(), 'issue_id' => $issue->getID(), 'field' => 'assigned_to', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', %identifiable_value%, %identifiable_type%);",

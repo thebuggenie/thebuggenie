@@ -1089,7 +1089,7 @@
 		public function isInvolved()
 		{
 			$user_id = TBGContext::getUser()->getID();
-			return (bool) ($this->getPostedByID() == $user_id || ($this->isAssigned() && $this->getAssignee()->getID() == $user_id && $this->getAssignee()->get() instanceof TBGUser) || ($this->isOwned() && $this->getOwner()->getID() == $user_id && $this->getOwner()->get() instanceof TBGUser));
+			return (bool) ($this->getPostedByID() == $user_id || ($this->isAssigned() && $this->getAssignee()->getID() == $user_id && $this->getAssignee() instanceof TBGUser) || ($this->isOwned() && $this->getOwner()->getID() == $user_id && $this->getOwner() instanceof TBGUser));
 		}
 		
 		/**
@@ -1157,7 +1157,7 @@
 		 *
 		 * @return boolean
 		 */
-		public function canEditAssignedTo()
+		public function canEditAssignee()
 		{
 			return (bool) ($this->_permissionCheck('caneditissueassigned_to') || $this->_permissionCheck('caneditissue', true));
 		}
@@ -1167,7 +1167,7 @@
 		 *
 		 * @return boolean
 		 */
-		public function canEditOwnedBy()
+		public function canEditOwner()
 		{
 			return (bool) ($this->_permissionCheck('caneditissueowned_by') || $this->_permissionCheck('caneditissue', true));
 		}
@@ -2714,14 +2714,32 @@
 			$this->_revertPropertyChange('_owner_team');
 		}
 
+		public function isOwnerChanged()
+		{
+			return (bool) $this->isOwnerTeamChanged() || $this->isOwnerUserChanged();
+		}
+
+		public function isOwned()
+		{
+			return (bool) ($this->getOwner() instanceof TBGIdentifiable);
+		}
+
+		public function revertOwner()
+		{
+			if ($this->isOwnerTeamChanged())
+				$this->revertOwnerTeam();
+			else
+				$this->revertOwnerUser();
+		}
+
 		/**
 		 * Check to see whether the assignee is changed
 		 * 
 		 * @return boolean
 		 */
-		public function isAssignedToUserChanged()
+		public function isAssigneeUserChanged()
 		{
-			return $this->_isPropertyChanged('_assigned_user');
+			return $this->_isPropertyChanged('_assignee_user');
 		}
 
 		/**
@@ -2729,17 +2747,17 @@
 		 * 
 		 * @return boolean
 		 */
-		public function isAssignedToUserMerged()
+		public function isAssigneeUserMerged()
 		{
-			return $this->_isPropertyMerged('_assigned_user');
+			return $this->_isPropertyMerged('_assignee_user');
 		}
 		
 		/**
 		 * Reverts estimated time
 		 */
-		public function revertAssignedToUser()
+		public function revertAssigneeUser()
 		{
-			$this->_revertPropertyChange('_assigned_user');
+			$this->_revertPropertyChange('_assignee_user');
 		}
 
 		/**
@@ -2747,9 +2765,9 @@
 		 *
 		 * @return boolean
 		 */
-		public function isAssignedToTeamChanged()
+		public function isAssigneeTeamChanged()
 		{
-			return $this->_isPropertyChanged('_assigned_team');
+			return $this->_isPropertyChanged('_assignee_team');
 		}
 
 		/**
@@ -2757,17 +2775,35 @@
 		 *
 		 * @return boolean
 		 */
-		public function isAssignedToTeamMerged()
+		public function isAssigneeTeamMerged()
 		{
-			return $this->_isPropertyMerged('_assigned_team');
+			return $this->_isPropertyMerged('_assignee_team');
+		}
+
+		public function isAssigneeChanged()
+		{
+			return (bool) $this->isAssigneeTeamChanged() || $this->isAssigneeUserChanged();
+		}
+
+		public function isAssigned()
+		{
+			return (bool) ($this->getAssignee() instanceof TBGIdentifiable);
 		}
 
 		/**
 		 * Reverts estimated time
 		 */
-		public function revertAssignedToTeam()
+		public function revertAssigneeTeam()
 		{
-			$this->_revertPropertyChange('_assigned_team');
+			$this->_revertPropertyChange('_assignee_team');
+		}
+
+		public function revertAssignee()
+		{
+			if ($this->isAssigneeTeamChanged())
+				$this->revertAssigneeTeam();
+			else
+				$this->revertAssigneeUser();
 		}
 
 		/**
@@ -4820,11 +4856,8 @@
 
 		public function getAssignee()
 		{
-			if ($this->_assignee_team !== null) {
-				$this->_b2dbLazyload('_assignee_team');
-			} elseif ($this->_assignee_user !== null) {
-				$this->_b2dbLazyload('_assignee_user');
-			}
+			$this->_b2dbLazyload('_assignee_team');
+			$this->_b2dbLazyload('_assignee_user');
 
 			if ($this->_assignee_team instanceof TBGTeam) {
 				return $this->_assignee_team;
@@ -4855,6 +4888,42 @@
 		{
 			$this->_assignee_team = null;
 			$this->_assignee_user = null;
+		}
+
+		public function getOwner()
+		{
+			$this->_b2dbLazyload('_owner_team');
+			$this->_b2dbLazyload('_owner_user');
+
+			if ($this->_owner_team instanceof TBGTeam) {
+				return $this->_owner_team;
+			} elseif ($this->_owner_user instanceof TBGUser) {
+				return $this->_owner_user;
+			} else {
+				return null;
+			}
+		}
+
+		public function hasOwner()
+		{
+			return (bool) ($this->getOwner() instanceof TBGIdentifiable);
+		}
+
+		public function setOwner(TBGIdentifiable $owner)
+		{
+			if ($owner instanceof TBGTeam) {
+				$this->_addChangedProperty('_owner_user', null);
+				$this->_addChangedProperty('_owner_team', $owner);
+			} else {
+				$this->_addChangedProperty('_owner_user', $owner);
+				$this->_addChangedProperty('_owner_team', null);
+			}
+		}
+
+		public function clearOwner()
+		{
+			$this->_owner_team = null;
+			$this->_owner_user = null;
 		}
 
 	}

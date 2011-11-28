@@ -39,11 +39,8 @@
 
 		public function getOwner()
 		{
-			if ($this->_owner_team !== null) {
-				$this->_b2dbLazyload('_owner_team');
-			} elseif ($this->_owner_user !== null) {
-				$this->_b2dbLazyload('_owner_user');
-			}
+			$this->_b2dbLazyload('_owner_team');
+			$this->_b2dbLazyload('_owner_user');
 
 			if ($this->_owner_team instanceof TBGTeam) {
 				return $this->_owner_team;
