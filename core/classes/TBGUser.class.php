@@ -715,7 +715,7 @@
 		{
 			if ($this->isDeleted())
 			{
-				return __('No such user');
+				return TBGContext::getI18n()->__('No such user');
 			}
 			return ($this->_buddyname) ? $this->_buddyname : (($this->_realname) ? $this->_realname : $this->_username);
 		}
