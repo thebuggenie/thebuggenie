@@ -21,7 +21,6 @@
 				<div id="comment_add_indicator" style="display: none;">
 					<?php echo image_tag('spinning_20.gif'); ?>
 				</div>
-
 				<div id="comment_add_controls" style="font-size: 12px;" class="comment_controls">
 					<?php if ($target_type == TBGComment::TYPE_ISSUE): ?>
 						<input type="checkbox" name="comment_save_changes" id="comment_save_changes" value="1"<?php if ($save_changes_checked): ?> checked<?php endif; ?>>&nbsp;<label for="comment_save_changes"><?php echo __('Save my changes with this comment'); ?></label>
@@ -39,7 +38,7 @@
 	<?php foreach (TBGComment::getComments($target_id, $target_type) as $comment): ?>
 		<?php
 
-			$options = array('comment' => $comment);
+			$options = compact('comment', 'comment_count_div');
 			if (isset($issue))
 				$options['issue'] = $issue;
 

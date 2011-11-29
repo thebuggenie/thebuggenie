@@ -99,6 +99,12 @@
 		 */
 		protected $_comment_number = 0;
 
+		/**
+		 * @Column(type="integer", length=10)
+		 * @Relates(class="TBGComment")
+		 */
+		protected $_reply_to_comment = 0;
+
 		protected static $_comment_count = array();
 
 		/**
@@ -406,6 +412,25 @@
 			);
 
 			return $return_values;
+		}
+
+		public function setReplyToComment($reply_to_comment_id)
+		{
+			$this->_reply_to_comment = $reply_to_comment_id;
+		}
+
+		public function getReplyToComment()
+		{
+			if (!is_object($this->_reply_to_comment) && $this->_reply_to_comment)
+			{
+				$this->_b2dbLazyload('_reply_to_comment');
+			}
+			return $this->_reply_to_comment;
+		}
+
+		public function isReply()
+		{
+			return (bool) (is_object($this->_reply_to_comment) || $this->_reply_to_comment);
 		}
 
 	}

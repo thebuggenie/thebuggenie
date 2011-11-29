@@ -971,6 +971,27 @@ TBG.Main.Comment.add = function(url, commentcount_span) {
 	});
 };
 
+TBG.Main.Comment.reply = function(url, reply_comment_id) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'comment_reply_form_' + reply_comment_id,
+		loading: {
+			indicator: 'comment_reply_indicator_' + reply_comment_id,
+			hide: 'comment_reply_controls_' + reply_comment_id
+		},
+		success: {
+			hide: ['comment_reply_' + reply_comment_id],
+			clear: 'comment_reply_bodybox_' + reply_comment_id,
+			update: {element: 'comments_box', insertion: true, from: 'comment_data'},
+			callback: function(json) {
+				$('comment_reply_visibility_' + reply_comment_id).setValue(1);
+			}
+		},
+		failure: {
+			show: 'comment_reply_controls_' + reply_comment_id
+		}
+	});
+};
+
 TBG.Main.Login.register = function(url)
 {
 	TBG.Main.Helpers.ajax(url, {

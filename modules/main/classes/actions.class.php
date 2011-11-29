@@ -2481,6 +2481,7 @@
 					$comment->setPostedBy(TBGContext::getUser()->getID());
 					$comment->setTargetID($request['comment_applies_id']);
 					$comment->setTargetType($request['comment_applies_type']);
+					$comment->setReplyToComment($request['reply_to_comment_id']);
 					$comment->setModuleName($request['comment_module']);
 					$comment->setIsPublic((bool) $request['comment_visibility']);
 					$comment->save();
