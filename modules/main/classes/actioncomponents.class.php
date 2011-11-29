@@ -471,6 +471,11 @@
 		{
 		}
 
+		public function componentDashboardViewRecentComments()
+		{
+			$this->comments = TBGComment::getRecentCommentsByAuthor($this->getUser()->getID());
+		}
+
 		public function componentDashboardViewLoggedActions()
 		{
 			$this->actions = $this->getUser()->getLatestActions();

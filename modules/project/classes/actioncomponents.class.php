@@ -126,11 +126,6 @@
 			$this->recent_activities = TBGContext::getCurrentProject()->getRecentActivities(10);
 		}
 
-		public function componentDashboardViewRecentComments()
-		{
-			$this->comments = TBGComment::getRecentCommentsByAuthor($this->getUser()->getID());
-		}
-
 		public function componentDashboardViewProjectDownloads()
 		{
 		}

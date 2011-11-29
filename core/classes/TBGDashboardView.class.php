@@ -351,7 +351,7 @@
 				case self::VIEW_PROJECT_DOWNLOADS:
 					return 'project/dashboardviewprojectdownloads';
 				case self::VIEW_RECENT_COMMENTS:
-					return 'main/dashboardviewprojectrecentcomments';
+					return 'main/dashboardviewrecentcomments';
 				case self::VIEW_LOGGED_ACTIONS:
 					return 'main/dashboardviewloggedactions';
 			}
