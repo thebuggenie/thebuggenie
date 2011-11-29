@@ -64,7 +64,14 @@
 				if ($relation_details && \class_exists($relation_details['class']))
 				{
 					$classname = $relation_details['class'];
-					$this->$property = new $classname($this->$property);
+					try
+					{
+						$this->$property = new $classname($this->$property);
+					}
+					catch (\Exception $e)
+					{
+						$this->$property = null;
+					}
 				}
 				else
 				{

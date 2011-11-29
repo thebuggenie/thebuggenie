@@ -11,7 +11,7 @@
 	<?php if ($showheader): ?>
 		<h5>
 			<?php if ($groupby == 'issuetype'): ?>
-				<?php echo image_tag($issue->getIssueType()->getIcon() . '_small.png', array('title' => $issue->getIssueType()->getName())); ?>
+				<?php echo image_tag((($issue->hasIssueType()) ? $issue->getIssueType()->getIcon() : 'icon_unknown') . '_small.png', array('title' => (($issue->hasIssueType()) ? $issue->getIssueType()->getName() : __('Unknown issuetype')))); ?>
 			<?php endif; ?>
 			<?php echo $groupby_description; ?>
 		</h5>
@@ -56,8 +56,8 @@
 					<td style="padding-left: 5px;"><?php echo link_tag(make_url('project_issues', array('project_key' => $issue->getProject()->getKey())), $issue->getProject()->getName()); ?></td>
 				<?php endif; ?>
 					<td class="sc_issuetype"<?php if (!in_array('issuetype', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
-						<?php echo image_tag($issue->getIssueType()->getIcon() . '_tiny.png', array('title' => $issue->getIssueType()->getName())); ?>
-						<?php echo $issue->getIssuetype()->getName(); ?>
+						<?php echo image_tag((($issue->hasIssueType()) ? $issue->getIssueType()->getIcon() : 'icon_unknown') . '_tiny.png', array('title' => (($issue->hasIssueType()) ? $issue->getIssueType()->getName() : __('Unknown issuetype')))); ?>
+						<?php echo ($issue->hasIssueType()) ? $issue->getIssueType()->getName() : __('Unknown issuetype'); ?>
 					</td>
 					<td class="result_issue"<?php if (TBGContext::isProjectContext()): ?> style="padding-left: 3px;"<?php endif; ?>>
 						<?php if ($issue->countFiles()): ?>

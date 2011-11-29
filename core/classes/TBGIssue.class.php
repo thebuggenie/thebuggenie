@@ -1412,7 +1412,14 @@
 		 */
 		public function getFormattedIssueNo($link_formatted = false, $include_issuetype = false)
 		{
-			$issuetype_description = ($this->getIssueType() instanceof TBGIssuetype && $include_issuetype) ? $this->getIssueType()->getName().' ' : '';
+			try
+			{
+				$issuetype_description = ($this->getIssueType() instanceof TBGIssuetype && $include_issuetype) ? $this->getIssueType()->getName().' ' : '';
+			}
+			catch (Exception $e)
+			{
+				$issuetype_description = TBGContext::getI18n()->__('Unknown issuetype') . ' ';
+			}
 
 			if ($this->getProject()->usePrefix())
 			{
@@ -1432,19 +1439,19 @@
 		 */
 		public function getIssueType()
 		{
-			/*if (is_numeric($this->_issuetype))
-			{
-				try
-				{
-					$this->_issuetype = TBGContext::factory()->TBGIssuetype($this->_issuetype);
-				}
-				catch (Exception $e) 
-				{
-					$this->_issuetype = null;
-				}
-			}
-			return $this->_issuetype;*/
 			return $this->_b2dbLazyload('_issuetype');
+		}
+
+		public function hasIssueType()
+		{
+			try
+			{
+				return ($this->getIssueType() instanceof TBGIssuetype);
+			}
+			catch (Exception $e)
+			{
+				return false;
+			}
 		}
 		
 		/**
@@ -3744,8 +3751,16 @@
 		 */
 		public function isFieldVisible($fieldname)
 		{
-			$fields_array = $this->getProject()->getVisibleFieldsArray($this->getIssueType()->getID());
-			return array_key_exists($fieldname, $fields_array);
+			if (!$this->hasIssueType()) return false;
+			try
+			{
+				$fields_array = $this->getProject()->getVisibleFieldsArray($this->getIssueType()->getID());
+				return array_key_exists($fieldname, $fields_array);
+			}
+			catch (Exception $e)
+			{
+				return false;
+			}
 		}
 
 		/**
