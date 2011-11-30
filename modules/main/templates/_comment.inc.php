@@ -9,7 +9,7 @@
 					<?php if ($comment->canUserDeleteComment()): ?><a href="javascript:void(0)" class="button button-silver" onclick="$('comment_delete_confirm_<?php echo $comment->getID(); ?>').toggle();"><?php echo image_tag('icon_comment_delete.png', array('title' => __('Delete'))); ?><?php echo __('Delete'); ?></a><?php endif; ?>
 				</div>
 			<?php endif; ?>
-			<?php if ($tbg_user->canPostComments() && ((TBGContext::isProjectContext() && !TBGContext::getCurrentProject()->isArchived()) || !TBGContext::isProjectContext())): ?>
+			<?php if (!$comment->isSystemComment() && $tbg_user->canPostComments() && ((TBGContext::isProjectContext() && !TBGContext::getCurrentProject()->isArchived()) || !TBGContext::isProjectContext())): ?>
 				<a class="button button-silver" style="float: right; margin: 10px 0; font-weight: normal;" href="javascript:void(0);" onclick="$('comment_reply_<?php echo $comment->getID(); ?>').show();$('comment_reply_bodybox_<?php echo $comment->getID(); ?>').focus();"><?php echo image_tag('icon_reply.png').__('Reply'); ?></a>
 			<?php endif; ?>
 			<div class="commenttitle">
@@ -21,7 +21,7 @@
 			</div>
 			<div class="commentdate" id="comment_<?php echo $comment->getID(); ?>_date">
 				<?php if ($comment->isReply()): ?>
-					<?php echo image_tag('icon_reply.png', array('style' => 'margin: 2px 5px -2px 0; height: 12px; width: 12px;')).__('%comment_date%, in reply to comment number #%replied_comment_number%', array('%comment_date%' => tbg_formattime($comment->getPosted(), 12), '%replied_comment_number%' => link_tag("#comment_{$comment->getReplyToComment()->getTargetType()}_{$comment->getReplyToComment()->getTargetID()}_{$comment->getReplyToComment()->getID()}", $comment->getReplyToComment()->getCommentNumber()))); ?>
+					<?php echo image_tag('icon_reply.png', array('style' => 'margin: 2px 5px -2px 0; height: 12px; width: 12px;')).__('%comment_date%, in reply to comment %replied_comment_number%', array('%comment_date%' => tbg_formattime($comment->getPosted(), 12), '%replied_comment_number%' => link_tag("#comment_{$comment->getReplyToComment()->getTargetType()}_{$comment->getReplyToComment()->getTargetID()}_{$comment->getReplyToComment()->getID()}", '#'.$comment->getReplyToComment()->getCommentNumber()))); ?>
 				<?php else: ?>
 					<?php echo tbg_formattime($comment->getPosted(), 12); ?>
 				<?php endif; ?>
