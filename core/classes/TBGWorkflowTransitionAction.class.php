@@ -206,14 +206,14 @@
 						$assignee = null;
 						switch ($request['assignee_type'])
 						{
-							case TBGIdentifiableTypeClass::TYPE_USER:
+							case 'user':
 								$assignee = TBGContext::factory()->TBGUser($request['assignee_id']);
 								break;
-							case TBGIdentifiableTypeClass::TYPE_TEAM:
+							case 'team':
 								$assignee = TBGContext::factory()->TBGTeam($request['assignee_id']);
 								break;
 						}
-						if ((bool) $request->getParameter('assignee_teamup', false))
+						if ((bool) $request->getParameter('assignee_teamup', false) && $assignee instanceof TBGUser && $assignee->getID() != TBGContext::getUser()->getID())
 						{
 							$team = new TBGTeam();
 							$team->setName($assignee->getBuddyname() . ' & ' . TBGContext::getUser()->getBuddyname());
