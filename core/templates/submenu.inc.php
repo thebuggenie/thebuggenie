@@ -9,7 +9,7 @@
 						<?php $first = true; ?>
 						<?php foreach ($breadcrumb['subitems'] as $subindex => $subitem): ?>
 							<?php if (array_key_exists('url', $subitem) || $subitem['title'] == $breadcrumb['title']): ?>
-								<a href="<?php echo (array_key_exists('url', $subitem)) ? $subitem['url'] : '#'; ?>"<?php if (strpos($subitem['title'], $breadcrumb['title']) === 0): ?> class="selected<?php if ($first): ?> rounded_list_first_item<?php endif; ?>"<?php endif; ?>><?php echo $subitem['title']; ?>!</a>
+								<a href="<?php echo (array_key_exists('url', $subitem)) ? $subitem['url'] : '#'; ?>"<?php if (strpos($subitem['title'], $breadcrumb['title']) === 0): ?> class="selected<?php if ($first): ?> rounded_list_first_item<?php endif; ?>"<?php endif; ?>><?php echo $subitem['title']; ?></a>
 								<?php $first = false; ?>
 							<?php endif; ?>
 						<?php endforeach; ?>
