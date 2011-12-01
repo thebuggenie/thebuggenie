@@ -17,7 +17,7 @@
 					<li id="transition_popup_assignee_div">
 						<input type="hidden" name="assignee_id" id="popup_assigned_to_id" value="<?php echo $issue->getAssignee()->getID(); ?>">
 						<input type="hidden" name="assignee_type" id="popup_assigned_to_type" value="<?php echo $issue->getAssigneeType(); ?>">
-						<input type="hidden" name="assignee_teamup" id="popup_assigned_to_teamup" value="<?php echo $issue->getAssigneeType(); ?>">
+						<input type="hidden" name="assignee_teamup" id="popup_assigned_to_teamup" value="0">
 						<label for="transition_popup_set_assignee"><?php echo __('Assignee'); ?></label>
 						<span style="width: 170px; display: <?php if ($issue->isAssigned()): ?>inline<?php else: ?>none<?php endif; ?>;" id="popup_assigned_to_name">
 							<?php if ($issue->getAssignee() instanceof TBGUser): ?>
