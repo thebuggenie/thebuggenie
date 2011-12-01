@@ -21,6 +21,7 @@
 	 * @subpackage tables
 	 *
 	 * @Table(name="rolepermissions")
+	 * @Entity(class="TBGRolePermission")
 	 */
 	class TBGRolePermissionsTable extends TBGB2DBTable
 	{
@@ -31,13 +32,8 @@
 		const SCOPE = 'rolepermissions.scope';
 		const ROLE_ID = 'rolepermissions.role_id';
 		const PERMISSION = 'rolepermissions.permission';
-
-		public function _initialize()
-		{
-			parent::_setup(self::B2DBNAME, self::ID);
-			parent::_addForeignKeyColumn(self::ROLE_ID, TBGListTypesTable::getTable());
-			parent::_addVarchar(self::PERMISSION, 100);
-		}
+		const MODULE = 'rolepermissions.module';
+		const TARGET_ID = 'rolepermissions.target_id';
 
 		protected function _setupIndexes()
 		{
@@ -51,11 +47,14 @@
 			$this->doDelete($crit);
 		}
 
-		public function addPermissionForRole($role_id, $permission)
+		public function addPermissionForRole($role_id, $permission, $module, $target_id = null)
 		{
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::ROLE_ID, $role_id);
 			$crit->addInsert(self::PERMISSION, $permission);
+			$crit->addInsert(self::MODULE, $module);
+			$crit->addInsert(self::TARGET_ID, $target_id);
+
 			$this->doInsert($crit);
 		}
 

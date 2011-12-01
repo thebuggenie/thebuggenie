@@ -11,7 +11,7 @@
 		protected $_itemtype = TBGDatatype::ROLE;
 
 		/**
-		 * @Relates(collection=true, joinclass="TBGRolePermissionsTable", foreign_column="role_id", column="permission")
+		 * @Relates(class="TBGRolePermission", collection=true, foreign_column="role_id")
 		 */
 		protected $_permissions = null;
 
@@ -29,6 +29,14 @@
 				$role->setName($name);
 				$role->setScope($scope);
 				$role->save();
+				foreach ($permissions as $k => $permission)
+				{
+					$p = new TBGRolePermission();
+					$p->setModule($permission['module']);
+					$p->setPermission($permission['permission']);
+					$p->setTargetID($permission['target_id']);
+					$permissions[$k] = $p;
+				}
 				$role->setPermissions($permissions);
 			}
 		}
@@ -86,7 +94,7 @@
 			TBGRolePermissionsTable::getTable()->clearPermissionsForRole($this->getID());
 			foreach ($permissions as $permission)
 			{
-				TBGRolePermissionsTable::getTable()->addPermissionForRole($this->getID(), $permission);
+				$permission->save();
 			}
 		}
 
@@ -96,10 +104,14 @@
 			return $this->_permissions;
 		}
 
-		public function hasPermission($permission_key)
+		public function hasPermission($permission_key, $module, $target_id = null)
 		{
-			$permissions = $this->getPermissions();
-			return in_array($permission_key, $permissions);
+			foreach ($this->getPermissions() as $role_permission)
+			{
+				if ($role_permission->getPermission() == $permission_key && $role_permission->getModule() == $module && $role_permission->getTargetID() == $target_id) return true;
+			}
+
+			return false;
 		}
 
 	}

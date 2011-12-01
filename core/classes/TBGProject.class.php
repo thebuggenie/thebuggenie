@@ -1307,9 +1307,10 @@
 			}
 			if ($role instanceof TBGRole)
 			{
-				foreach ($role->getPermissions() as $permission)
+				foreach ($role->getPermissions() as $role_permission)
 				{
-					TBGContext::setPermission($permission, $this->getID(), 'core', $user_id, 0, $team_id, true);
+					$target_id = ($role_permission->hasTargetID()) ? $role_permission->getReplacedTargetID($this) : $this->getID();
+					TBGContext::setPermission($role_permission->getPermission(), $target_id, $role_permission->getModule(), $user_id, 0, $team_id, true);
 				}
 			}
 		}

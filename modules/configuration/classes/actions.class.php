@@ -3296,7 +3296,19 @@
 					{
 						$role->setName($request['name']);
 						$role->save();
-						$role->setPermissions(array_keys($request['permissions']));
+						$permissions = array();
+						foreach ($request['permissions'] as $permission)
+						{
+							list ($module, $target_id, $permission_key) = explode(',', $permission);
+							$p = new TBGRolePermission();
+							$p->setRole($role);
+							$p->setModule($module);
+							$p->setPermission($permission_key);
+							if ($target_id) $p->setTargetID($target_id);
+
+							$permissions[] = $p;
+						}
+						$role->setPermissions($permissions);
 						return $this->renderJSON(array('message' => $this->getI18n()->__('Permissions updated'), 'permissions_count' => count($request['permissions']), 'role_name' => $role->getName()));
 					}
 					return $this->renderTemplate('configuration/rolepermissionsedit', array('role' => $role));

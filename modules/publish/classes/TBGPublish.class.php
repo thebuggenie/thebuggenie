@@ -71,6 +71,7 @@
 			TBGEvent::listen('core', 'upload', array($this, 'listen_upload'));
 			TBGEvent::listen('core', 'quicksearch_dropdown_firstitems', array($this, 'listen_quicksearchDropdownFirstItems'));
 			TBGEvent::listen('core', 'quicksearch_dropdown_founditems', array($this, 'listen_quicksearchDropdownFoundItems'));
+			TBGEvent::listen('core', 'rolepermissionsedit', array($this, 'listen_rolePermissionsEdit'));
 		}
 
 		protected function _addRoutes()
@@ -339,6 +340,29 @@
 		public function listen_projectLinks(TBGEvent $event)
 		{
 			TBGActionComponent::includeTemplate('publish/projectlinks', array('project' => $event->getSubject()));
+		}
+
+		protected function _getPermissionslist()
+		{
+			$permissions = array();
+			$permissions['readarticle'] = array('description' => TBGContext::getI18n()->__('Can access the project wiki'), 'permission' => 'readarticle');
+			$permissions['editarticle'] = array('description' => TBGContext::getI18n()->__('Can write articles in project wiki'), 'permission' => 'editarticle');
+			$permissions['deletearticle'] = array('description' => TBGContext::getI18n()->__('Can delete articles from project wiki'), 'permission' => 'deletearticle');
+			return $permissions;
+		}
+
+		public function getPermissionDetails($permission)
+		{
+			$permissions = $this->_getPermissionslist();
+			if (array_key_exists($permission, $permissions))
+			{
+				return $permissions[$permission];
+			}
+		}
+
+		public function listen_rolePermissionsEdit(TBGEvent $event)
+		{
+			TBGActionComponent::includeTemplate('configuration/rolepermissionseditlist', array('role' => $event->getSubject(), 'permissions_list' => $this->_getPermissionslist(), 'module' => 'publish', 'target_id' => '%project_key%'));
 		}
 
 		public function listen_BreadcrumbMainLinks(TBGEvent $event)
