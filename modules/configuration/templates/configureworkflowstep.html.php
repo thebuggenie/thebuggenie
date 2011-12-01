@@ -26,7 +26,7 @@
 							<?php if (!$step->isCore()): ?>
 								<br>
 								<b><?php echo javascript_link_tag(__('Edit this step'), array('onclick' => "\$('step_details_form').toggle();\$('step_details_info').toggle();")); ?></b><br>
-								<b><?php echo javascript_link_tag(__('Add transition'), array('onclick' => "$('step_{$step->getID()}_transition_add').toggle()")); ?></b>
+								<b><?php echo javascript_link_tag(__('Add outgoing transition'), array('onclick' => "$('step_{$step->getID()}_transition_add').toggle()")); ?></b>
 							<?php endif; ?>
 						</div>
 					</div>

@@ -39,7 +39,7 @@
 		 * Projects using this workflow scheme
 		 *
 		 * @var array|TBGProject
-		 * @Relates(class="TBGProject", collection=true, foreign_column="workflow_id")
+		 * @Relates(class="TBGProject", collection=true, foreign_column="workflow_scheme_id")
 		 */
 		protected $_projects = null;
 

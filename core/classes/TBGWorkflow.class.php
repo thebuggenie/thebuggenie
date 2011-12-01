@@ -75,6 +75,8 @@
 		 */
 		protected $_schemes = null;
 
+		protected $_num_schemes = null;
+		
 		protected static function _populateWorkflows()
 		{
 			if (self::$_workflows === null)
@@ -234,11 +236,15 @@
 		
 		public function getNumberOfSchemes()
 		{
-			if ($this->_number_of_schemes === null)
+			if ($this->_num_schemes === null && $this->_schemes !== null)
 			{
-				$this->_b2dbLazycount('_schemes');
+				$this->_num_schemes = count($this->_schemes);
 			}
-			return $this->_number_of_schemes;
+			elseif ($this->_num_schemes === null)
+			{
+				$this->_num_schemes = $this->_b2dbLazycount('_schemes');
+			}
+			return $this->_num_schemes;
 		}
 		
 		public function copy($new_name)
