@@ -258,7 +258,7 @@
 			if (!$this->preformat) $output .= "<pre>";
 			$this->preformat = true;
 
-			$output .= $matches[1];
+			$output .= $matches[2];
 
 			return $output."\n";
 		}
@@ -716,7 +716,7 @@
 		{
 			$line_regexes = array();
 			
-			$line_regexes['preformat'] = '^\s{1}(.*?)$';
+			$line_regexes['preformat'] = '^(\&gt\;|\s{1})(.*?)$';
 			$line_regexes['definitionlist'] = '^([\;\:])(?!\-?[\(\)\D\/P])\s*(.*?)$';
 			$line_regexes['newline'] = '^$';
 			$line_regexes['list'] = '^([\*\#]+)(.*?)$';
