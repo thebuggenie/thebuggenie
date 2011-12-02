@@ -835,6 +835,9 @@
 								$column['auto_inc'] = ($column_annotation->hasProperty('auto_increment')) ? $column_annotation->getProperty('auto_increment') : false;
 								$column['unsigned'] = ($column_annotation->hasProperty('unsigned')) ? $column_annotation->getProperty('unsigned') : false;
 								$column['length'] = ($column_annotation->hasProperty('length')) ? $column_annotation->getProperty('length') : 10;
+								if ($column['type'] != 'float') {
+									$column['default_value'] = ($column_annotation->hasProperty('default_value')) ? $column_annotation->getProperty('default_value') : 0;
+								}
 								break;
 						}
 						self::$_cached_entity_classes[$classname]['columns'][$column_name] = $column;

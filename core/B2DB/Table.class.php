@@ -737,13 +737,10 @@
 			$qc = $this->getQC();
 			switch (Core::getDBtype()) {
 				case 'mysql':
-					$sql .= ' MODIFY ';
-					$sql .= " $qc" . $this->_getRealColumnFieldName($details['name']) . "$qc ";
+					$sql .= " MODIFY $qc" . $this->_getRealColumnFieldName($details['name']) . "$qc ";
 					break;
 				case 'pgsql':
-					$sql .= ' ALTER COLUMN ';
-					$sql .= " $qc" . $this->_getRealColumnFieldName($details['name']) . "$qc ";
-					$sql .= ' TYPE ';
+					$sql .= " ALTER COLUMN $qc" . $this->_getRealColumnFieldName($details['name']) . "$qc TYPE ";
 					break;
 			}
 			$sql .= $this->_getColumnDefinitionSQL($details);
@@ -794,10 +791,11 @@
 
 			$sqls = array();
 			foreach ($altered_columns as $column => $details) {
+				if (in_array($column, $dropped_columns)) continue;
 				$sqls[] = $this->_getAlterColumnSQL($column, $new_columns[$column]);
 			}
-			foreach ($dropped_columns as $column => $details) {
-				$sqls[] = $this->_getDropColumnSQL($column);
+			foreach ($dropped_columns as $details) {
+				$sqls[] = $this->_getDropColumnSQL($details);
 			}
 			if (count($sqls)) {
 				foreach ($sqls as $sqlStmt) {
