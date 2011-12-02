@@ -15,6 +15,8 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name="users")
 	 */
 	class TBGUsersTable3dot1 extends TBGB2DBTable 
 	{
@@ -43,10 +45,9 @@
 		const JOINED = 'users.joined';
 		const GROUP_ID = 'users.group_id';
 		
-		public function __construct()
+		public function _initialize()
 		{
-			parent::__construct(self::B2DBNAME, self::ID);
-			
+			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addVarchar(self::UNAME, 50);
 			parent::_addVarchar(self::PASSWORD, 50);
 			parent::_addVarchar(self::BUDDYNAME, 50);

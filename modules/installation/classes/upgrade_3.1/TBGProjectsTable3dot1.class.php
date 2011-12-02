@@ -15,6 +15,8 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 *
+	 * @Table(name="projects")
 	 */
 	class TBGProjectsTable3dot1 extends TBGB2DBTable
 	{
@@ -53,9 +55,9 @@
 		const ISSUETYPE_SCHEME_ID = 'projects.issuetype_scheme_id';
 		const AUTOASSIGN = 'projects.autoassign';
 		
-		public function __construct()
+		public function _initialize()
 		{
-			parent::__construct(self::B2DBNAME, self::ID);
+			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addVarchar(self::NAME, 100);
 			parent::_addVarchar(self::KEY, 100);
 			parent::_addVarchar(self::PREFIX, 5, '');

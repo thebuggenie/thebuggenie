@@ -61,6 +61,38 @@
 //			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 //		}
 		
+		public function _migrateData(\b2db\Table $old_table)
+		{
+			$sqls = array();
+			$tn = $this->_getTableNameSQL();
+			switch ($old_table->getVersion())
+			{
+				case 1:
+					$crit = $this->getCriteria();
+					$crit->addWhere(self::EDITION, 0, Criteria::DB_NOT_EQUALS);
+					$res = $this->doSelect($crit);
+					$editions = array();
+					if ($res)
+					{
+						while ($row = $res->getNextRow())
+						{
+							$editions[$row->get(self::EDITION)] = 0;
+						}
+					}
+					
+					$edition_projects = TBGEditionsTable::getTable()->getProjectIDsByEditionIDs(array_keys($editions));
+
+					foreach ($edition_projects as $edition => $project)
+					{
+						$crit = $this->getCriteria();
+						$crit->addUpdate(self::PROJECT, $project);
+						$crit->addWhere(self::EDITION, $edition);
+						$res = $this->doUpdate($crit);
+					}
+					break;
+			}
+		}
+
 		public function getByProjectID($project_id)
 		{
 			$crit = $this->getCriteria();

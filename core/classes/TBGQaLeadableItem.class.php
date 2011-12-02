@@ -50,7 +50,7 @@
 		 * The QA responsible for the project
 		 *
 		 * @var TBGUser
-		 * @Column(type="integer")
+		 * @Column(type="integer", length=10)
 		 * @Relates(class="TBGUser")
 		 */
 		protected $_qa_responsible_user;

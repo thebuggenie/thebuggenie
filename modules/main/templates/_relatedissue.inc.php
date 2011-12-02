@@ -1,4 +1,4 @@
-<div class="<?php if ($related_issue->getIssueType()->getItemdata() == 'task'): ?>user_story_task<?php else: ?>related_issue<?php endif; ?>">
+<div class="<?php if ($related_issue->getIssueType()->getIcon() == 'task'): ?>user_story_task<?php else: ?>related_issue<?php endif; ?>">
 	<table style="table-layout: fixed; width: 100%;" cellpadding=0 cellspacing=0>
 		<tr>
 			<td style="width: 20px;"><div style="border: 1px solid #AAA; background-color: <?php echo ($related_issue->getStatus() instanceof TBGStatus) ? $related_issue->getStatus()->getColor() : '#FFF'; ?>; font-size: 1px; width: 13px; height: 13px;" title="<?php echo ($related_issue->getStatus() instanceof TBGStatus) ? $related_issue->getStatus()->getName() : ''; ?>">&nbsp;</div></td>
@@ -17,9 +17,9 @@
 					<tr>
 						<td valign="middle" class="faded_out">
 						<?php if ($related_issue->isAssigned()): ?>
-							<?php if ($related_issue->getAssignee()->get() instanceof TBGUser): ?>
+							<?php if ($related_issue->getAssignee() instanceof TBGUser): ?>
 								<?php echo __('Assigned to %user%', array('%user%' => '</td><td style="padding-left: 5px;" class="faded_out">' . get_component_html('main/userdropdown', array('user' => $related_issue->getAssignee(), 'size' => 'small')))); ?>
-							<?php elseif ($related_issue->getAssignee()->get() instanceof TBGTeam): ?>
+							<?php elseif ($related_issue->getAssignee() instanceof TBGTeam): ?>
 								<?php echo __('Assigned to %team%', array('%team%' => '</td><td style="padding-left: 5px;" class="faded_out">' . get_component_html('main/teamdropdown', array('team' => $related_issue->getAssignee(), 'size' => 'small')))); ?>
 							<?php endif; ?>
 						<?php endif; ?>

@@ -172,7 +172,7 @@
 		 * What kind of bug this is
 		 * 
 		 * @var integer
-		 * @Column(type="integer", length=5)
+		 * @Column(type="integer", length=3)
 		 */
 		protected $_pain_bug_type;
 
@@ -180,7 +180,7 @@
 		 * What effect this bug has on users
 		 *
 		 * @var integer
-		 * @Column(type="integer", length=5)
+		 * @Column(type="integer", length=3)
 		 */
 		protected $_pain_effect;
 
@@ -188,7 +188,7 @@
 		 * How likely users are to experience this bug
 		 *
 		 * @var integer
-		 * @Column(type="integer", length=5)
+		 * @Column(type="integer", length=3)
 		 */
 		protected $_pain_likelihood;
 
@@ -266,7 +266,7 @@
 		 * The scrum color
 		 *
 		 * @var string
-		 * @Column(type="string", length=10)
+		 * @Column(type="string", length=7, default_value="#FFFFFF")
 		 */
 		protected $_scrumcolor;
 
@@ -274,7 +274,7 @@
 		 * The estimated time (months) to fix this issue
 		 * 
 		 * @var integer
-		 * @Column(type="integer", length=5)
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_estimated_months;
 
@@ -282,7 +282,7 @@
 		 * The estimated time (weeks) to fix this issue
 		 * 
 		 * @var integer
-		 * @Column(type="integer", length=5)
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_estimated_weeks;
 
@@ -290,7 +290,7 @@
 		 * The estimated time (days) to fix this issue
 		 * 
 		 * @var integer
-		 * @Column(type="integer", length=5)
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_estimated_days;
 
@@ -298,7 +298,7 @@
 		 * The estimated time (hours) to fix this issue
 		 * 
 		 * @var integer
-		 * @Column(type="integer", length=5)
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_estimated_hours;
 
@@ -306,7 +306,7 @@
 		 * The estimated time (points) to fix this issue
 		 * 
 		 * @var integer
-		 * @Column(type="integer", length=5)
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_estimated_points;
 
@@ -314,7 +314,7 @@
 		 * The time spent (months) to fix this issue
 		 * 
 		 * @var integer
-		 * @Column(type="integer", length=5)
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_spent_months;
 
@@ -322,7 +322,7 @@
 		 * The time spent (weeks) to fix this issue
 		 * 
 		 * @var integer
-		 * @Column(type="integer", length=5)
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_spent_weeks;
 
@@ -330,7 +330,7 @@
 		 * The time spent (days) to fix this issue
 		 * 
 		 * @var integer
-		 * @Column(type="integer", length=5)
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_spent_days;
 
@@ -338,7 +338,7 @@
 		 * The time spent (hours) to fix this issue
 		 * 
 		 * @var integer
-		 * @Column(type="integer", length=5)
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_spent_hours;
 
@@ -346,7 +346,7 @@
 		 * The time spent (points) to fix this issue
 		 * 
 		 * @var integer
-		 * @Column(type="integer", length=5)
+		 * @Column(type="integer", length=10)
 		 */
 		protected $_spent_points;
 		
@@ -354,7 +354,7 @@
 		 * How far along the issus is
 		 * 
 		 * @var integer
-		 * @Column(type="integer", length=5)
+		 * @Column(type="integer", length=2)
 		 */
 		protected $_percent_complete;
 		

@@ -115,6 +115,28 @@
 			$this->_addIndex('parent_scope', array(self::PARENT_PROJECT_ID, self::SCOPE));
 		}
 
+		public function _migrateData(\b2db\Table $old_table)
+		{
+			$sqls = array();
+			$tn = $this->_getTableNameSQL();
+			switch ($old_table->getVersion())
+			{
+				case 1:
+					$sqls[] = "UPDATE {$tn} SET owner_team = owner WHERE owner_type = 2";
+					$sqls[] = "UPDATE {$tn} SET owner_user = owner WHERE owner_type = 1";
+					$sqls[] = "UPDATE {$tn} SET leader_team = leader WHERE leader_type = 2";
+					$sqls[] = "UPDATE {$tn} SET leader_user = leader WHERE leader_type = 1";
+					$sqls[] = "UPDATE {$tn} SET qa_responsible_team = qa_responsible WHERE qa_responsible_type = 2";
+					$sqls[] = "UPDATE {$tn} SET qa_responsible_user = qa_responsible WHERE qa_responsible_type = 1";
+					break;
+			}
+			foreach ($sqls as $sql)
+			{
+				$statement = \b2db\Statement::getPreparedStatement($sql);
+				$res = $statement->performQuery('update');
+			}
+		}
+
 		public function clearDefaults()
 		{
 			$crit = $this->getCriteria();

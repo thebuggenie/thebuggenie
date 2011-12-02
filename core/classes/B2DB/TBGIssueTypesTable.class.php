@@ -26,7 +26,7 @@
 	class TBGIssueTypesTable extends TBGB2DBTable 
 	{
 
-		const B2DB_TABLE_VERSION = 1;
+		const B2DB_TABLE_VERSION = 2;
 		const B2DBNAME = 'issuetypes';
 		const ID = 'issuetypes.id';
 		const SCOPE = 'issuetypes.scope';
@@ -34,7 +34,24 @@
 		const DESCRIPTION = 'issuetypes.description';
 		const ICON = 'issuetypes.icon';
 		const TASK = 'issuetypes.task';
-		
+
+		public function _migrateData(\b2db\Table $old_table)
+		{
+			$sqls = array();
+			$tn = $this->_getTableNameSQL();
+			switch ($old_table->getVersion())
+			{
+				case 1:
+					$sqls[] = "UPDATE {$tn} SET icon = itemdata";
+					break;
+			}
+			foreach ($sqls as $sql)
+			{
+				$statement = \b2db\Statement::getPreparedStatement($sql);
+				$res = $statement->performQuery('update');
+			}
+		}
+
 		public function getAll()
 		{
 			$crit = $this->getCriteria();

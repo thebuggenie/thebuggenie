@@ -290,8 +290,6 @@
 			elseif ($assignee instanceof TBGTeam)
 				$retval = TBGEditionAssignedTeamsTable::getTable()->addTeamToEdition($this->getID(), $assignee, $role);
 
-			$this->applyInitialPermissionSet($assignee, $role);
-			
 			return $retval;
 		}
 

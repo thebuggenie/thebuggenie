@@ -191,11 +191,7 @@
 			{
 				$this->_associated_projects = array();
 				
-				$projects = TBGProjectAssignedTeamsTable::getTable()->getProjectsByTeamID($this->getID());
-				$edition_projects = TBGEditionAssignedTeamsTable::getTable()->getProjectsByTeamID($this->getID());
-				$component_projects = TBGComponentAssignedTeamsTable::getTable()->getProjectsByTeamID($this->getID());
-
-				$project_ids = array_merge(array_keys($projects), array_keys($edition_projects), array_keys($component_projects));
+				$project_ids = TBGProjectAssignedTeamsTable::getTable()->getProjectsByTeamID($this->getID());
 				foreach ($project_ids as $project_id)
 				{
 					$this->_associated_projects[$project_id] = TBGContext::factory()->TBGProject($project_id);

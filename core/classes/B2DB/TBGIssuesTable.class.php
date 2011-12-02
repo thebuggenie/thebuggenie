@@ -26,7 +26,7 @@
 	class TBGIssuesTable extends TBGB2DBTable 
 	{
 		
-		const B2DB_TABLE_VERSION = 1;
+		const B2DB_TABLE_VERSION = 2;
 		const B2DBNAME = 'issues';
 		const ID = 'issues.id';
 		const SCOPE = 'issues.scope';
@@ -136,6 +136,27 @@
 			$this->_addIndex('deleted_project', array(self::DELETED, self::PROJECT_ID));
 			$this->_addIndex('deleted_state_project', array(self::DELETED, self::STATE, self::PROJECT_ID));
 			$this->_addIndex('deleted_project_issueno', array(self::DELETED, self::ISSUE_NO, self::PROJECT_ID));
+		}
+
+		public function _migrateData(\b2db\Table $old_table)
+		{
+			$sqls = array();
+			$tn = $this->_getTableNameSQL();
+			switch ($old_table->getVersion())
+			{
+				case 1:
+					$sqls[] = "UPDATE {$tn} SET owner_team = owner WHERE owner_type = 2";
+					$sqls[] = "UPDATE {$tn} SET owner_user = owner WHERE owner_type = 1";
+					$sqls[] = "UPDATE {$tn} SET assignee_team = assigned_to WHERE assigned_type = 2";
+					$sqls[] = "UPDATE {$tn} SET assignee_user = assigned_to WHERE assigned_type = 1";
+					$sqls[] = "UPDATE {$tn} SET name = title";
+					break;
+			}
+			foreach ($sqls as $sql)
+			{
+				$statement = \b2db\Statement::getPreparedStatement($sql);
+				$res = $statement->performQuery('update');
+			}
 		}
 
 		public static function getValidSearchFilters()

@@ -448,16 +448,31 @@
 			// Add classpath for existing old tables used for upgrade
 			TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'installation' . DS . 'classes' . DS . 'upgrade_3.1');
 			TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'mailing' . DS . 'classes' . DS . 'B2DB');
+			TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'mailing' . DS . 'classes');
 			TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'publish' . DS . 'classes' . DS . 'B2DB');
+			TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'publish' . DS . 'classes');
 
 			// Upgrade existing tables
 			TBGProjectsTable::getTable()->upgrade(TBGProjectsTable3dot1::getTable());
-			TBGBuildsTable::getTable()->upgrade(TBGBuildsTable3dot1::getTable());
 			TBGUsersTable::getTable()->upgrade(TBGUsersTable3dot1::getTable());
+			TBGIssuesTable::getTable()->upgrade(TBGIssuesTable3dot1::getTable());
+			TBGIssueTypesTable::getTable()->upgrade(TBGIssueTypesTable3dot1::getTable());
+			TBGListTypesTable::getTable()->upgrade(TBGListTypesTable3dot1::getTable());
+			TBGEditionsTable::getTable()->upgrade(TBGEditionsTable3dot1::getTable());
+			TBGBuildsTable::getTable()->upgrade(TBGBuildsTable3dot1::getTable());
+			TBGCommentsTable::getTable()->upgrade(TBGCommentsTable3dot1::getTable());
+			TBGComponentsTable::getTable()->upgrade(TBGComponentsTable3dot1::getTable());
+			TBGCustomFieldsTable::getTable()->upgrade(TBGCustomFieldsTable3dot1::getTable());
 			
 			// Create new tables
 			TBGDashboardViewsTable::getTable()->create();
 			TBGOpenIdAccountsTable::getTable()->create();
+			TBGProjectAssignedUsersTable::getTable()->create();
+			TBGProjectAssignedTeamsTable::getTable()->create();
+			TBGEditionAssignedUsersTable::getTable()->create();
+			TBGEditionAssignedTeamsTable::getTable()->create();
+			TBGComponentAssignedUsersTable::getTable()->create();
+			TBGComponentAssignedTeamsTable::getTable()->create();
 
 			// Create new module tables
 			TBGIncomingEmailAccountTable::getTable()->create();
@@ -466,7 +481,7 @@
 			TBGArticlesTable::getTable()->createIndexes();
 			TBGCommentsTable::getTable()->createIndexes();
 			TBGIssueAffectsBuildTable::getTable()->createIndexes();
-			TBGIssueAffectsCopmponentTable::getTable()->createIndexes();
+			TBGIssueAffectsComponentTable::getTable()->createIndexes();
 			TBGIssueAffectsEditionTable::getTable()->createIndexes();
 			TBGIssueFieldsTable::getTable()->createIndexes();
 			TBGIssueFilesTable::getTable()->createIndexes();

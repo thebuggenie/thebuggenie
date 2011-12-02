@@ -26,7 +26,7 @@
 	class TBGComponentsTable extends TBGB2DBTable 
 	{
 
-		const B2DB_TABLE_VERSION = 1;
+		const B2DB_TABLE_VERSION = 2;
 		const B2DBNAME = 'components';
 		const ID = 'components.id';
 		const SCOPE = 'components.scope';

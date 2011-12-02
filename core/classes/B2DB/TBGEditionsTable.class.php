@@ -26,7 +26,7 @@
 	class TBGEditionsTable extends TBGB2DBTable 
 	{
 
-		const B2DB_TABLE_VERSION = 1;
+		const B2DB_TABLE_VERSION = 2;
 		const B2DBNAME = 'editions';
 		const ID = 'editions.id';
 		const SCOPE = 'editions.scope';
@@ -71,6 +71,24 @@
 			$crit->addWhere(self::PROJECT, $project_id);
 			$res = $this->doSelect($crit);
 			return $res;
+		}
+
+		public function getProjectIDsByEditionIDs($edition_ids)
+		{
+			if (count($edition_ids))
+			{
+				$crit = $this->getCriteria();
+				$crit->addWhere(self::ID, $edition_ids, Criteria::DB_IN);
+				$edition_ids = array();
+				if ($res = $this->doSelect($crit))
+				{
+					while ($row = $res->getNextRow())
+					{
+						$edition_ids[$row->get(self::ID)] = $row->get(self::PROJECT);
+					}
+				}
+			}
+			return $edition_ids;
 		}
 
 	}

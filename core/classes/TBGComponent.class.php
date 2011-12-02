@@ -67,7 +67,6 @@
 		public function addAssignee($assignee, $role)
 		{
 			$retval = TBGComponentAssigneesTable::getTable()->addAssigneeToComponent($this->getID(), $assignee, $role);
-			$this->applyInitialPermissionSet($assignee, $role);
 			
 			return $retval;
 		}

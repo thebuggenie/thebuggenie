@@ -163,7 +163,8 @@
 		 */
 		public function getProject()
 		{
-			return ($this->_project !== null || !is_object($this->_edition)) ? $this->_project : $this->_edition->getProject();
+			$this->_b2dbLazyload('_project');
+			return $this->_project;
 		}
 
 		public function setProject(TBGProject $project)
