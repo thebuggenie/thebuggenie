@@ -150,12 +150,13 @@
 
 		public function getForeignTableByLocalColumn($column)
 		{
-			foreach ($this->_foreigntables as $foreign_table) {
-				if ($foreign_table['column'] == $column) {
-					return $foreign_table;
+			if (is_array($this->_foreigntables)) {
+				foreach ($this->_foreigntables as $foreign_table) {
+					if ($foreign_table['column'] == $column) {
+						return $foreign_table;
+					}
 				}
 			}
-			return null;
 		}
 		
 		public function __toString()
