@@ -1744,7 +1744,12 @@
 		{
 			$this->_populateRelatedIssues();
 			return $this->_parent_issues;
-		} 
+		}
+
+		public function isChildIssue()
+		{
+			return (bool) count($this->getParentIssues());
+		}
 
 		/**
 		 * Return related issues
