@@ -171,6 +171,8 @@
 
 		protected function _uninstall() { }
 
+		protected function _upgrade() { }
+
 		/**
 		 * Class constructor
 		 */
@@ -245,6 +247,14 @@
 			$this->_enabled = true;
 		}
 		
+		final public function upgrade()
+		{
+			TBGCache::delete(TBGCache::KEY_PREMODULES_ROUTES_CACHE);
+			TBGCache::delete(TBGCache::KEY_POSTMODULES_ROUTES_CACHE);
+			TBGCache::delete(TBGCache::KEY_PERMISSIONS_CACHE);
+			$this->_upgrade();
+		}
+
 		final public function uninstall($scope = null)
 		{
 			if ($this->isCore())

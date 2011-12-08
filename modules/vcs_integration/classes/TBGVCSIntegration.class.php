@@ -92,7 +92,7 @@
 			parent::_uninstall();
 		}
 		
-		public function upgrade()
+		protected function _upgrade()
 		{
 			switch ($this->_version)
 			{
