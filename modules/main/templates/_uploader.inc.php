@@ -1,5 +1,5 @@
 <?php $apc_enabled = TBGRequest::CanGetUploadStatus(); ?>
-<div id="attach_file" style="display: none;">
+<div id="attach_file" style="display: none;" class="fullpage_backdrop">
 	<div class="backdrop_box medium">
 		<div class="backdrop_detail_header">
 			<?php if ($mode == 'issue'): ?>
@@ -64,7 +64,6 @@
 			<a href="javascript:void(0)" onclick="$('attach_file').hide();"><?php echo __('Close'); ?></a>
 		</div>
 	</div>
-	<div style="background-color: #000; width: 100%; height: 100%; position: absolute; top: 0; left: 0; margin: 0; padding: 0; z-index: 100000;" class="semi_transparent" onclick="$('attach_file').hide();"> </div>
 </div>
 <?php if ($apc_enabled): ?>
 	<script type="text/javascript">

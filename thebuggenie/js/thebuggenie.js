@@ -123,7 +123,7 @@ TBG.Core._extractAutocompleteValue = function(elem, value) {
  * Monitors viewport resize to adapt backdrops and dashboard containers
  */
 TBG.Core._resizeWatcher = function() {
-	if (($('fullpage_backdrop') && $('fullpage_backdrop').visible()) || ($('attach_file') && $('attach_file').visible())) {
+	if (/*($('fullpage_backdrop') && $('fullpage_backdrop').visible()) || */ ($('attach_file') && $('attach_file').visible())) {
 		var docheight = document.viewport.getHeight();
 		var backdropheight = $('backdrop_detail_content').getHeight();
 		if (backdropheight > (docheight - 100)) {
@@ -581,6 +581,7 @@ TBG.Main.Helpers.formSubmit = function(url, form_id) {
 
 TBG.Main.Helpers.Backdrop.show = function(url) {
 	$('fullpage_backdrop').appear({duration: 0.2});
+	$$('body')[0].setStyle({'overflow': 'hidden'});
 	$('fullpage_backdrop_indicator').show();
 
 	if (url != undefined) {
@@ -599,6 +600,7 @@ TBG.Main.Helpers.Backdrop.show = function(url) {
 };
 
 TBG.Main.Helpers.Backdrop.reset = function() {
+	$$('body')[0].setStyle({'overflow': 'auto'});
 	$('fullpage_backdrop').fade({duration: 0.2});
 };
 
