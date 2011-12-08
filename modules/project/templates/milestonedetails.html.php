@@ -16,10 +16,19 @@
 ?>
 			<?php include_template('project/projectheader', array('selected_project' => $selected_project)); ?>
 			<?php include_template('project/projectinfosidebar', array('selected_project' => $selected_project)); ?>
-			<div style="width: auto; padding-right: 5px; position: relative;" id="scrum_sprint_burndown">
+			<div style="width: auto; padding-right: 5px; position: relative;" id="milestone_details_overview">
 				<?php if ($milestone instanceof TBGMilestone): ?>
 					<h3>
-						<?php echo __('Milestone details, "%milestone_name%"', array('%milestone_name%' => $milestone->getName())); ?>
+						<?php echo __('Milestone details, "%milestone_name%"', array('%milestone_name%' => $milestone->getName())); ?><br>
+						<span class="date">
+							<?php if ($milestone->getStartingDate() && $milestone->isScheduled()): ?>
+								(<?php echo tbg_formatTime($milestone->getStartingDate(), 22); ?> - <?php echo tbg_formatTime($milestone->getScheduledDate(), 22); ?>)
+							<?php elseif ($milestone->getStartingDate() && !$milestone->isScheduled()): ?>
+								(<?php echo __('Starting %start_date%', array('%start_date%' => tbg_formatTime($milestone->getStartingDate(), 22))); ?>)
+							<?php elseif (!$milestone->getStartingDate() && $milestone->isScheduled()): ?>
+								(<?php echo __('Ends %end_date%', array('%end_date%' => tbg_formatTime($milestone->getScheduledDate(), 22))); ?>)
+							<?php endif; ?>
+						</span>
 					</h3>
 				<?php else: ?>
 					<?php echo __('No milestone selected'); ?>
@@ -89,67 +98,148 @@
 					</table>
 					<script type="text/javascript">
 							jQuery(function () {
+
 								var d_e_points = [];
-								<?php foreach ($burndown_data['estimations']['points'] as $d => $p): ?>
-									d_e_points.push([<?php echo $d; ?>, <?php echo $p; ?>]);
-								<?php endforeach; ?>
 								var d_e_hours = [];
-								<?php foreach ($burndown_data['estimations']['hours'] as $d => $h): ?>
-									d_e_hours.push([<?php echo $d; ?>, <?php echo $h; ?>]);
-								<?php endforeach; ?>
 								var d_s_points = [];
-								<?php foreach ($burndown_data['spent_times']['points'] as $d => $p): ?>
-									d_s_points.push([<?php echo $d; ?>, <?php echo $p; ?>]);
-								<?php endforeach; ?>
 								var d_s_hours = [];
-								<?php foreach ($burndown_data['spent_times']['hours'] as $d => $h): ?>
-									d_s_hours.push([<?php echo $d; ?>, <?php echo $h; ?>]);
-								<?php endforeach; ?>
-								console.log(d_s_hours);
-								jQuery.plot(jQuery("#selected_burndown_image"), [
-									{
-										data: d_e_hours,
-										lines: { show: true },
-										points: { show: true },
-										color: '#92BA6F',
-										label: '<?php echo __('Estimated hours'); ?>'
-									},
-									{
-										data: d_e_points,
-										lines: { show: true, fill: true },
-										points: { show: true },
-										color: '#F8C939',
-										label: '<?php echo __('Estimated points'); ?>'
-									},
-									{
-										data: d_s_hours,
-										lines: { show: true },
-										points: { show: true },
-										color: '#923A6F',
-										label: '<?php echo __('Spent hours'); ?>'
-									},
-									{
-										data: d_s_points,
-										lines: { show: true, fill: true },
-										points: { show: true },
-										color: '#F83A39',
-										label: '<?php echo __('Spent points'); ?>'
-									}
-								], {
-								xaxis: {
-									color: '#AAA'
-								},
-								yaxis: {
-									color: '#AAA'
-								},
-								grid: {
+								
+								<?php if ($milestone->hasStartingDate() && $milestone->hasScheduledDate()): ?>
+									<?php foreach ($burndown_data['estimations']['points'] as $d => $p): ?>
+										d_e_points.push([<?php echo $d * 1000; ?>, <?php echo $p; ?>]);
+									<?php endforeach; ?>
+
+									<?php foreach ($burndown_data['estimations']['hours'] as $d => $h): ?>
+										d_e_hours.push([<?php echo $d * 1000; ?>, <?php echo $h; ?>]);
+									<?php endforeach; ?>
+
+									<?php foreach ($burndown_data['spent_times']['points'] as $d => $p): ?>
+										d_s_points.push([<?php echo $d * 1000; ?>, <?php echo $p; ?>]);
+									<?php endforeach; ?>
+
+									<?php foreach ($burndown_data['spent_times']['hours'] as $d => $h): ?>
+										d_s_hours.push([<?php echo $d * 1000; ?>, <?php echo $h; ?>]);
+									<?php endforeach; ?>
+								<?php else: ?>
+									d_e_hours.push([0,0]);
+									d_e_hours.push([1,0]);
+									d_e_hours.push([2,0]);
+									d_e_hours.push([3, <?php echo array_sum($burndown_data['estimations']['hours']); ?>]);
+									d_e_hours.push([4,0]);
+									d_e_hours.push([5,0]);
+									d_e_hours.push([6,0]);
+									d_e_hours.push([7,0]);
+									d_e_hours.push([8,0]);
+									d_s_hours.push([0,0]);
+									d_s_hours.push([1,0]);
+									d_s_hours.push([2,0]);
+									d_s_hours.push([3, <?php echo array_sum($burndown_data['spent_times']['hours']); ?>]);
+									d_s_hours.push([4,0]);
+									d_s_hours.push([5,0]);
+									d_s_hours.push([6,0]);
+									d_s_hours.push([7,0]);
+									d_s_hours.push([8,0]);
+									d_e_points.push([0,0]);
+									d_e_points.push([1,0]);
+									d_e_points.push([2,0]);
+									d_e_points.push([3,0]);
+									d_e_points.push([4,0]);
+									d_e_points.push([5, <?php echo array_sum($burndown_data['estimations']['points']); ?>]);
+									d_e_points.push([6,0]);
+									d_e_points.push([7,0]);
+									d_e_points.push([8,0]);
+									d_s_points.push([0,0]);
+									d_s_points.push([1,0]);
+									d_s_points.push([2,0]);
+									d_s_points.push([3,0]);
+									d_s_points.push([4,0]);
+									d_s_points.push([5, <?php echo array_sum($burndown_data['spent_times']['points']); ?>]);
+									d_s_points.push([6,0]);
+									d_s_points.push([7,0]);
+									d_s_points.push([8,0]);
+								<?php endif; ?>
+
+								var y_config = { color: '#AAA', min: 0, tickDecimals: 0 };
+								var x_config = { color: '#AAA', tickDecimals: 0 };
+								var grid_config = {
 									color: '#CCC',
 									borderWidth: 1,
 									backgroundColor: { colors: ["#FFF", "#EEE"] },
 									hoverable: true,
 									autoHighlight: true
-								}
-								});
+								};
+
+								<?php if ($milestone->hasStartingDate() && $milestone->hasScheduledDate()): ?>
+									x_config.mode = 'time';
+									grid_config.markings = [{xaxis: { from: <?php echo time() * 1000; ?>, to: <?php echo time() * 1000; ?>}, color: '#955', lineWidth: 1}];
+									jQuery.plot(jQuery("#selected_burndown_image"), [
+										{
+											data: d_e_hours,
+											lines: { show: true },
+											points: { show: true },
+											color: '#92BA6F',
+											label: '<?php echo __('Estimated hours'); ?>'
+										},
+										{
+											data: d_e_points,
+											lines: { show: true, fill: true },
+											points: { show: true },
+											color: '#F8C939',
+											label: '<?php echo __('Estimated points'); ?>'
+										},
+										{
+											data: d_s_hours,
+											lines: { show: true },
+											points: { show: true },
+											color: '#923A6F',
+											label: '<?php echo __('Spent hours'); ?>'
+										},
+										{
+											data: d_s_points,
+											lines: { show: true, fill: true },
+											points: { show: true },
+											color: '#F83A39',
+											label: '<?php echo __('Spent points'); ?>'
+										}
+									], {
+									yaxis: y_config,
+									xaxis: x_config,
+									grid: grid_config
+									});
+								<?php else: ?>
+									x_config.ticks = [[0, ' '], [1, ' '], [2, ' '], [3, '<?php echo __('Hours'); ?>'], [4, ' '], [5, '<?php echo __('Points'); ?>'], [6, ' '], [7, ' '], [8, ' ']]
+									jQuery.plot(jQuery("#selected_burndown_image"), [
+										{
+											data: d_e_hours,
+											color: '#92BA6F',
+											label: '<?php echo __('Estimated hours'); ?>'
+										},
+										{
+											data: d_e_points,
+											color: '#F8C939',
+											label: '<?php echo __('Estimated points'); ?>'
+										},
+										{
+											data: d_s_hours,
+											color: '#923A6F',
+											label: '<?php echo __('Spent hours'); ?>'
+										},
+										{
+											data: d_s_points,
+											color: '#F83A39',
+											label: '<?php echo __('Spent points'); ?>'
+										}
+									], {
+										series: {
+											stack: true,
+											lines: { show: false },
+											bars: { show: true, barWidth: 0.6 }
+										},
+										yaxis: y_config,
+										xaxis: x_config,
+										grid: grid_config
+									});
+								<?php endif; ?>
 							});
 					</script>
 				<?php endif; ?>

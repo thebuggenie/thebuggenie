@@ -963,7 +963,7 @@ table.issue_affects td img { vertical-align: bottom; }
 
 .milestone_box { margin: 5px 5px 5px 0; font-size: 1em; position: relative; }
 .milestone_box.highlighted { background-color: #FFF299; }
-.milestone_box .date { font-size: 0.9em; color: #888; font-weight: normal; }
+.milestone_box .date, #milestone_details_overview .date { font-size: 0.9em; color: #888; font-weight: normal; }
 .milestone_box .status { font-weight: normal; text-align: right; margin-top: 10px; }
 .milestone_box .percentage { position: relative; margin-top: 5px; }
 .milestone_box .percentage .numbers { position: absolute; right: 2px; text-align: right; font-size: 0.8em; }
@@ -1057,14 +1057,15 @@ ul.milestone_issues_container li .actions label { float: left; font-weight: bold
 .planning_container .sprint_header a.issue_count { font-size: 1em; font-weight: normal; color: #888; }
 .planning_container .sprint_header a.issue_count:hover { color: #BBB; }
 .planning_container .sprint_header a:hover { color: #888; text-decoration: none; border: 0; }
-#scrum_sprint_burndown a { color: #555; border-bottom: 1px dotted #AAA; }
-#scrum_sprint_burndown .faded_out a { color: #888; border-bottom: 0; }
-#scrum_sprint_burndown a:hover { color: #777; border-bottom: 1px dotted #BBB; }
-#scrum_sprint_burndown .faded_out a:hover { color: #999; border-bottom: 0; }
-#scrum_sprint_burndown a.img, #scrum_sprint_burndown a.img:hover { border-bottom: 0; }
-#scrum_sprint_burndown td.estimates { padding: 3px; text-align: center; font-weight: normal; }
-#scrum_sprint_burndown tr.canhover_light:hover { background-color: transparent; }
-#scrum_sprint_burndown tr.canhover_light:hover td.estimates { background-color: #F1F1F1; }
+#milestone_details_overview h3 { line-height: 1.2; }
+#milestone_details_overview a { color: #555; border-bottom: 1px dotted #AAA; }
+#milestone_details_overview .faded_out a { color: #888; border-bottom: 0; }
+#milestone_details_overview a:hover { color: #777; border-bottom: 1px dotted #BBB; }
+#milestone_details_overview .faded_out a:hover { color: #999; border-bottom: 0; }
+#milestone_details_overview a.img, #milestone_details_overview a.img:hover { border-bottom: 0; }
+#milestone_details_overview td.estimates { padding: 3px; text-align: center; font-weight: normal; }
+#milestone_details_overview tr.canhover_light:hover { background-color: transparent; }
+#milestone_details_overview tr.canhover_light:hover td.estimates { background-color: #F1F1F1; }
 /* end scrum page styling */
 
 /* menu links */
