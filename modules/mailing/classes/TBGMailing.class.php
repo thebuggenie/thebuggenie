@@ -377,8 +377,9 @@
 			}
 			elseif ($issue->getProject()->getLeader() instanceof TBGUser)
 			{
-				if (!($issue->getProject()->getLeaderID() == $cu && !$ns) && !(!$this->getSetting(self::NOTIFY_ISSUE_PROJECT_ASSIGNED, $issue->getProject()->getLeaderID())))
-					$uids[$issue->getProject()->getLeaderID()] = $issue->getProject()->getLeaderID();
+				$lid = $issue->getProject()->getLeader()->getID();
+				if (!($lid == $cu && !$ns) && !(!$this->getSetting(self::NOTIFY_ISSUE_PROJECT_ASSIGNED, $lid)))
+					$uids[$lid] = $lid;
 			}
 	
 			// Same for QA
@@ -393,8 +394,9 @@
 			}
 			elseif ($issue->getProject()->getQaResponsible() instanceof TBGUser)
 			{
-				if (!($issue->getProject()->getQaResponsibleID() == $cu && !$ns) && !(!$this->getSetting(self::NOTIFY_ISSUE_PROJECT_ASSIGNED, $issue->getProject()->getQaResponsibleID())))
-					$uids[$issue->getProject()->getQaResponsibleID()] = $issue->getProject()->getQaResponsibleID();
+				$qaid = $issue->getProject()->getQaResponsible()->getID();
+				if (!($qaid == $cu && !$ns) && !(!$this->getSetting(self::NOTIFY_ISSUE_PROJECT_ASSIGNED, $qaid)))
+					$uids[$qaid] = $qaid;
 			}
 			
 			foreach ($issue->getProject()->getAssignedTeams() as $team_id => $assignments)
