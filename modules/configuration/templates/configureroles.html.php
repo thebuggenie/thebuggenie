@@ -1,7 +1,7 @@
 <?php $tbg_response->setTitle(__('Configure roles')); ?>
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
 	<tr>
-		<?php include_component('leftmenu', array('selected_section' => TBGSettings::CONFIGURATION_SECTION_SCOPES)); ?>
+		<?php include_component('leftmenu', array('selected_section' => TBGSettings::CONFIGURATION_SECTION_ROLES)); ?>
 		<td valign="top">
 			<div id="config_roles" style="position: relative; width: 788px;">
 				<h3>
