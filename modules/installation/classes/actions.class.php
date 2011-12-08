@@ -473,6 +473,7 @@
 			TBGEditionAssignedTeamsTable::getTable()->create();
 			TBGComponentAssignedUsersTable::getTable()->create();
 			TBGComponentAssignedTeamsTable::getTable()->create();
+			TBGRolePermissionsTable::getTable()->create();
 
 			// Create new module tables
 			TBGIncomingEmailAccountTable::getTable()->create();
