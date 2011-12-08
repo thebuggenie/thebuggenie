@@ -27,10 +27,14 @@
 				}
 			], {
 			xaxis: {
-				color: '#AAA'
+				color: '#AAA',
+				tickDecimals: 0,
+				ticks: 15
 			},
 			yaxis: {
-				color: '#AAA'
+				color: '#AAA',
+				min: 0,
+				tickDecimals: 0
 			},
 			grid: {
 				color: '#CCC',
