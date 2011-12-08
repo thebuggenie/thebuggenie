@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="<?php echo TBGSettings::getHTMLLanguage(); ?>">
+<html lang="<?php echo TBGSettings::getHTMLLanguage(); ?>" style="cursor: progress;">
 	<head>
 		<meta charset="<?php echo TBGContext::getI18n()->getCharset(); ?>">
 		<?php TBGEvent::createNew('core', 'header_begins')->trigger(); ?>

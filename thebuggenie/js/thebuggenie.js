@@ -302,6 +302,8 @@ TBG.initialize = function(options) {
 		TBG.Main.Dashboard.views.each(function(view_id) {
 			TBG.Main.Dashboard.View.init(TBG.Main.Dashboard.url, view_id);
 		});
+	} else {
+		$$('html')[0].setStyle({ 'cursor': 'default' });
 	}
 	$('fullpage_backdrop_content').observe('click', TBG.Core._resizeWatcher);
 	document.observe('click', TBG.Main.toggleBreadcrumbMenuPopout);
@@ -849,7 +851,15 @@ TBG.Main.Dashboard.View.init = function(url, view_id) {
 		additional_params: '&view_id=' + view_id,
 		loading: {indicator: 'dashboard_' + view_id + '_indicator'},
 		success: {update: 'dashboard_' + view_id},
-		complete: {callback: TBG.Core._resizeWatcher}
+		complete: {
+			callback: function() {
+				TBG.Core._resizeWatcher();
+				TBG.Main.Dashboard.views.splice(0, 1);
+				if (TBG.Main.Dashboard.views.size() == 0) {
+					$$('html')[0].setStyle({ 'cursor': 'default' });
+				}
+			}
+		}
 	});
 };
 
