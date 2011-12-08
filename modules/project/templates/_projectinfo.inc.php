@@ -41,7 +41,7 @@
 		<td><label for="client"><?php echo __('Subproject of'); ?></label></td>
 		<td>
 			<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-				<select name="client" id="client" style="width: 100%">
+				<select name="subproject_id" id="subproject_id" style="width: 100%">
 					<option value="0"<?php if (!($project->hasParent())): ?> selected<?php endif; ?>><?php echo __('Not a subproject'); ?></option>
 					<?php foreach ($valid_subproject_targets as $aproject): ?>
 						<option value=<?php echo $aproject->getID(); ?><?php if ($project->hasParent() && $project->getParent()->getID() == $aproject->getID()): ?> selected<?php endif; ?>><?php echo $aproject->getName(); ?></option>

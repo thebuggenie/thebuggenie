@@ -1519,6 +1519,18 @@
 					}
 				}
 
+				if ($request->hasParameter('subproject_id'))
+				{
+					if ($request['subproject_id'] == 0)
+					{
+						$this->selected_project->clearParent();
+					}
+					else
+					{
+						$this->selected_project->setParent(TBGContext::factory()->TBGProject($request['subproject_id']));
+					}
+				}
+
 				if ($request->hasParameter('workflow_scheme'))
 				{
 					try

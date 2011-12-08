@@ -2594,6 +2594,11 @@
 			return $this->_b2dbLazyload('_parent');
 		}
 		
+		public function clearParent()
+		{
+			$this->_parent = null;
+		}
+
 		public function setParent(TBGProject $project)
 		{
 			$this->_parent = $project;
