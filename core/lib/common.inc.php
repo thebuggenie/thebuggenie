@@ -357,7 +357,7 @@
 			if ($minify == true && file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DIRECTORY_SEPARATOR . 'js' . DIRECTORY_SEPARATOR . $script))
 				$jsstrings[] = 'js/'.$script;
 			else
-				$sepjs[] = 'js/' . $script;
+				$sepjs[] = $script;
 		}
 
 		$jsstrings = join(',', $jsstrings);

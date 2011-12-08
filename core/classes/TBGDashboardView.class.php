@@ -269,7 +269,7 @@
 
 		public function getJS()
 		{
-			return array('jquery.flot.min.js', 'jquery.flot.resize.min.js');
+			return array('js/jquery.flot.min.js', 'js/jquery.flot.resize.min.js');
 		}
 
 		public function getRSSUrl()
