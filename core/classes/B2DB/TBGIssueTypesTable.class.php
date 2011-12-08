@@ -43,12 +43,26 @@
 			{
 				case 1:
 					$sqls[] = "UPDATE {$tn} SET icon = itemdata";
+					$sqls[] = "UPDATE {$tn} SET key = null";
 					break;
 			}
 			foreach ($sqls as $sql)
 			{
 				$statement = \b2db\Statement::getPreparedStatement($sql);
 				$res = $statement->performQuery('update');
+			}
+
+			switch ($old_table->getVersion())
+			{
+				case 1:
+					foreach (self::getTable()->getAll() as $issuetype)
+					{
+						// Trigger issuetype key regeneration
+						$issuetype->setKey(null);
+						$issuetype->getKey();
+						$issuetype->save();
+					}
+					break;
 			}
 		}
 
