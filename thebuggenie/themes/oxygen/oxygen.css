@@ -68,6 +68,8 @@ div.image_container.thumb img.image { width: 220px; }
 .left { text-align: left; }
 .right { text-align: right; }
 
+blockquote { border-left: 2px solid rgba(97, 147, 207, 0.5); padding: 0 0 0 5px; margin: 5px 0 5px 15px; font-style: italic; color: #888; }
+
 /* end general styles */
 
 /* Main header area */

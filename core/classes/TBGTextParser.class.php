@@ -23,6 +23,7 @@
 		protected static $current_parser = null;
 
 		protected $preformat = null;
+		protected $quote = null;
 		protected $tablemode = null;
 		protected $opentablecol = false;
 		protected $options = array();
@@ -258,9 +259,29 @@
 			if (!$this->preformat) $output .= "<pre>";
 			$this->preformat = true;
 
-			$output .= $matches[2];
+			$output .= $matches[0];
 
 			return $output."\n";
+		}
+
+		protected function _parse_quote($matches, $close = false)
+		{
+			if ($close)
+			{
+				$this->quote = false;
+				return "</blockquote>\n";
+			}
+
+			$this->stop_all = true;
+
+			$output = "";
+			if (!$this->quote) $output .= "<blockquote>";
+			$this->quote = true;
+
+			if ($matches[2])
+				$output .= $matches[2]."<br>";
+
+			return $output;
 		}
 
 		protected function _parse_horizontalrule($matches)
@@ -716,7 +737,8 @@
 		{
 			$line_regexes = array();
 			
-			$line_regexes['preformat'] = '^(\&gt\;|\s{1})(.*?)$';
+			$line_regexes['preformat'] = '^\s{1}(.*?)$';
+			$line_regexes['quote'] = '^(\&gt\;)(.*?)$';
 			$line_regexes['definitionlist'] = '^([\;\:])(?!\-?[\(\)\D\/P])\s*(.*?)$';
 			$line_regexes['newline'] = '^$';
 			$line_regexes['list'] = '^([\*\#]+)(.*?)$';
@@ -778,6 +800,7 @@
 			if ($this->deflist && !array_key_exists('definitionlist', $called)) $line = $this->_parse_definitionlist(false, true) . $line;
 
 			if ($this->preformat && !array_key_exists('preformat', $called)) $line = $this->_parse_preformat(false, true) . $line;
+			if ($this->quote && !array_key_exists('quote', $called)) $line = $this->_parse_quote(false, true) . $line;
 
 			// suppress linebreaks for the next line if we just displayed one; otherwise re-enable them
 			if ($isline) $this->ignore_newline = (array_key_exists('newline', $called) || array_key_exists('headers', $called));
