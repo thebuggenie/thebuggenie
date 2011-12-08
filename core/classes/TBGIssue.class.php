@@ -4495,12 +4495,12 @@
 
 			if ($is_saved_estimated)
 			{
-				\b2db\Core::getTable('TBGIssueEstimates')->saveEstimate($this->getID(), $this->_estimated_months, $this->_estimated_weeks, $this->_estimated_days, $this->_estimated_hours, $this->_estimated_points);
+				TBGIssueEstimates::getTable()->saveEstimate($this->getID(), $this->_estimated_months, $this->_estimated_weeks, $this->_estimated_days, $this->_estimated_hours, $this->_estimated_points);
 			}
 
 			if ($is_saved_spent)
 			{
-				\b2db\Core::getTable('TBGIssueSpentTimes')->saveSpentTime($this->getID(), $this->_spent_months, $this->_spent_weeks, $this->_spent_days, $this->_spent_hours, $this->_spent_points);
+				TBGIssueSpentTimes::getTable()->saveSpentTime($this->getID(), $this->_spent_months, $this->_spent_weeks, $this->_spent_days, $this->_spent_hours, $this->_spent_points);
 			}
 
 			$this->related_issues_to_save = $related_issues_to_save;

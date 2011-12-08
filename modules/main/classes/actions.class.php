@@ -398,6 +398,7 @@
 		 */
 		public function runAbout(TBGRequest $request)
 		{
+			TBGRolePermissionsTable::getTable()->create();
 			$this->forward403unless(TBGContext::getUser()->hasPageAccess('about'));
 		}
 		
@@ -986,6 +987,12 @@
 				if ($reproducability_id = (int) $request['reproducability_id'])
 					$this->selected_reproducability = TBGContext::factory()->TBGReproducability($reproducability_id);
 
+				if ($milestone_id = (int) $request['milestone_id'])
+					$this->selected_milestone = TBGContext::factory()->TBGMilestone($milestone_id);
+
+				if ($parent_issue_id = (int) $request['parent_issue_id'])
+					$this->parent_issue = TBGContext::factory()->TBGIssue($parent_issue_id);
+
 				if ($resolution_id = (int) $request['resolution_id'])
 					$this->selected_resolution = TBGContext::factory()->TBGResolution($resolution_id);
 
@@ -1107,6 +1114,8 @@
 			if (isset($fields_array['priority']) && $this->selected_priority instanceof TBGDatatype) $issue->setPriority($this->selected_priority->getID());
 			if (isset($fields_array['estimated_time'])) $issue->setEstimatedTime($this->selected_estimated_time);
 			if (isset($fields_array['spent_time'])) $issue->setSpentTime($this->selected_spent_time);
+			if (isset($fields_array['milestone']) || isset($this->selected_milestone)) $issue->setMilestone($this->selected_milestone);
+			if (isset($this->parent_issue)) $issue->addParentIssue($this->parent_issue);
 			if (isset($fields_array['percent_complete'])) $issue->setPercentCompleted($this->selected_percent_complete);
 			if (isset($fields_array['pain_bug_type'])) $issue->setPainBugType($this->selected_pain_bug_type);
 			if (isset($fields_array['pain_likelihood'])) $issue->setPainLikelihood($this->selected_pain_likelihood);
@@ -1187,6 +1196,30 @@
 							$options['issue'] = $issue;
 							$options['errors'] = $errors;
 							$options['permission_errors'] = $permission_errors;
+							if ($request->hasParameter('milestone_id'))
+							{
+								try
+								{
+									$options['selected_milestone'] = TBGContext::factory()->TBGMilestone((int) $request['milestone_id']);
+								}
+								catch (Exception $e) {}
+							}
+							if ($request->hasParameter('parent_issue_id'))
+							{
+								try
+								{
+									$options['parent_issue'] = TBGContext::factory()->TBGIssue((int) $request['parent_issue_id']);
+								}
+								catch (Exception $e) {}
+							}
+							if ($request->hasParameter('build_id'))
+							{
+								try
+								{
+									$options['selected_build'] = TBGContext::factory()->TBGBuild((int) $request['build_id']);
+								}
+								catch (Exception $e) {}
+							}
 							return $this->renderJSON(array('content' => $this->getComponentHTML('main/reportissuecontainer', $options)));
 						}
 						if ($issue->getProject()->getIssuetypeScheme()->isIssuetypeRedirectedAfterReporting($this->selected_issuetype))
@@ -1315,39 +1348,39 @@
 			switch ($request['field'])
 			{
 				case 'description':
-					if (!$issue->canEditDescription()) return $this->renderJSON(array('changed' => false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
+					if (!$issue->canEditDescription()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
 					
 					$issue->setDescription($request->getRawParameter('value'));
-					return $this->renderJSON(array('changed' => $issue->isDescriptionChanged(), 'field' => array('id' => (int) ($issue->getDescription() != ''), 'name' => tbg_parse_text($issue->getDescription(), false, null, array('issue' => $issue))), 'description' => tbg_parse_text($issue->getDescription(), false, null, array('issue' => $issue))));
+					return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>$issue->isDescriptionChanged(), 'field' => array('id' => (int) ($issue->getDescription() != ''), 'name' => tbg_parse_text($issue->getDescription(), false, null, array('issue' => $issue))), 'description' => tbg_parse_text($issue->getDescription(), false, null, array('issue' => $issue))));
 					break;
 				case 'reproduction_steps':
-					if (!$issue->canEditReproductionSteps()) return $this->renderJSON(array('changed' => false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
+					if (!$issue->canEditReproductionSteps()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
 					
 					$issue->setReproductionSteps($request->getRawParameter('value'));
-					return $this->renderJSON(array('changed' => $issue->isReproductionStepsChanged(), 'field' => array('id' => (int) ($issue->getReproductionSteps() != ''), 'name' => tbg_parse_text($issue->getReproductionSteps(), false, null, array('issue' => $issue))), 'reproduction_steps' => tbg_parse_text($issue->getReproductionSteps(), false, null, array('issue' => $issue))));
+					return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>$issue->isReproductionStepsChanged(), 'field' => array('id' => (int) ($issue->getReproductionSteps() != ''), 'name' => tbg_parse_text($issue->getReproductionSteps(), false, null, array('issue' => $issue))), 'reproduction_steps' => tbg_parse_text($issue->getReproductionSteps(), false, null, array('issue' => $issue))));
 					break;
 				case 'title':
-					if (!$issue->canEditTitle()) return $this->renderJSON(array('changed' => false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
+					if (!$issue->canEditTitle()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
 					
 					if ($request['value'] == '')
 					{
 						$this->getResponse()->setHttpStatus(400);
-						return $this->renderJSON(array('changed' => false, 'error' => TBGContext::getI18n()->__('You have to provide a title')));
+						return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false, 'error' => TBGContext::getI18n()->__('You have to provide a title')));
 					}
 					else
 					{
 						$issue->setTitle($request->getRawParameter('value'));
-						return $this->renderJSON(array('changed' => $issue->isTitleChanged(), 'field' => array('id' => 1, 'name' => strip_tags($issue->getTitle())), 'title' => strip_tags($issue->getTitle())));
+						return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>$issue->isTitleChanged(), 'field' => array('id' => 1, 'name' => strip_tags($issue->getTitle())), 'title' => strip_tags($issue->getTitle())));
 					}
 					break;
 				case 'percent':
-					if (!$issue->canEditPercentage()) return $this->renderJSON(array('changed' => false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
+					if (!$issue->canEditPercentage()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
 					
 					$issue->setPercentCompleted($request['percent']);
-					return $this->renderJSON(array('changed' => $issue->isPercentCompletedChanged(), 'percent' => $issue->getPercentCompleted()));
+					return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>$issue->isPercentCompletedChanged(), 'percent' => $issue->getPercentCompleted()));
 					break;
 				case 'estimated_time':
-					if (!$issue->canEditEstimatedTime()) return $this->renderJSON(array('changed' => false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
+					if (!$issue->canEditEstimatedTime()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
 					
 					if ($request['estimated_time'] != TBGContext::getI18n()->__('Enter your estimate here') && $request['estimated_time'])
 					{
@@ -1359,20 +1392,24 @@
 					}
 					else
 					{
-						$issue->setEstimatedMonths($request['estimated_time_months']);
-						$issue->setEstimatedWeeks($request['estimated_time_weeks']);
-						$issue->setEstimatedDays($request['estimated_time_days']);
-						$issue->setEstimatedHours($request['estimated_time_hours']);
-						$issue->setEstimatedPoints($request['estimated_time_points']);
+						$issue->setEstimatedMonths($request['months']);
+						$issue->setEstimatedWeeks($request['weeks']);
+						$issue->setEstimatedDays($request['days']);
+						$issue->setEstimatedHours($request['hours']);
+						$issue->setEstimatedPoints($request['points']);
 					}
-					return $this->renderJSON(array('changed' => $issue->isEstimatedTimeChanged(), 'field' => (($issue->hasEstimatedTime()) ? array('id' => 1, 'name' => $issue->getFormattedTime($issue->getEstimatedTime())) : array('id' => 0)), 'values' => $issue->getEstimatedTime()));
+					if ($request['do_save'])
+					{
+						$issue->save();
+					}
+					return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>$issue->isEstimatedTimeChanged(), 'field' => (($issue->hasEstimatedTime()) ? array('id' => 1, 'name' => $issue->getFormattedTime($issue->getEstimatedTime())) : array('id' => 0)), 'values' => $issue->getEstimatedTime()));
 					break;
 				case 'posted_by':
 				case 'owned_by':
 				case 'assigned_to':
-					if ($request['field'] == 'posted_by' && !$issue->canEditPostedBy()) return $this->renderJSON(array('changed' => false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
-					elseif ($request['field'] == 'owned_by' && !$issue->canEditOwner()) return $this->renderJSON(array('changed' => false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
-					elseif ($request['field'] == 'assigned_to' && !$issue->canEditAssignee()) return $this->renderJSON(array('changed' => false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
+					if ($request['field'] == 'posted_by' && !$issue->canEditPostedBy()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
+					elseif ($request['field'] == 'owned_by' && !$issue->canEditOwner()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
+					elseif ($request['field'] == 'assigned_to' && !$issue->canEditAssignee()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
 					
 					if ($request->hasParameter('value'))
 					{
@@ -1420,15 +1457,15 @@
 							}
 						}
 						if ($request['field'] == 'posted_by')
-							return $this->renderJSON(array('changed' => $issue->isPostedByChanged(), 'field' => array('id' => $issue->getPostedByID(), 'name' => $this->getComponentHTML('main/userdropdown', array('user' => $issue->getPostedBy())))));
+							return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>$issue->isPostedByChanged(), 'field' => array('id' => $issue->getPostedByID(), 'name' => $this->getComponentHTML('main/userdropdown', array('user' => $issue->getPostedBy())))));
 						if ($request['field'] == 'owned_by')
-							return $this->renderJSON(array('changed' => $issue->isOwnerChanged(), 'field' => (($issue->isOwned()) ? array('id' => $issue->getOwner()->getID(), 'name' => (($issue->getOwner() instanceof TBGUser) ? $this->getComponentHTML('main/userdropdown', array('user' => $issue->getOwner())) : $this->getComponentHTML('main/teamdropdown', array('team' => $issue->getOwner())))) : array('id' => 0))));
+							return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>$issue->isOwnerChanged(), 'field' => (($issue->isOwned()) ? array('id' => $issue->getOwner()->getID(), 'name' => (($issue->getOwner() instanceof TBGUser) ? $this->getComponentHTML('main/userdropdown', array('user' => $issue->getOwner())) : $this->getComponentHTML('main/teamdropdown', array('team' => $issue->getOwner())))) : array('id' => 0))));
 						if ($request['field'] == 'assigned_to')
-							return $this->renderJSON(array('changed' => $issue->isAssigneeChanged(), 'field' => (($issue->isAssigned()) ? array('id' => $issue->getAssignee()->getID(), 'name' => (($issue->getAssignee() instanceof TBGUser) ? $this->getComponentHTML('main/userdropdown', array('user' => $issue->getAssignee())) : $this->getComponentHTML('main/teamdropdown', array('team' => $issue->getAssignee())))) : array('id' => 0))));
+							return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>$issue->isAssigneeChanged(), 'field' => (($issue->isAssigned()) ? array('id' => $issue->getAssignee()->getID(), 'name' => (($issue->getAssignee() instanceof TBGUser) ? $this->getComponentHTML('main/userdropdown', array('user' => $issue->getAssignee())) : $this->getComponentHTML('main/teamdropdown', array('team' => $issue->getAssignee())))) : array('id' => 0))));
 					}
 					break;
 				case 'spent_time':
-					if (!$issue->canEditSpentTime()) return $this->renderJSON(array('changed' => false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
+					if (!$issue->canEditSpentTime()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
 					
 					if ($request['spent_time'] != TBGContext::getI18n()->__('Enter time spent here') && $request['spent_time'])
 					{
@@ -1443,22 +1480,22 @@
 					{
 						if ($request->hasParameter('spent_time_added_input'))
 						{
-							$issue->addSpentMonths($request['spent_time_months']);
-							$issue->addSpentWeeks($request['spent_time_weeks']);
-							$issue->addSpentDays($request['spent_time_days']);
-							$issue->addSpentHours($request['spent_time_hours']);
-							$issue->addSpentPoints($request['spent_time_points']);
+							$issue->addSpentMonths($request['months']);
+							$issue->addSpentWeeks($request['weeks']);
+							$issue->addSpentDays($request['days']);
+							$issue->addSpentHours($request['hours']);
+							$issue->addSpentPoints($request['points']);
 						}
 						else
 						{
-							$issue->setSpentMonths($request['spent_time_months']);
-							$issue->setSpentWeeks($request['spent_time_weeks']);
-							$issue->setSpentDays($request['spent_time_days']);
-							$issue->setSpentHours($request['spent_time_hours']);
-							$issue->setSpentPoints($request['spent_time_points']);
+							$issue->setSpentMonths($request['months']);
+							$issue->setSpentWeeks($request['weeks']);
+							$issue->setSpentDays($request['days']);
+							$issue->setSpentHours($request['hours']);
+							$issue->setSpentPoints($request['points']);
 						}
 					}
-					return $this->renderJSON(array('changed' => $issue->isSpentTimeChanged(), 'field' => (($issue->hasSpentTime()) ? array('id' => 1, 'name' => $issue->getFormattedTime($issue->getSpentTime())) : array('id' => 0)), 'values' => $issue->getSpentTime()));
+					return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>$issue->isSpentTimeChanged(), 'field' => (($issue->hasSpentTime()) ? array('id' => 1, 'name' => $issue->getFormattedTime($issue->getSpentTime())) : array('id' => 0)), 'values' => $issue->getSpentTime()));
 					break;
 				case 'category':
 				case 'resolution':
@@ -1471,15 +1508,15 @@
 				case 'pain_bug_type':
 				case 'pain_likelihood':
 				case 'pain_effect':
-					if ($request['field'] == 'category' && !$issue->canEditCategory()) return $this->renderJSON(array('changed' => false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
-					elseif ($request['field'] == 'resolution' && !$issue->canEditResolution()) return $this->renderJSON(array('changed' => false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
-					elseif ($request['field'] == 'severity' && !$issue->canEditSeverity()) return $this->renderJSON(array('changed' => false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
-					elseif ($request['field'] == 'reproducability' && !$issue->canEditReproducability()) return $this->renderJSON(array('changed' => false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
-					elseif ($request['field'] == 'priority' && !$issue->canEditPriority()) return $this->renderJSON(array('changed' => false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
-					elseif ($request['field'] == 'milestone' && !$issue->canEditMilestone()) return $this->renderJSON(array('changed' => false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
-					elseif ($request['field'] == 'issuetype' && !$issue->canEditIssuetype()) return $this->renderJSON(array('changed' => false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
-					elseif ($request['field'] == 'status' && !$issue->canEditStatus()) return $this->renderJSON(array('changed' => false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
-					elseif (in_array($request['field'], array('pain_bug_type', 'pain_likelihood', 'pain_effect')) && !$issue->canEditUserPain()) return $this->renderJSON(array('changed' => false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
+					if ($request['field'] == 'category' && !$issue->canEditCategory()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
+					elseif ($request['field'] == 'resolution' && !$issue->canEditResolution()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
+					elseif ($request['field'] == 'severity' && !$issue->canEditSeverity()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
+					elseif ($request['field'] == 'reproducability' && !$issue->canEditReproducability()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
+					elseif ($request['field'] == 'priority' && !$issue->canEditPriority()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
+					elseif ($request['field'] == 'milestone' && !$issue->canEditMilestone()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
+					elseif ($request['field'] == 'issuetype' && !$issue->canEditIssuetype()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
+					elseif ($request['field'] == 'status' && !$issue->canEditStatus()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
+					elseif (in_array($request['field'], array('pain_bug_type', 'pain_likelihood', 'pain_effect')) && !$issue->canEditUserPain()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
 					
 					try
 					{
@@ -1535,12 +1572,12 @@
 								$issue->$set_function_name($parameter_id);
 								if ($is_pain)
 								{
-									if (!$issue->$is_changed_function_name()) return $this->renderJSON(array('changed' => false, 'field' => array('id' => 0), 'user_pain' => $issue->getUserPain(), 'user_pain_diff_text' => $issue->getUserPainDiffText()));
-									return ($parameter_id == 0) ? $this->renderJSON(array('changed' => true, 'field' => array('id' => 0), 'user_pain' => $issue->getUserPain(), 'user_pain_diff_text' => $issue->getUserPainDiffText())) : $this->renderJSON(array('changed' => true, 'field' => array('id' => $parameter_id, 'name' => $issue->$get_pain_type_label_function()), 'user_pain' => $issue->getUserPain(), 'user_pain_diff_text' => $issue->getUserPainDiffText()));
+									if (!$issue->$is_changed_function_name()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false, 'field' => array('id' => 0), 'user_pain' => $issue->getUserPain(), 'user_pain_diff_text' => $issue->getUserPainDiffText()));
+									return ($parameter_id == 0) ? $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>true, 'field' => array('id' => 0), 'user_pain' => $issue->getUserPain(), 'user_pain_diff_text' => $issue->getUserPainDiffText())) : $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>true, 'field' => array('id' => $parameter_id, 'name' => $issue->$get_pain_type_label_function()), 'user_pain' => $issue->getUserPain(), 'user_pain_diff_text' => $issue->getUserPainDiffText()));
 								}
 								else
 								{
-									if (!$issue->$is_changed_function_name()) return $this->renderJSON(array('changed' => false));
+									if (!$issue->$is_changed_function_name()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false));
 									
 									if (isset($parameter))
 									{
@@ -1559,11 +1596,11 @@
 									}
 									if ($parameter_id == 0) 
 									{
-										return $this->renderJSON(array('changed' => true, 'field' => array('id' => 0)));
+										return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>true, 'field' => array('id' => 0)));
 									}
 									else
 									{
-										$options = array('changed' => true, 'visible_fields' => $visible_fields, 'field' => $field);
+										$options = array('issue_id' => $issue->getID(), 'changed' =>true, 'visible_fields' => $visible_fields, 'field' => $field);
 										if ($request['field'] == 'milestone')
 											$options['field']['url'] = $this->getRouting()->generate('project_milestone_details', array('project_key' => $issue->getProject()->getKey(), 'milestone_id' => $issue->getMilestone()->getID()));
 
@@ -1629,8 +1666,8 @@
 									}
 
 									$changed_methodname = "isCustomfield{$key}Changed";
-									if (!$issue->$changed_methodname()) return $this->renderJSON(array('changed' => false));
-									return ($customdatatypeoption_value == '') ? $this->renderJSON(array('changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('changed' => true, 'field' => array('value' => $key, 'name' => $finalvalue)));
+									if (!$issue->$changed_methodname()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false));
+									return ($customdatatypeoption_value == '') ? $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>true, 'field' => array('id' => 0))) : $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>true, 'field' => array('value' => $key, 'name' => $finalvalue)));
 									break;
 								case TBGCustomDatatype::INPUT_TEXTAREA_MAIN:
 								case TBGCustomDatatype::INPUT_TEXTAREA_SMALL:
@@ -1643,8 +1680,8 @@
 										$issue->setCustomField($key, $request->getRawParameter("{$key}_value"));
 									}
 									$changed_methodname = "isCustomfield{$key}Changed";
-									if (!$issue->$changed_methodname()) return $this->renderJSON(array('changed' => false));
-									return ($customdatatypeoption_value == '') ? $this->renderJSON(array('changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('changed' => true, 'field' => array('value' => $key, 'name' => tbg_parse_text($request->getRawParameter("{$key}_value"), false, null, array('issue' => $issue)))));
+									if (!$issue->$changed_methodname()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false));
+									return ($customdatatypeoption_value == '') ? $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>true, 'field' => array('id' => 0))) : $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>true, 'field' => array('value' => $key, 'name' => tbg_parse_text($request->getRawParameter("{$key}_value"), false, null, array('issue' => $issue)))));
 									break;
 								default:
 									if ($customdatatypeoption_value == '')
@@ -1656,8 +1693,8 @@
 										$issue->setCustomField($key, $request->getParameter("{$key}_value"));
 									}
 									$changed_methodname = "isCustomfield{$key}Changed";
-									if (!$issue->$changed_methodname()) return $this->renderJSON(array('changed' => false));
-									return ($customdatatypeoption_value == '') ? $this->renderJSON(array('changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('changed' => true, 'field' => array('value' => $key, 'name' => $customdatatypeoption_value)));
+									if (!$issue->$changed_methodname()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false));
+									return ($customdatatypeoption_value == '') ? $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>true, 'field' => array('id' => 0))) : $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>true, 'field' => array('value' => $key, 'name' => $customdatatypeoption_value)));
 									break;
 							}
 						}
@@ -1673,8 +1710,8 @@
 							}
 							
 							$changed_methodname = "isCustomfield{$key}Changed";
-							if (!$issue->$changed_methodname()) return $this->renderJSON(array('changed' => false));
-							return ($customdatatypeoption_value == '') ? $this->renderJSON(array('changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('changed' => true, 'field' => array('value' => $customdatatypeoption_value, 'name' => $customdatatypeoption->getName())));
+							if (!$issue->$changed_methodname()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false));
+							return ($customdatatypeoption_value == '') ? $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>true, 'field' => array('id' => 0))) : $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>true, 'field' => array('value' => $customdatatypeoption_value, 'name' => $customdatatypeoption->getName())));
 						}
 					}
 					break;
@@ -2679,6 +2716,14 @@
 							try
 							{
 								$options['selected_milestone'] = TBGContext::factory()->TBGMilestone((int) $request['milestone_id']);
+							}
+							catch (Exception $e) {}
+						}
+						if ($request->hasParameter('parent_issue_id'))
+						{
+							try
+							{
+								$options['parent_issue'] = TBGContext::factory()->TBGIssue((int) $request['parent_issue_id']);
 							}
 							catch (Exception $e) {}
 						}

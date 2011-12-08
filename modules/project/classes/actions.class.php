@@ -159,6 +159,7 @@
 			$this->total_spent_points = 0;
 			$this->total_estimated_hours = 0;
 			$this->total_spent_hours = 0;
+			$this->burndown_data = $milestone->getBurndownData();
 		}
 
 		/**

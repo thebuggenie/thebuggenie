@@ -152,8 +152,10 @@
 	</div>
 <?php elseif ($issue instanceof TBGIssue): ?>
 	<div class="rounded_box report_issue_desc <?php if (!$tbg_request->isAjaxCall()): ?>green<?php endif; ?> borderless" style="margin-bottom: 10px;" id="report_issue_reported_issue_details">
-		<strong><?php echo __('The following issue was reported'); ?>:</strong>
-		<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), __('%issue_no% - %issue_title%', array('%issue_no%' => $issue->getFormattedIssueNo(true), '%issue_title%' => $issue->getTitle()))); ?><br>
+		<div style="font-size: 1.1em;">
+			<strong><?php echo __('The following issue was reported: %issue_title%', array('%issue_title%' => '')); ?>:</strong>
+			<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue->getFormattedIssueNo(true) . ' - ' . $issue->getTitle()); ?><br>
+		</div>
 		<span class="faded_out"><?php echo __('Click the link to visit the reported issue'); ?></span>
 	</div>
 <?php endif; ?>
@@ -163,20 +165,34 @@
 	<form action="<?php echo make_url('project_reportissue', array('project_key' => $selected_project->getKey())); ?>" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>">
 <?php endif; ?>
 	<input type="hidden" name="project_id" id="project_id" value="<?php echo $selected_project->getID(); ?>">
-	<?php if (isset($selected_milestone)): ?>
+	<?php if (isset($selected_milestone) || isset($selected_build) || isset($parent_issue)): ?>
 		<div class="rounded_box lightyellow borderless">
-			<?php echo __('You are adding an issue to %milestone_name%', array('%milestone_name%' => '<b>'.$selected_milestone->getName().'</b>')); ?>
-		</div>
-	<?php endif; ?>
-	<?php if (isset($selected_build)): ?>
-		<div class="rounded_box lightyellow borderless" style="font-size: 1.1em;">
-			<?php echo __('You are adding an issue to release %release_name%', array('%release_name%' => '<b>'.$selected_build->getName().'</b>')); ?>
+			<ul class="simple_list" style="padding: 5px; margin: 5px; font-size: 1.2em;">
+				<?php if (isset($selected_milestone)): ?>
+					<li>
+						<?php echo __('You are adding an issue to %milestone_name%', array('%milestone_name%' => '<b>'.$selected_milestone->getName().'</b>')); ?>
+						<input type="hidden" name="milestone_id" id="reportissue_selected_milestone_id" value="<?php echo $selected_milestone->getID(); ?>">
+					</li>
+				<?php endif; ?>
+				<?php if (isset($parent_issue)): ?>
+					<li>
+						<?php echo __('Any issues you create will be related to %related_issue_title%', array('%related_issue_title%' => '<b>'.$parent_issue->getFormattedTitle().'</b>')); ?>
+						<input type="hidden" name="parent_issue_id" id="reportissue_parent_issue_id" value="<?php echo $parent_issue->getID(); ?>">
+					</li>
+				<?php endif; ?>
+				<?php if (isset($selected_build)): ?>
+					<li>
+						<?php echo __('You are adding an issue to release %release_name%', array('%release_name%' => '<b>'.$selected_build->getName().'</b>')); ?>
+						<input type="hidden" name="build_id" id="reportissue_selected_build_id" value="<?php echo $selected_build->getID(); ?>">
+					</li>
+				<?php endif; ?>
+			</ul>
 		</div>
 	<?php endif; ?>
 	<?php if (count($issuetypes) > 0): ?>
 		<div class="issuetype_list" id="issuetype_list"<?php if ($selected_issuetype instanceof TBGIssuetype): ?> style="display: none;"<?php endif; ?>>
 		<?php foreach ($issuetypes as $issuetype): ?>
-			<?php if (!$selected_project->getIssuetypeScheme()->isIssuetypeReportable($issuetype)) continue; ?>
+			<?php if (!$selected_project->getIssuetypeScheme()->isIssuetypeReportable($issuetype) && !$tbg_request->isAjaxCall()) continue; ?>
 			<a class="button button-silver" href="javascript:void(0);" onclick="$('issuetype_id').setValue(<?php echo $issuetype->getID(); ?>);TBG.Issues.updateFields('<?php echo make_url('getreportissuefields', array('project_key' => $selected_project->getKey())); ?>');" style="font-size: 13px; font-weight: bold;">
 				<?php echo image_tag($issuetype->getIcon() . '.png'); ?>
 				<?php echo __('Choose %issuetype_name%', array('%issuetype_name%' => '<br>'.$issuetype->getName())); ?>
@@ -207,7 +223,7 @@
 						<select name="issuetype_id" id="issuetype_id" style="min-width: 300px; height: 25px;" onchange="TBG.Issues.updateFields('<?php echo make_url('getreportissuefields', array('project_key' => $selected_project->getKey())); ?>');">
 							<option value="0"><?php echo __('Please select an issue type from this list'); ?>...</option>
 							<?php foreach ($issuetypes as $issuetype): ?>
-								<?php if (!$selected_project->getIssuetypeScheme()->isIssuetypeReportable($issuetype)) continue; ?>
+								<?php if (!$selected_project->getIssuetypeScheme()->isIssuetypeReportable($issuetype) && !$tbg_request->isAjaxCall()) continue; ?>
 								<option value="<?php echo $issuetype->getID(); ?>"<?php if ($selected_issuetype instanceof TBGIssuetype && $selected_issuetype->getID() == $issuetype->getID()): ?> selected<?php endif; ?>><?php echo $issuetype->getName(); ?></option>
 							<?php endforeach; ?>
 						</select>

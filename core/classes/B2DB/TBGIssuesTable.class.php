@@ -373,7 +373,7 @@
 			$crit->addWhere(TBGProjectsTable::DELETED, false);
 			$crit->addWhere(self::ISSUE_NO, $issue_no);
 			$crit->addWhere(self::DELETED, 0);
-			$row = $this->doSelectOne($crit, array(self::PROJECT_ID));
+			$row = $this->doSelectOne($crit);
 			return $row;
 		}
 

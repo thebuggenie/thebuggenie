@@ -2850,29 +2850,54 @@ TBG.Issues.Field.Updaters.dualFromJSON = function(dualfield, field) {
 	}
 }
 
-TBG.Issues.Field.Updaters.fromObject = function(object, field) {
+TBG.Issues.Field.Updaters.fromObject = function(issue_id, object, field) {
+	var fn = field + '_' + issue_id + '_name';
+	var nf = 'no_ ' + field + '_' + issue_id;
+	if (!$(fn)) {
+		fn = field + '_name';
+		nf = 'no_' + field;
+	}
 	if ((Object.isUndefined(object.id) == false && object.id == 0) || (object.value && object.value == '')) {
-		$(field + '_name').hide();
-		$('no_' + field).show();
+		$(fn).hide();
+		$(nf).show();
 	} else {
-		$(field + '_name').update(object.name);
-		if (object.url) $(field + '_name').href = object.url;
-		$('no_' + field).hide();
-		$(field + '_name').show();
+		$(fn).update(object.name);
+		if (object.url) $(fn).href = object.url;
+		$(nf).hide();
+		$(fn).show();
 	}
 }
 
-TBG.Issues.Field.Updaters.timeFromObject = function(object, values, field) {
-	if (object.id == 0) {
-		$(field + '_name').hide();
-		$('no_' + field).show();
-	} else {
-		$(field + '_name').update(object.name);
-		$('no_' + field).hide();
-		$(field + '_name').show();
+TBG.Issues.Field.Updaters.timeFromObject = function(issue_id, object, values, field) {
+	var fn = field + '_' + issue_id + '_name';
+	var nf = 'no_ ' + field + '_' + issue_id;
+	if (!$(fn)) {
+		fn = field + '_name';
+		nf = 'no_' + field;
 	}
+	if ($(fn) && $(nf)) {
+		if (object.id == 0) {
+			$(fn).hide();
+			$(nf).show();
+		} else {
+			$(fn).update(object.name);
+			$(nf).hide();
+			$(fn).show();
+		}
+	}
+	console.log('fuu');
 	['points', 'hours', 'days', 'weeks', 'months'].each(function(unit) {
-		$(field + '_' + unit).setValue(values[unit]);
+		if ($(field + '_' + issue_id + '_' + unit + '_input'))
+			$(field + '_' + issue_id + '_' + unit + '_input').setValue(values[unit]);
+
+		if ($(field + '_' + issue_id + '_' + unit)) {
+			$(field + '_' + issue_id + '_' + unit).update(values[unit]);
+			if (values[unit] == 0) {
+				$(field + '_' + issue_id + '_' + unit).addClassName('faded_out');
+			} else {
+ 				$(field + '_' + issue_id + '_' + unit).removeClassName('faded_out');
+			}
+		}
 	});
 }
 
@@ -2925,7 +2950,7 @@ TBG.Issues.Field.set = function(url, field, serialize_form) {
 				if (json.field != undefined)
 				{
 					if (field == 'status' || field == 'issuetype') TBG.Issues.Field.Updaters.dualFromJSON(json.field, field);
-					else TBG.Issues.Field.Updaters.fromObject(json.field, field);
+					else TBG.Issues.Field.Updaters.fromObject(json.issue_id, json.field, field);
 					
 					if (field == 'issuetype') TBG.Issues.Field.Updaters.allVisible(json.visible_fields);
 					else if (field == 'pain_bug_type' || field == 'pain_likelihood' || field == 'pain_effect')
@@ -2953,26 +2978,26 @@ TBG.Issues.Field.set = function(url, field, serialize_form) {
 	});
 }
 
-TBG.Issues.Field.setTime = function(url, field) {
+TBG.Issues.Field.setTime = function(url, field, issue_id) {
 	TBG.Main.Helpers.ajax(url, {
-		form: field + '_form',
+		form: field + '_' + issue_id + '_form',
 		loading: {
-			indicator: field + '_spinning',
-			clear: field + '_change_error',
-			hide: field + '_change_error'
+			indicator: field + '_' + issue_id + '_spinning',
+			clear: field + '_' + issue_id + '_change_error',
+			hide: field + '_' + issue_id + '_change_error'
 		},
 		success: {
 			callback: function(json) {
-				TBG.Issues.Field.Updaters.timeFromObject(json.field, json.values, field);
+				TBG.Issues.Field.Updaters.timeFromObject(json.issue_id, json.field, json.values, field);
 				(json.changed == true) ? TBG.Issues.markAsChanged(field) : TBG.Issues.markAsUnchanged(field);
 			},
-			hide: field + '_change'
+			hide: field + '_' + issue_id + '_change'
 		},
 		failure: {
-			update: field + '_change_error',
-			show: field + '_change_error',
+			update: field + '_' + issue_id + '_change_error',
+			show: field + '_' + issue_id + '_change_error',
 			callback: function(json) {
-				new Effect.Pulsate($(field + '_change_error'));
+				new Effect.Pulsate($(field + '_' + issue_id + '_change_error'));
 			}
 		}
 	});

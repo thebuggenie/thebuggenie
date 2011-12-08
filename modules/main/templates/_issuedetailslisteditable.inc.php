@@ -307,41 +307,16 @@
 				<?php if ($issue->isUpdateable() && $issue->canEditEstimatedTime()): ?>
 					<a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'estimated_time')); ?>', 'estimated_time');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
 					<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'estimated_time_undo_spinning')); ?>
-					<a href="javascript:void(0);" onclick="if ($('estimated_time_change').visible()) { $$('div.dropdown_box').each(Element.hide); } else { $$('div.dropdown_box').each(Element.hide); $('estimated_time_change').toggle(); }" title="<?php echo __('Click to estimate this issue'); ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
+					<a href="javascript:void(0);" onclick="if ($('estimated_time_change').visible()) { $$('div.dropdown_box').each(Element.hide); } else { $$('div.dropdown_box').each(Element.hide); $('estimated_time_<?php echo $issue->getID(); ?>_change').toggle(); }" title="<?php echo __('Click to estimate this issue'); ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
 				<?php endif; ?>
-				<span id="estimated_time_name"<?php if (!$issue->hasEstimatedTime()): ?> style="display: none;"<?php endif; ?>>
+				<span id="estimated_time_<?php echo $issue->getID(); ?>_name"<?php if (!$issue->hasEstimatedTime()): ?> style="display: none;"<?php endif; ?>>
 					<?php echo $issue->getFormattedTime($issue->getEstimatedTime()); ?>
 				</span>
-				<span class="faded_out" id="no_estimated_time"<?php if ($issue->hasEstimatedTime()): ?> style="display: none;"<?php endif; ?>><?php echo __('Not estimated'); ?></span>
+				<span class="faded_out" id="no_estimated_time_<?php echo $issue->getID(); ?>"<?php if ($issue->hasEstimatedTime()): ?> style="display: none;"<?php endif; ?>><?php echo __('Not estimated'); ?></span>
 			</dd>
 		</dl>
 		<?php if ($issue->isUpdateable() && $issue->canEditEstimatedTime()): ?>
-			<div class="rounded_box white shadowed dropdown_box" id="estimated_time_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0; padding: 5px;">
-				<form id="estimated_time_form" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="" onsubmit="TBG.Issues.Field.setTime('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'estimated_time')); ?>', 'estimated_time');return false;">
-					<div class="dropdown_header"><?php echo __('Estimate this issue'); ?></div>
-					<div class="dropdown_content">
-						<a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'estimated_time', 'value' => 0)); ?>', 'estimated_time');"><?php echo __('Clear current estimate'); ?></a><br>
-					</div>
-					<div class="dropdown_content">
-						<label for="estimated_time_input"><?php echo trim(__('%clear_current_estimate% type a new estimate %or_select_below%', array('%clear_current_estimate%' => '', '%or_select_below%' => ''))); ?>:</label><br>
-						<?php $estimated_time_title = __('Enter your estimate here'); ?>
-						<input type="text" name="estimated_time" id="estimated_time_input" value="<?php echo $estimated_time_title; ?>" style="width: 240px; padding: 1px 1px 1px;" onblur="if (this.getValue() == '') { this.value = '<?php echo $estimated_time_title; ?>'; this.addClassName('faded_out'); }" onfocus="if (this.getValue() == '<?php echo $estimated_time_title; ?>') { this.clear(); } this.removeClassName('faded_out');" class="faded_out">
-						<input type="submit" style="width: 60px;" value="<?php echo __('Estimate'); ?>">
-						<div class="faded_out" style="padding: 5px 0 5px 0;"><?php echo __('Enter an estimate in plain text, like "1 week, 2 hours", "3 months and 1 day", or similar'); ?>.</div>
-					</div>
-					<div class="dropdown_content">
-						<label for="estimated_time_months"><?php echo __('or enter an estimate below'); ?>:</label><br>
-						<input type="text" style="width: 20px;" value="<?php echo $issue->getEstimatedMonths(); ?>" name="estimated_time_months" id="estimated_time_months"><b><?php echo __('%number_of% months', array('%number_of%' => '')); ?></b><br>
-						<input type="text" style="width: 20px;" value="<?php echo $issue->getEstimatedWeeks(); ?>" name="estimated_time_weeks" id="estimated_time_weeks"><b><?php echo __('%number_of% weeks', array('%number_of%' => '')); ?></b><br>
-						<input type="text" style="width: 20px;" value="<?php echo $issue->getEstimatedDays(); ?>" name="estimated_time_days" id="estimated_time_days"><b><?php echo __('%number_of% days', array('%number_of%' => '')); ?></b><br>
-						<input type="text" style="width: 20px;" value="<?php echo $issue->getEstimatedHours(); ?>" name="estimated_time_hours" id="estimated_time_hours"><b><?php echo __('%number_of% hours', array('%number_of%' => '')); ?></b><br>
-						<input type="submit" style="width: 60px; float: right;" value="<?php echo __('Estimate'); ?>">
-						<input type="text" style="width: 20px;" value="<?php echo $issue->getEstimatedPoints(); ?>" name="estimated_time_points" id="estimated_time_points"><b><?php echo __('%number_of% points', array('%number_of%' => '')); ?></b><br>
-					</div>
-				</form>
-				<div id="estimated_time_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</div>
-				<div id="estimated_time_change_error" class="error_message" style="display: none;"></div>
-			</div>
+			<?php include_component('main/issueestimator', array('issue' => $issue, 'field' => 'estimated_time')); ?>
 		<?php endif; ?>
 	</li>
 	<li id="spent_time_field"<?php if (!$issue->isSpentTimeVisible()): ?> style="display: none;"<?php endif; ?> class="issue_detail_field<?php if ($issue->isSpentTimeChanged()): ?> issue_detail_changed<?php endif; ?><?php if (!$issue->isSpentTimeMerged()): ?> issue_detail_unmerged<?php endif; ?>">
@@ -351,7 +326,7 @@
 				<?php if ($issue->isUpdateable() && $issue->canEditSpentTime()): ?>
 					<a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'spent_time')); ?>', 'spent_time');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
 					<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'spent_time_undo_spinning')); ?>
-					<a href="javascript:void(0);" onclick="if ($('spent_time_change').visible()) { $$('div.dropdown_box').each(Element.hide); } else { $$('div.dropdown_box').each(Element.hide); $('spent_time_change').toggle(); }" title="<?php echo __('Click to enter time spent on this issue'); ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
+					<a href="javascript:void(0);" onclick="if ($('spent_time_change').visible()) { $$('div.dropdown_box').each(Element.hide); } else { $$('div.dropdown_box').each(Element.hide); $('spent_time_<?php echo $issue->getID(); ?>_change').toggle(); }" title="<?php echo __('Click to enter time spent on this issue'); ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
 				<?php endif; ?>
 				<span id="spent_time_name"<?php if (!$issue->hasSpentTime()): ?> style="display: none;"<?php endif; ?>>
 					<?php echo $issue->getFormattedTime($issue->getSpentTime()); ?>
@@ -360,34 +335,7 @@
 			</dd>
 		</dl>
 		<?php if ($issue->isUpdateable() && $issue->canEditSpentTime()): ?>
-			<div class="rounded_box white shadowed dropdown_box" id="spent_time_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0; padding: 5px;">
-				<form id="spent_time_form" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="" onsubmit="TBG.Issues.Field.setTime('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'spent_time')); ?>', 'spent_time');return false;">
-					<div class="dropdown_header"><?php echo __('Set time spent on this issue'); ?></div>
-					<div class="dropdown_content">
-						<a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'spent_time', 'value' => 0)); ?>', 'spent_time');"><?php echo __('Clear time spent on this issue'); ?></a><br>
-					</div>
-					<div class="dropdown_content">
-						<label for="spent_time_input"><?php echo trim(__("%clear_time_spent% enter how much time you've spent %or_select_below%", array('%clear_time_spent%' => '', '%or_select_below%' => ''))); ?>:</label><br>
-						<?php $spent_time_title = __('Enter time spent here'); ?>
-						<input type="text" name="spent_time" id="spent_time_input" value="<?php echo $spent_time_title; ?>" style="width: 180px; padding: 1px 1px 1px;" onblur="if (this.getValue() == '') { this.value = '<?php echo $spent_time_title; ?>'; this.addClassName('faded_out'); }" onfocus="if (this.getValue() == '<?php echo $spent_time_title; ?>') { this.clear(); } this.removeClassName('faded_out');" class="faded_out">
-						<input type="submit" style="width: 80px;" value="<?php echo __('Spend time'); ?>"><br>
-						<input type="checkbox" checked="checked" name="spent_time_added_text" value="true" id="spent_time_added_text"><label for="spent_time_added_text"><?php echo __('Add entered time to total time spent') ?></label>
-						<div class="faded_out" style="padding: 5px 0 5px 0;"><?php echo __('Enter time spent as plain text, like "1 day, 2 hours", "12 hours / 2 points", or similar'); ?>.</div>
-					</div>
-					<div class="dropdown_content">
-						<label for="spent_time_months"><?php echo __('or enter time spent below'); ?>:</label><br>
-						<input type="text" style="width: 20px;" value="<?php echo $issue->getSpentMonths(); ?>" name="spent_time_months" id="spent_time_months"><b><?php echo __('%number_of% months', array('%number_of%' => '')); ?></b><br>
-						<input type="text" style="width: 20px;" value="<?php echo $issue->getSpentWeeks(); ?>" name="spent_time_weeks" id="spent_time_weeks"><b><?php echo __('%number_of% weeks', array('%number_of%' => '')); ?></b><br>
-						<input type="text" style="width: 20px;" value="<?php echo $issue->getSpentDays(); ?>" name="spent_time_days" id="spent_time_days"><b><?php echo __('%number_of% days', array('%number_of%' => '')); ?></b><br>
-						<input type="text" style="width: 20px;" value="<?php echo $issue->getSpentHours(); ?>" name="spent_time_hours" id="spent_time_hours"><b><?php echo __('%number_of% hours', array('%number_of%' => '')); ?></b><br>
-						<input type="submit" style="width: 80px; float: right;" value="<?php echo __('Spend time'); ?>">
-						<input type="text" style="width: 20px;" value="<?php echo $issue->getSpentPoints(); ?>" name="spent_time_points" id="spent_time_points"><b><?php echo __('%number_of% points', array('%number_of%' => '')); ?></b><br>
-						<input type="checkbox" name="spent_time_added_input" value="true" id="spent_time_added_input"><label for="spent_time_added_input"><?php echo __('Add entered time to total time spent') ?></label>
-					</div>
-				</form>
-				<div id="spent_time_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</div>
-				<div id="spent_time_change_error" class="error_message" style="display: none;"></div>
-			</div>
+			<?php include_component('main/issueestimator', array('issue' => $issue, 'field' => 'spent_time')); ?>
 		<?php endif; ?>
 	</li>
 	<?php foreach ($fields_list as $field => $info): ?>

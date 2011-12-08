@@ -630,17 +630,18 @@
 			if ($this->_burndowndata === null)
 			{
 				$this->_burndowndata = array();
-				$child_issues = array();
+				$issues = array();
 				foreach ($this->getIssues() as $issue)
 				{
+					$issues[] = (int) $issue->getID();
 					foreach ($issue->getChildIssues() as $child_issue)
 					{
-						$child_issues[] = (int) $child_issue->getID();
+						$issues[] = (int) $child_issue->getID();
 					}
 				}
 				
-				$estimations = TBGIssueEstimates::getTable()->getEstimatesByDateAndIssueIDs($this->getStartingDate(), $this->getScheduledDate(), $child_issues);
-				$spent_times = TBGIssueSpentTimes::getTable()->getSpentTimesByDateAndIssueIDs($this->getStartingDate(), $this->getScheduledDate(), $child_issues);
+				$estimations = TBGIssueEstimates::getTable()->getEstimatesByDateAndIssueIDs($this->getStartingDate(), $this->getScheduledDate(), $issues);
+				$spent_times = TBGIssueSpentTimes::getTable()->getSpentTimesByDateAndIssueIDs($this->getStartingDate(), $this->getScheduledDate(), $issues);
 
 				$burndowndata = array();
 

@@ -418,6 +418,7 @@
 			$this->selected_edition = null;
 			$this->selected_build = $this->selected_build ?: null;
 			$this->selected_milestone = $this->selected_milestone ?: null;
+			$this->parent_issue = $this->parent_issue ?: null;
 			$this->selected_component = null;
 			$this->selected_category = null;
 			$this->selected_status = null;
@@ -479,6 +480,27 @@
 		public function componentDashboardViewLoggedActions()
 		{
 			$this->actions = $this->getUser()->getLatestActions();
+		}
+
+		public function componentIssueEstimator()
+		{
+			switch ($this->field)
+			{
+				case 'estimated_time':
+					$this->months = $this->issue->getEstimatedMonths();
+					$this->weeks = $this->issue->getEstimatedWeeks();
+					$this->days = $this->issue->getEstimatedDays();
+					$this->hours = $this->issue->getEstimatedHours();
+					$this->points = $this->issue->getEstimatedPoints();
+					break;
+				case 'spent_time':
+					$this->months = $this->issue->getSpentMonths();
+					$this->weeks = $this->issue->getSpentWeeks();
+					$this->days = $this->issue->getSpentDays();
+					$this->hours = $this->issue->getSpentHours();
+					$this->points = $this->issue->getSpentPoints();
+					break;
+			}
 		}
 
 	}
