@@ -2,7 +2,7 @@
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
 	<tr>
 		<?php include_component('leftmenu', array('selected_section' => TBGSettings::CONFIGURATION_SECTION_ROLES)); ?>
-		<td valign="top">
+		<td valign="top" style="padding-left: 15px;">
 			<div id="config_roles" style="position: relative; width: 788px;">
 				<h3>
 					<?php echo __('Configure roles'); ?>

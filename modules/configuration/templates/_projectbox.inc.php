@@ -1,5 +1,5 @@
 <?php TBGContext::loadLibrary('ui'); ?>
-<div class="rounded_box round_canhover lightgrey projectbox" style="margin: 10px 0px 10px 0px; width: 690px;">
+<div class="rounded_box round_canhover lightgrey projectbox" style="margin: 10px 0px 10px 0px; width: 788px;">
 	<div style="padding: 3px; font-size: 14px;">
 		<?php if ($project->isArchived()): ?>
 			<span class="faded_out"><?php echo __('ARCHIVED'); ?> </span>
@@ -12,7 +12,7 @@
 			&nbsp;-&nbsp;<?php echo __('Subproject of'); ?> <i><?php echo $project->getParent()->getName(); ?></i>
 		<?php endif; ?>
 	</div>
-	<table cellpadding=0 cellspacing=0 style="width: 680px; table-layout: auto;">
+	<table cellpadding=0 cellspacing=0 style="width: 778px; table-layout: auto;">
 	<tr>
 	<td style="padding-left: 3px; width: 80px;"><b><?php echo __('Owner: %user_or_team%', array('%user_or_team%' => '')); ?></b></td>
 	<td style="padding-left: 3px; width: auto;">

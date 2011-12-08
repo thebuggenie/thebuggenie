@@ -6,9 +6,9 @@
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
 	<tr>
 		<?php include_component('leftmenu', array('selected_section' => TBGSettings::CONFIGURATION_SECTION_WORKFLOW)); ?>
-		<td valign="top">
+		<td valign="top" style="padding-left: 15px;">
 			<?php include_template('configuration/workflowmenu', array('selected_tab' => 'workflows')); ?>
-			<div class="content" style="width: 750px;">
+			<div class="content" style="width: 788px;">
 				<?php if (isset($error)): ?>
 					<div class="rounded_box red borderless" style="margin-top: 5px;">
 						<?php echo $error; ?>

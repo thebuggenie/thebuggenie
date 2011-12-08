@@ -9,9 +9,9 @@
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
 	<tr>
 		<?php include_component('leftmenu', array('selected_section' => TBGSettings::CONFIGURATION_SECTION_WORKFLOW)); ?>
-		<td valign="top">
+		<td valign="top" style="padding-left: 15px;">
 			<?php include_template('configuration/workflowmenu', array('selected_tab' => 'transition', 'workflow' => $workflow, 'transition' => $transition)); ?>
-			<div class="content" style="width: 750px;" id="workflow_step_container">
+			<div class="content" style="width: 788px;" id="workflow_step_container">
 				<?php if ($transition instanceof TBGWorkflowTransition): ?>
 					<div class="rounded_box lightgrey borderless workflow_step_intro">
 						<div class="header"><?php echo __('Transition "%transition_name%"', array('%transition_name%' => $transition->getName())); ?></div>

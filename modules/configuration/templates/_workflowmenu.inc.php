@@ -1,8 +1,10 @@
-<div style="width: 750px;" id="config_workflows">
-	<div class="config_header"><?php echo __('Configure workflows'); ?></div>
-	<div class="content">
-		<?php echo __('Workflow lets you define the lifecycle of an issue. You can define steps, transitions and more, that makes an issue move through its defined lifecycle.'); ?>
-		<?php echo __('You can read more about how the workflow in The Bug Genie works and is set up in %link_to_wiki_workflow%.', array('%link_to_wiki_workflow%' => link_tag(make_url('publish_article', array('article_name' => 'TheBugGenie:Workflow')), 'TheBugGenie:Workflow'))); ?>
+<div style="width: 788px;" id="config_workflows">
+	<h3><?php echo __('Configure workflows'); ?></h3>
+	<div class="content faded_out">
+		<p>
+			<?php echo __('Workflow lets you define the lifecycle of an issue. You can define steps, transitions and more, that makes an issue move through its defined lifecycle.'); ?>
+			<?php echo __('You can read more about how the workflow in The Bug Genie works and is set up in %link_to_wiki_workflow%.', array('%link_to_wiki_workflow%' => link_tag(make_url('publish_article', array('article_name' => 'TheBugGenie:Workflow')), 'TheBugGenie:Workflow'))); ?>
+		</p>
 	</div>
 	<?php if (TBGContext::getScope()->getMaxWorkflowsLimit()): ?>
 		<div class="faded_out dark" style="margin: 12px 0;">
