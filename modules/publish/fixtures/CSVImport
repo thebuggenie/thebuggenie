@@ -56,7 +56,7 @@ When the tables mention the 'column name', this is what should be in the first r
 | autoassign || No || Set whether to automatically assign issues based on the leader for projects, editions and components || 1 for yes, 0 for no
 |}
 
-== Importing projects ==
+== Importing clients ==
 
 {|
 ! Column name  !! Required !! Contains !! Other details
