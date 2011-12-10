@@ -1779,6 +1779,7 @@
 							$itemsubmenulinks = array();
 							foreach ($all_projects as $child)
 							{
+								if (!$child->hasAccess()) continue;
 								$itemsubmenulinks[] = array('url' => self::getRouting()->generate('project_dashboard', array('project_key' => $child->getKey())), 'title' => $child->getName());
 							}
 							
@@ -1811,6 +1812,7 @@
 								$itemsubmenulinks = array();
 								foreach ($children as $child)
 								{
+									if (!$child->hasAccess()) continue;
 									$itemsubmenulinks[] = array('url' => self::getRouting()->generate('project_dashboard', array('project_key' => $child->getKey())), 'title' => $child->getName());
 								}
 							}
