@@ -39,11 +39,12 @@
 		{
 			$sqls = array();
 			$tn = $this->_getTableNameSQL();
+			$qc = $this->getQC();
 			switch ($old_table->getVersion())
 			{
 				case 1:
 					$sqls[] = "UPDATE {$tn} SET icon = itemdata";
-					$sqls[] = "UPDATE {$tn} SET key = null";
+					$sqls[] = "UPDATE {$tn} SET {$qc}key{$qc} = NULL";
 					break;
 			}
 			foreach ($sqls as $sql)
