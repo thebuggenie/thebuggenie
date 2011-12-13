@@ -28,7 +28,7 @@
 			<?php echo __('Are you really sure you want to delete this item?'); ?><br>
 			<?php echo __('This will also remove the value of this custom field from all issues, along with any possible options this field can take.')?>
 			<div style="text-align: right; font-size: 13px;">
-				<a href="javascript:void(0);" onclick="TBG.Issues.Field.Custom.remove('<?php echo make_url('configure_issuefields_delete_customtype', array('type' => $type_key)); ?>', '<?php echo $type_key; ?>', '<?php echo $type->getID(); ?>');return false;"><?php echo __('Yes'); ?></a> ::
+				<a href="javascript:void(0);" onclick="TBG.Config.Issuefields.Custom.remove('<?php echo make_url('configure_issuefields_delete_customtype', array('type' => $type_key)); ?>', '<?php echo $type_key; ?>', '<?php echo $type->getID(); ?>');return false;"><?php echo __('Yes'); ?></a> ::
 				<a href="javascript:void(0);" onclick="$('delete_item_<?php echo $type->getID(); ?>').toggle();"><b><?php echo __('No'); ?></b></a>
 			</div>
 			<?php echo image_tag('spinning_20.gif', array('id' => 'delete_'.$type_key.'_'.$type->getID().'_indicator', 'style' => 'margin-left: 5px; display: none;')); ?>
@@ -41,7 +41,7 @@
 		</span>
 		<span id="custom_type_<?php echo $type_key; ?>_no_instructions_div" class="faded_out dark"<?php if ($type->hasInstructions()): ?> style="display: none;"<?php endif; ?>><?php echo __("This custom type doesn't have any instructions"); ?></span>
 	</div>
-	<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuefields_update_customtype', array('type' => $type_key)); ?>" onsubmit="TBG.Issues.Field.Custom.update('<?php echo make_url('configure_issuefields_update_customtype', array('type' => $type_key)); ?>', '<?php echo $type_key; ?>');return false;" id="edit_custom_type_<?php echo $type_key; ?>_form" style="display: none;">
+	<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuefields_update_customtype', array('type' => $type_key)); ?>" onsubmit="TBG.Config.Issuefields.Custom.update('<?php echo make_url('configure_issuefields_update_customtype', array('type' => $type_key)); ?>', '<?php echo $type_key; ?>');return false;" id="edit_custom_type_<?php echo $type_key; ?>_form" style="display: none;">
 		<div class="rounded_box white" style="margin: 5px 0 0 0; padding: 3px; font-size: 12px;">
 			<label for="custom_type_<?php echo $type_key; ?>_name"><?php echo __('Name'); ?></label>
 			<input type="text" name="name" id="custom_type_<?php echo $type_key; ?>_name" value="<?php echo $type->getName(); ?>" style="width: 250px;">

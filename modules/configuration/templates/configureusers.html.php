@@ -62,7 +62,7 @@
 					</div>
 					<div id="tab_groups_pane" style="display: none; padding-top: 0; width: 750px;">
 						<div class="rounded_box yellow borderless" style="margin-top: 5px; padding: 7px;">
-							<form id="create_group_form" action="<?php echo make_url('configure_users_add_group'); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="createGroup('<?php echo make_url('configure_users_add_group'); ?>');return false;">
+							<form id="create_group_form" action="<?php echo make_url('configure_users_add_group'); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="TBG.Config.Group.add('<?php echo make_url('configure_users_add_group'); ?>');return false;">
 								<div id="add_group">
 									<label for="group_name"><?php echo __('Create a new group'); ?></label>
 									<input type="text" id="group_name" name="group_name">
@@ -84,7 +84,7 @@
 					</div>
 					<div id="tab_teams_pane" style="display: none; padding-top: 0; width: 750px;">
 						<div class="rounded_box yellow borderless" style="margin-top: 5px; padding: 7px;<?php if (!TBGContext::getScope()->hasTeamsAvailable()): ?> display: none;<?php endif; ?>" id="add_team_div">
-							<form id="create_team_form" action="<?php echo make_url('configure_users_add_team'); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="createTeam('<?php echo make_url('configure_users_add_team'); ?>');return false;">
+							<form id="create_team_form" action="<?php echo make_url('configure_users_add_team'); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="TBG.Config.Team.add('<?php echo make_url('configure_users_add_team'); ?>');return false;">
 								<label for="team_name"><?php echo __('Create a new team'); ?></label>
 								<input type="text" id="team_name" name="team_name">
 								<input type="submit" value="<?php echo __('Create'); ?>">
@@ -104,7 +104,7 @@
 					</div>
 					<div id="tab_clients_pane" style="display: none; padding-top: 0; width: 750px;">
 						<div class="rounded_box yellow borderless" style="margin-top: 5px; padding: 7px;">
-							<form id="create_client_form" action="<?php echo make_url('configure_users_add_client'); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="createClient('<?php echo make_url('configure_users_add_client'); ?>');return false;">
+							<form id="create_client_form" action="<?php echo make_url('configure_users_add_client'); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="TBG.Config.Client.add('<?php echo make_url('configure_users_add_client'); ?>');return false;">
 								<div id="add_client">
 									<label for="client_name"><?php echo __('Create a new client'); ?></label>
 									<input type="text" id="client_name" name="client_name">
