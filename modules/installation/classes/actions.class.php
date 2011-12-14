@@ -501,6 +501,10 @@
 			foreach (TBGProject::getAll() as $project)
 			{
 				TBGDashboardViewsTable::getTable()->setDefaultViews($project->getID(), TBGDashboardViewsTable::TYPE_PROJECT);
+				if (!$project->getKey())
+				{
+					$project->setName($project->getName());
+				}
 			}
 			
 			$this->upgrade_complete = true;
