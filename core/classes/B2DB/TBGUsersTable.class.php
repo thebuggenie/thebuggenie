@@ -115,14 +115,14 @@
 			$crit->addWhere(self::UNAME, $username);
 			$crit->addWhere(self::PASSWORD, $password);
 			$crit->addWhere(self::DELETED, false);
-			return $this->doSelectOne($crit);
+			return $this->selectOne($crit);
 		}
 
 		public function getByUserID($userid)
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::DELETED, false);
-			return $this->doSelectById($userid, $crit);
+			return $this->selectById($userid, $crit);
 		}
 
 		public function getByDetails($details, $limit = null)

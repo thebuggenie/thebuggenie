@@ -382,7 +382,7 @@
 		{
 			try
 			{
-				$row = null;
+				$user = null;
 				$external = false;
 				$raw = true;
 
@@ -393,10 +393,10 @@
 					{
 						$username = TBGContext::getRequest()->getCookie('tbg3_username');
 						$password = TBGContext::getRequest()->getCookie('tbg3_password');
-						$row = TBGUsersTable::getTable()->getByUsernameAndPassword($username, $password);
+						$user = TBGUsersTable::getTable()->getByUsernameAndPassword($username, $password);
 						$raw = false;
 
-						if (!$row)
+						if (!$user instanceof TBGUser)
 						{
 							TBGContext::logout();
 							throw new Exception('No such login');
@@ -419,13 +419,13 @@
 						}
 						if (TBGContext::getRequest()->hasCookie('tbg3_username') && TBGContext::getRequest()->hasCookie('tbg3_password'))
 						{
-							$row = $mod->verifyLogin($username, $password);
+							$user = $mod->verifyLogin($username, $password);
 						}
 						else
 						{
-							$row = $mod->doLogin($username, $password);
+							$user = $mod->doLogin($username, $password);
 						}
-						if(!$row)
+						if (!$user instanceof TBGUser)
 						{
 							// Invalid
 							TBGContext::logout();
@@ -451,9 +451,9 @@
 							TBGLogging::log('Auth module is not the right type', 'auth', TBGLogging::LEVEL_FATAL);
 						}
 
-						$row = $mod->doAutoLogin();
+						$user = $mod->doAutoLogin();
 						
-						if(!$row)
+						if (!$user instanceof TBGUser)
 						{
 							// Invalid
 							TBGContext::logout();
@@ -471,19 +471,19 @@
 					$external = false;
 					TBGLogging::log('Using internal authentication', 'auth', TBGLogging::LEVEL_INFO);
 					// First test a pre-encrypted password
-					$row = TBGUsersTable::getTable()->getByUsernameAndPassword($username, $password);
+					$user = TBGUsersTable::getTable()->getByUsernameAndPassword($username, $password);
 
-					if (!$row)
+					if (!$user instanceof TBGUser)
 					{
 						// Then test an unencrypted password
-						$row = TBGUsersTable::getTable()->getByUsernameAndPassword($username, self::hashPassword($password));
+						$user = TBGUsersTable::getTable()->getByUsernameAndPassword($username, self::hashPassword($password));
 
-						if(!$row)
+						if (!$user instanceof TBGUser)
 						{
 							// This is a legacy account from a 3.1 upgrade - try sha1 salted
 							$salt = TBGSettings::getPasswordSalt();
-							$row = TBGUsersTable::getTable()->getByUsernameAndPassword($username, sha1($password.$salt));
-							if(!$row)
+							$user = TBGUsersTable::getTable()->getByUsernameAndPassword($username, sha1($password.$salt));
+							if (!$user instanceof TBGUser)
 							{
 								// Invalid
 								TBGContext::logout();
@@ -493,36 +493,33 @@
 							else 
 							{
 								// convert sha1 to new password type
-								$user = new TBGUser($row->get(TBGUsersTable::ID), $row);
 								$user->changePassword($password);
 								$user->save();
-								unset($user);
 							}
 						}
 					}
 				}
 				elseif (TBGContext::isCLI())
 				{
-					$row = TBGUsersTable::getTable()->getByUsername(TBGContext::getCurrentCLIusername());
+					$user = TBGUsersTable::getTable()->getByUsername(TBGContext::getCurrentCLIusername());
 				
 				}
 				// guest user
 				elseif (!TBGSettings::isLoginRequired())
 				{
-					$row = TBGUsersTable::getTable()->getByUserID(TBGSettings::getDefaultUserID());
+					$user = TBGUsersTable::getTable()->getByUserID(TBGSettings::getDefaultUserID());
 				}
 
-				if ($row)
+				if ($user instanceof TBGUser)
 				{
-					if (!$row->get(TBGUsersTable::ACTIVATED))
+					if (!$user->isActivated())
 					{
 						throw new Exception('This account has not been activated yet');
 					}
-					elseif (!$row->get(TBGUsersTable::ENABLED))
+					elseif (!$user->isEnabled())
 					{
 						throw new Exception('This account has been suspended');
 					}
-					$user = TBGContext::factory()->TBGUser($row->get(TBGUsersTable::ID), $row);
 					
 					if ($external == false)
 					{

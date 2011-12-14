@@ -741,16 +741,15 @@
 		{
 			$this->getResponse()->setPage('login');
 			
-			$row = TBGUsersTable::getTable()->getByUsername(str_replace('%2E', '.', $request['user']));
-			if ($row)
+			$user = TBGUsersTable::getTable()->getByUsername(str_replace('%2E', '.', $request['user']));
+			if ($user instanceof TBGUser)
 			{
-				if ($row->get(TBGUsersTable::PASSWORD) != $request['key'])
+				if ($user->getHashPassword() != $request['key'])
 				{
 					 TBGContext::setMessage('login_message_err', TBGContext::getI18n()->__('This activation link is not valid'));
 				}
 				else
 				{
-					$user = new TBGUser($row->get(TBGUsersTable::ID), $row);
 					$user->setValidated(true);
 					$user->save();
 					TBGContext::setMessage('login_message', TBGContext::getI18n()->__('Your account has been activated! You can now log in with the username %user% and the password in your activation email.', array('%user%' => $user->getUsername())));
