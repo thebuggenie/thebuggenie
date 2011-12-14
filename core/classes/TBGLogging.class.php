@@ -93,6 +93,15 @@
 					return 'unknown';
 			}
 		}
+		
+		public static function setLogFilePath($filename)
+		{
+			if (!file_exists($filename))
+			{
+				throw new Exception('Invalid log filename');
+			}
+			self::$_logfile = $filename;
+		}
 
 		/**
 		 * Return the color assigned to a specific category
