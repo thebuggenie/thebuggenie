@@ -24,6 +24,11 @@
 		protected $_real_filename;
 
 		/**
+		 * @Column(type="string", length=200, name="original_filename")
+		 */
+		protected $_name;
+
+		/**
 		 * @Column(type="blob")
 		 */
 		protected $_content;
