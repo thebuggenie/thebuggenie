@@ -6,7 +6,7 @@
 ?>
 <div id="account_info_container">
 	<div id="account_user_info">
-		<?php echo image_tag($tbg_user->getAvatarURL(false), array('style' => 'float: left; margin-right: 5px;'), true); ?>
+		<?php echo image_tag($tbg_user->getAvatarURL(false), array('style' => 'float: left; margin-right: 5px;', 'alt' => '[avatar]'), true); ?>
 		<span id="user_name_span">
 			<?php echo $tbg_user->getRealname(); ?><br>
 			<?php if (!$tbg_user->isOpenIdLocked()): ?>
