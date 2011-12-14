@@ -51,9 +51,9 @@
 	<?php endif; ?>
 </div>
 <?php if (TBGContext::getCurrentProject()->hasHomepage()): ?>
-	<a class="button button-silver" href="<?php echo TBGContext::getCurrentProject()->getHomepage(); ?>" target="_blank"><?php echo __('Visit homepage'); ?></a>
+	<a class="button button-silver dash" href="<?php echo TBGContext::getCurrentProject()->getHomepage(); ?>" target="_blank"><?php echo __('Visit homepage'); ?></a>
 <?php endif; ?>
 <?php if (TBGContext::getCurrentProject()->hasDocumentationURL()): ?>
-	<a class="button button-silver" href="<?php echo TBGContext::getCurrentProject()->getDocumentationURL(); ?>" target="_blank"><?php echo __('Open documentation'); ?></a>
+	<a class="button button-silver dash" href="<?php echo TBGContext::getCurrentProject()->getDocumentationURL(); ?>" target="_blank"><?php echo __('Open documentation'); ?></a>
 <?php endif; ?>
 <br style="clear: both;">

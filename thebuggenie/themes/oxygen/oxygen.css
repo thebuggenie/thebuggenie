@@ -950,7 +950,7 @@ table.issue_affects td img { vertical-align: bottom; }
 #dashboard li .milestone_box .header { margin: 0; padding: 0; border: none; background: none; }
 #dashboard .dashboard_view_header { font-weight: bold; color: #666; font-size: 1em; padding: 4px; }
 #dashboard .dashboard_view_content { padding: 5px 10px; }
-#dashboard .dashboard_view_content .button { float: right; margin-left: 5px; overflow: visible; font-size: 0.9em; }
+#dashboard .dashboard_view_content .button.dash { float: right; margin-left: 5px; overflow: visible; font-size: 0.9em; }
 #dashboard .dashboard_view_header img { margin-right: 2px; }
 #dashboard .latest_action_dates{ font-weight: bold; padding: 10px 0 0 0; }
 #dashboard .faded_out.smaller { font-size: 0.8em; padding-right: 5px; }

@@ -14,6 +14,6 @@
 		<td style="text-align: right; font-weight: normal; font-size: 11px; padding-left: 5px; vertical-align: middle;" class="faded_out">&nbsp;<?php echo (int) $counts[0]['percentage']; ?>%</td>
 	</tr>
 </table>
-<?php echo link_tag(make_url('project_statistics', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Show more statistics'), array('class' => 'button button-silver', 'title' => __('More statistics'))); ?>
-<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'search' => true, 'filters[state]' => array('operator' => '=', 'value' => TBGIssue::STATE_OPEN), 'groupby' => $key, 'grouporder' => 'desc')), __('Show details'), array('class' => 'button button-silver', 'title' => __('Show more issues'))); ?>
+<?php echo link_tag(make_url('project_statistics', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Show more statistics'), array('class' => 'button button-silver dash', 'title' => __('More statistics'))); ?>
+<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'search' => true, 'filters[state]' => array('operator' => '=', 'value' => TBGIssue::STATE_OPEN), 'groupby' => $key, 'grouporder' => 'desc')), __('Show details'), array('class' => 'button button-silver dash', 'title' => __('Show more issues'))); ?>
 <br style="clear: both;">
