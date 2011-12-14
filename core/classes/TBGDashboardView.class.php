@@ -111,10 +111,7 @@
 					$searches = array();
 					$searches[self::VIEW_PREDEFINED_SEARCH] = array(TBGContext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES => TBGContext::getI18n()->__('Issues reported by me'),
 																	TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES => TBGContext::getI18n()->__('Open issues assigned to me'),
-																	TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES => TBGContext::getI18n()->__('Open issues assigned to my teams'),
-																	TBGContext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES => TBGContext::getI18n()->__('Open issues'),
-																	TBGContext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES => TBGContext::getI18n()->__('Closed issues'),
-																	TBGContext::PREDEFINED_SEARCH_PROJECT_MOST_VOTED => TBGContext::getI18n()->__('Most voted issues'));
+																	TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES => TBGContext::getI18n()->__('Open issues assigned to my teams'));
 					$searches[self::VIEW_LOGGED_ACTIONS] = array(0 => TBGContext::getI18n()->__("What you've done recently"));
 					if (TBGContext::getUser()->canViewComments())
 					{
