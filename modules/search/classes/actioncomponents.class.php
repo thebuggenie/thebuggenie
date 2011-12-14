@@ -120,7 +120,7 @@
 			}
 			elseif ($this->view->getType() == TBGDashboardView::VIEW_SAVED_SEARCH)
 			{
-				$filters = TBGSavedSearchFiltersTable::getTable()->getFiltersBySavedSearchID($request['saved_search']);
+				$filters = TBGSavedSearchFiltersTable::getTable()->getFiltersBySavedSearchID($this->view->getDetail());
 			}
 			list ($this->issues, $this->resultcount) = TBGIssue::findIssues($filters);
 		}		
