@@ -3053,6 +3053,22 @@
 				return $this->renderJSON(array('error' => TBGContext::getI18n()->__('Could not add or remove friend')));
 			}
 		}
+
+		public function runSetState(TBGRequest $request)
+		{
+			try
+			{
+				$state = TBGContext::factory()->TBGUserstate($request['state_id']);
+				$this->getUser()->setState($state);
+				$this->getUser()->save();
+				return $this->renderJSON(array('userstate' => $state->getName()));
+			}
+			catch (Exception $e)
+			{
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('error' => $this->getI18n()->__('An error occured while trying to update your status')));
+			}
+		}
 		
 		public function runToggleAffectedConfirmed(TBGRequest $request)
 		{

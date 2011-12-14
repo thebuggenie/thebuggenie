@@ -115,7 +115,17 @@
 							<?php endif; ?>
 							<?php TBGEvent::createNew('core', 'user_dropdown_anon')->trigger(); ?>
 						<?php else: ?>
-							<div class="header"><?php echo __('You are: %userstate%', array('%userstate%' => '<span class="userstate">'.(($tbg_user->getState() instanceof TBGUserState) ? $tbg_user->getState()->getName() : __('offline')).'</span>')); ?></div>
+							<div class="header" style="margin-bottom: 5px;">
+								<a href="javascript:void(0);" onclick="$('usermenu_changestate').toggle();" class="button button-lightblue" style="float: right; margin-left: 5px;"><?php echo __('Change'); ?></a>
+								<?php echo image_tag('spinning_16.gif', array('style' => 'float: right; display: none; margin: -2px 5px 2px;', 'id' => 'change_userstate_dropdown')); ?>
+								<?php echo __('You are: %userstate%', array('%userstate%' => '<span class="current_userstate userstate">'.$tbg_user->getState()->getName().'</span>')); ?>
+							</div>
+							<div id="usermenu_changestate" style="clear: both; margin: 5px 10px 10px 10px; display: none;">
+								<?php foreach (TBGUserstate::getAll() as $state): ?>
+									<?php if ($state->getID() == TBGSettings::getOfflineState()->getID()) continue; ?>
+									<a href="javascript:void(0);" onclick="TBG.Main.Profile.setState('<?php echo make_url('set_state', array('state_id' => $state->getID())); ?>', 'change_userstate_dropdown');"><?php echo $state->getName(); ?></a>
+								<?php endforeach; ?>
+							</div>
 							<?php echo link_tag(make_url('dashboard'), image_tag('icon_dashboard_small.png').__('Your dashboard')); ?>
 							<?php if ($tbg_response->getPage() == 'dashboard'): ?>
 								<?php echo javascript_link_tag(image_tag('icon_dashboard_config.png').__('Customize your dashboard'), array('title' => __('Customize your dashboard'), 'onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'dashboard_config', 'tid' => TBGContext::getUser()->getID(), 'target_type' => TBGDashboardViewsTable::TYPE_USER))."')")); ?>

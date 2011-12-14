@@ -284,6 +284,11 @@ TBG.Core._processCommonAjaxPostEvents = function(options) {
 	}
 };
 
+TBG.Core._escapeWatcher = function(event) {
+	if (Event.KEY_ESC != event.keyCode) return;
+	TBG.Main.Helpers.Backdrop.reset();
+};
+
 /**
  * Main initializer function
  * Sets up and initializes autocompleters, watchers, etc
@@ -303,10 +308,11 @@ TBG.initialize = function(options) {
 			TBG.Main.Dashboard.View.init(TBG.Main.Dashboard.url, view_id);
 		});
 	} else {
-		$$('html')[0].setStyle({ 'cursor': 'default' });
+		$$('html')[0].setStyle({'cursor': 'default'});
 	}
 	$('fullpage_backdrop_content').observe('click', TBG.Core._resizeWatcher);
 	document.observe('click', TBG.Main.toggleBreadcrumbMenuPopout);
+	document.observe('keydown', TBG.Core._escapeWatcher);
 };
 
 TBG.loadDebugInfo = function(debug_id, cb) {
@@ -856,7 +862,7 @@ TBG.Main.Dashboard.View.init = function(url, view_id) {
 				TBG.Core._resizeWatcher();
 				TBG.Main.Dashboard.views.splice(0, 1);
 				if (TBG.Main.Dashboard.views.size() == 0) {
-					$$('html')[0].setStyle({ 'cursor': 'default' });
+					$$('html')[0].setStyle({'cursor': 'default'});
 				}
 			}
 		}
@@ -877,6 +883,19 @@ TBG.Main.Dashboard.save = function(url)
 			hide: 'save_dashboard'
 		},
 		complete: {show: 'save_dashboard'}
+	});
+}
+
+TBG.Main.Profile.setState = function(url, ind) {
+	TBG.Main.Helpers.ajax(url, {
+		loading: {indicator: ind},
+		success: {
+			callback: function(json) {
+				$$('.current_userstate').each(function(element) {
+					$(element).update(json.userstate);
+				});
+			}
+		}
 	});
 }
 
