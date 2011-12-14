@@ -584,14 +584,28 @@
 				}
 				catch (Exception $e)
 				{
-					$this->getResponse()->setHttpStatus(401);
-					return $this->renderJSON(array("error" => $i18n->__($e->getMessage())));
+					if ($request->isAjaxCall())
+					{
+						$this->getResponse()->setHttpStatus(401);
+						return $this->renderJSON(array("error" => $i18n->__($e->getMessage())));
+					}
+					else
+					{
+						$this->forward403($e->getMessage());
+					}
 				}
 			}
 			else
 			{
-				$this->getResponse()->setHttpStatus(401);
-				return $this->renderJSON(array("error" => $i18n->__('Please enter a username and password')));
+				if ($request->isAjaxCall())
+				{
+					$this->getResponse()->setHttpStatus(401);
+					return $this->renderJSON(array("error" => $i18n->__('Please enter a username and password')));
+				}
+				else
+				{
+					$this->forward403($i18n->__('Please enter a username and password'));
+				}
 			}
 
 			if ($request->isAjaxCall())
