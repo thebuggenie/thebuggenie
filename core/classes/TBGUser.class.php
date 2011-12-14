@@ -1187,14 +1187,16 @@
 		 */
 		public function getState()
 		{
-			if ($this->_customstate)
+			$active = $this->isActive();
+			$away = $this->isAway();
+			if ($this->_customstate && ($active || $away))
 			{
 				return $this->_b2dbLazyload('_userstate');
 			}
 			
-			if ($this->isActive())
+			if ($active)
 				return TBGSettings::getOnlineState();
-			elseif ($this->isAway())
+			elseif ($away)
 				return TBGSettings::getAwayState();
 			else
 				return TBGSettings::getOfflineState();
