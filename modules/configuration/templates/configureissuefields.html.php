@@ -27,7 +27,7 @@
 					<div class="content" style="padding: 2px; margin-bottom: 15px;">
 						<?php echo __('Enter a name for the field (same as ex. "%resolution_types%" above), then click %add%', array('%resolution_types%' => __('Resolution types'), '%add%' => '<b>' . __('Add') . '</b>')); ?>
 					</div>
-					<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuefields_add_customtype'); ?>" onsubmit="TBG.Issues.Field.Custom.add('<?php echo make_url('configure_issuefields_add_customtype'); ?>');return false;" id="add_custom_type_form">
+					<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuefields_add_customtype'); ?>" onsubmit="TBG.Config.Issuefields.Custom.add('<?php echo make_url('configure_issuefields_add_customtype'); ?>');return false;" id="add_custom_type_form">
 						<label for="new_custom_field_name" style="width: 100px; display: block; float: left;"><?php echo __('Custom type'); ?></label>
 						<select id="new_custom_field_type" name="field_type" style="width: 375px;">
 							<?php foreach (TBGCustomDatatype::getFieldTypes() as $type => $description): ?>
