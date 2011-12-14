@@ -604,7 +604,7 @@
 			{
 				// The time the script was loaded
 				$starttime = explode(' ', microtime());
-				define('NOW', $starttime[1]);
+				define('NOW', (integer) $starttime[1]);
 
 				// Set up error and exception handling
 				set_exception_handler(array('TBGContext', 'exceptionHandler'));
