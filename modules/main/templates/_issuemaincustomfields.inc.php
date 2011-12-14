@@ -1,5 +1,8 @@
 							<?php foreach ($customfields_list as $field => $info): ?>
 							<?php
+								if (!$info['visible']) {
+									continue;
+								}
 								switch ($info['type'])
 								{
 									case TBGCustomDatatype::INPUT_TEXTAREA_MAIN:
