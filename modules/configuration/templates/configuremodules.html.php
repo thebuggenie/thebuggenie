@@ -11,17 +11,17 @@
 					</p>
 				</div>
 				<?php if ($module_error !== null): ?>
-					<div class="rounded_box red borderless" style="margin: 5px 0px 5px 0px; color: #FFF; width: 750px;" id="module_error">
+					<div class="rounded_box red borderless" style="margin: 5px 0px 5px 0px; color: #FFF; width: 783px;" id="module_error">
 						<div class="header"><?php echo $module_error; ?></div>
 					</div>
 				<?php endif; ?>
 				<?php if ($module_message !== null): ?>
-					<div class="rounded_box green borderless" style="margin: 5px 0px 5px 0px; width: 750px;" id="module_message">
+					<div class="rounded_box green borderless" style="margin: 5px 0px 5px 0px; width: 783px;" id="module_message">
 						<div class="header"><?php echo $module_message; ?></div>
 					</div>
 				<?php endif; ?>
 				<?php if (count($outdated_modules) > 0): ?>
-					<div class="rounded_box yellow borderless" style="margin: 5px 0px 5px 0px; width: 750px;" id="module_message">
+					<div class="rounded_box yellow borderless" style="margin: 5px 0px 5px 0px; width: 783px;" id="module_message">
 						<div class="header"><?php echo __('You have %count% outdated modules. They have been disabled until you upgrade them, you can upgrade them on this page.', array('%count%' => count($outdated_modules))); ?></div>
 					</div>
 				<?php endif; ?>
