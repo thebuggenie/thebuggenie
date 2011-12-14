@@ -403,7 +403,6 @@
 		 */
 		public function runAbout(TBGRequest $request)
 		{
-			TBGRolePermissionsTable::getTable()->create();
 			$this->forward403unless(TBGContext::getUser()->hasPageAccess('about'));
 		}
 		
