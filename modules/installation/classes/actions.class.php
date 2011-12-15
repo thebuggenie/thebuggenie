@@ -495,6 +495,11 @@
 			TBGUserIssuesTable::getTable()->createIndexes();
 			TBGUsersTable::getTable()->createIndexes();
 
+			foreach (TBGScope::getAll() as $scope)
+			{
+				TBGRole::loadFixtures($scope);
+			}
+
 			TBGSettings::saveSetting(TBGSettings::SETTING_ICONSET, TBGSettings::get(TBGSettings::SETTING_THEME_NAME));
 			TBGContext::setPermission('readarticle', 0, 'core', 0, 0, 0, true);
 			

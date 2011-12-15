@@ -18,10 +18,61 @@
 		public static function loadFixtures(TBGScope $scope)
 		{
 			$roles = array();
-			$roles['Developer'] = array();
-			$roles['Project manager'] = array();
-			$roles['Tester'] = array();
-			$roles['Documentation editor'] = array();
+			$roles['Developer'] = array(
+				array('permission' => 'page_project_allpages_access'),
+				array('permission' => 'canseeproject'),
+				array('permission' => 'canseeprojecthierarchy'),
+				array('permission' => 'candoscrumplanning'),
+				array('permission' => 'canvoteforissues'),
+				array('permission' => 'canlockandeditlockedissues'),
+				array('permission' => 'cancreateandeditissues'),
+				array('permission' => 'caneditissue'),
+				array('permission' => 'caneditissuecustomfields'),
+				array('permission' => 'canaddextrainformationtoissues'),
+				array('permission' => 'canpostseeandeditallcomments'),
+				array('permission' => 'readarticle', 'module' => 'publish', 'target_id' => '%project_key%'),
+				array('permission' => 'editarticle', 'module' => 'publish', 'target_id' => '%project_key%'),
+				array('permission' => 'deletearticle', 'module' => 'publish', 'target_id' => '%project_key%'),
+			);
+			$roles['Project manager'] = array(
+				array('permission' => 'page_project_allpages_access'),
+				array('permission' => 'canseeproject'),
+				array('permission' => 'canseeprojecthierarchy'),
+				array('permission' => 'candoscrumplanning'),
+				array('permission' => 'canvoteforissues'),
+				array('permission' => 'canlockandeditlockedissues'),
+				array('permission' => 'cancreateandeditissues'),
+				array('permission' => 'caneditissue'),
+				array('permission' => 'caneditissuecustomfields'),
+				array('permission' => 'canaddextrainformationtoissues'),
+				array('permission' => 'canpostseeandeditallcomments'),
+				array('permission' => 'readarticle', 'module' => 'publish', 'target_id' => '%project_key%'),
+				array('permission' => 'editarticle', 'module' => 'publish', 'target_id' => '%project_key%'),
+				array('permission' => 'deletearticle', 'module' => 'publish', 'target_id' => '%project_key%'),
+			);
+			$roles['Tester'] = array(
+				array('permission' => 'page_project_allpages_access'),
+				array('permission' => 'canseeproject'),
+				array('permission' => 'canseeprojecthierarchy'),
+				array('permission' => 'canvoteforissues'),
+				array('permission' => 'cancreateandeditissues'),
+				array('permission' => 'caneditissuecustomfields'),
+				array('permission' => 'canaddextrainformationtoissues'),
+				array('permission' => 'canpostandeditcomments'),
+				array('permission' => 'readarticle', 'module' => 'publish', 'target_id' => '%project_key%'),
+				array('permission' => 'editarticle', 'module' => 'publish', 'target_id' => '%project_key%'),
+			);
+			$roles['Documentation editor'] = array(
+				array('permission' => 'page_project_allpages_access'),
+				array('permission' => 'canseeproject'),
+				array('permission' => 'canseeprojecthierarchy'),
+				array('permission' => 'canvoteforissues'),
+				array('permission' => 'cancreateandeditissues'),
+				array('permission' => 'canaddextrainformationtoissues'),
+				array('permission' => 'canpostandeditcomments'),
+				array('permission' => 'readarticle', 'module' => 'publish', 'target_id' => '%project_key%'),
+				array('permission' => 'editarticle', 'module' => 'publish', 'target_id' => '%project_key%'),
+			);
 			
 			foreach ($roles as $name => $permissions)
 			{
@@ -32,9 +83,11 @@
 				foreach ($permissions as $k => $permission)
 				{
 					$p = new TBGRolePermission();
-					$p->setModule($permission['module']);
 					$p->setPermission($permission['permission']);
-					$p->setTargetID($permission['target_id']);
+
+					if (array_key_exists('target_id', $permission)) $p->setTargetID($permission['target_id']);
+					if (array_key_exists('module', $permission)) $p->setModule($permission['module']);
+					
 					$permissions[$k] = $p;
 				}
 				$role->setPermissions($permissions);
@@ -51,6 +104,11 @@
 			return TBGListTypesTable::getTable()->getAllByItemTypeAndItemdata(self::ROLE, null);
 		}
 
+		/**
+		 * Returns all project roles available for a specific project
+		 *
+		 * @return array
+		 */
 		public static function getByProjectID($project_id)
 		{
 			return TBGListTypesTable::getTable()->getAllByItemTypeAndItemdata(self::ROLE, $project_id);
@@ -94,6 +152,7 @@
 			TBGRolePermissionsTable::getTable()->clearPermissionsForRole($this->getID());
 			foreach ($permissions as $permission)
 			{
+				$permission->setRole($this);
 				$permission->save();
 			}
 		}
