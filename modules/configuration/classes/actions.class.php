@@ -2929,7 +2929,7 @@
 								if ($scrum !== null)
 								{
 									if (trim($activerow[$websitecol], '"') == '1')
-										$project->setUseScrum(true);
+										$project->setUsesScrum(true);
 								}
 								
 								if ($owner !== null && $owner_type !== null)
