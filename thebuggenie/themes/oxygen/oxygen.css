@@ -756,7 +756,7 @@ ul.workflow_actions li:hover { box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); -webkit-b
 #reportissue_container .backdrop_detail_footer a { font-weight: normal; }
 #backdrop_detail_content #report_issue_add_extra, #backdrop_detail_content #reproduction_steps_div { display: none; }
 #backdrop_detail_content .tab_menu { margin-top: 30px; margin-bottom: 10px; font-size: 1.1em; }
-.backdrop_detail_footer { font-weight: bold; font-size: 0.9em; padding: 5px; text-align: right; background-color: #FFF; }
+.backdrop_detail_footer { clear: both; font-weight: bold; font-size: 0.9em; padding: 5px; text-align: right; background-color: #FFF; }
 
 #dialog_title, #dialog_content {margin-left: 75px; }
 #dialog_yes, #dialog_no { border-bottom: none !important; }

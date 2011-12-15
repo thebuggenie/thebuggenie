@@ -3614,4 +3614,18 @@
 			$this->tbg_summary = TBGContext::getDebugData($request['debug_id']);
 		}
 
+		public function runGetACLFormEntry(TBGRequest $request)
+		{
+			switch ($request['identifiable_type'])
+			{
+				case 'user':
+					$target = TBGContext::factory()->TBGUser((int) $request['identifiable_value']);
+					break;
+				case 'team':
+					$target = TBGContext::factory()->TBGTeam((int) $request['identifiable_value']);
+					break;
+			}
+			return $this->renderJSON(array('content' => $this->getTemplateHTML('main/issueaclformentry', array('target' => $target))));
+		}
+
 }

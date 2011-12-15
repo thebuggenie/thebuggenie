@@ -17,6 +17,7 @@
 	$routes[] = array('issue_gettempfieldvalue', '/:project_key/issues/:issue_id/get/temp/value/for/:field/*', 'main', 'issueGetTempFieldValue');
 	$routes[] = array('issue_setfield', '/:project_key/issues/:issue_id/set/:field/*', 'main', 'issueSetField');
 	$routes[] = array('issue_revertfield', '/:project_key/issues/:issue_id/revert/:field', 'main', 'issueRevertField');
+	$routes[] = array('getacl_formentry', '/get/acl/formentry/for/:identifiable_type/:identifiable_value', 'main', 'getACLFormEntry');
 	$routes[] = array('main_find_identifiable', '/find/identifiable/by/*', 'main', 'findIdentifiable');
 	$routes[] = array('toggle_favourite_issue', '/toggle_favourite_issue/:issue_id', 'main', 'toggleFavouriteIssue', array('format' => 'json'));
 	$routes[] = array('project_getmenulinks', '/:project_key/menulinks', 'project', 'menuLinks');

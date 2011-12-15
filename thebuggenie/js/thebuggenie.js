@@ -73,6 +73,7 @@ var TBG = {
 		Field: {
 			Updaters: {}
 		},
+		ACL: {},
 		Affected: {}
 	}, // The "Issues" namespace contains functions used in direct relation to issues
 	Search: {
@@ -3088,6 +3089,34 @@ TBG.Issues.markAsUnchanged = function(field)
 		if ($('comment_save_changes')) $('comment_save_changes').checked = false;
 	}
 }
+
+TBG.Issues.ACL.toggle_checkboxes = function(element, issue_id) {
+	var val = element.getValue();
+	var opp_val = (val == 'restricted') ? 'public' : 'restricted';
+	if ($(element).checked) {
+		$('acl_'+issue_id+'_'+val).show();
+		$('acl_'+issue_id+'_'+opp_val).hide();
+	} else {
+		$('acl_'+issue_id+'_'+val).hide();
+		$('acl_'+issue_id+'_'+opp_val).show();
+	}
+};
+
+TBG.Issues.ACL.addTarget = function(url, issue_id) {
+	TBG.Main.Helpers.ajax(url, {
+		loading: {
+			indicator: 'acl_indicator_'+issue_id
+		},
+		success: {
+			update: {element: 'issue_'+issue_id+'_access_list', insertion: true},
+			hide: ['popup_find_acl_'+issue_id, 'issue_'+issue_id+'_access_list_none']
+		}
+	});
+};
+
+TBG.Issues.ACL.set = function(url) {
+
+};
 
 TBG.Issues.Affected.toggleConfirmed = function(url, affected)
 {
