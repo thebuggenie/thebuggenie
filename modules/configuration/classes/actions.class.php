@@ -3015,7 +3015,7 @@
 								
 								if ($client !== null)
 								{
-									$client_object = TBGContext::factory()->TBGWorkflowScheme(trim($activerow[$client], '" '));
+									$client_object = TBGContext::factory()->TBGClient(trim($activerow[$client], '" '));
 									$project->setClient($client_object);
 								}
 								
