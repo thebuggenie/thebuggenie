@@ -180,6 +180,7 @@
 			$option->setKey($this->getKey());
 			$option->setValue($value);
 			$option->setItemdata($itemdata);
+			$option->setCustomdatatype($this->_id);
 			$option->save();
 			$this->_options = null;
 			return $option;
