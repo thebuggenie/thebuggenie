@@ -712,6 +712,11 @@
 		{
 			return $this->getFormattedIssueNo($link_formatted, $include_issuetype) . ' - ' . $this->getTitle();
 		}
+
+		public function getAccessList()
+		{
+			TBGPermissionsTable::getTable();
+		}
 		
 		/**
 		 * Whether or not the current user can access the issue
@@ -1063,10 +1068,6 @@
 		 */
 		public function canEditIssueDetails()
 		{
-			if ($this->isLocked())
-			{
-				return $this->_permissionCheck('canlockandeditlockedissues');
-			}
 			if (!$this->getProject()->canChangeIssuesWithoutWorkingOnThem())
 			{
 				if (!$this->isBeingWorkedOn())
@@ -1092,6 +1093,16 @@
 			return (bool) ($this->getPostedByID() == $user_id || ($this->isAssigned() && $this->getAssignee()->getID() == $user_id && $this->getAssignee() instanceof TBGUser) || ($this->isOwned() && $this->getOwner()->getID() == $user_id && $this->getOwner() instanceof TBGUser));
 		}
 		
+		/**
+		 * Return if the user can edit title
+		 *
+		 * @return boolean
+		 */
+		public function canEditAccessPolicy()
+		{
+			return $this->_permissionCheck('canlockandeditlockedissues');
+		}
+
 		/**
 		 * Return if the user can edit title
 		 *

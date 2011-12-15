@@ -1538,7 +1538,7 @@
 				self::$_available_permissions['build']['canseebuild'] = array('description' => $i18n->__('Can see this release'));
 				self::$_available_permissions['milestone']['canseemilestone'] = array('description' => $i18n->__('Can see this milestone'));
 				self::$_available_permissions['issues']['canvoteforissues'] = array('description' => $i18n->__('Can vote for issues'));
-				self::$_available_permissions['issues']['canlockandeditlockedissues'] = array('description' => $i18n->__('Can lock and edit locked issues'));
+				self::$_available_permissions['issues']['canlockandeditlockedissues'] = array('description' => $i18n->__('Can toggle issue access between restricted and public'));
 				self::$_available_permissions['issues']['cancreateandeditissues'] = array('description' => $i18n->__('Can create issues, edit basic information on issues reported by the user and close/re-open them'), 'details' => array());
 				self::$_available_permissions['issues']['cancreateandeditissues']['details']['cancreateissues'] = array('description' => $i18n->__('Can create new issues'), 'details' => array());
 				self::$_available_permissions['issues']['cancreateandeditissues']['details']['caneditissuebasicown'] = array('description' => $i18n->__('Can edit title and description on issues reported by the user'), 'details' => array());

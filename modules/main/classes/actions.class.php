@@ -2603,6 +2603,9 @@
 					case 'move_issue':
 						$template_name = 'main/moveissue';
 						break;
+					case 'issue_permissions':
+						$template_name = 'main/issuepermissions';
+						break;
 					case 'relate_issue':
 						$template_name = 'main/relateissue';
 						break;

@@ -196,5 +196,22 @@
 				$res = $this->doInsert($crit);
 			}
 		}
+
+		public function getByPermissionTargetIDAndModule($permission, $target_id, $module = 'core')
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::PERMISSION_TYPE, $permission);
+			$crit->addWhere(self::TARGET_ID, $target_id);
+			$crit->addWhere(self::MODULE, $module);
+
+			$permissions = array();
+			if ($res = $this->doSelect($crit))
+			{
+				while ($row = $res->getNextRow())
+				{
+					$permissions[] = array('user_id' => $row->get(self::UID), 'team_id' => $row->get(self::TID), 'group_id' => $row->get(self::GID));
+				}
+			}
+		}
 		
 	}

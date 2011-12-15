@@ -468,6 +468,10 @@
 		{
 		}
 
+		public function componentIssuePermissions()
+		{
+		}
+
 		public function componentDashboardViewRecentComments()
 		{
 			$this->comments = TBGComment::getRecentCommentsByAuthor($this->getUser()->getID());
