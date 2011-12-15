@@ -611,6 +611,7 @@ TBG.Main.Helpers.Backdrop.show = function(url) {
 TBG.Main.Helpers.Backdrop.reset = function() {
 	$$('body')[0].setStyle({'overflow': 'auto'});
 	$('fullpage_backdrop').fade({duration: 0.2});
+	TBG.Core._resizeWatcher();
 };
 
 TBG.Main.Helpers.tabSwitcher = function(visibletab, menu) {
