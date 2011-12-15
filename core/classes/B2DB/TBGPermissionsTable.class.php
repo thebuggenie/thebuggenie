@@ -209,9 +209,23 @@
 			{
 				while ($row = $res->getNextRow())
 				{
-					$permissions[] = array('user_id' => $row->get(self::UID), 'team_id' => $row->get(self::TID), 'group_id' => $row->get(self::GID));
+					$target = null;
+					if ($uid = $row->get(self::UID))
+					{
+						$target = TBGContext::factory()->TBGUser($uid);
+					}
+					if ($tid = $row->get(self::TID))
+					{
+						$target = TBGContext::factory()->TBGTeam($tid);
+					}
+					if ($gid = $row->get(self::GID))
+					{
+						$target = TBGContext::factory()->TBGGroup($gid);
+					}
+					$permissions[] = array('target' => $target, 'allowed' => (boolean) $row->get(self::ALLOWED), 'user_id' => $row->get(self::UID), 'team_id' => $row->get(self::TID), 'group_id' => $row->get(self::GID));
 				}
 			}
+			return $permissions;
 		}
 		
 	}

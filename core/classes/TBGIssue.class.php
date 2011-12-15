@@ -715,7 +715,8 @@
 
 		public function getAccessList()
 		{
-			TBGPermissionsTable::getTable();
+			$permissions = TBGPermissionsTable::getTable()->getByPermissionTargetIDAndModule('canviewissue', $this->getID());
+			return $permissions;
 		}
 		
 		/**
