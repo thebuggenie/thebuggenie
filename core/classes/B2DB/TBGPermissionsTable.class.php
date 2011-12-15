@@ -222,10 +222,22 @@
 					{
 						$target = TBGContext::factory()->TBGGroup($gid);
 					}
-					$permissions[] = array('target' => $target, 'allowed' => (boolean) $row->get(self::ALLOWED), 'user_id' => $row->get(self::UID), 'team_id' => $row->get(self::TID), 'group_id' => $row->get(self::GID));
+					if ($target instanceof TBGIdentifiable)
+					{
+						$permissions[] = array('target' => $target, 'allowed' => (boolean) $row->get(self::ALLOWED), 'user_id' => $row->get(self::UID), 'team_id' => $row->get(self::TID), 'group_id' => $row->get(self::GID));
+					}
 				}
 			}
 			return $permissions;
+		}
+		
+		public function deleteByPermissionTargetIDAndModule($permission, $target_id, $module = 'core')
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::PERMISSION_TYPE, $permission);
+			$crit->addWhere(self::TARGET_ID, $target_id);
+			$crit->addWhere(self::MODULE, $module);
+			$this->doDelete($crit);
 		}
 		
 	}

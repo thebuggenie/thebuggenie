@@ -1020,6 +1020,17 @@
 		}
 
 		/**
+		 * Returns whether or not this item is locked
+		 *
+		 * @return boolean
+		 * @access public
+		 */
+		public function isUnlocked()
+		{
+			return !$this->isLocked();
+		}
+
+		/**
 		 * Specify whether or not this item is locked
 		 *
 		 * @param boolean $locked[optional]

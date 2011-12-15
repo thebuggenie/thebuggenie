@@ -12,6 +12,8 @@
 	$routes[] = array('viewissue_find_issue', '/:project_key/findissues/:issue_id/:type', 'main', 'findIssue', array('format' => 'json'));
 	$routes[] = array('viewissue_relate_issues', '/:project_key/issues/:issue_id/relate', 'main', 'relateIssues', array('format' => 'json'));
 	$routes[] = array('deleteissue', '/:project_key/issues/:issue_id/delete', 'main', 'deleteIssue');
+	$routes[] = array('lock_issue', '/lock/issue/:issue_id', 'main', 'lockIssue');
+	$routes[] = array('unlock_issue', '/unlock/issue/:issue_id', 'main', 'unlockIssue');
 	$routes[] = array('block', '/:project_key/issues/:issue_id/block', 'main', 'markAsBlocker');
 	$routes[] = array('unblock', '/:project_key/issues/:issue_id/unblock', 'main', 'markAsNotBlocker');
 	$routes[] = array('issue_gettempfieldvalue', '/:project_key/issues/:issue_id/get/temp/value/for/:field/*', 'main', 'issueGetTempFieldValue');

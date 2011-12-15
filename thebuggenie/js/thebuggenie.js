@@ -3114,8 +3114,16 @@ TBG.Issues.ACL.addTarget = function(url, issue_id) {
 	});
 };
 
-TBG.Issues.ACL.set = function(url) {
-
+TBG.Issues.ACL.set = function(url, issue_id, mode) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'acl_'+issue_id+'_'+mode+'form',
+		loading: {
+			indicator: 'acl_indicator_'+issue_id
+		},
+		success: {
+			callback: TBG.Main.Helpers.Backdrop.reset
+		}
+	});
 };
 
 TBG.Issues.Affected.toggleConfirmed = function(url, affected)

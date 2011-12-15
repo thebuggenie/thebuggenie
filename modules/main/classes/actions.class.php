@@ -1889,6 +1889,112 @@
 		}
 		
 		/**
+		 * Unlock the issue
+		 * 
+		 * @param TBGRequest $request
+		 */
+		public function runUnlockIssue(TBGRequest $request)
+		{
+			$this->forward403unless(TBGContext::getUser()->hasPermission('caneditissue') || TBGContext::getUser()->hasPermission('caneditissuebasic'));
+
+			if ($issue_id = $request['issue_id'])
+			{
+				try
+				{
+					$issue = TBGContext::factory()->TBGIssue($issue_id);
+					$issue->setLocked(false);
+					$issue->save();
+					TBGPermissionsTable::getTable()->deleteByPermissionTargetIDAndModule('canviewissue', $issue_id);
+				}
+				catch (Exception $e)
+				{
+					$this->getResponse()->setHttpStatus(400);
+					return $this->renderJSON(array('message' => TBGContext::getI18n()->__('This issue does not exist')));
+				}
+			}
+			else
+			{
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('message' => TBGContext::getI18n()->__('This issue does not exist')));
+			}
+
+			return $this->renderJSON(array('message' => $this->getI18n()->__('Issue access policy updated')));
+		}
+		
+		/**
+		 * Unlock the issue
+		 * 
+		 * @param TBGRequest $request
+		 */
+		public function runLockIssue(TBGRequest $request)
+		{
+			$this->forward403unless(TBGContext::getUser()->hasPermission('caneditissue') || TBGContext::getUser()->hasPermission('caneditissuebasic'));
+
+			if ($issue_id = $request['issue_id'])
+			{
+				try
+				{
+					$issue = TBGContext::factory()->TBGIssue($issue_id);
+					$issue->setLocked();
+					$issue->save();
+					TBGContext::setPermission('canviewissue', $issue->getID(), 'core', 0, 0, 0, false);
+					TBGContext::setPermission('canviewissue', $issue->getID(), 'core', $this->getUser()->getID(), 0, 0, true);
+					
+					$al_users = $request->getParameter('access_list_users', array());
+					$al_teams = $request->getParameter('access_list_teams', array());
+					$i_al = $issue->getAccessList();
+					foreach ($i_al as $k => $item)
+					{
+						if ($item['target'] instanceof TBGTeam)
+						{
+							$tid = $item['target']->getID();
+							if (array_key_exists($tid, $al_teams))
+							{
+								unset($i_al[$k]);
+							}
+							else
+							{
+								TBGContext::removePermission('canviewissue', $issue->getID(), 'core', 0, 0, $tid);
+							}
+						}
+						elseif ($item['target'] instanceof TBGUser)
+						{
+							$uid = $item['target']->getID();
+							if (array_key_exists($uid, $al_users))
+							{
+								unset($i_al[$k]);
+							}
+							elseif ($uid != $this->getUser()->getID())
+							{
+								TBGContext::removePermission('canviewissue', $issue->getID(), 'core', $uid, 0, 0);
+							}
+						}
+					}
+					foreach ($al_users as $uid)
+					{
+						TBGContext::setPermission('canviewissue', $issue->getID(), 'core', $uid, 0, 0, true);
+					}
+					foreach ($al_teams as $tid)
+					{
+						TBGContext::setPermission('canviewissue', $issue->getID(), 'core', 0, 0, $tid, true);
+					}
+				}
+				catch (Exception $e)
+				{
+					$this->getResponse()->setHttpStatus(400);
+					return $this->renderJSON(array('message' => TBGContext::getI18n()->__('This issue does not exist')));
+				}
+			}
+			else
+			{
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('message' => TBGContext::getI18n()->__('This issue does not exist')));
+			}
+
+			return $this->renderJSON(array('message' => $this->getI18n()->__('Issue access policy updated')));
+		}
+		
+		/**
 		 * Mark the issue as not blocking the next release
 		 * 
 		 * @param TBGRequest $request
