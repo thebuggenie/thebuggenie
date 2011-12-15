@@ -281,10 +281,6 @@
 			$this->setupVariables();
 		}
 		
-		public function componentMarkasduplicate()
-		{
-		}
-		
 		public function componentRelateissue()
 		{
 		}
