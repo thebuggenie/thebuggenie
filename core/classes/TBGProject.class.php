@@ -407,6 +407,15 @@
 		 * @Column(type="boolean")
 		 */
 		protected $_archived = false;
+
+		/**
+		 * What columns should be shown on the Project Planning page
+		 * Stored as serialized array
+		 *
+		 * @var string
+		 * @Column(type="text")
+		 */
+		protected $_planning_columns = null;
 		
 		/**
 		 * Make a project default
@@ -2793,6 +2802,33 @@
 		{
 			$this->_populateTeamRoles();
 			return (array_key_exists($team->getID(), $this->_team_roles)) ? $this->_team_roles[$team->getID()] : array();
+		}
+
+		/**
+		 * @param array $planning_columns
+		 */
+		public function setPlanningColumns($planning_columns)
+		{
+			$this->_planning_columns = serialize($planning_columns);
+		}
+
+		/**
+		 * @return array
+		 */
+		public function getPlanningColumns()
+		{
+			$columns = unserialize($this->_planning_columns);
+
+			if (empty($columns)) {
+				// Default values
+				$columns = array(
+					'priority' => array(),
+					'estimated_time' => array(),
+					'spent_time' => array()
+				);
+			}
+
+			return $columns;
 		}
 
 	}

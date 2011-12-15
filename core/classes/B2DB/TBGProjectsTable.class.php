@@ -64,7 +64,8 @@
 		const AUTOASSIGN = 'projects.autoassign';
 		const PARENT_PROJECT_ID = 'projects.parent';
 		const ARCHIVED = 'projects.archived';
-		
+		const PLANNING_COLUMNS = 'projects.planning_columns';
+
 //		public function __construct()
 //		{
 //			parent::__construct(self::B2DBNAME, self::ID);
