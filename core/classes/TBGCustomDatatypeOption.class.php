@@ -109,4 +109,20 @@
 			$this->_value = $value;
 		}
 
+		/**
+		 * @param int $customdatatype
+		 */
+		public function setCustomdatatype($customdatatype)
+		{
+			$this->_customdatatype = $customdatatype;
+		}
+
+		/**
+		 * @return int
+		 */
+		public function getCustomdatatype()
+		{
+			return $this->_customdatatype;
+		}
+
 	}
