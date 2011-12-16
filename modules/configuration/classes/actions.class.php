@@ -706,6 +706,7 @@
 							$customtype = new TBGCustomDatatype();
 							$customtype->setName($request['name']);
 							$customtype->setItemdata($request['label']);
+							$customtype->setDescription($request['label']);
 							$customtype->setType($request['field_type']);
 							$customtype->save();
 							return $this->renderJSON(array('title' => TBGContext::getI18n()->__('The custom field was added'), 'content' => $this->getComponentHTML('issuefields_customtype', array('type_key' => $customtype->getKey(), 'type' => $customtype))));
