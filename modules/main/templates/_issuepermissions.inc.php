@@ -4,11 +4,13 @@
 		<input type="radio" name="issue_access" id="issue_access_public" onchange="TBG.Issues.ACL.toggle_checkboxes(this, <?php echo $issue->getID(); ?>);" value="public"<?php if($issue->isUnlocked()): ?> checked<?php endif; ?>><label for="issue_access_public"><?php echo __('Available to anyone with access'); ?></label><br>
 		<input type="radio" name="issue_access" id="issue_access_restricted" onchange="TBG.Issues.ACL.toggle_checkboxes(this, <?php echo $issue->getID(); ?>);" value="restricted"<?php if($issue->isLocked()): ?> checked<?php endif; ?>><label for="issue_access_restricted"><?php echo __('Available only to you and those listed below'); ?></label><br>
 		<?php image_tag('spinning_16.gif', array('id' => 'acl_indicator_'.$issue->getID(), 'style' => '')); ?>
-		<form action="<?php echo make_url('unlock_issue', array('issue_id' => $issue->getID())); ?>" onsubmit="TBG.Issues.ACL.set('<?php echo make_url('unlock_issue', array('issue_id' => $issue->getID())); ?>', <?php echo $issue->getID(); ?>, 'public');return false;" method="post" id="acl_<?php echo $issue->getID(); ?>_publicform" style="<?php if($issue->isLocked()): ?> display: none;<?php endif; ?>">
-			<div style="text-align: right;">
-				<input type="submit" value="<?php echo __('Save changes'); ?>" class="button button-green">
-			</div>
-		</form>
+		<div id="acl_<?php echo $issue->getID(); ?>_public">
+			<form action="<?php echo make_url('unlock_issue', array('issue_id' => $issue->getID())); ?>" onsubmit="TBG.Issues.ACL.set('<?php echo make_url('unlock_issue', array('issue_id' => $issue->getID())); ?>', <?php echo $issue->getID(); ?>, 'public');return false;" method="post" id="acl_<?php echo $issue->getID(); ?>_publicform" style="<?php if($issue->isLocked()): ?> display: none;<?php endif; ?>">
+				<div style="text-align: right;">
+					<input type="submit" value="<?php echo __('Save changes'); ?>" class="button button-green">
+				</div>
+			</form>
+		</div>
 		<div id="acl_<?php echo $issue->getID(); ?>_restricted" style="<?php if($issue->isUnlocked()): ?> display: none;<?php endif; ?>">
 			<h4 style="margin-top: 10px;">
 				<?php echo javascript_link_tag(__('Add a user or team'), array('onclick' => "$('popup_find_acl_{$issue->getID()}').toggle();", 'style' => 'float: right;', 'class' => 'button button-silver')); ?>
