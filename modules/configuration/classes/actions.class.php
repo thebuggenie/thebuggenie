@@ -2930,7 +2930,7 @@
 								if ($scrum !== null)
 								{
 									if (trim($activerow[$websitecol], '"') == '1')
-										$project->setUseScrum(true);
+										$project->setUsesScrum(true);
 								}
 								
 								if ($owner !== null && $owner_type !== null)
@@ -3016,7 +3016,7 @@
 								
 								if ($client !== null)
 								{
-									$client_object = TBGContext::factory()->TBGWorkflowScheme(trim($activerow[$client], '" '));
+									$client_object = TBGContext::factory()->TBGClient(trim($activerow[$client], '" '));
 									$project->setClient($client_object);
 								}
 								
@@ -3066,7 +3066,7 @@
 									$issue->setDescription(trim($activerow[$descr], '" '));
 									
 								if ($repro !== null)
-									$issue->setReproduction(trim($activerow[$repro], '" '));
+									$issue->setReproductionSteps(trim($activerow[$repro], '" '));
 								
 								if ($state !== null)
 									$issue->setState(trim($activerow[$state], '" '));
@@ -3129,7 +3129,7 @@
 									$issue->setVotes(trim($activerow[$votes], '" '));
 								
 								if ($percentage !== null)
-									$issue->setPercentage(trim($activerow[$percentage], '" '));
+									$issue->setPercentCompleted(trim($activerow[$percentage], '" '));
 								
 								if ($milestone !== null)
 									$issue->setMilestone(trim($activerow[$milestone], '" '));
