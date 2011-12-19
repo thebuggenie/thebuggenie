@@ -1366,6 +1366,16 @@
 		}
 
 		/**
+		 * Return if the user can add/modify extra data for an issue
+		 *
+		 * @return boolean
+		 */
+		public function canAddExtraInformation()
+		{
+			return (bool) ($this->_permissionCheck('canaddextrainformationtoissues'));
+		}
+
+		/**
 		 * Return if the user can add related issues to this issue
 		 *
 		 * @return boolean

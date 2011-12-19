@@ -2907,6 +2907,7 @@
 		{
 			$status = 200;
 			$message = null;
+			
 			if ($issue_id = $request['issue_id'])
 			{
 				try
@@ -2923,6 +2924,12 @@
 			{
 				$status = 400;
 				$message = TBGContext::getI18n()->__('Please provide an issue number');
+			}
+
+			if (!$issue->canAddExtraInformation() || !TBGContext::getUser()->canReportIssues($issue->getProject()) || !$issue->isUpdateable())
+			{
+				$status = 400;
+				$message = TBGContext::getI18n()->__('Unknown error');
 			}
 			
 			$this->getResponse()->setHttpStatus($status);
