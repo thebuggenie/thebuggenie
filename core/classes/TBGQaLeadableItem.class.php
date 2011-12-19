@@ -93,9 +93,9 @@
 
 		public function getQaResponsible()
 		{
-			if ($this->_qa_responsible_team !== null) {
+			if (!empty($this->_qa_responsible_team)) {
 				$this->_b2dbLazyload('_qa_responsible_team');
-			} elseif ($this->_qa_responsible_user !== null) {
+			} elseif (!empty($this->_qa_responsible_user)) {
 				$this->_b2dbLazyload('_qa_responsible_user');
 			}
 
