@@ -1381,6 +1381,26 @@
 			return $this->renderJSON(array('error' => TBGContext::getI18n()->__("You don't have access to save project settings")));
 		}
 
+		public function runConfigureProjectUpdatePlanning(TBGRequest $request)
+		{
+			if ($this->getUser()->canEditProjectDetails($this->selected_project))
+			{
+				try
+				{
+					$this->selected_project->setPlanningColumns($request['planning_column']);
+					$this->selected_project->save();
+					return $this->renderJSON(array('title' => TBGContext::getI18n()->__('Your changes has been saved'), 'message' => ''));
+				}
+				catch (Exception $e)
+				{
+					$this->getResponse()->setHttpStatus(400);
+					return $this->renderJSON(array('error' => TBGContext::getI18n()->__('An error occured'), 'message' => $e->getMessage()));
+				}
+			}
+			$this->getResponse()->setHttpStatus(403);
+			return $this->renderJSON(array('error' => TBGContext::getI18n()->__("You don't have access to save project settings")));
+		}
+
 		/**
 		 * Configure project builds
 		 *

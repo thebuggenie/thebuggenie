@@ -116,6 +116,7 @@
 		{
 			$key = \b2db\Core::getTable('TBGCustomFieldsTable')->getKeyFromId($this->getID());
 			\b2db\Core::getTable('TBGCustomFieldOptionsTable')->doDeleteByFieldKey($key);
+			\b2db\Core::getTable('TBGIssueFieldsTable')->deleteByIssueFieldKey($key);
 		}
 
 		public static function doesKeyExist($key)

@@ -2488,6 +2488,52 @@
 		{
 			$this->_issuetype_scheme_id = $scheme;
 		}
+
+		/**
+		 * Return array of visible fields used by the Project
+		 *
+		 * @return array
+		 */
+		public function getIssueFields()
+		{
+			$fields = $this->getIssuetypeScheme()->getVisibleFields();
+
+			foreach ($fields as $key => $field) {
+				switch ($key)
+				{
+					case 'user_pain':
+						$fields[$key]['label'] = TBGContext::getI18n()->__('Triaging: User pain');
+						break;
+					case 'percent_complete':
+						$fields[$key]['label'] = TBGContext::getI18n()->__('Percent completed');
+						break;
+					case 'build':
+						$fields[$key]['label'] = TBGContext::getI18n()->__('Release');
+						break;
+					case 'component':
+						$fields[$key]['label'] = TBGContext::getI18n()->__('Components');
+						break;
+					case 'edition':
+						$fields[$key]['label'] = TBGContext::getI18n()->__('Edition');
+						break;
+					case 'estimated_time':
+						$fields[$key]['label'] = TBGContext::getI18n()->__('Estimated time to complete');
+						break;
+					case 'spent_time':
+						$fields[$key]['label'] = TBGContext::getI18n()->__('Time spent working on the issue');
+						break;
+					case 'votes':
+						$fields[$key]['label'] = TBGContext::getI18n()->__('Votes');
+						break;
+					default:
+						if (!isset($fields[$key]['label'])) {
+							$fields[$key]['label'] = ucfirst($key);
+						}
+						break;
+				}
+			}
+			return $fields;
+		}
 		
 		/**
 		 * Return the client assigned to the project, or null if there is none
