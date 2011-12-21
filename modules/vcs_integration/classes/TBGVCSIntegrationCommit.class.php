@@ -122,7 +122,16 @@
 		 */
 		public function getPreviousCommit()
 		{
-			// FIXME
+				$row = TBGVCSIntegrationCommitsTable::getTable()->getCommitByCommitId($this->_old_rev, $this->getProject()->getID());
+				
+				if ($row instanceof b2db\Row)
+				{
+					return TBGContext::factory()->TBGVCSIntegrationCommit($row->get(TBGVCSIntegrationCommitsTable::ID), $row);
+				}
+				else
+				{
+					return null;
+				}
 		}
 		
 		/**
@@ -178,7 +187,7 @@
 		 */
 		public function getProject()
 		{
-			return $this->_project;
+			return $this->_b2dbLazyload('_project');
 		}
 		
 		/**

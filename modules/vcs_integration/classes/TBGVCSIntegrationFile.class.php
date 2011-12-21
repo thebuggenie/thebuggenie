@@ -66,11 +66,7 @@
 		 */
 		public function getCommit()
 		{
-			if (!($this->_commit instanceof TBGVCSIntegrationCommit))
-			{
-				$this->_commit = TBGContext::factory()->TBGVCSIntegrationCommit($this->_commit);
-			}
-			return $this->_commit;
+			return $this->_b2dbLazyload('_commit');
 		}
 		
 		/**

@@ -65,5 +65,21 @@
 			$results = $this->doSelect($crit);
 			return $results;
 		}
+		
+		/**
+		 * Get commit for a given commit id
+		 * @param string $id
+		 * @param integer $project
+		 */
+		public function getCommitByCommitId($id, $project)
+		{
+			$crit = new Criteria();
+			
+			$crit->addWhere(self::NEW_REV, $id);
+			$crit->addWhere(self::PROJECT_ID, $project);
+				
+			$result = $this->doSelectOne($crit);
+			return $result;
+		}
 	}
 

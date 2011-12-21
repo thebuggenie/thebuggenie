@@ -42,11 +42,7 @@
 		 */
 		public function getIssue()
 		{
-			if (!($this->_issue instanceof TBGIssue))
-			{
-				$this->_issue = TBGContext::factory()->TBGIssue($this->_issue);
-			}
-			return $this->_issue;
+			return $this->_b2dbLazyload('_issue');
 		}
 		
 		/**
@@ -55,11 +51,7 @@
 		 */
 		public function getCommit()
 		{
-			if (!($this->_commit instanceof TBGVCSIntegrationCommit))
-			{
-				$this->_commit = TBGContext::factory()->TBGVCSIntegrationCommit($this->_commit);
-			}
-			return $this->_commit;
+			return $this->_b2dbLazyload('_commit');
 		}
 		
 		/**
