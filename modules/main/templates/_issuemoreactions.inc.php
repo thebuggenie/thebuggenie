@@ -25,7 +25,7 @@
 			<?php endif; ?>
 		<?php endif; ?>
 		<?php if ($issue->isUpdateable()): ?>
-			<?php if ($issue->canAddExtraInformation() && $tbg_user->canReportIssues($project)): ?>
+			<?php if ($issue->canAddExtraInformation() && $tbg_user->canReportIssues($issue->getProject())): ?>
 				<li><?php echo javascript_link_tag(image_tag('action_add_task.png').__('Add a task to this issue'), array('onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'reportissue', 'project_id' => $issue->getProject()->getId(), 'parent_issue_id' => $issue->getID()))."');")); ?></li>
 			<?php endif; ?>
 			<?php if ($issue->canAddRelatedIssue()): ?>
