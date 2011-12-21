@@ -23,6 +23,7 @@
 		/**
 		 * Affected issue
 		 * @var TBGIssue
+		 * @Column(type="integer")
 		 * @Relates(class="TBGIssue")
 		 */
 		protected $_issue_no = null;
@@ -30,6 +31,7 @@
 		/**
 		 * Associated commit
 		 * @var TBGVCSIntegrationCommit
+		 * @Column(type="integer")
 		 * @Relates(class="TBGVCSIntegrationCommit")
 		 */
 		protected $_commit_id = null;

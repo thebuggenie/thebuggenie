@@ -20,12 +20,13 @@
 	 * @package thebuggenie
 	 * @subpackage vcs_integration
 	 *
+	 * @Entity(class="TBGVCSIntegrationFile")
 	 * @Table(name="vcsintegration_files")
 	 */
 	class TBGVCSIntegrationFilesTable extends TBGB2DBTable 
 	{
 
-		const B2DB_TABLE_VERSION = 1;
+		const B2DB_TABLE_VERSION = 2;
 		const B2DBNAME = 'vcsintegration_files';
 		const ID = 'vcsintegration_files.id';
 		const SCOPE = 'vcsintegration_files.scope';
@@ -33,15 +34,6 @@
 		const FILE_NAME = 'vcsintegration_files.file_name';
 		const ACTION = 'vcsintegration_files.action';
 					
-		public function _initialize()
-		{
-			parent::_setup(self::B2DBNAME, self::ID);
-			parent::_addText(self::FILE_NAME, false);
-			parent::_addVarchar(self::ACTION, 1);
-			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(),  TBGScopesTable::ID);
-			parent::_addForeignKeyColumn(self::COMMIT_ID, TBGVCSIntegrationCommitsTable::getTable(),  TBGVCSIntegrationCommitsTable::ID);
-		}
-		
 		/**
 		 * Get all affected files by commit
 		 * @param integer $id

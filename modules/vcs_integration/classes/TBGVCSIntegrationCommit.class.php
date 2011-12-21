@@ -29,18 +29,21 @@
 		/**
 		 * Commit log.
 		 * @var string
+		 * @Column(type="text")
 		 */
 		protected $_log = null;
 		
 		/**
 		 * Revision number/hash of previous commit
 		 * @var string/integer
+		 * @Column(type="string", length=40)
 		 */
 		protected $_old_rev = null;
 		
 		/**
 		 * Revision number/hash of this commit
 		 * @var string/integer
+		 * @Column(type="string", length=40)
 		 */
 		protected $_new_rev = null;
 		
@@ -48,18 +51,21 @@
 		 * Commit author
 		 * @var TBGUser
 		 * @Relates(class="TBGUser")
+		 * @Column(type="integer")
 		 */
 		protected $_author = null;
 		
 		/**
 		 * POSIX timestamp of commit
 		 * @var integer
+		 * @Column(type="integer")
 		 */
 		protected $_date = null;
 		
 		/**
 		 * Misc data
 		 * @var string
+		 * @Column(type="text")
 		 */
 		protected $_data = null;
 		
@@ -79,6 +85,7 @@
 		 * Project
 		 * @var TBGProject
 		 * @Relates(class="TBGProject")
+		 *  @Column(type="integer")
 		 */
 		protected $_project_id = null;
 		

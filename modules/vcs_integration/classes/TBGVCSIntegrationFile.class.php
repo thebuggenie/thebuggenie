@@ -23,12 +23,14 @@
 		/**
 		 * File path
 		 * @var string
+		 * @Column(type="text")
 		 */
 		protected $_file_name = null;
 		
 		/**
 		 * Action applied to file (Added, Updated or Deleted)
 		 * @var string
+		 * @Column(type="string", length=1)
 		 */
 		protected $_action = null;
 		
@@ -36,6 +38,7 @@
 		 * Associated commit
 		 * @var TBGVCSIntegrationCommit
 		 * @Relates(class="TBGVCSIntegrationCommit")
+		 * @Column(type="integer")
 		 */
 		protected $_commit_id = null;
 		

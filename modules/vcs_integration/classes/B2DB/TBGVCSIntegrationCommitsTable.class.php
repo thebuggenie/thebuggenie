@@ -20,12 +20,13 @@
 	 * @package thebuggenie
 	 * @subpackage vcs_integration
 	 *
+	 * @Entity(class="TBGVCSIntegrationCommit")
 	 * @Table(name="vcsintegration_commits")
 	 */
 	class TBGVCSIntegrationCommitsTable extends TBGB2DBTable 
 	{
 
-		const B2DB_TABLE_VERSION = 1;
+		const B2DB_TABLE_VERSION = 2;
 		const B2DBNAME = 'vcsintegration_commits';
 		const ID = 'vcsintegration_commits.id';
 		const SCOPE = 'vcsintegration_commits.scope';
@@ -36,19 +37,6 @@
 		const DATE = 'vcsintegration_commits.date';
 		const DATA = 'vcsintegration_commits.data';
 		const PROJECT_ID = 'vcsintegration_commits.project_id';
-					
-		public function _initialize()
-		{
-			parent::_setup(self::B2DBNAME, self::ID);
-			parent::_addText(self::LOG, false);
-			parent::_addVarchar(self::OLD_REV, 40);
-			parent::_addVarchar(self::NEW_REV, 40);
-			parent::_addInteger(self::DATE, 10);
-			parent::_addText(self::DATA, false);
-			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(),  TBGScopesTable::ID);
-			parent::_addForeignKeyColumn(self::AUTHOR, TBGUsersTable::getTable(), TBGUsersTable::ID);
-			parent::_addForeignKeyColumn(self::PROJECT_ID, TBGProjectsTable::getTable(), TBGProjectsTable::ID);
-		}
 		
 		/**
 		 * Get all commits relating to issues inside a project
