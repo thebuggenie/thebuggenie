@@ -23,18 +23,18 @@
 		/**
 		 * Affected issue
 		 * @var TBGIssue
-		 * @Column(type="integer")
+		 * @Column(type="integer", name="issue_no")
 		 * @Relates(class="TBGIssue")
 		 */
-		protected $_issue_no = null;
+		protected $_issue = null;
 		
 		/**
 		 * Associated commit
 		 * @var TBGVCSIntegrationCommit
-		 * @Column(type="integer")
+		 * @Column(type="integer", name="commit_id")
 		 * @Relates(class="TBGVCSIntegrationCommit")
 		 */
-		protected $_commit_id = null;
+		protected $_commit = null;
 		
 		/**
 		 * Get the issue for this link
@@ -42,7 +42,11 @@
 		 */
 		public function getIssue()
 		{
-			return $this->_issue_no;
+			if (!($this->_issue instanceof TBGIssue))
+			{
+				$this->_issue = TBGContext::factory()->TBGIssue($this->_issue);
+			}
+			return $this->_issue;
 		}
 		
 		/**
@@ -51,7 +55,11 @@
 		 */
 		public function getCommit()
 		{
-			return $this->_commit_id;
+			if (!($this->_commit instanceof TBGVCSIntegrationCommit))
+			{
+				$this->_commit = TBGContext::factory()->TBGVCSIntegrationCommit($this->_commit);
+			}
+			return $this->_commit;
 		}
 		
 		/**
@@ -60,7 +68,7 @@
 		 */
 		public function setIssue(TBGIssue $issue)
 		{
-			$this->_issue_no = $issue;
+			$this->_issue = $issue;
 		}
 		
 		/**
@@ -69,7 +77,7 @@
 		 */
 		public function setCommit(TBGVCSIntegrationCommit $commit)
 		{
-			$this->_commit_id = $commit;
+			$this->_commit = $commit;
 		}
 		
 		/**

@@ -38,9 +38,9 @@
 		 * Associated commit
 		 * @var TBGVCSIntegrationCommit
 		 * @Relates(class="TBGVCSIntegrationCommit")
-		 * @Column(type="integer")
+		 * @Column(type="integer", name="commit_id")
 		 */
-		protected $_commit_id = null;
+		protected $_commit = null;
 		
 		/**
 		 * Get the file path
@@ -66,7 +66,11 @@
 		 */
 		public function getCommit()
 		{
-			return $this->_commit_id;
+			if (!($this->_commit instanceof TBGVCSIntegrationCommit))
+			{
+				$this->_commit = TBGContext::factory()->TBGVCSIntegrationCommit($this->_commit);
+			}
+			return $this->_commit;
 		}
 		
 		/**

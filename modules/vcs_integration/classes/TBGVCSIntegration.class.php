@@ -374,7 +374,7 @@
 				
 				/* Now produce each box */
 				foreach ($links as $link)
-				{	
+				{
 					include_template('vcs_integration/commitbox', array("projectId" => $event->getSubject()->getProject()->getID(), "commit" => $link->getCommit()));
 				}
 				

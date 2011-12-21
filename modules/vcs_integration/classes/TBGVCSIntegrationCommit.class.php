@@ -85,9 +85,9 @@
 		 * Project
 		 * @var TBGProject
 		 * @Relates(class="TBGProject")
-		 *  @Column(type="integer")
+		 *  @Column(type="integer", name="project_id")
 		 */
-		protected $_project_id = null;
+		protected $_project = null;
 		
 		/**
 		 * Get the commit log for this commit
@@ -241,7 +241,7 @@
 		 */
 		public function setProject(TBGProject $project)
 		{
-			$this->_project_id = $project;
+			$this->_project = $project;
 		}
 		
 		private function _populateAffectedFiles()
