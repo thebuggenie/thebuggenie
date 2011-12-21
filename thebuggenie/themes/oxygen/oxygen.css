@@ -1207,7 +1207,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 #search_builder_toggler, #save_search_builder_toggler { float: right; margin: -2px 0 0 5px; padding-bottom: 2px !important; font-size: 1em !important; }
 .search_buttons { float: right; }
 .search_buttons .button, .search_buttons .button:hover { font-size: 1.15em !important; padding: 2px 10px !important; font-weight: normal !important; }
-#search_column_settings_container { width: 400px; position: absolute; right: 5px; }
+#search_column_settings_container { width: 400px; position: absolute; right: 5px; z-index: 10; }
 #find_issues #search_filters ul { list-style-type: none; margin: 0; padding: 0; }
 #find_issues #search_filters ul li { margin: 0; padding: 0; }
 #search_filters_list li { clear: both; }
