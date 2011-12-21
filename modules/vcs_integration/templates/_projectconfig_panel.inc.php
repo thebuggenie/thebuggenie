@@ -125,8 +125,8 @@
 				<tr>
 					<td colspan="2" style="padding: 10px 0 10px 10px; text-align: right;">
 						<div style="float: left; font-size: 13px; padding-top: 2px; font-style: italic;" class="config_explanation"><?php echo __('When you are done, click "%save%" to save your changes on all tabs', array('%save%' => __('Save'))); ?></div>
-						<div class="button button-green" id="vcs_button" style="float: right; font-size: 14px; font-weight: bold;">
-							<input type="submit" value="<?php echo __('Save'); ?>">
+						<div id="vcs_button" style="float: right; font-size: 14px; font-weight: bold;">
+							<input type="submit" class="button button-green" value="<?php echo __('Save'); ?>">
 						</div>
 						<span id="vcs_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
 					</td>
