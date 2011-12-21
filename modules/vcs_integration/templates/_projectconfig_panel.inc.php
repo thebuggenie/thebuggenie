@@ -20,6 +20,18 @@
 					</td>
 				</tr>
 				<tr>
+					<td style="width: 200px;"><label for="vcs_workflow"><?php echo __('Enable workflow?'); ?></label></td>
+					<td style="width: 580px;">
+						<select name="vcs_workflow" id="vcs_workflow" style="width: 100%">
+							<option value="0"<?php if (TBGSettings::get('vcs_workflow_'.$project->getID(), 'vcs_integration') == 0): ?> selected="selected"<?php endif;?>>Disable for this project</option>
+							<option value="1"<?php if (TBGSettings::get('vcs_workflow_'.$project->getID(), 'vcs_integration') == 1): ?> selected="selected"<?php endif;?>>Enable for this project</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td class="config_explanation" colspan="2"><?php echo __('This will allow specially-crafted commit messages to cause a workflow transition, in the same way as incoming emails. See the documentation for details.'); ?></td>
+				</tr>
+				<tr>
 					<td style="width: 200px;"><label for="access_method"><?php echo __('Access method'); ?></label></td>
 					<td style="width: 580px;">
 						<select name="access_method" id="access_method" style="width: 100%" onchange="if ($('access_method').getValue() == '1') { $('http_passkey').show(); } else { $('http_passkey').hide(); }">

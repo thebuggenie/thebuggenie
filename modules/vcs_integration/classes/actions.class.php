@@ -318,7 +318,7 @@
 				$project_id = $request['project_id'];
 				
 				$fields = array('vcs_mode', 'match_keywords', 'access_method', 'access_passkey', 'commit_url', 'log_url',
-								'blob_url', 'diff_url', 'browser_url');
+								'blob_url', 'diff_url', 'browser_url', 'vcs_workflow');
 				
 				foreach ($fields as $field)
 				{

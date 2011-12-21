@@ -22,6 +22,9 @@
 		const MODE_DISABLED = 0;
 		const MODE_ISSUECOMMITS = 1;
 		
+		const WORKFLOW_DISABLED = 0;
+		const WORKFLOW_ENABLED = 1;
+		
 		const ACCESS_DIRECT = 0;
 		const ACCESS_HTTP = 1;
 		
@@ -407,14 +410,34 @@
 			
 			$fixes_grep = TBGTextParser::getIssueRegex();
 
-			// Build list of affected issues
-			$temp = array();
-			$issues = array();
+			// Build list of affected issues and their transitions
+			$temp = array(); // All data from regexp
+			$temp2 = array(); // Issue numbers
+			$issues = array(); // Issue objects
+			$transitions = array(); // Transition strings
 			
 			if (preg_match_all($fixes_grep, $commit_msg, $temp))
-			{	
-				$temp = array_unique($temp[2]);
-				foreach ($temp as $issue_no)
+			{
+				foreach ($temp[0] as $key => $item)
+				{
+					// Preserve workflow step data
+					if (!array_key_exists($temp[4][$key], $transitions))
+					{
+						$transitions[$temp[4][$key]] = array();
+					}
+					
+					$count = preg_match('/ \((.*)\)/i', $temp[6][$key], $stuff);
+					
+					if ($count == 1)
+					{
+						$transitions[$temp[4][$key]][] = $stuff[0];
+					}
+					
+					$temp2[] = $temp[4][$key];
+				}
+				
+				$temp2 = array_unique($temp2);
+				foreach ($temp2 as $issue_no)
 				{
 					$issue = TBGIssue::getIssueFromLink($issue_no);
 					if ($issue instanceof TBGIssue): $issues[] = $issue; endif;
@@ -564,10 +587,70 @@
 			// Create issue links
 			foreach ($issues as $issue)
 			{
-				$inst = new TBGVCSIntegrationIssueLink();
-				$inst->setIssue($issue);
-				$inst->setCommit($commit);
-				$inst->save();
+				foreach ($transitions[$issue->getIssueNo()] as $issue_transition_block)
+				{
+					preg_match('/(?<=\()(.*)(?=\))/', $issue_transition_block, $issue_transitions, null);
+					$inst = new TBGVCSIntegrationIssueLink();
+					$inst->setIssue($issue);
+					$inst->setCommit($commit);
+					$inst->save();
+					
+					if (TBGSettings::get('vcs_workflow_'.$project->getID(), 'vcs_integration') == TBGVCSIntegration::WORKFLOW_ENABLED)
+					{
+						TBGContext::setUser($user);
+						TBGSettings::forceSettingsReload();
+						TBGContext::cacheAllPermissions();
+						
+						if ($issue->isWorkflowTransitionsAvailable())
+						{
+							foreach (explode('; ', $issue_transitions[0]) as $workflow_individual_data)
+							{
+								$data = explode(": ", $workflow_individual_data);
+								if (count($data) == 2)
+								{
+									$command = $data[0];
+									$parameters = $data[1];
+								}
+								else
+								{
+									$command = $data[0];
+									$parameters = null;
+								}
+								foreach ($issue->getAvailableWorkflowTransitions() as $transition)
+								{
+									if (mb_strtolower($transition->getName()) == mb_strtolower($command))
+									{
+										$output .= '[VCS '.$project->getKey().'] Running transition '.$command.' on issue '.$issue->getFormattedIssueNo()."\n";
+										foreach (explode(" ", $parameters) as $single_command)
+										{
+											if (mb_strpos($single_command, '='))
+											{
+												list($key, $val) = explode('=', $single_command);
+												switch ($key)
+												{
+													case 'resolution':
+														if (($resolution = TBGResolution::getResolutionByKeyish($val)) instanceof TBGResolution)
+														{
+															TBGContext::getRequest()->setParameter('resolution_id', $resolution->getID());
+														}
+														break;
+													case 'status':
+														if (($status = TBGStatus::getStatusByKeyish($val)) instanceof TBGStatus)
+														{
+															TBGContext::getRequest()->setParameter('status_id', $status->getID());
+														}
+														break;
+												}
+											}
+										}
+										$transition->transitionIssueToOutgoingStepFromRequest($issue, TBGContext::getRequest());
+										$output .= '[VCS '.$project->getKey().'] Ran transition '.$transition->getName().' with parameters \''.$parameters.'\' on issue '.$issue->getFormattedIssueNo()."\n";
+									}
+								}
+							}
+						}
+					}
+				}
 				
 				$issue->addSystemComment(TBGContext::getI18n()->__('Issue updated from code repository'), TBGContext::getI18n()->__('This issue has been updated with the latest changes from the code repository.<source>%commit_msg%</source>', array('%commit_msg%' => $commit_msg)), $uid);
 				$output .= '[VCS '.$project->getKey().'] Updated issue ' . $issue->getFormattedIssueNo() . "\n";
