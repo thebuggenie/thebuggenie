@@ -1906,6 +1906,19 @@ TBG.Config.Import.importCSV = function(url) {
 	});
 }
 
+TBG.Config.Import.getImportCsvIds = function(url) {
+	TBG.Main.Helpers.ajax(url, {
+		loading: {
+			indicator: 'id_zone_indicator',
+			hide: 'id_zone_content'
+		},
+		success: {
+			update: 'id_zone_content',
+			show: 'id_zone_content'
+		}
+	});
+}
+
 TBG.Config.updateCheck = function(url) {
 	TBG.Main.Helpers.ajax(url, {
 		loading: {

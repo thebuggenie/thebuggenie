@@ -20,61 +20,22 @@
 					<div id="tab_csv_pane" style="padding-top: 0; width: 100%;">
 						<div class="tab_content">
 							<?php echo __('You can import data from a CSV file copied into a text box in The Bug Genie, exported from other sources. Please see the %CSVImport% wiki article for further details and instructions.', array('%CSVImport%' => link_tag(make_url('publish_article', array('article_name' => 'CSVImport')), __('CSVImport'), array('target' => '_blank')))); ?>
-							<div class="tab_header"><?php echo __('What data would you like to import?'); ?></div>
-							<ul>
-								<li><a href="javascript:void(0);" onClick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('configure_import_csv', array('type' => 'issues')); ?>');"><?php echo __('Issues'); ?></a></li>
-								<li><a href="javascript:void(0);" onClick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('configure_import_csv', array('type' => 'projects')); ?>');"><?php echo __('Projects'); ?></a></li>
-								<!--<li><a href="javascript:void(0);" onClick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('configure_import_csv', array('type' => 'users')); ?>');"><?php echo __('Users'); ?></a></li>
-								<li><a href="javascript:void(0);" onClick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('configure_import_csv', array('type' => 'teams')); ?>');"><?php echo __('Teams'); ?></a></li>-->
-								<li><a href="javascript:void(0);" onClick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('configure_import_csv', array('type' => 'clients')); ?>');"><?php echo __('Clients'); ?></a></li>
-								<!--<li><a href="javascript:void(0);" onClick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('configure_import_csv', array('type' => 'groups')); ?>');"><?php echo __('Groups'); ?></a></li>-->
-							</ul>
-							<?php echo __('When you select a type, you will be given the opportunity to copy in your CSV file, and import the data.'); ?>
-							<div class="tab_header"><?php echo __('Field IDs'); ?></div>
+							<div id="csv_button_area" class="button-group">
+								<button class="button" onClick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('configure_import_csv', array('type' => 'issues')); ?>');"><?php echo __('Issues'); ?></button>
+								<button class="button" onClick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('configure_import_csv', array('type' => 'projects')); ?>');"><?php echo __('Projects'); ?></button>
+								<!--<button class="button" onClick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('configure_import_csv', array('type' => 'users')); ?>');"><?php echo __('Users'); ?></button>
+								<button class="button" onClick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('configure_import_csv', array('type' => 'teams')); ?>');"><?php echo __('Teams'); ?></button>-->
+								<button class="button" onClick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('configure_import_csv', array('type' => 'clients')); ?>');"><?php echo __('Clients'); ?></button>
+								<!--<button class="button" onClick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('configure_import_csv', array('type' => 'groups')); ?>');"><?php echo __('Groups'); ?></button>-->
+							</div>
+							<br class="clear" />
 							<div class="tab_content">
-							<?php echo __('To import some field an ID number is required. The table below contains all the ID numbers you require. User, team, group and client IDs can be found in user configuration.'); ?>
-							<p style="font-weight: bold; margin-bottom: 5px;"><a href="javascript:void(0);" onclick="$('id_table').toggle();"><?php echo __('Toggle list of ID numbers'); ?></a></p>
-							<table class="cleantable" style="display: none" id="id_table">
-								<thead>
-									<tr>
-										<th><?php echo __('Type'); ?></th>
-										<th><?php echo __('Name'); ?></th>
-										<th><?php echo __('ID'); ?></th>
-									</tr>
-								</thead>
-								<tbody>
-							<?php foreach (TBGIssuetypeScheme::getAll() as $item): ?>
-								<tr><td><?php echo __('Issue type scheme'); ?></td><td><?php echo $item->getName(); ?></td><td><?php echo $item->getID(); ?></td></tr>
-							<?php endforeach; ?>
-								<?php foreach (TBGWorkflowScheme::getAll() as $item): ?>
-									<tr><td><?php echo __('Workflow scheme'); ?></td><td><?php echo $item->getName(); ?></td><td><?php echo $item->getID(); ?></td></tr>
-								<?php endforeach; ?>
-								<?php foreach (TBGProject::getAll() as $item): ?>
-									<tr><td><?php echo __('Project'); ?></td><td><?php echo $item->getName(); ?></td><td><?php echo $item->getID(); ?></td></tr>
-									<?php foreach ($item->getMilestones() as $item2): ?>
-										<tr><td><?php echo __('Milestone for project'); ?> <?php echo $item->getID(); ?></td><td><?php echo $item2->getName(); ?></td><td><?php echo $item2->getID(); ?></td></tr>
-									<?php endforeach; ?>
-								<?php endforeach; ?>
-								<?php foreach (TBGReproducability::getAll() as $item): ?>
-									<tr><td><?php echo __('Reproducability'); ?></td><td><?php echo $item->getName(); ?></td><td><?php echo $item->getID(); ?></td></tr>
-								<?php endforeach; ?>
-								<?php foreach (TBGSeverity::getAll() as $item): ?>
-									<tr><td><?php echo __('Severity'); ?></td><td><?php echo $item->getName(); ?></td><td><?php echo $item->getID(); ?></td></tr>
-								<?php endforeach; ?>
-								<?php foreach (TBGCategory::getAll() as $item): ?>
-									<tr><td><?php echo __('Category'); ?></td><td><?php echo $item->getName(); ?></td><td><?php echo $item->getID(); ?></td></tr>
-								<?php endforeach; ?>
-								<?php foreach (TBGPriority::getAll() as $item): ?>
-									<tr><td><?php echo __('Priority'); ?></td><td><?php echo $item->getName(); ?></td><td><?php echo $item->getID(); ?></td></tr>
-								<?php endforeach; ?>
-								<?php foreach (TBGResolution::getAll() as $item): ?>
-									<tr><td><?php echo __('Resolution'); ?></td><td><?php echo $item->getName(); ?></td><td><?php echo $item->getID(); ?></td></tr>
-								<?php endforeach; ?>
-								<?php foreach (TBGIssuetype::getAll() as $item): ?>
-									<tr><td><?php echo __('Issue type'); ?></td><td><?php echo $item->getName(); ?></td><td><?php echo $item->getID(); ?></td></tr>
-								<?php endforeach; ?>
-								</tbody>
-							</table>
+							<?php echo __('To import some fields, ID numbers are required, which can be seen below. User, team, group and client IDs can be found in user configuration.'); ?>
+							</div>
+							<div class="tab_content"><button onclick="TBG.Config.Import.getImportCsvIds('<?php echo make_url('configure_import_csv_get_ids'); ?>'); $('id_zone').toggle();"><?php echo __('Toggle list of ID numbers'); ?></button></div>
+							<div class="tab_content" id="id_zone" style="display: none">
+								<div id="id_zone_indicator"><?php echo image_tag('spinning_20.gif'); ?></div>
+								<div id="id_zone_content" style="display: none;"></div>
 							</div>
 						</div>
 					</div>

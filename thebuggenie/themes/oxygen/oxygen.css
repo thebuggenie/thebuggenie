@@ -706,7 +706,7 @@ reportissue_additional_information_container .markItUp { display: none; }
 .workflow_actions .button.last, .button-group .button:last-child { border-top-right-radius: 3px; -moz-border-radius-topright: 3px; -webkit-border-top-right-radius: 3px; border-bottom-right-radius: 3px; -moz-border-radius-bottomright: 3px; -webkit-border-bottom-right-radius: 3px; }
 .workflow_actions li.more_actions { margin-left: 5px; }
 .button-group .button { float: left; }
-.project_strip .button-group .button, .project_strip .button-group .button:hover { padding: 4px 10px !important; font-size: 1em; font-weight: normal !important; }
+#tab_csv_pane .button-group .button, #tab_csv_pane .button-group .button:hover, .project_strip .button-group .button, .project_strip .button-group .button:hover { padding: 4px 10px !important; font-size: 1em; font-weight: normal !important; }
 /* end very visible button */
 
 .rounded_list_first_item { border-top-right-radius: 3px; -moz-border-radius-topright: 5px; -webkit-border-top-right-radius: 3px; border-top-left-radius: 3px; -moz-border-radius-topleft: 5px; -webkit-border-top-left-radius: 3px; }
@@ -1299,6 +1299,16 @@ a:hover .issue_title { color: #555; }
 .csv_import_data_box { margin: 5px; border: 1px solid #AAA; width: 98%; height: 200px; }
 .csv_import_dry { float: left; }
 .csv_import_go { float: right; }
+#csv_button_area { clear: both; padding-top: 5px; padding-bottom: 5px; }
+#csv_button_area button { float: left; }
+#csv_button_area button:last-child { clear: right; }
+#id_zone .tab_header { clear: both; }
+#id_zone .clear, #csv_button_area .clear { clear: both; }
+.csv_data_box { width: 250px; float: left; margin-top: 10px; margin-bottom: 10px; margin-right: 10px; }
+.csv_data_box_right { clear: right; }
+.csv_data_box table { width: 100%; }
+.csv_data_box table thead tr th:last-child { width: 25px; }
+.csv_data_box .header { padding-bottom: 5px; }
 #csv_import_control { height: 20px }
 
 #config_scopes .nice_button { margin-left: 0; }

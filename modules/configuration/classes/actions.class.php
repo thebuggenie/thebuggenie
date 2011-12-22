@@ -2204,6 +2204,12 @@
 			return $this->renderJSON(array('content' => $content));
 		}
 		
+		public function runGetIDsForImportCSV(TBGRequest $request)
+		{
+			$content = $this->getTemplateHTML('configuration/import_ids');
+			return $this->renderJSON(array('content' => $content));
+		}
+		
 		public function runDoImportCSV(TBGRequest $request)
 		{
 			try
