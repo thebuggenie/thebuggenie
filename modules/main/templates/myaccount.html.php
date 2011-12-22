@@ -59,6 +59,14 @@
 		<?php endif; ?>
 		<?php if ($tbg_user->canChangePassword()): ?>
 			<div class="rounded_box white shadowed"  style="display: none; position: absolute; right: 0; top: 38px; z-index: 100; padding: 5px 10px 5px 10px; font-size: 13px; width: 350px;" id="change_password_div">
+				<?php
+				if (TBGSettings::isUsingExternalAuthenticationBackend())
+				{
+					echo tbg_parse_text(TBGSettings::get('changepw_message'), null, null, array('embedded' => true));
+				}
+				else
+				{
+				?>
 				<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_change_password'); ?>" onsubmit="TBG.Main.Profile.changePassword('<?php echo make_url('account_change_password'); ?>'); return false;" method="post" id="change_password_form">
 					<b><?php echo __('Changing your password'); ?></b><br>
 					<div style="font-size: 13px; margin-bottom: 10px;"><?php echo __('Enter your current password in the first box, then enter your new password twice (to prevent you from typing mistakes).'); ?><br>
@@ -76,6 +84,9 @@
 						<span id="change_password_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
 					</div>
 				</form>
+				<?php
+				}
+				?>
 			</div>
 		<?php endif; ?>
 	</div>
@@ -99,7 +110,7 @@
 		<div id="account_tabs_panes">
 			<div id="tab_profile_pane">
 				<?php
-				if (TBGSettings::getAuthenticationBackend() != 'tbg' && TBGSettings::getAuthenticationBackend() != null)
+				if (TBGSettings::isUsingExternalAuthenticationBackend())
 				{
 					echo tbg_parse_text(TBGSettings::get('changedetails_message'), null, null, array('embedded' => true));
 				}

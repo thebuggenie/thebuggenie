@@ -1,6 +1,6 @@
 <div id="tab_forgot_pane"<?php if ($selected_tab != 'forgot'): ?> style="display: none;<?php endif; ?>">
 <?php
-if (TBGSettings::getAuthenticationBackend() != 'tbg' && TBGSettings::getAuthenticationBackend() != null)
+if (TBGSettings::isUsingExternalAuthenticationBackend())
 {
 	echo tbg_parse_text(TBGSettings::get('forgot_message'), null, null, array('embedded' => true));
 }
