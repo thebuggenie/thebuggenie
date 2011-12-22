@@ -128,6 +128,21 @@
 
 		public function componentDashboardViewProjectDownloads()
 		{
+			$builds = TBGContext::getCurrentProject()->getBuilds();
+			$active_builds = array();
+			
+			foreach (TBGContext::getCurrentProject()->getEditions() as $edition_id => $edition)
+			{
+				$active_builds[$edition_id] = array();
+			}
+			
+			foreach ($builds as $build)
+			{
+				if ($build->isReleased() && $build->hasFile())
+					$active_builds[$build->getEditionID()][] = $build;
+			}
+			
+			$this->editions = $active_builds;
 		}
 
 		public function componentProjectConfig_Container()
