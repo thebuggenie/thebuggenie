@@ -3673,12 +3673,12 @@ var openid = {
 		if (this.no_sprite) {
 			var image_ext = box_size == 'small' ? '.ico.png' : '.png';
 			return '<a title="' + this.image_title.replace('%openid_provider_name%', provider["name"]) + '" href="javascript:openid.signin(\'' + box_id + '\');"'
-					+ 'class="' + box_id + ' openid_' + box_size + '_btn button button-silver"><img src="../../iconsets/oxygen/openid_providers.' + box_size + '/' + box_id + image_ext + '"></a>';
+					+ 'class="' + box_id + ' openid_' + box_size + '_btn button button-silver"><img src="iconsets/oxygen/openid_providers.' + box_size + '/' + box_id + image_ext + '"></a>';
 		}
 		var x = box_size == 'small' ? -index * 24 : -index * 100;
 		var y = box_size == 'small' ? -60 : 0;
 		return '<a title="' + this.image_title.replace('%openid_provider_name%', provider["name"]) + '" href="javascript:openid.signin(\'' + box_id + '\');"'
-				+ ' style="background: #FFF url(' + this.img_path + '../../iconsets/oxygen/openid-providers-' + this.sprite + '.png); background-position: ' + x + 'px ' + y + 'px" '
+				+ ' style="background: #FFF url(' + this.img_path + 'iconsets/oxygen/openid-providers-' + this.sprite + '.png); background-position: ' + x + 'px ' + y + 'px" '
 				+ 'class="' + box_id + ' openid_' + box_size + '_btn button button-silver"></a>';
 	},
 
