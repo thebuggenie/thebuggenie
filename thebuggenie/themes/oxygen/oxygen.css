@@ -706,7 +706,7 @@ reportissue_additional_information_container .markItUp { display: none; }
 .workflow_actions .button.last, .button-group .button:last-child { border-top-right-radius: 3px; -moz-border-radius-topright: 3px; -webkit-border-top-right-radius: 3px; border-bottom-right-radius: 3px; -moz-border-radius-bottomright: 3px; -webkit-border-bottom-right-radius: 3px; }
 .workflow_actions li.more_actions { margin-left: 5px; }
 .button-group .button { float: left; }
-#tab_csv_pane .button-group .button, #tab_csv_pane .button-group .button:hover, .project_strip .button-group .button, .project_strip .button-group .button:hover { padding: 4px 10px !important; font-size: 1em; font-weight: normal !important; }
+.project_header_right .button, .project_header_right .button:hover, #tab_csv_pane .button-group .button, #tab_csv_pane .button-group .button:hover, .project_strip .button-group .button, .project_strip .button-group .button:hover { padding: 4px 10px !important; font-size: 1em; font-weight: normal !important; }
 /* end very visible button */
 
 .rounded_list_first_item { border-top-right-radius: 3px; -moz-border-radius-topright: 5px; -webkit-border-top-right-radius: 3px; border-top-left-radius: 3px; -moz-border-radius-topleft: 5px; -webkit-border-top-left-radius: 3px; }
@@ -1140,7 +1140,6 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .client_users_div_inner { padding: 10px; }
 .project_header { padding: 10px; }
 .project_header_right { float: right; margin-top: 5px; }
-.project_header_right .button, .project_header_right .button:hover { float: left; margin-left: 10px; font-size: 1.1em !important; padding: 3px 6px !important; }
 #project_website, #project_documentation { margin-top: 5px; }
 #edition_table { list-style: none; margin: 0; padding: 0; line-height: 1.2; }
 #edition_table li { list-style: none; margin: 0; padding: 3px; clear: both; margin-top: 5px; }
