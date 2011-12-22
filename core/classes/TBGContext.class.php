@@ -745,7 +745,7 @@
 				else
 					self::$_user = self::factory()->TBGUser(TBGSettings::getDefaultUserID());
 
-				throw $e;
+				//throw $e;
 			}
 			TBGLogging::log('...done');
 		}
