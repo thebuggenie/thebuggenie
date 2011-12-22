@@ -426,7 +426,7 @@
 		 * Row from TBGUsersTable - succeeded operation, user found
 		 * 
 		 */
-		public function autoLogin()
+		public function doAutoLogin()
 		{
 			return true;
 		}

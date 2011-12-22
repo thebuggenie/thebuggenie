@@ -453,7 +453,7 @@
 
 						$user = $mod->doAutoLogin();
 						
-						if (!$user instanceof TBGUser)
+						if ($user == false)
 						{
 							// Invalid
 							TBGContext::logout();
@@ -499,13 +499,14 @@
 						}
 					}
 				}
-				elseif (TBGContext::isCLI())
+
+				if (!$user instanceof TBGUser && TBGContext::isCLI())
 				{
 					$user = TBGUsersTable::getTable()->getByUsername(TBGContext::getCurrentCLIusername());
 				
 				}
 				// guest user
-				elseif (!TBGSettings::isLoginRequired())
+				elseif (!$user instanceof TBGUser && !TBGSettings::isLoginRequired())
 				{
 					$user = TBGUsersTable::getTable()->getByUserID(TBGSettings::getDefaultUserID());
 				}
