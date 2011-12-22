@@ -16,7 +16,7 @@
 			<ul class="simple_list" id="active_builds_0">
 				<?php if (count($active_builds[0])): ?>
 					<?php foreach ($active_builds[0] as $build): ?>
-						<?php include_component('configuration/buildbox', array('build' => $build)); ?>
+						<?php include_component('project/buildbox', array('build' => $build)); ?>
 					<?php endforeach; ?>
 				<?php endif; ?>
 			</ul>
