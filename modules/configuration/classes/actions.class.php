@@ -2312,7 +2312,7 @@
 								
 								foreach ($boolitems as $boolitem)
 								{
-									if (isset($activerow[$boolitem]) && $activerow[$boolitem] != 1 && $activerow[$boolitem] != 0)
+									if (array_key_exists($boolitem, $activerow) && isset($activerow[$boolitem]) && $activerow[$boolitem] != 1 && $activerow[$boolitem] != 0)
 									{
 											$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be 1/0)', array('%col%' => $boolitem, '%row%' => $i+1));
 									}
@@ -2328,22 +2328,22 @@
 								foreach ($identifiableitems as $identifiableitem)
 								{
 
-									if ((!isset($activerow[$identifiableitem[0]]) || !isset($activerow[$identifiableitem[1]])) && !(!isset($activerow[$identifiableitem[0]]) && !isset($activerow[$identifiableitem[1]])))
+									if ((!array_key_exists($identifiableitem[1], $activerow) && array_key_exists($identifiableitem[0], $activerow)) || (array_key_exists($identifiableitem[1], $activerow) && !array_key_exists($identifiableitem[0], $activerow)))
 									{
 											$errors[] = TBGContext::getI18n()->__('Row %row%: Both the type and item ID must be supplied for owner/lead/qa fields', array('%row%' => $i+1));
 											continue;
 									}
 									
-									if (isset($activerow[$identifiableitem[1]]) !== null && $activerow[$identifiableitem[1]] != self::CSV_IDENTIFIER_TYPE_USER && $activerow[$identifiableitem[1]] != self::CSV_IDENTIFIER_TYPE_TEAM)
+									if (array_key_exists($identifiableitem[1], $activerow) && isset($activerow[$identifiableitem[1]]) !== null && $activerow[$identifiableitem[1]] != self::CSV_IDENTIFIER_TYPE_USER && $activerow[$identifiableitem[1]] != self::CSV_IDENTIFIER_TYPE_TEAM)
 									{
 											$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be 1 for a user or 2 for a team)', array('%col%' => $identifiableitem[1], '%row%' => $i+1));
 									}
 									
-									if (isset($activerow[$identifiableitem[0]]) && !is_numeric($activerow[$identifiableitem[0]]))
+									if (array_key_exists($identifiableitem[0], $activerow) && isset($activerow[$identifiableitem[0]]) && !is_numeric($activerow[$identifiableitem[0]]))
 									{
 											$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $identifiableitem[0], '%row%' => $i+1));
 									}
-									elseif (isset($activerow[$identifiableitem[0]]) && is_numeric($activerow[$identifiableitem[0]]))
+									elseif (array_key_exists($identifiableitem[0], $activerow) && isset($activerow[$identifiableitem[0]]) && is_numeric($activerow[$identifiableitem[0]]))
 									{
 										// check if they exist
 										switch ($activerow[$identifiableitem[1]])
@@ -2373,7 +2373,7 @@
 								}
 								
 								// Now check client exists
-								if (isset($activerow[self::CSV_PROJECT_CLIENT]))
+								if (array_key_exists(self::CSV_PROJECT_CLIENT, $activerow) && isset($activerow[self::CSV_PROJECT_CLIENT]))
 								{
 									if (!is_numeric($activerow[self::CSV_PROJECT_CLIENT]))
 									{
@@ -2393,7 +2393,7 @@
 								}
 								
 								// Now check if workflow exists
-								if (isset($activerow[self::CSV_PROJECT_WORKFLOW_ID]))
+								if (array_key_exists(self::CSV_PROJECT_WORKFLOW_ID, $activerow) && isset($activerow[self::CSV_PROJECT_WORKFLOW_ID]))
 								{
 									if (!is_numeric($activerow[self::CSV_PROJECT_WORKFLOW_ID]))
 									{
@@ -2413,7 +2413,7 @@
 								}
 								
 								// Now check if issuetype scheme
-								if (isset($activerow[self::CSV_PROJECT_ISSUETYPE_SCHEME]))
+								if (array_key_exists(self::CSV_PROJECT_ISSUETYPE_SCHEME, $activerow) && isset($activerow[self::CSV_PROJECT_ISSUETYPE_SCHEME]))
 								{
 									if (!is_numeric($activerow[self::CSV_PROJECT_ISSUETYPE_SCHEME]))
 									{
@@ -2433,7 +2433,7 @@
 								}
 								
 								// Finally check if the summary type is valid. At this point, your error list has probably become so big it has eaten up all your available RAM...
-								if (isset($activerow[self::CSV_PROJECT_SUMMARY_TYPE]))
+								if (array_key_exists(self::CSV_PROJECT_SUMMARY_TYPE, $activerow) && isset($activerow[self::CSV_PROJECT_SUMMARY_TYPE]))
 								{
 									if ($activerow[self::CSV_PROJECT_SUMMARY_TYPE] != 'issuetypes' && $activerow[self::CSV_PROJECT_SHOW_SUMMARY] != 'milestones')
 									{
@@ -2463,7 +2463,7 @@
 								
 								foreach ($boolitems as $boolitem)
 								{
-									if (isset($activerow[$boolitem]) && $activerow[$boolitem] != 1 && $activerow[$boolitem] != 0)
+									if (array_key_exists($boolitem, $activerow) && isset($activerow[$boolitem]) && $activerow[$boolitem] != 1 && $activerow[$boolitem] != 0)
 									{
 											$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be 1/0)', array('%col%' => $boolitem, '%row%' => $i+1));
 									}
@@ -2474,14 +2474,14 @@
 								
 								foreach ($numericitems as $numericitem)
 								{
-									if (isset($activerow[$numericitem]) && !(is_numeric($activerow[$numericitem])))
+									if (array_key_exists($numericitem, $activerow) && isset($activerow[$numericitem]) && !(is_numeric($activerow[$numericitem])))
 									{
 											$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $numericitem, '%row%' => $i+1));
 									}
 								}
 								
 								// Percentage must be 0-100
-								if (isset($activerow[self::CSV_ISSUE_PERCENTAGE]) && (($activerow[self::CSV_ISSUE_PERCENTAGE] < 0) || ($activerow[self::CSV_ISSUE_PERCENTAGE] > 100)))
+								if (array_key_exists(self::CSV_ISSUE_PERCENTAGE, $activerow) && isset($activerow[self::CSV_ISSUE_PERCENTAGE]) && (($activerow[self::CSV_ISSUE_PERCENTAGE] < 0) || ($activerow[self::CSV_ISSUE_PERCENTAGE] > 100)))
 								{
 									$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: Percentage must be from 0 to 100 inclusive', array('%col%' => self::CSV_ISSUE_PERCENTAGE, '%row%' => $i+1));
 								}
@@ -2494,22 +2494,22 @@
 								
 								foreach ($identifiableitems as $identifiableitem)
 								{
-									if ((!isset($activerow[$identifiableitem[0]]) || !isset($activerow[$identifiableitem[1]])) && !(!isset($activerow[$identifiableitem[0]]) && !isset($activerow[$identifiableitem[1]])))
+									if ((!array_key_exists($identifiableitem[1], $activerow) && array_key_exists($identifiableitem[0], $activerow)) || (array_key_exists($identifiableitem[1], $activerow) && !array_key_exists($identifiableitem[0], $activerow)))
 									{
 											$errors[] = TBGContext::getI18n()->__('Row %row%: Both the type and item ID must be supplied for owner/lead/qa fields', array('%row%' => $i+1));
 											continue;
 									}
 									
-									if (isset($activerow[$identifiableitem[1]]) && $activerow[$identifiableitem[1]] != self::CSV_IDENTIFIER_TYPE_USER && $activerow[$identifiableitem[1]] != self::CSV_IDENTIFIER_TYPE_TEAM)
+									if (array_key_exists($identifiableitem[1], $activerow) && isset($activerow[$identifiableitem[1]]) && $activerow[$identifiableitem[1]] != self::CSV_IDENTIFIER_TYPE_USER && $activerow[$identifiableitem[1]] != self::CSV_IDENTIFIER_TYPE_TEAM)
 									{
 											$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be 1 for a user or 2 for a team)', array('%col%' => $identifiableitem[1], '%row%' => $i+1));
 									}
 									
-									if (isset($activerow[$identifiableitem[0]]) && !is_numeric($activerow[$identifiableitem[0]]))
+									if (array_key_exists($identifiableitem[0], $activerow) && isset($activerow[$identifiableitem[0]]) && !is_numeric($activerow[$identifiableitem[0]]))
 									{
 											$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $identifiableitem[0], '%row%' => $i+1));
 									}
-									elseif (isset($activerow[$identifiableitem[0]]) && is_numeric($activerow[$identifiableitem[0]]))
+									elseif (array_key_exists($identifiableitem[0], $activerow) && isset($activerow[$identifiableitem[0]]) && is_numeric($activerow[$identifiableitem[0]]))
 									{
 										// check if they exist
 										switch ($activerow[$identifiableitem[1]])
@@ -2539,7 +2539,7 @@
 								}
 								
 								// Now check user exists for postedby
-								if (isset($activerow[self::CSV_ISSUE_POSTED_BY]))
+								if (array_key_exists(self::CSV_ISSUE_POSTED_BY, $activerow) && isset($activerow[self::CSV_ISSUE_POSTED_BY]))
 								{
 									if (!is_numeric($activerow[self::CSV_ISSUE_POSTED_BY]))
 									{
@@ -2559,7 +2559,7 @@
 								}
 								
 								// Now check milestone exists and is valid
-								if (isset($activerow[self::CSV_ISSUE_MILESTONE]))
+								if (array_key_exists(self::CSV_ISSUE_MILESTONE, $activerow) && isset($activerow[self::CSV_ISSUE_MILESTONE]))
 								{
 									if (!is_numeric($activerow[self::CSV_ISSUE_MILESTONE]))
 									{
@@ -2583,7 +2583,7 @@
 								}
 								
 								// status
-								if (isset($activerow[self::CSV_ISSUE_STATUS]))
+								if (array_key_exists(self::CSV_ISSUE_STATUS, $activerow) && isset($activerow[self::CSV_ISSUE_STATUS]))
 								{
 									if (!is_numeric($activerow[self::CSV_ISSUE_STATUS]))
 									{
@@ -2603,7 +2603,7 @@
 								}
 								
 								// resolution
-								if (isset($activerow[self::CSV_ISSUE_RESOLUTION]))
+								if (array_key_exists(self::CSV_ISSUE_RESOLUTION, $activerow) && isset($activerow[self::CSV_ISSUE_RESOLUTION]))
 								{
 									if (!is_numeric($activerow[self::CSV_ISSUE_RESOLUTION]))
 									{
@@ -2623,7 +2623,7 @@
 								}
 								
 								// priority
-								if (isset($activerow[self::CSV_ISSUE_PRIORITY]))
+								if (array_key_exists(self::CSV_ISSUE_PRIORITY, $activerow) && isset($activerow[self::CSV_ISSUE_PRIORITY]))
 								{
 									if (!is_numeric($activerow[self::CSV_ISSUE_PRIORITY]))
 									{
@@ -2643,7 +2643,7 @@
 								}
 								
 								// category
-								if (isset($activerow[self::CSV_ISSUE_CATEGORY]))
+								if (array_key_exists(self::CSV_ISSUE_CATEGORY, $activerow) && isset($activerow[self::CSV_ISSUE_CATEGORY]))
 								{
 									if (!is_numeric($activerow[self::CSV_ISSUE_CATEGORY]))
 									{
@@ -2663,7 +2663,7 @@
 								}
 								
 								// severity
-								if (isset($activerow[self::CSV_ISSUE_SEVERITY]))
+								if (array_key_exists(self::CSV_ISSUE_SEVERITY, $activerow) && isset($activerow[self::CSV_ISSUE_SEVERITY]))
 								{
 									if (!is_numeric($activerow[self::CSV_ISSUE_SEVERITY]))
 									{
@@ -2683,7 +2683,7 @@
 								}
 								
 								// reproducability
-								if (isset($activerow[self::CSV_ISSUE_REPRODUCIBILITY]))
+								if (array_key_exists(self::CSV_ISSUE_REPRODUCIBILITY, $activerow) && isset($activerow[self::CSV_ISSUE_REPRODUCIBILITY]))
 								{
 									if (!is_numeric($activerow[self::CSV_ISSUE_REPRODUCIBILITY]))
 									{
@@ -2703,7 +2703,7 @@
 								}
 								
 								// type
-								if (isset($activerow[self::CSV_ISSUE_ISSUE_TYPE]))
+								if (array_key_exists(self::CSV_ISSUE_TYPE, $activerow) && isset($activerow[self::CSV_ISSUE_ISSUE_TYPE]))
 								{
 									if (!is_numeric($activerow[self::CSV_ISSUE_ISSUE_TYPE]))
 									{
@@ -2881,18 +2881,9 @@
 									if ($activerow[self::CSV_PROJECT_EN_EDITIONS] == '1')
 										$project->setEditionsEnabled(true);
 								}
-								
-								if (isset($activerow[self::CSV_PROJECT_WORKFLOW_ID]))
-								{
-									$workflow = TBGContext::factory()->TBGWorkflowScheme($activerow[self::CSV_PROJECT_WORKFLOW_ID]);
-									$project->setWorkflowScheme($workflow);
-								}
-								
+																
 								if (isset($activerow[self::CSV_PROJECT_CLIENT]))
-								{
-									$client_object = TBGContext::factory()->TBGClient($activerow[self::CSV_PROJECT_CLIENT]);
-									$project->setClient($client_object);
-								}
+									$project->setClient(TBGContext::factory()->TBGClient($activerow[self::CSV_PROJECT_CLIENT]));
 								
 								if (isset($activerow[self::CSV_PROJECT_SHOW_SUMMARY]))
 								{
@@ -2902,9 +2893,6 @@
 								
 								if (isset($activerow[self::CSV_PROJECT_SUMMARY_TYPE]))
 									$project->setFrontpageSummaryType($activerow[self::CSV_PROJECT_SUMMARY_TYPE]);
-
-								if (isset($activerow[self::CSV_PROJECT_ISSUETYPE_SCHEME]))
-									$project->setIssuetypeScheme(TBGContext::factory()->TBGIssuetypeScheme($activerow[self::CSV_PROJECT_ISSUETYPE_SCHEME]));
 									
 								if (isset($activerow[self::CSV_PROJECT_ALLOW_REPORTING]))
 									$project->setLocked($activerow[self::CSV_PROJECT_ALLOW_REPORTING]);
@@ -2912,6 +2900,15 @@
 								if (isset($activerow[self::CSV_PROJECT_AUTOASSIGN]))
 									$project->setAutoassign($activerow[self::CSV_PROJECT_AUTOASSIGN]);
 									
+								$project->save();
+								
+								// These are overwritten later
+								if (isset($activerow[self::CSV_PROJECT_ISSUETYPE_SCHEME]))
+									$project->setIssuetypeScheme(TBGContext::factory()->TBGIssuetypeScheme($activerow[self::CSV_PROJECT_ISSUETYPE_SCHEME]));
+								
+								if (isset($activerow[self::CSV_PROJECT_WORKFLOW_ID]));
+									$project->setWorkflowScheme(TBGContext::factory()->TBGWorkflowScheme($activerow[self::CSV_PROJECT_WORKFLOW_ID]));
+								
 								$project->save();
 							}
 							catch (Exception $e)
