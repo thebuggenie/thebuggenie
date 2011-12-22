@@ -24,7 +24,7 @@
 		<script type="text/javascript" src="js/scriptaculous.js"></script>
 		<script type="text/javascript" src="js/install.js"></script>
 		<style type="text/css">
-			body, html, div, p, td, input { font-family: "Ubuntu", "Droid Sans", arial; font-size: 13px; }
+			body, html, div, p, td, input { font-family: "Open Sans", arial; font-size: 13px; }
 			.install_progress { font-weight: normal; border: 1px solid #DDD; padding: 3px; font-size: 11px; margin-bottom: 2px; width: 930px; background-color: #FDFDFD; }
 			.install_progress:first-line { font-weight: bold; }
 			.install_progress img { float: right; }

@@ -10,23 +10,23 @@
 				<td style="width: 20px; padding: 3px; cursor: pointer;" onclick="$('tbg___DEBUGINFO___').hide();" title="Hide debug bar">
 					<?php echo image_tag('action_delete.png'); ?>
 				</td>
-				<td style="width: 400px; padding: 3px; font-size: 11px; font-family: Ubuntu;">
+				<td style="width: 400px; padding: 3px; font-size: 11px;">
 					<?php echo image_tag('debug_route.png', array('style' => 'float: left; margin-right: 5px;')); ?>
 					<b>Current route: </b>[<i><?php echo $tbg_summary['routing']['name']; ?></i>] <?php echo $tbg_summary['routing']['module']; ?> / <?php echo $tbg_summary['routing']['action']; ?>
 				</td>
-				<td style="width: 100px; cursor: pointer; padding: 3px; font-size: 11px; font-family: Ubuntu;" onclick="$('log_timing').toggle();" title="Click to toggle timing overview">
+				<td style="width: 100px; cursor: pointer; padding: 3px; font-size: 11px;" onclick="$('log_timing').toggle();" title="Click to toggle timing overview">
 					<?php echo image_tag('debug_time.png', array('style' => 'float: left; margin-right: 5px;')); ?>
 					<?php echo $tbg_summary['load_time']; ?>
 				</td>
-				<td style="width: 100px; cursor: pointer; padding: 3px; font-size: 11px; font-family: Ubuntu;" onclick="$('log_ajax').toggle();" title="Click to toggle ajax calls list">
+				<td style="width: 100px; cursor: pointer; padding: 3px; font-size: 11px;" onclick="$('log_ajax').toggle();" title="Click to toggle ajax calls list">
 					<?php echo image_tag('debug_ajax.png', array('style' => 'float: left; margin-right: 5px;')); ?>
 					<span id="debug_ajax_count">1</span>
 				</td>
-				<td onclick="$('scope_settings').toggle();" style="width: 80px; padding: 3px; cursor: pointer; font-size: 11px; font-family: Ubuntu;" title="Generated hostname: <?php echo $tbg_summary['scope']['hostnames']; ?>">
+				<td onclick="$('scope_settings').toggle();" style="width: 80px; padding: 3px; cursor: pointer; font-size: 11px;" title="Generated hostname: <?php echo $tbg_summary['scope']['hostnames']; ?>">
 					<?php echo image_tag('debug_scope.png', array('style' => 'float: left; margin-right: 5px;')); ?>
 					<b>Scope: </b><?php echo $tbg_summary['scope']['id']; ?>
 				</td>
-				<td onclick="$('log_sql').toggle();" style="width: 200px; cursor: pointer; padding: 3px; font-size: 11px; font-family: Ubuntu;">
+				<td onclick="$('log_sql').toggle();" style="width: 200px; cursor: pointer; padding: 3px; font-size: 11px;">
 					<?php echo image_tag('debug_database.png', array('style' => 'float: left; margin-right: 5px;')); ?>
 					<?php if (array_key_exists('db', $tbg_summary)): ?>
 						<b><?php echo count($tbg_summary['db']['queries']); ?></b> database queries (<?php echo ($tbg_summary['db']['timing'] > 1) ? round($tbg_summary['db']['timing'], 2) . 's' : round($tbg_summary['db']['timing'] * 1000, 1) . 'ms'; ?>)
@@ -34,7 +34,7 @@
 						<span class="faded_out">No database queries</span>
 					<?php endif; ?>
 				</td>
-				<td style="padding: 3px; font-size: 11px; font-family: Ubuntu; text-align: right;">
+				<td style="padding: 3px; font-size: 11px; text-align: right;">
 					<span onclick="$('log_messages').toggle();" style="cursor: pointer;">
 						Toggle log messages
 						<?php echo image_tag('debug_log.png', array('style' => 'float: right; margin-left: 5px; cursor: pointer;')); ?>
