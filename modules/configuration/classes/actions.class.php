@@ -2703,7 +2703,7 @@
 								}
 								
 								// type
-								if (array_key_exists(self::CSV_ISSUE_TYPE, $activerow) && isset($activerow[self::CSV_ISSUE_ISSUE_TYPE]))
+								if (array_key_exists(self::CSV_ISSUE_ISSUE_TYPE, $activerow) && isset($activerow[self::CSV_ISSUE_ISSUE_TYPE]))
 								{
 									if (!is_numeric($activerow[self::CSV_ISSUE_ISSUE_TYPE]))
 									{
@@ -2794,7 +2794,9 @@
 
 								$project = new TBGProject();
 								$project->setName($activerow[self::CSV_PROJECT_NAME]);
-								
+
+								$project->save();
+
 								if (isset($activerow[self::CSV_PROJECT_PREFIX]))
 								{
 									$project->setPrefix($activerow[self::CSV_PROJECT_PREFIX]);
@@ -2899,10 +2901,7 @@
 							
 								if (isset($activerow[self::CSV_PROJECT_AUTOASSIGN]))
 									$project->setAutoassign($activerow[self::CSV_PROJECT_AUTOASSIGN]);
-									
-								$project->save();
 								
-								// These are overwritten later
 								if (isset($activerow[self::CSV_PROJECT_ISSUETYPE_SCHEME]))
 									$project->setIssuetypeScheme(TBGContext::factory()->TBGIssuetypeScheme($activerow[self::CSV_PROJECT_ISSUETYPE_SCHEME]));
 								
@@ -2928,6 +2927,8 @@
 								$issue->setTitle($activerow[self::CSV_ISSUE_TITLE]);
 								$issue->setProject($activerow[self::CSV_ISSUE_PROJECT]);
 								$issue->setIssuetype($activerow[self::CSV_ISSUE_ISSUE_TYPE]);
+								
+								$issue->save();
 								
 								if (isset($activerow[self::CSV_ISSUE_DESCR]))
 									$issue->setDescription($activerow[self::CSV_ISSUE_DESCR]);
