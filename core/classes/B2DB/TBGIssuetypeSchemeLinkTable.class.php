@@ -34,7 +34,7 @@
 		const REPORTABLE = 'issuetype_scheme_link.reportable';
 		const REDIRECT_AFTER_REPORTING = 'issuetype_scheme_link.redirect_after_reporting';
 
-		public function _initialize()
+		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addForeignKeyColumn(self::ISSUETYPE_SCHEME_ID, TBGIssuetypeSchemesTable::getTable(), TBGIssuetypeSchemesTable::ID);

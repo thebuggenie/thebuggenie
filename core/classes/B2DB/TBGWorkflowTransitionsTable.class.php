@@ -36,7 +36,7 @@
 		const OUTGOING_STEP_ID = 'workflow_transitions.outgoing_step_id';
 		const TEMPLATE = 'workflow_transitions.template';
 
-//		public function _initialize()
+//		protected function _initialize()
 //		{
 //			parent::_setup(self::B2DBNAME, self::ID);
 //			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);

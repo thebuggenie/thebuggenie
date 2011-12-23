@@ -33,7 +33,7 @@
 		const ROLE_ID = 'editionassignedteams.role_id';
 		const EDITION_ID = 'editionassignedteams.edition_id';
 		
-		public function _initialize()
+		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addForeignKeyColumn(self::EDITION_ID, TBGEditionsTable::getTable());

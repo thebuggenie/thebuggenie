@@ -33,7 +33,7 @@
 		const TRANSITION_ID = 'workflow_step_transitions.transition_id';
 		const WORKFLOW_ID = 'workflow_step_transitions.workflow_id';
 
-		public function _initialize()
+		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);

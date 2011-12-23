@@ -32,7 +32,7 @@
 		const EDITION = 'editioncomponents.edition';
 		const COMPONENT = 'editioncomponents.component';
 
-		public function _initialize()
+		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addForeignKeyColumn(self::EDITION, Core::getTable('TBGEditionsTable'), TBGEditionsTable::ID);

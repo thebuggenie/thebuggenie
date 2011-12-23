@@ -32,7 +32,7 @@
 		const UID = 'clientmembers.uid';
 		const CID = 'clientmembers.cid';
 		
-		public function _initialize()
+		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addForeignKeyColumn(self::UID, TBGUsersTable::getTable());

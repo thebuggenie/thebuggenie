@@ -19,7 +19,7 @@
 		const SEARCH_ID = 'savedsearchfilters.search_id';
 		const FILTER_KEY = 'savedsearchfilters.filter_key';
 		
-		public function _initialize()
+		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addVarchar(self::VALUE, 200);

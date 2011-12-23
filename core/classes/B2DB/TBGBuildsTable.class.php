@@ -43,7 +43,7 @@
 		const FILE_ID = 'builds.file_id';
 		const FILE_URL = 'builds.file_url';
 		
-//		public function _initialize()
+//		protected function _initialize()
 //		{
 //			parent::_setup(self::B2DBNAME, self::ID);
 //			parent::_addVarchar(self::NAME, 100);

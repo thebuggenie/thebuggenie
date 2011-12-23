@@ -32,7 +32,7 @@
 		const PROJECT_ID = 'visible_milestones.project_id';
 		const MILESTONE_ID = 'visible_milestones.milestone_id';
 		
-		public function _initialize()
+		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addForeignKeyColumn(self::MILESTONE_ID, TBGMilestonesTable::getTable(), TBGMilestonesTable::ID);

@@ -32,7 +32,7 @@
 		const PROJECT_ID = 'visible_issue_types.project_id';
 		const ISSUETYPE_ID = 'visible_issue_types.issuetype_id';
 		
-		public function _initialize()
+		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addForeignKeyColumn(self::ISSUETYPE_ID, TBGIssueTypesTable::getTable(), TBGIssueTypesTable::ID);

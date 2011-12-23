@@ -36,7 +36,7 @@
 		const RULE_VALUE = 'workflow_transition_validation_rules.rule_value';
 		const PRE_OR_POST = 'workflow_transition_validation_rules.pre_or_post';
 
-//		public function _initialize()
+//		protected function _initialize()
 //		{
 //			parent::_setup(self::B2DBNAME, self::ID);
 //			parent::_addVarchar(self::PRE_OR_POST, 4);

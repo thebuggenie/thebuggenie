@@ -83,7 +83,7 @@
 		const TIME = 'log.time';
 		const UID = 'log.uid';
 
-		public function _initialize()
+		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addInteger(self::TARGET, 10);

@@ -32,7 +32,7 @@
 		const ISSUE = 'userissues.issue';
 		const UID = 'userissues.uid';
 
-		public function _initialize()
+		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addForeignKeyColumn(self::ISSUE, TBGIssuesTable::getTable(), TBGIssuesTable::ID);

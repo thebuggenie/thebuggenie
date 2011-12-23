@@ -45,7 +45,7 @@
 		const JOINED = 'users.joined';
 		const GROUP_ID = 'users.group_id';
 		
-		public function _initialize()
+		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addVarchar(self::UNAME, 50);

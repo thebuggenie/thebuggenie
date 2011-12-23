@@ -33,7 +33,7 @@
 		const WORKFLOW_ID = 'workflow_issuetype.workflow_id';
 		const ISSUETYPE_ID = 'workflow_issuetype.issutype_id';
 
-		public function _initialize()
+		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable());

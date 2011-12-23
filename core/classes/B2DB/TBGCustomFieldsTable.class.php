@@ -36,7 +36,7 @@
 		const FIELD_TYPE = 'customfields.itemtype';
 		const SCOPE = 'customfields.scope';
 
-//		public function _initialize()
+//		protected function _initialize()
 //		{
 //			parent::_setup(self::B2DBNAME, self::ID);
 //			parent::_addVarchar(self::FIELD_NAME, 100);

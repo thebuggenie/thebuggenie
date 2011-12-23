@@ -33,7 +33,7 @@
 		const ROLE_ID = 'componentassignedteams.role_id';
 		const COMPONENT_ID = 'componentassignedteams.component_id';
 		
-		public function _initialize()
+		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addForeignKeyColumn(self::COMPONENT_ID, TBGComponentsTable::getTable());

@@ -33,7 +33,7 @@
 		const PROJECT_ID = 'projectassignedusers.project_id';
 		const ROLE_ID = 'projectassignedusers.role_id';
 
-		public function _initialize()
+		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addForeignKeyColumn(self::PROJECT_ID, TBGProjectsTable::getTable());

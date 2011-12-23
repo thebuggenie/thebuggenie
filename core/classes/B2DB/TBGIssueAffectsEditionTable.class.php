@@ -34,7 +34,7 @@
 		const CONFIRMED = 'issueaffectsedition.confirmed';
 		const STATUS = 'issueaffectsedition.status';
 		
-		public function _initialize()
+		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addBoolean(self::CONFIRMED);

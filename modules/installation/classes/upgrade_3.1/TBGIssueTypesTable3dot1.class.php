@@ -30,7 +30,7 @@
 		const ICON = 'issuetypes.itemdata';
 		const TASK = 'issuetypes.task';
 		
-		public function _initialize()
+		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addVarchar(self::NAME, 50);

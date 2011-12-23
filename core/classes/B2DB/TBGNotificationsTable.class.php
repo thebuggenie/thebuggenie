@@ -39,7 +39,7 @@
 		const CONTENTS = 'notifications.contents';
 		const STATUS = 'notifications.status';
 
-		public function _initialize()
+		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addVarchar(self::MODULE_NAME, 50);

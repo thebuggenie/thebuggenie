@@ -17,7 +17,7 @@
 		const USER_ID = 'articleviews.user_id';
 		const SCOPE = 'articleviews.scope';
 		
-		public function _initialize()
+		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addForeignKeyColumn(self::USER_ID, TBGUsersTable::getTable(), TBGUsersTable::ID);

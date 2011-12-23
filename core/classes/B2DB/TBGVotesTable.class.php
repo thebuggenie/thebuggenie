@@ -33,7 +33,7 @@
 		const VOTE = 'votes.vote';
 		const UID = 'votes.uid';
 
-		public function _initialize()
+		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addInteger(self::TARGET, 10);

@@ -34,7 +34,7 @@
 		const FILE_ID = 'issuefiles.file_id';
 		const ISSUE_ID = 'issuefiles.issue_id';
 
-		public function _initialize()
+		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addForeignKeyColumn(self::UID, TBGUsersTable::getTable(), TBGUsersTable::ID);

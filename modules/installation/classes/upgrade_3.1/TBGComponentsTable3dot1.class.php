@@ -33,7 +33,7 @@
 		const LEAD_BY = 'components.leader';
 		const LEAD_TYPE = 'components.leader_type';
 		
-		public function _initialize()
+		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addVarchar(self::NAME, 100);

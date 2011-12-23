@@ -36,7 +36,7 @@
 		const CUSTOMFIELDS_KEY = 'customfieldoptions.customfield_key';
 		const SCOPE = 'customfieldoptions.scope';
 
-//		public function _initialize()
+//		protected function _initialize()
 //		{
 //			parent::_setup(self::B2DBNAME, self::ID);
 //			parent::_addVarchar(self::NAME, 100);

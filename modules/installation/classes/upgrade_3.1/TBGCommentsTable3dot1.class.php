@@ -38,7 +38,7 @@
 		const COMMENT_NUMBER = 'comments.comment_number';
 		const SYSTEM_COMMENT = 'comments.system_comment';
 
-		public function _initialize()
+		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addInteger(self::TARGET_ID, 10);

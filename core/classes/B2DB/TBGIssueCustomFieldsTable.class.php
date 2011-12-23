@@ -33,7 +33,7 @@
 		const OPTION_VALUE = 'issuecustomfields.option_value';
 		const CUSTOMFIELDS_ID = 'issuecustomfields.customfields_id';
 
-		public function _initialize()
+		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addForeignKeyColumn(self::ISSUE_ID, TBGIssuesTable::getTable(), TBGIssuesTable::ID);

@@ -38,7 +38,7 @@
 		const ESTIMATED_HOURS = 'issue_estimates.estimated_hours';
 		const ESTIMATED_POINTS = 'issue_estimates.estimated_points';
 
-		public function _initialize()
+		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addForeignKeyColumn(self::ISSUE_ID, TBGIssuesTable::getTable(), TBGIssuesTable::ID);

@@ -38,7 +38,7 @@
 		const SPENT_HOURS = 'issue_spenttimes.spent_hours';
 		const SPENT_POINTS = 'issue_spenttimes.spent_points';
 
-		public function _initialize()
+		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addForeignKeyColumn(self::ISSUE_ID, TBGIssuesTable::getTable(), TBGIssuesTable::ID);

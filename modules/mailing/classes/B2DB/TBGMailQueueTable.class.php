@@ -17,7 +17,7 @@
 		const DATE = 'mailing_queue.date';
 		const SCOPE = 'mailing_queue.scope';
 
-		public function _initialize()
+		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addText(self::MESSAGE);
