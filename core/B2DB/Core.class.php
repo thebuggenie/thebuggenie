@@ -923,6 +923,9 @@
 			self::_populateCachedClassFiles($classname);
 			if (\array_key_exists($classname, self::$_cached_entity_classes) && \array_key_exists('columns', self::$_cached_entity_classes[$classname]))
 			{
+				if (!array_key_exists('id_column', self::$_cached_entity_classes[$classname])) {
+					throw new Exception('Cannot find an id column for this table.');
+				}
 				return array('columns' => self::$_cached_entity_classes[$classname]['columns'],
 							'foreign_columns' => self::$_cached_entity_classes[$classname]['foreign_columns'],
 							'id' => self::$_cached_entity_classes[$classname]['id_column'],
