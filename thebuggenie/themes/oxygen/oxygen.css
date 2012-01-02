@@ -188,6 +188,7 @@ footer td { font-size: 0.9em; line-height: 1.2; padding: 5px; text-shadow: 1px 1
 .commit_left .commit_header, .commit_right .commit_header { padding-bottom: 5px; }
 .commits_next { clear: both; }
 .commit_left td { border: none !important; }
+.commit_main pre { white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word; }
 .commitbranch { font-weight: normal; background-color: #D4E5FF; color: #99C; padding: 2px; font-size: smaller; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; }
 /* end comments and commits styling */
 
