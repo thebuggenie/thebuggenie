@@ -58,6 +58,13 @@
 		{
 		}
 		
+		protected function _loadFixtures($scope)
+		{
+			TBGVCSIntegrationCommitsTable::getTable()->createIndexes();
+			TBGVCSIntegrationFilesTable::getTable()->createIndexes();
+			TBGVCSIntegrationIssueLinksTable::getTable()->createIndexes();
+		}
+		
 		protected function _addListeners()
 		{
 			TBGEvent::listen('core', 'project_sidebar_links_statistics', array($this, 'listen_sidebar_links'));
@@ -104,6 +111,10 @@
 					\b2db\Core::getTable('TBGVCSIntegrationCommitsTable')->create();
 					\b2db\Core::getTable('TBGVCSIntegrationFilesTable')->create();
 					\b2db\Core::getTable('TBGVCSIntegrationIssueLinksTable')->create();
+					
+					TBGVCSIntegrationCommitsTable::getTable()->createIndexes();
+					TBGVCSIntegrationFilesTable::getTable()->createIndexes();
+					TBGVCSIntegrationIssueLinksTable::getTable()->createIndexes();
 					
 					// Migrate data from old table to new tables
 					$crit = new \b2db\Criteria();
@@ -192,7 +203,6 @@
 							}
 						}
 					}
-					
 					// Drop old table
 					TBGVCSIntegrationTable::getTable()->drop();
 					
