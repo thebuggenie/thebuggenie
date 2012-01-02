@@ -203,8 +203,6 @@
 							}
 						}
 					}
-					// Drop old table
-					TBGVCSIntegrationTable::getTable()->drop();
 					
 					// Migrate settings to new format
 					$access_method = $this->getSetting('use_web_interface');
