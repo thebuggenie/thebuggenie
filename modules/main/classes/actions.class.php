@@ -2926,7 +2926,7 @@
 				$message = TBGContext::getI18n()->__('Please provide an issue number');
 			}
 
-			if (!$issue->canAddExtraInformation() || !TBGContext::getUser()->canReportIssues($issue->getProject()) || !$issue->isUpdateable())
+			if (!$issue->canAddRelatedIssue())
 			{
 				$status = 400;
 				$message = TBGContext::getI18n()->__('Unknown error');
