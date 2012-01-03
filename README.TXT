@@ -29,5 +29,5 @@ To install:
 * REPORTING ISSUES *
 
 If you find any issues, please report them in the issue tracker on our website:
-http://thebuggenie.com/thebuggenie
+http://issues.thebuggenie.com/
 
