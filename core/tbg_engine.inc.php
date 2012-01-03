@@ -330,7 +330,7 @@
 							No login is required - but if you have a username and password entering it below will post the issue with your username, allowing you to follow its progress.
 						</div>
 						<br>
-						<form action=\"http://thebuggenie.com/thebuggenie/thebuggenie/issues/new/bugreport\" target=\"_new\" method=\"post\">
+						<form action=\"http://issues.thebuggenie.com/thebuggenie/issues/new/bugreport\" target=\"_new\" method=\"post\">
 							<label for=\"username\">Username <span>(optional)</span></label>
 							<input type=\"text\" name=\"tbg3_username\" id=\"username\">
 							<br style=\"clear: both;\">
