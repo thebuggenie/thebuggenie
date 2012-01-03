@@ -2722,6 +2722,12 @@
 				$status = 400;
 				$message = TBGContext::getI18n()->__('Please provide an issue number');
 			}
+
+			if (!$issue->canAddRelatedIssue())
+			{
+				$status = 400;
+				$message = TBGContext::getI18n()->__('Unknown error');
+			}
 			
 			$this->getResponse()->setHttpStatus($status);
 			if ($status == 400)

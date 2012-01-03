@@ -1299,6 +1299,16 @@
 		{
 			return (bool) ($this->_permissionCheck('canpostcomments') || $this->_permissionCheck('canpostandeditcomments'));
 		}
+		
+		/**
+		 * Return if the user can add/modify extra data for an issue
+		 *
+		 * @return boolean
+		 */
+		public function canAddExtraInformation()
+		{
+			return (bool) ($this->_permissionCheck('canaddextrainformationtoissues'));
+		}
 
 		/**
 		 * Return if the user can attach files
