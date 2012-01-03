@@ -3,7 +3,7 @@ THE BUG GENIE VERSION 3
 Thank you for downloading The Bug Genie
 
 Please report issues and feedback from the issue tracker on our website:
-http://thebuggenie.com/thebuggenie
+http://issues.thebuggenie.com
 
 
 * INSTALLATION *
