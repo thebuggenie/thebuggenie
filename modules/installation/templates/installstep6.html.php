@@ -17,7 +17,7 @@
 		The Bug Genie builds upon its own open source php framework, and an open source PHP database layer called <a href="http://b2db.sf.net" target="_randomrandomrandom"><b>B2DB</b></a>. If you find any bugs or issues, please use our <a href="http://thebuggenie.com" target="_new">issue tracker</a> or send an email to <a href="mailto:support@thebuggenie.com">support@thebuggenie.com</a>.<br>
 		<br>
 		<h3>Help and support</h3>
-		Online documentation is available from <a href="http://www.thebuggenie.com/support.php" target="_new">www.thebuggenie.com -> support</a>. If you need more help, you can use the <a href="http://www.thebuggenie.com/forum" target="_new">forums</a> where there are a lot of helpful people around.<br>
+		Online documentation is available from <a href="http://www.thebuggenie.com/support.php" target="_new">www.thebuggenie.com -> support</a>. If you need more help, you can use the <a href="http://forum.thebuggenie.com" target="_new">forums</a> where there are a lot of helpful people around.<br>
 		<b>Commercial email support is available for anyone with a <a target="_new" href="http://www.thebuggenie.com/giving_back.php">support contract</a>.</b> For other inquiries, send an email to <a href="mailto:support@thebuggenie.com">support@thebuggenie.com</a>.
 	</div>
 	<form action="<?php echo make_url('login'); ?>" method="post">
