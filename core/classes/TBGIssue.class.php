@@ -1775,6 +1775,12 @@
 		public function hasUserVoted($user_id, $up)
 		{
 			$user_id = (is_object($user_id)) ? $user_id->getID() : $user_id;
+
+			if ($user_id == TBGSettings::getDefaultUserID() && TBGSettings::isDefaultUserGuest())
+			{
+				return true;
+			}
+			
 			$this->_setupVotes();
 			if (array_key_exists($user_id, $this->_votes))
 			{
