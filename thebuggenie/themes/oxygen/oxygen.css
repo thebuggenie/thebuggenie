@@ -96,7 +96,7 @@ header #header_userinfo li.temporarily_switched .user_menu_dropdown { background
 header nav ul { position: relative !important; }
 
 #logo_container { padding: 0 0 0 10px; float: left; margin: 5px 30px 5px 5px; display: block; }
-#logo_container a.logo { float: left; margin: 0px 5px 0 0; text-decoration: none; border: 0; line-height: 0; }
+#logo_container .logo { float: left; margin: 0px 5px 0 0; text-decoration: none; border: 0; line-height: 0; }
 #logo_container a.logo:hover { text-decoration: none; border: 0; }
 #logo_container .logo_name { font-size: 1.2em; font-weight: bold; color: #FFF; margin: 2px 5px; padding: 0; line-height: 1.3; text-shadow: 1px 1px 2px #000000; filter: dropshadow(color=#000000, offx=1, offy=1); float: left; }
 
