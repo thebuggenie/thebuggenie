@@ -10,7 +10,7 @@
 		</ul>
 		<h4>If this software has turned out to be valuable to you and/or your business - please consider supporting it.</h4>
 		More information about supporting The Bug Genie development can be found here:
-		<a target="_blank" href="http://www.thebuggenie.com/support.php">http://www.thebuggenie.com/support.php</a> <i>(opens in a new window)</i>
+		<a target="_blank" href="http://www.thebuggenie.com/support">http://www.thebuggenie.com/support</a> <i>(opens in a new window)</i>
 	</div>
 <?php endif; ?>
 <div class="installation_box">

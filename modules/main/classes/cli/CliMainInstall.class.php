@@ -53,7 +53,7 @@
 			$this->cliEcho("By making a donation, or buying a support contract you can help us continue development.\n\n");
 			$this->cliEcho("If this software is valuable to you - please consider supporting it.\n\n");
 			$this->cliEcho("More information about supporting The Bug Genie's development can be found here:\n");
-			$this->cliEcho("http://www.thebuggenie.com/giving_back.php\n\n", 'blue', 'underline');
+			$this->cliEcho("http://www.thebuggenie.com/support\n\n", 'blue', 'underline');
 			$this->cliEcho("Press ENTER to continue: ");
 
 			$this->pressEnterToContinue();
