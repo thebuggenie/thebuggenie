@@ -1842,7 +1842,7 @@
 			$user_id = (is_object($user_id)) ? $user_id->getID() : $user_id;
 			$this->_setupVotes();
 			
-			if ($user_id == TBGSettings::getDefaultUserID() && TBGSettings::isDefaultUserGuest())
+			if (($user_id == TBGSettings::getDefaultUserID() && TBGSettings::isDefaultUserGuest()) || !$this->getProject()->canVoteOnIssues())
 			{
 				return true;
 			}
