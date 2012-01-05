@@ -2465,6 +2465,11 @@
 			return (bool) ($this->permissionCheck('canseeprojecthierarchy') || $this->permissionCheck('canseeallprojectmilestones'));
 		}
 		
+		public function canVoteOnIssues()
+		{
+			return (bool) $this->permissionCheck('canvoteonissues');
+		}
+		
 		public function canAutoassign()
 		{
 			return (bool) ($this->_autoassign);
