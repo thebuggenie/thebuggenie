@@ -706,7 +706,31 @@
 				
 				while ($row = $res->getNextRow())
 				{
-					$updated_by = null; // FIXME: Need to get this from the log table
+					$issue_object = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
+					$issue_log = $issue_object->getLogEntries();
+					
+					array_reverse($issue_log);
+					
+					$updated_by = null;
+					$assigned_by = null;
+	
+					foreach($issue_log as $entry)
+					{
+						if ($updated_by !== null)
+						{
+							if ($entry['change_type'] == TBGLogTable::LOG_ISSUE_ASSIGNED)
+							{
+								$assigned_by = $entry['user_id'];
+							}
+						}
+					}
+					
+					reset($issue_log);
+					array_reverse($issue_log);
+					
+					end($issue_log); // Set array to the end
+					
+					$assigned_by = $issue_log['user_id'];
 					
 					if (array_key_exists('uid_'.$row->get(TBGIssuesTable::POSTED_BY), $offsets['users']))
 					{
@@ -725,6 +749,15 @@
 					{
 						$offset2 = $offsets['system'];
 					}
+					
+					if ($assigned_by !== null && array_key_exists('uid_'.$assigned_by, $offsets['users']))
+					{
+						$offset3 = $offsets['users']['uid_'.$assigned_by];
+					}
+					else
+					{
+						$offset3 = $offsets['system'];
+					}
 	
 					$crit2 = $table->getCriteria();
 					$crit2->addUpdate(TBGIssuesTable::POSTED, (int) $row->get(TBGIssuesTable::POSTED) + $offset);
@@ -732,6 +765,12 @@
 					if (isset($offset2))
 					{
 						$crit2->addUpdate(TBGIssuesTable::LAST_UPDATED, (int) $row->get(TBGIssuesTable::LAST_UPDATED) + $offset2);
+						unset($offset2);
+					}
+					
+					if (isset($offset3))
+					{
+						$crit2->addUpdate(TBGIssuesTable::BEING_WORKED_ON_BY_USER_SINCE, (int) $row->get(TBGIssuesTable::BEING_WORKED_ON_BY_USER_SINCE) + $offset3);
 						unset($offset2);
 					}
 					
