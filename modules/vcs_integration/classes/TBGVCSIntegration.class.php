@@ -237,8 +237,12 @@
 			}
 			
 			try
-			{
-				$project = new TBGProject($project);
+			{				
+				$row = TBGProjectsTable::getTable()->doSelectById($project);
+				
+				$project = new TBGProject($project, $row);
+				
+				TBGContext::setScope($project->getScope());
 			}
 			catch (Exception $e)
 			{
@@ -394,6 +398,21 @@
 							}
 						}
 						
+						if ($uid == 0)
+						{
+							$uid = TBGSettings::getDefaultUserID();
+						}
+						
+						try
+						{
+							$user = TBGContext::factory()->TBGUser($uid);
+						}
+						catch (Exception $e)
+						{
+							$user = TBGContext::factory()->TBGUser(TBGSettings::getDefaultUserID());
+							$uid = TBGSettings::getDefaultUserID();
+						}
+						
 						$theIssue->addSystemComment(TBGContext::getI18n()->__('Issue updated from code repository'), TBGContext::getI18n()->__('This issue has been updated with the latest changes from the code repository.<source>%commit_msg%</source>', array('%commit_msg%' => $commit_msg)), $uid);
 
 						foreach ($files as $afile)
@@ -406,15 +425,6 @@
 							TBGVCSIntegrationTable::addEntry($theIssue->getID(), $afile[0], $commit_msg, $afile[1], $new_rev, $old_rev, $uid, $date);
 						}
 						$output .= 'Updated ' . $theIssue->getFormattedIssueNo() . "\n";
-						
-						if ($uid == 0)
-						{
-							$user = null;
-						}
-						else
-						{
-							$user = TBGContext::factory()->TBGUser($uid);
-						}
 						
 						TBGEvent::createNew('vcs_integration', 'new_commit')->trigger(array('issue' => $theIssue, 'user' => $user, 'date' => $date, 'new_rev' => $new_rev, 'old_rev' => $old_rev, 'commit_msg' => $commit_msg));
 					}
