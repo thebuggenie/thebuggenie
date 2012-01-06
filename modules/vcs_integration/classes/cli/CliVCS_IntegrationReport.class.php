@@ -36,10 +36,14 @@
 
 		public function do_execute()
 		{
-			/* Prepare variables */
-			$project = TBGContext::factory()->TBGProject($this->getProvidedArgument('projectid'));
-			
-			if (!($project instanceof TBGProject))
+			/* Prepare variables */			
+			try
+			{
+				$row = TBGProjectsTable::getTable()->doSelectById($project);
+				$project = new TBGProject($project, $row);
+				TBGContext::setScope($project->getScope());
+			}
+			catch (Exception $e)
 			{
 				$this->cliEcho("The project with the ID ".$this->getProvidedArgument('projectid')." does not exist\n", 'red', 'bold');
 				exit;
