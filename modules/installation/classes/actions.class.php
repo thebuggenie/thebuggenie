@@ -633,7 +633,7 @@
 					
 					if (array_key_exists('uid_'.$row->get(TBGCommentsTable::UPDATED_BY), $offsets['users']))
 					{
-						$offset2 = $offsets['users']['uid_'.$row->get(TBGCommentsTable::POSTED_BY)];
+						$offset2 = $offsets['users']['uid_'.$row->get(TBGCommentsTable::UPDATED_BY)];
 					}
 					else
 					{
@@ -696,17 +696,71 @@
 					$crit2->addWhere(TBGFilesTable::ID, $row->get(TBGFilesTable::ID));
 				}
 				
-				// ISSUE ESTIMATES
-				
-				// FIXME
-				
-				// ISSUE SPENT TIMES
-				
-				// FIXME
-				
 				// ISSUES
 				
+				$table = TBGIssuesTable::getTable();
+				$crit = $table->getCriteria();
+				$crit->addWhere(TBGIssuesTable::SCOPE, $scope->getID());
+				
+				$res = $table->doSelect($crit);
+				
+				while ($row = $res->getNextRow())
+				{
+					$updated_by = null; // FIXME: Need to get this from the log table
+					
+					if (array_key_exists('uid_'.$row->get(TBGIssuesTable::POSTED_BY), $offsets['users']))
+					{
+						$offset = $offsets['users']['uid_'.$row->get(TBGIssuesTable::POSTED_BY)];
+					}
+					else
+					{
+						$offset = $offsets['system'];
+					}
+					
+					if (array_key_exists('uid_'.$updated_by, $offsets['users']))
+					{
+						$offset2 = $offsets['users']['uid_'.$updated_by];
+					}
+					else
+					{
+						$offset2 = $offsets['system'];
+					}
+	
+					$crit2 = $table->getCriteria();
+					$crit2->addUpdate(TBGIssuesTable::POSTED, (int) $row->get(TBGIssuesTable::POSTED) + $offset);
+
+					if (isset($offset2))
+					{
+						$crit2->addUpdate(TBGIssuesTable::LAST_UPDATED, (int) $row->get(TBGIssuesTable::LAST_UPDATED) + $offset2);
+						unset($offset2);
+					}
+					
+					$crit2->addWhere(TBGIssuesTable::ID, $row->get(TBGIssuesTable::ID));
+				}
+				
 				// LOG
+				
+				$table = TBGLogTable::getTable();
+				$crit = $table->getCriteria();
+				$crit->addWhere(TBGLogTable::SCOPE, $scope->getID());
+				
+				$res = $table->doSelect($crit);
+				
+				while ($row = $res->getNextRow())
+				{
+					if (array_key_exists('uid_'.$row->get(TBGLogTable::UID), $offsets['users']))
+					{
+						$offset = $offsets['users']['uid_'.$row->get(TBGLogTable::UID)];
+					}
+					else
+					{
+						$offset = $offsets['system'];
+					}
+
+					$crit2 = $table->getCriteria();
+					$crit2->addUpdate(TBGLogTable::TIME, (int) $row->get(TBGLogTable::TIME) + $offset);
+					$crit2->addWhere(TBGLogTable::ID, $row->get(TBGLogTable::ID));
+				}
 				
 				// MILESTONES
 				
@@ -741,8 +795,7 @@
 				}
 				
 				// PROJECTS
-				// FIXME: does planned release use the RELEASED field?
-				
+								
 				$table = TBGProjectsTable::getTable();
 				$crit = $table->getCriteria();
 				$crit->addWhere(TBGProjectsTable::SCOPE, $scope->getID());
