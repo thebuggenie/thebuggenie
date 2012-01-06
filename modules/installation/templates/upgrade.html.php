@@ -31,7 +31,7 @@
 					<h2>Would you like us to fix your timestamps?</h2>
 					If you or any of your users have ever used the timezone setting, this will have meant some timestamps have been stored incorrectly, meaning they will display the wrong time. This can be fixed for you. Please see <a target="_blank" href="http://thebuggenie.wordpress.com/2012/01/04/the-bug-genie-3-2-and-utf/">our blog post</a> for more details. <i>(opens in a new window)</i>
 					<br><br>
-					<input type="checkbox" name="fix_my_timestamps" id="fix_my_timestamps" checked="checked">
+					<input type="checkbox" name="fix_my_timestamps" value="1" id="fix_my_timestamps" checked="checked">
 					<label for="fix_my_timestamps" style="font-weight: bold;">Please fix my timestamps</label>
 				</div>
 				<br>

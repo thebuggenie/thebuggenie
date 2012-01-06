@@ -512,10 +512,15 @@
 				}
 			}
 			
+			if (TBGContext::getRequest()->getParameter('fix_my_timestamps' == '1'))
+			{
+				$this->_fixTimestamps();
+			}
+			
 			$this->upgrade_complete = true;
 		}
 
-		private function fixTimestamps()
+		private function _fixTimestamps()
 		{
 			// Unlimited execution time
 			set_time_limit(0);
@@ -544,25 +549,25 @@
 				if (TBGContext::isModuleLoaded('publish'))
 				{
 					// ARTICLE HISTORY
-					$this->fixUserDependentTimezone($offsets, TBGArticleHistoryTable::getTable(), TBGArticleHistoryTable::AUTHOR, TBGArticleHistoryTable::DATE);
+					$this->_fixUserDependentTimezone($offsets, TBGArticleHistoryTable::getTable(), TBGArticleHistoryTable::AUTHOR, TBGArticleHistoryTable::DATE);
 					
 					// ARTICLES
-					$this->fixUserDependentTimezone($offsets, TBGArticlesTable::getTable(), TBGArticlesTable::AUTHOR, TBGArticlesTable::DATE);
+					$this->_fixUserDependentTimezone($offsets, TBGArticlesTable::getTable(), TBGArticlesTable::AUTHOR, TBGArticlesTable::DATE);
 				}
 
 				// BUILDS
-				$this->fixNonUserDependentTimezone($offsets, TBGBuildsTable::getTable(), TBGBuildsTable::RELEASE_DATE, TBGBuildsTable::RELEASED);
+				$this->_fixNonUserDependentTimezone($offsets, TBGBuildsTable::getTable(), TBGBuildsTable::RELEASE_DATE, TBGBuildsTable::RELEASED);
 
 				
 				// COMMENTS		
-				$this->fixUserDependentTimezone($offsets, TBGCommentsTable::getTable(), array('a' => TBGCommentsTable::POSTED_BY, 'b' => TBGCommentsTable::UPDATED_BY), array('a' => TBGCommentsTable::POSTED, 'b' => TBGCommentsTable::UPDATED));
+				$this->_fixUserDependentTimezone($offsets, TBGCommentsTable::getTable(), array('a' => TBGCommentsTable::POSTED_BY, 'b' => TBGCommentsTable::UPDATED_BY), array('a' => TBGCommentsTable::POSTED, 'b' => TBGCommentsTable::UPDATED));
 				
 				// EDITIONS
-				$this->fixNonUserDependentTimezone($offsets, TBGEditionsTable::getTable(), TBGEditionsTable::RELEASE_DATE, TBGEditionsTable::RELEASED);
+				$this->_fixNonUserDependentTimezone($offsets, TBGEditionsTable::getTable(), TBGEditionsTable::RELEASE_DATE, TBGEditionsTable::RELEASED);
 
 								
 				// FILES
-				$this->fixUserDependentTimezone($offsets, TBGFilesTable::getTable(), TBGFilesTable::UID, TBGFilesTable::UPLOADED_AT);
+				$this->_fixUserDependentTimezone($offsets, TBGFilesTable::getTable(), TBGFilesTable::UID, TBGFilesTable::UPLOADED_AT);
 				
 				// ISSUES
 				// This is a bit more complex so do this manually - we have to poke around with the issue log
@@ -652,7 +657,7 @@
 				}
 				
 				// LOG
-				$this->fixUserDependentTimezone($offsets, TBGLogTable::getTable(), TBGLogTable::UID, TBGLogTable::TIME);
+				$this->_fixUserDependentTimezone($offsets, TBGLogTable::getTable(), TBGLogTable::UID, TBGLogTable::TIME);
 				
 				// MILESTONES
 				// The conditions are a bit different here so do it manually
@@ -697,7 +702,7 @@
 				}
 				
 				// PROJECTS
-				$this->fixNonUserDependentTimezone($offsets, TBGProjectsTable::getTable(), TBGProjectsTable::RELEASE_DATE, TBGProjectsTable::RELEASED);
+				$this->_fixNonUserDependentTimezone($offsets, TBGProjectsTable::getTable(), TBGProjectsTable::RELEASE_DATE, TBGProjectsTable::RELEASED);
 				
 				// VCS INTEGRATION
 				if (TBGContext::isModuleLoaded('vcs_integration'))
@@ -707,7 +712,7 @@
 			}
 		}
 
-		private function fixUserDependentTimezone($offsets, \b2db\Table $table, $author_field, $correctionfield, $testfield = null)
+		private function _fixUserDependentTimezone($offsets, \b2db\Table $table, $author_field, $correctionfield, $testfield = null)
 		{
 			$crit = $table->getCriteria();
 			$crit->addWhere($table::SCOPE, $scope->getID());
@@ -768,7 +773,7 @@
 			}
 		}
 
-		private function fixNonUserDependentTimezone($offsets, \b2db\Table $table, $correctionfield, $testfield = null)
+		private function _fixNonUserDependentTimezone($offsets, \b2db\Table $table, $correctionfield, $testfield = null)
 		{
 			$crit = $table->getCriteria();
 			$crit->addWhere($table::SCOPE, $scope->getID());
