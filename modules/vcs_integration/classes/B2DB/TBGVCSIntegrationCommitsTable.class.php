@@ -37,7 +37,12 @@
 		const DATE = 'vcsintegration_commits.date';
 		const DATA = 'vcsintegration_commits.data';
 		const PROJECT_ID = 'vcsintegration_commits.project_id';
-		
+
+		protected function _setupIndexes()
+		{
+			$this->_addIndex('project', self::PROJECT_ID);
+		}
+
 		/**
 		 * Get all commits relating to issues inside a project
 		 * @param integer $id

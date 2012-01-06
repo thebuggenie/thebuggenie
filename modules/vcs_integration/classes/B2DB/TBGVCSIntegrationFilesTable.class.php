@@ -33,7 +33,12 @@
 		const COMMIT_ID = 'vcsintegration_files.commit_id';
 		const FILE_NAME = 'vcsintegration_files.file_name';
 		const ACTION = 'vcsintegration_files.action';
-					
+
+		protected function _setupIndexes()
+		{
+			$this->_addIndex('commit', self::COMMIT_ID);
+		}
+
 		/**
 		 * Get all affected files by commit
 		 * @param integer $id

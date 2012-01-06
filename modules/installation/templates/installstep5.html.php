@@ -4,7 +4,7 @@
 		<div class="error"><?php echo nl2br($error); ?></div>
 		<h2>An error occured</h2>
 		<div style="font-size: 13px;">An error occured and the installation has been stopped. Please try to fix the error based on the information above, then click back, and try again.<br>
-		If you think this is a bug, please report it in our <a href="http://thebuggenie.com/thebuggenie" target="_new">online bug tracker</a>.</div>
+		If you think this is a bug, please report it in our <a href="http://issues.thebuggenie.com" target="_new">online bug tracker</a>.</div>
 	</div>
 <?php else: ?>
 	<div class="installation_box">

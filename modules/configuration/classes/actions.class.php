@@ -871,7 +871,7 @@
 		 */
 		public function runGetUserEditForm(TBGRequest $request)
 		{
-			return $this->renderJSON(array("content" => get_template_html('finduser_row_editable', array('user' => TBGContext::factory()->TBGUser($request['user_id'])))));
+			return $this->renderJSON(array("content" => $this->getTemplateHtml('finduser_row_editable', array('user' => TBGContext::factory()->TBGUser($request['user_id'])))));
 		}	
 			
 		/**

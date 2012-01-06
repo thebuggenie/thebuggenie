@@ -37,8 +37,8 @@
 		/**
 		 * Associated commit
 		 * @var TBGVCSIntegrationCommit
-		 * @Relates(class="TBGVCSIntegrationCommit")
 		 * @Column(type="integer", name="commit_id")
+		 * @Relates(class="TBGVCSIntegrationCommit")
 		 */
 		protected $_commit = null;
 		
@@ -93,7 +93,7 @@
 		 */
 		public function setCommit(TBGVCSIntegrationCommit $commit)
 		{
-			$this->_commit_id = $commit;
+			$this->_commit = $commit;
 		}
 		
 	}

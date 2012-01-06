@@ -58,6 +58,13 @@
 		{
 		}
 		
+		protected function _loadFixtures($scope)
+		{
+			TBGVCSIntegrationCommitsTable::getTable()->createIndexes();
+			TBGVCSIntegrationFilesTable::getTable()->createIndexes();
+			TBGVCSIntegrationIssueLinksTable::getTable()->createIndexes();
+		}
+		
 		protected function _addListeners()
 		{
 			TBGEvent::listen('core', 'project_sidebar_links_statistics', array($this, 'listen_sidebar_links'));
@@ -105,23 +112,27 @@
 					\b2db\Core::getTable('TBGVCSIntegrationFilesTable')->create();
 					\b2db\Core::getTable('TBGVCSIntegrationIssueLinksTable')->create();
 					
+					TBGVCSIntegrationCommitsTable::getTable()->createIndexes();
+					TBGVCSIntegrationFilesTable::getTable()->createIndexes();
+					TBGVCSIntegrationIssueLinksTable::getTable()->createIndexes();
+					
 					// Migrate data from old table to new tables
 					$crit = new \b2db\Criteria();
 					$crit->addOrderBy(TBGVCSIntegrationTable::DATE, \b2db\Criteria::SORT_DESC);
 					$results = TBGVCSIntegrationTable::getTable()->doSelect($crit);
 					
-					if (is_object($results) && count($results) > 0)
+					if ($results instanceof \b2db\Resultset && $results->count() > 0)
 					{
 						$commits = array();
-
-						while ($results->next())
+													
+						while ($row = $results->getNextRow())
 						{
-							$rev = $results->get(TBGVCSIntegrationTable::NEW_REV);
+							$rev = $row->get(TBGVCSIntegrationTable::NEW_REV);
 							if (array_key_exists($rev, $commits))
 							{
 								// Add a new file or issue to the commit data
-								$commits[$rev]['files'][$results->get(TBGVCSIntegrationTable::FILE_NAME)] = array('file_name' => $results->get(TBGVCSIntegrationTable::FILE_NAME), 'action' => $results->get(TBGVCSIntegrationTable::ACTION));
-								$commits[$rev]['issues'][$results->get(TBGVCSIntegrationTable::ISSUE_NO)] = $results->get(TBGVCSIntegrationTable::ISSUE_NO);
+								$commits[$rev]['files'][$row->get(TBGVCSIntegrationTable::FILE_NAME)] = array('file_name' => $row->get(TBGVCSIntegrationTable::FILE_NAME), 'action' => $row->get(TBGVCSIntegrationTable::ACTION));
+								$commits[$rev]['issues'][$row->get(TBGVCSIntegrationTable::ISSUE_NO)] = $row->get(TBGVCSIntegrationTable::ISSUE_NO);
 							}
 							else
 							{
@@ -130,9 +141,9 @@
 								// Add details of a new commit
 								$commits[$rev] = array('commit' => array(), 'files' => array(), 'issues' => array());
 								
-								$commits[$rev]['commit'] = array('new_rev' => $rev, 'old_rev' => $results->get(TBGVCSIntegrationTable::OLD_REV), 'author' => $results->get(TBGVCSIntegrationTable::AUTHOR), 'date' => $results->get(TBGVCSIntegrationTable::DATE), 'log' => $results->get(TBGVCSIntegrationTable::LOG), 'scope' => $results->get(TBGVCSIntegrationTable::SCOPE), 'project' => $issue->getProject());
-								$commits[$rev]['files'][$results->get(TBGVCSIntegrationTable::FILE_NAME)] = array('file_name' => $results->get(TBGVCSIntegrationTable::FILE_NAME), 'action' => $results->get(TBGVCSIntegrationTable::ACTION));
-								$commits[$rev]['issues'][$results->get(TBGVCSIntegrationTable::ISSUE_NO)] = $results->get(TBGVCSIntegrationTable::ISSUE_NO);
+								$commits[$rev]['commit'] = array('new_rev' => $rev, 'old_rev' => $row->get(TBGVCSIntegrationTable::OLD_REV), 'author' => $row->get(TBGVCSIntegrationTable::AUTHOR), 'date' => $row->get(TBGVCSIntegrationTable::DATE), 'log' => $row->get(TBGVCSIntegrationTable::LOG), 'scope' => $row->get(TBGVCSIntegrationTable::SCOPE), 'project' => $issue->getProject());
+								$commits[$rev]['files'][$row->get(TBGVCSIntegrationTable::FILE_NAME)] = array('file_name' => $row->get(TBGVCSIntegrationTable::FILE_NAME), 'action' => $row->get(TBGVCSIntegrationTable::ACTION));
+								$commits[$rev]['issues'][$row->get(TBGVCSIntegrationTable::ISSUE_NO)] = $row->get(TBGVCSIntegrationTable::ISSUE_NO);
 							}
 						}
 						
@@ -148,6 +159,11 @@
 								$author = TBGContext::factory()->TBGUser($commit['commit']['author']);
 							}
 							catch (Exception $e)
+							{
+								$author = TBGContext::factory()->TBGUser(TBGSettings::getDefaultUserID());
+							}
+							
+							if (!($author instanceof TBGUser))
 							{
 								$author = TBGContext::factory()->TBGUser(TBGSettings::getDefaultUserID());
 							}
@@ -192,10 +208,6 @@
 							}
 						}
 					}
-					
-					// Drop old table
-					TBGVCSIntegrationTable::getTable()->drop();
-					
 					// Migrate settings to new format
 					$access_method = $this->getSetting('use_web_interface');
 					$passkey = $this->getSetting('vcs_passkey');

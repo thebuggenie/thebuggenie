@@ -33,6 +33,12 @@
 		const ISSUE_NO = 'vcsintegration_issuelinks.issue_no';
 		const COMMIT_ID = 'vcsintegration_issuelinks.commit_id';
 		
+		protected function _setupIndexes()
+		{
+			$this->_addIndex('commit', self::COMMIT_ID);
+			$this->_addIndex('issue', self::ISSUE_NO);
+		}
+		
 		/**
 		 * Get all rows by commit ID
 		 * @param integer $id

@@ -24,7 +24,49 @@
 		<script type="text/javascript" src="js/scriptaculous.js"></script>
 		<script type="text/javascript" src="js/install.js"></script>
 		<style type="text/css">
-			body, html, div, p, td, input { font-family: "Open Sans", arial; font-size: 13px; }
+			@font-face {
+			  font-family: 'Droid Sans Mono';
+			  font-style: normal;
+			  font-weight: normal;
+			  src: url('<?php echo TBGContext::getTBGPath(); ?>fonts/droid_sans_mono.eot');
+			  src: local('Droid Sans Mono'), local('DroidSansMono'), url('<?php echo TBGContext::getTBGPath(); ?>fonts/droid_sans_mono.woff') format('woff'), url('<?php echo TBGContext::getTBGPath(); ?>fonts/droid_sans_mono.ttf') format('truetype');
+			}
+			@font-face {
+			  font-family: 'Open Sans';
+			  font-style: normal;
+			  font-weight: normal;
+			  src: url('<?php echo TBGContext::getTBGPath(); ?>fonts/open_sans.eot');
+			  src: local('Open Sans'), local('OpenSans'), url('<?php echo TBGContext::getTBGPath(); ?>fonts/open_sans.woff') format('woff'), url('<?php echo TBGContext::getTBGPath(); ?>fonts/open_sans.ttf') format('truetype');
+			}
+			@font-face {
+			  font-family: 'Open Sans';
+			  font-style: italic;
+			  font-weight: normal;
+			  src: url('<?php echo TBGContext::getTBGPath(); ?>fonts/open_sans_italic.eot');
+			  src: local('Open Sans Italic'), local('OpenSans-Italic'), url('<?php echo TBGContext::getTBGPath(); ?>fonts/open_sans_italic.woff') format('woff'), url('<?php echo TBGContext::getTBGPath(); ?>fonts/open_sans_italic.ttf') format('truetype');
+			}
+			@font-face {
+			  font-family: 'Open Sans';
+			  font-style: normal;
+			  font-weight: bold;
+			  src: url('<?php echo TBGContext::getTBGPath(); ?>fonts/open_sans_bold.eot');
+			  src: local('Open Sans Bold'), local('OpenSans-Bold'), url('<?php echo TBGContext::getTBGPath(); ?>fonts/open_sans_bold.woff') format('woff'), url('<?php echo TBGContext::getTBGPath(); ?>fonts/open_sans_bold.ttf') format('truetype');
+			}
+			@font-face {
+			  font-family: 'Open Sans';
+			  font-style: italic;
+			  font-weight: bold;
+			  src: url('<?php echo TBGContext::getTBGPath(); ?>fonts/open_sans_bold_italic.eot');
+			  src: local('Open Sans Bold Italic'), local('OpenSans-BoldItalic'), url('<?php echo TBGContext::getTBGPath(); ?>fonts/open_sans_bold_italic.woff') format('woff'), url('<?php echo TBGContext::getTBGPath(); ?>fonts/open_sans_bold_italic.ttf') format('truetype');
+			}
+		
+			body, html, div, p, td, input { font-family: "Open Sans", arial; font-size: 12px; }
+			h1, h2, h3, h4 { text-shadow: 1px 1px 2px #DDD; }
+			h1 { font-size: 1.4em; }
+			h2 { font-size: 1.3em; }
+			h3 { font-size: 1.2em; }
+			h4 { font-size: 1.1em; }
+			h2 .smaller { font-size: 0.9em; text-shadow: none; }
 			.install_progress { font-weight: normal; border: 1px solid #DDD; padding: 3px; font-size: 11px; margin-bottom: 2px; width: 930px; background-color: #FDFDFD; }
 			.install_progress:first-line { font-weight: bold; }
 			.install_progress img { float: right; }
@@ -32,7 +74,7 @@
 			.prereq_fail { border: 1px solid #B76B6B; color: #FFF; font-size: 13px; background-color: #F38888; margin-top: 10px; }
 			.prereq_warn { border: 1px solid #FF9900; background-color: #FFFF99; font-size: 12px; }
 			.installation_box { padding: 3px 10px 10px 10px; width: 950px; margin-left: auto; margin-right: auto; margin-top: 15px; position: relative; font-size: 12px; }
-			.installation_box input[type="submit"] { padding: 5px; font-weight: bold; height: 30px; font-size: 15px; }
+			.installation_box input[type="submit"] { padding: 5px; font-weight: bold; height: 30px; font-size: 16px; }
 			.donate { border: 1px solid #aaC6aa; background-color: #CFE8CF; }
 			.grey_box { border: 1px solid #DDD; background-color: #F5F5F5; }
 			.command_box { border: 1px dashed #DDD; background-color: #F5F5F5; padding: 4px; font-family: 'Droid Sans Mono', monospace; width: 928px; margin-top: 5px; margin-bottom: 15px; }
@@ -44,38 +86,58 @@
 			.install_list dd input[type="text"], .install_list dd input[type="password"] { width: 320px; }
 			.install_list dt { width: 420px; }
 			.install_list dt .faded_out { font-weight: normal; }
-
+			.main_header_print
+			{
+				background: #6193cf; /* Old browsers */
+				background: -moz-linear-gradient(top, #6193cf 0%, #396ba7 100%); /* FF3.6+ */
+				background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#6193cf), color-stop(100%,#396ba7)); /* Chrome,Safari4+ */
+				background: -webkit-linear-gradient(top, #6193cf 0%,#396ba7 100%); /* Chrome10+,Safari5.1+ */
+				background: -o-linear-gradient(top, #6193cf 0%,#396ba7 100%); /* Opera11.10+ */
+				background: -ms-linear-gradient(top, #6193cf 0%,#396ba7 100%); /* IE10+ */
+				filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6193cf', endColorstr='#396ba7',GradientType=0 ); /* IE6-9 */
+				background: linear-gradient(top, #6193cf 0%,#396ba7 100%); /* W3C */
+				color: white;
+				border-bottom-left-radius: 7px;
+				border-bottom-right-radius: 7px;
+				-moz-border-radius-bottomleft: 7px;
+				-moz-border-radius-bottomright: 7px;
+				-webkit-border-bottom-left-radius: 7px;
+				-webkit-border-bottom-right-radius: 7px;
+				box-shadow: 0 0 8px rgba(0, 0, 0, 0.4); -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, 0.4); -moz-box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+				height: 60px !important;
+			}
+			
+			.footer_container { background-color: #F5F5F5; width: 100%; border-top: 1px solid #DDD; padding: 5px; text-shadow: 1px 1px 0px #FFF; }
+			.footer_container img { margin-right: 10px; }
+			.padded_box { padding: 3px 10px 10px 10px; }
 			.error { padding: 4px; border: 1px solid #B77; background-color: #FEE; color: #955; margin: 10px 0 10px 0; }
 			.ok { padding: 4px; border: 1px solid #aaC6aa; background-color: #CFE8CF; margin: 10px 0 10px 0; }
 			.error:first-line, .ok:first-line { font-weight: bold; }
 			
-			.logo_large, .logo_small { color: black; white-space: nowrap; }
+			.logo_small { font-size: 0.9em; color: white; white-space: nowrap; }
 
 			fieldset { border: 1px solid #DDD; margin: 10px 0 10px 0; background-color: #F5F5F5; padding: 0 0 0 8px; }
 			legend { font-weight: bold;  }
 
 			ul.outlined { margin-top: 5px; }
 			ul.outlined li { font-weight: bold; }
+			
+			#logo_container .logo { margin-right: 10px; }
+			#logo_container .logo_name { font-size: 1.7em; float: none; }
 		</style>
 	</head>
 	<body>
-		<table style="width: 1000px; height: 100%; table-layout: fixed; border-left: 1px solid #DDD; border-right: 1px solid #DDD;" cellpadding=0 cellspacing=0 align="center">
+		<table style="width: 1000px; height: 100%; table-layout: fixed;" cellpadding=0 cellspacing=0 align="center">
+			<tr>
+				<td style="overflow: auto;" valign="top" id="maintd" class="main_header_print">
+					<div id="logo_container" width="100%">
+						   <img width=48 height=48 SRC="iconsets/oxygen/logo_48.png" class="logo" alt="The Bug Genie - Installation">
+						   <div class="logo_name">The Bug Genie</div><div class="logo_small"><b>Friendly</b> issue tracking and project management</div>
+					</div>
+				</td>
+			</tr>
 			<tr>
 				<td style="height: auto; overflow: auto;" valign="top" id="maintd">
-					<table class="main_header_print" cellpadding=0 cellspacing=0 width="100%" style="table-layout: fixed;">
-						<tr class="logo_back">
-						    <td style="width: 70px; height: 65px; text-align: center;" align="center" valign="middle">
-						        <img width=48 height=48 SRC="iconsets/oxygen/logo_48.png" alt="The Bug Genie - Installation">
-						    </td>
-						    <td align="left" valign="middle" style="width: 300px;"><div class="logo_large">The Bug Genie</div><div class="logo_small"><b>Friendly</b> issue tracking and project management</div></td>
-						    <td style="width: auto;">
-						    </td>
-						</tr>
-						<tr>
-						    <td class='topmenu' colspan="3"></td>
-						</tr>
-					</table>
-					<div style="border-bottom: 1px solid #DDD; height: 1px;"></div>
 					<div class="print_header_strip" style="text-align: left; padding: 5px;">
 						<?php if ($mode == 'upgrade'): ?>
 							<b>The Bug Genie upgrade</b>
