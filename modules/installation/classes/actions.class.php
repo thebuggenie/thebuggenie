@@ -716,7 +716,7 @@
 	
 					foreach($issue_log as $entry)
 					{
-						if ($updated_by !== null)
+						if ($updated_by == null)
 						{
 							if ($entry['change_type'] == TBGLogTable::LOG_ISSUE_ASSIGNED)
 							{
@@ -758,6 +758,11 @@
 					{
 						$offset3 = $offsets['system'];
 					}
+
+					unset($issue_log);
+					unset($issue_object);
+					unset($updated_by);
+					unset($assigned_by);
 	
 					$crit2 = $table->getCriteria();
 					$crit2->addUpdate(TBGIssuesTable::POSTED, (int) $row->get(TBGIssuesTable::POSTED) + $offset);
@@ -771,7 +776,7 @@
 					if (isset($offset3))
 					{
 						$crit2->addUpdate(TBGIssuesTable::BEING_WORKED_ON_BY_USER_SINCE, (int) $row->get(TBGIssuesTable::BEING_WORKED_ON_BY_USER_SINCE) + $offset3);
-						unset($offset2);
+						unset($offset3);
 					}
 					
 					$crit2->addWhere(TBGIssuesTable::ID, $row->get(TBGIssuesTable::ID));
