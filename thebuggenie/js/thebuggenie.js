@@ -2078,8 +2078,8 @@ TBG.Config.Issuefields.Options.update = function(url, type, id) {
 		form: 'edit_' + type + '_' + id + '_form',
 		loading: {indicator: 'edit_' + type + '_' + id + '_indicator'},
 		success: {
-			show: 'item_' + type + '_' + id,
-			hide: 'edit_item_' + id,
+			show: 'item_option_' + type + '_' + id,
+			hide: 'edit_item_option_' + id,
 			callback: function(json) {
 				$(type + '_' + id + '_name').update($(type + '_' + id + '_name_input').getValue());
 				if ($(type + '_' + id + '_itemdata_input') && $(type + '_' + id + '_itemdata')) $(type + '_' + id + '_itemdata').style.backgroundColor = $(type + '_' + id + '_itemdata_input').getValue();
@@ -2093,7 +2093,7 @@ TBG.Config.Issuefields.Options.remove = function(url, type, id) {
 	TBG.Main.Helpers.ajax(url, {
 		loading: {indicator: 'delete_' + type + '_' + id + '_indicator'},
 		success: {
-			remove: ['delete_item_' + id, 'item_' + type + '_' + id]
+			remove: ['delete_item_option_' + id, 'item_option_' + type + '_' + id]
 		}
 	});
 }
