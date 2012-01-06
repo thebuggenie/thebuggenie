@@ -515,6 +515,281 @@
 			$this->upgrade_complete = true;
 		}
 
+		private function fixTimestamps()
+		{
+			// Unlimited execution time
+			set_time_limit(0);
+			
+			foreach (TBGScope::getAll() as $scope)
+			{
+				TBGContext::setScope($scope);
+				
+				// The first job is to work out the offsets that need applying
+				$offsets = array('system', 'users');
+				$offsets['users'] = array();
+				
+				$offsets['system'] == (int) TBGSettings::getGMToffset() * 3600;
+				
+				foreach (TBGUser::getAll() as $user)
+				{
+					// Don't record an offset if the user's timezone is set to 0, use the system one instead
+					if ($user->getTimezone() != '0' && $user->getTimezone() != 'sys')
+					{
+						$offsets['users']['uid_'.$user->getID()] = (int) $user->getTimezone() * 3600;
+					}
+				}
+				
+				// Now go through every thing which requires updating
+				
+				if (TBGContext::isModuleLoaded('publish'))
+				{
+					// ARTICLE HISTORY
+					
+					$table = TBGArticleHistoryTable::getTable();
+					$crit = $table->getCriteria();
+					$crit->addWhere(TBGArticleHistoryTable::SCOPE, $scope->getID());
+					
+					$res = $table->doSelect($crit);
+					
+					while ($row = $res->getNextRow())
+					{
+						if (array_key_exists('uid_'.$row->get(TBGArticleHistoryTable::AUTHOR), $offsets['users']))
+						{
+							$offset = $offsets['users']['uid_'.$row->get(TBGArticleHistoryTable::AUTHOR)];
+						}
+						else
+						{
+							$offset = $offsets['system'];
+						}
+	
+						$crit2 = $table->getCriteria();
+						$crit2->addUpdate(TBGArticleHistoryTable::DATE, (int) $row->get(TBGArticleHistoryTable::DATE) + $offset);
+						$crit2->addWhere(TBGArticleHistoryTable::ID, $row->get(TBGArticleHistoryTable::ID));
+					}
+					
+					// ARTICLES
+					
+					$table = TBGArticlesTable::getTable();
+					$crit = $table->getCriteria();
+					$crit->addWhere(TBGArticlesTable::SCOPE, $scope->getID());
+					
+					$res = $table->doSelect($crit);
+					
+					while ($row = $res->getNextRow())
+					{
+						if (array_key_exists('uid_'.$row->get(TBGArticlesTable::AUTHOR), $offsets['users']))
+						{
+							$offset = $offsets['users']['uid_'.$row->get(TBGArticlesTable::AUTHOR)];
+						}
+						else
+						{
+							$offset = $offsets['system'];
+						}
+	
+						$crit2 = $table->getCriteria();
+						$crit2->addUpdate(TBGArticlesTable::DATE, (int) $row->get(TBGArticlesTable::DATE) + $offset);
+						$crit2->addWhere(TBGArticlesTable::ID, $row->get(TBGArticlesTable::ID));
+					}
+				}
+
+				// BUILDS
+				
+				$table = TBGBuildsTable::getTable();
+				$crit = $table->getCriteria();
+				$crit->addWhere(TBGBuilds::SCOPE, $scope->getID());
+				
+				$res = $table->doSelect($crit);
+				
+				while ($row = $res->getNextRow())
+				{
+					if ($row->get(TBGBuildsTable::RELEASED) == 1)
+					{
+						$offset = $offsets['system'];
+	
+						$crit2 = $table->getCriteria();
+						$crit2->addUpdate(TBGBuildsTable::RELEASE_DATE, (int) $row->get(TBGBuildsTable::RELEASE_DATE) + $offset);
+						$crit2->addWhere(TBGBuildsTable::ID, $row->get(TBGBuildsTable::ID));
+					}
+				}
+				
+				// COMMENTS
+				
+				$table = TBGCommentsTable::getTable();
+				$crit = $table->getCriteria();
+				$crit->addWhere(TBGCommentsTable::SCOPE, $scope->getID());
+				
+				$res = $table->doSelect($crit);
+				
+				while ($row = $res->getNextRow())
+				{
+					if (array_key_exists('uid_'.$row->get(TBGCommentsTable::POSTED_BY), $offsets['users']))
+					{
+						$offset = $offsets['users']['uid_'.$row->get(TBGCommentsTable::POSTED_BY)];
+					}
+					else
+					{
+						$offset = $offsets['system'];
+					}
+					
+					if (array_key_exists('uid_'.$row->get(TBGCommentsTable::UPDATED_BY), $offsets['users']))
+					{
+						$offset2 = $offsets['users']['uid_'.$row->get(TBGCommentsTable::POSTED_BY)];
+					}
+					else
+					{
+						$offset2 = $offsets['system'];
+					}
+	
+					$crit2 = $table->getCriteria();
+					$crit2->addUpdate(TBGCommentsTable::POSTED, (int) $row->get(TBGCommentsTable::POSTED) + $offset);
+
+					if (isset($offset2))
+					{
+						$crit2->addUpdate(TBGCommentsTable::UPDATED, (int) $row->get(TBGCommentsTable::UPDATED) + $offset2);
+						unset($offset2);
+					}
+					
+					$crit2->addWhere(TBGCommentsTable::ID, $row->get(TBGCommentsTable::ID));
+				}
+				
+				// EDITIONS
+				
+				$table = TBGEditionsTable::getTable();
+				$crit = $table->getCriteria();
+				$crit->addWhere(TBGEditions::SCOPE, $scope->getID());
+				
+				$res = $table->doSelect($crit);
+				
+				while ($row = $res->getNextRow())
+				{
+					if ($row->get(TBGEditionsTable::RELEASED) == 1)
+					{
+						$offset = $offsets['system'];
+	
+						$crit2 = $table->getCriteria();
+						$crit2->addUpdate(TBGEditionsTable::RELEASE_DATE, (int) $row->get(TBGEditionsTable::RELEASE_DATE) + $offset);
+						$crit2->addWhere(TBGEditionsTable::ID, $row->get(TBGEditionsTable::ID));
+					}
+				}
+				
+				// FILES
+				
+				$table = TBGFilesTable::getTable();
+				$crit = $table->getCriteria();
+				$crit->addWhere(TBGFilesTable::SCOPE, $scope->getID());
+				
+				$res = $table->doSelect($crit);
+				
+				while ($row = $res->getNextRow())
+				{
+					if (array_key_exists('uid_'.$row->get(TBGFilesTable::UID), $offsets['users']))
+					{
+						$offset = $offsets['users']['uid_'.$row->get(TBGFilesTable::UID)];
+					}
+					else
+					{
+						$offset = $offsets['system'];
+					}
+
+					$crit2 = $table->getCriteria();
+					$crit2->addUpdate(TBGFilesTable::UPLOADED_AT, (int) $row->get(TBGFilesTable::UPLOADED_AT) + $offset);
+					$crit2->addWhere(TBGFilesTable::ID, $row->get(TBGFilesTable::ID));
+				}
+				
+				// ISSUE ESTIMATES
+				
+				// FIXME
+				
+				// ISSUE SPENT TIMES
+				
+				// FIXME
+				
+				// ISSUES
+				
+				// LOG
+				
+				// MILESTONES
+				
+				$table = TBGMilestonesTable::getTable();
+				$crit = $table->getCriteria();
+				$crit->addWhere(TBGMilestonesTable::SCOPE, $scope->getID());
+				
+				$res = $table->doSelect($crit);
+				
+				while ($row = $res->getNextRow())
+				{
+					$offset = $offsets['system'];
+	
+					$crit2 = $table->getCriteria();
+					
+					if ($row->get(TBGMilestonesTable::REACHED) > 0)
+					{
+						$crit2->addUpdate(TBGMilestonesTable::REACHED, (int) $row->get(TBGMilestonesTable::REACHED) + $offset);
+					}
+
+					if ($row->get(TBGMilestonesTable::SCHEDULED) > 0)
+					{
+						$crit2->addUpdate(TBGMilestonesTable::SCHEDULED, (int) $row->get(TBGMilestonesTable::SCHEDULED) + $offset);
+					}
+					
+					if ($row->get(TBGMilestonesTable::STARTING) > 0)
+					{
+						$crit2->addUpdate(TBGMilestonesTable::STARTING, (int) $row->get(TBGMilestonesTable::STARTING) + $offset);
+					}
+					
+					$crit2->addWhere(TBGMilestonesTable::ID, $row->get(TBGMilestonesTable::ID));
+				}
+				
+				// PROJECTS
+				// FIXME: does planned release use the RELEASED field?
+				
+				$table = TBGProjectsTable::getTable();
+				$crit = $table->getCriteria();
+				$crit->addWhere(TBGProjectsTable::SCOPE, $scope->getID());
+				
+				$res = $table->doSelect($crit);
+				
+				while ($row = $res->getNextRow())
+				{
+					if ($row->get(TBGProjectsTable::RELEASED) == 1)
+					{
+						$offset = $offsets['system'];
+	
+						$crit2 = $table->getCriteria();
+						$crit2->addUpdate(TBGProjectsTable::RELEASE_DATE, (int) $row->get(TBGProjectsTable::RELEASE_DATE) + $offset);
+						$crit2->addWhere(TBGProjectsTable::ID, $row->get(TBGProjectsTable::ID));
+					}
+				}
+				
+				// VCS INTEGRATION
+				
+				if (TBGContext::isModuleLoaded('vcs_integration'))
+				{
+					$table = TBGVCSIntegrationTable::getTable();
+					$crit = $table->getCriteria();
+					$crit->addWhere(TBGVCSIntegrationTable::SCOPE, $scope->getID());
+					
+					$res = $table->doSelect($crit);
+					
+					while ($row = $res->getNextRow())
+					{
+						if (array_key_exists('uid_'.$row->get(TBGVCSIntegrationTable::AUTHOR), $offsets['users']))
+						{
+							$offset = $offsets['users']['uid_'.$row->get(TBGVCSIntegrationTable::AUTHOR)];
+						}
+						else
+						{
+							$offset = $offsets['system'];
+						}
+	
+						$crit2 = $table->getCriteria();
+						$crit2->addUpdate(TBGVCSIntegrationTable::DATE, (int) $row->get(TBGVCSIntegrationTable::DATE) + $offset);
+						$crit2->addWhere(TBGVCSIntegrationTable::ID, $row->get(TBGVCSIntegrationTable::ID));
+					}
+				}
+			}
+		}
+
 		public function runUpgrade(TBGRequest $request)
 		{
 			$version_info = explode(',', file_get_contents(THEBUGGENIE_PATH . 'installed'));
