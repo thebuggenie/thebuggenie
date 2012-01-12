@@ -74,7 +74,7 @@
 					}
 					$this->cliEcho($issue->issue_no, 'green', 'bold');
 					$this->cliEcho(" - ");
-					$this->cliEcho($issue->title, 'white', 'bold');
+					$this->cliEcho(html_entity_decode($issue->title), 'white', 'bold');
 					$this->cliEcho("\n");
 					if ($this->getProvidedArgument('detailed', 'no') == 'yes')
 					{
