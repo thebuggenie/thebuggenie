@@ -1756,7 +1756,7 @@
 		{
 			if ($this->_timezone == null)
 			{
-				$this->_timezone = TBGSettings::get('timezone', 'core', null, $this->getID());
+				$this->_timezone = TBGSettings::get('timezone', 'core', TBGContext::getScope(), $this->getID());
 			}
 			return $this->_timezone;
 		}

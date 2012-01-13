@@ -52,8 +52,7 @@
 		
 		public function getAll()
 		{
-			$crit = $this->getCriteria();
-			$res = $this->select($crit, 'none');
+			$res = $this->doSelectAll();
 			
 			return $res;
 		}
