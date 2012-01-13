@@ -3560,7 +3560,7 @@
 		
 		public function runServe(TBGRequest $request)
 		{
-			if(TBGContext::isMinifyDisabled())
+			if(!TBGContext::isMinifyEnabled())
 			{
 				$itemarray = array($request['g'] => explode(',', base64_decode($request['files'])));
 				

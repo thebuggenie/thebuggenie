@@ -2095,4 +2095,11 @@
 			return array_key_exists($identity, $this->_openid_accounts);
 		}
 
+		public function toJSON()
+		{
+			return array('id' => $this->getID(),
+						'name' => $this->getName(),
+						'username' => $this->getUsername());
+		}
+
 	}

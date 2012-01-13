@@ -512,8 +512,316 @@
 				}
 			}
 			
+			if (TBGContext::getRequest()->getParameter('fix_my_timestamps' == '1'))
+			{
+				$this->_fixTimestamps();
+			}
+			
 			$this->upgrade_complete = true;
 		}
+
+		private function _fixTimestamps()
+		{
+			// Unlimited execution time
+			set_time_limit(0);
+			
+			foreach (TBGScope::getAll() as $scope)
+			{
+				TBGContext::setScope($scope);
+				
+				// The first job is to work out the offsets that need applying
+				$offsets = array('system', 'users');
+				$offsets['users'] = array();
+				
+				$offsets['system'] == (int) TBGSettings::getGMToffset() * 3600;
+				
+				foreach (TBGUser::getAll() as $user)
+				{
+					// Don't record an offset if the user's timezone is set to 0, use the system one instead
+					if ($user->getTimezone() != '0' && $user->getTimezone() != 'sys')
+					{
+						$offsets['users']['uid_'.$user->getID()] = (int) $user->getTimezone() * 3600;
+					}
+				}
+				
+				// Now go through every thing which requires updating
+				
+				if (TBGContext::isModuleLoaded('publish'))
+				{
+					// ARTICLE HISTORY
+					$this->_fixUserDependentTimezone($offsets, TBGArticleHistoryTable::getTable(), TBGArticleHistoryTable::AUTHOR, TBGArticleHistoryTable::DATE);
+					
+					// ARTICLES
+					$this->_fixUserDependentTimezone($offsets, TBGArticlesTable::getTable(), TBGArticlesTable::AUTHOR, TBGArticlesTable::DATE);
+				}
+
+				// BUILDS
+				$this->_fixNonUserDependentTimezone($offsets, TBGBuildsTable::getTable(), TBGBuildsTable::RELEASE_DATE, TBGBuildsTable::RELEASED);
+
+				
+				// COMMENTS		
+				$this->_fixUserDependentTimezone($offsets, TBGCommentsTable::getTable(), array('a' => TBGCommentsTable::POSTED_BY, 'b' => TBGCommentsTable::UPDATED_BY), array('a' => TBGCommentsTable::POSTED, 'b' => TBGCommentsTable::UPDATED));
+				
+				// EDITIONS
+				$this->_fixNonUserDependentTimezone($offsets, TBGEditionsTable::getTable(), TBGEditionsTable::RELEASE_DATE, TBGEditionsTable::RELEASED);
+
+								
+				// FILES
+				$this->_fixUserDependentTimezone($offsets, TBGFilesTable::getTable(), TBGFilesTable::UID, TBGFilesTable::UPLOADED_AT);
+				
+				// ISSUES
+				// This is a bit more complex so do this manually - we have to poke around with the issue log
+				$table = TBGIssuesTable::getTable();
+				$crit = $table->getCriteria();
+				$crit->addWhere(TBGIssuesTable::SCOPE, $scope->getID());
+				
+				$res = $table->doSelect($crit);
+				
+				while ($row = $res->getNextRow())
+				{
+					$issue_object = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
+					$issue_log = $issue_object->getLogEntries();
+					
+					array_reverse($issue_log);
+					
+					$updated_by = null;
+					$assigned_by = null;
+	
+					foreach($issue_log as $entry)
+					{
+						if ($updated_by == null)
+						{
+							if ($entry['change_type'] == TBGLogTable::LOG_ISSUE_ASSIGNED)
+							{
+								$assigned_by = $entry['user_id'];
+							}
+						}
+					}
+					
+					reset($issue_log);
+					array_reverse($issue_log);
+					
+					end($issue_log); // Set array to the end
+					
+					$assigned_by = $issue_log['user_id'];
+					
+					if (array_key_exists('uid_'.$row->get(TBGIssuesTable::POSTED_BY), $offsets['users']))
+					{
+						$offset = $offsets['users']['uid_'.$row->get(TBGIssuesTable::POSTED_BY)];
+					}
+					else
+					{
+						$offset = $offsets['system'];
+					}
+					
+					if (array_key_exists('uid_'.$updated_by, $offsets['users']))
+					{
+						$offset2 = $offsets['users']['uid_'.$updated_by];
+					}
+					else
+					{
+						$offset2 = $offsets['system'];
+					}
+					
+					if ($assigned_by !== null && array_key_exists('uid_'.$assigned_by, $offsets['users']))
+					{
+						$offset3 = $offsets['users']['uid_'.$assigned_by];
+					}
+					else
+					{
+						$offset3 = $offsets['system'];
+					}
+
+					unset($issue_log);
+					unset($issue_object);
+					unset($updated_by);
+					unset($assigned_by);
+	
+					$crit2 = $table->getCriteria();
+					$crit2->addUpdate(TBGIssuesTable::POSTED, (int) $row->get(TBGIssuesTable::POSTED) + $offset);
+
+					if (isset($offset2))
+					{
+						$crit2->addUpdate(TBGIssuesTable::LAST_UPDATED, (int) $row->get(TBGIssuesTable::LAST_UPDATED) + $offset2);
+						unset($offset2);
+					}
+					
+					if (isset($offset3))
+					{
+						$crit2->addUpdate(TBGIssuesTable::BEING_WORKED_ON_BY_USER_SINCE, (int) $row->get(TBGIssuesTable::BEING_WORKED_ON_BY_USER_SINCE) + $offset3);
+						unset($offset3);
+					}
+					
+					$crit2->addWhere(TBGIssuesTable::ID, $row->get(TBGIssuesTable::ID));
+					$table->doUpdate($crit2);
+				}
+				
+				// LOG
+				$this->_fixUserDependentTimezone($offsets, TBGLogTable::getTable(), TBGLogTable::UID, TBGLogTable::TIME);
+				
+				// MILESTONES
+				// The conditions are a bit different here so do it manually
+				$table = TBGMilestonesTable::getTable();
+				$crit = $table->getCriteria();
+				$crit->addWhere(TBGMilestonesTable::SCOPE, $scope->getID());
+				
+				$res = $table->doSelect($crit);
+				
+				while ($row = $res->getNextRow())
+				{
+					$offset = $offsets['system'];
+	
+					$crit2 = $table->getCriteria();
+					
+					$added = 0;
+					
+					if ($row->get(TBGMilestonesTable::REACHED) > 0)
+					{
+						$crit2->addUpdate(TBGMilestonesTable::REACHED, (int) $row->get(TBGMilestonesTable::REACHED) + $offset);
+						$added = 1;
+					}
+
+					if ($row->get(TBGMilestonesTable::SCHEDULED) > 0)
+					{
+						$crit2->addUpdate(TBGMilestonesTable::SCHEDULED, (int) $row->get(TBGMilestonesTable::SCHEDULED) + $offset);
+						$added = 1;
+					}
+					
+					if ($row->get(TBGMilestonesTable::STARTING) > 0)
+					{
+						$crit2->addUpdate(TBGMilestonesTable::STARTING, (int) $row->get(TBGMilestonesTable::STARTING) + $offset);
+						$added = 1;
+					}
+					
+					// Only do something if at least one call to addUpdate is done
+					if ($added == 1)
+					{
+						$crit2->addWhere(TBGMilestonesTable::ID, $row->get(TBGMilestonesTable::ID));
+						$table->doUpdate($crit2);
+					}
+				}
+				
+				// PROJECTS
+				$this->_fixNonUserDependentTimezone($offsets, TBGProjectsTable::getTable(), TBGProjectsTable::RELEASE_DATE, TBGProjectsTable::RELEASED);
+				
+				// VCS INTEGRATION
+				if (TBGContext::isModuleLoaded('vcs_integration'))
+				{
+					$this->fixUserDependentTimezone($offsets, TBGVCSIntegrationTable::getTable(), TBGVCSIntegrationTable::AUTHOR, TBGVCSIntegrationTable::DATE);
+				}
+			}
+		}
+
+		private function _fixUserDependentTimezone($offsets, \b2db\Table $table, $author_field, $correctionfield, $testfield = null)
+		{
+			$crit = $table->getCriteria();
+			$crit->addWhere($table::SCOPE, $scope->getID());
+			
+			$res = $table->doSelect($crit);
+			
+			while ($row = $res->getNextRow())
+			{				
+				if ($testfield !== null)
+				{
+					if ($row->get($testfield) != 1)
+					{
+						continue;
+					}
+				}
+				
+				if (!is_array($correctionfield))
+				{
+					$correctionfield = array('a' => $correctionfield);
+				}
+				
+				if (!is_array($author_field))
+				{
+					$author_field = array('a' => $author_field);
+				}
+				
+				$crit2 = $table->getCriteria();
+			
+				$added = 0;
+			
+				foreach ($author_field as $key => $field)
+				{
+					if (array_key_exists('uid_'.$row->get($field, $offsets['users'])))
+					{
+						$offset = $offsets['users']['uid_'.$row->get($field)];
+					}
+					else
+					{
+						$offset = $offsets['system'];
+					}
+
+					// If the timestamp is 0, don't correct as it is unset
+					if ($row->get($correctionfield[$key]) == 0)
+					{
+						continue;
+					}
+
+					$crit2->addUpdate($correctionfield[$key], (int) $row->get($correctionfield[$key]) + $offset);
+					$added = 1; // Mark that we have actually added something
+				}
+				
+				// Don't update if no addUpdate calls made
+				if ($added == 1)
+				{
+					$crit2->addWhere($table::ID, $row->get($table::ID));
+					$table->doUpdate($crit2);
+				}
+			}
+		}
+
+		private function _fixNonUserDependentTimezone($offsets, \b2db\Table $table, $correctionfield, $testfield = null)
+		{
+			$crit = $table->getCriteria();
+			$crit->addWhere($table::SCOPE, $scope->getID());
+			
+			$res = $table->doSelect($crit);
+			
+			while ($row = $res->getNextRow())
+			{
+				if ($testfield !== null)
+				{
+					if ($row->get($testfield) != 1)
+					{
+						continue;
+					}
+				}
+				
+				$offset = $offsets['system'];
+
+				$crit2 = $table->getCriteria();
+				
+				if (!is_array($correctionfield))
+				{
+					$correctionfield = array($correctionfield);
+				}
+				
+				$added = 0;
+				
+				foreach ($correctionfield as $field)
+				{
+					// If the timestamp is 0, don't correct as it is unset
+					if ($row->get($field) == 0)
+					{
+						continue;
+					}
+
+					$crit2->addUpdate($field, (int) $row->get($field) + $offset);
+					$added = 1; // Mark that we have actually added something
+				}
+				
+				// Don't update if no addUpdate calls made
+				if ($added == 1)
+				{
+					$crit2->addWhere($table::ID, $row->get($table::ID));
+					$table->doUpdate($crit2);
+				}
+			}
+		}
+
 
 		public function runUpgrade(TBGRequest $request)
 		{

@@ -13,6 +13,9 @@
 	require THEBUGGENIE_CORE_PATH . 'classes' . DS . 'TBGContext.class.php';
 	spl_autoload_register(array('TBGContext', 'autoload'));
 
+	TBGContext::setDebugMode(true);
+	TBGContext::setMinifyEnabled(false);
+
 	TBGContext::addAutoloaderClassPath(THEBUGGENIE_CORE_PATH . 'classes' . DS);
 	TBGContext::addAutoloaderClassPath(THEBUGGENIE_CORE_PATH . 'classes' . DS . 'B2DB' . DS);
 	TBGContext::autoloadNamespace('b2db', THEBUGGENIE_CORE_PATH . 'B2DB' . DS);

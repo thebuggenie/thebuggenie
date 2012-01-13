@@ -579,11 +579,13 @@
 		
 		public static function getUserTimezone()
 		{
+			if (!TBGContext::getUser() instanceof TBGUser) return 'sys';
 			return self::get(self::SETTING_USER_TIMEZONE, 'core', null, TBGContext::getUser()->getID());
 		}
 		
 		public static function getUserLanguage()
 		{
+			if (!TBGContext::getUser() instanceof TBGUser) return null;
 			return self::get(self::SETTING_USER_LANGUAGE, 'core', null, TBGContext::getUser()->getID());
 		}
 		

@@ -56,7 +56,7 @@
 			$this->cliEcho(" - ");
 			$state = ($issue->state == TBGIssue::STATE_OPEN) ? 'OPEN' : 'CLOSED';
 			$this->cliEcho("[{$state}] ", 'cyan');
-			$this->cliEcho($issue->title, 'white', 'bold');
+			$this->cliEcho(html_entity_decode($issue->title), 'white', 'bold');
 			$this->cliEcho("\n");
 			$this->cliEcho("State: ", 'white', 'bold');
 			$this->cliEcho($state);

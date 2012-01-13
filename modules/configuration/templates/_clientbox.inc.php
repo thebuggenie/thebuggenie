@@ -9,7 +9,7 @@
 		<div class="rounded_box white shadowed" style="margin: 5px; display: none;" id="edit_client_<?php echo $client->getID(); ?>">
 			<div class="dropdown_header"><?php echo __('Edit client settings'); ?></div>
 			<div class="dropdown_content">
-				<form id="edit_client_<?php echo $client->getID(); ?>_form" action="<?php echo make_url('configure_users_edit_client', array('client_id' => $client->getID())); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="editClient('<?php echo make_url('configure_users_edit_client', array('client_id' => $client->getID())); ?>', '<?php echo $client->getID(); ?>');return false;">
+				<form id="edit_client_<?php echo $client->getID(); ?>_form" action="<?php echo make_url('configure_users_edit_client', array('client_id' => $client->getID())); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="TBG.Config.Client.update('<?php echo make_url('configure_users_edit_client', array('client_id' => $client->getID())); ?>', '<?php echo $client->getID(); ?>');return false;">
 				<input type="hidden" name="client_id" value="<?php echo $client->getID(); ?>">
 					<div id="edit_client">
 						<table style="clear: both; width: 780px;" class="padded_table" cellpadding=0 cellspacing=0>
