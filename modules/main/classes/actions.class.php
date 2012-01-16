@@ -2632,6 +2632,10 @@
 
 		public function runGetBackdropPartial(TBGRequest $request)
 		{
+			if (!$request->isAjaxCall())
+			{
+				return $this->return404($this->getI18n()->__('You need to enable javascript for The Bug Genie to work properly'));
+			}
 			try
 			{
 				$template_name = null;
