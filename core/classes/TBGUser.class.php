@@ -1744,7 +1744,12 @@
 		 */
 		public function hasProjectPageAccess($page, $project_id)
 		{
-			return (bool) ($this->hasPageAccess($page, $project_id) || $this->hasPageAccess('project_allpages', $project_id)); 
+			$retval = $this->hasPageAccess($page, $project_id);
+			if ($retval === null)
+			{
+				return (bool) $this->hasPageAccess('project_allpages', $project_id);
+			}
+			return $retval;
 		}
 
 		/**

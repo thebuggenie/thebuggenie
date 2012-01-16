@@ -1429,6 +1429,7 @@
 		{
 			$uid = (int) $uid;
 			$gid = (int) $gid;
+			$retval = null;
 			if (array_key_exists($module_name, self::$_permissions) &&
 				array_key_exists($permission_type, self::$_permissions[$module_name]) &&
 				(array_key_exists($target_id, self::$_permissions[$module_name][$permission_type]) || $target_id === null))
@@ -1450,7 +1451,7 @@
 				if ($retval !== null) return $retval;
 			}
 
-			if ($explicit) return $permissive;
+			if ($explicit) return $retval;
 			
 			return TBGSettings::isPermissive();
 		}
