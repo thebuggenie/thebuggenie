@@ -499,18 +499,27 @@
 
 		protected function _parse_externallink($matches)
 		{
-			$href = html_entity_decode($matches[2]);
-			$title = null;
-			$title = (array_key_exists(3, $matches)) ? $matches[3] : $matches[2];
-			if (!$title)
+			if (!is_array($matches))
 			{
+				if (is_null($matches)) return '';
+
 				$this->linknumber++;
-				$title = "[{$this->linknumber}]";
+				$href = $title = html_entity_decode($matches);
 			}
+			else
+			{
+				$href = html_entity_decode($matches[2]);
+				$title = null;
+				$title = (array_key_exists(3, $matches)) ? $matches[3] : $matches[2];
+				if (!$title)
+				{
+					$this->linknumber++;
+					$title = "[{$this->linknumber}]";
+				}
 
-			if (TBGContext::isCLI()) return $href;
-
-			return link_tag($href, $title, array('target' => '_new'));
+				if (TBGContext::isCLI()) return $href;
+			}
+			return link_tag(str_replace(array('[',']'), array('&#91;', '&#93;'), $href), str_replace(array('[',']'), array('&#91;', '&#93;'), $title), array('target' => '_new'));
 		}
 
 		protected function _parse_autosensedlink($matches)
@@ -757,11 +766,11 @@
 			{
 				$char_regexes[] = array('/(\{\{([^\}]*?)\}\})/i', array($this, '_parse_variable'));
 			}
-			$char_regexes[] = array('/(\[\[(\:?([^\]]*?)\:)?([^\]]*?)(\|([^\]]*?))?\]\]([a-z]+)?)/i', array($this, "_parse_save_ilink"));
+			$char_regexes[] = array('/(^|[ \t\r\n])((ftp|http|https|gopher|mailto|news|nntp|telnet|wais|file|prospero|aim|webcal):(([A-Za-z0-9$_.+!*(),;\[\]\/?:@&~=-])|%[A-Fa-f0-9]{2}){2,}(#([a-zA-Z0-9][a-zA-Z0-9\[\]$_.+!*(),;\/?:@&~=%-]*))?([A-Za-z0-9\[\]$_+!*();\/?:~-]))/', array($this, '_parse_autosensedlink'));
 			$char_regexes[] = array('/(\[([^\]]*?)(\s+[^\]]*?)?\])/i', array($this, "_parse_save_elink"));
+			$char_regexes[] = array('/(\[\[(\:?([^\]]*?)\:)?([^\]]*?)(\|([^\]]*?))?\]\]([a-z]+)?)/i', array($this, "_parse_save_ilink"));
 			$char_regexes[] = array(self::getIssueRegex(), array($this, '_parse_issuelink'));
 			$char_regexes[] = array('/(?<=\s|^)(\:\(|\:-\(|\:\)|\:-\)|8\)|8-\)|B\)|B-\)|\:-\/|\:-D|\:-P|\(\!\)|\(\?\))(?=\s|$)/i', array($this, '_getsmiley'));
-			$char_regexes[] = array('/(^|[ \t\r\n])((ftp|http|https|gopher|mailto|news|nntp|telnet|wais|file|prospero|aim|webcal):(([A-Za-z0-9$_.+!*(),;\/?:@&~=-])|%[A-Fa-f0-9]{2}){2,}(#([a-zA-Z0-9][a-zA-Z0-9$_.+!*(),;\/?:@&~=%-]*))?([A-Za-z0-9$_+!*();\/?:~-]))/', array($this, '_parse_autosensedlink'));
 			foreach (self::getRegexes() as $regex)
 			{
 				$char_regexes[] = array($regex[0], $regex[1]);
