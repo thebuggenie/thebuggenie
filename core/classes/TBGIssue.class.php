@@ -754,7 +754,7 @@
 				TBGLogging::log('done checking, allowed since this user is in same group as user that posted it');
 				return true;
 			}
-			if (!TBGContext::getUser()->hasPermission('canseeallissues', 0, 'core', true, true))
+			if (TBGContext::getUser()->hasPermission('canseeallissues', 0, 'core', true, true) === false)
 			{
 				TBGLogging::log('done checking, not allowed to access issues not posted by themselves');
 				return false;
