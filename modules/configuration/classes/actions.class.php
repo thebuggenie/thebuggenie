@@ -2178,7 +2178,7 @@
 					throw new Exception(TBGContext::getI18n()->__("You cannot edit this client"));
 				}
 				
-				if (TBGClient::doesClientNameExist(trim($request['client_name'])) && $request['client_name'] != $client->getName())
+				if (TBGClient::doesClientNameExist(trim($request['client_name'])) && strtolower($request['client_name']) != strtolower($client->getName()))
 				{
 					throw new Exception(TBGContext::getI18n()->__("Please enter a client name that doesn't already exist"));
 				}
