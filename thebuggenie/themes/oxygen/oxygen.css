@@ -790,7 +790,7 @@ ul.workflow_actions li:hover { box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); -webkit-b
 .issue_info .header { font-size: 1.1em; line-height: 1.3; }
 .issue_info .content, .notfound_error .content { font-weight: normal; font-size: 0.95em; line-height: 1; }
 .issue_info.error.active ~ .issue_info_backdrop { background-color: #FAA; }
-#notfound_error { vertical-align: middle; text-align: center; padding: 5px; color: #222; font-weight: bold; font-size: 1.1em; width: 700px; }
+#notfound_error { vertical-align: middle; text-align: center; padding: 5px; color: #222; font-weight: bold; font-size: 1.1em; width: 900px; }
 #notfound_error .content { font-weight: normal; }
 #notfound_error .header { text-align: center; }
 #viewissue_saved { cursor: pointer; }
