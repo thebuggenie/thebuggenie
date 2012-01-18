@@ -64,7 +64,7 @@
 		<?php endif; ?>
 	</td>
 	<td style="padding: 2px; text-align: center;">
-		<?php if (in_array($key, array('votes'))): ?>
+		<?php if (in_array($key, array('votes', 'owner', 'assignee'))): ?>
 			<input type="hidden" id="f_<?php echo $issuetype->getID(); ?>_<?php echo $key; ?>_reportable"> -
 		<?php else: ?>
 			<?php if (!$scheme->isCore()): ?>
@@ -74,18 +74,18 @@
 			<?php endif; ?>
 		<?php endif; ?>
 	<td style="padding: 2px; text-align: center;">
-		<?php if (!in_array($key, array('description', 'reproduction_steps', 'user_pain', 'votes'))): ?>
+		<?php if (in_array($key, array('description', 'reproduction_steps', 'user_pain', 'votes', 'owner', 'assignee'))): ?>
+			<input type="hidden" id="f_<?php echo $issuetype->getID(); ?>_<?php echo $key; ?>_additional"> -
+		<?php else: ?>
 			<?php if (!$scheme->isCore()): ?>
 				<input type="checkbox" id="f_<?php echo $issuetype->getID(); ?>_<?php echo $key; ?>_additional" name="field[<?php echo $key; ?>][additional]" value="1"<?php if (array_key_exists($key, $visiblefields) && $visiblefields[$key]['additional']): ?> checked<?php endif; ?><?php if ((!array_key_exists($key, $visiblefields) || !$visiblefields[$key]['reportable']) && !in_array($key, array('status'))): ?> disabled<?php endif; ?>>
 			<?php else: ?>
 				<?php echo (array_key_exists($key, $visiblefields) && $visiblefields[$key]['additional']) ? image_tag('action_ok.png') : ''; ?>
 			<?php endif; ?>
-		<?php else: ?>
-			<input type="hidden" id="f_<?php echo $issuetype->getID(); ?>_<?php echo $key; ?>_additional"> - 
 		<?php endif; ?>
 	</td>
 	<td style="padding: 2px; text-align: center;">
-		<?php if (in_array($key, array('votes'))): ?>
+		<?php if (in_array($key, array('votes', 'owner', 'assignee'))): ?>
 			<input type="hidden" id="f_<?php echo $issuetype->getID(); ?>_<?php echo $key; ?>_required"> -
 		<?php else: ?>
 			<?php if (!$scheme->isCore()): ?>
