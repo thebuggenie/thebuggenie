@@ -9,18 +9,19 @@
 			</td>
 			<td class="workflow_scheme_issuetypes"><?php echo __('Issue types with associated workflows: %number_of_associated_issuetypes%', array('%number_of_associated_issuetypes%' => '<span>'.$scheme->getNumberOfAssociatedWorkflows().'</span>')); ?></td>
 			<td class="workflow_actions">
-				<?php echo __('Actions: %list%', array('%list%' => '')); ?><br>
-				<?php if (!$scheme->isCore()): ?>
-					<?php if ($scheme->isInUse()): ?>
-						<a href="javascript:void(0);" onclick="TBG.Main.Helpers.Message.error('<?php echo __('Cannot delete workflow scheme'); ?>', '<?php echo __('This workflow scheme can not be deleted as it is being used by %number_of_projects% project(s)', array('%number_of_projects%' => $scheme->getNumberOfProjects())); ?>');" class="rounded_box"><?php echo image_tag('icon_delete.png', array('title' => __('Delete this issue type scheme'))); ?></a>
-					<?php else: ?>
-						<a href="javascript:void(0);" onclick="$('delete_scheme_<?php echo $scheme->getID(); ?>_popup').toggle();" class="rounded_box"><?php echo image_tag('icon_delete.png', array('title' => __('Delete this issue type scheme'))); ?></a>
+				<div class="button-group">
+					<?php echo link_tag(make_url('configure_workflow_scheme', array('scheme_id' => $scheme->getID())), image_tag('icon_workflow_scheme_edit.png', array('title' => __('Show / edit issue type associations'))), array('class' => 'button button-icon button-silver')); ?></a>
+					<?php if (TBGContext::getScope()->isCustomWorkflowsEnabled()): ?>
+						<a href="javascript:void(0);" onclick="$('copy_scheme_<?php echo $scheme->getID(); ?>_popup').toggle();" class="button button-icon button-silver"><?php echo image_tag('icon_copy.png', array('title' => __('Create a copy of this workflow scheme'))); ?></a>
 					<?php endif; ?>
-				<?php endif; ?>
-				<?php if (TBGContext::getScope()->isCustomWorkflowsEnabled()): ?>
-					<a href="javascript:void(0);" onclick="$('copy_scheme_<?php echo $scheme->getID(); ?>_popup').toggle();" class="rounded_box"><?php echo image_tag('icon_copy.png', array('title' => __('Create a copy of this workflow scheme'))); ?></a>
-				<?php endif; ?>
-				<?php echo link_tag(make_url('configure_workflow_scheme', array('scheme_id' => $scheme->getID())), image_tag('icon_workflow_scheme_edit.png', array('title' => __('Show / edit issue type associations'))), array('class' => 'rounded_box')); ?></a>
+					<?php if (!$scheme->isCore()): ?>
+						<?php if ($scheme->isInUse()): ?>
+							<a href="javascript:void(0);" onclick="TBG.Main.Helpers.Message.error('<?php echo __('Cannot delete workflow scheme'); ?>', '<?php echo __('This workflow scheme can not be deleted as it is being used by %number_of_projects% project(s)', array('%number_of_projects%' => $scheme->getNumberOfProjects())); ?>');" class="button button-icon button-silver"><?php echo image_tag('icon_delete.png', array('title' => __('Delete this issue type scheme'))); ?></a>
+						<?php else: ?>
+							<a href="javascript:void(0);" onclick="$('delete_scheme_<?php echo $scheme->getID(); ?>_popup').toggle();" class="button button-icon button-silver"><?php echo image_tag('icon_delete.png', array('title' => __('Delete this issue type scheme'))); ?></a>
+						<?php endif; ?>
+					<?php endif; ?>
+				</div>
 			</td>
 		</tr>
 	</table>

@@ -10,18 +10,19 @@
 			<td class="workflow_<?php if (!$workflow->isActive()) echo 'in'; ?>active"><?php echo ($workflow->isActive()) ? __('Active') : __('Inactive'); ?></td>
 			<td class="workflow_steps"><?php echo __('Steps: %number_of_workflow_steps%', array('%number_of_workflow_steps%' => '<span>'.$workflow->getNumberOfSteps().'</span>')); ?></td>
 			<td class="workflow_actions">
-				<?php echo __('Actions: %list%', array('%list%' => '')); ?><br>
-				<?php if (!$workflow->isCore()): ?>
-					<?php if ($workflow->isInUse()): ?>
-						<a href="javascript:void(0);" onclick="TBG.Main.Helpers.Message.error('<?php echo __('Cannot delete workflow'); ?>', '<?php echo __('This workflow can not be deleted as it is being used by %number_of_schemes% workflow scheme(s)', array('%number_of_schemes%' => $workflow->getNumberOfSchemes())); ?>');" class="rounded_box"><?php echo image_tag('icon_delete.png', array('title' => __('Delete this workflow'))); ?></a>
-					<?php else: ?>
-						<a href="javascript:void(0);" onclick="$('delete_workflow_<?php echo $workflow->getID(); ?>_popup').toggle();" class="rounded_box"><?php echo image_tag('icon_delete.png', array('title' => __('Delete this workflow'))); ?></a>
+				<div class="button-group">
+					<?php echo link_tag(make_url('configure_workflow_steps', array('workflow_id' => $workflow->getID())), image_tag('icon_workflow_scheme_edit.png', array('title' => __('Show workflow details'))), array('class' => 'button button-icon button-silver')); ?></a>
+					<?php if (TBGContext::getScope()->hasCustomWorkflowsAvailable()): ?>
+						<a href="javascript:void(0);" onclick="$('copy_workflow_<?php echo $workflow->getID(); ?>_popup').toggle();" class="button button-icon button-silver copy_workflow_link"><?php echo image_tag('icon_copy.png', array('title' => __('Create a copy of this workflow'))); ?></a>
 					<?php endif; ?>
-				<?php endif; ?>
-				<?php if (TBGContext::getScope()->hasCustomWorkflowsAvailable()): ?>
-					<a href="javascript:void(0);" onclick="$('copy_workflow_<?php echo $workflow->getID(); ?>_popup').toggle();" class="rounded_box copy_workflow_link"><?php echo image_tag('icon_copy.png', array('title' => __('Create a copy of this workflow'))); ?></a>
-				<?php endif; ?>
-				<?php echo link_tag(make_url('configure_workflow_steps', array('workflow_id' => $workflow->getID())), image_tag('icon_workflow_scheme_edit.png', array('title' => __('Show workflow details'))), array('class' => 'rounded_box')); ?></a>
+					<?php if (!$workflow->isCore()): ?>
+						<?php if ($workflow->isInUse()): ?>
+							<a href="javascript:void(0);" onclick="TBG.Main.Helpers.Message.error('<?php echo __('Cannot delete workflow'); ?>', '<?php echo __('This workflow can not be deleted as it is being used by %number_of_schemes% workflow scheme(s)', array('%number_of_schemes%' => $workflow->getNumberOfSchemes())); ?>');" class="button button-icon button-silver"><?php echo image_tag('icon_delete.png', array('title' => __('Delete this workflow'))); ?></a>
+						<?php else: ?>
+							<a href="javascript:void(0);" onclick="$('delete_workflow_<?php echo $workflow->getID(); ?>_popup').toggle();" class="button button-icon button-silver"><?php echo image_tag('icon_delete.png', array('title' => __('Delete this workflow'))); ?></a>
+						<?php endif; ?>
+					<?php endif; ?>
+				</div>
 			</td>
 		</tr>
 	</table>
