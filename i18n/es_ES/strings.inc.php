@@ -538,7 +538,7 @@
 	$strings['Can see all comments including hidden'] = 'Puede ver todos los comentarios incluyendo los ocultos';
 	$strings['Can delete any comments'] = 'Puede borrar cualquier comentario';
 	$strings['Dropdown list with custom text choices'] = 'Lista desplegable con opciones textuales';
-	$strings['Single line text input'] = 'Una sola línea de entradad de texto';
+	$strings['Single line text input'] = 'Una sola línea de entrada de texto';
 	$strings['Textarea in issue main area'] = 'Area de texto en el área principal del petición';
 	$strings['Textarea (small) in issue details list'] = 'Area de texto (pequeña) en la lista de detalles de la petición';
 	$strings['Radio choices'] = 'Opciones de radio';
@@ -2559,3 +2559,11 @@
 	$strings['Noone else can see this issue'] = 'Nadie puede ver esta petición';
 	$strings['Add a user or team'] = 'Agregar un usuario o equipo';
 	$strings['Give someone access to this issue'] = 'Dar acceso a esta petición';	
+	$strings['There are no downloadable releases at the moment'] = 'No hay versiones disponibles por el momento';
+	$strings['This dashboard doesn\'t contain any views.'] = 'Este panel no posee ninguna vista';
+	$strings['Setup my dashboard'] = 'Definir mi panel de control';
+	$strings['General settings'] = 'Opciones generales';
+	$strings['Your account details'] = 'Detalle de su cuenta';
+	$strings['Save workflow associations'] = 'Guardar asociaciones del flujo de trabajo';
+	$strings['No workflow selected - will use default workflow'] = 'Sin flujo de trabajo seleccionado - se usará el predefinido';
+	$strings['Workflow associations were updated'] = 'Asociaciones de flujo de trabajo actualizadas';	
