@@ -261,14 +261,8 @@
 				$crit->addWhere(self::MILESTONE, $milestone_id);
 			}
 			$crit->addWhere(self::DELETED, 0);
-			if ($exclude_tasks)
-			{
-				$crit->addJoin(TBGIssueTypesTable::getTable(), TBGIssueTypesTable::ID, self::ISSUE_TYPE);
-				$crit->addWhere(TBGIssueTypesTable::TASK, false);
-			}
 			
 			$crit2 = clone $crit;
-			
 			$crit->addWhere(self::STATE, TBGIssue::STATE_CLOSED);
 			$crit2->addWhere(self::STATE, TBGIssue::STATE_OPEN);
 			return array($this->doCount($crit), $this->doCount($crit2));
