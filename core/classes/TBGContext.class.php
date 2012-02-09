@@ -952,6 +952,7 @@
 			}
 			catch (Exception $e)
 			{
+				self::$_user = new TBGUser();
 				throw $e;
 			}
 			return self::$_user;
