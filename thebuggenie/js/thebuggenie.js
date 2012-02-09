@@ -697,6 +697,7 @@ TBG.Main.submitIssue = function(url) {
 
 TBG.Main.Link.add = function(url, target_type, target_id) {
 	TBG.Main.Helpers.ajax(url, {
+		form: 'attach_link_' + target_type + '_' + target_id + '_form',
 		loading: {
 			indicator: 'attach_link_' + target_type + '_' + target_id + '_indicator',
 			hide: 'attach_link_' + target_type + '_' + target_id + '_submit'
