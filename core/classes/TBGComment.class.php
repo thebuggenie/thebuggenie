@@ -430,7 +430,7 @@
 
 		public function isReply()
 		{
-			return (bool) (is_object($this->_reply_to_comment) || $this->_reply_to_comment);
+			return (bool) ($this->getReplyToComment() instanceof TBGComment);
 		}
 
 	}
