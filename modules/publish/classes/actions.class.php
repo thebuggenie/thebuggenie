@@ -228,7 +228,7 @@
 			}
 			if ($request->isPost())
 			{
-				if ($request->hasParameter('new_article_name') && $request['new_article_name'] != '')
+				if ($request->hasParameter('new_article_name') && $request['new_article_name'] != '' && preg_replace('/[\s\W]+/', '', $request['new_article_name']) == $request['new_article_name'])
 				{
 					if (($request->hasParameter('change_reason') && trim($request['change_reason']) != '') || TBGPublish::getModule()->getSetting('require_change_reason') == 0)
 					{
@@ -297,7 +297,7 @@
 				}
 				else
 				{
-					$this->error = TBGContext::getI18n()->__('You need to specify the article name');
+					$this->error = TBGContext::getI18n()->__('You need to specify a valid article name');
 				}
 			}
 			$this->preview = (bool) $request['preview'];
