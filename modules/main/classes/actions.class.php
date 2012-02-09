@@ -1132,7 +1132,6 @@
 			if (isset($fields_array['estimated_time'])) $issue->setEstimatedTime($this->selected_estimated_time);
 			if (isset($fields_array['spent_time'])) $issue->setSpentTime($this->selected_spent_time);
 			if (isset($fields_array['milestone']) || isset($this->selected_milestone)) $issue->setMilestone($this->selected_milestone);
-			if (isset($this->parent_issue)) $issue->addParentIssue($this->parent_issue);
 			if (isset($fields_array['percent_complete'])) $issue->setPercentCompleted($this->selected_percent_complete);
 			if (isset($fields_array['pain_bug_type'])) $issue->setPainBugType($this->selected_pain_bug_type);
 			if (isset($fields_array['pain_likelihood'])) $issue->setPainLikelihood($this->selected_pain_likelihood);
@@ -1173,9 +1172,12 @@
 			
 			$issue->save();
 
+			if (isset($this->parent_issue)) $issue->addParentIssue($this->parent_issue);
 			if (isset($fields_array['edition']) && $this->selected_edition instanceof TBGEdition) $issue->addAffectedEdition($this->selected_edition);
 			if (isset($fields_array['build']) && $this->selected_build instanceof TBGBuild) $issue->addAffectedBuild($this->selected_build);
 			if (isset($fields_array['component']) && $this->selected_component instanceof TBGComponent) $issue->addAffectedComponent($this->selected_component);
+
+
 
 			return $issue;
 		}
