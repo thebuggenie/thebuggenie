@@ -82,7 +82,7 @@
 			<select name="<?php echo TBGSettings::SETTING_ALLOW_OPENID; ?>" id="allowopenid" style="width: 400px;"<?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>>
 				<option value="all"<?php if (TBGSettings::getOpenIDStatus() == 'all'): ?> selected<?php endif; ?>><?php echo __('Users can register with OpenID and link OpenID to existing accounts'); ?></option>
 				<option value="existing"<?php if (!TBGSettings::getOpenIDStatus() == 'existing'): ?> selected<?php endif; ?>><?php echo __('Users can only link OpenID logins with existing accounts'); ?></option>
-				<option value="none"<?php if (!TBGSettings::getOpenIDStatus() == 'none'): ?> selected<?php endif; ?>><?php echo __('OpenID authentication is disabled'); ?></option>
+				<option value="none"<?php if (TBGSettings::getOpenIDStatus() == 'none'): ?> selected<?php endif; ?>><?php echo __('OpenID authentication is disabled'); ?></option>
 			</select>
 		</td>
 	</tr>
