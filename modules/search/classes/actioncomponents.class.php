@@ -74,6 +74,7 @@
 				$filters['component'] = array('description' => $i18n->__('Component'), 'options' => TBGContext::getCurrentProject()->getComponents());
 				$filters['build'] = array('description' => $i18n->__('Build'), 'options' => TBGContext::getCurrentProject()->getBuilds());
 				$filters['edition'] = array('description' => $i18n->__('Edition'), 'options' => TBGContext::getCurrentProject()->getEditions());
+				$filters['milestone'] = array('description' => $i18n->__('Milestone'), 'options' => TBGContext::getCurrentProject()->getMilestones());
 			}
 			$filters['posted_by'] = array('description' => $i18n->__('Posted by'));
 			$filters['assignee_user'] = array('description' => $i18n->__('Assigned to user'));

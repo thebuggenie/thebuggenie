@@ -36,6 +36,7 @@
 						<option value="severity"><?php echo __("Severity - how serious the issue is"); ?></option>
 						<option value="reproducability"><?php echo __("Reproducability - how often you can reproduce the issue"); ?></option>
 						<option value="issuetype"><?php echo __("Issue type - what kind of issue it is"); ?></option>
+						<option value="milestone"><?php echo __("Milestone - which milestone an issue is targetted for"); ?></option>
 						<option value="component"><?php echo __("Component - which components have been affected"); ?></option>
 						<option value="build"><?php echo __("Build - which builds have been affected"); ?></option>
 						<option value="edition"><?php echo __("Edition - which editions have been affected"); ?></option>
