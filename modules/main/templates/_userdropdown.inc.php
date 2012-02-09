@@ -33,7 +33,12 @@
 				</div>
 			<?php endif; ?>
 			<?php if ($tbg_user->canAccessConfigurationPage(TBGSettings::CONFIGURATION_SECTION_USERS)): ?>
-				<div style="padding: 2px;"><?php echo link_tag(make_url('configure_users', array('finduser' => $user->getUsername())), __('Edit this user'), array('target' => '_new')); ?></div>
+				<div style="padding: 2px;">
+					<form action="<?php echo make_url('configure_users'); ?>">
+						<input type="hidden" name="finduser" value="<?php echo $user->getUsername(); ?>">
+						<a href="javascript:void(0);" onclick="$(this).up('form').submit();"><?php echo __('Edit this user'); ?></a>
+					</form>
+				</div>
 				<?php if (!$tbg_request->hasCookie('tbg3_original_username')): ?>
 					<div style="padding: 2px;"><?php echo link_tag(make_url('switch_to_user', array('user_id' => $user->getID())), __('Switch to this user')); ?></div>
 				<?php else: ?>
