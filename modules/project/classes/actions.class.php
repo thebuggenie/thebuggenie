@@ -1066,42 +1066,53 @@
 
 		public function runMilestone(TBGRequest $request)
 		{
-			if ($request->isPost()) {
-				$milestone = new TBGMilestone($request['milestone_id']);
-				$milestone->setName($request['name']);
-				$milestone->setProject($this->selected_project);
-				$milestone->setStarting((bool) $request['is_starting']);
-				$milestone->setScheduled((bool) $request['is_scheduled']);
-				$milestone->setDescription($request['description']);
-				$milestone->setType($request->getParameter('milestone_type', TBGMilestone::TYPE_REGULAR));
-				if ($request->hasParameter('sch_month') && $request->hasParameter('sch_day') && $request->hasParameter('sch_year'))
+			if ($request->isPost()) 
+			{
+				try
 				{
-					$scheduled_date = mktime(23, 59, 59, TBGContext::getRequest()->getParameter('sch_month'), TBGContext::getRequest()->getParameter('sch_day'), TBGContext::getRequest()->getParameter('sch_year'));
-					$milestone->setScheduledDate($scheduled_date);
-				}
-				else
-					$milestone->setScheduledDate(0);
+					if (!$request['name']) throw new Exception($this->getI18n()->__('You must provide a valid milestone name'));
 
-				if ($request->hasParameter('starting_month') && $request->hasParameter('starting_day') && $request->hasParameter('starting_year'))
-				{
-					$starting_date = mktime(0, 0, 1, TBGContext::getRequest()->getParameter('starting_month'), TBGContext::getRequest()->getParameter('starting_day'), TBGContext::getRequest()->getParameter('starting_year'));
-					$milestone->setStartingDate($starting_date);
-				}
-				else
-					$milestone->setStartingDate(0);
+					$milestone = new TBGMilestone($request['milestone_id']);
+					$milestone->setName($request['name']);
+					$milestone->setProject($this->selected_project);
+					$milestone->setStarting((bool) $request['is_starting']);
+					$milestone->setScheduled((bool) $request['is_scheduled']);
+					$milestone->setDescription($request['description']);
+					$milestone->setType($request->getParameter('milestone_type', TBGMilestone::TYPE_REGULAR));
+					if ($request->hasParameter('sch_month') && $request->hasParameter('sch_day') && $request->hasParameter('sch_year'))
+					{
+						$scheduled_date = mktime(23, 59, 59, TBGContext::getRequest()->getParameter('sch_month'), TBGContext::getRequest()->getParameter('sch_day'), TBGContext::getRequest()->getParameter('sch_year'));
+						$milestone->setScheduledDate($scheduled_date);
+					}
+					else
+						$milestone->setScheduledDate(0);
 
-				$milestone->save();
-				if ($request['milestone_id'])
-				{
-					$message = TBGContext::getI18n()->__('Milestone updated');
-					$template = 'milestoneboxheader';
+					if ($request->hasParameter('starting_month') && $request->hasParameter('starting_day') && $request->hasParameter('starting_year'))
+					{
+						$starting_date = mktime(0, 0, 1, TBGContext::getRequest()->getParameter('starting_month'), TBGContext::getRequest()->getParameter('starting_day'), TBGContext::getRequest()->getParameter('starting_year'));
+						$milestone->setStartingDate($starting_date);
+					}
+					else
+						$milestone->setStartingDate(0);
+
+					$milestone->save();
+					if ($request['milestone_id'])
+					{
+						$message = TBGContext::getI18n()->__('Milestone updated');
+						$template = 'milestoneboxheader';
+					}
+					else
+					{
+						$message = TBGContext::getI18n()->__('Milestone created');
+						$template = 'milestonebox';
+					}
+					return $this->renderJSON(array('content' => $this->getTemplateHTML($template, array('milestone' => $milestone)), 'milestone_id' => $milestone->getID(), 'milestone_name' => $milestone->getName(), 'milestone_order' => array_keys($this->selected_project->getMilestones())));
 				}
-				else
+				catch (Exception $e)
 				{
-					$message = TBGContext::getI18n()->__('Milestone created');
-					$template = 'milestonebox';
+					$this->getResponse()->setHttpStatus(400);
+					return $this->renderJSON(array('error' => $e->getMessage()));
 				}
-				return $this->renderJSON(array('content' => $this->getTemplateHTML($template, array('milestone' => $milestone)), 'milestone_id' => $milestone->getID(), 'milestone_name' => $milestone->getName(), 'milestone_order' => array_keys($this->selected_project->getMilestones())));
 			}
 		}
 
