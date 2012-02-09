@@ -5,6 +5,16 @@
 	
 ?>
 <div id="account_info_container">
+	<div id="account_user_info">
+		<?php echo image_tag($tbg_user->getAvatarURL(false), array('style' => 'float: left; margin-right: 5px;', 'alt' => '[avatar]'), true); ?>
+		<span id="user_name_span">
+			<?php echo $tbg_user->getRealname(); ?><br>
+			<?php if (!$tbg_user->isOpenIdLocked()): ?>
+				<?php echo $tbg_user->getUsername(); ?>
+			<?php endif; ?>
+		</span>
+	</div>
+	<br style="clear: both;">
 	<div class="profile_buttons">
 		<div class="button-group">
 			<a style="<?php if (!$tbg_user->usesGravatar()): ?>display: none; <?php endif; ?>" id="gravatar_change" href="http://en.gravatar.com/emails/" class="button button-silver">
@@ -80,15 +90,6 @@
 				?>
 			</div>
 		<?php endif; ?>
-	</div>
-	<div id="account_user_info">
-		<?php echo image_tag($tbg_user->getAvatarURL(false), array('style' => 'float: left; margin-right: 5px;', 'alt' => '[avatar]'), true); ?>
-		<span id="user_name_span">
-			<?php echo $tbg_user->getRealname(); ?><br>
-			<?php if (!$tbg_user->isOpenIdLocked()): ?>
-				<?php echo $tbg_user->getUsername(); ?>
-			<?php endif; ?>
-		</span>
 	</div>
 	<br style="clear: both;">
 	<div style="margin: 0 0 20px 0; table-layout: fixed; width: 100%; height: 100%;">
