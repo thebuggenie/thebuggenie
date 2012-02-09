@@ -1754,8 +1754,12 @@ TBG.Project.Component.remove = function(url, cid) {
 	});
 }
 
-TBG.Project.submitSettings = function(url) {
+TBG.Project.submitAdvancedSettings = function(url) {
 	TBG.Project._submitDetails(url, 'project_settings');
+}
+
+TBG.Project.submitDisplaySettings = function(url) {
+	TBG.Project._submitDetails(url, 'project_other');
 }
 
 TBG.Project.submitInfo = function(url, pid) {

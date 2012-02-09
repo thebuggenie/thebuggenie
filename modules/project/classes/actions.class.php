@@ -1596,8 +1596,7 @@
 					$this->selected_project->setAutoassign((bool) $request['allow_autoassignment']);
 
 				$this->selected_project->save();
-				TBGContext::setMessage('project_settings_saved', true);
-				$this->forward(TBGContext::getRouting()->generate('project_settings', array('project_key' => $this->selected_project->getKey())));
+				return $this->renderJSON(array('message' => $this->getI18n()->__('Settings saved')));
 			}
 		}
 

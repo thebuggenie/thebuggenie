@@ -1,5 +1,5 @@
 <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-	<form action="<?php echo make_url('configure_project_updateother', array('project_id' => $project->getID())); ?>" method="post" id="project_other">
+	<form action="<?php echo make_url('configure_project_updateother', array('project_id' => $project->getID())); ?>" method="post" id="project_other" onsubmit="TBG.Project.submitDisplaySettings('<?php echo make_url('configure_project_settings', array('project_id' => $project->getID())); ?>'); return false;">
 <?php endif; ?>
 	<h3><?php echo __('Editing project display settings'); ?></h3>
 	<table style="clear: both; width: 780px;" class="padded_table" cellpadding=0 cellspacing=0>
