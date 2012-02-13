@@ -133,7 +133,13 @@
 
 		public function canUserSet(TBGUser $user)
 		{
-			return $user->hasPermission($this->getPermissionsKey(), $this->getID(), 'core', true, true);
+			$retval = $user->hasPermission($this->getPermissionsKey(), $this->getID(), 'core', true);
+			if ($retval === null)
+			{
+				$retval = $user->hasPermission($this->getPermissionsKey(), 0, 'core', true);
+			}
+
+			return (bool) $retval;
 		}
 
 		public function setOrder($order)

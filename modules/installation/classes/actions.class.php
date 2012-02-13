@@ -498,6 +498,10 @@
 			foreach (TBGScope::getAll() as $scope)
 			{
 				TBGRole::loadFixtures($scope);
+				foreach (TBGDatatype::getTypes() as $type => $class)
+				{
+					TBGContext::setPermission('set_datatype_'.$type, 0, 'core', 0, 0, 0, true, $scope->getID());
+				}
 			}
 
 			TBGWorkflowTransitionsTable::getTable()->upgradeFrom3dot1();
