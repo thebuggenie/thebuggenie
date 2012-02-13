@@ -759,6 +759,14 @@
 				TBGLogging::log('done checking, not allowed to access issues not posted by themselves');
 				return false;
 			}
+			if ($this->getCategory() instanceof TBGCategory)
+			{
+				if (!$this->getCategory()->hasAccess())
+				{
+					TBGLogging::log('done checking, not allowed to access issues in this category');
+					return false;
+				}
+			}
 			if ($this->getProject()->hasAccess())
 			{
 				TBGLogging::log('done checking, can access project');

@@ -31,4 +31,9 @@
 			return TBGListTypesTable::getTable()->getAllByItemType(self::CATEGORY);
 		}
 
+		public function hasAccess()
+		{
+			return $this->canUserSet(TBGContext::getUser());
+		}
+
 	}
