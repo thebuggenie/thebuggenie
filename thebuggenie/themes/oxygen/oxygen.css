@@ -1195,7 +1195,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 
 /* search styling */
 /* search boxes */
-#find_issues .results_header { font-weight: bold; font-size: 1.1em; padding: 5px 0 3px 2px; margin-bottom: 0; border-bottom: 1px solid #AAA; color: #333; background: transparent; box-shadow: none; -webkit-box-shadow: none; -moz-box-shadow: none; }
+#find_issues .results_header { font-weight: bold; font-size: 1.1em; padding: 5px 0 3px 2px; margin-bottom: 0; border-bottom: 1px solid #AAA; color: #333; background: transparent; box-shadow: none; -webkit-box-shadow: none; -moz-box-shadow: none; position: relative; }
 .searchbox_container { margin: 5px 0 5px 0; padding: 3px 10px 3px 10px; font-size: 0.9em; }
 /*.searchbox_container label { font-size: 0.9em; }
 .searchbox_container input[type="text"], .searchbox_container select { font-size: 0.9em; }*/
@@ -1205,7 +1205,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 #find_issues #no_issues { padding: 4px; }
 #find_issues .search_export_links { float: right; font-size: 0.8em; }
 #find_issues .search_export_links img { margin: 0 3px -4px 10px; }
-#find_issues .search_column_settings { float: right; font-size: 0.8em; margin: -2px 0 3px 10px; }
+#find_issues .search_column_settings { font-size: 0.8em; }
 #find_issues .search_column_settings .button-icon { cursor: pointer; }
 #find_issues .search_column_settings h4 { margin-bottom: 5px; }
 #find_issues .search_column_settings input { float: left; margin: 0 3px 0 0; padding: 0; }
@@ -1213,10 +1213,8 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 #find_issues .search_column_settings label { padding: 3px; }
 #find_issues .search_column_settings li { clear: both; }
 #search_column_settings_save_button { margin-right: 10px; }
-#search_builder_toggler, #save_search_builder_toggler { float: right; margin: -2px 0 0 5px; padding-bottom: 2px !important; font-size: 1em !important; }
 .search_buttons { float: right; }
 .search_buttons .button, .search_buttons .button:hover { font-size: 1.15em !important; padding: 2px 10px !important; font-weight: normal !important; }
-#search_column_settings_container { width: 400px; position: absolute; right: 5px; z-index: 10; }
 #find_issues #search_filters ul { list-style-type: none; margin: 0; padding: 0; }
 #find_issues #search_filters ul li { margin: 0; padding: 0; }
 #search_filters_list li { clear: both; }
