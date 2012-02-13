@@ -121,10 +121,18 @@
 							if (is_uploaded_file($thefile['tmp_name']))
 							{
 								TBGLogging::log('Uploaded file is uploaded');
-								$files_dir = TBGSettings::getUploadsLocalpath();
 								$new_filename = TBGContext::getUser()->getID() . '_' . NOW . '_' . basename($thefile['name']);
-								TBGLogging::log('Moving uploaded file to '.$new_filename);
-								if (!move_uploaded_file($thefile['tmp_name'], $files_dir . $new_filename))
+								if (TBGSettings::getUploadStorage() == 'files')
+								{
+									$files_dir = TBGSettings::getUploadsLocalpath();
+									$filename = $files_dir.$new_filename;
+								}
+								else
+								{
+									$filename = $thefile['tmp_name'];
+								}
+								TBGLogging::log('Moving uploaded file to '.$filename);
+								if (TBGSettings::getUploadStorage() == 'files' && !move_uploaded_file($thefile['tmp_name'], $filename))
 								{
 									TBGLogging::log('Moving uploaded file failed!');
 									throw new Exception(TBGContext::getI18n()->__('An error occured when saving the file'));
@@ -132,7 +140,7 @@
 								else
 								{
 									TBGLogging::log('Upload complete and ok, storing upload status and returning filename '.$new_filename);
-									$content_type = TBGFile::getMimeType($files_dir.$new_filename);
+									$content_type = TBGFile::getMimeType($filename);
 									$file = new TBGFile();
 									$file->setRealFilename($new_filename);
 									$file->setOriginalFilename(basename($thefile['name']));
@@ -140,7 +148,7 @@
 									$file->setDescription($this->getParameter($key.'_description'));
 									if (TBGSettings::getUploadStorage() == 'database')
 									{
-										$file->setContent(file_get_contents($files_dir.$new_filename));
+										$file->setContent(file_get_contents($filename));
 									}
 									$file->save();
 									if ($apc_exists)
