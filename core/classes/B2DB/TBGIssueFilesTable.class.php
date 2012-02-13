@@ -94,6 +94,23 @@
 			return $this->doCount($crit);
 		}
 
+		public function getIssuesByFileID($file_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::FILE_ID, $file_id);
+
+			$issue_ids = array();
+			if ($res = $this->doSelect($crit))
+			{
+				while ($row = $res->getNextRow())
+				{
+					$i_id = $row->get(self::ISSUE_ID);
+					$issue_ids[$i_id] = $i_id;
+				}
+			}
+			return $issue_ids;
+		}
+
 		public function removeByIssueIDandFileID($issue_id, $file_id)
 		{
 			$crit = $this->getCriteria();

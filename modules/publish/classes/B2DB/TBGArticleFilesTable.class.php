@@ -101,4 +101,21 @@
 			return $res;
 		}
 		
+		public function getArticlesByFileID($file_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::FILE_ID, $file_id);
+
+			$article_ids = array();
+			if ($res = $this->doSelect($crit))
+			{
+				while ($row = $res->getNextRow())
+				{
+					$a_id = $row->get(self::ARTICLE_ID);
+					$article_ids[$a_id] = $a_id;
+				}
+			}
+			return $article_ids;
+		}
+
 	}

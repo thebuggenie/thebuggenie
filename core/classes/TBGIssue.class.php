@@ -726,38 +726,42 @@
 		{
 			TBGLogging::log('checking access to issue ' . $this->getFormattedIssueNo());
 			$i_id = $this->getID();
-			$specific_access = TBGContext::getUser()->hasPermission("canviewissue", $i_id, 'core', true, null);
-			if ($specific_access !== null)
+			$user = TBGContext::getUser();
+			if (!$user->isGuest() && $user->isAuthenticated())
 			{
-				TBGLogging::log('done checking, returning specific access ' . (($specific_access) ? 'allowed' : 'denied'));
-				return $specific_access;
-			}
-			if ($this->getPostedByID() == TBGContext::getUser()->getID())
-			{
-				TBGLogging::log('done checking, allowed since this user posted it');
-				return true;
-			}
-			if ($this->getOwner() instanceof TBGUser && $this->getOwner()->getID() == TBGContext::getUser()->getID())
-			{
-				TBGLogging::log('done checking, allowed since this user owns it');
-				return true;
-			}
-			if ($this->getAssignee() instanceof TBGUser && $this->getAssignee()->getID() == TBGContext::getUser()->getID())
-			{
-				TBGLogging::log('done checking, allowed since this user is assigned to it');
-				return true;
-			}
-			if (TBGContext::getUser()->hasPermission('canseegroupissues', 0, 'core', true, true) &&
-				$this->getPostedBy() instanceof TBGUser &&
-				$this->getPostedBy()->getGroupID() == TBGContext::getUser()->getGroupID())
-			{
-				TBGLogging::log('done checking, allowed since this user is in same group as user that posted it');
-				return true;
-			}
-			if (TBGContext::getUser()->hasPermission('canseeallissues', 0, 'core', true, true) === false)
-			{
-				TBGLogging::log('done checking, not allowed to access issues not posted by themselves');
-				return false;
+				$specific_access = $user->hasPermission("canviewissue", $i_id, 'core', true, null);
+				if ($specific_access !== null)
+				{
+					TBGLogging::log('done checking, returning specific access ' . (($specific_access) ? 'allowed' : 'denied'));
+					return $specific_access;
+				}
+				if ($this->getPostedByID() == $user->getID())
+				{
+					TBGLogging::log('done checking, allowed since this user posted it');
+					return true;
+				}
+				if ($this->getOwner() instanceof TBGUser && $this->getOwner()->getID() == $user->getID())
+				{
+					TBGLogging::log('done checking, allowed since this user owns it');
+					return true;
+				}
+				if ($this->getAssignee() instanceof TBGUser && $this->getAssignee()->getID() == $user->getID())
+				{
+					TBGLogging::log('done checking, allowed since this user is assigned to it');
+					return true;
+				}
+				if ($user->hasPermission('canseegroupissues', 0, 'core', true, true) &&
+					$this->getPostedBy() instanceof TBGUser &&
+					$this->getPostedBy()->getGroupID() == $user->getGroupID())
+				{
+					TBGLogging::log('done checking, allowed since this user is in same group as user that posted it');
+					return true;
+				}
+				if ($user->hasPermission('canseeallissues', 0, 'core', true, true) === false)
+				{
+					TBGLogging::log('done checking, not allowed to access issues not posted by themselves');
+					return false;
+				}
 			}
 			if ($this->getCategory() instanceof TBGCategory)
 			{

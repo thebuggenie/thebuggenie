@@ -68,6 +68,7 @@
 				TBGEvent::listen('core', 'breadcrumb_project_links', array($this, 'listen_BreadcrumbProjectLinks'));
 			}
 			TBGEvent::listen('core', 'TBGProject::_postSave', array($this, 'listen_createNewProject'));
+			TBGEvent::listen('core', 'TBGFile::hasAccess', array($this, 'listen_fileHasAccess'));
 			TBGEvent::listen('core', 'upload', array($this, 'listen_upload'));
 			TBGEvent::listen('core', 'quicksearch_dropdown_firstitems', array($this, 'listen_quicksearchDropdownFirstItems'));
 			TBGEvent::listen('core', 'quicksearch_dropdown_founditems', array($this, 'listen_quicksearchDropdownFoundItems'));
@@ -370,7 +371,24 @@
 			$link = array('url' => TBGContext::getRouting()->generate('publish'), 'title' => $this->getMenuTitle(TBGContext::isProjectContext()));
 			$event->addToReturnList($link);
 		}
-		
+
+		public function listen_fileHasAccess(TBGEvent $event)
+		{
+			$article_ids = TBGArticleFilesTable::getTable()->getArticlesByFileID($event->getSubject()->getID());
+
+			foreach ($article_ids as $article_id)
+			{
+				$article = new TBGWikiArticle($article_id);
+				if ($article->canRead())
+				{
+					$event->setProcessed();
+					$event->setReturnValue(true);
+					break;
+				}
+			}
+			
+		}
+
 		public function listen_BreadcrumbProjectLinks(TBGEvent $event)
 		{
 			$link = array('url' => TBGContext::getRouting()->generate('publish_article', array('article_name' => TBGContext::getCurrentProject()->getKey() . ':MainPage')), 'title' => $this->getMenuTitle(true));

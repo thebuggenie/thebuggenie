@@ -188,5 +188,22 @@
 			$this->setRealFilename($target_path);
 			$this->save();
 		}
+
+		public function hasAccess()
+		{
+			$issue_ids = TBGIssueFilesTable::getTable()->getIssuesByFileID($this->getID());
+
+			foreach ($issue_ids as $issue_id)
+			{
+				$issue = new TBGIssue($issue_id);
+				if ($issue->hasAccess()) return true;
+			}
+
+			$event = TBGEvent::createNew('core', 'TBGFile::hasAccess', $this);
+			$event->setReturnValue(false);
+			$event->triggerUntilProcessed();
+
+			return $event->getReturnValue();
+		}
 		
 	}
