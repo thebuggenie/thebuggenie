@@ -51,7 +51,7 @@
 				<div style="margin: 5px 10px 5px 5px;">
 					<?php include_template('main/textarea', array('area_name' => 'new_article_content', 'area_id' => 'article_content', 'height' => '350px', 'width' => '100%', 'value' => htmlspecialchars($article_content))); ?>
 				</div>
-				<label for="change_reason" style="margin-left: 5px; clear: both;"><?php echo __('Change reason'); ?></label><br>
+				<label for="change_reason" style="margin-left: 5px; clear: both;"><?php echo __('Change reason'); ?>&nbsp;&nbsp;<span class="faded_out" style="font-weight: normal; font-size: 0.9em;"><?php echo __('Optional'); ?></span></label><br>
 				<div style="margin: 5px 15px 5px 5px;">
 					<input type="text" name="change_reason" id="change_reason" style="width: 100%;" maxlength="255" value="<?php echo $change_reason; ?>"><br>
 				</div>

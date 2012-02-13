@@ -3,6 +3,9 @@
 	<?php if ($show_title): ?>
 		<?php include_template('publish/header', array('article_name' => $article->getName(), 'article' => $article, 'show_actions' => $show_actions, 'mode' => $mode)); ?>
 	<?php endif; ?>
+	<?php if (!$embedded): ?>
+		<?php echo javascript_link_tag(__('Delete this article'), array('class' => 'button button-red', 'style' => 'float: right;', 'onclick' => "TBG.Main.Helpers.Dialog.show('".__('Please confirm')."', '".__('Do you really want to delete this article?')."', {yes: {click: function() {TBG.Main.Helpers.ajax('".make_url('publish_article_delete', array('article_name' => $article->getName()))."', {method: 'post'}); TBG.Main.Helpers.Dialog.dismiss(); }}, no: {click: TBG.Main.Helpers.Dialog.dismiss}})")); ?>
+	<?php endif; ?>
 	<?php if ($show_details && $show_article): ?>
 		<div class="details">
 			<?php if (isset($redirected_from)): ?>

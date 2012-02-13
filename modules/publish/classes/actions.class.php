@@ -200,17 +200,31 @@
 		 */
 		public function runDeleteArticle(TBGRequest $request)
 		{
-			if (!TBGContext::getModule('publish')->canUserDeleteArticle($this->article->getName()))
+			try
 			{
-				TBGContext::setMessage('publish_article_error', TBGContext::getI18n()->__('You do not have permission to delete this article'));
-				$this->forward(TBGContext::getRouting()->generate('publish_article', array('article_name' => $this->article->getName())));
+				if (!$this->article instanceof TBGWikiArticle)
+				{
+					throw new Exception($this->getI18n()->__('This article does not exist'));
+				}
+				if (!TBGContext::getModule('publish')->canUserDeleteArticle($this->article->getName()))
+				{
+					throw new Exception($this->getI18n()->__('You do not have permission to delete this article'));
+				}
+				if (!$request['article_name'])
+				{
+					throw new Exception($this->getI18n()->__('Please specify an article name'));
+				}
+				else
+				{
+					TBGWikiArticle::deleteByName($request['article_name']);
+				}
 			}
-			if ($article_name = $request['article_name'])
+			catch (Exception $e)
 			{
-				TBGWikiArticle::deleteByName($article_name);
-				TBGContext::setMessage('publish_article_error', TBGContext::getI18n()->__('The article was deleted'));
-				$this->forward(TBGContext::getRouting()->generate('publish_article', array('article_name' => $article_name)));
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('title' => $this->getI18n()->__('An error occured'), 'error' => $e->getMessage()));
 			}
+			return $this->renderJSON(array('message' => $this->getI18n()->__('The article was deleted')));
 		}
 
 		/**

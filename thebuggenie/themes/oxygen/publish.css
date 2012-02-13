@@ -32,6 +32,7 @@
 .article pre { border: 1px dotted #AAA; background-color: #F1F1F1; padding: 3px; margin: 5px 0 5px 0; font-family: "DroidSansMono", monospace; font-size: 12px; }
 
 .article .publish_article_actions .sub_header { font-size: 13px; font-weight: bold; padding: 0 5px; margin-right: 5px; float: left; }
+.article .publish_article_actions { margin-left: 5px; }
 
 .article.edit label { font-size: 1.2em; }
 .article.edit label.small { font-size: 1em; }

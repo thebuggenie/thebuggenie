@@ -1,17 +1,23 @@
 <?php $article = (isset($article)) ? $article : null; ?>
 <div class="header tab_menu">
-	<?php if ($show_actions): ?>
-		<ul class="right">
-			<li<?php if ($mode == 'view'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('publish_article', array('article_name' => $article_name)), __('Show')); ?></li>
-			<?php if ((isset($article) && $article->canEdit()) || (!isset($article) && ((TBGContext::isProjectContext() && !TBGContext::getCurrentProject()->isArchived()) || (!TBGContext::isProjectContext() && TBGContext::getModule('publish')->canUserEditArticle($article_name))))): ?>
-				<li<?php if ($mode == 'edit'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('publish_article_edit', array('article_name' => $article_name)), __('Edit')); ?></li>
-			<?php endif; ?>
-			<li<?php if ($mode == 'history'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('publish_article_history', array('article_name' => $article_name)), __('History')); ?></li>
-			<?php if ((isset($article) && $article->canEdit()) || (!isset($article) && TBGContext::isProjectContext() && !TBGContext::getCurrentProject()->isArchived())): ?>
-				<li<?php if ($mode == 'permissions'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('publish_article_permissions', array('article_name' => $article_name)), __('Permissions')); ?></li>
-			<?php endif; ?>
-			<li<?php if ($mode == 'attachments'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('publish_article_attachments', array('article_name' => $article_name)), __('Attachments')); ?></li>
-		</ul>
+	<?php if ($article instanceof TBGWikiArticle || $mode == 'edit'): ?>
+		<?php if ($show_actions): ?>
+			<ul class="right">
+				<?php if ($article instanceof TBGWikiArticle): ?>
+					<li<?php if ($mode == 'view'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('publish_article', array('article_name' => $article_name)), __('Show')); ?></li>
+				<?php endif; ?>
+				<?php if ((isset($article) && $article->canEdit()) || (!isset($article) && ((TBGContext::isProjectContext() && !TBGContext::getCurrentProject()->isArchived()) || (!TBGContext::isProjectContext() && TBGContext::getModule('publish')->canUserEditArticle($article_name))))): ?>
+					<li<?php if ($mode == 'edit'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('publish_article_edit', array('article_name' => $article_name)), ($article instanceof TBGWikiArticle) ? __('Edit') : __('Create new article')); ?></li>
+				<?php endif; ?>
+				<?php if ($article instanceof TBGWikiArticle): ?>
+					<li<?php if ($mode == 'history'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('publish_article_history', array('article_name' => $article_name)), __('History')); ?></li>
+					<?php if ((isset($article) && $article->canEdit()) || (!isset($article) && TBGContext::isProjectContext() && !TBGContext::getCurrentProject()->isArchived())): ?>
+						<li<?php if ($mode == 'permissions'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('publish_article_permissions', array('article_name' => $article_name)), __('Permissions')); ?></li>
+					<?php endif; ?>
+					<li<?php if ($mode == 'attachments'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('publish_article_attachments', array('article_name' => $article_name)), __('Attachments')); ?></li>
+				<?php endif; ?>
+			</ul>
+		<?php endif; ?>
 	<?php endif; ?>
 	<?php if (TBGContext::isProjectContext()): ?>
 		<?php if ((mb_strpos($article_name, ucfirst(TBGContext::getCurrentProject()->getKey())) == 0) || ($article instanceof TBGWikiArticle && $article->isCategory() && mb_strpos($article_name, ucfirst(TBGContext::getCurrentProject()->getKey())) == 9)): ?>
@@ -23,9 +29,9 @@
 	<?php else: ?>
 		<?php echo get_spaced_name($article_name); ?>
 	<?php endif; ?>
-	<?php 
-	
-		if ($mode)
+	<?php
+
+		if ($article instanceof TBGWikiArticle && $mode)
 		{
 			switch ($mode)
 			{
@@ -43,6 +49,6 @@
 					break;
 			}
 		}
-		
+
 	?>
 </div>
