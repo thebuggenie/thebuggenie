@@ -158,6 +158,9 @@
 					case TBGContext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES:
 						$this->searchtitle = (TBGContext::isProjectContext()) ? $i18n->__('Closed issues for %project_name%', array('%project_name%' => TBGContext::getCurrentProject()->getName())) : $i18n->__('All closed issues');
 						break;
+					case TBGContext::PREDEFINED_SEARCH_PROJECT_WISHLIST:
+						$this->searchtitle = $i18n->__('%project_name% wishlist', array('%project_name%' => TBGContext::getCurrentProject()->getName()));
+						break;
 					case TBGContext::PREDEFINED_SEARCH_PROJECT_MILESTONE_TODO:
 						$this->searchtitle = $i18n->__('Milestone todo-list for %project_name%', array('%project_name%' => TBGContext::getCurrentProject()->getName()));
 						$this->templatename = 'results_todo';

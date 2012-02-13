@@ -42,6 +42,16 @@
 					$filters['project_id'] = array('operator' => '=', 'value' => TBGContext::getCurrentProject()->getID());
 					$groupby = 'issuetype';
 					break;
+				case TBGContext::PREDEFINED_SEARCH_PROJECT_WISHLIST:
+					$filters['state'] = array('operator' => '=', 'value' => TBGIssue::STATE_OPEN);
+					$filters['project_id'] = array('operator' => '=', 'value' => TBGContext::getCurrentProject()->getID());
+					foreach (TBGContext::getCurrentProject()->getIssuetypeScheme()->getIssuetypes() as $issuetype)
+					{
+						if (in_array($issuetype->getIcon(), array('feature_request', 'enhancement')))
+							$filters['issuetype'][] = array('operator' => '=', 'value' => $issuetype->getID());
+					}
+					$groupby = 'issuetype';
+					break;
 				case TBGContext::PREDEFINED_SEARCH_PROJECT_REPORTED_LAST_NUMBEROF_DAYS:
 					$filters['project_id'] = array('operator' => '=', 'value' => TBGContext::getCurrentProject()->getID());
 					$filters['posted'] = array(
