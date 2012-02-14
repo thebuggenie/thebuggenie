@@ -178,6 +178,11 @@
 					<li>
 						<?php echo __('Any issues you create will be related to %related_issue_title%', array('%related_issue_title%' => '<b>'.$parent_issue->getFormattedTitle().'</b>')); ?>
 						<input type="hidden" name="parent_issue_id" id="reportissue_parent_issue_id" value="<?php echo $parent_issue->getID(); ?>">
+						<?php if ($issue instanceof TBGIssue): ?>
+						<script>
+							TBG.Issues.refreshRelatedIssues('<?php echo make_url('viewissue_related_issues', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $parent_issue->getID())); ?>');
+						</script>
+						<?php endif; ?>
 					</li>
 				<?php endif; ?>
 				<?php if (isset($selected_build)): ?>

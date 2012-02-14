@@ -2693,41 +2693,22 @@ TBG.Issues.showWorkflowTransition = function(transition_id) {
 	}});
 };
 
-TBG.Issues.addUserStoryTask = function(url, story_id, mode) {
-	var prefix = (mode == 'scrum') ? 'issue_' + story_id : 'viewissue';
-	var indicator_prefix = (mode == 'scrum') ? 'add_task_' + story_id : 'add_task';
-	var success_arr = {};
-	
-	if (mode == 'scrum') {
-		success_arr = {
-			reset: prefix + '_add_task_form',
-			hide: 'no_tasks_' + story_id,
-			callback: function(json) {
-				$(prefix + '_tasks').insert({bottom: json.content});
-				$(prefix + '_tasks_count').update(json.count);
-			}
-		};
-	} else {
-		success_arr = {
-			reset: prefix + '_add_task_form',
-			hide: 'no_child_issues',
-			callback: function(json) {
-				$('related_child_issues_inline').insert({bottom: json.content});
-				if (json.comment) {
-					$('comments_box').insert({bottom: json.comment});
-					if ($('comments_box').childElements().size() != 0) {
-						$('comments_none').hide();
-					}
+TBG.Issues.refreshRelatedIssues = function(url) {
+	if ($('related_child_issues_inline')) {
+		TBG.Main.Helpers.ajax(url, {
+			loading: {indicator: 'related_issues_indicator'},
+			success: {
+				hide: 'no_child_issues',
+				update: {element: 'related_child_issues_inline'},
+				callback: function() {
+					var count = 0;
+					count += $('related_child_issues_inline').childElements().size();
+					count += $('related_parent_issues_inline').childElements().size();
+					$('viewissue_related_issues_count').update(count);
 				}
 			}
-		};
+		});
 	}
-	
-	TBG.Main.Helpers.ajax(url, {
-		form: prefix + '_add_task_form',
-		loading: {indicator: indicator_prefix + '_indicator'},
-		success: success_arr
-	});
 };
 
 TBG.Issues.findRelated = function(url) {

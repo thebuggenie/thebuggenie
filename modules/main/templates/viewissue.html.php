@@ -385,14 +385,16 @@
 				<div id="viewissue_related">
 					<table border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
 						<tr>
-							<td id="related_parent_issues_inline" style="width: 360px;">
-								<?php $p_issues = 0; ?>
-								<?php foreach ($issue->getParentIssues() as $parent_issue): ?>
-									<?php if ($parent_issue->hasAccess()): ?>
-										<?php include_template('main/relatedissue', array('theIssue' => $issue, 'related_issue' => $parent_issue)); ?>
-										<?php $p_issues++; ?>
-									<?php endif; ?>
-								<?php endforeach; ?>
+							<td style="width: 360px;">
+								<div id="related_parent_issues_inline">
+									<?php $p_issues = 0; ?>
+									<?php foreach ($issue->getParentIssues() as $parent_issue): ?>
+										<?php if ($parent_issue->hasAccess()): ?>
+											<?php include_template('main/relatedissue', array('issue' => $parent_issue)); ?>
+											<?php $p_issues++; ?>
+										<?php endif; ?>
+									<?php endforeach; ?>
+								</div>
 								<div class="no_items" id="no_parent_issues"<?php if ($p_issues > 0): ?> style="display: none;"<?php endif; ?>><?php echo __('No other issues depends on this issue'); ?></div>
 							</td>
 							<td style="width: 40px; text-align: center; padding: 0;"><?php echo image_tag('right.png'); ?></td>
@@ -402,14 +404,16 @@
 								</div>
 							</td>
 							<td style="width: 40px; text-align: center; padding: 0;"><?php echo image_tag('right.png'); ?></td>
-							<td id="related_child_issues_inline" style="width: 360px;">
-								<?php $c_issues = 0; ?>
-								<?php foreach ($issue->getChildIssues() as $child_issue): ?>
-									<?php if ($child_issue->hasAccess()): ?>
-										<?php include_template('main/relatedissue', array('theIssue' => $issue, 'related_issue' => $child_issue)); ?>
-										<?php $c_issues++; ?>
-									<?php endif; ?>
-								<?php endforeach; ?>
+							<td style="width: 360px;">
+								<div id="related_child_issues_inline">
+									<?php $c_issues = 0; ?>
+									<?php foreach ($issue->getChildIssues() as $child_issue): ?>
+										<?php if ($child_issue->hasAccess()): ?>
+											<?php include_template('main/relatedissue', array('issue' => $child_issue)); ?>
+											<?php $c_issues++; ?>
+										<?php endif; ?>
+									<?php endforeach; ?>
+								</div>
 								<div class="no_items" id="no_child_issues"<?php if ($c_issues > 0): ?> style="display: none;"<?php endif; ?>><?php echo __('This issue does not depend on any other issues'); ?></div>
 							</td>
 						</tr>

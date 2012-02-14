@@ -76,6 +76,7 @@
 				$this->components = ($issue->getProject()->isComponentsEnabled()) ? $components = $issue->getComponents() : array();
 				$this->builds = ($issue->getProject()->isBuildsEnabled()) ? $builds = $issue->getBuilds(): array();
 				$this->affected_count = count($this->editions) + count($this->components) + count($this->builds);
+
 				TBGEvent::createNew('core', 'viewissue', $issue)->trigger();
 			}
 
@@ -2973,7 +2974,7 @@
 							$issue->addParentIssue($related_issue);
 						}
 						$cc++;
-						$content .= $this->getTemplateHTML('main/relatedissue', array('related_issue' => $related_issue));
+						$content .= $this->getTemplateHTML('main/relatedissue', array('issue' => $related_issue));
 					}
 					catch (Exception $e)
 					{
@@ -2995,6 +2996,18 @@
 			{
 				$this->getResponse()->setHttpStatus(400);
 				return $this->renderJSON(array('error' => TBGContext::getI18n()->__('An error occured when relating issues: %error%', array('%error%' => $message))));
+			}
+		}
+
+		public function runRelatedIssues(TBGRequest $request)
+		{
+			if ($issue_id = $request['issue_id'])
+			{
+				try
+				{
+					$this->issue = TBGContext::factory()->TBGIssue($issue_id);
+				}
+				catch (Exception $e) { }
 			}
 		}
 
