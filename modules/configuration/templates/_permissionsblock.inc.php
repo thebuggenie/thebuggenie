@@ -17,7 +17,11 @@
 				<?php if(array_key_exists('details', $permission) && count($permission['details']) > 0): ?>
 					<a href="javascript:void(0);" onclick="<?php if (!array_key_exists('iscontainer', $permission) || $permission['iscontainer'] == false): ?>$('<?php echo $base_id; ?>_<?php echo $permission_key; ?>_settings').hide();<?php endif; ?>TBG.Config.Permissions.getOptions('<?php echo make_url('configure_permissions_get_permissions', array('base_id' => $base_id . $permission_key, 'user_id' => (int) $user_id, 'permissions_list' => $permission_key, 'mode' => $mode, 'target_id' => $current_target_id, 'target_module' => $module)); ?>', '<?php echo $base_id; ?>_<?php echo $permission_key; ?>_details');" style="float: right; margin-right: 5px;" title="<?php echo __('More fine-tuned permissions are available. Click to see them.'); ?>"><?php echo image_tag('icon_project_permissions.png'); ?></a>
 				<?php endif; ?>
-				<a href="javascript:void(0);" onclick="<?php if(array_key_exists('details', $permission) && count($permission['details']) > 0): ?>$('<?php echo $base_id; ?>_<?php echo $permission_key; ?>_details').hide();<?php endif; ?>$('<?php echo $base_id; ?>_<?php echo $permission_key; ?>_settings').toggle();" class="permission_description"><?php echo $permission['description']; ?></a>
+				<?php if (!isset($user_id) || !$user_id): ?>
+					<a href="javascript:void(0);" onclick="<?php if(array_key_exists('details', $permission) && count($permission['details']) > 0): ?>$('<?php echo $base_id; ?>_<?php echo $permission_key; ?>_details').hide();<?php endif; ?>$('<?php echo $base_id; ?>_<?php echo $permission_key; ?>_settings').toggle();" class="permission_description"><?php echo $permission['description']; ?></a>
+				<?php else: ?>
+					<?php echo $permission['description']; ?>
+				<?php endif; ?>
 				<?php if(array_key_exists('details', $permission) && count($permission['details']) > 0): ?>
 					<?php echo image_tag('spinning_20.gif', array('style' => 'display: none;', 'id' => $base_id . '_' . $permission_key . '_details_indicator')); ?>
 					<ul style="display: none;" id="<?php echo $base_id; ?>_<?php echo $permission_key; ?>_details"> </ul>
