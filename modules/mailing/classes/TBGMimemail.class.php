@@ -106,7 +106,7 @@
 				}
 			}
 			$this->charset = $charset;
-			$this->headers['X-Mailer'] = "PHP/" . phpversion();
+			$this->headers['X-Mailer'] = "TBG";
 			$this->headers['Subject'] = $subject;
 			$this->headers['Date'] = date('r');
 			$this->headers['MIME-Version'] = "1.0";
