@@ -72,6 +72,10 @@
 				if (count($_SESSION['viewissue_list']) > 10)
 					array_shift($_SESSION['viewissue_list']);
 
+				$this->editions = ($issue->getProject()->isEditionsEnabled()) ? $issue->getEditions() : array();
+				$this->components = ($issue->getProject()->isComponentsEnabled()) ? $components = $issue->getComponents() : array();
+				$this->builds = ($issue->getProject()->isBuildsEnabled()) ? $builds = $issue->getBuilds(): array();
+				$this->affected_count = count($this->editions) + count($this->components) + count($this->builds);
 				TBGEvent::createNew('core', 'viewissue', $issue)->trigger();
 			}
 
