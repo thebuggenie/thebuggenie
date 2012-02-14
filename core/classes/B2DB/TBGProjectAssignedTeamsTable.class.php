@@ -94,8 +94,11 @@
 			$projects = array();
 			if ($res)
 			{
-				$pid = $row->get(self::PROJECT_ID);
-				$projects[$pid] = $pid;
+				while ($row = $res->getNextRow())
+				{
+					$pid = $row->get(self::PROJECT_ID);
+					$projects[$pid] = $pid;
+				}
 			}
 			
 			return $projects;
