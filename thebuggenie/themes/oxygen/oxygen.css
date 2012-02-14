@@ -725,7 +725,7 @@ reportissue_additional_information_container .markItUp { display: none; }
 #issue_details { position: relative; }
 #issue_details dl { font-size: 0.9em; }
 #issue_details ul.issue_details { margin: 0; }
-.issue_detail_field { margin: 0 5px 0 0; padding: 0; width: 48%; float: left; }
+.issue_detail_field { margin: 0 5px 0 0; padding: 0; width: 48%; float: left; position: relative; }
 .issue_detail_field dl { border-bottom: 1px solid transparent; height: 24px; }
 .issue_detail_field dt { min-width: 150px; }
 .issue_detail_field:hover dl { background-color: #F1F1F1; border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; }

@@ -1,4 +1,4 @@
-<div class="rounded_box white shadowed dropdown_box" id="<?php echo $field . '_' . $issue->getID(); ?>_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0; right: 0; padding: 5px; text-align: left;">
+<div class="rounded_box white shadowed dropdown_box" id="<?php echo $field . '_' . $issue->getID(); ?>_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0; <?php echo (isset($mode) && $mode == 'left') ? 'left' : 'right'; ?>: 0; padding: 5px; text-align: left;">
 	<form id="<?php echo $field . '_' . $issue->getID(); ?>_form" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="" onsubmit="TBG.Issues.Field.setTime('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'estimated_time')); ?>', 'estimated_time', <?php echo $issue->getID(); ?>);return false;">
 		<input type="hidden" name="do_save" value="<?php echo (integer) (isset($instant_save) && $instant_save); ?>">
 		<div class="dropdown_header">
