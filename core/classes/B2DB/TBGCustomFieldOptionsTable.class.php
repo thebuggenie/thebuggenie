@@ -26,7 +26,7 @@
 	class TBGCustomFieldOptionsTable extends TBGB2DBTable
 	{
 
-		const B2DB_TABLE_VERSION = 1;
+		const B2DB_TABLE_VERSION = 2;
 		const B2DBNAME = 'customfieldoptions';
 		const ID = 'customfieldoptions.id';
 		const NAME = 'customfieldoptions.name';
@@ -35,17 +35,6 @@
 		const SORT_ORDER = 'customfieldoptions.sort_order';
 		const CUSTOMFIELDS_KEY = 'customfieldoptions.customfield_key';
 		const SCOPE = 'customfieldoptions.scope';
-
-//		protected function _initialize()
-//		{
-//			parent::_setup(self::B2DBNAME, self::ID);
-//			parent::_addVarchar(self::NAME, 100);
-//			parent::_addVarchar(self::OPTION_VALUE, 100);
-//			parent::_addVarchar(self::ITEMDATA, 100);
-//			parent::_addInteger(self::SORT_ORDER, 100);
-//			parent::_addVarchar(self::CUSTOMFIELDS_KEY, 100);
-//			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
-//		}
 
 		public function getAllByKey($key)
 		{

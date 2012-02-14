@@ -20,7 +20,7 @@
 		 * Custom field key value
 		 *
 		 * @var integer
-		 * @Column(type="integer", length=10)
+		 * @Column(type="integer", length=10, name="customfield_key", foreign_column="key")
 		 * @Relates(class="TBGCustomDatatype")
 		 */
 		protected $_customdatatype;

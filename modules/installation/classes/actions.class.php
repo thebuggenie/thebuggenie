@@ -463,6 +463,7 @@
 			TBGCommentsTable::getTable()->upgrade(TBGCommentsTable3dot1::getTable());
 			TBGComponentsTable::getTable()->upgrade(TBGComponentsTable3dot1::getTable());
 			TBGCustomFieldsTable::getTable()->upgrade(TBGCustomFieldsTable3dot1::getTable());
+			TBGCustomFieldOptionsTable::getTable()->upgrade(TBGCustomFieldOptionsTable3dot1::getTable());
 			
 			// Create new tables
 			TBGDashboardViewsTable::getTable()->create();
