@@ -89,7 +89,7 @@
 				{
 					if (array_key_exists('name', $recipient))
 					{
-						$this->addTo($recipient['name'], $recipient['address']);
+						$this->addTo($recipient['address'], $recipient['name']);
 					}
 					elseif (count($recipient) == 2)
 					{
