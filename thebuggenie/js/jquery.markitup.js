@@ -3,7 +3,7 @@
 // v 1.1.x
 // Dual licensed under the MIT and GPL licenses.
 // ----------------------------------------------------------------------------
-// Copyright (C) 2007-2010 Jay Salvat
+// Copyright (C) 2007-2011 Jay Salvat
 // http://markitup.jaysalvat.com/
 // ----------------------------------------------------------------------------
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -36,6 +36,7 @@
 					previewAutoRefresh:		true,
 					previewPosition:		'after',
 					previewTemplatePath:	'~/templates/preview.html',
+					previewParser:			false,
 					previewParserPath:		'',
 					previewParserVar:		'data',
 					resizeHandle:			true,
@@ -164,7 +165,7 @@
 							return false;
 						}).bind("focusin", function(){
                             $$.focus();
-						}).mousedown(function() {
+						}).mouseup(function() {
 							if (button.call) {
 								eval(button.call)();
 							}
@@ -233,22 +234,38 @@
 
 			// build block to insert
 			function build(string) {
-				var openWith 	= prepare(clicked.openWith);
-				var placeHolder = prepare(clicked.placeHolder);
-				var replaceWith = prepare(clicked.replaceWith);
-				var closeWith 	= prepare(clicked.closeWith);
+				var openWith 			= prepare(clicked.openWith);
+				var placeHolder 		= prepare(clicked.placeHolder);
+				var replaceWith 		= prepare(clicked.replaceWith);
+				var closeWith 			= prepare(clicked.closeWith);
+				var openBlockWith 		= prepare(clicked.openBlockWith);
+				var closeBlockWith 		= prepare(clicked.closeBlockWith);
+				var multiline 			= clicked.multiline;
+				
 				if (replaceWith !== "") {
 					block = openWith + replaceWith + closeWith;
 				} else if (selection === '' && placeHolder !== '') {
 					block = openWith + placeHolder + closeWith;
 				} else {
-					string = string || selection;						
-					if (string.match(/ $/)) {
-						block = openWith + string.replace(/ $/, '') + closeWith + ' ';
-					} else {
-						block = openWith + string + closeWith;
+					string = string || selection;
+
+					var lines = selection.split(/\r?\n/), blocks = [];
+					
+					for (var l=0; l < lines.length; l++) {
+						line = lines[l];
+						var trailingSpaces;
+						if (trailingSpaces = line.match(/ *$/)) {
+							blocks.push(openWith + line.replace(/ *$/g, '') + closeWith + trailingSpaces);
+						} else {
+							blocks.push(openWith + line + closeWith);
+						}
 					}
+					
+					block = blocks.join("\n");
 				}
+
+				block = openBlockWith + block + closeBlockWith;
+
 				return {	block:block, 
 							openWith:openWith, 
 							replaceWith:replaceWith, 
@@ -262,7 +279,6 @@
 				var len, j, n, i;
 				hash = clicked = button;
 				get();
-
 				$.extend(hash, {	line:"", 
 						 			root:options.root,
 									textarea:textarea, 
@@ -276,12 +292,12 @@
 				// callbacks before insertion
 				prepare(options.beforeInsert);
 				prepare(clicked.beforeInsert);
-				if (ctrlKey === true && shiftKey === true) {
+				if ((ctrlKey === true && shiftKey === true) || button.multiline === true) {
 					prepare(clicked.beforeMultiInsert);
 				}			
 				$.extend(hash, { line:1 });
-				
-				if (ctrlKey === true && shiftKey === true) {
+
+				if ((ctrlKey === true && shiftKey === true)) {
 					lines = selection.split(/\r?\n/);
 					for (j = 0, n = lines.length, i = 0; i < n; i++) {
 						if ($.trim(lines[i]) !== '') {
@@ -333,7 +349,7 @@
 				$.extend(hash, { line:'', selection:selection });
 
 				// callbacks after insertion
-				if (ctrlKey === true && shiftKey === true) {
+				if ((ctrlKey === true && shiftKey === true) || button.multiline === true) {
 					prepare(clicked.afterMultiInsert);
 				}
 				prepare(clicked.afterInsert);
@@ -412,6 +428,7 @@
 					}
 				} else { // gecko & webkit
 					caretPosition = textarea.selectionStart;
+
 					selection = textarea.value.substring(caretPosition, textarea.selectionEnd);
 				} 
 				return selection;
@@ -457,7 +474,10 @@
 
 			function renderPreview() {		
 				var phtml;
-				if (options.previewParserPath !== '') {
+				if (options.previewParser && typeof options.previewParser === 'function') {
+					var data = options.previewParser( $$.val() );
+					writeInPreview( localize(data, 1) ); 
+				} else if (options.previewParserPath !== '') {
 					$.ajax({
 						type: 'POST',
 						dataType: 'text',
@@ -501,7 +521,7 @@
 			function keyPressed(e) { 
 				shiftKey = e.shiftKey;
 				altKey = e.altKey;
-				ctrlKey = (!(e.altKey && e.ctrlKey)) ? e.ctrlKey || e.metaKey : false;
+				ctrlKey = (!(e.altKey && e.ctrlKey)) ? (e.ctrlKey || e.metaKey) : false;
 
 				if (e.type === 'keydown') {
 					if (ctrlKey === true) {
@@ -509,7 +529,7 @@
 						if (li.length !== 0) {
 							ctrlKey = false;
 							setTimeout(function() {
-								li.triggerHandler('mousedown');
+								li.triggerHandler('mouseup');
 							},1);
 							return false;
 						}
