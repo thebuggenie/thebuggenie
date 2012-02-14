@@ -1,6 +1,7 @@
 <div id="item_<?php echo $type_key; ?>_<?php echo $type->getID(); ?>" class="rounded_box borderless mediumgrey" style="margin: 5px 0 0 0; padding: 3px; font-size: 12px;">
 	<?php echo image_tag('spinning_32.gif', array('style' => 'float: right; margin-left: 5px; display: none;', 'id' => $type_key . '_indicator')); ?>
-	<div class="header"><a href="javascript:void(0);" onclick="TBG.Config.Issuefields.Options.show('<?php echo make_url('configure_issuefields_getoptions', array('type' => $type_key)); ?>', '<?php echo $type_key; ?>');" id="custom_type_<?php echo $type_key; ?>_name_link"><?php echo $type->getName(); ?></a>&nbsp;<span class="faded_out dark" style="font-weight: normal; font-size: 12px;"><?php echo $type_key; ?></span></div>
+	<div class="header"><?php echo $type->getName(); ?>&nbsp;<span class="faded_out dark" style="font-weight: normal; font-size: 12px;"><?php echo $type_key; ?></span>
+	</div>
 	<div class="content">
 		<a title="<?php echo __('Edit this custom type'); ?>" href="javascript:void(0);" onclick="$('edit_custom_type_<?php echo $type_key; ?>_form').toggle();$('custom_type_<?php echo $type_key; ?>_info').toggle();" class="image" style="float: right; margin-right: 5px;"><?php echo image_tag('icon_edit.png'); ?></a>
 		<?php
