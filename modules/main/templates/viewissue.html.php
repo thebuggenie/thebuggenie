@@ -451,10 +451,15 @@
 	</div>
 	<?php return; ?>
 <?php endif; ?>
-<?php if ($issue->isWorkflowTransitionsAvailable()): ?>
-	<?php foreach ($issue->getAvailableWorkflowTransitions() as $transition): ?>
-		<?php if ($transition instanceof TBGWorkflowTransition && $transition->hasTemplate()): ?>
-			<?php include_component($transition->getTemplate(), compact('issue', 'transition')); ?>
-		<?php endif; ?>
-	<?php endforeach; ?>
-<?php endif; ?>
+<div id="workflow_transition_container" style="display: none;">
+	<?php if ($issue->isWorkflowTransitionsAvailable()): ?>
+		<?php foreach ($issue->getAvailableWorkflowTransitions() as $transition): ?>
+			<?php if ($transition instanceof TBGWorkflowTransition && $transition->hasTemplate()): ?>
+				<?php include_component($transition->getTemplate(), compact('issue', 'transition')); ?>
+			<?php endif; ?>
+		<?php endforeach; ?>
+	<?php endif; ?>
+</div>
+<div id="workflow_transition_fullpage" class="fullpage_backdrop" style="display: none;">
+
+</div>

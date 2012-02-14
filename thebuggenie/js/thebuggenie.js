@@ -621,6 +621,34 @@ TBG.Main.Helpers.tabSwitcher = function(visibletab, menu) {
 	$(visibletab + '_pane').show();
 };
 
+TBG.Main.Helpers.MarkitUp = function(element) {
+	element.markItUp({
+		previewParserPath:	'', // path to your Wiki parser
+		onShiftEnter:		{keepDefault:false, replaceWith:'\n\n'},
+		markupSet: [
+			{name:'Heading 1', key:'1', openWith:'== ', closeWith:' ==', placeHolder:'Your title here...'},
+			{name:'Heading 2', key:'2', openWith:'=== ', closeWith:' ===', placeHolder:'Your title here...'},
+			{name:'Heading 3', key:'3', openWith:'==== ', closeWith:' ====', placeHolder:'Your title here...'},
+			{name:'Heading 4', key:'4', openWith:'===== ', closeWith:' =====', placeHolder:'Your title here...'},
+			{name:'Heading 5', key:'5', openWith:'====== ', closeWith:' ======', placeHolder:'Your title here...'},
+			{separator:'---------------'},
+			{name:'Bold', key:'B', openWith:"'''", closeWith:"'''"},
+			{name:'Italic', key:'I', openWith:"''", closeWith:"''"},
+			{name:'Stroke through', key:'S', openWith:'<s>', closeWith:'</s>'},
+			{separator:'---------------'},
+			{name:'Bulleted list', openWith:'(!(* |!|*)!)'},
+			{name:'Numeric list', openWith:'(!(# |!|#)!)'},
+			{separator:'---------------'},
+			{name:'Picture', key:"P", replaceWith:'[[Image:[![Url:!:http://]!]|[![name]!]]]'},
+			{name:'Link', key:"L", openWith:"[[![Link]!] ", closeWith:']', placeHolder:'Your text to link here...'},
+			{name:'Url', openWith:"[[![Url:!:http://]!] ", closeWith:']', placeHolder:'Your text to link here...'},
+			{separator:'---------------'},
+			{name:'Quotes', openWith:'(!(> |!|>)!)', placeHolder:''},
+			{name:'Code', openWith:'(!(<source lang="[![Language:!:php]!]">|!|<pre>)!)', closeWith:'(!(</source>|!|</pre>)!)'}
+		]
+	});
+};
+
 TBG.Main.toggleBreadcrumbMenuPopout = function(event) {
 	var item = event.findElement('a');
 	if (TBG.activated_popoutmenu != undefined && TBG.activated_popoutmenu != item && item != undefined) {
@@ -2676,10 +2704,14 @@ TBG.Issues.updateFields = function(url)
  * Displays the workflow transition popup dialog
  */
 TBG.Issues.showWorkflowTransition = function(transition_id) {
-	TBG.Main.Helpers.Backdrop.show();
-	$('fullpage_backdrop_indicator').hide();
-	var workflow_div = $('issue_transition_container_' + transition_id).clone(true);
-	$('fullpage_backdrop_content').update(workflow_div);
+	var existing_container = $('workflow_transition_fullpage').down('.workflow_transition');
+	if (existing_container) {
+		existing_container.hide();
+		$('workflow_transition_container').insert(existing_container);
+	}
+	var workflow_div = $('issue_transition_container_' + transition_id);
+	$('workflow_transition_fullpage').insert(workflow_div);
+	$('workflow_transition_fullpage').appear({duration: 0.2});
 	workflow_div.appear({duration: 0.2, afterFinish: function() {
 		if ($('duplicate_finder_transition_' + transition_id)) {
 			$('viewissue_find_issue_' + transition_id + '_input').observe('keypress', function(event) {
@@ -3572,32 +3604,6 @@ TBG.Search.bulkUpdate = function(url, mode) {
 	}
 };
 
-jQuery(document).ready(function(){jQuery('textarea').markItUp({
-	previewParserPath:	'', // path to your Wiki parser
-	onShiftEnter:		{keepDefault:false, replaceWith:'\n\n'},
-	markupSet: [
-		{name:'Heading 1', key:'1', openWith:'== ', closeWith:' ==', placeHolder:'Your title here...'},
-		{name:'Heading 2', key:'2', openWith:'=== ', closeWith:' ===', placeHolder:'Your title here...'},
-		{name:'Heading 3', key:'3', openWith:'==== ', closeWith:' ====', placeHolder:'Your title here...'},
-		{name:'Heading 4', key:'4', openWith:'===== ', closeWith:' =====', placeHolder:'Your title here...'},
-		{name:'Heading 5', key:'5', openWith:'====== ', closeWith:' ======', placeHolder:'Your title here...'},
-		{separator:'---------------'},
-		{name:'Bold', key:'B', openWith:"'''", closeWith:"'''"},
-		{name:'Italic', key:'I', openWith:"''", closeWith:"''"},
-		{name:'Stroke through', key:'S', openWith:'<s>', closeWith:'</s>'},
-		{separator:'---------------'},
-		{name:'Bulleted list', openWith:'(!(* |!|*)!)'},
-		{name:'Numeric list', openWith:'(!(# |!|#)!)'},
-		{separator:'---------------'},
-		{name:'Picture', key:"P", replaceWith:'[[Image:[![Url:!:http://]!]|[![name]!]]]'},
-		{name:'Link', key:"L", openWith:"[[![Link]!] ", closeWith:']', placeHolder:'Your text to link here...'},
-		{name:'Url', openWith:"[[![Url:!:http://]!] ", closeWith:']', placeHolder:'Your text to link here...'},
-		{separator:'---------------'},
-		{name:'Quotes', openWith:'(!(> |!|>)!)', placeHolder:''},
-		{name:'Code', openWith:'(!(<source lang="[![Language:!:php]!]">|!|<pre>)!)', closeWith:'(!(</source>|!|</pre>)!)'}
-	]
-});});
-
 /*
 	Simple OpenID Plugin
 	http://code.google.com/p/openid-selector/
@@ -3807,3 +3813,7 @@ var openid = {
 		this.demo = demoMode;
 	}
 };
+
+	jQuery(document).ready(function(){
+		TBG.Main.Helpers.MarkitUp(jQuery('textarea'));
+	});

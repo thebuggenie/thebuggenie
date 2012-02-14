@@ -1,4 +1,4 @@
-<div class="backdrop_box medium issuedetailspopup" style="padding: 5px; text-align: left; font-size: 13px; <?php if ($issue instanceof TBGIssue): ?>display: none;<?php endif; ?>" id="issue_transition_container_<?php echo $transition->getId(); ?>">
+<div class="backdrop_box medium issuedetailspopup workflow_transition" style="padding: 5px; text-align: left; font-size: 13px; <?php if ($issue instanceof TBGIssue): ?>display: none;<?php endif; ?>" id="issue_transition_container_<?php echo $transition->getId(); ?>">
 	<div class="backdrop_detail_header"><?php echo $transition->getDescription(); ?></div>
 <?php if ($issue instanceof TBGIssue): ?>
 	<form action="<?php echo make_url('transition_issue', array('project_key' => $project->getKey(), 'issue_id' => $issue->getID(), 'transition_id' => $transition->getID())); ?>" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>">
@@ -174,7 +174,7 @@
 			</div>
 		</div>
 		<div class="backdrop_detail_footer">
-			<?php echo '<a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.reset();">' . __('Cancel and close this pop-up') . '</a>'; ?>
+			<a href="javascript:void(0);" onclick="$('workflow_transition_fullpage').fade({duration: 0.2});"><?php echo __('Cancel and close this pop-up'); ?></a>
 		</div>
 	</form>
 	<?php if (($issue instanceof TBGIssue && ($issue->canEditAssignee()) || isset($issues)) && $transition->hasAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE) && !$transition->getAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE)->hasTargetValue()): ?>
