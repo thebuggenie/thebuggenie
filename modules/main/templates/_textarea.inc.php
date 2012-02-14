@@ -5,13 +5,13 @@
 		<p>
 			<?php
 			
-				switch (rand(1, 9))
+				switch (rand(2, 2))
 				{
 					case 1:
 						echo htmlspecialchars(__('URLs will be automatically transformed to links. If you want to add a title, use the link formatter: [[http://awesome.com/something An awesome link]].'));
 						break;
 					case 2:
-						echo htmlspecialchars(__('To auto-link to an existing issue, write "issue", "bug", "ticket" or the issue type (like "bug report" or "enhancement") followed by the issue number (ex: "%ticket_example_1%" or "%ticket_example_2%"). Enclose sourcecode samples in <source></source>; tags.', array('%ticket_example_1%' => '<span class="example">ticket #3</span>', '%ticket_example_2%' => '<span class="example">bug report MYPROJ-1</span>')));
+						echo str_replace(array('%ticket_example_1%', '%ticket_example_2%'), array('<span class="example">ticket #3</span>', '<span class="example">bug report MYPROJ-1</span>'), htmlspecialchars(__('To auto-link to an existing issue, write "issue", "bug", "ticket" or the issue type (like "bug report" or "enhancement") followed by the issue number (ex: "%ticket_example_1%" or "%ticket_example_2%"). Enclose sourcecode samples in <source></source> tags.')));
 						break;
 					case 3:
 						echo htmlspecialchars(__('To create a bulleted list, start one or more lines with a star ("* bulleted list item"). You can create a numbered list by using the hash/pund sign instead ("# numbered list item").'));
