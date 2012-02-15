@@ -30,19 +30,19 @@
 		 */
 		public function preExecute(TBGRequest $request, $action)
 		{
-			if ($project_key = $request['project_key'])
-			{
-				try
-				{
-					$this->selected_project = TBGProject::getByKey($project_key);
-				}
-				catch (Exception $e) {}
-			}
-			elseif ($project_id = $request['project_id'])
+			if ($project_id = $request['project_id'])
 			{
 				try
 				{
 					$this->selected_project = TBGContext::factory()->TBGProject($project_id);
+				}
+				catch (Exception $e) {}
+			}
+			elseif ($project_key = $request['project_key'])
+			{
+				try
+				{
+					$this->selected_project = TBGProject::getByKey($project_key);
 				}
 				catch (Exception $e) {}
 			}
