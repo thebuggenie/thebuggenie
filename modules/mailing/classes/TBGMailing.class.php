@@ -202,7 +202,7 @@
 				if ($this->isOutgoingNotificationsEnabled())
 				{
 					$subject = TBGContext::getI18n()->__('User account registered with The Bug Genie');
-					$message = $this->createNewTBGMimemailFromTemplate($subject, 'registeruser', array('user' => $user, 'password' => $password), null, array($user->getBuddyname(), $user->getEmail()));
+					$message = $this->createNewTBGMimemailFromTemplate($subject, 'registeruser', array('user' => $user, 'password' => $password), null, array(array('name' => $user->getBuddyname(), 'address' => $user->getEmail())));
 	
 					$message->addReplacementValues(array('%user_buddyname%' => $user->getBuddyname()));
 					$message->addReplacementValues(array('%user_username%' => $user->getUsername()));
