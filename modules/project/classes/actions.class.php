@@ -327,11 +327,43 @@
 			foreach ($request['issue_id'] as $issue_id)
 			{
 				$issue = new TBGIssue($issue_id);
-				$issue->setEstimatedHours($request['estimated_hours'][$issue_id]);
-				$issue->setEstimatedPoints($request['estimated_points'][$issue_id]);
-				$issue->setSpentHours($request['spent_hours'][$issue_id]);
-				$issue->setSpentPoints($request['spent_points'][$issue_id]);
-				$issue->setPriority($request['priority'][$issue_id]);
+
+				if (isset($request['estimated_hours'][$issue_id]))
+					$issue->setEstimatedHours($request['estimated_hours'][$issue_id]);
+
+				if (isset($request['estimated_points'][$issue_id]))
+					$issue->setEstimatedPoints($request['estimated_points'][$issue_id]);
+
+				if (isset($request['spent_hours'][$issue_id]))
+					$issue->setSpentHours($request['spent_hours'][$issue_id]);
+
+				if (isset($request['spent_points'][$issue_id]))
+					$issue->setSpentPoints($request['spent_points'][$issue_id]);
+
+				if (isset($request['priority'][$issue_id]))
+					$issue->setPriority($request['priority'][$issue_id]);
+
+				if (isset($request['percent_complete'][$issue_id]))
+					$issue->setPercentCompleted($request['percent_complete'][$issue_id]);
+
+				if (isset($request['severity'][$issue_id]))
+					$issue->setSeverity($request['severity'][$issue_id]);
+
+				if (isset($request['reproducability'][$issue_id]))
+					$issue->setReproducability($request['reproducability'][$issue_id]);
+
+				if (isset($request['category'][$issue_id]))
+					$issue->setCategory($request['category'][$issue_id]);
+
+				if (isset($request['customfield']))
+				{
+					foreach ($request['customfield'] as $fieldkey => $data)
+					{
+						if (isset($data[$issue_id]))
+							$issue->setCustomField($fieldkey, $data[$issue_id]);
+					}
+				}
+
 				$issue->save();
 			}
 			return $this->renderJSON(array('estimated_hours' => $milestone->getHoursEstimated(), 'estimated_points' => $milestone->getPointsEstimated(), 'message' => TBGContext::getI18n()->__('%num% issue(s) updated', array('%num%' => count($request['issue_id'])))));
@@ -1000,7 +1032,11 @@
 						$milestone->setProject($this->selected_project);
 					}
 					$template = ($request->getParameter('mode', 'roadmap') == 'roadmap') ? 'project/milestoneissues' : 'project/planning_milestoneissues';
-					return $this->renderJSON(array('failed' => false, 'content' => $this->getTemplateHTML($template, array('milestone' => $milestone))));
+					return $this->renderJSON(array('failed' => false, 'content' => $this->getTemplateHTML($template, array(
+						'milestone' => $milestone,
+						'planningcolumns' => $milestone->getProject()->getPlanningColumns(),
+						'fields' => $milestone->getProject()->getIssueFields())
+					)));
 				}
 				else
 				{
@@ -1380,6 +1416,26 @@
 							$this->selected_project->save();
 							break;
 					}
+					return $this->renderJSON(array('title' => TBGContext::getI18n()->__('Your changes has been saved'), 'message' => ''));
+				}
+				catch (Exception $e)
+				{
+					$this->getResponse()->setHttpStatus(400);
+					return $this->renderJSON(array('error' => TBGContext::getI18n()->__('An error occured'), 'message' => $e->getMessage()));
+				}
+			}
+			$this->getResponse()->setHttpStatus(403);
+			return $this->renderJSON(array('error' => TBGContext::getI18n()->__("You don't have access to save project settings")));
+		}
+
+		public function runConfigureProjectUpdatePlanning(TBGRequest $request)
+		{
+			if ($this->getUser()->canEditProjectDetails($this->selected_project))
+			{
+				try
+				{
+					$this->selected_project->setPlanningColumns($request['planning_column']);
+					$this->selected_project->save();
 					return $this->renderJSON(array('title' => TBGContext::getI18n()->__('Your changes has been saved'), 'message' => ''));
 				}
 				catch (Exception $e)

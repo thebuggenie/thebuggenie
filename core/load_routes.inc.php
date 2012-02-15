@@ -98,6 +98,7 @@
 	$routes[] = array('configure_project_editions_components', '/configure/project/:project_id/editions_and_components', 'project', 'configureProjectEditionsAndComponents');
 	$routes[] = array('configure_project_other', '/configure/project/:project_id/other', 'project', 'configureProjectOther');
 	$routes[] = array('configure_project_updateother', '/configure/project/:project_id/update/other', 'project', 'configureProjectUpdateOther');
+	$routes[] = array('configure_project_updateplanning', '/configure/project/:project_id/update/planning', 'project', 'configureProjectUpdatePlanning');
 	$routes[] = array('configure_project_edition', '/configure/project/:project_id/edition/:edition_id', 'project', 'configureProjectEdition', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_PROJECTS, 'format' => 'json'));
 	$routes[] = array('configure_project', '/configure/project/:project_id/hierarchy', 'project', 'configureProject', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_PROJECTS, 'format' => 'json'));
 	$routes[] = array('configure_settings', '/configure/settings', 'configuration', 'settings', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_SETTINGS));

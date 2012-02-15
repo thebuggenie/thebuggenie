@@ -61,7 +61,13 @@
 			{
 				while ($row = $res->getNextRow())
 				{
-					$retval[$row->get(TBGIssueFieldsTable::FIELD_KEY)] = array('required' => (bool) $row->get(TBGIssueFieldsTable::REQUIRED), 'reportable' => (bool) $row->get(TBGIssueFieldsTable::REPORTABLE), 'additional' => (bool) $row->get(TBGIssueFieldsTable::ADDITIONAL));
+					$retval[$row->get(TBGIssueFieldsTable::FIELD_KEY)] = array(
+						'label' => $row->get(TBGCustomFieldsTable::FIELD_DESCRIPTION),
+						'required' => (bool)$row->get(TBGIssueFieldsTable::REQUIRED),
+						'reportable' => (bool)$row->get(TBGIssueFieldsTable::REPORTABLE),
+						'additional' => (bool)$row->get(TBGIssueFieldsTable::ADDITIONAL),
+						'type' => $row->get(TBGCustomFieldsTable::FIELD_TYPE) ? $row->get(TBGCustomFieldsTable::FIELD_TYPE) : 'builtin',
+					);
 				}
 			}
 			return $retval;
@@ -124,6 +130,7 @@
 		public function getBySchemeIDandIssuetypeID($scheme_id, $issuetype_id)
 		{
 			$crit = $this->getCriteria();
+			$crit->addJoin(TBGCustomFieldsTable::getTable(), TBGCustomFieldsTable::FIELD_KEY, self::FIELD_KEY);
 			$crit->addWhere(self::ISSUETYPE_SCHEME_ID, $scheme_id);
 			$crit->addWhere(self::ISSUETYPE_ID, $issuetype_id);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
@@ -135,6 +142,14 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::ISSUETYPE_SCHEME_ID, $scheme_id);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$res = $this->doDelete($crit);
+		}
+
+		public function deleteByIssueFieldKey($key)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::FIELD_KEY, $key);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$res = $this->doDelete($crit);
 		}

@@ -5,6 +5,9 @@
 	<div id="tab_settings_pane"<?php if ($selected_tab != 'settings'): ?> style="display: none;"<?php endif; ?>>
 		<?php include_component('project/projectsettings', array('access_level' => $access_level, 'project' => $project)); ?>
 	</div>
+	<div id="tab_planning_pane"<?php if ($selected_tab != 'planning'): ?> style="display: none;"<?php endif; ?>>
+		<?php include_component('project/projectplanningsettings', array('access_level' => $access_level, 'project' => $project)); ?>
+	</div>
 	<div id="tab_hierarchy_pane"<?php if ($selected_tab != 'hierarchy'): ?> style="display: none;"<?php endif; ?>>
 		<?php include_template('project/projecthierarchy', array('access_level' => $access_level, 'project' => $project)); ?>
 	</div>

@@ -232,6 +232,18 @@
 			}
 		}
 
+		public function getVisibleFields()
+		{
+			$fields = array();
+			$types = $this->getIssuetypes();
+			foreach ($types as $type) {
+				$this->_populateVisibleFieldsForIssuetype($type);
+				$fields = array_merge($fields, $this->_visiblefields[$type->getID()]);
+			}
+			ksort($fields);
+			return $fields;
+		}
+
 		public function getVisibleFieldsForIssuetype(TBGIssuetype $issuetype)
 		{
 			$this->_populateVisibleFieldsForIssuetype($issuetype);

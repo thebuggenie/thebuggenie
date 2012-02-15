@@ -168,6 +168,10 @@
 			$this->statustypes = TBGStatus::getAll();
 		}
 
+		public function componentProjectplanningsettings()
+		{
+		}
+
 		public function componentProjectEdition()
 		{
 			$this->access_level = ($this->getUser()->canManageProject(TBGContext::getCurrentProject())) ? TBGSettings::ACCESS_FULL : TBGSettings::ACCESS_READ;
