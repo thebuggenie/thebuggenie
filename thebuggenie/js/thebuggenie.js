@@ -163,14 +163,10 @@ TBG.Core._scrollWatcher = function() {
 			if (y >= $('viewissue_menu_panes').offsetTop) {
 				if ($('comment_add_button') != undefined) {
 					var button = $('comment_add_button').remove();
-					button.down('input').addClassName('button-silver');
-					button.down('input').removeClassName('button-green');
 					$('workflow_actions').down('ul').insert(button);
 				}
 			} else if ($('comment_add_button') != undefined) {
 				var button = $('comment_add_button').remove();
-				button.down('input').removeClassName('button-silver');
-				button.down('input').addClassName('button-green');
 				$('add_comment_button_container').update(button);
 			}
 		}else {
@@ -178,8 +174,6 @@ TBG.Core._scrollWatcher = function() {
 			$('workflow_actions').removeClassName('fixed');
 			if ($('comment_add_button') != undefined) {
 				var button = $('comment_add_button').remove();
-				button.down('input').removeClassName('button-silver');
-				button.down('input').addClassName('button-green');
 				$('add_comment_button_container').update(button);
 			}
 		}
