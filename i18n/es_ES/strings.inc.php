@@ -466,7 +466,7 @@
 	$strings['Can access the search page'] = 'Puede acceder a la página de búsqueda';
 	$strings['Can access the "About" page'] = 'Puede acceder a la página "Acerca de"';
 	$strings['Can access the "My account" page'] = 'Puede acceder a la página "Mi cuenta"';
-	$strings['Can access all project pages'] = 'Puede acceder a las páginas de todos los proyectos';
+	$strings['Can access all project pages'] = 'Puede acceder a todas las páginas del proyecto';
 	$strings['Can access the project dashboard'] = 'Puede acceder al tablero del proyecto';
 	$strings['Can access the project planning page'] = 'Puede acceder a la página de planificación del proyecto';
 	$strings['Can access the project scrum page'] = 'Puede acceder a la página de scrum del proyecto';
@@ -637,7 +637,7 @@
 	$strings['The edition has been added'] = 'La edición ha sido agregada';
 	$strings['The component has been added'] = 'El componente ha sido agregado';
 	$strings['Access has been granted to your group. Remember to give other users/groups permission to access it via the admin section to the left, if necessary.'] = 'El acceso se ha concedido a su grupo. Recuerde que debe dar a otros usuarios / grupos permisos para acceder a él a través del administrador en la sección de la izquierda, si es necesario.';
-	$strings['Are you sure you want to delete this component?'] = 'A¿Seguro que quiere borrar este componente?';
+	$strings['Are you sure you want to delete this component?'] = '¿Seguro que quiere borrar este componente?';
 	$strings['Documentation:'] = 'Documentación:';
 	$strings['Add an edition'] = 'Agregar una edición';
 	$strings['Can report issues:'] = 'Puede registrar peticiones:';
