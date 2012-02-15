@@ -185,10 +185,10 @@
 					$listtype = 'ul';
 				}
 
-				if ($this->list_level > $newlevel)
+				if ($this->list_level >= $newlevel)
 				{
 					$listtype = '/'.array_pop($this->list_level_types);
-					$this->list_level--;
+					if ($this->list_level > $newlevel) $this->list_level--;
 				} 
 				else
 				{
