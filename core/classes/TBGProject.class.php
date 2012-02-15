@@ -431,8 +431,11 @@
 		 */
 		public static function getByKey($key)
 		{
-			self::_populateProjects();
-			return (array_key_exists($key, self::$_projects)) ? self::$_projects[$key] : null;
+			if ($key)
+			{
+				self::_populateProjects();
+				return (array_key_exists($key, self::$_projects)) ? self::$_projects[$key] : null;
+			}
 		}
 		
 		public static function getValidSubprojects(TBGProject $project)
