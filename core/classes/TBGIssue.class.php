@@ -3240,7 +3240,7 @@
 				{
 					$this->addLogEntry(TBGLogTable::LOG_AFF_ADD, TBGContext::getI18n()->__("'%release_name%' added", array('%release_name%' => $build->getName())));
 					$this->addSystemComment(TBGContext::getI18n()->__("Affected releases"), TBGContext::getI18n()->__('\'\'\'%release_name%\'\'\' is now affected by this issue', array('%release_name%' => $build->getName())), TBGContext::getUser()->getID());
-					return array('a_id' => $retval, 'build' => $build, 'confirmed' => 0, 'status' => TBGContext::factory()->TBGStatus(20));
+					return array('a_id' => $retval, 'build' => $build, 'confirmed' => 0, 'status' => null);
 				}
 			}
 			return false;
@@ -3262,7 +3262,7 @@
 				{
 					$this->addLogEntry(TBGLogTable::LOG_AFF_ADD, TBGContext::getI18n()->__("'%edition_name%' added", array('%edition_name%' => $edition->getName())));
 					$this->addSystemComment(TBGContext::getI18n()->__("Affected editions"), TBGContext::getI18n()->__('\'\'\'%edition_name%\'\'\' is now affected by this issue', array('%edition_name%' => $edition->getName())), TBGContext::getUser()->getID());
-					return array('a_id' => $retval, 'edition' => $edition, 'confirmed' => 0, 'status' => TBGContext::factory()->TBGStatus(20));
+					return array('a_id' => $retval, 'edition' => $edition, 'confirmed' => 0, 'status' => null);
 				}
 			}
 			return false;
@@ -3284,7 +3284,7 @@
 				{
 					$this->addLogEntry(TBGLogTable::LOG_AFF_ADD, TBGContext::getI18n()->__("'%component_name%' added", array('%component_name%' => $component->getName())));
 					$this->addSystemComment(TBGContext::getI18n()->__("Affected components"), TBGContext::getI18n()->__('\'\'\'%component_name%\'\'\' is now affected by this issue', array('%component_name%' => $component->getName())), TBGContext::getUser()->getID());
-					return array('a_id' => $retval, 'component' => $component, 'confirmed' => 0, 'status' => TBGContext::factory()->TBGStatus(20));
+					return array('a_id' => $retval, 'component' => $component, 'confirmed' => 0, 'status' => null);
 				}
 			}
 			return false;

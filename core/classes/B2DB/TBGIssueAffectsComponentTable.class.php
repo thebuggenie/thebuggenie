@@ -121,7 +121,6 @@
 				$crit->addInsert(self::ISSUE, $issue_id);
 				$crit->addInsert(self::COMPONENT, $component_id);
 				$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
-				$crit->addInsert(self::STATUS, 20);
 				$ret = $this->doInsert($crit);
 				return $ret->getInsertID();
 			}
