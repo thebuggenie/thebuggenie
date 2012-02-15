@@ -333,6 +333,22 @@
 			$this->count = count($this->editions) + count($this->components) + count($this->builds);
 		}
 
+		public function componentRelatedissues()
+		{
+			$parent_issues = array();
+			$child_issues = array();
+			foreach ($this->issue->getParentIssues() as $parent_issue)
+			{
+				if ($parent_issue->hasAccess()) $parent_issues[] = $parent_issue;
+			}
+			foreach ($this->issue->getChildIssues() as $child_issue)
+			{
+				if ($child_issue->hasAccess()) $child_issues[] = $child_issue;
+			}
+			$this->parent_issues = $parent_issues;
+			$this->child_issues = $child_issues;
+		}
+
 		public function componentLoginpopup()
 		{
 			if (TBGContext::getRequest()->getParameter('redirect') == true)

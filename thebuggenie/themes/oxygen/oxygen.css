@@ -940,6 +940,8 @@ tr.attached_item td .upload_details { color: #AAA; font-size: 0.9em; }
 table.issue_affects td { padding: 3px; }
 table.issue_affects td img { vertical-align: bottom; }
 #viewissue_left_box_top table.issue_affects th { background: rgb(244, 236, 139); border-bottom-color: #e3dda5; }
+.issue_affects img.hover_visible { display: none; }
+.issue_affects td:hover img.hover_visible { display: inline; }
 /* end view issue styling */
 
 /* user dashboard styling */
@@ -1237,7 +1239,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .search_results th img { width: 12px; height: 12px; }
 .search_results td { font-size: 0.9em; padding: 2px; }
 .search_results tbody tr:hover { background-color: #F1F1F1; }
-.search_results tbody tr.closed td { color: #777; text-decoration: line-through; }
+.search_results tbody tr.closed td, tr.closed td { color: #888; text-decoration: line-through; }
 .search_results tbody tr.changed { background-color: #FFFBE2; }
 .search_results tbody tr.changed:hover { background-color: #FFF299; }
 .search_results tbody tr.blocking { background-color: #FCC; }

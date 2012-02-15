@@ -77,6 +77,16 @@
 			return $res;
 		}
 		
+		public function removeParentIssue($issue_id, $parent_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::CHILD_ID, $issue_id);
+			$crit->addWhere(self::PARENT_ID, $parent_id);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$res = $this->doDelete($crit);
+			return $res;
+		}
+
 		public function addChildIssue($issue_id, $child_id)
 		{
 			$crit = $this->getCriteria();
@@ -87,4 +97,14 @@
 			return $res;
 		}
 		
+		public function removeChildIssue($issue_id, $child_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::PARENT_ID, $issue_id);
+			$crit->addWhere(self::CHILD_ID, $child_id);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$res = $this->doDelete($crit);
+			return $res;
+		}
+
 	}

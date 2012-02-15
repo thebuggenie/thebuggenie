@@ -19,7 +19,7 @@
 			<?php echo __('Please wait while updating issue type'); ?>...
 		</div>
 	</div>
-	<div style="width: auto; text-align: left; padding: 5px; margin: 0 auto 0 auto;">
+	<div style="width: auto; text-align: left; padding: 5px 5px 50px 5px; margin: 0;">
 		<div id="viewissue_header_container">
 			<table cellpadding=0 cellspacing=0 class="title_area" style="table-layout: fixed;">
 				<tr>
@@ -383,41 +383,7 @@
 			</div>
 			<div id="tab_related_issues_and_tasks_pane" style="padding-top: 5px; margin: 0 5px 0 5px; display: none;">
 				<div id="viewissue_related">
-					<table border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
-						<tr>
-							<td style="width: 360px;">
-								<div id="related_parent_issues_inline">
-									<?php $p_issues = 0; ?>
-									<?php foreach ($issue->getParentIssues() as $parent_issue): ?>
-										<?php if ($parent_issue->hasAccess()): ?>
-											<?php include_template('main/relatedissue', array('issue' => $parent_issue)); ?>
-											<?php $p_issues++; ?>
-										<?php endif; ?>
-									<?php endforeach; ?>
-								</div>
-								<div class="no_items" id="no_parent_issues"<?php if ($p_issues > 0): ?> style="display: none;"<?php endif; ?>><?php echo __('No other issues depends on this issue'); ?></div>
-							</td>
-							<td style="width: 40px; text-align: center; padding: 0;"><?php echo image_tag('right.png'); ?></td>
-							<td style="width: 200px;">
-								<div class="rounded_box mediumgrey borderless" id="related_issues_this_issue" style="margin: 5px auto 5px auto;">
-									<?php echo __('This issue'); ?>
-								</div>
-							</td>
-							<td style="width: 40px; text-align: center; padding: 0;"><?php echo image_tag('right.png'); ?></td>
-							<td style="width: 360px;">
-								<div id="related_child_issues_inline">
-									<?php $c_issues = 0; ?>
-									<?php foreach ($issue->getChildIssues() as $child_issue): ?>
-										<?php if ($child_issue->hasAccess()): ?>
-											<?php include_template('main/relatedissue', array('issue' => $child_issue)); ?>
-											<?php $c_issues++; ?>
-										<?php endif; ?>
-									<?php endforeach; ?>
-								</div>
-								<div class="no_items" id="no_child_issues"<?php if ($c_issues > 0): ?> style="display: none;"<?php endif; ?>><?php echo __('This issue does not depend on any other issues'); ?></div>
-							</td>
-						</tr>
-					</table>
+					<?php include_component('main/relatedissues', array('issue' => $issue)); ?>
 				</div>
 			</div>
 			<div id="tab_duplicate_issues_pane" style="padding-top: 0; margin: 0 5px 0 5px; display: none;">
@@ -460,6 +426,4 @@
 		<?php endforeach; ?>
 	<?php endif; ?>
 </div>
-<div id="workflow_transition_fullpage" class="fullpage_backdrop" style="display: none;">
-
-</div>
+<div id="workflow_transition_fullpage" class="fullpage_backdrop" style="display: none;"></div>

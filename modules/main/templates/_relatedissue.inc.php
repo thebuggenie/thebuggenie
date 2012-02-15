@@ -1,32 +1,21 @@
-<div class="<?php if ($issue->getIssueType()->getIcon() == 'task'): ?>user_story_task<?php else: ?>related_issue<?php endif; ?>">
-	<table style="table-layout: fixed; width: 100%;" cellpadding=0 cellspacing=0>
-		<tr>
-			<td style="width: 20px;"><div style="border: 1px solid #AAA; background-color: <?php echo ($issue->getStatus() instanceof TBGStatus) ? $issue->getStatus()->getColor() : '#FFF'; ?>; font-size: 1px; width: 13px; height: 13px;" title="<?php echo ($issue->getStatus() instanceof TBGStatus) ? $issue->getStatus()->getName() : ''; ?>">&nbsp;</div></td>
-			<td style="padding: 1px; width: auto;" valign="middle"><?php echo link_tag(make_url('viewissue', array('issue_no' => $issue->getFormattedIssueNo(), 'project_key' => $issue->getProject()->getKey())), (($issue->getIssueType()->isTask() ? $issue->getTitle() : $issue->getFormattedTitle()))); ?></td>
-			<td style="padding: 1px; width: 20px;" valign="middle">
-				<?php if ($issue->getState() == TBGIssue::STATE_CLOSED): ?>
-					<?php echo image_tag('action_ok_small.png', array('title' => ($issue->getIssuetype()->isTask()) ? __('This relation is solved because the task has been closed') : __('This relation is solved because the issue has been closed'))); ?>
-				<?php else: ?>
-					<?php echo image_tag('action_cancel_small.png', array('title' => ($issue->getIssuetype()->isTask()) ? __('This task must be closed before the issue relation is solved') : __('This issue must be closed before the issue relation is solved'))); ?>
-				<?php endif; ?>
-			</td>
-		</tr>
-		<tr<?php if (!$issue->isAssigned()): ?> style="display: none;"<?php endif; ?>>
-			<td colspan="3" valign="middle">
-				<table border="0" cellpadding="0" cellspacing="0">
-					<tr>
-						<td valign="middle" class="faded_out">
-						<?php if ($issue->isAssigned()): ?>
-							<?php if ($issue->getAssignee() instanceof TBGUser): ?>
-								<?php echo __('Assigned to %user%', array('%user%' => '</td><td style="padding-left: 5px;" class="faded_out">' . get_component_html('main/userdropdown', array('user' => $issue->getAssignee(), 'size' => 'small')))); ?>
-							<?php elseif ($issue->getAssignee() instanceof TBGTeam): ?>
-								<?php echo __('Assigned to %team%', array('%team%' => '</td><td style="padding-left: 5px;" class="faded_out">' . get_component_html('main/teamdropdown', array('team' => $issue->getAssignee(), 'size' => 'small')))); ?>
-							<?php endif; ?>
-						<?php endif; ?>
-						</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-	</table>
-</div>
+<tr class="hover_highlight<?php if ($issue->isClosed()): ?> closed<?php endif; ?>" id="related_issue_<?php echo $issue->getID(); ?>">
+	<td><?php echo image_tag((($issue->hasIssueType()) ? $issue->getIssueType()->getIcon() : 'icon_unknown') . '_tiny.png', array('title' => (($issue->hasIssueType()) ? $issue->getIssueType()->getName() : __('Unknown issuetype')))); ?></td>
+	<td style="padding: 1px; width: auto; font-size: 1em;" valign="middle">
+		<?php if ($related_issue->canAddRelatedIssues()): ?>
+			<a href="javascript:void(0);" onclick="TBG.Main.Helpers.Dialog.show('<?php echo __('Remove relation to issue %itemname%?', array('%itemname%' => $issue->getFormattedIssueNo(true))); ?>', '<?php echo __('Please confirm that you want to remove this item from the list of issues related to this issue'); ?>', {yes: {click: function() {TBG.Issues.removeRelated('<?php echo make_url('viewissue_remove_related_issue', array('project_key' => $related_issue->getProject()->getKey(), 'issue_id' => $related_issue->getID(), 'related_issue_id' => $issue->getID())); ?>', <?php echo $issue->getID(); ?>);TBG.Main.Helpers.Dialog.dismiss();}}, no: {click: TBG.Main.Helpers.Dialog.dismiss}});"><?php echo image_tag('icon_delete.png', array('class' => 'hover_visible', 'alt' => __('Remove relation'))); ?></a>
+		<?php endif; ?>
+		<?php echo link_tag(make_url('viewissue', array('issue_no' => $issue->getFormattedIssueNo(), 'project_key' => $issue->getProject()->getKey())), (($issue->getIssueType()->isTask() ? $issue->getTitle() : $issue->getFormattedTitle()))); ?>
+	</td>
+	<td style="font-size: 1em; line-height: 1;"><div style="border: 1px solid rgba(0, 0, 0, 0.3); background-color: <?php echo ($issue->getStatus() instanceof TBGStatus) ? $issue->getStatus()->getColor() : '#FFF'; ?>; font-size: 1px; width: 14px; height: 14px; float: left; margin-right: 5px;" title="<?php echo ($issue->getStatus() instanceof TBGStatus) ? $issue->getStatus()->getName() : __('Unknown'); ?>">&nbsp;</div><?php echo ($issue->getStatus() instanceof TBGStatus) ? $issue->getStatus()->getName() : __('Unknown'); ?></td>
+	<td style="font-size: 1em;">
+		<?php if ($issue->isAssigned()): ?>
+			<?php if ($issue->getAssignee() instanceof TBGUser): ?>
+				<?php echo include_component('main/userdropdown', array('user' => $issue->getAssignee())); ?>
+			<?php else: ?>
+				<?php echo include_component('main/teamdropdown', array('team' => $issue->getAssignee())); ?>
+			<?php endif; ?>
+		<?php else: ?>
+			<span class="faded_out"><?php echo __('Not assigned'); ?></span>
+		<?php endif; ?>
+	</td>
+</tr>

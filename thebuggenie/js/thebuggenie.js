@@ -2728,10 +2728,9 @@ TBG.Issues.refreshRelatedIssues = function(url) {
 				hide: 'no_child_issues',
 				update: {element: 'related_child_issues_inline'},
 				callback: function() {
-					var count = 0;
-					count += $('related_child_issues_inline').childElements().size();
-					count += $('related_parent_issues_inline').childElements().size();
-					$('viewissue_related_issues_count').update(count);
+					var childcount = $('related_child_issues_inline').childElements().size();
+					var parentcount = $('related_parent_issues_inline').childElements().size();
+					$('viewissue_related_issues_count').update(childcount + parentcount);
 				}
 			}
 		});
@@ -2768,6 +2767,22 @@ TBG.Issues.relate = function(url) {
 		}
 	});
 	return false;
+};
+
+TBG.Issues.removeRelated = function(url, issue_id) {
+	TBG.Main.Helpers.ajax(url, {
+		loading: {indicator: 'related_issues_indicator'},
+		success: {
+			remove: 'related_issue_'+issue_id,
+			callback: function() {
+				var childcount = $('related_child_issues_inline').childElements().size();
+				var parentcount = $('related_parent_issues_inline').childElements().size();
+				if (childcount == 0) $('no_child_issues').show();
+				if (parentcount == 0) $('no_parent_issues').show();
+				$('viewissue_related_issues_count').update(childcount + parentcount);
+			}
+		}
+	});
 };
 
 TBG.Issues._addVote = function(url, direction) {

@@ -2917,6 +2917,41 @@
 			return $this->renderJSON(array('content' => $this->getComponentHTML('main/findduplicateissues', array('issue' => $issue, 'issues' => $issues, 'count' => $count))));
 		}
 
+		public function runRemoveRelatedIssue(TBGRequest $request)
+		{
+			try
+			{
+				try
+				{
+					$issue_id = (int) $request['issue_id'];
+					$related_issue_id = (int) $request['related_issue_id'];
+					$issue = null;
+					$related_issue = null;
+					if ($issue_id && $related_issue_id)
+					{
+						$issue = TBGContext::factory()->TBGIssue($issue_id);
+						$related_issue = TBGContext::factory()->TBGIssue($related_issue_id);
+					}
+					if (!$issue instanceof TBGIssue || !$related_issue instanceof TBGIssue)
+					{
+						throw new Exception('');
+					}
+					$issue->removeDependantIssue($related_issue->getID());
+				}
+				catch (Exception $e)
+				{
+					throw new Exception($this->getI18n()->__('Please provide a valid issue number and a valid related issue number'));
+				}
+				return $this->renderJSON(array('message' => $this->getI18n()->__('The issues are no longer related')));
+			}
+			catch (Exception $e)
+			{
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('error' => $e->getMessage()));
+			}
+			
+		}
+
 		public function runRelateIssues(TBGRequest $request)
 		{
 			$status = 200;
@@ -2943,7 +2978,7 @@
 			if (!$issue->canAddRelatedIssue())
 			{
 				$status = 400;
-				$message = TBGContext::getI18n()->__('Unknown error');
+				$message = TBGContext::getI18n()->__('You are not allowed to relate issues');
 			}
 			
 			$this->getResponse()->setHttpStatus($status);
@@ -3074,24 +3109,29 @@
 			try
 			{
 				$issue = TBGContext::factory()->TBGIssue($request['issue_id']);
-				
-				if (!$issue->canEditIssue())
+				$itemtype = $request['affected_type'];
+
+				if (!(($itemtype == 'build' && $issue->canEditAffectedBuilds()) || ($itemtype == 'component' && $issue->canEditAffectedComponents()) || ($itemtype == 'edition' && $issue->canEditAffectedEditions())))
 				{
-					$this->getResponse()->setHttpStatus(400);
-					return $this->renderJSON(array('error' => TBGContext::getI18n()->__('You are not allowed to do this')));
+					throw new Exception($this->getI18n()->__('You are not allowed to do this'));
 				}
+
+				$affected_id = $request['affected_id'];
 				
-				switch ($request['affected_type'])
+				switch ($itemtype)
 				{
 					case 'edition':
 						if (!$issue->getProject()->isEditionsEnabled())
 						{
-							$this->getResponse()->setHttpStatus(400);
-							return $this->renderJSON(array('error' => TBGContext::getI18n()->__('Editions are disabled')));
+							throw new Exception($this->getI18n()->__('Editions are disabled'));
 						}
 						
 						$editions = $issue->getEditions();
-						$edition = $editions[$request['affected_id']];
+						if (!array_key_exists($affected_id, $editions))
+						{
+							throw new Exception($this->getI18n()->__('This edition is not affected by this issue'));
+						}
+						$edition = $editions[$affected_id];
 						
 						if ($edition['confirmed'] == true)
 						{
@@ -3114,12 +3154,15 @@
 					case 'component':
 						if (!$issue->getProject()->isComponentsEnabled())
 						{
-							$this->getResponse()->setHttpStatus(400);
-							return $this->renderJSON(array('error' => TBGContext::getI18n()->__('Components are disabled')));
+							throw new Exception($this->getI18n()->__('Components are disabled'));
 						}
 						
 						$components = $issue->getComponents();
-						$component = $components[$request['affected_id']];
+						if (!array_key_exists($affected_id, $components))
+						{
+							throw new Exception($this->getI18n()->__('This component is not affected by this issue'));
+						}
+						$component = $components[$affected_id];
 						
 						if ($component['confirmed'] == true)
 						{
@@ -3142,12 +3185,15 @@
 					case 'build':
 						if (!$issue->getProject()->isBuildsEnabled())
 						{
-							$this->getResponse()->setHttpStatus(400);
-							return $this->renderJSON(array('error' => TBGContext::getI18n()->__('Releases are disabled')));
+							throw new Exception($this->getI18n()->__('Releases are disabled'));
 						}
 						
 						$builds = $issue->getBuilds();
-						$build = $builds[$request['affected_id']];
+						if (!array_key_exists($affected_id, $builds))
+						{
+							throw new Exception($this->getI18n()->__('This release is not affected by this issue'));
+						}
+						$build = $builds[$affected_id];
 						
 						if ($build['confirmed'] == true)
 						{
@@ -3177,7 +3223,7 @@
 			catch (Exception $e)
 			{
 				$this->getResponse()->setHttpStatus(400);
-				return $this->renderJSON(array('error' => TBGContext::getI18n()->__('An internal error has occured')));
+				return $this->renderJSON(array('error' => $e->getMessage()));
 			}
 		}
 		

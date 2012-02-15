@@ -879,14 +879,15 @@
 				$this->_builds = array();
 				$this->_components = array();
 		
-				if ($res = \b2db\Core::getTable('TBGIssueAffectsEditionTable')->getByIssueID($this->getID()))
+				if ($res = TBGIssueAffectsEditionTable::getTable()->getByIssueID($this->getID()))
 				{
 					while ($row = $res->getNextRow())
 					{
 						try
 						{
+							$status_id = $row->get(TBGIssueAffectsEditionTable::STATUS);
 							$this->_editions[$row->get(TBGIssueAffectsEditionTable::ID)] = array(	'edition' => TBGContext::factory()->TBGEdition($row->get(TBGIssueAffectsEditionTable::EDITION)),
-														'status' => TBGContext::factory()->TBGStatus($row->get(TBGIssueAffectsEditionTable::STATUS), $row),
+														'status' => ($status_id) ? TBGContext::factory()->TBGStatus($status_id, $row) : null,
 														'confirmed' => (bool) $row->get(TBGIssueAffectsEditionTable::CONFIRMED),
 														'a_id' => $row->get(TBGIssueAffectsEditionTable::ID));
 						}
@@ -894,14 +895,15 @@
 					}
 				}
 				
-				if ($res = \b2db\Core::getTable('TBGIssueAffectsBuildTable')->getByIssueID($this->getID()))
+				if ($res = TBGIssueAffectsBuildTable::getTable()->getByIssueID($this->getID()))
 				{
 					while ($row = $res->getNextRow())
 					{
 						try
 						{
+							$status_id = $row->get(TBGIssueAffectsBuildTable::STATUS);
 							$this->_builds[$row->get(TBGIssueAffectsBuildTable::ID)] = array(	'build' => TBGContext::factory()->TBGBuild($row->get(TBGIssueAffectsBuildTable::BUILD)),
-														'status' => TBGContext::factory()->TBGStatus($row->get(TBGIssueAffectsBuildTable::STATUS), $row),
+														'status' => ($status_id) ? TBGContext::factory()->TBGStatus($status_id, $row) : null,
 														'confirmed' => (bool) $row->get(TBGIssueAffectsBuildTable::CONFIRMED),
 														'a_id' => $row->get(TBGIssueAffectsBuildTable::ID));
 						}
@@ -909,21 +911,22 @@
 					}
 				}
 				
-				if ($res = \b2db\Core::getTable('TBGIssueAffectsComponentTable')->getByIssueID($this->getID()))
+				if ($res = TBGIssueAffectsComponentTable::getTable()->getByIssueID($this->getID()))
 				{
 					while ($row = $res->getNextRow())
 					{
 						try
 						{
+							$status_id = $row->get(TBGIssueAffectsComponentTable::STATUS);
 							$this->_components[$row->get(TBGIssueAffectsComponentTable::ID)] = array(	'component' => TBGContext::factory()->TBGComponent($row->get(TBGIssueAffectsComponentTable::COMPONENT)),
-															'status' => TBGContext::factory()->TBGStatus($row->get(TBGIssueAffectsComponentTable::STATUS), $row),
+															'status' => ($status_id) ? TBGContext::factory()->TBGStatus($status_id, $row) : null,
 															'confirmed' => (bool) $row->get(TBGIssueAffectsComponentTable::CONFIRMED),
 															'a_id' => $row->get(TBGIssueAffectsComponentTable::ID));
 						}
 						catch (Exception $e) {}
 					}
 				}
-			}			
+			}
 		}
 		
 		/**
@@ -2248,17 +2251,19 @@
 		 */
 		public function removeDependantIssue($issue_id)
 		{
-			if ($row = \b2db\Core::getTable('TBGIssueRelationsTable')->getIssueRelation($this->getID(), $issue_id))
+			if ($row = TBGIssueRelationsTable::getTable()->getIssueRelation($this->getID(), $issue_id))
 			{
 				$related_issue = TBGContext::factory()->TBGIssue($issue_id);
+				$relation_id = $row->get(TBGIssueRelationsTable::ID);
 				if ($row->get(TBGIssueRelationsTable::PARENT_ID) == $this->getID())
 				{
-					$this->_removeChildIssue($related_issue, $row->get(TBGIssueRelationsTable::ID));
+					$this->_removeChildIssue($related_issue, $relation_id);
 				}
 				else
 				{
-					$this->_removeParentIssue($related_issue, $row->get(TBGIssueRelationsTable::ID));
+					$this->_removeParentIssue($related_issue, $relation_id);
 				}
+				TBGIssueRelationsTable::getTable()->doDeleteById($relation_id);
 			}
 		}
 		
