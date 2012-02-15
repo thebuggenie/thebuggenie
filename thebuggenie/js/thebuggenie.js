@@ -844,6 +844,16 @@ TBG.Main.Profile.removeOpenIDIdentity = function(url, oid) {
 	});
 }
 
+TBG.Main.Profile.clearPopupsAndButtons = function() {
+	var pbuttons = $('account_info_container').down('.profile_buttons');
+	pbuttons.select('.button').each(function(element) {
+		$(element).removeClassName('button-pressed');
+	});
+	pbuttons.select('.popup_box').each(function(element) {
+		$(element).hide();
+	});
+}
+
 TBG.Main.Dashboard.View.swap = function(source_elm)
 {
 	source_elm = $(source_elm);
