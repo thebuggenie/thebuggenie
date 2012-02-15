@@ -298,6 +298,7 @@ TBG.initialize = function(options) {
 	Event.observe(window, 'resize', TBG.Core._resizeWatcher);
 	Event.observe(window, 'scroll', TBG.Core._scrollWatcher);
 	TBG.Core._resizeWatcher();
+	TBG.Core._scrollWatcher();
 	if (TBG.Main.Dashboard.views.size() > 0) {
 		TBG.Main.Dashboard.views.each(function(view_id) {
 			TBG.Main.Dashboard.View.init(TBG.Main.Dashboard.url, view_id);
