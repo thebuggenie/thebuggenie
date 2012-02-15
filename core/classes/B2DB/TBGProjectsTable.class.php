@@ -166,6 +166,7 @@
 			$crit = $this->getCriteria();
 			$crit->addOrderBy(self::NAME, Criteria::SORT_ASC);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$crit->addWhere(self::DELETED, false);
 			$crit->indexBy(self::KEY);
 			$res = $this->select($crit);
 			return $res;
