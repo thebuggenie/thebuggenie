@@ -65,46 +65,6 @@
 		const PARENT_PROJECT_ID = 'projects.parent';
 		const ARCHIVED = 'projects.archived';
 		
-//		public function __construct()
-//		{
-//			parent::__construct(self::B2DBNAME, self::ID);
-//			parent::_addVarchar(self::NAME, 100);
-//			parent::_addVarchar(self::KEY, 100);
-//			parent::_addVarchar(self::PREFIX, 5, '');
-//			parent::_addBoolean(self::USE_PREFIX);
-//			parent::_addBoolean(self::USE_SCRUM);
-//			parent::_addBoolean(self::HAS_DOWNLOADS);
-//			parent::_addVarchar(self::HOMEPAGE, 200, '');
-//			parent::_addInteger(self::OWNER, 10);
-//			parent::_addInteger(self::OWNER_TYPE, 3);
-//			parent::_addInteger(self::LEAD_BY, 10);
-//			parent::_addInteger(self::LEAD_TYPE, 3);
-//			parent::_addText(self::DESCRIPTION, false);
-//			parent::_addVarchar(self::DOC_URL, 200, '');
-//			parent::_addBoolean(self::ALLOW_CHANGING_WITHOUT_WORKING);
-//			parent::_addBoolean(self::RELEASED);
-//			parent::_addBoolean(self::PLANNED_RELEASED);
-//			parent::_addInteger(self::RELEASE_DATE, 10);
-//			parent::_addBoolean(self::ENABLE_BUILDS);
-//			parent::_addBoolean(self::ENABLE_EDITIONS);
-//			parent::_addBoolean(self::ENABLE_COMPONENTS);
-//			parent::_addBoolean(self::SHOW_IN_SUMMARY, true);
-//			parent::_addVarchar(self::SUMMARY_DISPLAY, 15, 'issuetypes');
-//			parent::_addInteger(self::QA, 10);
-//			parent::_addInteger(self::QA_TYPE, 3);
-//			parent::_addBoolean(self::LOCKED);
-//			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
-//			parent::_addForeignKeyColumn(self::WORKFLOW_SCHEME_ID, TBGWorkflowSchemesTable::getTable(), TBGWorkflowSchemesTable::ID);
-//			parent::_addForeignKeyColumn(self::ISSUETYPE_SCHEME_ID, TBGIssuetypeSchemesTable::getTable(), TBGIssuetypeSchemesTable::ID);
-//			parent::_addForeignKeyColumn(self::CLIENT, TBGClientsTable::getTable(), TBGClientsTable::ID);
-//			parent::_addForeignKeyColumn(self::PARENT_PROJECT_ID, $this, self::ID);
-//			parent::_addForeignKeyColumn(self::SMALL_ICON, TBGFilesTable::getTable(), TBGFilesTable::ID);
-//			parent::_addForeignKeyColumn(self::LARGE_ICON, TBGFilesTable::getTable(), TBGFilesTable::ID);
-//			parent::_addBoolean(self::DELETED);
-//			parent::_addBoolean(self::AUTOASSIGN);
-//			parent::_addBoolean(self::ARCHIVED);
-//		}
-		
 		public function _setupIndexes()
 		{
 			$this->_addIndex('scope', self::SCOPE);
