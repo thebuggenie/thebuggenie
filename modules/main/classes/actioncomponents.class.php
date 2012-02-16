@@ -458,6 +458,7 @@
 			$this->reproducabilities = TBGReproducability::getAll();
 			$this->resolutions = TBGResolution::getAll();
 			$this->statuses = TBGStatus::getAll();
+			$this->milestones = TBGContext::getCurrentProject()->getMilestones();
 		}
 
 		public function componentReportIssue()

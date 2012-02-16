@@ -50,6 +50,9 @@
 									case 'resolution':
 										echo __("Please specify a valid resolution");
 										break;
+									case 'milestone':
+										echo __("Please specify a valid resolution");
+										break;
 									case 'estimated_time':
 										echo __("Please enter a valid estimate");
 										break;
@@ -165,15 +168,15 @@
 	<form action="<?php echo make_url('project_reportissue', array('project_key' => $selected_project->getKey())); ?>" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>">
 <?php endif; ?>
 	<input type="hidden" name="project_id" id="project_id" value="<?php echo $selected_project->getID(); ?>">
-	<?php if (isset($selected_milestone) || isset($selected_build) || isset($parent_issue)): ?>
+	<?php if (/*isset($selected_milestone) ||*/ isset($selected_build) || isset($parent_issue)): ?>
 		<div class="rounded_box lightyellow borderless">
 			<ul class="simple_list" style="padding: 5px; margin: 5px; font-size: 1.2em;">
-				<?php if (isset($selected_milestone)): ?>
+				<?php /* if (isset($selected_milestone)): ?>
 					<li>
 						<?php echo __('You are adding an issue to %milestone_name%', array('%milestone_name%' => '<b>'.$selected_milestone->getName().'</b>')); ?>
 						<input type="hidden" name="milestone_id" id="reportissue_selected_milestone_id" value="<?php echo $selected_milestone->getID(); ?>">
 					</li>
-				<?php endif; ?>
+				<?php endif; */ ?>
 				<?php if (isset($parent_issue)): ?>
 					<li>
 						<?php echo __('Any issues you create will be related to %related_issue_title%', array('%related_issue_title%' => '<b>'.$parent_issue->getFormattedTitle().'</b>')); ?>
@@ -412,6 +415,21 @@
 								<option value="0"><?php echo __('Not specified'); ?></option>
 								<?php foreach ($priorities as $priority): ?>
 									<option value="<?php echo $priority->getID(); ?>"<?php if ($selected_priority instanceof TBGPriority && $selected_priority->getID() == $priority->getID()): ?> selected<?php endif; ?>><?php echo $priority->getName(); ?></option>
+								<?php endforeach; ?>
+							</select>
+						</td>
+					</tr>
+				</table>
+				<table cellpadding="0" cellspacing="0" id="milestone_div" style="display: none;" class="additional_information<?php if (array_key_exists('milestone', $errors)): ?> reportissue_error<?php endif; ?>">
+					<tr>
+						<td style="width: 180px;"><label for="milestone_id" id="milestone_label"><span>* </span><?php echo __('Milestone'); ?></label></td>
+						<td class="report_issue_help faded_out dark"><?php echo __("Choose the milestone of this issue"); ?></td>
+					<tr>
+						<td colspan="2" style="padding-top: 5px;">
+							<select name="milestone_id" id="milestone_id" style="width: 100%;">
+								<option value="0"><?php echo __('Not specified'); ?></option>
+								<?php foreach ($milestones as $milestone): ?>
+									<option value="<?php echo $milestone->getID(); ?>"<?php if ($selected_milestone instanceof TBGMilestone && $selected_milestone->getID() == $milestone->getID()): ?> selected<?php endif; ?>><?php echo $milestone->getName(); ?></option>
 								<?php endforeach; ?>
 							</select>
 						</td>
