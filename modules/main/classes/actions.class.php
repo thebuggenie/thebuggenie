@@ -1627,6 +1627,8 @@
 										$options = array('issue_id' => $issue->getID(), 'changed' =>true, 'visible_fields' => $visible_fields, 'field' => $field);
 										if ($request['field'] == 'milestone')
 											$options['field']['url'] = $this->getRouting()->generate('project_milestone_details', array('project_key' => $issue->getProject()->getKey(), 'milestone_id' => $issue->getMilestone()->getID()));
+										if ($request['field'] == 'status')
+											$options['field']['color'] = $issue->getStatus()->getItemdata();
 
 										return $this->renderJSON($options);
 									}
@@ -1830,7 +1832,7 @@
 					$issue->revertIssuetype();
 					$field = ($issue->getIssuetype() instanceof TBGIssuetype) ? array('id' => $issue->getIssuetype()->getID(), 'name' => $issue->getIssuetype()->getName(), 'src' => htmlspecialchars(TBGContext::getTBGPath() . 'iconsets/' . TBGSettings::getThemeName() . '/' . $issue->getIssuetype()->getIcon() . '_small.png')) : array('id' => 0);
 					$visible_fields = ($issue->getIssuetype() instanceof TBGIssuetype) ? $issue->getProject()->getVisibleFieldsArray($issue->getIssuetype()->getID()) : array();
-					return $this->renderJSON(array('ok' => true, 'field' => $field, 'visible_fields' => $visible_fields));
+					return $this->renderJSON(array('ok' => true, 'issue_id' => $issue->getID(), 'field' => $field, 'visible_fields' => $visible_fields));
 					break;
 				case 'milestone':
 					$issue->revertMilestone();
@@ -1838,11 +1840,11 @@
 					break;
 				case 'estimated_time':
 					$issue->revertEstimatedTime();
-					return $this->renderJSON(array('ok' => true, 'field' => (($issue->hasEstimatedTime()) ? array('id' => 1, 'name' => $issue->getFormattedTime($issue->getEstimatedTime())) : array('id' => 0)), 'values' => $issue->getEstimatedTime()));
+					return $this->renderJSON(array('ok' => true, 'issue_id' => $issue->getID(), 'field' => (($issue->hasEstimatedTime()) ? array('id' => 1, 'name' => $issue->getFormattedTime($issue->getEstimatedTime())) : array('id' => 0)), 'values' => $issue->getEstimatedTime()));
 					break;
 				case 'spent_time':
 					$issue->revertSpentTime();
-					return $this->renderJSON(array('ok' => true, 'field' => (($issue->hasSpentTime()) ? array('id' => 1, 'name' => $issue->getFormattedTime($issue->getSpentTime())) : array('id' => 0)), 'values' => $issue->getSpentTime()));
+					return $this->renderJSON(array('ok' => true, 'issue_id' => $issue->getID(), 'field' => (($issue->hasSpentTime()) ? array('id' => 1, 'name' => $issue->getFormattedTime($issue->getSpentTime())) : array('id' => 0)), 'values' => $issue->getSpentTime()));
 					break;
 				case 'owned_by':
 					$issue->revertOwner();
@@ -1886,7 +1888,7 @@
 			
 			if ($field !== null)
 			{
-				return $this->renderJSON(array('ok' => true, 'field' => $field));
+				return $this->renderJSON(array('ok' => true, 'issue_id' => $issue->getID(), 'field' => $field));
 			}
 			else
 			{

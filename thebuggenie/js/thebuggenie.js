@@ -2901,13 +2901,13 @@ TBG.Issues.Field.setPercent = function(url, mode) {
 	});
 }
 
-TBG.Issues.Field.Updaters.dualFromJSON = function(dualfield, field) {
+TBG.Issues.Field.Updaters.dualFromJSON = function(issue_id, dualfield, field) {
 	if (dualfield.id == 0) {
 		$(field + '_table').hide();
 		$('no_' + field).show();
 	} else {
 		$(field + '_content').update(dualfield.name);
-		if (field == 'status') $('status_color').setStyle({backgroundColor: dualfield.color});
+		if (field == 'status') $('status_'+issue_id+'_color').setStyle({backgroundColor: dualfield.color});
 		else if (field == 'issuetype') $('issuetype_image').src = dualfield.src;
 		if ($('no_' + field)) $('no_' + field).hide();
 		if ($(field + '_table')) $(field + '_table').show();
@@ -2916,7 +2916,7 @@ TBG.Issues.Field.Updaters.dualFromJSON = function(dualfield, field) {
 
 TBG.Issues.Field.Updaters.fromObject = function(issue_id, object, field) {
 	var fn = field + '_' + issue_id + '_name';
-	var nf = 'no_ ' + field + '_' + issue_id;
+	var nf = 'no_' + field + '_' + issue_id;
 	if (!$(fn)) {
 		fn = field + '_name';
 		nf = 'no_' + field;
@@ -2934,11 +2934,7 @@ TBG.Issues.Field.Updaters.fromObject = function(issue_id, object, field) {
 
 TBG.Issues.Field.Updaters.timeFromObject = function(issue_id, object, values, field) {
 	var fn = field + '_' + issue_id + '_name';
-	var nf = 'no_ ' + field + '_' + issue_id;
-	if (!$(fn)) {
-		fn = field + '_name';
-		nf = 'no_' + field;
-	}
+	var nf = 'no_' + field + '_' + issue_id;
 	if ($(fn) && $(nf)) {
 		if (object.id == 0) {
 			$(fn).hide();
@@ -2949,7 +2945,6 @@ TBG.Issues.Field.Updaters.timeFromObject = function(issue_id, object, values, fi
 			$(fn).show();
 		}
 	}
-	console.log('fuu');
 	['points', 'hours', 'days', 'weeks', 'months'].each(function(unit) {
 		if ($(field + '_' + issue_id + '_' + unit + '_input'))
 			$(field + '_' + issue_id + '_' + unit + '_input').setValue(values[unit]);
@@ -3013,8 +3008,12 @@ TBG.Issues.Field.set = function(url, field, serialize_form) {
 			callback: function(json) {
 				if (json.field != undefined)
 				{
-					if (field == 'status' || field == 'issuetype') TBG.Issues.Field.Updaters.dualFromJSON(json.field, field);
+					if (field == 'status' || field == 'issuetype') TBG.Issues.Field.Updaters.dualFromJSON(json.issue_id, json.field, field);
 					else if (field == 'percent_complete') TBG.Main.updatePercentageLayout(json.percent);
+					else if (field == 'estimated_time' || field == 'spent_time') {
+						TBG.Issues.Field.Updaters.timeFromObject(json.issue_id, json.field, json.values, field);
+						$(field + '_' + json.issue_id + '_change').hide();
+					}
 					else TBG.Issues.Field.Updaters.fromObject(json.issue_id, json.field, field);
 					
 					if (field == 'issuetype') TBG.Issues.Field.Updaters.allVisible(json.visible_fields);
@@ -3080,10 +3079,10 @@ TBG.Issues.Field.revert = function(url, field)
 		success: {
 			callback: function(json) {
 				if (json.field != undefined) {
-					if (field == 'status' || field == 'issuetype') TBG.Issues.Field.Updaters.dualFromJSON(json.field, field);
-					else if (field == 'estimated_time' || field == 'spent_time') TBG.Issues.Field.Updaters.timeFromObject(json.field, json.values, field);
+					if (field == 'status' || field == 'issuetype') TBG.Issues.Field.Updaters.dualFromJSON(json.issue_id, json.field, field);
+					else if (field == 'estimated_time' || field == 'spent_time') TBG.Issues.Field.Updaters.timeFromObject(json.issue_id, json.field, json.values, field);
 					else if (field == 'percent_complete') TBG.Main.updatePercentageLayout(json.field);
-					else TBG.Issues.Field.Updaters.fromObject(json.field, field);
+					else TBG.Issues.Field.Updaters.fromObject(json.issue_id, json.field, field);
 					
 					if (field == 'issuetype') TBG.Issues.Field.Updaters.allVisible(json.visible_fields);
 					else if (field == 'description' || field == 'reproduction_steps') $(field + '_form_value').update(json.form_value);

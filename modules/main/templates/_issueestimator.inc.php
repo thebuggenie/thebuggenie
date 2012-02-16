@@ -14,7 +14,7 @@
 	<?php endif; ?>
 		<?php if (!isset($clear) || $clear == true): ?>
 			<div class="dropdown_content">
-				<a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, 'value' => 0)); ?>', '<?php echo $field . '_' . $issue->getID(); ?>');"><?php echo ($field == 'estimated_time') ? __('Clear current estimate') : __('Clear time spent on this issue'); ?></a><br>
+				<a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, 'value' => 0)); ?>', '<?php echo $field; ?>');"><?php echo ($field == 'estimated_time') ? __('Clear current estimate') : __('Clear time spent on this issue'); ?></a><br>
 			</div>
 		<?php endif; ?>
 		<div class="dropdown_content">
