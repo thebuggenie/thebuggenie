@@ -619,7 +619,7 @@
 				if (in_array($column['name'], $this->_foreigncolumns)) $value = ($value) ? (int) $value : null;
 				if ($id) {
 					$crit->addUpdate($column['name'], $value);
-				} elseif ($column != $this->getIdColumn()) {
+				} elseif ($column['name'] != $this->getIdColumn()) {
 					$crit->addInsert($column['name'], $value);
 				}
 			}
