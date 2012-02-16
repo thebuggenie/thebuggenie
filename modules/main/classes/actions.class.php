@@ -1397,11 +1397,11 @@
 						return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>$issue->isTitleChanged(), 'field' => array('id' => 1, 'name' => strip_tags($issue->getTitle())), 'title' => strip_tags($issue->getTitle())));
 					}
 					break;
-				case 'percent':
+				case 'percent_complete':
 					if (!$issue->canEditPercentage()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
 					
 					$issue->setPercentCompleted($request['percent']);
-					return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>$issue->isPercentCompletedChanged(), 'percent' => $issue->getPercentCompleted()));
+					return $this->renderJSON(array('issue_id' => $issue->getID(), 'field' => 'percent_complete', 'changed' => $issue->isPercentCompletedChanged(), 'percent' => $issue->getPercentCompleted()));
 					break;
 				case 'estimated_time':
 					if (!$issue->canEditEstimatedTime()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
@@ -1806,9 +1806,9 @@
 					$issue->revertPriority();
 					$field = ($issue->getPriority() instanceof TBGPriority) ? array('id' => $issue->getPriority()->getID(), 'name' => $issue->getPriority()->getName()) : array('id' => 0);
 					break;
-				case 'percent':
+				case 'percent_complete':
 					$issue->revertPercentCompleted();
-					return $this->renderJSON(array('ok' => true, 'percent' => $issue->getPercentCompleted()));
+					$field = $issue->getPercentCompleted();
 					break;
 				case 'status':
 					$issue->revertStatus();

@@ -2725,8 +2725,36 @@
 		}
 	
 		/**
+		 * Check to see whether the percent completed is changed
+		 *
+		 * @return boolean
+		 */
+		public function isPercentCompletedChanged()
+		{
+			return $this->_isPropertyChanged('_percent_complete');
+		}
+
+		/**
+		 * Check to see whether the percent completed is merged
+		 *
+		 * @return boolean
+		 */
+		public function isPercentCompletedMerged()
+		{
+			return $this->_isPropertyMerged('_percent_complete');
+		}
+
+		/**
+		 * Reverts percent completed
+		 */
+		public function revertPercentCompleted()
+		{
+			$this->_revertPropertyChange('_percent_complete');
+		}
+
+		/**
 		 * Check to see whether the owner is changed
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function isOwnerUserChanged()
@@ -2736,14 +2764,14 @@
 
 		/**
 		 * Check to see whether the owner is merged
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function isOwnerUserMerged()
 		{
 			return $this->_isPropertyMerged('_owner_user');
 		}
-		
+
 		/**
 		 * Reverts estimated time
 		 */

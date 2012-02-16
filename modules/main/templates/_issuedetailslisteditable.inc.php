@@ -108,29 +108,34 @@
 																	'classes'			=> 'dropdown_box')); ?>
 		<?php endif; ?>
 	</li>
-	<li class="viewissue_list issue_detail_field" id="percent_complete_field"<?php if (!$issue->isPercentCompletedVisible()): ?> style="display: none;"<?php endif; ?>>
+	<li class="viewissue_list issue_detail_field<?php if ($issue->isPercentCompletedChanged()): ?> issue_detail_changed<?php endif; ?><?php if (!$issue->isPercentCompletedMerged()): ?> issue_detail_unmerged<?php endif; ?>" id="percent_complete_field"<?php if (!$issue->isPercentCompletedVisible()): ?> style="display: none;"<?php endif; ?>>
 		<dl class="viewissue_list">
-			<dt id="percent_header" class="<?php if ($issue->isPercentCompletedChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isPercentCompletedMerged()): ?> issue_detail_unmerged<?php endif; ?>"><?php echo __('Progress'); ?></dt>
-			<dd id="percent_content" class="<?php if ($issue->isPercentCompletedChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isPercentCompletedMerged()): ?> issue_detail_unmerged<?php endif; ?>">
+			<dt id="percent_complete_header"><?php echo __('Progress'); ?></dt>
+			<dd id="percent_complete_content">
 				<div style="width: 100%;">
 					<?php if ($issue->canEditPercentage() && $issue->isUpdateable()): ?>
-						<a href="javascript:void(0);" onclick="TBG.Issues.Field.setPercent('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'percent')); ?>', 'percent');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
-						<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: right; margin-left: 5px;', 'id' => 'percent_spinning')); ?>
-						<table style="table-layout: fixed; width: 100%;" cellpadding=0 cellspacing=0>
-							<tr id="percentage_tds">
-								<?php for ($cc = 0; $cc <= 100; $cc++): ?>
-									<td class="<?php if ($issue->getPercentCompleted() <= $cc): ?>percent_unfilled<?php else: ?>percent_filled<?php endif; ?>" style="font-size: 1px; width: 1%; height: 14px;">
-										<a href="javascript:void(0);" onclick="TBG.Issues.Field.setPercent('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'percent', 'percent' => $cc)); ?>', 'set');" title="<?php echo __('Set to %pct% percent', array('%pct%' => $cc)); ?>">&nbsp;</a>
-									</td>
-								<?php endfor; ?>
-							</tr>
-						</table>
-					<?php else: ?>
-						<?php include_template('main/percentbar', array('percent' => $issue->getPercentCompleted(), 'height' => 14)); ?>
+						<a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'percent_complete')); ?>', 'percent_complete');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
+						<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'percent_complete_undo_spinning')); ?>
+						<a href="javascript:void(0);" onclick="if ($('percent_complete_change').visible()) { $$('div.dropdown_box').each(Element.hide); } else { $$('div.dropdown_box').each(Element.hide); $('percent_complete_change').toggle(); }" title="<?php echo __('Click to set percent completed'); ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
 					<?php endif; ?>
+					<?php include_template('main/percentbar', array('percent' => $issue->getPercentCompleted(), 'height' => 14)); ?>
+					<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'percent_complete_spinning')); ?>
 				</div>
 			</dd>
 		</dl>
+		<?php if ($issue->canEditPercentage() && $issue->isUpdateable()): ?>
+			<div class="rounded_box white shadowed dropdown_box" id="percent_complete_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0; padding: 5px;">
+				<div class="dropdown_header"><?php echo __('Set percent completed'); ?></div>
+				<div class="dropdown_content">
+					<form id="percent_complete_form" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="" onsubmit="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'percent_complete')); ?>', 'percent_complete', 'percent_complete');return false;">
+						<label for="set_percent"><?php echo __('Percent complete'); ?></label>&nbsp;<input type="text" style="width: 40px;" name="percent" id="set_percent">&percnt;
+						<input type="submit" value="<?php echo __('Set'); ?>">
+					</form>
+					<?php echo __('%set_percent_completed% or %clear_percent_completed%', array('%set_percent_completed%' => '', '%clear_percent_completed%' => '')); ?><br>
+					<a href="javascript:void(0);" onclick="TBG.Issues.Field.setPercent('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'percent_complete', 'percent' => 0)); ?>', 'set');"><?php echo __('Clear percent completed'); ?></a><br>
+				</div>
+			</div>
+		<?php endif; ?>
 	</li>
 	<li id="pain_bug_type_field" class="issue_detail_field<?php if ($issue->isPainBugTypeChanged()): ?> issue_detail_changed<?php endif; ?><?php if (!$issue->isPainBugTypeMerged()): ?> issue_detail_unmerged<?php endif; ?>" style="<?php if (!$issue->isUserPainVisible()): ?> display: none;<?php endif; ?>">
 		<dl class="viewissue_list">

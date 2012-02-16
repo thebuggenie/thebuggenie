@@ -670,29 +670,9 @@ TBG.Main.findIdentifiable = function(url, field) {
 	});
 };
 
-TBG.Main.updatePercentageLayout = function(tds, percent) {
-	cc = 0;
-	$(tds).childElements().each(function(elm) {
-		if ($(tds).childElements().size() == 2) {
-			$(tds).childElements().first().style.width = percent + '%';
-			$(tds).childElements().last().style.width = (100 - percent) + '%';
-		} else {
-			elm.removeClassName("percent_filled");
-			elm.removeClassName("percent_unfilled");
-			switch (true) {
-				case (percent > 0 && percent < 100):
-					(cc <= percent) ? elm.addClassName("percent_filled") : elm.addClassName("percent_unfilled");
-					break;
-				case (percent == 0):
-					elm.addClassName("percent_unfilled");
-					break;
-				case (percent == 100):
-					elm.addClassName("percent_filled");
-					break;
-			}
-			cc++;
-		}
-	});
+TBG.Main.updatePercentageLayout = function(percent) {
+	$('percent_complete_content').select('.percent_filled').first().style.width = percent + '%';
+	$('percent_complete_content').select('.percent_unfilled').first().style.width = (100 - percent) + '%';
 };
 
 TBG.Main.submitIssue = function(url) {
@@ -2914,8 +2894,8 @@ TBG.Issues.Field.setPercent = function(url, mode) {
 		loading: {indicator: 'percent_spinning'},
 		success: {
 			callback: function(json) {
-				TBG.Main.updatePercentageLayout('percentage_tds', json.percent);
-				(mode == 'set') ? TBG.Issues.markAsChanged('percent') : TBG.Issues.markAsUnchanged('percent');
+				TBG.Main.updatePercentageLayout(json.percent);
+				(mode == 'set') ? TBG.Issues.markAsChanged('percent_complete') : TBG.Issues.markAsUnchanged('percent_complete');
 			}
 		}
 	});
@@ -3034,6 +3014,7 @@ TBG.Issues.Field.set = function(url, field, serialize_form) {
 				if (json.field != undefined)
 				{
 					if (field == 'status' || field == 'issuetype') TBG.Issues.Field.Updaters.dualFromJSON(json.field, field);
+					else if (field == 'percent_complete') TBG.Main.updatePercentageLayout(json.percent);
 					else TBG.Issues.Field.Updaters.fromObject(json.issue_id, json.field, field);
 					
 					if (field == 'issuetype') TBG.Issues.Field.Updaters.allVisible(json.visible_fields);
@@ -3101,6 +3082,7 @@ TBG.Issues.Field.revert = function(url, field)
 				if (json.field != undefined) {
 					if (field == 'status' || field == 'issuetype') TBG.Issues.Field.Updaters.dualFromJSON(json.field, field);
 					else if (field == 'estimated_time' || field == 'spent_time') TBG.Issues.Field.Updaters.timeFromObject(json.field, json.values, field);
+					else if (field == 'percent_complete') TBG.Main.updatePercentageLayout(json.field);
 					else TBG.Issues.Field.Updaters.fromObject(json.field, field);
 					
 					if (field == 'issuetype') TBG.Issues.Field.Updaters.allVisible(json.visible_fields);
