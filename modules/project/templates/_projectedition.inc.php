@@ -2,7 +2,7 @@
 	<div class="backdrop_detail_header">
 		<?php echo __('Edit edition details'); ?>
 	</div>
-	<div id="backdrop_detail_content">
+	<div id="backdrop_detail_content" class="backdrop_detail_content">
 		<div style="clear: both; margin-top: 10px; margin-bottom: 10px; width: 790px; height: 30px;" class="tab_menu">
 			<ul id="editions_menu">
 				<li<?php if ($selected_section == 'general'): ?> class="selected"<?php endif; ?> id="edition_settings"><a href="javascript:void(0);" onclick="TBG.Main.Helpers.tabSwitcher('edition_settings', 'editions_menu');"><?php echo __('Details &amp; settings'); ?></a></li>

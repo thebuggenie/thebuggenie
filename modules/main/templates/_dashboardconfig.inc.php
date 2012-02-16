@@ -2,7 +2,7 @@
 	<div class="backdrop_detail_header">
 		<?php echo __('Configure dashboard'); ?>
 	</div>
-	<div id="backdrop_detail_content">
+	<div id="backdrop_detail_content" class="backdrop_detail_content">
 		<ul id="views_list" style="float: left; margin: 0; padding: 0; list-style: none;" class="sortable">
 		<?php foreach ($dashboardViews as $view): ?>
 			<li id="view_<?php echo $view->getDetail(); ?>" class="rounded_box mediumgrey">

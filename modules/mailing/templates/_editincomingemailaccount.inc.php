@@ -16,7 +16,7 @@
 	<div class="backdrop_detail_header">
 		<?php echo ($account->getId()) ? __('Edit incoming email account') : __('Add new incoming email account'); ?>
 	</div>
-	<div id="backdrop_detail_content">
+	<div id="backdrop_detail_content" class="backdrop_detail_content">
 		<div class="content" style="padding: 4px;">
 			<?php echo __('The Bug Genie can check email accounts and create issues from incoming emails. Set up a new account here, and check the %online_documentation% for more information.', array('%online_documentation%' => link_tag('http://issues.thebuggenie.com/wiki/TheBugGenie:IncomingEmail', '<b>'.__('online documentation').'</b>'))); ?>
 		</div>

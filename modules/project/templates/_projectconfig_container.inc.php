@@ -2,7 +2,7 @@
 	<div class="backdrop_detail_header">
 		<?php echo __('Quick edit project'); ?>
 	</div>
-	<div id="backdrop_detail_content">
+	<div id="backdrop_detail_content" class="backdrop_detail_content">
 		<h5 style="font-size: 13px; text-align: left;">
 			<div class="button button-blue" style="float: right; margin: -5px 5px 5px 0;"><?php echo link_tag(make_url('project_settings', array('project_key' => $project->getKey())), '<span>'.__('More settings').'</span>'); ?></a></div>
 			<?php echo __('Only showing basic project details. More settings available in the main project configuration.'); ?>

@@ -1,6 +1,6 @@
 <div class="backdrop_box medium" id="viewissue_add_item_div">
 	<div class="backdrop_detail_header"><?php echo __('Issue access policy'); ?></div>
-	<div id="backdrop_detail_content">
+	<div id="backdrop_detail_content" class="backdrop_detail_content">
 		<input type="radio" name="issue_access" id="issue_access_public" onchange="TBG.Issues.ACL.toggle_checkboxes(this, <?php echo $issue->getID(); ?>);" value="public"<?php if($issue->isUnlocked()): ?> checked<?php endif; ?>><label for="issue_access_public"><?php echo __('Available to anyone with access'); ?></label><br>
 		<input type="radio" name="issue_access" id="issue_access_restricted" onchange="TBG.Issues.ACL.toggle_checkboxes(this, <?php echo $issue->getID(); ?>);" value="restricted"<?php if($issue->isLocked()): ?> checked<?php endif; ?>><label for="issue_access_restricted"><?php echo __('Available only to you and those listed below'); ?></label><br>
 		<?php image_tag('spinning_16.gif', array('id' => 'acl_indicator_'.$issue->getID(), 'style' => '')); ?>

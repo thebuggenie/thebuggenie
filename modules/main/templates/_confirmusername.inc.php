@@ -1,6 +1,6 @@
 <div class="backdrop_box large" id="username_confirmation_popup">
 	<div class="backdrop_detail_header"><?php echo __('Confirm username'); ?></div>
-	<div id="backdrop_detail_content">
+	<div id="backdrop_detail_content" class="backdrop_detail_content">
 		<h5><?php echo __('The selected username is available'); ?></h5>
 		<?php echo __('You cannot change the username after you have picked it. Please confirm that you want to use the following username: %username%', array('%username%' => '<h3>'.$username.'</h3>')); ?>
 		<div style="text-align: center;">

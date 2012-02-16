@@ -659,21 +659,21 @@ a.friend:hover { border-bottom: 1px dotted #0000a4; }
 #report_form table { width: 990px; margin: 0 auto; }
 #report_form table table { width: auto; }
 #report_form label { font-size: 1.1em; padding: 3px 0 3px 0; font-weight: normal; }
-#backdrop_detail_content #report_form label { font-size: 1em; }
+.backdrop_detail_content #report_form label { font-size: 1em; }
 #report_form label span { display: none; }
 #report_form label.required { font-weight: bold; }
 #report_form label.required span { display: inline; }
 #report_form input[type="text"] { font-size: 1.3em; padding: 4px; height: 20px; text-align: left; width: 100%; }
-#backdrop_detail_content #report_form input[type="text"] { font-size: 1.1em; padding: 2px; }
+.backdrop_detail_content #report_form input[type="text"] { font-size: 1.1em; padding: 2px; }
 #report_form input#title { width: 800px; }
 #report_form select { font-size: 1.1em; padding: 2px; height: 24px; text-align: left; width: 100%; }
-#backdrop_detail_content #report_form select { font-size: 1em; padding: 1px; height: 22px; text-align: left; width: auto; }
+.backdrop_detail_content #report_form select { font-size: 1em; padding: 1px; height: 22px; text-align: left; width: auto; }
 .report_issue_help { padding: 5px 0 0 2px; }
-#backdrop_detail_content #report_issue_reported_issue_details { padding: 5px; font-size: 1.1em; }
-#backdrop_detail_content .report_issue_help { padding: 3px 0 0 1px; }
-#backdrop_detail_content .reportissue_additional_information_container { border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; padding: 3px; background-color: #F5F5F5; margin-top: 10px; margin-bottom: 0; }
-#backdrop_detail_content .additional_information { float: left; width: 323px; margin: 0 0 10px 5px; }
-#backdrop_detail_content .additional_information .report_issue_help { display: none; }
+.backdrop_detail_content #report_issue_reported_issue_details { padding: 5px; font-size: 1.1em; }
+.backdrop_detail_content .report_issue_help { padding: 3px 0 0 1px; }
+.backdrop_detail_content .reportissue_additional_information_container { border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; padding: 3px; background-color: #F5F5F5; margin-top: 10px; margin-bottom: 0; }
+.backdrop_detail_content .additional_information { float: left; width: 323px; margin: 0 0 10px 5px; }
+.backdrop_detail_content .additional_information .report_issue_help { display: none; }
 reportissue_additional_information_container .markItUp { display: none; }
 .report_issue_submit_container { font-size: 1.1em; }
 .report_issue_submit_container .button, .report_issue_submit_container .button:hover { float: right; font-size: 1.1em; padding: 0 5px !important; }
@@ -760,12 +760,12 @@ ul.workflow_actions li:hover { box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); -webkit-b
 .backdrop_box.large { width: 800px; margin: 0 -400px 200px -400px; }
 .backdrop_box.huge { width: 1010px; margin: 0 -500px 200px -500px; }
 .backdrop_box .backdrop_detail_header { font-weight: bold; padding: 7px; font-size: 0.9em; text-align: left; color: white; text-shadow: 1px 1px 2px #000000; filter: dropshadow(color=#000000, offx=1, offy=1); }
-#backdrop_detail_content { font-weight: normal; font-size: 1.0em; padding: 5px; background: white; text-align: left; }
-#reportissue_container #backdrop_detail_content { padding: 5px; font-size: 0.9em; }
+.backdrop_detail_content { font-weight: normal; font-size: 1.0em; padding: 5px; background: white; text-align: left; }
+#reportissue_container .backdrop_detail_content { padding: 5px; font-size: 0.9em; }
 #reportissue_container .backdrop_detail_footer { padding: 5px; font-size: 1.1em; }
 #reportissue_container .backdrop_detail_footer a { font-weight: normal; }
-#backdrop_detail_content #report_issue_add_extra, #backdrop_detail_content #reproduction_steps_div { display: none; }
-#backdrop_detail_content .tab_menu { margin-top: 30px; margin-bottom: 10px; font-size: 1.1em; }
+.backdrop_detail_content #report_issue_add_extra, .backdrop_detail_content #reproduction_steps_div { display: none; }
+.backdrop_detail_content .tab_menu { margin-top: 30px; margin-bottom: 10px; font-size: 1.1em; }
 .backdrop_detail_footer { clear: both; font-weight: bold; font-size: 0.9em; padding: 5px; text-align: right; background-color: #FFF; }
 
 #dialog_title, #dialog_content {margin-left: 75px; }

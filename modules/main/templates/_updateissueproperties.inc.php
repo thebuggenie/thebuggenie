@@ -8,7 +8,7 @@
 		<input type="hidden" name="issue_ids[<?php echo $issue_id; ?>]" value="<?php echo $issue_id; ?>">
 	<?php endforeach; ?>
 <?php endif; ?>
-		<div id="backdrop_detail_content">
+		<div id="backdrop_detail_content" class="backdrop_detail_content">
 			<?php if (!$issue instanceof TBGIssue): ?>
 			<div class="rounded_box yellow borderless"><?php echo __('This transition will be applied to %count% selected issues', array('%count%' => count($issues))); ?></div>
 			<?php endif; ?>

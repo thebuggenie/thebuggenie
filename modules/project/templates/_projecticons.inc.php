@@ -2,7 +2,7 @@
 	<div class="backdrop_detail_header">
 		<?php echo __('Update project icons'); ?>
 	</div>
-	<div id="backdrop_detail_content">
+	<div id="backdrop_detail_content" class="backdrop_detail_content">
 		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_projects_icons', array('project_id' => $project->getID())); ?>" method="post" id="build_form" onsubmit="$('update_icons_indicator').show();return true;" enctype="multipart/form-data">
 			<table cellpadding="0" cellspacing="0">
 				<tr>

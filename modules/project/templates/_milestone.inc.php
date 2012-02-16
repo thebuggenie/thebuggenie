@@ -2,7 +2,7 @@
 	<div class="backdrop_detail_header">
 		<?php echo ($milestone->getId()) ? __('Edit milestone details') : __('Add milestone'); ?>
 	</div>
-	<div id="backdrop_detail_content">
+	<div id="backdrop_detail_content" class="backdrop_detail_content">
 		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('project_milestone', array('project_key' => $milestone->getProject()->getKey())); ?>" method="post" id="edit_milestone_form" onsubmit="TBG.Project.Milestone.<?php echo ($milestone->getID()) ? 'update' : 'add'; ?>('<?php echo make_url('project_milestone', array('project_key' => $milestone->getProject()->getKey())); ?>'<?php if ($milestone->getID()): ?>, <?php echo $milestone->getID(); ?><?php endif; ?>);return false;">
 			<table style="width: 750px;" cellpadding=0 cellspacing=0>
 				<tr>

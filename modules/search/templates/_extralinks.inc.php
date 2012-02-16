@@ -20,7 +20,7 @@
 		<div class="backdrop_detail_header">
 			<?php echo __('Configure visible columns'); ?>
 		</div>
-		<div id="backdrop_detail_content">
+		<div id="backdrop_detail_content" class="backdrop_detail_content">
 			<div class="search_column_settings">
 				<h4><?php echo __('Select columns to show'); ?></h4>
 				<p class="faded_out"><?php echo __('Select which columns you would like to show in this result view. Your selection is saved until the next time you visit.'); ?></p>

@@ -2,7 +2,7 @@
 	<div class="backdrop_detail_header">
 		<?php echo __('Change workflow'); ?>
 	</div>
-	<div id="backdrop_detail_content">
+	<div id="backdrop_detail_content" class="backdrop_detail_content">
 		<div id="change_workflow_box">
 			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" onsubmit="TBG.Project.workflowtable('<?php echo make_url('configure_projects_workflow_table', array('project_id' => $project->getID())); ?>', <?php echo $project->getID(); ?>);return false;" action="<?php echo make_url('configure_projects_workflow_table', array('project_id' => $project->getID())); ?>" method="post" id="workflow_form" enctype="multipart/form-data">
 				<h3><?php echo __('New workflow scheme: '); ?><select name="new_workflow">

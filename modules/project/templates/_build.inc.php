@@ -2,7 +2,7 @@
 	<div class="backdrop_detail_header">
 		<?php echo ($build->getId()) ? __('Edit release details') : __('Add new release'); ?>
 	</div>
-	<div id="backdrop_detail_content">
+	<div id="backdrop_detail_content" class="backdrop_detail_content">
 		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_projects_build', array('project_id' => $project->getID())); ?>" method="post" id="build_form" onsubmit="$('add_release_indicator').show();return true;" enctype="multipart/form-data">
 			<table style="clear: both; width: 780px;" class="padded_table" cellpadding=0 cellspacing=0>
 				<tr>

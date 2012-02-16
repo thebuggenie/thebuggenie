@@ -1,6 +1,6 @@
 <div class="backdrop_box medium" id="client_users">
 	<div class="backdrop_detail_header"><?php echo __('Archived projects'); ?></div>
-	<div id="backdrop_detail_content">
+	<div id="backdrop_detail_content" class="backdrop_detail_content">
 		<?php
 			if (isset($team))
 			{

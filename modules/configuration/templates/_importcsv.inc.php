@@ -2,7 +2,7 @@
 	<div class="backdrop_detail_header">
 		<?php echo __('Import content from CSV'); ?>
 	</div>
-	<div id="backdrop_detail_content">
+	<div id="backdrop_detail_content" class="backdrop_detail_content">
 		<div style="padding: 5px;">
 			<div class="header">
 				<?php echo __('Importing %type%', array('%type%' => __($type))); ?>

@@ -3,7 +3,7 @@
 		<div class="backdrop_detail_header">
 			<?php echo __('Attach a link to this issue'); ?>
 		</div>
-		<div id="backdrop_detail_content">
+		<div id="backdrop_detail_content" class="backdrop_detail_content">
 			<form action="<?php echo make_url('issue_attach_link', array('issue_id' => $issue->getID())); ?>" method="post" onsubmit="TBG.Issues.Link.add('<?php echo make_url('issue_attach_link', array('issue_id' => $issue->getID())); ?>');return false;" id="attach_link_form">
 				<dl style="margin: 0; clear: both;">
 					<dt style="width: 80px; padding-top: 3px;"><label for="attach_link_url"><?php echo __('URL'); ?>:</label></dt>
