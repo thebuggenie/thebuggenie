@@ -4655,15 +4655,10 @@
 			$this->_being_worked_on_by_user_since = NOW;
 		}
 		
-		/**
-		 * Stop working on the issue, and save time spent
-		 * 
-		 * @return null
-		 */
-		public function stopWorkingOnIssue()
+		public function calculateTimeSpent()
 		{
-			$time_spent = NOW - $this->_being_worked_on_by_user_since;
-			$this->clearUserWorkingOnIssue();
+			$ts_array = array('hours' => 0, 'days' => 0, 'weeks' => 0);
+			$time_spent = ($this->_being_worked_on_by_user_since) ? NOW - $this->_being_worked_on_by_user_since : 0;
 			if ($time_spent > 0)
 			{
 				$weeks_spent = 0;
@@ -4672,16 +4667,27 @@
 				
 				$weeks_spent = floor($time_spent / 604800);
 				$days_spent = floor(($time_spent - ($weeks_spent * 604800)) / 86400);
-				$hours_spent = floor(($time_spent - ($weeks_spent * 604800) - ($days_spent * 86400)) / 3600);
+				$hours_spent = ceil(($time_spent - ($weeks_spent * 604800) - ($days_spent * 86400)) / 3600);
 
-				if ($hours_spent < 0) $hours_spent = 0;
-				if ($weeks_spent < 0) $weeks_spent = 0;
-				if ($days_spent < 0) $days_spent = 0;
-								
-				$this->_addChangedProperty('_spent_hours', $this->_spent_hours + $hours_spent);
-				$this->_addChangedProperty('_spent_days', $this->_spent_days + $days_spent);
-				$this->_addChangedProperty('_spent_weeks', $this->_spent_weeks + $weeks_spent);
+				$ts_array['hours'] = ($hours_spent < 0) ? 0 : $hours_spent;
+				$ts_array['days'] = ($days_spent < 0) ? 0 : $days_spent;
+				$ts_array['weeks'] = ($weeks_spent < 0) ? 0 : $weeks_spent;
 			}
+			return $ts_array;
+		}
+
+		/**
+		 * Stop working on the issue, and save time spent
+		 * 
+		 * @return null
+		 */
+		public function stopWorkingOnIssue()
+		{
+			$time_spent = $this->calculateTimeSpent();
+			$this->clearUserWorkingOnIssue();
+			if ($time_spent['hours'] > 0) $this->addSpentHours($time_spent['hours']);
+			if ($time_spent['days'] > 0) $this->addSpentDays($time_spent['days']);
+			if ($time_spent['weeks'] > 0) $this->addSpentWeeks($time_spent['weeks']);
 		}
 		
 		/**

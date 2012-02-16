@@ -1406,7 +1406,7 @@
 				case 'estimated_time':
 					if (!$issue->canEditEstimatedTime()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
 					
-					if ($request['estimated_time'] != TBGContext::getI18n()->__('Enter your estimate here') && $request['estimated_time'])
+					if ($request['estimated_time'])
 					{
 						$issue->setEstimatedTime($request['estimated_time']);
 					}

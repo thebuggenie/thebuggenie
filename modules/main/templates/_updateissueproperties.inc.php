@@ -13,23 +13,23 @@
 			<div class="rounded_box yellow borderless"><?php echo __('This transition will be applied to %count% selected issues', array('%count%' => count($issues))); ?></div>
 			<?php endif; ?>
 			<ul class="simple_list">
-				<?php if ((($issue instanceof TBGIssue && $issue->isEditable() && $issue->canEditCategory()) || isset($issues)) && $transition->hasAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE) && !$transition->getAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE)->hasTargetValue()): ?>
-					<li id="transition_popup_assignee_div">
-						<input type="hidden" name="assignee_id" id="popup_assigned_to_id" value="<?php echo $issue->getAssignee()->getID(); ?>">
-						<input type="hidden" name="assignee_type" id="popup_assigned_to_type" value="<?php echo $issue->getAssigneeType(); ?>">
-						<input type="hidden" name="assignee_teamup" id="popup_assigned_to_teamup" value="0">
-						<label for="transition_popup_set_assignee"><?php echo __('Assignee'); ?></label>
-						<span style="width: 170px; display: <?php if ($issue->isAssigned()): ?>inline<?php else: ?>none<?php endif; ?>;" id="popup_assigned_to_name">
+				<?php if ((($issue instanceof TBGIssue && $issue->isEditable() && $issue->canEditAssignee()) || isset($issues)) && $transition->hasAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE) && !$transition->getAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE)->hasTargetValue()): ?>
+					<li id="transition_popup_assignee_div_<?php echo $transition->getID(); ?>">
+						<input type="hidden" name="assignee_id" id="popup_assigned_to_id_<?php echo $transition->getID(); ?>" value="<?php echo $issue->getAssignee()->getID(); ?>">
+						<input type="hidden" name="assignee_type" id="popup_assigned_to_type_<?php echo $transition->getID(); ?>" value="<?php echo $issue->getAssigneeType(); ?>">
+						<input type="hidden" name="assignee_teamup" id="popup_assigned_to_teamup_<?php echo $transition->getID(); ?>" value="0">
+						<label for="transition_popup_set_assignee_<?php echo $transition->getID(); ?>"><?php echo __('Assignee'); ?></label>
+						<span style="width: 170px; display: <?php if ($issue->isAssigned()): ?>inline<?php else: ?>none<?php endif; ?>;" id="popup_assigned_to_name_<?php echo $transition->getID(); ?>">
 							<?php if ($issue->getAssignee() instanceof TBGUser): ?>
 								<?php echo include_component('main/userdropdown', array('user' => $issue->getAssignee())); ?>
 							<?php elseif ($issue->getAssignee() instanceof TBGTeam): ?>
 								<?php echo include_component('main/teamdropdown', array('team' => $issue->getAssignee())); ?>
 							<?php endif; ?>
 						</span>
-						<span class="faded_out" id="popup_no_assigned_to"<?php if ($issue->isAssigned()): ?> style="display: none;"<?php endif; ?>><?php echo __('Not assigned to anyone'); ?></span>
-						<a href="javascript:void(0);" onclick="$('popup_assigned_to_change').toggle();" title="<?php echo __('Click to change assignee'); ?>"><?php echo image_tag('action_dropdown_small.png', array('style' => 'float: right;')); ?></a>
-						<div id="popup_assigned_to_name_indicator" style="display: none;"><?php echo image_tag('spinning_16.gif', array('style' => 'float: right; margin-left: 5px;')); ?></div>
-						<div class="faded_out" id="popup_assigned_to_teamup_info" style="clear: both; display: none;"><?php echo __('You will be teamed up with this user'); ?></div>
+						<span class="faded_out" id="popup_no_assigned_to_<?php echo $transition->getID(); ?>"<?php if ($issue->isAssigned()): ?> style="display: none;"<?php endif; ?>><?php echo __('Not assigned to anyone'); ?></span>
+						<a href="javascript:void(0);" onclick="$('popup_assigned_to_change_<?php echo $transition->getID(); ?>').toggle();" title="<?php echo __('Click to change assignee'); ?>"><?php echo image_tag('action_dropdown_small.png', array('style' => 'float: right;')); ?></a>
+						<div id="popup_assigned_to_name_indicator_<?php echo $transition->getID(); ?>" style="display: none;"><?php echo image_tag('spinning_16.gif', array('style' => 'float: right; margin-left: 5px;')); ?></div>
+						<div class="faded_out" id="popup_assigned_to_teamup_info_<?php echo $transition->getID(); ?>" style="clear: both; display: none;"><?php echo __('You will be teamed up with this user'); ?></div>
 					</li>
 				<?php endif; ?>
 				<?php if (($issue instanceof TBGIssue && ($issue->isEditable() && !$issue->isDuplicate()) || isset($issues)) && $transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_DUPLICATE)): ?>
@@ -60,8 +60,8 @@
 				<?php endif; ?>
 				<?php if (($issue instanceof TBGIssue && ($issue->isUpdateable() && $issue->canEditStatus()) || isset($issues)) && $transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_STATUS) && !$transition->getAction(TBGWorkflowTransitionAction::ACTION_SET_STATUS)->hasTargetValue()): ?>
 					<li>
-						<label for="transition_popup_set_status"><?php echo __('Status'); ?></label>
-						<select name="status_id" id="transition_popup_set_status">
+						<label for="transition_popup_set_status_<?php echo $transition->getID(); ?>"><?php echo __('Status'); ?></label>
+						<select name="status_id" id="transition_popup_set_status_<?php echo $transition->getID(); ?>">
 							<?php foreach ($statuses as $status): ?>
 								<?php if (!$transition->hasPostValidationRule(TBGWorkflowTransitionValidationRule::RULE_STATUS_VALID) || $transition->getPostValidationRule(TBGWorkflowTransitionValidationRule::RULE_STATUS_VALID)->isValueValid($status)): ?>
 									<option value="<?php echo $status->getID(); ?>"<?php if ($issue instanceof TBGIssue && $issue->getStatus() instanceof TBGStatus && $issue->getStatus()->getID() == $status->getID()): ?> selected<?php endif; ?>><?php echo $status->getName(); ?></option>
@@ -71,9 +71,9 @@
 					</li>
 				<?php endif; ?>
 				<?php if (($issue instanceof TBGIssue && ($issue->isUpdateable() && $issue->canEditPriority()) || isset($issues)) && $transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_PRIORITY) && !$transition->getAction(TBGWorkflowTransitionAction::ACTION_SET_PRIORITY)->hasTargetValue()): ?>
-					<li id="transition_popup_priority_div">
-						<label for="transition_popup_set_priority"><?php echo __('Priority'); ?></label>
-						<select name="priority_id" id="transition_popup_set_priority">
+					<li id="transition_popup_priority_div_<?php echo $transition->getID(); ?>">
+						<label for="transition_popup_set_priority_<?php echo $transition->getID(); ?>"><?php echo __('Priority'); ?></label>
+						<select name="priority_id" id="transition_popup_set_priority_<?php echo $transition->getID(); ?>">
 							<?php foreach ($fields_list['priority']['choices'] as $priority): ?>
 								<?php if (!$transition->hasPostValidationRule(TBGWorkflowTransitionValidationRule::RULE_PRIORITY_VALID) || $transition->getPostValidationRule(TBGWorkflowTransitionValidationRule::RULE_PRIORITY_VALID)->isValueValid($priority)): ?>
 									<option value="<?php echo $priority->getID(); ?>"<?php if ($issue instanceof TBGIssue && $issue->getPriority() instanceof TBGPriority && $issue->getPriority()->getID() == $priority->getID()): ?> selected<?php endif; ?>><?php echo $priority->getName(); ?></option>
@@ -88,9 +88,9 @@
 					<?php endif; ?>
 				<?php endif; ?>
 				<?php if (($issue instanceof TBGIssue && ($issue->isUpdateable()) || isset($issues)) && $transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_PERCENT) && !$transition->getAction(TBGWorkflowTransitionAction::ACTION_SET_PERCENT)->hasTargetValue()): ?>
-					<li id="transition_popup_percent_complete_div">
-						<label for="transition_popup_set_percent_complete"><?php echo __('Percent complete'); ?></label>
-						<select name="percent_complete_id" id="transition_popup_set_percent_complete">
+					<li id="transition_popup_percent_complete_div_<?php echo $transition->getID(); ?>">
+						<label for="transition_popup_set_percent_complete_<?php echo $transition->getID(); ?>"><?php echo __('Percent complete'); ?></label>
+						<select name="percent_complete_id" id="transition_popup_set_percent_complete_<?php echo $transition->getID(); ?>">
 							<?php foreach (range(0, 100) as $percent_complete): ?>
 								<option value="<?php echo $percent_complete; ?>"<?php if ($issue instanceof TBGIssue && $issue->getPercentComplete() == $percent_complete): ?> selected<?php endif; ?>><?php echo $percent_complete; ?></option>
 							<?php endforeach; ?>
@@ -103,9 +103,9 @@
 					<?php endif; ?>
 				<?php endif; ?>
 				<?php if (($issue instanceof TBGIssue && ($issue->isEditable() && $issue->canEditReproducability()) || isset($issues)) && $transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_REPRODUCABILITY) && !$transition->getAction(TBGWorkflowTransitionAction::ACTION_SET_REPRODUCABILITY)->hasTargetValue()): ?>
-					<li id="transition_popup_reproducability_div">
-						<label for="transition_popup_set_reproducability"><?php echo __('Reproducability'); ?></label>
-						<select name="reproducability_id" id="transition_popup_set_reproducability">
+					<li id="transition_popup_reproducability_div_<?php echo $transition->getID(); ?>">
+						<label for="transition_popup_set_reproducability_<?php echo $transition->getID(); ?>"><?php echo __('Reproducability'); ?></label>
+						<select name="reproducability_id" id="transition_popup_set_reproducability_<?php echo $transition->getID(); ?>">
 							<?php foreach ($fields_list['reproducability']['choices'] as $reproducability): ?>
 								<?php if (!$transition->hasPostValidationRule(TBGWorkflowTransitionValidationRule::RULE_REPRODUCABILITY_VALID) || $transition->getPostValidationRule(TBGWorkflowTransitionValidationRule::RULE_REPRODUCABILITY_VALID)->isValueValid($reproducability)): ?>
 									<option value="<?php echo $reproducability->getID(); ?>"<?php if ($issue instanceof TBGIssue && $issue->getReproducability() instanceof TBGReproducability && $issue->getReproducability()->getID() == $reproducability->getID()): ?> selected<?php endif; ?>><?php echo $reproducability->getName(); ?></option>
@@ -120,9 +120,9 @@
 					<?php endif; ?>
 				<?php endif; ?>
 				<?php if (($issue instanceof TBGIssue && ($issue->isUpdateable()) || isset($issues)) && $transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_RESOLUTION) && !$transition->getAction(TBGWorkflowTransitionAction::ACTION_SET_RESOLUTION)->hasTargetValue()): ?>
-					<li id="transition_popup_resolution_div">
-						<label for="transition_popup_set_resolution"><?php echo __('Resolution'); ?></label>
-						<select name="resolution_id" id="transition_popup_set_resolution">
+					<li id="transition_popup_resolution_div_<?php echo $transition->getID(); ?>">
+						<label for="transition_popup_set_resolution_<?php echo $transition->getID(); ?>"><?php echo __('Resolution'); ?></label>
+						<select name="resolution_id" id="transition_popup_set_resolution_<?php echo $transition->getID(); ?>">
 							<?php foreach ($fields_list['resolution']['choices'] as $resolution): ?>
 								<?php if (!$transition->hasPostValidationRule(TBGWorkflowTransitionValidationRule::RULE_RESOLUTION_VALID) || $transition->getPostValidationRule(TBGWorkflowTransitionValidationRule::RULE_RESOLUTION_VALID)->isValueValid($resolution)): ?>
 									<option value="<?php echo $resolution->getID(); ?>"<?php if ($issue instanceof TBGIssue && $issue->getResolution() instanceof TBGResolution && $issue->getResolution()->getID() == $resolution->getID()): ?> selected<?php endif; ?>><?php echo $resolution->getName(); ?></option>
@@ -137,9 +137,9 @@
 					<?php endif; ?>
 				<?php endif; ?>
 				<?php if (($issue instanceof TBGIssue && ($issue->isUpdateable() && $issue->canEditMilestone()) || isset($issues)) && $transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_MILESTONE)): ?>
-					<li id="transition_popup_milestone_div">
-						<label for="transition_popup_set_milestone"><?php echo __('Milestone'); ?></label>
-						<select name="milestone_id" id="transition_popup_set_milestone">
+					<li id="transition_popup_milestone_div_<?php echo $transition->getID(); ?>">
+						<label for="transition_popup_set_milestone_<?php echo $transition->getID(); ?>"><?php echo __('Milestone'); ?></label>
+						<select name="milestone_id" id="transition_popup_set_milestone_<?php echo $transition->getID(); ?>">
 							<option value="0"<?php if (!$issue->getMilestone() instanceof TBGMilestone): ?> selected<?php endif; ?>><?php echo __('Not determined') ?></option>
 							<?php foreach ($project->getMilestones() as $milestone): ?>
 								<option value="<?php echo $milestone->getID(); ?>"<?php if ($issue instanceof TBGIssue && $issue->getMilestone() instanceof TBGMilestone && $issue->getMilestone()->getID() == $milestone->getID()): ?> selected<?php endif; ?>><?php echo $milestone->getName(); ?></option>
@@ -155,17 +155,24 @@
 						</li>
 					<?php endif; ?>
 				<?php endif; ?>
-				<?php if (($issue instanceof TBGIssue && ($issue->isBeingWorkedOn()) || isset($issues)) && $transition->hasAction(TBGWorkflowTransitionAction::ACTION_USER_STOP_WORKING)): ?>
-					<li id="transition_popup_stop_working_div">
+				<?php if (($issue instanceof TBGIssue || isset($issues)) && $transition->hasAction(TBGWorkflowTransitionAction::ACTION_USER_STOP_WORKING)): ?>
+					<li id="transition_popup_stop_working_div_<?php echo $transition->getID(); ?>">
 						<label for="transition_popup_set_stop_working"><?php echo __('Log time spent'); ?></label>
-						<input type="radio" name="did" id="transition_popup_set_stop_working" value="something" checked><label for="transition_popup_set_stop_working" class="simple"><?php echo __('Yes'); ?></label>&nbsp;
-						<input type="radio" name="did" id="transition_popup_set_stop_working_no_log" value="nothing"><label for="transition_popup_set_stop_working_no_log" class="simple"><?php echo __('No'); ?></label>
-						<input type="radio" name="did" id="transition_popup_set_stop_working_specify_log" value="this"><label for="transition_popup_set_stop_working_specify_log" class="simple"><?php echo __('Yes, this amount'); ?></label>
+						<div style="width: 435px; float: left;">
+							<?php $time_spent = $issue->calculateTimeSpent(); ?>
+							<input type="radio" name="did" id="transition_popup_set_stop_working_<?php echo $transition->getID(); ?>" value="something" checked onchange="$('transition_popup_set_stop_working_specify_log_div_<?php echo $transition->getID(); ?>').hide();"><label for="transition_popup_set_stop_working_<?php echo $transition->getID(); ?>" class="simple"><?php echo __('Yes'); ?></label>&nbsp;&nbsp;&nbsp;&nbsp;<span class="faded_out"><?php echo __('Adds %hours% hour(s), %days% day(s) and %weeks% week(s)', array('%hours%' => $time_spent['hours'], '%days%' => $time_spent['days'], '%weeks%' => $time_spent['weeks'])); ?></span><br>
+							<input type="radio" name="did" id="transition_popup_set_stop_working_no_log_<?php echo $transition->getID(); ?>" value="nothing" onchange="$('transition_popup_set_stop_working_specify_log_div_<?php echo $transition->getID(); ?>').hide();"><label for="transition_popup_set_stop_working_no_log_<?php echo $transition->getID(); ?>" class="simple"><?php echo __('No'); ?></label><br>
+							<input type="radio" name="did" id="transition_popup_set_stop_working_specify_log_<?php echo $transition->getID(); ?>" value="this" onchange="$('transition_popup_set_stop_working_specify_log_div_<?php echo $transition->getID(); ?>').show()"><label for="transition_popup_set_stop_working_specify_log_<?php echo $transition->getID(); ?>" class="simple"><?php echo __('Yes, let me specify'); ?></label>
+							<div id="transition_popup_set_stop_working_specify_log_div_<?php echo $transition->getID(); ?>" style="display: none;">
+								<?php include_component('main/issueestimator', array('issue' => $issue, 'field' => 'spent_time', 'mode' => 'inline', 'clear' => false, 'save' => false, 'hidden' => false, 'headers' => false)); ?>
+							</div>
+						</div>
+						<br style="clear: both;">
 					</li>
 				<?php endif; ?>
 				<li style="margin-top: 10px;">
 					<label for="transition_popup_comment_body"><?php echo __('Write a comment if you want it to be added'); ?></label><br>
-					<?php include_template('main/textarea', array('area_name' => 'comment_body', 'area_id' => 'transition_popup_comment_body', 'height' => '120px', 'width' => '585px', 'value' => '')); ?>
+					<?php include_template('main/textarea', array('area_name' => 'comment_body', 'area_id' => 'transition_popup_comment_body_'.$transition->getID(), 'height' => '120px', 'width' => '585px', 'value' => '')); ?>
 				</li>
 			</ul>
 			<div style="text-align: right; margin-right: 5px;">

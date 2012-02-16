@@ -243,6 +243,26 @@
 					{
 						$issue->clearUserWorkingOnIssue();
 					}
+					elseif ($request->getParameter('did', 'nothing') == 'this')
+					{
+						if ($request['spent_time'])
+						{
+							$issue->setSpentTime($request['spent_time']);
+						}
+						elseif ($request->hasParameter('value'))
+						{
+							$issue->setSpentTime($request['value']);
+						}
+						else
+						{
+							$issue->setSpentMonths($request['months']);
+							$issue->setSpentWeeks($request['weeks']);
+							$issue->setSpentDays($request['days']);
+							$issue->setSpentHours($request['hours']);
+							$issue->setSpentPoints($request['points']);
+						}
+						$issue->clearUserWorkingOnIssue();
+					}
 					else
 					{
 						$issue->stopWorkingOnIssue();
