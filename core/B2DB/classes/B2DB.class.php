@@ -34,7 +34,7 @@
 		static protected $_aliascnt = 0;
 		static protected $_transaction_active = false;
 		static protected $_tables = array();
-		static protected $_debug_mode = true;
+		static protected $_debug_mode = false;
 		static protected $_cache_dir = null;
 		static protected $_cached_column_class_properties = array();
 		static protected $_cached_foreign_classes = array();
