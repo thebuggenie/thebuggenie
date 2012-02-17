@@ -96,8 +96,8 @@
 
 		static protected $_ver_mj = 3;
 		static protected $_ver_mn = 1;
-		static protected $_ver_rev = 4;
-		static protected $_ver_name = "Lightweight Dairy and Airbourne Pigs";
+		static protected $_ver_rev = 5;
+		static protected $_ver_name = "And now for something completely different";
 		static protected $_defaultscope = null;
 		static protected $_settings = null;
 		static protected $_loadedsettings = array();
