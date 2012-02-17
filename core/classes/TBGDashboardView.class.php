@@ -219,6 +219,14 @@
 			$this->_pid = $pid;
 		}
 
+		/**
+		 * @return TBGProject
+		 */
+		public function getProject()
+		{
+			return new TBGProject($this->getProjectID());
+		}
+
 		public function getTargetID()
 		{
 			return $this->_tid;
@@ -277,12 +285,15 @@
 				case self::VIEW_SAVED_SEARCH:
 					return TBGContext::getRouting()->generate('search', $this->getSearchParameters(true));
 					break;
+				case self::VIEW_PROJECT_RECENT_ACTIVITIES:
+					return TBGContext::getRouting()->generate('project_timeline', array('project_key' => $this->getProject()->getKey(), 'format' => 'rss'));
+					break;
 			}
 		}
 
 		public function getSearchParameters($rss = false)
 		{
-			$paramaters = ($rss) ? array('format' => 'rss') : array();
+			$parameters = ($rss) ? array('format' => 'rss') : array();
 			switch ($this->getType())
 			{
 				case TBGDashboardView::VIEW_PREDEFINED_SEARCH :
