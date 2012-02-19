@@ -2311,7 +2311,7 @@
 					$this->getResponse()->renderHeaders();
 					if (TBGSettings::getUploadStorage() == 'files')
 					{
-						echo fpassthru(fopen(TBGSettings::getUploadsLocalpath().$file->getRealFilename(), 'r'));
+						fpassthru(fopen(TBGSettings::getUploadsLocalpath().$file->getRealFilename(), 'r'));
 						exit();
 					}
 					else
