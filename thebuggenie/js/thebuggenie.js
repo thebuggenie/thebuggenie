@@ -629,7 +629,7 @@ TBG.Main.Helpers.MarkitUp = function(element) {
 			{separator:'---------------'},
 			{name:'Bold', key:'B', openWith:"'''", closeWith:"'''"},
 			{name:'Italic', key:'I', openWith:"''", closeWith:"''"},
-			{name:'Stroke through', key:'S', openWith:'<s>', closeWith:'</s>'},
+			{name:'Stroke through', key:'S', openWith:'<strike>', closeWith:'</strike>'},
 			{separator:'---------------'},
 			{name:'Bulleted list', openWith:'(!(* |!|*)!)'},
 			{name:'Numeric list', openWith:'(!(# |!|#)!)'},
