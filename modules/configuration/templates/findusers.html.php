@@ -20,7 +20,7 @@
 					<th><?php echo __('Real name (nickname)'); ?></th>
 					<th><?php echo __('E-mail'); ?></th>
 					<th><?php echo __('Actv.'); ?></th>
-					<th>&nbsp;</th>
+					<th style="width: 80px;">&nbsp;</th>
 				</tr>
 			</thead>
 			<tbody>
