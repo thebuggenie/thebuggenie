@@ -24,19 +24,22 @@
 						<div class="rounded_box mediumgrey borderless" style="margin-top: 5px; padding: 0 5px 5px 5px;">
 						<table cellpadding="0" cellspacing="0" border="0">
 							<tr>
-								<td style="padding: 3px;" rowspan="2"><label><?php echo __('Show user(s)'); ?>:</label></td>
-								<td style="padding: 3px; font-size: 12px;">
-									<?php foreach (range('A', 'Z') as $letter): ?>
-										<?php echo javascript_link_tag($letter, array('onclick' => "TBG.Config.User.show('".make_url('configure_users_find_user')."', '{$letter}');")); ?> |
-									<?php endforeach; ?>
-									<?php echo javascript_link_tag('0-9', array('onclick' => "TBG.Config.User.show('".make_url('configure_users_find_user')."', '0-9');")); ?> |
-									<?php echo javascript_link_tag('ALL', array('onclick' => "TBG.Config.User.show('".make_url('configure_users_find_user')."', 'all');")); ?>
-								</td>
-							</tr>
-							<tr>
-								<td style="padding: 3px; font-size: 12px;">
-									<?php echo javascript_link_tag(__('Unactivated users'), array('onclick' => "TBG.Config.User.show('".make_url('configure_users_find_user')."', 'unactivated');")); ?> |
-									<?php echo javascript_link_tag(__('New users'), array('onclick' => "TBG.Config.User.show('".make_url('configure_users_find_user')."', 'newusers');")); ?>
+								<td style="padding: 3px;"><label><?php echo __('Show user(s)'); ?>:</label></td>
+								<td style="padding: 3px; font-size: 12px; position: relative;">
+									<div class="button-group">
+										<?php foreach (range('A', 'Z') as $letter): ?>
+											<?php echo javascript_link_tag($letter, array('class' => 'button button-silver', 'style' => 'width: 14px;', 'onclick' => "TBG.Config.User.show('".make_url('configure_users_find_user')."', '{$letter}');")); ?>
+										<?php endforeach; ?>
+										<?php echo javascript_link_tag('0-9', array('style' => 'width: 25px;', 'class' => 'button button-silver', 'onclick' => "TBG.Config.User.show('".make_url('configure_users_find_user')."', '0-9');")); ?>
+										<button class="button button-silver" id="users_more_actions" onclick="$('users_more_actions').toggleClassName('button-pressed');$('users_more_actions_dropdown').toggle();"><?php echo __('More'); ?></button>
+									</div>
+									<div style="position: relative;">
+										<ul id="users_more_actions_dropdown" style="display: none; position: absolute; width: 300px; font-size: 1.1em; top: 20px; margin-top: 0; right: 0; z-index: 1000;" class="simple_list rounded_box white shadowed popup_box more_actions_dropdown" onclick="$('users_more_actions').toggleClassName('button-pressed');$('users_more_actions_dropdown').toggle();">
+											<?php echo javascript_link_tag('Show all users', array('onclick' => "TBG.Config.User.show('".make_url('configure_users_find_user')."', 'all');")); ?>
+											<?php echo javascript_link_tag(__('Show unactivated users'), array('onclick' => "TBG.Config.User.show('".make_url('configure_users_find_user')."', 'unactivated');")); ?>
+											<?php echo javascript_link_tag(__('Show newly created users'), array('onclick' => "TBG.Config.User.show('".make_url('configure_users_find_user')."', 'newusers');")); ?>
+										</ul>
+									</div>
 								</td>
 							</tr>
 							<tr>

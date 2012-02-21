@@ -1386,6 +1386,7 @@ input[type=submit], input[type=submit]:hover, button, .button, .button:hover {
 }
 .button-silver, input[type=submit], button, input[type=submit].button-silver, button.button-silver, a.button-silver, .button-silver:active, button.button-silver:active, input[type=submit].button-silver:active, a.button-silver:active { color: #555; text-shadow: 1px 1px #FFF; box-shadow: none; -moz-box-shadow: none; -webkit-box-shadow: none; }
 .button.disabled { color: #AAA !important; text-shadow: 1px 1px 0px #FFF; }
+.button-icon.disabled img { filter:alpha(opacity=25); -moz-opacity:.25; opacity:.25; }
 /*----------------------------*/
 .button-khaki, input[type=submit].button-khaki {
 	background: #A2B598;
