@@ -57,7 +57,7 @@
 			</div>
 			<div class="faded_out" id="uploader_no_uploaded_files"<?php if (count($existing_files) > 0): ?> style="display: none;"<?php endif; ?>><?php echo __("You haven't uploaded any files right now (not including already attached files)"); ?></div>
 			<div id="done_div">
-				<?php echo __('Click %done% when you have uploaded the files you want to attach', array('%done%' => '<a href="javascript:void(0)" onClick="$(\'attach_file\').hide();"><b>'.__('Done').'</b></a>')); ?>
+				<?php echo __('Click %done% when you have uploaded the files you want to attach', array('%done%' => '<a href="javascript:void(0)" onclick="$(\'attach_file\').hide();"><b>'.__('Done').'</b></a>')); ?>
 			</div>
 		</div>
 		<div class="backdrop_detail_footer">

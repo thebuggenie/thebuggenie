@@ -21,12 +21,12 @@
 						<div class="tab_content">
 							<?php echo __('You can import data from a CSV file copied into a text box in The Bug Genie, exported from other sources. Please see the %CSVImport% wiki article for further details and instructions.', array('%CSVImport%' => link_tag(make_url('publish_article', array('article_name' => 'CSVImport')), __('CSVImport'), array('target' => '_blank')))); ?>
 							<div id="csv_button_area" class="button-group">
-								<button class="button" onClick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('configure_import_csv', array('type' => 'issues')); ?>');"><?php echo __('Issues'); ?></button>
-								<button class="button" onClick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('configure_import_csv', array('type' => 'projects')); ?>');"><?php echo __('Projects'); ?></button>
-								<!--<button class="button" onClick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('configure_import_csv', array('type' => 'users')); ?>');"><?php echo __('Users'); ?></button>
-								<button class="button" onClick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('configure_import_csv', array('type' => 'teams')); ?>');"><?php echo __('Teams'); ?></button>-->
-								<button class="button" onClick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('configure_import_csv', array('type' => 'clients')); ?>');"><?php echo __('Clients'); ?></button>
-								<!--<button class="button" onClick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('configure_import_csv', array('type' => 'groups')); ?>');"><?php echo __('Groups'); ?></button>-->
+								<button class="button" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('configure_import_csv', array('type' => 'issues')); ?>');"><?php echo __('Issues'); ?></button>
+								<button class="button" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('configure_import_csv', array('type' => 'projects')); ?>');"><?php echo __('Projects'); ?></button>
+								<!--<button class="button" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('configure_import_csv', array('type' => 'users')); ?>');"><?php echo __('Users'); ?></button>
+								<button class="button" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('configure_import_csv', array('type' => 'teams')); ?>');"><?php echo __('Teams'); ?></button>-->
+								<button class="button" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('configure_import_csv', array('type' => 'clients')); ?>');"><?php echo __('Clients'); ?></button>
+								<!--<button class="button" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('configure_import_csv', array('type' => 'groups')); ?>');"><?php echo __('Groups'); ?></button>-->
 							</div>
 							<br class="clear" />
 							<div class="tab_content">
@@ -54,7 +54,7 @@
 								<input type="hidden" name="import_sample_data" value="1">
 								<div style="text-align: right;">
 									<?php if ($canimport): ?>
-										<input type="submit" onClick="$('import_sample_button').hide();$('import_sample_indicator').show();" id="import_sample_button" value="<?php echo __('Import sample data'); ?>" style="font-weight: bold; font-size: 1em; padding: 4px;">
+										<input type="submit" onclick="$('import_sample_button').hide();$('import_sample_indicator').show();" id="import_sample_button" value="<?php echo __('Import sample data'); ?>" style="font-weight: bold; font-size: 1em; padding: 4px;">
 									<?php else: ?>
 										<div class="faded_out"><?php echo __('You can only import sample projects once'); ?></div>
 									<?php endif; ?>
