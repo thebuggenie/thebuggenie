@@ -2266,7 +2266,7 @@ TBG.Config.User.show = function(url, findstring) {
 	});
 }
 
-TBG.Config.User.create = function(url) {
+TBG.Config.User.add = function(url) {
 	TBG.Main.Helpers.ajax(url, {
 		form: 'createuser_form',
 		loading: {indicator: 'find_users_indicator'},
