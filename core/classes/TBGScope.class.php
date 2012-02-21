@@ -140,7 +140,7 @@
 
 		public function isDefault()
 		{
-			return (bool) ($this->_id == 1);
+			return in_array('*', $this->getHostnames());
 		}
 		
 		public function setEnabled($enabled = true)
@@ -223,13 +223,13 @@
 			// Load fixtures for this scope if it's a new scope
 			if ($is_new)
 			{
-				if ($this->getID() != 1)
+				if (!$this->isDefault())
 				{
 					$prev_scope = TBGContext::getScope();
 					TBGContext::setScope($this);
 				}
 				$this->loadFixtures();
-				if ($this->getID() != 1)
+				if (!$this->isDefault())
 				{
 					TBGModule::installModule('publish', $this);
 					TBGContext::setScope($prev_scope);
