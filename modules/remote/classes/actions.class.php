@@ -27,6 +27,19 @@
 			catch (Exception $e) {}
 		}
 		
+		public function runListClients(TBGRequest $request)
+		{
+			$clients = TBGClient::getAll();
+
+			$return_array = array();
+			foreach ($clients as $client_key=>$client)
+			{
+				$return_array[$client_key] = $client->getName();
+			}
+
+			$this->clients = $return_array;
+		}
+		
 		public function runListProjects(TBGRequest $request)
 		{
 			$projects = TBGProject::getAll();

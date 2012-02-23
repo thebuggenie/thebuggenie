@@ -2546,6 +2546,20 @@
 				$this->forward($request['forward_url']);
 		}
 
+		public function runListClients(TBGRequest $request)
+		{
+			error_reporting(E_ALL); ini_set('display_errors', 1);
+			$clients = TBGClient::getAll();
+
+			$return_array = array();
+			foreach ($clients as $client_key=>$client)
+			{
+				$return_array[$client_key] = $client->getName();
+			}
+
+			$this->clients = $return_array;
+		}
+		
 		public function runListProjects(TBGRequest $request)
 		{
 			$projects = TBGProject::getAll();
