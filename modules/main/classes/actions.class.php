@@ -2548,7 +2548,6 @@
 
 		public function runListClients(TBGRequest $request)
 		{
-			error_reporting(E_ALL); ini_set('display_errors', 1);
 			$clients = TBGClient::getAll();
 
 			$return_array = array();
