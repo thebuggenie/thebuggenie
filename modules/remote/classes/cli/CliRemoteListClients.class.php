@@ -3,7 +3,9 @@
 	/**
 	 * CLI command class, remote -> list_clients
 	 *
-	 * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
+	 * Copied from CliRemoteListProjects.class.php and modified for clients.
+	 *
+	 * @author Jonathan Baugh <jbaugh@saleamp.com>
 	 * @version 3.1
 	 * @license http://www.opensource.org/licenses/mozilla1.1.php Mozilla Public License 1.1 (MPL 1.1)
 	 * @package thebuggenie
