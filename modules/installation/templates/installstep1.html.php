@@ -60,7 +60,7 @@
 			</div>
 		<?php else: ?>
 			<div class="install_progress prereq_fail">
-			<b>Could not write to The Bug Genie cache directoies</b><br>
+			<b>Could not write to The Bug Genie cache directories</b><br>
 			Either the cache folder, or its B2DB subfolder can not be accessed. These folders should exist and be writable during installation and normal operations, since we need to store cache files in them
 			</div>
 			<b>If you're installing this on a Linux server,</b> running this command should fix it:<br>
