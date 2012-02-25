@@ -856,6 +856,7 @@
 			$foreign_table_class = \get_class($foreign_table);
 			$item_class = (array_key_exists('class', $relation_details)) ? $relation_details['class'] : null;
 			$item_column = null;
+			$item_table_class = null;
 			if ($relation_details['manytomany']) {
 				$item_table_class = Core::getCachedB2DBTableClass($item_class);
 			}
