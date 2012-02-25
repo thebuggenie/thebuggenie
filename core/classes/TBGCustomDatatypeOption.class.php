@@ -125,4 +125,9 @@
 			return $this->_customdatatype;
 		}
 
+		public function getType()
+		{
+			return parent::getItemtype();
+		}
+
 	}
