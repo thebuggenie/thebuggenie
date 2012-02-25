@@ -65,10 +65,10 @@
 			</div>
 			<b>If you're installing this on a Linux server,</b> running this command should fix it:<br>
 			<div class="command_box">
-			mkdir <?php echo THEBUGGENIE_CORE_PATH; ?>cache
-			chmod -R a+w <?php echo THEBUGGENIE_CORE_PATH; ?>cache
-			
-			mkdir <?php echo THEBUGGENIE_CORE_PATH; ?>cache<?php echo DS; ?>B2DB
+			mkdir <?php echo THEBUGGENIE_CORE_PATH; ?>cache<br>
+			chmod -R a+w <?php echo THEBUGGENIE_CORE_PATH; ?>cache<br>
+			<br>
+			mkdir <?php echo THEBUGGENIE_CORE_PATH; ?>cache<?php echo DS; ?>B2DB<br>
 			chmod -R a+w <?php echo THEBUGGENIE_CORE_PATH; ?>cache<?php echo DS; ?>B2DB
 			</div>
 		<?php endif; ?>
