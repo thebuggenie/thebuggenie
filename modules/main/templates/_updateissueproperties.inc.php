@@ -15,7 +15,7 @@
 			<ul class="simple_list">
 				<?php if ((($issue instanceof TBGIssue && $issue->isEditable() && $issue->canEditAssignee()) || isset($issues)) && $transition->hasAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE) && !$transition->getAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE)->hasTargetValue()): ?>
 					<li id="transition_popup_assignee_div_<?php echo $transition->getID(); ?>">
-						<input type="hidden" name="assignee_id" id="popup_assigned_to_id_<?php echo $transition->getID(); ?>" value="<?php echo $issue->getAssignee()->getID(); ?>">
+						<input type="hidden" name="assignee_id" id="popup_assigned_to_id_<?php echo $transition->getID(); ?>" value="<?php echo ($issue->hasAssignee() ? $issue->getAssignee()->getID() : 0); ?>">
 						<input type="hidden" name="assignee_type" id="popup_assigned_to_type_<?php echo $transition->getID(); ?>" value="<?php echo $issue->getAssigneeType(); ?>">
 						<input type="hidden" name="assignee_teamup" id="popup_assigned_to_teamup_<?php echo $transition->getID(); ?>" value="0">
 						<label for="transition_popup_set_assignee_<?php echo $transition->getID(); ?>"><?php echo __('Assignee'); ?></label>
