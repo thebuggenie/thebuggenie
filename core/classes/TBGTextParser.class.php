@@ -851,6 +851,12 @@
 				}
 				$output .= $this->_parse_line($line, $options);
 			}
+
+			// Check if we need to close any tags in case the list items, etc were the last line
+			if ($this->list_level > 0) $output .= $this->_parse_list(false, true);
+			if ($this->deflist) $output .= $this->_parse_definitionlist(false, true);
+			if ($this->preformat) $output .= $this->_parse_preformat(false, true);
+			if ($this->quote) $output .= $this->_parse_quote(false, true);
 			
 			$this->nowikis = array_reverse($this->nowikis);
 			$this->codeblocks = array_reverse($this->codeblocks);
