@@ -3240,32 +3240,32 @@ TBG.Issues.Affected.add = function(url)
 	});
 }
 
-TBG.Issues.updateWorkflowAssignee = function(url, assignee_id, assignee_type, teamup)
+TBG.Issues.updateWorkflowAssignee = function(url, assignee_id, assignee_type, transition_id, teamup)
 {
 	teamup = (teamup == undefined) ? 0 : 1;
 	TBG.Main.Helpers.ajax(url, {
 		loading: {
-			indicator: 'popup_assigned_to_name_indicator',
-			hide: 'popup_no_assigned_to',
-			show: 'popup_assigned_to_name'
+			indicator: 'popup_assigned_to_name_indicator_'+transition_id,
+			hide: 'popup_no_assigned_to_'+transition_id,
+			show: 'popup_assigned_to_name_'+transition_id
 		},
 		success: {
-			update: 'popup_assigned_to_name'
+			update: 'popup_assigned_to_name_'+transition_id
 		},
 		complete: {
 			callback: function() {
-				$('popup_assigned_to_id').setValue(assignee_id);
-				$('popup_assigned_to_type').setValue(assignee_type);
-				$('popup_assigned_to_teamup').setValue(teamup);
+				$('popup_assigned_to_id_'+transition_id).setValue(assignee_id);
+				$('popup_assigned_to_type_'+transition_id).setValue(assignee_type);
+				$('popup_assigned_to_teamup_'+transition_id).setValue(teamup);
 			},
-			hide: ['popup_assigned_to_teamup_info', 'popup_assigned_to_change']
+			hide: ['popup_assigned_to_teamup_info_'+transition_id, 'popup_assigned_to_change_'+transition_id]
 		}
 	});
 }
 
-TBG.Issues.updateWorkflowAssigneeTeamup = function(url, assignee_id, assignee_type)
+TBG.Issues.updateWorkflowAssigneeTeamup = function(url, assignee_id, assignee_type, transition_id)
 {
-	TBG.Issues.updateWorkflowAssignee(url, assignee_id, assignee_type, true);
+	TBG.Issues.updateWorkflowAssignee(url, assignee_id, assignee_type, transition_id, true);
 }
 
 TBG.Search.Filter.add = function(url) {
