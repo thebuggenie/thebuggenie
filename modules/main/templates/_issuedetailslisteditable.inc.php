@@ -334,7 +334,7 @@
 				<span id="spent_time_<?php echo $issue->getID(); ?>_name"<?php if (!$issue->hasSpentTime()): ?> style="display: none;"<?php endif; ?>>
 					<?php echo $issue->getFormattedTime($issue->getSpentTime()); ?>
 				</span>
-				<span class="faded_out" id="no_spent_time"<?php if ($issue->hasSpentTime()): ?> style="display: none;"<?php endif; ?>><?php echo __('No time spent'); ?></span>
+				<span class="faded_out" id="no_spent_time_<?php echo $issue->getID(); ?>"<?php if ($issue->hasSpentTime()): ?> style="display: none;"<?php endif; ?>><?php echo __('No time spent'); ?></span>
 			</dd>
 		</dl>
 		<?php if ($issue->isUpdateable() && $issue->canEditSpentTime()): ?>
