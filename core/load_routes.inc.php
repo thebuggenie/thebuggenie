@@ -38,6 +38,7 @@
 	$routes[] = array('quicksearch', '/quicksearch/*', 'search', 'findIssues', array('quicksearch' => true, 'issues_per_page' => 6));
 	$routes[] = array('opensearch', '/opensearch.xml', 'search', 'opensearch', array('format' => 'xml'));
 	$routes[] = array('about', '/about', 'main', 'about');
+	$routes[] = array('list_clients', '/list/clients/:format', 'main', 'listClients');
 	$routes[] = array('list_projects', '/list/projects/:format', 'main', 'listProjects');
 	$routes[] = array('list_issuetypes', '/list/issuetypes/:format', 'main', 'listIssuetypes');
 	$routes[] = array('list_fieldvalues', '/list/fieldvalues/for/field/:field_key/:format/*', 'main', 'listFieldvalues');
