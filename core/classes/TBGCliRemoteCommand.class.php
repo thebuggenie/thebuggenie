@@ -107,46 +107,38 @@
 
 		protected function getRemoteResponse($url, $postdata = array())
 		{
-			$headers = "Accept-language: en\r\n";
-			$headers .= "Cookie: tbg3_username={$this->_getCurrentRemoteUser()}; tbg3_password={$this->_getCurrentRemotePasswordHash()}\r\n";
+			$headers = array();
+			
+			$cookie = "tbg3_username={$this->_getCurrentRemoteUser()}; tbg3_password={$this->_getCurrentRemotePasswordHash()}";
 
-			$options = array('http' => array('method' => (empty($postdata)) ? 'GET' : 'POST', 'header' => $headers));
-
-			if (!empty($postdata))
-			{
-				$content = '';
-				$boundary = "---------------------".mb_substr(md5(rand(0,32000)), 0, 10); 
-				$headers .= 'Content-Type: multipart/form-data; boundary='.$boundary."\r\n";
-				$options['http']['header'] = $headers;
-
-				foreach($postdata as $key => $val) 
-				{ 
-					$content .= "--$boundary\n";
-					$content .= "Content-Disposition: form-data; name=\"".$key."\"\n\n".$val."\n";
-				} 
-
-				$content .= "--$boundary\n";
-				$options['http']['content'] = $content;
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_HEADER, $headers);
+			curl_setopt($ch, CURLOPT_COOKIE, $cookie);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			
+			if( !empty($postdata) ) {
+				curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
 			}
 
-			$prev_rep_val = error_reporting();
-			error_reporting(E_USER_ERROR);
-			$retval = file_get_contents($url, false, stream_context_create($options));
-			error_reporting(E_ERROR);
-
-			if ($retval === false)
+			$retval = curl_exec($ch);
+			
+			if (!$retval)
 			{
-				$errors = (isset($http_response_header)) ? ":\n" . $http_response_header[0] : '';
-				throw new Exception($url . " could not be retrieved" . $errors);
+				throw new Exception($url . " could not be retrieved. '$retval'");
 			}
+			
 			$response = json_decode($retval);
+			
 			if (is_object($response) && isset($response->failed) && $response->failed)
 			{
 				throw new Exception($url . "\n" . $response->message);
 			}
-
+			
 			if (!is_object($response) && !is_array($response))
+			{
 				throw new Exception('Could not parse the return value from the server. Please re-check the command being executed.');
+			}
 			
 			return $response;
 		}
