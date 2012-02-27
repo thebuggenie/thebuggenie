@@ -4994,8 +4994,8 @@
 
 		public function clearAssignee()
 		{
-			$this->_assignee_team = null;
-			$this->_assignee_user = null;
+			$this->_addChangedProperty('_assignee_user', null);
+			$this->_addChangedProperty('_assignee_team', null);
 		}
 
 		public function getOwner()
