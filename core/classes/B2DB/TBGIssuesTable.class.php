@@ -61,7 +61,7 @@
 		const SPENT_POINTS = 'issues.spent_points';
 		const PERCENT_COMPLETE = 'issues.percent_complete';
 		const ASSIGNEE_USER = 'issues.assignee_user';
-		const ASSIGNEE_TEAM = 'issues.assigned_team';
+		const ASSIGNEE_TEAM = 'issues.assignee_team';
 		const BEING_WORKED_ON_BY_USER = 'issues.being_worked_on_by_user';
 		const BEING_WORKED_ON_BY_USER_SINCE = 'issues.being_worked_on_by_user_since';
 		const USER_PAIN = 'issues.user_pain';
