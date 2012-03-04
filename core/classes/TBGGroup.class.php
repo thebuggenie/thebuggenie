@@ -92,7 +92,14 @@
 			$guest_group->save();
 			
 			// Set up initial users, and their permissions
-			TBGUser::loadFixtures($scope, $admin_group, $user_group, $guest_group);
+			if ($scope->isDefault())
+			{
+				TBGUser::loadFixtures($scope, $admin_group, $user_group, $guest_group);
+			}
+			else
+			{
+				TBGSettings::saveSetting(TBGSettings::SETTING_DEFAULT_USER_ID, TBGSettings::get(TBGSettings::SETTING_DEFAULT_USER_ID), 'core', $scope->getID());
+			}
 			TBGPermissionsTable::getTable()->loadFixtures($scope, $admin_group->getID(), $guest_group->getID());
 		}
 		

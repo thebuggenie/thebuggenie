@@ -858,6 +858,7 @@ dd { float: left; display: block; width: 195px; font-weight: normal; margin: 0; 
 #viewissue_left_box_status { font-weight: normal; }
 #viewissue_left_box_status table tr td { font-weight: normal; }
 #viewissue_left_box_top #status_header { padding: 2px; }
+.more_actions_dropdown li { white-space: nowrap; }
 .more_actions_dropdown li img { float: left; margin-right: 5px; }
 .more_actions_dropdown li.disabled a { color: #AAA; text-shadow: 1px 1px 1px #FFF; }
 .title_left_images { width: 32px; padding: 0; }

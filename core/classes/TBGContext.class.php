@@ -1719,7 +1719,7 @@
 						return;
 				}
 				
-				TBGLogging::log("Setting scope from hostname");
+				TBGLogging::log("Setting scope {$scope->getID()} from hostname");
 				self::$_scope = $scope;
 				TBGSettings::forceSettingsReload();
 				TBGSettings::loadSettings();

@@ -174,6 +174,7 @@
 	$routes[] = array('configure_users_delete_client', '/configure/users/delete/client/:client_id', 'configuration', 'deleteClient', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_USERS, 'format' => 'json'));
 	$routes[] = array('configure_users_get_client_members', '/configure/users/get/members/in/client/:client_id', 'configuration', 'getClientMembers', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_USERS, 'format' => 'json'));
 	$routes[] = array('configure_users_update_user', '/configure/users/update/user/:user_id', 'configuration', 'updateUser', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_USERS));
+	$routes[] = array('configure_users_update_user_scopes', '/configure/users/update/userscopes/:user_id', 'configuration', 'updateUserScopes', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_USERS));
 	$routes[] = array('configure_users_delete_user', '/configure/users/delete/user/:user_id', 'configuration', 'deleteUser', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_USERS));
 	$routes[] = array('configure_users', '/configure/users/*', 'configuration', 'configureUsers', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_USERS));
 	$routes[] = array('configure_modules', '/configure/modules', 'configuration', 'configureModules', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_MODULES));

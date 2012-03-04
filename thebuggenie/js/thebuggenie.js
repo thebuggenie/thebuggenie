@@ -2321,6 +2321,16 @@ TBG.Config.User.update = function(url, user_id) {
 	});
 }
 
+TBG.Config.User.updateScopes = function(url, user_id) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'edituser_' + user_id + '_scopes_form',
+		loading: {indicator: 'edit_user_' + user_id + '_scopes_form_indicator'},
+		success: {
+			callback: TBG.Main.Helpers.Backdrop.reset
+		}
+	});
+}
+
 TBG.Config.User.getPermissionsBlock = function(url, user_id) {
 	$('users_results_user_' + user_id + '_permissions_row').toggle();
 	if ($('users_results_user_' + user_id + '_permissions').innerHTML == '') {

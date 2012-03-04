@@ -35,13 +35,13 @@
 		<div id="security_key" style="display: none; position: absolute; width: 350px; padding: 10px; top: 36px; right: 0; z-index: 1000;" class="rounded_box white shadowed popup_box">
 			<?php echo __('Your security key is %securitykey%', array('%securitykey%' => '<b>'.TBGSettings::getRemoteSecurityKey().'</b>')); ?>
 		</div>
-		<ul id="more_actions" style="display: none; position: absolute; width: 300px; top: 36px; margin-top: 0; right: 0; z-index: 1000;" class="simple_list rounded_box white shadowed popup_box" onclick="$('more_actions_button').toggleClassName('button-pressed');$('more_actions').toggle();">
+		<ul id="more_actions" style="display: none; position: absolute; width: 300px; top: 36px; margin-top: 0; right: 0; z-index: 1000;" class="simple_list rounded_box white shadowed popup_box more_actions_dropdown" onclick="$('more_actions_button').toggleClassName('button-pressed');$('more_actions').toggle();">
 			<li><?php echo link_tag(make_url('my_reported_issues'), image_tag('tab_search.png', array('style' => 'float: left; margin-right: 5px;')).__("Show issues I've reported")); ?></li>
 			<li><?php echo link_tag(make_url('my_assigned_issues'), image_tag('tab_search.png', array('style' => 'float: left; margin-right: 5px;')).__("Show open issues assigned to me")); ?></li>
 			<li><?php echo link_tag(make_url('my_teams_assigned_issues'), image_tag('tab_search.png', array('style' => 'float: left; margin-right: 5px;')).__("Show open issues assigned to my teams")); ?></li>
 		</ul>
 		<?php if ($tbg_user->isOpenIdLocked()): ?>
-			<div class="rounded_box white shadowed"  style="display: none; position: absolute; right: 0; top: 38px; z-index: 100; padding: 5px 10px 5px 10px; font-size: 13px; width: 400px;" id="pick_username_div">
+			<div class="rounded_box white shadowed popup_box"  style="display: none; position: absolute; right: 0; top: 38px; z-index: 100; padding: 5px 10px 5px 10px; font-size: 13px; width: 400px;" id="pick_username_div">
 				<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_check_username'); ?>" onsubmit="TBG.Main.Profile.checkUsernameAvailability('<?php echo make_url('account_check_username'); ?>'); return false;" method="post" id="check_username_form">
 					<b><?php echo __('Picking a username'); ?></b><br>
 					<div style="font-size: 13px; margin-bottom: 10px;"><?php echo __('Since this account was created via an OpenID login, you will have to pick a username to be able to log in with a username or password. You can continue to use your account with your OpenID login, so this is only if you want to pick a username for your account.'); ?><br>
@@ -59,35 +59,28 @@
 			</div>
 		<?php endif; ?>
 		<?php if ($tbg_user->canChangePassword()): ?>
-			<div class="rounded_box white shadowed"  style="display: none; position: absolute; right: 0; top: 38px; z-index: 100; padding: 5px 10px 5px 10px; font-size: 13px; width: 350px;" id="change_password_div">
-				<?php
-				if (TBGSettings::isUsingExternalAuthenticationBackend())
-				{
-					echo tbg_parse_text(TBGSettings::get('changepw_message'), null, null, array('embedded' => true));
-				}
-				else
-				{
-				?>
-				<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_change_password'); ?>" onsubmit="TBG.Main.Profile.changePassword('<?php echo make_url('account_change_password'); ?>'); return false;" method="post" id="change_password_form">
-					<b><?php echo __('Changing your password'); ?></b><br>
-					<div style="font-size: 13px; margin-bottom: 10px;"><?php echo __('Enter your current password in the first box, then enter your new password twice (to prevent you from typing mistakes).'); ?><br>
-					<br><?php echo __('Click "%change_password%" to change it.', array('%change_password%' => __('Change password'))); ?></div>
-					<label for="current_password" class="smaller"><?php echo __('Current password'); ?></label><br>
-					<input type="password" name="current_password" id="current_password" value="" style="width: 200px;"><br>
-					<br>
-					<label for="new_password_1" class="smaller"><?php echo __('New password'); ?></label><br>
-					<input type="password" name="new_password_1" id="new_password_1" value="" style="width: 200px;"><br>
-					<label for="new_password_2" class="smaller"><?php echo __('New password (repeat it)'); ?></label><br>
-					<input type="password" name="new_password_2" id="new_password_2" value="" style="width: 200px;"><br>
-					<div class="smaller" style="text-align: right; margin: 10px 2px 5px 0; height: 23px;">
-						<div style="float: right; padding: 3px;"><?php echo __('%change_password% or %cancel%', array('%change_password%' => '', '%cancel%' => '<a href="javascript:void(0);" onclick="$(\'change_password_div\').toggle();$(\'change_password_button\').toggleClassName(\'button-pressed\');"><b>' . __('cancel') . '</b></a>')); ?></div>
-						<input type="submit" value="<?php echo __('Change password'); ?>" style="font-weight: bold; float: right;">
-						<span id="change_password_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
-					</div>
-				</form>
-				<?php
-				}
-				?>
+			<div class="rounded_box white shadowed popup_box"  style="display: none; position: absolute; right: 0; top: 38px; z-index: 100; padding: 5px 10px 5px 10px; font-size: 13px; width: 350px;" id="change_password_div">
+				<?php if (TBGSettings::isUsingExternalAuthenticationBackend()): ?>
+					<?php echo tbg_parse_text(TBGSettings::get('changepw_message'), null, null, array('embedded' => true)); ?>
+				<?php else: ?>
+					<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_change_password'); ?>" onsubmit="TBG.Main.Profile.changePassword('<?php echo make_url('account_change_password'); ?>'); return false;" method="post" id="change_password_form">
+						<b><?php echo __('Changing your password'); ?></b><br>
+						<div style="font-size: 13px; margin-bottom: 10px;"><?php echo __('Enter your current password in the first box, then enter your new password twice (to prevent you from typing mistakes).'); ?><br>
+						<br><?php echo __('Click "%change_password%" to change it.', array('%change_password%' => __('Change password'))); ?></div>
+						<label for="current_password" class="smaller"><?php echo __('Current password'); ?></label><br>
+						<input type="password" name="current_password" id="current_password" value="" style="width: 200px;"><br>
+						<br>
+						<label for="new_password_1" class="smaller"><?php echo __('New password'); ?></label><br>
+						<input type="password" name="new_password_1" id="new_password_1" value="" style="width: 200px;"><br>
+						<label for="new_password_2" class="smaller"><?php echo __('New password (repeat it)'); ?></label><br>
+						<input type="password" name="new_password_2" id="new_password_2" value="" style="width: 200px;"><br>
+						<div class="smaller" style="text-align: right; margin: 10px 2px 5px 0; height: 23px;">
+							<div style="float: right; padding: 3px;"><?php echo __('%change_password% or %cancel%', array('%change_password%' => '', '%cancel%' => '<a href="javascript:void(0);" onclick="$(\'change_password_div\').toggle();$(\'change_password_button\').toggleClassName(\'button-pressed\');"><b>' . __('cancel') . '</b></a>')); ?></div>
+							<input type="submit" value="<?php echo __('Change password'); ?>" style="font-weight: bold; float: right;">
+							<span id="change_password_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
+						</div>
+					</form>
+				<?php endif; ?>
 			</div>
 		<?php endif; ?>
 	</div>
@@ -110,72 +103,65 @@
 		</div>
 		<div id="account_tabs_panes">
 			<div id="tab_profile_pane">
-				<?php
-				if (TBGSettings::isUsingExternalAuthenticationBackend())
-				{
-					echo tbg_parse_text(TBGSettings::get('changedetails_message'), null, null, array('embedded' => true));
-				}
-				else
-				{
-				?>
-				<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_save_information'); ?>" onsubmit="TBG.Main.Profile.updateInformation('<?php echo make_url('account_save_information'); ?>'); return false;" method="post" id="profile_information_form">
-					<div class="rounded_box borderless lightgrey cut_bottom" style="margin: 5px 0 0 0; width: 895px; border-bottom: 0;">
-						<p class="content"><?php echo __('Edit your profile details here, including additional information.'); ?><br><?php echo __('Required fields are marked with a little star.'); ?></p>
-						<table style="width: 680px;" class="padded_table" cellpadding=0 cellspacing=0>
-							<tr>
-								<td style="padding: 5px;"><label for="profile_buddyname">* <?php echo __('Display name'); ?></label></td>
-								<td>
-									<input type="text" name="buddyname" id="profile_buddyname" value="<?php echo $tbg_user->getBuddyname(); ?>" style="width: 200px;">
-								</td>
-							</tr>
-							<tr>
-								<td class="config_explanation" colspan="2"><?php echo __('This is the name used across the site for your profile.'); ?></td>
-							</tr>
-							<tr>
-								<td style="padding: 5px;"><label for="profile_realname"><?php echo __('Full name'); ?></label></td>
-								<td>
-									<input type="text" name="realname" id="profile_realname" value="<?php echo $tbg_user->getRealname(); ?>" style="width: 300px;">
-								</td>
-							</tr>
-							<tr>
-								<td class="config_explanation" colspan="2"><?php echo __('This is your real name, mostly used in communication with you, and rarely shown to others'); ?></td>
-							</tr>
-							<tr>
-								<td style="padding: 5px;"><label for="profile_email">* <?php echo __('Email address'); ?></label></td>
-								<td>
-									<input type="email" name="email" id="profile_email" value="<?php echo $tbg_user->getEmail(); ?>" style="width: 300px;">
-								</td>
-							</tr>
-							<tr>
-								<td style="padding: 5px;"><label for="profile_email_private_yes">* <?php echo __('Show my email address to others'); ?></label></td>
-								<td>
-									<input type="radio" name="email_private" value="0" id="profile_email_private_no"<?php if ($tbg_user->isEmailPublic()): ?> checked<?php endif; ?>>&nbsp;<label for="profile_email_private_no"><?php echo __('Yes'); ?></label>&nbsp;&nbsp;
-									<input type="radio" name="email_private" value="1" id="profile_email_private_yes"<?php if ($tbg_user->isEmailPrivate()): ?> checked<?php endif; ?>>&nbsp;<label for="profile_email_private_yes"><?php echo __('No'); ?></label>
-								</td>
-							</tr>
-							<tr>
-								<td class="config_explanation" colspan="2"><?php echo __('Whether your email address is visible to other users in your profile information card. The email address is always visible to admins.'); ?></td>
-							</tr>
-							<tr>
-								<td style="padding: 5px;"><label for="profile_homepage"><?php echo __('Homepage'); ?></label></td>
-								<td>
-									<input type="url" name="homepage" id="profile_homepage" value="<?php echo $tbg_user->getHomepage(); ?>" style="width: 300px;">
-								</td>
-							</tr>
-							<tr>
-								<td colspan="2" style="padding: 5px; text-align: right;">&nbsp;</td>
-							</tr>
-						</table>
-					</div>
-					<div class="rounded_box iceblue borderless cut_top" style="margin: 0 0 5px 0; width: 895px; border-top: 0; padding: 3px; height: 26px;">
-						<div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "%save%" to save your account information', array('%save%' => __('Save'))); ?></div>
-						<input type="submit" id="submit_settings_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
-						<span id="profile_save_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
-					</div>
-				</form>
-				<?php
-				}
-				?>
+				<?php if (TBGSettings::isUsingExternalAuthenticationBackend()): ?>
+					<?php tbg_parse_text(TBGSettings::get('changedetails_message'), null, null, array('embedded' => true)); ?>
+				<?php else: ?>
+					<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_save_information'); ?>" onsubmit="TBG.Main.Profile.updateInformation('<?php echo make_url('account_save_information'); ?>'); return false;" method="post" id="profile_information_form">
+						<div class="rounded_box borderless lightgrey cut_bottom" style="margin: 5px 0 0 0; width: 895px; border-bottom: 0;">
+							<p class="content"><?php echo __('Edit your profile details here, including additional information.'); ?><br><?php echo __('Required fields are marked with a little star.'); ?></p>
+							<table style="width: 680px;" class="padded_table" cellpadding=0 cellspacing=0>
+								<tr>
+									<td style="padding: 5px;"><label for="profile_buddyname">* <?php echo __('Display name'); ?></label></td>
+									<td>
+										<input type="text" name="buddyname" id="profile_buddyname" value="<?php echo $tbg_user->getBuddyname(); ?>" style="width: 200px;">
+									</td>
+								</tr>
+								<tr>
+									<td class="config_explanation" colspan="2"><?php echo __('This is the name used across the site for your profile.'); ?></td>
+								</tr>
+								<tr>
+									<td style="padding: 5px;"><label for="profile_realname"><?php echo __('Full name'); ?></label></td>
+									<td>
+										<input type="text" name="realname" id="profile_realname" value="<?php echo $tbg_user->getRealname(); ?>" style="width: 300px;">
+									</td>
+								</tr>
+								<tr>
+									<td class="config_explanation" colspan="2"><?php echo __('This is your real name, mostly used in communication with you, and rarely shown to others'); ?></td>
+								</tr>
+								<tr>
+									<td style="padding: 5px;"><label for="profile_email">* <?php echo __('Email address'); ?></label></td>
+									<td>
+										<input type="email" name="email" id="profile_email" value="<?php echo $tbg_user->getEmail(); ?>" style="width: 300px;">
+									</td>
+								</tr>
+								<tr>
+									<td style="padding: 5px;"><label for="profile_email_private_yes">* <?php echo __('Show my email address to others'); ?></label></td>
+									<td>
+										<input type="radio" name="email_private" value="0" id="profile_email_private_no"<?php if ($tbg_user->isEmailPublic()): ?> checked<?php endif; ?>>&nbsp;<label for="profile_email_private_no"><?php echo __('Yes'); ?></label>&nbsp;&nbsp;
+										<input type="radio" name="email_private" value="1" id="profile_email_private_yes"<?php if ($tbg_user->isEmailPrivate()): ?> checked<?php endif; ?>>&nbsp;<label for="profile_email_private_yes"><?php echo __('No'); ?></label>
+									</td>
+								</tr>
+								<tr>
+									<td class="config_explanation" colspan="2"><?php echo __('Whether your email address is visible to other users in your profile information card. The email address is always visible to admins.'); ?></td>
+								</tr>
+								<tr>
+									<td style="padding: 5px;"><label for="profile_homepage"><?php echo __('Homepage'); ?></label></td>
+									<td>
+										<input type="url" name="homepage" id="profile_homepage" value="<?php echo $tbg_user->getHomepage(); ?>" style="width: 300px;">
+									</td>
+								</tr>
+								<tr>
+									<td colspan="2" style="padding: 5px; text-align: right;">&nbsp;</td>
+								</tr>
+							</table>
+						</div>
+						<div class="rounded_box iceblue borderless cut_top" style="margin: 0 0 5px 0; width: 895px; border-top: 0; padding: 3px; height: 26px;">
+							<div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "%save%" to save your account information', array('%save%' => __('Save'))); ?></div>
+							<input type="submit" id="submit_settings_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
+							<span id="profile_save_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
+						</div>
+					</form>
+				<?php endif; ?>
 			</div>
 			<div id="tab_settings_pane" style="display: none;">
 				<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_save_settings'); ?>" onsubmit="TBG.Main.Profile.updateSettings('<?php echo make_url('account_save_settings'); ?>'); return false;" method="post" id="profile_settings_form">

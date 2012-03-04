@@ -144,13 +144,21 @@
 		protected $_use_gravatar = true;
 		
 		/**
+		 * Array of scopes this user is a member of
+		 *
+		 * @var array
+		 * @Relates(class="TBGScope", collection=true, manytomany=true, joinclass="TBGUserScopesTable")
+		 */
+		protected $_scopes = null;
+		
+		/**
 		 * Array of issues to follow up
 		 *
 		 * @var array
 		 * @Relates(class="TBGIssue", collection=true, through="TBGUserIssuesTable")
 		 */
 		protected $_starredissues = null;
-		
+
 		/**
 		 * Array of issues assigned to the user
 		 *
@@ -520,6 +528,10 @@
 					elseif (!$user->isEnabled())
 					{
 						throw new Exception('This account has been suspended');
+					}
+					elseif(!$user->isMemberOfScope(TBGContext::getScope()))
+					{
+						throw new Exception('This account does not have access to this scope');
 					}
 					
 					if ($external == false)
@@ -947,15 +959,8 @@
 		{
 			if ($this->_starredissues === null)
 			{
-				$this->_starredissues = array();
-				if ($res = \b2db\Core::getTable('TBGUserIssuesTable')->getUserStarredIssues($this->getID()))
-				{
-					while ($row = $res->getNextRow())
-					{
-						$this->_starredissues[$row->get(TBGIssuesTable::ID)] = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
-					}
-					ksort($this->_starredissues, SORT_NUMERIC);
-				}
+				$this->_b2dbLazyload('_starredissues');
+				ksort($this->_starredissues, SORT_NUMERIC);
 			}
 		}
 		
@@ -1929,7 +1934,7 @@
 		 */
 		public function canEditProjectDetails(TBGProject $project)
 		{
-			if ($project->isArchived()): return false; endif;
+			if ($project->isArchived()) return false;
 			return (bool) ($this->hasPermission('caneditprojectdetails', $project->getID(), 'core', true) || $this->hasPermission('canmanageproject', $project->getID(), 'core', true) || $this->canSaveConfiguration(TBGSettings::CONFIGURATION_SECTION_PROJECTS));
 		}
 
@@ -1942,7 +1947,7 @@
 		 */
 		public function canAssignScrumUserStories(TBGProject $project)
 		{
-			if ($project->isArchived()): return false; endif;
+			if ($project->isArchived()) return false;
 			return (bool) ($this->hasPermission('canassignscrumuserstoriestosprints', $project->getID(), 'core', true) || $this->hasPermission('candoscrumplanning', $project->getID(), 'core', true) || $this->hasPermission('canassignscrumuserstoriestosprints', 0, 'core', true) || $this->hasPermission('candoscrumplanning', 0, 'core', true));
 		}
 
@@ -1955,7 +1960,8 @@
 		 */
 		public function canChangePassword()
 		{
-			return (bool) ($this->hasPermission('canchangepassword', 0, 'core', true, $this->hasPermission('page_account_access', 0, 'core', true)));
+			$retval = ($this->hasPermission('canchangepassword', 0, 'core', true, $this->hasPermission('page_account_access', 0, 'core', true)));
+			return ($retval === false) ? false : true;
 		}
 		
 		/**
@@ -1967,14 +1973,8 @@
 		 */
 		public function getLatestActions($number = 10)
 		{
-			if ($items = TBGLogTable::getTable()->getByUserID($this->getID(), $number))
-			{
-				return $items;
-			}
-			else
-			{
-				return array();
-			}
+			$items = TBGLogTable::getTable()->getByUserID($this->getID(), $number);
+			return $items;
 		}
 
 		/**
@@ -2105,6 +2105,36 @@
 			return array('id' => $this->getID(),
 						'name' => $this->getName(),
 						'username' => $this->getUsername());
+		}
+
+		public function getScopes()
+		{
+			$this->_b2dbLazyload('_scopes');
+			return $this->_scopes;
+		}
+
+		public function clearScopes()
+		{
+			TBGUserScopesTable::getTable()->clearUserScopes($this->getID());
+		}
+
+		public function addScope(TBGScope $scope)
+		{
+			if (!$this->isMemberOfScope($scope))
+			{
+				TBGUserScopesTable::getTable()->addUserToScope($this->getID(), $scope->getID());
+				$this->_scopes = null;
+			}
+		}
+
+		public function isMemberOfScope(TBGScope $scope)
+		{
+			$scopes = $this->getScopes();
+			foreach ($scopes as $m_scope)
+			{
+				if ($scope->getID() == $m_scope->getID()) return true;
+			}
+			return false;
 		}
 
 	}

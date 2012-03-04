@@ -213,5 +213,10 @@
 			}
 			$this->available_assignees = $available_assignees;
 		}
+
+		public function componentUserscopes()
+		{
+			$this->scopes = TBGScope::getAll();
+		}
 		
 	}

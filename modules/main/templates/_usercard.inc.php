@@ -26,7 +26,12 @@
 				</div>
 			<?php endif; ?>
 			<?php if ($tbg_user->canAccessConfigurationPage(TBGSettings::CONFIGURATION_SECTION_USERS)): ?>
-				<div style="padding: 2px;"><?php echo link_tag(make_url('configure_users', array('finduser' => $user->getUsername())), __('Edit this user'), array('target' => '_new')); ?></div>
+				<div style="padding: 2px;">
+					<form action="<?php echo make_url('configure_users'); ?>">
+						<input type="hidden" name="finduser" value="<?php echo $user->getUsername(); ?>">
+						<a href="javascript:void(0);" onclick="$(this).up('form').submit();"><?php echo __('Edit this user'); ?></a>
+					</form>
+				</div>
 			<?php endif; ?>
 		<?php endif; ?>
 			<?php if (!$user->getJoinedDate()): ?>
@@ -73,7 +78,7 @@
 				<b><?php echo __('Member of the following teams:</b> %list_of_teams%', array('%list_of_teams%' => '')); ?></b><br>
 				<ul class="teamlist">
 					<?php foreach ($user->getTeams() as $team): ?>
-						<li><?php echo image_tag('icon_team.png', array('style' => 'float: left; margin-right: 5px;')) . $team->getName(); ?></li>
+						<li><?php include_component('main/teamdropdown', array('team' => $team)); ?></li>
 					<?php endforeach; ?>
 				</ul>
 			<?php endif; ?>			

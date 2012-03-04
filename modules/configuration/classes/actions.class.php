@@ -1682,6 +1682,42 @@
 			return $this->renderJSON(array('error' => TBGContext::getI18n()->__('This user could not be updated')));
 		}
 
+		public function runUpdateUserScopes(TBGRequest $request)
+		{
+			try
+			{
+				if (!TBGContext::getScope()->isDefault()) throw new Exception('This operation is not allowed');
+
+				$user = TBGContext::factory()->TBGUser($request['user_id']);
+				if ($user instanceof TBGUser)
+				{
+					$return_options = array('message' => $this->getI18n()->__("The user's scope access was successfully updated"));
+					$scopes = $request->getParameter('scopes', array());
+					if (count($scopes) && !(count($scopes) == 1 && array_key_exists(TBGSettings::getDefaultScopeID(), $scopes)))
+					{
+						$user->clearScopes();
+						foreach ($scopes as $scope_id => $scope)
+						{
+							try
+							{
+								$scope = new TBGScope((int) $scope_id);
+								$user->addScope($scope);
+							}
+							catch (Exception $e) {}
+						}
+					}
+					return $this->renderJSON($return_options);
+				}
+			}
+			catch (Exception $e)
+			{
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('error' => TBGContext::getI18n()->__('This user could not be updated: %message%', array('%message%' => $e->getMessage()))));
+			}
+			$this->getResponse()->setHttpStatus(400);
+			return $this->renderJSON(array('error' => TBGContext::getI18n()->__('This user could not be updated')));
+		}
+
 		public function runGetPermissionsConfigurator(TBGRequest $request)
 		{
 			return $this->renderComponent('configuration/permissionsconfigurator', array('access_level' => $this->access_level, 'user_id' => $request->getParameter('user_id', 0), 'base_id' => $request->getParameter('base_id', 0)));

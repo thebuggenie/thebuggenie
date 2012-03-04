@@ -2,7 +2,8 @@
 
 	use b2db\Core,
 		b2db\Criteria,
-		b2db\Criterion;
+		b2db\Criterion,
+		b2db\Table;
 
 	/**
 	 * Users table
@@ -57,7 +58,7 @@
 			return $res;
 		}
 
-		public function _setupIndexes()
+		protected function _setupIndexes()
 		{
 			$this->_addIndex('userstate', self::USERSTATE);
 			$this->_addIndex('group', self::GROUP_ID);
@@ -65,31 +66,36 @@
 			$this->_addIndex('username_deleted', array(self::UNAME, self::DELETED));
 		}
 
-//		public function __construct()
-//		{
-//			parent::__construct(self::B2DBNAME, self::ID);
-//
-//			parent::_addVarchar(self::UNAME, 50);
-//			parent::_addVarchar(self::PASSWORD, 100);
-//			parent::_addVarchar(self::BUDDYNAME, 50);
-//			parent::_addVarchar(self::REALNAME, 100);
-//			parent::_addVarchar(self::EMAIL, 200);
-//			parent::_addForeignKeyColumn(self::USERSTATE, Core::getTable('TBGUserStateTable'), TBGUserStateTable::ID);
-//			parent::_addBoolean(self::CUSTOMSTATE);
-//			parent::_addVarchar(self::HOMEPAGE, 250, '');
-//			parent::_addVarchar(self::LANGUAGE, 100, '');
-//			parent::_addInteger(self::LASTSEEN, 10);
-//			parent::_addInteger(self::QUOTA);
-//			parent::_addBoolean(self::ACTIVATED);
-//			parent::_addBoolean(self::ENABLED);
-//			parent::_addBoolean(self::DELETED);
-//			parent::_addVarchar(self::AVATAR, 30, '');
-//			parent::_addBoolean(self::USE_GRAVATAR, true);
-//			parent::_addBoolean(self::PRIVATE_EMAIL);
-//			parent::_addBoolean(self::OPENID_LOCKED);
-//			parent::_addInteger(self::JOINED, 10);
-//			parent::_addForeignKeyColumn(self::GROUP_ID, TBGGroupsTable::getTable(), TBGGroupsTable::ID);
-//		}
+		protected function _migrateData(Table $old_users_table)
+		{
+			switch ($old_users_table->getVersion())
+			{
+				case 1:
+					$users = $this->getUsersAndScopes();
+					$table = TBGUserScopesTable::getTable();
+					foreach ($users as $user_id => $scope_id)
+					{
+						$table->addUserToScope($user_id, $scope_id);
+					}
+					break;
+			}
+		}
+
+		protected function getUsersAndScopes()
+		{
+			$crit = $this->getCriteria();
+			$crit->addSelectionColumn('users.id');
+			$crit->addSelectionColumn('users.scope');
+			$res = $this->doSelect($crit);
+
+			$users = array();
+			while ($row = $res->getNextRow())
+			{
+				$users[$row->get('users.id')] = $row->get('users.scope');
+			}
+
+			return $users;
+		}
 
 		public function getByUsername($username)
 		{

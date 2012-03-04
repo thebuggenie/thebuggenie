@@ -59,15 +59,6 @@
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable());
 		}
 		
-		public function getDefaultScope()
-		{
-			$crit = $this->getCriteria();
-			$crit->addWhere(self::SCOPE, 0);
-			$crit->addWhere(self::NAME, 'defaultscope');
-			$row = $this->doSelectOne($crit);
-			return $row;
-		}
-
 		public function getSettingsForScope($scope, $uid = 0)
 		{
 			$crit = $this->getCriteria();

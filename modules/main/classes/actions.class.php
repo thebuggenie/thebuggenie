@@ -2810,6 +2810,12 @@
 						$template_name = 'main/confirmusername';
 						$options['username'] = $request['username'];
 						break;
+					case 'userscopes':
+						if (!TBGContext::getScope()->isDefault()) throw new Exception($this->getI18n()->__('This is not allowed outside the default scope'));
+
+						$template_name = 'configuration/userscopes';
+						$options['user'] = new TBGUser((int) $request['user_id']);
+						break;
 					default:
 						$event = new TBGEvent('core', 'get_backdrop_partial', $request['key']);
 						$event->triggerUntilProcessed();
@@ -2829,7 +2835,8 @@
 			}
 			$this->getResponse()->cleanBuffer();
 			$this->getResponse()->setHttpStatus(400);
-			return $this->renderJSON(array('error' => TBGContext::getI18n()->__('Invalid template or parameter')));
+			$error = (TBGContext::isDebugMode()) ? TBGContext::getI18n()->__('Invalid template or parameter') : $this->getI18n()->__('Could not show the requested popup');
+			return $this->renderJSON(array('error' => $error));
 		}
 
 		public function runFindIssue(TBGRequest $request)
