@@ -824,6 +824,34 @@ TBG.Main.Profile.removeOpenIDIdentity = function(url, oid) {
 	});
 }
 
+TBG.Main.Profile.cancelScopeMembership = function(url, sid) {
+	TBG.Main.Helpers.ajax(url, {
+		loading: {indicator: 'dialog_indicator'},
+		success: {
+			remove: 'account_scope_'+sid,
+			callback: function () {
+				if ($('pending_scope_memberships').childElements().size() == 0) $('no_pending_scope_memberships').show();
+				TBG.Main.Helpers.Dialog.dismiss();
+			}
+		}
+	});
+}
+
+TBG.Main.Profile.confirmScopeMembership = function(url, sid) {
+	TBG.Main.Helpers.ajax(url, {
+		loading: {indicator: 'dialog_indicator'},
+		success: {
+			callback: function () {
+				$('confirmed_scope_memberships').insert({'bottom': $('account_scope_'+sid).remove()});
+				$('account_scope_'+sid).down('.button-green').remove();
+				$('account_scope_'+sid).down('.button-red').show();
+				if ($('pending_scope_memberships').childElements().size() == 0) $('no_pending_scope_memberships').show();
+				TBG.Main.Helpers.Dialog.dismiss();
+			}
+		}
+	});
+}
+
 TBG.Main.Profile.clearPopupsAndButtons = function() {
 	var pbuttons = $('account_info_container').down('.profile_buttons');
 	pbuttons.select('.button').each(function(element) {
@@ -2365,7 +2393,10 @@ TBG.Config.Collection.remove = function(url, type, cid, callback_function) {
 		loading: {indicator: 'delete_' + type + '_' + cid + '_indicator'},
 		success: {
 			remove: type + 'box_' + cid,
-			callback: callback_function
+			callback: function(json) {
+				TBG.Main.Helpers.Dialog.dismiss();
+				if (callback_function) callback_function(json);
+			}
 		}
 	});
 }

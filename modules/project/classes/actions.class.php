@@ -1432,7 +1432,7 @@
 				$this->forward403unless(($request['item_type'] == 'project' && $this->getUser()->canEditProjectDetails($this->selected_project)) || ($request['item_type'] != 'project' && $this->getUser()->canManageProjectReleases($this->selected_project)));
 				if ($request->hasParameter('identifiable_type'))
 				{
-					if (in_array($request['identifiable_type'], array('team', 'user')))
+					if (in_array($request['identifiable_type'], array('team', 'user')) && $request['value'])
 					{
 						switch ($request['identifiable_type'])
 						{

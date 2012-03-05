@@ -59,6 +59,8 @@
 	$routes[] = array('account_check_username', '/account/check/username', 'main', 'accountCheckUsername', array(), true);
 	$routes[] = array('account_pick_username', '/account/pick/username/:selected_username', 'main', 'accountPickUsername', array(), true);
 	$routes[] = array('account_remove_openid', '/account/remove/openid/:openid/:csrf_token', 'main', 'removeOpenIDIdentity', array(), true);
+	$routes[] = array('account_confirm_scope', '/account/confirm/scope/:scope_id/:csrf_token', 'main', 'confirmScope', array(), true);
+	$routes[] = array('account_remove_scope', '/account/remove/scope/:scope_id/:csrf_token', 'main', 'removeScope', array(), true);
 	$routes[] = array('account_save_information', '/account/save/information/*', 'main', 'myAccount', array('mode' => 'information'), true);
 	$routes[] = array('account_save_settings', '/account/save/settings/*', 'main', 'myAccount', array('mode' => 'settings'), true);
 	$routes[] = array('account_save_module_settings', '/account/save/module/:target_module/settings/*', 'main', 'myAccount', array('mode' => 'module'), true);

@@ -14,7 +14,6 @@
 			<?php endif; ?>
 		</span>
 	</div>
-	<br style="clear: both;">
 	<div class="profile_buttons">
 		<div class="button-group">
 			<a style="<?php if (!$tbg_user->usesGravatar()): ?>display: none; <?php endif; ?>" id="gravatar_change" href="http://en.gravatar.com/emails/" class="button button-silver">
@@ -32,16 +31,16 @@
 				<a href="javascript:void(0);" onclick="$(this).toggleClassName('button-pressed');$('pick_username_div').toggle();" id="pick_username_button" class="button button-blue"><?php echo __('Pick a username'); ?></a>
 			<?php endif; ?>
 		</div>
-		<div id="security_key" style="display: none; position: absolute; width: 350px; padding: 10px; top: 36px; right: 0; z-index: 1000;" class="rounded_box white shadowed popup_box">
+		<div id="security_key" style="display: none; position: absolute; width: 350px; padding: 10px; top: 23px; right: 0; z-index: 1000;" class="rounded_box white shadowed popup_box">
 			<?php echo __('Your security key is %securitykey%', array('%securitykey%' => '<b>'.TBGSettings::getRemoteSecurityKey().'</b>')); ?>
 		</div>
-		<ul id="more_actions" style="display: none; position: absolute; width: 300px; top: 36px; margin-top: 0; right: 0; z-index: 1000;" class="simple_list rounded_box white shadowed popup_box more_actions_dropdown" onclick="$('more_actions_button').toggleClassName('button-pressed');$('more_actions').toggle();">
+		<ul id="more_actions" style="display: none; position: absolute; width: 300px; top: 23px; margin-top: 0; right: 0; z-index: 1000;" class="simple_list rounded_box white shadowed popup_box more_actions_dropdown" onclick="$('more_actions_button').toggleClassName('button-pressed');$('more_actions').toggle();">
 			<li><?php echo link_tag(make_url('my_reported_issues'), image_tag('tab_search.png', array('style' => 'float: left; margin-right: 5px;')).__("Show issues I've reported")); ?></li>
 			<li><?php echo link_tag(make_url('my_assigned_issues'), image_tag('tab_search.png', array('style' => 'float: left; margin-right: 5px;')).__("Show open issues assigned to me")); ?></li>
 			<li><?php echo link_tag(make_url('my_teams_assigned_issues'), image_tag('tab_search.png', array('style' => 'float: left; margin-right: 5px;')).__("Show open issues assigned to my teams")); ?></li>
 		</ul>
 		<?php if ($tbg_user->isOpenIdLocked()): ?>
-			<div class="rounded_box white shadowed popup_box"  style="display: none; position: absolute; right: 0; top: 38px; z-index: 100; padding: 5px 10px 5px 10px; font-size: 13px; width: 400px;" id="pick_username_div">
+			<div class="rounded_box white shadowed popup_box"  style="display: none; position: absolute; right: 0; top: 23px; z-index: 100; padding: 5px 10px 5px 10px; font-size: 13px; width: 400px;" id="pick_username_div">
 				<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_check_username'); ?>" onsubmit="TBG.Main.Profile.checkUsernameAvailability('<?php echo make_url('account_check_username'); ?>'); return false;" method="post" id="check_username_form">
 					<b><?php echo __('Picking a username'); ?></b><br>
 					<div style="font-size: 13px; margin-bottom: 10px;"><?php echo __('Since this account was created via an OpenID login, you will have to pick a username to be able to log in with a username or password. You can continue to use your account with your OpenID login, so this is only if you want to pick a username for your account.'); ?><br>
@@ -59,7 +58,7 @@
 			</div>
 		<?php endif; ?>
 		<?php if ($tbg_user->canChangePassword()): ?>
-			<div class="rounded_box white shadowed popup_box"  style="display: none; position: absolute; right: 0; top: 38px; z-index: 100; padding: 5px 10px 5px 10px; font-size: 13px; width: 350px;" id="change_password_div">
+			<div class="rounded_box white shadowed popup_box"  style="display: none; position: absolute; right: 0; top: 23px; z-index: 100; padding: 5px 10px 5px 10px; font-size: 13px; width: 350px;" id="change_password_div">
 				<?php if (TBGSettings::isUsingExternalAuthenticationBackend()): ?>
 					<?php echo tbg_parse_text(TBGSettings::get('changepw_message'), null, null, array('embedded' => true)); ?>
 				<?php else: ?>
@@ -84,7 +83,6 @@
 			</div>
 		<?php endif; ?>
 	</div>
-	<br style="clear: both;">
 	<div style="margin: 0 0 20px 0; table-layout: fixed; width: 100%; height: 100%;">
 		<div style="margin: 0; clear: both; height: 30px; width: 100%;" class="tab_menu">
 			<ul id="account_tabs">
@@ -99,6 +97,9 @@
 						<li id="tab_settings_<?php echo $module_name; ?>"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_settings_<?php echo $module_name; ?>', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag($module->getAccountSettingsLogo(), array('style' => 'float: left;'), false, $module_name).__($module->getAccountSettingsName()); ?></a></li>
 					<?php endif; ?>
 				<?php endforeach; ?>
+				<?php if (count($tbg_user->getScopes()) > 1): ?>
+					<li id="tab_scopes"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_scopes', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_scopes.png', array('style' => 'float: left;')).__('Scope memberships'); ?></a></li>
+				<?php endif; ?>
 			</ul>
 		</div>
 		<div id="account_tabs_panes">
@@ -281,6 +282,25 @@
 					</div>
 				<?php endif; ?>
 			<?php endforeach; ?>
+			<?php if (count($tbg_user->getScopes()) > 1): ?>
+				<div id="tab_scopes_pane" style="display: none;">
+					<div style="padding: 10px;">
+						<h5><?php echo __('Pending memberships'); ?></h5>
+						<ul class="simple_list" id="pending_scope_memberships">
+							<?php foreach ($tbg_user->getUnconfirmedScopes() as $scope): ?>
+								<?php include_template('main/userscope', array('scope' => $scope)); ?>
+							<?php endforeach; ?>
+						</ul>
+						<span id="no_pending_scope_memberships" class="faded_out" style="<?php if (count($tbg_user->getUnconfirmedScopes())): ?>display: none;<?php endif; ?>"><?php echo __('You have no pending scope memberships'); ?></span>
+						<h5 style="margin-top: 20px;"><?php echo __('Confirmed memberships'); ?></h5>
+						<ul class="simple_list" id="confirmed_scope_memberships">
+							<?php foreach ($tbg_user->getConfirmedScopes() as $scope_id => $scope): ?>
+								<?php include_template('main/userscope', array('scope' => $scope)); ?>
+							<?php endforeach; ?>
+						</ul>
+					</div>
+				</div>
+			<?php endif; ?>
 		</div>
 	</div>
 </div>

@@ -1500,15 +1500,19 @@
 			if ($this->_visible_milestones === null)
 			{
 				$this->_visible_milestones = array();
-				if ($res = \b2db\Core::getTable('TBGVisibleMilestonesTable')->getAllByProjectID($this->getID()))
+				if ($res = TBGVisibleMilestonesTable::getTable()->getAllByProjectID($this->getID()))
 				{
 					while ($row = $res->getNextRow())
 					{
-						$milestone = TBGContext::factory()->TBGMilestone($row->get(TBGMilestonesTable::ID), $row);
-						if ($milestone->hasAccess())
+						try
 						{
-							$this->_visible_milestones[$milestone->getID()] = $milestone;
+							$milestone = TBGContext::factory()->TBGMilestone($row->get(TBGMilestonesTable::ID), $row);
+							if ($milestone->hasAccess())
+							{
+								$this->_visible_milestones[$milestone->getID()] = $milestone;
+							}
 						}
+						catch (Exception $e) {}
 					}
 				}
 			}

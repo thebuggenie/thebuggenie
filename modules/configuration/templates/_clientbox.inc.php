@@ -1,9 +1,11 @@
 <div class="rounded_box mediumgrey borderless" style="padding: 0; margin-top: 5px;" id="clientbox_<?php echo $client->getID(); ?>">
 	<div style="padding: 5px;">
 		<?php echo image_tag('client_large.png', array('style' => 'float: left; margin-right: 5px;')); ?>
-		<?php echo javascript_link_tag(image_tag('action_delete.png'), array('title' => __('Delete this user client'), 'onclick' => '$(\'confirm_client_'.$client->getID().'_delete\').toggle();', 'style' => 'float: right;', 'class' => 'image')); ?>
-		<?php echo javascript_link_tag(image_tag('icon_edit.png'), array('title' => __('Edit this user client'), 'onclick' => '$(\'edit_client_'.$client->getID().'\').toggle();', 'style' => 'float: right; margin-right: 5px;', 'class' => 'image')); ?>
-		<?php echo javascript_link_tag(image_tag('client_list_users.png'), array('title' => __('List users in this client'), 'onclick' => 'TBG.Config.Client.showMembers(\''.make_url('configure_users_get_client_members', array('client_id' => $client->getID())).'\', '.$client->getID().');', 'style' => 'float: right; margin-right: 5px;', 'class' => 'image')); ?>
+		<div class="button-group" style="float: right;">
+			<?php echo javascript_link_tag(image_tag('client_list_users.png'), array('title' => __('List users in this client'), 'onclick' => 'TBG.Config.Client.showMembers(\''.make_url('configure_users_get_client_members', array('client_id' => $client->getID())).'\', '.$client->getID().');', 'class' => 'button button-silver button-icon')); ?>
+			<?php echo javascript_link_tag(image_tag('icon_edit.png'), array('title' => __('Edit this user client'), 'onclick' => '$(\'edit_client_'.$client->getID().'\').toggle();', 'class' => 'button button-silver button-icon')); ?>
+			<?php echo javascript_link_tag(image_tag('action_delete.png'), array('title' => __('Delete this user client'), 'onclick' => "TBG.Main.Helpers.Dialog.show('".__('Do you really want to delete this team?')."', '".__('If you delete this client, any projects this client is assigned to will be set to having no client')."', {yes: {click: function() {TBG.Config.Client.remove('".make_url('configure_users_delete_client', array('client_id' => $client->getID()))."', {$client->getID()}); }}, no: { click: TBG.Main.Helpers.Dialog.dismiss }});", 'class' => 'button button-silver button-icon')); ?>
+		</div>
 		<p class="clientbox_header"><?php echo $client->getName(); ?></p>
 		<p class="clientbox_membercount"><?php echo __('ID: %id%', array('%id%' => $client->getID())); ?> - <?php echo __('%number_of% member(s)', array('%number_of%' => '<span id="client_'.$client->getID().'_membercount">'.$client->getNumberOfMembers().'</span>')); ?></p>
 		<div class="rounded_box white shadowed" style="margin: 5px; display: none;" id="edit_client_<?php echo $client->getID(); ?>">
@@ -63,21 +65,6 @@
 					<tr>
 						<td style="width: 20px; padding: 2px;"><?php echo image_tag('spinning_20.gif'); ?></td>
 						<td style="padding: 0px; text-align: left;"><?php echo __('Saving, please wait'); ?>...</td>
-					</tr>
-				</table>
-			</div>
-		</div>
-		<div class="rounded_box white shadowed" style="margin: 5px; display: none;" id="confirm_client_<?php echo $client->getID(); ?>_delete">
-			<div class="dropdown_header"><?php echo __('Do you really want to delete this client?'); ?></div>
-			<div class="dropdown_content">
-				<?php echo __('If you delete this client, any projects this client is assigned to will be set to having no client.'); ?>
-				<div style="text-align: right;">
-					<?php echo javascript_link_tag(__('Yes'), array('onclick' => 'TBG.Config.Client.remove(\''.make_url('configure_users_delete_client', array('client_id' => $client->getID())).'\', '.$client->getID().');')); ?> :: <b><?php echo javascript_link_tag(__('No'), array('onclick' => '$(\'confirm_client_'.$client->getID().'_delete\').toggle();')); ?></b>
-				</div>
-				<table cellpadding=0 cellspacing=0 style="display: none; margin-left: 5px; width: 300px;" id="delete_client_<?php echo $client->getID(); ?>_indicator">
-					<tr>
-						<td style="width: 20px; padding: 2px;"><?php echo image_tag('spinning_20.gif'); ?></td>
-						<td style="padding: 0px; text-align: left;"><?php echo __('Deleting client, please wait'); ?>...</td>
 					</tr>
 				</table>
 			</div>

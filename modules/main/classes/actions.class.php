@@ -3822,4 +3822,16 @@
 			return $this->renderJSON(array('content' => $this->getTemplateHTML('main/issueaclformentry', array('target' => $target))));
 		}
 
+		public function runRemoveScope(TBGRequest $request)
+		{
+			$this->getUser()->removeScope((int) $request['scope_id']);
+			return $this->renderJSON('ok');
+		}
+
+		public function runConfirmScope(TBGRequest $request)
+		{
+			$this->getUser()->confirmScope((int) $request['scope_id']);
+			return $this->renderJSON('ok');
+		}
+
 }

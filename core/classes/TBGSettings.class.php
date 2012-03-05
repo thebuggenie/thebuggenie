@@ -549,7 +549,7 @@
 		
 		public static function getPasswordSalt()
 		{
-			$salt = self::get(self::SETTING_SALT);
+			$salt = self::get(self::SETTING_SALT, 'core', self::getDefaultScopeID());
 			return $salt;
 		}
 		

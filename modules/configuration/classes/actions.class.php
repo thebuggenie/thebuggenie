@@ -1470,7 +1470,8 @@
 			$findstring = $request['findstring'];
 			if (mb_strlen($findstring) >= 1)
 			{
-				list ($this->users, $this->total_results) = TBGUsersTable::getTable()->findInConfig($findstring);
+				$this->users = TBGUsersTable::getTable()->findInConfig($findstring);
+				$this->total_results = count($this->users);
 			}
 			else
 			{
