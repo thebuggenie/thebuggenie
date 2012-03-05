@@ -48,6 +48,14 @@
 			$this->_addIndex('groupid_scope', array(self::GROUP_ID, self::SCOPE));
 		}
 
+		public function countUsers()
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+
+			return $this->doCount($crit);
+		}
+
 		public function addUserToScope($user_id, $scope_id, $group_id = null, $confirmed = false)
 		{
 			$crit = $this->getCriteria();

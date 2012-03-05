@@ -225,14 +225,6 @@
 			return $users;
 		}
 
-		public function countUsers()
-		{
-			$crit = $this->getCriteria();
-			$crit->addWhere(self::DELETED, false);
-
-			return $this->doCount($crit);
-		}
-		
 		public function getAllUserIDs()
 		{
 			$crit = $this->getCriteria();

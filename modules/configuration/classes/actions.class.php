@@ -1326,7 +1326,7 @@
 			{
 				try
 				{
-					$return_options = array('success' => true);
+					$return_options = array();
 					$user = TBGContext::factory()->TBGUser($request['user_id']);
 					if ($user->getGroup() instanceof TBGGroup)
 					{
@@ -1345,7 +1345,7 @@
 							$return_options['update_teams']['membercounts'][$team_id] = $team->getNumberOfMembers();
 						}
 					}
-					if (in_array($user->getUsername(), array('administrator', 'guest')))
+					if (in_array($user->getID(), array(1, TBGSettings::getDefaultUserID())))
 					{
 						throw new Exception(TBGContext::getI18n()->__("You cannot delete this system user"));
 					}
@@ -1355,9 +1355,17 @@
 				{
 					throw new Exception(TBGContext::getI18n()->__("You cannot delete this user"));
 				}
-				$user->markAsDeleted();
-				$user->save();
-				$return_options['message'] = TBGContext::getI18n()->__('The user was deleted');
+				if (TBGContext::getScope()->isDefault())
+				{
+					$user->markAsDeleted();
+					$user->save();
+					$return_options['message'] = TBGContext::getI18n()->__('The user was deleted');
+				}
+				else
+				{
+					$user->removeScope(TBGContext::getScope()->getID());
+					$return_options['message'] = TBGContext::getI18n()->__('The user has been removed from this scope');
+				}
 				$return_options['total_count'] = TBGUser::getUsersCount();
 				$return_options['more_available'] = TBGContext::getScope()->hasUsersAvailable();
 				
@@ -1505,6 +1513,24 @@
 				
 				if ($username = $request['username'])
 				{
+					if (!TBGUser::isUsernameAvailable($username))
+					{
+						if ($request->getParameter('mode') == 'import')
+						{
+							$user = TBGUser::getByUsername($username);
+							$user->addScope(TBGContext::getScope());
+							return $this->renderJSON(array('imported' => true, 'message' => $this->getI18n()->__('The user was successfully added to this scope (pending user confirmation)')));
+						}
+						elseif (TBGContext::getScope()->isDefault())
+						{
+							throw new Exception(TBGContext::getI18n()->__('This username already exists'));
+						}
+						else
+						{
+							$this->getResponse()->setHttpStatus(400);
+							return $this->renderJSON(array('allow_import' => true));
+						}
+					}
 					$user = new TBGUser();
 					$user->setUsername($username);
 					$user->setRealname($username);

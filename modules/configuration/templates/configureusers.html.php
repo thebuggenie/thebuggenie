@@ -53,8 +53,20 @@
 							<tr id="adduser_div"<?php if (!TBGContext::getScope()->hasUsersAvailable()): ?> style="display: none;"<?php endif; ?>>
 								<td style="padding: 3px;"><label for="adduser_username"><?php echo __('Enter username'); ?>:</label></td>
 								<td style="padding: 3px;">
-									<form action="<?php echo make_url('configure_users_add_user'); ?>" method="post" onsubmit="TBG.Config.User.add('<?php echo make_url('configure_users_add_user'); ?>');return false;" id="createuser_form">
-										<input type="text" name="username" id="adduser_username" style="width: 300px;">&nbsp;<input type="submit" value="<?php echo __('Create user'); ?>" style="font-size: 12px; font-weight: bold;">
+									<script>
+										var import_cb = function () { 
+											TBG.Main.Helpers.Dialog.show('<?php echo __('Would you like to add this user to the current scope?'); ?>',
+																		 '<?php echo __('The username you tried to create already exists. You can give this user access to the current scope by pressing "%yes%" below. If you want to create a different user, press "%no%" and enter a different username.', array('%yes%' => __('yes'), '%no%' => __('no'))); ?>',
+																		 {
+																			 yes: {
+																				 click: function() {TBG.Config.User.addToScope('<?php echo make_url('configure_users_import_user'); ?>');}
+																			 },
+																			 no: {click: TBG.Main.Helpers.Dialog.dismiss}
+																		 });
+										};
+									</script>
+									<form action="<?php echo make_url('configure_users_add_user'); ?>" method="post" onsubmit="TBG.Config.User.add('<?php echo make_url('configure_users_add_user'); ?>', import_cb);return false;" id="createuser_form">
+										<input type="text" name="username" id="adduser_username" style="width: 300px;">&nbsp;<input type="submit" value="<?php echo (TBGContext::getScope()->isDefault()) ? __('Create user') : __('Create or add user'); ?>" style="font-size: 12px; font-weight: bold;">
 									</form>
 								</td>
 							</tr>

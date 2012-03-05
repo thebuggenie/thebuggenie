@@ -97,7 +97,7 @@
 			{
 				$default_scope_id = TBGSettings::getDefaultScopeID();
 				$default_user_id = (int) TBGSettings::get(TBGSettings::SETTING_DEFAULT_USER_ID, 'core', $default_scope_id);
-				TBGUserScopesTable::getTable()->addUserToScope($default_user_id, $scope->getID(), $user_group->getID());
+				TBGUserScopesTable::getTable()->addUserToScope($default_user_id, $scope->getID(), $user_group->getID(), true);
 				TBGUserScopesTable::getTable()->addUserToScope(1, $scope->getID(), $admin_group->getID());
 				TBGSettings::saveSetting(TBGSettings::SETTING_DEFAULT_USER_ID, $default_user_id, 'core', $scope->getID());
 			}

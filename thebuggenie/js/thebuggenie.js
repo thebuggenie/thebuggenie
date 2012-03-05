@@ -238,7 +238,7 @@ TBG.Core._processCommonAjaxPostEvents = function(options) {
 	if (options.hide) {
 		if (is_string(options.hide)) {
 			if ($(options.hide)) $(options.hide).hide();
-		} else {
+		}else {
 			options.hide.each(function(s) {if (is_string(s) && $(s)) $(s).hide();else if ($(s)) s.hide();});
 		}
 	}
@@ -529,15 +529,15 @@ TBG.Main.Helpers.ajax = function(url, options) {
 		},
 		onFailure: function (response) {
 			var json = (response.responseJSON) ? response.responseJSON : undefined;
-			if (response.responseJSON) {
+			if (response.responseJSON && (json.error || json.message)) {
 				TBG.Main.Helpers.Message.error(json.error, json.message);
-			} else {
+			} else if (response.responseText) {
 				TBG.Main.Helpers.Message.error(response.responseText);
 			}
 			if (options.failure) {
 				TBG.Core._processCommonAjaxPostEvents(options.failure);
 				if (options.failure.callback) {
-					options.failure.callback(response);
+					options.failure.callback(json);
 				}
 			}
 		},
@@ -2294,13 +2294,34 @@ TBG.Config.User.show = function(url, findstring) {
 	});
 }
 
-TBG.Config.User.add = function(url) {
+TBG.Config.User.add = function(url, callback_function_for_import) {
 	TBG.Main.Helpers.ajax(url, {
 		form: 'createuser_form',
 		loading: {indicator: 'find_users_indicator'},
 		success: {
 			update: 'users_results',
 			callback: TBG.Config.User._updateLinks
+		},
+		failure: {
+			callback: function(json) {
+				if (json.allow_import) {
+					callback_function_for_import();
+				}
+			}
+		}
+	});
+}
+
+TBG.Config.User.addToScope = function(url) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'createuser_form',
+		loading: {indicator: 'dialog_indicator'},
+		success: {
+			update: 'users_results',
+			callback: function(json) {
+				TBG.Main.Helpers.Dialog.dismiss();
+				TBG.Config.User._updateLinks(json);
+			}
 		}
 	});
 }

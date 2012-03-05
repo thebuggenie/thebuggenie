@@ -611,7 +611,7 @@
 		{
 			if (self::$_num_users === null)
 			{
-				self::$_num_users = TBGUsersTable::getTable()->countUsers();
+				self::$_num_users = TBGUserScopesTable::getTable()->countUsers();
 			}
 
 			return self::$_num_users;
