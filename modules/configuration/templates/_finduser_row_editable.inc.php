@@ -6,10 +6,14 @@
 				<td><?php if (TBGSettings::isUsingExternalAuthenticationBackend()): echo $user->getUsername(); else: ?><input type="text" name="username" id="username_<?php echo $user->getID(); ?>" style="width: 120px;" value="<?php echo $user->getUsername(); ?>"><?php endif; ?></td>
 				<td><label for="activated_<?php echo $user->getID(); ?>_yes"><?php echo __('Activated'); ?></label></td>
 				<td valign="middle">
-					<input type="radio" name="activated" id="activated_<?php echo $user->getID(); ?>_yes" value="1"<?php if ($user->isActivated()): ?> checked<?php endif; ?>>
-					<label for="activated_<?php echo $user->getID(); ?>_yes" style="font-weight: normal;"><?php echo __('Yes'); ?></label>&nbsp;
-					<input type="radio" name="activated" id="activated_<?php echo $user->getID(); ?>_no" value="0"<?php if (!$user->isActivated()): ?> checked<?php endif; ?>>
-					<label for="activated_<?php echo $user->getID(); ?>_no" style="font-weight: normal;"><?php echo __('No'); ?></label>
+					<?php if (TBGContext::getScope()->isDefault()): ?>
+						<input type="radio" name="activated" id="activated_<?php echo $user->getID(); ?>_yes" value="1"<?php if ($user->isActivated()): ?> checked<?php endif; ?>>
+						<label for="activated_<?php echo $user->getID(); ?>_yes" style="font-weight: normal;"><?php echo __('Yes'); ?></label>&nbsp;
+						<input type="radio" name="activated" id="activated_<?php echo $user->getID(); ?>_no" value="0"<?php if (!$user->isActivated()): ?> checked<?php endif; ?>>
+						<label for="activated_<?php echo $user->getID(); ?>_no" style="font-weight: normal;"><?php echo __('No'); ?></label>
+					<?php else: ?>
+						<?php echo ($user->isActivated()) ? __('Yes') : __('No'); ?>
+					<?php endif; ?>
 				</td>
 			</tr>
 			<tr>
@@ -17,10 +21,14 @@
 				<td><?php if (TBGSettings::isUsingExternalAuthenticationBackend()): if ($user->getRealname() == null): echo '-'; else: echo $user->getRealname(); endif; else: ?><input type="text" name="realname" id="realname_<?php echo $user->getID(); ?>" style="width: 220px;" value="<?php echo $user->getRealname(); ?>"><?php endif; ?></td>
 				<td><label for="enabled_<?php echo $user->getID(); ?>_yes"><?php echo __('Enabled'); ?></label></td>
 				<td valign="middle">
-					<input type="radio" name="enabled" id="enabled_<?php echo $user->getID(); ?>_yes" value="1"<?php if ($user->isEnabled()): ?> checked<?php endif; ?>>
-					<label for="enabled_<?php echo $user->getID(); ?>_yes" style="font-weight: normal;"><?php echo __('Yes'); ?></label>&nbsp;
-					<input type="radio" name="enabled" id="enabled_<?php echo $user->getID(); ?>_no" value="0"<?php if (!$user->isEnabled()): ?> checked<?php endif; ?>>
-					<label for="enabled_<?php echo $user->getID(); ?>_no" style="font-weight: normal;"><?php echo __('No'); ?></label>
+					<?php if (TBGContext::getScope()->isDefault()): ?>
+						<input type="radio" name="enabled" id="enabled_<?php echo $user->getID(); ?>_yes" value="1"<?php if ($user->isEnabled()): ?> checked<?php endif; ?>>
+						<label for="enabled_<?php echo $user->getID(); ?>_yes" style="font-weight: normal;"><?php echo __('Yes'); ?></label>&nbsp;
+						<input type="radio" name="enabled" id="enabled_<?php echo $user->getID(); ?>_no" value="0"<?php if (!$user->isEnabled()): ?> checked<?php endif; ?>>
+						<label for="enabled_<?php echo $user->getID(); ?>_no" style="font-weight: normal;"><?php echo __('No'); ?></label>
+					<?php else: ?>
+						<?php echo ($user->isEnabled()) ? __('Yes') : __('No'); ?>
+					<?php endif; ?>
 				</td>
 			</tr>
 			<tr>

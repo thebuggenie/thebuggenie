@@ -44,8 +44,10 @@
 			<?php if (!in_array($user->getID(), array(1, (int) TBGSettings::get(TBGSettings::SETTING_DEFAULT_USER_ID)))): ?>
 				<?php if (TBGContext::getScope()->isDefault()): ?>
 					<li><?php echo javascript_link_tag(__('Delete this user'), array('onclick' => "TBG.Main.Helpers.Dialog.show('".__('Permanently delete this user?')."', '".__('Are you sure you want to remove this user? This will remove the users login data, as well as memberships in (and data in) any scopes the user is a member of.')."', {yes: {click: function() {TBG.Config.User.remove('".make_url('configure_users_delete_user', array('user_id' => $user->getID()))."', ".$user->getID()."); TBG.Main.Helpers.Dialog.dismiss(); } }, no: {click: TBG.Main.Helpers.Dialog.dismiss}});")); ?></li>
-				<?php else: ?>
+				<?php elseif ($user->isScopeConfirmed()): ?>
 					<li><?php echo javascript_link_tag(__('Remove user from this scope'), array('onclick' => "TBG.Main.Helpers.Dialog.show('".__('Remove this user?')."', '".__('Are you sure you want to remove this user from the current scope? The users login is kept, and you can re-add the user later.')."', {yes: {click: function() {TBG.Config.User.remove('".make_url('configure_users_delete_user', array('user_id' => $user->getID()))."', ".$user->getID()."); TBG.Main.Helpers.Dialog.dismiss(); } }, no: {click: TBG.Main.Helpers.Dialog.dismiss}});")); ?></li>
+				<?php else: ?>
+					<li><?php echo javascript_link_tag(__('Cancel invitation'), array('onclick' => "TBG.Main.Helpers.Dialog.show('".__('Cancel membership in this scope?')."', '".__('If you cancel the invitation to this scope, then this user will be notified and the unconfirmed membership removed from this scope.')."', {yes: {click: function() {TBG.Config.User.remove('".make_url('configure_users_delete_user', array('user_id' => $user->getID()))."', ".$user->getID()."); TBG.Main.Helpers.Dialog.dismiss(); } }, no: {click: TBG.Main.Helpers.Dialog.dismiss}});")); ?></li>
 				<?php endif; ?>
 			<?php else: ?>
 				<li class="disabled"><a href="javascript:void(0);" onclick="TBG.Main.Helpers.Message.error('<?php echo __('This user cannot be removed'); ?>', '<?php echo __('This is a system user which cannot be removed'); ?>');" class="disabled"><?php echo __('Delete this user'); ?></a></li>

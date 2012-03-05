@@ -1568,6 +1568,11 @@
 				$user = TBGContext::factory()->TBGUser($request['user_id']);
 				if ($user instanceof TBGUser)
 				{
+					if (!$user->isConfirmedMemberOfScope(TBGContext::getScope()))
+					{
+						$this->getResponse()->setHttpStatus(400);
+						return $this->renderJSON(array('error' => TBGContext::getI18n()->__('This user is not a confirmed member of this scope')));
+					}
 					if (!empty($request['username'])) {
 						$testuser = TBGUser::getByUsername($request['username']);
 						if (!$testuser instanceof TBGUser || $testuser->getID() == $user->getID())
@@ -1662,8 +1667,11 @@
 					if (isset($request['email'])) {
 						$user->setEmail($request['email']);
 					}
-					$user->setActivated((bool) $request['activated']);
-					$user->setEnabled((bool) $request['enabled']);
+					if (TBGContext::getScope()->isDefault())
+					{
+						$user->setActivated((bool) $request['activated']);
+						$user->setEnabled((bool) $request['enabled']);
+					}
 					$user->save();
 					if (isset($groups))
 					{
