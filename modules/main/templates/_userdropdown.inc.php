@@ -1,5 +1,7 @@
 <?php if (!$user instanceof TBGUser || $user->getID() == 0 || $user->isDeleted()): ?>
 	<span class="faded_out"><?php echo __('No such user'); ?></span>
+<?php elseif (!$user->isScopeConfirmed()): ?>
+	<span class="faded_out" title="<?php echo __('This user has not been confirmed yet'); ?>"><?php echo $user->getUsername() ?></span>
 <?php else: ?>
 	<?php $avatar_dimensions = (!isset($size) || $size == 'small') ? 16 : 22; ?>
 	<?php if ($show_avatar): ?>

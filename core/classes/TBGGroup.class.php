@@ -23,9 +23,6 @@
 		
 		protected static $_groups = null;
 
-		/**
-		 * @Relates(class="TBGUser", collection=true, foreign_column="group_id")
-		 */
 		protected $_members = null;
 
 		protected $_num_members = null;
@@ -92,7 +89,18 @@
 			$guest_group->save();
 			
 			// Set up initial users, and their permissions
-			TBGUser::loadFixtures($scope, $admin_group, $user_group, $guest_group);
+			if ($scope->isDefault())
+			{
+				TBGUser::loadFixtures($scope, $admin_group, $user_group, $guest_group);
+			}
+			else
+			{
+				$default_scope_id = TBGSettings::getDefaultScopeID();
+				$default_user_id = (int) TBGSettings::get(TBGSettings::SETTING_DEFAULT_USER_ID, 'core', $default_scope_id);
+				TBGUserScopesTable::getTable()->addUserToScope($default_user_id, $scope->getID(), $user_group->getID(), true);
+				TBGUserScopesTable::getTable()->addUserToScope(1, $scope->getID(), $admin_group->getID());
+				TBGSettings::saveSetting(TBGSettings::SETTING_DEFAULT_USER_ID, $default_user_id, 'core', $scope->getID());
+			}
 			TBGPermissionsTable::getTable()->loadFixtures($scope, $admin_group->getID(), $guest_group->getID());
 		}
 		
@@ -118,15 +126,7 @@
 
 		protected function _preDelete()
 		{
-			$crit = TBGUsersTable::getTable()->getCriteria();
-			$crit->addWhere(TBGUsersTable::GROUP_ID, $this->getID());
-			
-			if ($this->getID() == TBGSettings::getDefaultGroup()->getID())
-				$crit->addUpdate(TBGUsersTable::GROUP_ID, null);
-			else
-				$crit->addUpdate(TBGUsersTable::GROUP_ID, TBGSettings::getDefaultGroup()->getID());
-
-			$res = TBGUsersTable::getTable()->doUpdate($crit);
+			TBGUserScopesTable::getTable()->clearUserGroups($this->getID());
 		}
 
 		/**
@@ -138,7 +138,7 @@
 		{
 			if ($this->_members === null)
 			{
-				$this->_b2dbLazyload('_members');
+				$this->_members = TBGUserScopesTable::getTable()->getUsersByGroupID($this->getID());
 			}
 			return $this->_members;
 		}
@@ -151,7 +151,7 @@
 			}
 			elseif ($this->_num_members === null)
 			{
-				$this->_num_members = $this->_b2dbLazycount('_members');
+				$this->_num_members = TBGUserScopesTable::getTable()->countUsersByGroupID($this->getID());
 			}
 
 			return $this->_num_members;

@@ -90,7 +90,7 @@
 			TBGEvent::listen('core', 'password_reset', array($this, 'listen_forgottenPassword'));
 			TBGEvent::listen('core', 'login_form_pane', array($this, 'listen_loginPane'));
 			TBGEvent::listen('core', 'login_form_tab', array($this, 'listen_loginTab'));
-			//TBGEvent::listen('core', 'TBGIssue::save', array($this, 'listen_issueSave'));
+			TBGEvent::listen('core', 'TBGUser::addScope', array($this, 'listen_addScope'));
 			TBGEvent::listen('core', 'TBGIssue::createNew', array($this, 'listen_issueCreate'));
 			TBGEvent::listen('core', 'TBGUser::_postSave', array($this, 'listen_createUser'));
 			TBGEvent::listen('core', 'TBGIssue::addSystemComment', array($this, 'listen_TBGComment_createNew'));
@@ -230,6 +230,30 @@
 					{
 						throw $e;
 					}
+				}
+			}
+		}
+
+		public function listen_addScope(TBGEvent $event)
+		{
+			if ($this->isOutgoingNotificationsEnabled())
+			{
+				$user = $event->getSubject();
+				$subject = TBGContext::getI18n()->__('Your account in The Bug Genie has been added to a new scope');
+				$scope = $event->getParameter('scope');
+				$message = $this->createNewTBGMimemailFromTemplate($subject, 'addtoscope', array('user' => $user, 'scope' => $scope), null, array(array($user->getBuddyname(), $user->getEmail())));
+
+				$message->addReplacementValues(array('%user_buddyname%' => $user->getBuddyname()));
+				$message->addReplacementValues(array('%user_username%' => $user->getUsername()));
+
+				try
+				{
+					$this->sendMail($message);
+					$event->setProcessed();
+				}
+				catch (Exception $e)
+				{
+					throw $e;
 				}
 			}
 		}
@@ -717,8 +741,6 @@
 		{
 			try
 			{
-				//if (file_exists(TBGContext::getRouting()->getCurrentRouteModule() . $module . DIRECTORY_SEPARATOR . $templatefile))
-				//if($basepath . $module . DIRECTORY_SEPARATOR . 'i18n' . DIRECTORY_SEPARATOR . $this->_language . DIRECTORY_SEPARATOR . $templatefile)
 				$mail = TBGMimemail::createNewFromTemplate($subject, $template, $parameters, $language, $recipients, $charset);
 				$this->_setInitialMailValues($mail);
 				$this->_setAdditionalMailValues($mail, $parameters);

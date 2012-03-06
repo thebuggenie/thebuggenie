@@ -210,7 +210,7 @@ footer td { font-size: 0.9em; line-height: 1.2; padding: 5px; text-shadow: 1px 1
 /* end closed / blocking */
 
 /* faded text styles */
-.faded_out { color: #AAA; }
+.faded_out, .faded_out td { color: #AAA; }
 .selected_green span.faded_out { color: #D1F1D1; }
 .selected_red span.faded_out { color: #F1D1D1; }
 .faded_out.dark { color: #999; }
@@ -375,7 +375,8 @@ a.shadowed:active { box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); -webkit-box-shad
 #account_info_container { width: 900px; margin: 0 auto; }
 #username_unavailable { padding: 10px 5px; font-size: 0.9em; color: darkred; font-weight: bold; }
 #username_confirmation_popup { text-align: left; }
-.profile_buttons { padding: 15px 0 0 15px; position: relative; float: right; }
+.profile_buttons { padding: 0; margin: 5px 0 20px 0; height: 20px; position: relative; clear: both; }
+.profile_buttons .button-group { float: right; }
 .profile_buttons .button, .profile_buttons .button:hover { font-weight: normal !important; padding: 2px 3px 3px 3px !important; }
 #user_details_popup .user_username { font-weight: normal; font-size: 0.9em; color: #AAA; font-style: italic; line-height: 1.2; }
 #user_details_popup .user_id { float: right; font-size: 2.3em; font-weight: normal; color: #C4CAE9; }
@@ -858,6 +859,7 @@ dd { float: left; display: block; width: 195px; font-weight: normal; margin: 0; 
 #viewissue_left_box_status { font-weight: normal; }
 #viewissue_left_box_status table tr td { font-weight: normal; }
 #viewissue_left_box_top #status_header { padding: 2px; }
+.more_actions_dropdown li { white-space: nowrap; }
 .more_actions_dropdown li img { float: left; margin-right: 5px; }
 .more_actions_dropdown li.disabled a { color: #AAA; text-shadow: 1px 1px 1px #FFF; }
 .title_left_images { width: 32px; padding: 0; }

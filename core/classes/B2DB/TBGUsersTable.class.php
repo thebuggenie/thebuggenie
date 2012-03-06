@@ -2,7 +2,8 @@
 
 	use b2db\Core,
 		b2db\Criteria,
-		b2db\Criterion;
+		b2db\Criterion,
+		b2db\Table;
 
 	/**
 	 * Users table
@@ -57,39 +58,44 @@
 			return $res;
 		}
 
-		public function _setupIndexes()
+		protected function _setupIndexes()
 		{
 			$this->_addIndex('userstate', self::USERSTATE);
-			$this->_addIndex('group', self::GROUP_ID);
 			$this->_addIndex('username_password', array(self::UNAME, self::PASSWORD));
 			$this->_addIndex('username_deleted', array(self::UNAME, self::DELETED));
 		}
 
-//		public function __construct()
-//		{
-//			parent::__construct(self::B2DBNAME, self::ID);
-//
-//			parent::_addVarchar(self::UNAME, 50);
-//			parent::_addVarchar(self::PASSWORD, 100);
-//			parent::_addVarchar(self::BUDDYNAME, 50);
-//			parent::_addVarchar(self::REALNAME, 100);
-//			parent::_addVarchar(self::EMAIL, 200);
-//			parent::_addForeignKeyColumn(self::USERSTATE, Core::getTable('TBGUserStateTable'), TBGUserStateTable::ID);
-//			parent::_addBoolean(self::CUSTOMSTATE);
-//			parent::_addVarchar(self::HOMEPAGE, 250, '');
-//			parent::_addVarchar(self::LANGUAGE, 100, '');
-//			parent::_addInteger(self::LASTSEEN, 10);
-//			parent::_addInteger(self::QUOTA);
-//			parent::_addBoolean(self::ACTIVATED);
-//			parent::_addBoolean(self::ENABLED);
-//			parent::_addBoolean(self::DELETED);
-//			parent::_addVarchar(self::AVATAR, 30, '');
-//			parent::_addBoolean(self::USE_GRAVATAR, true);
-//			parent::_addBoolean(self::PRIVATE_EMAIL);
-//			parent::_addBoolean(self::OPENID_LOCKED);
-//			parent::_addInteger(self::JOINED, 10);
-//			parent::_addForeignKeyColumn(self::GROUP_ID, TBGGroupsTable::getTable(), TBGGroupsTable::ID);
-//		}
+		protected function _migrateData(Table $old_users_table)
+		{
+			switch ($old_users_table->getVersion())
+			{
+				case 1:
+					$users = $this->getUserMigrationDetails();
+					$table = TBGUserScopesTable::getTable();
+					foreach ($users as $user_id => $details)
+					{
+						$table->addUserToScope($user_id, $details['scope_id'], $details['group_id'], true);
+					}
+					break;
+			}
+		}
+
+		protected function getUserMigrationDetails()
+		{
+			$crit = $this->getCriteria();
+			$crit->addSelectionColumn('users.id');
+			$crit->addSelectionColumn('users.scope');
+			$crit->addSelectionColumn('users.group_id');
+			$res = $this->doSelect($crit);
+
+			$users = array();
+			while ($row = $res->getNextRow())
+			{
+				$users[$row->get('users.id')] = array('scope_id' => $row->get('users.scope'), 'group_id' => $row->get('users.group_id'));
+			}
+
+			return $users;
+		}
 
 		public function getByUsername($username)
 		{
@@ -155,11 +161,23 @@
 				}
 				$res = $this->select($crit);
 			}
+
+			$users = array();
+			if ($res)
+			{
+				foreach ($res as $key => $user)
+				{
+					if ($user->isScopeConfirmed())
+					{
+						$users[$key] = $user;
+					}
+				}
+			}
 			
-			return $res;
+			return $users;
 		}
 
-		public function findInConfig($details, $limit = 50, $offset = null)
+		public function findInConfig($details, $limit = 50)
 		{
 			$crit = $this->getCriteria();
 			switch ($details)
@@ -189,33 +207,24 @@
 			}
 			$crit->addWhere(self::DELETED, false);
 
-			if ($limit !== null) $crit->setLimit($limit);
-			if ($offset !== null) $crit->setOffset($offset);
-
 			$users = array();
 			$res = null;
 
 			if ($details != '' && $res = $this->doSelect($crit))
 			{
-				while ($row = $res->getNextRow())
+				while (($row = $res->getNextRow()) && count($users) < $limit)
 				{
-					$users[$row->get(self::ID)] = TBGContext::factory()->TBGUser($row->get(self::ID));
+					$user_id = (int) $row->get(self::ID);
+					$details = TBGUserScopesTable::getTable()->getUserDetailsByScope($user_id, TBGContext::getScope()->getID());
+					if (!$details) continue;
+					$users[$user_id] = TBGContext::factory()->TBGUser($user_id);
+					$users[$user_id]->setScopeConfirmed($details['confirmed']);
 				}
 			}
 
-			$num_results = (is_object($res)) ? count($res) : 0;
-
-			return array($users, $num_results);
+			return $users;
 		}
 
-		public function countUsers()
-		{
-			$crit = $this->getCriteria();
-			$crit->addWhere(self::DELETED, false);
-
-			return $this->doCount($crit);
-		}
-		
 		public function getAllUserIDs()
 		{
 			$crit = $this->getCriteria();

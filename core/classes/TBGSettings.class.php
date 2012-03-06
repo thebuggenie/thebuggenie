@@ -272,13 +272,11 @@
 		 *
 		 * @return TBGScope
 		 */
-		public static function getDefaultScope()
+		public static function getDefaultScopeID()
 		{
-			throw new Exception("This function is deprecated. Default scope is always 1");
 			if (self::$_defaultscope === null)
 			{
-				$row = \b2db\Core::getTable('TBGSettingsTable')->getDefaultScope();
-				self::$_defaultscope = TBGContext::factory()->TBGScope($row->get(TBGSettingsTable::VALUE));
+				self::$_defaultscope = TBGScopeHostnamesTable::getTable()->getScopeIDForHostname('*');
 			}
 			return self::$_defaultscope;
 		}
@@ -551,7 +549,7 @@
 		
 		public static function getPasswordSalt()
 		{
-			$salt = self::get(self::SETTING_SALT);
+			$salt = self::get(self::SETTING_SALT, 'core', self::getDefaultScopeID());
 			return $salt;
 		}
 		

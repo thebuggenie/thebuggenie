@@ -486,7 +486,14 @@
 			header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 			header("Pragma: no-cache"); // HTTP/1.0
 			header("x-tbg-debugid: ".TBGContext::getDebugID());
-			header("Content-Type: " . $this->_content_type . "; charset=" . TBGContext::getI18n()->getCharset());
+			if (TBGContext::isI18nInitialized())
+			{
+				header("Content-Type: " . $this->_content_type . "; charset=" . TBGContext::getI18n()->getCharset());
+			}
+			else
+			{
+				header("Content-Type: " . $this->_content_type . "; charset=utf-8");
+			}
 
 			foreach ($this->_headers as $header)
 			{

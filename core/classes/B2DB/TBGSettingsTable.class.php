@@ -59,15 +59,6 @@
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable());
 		}
 		
-		public function getDefaultScope()
-		{
-			$crit = $this->getCriteria();
-			$crit->addWhere(self::SCOPE, 0);
-			$crit->addWhere(self::NAME, 'defaultscope');
-			$row = $this->doSelectOne($crit);
-			return $row;
-		}
-
 		public function getSettingsForScope($scope, $uid = 0)
 		{
 			$crit = $this->getCriteria();
@@ -148,8 +139,11 @@
 			$settings[TBGSettings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_LANGUAGE] = 'html4strict';
 			$settings[TBGSettings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_NUMBERING] = '3';
 			$settings[TBGSettings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_INTERVAL] = '10';
-			$settings[TBGSettings::SETTING_SALT] = sha1(time().mt_rand(1000, 10000));
 			$settings[TBGSettings::SETTING_ICONSET] = 'oxygen';
+			if ($scope->isDefault())
+			{
+				$settings[TBGSettings::SETTING_SALT] = sha1(time().mt_rand(1000, 10000));
+			}
 
 			$scope_id = $scope->getID();
 			foreach ($settings as $settings_name => $settings_val)

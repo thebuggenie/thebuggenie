@@ -89,7 +89,7 @@
 
 			$row = $this->doSelectOne($crit);
 
-			return ($row instanceof \b2db\Row) ? $row->get(self::SCOPE_ID) : null;
+			return ($row instanceof \b2db\Row) ? (int) $row->get(self::SCOPE_ID) : null;
 		}
 
 	}

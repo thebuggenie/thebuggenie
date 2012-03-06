@@ -1326,7 +1326,7 @@
 			{
 				try
 				{
-					$return_options = array('success' => true);
+					$return_options = array();
 					$user = TBGContext::factory()->TBGUser($request['user_id']);
 					if ($user->getGroup() instanceof TBGGroup)
 					{
@@ -1345,7 +1345,7 @@
 							$return_options['update_teams']['membercounts'][$team_id] = $team->getNumberOfMembers();
 						}
 					}
-					if (in_array($user->getUsername(), array('administrator', 'guest')))
+					if (in_array($user->getID(), array(1, TBGSettings::getDefaultUserID())))
 					{
 						throw new Exception(TBGContext::getI18n()->__("You cannot delete this system user"));
 					}
@@ -1355,9 +1355,17 @@
 				{
 					throw new Exception(TBGContext::getI18n()->__("You cannot delete this user"));
 				}
-				$user->markAsDeleted();
-				$user->save();
-				$return_options['message'] = TBGContext::getI18n()->__('The user was deleted');
+				if (TBGContext::getScope()->isDefault())
+				{
+					$user->markAsDeleted();
+					$user->save();
+					$return_options['message'] = TBGContext::getI18n()->__('The user was deleted');
+				}
+				else
+				{
+					$user->removeScope(TBGContext::getScope()->getID());
+					$return_options['message'] = TBGContext::getI18n()->__('The user has been removed from this scope');
+				}
 				$return_options['total_count'] = TBGUser::getUsersCount();
 				$return_options['more_available'] = TBGContext::getScope()->hasUsersAvailable();
 				
@@ -1470,7 +1478,8 @@
 			$findstring = $request['findstring'];
 			if (mb_strlen($findstring) >= 1)
 			{
-				list ($this->users, $this->total_results) = TBGUsersTable::getTable()->findInConfig($findstring);
+				$this->users = TBGUsersTable::getTable()->findInConfig($findstring);
+				$this->total_results = count($this->users);
 			}
 			else
 			{
@@ -1504,6 +1513,24 @@
 				
 				if ($username = $request['username'])
 				{
+					if (!TBGUser::isUsernameAvailable($username))
+					{
+						if ($request->getParameter('mode') == 'import')
+						{
+							$user = TBGUser::getByUsername($username);
+							$user->addScope(TBGContext::getScope());
+							return $this->renderJSON(array('imported' => true, 'message' => $this->getI18n()->__('The user was successfully added to this scope (pending user confirmation)')));
+						}
+						elseif (TBGContext::getScope()->isDefault())
+						{
+							throw new Exception(TBGContext::getI18n()->__('This username already exists'));
+						}
+						else
+						{
+							$this->getResponse()->setHttpStatus(400);
+							return $this->renderJSON(array('allow_import' => true));
+						}
+					}
 					$user = new TBGUser();
 					$user->setUsername($username);
 					$user->setRealname($username);
@@ -1541,6 +1568,11 @@
 				$user = TBGContext::factory()->TBGUser($request['user_id']);
 				if ($user instanceof TBGUser)
 				{
+					if (!$user->isConfirmedMemberOfScope(TBGContext::getScope()))
+					{
+						$this->getResponse()->setHttpStatus(400);
+						return $this->renderJSON(array('error' => TBGContext::getI18n()->__('This user is not a confirmed member of this scope')));
+					}
 					if (!empty($request['username'])) {
 						$testuser = TBGUser::getByUsername($request['username']);
 						if (!$testuser instanceof TBGUser || $testuser->getID() == $user->getID())
@@ -1635,8 +1667,11 @@
 					if (isset($request['email'])) {
 						$user->setEmail($request['email']);
 					}
-					$user->setActivated((bool) $request['activated']);
-					$user->setEnabled((bool) $request['enabled']);
+					if (TBGContext::getScope()->isDefault())
+					{
+						$user->setActivated((bool) $request['activated']);
+						$user->setEnabled((bool) $request['enabled']);
+					}
 					$user->save();
 					if (isset($groups))
 					{
@@ -1669,6 +1704,50 @@
 					if ($password_changed)
 					{
 						$return_options['message'] = TBGContext::getI18n()->__('The password was changed');
+					}
+					return $this->renderJSON($return_options);
+				}
+			}
+			catch (Exception $e)
+			{
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('error' => TBGContext::getI18n()->__('This user could not be updated: %message%', array('%message%' => $e->getMessage()))));
+			}
+			$this->getResponse()->setHttpStatus(400);
+			return $this->renderJSON(array('error' => TBGContext::getI18n()->__('This user could not be updated')));
+		}
+
+		public function runUpdateUserScopes(TBGRequest $request)
+		{
+			try
+			{
+				if (!TBGContext::getScope()->isDefault()) throw new Exception('This operation is not allowed');
+
+				$user = TBGContext::factory()->TBGUser($request['user_id']);
+				if ($user instanceof TBGUser)
+				{
+					$return_options = array('message' => $this->getI18n()->__("The user's scope access was successfully updated"));
+					$scopes = $request->getParameter('scopes', array());
+					if (count($scopes) && !(count($scopes) == 1 && array_key_exists(TBGSettings::getDefaultScopeID(), $scopes)))
+					{
+						foreach ($user->getScopes() as $scope_id => $scope)
+						{
+							if (!$scope->isDefault() && !array_key_exists($scope_id, $scopes))
+							{
+								$user->removeScope($scope_id);
+							}
+						}
+						foreach ($scopes as $scope_id => $scope)
+						{
+							try
+							{
+								$scope = new TBGScope((int) $scope_id);
+								if ($user->isMemberOfScope($scope)) continue;
+
+								$user->addScope($scope);
+							}
+							catch (Exception $e) {}
+						}
 					}
 					return $this->renderJSON($return_options);
 				}

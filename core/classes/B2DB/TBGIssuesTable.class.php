@@ -587,6 +587,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::DELETED, false);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			if (count($filters) > 0)
 			{
 				$crit->addJoin(TBGIssueCustomFieldsTable::getTable(), TBGIssueCustomFieldsTable::ISSUE_ID, TBGIssuesTable::ID);

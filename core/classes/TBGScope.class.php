@@ -207,9 +207,11 @@
 				'TBGIssueAffectsBuildTable', 'TBGIssueAffectsComponentTable', 'TBGIssueFilesTable',
 				'TBGIssueRelationsTable', 'TBGIssuetypeSchemeLinkTable', 'TBGIssuetypeSchemesTable',
 				'TBGIssueTypesTable', 'TBGListTypesTable', 'TBGIssuesTable', 'TBGCommentsTable',
-				'TBGComponentAssigneesTable', 'TBGProjectAssigneesTable', 'TBGEditionAssigneesTable',
+				'TBGComponentAssignedTeamsTable', 'TBGComponentAssignedUsersTable', 
+				'TBGProjectAssignedTeamsTable', 'TBGProjectAssignedUsersTable',
+				'TBGEditionAssignedTeamsTable', 'TBGEditionAssignedUsersTable',
 				'TBGComponentsTable', 'TBGEditionsTable', 'TBGBuildsTable', 'TBGMilestonesTable',
-				'TBGIssuesTable', 'TBGProjectsTable'
+				'TBGIssuesTable', 'TBGProjectsTable', 'TBGUserScopesTable'
 			);
 			foreach($tables as $table)
 			{

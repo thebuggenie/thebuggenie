@@ -20,27 +20,29 @@
 					<th><?php echo __('Real name (nickname)'); ?></th>
 					<th><?php echo __('E-mail'); ?></th>
 					<th><?php echo __('Actv.'); ?></th>
-					<th style="width: 80px;">&nbsp;</th>
+					<th style="width: 20px;">&nbsp;</th>
 				</tr>
 			</thead>
 			<tbody>
 				<?php foreach ($users as $user): ?>
-				<tr class="hover_highlight" id="users_results_user_<?php echo $user->getID(); ?>" onclick="$('users_results_user_<?php echo $user->getID(); ?>').toggleClassName('selected_green');">
-					<?php include_template('finduser_row', array('user' => $user)); ?>
-				</tr>
-				<tr id="user_<?php echo $user->getID(); ?>_edit_spinning" class="selected_green" style="display: none;">
-					<td style="padding: 3px;" colspan="7">
-						<?php echo image_tag('spinning_32.gif'); ?>
-					</td>
-				</tr>
-				<tr id="user_<?php echo $user->getID(); ?>_edit_tr" class="selected_green" style="display: none;">
-					<td style="padding: 3px;" colspan="7" id="user_<?php echo $user->getID(); ?>_edit_td">
-						&nbsp;
-					</td>
-				</tr>
-				<tr id="users_results_user_<?php echo $user->getID(); ?>_permissions_row" style="display: none;">
-					<td id="users_results_user_<?php echo $user->getID(); ?>_permissions" colspan="7" class="config_permissions" style="padding-bottom: 5px;"></td>
-				</tr>
+					<tr class="hover_highlight <?php if (!$user->isScopeConfirmed()): ?>faded_out<?php endif; ?>" id="users_results_user_<?php echo $user->getID(); ?>" onclick="$('users_results_user_<?php echo $user->getID(); ?>').toggleClassName('selected_green');">
+						<?php include_template('finduser_row', array('user' => $user)); ?>
+					</tr>
+					<?php if ($user->isScopeConfirmed()): ?>
+						<tr id="user_<?php echo $user->getID(); ?>_edit_spinning" class="selected_green" style="display: none;">
+							<td style="padding: 3px;" colspan="7">
+								<?php echo image_tag('spinning_32.gif'); ?>
+							</td>
+						</tr>
+						<tr id="user_<?php echo $user->getID(); ?>_edit_tr" class="selected_green" style="display: none;">
+							<td style="padding: 3px;" colspan="7" id="user_<?php echo $user->getID(); ?>_edit_td">
+								&nbsp;
+							</td>
+						</tr>
+					<?php endif; ?>
+					<tr id="users_results_user_<?php echo $user->getID(); ?>_permissions_row" style="display: none;">
+						<td id="users_results_user_<?php echo $user->getID(); ?>_permissions" colspan="7" class="config_permissions" style="padding-bottom: 5px;"></td>
+					</tr>
 				<?php endforeach; ?>
 			</tbody>
 		</table>

@@ -14,6 +14,7 @@
 	$routes[] = array('dashboard_view', '/dashboard/views', 'main', 'dashboardView');
 	$routes[] = array('get_javascript', '/js/:js_file', 'main', 'index');
 	$routes[] = array('switch_to_user', '/switch/to/user/:user_id', 'main', 'switchUser');
+	$routes[] = array('add_scope', '/add/scope', 'main', 'addScope');
 	$routes[] = array('switch_back_user', '/switch/back', 'main', 'switchUser');
 	$routes[] = array('login', '/do/login', 'main', 'doLogin');
 	$routes[] = array('login_page', '/login', 'main', 'login');
@@ -59,6 +60,8 @@
 	$routes[] = array('account_check_username', '/account/check/username', 'main', 'accountCheckUsername', array(), true);
 	$routes[] = array('account_pick_username', '/account/pick/username/:selected_username', 'main', 'accountPickUsername', array(), true);
 	$routes[] = array('account_remove_openid', '/account/remove/openid/:openid/:csrf_token', 'main', 'removeOpenIDIdentity', array(), true);
+	$routes[] = array('account_confirm_scope', '/account/confirm/scope/:scope_id/:csrf_token', 'main', 'confirmScope', array(), true);
+	$routes[] = array('account_remove_scope', '/account/remove/scope/:scope_id/:csrf_token', 'main', 'removeScope', array(), true);
 	$routes[] = array('account_save_information', '/account/save/information/*', 'main', 'myAccount', array('mode' => 'information'), true);
 	$routes[] = array('account_save_settings', '/account/save/settings/*', 'main', 'myAccount', array('mode' => 'settings'), true);
 	$routes[] = array('account_save_module_settings', '/account/save/module/:target_module/settings/*', 'main', 'myAccount', array('mode' => 'module'), true);
@@ -160,6 +163,7 @@
 	$routes[] = array('configure_issuefields_delete_customtype', '/configure/issuefields/delete/custom/type/:type', 'configuration', 'configureIssuefieldsCustomTypeAction', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_ISSUEFIELDS, 'mode' => 'delete'));
 	$routes[] = array('configure_users_find_user', '/configure/users/find/users/*', 'configuration', 'findUsers', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_USERS));
 	$routes[] = array('configure_users_add_user', '/configure/users/add/user', 'configuration', 'addUser', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_USERS));
+	$routes[] = array('configure_users_import_user', '/configure/users/import/user', 'configuration', 'addUser', array('config_module' => 'core', 'mode' => 'import', 'section' => TBGSettings::CONFIGURATION_SECTION_USERS));
 	$routes[] = array('configure_users_edit_user_form', '/configure/users/edit/user/:user_id/form', 'configuration', 'getUserEditForm', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_USERS));
 	$routes[] = array('configure_users_add_group', '/configure/users/add/group', 'configuration', 'addGroup', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_USERS, 'format' => 'json', 'mode' => 'new'));
 	$routes[] = array('configure_users_clone_group', '/configure/users/clone/group/:group_id', 'configuration', 'addGroup', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_USERS, 'format' => 'json', 'mode' => 'clone'));
@@ -174,6 +178,7 @@
 	$routes[] = array('configure_users_delete_client', '/configure/users/delete/client/:client_id', 'configuration', 'deleteClient', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_USERS, 'format' => 'json'));
 	$routes[] = array('configure_users_get_client_members', '/configure/users/get/members/in/client/:client_id', 'configuration', 'getClientMembers', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_USERS, 'format' => 'json'));
 	$routes[] = array('configure_users_update_user', '/configure/users/update/user/:user_id', 'configuration', 'updateUser', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_USERS));
+	$routes[] = array('configure_users_update_user_scopes', '/configure/users/update/userscopes/:user_id', 'configuration', 'updateUserScopes', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_USERS));
 	$routes[] = array('configure_users_delete_user', '/configure/users/delete/user/:user_id', 'configuration', 'deleteUser', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_USERS));
 	$routes[] = array('configure_users', '/configure/users/*', 'configuration', 'configureUsers', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_USERS));
 	$routes[] = array('configure_modules', '/configure/modules', 'configuration', 'configureModules', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_MODULES));

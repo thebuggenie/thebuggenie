@@ -238,7 +238,7 @@ TBG.Core._processCommonAjaxPostEvents = function(options) {
 	if (options.hide) {
 		if (is_string(options.hide)) {
 			if ($(options.hide)) $(options.hide).hide();
-		} else {
+		}else {
 			options.hide.each(function(s) {if (is_string(s) && $(s)) $(s).hide();else if ($(s)) s.hide();});
 		}
 	}
@@ -529,15 +529,15 @@ TBG.Main.Helpers.ajax = function(url, options) {
 		},
 		onFailure: function (response) {
 			var json = (response.responseJSON) ? response.responseJSON : undefined;
-			if (response.responseJSON) {
+			if (response.responseJSON && (json.error || json.message)) {
 				TBG.Main.Helpers.Message.error(json.error, json.message);
-			} else {
+			} else if (response.responseText) {
 				TBG.Main.Helpers.Message.error(response.responseText);
 			}
 			if (options.failure) {
 				TBG.Core._processCommonAjaxPostEvents(options.failure);
 				if (options.failure.callback) {
-					options.failure.callback(response);
+					options.failure.callback(json);
 				}
 			}
 		},
@@ -818,6 +818,34 @@ TBG.Main.Profile.removeOpenIDIdentity = function(url, oid) {
 			callback: function () {
 				if ($('openid_accounts_list').childElements().size() == 0) $('no_openid_accounts').show();
 				if ($('openid_accounts_list').childElements().size() == 1 && $('pick_username_button')) $('openid_accounts_list').down('.button').remove();
+				TBG.Main.Helpers.Dialog.dismiss();
+			}
+		}
+	});
+}
+
+TBG.Main.Profile.cancelScopeMembership = function(url, sid) {
+	TBG.Main.Helpers.ajax(url, {
+		loading: {indicator: 'dialog_indicator'},
+		success: {
+			remove: 'account_scope_'+sid,
+			callback: function () {
+				if ($('pending_scope_memberships').childElements().size() == 0) $('no_pending_scope_memberships').show();
+				TBG.Main.Helpers.Dialog.dismiss();
+			}
+		}
+	});
+}
+
+TBG.Main.Profile.confirmScopeMembership = function(url, sid) {
+	TBG.Main.Helpers.ajax(url, {
+		loading: {indicator: 'dialog_indicator'},
+		success: {
+			callback: function () {
+				$('confirmed_scope_memberships').insert({'bottom': $('account_scope_'+sid).remove()});
+				$('account_scope_'+sid).down('.button-green').remove();
+				$('account_scope_'+sid).down('.button-red').show();
+				if ($('pending_scope_memberships').childElements().size() == 0) $('no_pending_scope_memberships').show();
 				TBG.Main.Helpers.Dialog.dismiss();
 			}
 		}
@@ -2266,13 +2294,34 @@ TBG.Config.User.show = function(url, findstring) {
 	});
 }
 
-TBG.Config.User.add = function(url) {
+TBG.Config.User.add = function(url, callback_function_for_import) {
 	TBG.Main.Helpers.ajax(url, {
 		form: 'createuser_form',
 		loading: {indicator: 'find_users_indicator'},
 		success: {
 			update: 'users_results',
 			callback: TBG.Config.User._updateLinks
+		},
+		failure: {
+			callback: function(json) {
+				if (json.allow_import) {
+					callback_function_for_import();
+				}
+			}
+		}
+	});
+}
+
+TBG.Config.User.addToScope = function(url) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'createuser_form',
+		loading: {indicator: 'dialog_indicator'},
+		success: {
+			update: 'users_results',
+			callback: function(json) {
+				TBG.Main.Helpers.Dialog.dismiss();
+				TBG.Config.User._updateLinks(json);
+			}
 		}
 	});
 }
@@ -2321,6 +2370,16 @@ TBG.Config.User.update = function(url, user_id) {
 	});
 }
 
+TBG.Config.User.updateScopes = function(url, user_id) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'edituser_' + user_id + '_scopes_form',
+		loading: {indicator: 'edit_user_' + user_id + '_scopes_form_indicator'},
+		success: {
+			callback: TBG.Main.Helpers.Backdrop.reset
+		}
+	});
+}
+
 TBG.Config.User.getPermissionsBlock = function(url, user_id) {
 	$('users_results_user_' + user_id + '_permissions_row').toggle();
 	if ($('users_results_user_' + user_id + '_permissions').innerHTML == '') {
@@ -2355,7 +2414,10 @@ TBG.Config.Collection.remove = function(url, type, cid, callback_function) {
 		loading: {indicator: 'delete_' + type + '_' + cid + '_indicator'},
 		success: {
 			remove: type + 'box_' + cid,
-			callback: callback_function
+			callback: function(json) {
+				TBG.Main.Helpers.Dialog.dismiss();
+				if (callback_function) callback_function(json);
+			}
 		}
 	});
 }

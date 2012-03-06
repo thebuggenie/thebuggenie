@@ -452,6 +452,18 @@
 			TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'publish' . DS . 'classes' . DS . 'B2DB');
 			TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'publish' . DS . 'classes');
 
+			// Create new tables
+			TBGDashboardViewsTable::getTable()->create();
+			TBGOpenIdAccountsTable::getTable()->create();
+			TBGProjectAssignedUsersTable::getTable()->create();
+			TBGProjectAssignedTeamsTable::getTable()->create();
+			TBGEditionAssignedUsersTable::getTable()->create();
+			TBGEditionAssignedTeamsTable::getTable()->create();
+			TBGComponentAssignedUsersTable::getTable()->create();
+			TBGComponentAssignedTeamsTable::getTable()->create();
+			TBGRolePermissionsTable::getTable()->create();
+			TBGUserScopesTable::getTable()->create();
+
 			// Upgrade existing tables
 			TBGProjectsTable::getTable()->upgrade(TBGProjectsTable3dot1::getTable());
 			TBGUsersTable::getTable()->upgrade(TBGUsersTable3dot1::getTable());
@@ -465,17 +477,6 @@
 			TBGCustomFieldsTable::getTable()->upgrade(TBGCustomFieldsTable3dot1::getTable());
 			TBGCustomFieldOptionsTable::getTable()->upgrade(TBGCustomFieldOptionsTable3dot1::getTable());
 			
-			// Create new tables
-			TBGDashboardViewsTable::getTable()->create();
-			TBGOpenIdAccountsTable::getTable()->create();
-			TBGProjectAssignedUsersTable::getTable()->create();
-			TBGProjectAssignedTeamsTable::getTable()->create();
-			TBGEditionAssignedUsersTable::getTable()->create();
-			TBGEditionAssignedTeamsTable::getTable()->create();
-			TBGComponentAssignedUsersTable::getTable()->create();
-			TBGComponentAssignedTeamsTable::getTable()->create();
-			TBGRolePermissionsTable::getTable()->create();
-
 			// Create new module tables
 			TBGIncomingEmailAccountTable::getTable()->create();
 			
@@ -495,6 +496,7 @@
 			TBGTeamMembersTable::getTable()->createIndexes();
 			TBGUserIssuesTable::getTable()->createIndexes();
 			TBGUsersTable::getTable()->createIndexes();
+			TBGUserScopesTable::getTable()->createIndexes();
 
 			foreach (TBGScope::getAll() as $scope)
 			{
@@ -503,6 +505,7 @@
 				{
 					TBGContext::setPermission('set_datatype_'.$type, 0, 'core', 0, 0, 0, true, $scope->getID());
 				}
+				TBGContext::setPermission('page_confirm_scope_access', 0, 'core', 0, 0, 0, true, $scope->getID());
 			}
 
 			TBGWorkflowTransitionsTable::getTable()->upgradeFrom3dot1();

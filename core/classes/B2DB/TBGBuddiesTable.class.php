@@ -54,7 +54,17 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::UID, $user_id);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
-			return $this->doSelect($crit, false);
+
+			$friends = array();
+			if ($res = $this->doSelect($crit, false))
+			{
+				while ($row = $res->getNextRow())
+				{
+					$friends[] = $row->get(self::BID);
+				}
+			}
+
+			return $friends;
 		}
 
 		public function removeFriendByUserID($user_id, $friend_id)
