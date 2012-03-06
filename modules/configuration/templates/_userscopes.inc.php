@@ -9,7 +9,7 @@
 			<?php foreach ($scopes as $scope): ?>
 				<input type="checkbox" style="float: left; margin-right: 3px;" name="scopes[<?php echo $scope->getID(); ?>]"<?php if ($user->isMemberOfScope($scope)): ?> checked<?php endif; ?><?php if ($scope->isDefault()): ?> disabled<?php endif; ?> id="user_<?php echo $user->getID(); ?>_scopes_<?php echo $scope->getID(); ?>"><label for="user_<?php echo $user->getID(); ?>_scopes_<?php echo $scope->getID(); ?>"><?php echo $scope->getName(); ?>&nbsp;<span class="faded_out" style="font-weight: normal;"><?php echo join(', ', $scope->getHostnames()); ?></span></label><br>
 			<?php endforeach; ?>
-			<?php echo image_tag('spinning_16.gif', array('style' => 'float: right; margin-left: 5px;', 'id' => 'edituser_'.$user->getID().'_scopes_form_indicator')); ?>
+			<?php echo image_tag('spinning_16.gif', array('style' => 'float: right; margin-left: 5px; display: none;', 'id' => 'edituser_'.$user->getID().'_scopes_form_indicator')); ?>
 			<input type="submit" value="<?php echo __('Save'); ?>" style="float: right;">
 		</form>
 	</div>

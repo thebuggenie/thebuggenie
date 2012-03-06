@@ -121,7 +121,7 @@
 								<?php echo image_tag('spinning_16.gif', array('style' => 'float: right; display: none; margin: -2px 5px 2px;', 'id' => 'change_userstate_dropdown')); ?>
 								<?php echo __('You are: %userstate%', array('%userstate%' => '<span class="current_userstate userstate">'.$tbg_user->getState()->getName().'</span>')); ?>
 							</div>
-							<div id="usermenu_changestate" style="clear: both; margin: 5px 10px 10px 10px; display: none;">
+							<div id="usermenu_changestate" style="clear: both; margin: 5px 10px 10px 10px; display: none;" onclick="$('usermenu_changestate').toggle();">
 								<?php foreach (TBGUserstate::getAll() as $state): ?>
 									<?php if ($state->getID() == TBGSettings::getOfflineState()->getID()) continue; ?>
 									<a href="javascript:void(0);" onclick="TBG.Main.Profile.setState('<?php echo make_url('set_state', array('state_id' => $state->getID())); ?>', 'change_userstate_dropdown');"><?php echo $state->getName(); ?></a>

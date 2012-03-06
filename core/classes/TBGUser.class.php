@@ -244,7 +244,6 @@
 		 * This users friends
 		 * 
 		 * @var array An array of TBGUser objects
-		 * @Relates(class="TBGUser", collection=true, manytomany=true, joinclass="TBGBuddiesTable")
 		 */
 		protected $_friends = null;
 		
@@ -550,7 +549,10 @@
 					}
 					elseif(!$user->isConfirmedMemberOfScope(TBGContext::getScope()))
 					{
-						throw new Exception('This account does not have access to this scope');
+						if (!TBGSettings::isRegistrationAllowed())
+						{
+							throw new Exception('This account does not have access to this scope');
+						}
 					}
 					
 					if ($external == false)
@@ -1074,7 +1076,21 @@
 		{
 			if ($this->_friends === null)
 			{
-				$this->_b2dbLazyload('_friends');
+				$userids = TBGBuddiesTable::getTable()->getFriendsByUserID($this->getID());
+				$friends = array();
+				foreach ($userids as $friend)
+				{
+					try
+					{
+						$friend = TBGContext::factory()->TBGUser((int) $friend);
+						$friends[$friend->getID()] = $friend;
+					}
+					catch (Exception $e)
+					{
+						$this->removeFriend($friend);
+					}
+				}
+				$this->_friends = $friends;
 			}
 		}
 
@@ -1090,7 +1106,10 @@
 			if (!($this->isFriend($user)) && !$user->isDeleted())
 			{
 				TBGBuddiesTable::getTable()->addFriend($this->getID(), $user->getID());
-				$this->_friends[$user->getID()] = $user;
+				if ($this->_friends !== null)
+				{
+					$this->_friends[$user->getID()] = $user;
+				}
 				return true;
 			}
 			else
@@ -1117,10 +1136,11 @@
 		 */
 		public function removeFriend($user)
 		{
-			TBGBuddiesTable::getTable()->removeFriendByUserID($this->getID(), $user->getID());
+			$user_id = ($user instanceof TBGUser) ? $user->getID() : $user_id;
+			TBGBuddiesTable::getTable()->removeFriendByUserID($this->getID(), $user_id);
 			if (is_array($this->_friends))
 			{
-				unset($this->_friends[$user->getID()]);
+				unset($this->_friends[$user_id]);
 			}
 		}
 	
@@ -1223,8 +1243,13 @@
 			$away = $this->isAway();
 			if ($this->_customstate && ($active || $away))
 			{
-				return $this->_b2dbLazyload('_userstate');
+				$this->_b2dbLazyload('_userstate');
+				if ($this->_userstate instanceof TBGUserstate)
+				{
+					return $this->_userstate;
+				}
 			}
+
 			
 			if ($active)
 				return TBGSettings::getOnlineState();
@@ -1412,18 +1437,22 @@
 		{
 			if (!is_object($this->_group_id))
 			{
-				if (!is_numeric($this->_group_id))
+				try
 				{
-					$this->_group_id = TBGUserScopesTable::getTable()->getUserGroupIdByScope($this->getID(), TBGContext::getScope()->getID());
+					if (!is_numeric($this->_group_id))
+					{
+						$this->_group_id = TBGUserScopesTable::getTable()->getUserGroupIdByScope($this->getID(), TBGContext::getScope()->getID());
+					}
+					if (!is_numeric($this->_group_id))
+					{
+						$this->_group_id = TBGSettings::getDefaultGroup();
+					}
+					else
+					{
+						$this->_group_id = TBGContext::factory()->TBGGroup($this->_group_id);
+					}
 				}
-				if (!is_numeric($this->_group_id))
-				{
-					$this->_group_id = TBGSettings::getDefaultGroup();
-				}
-				else
-				{
-					$this->_group_id = TBGContext::factory()->TBGGroup($this->_group_id);
-				}
+				catch (Exception $e) {}
 			}
 			return $this->_group_id;
 		}
@@ -2221,11 +2250,15 @@
 			$this->_confirmed_scopes = null;
 		}
 
-		public function addScope(TBGScope $scope)
+		public function addScope(TBGScope $scope, $notify = true)
 		{
 			if (!$this->isMemberOfScope($scope))
 			{
 				TBGUserScopesTable::getTable()->addUserToScope($this->getID(), $scope->getID());
+				if ($notify)
+				{
+					TBGEvent::createNew('core', 'TBGUser::addScope', $this, array('scope' => $scope))->trigger();
+				}
 				$this->_scopes = null;
 				$this->_unconfirmed_scopes = null;
 				$this->_confirmed_scopes = null;

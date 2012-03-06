@@ -746,6 +746,7 @@
 			catch (Exception $e)
 			{
 				TBGLogging::log("Something happened while setting up user: ". $e->getMessage(), 'main', TBGLogging::LEVEL_WARNING);
+				TBGContext::setMessage('login_message_err', $e->getMessage());
 				if (!self::isCLI() && (self::getRouting()->getCurrentRouteModule() != 'main' || self::getRouting()->getCurrentRouteAction() != 'register1' && self::getRouting()->getCurrentRouteAction() != 'register2' && self::getRouting()->getCurrentRouteAction() != 'activate' && self::getRouting()->getCurrentRouteAction() != 'reset_password' && self::getRouting()->getCurrentRouteAction() != 'captcha' && self::getRouting()->getCurrentRouteAction() != 'login' && self::getRouting()->getCurrentRouteAction() != 'getBackdropPartial' && self::getRouting()->getCurrentRouteAction() != 'serve' && self::getRouting()->getCurrentRouteAction() != 'doLogin'))
 					self::$_redirect_login = true;
 				else
@@ -876,13 +877,18 @@
 		 */
 		public static function getI18n()
 		{
-			if (!self::$_i18n instanceof TBGI18n)
+			if (!self::isI18nInitialized())
 			{
 				TBGLogging::log('Cannot access the translation object until the i18n system has been initialized!', 'i18n', TBGLogging::LEVEL_WARNING);
 				throw new Exception('Cannot access the translation object until the i18n system has been initialized!');
 				//self::reinitializeI18n(self::getUser()->getLanguage());
 			}
 			return self::$_i18n;
+		}
+
+		public static function isI18nInitialized()
+		{
+			return (self::$_i18n instanceof TBGI18n);
 		}
 		
 		/**
@@ -941,6 +947,10 @@
 					if (!self::getRequest()->hasCookie('tbg3_original_username'))
 					{
 						self::$_user->updateLastSeen();
+					}
+					if (!TBGContext::getScope()->isDefault() && !self::getRequest()->isAjaxCall() && !in_array(self::getRouting()->getCurrentRouteName(), array('add_scope', 'serve', 'debug', 'logout')) && !self::$_user->isGuest() && !self::$_user->isConfirmedMemberOfScope(TBGContext::getScope()))
+					{
+						self::getResponse()->headerRedirect(self::getRouting()->generate('add_scope'));
 					}
 					self::$_user->setTimezone(TBGSettings::getUserTimezone());
 					self::$_user->setLanguage(TBGSettings::getUserLanguage());

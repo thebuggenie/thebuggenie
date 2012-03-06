@@ -139,6 +139,7 @@
 			$this->setPermission(0, 0, 0, true, 'core', "page_about_access", 0, $scope_id);
 			$this->setPermission(0, 0, 0, true, 'core', "page_dashboard_access", 0, $scope_id);
 			$this->setPermission(0, 0, 0, true, 'core', "page_search_access", 0, $scope_id);
+			$this->setPermission(0, 0, 0, true, 'core', 'page_confirm_scope_access', 0, $scope_id);
 			$this->setPermission(0, $guest_group_id, 0, false, 'core', "page_dashboard_access", 0, $scope_id);
 			$this->setPermission(0, $admin_group_id, 0, true, 'core', "page_teamlist_access", 0, $scope_id);
 			$this->setPermission(0, $admin_group_id, 0, true, 'core', "page_clientlist_access", 0, $scope_id);

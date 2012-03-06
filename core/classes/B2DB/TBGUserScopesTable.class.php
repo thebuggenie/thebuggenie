@@ -58,6 +58,7 @@
 
 		public function addUserToScope($user_id, $scope_id, $group_id = null, $confirmed = false)
 		{
+			$group_id = ($group_id === null) ? TBGSettings::get(TBGSettings::SETTING_USER_GROUP, 'core', $scope_id) : $group_id;
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::USER_ID, $user_id);
 			$crit->addInsert(self::SCOPE, $scope_id);

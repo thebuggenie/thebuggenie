@@ -1730,12 +1730,20 @@
 					$scopes = $request->getParameter('scopes', array());
 					if (count($scopes) && !(count($scopes) == 1 && array_key_exists(TBGSettings::getDefaultScopeID(), $scopes)))
 					{
-						$user->clearScopes();
+						foreach ($user->getScopes() as $scope_id => $scope)
+						{
+							if (!$scope->isDefault() && !array_key_exists($scope_id, $scopes))
+							{
+								$user->removeScope($scope_id);
+							}
+						}
 						foreach ($scopes as $scope_id => $scope)
 						{
 							try
 							{
 								$scope = new TBGScope((int) $scope_id);
+								if ($user->isMemberOfScope($scope)) continue;
+
 								$user->addScope($scope);
 							}
 							catch (Exception $e) {}

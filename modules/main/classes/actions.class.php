@@ -472,6 +472,22 @@
 			$this->forward($this->getRouting()->generate('home'));
 		}
 
+		protected function checkScopeMembership(TBGUser $user)
+		{
+			if (!TBGContext::getScope()->isDefault() && !$user->isGuest() && !$user->isConfirmedMemberOfScope(TBGContext::getScope()))
+			{
+				$route = self::getRouting()->generate('add_scope');
+				if (TBGContext::getRequest()->isAjaxCall())
+				{
+					return $this->renderJSON(array('forward' => $route));
+				}
+				else
+				{
+					$this->getResponse()->headerRedirect($route);
+				}
+			}
+		}
+
 		/**
 		 * Do login (AJAX call)
 		 *  
@@ -537,6 +553,8 @@
 							}
 							TBGContext::getResponse()->setCookie('tbg3_password', $user->getPassword());
 							TBGContext::getResponse()->setCookie('tbg3_username', $user->getUsername());
+							if ($this->checkScopeMembership($user)) return true;
+
 							return $this->forward(TBGContext::getRouting()->generate('account'));
 						}
 						else
@@ -551,8 +569,7 @@
 				}
 				catch (Exception $e)
 				{
-					die($e);
-					$this->error = TBGContext::getI18n()->__("Could not validate against the OpenID provider");
+					$this->error = TBGContext::getI18n()->__("Could not validate against the OpenID provider: %message%", array('%message%' => $e->getMessage()));
 				}
 			}
 			elseif ($request->getMethod() == TBGRequest::POST)
@@ -566,6 +583,7 @@
 						$user = TBGUser::loginCheck($username, $password, true);
 
 						TBGContext::setUser($user);
+						if ($this->checkScopeMembership($user)) return true;
 						if ($request->hasParameter('return_to')) 
 						{
 							$forward_url = $request['return_to'];
@@ -613,6 +631,7 @@
 				}
 			}
 
+			if ($this->checkScopeMembership($user)) return true;
 			if ($request->isAjaxCall())
 			{
 				return $this->renderJSON(array('forward' => $forward_url));
@@ -3832,6 +3851,18 @@
 		{
 			$this->getUser()->confirmScope((int) $request['scope_id']);
 			return $this->renderJSON('ok');
+		}
+
+		public function runAddScope(TBGRequest $request)
+		{
+			if ($request->isPost())
+			{
+				$scope = TBGContext::getScope();
+				$this->getUser()->addScope($scope, false);
+				$this->getUser()->confirmScope($scope->getID());
+				$route = (TBGSettings::getLoginReturnRoute() != 'referer') ? TBGSettings::getLoginReturnRoute() : 'home';
+				$this->forward(TBGContext::getRouting()->generate($route));
+			}
 		}
 
 }

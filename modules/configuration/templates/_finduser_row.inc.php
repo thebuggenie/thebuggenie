@@ -30,6 +30,7 @@
 <td style="padding: 3px;"><?php echo ($user->isActivated()) ? __('Yes') : __('No'); ?></td>
 <td style="padding: 3px; position: relative; text-align: right;">
 	<button class="button button-silver button-icon" id="user_<?php echo $user->getID(); ?>_more_actions" onclick="$('user_<?php echo $user->getID(); ?>_more_actions').toggleClassName('button-pressed');$('user_<?php echo $user->getID(); ?>_more_actions_dropdown').toggle();"><?php echo image_tag('action_dropdown_small.png'); ?></button>
+	<?php echo image_tag('spinning_16.gif', array('id' => "toggle_friend_{$user->getID()}_12_indicator", 'style' => 'display: none;')); ?>
 	<div style="position: relative;">
 		<ul id="user_<?php echo $user->getID(); ?>_more_actions_dropdown" style="display: none; position: absolute; width: auto; font-size: 1.1em; top: 0; margin-top: 0; right: 0; z-index: 1000;" class="simple_list rounded_box white shadowed popup_box more_actions_dropdown" onclick="$('user_<?php echo $user->getID(); ?>_more_actions').toggleClassName('button-pressed');$('user_<?php echo $user->getID(); ?>_more_actions_dropdown').toggle();"></li>
 			<?php if ($user->isScopeConfirmed()): ?>
@@ -41,6 +42,15 @@
 			<?php if (TBGContext::getScope()->isDefault()): ?>
 				<li><a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'userscopes', 'user_id' => $user->getID())); ?>');"><?php echo __('Edit available scopes for this user'); ?></a></li>
 			<?php endif; ?>
+			<?php if (TBGUser::isThisGuest() == false && $user->getID() != $tbg_user->getID()): ?>
+				<li style="<?php if ($tbg_user->isFriend($user)): ?> display: none;<?php endif; ?>" id="add_friend_<?php echo $user->getID(); ?>_12">
+					<?php echo javascript_link_tag(__('Become friends'), array('onclick' => "TBG.Main.Profile.addFriend('".make_url('toggle_friend', array('mode' => 'add', 'user_id' => $user->getID()))."', {$user->getID()}, 12);")); ?>
+				</li>
+				<li style="<?php if (!$tbg_user->isFriend($user)): ?> display: none;<?php endif; ?>" id="remove_friend_<?php echo $user->getID(); ?>_12">
+					<?php echo javascript_link_tag(__('Remove this friend'), array('onclick' => "TBG.Main.Profile.removeFriend('".make_url('toggle_friend', array('mode' => 'remove', 'user_id' => $user->getID()))."', {$user->getID()}, 12);")); ?>
+				</li>
+			<?php endif; ?>
+			<li><a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'usercard', 'user_id' => $user->getID())); ?>');$('bud_<?php echo $user->getUsername() . "_12"; ?>').hide();"><?php echo __('Show user details'); ?></a></li>
 			<?php if (!in_array($user->getID(), array(1, (int) TBGSettings::get(TBGSettings::SETTING_DEFAULT_USER_ID)))): ?>
 				<?php if (TBGContext::getScope()->isDefault()): ?>
 					<li><?php echo javascript_link_tag(__('Delete this user'), array('onclick' => "TBG.Main.Helpers.Dialog.show('".__('Permanently delete this user?')."', '".__('Are you sure you want to remove this user? This will remove the users login data, as well as memberships in (and data in) any scopes the user is a member of.')."', {yes: {click: function() {TBG.Config.User.remove('".make_url('configure_users_delete_user', array('user_id' => $user->getID()))."', ".$user->getID()."); TBG.Main.Helpers.Dialog.dismiss(); } }, no: {click: TBG.Main.Helpers.Dialog.dismiss}});")); ?></li>
