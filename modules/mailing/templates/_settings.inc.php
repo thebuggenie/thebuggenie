@@ -3,7 +3,7 @@
 		<div class="content" style="padding-bottom: 10px;"><?php echo __('These are the settings for outgoing emails, such as notification emails and registration emails.'); ?></div>
 		<table style="width: 680px;" class="padded_table" cellpadding=0 cellspacing=0 id="mailnotification_settings_table">
 			<tr>
-				<td style="width: 200px; padding: 5px;"><label for="enable_outgoing_notifications"><?php echo __('Enable outgoing email notifications'); ?></label></td>
+				<td style="width: 300px; padding: 5px;"><label for="enable_outgoing_notifications"><?php echo __('Enable outgoing email notifications'); ?></label></td>
 				<td style="width: auto;">
 					<select name="enable_outgoing_notifications" id="enable_outgoing_notifications" onchange="if ($(this).getValue() == 0) { $('mailnotification_settings_table').select('input').each(function (element, index) { element.disable(); }); } else { $('mailnotification_settings_table').select('input').each(function (element, index) { element.enable(); }); }">
 						<option value="1"<?php if ($module->isOutgoingNotificationsEnabled()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
@@ -66,7 +66,7 @@
 		</table>
 		<table style="width: 680px; margin-top: 10px;<?php if ($module->getSetting('mail_type') != TBGMailer::MAIL_TYPE_B2M): ?> display: none;<?php endif; ?>" class="padded_table" cellpadding=0 cellspacing=0 id="mail_type_b2m_info">
 			<tr>
-				<td style="width: 200px; padding: 5px;"><label for="smtp_host"><?php echo __('SMTP server address'); ?></label></td>
+				<td style="width: 300px; padding: 5px;"><label for="smtp_host"><?php echo __('SMTP server address'); ?></label></td>
 				<td style="width: auto;"><input type="text" name="smtp_host" id="smtp_host" value="<?php echo $module->getSetting('smtp_host'); ?>" style="width: 100%;"<?php echo ($access_level != TBGSettings::ACCESS_FULL) ? ' disabled' : ''; ?>></td>
 			</tr>
 			<tr>
