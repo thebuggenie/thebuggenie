@@ -242,7 +242,7 @@
 			}
 			if ($request->isPost())
 			{
-				if ($request->hasParameter('new_article_name') && $request['new_article_name'] != '' && preg_replace('/[\s\W]+/', '', $request['new_article_name']) == $request['new_article_name'])
+				if ($request->hasParameter('new_article_name') && $request['new_article_name'] != '' && preg_match('/[\w:]+/i', $request['new_article_name']) )
 				{
 					if (($request->hasParameter('change_reason') && trim($request['change_reason']) != '') || TBGPublish::getModule()->getSetting('require_change_reason') == 0)
 					{
