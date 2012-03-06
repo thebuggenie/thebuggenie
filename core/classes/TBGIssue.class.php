@@ -2424,6 +2424,14 @@
 		{
 			$this->_addChangedProperty('_posted_by', $poster->getID());
 		}
+
+		/**
+		 * @return bool
+		 */
+		public function isPostedByChanged()
+		{
+			return $this->_isPropertyChanged('_posted_by');
+		}
 		
 		/**
 		 * Returns the percentage completed
