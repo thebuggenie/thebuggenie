@@ -707,7 +707,7 @@
 							$customtype = TBGCustomDatatype::getByKey($request['type']);
 							$item = TBGContext::factory()->TBGCustomDatatypeOption($request['id']);
 						}
-						if ($item instanceof TBGDatatypeBase && $item->getItemtype() == $item->getType())
+						if ($item instanceof TBGDatatypeBase)
 						{
 							$item->setName($request['name']);
 							$item->setItemdata($request['itemdata']);
