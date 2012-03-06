@@ -19,7 +19,7 @@
 	$routes[] = array('unlock_issue', '/unlock/issue/:issue_id', 'main', 'unlockIssue');
 	$routes[] = array('block', '/:project_key/issues/:issue_id/block', 'main', 'markAsBlocker');
 	$routes[] = array('unblock', '/:project_key/issues/:issue_id/unblock', 'main', 'markAsNotBlocker');
-	$routes[] = array('issue_gettempfieldvalue', '/:project_key/issues/:issue_id/get/temp/value/for/:field/*', 'main', 'issueGetTempFieldValue');
+	$routes[] = array('issue_gettempfieldvalue', '/get/temp/value/for/:field/*', 'main', 'issueGetTempFieldValue');
 	$routes[] = array('issue_setfield', '/:project_key/issues/:issue_id/set/:field/*', 'main', 'issueSetField');
 	$routes[] = array('issue_revertfield', '/:project_key/issues/:issue_id/revert/:field', 'main', 'issueRevertField');
 	$routes[] = array('getacl_formentry', '/get/acl/formentry/for/:identifiable_type/:identifiable_value', 'main', 'getACLFormEntry');
