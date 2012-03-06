@@ -508,6 +508,13 @@
 				TBGContext::setPermission('page_confirm_scope_access', 0, 'core', 0, 0, 0, true, $scope->getID());
 			}
 
+			$linkstable = TBGLinksTable::getTable();
+			$crit = $linkstable->getCriteria();
+			$crit->addUpdate(TBGLinksTable::URL, 'http://issues.thebuggenie.com');
+			$crit->addWhere(TBGLinksTable::URL, 'http://thebuggenie.com/thebuggenie');
+			$crit->addOr(TBGLinksTable::URL, 'http://www.thebuggenie.com/thebuggenie');
+			$linkstable->doUpdate($crit);
+
 			TBGWorkflowTransitionsTable::getTable()->upgradeFrom3dot1();
 			TBGSettings::saveSetting(TBGSettings::SETTING_ICONSET, TBGSettings::get(TBGSettings::SETTING_THEME_NAME));
 			TBGContext::setPermission('readarticle', 0, 'publish', 0, 0, 0, true);
