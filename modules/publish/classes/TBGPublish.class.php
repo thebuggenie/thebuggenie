@@ -451,7 +451,9 @@
 					}
 				}
 			}
-			return $user->hasPermission($permission_name, 0, 'publish', false, $permissive);
+			$retval = $user->hasPermission($permission_name, 0, 'publish', false, $permissive);
+			$permissive = ($permission_name == self::PERMISSION_READ_ARTICLE) ? true : $permissive;
+			return ($retval !== null) ? $retval : $permissive;
 		}
 		
 		public function canUserReadArticle($article_name)
