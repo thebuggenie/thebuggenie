@@ -38,7 +38,7 @@
 					<li class="duplicate_search">
 						<h6><?php echo __('Mark as duplicate of another, existing issue'); ?></h6>
 						<label for="viewissue_find_issue_<?php echo $transition->getID(); ?>_input"><?php echo __('Find issue(s)'); ?>&nbsp;</label>
-						<input class="button button-blue" style="float: right;" type="button" value="<?php echo __('Find'); ?>" id="viewissue_find_issue_<?php echo $transition->getID(); ?>_submit">
+						<input class="button button-blue" style="float: right;" type="button" onclick="TBG.Issues.findDuplicate($('duplicate_finder_transition_<?php echo $transition->getID(); ?>').getValue(), <?php echo $transition->getID(); ?>);return false;" value="<?php echo __('Find'); ?>" id="viewissue_find_issue_<?php echo $transition->getID(); ?>_submit">
 						<input type="text" name="searchfor" id="viewissue_find_issue_<?php echo $transition->getID(); ?>_input">
 						<?php echo image_tag('spinning_20.gif', array('id' => 'find_issue_'.$transition->getID().'_indicator', 'style' => 'display: none;')); ?><br>
 						<div id="viewissue_<?php echo $transition->getID(); ?>_duplicate_results"></div>
