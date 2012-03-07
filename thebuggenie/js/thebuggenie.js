@@ -3632,11 +3632,25 @@ TBG.Search.bulkPostProcess = function(json) {
 TBG.Search.bulkWorkflowTransition = function(url, transition_id) {
 	TBG.Main.Helpers.ajax(url, {
 		form: 'bulk_workflow_transition_form',
-		loading: {indicator: 'transition_working_'+transition_id+'_indicator'},
+		loading: {
+			indicator: 'transition_working_'+transition_id+'_indicator',
+			callback: function() {
+				$$('.workflow_transition_submit_button').each(function(element) {
+					$(element).addClassName('disabled');
+				});
+			}
+		},
 		success: {
 			callback: function(json) {
 				TBG.Search.bulkPostProcess(json)
 				TBG.Main.Helpers.Backdrop.reset();
+			}
+		},
+		complete: {
+			callback: function() {
+				$$('.workflow_transition_submit_button').each(function(element) {
+					$(element).removeClassName('disabled');
+				});
 			}
 		}
 	});

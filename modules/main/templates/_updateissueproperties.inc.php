@@ -178,8 +178,8 @@
 				</li>
 			</ul>
 			<div style="text-align: right; margin-right: 5px;">
-				<?php image_tag('spinning_32.gif', array('id' => 'transition_working_'.$transition->getID().'_indicator')); ?>
-				<input type="submit" value="<?php echo $transition->getName(); ?>">
+				<?php echo image_tag('spinning_32.gif', array('style' => 'margin: -3px 0 -3px 5px; display: none;', 'id' => 'transition_working_'.$transition->getID().'_indicator')); ?>
+				<input type="submit" class="workflow_transition_submit_button" value="<?php echo $transition->getName(); ?>" id="transition_working_<?php echo $transition->getID(); ?>_submit">
 			</div>
 		</div>
 		<div class="backdrop_detail_footer">
