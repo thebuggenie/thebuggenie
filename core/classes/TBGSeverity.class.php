@@ -6,6 +6,8 @@
 	class TBGSeverity extends TBGDatatype 
 	{
 
+		const ITEMTYPE = TBGDatatype::SEVERITY;
+
 		protected static $_items = null;
 		
 		protected $_itemtype = TBGDatatype::SEVERITY;
@@ -27,14 +29,4 @@
 			}
 		}
 		
-		/**
-		 * Returns all severities available
-		 * 
-		 * @return array 
-		 */		
-		public static function getAll()
-		{
-			return TBGListTypesTable::getTable()->getAllByItemType(self::SEVERITY);
-		}
-
 	}

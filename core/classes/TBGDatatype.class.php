@@ -106,4 +106,20 @@
 			return true;
 		}
 
+		public static function has($item_id)
+		{
+			$items = static::getAll();
+			return array_key_exists($item_id, $items);
+		}
+
+		/**
+		 * Returns all severities available
+		 *
+		 * @return array
+		 */
+		public static function getAll()
+		{
+			return TBGListTypesTable::getTable()->getAllByItemType(static::ITEMTYPE);
+		}
+
 	}

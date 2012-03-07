@@ -6,6 +6,8 @@
 	class TBGReproducability extends TBGDatatype 
 	{
 
+		const ITEMTYPE = TBGDatatype::REPRODUCABILITY;
+
 		protected static $_items = null;
 		
 		protected $_itemtype = TBGDatatype::REPRODUCABILITY;
@@ -26,16 +28,6 @@
 				$reproducability->setScope($scope);
 				$reproducability->save();
 			}
-		}
-
-		/**
-		 * Returns all reproducabilities available
-		 * 
-		 * @return array 
-		 */		
-		public static function getAll()
-		{
-			return TBGListTypesTable::getTable()->getAllByItemType(self::REPRODUCABILITY);
 		}
 
 	}

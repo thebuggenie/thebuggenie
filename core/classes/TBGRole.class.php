@@ -6,6 +6,8 @@
 	class TBGRole extends TBGDatatype 
 	{
 
+		const ITEMTYPE = TBGDatatype::ROLE;
+
 		protected static $_items = null;
 		
 		protected $_itemtype = TBGDatatype::ROLE;

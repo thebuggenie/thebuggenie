@@ -271,6 +271,35 @@
 			}
 		}
 		
+		public function hasValidTarget()
+		{
+			if (!$this->_target_value) return true;
+
+			switch ($this->_action_type)
+			{
+				case self::ACTION_ASSIGN_ISSUE:
+					return (bool) TBGUser::doesIDExist($this->_target_value);
+					break;
+				case self::ACTION_SET_MILESTONE:
+					return (bool) TBGMilestone::doesIDExist($this->_target_value);
+					break;
+				case self::ACTION_SET_PRIORITY:
+					return (bool) TBGPriority::has($this->_target_value);
+					break;
+				case self::ACTION_SET_STATUS:
+					return (bool) TBGStatus::has($this->_target_value);
+					break;
+				case self::ACTION_SET_REPRODUCABILITY:
+					return (bool) TBGReproducability::has($this->_target_value);
+					break;
+				case self::ACTION_SET_RESOLUTION:
+					return (bool) TBGResolution::has($this->_target_value);
+					break;
+				default:
+					return true;
+			}
+		}
+
 		public function isValid(TBGRequest $request)
 		{
 			if ($this->_target_value) return true;

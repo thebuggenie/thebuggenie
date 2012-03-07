@@ -130,6 +130,14 @@
 			return $this->selectById($userid, $crit);
 		}
 
+		public function doesIDExist($userid)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::DELETED, false);
+			$crit->addWhere(self::ID, $userid);
+			return $this->doCount($crit);
+		}
+
 		public function getByDetails($details, $limit = null)
 		{
 			$crit = $this->getCriteria();

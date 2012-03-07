@@ -6,6 +6,8 @@
 	class TBGCategory extends TBGDatatype 
 	{
 
+		const ITEMTYPE = TBGDatatype::CATEGORY;
+
 		protected $_itemtype = TBGDatatype::CATEGORY;
 
 		public static function loadFixtures(TBGScope $scope)
@@ -19,16 +21,6 @@
 				$category->setScope($scope);
 				$category->save();
 			}
-		}
-		
-		/**
-		 * Returns all categories available
-		 * 
-		 * @return array 
-		 */		
-		public static function getAll()
-		{
-			return TBGListTypesTable::getTable()->getAllByItemType(self::CATEGORY);
 		}
 
 		public function hasAccess()

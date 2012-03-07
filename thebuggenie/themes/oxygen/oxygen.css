@@ -1230,6 +1230,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 /* end boxes */
 
 #search_error, #search_message { font-weight: bold; color: #333; }
+.generic_error_message { font-weight: normal; color: #E44; }
 
 /* search results */
 .search_results { margin: 0 0 5px 0; }

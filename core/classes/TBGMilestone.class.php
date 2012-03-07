@@ -150,7 +150,12 @@
 				TBGEvent::createNew('core', 'TBGMilestone::_postSave', $this)->trigger();
 			}
 		}
-		
+
+		public static function doesIDExist($id)
+		{
+			return (bool) static::getB2DBTable()->doesIDExist($id);
+		}
+
 		/**
 		 * Returns an array with issues
 		 *

@@ -318,6 +318,7 @@
 				$user->setEnabled();
 				$user->setValidated();
 				$user->save();
+				$user->addScope(TBGContext::getScope());
 			}
 			
 			return $user;
@@ -346,7 +347,12 @@
 		
 		public static function isUsernameAvailable($username)
 		{
-			return TBGUsersTable::getTable()->isUsernameAvailable($username);
+			return static::getB2DBTable()->isUsernameAvailable($username);
+		}
+
+		public static function doesIDExist($id)
+		{
+			return (bool) static::getB2DBTable()->doesIDExist($id);
 		}
 		
 		/**

@@ -82,6 +82,13 @@
 			return $res;
 		}
 
+		public function doesIDExist($userid)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::ID, $userid);
+			return $this->doCount($crit);
+		}
+
 		public function setReached($milestone_id)
 		{
 			$crit = $this->getCriteria();

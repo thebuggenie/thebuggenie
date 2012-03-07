@@ -6,6 +6,8 @@
 	class TBGResolution extends TBGDatatype 
 	{
 
+		const ITEMTYPE = TBGDatatype::RESOLUTION;
+
 		protected static $_items = null;
 
 		protected $_key = null;
@@ -30,16 +32,6 @@
 				$resolution->setScope($scope);
 				$resolution->save();
 			}
-		}
-		
-		/**
-		 * Returns all resolutions available
-		 * 
-		 * @return array 
-		 */		
-		public static function getAll()
-		{
-			return TBGListTypesTable::getTable()->getAllByItemType(self::RESOLUTION);
 		}
 
 		public static function getResolutionByKeyish($key)

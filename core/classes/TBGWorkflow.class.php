@@ -104,7 +104,7 @@
 			$workflow->setScope($scope->getID());
 			$workflow->save();
 
-			TBGSettings::saveSetting(TBGSettings::SETTING_DEFAULT_WORKFLOW, $workflow->getID());
+			TBGSettings::saveSetting(TBGSettings::SETTING_DEFAULT_WORKFLOW, $workflow->getID(), 'core', $scope->getID());
 			TBGWorkflowStep::loadFixtures($scope, $workflow);
 		}
 

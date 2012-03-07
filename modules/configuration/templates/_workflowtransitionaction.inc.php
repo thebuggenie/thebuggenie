@@ -55,18 +55,22 @@
 			case TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE:
 				?>
 				<td id="workflowtransitionaction_<?php echo $action->getID(); ?>_description" style="padding: 2px;">
-					<?php if ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_SET_STATUS): ?>
-						<?php echo __('Set status to %status%', array('%status%' => '<span id="workflowtransitionaction_'.$action->getID().'_value" style="font-weight: bold;">' . (($action->getTargetValue()) ? TBGContext::factory()->TBGStatus((int) $action->getTargetValue())->getName() : __('Status provided by user')) . '</span>')); ?>
-					<?php elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_SET_PRIORITY): ?>
-						<?php echo __('Set priority to %priority%', array('%priority%' => '<span id="workflowtransitionaction_'.$action->getID().'_value" style="font-weight: bold;">' . (($action->getTargetValue()) ? TBGContext::factory()->TBGPriority((int) $action->getTargetValue())->getName() : __('Priority provided by user')) . '</span>')); ?>
-					<?php elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_SET_PERCENT): ?>
-						<?php echo __('Set percent completed to %percentcompleted%', array('%percentcompleted%' => '<span id="workflowtransitionaction_'.$action->getID().'_value" style="font-weight: bold;">' . (($action->getTargetValue()) ? (int) $action->getTargetValue() : __('Percentage provided by user')) . '</span>')); ?>
-					<?php elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_SET_RESOLUTION): ?>
-						<?php echo __('Set resolution to %resolution%', array('%resolution%' => '<span id="workflowtransitionaction_'.$action->getID().'_value" style="font-weight: bold;">' . (($action->getTargetValue()) ? TBGContext::factory()->TBGResolution((int) $action->getTargetValue())->getName() : __('Resolution provided by user')) . '</span>')); ?>
-					<?php elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_SET_REPRODUCABILITY): ?>
-						<?php echo __('Set reproducability to %reproducability%', array('%reproducability%' => '<span id="workflowtransitionaction_'.$action->getID().'_value" style="font-weight: bold;">' . (($action->getTargetValue()) ? TBGContext::factory()->TBGReproducability((int) $action->getTargetValue())->getName() : __('Reproducability provided by user')) . '</span>')); ?>
-					<?php elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE): ?>
-						<?php echo __('Assign issue to %user%', array('%user%' => '<span id="workflowtransitionaction_'.$action->getID().'_value" style="font-weight: bold;">' . (($action->getTargetValue()) ? TBGContext::factory()->TBGUser((int) $action->getTargetValue())->getNameWithUsername() : __('User specified during transition')) . '</span>')); ?>
+					<?php if (!$action->getTargetValue() && $action->hasValidTarget()): ?>
+						<?php if ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_SET_STATUS): ?>
+							<?php echo __('Set status to %status%', array('%status%' => '<span id="workflowtransitionaction_'.$action->getID().'_value" style="font-weight: bold;">' . (($action->getTargetValue()) ? TBGContext::factory()->TBGStatus((int) $action->getTargetValue())->getName() : __('Status provided by user')) . '</span>')); ?>
+						<?php elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_SET_PRIORITY): ?>
+							<?php echo __('Set priority to %priority%', array('%priority%' => '<span id="workflowtransitionaction_'.$action->getID().'_value" style="font-weight: bold;">' . (($action->getTargetValue()) ? TBGContext::factory()->TBGPriority((int) $action->getTargetValue())->getName() : __('Priority provided by user')) . '</span>')); ?>
+						<?php elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_SET_PERCENT): ?>
+							<?php echo __('Set percent completed to %percentcompleted%', array('%percentcompleted%' => '<span id="workflowtransitionaction_'.$action->getID().'_value" style="font-weight: bold;">' . (($action->getTargetValue()) ? (int) $action->getTargetValue() : __('Percentage provided by user')) . '</span>')); ?>
+						<?php elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_SET_RESOLUTION): ?>
+							<?php echo __('Set resolution to %resolution%', array('%resolution%' => '<span id="workflowtransitionaction_'.$action->getID().'_value" style="font-weight: bold;">' . (($action->getTargetValue()) ? TBGContext::factory()->TBGResolution((int) $action->getTargetValue())->getName() : __('Resolution provided by user')) . '</span>')); ?>
+						<?php elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_SET_REPRODUCABILITY): ?>
+							<?php echo __('Set reproducability to %reproducability%', array('%reproducability%' => '<span id="workflowtransitionaction_'.$action->getID().'_value" style="font-weight: bold;">' . (($action->getTargetValue()) ? TBGContext::factory()->TBGReproducability((int) $action->getTargetValue())->getName() : __('Reproducability provided by user')) . '</span>')); ?>
+						<?php elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE): ?>
+							<?php echo __('Assign issue to %user%', array('%user%' => '<span id="workflowtransitionaction_'.$action->getID().'_value" style="font-weight: bold;">' . (($action->getTargetValue()) ? TBGContext::factory()->TBGUser((int) $action->getTargetValue())->getNameWithUsername() : __('User specified during transition')) . '</span>')); ?>
+						<?php endif; ?>
+					<?php elseif ($action->getTargetValue()): ?>
+						<span class="generic_error_message"><?php echo __('Invalid transition configuration'); ?></span>
 					<?php endif; ?>
 				</td>
 				<?php if (!$action->getTransition()->isCore()): ?>

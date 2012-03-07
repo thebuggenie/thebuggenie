@@ -1153,7 +1153,15 @@
 		{
 			try
 			{
-				$transition = TBGContext::factory()->TBGWorkflowTransition($request['transition_id']);
+				try
+				{
+					$transition = TBGContext::factory()->TBGWorkflowTransition($request['transition_id']);
+				}
+				catch (Exception $e)
+				{
+					$this->getResponse()->setHttpStatus(400);
+					return $this->renderJSON(array('error' => $this->getI18n()->__('This is not a valid transition')));
+				}
 				$issue_ids = $request['issue_ids'];
 				$status = null;
 				$closed = false;
@@ -1166,7 +1174,17 @@
 						return $this->renderJSON(array('error' => TBGContext::getI18n()->__('The transition could not be applied to issue %issue_number% because of %errors%', array('%issue_number%' => $issue->getFormattedIssueNo(), '%errors%' => join(', ', $transition->getValidationErrors())))));
 					}
 
-					$transition->transitionIssueToOutgoingStepFromRequest($issue);
+					try
+					{
+						$transition->transitionIssueToOutgoingStepFromRequest($issue);
+					}
+					catch (Exception $e)
+					{
+						$this->getResponse()->setHttpStatus(400);
+						TBGLogging::log(TBGLogging::LEVEL_WARNING, 'Transition '.$transition->getID().' failed for issue ' . $issue_id);
+						TBGLogging::log(TBGLogging::LEVEL_WARNING, $e->getMessage());
+						return $this->renderJSON(array('error' => $this->getI18n()->__('The transition failed because of an error in the workflow. Check your workflow configuration.')));
+					}
 					if ($status === null) $status = $issue->getStatus();
 					$closed = $issue->isClosed();
 				}
@@ -1182,11 +1200,11 @@
 				}
 				foreach (array('resolution', 'priority', 'category', 'severity') as $item)
 				{
+					$class = "TBG".ucfirst($item);
 					if ($request->hasParameter($item . '_id'))
 					{
 						if ($item_id = $request[$item . '_id'])
 						{
-							$class = "TBG".ucfirst($item);
 							$itemobject = new $class($item_id);
 							$itemname = $itemobject->getName();
 						}
@@ -1197,14 +1215,23 @@
 						}
 						$options[$item] = array('name' => $itemname, 'id' => $item_id);
 					}
+					else
+					{
+						$method = 'get'.ucfirst($item);
+						$itemname = ($issue->$method() instanceof $class) ? $issue->$method()->getName() : '-';
+						$item_id = ($issue->$method() instanceof $class) ? $issue->$method()->getID() : 0;
+						$options[$item] = array('name' => $itemname, 'id' => $item_id);
+					}
 				}
 
 				return $this->renderJSON($options);
 			}
 			catch (Exception $e)
 			{
-				throw $e;
-				return $this->return404();
+				$this->getResponse()->setHttpStatus(400);
+				TBGLogging::log(TBGLogging::LEVEL_WARNING, 'Transition '.$transition->getID().' failed for issue ' . $issue_id);
+				TBGLogging::log(TBGLogging::LEVEL_WARNING, $e->getMessage());
+				return $this->renderJSON(array('error' => $this->getI18n()->__('An error occured when trying to apply the transition')));
 			}
 		}
 		

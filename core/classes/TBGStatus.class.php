@@ -6,6 +6,8 @@
 	class TBGStatus extends TBGDatatype 
 	{
 
+		const ITEMTYPE = TBGDatatype::STATUS;
+
 		protected static $_items = null;
 		
 		protected $_itemtype = TBGDatatype::STATUS;
@@ -34,16 +36,6 @@
 				$status->setScope($scope);
 				$status->save();
 			}
-		}
-		
-		/**
-		 * Returns all statuses available
-		 * 
-		 * @return array 
-		 */		
-		public static function getAll()
-		{
-			return TBGListTypesTable::getTable()->getAllByItemType(self::STATUS);
 		}
 
 		public static function getStatusByKeyish($key)

@@ -6,6 +6,8 @@
 	class TBGPriority extends TBGDatatype 
 	{
 
+		const ITEMTYPE = TBGDatatype::PRIORITY;
+
 		protected static $_items = null;
 		
 		protected $_itemtype = TBGDatatype::PRIORITY;
@@ -27,16 +29,6 @@
 				$priority->setScope($scope);
 				$priority->save();
 			}
-		}
-		
-		/**
-		 * Returns all priorities available
-		 * 
-		 * @return array 
-		 */		
-		public static function getAll()
-		{
-			return TBGListTypesTable::getTable()->getAllByItemType(self::PRIORITY);
 		}
 
 		public function getValue()
