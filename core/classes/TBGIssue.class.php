@@ -2210,6 +2210,40 @@
 		}
 
 		/**
+		 * Get string value of any built-in or custom field for this issue
+		 *
+		 * @param $key Key of field
+		 * @return string
+		 */
+		public function getFieldValue($key)
+		{
+			$methodname = 'get'.str_replace(' ', '', ucwords(str_replace('_', ' ', $key)));
+
+			if (method_exists($this, $methodname)) {
+				// Use existing getter if available
+				return $this->$methodname();
+
+			} elseif ($key == 'component' || $key == 'edition' || $key == 'build') {
+				$valueString = '';
+				$methodname .= 's'; // Turn getComponent to getComponents
+				$items = $this->$methodname();
+				foreach ($items as $item) {
+					$valueString .= ', '.$item[$key]->getName();
+				}
+				if (strlen($valueString) > 0) {
+					$valueString = substr($valueString, 2);
+				}
+				return $valueString;
+
+			} elseif ($key == 'percent_complete') {
+				return $this->getPercentCompleted();
+
+			} else {
+				return $this->getCustomField($key);
+			}
+		}
+
+		/**
 		 * Returns the scrum color
 		 *
 		 * @return string
