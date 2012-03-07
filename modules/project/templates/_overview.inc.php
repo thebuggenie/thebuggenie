@@ -23,8 +23,8 @@
 		<?php endif; ?>
 	</div>
 	<nav class="button-group">
+<?php if ($tbg_user->hasPageAccess('project_dashboard', $project->getID()) || $tbg_user->hasPageAccess('project_allpages', $project->getID())) echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), __('Dashboard'), array('class' => 'button button-silver')); ?>
 <?php if ($tbg_user->canSearchForIssues() && ($tbg_user->hasPageAccess('project_issues', $project->getID()) || $tbg_user->hasPageAccess('project_allpages', $project->getID()))) echo link_tag(make_url('project_open_issues', array('project_key' => $project->getKey())), __('Issues'), array('class' => 'button button-silver')); ?>
-<?php if ($tbg_user->hasPageAccess('project_roadmap', $project->getID()) || $tbg_user->hasPageAccess('project_allpages', $project->getID())) echo link_tag(make_url('project_roadmap', array('project_key' => $project->getKey())), __('Show roadmap'), array('class' => 'button button-silver')); ?>
 <?php TBGEvent::createNew('core', 'project_overview_item_links', $project)->trigger(); ?>
 <?php if ($tbg_user->canReportIssues($project)) echo link_tag(make_url('project_reportissue', array('project_key' => $project->getKey())), __('Report an issue'), array('class' => 'button button-green')); ?>
 	</nav>
