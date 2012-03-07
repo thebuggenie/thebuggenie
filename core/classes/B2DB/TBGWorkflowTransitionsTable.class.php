@@ -131,7 +131,7 @@
 			{
 				$crit = $this->getCriteria();
 				$crit->addWhere(self::NAME, '%reject%', \b2db\Criteria::DB_LIKE);
-				$crit->addWhere(self::WORKFLOW_ID, $workflow_ids, \b2db\Criteria::DB_IN);
+				$crit->addWhere(self::WORKFLOW_ID, $workflows, \b2db\Criteria::DB_IN);
 				$crit->addUpdate(self::TEMPLATE, 'main/updateissueproperties');
 				$this->doUpdate($crit);
 			}

@@ -506,6 +506,19 @@
 					TBGContext::setPermission('set_datatype_'.$type, 0, 'core', 0, 0, 0, true, $scope->getID());
 				}
 				TBGContext::setPermission('page_confirm_scope_access', 0, 'core', 0, 0, 0, true, $scope->getID());
+				if (!TBGSettings::get(TBGSettings::SETTING_DEFAULT_WORKFLOW, 'core', $scope->getID()))
+				{
+					$workflows = TBGWorkflowsTable::getTable()->getAll($scope);
+					if (count($workflows))
+					{
+						$default_workflow = array_shift($workflows);
+						TBGSettings::saveSetting(TBGSettings::SETTING_DEFAULT_WORKFLOW, $default_workflow->getID(), 'core', $scope->getID());
+					}
+					else
+					{
+						TBGWorkflow::loadFixtures($scope);
+					}
+				}
 			}
 
 			$linkstable = TBGLinksTable::getTable();
