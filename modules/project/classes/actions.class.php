@@ -142,6 +142,27 @@
 		}
 
 		/**
+		 * Save Planning column settings for user
+		 *
+		 * @param TBGRequest $request
+		 * @return bool
+		 */
+		public function runSavePlanningColumnSettings(TBGRequest $request)
+		{
+			if ($this->getUser() instanceof TBGUser)
+			{
+				try
+				{
+					TBGSettings::saveSetting('planning_columns_'.$this->selected_project->getID(), join(',', $request['planning_column']), 'project', TBGContext::getScope()->getID(), $this->getUser()->getID());
+				}
+				catch (Exception $e)
+				{
+				}
+			}
+			$this->forward(TBGContext::getRouting()->generate('project_planning', array('project_key' => $this->selected_project->getKey())));
+		}
+
+		/**
 		 * The project scrum page
 		 *
 		 * @param TBGRequest $request

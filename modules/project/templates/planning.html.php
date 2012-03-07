@@ -10,6 +10,7 @@
 			<h3>
 				<?php if ($tbg_user->canManageProjectReleases($selected_project)): ?>
 					<?php echo javascript_link_tag(__('Add new milestone'), array('onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'milestone', 'project_id' => $selected_project->getId()))."');", 'class' => 'button button-green')); ?>
+					<?php echo javascript_link_tag(__('Configure columns'), array('onclick' => "$('planning_column_settings_container').toggle();", 'class' => 'button button-green', 'style' => 'margin-right: 5px')); ?>
 				<?php endif; ?>
 				<?php echo __('Project milestones'); ?>
 			</h3>
@@ -109,3 +110,4 @@
 		</td> */ ?>
 	</tr>
 </table>
+<?php include_template('project/projectplanningsettings', array('selected_project' => $selected_project)); ?>
