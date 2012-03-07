@@ -15,18 +15,22 @@
 			<ul class="simple_list">
 				<?php if ((($issue instanceof TBGIssue && $issue->isEditable() && $issue->canEditAssignee()) || isset($issues)) && $transition->hasAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE) && !$transition->getAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE)->hasTargetValue()): ?>
 					<li id="transition_popup_assignee_div_<?php echo $transition->getID(); ?>">
-						<input type="hidden" name="assignee_id" id="popup_assigned_to_id_<?php echo $transition->getID(); ?>" value="<?php echo ($issue->hasAssignee() ? $issue->getAssignee()->getID() : 0); ?>">
-						<input type="hidden" name="assignee_type" id="popup_assigned_to_type_<?php echo $transition->getID(); ?>" value="<?php echo $issue->getAssigneeType(); ?>">
-						<input type="hidden" name="assignee_teamup" id="popup_assigned_to_teamup_<?php echo $transition->getID(); ?>" value="0">
+						<?php if ($issue instanceof TBGIssue): ?>
+							<input type="hidden" name="assignee_id" id="popup_assigned_to_id_<?php echo $transition->getID(); ?>" value="<?php echo ($issue->hasAssignee() ? $issue->getAssignee()->getID() : 0); ?>">
+							<input type="hidden" name="assignee_type" id="popup_assigned_to_type_<?php echo $transition->getID(); ?>" value="<?php echo $issue->getAssigneeType(); ?>">
+							<input type="hidden" name="assignee_teamup" id="popup_assigned_to_teamup_<?php echo $transition->getID(); ?>" value="0">
+						<?php endif; ?>
 						<label for="transition_popup_set_assignee_<?php echo $transition->getID(); ?>"><?php echo __('Assignee'); ?></label>
-						<span style="width: 170px; display: <?php if ($issue->isAssigned()): ?>inline<?php else: ?>none<?php endif; ?>;" id="popup_assigned_to_name_<?php echo $transition->getID(); ?>">
-							<?php if ($issue->getAssignee() instanceof TBGUser): ?>
-								<?php echo include_component('main/userdropdown', array('user' => $issue->getAssignee())); ?>
-							<?php elseif ($issue->getAssignee() instanceof TBGTeam): ?>
-								<?php echo include_component('main/teamdropdown', array('team' => $issue->getAssignee())); ?>
+						<span style="width: 170px; display: <?php if ($issue instanceof TBGIssue && $issue->isAssigned()): ?>inline<?php else: ?>none<?php endif; ?>;" id="popup_assigned_to_name_<?php echo $transition->getID(); ?>">
+							<?php if ($issue instanceof TBGIssue): ?>
+								<?php if ($issue->getAssignee() instanceof TBGUser): ?>
+									<?php echo include_component('main/userdropdown', array('user' => $issue->getAssignee())); ?>
+								<?php elseif ($issue->getAssignee() instanceof TBGTeam): ?>
+									<?php echo include_component('main/teamdropdown', array('team' => $issue->getAssignee())); ?>
+								<?php endif; ?>
 							<?php endif; ?>
 						</span>
-						<span class="faded_out" id="popup_no_assigned_to_<?php echo $transition->getID(); ?>"<?php if ($issue->isAssigned()): ?> style="display: none;"<?php endif; ?>><?php echo __('Not assigned to anyone'); ?></span>
+						<span class="faded_out" id="popup_no_assigned_to_<?php echo $transition->getID(); ?>"<?php if ($issue instanceof TBGIssue && $issue->isAssigned()): ?> style="display: none;"<?php endif; ?>><?php echo __('Not assigned to anyone'); ?></span>
 						<a href="javascript:void(0);" onclick="$('popup_assigned_to_change_<?php echo $transition->getID(); ?>').toggle();" title="<?php echo __('Click to change assignee'); ?>"><?php echo image_tag('action_dropdown_small.png', array('style' => 'float: right;')); ?></a>
 						<div id="popup_assigned_to_name_indicator_<?php echo $transition->getID(); ?>" style="display: none;"><?php echo image_tag('spinning_16.gif', array('style' => 'float: right; margin-left: 5px;')); ?></div>
 						<div class="faded_out" id="popup_assigned_to_teamup_info_<?php echo $transition->getID(); ?>" style="clear: both; display: none;"><?php echo __('You will be teamed up with this user'); ?></div>
