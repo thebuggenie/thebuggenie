@@ -102,7 +102,7 @@
 						<?php echo ($issue->getSeverity() instanceof TBGSeverity) ? $issue->getSeverity()->getName() : '-'; ?>
 					</td>
 					<td class="smaller sc_percent_complete"<?php if (!in_array('percent_complete', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
-						<span style="display: none;"><?php echo $issue->getPercentComplete(); ?></span><?php include_template('main/percentbar', array('percent' => $issue->getPercentComplete(), 'height' => 15)) ?>
+						<span style="display: none;"><?php echo $issue->getPercentCompleted(); ?></span><?php include_template('main/percentbar', array('percent' => $issue->getPercentCompleted(), 'height' => 15)) ?>
 					</td>
 					<td class="sc_reproducability<?php if (!$issue->getReproducability() instanceof TBGReproducability): ?> faded_out<?php endif; ?>"<?php if (!in_array('reproducability', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
 						<?php echo ($issue->getReproducability() instanceof TBGReproducability) ? $issue->getReproducability()->getName() : '-'; ?>

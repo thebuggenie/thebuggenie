@@ -94,7 +94,7 @@
 						<label for="transition_popup_set_percent_complete_<?php echo $transition->getID(); ?>"><?php echo __('Percent complete'); ?></label>
 						<select name="percent_complete_id" id="transition_popup_set_percent_complete_<?php echo $transition->getID(); ?>">
 							<?php foreach (range(0, 100) as $percent_complete): ?>
-								<option value="<?php echo $percent_complete; ?>"<?php if ($issue instanceof TBGIssue && $issue->getPercentComplete() == $percent_complete): ?> selected<?php endif; ?>><?php echo $percent_complete; ?></option>
+								<option value="<?php echo $percent_complete; ?>"<?php if ($issue instanceof TBGIssue && $issue->getPercentCompleted() == $percent_complete): ?> selected<?php endif; ?>><?php echo $percent_complete; ?></option>
 							<?php endforeach; ?>
 						</select>
 					</li>
