@@ -16,7 +16,7 @@
 		$tbg_response->addFeed(make_url('project_wishlist_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'rss')), __('Wishlist for %project_name%', array('%project_name%' => TBGContext::getCurrentProject()->getName())));
 		$tbg_response->addFeed(make_url('project_milestone_todo_list', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'rss')), __('Milestone todo-list for %project_name%', array('%project_name%' => TBGContext::getCurrentProject()->getName())));
 		$tbg_response->addFeed(make_url('project_month_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'rss')), __('Issues reported for %project_name% this month', array('%project_name%' => TBGContext::getCurrentProject()->getName())));
-		$tbg_response->addFeed(make_url('project_last_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'rss', 'days' => 30)), __('Issues reported for %project_name% last 30 days', array('%project_name%' => TBGContext::getCurrentProject()->getName())));
+		$tbg_response->addFeed(make_url('project_last_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'rss', 'units' => 30, 'time_unit' => 'days')), __('Issues reported for %project_name% last 30 days', array('%project_name%' => TBGContext::getCurrentProject()->getName())));
 		if (!TBGUser::isThisGuest())
 		{
 			$tbg_response->addFeed(make_url('project_my_reported_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'rss')), __('Issues reported by me') . ' ('.TBGContext::getCurrentProject()->getName().')');

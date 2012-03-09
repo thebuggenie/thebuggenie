@@ -52,11 +52,38 @@
 					}
 					$groupby = 'issuetype';
 					break;
-				case TBGContext::PREDEFINED_SEARCH_PROJECT_REPORTED_LAST_NUMBEROF_DAYS:
+				case TBGContext::PREDEFINED_SEARCH_PROJECT_REPORTED_LAST_NUMBEROF_TIMEUNITS:
 					$filters['project_id'] = array('operator' => '=', 'value' => TBGContext::getCurrentProject()->getID());
+					$units = TBGContext::getRequest()->getParameter('units');
+					switch (TBGContext::getRequest()->getParameter('time_unit'))
+					{
+						case 'seconds':
+							$time_unit = NOW - $units;
+							break;
+						case 'minutes':
+							$time_unit = NOW - (60 * $units);
+							break;
+						case 'hours':
+							$time_unit = NOW - (60 * 60 * $units);
+							break;
+						case 'days':
+							$time_unit = NOW - (86400 * $units);
+							break;
+						case 'weeks':
+							$time_unit = NOW - (86400 * 7 * $units);
+							break;
+						case 'months':
+							$time_unit = NOW - (86400 * 30 * $units);
+							break;
+						case 'years':
+							$time_unit = NOW - (86400 * 365 * $units);
+							break;
+						default:
+							$time_unit = NOW - (86400 * 30);
+					}
 					$filters['posted'] = array(
 						array('operator' => '<=', 'value' => NOW),
-						array('operator' => '>=', 'value' => NOW - (86400 * (int) TBGContext::getRequest()->getParameter('days')))
+						array('operator' => '>=', 'value' => $time_unit)
 					);
 					break;
 				case TBGContext::PREDEFINED_SEARCH_PROJECT_REPORTED_THIS_MONTH:
