@@ -91,11 +91,6 @@
 			return "" . $this->_name;
 		}
 		
-		public function getType()
-		{
-			return self::TYPE_CLIENT;
-		}
-		
 		/**
 		 * Get the client's website
 		 * 

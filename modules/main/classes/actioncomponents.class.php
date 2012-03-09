@@ -50,7 +50,7 @@
 				$this->projects = TBGProject::getAllRootProjects(true);
 				$this->project_count = count($this->projects);
 			}
-			elseif ($this->target == TBGIdentifiableTypeClass::TYPE_TEAM)
+			elseif ($this->target == 'team')
 			{
 				$this->team = TBGContext::factory()->TBGTeam($this->id);
 				$projects = array();
@@ -76,7 +76,7 @@
 				
 				$this->projects = $final_projects;
 			}
-			elseif ($this->target == TBGIdentifiableTypeClass::TYPE_CLIENT)
+			elseif ($this->target == 'client')
 			{
 				$this->client = TBGContext::factory()->TBGClient($this->id);
 				$projects = TBGProject::getAllByClientID($this->client->getID());

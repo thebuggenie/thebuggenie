@@ -538,7 +538,7 @@
 						}
 						if ($this->key != 'issues_per_state')
 						{
-							$labels[] = ($item instanceof TBGIdentifiableTypeClass) ? html_entity_decode($item->getName()) : $i18n->__('Unknown', array(), true);
+							$labels[] = ($item instanceof TBGDatatype) ? html_entity_decode($item->getName()) : $i18n->__('Unknown', array(), true);
 						}
 						else
 						{
@@ -732,11 +732,7 @@
 						break;
 				}
 				
-				$filters['assigned_to'] = array('operator' => '=', 'value' => $user_id);
-				if ($user_id > 0)
-				{
-					$filters['assigned_type'] = array('operator' => '=', 'value' => TBGIdentifiableTypeClass::TYPE_USER);
-				}
+				$filters['assignee_user'] = array('operator' => '=', 'value' => $user_id);
 			}
 
 			list ($this->issues, $this->count) = TBGIssue::findIssues($filters, 0);

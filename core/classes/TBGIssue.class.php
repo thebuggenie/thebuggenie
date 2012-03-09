@@ -2393,17 +2393,6 @@
 			return (bool) ($this->getPostedBy() instanceof TBGIdentifiable);
 		}
 
-                /**
-                 * Returns the poster type
-                 *
-                 * @return integer
-                 */
-                public function getPostedByType()
-                {
-                        $poster = $this->getPostedBy();
-                        return ($poster instanceof TBGIdentifiableTypeClass) ? $poster->getType() : null;
-                }
-		
 		/**
 		 * Return the poster id
 		 *
@@ -4269,39 +4258,25 @@
 							$this->addLogEntry(TBGLogTable::LOG_ISSUE_PRIORITY, $old_name . ' &rArr; ' . $new_name);
 							$comment_lines[] = TBGContext::getI18n()->__("The priority has been updated, from '''%previous_priority%''' to '''%new_priority%'''.", array('%previous_priority%' => $old_name, '%new_priority%' => $new_name));
 							break;
-						case '_assigned_to':
-						case '_assigned_type':
+						case '_assignee_team':
+						case '_assignee_user':
 							if (!$is_saved_assignee)
 							{
-								if ($value['original_value'] != 0)
-								{
-									$old_identifiable = null;
-									if ($this->getChangedPropertyOriginal('_assigned_type') == TBGIdentifiableTypeClass::TYPE_USER)
-										$old_identifiable = TBGContext::factory()->TBGUser($value['original_value']);
-									elseif ($this->getChangedPropertyOriginal('_assigned_type') == TBGIdentifiableTypeClass::TYPE_TEAM)
-										$old_identifiable = TBGContext::factory()->TBGTeam($value['original_value']);
-									$old_name = ($old_identifiable instanceof TBGIdentifiableTypeClass) ? $old_identifiable->getName() : TBGContext::getI18n()->__('Unknown');
-								}
-								else
-								{
-									$old_name = TBGContext::getI18n()->__('Not assigned');
-								}
-								$new_name = ($this->getAssignee() instanceof TBGIdentifiableTypeClass) ? $this->getAssignee()->getName() : TBGContext::getI18n()->__('Not assigned');
-								
+								$new_name = ($this->getAssignee() instanceof TBGIdentifiable) ? $this->getAssignee()->getName() : TBGContext::getI18n()->__('Not assigned');
 								
 								if ($this->getAssignee() instanceof TBGUser)
 								{
 									$this->startWorkingOnIssue($this->getAssignee());
 								}
 								
-								$this->addLogEntry(TBGLogTable::LOG_ISSUE_ASSIGNED, $old_name . ' &rArr; ' . $new_name);
-								$comment_lines[] = TBGContext::getI18n()->__("The assignee has been changed, from '''%previous_name%''' to '''%new_name%'''.", array('%previous_name%' => $old_name, '%new_name%' => $new_name));
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_ASSIGNED, $new_name);
+								$comment_lines[] = TBGContext::getI18n()->__("The assignee has been changed to '''%new_name%'''.", array('%new_name%' => $new_name));
 								$is_saved_assignee = true;
 							}
 							break;
 						case '_posted_by':
 							$old_identifiable = ($value['original_value']) ? TBGContext::factory()->TBGUser($value['original_value']) : TBGContext::getI18n()->__('Unknown');
-							$old_name = ($old_identifiable instanceof TBGIdentifiableTypeClass) ? $old_identifiable->getName() : TBGContext::getI18n()->__('Unknown');
+							$old_name = ($old_identifiable instanceof TBGUser) ? $old_identifiable->getName() : TBGContext::getI18n()->__('Unknown');
 							$new_name = $this->getPostedBy()->getName();
 							
 							$this->addLogEntry(TBGLogTable::LOG_ISSUE_POSTED, $old_name . ' &rArr; ' . $new_name);
@@ -4311,38 +4286,25 @@
 							if ($value['original_value'] != 0)
 							{
 								$old_identifiable = TBGContext::factory()->TBGUser($value['original_value']);
-								$old_name = ($old_identifiable instanceof TBGIdentifiableTypeClass) ? $old_identifiable->getName() : TBGContext::getI18n()->__('Unknown');
+								$old_name = ($old_identifiable instanceof TBGUser) ? $old_identifiable->getName() : TBGContext::getI18n()->__('Unknown');
 							}
 							else
 							{
 								$old_name = TBGContext::getI18n()->__('Not being worked on');
 							}
-							$new_name = ($this->getUserWorkingOnIssue() instanceof TBGIdentifiableTypeClass) ? $this->getUserWorkingOnIssue()->getName() : TBGContext::getI18n()->__('Not being worked on');
+							$new_name = ($this->getUserWorkingOnIssue() instanceof TBGUser) ? $this->getUserWorkingOnIssue()->getName() : TBGContext::getI18n()->__('Not being worked on');
 
 							$this->addLogEntry(TBGLogTable::LOG_ISSUE_USERS, $old_name . ' &rArr; ' . $new_name);
 							$comment_lines[] = TBGContext::getI18n()->__("Information about the user working on this issue has been changed, from '''%previous_name%''' to '''%new_name%'''.", array('%previous_name%' => $old_name, '%new_name%' => $new_name));
 							break;
-						case '_owner':
-						case '_owner_type':
+						case '_owner_team':
+						case '_owner_user':
 							if (!$is_saved_owner)
 							{
-								if ($value['original_value'] != 0)
-								{
-									$old_identifiable = null;
-									if ($this->getChangedPropertyOriginal('_owner_type') == TBGIdentifiableTypeClass::TYPE_USER)
-										$old_identifiable = TBGContext::factory()->TBGUser($value['original_value']);
-									elseif ($this->getChangedPropertyOriginal('_owner_type') == TBGIdentifiableTypeClass::TYPE_TEAM)
-										$old_identifiable = TBGContext::factory()->TBGTeam($value['original_value']);
-									$old_name = ($old_identifiable instanceof TBGIdentifiableTypeClass) ? $old_identifiable->getName() : TBGContext::getI18n()->__('Unknown');
-								}
-								else
-								{
-									$old_name = TBGContext::getI18n()->__('Not owned by anyone');
-								}
-								$new_name = ($this->getOwner() instanceof TBGIdentifiableTypeClass) ? $this->getOwner()->getName() : TBGContext::getI18n()->__('Not owned by anyone');
+								$new_name = ($this->getOwner() instanceof TBGIdentifiable) ? $this->getOwner()->getName() : TBGContext::getI18n()->__('Not owned by anyone');
 								
-								$this->addLogEntry(TBGLogTable::LOG_ISSUE_OWNED, $old_name . ' &rArr; ' . $new_name);
-								$comment_lines[] = TBGContext::getI18n()->__("The owner has been changed, from '''%previous_name%''' to '''%new_name%'''.", array('%previous_name%' => $old_name, '%new_name%' => $new_name));
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_OWNED, $new_name);
+								$comment_lines[] = TBGContext::getI18n()->__("The owner has been changed to '''%new_name%'''.", array('%previous_name%' => $old_name, '%new_name%' => $new_name));
 								$is_saved_owner = true;
 							}
 							break;
@@ -4952,7 +4914,7 @@
 						break;
 				}
 				if ($identifiable)
-					$return_values[$field] = ($value instanceof TBGIdentifiableTypeClass) ? $value->toJSON() : null;
+					$return_values[$field] = ($value instanceof TBGIdentifiable) ? $value->toJSON() : null;
 				else
 					$return_values[$field] = $this->$method();
 

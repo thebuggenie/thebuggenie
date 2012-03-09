@@ -99,11 +99,6 @@
 			return "" . $this->_name;
 		}
 		
-		public function getType()
-		{
-			return self::TYPE_TEAM;
-		}
-		
 		/**
 		 * Adds a user to the team
 		 *

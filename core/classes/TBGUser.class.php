@@ -1371,16 +1371,6 @@
 		}
 
 		/**
-		 * Return the identifiable type
-		 * 
-		 * @return integer
-		 */
-		public function getType()
-		{
-			return TBGIdentifiableTypeClass::TYPE_USER;
-		}
-		
-		/**
 		 * Set whether or not the email address is hidden for normal users
 		 *
 		 * @param boolean $val
