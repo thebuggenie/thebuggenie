@@ -35,7 +35,17 @@
 			<?php echo link_tag(make_url('viewissue', array('issue_no' => $issue->getFormattedIssueNo(), 'project_key' => $issue->getProject()->getKey())), $issue->getFormattedTitle()); ?>
 		</div>
 	</td>
-	<td><?php echo ($issue->isAssigned()) ? $issue->getAssignee()->getName() : '-' ?></td>
+	<td>
+		<?php if ($issue->isAssigned()): ?>
+			<?php if ($issue->getAssignee() instanceof TBGUser): ?>
+				<?php echo include_component('main/userdropdown', array('user' => $issue->getAssignee())); ?>
+			<?php else: ?>
+				<?php echo include_component('main/teamdropdown', array('team' => $issue->getAssignee())); ?>
+			<?php endif; ?>
+		<?php else: ?>
+			-
+		<?php endif; ?>
+	</td>
 	<td class="sc_status"><span class="sc_status_name"><?php echo ($issue->getStatus() instanceof TBGStatus) ? $issue->getStatus()->getName() : '-' ?></span></td>
 	<?php if ($issue->canEditIssue()): ?>
 		<td class="milestoneupdateable first">
