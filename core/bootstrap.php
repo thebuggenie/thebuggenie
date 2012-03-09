@@ -13,7 +13,7 @@
 	require THEBUGGENIE_CORE_PATH . 'classes' . DS . 'TBGContext.class.php';
 	spl_autoload_register(array('TBGContext', 'autoload'));
 
-	TBGContext::setDebugMode(true);
+	TBGContext::setDebugMode(false);
 	TBGContext::setMinifyEnabled(false);
 
 	TBGContext::addAutoloaderClassPath(THEBUGGENIE_CORE_PATH . 'classes' . DS);
