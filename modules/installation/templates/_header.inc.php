@@ -140,7 +140,7 @@
 				<td style="height: auto; overflow: auto;" valign="top" id="maintd">
 					<div class="print_header_strip" style="text-align: left; padding: 5px;">
 						<?php if ($mode == 'upgrade'): ?>
-							<b>The Bug Genie upgrade</b>
+							<b style="font-size: 1.2em;">The Bug Genie upgrade</b>
 						<?php else: ?>
 							<b>The Bug Genie installation</b> &ndash;
 							<?php if ($step == 0): ?>
