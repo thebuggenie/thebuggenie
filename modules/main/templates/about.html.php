@@ -22,11 +22,11 @@
 		<b><?php echo __('Enjoy using The Bug Genie!'); ?></b>
 	</div>
 	<br>
-	<a href="http://www.thebuggenie.com" target="_blank">The Bug Genie</a>, Copyright &copy; 2002 - 2011 <b>The Bug Genie team</b><br>
+	<a href="http://www.thebuggenie.com" target="_blank">The Bug Genie</a>, Copyright &copy; 2002 - <?php echo date('Y'); ?> <b>The Bug Genie team</b><br>
 	<?php echo __('Licensed under the MPL 1.1 only, read it at %link_to_MPL%', array('%link_to_MPL%' => '<a href="http://www.opensource.org/licenses/mozilla1.1.php">opensource.org</a>')); ?>.<br>
 	<br>
 	<span class="faded_out">
 		<?php echo __('The Bug Genie uses icons from the %link_to_iconset%', array('%link_to_iconset%' => '<a href="http://www.oxygen-icons.org">Oxygen icon set</a>')); ?>.<br>
-		<?php echo __('These icons may be freely distributed under the %link_to_LGPL%', array('%link_to_LGPL%' => '<a href="http://www.opensource.org/licenses/lgpl-3.0.html">LGPLv3</a>')); ?>.
+		<?php echo __('These icons may be freely distributed under the %link_to_license%', array('%link_to_license%' => '<a href="http://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0 License</a>')); ?>.
 	</span>
 </div>
