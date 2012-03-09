@@ -590,8 +590,8 @@
 				<strong><?php echo __('Add more information to your issue'); ?></strong><br>
 				<p><?php echo __('Specify additional information by clicking the links below before submitting your issue'); ?></p>
 				<ul id="reportissue_extrafields">
-					<li><?php echo image_tag('icon_file.png'); ?><a href="javascript:void(0);" onclick="TBG.Main.Helpers.Message.success('<?php echo __('Please file the issue before attaching a file'); ?>');"><?php echo __('Attach a file'); ?></a></li>
-					<li><?php echo image_tag('icon_link.png'); ?><a href="javascript:void(0);" onclick="TBG.Main.Helpers.Message.success('<?php echo __('Please file the issue before attaching a link'); ?>');"><?php echo __('Add a link'); ?></a></li>
+					<?php /*<li><?php echo image_tag('icon_file.png'); ?><a href="javascript:void(0);" onclick="TBG.Main.Helpers.Message.success('<?php echo __('Please file the issue before attaching a file'); ?>');"><?php echo __('Attach a file'); ?></a></li>
+					<li><?php echo image_tag('icon_link.png'); ?><a href="javascript:void(0);" onclick="TBG.Main.Helpers.Message.success('<?php echo __('Please file the issue before attaching a link'); ?>');"><?php echo __('Add a link'); ?></a></li> */ ?>
 					<li id="status_additional" style="display: none;">
 						<?php echo image_tag('icon_status.png'); ?>
 						<div id="status_link"<?php if ($selected_status instanceof TBGStatus): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('status_link').hide();$('status_additional_div').show();"><?php echo __('Set initial status'); ?></a></div>
