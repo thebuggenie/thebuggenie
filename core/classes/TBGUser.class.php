@@ -387,6 +387,8 @@
 			$guestuser->save();
 
 			TBGSettings::saveSetting('defaultuserid', $guestuser->getID(), 'core', $scope->getID());
+
+			return array($guestuser->getID(), $adminuser->getID());
 		}
 		
 		/**
