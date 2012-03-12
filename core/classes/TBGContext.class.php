@@ -757,6 +757,16 @@
 			TBGLogging::log('...done');
 		}
 
+		public static function clearRoutingCache()
+		{
+			if (!TBGCache::isEnabled()) return;
+			foreach (array(TBGCache::KEY_PREMODULES_ROUTES_CACHE, TBGCache::KEY_PREMODULES_ROUTES_CACHE) as $key)
+			{
+				TBGCache::delete($key);
+				TBGCache::fileDelete($key);
+			}
+		}
+
 		protected static function loadPreModuleRoutes()
 		{
 			TBGLogging::log('Loading first batch of routes', 'routing');
