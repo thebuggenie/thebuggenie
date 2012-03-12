@@ -43,13 +43,11 @@
 				<?php endif; ?>
 				<h4><?php echo __('Existing projects'); ?></h4>
 				<div id="project_table">
-				<?php if (count($allProjects) > 0): ?>
-					<?php foreach ($allProjects as $aProject): ?>
-						<div id="project_box_<?php echo $aProject->getID();?>">
-							<?php include_template('projectbox', array('project' => $aProject, 'access_level' => $access_level)); ?>
-						</div>
-					<?php endforeach; ?>
-				<?php endif; ?>
+					<?php if (count($allProjects) > 0): ?>
+						<?php foreach ($allProjects as $project): ?>
+							<?php include_template('projectbox', array('project' => $project, 'access_level' => $access_level)); ?>
+						<?php endforeach; ?>
+					<?php endif; ?>
 				</div>
 				<div id="noprojects_tr" style="padding: 3px; color: #AAA;<?php if (count($allProjects) > 0): ?> display: none;<?php endif;?>">
 					<?php echo __('There are no projects available'); ?>

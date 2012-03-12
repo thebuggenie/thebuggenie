@@ -1402,7 +1402,8 @@ TBG.Project.add = function(url) {
 		loading: {indicator: 'project_add_indicator'},
 		success: {
 			reset: 'add_project_form',
-			update: 'project_table',
+			update: {element: 'project_table', insertion: true},
+			hide: 'noprojects_tr',
 			callback: TBG.Project.updateLinks
 		}
 	});
