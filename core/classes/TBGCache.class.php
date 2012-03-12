@@ -93,7 +93,10 @@
 		public static function fileDelete($key)
 		{
 			$filename = self::_getFilenameForKey($key);
-			unlink($filename);
+			if (file_exists($filename))
+			{
+				unlink($filename);
+			}
 		}
 		
 		public static function checkEnabled()
