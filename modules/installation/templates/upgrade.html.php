@@ -18,7 +18,7 @@
 		<?php if (isset($permissions_ok) && $permissions_ok): ?>
 			<div class="grey_box padded_box shadowed rounded_box">
 				<h2 style="margin-bottom: 15px; padding-bottom: 0;">
-					<span style="font-weight: normal;">You are performing the following upgrade: </span><?php echo $current_version; ?>.x => 3.2RC1<br>
+					<span style="font-weight: normal;">You are performing the following upgrade: </span><?php echo $current_version; ?>.x => 3.2RC5<br>
 					<span class="smaller">Make a backup of your installation before you continue!</span>
 				</h2>
 				<form accept-charset="utf-8" action="<?php echo make_url('upgrade'); ?>" method="post">
