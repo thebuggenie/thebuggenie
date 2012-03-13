@@ -760,7 +760,7 @@
 		public static function clearRoutingCache()
 		{
 			if (!TBGCache::isEnabled()) return;
-			foreach (array(TBGCache::KEY_PREMODULES_ROUTES_CACHE, TBGCache::KEY_PREMODULES_ROUTES_CACHE) as $key)
+			foreach (array(TBGCache::KEY_PREMODULES_ROUTES_CACHE, TBGCache::KEY_POSTMODULES_ROUTES_CACHE) as $key)
 			{
 				TBGCache::delete($key);
 				TBGCache::fileDelete($key);
