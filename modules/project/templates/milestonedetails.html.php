@@ -20,7 +20,9 @@
 			<div style="width: 788px; padding-right: 5px; position: relative;" id="milestone_details_overview">
 				<?php if ($milestone instanceof TBGMilestone): ?>
 					<h3>
-						<?php echo $milestone->getName(); ?><br>
+						<span id="milestone_name"><?php echo $milestone->getName(); ?></span>&nbsp;
+						<?php echo javascript_link_tag(image_tag('icon_edit.png'), array('onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'milestone', 'project_id' => $milestone->getProject()->getId(), 'milestone_id' => $milestone->getID()))."');", 'class' => 'button button-icon button-silver')); ?>
+						<br>
 						<span class="date">
 							<?php if ($milestone->getStartingDate() && $milestone->isScheduled()): ?>
 								(<?php echo tbg_formatTime($milestone->getStartingDate(), 22); ?> - <?php echo tbg_formatTime($milestone->getScheduledDate(), 22); ?>)

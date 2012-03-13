@@ -1073,6 +1073,7 @@ ul.milestone_issues_container li .actions label { float: left; font-weight: bold
 .planning_container .sprint_header a:hover { color: #888; text-decoration: none; border: 0; }
 #milestone_details_overview h3 { line-height: 1.2; }
 #milestone_details_overview a { color: #555; border-bottom: 1px dotted #AAA; }
+#milestone_details_overview a.button, #milestone_details_overview a.button:hover { border-bottom: 1px solid rgba(0, 0, 0, 0.2); }
 #milestone_details_overview .faded_out a { color: #888; border-bottom: 0; }
 #milestone_details_overview a:hover { color: #777; border-bottom: 1px dotted #BBB; }
 #milestone_details_overview .faded_out a:hover { color: #999; border-bottom: 0; }

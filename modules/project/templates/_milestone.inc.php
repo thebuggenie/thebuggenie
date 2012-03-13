@@ -87,7 +87,7 @@
 							<input type="hidden" name="milestone_id" value="<?php echo $milestone->getID(); ?>">
 						<?php endif; ?>
 						<input class="button button-green" style="float: right;" type="submit" value="<?php echo ($milestone->getId()) ? __('Update milestone') : __('Add milestone'); ?>">
-						<span id="add_milestone_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
+						<span id="milestone_edit_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
 					</td>
 				</tr>
 			</table>
