@@ -191,6 +191,7 @@
 			try
 			{
 				TBGContext::clearRoutingCache();
+				TBGContext::clearPermissionsCache();
 				$this->_install($scope);
 				$b2db_classpath = THEBUGGENIE_MODULES_PATH . $this->_name . DS . 'classes' . DS . 'B2DB';
 
@@ -250,9 +251,8 @@
 		
 		final public function upgrade()
 		{
-			TBGCache::delete(TBGCache::KEY_PREMODULES_ROUTES_CACHE);
-			TBGCache::delete(TBGCache::KEY_POSTMODULES_ROUTES_CACHE);
-			TBGCache::delete(TBGCache::KEY_PERMISSIONS_CACHE);
+			TBGContext::clearRoutingCache();
+			TBGContext::clearPermissionsCache();
 			$this->_upgrade();
 		}
 
@@ -268,6 +268,7 @@
 			TBGSettings::deleteModuleSettings($this->getName(), $scope);
 			TBGContext::deleteModulePermissions($this->getName(), $scope);
 			TBGContext::clearRoutingCache();
+			TBGContext::clearPermissionsCache();
 		}
 		
 		public function getClassname()

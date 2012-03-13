@@ -1264,6 +1264,12 @@
 			TBGPermissionsTable::getTable()->deleteModulePermissions($module_name, $scope);
 		}
 
+		public static function clearPermissionsCache()
+		{
+			TBGCache::delete(TBGCache::KEY_PERMISSIONS_CACHE);
+			TBGCache::fileDelete(TBGCache::KEY_PERMISSIONS_CACHE);
+		}
+
 		/**
 		 * Remove a saved permission
 		 * 
@@ -1281,7 +1287,7 @@
 			if ($scope === null) $scope = self::getScope()->getID();
 			
 			TBGPermissionsTable::getTable()->removeSavedPermission($uid, $gid, $tid, $module, $permission_type, $target_id, $scope);
-			TBGCache::delete(TBGCache::KEY_PERMISSIONS_CACHE);
+			self::clearPermissionsCache();
 
 			if ($recache) self::cacheAllPermissions();
 		}
@@ -1290,6 +1296,7 @@
 		{
 			$scope = ($scope !== null) ? $scope : self::getScope()->getID();
 			TBGPermissionsTable::getTable()->deleteAllPermissionsForCombination($uid, $gid, $tid, $target_id, $module, $scope);
+			self::clearPermissionsCache();
 		}
 
 		/**
@@ -1310,7 +1317,7 @@
 			
 			self::removePermission($permission_type, $target_id, $module, $uid, $gid, $tid, false, $scope);
 			TBGPermissionsTable::getTable()->setPermission($uid, $gid, $tid, $allowed, $module, $permission_type, $target_id, $scope);
-			TBGCache::delete(TBGCache::KEY_PERMISSIONS_CACHE);
+			self::clearPermissionsCache();
 
 			self::cacheAllPermissions();
 		}
