@@ -12,9 +12,6 @@
 	<li><a href="<?php echo $csv_url; ?>"><?php echo image_tag('icon_csv.png') . __('Download as CSV'); ?></a></li>
 	<li><a href="<?php echo $rss_url; ?>"><?php echo image_tag('icon_rss.png') . __('Download as RSS'); ?></a></li>
 </ul>
-<?php /*<div class="search_export_links">
-	<?php echo __('Export results as: %csv_link% %rss_link%', array('%csv_link%' => link_tag($csv_url, image_tag('icon_csv.png')."CSV", array('class' => 'image')), '%rss_link%' => link_tag($rss_url, image_tag('icon_rss.png')."RSS", array('class' => 'image')))); ?>
-</div> */ ?>
 <div id="search_column_settings_container" style="display: none;" class="fullpage_backdrop">
 	<div class="backdrop_box medium">
 		<div class="backdrop_detail_header">
@@ -36,6 +33,10 @@
 							<div style="float: left; padding: 8px;"><?php echo javascript_link_tag(__('Reset columns'), array('onclick' => 'TBG.Search.resetColumns()')); ?></div>
 							<div id="search_column_settings_save_button" class="button button-green" onclick="TBG.Search.saveVisibleColumns('<?php echo make_url('search_save_column_settings'); ?>');" style="margin-top: 7px;"><span><?php echo __('Ok'); ?></span></div>
 							<div id="search_column_settings_indicator" style="display: none; float: right; margin: 7px 5px 0 10px;"><?php echo image_tag('spinning_20.gif'); ?></div>
+						</div>
+					<?php else: ?>
+						<div style="text-align: right; clear: both;">
+							<a href="javascript:void(0);" onclick="$('search_column_settings_container').toggle();" title="<?php echo __('Done'); ?>" class="button button-silver"><?php echo __('Done'); ?></a>
 						</div>
 					<?php endif; ?>
 				</form>

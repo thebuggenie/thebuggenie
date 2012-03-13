@@ -1639,6 +1639,18 @@
 			}
 			return false;
 		}
+
+		public function getComponentNames()
+		{
+			$components = $this->getComponents();
+			$names = array();
+			foreach ($components as $info)
+			{
+				$names[] = $info['component']->getName();
+			}
+
+			return $names;
+		}
 		
 		public function getFirstAffectedComponent()
 		{
