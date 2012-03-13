@@ -1,12 +1,27 @@
 THE BUG GENIE VERSION 3
 -------
-Thank you for downloading The Bug Genie
+The Bug Genie is an enterprise-grade issue-tracking, development and project
+management system. Main features includes:
+* Integrated wiki
+* Live project planning
+* Great agile project support
+* Customizable workflow support
+* Time tracking
+* Multiple hosted installations on single setups
+* Complete source code integration
+* Command-line interface for both local and remote installations
+* LDAP authentication, OpenID enabled logins and pluggable auth backend
+* Remote API (JSON-based)
+* Great web-based configuration
+* Module-based and extensible architecture
 
-Please report issues and feedback from the issue tracker on our website:
-http://issues.thebuggenie.com
+... and a lot more!
+
+For up-to-date installation and setup notes, visit the FAQ:
+http://issues.thebuggenie.com/wiki/TheBugGenie:FAQ
 
 
-* INSTALLATION *
+*GENERAL INSTALLATION NOTES*
 
 via web
 -------
@@ -26,8 +41,8 @@ To install:
     ./tbg_cli install
 
 
-* REPORTING ISSUES *
+*REPORTING ISSUES*
 
+Thank you for downloading The Bug Genie
 If you find any issues, please report them in the issue tracker on our website:
 http://issues.thebuggenie.com
-

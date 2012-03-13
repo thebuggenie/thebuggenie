@@ -1,5 +1,9 @@
-* INSTALLATION *
+*INSTALLATION*
 
+NOTE: For the latest installation notes, troubleshooting and tips,
+visit the FAQ: http://issues.thebuggenie.com/wiki/TheBugGenie:FAQ
+
+** GENERAL INSTALLATION NOTES **
 via web
 -------
 To install The Bug Genie, copy this folder to your webserver, and visit the
