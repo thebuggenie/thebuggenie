@@ -1,5 +1,5 @@
 <div class="logindiv openid_container">
-	<form action="<?php echo make_url('login'); ?>" method="post" id="openid_form" onclick="return openid.submit();">
+	<form action="<?php echo make_url('login'); ?>" method="post" id="openid_form" onsubmit="return TBG.OpenID.submit();">
 		<input type="hidden" name="action" value="verify" />
 		<div id="openid_choice">
 			<div class="login_boxheader">
@@ -14,7 +14,8 @@
 		<div id="openid_input_area">
 			<input id="openid_identifier" name="openid_identifier" type="text" value="http://" />
 		</div>
-		<input type="submit" value="<?php echo __('Sign in'); ?>" class="button button-silver">
+		<input id="openid_provider" type="hidden" value="" />
+		<input id="openid_submit_button" type="submit" value="<?php echo __('Sign in'); ?>" class="button button-silver" style="display: none;">
 	</form>
 </div>
 <script type="text/javascript">
@@ -38,11 +39,6 @@
 			name : 'Google',
 			url : 'https://www.google.com/accounts/o8/id'
 		}
-		/* aol : {
-			name : 'AOL',
-			label : '<?php echo __('Enter your AOL screenname'); ?>',
-			url : 'http://openid.aol.com/{username}'
-		}, */
 	};
 
 	var providers_small = {
@@ -51,16 +47,21 @@
 			label : '<?php echo __('Enter your Livejournal username'); ?>',
 			url : 'http://{username}.livejournal.com/'
 		},
-		/* flickr: {
+		aol : {
+			name : 'AOL',
+			label : '<?php echo __('Enter your AOL screenname'); ?>',
+			url : 'http://openid.aol.com/{username}'
+		},
+		flickr: {
 			name: 'Flickr',
-			label: 'Enter your Flickr username.',
+			label : '<?php echo __('Enter your Flickr username'); ?>',
 			url: 'http://flickr.com/{username}/'
-		}, */
-		/* technorati: {
+		},
+		technorati: {
 			name: 'Technorati',
-			label: 'Enter your Technorati username.',
+			label : '<?php echo __('Your Technorati username'); ?>',
 			url: 'http://technorati.com/people/technorati/{username}/'
-		}, */
+		},
 		wordpress : {
 			name : 'Wordpress',
 			label : '<?php echo __('Enter your Wordpress.com username'); ?>',
@@ -76,16 +77,16 @@
 			label : '<?php echo __('Your Verisign username'); ?>',
 			url : 'http://{username}.pip.verisignlabs.com/'
 		},
-		/* vidoop: {
+		vidoop: {
 			name: 'Vidoop',
-			label: 'Your Vidoop username',
+			label : '<?php echo __('Your Vidoop username'); ?>',
 			url: 'http://{username}.myvidoop.com/'
-		}, */
-		/* launchpad: {
+		},
+		launchpad: {
 			name: 'Launchpad',
-			label: 'Your Launchpad username',
+			label : '<?php echo __('Your Launchpad username'); ?>',
 			url: 'https://launchpad.net/~{username}'
-		}, */
+		},
 		claimid : {
 			name : 'ClaimID',
 			label : '<?php echo __('Your ClaimID username'); ?>',
@@ -103,12 +104,11 @@
 		}
 	};
 
-	openid.locale = 'en';
-	openid.sprite = 'en'; // reused in german& japan localization
-	openid.signin_text = '<?php echo __('Sign in'); ?>';
-	openid.image_title = '<?php echo __('Log in with %openid_provider_name%'); ?>';
-	openid.no_sprite = true;
-	openid.providers_small = providers_small;
-	openid.providers_large = providers_large;
-	openid.init('openid_identifier');
+	TBG.OpenID.signin_text = '<?php echo __('Sign in'); ?>';
+	TBG.OpenID.image_title = '<?php echo __('Log in with %openid_provider_name%'); ?>';
+	TBG.OpenID.providers_small = providers_small;
+	TBG.OpenID.providers_large = providers_large;
+	<?php if ($tbg_request->isAjaxCall()): ?>
+		TBG.OpenID.init();
+	<?php endif; ?>
 </script>

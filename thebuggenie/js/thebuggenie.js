@@ -309,6 +309,7 @@ TBG.initialize = function(options) {
 	$('fullpage_backdrop_content').observe('click', TBG.Core._resizeWatcher);
 	document.observe('click', TBG.Main.toggleBreadcrumbMenuPopout);
 	document.observe('keydown', TBG.Core._escapeWatcher);
+	TBG.OpenID.init();
 };
 
 TBG.loadDebugInfo = function(debug_id, cb) {
@@ -3692,9 +3693,7 @@ TBG.Search.bulkUpdate = function(url, mode) {
 	This code is licensed under the New BSD License.
 */
 
-var providers;
-
-var openid = {
+TBG.OpenID = {
 	version : '1.3', // version constant
 	demo : false,
 	demo_text : null,
@@ -3703,15 +3702,14 @@ var openid = {
 	cookie_path : '/',
 
 	img_path : 'images/',
-	locale : null, // is set in openid-<locale>.js
-	sprite : null, // usually equals to locale, is set in
+	locale : 'en', // is set in openid-<locale>.js
+	sprite : 'en', // usually equals to locale, is set in
 	// openid-<locale>.js
 	signin_text : null, // text on submit button on the form
 	all_small : false, // output large providers w/ small icons
-	no_sprite : false, // don't use sprite image
 	image_title : '%openid_provider_name%', // for image title
 
-	input_id : null,
+	input_id : 'openid_identifier',
 	provider_url : null,
 	provider_id : null,
 	providers_small : null,
@@ -3722,12 +3720,8 @@ var openid = {
 	 *
 	 * @return {Void}
 	 */
-	init : function(input_id) {
-		providers = {};
-		Object.extend(providers, this.providers_large);
-		Object.extend(providers, this.providers_small);
+	init : function() {
 		var openid_btns = $('openid_btns');
-		this.input_id = input_id;
 		$('openid_choice').setStyle({
 			display: 'block'
 		});
@@ -3746,26 +3740,19 @@ var openid = {
 			}
 		}
 //		$('openid_form').submit = this.submit;
-		var box_id = this.readCookie();
-		if (box_id) {
-			this.signin(box_id, true);
-		}
+//		var box_id = this.readCookie();
+//		if (box_id) {
+//			this.signin(box_id, true);
+//		}
 	},
 
 	/**
 	 * @return {String}
 	 */
 	getBoxHTML : function(box_id, provider, box_size, index) {
-		if (this.no_sprite) {
-			var image_ext = box_size == 'small' ? '.ico.png' : '.png';
-			return '<a title="' + this.image_title.replace('%openid_provider_name%', provider["name"]) + '" href="javascript:openid.signin(\'' + box_id + '\');"'
-					+ 'class="' + box_id + ' openid_' + box_size + '_btn button button-silver"><img src="iconsets/oxygen/openid_providers.' + box_size + '/' + box_id + image_ext + '"></a>';
-		}
-		var x = box_size == 'small' ? -index * 24 : -index * 100;
-		var y = box_size == 'small' ? -60 : 0;
-		return '<a title="' + this.image_title.replace('%openid_provider_name%', provider["name"]) + '" href="javascript:openid.signin(\'' + box_id + '\');"'
-				+ ' style="background: #FFF url(' + this.img_path + 'iconsets/oxygen/openid-providers-' + this.sprite + '.png); background-position: ' + x + 'px ' + y + 'px" '
-				+ 'class="' + box_id + ' openid_' + box_size + '_btn button button-silver"></a>';
+		var image_ext = box_size == 'small' ? '.ico.png' : '.png';
+		return '<a title="' + this.image_title.replace('%openid_provider_name%', provider["name"]) + '" href="javascript:TBG.OpenID.signin(\'' + box_id + '\');"'
+				+ 'class="' + box_id + ' openid_' + box_size + '_btn button button-silver"><img src="' + TBG.basepath + 'iconsets/oxygen/openid_providers.' + box_size + '/' + box_id + image_ext + '"></a>';
 	},
 
 	/**
@@ -3773,13 +3760,12 @@ var openid = {
 	 *
 	 * @return {Void}
 	 */
-	signin : function(box_id, onload) {
-		var provider = providers[box_id];
+	signin : function(box_id) {
+		var provider = (this.providers_large[box_id]) ? this.providers_large[box_id] : this.providers_small[box_id];
 		if (!provider) {
 			return;
 		}
 		this.highlight(box_id);
-		this.setCookie(box_id);
 		this.provider_id = box_id;
 		this.provider_url = provider['url'];
 		// prompt user for input?
@@ -3787,9 +3773,8 @@ var openid = {
 			this.useInputBox(provider);
 		} else {
 			$('openid_input_area').innerHTML = '';
-			if (!onload) {
-				$('openid_form').submit();
-			}
+			this.submit();
+			$('openid_form').submit();
 		}
 	},
 
@@ -3799,19 +3784,12 @@ var openid = {
 	 * @return {Boolean}
 	 */
 	submit : function() {
-		var url = openid.provider_url;
+		var url = this.provider_url;
 		var username_field = $('openid_username');
 		var username = username_field ? $('openid_username').getValue() : '';
-		console.log(username);
-		console.log(url);
 		if (url) {
 			url = url.replace('{username}', username);
-			openid.setOpenIdUrl(url);
-		}
-		if (url.indexOf("javascript:") == 0) {
-			url = url.substr("javascript:".length);
-			eval(url);
-			return false;
+			this.setOpenIdUrl(url);
 		}
 		return true;
 	},
@@ -3877,14 +3855,14 @@ var openid = {
 		if (provider['name'] == 'OpenID') {
 			id = this.input_id;
 			value = 'http://';
-			style = 'background: #FFF url(../../iconsets/oxygen/openid-inputicon.gif) no-repeat scroll 0 50%; padding-left:18px;';
+			style = 'background: #FFF url(' + TBG.basepath + 'iconsets/oxygen/openid-inputicon.gif) no-repeat scroll 0 50%; padding-left:18px;';
 		}
 		html = '<input id="' + id + '" type="text" style="' + style + '" name="' + id + '" value="' + value + '" />';
 		if (label) {
 			html += '<label for="' + id + '">' + label + '</label>';
 		}
-				/*+ '<input id="openid_submit" type="submit" value="' + this.signin_text + '"/>'; */
 		input_area.innerHTML = html;
+		$('openid_submit_button').show();
 
 //		$('openid_submit').onclick = this.submit;
 		$(id).focus();

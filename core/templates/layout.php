@@ -98,7 +98,7 @@
 		</table>
 		<script type="text/javascript">
 			document.observe('dom:loaded', function() {
-				var f_init = function() {TBG.initialize({ autocompleter_url: '<?php echo (TBGContext::isProjectContext()) ? make_url('project_quicksearch', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('quicksearch'); ?>'})};
+				var f_init = function() {TBG.initialize({ basepath: '<?php echo TBGContext::getTBGPath(); ?>', autocompleter_url: '<?php echo (TBGContext::isProjectContext()) ? make_url('project_quicksearch', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('quicksearch'); ?>'})};
 				<?php if (TBGContext::isDebugMode()): ?>
 					TBG.debug = true;
 					TBG.debugUrl = '<?php echo make_url('debug', array('debug_id' => '___debugid___')); ?>';
