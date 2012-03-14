@@ -1474,10 +1474,6 @@
 			{
 				return $this->getGroup()->getID();
 			}
-			elseif (is_numeric($this->getGroup()))
-			{
-				return $this->getGroup();
-			}
 
 			return null;
 		}
@@ -1797,7 +1793,7 @@
 		public function hasPermission($permission_type, $target_id = 0, $module_name = 'core', $explicit = false, $permissive = false)
 		{
 			TBGLogging::log('Checking permission '.$permission_type);
-			$group_id = ($this->getGroup() instanceof TBGGroup) ? $this->getGroup()->getID() : 0;
+			$group_id = (int) $this->getGroupID();
 			$retval = TBGContext::checkPermission($permission_type, $this->getID(), $group_id, $this->getTeams(), $target_id, $module_name, $explicit, $permissive);
 			TBGLogging::log('...done (Checking permissions '.$permission_type.') - return was '.(($retval) ? 'true' : 'false'));
 			
