@@ -243,7 +243,7 @@
 <?php endif; ?>
 <?php if ($username_chosen): ?>
 	<script type="text/javascript">
-		TBG.Main.Helpers.Message.success('<?php echo __("You've chosen the username '%username%'", array('%username%' => $tbg_user->getUsername())); ?>', '<?php echo __('Before you can use the new username to log in, you must pick a password via the "%change_password%" button.', array('%change_password%' => __('Change password'))); ?>');
+		TBG.Main.Helpers.Message.success('<?php echo __("You\'ve chosen the username \'%username%\'", array('%username%' => $tbg_user->getUsername())); ?>', '<?php echo __('Before you can use the new username to log in, you must pick a password via the "%change_password%" button.', array('%change_password%' => __('Change password'))); ?>');
 	</script>
 <?php endif; ?>
 <?php if ($openid_used): ?>
