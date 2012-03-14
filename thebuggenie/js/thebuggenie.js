@@ -95,17 +95,19 @@ var TBG = {
  * Initializes the autocompleter
  */
 TBG.Core._initializeAutocompleter = function() {
-	new Ajax.Autocompleter(
-		"searchfor",
-		"searchfor_autocomplete_choices",
-		TBG.autocompleter_url,
-		{
-			paramName: "filters[text][value]",
-			minChars: 2,
-			indicator: 'quicksearch_indicator',
-			afterUpdateElement: TBG.Core._extractAutocompleteValue
-		}
-	);
+	if ($('searchfor')) {
+		new Ajax.Autocompleter(
+			"searchfor",
+			"searchfor_autocomplete_choices",
+			TBG.autocompleter_url,
+			{
+				paramName: "filters[text][value]",
+				minChars: 2,
+				indicator: 'quicksearch_indicator',
+				afterUpdateElement: TBG.Core._extractAutocompleteValue
+			}
+		);
+	}
 };
 
 /**
