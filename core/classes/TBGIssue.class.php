@@ -4316,7 +4316,7 @@
 								$new_name = ($this->getOwner() instanceof TBGIdentifiable) ? $this->getOwner()->getName() : TBGContext::getI18n()->__('Not owned by anyone');
 								
 								$this->addLogEntry(TBGLogTable::LOG_ISSUE_OWNED, $new_name);
-								$comment_lines[] = TBGContext::getI18n()->__("The owner has been changed to '''%new_name%'''.", array('%previous_name%' => $old_name, '%new_name%' => $new_name));
+								$comment_lines[] = TBGContext::getI18n()->__("The owner has been changed to '''%new_name%'''.", array('%new_name%' => $new_name));
 								$is_saved_owner = true;
 							}
 							break;
