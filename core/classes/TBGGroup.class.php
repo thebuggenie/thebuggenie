@@ -92,7 +92,7 @@
 			if ($scope->isDefault())
 			{
 				list($guestuser_id, $adminuser_id) = TBGUser::loadFixtures($scope, $admin_group, $user_group, $guest_group);
-				TBGUserScopesTable::getTable()->addUserToScope($guestuser_id, $scope->getID(), $user_group->getID(), true);
+				TBGUserScopesTable::getTable()->addUserToScope($guestuser_id, $scope->getID(), $guest_group->getID(), true);
 				TBGUserScopesTable::getTable()->addUserToScope($adminuser_id, $scope->getID(), $admin_group->getID(), true);
 			}
 			else

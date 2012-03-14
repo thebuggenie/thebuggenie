@@ -235,6 +235,7 @@
 				{
 					TBGModule::installModule('publish', $this);
 					TBGContext::setScope($prev_scope);
+					TBGContext::clearPermissionsCache();
 				}
 			}
 		}
@@ -261,27 +262,27 @@
 			// Load initial settings
 			TBGSettingsTable::getTable()->loadFixtures($this);
 			TBGSettings::loadSettings();
-			
+
 			// Load group, users and permissions fixtures
 			TBGGroup::loadFixtures($this);
 
 			// Load initial teams
 			TBGTeam::loadFixtures($this);
-			
+
 			// Set up user states, like "available", "away", etc
 			TBGUserstate::loadFixtures($this);
-			
+
 			// Set up data types
 			list($b_id, $f_id, $e_id, $t_id, $u_id, $i_id) = TBGIssuetype::loadFixtures($this);
 			$scheme = TBGIssuetypeScheme::loadFixtures($this);
 			TBGIssueFieldsTable::getTable()->loadFixtures($this, $scheme, $b_id, $f_id, $e_id, $t_id, $u_id, $i_id);
 			TBGDatatype::loadFixtures($this);
-			
+
 			// Set up workflows
 			TBGWorkflow::loadFixtures($this);
 			TBGWorkflowScheme::loadFixtures($this);
 			TBGWorkflowIssuetypeTable::getTable()->loadFixtures($this);
-			
+
 			// Set up left menu links
 			TBGLinksTable::getTable()->loadFixtures($this);
 		}
