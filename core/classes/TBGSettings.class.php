@@ -104,7 +104,7 @@
 
 		protected static $_ver_mj = 3;
 		protected static $_ver_mn = 2;
-		protected static $_ver_rev = '0-pre';
+		protected static $_ver_rev = '0RC7';
 		protected static $_ver_name = "Borg";
 		protected static $_defaultscope = null;
 		protected static $_settings = null;
