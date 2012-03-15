@@ -772,20 +772,20 @@
 		protected static function loadPreModuleRoutes()
 		{
 			TBGLogging::log('Loading first batch of routes', 'routing');
-			if (!($routes_1 = TBGCache::get(TBGCache::KEY_PREMODULES_ROUTES_CACHE)))
+			if (!($routes_1 = TBGCache::get(TBGCache::KEY_PREMODULES_ROUTES_CACHE, false)))
 			{
-				if (!($routes_1 = TBGCache::fileGet(TBGCache::KEY_PREMODULES_ROUTES_CACHE)))
+				if (!($routes_1 = TBGCache::fileGet(TBGCache::KEY_PREMODULES_ROUTES_CACHE, false)))
 				{
 					TBGLogging::log('generating routes', 'routing');
 					require THEBUGGENIE_CORE_PATH . 'load_routes.inc.php';
-					TBGCache::fileAdd(TBGCache::KEY_PREMODULES_ROUTES_CACHE, self::getRouting()->getRoutes());
+					TBGCache::fileAdd(TBGCache::KEY_PREMODULES_ROUTES_CACHE, self::getRouting()->getRoutes(), false);
 				}
 				else
 				{
 					TBGLogging::log('using disk cached routes', 'routing');
 					self::getRouting()->setRoutes($routes_1);
 				}
-				TBGCache::add(TBGCache::KEY_PREMODULES_ROUTES_CACHE, self::getRouting()->getRoutes());
+				TBGCache::add(TBGCache::KEY_PREMODULES_ROUTES_CACHE, self::getRouting()->getRoutes(), false);
 			}
 			else
 			{
@@ -798,20 +798,20 @@
 		protected static function loadPostModuleRoutes()
 		{
 			TBGLogging::log('Loading last batch of routes', 'routing');
-			if (!($routes = TBGCache::get(TBGCache::KEY_POSTMODULES_ROUTES_CACHE)))
+			if (!($routes = TBGCache::get(TBGCache::KEY_POSTMODULES_ROUTES_CACHE, false)))
 			{
-				if (!($routes = TBGCache::fileGet(TBGCache::KEY_POSTMODULES_ROUTES_CACHE)))
+				if (!($routes = TBGCache::fileGet(TBGCache::KEY_POSTMODULES_ROUTES_CACHE, false)))
 				{
 					TBGLogging::log('generating postmodule routes', 'routing');
 					require THEBUGGENIE_CORE_PATH . 'load_routes_postmodules.inc.php';
-					TBGCache::fileAdd(TBGCache::KEY_POSTMODULES_ROUTES_CACHE, self::getRouting()->getRoutes());
+					TBGCache::fileAdd(TBGCache::KEY_POSTMODULES_ROUTES_CACHE, self::getRouting()->getRoutes(), false);
 				}
 				else
 				{
 					TBGLogging::log('using disk cached postmodule routes', 'routing');
 					self::getRouting()->setRoutes($routes);
 				}
-				TBGCache::add(TBGCache::KEY_POSTMODULES_ROUTES_CACHE, self::getRouting()->getRoutes());
+				TBGCache::add(TBGCache::KEY_POSTMODULES_ROUTES_CACHE, self::getRouting()->getRoutes(), false);
 			}
 			else
 			{
