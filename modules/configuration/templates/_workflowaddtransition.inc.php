@@ -38,6 +38,7 @@
 						<dt><label for="add_transition_step_<?php echo $step->getID(); ?>_template"><?php echo __('Popup template'); ?></label></dt>
 						<dd>
 							<select id="add_transition_step_<?php echo $step->getID(); ?>_template" name="template">
+								<option value="" selected><?php echo __('No template used - transition happens instantly'); ?></option>
 								<?php foreach (TBGWorkflowTransition::getTemplates() as $template_key => $template_name): ?>
 									<option value="<?php echo $template_key; ?>"><?php echo $template_name; ?></option>
 								<?php endforeach; ?>
