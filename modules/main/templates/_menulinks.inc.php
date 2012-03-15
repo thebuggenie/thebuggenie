@@ -1,8 +1,10 @@
 <div class="container_div menu_links" id="<?php echo $target_type; ?>_<?php echo $target_id; ?>_container" style="margin: 0 0 5px 5px;">
 	<div class="header">
 		<?php if ($tbg_user->canEditMainMenu() && ((TBGContext::isProjectContext() && !TBGContext::getCurrentProject()->isArchived()) || !TBGContext::isProjectContext())): ?>
-			<?php echo javascript_link_tag(image_tag('action_add_link.png'), array('style' => 'float: right;', 'class' => 'image', 'onclick' => "$('attach_link_{$target_type}_{$target_id}').toggle();", 'title' => __('Add an item to the menu'))); ?>
-			<?php echo javascript_link_tag(image_tag('icon_edit.png'), array('style' => 'float: right;', 'class' => 'image', 'onclick' => "$('{$target_type}_{$target_id}_container').toggleClassName('menu_editing');", 'title' => __('Toggle menu edit mode'))); ?>
+			<div class="button-group" style="float: right; margin: -3px -6px 0 0;">
+				<?php echo javascript_link_tag(image_tag('icon_edit.png'), array('class' => 'button button-silver button-icon', 'onclick' => "$('{$target_type}_{$target_id}_container').toggleClassName('menu_editing');", 'title' => __('Toggle menu edit mode'))); ?>
+				<?php echo javascript_link_tag(image_tag('action_add_link.png'), array('class' => 'button button-silver button-icon', 'onclick' => "$('attach_link_{$target_type}_{$target_id}').toggle();", 'title' => __('Add an item to the menu'))); ?>
+			</div>
 		<?php endif; ?>
 		<?php echo $title; ?>
 	</div>
