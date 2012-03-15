@@ -2385,13 +2385,21 @@
 
 		public function runRemoveLink(TBGRequest $request)
 		{
-			if ($request['link_id'] != 0)
+			if (!$this->getUser()->canEditMainMenu())
 			{
-				TBGLinksTable::getTable()->removeByTargetTypeTargetIDandLinkID($request['target_type'], $request['target_id'], $request['link_id']);
-				return $this->renderJSON(array('message' => TBGContext::getI18n()->__('Link removed!')));
+				$this->getResponse()->setHttpStatus(403);
+				return $this->renderJSON(array('error' => TBGContext::getI18n()->__('You do not have access to removing links')));
 			}
-			$this->getResponse()->setHttpStatus(400);
-			return $this->renderJSON(array('error' => TBGContext::getI18n()->__('You have to provide a valid link id')));
+
+			if (!$request['link_id'])
+			{
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('error' => TBGContext::getI18n()->__('You have to provide a valid link id')));
+			}
+
+			TBGLinksTable::getTable()->removeByTargetTypeTargetIDandLinkID($request['target_type'], $request['target_id'], $request['link_id']);
+			TBGContext::clearMenuLinkCache();
+			return $this->renderJSON(array('message' => TBGContext::getI18n()->__('Link removed!')));
 		}
 		
 		public function runDeleteComment(TBGRequest $request)

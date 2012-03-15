@@ -769,6 +769,16 @@
 			}
 		}
 
+		public static function clearMenuLinkCache()
+		{
+			if (!TBGCache::isEnabled()) return;
+			foreach (array(TBGCache::KEY_MAIN_MENU_LINKS) as $key)
+			{
+				TBGCache::delete($key);
+				TBGCache::fileDelete($key);
+			}
+		}
+
 		protected static function loadPreModuleRoutes()
 		{
 			TBGLogging::log('Loading first batch of routes', 'routing');
@@ -2359,10 +2369,10 @@
 		 */
 		public static function getMainLinks()
 		{
-			if (!$links = TBGCache::get('core_main_links'))
+			if (!$links = TBGCache::get(TBGCache::KEY_MAIN_MENU_LINKS))
 			{
-				$links = \b2db\Core::getTable('TBGLinksTable')->getMainLinks();
-				TBGCache::add('core_main_links', $links);
+				$links = TBGLinksTable::getTable()->getMainLinks();
+				TBGCache::add(TBGCache::KEY_MAIN_MENU_LINKS, $links);
 			}
 			return $links;
 		}
