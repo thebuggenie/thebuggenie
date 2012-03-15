@@ -24,6 +24,8 @@
 		const KEY_POSTMODULES_ROUTES_CACHE = '_routes_postmodules';
 		const KEY_PERMISSIONS_CACHE = '_permissions';
 		const KEY_MAIN_MENU_LINKS = '_mainmenu_links';
+		const KEY_TBG_FACTORY = 'TBGFactory_cache';
+		const KEY_I18N = '_i18n_';
 		const KEY_TEXTPARSER_ISSUE_REGEX = 'TBGTextParser::getIssueRegex';
 		
 		protected static $_enabled = true;

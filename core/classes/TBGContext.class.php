@@ -700,17 +700,17 @@
 			}
 			
 			TBGLogging::log('Loading i18n strings');
-			if (!self::$_i18n = TBGCache::get("i18n_{$language}"))
+			if (!self::$_i18n = TBGCache::get(TBGCache::KEY_I18N.$language, false))
 			{
 				TBGLogging::log("Loading strings from file ({$language})");
 				self::$_i18n = new TBGI18n($language);
-				self::$_i18n->initialize();
-				TBGCache::add("i18n_{$language}", self::$_i18n);
+				TBGCache::add(TBGCache::KEY_I18N.$language, self::$_i18n, false);
 			}
 			else
 			{
 				TBGLogging::log('Using cached i18n strings');
 			}
+			self::$_i18n->initialize();
 			TBGLogging::log('...done');
 		}
 

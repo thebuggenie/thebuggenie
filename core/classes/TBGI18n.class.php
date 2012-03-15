@@ -62,12 +62,14 @@
 				TBGLogging::log("Initiating with file '{$filename}", 'i18n');
 				include $filename;
 			}
-			$this->loadStrings();
-			foreach (TBGContext::getModules() as $module_name => $module)
+			if ($this->_strings === null)
 			{
-				$this->loadStrings($module_name);
+				$this->loadStrings();
+				foreach (TBGContext::getModules() as $module_name => $module)
+				{
+					$this->loadStrings($module_name);
+				}
 			}
-			
 		}
 		
 		public function setLanguage($language)
@@ -165,6 +167,7 @@
 		
 		protected function loadStrings($module = null)
 		{
+			if ($this->_strings === null) $this->_strings = array();
 			$filename = '';
 			$strings = array();
 			if ($module !== null)
