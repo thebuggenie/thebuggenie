@@ -92,7 +92,7 @@
 			if (!self::isEnabled()) return null;
 
 			$key = self::getScopedKeyIfAppliccable($key, $prepend_scope);
-			if (!self::fileHas($key)) return null;
+			if (!self::fileHas($key, $prepend_scope)) return null;
 
 			$filename = self::_getFilenameForKey($key);
 			$value = unserialize(file_get_contents($filename));
