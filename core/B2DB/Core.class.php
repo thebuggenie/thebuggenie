@@ -40,8 +40,7 @@
 		protected static $_aliascnt = 0;
 		protected static $_transaction_active = false;
 		protected static $_tables = array();
-		protected static $_debug_mode = true;
-		protected static $_cache_dir;
+		protected static $_debug_mode = false;
 		protected static $_cached_entity_classes = array();
 		protected static $_cached_table_classes = array();
 
@@ -565,16 +564,6 @@
 			return (bool) (self::$_db_connection instanceof \PDO);
 		}
 
-		public static function getCacheDir()
-		{
-			if (self::$_cache_dir === null)
-			{
-				$cache_dir = (\defined('B2DB_CACHEPATH')) ? \realpath(B2DB_CACHEPATH) : \realpath(B2DB_BASEPATH . 'cache/');
-				self::$_cache_dir = $cache_dir;
-			}
-			return self::$_cache_dir;
-		}
-		
 		/**
 		 * Toggle the transaction state
 		 *
@@ -790,8 +779,8 @@
 
 			$key = 'b2db_cache_'.$classname;
 			if (!self::$_debug_mode) {
-				\TBGCache::add($key, self::$_cached_table_classes[$classname]);
-				\TBGCache::fileAdd($key, self::$_cached_table_classes[$classname]);
+				\TBGCache::add($key, self::$_cached_table_classes[$classname], false);
+				\TBGCache::fileAdd($key, self::$_cached_table_classes[$classname], false);
 			}
 		}
 
@@ -877,8 +866,8 @@
 			}
 			$key = 'b2db_cache_'.$classname;
 			if (!self::$_debug_mode) {
-				\TBGCache::add($key, self::$_cached_entity_classes[$classname]);
-				\TBGCache::fileAdd($key, self::$_cached_entity_classes[$classname]);
+				\TBGCache::add($key, self::$_cached_entity_classes[$classname], false);
+				\TBGCache::fileAdd($key, self::$_cached_entity_classes[$classname], false);
 			}
 		}
 
@@ -887,10 +876,10 @@
 			if (!array_key_exists($classname, self::$_cached_entity_classes))
 			{
 				$entity_key = 'b2db_cache_'.$classname;
-				if (\TBGCache::has($entity_key)) {
-					self::$_cached_entity_classes[$classname] = \TBGCache::get($entity_key);
-				} elseif (\TBGCache::fileHas($entity_key)) {
-					self::$_cached_entity_classes[$classname] = \TBGCache::fileGet($entity_key);
+				if (\TBGCache::has($entity_key, false)) {
+					self::$_cached_entity_classes[$classname] = \TBGCache::get($entity_key, false);
+				} elseif (\TBGCache::fileHas($entity_key, false)) {
+					self::$_cached_entity_classes[$classname] = \TBGCache::fileGet($entity_key, false);
 				} else {
 					self::cacheEntityClass($classname);
 				}
@@ -902,10 +891,10 @@
 			if (!array_key_exists($classname, self::$_cached_table_classes))
 			{
 				$key = 'b2db_cache_'.$classname;
-				if (\TBGCache::has($key)) {
-					self::$_cached_table_classes[$classname] = \TBGCache::get($key);
-				} elseif (\TBGCache::fileHas($key)) {
-					self::$_cached_table_classes[$classname] = \TBGCache::fileGet($key);
+				if (\TBGCache::has($key, false)) {
+					self::$_cached_table_classes[$classname] = \TBGCache::get($key, false);
+				} elseif (\TBGCache::fileHas($key, false)) {
+					self::$_cached_table_classes[$classname] = \TBGCache::fileGet($key, false);
 				} else {
 					self::cacheTableClass($classname);
 				}
