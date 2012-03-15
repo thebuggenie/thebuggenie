@@ -39,8 +39,8 @@
 			/* Prepare variables */			
 			try
 			{
-				$row = TBGProjectsTable::getTable()->doSelectById($project);
-				$project = new TBGProject($project, $row);
+				$project_id = $this->getProvidedArgument('projectid');
+				$project = new TBGProject($project_id);
 				TBGContext::setScope($project->getScope());
 			}
 			catch (Exception $e)
