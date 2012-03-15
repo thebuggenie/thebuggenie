@@ -100,27 +100,40 @@
 			}
 			if ($project instanceof TBGProject)
 			{
-				$account_id = $request['account_id'];
-				$account = new TBGIncomingEmailAccount($account_id);
-				$account->setIssuetype((integer) $request['issuetype']);
-				$account->setProject($project);
-				$account->setPort((integer) $request['port']);
-				$account->setName($request['name']);
-				$account->setServer($request['servername']);
-				$account->setUsername($request['username']);
-				$account->setPassword($request['password']);
-				$account->setSSL((boolean) $request['ssl']);
-				$account->setServerType((integer) $request['account_type']);
-				$account->save();
-				
-				if (!$account_id)
+				try
 				{
-					return $this->renderTemplate('mailing/incomingemailaccount', array('project' => $project, 'account' => $account));
+					$account_id = $request['account_id'];
+					$account = ($account_id) ? new TBGIncomingEmailAccount($account_id) : new TBGIncomingEmailAccount();
+					$account->setIssuetype((integer) $request['issuetype']);
+					$account->setProject($project);
+					$account->setPort((integer) $request['port']);
+					$account->setName($request['name']);
+					$account->setServer($request['servername']);
+					$account->setUsername($request['username']);
+					$account->setPassword($request['password']);
+					$account->setSSL((boolean) $request['ssl']);
+					$account->setServerType((integer) $request['account_type']);
+					$account->save();
+
+					if (!$account_id)
+					{
+						return $this->renderTemplate('mailing/incomingemailaccount', array('project' => $project, 'account' => $account));
+					}
+					else
+					{
+						return $this->renderJSON(array('name' => $account->getName()));
+					}
 				}
-				else
+				catch (Exception $e)
 				{
-					return $this->renderJSON(array('name' => $account->getName()));
+					$this->getResponse()->setHttpStatus(400);
+					return $this->renderJSON(array('error' => $this->getI18n()->__('This is not a valid mailing account')));
 				}
+			}
+			else
+			{
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('error' => $this->getI18n()->__('This is not a valid project')));
 			}
 		}
 		
@@ -129,10 +142,23 @@
 			TBGContext::loadLibrary('common');
 			if ($account_id = $request['account_id'])
 			{
-				$account = new TBGIncomingEmailAccount($account_id);
-				TBGContext::getModule('mailing')->processIncomingEmailAccount($account);
-				
-				return $this->renderJSON(array('account_id' => $account->getID(), 'time' => tbg_formatTime($account->getTimeLastFetched(), 6), 'count' => $account->getNumberOfEmailsLastFetched()));
+				try
+				{
+					$account = new TBGIncomingEmailAccount($account_id);
+					TBGContext::getModule('mailing')->processIncomingEmailAccount($account);
+
+					return $this->renderJSON(array('account_id' => $account->getID(), 'time' => tbg_formatTime($account->getTimeLastFetched(), 6), 'count' => $account->getNumberOfEmailsLastFetched()));
+				}
+				catch (Exception $e)
+				{
+					$this->getResponse()->setHttpStatus(400);
+					return $this->renderJSON(array('error' => $this->getI18n()->__('This is not a valid mailing account')));
+				}
+			}
+			else
+			{
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('error' => $this->getI18n()->__('This is not a valid mailing account')));
 			}
 		}
 		
@@ -140,10 +166,23 @@
 		{
 			if ($account_id = $request['account_id'])
 			{
-				$account = new TBGIncomingEmailAccount($account_id);
-				$account->delete();
-				
-				return $this->renderText('ok');
+				try
+				{
+					$account = new TBGIncomingEmailAccount($account_id);
+					$account->delete();
+
+					return $this->renderJSON(array('message' => $this->getI18n()->__('Incoming email account deleted')));
+				}
+				catch (Exception $e)
+				{
+					$this->getResponse()->setHttpStatus(400);
+					return $this->renderJSON(array('error' => $this->getI18n()->__('This is not a valid mailing account')));
+				}
+			}
+			else
+			{
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('error' => $this->getI18n()->__('This is not a valid mailing account')));
 			}
 		}
 
