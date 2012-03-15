@@ -89,7 +89,7 @@
 	$routes[] = array('configure_projects_icons', '/configure/project/:project_id/icons', 'project', 'projectIcons');
 	$routes[] = array('configure_projects_workflow', '/configure/project/:project_id/workflow', 'project', 'projectWorkflow');
 	$routes[] = array('configure_projects_workflow_table', '/configure/project/:project_id/workflow/get/table', 'project', 'projectWorkflowTable');
-	$routes[] = array('configure_build_action', '/configure/build/:build_id/do/:build_action', 'project', 'buildAction');
+	$routes[] = array('configure_build_action', '/configure/project/:project_id/:build_id/do/:build_action', 'project', 'buildAction');
 	$routes[] = array('configure_edition_set_leadby', '/configure/project/:project_id/edition/:edition_id/set/:field/*', 'project', 'setItemLead', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_PROJECTS, 'item_type' => 'edition'));
 	$routes[] = array('configure_edition_add_build', '/configure/project/:project_id/edition/:edition_id/add/build', 'project', 'addBuild');
 	$routes[] = array('configure_edition_add_component', '/configure/project/:project_id/edition/:edition_id/add/component/:component_id', 'project', 'editEditionComponent', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_PROJECTS, 'mode' => 'add'));
