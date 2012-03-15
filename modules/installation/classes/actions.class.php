@@ -528,6 +528,12 @@
 			$crit->addOr(TBGLinksTable::URL, 'http://www.thebuggenie.com/thebuggenie');
 			$linkstable->doUpdate($crit);
 
+			$listtypestable = TBGListTypesTable::getTable();
+			$crit = $listtypestable->getCriteria();
+			$crit->addUpdate(TBGListTypesTable::ITEMTYPE, 'role');
+			$crit->addWhere(TBGListTypesTable::ITEMTYPE, 'projectrole');
+			$listtypestable->doUpdate($crit);
+
 			TBGWorkflowTransitionsTable::getTable()->upgradeFrom3dot1();
 			TBGSettings::saveSetting(TBGSettings::SETTING_ICONSET, TBGSettings::get(TBGSettings::SETTING_THEME_NAME));
 			TBGContext::setPermission('readarticle', 0, 'publish', 0, 0, 0, true);
