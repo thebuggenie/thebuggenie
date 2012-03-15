@@ -2100,7 +2100,7 @@
 
 				foreach ($this->getTeams() as $team)
 				{
-					$project_ids = array_keys($team->getAssociatedProjects());
+					$project_ids += array_keys($team->getAssociatedProjects());
 				}
 				
 				$project_ids = array_unique($project_ids);

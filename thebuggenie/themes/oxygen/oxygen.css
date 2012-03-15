@@ -1011,7 +1011,7 @@ table.issue_affects td img { vertical-align: bottom; }
 .milestone_issues_indicator { float: right; margin: 0 5px 0 0; }
 
 #dashboard_righthand #associated_projects li { padding: 0 5px 5px 0; border: 0; position: relative; margin: 0; }
-#dashboard_righthand #associated_projects li .project_name { text-align: left; padding: 0; font-weight: bold; }
+#dashboard_righthand #associated_projects li .project_name { text-align: left; padding: 0 5px 5px; font-weight: bold; }
 /* end user dashboard */
 
 /* scrum page styling */

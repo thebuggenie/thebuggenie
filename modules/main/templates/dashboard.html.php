@@ -50,18 +50,16 @@
 						<?php foreach ($tbg_user->getAssociatedProjects() as $project): ?>
 							<?php if ($project->isDeleted()): continue; endif; ?>
 							<li style="text-align: right;">
-								<div style="padding: 5px;">
+								<div style="padding: 0 5px;">
 									<div class="project_name">
-										<?php echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), $project->getName()); ?>
+										<?php echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), $project->getName(), array('style' => 'font-weight: normal; font-size: 1.2em;')); ?>
 									</div>
-									<div style="float: left; font-weight: bold;"><?php echo __('Go to'); ?>:</div>
-									<?php echo link_tag(make_url('project_open_issues', array('project_key' => $project->getKey())), __('Issues')); ?>
-									|
-									<?php if ($project->usesScrum()): ?>
-										<?php echo link_tag(make_url('project_planning', array('project_key' => $project->getKey())), __('Planning')); ?>
-										|
-									<?php endif; ?>
-									<?php echo link_tag(make_url('project_roadmap', array('project_key' => $project->getKey())), __('Roadmap')); ?>
+									<div style="float: right;" class="button-group">
+										<?php echo link_tag(make_url('project_open_issues', array('project_key' => $project->getKey())), __('Issues'), array('class' => 'button button-silver')); ?>
+										<?php echo link_tag(make_url('project_planning', array('project_key' => $project->getKey())), __('Planning'), array('class' => 'button button-silver')); ?>
+										<?php echo link_tag(make_url('project_roadmap', array('project_key' => $project->getKey())), __('Roadmap'), array('class' => 'button button-silver')); ?>
+									</div>
+									<br style="clear: both;">
 								</div>
 							</li>
 						<?php endforeach; ?>
