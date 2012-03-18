@@ -119,36 +119,6 @@
 			return $this->_language;
 		}
 		
-		public function loadHelpTopic($topic, $module = '')
-		{
-			if ($module == '')
-			{
-				if (TBGSettings::get($topic, 'help'))
-				{
-					return TBGSettings::get($topic, 'help');
-				}
-				$filename = THEBUGGENIE_PATH . 'i18n/' . $this->getCurrentLanguage() . "/help/$topic.inc.php";
-				if (file_exists($filename))
-				{
-					return file_get_contents($filename);
-				}
-			}
-			else
-			{
-				$filename = THEBUGGENIE_PATH . 'i18n/' . $this->getCurrentLanguage() . "/help/$module/$topic.inc.php";
-				if (file_exists($filename))
-				{
-					return file_get_contents($filename);
-				}
-				$filename = THEBUGGENIE_MODULES_PATH . $module . DS . 'help' . DS . "{$topic}.inc.php";
-				if (file_exists($filename))
-				{
-					return file_get_contents($filename);
-				}
-			}
-			return false;
-		}
-		
 		public function getCharset()
 		{
 			if (TBGContext::isInstallmode()) return $this->_charset;
