@@ -1094,7 +1094,7 @@
 
 		public function countEditions()
 		{
-			if ($this->_editions === null)
+			if ($this->_editions !== null)
 			{
 				return count($this->_editions);
 			}

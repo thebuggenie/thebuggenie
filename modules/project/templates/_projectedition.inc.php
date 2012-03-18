@@ -189,7 +189,7 @@
 							<?php foreach ($edition->getProject()->getComponents() as $aComponent): ?>
 								<tr id="edition_component_<?php echo $aComponent->getID(); ?>"<?php if (!$edition->hasComponent($aComponent)): ?> style="display: none;"<?php endif; ?>>
 									<td style="width: 20px; padding: 2px;"><?php echo image_tag('icon_components.png'); ?></td>
-									<td style="width: auto; padding: 2px;"><?php print $aComponent; ?></td>
+									<td style="width: auto; padding: 2px;"><?php print $aComponent->getName(); ?></td>
 								<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 									<td style="width: 70px; text-align: right;"><a href="javascript:void(0);" onclick="TBG.Project.Edition.Component.remove('<?php echo make_url('configure_edition_remove_component', array('project_id' => $edition->getProject()->getID(), 'edition_id' => $edition->getID(), 'component_id' => $aComponent->getID())); ?>', <?php echo $aComponent->getID(); ?>);"><?php echo __('Remove'); ?>&nbsp;&gt;&gt;</a></td>
 								<?php endif; ?>
@@ -212,7 +212,7 @@
 									<td style="width: 50px; text-align: left;"><a href="javascript:void(0);" onclick="TBG.Project.Edition.Component.add('<?php echo make_url('configure_edition_add_component', array('project_id' => $edition->getProject()->getID(), 'edition_id' => $edition->getID(), 'component_id' => $aComponent->getID())); ?>', <?php echo $aComponent->getID(); ?>);">&lt;&lt;&nbsp;<?php echo __('Add'); ?></a></td>
 								<?php endif; ?>
 									<td style="width: 20px; padding: 2px;"><?php echo image_tag('icon_components.png'); ?></td>
-									<td style="width: auto; padding: 2px;"><?php print $aComponent; ?></td>
+									<td style="width: auto; padding: 2px;"><?php print $aComponent->getName(); ?></td>
 								</tr>
 							<?php endforeach; ?>
 							<?php if (count($edition->getProject()->getComponents()) == 0): ?>

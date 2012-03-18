@@ -49,6 +49,14 @@
 			return $res;
 		}
 
+		public function deleteByEditionID($edition_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::EDITION, $edition_id);
+			$res = $this->doDelete($crit);
+			return $res;
+		}
+
 		public function getByEditionIDandComponentID($edition_id, $component_id)
 		{
 			$crit = $this->getCriteria();
@@ -80,6 +88,14 @@
 			$crit->addWhere(self::COMPONENT, $component_id);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$res = $this->doDelete($crit);
+		}
+
+		public function deleteByComponentID($component_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::COMPONENT, $component_id);
+			$res = $this->doDelete($crit);
+			return $res;
 		}
 
 	}

@@ -354,7 +354,9 @@
 
 		protected function _preDelete()
 		{
-			\b2db\Core::getTable('TBGEditionAssigneesTable')->deleteByEditionID($this->getID());
+			TBGEditionComponentsTable::getTable()->deleteByEditionID($this->getID());
+			TBGEditionAssignedUsersTable::getTable()->deleteByEditionID($this->getID());
+			TBGEditionAssignedTeamsTable::getTable()->deleteByEditionID($this->getID());
 		}
 		
 		/**

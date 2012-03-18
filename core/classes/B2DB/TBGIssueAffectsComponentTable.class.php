@@ -130,4 +130,11 @@
 			}
 		}
 		
+		public function deleteByComponentID($component_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::COMPONENT, $component_id);
+			$res = $this->doDelete($crit);
+			return $res;
+		}
 	}

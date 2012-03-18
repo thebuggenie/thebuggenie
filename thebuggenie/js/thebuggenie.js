@@ -1794,6 +1794,7 @@ TBG.Project.Component.remove = function(url, cid) {
 			remove: ['show_component_'+cid, 'edit_component_'+cid, 'component_'+cid+'_permissions'],
 			callback: function(json) {
 				if (json.itemcount == 0) $('no_components').show();
+				TBG.Main.Helpers.Dialog.dismiss();
 			}
 		},
 		failure: {

@@ -38,7 +38,15 @@
 		 */
 		protected $_project = null;
 		
-		protected $_assignees = null;
+		/**
+		 * @Relates(class="TBGUser", collection=true, manytomany=true, joinclass="TBGComponentAssignedUsersTable")
+		 */
+		protected $_assigned_users;
+
+		/**
+		 * @Relates(class="TBGTeam", collection=true, manytomany=true, joinclass="TBGComponentAssignedTeamsTable")
+		 */
+		protected $_assigned_teams;
 		
 		protected function _postSave($is_new)
 		{
@@ -64,66 +72,69 @@
 			$this->_project = $project;
 		}
 		
-		public function addAssignee($assignee, $role)
-		{
-			$retval = TBGComponentAssigneesTable::getTable()->addAssigneeToComponent($this->getID(), $assignee, $role);
-			
-			return $retval;
-		}
-		
 		protected function _preDelete()
 		{
-			$crit = new \b2db\Criteria();
-			$crit->addWhere(TBGIssueAffectsComponentTable::COMPONENT, $this->getID());
-			\b2db\Core::getTable('TBGIssueAffectsComponentTable')->doDelete($crit);
-			$crit = new \b2db\Criteria();
-			$crit->addWhere(TBGEditionComponentsTable::COMPONENT, $this->getID());
-			\b2db\Core::getTable('TBGEditionComponentsTable')->doDelete($crit);
-			$crit = new \b2db\Criteria();
-			$crit->addWhere(TBGComponentAssigneesTable::COMPONENT_ID, $this->getID());
-			$crit->addWhere(TBGComponentAssigneesTable::SCOPE, TBGContext::getScope()->getID());
-			\b2db\Core::getTable('TBGComponentAssigneesTable')->doDelete($crit);
-		}
-		
-		protected function _populateAssignees()
-		{
-			if ($this->_assignees === null)
-			{
-				$this->_assignees = TBGComponentAssigneesTable::getTable()->getByComponentID($this->getID());
-			}
+			TBGIssueAffectsComponentTable::getTable()->deleteByComponentID($this->getID());
+			TBGEditionComponentsTable::getTable()->deleteByComponentID($this->getID());
+			TBGComponentAssignedUsersTable::getTable()->deleteByComponentID($this->getID());
+			TBGComponentAssignedTeamsTable::getTable()->deleteByComponentID($this->getID());
 		}
 		
 		/**
-		 * Get assignees for this component
-		 * 
-		 * @return array
+		 * Add an assignee to the component
+		 *
+		 * @param TBGIdentifiableClass $assignee
+		 * @param integer $role
+		 *
+		 * @return boolean
 		 */
-		public function getAssignees()
+		public function addAssignee(TBGIdentifiableClass $assignee, $role)
 		{
-			$this->_populateAssignees();
-			return $this->_assignees;
+			if ($assignee instanceof TBGUser)
+				$retval = TBGComponentAssignedUsersTable::getTable()->addUserToComponent($this->getID(), $assignee, $role);
+			elseif ($assignee instanceof TBGTeam)
+				$retval = TBGComponentAssignedTeamsTable::getTable()->addTeamToComponent($this->getID(), $assignee, $role);
+
+			return $retval;
 		}
-		
+
+		/**
+		 * Add an assignee to the component
+		 *
+		 * @param TBGIdentifiableClass $assignee
+		 * @param integer $role
+		 *
+		 * @return boolean
+		 */
+		public function removeAssignee(TBGIdentifiableClass $assignee)
+		{
+			if ($assignee instanceof TBGUser)
+				$retval = TBGComponentAssignedUsersTable::getTable()->removeUserFromComponent($this->getID(), $assignee, $role);
+			elseif ($assignee instanceof TBGTeam)
+				$retval = TBGComponentAssignedTeamsTable::getTable()->removeTeamFromComponent($this->getID(), $assignee, $role);
+
+			return $retval;
+		}
+
+		protected function _populateAssignees()
+		{
+			if ($this->_assigned_users === null)
+				$this->_b2dbLazyload('_assigned_users');
+
+			if ($this->_assigned_teams === null)
+				$this->_b2dbLazyload('_assigned_teams');
+		}
+
 		public function getAssignedUsers()
 		{
 			$this->_populateAssignees();
-			$users = array();
-			foreach (array_keys($this->_assignees['users']) as $user_id)
-			{
-				$users[$user_id] = TBGContext::factory()->TBGUser($user_id);
-			}
-			return $users;
+			return $this->_assigned_users;
 		}
-		
+
 		public function getAssignedTeams()
 		{
 			$this->_populateAssignees();
-			$teams = array();
-			foreach (array_keys($this->_assignees['teams']) as $team_id)
-			{
-				$teams[$team_id] = TBGContext::factory()->TBGTeam($team_id);
-			}
-			return $teams;
+			return $this->_assigned_teams;
 		}
 
 		/**
