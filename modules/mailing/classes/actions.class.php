@@ -145,7 +145,15 @@
 				try
 				{
 					$account = new TBGIncomingEmailAccount($account_id);
-					TBGContext::getModule('mailing')->processIncomingEmailAccount($account);
+					try
+					{
+						TBGContext::getModule('mailing')->processIncomingEmailAccount($account);
+					}
+					catch (Exception $e)
+					{
+						$this->getResponse()->setHttpStatus(400);
+						return $this->renderJSON(array('error' => $e->getMessage()));
+					}
 
 					return $this->renderJSON(array('account_id' => $account->getID(), 'time' => tbg_formatTime($account->getTimeLastFetched(), 6), 'count' => $account->getNumberOfEmailsLastFetched()));
 				}

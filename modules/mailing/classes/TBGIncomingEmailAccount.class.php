@@ -259,6 +259,12 @@
 			{
 				$this->_connection = imap_open($this->getConnectionString(), $this->getUsername(), $this->getPassword(), OP_READONLY);
 			}
+			if (!is_resource($this->_connection))
+			{
+				$error = imap_last_error();
+				$error = ($error === false) ? TBGContext::getI18n()->__('No error message provided') : $error;
+				throw new Exception(TBGContext::getI18n()->__('Could not connect to the specified email server(%connection_string%): %error_message%', array('%connection_string%' => $this->getConnectionString(), '%error_message%' => $error)));
+			}
 		}
 		
 		/**
