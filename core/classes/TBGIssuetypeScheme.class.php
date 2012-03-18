@@ -74,7 +74,7 @@
 			$scheme->setDescription("This is the default issuetype scheme. It is used by all projects with no specific issuetype scheme selected. This scheme cannot be edited or removed.");
 			$scheme->save();
 
-			TBGSettings::saveSetting(TBGSettings::SETTING_DEFAULT_ISSUETYPESCHEME, $scheme->getID());
+			TBGSettings::saveSetting(TBGSettings::SETTING_DEFAULT_ISSUETYPESCHEME, $scheme->getID(), 'core', $scope->getID());
 			
 			foreach (TBGIssuetype::getAll() as $issuetype)
 			{

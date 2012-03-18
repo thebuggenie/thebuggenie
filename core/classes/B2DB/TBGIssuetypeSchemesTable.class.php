@@ -50,4 +50,14 @@
 			return $this->select($crit);
 		}
 
+		public function getFirstIdByScope($scope_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addSelectionColumn(self::ID, 'id');
+			$crit->addWhere(self::SCOPE, $scope_id);
+			$crit->addOrderBy(self::ID);
+			$row = $this->doSelectOne($crit);
+			return ($row) ? $row->get('id') : 0;
+		}
+
 	}

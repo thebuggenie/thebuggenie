@@ -508,15 +508,38 @@
 				TBGContext::setPermission('page_confirm_scope_access', 0, 'core', 0, 0, 0, true, $scope->getID());
 				if (!TBGSettings::get(TBGSettings::SETTING_DEFAULT_WORKFLOW, 'core', $scope->getID()))
 				{
-					$workflows = TBGWorkflowsTable::getTable()->getAll($scope);
-					if (count($workflows))
+					$workflow_id = TBGWorkflowsTable::getTable()->getFirstIdByScope($scope->getID());
+					if ($workflow_id)
 					{
-						$default_workflow = array_shift($workflows);
-						TBGSettings::saveSetting(TBGSettings::SETTING_DEFAULT_WORKFLOW, $default_workflow->getID(), 'core', $scope->getID());
+						TBGSettings::saveSetting(TBGSettings::SETTING_DEFAULT_WORKFLOW, $workflow_id, 'core', $scope->getID());
 					}
 					else
 					{
 						TBGWorkflow::loadFixtures($scope);
+					}
+				}
+				if (!TBGSettings::get(TBGSettings::SETTING_DEFAULT_WORKFLOWSCHEME, 'core', $scope->getID()))
+				{
+					$workflow_scheme_id = TBGWorkflowSchemesTable::getTable()->getFirstIdByScope($scope->getID());
+					if ($workflow_scheme_id)
+					{
+						TBGSettings::saveSetting(TBGSettings::SETTING_DEFAULT_WORKFLOWSCHEME, $workflow_scheme_id, 'core', $scope->getID());
+					}
+					else
+					{
+						TBGWorkflowScheme::loadFixtures($scope);
+					}
+				}
+				if (!TBGSettings::get(TBGSettings::SETTING_DEFAULT_ISSUETYPESCHEME, 'core', $scope->getID()))
+				{
+					$issuetype_scheme_id = TBGIssuetypeSchemesTable::getTable()->getFirstIdByScope($scope->getID());
+					if ($issuetype_scheme_id)
+					{
+						TBGSettings::saveSetting(TBGSettings::SETTING_DEFAULT_ISSUETYPESCHEME, $issuetype_scheme_id, 'core', $scope->getID());
+					}
+					else
+					{
+						TBGIssuetypeScheme::loadFixtures($scope);
 					}
 				}
 			}

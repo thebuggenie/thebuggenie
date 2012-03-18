@@ -78,7 +78,7 @@
 			$scheme->setDescription("This is the default workflow scheme. It is used by all projects with no specific workflow scheme selected. This scheme cannot be edited or removed.");
 			$scheme->save();
 
-			TBGSettings::saveSetting(TBGSettings::SETTING_DEFAULT_WORKFLOWSCHEME, $scheme->getID());
+			TBGSettings::saveSetting(TBGSettings::SETTING_DEFAULT_WORKFLOWSCHEME, $scheme->getID(), 'core', $scope->getID());
 		}
 
 		protected function _preDelete()
