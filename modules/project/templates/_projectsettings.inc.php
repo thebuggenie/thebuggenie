@@ -42,19 +42,6 @@
 			</td>
 		</tr>
 		<tr>
-			<td><label for="use_scrum"><?php echo __('Enable agile development features'); ?></label></td>
-			<td>
-				<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-					<select name="use_scrum" id="use_scrum" style="width: 70px;">
-						<option value=1<?php if ($project->usesScrum()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
-						<option value=0<?php if (!$project->usesScrum()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
-					</select>
-				<?php else: ?>
-					<?php echo ($project->usesScrum()) ? __('Yes') : __('No'); ?>
-				<?php endif; ?>
-			</td>
-		</tr>
-		<tr>
 			<td><label for="enable_builds"><?php echo __('Enable releases'); ?></label></td>
 			<td>
 				<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>

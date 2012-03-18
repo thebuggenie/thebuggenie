@@ -1834,13 +1834,13 @@ TBG.Project._submitDetails = function(url, form_id, pid) {
 				if ($('sidebar_link_scrum') && $('use_scrum').getValue() == 1) $('sidebar_link_scrum').show();
 				else if ($('sidebar_link_scrum')) $('sidebar_link_scrum').hide();
 
-				['edition', 'component', 'build'].each(function(element) {
+				['edition', 'component'].each(function(element) {
 					if ($('enable_'+element+'s').getValue() == 1) {
-						$('add_'+element+'_form').show();
+						$('add_'+element+'_button').show();
 						$('project_'+element+'s').show();
 						$('project_'+element+'s_disabled').hide();
 					} else {
-						$('add_'+element+'_form').hide();
+						$('add_'+element+'_button').hide();
 						$('project_'+element+'s').hide();
 						$('project_'+element+'s_disabled').show();
 					}

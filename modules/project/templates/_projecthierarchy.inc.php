@@ -1,10 +1,10 @@
 <h3>
-	<?php if ($access_level == TBGSettings::ACCESS_FULL && $project->isEditionsEnabled()): ?>
-		<div class="button button-green" style="float: right; margin-top: -3px;" onclick="$('add_edition_form').toggle();if ($('add_edition_form').visible()) $('edition_name').focus();"><?php echo __('Add an edition'); ?></div>
+	<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
+		<div class="button button-green" id="add_edition_button" style="float: right; margin-top: -3px;<?php if (!$project->isEditionsEnabled()): ?> display: none;<?php endif; ?>" onclick="$('add_edition_form').toggle();if ($('add_edition_form').visible()) $('edition_name').focus();"><?php echo __('Add an edition'); ?></div>
 	<?php endif; ?>
 	<?php echo __('Project editions'); ?>
 </h3>
-<?php if ($access_level == TBGSettings::ACCESS_FULL && $project->isEditionsEnabled()): ?>
+<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 	<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_projects_add_edition', array('project_id' => $project->getID())); ?>" method="post" id="add_edition_form" onsubmit="TBG.Project.Edition.add('<?php echo make_url('configure_projects_add_edition', array('project_id' => $project->getID())); ?>');return false;" style="display: none;">
 		<div class="rounded_box lightgrey" style="vertical-align: middle; padding: 5px; font-size: 12px;">
 			<input class="button button-silver" style="float: right; margin: -2px 0;" type="submit" value="<?php echo __('Create'); ?>">
@@ -29,12 +29,12 @@
 </div>
 <div style="padding: 2px 5px 5px 5px;<?php if ($project->isEditionsEnabled()): ?> display: none;<?php endif; ?>" id="project_editions_disabled" class="faded_out"><?php echo __('This project does not use editions. Editions can be enabled in %advanced_settings%', array('%advanced_settings%' => javascript_link_tag(__('Advanced settings'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_settings', 'project_config_menu');")))); ?>.</div>
 <h3>
-	<?php if ($access_level == TBGSettings::ACCESS_FULL && $project->isComponentsEnabled()): ?>
-		<div class="button button-green" style="float: right; margin-top: -3px;" onclick="$('add_component_form').toggle();if ($('add_component_form').visible()) $('component_name').focus();"><?php echo __('Add a component'); ?></div>
+	<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
+		<div class="button button-green" id="add_component_button" style="float: right; margin-top: -3px;<?php if (!$project->isComponentsEnabled()): ?> display: none;<?php endif; ?>" onclick="$('add_component_form').toggle();if ($('add_component_form').visible()) $('component_name').focus();"><?php echo __('Add a component'); ?></div>
 	<?php endif; ?>
 	<?php echo __('Project components'); ?>
 </h3>
-<?php if ($access_level == TBGSettings::ACCESS_FULL && $project->isComponentsEnabled()): ?>
+<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 	<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_projects_add_component', array('project_id' => $project->getID())); ?>" method="post" id="add_component_form" onsubmit="TBG.Project.Component.add('<?php echo make_url('configure_projects_add_component', array('project_id' => $project->getID())); ?>');return false;" style="display: none;">
 		<div class="rounded_box lightgrey" style="vertical-align: middle; padding: 5px; font-size: 12px;">
 			<input class="button button-silver" style="float: right; margin: -2px 0;" type="submit" value="<?php echo __('Create'); ?>">
@@ -60,4 +60,3 @@
 	</table>
 </div>
 <div style="padding: 2px 5px 5px 5px;<?php if ($project->isComponentsEnabled()): ?> display: none;<?php endif; ?>" id="project_components_disabled" class="faded_out"><?php echo __('This project does not use components. Components can be enabled in %advanced_settings%', array('%advanced_settings%' => javascript_link_tag(__('Advanced settings'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_settings', 'project_config_menu');")))); ?>.</div>
-<?php //include_template('project/builds', array('parent' => $project, 'access_level' => $access_level)); ?>
