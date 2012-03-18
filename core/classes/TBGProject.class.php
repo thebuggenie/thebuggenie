@@ -2832,4 +2832,19 @@
 			return (array_key_exists($team->getID(), $this->_team_roles)) ? $this->_team_roles[$team->getID()] : array();
 		}
 
+		public static function listen_TBGFile_hasAccess(TBGEvent $event)
+		{
+			$file = $event->getSubject();
+			$projects = self::getB2DBTable()->getByFileID($file->getID());
+			foreach ($projects as $project)
+			{
+				if ($project->hasAccess())
+				{
+					$event->setReturnValue(true);
+					$event->setProcessed();
+					break;
+				}
+			}
+		}
+
 	}

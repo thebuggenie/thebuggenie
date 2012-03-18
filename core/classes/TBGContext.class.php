@@ -661,6 +661,8 @@
 				self::setScope();
 				TBGLogging::log('done (loading scope)');
 
+				if (!self::$_installmode) self::setupCoreListeners();
+
 				TBGLogging::log('Loading modules');
 				self::loadModules();
 				TBGLogging::log('done (loading modules)');
@@ -757,6 +759,11 @@
 				}
 			}
 			TBGLogging::log('...done');
+		}
+
+		protected static function setupCoreListeners()
+		{
+			TBGEvent::listen('core', 'TBGFile::hasAccess', 'TBGProject::listen_TBGFile_hasAccess');
 		}
 
 		public static function clearRoutingCache()

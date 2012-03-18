@@ -240,5 +240,16 @@
 			
 			$res = $this->doUpdate($crit);
 		}
+
+		public function getByFileID($file_id)
+		{
+			$crit = $this->getCriteria();
+			$ctn = $crit->returnCriterion(self::SMALL_ICON, $file_id);
+			$ctn->addOr(self::LARGE_ICON, $file_id);
+			$crit->addWhere($ctn);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+
+			return $this->select($crit);
+		}
 		
 	}
