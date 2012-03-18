@@ -49,9 +49,6 @@
 		 */
 		protected $_password;
 		
-		/**
-		 * @Column(type="string", length=200)
-		 */
 		protected $_connection;
 
 		/**
