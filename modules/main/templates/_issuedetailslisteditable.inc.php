@@ -371,18 +371,20 @@
 					<div class="dropdown_content">
 						<a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_id' => 0)); ?>', '<?php echo $field; ?>');"><?php echo $info['clear']; ?></a><br>
 					</div>
-					<div class="dropdown_content">
-						<?php echo $info['select']; ?>:<br>
-						<ul class="choices">
-							<?php foreach ($info['choices'] as $choice): ?>
-								<?php if ($choice instanceof TBGDatatypeBase && !$choice->canUserSet($tbg_user)) continue; ?>
-								<li>
-									<?php echo image_tag('icon_' . $field . '.png', array('style' => 'float: left; margin-right: 5px;')); ?><a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_id' => $choice->getID())); ?>', '<?php echo $field; ?>');"><?php echo __($choice->getName()); ?></a>
-								</li>
-							<?php endforeach; ?>
-						</ul>
-						<div id="<?php echo $field; ?>_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</div>
-					</div>
+					<?php if (count($info['choices'])): ?>
+						<div class="dropdown_content">
+							<?php echo $info['select']; ?>:<br>
+							<ul class="choices">
+								<?php foreach ($info['choices'] as $choice): ?>
+									<?php if ($choice instanceof TBGDatatypeBase && !$choice->canUserSet($tbg_user)) continue; ?>
+									<li>
+										<?php echo image_tag('icon_' . $field . '.png', array('style' => 'float: left; margin-right: 5px;')); ?><a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_id' => $choice->getID())); ?>', '<?php echo $field; ?>');"><?php echo __($choice->getName()); ?></a>
+									</li>
+								<?php endforeach; ?>
+							</ul>
+							<div id="<?php echo $field; ?>_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</div>
+						</div>
+					<?php endif; ?>
 					<div id="<?php echo $field; ?>_change_error" class="error_message" style="display: none;"></div>
 				</div>
 			<?php endif; ?>
