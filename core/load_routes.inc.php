@@ -96,8 +96,8 @@
 	$routes[] = array('configure_edition_remove_component', '/configure/project/:project_id/edition/:edition_id/remove/component/:component_id', 'project', 'editEditionComponent', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_PROJECTS, 'mode' => 'remove'));
 	$routes[] = array('configure_update_component', '/configure/component/:component_id/update', 'project', 'editComponent', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_PROJECTS, 'mode' => 'update'));
 	$routes[] = array('configure_component_set_assignedto', '/configure/project/:project_id/component/:component_id/set/:field/*', 'project', 'setItemLead', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_PROJECTS, 'item_type' => 'component'));
-	$routes[] = array('configure_delete_component', '/configure/component/:component_id/delete', 'project', 'editComponent', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_PROJECTS, 'mode' => 'delete'));
-	$routes[] = array('configure_delete_edition', '/configure/edition/:edition_id/delete', 'project', 'deleteEdition');
+	$routes[] = array('configure_delete_component', '/configure/project/:project_id/component/:component_id/delete', 'project', 'editComponent', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_PROJECTS, 'mode' => 'delete'));
+	$routes[] = array('configure_delete_edition', '/configure/project/:project_id/edition/:edition_id/delete', 'project', 'deleteEdition');
 	$routes[] = array('configure_project_editions_components', '/configure/project/:project_id/editions_and_components', 'project', 'configureProjectEditionsAndComponents');
 	$routes[] = array('configure_project_other', '/configure/project/:project_id/other', 'project', 'configureProjectOther');
 	$routes[] = array('configure_project_updateother', '/configure/project/:project_id/update/other', 'project', 'configureProjectUpdateOther');
