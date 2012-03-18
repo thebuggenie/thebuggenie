@@ -19,7 +19,7 @@
 	class TBGI18n
 	{
 
-		protected $_strings = array();
+		protected $_strings = null;
 		
 		protected $_missing_strings = array();
 		
