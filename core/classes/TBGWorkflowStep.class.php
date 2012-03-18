@@ -107,6 +107,18 @@
 			
 		}
 
+		public static function getAllByWorkflowSchemeID($scheme_id)
+		{
+			$ids = TBGWorkflowStepsTable::getTable()->getAllByWorkflowSchemeID($scheme_id);
+			$steps = array();
+			foreach ($ids as $step_id)
+			{
+				$steps[$step_id] = new TBGWorkflowStep((int) $step_id);
+			}
+
+			return $steps;
+		}
+
 		/**
 		 * Returns the workflows description
 		 *

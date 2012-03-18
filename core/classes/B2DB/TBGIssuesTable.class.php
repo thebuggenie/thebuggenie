@@ -217,16 +217,18 @@
 			{
 				while ($row = $res1->getNextRow())
 				{
-					if (!array_key_exists($row->get($column), $retarr)) $retarr[$row->get($column)] = array('open' => 0, 'closed' => 0);
-					$retarr[$row->get($column)]['closed'] = $row->get('column_count');
+					$col = (int) $row->get($column);
+					if (!array_key_exists($col, $retarr)) $retarr[$col] = array('open' => 0, 'closed' => 0);
+					$retarr[$col]['closed'] = $row->get('column_count');
 				}
 			}
 			if ($res2)
 			{
 				while ($row = $res2->getNextRow())
 				{
-					if (!array_key_exists($row->get($column), $retarr)) $retarr[$row->get($column)] = array('open' => 0, 'closed' => 0);
-					$retarr[$row->get($column)]['open'] = $row->get('column_count');
+					$col = (int) $row->get($column);
+					if (!array_key_exists($col, $retarr)) $retarr[$col] = array('open' => 0, 'closed' => 0);
+					$retarr[$col]['open'] = $row->get('column_count');
 				}
 			}
 
@@ -291,6 +293,11 @@
 		public function getCategoryCountByProjectID($project_id)
 		{
 			return $this->_getCountByProjectIDAndColumn($project_id, self::CATEGORY);
+		}
+
+		public function getWorkflowStepCountByProjectID($project_id)
+		{
+			return $this->_getCountByProjectIDAndColumn($project_id, self::WORKFLOW_STEP_ID);
 		}
 
 		public function getResolutionCountByProjectID($project_id)

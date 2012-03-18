@@ -100,4 +100,25 @@
 			return $this->doCount($crit);
 		}
 
+		public function getAllByWorkflowSchemeID($scheme_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addJoin(TBGWorkflowsTable::getTable(), TBGWorkflowsTable::ID, self::WORKFLOW_ID, array(), Criteria::DB_INNER_JOIN);
+			$crit->addJoin(TBGWorkflowIssuetypeTable::getTable(), TBGWorkflowIssuetypeTable::WORKFLOW_ID, self::WORKFLOW_ID, array(), Criteria::DB_INNER_JOIN);
+			$crit->addWhere(TBGWorkflowIssuetypeTable::WORKFLOW_SCHEME_ID, $scheme_id);
+			$res = $this->doSelect($crit);
+
+			$steps = array();
+			if ($res)
+			{
+				while ($row = $res->getNextRow())
+				{
+					$step_id = $row->get(self::ID);
+					$steps[$step_id] = $step_id;
+				}
+			}
+
+			return $steps;
+		}
+
 	}

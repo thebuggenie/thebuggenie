@@ -101,6 +101,11 @@
 					$items = TBGStatus::getAll();
 					$key = 'status';
 					break;
+				case TBGDashboardView::VIEW_PROJECT_STATISTICS_WORKFLOW_STEP:
+					$counts = TBGContext::getCurrentProject()->getWorkflowCount();
+					$items = TBGWorkflowStep::getAllByWorkflowSchemeID(TBGContext::getCurrentProject()->getWorkflowScheme()->getID());
+					$key = 'workflowstep';
+					break;
 				case TBGDashboardView::VIEW_PROJECT_STATISTICS_STATE:
 					$counts = TBGContext::getCurrentProject()->getStateCount();
 					$items = array('open' => $this->getI18n()->__('Open'), 'closed' => $this->getI18n()->__('Closed'));

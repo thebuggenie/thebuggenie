@@ -307,6 +307,13 @@
 		protected $_prioritycount = null;
 
 		/**
+		 * Workflow step count
+		 *
+		 * @var array
+		 */
+		protected $_workflowstepcount = null;
+
+		/**
 		 * Status count
 		 *
 		 * @var array
@@ -2237,6 +2244,29 @@
 		{
 			$this->_populatePriorityCount();
 			return $this->_prioritycount;
+		}
+
+		protected function _populateWorkflowCount()
+		{
+			if ($this->_workflowstepcount === null)
+			{
+				$this->_workflowstepcount = array();
+				$this->_workflowstepcount[0] = array('open' => 0, 'closed' => 0, 'percentage' => 0);
+				foreach (TBGWorkflowStep::getAllByWorkflowSchemeID($this->getWorkflowScheme()->getID()) as $workflow_step_id => $workflow_step)
+				{
+					$this->_workflowstepcount[$workflow_step_id] = array('open' => 0, 'closed' => 0, 'percentage' => 0);
+				}
+				foreach (TBGIssuesTable::getTable()->getWorkflowStepCountByProjectID($this->getID()) as $workflow_step_id => $workflow_count)
+				{
+					$this->_workflowstepcount[$workflow_step_id] = $workflow_count;
+				}
+			}
+		}
+
+		public function getWorkflowCount()
+		{
+			$this->_populateWorkflowCount();
+			return $this->_workflowstepcount;
 		}
 
 		protected function _populateStatusCount()

@@ -36,6 +36,7 @@
 		const VIEW_PROJECT_STATISTICS_LAST15 = 105;
 		const VIEW_PROJECT_STATISTICS_PRIORITY = 106;
 		const VIEW_PROJECT_STATISTICS_STATUS = 111;
+		const VIEW_PROJECT_STATISTICS_WORKFLOW_STEP = 115;
 		const VIEW_PROJECT_STATISTICS_RESOLUTION = 112;
 		const VIEW_PROJECT_STATISTICS_STATE = 113;
 		const VIEW_PROJECT_STATISTICS_CATEGORY = 114;
@@ -89,7 +90,6 @@
 					$views[$id] = $view;
 				}
 			}
-//die();
 			return $views;
 		}
 
@@ -144,6 +144,7 @@
 					$searches[self::VIEW_PROJECT_STATISTICS_CATEGORY] = array(0 => TBGContext::getI18n()->__('Statistics by category'));
 					$searches[self::VIEW_PROJECT_STATISTICS_STATUS] = array(0 => TBGContext::getI18n()->__('Statistics by status'));
 					$searches[self::VIEW_PROJECT_STATISTICS_RESOLUTION] = array(0 => TBGContext::getI18n()->__('Statistics by resolution'));
+					$searches[self::VIEW_PROJECT_STATISTICS_WORKFLOW_STEP] = array(0 => TBGContext::getI18n()->__('Statistics by workflow step'));
 					$searches[self::VIEW_PROJECT_RECENT_ISSUES] = $issuetype_icons;
 					$searches[self::VIEW_PROJECT_RECENT_ACTIVITIES] = array(0 => TBGContext::getI18n()->__('Recent activities'));
 					$searches[self::VIEW_PROJECT_UPCOMING] = array(0 => TBGContext::getI18n()->__('Upcoming milestones and deadlines'));
@@ -353,6 +354,7 @@
 				case self::VIEW_PROJECT_STATISTICS_RESOLUTION:
 				case self::VIEW_PROJECT_STATISTICS_STATE:
 				case self::VIEW_PROJECT_STATISTICS_STATUS:
+				case self::VIEW_PROJECT_STATISTICS_WORKFLOW_STEP:
 					return 'project/dashboardviewprojectstatistics';
 				case self::VIEW_PROJECT_UPCOMING:
 					return 'project/dashboardviewprojectupcoming';
