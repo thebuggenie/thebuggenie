@@ -683,7 +683,7 @@ reportissue_additional_information_container .markItUp { display: none; }
 #report_form .textarea_hint { color: #AAA; font-weight: normal; padding: 5px 0 0 0; }
 #issue_main .textarea_hint { color: #999; font-weight: normal; padding: 5px 0 0 0; }
 #issue_main pre { padding: 3px; background-color: #F1EECB; border: 1px dotted #E3DDa5; }
-#issue_view { position: relative; z-index: 0; }
+#issue_view { position: relative; z-index: 100; }
 #issue_view fieldset { border: 0; border-top: 1px dotted #AAA; padding: 5px; margin: 0; }
 #issue_view fieldset legend { border: 0; padding: 5px; font-weight: bold; font-size: 1.1em; }
 .reportissue_error tr { background-color: #FEE; }
@@ -732,7 +732,7 @@ reportissue_additional_information_container .markItUp { display: none; }
 .issue_detail_field:hover dl { background-color: #F1F1F1; border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; }
 
 /* workflow actions */
-#workflow_actions { position: absolute; margin-top: 3px; right: 10px; height: 25px; z-index: 2; }
+#workflow_actions { position: absolute; margin-top: 3px; right: 10px; height: 25px; z-index: 102; }
 ul.workflow_actions { margin-top: 0; }
 ul.workflow_actions li { display: block; float: left; border-radius: 0; -moz-border-radius: 0; -webkit-border-radius: 0; padding: 0; line-height: 1; }
 ul.workflow_actions li form { display: inline; margin: 0; padding: 0; }
