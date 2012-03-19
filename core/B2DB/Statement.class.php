@@ -254,6 +254,10 @@
 					$str = substr_replace($str, $val, mb_strpos($str, '?'), 1);
 				}
 			}
+			else
+			{
+				$str = $this->custom_sql;
+			}
 			return $str;
 		}
 		
