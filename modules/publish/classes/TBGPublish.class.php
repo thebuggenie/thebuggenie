@@ -433,9 +433,10 @@
 					$permissive = false;
 					break;
 			}
-			if ($user->hasPermission($permission_name, $article_name, 'publish', true, $permissive))
+			$retval = $user->hasPermission($permission_name, $article_name, 'publish', true, $permissive);
+			if ($user->hasPermission($permission_name, $article_name, 'publish', true, $permissive) !== null)
 			{
-				return true;
+				return $retval;
 			}
 			$namespaces = explode(':', $article_name);
 			if (count($namespaces) > 1)
@@ -451,8 +452,8 @@
 					}
 				}
 			}
-			$retval = $user->hasPermission($permission_name, 0, 'publish', false, $permissive);
 			$permissive = ($permission_name == self::PERMISSION_READ_ARTICLE) ? true : $permissive;
+			$retval = $user->hasPermission($permission_name, 0, 'publish', false, $permissive);
 			return ($retval !== null) ? $retval : $permissive;
 		}
 		
