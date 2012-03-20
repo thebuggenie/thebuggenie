@@ -190,17 +190,10 @@
 		 *
 		 * @return boolean
 		 */
-		protected function _permissionCheckWithID($key, $explicit = false)
+		protected function _permissionCheckWithID($key)
 		{
 			$retval = TBGContext::getUser()->hasPermission($key, $this->getID(), 'core', true, null);
-			if ($explicit)
-			{
-				$retval = ($retval !== null) ? $retval : TBGContext::getUser()->hasPermission($key, 0, 'core', true, null);
-			}
-			else
-			{
-				$retval = ($retval !== null) ? $retval : TBGContext::getUser()->hasPermission($key);
-			}
+			$retval = ($retval !== null) ? $retval : TBGContext::getUser()->hasPermission($key, 0, 'core', true, null);
 
 			return $retval;
 		}
@@ -220,9 +213,10 @@
 			$retval = null;
 			if ($this->getPostedByID() == TBGContext::getUser()->getID() && !$exclusive)
 			{
-				$retval = $this->_permissionCheckWithID($key.'own', true);
+				$retval = $this->_permissionCheckWithID($key.'own');
 			}
-			return ($retval !== null) ? $retval : $this->_permissionCheckWithID($key);
+			$retval = ($retval !== null) ? $retval : $this->_permissionCheckWithID($key);
+			return ($retval !== null) ? $retval : false;
 		}
 
 		protected function _preSave($is_new)
@@ -260,7 +254,7 @@
 		public function canUserEditComment()
 		{
 			if ($this->isSystemComment()) return false;
-			return (bool) ($this->getPostedByID() == TBGContext::getUser()->getID() || $this->_permissionCheck('caneditcomments') || $this->_permissionCheck('canpostseeandeditallcomments', true));
+			return ($this->_permissionCheck('caneditcomments') || $this->_permissionCheck('canpostseeandeditallcomments', true));
 		}
 
 		/**

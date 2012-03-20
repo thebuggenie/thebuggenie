@@ -1938,7 +1938,10 @@
 		 */
 		public function canPostComments()
 		{
-			return (bool) ($this->hasPermission('canpostcomments') || $this->hasPermission('canpostandeditcomments'));
+			$retval = $this->hasPermission('canpostcomments', 0, 'core', true);
+			$retval = ($retval !== null) ? $retval : $this->hasPermission('canpostandeditcomments', 0, 'core', true);
+
+			return ($retval !== null) ? $retval : TBGSettings::isPermissive();
 		}
 
 		/**
