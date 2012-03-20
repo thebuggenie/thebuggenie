@@ -949,92 +949,95 @@
 				return '';
 			}
 			$codeblock = $matches[2];
-			$params = $matches[1];
+			if (strlen(trim($codeblock)))
+			{
+				$params = $matches[1];
 
-			$language = preg_match('/(?<=lang=")(.+?)(?=")/', $params, $matches);
+				$language = preg_match('/(?<=lang=")(.+?)(?=")/', $params, $matches);
 
-			if ($language !== 0)
-			{
-				$language = $matches[0];
-			} 
-			else
-			{
-				$language = TBGSettings::get('highlight_default_lang');
-			}
-			
-			$numbering_startfrom = preg_match('/(?<=line start=")(.+?)(?=")/', $params, $matches);
-			if ($numbering_startfrom !== 0)
-			{
-				$numbering_startfrom = (int) $matches[0];
-			} 
-			else
-			{
-				$numbering_startfrom = 1;
-			}
-			
-			$geshi = new GeSHi($codeblock, $language);
-			
-			$highlighting = preg_match('/(?<=line=")(.+?)(?=")/', $params, $matches);
-			if ($highlighting !== 0)
-			{
-				$highlighting = $matches[0];
-			} 
-			else
-			{
-				$highlighting = false;
-			}
-			
-			$interval = preg_match('/(?<=highlight=")(.+?)(?=")/', $params, $matches);
-			if ($interval !== 0)
-			{
-				$interval = $matches[0];
-			} 
-			else
-			{
-				$interval = TBGSettings::get('highlight_default_interval');
-			}
-
-			if ($highlighting === false)
-			{
-				switch (TBGSettings::get('highlight_default_numbering'))
+				if ($language !== 0)
 				{
-					case 1:
-						// Line numbering with a highloght every n rows
-						$geshi->enable_line_numbers(GESHI_FANCY_LINE_NUMBERS, $interval);
-						$geshi->start_line_numbers_at($numbering_startfrom);
-						break;
-					case 2:
-						// Normal line numbering
-						$geshi->enable_line_numbers(GESHI_NORMAL_LINE_NUMBERS, 10);
-						$geshi->start_line_numbers_at($numbering_startfrom);
-						break;
-					case 3:
-						break; // No numbering
+					$language = $matches[0];
 				}
-			}
-			else
-			{
-				switch($highlighting)
+				else
 				{
-					case 'highlighted':
-					case 'GESHI_FANCY_LINE_NUMBERS':
-						// Line numbering with a highloght every n rows
-						$geshi->enable_line_numbers(GESHI_FANCY_LINE_NUMBERS, $interval);
-						$geshi->start_line_numbers_at($numbering_startfrom);
-						break;
-					case 'normal':
-					case 'GESHI_NORMAL_LINE_NUMBERS':
-						// Normal line numbering
-						$geshi->enable_line_numbers(GESHI_NORMAL_LINE_NUMBERS, 10);
-						$geshi->start_line_numbers_at($numbering_startfrom);
-						break;
-					case 3:
-						break; // No numbering
+					$language = TBGSettings::get('highlight_default_lang');
 				}
-			}
 
-			$codeblock = $geshi->parse_code();
-			unset($geshi);
+				$numbering_startfrom = preg_match('/(?<=line start=")(.+?)(?=")/', $params, $matches);
+				if ($numbering_startfrom !== 0)
+				{
+					$numbering_startfrom = (int) $matches[0];
+				}
+				else
+				{
+					$numbering_startfrom = 1;
+				}
+
+				$geshi = new GeSHi($codeblock, $language);
+
+				$highlighting = preg_match('/(?<=line=")(.+?)(?=")/', $params, $matches);
+				if ($highlighting !== 0)
+				{
+					$highlighting = $matches[0];
+				}
+				else
+				{
+					$highlighting = false;
+				}
+
+				$interval = preg_match('/(?<=highlight=")(.+?)(?=")/', $params, $matches);
+				if ($interval !== 0)
+				{
+					$interval = $matches[0];
+				}
+				else
+				{
+					$interval = TBGSettings::get('highlight_default_interval');
+				}
+
+				if ($highlighting === false)
+				{
+					switch (TBGSettings::get('highlight_default_numbering'))
+					{
+						case 1:
+							// Line numbering with a highloght every n rows
+							$geshi->enable_line_numbers(GESHI_FANCY_LINE_NUMBERS, $interval);
+							$geshi->start_line_numbers_at($numbering_startfrom);
+							break;
+						case 2:
+							// Normal line numbering
+							$geshi->enable_line_numbers(GESHI_NORMAL_LINE_NUMBERS, 10);
+							$geshi->start_line_numbers_at($numbering_startfrom);
+							break;
+						case 3:
+							break; // No numbering
+					}
+				}
+				else
+				{
+					switch($highlighting)
+					{
+						case 'highlighted':
+						case 'GESHI_FANCY_LINE_NUMBERS':
+							// Line numbering with a highloght every n rows
+							$geshi->enable_line_numbers(GESHI_FANCY_LINE_NUMBERS, $interval);
+							$geshi->start_line_numbers_at($numbering_startfrom);
+							break;
+						case 'normal':
+						case 'GESHI_NORMAL_LINE_NUMBERS':
+							// Normal line numbering
+							$geshi->enable_line_numbers(GESHI_NORMAL_LINE_NUMBERS, 10);
+							$geshi->start_line_numbers_at($numbering_startfrom);
+							break;
+						case 3:
+							break; // No numbering
+					}
+				}
+
+				$codeblock = $geshi->parse_code();
+				unset($geshi);
+			}
 			return '<code>' . $codeblock . '</code>';
 		}
 
