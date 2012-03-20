@@ -76,6 +76,8 @@
 								var d_e_hours = [];
 								var d_s_points = [];
 								var d_s_hours = [];
+								var d_b_points = [];
+								var d_b_hours = [];
 								
 								<?php if ($milestone->hasStartingDate() && $milestone->hasScheduledDate()): ?>
 									<?php foreach ($burndown_data['estimations']['points'] as $d => $p): ?>
@@ -92,6 +94,14 @@
 
 									<?php foreach ($burndown_data['spent_times']['hours'] as $d => $h): ?>
 										d_s_hours.push([<?php echo $d * 1000; ?>, <?php echo $h; ?>]);
+									<?php endforeach; ?>
+
+									<?php foreach ($burndown_data['burndown']['points'] as $d => $p): ?>
+										d_b_points.push([<?php echo $d * 1000; ?>, <?php echo $p; ?>]);
+									<?php endforeach; ?>
+
+									<?php foreach ($burndown_data['burndown']['hours'] as $d => $h): ?>
+										d_b_hours.push([<?php echo $d * 1000; ?>, <?php echo $h; ?>]);
 									<?php endforeach; ?>
 									var d_e_velocity_hours = [[<?php echo min(array_keys($burndown_data['estimations']['hours'])) * 1000; ?>, <?php echo max($burndown_data['estimations']['hours']); ?>], [<?php echo max(array_keys($burndown_data['estimations']['hours'])) * 1000; ?>, 0]];
 									var d_e_velocity_points = [[<?php echo min(array_keys($burndown_data['estimations']['points'])) * 1000; ?>, <?php echo max($burndown_data['estimations']['points']); ?>], [<?php echo max(array_keys($burndown_data['estimations']['points'])) * 1000; ?>, 0]];
@@ -162,33 +172,47 @@
 											color: '#333',
 											label: '<?php echo __('Estimated velocity (points)'); ?>'
 										},
+//										{
+//											data: d_e_hours,
+//											lines: { show: true },
+//											points: { show: true },
+//											color: '#92BA6F',
+//											label: '<?php echo __('Estimated hours'); ?>'
+//										},
+//										{
+//											data: d_e_points,
+//											lines: { show: true },
+//											points: { show: true },
+//											color: '#F8C939',
+//											label: '<?php echo __('Estimated points'); ?>'
+//										},
+//										{
+//											data: d_s_hours,
+//											lines: { show: true },
+//											points: { show: true },
+//											color: '#923A6F',
+//											label: '<?php echo __('Spent hours'); ?>'
+//										},
+//										{
+//											data: d_s_points,
+//											lines: { show: true },
+//											points: { show: true },
+//											color: '#F83A39',
+//											label: '<?php echo __('Spent points'); ?>'
+//										},
 										{
-											data: d_e_hours,
-											lines: { show: true },
-											points: { show: true },
-											color: '#92BA6F',
-											label: '<?php echo __('Estimated hours'); ?>'
-										},
-										{
-											data: d_e_points,
-											lines: { show: true },
-											points: { show: true },
-											color: '#F8C939',
-											label: '<?php echo __('Estimated points'); ?>'
-										},
-										{
-											data: d_s_hours,
+											data: d_b_hours,
 											lines: { show: true },
 											points: { show: true },
 											color: '#923A6F',
-											label: '<?php echo __('Spent hours'); ?>'
+											label: '<?php echo __('Hours burndown'); ?>'
 										},
 										{
-											data: d_s_points,
+											data: d_b_points,
 											lines: { show: true },
 											points: { show: true },
 											color: '#F83A39',
-											label: '<?php echo __('Spent points'); ?>'
+											label: '<?php echo __('Points burndown'); ?>'
 										}
 									], {
 									yaxis: y_config,
