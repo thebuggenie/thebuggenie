@@ -647,10 +647,18 @@
 				
 				$estimations = TBGIssueEstimates::getTable()->getEstimatesByDateAndIssueIDs($this->getStartingDate(), $this->getScheduledDate(), $issues);
 				$spent_times = TBGIssueSpentTimes::getTable()->getSpentTimesByDateAndIssueIDs($this->getStartingDate(), $this->getScheduledDate(), $issues);
+				
+				$burndown = array();
+				foreach ($estimations['hours'] as $key => $val)
+				{
+					$burndown['hours'][$key] = (array_key_exists($key, $spent_times['hours'])) ? $val - $spent_times['hours'][$key] : $val;
+				}
+				foreach ($estimations['points'] as $key => $val)
+				{
+					$burndown['points'][$key] = (array_key_exists($key, $spent_times['points'])) ? $val - $spent_times['points'][$key] : $val;
+				}
 
-				$burndowndata = array();
-
-				$this->_burndowndata = array('estimations' => $estimations, 'spent_times' => $spent_times);
+				$this->_burndowndata = array('estimations' => $estimations, 'spent_times' => $spent_times, 'burndown' => $burndown);
 			}
 		}
 
