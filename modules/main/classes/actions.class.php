@@ -3011,7 +3011,7 @@
 				$message = TBGContext::getI18n()->__('Please provide an issue number');
 			}
 
-			if (!$issue->canAddRelatedIssue())
+			if (!$issue->canAddRelatedIssues())
 			{
 				$status = 400;
 				$message = TBGContext::getI18n()->__('You are not allowed to relate issues');
