@@ -1072,13 +1072,16 @@ ul.milestone_issues_container li .actions label { float: left; font-weight: bold
 .planning_container .sprint_header a.issue_count:hover { color: #BBB; }
 .planning_container .sprint_header a:hover { color: #888; text-decoration: none; border: 0; }
 #milestone_details_overview h3 { line-height: 1.2; }
-#milestone_details_overview a { color: #555; border-bottom: 1px dotted #AAA; }
+#milestone_details_overview .issue_title_container { padding: 3px 3px 3px 5px; font-size: 13px; width: 592px; }
+#milestone_details_overview .issue_title_container a { color: #555; border-bottom: 1px solid transparent; padding: 0 3px 0 5px; font-size: 13px; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#milestone_details_overview a { color: #555; border-bottom: 1px solid transparent; }
 #milestone_details_overview a.button, #milestone_details_overview a.button:hover { border-bottom: 1px solid rgba(0, 0, 0, 0.2); }
 #milestone_details_overview .faded_out a { color: #888; border-bottom: 0; }
 #milestone_details_overview a:hover { color: #777; border-bottom: 1px dotted #BBB; }
 #milestone_details_overview .faded_out a:hover { color: #999; border-bottom: 0; }
 #milestone_details_overview a.img, #milestone_details_overview a.img:hover { border-bottom: 0; }
-#milestone_details_overview td.estimates { padding: 3px; text-align: center; font-weight: normal; }
+#milestone_details_overview td.estimates { padding: 3px; text-align: center; font-weight: normal; width: 50px; }
+#milestone_details_overview td.milestone_issue_actions { padding: 3px; text-align: right; position: relative; width: 70px; }
 #milestone_details_overview tr.canhover_light:hover { background-color: transparent; }
 #milestone_details_overview tr.canhover_light:hover td.estimates { background-color: #F1F1F1; }
 /* end scrum page styling */
