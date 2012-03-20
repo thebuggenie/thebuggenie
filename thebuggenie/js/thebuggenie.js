@@ -3910,28 +3910,46 @@ TBG.OpenID = {
 	}
 };
 
-TBG.Chart.burndownChart = function(burndown_data) {
+TBG.Chart.burndownChart = function(burndown_data, time) {
 	var d_b_points = [];
 	var d_b_hours = [];
+	var eh_keys = [];
+	var eh_values = [];
+	var ep_keys = [];
+	var ep_values = [];
 
 	for(var d in burndown_data.burndown.points) {
 		if(burndown_data.burndown.points.hasOwnProperty(d)) {
-			d_b_points.push([d * 1000, burndown_data.burndown.points.d]);
+			d_b_points.push([d * 1000, burndown_data.burndown.points[d]]);
 		}
 	}
 
 	for(var d in burndown_data.burndown.hours) {
 		if(burndown_data.burndown.hours.hasOwnProperty(d)) {
-			d_b_hours.push([d * 1000, burndown_data.burndown.hours.d]);
+			d_b_hours.push([d * 1000, burndown_data.burndown.hours[d]]);
 		}
 	}
 
-	var d_e_velocity_hours = [[burndown_data['estimations']['hours'].keys().min() * 1000, burndown_data['estimations']['hours'].keys().max() * 1000], [burndown_data['estimations']['hours'].keys().max() * 1000, 0]];
-	var d_e_velocity_points = [[burndown_data['estimations']['points'].keys().min() * 1000, burndown_data['estimations']['points'].keys().max() * 1000], [burndown_data['estimations']['points'].keys().max() * 1000, 0]];
+	for(var d in burndown_data.estimations.hours) {
+		if(burndown_data.estimations.hours.hasOwnProperty(d)) {
+			eh_keys.push(d);
+			eh_values.push(burndown_data.estimations.hours[d]);
+		}
+	}
+	for(var d in burndown_data.estimations.points) {
+		if(burndown_data.estimations.points.hasOwnProperty(d)) {
+			ep_keys.push(d);
+			ep_values.push(burndown_data.estimations.points[d]);
+		}
+	}
+	var d_e_velocity_hours = [[eh_keys.min() * 1000, eh_values.max()], [eh_keys.max() * 1000, 0]];
+	var d_e_velocity_points = [[ep_keys.min() * 1000, ep_values.max()], [ep_keys.max() * 1000, 0]];
+	console.log(d_e_velocity_points);
+	console.log(d_b_hours);
 		var x_config = TBG.Chart.config.x_config;
 		x_config.mode = 'time';
 		var grid_config = TBG.Chart.config.grid_config;
-		grid_config.markings = [{xaxis: { from: time(), to: time()}, color: '#955', lineWidth: 1}];
+		grid_config.markings = [{xaxis: { from: time, to: time}, color: '#955', lineWidth: 1}];
 		jQuery.plot(jQuery("#selected_burndown_image"), [
 			{
 				data: d_e_velocity_hours,

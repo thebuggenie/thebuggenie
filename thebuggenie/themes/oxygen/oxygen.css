@@ -984,12 +984,12 @@ table.issue_affects td img { vertical-align: bottom; }
 .milestone_box .header { padding: 4px 0; border-bottom: 1px dotted #CCC; font-size: 1.1em; font-weight: bold; }
 .milestone_box .header .counts { font-size: 0.8em; font-weight: normal; color: #555; }
 .milestone_box .header .counts span { font-weight: bold; }
-.milestone_box .header .button { font-size: 0.8em; font-weight: bold; line-height: 1; padding: 2px 5px !important; margin-left: 5px; float: right; }
+.milestone_box .header .button { font-size: 0.8em; font-weight: bold; line-height: 1; padding: 2px 5px !important; }
 .milestone_box .milestone_moreactions, .more_actions_dropdown { position: absolute; margin-top: 23px; right: 0; padding: 0; z-index: 10; text-align: left; }
 .more_actions { margin-top: 0; }
-.milestone_box .milestone_moreactions, .more_actions_dropdown .header { padding: 5px; }
+.more_actions_dropdown .header { padding: 5px; }
 .milestone_box .milestone_moreactions a, .more_actions_dropdown a { display: block; padding: 3px 5px; font-size: 0.85em; color: #555; font-weight: normal; }
-.milestone_box .milestone_moreactions a:hover, .more_actions_dropdown a:hover { background-color: #F5F5F5; text-decoration: none; border: none; color: #555; }
+.milestone_box .milestone_moreactions a:hover, .more_actions_dropdown a:hover { background-color: #F5F5F5; text-decoration: none; border: none; border-color: transparent; color: #555; }
 
 .milestone_box .milestone_issues { width: 100%; }
 .milestone_box .milestone_issues th { background-color: #EAEAEA; border-left: 1px solid #FFF; color: #555; font-size: 0.8em; padding: 2px; font-weight: bold; border-right: 1px solid #CCC; }
@@ -1074,14 +1074,14 @@ ul.milestone_issues_container li .actions label { float: left; font-weight: bold
 #milestone_details_overview h3 { line-height: 1.2; }
 #milestone_details_overview .issue_title_container { padding: 3px 3px 3px 5px; font-size: 13px; width: 592px; }
 #milestone_details_overview .issue_title_container a { color: #555; border-bottom: 1px solid transparent; padding: 0 3px 0 5px; font-size: 13px; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-#milestone_details_overview a { color: #555; border-bottom: 1px solid transparent; }
+#milestone_details_overview a { color: #555; border-bottom: none; }
 #milestone_details_overview a.button, #milestone_details_overview a.button:hover { border-bottom: 1px solid rgba(0, 0, 0, 0.2); }
 #milestone_details_overview .faded_out a { color: #888; border-bottom: 0; }
-#milestone_details_overview a:hover { color: #777; border-bottom: 1px dotted #BBB; }
+#milestone_details_overview a:hover { color: #777; border-bottom: none; }
 #milestone_details_overview .faded_out a:hover { color: #999; border-bottom: 0; }
 #milestone_details_overview a.img, #milestone_details_overview a.img:hover { border-bottom: 0; }
 #milestone_details_overview td.estimates { padding: 3px; text-align: center; font-weight: normal; width: 50px; }
-#milestone_details_overview td.milestone_issue_actions { padding: 3px; text-align: right; position: relative; width: 70px; }
+#milestone_details_overview td.milestone_issue_actions { padding: 3px; text-align: right; position: relative; width: 30px; }
 #milestone_details_overview tr.canhover_light:hover { background-color: transparent; }
 #milestone_details_overview tr.canhover_light:hover td.estimates { background-color: #F1F1F1; }
 /* end scrum page styling */

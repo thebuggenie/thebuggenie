@@ -37,14 +37,15 @@
 		</div>
 		<div class="dropdown_content">
 			<label for="<?php echo $field . '_' . $issue->getID(); ?>_months"><?php echo __('%enter_a_value_in_plain_text% or specify below', array('%enter_a_value_in_plain_text%' => '')); ?>:</label><br>
-			<input type="text" style="width: 20px;" value="<?php echo $issue->getEstimatedMonths(); ?>" name="months" id="<?php echo $field . '_' . $issue->getID(); ?>_months_input"><b><?php echo __('%number_of% months', array('%number_of%' => '')); ?></b><?php if (isset($mode) && $mode == 'inline'): ?>&nbsp;<?php else: ?><br><?php endif; ?>
-			<input type="text" style="width: 20px;" value="<?php echo $issue->getEstimatedWeeks(); ?>" name="weeks" id="<?php echo $field . '_' . $issue->getID(); ?>_weeks_input"><b><?php echo __('%number_of% weeks', array('%number_of%' => '')); ?></b><?php if (isset($mode) && $mode == 'inline'): ?>&nbsp;<?php else: ?><br><?php endif; ?>
-			<input type="text" style="width: 20px;" value="<?php echo $issue->getEstimatedDays(); ?>" name="days" id="<?php echo $field . '_' . $issue->getID(); ?>_days_input"><b><?php echo __('%number_of% days', array('%number_of%' => '')); ?></b><?php if (isset($mode) && $mode == 'inline'): ?>&nbsp;<?php else: ?><br><?php endif; ?>
-			<input type="text" style="width: 20px;" value="<?php echo $issue->getEstimatedHours(); ?>" name="hours" id="<?php echo $field . '_' . $issue->getID(); ?>_hours_input"><b><?php echo __('%number_of% hours', array('%number_of%' => '')); ?></b><?php if (isset($mode) && $mode == 'inline'): ?>&nbsp;<?php else: ?><br><?php endif; ?>
+			<input type="text" style="width: 20px;" value="<?php echo ($field == 'estimated_time') ? $issue->getEstimatedMonths() : $issue->getSpentMonths(); ?>" name="months" id="<?php echo $field . '_' . $issue->getID(); ?>_months_input"><b><?php echo __('%number_of% months', array('%number_of%' => '')); ?></b><?php if (isset($mode) && $mode == 'inline'): ?>&nbsp;<?php else: ?><br><?php endif; ?>
+			<input type="text" style="width: 20px;" value="<?php echo ($field == 'estimated_time') ? $issue->getEstimatedWeeks() : $issue->getSpentWeeks(); ?>" name="weeks" id="<?php echo $field . '_' . $issue->getID(); ?>_weeks_input"><b><?php echo __('%number_of% weeks', array('%number_of%' => '')); ?></b><?php if (isset($mode) && $mode == 'inline'): ?>&nbsp;<?php else: ?><br><?php endif; ?>
+			<input type="text" style="width: 20px;" value="<?php echo ($field == 'estimated_time') ? $issue->getEstimatedDays() : $issue->getSpentDays(); ?>" name="days" id="<?php echo $field . '_' . $issue->getID(); ?>_days_input"><b><?php echo __('%number_of% days', array('%number_of%' => '')); ?></b><?php if (isset($mode) && $mode == 'inline'): ?>&nbsp;<?php else: ?><br><?php endif; ?>
+			<input type="text" style="width: 20px;" value="<?php echo ($field == 'estimated_time') ? $issue->getEstimatedHours() : $issue->getSpentHours(); ?>" name="hours" id="<?php echo $field . '_' . $issue->getID(); ?>_hours_input"><b><?php echo __('%number_of% hours', array('%number_of%' => '')); ?></b><?php if (isset($mode) && $mode == 'inline'): ?>&nbsp;<?php else: ?><br><?php endif; ?>
 		<?php if (!isset($save) || $save == true): ?>
+			<a href="javascript:void(0);" onclick="$('<?php echo $field . '_' . $issue->getID(); ?>_change').hide();" style="float: right; margin-left: 5px;" class="button button-silver"><?php echo __('Cancel'); ?></a>
 			<input type="submit" style="float: right;" value="<?php echo __('Save'); ?>">
 		<?php endif; ?>
-			<input type="text" style="width: 20px;" value="<?php echo $issue->getEstimatedPoints(); ?>" name="points" id="<?php echo $field . '_' . $issue->getID(); ?>_points_input"><b><?php echo __('%number_of% points', array('%number_of%' => '')); ?></b><br>
+			<input type="text" style="width: 20px;" value="<?php echo ($field == 'estimated_time') ? $issue->getEstimatedPoints() : $issue->getSpentPoints(); ?>" name="points" id="<?php echo $field . '_' . $issue->getID(); ?>_points_input"><b><?php echo __('%number_of% points', array('%number_of%' => '')); ?></b><br>
 		</div>
 <?php if (!isset($save) || $save == true): ?>
 	</form>

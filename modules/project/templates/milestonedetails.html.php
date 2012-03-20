@@ -42,10 +42,10 @@
 					<table style="width: 800px; position: relative; margin-bottom: 20px;" cellpadding="0" cellspacing="0" border="0">
 						<thead>
 							<tr>
-								<td style="width: 600px; border-bottom: 1px solid #DDD;">&nbsp;</td>
+								<td style="width: 640px; border-bottom: 1px solid #DDD;">&nbsp;</td>
 								<td style="width: 50px; border-bottom: 1px solid #DDD; font-size: 11px; font-weight: bold; text-align: center; padding: 5px;"><?php echo __('Points'); ?></td>
 								<td style="width: 50px; border-bottom: 1px solid #DDD; font-size: 11px; font-weight: bold; text-align: center; padding: 5px;"><?php echo __('Hours'); ?></td>
-								<td style="width: 100px; border-bottom: 1px solid #DDD; font-size: 11px; font-weight: bold; text-align: right; padding: 5px;"><?php echo __('Actions'); ?></td>
+								<td style="width: 30px; border-bottom: 1px solid #DDD;">&nbsp;</td>
 							</tr>
 						</thead>
 						<tbody>
@@ -84,7 +84,7 @@
 								var d_b_hours = [];
 
 								<?php if ($milestone->hasStartingDate() && $milestone->hasScheduledDate()): ?>
-									TBG.Chart.burndownChart(<?php echo json_encode($burndown_data); ?>);
+									TBG.Chart.burndownChart(<?php echo json_encode($burndown_data); ?>, '<?php echo time() * 1000; ?>');
 								<?php else: ?>
 									<?php foreach (range(0, 8) as $cc): ?>
 										<?php $eh_val = ($cc != 3) ? 0 : array_sum($burndown_data['estimations']['hours']); ?>
