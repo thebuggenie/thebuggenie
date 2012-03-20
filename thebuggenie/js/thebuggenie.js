@@ -3,6 +3,27 @@ function is_string(element) {
     return (typeof element == 'string');
 }
 
+Array.range= function(a, b, step){
+    var A= [];
+    if(typeof a== 'number'){
+        A[0]= a;
+        step= step || 1;
+        while(a+step<= b){
+            A[A.length]= a+= step;
+        }
+    }
+    else{
+        var s= 'abcdefghijklmnopqrstuvwxyz';
+        if(a=== a.toUpperCase()){
+            b=b.toUpperCase();
+            s= s.toUpperCase();
+        }
+        s= s.substring(s.indexOf(a), s.indexOf(b)+ 1);
+        A= s.split('');
+    }
+    return A;
+}
+
 // The core js class used by thebuggenie
 var TBG = {
 	Core: {
@@ -23,6 +44,7 @@ var TBG = {
 		Link: {},
 		Login: {}
 	},
+	Chart: {},
 	Modules: {},
 	Project: {
 		Statistics: {},
@@ -3696,6 +3718,18 @@ TBG.Search.bulkUpdate = function(url, mode) {
 	This code is licensed under the New BSD License.
 */
 
+TBG.Chart.config = {
+	y_config: { color: '#AAA', min: 0, tickDecimals: 0 },
+	x_config: { color: '#AAA', tickDecimals: 0 },
+	grid_config: {
+		color: '#CCC',
+		borderWidth: 1,
+		backgroundColor: { colors: ["#FFF", "#EEE"] },
+		hoverable: true,
+		autoHighlight: true
+	}
+};
+
 TBG.OpenID = {
 	version : '1.3', // version constant
 	demo : false,
@@ -3874,6 +3908,64 @@ TBG.OpenID = {
 	setDemoMode : function(demoMode) {
 		this.demo = demoMode;
 	}
+};
+
+TBG.Chart.burndownChart = function(burndown_data) {
+	var d_b_points = [];
+	var d_b_hours = [];
+
+	for(var d in burndown_data.burndown.points) {
+		if(burndown_data.burndown.points.hasOwnProperty(d)) {
+			d_b_points.push([d * 1000, burndown_data.burndown.points.d]);
+		}
+	}
+
+	for(var d in burndown_data.burndown.hours) {
+		if(burndown_data.burndown.hours.hasOwnProperty(d)) {
+			d_b_hours.push([d * 1000, burndown_data.burndown.hours.d]);
+		}
+	}
+
+	var d_e_velocity_hours = [[burndown_data['estimations']['hours'].keys().min() * 1000, burndown_data['estimations']['hours'].keys().max() * 1000], [burndown_data['estimations']['hours'].keys().max() * 1000, 0]];
+	var d_e_velocity_points = [[burndown_data['estimations']['points'].keys().min() * 1000, burndown_data['estimations']['points'].keys().max() * 1000], [burndown_data['estimations']['points'].keys().max() * 1000, 0]];
+		var x_config = TBG.Chart.config.x_config;
+		x_config.mode = 'time';
+		var grid_config = TBG.Chart.config.grid_config;
+		grid_config.markings = [{xaxis: { from: time(), to: time()}, color: '#955', lineWidth: 1}];
+		jQuery.plot(jQuery("#selected_burndown_image"), [
+			{
+				data: d_e_velocity_hours,
+				dashes: { show: true, lineWidth: 1 },
+				points: { show: false },
+				color: '#66F',
+				label: 'Estimated velocity (hours)'
+			},
+			{
+				data: d_e_velocity_points,
+				dashes: { show: true, lineWidth: 1 },
+				points: { show: false },
+				color: '#333',
+				label: 'Estimated velocity (points)'
+			},
+			{
+				data: d_b_hours,
+				lines: { show: true },
+				points: { show: true },
+				color: '#923A6F',
+				label: 'Hours burndown'
+			},
+			{
+				data: d_b_points,
+				lines: { show: true },
+				points: { show: true },
+				color: '#F83A39',
+				label: 'Points burndown'
+			}
+		], {
+		yaxis: TBG.Chart.config.y_config,
+		xaxis: x_config,
+		grid: grid_config
+		});
 };
 
 	jQuery(document).ready(function(){

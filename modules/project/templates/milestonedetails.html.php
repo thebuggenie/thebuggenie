@@ -82,148 +82,21 @@
 								var d_s_hours = [];
 								var d_b_points = [];
 								var d_b_hours = [];
-								
-								<?php if ($milestone->hasStartingDate() && $milestone->hasScheduledDate()): ?>
-									<?php foreach ($burndown_data['estimations']['points'] as $d => $p): ?>
-										d_e_points.push([<?php echo $d * 1000; ?>, <?php echo $p; ?>]);
-									<?php endforeach; ?>
-
-									<?php foreach ($burndown_data['estimations']['hours'] as $d => $h): ?>
-										d_e_hours.push([<?php echo $d * 1000; ?>, <?php echo $h; ?>]);
-									<?php endforeach; ?>
-
-									<?php foreach ($burndown_data['spent_times']['points'] as $d => $p): ?>
-										d_s_points.push([<?php echo $d * 1000; ?>, <?php echo $p; ?>]);
-									<?php endforeach; ?>
-
-									<?php foreach ($burndown_data['spent_times']['hours'] as $d => $h): ?>
-										d_s_hours.push([<?php echo $d * 1000; ?>, <?php echo $h; ?>]);
-									<?php endforeach; ?>
-
-									<?php foreach ($burndown_data['burndown']['points'] as $d => $p): ?>
-										d_b_points.push([<?php echo $d * 1000; ?>, <?php echo $p; ?>]);
-									<?php endforeach; ?>
-
-									<?php foreach ($burndown_data['burndown']['hours'] as $d => $h): ?>
-										d_b_hours.push([<?php echo $d * 1000; ?>, <?php echo $h; ?>]);
-									<?php endforeach; ?>
-									var d_e_velocity_hours = [[<?php echo min(array_keys($burndown_data['estimations']['hours'])) * 1000; ?>, <?php echo max($burndown_data['estimations']['hours']); ?>], [<?php echo max(array_keys($burndown_data['estimations']['hours'])) * 1000; ?>, 0]];
-									var d_e_velocity_points = [[<?php echo min(array_keys($burndown_data['estimations']['points'])) * 1000; ?>, <?php echo max($burndown_data['estimations']['points']); ?>], [<?php echo max(array_keys($burndown_data['estimations']['points'])) * 1000; ?>, 0]];
-								<?php else: ?>
-									d_e_hours.push([0,0]);
-									d_e_hours.push([1,0]);
-									d_e_hours.push([2,0]);
-									d_e_hours.push([3, <?php echo array_sum($burndown_data['estimations']['hours']); ?>]);
-									d_e_hours.push([4,0]);
-									d_e_hours.push([5,0]);
-									d_e_hours.push([6,0]);
-									d_e_hours.push([7,0]);
-									d_e_hours.push([8,0]);
-									d_s_hours.push([0,0]);
-									d_s_hours.push([1,0]);
-									d_s_hours.push([2,0]);
-									d_s_hours.push([3, <?php echo array_sum($burndown_data['spent_times']['hours']); ?>]);
-									d_s_hours.push([4,0]);
-									d_s_hours.push([5,0]);
-									d_s_hours.push([6,0]);
-									d_s_hours.push([7,0]);
-									d_s_hours.push([8,0]);
-									d_e_points.push([0,0]);
-									d_e_points.push([1,0]);
-									d_e_points.push([2,0]);
-									d_e_points.push([3,0]);
-									d_e_points.push([4,0]);
-									d_e_points.push([5, <?php echo array_sum($burndown_data['estimations']['points']); ?>]);
-									d_e_points.push([6,0]);
-									d_e_points.push([7,0]);
-									d_e_points.push([8,0]);
-									d_s_points.push([0,0]);
-									d_s_points.push([1,0]);
-									d_s_points.push([2,0]);
-									d_s_points.push([3,0]);
-									d_s_points.push([4,0]);
-									d_s_points.push([5, <?php echo array_sum($burndown_data['spent_times']['points']); ?>]);
-									d_s_points.push([6,0]);
-									d_s_points.push([7,0]);
-									d_s_points.push([8,0]);
-								<?php endif; ?>
-
-								var y_config = { color: '#AAA', min: 0, tickDecimals: 0 };
-								var x_config = { color: '#AAA', tickDecimals: 0 };
-								var grid_config = {
-									color: '#CCC',
-									borderWidth: 1,
-									backgroundColor: { colors: ["#FFF", "#EEE"] },
-									hoverable: true,
-									autoHighlight: true
-								};
 
 								<?php if ($milestone->hasStartingDate() && $milestone->hasScheduledDate()): ?>
-									x_config.mode = 'time';
-									grid_config.markings = [{xaxis: { from: <?php echo time() * 1000; ?>, to: <?php echo time() * 1000; ?>}, color: '#955', lineWidth: 1}];
-									jQuery.plot(jQuery("#selected_burndown_image"), [
-										{
-											data: d_e_velocity_hours,
-											dashes: { show: true, lineWidth: 1 },
-											points: { show: false },
-											color: '#66F',
-											label: '<?php echo __('Estimated velocity (hours)'); ?>'
-										},
-										{
-											data: d_e_velocity_points,
-											dashes: { show: true, lineWidth: 1 },
-											points: { show: false },
-											color: '#333',
-											label: '<?php echo __('Estimated velocity (points)'); ?>'
-										},
-//										{
-//											data: d_e_hours,
-//											lines: { show: true },
-//											points: { show: true },
-//											color: '#92BA6F',
-//											label: '<?php echo __('Estimated hours'); ?>'
-//										},
-//										{
-//											data: d_e_points,
-//											lines: { show: true },
-//											points: { show: true },
-//											color: '#F8C939',
-//											label: '<?php echo __('Estimated points'); ?>'
-//										},
-//										{
-//											data: d_s_hours,
-//											lines: { show: true },
-//											points: { show: true },
-//											color: '#923A6F',
-//											label: '<?php echo __('Spent hours'); ?>'
-//										},
-//										{
-//											data: d_s_points,
-//											lines: { show: true },
-//											points: { show: true },
-//											color: '#F83A39',
-//											label: '<?php echo __('Spent points'); ?>'
-//										},
-										{
-											data: d_b_hours,
-											lines: { show: true },
-											points: { show: true },
-											color: '#923A6F',
-											label: '<?php echo __('Hours burndown'); ?>'
-										},
-										{
-											data: d_b_points,
-											lines: { show: true },
-											points: { show: true },
-											color: '#F83A39',
-											label: '<?php echo __('Points burndown'); ?>'
-										}
-									], {
-									yaxis: y_config,
-									xaxis: x_config,
-									grid: grid_config
-									});
+									TBG.Chart.burndownChart(<?php echo json_encode($burndown_data); ?>);
 								<?php else: ?>
+									<?php foreach (range(0, 8) as $cc): ?>
+										<?php $eh_val = ($cc != 3) ? 0 : array_sum($burndown_data['estimations']['hours']); ?>
+										d_e_hours.push([<?php echo $cc; ?>,<?php echo $eh_val; ?>]);
+										<?php $sh_val = ($cc != 3) ? 0 : array_sum($burndown_data['spent_times']['hours']); ?>
+										d_s_hours.push([<?php echo $cc; ?>,<?php echo $sh_val; ?>]);
+										<?php $ep_val = ($cc != 5) ? 0 : array_sum($burndown_data['estimations']['points']); ?>
+										d_e_points.push([<?php echo $cc; ?>,<?php echo $ep_val; ?>]);
+										<?php $sp_val = ($cc != 5) ? 0 : array_sum($burndown_data['spent_times']['points']); ?>
+										d_s_points.push([<?php echo $cc; ?>,<?php echo $sp_val; ?>]);
+									<?php endforeach; ?>
+									var x_config = TBG.Chart.config.x_config;
 									x_config.ticks = [[0, ' '], [1, ' '], [2, ' '], [3, '<?php echo __('Hours'); ?>'], [4, ' '], [5, '<?php echo __('Points'); ?>'], [6, ' '], [7, ' '], [8, ' ']]
 									jQuery.plot(jQuery("#selected_burndown_image"), [
 										{
@@ -252,9 +125,9 @@
 											lines: { show: false },
 											bars: { show: true, barWidth: 0.6 }
 										},
-										yaxis: y_config,
+										yaxis: TBG.Chart.config.y_config,
 										xaxis: x_config,
-										grid: grid_config
+										grid: TBG.Chart.config.grid_config
 									});
 								<?php endif; ?>
 							});
