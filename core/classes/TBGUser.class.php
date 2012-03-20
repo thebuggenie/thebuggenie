@@ -1918,7 +1918,8 @@
 		 */
 		public function canEditMainMenu()
 		{
-			return (bool) ($this->hasPermission('caneditmainmenu'));
+			$retval = $this->hasPermission('caneditmainmenu', 0, 'core', true);
+			return ($retval !== null) ? $retval : false;
 		}
 
 		/**
