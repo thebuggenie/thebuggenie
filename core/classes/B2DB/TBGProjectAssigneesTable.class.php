@@ -51,7 +51,7 @@
 		public static function getTypeName($type)
 		{
 			$types = self::getTypes();
-			return $types[$type];
+			return (array_key_exists($type, $types)) ? $types[$type] : TBGContext::getI18n()->__('Unknown role');
 		}
 
 		public function getByProjectID($project_id)
