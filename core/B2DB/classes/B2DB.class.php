@@ -28,7 +28,7 @@
 		static protected $_db_host, $_db_uname, $_db_pwd, $_db_name, $_db_type, $_db_port = null;
 		static protected $_dsn = null;
 		static protected $_tableprefix = '';
-		static protected $_sqlhits;
+		static protected $_sqlhits = array();
 		static protected $_sqltiming;
 		static protected $_throwhtmlexception = false;
 		static protected $_aliascnt = 0;
