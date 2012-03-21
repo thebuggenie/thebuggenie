@@ -1325,7 +1325,10 @@
 		 */
 		public function canDeleteIssue()
 		{
-			return (bool) ($this->_permissionCheck('candeleteissues', true) || $this->_permissionCheck('caneditissue', true));
+			$retval = $this->_permissionCheck('candeleteissues', true);
+			$retval = ($retval !== null) ? $retval : $this->_permissionCheck('caneditissue', true);
+
+			return ($retval !== null) ? $retval : false;
 		}
 		
 		/**
