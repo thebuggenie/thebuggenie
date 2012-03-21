@@ -105,10 +105,10 @@
 		
 		static function countComments($target_id, $target_type, $include_system_comments = true)
 		{
-			if (!array_key_exists($target_type, self::$_comment_count))
+			if (!array_key_exists($target_type, self::$_comment_count) || !is_array(self::$_comment_count[$target_type]))
 				self::$_comment_count[$target_type] = array();
 
-			if (!array_key_exists($target_id, self::$_comment_count[$target_type]))
+			if (!array_key_exists($target_id, self::$_comment_count[$target_type]) || !is_array(self::$_comment_count[$target_type][$target_id]))
 				self::$_comment_count[$target_type][$target_id] = array();
 
 			if (!array_key_exists((int) $include_system_comments, self::$_comment_count[$target_type][$target_id]))
@@ -208,7 +208,7 @@
 			{
 				$tty = $this->getTargetType();
 				$tid = $this->getTargetID();
-				if (array_key_exists($tty, self::$_comment_count) && array_key_exists($tid, self::$_comment_count[$tty]) && array_key_exists((int) $this->isSystemComment(), self::$_comment_count[$tty][$tid]))
+				if (is_array(self::$_comment_count) && array_key_exists($tty, self::$_comment_count) && is_array(self::$_comment_count[$tty]) && array_key_exists($tid, self::$_comment_count[$tty]) && is_array(self::$_comment_count[$tty][$tid]) && array_key_exists((int) $this->isSystemComment(), self::$_comment_count[$tty][$tid]))
 					self::$_comment_count[$tty][$tid][(int) $this->isSystemComment()]++;
 			}
 		}
