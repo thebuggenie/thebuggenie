@@ -604,14 +604,13 @@
 				
 				// Now go through every thing which requires updating
 				
-				if (TBGContext::isModuleLoaded('publish'))
-				{
-					// ARTICLE HISTORY
-					$this->_fixUserDependentTimezone($offsets, TBGArticleHistoryTable::getTable(), TBGArticleHistoryTable::AUTHOR, TBGArticleHistoryTable::DATE);
+				TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'publish' . DS . 'classes' . DS . 'B2DB');
+				TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'publish' . DS . 'classes');
+				// ARTICLE HISTORY
+				$this->_fixUserDependentTimezone($offsets, TBGArticleHistoryTable::getTable(), TBGArticleHistoryTable::AUTHOR, TBGArticleHistoryTable::DATE);
 					
-					// ARTICLES
-					$this->_fixUserDependentTimezone($offsets, TBGArticlesTable::getTable(), TBGArticlesTable::AUTHOR, TBGArticlesTable::DATE);
-				}
+				// ARTICLES
+				$this->_fixUserDependentTimezone($offsets, TBGArticlesTable::getTable(), TBGArticlesTable::AUTHOR, TBGArticlesTable::DATE);
 
 				// BUILDS
 				$this->_fixNonUserDependentTimezone($offsets, TBGBuildsTable::getTable(), TBGBuildsTable::RELEASE_DATE, TBGBuildsTable::RELEASED);
@@ -763,8 +762,15 @@
 				$this->_fixNonUserDependentTimezone($offsets, TBGProjectsTable::getTable(), TBGProjectsTable::RELEASE_DATE, TBGProjectsTable::RELEASED);
 				
 				// VCS INTEGRATION
-				if (TBGContext::isModuleLoaded('vcs_integration'))
+				// check if module is loaded
+				
+				$modules = TBGModulesTable::getTable()->getModulesForScope($scope->getID());
+				
+				if ($modules['vcs_integration'] == true)
 				{
+					die('hello!!');
+					TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'vcs_integration' . DS . 'classes' . DS . 'B2DB');
+					TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'vcs_integration' . DS . 'classes');
 					$this->fixUserDependentTimezone($offsets, TBGVCSIntegrationTable::getTable(), TBGVCSIntegrationTable::AUTHOR, TBGVCSIntegrationTable::DATE);
 				}
 			}
