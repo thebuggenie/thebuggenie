@@ -580,6 +580,7 @@
 
 		private function _fixTimestamps()
 		{
+			die('fu');
 			// Unlimited execution time
 			set_time_limit(0);
 			
@@ -773,6 +774,7 @@
 					TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'vcs_integration' . DS . 'classes');
 					$this->fixUserDependentTimezone($offsets, TBGVCSIntegrationTable::getTable(), TBGVCSIntegrationTable::AUTHOR, TBGVCSIntegrationTable::DATE);
 				}
+				die('byebye!!');
 			}
 		}
 
