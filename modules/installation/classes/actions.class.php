@@ -451,7 +451,13 @@
 			TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'mailing' . DS . 'classes');
 			TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'publish' . DS . 'classes' . DS . 'B2DB');
 			TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'publish' . DS . 'classes');
-
+			
+			
+			if (TBGContext::getRequest()->getParameter('fix_my_timestamps') == '1')
+			{
+				$this->_fixTimestamps();
+			}
+			
 			// Create new tables
 			TBGDashboardViewsTable::getTable()->create();
 			TBGOpenIdAccountsTable::getTable()->create();
@@ -570,17 +576,11 @@
 				}
 			}
 			
-			if (TBGContext::getRequest()->getParameter('fix_my_timestamps' == '1'))
-			{
-				$this->_fixTimestamps();
-			}
-			
 			$this->upgrade_complete = true;
 		}
 
 		private function _fixTimestamps()
 		{
-			die('fu');
 			// Unlimited execution time
 			set_time_limit(0);
 			
@@ -592,7 +592,7 @@
 				$offsets = array('system', 'users');
 				$offsets['users'] = array();
 				
-				$offsets['system'] == (int) TBGSettings::getGMToffset() * 3600;
+				$offsets['system'] = (int) TBGSettings::getGMToffset() * 3600;
 				
 				foreach (TBGUser::getAll() as $user)
 				{
@@ -608,24 +608,24 @@
 				TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'publish' . DS . 'classes' . DS . 'B2DB');
 				TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'publish' . DS . 'classes');
 				// ARTICLE HISTORY
-				$this->_fixUserDependentTimezone($offsets, TBGArticleHistoryTable::getTable(), TBGArticleHistoryTable::AUTHOR, TBGArticleHistoryTable::DATE);
+				$this->_fixUserDependentTimezone($offsets, TBGArticleHistoryTable::getTable(), TBGArticleHistoryTable::AUTHOR, TBGArticleHistoryTable::DATE, $scope);
 					
 				// ARTICLES
-				$this->_fixUserDependentTimezone($offsets, TBGArticlesTable::getTable(), TBGArticlesTable::AUTHOR, TBGArticlesTable::DATE);
+				$this->_fixUserDependentTimezone($offsets, TBGArticlesTable::getTable(), TBGArticlesTable::AUTHOR, TBGArticlesTable::DATE, $scope);
 
 				// BUILDS
-				$this->_fixNonUserDependentTimezone($offsets, TBGBuildsTable::getTable(), TBGBuildsTable::RELEASE_DATE, TBGBuildsTable::RELEASED);
+				$this->_fixNonUserDependentTimezone($offsets, TBGBuildsTable::getTable(), TBGBuildsTable::RELEASE_DATE, $scope, TBGBuildsTable::RELEASED);
 
 				
 				// COMMENTS		
-				$this->_fixUserDependentTimezone($offsets, TBGCommentsTable::getTable(), array('a' => TBGCommentsTable::POSTED_BY, 'b' => TBGCommentsTable::UPDATED_BY), array('a' => TBGCommentsTable::POSTED, 'b' => TBGCommentsTable::UPDATED));
+				$this->_fixUserDependentTimezone($offsets, TBGCommentsTable::getTable(), array('a' => TBGCommentsTable::POSTED_BY, 'b' => TBGCommentsTable::UPDATED_BY), array('a' => TBGCommentsTable::POSTED, 'b' => TBGCommentsTable::UPDATED), $scope);
 				
 				// EDITIONS
-				$this->_fixNonUserDependentTimezone($offsets, TBGEditionsTable::getTable(), TBGEditionsTable::RELEASE_DATE, TBGEditionsTable::RELEASED);
+				$this->_fixNonUserDependentTimezone($offsets, TBGEditionsTable::getTable(), TBGEditionsTable::RELEASE_DATE, $scope, TBGEditionsTable::RELEASED);
 
 								
 				// FILES
-				$this->_fixUserDependentTimezone($offsets, TBGFilesTable::getTable(), TBGFilesTable::UID, TBGFilesTable::UPLOADED_AT);
+				$this->_fixUserDependentTimezone($offsets, TBGFilesTable::getTable(), TBGFilesTable::UID, TBGFilesTable::UPLOADED_AT, $scope);
 				
 				// ISSUES
 				// This is a bit more complex so do this manually - we have to poke around with the issue log
@@ -660,8 +660,8 @@
 					array_reverse($issue_log);
 					
 					end($issue_log); // Set array to the end
-					
-					$assigned_by = $issue_log['user_id'];
+					$end_item = current($issue_log);
+					$updated_by = $end_item['user_id'];
 					
 					if (array_key_exists('uid_'.$row->get(TBGIssuesTable::POSTED_BY), $offsets['users']))
 					{
@@ -694,6 +694,7 @@
 					unset($issue_object);
 					unset($updated_by);
 					unset($assigned_by);
+					unset($end_item);
 	
 					$crit2 = $table->getCriteria();
 					$crit2->addUpdate(TBGIssuesTable::POSTED, (int) $row->get(TBGIssuesTable::POSTED) + $offset);
@@ -715,7 +716,7 @@
 				}
 				
 				// LOG
-				$this->_fixUserDependentTimezone($offsets, TBGLogTable::getTable(), TBGLogTable::UID, TBGLogTable::TIME);
+				$this->_fixUserDependentTimezone($offsets, TBGLogTable::getTable(), TBGLogTable::UID, TBGLogTable::TIME, $scope);
 				
 				// MILESTONES
 				// The conditions are a bit different here so do it manually
@@ -760,7 +761,7 @@
 				}
 				
 				// PROJECTS
-				$this->_fixNonUserDependentTimezone($offsets, TBGProjectsTable::getTable(), TBGProjectsTable::RELEASE_DATE, TBGProjectsTable::RELEASED);
+				$this->_fixNonUserDependentTimezone($offsets, TBGProjectsTable::getTable(), TBGProjectsTable::RELEASE_DATE, $scope, TBGProjectsTable::RELEASED);
 				
 				// VCS INTEGRATION
 				// check if module is loaded
@@ -769,21 +770,24 @@
 				
 				if ($modules['vcs_integration'] == true)
 				{
-					die('hello!!');
 					TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'vcs_integration' . DS . 'classes' . DS . 'B2DB');
 					TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'vcs_integration' . DS . 'classes');
-					$this->fixUserDependentTimezone($offsets, TBGVCSIntegrationTable::getTable(), TBGVCSIntegrationTable::AUTHOR, TBGVCSIntegrationTable::DATE);
+					$this->_fixUserDependentTimezone($offsets, TBGVCSIntegrationTable::getTable(), TBGVCSIntegrationTable::AUTHOR, TBGVCSIntegrationTable::DATE, $scope);
 				}
-				die('byebye!!');
 			}
 		}
 
-		private function _fixUserDependentTimezone($offsets, \b2db\Table $table, $author_field, $correctionfield, $testfield = null)
+		private function _fixUserDependentTimezone($offsets, \b2db\Table $table, $author_field, $correctionfield, $scope, $testfield = null)
 		{
 			$crit = $table->getCriteria();
 			$crit->addWhere($table::SCOPE, $scope->getID());
 			
 			$res = $table->doSelect($crit);
+			
+			if (is_null($res))
+			{
+				return; // nothing to update
+			}
 			
 			while ($row = $res->getNextRow())
 			{				
@@ -811,7 +815,7 @@
 			
 				foreach ($author_field as $key => $field)
 				{
-					if (array_key_exists('uid_'.$row->get($field, $offsets['users'])))
+					if (array_key_exists('uid_'.$row->get($field), $offsets['users']))
 					{
 						$offset = $offsets['users']['uid_'.$row->get($field)];
 					}
@@ -839,12 +843,17 @@
 			}
 		}
 
-		private function _fixNonUserDependentTimezone($offsets, \b2db\Table $table, $correctionfield, $testfield = null)
+		private function _fixNonUserDependentTimezone($offsets, \b2db\Table $table, $correctionfield, $scope, $testfield = null)
 		{
 			$crit = $table->getCriteria();
 			$crit->addWhere($table::SCOPE, $scope->getID());
 			
 			$res = $table->doSelect($crit);
+			
+			if (is_null($res))
+			{
+				return; // nothing to update
+			}
 			
 			while ($row = $res->getNextRow())
 			{
