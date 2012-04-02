@@ -452,12 +452,6 @@
 			TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'publish' . DS . 'classes' . DS . 'B2DB');
 			TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'publish' . DS . 'classes');
 			
-			
-			if (TBGContext::getRequest()->getParameter('fix_my_timestamps') == '1')
-			{
-				$this->_fixTimestamps();
-			}
-			
 			// Create new tables
 			TBGDashboardViewsTable::getTable()->create();
 			TBGOpenIdAccountsTable::getTable()->create();
@@ -483,6 +477,8 @@
 			TBGCustomFieldsTable::getTable()->upgrade(TBGCustomFieldsTable3dot1::getTable());
 			TBGCustomFieldOptionsTable::getTable()->upgrade(TBGCustomFieldOptionsTable3dot1::getTable());
 			TBGIssueCustomFieldsTable::getTable()->upgrade(TBGIssueCustomFieldsTable3dot1::getTable());
+			
+			if (TBGContext::getRequest()->getParameter('fix_my_timestamps', false)) $this->_fixTimestamps();
 			
 			// Create new module tables
 			TBGIncomingEmailAccountTable::getTable()->create();
@@ -633,6 +629,7 @@
 				$table = TBGIssuesTable::getTable();
 				$crit = $table->getCriteria();
 				$crit->addWhere(TBGIssuesTable::SCOPE, $scope->getID());
+				$crit->addWhere(TBGIssuesTable::DELETED, false);
 				
 				$res = $table->doSelect($crit);
 				
