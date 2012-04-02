@@ -15,6 +15,8 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
+	 * 
+	 * @Table(name="scopes")
 	 */
 	class TBGScopesTable3dot0 extends TBGB2DBTable 
 	{
@@ -27,7 +29,7 @@
 		const ADMINISTRATOR = 'scopes.administrator';
 		const HOSTNAME = 'scopes.hostname';
 		
-		public function __construct()
+		protected function _initialize()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
 			parent::_addBoolean(self::ENABLED, false);

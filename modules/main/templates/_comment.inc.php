@@ -70,7 +70,7 @@
 			</select>
 			<br />
 			<label for="comment_reply_bodybox_<?php echo $comment->getID(); ?>"><?php echo __('Comment'); ?></label><br />
-			<?php include_template('main/textarea', array('area_name' => 'comment_body', 'area_id' => 'comment_reply_bodybox_'.$comment->getID(), 'height' => '200px', 'width' => '100%', 'value' => tbg_decodeUTF8("\n\n\n'''".__('%user% wrote:', array('%user%' => $comment->getPostedBy()->getName()))."'''\n>".str_replace("\n", "\n>", wordwrap(html_entity_decode(strip_tags(tbg_parse_text($comment->getContent(), false, null, $options))), 75, "\n"))."\n", true))); ?>
+			<?php include_template('main/textarea', array('area_name' => 'comment_body', 'area_id' => 'comment_reply_bodybox_'.$comment->getID(), 'height' => '200px', 'width' => '100%', 'value' => tbg_decodeUTF8("\n\n\n'''".__('%user% wrote:', array('%user%' => $comment->getPostedBy()->getName()))."'''\n>".str_replace("\n", "\n>", wordwrap(html_entity_decode(strip_tags(tbg_parse_text($comment->getContent(), false, null, $options)), ENT_COMPAT, TBGContext::getI18n()->getCharset()), 75, "\n"))."\n", true))); ?>
 			<div id="comment_reply_indicator_<?php echo $comment->getID(); ?>" style="display: none;">
 				<?php echo image_tag('spinning_16.gif', array('class' => 'spinning')); ?>
 			</div>
