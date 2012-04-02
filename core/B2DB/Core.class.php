@@ -41,6 +41,7 @@
 		protected static $_transaction_active = false;
 		protected static $_tables = array();
 		protected static $_debug_mode = false;
+		protected static $_cache_enabled = true;
 		protected static $_cached_entity_classes = array();
 		protected static $_cached_table_classes = array();
 
@@ -55,6 +56,11 @@
 		{
 			self::$_tables[\get_class($table)] = $table;
 			return $table;
+		}
+
+		public static function setCachingEnabled($enabled = true)
+		{
+			self::$_cache_enabled = $enabled;
 		}
 
 		/**
@@ -777,8 +783,8 @@
 
 			self::$_cached_table_classes[$classname]['name'] = $table_name;
 
-			$key = 'b2db_cache_'.$classname;
-			if (!self::$_debug_mode) {
+			if (self::$_cache_enabled && !self::$_debug_mode) {
+				$key = 'b2db_cache_'.$classname;
 				\TBGCache::add($key, self::$_cached_table_classes[$classname], false);
 				\TBGCache::fileAdd($key, self::$_cached_table_classes[$classname], false);
 			}
@@ -864,8 +870,8 @@
 					}
 				}
 			}
-			$key = 'b2db_cache_'.$classname;
-			if (!self::$_debug_mode) {
+			if (self::$_cache_enabled && !self::$_debug_mode) {
+				$key = 'b2db_cache_'.$classname;
 				\TBGCache::add($key, self::$_cached_entity_classes[$classname], false);
 				\TBGCache::fileAdd($key, self::$_cached_entity_classes[$classname], false);
 			}
@@ -876,9 +882,9 @@
 			if (!array_key_exists($classname, self::$_cached_entity_classes))
 			{
 				$entity_key = 'b2db_cache_'.$classname;
-				if (\TBGCache::has($entity_key, false)) {
+				if (self::$_cache_enabled && \TBGCache::has($entity_key, false)) {
 					self::$_cached_entity_classes[$classname] = \TBGCache::get($entity_key, false);
-				} elseif (\TBGCache::fileHas($entity_key, false)) {
+				} elseif (self::$_cache_enabled && \TBGCache::fileHas($entity_key, false)) {
 					self::$_cached_entity_classes[$classname] = \TBGCache::fileGet($entity_key, false);
 				} else {
 					self::cacheEntityClass($classname);
@@ -891,9 +897,9 @@
 			if (!array_key_exists($classname, self::$_cached_table_classes))
 			{
 				$key = 'b2db_cache_'.$classname;
-				if (\TBGCache::has($key, false)) {
+				if (self::$_cache_enabled && \TBGCache::has($key, false)) {
 					self::$_cached_table_classes[$classname] = \TBGCache::get($key, false);
-				} elseif (\TBGCache::fileHas($key, false)) {
+				} elseif (self::$_cache_enabled && \TBGCache::fileHas($key, false)) {
 					self::$_cached_table_classes[$classname] = \TBGCache::fileGet($key, false);
 				} else {
 					self::cacheTableClass($classname);
