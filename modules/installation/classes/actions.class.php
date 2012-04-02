@@ -482,6 +482,7 @@
 			TBGComponentsTable::getTable()->upgrade(TBGComponentsTable3dot1::getTable());
 			TBGCustomFieldsTable::getTable()->upgrade(TBGCustomFieldsTable3dot1::getTable());
 			TBGCustomFieldOptionsTable::getTable()->upgrade(TBGCustomFieldOptionsTable3dot1::getTable());
+			TBGIssueCustomFieldsTable::getTable()->upgrade(TBGIssueCustomFieldsTable3dot1::getTable());
 			
 			// Create new module tables
 			TBGIncomingEmailAccountTable::getTable()->create();
