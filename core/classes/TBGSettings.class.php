@@ -104,8 +104,8 @@
 
 		protected static $_ver_mj = 3;
 		protected static $_ver_mn = 2;
-		protected static $_ver_rev = '0RC8';
-		protected static $_ver_name = "Borg";
+		protected static $_ver_rev = '0RC9';
+		protected static $_ver_name = "Peach";
 		protected static $_defaultscope = null;
 		protected static $_settings = null;
 		protected static $_loadedsettings = array();
