@@ -638,8 +638,8 @@
 		{
 			return static::B2DB_TABLE_VERSION;
 		}
-
-		protected function _getColumnDefinitionSQL($column)
+		
+		protected function _getColumnTypeSQL($column)
 		{
 			$fsql = '';
 			switch ($column['type']) {
@@ -675,7 +675,12 @@
 					$fsql .= mb_strtoupper($column['type']);
 					break;
 			}
-			if ($column['not_null']) $fsql .= ' NOT NULL';
+			return $fsql;
+		}
+		
+		protected function _getColumnDefaultValueSQL($column)
+		{
+			$fsql = '';
 			if ($column['type'] != 'text') {
 				if (isset($column['auto_inc']) && $column['auto_inc'] == true && Core::getDBtype() != 'pgsql') {
 					$fsql .= ' AUTO_INCREMENT';
@@ -692,6 +697,13 @@
 					}
 				}
 			}
+		}
+		
+		protected function _getColumnDefinitionSQL($column)
+		{
+			$fsql = $this->_getColumnTypeSQL($column);
+			if ($column['not_null']) $fsql .= ' NOT NULL';
+			$fsql .= $this->_getColumnDefaultValueSQL($column);
 			return $fsql;
 		}
 
@@ -732,19 +744,48 @@
 			return $sql;
 		}
 
-		protected function _getAlterColumnSQL($column, $details)
+		protected function _getAlterColumnSQL($old_column, $new_column)
 		{
 			$sql = 'ALTER TABLE ' . $this->_getTableNameSQL();
 			$qc = $this->getQC();
+			
+			$field = $this->_getRealColumnFieldName($new_column['name']);
+			
 			switch (Core::getDBtype()) {
 				case 'mysql':
-					$sql .= " MODIFY $qc" . $this->_getRealColumnFieldName($details['name']) . "$qc ";
+					$sql .= " MODIFY $qc" . $field . "$qc ";
+					$sql .= $this->_getColumnDefinitionSQL($new_column);
 					break;
 				case 'pgsql':
-					$sql .= " ALTER COLUMN $qc" . $this->_getRealColumnFieldName($details['name']) . "$qc TYPE ";
+					
+					$csql = array();
+					
+					$alter = " ALTER COLUMN $qc" . $field . "$qc ";
+					
+					$new_type = $this->_getColumnTypeSQL($new_column);
+					$new_default = $this->_getColumnDefaultValueSQL($new_column);
+					
+					$csql[] = $alter . " DROP NOT NULL";
+					$csql[] = $alter . " DROP DEFAULT";
+					
+					$type = " TYPE " . $new_type;
+					if ($old_column['type'] == 'boolean' && $new_column['type'] == 'integer') {
+						$type .= " USING CASE WHEN $qc" . $field . "$qc THEN 1 ELSE 0 END";
+					} else {
+						// TODO Other default conversions provided by MySQL but not PostgreSQL?
+					}
+					$csql[] = $alter . $type;
+					
+					if ($new_default != '') {
+						$csql[] = $alter . " SET " . $new_default;
+					}
+					if ($new_column['not_null']) {
+						$csql[] =  $alter . " SET NOT NULL";
+					}
+					
+					$sql .= join(", ", $csql);
 					break;
 			}
-			$sql .= $this->_getColumnDefinitionSQL($details);
 			
 			return $sql;
 		}
@@ -793,7 +834,7 @@
 			$sqls = array();
 			foreach ($altered_columns as $column => $details) {
 				if (in_array($column, $dropped_columns)) continue;
-				$sqls[] = $this->_getAlterColumnSQL($column, $new_columns[$column]);
+				$sqls[] = $this->_getAlterColumnSQL($old_columns[$column], $new_columns[$column]);
 			}
 			foreach ($dropped_columns as $details) {
 				$sqls[] = $this->_getDropColumnSQL($details);
