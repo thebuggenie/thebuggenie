@@ -683,7 +683,7 @@
 		 */
 		public function _construct(\b2db\Row $row, $foreign_key = null)
 		{
-			//$this->_populateCustomfields();
+			$this->_initializeCustomfields();
 			$this->_mergeChangedProperties();
 			if($this->isDeleted())
 			{
@@ -831,43 +831,36 @@
 			return ($this->getWorkflowStep() instanceof TBGWorkflowStep) ? $this->getWorkflowStep()->getAvailableTransitionsForIssue($this) : array();
 		}
 
-		/**
-		 * Populates all the custom field values
-		 */
-		protected function _populateCustomfields()
+		protected function _initializeCustomfields()
 		{
-			if (!$this->_custom_populated)
+			foreach (TBGCustomDatatype::getAll() as $key => $customdatatype)
 			{
-				$this->_custom_populated = true;
-				foreach (TBGCustomDatatype::getAll() as $key => $customdatatype)
+				$var_name = "_customfield".$key;
+				$this->$var_name = null;
+			}
+			if ($res = TBGIssueCustomFieldsTable::getTable()->getAllValuesByIssueID($this->getID()))
+			{
+				while ($row = $res->getNextRow())
 				{
-					$var_name = "_customfield".$key;
-					$this->$var_name = null;
-				}
-				if ($res = TBGIssueCustomFieldsTable::getTable()->getAllValuesByIssueID($this->getID()))
-				{
-					while ($row = $res->getNextRow())
+					$datatype = new TBGCustomDatatype($row->get(TBGIssueCustomFieldsTable::CUSTOMFIELDS_ID));
+					$var_name = "_customfield".$datatype->getKey();
+
+					if ($datatype->hasCustomOptions())
 					{
-						$datatype = new TBGCustomDatatype($row->get(TBGIssueCustomFieldsTable::CUSTOMFIELDS_ID));
-						$var_name = "_customfield".$datatype->getKey();
-						
-						if ($datatype->hasCustomOptions())
+						$option = TBGCustomFieldOptionsTable::getTable()->selectById((int) $row->get(TBGIssueCustomFieldsTable::CUSTOMFIELDOPTION_ID));
+						if ($option instanceof TBGCustomDatatypeOption)
 						{
-							if ($optionrow = TBGCustomFieldOptionsTable::getTable()->doSelectById($row->get(TBGIssueCustomFieldsTable::OPTION_VALUE)))
-							{
-								$this->$var_name = $optionrow->get(TBGCustomFieldOptionsTable::OPTION_VALUE);
-							}
-						}
-						else
-						{
-							$this->$var_name = $row->get(TBGIssueCustomFieldsTable::OPTION_VALUE);
+							$this->$var_name = $option;
 						}
 					}
+					else
+					{
+						$this->$var_name = $row->get(TBGIssueCustomFieldsTable::OPTION_VALUE);
+					}
 				}
-				$this->_mergeChangedProperties();
 			}
 		}
-		
+
 		/**
 		 * Populates the affected items
 		 */
@@ -2166,7 +2159,6 @@
 		 */
 		public function setCustomField($key, $value)
 		{
-			$this->_populateCustomfields();
 			$this->_addChangedProperty('_customfield'.$key, $value);
 		}
 
@@ -2179,16 +2171,15 @@
 		 */
 		public function getCustomField($key)
 		{
-			$this->_populateCustomfields();
 			$var_name = "_customfield{$key}";
-			if (property_exists($this, $var_name) && !is_null($this->$var_name))
+			if (property_exists($this, $var_name))
 			{
-				$datatype = TBGCustomDatatype::getByKey($key);
-				if ($datatype->hasCustomOptions())
+				if ($this->$var_name)
 				{
-					if (!is_object($this->$var_name))
+					$customtype = TBGCustomDatatype::getByKey($key);
+					if ($customtype->hasCustomOptions() && !$this->$var_name instanceof TBGCustomDatatypeOption)
 					{
-						$this->$var_name = TBGCustomDatatypeOption::getByValueAndKey($this->$var_name, $key);
+						$this->$var_name = new TBGCustomDatatypeOption($this->$var_name);
 					}
 				}
 				return $this->$var_name;
@@ -4108,11 +4099,11 @@
 						}
 						catch (Exception $e) {}
 						$option_id = (is_object($option_object)) ? $option_object->getID() : null;
-						TBGIssueCustomFieldsTable::getTable()->saveIssueCustomFieldValue($option_id, $customdatatype->getID(), $this->getID());
+						TBGIssueCustomFieldsTable::getTable()->saveIssueCustomFieldOption($option_id, $customdatatype->getID(), $this->getID());
 						break;
 					default:
 						$option_id = ($this->getCustomField($key) instanceof TBGCustomDatatypeOption) ? $this->getCustomField($key)->getID() : null;
-						TBGIssueCustomFieldsTable::getTable()->saveIssueCustomFieldValue($option_id, $customdatatype->getID(), $this->getID());
+						TBGIssueCustomFieldsTable::getTable()->saveIssueCustomFieldOption($option_id, $customdatatype->getID(), $this->getID());
 						break;
 				}
 			}
@@ -4540,10 +4531,16 @@
 										$comment_lines[] = TBGContext::getI18n()->__("The custom field %customfield_name% has been updated, from '''%previous_value%''' to '''%new_value%'''.", array('%customfield_name%' => $customdatatype->getDescription(), '%previous_value%' => $old_value, '%new_value%' => $new_value));
 										break;
 									default:
-										$old_value = ($old_item = TBGCustomDatatypeOption::getByValueAndKey($value['original_value'], $key)) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
+										$old_item = null;
+										try
+										{
+											$old_item = ($value['original_value']) ? new TBGCustomDatatypeOption($value['original_value']) : null;
+										}
+										catch (Exception $e) {}
+										$old_value = ($old_item instanceof TBGCustomDatatypeOption) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
 										$new_value = ($this->getCustomField($key) instanceof TBGCustomDatatypeOption) ? $this->getCustomField($key)->getName() : TBGContext::getI18n()->__('Unknown');
 										$this->addLogEntry(TBGLogTable::LOG_ISSUE_CUSTOMFIELD_CHANGED, $old_value . ' &rArr; ' . $new_value);
-										$comment_lines[] = TBGContext::getI18n()->__("The custom field %customfield_name% has been updated, from '''%previous_value%''' to '''%new_value%'''.", array('%customfield_name%' => $customdatatype->getDescription(), '%previous_value%' => $old_value, '%new_value%' => $new_value));
+										$comment_lines[] = TBGContext::getI18n()->__("The custom field %customfield_name% has been updated to '''%new_value%'''.", array('%customfield_name%' => $customdatatype->getDescription(), '%new_value%' => $new_value));
 										break;
 								}
 							}
@@ -4581,6 +4578,7 @@
 		
 		protected function _postSave($is_new)
 		{
+			$this->_clearChangedProperties();
 			if (!$is_new && isset($this->comment) && isset($this->comment_lines))
 			{
 				$event = TBGEvent::createNew('core', 'TBGIssue::save', $this, array('changed_properties' => $this->_getChangedProperties(), 'comment' => $this->comment, 'comment_lines' => $this->comment_lines, 'updated_by' => TBGContext::getUser()));

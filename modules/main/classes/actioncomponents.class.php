@@ -162,6 +162,7 @@
 				$customfields_list = array();
 				foreach (TBGCustomDatatype::getAll() as $key => $customdatatype)
 				{
+					$customvalue = $this->issue->getCustomField($key);
 					$changed_methodname = "isCustomfield{$key}Changed";
 					$merged_methodname = "isCustomfield{$key}Merged";
 					$customfields_list[$key] = array('type' => $customdatatype->getType(),
@@ -176,16 +177,16 @@
 
 					if ($customdatatype->hasCustomOptions())
 					{
-						$customfields_list[$key]['name'] = (($this->issue->getCustomField($key) instanceof TBGCustomDatatypeOption) ? $this->issue->getCustomField($key)->getName() : '');
-						$customfields_list[$key]['name_visible'] = (bool) ($this->issue->getCustomField($key) instanceof TBGCustomDatatypeOption);
-						$customfields_list[$key]['noname_visible'] = (bool) (!$this->issue->getCustomField($key) instanceof TBGCustomDatatypeOption);
+						$customfields_list[$key]['name'] = ($customvalue instanceof TBGCustomDatatypeOption) ? $customvalue->getName() : '';
+						$customfields_list[$key]['name_visible'] = (bool) ($customvalue instanceof TBGCustomDatatypeOption);
+						$customfields_list[$key]['noname_visible'] = (bool) (!$customvalue instanceof TBGCustomDatatypeOption);
 						$customfields_list[$key]['choices'] = $customdatatype->getOptions();
 					}
 					else
 					{
-						$customfields_list[$key]['name'] = $this->issue->getCustomField($key);
-						$customfields_list[$key]['name_visible'] = (bool) ($this->issue->getCustomField($key) != '');
-						$customfields_list[$key]['noname_visible'] = (bool) ($this->issue->getCustomField($key) == '');
+						$customfields_list[$key]['name'] = $customvalue;
+						$customfields_list[$key]['name_visible'] = (bool) ($customvalue != '');
+						$customfields_list[$key]['noname_visible'] = (bool) ($customvalue == '');
 					}
 				}
 				$this->customfields_list = $customfields_list;
@@ -444,7 +445,7 @@
 			$this->selected_pain_bug_type = null;
 			$this->selected_pain_likelihood = null;
 			$this->selected_pain_effect = null;
-			$selected_customdatatype = array();
+			$selected_customdatatype = $this->selected_customdatatype ?: array();
 			foreach (TBGCustomDatatype::getAll() as $customdatatype)
 			{
 				$selected_customdatatype[$customdatatype->getKey()] = null;

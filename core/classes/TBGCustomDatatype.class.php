@@ -22,9 +22,6 @@
 		const USER_CHOICE = 14;
 		const TEAM_CHOICE = 15;
 		const USER_OR_TEAM_CHOICE = 17;
-		const DROPDOWN_CHOICE_TEXT_COLORED = 18;
-		const DROPDOWN_CHOICE_TEXT_COLOR = 19;
-		const DROPDOWN_CHOICE_TEXT_ICON = 20;
 
 		protected static $_types = null;
 
@@ -32,7 +29,7 @@
 		 * This custom types options (if any)
 		 *
 		 * @var array
-		 * @Relates(class="TBGCustomDatatypeOption", collection=true, foreign_column="customfield_key")
+		 * @Relates(class="TBGCustomDatatypeOption", collection=true, foreign_column="customfield_id")
 		 */
 		protected $_options = null;
 
@@ -114,8 +111,7 @@
 		 */
 		protected function _preDelete()
 		{
-			$key = \b2db\Core::getTable('TBGCustomFieldsTable')->getKeyFromId($this->getID());
-			\b2db\Core::getTable('TBGCustomFieldOptionsTable')->doDeleteByFieldKey($key);
+			TBGCustomFieldOptionsTable::getTable()->deleteCustomFieldOptions($key);
 		}
 
 		public static function doesKeyExist($key)
@@ -142,7 +138,7 @@
 
 		public static function getChoiceFieldsAsArray()
 		{
-			return array(self::CHECKBOX_CHOICES, self::DROPDOWN_CHOICE_TEXT, self::DROPDOWN_CHOICE_TEXT_COLOR, self::DROPDOWN_CHOICE_TEXT_COLORED, self::DROPDOWN_CHOICE_TEXT_ICON, self::RADIO_CHOICE);
+			return array(self::CHECKBOX_CHOICES, self::DROPDOWN_CHOICE_TEXT, self::RADIO_CHOICE);
 		}
 
 		/**

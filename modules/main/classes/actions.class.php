@@ -1072,7 +1072,7 @@
 						if ($request->hasParameter($customdatatype_id))
 						{
 							$$customdatatype_id = $request->getParameter($customdatatype_id);
-							$selected_customdatatype[$customdatatype->getKey()] = TBGCustomDatatypeOption::getByValueAndKey($$customdatatype_id, $customdatatype->getKey());
+							$selected_customdatatype[$customdatatype->getKey()] = new TBGCustomDatatypeOption($$customdatatype_id);
 						}
 					}
 					else
@@ -1739,25 +1739,22 @@
 									}
 									$changed_methodname = "isCustomfield{$key}Changed";
 									if (!$issue->$changed_methodname()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false));
-									return ($customdatatypeoption_value == '') ? $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>true, 'field' => array('id' => 0))) : $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>true, 'field' => array('value' => $key, 'name' => $customdatatypeoption_value)));
+									return ($customdatatypeoption_value == '') ? $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>true, 'field' => array('id' => 0))) : $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('value' => $key, 'name' => $customdatatypeoption_value)));
 									break;
 							}
 						}
-						if ($customdatatypeoption_value == '' || ($customdatatypeoption_value && ($customdatatypeoption = TBGCustomDatatypeOption::getByValueAndKey($customdatatypeoption_value, $key)) instanceof TBGCustomDatatypeOption))
+						$customdatatypeoption = ($customdatatypeoption_value) ? TBGCustomDatatypeOption::getB2DBTable()->selectById($customdatatypeoption_value) : null;
+						if ($customdatatypeoption instanceof TBGCustomDatatypeOption)
 						{
-							if ($customdatatypeoption_value == '')
-							{
-								$issue->setCustomField($key, "");
-							}
-							else
-							{
-								$issue->setCustomField($key, $customdatatypeoption->getValue());
-							}
-							
-							$changed_methodname = "isCustomfield{$key}Changed";
-							if (!$issue->$changed_methodname()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false));
-							return ($customdatatypeoption_value == '') ? $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>true, 'field' => array('id' => 0))) : $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>true, 'field' => array('value' => $customdatatypeoption_value, 'name' => $customdatatypeoption->getName())));
+							$issue->setCustomField($key, $customdatatypeoption->getID());
 						}
+						else
+						{
+							$issue->setCustomField($key, null);
+						}
+						$changed_methodname = "isCustomfield{$key}Changed";
+						if (!$issue->$changed_methodname()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false));
+						return (!$customdatatypeoption instanceof TBGCustomDatatypeOption) ? $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>true, 'field' => array('id' => 0))) : $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('value' => $customdatatypeoption->getID(), 'name' => $customdatatypeoption->getName())));
 					}
 					break;
 			}
@@ -1886,7 +1883,7 @@
 						
 						if ($customdatatype->hasCustomOptions())
 						{
-							$field = ($issue->getCustomField($key) instanceof TBGCustomDatatypeOption) ? array('value' => $issue->getCustomField($key)->getValue(), 'name' => $issue->getCustomField($key)->getName()) : array('id' => 0);
+							$field = ($issue->getCustomField($key) instanceof TBGCustomDatatypeOption) ? array('value' => $issue->getCustomField($key)->getID(), 'name' => $issue->getCustomField($key)->getName()) : array('id' => 0);
 						}
 						else
 						{
@@ -2095,8 +2092,6 @@
 		 */
 		public function runDeleteIssue(TBGRequest $request)
 		{
-			$this->forward403unless(TBGContext::getUser()->hasPermission('caneditissue') || TBGContext::getUser()->hasPermission('candeleteissues'));
-
 			if ($issue_id = $request['issue_id'])
 			{
 				try
@@ -2113,6 +2108,7 @@
 				return $this->return404(TBGContext::getI18n()->__('This issue does not exist'));
 			}
 
+			$this->forward403unless($issue->canDeleteIssue());
 			$issue->deleteIssue();
 			$issue->save();
 			

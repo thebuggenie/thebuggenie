@@ -634,14 +634,14 @@
 									$ctn = $crit->returnCriterion(self::TITLE, $searchterm, Criteria::DB_LIKE);
 									$ctn->addOr(self::DESCRIPTION, $searchterm, Criteria::DB_LIKE);
 									$ctn->addOr(self::REPRODUCTION_STEPS, $searchterm, Criteria::DB_LIKE);
-									$ctn->addOr(TBGIssueCustomFieldsTable::OPTION_VALUE, $searchterm, Criteria::DB_LIKE);
+									$ctn->addOr(TBGIssueCustomFieldsTable::CUSTOMFIELDOPTION_ID, $searchterm, Criteria::DB_LIKE);
 								}
 								else
 								{
 									$ctn = $crit->returnCriterion(self::TITLE, $searchterm, Criteria::DB_NOT_LIKE);
 									$ctn->addWhere(self::DESCRIPTION, $searchterm, Criteria::DB_NOT_LIKE);
 									$ctn->addWhere(self::REPRODUCTION_STEPS, $searchterm, Criteria::DB_NOT_LIKE);
-									$ctn->addOr(TBGIssueCustomFieldsTable::OPTION_VALUE, $searchterm, Criteria::DB_NOT_LIKE);
+									$ctn->addOr(TBGIssueCustomFieldsTable::CUSTOMFIELDOPTION_ID, $searchterm, Criteria::DB_NOT_LIKE);
 								}
 								$crit->addWhere($ctn);
 							}
@@ -654,7 +654,7 @@
 						{
 							$customdatatype = TBGCustomDatatype::getByKey($filter);
 							$ctn = $crit->returnCriterion(TBGIssueCustomFieldsTable::CUSTOMFIELDS_ID, $customdatatype->getID());
-							$ctn->addWhere(TBGIssueCustomFieldsTable::OPTION_VALUE, $filter_info['value'], $filter_info['operator']);
+							$ctn->addWhere(TBGIssueCustomFieldsTable::CUSTOMFIELDOPTION_ID, $filter_info['value'], $filter_info['operator']);
 							$crit->addWhere($ctn);
 						}
 					}
@@ -709,14 +709,14 @@
 							$customdatatype = TBGCustomDatatype::getByKey($filter);
 							$first_val = array_shift($filter_info);
 							$ctn = $crit->returnCriterion(TBGIssueCustomFieldsTable::CUSTOMFIELDS_ID, $customdatatype->getID());
-							$ctn->addWhere(TBGIssueCustomFieldsTable::OPTION_VALUE, $first_val['value'], $first_val['operator']);
+							$ctn->addWhere(TBGIssueCustomFieldsTable::CUSTOMFIELDOPTION_ID, $first_val['value'], $first_val['operator']);
 							if (count($filter_info) > 0)
 							{
 								foreach ($filter_info as $single_filter)
 								{
 									if (in_array($single_filter['operator'], array('=', '!=', '<=', '>=', '<', '>')))
 									{
-										$ctn->addOr(TBGIssueCustomFieldsTable::OPTION_VALUE, $single_filter['value'], $single_filter['operator']);
+										$ctn->addOr(TBGIssueCustomFieldsTable::CUSTOMFIELDOPTION_ID, $single_filter['value'], $single_filter['operator']);
 									}
 								}
 							}

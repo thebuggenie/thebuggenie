@@ -20,6 +20,8 @@
 	 * @package thebuggenie
 	 * @subpackage tables
 	 *
+	 * @static TBGCustomFieldOptionsTable getTable() Returns an instance of this table
+	 *
 	 * @Table(name="customfieldoptions")
 	 * @Entity(class="TBGCustomDatatypeOption")
 	 */
@@ -33,57 +35,56 @@
 		const ITEMDATA = 'customfieldoptions.itemdata';
 		const OPTION_VALUE = 'customfieldoptions.value';
 		const SORT_ORDER = 'customfieldoptions.sort_order';
-		const CUSTOMFIELDS_KEY = 'customfieldoptions.customfield_key';
+		const CUSTOMFIELD_ID = 'customfieldoptions.customfield_id';
 		const SCOPE = 'customfieldoptions.scope';
 
-		public function getAllByKey($key)
+		public function getByValueAndCustomfieldID($value, $customfield_id)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::CUSTOMFIELDS_KEY, $key);
-			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
-			$crit->addOrderBy(self::SORT_ORDER, Criteria::SORT_ASC);
-			
-			$res = $this->doSelect($crit);
-			
-			$retval = array();
-
-			if ($res)
-			{
-				while ($row = $res->getNextRow())
-				{
-					$retval[$row->get(self::ID)] = $row;
-				}
-			}
-
-			return $retval;
-		}
-
-		public function getByValueAndKey($value, $key)
-		{
-			$crit = $this->getCriteria();
-			$crit->addWhere(self::CUSTOMFIELDS_KEY, $key);
 			$crit->addWhere(self::OPTION_VALUE, $value);
-			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$crit->addWhere(self::CUSTOMFIELD_ID, $customfield_id);
 
-			$row = $this->doSelectOne($crit);
+			$row = $this->selectOne($crit);
 
 			return $row;
 		}
 
-		public function doDeleteByFieldKey($key)
+		public function deleteCustomFieldOptions($customfield_id)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::CUSTOMFIELDS_KEY, $key);
+			$crit->addWhere(self::CUSTOMFIELD_ID, $customfield_id);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
-		
-			$res = $this->doSelect($crit);
-			
-			if ($res)
+			$this->doDelete($crit);
+		}
+
+		public function _migrateData(\b2db\Table $old_table)
+		{
+			switch ($old_table->getVersion())
 			{
-				while ($row = $res->getNextRow())
-				{
-					$this->doDeleteById($row->get(self::ID));
-				}
+				case 1:
+					if ($res = $old_table->doSelectAll())
+					{
+						$customdatatypes_table = TBGCustomDatatype::getB2DBTable();
+						$crit = $customdatatypes_table->getCriteria();
+						$crit->indexBy(TBGCustomFieldsTable::FIELD_KEY);
+						$customfields = $customdatatypes_table->select($crit);
+						while ($row = $res->getNextRow())
+						{
+							$key = $row->get('customfieldoptions.customfield_key');
+							$customfield = (array_key_exists($key, $customfields)) ? $customfields[$key] : null;
+							if ($customfield instanceof TBGCustomDatatype)
+							{
+								$crit = $this->getCriteria();
+								$crit->addUpdate(self::CUSTOMFIELD_ID, $customfield->getID());
+								$this->doUpdateById($crit, $row->get(self::ID));
+							}
+							else
+							{
+								$this->doDeleteById($row->get(self::ID));
+							}
+						}
+					}
+					break;
 			}
 		}
 
