@@ -1222,6 +1222,16 @@
 		}
 		
 		/**
+		 * Return if the user can edit category
+		 *
+		 * @return boolean
+		 */
+		public function canEditCustomFields()
+		{
+			return (bool) $this->_permissionCheck('caneditissue', true);
+		}
+
+		/**
 		 * Return if the user can edit resolution
 		 *
 		 * @return boolean
