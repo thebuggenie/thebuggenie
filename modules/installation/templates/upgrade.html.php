@@ -26,7 +26,7 @@
 						<?php /* <b>A straightforward fix is available - </b>please see <a target="_blank" href="http://thebuggenie.wordpress.com/2011/12/30/how-the-bug-genie-3-2s-upgrader-fixes-your-timestamps/">our blog post</a> for details. <i>(opens in a new window)</i> */ ?>
 						<input type="checkbox" name="fix_my_timestamps" value="1" id="fix_my_timestamps" checked="checked">
 						<label for="fix_my_timestamps" style="font-weight: bold;">Fix incorrect time and date values</label><br>
-						Please see <a target="_blank" href="http://thebuggenie.wordpress.com/2012/01/04/the-bug-genie-3-2-and-utf/">our blog post</a> for more details. <i>(opens in a new window)</i><br>
+						Please see <a target="_blank" href="http://thebuggenie.wordpress.com/2011/12/30/how-the-bug-genie-3-2s-upgrader-fixes-your-timestamps/">our blog post</a> for more details. <i>(opens in a new window)</i><br>
 						<br>
 					<?php endif; ?>
 					<input type="hidden" name="perform_upgrade" value="1">
