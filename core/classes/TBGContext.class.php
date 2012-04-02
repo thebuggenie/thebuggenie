@@ -583,11 +583,19 @@
 		public static function checkInstallMode()
 		{
 			if (!is_readable(THEBUGGENIE_PATH . 'installed'))
+			{
 				self::$_installmode = true;
+			}
 			elseif (is_readable(THEBUGGENIE_PATH . 'upgrade'))
-				self::$_installmode = self::$_upgrademode = true;
+			{
+				self::$_installmode = true;
+				self::$_upgrademode = true;
+				\b2db\Core::setCachingEnabled(false);
+			}
 			elseif (!\b2db\Core::isInitialized())
+			{
 				throw new Exception("The Bug Genie seems installed, but B2DB isn't configured. This usually indicates an error with the installation. Try removing the file ".THEBUGGENIE_PATH."installed and try again.");
+			}
 		}
 
 		public static function initializeSession()
@@ -2551,4 +2559,3 @@
 		}
 
 	}
-	
