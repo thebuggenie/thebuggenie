@@ -697,6 +697,7 @@
 					}
 				}
 			}
+			return $fsql;
 		}
 		
 		protected function _getColumnDefinitionSQL($column)
