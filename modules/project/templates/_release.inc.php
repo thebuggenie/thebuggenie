@@ -19,5 +19,11 @@
 		<?php endif; ?>
 		<?php echo image_tag('icon_build.png', array('style' => 'float: left; margin: 2px 5px 0 0;')); ?> <?php echo $build->getName() . '&nbsp;&nbsp;<span class="faded_out">(' . $build->getVersion() . ')</span>'; ?><br>
 	<?php endif; ?>
-	<span class="faded_out" style="font-size: 11px;"><?php echo __('Released %timestamp%', array('%timestamp%' => tbg_formatTime($build->getReleaseDate(), 7))); ?></span>
+		<span class="faded_out" style="font-size: 0.9em;" id="build_<?php echo $build->getID(); ?>_release_date">
+		<?php if ($build->isReleased()): ?>
+			<?php echo __('Released %release_date%', array('%release_date%' => tbg_formatTime($build->getReleaseDate(), 7))); ?>
+		<?php else: ?>
+			<?php echo __('Not released yet'); ?>
+		<?php endif; ?>
+		</span>
 </li>
