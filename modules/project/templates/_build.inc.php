@@ -30,7 +30,7 @@
 				<tr>
 					<td><label for="has_release_date"><?php echo __('Release date'); ?></label></td>
 					<td style="padding: 2px;">
-						<select name="has_release_date" id="has_release_date" style="width: 70px;" onchange="var val = $(this).getValue(); ['day', 'month', 'year'].each(function(item) { (val) ? $('release_'+item).enable() : $('release_'+item).disable(); });">
+						<select name="has_release_date" id="has_release_date" style="width: 70px;" onchange="var val = $(this).getValue(); ['day', 'month', 'year', 'hour', 'minute'].each(function(item) { (val == 1) ? $('release_'+item).enable() : $('release_'+item).disable(); });">
 							<option value=1<?php if ($build->hasReleaseDate()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
 							<option value=0<?php if (!$build->hasReleaseDate()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
 						</select>
@@ -50,8 +50,8 @@
 						<?php endfor; ?>
 						</select>
 						<b><?php echo __('%release_date_input% - time: %time_input%', array('%release_date_input%' => '', '%time_input%' => '')); ?></b>
-						<input type="text" name="release_hour" style="width: 20px; font-size: 0.9em; text-align: center;" value="<?php echo $build->getReleaseDateHour(); ?>">&nbsp;:&nbsp;
-						<input type="text" name="release_minute" style="width: 20px; font-size: 0.9em; text-align: center;" value="<?php echo $build->getReleaseDateMinute(); ?>">
+						<input type="text" id="release_hour" name="release_hour" style="width: 20px; font-size: 0.9em; text-align: center;" value="<?php echo $build->getReleaseDateHour(); ?>"<?php if (!$build->hasReleaseDate()): ?> disabled<?php endif; ?>>&nbsp;:&nbsp;
+						<input type="text" id="release_minute" name="release_minute" style="width: 20px; font-size: 0.9em; text-align: center;" value="<?php echo $build->getReleaseDateMinute(); ?>"<?php if (!$build->hasReleaseDate()): ?> disabled<?php endif; ?>>
 					</td>
 				</tr>
 				<tr>

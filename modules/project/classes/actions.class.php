@@ -1804,7 +1804,11 @@
 							{
 								$build->clearEdition();
 							}
-							$release_date = mktime($request['release_hour'], $request['release_minute'], 1, $request['release_month'], $request['release_day'], $request['release_year']);
+							$release_date = null;
+							if ($request['has_release_date'])
+							{
+								$release_date = mktime($request['release_hour'], $request['release_minute'], 1, $request['release_month'], $request['release_day'], $request['release_year']);
+							}
 							$build->setReleaseDate($release_date);
 							switch ($request->getParameter('download', 'leave_file'))
 							{

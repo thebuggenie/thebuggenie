@@ -57,7 +57,6 @@
 		 */
 		public function setReleaseDate($release_date = null)
 		{
-			if ($release_date === null) $release_date = NOW;
 			$this->_release_date = $release_date;
 		}
 
