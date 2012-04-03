@@ -634,14 +634,14 @@
 									$ctn = $crit->returnCriterion(self::TITLE, $searchterm, Criteria::DB_LIKE);
 									$ctn->addOr(self::DESCRIPTION, $searchterm, Criteria::DB_LIKE);
 									$ctn->addOr(self::REPRODUCTION_STEPS, $searchterm, Criteria::DB_LIKE);
-									$ctn->addOr(TBGIssueCustomFieldsTable::CUSTOMFIELDOPTION_ID, $searchterm, Criteria::DB_LIKE);
+									$ctn->addOr(TBGIssueCustomFieldsTable::OPTION_VALUE, $searchterm, Criteria::DB_LIKE);
 								}
 								else
 								{
 									$ctn = $crit->returnCriterion(self::TITLE, $searchterm, Criteria::DB_NOT_LIKE);
 									$ctn->addWhere(self::DESCRIPTION, $searchterm, Criteria::DB_NOT_LIKE);
 									$ctn->addWhere(self::REPRODUCTION_STEPS, $searchterm, Criteria::DB_NOT_LIKE);
-									$ctn->addOr(TBGIssueCustomFieldsTable::CUSTOMFIELDOPTION_ID, $searchterm, Criteria::DB_NOT_LIKE);
+									$ctn->addOr(TBGIssueCustomFieldsTable::OPTION_VALUE, $searchterm, Criteria::DB_NOT_LIKE);
 								}
 								$crit->addWhere($ctn);
 							}
