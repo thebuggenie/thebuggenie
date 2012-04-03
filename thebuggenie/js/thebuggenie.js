@@ -3738,12 +3738,12 @@ TBG.Search.bulkUpdate = function(url, mode) {
 */
 
 TBG.Chart.config = {
-	y_config: { color: '#AAA', min: 0, tickDecimals: 0 },
-	x_config: { color: '#AAA', tickDecimals: 0 },
+	y_config: {color: '#AAA', min: 0, tickDecimals: 0},
+	x_config: {color: '#AAA', tickDecimals: 0},
 	grid_config: {
 		color: '#CCC',
 		borderWidth: 1,
-		backgroundColor: { colors: ["#FFF", "#EEE"] },
+		backgroundColor: {colors: ["#FFF", "#EEE"]},
 		hoverable: true,
 		autoHighlight: true
 	}
@@ -3968,33 +3968,33 @@ TBG.Chart.burndownChart = function(burndown_data, time) {
 		var x_config = TBG.Chart.config.x_config;
 		x_config.mode = 'time';
 		var grid_config = TBG.Chart.config.grid_config;
-		grid_config.markings = [{xaxis: { from: time, to: time}, color: '#955', lineWidth: 1}];
+		grid_config.markings = [{xaxis: {from: time, to: time}, color: '#955', lineWidth: 1}];
 		jQuery.plot(jQuery("#selected_burndown_image"), [
 			{
 				data: d_e_velocity_hours,
-				dashes: { show: true, lineWidth: 1 },
-				points: { show: false },
+				dashes: {show: true, lineWidth: 1},
+				points: {show: false},
 				color: '#66F',
 				label: 'Estimated velocity (hours)'
 			},
 			{
 				data: d_e_velocity_points,
-				dashes: { show: true, lineWidth: 1 },
-				points: { show: false },
+				dashes: {show: true, lineWidth: 1},
+				points: {show: false},
 				color: '#333',
 				label: 'Estimated velocity (points)'
 			},
 			{
 				data: d_b_hours,
-				lines: { show: true },
-				points: { show: true },
+				lines: {show: true},
+				points: {show: true},
 				color: '#923A6F',
 				label: 'Hours burndown'
 			},
 			{
 				data: d_b_points,
-				lines: { show: true },
-				points: { show: true },
+				lines: {show: true},
+				points: {show: true},
 				color: '#F83A39',
 				label: 'Points burndown'
 			}
