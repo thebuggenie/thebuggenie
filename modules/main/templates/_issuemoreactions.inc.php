@@ -1,5 +1,5 @@
 <?php if (!$issue->getProject()->isArchived() && ($tbg_user->hasPermission('caneditissue') || $tbg_user->hasPermission('caneditissuebasic'))): ?>
-	<ul id="more_actions_<?php echo $issue->getID(); ?>" style="display: none; position: absolute; width: 300px; top: 0; right: 0; z-index: 1000;" class="simple_list rounded_box white shadowed more_actions_dropdown" onclick="$('more_actions_button').toggleClassName('button-pressed');$('more_actions_<?php echo $issue->getID(); ?>').toggle();">
+	<ul id="more_actions_<?php echo $issue->getID(); ?>" style="display: none; position: absolute; width: 300px; top: 0; right: 0; z-index: 1000;" class="simple_list rounded_box white shadowed more_actions_dropdown dropdown_box" onclick="$('more_actions_button').toggleClassName('button-pressed');$('more_actions_<?php echo $issue->getID(); ?>').toggle();">
 		<?php if (!isset($multi) || !$multi): ?>
 			<li class="header"><?php echo __('Additional actions available'); ?></li>
 		<?php endif; ?>

@@ -173,6 +173,23 @@ TBG.Core._resizeWatcher = function() {
 			item.setStyle({width: element_width + 'px'});
 		});
 	}
+	var visible_popups = $$('.dropdown_box').findAll(function(el) {return el.visible();});
+	if (visible_popups.size()) {
+		visible_popups.each(function (element) {
+			var max_bottom = document.viewport.getHeight();
+			var element_height = $(element).getHeight()
+			var parent_offset = $(element).up().cumulativeOffset().top;
+			var element_min_bottom = parent_offset + element_height + 35;
+			if (max_bottom < element_min_bottom) {
+				if ($(element).getStyle('position') != 'fixed') {
+					jQuery(element).data({'top': $(element).getStyle('top')});
+				}
+				$(element).setStyle({'position': 'fixed', 'bottom': '5px', 'top': 'auto'});
+			} else {
+				$(element).setStyle({'position': 'absolute', 'bottom': 'auto', 'top': jQuery(element).data('top')});
+			}
+		});
+	}
 };
 
 /**
