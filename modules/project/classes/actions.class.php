@@ -1672,97 +1672,41 @@
 		 *
 		 * @param TBGRequest $request The request object
 		 */
-		public function runBuildAction(TBGRequest $request)
+		public function runDeleteBuild(TBGRequest $request)
 		{
 			$i18n = TBGContext::getI18n();
 
-			if ($this->getUser()->canManageProjectReleases($this->selected_project))
+			try
 			{
-				try
+				if ($this->getUser()->canManageProjectReleases($this->selected_project))
 				{
 					if ($b_id = $request['build_id'])
 					{
 						$build = TBGContext::factory()->TBGBuild($b_id);
 						if ($build->hasAccess())
 						{
-							switch ($request['build_action'])
-							{
-								case 'delete':
-									$build->delete();
-									return $this->renderJSON(array('deleted' => true, 'message' => $i18n->__('The release was deleted')));
-									break;
-								case 'addtoopen':
-									$build->addToOpenParentIssues((int) $request['status'], (int) $request['category'], (int) $request['issuetype']);
-									return $this->renderJSON(array('failed' => false, 'title' => $i18n->__('The selected build has been added to open issues based on your selections'), 'message' => ''));
-									break;
-								case 'release':
-									$build->setReleased(true);
-									$build->setReleaseDate();
-									$build->save();
-									$this->show_mode = 'one';
-									break;
-								case 'retract':
-									$build->setReleased(false);
-									$build->setReleaseDate(0);
-									$build->save();
-									$this->show_mode = 'one';
-									break;
-								case 'lock':
-									$build->setLocked(true);
-									$build->save();
-									$this->show_mode = 'one';
-									break;
-								case 'unlock':
-									$build->setLocked(false);
-									$build->save();
-									$this->show_mode = 'one';
-									break;
-								case 'update':
-									if (($b_name = $request['build_name']) && trim($b_name) != '')
-									{
-										if ($build->getProject() instanceof TBGProject && in_array($b_name, $build->getProject()->getBuilds()) && !($b_name == $build->getName()))
-										{
-											throw new Exception($i18n->__('This build already exists for this project'));
-										}
-										$build->setName($b_name);
-										$build->setVersionMajor($request['ver_mj']);
-										$build->setVersionMinor($request['ver_mn']);
-										$build->setVersionRevision($request['ver_rev']);
-										if ($request->hasParameter('release_month') && $request->hasParameter('release_day') && $request->hasParameter('release_year'))
-										{
-											$release_date = mktime(0, 0, 1, $request['release_month'], $request['release_day'], $request['release_year']);
-											$build->setReleaseDate($release_date);
-										}
-										$build->save();
-									}
-									else
-									{
-										throw new Exception($i18n->__('The build / release needs to have a name'));
-									}
-									$this->show_mode = 'one';
-									break;
-							}
+							$build->delete();
+							return $this->renderJSON(array('deleted' => true, 'message' => $i18n->__('The release was deleted')));
 						}
 						else
 						{
-							throw new Exception($i18n->__('You do not have access to this build / release'));
+							throw new Exception($i18n->__('You do not have access to this release'));
 						}
 					}
 					else
 					{
-						throw new Exception($i18n->__('You need to specify a build / release'));
+						throw new Exception($i18n->__('You need to specify a release'));
 					}
 				}
-				catch (Exception $e)
+				else
 				{
-					return $this->renderJSON(array('failed' => true, "error" => $i18n->__('Could not update the build / release').", ".$e->getMessage()));
+					throw new Exception($i18n->__("You don't have access to manage releases"));
 				}
-
-				$this->build = $build;
 			}
-			else
+			catch (Exception $e)
 			{
-				return $this->renderJSON(array('failed' => true, "error" => $i18n->__("You don't have access to add editions")));
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array("error" => $e->getMessage()));
 			}
 		}
 

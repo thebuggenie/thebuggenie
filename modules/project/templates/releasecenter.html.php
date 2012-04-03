@@ -42,14 +42,14 @@
 				<?php endforeach; ?>
 			<?php endif; ?>
 			<h3 style="margin-top: 30px;"><?php echo __('Archived releases'); ?></h3>
-			<ul class="simple_list" id="archived_builds">
+			<ul class="simple_list" id="archived_builds_0">
 				<?php if (count($archived_builds[0])): ?>
 					<?php foreach ($archived_builds[0] as $build): ?>
 						<?php include_component('buildbox', array('build' => $build)); ?>
 					<?php endforeach; ?>
 				<?php endif; ?>
 			</ul>
-			<div class="faded_out" id="no_archived_builds"<?php if (count($archived_builds)): ?> style="display: none;"<?php endif; ?>><?php echo __('There are no archived releases for this project'); ?></div>
+			<div class="faded_out" id="no_archived_builds_0"<?php if (count($archived_builds[0])): ?> style="display: none;"<?php endif; ?>><?php echo __('There are no archived releases for this project'); ?></div>
 			<?php if ($selected_project->isEditionsEnabled()): ?>
 				<?php foreach ($selected_project->getEditions() as $edition_id => $edition): ?>
 					<div style="margin: 20px 0 0 0;">
