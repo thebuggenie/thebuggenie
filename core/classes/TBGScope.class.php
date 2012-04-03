@@ -52,6 +52,8 @@
 		
 		protected $_hostnames = null;
 
+		protected $_is_secure = false;
+
 		/**
 		 * @var boolean
 		 * @Column(type="boolean")
@@ -244,12 +246,18 @@
 		{
 			if (TBGContext::isCLI()) return;
 			$hostprefix = (!array_key_exists('HTTPS', $_SERVER) || $_SERVER['HTTPS'] == '' || $_SERVER['HTTPS'] == 'off') ? 'http' : 'https';
+			$this->_is_secure = (bool) ($hostprefix == 'https');
 			$this->_hostname = "{$hostprefix}://{$_SERVER['SERVER_NAME']}";
 			$port = $_SERVER['SERVER_PORT'];
 			if ($port != 80)
 			{
 				$this->_hostname .= ":{$port}";
 			}
+		}
+
+		public function isSecure()
+		{
+			return $this->_is_secure;
 		}
 
 		public function getCurrentHostname()
