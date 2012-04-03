@@ -19,6 +19,9 @@
 		public function componentUser()
 		{
 			$this->userstates = TBGUserstate::getAll();
+			$this->onlinestate = TBGSettings::getOnlineState();
+			$this->awaystate = TBGSettings::getAwayState();
+			$this->offlinestate = TBGSettings::getOfflineState();
 		}
 
 		public function componentAppearance()

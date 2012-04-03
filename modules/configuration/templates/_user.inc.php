@@ -135,7 +135,7 @@
 		<td>
 			<select name="<?php echo TBGSettings::SETTING_ONLINESTATE; ?>" id="onlinestate" style="width: 400px;"<?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>>
 			<?php foreach ($userstates as $userstate): ?>
-				<option value="<?php print $userstate->getID(); ?>"<?php if (($onlinestate = TBGSettings::getOnlineState()) instanceof TBGDatatype && $onlinestate->getID() == $userstate->getID()): ?> selected<?php endif; ?>><?php print $userstate->getName(); ?></option>
+				<option value="<?php print $userstate->getID(); ?>"<?php if ($onlinestate instanceof TBGUserstate && $onlinestate->getID() == $userstate->getID()): ?> selected<?php endif; ?>><?php print $userstate->getName(); ?></option>
 			<?php endforeach; ?>
 			</select>
 		</td>
@@ -145,7 +145,7 @@
 		<td>
 			<select name="<?php echo TBGSettings::SETTING_AWAYSTATE; ?>" id="awaystate" style="width: 400px;"<?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>>
 			<?php foreach ($userstates as $userstate): ?>
-				<option value="<?php print $userstate->getID(); ?>"<?php if (($awaystate = TBGSettings::getAwayState()) instanceof TBGDatatype && $awaystate->getID() == $userstate->getID()): ?> selected<?php endif; ?>><?php print $userstate->getName(); ?></option>
+				<option value="<?php print $userstate->getID(); ?>"<?php if ($awaystate instanceof TBGUserstate && $awaystate->getID() == $userstate->getID()): ?> selected<?php endif; ?>><?php print $userstate->getName(); ?></option>
 			<?php endforeach; ?>
 			</select>
 		</td>
@@ -155,7 +155,7 @@
 		<td>
 			<select name="<?php echo TBGSettings::SETTING_OFFLINESTATE; ?>" id="offlinestate" style="width: 400px;"<?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>>
 			<?php foreach ($userstates as $userstate): ?>
-				<option value="<?php print $userstate->getID(); ?>"<?php if (($offlinestate = TBGSettings::getOfflineState()) instanceof TBGDatatype && $offlinestate->getID() == $userstate->getID()): ?> selected<?php endif; ?>><?php print $userstate->getName(); ?></option>
+				<option value="<?php print $userstate->getID(); ?>"<?php if ($offlinestate instanceof TBGUserstate && $offlinestate->getID() == $userstate->getID()): ?> selected<?php endif; ?>><?php print $userstate->getName(); ?></option>
 			<?php endforeach; ?>
 			</select>
 		</td>
