@@ -1071,7 +1071,7 @@
 						$selected_customdatatype[$customdatatype->getKey()] = null;
 						if ($request->hasParameter($customdatatype_id))
 						{
-							$$customdatatype_id = $request->getParameter($customdatatype_id);
+							$$customdatatype_id = (int) $request->getParameter($customdatatype_id);
 							$selected_customdatatype[$customdatatype->getKey()] = new TBGCustomDatatypeOption($$customdatatype_id);
 						}
 					}
@@ -1168,7 +1168,7 @@
 					if (isset($fields_array[$customdatatype->getKey()]) && $this->selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeOption)
 					{
 						$selected_option = $this->selected_customdatatype[$customdatatype->getKey()];
-						$issue->setCustomField($customdatatype->getKey(), $selected_option->getValue());
+						$issue->setCustomField($customdatatype->getKey(), $selected_option->getID());
 					}
 				}
 				else

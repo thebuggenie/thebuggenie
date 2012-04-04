@@ -274,12 +274,12 @@
 				<table cellpadding="0" cellspacing="0" id="edition_div" style="display: none;" class="additional_information<?php if (array_key_exists('edition', $errors)): ?> reportissue_error<?php endif; ?>">
 					<tr>
 						<td style="width: 180px;"><label for="edition_id" id="edition_label"><span>* </span><?php echo __('Edition'); ?></label></td>
-						<td class="report_issue_help faded_out dark"><?php echo __('Select which edition of the product you\'re using'); ?></td>
+						<td class="report_issue_help faded_out dark"><?php echo __("Select which edition of the product you're using"); ?></td>
 					</tr>
 					<tr>
 						<td colspan="2" style="padding-top: 5px;">
 							<select name="edition_id" id="edition_id" style="width: 100%;">
-								<option value="0"><?php echo __('Not specified'); ?></option>
+								<option value=""<?php if (!$selected_edition instanceof TBGEdition) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
 								<?php if ($selected_edition instanceof TBGEdition): ?>
 									<option value="<?php echo $selected_edition->getID(); ?>"><?php echo $selected_edition->getName(); ?></option>
 								<?php endif; ?>
@@ -290,12 +290,12 @@
 				<table cellpadding="0" cellspacing="0" id="build_div" style="display: none;" class="additional_information<?php if (array_key_exists('build', $errors)): ?> reportissue_error<?php endif; ?>">
 					<tr>
 						<td style="width: 180px;"><label for="build_id" id="build_label"><span>* </span><?php echo __('Release'); ?></label></td>
-						<td class="report_issue_help faded_out dark"><?php echo __('Select which release you\'re using'); ?></td>
+						<td class="report_issue_help faded_out dark"><?php echo __("Select which release you're using"); ?></td>
 					</tr>
 					<tr>
 						<td colspan="2" style="padding-top: 5px;">
 							<select name="build_id" id="build_id" style="width: 100%;">
-								<option value="0"><?php echo __('Not specified'); ?></option>
+								<option value=""<?php if (!$selected_build instanceof TBGBuild) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
 								<?php if ($selected_build instanceof TBGBuild): ?>
 									<option value="<?php echo $selected_build->getID(); ?>"><?php echo $selected_build->getName(); ?> (<?php echo $selected_build->getVersion(); ?>)</option>
 								<?php endif; ?>
@@ -311,7 +311,7 @@
 					<tr>
 						<td colspan="2" style="padding-top: 5px;">
 							<select name="component_id" id="component_id" style="width: 100%;">
-								<option value="0"><?php echo __('Not specified'); ?></option>
+								<option value=""<?php if (!$selected_component instanceof TBGComponent) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
 								<?php if ($selected_component instanceof TBGComponent): ?>
 									<option value="<?php echo $selected_component->getID(); ?>"><?php echo $selected_component->getName(); ?></option>
 								<?php endif; ?>
@@ -351,7 +351,7 @@
 					<tr>
 						<td colspan="2" style="padding-top: 5px;">
 							<select name="status_id" id="status_id" style="width: 100%;">
-								<option value="0"><?php echo __('Not specified'); ?></option>
+								<option value=""<?php if (!$selected_status instanceof TBGStatus) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
 								<?php foreach ($statuses as $status): ?>
 									<option value="<?php echo $status->getID(); ?>"<?php if ($selected_status instanceof TBGStatus && $selected_status->getID() == $status->getID()): ?> selected<?php endif; ?>><?php echo $status->getName(); ?></option>
 								<?php endforeach; ?>
@@ -367,7 +367,7 @@
 					<tr>
 						<td colspan="2" style="padding-top: 5px;">
 							<select name="category_id" id="category_id" style="width: 100%;">
-								<option value="0"><?php echo __('Not specified'); ?></option>
+								<option value=""<?php if (!$selected_category instanceof TBGCategory) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
 								<?php foreach ($categories as $category): ?>
 									<option value="<?php echo $category->getID(); ?>"<?php if ($selected_category instanceof TBGCategory && $selected_category->getID() == $category->getID()): ?> selected<?php endif; ?>><?php echo $category->getName(); ?></option>
 								<?php endforeach; ?>
@@ -382,7 +382,7 @@
 					<tr>
 						<td colspan="2" style="padding-top: 5px;">
 							<select name="resolution_id" id="resolution_id" style="width: 100%;">
-								<option value="0"><?php echo __('Not specified'); ?></option>
+								<option value=""<?php if (!$selected_resolution instanceof TBGResolution) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
 								<?php foreach ($resolutions as $resolution): ?>
 									<option value="<?php echo $resolution->getID(); ?>"<?php if ($selected_resolution instanceof TBGResolution && $selected_resolution->getID() == $resolution->getID()): ?> selected<?php endif; ?>><?php echo $resolution->getName(); ?></option>
 								<?php endforeach; ?>
@@ -397,7 +397,7 @@
 					<tr>
 						<td colspan="2" style="padding-top: 5px;">
 							<select name="reproducability_id" id="reproducability_id" style="width: 100%;">
-								<option value="0"><?php echo __('Not specified'); ?></option>
+								<option value=""<?php if (!$selected_reproducability instanceof TBGReproducability) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
 								<?php foreach ($reproducabilities as $reproducability): ?>
 									<option value="<?php echo $reproducability->getID(); ?>"<?php if ($selected_reproducability instanceof TBGReproducability && $selected_reproducability->getID() == $reproducability->getID()): ?> selected<?php endif; ?>><?php echo $reproducability->getName(); ?></option>
 								<?php endforeach; ?>
@@ -412,7 +412,7 @@
 					<tr>
 						<td colspan="2" style="padding-top: 5px;">
 							<select name="priority_id" id="priority_id" style="width: 100%;">
-								<option value="0"><?php echo __('Not specified'); ?></option>
+								<option value=""<?php if (!$selected_priority instanceof TBGPriority) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
 								<?php foreach ($priorities as $priority): ?>
 									<option value="<?php echo $priority->getID(); ?>"<?php if ($selected_priority instanceof TBGPriority && $selected_priority->getID() == $priority->getID()): ?> selected<?php endif; ?>><?php echo $priority->getName(); ?></option>
 								<?php endforeach; ?>
@@ -427,7 +427,7 @@
 					<tr>
 						<td colspan="2" style="padding-top: 5px;">
 							<select name="milestone_id" id="milestone_id" style="width: 100%;">
-								<option value="0"><?php echo __('Not specified'); ?></option>
+								<option value=""<?php if (!$selected_milestone instanceof TBGMilestone) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
 								<?php foreach ($milestones as $milestone): ?>
 									<option value="<?php echo $milestone->getID(); ?>"<?php if ($selected_milestone instanceof TBGMilestone && $selected_milestone->getID() == $milestone->getID()): ?> selected<?php endif; ?>><?php echo $milestone->getName(); ?></option>
 								<?php endforeach; ?>
@@ -442,7 +442,7 @@
 					<tr>
 						<td colspan="2" style="padding-top: 5px;">
 							<select name="pain_bug_type_id" id="pain_bug_type_id" style="width: 100%;">
-								<option value="0"><?php echo __('Not specified'); ?></option>
+								<option value=""<?php if (!$selected_pain_bug_type) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
 								<?php foreach (TBGIssue::getPainTypesOrLabel('pain_bug_type') as $choice_id => $choice): ?>
 									<option value="<?php echo $choice_id; ?>"<?php if ($selected_pain_bug_type == $choice_id): ?> selected<?php endif; ?>><?php echo $choice; ?></option>
 								<?php endforeach; ?>
@@ -457,7 +457,7 @@
 					<tr>
 						<td colspan="2" style="padding-top: 5px;">
 							<select name="pain_likelihood_id" id="pain_likelihood_id" style="width: 100%;">
-								<option value="0"><?php echo __('Not specified'); ?></option>
+								<option value=""<?php if (!$selected_pain_likelihood) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
 								<?php foreach (TBGIssue::getPainTypesOrLabel('pain_likelihood') as $choice_id => $choice): ?>
 									<option value="<?php echo $choice_id; ?>"<?php if ($selected_pain_likelihood == $choice_id): ?> selected<?php endif; ?>><?php echo $choice; ?></option>
 								<?php endforeach; ?>
@@ -472,7 +472,7 @@
 					<tr>
 						<td colspan="2" style="padding-top: 5px;">
 							<select name="pain_effect_id" id="pain_effect_id" style="width: 100%;">
-								<option value="0"><?php echo __('Not specified'); ?></option>
+								<option value=""<?php if (!$selected_pain_effect) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
 								<?php foreach (TBGIssue::getPainTypesOrLabel('pain_effect') as $choice_id => $choice): ?>
 									<option value="<?php echo $choice_id; ?>"<?php if ($selected_pain_effect == $choice_id): ?> selected<?php endif; ?>><?php echo $choice; ?></option>
 								<?php endforeach; ?>
@@ -487,7 +487,7 @@
 					<tr>
 						<td colspan="2" style="padding-top: 5px;">
 							<select name="severity_id" id="severity_id" style="width: 100%;">
-								<option value="0"><?php echo __('Not specified'); ?></option>
+								<option value=""<?php if (!$selected_severity instanceof TBGSeverity) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
 								<?php foreach ($severities as $severity): ?>
 									<option value="<?php echo $severity->getID(); ?>"<?php if ($selected_severity instanceof TBGSeverity && $selected_severity->getID() == $severity->getID()): ?> selected<?php endif; ?>><?php echo $severity->getName(); ?></option>
 								<?php endforeach; ?>
@@ -507,6 +507,7 @@
 									{
 										case TBGCustomDatatype::DROPDOWN_CHOICE_TEXT: ?>
 											<select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id" style="width: 100%;">
+												<option value=""<?php if (!$selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeOption) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
 												<?php foreach ($customdatatype->getOptions() as $option): ?>
 												<option value="<?php echo $option->getID(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeOption && $selected_customdatatype[$customdatatype->getKey()]->getID() == $option->getID()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
 												<?php endforeach; ?>
@@ -515,43 +516,48 @@
 											break;
 										case TBGCustomDatatype::EDITIONS_CHOICE: ?>
 											<select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id" style="width: 100%;">
-											<?php if ($selected_project instanceof TBGProject): ?>
-												<?php foreach ($selected_project->getEditions() as $option): ?>
-												<option value="<?php echo $option->getID(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] == $option->getID()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
-												<?php endforeach; ?>
-											<?php endif; ?>
+												<option value=""<?php if (!$selected_customdatatype[$customdatatype->getKey()] instanceof TBGEdition) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
+												<?php if ($selected_project instanceof TBGProject): ?>
+													<?php foreach ($selected_project->getEditions() as $option): ?>
+													<option value="<?php echo $option->getID(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] == $option->getID()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
+													<?php endforeach; ?>
+												<?php endif; ?>
 											</select>
 											<?php
 											break;
 										case TBGCustomDatatype::STATUS_CHOICE: ?>
 											<select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id" style="width: 100%;">
-											<?php foreach (TBGStatus::getAll() as $option): ?>
-											<option value="<?php echo $option->getID(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] == $option->getID()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
-											<?php endforeach; ?>
+												<option value=""<?php if (!$selected_customdatatype[$customdatatype->getKey()] instanceof TBGStatus) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
+												<?php foreach (TBGStatus::getAll() as $option): ?>
+													<option value="<?php echo $option->getID(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] == $option->getID()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
+												<?php endforeach; ?>
 											</select>
 											<?php
 											break;
 										case TBGCustomDatatype::COMPONENTS_CHOICE: ?>
 											<select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id" style="width: 100%;">
-											<?php if ($selected_project instanceof TBGProject): ?>
-												<?php foreach ($selected_project->getComponents() as $option): ?>
-												<option value="<?php echo $option->getID(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] == $option->getID()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
-												<?php endforeach; ?>
-											<?php endif; ?>
+												<option value=""<?php if (!$selected_customdatatype[$customdatatype->getKey()] instanceof TBGComponent) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
+												<?php if ($selected_project instanceof TBGProject): ?>
+													<?php foreach ($selected_project->getComponents() as $option): ?>
+														<option value="<?php echo $option->getID(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] == $option->getID()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
+													<?php endforeach; ?>
+												<?php endif; ?>
 											</select>
 											<?php
 											break;
 										case TBGCustomDatatype::RELEASES_CHOICE: ?>
 											<select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id" style="width: 100%;">
-											<?php if ($selected_project instanceof TBGProject): ?>
-												<?php foreach ($selected_project->getBuilds() as $option): ?>
-												<option value="<?php echo $option->getID(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] == $option->getID()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
-												<?php endforeach; ?>
-											<?php endif; ?>
+												<option value=""<?php if (!$selected_customdatatype[$customdatatype->getKey()] instanceof TBGBuild) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
+												<?php if ($selected_project instanceof TBGProject): ?>
+													<?php foreach ($selected_project->getBuilds() as $option): ?>
+														<option value="<?php echo $option->getID(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] == $option->getID()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
+													<?php endforeach; ?>
+												<?php endif; ?>
 											</select>
 											<?php
 											break;
 										case TBGCustomDatatype::RADIO_CHOICE: ?>
+											<input type="radio" name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_0" value="" <?php if (!$selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeOption): ?> selected<?php endif; ?> /> <label for="<?php echo $customdatatype->getKey(); ?>_0"><?php echo __('Not specified'); ?></label><br>
 											<?php foreach ($customdatatype->getOptions() as $option): ?>
 												<input type="radio" name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_<?php echo $option->getID(); ?>" value="<?php echo $option->getID(); ?>" <?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeOption && $selected_customdatatype[$customdatatype->getKey()]->getID() == $option->getID()): ?> selected<?php endif; ?> /> <label for="<?php echo $customdatatype->getKey(); ?>_<?php echo $option->getID(); ?>"><?php echo $option->getName(); ?></label><br>
 											<?php endforeach; ?>
@@ -597,7 +603,7 @@
 						<div id="status_link"<?php if ($selected_status instanceof TBGStatus): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('status_link').hide();$('status_additional_div').show();"><?php echo __('Set initial status'); ?></a></div>
 						<div id="status_additional_div"<?php if ($selected_status === null): ?> style="display: none;"<?php endif; ?>>
 							<select name="status_id" id="status_id_additional">
-								<option value="0"><?php echo __('Not specified'); ?></option>
+								<option value=""><?php echo __('Not specified'); ?></option>
 								<?php foreach ($statuses as $status): ?>
 									<option value="<?php echo $status->getID(); ?>"<?php if ($selected_status instanceof TBGDatatype && $selected_status->getID() == $status->getID()): ?> selected<?php endif; ?>><?php echo $status->getName(); ?></option>
 								<?php endforeach; ?>
@@ -610,7 +616,7 @@
 						<div id="category_link"<?php if ($selected_category instanceof TBGCategory): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('category_link').hide();$('category_additional_div').show();"><?php echo __('Specify category'); ?></a></div>
 						<div id="category_additional_div"<?php if ($selected_category === null): ?> style="display: none;"<?php endif; ?>>
 							<select name="category_id" id="category_id_additional">
-								<option value="0"><?php echo __('Not specified'); ?></option>
+								<option value=""><?php echo __('Not specified'); ?></option>
 								<?php foreach ($categories as $category): ?>
 									<option value="<?php echo $category->getID(); ?>"<?php if ($selected_category instanceof TBGDatatype && $selected_category->getID() == $category->getID()): ?> selected<?php endif; ?>><?php echo $category->getName(); ?></option>
 								<?php endforeach; ?>
@@ -647,7 +653,7 @@
 						<div id="priority_link"<?php if ($selected_priority instanceof TBGPriority): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('priority_link').hide();$('priority_additional_div').show();"><?php echo __('Set priority'); ?></a></div>
 						<div id="priority_additional_div"<?php if ($selected_priority === null): ?> style="display: none;"<?php endif; ?>>
 							<select name="priority_id" id="priority_id_additional">
-								<option value="0"><?php echo __('Not specified'); ?></option>
+								<option value=""><?php echo __('Not specified'); ?></option>
 								<?php foreach ($priorities as $priority): ?>
 									<option value="<?php echo $priority->getID(); ?>"><?php echo $priority->getName(); ?></option>
 								<?php endforeach; ?>
@@ -660,7 +666,7 @@
 						<div id="reproducability_link"<?php if ($selected_reproducability instanceof TBGReproducability): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('reproducability_link').hide();$('reproducability_additional_div').show();"><?php echo __('Set reproducability'); ?></a></div>
 						<div id="reproducability_additional_div"<?php if ($selected_reproducability === null): ?> style="display: none;"<?php endif; ?>>
 							<select name="reproducability_id" id="reproducability_id_additional">
-								<option value="0"><?php echo __('Not specified'); ?></option>
+								<option value=""><?php echo __('Not specified'); ?></option>
 								<?php foreach ($reproducabilities as $reproducability): ?>
 									<option value="<?php echo $reproducability->getID(); ?>"<?php if ($selected_reproducability instanceof TBGDatatype && $selected_reproducability->getID() == $reproducability->getID()): ?> selected<?php endif; ?>><?php echo $reproducability->getName(); ?></option>
 								<?php endforeach; ?>
@@ -673,7 +679,7 @@
 						<div id="resolution_link"<?php if ($selected_resolution instanceof TBGResolution): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('resolution_link').hide();$('resolution_additional_div').show();"><?php echo __('Set resolution'); ?></a></div>
 						<div id="resolution_additional_div"<?php if ($selected_resolution === null): ?> style="display: none;"<?php endif; ?>>
 							<select name="resolution_id" id="resolution_id_additional">
-								<option value="0"><?php echo __('Not specified'); ?></option>
+								<option value=""><?php echo __('Not specified'); ?></option>
 								<?php foreach ($resolutions as $resolution): ?>
 									<option value="<?php echo $resolution->getID(); ?>"><?php echo $resolution->getName(); ?></option>
 								<?php endforeach; ?>
@@ -686,7 +692,7 @@
 						<div id="severity_link"<?php if ($selected_severity instanceof TBGSeverity): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('severity_link').hide();$('severity_additional_div').show();"><?php echo __('Set severity'); ?></a></div>
 						<div id="severity_additional_div"<?php if ($selected_severity === null): ?> style="display: none;"<?php endif; ?>>
 							<select name="severity_id" id="severity_id_additional">
-								<option value="0"><?php echo __('Not specified'); ?></option>
+								<option value=""><?php echo __('Not specified'); ?></option>
 								<?php foreach ($severities as $severity): ?>
 									<option value="<?php echo $severity->getID(); ?>"><?php echo $severity->getName(); ?></option>
 								<?php endforeach; ?>
@@ -706,7 +712,7 @@
 											?>
 											<select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id_additional">
 												<?php foreach ($customdatatype->getOptions() as $option): ?>
-												<option value="<?php echo $option->getValue(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeOption && $selected_customdatatype[$customdatatype->getKey()]->getValue() == $option->getValue()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
+												<option value="<?php echo $option->getID(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeOption && $selected_customdatatype[$customdatatype->getKey()]->getID() == $option->getID()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
 												<?php endforeach; ?>
 											</select>
 											<?php
@@ -758,7 +764,7 @@
 											<label for="<?php echo $customdatatype->getKey(); ?>_id_additional"><?php echo $customdatatype->getDescription(); ?></label>
 											<br>
 											<?php foreach ($customdatatype->getOptions() as $option): ?>
-												<input type="radio" name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id_additional" value="<?php echo $option->getValue(); ?>" <?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeOption && $selected_customdatatype[$customdatatype->getKey()]->getValue() == $option->getValue()): ?> selected<?php endif; ?> /> <?php echo $option->getName(); ?><br>
+												<input type="radio" name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id_additional" value="<?php echo $option->getID(); ?>" <?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeOption && $selected_customdatatype[$customdatatype->getKey()]->getID() == $option->getID()): ?> selected<?php endif; ?> /> <?php echo $option->getName(); ?><br>
 											<?php
 											endforeach;
 											break;
