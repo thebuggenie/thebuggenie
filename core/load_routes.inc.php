@@ -193,6 +193,7 @@
 	$routes[] = array('configure_import_csv', '/configure/import/:type/from/csv', 'configuration', 'importCSV', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_IMPORT));
 	$routes[] = array('configure_import_csv_get_ids', '/configure/import/csv/get/ids', 'configuration', 'getIDsForImportCSV', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_IMPORT));
 	$routes[] = array('configure_do_import_csv', '/configure/do/import/:type/from/csv', 'configuration', 'doImportCSV', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_IMPORT));
+	$routes[] = array('configure_site_icons', '/configure/settings/icons', 'configuration', 'siteIcons');
 	$routes[] = array('comment_delete', '/comment/delete/:comment_id', 'main', 'deleteComment');
 	$routes[] = array('comment_update', '/comment/update/:comment_id', 'main', 'updateComment');
 	$routes[] = array('comment_add', '/comment/add/for/module/:comment_module/item/type/:comment_applies_type/id/:comment_applies_id', 'main', 'addComment');

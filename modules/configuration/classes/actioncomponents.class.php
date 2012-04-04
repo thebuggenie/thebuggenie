@@ -222,4 +222,7 @@
 			$this->scopes = TBGScope::getAll();
 		}
 		
+		public function componentSiteicons()
+		{
+		}
 	}

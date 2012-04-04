@@ -36,13 +36,11 @@
 		const CONFIGURATION_SECTION_IMPORT = 16;
 		const CONFIGURATION_SECTION_AUTHENTICATION = 17;
 
-		const APPEARANCE_HEADER_USE_THEME = 0;
+		const APPEARANCE_HEADER_THEME = 0;
 		const APPEARANCE_HEADER_CUSTOM = 1;
-		const APPEARANCE_HEADER_URL = 2;
 
-		const FAVICON_DEFAULT = 0;
-		const FAVICON_PUBLIC = 1;
-		const FAVICON_CUSTOM_URL = 2;
+		const APPEARANCE_FAVICON_THEME = 0;
+		const APPEARANCE_FAVICON_CUSTOM = 1;
 
 		const SYNTAX_HIHGLIGHTING_FANCY_NUMBERS = 1;
 		const SYNTAX_HIHGLIGHTING_NORMAL_NUMBERS = 2;
@@ -65,10 +63,10 @@
 		const SETTING_ENABLE_UPLOADS = 'enable_uploads';
 		const SETTING_ENABLE_GRAVATARS = 'enable_gravatars';
 		const SETTING_FAVICON_TYPE = 'icon_fav';
-		const SETTING_FAVICON_URL = 'icon_fav_url';
+		const SETTING_FAVICON_ID = 'icon_fav_id';
 		const SETTING_GUEST_GROUP = 'guestgroup';
 		const SETTING_HEADER_ICON_TYPE = 'icon_header';
-		const SETTING_HEADER_ICON_URL = 'icon_header_url';
+		const SETTING_HEADER_ICON_ID = 'icon_header_id';
 		const SETTING_HEADER_LINK = 'header_link';
 		const SETTING_IS_PERMISSIVE_MODE = 'permissive';
 		const SETTING_IS_SINGLE_PROJECT_TRACKER = 'singleprojecttracker';
@@ -373,9 +371,19 @@
 			return self::get(self::SETTING_DEFAULT_CHARSET);
 		}
 		
+		public static function getHeaderIconID()
+		{
+			return self::get(self::SETTING_HEADER_ICON_ID);
+		}
+		
+		public static function getFaviconID()
+		{
+			return self::get(self::SETTING_FAVICON_ID);
+		}
+		
 		public static function getHeaderIconURL()
 		{
-			return self::get(self::SETTING_HEADER_ICON_URL);
+			return (self::isUsingCustomHeaderIcon()) ? TBGContext::getRouting()->generate('showfile', array('id' => self::getHeaderIconID())) : 'logo_24.png';
 		}
 		
 		public static function getHeaderLink()
@@ -385,15 +393,7 @@
 		
 		public static function getFaviconURL()
 		{
-			switch (self::getFaviconType())
-			{
-				case self::FAVICON_CUSTOM_URL:
-					return self::get(self::SETTING_FAVICON_URL);
-				case self::FAVICON_PUBLIC:
-					return TBGContext::getTBGPath()."favicon.png";
-				default:
-					return TBGContext::getTBGPath()."iconsets/".TBGSettings::getThemeName()."/favicon.png";
-			}
+			return (self::isUsingCustomFavicon()) ? TBGContext::getRouting()->generate('showfile', array('id' => self::getFaviconID())) : 'favicon.png';
 		}
 		
 		public static function getTBGname()
@@ -421,7 +421,7 @@
 			return self::get(self::SETTING_HEADER_ICON_TYPE);
 		}
 		
-		public static function getFaviconType()
+		public static function isUsingCustomFavicon()
 		{
 			return self::get(self::SETTING_FAVICON_TYPE);
 		}

@@ -1,13 +1,7 @@
 <header>
 	<div id="logo_container">
 		<?php $link = (TBGSettings::getHeaderLink() == '') ? TBGContext::getTBGPath() : TBGSettings::getHeaderLink(); ?>
-		<?php if (TBGSettings::isUsingCustomHeaderIcon() == TBGSettings::APPEARANCE_HEADER_URL): ?>
-			<a class="logo" href="<?php print $link; ?>"><img src="<?php print TBGSettings::getHeaderIconURL(); ?>" alt="[logo]" title="[logo]"></a>
-		<?php elseif (TBGSettings::isUsingCustomHeaderIcon() == TBGSettings::APPEARANCE_HEADER_CUSTOM): ?>
-			<a class="logo" href="<?php print $link; ?>"><img src="<?php print TBGContext::getTBGPath(); ?>header.png" alt="[logo]" title="[logo]"></a>
-		<?php else: ?>
-			<a class="logo" href="<?php print $link; ?>"><?php echo image_tag('logo_24.png', array('alt' => '[logo]', 'title' => '[logo]')) ; ?></a>
-		<?php endif; ?>
+		<a class="logo" href="<?php print $link; ?>"><?php echo image_tag(TBGSettings::getHeaderIconUrl(), array('style' => 'width: 24px; height: 24px;'), TBGSettings::isUsingCustomHeaderIcon()); ?></a>
 		<div class="logo_name"><?php echo TBGSettings::getTBGname(); ?></div>
 	</div>
 	<?php if (!TBGSettings::isMaintenanceModeEnabled()): ?>
