@@ -280,7 +280,6 @@
 					while ($row = $res->getNextRow())
 					{
 						$theIssue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID));
-						if ($this->isSprint() && $theIssue->getIssueType()->isTask()) continue;
 						$this->_issues[$theIssue->getID()] = $theIssue;
 						if ($theIssue->getState() == TBGIssue::STATE_CLOSED)
 						{

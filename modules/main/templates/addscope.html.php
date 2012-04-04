@@ -3,7 +3,7 @@
 	<p>
 		<?php echo __('Do you want to register your username in this scope? This will link your main user account to this scope and give you access to the scope just like a regular user.'); ?><br>
 		<br>
-		<b><?php echo __('NOTE: Registering in this scope will give administrators in this scope access to our user details such as username, email, name, etc.'); ?></b><br>
+		<b><?php echo __('NOTE: Registering in this scope will give administrators in this scope access to your user details such as username, email, name, etc.'); ?></b><br>
 		<?php echo __('If this is not what you want, select "No" below. Keep in mind that your main account can never be disabled or unregistered by administrators in this scope.'); ?><br>
 	</p>
 	<div style="margin-top: 25px;">

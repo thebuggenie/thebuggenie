@@ -22,16 +22,12 @@
 				<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 					<div class="rounded_box lightgrey" style="width: 788px; padding: 5px; margin: 10px 0;<?php if (!TBGContext::getScope()->hasProjectsAvailable()): ?> display: none;<?php endif; ?>" id="add_project_div">
 						<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" method="post" id="add_project_form" onsubmit="TBG.Project.add('<?php echo make_url('configure_projects_add_project'); ?>');return false;">
-							<input type="hidden" name="add_project" value="true">
-							<table cellpadding=0 cellspacing=0 style="margin: 0; width: 690px; table-layout: auto;">
-								<tr>
-									<td style="width: auto; padding-right: 10px;"><b><?php echo __('Create a new project'); ?></b></td>
-									<td style="width: 400px; padding: 2px; text-align: right;">
-										<input type="text" style="width: 320px; text-align: left;" name="p_name">
-										<input type="submit" style="width: 60px;" value="<?php echo __('Add'); ?>">
-									</td>
-								</tr>
-							</table>
+							<div style="height: 25px;">
+								<input type="hidden" name="add_project" value="true">
+								<label for="add_project_input" style="float: left;"><?php echo __('Create a new project'); ?></label>
+								<input type="submit" style="float: right; margin-left: 5px; padding: 2px 5px 3px !important;" value="<?php echo __('Add'); ?>">
+								<input type="text" style="width: 400px; text-align: left; float: right;" id="add_project_input" name="p_name">
+							</div>
 							<table cellpadding=0 cellspacing=0 style="display: none; margin-left: 5px; width: 300px;" id="project_add_indicator">
 								<tr>
 									<td style="width: 20px; padding: 2px;"><?php echo image_tag('spinning_20.gif'); ?></td>

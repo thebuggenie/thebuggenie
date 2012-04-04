@@ -824,6 +824,7 @@
 		
 		protected function _parseText($options = array())
 		{
+			$options = array_merge($options, $this->options);
 			TBGContext::loadLibrary('common');
 			
 			self::$current_parser = $this;
@@ -865,6 +866,10 @@
 			if (!array_key_exists('ignore_toc', $options))
 			{
 				$output = preg_replace_callback('/\{\{TOC\}\}/', array($this, "_parse_add_toc"), $output);
+			}
+			else
+			{
+				$output = str_replace('{{TOC}}', '', $output);
 			}
 			$output = preg_replace_callback('/\|\|\|NOWIKI\|\|\|/i', array($this, "_parse_restore_nowiki"), $output);
 			if (!isset($options['no_code_highlighting']))

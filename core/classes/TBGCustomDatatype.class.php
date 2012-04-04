@@ -111,7 +111,7 @@
 		 */
 		protected function _preDelete()
 		{
-			TBGCustomFieldOptionsTable::getTable()->deleteCustomFieldOptions($key);
+			TBGCustomFieldOptionsTable::getTable()->deleteCustomFieldOptions($this->getID());
 		}
 
 		public static function doesKeyExist($key)

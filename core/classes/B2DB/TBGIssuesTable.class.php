@@ -256,7 +256,9 @@
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			if (!$milestone_id)
 			{
-				$crit->addWhere(self::MILESTONE, null);
+				$ctn = $crit->returnCriterion(self::MILESTONE, null);
+				$ctn->addOr(self::MILESTONE, 0);
+				$crit->addWhere($ctn);
 			}
 			else
 			{
@@ -400,7 +402,9 @@
 			$crit = $this->getCriteria();
 			if (!$milestone_id)
 			{
-				$crit->addWhere(self::MILESTONE, null);
+				$ctn = $crit->returnCriterion(self::MILESTONE, null);
+				$ctn->addOr(self::MILESTONE, 0);
+				$crit->addWhere($ctn);
 				$crit->addWhere(self::PROJECT_ID, $project_id);
 			}
 			else

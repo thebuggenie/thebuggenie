@@ -345,6 +345,10 @@
 		
 		public static function isOpenIDavailable()
 		{
+			if (TBGSettings::isUsingExternalAuthenticationBackend())
+			{
+				return false; // No openID when using external auth
+			}
 			return (bool) (self::getOpenIDStatus() != 'none');
 		}
 		

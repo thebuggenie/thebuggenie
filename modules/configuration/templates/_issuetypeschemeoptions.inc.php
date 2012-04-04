@@ -21,7 +21,7 @@
 				<?php endforeach; ?>
 				<?php if (count($customtypes) > 0): ?>
 					<?php foreach ($customtypes as $key => $item): ?>
-						<?php include_template('issuetypeschemeoption', array('issuetype' => $issuetype, 'scheme' => $scheme, 'key' => $key, 'item' => $item->getDescription(), 'visiblefields' => $visiblefields)); ?>
+						<?php include_template('issuetypeschemeoption', array('issuetype' => $issuetype, 'scheme' => $scheme, 'key' => $key, 'item' => $item, 'visiblefields' => $visiblefields)); ?>
 					<?php endforeach; ?>
 				<?php endif; ?>
 			</tbody>

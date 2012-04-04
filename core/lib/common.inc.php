@@ -26,12 +26,12 @@
 	 * 
 	 * @return string The truncated string
 	 */
-	function tbg_truncateText($text, $length, $add_dots = true)
+	function tbg_truncateText($text, $length, $add_dots = true, $ignore_linebreaks = false)
 	{
 		if (mb_strlen($text) > $length)
 		{
-			$string = wordwrap($text, $length - 3);
-			$text = mb_substr($string, 0, mb_strpos($string, "\n"));
+			$string = wordwrap($text, $length - 3, '|||WORDWRAP|||');
+			$text = mb_substr($string, 0, mb_strpos($string, "|||WORDWRAP|||"));
 			if ($add_dots) $text .= '...';
 		}
 		return $text;
