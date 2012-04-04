@@ -636,30 +636,33 @@
 				while ($row = $res->getNextRow())
 				{
 					$crit = TBGLogTable::getTable()->getCriteria();
-					$crit->addSelect(TBGLogTable::UID);
+					$crit->addSelectionColumn(TBGLogTable::UID);
 					$crit->addWhere(TBGLogTable::CHANGE_TYPE, TBGLogTable::LOG_ISSUE_ASSIGNED);
 					$crit->addWhere(TBGLogTable::TARGET, $row->get(TBGIssuesTable::ID));
-					$crit->addWhere(TBGLogTable::TARGET_TYPE, self::TYPE_ISSUE);
-					$crit->addOrderBy(TBGLogTable::TIME, Criteria::SORT_DESC);
+					$crit->addWhere(TBGLogTable::TARGET_TYPE, TBGLogTable::TYPE_ISSUE);
+					$crit->addOrderBy(TBGLogTable::TIME, b2db\Criteria::SORT_DESC);
+					$crit->addOrderBy(TBGLogTable::ID, b2db\Criteria::SORT_DESC);
 					
-					if ($row = $this->doSelectOne($crit))
+					if ($row2 = TBGLogTable::getTable()->doSelectOne($crit))
 					{
-						$assigned_by = $row->get(TBGLogTable::UID);
+						$assigned_by = $row2->get(TBGLogTable::UID);
+						echo 'assigned '.$row->get(TBGIssuesTable::ID).' by '.$assigned_by.'<hr />';
 					}
 			
 					$crit = TBGLogTable::getTable()->getCriteria();
-					$crit->addSelect(TBGLogTable::UID);
+					$crit->addSelectionColumn(TBGLogTable::UID);
 					$crit->addWhere(TBGLogTable::TARGET, $row->get(TBGIssuesTable::ID));
-					$crit->addWhere(TBGLogTable::TARGET_TYPE, self::TYPE_ISSUE);
-					$crit->addOrderBy(TBGLogTable::TIME, Criteria::SORT_DESC);
+					$crit->addWhere(TBGLogTable::TARGET_TYPE, TBGLogTable::TYPE_ISSUE);
+					$crit->addOrderBy(TBGLogTable::TIME, b2db\Criteria::SORT_DESC);
+					$crit->addOrderBy(TBGLogTable::ID, b2db\Criteria::SORT_DESC);
 					
-					if ($row = $this->doSelectOne($crit))
+					if ($row2 = TBGLogTable::getTable()->doSelectOne($crit))
 					{
-						$updated_by = $row->get(TBGLogTable::UID);
+						$updated_by = $row2->get(TBGLogTable::UID);
+						echo 'updated '.$row->get(TBGIssuesTable::ID).' by '.$updated_by.'<hr />';
 					}
-					
 					unset($crit);
-					unset($row);
+					unset($row2);
 					
 					if (array_key_exists('uid_'.$row->get(TBGIssuesTable::POSTED_BY), $offsets['users']))
 					{
