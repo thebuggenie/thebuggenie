@@ -3288,4 +3288,45 @@
 			$this->roles = TBGRole::getAll();
 		}
 
+		public function runSiteIcons(TBGRequest $request)
+		{
+			if ($this->getAccessLevel($request['section'], 'core') == TBGSettings::ACCESS_FULL)
+			{
+				if ($request->isPost())
+				{
+					switch ($request['small_icon_action'])
+					{
+						case 'upload_file':
+							$file = $request->handleUpload('small_icon');
+							TBGSettings::saveSetting(TBGSettings::SETTING_FAVICON_TYPE, TBGSettings::APPEARANCE_FAVICON_CUSTOM);
+							TBGSettings::saveSetting(TBGSettings::SETTING_FAVICON_ID, $file->getID());
+							break;
+						case 'clear_file':
+							TBGSettings::saveSetting(TBGSettings::SETTING_FAVICON_TYPE, TBGSettings::APPEARANCE_FAVICON_THEME);
+							break;
+					}
+					switch ($request['large_icon_action'])
+					{
+						case 'upload_file':
+							$file = $request->handleUpload('large_icon');
+							TBGSettings::saveSetting(TBGSettings::SETTING_HEADER_ICON_TYPE, TBGSettings::APPEARANCE_HEADER_CUSTOM);
+							TBGSettings::saveSetting(TBGSettings::SETTING_HEADER_ICON_ID, $file->getID());
+							break;
+						case 'clear_file':
+							TBGSettings::saveSetting(TBGSettings::SETTING_HEADER_ICON_TYPE, TBGSettings::APPEARANCE_HEADER_THEME);
+							break;
+					}
+				}
+				$route = TBGContext::getRouting()->generate('configure_settings');
+				if ($request->isAjaxCall())
+				{
+					return $this->renderJSON(array('forward' => $route));
+				}
+				else
+				{
+					$this->forward($route);
+				}
+			}
+			return $this->forward403($this->getI18n()->__("You don't have access to perform this action"));
+		}
 	}
