@@ -148,7 +148,7 @@ TBG.Core._extractAutocompleteValue = function(elem, value) {
  * Monitors viewport resize to adapt backdrops and dashboard containers
  */
 TBG.Core._resizeWatcher = function() {
-	if (/*($('fullpage_backdrop') && $('fullpage_backdrop').visible()) || */ ($('attach_file') && $('attach_file').visible())) {
+	if (($('attach_file') && $('attach_file').visible())) {
 		var docheight = document.viewport.getHeight();
 		var backdropheight = $('backdrop_detail_content').getHeight();
 		if (backdropheight > (docheight - 100)) {
@@ -173,6 +173,10 @@ TBG.Core._resizeWatcher = function() {
 			item.setStyle({width: element_width + 'px'});
 		});
 	}
+	TBG.Core.popupVisiblizer();
+};
+
+TBG.Core.popupVisiblizer = function() {
 	var visible_popups = $$('.dropdown_box').findAll(function(el) {return el.visible();});
 	if (visible_popups.size()) {
 		visible_popups.each(function (element) {
@@ -2732,8 +2736,8 @@ TBG.Issues.updateFields = function(url)
 					{
 						if ($(fieldname + '_div')) {
 							if (json.fields[fieldname]) {
+								var prev_val = '';
 								if (json.fields[fieldname].values) {
-									var prev_val;
 									if ($(fieldname + '_additional') && $(fieldname + '_additional_div').visible()) {
 										prev_val = $(fieldname + '_id_additional').getValue();
 									} else if ($(fieldname + '_div') && $(fieldname + '_div').visible()) {
