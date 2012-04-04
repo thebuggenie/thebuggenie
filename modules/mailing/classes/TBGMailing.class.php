@@ -547,7 +547,7 @@
 				if ($issue instanceof TBGIssue)
 				{
 					$to_users = $this->_getIssueRelatedUsers($issue);
-					$subject = TBGContext::getI18n()->__('[%project_name%] %issue_type% %issue_no% - %issue_title%', array('%project_name%' => $issue->getProject()->getKey(), '%issue_type%' => TBGContext::getI18n()->__($issue->getIssueType()->getName()), '%issue_no%' => $issue->getFormattedIssueNo(true), '%issue_title%' => $issue->getTitle()));
+					$subject = TBGContext::getI18n()->__('[%project_name%] %issue_type% %issue_no% - %issue_title%', array('%project_name%' => $issue->getProject()->getKey(), '%issue_type%' => TBGContext::getI18n()->__($issue->getIssueType()->getName()), '%issue_no%' => $issue->getFormattedIssueNo(true), '%issue_title%' => html_entity_decode($issue->getTitle(), ENT_COMPAT, TBGContext::getI18n()->getCharset())));
 					$message = $this->createNewTBGMimemailFromTemplate($subject, 'issuecreate', array('issue' => $issue));
 					$this->_sendToUsers($to_users, $message);
 				}
@@ -569,7 +569,7 @@
 						$message->setLanguage($user->getLanguage());
 						$message->clearRecipients();
 						$message->addReplacementValues(array('%user_buddyname%' => $user->getBuddyname(), '%user_username%' => $user->getUsername()));
-						$message->addTo($user->getEmail(), $user->getBuddyname());
+						$message->addTo($user->getEmail(), mb_encode_mimeheader($user->getBuddyname(), TBGContext::getI18n()->getCharset(), 'B'));
 
 						try
 						{
@@ -619,7 +619,7 @@
 						$content = $comment->getContent();
 						$to_users = $this->_getIssueRelatedUsers($issue);
 						
-						$subject = TBGContext::getI18n()->__('Re: [%project_name%] %issue_type% %issue_no% - %issue_title%', array('%project_name%' => $issue->getProject()->getKey(), '%issue_type%' => TBGContext::getI18n()->__($issue->getIssueType()->getName()), '%issue_no%' => $issue->getFormattedIssueNo(true), '%issue_title%' => $issue->getTitle()));
+						$subject = TBGContext::getI18n()->__('Re: [%project_name%] %issue_type% %issue_no% - %issue_title%', array('%project_name%' => $issue->getProject()->getKey(), '%issue_type%' => TBGContext::getI18n()->__($issue->getIssueType()->getName()), '%issue_no%' => $issue->getFormattedIssueNo(true), '%issue_title%' => html_entity_decode($issue->getTitle(), ENT_COMPAT, TBGContext::getI18n()->getCharset())));
 						$message = $this->createNewTBGMimemailFromTemplate($subject, 'issueupdate', array('issue' => $issue, 'comment' => $content, 'updated_by' => $comment->getPostedBy()));
 						$this->_sendToUsers($to_users, $message);
 					}
@@ -641,7 +641,7 @@
 				{
 					$to_users = $this->_getIssueRelatedUsers($issue);
 
-					$subject = TBGContext::getI18n()->__('Re: [%project_name%] %issue_type% %issue_no% - %issue_title%', array('%project_name%' => $issue->getProject()->getKey(), '%issue_type%' => TBGContext::getI18n()->__($issue->getIssueType()->getName()), '%issue_no%' => $issue->getFormattedIssueNo(true), '%issue_title%' => $issue->getTitle()));
+					$subject = TBGContext::getI18n()->__('Re: [%project_name%] %issue_type% %issue_no% - %issue_title%', array('%project_name%' => $issue->getProject()->getKey(), '%issue_type%' => TBGContext::getI18n()->__($issue->getIssueType()->getName()), '%issue_no%' => $issue->getFormattedIssueNo(true), '%issue_title%' => html_entity_decode($issue->getTitle(), ENT_COMPAT, TBGContext::getI18n()->getCharset())));
 					$message = $this->createNewTBGMimemailFromTemplate($subject, 'issueupdate', array('issue' => $issue, 'comment_lines' => $event->getParameter('comment_lines'), 'updated_by' => $event->getParameter('updated_by')));
 					$this->_sendToUsers($to_users, $message);
 				}
