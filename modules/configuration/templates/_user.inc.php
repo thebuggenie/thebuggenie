@@ -79,11 +79,15 @@
 	<tr>
 		<td><label for="allowreg"><?php echo __('Enable OpenID'); ?></label></td>
 		<td>
+			<?php if (!TBGSettings::isUsingExternalAuthenticationBackend()): ?>
 			<select name="<?php echo TBGSettings::SETTING_ALLOW_OPENID; ?>" id="allowopenid" style="width: 400px;"<?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>>
 				<option value="all"<?php if (TBGSettings::getOpenIDStatus() == 'all'): ?> selected<?php endif; ?>><?php echo __('Users can register with OpenID and link OpenID to existing accounts'); ?></option>
 				<option value="existing"<?php if (!TBGSettings::getOpenIDStatus() == 'existing'): ?> selected<?php endif; ?>><?php echo __('Users can only link OpenID logins with existing accounts'); ?></option>
 				<option value="none"<?php if (TBGSettings::getOpenIDStatus() == 'none'): ?> selected<?php endif; ?>><?php echo __('OpenID authentication is disabled'); ?></option>
 			</select>
+			<?php else: ?>
+			<div class="faded_out"><?php echo __('OpenID support is not available when not using internal authentication'); ?></div>
+			<?php endif; ?>
 		</td>
 	</tr>
 	<tr>
