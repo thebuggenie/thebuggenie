@@ -1999,8 +1999,10 @@ TBG.Config.Import.importCSV = function(url) {
 			hide: 'csv_import_error'
 		},
 		failure: {
-			update: {element: 'csv_import_error_detail', from: 'errordetail'},
-			show: 'csv_import_error'
+			show: 'csv_import_error',
+			callback: function(json) {
+				$('csv_import_error_detail').update(json.errordetail);
+			}
 		}
 	});
 }
