@@ -30,7 +30,7 @@
 			<label><?php echo __('Custom header and favicons'); ?></label>
 		</td>
 		<td>
-			<div class="button button-blue" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'project_icons')); ?>');"><span><?php echo __('Configure icons'); ?></span></div>
+			<div class="button button-blue" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'site_icons')); ?>');"><span><?php echo __('Configure icons'); ?></span></div>
 		</td>
 	</tr>
 	<tr>

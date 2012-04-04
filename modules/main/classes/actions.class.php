@@ -2776,6 +2776,9 @@
 						break;
 					case 'permissions':
 						break;
+					case 'site_icons':
+						$template_name = 'configuration/siteicons';
+						break;
 					case 'project_config':
 						$template_name = 'project/projectconfig_container';
 						$project = TBGContext::factory()->TBGProject($request['project_id']);
