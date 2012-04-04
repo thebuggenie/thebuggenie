@@ -635,8 +635,7 @@
 				
 				while ($row = $res->getNextRow())
 				{
-					$issue_object = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
-					$issue_log = $issue_object->getLogEntries();
+					$issue_log = TBGLogTable::getTable()->getByIssueID($row->get(TBGIssuesTable::ID)); 
 					
 					array_reverse($issue_log);
 					
@@ -689,7 +688,6 @@
 					}
 
 					unset($issue_log);
-					unset($issue_object);
 					unset($updated_by);
 					unset($assigned_by);
 					unset($end_item);
