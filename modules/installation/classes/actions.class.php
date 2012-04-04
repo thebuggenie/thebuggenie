@@ -635,30 +635,31 @@
 				
 				while ($row = $res->getNextRow())
 				{
-					$issue_log = TBGLogTable::getTable()->getByIssueID($row->get(TBGIssuesTable::ID)); 
+					$crit = TBGLogTable::getTable()->getCriteria();
+					$crit->addSelect(TBGLogTable::UID);
+					$crit->addWhere(TBGLogTable::CHANGE_TYPE, TBGLogTable::LOG_ISSUE_ASSIGNED);
+					$crit->addWhere(TBGLogTable::TARGET, $row->get(TBGIssuesTable::ID));
+					$crit->addWhere(TBGLogTable::TARGET_TYPE, self::TYPE_ISSUE);
+					$crit->addOrderBy(TBGLogTable::TIME, Criteria::SORT_DESC);
 					
-					array_reverse($issue_log);
-					
-					$updated_by = null;
-					$assigned_by = null;
-	
-					foreach($issue_log as $entry)
+					if ($row = $this->doSelectOne($crit))
 					{
-						if ($updated_by == null)
-						{
-							if ($entry['change_type'] == TBGLogTable::LOG_ISSUE_ASSIGNED)
-							{
-								$assigned_by = $entry['user_id'];
-							}
-						}
+						$assigned_by = $row->get(TBGLogTable::UID);
+					}
+			
+					$crit = TBGLogTable::getTable()->getCriteria();
+					$crit->addSelect(TBGLogTable::UID);
+					$crit->addWhere(TBGLogTable::TARGET, $row->get(TBGIssuesTable::ID));
+					$crit->addWhere(TBGLogTable::TARGET_TYPE, self::TYPE_ISSUE);
+					$crit->addOrderBy(TBGLogTable::TIME, Criteria::SORT_DESC);
+					
+					if ($row = $this->doSelectOne($crit))
+					{
+						$updated_by = $row->get(TBGLogTable::UID);
 					}
 					
-					reset($issue_log);
-					array_reverse($issue_log);
-					
-					end($issue_log); // Set array to the end
-					$end_item = current($issue_log);
-					$updated_by = $end_item['user_id'];
+					unset($crit);
+					unset($row);
 					
 					if (array_key_exists('uid_'.$row->get(TBGIssuesTable::POSTED_BY), $offsets['users']))
 					{
@@ -669,29 +670,24 @@
 						$offset = $offsets['system'];
 					}
 					
-					if (array_key_exists('uid_'.$updated_by, $offsets['users']))
+					if (isset($updated_by) && array_key_exists('uid_'.$updated_by, $offsets['users']))
 					{
 						$offset2 = $offsets['users']['uid_'.$updated_by];
 					}
-					else
+					elseif (isset($updated_by))
 					{
 						$offset2 = $offsets['system'];
 					}
 					
-					if ($assigned_by !== null && array_key_exists('uid_'.$assigned_by, $offsets['users']))
+					if (isset($assigned_by) && array_key_exists('uid_'.$assigned_by, $offsets['users']))
 					{
 						$offset3 = $offsets['users']['uid_'.$assigned_by];
 					}
-					else
+					elseif (isset($assigned_by))
 					{
 						$offset3 = $offsets['system'];
 					}
 
-					unset($issue_log);
-					unset($updated_by);
-					unset($assigned_by);
-					unset($end_item);
-	
 					$crit2 = $table->getCriteria();
 					$crit2->addUpdate(TBGIssuesTable::POSTED, (int) $row->get(TBGIssuesTable::POSTED) + $offset);
 
