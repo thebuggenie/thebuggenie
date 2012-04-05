@@ -17,7 +17,7 @@
 
   # skip all hidden files (starting with a .)
   RewriteCond %{REQUEST_URI} \..+$
-  RewriteCond %{REQUEST_URI} !\.(html|wsdl|json|xml)$
+  RewriteCond %{REQUEST_URI} !\.(html|wsdl|json|xml|woff|ttf|eot)$
   RewriteRule .* - [L]
 
   # redirect to front controller
