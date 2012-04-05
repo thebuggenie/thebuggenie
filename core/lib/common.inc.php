@@ -206,13 +206,54 @@
 				}
 				break;
 			case 21:
-				$tstring = (TBGContext::isCLI()) ? strftime('%a, %d %b %Y %H:%M:%S GMT', $tstamp) : strftime(TBGContext::getI18n()->getDateTimeFormat(17), $tstamp);
-				if (TBGContext::getUser() instanceof TBGUser)
+				$tstring = strftime('%a, %d %b %Y %H:%M:%S ', $tstamp);
+				if (!$skipusertimestamp && TBGSettings::getUserTimezone() != 'sys')
 				{
-					if (TBGContext::getUser()->getTimezone() > 0) $tstring .= '+';
-					if (TBGContext::getUser()->getTimezone() < 0) $tstring .= '-';
-					if (TBGContext::getUser()->getTimezone() != 0) $tstring .= TBGContext::getUser()->getTimezone();
+					if (TBGSettings::getUserTimezone() != 0)
+					{
+						$offset = TBGSettings::getUserTimezone() * 100;
+					}
 				}
+				elseif (TBGSettings::getGMToffset() != 0)
+				{
+					$offset = TBGSettings::getGMToffset() * 100;
+				}
+				
+				if (!isset($offset))
+				{
+					$offset = 'GMT';
+				}
+				
+				if ($offset == 0)
+				{
+					$offset = 'GMT';
+				}
+				elseif ($offset != 'GMT')
+				{
+					$negative = false;
+					if (strstr($offset, '-'))
+					{
+						$offset = trim($offset, '-');
+						$negative = true;
+					}
+					
+					if ($offset < 1000)
+					{
+						$offset = '0'.$offset;
+					}
+					
+					if ($negative)
+					{
+						$offset = '-'.$offset;
+					}
+					else
+					{
+						$offset = '+'.$offset;
+					}
+				}
+
+				$tstring .= $offset;
+				return ($tstring);
 				break;
 			case 22:
 				$tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(15), $tstamp);
