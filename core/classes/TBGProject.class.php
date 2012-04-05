@@ -2681,7 +2681,10 @@
 
 				foreach ($res->getAllRows() as $row)
 				{
-					$this->_children[] = TBGContext::factory()->TBGProject($row->get(TBGProjectsTable::ID), $row);
+					if ($row->get(TBGProjectsTable::DELETED) == false)
+					{
+						$this->_children[] = TBGContext::factory()->TBGProject($row->get(TBGProjectsTable::ID), $row);
+					}
 				}
 			}
 		}
