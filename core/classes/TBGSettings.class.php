@@ -714,5 +714,15 @@
 			}
 			return self::$_core_issuetypescheme;
 		}
+		
+		public static function listen_TBGFile_hasAccess(TBGEvent $event)
+		{
+			$file = $event->getSubject();
+			if ($file->getID() == self::getHeaderIconID() || $file->getID() == self::getFaviconID())
+			{
+				$event->setReturnValue(true);
+				$event->setProcessed();
+			}
+		}
 
 	}
