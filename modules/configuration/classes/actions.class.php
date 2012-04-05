@@ -1667,6 +1667,9 @@
 					if (isset($request['email'])) {
 						$user->setEmail($request['email']);
 					}
+					if (isset($request['homepage'])) {
+						$user->setHomepage($request['homepage']);
+					}
 					if (TBGContext::getScope()->isDefault())
 					{
 						$user->setActivated((bool) $request['activated']);
