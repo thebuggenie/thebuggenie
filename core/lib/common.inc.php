@@ -60,16 +60,22 @@
 	 *
 	 * @param integer $tstamp the timestamp to format
 	 * @param integer $format[optional] the format
-	 * @param integer $skiptimestamp
+	 * @param integer $skipusertimestamp ignore user timestamp
 	 */
-	function tbg_formatTime($tstamp, $format = 0)
+	function tbg_formatTime($tstamp, $format = 0, $skipusertimestamp = false)
 	{
 		// offset the timestamp properly
-		if (TBGSettings::getGMToffset() != 0)
+		if (!$skipusertimestamp && TBGSettings::getUserTimezone() != 'sys')
+		{
+			if (TBGSettings::getUserTimezone() != 0)
+			{
+				$tstamp += TBGSettings::getUserTimezone() * 60 * 60;
+			}
+		}
+		elseif (TBGSettings::getGMToffset() != 0)
+		{
 			$tstamp += TBGSettings::getGMToffset() * 60 * 60;
-
-		if ((TBGSettings::getUserTimezone() != 0) && TBGSettings::getUserTimezone() != 'sys')
-			$tstamp += TBGSettings::getUserTimezone() * 60 * 60;
+		}
 			
 		switch ($format)
 		{

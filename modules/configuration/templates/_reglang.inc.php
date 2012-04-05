@@ -39,7 +39,7 @@
 	<tr>
 		<td class="config_explanation" colspan="2">
 			<?php echo __('The timezone used for The Bug Genie'); ?><br>
-			<?php echo __('The time is now: %time%', array('%time%' => tbg_formatTime(time(), 1))); ?>
+			<?php echo __('The time is now: %time%', array('%time%' => tbg_formatTime(time(), 1, true))); ?>
 		</td>
 	</tr>
 </table>
