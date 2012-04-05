@@ -60,16 +60,22 @@
 	 *
 	 * @param integer $tstamp the timestamp to format
 	 * @param integer $format[optional] the format
-	 * @param integer $skiptimestamp
+	 * @param integer $skipusertimestamp ignore user timestamp
 	 */
-	function tbg_formatTime($tstamp, $format = 0)
+	function tbg_formatTime($tstamp, $format = 0, $skipusertimestamp = false)
 	{
 		// offset the timestamp properly
-		if (TBGSettings::getGMToffset() != 0)
+		if (!$skipusertimestamp && TBGSettings::getUserTimezone() != 'sys')
+		{
+			if (TBGSettings::getUserTimezone() != 0)
+			{
+				$tstamp += TBGSettings::getUserTimezone() * 60 * 60;
+			}
+		}
+		elseif (TBGSettings::getGMToffset() != 0)
+		{
 			$tstamp += TBGSettings::getGMToffset() * 60 * 60;
-
-		if ((TBGSettings::getUserTimezone() != 0) && TBGSettings::getUserTimezone() != 'sys')
-			$tstamp += TBGSettings::getUserTimezone() * 60 * 60;
+		}
 			
 		switch ($format)
 		{
@@ -200,13 +206,54 @@
 				}
 				break;
 			case 21:
-				$tstring = (TBGContext::isCLI()) ? strftime('%a, %d %b %Y %H:%M:%S GMT', $tstamp) : strftime(TBGContext::getI18n()->getDateTimeFormat(17), $tstamp);
-				if (TBGContext::getUser() instanceof TBGUser)
+				$tstring = strftime('%a, %d %b %Y %H:%M:%S ', $tstamp);
+				if (!$skipusertimestamp && TBGSettings::getUserTimezone() != 'sys')
 				{
-					if (TBGContext::getUser()->getTimezone() > 0) $tstring .= '+';
-					if (TBGContext::getUser()->getTimezone() < 0) $tstring .= '-';
-					if (TBGContext::getUser()->getTimezone() != 0) $tstring .= TBGContext::getUser()->getTimezone();
+					if (TBGSettings::getUserTimezone() != 0)
+					{
+						$offset = TBGSettings::getUserTimezone() * 100;
+					}
 				}
+				elseif (TBGSettings::getGMToffset() != 0)
+				{
+					$offset = TBGSettings::getGMToffset() * 100;
+				}
+				
+				if (!isset($offset))
+				{
+					$offset = 'GMT';
+				}
+				
+				if ($offset == 0)
+				{
+					$offset = 'GMT';
+				}
+				elseif ($offset != 'GMT')
+				{
+					$negative = false;
+					if (strstr($offset, '-'))
+					{
+						$offset = trim($offset, '-');
+						$negative = true;
+					}
+					
+					if ($offset < 1000)
+					{
+						$offset = '0'.$offset;
+					}
+					
+					if ($negative)
+					{
+						$offset = '-'.$offset;
+					}
+					else
+					{
+						$offset = '+'.$offset;
+					}
+				}
+
+				$tstring .= $offset;
+				return ($tstring);
 				break;
 			case 22:
 				$tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(15), $tstamp);
