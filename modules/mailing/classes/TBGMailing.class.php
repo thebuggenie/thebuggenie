@@ -983,7 +983,7 @@
 				
 				try
 				{
-					$user->setName($name);
+					$user->setBuddyname($name);
 					$user->setEmail($email);
 					$user->setUsername($email);
 					$user->setValidated();
