@@ -1745,7 +1745,7 @@ table.sortable tr th.nosort {
 	width:22px; height:5px;
 	margin-left:auto;
 	margin-right:auto;
-	background-image:url('../iconsets/oxygen/markitup/handle.png');
+	background-image:url('./iconsets/oxygen/markitup/handle.png');
 	cursor:n-resize;
 }
 /***************************************************************************************/
