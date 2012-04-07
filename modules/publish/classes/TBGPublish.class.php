@@ -434,7 +434,7 @@
 					break;
 			}
 			$retval = $user->hasPermission($permission_name, $article_name, 'publish', true, $permissive);
-			if ($user->hasPermission($permission_name, $article_name, 'publish', true, $permissive) !== null)
+			if ($retval !== null)
 			{
 				return $retval;
 			}
@@ -453,7 +453,7 @@
 				}
 			}
 			$permissive = ($permission_name == self::PERMISSION_READ_ARTICLE) ? true : $permissive;
-			$retval = $user->hasPermission($permission_name, 0, 'publish', false, $permissive);
+			$retval = $user->hasPermission($permission_name, 0, 'publish', true, $permissive);
 			return ($retval !== null) ? $retval : $permissive;
 		}
 		
