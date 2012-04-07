@@ -607,13 +607,13 @@
 			// Create issue links
 			foreach ($issues as $issue)
 			{
+				$inst = new TBGVCSIntegrationIssueLink();
+				$inst->setIssue($issue);
+				$inst->setCommit($commit);
+				$inst->save();
 				foreach ($transitions[$issue->getIssueNo()] as $issue_transition_block)
 				{
 					preg_match('/(?<=\()(.*)(?=\))/', $issue_transition_block, $issue_transitions, null);
-					$inst = new TBGVCSIntegrationIssueLink();
-					$inst->setIssue($issue);
-					$inst->setCommit($commit);
-					$inst->save();
 					
 					if (TBGSettings::get('vcs_workflow_'.$project->getID(), 'vcs_integration') == TBGVCSIntegration::WORKFLOW_ENABLED)
 					{
