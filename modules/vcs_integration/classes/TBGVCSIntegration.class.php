@@ -79,9 +79,9 @@
 		protected function _addRoutes()
 		{
 			$this->addRoute('vcs_commitspage', '/:project_key/commits', 'projectCommits');
-			$this->addRoute('normalcheckin', '/vcs_integration/report/:project_key/', 'addCommit');
-			$this->addRoute('githubcheckin', '/vcs_integration/report/:project_key/github/', 'addCommitGithub');
-			$this->addRoute('gitoriouscheckin', '/vcs_integration/report/:project_key/gitorious/', 'addCommitGitorious');
+			$this->addRoute('normalcheckin', '/vcs_integration/report/:project_id/', 'addCommit');
+			$this->addRoute('githubcheckin', '/vcs_integration/report/:project_id/github/', 'addCommitGithub');
+			$this->addRoute('gitoriouscheckin', '/vcs_integration/report/:project_id/gitorious/', 'addCommitGitorious');
 			$this->addRoute('configure_vcs_settings', '/configure/project/:project_id/vcs', 'configureProjectSettings', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_PROJECTS));
 		}
 

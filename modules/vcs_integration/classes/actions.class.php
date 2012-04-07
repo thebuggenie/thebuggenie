@@ -121,7 +121,15 @@
 				
 			$passkey = TBGContext::getRequest()->getParameter('passkey');
 			$project_id = urldecode(TBGContext::getRequest()->getParameter('project_id'));
-			$project = TBGContext::factory()->TBGProject($project_id);
+			
+			try
+			{
+				$project = TBGContext::factory()->TBGProject($project_id);
+			}
+			catch (Exception $e)
+			{
+				$project = false;
+			}
 			
 			// Validate access
 			if (!$project)
@@ -158,12 +166,11 @@
 			$previous = $entries->before;
 				
 			// Branch is stored in the ref
-			$rev = $entries->ref;
+			$ref = $entries->ref;
 			$parts = explode('/', $ref);
-			
 			if (count($parts) == 3)
 			{
-				$branch = $parts[3];
+				$branch = $parts[2];
 			}
 			else
 			{
