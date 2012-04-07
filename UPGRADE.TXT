@@ -17,6 +17,7 @@ To upgrade The Bug Genie, do the following:
 Then, visit the location <thebuggenie.url>/upgrade in your web-browser and the
 upgrade wizard will start, and guide you through the upgrade process.
 
+The version number in the "installed" file will be automatically updated"
 
 via command-line
 ----------------------------------
