@@ -14,6 +14,7 @@ management system. Main features includes:
 * Remote API (JSON-based)
 * Great web-based configuration
 * Module-based and extensible architecture
+* Integration with source-code control systems
 
 ... and a lot more!
 
