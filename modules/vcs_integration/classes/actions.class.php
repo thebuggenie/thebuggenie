@@ -287,12 +287,12 @@
 			$previous = $entries->before;	
 			
 			// Branch is stored in the ref
-			$rev = $entries->ref;
+			$ref = $entries->ref;
 			$parts = explode('/', $ref);
 			
 			if (count($parts) == 3)
 			{
-				$branch = $parts[3];
+				$branch = $parts[2];
 			}
 			else
 			{
