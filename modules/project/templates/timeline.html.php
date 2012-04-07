@@ -29,7 +29,11 @@
 			<input id="timeline_offset" value="40" type="hidden">
 			<?php if (count($recent_activities) > 0): ?>
 				<?php echo image_tag('spinning_16.gif', array('id' => 'timeline_indicator', 'style' => 'display: none; float: left; margin-right: 5px;')); ?>
-				<?php echo javascript_link_tag(__('Show more').image_tag('action_add_small.png', array('style' => 'float: left; margin-right: 5px;')), array('onclick' => "TBG.Project.Timeline.update('".make_url('project_timeline', array('project_key' => $selected_project->getKey()))."');", 'id' => 'timeline_more_link')); ?>
+				<?php if ($important): ?>
+					<?php echo javascript_link_tag(__('Show more').image_tag('action_add_small.png', array('style' => 'float: left; margin-right: 5px;')), array('onclick' => "TBG.Project.Timeline.update('".make_url('project_timeline_important', array('project_key' => $selected_project->getKey()))."');", 'id' => 'timeline_more_link')); ?>
+				<?php else: ?>
+					<?php echo javascript_link_tag(__('Show more').image_tag('action_add_small.png', array('style' => 'float: left; margin-right: 5px;')), array('onclick' => "TBG.Project.Timeline.update('".make_url('project_timeline', array('project_key' => $selected_project->getKey()))."');", 'id' => 'timeline_more_link')); ?>
+				<?php endif; ?>
 			<?php endif; ?>
 		</td>
 	</tr>

@@ -1303,7 +1303,7 @@ TBG.Project.Milestone.refresh = function(url, milestone_id) {
 TBG.Project.Timeline.update = function(url) {
 	TBG.Main.Helpers.ajax(url, {
 		url_method: 'get',
-		additional_params: {offset: $('timeline_offset').getValue()},
+		additional_params: "offset=" + $('timeline_offset').getValue(),
 		loading: {
 			indicator: 'timeline_indicator',
 			hide: 'timeline_more_link'
@@ -1321,7 +1321,7 @@ TBG.Project.Timeline.update = function(url) {
 TBG.Project.Commits.update = function(url) {
 	TBG.Main.Helpers.ajax(url, {
 		url_method: 'get',
-		additional_params: {offset: $('commits_offset').getValue()},
+		additional_params: "offset=" + $('commits_offset').getValue(),
 		loading: {
 			indicator: 'commits_indicator',
 			hide: 'commits_more_link'
