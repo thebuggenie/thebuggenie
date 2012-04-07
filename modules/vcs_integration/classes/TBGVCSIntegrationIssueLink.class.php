@@ -83,7 +83,7 @@
 
 			if (!is_object(TBGVCSIntegrationIssueLinksTable::getTable()->getByIssueID($issue->getID())))
 			{
-				return false;
+				return array();
 			}
 			
 			foreach (TBGVCSIntegrationIssueLinksTable::getTable()->getByIssueID($issue->getID())->getAllRows() as $row)
