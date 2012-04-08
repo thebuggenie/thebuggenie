@@ -682,8 +682,8 @@ reportissue_additional_information_container .markItUp { display: none; }
 .report_issue_submit_container img { float: right; margin-right: 5px; }
 #report_issue_add_extra { margin-top: 15px; color: #333; }
 #report_form .textarea_hint { color: #AAA; font-weight: normal; padding: 5px 0 0 0; }
-#issue_main .textarea_hint { color: #999; font-weight: normal; padding: 5px 0 0 0; }
-#issue_main pre { padding: 3px; background-color: #F1EECB; border: 1px dotted #E3DDa5; }
+#issue_view .textarea_hint { color: #999; font-weight: normal; padding: 5px 0 0 0; }
+#issue_view pre { padding: 3px; background-color: #F1F1F1; border: 1px dotted #AAA; }
 #issue_view { position: relative; z-index: 100; }
 #issue_view fieldset { border: 0; border-top: 1px dotted #AAA; padding: 5px; margin: 0; }
 #issue_view fieldset legend { border: 0; padding: 5px; font-weight: bold; font-size: 1.1em; }
