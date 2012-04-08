@@ -139,11 +139,11 @@
 
 			if (!$this->no_dash_f)
 			{
-				$retval = mb_send_mail($email->getRecipientAddressesAsString(), $email->getSubject(), $email->getBodyAsString(), $email->getHeadersAsString(false), '-f'.$email->getFromAddress());
+				$retval = mail($email->getRecipientAddressesAsString(), $email->getSubject(), $email->getBodyAsString(), $email->getHeadersAsString(false), '-f'.$email->getFromAddress());
 			}
 			else
 			{
-				$retval = mb_send_mail($email->getRecipientAddressesAsString(), $email->getSubject(), $email->getBodyAsString(), $email->getHeadersAsString(false));
+				$retval = mail($email->getRecipientAddressesAsString(), $email->getSubject(), $email->getBodyAsString(), $email->getHeadersAsString(false));
 			}
 			if ($retval)
 			{
