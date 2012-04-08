@@ -26,7 +26,7 @@
 				</select>
 				<select style="width: 85px;" name="release_month" id="release_month"<?php if (!$project->hasReleaseDate()): ?> disabled<?php endif; ?>>
 				<?php for($cc = 1;$cc <= 12;$cc++): ?>
-					<option value=<?php print $cc; ?><?php print (($project->getReleaseDateMonth() == $cc) ? " selected" : "") ?>><?php echo tbg_formatTime(mktime(0, 0, 0, $cc, 1), 15); ?></option>
+					<option value=<?php print $cc; ?><?php print (($project->getReleaseDateMonth() == $cc) ? " selected" : "") ?>><?php echo strftime('%B', mktime(0, 0, 0, $cc, 1)); ?></option>
 				<?php endfor; ?>
 				</select>
 				<select style="width: 40px;" name="release_day" id="release_day"<?php if (!$project->hasReleaseDate()): ?> disabled<?php endif; ?>>

@@ -21,7 +21,7 @@
 	<?php endif; ?>
 		<span class="faded_out" style="font-size: 0.9em;" id="build_<?php echo $build->getID(); ?>_release_date">
 		<?php if ($build->isReleased()): ?>
-			<?php echo __('Released %release_date%', array('%release_date%' => tbg_formatTime($build->getReleaseDate(), 7))); ?>
+			<?php echo __('Released %release_date%', array('%release_date%' => tbg_formatTime($build->getReleaseDate(), 7, true, true))); ?>
 		<?php else: ?>
 			<?php echo __('Not released yet'); ?>
 		<?php endif; ?>
