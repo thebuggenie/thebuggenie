@@ -20,11 +20,11 @@
 	<b><?php echo $milestone->getName(); ?></b>
 	<span class="date">
 		<?php if ($milestone->getStartingDate() && $milestone->isScheduled()): ?>
-			(<?php echo tbg_formatTime($milestone->getStartingDate(), 22); ?> - <?php echo tbg_formatTime($milestone->getScheduledDate(), 22); ?>)
+			(<?php echo tbg_formatTime($milestone->getStartingDate(), 22, true, true); ?> - <?php echo tbg_formatTime($milestone->getScheduledDate(), 22, true, true); ?>)
 		<?php elseif ($milestone->getStartingDate() && !$milestone->isScheduled()): ?>
-			(<?php echo __('Starting %start_date%', array('%start_date%' => tbg_formatTime($milestone->getStartingDate(), 22))); ?>)
+			(<?php echo __('Starting %start_date%', array('%start_date%' => tbg_formatTime($milestone->getStartingDate(), 22, true, true))); ?>)
 		<?php elseif (!$milestone->getStartingDate() && $milestone->isScheduled()): ?>
-			(<?php echo __('Ends %end_date%', array('%end_date%' => tbg_formatTime($milestone->getScheduledDate(), 22))); ?>)
+			(<?php echo __('Ends %end_date%', array('%end_date%' => tbg_formatTime($milestone->getScheduledDate(), 22, true, true))); ?>)
 		<?php endif; ?>
 	</span>
 	&nbsp;&nbsp;<span class="counts"><?php echo __('%number_of% issue(s), %hours% hrs, %points% pts', array('%points%' => '<span id="milestone_'.$milestone->getID().'_estimated_points">' . $milestone->getPointsEstimated() . '</span>', '%hours%' => '<span id="milestone_'.$milestone->getID().'_estimated_hours">' . $milestone->getHoursEstimated() . '</span>', '%number_of%' => '<span id="milestone_'.$milestone->getID().'_issues">'.$milestone->countIssues().'</span>')); ?></span>&nbsp;

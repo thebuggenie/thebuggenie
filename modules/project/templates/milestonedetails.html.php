@@ -25,11 +25,11 @@
 						<br>
 						<span class="date">
 							<?php if ($milestone->getStartingDate() && $milestone->isScheduled()): ?>
-								(<?php echo tbg_formatTime($milestone->getStartingDate(), 22); ?> - <?php echo tbg_formatTime($milestone->getScheduledDate(), 22); ?>)
+								(<?php echo tbg_formatTime($milestone->getStartingDate(), 22, true, true); ?> - <?php echo tbg_formatTime($milestone->getScheduledDate(), 22, true, true); ?>)
 							<?php elseif ($milestone->getStartingDate() && !$milestone->isScheduled()): ?>
-								(<?php echo __('Starting %start_date%', array('%start_date%' => tbg_formatTime($milestone->getStartingDate(), 22))); ?>)
+								(<?php echo __('Starting %start_date%', array('%start_date%' => tbg_formatTime($milestone->getStartingDate(), 22, true, true))); ?>)
 							<?php elseif (!$milestone->getStartingDate() && $milestone->isScheduled()): ?>
-								(<?php echo __('Ends %end_date%', array('%end_date%' => tbg_formatTime($milestone->getScheduledDate(), 22))); ?>)
+								(<?php echo __('Ends %end_date%', array('%end_date%' => tbg_formatTime($milestone->getScheduledDate(), 22, true, true))); ?>)
 							<?php endif; ?>
 						</span>
 					</h3>

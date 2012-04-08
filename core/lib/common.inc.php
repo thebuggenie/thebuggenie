@@ -62,19 +62,12 @@
 	 * @param integer $format[optional] the format
 	 * @param integer $skipusertimestamp ignore user timestamp
 	 */
-	function tbg_formatTime($tstamp, $format = 0, $skipusertimestamp = false)
+	function tbg_formatTime($tstamp, $format = 0, $skipusertimestamp = false, $skiptimestamp = false)
 	{
 		// offset the timestamp properly
-		if (!$skipusertimestamp && TBGSettings::getUserTimezone() != 'sys')
+		if (!$skiptimestamp)
 		{
-			if (TBGSettings::getUserTimezone() != 0)
-			{
-				$tstamp += TBGSettings::getUserTimezone() * 60 * 60;
-			}
-		}
-		elseif (TBGSettings::getGMToffset() != 0)
-		{
-			$tstamp += TBGSettings::getGMToffset() * 60 * 60;
+			$tstamp += tbg_get_timezone_offset($skiptimestamp);
 		}
 			
 		switch ($format)
@@ -433,5 +426,25 @@
 		$cssstrings = join(',', $cssstrings);
 
 		return array($cssstrings, $sepcss);
+	}
+	
+	function tbg_get_timezone_offset($skipusertimestamp = false)
+	{
+		$tstamp = 0;
+		
+		// offset the timestamp properly
+		if (!$skipusertimestamp && TBGSettings::getUserTimezone() != 'sys')
+		{
+			if (TBGSettings::getUserTimezone() != 0)
+			{
+				$tstamp = TBGSettings::getUserTimezone() * 60 * 60;
+			}
+		}
+		elseif (TBGSettings::getGMToffset() != 0)
+		{
+			$tstamp = TBGSettings::getGMToffset() * 60 * 60;
+		}
+		
+		return $tstamp;
 	}
 	
