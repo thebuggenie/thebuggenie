@@ -2655,3 +2655,5 @@
 	$strings['Project wishlist']  = 'Lista de deseos';
 	$strings['A new milestone has been reached'] = 'Un nuevo punto de control ha sido alcanzado';
 	$strings['Yes, let me specify'] = 'Sí, dejarme especificar'; 
+  	$strings['This milestone also includes issues you do not have access to'] = 'Este punto de control incluye pedidos a los que no tiene acceso';
+  	$strings['Issue access policy updated'] = 'Política de acceso a petición actualizada';	
