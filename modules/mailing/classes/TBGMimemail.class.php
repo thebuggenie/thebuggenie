@@ -89,7 +89,7 @@
 				{
 					if (array_key_exists('name', $recipient))
 					{
-						$this->addTo($recipient['name'], $recipient['address']);
+						$this->addTo($recipient['address'], $recipient['name']);
 					}
 					elseif (count($recipient) == 2)
 					{
@@ -106,7 +106,7 @@
 				}
 			}
 			$this->charset = $charset;
-			$this->headers['X-Mailer'] = "PHP/" . phpversion();
+			$this->headers['X-Mailer'] = "TBG";
 			$this->headers['Subject'] = $subject;
 			$this->headers['Date'] = date('r');
 			$this->headers['MIME-Version'] = "1.0";
@@ -156,13 +156,14 @@
 			return $this->headers;
 		}
 
-		public function getHeadersAsString($include_subject = true)
+		public function getHeadersAsString($include_subject = true, $include_to = true)
 		{
 			$headers = $this->getHeaders();
 			$header = '';
 			foreach ($headers as $key => $val)
 			{
 				if (!$include_subject && mb_strtolower($key) == 'subject') continue;
+				if (!$include_to && mb_strtolower($key) == 'to') continue;
 				$header .= "{$key}: {$val}\r\n";
 			}
 			return $header;
