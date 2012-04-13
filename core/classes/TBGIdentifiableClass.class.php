@@ -47,7 +47,7 @@
 		 */
 		public function setID($id)
 		{
-			$this->_id = $id;
+			$this->_id = (int) $id;
 		}
 
 	}
