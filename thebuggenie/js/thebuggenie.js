@@ -1946,7 +1946,13 @@ TBG.Project.removeAssignee = function(url, type, id) {
 			hide: 'assignee_'+type+'_'+id+'_link'
 		},
 		success: {
-			hide: 'assignee_'+type+'_'+id+'_row'
+			remove: 'assignee_'+type+'_'+id+'_row',
+			callback: function() {
+				if ($('project_team_' + type + 's').childElements().size() == 0) {
+					$('project_team_' + type + 's').hide();
+					$('no_project_team_' + type + 's').show();
+				}
+			}
 		}
 	});
 }
