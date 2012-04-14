@@ -3,7 +3,7 @@
 	// This code requires PHP 5.3 or newer, so if we don't have it - don't continue
 	if (PHP_VERSION_ID < 50300)
 		die('This software requires PHP 5.3.0 or newer, but you have an older version. Please upgrade.');
-
+	gc_enable();
 	date_default_timezone_set('UTC');
 	
 	if (!defined('THEBUGGENIE_PATH'))
