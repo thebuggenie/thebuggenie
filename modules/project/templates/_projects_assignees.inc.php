@@ -6,14 +6,13 @@
 
 ?>
 <div class="config_header" style="border-bottom: 0; margin-top: 0; padding-top: 0;"><b><?php echo __('Assigned users'); ?></b></div>
-<?php if (count($assigned_users) == 0): ?>
-	<div style="padding-left: 5px; padding-top: 3px; color: #AAA;"><?php echo __('There are no users assigned to this project'); ?></div>
-<?php else: ?>
-	<table cellpadding=0 cellspacing=0 width="100%">
+<div id="no_project_team_users" style="padding-left: 5px;<?php if (count($assigned_users) > 0): ?> display: none;<?php endif; ?> padding-top: 3px; color: #AAA;"><?php echo __('There are no users assigned to this project'); ?></div>
+<table cellpadding=0 cellspacing=0 width="100%">
+	<tbody id="project_team_users">
 		<?php foreach ($assigned_users as $user): ?>
 			<tr id="assignee_user_<?php echo $user->getID(); ?>_row" class="hoverable">
 				<td style="width: 20px;">
-					<?php echo javascript_link_tag(image_tag('action_delete.png'), array('class' => 'image', 'onclick' => "TBG.Project.removeAssignee('".make_url('configure_project_remove_assignee', array('project_id' => $project->getID(), 'assignee_type' => 'user', 'assignee_id' => $user->getID()))."', 'user', {$user->getID()});", 'id' => 'assignee_user_'.$user->getID().'_link')); ?>
+					<a href="javascript:void(0);" id="assignee_user_<?php echo $user->getID(); ?>_link" onclick="TBG.Main.Helpers.Dialog.show('<?php echo __('Remove %username% from this project?', array('%username%' => $user->getNameWithUsername())); ?>', '<?php echo __('Please confirm that you want to remove this user from the project team'); ?>', {yes: {click: function() {TBG.Project.removeAssignee('<?php echo make_url('configure_project_remove_assignee', array('project_id' => $project->getID(), 'assignee_type' => 'user', 'assignee_id' => $user->getID())); ?>', 'user', <?php echo $user->getID(); ?>);TBG.Main.Helpers.Dialog.dismiss();}}, no: {click: TBG.Main.Helpers.Dialog.dismiss}});"><?php echo image_tag('action_delete.png'); ?></a>
 					<?php echo image_tag('spinning_16.gif', array('id' => 'remove_assignee_user_'.$user->getID().'_indicator', 'style' => 'float: left; display: none;')); ?>
 				</td>
 				<td style="vertical-align: top; font-size: 0.9em;">
@@ -27,17 +26,16 @@
 				</td>
 			</tr>
 		<?php endforeach; ?>
-	</table>
-<?php endif; ?>
+	</tbody>
+</table>
 <div class="config_header" style="border-bottom: 0;"><b><?php echo __('Assigned teams'); ?></b></div>
-<?php if (count($assigned_teams) == 0): ?>
-	<div style="padding-left: 5px; padding-top: 3px; color: #AAA;"><?php echo __('There are no teams assigned to this project'); ?></div>
-<?php else: ?>
-	<table cellpadding=0 cellspacing=0 width="100%">
+<div id="no_project_team_teams" style="padding-left: 5px;<?php if (count($assigned_teams) > 0): ?> display: none;<?php endif; ?> padding-top: 3px; color: #AAA;"><?php echo __('There are no teams assigned to this project'); ?></div>
+<table cellpadding=0 cellspacing=0 width="100%">
+	<tbody id="project_team_teams">
 		<?php foreach ($assigned_teams as $team): ?>
 			<tr id="assignee_team_<?php echo $team->getID(); ?>_row" class="hoverable">
 				<td style="width: 20px;">
-					<?php echo javascript_link_tag(image_tag('action_delete.png'), array('class' => 'image', 'onclick' => "TBG.Project.removeAssignee('".make_url('configure_project_remove_assignee', array('project_id' => $project->getID(), 'assignee_type' => 'team', 'assignee_id' => $team->getID()))."', 'team', {$team->getID()});", 'id' => 'assignee_team_'.$team->getID().'_link')); ?>
+					<a href="javascript:void(0);" id="assignee_team_<?php echo $team->getID(); ?>_link" onclick="TBG.Main.Helpers.Dialog.show('<?php echo __('Remove %teamname% from this project?', array('%teamname%' => $team->getName())); ?>', '<?php echo __('Please confirm that you want to remove this team from the project team'); ?>', {yes: {click: function() {TBG.Project.removeAssignee('<?php echo make_url('configure_project_remove_assignee', array('project_id' => $project->getID(), 'assignee_type' => 'team', 'assignee_id' => $team->getID())); ?>', 'team', <?php echo $team->getID(); ?>);TBG.Main.Helpers.Dialog.dismiss();}}, no: {click: TBG.Main.Helpers.Dialog.dismiss}});"><?php echo image_tag('action_delete.png'); ?></a>
 					<?php echo image_tag('spinning_16.gif', array('id' => 'remove_assignee_team_'.$team->getID().'_indicator', 'style' => 'float: left; display: none;')); ?>
 				</td>
 				<td style="vertical-align: top; font-size: 0.9em;">
@@ -51,5 +49,5 @@
 				</td>
 			</tr>
 		<?php endforeach; ?>
-	</table>
-<?php endif; ?>
+	</tbody>
+</table>

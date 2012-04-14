@@ -16,18 +16,9 @@
 	 * @package thebuggenie
 	 * @subpackage core
 	 */
-	abstract class TBGIdentifiableScopedClass extends \b2db\Saveable implements TBGIdentifiable
+	abstract class TBGIdentifiableScopedClass extends TBGIdentifiableClass
 	{
 		
-		/**
-		 * The id for this item, usually identified by a record in the database
-		 *
-		 * @var integer
-		 * @Id
-		 * @Column(type="integer", not_null=true, auto_increment=1, length=10, unsigned=true)
-		 */
-		protected $_id;
-
 		/**
 		 * The related scope
 		 *
@@ -60,26 +51,6 @@
 			return $this->_scope;
 		}
 		
-		/**
-		 * Return the items id
-		 * 
-		 * @return integer
-		 */
-		public function getID()
-		{
-			return (integer) $this->_id;
-		}
-
-		/**
-		 * Set the items id
-		 *
-		 * @param integer $id
-		 */
-		public function setID($id)
-		{
-			$this->_id = (integer) $id;
-		}
-
 		protected function _preSave($is_new)
 		{
 			if ($is_new && $this->_scope === null)
