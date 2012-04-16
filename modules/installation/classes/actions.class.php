@@ -451,7 +451,7 @@
 			TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'mailing' . DS . 'classes');
 			TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'publish' . DS . 'classes' . DS . 'B2DB');
 			TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'publish' . DS . 'classes');
-			
+				
 			// Create new tables
 			TBGDashboardViewsTable::getTable()->create();
 			TBGOpenIdAccountsTable::getTable()->create();
@@ -478,8 +478,6 @@
 			TBGCustomFieldOptionsTable::getTable()->upgrade(TBGCustomFieldOptionsTable3dot1::getTable());
 			TBGIssueCustomFieldsTable::getTable()->upgrade(TBGIssueCustomFieldsTable3dot1::getTable());
 			
-			if (TBGContext::getRequest()->getParameter('fix_my_timestamps', false)) $this->_fixTimestamps();
-			
 			// Create new module tables
 			TBGIncomingEmailAccountTable::getTable()->create();
 			
@@ -500,6 +498,8 @@
 			TBGUserIssuesTable::getTable()->createIndexes();
 			TBGUsersTable::getTable()->createIndexes();
 			TBGUserScopesTable::getTable()->createIndexes();
+			
+			if (TBGContext::getRequest()->getParameter('fix_my_timestamps', false)) $this->_fixTimestamps();
 
 			foreach (TBGScope::getAll() as $scope)
 			{
@@ -591,38 +591,45 @@
 				
 				$offsets['system'] = (int) TBGSettings::getGMToffset() * 3600;
 				
-				foreach (TBGUser::getAll() as $user)
+				$settingstable = TBGSettingsTable::getTable();
+				$crit = $settingstable->getCriteria();
+				
+				$crit->addWhere(TBGSettingsTable::NAME, 'timezone');
+				$crit->addWhere(TBGSettingsTable::MODULE, 'core');
+				$crit->addWhere(TBGSettingsTable::UID, 0, \b2db\Criteria::DB_NOT_EQUALS);
+				$crit->addWhere(TBGSettingsTable::VALUE, 0, \b2db\Criteria::DB_NOT_EQUALS);
+				$crit->addWhere(TBGSettingsTable::VALUE, 'sys', \b2db\Criteria::DB_NOT_EQUALS);
+				$crit->addWhere(TBGSettingsTable::SCOPE, $scope->getID());
+
+				$res = $settingstable->doSelect($crit);
+				
+				if ($res instanceof \b2db\Resultset)
 				{
-					// Don't record an offset if the user's timezone is set to 0, use the system one instead
-					if ($user->getTimezone() != '0' && $user->getTimezone() != 'sys')
+					while ($user = $res->getNextRow())
 					{
-						$offsets['users']['uid_'.$user->getID()] = (int) $user->getTimezone() * 3600;
+						$offsets['users']['uid_'.$user->get(TBGSettingsTable::UID)] = (int) $user->get(TBGSettingsTable::VALUE) * 3600;
 					}
 				}
-				
+
 				// Now go through every thing which requires updating
-				
+
 				TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'publish' . DS . 'classes' . DS . 'B2DB');
 				TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'publish' . DS . 'classes');
 				// ARTICLE HISTORY
 				$this->_fixUserDependentTimezone($offsets, TBGArticleHistoryTable::getTable(), TBGArticleHistoryTable::AUTHOR, TBGArticleHistoryTable::DATE, $scope);
-					
+
 				// ARTICLES
 				$this->_fixUserDependentTimezone($offsets, TBGArticlesTable::getTable(), TBGArticlesTable::AUTHOR, TBGArticlesTable::DATE, $scope);
 
 				// BUILDS
 				$this->_fixNonUserDependentTimezone($offsets, TBGBuildsTable::getTable(), TBGBuildsTable::RELEASE_DATE, $scope, TBGBuildsTable::RELEASED);
 
-				
 				// COMMENTS		
 				$this->_fixUserDependentTimezone($offsets, TBGCommentsTable::getTable(), array('a' => TBGCommentsTable::POSTED_BY, 'b' => TBGCommentsTable::UPDATED_BY), array('a' => TBGCommentsTable::POSTED, 'b' => TBGCommentsTable::UPDATED), $scope);
-				
+
 				// EDITIONS
 				$this->_fixNonUserDependentTimezone($offsets, TBGEditionsTable::getTable(), TBGEditionsTable::RELEASE_DATE, $scope, TBGEditionsTable::RELEASED);
 
-								
-				// FILES
-				$this->_fixUserDependentTimezone($offsets, TBGFilesTable::getTable(), TBGFilesTable::UID, TBGFilesTable::UPLOADED_AT, $scope);
 				
 				// ISSUES
 				// This is a bit more complex so do this manually - we have to poke around with the issue log
@@ -630,9 +637,7 @@
 				$crit = $table->getCriteria();
 				$crit->addWhere(TBGIssuesTable::SCOPE, $scope->getID());
 				$crit->addWhere(TBGIssuesTable::DELETED, false);
-				
 				$res = $table->doSelect($crit);
-				
 				while ($row = $res->getNextRow())
 				{
 					$crit = TBGLogTable::getTable()->getCriteria();
@@ -646,7 +651,6 @@
 					if ($row2 = TBGLogTable::getTable()->doSelectOne($crit))
 					{
 						$assigned_by = $row2->get(TBGLogTable::UID);
-						echo 'assigned '.$row->get(TBGIssuesTable::ID).' by '.$assigned_by.'<hr />';
 					}
 			
 					$crit = TBGLogTable::getTable()->getCriteria();
@@ -659,7 +663,6 @@
 					if ($row2 = TBGLogTable::getTable()->doSelectOne($crit))
 					{
 						$updated_by = $row2->get(TBGLogTable::UID);
-						echo 'updated '.$row->get(TBGIssuesTable::ID).' by '.$updated_by.'<hr />';
 					}
 					unset($crit);
 					unset($row2);
@@ -709,7 +712,7 @@
 					$crit2->addWhere(TBGIssuesTable::ID, $row->get(TBGIssuesTable::ID));
 					$table->doUpdate($crit2);
 				}
-				
+
 				// LOG
 				$this->_fixUserDependentTimezone($offsets, TBGLogTable::getTable(), TBGLogTable::UID, TBGLogTable::TIME, $scope);
 				
@@ -776,14 +779,13 @@
 		{
 			$crit = $table->getCriteria();
 			$crit->addWhere($table::SCOPE, $scope->getID());
-			
+			$crit->generateSelectSQL();
 			$res = $table->doSelect($crit);
-			
+
 			if (is_null($res))
 			{
 				return; // nothing to update
 			}
-			
 			while ($row = $res->getNextRow())
 			{				
 				if ($testfield !== null)
@@ -805,7 +807,6 @@
 				}
 				
 				$crit2 = $table->getCriteria();
-			
 				$added = 0;
 			
 				foreach ($author_field as $key => $field)
@@ -818,7 +819,6 @@
 					{
 						$offset = $offsets['system'];
 					}
-
 					// If the timestamp is 0, don't correct as it is unset
 					if ($row->get($correctionfield[$key]) == 0)
 					{
