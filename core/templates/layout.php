@@ -7,43 +7,10 @@
 		<meta name="keywords" content="thebuggenie friendly issue tracking">
 		<meta name="author" content="thebuggenie.com">
 		<title><?php echo ($tbg_response->hasTitle()) ? strip_tags(TBGSettings::getTBGname() . ' ~ ' . $tbg_response->getTitle()) : strip_tags(TBGSettings::getTBGname()); ?></title>
-		<style>
-			@font-face {
-			  font-family: 'Droid Sans Mono';
-			  font-style: normal;
-			  font-weight: normal;
-			  src: url('<?php echo TBGContext::getTBGPath(); ?>fonts/droid_sans_mono.eot');
-			  src: local('Droid Sans Mono'), local('DroidSansMono'), url('<?php echo TBGContext::getTBGPath(); ?>fonts/droid_sans_mono.woff') format('woff'), url('<?php echo TBGContext::getTBGPath(); ?>fonts/droid_sans_mono.ttf') format('truetype');
-			}
-			@font-face {
-			  font-family: 'Open Sans';
-			  font-style: normal;
-			  font-weight: normal;
-			  src: url('<?php echo TBGContext::getTBGPath(); ?>fonts/open_sans.eot');
-			  src: local('Open Sans'), local('OpenSans'), url('<?php echo TBGContext::getTBGPath(); ?>fonts/open_sans.woff') format('woff'), url('<?php echo TBGContext::getTBGPath(); ?>fonts/open_sans.ttf') format('truetype');
-			}
-			@font-face {
-			  font-family: 'Open Sans';
-			  font-style: italic;
-			  font-weight: normal;
-			  src: url('<?php echo TBGContext::getTBGPath(); ?>fonts/open_sans_italic.eot');
-			  src: local('Open Sans Italic'), local('OpenSans-Italic'), url('<?php echo TBGContext::getTBGPath(); ?>fonts/open_sans_italic.woff') format('woff'), url('<?php echo TBGContext::getTBGPath(); ?>fonts/open_sans_italic.ttf') format('truetype');
-			}
-			@font-face {
-			  font-family: 'Open Sans';
-			  font-style: normal;
-			  font-weight: bold;
-			  src: url('<?php echo TBGContext::getTBGPath(); ?>fonts/open_sans_bold.eot');
-			  src: local('Open Sans Bold'), local('OpenSans-Bold'), url('<?php echo TBGContext::getTBGPath(); ?>fonts/open_sans_bold.woff') format('woff'), url('<?php echo TBGContext::getTBGPath(); ?>fonts/open_sans_bold.ttf') format('truetype');
-			}
-			@font-face {
-			  font-family: 'Open Sans';
-			  font-style: italic;
-			  font-weight: bold;
-			  src: url('<?php echo TBGContext::getTBGPath(); ?>fonts/open_sans_bold_italic.eot');
-			  src: local('Open Sans Bold Italic'), local('OpenSans-BoldItalic'), url('<?php echo TBGContext::getTBGPath(); ?>fonts/open_sans_bold_italic.woff') format('woff'), url('<?php echo TBGContext::getTBGPath(); ?>fonts/open_sans_bold_italic.ttf') format('truetype');
-			}
-		</style>
+		
+		<link href='http://fonts.googleapis.com/css?family=Droid+Sans+Mono' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700' rel='stylesheet' type='text/css'>
+		
 		<link rel="shortcut icon" href="<?php if (TBGSettings::isUsingCustomFavicon()): echo TBGSettings::getFaviconURL(); else: echo image_url('favicon.png'); endif; ?>">
 		<link title="<?php echo (TBGContext::isProjectContext()) ? __('%project_name% search', array('%project_name%' => TBGContext::getCurrentProject()->getName())) : __('%site_name% search', array('%site_name%' => TBGSettings::getTBGname())); ?>" href="<?php echo (TBGContext::isProjectContext()) ? make_url('project_opensearch', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('opensearch'); ?>" type="application/opensearchdescription+xml" rel="search">
 		<?php foreach ($tbg_response->getFeeds() as $feed_url => $feed_title): ?>
