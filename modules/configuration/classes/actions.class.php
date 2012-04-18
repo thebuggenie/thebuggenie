@@ -1158,6 +1158,10 @@
 				$this->forward403unless($this->access_level == TBGSettings::ACCESS_FULL);
 				if ($request['upload_storage'] == 'files' && (bool) $request['enable_uploads'])
 				{
+					if(!is_dir($request['upload_localpath']))
+					{
+						mkdir($request['upload_localpath'], 0744, true);
+					}
 					if (!is_writable($request['upload_localpath']))
 					{
 						$this->getResponse()->setHttpStatus(400);
