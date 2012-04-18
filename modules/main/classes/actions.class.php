@@ -2322,7 +2322,7 @@
 					$this->getResponse()->clearHeaders();
 					$this->getResponse()->setDecoration(TBGResponse::DECORATE_NONE);
 					$this->getResponse()->addHeader('Content-disposition: '.(($request['mode'] == 'download') ? 'attachment' : 'inline').'; filename="'.$file->getOriginalFilename().'"');
-					$this->getResponse()->addHeader('Content-type: '.$file->getContentType().'; charset=UTF-8');
+					$this->getResponse()->setContentType($file->getContentType());
 					$this->getResponse()->renderHeaders();
 					if (TBGSettings::getUploadStorage() == 'files')
 					{
