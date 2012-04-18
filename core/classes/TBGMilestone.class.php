@@ -512,7 +512,6 @@
 		 */
 		public function getStartingDay()
 		{
-			var_dump(date("j", $this->_startingdate));
 			return date("j", $this->_startingdate);
 		}
 		
