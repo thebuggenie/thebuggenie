@@ -147,11 +147,11 @@
 			}
 			if ($retval)
 			{
-				TBGLogging::log("Sending email to {$email->getRecipients()} accepted for delivery OK");
+				TBGLogging::log("Sending email to {$email->getRecipientsAsString()} accepted for delivery OK");
 			}
 			else
 			{
-				TBGLogging::log("Sending email to {$email->getRecipients()} not accepted for delivery", TBGLogging::LEVEL_NOTICE);
+				TBGLogging::log("Sending email to {$email->getRecipientsAsString()} not accepted for delivery", TBGLogging::LEVEL_NOTICE);
 			}
 			
 			return $retval;
