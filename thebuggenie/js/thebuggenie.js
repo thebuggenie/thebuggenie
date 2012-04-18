@@ -1,4 +1,3 @@
-
 function is_string(element) {
     return (typeof element == 'string');
 }
@@ -3790,10 +3789,14 @@ TBG.OpenID = {
 	 */
 	init : function() {
 		var openid_btns = $('openid_btns');
-		$('openid_choice').setStyle({
-			display: 'block'
-		});
-		$('openid_input_area').innerHTML = "";
+		if( $('openid_choice') ){
+			$('openid_choice').setStyle({
+				display: 'block'
+			});
+		}
+		if( $('openid_input_area') ){
+			$('openid_input_area').innerHTML = "";
+		}
 		var i = 0;
 		// add box for each provider
 		for (id in this.providers_large) {
