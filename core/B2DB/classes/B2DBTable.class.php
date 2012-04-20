@@ -700,8 +700,8 @@
 			$id = $object->getB2DBID();
 			foreach ($this->getColumns() as $property)
 			{
+				$value = $this->formatify($object->getB2DBSaveablePropertyValue(strtolower($property['name'])), $property['type']);
 				$property = $property['name'];
-				$value = $this->formatify($object->getB2DBSaveablePropertyValue(strtolower($property)), $property['type']);
 				if ($property == $this->getIdColumn())
 				{
 					$res_id = $value;
