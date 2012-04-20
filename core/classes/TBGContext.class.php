@@ -2411,7 +2411,7 @@
 					{
 						$route = array('module' => 'installation', 'action' => 'installIntro');
 					}
-					if (self::$_redirect_login && !self::getRouting()->getCurrentRouteName('debug'))
+					if (self::$_redirect_login)
 					{
 						TBGLogging::log('An error occurred setting up the user object, redirecting to login', 'main', TBGLogging::LEVEL_NOTICE);
 						TBGContext::setMessage('login_message_err', TBGContext::geti18n()->__('Please log in'));
