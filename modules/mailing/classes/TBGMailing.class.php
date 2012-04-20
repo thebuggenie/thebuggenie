@@ -974,9 +974,9 @@
 			{
 				$name = $email;
 
-				if (($q_pos = strpos($email, "<")) !== false)
+				if (($q_pos = strpos($email_string, "<")) !== false)
 				{
-					$name = trim(substr($email, 0, $q_pos - 1));
+					$name = trim(substr($email_string, 0, $q_pos - 1));
 				}
 
 				$user = new TBGUser();
