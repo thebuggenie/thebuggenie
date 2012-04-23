@@ -55,7 +55,8 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::NAME, $group_name);
-			
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+
 			return (bool) $this->doCount($crit);
 		}
 		

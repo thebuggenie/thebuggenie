@@ -58,9 +58,10 @@
 		public function doesClientNameExist($client_name)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::NAME, $client_name);
+            $crit->addWhere(self::NAME, $client_name);
+            $crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 
-			return (bool) $this->doCount($crit);
+            return (bool) $this->doCount($crit);
 		}
 
 	}
