@@ -224,7 +224,11 @@
 				{
 					while ($row = $res->getNextRow())
 					{
-						$this->_linking_articles[$row->get(TBGArticleLinksTable::ARTICLE_NAME)] = PublishFactory::articleName($row->get(TBGArticleLinksTable::ARTICLE_NAME));
+						try
+						{
+							$this->_linking_articles[$row->get(TBGArticleLinksTable::ARTICLE_NAME)] = PublishFactory::articleName($row->get(TBGArticleLinksTable::ARTICLE_NAME));
+						}
+						catch (Exception $e) {}
 					}
 				}
 			}
