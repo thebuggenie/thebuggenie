@@ -211,7 +211,9 @@
 		 * Add to the breadcrumb trail for the current page
 		 * 
 		 * @param string $breadcrumb 
-		 * @param string $url[optional]
+		 * @param string $url[optional] The menu item's url if any
+		 * @param array $subitems[optional] An array of submenu items to add
+		 * @param string $class[optional] An optional class
 		 */
 		public function addBreadcrumb($breadcrumb, $url = null, $subitems = null, $class = null)
 		{
@@ -388,6 +390,8 @@
 		
 		/**
 		 * Get the HTTP status code
+         *
+         * @return int
 		 */
 		public function getHttpStatus()
 		{
@@ -431,16 +435,31 @@
 			}
 		}
 
+        /**
+         * Get the current decoration mode
+         *
+         * @return int
+         */
 		public function getDecoration()
 		{
 			return $this->_decoration;
 		}
-		
+
+        /**
+         * Get the current custom header decoration file location
+         *
+         * @return string
+         */
 		public function getHeaderDecoration()
 		{
 			return $this->_decor_header;
 		}
-		
+
+        /**
+         * Get the current custom footer decoration file location
+         *
+         * @return string
+         */
 		public function getFooterDecoration()
 		{
 			return $this->_decor_footer;
