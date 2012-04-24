@@ -21,7 +21,7 @@
 			<?php echo __("What's the issue?"); ?>
 		</div>
 		<div id="reportissue_content">
-			<?php include_component('main/reportissue', compact('issue', 'errors', 'permission_errors', 'selected_project', 'selected_issuetype', 'selected_milestone', 'selected_build', 'issuetypes')); ?>
+			<?php include_component('main/reportissue', $options); ?>
 		</div>
 	</div>
 <?php endif; ?>

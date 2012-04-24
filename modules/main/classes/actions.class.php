@@ -110,7 +110,6 @@
 					{
 						$this->issue_unsaved = true;
 					}
-					break;
 				}
 			}
 			elseif ($message == true)
@@ -1298,6 +1297,7 @@
 			}
 			$this->errors = $errors;
 			$this->permission_errors = $permission_errors;
+            $this->options = $this->getParameterHolder();
 		}
 		
 		/**
