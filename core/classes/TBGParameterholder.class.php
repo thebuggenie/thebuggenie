@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage mvc
 	 */
-	class TBGParameterholder
+	class TBGParameterholder implements ArrayAccess
 	{
 		
 		protected $_property_list = array();
@@ -45,5 +45,28 @@
 		{
 			return (array_key_exists($key, $this->_property_list)) ? true : false; 
 		}
+
+        public function offsetUnset($key)
+        {
+            if (array_key_exists($key, $this->_property_list))
+            {
+                unset($this->_property_list[$key]);
+            }
+        }
+
+        public function offsetSet($key, $value)
+        {
+            $this->__set($key, $value);
+        }
+
+        public function offsetGet($key)
+        {
+            return $this->__get($key);
+        }
+
+        public function offsetExists($key)
+        {
+            return $this->__isset($key);
+        }
 		
 	}
