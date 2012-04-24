@@ -428,27 +428,27 @@
 		protected function _setupReportIssueProperties()
 		{
 			$this->selected_issuetype = $this->selected_issuetype ?: null;
-			$this->selected_edition = null;
+			$this->selected_edition = $this->selected_edition ?: null;
 			$this->selected_build = $this->selected_build ?: null;
 			$this->selected_milestone = $this->selected_milestone ?: null;
 			$this->parent_issue = $this->parent_issue ?: null;
-			$this->selected_component = null;
-			$this->selected_category = null;
-			$this->selected_status = null;
-			$this->selected_resolution = null;
-			$this->selected_priority = null;
-			$this->selected_reproducability = null;
-			$this->selected_severity = null;
-			$this->selected_estimated_time = null;
-			$this->selected_spent_time = null;
-			$this->selected_percent_complete = null;
-			$this->selected_pain_bug_type = null;
-			$this->selected_pain_likelihood = null;
-			$this->selected_pain_effect = null;
+			$this->selected_component = $this->selected_component ?: null;
+			$this->selected_category = $this->selected_category ?: null;
+			$this->selected_status = $this->selected_status ?: null;
+			$this->selected_resolution = $this->selected_resolution ?: null;
+			$this->selected_priority = $this->selected_priority ?: null;
+			$this->selected_reproducability = $this->selected_reproducability ?: null;
+			$this->selected_severity = $this->selected_severity ?: null;
+			$this->selected_estimated_time = $this->selected_estimated_time ?: null;
+			$this->selected_spent_time = $this->selected_spent_time ?: null;
+			$this->selected_percent_complete = $this->selected_percent_complete ?: null;
+			$this->selected_pain_bug_type = $this->selected_pain_bug_type ?: null;
+			$this->selected_pain_likelihood = $this->selected_pain_likelihood ?: null;
+			$this->selected_pain_effect = $this->selected_pain_effect ?: null;
 			$selected_customdatatype = $this->selected_customdatatype ?: array();
 			foreach (TBGCustomDatatype::getAll() as $customdatatype)
 			{
-				$selected_customdatatype[$customdatatype->getKey()] = null;
+				$selected_customdatatype[$customdatatype->getKey()] = $selected_customdatatype[$customdatatype->getKey()] ?: null;
 			}
 			$this->selected_customdatatype = $selected_customdatatype;
 			$this->issuetype_id = $this->issuetype_id ?: null;
