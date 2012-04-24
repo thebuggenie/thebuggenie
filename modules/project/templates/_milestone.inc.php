@@ -32,17 +32,17 @@
 					<td style="width: auto;">
 						<select style="width: 90px;" name="starting_month" id="starting_month_<?php echo $milestone->getID(); ?>"<?php if (!$milestone->hasStartingDate()): ?> disabled<?php endif; ?>>
 						<?php for ($cc = 1;$cc <= 12;$cc++): ?>
-							<option value="<?php echo $cc; ?>" <?php echo (($milestone->getStartingMonth() == $cc) ? " selected" : ""); ?>><?php echo strftime('%B', mktime(0, 0, 0, $cc, 1)); ?></option>
+							<option value="<?php echo $cc; ?>" <?php if ($milestone->getStartingMonth() == $cc || (!$milestone->hasStartingDate() && $cc == date('m'))) echo " selected"; ?>><?php echo strftime('%B', mktime(0, 0, 0, $cc, 1)); ?></option>
 						<?php endfor; ?>
 						</select>
 						<select style="width: 45px;" name="starting_day" id="starting_day_<?php echo $milestone->getID(); ?>"<?php if (!$milestone->hasStartingDate()): ?> disabled<?php endif; ?>>
 						<?php for ($cc = 1;$cc <= 31;$cc++): ?>
-							<option value="<?php echo $cc; ?>" <?php echo (($milestone->getStartingDay() == $cc) ? " selected" : ""); ?>><?php echo $cc; ?></option>
+							<option value="<?php echo $cc; ?>" <?php if ($milestone->getStartingDay() == $cc || (!$milestone->hasStartingDate() && $cc == date('d'))) echo " selected"; ?>><?php echo $cc; ?></option>
 						<?php endfor; ?>
 						</select>
 						<select style="width: 60px;" name="starting_year" id="starting_year_<?php echo $milestone->getID(); ?>"<?php if (!$milestone->hasStartingDate()): ?> disabled<?php endif; ?>>
 						<?php for ($cc = 1990;$cc <= (date("Y") + 10);$cc++): ?>
-							<option value="<?php echo $cc; ?>" <?php echo (($milestone->getStartingYear() == $cc) ? " selected" : ""); ?>><?php echo $cc; ?></option>
+							<option value="<?php echo $cc; ?>" <?php if ($milestone->getStartingYear() == $cc || (!$milestone->hasStartingDate() && $cc == date('Y'))) echo " selected"; ?>><?php echo $cc; ?></option>
 						<?php endfor; ?>
 						</select>
 					</td>
@@ -57,17 +57,17 @@
 					<td style="width: auto;">
 						<select style="width: 90px;" name="sch_month" id="sch_month_<?php echo $milestone->getID(); ?>" <?php print (!$milestone->hasScheduledDate()) ? "disabled" : ""; ?>>
 						<?php for ($cc = 1;$cc <= 12;$cc++): ?>
-							<option value="<?php echo $cc; ?>" <?php echo (($milestone->getScheduledMonth() == $cc) ? " selected" : ""); ?>><?php echo strftime('%B', mktime(0, 0, 0, $cc, 1)); ?></option>
+							<option value="<?php echo $cc; ?>" <?php if ($milestone->getScheduledMonth() == $cc || (!$milestone->hasScheduledDate() && $cc == date('m'))) echo " selected"; ?>><?php echo strftime('%B', mktime(0, 0, 0, $cc, 1)); ?></option>
 						<?php endfor; ?>
 						</select>
 						<select style="width: 45px;" name="sch_day" id="sch_day_<?php echo $milestone->getID(); ?>" <?php print (!$milestone->hasScheduledDate()) ? "disabled" : ""; ?>>
 						<?php for ($cc = 1;$cc <= 31;$cc++): ?>
-							<option value="<?php echo $cc; ?>" <?php echo (($milestone->getScheduledDay() == $cc) ? " selected" : ""); ?>><?php echo $cc; ?></option>
+							<option value="<?php echo $cc; ?>" <?php if ($milestone->getScheduledDay() == $cc || (!$milestone->hasScheduledDate() && $cc == date('d'))) echo " selected"; ?>><?php echo $cc; ?></option>
 						<?php endfor; ?>
 						</select>
 						<select style="width: 60px;" name="sch_year" id="sch_year_<?php echo $milestone->getID(); ?>" <?php print (!$milestone->hasScheduledDate()) ? "disabled" : ""; ?>>
 						<?php for ($cc = 1990;$cc <= (date("Y") + 10);$cc++): ?>
-							<option value="<?php echo $cc; ?>" <?php echo (($milestone->getScheduledYear() == $cc) ? " selected" : ""); ?>><?php echo $cc; ?></option>
+							<option value="<?php echo $cc; ?>" <?php if ($milestone->getScheduledYear() == $cc || (!$milestone->hasScheduledDate() && $cc == date('Y'))) echo " selected"; ?>><?php echo $cc; ?></option>
 						<?php endfor; ?>
 						</select>
 					</td>
