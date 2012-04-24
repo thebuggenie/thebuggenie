@@ -261,8 +261,7 @@
 			return (in_array($this->getType(), array(
 				self::VIEW_PREDEFINED_SEARCH,
 				self::VIEW_SAVED_SEARCH,
-				self::VIEW_PROJECT_RECENT_ACTIVITIES,
-				self::VIEW_PROJECT_RECENT_ISSUES
+				self::VIEW_PROJECT_RECENT_ACTIVITIES
 			)));
 		}
 
