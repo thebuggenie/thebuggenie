@@ -147,6 +147,10 @@
 					$account = new TBGIncomingEmailAccount($account_id);
 					try
 					{
+                        if (!function_exists('imap_open'))
+                        {
+                            throw new Exception($this->getI18n()->__('The php imap extension is not installed'));
+                        }
 						TBGContext::getModule('mailing')->processIncomingEmailAccount($account);
 					}
 					catch (Exception $e)
