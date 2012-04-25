@@ -1,9 +1,4 @@
-<?php
-
-	$tbg_response->setTitle(__('Configure data types'));
-	$tbg_response->addJavascript('cpicker/cpicker.js');
-	$tbg_response->addStylesheet('cpicker/cpicker.css');
-?>
+<?php $tbg_response->setTitle(__('Configure data types')); ?>
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
 	<tr>
 		<?php include_component('leftmenu', array('selected_section' => 4)); ?>
@@ -56,12 +51,3 @@
 		</td>
 	</tr>
 </table>
-<script>
-	var picker = new ColorPicker({iconPath: '<?php echo TBGSettings::getURLhost() . TBGContext::getTBGPath() . 'themes/' . TBGSettings::getThemeName() . '/cpicker/'; ?>'});
-	
-	picker.setCallback(function (color) {
-		picker.selector.style.backgroundColor = color;
-		picker.selector.value = color;
-		picker.hide();
-	});
-</script>
