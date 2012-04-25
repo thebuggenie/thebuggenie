@@ -650,6 +650,19 @@
 							<a href="javascript:void(0);" class="img" onclick="$('component_link').show();$('component_additional_div').hide();$('component_id_additional').setValue(0);"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
 						</div>
 					</li>
+					<li id="milestone_additional" style="display: none;">
+						<?php echo image_tag('icon_milestone.png'); ?>
+						<div id="milestone_link"<?php if ($selected_milestone instanceof TBGMilestone): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('milestone_link').hide();$('milestone_additional_div').show();"><?php echo __('Specify milestone'); ?></a></div>
+						<div id="milestone_additional_div"<?php if ($selected_milestone === null): ?> style="display: none;"<?php endif; ?>>
+							<select name="milestone_id" id="milestone_id_additional">
+								<option value=""<?php if (!$selected_milestone instanceof TBGMilestone) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
+								<?php if ($selected_milestone instanceof TBGMilestone): ?>
+									<option value="<?php echo $selected_milestone->getID(); ?>"><?php echo $selected_milestone->getName(); ?> (<?php echo $selected_milestone->getVersion(); ?>)</option>
+								<?php endif; ?>
+							</select>
+							<a href="javascript:void(0);" class="img" onclick="$('milestone_link').show();$('milestone_additional_div').hide();$('milestone_id_additional').setValue(0);"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
+						</div>
+					</li>
 					<li id="category_additional" style="display: none;">
 						<?php echo image_tag('icon_category.png'); ?>
 						<div id="category_link"<?php if ($selected_category instanceof TBGCategory): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('category_link').hide();$('category_additional_div').show();"><?php echo __('Specify category'); ?></a></div>
