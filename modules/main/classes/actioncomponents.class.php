@@ -448,7 +448,7 @@
 			$selected_customdatatype = $this->selected_customdatatype ?: array();
 			foreach (TBGCustomDatatype::getAll() as $customdatatype)
 			{
-				$selected_customdatatype[$customdatatype->getKey()] = $selected_customdatatype[$customdatatype->getKey()] ?: null;
+				$selected_customdatatype[$customdatatype->getKey()] = isset($selected_customdatatype[$customdatatype->getKey()]) ? $selected_customdatatype[$customdatatype->getKey()] : null;
 			}
 			$this->selected_customdatatype = $selected_customdatatype;
 			$this->issuetype_id = $this->issuetype_id ?: null;
