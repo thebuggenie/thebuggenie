@@ -611,6 +611,45 @@
 							<a href="javascript:void(0);" class="img" onclick="$('status_link').show();$('status_additional_div').hide();$('status_id_additional').setValue(0);"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
 						</div>
 					</li>
+					<li id="edition_additional" style="display: none;">
+						<?php echo image_tag('icon_edition.png'); ?>
+						<div id="edition_link"<?php if ($selected_edition instanceof TBGEdition): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('edition_link').hide();$('edition_additional_div').show();"><?php echo __('Specify edition'); ?></a></div>
+						<div id="edition_additional_div"<?php if ($selected_edition === null): ?> style="display: none;"<?php endif; ?>>
+							<select name="edition_id" id="edition_id_additional">
+								<option value=""<?php if (!$selected_edition instanceof TBGEdition) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
+								<?php if ($selected_edition instanceof TBGEdition): ?>
+									<option value="<?php echo $selected_edition->getID(); ?>"><?php echo $selected_edition->getName(); ?> (<?php echo $selected_edition->getVersion(); ?>)</option>
+								<?php endif; ?>
+							</select>
+							<a href="javascript:void(0);" class="img" onclick="$('edition_link').show();$('edition_additional_div').hide();$('edition_id_additional').setValue(0);"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
+						</div>
+					</li>
+					<li id="build_additional" style="display: none;">
+						<?php echo image_tag('icon_build.png'); ?>
+						<div id="build_link"<?php if ($selected_build instanceof TBGBuild): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('build_link').hide();$('build_additional_div').show();"><?php echo __('Specify release'); ?></a></div>
+						<div id="build_additional_div"<?php if ($selected_build === null): ?> style="display: none;"<?php endif; ?>>
+							<select name="build_id" id="build_id_additional">
+								<option value=""<?php if (!$selected_build instanceof TBGBuild) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
+								<?php if ($selected_build instanceof TBGBuild): ?>
+									<option value="<?php echo $selected_build->getID(); ?>"><?php echo $selected_build->getName(); ?> (<?php echo $selected_build->getVersion(); ?>)</option>
+								<?php endif; ?>
+							</select>
+							<a href="javascript:void(0);" class="img" onclick="$('build_link').show();$('build_additional_div').hide();$('build_id_additional').setValue(0);"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
+						</div>
+					</li>
+					<li id="component_additional" style="display: none;">
+						<?php echo image_tag('icon_component.png'); ?>
+						<div id="component_link"<?php if ($selected_component instanceof TBGComponent): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('component_link').hide();$('component_additional_div').show();"><?php echo __('Specify component'); ?></a></div>
+						<div id="component_additional_div"<?php if ($selected_component === null): ?> style="display: none;"<?php endif; ?>>
+							<select name="component_id" id="component_id_additional">
+								<option value=""<?php if (!$selected_component instanceof TBGComponent) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
+								<?php if ($selected_component instanceof TBGComponent): ?>
+									<option value="<?php echo $selected_component->getID(); ?>"><?php echo $selected_component->getName(); ?> (<?php echo $selected_component->getVersion(); ?>)</option>
+								<?php endif; ?>
+							</select>
+							<a href="javascript:void(0);" class="img" onclick="$('component_link').show();$('component_additional_div').hide();$('component_id_additional').setValue(0);"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
+						</div>
+					</li>
 					<li id="category_additional" style="display: none;">
 						<?php echo image_tag('icon_category.png'); ?>
 						<div id="category_link"<?php if ($selected_category instanceof TBGCategory): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('category_link').hide();$('category_additional_div').show();"><?php echo __('Specify category'); ?></a></div>

@@ -692,7 +692,7 @@ reportissue_additional_information_container .markItUp { display: none; }
 .reportissue_error label { color: #955; }
 .reportissue_error .faded_out dark { color: #aa8D8D; }
 #reportissue_extrafields { list-style-type: none; padding: 0; margin: 10px 0 0 0; width: 1005px; clear: both; }
-#reportissue_extrafields li { font-weight: normal; clear: none; margin: 5px; min-height: 24px; width: 310px; text-align: left; float: left; }
+#reportissue_extrafields li { font-weight: normal; clear: none; margin: 5px; min-height: 26px; width: 310px; text-align: left; float: left; }
 #reportissue_extrafields li img { margin: 2px 5px 0 0; float: left; }
 #reportissue_extrafields li div { clear: none; margin-top: 2px; }
 #reportissue_extrafields li select, #reportissue_extrafields input[type="text"] { width: 255px; font-size: 0.8em; height: 20px; padding: 1px; float: left; }
