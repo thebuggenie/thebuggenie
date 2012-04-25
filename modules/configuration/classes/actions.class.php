@@ -325,14 +325,6 @@
 					
 					$this->imported_data = true;
 
-					$developer = TBGProjectAssigneesTable::getByType(TBGProjectAssigneesTable::TYPE_DEVELOPER);
-					foreach (array($project1, $project2) as $project)
-					{
-						foreach ($users as $user)
-						{
-							$project->addAssignee($user, $developer->getID());
-						}
-					}
 				}
 			}
 
