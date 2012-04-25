@@ -804,6 +804,8 @@
 
 		public static function loadCachedClassFiles($class)
 		{
+			self::$_cached_column_class_properties[$class] = array();
+			self::$_cached_foreign_classes[$class] = array();
 			$filename = self::getCacheDir() . "/{$class}.column_class_properties.cache.php";
 			if (file_exists($filename))
 			{
@@ -827,7 +829,10 @@
 		
 		public static function getCachedColumnClassProperty($column, $class)
 		{
-			self::loadCachedClassFiles($class);
+			if (!array_key_exists($class, self::$_cached_column_class_properties))
+			{
+				self::loadCachedClassFiles($class);
+			}
 			if (array_key_exists($class, self::$_cached_column_class_properties))
 			{
 				if (array_key_exists($column, self::$_cached_column_class_properties[$class]))
@@ -849,7 +854,10 @@
 		
 		public static function getCachedClassPropertyForeignClass($class, $property)
 		{
-			self::loadCachedClassFiles($class);
+			if (!array_key_exists($class, self::$_cached_foreign_classes))
+			{
+				self::loadCachedClassFiles($class);
+			}
 			if (array_key_exists($class, self::$_cached_foreign_classes))
 			{
 				if (array_key_exists($property, self::$_cached_foreign_classes[$class]))
