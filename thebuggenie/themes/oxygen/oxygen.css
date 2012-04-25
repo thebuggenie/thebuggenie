@@ -437,10 +437,10 @@ a.shadowed:active { box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); -webkit-box-shad
 .rounded_box.lightgrey.highlighted { background-color: #FFF299; border: 0; }
 
 .rounded_box.blue a { color: #B5B5FF; font-weight: bold; }
-.rounded_box.lightgreen a, .rounded_box.green a { color: #4E703D; border-bottom: 1px dotted #4E703D; }
+.rounded_box.lightgreen a, .rounded_box.green a { color: #4E703D; border-bottom-color: #4E703D; }
 
 .rounded_box.blue a:hover { color: #C9C9FF; font-weight: bold; }
-.rounded_box.lightgreen a:hover, .rounded_box.green a:hover { color: #6a9753; border-bottom: 1px dotted #6a9753; }
+.rounded_box.lightgreen a:hover, .rounded_box.green a:hover { color: #6a9753; border-bottom-color: #6a9753; }
 
 .rounded_box.white { background-color: #FFF; border-color: #CCC; }
 .rounded_box.white th { font-weight: bold; background-color: #F1F1F1; border-bottom: 1px solid #DDD; padding-bottom: 2px; }
@@ -1355,6 +1355,7 @@ input[type=submit], input[type=submit]:hover, button, .button, .button:hover {
 	text-decoration: none;
 	border: 1px solid #AAA; /* Fallback style */
 	border: 1px solid rgba(0, 0, 0, 0.2); 
+	border-color: rgba(0, 0, 0, 0.2) !important; 
 	-moz-border-radius: 2px;
 	-webkit-border-radius: 2px;
 	border-radius: 2px;
