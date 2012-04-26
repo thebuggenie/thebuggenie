@@ -13,7 +13,7 @@
 			<div class="rounded_box yellow borderless"><?php echo __('This transition will be applied to %count% selected issues', array('%count%' => count($issues))); ?></div>
 			<?php endif; ?>
 			<ul class="simple_list">
-				<?php if ((($issue instanceof TBGIssue && $issue->isEditable() && $issue->canEditAssignee()) || isset($issues)) && $transition->hasAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE) && !$transition->getAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE)->hasTargetValue()): ?>
+				<?php if ((($issue instanceof TBGIssue && $issue->isUpdateable() && $issue->canEditAssignee()) || isset($issues)) && $transition->hasAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE) && !$transition->getAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE)->hasTargetValue()): ?>
 					<li id="transition_popup_assignee_div_<?php echo $transition->getID(); ?>">
 						<input type="hidden" name="assignee_id" id="popup_assigned_to_id_<?php echo $transition->getID(); ?>" value="<?php echo ($issue instanceof TBGIssue && $issue->hasAssignee() ? $issue->getAssignee()->getID() : 0); ?>">
 						<input type="hidden" name="assignee_type" id="popup_assigned_to_type_<?php echo $transition->getID(); ?>" value="<?php echo ($issue instanceof TBGIssue ? $issue->getAssigneeType() : ''); ?>">
@@ -34,7 +34,7 @@
 						<div class="faded_out" id="popup_assigned_to_teamup_info_<?php echo $transition->getID(); ?>" style="clear: both; display: none;"><?php echo __('You will be teamed up with this user'); ?></div>
 					</li>
 				<?php endif; ?>
-				<?php if (($issue instanceof TBGIssue && ($issue->isEditable() && !$issue->isDuplicate()) || isset($issues)) && $transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_DUPLICATE)): ?>
+				<?php if (($issue instanceof TBGIssue && ($issue->isUpdateable() && !$issue->isDuplicate()) || isset($issues)) && $transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_DUPLICATE)): ?>
 					<li class="duplicate_search">
 						<h6><?php echo __('Mark as duplicate of another, existing issue'); ?></h6>
 						<label for="viewissue_find_issue_<?php echo $transition->getID(); ?>_input"><?php echo __('Find issue(s)'); ?>&nbsp;</label>
@@ -199,6 +199,7 @@
 																'base_id'			=> 'popup_assigned_to',
 																'include_teams'		=> true,
 																'allow_clear'		=> false,
+																'style'				=> array('top' => '65px', 'right' => '5px'),
 																'absolute'			=> true)); ?>
 	<?php endif; ?>
 </div>

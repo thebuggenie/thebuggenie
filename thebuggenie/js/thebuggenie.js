@@ -3379,6 +3379,11 @@ TBG.Issues.updateWorkflowAssignee = function(url, assignee_id, assignee_type, tr
 				$('popup_assigned_to_id_'+transition_id).setValue(assignee_id);
 				$('popup_assigned_to_type_'+transition_id).setValue(assignee_type);
 				$('popup_assigned_to_teamup_'+transition_id).setValue(teamup);
+				if (teamup) {
+					$('popup_assigned_to_teamup_info_'+transition_id).show();
+				} else {
+					$('popup_assigned_to_teamup_info_'+transition_id).hide();
+				}
 			},
 			hide: ['popup_assigned_to_teamup_info_'+transition_id, 'popup_assigned_to_change_'+transition_id]
 		}
