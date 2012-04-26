@@ -3057,7 +3057,7 @@
 							$issue->addParentIssue($related_issue);
 						}
 						$cc++;
-						$content .= $this->getTemplateHTML('main/relatedissue', array('issue' => $related_issue));
+						$content .= $this->getTemplateHTML('main/relatedissue', array('issue' => $related_issue, 'related_issue' => $issue));
 					}
 					catch (Exception $e)
 					{
