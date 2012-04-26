@@ -30,6 +30,11 @@
 						<br>
 					<?php endif; ?>
 					<input type="hidden" name="perform_upgrade" value="1">
+					<?php if (version_compare($current_version, '3.1', '<')): ?>
+						<div class="rounded_box shadowed padded_box yellow" style="font-size: 1.1em; margin-bottom: 10px;">
+							<u>You are performing an update from an older version of The Bug Genie (<?php echo $current_version; ?>), and not 3.1.x</u>. This is a valid upgrade, but often happens if the version number in the "installed" file is incorrect (due to a bug in 3.1.5 and earlier). Please read the <a href="http://thebuggenie.com/upgrade/3_2">upgrade notes</a> and make sure your version information is correct, otherwise this upgrade will fail.
+						</div>
+					<?php endif; ?>
 					<input type="checkbox" name="confirm_backup" id="confirm_backup" onclick="($('confirm_backup').checked) ? $('start_upgrade').enable() : $('start_upgrade').disable();">
 					<label for="confirm_backup" style="font-weight: bold; font-size: 1.1em;">I have read and understand the <a href="http://thebuggenie.com/upgrade/3_2">upgrade notes</a> - and I've taken steps to make sure my data is backed up</label><br>
 					<input type="submit" value="Perform upgrade" id="start_upgrade" disabled="disabled" style="margin-top: 10px;">
