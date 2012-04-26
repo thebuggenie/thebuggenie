@@ -89,6 +89,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::TEAM_ID, $team);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$res = $this->doSelect($crit);
 			
 			$projects = array();

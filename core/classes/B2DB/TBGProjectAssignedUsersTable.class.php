@@ -82,6 +82,7 @@
 			$crit = $this->getCriteria();
 			$crit->addSelectionColumn(self::PROJECT_ID, 'pid');
 			$crit->addWhere(self::USER_ID, $user_id);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$projects = array();
 
 			if ($res = $this->doSelect($crit, 'none'))
