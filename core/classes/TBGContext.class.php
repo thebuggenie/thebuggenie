@@ -629,6 +629,7 @@
 				self::setLoadStart($starttime[1] + $starttime[0]);
 				TBGLogging::log('Initializing Caspar framework');
 				TBGLogging::log('PHP_SAPI says "' . PHP_SAPI . '"');
+				TBGLogging::log('We are version "' . TBGSettings::getVersion() . '"');
 
 				if (!is_writable(THEBUGGENIE_CORE_PATH . DIRECTORY_SEPARATOR . 'cache'))
 					throw new Exception('The cache directory is not writable. Please correct the permissions of core/cache, and try again');
