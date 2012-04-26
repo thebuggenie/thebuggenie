@@ -6,7 +6,7 @@
 			Even though this software has been provided to you <b>free of charge</b>, developing it is not possible without support from our users.<br>
 			You can help in any number of ways:
 			<ul>
-				<li>Buy a <a href="http://thebuggenie.com/support">support agreement</a>, <a href="http://thebuggenie.com/partners">partners badge</a> or <a href="http://thebuggenie.com/help">donate</a></li>
+				<li>Buy a <a href="http://thebuggenie.com/support">support agreement</a><?php /*, <a href="http://thebuggenie.com/partners">partners badge</a> */ ?> or <a href="http://thebuggenie.com/help">donate</a></li>
 				<li>Help fund our development and hosting servers</li>
 				<li>Contribute patches, fixes and features <a href="http://github.com/thebuggenie/thebuggenie">via github</a></li>
 				<li>Write <a href="http://issues.thebuggenie.com/wiki/TheBugGenie:MainPage">documentation</a>, blogs or news articles about The Bug Genie</li>
@@ -21,25 +21,27 @@
 					<span style="font-weight: normal;">You are performing the following upgrade: </span><?php echo $current_version; ?>.x => <?php echo TBGSettings::getVersion(false, true); ?><br>
 					<span class="smaller">Make a backup of your installation before you continue!</span>
 				</h2>
-				<form accept-charset="utf-8" action="<?php echo make_url('upgrade'); ?>" method="post">
-					<?php if (version_compare($current_version, '3.2', '<')): ?>
-						<?php /* <b>A straightforward fix is available - </b>please see <a target="_blank" href="http://thebuggenie.wordpress.com/2011/12/30/how-the-bug-genie-3-2s-upgrader-fixes-your-timestamps/">our blog post</a> for details. <i>(opens in a new window)</i> */ ?>
-						<input type="checkbox" name="fix_my_timestamps" value="1" id="fix_my_timestamps">
-						<label for="fix_my_timestamps" style="font-weight: bold; font-size: 1.1em;">Fix incorrect time and date values</label><br>
-						<b style="font-size: 1.1em;">This function will take some time and consume a lot of memory. Do not enable on installations with > 500 tickets.</b><br>
-						Please see <a target="_blank" href="http://thebuggenie.wordpress.com/2011/12/30/how-the-bug-genie-3-2s-upgrader-fixes-your-timestamps/">our blog post</a> for more details. <i>(opens in a new window)</i><br>
-						<br>
-					<?php endif; ?>
-					<input type="hidden" name="perform_upgrade" value="1">
-					<?php if (version_compare($current_version, '3.1', '<')): ?>
-						<div class="rounded_box shadowed padded_box yellow" style="font-size: 1.1em; margin-bottom: 10px;">
-							<u>You are performing an update from an older version of The Bug Genie (<?php echo $current_version; ?>), and not 3.1.x</u>. This is a valid upgrade, but often happens if the version number in the "installed" file is incorrect (due to a bug in 3.1.5 and earlier). Please read the <a href="http://thebuggenie.com/upgrade/3_2">upgrade notes</a> and make sure your version information is correct, otherwise this upgrade will fail.
-						</div>
-					<?php endif; ?>
-					<input type="checkbox" name="confirm_backup" id="confirm_backup" onclick="($('confirm_backup').checked) ? $('start_upgrade').enable() : $('start_upgrade').disable();">
-					<label for="confirm_backup" style="font-weight: bold; font-size: 1.1em;">I have read and understand the <a href="http://thebuggenie.com/upgrade/3_2">upgrade notes</a> - and I've taken steps to make sure my data is backed up</label><br>
-					<input type="submit" value="Perform upgrade" id="start_upgrade" disabled="disabled" style="margin-top: 10px;">
-				</form>
+				<?php if (version_compare($current_version, '3.1', '<')): ?>
+					<div class="rounded_box shadowed padded_box yellow" style="font-size: 1.1em; margin-bottom: 10px;">
+						<u>You are performing an update from an older version of The Bug Genie (<?php echo $current_version; ?>), and not 3.1.x</u>. This is a valid upgrade, but often happens if the version number in the "installed" file is incorrect (due to a bug in 3.1.5 and earlier). Please read the <a href="http://thebuggenie.com/upgrade/3_2">upgrade notes</a> and make sure your version information is correct.<br>
+						If you really are upgrading from <?php echo $current_version; ?>, you need to upgrade to 3.1.x first, and then upgrade to <?php echo TBGSettings::getVersion(false, true); ?>.
+					</div>
+				<?php else: ?>
+					<form accept-charset="utf-8" action="<?php echo make_url('upgrade'); ?>" method="post">
+						<?php if (version_compare($current_version, '3.2', '<')): ?>
+							<?php /* <b>A straightforward fix is available - </b>please see <a target="_blank" href="http://thebuggenie.wordpress.com/2011/12/30/how-the-bug-genie-3-2s-upgrader-fixes-your-timestamps/">our blog post</a> for details. <i>(opens in a new window)</i> */ ?>
+							<input type="checkbox" name="fix_my_timestamps" value="1" id="fix_my_timestamps">
+							<label for="fix_my_timestamps" style="font-weight: bold; font-size: 1.1em;">Fix incorrect time and date values</label><br>
+							<b style="font-size: 1.1em;">This function will take some time and consume a lot of memory. Do not enable on installations with > 500 tickets.</b><br>
+							Please see <a target="_blank" href="http://thebuggenie.wordpress.com/2011/12/30/how-the-bug-genie-3-2s-upgrader-fixes-your-timestamps/">our blog post</a> for more details. <i>(opens in a new window)</i><br>
+							<br>
+						<?php endif; ?>
+						<input type="hidden" name="perform_upgrade" value="1">
+						<input type="checkbox" name="confirm_backup" id="confirm_backup" onclick="($('confirm_backup').checked) ? $('start_upgrade').enable() : $('start_upgrade').disable();">
+						<label for="confirm_backup" style="font-weight: bold; font-size: 1.1em;">I have read and understand the <a href="http://thebuggenie.com/upgrade/3_2">upgrade notes</a> - and I've taken steps to make sure my data is backed up</label><br>
+						<input type="submit" value="Perform upgrade" id="start_upgrade" disabled="disabled" style="margin-top: 10px;">
+					</form>
+				<?php endif; ?>
 			</div>
 		<?php else: ?>
 			<div class="rounded_box shadowed padded_box installation_prerequisites prereq_fail" style="padding: 10px; margin-bottom: 10px;">
