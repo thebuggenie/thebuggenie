@@ -2172,6 +2172,26 @@
 									}
 								}
 							}
+							elseif ($key == 'milestone')
+							{
+								$retval[$key]['values'] = array();
+								$retval[$key]['values'][''] = TBGContext::getI18n()->__('None');
+								foreach ($this->getMilestones() as $milestone)
+								{
+									$retval[$key]['values'][$milestone->getID()] = $milestone->getName();
+								}
+								if (empty($retval[$key]['values']))
+								{
+									if (!$retval[$key]['required'])
+									{
+										unset($retval[$key]);
+									}
+									else
+									{
+										unset($retval[$key]['values']);
+									}
+								}
+							}
 						}
 					}
 				}
