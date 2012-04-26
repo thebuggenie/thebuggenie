@@ -140,6 +140,7 @@
 			{
 				$crit = $this->getCriteria();
 				$crit->addUpdate(self::LINK_ORDER, $key + 1);
+				$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 				$this->doUpdateById($crit, $link_id);
 			}
 		}

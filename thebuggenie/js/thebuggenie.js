@@ -2176,6 +2176,15 @@ TBG.Config.IssuetypeScheme.remove = function(url, scheme_id) {
 	});
 }
 
+TBG.Config.Issuefields.saveOrder = function(container, type, url) {
+	TBG.Main.Helpers.ajax(url, {
+		additional_params: Sortable.serialize(container),
+		loading: {
+			indicator: type + '_sort_indicator'
+		}
+	});
+};
+
 TBG.Config.Issuefields.Options.show = function(url, field) {
 	$(field + '_content').toggle();
 	if ($(field + '_content').childElements().size() == 0) {

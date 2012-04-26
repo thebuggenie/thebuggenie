@@ -673,6 +673,19 @@
 
 			switch ($request['mode'])
 			{
+				case 'saveorder':
+					$itemtype = $request['type'];
+					if (array_key_exists($itemtype, $types))
+					{
+						TBGListTypesTable::getTable()->saveOptionOrder($request[$itemtype.'_list'], $itemtype);
+					}
+					else
+					{
+						$customtype = TBGCustomDatatype::getByKey($request['type']);
+						TBGCustomFieldOptionsTable::getTable()->saveOptionOrder($request[$itemtype.'_list'], $customtype->getID());
+					}
+					return $this->renderJSON('ok');
+					break;
 				case 'add':
 					if ($request['name'])
 					{

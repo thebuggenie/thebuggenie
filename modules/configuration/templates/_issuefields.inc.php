@@ -1,16 +1,15 @@
 <?php if ($showitems): ?>
 	<div class="header_div" style="margin-top: 15px;">
 		<?php echo __('Existing choices'); ?>
+		<?php echo image_tag('spinning_16.gif', array('style' => 'margin-right: 5px; display: none; float: right;', 'id' => $type . '_sort_indicator')); ?>
 	</div>
-	<table style="width: 100%;" cellpadding="0" cellspacing="0">
-		<tbody id="<?php echo $type; ?>_list">
-			<?php if (count($items) > 0): ?>
-				<?php foreach ($items as $item): ?>
-					<?php include_template('issuefield', array('item' => $item, 'type' => $type, 'access_level' => $access_level)); ?>
-				<?php endforeach; ?>
-			<?php endif; ?>
-		</tbody>
-	</table>
+	<ul class="simple_list" id="<?php echo $type; ?>_list">
+		<?php if (count($items) > 0): ?>
+			<?php foreach ($items as $item): ?>
+				<?php include_template('issuefield', array('item' => $item, 'type' => $type, 'access_level' => $access_level)); ?>
+			<?php endforeach; ?>
+		<?php endif; ?>
+	</ul>
 	<div class="faded_out dark" id="no_<?php echo $type; ?>_items" style="<?php if (count($items) > 0): ?>display: none; <?php endif; ?>padding: 3px;"><?php echo __('There are no items'); ?></div>
 	<div class="header_div" style="margin: 15px 0 2px 0;"><?php echo __('Add an option'); ?></div>
 	<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuefields_add', array('type' => $type)); ?>" onsubmit="TBG.Config.Issuefields.Options.add('<?php echo make_url('configure_issuefields_add', array('type' => $type)); ?>', '<?php echo $type; ?>');return false;" id="add_<?php echo $type; ?>_form">
@@ -27,4 +26,7 @@
 		<input type="submit" value="<?php echo __('Add'); ?>" style="margin-right: 5px; font-weight: bold;">
 		<?php echo image_tag('spinning_16.gif', array('style' => 'margin-right: 5px; display: none;', 'id' => 'add_' . $type . '_indicator')); ?>
 	</form>
+	<script>
+		Sortable.create('<?php echo $type; ?>_list', {constraint: '', onUpdate: function(container) { TBG.Config.Issuefields.saveOrder(container, '<?php echo $type; ?>', '<?php echo make_url('configure_issuefields_saveorder', array('type' => $type)); ?>'); }});
+	</script>
 <?php endif; ?>

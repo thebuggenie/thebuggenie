@@ -503,6 +503,8 @@ table.cleantable th { text-align: center; }
 .issuetype_box a.image, .issuetype_box a.image:hover { border: 0; }
 .issuetype_scheme_associate_link { font-weight: normal; font-size: 0.9em; }
 
+#config_issuefields .issuefield_item_option { cursor: move; }
+
 .more_than_one_project_warning { color: #C55; }
 
 .tab_content { padding-top: 10px; }

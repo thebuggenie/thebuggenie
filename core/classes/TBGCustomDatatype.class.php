@@ -29,7 +29,7 @@
 		 * This custom types options (if any)
 		 *
 		 * @var array
-		 * @Relates(class="TBGCustomDatatypeOption", collection=true, foreign_column="customfield_id")
+		 * @Relates(class="TBGCustomDatatypeOption", collection=true, foreign_column="customfield_id", orderby="sort_order")
 		 */
 		protected $_options = null;
 

@@ -88,4 +88,16 @@
 			}
 		}
 
+		public function saveOptionOrder($options, $customfield_id)
+		{
+			foreach ($options as $key => $option_id)
+			{
+				$crit = $this->getCriteria();
+				$crit->addUpdate(self::SORT_ORDER, $key + 1);
+				$crit->addWhere(self::CUSTOMFIELD_ID, $customfield_id);
+				$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+				$this->doUpdateById($crit, $option_id);
+			}
+		}
+
 	}

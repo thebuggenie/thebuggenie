@@ -89,5 +89,17 @@
 
 			$res = $this->doDelete($crit);
 		}
-		
+
+		public function saveOptionOrder($options, $type)
+		{
+			foreach ($options as $key => $option_id)
+			{
+				$crit = $this->getCriteria();
+				$crit->addUpdate(self::ORDER, $key + 1);
+				$crit->addWhere(self::ITEMTYPE, $type);
+				$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+				$this->doUpdateById($crit, $option_id);
+			}
+		}
+
 	}
