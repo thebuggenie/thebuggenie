@@ -22,10 +22,11 @@
 					<span class="smaller">Make a backup of your installation before you continue!</span>
 				</h2>
 				<form accept-charset="utf-8" action="<?php echo make_url('upgrade'); ?>" method="post">
-					<?php if ($current_version == '3.1' || $current_version == '3.0'): ?>
+					<?php if (version_compare($current_version, '3.2', '<')): ?>
 						<?php /* <b>A straightforward fix is available - </b>please see <a target="_blank" href="http://thebuggenie.wordpress.com/2011/12/30/how-the-bug-genie-3-2s-upgrader-fixes-your-timestamps/">our blog post</a> for details. <i>(opens in a new window)</i> */ ?>
-						<input type="checkbox" name="fix_my_timestamps" value="1" id="fix_my_timestamps" checked="checked">
-						<label for="fix_my_timestamps" style="font-weight: bold;">Fix incorrect time and date values</label><br>
+						<input type="checkbox" name="fix_my_timestamps" value="1" id="fix_my_timestamps">
+						<label for="fix_my_timestamps" style="font-weight: bold; font-size: 1.1em;">Fix incorrect time and date values</label><br>
+						<b style="font-size: 1.1em;">This function will take some time and consume a lot of memory. Do not enable on installations with > 500 tickets.</b><br>
 						Please see <a target="_blank" href="http://thebuggenie.wordpress.com/2011/12/30/how-the-bug-genie-3-2s-upgrader-fixes-your-timestamps/">our blog post</a> for more details. <i>(opens in a new window)</i><br>
 						<br>
 					<?php endif; ?>
