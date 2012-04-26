@@ -564,6 +564,11 @@
 			$crit->addUpdate(TBGListTypesTable::ITEMTYPE, 'role');
 			$crit->addWhere(TBGListTypesTable::ITEMTYPE, 'projectrole');
 			$listtypestable->doUpdate($crit);
+			
+			$crit = $listtypestable->getCriteria();
+			$crit->addUpdate(TBGListTypesTable::ITEMTYPE, 'priority');
+			$crit->addWhere(TBGListTypesTable::ITEMTYPE, 'b2_prioritytypes');
+			$listtypestable->doUpdate($crit);
 
 			TBGWorkflowTransitionsTable::getTable()->upgradeFrom3dot1();
 			TBGSettings::saveSetting(TBGSettings::SETTING_ICONSET, TBGSettings::get(TBGSettings::SETTING_THEME_NAME));
