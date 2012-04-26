@@ -116,6 +116,14 @@
 			$this->_date = NOW;
 			$this->_author = TBGContext::getUser();
 		}
+
+		protected function _postDelete()
+		{
+			TBGArticleLinksTable::getTable()->deleteLinksByArticle($this->getName());
+			TBGArticleCategoriesTable::getTable()->deleteCategoriesByArticle($this->getName());
+			TBGArticleHistoryTable::getTable()->deleteHistoryByArticle($this->getName());
+			TBGArticleFilesTable::getTable()->deleteFilesByArticleID($this->getID());
+		}
 		
 		public static function findArticlesByContentAndProject($content, $project, $limit = 5, $offset = 0)
 		{

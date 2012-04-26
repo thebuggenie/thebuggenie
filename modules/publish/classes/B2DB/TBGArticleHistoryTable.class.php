@@ -45,6 +45,14 @@
 			return ($row->get('next_revision')) ? $row->get('next_revision') : 1;
 		}
 
+		public function deleteHistoryByArticle($article_name)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::ARTICLE_NAME, $article_name);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$res = $this->doDelete($crit);
+		}
+
 		public function addArticleHistory($article_name, $old_content, $new_content, $user_id, $reason = null)
 		{
 			$transaction = Core::startTransaction();

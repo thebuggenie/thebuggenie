@@ -101,6 +101,14 @@
 			return $res;
 		}
 		
+		public function deleteFilesByArticleID($article_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::ARTICLE_ID, $article_id);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$this->doDelete($crit);
+		}
+
 		public function getArticlesByFileID($file_id)
 		{
 			$crit = $this->getCriteria();
