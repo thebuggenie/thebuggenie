@@ -41,6 +41,7 @@ var TBG = {
 		},
 		Comment: {},
 		Link: {},
+		Menu: {},
 		Login: {}
 	},
 	Chart: {},
@@ -777,6 +778,24 @@ TBG.Main.Link.remove = function(url, target_type, target_id, link_id) {
 		},
 		failure: {
 			show: target_type + '_' + target_id + '_links_'+ link_id + '_remove_link'
+		}
+	});
+};
+
+TBG.Main.Menu.toggleEditMode = function(target_type, target_id, url) {
+	if ($(target_type + '_' + target_id + '_container').hasClassName('menu_editing')) {
+		Sortable.destroy(target_type + '_' + target_id + '_links');
+	} else {
+		Sortable.create(target_type + '_' + target_id + '_links', {constraint: '', onUpdate: function(container) { TBG.Main.Menu.saveOrder(container, target_type, target_id, url); }});
+	}
+	$(target_type + '_' + target_id + '_container').toggleClassName('menu_editing');
+};
+
+TBG.Main.Menu.saveOrder = function(container, target_type, target_id, url) {
+	TBG.Main.Helpers.ajax(url, {
+		additional_params: Sortable.serialize(container),
+		loading: {
+			indicator: target_type + '_' + target_id + '_indicator'
 		}
 	});
 };

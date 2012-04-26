@@ -2397,6 +2397,19 @@
 			TBGContext::clearMenuLinkCache();
 			return $this->renderJSON(array('message' => TBGContext::getI18n()->__('Link removed!')));
 		}
+
+		public function runSaveMenuOrder(TBGRequest $request)
+		{
+			$target_type = $request['target_type'];
+			$target_id = $request['target_id'];
+			TBGLinksTable::getTable()->saveLinkOrder($request[$target_type.'_'.$target_id.'_links']);
+			if ($target_type == 'main_menu')
+			{
+				TBGCache::delete(TBGCache::KEY_MAIN_MENU_LINKS);
+				TBGCache::fileDelete(TBGCache::KEY_MAIN_MENU_LINKS);
+			}
+			return $this->renderJSON('ok');
+		}
 		
 		public function runDeleteComment(TBGRequest $request)
 		{

@@ -88,7 +88,7 @@
 			{
 				while ($row = $res->getNextRow())
 				{
-					$links[$row->get(self::ID)] = array('target_type' => $row->get(self::TARGET_TYPE), 'target_id' => $row->get(self::TARGET_ID), 'url' => $row->get(self::URL), 'description' => $row->get(self::DESCRIPTION));
+					$links[] = array('id' => $row->get(self::ID), 'target_type' => $row->get(self::TARGET_TYPE), 'target_id' => $row->get(self::TARGET_ID), 'url' => $row->get(self::URL), 'description' => $row->get(self::DESCRIPTION));
 				}
 			}
 			return $links;
@@ -132,6 +132,16 @@
 		public function addMainMenuLink($url = null, $description = null, $link_order = null, $scope = null)
 		{
 			return $this->addLink('main_menu', 0, $url, $description, $link_order, $scope);
+		}
+
+		public function saveLinkOrder($links)
+		{
+			foreach ($links as $key => $link_id)
+			{
+				$crit = $this->getCriteria();
+				$crit->addUpdate(self::LINK_ORDER, $key + 1);
+				$this->doUpdateById($crit, $link_id);
+			}
 		}
 
 		public function loadFixtures(TBGScope $scope)

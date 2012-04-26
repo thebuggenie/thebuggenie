@@ -2,7 +2,7 @@
 	<div class="header">
 		<?php if ($tbg_user->canEditMainMenu() && ((TBGContext::isProjectContext() && !TBGContext::getCurrentProject()->isArchived()) || !TBGContext::isProjectContext())): ?>
 			<div class="button-group" style="float: right; margin: -3px -6px 0 0;">
-				<?php echo javascript_link_tag(image_tag('icon_edit.png'), array('class' => 'button button-silver button-icon', 'onclick' => "$('{$target_type}_{$target_id}_container').toggleClassName('menu_editing');", 'title' => __('Toggle menu edit mode'))); ?>
+				<?php echo javascript_link_tag(image_tag('icon_edit.png'), array('class' => 'button button-silver button-icon', 'onclick' => "TBG.Main.Menu.toggleEditMode('{$target_type}', '{$target_id}', '".make_url('save_menu_order', array('target_type' => $target_type, 'target_id' => $target_id))."');", 'title' => __('Toggle menu edit mode'))); ?>
 				<?php echo javascript_link_tag(image_tag('action_add_link.png'), array('class' => 'button button-silver button-icon', 'onclick' => "$('attach_link_{$target_type}_{$target_id}').toggle();", 'title' => __('Add an item to the menu'))); ?>
 			</div>
 		<?php endif; ?>
@@ -33,13 +33,12 @@
 		</div>
 	<?php endif; ?>
 	<div class="content">
-		<table style="table-layout: fixed; width: 100%;" cellpadding=0 cellspacing=0>
-			<tbody id="<?php echo $target_type; ?>_<?php echo $target_id; ?>_links">
-				<?php foreach ($links as $link_id => $link): ?>
-					<?php include_template('main/menulink', array('link_id' => $link_id, 'link' => $link)); ?>
-				<?php endforeach; ?>
-			</tbody>
-		</table>
+		<ul class="simple_list" id="<?php echo $target_type; ?>_<?php echo $target_id; ?>_links">
+			<?php foreach ($links as $link): ?>
+				<?php include_template('main/menulink', array('link_id' => $link['id'], 'link' => $link)); ?>
+			<?php endforeach; ?>
+		</ul>
 		<div style="padding-left: 5px;<?php if (count($links) > 0): ?> display: none;<?php endif; ?>" class="no_items" id="<?php echo $target_type; ?>_<?php echo $target_id; ?>_no_links"><?php echo __('There are no links in this menu'); ?></div>
+		<div style="padding-left: 5px; text-align: center; display: none;" id="<?php echo $target_type; ?>_<?php echo $target_id; ?>_indicator"><?php echo image_tag('spinning_16.gif'); ?></div>
 	</div>
 </div>

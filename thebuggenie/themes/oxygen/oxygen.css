@@ -1089,12 +1089,14 @@ ul.milestone_issues_container li .actions label { float: left; font-weight: bold
 
 /* menu links */
 .menu_links .header { font-size: 1em; border-bottom: 0; font-weight: bold; margin-bottom: 5px; }
-.menu_links .content table td { font-size: 1.0em; padding: 1px; }
+.menu_links .content li { font-size: 1.0em; padding: 1px; height: 20px; }
 .menu_links .content a { font-weight: bold; }
 .menu_links .content a.selected { font-weight: bold; color: #006700; }
 .menu_links .content a.selected:hover { font-weight: bold; color: #00a400; }
-.menu_links .content table td img { display: none; }
-.menu_links.menu_editing .content table td img { display: inline; }
+.menu_links .content .button { display: none; }
+.menu_links li { cursor: default; }
+.menu_links.menu_editing .content .button { display: inline; }
+.menu_links.menu_editing li { cursor: move; }
 /* end menu links */
 
 /* generic blue infobox */
