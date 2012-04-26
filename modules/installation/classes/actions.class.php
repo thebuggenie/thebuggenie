@@ -546,10 +546,10 @@
 					}
 				}
 
-				TBGSettings::saveSetting(TBGSettings::SETTING_FAVICON_ID, 0, core, $scope->getID());
-				TBGSettings::saveSetting(TBGSettings::SETTING_FAVICON_TYPE, 0, core, $scope->getID());
-				TBGSettings::saveSetting(TBGSettings::SETTING_HEADER_ICON_ID, 0, core, $scope->getID());
-				TBGSettings::saveSetting(TBGSettings::SETTING_HEADER_ICON_TYPE, 0, core, $scope->getID());
+				TBGSettings::saveSetting(TBGSettings::SETTING_FAVICON_ID, 0, 'core', $scope->getID());
+				TBGSettings::saveSetting(TBGSettings::SETTING_FAVICON_TYPE, 0, 'core', $scope->getID());
+				TBGSettings::saveSetting(TBGSettings::SETTING_HEADER_ICON_ID, 0, 'core', $scope->getID());
+				TBGSettings::saveSetting(TBGSettings::SETTING_HEADER_ICON_TYPE, 0, 'core', $scope->getID());
 			}
 
 			$linkstable = TBGLinksTable::getTable();
