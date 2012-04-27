@@ -301,11 +301,11 @@
 			$crit->addWhere(TBGSettingsTable::MODULE, $module);
 			if ($scope == 0)
 			{
-				throw new Exception('BUGS has not been correctly installed. Please check that the default scope exists');
+				throw new Exception('The Bug Genie has not been correctly installed. Please check that the default scope exists');
 			}
 			$crit->addWhere(TBGSettingsTable::SCOPE, $scope);
 			$res = \b2db\Core::getTable('TBGSettingsTable')->doSelect($crit);
-			if ($res->count() > 0)
+			if ($res)
 			{
 				$retarr = array();
 				while ($row = $res->getNextRow())
