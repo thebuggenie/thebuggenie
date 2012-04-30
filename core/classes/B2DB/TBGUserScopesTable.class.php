@@ -95,7 +95,7 @@
 		public function clearUserScopes($user_id)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::SCOPE, TBGSettings::getDefaultScopeID(), Criteria::DB_NOT_LIKE);
+			$crit->addWhere(self::SCOPE, TBGSettings::getDefaultScopeID(), Criteria::DB_NOT_EQUALS);
 			$crit->addWhere(self::USER_ID, $user_id);
 			$this->doDelete($crit);
 		}
