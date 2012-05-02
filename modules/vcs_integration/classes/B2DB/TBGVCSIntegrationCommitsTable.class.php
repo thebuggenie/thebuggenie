@@ -54,7 +54,6 @@
 			$crit = new Criteria();
 			
 			$crit->addWhere(self::PROJECT_ID, $id);
-			$crit->addWhere(self::DATE, strtotime($limit), $crit::DB_GREATER_THAN_EQUAL);
 			$crit->addOrderBy(self::DATE, Criteria::SORT_DESC);
 		
 			if ($limit !== null)
