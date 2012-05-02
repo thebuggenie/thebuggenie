@@ -3142,7 +3142,7 @@
 				$state = TBGContext::factory()->TBGUserstate($request['state_id']);
 				$this->getUser()->setState($state);
 				$this->getUser()->save();
-				return $this->renderJSON(array('userstate' => $state->getName()));
+				return $this->renderJSON(array('userstate' => $this->getI18n()->__($state->getName())));
 			}
 			catch (Exception $e)
 			{
