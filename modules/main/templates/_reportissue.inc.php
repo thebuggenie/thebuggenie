@@ -51,7 +51,7 @@
 										echo __("Please specify a valid resolution");
 										break;
 									case 'milestone':
-										echo __("Please specify a valid resolution");
+										echo __("Please specify a valid milestone");
 										break;
 									case 'estimated_time':
 										echo __("Please enter a valid estimate");
@@ -657,7 +657,7 @@
 							<select name="milestone_id" id="milestone_id_additional">
 								<option value=""<?php if (!$selected_milestone instanceof TBGMilestone) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
 								<?php if ($selected_milestone instanceof TBGMilestone): ?>
-									<option value="<?php echo $selected_milestone->getID(); ?>"><?php echo $selected_milestone->getName(); ?> (<?php echo $selected_milestone->getVersion(); ?>)</option>
+									<option value="<?php echo $selected_milestone->getID(); ?>"><?php echo $selected_milestone->getName(); ?></option>
 								<?php endif; ?>
 							</select>
 							<a href="javascript:void(0);" class="img" onclick="$('milestone_link').show();$('milestone_additional_div').hide();$('milestone_id_additional').setValue(0);"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
