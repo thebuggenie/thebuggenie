@@ -1205,6 +1205,7 @@
 		public function setState(TBGUserstate $state)
 		{
 			$this->_userstate = $state;
+			$this->_customstate = true;
 		}
 		
 		/**
