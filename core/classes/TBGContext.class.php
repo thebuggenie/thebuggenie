@@ -781,8 +781,8 @@
 			if (!TBGCache::isEnabled()) return;
 			foreach (array(TBGCache::KEY_PREMODULES_ROUTES_CACHE, TBGCache::KEY_POSTMODULES_ROUTES_CACHE) as $key)
 			{
-				TBGCache::delete($key);
-				TBGCache::fileDelete($key);
+				TBGCache::delete($key, false);
+				TBGCache::fileDelete($key, false);
 			}
 		}
 
