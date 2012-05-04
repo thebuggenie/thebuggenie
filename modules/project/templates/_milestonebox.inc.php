@@ -1,3 +1,8 @@
+<?php
+$selected_columns = $milestone->getProject()->getPlanningColumns($tbg_user);
+$all_columns = $milestone->getProject()->getIssueFields(false, array('status', 'milestone', 'resolution', 'assignee', 'user_pain'));
+?>
+
 <div id="milestone_<?php echo $milestone->getID(); ?>" class="milestone_box">
 	<?php include_template('project/milestoneboxheader', array('milestone' => $milestone)); ?>
 	<div id="milestone_<?php echo $milestone->getID(); ?>_container" style="display: none;">
@@ -11,11 +16,20 @@
 						<th><?php echo __('Issue'); ?></th>
 						<th><?php echo __('Assigned to'); ?></th>
 						<th><?php echo __('Status'); ?></th>
-						<th><?php echo __('Priority'); ?></th>
-						<th class="pointsandtime"><?php echo __('Est. hrs'); ?></th>
-						<th class="pointsandtime"><?php echo __('Est. pts'); ?></th>
-						<th class="pointsandtime"><?php echo __('Spent hrs'); ?></th>
-						<th class="pointsandtime"><?php echo __('Spent pts'); ?></th>
+						<?php foreach ($selected_columns as $key => $data):
+							if (!isset($all_columns[$key])) { continue; }
+							if ($key == 'estimated_time' || $key == 'spent_time') { continue; }
+						?>
+							<th><?php echo $all_columns[$key]['label']; ?></th>
+						<?php endforeach ?>
+						<?php if (isset($selected_columns['estimated_time'])) : ?>
+							<th class="pointsandtime"><?php echo __('Est. hrs'); ?></th>
+							<th class="pointsandtime"><?php echo __('Est. pts'); ?></th>
+						<?php endif; ?>
+						<?php if (isset($selected_columns['spent_time'])) : ?>
+							<th class="pointsandtime"><?php echo __('Spent hrs'); ?></th>
+							<th class="pointsandtime"><?php echo __('Spent pts'); ?></th>
+						<?php endif; ?>
 					</tr>
 				</thead>
 				<tbody id="milestone_<?php echo $milestone->getID(); ?>_list" class="milestone_issues_container"></tbody> 
