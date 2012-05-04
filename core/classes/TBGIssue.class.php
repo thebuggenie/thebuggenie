@@ -1086,17 +1086,11 @@
 		 */
 		public function canEditIssueDetails()
 		{
-			if (!$this->getProject()->canChangeIssuesWithoutWorkingOnThem())
-			{
-				if (!$this->isBeingWorkedOn())
-					return false;
-				
-				if ($this->getUserWorkingOnIssue()->getID() == TBGContext::getUser()->getID())
-					return true;
-					
-				//return false;
-			}
-			return (bool) ($this->_permissionCheck('caneditissuebasic') || ($this->isInvolved() && $this->_permissionCheck('cancreateandeditissues')) || $this->_permissionCheck('caneditissue', true));
+			$retval = $this->_permissionCheck('caneditissuebasic');
+			$retval = ($retval === null) ? ($this->isInvolved() || $this->_permissionCheck('cancreateandeditissues')) : $retval;
+			$retval = ($retval === null) ? $this->_permissionCheck('caneditissue', true) : $retval;
+
+			return $retval;
 		}
 		
 		public function isWorkflowTransitionsAvailable()
@@ -1371,7 +1365,10 @@
 		 */
 		public function canAttachFiles()
 		{
-			return (bool) ($this->_permissionCheck('canaddfilestoissues') || $this->_permissionCheck('canaddextrainformationtoissues'));
+			$retval = $this->_permissionCheck('canaddfilestoissues');
+			$retval = ($retval !== null) ? $retval : $this->_permissionCheck('canaddextrainformationtoissues');
+
+			return $retval;
 		}
 
 		/**
@@ -1381,7 +1378,10 @@
 		 */
 		public function canAddRelatedIssues()
 		{
-			return (bool) ($this->_permissionCheck('canaddrelatedissues') || $this->_permissionCheck('canaddextrainformationtoissues'));
+			$retval = $this->_permissionCheck('canaddrelatedissues');
+			$retval = ($retval !== null) ? $retval : $this->_permissionCheck('canaddextrainformationtoissues');
+
+			return $retval;
 		}
 
 		/**
@@ -1391,7 +1391,7 @@
 		 */
 		public function canAddExtraInformation()
 		{
-			return (bool) ($this->_permissionCheck('canaddextrainformationtoissues'));
+			return (bool) $this->_permissionCheck('canaddextrainformationtoissues');
 		}
 
 		/**
@@ -1401,7 +1401,10 @@
 		 */
 		public function canEditAffectedComponents()
 		{
-			return (bool) ($this->_permissionCheck('canaddcomponents') || $this->_permissionCheck('canaddextrainformationtoissues'));
+			$retval = $this->_permissionCheck('canaddcomponents');
+			$retval = ($retval !== null) ? $retval : $this->_permissionCheck('canaddextrainformationtoissues');
+
+			return $retval;
 		}
 
 		/**
@@ -1411,7 +1414,10 @@
 		 */
 		public function canEditAffectedEditions()
 		{
-			return (bool) ($this->_permissionCheck('canaddeditions') || $this->_permissionCheck('canaddextrainformationtoissues'));
+			$retval = $this->_permissionCheck('canaddeditions');
+			$retval = ($retval !== null) ? $retval : $this->_permissionCheck('canaddextrainformationtoissues');
+
+			return $retval;
 		}
 
 		/**
@@ -1421,7 +1427,10 @@
 		 */
 		public function canEditAffectedBuilds()
 		{
-			return (bool) ($this->_permissionCheck('canaddbuilds') || $this->_permissionCheck('canaddextrainformationtoissues'));
+			$retval = $this->_permissionCheck('canaddbuilds');
+			$retval = ($retval !== null) ? $retval : $this->_permissionCheck('canaddextrainformationtoissues');
+
+			return $retval;
 		}
 
 		/**

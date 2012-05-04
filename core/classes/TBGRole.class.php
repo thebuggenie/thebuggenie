@@ -165,7 +165,7 @@
 			return $this->_permissions;
 		}
 
-		public function hasPermission($permission_key, $module, $target_id = null)
+		public function hasPermission($permission_key, $module = 'core', $target_id = null)
 		{
 			foreach ($this->getPermissions() as $role_permission)
 			{
