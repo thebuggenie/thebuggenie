@@ -124,7 +124,7 @@
 					</td>
 					<td class="sc_actions">
 						<div style="position: relative;">
-							<a class="image" id="more_actions_button" href="javascript:void(0);" onclick="$(this).toggleClassName('button-pressed');$('more_actions_<?php echo $issue->getID(); ?>').toggle();"><?php echo image_tag('action_dropdown_small.png', array('title' => __('Show more actions'))); ?></a>
+							<a class="image" id="more_actions_<?php echo $issue->getID(); ?>_button" href="javascript:void(0);" onclick="var pressed = $(this).hasClassName('button-pressed'); TBG.Main.Profile.clearPopupsAndButtons(); $(this).toggleClassName('button-pressed'); if (!pressed) { $('more_actions_<?php echo $issue->getID(); ?>').toggle(); }"><?php echo image_tag('action_dropdown_small.png', array('title' => __('Show more actions'))); ?></a>
 							<?php include_template('main/issuemoreactions', array('issue' => $issue, 'multi' => true)); ?>
 						</div>
 					</td>

@@ -265,7 +265,7 @@
 						<?php $cc++; ?>
 					<?php endforeach; ?>
 					<li class="more_actions">
-						<input class="button button-silver first last" id="more_actions_button" type="button" value="<?php echo __('More actions'); ?>" onclick="$(this).toggleClassName('button-pressed');$('more_actions_<?php echo $issue->getID(); ?>').toggle();">
+						<input class="button button-silver first last" id="more_actions_<?php echo $issue->getID(); ?>_button" type="button" value="<?php echo __('More actions'); ?>" onclick="$(this).toggleClassName('button-pressed');$('more_actions_<?php echo $issue->getID(); ?>').toggle();">
 					</li>
 				<?php endif; ?>
 			</ul>
