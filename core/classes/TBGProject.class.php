@@ -2536,6 +2536,68 @@
 		{
 			$this->_issuetype_scheme_id = $scheme;
 		}
+
+		/**
+		 * Return array of visible fields used by the Project
+		 *
+		 * @param bool $includeTextareas
+		 * @param array $excludeFields
+		 * @return array
+		 */
+		public function getIssueFields($includeTextareas = true, $excludeFields = array())
+		{
+			$fields = $this->getIssuetypeScheme()->getVisibleFields();
+
+			foreach ($fields as $key => $field) {
+				switch ($key)
+				{
+					case 'user_pain':
+						$fields[$key]['label'] = TBGContext::getI18n()->__('Triaging: User pain');
+						break;
+					case 'percent_complete':
+						$fields[$key]['label'] = TBGContext::getI18n()->__('Percent completed');
+						break;
+					case 'build':
+						$fields[$key]['label'] = TBGContext::getI18n()->__('Release');
+						break;
+					case 'component':
+						$fields[$key]['label'] = TBGContext::getI18n()->__('Components');
+						break;
+					case 'edition':
+						$fields[$key]['label'] = TBGContext::getI18n()->__('Edition');
+						break;
+					case 'estimated_time':
+						$fields[$key]['label'] = TBGContext::getI18n()->__('Estimated time to complete');
+						break;
+					case 'spent_time':
+						$fields[$key]['label'] = TBGContext::getI18n()->__('Time spent working on the issue');
+						break;
+					case 'votes':
+						$fields[$key]['label'] = TBGContext::getI18n()->__('Votes');
+						break;
+					default:
+						if (!isset($fields[$key]['label'])) {
+							$fields[$key]['label'] = ucfirst($key);
+						}
+						break;
+				}
+			}
+
+			if (!$includeTextareas) {
+				unset($fields['description'], $fields['reproduction_steps']);
+				foreach ($fields as $key => $field) {
+					if (in_array($field['type'], array(TBGCustomDatatype::INPUT_TEXTAREA_MAIN, TBGCustomDatatype::INPUT_TEXTAREA_SMALL))) {
+						unset($fields[$key]);
+					}
+				}
+			}
+
+			foreach ($excludeFields as $field) {
+				unset($fields[$field]);
+			}
+
+			return $fields;
+		}
 		
 		/**
 		 * Return the client assigned to the project, or null if there is none
@@ -2870,4 +2932,25 @@
 			}
 		}
 
+		/**
+		 * @param \TBGUser $user
+		 * @return array
+		 */
+		public function getPlanningColumns(TBGUser $user)
+		{
+			$columns = TBGSettings::get('planning_columns_'.$this->getID(), 'project', TBGContext::getScope()->getID(), $user->getID());
+			$columns = explode(',', $columns);
+			if (empty($columns) || (isset($columns[0]) && empty($columns[0]))) {
+				// Default values
+				$columns = array(
+					'priority',
+					'estimated_time',
+					'spent_time',
+				);
+			}
+			// Set array keys to equal array values
+			$columns = array_combine($columns, $columns);
+
+			return $columns;
+		}
 	}
