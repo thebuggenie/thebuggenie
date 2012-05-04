@@ -346,6 +346,7 @@
 		protected function _getPermissionslist()
 		{
 			$permissions = array();
+			$permissions['editwikimenu'] = array('description' => TBGContext::getI18n()->__('Can edit the wiki lefthand menu'), 'permission' => 'editwikimenu');
 			$permissions['readarticle'] = array('description' => TBGContext::getI18n()->__('Can access the project wiki'), 'permission' => 'readarticle');
 			$permissions['editarticle'] = array('description' => TBGContext::getI18n()->__('Can write articles in project wiki'), 'permission' => 'editarticle');
 			$permissions['deletearticle'] = array('description' => TBGContext::getI18n()->__('Can delete articles from project wiki'), 'permission' => 'deletearticle');
