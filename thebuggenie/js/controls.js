@@ -391,6 +391,8 @@ Ajax.Autocompleter = Class.create(Autocompleter.Base, {
 
   onComplete: function(request) {
     this.updateChoices(request.responseText);
+    if (this.options.afterUpdateChoices)
+	  this.options.afterUpdateChoices(this.element, request.responseText);
   }
 });
 

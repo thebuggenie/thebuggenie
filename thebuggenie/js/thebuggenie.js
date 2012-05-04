@@ -126,6 +126,16 @@ TBG.Core._initializeAutocompleter = function() {
 				paramName: "filters[text][value]",
 				minChars: 2,
 				indicator: 'quicksearch_indicator',
+				callback: function() {
+					$('quicksearch_submit').disable();
+					$('quicksearch_submit').removeClassName('button-blue');
+					$('quicksearch_submit').addClassName('button-silver');
+				},
+				afterUpdateChoices: function() {
+					$('quicksearch_submit').enable();
+					$('quicksearch_submit').removeClassName('button-silver');
+					$('quicksearch_submit').addClassName('button-blue');
+				},
 				afterUpdateElement: TBG.Core._extractAutocompleteValue
 			}
 		);
@@ -140,6 +150,9 @@ TBG.Core._extractAutocompleteValue = function(elem, value) {
 	if (elements.size() == 1) {
 		window.location = elements[0].innerHTML.unescapeHTML();
 		$('quicksearch_indicator').show();
+		$('quicksearch_submit').disable();
+		$('quicksearch_submit').removeClassName('button-blue');
+		$('quicksearch_submit').addClassName('button-silver');
 		$('searchfor').blur();
 	}
 };
@@ -917,11 +930,13 @@ TBG.Main.Profile.confirmScopeMembership = function(url, sid) {
 }
 
 TBG.Main.Profile.clearPopupsAndButtons = function() {
-	var pbuttons = $('account_info_container').down('.profile_buttons');
-	pbuttons.select('.button').each(function(element) {
-		$(element).removeClassName('button-pressed');
-	});
-	pbuttons.select('.popup_box').each(function(element) {
+	if ($('account_info_container')) {
+		var pbuttons = $('account_info_container').down('.profile_buttons');
+		pbuttons.select('.button').each(function(element) {
+			$(element).removeClassName('button-pressed');
+		});
+	}
+	$$('.popup_box').each(function(element) {
 		$(element).hide();
 	});
 }
@@ -2773,7 +2788,7 @@ TBG.Issues.updateFields = function(url)
 							if (json.fields[fieldname]) {
 								var prev_val = '';
 								if (json.fields[fieldname].values) {
-									if ($(fieldname + '_additional') && $(fieldname + '_additional_div').visible()) {
+									if ($(fieldname + '_additional') && $(fieldname + '_additional').visible()) {
 										prev_val = $(fieldname + '_id_additional').getValue();
 									} else if ($(fieldname + '_div') && $(fieldname + '_div').visible()) {
 										prev_val = $(fieldname + '_id').getValue();
@@ -2794,23 +2809,25 @@ TBG.Issues.updateFields = function(url)
 										$(fieldname + '_id_additional').setValue(prev_val);
 									}
 								} else {
-									$(fieldname + '_div').show();
+									if ($(fieldname + '_div')) $(fieldname + '_div').show();
 									if ($(fieldname + '_id')) $(fieldname + '_id').enable();
 									if ($(fieldname + '_value')) $(fieldname + '_value').enable();
 									if ($(fieldname + '_id_additional')) $(fieldname + '_id_additional').disable();
 									if ($(fieldname + '_value_additional')) $(fieldname + '_value_additional').disable();
 									if ($(fieldname + '_additional')) $(fieldname + '_additional').hide();
 									if (json.fields[fieldname].values) {
-										$(fieldname + '_id').update('');
-										for (var opt in json.fields[fieldname].values) {
-											$(fieldname + '_id').insert('<option value="'+opt+'">'+json.fields[fieldname].values[opt]+'</option>');
+										if ($(fieldname + '_id')) {
+											$(fieldname + '_id').update('');
+											for (var opt in json.fields[fieldname].values) {
+												$(fieldname + '_id').insert('<option value="'+opt+'">'+json.fields[fieldname].values[opt]+'</option>');
+											}
+											$(fieldname + '_id').setValue(prev_val);
 										}
-										$(fieldname + '_id').setValue(prev_val);
 									}
 								}
 								(json.fields[fieldname].required) ? $(fieldname + '_label').addClassName('required') : $(fieldname + '_label').removeClassName('required');
 							} else {
-								$(fieldname + '_div').hide();
+								if ($(fieldname + '_div')) $(fieldname + '_div').hide();
 								if ($(fieldname + '_id')) $(fieldname + '_id').disable();
 								if ($(fieldname + '_value')) $(fieldname + '_value').disable();
 								if ($(fieldname + '_additional')) $(fieldname + '_additional').hide();
@@ -2824,6 +2841,7 @@ TBG.Issues.updateFields = function(url)
 			complete: {
 				callback: function() {
 					$('title').focus();
+					$('report_issue_more_options_indicator').hide();
 				}
 			}
 		});

@@ -35,9 +35,9 @@
 		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo (TBGContext::isProjectContext()) ? make_url('search', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('search'); ?>" method="get" name="quicksearchform" style="float: right;">
 			<div style="width: auto; padding: 0; text-align: right; position: relative;" id="quicksearch_container">
 				<input type="hidden" name="filters[text][operator]" value="=">
-				<?php echo image_tag('spinning_16.gif', array('id' => 'quicksearch_indicator', 'style' => 'position: absolute; left: 305px; top: 2px; display: none; z-index: 10;')); ?>
-				<input type="search" name="filters[text][value]" id="searchfor" placeholder="<?php echo __('Search for anything here'); ?>" style="width: 320px; padding: 1px 1px 1px;" class="faded_out"><div id="searchfor_autocomplete_choices" class="autocomplete rounded_box"></div>
-				<input type="submit" class="button-blue" value="<?php echo TBGContext::getI18n()->__('Find'); ?>" style="padding: 0 2px 0 2px; display: inline">
+				<?php echo image_tag('spinning_16.gif', array('id' => 'quicksearch_indicator', 'style' => 'display: none;')); ?>
+				<input type="search" name="filters[text][value]" accesskey="f" id="searchfor" placeholder="<?php echo __('Search for anything here'); ?>"><div id="searchfor_autocomplete_choices" class="autocomplete rounded_box"></div>
+				<input type="submit" class="button-blue" id="quicksearch_submit" value="<?php echo TBGContext::getI18n()->__('Find'); ?>">
 			</div>
 		</form>
 	<?php endif; ?>
