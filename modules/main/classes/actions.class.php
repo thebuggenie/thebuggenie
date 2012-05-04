@@ -1920,13 +1920,12 @@
 		 */
 		public function runUnlockIssue(TBGRequest $request)
 		{
-			$this->forward403unless(TBGContext::getUser()->hasPermission('caneditissue') || TBGContext::getUser()->hasPermission('caneditissuebasic'));
-
 			if ($issue_id = $request['issue_id'])
 			{
 				try
 				{
 					$issue = TBGContext::factory()->TBGIssue($issue_id);
+					if (!$issue->canEditIssueDetails()) return $this->forward403();
 					$issue->setLocked(false);
 					$issue->save();
 					TBGPermissionsTable::getTable()->deleteByPermissionTargetIDAndModule('canviewissue', $issue_id);
@@ -1953,13 +1952,17 @@
 		 */
 		public function runLockIssue(TBGRequest $request)
 		{
-			$this->forward403unless(TBGContext::getUser()->hasPermission('caneditissue') || TBGContext::getUser()->hasPermission('caneditissuebasic'));
 
 			if ($issue_id = $request['issue_id'])
 			{
 				try
 				{
 					$issue = TBGContext::factory()->TBGIssue($issue_id);
+					if ($issue->canEditIssueDetails())
+					{
+						$this->forward403($this->getI18n()->__("You don't have access to update the issue access policy"));
+						return;
+					}
 					$issue->setLocked();
 					$issue->save();
 					TBGContext::setPermission('canviewissue', $issue->getID(), 'core', 0, 0, 0, false);
