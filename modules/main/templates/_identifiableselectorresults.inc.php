@@ -18,7 +18,7 @@
 	<b><?php echo __('Teams found'); ?></b><br>
 	<?php if (count($teams) > 0): ?>
 		<?php foreach ($teams as $team): ?>
-			<a href="javascript:void(0);" onclick="<?php echo str_replace(array(urlencode('%identifiable_value%'), '%identifiable_value%', urlencode('%identifiable_type%'), '%identifiable_type%'), array($team->getID(), $team->getID(), 'team', "'team'"), $callback); ?>"><?php echo $team->getName(); ?></a><br>
+			<a href="javascript:void(0);" onclick="<?php echo str_replace(array(urlencode('%identifiable_value%'), '%identifiable_value%', urlencode('%identifiable_type%'), '%identifiable_type%'), array($team->getID(), $team->getID(), 'team', "'team'"), (isset($team_callback)) ? $team_callback : $callback); ?>"><?php echo $team->getName(); ?></a><br>
 		<?php endforeach; ?>
 	<?php else: ?>
 		<span class="faded_out"><?php echo __("Couldn't find any teams"); ?></span>
