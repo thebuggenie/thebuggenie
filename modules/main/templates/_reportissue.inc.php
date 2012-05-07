@@ -168,15 +168,16 @@
 	<form action="<?php echo make_url('project_reportissue', array('project_key' => $selected_project->getKey())); ?>" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>">
 <?php endif; ?>
 	<input type="hidden" name="project_id" id="project_id" value="<?php echo $selected_project->getID(); ?>">
-	<?php if (/*isset($selected_milestone) ||*/ isset($selected_build) || isset($parent_issue)): ?>
+	<?php if (isset($selected_milestone) || isset($selected_build) || isset($parent_issue)): ?>
 		<div class="rounded_box lightyellow borderless">
 			<ul class="simple_list" style="padding: 5px; margin: 5px; font-size: 1.2em;">
-				<?php /* if (isset($selected_milestone)): ?>
+				<?php if (isset($selected_milestone)): ?>
 					<li>
 						<?php echo __('You are adding an issue to %milestone_name%', array('%milestone_name%' => '<b>'.$selected_milestone->getName().'</b>')); ?>
 						<input type="hidden" name="milestone_id" id="reportissue_selected_milestone_id" value="<?php echo $selected_milestone->getID(); ?>">
+						<input type="hidden" name="milestone_fixed" value="1">
 					</li>
-				<?php endif; */ ?>
+				<?php endif; ?>
 				<?php if (isset($parent_issue)): ?>
 					<li>
 						<?php echo __('Any issues you create will be related to %related_issue_title%', array('%related_issue_title%' => '<b>'.$parent_issue->getFormattedTitle().'</b>')); ?>
@@ -420,21 +421,23 @@
 						</td>
 					</tr>
 				</table>
-				<table cellpadding="0" cellspacing="0" id="milestone_div" style="display: none;" class="additional_information<?php if (array_key_exists('milestone', $errors)): ?> reportissue_error<?php endif; ?>">
-					<tr>
-						<td style="width: 180px;"><label for="milestone_id" id="milestone_label"><span>* </span><?php echo __('Milestone'); ?></label></td>
-						<td class="report_issue_help faded_out dark"><?php echo __("Choose the milestone of this issue"); ?></td>
-					<tr>
-						<td colspan="2" style="padding-top: 5px;">
-							<select name="milestone_id" id="milestone_id" style="width: 100%;">
-								<option value=""<?php if (!$selected_milestone instanceof TBGMilestone) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
-								<?php foreach ($milestones as $milestone): ?>
-									<option value="<?php echo $milestone->getID(); ?>"<?php if ($selected_milestone instanceof TBGMilestone && $selected_milestone->getID() == $milestone->getID()): ?> selected<?php endif; ?>><?php echo $milestone->getName(); ?></option>
-								<?php endforeach; ?>
-							</select>
-						</td>
-					</tr>
-				</table>
+				<?php if (!isset($selected_milestone)): ?>
+					<table cellpadding="0" cellspacing="0" id="milestone_div" style="display: none;" class="additional_information<?php if (array_key_exists('milestone', $errors)): ?> reportissue_error<?php endif; ?>">
+						<tr>
+							<td style="width: 180px;"><label for="milestone_id" id="milestone_label"><span>* </span><?php echo __('Milestone'); ?></label></td>
+							<td class="report_issue_help faded_out dark"><?php echo __("Choose the milestone of this issue"); ?></td>
+						<tr>
+							<td colspan="2" style="padding-top: 5px;">
+								<select name="milestone_id" id="milestone_id" style="width: 100%;">
+									<option value=""<?php if (!$selected_milestone instanceof TBGMilestone) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
+									<?php foreach ($milestones as $milestone): ?>
+										<option value="<?php echo $milestone->getID(); ?>"<?php if ($selected_milestone instanceof TBGMilestone && $selected_milestone->getID() == $milestone->getID()): ?> selected<?php endif; ?>><?php echo $milestone->getName(); ?></option>
+									<?php endforeach; ?>
+								</select>
+							</td>
+						</tr>
+					</table>
+				<?php endif; ?>
 				<table cellpadding="0" cellspacing="0" id="pain_bug_type_div" style="display: none;" class="additional_information<?php if (array_key_exists('pain_bug_type', $errors)): ?> reportissue_error<?php endif; ?>">
 					<tr>
 						<td style="width: 180px;"><label for="pain_bug_type_id" id="pain_bug_type_label"><span>* </span><?php echo __('Triaging: Bug type'); ?></label></td>
@@ -650,19 +653,21 @@
 							<a href="javascript:void(0);" class="img" onclick="$('component_link').show();$('component_additional_div').hide();$('component_id_additional').setValue(0);"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
 						</div>
 					</li>
-					<li id="milestone_additional" style="display: none;">
-						<?php echo image_tag('icon_milestone.png'); ?>
-						<div id="milestone_link"<?php if ($selected_milestone instanceof TBGMilestone): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('milestone_link').hide();$('milestone_additional_div').show();"><?php echo __('Specify milestone'); ?></a></div>
-						<div id="milestone_additional_div"<?php if ($selected_milestone === null): ?> style="display: none;"<?php endif; ?>>
-							<select name="milestone_id" id="milestone_id_additional">
-								<option value=""<?php if (!$selected_milestone instanceof TBGMilestone) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
-								<?php if ($selected_milestone instanceof TBGMilestone): ?>
-									<option value="<?php echo $selected_milestone->getID(); ?>"><?php echo $selected_milestone->getName(); ?></option>
-								<?php endif; ?>
-							</select>
-							<a href="javascript:void(0);" class="img" onclick="$('milestone_link').show();$('milestone_additional_div').hide();$('milestone_id_additional').setValue(0);"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
-						</div>
-					</li>
+					<?php if (!isset($selected_milestone)): ?>
+						<li id="milestone_additional" style="display: none;">
+							<?php echo image_tag('icon_milestone.png'); ?>
+							<div id="milestone_link"<?php if ($selected_milestone instanceof TBGMilestone): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('milestone_link').hide();$('milestone_additional_div').show();"><?php echo __('Specify milestone'); ?></a></div>
+							<div id="milestone_additional_div"<?php if ($selected_milestone === null): ?> style="display: none;"<?php endif; ?>>
+								<select name="milestone_id" id="milestone_id_additional">
+									<option value=""<?php if (!$selected_milestone instanceof TBGMilestone) echo ' selected'; ?>><?php echo __('Not specified'); ?></option>
+									<?php if ($selected_milestone instanceof TBGMilestone): ?>
+										<option value="<?php echo $selected_milestone->getID(); ?>"><?php echo $selected_milestone->getName(); ?></option>
+									<?php endif; ?>
+								</select>
+								<a href="javascript:void(0);" class="img" onclick="$('milestone_link').show();$('milestone_additional_div').hide();$('milestone_id_additional').setValue(0);"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
+							</div>
+						</li>
+					<?php endif; ?>
 					<li id="category_additional" style="display: none;">
 						<?php echo image_tag('icon_category.png'); ?>
 						<div id="category_link"<?php if ($selected_category instanceof TBGCategory): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('category_link').hide();$('category_additional_div').show();"><?php echo __('Specify category'); ?></a></div>
