@@ -1169,33 +1169,40 @@
 			if ($this->uploads_enabled && $request->isPost())
 			{
 				$this->forward403unless($this->access_level == TBGSettings::ACCESS_FULL);
-				if ($request['upload_storage'] == 'files' && (bool) $request['enable_uploads'])
+				if ($request['enable_uploads'])
 				{
-					if(!is_dir($request['upload_localpath']))
+					if ($request['upload_storage'] == 'files' && (bool) $request['enable_uploads'])
 					{
-						mkdir($request['upload_localpath'], 0744, true);
+						if(!is_dir($request['upload_localpath']))
+						{
+							mkdir($request['upload_localpath'], 0744, true);
+						}
+						if (!is_writable($request['upload_localpath']))
+						{
+							$this->getResponse()->setHttpStatus(400);
+							return $this->renderJSON(array('error' => TBGContext::getI18n()->__("The upload path isn't writable")));
+						}
 					}
-					if (!is_writable($request['upload_localpath']))
+
+					if (!is_numeric($request['upload_max_file_size']))
 					{
 						$this->getResponse()->setHttpStatus(400);
-						return $this->renderJSON(array('error' => TBGContext::getI18n()->__("The upload path isn't writable")));
+						return $this->renderJSON(array('error' => TBGContext::getI18n()->__("The maximum file size must be a number")));
 					}
-				}
-				
-				if (!is_numeric($request['upload_max_file_size']))
-				{
-					$this->getResponse()->setHttpStatus(400);
-					return $this->renderJSON(array('error' => TBGContext::getI18n()->__("The maximum file size must be a number")));
-				}
-				
-				$settings = array('enable_uploads', 'upload_restriction_mode', 'upload_extensions_list', 'upload_max_file_size', 'upload_storage', 'upload_localpath');
 
-				foreach ($settings as $setting)
-				{
-					if (TBGContext::getRequest()->hasParameter($setting))
+					$settings = array('upload_restriction_mode', 'upload_extensions_list', 'upload_max_file_size', 'upload_storage', 'upload_localpath');
+
+					foreach ($settings as $setting)
 					{
-						TBGSettings::saveSetting($setting, TBGContext::getRequest()->getParameter($setting));
+						if (TBGContext::getRequest()->hasParameter($setting))
+						{
+							TBGSettings::saveSetting($setting, TBGContext::getRequest()->getParameter($setting));
+						}
 					}
+				}
+				else
+				{
+					TBGSettings::saveSetting('enable_uploads', TBGContext::getRequest()->getParameter('enable_uploads'));
 				}
 				return $this->renderJSON(array('title' => TBGContext::getI18n()->__('All settings saved')));
 			}
