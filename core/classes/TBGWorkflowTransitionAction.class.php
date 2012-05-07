@@ -233,7 +233,7 @@
 						$members = $issue->getAssignee()->getMembers();
 						$issue->startWorkingOnIssue(array_shift($members));
 					}
-					else
+					elseif ($issue->getAssignee() instanceof TBGUser)
 					{
 						$issue->startWorkingOnIssue($issue->getAssignee());
 					}
