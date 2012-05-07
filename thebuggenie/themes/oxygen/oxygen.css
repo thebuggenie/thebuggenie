@@ -821,7 +821,7 @@ ul.workflow_actions li:hover { box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); -webkit-b
 #viewissue_menu li a { font-size: 1em; }
 #issue_info_container { text-align: left; z-index: 0; vertical-align: middle; font-size: 1em; font-weight: normal; color: #F5F5F5; width: auto; position: relative; margin: 0 5px 3px 5px; }
 .issue_info_backdrop { background-color: #DDD; z-index: 100; filter:alpha(opacity=90); -moz-opacity:.90; opacity:.90; width: 100%; height: 100%; position: absolute; top: 0; left: 0; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; border-top-left-radius: 0; -moz-border-radius-topleft: 0; -webkit-border-top-left-radius: 0; border-top-right-radius: 0; -moz-border-radius-topright: 0; -webkit-border-top-right-radius: 0; }
-.issue_info { z-index: 110; color: #333; text-shadow: 1px 1px 1px #FFF; position: relative; padding: 3px 3px 3px 5px; font-weight: normal; height: 22px; }
+.issue_info { z-index: 110; color: #333; text-shadow: 1px 1px 1px #FFF; position: relative; padding: 3px 3px 3px 5px; font-weight: normal; min-height: 22px; }
 .issue_info .buttons { float: right; margin: 0; }
 .issue_info .buttons .button input, .issue_info .buttons .button button { padding: 0 4px; font-size: 0.9em; }
 .issue_info a { font-size: 0.95em; font-weight: bold; }
