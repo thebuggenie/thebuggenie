@@ -257,7 +257,7 @@
 		{
 			if ($this->_connection === null)
 			{
-				$this->_connection = imap_open($this->getConnectionString(), $this->getUsername(), $this->getPassword(), OP_READONLY);
+				$this->_connection = imap_open($this->getConnectionString(), $this->getUsername(), $this->getPassword());
 			}
 			if (!is_resource($this->_connection))
 			{
