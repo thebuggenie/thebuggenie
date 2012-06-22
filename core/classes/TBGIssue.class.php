@@ -853,6 +853,10 @@
 							$this->$var_name = $option;
 						}
 					}
+					else if($datatype->hasPredefinedOptions())
+					{
+						$this->$var_name = $row->get(TBGIssueCustomFieldsTable::CUSTOMFIELDOPTION_ID);
+					}
 					else
 					{
 						$this->$var_name = $row->get(TBGIssueCustomFieldsTable::OPTION_VALUE);
@@ -4554,6 +4558,7 @@
 													break;
 												case TBGCustomDatatype::RELEASES_CHOICE:
 													$old_object = TBGContext::factory()->TBGBuild($value['original_value']);
+													break;
 												case TBGCustomDatatype::STATUS_CHOICE:
 													$old_object = TBGContext::factory()->TBGStatus($value['original_value']);
 													break;
@@ -4572,6 +4577,7 @@
 													break;
 												case TBGCustomDatatype::RELEASES_CHOICE:
 													$new_object = TBGContext::factory()->TBGBuild($this->getCustomField($key));
+													break;
 												case TBGCustomDatatype::STATUS_CHOICE:
 													$new_object = TBGContext::factory()->TBGStatus($this->getCustomField($key));
 													break;
@@ -4982,7 +4988,7 @@
 				if ($identifiable)
 					$return_values[$field] = ($value instanceof TBGIdentifiable) ? $value->toJSON() : null;
 				else
-					$return_values[$field] = $this->$method();
+					$return_values[$field] = $value;
 
 			}
 

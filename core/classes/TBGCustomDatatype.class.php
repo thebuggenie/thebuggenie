@@ -137,9 +137,16 @@
 			return null;
 		}
 
-		public static function getChoiceFieldsAsArray()
+		public static function getCustomChoiceFieldsAsArray()
 		{
 			return array(self::CHECKBOX_CHOICES, self::DROPDOWN_CHOICE_TEXT, self::RADIO_CHOICE);
+		}
+
+		public static function getChoiceFieldsAsArray()
+		{
+			return array(self::CHECKBOX_CHOICES, self::DROPDOWN_CHOICE_TEXT, self::RADIO_CHOICE, self::RELEASES_CHOICE,
+			             self::COMPONENTS_CHOICE, self::EDITIONS_CHOICE, self::STATUS_CHOICE, self::USER_CHOICE,
+			             self::TEAM_CHOICE, self::USER_OR_TEAM_CHOICE);
 		}
 
 		/**
@@ -215,6 +222,11 @@
 		}
 
 		public function hasCustomOptions()
+		{
+			return (bool) in_array($this->getType(), self::getCustomChoiceFieldsAsArray());
+		}
+
+		public function hasPredefinedOptions()
 		{
 			return (bool) in_array($this->getType(), self::getChoiceFieldsAsArray());
 		}
