@@ -1,7 +1,7 @@
 <?php
 
 // Number of Sections: 268
-// Updated at: 2012 Jun 19.
+// Updated at: 2012 Jun 22.
 // Translator: 
 // Translator email: 
 
