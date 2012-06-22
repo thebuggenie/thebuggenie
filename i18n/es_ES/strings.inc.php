@@ -355,7 +355,7 @@
 // First occurrence is in: .\core\classes\TBGTextParser.class.php
 // ----------------------------------------------------------------------------
   $strings['top'] = 'arriba';
-  $strings['Open image in new window'] = 'Abrir imagen en una nueva ventana';
+  $strings['Open image in new window'] = 'Abrir imagen en una nueva pantalla';
   $strings['Open file in new window'] = 'Abrir archivo en una nueva ventana';
 
 // First occurrence is in: .\core\classes\TBGUser.class.php
@@ -447,41 +447,41 @@
 // ----------------------------------------------------------------------------
 //$strings['Use this page to set up the connection details for your LDAP or Active Directory server. It is highly recommended that you read the online help before use, as misconfiguration may prevent you from accessing configuration pages to rectify issues.'] = '';
 //$strings['View the online documentation'] = '';
-//$strings['LDAP support is not installed'] = '';
-//$strings['The PHP LDAP extension is required to use this functionality. As this module is not installed, all functionality on this page has been disabled.'] = '';
-//$strings['Important information'] = '';
-//$strings['When you enable LDAP as your authentication backend in Authentication configuration, you will lose access to all accounts which do not also exist in the LDAP database. This may mean you lose administrative access.'] = '';
-//$strings['To resolve this issue, either import all users using the tool on this page and make one an administrator using Users configuration, or create a user with the same username as one in LDAP and make that one an administrator.'] = '';
-//$strings['Connection details'] = '';
-//$strings['Hostname'] = '';
-//$strings['Use URL syntax (ldap://hostname:port). If your server requires SSL, use ldaps://hostname/ in this field.'] = '';
-//$strings['Base DN'] = '';
+  $strings['LDAP support is not installed'] = 'El soporte para LDAP no está instalado';
+  $strings['The PHP LDAP extension is required to use this functionality. As this module is not installed, all functionality on this page has been disabled.'] = 'La extensión LDAP de PHP es necesaria para activar esta funcionalidad. Como el módulo no está instalado, todas las opciones de esta página han sido inhabilitadas.';
+  $strings['Important information'] = 'Información importante';
+  $strings['When you enable LDAP as your authentication backend in Authentication configuration, you will lose access to all accounts which do not also exist in the LDAP database. This may mean you lose administrative access.'] = 'Cuando LDAP esté habilitado como su método de autenticación en la configuración de autentificación, perderá el acceso a todas las cuentas que no existan en la base de datos de LDAP. Esto quiere decir que perderá los accesos de administración';
+  $strings['To resolve this issue, either import all users using the tool on this page and make one an administrator using Users configuration, or create a user with the same username as one in LDAP and make that one an administrator.'] = 'Para resolver este inconveniente, importe todos los usuarios utilizando la herramienta de esta página y haga un único administrador utilizando la configuración de Usuarios, o cree un usuario con el mismo nombre de usuario que haya en LDAP y hagalo administrador.';
+  $strings['Connection details'] = 'Detalles de conexión';
+  $strings['Hostname'] = 'Nombre de servidor';
+  $strings['Use URL syntax (ldap://hostname:port). If your server requires SSL, use ldaps://hostname/ in this field.'] = 'Utilice la sintáxis de URL (ldap://nombre_de_servidor:puerto). Si su servidor solicita SSL, utilice ldaps://nombre_de_servidor/ en este campo';
+  $strings['Base DN'] = 'DN base';
 //$strings['This should be the DN string for an OU where all user and group OUs can be found. For example, DC=ldap,DC=example,DC=com.'] = '';
 //$strings['Object DN attribute'] = '';
 //$strings['Enter the name of the property containing the distinguished name of an object. On Linux systems this may be entrydn (which is the default value if this is left blank), on Active Directory it is distinguishedName.'] = '';
 //$strings['User class'] = '';
 //$strings['Enter the value to check for in objectClass for users. Leave blank to use the default of person'] = '';
-//$strings['Username attribute'] = '';
-//$strings['This field should contain the name of the attribute where the username is stored, such as uid.'] = '';
-//$strings['Full name attribute'] = '';
-//$strings['Email address attribute'] = '';
+  $strings['Username attribute'] = 'Atributos del nombre de usuario';
+  $strings['This field should contain the name of the attribute where the username is stored, such as uid.'] = 'Este campo debe contener el nombre del atributo en donde el nombre de usuario es guardado, como el uid.';
+  $strings['Full name attribute'] = 'Atributo del nombre completo';
+  $strings['Email address attribute'] = 'Atributo de la cuenta de correo';
 //$strings['Group class'] = '';
 //$strings['Enter the value to check for in objectClass for groups. Leave blank to use the default of group'] = '';
-//$strings['Group members attribute'] = '';
-//$strings['This field should contain the name of the attribute where the list of members of a group is stored, such as uniqueMember.'] = '';
-//$strings['Allowed groups'] = '';
+  $strings['Group members attribute'] = 'Atributo de los miembros del grupo';
+  $strings['This field should contain the name of the attribute where the list of members of a group is stored, such as uniqueMember.'] = 'Este campo debe contener el nombre del atributo donde la lista de miembros de un grupo es almacenado, como uniqueMember.';
+  $strings['Allowed groups'] = 'Grupos permitidos';
 //$strings['You may wish to restrict access to users who belong to certain groups in LDAP. If so, write a comma separated list of group names here. Leave blank to disable this feature.'] = '';
 //$strings['Control username'] = '';
 //$strings['Control user password'] = '';
 //$strings['Please insert the authentication details for a user who can access all LDAP records. Only read only access is necessary, and for an anonyous bind leave this blank.'] = '';
-//$strings['Click "%save%" to save the settings'] = '';
+  $strings['Click "%save%" to save the settings'] = 'Haga clic en "%save%" para salvar la configuración';
   $strings['Save'] = 'Guardar';
-//$strings['Test connection'] = '';
+  $strings['Test connection'] = 'Probar conexión';
 //$strings['After configuring and saving your connection settings, you should test your connection to the LDAP server. This test does not check whether the DN and attributes can allow The Bug Genie to correctly find users, but it will give an indication if The Bug Genie can talk to your LDAP server, and if any groups you specify exist.'] = '';
-//$strings['Import all users'] = '';
+  $strings['Import all users'] = 'Importar todos los usuarios';
 //$strings['You can import all users who can log in from LDAP into The Bug Genie with this tool. This will not let them log in without switching to LDAP Authentication. We recomemnd you do this before switching over, and make at least one of the new users an administrator. Already existing users with the same username will be updated.'] = '';
-//$strings['Import users'] = '';
-//$strings['Prune users'] = '';
+  $strings['Import users'] = 'Importar usuarios';
+  $strings['Prune users'] = 'Quitar usuarios';
 //$strings['To remove the data from The Bug Genie of users who can no longer log in via LDAP, run this tool. These users would not be able to log in anyway, but it will keep your user list clean. The guest user is not affected, but it may affect your current user - if this is deleted you will be logged out.'] = '';
 
 // First occurrence is in: .\modules\configuration\classes\actioncomponents.class.php
@@ -1018,7 +1018,7 @@
 //$strings['Show project details'] = '';
   $strings['Unarchive'] = 'Desarchivar';
 //$strings['Unarchive project'] = '';
-//$strings['Archive'] = '';
+  $strings['Archive'] = 'Archivar';
   $strings['Archive project'] = 'Archivado de proyecto';
   $strings['Archive this project?'] = '¿Archiva este proyecto?';
   $strings['If you archive a project, it is placed into a read only mode, where the project and its issues can no longer be edited. This will also prevent you from creating new issues, and will hide it from project lists (it can be viewed from an Archived Projects list). This will not, however, affect any subprojects this one has.'] = 'Si archiva un proyecto, será puesto en modo solo lectura, tanto el proyecto como sus peticiones no podrán ser editadas. Esto también impedirá la creación de nuevos pedidos, y se ocultará de la lista de proyectos (puede ser visto desde la lista de Proyectos Archivados). Esto no afectará a ningún subproyecto si tuviera uno.';
@@ -1628,12 +1628,12 @@
 
 // First occurrence is in: .\modules\mailing\classes\TBGMailer.class.php
 // ----------------------------------------------------------------------------
-//$strings['You need to add at least one recipient'] = '';
-//$strings['You need to add a sender name and address'] = '';
-//$strings['Timed out during server conversation'] = '';
-//$strings['Could not open connection to server %server on port %port%'] = '';
-//$strings['Not ready to authenticate. (%rv%) Try changing server type'] = '';
-//$strings['Username / password not accepted on server: %rv%'] = '';
+  $strings['You need to add at least one recipient'] = 'Es necesario agregar al menos un receptor';
+  $strings['You need to add a sender name and address'] = 'Es necesario agregar un nombre y una dirección';
+  $strings['Timed out during server conversation'] = 'Se superó el tiempo de espera con el servidor';
+  $strings['Could not open connection to server %server on port %port%'] = 'No se puede establecer la conexión con el servidor %server en el puerto %port%';
+  $strings['Not ready to authenticate. (%rv%) Try changing server type'] = 'No está listo para autenticar. (%rv%) Intente cambiando el tipo de servidor';
+  $strings['Username / password not accepted on server: %rv%'] = 'Nombre de usuario o contraseña no aceptados en el servidor: %rv%';
 
 // First occurrence is in: .\modules\mailing\classes\TBGMailing.class.php
 // ----------------------------------------------------------------------------
@@ -1647,7 +1647,7 @@
 //$strings['Password reset'] = '';
 //$strings['Forgot your password?'] = '';
 //$strings['Test email'] = '';
-//$strings['The email module is not configured for outgoing emails'] = '';
+  $strings['The email module is not configured for outgoing emails'] = 'El módulo de correo no está configurado para correo saliente';
 //$strings['[%project_name%] %issue_type% %issue_no% - %issue_title%'] = '';
 //$strings['Re: [%project_name%] %issue_type% %issue_no% - %issue_title%'] = '';
 
@@ -1660,18 +1660,18 @@
   $strings['Notify me when an issue assigned to one of my teams is updated or created'] = 'Avisarme cuando un pedido asignado a uno de mis equipos sea actualizado o creado';
   $strings['Notify me when an issue assigned to one of my team projects is updated or created'] = 'Avisarme cuando un pedido asignado a uno de mis proyectos del equipo sea actualizado o creado';
   $strings['Notify me when an issue assigned to one of my projects is updated or created'] = 'Avisarme cuando un pedido asignado a uno de mis proyectos sea actualizado o creado';
-//$strings['Notify me when an issue I commented on gets updated'] = '';
+  $strings['Notify me when an issue I commented on gets updated'] = 'Avisarme cuando un pedido que comenté sea actualizado';
 
 // First occurrence is in: .\modules\mailing\classes\actions.class.php
 // ----------------------------------------------------------------------------
-//$strings['Please use the link in the email you received'] = '';
-//$strings['Cannot find an email address for this user'] = '';
-//$strings['Forbidden for this username, please contact your administrator'] = '';
-//$strings['This username does not exist'] = '';
-//$strings['Please enter an username'] = '';
-//$strings['The email was successfully accepted for delivery'] = '';
-//$strings['The email was not sent'] = '';
-//$strings['Please specify an email address'] = '';
+  $strings['Please use the link in the email you received'] = 'Por favor, utilice el enlace en la dirección de correo electrónico que ha recibido';
+  $strings['Cannot find an email address for this user'] = 'No se puede encontrar una dirección de correo para este usuario';
+  $strings['Forbidden for this username, please contact your administrator'] = 'Prohibido para este nombre de usuario, contáctese con su administrador';
+  $strings['This username does not exist'] = 'Este nombre de usuario no existe';
+  $strings['Please enter an username'] = 'Ingrese un nombre de usuario por favor';
+  $strings['The email was successfully accepted for delivery'] = 'El correo fue aceptado para el envío';
+  $strings['The email was not sent'] = 'El correo no fue enviado';
+  $strings['Please specify an email address'] = 'Por favor establezca una dirección de correo';
 //$strings['This is not a valid mailing account'] = '';
 //$strings['This is not a valid project'] = '';
 //$strings['The php imap extension is not installed'] = '';
@@ -1714,13 +1714,13 @@
 
 // First occurrence is in: .\modules\mailing\templates\_forgotPasswordPane.inc.php
 // ----------------------------------------------------------------------------
-//$strings['Forgot password?'] = '';
-//$strings['If you have forgot your password, enter your username here, and we will send you an email that will allow you to change your password'] = '';
-//$strings['Send email'] = '';
+  $strings['Forgot password?'] = '¿Olvidó su contraseña?';
+  $strings['If you have forgot your password, enter your username here, and we will send you an email that will allow you to change your password'] = 'Si olvidó su contraseña, ingrese aquí su nombre de usuario y le enviaremos un correo que le permitirá cambiar la contraseña';
+  $strings['Send email'] = 'Enviar correo';
 
 // First occurrence is in: .\modules\mailing\templates\_forgotPasswordTab.inc.php
 // ----------------------------------------------------------------------------
-//$strings['Forgot password'] = '';
+  $strings['Forgot password'] = 'Olvido de contraseña';
 
 // First occurrence is in: .\modules\mailing\templates\_incomingemailaccount.inc.php
 // ----------------------------------------------------------------------------
@@ -1735,7 +1735,7 @@
 // ----------------------------------------------------------------------------
 //$strings['You do not have the relevant permissions to access email settings'] = '';
   $strings['Add new account'] = 'Agregar nueva cuenta';
-//$strings['Incoming email accounts'] = '';
+  $strings['Incoming email accounts'] = 'Cuentas de correo entrantes';
 
 // First occurrence is in: .\modules\mailing\templates\_projectconfig_tab.inc.php
 // ----------------------------------------------------------------------------
@@ -1743,39 +1743,39 @@
 
 // First occurrence is in: .\modules\mailing\templates\_settings.inc.php
 // ----------------------------------------------------------------------------
-//$strings['These are the settings for outgoing emails, such as notification emails and registration emails.'] = '';
-//$strings['Enable outgoing email notifications'] = '';
-//$strings['Require email activation for new accounts'] = '';
-//$strings["If this option is ticked, new accounts will require activation by clicking a link in the email. If this is ticked, the user's password will also be provided in the email, instead of in the registration screen"] = "";
-//$strings['Email "from"-name'] = '';
-//$strings['Email "from"-address'] = '';
-//$strings['This is the name and email address email notifications from The Bug Genie will be sent from'] = '';
-//$strings["Don't use sendmail '-f'"] = "";
-//$strings["Don't use the '-f' sendmail parameter (some systems may not allow it)"] = "";
-//$strings['Email header charset'] = '';
-//$strings['The character encoding used in outgoing emails'] = '';
-//$strings['Queue emails for batch processing'] = '';
-//$strings['Send email notifications instantly'] = '';
-//$strings['Use email queueing'] = '';
-//$strings["If you're using a queue, outgoing emails will not slow down the system. Read more about how to set up email queueing in %email_queueing%"] = "";
-//$strings['Mail configuration'] = '';
-//$strings['Use php settings'] = '';
-//$strings['Use custom settings'] = '';
-//$strings['This setting determines whether The Bug Genie uses the built-in php email function, or a custom configuration'] = '';
-//$strings['SMTP server address'] = '';
-//$strings['SMTP address port'] = '';
-//$strings['SMTP server timeout'] = '';
-//$strings['%number_of% seconds'] = '';
-//$strings['Connection information for the outgoing email server'] = '';
-//$strings['Microsoft Exchange server'] = '';
-//$strings['For compatibility reasons, specify whether the SMTP server is a Microsoft Exchange server'] = '';
-//$strings['SMTP username'] = '';
-//$strings['The username used for sending emails'] = '';
-//$strings['SMTP password'] = '';
-//$strings['The password used for sending emails'] = '';
-//$strings['Click "%save%" to save email notification settings'] = '';
-//$strings['Send test email'] = '';
-//$strings['Enter an email address, and click "%send_test_email%" to check if the email module is configured correctly'] = '';
+  $strings['These are the settings for outgoing emails, such as notification emails and registration emails.'] = 'Estos son las configuraciones para el correo saliente, tales como la notificación por correo y el correo al registrarse.';
+  $strings['Enable outgoing email notifications'] = 'Habilitar los avisos por correo saliente';
+  $strings['Require email activation for new accounts'] = 'Solicitar activación por correo para las nuevas cuentas';
+  $strings["If this option is ticked, new accounts will require activation by clicking a link in the email. If this is ticked, the user's password will also be provided in the email, instead of in the registration screen"] = "Si esta opción está marcada, las nuevas cuentas requerirán activación a través del enlace del correo. También la contraseña del usuario será provista en el correo, en lugar del registro en pantalla";
+  $strings['Email "from"-name'] = 'Nombre "de" para correo';
+  $strings['Email "from"-address'] = 'Dirección "de" para correo';
+  $strings['This is the name and email address email notifications from The Bug Genie will be sent from'] = 'Este es el nombre y dirección de correo que The Bug Genie utilizará';
+  $strings["Don't use sendmail '-f'"] = "No utilizar sendmail '-f'";
+  $strings["Don't use the '-f' sendmail parameter (some systems may not allow it)"] = "No utiliza el parámetro '-f' de sendmail (algunos sistemas no lo permiten)";
+  $strings['Email header charset'] = 'Juego de caracteres';
+  $strings['The character encoding used in outgoing emails'] = 'La codificación de los caracteres usada en los correos salientes';
+  $strings['Queue emails for batch processing'] = 'Correos electrónicos a la cola para el procesamiento en lote';
+  $strings['Send email notifications instantly'] = 'Enviar avisos inmediatamente';
+  $strings['Use email queueing'] = 'Usar cola de correos electrónico';
+  $strings["If you're using a queue, outgoing emails will not slow down the system. Read more about how to set up email queueing in %email_queueing%"] = "Si esta usando una cola, el correo saliente no ralentizará al sistema. Lea más de como configurar una cola en %email_queueing%";
+  $strings['Mail configuration'] = 'Configuración de correo';
+  $strings['Use php settings'] = 'Usar configuración de php';
+  $strings['Use custom settings'] = 'Usar configuración personal';
+  $strings['This setting determines whether The Bug Genie uses the built-in php email function, or a custom configuration'] = 'Esta opción determina si The Bug Genie utiliza funciones de correo propias de php, o una configuración personalizada';
+  $strings['SMTP server address'] = 'Dirección del servidor SMTP';
+  $strings['SMTP address port'] = 'Puerto del servidor SMTP';
+  $strings['SMTP server timeout'] = 'Tiempo de espera del servidor SMTP';
+  $strings['%number_of% seconds'] = '%number_of% segundos';
+  $strings['Connection information for the outgoing email server'] = 'Información de la conexión del servidor para el correo saliente';
+  $strings['Microsoft Exchange server'] = 'Servidor Microsoft Exchange';
+  $strings['For compatibility reasons, specify whether the SMTP server is a Microsoft Exchange server'] = 'Pro motivos de compatibilidad, especifique si el servidor de SMTP es un Microsoft Exchange';
+  $strings['SMTP username'] = 'Nombre de usuario SMTP';
+  $strings['The username used for sending emails'] = 'El nombre de usuario utilizado para enviar correo';
+  $strings['SMTP password'] = 'Contraseña SMTP';
+  $strings['The password used for sending emails'] = 'La contraseña usada para el envío de correo';
+  $strings['Click "%save%" to save email notification settings'] = 'Haga clic en "%save%" para guardar las opciones de aviso';
+  $strings['Send test email'] = 'Enviar correo de prueba';
+  $strings['Enter an email address, and click "%send_test_email%" to check if the email module is configured correctly'] = 'Ingrese una dirección de correo, y haga clic en "%send_test_email%" para verificar si el módulo está correctamente configurado';
 
 // First occurrence is in: .\modules\main\classes\actioncomponents.class.php
 // ----------------------------------------------------------------------------
@@ -1948,9 +1948,9 @@
 // First occurrence is in: .\modules\main\templates\_attachedfile.inc.php
 // ----------------------------------------------------------------------------
   $strings['%filename%, uploaded %date%'] = '%filename%, subido %date%';
-//$strings['Use this tag to include this image: [[Image:%filename%|thumb|Image description]]'] = '';
-  $strings['Do you really want to detach this file?'] = '¿Realmente quiere desvincular este archivo?';
-  $strings['If you detach this file, it will be deleted. This action cannot be undone. Are you sure you want to remove this file?'] = 'Si desvincula este archivo, será eliminado. Esta acción no puede ser deshecha. ¿Está seguro que quiere quitar este archivo?';
+  $strings['Use this tag to include this image: [[Image:%filename%|thumb|Image description]]'] = 'Utilice esta etiquetea para incluir esta imagen: [[Image:%filename%|thumb|Descripción de la imagen]]';
+  $strings['Do you really want to detach this file?'] = '¿Realmente quiere separar este archivo?';
+  $strings['If you detach this file, it will be deleted. This action cannot be undone. Are you sure you want to remove this file?'] = 'Si desvincula este archivo, será eliminado. Esta acción no puede ser revertida. ¿Está seguro que quiere eliminarlo?';
 //$strings['Invalid file'] = '';
 
 // First occurrence is in: .\modules\main\templates\_attachedlink.inc.php
@@ -1994,7 +1994,7 @@
 // First occurrence is in: .\modules\main\templates\_comments.inc.php
 // ----------------------------------------------------------------------------
   $strings['Show system-generated comments'] = 'Mostrar comentarios del sistema';
-//$strings['Post comment'] = '';
+  $strings['Post comment'] = 'Publicar comentario';
   $strings['Create a comment'] = 'Crear un comentario';
   $strings['Save my changes with this comment'] = 'Guardar mis cambios con este comentario';
   $strings['%create_comment% or %cancel%'] = '%create_comment% o %cancel%';
@@ -2198,7 +2198,7 @@
 // First occurrence is in: .\modules\main\templates\_loginregister.inc.php
 // ----------------------------------------------------------------------------
   $strings['Register a new account'] = 'Registrar una nueva cuenta';
-//$strings['To register, please fill out the information below.'] = '';
+  $strings['To register, please fill out the information below.'] = 'Para registrarse, complete la información inferior por favor.';
   $strings['Required information is marked with an asterisk'] = 'La información obligatoria está marcada con un asterisco';
   $strings['Display name'] = 'Nombre a mostrar';
   $strings['The "display name" is the name shown to others'] = 'El "nombre a mostrar" es el nombre que ve el resto';
@@ -2495,7 +2495,7 @@
 // First occurrence is in: .\modules\main\templates\_uploader.inc.php
 // ----------------------------------------------------------------------------
   $strings['Attach one or more file(s) to this issue'] = 'Adjuntar uno o más archivos a este pedido';
-//$strings['Attach one or more file(s) to this article'] = '';
+  $strings['Attach one or more file(s) to this article'] = 'Adjuntar uno o más archivos a este artículo';
   $strings['Select a file'] = 'Seleccione un archivo';
   $strings['Files bigger than %max_filesize% can not be attached. Please check that the file you are attaching is not bigger than this.'] = 'Los archivos más grandes que %max_filesize% no pueden ser adjuntados. Verifique que el archivo no sea más grande que esto.';
   $strings['Describe the file'] = 'Describa el contenido del archivo';
@@ -2616,7 +2616,7 @@
 // First occurrence is in: .\modules\main\templates\myaccount.html.php
 // ----------------------------------------------------------------------------
   $strings['Profile information'] = 'Información del perfil';
-  $strings['General settings'] = 'Opciones generales';
+  $strings['General settings'] = 'Ajustes generales';
   $strings['Login accounts'] = 'Cuentas de acceso';
 //$strings['Scope memberships'] = '';
   $strings['Edit your profile details here, including additional information.'] = 'Aquí, edite su perfil, incluyendo información adicional.';
@@ -3333,7 +3333,7 @@
 
 // First occurrence is in: .\modules\project\templates\settings.html.php
 // ----------------------------------------------------------------------------
-//$strings['Project settings'] = '';
+  $strings['Project settings'] = 'Configuración del proyecto';
   $strings['"%project_name%" settings'] = 'Configuración de "%project_name%"';
   $strings['Project settings have been saved successfully'] = 'Las opciones del proyecto han sido guardadas con éxito';
 
@@ -3365,14 +3365,14 @@
 // ----------------------------------------------------------------------------
 //$strings['%number_of_articles% articles imported successfully'] = '';
 //$strings['Project archive'] = '';
-//$strings['Documentation'] = '';
-//$strings['Project documentation'] = '';
-//$strings['Documents'] = '';
+  $strings['Documentation'] = 'Documentación';
+  $strings['Project documentation'] = 'Documentación del proyecto';
+  $strings['Documents'] = 'Documentos';
 //$strings['Project documents'] = '';
   $strings['Help'] = 'Ayuda';
 //$strings['Project help'] = '';
-//$strings['Project wiki'] = '';
-//$strings['Wiki'] = '';
+  $strings['Project wiki'] = 'Wiki del proyecto';
+  $strings['Wiki'] = 'Wiki';
 //$strings['Can edit the wiki lefthand menu'] = '';
   $strings['Can access the project wiki'] = 'Puede acceder a la wiki del proyecto';
   $strings['Can write articles in project wiki'] = 'Puede escribir artículos en la wiki del proyecto';
@@ -3384,7 +3384,7 @@
 
 // First occurrence is in: .\modules\publish\classes\actions.class.php
 // ----------------------------------------------------------------------------
-//$strings["You don't have access to read this article"] = "";
+  $strings["You don't have access to read this article"] = "No tiene acceso a leer este artículo";
 //$strings['There was an error trying to show this revision'] = '';
 //$strings['Please specify a from- and to-revision to compare'] = '';
 //$strings['You do not have permission to edit this article'] = '';
@@ -3395,63 +3395,63 @@
 //$strings['The file has been modified since you last opened it'] = '';
   $strings['The article was saved'] = 'El artículo fue guardado';
 //$strings['An article with that name already exists. Please choose a different article name'] = '';
-//$strings['You have to provide a reason for the changes'] = '';
+  $strings['You have to provide a reason for the changes'] = 'Tiene que dar un motivo para los cambios';
 //$strings['You need to specify a valid article name'] = '';
 
 // First occurrence is in: .\modules\publish\templates\_articledisplay.inc.php
 // ----------------------------------------------------------------------------
-//$strings['Delete this article'] = '';
+  $strings['Delete this article'] = 'Borrar este artículo';
 //$strings['Do you really want to delete this article?'] = '';
 //$strings['Redirected from %article_name%'] = '';
-//$strings['Last updated at %time%, by %user%'] = '';
-//$strings['System'] = '';
-//$strings['Subcategories'] = '';
+  $strings['Last updated at %time%, by %user%'] = 'Ultima actualización %time%, por %user%';
+  $strings['System'] = 'Sistema';
+  $strings['Subcategories'] = 'Subcategorías';
 //$strings["This category doesn't have any subcategories"] = "";
-//$strings['Pages in this category'] = '';
+  $strings['Pages in this category'] = 'Páginas en esta categoría';
 //$strings['There are no pages in this category'] = '';
-//$strings['Categories:'] = '';
-//$strings['This article is not in any categories'] = '';
+  $strings['Categories:'] = 'Categorías:';
+  $strings['This article is not in any categories'] = 'Este artículo no está en ninguna categoría';
 
 // First occurrence is in: .\modules\publish\templates\_attachments.inc.php
 // ----------------------------------------------------------------------------
-//$strings['There are no file attached to this article'] = '';
+  $strings['There are no file attached to this article'] = 'No hay archivos adjuntos a este artículo';
 
 // First occurrence is in: .\modules\publish\templates\_header.inc.php
 // ----------------------------------------------------------------------------
   $strings['Show'] = 'Mostrar';
 //$strings['Create new article'] = '';
-//$strings['History'] = '';
+  $strings['History'] = 'Historia';
   $strings['Attachments'] = 'Adjuntos';
-//$strings['%article_name% ~ Edit'] = '';
-//$strings['%article_name% ~ History'] = '';
-//$strings['%article_name% ~ Permissions'] = '';
-//$strings['%article_name% ~ Attachments'] = '';
+  $strings['%article_name% ~ Edit'] = '%article_name% ~ Editar';
+  $strings['%article_name% ~ History'] = '%article_name% ~ Historia';
+  $strings['%article_name% ~ Permissions'] = '%article_name% ~ Permisos';
+  $strings['%article_name% ~ Attachments'] = '%article_name% ~ Adjuntos';
 
 // First occurrence is in: .\modules\publish\templates\_latestArticles.inc.php
 // ----------------------------------------------------------------------------
-//$strings['Recently edited pages here'] = '';
+  $strings['Recently edited pages here'] = 'Páginas editadas últimamente';
   $strings['%time%, by %user%'] = '%time%, por %user%';
-//$strings['There are no recent pages here'] = '';
+  $strings['There are no recent pages here'] = 'No hay páginas';
 
 // First occurrence is in: .\modules\publish\templates\_leftmenu.inc.php
 // ----------------------------------------------------------------------------
-//$strings['Wiki menu'] = '';
-//$strings['Links to this article'] = '';
-//$strings['No other articles links to this article'] = '';
+  $strings['Wiki menu'] = 'Menú Wiki';
+  $strings['Links to this article'] = 'Enlaces a este artículo';
+  $strings['No other articles links to this article'] = 'No hay enlaces a este artículo';
 
 // First occurrence is in: .\modules\publish\templates\_menustriplinks.inc.php
 // ----------------------------------------------------------------------------
-//$strings['Currently selected project'] = '';
-//$strings['Project wiki frontpage'] = '';
+  $strings['Currently selected project'] = 'Proyecto seleccionado';
+  $strings['Project wiki frontpage'] = 'Portada wiki del proyecto';
   $strings['Find project article (press enter to search)'] = 'Encuentre artículos del proyecto (Enter para buscar)';
-//$strings['Global content'] = '';
+  $strings['Global content'] = 'Contenido General';
   $strings['Find any article (press enter to search)'] = 'Encuentre cualquier artículo (Enter para buscar)';
   $strings['Project wikis'] = 'Wikis de proyectos';
 
 // First occurrence is in: .\modules\publish\templates\_placeholder.inc.php
 // ----------------------------------------------------------------------------
   $strings['This article has not been created yet.'] = 'Este artículo no ha sido creado aún';
-//$strings['Create this article'] = '';
+  $strings['Create this article'] = 'Crear este artículo';
   $strings['You can create this article by clicking %create_this_article% below.'] = 'Puede crear este artículo haciendo clic en %create_this_article%';
 
 // First occurrence is in: .\modules\publish\templates\_quicksearch_dropdown_firstitems.inc.php
@@ -3467,91 +3467,91 @@
 
 // First occurrence is in: .\modules\publish\templates\_settings.inc.php
 // ----------------------------------------------------------------------------
-//$strings['General wiki settings'] = '';
-//$strings['Import wiki articles'] = '';
-//$strings['Menu title'] = '';
-//$strings['Project archive / Archive'] = '';
-//$strings['Project documentation / Documentation'] = '';
-//$strings['Project documents / Documents'] = '';
-//$strings['Project help / Help'] = '';
-//$strings['Project wiki / Wiki'] = '';
-//$strings['Specify here if you want to show a different menu title than "Wiki" in the header menu'] = '';
-//$strings['Allow "CamelCased" links'] = '';
-//$strings['CamelCasing'] = '';
-//$strings['Traditionally, %CamelCasing% has been used to specify links between documents in Wikis. If you want to keep this turned on, specify so here. Make sure you read the %wikiformatting% wiki article if you are unsure how to use this feature.'] = '';
-//$strings['Show "Wiki" links'] = '';
-//$strings['Setting this to "%no%" will hide all "Wiki" tabs and links'] = '';
+  $strings['General wiki settings'] = 'Opciones generales para wiki';
+  $strings['Import wiki articles'] = 'Importar artículos wiki';
+  $strings['Menu title'] = 'Título del menú';
+  $strings['Project archive / Archive'] = 'Archivo del proyecto / Archivo';
+  $strings['Project documentation / Documentation'] = 'Documentación del Proyecto / Documentación';
+  $strings['Project documents / Documents'] = 'Documentos del proyecto / Documentos';
+  $strings['Project help / Help'] = 'Ayuda del proyecto / Ayuda';
+  $strings['Project wiki / Wiki'] = 'Wiki del proyecto / Wiki';
+  $strings['Specify here if you want to show a different menu title than "Wiki" in the header menu'] = 'Defina aqui si quiere mostrar un título de menú distinto a "Wiki" en la cabecera del menú';
+  $strings['Allow "CamelCased" links'] = 'Permitir enlaces "CamelCased"';
+  $strings['CamelCasing'] = 'CamelCasing';
+  $strings['Traditionally, %CamelCasing% has been used to specify links between documents in Wikis. If you want to keep this turned on, specify so here. Make sure you read the %wikiformatting% wiki article if you are unsure how to use this feature.'] = 'Tradicionalmente, %CamelCasing% ha sido utilizado para crear enlaces entre documentos en la Wiki. Si quiere mantenerlo, hágalo aquí. Asegúrese de haber leido el artículo %wikiformatting% si no está seguro de esta característica.';
+  $strings['Show "Wiki" links'] = 'Mostrar enlaces "Wiki"';
+  $strings['Setting this to "%no%" will hide all "Wiki" tabs and links'] = 'Poniendo esto en "%no%" ocultará todas las pestañas y enlaces "Wiki"';
   $strings['Require change reason'] = 'Necesita motivo para el cambio';
   $strings['Setting this to "%no%" will not require users to enter a reason when saving Wiki changes'] = 'Estableciendo esto en "%no%", no solicitará a los usuarios ingresar el motivo para guardar los cambios en Wiki';
-//$strings['Wiki permissions'] = '';
-//$strings['Open for everyone with access to add / remove content'] = '';
-//$strings['Only registered users can add / remove content'] = '';
-//$strings['Set wiki permissions manually'] = '';
-//$strings['Specify how you want to control access to wiki editing functionality'] = '';
-//$strings['Click "%save%" to save wiki settings'] = '';
-//$strings['Show articles in category'] = '';
+  $strings['Wiki permissions'] = 'Permisos Wiki';
+  $strings['Open for everyone with access to add / remove content'] = 'Permitir a cada uno con acceso a agregar / quitar contenido';
+  $strings['Only registered users can add / remove content'] = 'Solo los usuarios registrados puede agregar / quitar contenido';
+  $strings['Set wiki permissions manually'] = 'Establecer manualmente los permisos de wiki';
+  $strings['Specify how you want to control access to wiki editing functionality'] = 'Defina como quiere controlar el acceso a la edición de la funcionalidad wiki';
+  $strings['Click "%save%" to save wiki settings'] = 'Haga clic en "%save%" para guardar las opciones';
+  $strings['Show articles in category'] = 'Mostrar artículos en categorías';
   $strings['All categories'] = 'Todas las categorías';
-//$strings['Toggle selection on visible articles'] = '';
-//$strings['Import articles'] = '';
-//$strings['Please select which articles to import, from the list of available articles below. When you are finished, click the %import_articles% button at the bottom'] = '';
-//$strings['Open existing article in new window'] = '';
-//$strings['Importing this article will overwrite an existing article in the database'] = '';
-//$strings['Click "%import_articles%" to import the selected articles'] = '';
+  $strings['Toggle selection on visible articles'] = 'Cambiar selección en artículos visibles';
+  $strings['Import articles'] = 'Importar artículos';
+  $strings['Please select which articles to import, from the list of available articles below. When you are finished, click the %import_articles% button at the bottom'] = 'Por favor seleccione los artículos a importar, de la lista de artículos disponibles. Cuando haya finalizado, haga clic en el botón %import_articles% del pie';
+  $strings['Open existing article in new window'] = 'Abrir artículos existentes en una nueva ventana';
+  $strings['Importing this article will overwrite an existing article in the database'] = 'Al importar este artículo sobreescribirá el artículo existente en la base de datos';
+  $strings['Click "%import_articles%" to import the selected articles'] = 'Haga clic en "%import_articles%" para importar los artículos seleccionados';
 
 // First occurrence is in: .\modules\publish\templates\_toc.inc.php
 // ----------------------------------------------------------------------------
-//$strings['Table of contents'] = '';
-//$strings['Move your mouse here to toggle the table of contents'] = '';
+  $strings['Table of contents'] = 'Tabla de contenidos';
+  $strings['Move your mouse here to toggle the table of contents'] = 'Mueva el mouse aquí para cambiar la tabla de contenidos';
 
 // First occurrence is in: .\modules\publish\templates\articleattachments.html.php
 // ----------------------------------------------------------------------------
-//$strings['%article_name% attachments'] = '';
+  $strings['%article_name% attachments'] = 'Adjuntos a %article_name%';
 
 // First occurrence is in: .\modules\publish\templates\articlehistory.html.php
 // ----------------------------------------------------------------------------
-//$strings['%article_name% history'] = '';
-//$strings['Updated'] = '';
-//$strings['Author'] = '';
-//$strings['Compare'] = '';
-//$strings['Initial import'] = '';
-//$strings['Restore this version'] = '';
-//$strings['Are you sure you want to restore this revision?'] = '';
-//$strings['If you confirm, all changes after this revision will be lost, and the article reverted back to the state it was in revision %revision_number%'] = '';
-//$strings['%yes% or %cancel%'] = '';
+  $strings['%article_name% history'] = '%article_name% historia';
+  $strings['Updated'] = 'Actualizado';
+  $strings['Author'] = 'Autor';
+  $strings['Compare'] = 'Comparar';
+  $strings['Initial import'] = 'Importación inicial';
+  $strings['Restore this version'] = 'Restaurar está versión';
+  $strings['Are you sure you want to restore this revision?'] = '¿Está seguro que quiere restaurar esta revisión?';
+  $strings['If you confirm, all changes after this revision will be lost, and the article reverted back to the state it was in revision %revision_number%'] = 'Si confirma, todos los cambios posteriores a esta revisión se perderán, y el artículo revertido a la revisión %revision_number%';
+  $strings['%yes% or %cancel%'] = '%yes% o %cancel%';
   $strings['%revision_number%, by %author% [%date%]'] = '%revision_number%, por %author% [%date%]';
 //$strings['Showing the difference between revisions: %from_revision% &rArr; %to_revision%'] = '';
   $strings['Back to history'] = 'Volver al historial';
 
 // First occurrence is in: .\modules\publish\templates\articlepermissions.html.php
 // ----------------------------------------------------------------------------
-//$strings['%article_name% permissions'] = '';
-//$strings['Specify permissions for entire wiki'] = '';
-//$strings['Specify permissions for the article %article_name%'] = '';
+  $strings['%article_name% permissions'] = 'permisos %article_name%';
+  $strings['Specify permissions for entire wiki'] = 'Definir permisos globales para wiki';
+  $strings['Specify permissions for the article %article_name%'] = 'Especificar los permisos para el artículo %article_name%';
 //$strings['Specify permissions to edit categories'] = '';
-//$strings['Specify permissions for the %namespace% namespace'] = '';
-//$strings['Select this option to specify permissions for the entire wiki.'] = '';
-//$strings['Select this option to specify permissions for this article.'] = '';
+  $strings['Specify permissions for the %namespace% namespace'] = 'Especificar permisos para el espacio de nombres %namespace%';
+  $strings['Select this option to specify permissions for the entire wiki.'] = 'Seleccione esta opción para definir los permisos para todo wiki.';
+  $strings['Select this option to specify permissions for this article.'] = 'Seleccione esta opción para definir los permisos para este artículo.';
 //$strings['Select this option to specify permissions for who can create and edit categories.'] = '';
-//$strings['Specify permissions for the %namespace% namespace. These permissions will apply for all articles in the mentioned namespace for which article-specific permissions, or child-namespace permissions have not been granted.'] = '';
-//$strings['Edit read permissions'] = '';
-//$strings['Edit write permissions'] = '';
-//$strings['Edit delete permissions'] = '';
+  $strings['Specify permissions for the %namespace% namespace. These permissions will apply for all articles in the mentioned namespace for which article-specific permissions, or child-namespace permissions have not been granted.'] = 'Especifique permisos para el nombre de espacio %namespace%. Estos permisos se aplicarán a todos los artículos en el espacio de nombres menciando para aquellos artículos específicos, o permisos para espacios de nombres dependientes que no hayan recibido permisos.';
+  $strings['Edit read permissions'] = 'Editar permisos de lectura';
+  $strings['Edit write permissions'] = 'Editar permisos de escritura';
+  $strings['Edit delete permissions'] = 'Editar permisos para borrar';
 //$strings['You do not have access to edit permissions for this article'] = '';
 
 // First occurrence is in: .\modules\publish\templates\editarticle.html.php
 // ----------------------------------------------------------------------------
-//$strings['Editing %article_name%'] = '';
-//$strings['This is a preview of the article'] = '';
-//$strings['Continue editing'] = '';
-//$strings['The article has not been saved yet'] = '';
-//$strings['This is the name you use when you link to this article'] = '';
-//$strings['Article content'] = '';
-//$strings['Change reason'] = '';
-//$strings['Enter a short reason summarizing your changes (max. 255 characters)'] = '';
-//$strings['Actions available'] = '';
-//$strings['Create article'] = '';
-//$strings['Preview article'] = '';
-//$strings['Preview changes'] = '';
+  $strings['Editing %article_name%'] = 'Editando %article_name%';
+  $strings['This is a preview of the article'] = 'Esta es una vista previa del artículo';
+  $strings['Continue editing'] = 'Continuar editando';
+  $strings['The article has not been saved yet'] = 'El artículo no ha sido guardado aún';
+  $strings['This is the name you use when you link to this article'] = 'Este es el nombre que usará cuando haga un vínculo a este artículo';
+  $strings['Article content'] = 'Contenido del artículo';
+  $strings['Change reason'] = 'Motivo del cambio';
+  $strings['Enter a short reason summarizing your changes (max. 255 characters)'] = 'Ingrese un breve resumen justificando los cambios (max. 255 caracteres)';
+  $strings['Actions available'] = 'Acciones disponibles';
+  $strings['Create article'] = 'Crear artículo';
+  $strings['Preview article'] = 'Vista previa del artículo';
+  $strings['Preview changes'] = 'Vista previa de los cambios';
 
 // First occurrence is in: .\modules\publish\templates\findarticles.html.php
 // ----------------------------------------------------------------------------
@@ -3783,8 +3783,8 @@
 // First occurrence is in: .\modules\vcs_integration\classes\TBGVCSIntegration.class.php
 // ----------------------------------------------------------------------------
   $strings['Commits'] = 'Código confirmado';
-//$strings['Issue updated from code repository'] = '';
-//$strings['This issue has been updated with the latest changes from the code repository.<source>%commit_msg%</source>'] = '';
+  $strings['Issue updated from code repository'] = 'Petición actualizada por código desde el repositorio';
+  $strings['This issue has been updated with the latest changes from the code repository.<source>%commit_msg%</source>'] = 'Esta petición ha sido actualizada con los últimos cambios desde el repositorio.<source>%commit_msg%</source>';
 
 // First occurrence is in: .\modules\vcs_integration\classes\actions.class.php
 // ----------------------------------------------------------------------------
@@ -3800,10 +3800,10 @@
 //$strings['Changed files'] = '';
 //$strings['No files have been affected by this commit'] = '';
 //$strings['directory'] = '';
-//$strings['Diff'] = '';
+  $strings['Diff'] = 'Diferencia';
 //$strings['deleted'] = '';
-//$strings['new file'] = '';
-//$strings['View'] = '';
+  $strings['new file'] = 'Archivo nuevo';
+  $strings['View'] = 'Ver';
 //$strings['Affected issues'] = '';
 //$strings['This commit affects no issues'] = '';
 //$strings['This commit only affects issues you do not hae access to'] = '';
@@ -3820,20 +3820,20 @@
   $strings['Enable VCS Integration?'] = '¿Habilita integración con VCS?';
 //$strings['Enable workflow?'] = '';
 //$strings['This will allow specially-crafted commit messages to cause a workflow transition, in the same way as incoming emails. See the documentation for details.'] = '';
-//$strings['Access method'] = '';
+  $strings['Access method'] = 'Método de acceso';
   $strings['Direct Access (via a call to tbg_cli)'] = 'Acceso Directo (via llamada a tbg_cli)';
   $strings['HTTP Access (via a call to a URL)'] = 'Acceso HTTP (via llamada a URL)';
   $strings['Required for Github and Gitorious users'] = 'Necesario para usuarios de Github y Gitorious';
   $strings['HTTP Passkey'] = 'Passkey HTTP';
-//$strings['URL to repository browser'] = '';
+  $strings['URL to repository browser'] = 'URL al navegador de repositorio';
   $strings['If the repository name is part of the URL (e.g. http://www.example.com/viewvc/myrepo), please include it as part of this field.'] = 'Si el nombre del repositorio es parte de la UTL (ej.  http://www.ejemplo.com/viewvc/mirepo), por favor inclúyalo como parte de este campo.';
   $strings['Repository browser type'] = 'Tipo de navegación del repositorio';
   $strings['Set URLs manually'] = 'URLs definidas manualmente';
-//$strings['Multi-system'] = '';
-//$strings['using MultiViews'] = '';
+  $strings['Multi-system'] = 'Multi-sistema';
+  $strings['using MultiViews'] = 'utilizando MultiViews';
   $strings['locally hosted'] = 'alojado localmente';
   $strings['If you are setting up for the first time, it is recommended you set a browser type, which will automatically set the URLs for you.'] = 'Si está definiendo esto por primera vez, se recomienda definir tipo de navegación, lo que definirá automáticamente las URLs';
-//$strings['Repository name'] = '';
+  $strings['Repository name'] = 'Nombre del repositorio';
   $strings['Custom browser URLs'] = 'URLs de navegación personalizadas';
   $strings['In the Commit details page field, the following parameters will be replaced with a real value when link is generated:'] = 'En el campo de detalles de Commit, los parámetros siguientes serán reemplazados con el valor real cuando el enlace sea generado:';
   $strings['Revision number/hash of either the current or previous revision (the one to use is automatically chosen as appropriate)'] = 'Número de revisión / hash de la revisión ya sea actual o anterior (la que se usa se selecciona automáticamente según el caso)';
@@ -3850,7 +3850,7 @@
 
 // First occurrence is in: .\modules\vcs_integration\templates\_projectconfig_tab.inc.php
 // ----------------------------------------------------------------------------
-//$strings['VCS Integration'] = '';
+  $strings['VCS Integration'] = 'Integración VCS';
 
 // First occurrence is in: .\modules\vcs_integration\templates\_projectheaderbutton.inc.php
 // ----------------------------------------------------------------------------
@@ -3868,365 +3868,3 @@
 // ----------------------------------------------------------------------------
   $strings['"%project_name%" commits'] = 'Código de %project_name%';
 //$strings['No commits have been found for this project'] = '';
-
-  
-  $strings['Use this page to set up the connection details for your LDAP or Active Directory server. The user you select here will need access to the user list, so the username and password users log in with can be verified, but no write access is necessary.'] = 'Utilice esta página para establecer los detalles de la conexión para su servidor LDAP o Active Directory. El usuario que aquí seleccione necesitará acceso a la lista de usuarios, para que los usuarios que quieran ingresar sean verificados, pero no es necesario el permiso de escritura.';
-  $strings['Important information'] = 'Información importante';
-  $strings['When you enable LDAP as your authentication backend in Authentication configuration, you will lose access to all accounts which do not also exist in the LDAP database. This may mean you lose administrative access.'] = 'Cuando LDAP esté habilitado como su método de autenticación en la configuración de autentificación, perderá el acceso a todas las cuentas que no existan en la base de datos de LDAP. Esto quiere decir que perderá los accesos de administración';
-  $strings['To resolve this issue, either import all users using the tool on this page and make one an administrator using Users configuration, or create a user with the same username as one in LDAP and make that one an administrator.'] = 'Para resolver este inconveniente, importe todos los usuarios utilizando la herramienta de esta página y haga un único administrador utilizando la configuración de Usuarios, o cree un usuario con el mismo nombre de usuario que haya en LDAP y hagalo administrador.';
-  $strings['Hostname'] = 'Nombre de servidor';
-  $strings['Use URL syntax (ldap://hostname:port). If your server requires SSL, use ldaps://hostname/ in this field.'] = 'Utilice la sintáxis de URL (ldap://nombre_de_servidor:puerto). Si su servidor solicita SSL, utilice ldaps://nombre_de_servidor/ en este campo';
-  $strings['Connection details'] = 'Detalles de conexión';
-  $strings['Port'] = 'Puerto';  
-  $strings['Warning: The password will be stored unencrypted in the database.'] = 'Atención: La contraseña será almacenada en forma desencriptada en la base de datos.';
-  $strings['Base DN'] = 'DN base';
-  $strings['This should be the DN string for the OU containing the user list. For example, OU=People,OU=staff,DN=ldap,DN=example,DN=com.'] = 'Esta prodría ser la cadena DN para el OU que contenga la lista de usuarios. Por ejemplo, OU=People, OU=staff,DN=ldap,DN=example,DN=com.';
-  $strings['Allowed groups'] = 'Grupos permitidos';
-  $strings['You may wish to restrict access to users who belong to certain groups in LDAP. If so, write a comma separated list of group names here. Leave blank to disable this feature.'] = '';
-  $strings['Click "%save%" to save the settings'] = 'Haga clic en "%save%" para salvar la configuración';
-  $strings['Test connection'] = 'Probar conexión';
-  $strings['After configuring and saving your connection settings, you should test your connection to the LDAP server. This test does not check whether the DN can correctly find users, but it will give an indication if The Bug Genie can talk to your LDAP server.'] = 'Luego de configurar y guardar las opciones de conexión, debería probar la conexión con el servidor LDAP. Esta prueba no revisa si el DN puede encontrar usuarios correctamente, pero la dará un indicio si The Bug Genie puede comunicarse con su servidor LDAP.';
-  $strings['Import all users'] = 'Importar todos los usuarios';
-  $strings["So that you can ensure all users from LDAP exist in The Bug Genie exist for initial configuration (e.g. to set permissions), you can import all users who don't already exist using this tool. If you set a group restriction, this will be obyed here. Remember to make at least one an administrator so you can continue to configure The Bug Genie after switching."] = 'Puede asegurarse de que todos los usuarios de LDAP existan en The Bug Genie en la configuración inicial (por ejemplo, para definir permisos), puede importar todos los usuarios que no existan utilizando esta herramienta. Si define una restricción a un grupo, ésta será aplicada aquí. Recuerde hacer al menos un administrador para poder continuar la configuración de the Bug Genie después de cambiarlo.';
-  $strings['Import users'] = 'Importar usuarios';
-  $strings['Prune users'] = 'Quitar usuarios';
-  $strings["If a user is deleted from LDAP then they will not be able to log into The Bug Genie. However if you want to remove users from The Bug Genie who have been deleted from LDAP you may wish to prune the users list. This action will delete all users from The Bug Genie's user list who do not exist in the LDAP database, and can not be reversed."] = 'Si un usuario es borrado de LDAP entonces no podrá acceder a The Bug Genie. Sin embargo si quiere quitar usuarios de The Bug Genie que han sido eliminados en LDAP puede quitar los usuarios de la lista. Esta acción eliminará todos los usuarios de la lista de The Bug Genie que no existan en la base de datos de LDAP, y no puede deshacerse.';
-  $strings['LDAP support is not installed']='El soporte para LDAP no está instalado';
-  $strings['The PHP LDAP extension is required to use this functionality. As this module is not installed, all functionality on this page has been disabled.']='La extensión LDAP de PHP es necesaria para activar esta funcionalidad. Como el módulo no está instalado, todas las opciones de esta página han sido inhabilitadas.';
-  $strings['Users DN']  = 'DN usuarios';
-  $strings['Username attribute']  = 'Atributos del nombre de usuario';
-  $strings['This field should contain the name of the attribute where the username is stored, such as uid.']  = 'Este campo debe contener el nombre del atributo en donde el nombre de usuario es guardado, como el uid.';
-  $strings['Full name attribute']  = 'Atributo del nombre completo';
-  $strings['Email address attribute']  = 'Atributo de la cuenta de correo';
-  $strings['Groups DN']  = 'DN grupos';
-  $strings['This should be the DN string for the OU containing the group list.']  = 'Esta debe ser la cadena DN para el OU que contiene la lista del grupo.';
-  $strings['Group members attribute']  = 'Atributo de los miembros del grupo';
-  $strings['This field should contain the name of the attribute where the list of members of a group is stored, such as uniqueMember.']  = 'Este campo debe contener el nombre del atributo donde la lista de miembros de un grupo es almacenado, como uniqueMember.';
-  $strings['Please insert the authentication details for a user who can access all LDAP records.'] = 'Por favor inserte los detalles de autentificación de usuario para que pueda acceder a todos los registros de LDAP.';
-  
-  	$strings['Configure mail notification module'] = 'Configuración módulo de notificación por correo';
-	$strings['Set up the mail notification module here.'] = 'Defina las opciones del módulo de notificación por correo aquí.';
-	$strings['Set up email- and user notifications from this section.'] = 'Establezca las opciones de correo y notificación a usuarios desde esta sección.';
-	$strings['SMTP server address'] = 'Dirección del servidor SMTP';
-	$strings['The address BUGS 2 should use to send emails via'] = 'The address BUGS 2 should use to send emails via';
-	$strings['SMTP address port'] = 'Puerto del servidor SMTP';
-	$strings['The port used by the SMTP server (default is 25)'] = 'El puerto utilizado por el servidor SMTP (por defecto es 25)';
-	$strings['Server type'] = 'Tipo de servidor';
-	$strings['Select whether the SMTP server is a MS Exchange server'] = 'Seleccione si el servidor de SMTP es un servidor MS Exchange';
-	$strings['SMTP username'] = 'Nombre de usuario SMTP';
-	$strings['The username used for sending emails'] = 'El nombre de usuario utilizado para enviar correo';
-	$strings['SMTP password'] = 'Contraseña SMTP';
-	$strings['The password used for sending emails'] = 'La contraseña usada para el envío de correo';
-	$strings['Email "from"-name'] = 'Nombre "de" para correo';
-	$strings['The name people will see when receiving emails from BUGS 2'] = 'El nombre de la persona que verán los usuarios cuando reciban un correo de The Bug Genie';
-	$strings['Email "from"-address'] = 'Dirección "de" para correo';
-	$strings['The email-address people will see when receiving emails from BUGS 2'] = 'La cuenta de correo que las personas verán cuando reciban un correo de The Bug Genie';
-	$strings['Email header charset'] = 'Juego de caracteres';
-	$strings['The charset used in outgoing emails'] = 'El conjunto de caracteres utilizado para los correos salientes';
-	$strings['Notification settings'] = 'Opciones de notificación';
-	$strings['Always notify'] = 'Notificar siempre';
-	$strings['Send notification email on my own changes'] = 'Enviar notificación en mis propios cambios';
-	$strings['Only notify me when others are committing changes'] = 'Solo notificarme cuando otros hagan cambios';
-	$strings['Enter an email address, and click "Send test email" to check if the email module is configured correctly'] = 'Ingrese la direcciónd de correo, y haga clic en "Enviar correo de prueba" para verificar que el módulo está configurado correctamente';
-	$strings['The test output will appear below this form'] = 'La respuesta de la prueba aparecerá debajo de este formulario';
-	$strings['Send test email to'] = 'Enviar prueba a';
-	$strings['Send test email'] = 'Enviar correo de prueba';
-	$strings['Test email output'] = 'Respuesta de la prueba';
-	$strings['Test configuration'] = 'Configuración de la prueba';
-	$strings['Mail notification'] = 'Notificación por correo';
-	$strings['Email when user registers'] = 'Correo cuando un usuario registra';
-	$strings['Email to reset password'] = 'Correo al limpiar la contraseña';
-	$strings['Email on issue update'] = 'Correo al actualizar una petición';
-	$strings['Email on new issues'] = 'Correo cuando haya nuevas peticiones';
-	$strings['Email when comments are posted'] = 'Correo cuando los comentarios son publicados';
-	$strings['"My account" settings'] = 'Configuración de "Mi cuenta"';
-	$strings['"My account" drop-down settings'] = 'Opciones para el menú "Mi cuenta"';
-	$strings['Email when password is reset'] = 'Correo cuando se restablece la contraseña';
-	$strings['SMTP server timeout'] = 'Tiempo de espera del servidor SMTP';
-	$strings['Timeout in seconds (default is 30)'] = 'Tiempo de espera en segundos (30 por defecto)';
-	$strings['This username does not exist'] = 'Este nombre de usuario no existe';
-	$strings['Please use the link in the email you received'] = 'Por favor, utilice el enlace en la dirección de correo electrónico que ha recibido';
-	$strings['If you have forgot your password, enter your username here, and we will send you an email that will allow you to change your username'] = 'Si ha olvidado su contraseña, introduzca su nombre de usuario aquí, y le enviaremos un mensaje de correo electrónico que le permitirá cambiar su contraseña';
-	$strings['Notify me when someone adds me as their friend'] = 'Avisarme cuando alguien me agrega como amigo';
-	$strings['Notify me when an issue I posted gets updated'] = 'Avisarme cuando una petición que publiqué sea actualizada';
-	$strings['Send me a notification email when I update an issue'] = 'Enviarme un correo cuando actualice una petición';
-	$strings['Notify me when someone comments on an issue I posted'] = 'Avisarme cuando alguien comenta una petición que publiqué';
-  	$strings['Notify me when an issue I commented on gets updated'] = 'Avisarme cuando un pedido que comenté sea actualizado';	
-	$strings['Outgoing settings'] = 'Configuración saliente';
-	$strings['Incoming settings'] = 'Configuración entrante';
-	$strings['Outgoing emails'] = 'Correos salientes';
-	$strings['These are the settings for outgoing emails, such as notification emails and registration emails.'] = 'Estos son las configuraciones para el correo saliente, tales como la notificación por correo y el correo al registrarse.';
-	$strings['Enable outgoing email notifications'] = 'Habilitar los avisos por correo saliente';
-	$strings['The character encoding used in outgoing emails'] = 'El conjunto de caracteres utilizado para los correos salientes';
-	$strings['Queue emails for batch processing'] = 'Correos electrónicos a la cola para el procesamiento en lote';
-	$strings['Send email notifications instantly'] = 'Enviar avisos inmediatamente';
-	$strings['Use email queueing'] = 'Usar cola de correos electrónico';
-	$strings['If you\'re using a queue, outgoing emails will not slow down the system. Read more about how to set up email queueing in %email_queueing%'] = 'Si esta usando una cola, el correo saliente no ralentizará al sistema. Lea más de como configurar una cola en %email_queueing%';
-	$strings['Mail configuration'] = 'Configuración de correo';
-	$strings['Use php settings'] = 'Usar configuración de php';
-	$strings['Use custom settings'] = 'Usar configuración personal';
-	$strings['This setting determines whether The Bug Genie uses the built-in php email function, or a custom configuration'] = 'Esta opción determina si The Bug Genie utiliza funciones de correo propias de php, o una configuración personalizada';
-	$strings['%number_of% seconds'] = '%number_of% segundos';
-	$strings['Connection information for the outgoing email server'] = 'Información de la conexión del servidor para el correo saliente';
-	$strings['Microsoft Exchange server'] = 'Servidor Microsoft Exchange';
-	$strings['For compatibility reasons, specify whether the SMTP server is a Microsoft Exchange server'] = 'Pro motivos de compatibilidad, especifique si el servidor de SMTP es un Microsoft Exchange';
-	$strings['This section doesn\'t have any settings yet'] = 'Esta sección no tiene opciones todavía';
-	$strings['Click "%save%" to save email notification settings'] = 'Haga clic en "%save%" para guardar las opciones de aviso';
-	$strings['Enter an email address, and click "%send_test_email%" to check if the email module is configured correctly'] = 'Ingrese una dirección de correo, y haga clic en "%send_test_email%" para verificar si el módulo está correctamente configurado';
-	$strings['Yes'] = 'Sí';
-	$strings['No'] = 'No';
-	$strings['Save'] = 'Guardar';
-	$strings['Username'] = 'Nombre de usuario';
-	$strings['Password'] = 'Contraseña';
-	$strings['Issues'] = 'Peticiones';
-	$strings['General'] = 'General';
-	$strings['Email communication'] = 'Comunicación por correo';
-	$strings['Enables in- and outgoing email functionality'] = 'Habilita la funcionalidad de correo entrante/saliente';
-	$strings['Set up in- and outgoing email communication from this section'] = 'Defina la comunicación para correo entrante y saliente desde esta sección';
-	$strings['Notifications'] = 'Notificaciones';
-	$strings['Email when an issue is updated'] = 'Correo cuando una peticion es actualizada';
-	$strings['Javascript Mailing'] = 'Correo Javascript';
-	$strings['The email module is not configured for outgoing emails'] = 'El módulo de correo no está configurado para correo saliente';
-	$strings['Forgot password'] = 'Olvido de contraseña';
-	$strings['Forgot password?'] = '¿Olvidó su contraseña?';
-	$strings['If you have forgot your password, enter your username here, and we will send you an email that will allow you to change your password'] = 'Si olvidó su contraseña, ingrese aquí su nombre de usuario y le enviaremos un correo que le permitirá cambiar la contraseña';
-	$strings['Send email'] = 'Enviar correo';
-	$strings['To register, please fill out the information below.'] = 'Para registrarse, complete la información inferior por favor.';
-	$strings['Cannot find an email address for this user'] = 'No se puede encontrar una dirección de correo para este usuario';
-	$strings['Forbidden for this username, please contact your administrator'] = 'Prohibido para este nombre de usuario, contáctese con su administrador';
-	$strings['Please enter an username'] = 'Ingrese un nombre de usuario por favor';
-	$strings['The email was successfully accepted for delivery'] = 'El correo fue aceptado para el envío';
-	$strings['The email was not sent'] = 'El correo no fue enviado';
-	$strings['Please specify an email address'] = 'Por favor establezca una dirección de correo';
-	$strings['You need to add at least one recipient'] = 'Es necesario agregar al menos un receptor';
-	$strings['You need to add a sender name and address'] = 'Es necesario agregar un nombre y una dirección';
-	$strings['Timed out during server conversation'] = 'Se superó el tiempo de espera con el servidor';
-	$strings['Could not open connection to server %server on port %port%'] = 'No se puede establecer la conexión con el servidor %server en el puerto %port%';
-	$strings['Not ready to authenticate. (%rv%) Try changing server type'] = 'No está listo para autenticar. (%rv%) Intente cambiando el tipo de servidor';
-	$strings['Username / password not accepted on server: %rv%'] = 'Nombre de usuario o contraseña no aceptados en el servidor: %rv%';
-	$strings["You are not allowed to send emails through this server. \nThe error was: %rv%"] = "No tiene permitido enviar correo a través de este servidor. \nEl error fue: %rv%";
-	$strings["Did not receive a confirmation message from the mail server.. \nHowever, we received: %rv%"] = "No se recibió un mensaje de confirmación desde el servidor de correo. \nDe todas maneras, recibimos: %rv%";
-	$strings['You are not allowed to send emails through this server. The error was: %rv%']='No tiene permitido enviar correo a través de este servidor. \nEl error fue: %rv%';
-	$strings['Did not receive a confirmation message from the mail server.. However, we received: %rv%']='No se recibió un mensaje de confirmación desde el servidor de correo. \nDe todas maneras, recibimos: %rv%';
-	$strings['The character encoding used in outgoing emails'] = 'La codificación de los caracteres usada en los correos salientes';
-	$strings['This is the name and email address email notifications from The Bug Genie will be sent from'] = 'Este es el nombre y dirección de correo que The Bug Genie utilizará';
-	$strings['Don\'t use sendmail \'-f\''] = 'No utilizar sendmail \'-f\''; 
-	$strings['Don\'t use the \'-f\' sendmail parameter (some systems may not allow it)'] = 'No utiliza el parámetro \'-f\' de sendmail (algunos sistemas no lo permiten)';
-	$strings['Require email activation for new accounts']  ='Solicitar activación por correo para las nuevas cuentas';
-	$strings['If this option is ticked, new accounts will require activation by clicking a link in the email. If this is ticked, the user\'s password will also be provided in the email, instead of in the registration screen'] = 'Si esta opción está marcada, las nuevas cuentas requerirán activación a través del enlace del correo. También la contraseña del usuario será provista en el correo, en lugar del registro en pantalla';
-	$strings['Incoming email accounts'] = 'Cuentas de correo entrantes';	
-	
-	$strings['Common actions'] = 'Acciones comunes';
-	$strings['Actions available'] = 'Acciones disponibles';
-	$strings['URL:'] = 'URL:';
-	$strings['System'] = 'Sistema';
-	$strings['Project documentation'] = 'Documentación del proyecto';
-	$strings['Documentation'] = 'Documentación';
-	$strings['Wiki'] = 'Wiki';
-	$strings['Wiki menu'] = 'Menú Wiki';
-	$strings['Links to this article'] = 'Enlaces a este artículo';
-	$strings['Your drafts'] = 'Sus borradores';
-	$strings["You don't have any unpublished pages"] = 'No tiene páginas sin publicar';
-	$strings['Recently edited pages'] = 'Páginas editadas últimamente';
-	$strings['Show wiki'] = 'Mostrar wiki';
-	$strings['History'] = 'Historia';
-	$strings['Last updated at %time%, by %user%'] = 'Ultima actualización el %time%, por %user%';
-	$strings['Categories:'] = 'Categorías:';
-	$strings['This article is not in any categories'] = 'Este artículo no está en ninguna categoría';
-	$strings['Edit this article'] = 'Editar este artículo';
-	$strings['Delete this article'] = 'Borrar este artículo';
-	$strings['Really delete this article?'] = '¿Está seguro de borrar este artículo?';
-	$strings['Deleting this article will remove it from the system.'] = 'Al borrar este artículo lo quitará del sistema.';
-	$strings['This is the name you use when you link to this article'] = 'Este es el nombre que se utiliza cuando vincule este artículo';
-	$strings['Article content'] = 'Contenido del artículo';
-	$strings['For help and tips on how to format your article, see %wiki_formatting%'] = 'Para ayuda y consejos de como formatear su artículo, vea %wiki_formatting%';
-	$strings['Change reason'] = 'Motivo del cambio';
-	$strings['Enter a short reason summarizing your changes (max. 255 characters)'] = 'Escriba una explicación breve resumiendo sus cambios (máx. 255 caracteres)';
-	$strings['Preview changes'] = 'Vista previa de los cambios';
-	$strings['Basic information'] = 'Información básica';
-	$strings['This is the basic settings for the wiki'] = 'Esta es la configuración básica para el wiki';
-	$strings['Menu title'] = 'Título del menú';
-	$strings['Archive'] = 'Archivar';
-	$strings['Documents'] = 'Documentos';
-	$strings['Help'] = 'Ayuda';
-	$strings['Specify here if you want to show a different menu title than "Wiki" in the header menu'] = 'Especifique aquí si quiere mostrar un título distinto a "Wiki" en el menú de la cabecera';
-	$strings['Allow "CamelCased" links'] = 'Permitir enlaces "CamelCased"';
-	$strings['CamelCasing'] = 'CamelCasing';
-	$strings['Traditionally, %CamelCasing% has been used to specify links between documents in Wikis. If you want to keep this turned on, specify so here. Make sure you read the %wikiformatting% wiki article if you are unsure how to use this feature.'] = 'Tradicionalmente, %CamelCasing% ha sido usado para definir vínculos entre documentos en los Wikis. Si quiere mantenerlos, defínalo aquí. Asegúrese de leer el artículo de wiki sobre %wikiformatting% si no está seguro como usar esta característica.';
-	$strings['Click "%save%" to save wiki settings'] = 'Haga clic en "%save%" para guardar la configuración de wiki';
-	$strings['Yes'] = 'Sí';
-	$strings['No'] = 'No';
-	$strings['Edit'] = 'Editar';
-	$strings['Cancel'] = 'Cancelar';
-	$strings['cancel'] = 'cancelar';
-	$strings['Save'] = 'Guardar';
-	$strings['Your changes has been saved'] = 'Sus cambios han sido guardados';
-	$strings['Category'] = 'Categoría';
-	$strings['Comment'] = 'Comentario';
-	$strings['Title'] = 'Título';
-	$strings['URL'] = 'URL';
-	$strings['Save changes'] = 'Guardar cambios';
-	$strings['Article name'] = 'Nombre del artículo';
-	$strings['Actions'] = 'Acciones';
-	$strings['Enables Wiki-functionality'] = 'Habilita funcionalidad Wiki'; 
-	$strings['Set up the Wiki module from this section'] = 'Configure el módulo wiki desde esta sección'; 
-	$strings['Global content'] = 'Contenido global'; 
-	$strings['Project wiki'] = 'Wiki del proyecto'; 
-	$strings['Can create and manage articles'] = 'Puede crear y gestionar artículos';
-	$strings['Can delete billboard posts'] = 'Puede borrar publicaciones';
-	$strings['Can post articles on global billboard'] = 'Puede publicar artículos en el tablero general';
-	$strings['Can post articles on team billboard'] = 'Puede publicar artículos en el tablero del equipo';
-	$strings['Project archive / Archive'] = 'Archivo del proyecto / Archivo'; 
-	$strings['Project documentation / Documentation'] = 'Documentación del Proyecto / Documentación'; 
-	$strings['Project documents / Documents'] = 'Documentos del proyecto / Documentos'; 
-	$strings['Project help / Help'] = 'Ayuda del proyecto / Ayuda'; 
-	$strings['Project wiki / Wiki'] = 'Wiki del proyecto / Wiki'; 
-	$strings['Show "Wiki" links'] = 'Mostrar enlaces "Wiki"'; 
-	$strings['Setting this to "%no%" will hide all "Wiki" tabs and links'] = 'Poniendo esto en "%no%" ocultará todas las pestañas y enlaces "Wiki"';
-	$strings['Project wiki'] = 'Wiki del proyecto';
-	$strings['Currently selected project'] = 'Proyecto seleccionado'; 
-	$strings['Project wiki frontpage'] = 'Portada wiki del proyecto'; 
-	$strings['The are no other projects to choose from'] = 'No hay otros proyectos para seleccionar';
-	$strings['Scrum'] = 'Scrum';
-	$strings['If you have not already registered, please use the "Register new account" tab.'] = 'Si no se ha registrado, por favor utilice la pestaña "Registrar nueva cuenta".';
-	$strings['To register, please fill out the information below'] = 'Para registrarse, complete la información';
-	$strings['Pages in this category'] = 'Páginas en esta categoría';
-	$strings['Subcategories'] = 'Subcategorías';
-	$strings['No other articles links to this article'] = 'Sin otros enlaces a este artículo'; 
-	$strings['Table of contents'] = 'Tabla de contenidos';
-	$strings['Move your mouse here to toggle the table of contents'] = 'Mueva el mouse aquí para cambiar la tabla de contenidos';	
-	$strings['Attachments'] = 'Adjuntos';
-	$strings['Show'] = 'Mostrar'; 
-	$strings['Last updated at %time%, by %user%'] = 'Ultima actualización %time%, por %user%'; 
-	$strings['Categories:'] = 'Categorías:'; 
-	$strings['Edit this article'] = 'Editar este artículo'; 
-	$strings['Delete this article'] = 'Borrar este artículo'; 
-	$strings['Really delete this article?'] = '¿Realmente borra este artículo?'; 
-	$strings['Deleting this article will remove it from the system.'] = 'Borrar este artículo lo quitará del sistema.'; 
-	$strings['Editing %article_name%'] = 'Editando %article_name%'; 
-	$strings['%article_name% ~ Edit'] = '%article_name% ~ Editar'; 
-	$strings['This is the name you use when you link to this article'] = 'Este es el nombre que usará cuando haga un vínculo a este artículo'; 
-	$strings['Article content'] = 'Contenido del artículo'; 
-	$strings['For help and tips on how to format your article, see %wiki_formatting%'] = 'Para ayuda y consejos sobre como dar formato a su artículo, vea %wiki_formatting%'; 
-	$strings['Change reason'] = 'Motivo del cambio'; 
-	$strings['Enter a short reason summarizing your changes (max. 255 characters)'] = 'Ingrese un breve resumen justificando los cambios (max. 255 caracteres)'; 
-	$strings['Preview changes'] = 'Vista previa de los cambios'; 
-	$strings['Wiki permissions'] = 'Permisos Wiki'; 
-	$strings['Front page article'] = 'Artículo de portada'; 
-	$strings['Create this article'] = 'Crear este artículo'; 
-  	$strings['%article_name% history'] = '%article_name% historia'; 
-  	$strings['%article_name% ~ History'] = '%article_name% ~ Historia'; 
-  	$strings['Updated'] = 'Actualizado'; 
-  	$strings['Author'] = 'Autor';
-	$strings['Recently edited pages'] = 'Páginas editadas recientemente'; 
-	$strings['This is a placeholder for an article that has not been created yet. You can create it by clicking %create_this_article% below.'] = 'Esta es la ubicación para un artículo que no ha sido creado aún. Puede crearlo haciendo clic en %create_this_article%.';
-	$strings['Create article'] = 'Crear artículo'; 
-	$strings['Preview article'] = 'Vista previa del artículo';         
-	$strings['You have to provide a reason for the changes'] = 'Tiene que dar un motivo para los cambios'; 
-	$strings['This is a preview of the article'] = 'Esta es una vista previa del artículo'; 
-	$strings['The article has not been saved yet'] = 'El artículo no ha sido guardado aún'; 
-	$strings['Continue editing'] = 'Continuar editando';         
-	$strings['System'] = 'Sistema';
-	$strings['This article is not in any categories'] = 'Este artículo no está en ninguna categoría'; 
-	$strings['%article_name% permissions'] = 'permisos %article_name%'; 
-	$strings['%article_name% ~ Permissions'] = '%article_name% ~ Permisos'; 
-	$strings['Specify permissions for the article %article_name%'] = 'Especificar los permisos para el artículo %article_name%'; 
-	$strings['Select this option to specify permissions for this article.'] = 'Seleccione esta opción para definir los permisos para este artículo.'; 
-	$strings['Edit write permissions'] = 'Editar permisos de escritura'; 
-	$strings['Edit delete permissions'] = 'Editar permisos para borrar';
-	$strings['Specify permissions for entire wiki'] = 'Definir permisos globales para wiki'; 
-	$strings['Select this option to specify permissions for the entire wiki.'] = 'Seleccione esta opción para definir los permisos para todo wiki.';        
-	$strings['Basic information'] = 'Información básica'; 
-	$strings['This is the basic settings for the wiki'] = 'Esta es la configuración básica para la wiki'; 
-	$strings['Menu title'] = 'Título del menú'; 
-	$strings['Specify here if you want to show a different menu title than "Wiki" in the header menu'] = 'Defina aqui si quiere mostrar un título de menú distinto a "Wiki" en la cabecera del menú'; 
-	$strings['Allow "CamelCased" links'] = 'Permitir enlaces "CamelCased"'; 
-	$strings['CamelCasing'] = 'CamelCasing'; 
-	$strings['Traditionally, %CamelCasing% has been used to specify links between documents in Wikis. If you want to keep this turned on, specify so here. Make sure you read the %wikiformatting% wiki article if you are unsure how to use this feature.'] = 'Tradicionalmente, %CamelCasing% ha sido utilizado para crear enlaces entre documentos en la Wiki. Si quiere mantenerlo, hágalo aquí. Asegúrese de haber leido el artículo %wikiformatting% si no está seguro de esta característica.'; 
-	$strings['Open for everyone with access to add / remove content'] = 'Permitir a cada uno con acceso a agregar / quitar contenido';
-	$strings['Only registered users can add / remove content'] = 'Solo los usuarios registrados puede agregar / quitar contenido';
-	$strings['Set wiki permissions manually'] = 'Establecer manualmente los permisos de wiki'; 
-	$strings['Specify how you want to control access to wiki editing functionality'] = 'Defina como quiere controlar el acceso a la edición de la funcionalidad wiki'; 
-	$strings['Click "%save%" to save wiki settings'] = 'Haga clic en "%save%" para guardar las opciones';
-	$strings['Wiki'] = 'Wiki'; 
-	$strings['Enables Wiki-functionality'] = 'Habilita funcionalidad wiki'; 
-	$strings['Set up the Wiki module from this section'] = 'Configure el módulo Wiki en esta sección'; 
-	$strings['Wiki menu'] = 'Menú Wiki'; 
-	$strings['Links to this article'] = 'Enlaces a este artículo'; 
-	$strings['History'] = 'Historia'; 
-	$strings['Global content'] = 'Contenido General'; 
-	$strings['Table of contents'] = 'Tabla de contenidos';
-	$strings['Move your mouse here to toggle the table of contents'] = 'Mueva el mouse aquí para cambiar la tabla de contenidos';	
-	$strings['No other articles links to this article'] = 'No hay enlaces a este artículo'; 
-	$strings['%time%, by %user%'] = '%time%, por %user%'; 
-	$strings['Open image in new window'] = 'Abrir imagen en una nueva pantalla'; 
-	$strings['Compare'] = 'Comparar'; 
-	$strings['Restore this version'] = 'Restaurar está versión'; 
-	$strings['Are you sure you want to restore this revision?'] = '¿Está seguro que quiere restaurar esta revisión?'; 
-	$strings['If you confirm, all changes after this revision will be lost, and the article reverted back to the state it was in revision %revision_number%'] = 'Si confirma, todos los cambios posteriores a esta revisión se perderán, y el artículo revertido a la revisión %revision_number%'; 
-	$strings['%yes% or %cancel%'] = '%yes% o %cancel%';
-	$strings['Specify permissions for the %namespace% namespace'] = 'Especificar permisos para el espacio de nombres %namespace%'; 
-	$strings['Specify permissions for the %namespace% namespace. These permissions will apply for all articles in the mentioned namespace for which article-specific permissions, or child-namespace permissions have not been granted.'] = 'Especifique permisos para el nombre de espacio %namespace%. Estos permisos se aplicarán a todos los artículos en el espacio de nombres menciando para aquellos artículos específicos, o permisos para espacios de nombres dependientes que no hayan recibido permisos.';
-	$strings['%article_name% attachments'] = 'Adjuntos a %article_name%'; 
-	$strings['Attach one or more file(s) to this article'] = 'Adjuntar uno o más archivos a este artículo'; 
-	$strings['%filename%, uploaded %date%'] = '%filename%, subido %date%'; 
-	$strings['Use this tag to include this image: [[Image:%filename%|thumb|Image description]]'] = 'Utilice esta etiquetea para incluir esta imagen: [[Image:%filename%|thumb|Descripción de la imagen]]'; 
-	$strings['Do you really want to detach this file?'] = '¿Realmente quiere separar este archivo?'; 
-	$strings['If you detach this file, it will be deleted. This action cannot be undone. Are you sure you want to remove this file?'] = 'Si desvincula este archivo, será eliminado. Esta acción no puede ser revertida. ¿Está seguro que quiere eliminarlo?'; 
-	$strings['%article_name% ~ Attachments'] = '%article_name% ~ Adjuntos'; 
-	$strings['There are no file attached to this article'] = 'No hay archivos adjuntos a este artículo';     
-	$strings["Article comments (%count%)"] = "Comentarios al artículo (%count%)";
-	$strings["General wiki settings"] = "Opciones generales para wiki";
-	$strings["Import wiki articles"] = "Importar artículos wiki";
-	$strings["Show articles in category"] = "Mostrar artículos en categorías";
-	$strings["Toggle selection on visible articles"] = "Cambiar selección en artículos visibles";
-	$strings["Import articles"] = "Importar artículos";
-	$strings["Please select which articles to import, from the list of available articles below. When you are finished, click the %import_articles% button at the bottom"]="Por favor seleccione los artículos a importar, de la lista de artículos disponibles. Cuando haya finalizado, haga clic en el botón %import_articles% del pie";
-	$strings["Open existing article in new window"] = "Abrir artículos existentes en una nueva ventana";
-	$strings["Importing this article will overwrite an existing article in the database"] = "Al importar este artículo sobreescribirá el artículo existente en la base de datos";
-	$strings['Click "%import_articles%" to import the selected articles'] = 'Haga clic en "%import_articles%" para importar los artículos seleccionados';
-	$strings['You don\'t have access to read this article'] = 'No tiene acceso a leer este artículo';
-	$strings['Recently edited pages here'] = 'Páginas editadas últimamente';
-	$strings['There are no recent pages here'] = 'No hay páginas';
-	$strings['Initial import'] = 'Importación inicial';
-	$strings['Edit read permissions'] = 'Editar permisos de lectura';
-	$strings['Post comment'] = 'Publicar comentario';
-
-	$strings['Project settings'] = 'Configuración del proyecto';
-	$strings['General settings'] = 'Ajustes generales';
-	$strings['Use this page to configure the interface between The Bug Genie and your VCS system. Note that further configuration is necessary to use this feature - please refer to the %help% for further details on these settings and other necessary configuration.'] = 'Utilice esta página para configurar la interface entre The Bug Genie y su sistema VCS. Tenga en cuenta que más configuración es necesaria para usar esta característica - por favor consulte %help% para más detalle sobre estos ajustes y la configuracion necesaria.';
-	$strings['These are the settings that apply to all communications between The Bug Genie and any VCS, regardless of the project.'] = 'Estos son los ajustes que se aplican a todas las comunicaciones entre The Bug Genie y cualquier VCS, independientemente del proyecto.';
-	$strings['Access method'] = 'Método de acceso';
-	$strings['Use the HTTP access method'] = 'Usar el médtodo de acceso HTTP';
-	$strings['Use the direct access method'] = 'Usar el método de acceso directo';
-	$strings['The Bug Genie can be notified of new commits by either a direct access call, or via HTTP. Select the method you wish to use here.'] = 'The Bug Genie puede ser notificado de nuevas entregas (commits) ya sea por una llamada de acceso directo, o a través de HTTP. Seleccione el método que desea utilizar aquí.';
-	$strings['Passkey for HTTP access'] = 'Clave de acceso por HTTP';
-	$strings['If the HTTP method has been chosen, a passkey must be entered so that malicious users can not add fake commit details.'] = 'Si el método HTTP se ha elegido, una clave de acceso debe ser entrado para que los usuarios malintencionados no puedan agregar información falsa.';
-	$strings['These settings apply to each individual project.'] = 'Estas configuraciones se aplican a cada proyecto individual.';
-	$strings['Repository browser'] = 'Navegador de repositorio';
-	$strings['Multi-system'] = 'Multi-sistema';
-	$strings['manually specified repository'] = 'repositorio definido manualmente';
-	$strings['using MultiViews'] = 'utilizando MultiViews';
-	$strings['A number of different VCS systems and source code browsers are available. Please select the one you use.'] = 'Un número de sistemas diferentes VCS y navegadores de código fuente está disponible. Por favor, seleccione el que usa.';
-	$strings['URL to repository browser'] = 'URL al navegador de repositorio';
-	$strings['The path to the main page of the repository browser, so links can be correctly generated (<i>see help for details</i>).'] = 'La ruta de acceso a la página principal del navegador de repositorios, por lo que los enlaces pueden ser generado correctamente (ver <i> ayuda para más información </ i>).';
-	$strings['Repository name'] = 'Nombre del repositorio';
-	$strings['The name of the repository in use, so the correct one can be chosen for viewing commit details. This is not required under certain conditions, see help for details.'] = 'El nombre del repositorio en uso, por lo que debe elegir la correcta para ver detalles. Esto no es necesario en determinadas condiciones, consulte la ayuda para más detalles.';
-	$strings['Click "%save%" to save the settings on both tabs'] = 'Haga clic	en "%save%" para guardar lass configuraciones de ambas pestañas';
-	$strings['No such user'] = 'Usuario inexistente';
-	$strings['Save'] = 'Guardar';
-	$strings['VCS Integration'] = 'Integración VCS';
-	$strings['Allows details from source code checkins to be displayed in The Bug Genie'] = 'Permite detalles del código fuente confirmado que sean mostrados en The Bug Genie'; 
-	$strings['Configure repository settings for source code integration'] = 'Configurar opciones del repositorio para la integración del código fuente'; 
-	$strings['with project\'s repository set as default'] = 'con el repositorio del proyecto definido por defecto';
-	$strings['Error: Invalid project ID'] = 'Error: ID de proyecto no válido';
-	$strings['Issue updated from code repository'] = 'Petición actualizada por código desde el repositorio';
-	$strings['This issue has been updated with the latest changes from the code repository.<source>%commit_msg%</source>'] = 'Esta petición ha sido actualizada con los últimos cambios desde el repositorio.<source>%commit_msg%</source>';
-	$strings['help'] = 'ayuda';
-	$strings["Revision %revno%"] = "Revisión %revno%";
-	$strings["committed on %date% by"] = "enviado el %date% por";
-	$strings["Log entry:"] = "Información de log";
-	$strings["Changed files:"] = "Archivos modificados";
-	$strings["Diff"] = "Diferencia";
-	$strings["View"] = "Ver";
-	$strings["new file"] = "Archivo nuevo";
