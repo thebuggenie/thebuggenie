@@ -4984,7 +4984,7 @@
 				if ($identifiable)
 					$return_values[$field] = ($value instanceof TBGIdentifiable) ? $value->toJSON() : null;
 				else
-					$return_values[$field] = $this->$method();
+					$return_values[$field] = $value;
 
 			}
 
