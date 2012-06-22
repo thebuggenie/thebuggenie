@@ -853,6 +853,10 @@
 							$this->$var_name = $option;
 						}
 					}
+					else if($datatype->hasPredefinedOptions())
+					{
+						$this->$var_name = $row->get(TBGIssueCustomFieldsTable::CUSTOMFIELDOPTION_ID);
+					}
 					else
 					{
 						$this->$var_name = $row->get(TBGIssueCustomFieldsTable::OPTION_VALUE);
