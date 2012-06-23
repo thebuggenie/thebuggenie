@@ -111,4 +111,4 @@ foreach ($translations as $category => $categoryContents) {
     }
 }
 
-echo 'Conversion is completed...' . "\n";
+echo 'Conversion to array is completed...' . "\n";

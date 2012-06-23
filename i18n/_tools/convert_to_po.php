@@ -73,4 +73,4 @@ foreach ($strings as $original => $translated) {
     $poFile->fwrite('msgstr "' . str_replace(array('"', "\\'"), array('\\"', "'"), $translated) . '"' . __NEWLINE__);
 }
 
-echo 'Conversion is completed...' . "\n"; 
+echo 'Conversion to po is completed...' . "\n";

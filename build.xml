@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 
-<project name="test" basedir="." default="build">
+<project name="thebuggenie" basedir="." default="build">
 
     <!-- ============================================  -->
     <!-- Directory settings                            -->
@@ -87,24 +87,10 @@
     <!-- Target: remove_translation                    -->
     <!-- ============================================  -->
     <target name="remove_translation" description="Removes outdates translation file (.po only)" hidden="true">
-        <if>
-            <available file="${current_locale_abs}/${po_file_name}" property="localeExists" value="true"/>
-            <then>
-                <delete file="${current_locale_abs}/${po_file_name}"/>
-            </then>
-        </if>
-        <if>
-            <available file="${current_locale_abs}/${po_file_backup_name}" property="localeExists" value="true"/>
-            <then>
-                <delete file="${current_locale_abs}/${po_file_backup_name}"/>
-            </then>
-        </if>
-        <if>
-            <available file="${current_locale_abs}/${strings_file_backup_name}" property="localeExists" value="true"/>
-            <then>
-                <delete file="${current_locale_abs}/${strings_file_backup_name}"/>
-            </then>
-        </if>
+        <echo msg="Deleting old translation files in ${current_locale_array}"/>
+        <delete failonerror="false" file="${current_locale_abs}/${po_file_name}"/>
+        <delete failonerror="false" file="${current_locale_abs}/${po_file_backup_name}"/>
+        <delete failonerror="false" file="${current_locale_abs}/${strings_file_backup_name}"/>
     </target>
 
     <!-- ============================================  -->
@@ -127,6 +113,7 @@
         <if>
             <available file="${current_locale_abs}" property="localeFileExists" value="true"/>
             <then>
+                <echo msg="${current_locale_array} locale extists, generating PO file from array..."/>
                 <exec dir="${localesDir}"
                       command="php -f ./_tools/convert_to_po.php ./${current_locale_array}/ ${strings_file_name} ${po_file_backup_name}"/>
             </then>
