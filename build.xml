@@ -1,0 +1,241 @@
+<?xml version="1.0" ?>
+
+<project name="thebuggenie" basedir="." default="build">
+
+    <!-- ============================================  -->
+    <!-- Directory settings                            -->
+    <!-- ============================================  -->
+    <property name="projectDir" value="."/>
+    <property name="localesDir" value="${projectDir}/i18n"/>
+
+    <!-- ============================================  -->
+    <!-- Files name settings                           -->
+    <!-- ============================================  -->
+    <property name="po_file_name" value="messages.po"/>
+    <property name="po_file_backup_name" value="messages_old.po"/>
+
+    <property name="strings_file_name" value="strings.inc.php"/>
+    <property name="strings_file_backup_name" value="strings._bak_.php"/>
+
+    <!-- =================================================================  -->
+    <!-- Path to gettext tools binaries                                     -->
+    <!-- For Windows systems, download gettext from the following site:     -->
+    <!-- http://gnuwin32.sourceforge.net/packages/gettext.htm               -->
+    <!-- Install or Unpack the package, and add its /bin directory to PATH  -->
+    <!--  or specify the /bin directory path in toolsDir property.          -->
+    <!-- =================================================================  -->
+    <property name="tools_dir" value="" description="Path to gettext tools bin directory"/>
+    <property name="xgettext_executable" value="xgettext"/>
+    <property name="msgmerge_executable" value="msgmerge"/>
+
+    <property name="xgettext_keyword" value="__" description="Name of the i18n function"/>
+
+    <!-- Updating properties if tools_dir is specified -->
+    <if>
+        <isset property="tools_dir"/>
+        <then>
+            <property name="xgettext_executable" value="${tools_dir}/${xgettext_executable}"/>
+            <property name="msgmerge_executable" value="${tools_dir}/${msgmerge_executable}"/>
+        </then>
+    </if>
+
+    <!-- ============================================  -->
+    <!-- Fileset for gettext tools                     -->
+    <!-- ============================================  -->
+    <fileset dir="${projectDir}" id="files_to_process">
+        <patternset id="gettext_files_pattern" description="Include all PHP sources, except Test cases">
+            <include name="**/*.php"/>
+            <include name="**/*.inc"/>
+            <include name="**/*.lib"/>
+
+            <exclude name="**/*Test*"/>
+            <exclude name="**/*Phing*"/>
+        </patternset>
+    </fileset>
+
+    <!-- ============================================  -->
+    <!-- Lists of translations                         -->
+    <!-- ============================================  -->
+    <fileset dir="${localesDir}" id="locales_list">
+        <type type="dir"/>
+        <depth min="0" max="0"/>
+        <include name="**"/>
+        <exclude name="_tools"/>
+    </fileset>
+
+    <!-- ============================================  -->
+    <!-- Target: clean                                 -->
+    <!-- ============================================  -->
+    <target name="clean" description="Cleans the build directory">
+        <echo msg="Removing old translation files (po only)..."/>
+
+        <if>
+            <equals arg1="${usePlainMessages}" arg2="N" casesensitive="true" trim="true"/>
+            <then>
+                <delete failonerror="false" file="${localesDir}/${po_file_name}"/>
+            </then>
+        </if>
+
+        <foreach param="current_locale_po" absparam="current_locale_abs" target="remove_translation">
+            <fileset refid="locales_list"/>
+        </foreach>
+
+        <echo msg="Old translation files removed..."/>
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: remove_translation                    -->
+    <!-- ============================================  -->
+    <target name="remove_translation" description="Removes outdates translation file (.po only)" hidden="true">
+        <echo msg="Deleting old translation files in ${current_locale_array}"/>
+        <delete failonerror="false" file="${current_locale_abs}/${po_file_name}"/>
+        <delete failonerror="false" file="${current_locale_abs}/${po_file_backup_name}"/>
+        <delete failonerror="false" file="${current_locale_abs}/${strings_file_backup_name}"/>
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: prepare                               -->
+    <!-- ============================================  -->
+    <target name="prepare" description="Creates build directory and structure">
+        <echo msg="Creating a backup from previous translations..."/>
+
+        <foreach param="current_locale_array" absparam="current_locale_abs" target="generate_po_from_array">
+            <fileset refid="locales_list"/>
+        </foreach>
+
+        <echo msg="Backups created successfully..."/>
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: generate_po_from_array                -->
+    <!-- ============================================  -->
+    <target name="generate_po_from_array" description="Generate PO files from strings.inc.php file" hidden="true">
+        <if>
+            <available file="${current_locale_abs}" property="localeFileExists" value="true"/>
+            <then>
+                <echo msg="${current_locale_array} locale extists, generating PO file from array..."/>
+                <exec dir="${localesDir}"
+                      command="php -f ./_tools/convert_to_po.php ./${current_locale_array}/ ${strings_file_name} ${po_file_backup_name}"/>
+            </then>
+        </if>
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: generate_translate                    -->
+    <!-- ============================================  -->
+    <target name="generate_translate" description="Generates gettext files for all PHP sources" hidden="true">
+        <if>
+            <available file="${localesDir}/${po_file_name}" property="existingPoFile" value="true"/>
+            <then>
+                <echo msg="PO file already exists, dont need to rebuild it..."/>
+            </then>
+            <else>
+                <echo msg="Generating new ${po_file_name} file from the project"/>
+
+                <foreach param="gettext_file" absparam="gettext_file_abs" target="gettext_translate">
+                    <fileset refid="files_to_process"/>
+                </foreach>
+            </else>
+        </if>
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: gettext_translate                     -->
+    <!-- ============================================  -->
+    <target name="gettext_translate" hidden="true">
+        <if>
+            <available file="${localesDir}/${po_file_name}" property="existingPoFile" value="true"/>
+            <then>
+                <echo msg="${xgettext_executable} --from-code=UTF-8 --no-wrap --keyword=${xgettext_keyword} --keyword -n -j -F ${gettext_file_abs} -o ${localesDir}/${po_file_name}"/>
+                <exec dir="${project.basedir}"
+                      command="${xgettext_executable} --from-code=UTF-8 --no-wrap --keyword=${xgettext_keyword} --keyword -n -j -F ${gettext_file_abs} -o ${localesDir}/${po_file_name}"
+                      logoutput="true"/>
+            </then>
+            <else>
+                <echo msg="${xgettext_executable} --from-code=UTF-8 --no-wrap --keyword=${xgettext_keyword} --keyword -n -F ${gettext_file_abs} -o ${localesDir}/${po_file_name}"/>
+                <exec dir="${project.basedir}"
+                      command="${xgettext_executable} --from-code=UTF-8 --no-wrap --keyword=${xgettext_keyword} --keyword -n -F ${gettext_file_abs} -o ${localesDir}/${po_file_name}"
+                      logoutput="true"/>
+            </else>
+        </if>
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: merge_translations                    -->
+    <!-- ============================================  -->
+    <target name="merge_translations" description="Merge old .po files with the new messages.po">
+        <echo msg="Merging old locales with the new messages.po ..."/>
+        <foreach param="current_locale_array" absparam="current_locale_abs" target="merge_translation">
+            <fileset refid="locales_list"/>
+        </foreach>
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: merge_translation                     -->
+    <!-- ============================================  -->
+    <target name="merge_translation" hidden="true">
+        <if>
+            <available file="${current_locale_abs}/${po_file_backup_name}" property="extistingMessages" value="true"/>
+            <then>
+                <echo msg="Locale exists in ${current_locale_array}, merging..."/>
+                <exec dir="${project.basedir}"
+                      command="${msgmerge_executable} ${current_locale_abs}/${po_file_backup_name} --no-wrap -N ${localesDir}/${po_file_name} -o ${current_locale_abs}/${po_file_name}"
+                      logoutput="true"/>
+            </then>
+            <else>
+                <echo msg="Messages.po not exists in ${current_locale_array}, copy plain one..."/>
+                <copy file="${localesDir}/${po_file_name}"
+                      tofile="${localesDir}/${current_locale_array}/${po_file_name}"/>
+            </else>
+        </if>
+
+        <exec dir="${localesDir}"
+              command="php -f ./_tools/convert_to_po.php ./${current_locale_array}/ ${strings_file_name} ${po_file_backup_name}"
+              logoutput="true"/>
+
+        <move file="${localesDir}/${current_locale_array}/${strings_file_name}"
+              tofile="${localesDir}/${current_locale_array}/${strings_file_backup_name}"/>
+
+        <exec dir="${localesDir}"
+              command="php -f ./_tools/convert_to_array.php ./${current_locale_array}/ en_US ${po_file_name} ${current_locale_array} ${strings_file_name}"
+              logoutput="true"/>
+
+        <if>
+            <available file="${localesDir}/${current_locale_array}/${strings_file_name}" property="existingStrings"
+                       value="true"/>
+            <else>
+                <echo msg="New strings file is missing in ${current_locale_array}, restoring backup"/>
+                <copy file="${localesDir}/${current_locale_array}/${strings_file_backup_name}"
+                      tofile="${localesDir}/${current_locale_array}/${strings_file_name}"/>
+            </else>
+        </if>
+
+        <if>
+            <equals arg1="${keepDebugFiles}" arg2="N" casesensitive="true" trim="true"/>
+            <then>
+                <echo msg="Deleting temporary files in ${current_locale_array} directory..."/>
+                <delete failonerror="false" file="${localesDir}/${current_locale_array}/${po_file_backup_name}"/>
+                <delete failonerror="false" file="${localesDir}/${current_locale_array}/${po_file_name}"/>
+                <delete failonerror="false" file="${localesDir}/${current_locale_array}/${strings_file_backup_name}"/>
+            </then>
+        </if>
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: build                                 -->
+    <!-- ============================================  -->
+    <target name="build" description="Runs every target (clean, prepare, generate_translate, merge_translation)">
+
+        <propertyprompt propertyName="keepDebugFiles" defaultValue="N"
+                        promptText="Are you want to keep temporary files?"/>
+        <propertyprompt propertyName="usePlainMessages" defaultValue="Y"
+                        promptText="Are you want to keep plain messages.po (Next time, you don't need to rebuild these file)?"/>
+
+        <phingcall target="clean"/>
+        <phingcall target="prepare"/>
+        <phingcall target="generate_translate"/>
+        <phingcall target="merge_translations"/>
+
+    </target>
+
+</project>
