@@ -104,9 +104,9 @@ foreach ($translations as $category => $categoryContents) {
         }
 
         if (strpos($msgid, "'") !== FALSE) {
-            $phpFile->fwrite($prefix . '$strings["' . $msgid . '"] = "' . $msgstr . '";' . "\n");
+            $phpFile->fwrite($prefix . '$strings["' . $msgid . '"] = "' . $msgstr . '";' . __NEWLINE__);
         } else {
-            $phpFile->fwrite($prefix . '$strings[\'' . str_replace(array('\\"', "'"), array('"', "\\'"), $msgid) . '\'] = \'' . str_replace(array('\\"', "'"), array('"', "\\'"), $msgstr) . '\';' . "\n");
+            $phpFile->fwrite($prefix . '$strings[\'' . str_replace(array('\\"', "'"), array('"', "\\'"), $msgid) . '\'] = \'' . str_replace(array('\\"', "'"), array('"', "\\'"), $msgstr) . '\';' . __NEWLINE__);
         }
     }
 }
