@@ -247,18 +247,18 @@
 	$strings['Reproduction steps updated'] = 'Schritte zur Reproduzierung aktualisiert';
 	$strings["This issue's reproduction steps has been changed"] = "Schritte zur Reproduzierung dieses Falles wurde geändert";
 	$strings['Not determined'] = 'Nicht festgelegt';
-	//$strings["The category has been updated, from '''%previous_category%''' to '''%new_category%'''."] = "";
+	$strings["The category has been updated, from '''%previous_category%''' to '''%new_category%'''."] = "Die Kategorie wurde von '''%previous_category%''' zu '''%new_category%''' geändert.";
 	//$strings["The triaging criteria 'bug type' has been updated, from '''%previous_name%''' to '''%new_name%'''."] = "";
 	//$strings["The triaging criteria 'effect' has been updated, from '''%previous_name%''' to '''%new_name%'''."] = "";
 	//$strings["The triaging criteria 'likelihood' has been updated, from '''%previous_name%''' to '''%new_name%'''."] = "";
 	//$strings["The calculated user pain has changed, from '''%previous_value%''' to '''%new_value%'''."] = "";
-	//$strings['Unknown'] = '';
+	$strings['Unknown'] = 'Unbekannt';
 	$strings["The status has been updated, from '''%previous_status%''' to '''%new_status%'''."] = "Der Status wurde aktualisiert, von '''%previous_status%''' zu '''%new_status%'''.";
 	//$strings["The reproducability has been updated, from '''%previous_reproducability%''' to '''%new_reproducability%'''."] = "";
-	//$strings["The priority has been updated, from '''%previous_priority%''' to '''%new_priority%'''."] = "";
+	$strings["The priority has been updated, from '''%previous_priority%''' to '''%new_priority%'''."] = "Die Priorität wurde von '''%previous_priority%''' zu '''%new_priority%''' geändert.";
 	$strings['Not assigned'] = 'Nicht zugeordnet';
-	//$strings["The assignee has been changed to '''%new_name%'''."] = "";
-	//$strings["The issue's poster has been changed, from '''%previous_name%''' to '''%new_name%'''."] = "";
+	$strings["The assignee has been changed to '''%new_name%'''."] = "Die Zuweisung wurde geändert zu '''%new_name%'''.";
+	$strings["The issue's poster has been changed, from '''%previous_name%''' to '''%new_name%'''."] = "Der Fallauthor wurde von '''%previous_name%''' zu '''%new_name%''' geändert.";
 	$strings['Not being worked on'] = 'Wird nicht bearbeitet';
 	//$strings["Information about the user working on this issue has been changed, from '''%previous_name%''' to '''%new_name%'''."] = "";
 	$strings['Not owned by anyone'] = 'Nicht zugeordnet';
@@ -297,15 +297,15 @@
 
 	// First occurrence is in: .\core\classes\TBGMilestone.class.php
 	// ----------------------------------------------------------------------------
-	//$strings['%milestone_name% (started %start_date% - ended %end_date%)'] = '';
-	//$strings['%milestone_name% (started %start_date% - ends %end_date%)'] = '';
-	//$strings['%milestone_name% (starts %start_date% - ended %end_date%)'] = '';
-	//$strings['%milestone_name% (started %start_date%)'] = '';
-	//$strings['%milestone_name% (starts %start_date%)'] = '';
-	//$strings['%milestone_name% (released: %date%)'] = '';
+	$strings['%milestone_name% (started %start_date% - ended %end_date%)'] = '%milestone_name% (begonnen %start_date% - beendet %end_date%)';
+	$strings['%milestone_name% (started %start_date% - ends %end_date%)'] = '%milestone_name% (begonnen %start_date% - endet %end_date%)';
+	$strings['%milestone_name% (starts %start_date% - ended %end_date%)'] = '%milestone_name% (beginnt %start_date% - endet %end_date%)';
+	$strings['%milestone_name% (started %start_date%)'] = '%milestone_name% (begonnen %start_date%)';
+	$strings['%milestone_name% (starts %start_date%)'] = '%milestone_name% (beginnt %start_date%)';
+	$strings['%milestone_name% (released: %date%)'] = '%milestone_name% (veröffentlicht %start_date%)';
 	$strings['%milestone_name% (will be released: %date%)'] = '%milestone_name% (wird veröffentlicht: %date%)';
 	//$strings['%milestone_name% (reached: %date%)'] = '';
-	//$strings['Not scheduled'] = '';
+	$strings['Not scheduled'] = 'Nicht geplant';
 
 	// First occurrence is in: .\core\classes\TBGProject.class.php
 	// ----------------------------------------------------------------------------
@@ -327,10 +327,10 @@
 	$strings['The file was not uploaded correctly'] = 'Die Datei konnte nicht erfolgreich hochgeladen werden';
 	$strings['The upload was interrupted, please try again'] = 'Der Upload wurde unterbrochen. Bitte erneut versuchen';
 	$strings['No file was uploaded'] = 'Keine Datei hochgeladen';
-	//$strings['An unhandled error occured'] = '';
-	//$strings['Uploads are not enabled'] = '';
-	//$strings['The file could not be uploaded'] = '';
-	//$strings['Could not find the uploaded file. Please make sure that it is not too big.'] = '';
+	$strings['An unhandled error occured'] = 'Ein nicht verarbeiteter Fehler ist aufgetreten';
+	$strings['Uploads are not enabled'] = 'Uploads sind nicht aktiviert';
+	$strings['The file could not be uploaded'] = '';
+	$strings['Could not find the uploaded file. Please make sure that it is not too big.'] = 'Hochgeladene Datei konnte nicht gefunden werden. Bitte stellen Sie sicher, daß sie nicht zu groß ist.';
 
 	// First occurrence is in: .\core\classes\TBGResponse.class.php
 	// ----------------------------------------------------------------------------
@@ -340,7 +340,7 @@
 	$strings['Teams'] = 'Teams';
 	$strings['Clients'] = 'Kunden';
 	$strings['Configure The Bug Genie'] = 'The Bug Genie konfigurieren';
-	//$strings['About %sitename%'] = '';
+	$strings['About %sitename%'] = 'Über %sitename/';
 	$strings['Account details'] = 'Kontodetails';
 	$strings['Dashboard'] = 'Übersicht';
 	$strings['Planning'] = 'Geplant';
@@ -350,17 +350,17 @@
 	$strings['Timeline'] = 'Zeitplan';
 	$strings['Report an issue'] = 'Fall einreichen';
 	$strings['Settings'] = 'Einstellungen';
-	//$strings['Release center'] = '';
+	$strings['Release center'] = 'Relaasecenter';
 
 	// First occurrence is in: .\core\classes\TBGTextParser.class.php
 	// ----------------------------------------------------------------------------
 	$strings['top'] = 'top';
-	//$strings['Open image in new window'] = '';
-	//$strings['Open file in new window'] = '';
+	$strings['Open image in new window'] = 'Bild in neuem Fenster öffnen';
+	$strings['Open file in new window'] = 'Datei in neuem Fenster öffnen';
 
 	// First occurrence is in: .\core\classes\TBGUser.class.php
 	// ----------------------------------------------------------------------------
-	//$strings['This username already exists'] = '';
+	$strings['This username already exists'] = 'Dieser Benutzername ist bereits vorhanden';
 	$strings['No such user'] = 'Unbekannter Benutzer';
 
 	// First occurrence is in: .\core\lib\common.inc.php
@@ -372,7 +372,7 @@
 	// First occurrence is in: .\core\templates\backdrops.inc.php
 	// ----------------------------------------------------------------------------
 	$strings['Click this message to dismiss it'] = 'Klicken Sie auf diese Nachricht um sie auszublenden';
-	//$strings['Please wait ...'] = '';
+	$strings['Please wait ...'] = 'Bitte warten ...';
 	$strings['Yes'] = 'Ja';
 	$strings['No'] = 'Nein';
 
@@ -386,38 +386,38 @@
 	$strings['Summary'] = 'Zusammenfassung';
 	$strings['Open issues for this project'] = 'Offene Fälle für dieses Projekt';
 	$strings['Closed issues for this project'] = 'Geschlossene Fälle für dieses Projekt';
-	//$strings['Wishlist for this project'] = '';
+	$strings['Wishlist for this project'] = 'Wunschliste für dieses Projekt';
 	$strings['Milestone todo-list for this project'] = 'Meilensteine To-Do-Liste';
 	$strings['Most voted for issues'] = 'Am häufigsten bewertete Fälle';
-	//$strings['Issues reported this month'] = '';
-	//$strings['Issues reported last 30 days'] = '';
+	$strings['Issues reported this month'] = 'Fälle, die diesen Monat gemeldet wurden';
+	$strings['Issues reported last 30 days'] = 'Fälle, die in den letzten 30 Tagen gemeldet wurden';
 	$strings['You are not logged in'] = 'Nicht angemeldet';
 	$strings['Login'] = 'Login';
 	$strings['Register'] = 'Registrieren';
-	//$strings['Change'] = '';
+	$strings['Change'] = 'Ändern';
 	$strings['You are: %userstate%'] = 'Sie sind: %userstate%';
 	$strings['Your dashboard'] = 'Ihre Übersicht';
 	$strings['Customize your dashboard'] = 'Persönliche Übersicht konfigurieren';
 	$strings['Your account'] = 'Ihr Account';
-	//$strings['You are temporarily this user'] = '';
-	//$strings['Switch back to original user'] = '';
-	//$strings['Help for this page'] = '';
+	$strings['You are temporarily this user'] = 'Sie sind temporär dieser Nutzer';
+	$strings['Switch back to original user'] = 'Zurück zum Originalnutzer';
+	$strings['Help for this page'] = 'Hilfe für diesen Nutzer';
 	$strings['Logout'] = 'Abmelden';
 	$strings['Your issues'] = 'Ihre Fälle';
 	$strings['This issue is blocking the next release'] = 'Dieser Fall blockiert das nächste Release';
 
 	// First occurrence is in: .\core\templates\layout.php
 	// ----------------------------------------------------------------------------
-	//$strings['%project_name% search'] = '';
-	//$strings['%site_name% search'] = '';
+	$strings['%project_name% search'] = '%project_name% Suche';
+	$strings['%site_name% search'] = '%site_name% Suche';
 
 	// First occurrence is in: .\core\templates\offline.inc.php
 	// ----------------------------------------------------------------------------
-	//$strings['This site has been temporarily disabled for maintenance. Please try again later.'] = '';
+	$strings['This site has been temporarily disabled for maintenance. Please try again later.'] = 'Diese Seite wurde kurzzeitig für Wartungsarbeiten deaktiviert. Bitte versuchen Sie es später nochmals.';
 
 	// First occurrence is in: .\core\templates\submenu.inc.php
 	// ----------------------------------------------------------------------------
-	//$strings['Click to expand'] = '';
+	$strings['Click to expand'] = 'Klicken zum öffnen';
 	$strings['Search for anything here'] = 'Globale Suche';
 	$strings['Find'] = 'Suchen';
 
@@ -478,18 +478,18 @@
 	$strings['Save'] = 'Speichern';
 	//$strings['Test connection'] = '';
 	//$strings['After configuring and saving your connection settings, you should test your connection to the LDAP server. This test does not check whether the DN and attributes can allow The Bug Genie to correctly find users, but it will give an indication if The Bug Genie can talk to your LDAP server, and if any groups you specify exist.'] = '';
-	//$strings['Import all users'] = '';
+	$strings['Import all users'] = 'Alle Nutzer importieren';
 	//$strings['You can import all users who can log in from LDAP into The Bug Genie with this tool. This will not let them log in without switching to LDAP Authentication. We recomemnd you do this before switching over, and make at least one of the new users an administrator. Already existing users with the same username will be updated.'] = '';
-	//$strings['Import users'] = '';
-	//$strings['Prune users'] = '';
+	$strings['Import users'] = 'Importiere Nutzer';
+	$strings['Prune users'] = 'Nutzer aufräumen';
 	//$strings['To remove the data from The Bug Genie of users who can no longer log in via LDAP, run this tool. These users would not be able to log in anyway, but it will keep your user list clean. The guest user is not affected, but it may affect your current user - if this is deleted you will be logged out.'] = '';
 
 	// First occurrence is in: .\modules\configuration\classes\actioncomponents.class.php
 	// ----------------------------------------------------------------------------
 	$strings['Scopes'] = 'Bereiche';
 	$strings['Permissions'] = 'Berechtigungen';
-	//$strings['Roles'] = '';
-	//$strings['Authentication'] = '';
+	$strings['Roles'] = 'Rollen';
+	$strings['Authentication'] = 'Auhentifizierung';
 	$strings['Uploads &amp; attachments'] = 'Uploads &amp; Anhänge';
 	$strings['Import data'] = 'Daten importieren';
 	$strings['Projects'] = 'Projekte';
@@ -505,7 +505,7 @@
 	$strings['Every setting in the bug genie can be adjusted in this section.'] = 'Grundsätzliche Einstellungen von Bug Genie können hier justiert werden.';
 	$strings['Configure permissions in this section'] = 'Konfiguration der Berechtigungen';
 	//$strings['Configure roles (permission templates) in this section'] = '';
-	//$strings['Configure the authentication method in this section'] = '';
+	$strings['Configure the authentication method in this section'] = 'Konfigurieren Sie die Authentifizierungsmethode in diesem Bereich';
 	$strings['All settings related to file uploads are controlled from this section.'] = 'Alle Einstellungen bezüglich des Hochladens von Dateien.';
 	$strings['Import data from CSV files and other sources.'] = 'Import von Daten über CSV-Dateien und anderen Quellen.';
 	$strings['Set up all projects in this configuration section.'] = 'Einstellen der Projekte';
@@ -515,12 +515,12 @@
 	$strings['Manage users, user groups, clients and user teams from this section.'] = 'Verwaltung von Benutzer, Gruppen, Kunden und Teams';
 	$strings['Manage Bug Genie extensions from this section. New modules are installed from here.'] = 'Hier können die Erweiterungen verwaltet und installiert werden.';
 	$strings['Module settings'] = 'Moduleinstellungen';
-	//$strings['Failed to check for updates'] = '';
-	//$strings['The response from The Bug Genie website was invalid'] = '';
-	//$strings['The Bug Genie is up to date'] = '';
-	//$strings['The latest version is %ver%'] = '';
-	//$strings['The Bug Genie is out of date'] = '';
-	//$strings['The latest version is %ver%. Update now from www.thebuggenie.com.'] = '';
+	$strings['Failed to check for updates'] = 'Fehler bei der Suche nach Aktualisierungen';
+	$strings['The response from The Bug Genie website was invalid'] = 'Die Antwort der The Bug Genie Webseite war ungültig';
+	$strings['The Bug Genie is up to date'] = 'The Bug Genie ist auf dem aktuellsten Stand';
+	$strings['The latest version is %ver%'] = 'Die letzte Version ist %ver%';
+	$strings['The Bug Genie is out of date'] = 'The Bug Genie ist nicht mehr aktuell';
+	$strings['The latest version is %ver%. Update now from www.thebuggenie.com.'] = 'Die letzte Version ist %ver%. Bitte aktualisieren Sie jetzt von www.thebuggenie.com';
 	$strings['Please provide a valid setting for highlighting interval'] = 'Bitte geben Sie eine gültige Einstellung für den Hervorhebungsinterval an';
 	$strings['Please provide a valid setting for charset'] = 'Bitte geben Sie einen gültigen Zeichensatz an';
 	$strings['All settings saved'] = 'Alle Einstellungen gespeichert';
@@ -530,16 +530,16 @@
 	$strings['Severity levels'] = 'Gewichtigkeitlevels';
 	$strings['Categories'] = 'Kategorien';
 	$strings['Reproducability'] = 'Reproduzierbarkeit';
-	//$strings['Please enter a valid name'] = '';
+	$strings['Please enter a valid name'] = 'Bitte geben sie einen gültigen Namen ein';
 	//$strings['The issuetype scheme was deleted'] = '';
 	$strings['Issue type created'] = 'Falltyp erstellt';
 	$strings['Please provide a valid name for the issue type'] = 'Bitte geben Sie eine gültige Fallbezeichnung ein';
-	//$strings['The issue type details were updated'] = '';
+	$strings['The issue type details were updated'] = 'Die Details des Falltypen wurden aktualisiert';
 	$strings['The issue type was updated'] = 'Der Falltyp wurde aktualisiert';
 	$strings['Please provide a valid issue type'] = 'Bitte geben Sie einen gültigen Falltyp ein';
 	$strings['Available choices updated'] = 'Verfügbare Auswahlmöglichkeiten aktualisiert';
 	$strings['Not implemented yet'] = 'Bisher nicht implementiert';
-	//$strings['Issue type deleted'] = '';
+	$strings['Issue type deleted'] = 'Falltyp gelöscht';
 	//$strings['Please provide a valid action for this issue type / scheme'] = '';
 	$strings['Please provide a valid action for this issue type'] = 'Bitte geben Sie eine gültige Aktion für diesen Falltyp ein';
 	$strings['The option was added'] = 'Die Option wurde hinzugefügt';
@@ -552,31 +552,31 @@
 	$strings['The custom field was updated'] = 'Benutzerdefiniertes Feld aktualisiert';
 	$strings['You need to provide a custom field key that already exists'] = 'Sie müssen ein benutzerdefiniertes Feld festlegen, welches bereits angelegt wurde';
 	$strings['The custom field was deleted'] = 'Das benutzerdefinierte Feld wurde gelöscht';
-	//$strings['There are no more projects available in this instance'] = '';
+	$strings['There are no more projects available in this instance'] = 'Es sind keine weiteren Projekte vorhanden';
 	$strings['The project has been added'] = 'Das Projekt wurde hinzugefügt';
 	$strings['A project with the same key already exists'] = 'Ein Projekt mit dem gleichen Schlüssel existiert bereits';
-	//$strings['An error occurred:'] = '';
+	$strings['An error occurred:'] = 'Ein Fehler ist aufgetreten:';
 	$strings['Please specify a valid project name'] = 'Bitte geben Sie einen validen Projektnamen ein';
 	$strings["You don't have access to add projects"] = "Sie haben keine Berechtigung neue Projekte hinzuzufügen";
 	$strings['The project was deleted'] = 'Das Projekt wurde gelöscht';
 	$strings['An error occured'] = 'Ein Fehler ist aufgetreten';
 	$strings["You don't have access to remove projects"] = "Sie haben keine Berechtigung das Projekt zu löschen";
-	//$strings['Project successfully updated'] = '';
-	//$strings["You don't have access to archive projects"] = "";
+	$strings['Project successfully updated'] = 'Projekt erfolgreich aktualisiert';
+	$strings["You don't have access to archive projects"] = "Sie haben keine Berechtigung Projekte zu archivieren";
 	$strings['The module "%module_name%" was installed successfully'] = 'Das Modul "%module_name%" wurde erfolgreich installiert';
 	$strings['There was an error install the module %module_name%'] = 'Ein Installationsfehler trat auf im Modul %module_name%';
-	//$strings['Invalid or empty archive uploaded'] = '';
-	//$strings['The module "%module_name%" was uploaded successfully'] = '';
+	$strings['Invalid or empty archive uploaded'] = 'Ungültiges oder leeres Archiv';
+	$strings['The module "%module_name%" was uploaded successfully'] = 'Das Modul "%module_name%" wurde erfolgreich hoch geladen';
 	$strings['The module "%module_name%" was uninstalled successfully'] = 'Das Modul "%module_name%" wurde erfolgreich deinstalliert';
-	//$strings['The module "%module_name%" was successfully upgraded and can now be used again'] = '';
-	//$strings['The module "%module_name%" was not successfully upgraded'] = '';
+	$strings['The module "%module_name%" was successfully upgraded and can now be used again'] = 'Das Modul "%module_name%" wurde erfolgreich aktualisiert und kann nun wieder verwendet werden';
+	$strings['The module "%module_name%" was not successfully upgraded'] = 'Das Modul "%module_name%" konnte nicht erfolgreich aktualisiert werden';
 	$strings['This module (%module_name%) does not exist'] = 'Dieses Modul (%module_name%) existiert nicht';
 	$strings["You don't have access to modify permissions"] = "Sie haben keine Berechtigung den Zugriff zu ändern";
 	$strings['Settings saved successfully'] = 'Änderungen erfolgreich gespeichert';
 	$strings['The module "%module_name%" is not configurable'] = 'Das Modul "%module_name%" ist nicht konfigurierbar';
 	$strings["The upload path isn't writable"] = "Der Uploadpfad ist nicht beschreibbar";
-	//$strings['The maximum file size must be a number'] = '';
-	//$strings['You cannot delete the default groups'] = '';
+	$strings['The maximum file size must be a number'] = 'Die Maximalgröße muss eine Zahl sein';
+	$strings['You cannot delete the default groups'] = 'Sie können die Default-Gruppe nicht löschen';
 	$strings['You cannot delete this group'] = 'Sie können diese Gruppe nicht löschen';
 	$strings['The group was deleted'] = 'Die Gruppe wurde gelöscht';
 	$strings['You cannot clone this group'] = 'Sie können diese Gruppe nicht klonen';
@@ -584,9 +584,9 @@
 	$strings['The group was cloned'] = 'Die Gruppe wurde kopiert';
 	$strings['The group was added'] = 'Die Gruppe wurde hinzugefügt';
 	$strings['Please enter a group name'] = 'Bitte geben Sie einen Gruppennamen ein';
-	//$strings['You cannot delete this system user'] = '';
-	//$strings['You cannot delete this user'] = '';
-	//$strings['The user was deleted'] = '';
+	$strings['You cannot delete this system user'] = 'Sie können diesen Systembenutzer nicht löschen';
+	$strings['You cannot delete this user'] = 'Sie können diesen Benutzer nicht löschen';
+	$strings['The user was deleted'] = 'Der Benutzer wurde gelöscht';
 	//$strings['The user has been removed from this scope'] = '';
 	$strings['You cannot delete this team'] = 'Sie können dieses Team nicht löschen';
 	$strings['The team was deleted'] = 'Das Team wurde gelöscht';
@@ -598,102 +598,102 @@
 	$strings['Unactivated users'] = 'Unaktivierte Benutzer';
 	$strings['New users'] = 'Neue Benutzer';
 	$strings['All users'] = 'Alle Benutzer';
-	//$strings['This instance of The Bug Genie cannot add more users'] = '';
+	$strings['This instance of The Bug Genie cannot add more users'] = 'Diese Instanz von The Bug Genie kann keine weiteren Benutzer hinzufügen';
 	//$strings['The user was successfully added to this scope (pending user confirmation)'] = '';
 	$strings['Please enter a username'] = 'Benutzername eingeben';
 	$strings['User %username% created'] = 'Benutzer %username% erstellt';
 	//$strings['This user is not a confirmed member of this scope'] = '';
 	$strings['This username is already taken'] = 'Dieser Benutzername ist bereits vergeben';
 	$strings['Please enter the new password twice'] = 'Bitte bestätigen Sie Ihr Passwort durch doppelte Eingabe';
-	//$strings['Invalid user group'] = '';
-	//$strings['One or more teams were invalid'] = '';
-	//$strings['One or more clients were invalid'] = '';
+	$strings['Invalid user group'] = 'Ungültige Nutzergruppe';
+	$strings['One or more teams were invalid'] = 'Mindestens ein Team war ungültig';
+	$strings['One or more clients were invalid'] = 'Mindestens ein Kunden waren ungültig';
 	$strings['User updated!'] = 'Benutzer aktualisiert!';
-	//$strings['The password was changed'] = '';
+	$strings['The password was changed'] = 'Das Passwort wurde geändert';
 	//$strings['This user could not be updated: %message%'] = '';
 	$strings['This user could not be updated'] = 'Dieser Benutzer konnte nicht aktualisiert werden';
 	//$strings["The user's scope access was successfully updated"] = "";
 	$strings['New'] = 'Neu';
 	//$strings['The workflow scheme was deleted'] = '';
-	//$strings['Workflow associations were updated'] = '';
+	$strings['Workflow associations were updated'] = 'Workflow-Zuordnungen wurden aktualisiert';
 	$strings['This workflow scheme does not exist'] = 'Dieses Workflow-Schema existiert nicht';
 	$strings['The workflow was deleted'] = 'Der Workflow wurde gelöscht';
 	$strings['This workflow does not exist'] = 'Dieser Workflow existiert nicht';
 	$strings['This workflow / step does not exist'] = 'Dieser Workflow / Schritt existiert nicht';
-	//$strings['The action has been deleted'] = '';
+	$strings['The action has been deleted'] = 'Die Aktion wurde gelöscht';
 	//$strings['User specified during transition'] = '';
 	//$strings['Resolution specified by user'] = '';
 	//$strings['Reproducability specified by user'] = '';
 	//$strings['Status specified by user'] = '';
 	//$strings['Milestone specified by user'] = '';
 	//$strings['Priority specified by user'] = '';
-	//$strings['The validation rule has been deleted'] = '';
-	//$strings['This validation rule already exist'] = '';
+	$strings['The validation rule has been deleted'] = 'Die Validierungsregel wurde gelöscht';
+	$strings['This validation rule already exist'] = 'Diese Validierungsregel ist bereits vorhanden';
 	//$strings['Unlimited'] = '';
 	//$strings['Any valid value'] = '';
-	//$strings['Please select a valid template'] = '';
+	$strings['Please select a valid template'] = 'Bitte wählen Sie eine gültige Vorlage';
 	//$strings['Please select a valid outgoing step'] = '';
 	$strings['Please fill in all required fields'] = 'Bitte alle erforderlichen Felder ausfüllen';
 	$strings['This workflow / transition does not exist'] = 'Dieser Workflow / Transaktion existiert nicht';
-	//$strings["Please enter a client name that doesn't already exist"] = "";
-	//$strings['The client was added'] = '';
-	//$strings['Please enter a client name'] = '';
-	//$strings['You cannot delete this client'] = '';
-	//$strings['The client was deleted'] = '';
-	//$strings['You cannot edit this client'] = '';
+	$strings["Please enter a client name that doesn't already exist"] = "Bitte geben Sie einen Kundennamen an, der nicht bereits vorhanden ist";
+	$strings['The client was added'] = 'Kunde hinzugefügt';
+	$strings['Please enter a client name'] = 'Bitte geben Sei einen Namen für den Kunden ein';
+	$strings['You cannot delete this client'] = 'Sie können diesen Kunden nicht löschen';
+	$strings['The client was deleted'] = 'Kunde wurde gelöscht';
+	$strings['You cannot edit this client'] = 'Sie können diesen Kunden nicht bearbeiten';
 	$strings['The client was saved'] = 'Der Kunde wurde gespeichert';
-	//$strings['No data supplied to import'] = '';
-	//$strings['Row %row% does not have the same number of elements as the header row'] = '';
-	//$strings['Insufficient data to import'] = '';
-	//$strings["Required column '%col%' not found in header row"] = "";
-	//$strings['Row %row% column %col% has no value'] = '';
-	//$strings['Row %row%: A project with this name already exists'] = '';
-	//$strings['Row %row% column %col%: invalid value (must be 1/0)'] = '';
+	$strings['No data supplied to import'] = 'Dem Import wurden keine Daten übergeben';
+	$strings['Row %row% does not have the same number of elements as the header row'] = 'Zeile %row% hat nicht die gleiche Spaltenzahl wie die Kopfzeile';
+	$strings['Insufficient data to import'] = 'Daten ungenügend für Import';
+	$strings["Required column '%col%' not found in header row"] = "Benötigte Spalte %col% wurde nicht in Kopfzeile gefunden";
+	$strings['Row %row% column %col% has no value'] = 'Zeile %row% Spalte %col%: Kein Wert';
+	$strings['Row %row%: A project with this name already exists'] = 'Zeile %row%: Ein Projekt mit diesem Namen ist bereits vorhanden';
+	$strings['Row %row% column %col%: invalid value (must be 1/0)'] = 'Zeile %row% Spalte %col%: Ungültiger Wert (erlaubt: 1 oder 0)';
 	//$strings['Row %row%: Both the type and item ID must be supplied for owner/lead/qa fields'] = '';
-	//$strings['Row %row% column %col%: invalid value (must be 1 for a user or 2 for a team)'] = '';
-	//$strings['Row %row% column %col%: invalid value (must be a number)'] = '';
-	//$strings['Row %row% column %col%: user does not exist'] = '';
-	//$strings['Row %row% column %col%: team does not exist'] = '';
-	//$strings['Row %row% column %col%: client does not exist'] = '';
-	//$strings['Row %row% column %col%: workflow scheme does not exist'] = '';
-	//$strings['Row %row% column %col%: issuetype scheme does not exist'] = '';
-	//$strings["Row %row% column %col%: invalid value (must be 'issuetypes' or 'milestones')"] = "";
-	//$strings['Row %row% column %col%: Project does not exist'] = '';
-	//$strings['Row %row% column %col%: Percentage must be from 0 to 100 inclusive'] = '';
-	//$strings['Row %row% column %col%: milestone does not apply to the specified project'] = '';
-	//$strings['Row %row% column %col%: milestone does not exist'] = '';
-	//$strings['Row %row% column %col%: status does not exist'] = '';
-	//$strings['Row %row% column %col%: resolution does not exist'] = '';
-	//$strings['Row %row% column %col%: priority does not exist'] = '';
-	//$strings['Row %row% column %col%: category does not exist'] = '';
-	//$strings['Row %row% column %col%: severity does not exist'] = '';
-	//$strings['Row %row% column %col%: reproducability does not exist'] = '';
-	//$strings['Row %row% column %col%: this project does not support issues of this type (%type%)'] = '';
-	//$strings['Row %row% column %col%: issue type does not exist'] = '';
-	//$strings['Errors occured while importing, see the error list in the import screen for further details'] = '';
+	$strings['Row %row% column %col%: invalid value (must be 1 for a user or 2 for a team)'] = 'Zeile %row% Spalte %col%: Ungültiger Wert (erlaubt: 1 für Benutzer, 2 für Team)';
+	$strings['Row %row% column %col%: invalid value (must be a number)'] = 'Zeile %row% Spalte %col%: Ungültiger Wert (Zahlen erlaubt)';
+	$strings['Row %row% column %col%: user does not exist'] = 'Zeile %row% Spalte %col%: Nutzer exisitiert nicht';
+	$strings['Row %row% column %col%: team does not exist'] = 'Zeile %row% Spalte %col%: Team exisitiert nicht';
+	$strings['Row %row% column %col%: client does not exist'] = 'Zeile %row% Spalte %col%: Kunde existiert nicht';
+	//$strings['Row %row% column %col%: workflow scheme does not exist'] = 'Zeile %row% Spalte %col%: ';
+	//$strings['Row %row% column %col%: issuetype scheme does not exist'] = 'Zeile %row% Spalte %col%: ';
+	$strings["Row %row% column %col%: invalid value (must be 'issuetypes' or 'milestones')"] = "Zeile %row% Spalte %col%: Ungültiger Wert ('issuetypes' oder 'milestones' erlaubt)";
+	$strings['Row %row% column %col%: Project does not exist'] = 'Zeile %row% Spalte %col%: Projekt existiert nicht';
+	$strings['Row %row% column %col%: Percentage must be from 0 to 100 inclusive'] = 'Zeile %row% Spalte %col%: Prozentwerte müssen im Bereich von 0 bis einschließlich 100 liegen';
+	//$strings['Row %row% column %col%: milestone does not apply to the specified project'] = 'Zeile %row% Spalte %col%: ';
+	$strings['Row %row% column %col%: milestone does not exist'] = 'Zeile %row% Spalte %col%: Meilenstein exisitiert nicht';
+	$strings['Row %row% column %col%: status does not exist'] = 'Zeile %row% Spalte %col%: Status existiert nicht';
+	//$strings['Row %row% column %col%: resolution does not exist'] = 'Zeile %row% Spalte %col%: ';
+	$strings['Row %row% column %col%: priority does not exist'] = 'Zeile %row% Spalte %col%: Priorität existiert nicht';
+	$strings['Row %row% column %col%: category does not exist'] = 'Zeile %row% Spalte %col%: Kategorie existiert nicht';
+	//$strings['Row %row% column %col%: severity does not exist'] = 'Zeile %row% Spalte %col%: ';
+	//$strings['Row %row% column %col%: reproducability does not exist'] = 'Zeile %row% Spalte %col%: ';
+	$strings['Row %row% column %col%: this project does not support issues of this type (%type%)'] = 'Zeile %row% Spalte %col%: das Projekte unterstützt Fälle diesen Types nicht (%type%)';
+	$strings['Row %row% column %col%: issue type does not exist'] = 'Zeile %row% Spalte %col%: Falltyp exisitiert nicht';
+	$strings['Errors occured while importing, see the error list in the import screen for further details'] = 'Beim Import sind Fehler aufgetreten. Prüfen Sie die Fehlerliste für mehr Informationen.';
 	//$strings['Dry-run successful, you can now uncheck the dry-run box and import your data.'] = '';
-	//$strings['Row %row% failed: %err%'] = '';
-	//$strings['Successfully imported %num% rows!'] = '';
+	$strings['Row %row% failed: %err%'] = 'Fehler in Zeile %row: %err%';
+	$strings['Successfully imported %num% rows!'] = '%num& Zeilen wurden erfolgreich importiert.';
 	//$strings['You cannot delete the default scope'] = '';
 	//$strings['Please specify a scope name'] = '';
-	//$strings['This is not a valid role'] = '';
-	//$strings['You do not have access to edit these permissions'] = '';
-	//$strings['Permissions updated'] = '';
-	//$strings['This role cannot be removed'] = '';
-	//$strings['Role deleted'] = '';
-	//$strings['You have to specify a name for this role'] = '';
-	//$strings["You don't have access to perform this action"] = "";
+	$strings['This is not a valid role'] = 'Das ist keine gültige Rolle';
+	$strings['You do not have access to edit these permissions'] = 'Sie haben keinen Zugriff darauf diese Rechte zu ändern.';
+	$strings['Permissions updated'] = 'Rechte aktualisiert';
+	$strings['This role cannot be removed'] = 'Diese Rolle kann nicht entfernt werden';
+	$strings['Role deleted'] = 'Rolle gelöscht';
+	$strings['You have to specify a name for this role'] = 'Sie müssen einen Namen für diese Rolle angeben';
+	$strings["You don't have access to perform this action"] = "Sie haben nicht ausreichend Rechte um diese Aktion durchzuführen.";
 
 	// First occurrence is in: .\modules\configuration\templates\_appearance.inc.php
 	// ----------------------------------------------------------------------------
 	$strings['Selected theme'] = 'Design wählen';
-	//$strings['Themes provide the look and feel of The Bug Genie, other than the icons. Therefore, changing the theme will change the colours, fonts and layout of your installation'] = '';
-	//$strings['Selected iconset'] = '';
-	//$strings['An iconset contains all the icons used in The Bug Genie. You can change the icons to be used using this option'] = '';
-	//$strings['Custom header and favicons'] = '';
-	//$strings['Configure icons'] = '';
-	//$strings['Custom header link'] = '';
-	//$strings['You can alter the webpage that clicking on the header icon navigates to. If left blank it will link to the main page of this installation.'] = '';
+	$strings['Themes provide the look and feel of The Bug Genie, other than the icons. Therefore, changing the theme will change the colours, fonts and layout of your installation'] = 'Designes legen das Aussehen von The Bug Genie fest. Wird ein anderes Design gewählt, so ändern sich Farben, Schriftarten und das Layout der Installation.';
+	$strings['Selected iconset'] = 'Iconset wählen';
+	$strings['An iconset contains all the icons used in The Bug Genie. You can change the icons to be used using this option'] = 'Ein Iconset enthält alle von The Bug Genie verwendeten Icons. Mit dieser Option können sie das verwendete Iconset ändern.';
+	$strings['Custom header and favicons'] = 'Anpassung von Kopfzeile und Favicon';
+	$strings['Configure icons'] = 'Icons configurieren';
+	$strings['Custom header link'] = 'Angepasster Kopf-Link';
+	$strings['You can alter the webpage that clicking on the header icon navigates to. If left blank it will link to the main page of this installation.'] = 'Sie können die Webseite ändern, die aufgerufen wird wenn das Icon in der Kopfzeile geklickt wird. Wenn dieses Feld leer gelassen wird, wird zur Hauptseite dieser Installation verlinkt.';
 
 	// First occurrence is in: .\modules\configuration\templates\_clientbox.inc.php
 	// ----------------------------------------------------------------------------
@@ -703,7 +703,7 @@
 	$strings['Do you really want to delete this team?'] = 'Möchten Sie dieses Team wirklich löschen?';
 	//$strings['If you delete this client, any projects this client is assigned to will be set to having no client'] = '';
 	$strings['%number_of% member(s)'] = '%number_of% Mitglieder';
-	//$strings['ID: %id%'] = '';
+	$strings['ID: %id%'] = 'ID: %id%';
 	$strings['Edit client settings'] = 'Editere Kundeneinstellungen';
 	$strings['Client name'] = 'Kundenname';
 	$strings['Email Address'] = 'eMailadresse';
@@ -717,30 +717,30 @@
 
 	// First occurrence is in: .\modules\configuration\templates\_clientuserlist.inc.php
 	// ----------------------------------------------------------------------------
-	//$strings['There are no users in this client'] = '';
+	$strings['There are no users in this client'] = 'Es gibt keine Benutzer in diesem Kunden.';
 
 	// First occurrence is in: .\modules\configuration\templates\_finduser_row.inc.php
 	// ----------------------------------------------------------------------------
-	//$strings['New password: %random_password%'] = '';
+	$strings['New password: %random_password%'] = 'Neues Passwort: %random_password%';
 	$strings['Edit this user'] = 'Benutzer editieren';
-	//$strings['The user must confirm his membership in this scope before you can perform this action'] = '';
-	//$strings['This user cannot be edited'] = '';
+	$strings['The user must confirm his membership in this scope before you can perform this action'] = 'Der Nutzer muss seine Mitgliedschaft in diesem Bereich bestätigen bevor diese Aktion durchgeführt werden kann.';
+	$strings['This user cannot be edited'] = 'Dieser Benutzer kann nicht bearbeitet werden.';
 	$strings['Edit permissions for this user'] = 'Berechtigungen editieren';
-	//$strings['Edit available scopes for this user'] = '';
+	$strings['Edit available scopes for this user'] = 'Für den Benutzer verfügbare Bereiche bearbeiten.';
 	$strings['Become friends'] = 'Freunde werden';
 	$strings['Remove this friend'] = 'Aus Verbindungen entfernen';
 	$strings['Show user details'] = 'Zeige Benutzerdetails';
-	//$strings['Are you sure you want to remove this user? This will remove the users login data, as well as memberships in (and data in) any scopes the user is a member of.'] = '';
-	//$strings['Delete this user'] = '';
-	//$strings['Permanently delete this user?'] = '';
-	//$strings['Are you sure you want to remove this user from the current scope? The users login is kept, and you can re-add the user later.'] = '';
-	//$strings['Remove this user?'] = '';
-	//$strings['Remove user from this scope'] = '';
-	//$strings['Cancel invitation'] = '';
-	//$strings['Cancel membership in this scope?'] = '';
-	//$strings['If you cancel the invitation to this scope, then this user will be notified and the unconfirmed membership removed from this scope.'] = '';
-	//$strings['This is a system user which cannot be removed'] = '';
-	//$strings['This user cannot be removed'] = '';
+	$strings['Are you sure you want to remove this user? This will remove the users login data, as well as memberships in (and data in) any scopes the user is a member of.'] = 'Soll dieser Nutzer wirklich gelöscht werden? Das wird die Login-Daten des Benutzers ebenso löschen wie Mitgliedschaften (und Daten in) jedem Bereich in dem der Nutzer Mitglied ist.';
+	$strings['Delete this user'] = 'Benutzer löschen';
+	$strings['Permanently delete this user?'] = 'Benutzer endgültig löschen?';
+	$strings['Are you sure you want to remove this user from the current scope? The users login is kept, and you can re-add the user later.'] = 'Soll dieser Nutzer wirklich aus dem aktuellen Bereich gelöscht werden? Der Login bleibt erhalten und der Nutzer kann später wieder hinzugefügt werden.';
+	$strings['Remove this user?'] = 'Benutzer entfernen?';
+	$strings['Remove user from this scope'] = 'Benutzer aus diesem Bereich entfernen';
+	$strings['Cancel invitation'] = 'Einladung abbrechen';
+	$strings['Cancel membership in this scope?'] = 'Mitgliedschaft in diesem Bereich beenden?';
+	$strings['If you cancel the invitation to this scope, then this user will be notified and the unconfirmed membership removed from this scope.'] = 'Wenn Sie die Einladung abbrechen wird der Benutzer informiert und die unbestätigte Mitgliedschaft entfernt.';
+	$strings['This is a system user which cannot be removed'] = 'Dies ist ein System-Nutzer, der nicht entfernt werden kann.';
+	$strings['This user cannot be removed'] = 'Dieser Nutzer kann nicht entfernt werden.';
 
 	// First occurrence is in: .\modules\configuration\templates\_finduser_row_editable.inc.php
 	// ----------------------------------------------------------------------------
@@ -752,16 +752,16 @@
 	$strings['Email address'] = 'eMailadresse';
 	$strings['In group'] = 'in der Gruppe';
 	$strings['Homepage'] = 'Homepage';
-	//$strings['The password setting, along with a number of other settings for this user, have been disabled due to use of an alternative authentictation mechanism'] = '';
+	$strings['The password setting, along with a number of other settings for this user, have been disabled due to use of an alternative authentictation mechanism'] = 'Die Passworteinstellungen, und einige weitere Einstellungen dieses Benutzers, wurden deaktiviert wegen der Nutzung einer alternativen Authentifizierungsmethode.';
 	$strings["Don't change the password"] = "Passwort nicht ändern";
 	$strings['Input new password'] = 'Neues Passwort festlegen';
 	$strings['Generate random new password'] = 'Zufälliges Passwort';
 	$strings['New password'] = 'Neues Passwort';
 	$strings['Repeat password'] = 'Passwort wiederholen';
 	$strings['Member of team(s)'] = 'Mitglied der Teams';
-	//$strings['No teams exist'] = '';
+	$strings['No teams exist'] = 'Keine Teams vorhanden';
 	//$strings['Member of client(s)'] = '';
-	//$strings['No clients exist'] = '';
+	$strings['No clients exist'] = 'Keine Kunden vorhanden';
 	$strings['Please wait'] = 'Bitte warten';
 	$strings['Update user'] = 'Aktualisiere Benutzer';
 	$strings['cancel'] = 'abbrechen';
@@ -779,7 +779,7 @@
 	$strings['No, use regular index page'] = 'Nein, nutze normale Index-Seite';
 	$strings['In single project tracker mode, The Bug Genie will display the homepage for the first project as the main page instead of the regular index page'] = 'Im Einzelprojektmodus wird anstelle der normalen Startseite direkt die Startseite des ersten Projekts angezeigt';
 	$strings['More than one project exists. When in "single project" mode, accessing other projects than the first will become harder.'] = 'Es existiert mehr als ein Projekt. Sofern der Einzelprojektmodus aktiv ist, wird es schwieriger die Seiten der anderen Projekte zu finden.';
-	//$strings['Show project list on frontpage'] = '';
+	$strings['Show project list on frontpage'] = 'Zeige Projektliste auf Startseite';
 	$strings['Whether the project overview list should appear on the frontpage or not'] = 'Ob die Projekt auf der Startseite erscheinen soll oder nicht';
 	$strings['Comment trail'] = 'Kommentarliste';
 	$strings["Don't post system comments when an issue is updated"] = "Erstelle keine automatischen Kommentare, wenn ein Fall aktualisiert wird";
@@ -821,18 +821,18 @@
 
 	// First occurrence is in: .\modules\configuration\templates\_import_ids.inc.php
 	// ----------------------------------------------------------------------------
-	//$strings['Data for project import'] = '';
+	$strings['Data for project import'] = 'Daten für Projektimport';
 	$strings['Issue type schemes'] = 'Falltypen-Schemen';
 	$strings['Name'] = 'Name';
-	//$strings['ID'] = '';
+	$strings['ID'] = 'ID';
 	$strings['Workflow schemes'] = 'Workflow Schemen';
-	//$strings['Data for issue import'] = '';
-	//$strings['Projects and milestones'] = '';
-	//$strings['Issue type values'] = '';
-	//$strings['Status values'] = '';
+	$strings['Data for issue import'] = 'Daten für Fallimport';
+	$strings['Projects and milestones'] = 'Projekte und Meilensteine';
+	$strings['Issue type values'] = 'Falltypenwerte';
+	$strings['Status values'] = 'Statuswerte';
 	//$strings['Reproducability values'] = '';
 	//$strings['Severity values'] = '';
-	//$strings['Category values'] = '';
+	$strings['Category values'] = 'Kategoriewerte';
 	//$strings['Priority values'] = '';
 	//$strings['Resolution values'] = '';
 
@@ -840,7 +840,7 @@
 	// ----------------------------------------------------------------------------
 	$strings['Import content from CSV'] = 'Importiere Inhalte von CSV';
 	$strings['Importing %type%'] = 'Importiere %type%';
-	//$strings['By default a dry-run will be used so any errors in your data can be found and fixed before importing proper. To turn off the dry-run mode, uncheck the box below.'] = '';
+	$strings['By default a dry-run will be used so any errors in your data can be found and fixed before importing proper. To turn off the dry-run mode, uncheck the box below.'] = 'Im Normalfall wird ein Testlauf genutzt um Fehler in den Daten zu finden und zu beheben bevor tatsächlich importiert wird. Um den Testlauf-Modus zu aktivieren wählen sie die Checkbox unten.';
 	$strings['Please wait, this may take a few minutes'] = 'Bitte warten. Dies kann einige Minuten beanspruchen';
 	$strings['There was an error importing your data:'] = 'Ein Fehler trat beim Import Ihrer Daten auf:';
 	$strings['Test the import (dry-run)'] = 'Import testen (Simulation)';
@@ -852,7 +852,7 @@
 	$strings['Edit this item'] = 'Eintrag editieren';
 	$strings['Set permissions for this item'] = 'Berechtigungen für diesen Eintrag setzen';
 	$strings['Are you really sure you want to delete this item?'] = 'Sind Sie wirklich sicher, dass Sie diesen Eintrag löschen möchten?';
-	//$strings['Really delete %itemname%?'] = '';
+	$strings['Really delete %itemname%?'] = '%itemname% wirklich löschen?';
 	$strings['Other items - such as workflow steps - may depend on this item to exist. Remove the dependant item or unlink it from this item to continue.'] = 'Andere Einträge -wie z.B. Workflow-Schritte- können von diesem Eintrag abhängig sein. Entfernen oder lösen Sie die abhängigen Schritte bevor Sie fortfahren.';
 	$strings['This item cannot be deleted'] = 'Dieser Eintrag kann nicht gelöscht werden';
 	$strings['Update'] = 'Aktualisierung';
