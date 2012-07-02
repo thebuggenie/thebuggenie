@@ -164,7 +164,7 @@
 		public function cleanBuffer()
 		{
 			$ob_status = ob_get_status();
-			if (!empty($ob_status) && $ob_status['status'] != PHP_OUTPUT_HANDLER_END)
+			if (!empty($ob_status) && ((isset($ob_status['status'])&& $ob_status['status'] != PHP_OUTPUT_HANDLER_END)|| (isset($ob_status['flags'])&&!($ob_status['flags'] & PHP_OUTPUT_HANDLER_END))))
 			{
 				ob_end_clean();
 			}
