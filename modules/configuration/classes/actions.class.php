@@ -1200,10 +1200,9 @@
 						}
 					}
 				}
-				else
-				{
-					TBGSettings::saveSetting('enable_uploads', TBGContext::getRequest()->getParameter('enable_uploads'));
-				}
+
+				TBGSettings::saveSetting('enable_uploads', TBGContext::getRequest()->getParameter('enable_uploads'));
+
 				return $this->renderJSON(array('title' => TBGContext::getI18n()->__('All settings saved')));
 			}
 		}
