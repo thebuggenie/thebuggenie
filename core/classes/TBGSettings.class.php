@@ -601,10 +601,11 @@
 			return ($bytes) ? (int) (self::get(self::SETTING_UPLOAD_MAX_FILE_SIZE) * 1024 * 1024) : (int) self::get(self::SETTING_UPLOAD_MAX_FILE_SIZE);
 		}
 
-		public static function getUploadsEffectiveMaxSize($bytes = false) {
-			$ini_min = min( (int) ini_get('upload_max_filesize'), (int) ini_get('post_max_size') ) * ( $bytes ? 1024 * 1024 : 1 );
+		public static function getUploadsEffectiveMaxSize($bytes = false)
+		{
+			$ini_min = min((int) ini_get('upload_max_filesize'), (int) ini_get('post_max_size')) * ($bytes ? 1024 * 1024 : 1);
 
-			return ( 0 == self::getUploadsMaxSize($bytes) ) ? $ini_min : min($ini_min, self::getUploadsMaxSize($bytes));
+			return (0 == self::getUploadsMaxSize($bytes)) ? $ini_min : min($ini_min, self::getUploadsMaxSize($bytes));
 		}
 
 		public static function getUploadsRestrictionMode()
