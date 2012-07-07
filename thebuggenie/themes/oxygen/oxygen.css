@@ -385,6 +385,7 @@ div.dropdown_separator { border-left: 1px dotted #EAEAF5; padding: 0 0 0 4px; ma
 
 /* unformatted lists */
 .simple_list { list-style-type: none; padding: 0; margin: 5px 0 0 0; }
+.simple_list ul { list-style-type: none;}
 
 /* generic header formatting */
 .header { font-weight: bold; text-align: left; }
