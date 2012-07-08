@@ -597,7 +597,7 @@
 		 * 
 		 * @return string
 		 */
-		public static function createPassword($len = 8)
+		public static function createPassword($len = 16)
 		{
 			$pass = '';
 			$lchar = 0;
