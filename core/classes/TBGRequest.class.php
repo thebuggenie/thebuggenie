@@ -64,9 +64,9 @@
 						if ($thefile['error'] == UPLOAD_ERR_OK)
 						{
 							TBGLogging::log('No upload errors');
-							if (filesize($thefile['tmp_name']) > TBGSettings::getUploadsMaxSize(true) && TBGSettings::getUploadsMaxSize() > 0)
+							if (filesize($thefile['tmp_name']) > TBGSettings::getUploadsEffectiveMaxSize(true))
 							{
-								throw new Exception(TBGContext::getI18n()->__('You cannot upload files bigger than %max_size% MB', array('%max_size%' => TBGSettings::getUploadsMaxSize())));
+								throw new Exception(TBGContext::getI18n()->__('You cannot upload files bigger than %max_size% MB', array('%max_size%' => TBGSettings::getUploadsEffectiveMaxSize())));
 							}
 							TBGLogging::log('Upload filesize ok');
 							$extension = mb_substr(basename($thefile['name']), mb_strpos(basename($thefile['name']), '.'));
@@ -178,7 +178,7 @@
 							{
 								case UPLOAD_ERR_INI_SIZE:
 								case UPLOAD_ERR_FORM_SIZE:
-									throw new Exception(TBGContext::getI18n()->__('You cannot upload files bigger than %max_size% MB', array('%max_size%' => TBGSettings::getUploadsMaxSize())));
+									throw new Exception(TBGContext::getI18n()->__('You cannot upload files bigger than %max_size% MB', array('%max_size%' => TBGSettings::getUploadsEffectiveMaxSize())));
 									break;
 								case UPLOAD_ERR_PARTIAL:
 									throw new Exception(TBGContext::getI18n()->__('The upload was interrupted, please try again'));
