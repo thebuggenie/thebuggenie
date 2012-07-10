@@ -757,7 +757,8 @@
 			catch (Exception $e)
 			{
 				TBGLogging::log("Something happened while setting up user: ". $e->getMessage(), 'main', TBGLogging::LEVEL_WARNING);
-				if (!self::isCLI() && (self::getRouting()->getCurrentRouteModule() != 'main' || self::getRouting()->getCurrentRouteAction() != 'register1' && self::getRouting()->getCurrentRouteAction() != 'register2' && self::getRouting()->getCurrentRouteAction() != 'activate' && self::getRouting()->getCurrentRouteAction() != 'reset_password' && self::getRouting()->getCurrentRouteAction() != 'captcha' && self::getRouting()->getCurrentRouteAction() != 'login' && self::getRouting()->getCurrentRouteAction() != 'getBackdropPartial' && self::getRouting()->getCurrentRouteAction() != 'serve' && self::getRouting()->getCurrentRouteAction() != 'doLogin'))
+				$allow_anonymous_routes = array('register', 'register1', 'register2', 'activate', 'reset_password', 'captcha', 'login', 'getBackdropPartial', 'serve', 'doLogin');
+				if (!self::isCLI() && (self::getRouting()->getCurrentRouteModule() != 'main' || !in_array(self::getRouting()->getCurrentRouteAction(), $allow_anonymous_routes)))
 				{
 					TBGContext::setMessage('login_message_err', $e->getMessage());
 					self::$_redirect_login = true;
