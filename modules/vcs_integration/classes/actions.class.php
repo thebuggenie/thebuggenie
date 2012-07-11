@@ -241,6 +241,86 @@
 			exit();
 		}
 		
+		/**
+		 * Bitbucket gateway - adding commit
+		 * @see http://confluence.atlassian.com/display/BITBUCKET/Setting+Up+the+bitbucket+POST+Service
+		 * @author AlmogBaku <almog.baku@gmail.com>
+		 * 
+		 * @param TBGRequest $request
+		 */
+		public function runAddCommitBitbucket(TBGRequest $request)
+		{
+		  TBGContext::getResponse()->setContentType('text/plain');
+		  TBGContext::getResponse()->renderHeaders();
+		
+		  $passkey = TBGContext::getRequest()->getParameter('passkey');
+		  $project_id = urldecode(TBGContext::getRequest()->getParameter('project_id'));
+		   
+		  try
+		  {
+		    $project = TBGContext::factory()->TBGProject($project_id);
+		  }
+		  catch (Exception $e)
+		  {
+		    $project = false;
+		  }
+		   
+		  // Validate access
+		  if (!$project)
+		  {
+		    echo 'Error: The project with the ID '.$project_id.' does not exist';
+		    exit;
+		  }
+		   
+		  if (TBGSettings::get('access_method_'.$project->getID(), 'vcs_integration') == TBGVCSIntegration::ACCESS_DIRECT)
+		  {
+		    echo 'Error: This project uses the CLI access method, and so access via HTTP has been disabled';
+		    exit;
+		  }
+		   
+		  if (TBGSettings::get('access_passkey_'.$project->getID(), 'vcs_integration') != $passkey)
+		  {
+		    echo 'Error: The passkey specified does not match the passkey specified for this project';
+		    exit;
+		  }
+		   
+		  // Validate data
+		  $data = html_entity_decode(TBGContext::getRequest()->getParameter('payload'));
+		  if (empty($data) || $data == null)
+		  {
+		    die('Error: No payload was provided');
+		  }
+		
+		  $entries = json_decode($data);
+		  if ($entries == null)
+		  {
+		    die('Error: The payload could not be decoded');
+		  }
+		
+		  foreach($entries->commits as $commit)
+		  {
+		    $changed=array();
+		    foreach($commit->files as $file)
+		    {
+		      switch($file->type) {
+		        case "modified":
+		          $changed[]="M".$file->file;
+		          break;
+		        case "removed":
+		          $changed[]="D".$file->file;
+		          break;
+		        case "added":
+		          $changed[]="A".$file->file;
+		          break;
+		      }
+		    }
+		
+		    echo TBGVCSIntegration::processCommit($project, $commit->message, $commit->parents[0], $commit->node, strtotime($commit->timestamp), implode("\n",$changed), $commit->author, $commit->branch);
+		    $previous = $commit->node;
+		  }
+		  exit();
+		}
+		
 		public function runAddCommitGitorious(TBGRequest $request)
 		{
 			TBGContext::getResponse()->setContentType('text/plain');
