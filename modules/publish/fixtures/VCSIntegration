@@ -33,6 +33,15 @@ You will need to set the hostname and path correctly as appropriate, as well as 
 
 Any commits which follow the rules for being picked up (see below) will then be recorded against their respective issues on push, though commits which make no changes to the filesystem (i.e. nothing added, removed or modified) will not be recorded in this release of VCS Integration.
 
+==== Bitbucket support ====
+If you wish to use the bitbucket hook, please set up HTTP access as previously discussed. You will then need to set up your Bitbucket project's post-receive hook to contact The Bug Genie.
+
+To do this, go to your project's service hooks page on bitbucket, and set a POST URL to point to the following URL:
+  http://www.your-tbg-site.com/vcs_integration/report/PROJECTID/bitcucket/?passkey=PASSKEY
+You will need to set the hostname and path correctly as appropriate, as well as replacing PASSKEY with the passkey you set, and PROJECTID with the ID number of the project, which can be found on the projects tab of VCS Integration configuration.
+
+Any commits which follow the rules for being picked up (see below) will then be recorded against their respective issues on push, though commits which make no changes to the filesystem (i.e. nothing added, removed or modified) will not be recorded in this release of VCS Integration.
+
 ==== Gitorious support ====
 If you have a locally hosted Gitorious server, then you can integrate that with The Bug Genie.
 

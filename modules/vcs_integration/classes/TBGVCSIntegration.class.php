@@ -81,6 +81,7 @@
 			$this->addRoute('vcs_commitspage', '/:project_key/commits', 'projectCommits');
 			$this->addRoute('normalcheckin', '/vcs_integration/report/:project_id/', 'addCommit');
 			$this->addRoute('githubcheckin', '/vcs_integration/report/:project_id/github/', 'addCommitGithub');
+			$this->addRoute('bitbucketcheckin', '/vcs_integration/report/:project_id/bitbucket/', 'addCommitBitbucket');
 			$this->addRoute('gitoriouscheckin', '/vcs_integration/report/:project_id/gitorious/', 'addCommitGitorious');
 			$this->addRoute('configure_vcs_settings', '/configure/project/:project_id/vcs', 'configureProjectSettings', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_PROJECTS));
 		}
@@ -286,6 +287,13 @@
 								$link_diff = '/commit/%revno%';
 								$link_view = '/blob/%revno%/%file%';
 								break;
+							case 'bitbucket':
+								  $base_url = 'https://bitbucket.org/' . $web_repo;
+								  $link_rev = '/changeset/%revno%';
+								  $link_file = '/history/%file%';
+								  $link_diff = '/changeset/%revno%#chg-%file%';
+								  $link_view = '/src/%revno%/%file%';
+								  break;
 							case 'gitorious':
 								$base_url = $web_path . '/' . $web_repo;
 								$link_rev = '/commit/%revno%';
