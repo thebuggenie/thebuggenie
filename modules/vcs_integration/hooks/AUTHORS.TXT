@@ -9,6 +9,9 @@ SVN hook:
 Github:
  - Philip Kent <kentphilip@gmail.com>
  
+Bitbucket:
+ - Almog Baku <almog.baku@gmail.com>
+ 
 Gitorious:
  - Joyce Babu <contact@joycebabu.com>
 

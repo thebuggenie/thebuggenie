@@ -36,7 +36,7 @@
 					<td style="width: 580px;">
 						<select name="access_method" id="access_method" style="width: 100%" onchange="if ($('access_method').getValue() == '1') { $('http_passkey').show(); } else { $('http_passkey').hide(); }">
 							<option value="0"<?php if (TBGSettings::get('access_method_'.$project->getID(), 'vcs_integration') != 1): ?> selected="selected"<?php endif;?>><?php echo __('Direct Access (via a call to tbg_cli)'); ?></option>
-							<option value="1"<?php if (TBGSettings::get('access_method_'.$project->getID(), 'vcs_integration') == 1): ?> selected="selected"<?php endif;?>><?php echo __('HTTP Access (via a call to a URL)'); ?> - <?php echo __('Required for Github and Gitorious users'); ?></option>
+							<option value="1"<?php if (TBGSettings::get('access_method_'.$project->getID(), 'vcs_integration') == 1): ?> selected="selected"<?php endif;?>><?php echo __('HTTP Access (via a call to a URL)'); ?> - <?php echo __('Required for Github, Gitorious and Bitbucket users'); ?></option>
 						</select>
 					</td>
 				</tr>
@@ -75,6 +75,7 @@
 								<option value='cgit' >cgit</option>
 								<option value='gitorious'>Gitorious (<?php echo __('locally hosted'); ?>)</option>
 								<option value='github'>Github</option>
+								<option value='bitbucket'>Bitbucket</option>
 							</optgroup>
 							<optgroup label="Bazaar">
 								<option value='loggerhead'>Loggerhead</option>

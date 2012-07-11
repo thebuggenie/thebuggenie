@@ -3823,7 +3823,7 @@
   $strings['Access method'] = 'Método de acceso';
   $strings['Direct Access (via a call to tbg_cli)'] = 'Acceso Directo (via llamada a tbg_cli)';
   $strings['HTTP Access (via a call to a URL)'] = 'Acceso HTTP (via llamada a URL)';
-  $strings['Required for Github and Gitorious users'] = 'Necesario para usuarios de Github y Gitorious';
+  $strings['Required for Github, Gitorious and Bitbucket users'] = 'Necesario para usuarios de Github, Gitorious y Bitbucket';
   $strings['HTTP Passkey'] = 'Passkey HTTP';
   $strings['URL to repository browser'] = 'URL al navegador de repositorio';
   $strings['If the repository name is part of the URL (e.g. http://www.example.com/viewvc/myrepo), please include it as part of this field.'] = 'Si el nombre del repositorio es parte de la UTL (ej.  http://www.ejemplo.com/viewvc/mirepo), por favor inclúyalo como parte de este campo.';
