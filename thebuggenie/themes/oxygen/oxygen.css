@@ -53,9 +53,10 @@ th { font-weight: bold; border-bottom: 1px solid #DDD; padding: 2px; background-
 
 dt { float: left; width: 420px; }
 dt label { padding-left: 0; }
+dd { margin-left: 0px; margin-bottom: 15px; vertical-align: middle; }
 label { font-weight: bold; margin: 0px; padding: 2px; cursor: pointer; }
 label .faded_out { font-weight: normal; }
-dd { margin-left: 0px; margin-bottom: 15px; vertical-align: middle; }
+label > input[type="checkbox"] { margin: 0 3px; position: relative; top: 2px;}
 
 div.image_container { border: 1px solid #CCC; padding: 3px; background-color: #F3F3F3; width: auto; margin: 0 5px 0 5px; float: right; clear: right; }
 div.image_container icleft { float: left; clear: left; }
