@@ -3823,7 +3823,7 @@
   $strings['Access method'] = 'Access method';
   $strings['Direct Access (via a call to tbg_cli)'] = 'Direct Access (via a call to tbg_cli)';
   $strings['HTTP Access (via a call to a URL)'] = 'HTTP Access (via a call to a URL)';
-  $strings['Required for Github and Gitorious users'] = 'Required for Github and Gitorious users';
+  $strings['Required for Github, Gitorious and Bitbucket users'] = 'Required for Github, Gitorious and Bitbucket users';
   $strings['HTTP Passkey'] = 'HTTP Passkey';
   $strings['URL to repository browser'] = 'URL to repository browser';
   $strings['If the repository name is part of the URL (e.g. http://www.example.com/viewvc/myrepo), please include it as part of this field.'] = 'If the repository name is part of the URL (e.g. http://www.example.com/viewvc/myrepo), please include it as part of this field.';
