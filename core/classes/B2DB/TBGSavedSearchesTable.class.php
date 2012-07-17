@@ -123,6 +123,11 @@
 					$filters['assignee_team'][] = array('operator' => '!=', 'value' => 0);
 					$groupby = 'issuetype';
 					break;
+				case TBGContext::PREDEFINED_SEARCH_MY_OWNED_OPEN_ISSUES:
+					$filters['state'] = array('operator' => '=', 'value' => TBGIssue::STATE_OPEN);
+					$filters['owner_user'] = array('operator' => '=', 'value' => TBGContext::getUser()->getID());
+					$groupby = 'issuetype';
+					break;
 			}
 
 			return array($filters, $groupby, $grouporder);

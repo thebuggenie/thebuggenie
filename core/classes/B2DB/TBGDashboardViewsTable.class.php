@@ -99,6 +99,7 @@
 					$this->addView($target_id, $target_type, array('type' => TBGDashboardView::VIEW_PREDEFINED_SEARCH, 'id' => TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES));
 					$this->addView($target_id, $target_type, array('type' => TBGDashboardView::VIEW_PREDEFINED_SEARCH, 'id' => TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES));
 					$this->addView($target_id, $target_type, array('type' => TBGDashboardView::VIEW_LOGGED_ACTIONS));
+					$this->addView($target_id, $target_type, array('type' => TBGDashboardView::VIEW_PREDEFINED_SEARCH, 'id' => TBGContext::PREDEFINED_SEARCH_MY_OWNED_OPEN_ISSUES));
 					break;
 				case self::TYPE_PROJECT:
 					$this->clearViews($target_id, $target_type);
