@@ -172,6 +172,9 @@
 					case TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES:
 						$this->searchtitle = $i18n->__('Open issues assigned to me');
 						break;
+					case TBGContext::PREDEFINED_SEARCH_MY_OWNED_OPEN_ISSUES:
+						$this->searchtitle = $i18n->__('Open issues owned by me');
+						break;
 					case TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES:
 						$this->searchtitle = $i18n->__('Open issues assigned to my teams');
 						break;

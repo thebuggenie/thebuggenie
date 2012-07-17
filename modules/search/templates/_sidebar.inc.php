@@ -59,6 +59,10 @@
 					<?php echo link_tag(make_url('my_assigned_issues'), __('Open issues assigned to me')); ?><br>
 				</li>
 				<li style="clear: both;">
+					<?php echo link_tag(make_url('my_owned_issues', array('format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
+					<?php echo link_tag(make_url('my_owned_issues'), __('Open issues owned by me')); ?><br>
+				</li>
+				<li style="clear: both;">
 					<?php echo link_tag(make_url('my_teams_assigned_issues', array('format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
 					<?php echo link_tag(make_url('my_teams_assigned_issues'), __('Open issues assigned to my teams')); ?><br>
 				</li>
