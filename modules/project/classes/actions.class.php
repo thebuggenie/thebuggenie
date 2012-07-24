@@ -1110,62 +1110,72 @@
 		
 		public function runRemoveMilestone(TBGRequest $request)
 		{
-			$milestone = new TBGMilestone($request['milestone_id']);
-			$no_milestone = new TBGMilestone(0);
-			$no_milestone->setProject($milestone->getProject());
-			$milestone->delete();
-			return $this->renderJSON(array('issue_count' => $no_milestone->countIssues(), 'hours' => $no_milestone->getHoursEstimated(), 'points' => $no_milestone->getPointsEstimated()));
+			if ($this->getUser()->canManageProject($this->selected_project) || $this->getUser()->canManageProjectReleases($this->selected_project)) 
+			{
+				$milestone = new TBGMilestone($request['milestone_id']);
+				$no_milestone = new TBGMilestone(0);
+				$no_milestone->setProject($milestone->getProject());
+				$milestone->delete();
+				return $this->renderJSON(array('issue_count' => $no_milestone->countIssues(), 'hours' => $no_milestone->getHoursEstimated(), 'points' => $no_milestone->getPointsEstimated()));
+			}
+			$this->getResponse()->setHttpStatus(400);
+			return $this->renderJSON(array("error" => $i18n->__("You don't have access to modify milestones")));
 		}
 
 		public function runMilestone(TBGRequest $request)
 		{
 			if ($request->isPost()) 
 			{
-				try
+				if ($this->getUser()->canManageProject($this->selected_project) || $this->getUser()->canManageProjectReleases($this->selected_project)) 
 				{
-					if (!$request['name']) throw new Exception($this->getI18n()->__('You must provide a valid milestone name'));
+					try
+					{
+						if (!$request['name']) throw new Exception($this->getI18n()->__('You must provide a valid milestone name'));
 
-					$milestone = new TBGMilestone($request['milestone_id']);
-					$milestone->setName($request['name']);
-					$milestone->setProject($this->selected_project);
-					$milestone->setStarting((bool) $request['is_starting']);
-					$milestone->setScheduled((bool) $request['is_scheduled']);
-					$milestone->setDescription($request['description']);
-					$milestone->setType($request->getParameter('milestone_type', TBGMilestone::TYPE_REGULAR));
-					if ($request->hasParameter('sch_month') && $request->hasParameter('sch_day') && $request->hasParameter('sch_year'))
-					{
-						$scheduled_date = mktime(23, 59, 59, TBGContext::getRequest()->getParameter('sch_month'), TBGContext::getRequest()->getParameter('sch_day'), TBGContext::getRequest()->getParameter('sch_year'));
-						$milestone->setScheduledDate($scheduled_date);
-					}
-					else
-						$milestone->setScheduledDate(0);
+						$milestone = new TBGMilestone($request['milestone_id']);
+						$milestone->setName($request['name']);
+						$milestone->setProject($this->selected_project);
+						$milestone->setStarting((bool) $request['is_starting']);
+						$milestone->setScheduled((bool) $request['is_scheduled']);
+						$milestone->setDescription($request['description']);
+						$milestone->setType($request->getParameter('milestone_type', TBGMilestone::TYPE_REGULAR));
+						if ($request->hasParameter('sch_month') && $request->hasParameter('sch_day') && $request->hasParameter('sch_year'))
+						{
+							$scheduled_date = mktime(23, 59, 59, TBGContext::getRequest()->getParameter('sch_month'), TBGContext::getRequest()->getParameter('sch_day'), TBGContext::getRequest()->getParameter('sch_year'));
+							$milestone->setScheduledDate($scheduled_date);
+						}
+						else
+							$milestone->setScheduledDate(0);
 
-					if ($request->hasParameter('starting_month') && $request->hasParameter('starting_day') && $request->hasParameter('starting_year'))
-					{
-						$starting_date = mktime(0, 0, 1, TBGContext::getRequest()->getParameter('starting_month'), TBGContext::getRequest()->getParameter('starting_day'), TBGContext::getRequest()->getParameter('starting_year'));
-						$milestone->setStartingDate($starting_date);
-					}
-					else
-						$milestone->setStartingDate(0);
+						if ($request->hasParameter('starting_month') && $request->hasParameter('starting_day') && $request->hasParameter('starting_year'))
+						{
+							$starting_date = mktime(0, 0, 1, TBGContext::getRequest()->getParameter('starting_month'), TBGContext::getRequest()->getParameter('starting_day'), TBGContext::getRequest()->getParameter('starting_year'));
+							$milestone->setStartingDate($starting_date);
+						}
+						else
+							$milestone->setStartingDate(0);
 
-					$milestone->save();
-					if ($request['milestone_id'])
-					{
-						$message = TBGContext::getI18n()->__('Milestone updated');
-						$template = 'milestoneboxheader';
+						$milestone->save();
+						if ($request['milestone_id'])
+						{
+							$message = TBGContext::getI18n()->__('Milestone updated');
+							$template = 'milestoneboxheader';
+						}
+						else
+						{
+							$message = TBGContext::getI18n()->__('Milestone created');
+							$template = 'milestonebox';
+						}
+						return $this->renderJSON(array('content' => $this->getTemplateHTML($template, array('milestone' => $milestone)), 'milestone_id' => $milestone->getID(), 'milestone_name' => $milestone->getName(), 'milestone_order' => array_keys($this->selected_project->getMilestones())));
 					}
-					else
+					catch (Exception $e)
 					{
-						$message = TBGContext::getI18n()->__('Milestone created');
-						$template = 'milestonebox';
+						$this->getResponse()->setHttpStatus(400);
+						return $this->renderJSON(array('error' => $e->getMessage()));
 					}
-					return $this->renderJSON(array('content' => $this->getTemplateHTML($template, array('milestone' => $milestone)), 'milestone_id' => $milestone->getID(), 'milestone_name' => $milestone->getName(), 'milestone_order' => array_keys($this->selected_project->getMilestones())));
 				}
-				catch (Exception $e)
-				{
-					$this->getResponse()->setHttpStatus(400);
-					return $this->renderJSON(array('error' => $e->getMessage()));
-				}
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array("error" => $i18n->__("You don't have access to modify milestones")));
 			}
 		}
 
@@ -1892,112 +1902,6 @@
 			}
 			$this->getResponse()->setHttpStatus(400);
 			return $this->renderJSON(array("error" => $i18n->__("You don't have access to add components")));
-		}
-
-		/**
-		 * Perform actions on a build (AJAX call)
-		 *
-		 * @param TBGRequest $request The request object
-		 */
-		public function runMilestoneAction(TBGRequest $request)
-		{
-			$i18n = TBGContext::getI18n();
-
-			if ($this->getUser()->canManageProject($this->selected_project) || $this->getUser()->canManageProjectReleases($this->selected_project))
-			{
-				try
-				{
-					if ($m_id = $request['milestone_id'])
-					{
-						$milestone = TBGContext::factory()->TBGMilestone($m_id);
-						if ($milestone->hasAccess())
-						{
-							switch ($request['milestone_action'])
-							{
-								case 'update':
-									if (($m_name = $request['name']) && trim($m_name) != '')
-									{
-										if ($m_name != $milestone->getName())
-										{
-											$check_milestones = $milestone->getProject()->getMilestones();
-											unset($check_milestones[$milestone->getID()]);
-											if (in_array($m_name, $check_milestones))
-											{
-												throw new Exception($i18n->__('This milestone already exists for this project'));
-											}
-										}
-										$milestone->setName($m_name);
-										if ($request['is_starting'])
-										{
-											$milestone->setStarting((bool) $request['is_starting']);
-										}
-
-										if ($request['is_scheduled'])
-										{
-											$milestone->setScheduled((bool) $request['is_scheduled']);
-										}
-
-										$milestone->setDescription($request->getParameter('description', null));
-										$milestone->setType($request->getParameter('milestone_type', 1));
-										if ($milestone->isScheduled())
-										{
-											if ($request->hasParameter('sch_month') && $request->hasParameter('sch_day') && $request->hasParameter('sch_year'))
-											{
-												$scheduled_date = mktime(23, 59, 59, TBGContext::getRequest()->getParameter('sch_month'), TBGContext::getRequest()->getParameter('sch_day'), TBGContext::getRequest()->getParameter('sch_year'));
-												$milestone->setScheduledDate($scheduled_date);
-											}
-										}
-										else
-										{
-											$milestone->setScheduledDate(0);
-										}
-
-										if ($milestone->isStarting())
-										{
-											if ($request->hasParameter('starting_month') && $request->hasParameter('starting_day') && $request->hasParameter('starting_year'))
-											{
-												$starting_date = mktime(0, 0, 1, TBGContext::getRequest()->getParameter('starting_month'), TBGContext::getRequest()->getParameter('starting_day'), TBGContext::getRequest()->getParameter('starting_year'));
-												$milestone->setStartingDate($starting_date);
-											}
-										}
-										else
-										{
-											$milestone->setStartingDate(0);
-										}
-
-										$milestone->save();
-										return $this->renderJSON(array('message' => TBGContext::getI18n()->__('Milestone updated'), 'content' => $this->getTemplateHTML('milestonebox', array('milestone' => $milestone))));
-									}
-									else
-									{
-										throw new Exception(TBGContext::getI18n()->__('The milestone needs to have a name'));
-									}
-									break;
-								case 'delete':
-									$milestone->delete();
-									return $this->renderJSON(array('deleted' => true));
-									break;
-							}
-						}
-						else
-						{
-							throw new Exception(TBGContext::getI18n()->__('You do not have access to this milestone'));
-						}
-					}
-					else
-					{
-						throw new Exception(TBGContext::getI18n()->__('You need to specify a milestone'));
-					}
-				}
-				catch (Exception $e)
-				{
-					$this->getResponse()->setHttpStatus(400);
-					return $this->renderJSON(array("error" => TBGContext::getI18n()->__('Could not update the milestone').", ".$e->getMessage()));
-				}
-				return $this->renderJSON(array('done' => true));
-			}
-			$this->getResponse()->setHttpStatus(400);
-			return $this->renderJSON(array("error" => $i18n->__("You don't have access to modify milestones")));
 		}
 
 		/**
