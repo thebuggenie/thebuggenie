@@ -28,10 +28,28 @@
 		const KEY_I18N = '_i18n_';
 		const KEY_TEXTPARSER_ISSUE_REGEX = 'TBGTextParser::getIssueRegex';
 		
+		/**
+		* Cache types APC, filesystem (default)
+		*/
+		const TYPE_APC = 'apc';
+		const TYPE_FILE = 'file';
+		
 		protected static $_enabled = true;
 
 		protected static $_logging = false;
+		
+		/**
+		* Cache type [apc|file].
+		* If APC is present, it will be automatically set to APC [apc].
+		* If no opcache present, it will fall back to caching into filesystem [file]
+		*/
+		protected static $type;
 
+		/**
+		* container holding already loaded classes from filesystem so each cached file is loaded only once and later served from memory
+		*/
+		protected static $loaded = array();
+		
 		protected static function getScopedKeyIfAppliccable($key, $prepend_scope)
 		{
 			return ($prepend_scope) ? "{$key}." . TBGContext::getScope()->getID() : $key;
@@ -43,7 +61,24 @@
 
 			$success = false;
 			$key = self::getScopedKeyIfAppliccable($key, $prepend_scope);
-			$var = apc_fetch($key, $success);
+
+			switch(self::$type){
+				case self::TYPE_APC:
+					$var = apc_fetch($key, $success);
+					break;
+				case self::TYPE_FILE:
+				default:
+					if(isset(self::$loaded[$key])){
+						$var = self::$loaded[$key];
+					}else{
+						$var = self::fileGet($key, $prepend_scope);
+						if(!empty($var)){
+							self::$loaded[$key] = $var;
+						}
+					}
+					$success = !empty($var);
+
+			}
 			return ($success) ? $var : null;
 		}
 
@@ -53,7 +88,16 @@
 
 			$success = false;
 			$key = self::getScopedKeyIfAppliccable($key, $prepend_scope);
-			apc_fetch($key, $success);
+			
+			switch(self::$type){
+				case self::TYPE_APC:
+					apc_fetch($key, $success);
+					break;
+				case self::TYPE_FILE:
+				default:
+					$success = self::fileHas($key, $prepend_scope);
+			}
+
 			return $success;
 		}
 		
@@ -62,7 +106,16 @@
 			if (!self::isEnabled()) return false;
 
 			$key = self::getScopedKeyIfAppliccable($key, $prepend_scope);
-			apc_store($key, $value);
+			
+			switch(self::$type){
+				case self::TYPE_APC:
+					apc_store($key, $value);
+					break;
+				case self::TYPE_FILE:
+				default:
+					self::fileAdd($key, $value, $prepend_scope);
+			}
+			
 			if (self::$_logging) TBGLogging::log('Caching value for key "' . $key . '"', 'cache');
 			return true;
 		}
@@ -72,12 +125,27 @@
 			if (!self::isEnabled()) return false;
 
 			$key = self::getScopedKeyIfAppliccable($key, $prepend_scope);
-			apc_delete($key);
+			$key = self::getKeyHash($key);
+			
+			switch(self::$type){
+				case self::TYPE_APC:
+					apc_delete($key);
+					break;
+				case self::TYPE_FILE:
+				default:
+					unset(self::$loaded[$key]);
+					self::fileDelete($key, $prepend_scope);
+			}
 		}
 		
-		protected static function _getFilenameForKey($key)
-		{
-			return THEBUGGENIE_CORE_PATH . 'cache' . DS . $key . '.cache';
+		/**
+		* Some keys have insuitable format for filepath, we must purify keys
+		* To prevent from accidentally filtering into two the same keys, we must also add hash calculated from original key
+		* @param string $key
+		*/
+		protected static function getKeyHash($key){
+			$key = preg_replace('/[^a-zA-Z0-9_\-]/', '-', $key);
+			return $key.'-'.substr(md5(serialize($key)), 0, 5);
 		}
 
 		public static function fileHas($key, $prepend_scope = true)
@@ -86,20 +154,9 @@
 
 			$key = self::getScopedKeyIfAppliccable($key, $prepend_scope);
 			$filename = self::_getFilenameForKey($key);
-			return file_exists($filename);
+			return isset(self::$loaded[$key]) ||  file_exists($filename);
 		}
 
-		public static function fileGet($key, $prepend_scope = true)
-		{
-			if (!self::isEnabled()) return null;
-
-			$key = self::getScopedKeyIfAppliccable($key, $prepend_scope);
-			if (!self::fileHas($key, $prepend_scope)) return null;
-
-			$filename = self::_getFilenameForKey($key);
-			$value = unserialize(file_get_contents($filename));
-			return $value;
-		}
 		
 		public static function fileAdd($key, $value, $prepend_scope = true)
 		{
@@ -108,6 +165,7 @@
 			$key = self::getScopedKeyIfAppliccable($key, $prepend_scope);
 			$filename = self::_getFilenameForKey($key);
 			file_put_contents($filename, serialize($value));
+			self::$loaded[$key] = $value;
 		}
 		
 		public static function fileDelete($key, $prepend_scope = true)
@@ -117,11 +175,36 @@
 			$key = self::getScopedKeyIfAppliccable($key, $prepend_scope);
 			$filename = self::_getFilenameForKey($key);
 			if (file_exists($filename)) unlink($filename);
+			unset(self::$loaded[$key]);
 		}
 		
+		public static function fileGet($key, $prepend_scope = true)
+		{
+			if (!self::isEnabled()) return null;
+
+			$key = self::getScopedKeyIfAppliccable($key, $prepend_scope);
+			if (!self::fileHas($key, $prepend_scope)) return null;
+			
+			if(isset(self::$loaded[$key])){
+				return self::$loaded[$key];
+			}
+
+			$filename = self::_getFilenameForKey($key);
+			self::$loaded[$key] = unserialize(file_get_contents($filename));
+			return self::$loaded[$key];
+		}
+		
+		protected static function _getFilenameForKey($key)
+		{
+			$key = self::getKeyHash($key);
+			return THEBUGGENIE_CORE_PATH . 'cache' . DS . $key . '.cache';
+		}
+
 		public static function checkEnabled()
 		{
-			if (self::$_enabled) self::$_enabled = function_exists('apc_add');
+			if (self::$_enabled){
+				self::$type = function_exists('apc_add') ? self::TYPE_APC : self::TYPE_FILE;
+			}
 		}
 
 		public static function isEnabled()
@@ -139,3 +222,5 @@
 		}
 
 	}
+	
+
