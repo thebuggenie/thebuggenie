@@ -1083,20 +1083,6 @@
 			return ($retval !== null) ? $retval : $this->getProject()->permissionCheck($key, !$this->isInvolved());
 		}
 
-		/**
-		 * Check whether or not this user can edit issue details
-		 * 
-		 * @return boolean
-		 */
-		public function canEditIssueDetails()
-		{
-			$retval = $this->_permissionCheck('caneditissuebasic');
-			$retval = ($retval === null) ? ($this->isInvolved() || $this->_permissionCheck('cancreateandeditissues')) : $retval;
-			$retval = ($retval === null) ? $this->_permissionCheck('caneditissue', true) : $retval;
-
-			return $retval;
-		}
-		
 		public function isWorkflowTransitionsAvailable()
 		{
 			if ($this->getProject()->isArchived()) return false;
@@ -1120,13 +1106,30 @@
 		}
 
 		/**
+		 * Check whether or not this user can edit issue details
+		 * 
+		 * @return boolean
+		 */
+		public function canEditIssueDetails()
+		{
+			$retval = $this->_permissionCheck('caneditissuebasic');
+			$retval = ($retval === null) ? ($this->isInvolved() || $this->_permissionCheck('cancreateandeditissues')) : $retval;
+			$retval = ($retval === null) ? $this->_permissionCheck('caneditissue', true) : $retval;
+
+			return ($retval !== null) ? $retval : TBGSettings::isPermissive();
+		}
+		
+		/**
 		 * Return if the user can edit title
 		 *
 		 * @return boolean
 		 */
 		public function canEditTitle()
 		{
-			return (bool) ($this->_permissionCheck('caneditissuetitle') || $this->_permissionCheck('caneditissuebasic') || ($this->isInvolved() && $this->_permissionCheck('cancreateandeditissues')) || $this->_permissionCheck('caneditissue', true));
+			$retval = $this->_permissionCheck('caneditissuetitle');
+			$retval = ($retval === null) ? $this->canEditIssueDetails() : $retval;
+			
+			return ($retval !== null) ? $retval : TBGSettings::isPermissive();
 		}
 
 		/**
@@ -1136,7 +1139,7 @@
 		 */
 		public function canEditIssuetype()
 		{
-			return (bool) ($this->_permissionCheck('caneditissuebasic') || ($this->isInvolved() && $this->_permissionCheck('cancreateandeditissues')) || $this->_permissionCheck('caneditissue', true));
+			return $this->canEditIssueDetails();
 		}
 
 		/**
@@ -1146,7 +1149,7 @@
 		 */
 		public function canEditUserPain()
 		{
-			return (bool) ($this->_permissionCheck('caneditissuebasic') || ($this->isInvolved() && $this->_permissionCheck('cancreateandeditissues')) || $this->_permissionCheck('caneditissue', true));
+			return $this->canEditIssueDetails();
 		}
 
 		/**
@@ -1156,7 +1159,10 @@
 		 */
 		public function canEditDescription()
 		{
-			return (bool) ($this->_permissionCheck('caneditissuedescription') || $this->_permissionCheck('caneditissuebasic') || ($this->isInvolved() && $this->_permissionCheck('cancreateandeditissues')) || $this->_permissionCheck('caneditissue', true));
+			$retval = $this->_permissionCheck('caneditissuedescription');
+			$retval = ($retval === null) ? $this->canEditIssueDetails() : $retval;
+			
+			return ($retval !== null) ? $retval : TBGSettings::isPermissive();
 		}
 
 		/**
@@ -1166,79 +1172,12 @@
 		 */
 		public function canEditReproductionSteps()
 		{
-			return (bool) ($this->_permissionCheck('caneditissuereproduction_steps') || $this->_permissionCheck('caneditissuebasic') || ($this->isInvolved() && $this->_permissionCheck('cancreateandeditissues')) || $this->_permissionCheck('caneditissue', true));
+			$retval = $this->_permissionCheck('caneditissuereproduction_steps');
+			$retval = ($retval === null) ? $this->canEditIssueDetails() : $retval;
+			
+			return ($retval !== null) ? $retval : TBGSettings::isPermissive();
 		}
 
-		/**
-		 * Return if the user can edit posted by
-		 *
-		 * @return boolean
-		 */
-		public function canEditPostedBy()
-		{
-			return (bool) ($this->_permissionCheck('caneditissueposted_by') || $this->_permissionCheck('caneditissue', true));
-		}
-
-		/**
-		 * Return if the user can edit assigned to
-		 *
-		 * @return boolean
-		 */
-		public function canEditAssignee()
-		{
-			return (bool) ($this->_permissionCheck('caneditissueassigned_to') || $this->_permissionCheck('caneditissue', true));
-		}
-		
-		/**
-		 * Return if the user can edit owned by
-		 *
-		 * @return boolean
-		 */
-		public function canEditOwner()
-		{
-			return (bool) ($this->_permissionCheck('caneditissueowned_by') || $this->_permissionCheck('caneditissue', true));
-		}
-		
-		/**
-		 * Return if the user can edit status
-		 *
-		 * @return boolean
-		 */
-		public function canEditStatus()
-		{
-			return (bool) ($this->_permissionCheck('caneditissuestatus') || $this->_permissionCheck('caneditissue', true));
-		}
-		
-		/**
-		 * Return if the user can edit category
-		 *
-		 * @return boolean
-		 */
-		public function canEditCategory()
-		{
-			return (bool) ($this->_permissionCheck('caneditissuecategory') || $this->_permissionCheck('caneditissue', true));
-		}
-		
-		/**
-		 * Return if the user can edit category
-		 *
-		 * @return boolean
-		 */
-		public function canEditCustomFields()
-		{
-			return (bool) $this->_permissionCheck('caneditissue', true);
-		}
-
-		/**
-		 * Return if the user can edit resolution
-		 *
-		 * @return boolean
-		 */
-		public function canEditResolution()
-		{
-			return (bool) ($this->_permissionCheck('caneditissueresolution') || $this->_permissionCheck('caneditissue', true));
-		}
-		
 		/**
 		 * Return if the user can edit basic parameters
 		 *
@@ -1249,6 +1188,81 @@
 			return (bool) ($this->_permissionCheck('caneditissue', true));
 		}
 		
+		protected function _canPermissionOrEditIssue($permission, $fallback = null)
+		{
+			$retval = $this->_permissionCheck($permission);
+			$retval = ($retval === null) ? $this->canEditIssue() : $retval;
+			
+			if ($retval !== null)
+			{
+				return $retval;
+			}
+			else
+			{
+				return ($fallback !== null) ? $fallback : TBGSettings::isPermissive();
+			}
+		}
+		
+		/**
+		 * Return if the user can edit posted by
+		 *
+		 * @return boolean
+		 */
+		public function canEditPostedBy()
+		{
+			return $this->_canPermissionOrEditIssue('caneditissueposted_by');
+		}
+
+		/**
+		 * Return if the user can edit assigned to
+		 *
+		 * @return boolean
+		 */
+		public function canEditAssignee()
+		{
+			return $this->_canPermissionOrEditIssue('caneditissueassigned_to');
+		}
+		
+		/**
+		 * Return if the user can edit owned by
+		 *
+		 * @return boolean
+		 */
+		public function canEditOwner()
+		{
+			return $this->_canPermissionOrEditIssue('caneditissueowned_by');
+		}
+		
+		/**
+		 * Return if the user can edit status
+		 *
+		 * @return boolean
+		 */
+		public function canEditStatus()
+		{
+			return $this->_canPermissionOrEditIssue('caneditissuestatus');
+		}
+		
+		/**
+		 * Return if the user can edit category
+		 *
+		 * @return boolean
+		 */
+		public function canEditCategory()
+		{
+			return $this->_canPermissionOrEditIssue('caneditissuecategory');
+		}
+		
+		/**
+		 * Return if the user can edit resolution
+		 *
+		 * @return boolean
+		 */
+		public function canEditResolution()
+		{
+			return $this->_canPermissionOrEditIssue('caneditissueresolution');
+		}
+		
 		/**
 		 * Return if the user can edit reproducability
 		 *
@@ -1256,7 +1270,7 @@
 		 */
 		public function canEditReproducability()
 		{
-			return (bool) ($this->_permissionCheck('caneditissuereproducability') || $this->_permissionCheck('caneditissue', true));
+			return $this->_canPermissionOrEditIssue('caneditissuereproducability');
 		}
 		
 		/**
@@ -1266,7 +1280,7 @@
 		 */
 		public function canEditSeverity()
 		{
-			return (bool) ($this->_permissionCheck('caneditissueseverity') || $this->_permissionCheck('caneditissue', true));
+			return $this->_canPermissionOrEditIssue('caneditissueseverity');
 		}
 		
 		/**
@@ -1276,7 +1290,7 @@
 		 */
 		public function canEditPriority()
 		{
-			return (bool) ($this->_permissionCheck('caneditissuepriority') || $this->_permissionCheck('caneditissue', true));
+			return $this->_canPermissionOrEditIssue('caneditissuepriority');
 		}
 		
 		/**
@@ -1286,7 +1300,7 @@
 		 */
 		public function canEditEstimatedTime()
 		{
-			return (bool) ($this->_permissionCheck('caneditissueestimated_time') || $this->_permissionCheck('caneditissue', true));
+			return $this->_canPermissionOrEditIssue('caneditissueestimated_time');
 		}
 		
 		/**
@@ -1296,7 +1310,7 @@
 		 */
 		public function canEditSpentTime()
 		{
-			return (bool) ($this->_permissionCheck('caneditissuespent_time') || $this->_permissionCheck('caneditissue', true));
+			return $this->_canPermissionOrEditIssue('caneditissuespent_time');
 		}
 		
 		/**
@@ -1306,7 +1320,7 @@
 		 */
 		public function canEditPercentage()
 		{
-			return (bool) ($this->_permissionCheck('caneditissuepercent_complete') || $this->_permissionCheck('caneditissue', true));
+			return $this->_canPermissionOrEditIssue('caneditissuepercent_complete');
 		}
 
 		/**
@@ -1316,7 +1330,7 @@
 		 */
 		public function canEditMilestone()
 		{
-			return (bool) ($this->_permissionCheck('caneditissuemilestone') || $this->_permissionCheck('caneditissue', true));
+			return $this->_canPermissionOrEditIssue('caneditissuemilestone');
 		}
 		
 		/**
@@ -1326,12 +1340,19 @@
 		 */
 		public function canDeleteIssue()
 		{
-			$retval = $this->_permissionCheck('candeleteissues', true);
-			$retval = ($retval !== null) ? $retval : $this->_permissionCheck('caneditissue', true);
-
-			return ($retval !== null) ? $retval : false;
+			return $this->_canPermissionOrEditIssue('candeleteissues', false);
 		}
 		
+		/**
+		 * Return if the user can edit any custom fields
+		 *
+		 * @return boolean
+		 */
+		public function canEditCustomFields()
+		{
+			return (bool) $this->_permissionCheck('caneditissuecustomfields');
+		}
+
 		/**
 		 * Return if the user can close the issue
 		 *
@@ -1339,7 +1360,11 @@
 		 */
 		public function canCloseIssue()
 		{
-			return (bool) ($this->_permissionCheck('cancloseissues') || $this->_permissionCheck('canclosereopenissues') || $this->_permissionCheck('caneditissue', true));
+			$retval = $this->_permissionCheck('cancloseissues');
+			$retval = ($retval === null) ? $this->_permissionCheck('canclosereopenissues') : $retval;
+			$retval = ($retval === null) ? $this->canEditIssue() : $retval;
+			
+			return ($retval !== null) ? $retval : TBGSettings::isPermissive();
 		}
 
 		/**
@@ -1349,45 +1374,21 @@
 		 */
 		public function canReopenIssue()
 		{
-			return (bool) ($this->_permissionCheck('canreopenissues') || $this->_permissionCheck('canclosereopenissues') || $this->_permissionCheck('caneditissue', true));
+			$retval = $this->_permissionCheck('canreopenissues');
+			$retval = ($retval === null) ? $this->_permissionCheck('canclosereopenissues') : $retval;
+			$retval = ($retval === null) ? $this->canEditIssue() : $retval;
+			
+			return ($retval !== null) ? $retval : TBGSettings::isPermissive();
 		}
 
-		/**
-		 * Return if the user can post comments on this issue
-		 *
-		 * @return boolean
-		 */
-		public function canPostComments()
+		protected function _dualPermissionsCheck($permission_1, $permission_2)
 		{
-			return (bool) ($this->_permissionCheck('canpostcomments') || $this->_permissionCheck('canpostandeditcomments'));
+			$retval = $this->_permissionCheck($permission_1);
+			$retval = ($retval === null) ? $this->_permissionCheck($permission_2) : $retval;
+			
+			return ($retval !== null) ? $retval : TBGSettings::isPermissive();
 		}
-
-		/**
-		 * Return if the user can attach files
-		 *
-		 * @return boolean
-		 */
-		public function canAttachFiles()
-		{
-			$retval = $this->_permissionCheck('canaddfilestoissues');
-			$retval = ($retval !== null) ? $retval : $this->_permissionCheck('canaddextrainformationtoissues');
-
-			return $retval;
-		}
-
-		/**
-		 * Return if the user can add related issues to this issue
-		 *
-		 * @return boolean
-		 */
-		public function canAddRelatedIssues()
-		{
-			$retval = $this->_permissionCheck('canaddrelatedissues');
-			$retval = ($retval !== null) ? $retval : $this->_permissionCheck('canaddextrainformationtoissues');
-
-			return $retval;
-		}
-
+		
 		/**
 		 * Return if the user can add/modify extra data for an issue
 		 *
@@ -1398,6 +1399,44 @@
 			return (bool) $this->_permissionCheck('canaddextrainformationtoissues');
 		}
 
+		protected function _canPermissionsOrExtraInformation($permission)
+		{
+			$retval = $this->_permissionCheck($permission);
+			$retval = ($retval === null) ? $this->canAddExtraInformation() : $retval;
+			
+			return ($retval !== null) ? $retval : TBGSettings::isPermissive();
+		}
+		
+		/**
+		 * Return if the user can post comments on this issue
+		 *
+		 * @return boolean
+		 */
+		public function canPostComments()
+		{
+			return $this->_dualPermissionsCheck('canpostcomments', 'canpostandeditcomments');
+		}
+
+		/**
+		 * Return if the user can attach files
+		 *
+		 * @return boolean
+		 */
+		public function canAttachFiles()
+		{
+			return $this->_canPermissionsOrExtraInformation('canaddfilestoissues');
+		}
+
+		/**
+		 * Return if the user can add related issues to this issue
+		 *
+		 * @return boolean
+		 */
+		public function canAddRelatedIssues()
+		{
+			return $this->_canPermissionsOrExtraInformation('canaddrelatedissues');
+		}
+
 		/**
 		 * Return if the user can add related issues to this issue
 		 *
@@ -1405,10 +1444,7 @@
 		 */
 		public function canEditAffectedComponents()
 		{
-			$retval = $this->_permissionCheck('canaddcomponents');
-			$retval = ($retval !== null) ? $retval : $this->_permissionCheck('canaddextrainformationtoissues');
-
-			return $retval;
+			return $this->_canPermissionsOrExtraInformation('canaddcomponents');
 		}
 
 		/**
@@ -1418,10 +1454,7 @@
 		 */
 		public function canEditAffectedEditions()
 		{
-			$retval = $this->_permissionCheck('canaddeditions');
-			$retval = ($retval !== null) ? $retval : $this->_permissionCheck('canaddextrainformationtoissues');
-
-			return $retval;
+			return $this->_canPermissionsOrExtraInformation('canaddeditions');
 		}
 
 		/**
@@ -1431,10 +1464,7 @@
 		 */
 		public function canEditAffectedBuilds()
 		{
-			$retval = $this->_permissionCheck('canaddbuilds');
-			$retval = ($retval !== null) ? $retval : $this->_permissionCheck('canaddextrainformationtoissues');
-
-			return $retval;
+			return $this->_canPermissionsOrExtraInformation('canaddbuilds');
 		}
 
 		/**
@@ -1444,7 +1474,7 @@
 		 */
 		public function canRemoveAttachments()
 		{
-			return (bool) ($this->_permissionCheck('canremovefilesfromissues') || $this->_permissionCheck('canaddextrainformationtoissues'));
+			return $this->_canPermissionsOrExtraInformation('canremovefilesfromissues');
 		}
 
 		/**
@@ -1454,7 +1484,7 @@
 		 */
 		public function canAttachLinks()
 		{
-			return (bool) ($this->_permissionCheck('canaddlinkstoissues') || $this->_permissionCheck('canaddextrainformationtoissues'));
+			return $this->_canPermissionsOrExtraInformation('canaddlinkstoissues');
 		}
 
 		/**
