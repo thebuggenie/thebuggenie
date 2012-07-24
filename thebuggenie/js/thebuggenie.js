@@ -124,12 +124,14 @@ TBG.Core._initializeAutocompleter = function() {
 			TBG.autocompleter_url,
 			{
 				paramName: "filters[text][value]",
+				parameters: "filters[text][operator]==",
 				minChars: 2,
 				indicator: 'quicksearch_indicator',
-				callback: function() {
+				callback: function(element, entry) {
 					$('quicksearch_submit').disable();
 					$('quicksearch_submit').removeClassName('button-blue');
 					$('quicksearch_submit').addClassName('button-silver');
+					return entry;
 				},
 				afterUpdateChoices: function() {
 					$('quicksearch_submit').enable();
