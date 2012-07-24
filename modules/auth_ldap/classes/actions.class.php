@@ -115,7 +115,7 @@
 			$email_attr = TBGContext::getModule('auth_ldap')->getSetting('e_attr');
 			$groups_members_attr = TBGContext::getModule('auth_ldap')->getSetting('g_attr');
 			
-			$user_class = TBGContext::getModule('auth_ldap')->getSetting('u_type');
+			$filter_attr = TBGContext::getModule('auth_ldap')->getSetting('fr_attr');
 			$group_class = TBGContext::getModule('auth_ldap')->getSetting('g_type');
 			
 			$users = TBGUser::getAll();
@@ -138,7 +138,7 @@
 					$username = $user->getUsername();
 					
 					$fields = array($fullname_attr, $email_attr, 'cn', $dn_attr);
-					$filter = '(&(objectClass='.TBGLDAPAuthentication::getModule()->escape($user_class).')('.$username_attr.'='.TBGLDAPAuthentication::getModule()->escape($username).'))';
+					$filter = '(&'.TBGLDAPAuthentication::getModule()->escape($filter_attr).'('.$username_attr.'='.TBGLDAPAuthentication::getModule()->escape($username).'))';
 					
 					$results = ldap_search($connection, $base_dn, $filter, $fields);
 					
@@ -246,7 +246,7 @@
 			$email_attr = TBGContext::getModule('auth_ldap')->getSetting('e_attr');
 			$groups_members_attr = TBGContext::getModule('auth_ldap')->getSetting('g_attr');
 			
-			$user_class = TBGContext::getModule('auth_ldap')->getSetting('u_type');
+			$filter_attr = TBGContext::getModule('auth_ldap')->getSetting('fr_attr');
 			$group_class = TBGContext::getModule('auth_ldap')->getSetting('g_type');
 			
 			$users = array();
@@ -265,9 +265,8 @@
 				 * Get a list of all users of a certain objectClass
 				 */
 				$fields = array($fullname_attr, $username_attr, $email_attr, 'cn', $dn_attr);
-				$filter = '(objectClass='.TBGLDAPAuthentication::getModule()->escape($user_class).')';
 
-				$results = ldap_search($connection, $base_dn, $filter, $fields);
+				$results = ldap_search($connection, $base_dn, '(&'.$filter_attr.')', $fields);
 				if (!$results)
 				{
 					TBGLogging::log('failed to search for users: '.ldap_error($connection), 'ldap', TBGLogging::LEVEL_FATAL);

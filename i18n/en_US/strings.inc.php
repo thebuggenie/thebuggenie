@@ -460,7 +460,9 @@
   $strings['Object DN attribute'] = 'Object DN attribute';
   $strings['Enter the name of the property containing the distinguished name of an object. On Linux systems this may be entrydn (which is the default value if this is left blank), on Active Directory it is distinguishedName.'] = 'Enter the name of the property containing the distinguished name of an object. On Linux systems this may be entrydn (which is the default value if this is left blank), on Active Directory it is distinguishedName.';
   $strings['User class'] = 'User class';
+  $strings['Filter'] = 'Filter';
   $strings['Enter the value to check for in objectClass for users. Leave blank to use the default of person'] = 'Enter the value to check for in objectClass for users. Leave blank to use the default of person';
+  $strings['Enter the value to filter for users. Leave blank to use the default of (objectClass=person)'] = 'Enter the value to filter for users. Leave blank to use the default of (objectClass=person)';
   $strings['Username attribute'] = 'Username attribute';
   $strings['This field should contain the name of the attribute where the username is stored, such as uid.'] = 'This field should contain the name of the attribute where the username is stored, such as uid.';
   $strings['Full name attribute'] = 'Full name attribute';
