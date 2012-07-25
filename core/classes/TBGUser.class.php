@@ -1792,7 +1792,7 @@
 		 * 
 		 * @return boolean
 		 */
-		public function hasPermission($permission_type, $target_id = 0, $module_name = 'core', $explicit = false, $permissive = false)
+		public function hasPermission($permission_type, $target_id = 0, $module_name = 'core', $explicit = true, $permissive = false)
 		{
 			TBGLogging::log('Checking permission '.$permission_type);
 			$group_id = (int) $this->getGroupID();
@@ -1877,6 +1877,14 @@
 		{
 			$this->_timezone = $timezone;
 		}
+		
+		protected function _dualPermissionsCheck($permission_1, $permission_1_target, $permission_2, $permission_2_target, $fallback)
+		{
+			$retval = $this->hasPermission($permission_1, $permission_1_target);
+			$retval = ($retval !== null) ? $retval : $this->hasPermission($permission_2, $permission_2_target);
+
+			return (bool) ($retval !== null) ? $retval : $fallback;
+		}
 
 		/**
 		 * Return if the user can report new issues
@@ -1910,7 +1918,7 @@
 		 */
 		public function canSearchForIssues()
 		{
-			return (bool) ($this->hasPermission('canfindissues') || $this->hasPermission('canfindissuesandsavesearches'));
+			return (bool) $this->_dualPermissionsCheck('canfindissues', 0, 'canfindissuesandsavesearches', 0, TBGSettings::isPermissive());
 		}
 
 		/**
@@ -1931,7 +1939,7 @@
 		 */
 		public function canViewComments()
 		{
-			return (bool) ($this->hasPermission('canviewcomments') || $this->hasPermission('canpostandeditcomments'));
+			return $this->_dualPermissionsCheck('canviewcomments', 0, 'canpostandeditcomments', 0, TBGSettings::isPermissive());
 		}
 
 		/**
@@ -1941,10 +1949,7 @@
 		 */
 		public function canPostComments()
 		{
-			$retval = $this->hasPermission('canpostcomments', 0, 'core', true);
-			$retval = ($retval !== null) ? $retval : $this->hasPermission('canpostandeditcomments', 0, 'core', true);
-
-			return ($retval !== null) ? $retval : TBGSettings::isPermissive();
+			return $this->_dualPermissionsCheck('canpostcomments', 0, 'canpostandeditcomments', 0, TBGSettings::isPermissive());
 		}
 
 		/**
@@ -1954,7 +1959,7 @@
 		 */
 		public function canSeeNonPublicComments()
 		{
-			return (bool) ($this->hasPermission('canseenonpubliccomments') || $this->hasPermission('canpostseeandeditallcomments'));
+			return $this->_dualPermissionsCheck('canseenonpubliccomments', 0, 'canpostseeandeditallcomments', 0, TBGSettings::isPermissive());
 		}
 
 		/**
@@ -1964,7 +1969,7 @@
 		 */
 		public function canCreatePublicSearches()
 		{
-			return (bool) ($this->hasPermission('cancreatepublicsearches') || $this->hasPermission('canfindissuesandsavesearches'));
+			return $this->_dualPermissionsCheck('cancreatepublicsearches', 0, 'canfindissuesandsavesearches', 0, TBGSettings::isPermissive());
 		}
 
 		/**
@@ -1988,7 +1993,12 @@
 		 */
 		public function canAccessConfigurationPage($section = null)
 		{
-			return (bool) ($this->hasPermission('canviewconfig', $section, 'core', true) || $this->hasPermission('cansaveconfig', $section, 'core', true) || $this->hasPermission('canviewconfig', 0, 'core', true) || $this->hasPermission('cansaveconfig', 0, 'core', true));
+			$retval = $this->hasPermission('canviewconfig', $section);
+			$retval = ($retval !== null) ? $retval : $this->hasPermission('cansaveconfig', $section);
+			$retval = ($retval !== null) ? $retval : $this->hasPermission('canviewconfig', 0);
+			$retval = ($retval !== null) ? $retval : $this->hasPermission('cansaveconfig', 0);
+
+			return (bool) ($retval !== null) ? $retval : false;
 		}
 
 		/**
@@ -1998,7 +2008,10 @@
 		 */
 		public function canSaveConfiguration($section, $module = 'core')
 		{
-			return (bool) ($this->hasPermission('cansaveconfig', $section, $module, true) || $this->hasPermission('cansaveconfig', 0, $module, true));
+			$retval = $this->hasPermission('cansaveconfig', $section, $module);
+			$retval = ($retval !== null) ? $retval : $this->hasPermission('cansaveconfig', 0, $module);
+
+			return (bool) ($retval !== null) ? $retval : false;
 		}
 
 		/**
@@ -2022,8 +2035,10 @@
 		 */
 		public function canManageProjectReleases(TBGProject $project)
 		{
-			if ($project->isArchived()): return false; endif;
-			return (bool) ($this->hasPermission('canmanageprojectreleases', $project->getID()) || $this->hasPermission('canmanageproject', $project->getID()) || $this->canSaveConfiguration(TBGSettings::CONFIGURATION_SECTION_PROJECTS));
+			if ($project->isArchived()) return false;
+			if ($this->canSaveConfiguration(TBGSettings::CONFIGURATION_SECTION_PROJECTS)) return true;
+			
+			return $this->_dualPermissionsCheck('canmanageprojectreleases', $project->getID(), 'canmanageproject', $project->getID(), false);
 		}
 
 		/**
@@ -2036,7 +2051,9 @@
 		public function canEditProjectDetails(TBGProject $project)
 		{
 			if ($project->isArchived()) return false;
-			return (bool) ($this->hasPermission('caneditprojectdetails', $project->getID(), 'core', true) || $this->hasPermission('canmanageproject', $project->getID(), 'core', true) || $this->canSaveConfiguration(TBGSettings::CONFIGURATION_SECTION_PROJECTS));
+			if ($this->canSaveConfiguration(TBGSettings::CONFIGURATION_SECTION_PROJECTS)) return true;
+
+			return $this->_dualPermissionsCheck('caneditprojectdetails', $project->getID(), 'canmanageproject', $project->getID(), false);
 		}
 
 		/**
@@ -2049,7 +2066,14 @@
 		public function canAssignScrumUserStories(TBGProject $project)
 		{
 			if ($project->isArchived()) return false;
-			return (bool) ($this->hasPermission('canassignscrumuserstoriestosprints', $project->getID(), 'core', true) || $this->hasPermission('candoscrumplanning', $project->getID(), 'core', true) || $this->hasPermission('canassignscrumuserstoriestosprints', 0, 'core', true) || $this->hasPermission('candoscrumplanning', 0, 'core', true));
+			if ($this->canSaveConfiguration(TBGSettings::CONFIGURATION_SECTION_PROJECTS)) return true;
+
+			$retval = $this->hasPermission('canassignscrumuserstoriestosprints', $project->getID());
+			$retval = ($retval !== null) ? $retval : $this->hasPermission('candoscrumplanning', $project->getID());
+			$retval = ($retval !== null) ? $retval : $this->hasPermission('canassignscrumuserstoriestosprints', 0);
+			$retval = ($retval !== null) ? $retval : $this->hasPermission('candoscrumplanning', 0);
+
+			return (bool) ($retval !== null) ? $retval : false;
 		}
 
 		/**
@@ -2061,8 +2085,7 @@
 		 */
 		public function canChangePassword()
 		{
-			$retval = ($this->hasPermission('canchangepassword', 0, 'core', true, $this->hasPermission('page_account_access', 0, 'core', true)));
-			return ($retval === false) ? false : true;
+			return $this->_dualPermissionsCheck('canchangepassword', 0, 'page_account_access', 0, true);
 		}
 		
 		/**

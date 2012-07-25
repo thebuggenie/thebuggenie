@@ -2672,24 +2672,39 @@
 			return false;
 		}
 
+		protected function _dualPermissionsCheck($permission_1, $permission_2, $fallback = null)
+		{
+			$retval = $this->permissionCheck($permission_1);
+			$retval = ($retval === null) ? $this->permissionCheck($permission_2) : $retval;
+			
+			if ($retval !== null)
+			{
+				return $retval;
+			}
+			else
+			{
+				return ($fallback !== null) ? $fallback : TBGSettings::isPermissive();
+			}
+		}
+		
 		public function canSeeAllEditions()
 		{
-			return (bool) ($this->permissionCheck('canseeprojecthierarchy') || $this->permissionCheck('canseeallprojecteditions'));
+			return (bool) $this->_dualPermissionsCheck('canseeprojecthierarchy', 'canseeallprojecteditions');
 		}
 		
 		public function canSeeAllComponents()
 		{
-			return (bool) ($this->permissionCheck('canseeprojecthierarchy') || $this->permissionCheck('canseeallprojectcomponents'));
+			return (bool) $this->_dualPermissionsCheck('canseeprojecthierarchy', 'canseeallprojectcomponents');
 		}
 		
 		public function canSeeAllBuilds()
 		{
-			return (bool) ($this->permissionCheck('canseeprojecthierarchy') || $this->permissionCheck('canseeallprojectbuilds'));
+			return (bool) $this->_dualPermissionsCheck('canseeprojecthierarchy', 'canseeallprojectbuilds');
 		}
 		
 		public function canSeeAllMilestones()
 		{
-			return (bool) ($this->permissionCheck('canseeprojecthierarchy') || $this->permissionCheck('canseeallprojectmilestones'));
+			return (bool) $this->_dualPermissionsCheck('canseeprojecthierarchy', 'canseeallprojectmilestones');
 		}
 		
 		public function canVoteOnIssues()
