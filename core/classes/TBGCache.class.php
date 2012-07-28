@@ -159,7 +159,9 @@
 
 			$key = self::getScopedKeyIfAppliccable($key, $prepend_scope);
 			$filename = self::_getFilenameForKey($key);
+			$new = !file_exists($filename);
 			file_put_contents($filename, serialize($value));
+			if ($new) chmod($filename, 0666);
 			self::$loaded[$key] = $value;
 		}
 		
