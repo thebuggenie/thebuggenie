@@ -232,10 +232,10 @@
 		public static function returnComponentHTML($template, $params = array())
 		{
 			$current_content = ob_get_clean();
-			ob_start('mb_output_handler');
+			(TBGContext::isCLI()) ? ob_start() : ob_start('mb_output_handler');
 			echo TBGActionComponent::includeComponent($template, $params);
 			$component_content = ob_get_clean();
-			ob_start('mb_output_handler');
+			(TBGContext::isCLI()) ? ob_start() : ob_start('mb_output_handler');
 			echo $current_content;
 			return $component_content;
 		}
@@ -264,10 +264,10 @@
 		public static function returnTemplateHTML($template, $params = array())
 		{
 			$current_content = ob_get_clean();
-			ob_start('mb_output_handler');
+			(TBGContext::isCLI()) ? ob_start() : ob_start('mb_output_handler');
 			echo TBGActionComponent::includeTemplate($template, $params);
 			$template_content = ob_get_clean();
-			ob_start('mb_output_handler');
+			(TBGContext::isCLI()) ? ob_start() : ob_start('mb_output_handler');
 			echo $current_content;
 			return $template_content;
 		}
