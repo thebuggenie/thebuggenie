@@ -32,7 +32,7 @@
 		<?php endforeach; ?>
 	</ul>
 	<?php if ($tbg_user->canSearchForIssues()): ?>
-		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo (TBGContext::isProjectContext()) ? make_url('search', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('search'); ?>" method="post" name="quicksearchform" style="float: right;">
+		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo (TBGContext::isProjectContext()) ? make_url('search', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('search'); ?>" method="get" name="quicksearchform" style="float: right;">
 			<div style="width: auto; padding: 0; text-align: right; position: relative;" id="quicksearch_container">
 				<input type="hidden" name="filters[text][operator]" value="=">
 				<?php echo image_tag('spinning_16.gif', array('id' => 'quicksearch_indicator', 'style' => 'display: none;')); ?>
