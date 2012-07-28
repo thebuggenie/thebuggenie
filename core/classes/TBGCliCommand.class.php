@@ -34,6 +34,8 @@
 		protected $_optional_arguments = array();
 		
 		protected $_module = null;
+		
+		protected $_scoped = false;
 
 		abstract protected function do_execute();
 
@@ -63,6 +65,15 @@
 		public function getDescription()
 		{
 			return $this->_description;
+		}
+		
+		protected function setScoped($val = true)
+		{
+			$this->_scoped = $val;
+			if ($this->_scoped)
+			{
+				$this->addOptionalArgument('scope', 'The scope to work with (uses default scope if not provided)');
+			}
 		}
 
 		public static function setAvailableCommands($available_commands)
@@ -145,6 +156,12 @@
 					}
 					continue;
 				}
+			}
+			if ($this->_scoped && array_key_exists('scope', self::$_named_arguments))
+			{
+				$scope = TBGScopesTable::getTable()->selectById(self::$_named_arguments['scope']);
+				$this->cliEcho("Using scope ".$scope->getID()."\n");
+				TBGContext::setScope($scope);
 			}
 		}
 		

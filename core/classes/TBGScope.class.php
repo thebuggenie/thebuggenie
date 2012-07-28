@@ -96,19 +96,15 @@
 		 */
 		protected $_max_teams = 0;
 
+		/**
+		 * Return all available scopes
+		 * 
+		 * @return array|TBGScope
+		 */
 		static function getAll()
 		{
 			if (self::$_scopes === null)
 			{
-//				$res = TBGScopesTable::getTable()->doSelectAll();
-//				$scopes = array();
-//
-//				while ($row = $res->getNextRow())
-//				{
-//					$scope = TBGContext::factory()->TBGScope($row->get(TBGScopesTable::ID), $row);
-//					$scopes[$scope->getID()] = $scope;
-//				}
-
 				self::$_scopes = TBGScopesTable::getTable()->selectAll();
 			}
 
@@ -244,14 +240,20 @@
 		
 		public function _construct(\b2db\Row $row, $foreign_key = null)
 		{
-			if (TBGContext::isCLI()) return;
-			$hostprefix = (!array_key_exists('HTTPS', $_SERVER) || $_SERVER['HTTPS'] == '' || $_SERVER['HTTPS'] == 'off') ? 'http' : 'https';
-			$this->_is_secure = (bool) ($hostprefix == 'https');
-			$this->_hostname = "{$hostprefix}://{$_SERVER['SERVER_NAME']}";
-			$port = $_SERVER['SERVER_PORT'];
-			if ($port != 80)
+			if (TBGContext::isCLI())
 			{
-				$this->_hostname .= ":{$port}";
+				$this->_hostname = php_uname('n');
+			}
+			else
+			{
+				$hostprefix = (!array_key_exists('HTTPS', $_SERVER) || $_SERVER['HTTPS'] == '' || $_SERVER['HTTPS'] == 'off') ? 'http' : 'https';
+				$this->_is_secure = (bool) ($hostprefix == 'https');
+				$this->_hostname = "{$hostprefix}://{$_SERVER['SERVER_NAME']}";
+				$port = $_SERVER['SERVER_PORT'];
+				if ($port != 80)
+				{
+					$this->_hostname .= ":{$port}";
+				}
 			}
 		}
 
@@ -260,11 +262,16 @@
 			return $this->_is_secure;
 		}
 
-		public function getCurrentHostname()
+		public function getCurrentHostname($clean = false)
 		{
+			if ($clean)
+			{
+				$url = parse_url($this->_hostname);
+				return $url['host'];
+			}
 			return $this->_hostname;
 		}
-
+		
 		public function loadFixtures()
 		{
 			// Load initial settings
