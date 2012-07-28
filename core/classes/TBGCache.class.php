@@ -60,22 +60,16 @@
 			if (!self::isEnabled()) return null;
 
 			$success = false;
-			$key = self::getScopedKeyIfAppliccable($key, $prepend_scope);
 
-			switch(self::$type){
+			switch (self::$type)
+			{
 				case self::TYPE_APC:
+					$key = self::getScopedKeyIfAppliccable($key, $prepend_scope);
 					$var = apc_fetch($key, $success);
 					break;
 				case self::TYPE_FILE:
 				default:
-					if(isset(self::$loaded[$key])){
-						$var = self::$loaded[$key];
-					}else{
-						$var = self::fileGet($key, $prepend_scope);
-						if(!empty($var)){
-							self::$loaded[$key] = $var;
-						}
-					}
+					$var = self::fileGet($key, $prepend_scope);
 					$success = !empty($var);
 
 			}
@@ -87,10 +81,11 @@
 			if (!self::isEnabled()) return false;
 
 			$success = false;
-			$key = self::getScopedKeyIfAppliccable($key, $prepend_scope);
 			
-			switch(self::$type){
+			switch (self::$type)
+			{
 				case self::TYPE_APC:
+					$key = self::getScopedKeyIfAppliccable($key, $prepend_scope);
 					apc_fetch($key, $success);
 					break;
 				case self::TYPE_FILE:
@@ -105,10 +100,11 @@
 		{
 			if (!self::isEnabled()) return false;
 
-			$key = self::getScopedKeyIfAppliccable($key, $prepend_scope);
 			
-			switch(self::$type){
+			switch (self::$type)
+			{
 				case self::TYPE_APC:
+					$key = self::getScopedKeyIfAppliccable($key, $prepend_scope);
 					apc_store($key, $value);
 					break;
 				case self::TYPE_FILE:
@@ -124,16 +120,15 @@
 		{
 			if (!self::isEnabled()) return false;
 
-			$key = self::getScopedKeyIfAppliccable($key, $prepend_scope);
-			$key = self::getKeyHash($key);
 			
-			switch(self::$type){
+			switch (self::$type)
+			{
 				case self::TYPE_APC:
+					$key = self::getScopedKeyIfAppliccable($key, $prepend_scope);
 					apc_delete($key);
 					break;
 				case self::TYPE_FILE:
 				default:
-					unset(self::$loaded[$key]);
 					self::fileDelete($key, $prepend_scope);
 			}
 		}
@@ -154,7 +149,7 @@
 
 			$key = self::getScopedKeyIfAppliccable($key, $prepend_scope);
 			$filename = self::_getFilenameForKey($key);
-			return isset(self::$loaded[$key]) ||  file_exists($filename);
+			return (array_key_exists($key, self::$loaded) || file_exists($filename));
 		}
 
 		
@@ -185,11 +180,12 @@
 			$key = self::getScopedKeyIfAppliccable($key, $prepend_scope);
 			if (!self::fileHas($key, $prepend_scope)) return null;
 			
-			if(isset(self::$loaded[$key])){
+			if (array_key_exists($key, self::$loaded)){
 				return self::$loaded[$key];
 			}
 
 			$filename = self::_getFilenameForKey($key);
+			if (!file_exists($filename)) throw new Exception("$filename - $key");
 			self::$loaded[$key] = unserialize(file_get_contents($filename));
 			return self::$loaded[$key];
 		}
