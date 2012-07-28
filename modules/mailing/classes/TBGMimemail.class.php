@@ -110,7 +110,8 @@
 			$this->headers['Subject'] = $subject;
 			$this->headers['Date'] = date('r');
 			$this->headers['MIME-Version'] = "1.0";
-			$this->headers['Message-ID'] = "<{$this->sep1}@{$_SERVER['SERVER_NAME']}>";
+			$server_name = TBGContext::getScope()->getCurrentHostname(true);
+			$this->headers['Message-ID'] = "<{$this->sep1}@{$server_name}>";
 		}
 
 		public function setLanguage($language)
