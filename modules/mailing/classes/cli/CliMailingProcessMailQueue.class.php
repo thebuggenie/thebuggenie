@@ -18,13 +18,14 @@
 	 */
 	class CliMailingProcessMailQueue extends TBGCliCommand
 	{
-
+		
 		protected function _setup()
 		{
 			$this->_command_name = 'process_mail_queue';
 			$this->_description = "Processes emails waiting to be sent";
 			$this->addOptionalArgument('test', "Set to 'yes' or 'no' to do a test run");
 			$this->addOptionalArgument('limit', "Specify a limit to only process a certain number of emails");
+			$this->setScoped();
 		}
 
 		public function do_execute()
