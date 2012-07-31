@@ -74,14 +74,14 @@
 
 		public function postConfigSettings(TBGRequest $request)
 		{
-			$settings = array('hostname', 'u_type', 'g_type', 'b_dn', 'groups', 'dn_attr', 'u_attr', 'g_attr', 'e_attr', 'f_attr', 'g_dn', 'control_user', 'control_pass');
+			$settings = array('hostname', 'fr_attr', 'g_type', 'b_dn', 'groups', 'dn_attr', 'u_attr', 'g_attr', 'e_attr', 'f_attr', 'g_dn', 'control_user', 'control_pass');
 			foreach ($settings as $setting)
 			{
-				if (($setting == 'u_type' || $setting == 'g_type' || $setting == 'dn_attr') && $request->getParameter($setting) == '')
+				if (($setting == 'fr_attr' || $setting == 'g_type' || $setting == 'dn_attr') && $request->getParameter($setting) == '')
 				{
-					if ($setting == 'u_type')
+					if ($setting == 'fr_attr')
 					{
-						$this->saveSetting($setting, 'person');
+						$this->saveSetting($setting, '(objectClass=person)');
 					}
 					elseif ($setting == 'g_type')
 					{
@@ -154,7 +154,7 @@
 			$email_attr = $this->escape($this->getSetting('e_attr'));
 			$groups_members_attr = $this->escape($this->getSetting('g_attr'));
 			
-			$user_class = TBGContext::getModule('auth_ldap')->getSetting('u_type');
+			$filter_attr = TBGContext::getModule('auth_ldap')->getSetting('fr_attr');
 			$group_class = TBGContext::getModule('auth_ldap')->getSetting('g_type');
 			
 			$email = null;
@@ -188,13 +188,13 @@
 				/*
 				 * Search for a user with the username specified. We search in the base_dn, so we can
 				 * find users in multiple parts of the directory, and only return users of a specific
-				 * class (default person).
+				 * filter (default person).
 				 * 
 				 * We want exactly 1 user to be returned. We get the user's full name, email, cn
 				 * and dn.
 				 */
 				$fields = array($fullname_attr, $email_attr, 'cn', $dn_attr);
-				$filter = '(&(objectClass='.TBGLDAPAuthentication::getModule()->escape($user_class).')('.$username_attr.'='.$this->escape($username).'))';
+				$filter = '(&(' . $filter_attr . ')('.$username_attr.'='.$this->escape($username).'))';
 				
 				$results = ldap_search($connection, $base_dn, $filter, $fields);
 				
@@ -209,14 +209,14 @@
 				// User does not exist
 				if ($data['count'] == 0)
 				{
-					TBGLogging::log('could not find user '.$username.', class '.$user_class.', attribute '.$username_attr, 'ldap', TBGLogging::LEVEL_FATAL);
+					TBGLogging::log('could not find user '.$username.', filter '.$filter_attr.', attribute '.$username_attr, 'ldap', TBGLogging::LEVEL_FATAL);
 					throw new Exception(TBGContext::geti18n()->__('User does not exist in the directory'));
 				}
 				
 				// If we have more than 1 user, something is seriously messed up...
 				if ($data['count'] > 1)
 				{
-					TBGLogging::log('too many users for '.$username.', class '.$user_class.', attribute '.$username_attr, 'ldap', TBGLogging::LEVEL_FATAL);
+					TBGLogging::log('too many users for '.$username.', filter '.$filter_attr.', attribute '.$username_attr, 'ldap', TBGLogging::LEVEL_FATAL);
 					throw new Exception(TBGContext::geti18n()->__('This user was found multiple times in the directory, please contact your admimistrator'));
 				}
 
