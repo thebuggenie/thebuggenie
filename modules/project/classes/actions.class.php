@@ -59,7 +59,7 @@
 
 		protected function _checkProjectPageAccess($page)
 		{
-			return TBGContext::getUser()->hasProjectPageAccess($page, $this->selected_project->getID());
+			return TBGContext::getUser()->hasProjectPageAccess($page, $this->selected_project);
 		}
 		
 		/**

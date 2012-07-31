@@ -2208,6 +2208,10 @@
 		 */
 		public function hasAccess()
 		{
+			$user = TBGContext::getUser();
+			if ($this->getOwner() instanceof TBGUser && $this->getOwner()->getID() == $user->getID()) return true;
+			if ($this->getLeader() instanceof TBGUser && $this->getLeader()->getID() == $user->getID()) return true;
+
 			return TBGContext::getUser()->hasPermission('canseeproject', $this->getID());
 		}
 		

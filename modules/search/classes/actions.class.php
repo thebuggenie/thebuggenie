@@ -21,7 +21,7 @@
 			{
 				if (($project = TBGProject::getByKey($request['project_key'])) instanceof TBGProject)
 				{
-					$this->forward403unless(TBGContext::getUser()->hasProjectPageAccess('project_issues', $project->getID()));
+					$this->forward403unless(TBGContext::getUser()->hasProjectPageAccess('project_issues', $project));
 					TBGContext::getResponse()->setPage('project_issues');
 					TBGContext::setCurrentProject($project);
 				}

@@ -1844,14 +1844,18 @@
 		 * 
 		 * @return boolean 
 		 */
-		public function hasProjectPageAccess($page, $project_id)
+		public function hasProjectPageAccess($page, TBGProject $project)
 		{
-			$retval = $this->hasPageAccess($page, $project_id);
+			$retval = $this->hasPageAccess($page, $project->getID());
+			$retval = ($retval === null) ? $this->hasPageAccess('project_allpages', $project->getID()) : $retval;
+
 			if ($retval === null)
 			{
-				return (bool) $this->hasPageAccess('project_allpages', $project_id);
+				if ($project->getOwner() instanceof TBGUser && $project->getOwner()->getID() == $this->getID()) return true;
+				if ($project->getLeader() instanceof TBGUser && $project->getLeader()->getID() == $this->getID()) return true;
 			}
-			return $retval;
+
+			return ($retval !== null) ? $retval : TBGSettings::isPermissive();
 		}
 
 		/**
@@ -2023,6 +2027,8 @@
 		 */
 		public function canManageProject(TBGProject $project)
 		{
+			if ($project->getOwner() instanceof TBGUser && $project->getOwner()->getID() == $this->getID()) return true;
+
 			return (bool) $this->hasPermission('canmanageproject', $project->getID()) || $this->canSaveConfiguration(TBGSettings::CONFIGURATION_SECTION_PROJECTS);
 		}
 
@@ -2037,6 +2043,7 @@
 		{
 			if ($project->isArchived()) return false;
 			if ($this->canSaveConfiguration(TBGSettings::CONFIGURATION_SECTION_PROJECTS)) return true;
+			if ($project->getOwner() instanceof TBGUser && $project->getOwner()->getID() == $this->getID()) return true;
 			
 			return $this->_dualPermissionsCheck('canmanageprojectreleases', $project->getID(), 'canmanageproject', $project->getID(), false);
 		}
@@ -2052,6 +2059,7 @@
 		{
 			if ($project->isArchived()) return false;
 			if ($this->canSaveConfiguration(TBGSettings::CONFIGURATION_SECTION_PROJECTS)) return true;
+			if ($project->getOwner() instanceof TBGUser && $project->getOwner()->getID() == $this->getID()) return true;
 
 			return $this->_dualPermissionsCheck('caneditprojectdetails', $project->getID(), 'canmanageproject', $project->getID(), false);
 		}
@@ -2067,6 +2075,7 @@
 		{
 			if ($project->isArchived()) return false;
 			if ($this->canSaveConfiguration(TBGSettings::CONFIGURATION_SECTION_PROJECTS)) return true;
+			if ($project->getOwner() instanceof TBGUser && $project->getOwner()->getID() == $this->getID()) return true;
 
 			$retval = $this->hasPermission('canassignscrumuserstoriestosprints', $project->getID());
 			$retval = ($retval !== null) ? $retval : $this->hasPermission('candoscrumplanning', $project->getID());
