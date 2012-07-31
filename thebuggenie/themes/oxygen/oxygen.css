@@ -850,6 +850,9 @@ reportissue_additional_information_container .markItUp { display: none; }
 .workflow_actions .button.first, .workflow_actions .button.first:hover, .button-group .button:first-child, .button-group .button:first-child:hover { border-left-width: 1px; border-top-left-radius: 3px; -moz-border-radius-topleft: 3px; -webkit-border-top-left-radius: 3px; border-bottom-left-radius: 3px; -moz-border-radius-bottomleft: 3px; -webkit-border-bottom-left-radius: 3px; }
 .workflow_actions .button.last, .button-group .button:last-child { border-top-right-radius: 3px; -moz-border-radius-topright: 3px; -webkit-border-top-right-radius: 3px; border-bottom-right-radius: 3px; -moz-border-radius-bottomright: 3px; -webkit-border-bottom-right-radius: 3px; }
 .workflow_actions li.more_actions { margin-left: 5px; }
+.workflow_actions li.workflow { position: relative; }
+.workflow_actions li.workflow .tooltip { left: auto; right: 0; bottom: auto; top: 30px; }
+.workflow_actions li.workflow .tooltip:before, .workflow_actions li.workflow .tooltip:after { left: auto; right: 10px; }
 .button-group .button { float: left; }
 .project_header_right .button, .project_header_right .button:hover, #tab_csv_pane .button-group .button, #tab_csv_pane .button-group .button:hover, .project_strip .button-group .button, .project_strip .button-group .button:hover { padding: 4px 10px !important; font-size: 1em; font-weight: normal !important; }
 /* end very visible button */
@@ -936,7 +939,8 @@ ul.workflow_actions li:hover { box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); -webkit-b
 #viewissue_header_container.fixed { width: 100%; position: fixed; top: 0; left: 0; margin: 0; z-index: 1000; }
 #viewissue_header_container.fixed #issue_info_container .issue_info_backdrop { box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5); -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5); -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5); }
 #viewissue_header_container table.title_area { 
-	table-layout: fixed; 
+	table-layout: fixed;
+	position: relative;
 	width: 100%; 
 	border-bottom: 1px solid #CCC; 
 	box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); 
@@ -997,8 +1001,12 @@ dd { float: left; display: block; width: 195px; font-weight: normal; margin: 0; 
 .more_actions_dropdown li { white-space: nowrap; }
 .more_actions_dropdown li img { float: left; margin-right: 5px; }
 .more_actions_dropdown li.disabled a { color: #AAA; text-shadow: 1px 1px 1px #FFF; }
-.title_left_images { width: 32px; padding: 0; }
+.title_left_images { width: 32px; padding: 0; position: relative; }
+.title_left_images:first-child { width: 42px; }
+.title_left_images:hover .tooltip { left: 5px; top: 65px; bottom: auto; width: 370px; position: absolute; }
+.title_left_images:hover .tooltip:before, .title_left_images:hover .tooltip:after { left: 15px; }
 .title_left_images img { margin-left: 5px; }
+.title_left_images:first-child img { margin-left: 10px; }
 
 
 /* left hand dropdown boxes */
@@ -1020,6 +1028,8 @@ dd { float: left; display: block; width: 195px; font-weight: normal; margin: 0; 
 #title_content.issue_detail_changed { background-color: #FFF299; }
 /* end changed, merged, unmerged */
 
+#title_field { font-size: 17px; width: auto; padding: 5px 10px 10px 7px; min-width: 930px; }
+.viewissue_title { white-space: nowrap; min-width: 900px; overflow: hidden; text-overflow: ellipsis; }
 #title_form { display: inline; }
 #title_form input[type="text"] { font-size: 1em; margin-right: 5px; width: 500px; }
 .viewissue_description_header, .viewissue_affects_header, .viewissue_reproduction_steps_header, .viewissue_customfield_header { font-weight: bold; font-size: 1.1em; padding: 0 0 5px 0; }

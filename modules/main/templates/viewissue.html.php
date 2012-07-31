@@ -21,27 +21,32 @@
 	</div>
 	<div style="width: auto; text-align: left; padding: 5px 5px 50px 5px; margin: 0;">
 		<div id="viewissue_header_container">
-			<table cellpadding=0 cellspacing=0 class="title_area" style="table-layout: fixed;">
+			<table cellpadding=0 cellspacing=0 class="title_area">
 				<tr>
-					<td style="width: 80px;<?php if (!$issue->isUserPainVisible()): ?> display: none;<?php endif; ?>" id="user_pain_additional">
-						<div class="rounded_box green borderless" title="<?php echo __('This is the user pain value for this issue'); ?>" id="viewissue_triaging" style="margin: 0 5px 0 0; vertical-align: middle; padding: 5px; font-weight: bold; font-size: 13px; text-align: center">
-							<div class="user_pain" id="issue_user_pain"><?php echo $issue->getUserPain(); ?></div>
-							<div class="user_pain_calculated" id="issue_user_pain_calculated"><?php echo $issue->getUserPainDiffText(); ?></div>
-						</div>
-					</td>
 					<td class="title_left_images">
 						<?php if ($tbg_user->isGuest()): ?>
-							<?php echo image_tag('star_faded.png', array('id' => 'issue_favourite_faded_'.$issue->getId(), 'title' => __('Please log in to bookmark issues'))); ?>
+							<?php echo image_tag('star_faded.png', array('id' => 'issue_favourite_faded_'.$issue->getId())); ?>
+							<div class="tooltip from-above leftie">
+								<?php echo __('Please log in to bookmark issues'); ?>
+							</div>
+						<?php elseif (($issue->isOwned() && $issue->getOwner() instanceof TBGUser && $issue->getOwner()->getID() == $tbg_user->getID()) || ($issue->isAssigned() && $issue->getAssignee() instanceof TBGUser && $issue->getAssignee()->getID() == $tbg_user->getID()) ||($issue->getPostedBy() instanceof TBGUser && $issue->getPostedBy()->getID() == $tbg_user->getID())): ?>
+							<?php echo image_tag('star.png', array('id' => 'issue_favourite_faded_'.$issue->getId(), 'title' => __('Please log in to bookmark issues'))); ?>
+							<div class="tooltip from-above leftie">
+								<?php echo __('You will be notified whenever this issue updates or changes'); ?>
+							</div>
 						<?php else: ?>
+							<div class="tooltip from-above leftie">
+								<?php echo __('Click the star to toggle whether you want to be notified whenever this issue updates or changes'); ?>
+							</div>
 							<?php echo image_tag('spinning_20.gif', array('id' => 'issue_favourite_indicator_'.$issue->getId(), 'style' => 'display: none;')); ?>
-							<?php echo image_tag('star_faded.png', array('id' => 'issue_favourite_faded_'.$issue->getId(), 'style' => 'cursor: pointer;'.(($tbg_user->isIssueStarred($issue->getID())) ? 'display: none;' : ''), 'title' => __('Click to start following this issue'), 'onclick' => "TBG.Issues.toggleFavourite('".make_url('toggle_favourite_issue', array('issue_id' => $issue->getID()))."', ".$issue->getID().");")); ?>
-							<?php echo image_tag('star.png', array('id' => 'issue_favourite_normal_'.$issue->getId(), 'style' => 'cursor: pointer;'.((!$tbg_user->isIssueStarred($issue->getID())) ? 'display: none;' : ''), 'title' => __('Click to stop following this issue'), 'onclick' => "TBG.Issues.toggleFavourite('".make_url('toggle_favourite_issue', array('issue_id' => $issue->getID()))."', ".$issue->getID().");")); ?>
+							<?php echo image_tag('star_faded.png', array('id' => 'issue_favourite_faded_'.$issue->getId(), 'style' => 'cursor: pointer;'.(($tbg_user->isIssueStarred($issue->getID())) ? 'display: none;' : ''), 'onclick' => "TBG.Issues.toggleFavourite('".make_url('toggle_favourite_issue', array('issue_id' => $issue->getID()))."', ".$issue->getID().");")); ?>
+							<?php echo image_tag('star.png', array('id' => 'issue_favourite_normal_'.$issue->getId(), 'style' => 'cursor: pointer;'.((!$tbg_user->isIssueStarred($issue->getID())) ? 'display: none;' : ''), 'onclick' => "TBG.Issues.toggleFavourite('".make_url('toggle_favourite_issue', array('issue_id' => $issue->getID()))."', ".$issue->getID().");")); ?>
 						<?php endif; ?>
 					</td>
 					<td class="title_left_images">
 						<?php echo image_tag((($issue->hasIssueType()) ? $issue->getIssueType()->getIcon() : 'icon_unknown') . '_small.png', array('id' => 'issuetype_image')); ?>
 					</td>
-					<td style="font-size: 17px; width: auto; padding: 5px 0 10px 7px;" id="title_field">
+					<td id="title_field">
 						<div class="viewissue_title hoverable">
 							<span class="faded_out <?php if ($issue->isTitleChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isTitleMerged()): ?> issue_detail_unmerged<?php endif; ?>" id="title_header">
 								<?php if ($issue->isEditable() && $issue->canEditTitle()): ?>
@@ -97,6 +102,12 @@
 									</td>
 								</tr>
 							</table>
+						</div>
+					</td>
+					<td style="width: 80px;<?php if (!$issue->isUserPainVisible()): ?> display: none;<?php endif; ?>" id="user_pain_additional">
+						<div class="rounded_box green borderless" title="<?php echo __('This is the user pain value for this issue'); ?>" id="viewissue_triaging" style="margin: 0 5px 0 0; vertical-align: middle; padding: 5px; font-weight: bold; font-size: 13px; text-align: center">
+							<div class="user_pain" id="issue_user_pain"><?php echo $issue->getUserPain(); ?></div>
+							<div class="user_pain_calculated" id="issue_user_pain_calculated"><?php echo $issue->getUserPainDiffText(); ?></div>
 						</div>
 					</td>
 				</tr>
@@ -254,6 +265,9 @@
 					<?php $cc = 1; $num_transitions = count($issue->getAvailableWorkflowTransitions()); ?>
 					<?php foreach ($issue->getAvailableWorkflowTransitions() as $transition): ?>
 						<li class="workflow">
+							<div class="tooltip from-above rightie">
+								<?php echo $transition->getDescription(); ?>
+							</div>
 							<?php if ($transition->hasTemplate()): ?>
 								<input class="button button-silver<?php if ($cc == 1): ?> first<?php endif; if ($cc == $num_transitions): ?> last<?php endif; ?>" type="button" value="<?php echo $transition->getName(); ?>" onclick="TBG.Issues.showWorkflowTransition(<?php echo $transition->getID(); ?>);">
 							<?php else: ?>
