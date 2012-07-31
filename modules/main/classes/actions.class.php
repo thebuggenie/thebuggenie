@@ -1424,6 +1424,7 @@
 					break;
 				case 'estimated_time':
 					if (!$issue->canEditEstimatedTime()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
+					if (!$issue->isUpdateable()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false, 'error' => TBGContext::getI18n()->__('This issue cannot be updated')));
 					
 					if ($request['estimated_time'])
 					{
