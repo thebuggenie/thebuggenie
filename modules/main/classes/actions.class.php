@@ -1264,7 +1264,7 @@
 							}
 							return $this->renderJSON(array('content' => $this->getComponentHTML('main/reportissuecontainer', $options)));
 						}
-						if ($issue->getProject()->getIssuetypeScheme()->isIssuetypeRedirectedAfterReporting($this->selected_issuetype))
+						if ($request->getRequestedFormat() != 'json' && $issue->getProject()->getIssuetypeScheme()->isIssuetypeRedirectedAfterReporting($this->selected_issuetype))
 						{
 							$this->forward(TBGContext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), 303);
 						}
