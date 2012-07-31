@@ -30,6 +30,21 @@
 
 		public function do_execute()
 		{
+
+			$mailing = TBGContext::getModule('mailing');
+			if (!$mailing->isOutgoingNotificationsEnabled())
+			{
+				$this->cliEcho("Outgoing email notifications are disabled.\n", 'red', 'bold');
+				$this->cliEcho("\n");
+				return;
+			}
+			if (!$mailing->getCLIMailingUrl())
+			{
+				$this->cliEcho("You must configure the CLI mailing url via the web interface before you can use this feature.\n", 'red', 'bold');
+				$this->cliEcho("\n");
+				return;
+			}
+
 			$this->cliEcho("Processing mail queue ... \n", 'white', 'bold');
 			$limit = $this->getProvidedArgument('limit', null);
 			$messages = TBGMailQueueTable::getTable()->getQueuedMessages($limit);
@@ -41,7 +56,7 @@
 			{
 				if (count($messages) > 0)
 				{
-					$mailer = TBGMailing::getModule()->getMailer();
+					$mailer = $mailing->getMailer();
 					$processed_messages = array();
 					$failed_messages = 0;
 					try

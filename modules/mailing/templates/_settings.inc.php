@@ -54,6 +54,16 @@
 				<td class="config_explanation" colspan="2"><?php echo __("If you're using a queue, outgoing emails will not slow down the system. Read more about how to set up email queueing in %email_queueing%", array('%email_queueing%' => link_tag(make_url('@publish_article?article_name=EmailQueueing'), 'EmailQueueing'))); ?></td>
 			</tr>
 			<tr>
+				<td style="padding: 5px;"><label for="from_address"><?php echo __('CLI issue tracker URL'); ?></label></td>
+				<td><input type="text" name="cli_mailing_url" id="cli_mailing_url" value="<?php echo $module->getCLIMailingUrl(); ?>" placeholder="<?php echo TBGContext::getScope()->getCurrentHostname(); ?>" style="width: 100%;"<?php echo ($access_level != TBGSettings::ACCESS_FULL || !$module->isOutgoingNotificationsEnabled()) ? ' disabled' : ''; ?>></td>
+			</tr>
+			<tr>
+				<td class="config_explanation" colspan="2">
+					<?php echo __("This is the full URL to the issue tracker, used when sending emails via the command line interface. If this isn't configured, you will not be able to send emails via the CLI for this scope."); ?>
+					<b><?php echo __("This is only required if outgoing emails are processed via the built-in command line interface (such as when using email queueing)."); ?></b>
+				</td>
+			</tr>
+			<tr>
 				<td style="padding: 5px;"><label for="mail_type_php"><?php echo __('Mail configuration'); ?></label></td>
 				<td>
 					<input type="radio" name="mail_type" value="<?php echo TBGMailer::MAIL_TYPE_PHP; ?>" id="mail_type_php"<?php if ($module->getSetting('mail_type') != TBGMailer::MAIL_TYPE_B2M): ?> checked<?php endif; ?> onclick="$('mail_type_b2m_info').hide();"<?php echo ($access_level != TBGSettings::ACCESS_FULL || !$module->isOutgoingNotificationsEnabled()) ? ' disabled' : ''; ?>>&nbsp;<label for="mail_type_php"><?php echo __('Use php settings'); ?></label><br>
