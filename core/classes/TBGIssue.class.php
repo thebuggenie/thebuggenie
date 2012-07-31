@@ -1052,13 +1052,13 @@
 
 		public function isEditable()
 		{
-			if ($this->getProject()->isArchived()): return false; endif;
+			if ($this->getProject()->isArchived()) return false;
 			return ($this->isOpen() && ($this->getProject()->canChangeIssuesWithoutWorkingOnThem() || ($this->getWorkflowStep() instanceof TBGWorkflowStep && $this->getWorkflowStep()->isEditable())));
 		}
 		
 		public function isUpdateable()
 		{
-			if ($this->getProject()->isArchived()): return false; endif;
+			if ($this->getProject()->isArchived()) return false;
 			return ($this->isOpen() && ($this->getProject()->canChangeIssuesWithoutWorkingOnThem() || !($this->getWorkflowStep() instanceof TBGWorkflowStep) || !$this->getWorkflowStep()->isClosed()));
 		}
 		

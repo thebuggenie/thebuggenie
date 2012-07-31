@@ -113,7 +113,7 @@
 			<dt id="percent_complete_header"><?php echo __('Progress'); ?></dt>
 			<dd id="percent_complete_content">
 				<div style="width: 100%;">
-					<?php if ($issue->canEditPercentage() && $issue->isUpdateable()): ?>
+					<?php if ($issue->canEditPercentage()): ?>
 						<a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'percent_complete')); ?>', 'percent_complete');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
 						<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'percent_complete_undo_spinning')); ?>
 						<a href="javascript:void(0);" onclick="if ($('percent_complete_change').visible()) { $$('div.dropdown_box').each(Element.hide); } else { $$('div.dropdown_box').each(Element.hide); $('percent_complete_change').toggle(); }" title="<?php echo __('Click to set percent completed'); ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
@@ -123,7 +123,7 @@
 				</div>
 			</dd>
 		</dl>
-		<?php if ($issue->canEditPercentage() && $issue->isUpdateable()): ?>
+		<?php if ($issue->canEditPercentage()): ?>
 			<div class="rounded_box white shadowed dropdown_box" id="percent_complete_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0; padding: 5px;">
 				<div class="dropdown_header"><?php echo __('Set percent completed'); ?></div>
 				<div class="dropdown_content">
@@ -141,7 +141,7 @@
 		<dl class="viewissue_list">
 			<dt id="pain_bug_type_header"><?php echo __('Type of bug'); ?></dt>
 			<dd id="pain_bug_type_content">
-				<?php if ($issue->isEditable() && $issue->canEditUserPain()): ?>
+				<?php if ($issue->isUpdateable() && $issue->canEditUserPain()): ?>
 					<a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'pain_bug_type')); ?>', 'pain_bug_type');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
 					<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'pain_bug_type_undo_spinning')); ?>
 					<a href="javascript:void(0);" onclick="if ($('pain_bug_type_change').visible()) { $$('div.dropdown_box').each(Element.hide); } else { $$('div.dropdown_box').each(Element.hide); $('pain_bug_type_change').toggle(); }" title="<?php echo __('Click to triage type of bug'); ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
@@ -152,7 +152,7 @@
 				<span class="faded_out" id="no_pain_bug_type"<?php if ($issue->hasPainBugType()): ?> style="display: none;"<?php endif; ?>><?php echo __('Not triaged'); ?></span>
 			</dd>
 		</dl>
-		<?php if ($issue->isEditable() && $issue->canEditUserPain()): ?>
+		<?php if ($issue->isUpdateable() && $issue->canEditUserPain()): ?>
 			<div class="rounded_box white shadowed dropdown_box" id="pain_bug_type_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0; padding: 5px;">
 				<div class="dropdown_header"><?php echo __('Triage bug type'); ?></div>
 				<div class="dropdown_content">
@@ -177,7 +177,7 @@
 		<dl class="viewissue_list">
 			<dt id="pain_likelihood_header"><?php echo __('Likelihood'); ?></dt>
 			<dd id="pain_likelihood_content" class="<?php if ($issue->isPainLikelihoodChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isPainLikelihoodMerged()): ?> issue_detail_unmerged<?php endif; ?>">
-				<?php if ($issue->isEditable() && $issue->canEditUserPain()): ?>
+				<?php if ($issue->isUpdateable() && $issue->canEditUserPain()): ?>
 					<a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'pain_likelihood')); ?>', 'pain_likelihood');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
 					<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'pain_likelihood_undo_spinning')); ?>
 					<a href="javascript:void(0);" onclick="if ($('pain_likelihood_change').visible()) { $$('div.dropdown_box').each(Element.hide); } else { $$('div.dropdown_box').each(Element.hide); $('pain_likelihood_change').toggle(); }" title="<?php echo __('Click to triage likelihood'); ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
@@ -188,7 +188,7 @@
 				<span class="faded_out" id="no_pain_likelihood"<?php if ($issue->hasPainLikelihood()): ?> style="display: none;"<?php endif; ?>><?php echo __('Not triaged'); ?></span>
 			</dd>
 		</dl>
-		<?php if ($issue->isEditable() && $issue->canEditUserPain()): ?>
+		<?php if ($issue->isUpdateable() && $issue->canEditUserPain()): ?>
 			<div class="rounded_box white shadowed dropdown_box" id="pain_likelihood_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0; padding: 5px;">
 				<div class="dropdown_header"><?php echo __('Triage likelihood'); ?></div>
 				<div class="dropdown_content">
@@ -213,7 +213,7 @@
 		<dl class="viewissue_list">
 			<dt id="pain_effect_header"><?php echo __('Effect'); ?></dt>
 			<dd id="pain_effect_content" class="<?php if ($issue->isPainEffectChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isPainEffectMerged()): ?> issue_detail_unmerged<?php endif; ?>">
-				<?php if ($issue->isEditable() && $issue->canEditUserPain()): ?>
+				<?php if ($issue->isUpdateable() && $issue->canEditUserPain()): ?>
 					<a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'pain_effect')); ?>', 'pain_effect');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
 					<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'pain_effect_undo_spinning')); ?>
 					<a href="javascript:void(0);" onclick="if ($('pain_effect_change').visible()) { $$('div.dropdown_box').each(Element.hide); } else { $$('div.dropdown_box').each(Element.hide); $('pain_effect_change').toggle(); }" title="<?php echo __('Click to triage effect'); ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
@@ -224,7 +224,7 @@
 				<span class="faded_out" id="no_pain_effect"<?php if ($issue->hasPainEffect()): ?> style="display: none;"<?php endif; ?>><?php echo __('Not triaged'); ?></span>
 			</dd>
 		</dl>
-		<?php if ($issue->isEditable() && $issue->canEditUserPain()): ?>
+		<?php if ($issue->isUpdateable() && $issue->canEditUserPain()): ?>
 			<div class="rounded_box white shadowed dropdown_box" id="pain_effect_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0; padding: 5px;">
 				<div class="dropdown_header"><?php echo __('Triage effect'); ?></div>
 				<div class="dropdown_content">
