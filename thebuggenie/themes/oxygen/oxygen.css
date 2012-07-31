@@ -199,6 +199,97 @@ footer td { font-size: 0.9em; line-height: 1.2; padding: 5px; text-shadow: 1px 1
 .register_success { width: 600px; margin-top: 20px; margin-left: auto; margin-right: auto; }
 /* end login / registration styling */
 
+/* tooltip styling */
+.tooltip {
+	display: block;
+	position: absolute;
+	bottom: 35px;
+	left: -12px;
+	font-size: 1em;
+	opacity: 0;
+	color: #333;
+	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.4);
+	border: 1px solid #CCC;
+	border-radius: 0;
+	background-color: #FFF;
+	-webkit-transition: opacity 0.3s ease, visibility 0.3s ease, bottom 0.3s ease;
+	-moz-transition: opacity 0.3s ease, visibility 0.3s ease, bottom 0.3s ease;
+	-ms-transition: opacity 0.3s ease, visibility 0.3s ease, bottom 0.3s ease;
+	-o-transition: opacity 0.3s ease, visibility 0.3s ease, bottom 0.3s ease;
+	transition: opacity 0.3s ease, visibility 0.3s ease, bottom 0.3s ease;
+	z-index: 1;
+	overflow: hidden;
+	width: 0;
+	height: 0;
+	padding: 0;
+	white-space: normal;
+}
+.tooltip.from-above {
+	bottom: auto;
+	top: 20px;
+}
+.tooltip.big {
+	width: 450px;
+}
+*:hover > .tooltip, *:active > .tooltip {
+	z-index: 200000;
+	width: 350px;
+	height: auto;
+	bottom: 40px;
+	left: -12px;
+	padding: 10px;
+	opacity: 1;
+	visibility: visible;
+	overflow: visible;
+	-webkit-transition: opacity 0.7s ease, visibility 0.7s ease, bottom 0.7s ease 0.9s;
+	-moz-transition: opacity 0.7s ease, visibility 0.7s ease, bottom 0.7s ease 0.9s;
+	-ms-transition: opacity 0.7s ease, visibility 0.7s ease, bottom 0.7s ease 0.9s;
+	-o-transition: opacity 0.7s ease, visibility 0.7s ease, bottom 0.7s ease 0.9s;
+	transition: opacity 0.7s ease, visibility 0.7s ease, bottom 0.7s ease 0.9s;
+}
+*:hover > .tooltip.from-above, *:active > .tooltip.from-above {
+	bottom: auto;
+	top: 25px;
+}
+.tooltip:before,
+.tooltip:after {
+	content: '';
+	position: absolute;
+	bottom: -12px;
+	left: 50%;
+	margin-left: -9px;
+	width: 0;
+	height: 0;
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	border-top: 10px solid #CCC;
+}
+.tooltip:after {
+	bottom: -10px;
+	margin-left: -10px;
+	border-top: 10px solid #CCC;
+}
+.tooltip.from-above:before, .tooltip.from-above:after {
+	border-top: none;
+	bottom: auto;
+	top: -10px;
+	border-bottom: 10px solid #CCC;
+}
+.tooltip.from-above:after {
+	border-bottom: 10px solid #FFF;
+	top: -10px;
+}
+.tooltip.leftie:before,
+.tooltip.leftie:after {
+	left: 10%;
+}
+.tooltip.rightie:before,
+.tooltip.rightie:after {
+	left: 90%;
+}
+
+/* end tooltip styling */
+
 /* table column containing an image */
 .imgtd { width: 22px; text-align: center; vertical-align: middle; }
 
