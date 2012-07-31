@@ -28,7 +28,7 @@
 			</select>
 			<select id="filter_<?php echo $filter; ?>_<?php echo $key; ?>_month" onchange="TBG.Search.Filter.setTimestamp('<?php echo $filter; ?>', '<?php echo $key; ?>');">
 				<?php for($cc = 1; $cc <= 12; $cc++): ?>
-				<option value="<?php echo $cc-1; ?>"<?php if ($cc == date('m', $selected_value)): ?> selected<?php endif; ?>><?php echo date('F', mktime(0, 0, 0, $cc)); ?></option>
+					<option value="<?php echo $cc-1; ?>"<?php if ($cc == date('m', $selected_value)): ?> selected<?php endif; ?>><?php echo date('F', mktime(12, 0, 1, $cc, 1)); ?></option>
 				<?php endfor; ?>
 			</select>
 			<select id="filter_<?php echo $filter; ?>_<?php echo $key; ?>_year" onchange="TBG.Search.Filter.setTimestamp('<?php echo $filter; ?>', '<?php echo $key; ?>');">
