@@ -3683,6 +3683,12 @@
 		
 		public function runServe(TBGRequest $request)
 		{
+			
+			// turn on browser's HTTP cache for static contents
+			header("Cache-Control: ");
+			header("Pragma: public");
+			header("Expires: Sat, 26 Jul ".(date('Y')+1)." 05:00:00 GMT");
+
 			if(!TBGContext::isMinifyEnabled())
 			{
 				$itemarray = array($request['g'] => explode(',', base64_decode($request['files'])));
