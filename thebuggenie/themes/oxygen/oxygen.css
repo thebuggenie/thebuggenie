@@ -955,6 +955,18 @@ ul.workflow_actions li:hover { box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); -webkit-b
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FFFFFF', endColorstr='#F1F1F1',GradientType=0 ); /* IE6-9 */
 	background: linear-gradient(top, #FFFFFF 0%,#F1F1F1 100%); /* W3C */
 }
+.blocking #viewissue_header_container table.title_area {
+	border-bottom-color: #730B0B;
+	box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+	background: -moz-linear-gradient(top, #FFFFFF 0%, #F1F1F1 70%, #FF8181 100%); /* FF3.6+ */
+	background: -khtml-gradient(linear, left top, left bottom, color-stop(0%,#FFFFFF), color-stop(70%,#F1F1F1), color-stop(100%,#FF8181)); /* Chrome,Safari4+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FFFFFF), color-stop(70%,#F1F1F1), color-stop(100%,#FF8181)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #FFFFFF 0%,#F1F1F1 70%, #FF8181 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #FFFFFF 0%,#F1F1F1 70%, #FF8181 100%); /* Opera11.10+ */
+	background: -ms-linear-gradient(top, #FFFFFF 0%,#F1F1F1 70%, #FF8181 100%); /* IE10+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FFFFFF', endColorstr='#FF8181',GradientType=0 ); /* IE6-9 */
+	background: linear-gradient(top, #FFFFFF 0%,#F1F1F1 70%, #FF8181 100%); /* W3C */
+}
 #workflow_actions.fixed { position: fixed; top: 32px; right: 3px; margin-top: 0; z-index: 1001; display: block; }
 #viewissue_header_container.fixed #votes_additional { display: none; }
 #workflow_actions.fixed #comment_add_button { margin-left: 5px; border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; }
