@@ -3224,6 +3224,20 @@ TBG.Issues.Field.setTime = function(url, field, issue_id) {
 			callback: function(json) {
 				TBG.Issues.Field.Updaters.timeFromObject(json.issue_id, json.field, json.values, field);
 				(json.changed == true) ? TBG.Issues.markAsChanged(field) : TBG.Issues.markAsUnchanged(field);
+				if ($('issue_'+issue_id)) {
+					var fields = $('issue_'+issue_id).select('.sc_'+field);
+					if (fields.size() > 0) {
+						fields.each(function(sc_element) {
+							if (json.field.name) {
+								$(sc_element).update(json.field.name);
+								$(sc_element).removeClassName('faded_out');
+							} else {
+								$(sc_element).update('-');
+								$(sc_element).addClassName('faded_out');
+							}
+						});
+					}
+				}
 			},
 			hide: field + '_' + issue_id + '_change'
 		},
@@ -3283,13 +3297,15 @@ TBG.Issues.markAsChanged = function(field)
 
 TBG.Issues.markAsUnchanged = function(field)
 {
-	$(field + '_field').removeClassName('issue_detail_changed');
-	$(field + '_field').removeClassName('issue_detail_unmerged');
-	if ($('issue_view').select('.issue_detail_changed').size() == 0) {
-		$('viewissue_changed').hide();
-		$('viewissue_merge_errors').hide();
-		$('viewissue_unsaved').hide();
-		if ($('comment_save_changes')) $('comment_save_changes').checked = false;
+	if ($(field + '_field')) {
+		$(field + '_field').removeClassName('issue_detail_changed');
+		$(field + '_field').removeClassName('issue_detail_unmerged');
+		if ($('issue_view').select('.issue_detail_changed').size() == 0) {
+			$('viewissue_changed').hide();
+			$('viewissue_merge_errors').hide();
+			$('viewissue_unsaved').hide();
+			if ($('comment_save_changes')) $('comment_save_changes').checked = false;
+		}
 	}
 }
 
@@ -3793,6 +3809,73 @@ TBG.Search.bulkUpdate = function(url, mode) {
 		});
 	}
 };
+
+TBG.Search.moveDown = function(event) {
+	var selected_elements = $('search_results').select('tr.selected');
+	var old_selected_element = (selected_elements.size() == 0) ? undefined : selected_elements[0];
+	var new_selected_element = (old_selected_element == undefined) ? $('search_results').select('table tbody tr')[0] : old_selected_element.next();
+
+	TBG.Search.move(old_selected_element, new_selected_element, event);
+};
+
+TBG.Search.moveUp = function(event) {
+	var selected_elements = $('search_results').select('tr.selected');
+	var old_selected_element = (selected_elements.size() == 0) ? undefined : selected_elements[selected_elements.size() - 1];
+	var new_selected_element = (old_selected_element == undefined) ? $('search_results').select('table tbody tr')[0] : old_selected_element.previous();
+
+	TBG.Search.move(old_selected_element, new_selected_element, event);
+};
+
+TBG.Search.move = function(old_selected_element, new_selected_element, event) {
+	if (old_selected_element && new_selected_element) {
+		$(old_selected_element).removeClassName('selected');
+	}
+	if (new_selected_element) {
+		var ns = $(new_selected_element);
+		ns.addClassName('selected');
+		var offsets = ns.cumulativeOffset();
+		var dimensions = ($('bulk_action_form_top')) ? $('bulk_action_form_top').getDimensions() : ns.getDimensions();
+		event.preventDefault();
+		window.scrollTo(0, offsets.top - dimensions.height);
+	}
+}
+
+TBG.Search.moveTo = function(event) {
+	var selected_elements = $('search_results').select('tr.selected');
+	if (selected_elements.size() > 0) {
+		var selected_issue = selected_elements[0];
+		var link = selected_issue.select('a.issue_link')[0];
+		if (link) {
+			window.location = link.href;
+			event.preventDefault();
+		}
+	}
+};
+
+TBG.Search.initializeKeyboardNavigation = function() {
+	Event.observe(document, 'keydown', function(event) {
+		if (['INPUT', 'TEXTAREA'].indexOf(event.target.nodeName) != -1) return;
+		if (Event.KEY_DOWN == event.keyCode) {
+			TBG.Search.moveDown(event);
+		}
+		else if (Event.KEY_PAGEDOWN == event.keyCode) {
+			for (var cc = 1; cc <= 5; cc++) {
+				TBG.Search.moveDown(event);
+			}
+		}
+		else if (Event.KEY_UP == event.keyCode) {
+			TBG.Search.moveUp(event);
+		}
+		else if (Event.KEY_PAGEUP == event.keyCode) {
+			for (var cc = 1; cc <= 5; cc++) {
+				TBG.Search.moveUp(event);
+			}
+		}
+		else if (Event.KEY_RETURN == event.keyCode) {
+			TBG.Search.moveTo(event);
+		}
+	});
+}
 
 /*
 	Simple OpenID Plugin

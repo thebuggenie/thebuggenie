@@ -38,6 +38,8 @@
 					<th class="sc_priority"<?php if (!in_array('priority', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Priority'); ?></th>
 					<th class="sc_components"<?php if (!in_array('components', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Component(s)'); ?></th>
 					<th class="sc_milestone"<?php if (!in_array('milestone', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Milestone'); ?></th>
+					<th class="sc_estimated_time"<?php if (!in_array('estimated_time', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Estimate'); ?></th>
+					<th class="sc_spent_time"<?php if (!in_array('spent_time', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Time spent'); ?></th>
 					<th class="sc_last_updated"<?php if (!in_array('last_updated', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Last updated'); ?></th>
 					<th class="sc_comments" style="width: 20px; padding-bottom: 0; text-align: center;<?php if (!in_array('comments', $visible_columns)): ?> display: none;<?php endif; ?>"><?php echo image_tag('icon_comments.png', array('title' => __('Number of user comments on this issue'))); ?></th>
 					<th class="sc_actions nosort" style="width: 20px; padding-bottom: 0; text-align: center;">&nbsp;</th>
@@ -68,7 +70,7 @@
 							<?php echo image_tag('icon_locked.png', array('style' => 'float: left; margin-right: 3px;', 'title' => __('Access to this issue is restricted'))); ?>
 						<?php endif; ?>
 						<?php $title_visible = (in_array('title', $visible_columns)) ? '' : ' style="display: none;'; ?>
-						<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), '<span class="issue_no">' . $issue->getFormattedIssueNo(true) . '</span><span class="issue_title sc_title"'.$title_visible.'> - ' . $issue->getTitle() . '</span>'); ?>
+						<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), '<span class="issue_no">' . $issue->getFormattedIssueNo(true) . '</span><span class="issue_title sc_title"'.$title_visible.'> - ' . $issue->getTitle() . '</span>', array('class' => 'issue_link')); ?>
 					</td>
 					<td class="sc_assigned_to<?php if (!$issue->isAssigned()): ?> faded_out<?php endif; ?>"<?php if (!in_array('assigned_to', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
 						<?php if ($issue->isAssigned()): ?>
@@ -118,6 +120,12 @@
 					<td class="sc_milestone<?php if (!$issue->getMilestone() instanceof TBGMilestone): ?> faded_out<?php endif; ?>"<?php if (!in_array('milestone', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
 						<?php echo ($issue->getMilestone() instanceof TBGMilestone) ? link_tag(make_url('project_milestone_details', array('project_key' => $issue->getProject()->getKey(), 'milestone_id' => $issue->getMilestone()->getID())), $issue->getMilestone()->getName()) : '-'; ?>
 					</td>
+					<td class="sc_estimated_time<?php if (!$issue->hasEstimatedTime()): ?> faded_out<?php endif; ?>"<?php if (!in_array('estimated_time', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
+						<?php echo (!$issue->hasEstimatedTime()) ? '-' : $issue->getFormattedTime($issue->getEstimatedTime()); ?>
+					</td>
+					<td class="sc_spent_time<?php if (!$issue->hasSpentTime()): ?> faded_out<?php endif; ?>"<?php if (!in_array('spent_time', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
+						<?php echo (!$issue->hasSpentTime()) ? '-' : $issue->getFormattedTime($issue->getSpentTime()); ?>
+					</td>
 					<td class="smaller sc_last_updated" title="<?php echo tbg_formatTime($issue->getLastUpdatedTime(), 21); ?>"<?php if (!in_array('last_updated', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo tbg_formatTime($issue->getLastUpdatedTime(), 20); ?></td>
 					<td class="smaller sc_comments" style="text-align: center;<?php if (!in_array('comments', $visible_columns)): ?> display: none;<?php endif; ?>">
 						<?php echo $issue->countUserComments(); ?>
@@ -139,6 +147,6 @@
 <?php if (!$tbg_user->isGuest()) include_template('search/bulkactions', array('mode' => 'bottom')); ?>
 <script type="text/javascript">
 	document.observe('dom:loaded', function() {
-		TBG.Search.setColumns('results_normal', ['title', 'issuetype', 'assigned_to', 'status', 'resolution', 'category', 'severity', 'percent_complete', 'reproducability', 'priority', 'components', 'milestone', 'last_updated', 'comments'], [<?php echo "'".join("', '", $visible_columns)."'"; ?>], [<?php echo "'".join("', '", $default_columns)."'"; ?>]);
+		TBG.Search.setColumns('results_normal', ['title', 'issuetype', 'assigned_to', 'status', 'resolution', 'category', 'severity', 'percent_complete', 'reproducability', 'priority', 'components', 'milestone', 'estimated_time', 'spent_time', 'last_updated', 'comments'], [<?php echo "'".join("', '", $visible_columns)."'"; ?>], [<?php echo "'".join("', '", $default_columns)."'"; ?>]);
 	});
 </script>

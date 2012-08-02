@@ -1953,13 +1953,12 @@
 		 */
 		public function runLockIssue(TBGRequest $request)
 		{
-
 			if ($issue_id = $request['issue_id'])
 			{
 				try
 				{
 					$issue = TBGContext::factory()->TBGIssue($issue_id);
-					if ($issue->canEditIssueDetails())
+					if (!$issue->canEditIssueDetails())
 					{
 						$this->forward403($this->getI18n()->__("You don't have access to update the issue access policy"));
 						return;
