@@ -283,7 +283,7 @@
 					</li>
 				<?php endif; ?>
 			</ul>
-			<?php include_template('main/issuemoreactions', array('issue' => $issue)); ?>
+			<?php include_template('main/issuemoreactions', array('issue' => $issue, 'times' => false)); ?>
 		</div>
 		<div id="viewissue_left_box_top">
 			<div id="issue_view">
