@@ -182,7 +182,7 @@
 					break;
 			}
 			$i18n = TBGContext::getI18n();
-			$this->columns = array('title' => $i18n->__('Issue title'), 'issuetype' => $i18n->__('Issue type'), 'assigned_to' => $i18n->__('Assigned to'), 'status' => $i18n->__('Status'), 'resolution' => $i18n->__('Resolution'), 'category' => $i18n->__('Category'), 'severity' => $i18n->__('Severity'), 'percent_complete' => $i18n->__('% completed'), 'reproducability' => $i18n->__('Reproducability'), 'priority' => $i18n->__('Priority'), 'components' => $i18n->__('Component(s)'), 'milestone' => $i18n->__('Milestone'), 'last_updated' => $i18n->__('Last updated time'), 'comments' => $i18n->__('Number of comments'));
+			$this->columns = array('title' => $i18n->__('Issue title'), 'issuetype' => $i18n->__('Issue type'), 'assigned_to' => $i18n->__('Assigned to'), 'status' => $i18n->__('Status'), 'resolution' => $i18n->__('Resolution'), 'category' => $i18n->__('Category'), 'severity' => $i18n->__('Severity'), 'percent_complete' => $i18n->__('% completed'), 'reproducability' => $i18n->__('Reproducability'), 'priority' => $i18n->__('Priority'), 'components' => $i18n->__('Component(s)'), 'milestone' => $i18n->__('Milestone'), 'estimated_time' => $i18n->__('Estimate'), 'spent_time' => $i18n->__('Time spent'), 'last_updated' => $i18n->__('Last updated time'), 'comments' => $i18n->__('Number of comments'));
 		}
 
 		public function componentBulkWorkflow()

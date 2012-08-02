@@ -3224,6 +3224,20 @@ TBG.Issues.Field.setTime = function(url, field, issue_id) {
 			callback: function(json) {
 				TBG.Issues.Field.Updaters.timeFromObject(json.issue_id, json.field, json.values, field);
 				(json.changed == true) ? TBG.Issues.markAsChanged(field) : TBG.Issues.markAsUnchanged(field);
+				if ($('issue_'+issue_id)) {
+					var fields = $('issue_'+issue_id).select('.sc_'+field);
+					if (fields.size() > 0) {
+						fields.each(function(sc_element) {
+							if (json.field.name) {
+								$(sc_element).update(json.field.name);
+								$(sc_element).removeClassName('faded_out');
+							} else {
+								$(sc_element).update('-');
+								$(sc_element).addClassName('faded_out');
+							}
+						});
+					}
+				}
 			},
 			hide: field + '_' + issue_id + '_change'
 		},
@@ -3283,13 +3297,15 @@ TBG.Issues.markAsChanged = function(field)
 
 TBG.Issues.markAsUnchanged = function(field)
 {
-	$(field + '_field').removeClassName('issue_detail_changed');
-	$(field + '_field').removeClassName('issue_detail_unmerged');
-	if ($('issue_view').select('.issue_detail_changed').size() == 0) {
-		$('viewissue_changed').hide();
-		$('viewissue_merge_errors').hide();
-		$('viewissue_unsaved').hide();
-		if ($('comment_save_changes')) $('comment_save_changes').checked = false;
+	if ($(field + '_field')) {
+		$(field + '_field').removeClassName('issue_detail_changed');
+		$(field + '_field').removeClassName('issue_detail_unmerged');
+		if ($('issue_view').select('.issue_detail_changed').size() == 0) {
+			$('viewissue_changed').hide();
+			$('viewissue_merge_errors').hide();
+			$('viewissue_unsaved').hide();
+			if ($('comment_save_changes')) $('comment_save_changes').checked = false;
+		}
 	}
 }
 
