@@ -1,5 +1,5 @@
 <input class="button button-silver" id="search_more_actions_button" type="button" style="float: right;" value="<?php echo __('More actions'); ?>" onclick="$(this).toggleClassName('button-pressed');$('search_more_actions').toggle();">
-<ul id="search_more_actions" style="display: none; width: 300px; top: 2px; z-index: 1000;" class="simple_list rounded_box white shadowed more_actions_dropdown" onclick="$('search_more_actions_button').toggleClassName('button-pressed');$('search_more_actions').toggle();">
+<ul id="search_more_actions" style="display: none; font-size: 0.9em; right: 0px; margin-top: -1px;" class="simple_list rounded_box white shadowed more_actions_dropdown" onclick="$('search_more_actions_button').toggleClassName('button-pressed');$('search_more_actions').toggle();">
 	<li class="header"><?php echo __('Additional actions available'); ?></li>
 	<li id="search_builder_toggler"><a href="javascript:void(0);" onclick="$('search_builder').toggle();"><?php echo __('Refine search'); ?></a></li>
 	<?php if ($show_results): ?>

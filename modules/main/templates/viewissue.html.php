@@ -19,7 +19,7 @@
 			<?php echo __('Please wait while updating issue type'); ?>...
 		</div>
 	</div>
-	<div style="width: auto; text-align: left; padding: 5px 5px 50px 5px; margin: 0;">
+	<div style="width: auto; text-align: left; padding: 5px 5px 50px 5px; margin: 0;" id="issue_<?php echo $issue->getID(); ?>" class="<?php if ($issue->isBlocking()) echo ' blocking'; ?>">
 		<div id="viewissue_header_container">
 			<table cellpadding=0 cellspacing=0 class="title_area">
 				<tr>
@@ -283,7 +283,7 @@
 					</li>
 				<?php endif; ?>
 			</ul>
-			<?php include_template('main/issuemoreactions', array('issue' => $issue)); ?>
+			<?php include_template('main/issuemoreactions', array('issue' => $issue, 'times' => false)); ?>
 		</div>
 		<div id="viewissue_left_box_top">
 			<div id="issue_view">
