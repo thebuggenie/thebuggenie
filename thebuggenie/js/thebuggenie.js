@@ -3810,6 +3810,73 @@ TBG.Search.bulkUpdate = function(url, mode) {
 	}
 };
 
+TBG.Search.moveDown = function(event) {
+	var selected_elements = $('search_results').select('tr.selected');
+	var old_selected_element = (selected_elements.size() == 0) ? undefined : selected_elements[0];
+	var new_selected_element = (old_selected_element == undefined) ? $('search_results').select('table tbody tr')[0] : old_selected_element.next();
+
+	TBG.Search.move(old_selected_element, new_selected_element, event);
+};
+
+TBG.Search.moveUp = function(event) {
+	var selected_elements = $('search_results').select('tr.selected');
+	var old_selected_element = (selected_elements.size() == 0) ? undefined : selected_elements[selected_elements.size() - 1];
+	var new_selected_element = (old_selected_element == undefined) ? $('search_results').select('table tbody tr')[0] : old_selected_element.previous();
+
+	TBG.Search.move(old_selected_element, new_selected_element, event);
+};
+
+TBG.Search.move = function(old_selected_element, new_selected_element, event) {
+	if (old_selected_element && new_selected_element) {
+		$(old_selected_element).removeClassName('selected');
+	}
+	if (new_selected_element) {
+		var ns = $(new_selected_element);
+		ns.addClassName('selected');
+		var offsets = ns.cumulativeOffset();
+		var dimensions = ($('bulk_action_form_top')) ? $('bulk_action_form_top').getDimensions() : ns.getDimensions();
+		event.preventDefault();
+		window.scrollTo(0, offsets.top - dimensions.height);
+	}
+}
+
+TBG.Search.moveTo = function(event) {
+	var selected_elements = $('search_results').select('tr.selected');
+	if (selected_elements.size() > 0) {
+		var selected_issue = selected_elements[0];
+		var link = selected_issue.select('a.issue_link')[0];
+		if (link) {
+			window.location = link.href;
+			event.preventDefault();
+		}
+	}
+};
+
+TBG.Search.initializeKeyboardNavigation = function() {
+	Event.observe(document, 'keydown', function(event) {
+		if (['INPUT', 'TEXTAREA'].indexOf(event.target.nodeName) != -1) return;
+		if (Event.KEY_DOWN == event.keyCode) {
+			TBG.Search.moveDown(event);
+		}
+		else if (Event.KEY_PAGEDOWN == event.keyCode) {
+			for (var cc = 1; cc <= 5; cc++) {
+				TBG.Search.moveDown(event);
+			}
+		}
+		else if (Event.KEY_UP == event.keyCode) {
+			TBG.Search.moveUp(event);
+		}
+		else if (Event.KEY_PAGEUP == event.keyCode) {
+			for (var cc = 1; cc <= 5; cc++) {
+				TBG.Search.moveUp(event);
+			}
+		}
+		else if (Event.KEY_RETURN == event.keyCode) {
+			TBG.Search.moveTo(event);
+		}
+	});
+}
+
 /*
 	Simple OpenID Plugin
 	http://code.google.com/p/openid-selector/
