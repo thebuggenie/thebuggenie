@@ -174,6 +174,7 @@
 						}
 						break;
 					case 'revert':
+						$article_name = $this->article->getName();
 						if (!TBGContext::getModule('publish')->canUserEditArticle($article_name))
 						{
 							TBGContext::setMessage('publish_article_error', TBGContext::getI18n()->__('You do not have permission to edit this article'));
@@ -183,7 +184,7 @@
 						if ($revision)
 						{
 							$this->article->restoreRevision($revision);
-							$this->forward(TBGContext::getRouting()->generate('publish_article_history', array('article_name' => $this->article->getName())));
+							$this->forward(TBGContext::getRouting()->generate('publish_article_history', array('article_name' => $article_name)));
 						}
 						else
 						{
