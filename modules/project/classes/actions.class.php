@@ -1119,7 +1119,7 @@
 				return $this->renderJSON(array('issue_count' => $no_milestone->countIssues(), 'hours' => $no_milestone->getHoursEstimated(), 'points' => $no_milestone->getPointsEstimated()));
 			}
 			$this->getResponse()->setHttpStatus(400);
-			return $this->renderJSON(array("error" => $i18n->__("You don't have access to modify milestones")));
+			return $this->renderJSON(array("error" => $this->getI18n()->__("You don't have access to modify milestones")));
 		}
 
 		public function runMilestone(TBGRequest $request)
@@ -1175,7 +1175,7 @@
 					}
 				}
 				$this->getResponse()->setHttpStatus(400);
-				return $this->renderJSON(array("error" => $i18n->__("You don't have access to modify milestones")));
+				return $this->renderJSON(array("error" => $this->getI18n()->__("You don't have access to modify milestones")));
 			}
 		}
 
@@ -2009,7 +2009,7 @@
 				}
 			}
 			$this->getResponse()->setHttpStatus(400);
-			return $this->renderJSON(array("error" => $i18n->__("You don't have access to modify edition")));
+			return $this->renderJSON(array("error" => $this->getI18n()->__("You don't have access to modify edition")));
 
 		}
 
@@ -2080,7 +2080,7 @@
 				}
 			}
 			$this->getResponse()->setHttpStatus(400);
-			return $this->renderJSON(array("error" => $i18n->__("You don't have access to modify edition")));
+			return $this->renderJSON(array("error" => $this->getI18n()->__("You don't have access to modify edition")));
 		}
 
 		public function runConfigureProject(TBGRequest $request)
@@ -2132,7 +2132,7 @@
 				}
 			}
 			$this->getResponse()->setHttpStatus(400);
-			return $this->renderJSON(array("error" => $i18n->__("You don't have access to perform this action")));
+			return $this->renderJSON(array("error" => $this->getI18n()->__("You don't have access to perform this action")));
 		}
 
 		public function runProjectIcons(TBGRequest $request)
