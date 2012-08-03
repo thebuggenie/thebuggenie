@@ -1132,7 +1132,9 @@
 						}
 					}
 				}
-
+				$event = new TBGEvent('core', 'mainActions::_postIssueValidation', null, array(), $errors);
+				$event->trigger();
+				$errors = $event->getReturnList();
 			}
 			return !(bool) (count($errors) + count($permission_errors));
 		}

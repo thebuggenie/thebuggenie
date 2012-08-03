@@ -77,8 +77,16 @@
 								}
 
 							?>
-						<?php else: ?>
+						<?php elseif (TBGCustomDatatype::doesKeyExist($key)): ?>
 							<?php echo __('Required field "%field_name%" is missing or invalid', array('%field_name%' => TBGCustomDatatype::getByKey($key)->getDescription())); ?>
+						<?php else:
+
+							$event = new TBGEvent('core', 'reportissue.validationerror', $key);
+							$event->setReturnValue($key);
+							$event->triggerUntilProcessed();
+							echo __('A validation error occured: %error%', array('%error%' => $event->getReturnValue()));
+
+						?>
 						<?php endif; ?>
 					</li>
 				<?php else: ?>
@@ -590,6 +598,7 @@
 					TBG.Issues.updateFields('<?php echo make_url('getreportissuefields', array('project_key' => $selected_project->getKey())); ?>');
 				</script>
 			<?php endif; ?>
+			<?php TBGEvent::createNew('core', 'reportissue.prefile')->trigger(); ?>
 			<div class="rounded_box report_issue_submit_container report_issue_desc green borderless" style="clear: both; vertical-align: middle; margin-top: 10px; padding: 5px; height: 25px;">
 				<div style="float: left; padding-top: 3px;"><?php echo __('When you are satisfied, click the %file_issue% button to file your issue', array('%file_issue%' => '<strong>'.__('File issue').'</strong>')); ?></div>
 				<input type="submit" class="button button-silver" value="<?php echo __('File issue'); ?>" id="report_issue_submit_button">
