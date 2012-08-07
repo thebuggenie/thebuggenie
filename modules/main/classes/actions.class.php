@@ -34,7 +34,6 @@
 		 */
 		public function runViewIssue(TBGRequest $request)
 		{
-			//TBGEvent::listen('core', 'viewissue', array($this, 'listenViewIssuePostError'));
 			TBGLogging::log('Loading issue');
 			
 			if ($issue_no = TBGContext::getRequest()->getParameter('issue_no'))
