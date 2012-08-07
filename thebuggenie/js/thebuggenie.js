@@ -3815,7 +3815,7 @@ TBG.Search.moveDown = function(event) {
 	var old_selected_element = (selected_elements.size() == 0) ? undefined : selected_elements[0];
 	var new_selected_element = (old_selected_element == undefined) ? $('search_results').select('table tbody tr')[0] : old_selected_element.next();
 
-	TBG.Search.move(old_selected_element, new_selected_element, event);
+	TBG.Search.move(old_selected_element, new_selected_element, event, true);
 };
 
 TBG.Search.moveUp = function(event) {
@@ -3823,10 +3823,10 @@ TBG.Search.moveUp = function(event) {
 	var old_selected_element = (selected_elements.size() == 0) ? undefined : selected_elements[selected_elements.size() - 1];
 	var new_selected_element = (old_selected_element == undefined) ? $('search_results').select('table tbody tr')[0] : old_selected_element.previous();
 
-	TBG.Search.move(old_selected_element, new_selected_element, event);
+	TBG.Search.move(old_selected_element, new_selected_element, event, true);
 };
 
-TBG.Search.move = function(old_selected_element, new_selected_element, event) {
+TBG.Search.move = function(old_selected_element, new_selected_element, event, move) {
 	if (old_selected_element && new_selected_element) {
 		$(old_selected_element).removeClassName('selected');
 	}
@@ -3835,8 +3835,8 @@ TBG.Search.move = function(old_selected_element, new_selected_element, event) {
 		ns.addClassName('selected');
 		var offsets = ns.cumulativeOffset();
 		var dimensions = ($('bulk_action_form_top')) ? $('bulk_action_form_top').getDimensions() : ns.getDimensions();
-		event.preventDefault();
-		window.scrollTo(0, offsets.top - dimensions.height);
+		if (event) event.preventDefault();
+		if (move) window.scrollTo(0, offsets.top - dimensions.height);
 	}
 }
 
@@ -3874,6 +3874,13 @@ TBG.Search.initializeKeyboardNavigation = function() {
 		else if (Event.KEY_RETURN == event.keyCode) {
 			TBG.Search.moveTo(event);
 		}
+	});
+	$('search_results').select('tr').each(function(element) {
+		element.observe('click', function(event) {
+			var selected_elements = $('search_results').select('tr.selected');
+			var old_selected_element = (selected_elements.size() == 0) ? undefined : selected_elements[selected_elements.size() - 1];
+			TBG.Search.move(old_selected_element, this, null, false);
+		});
 	});
 }
 

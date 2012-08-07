@@ -32,6 +32,7 @@
 			<span class="bulk_action_subcontainer" id="bulk_action_subcontainer_set_status_<?php echo $mode; ?>" style="display: none;">
 				<select name="status" id="bulk_action_set_status_<?php echo $mode; ?>" class="focusable" onchange="TBG.Search.bulkChanger('<?php echo $mode; ?>');">
 					<?php foreach (TBGStatus::getAll() as $status_id => $status): ?>
+						<?php if (!$status->canUserSet($tbg_user)) continue; ?>
 						<option value="<?php echo $status_id; ?>"><?php echo $status->getName(); ?></option>
 					<?php endforeach; ?>
 				</select>
@@ -40,6 +41,7 @@
 				<select name="resolution" id="bulk_action_set_resolution_<?php echo $mode; ?>" class="focusable" onchange="TBG.Search.bulkChanger('<?php echo $mode; ?>');">
 					<option value="0"><?php echo __('No resolution'); ?></option>
 					<?php foreach (TBGResolution::getAll() as $resolution_id => $resolution): ?>
+						<?php if (!$resolution->canUserSet($tbg_user)) continue; ?>
 						<option value="<?php echo $resolution_id; ?>"><?php echo $resolution->getName(); ?></option>
 					<?php endforeach; ?>
 				</select>
@@ -48,6 +50,7 @@
 				<select name="priority" id="bulk_action_set_priority_<?php echo $mode; ?>" class="focusable" onchange="TBG.Search.bulkChanger('<?php echo $mode; ?>');">
 					<option value="0"><?php echo __('No priority'); ?></option>
 					<?php foreach (TBGPriority::getAll() as $priority_id => $priority): ?>
+						<?php if (!$priority->canUserSet($tbg_user)) continue; ?>
 						<option value="<?php echo $priority_id; ?>"><?php echo $priority->getName(); ?></option>
 					<?php endforeach; ?>
 				</select>
@@ -56,6 +59,7 @@
 				<select name="category" id="bulk_action_set_category_<?php echo $mode; ?>" class="focusable" onchange="TBG.Search.bulkChanger('<?php echo $mode; ?>');">
 					<option value="0"><?php echo __('No category'); ?></option>
 					<?php foreach (TBGCategory::getAll() as $category_id => $category): ?>
+						<?php if (!$category->canUserSet($tbg_user)) continue; ?>
 						<option value="<?php echo $category_id; ?>"><?php echo $category->getName(); ?></option>
 					<?php endforeach; ?>
 				</select>
@@ -64,6 +68,7 @@
 				<select name="severity" id="bulk_action_set_severity_<?php echo $mode; ?>" class="focusable" onchange="TBG.Search.bulkChanger('<?php echo $mode; ?>');">
 					<option value="0"><?php echo __('No severity'); ?></option>
 					<?php foreach (TBGSeverity::getAll() as $severity_id => $severity): ?>
+						<?php if (!$severity->canUserSet($tbg_user)) continue; ?>
 						<option value="<?php echo $severity_id; ?>"><?php echo $severity->getName(); ?></option>
 					<?php endforeach; ?>
 				</select>

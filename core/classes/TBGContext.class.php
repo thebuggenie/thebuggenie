@@ -746,13 +746,17 @@
 
 					if ($event->isProcessed())
 						self::loadUser($event->getReturnValue());
-					else
+					elseif (!self::isCLI())
 						self::loadUser();
+					else
+						self::$_user = new TBGUser();
 
 					TBGEvent::createNew('core', 'post_login', self::getUser())->trigger();
 
 					TBGLogging::log('loaded');
+					TBGLogging::log('caching permissions');
 					self::cacheAllPermissions();
+					TBGLogging::log('done (caching permissions)');
 				}
 			}
 			catch (Exception $e)
@@ -1029,7 +1033,14 @@
 		{
 			self::$_user = $user;
 		}
-		
+
+		public static function switchUserContext(TBGUser $user)
+		{
+			self::setUser($user);
+			TBGSettings::forceSettingsReload();
+			self::cacheAllPermissions();
+		}
+
 		/**
 		 * Loads and initializes all modules
 		 */
@@ -1485,7 +1496,7 @@
 		 * 
 		 * @return unknown_type
 		 */
-		public static function checkPermission($permission_type, $uid, $gid, $tid, $target_id = 0, $module_name = 'core', $explicit = false, $permissive = false)
+		public static function checkPermission($permission_type, $uid, $gid, $tid, $target_id = 0, $module_name = 'core')
 		{
 			$uid = (int) $uid;
 			$gid = (int) $gid;
@@ -1511,9 +1522,12 @@
 				if ($retval !== null) return $retval;
 			}
 
-			if ($explicit) return $retval;
-			
-			return TBGSettings::isPermissive();
+			return $retval;
+		}
+
+		public static function getLoadedPermissions()
+		{
+			return self::$_permissions;
 		}
 		
 		public static function getPermissionDetails($permission, $permissions_list = null)

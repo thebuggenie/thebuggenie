@@ -194,6 +194,11 @@
 		{
 			return self::$_logging_enabled;
 		}
+
+		public static function setCLIDebug($value = true)
+		{
+			self::$_cli_log_to_screen_in_debug_mode = $value;
+		}
 		
 	}
 	

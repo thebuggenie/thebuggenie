@@ -34,7 +34,6 @@
 		 */
 		public function runViewIssue(TBGRequest $request)
 		{
-			//TBGEvent::listen('core', 'viewissue', array($this, 'listenViewIssuePostError'));
 			TBGLogging::log('Loading issue');
 			
 			if ($issue_no = TBGContext::getRequest()->getParameter('issue_no'))
@@ -2224,21 +2223,8 @@
 						{
 							case 'issue':
 								if (!$issue instanceof TBGIssue) break;
-								$issue->attachFile($file);
+								$issue->attachFile($file, $request->getRawParameter('comment'), $request['uploader_file_description']);
 								$issue->save();
-								$comment = new TBGComment();
-								$comment->setPostedBy(TBGContext::getUser()->getID());
-								$comment->setTargetID($issue->getID());
-								$comment->setTargetType(TBGComment::TYPE_ISSUE);
-								if ($request['comment'] != '')
-								{
-									$comment->setContent(TBGContext::getI18n()->__('A file was uploaded. %link_to_file% This comment was attached: %comment%', array('%comment%' => "\n\n".$request->getRawParameter('comment'), '%link_to_file%' => "[[File:{$file->getOriginalFilename()}|thumb|{$request['uploader_file_description']}]]")));
-								}
-								else
-								{
-									$comment->setContent(TBGContext::getI18n()->__('A file was uploaded. %link_to_file%', array('%link_to_file%' => "[[File:{$file->getOriginalFilename()}|thumb|{$request['uploader_file_description']}]]")));
-								}
-								$comment->save();
 								break;
 							case 'article':
 								if (!$article instanceof TBGWikiArticle) break;

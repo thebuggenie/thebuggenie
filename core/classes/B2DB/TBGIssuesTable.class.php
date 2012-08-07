@@ -76,57 +76,6 @@
 		const MILESTONE = 'issues.milestone';
 		const VOTES_TOTAL = 'issues.votes_total';
 
-//		public function __construct()
-//		{
-//			parent::__construct(self::B2DBNAME, self::ID);
-//			parent::_addInteger(self::ISSUE_NO, 10);
-//			parent::_addVarchar(self::TITLE, 200);
-//			parent::_addInteger(self::POSTED, 10);
-//			parent::_addInteger(self::LAST_UPDATED, 10);
-//			parent::_addForeignKeyColumn(self::PROJECT_ID, TBGProjectsTable::getTable(), TBGProjectsTable::ID);
-//			parent::_addText(self::DESCRIPTION, false);
-//			parent::_addBoolean(self::STATE);
-//			parent::_addForeignKeyColumn(self::POSTED_BY, TBGUsersTable::getTable(), TBGUsersTable::ID);
-//			parent::_addInteger(self::OWNER, 10);
-//			parent::_addInteger(self::OWNER_TYPE, 2);
-//			parent::_addFloat(self::USER_PAIN, 3);
-//			parent::_addInteger(self::PAIN_BUG_TYPE, 3);
-//			parent::_addInteger(self::PAIN_EFFECT, 3);
-//			parent::_addInteger(self::PAIN_LIKELIHOOD, 3);
-//			parent::_addInteger(self::ASSIGNED_TO, 10);
-//			parent::_addText(self::REPRODUCTION_STEPS, false);
-//			parent::_addForeignKeyColumn(self::RESOLUTION, TBGListTypesTable::getTable(), TBGListTypesTable::ID);
-//			parent::_addForeignKeyColumn(self::ISSUE_TYPE, TBGIssueTypesTable::getTable(), TBGIssueTypesTable::ID);
-//			parent::_addForeignKeyColumn(self::STATUS, TBGListTypesTable::getTable(), TBGListTypesTable::ID);
-//			parent::_addForeignKeyColumn(self::PRIORITY, TBGListTypesTable::getTable(), TBGListTypesTable::ID);
-//			parent::_addForeignKeyColumn(self::CATEGORY, TBGListTypesTable::getTable(), TBGListTypesTable::ID);
-//			parent::_addForeignKeyColumn(self::SEVERITY, TBGListTypesTable::getTable(), TBGListTypesTable::ID);
-//			parent::_addForeignKeyColumn(self::REPRODUCABILITY, TBGListTypesTable::getTable(), TBGListTypesTable::ID);
-//			parent::_addVarchar(self::SCRUMCOLOR, 7, '#FFFFFF');
-//			parent::_addInteger(self::ESTIMATED_MONTHS, 10);
-//			parent::_addInteger(self::ESTIMATED_WEEKS, 10);
-//			parent::_addInteger(self::ESTIMATED_DAYS, 10);
-//			parent::_addInteger(self::ESTIMATED_HOURS, 10);
-//			parent::_addInteger(self::ESTIMATED_POINTS);
-//			parent::_addInteger(self::SPENT_MONTHS, 10);
-//			parent::_addInteger(self::SPENT_WEEKS, 10);
-//			parent::_addInteger(self::SPENT_DAYS, 10);
-//			parent::_addInteger(self::SPENT_HOURS, 10);
-//			parent::_addInteger(self::VOTES_TOTAL, 10);
-//			parent::_addInteger(self::SPENT_POINTS);
-//			parent::_addInteger(self::PERCENT_COMPLETE, 2);
-//			parent::_addInteger(self::ASSIGNED_TYPE, 2);
-//			parent::_addInteger(self::DUPLICATE_OF, 10);
-//			parent::_addBoolean(self::DELETED);
-//			parent::_addBoolean(self::BLOCKING);
-//			parent::_addBoolean(self::LOCKED);
-//			parent::_addForeignKeyColumn(self::BEING_WORKED_ON_BY_USER, TBGUsersTable::getTable(), TBGUsersTable::ID);
-//			parent::_addInteger(self::BEING_WORKED_ON_BY_USER_SINCE, 10);
-//			parent::_addForeignKeyColumn(self::MILESTONE, TBGMilestonesTable::getTable(), TBGMilestonesTable::ID);
-//			parent::_addForeignKeyColumn(self::WORKFLOW_STEP_ID, TBGWorkflowStepsTable::getTable(), TBGWorkflowStepsTable::ID);
-//			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
-//		}
-
 		protected function _setupIndexes()
 		{
 			$this->_addIndex('project', self::PROJECT_ID);
@@ -167,10 +116,9 @@
 		public function getCountsByProjectID($project_id)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::PROJECT_ID, $project_id);
 			$crit->addWhere(self::DELETED, false);
+			$crit->addWhere(self::PROJECT_ID, $project_id);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
-			$crit->addWhere(self::DELETED, 0);
 
 			$crit2 = clone $crit;
 
@@ -182,11 +130,10 @@
 		public function getCountsByProjectIDandIssuetype($project_id, $issuetype_id)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::PROJECT_ID, $project_id);
 			$crit->addWhere(self::DELETED, false);
+			$crit->addWhere(self::PROJECT_ID, $project_id);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addWhere(self::ISSUE_TYPE, $issuetype_id);
-			$crit->addWhere(self::DELETED, 0);
 			
 			$crit2 = clone $crit;
 			
@@ -198,11 +145,11 @@
 		protected function _getCountByProjectIDAndColumn($project_id, $column)
 		{
 			$crit = $this->getCriteria();
+			$crit->addWhere(self::DELETED, false);
 			$crit->addSelectionColumn(self::ID, 'column_count', Criteria::DB_COUNT);
 			$crit->addSelectionColumn($column);
 			$crit->addWhere(self::PROJECT_ID, $project_id);
 			$crit->addGroupBy($column);
-			$crit->addWhere(self::DELETED, 0);
 
 			$crit2 = clone $crit;
 
@@ -251,8 +198,8 @@
 		public function getCountsByProjectIDandMilestone($project_id, $milestone_id, $exclude_tasks = false)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::PROJECT_ID, $project_id);
 			$crit->addWhere(self::DELETED, false);
+			$crit->addWhere(self::PROJECT_ID, $project_id);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			if (!$milestone_id)
 			{
@@ -264,7 +211,6 @@
 			{
 				$crit->addWhere(self::MILESTONE, $milestone_id);
 			}
-			$crit->addWhere(self::DELETED, 0);
 			
 			$crit2 = clone $crit;
 			$crit->addWhere(self::STATE, TBGIssue::STATE_CLOSED);
@@ -275,9 +221,9 @@
 		public function getOpenAffectedIssuesByProjectID($project_id)
 		{
 			$crit = $this->getCriteria();
+			$crit->addWhere(self::DELETED, false);
 			$crit->addWhere(self::STATE, TBGIssue::STATE_OPEN);
 			$crit->addWhere(self::PROJECT_ID, $project_id);
-			$crit->addWhere(self::DELETED, 0);
 			$res = $this->doSelect($crit);
 			return $res;
 		}
@@ -320,8 +266,8 @@
 		public function getIssuesByProjectID($id)
 		{
 			$crit = new Criteria();
+			$crit->addWhere(self::DELETED, false);
 			$crit->addWhere(self::PROJECT_ID, $id);
-			$crit->addWhere(self::DELETED, 0);
 			$results = $this->doSelect($crit);
 
 			if (!is_object($results) || count($results) == 0)
@@ -343,8 +289,8 @@
 		public function getByID($id)
 		{
 			$crit = $this->getCriteria();
+			$crit->addWhere(self::DELETED, false);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
-			$crit->addWhere(self::DELETED, 0);
 			$row = $this->doSelectById($id, $crit, false);
 			return $row;
 		}
@@ -352,8 +298,8 @@
 		public function getCountByProjectID($project_id)
 		{
 			$crit = $this->getCriteria();
+			$crit->addWhere(self::DELETED, false);
 			$crit->addWhere(self::PROJECT_ID, $project_id);
-			$crit->addWhere(self::DELETED, 0);
 			$res = $this->doCount($crit);
 			return $res;
 		}
@@ -361,8 +307,8 @@
 		public function getNextIssueNumberForProductID($p_id)
 		{
 			$crit = $this->getCriteria();
+			$crit->addWhere(self::DELETED, false);
 			$crit->addWhere(self::PROJECT_ID, $p_id);
-			$crit->addWhere(self::DELETED, 0);
 			$crit->addSelectionColumn(self::ISSUE_NO, 'issueno', Criteria::DB_MAX, '', '+1');
 			$row = $this->doSelectOne($crit, 'none');
 			$issue_no = $row->get('issueno');
@@ -372,22 +318,20 @@
 		public function getByPrefixAndIssueNo($prefix, $issue_no)
 		{
 			$crit = $this->getCriteria();
+			$crit->addWhere(self::DELETED, false);
 			$crit->addWhere(TBGProjectsTable::PREFIX, mb_strtolower($prefix), Criteria::DB_EQUALS, '', '', Criteria::DB_LOWER);
 			$crit->addWhere(TBGProjectsTable::DELETED, false);
 			$crit->addWhere(self::ISSUE_NO, $issue_no);
-			$crit->addWhere(self::DELETED, 0);
-			$row = $this->doSelectOne($crit);
-			return $row;
+			return $this->selectOne($crit);
 		}
 
 		public function getByProjectIDAndIssueNo($project_id, $issue_no)
 		{
 			$crit = $this->getCriteria();
+			$crit->addWhere(self::DELETED, false);
 			$crit->addWhere(self::PROJECT_ID, $project_id);
 			$crit->addWhere(self::ISSUE_NO, $issue_no);
-			$crit->addWhere(self::DELETED, 0);
 			return $this->selectOne($crit);
-//			return $row;
 		}
 
 		public function setDuplicate($issue_id, $duplicate_of)
@@ -400,6 +344,7 @@
 		public function getByMilestone($milestone_id, $project_id)
 		{
 			$crit = $this->getCriteria();
+			$crit->addWhere(self::DELETED, false);
 			if (!$milestone_id)
 			{
 				$ctn = $crit->returnCriterion(self::MILESTONE, null);
@@ -411,14 +356,13 @@
 			{
 				$crit->addWhere(self::MILESTONE, $milestone_id);
 			}
-			$crit->addWhere(self::DELETED, 0);
-			$res = $this->doSelect($crit);
-			return $res;
+			return $this->select($crit);
 		}
 		
 		public function getPointsAndTimeByMilestone($milestone_id)
 		{
 			$crit = $this->getCriteria();
+			$crit->addWhere(self::DELETED, false);
 			if (!$milestone_id)
 			{
 				$crit->addWhere(self::MILESTONE, null);
@@ -427,7 +371,6 @@
 			{
 				$crit->addWhere(self::MILESTONE, $milestone_id);
 			}
-			$crit->addWhere(self::DELETED, 0);
 			$crit->addSelectionColumn(self::ESTIMATED_POINTS, 'estimated_points');
 			$crit->addSelectionColumn(self::ESTIMATED_HOURS, 'estimated_hours');
 			$crit->addSelectionColumn(self::ESTIMATED_DAYS, 'estimated_days');
@@ -445,9 +388,9 @@
 		public function getByProjectIDandNoMilestone($project_id)
 		{
 			$crit = $this->getCriteria();
+			$crit->addWhere(self::DELETED, false);
 			$crit->addWhere(self::MILESTONE, null);
 			$crit->addWhere(self::PROJECT_ID, $project_id);
-			$crit->addWhere(self::DELETED, false);
 			$res = $this->doSelect($crit);
 			return $res;
 		}
@@ -455,10 +398,10 @@
 		public function getByProjectIDandNoMilestoneandTypes($project_id, $issuetypes)
 		{
 			$crit = $this->getCriteria();
+			$crit->addWhere(self::DELETED, false);
 			$crit->addWhere(self::MILESTONE, null);
 			$crit->addWhere(self::ISSUE_TYPE, $issuetypes, Criteria::DB_IN);
 			$crit->addWhere(self::PROJECT_ID, $project_id);
-			$crit->addWhere(self::DELETED, false);
 			$res = $this->doSelect($crit);
 			return $res;
 		}
@@ -466,10 +409,10 @@
 		public function getByProjectIDandNoMilestoneandTypesandState($project_id, $issuetypes, $state)
 		{
 			$crit = $this->getCriteria();
+			$crit->addWhere(self::DELETED, false);
 			$crit->addWhere(self::MILESTONE, null);
 			$crit->addWhere(self::ISSUE_TYPE, $issuetypes, Criteria::DB_IN);
 			$crit->addWhere(self::PROJECT_ID, $project_id);
-			$crit->addWhere(self::DELETED, false);
 			$crit->addWhere(self::STATE, $state);
 			$res = $this->doSelect($crit);
 			return $res;
@@ -486,9 +429,9 @@
 		public function getOpenIssuesByTeamAssigned($team_id)
 		{
 			$crit = $this->getCriteria();
+			$crit->addWhere(self::DELETED, false);
 			$crit->addWhere(self::ASSIGNED_TEAM, $team_id);
 			$crit->addWhere(self::STATE, TBGIssue::STATE_OPEN);
-			$crit->addWhere(self::DELETED, 0);
 			
 			$res = $this->doSelect($crit);
 			
@@ -498,9 +441,9 @@
 		public function getOpenIssuesByUserAssigned($user_id)
 		{
 			$crit = $this->getCriteria();
+			$crit->addWhere(self::DELETED, false);
 			$crit->addWhere(self::ASSIGNEE_USER, $user_id);
 			$crit->addWhere(self::STATE, TBGIssue::STATE_OPEN);
-			$crit->addWhere(self::DELETED, 0);
 			
 			$res = $this->doSelect($crit);
 			
@@ -510,10 +453,10 @@
 		public function getOpenIssuesByProjectIDAndIssueTypes($project_id, $issuetypes, $order_by=null)
 		{
 			$crit = $this->getCriteria();
+			$crit->addWhere(self::DELETED, false);
 			$crit->addWhere(self::PROJECT_ID, $project_id);
 			$crit->addWhere(self::ISSUE_TYPE, $issuetypes, Criteria::DB_IN);
 			$crit->addWhere(self::STATE, TBGIssue::STATE_OPEN);
-			$crit->addWhere(self::DELETED, 0);
 			
 			if ($order_by != null)
 			{
@@ -528,6 +471,7 @@
 		public function getRecentByProjectIDandIssueType($project_id, $issuetype, $limit = 10)
 		{
 			$crit = $this->getCriteria();
+			$crit->addWhere(self::DELETED, false);
 			$crit->addWhere(self::PROJECT_ID, $project_id);
 			$crit->addWhere(self::ISSUE_TYPE, $issuetype);
 			$crit->addOrderBy(self::POSTED, Criteria::SORT_DESC);
@@ -542,6 +486,7 @@
 		public function getTotalPointsByMilestoneID($milestone_id)
 		{
 			$crit = $this->getCriteria();
+			$crit->addWhere(self::DELETED, false);
 			$crit->addSelectionColumn(self::ESTIMATED_POINTS, 'estimated_points', Criteria::DB_SUM);
 			$crit->addSelectionColumn(self::SPENT_POINTS, 'spent_points', Criteria::DB_SUM);
 			if (!$milestone_id)
@@ -565,6 +510,7 @@
 		public function getTotalHoursByMilestoneID($milestone_id)
 		{
 			$crit = $this->getCriteria();
+			$crit->addWhere(self::DELETED, false);
 			$crit->addSelectionColumn(self::ESTIMATED_HOURS, 'estimated_hours', Criteria::DB_SUM);
 			$crit->addSelectionColumn(self::SPENT_HOURS, 'spent_hours', Criteria::DB_SUM);
 			if (!$milestone_id)
@@ -605,7 +551,6 @@
 				$crit->addJoin(TBGIssueAffectsComponentTable::getTable(), TBGIssueAffectsComponentTable::ISSUE, self::ID);
 				$crit->addJoin(TBGIssueAffectsEditionTable::getTable(), TBGIssueAffectsEditionTable::ISSUE, self::ID);
 				$crit->addJoin(TBGIssueAffectsBuildTable::getTable(), TBGIssueAffectsBuildTable::ISSUE, self::ID);
-//				$crit->addJoin(TBGMilestonesTable::getTable(), TBGMilestonesTable::ID, self::MILESTONE);
 
 				foreach ($filters as $filter => $filter_info)
 				{
@@ -858,6 +803,7 @@
 		public function getDuplicateIssuesByIssueNo($issue_no)
 		{
 			$crit = $this->getCriteria();
+			$crit->addWhere(self::DELETED, false);
 			$crit->addSelectionColumn(self::ID);
 			$crit->addWhere(self::DUPLICATE_OF, $issue_no);
 			
@@ -869,7 +815,7 @@
 			$crit = $this->getCriteria();
 			$crit->addUpdate(self::VOTES_TOTAL, $votes_total);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
-			$res = $this->doUpdateById($crit, $issue_id);
+			$this->doUpdateById($crit, $issue_id);
 		}
 
 		/**
@@ -884,9 +830,9 @@
 		public function getIssuesPostedByUser($user_id, $limit=null, $sort=Criteria::SORT_DESC)
 		{
 			$crit = $this->getCriteria();
+			$crit->addWhere(self::DELETED, false);
 			$crit->addJoin(TBGProjectsTable::getTable(), TBGProjectsTable::ID, self::PROJECT_ID);
 			$crit->addWhere(self::POSTED_BY, $user_id);
-			$crit->addWhere(self::DELETED, 0);
 			$crit->addOrderBy(self::POSTED, $sort);
 			if ($limit !== null)
 			{

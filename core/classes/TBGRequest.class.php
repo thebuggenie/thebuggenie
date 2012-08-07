@@ -121,6 +121,7 @@
 							if (is_uploaded_file($thefile['tmp_name']))
 							{
 								TBGLogging::log('Uploaded file is uploaded');
+
 								$new_filename = TBGContext::getUser()->getID() . '_' . NOW . '_' . basename($thefile['name']);
 								if (TBGSettings::getUploadStorage() == 'files')
 								{
@@ -146,6 +147,7 @@
 									$file->setOriginalFilename(basename($thefile['name']));
 									$file->setContentType($content_type);
 									$file->setDescription($this->getParameter($key.'_description'));
+									$file->setUploadedBy(TBGContext::getUser());
 									if (TBGSettings::getUploadStorage() == 'database')
 									{
 										$file->setContent(file_get_contents($filename));
