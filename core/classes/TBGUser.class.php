@@ -1792,12 +1792,19 @@
 		 * 
 		 * @return boolean
 		 */
-		public function hasPermission($permission_type, $target_id = 0, $module_name = 'core', $explicit = true, $permissive = false)
+		public function hasPermission($permission_type, $target_id = 0, $module_name = 'core')
 		{
 			TBGLogging::log('Checking permission '.$permission_type);
 			$group_id = (int) $this->getGroupID();
-			$retval = TBGContext::checkPermission($permission_type, $this->getID(), $group_id, $this->getTeams(), $target_id, $module_name, $explicit, $permissive);
-			TBGLogging::log('...done (Checking permissions '.$permission_type.') - return was '.(($retval) ? 'true' : 'false'));
+			$retval = TBGContext::checkPermission($permission_type, $this->getID(), $group_id, $this->getTeams(), $target_id, $module_name);
+			if ($retval !== null)
+			{
+				TBGLogging::log('...done (Checking permissions '.$permission_type.', target id '.$target_id.') - return was '.(($retval) ? 'true' : 'false'));
+			}
+			else
+			{
+				TBGLogging::log('...done (Checking permissions '.$permission_type.', target id '.$target_id.') - return was null');
+			}
 			
 			return $retval;
 		}
@@ -1902,16 +1909,13 @@
 			if ($project_id !== null)
 			{
 				if (is_numeric($project_id)) $project_id = TBGContext::factory()->TBGProject($project_id);
+				if ($project_id->isArchived()) return false;
 			
-				if ($project_id->isArchived()): return false; endif;
-				
 				$project_id = ($project_id instanceof TBGProject) ? $project_id->getID() : $project_id;
-				$retval = $this->hasPermission('cancreateissues', $project_id, 'core', true, null);
-				$retval = ($retval !== null) ? $retval : $this->hasPermission('cancreateandeditissues', $project_id, 'core', true, null);
+				$retval = $this->_dualPermissionsCheck('cancreateissues', $project_id, 'cancreateandeditissues', $project_id, null);
 			}
-			$retval = ($retval !== null) ? $retval : $this->hasPermission('cancreateissues', 0, 'core', true, null);
-			$retval = ($retval !== null) ? $retval : $this->hasPermission('cancreateandeditissues', 0, 'core', true, null);
-			
+			$retval = ($retval !== null) ? $retval : $this->_dualPermissionsCheck('cancreateissues', 0, 'cancreateandeditissues', 0, null);
+
 			return ($retval !== null) ? $retval : TBGSettings::isPermissive();
 		}
 
