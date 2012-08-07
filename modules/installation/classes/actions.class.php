@@ -733,38 +733,40 @@
 				$crit->addWhere(TBGMilestonesTable::SCOPE, $scope->getID());
 				
 				$res = $table->doSelect($crit);
-				
-				while ($row = $res->getNextRow())
+				if ($res)
 				{
-					$offset = $offsets['system'];
-	
-					$crit2 = $table->getCriteria();
-					
-					$added = 0;
-					
-					if ($row->get(TBGMilestonesTable::REACHED) > 0)
+					while ($row = $res->getNextRow())
 					{
-						$crit2->addUpdate(TBGMilestonesTable::REACHED, (int) $row->get(TBGMilestonesTable::REACHED) + $offset);
-						$added = 1;
-					}
+						$offset = $offsets['system'];
 
-					if ($row->get(TBGMilestonesTable::SCHEDULED) > 0)
-					{
-						$crit2->addUpdate(TBGMilestonesTable::SCHEDULED, (int) $row->get(TBGMilestonesTable::SCHEDULED) + $offset);
-						$added = 1;
-					}
-					
-					if ($row->get(TBGMilestonesTable::STARTING) > 0)
-					{
-						$crit2->addUpdate(TBGMilestonesTable::STARTING, (int) $row->get(TBGMilestonesTable::STARTING) + $offset);
-						$added = 1;
-					}
-					
-					// Only do something if at least one call to addUpdate is done
-					if ($added == 1)
-					{
-						$crit2->addWhere(TBGMilestonesTable::ID, $row->get(TBGMilestonesTable::ID));
-						$table->doUpdate($crit2);
+						$crit2 = $table->getCriteria();
+
+						$added = 0;
+
+						if ($row->get(TBGMilestonesTable::REACHED) > 0)
+						{
+							$crit2->addUpdate(TBGMilestonesTable::REACHED, (int) $row->get(TBGMilestonesTable::REACHED) + $offset);
+							$added = 1;
+						}
+
+						if ($row->get(TBGMilestonesTable::SCHEDULED) > 0)
+						{
+							$crit2->addUpdate(TBGMilestonesTable::SCHEDULED, (int) $row->get(TBGMilestonesTable::SCHEDULED) + $offset);
+							$added = 1;
+						}
+
+						if ($row->get(TBGMilestonesTable::STARTING) > 0)
+						{
+							$crit2->addUpdate(TBGMilestonesTable::STARTING, (int) $row->get(TBGMilestonesTable::STARTING) + $offset);
+							$added = 1;
+						}
+
+						// Only do something if at least one call to addUpdate is done
+						if ($added == 1)
+						{
+							$crit2->addWhere(TBGMilestonesTable::ID, $row->get(TBGMilestonesTable::ID));
+							$table->doUpdate($crit2);
+						}
 					}
 				}
 				
