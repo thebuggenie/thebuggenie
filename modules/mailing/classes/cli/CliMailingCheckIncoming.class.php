@@ -32,22 +32,33 @@
 		{
 			$this->cliEcho("Checking for emails ... \n", 'white', 'bold');
 			$limit = $this->getProvidedArgument('limit', 25);
+			$accounts = $this->getModule()->getIncomingEmailAccounts();
 
-			foreach ($this->getModule()->getIncomingEmailAccounts() as $account)
+			if (count($accounts))
 			{
-				$account->connect();
-				$unread_count = $account->getUnreadCount();
-				$this->cliEcho("Processing " . $account->getName() . " ({$unread_count} unprocessed)\n");
-				if ($unread_count > 0)
+				$this->cliEcho("\n");
+				foreach ($accounts as $account)
 				{
-					$this->cliEcho("Will process up to {$limit} emails from this account\n");
-					$this->getModule()->processIncomingEmailAccount($account, $limit);
+					$account->connect();
+					$unread_count = $account->getUnreadCount();
+					$this->cliEcho("[".$account->getProject()->getKey()." (" . $account->getName() . ")] Processing ({$unread_count} unprocessed)\n");
+					if ($unread_count > 0)
+					{
+						$this->cliEcho("[".$account->getProject()->getKey()." (" . $account->getName() . ")] Will process up to {$limit} emails from this account\n");
+						$this->getModule()->processIncomingEmailAccount($account, $limit);
+						$this->cliEcho("[".$account->getProject()->getKey()." (" . $account->getName() . ")] Processed ".$account->getNumberOfEmailsLastFetched()." emails\n");
+					}
+					else
+					{
+						$this->cliEcho("[".$account->getProject()->getKey()." (" . $account->getName() . ")] Nothing to do for this account\n");
+					}
+					$account->disconnect();
+					$this->cliEcho("\n");
 				}
-				else
-				{
-					$this->cliEcho("Nothing to do for this account\n");
-				}
-				$account->disconnect();
+			}
+			else
+			{
+				$this->cliEcho("No incoming email accounts configured!\n");
 			}
 			$this->cliEcho("Done!\n");
 		}
