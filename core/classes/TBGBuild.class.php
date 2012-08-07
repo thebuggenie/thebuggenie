@@ -143,12 +143,12 @@
 		 */
 		public function getEdition()
 		{
-			return $this->_edition;
+			return $this->_b2dbLazyload('_edition');
 		}
 		
 		public function getEditionID()
 		{
-			return ($this->getEdition() instanceof TBGEdition) ? $this->getEdition()->getID() : 0;
+			return ($this->_edition instanceof TBGEdition) ? $this->_edition->getID() : (int) $this->_edition;
 		}
 
 		public function setEdition(TBGEdition $edition)
