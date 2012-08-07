@@ -275,13 +275,12 @@
 			if ($this->_issues == null)
 			{
 				$this->_issues = array();
-				if ($res = TBGIssuesTable::getTable()->getByMilestone($this->getID(), $this->getProject()->getID()))
+				if ($issues = TBGIssuesTable::getTable()->getByMilestone($this->getID(), $this->getProject()->getID()))
 				{
-					while ($row = $res->getNextRow())
+					foreach ($issues as $issue)
 					{
-						$theIssue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID));
-						$this->_issues[$theIssue->getID()] = $theIssue;
-						if ($theIssue->getState() == TBGIssue::STATE_CLOSED)
+						$this->_issues[$issue->getID()] = $issue;
+						if ($issue->isClosed())
 						{
 							$this->_closed_issues++;
 						}

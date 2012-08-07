@@ -134,12 +134,9 @@
 		public function canUserSet(TBGUser $user)
 		{
 			$retval = $user->hasPermission($this->getPermissionsKey(), $this->getID(), 'core', true);
-			if ($retval === null)
-			{
-				$retval = $user->hasPermission($this->getPermissionsKey(), 0, 'core', true);
-			}
+			$retval = ($retval === null) ? $user->hasPermission($this->getPermissionsKey(), 0, 'core', true) : $retval;
 
-			return (bool) $retval;
+			return ($retval !== null) ? $retval : TBGSettings::isPermissive();
 		}
 
 		public function setOrder($order)

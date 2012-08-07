@@ -30,9 +30,9 @@
 								<?php echo __('Please log in to bookmark issues'); ?>
 							</div>
 						<?php elseif (($issue->isOwned() && $issue->getOwner() instanceof TBGUser && $issue->getOwner()->getID() == $tbg_user->getID()) || ($issue->isAssigned() && $issue->getAssignee() instanceof TBGUser && $issue->getAssignee()->getID() == $tbg_user->getID()) ||($issue->getPostedBy() instanceof TBGUser && $issue->getPostedBy()->getID() == $tbg_user->getID())): ?>
-							<?php echo image_tag('star.png', array('id' => 'issue_favourite_faded_'.$issue->getId(), 'title' => __('Please log in to bookmark issues'))); ?>
+							<?php echo image_tag('star.png', array('id' => 'issue_favourite_faded_'.$issue->getId())); ?>
 							<div class="tooltip from-above leftie">
-								<?php echo __('You will be notified whenever this issue updates or changes'); ?>
+								<?php echo __('You are involved with this issue and may be notified whenever it is updated or changed'); ?>
 							</div>
 						<?php else: ?>
 							<div class="tooltip from-above leftie">

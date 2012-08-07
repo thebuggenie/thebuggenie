@@ -615,9 +615,6 @@
 					if (!$project instanceof TBGProject) return null;
 					if ($project->usePrefix()) return null;
 					$theIssue = TBGIssuesTable::getTable()->getByProjectIDAndIssueNo($project->getID(), (integer) $issue_no);
-//					{
-//						$theIssue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
-//					}
 				}
 				catch (Exception $e)
 				{
@@ -628,13 +625,9 @@
 			{
 				$issue_no = explode('-', mb_strtoupper($issue_no));
 				TBGLogging::log('exploding');
-				if (count($issue_no) == 2 && $row = TBGIssuesTable::getTable()->getByPrefixAndIssueNo($issue_no[0], $issue_no[1]))
+				if (count($issue_no) == 2 && ($theIssue = TBGIssuesTable::getTable()->getByPrefixAndIssueNo($issue_no[0], $issue_no[1])) instanceof TBGIssue)
 				{
-					$theIssue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
-					if (!$theIssue->getProject()->usePrefix())
-					{
-						return null;
-					}
+					if (!$theIssue->getProject()->usePrefix()) return null;
 				}
 				TBGLogging::log('exploding done');
 			}
@@ -685,18 +678,10 @@
 		{
 			$this->_initializeCustomfields();
 			$this->_mergeChangedProperties();
-			if($this->isDeleted())
-			{
-				throw new Exception(TBGContext::geti18n()->__('This issue has been deleted'));
-			}
-		}
-		
-		/**
-		 * @deprecated
-		 */
-		public function __toString()
-		{
-			throw new Exception("Don't print the issue, use getFormattedTitle() instead.");
+//			if ($this->isDeleted())
+//			{
+//				throw new Exception(TBGContext::geti18n()->__('This issue has been deleted'));
+//			}
 		}
 		
 		/**
@@ -1770,9 +1755,22 @@
 		 * 
 		 * @param TBGFile $file The file to attach
 		 */
-		public function attachFile(TBGFile $file)
+		public function attachFile(TBGFile $file, $file_comment = '', $description = '')
 		{
 			TBGIssueFilesTable::getTable()->addByIssueIDandFileID($this->getID(), $file->getID());
+			$comment = new TBGComment();
+			$comment->setPostedBy(TBGContext::getUser()->getID());
+			$comment->setTargetID($this->getID());
+			$comment->setTargetType(TBGComment::TYPE_ISSUE);
+			if ($file_comment)
+			{
+				$comment->setContent(TBGContext::getI18n()->__('A file was uploaded. %link_to_file% This comment was attached: %comment%', array('%comment%' => "\n\n".$file_comment, '%link_to_file%' => "[[File:{$file->getOriginalFilename()}|thumb|{$description}]]")));
+			}
+			else
+			{
+				$comment->setContent(TBGContext::getI18n()->__('A file was uploaded. %link_to_file%', array('%link_to_file%' => "[[File:{$file->getOriginalFilename()}|thumb|{$description}]]")));
+			}
+			$comment->save();
 			if ($this->_files !== null)
 			{
 				$this->_files[$file->getID()] = $file;
