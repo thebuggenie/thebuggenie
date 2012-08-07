@@ -77,6 +77,7 @@
 		
 		public static function getAll()
 		{
+			return TBGIncomingEmailAccountTable::getTable()->getAll();
 			$accounts = array();
 			if ($res = TBGIncomingEmailAccountTable::getTable()->doSelectAll())
 			{
@@ -310,15 +311,13 @@
 		 * Returns the primary body and the mime type
 		 * 
 		 * @param stdObject $email
-		 * @return array An array($type, $body)
+		 * @return TBGIncomingEmailMessage the message
 		 */
-		public function getEmailDetails($email)
+		public function getMessage($email)
 		{
-			$structure = imap_fetchstructure($this->_connection, $email->msgno);
-			$type = TBGContext::getModule('mailing')->getMailMimeType($structure);
-
-			$data = TBGContext::getModule('mailing')->getMailPart($this->_connection, $email->msgno, $type, $structure);
-			return array($type, $data);
+			$message = new TBGIncomingEmailMessage($this->_connection, $email->msgno);
+			$message->fetch();
+			return $message;
 		}
 		
 		/**

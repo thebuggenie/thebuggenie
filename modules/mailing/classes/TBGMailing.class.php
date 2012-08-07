@@ -964,6 +964,67 @@
 			} // END OF MULTIPART
 			return false;
 		}
+
+		function getMailAttachments($structure, $connection, $message_number)
+		{
+			$attachments = array();
+			if (isset($structure->parts) && count($structure->parts))
+			{
+				for ($i = 0; $i < count($structure->parts); $i++)
+				{
+					$attachments[$i] = array(
+						'is_attachment' => false,
+						'filename' => '',
+						'name' => '',
+						'mimetype' => '',
+						'attachment' => '');
+
+					if ($structure->parts[$i]->ifdparameters)
+					{
+						foreach ($structure->parts[$i]->dparameters as $object)
+						{
+							if (strtolower($object->attribute) == 'filename')
+							{
+								$attachments[$i]['is_attachment'] = true;
+								$attachments[$i]['filename'] = $object->value;
+							}
+						}
+					}
+
+					if ($structure->parts[$i]->ifparameters)
+					{
+						foreach ($structure->parts[$i]->parameters as $object)
+						{
+							if (strtolower($object->attribute) == 'name')
+							{
+								$attachments[$i]['is_attachment'] = true;
+								$attachments[$i]['name'] = $object->value;
+							}
+						}
+					}
+
+					if ($attachments[$i]['is_attachment'])
+					{
+						$attachments[$i]['attachment'] = imap_fetchbody($connection, $message_number, $i + 1);
+						if ($structure->parts[$i]->encoding == 3)
+						{ // 3 = BASE64
+							$attachments[$i]['attachment'] = base64_decode($attachments[$i]['attachment']);
+						}
+						elseif ($structure->parts[$i]->encoding == 4)
+						{ // 4 = QUOTED-PRINTABLE
+							$attachments[$i]['attachment'] = quoted_printable_decode($attachments[$i]['attachment']);
+						}
+						$attachments[$i]['mimetype'] = $structure->parts[$i]->type."/".$structure->parts[$i]->subtype;
+					}
+					else
+					{
+						unset($attachments[$i]);
+					}
+				} // for($i = 0; $i < count($structure->parts); $i++)
+			} // if(isset($structure->parts) && count($structure->parts))
+
+			return $attachments;
+		}
 		
 		public function getIncomingEmailAccounts()
 		{
@@ -1026,13 +1087,9 @@
 			
 			return $user;
 		}
-		
+
 		public function processIncomingEmailCommand($content, TBGIssue $issue, TBGUser $user)
 		{
-			TBGContext::setUser($user);
-			TBGSettings::forceSettingsReload();
-			TBGContext::cacheAllPermissions();
-			
 			if (!$issue->isWorkflowTransitionsAvailable()) return false;
 			
 			$lines = preg_split("/(\r?\n)/", $content);
@@ -1076,48 +1133,100 @@
 			$count = 0;
 			if ($emails = $account->getUnprocessedEmails())
 			{
-				foreach ($emails as $email)
+				try
 				{
-					$user = $this->getOrCreateUserFromEmailString($email->from);
-					
-					if ($user instanceof TBGUser) 
+					$current_user = TBGContext::getUser();
+					foreach ($emails as $email)
 					{
-						list($type, $data) = $account->getEmailDetails($email);
-						if ($type != "TEXT/PLAIN") $data = strip_tags($data);
+						$user = $this->getOrCreateUserFromEmailString($email->from);
 
-						$matches = array();
-						preg_match(TBGTextParser::getIssueRegex(), mb_decode_mimeheader($email->subject), $matches);
-
-						$issue = ($matches) ? TBGIssue::getIssueFromLink($matches[0], $account->getProject()) : null;
-
-						if ($issue instanceof TBGIssue)
+						if ($user instanceof TBGUser)
 						{
-							$text = preg_replace('#(^\w.+:\n)?(^>.*(\n|$))+#mi', "", $data);
-							$text = trim($text);
-							if (!$this->processIncomingEmailCommand($text, $issue, $user) && $user->canPostComments())
+							if (TBGContext::getUser()->getID() != $user->getID()) TBGContext::switchUserContext($user);
+
+							$message = $account->getMessage($email);
+							$data = ($message->getBodyPlain()) ? $message->getBodyPlain() : strip_tags($message->getBodyHTML());
+
+							$matches = array();
+							preg_match(TBGTextParser::getIssueRegex(), mb_decode_mimeheader($email->subject), $matches);
+
+							$issue = ($matches) ? TBGIssue::getIssueFromLink($matches[0], $account->getProject()) : null;
+
+							if ($issue instanceof TBGIssue)
 							{
-								$comment = new TBGComment();
-								$comment->setContent($text);
-								$comment->setPostedBy($user);
-								$comment->setTargetID($issue->getID());
-								$comment->setTargetType(TBGComment::TYPE_ISSUE);
-								$comment->save();
+								$text = preg_replace('#(^\w.+:\n)?(^>.*(\n|$))+#mi', "", $data);
+								$text = trim($text);
+								if (!$this->processIncomingEmailCommand($text, $issue, $user) && $user->canPostComments())
+								{
+									$comment = new TBGComment();
+									$comment->setContent($text);
+									$comment->setPostedBy($user);
+									$comment->setTargetID($issue->getID());
+									$comment->setTargetType(TBGComment::TYPE_ISSUE);
+									$comment->save();
+								}
 							}
-						}
-						elseif ($user->canReportIssues($account->getProject()->getID()))
-						{
-							$issue = new TBGIssue();
-							$issue->setProject($account->getProject());
-							$issue->setTitle(mb_decode_mimeheader($email->subject));
-							$issue->setDescription($data);
-							$issue->setPostedBy($user);
-							$issue->setIssuetype($account->getIssuetype());
-							$issue->save();
-						}
+							else
+							{
+								if ($user->canReportIssues($account->getProject()))
+								{
+									$issue = new TBGIssue();
+									$issue->setProject($account->getProject());
+									$issue->setTitle(mb_decode_mimeheader($email->subject));
+									$issue->setDescription($data);
+									$issue->setPostedBy($user);
+									$issue->setIssuetype($account->getIssuetype());
+									$issue->save();
+								}
+							}
 
-						$count++;
+							if ($issue instanceof TBGIssue && $message->hasAttachments())
+							{
+								foreach ($message->getAttachments() as $attachment_no => $attachment)
+								{
+									echo 'saving attachment '.$attachment_no;
+									$name = $attachment['filename'];
+									$new_filename = TBGContext::getUser()->getID() . '_' . NOW . '_' . basename($name);
+									if (TBGSettings::getUploadStorage() == 'files')
+									{
+										$files_dir = TBGSettings::getUploadsLocalpath();
+										$filename = $files_dir.$new_filename;
+									}
+									else
+									{
+										$filename = $name;
+									}
+									TBGLogging::log('Creating issue attachment '.$filename.' from attachment '.$attachment_no);
+									echo 'Creating issue attachment '.$filename.' from attachment '.$attachment_no;
+									$content_type = $attachment['type'].'/'.$attachment['subtype'];
+									$file = new TBGFile();
+									$file->setRealFilename($new_filename);
+									$file->setOriginalFilename(basename($name));
+									$file->setContentType($content_type);
+									$file->setDescription($name);
+									$file->setUploadedBy(TBGContext::getUser());
+									if (TBGSettings::getUploadStorage() == 'database')
+									{
+										$file->setContent($attachment['data']);
+									}
+									else
+									{
+										TBGLogging::log('Saving file '.$new_filename.' with content from attachment '.$attachment_no);
+										file_put_contents($new_filename, $attachment['data']);
+									}
+									$file->save();
+									$issue->attachFile($file);
+								}
+							}
+
+							$count++;
+						}
 					}
 				}
+				catch (Exception $e)
+				{
+				}
+				if (TBGContext::getUser()->getID() != $current_user->getID()) TBGContext::switchUserContext($current_user);
 			}
 			$account->setTimeLastFetched(time());
 			$account->setNumberOfEmailsLastFetched($count);
