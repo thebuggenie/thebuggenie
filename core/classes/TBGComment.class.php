@@ -210,13 +210,9 @@
 		 */
 		protected function _permissionCheck($key, $exclusive = false)
 		{
-			$retval = null;
-			if ($this->getPostedByID() == TBGContext::getUser()->getID() && !$exclusive)
-			{
-				$retval = $this->_permissionCheckWithID($key.'own');
-			}
+			$retval = ($this->getPostedByID() == TBGContext::getUser()->getID() && !$exclusive) ? $this->_permissionCheckWithID($key.'own') : null;
 			$retval = ($retval !== null) ? $retval : $this->_permissionCheckWithID($key);
-			return ($retval !== null) ? $retval : false;
+			return ($retval !== null) ? $retval : null;
 		}
 
 		protected function _preSave($is_new)
@@ -246,6 +242,22 @@
 			}
 		}
 		
+		protected function _canPermissionOrSeeAndEditAllComments($permission)
+		{
+			$retval = $this->_permissionCheck($permission);
+			$retval = ($retval === null) ? $this->_permissionCheck('canpostseeandeditallcomments', true) : $retval;
+
+			return $retval;
+		}
+
+		protected function _canPermissionOrSeeAndEditComments($permission)
+		{
+			$retval = $this->_permissionCheck($permission);
+			$retval = ($retval === null) ? $this->_permissionCheck('canpostandeditcomments', true) : $retval;
+
+			return $retval;
+		}
+
 		/**
 		 * Return if the user can edit this comment
 		 *
@@ -254,7 +266,10 @@
 		public function canUserEditComment()
 		{
 			if ($this->isSystemComment()) return false;
-			return ($this->_permissionCheck('caneditcomments') || $this->_permissionCheck('canpostseeandeditallcomments', true));
+			$retval = $this->_canPermissionOrSeeAndEditComments('caneditcomments');
+			$retval = ($retval === null) ? $this->_canPermissionOrSeeAndEditAllComments('caneditcomments') : $retval;
+
+			return ($retval !== null) ? $retval : TBGSettings::isPermissive();
 		}
 
 		/**
@@ -264,7 +279,10 @@
 		 */
 		public function canUserDeleteComment()
 		{
-			return (bool) ($this->getPostedByID() == TBGContext::getUser()->getID() || $this->_permissionCheck('candeletecomments') || $this->_permissionCheck('canpostseeandeditallcomments', true));
+			$retval = $this->_canPermissionOrSeeAndEditComments('candeletecomments');
+			$retval = ($retval === null) ? $this->_canPermissionOrSeeAndEditAllComments('candeletecomments') : $retval;
+
+			return ($retval !== null) ? $retval : TBGSettings::isPermissive();
 		}
 
 		public function __toString()
