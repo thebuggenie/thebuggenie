@@ -169,7 +169,7 @@
 		 * Array of issues to follow up
 		 *
 		 * @var array
-		 * @Relates(class="TBGIssue", collection=true, through="TBGUserIssuesTable")
+		 * @Relates(class="TBGIssue", collection=true, manytomany=true, joinclass="TBGUserIssuesTable")
 		 */
 		protected $_starredissues = null;
 
