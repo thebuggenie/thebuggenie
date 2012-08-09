@@ -63,6 +63,27 @@
 			
 			return $uids;
 		}
+
+		public function copyStarrers($from_issue_id, $to_issue_id)
+		{
+			$old_watchers = $this->getUserIDsByIssueID($from_issue_id);
+			$new_watchers = $this->getUserIDsByIssueID($to_issue_id);
+
+			if (count($old_watchers))
+			{
+				$crit = $this->getCriteria();
+				$crit->addInsert(self::ISSUE, $to_issue_id);
+				$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
+				foreach ($old_watchers as $uid)
+				{
+					if (!in_array($uid, $new_watchers))
+					{
+						$crit->addInsert(self::UID, $uid);
+						$this->doInsert($crit);
+					}
+				}
+			}
+		}
 		
 		public function getUserStarredIssues($user_id)
 		{
