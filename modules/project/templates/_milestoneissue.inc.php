@@ -93,7 +93,7 @@
 						<select name="category[<?php echo $issue->getID(); ?>]" id="category_selector_<?php echo $issue->getID(); ?>">
 							<option value="0"<?php if (!$issue->getCategory() instanceof TBGCategory): ?> selected<?php endif; ?>>--</option>
 							<?php foreach (TBGCategory::getAll() as $c_id => $category): ?>
-								<option value="<?php echo $c_id; ?>"<?php if ($issue->getReproducability() instanceof TBGReproducability && $issue->getCategory()->getID() == $c_id): ?> selected<?php endif; ?>><?php echo $category->getName(); ?></option>
+								<option value="<?php echo $c_id; ?>"<?php if ($issue->getCategory() instanceof TBGCategory && $issue->getCategory()->getID() == $c_id): ?> selected<?php endif; ?>><?php echo $category->getName(); ?></option>
 							<?php endforeach; ?>
 						</select>
 					</td>
