@@ -1680,13 +1680,13 @@
 
 		public function isKeyboardNavigationEnabled()
 		{
-			$val = TBGSettings::get('timezone', 'core', TBGContext::getScope(), $this->getID());
+			$val = TBGSettings::get(TBGSettings::SETTING_USER_KEYBOARD_NAVIGATION, 'core', TBGContext::getScope(), $this->getID());
 			return ($val !== null) ? $val : true;
 		}
 
 		public function setKeyboardNavigationEnabled($value = true)
 		{
-			if (!$value) TBGSettings::saveSetting(TBGSettings::SETTING_USER_KEYBOARD_NAVIGATION, $this->_timezone, 'core', null, $this->getID());
+			if (!$value) TBGSettings::saveSetting(TBGSettings::SETTING_USER_KEYBOARD_NAVIGATION, false, 'core', null, $this->getID());
 			else TBGSettings::deleteSetting(TBGSettings::SETTING_USER_KEYBOARD_NAVIGATION, 'core', null, $this->getID());
 		}
 		
