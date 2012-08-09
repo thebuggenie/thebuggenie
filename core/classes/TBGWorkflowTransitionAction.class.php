@@ -280,6 +280,9 @@
 				case self::ACTION_ASSIGN_ISSUE:
 					return (bool) TBGUser::doesIDExist($this->_target_value);
 					break;
+				case self::ACTION_SET_PERCENT:
+					return (bool) ($this->_target_value > -1);
+					break;
 				case self::ACTION_SET_MILESTONE:
 					return (bool) TBGMilestone::doesIDExist($this->_target_value);
 					break;

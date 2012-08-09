@@ -55,7 +55,7 @@
 			case TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE:
 				?>
 				<td id="workflowtransitionaction_<?php echo $action->getID(); ?>_description" style="padding: 2px;">
-					<?php if (!$action->getTargetValue() && $action->hasValidTarget()): ?>
+					<?php if ($action->hasValidTarget()): ?>
 						<?php if ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_SET_STATUS): ?>
 							<?php echo __('Set status to %status%', array('%status%' => '<span id="workflowtransitionaction_'.$action->getID().'_value" style="font-weight: bold;">' . (($action->getTargetValue()) ? TBGContext::factory()->TBGStatus((int) $action->getTargetValue())->getName() : __('Status provided by user')) . '</span>')); ?>
 						<?php elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_SET_PRIORITY): ?>
