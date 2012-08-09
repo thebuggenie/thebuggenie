@@ -142,13 +142,13 @@
 		 */
 		public function getRouteFromUrl($url)
 		{
-			TBGLogging::log('URL is ' . $url, 'routing');
+			TBGLogging::log("URL is '{$url}'", 'routing');
 			// an URL should start with a '/', mod_rewrite doesn't respect that, but no-mod_rewrite version does.
 			if (mb_strlen($url) == 0 || '/' != $url[0])
 			{
 				$url = '/'.$url;
 			}
-			TBGLogging::log('URL is now ' . $url, 'routing');
+			TBGLogging::log("URL is now '{$url}'", 'routing');
 	
 			// we remove the query string
 			if ($pos = mb_strpos($url, '?'))
@@ -160,7 +160,7 @@
 			
 			// we remove multiple /
 			$url = preg_replace('#/+#', '/', $url);
-			TBGLogging::log('URL is now ' . $url, 'routing');
+			TBGLogging::log("URL is now '{$url}'", 'routing');
 			foreach ($this->routes as $route_name => $route)
 			{
 				$out = array();
