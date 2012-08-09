@@ -1,8 +1,9 @@
 <?php if (is_array($tbg_summary)): ?>
 	<style type="text/css">
-		#log_messages, #scope_settings, #log_timing, #log_sql, #log_ajax { filter:alpha(opacity=90); -moz-opacity:0.9; -khtml-opacity: 0.9; opacity: 0.9; position: fixed; bottom: 24px; border: 1px solid #DDD; border-bottom: 0; width: 98%; margin: 5px auto; padding: 5px; background-color: #F5F5F5; height: 540px; left: 10px; color: #000; font-size: 12px; box-shadow: 0 -3px 3px -3px rgba(0, 0, 0, 0.2) inset; }
-		#log_messages div.log, #scope_settings div.log, #log_timing div.log, #log_sql div.log { height: 500px; overflow: auto; font-size: 12px; text-align: left; }
-		#scope_settings div.log table tr:hover td { background-color: #DDD; }
+		#log_messages, #scope_settings, #log_timing, #log_sql, #debug_routes, #log_ajax { filter:alpha(opacity=90); -moz-opacity:0.9; -khtml-opacity: 0.9; opacity: 0.9; position: fixed; bottom: 24px; border: 1px solid #DDD; border-bottom: 0; width: 98%; margin: 5px auto; padding: 5px; background-color: #F5F5F5; height: 540px; left: 10px; color: #000; font-size: 12px; box-shadow: 0 -3px 3px -3px rgba(0, 0, 0, 0.2) inset; }
+		#log_messages div.log, #debug_routes div.log, #scope_settings div.log, #log_timing div.log, #log_sql div.log { height: 500px; overflow: auto; font-size: 12px; text-align: left; }
+		div.log table tr:hover td { background-color: #DDD; }
+		div.log table tr.selected { background-color: rgba(200, 200, 100, 0.8); }
 	</style>
 	<div style="border-top: 1px dotted #CCC; width: 100%; padding: 3px; background-color: #F1F1F1; box-shadow: 0 -3px 3px rgba(0, 0, 0, 0.3);">
 		<table style="width: 100%; border: 0;" cellpadding="0" cellspacing="0">
@@ -11,8 +12,10 @@
 					<?php echo image_tag('action_delete.png'); ?>
 				</td>
 				<td style="width: 400px; padding: 3px; font-size: 11px;">
-					<?php echo image_tag('debug_route.png', array('style' => 'float: left; margin-right: 5px;')); ?>
-					<b>Current route: </b>[<i><?php echo $tbg_summary['routing']['name']; ?></i>] <?php echo $tbg_summary['routing']['module']; ?> / <?php echo $tbg_summary['routing']['action']; ?>
+					<span onclick="$('debug_routes').toggle();" style="cursor: pointer;">
+						<?php echo image_tag('debug_route.png', array('style' => 'float: left; margin-right: 5px;')); ?>
+						<b>Current route: </b>[<i><?php echo $tbg_summary['routing']['name']; ?></i>] <?php echo $tbg_summary['routing']['module']; ?> / <?php echo $tbg_summary['routing']['action']; ?>
+					</span>
 				</td>
 				<td style="width: 100px; cursor: pointer; padding: 3px; font-size: 11px;" onclick="$('log_timing').toggle();" title="Click to toggle timing overview">
 					<?php echo image_tag('debug_time.png', array('style' => 'float: left; margin-right: 5px;')); ?>
@@ -26,7 +29,7 @@
 					<?php echo image_tag('debug_scope.png', array('style' => 'float: left; margin-right: 5px;')); ?>
 					<b>Scope: </b><?php echo $tbg_summary['scope']['id']; ?>
 				</td>
-				<td onclick="$('log_sql').toggle();" style="width: 200px; cursor: pointer; padding: 3px; font-size: 11px;">
+				<td onclick="$('log_sql').toggle();" style="width: 200px; cursor: pointer; padding: 3px; font-size: 11px;<?php if (!\b2db\Core::isDebugMode()) echo ' color: #AAA;'; ?>">
 					<?php echo image_tag('debug_database.png', array('style' => 'float: left; margin-right: 5px;')); ?>
 					<?php if (array_key_exists('db', $tbg_summary)): ?>
 						<b><?php echo count($tbg_summary['db']['queries']); ?></b> database queries (<?php echo ($tbg_summary['db']['timing'] > 1) ? round($tbg_summary['db']['timing'], 2) . 's' : round($tbg_summary['db']['timing'] * 1000, 1) . 'ms'; ?>)
@@ -81,9 +84,31 @@
 			</ul>
 		</div>
 	</div>
+	<div id="debug_routes" style="display: none;">
+		<div style="font-size: 16px; font-weight: bold; border-bottom: 1px solid #DDD; padding: 4px;">Routes (<?php echo count($tbg_routing->getRoutes()); ?>)</div>
+		<div class="log">
+			<table style="border: 0;" cellpadding="0" cellspacing="0">
+			<?php foreach ($tbg_routing->getRoutes() as $route_name => $route): ?>
+				<?php list($route, $regexp, $names, $names_hash, $module, $action, $params, $csrf_enabled) = $route; ?>
+				<tr class="<?php if ($tbg_summary['routing']['name'] == $route_name) echo 'selected'; ?>">
+					<td style="font-size: 12px; padding: 1px 5px 1px 1px;"><b><?php echo $route_name; ?>: </b></td>
+					<td style="font-size: 12px;">
+						<b class="log_routing"><?php echo $route; ?></b>, <?php echo $module; ?>::<?php echo $action; ?>()
+						<div class="faded">
+							Auto-CSRF protection: <?php echo ($csrf_enabled) ? 'yes' : 'no'; ?>
+						</div>
+					</td>
+				</tr>
+			<?php endforeach; ?>
+			</table>
+		</div>
+	</div>
 	<div id="log_sql" style="display: none;">
 		<div style="font-size: 16px; font-weight: bold; border-bottom: 1px solid #DDD; padding: 4px;">Database calls</div>
 		<div class="log">
+			<?php if (!\b2db\Core::isDebugMode()): ?>
+				<li>Database debugging disabled</li>
+			<?php endif; ?>
 			<ol class="simple_list">
 			<?php foreach ($tbg_summary['db']['queries'] as $cc => $details): ?>
 				<li>
