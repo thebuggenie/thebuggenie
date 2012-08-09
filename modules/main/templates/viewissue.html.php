@@ -409,8 +409,8 @@
 						<div class="no_items"><?php echo __('This issue has no duplicates'); ?></div>
 					<?php endif; ?>
 					<ul>
-						<?php foreach ($data as $issue): ?>
-							<?php include_template('main/duplicateissue', array('duplicate_issue' => $issue)); ?>
+						<?php foreach ($data as $duplicate_issue): ?>
+							<?php include_template('main/duplicateissue', array('duplicate_issue' => $duplicate_issue)); ?>
 						<?php endforeach; ?>
 					</ul>
 				</div>
@@ -424,6 +424,15 @@
 		</div>
 		<?php TBGEvent::createNew('core', 'viewissue_after_tabs', $issue)->trigger(); ?>
 	</div>
+	<div id="workflow_transition_container" style="display: none;">
+		<?php if ($issue->isWorkflowTransitionsAvailable()): ?>
+			<?php foreach ($issue->getAvailableWorkflowTransitions() as $transition): ?>
+				<?php if ($transition instanceof TBGWorkflowTransition && $transition->hasTemplate()): ?>
+					<?php include_component($transition->getTemplate(), compact('issue', 'transition')); ?>
+				<?php endif; ?>
+			<?php endforeach; ?>
+		<?php endif; ?>
+	</div>
 <?php else: ?>
 	<div class="rounded_box red borderless" id="notfound_error">
 		<div class="header"><?php echo __("You have specified an issue that can't be shown"); ?></div>
@@ -431,13 +440,4 @@
 	</div>
 	<?php return; ?>
 <?php endif; ?>
-<div id="workflow_transition_container" style="display: none;">
-	<?php if ($issue->isWorkflowTransitionsAvailable()): ?>
-		<?php foreach ($issue->getAvailableWorkflowTransitions() as $transition): ?>
-			<?php if ($transition instanceof TBGWorkflowTransition && $transition->hasTemplate()): ?>
-				<?php include_component($transition->getTemplate(), compact('issue', 'transition')); ?>
-			<?php endif; ?>
-		<?php endforeach; ?>
-	<?php endif; ?>
-</div>
 <div id="workflow_transition_fullpage" class="fullpage_backdrop" style="display: none;"></div>
