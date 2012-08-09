@@ -639,7 +639,14 @@
 					self::initializeSession();
 
 				TBGCache::checkEnabled();
-				TBGLogging::log((TBGCache::isEnabled()) ? 'APC cache is enabled' : 'APC cache is not enabled');
+				if (TBGCache::isEnabled())
+				{
+					TBGLogging::log((TBGCache::getCacheType() == TBGCache::TYPE_APC) ? 'Caching enabled: APC, filesystem' : 'Caching enabled: filesystem');
+				}
+				else
+				{
+					TBGLogging::log('No caching available');
+				}
 
 				TBGLogging::log('Loading B2DB');
 				if (self::isCLI()) \b2db\Core::setHTMLException(false);
@@ -716,7 +723,7 @@
 			{
 				TBGLogging::log("Loading strings from file ({$language})");
 				self::$_i18n = new TBGI18n($language);
-				TBGCache::add(TBGCache::KEY_I18N.$language, self::$_i18n, false);
+				if (!self::isInstallmode()) TBGCache::add(TBGCache::KEY_I18N.$language, self::$_i18n, false);
 			}
 			else
 			{
@@ -805,20 +812,20 @@
 		protected static function loadPreModuleRoutes()
 		{
 			TBGLogging::log('Loading first batch of routes', 'routing');
-			if (!($routes_1 = TBGCache::get(TBGCache::KEY_PREMODULES_ROUTES_CACHE, false)))
+			if (self::isInstallmode() || !($routes_1 = TBGCache::get(TBGCache::KEY_PREMODULES_ROUTES_CACHE, false)))
 			{
-				if (!($routes_1 = TBGCache::fileGet(TBGCache::KEY_PREMODULES_ROUTES_CACHE, false)))
+				if (self::isInstallmode() || !($routes_1 = TBGCache::fileGet(TBGCache::KEY_PREMODULES_ROUTES_CACHE, false)))
 				{
 					TBGLogging::log('generating routes', 'routing');
 					require THEBUGGENIE_CORE_PATH . 'load_routes.inc.php';
-					TBGCache::fileAdd(TBGCache::KEY_PREMODULES_ROUTES_CACHE, self::getRouting()->getRoutes(), false);
+					if (!self::isInstallmode()) TBGCache::fileAdd(TBGCache::KEY_PREMODULES_ROUTES_CACHE, self::getRouting()->getRoutes(), false);
 				}
 				else
 				{
 					TBGLogging::log('using disk cached routes', 'routing');
 					self::getRouting()->setRoutes($routes_1);
 				}
-				TBGCache::add(TBGCache::KEY_PREMODULES_ROUTES_CACHE, self::getRouting()->getRoutes(), false);
+				if (!self::isInstallmode()) TBGCache::add(TBGCache::KEY_PREMODULES_ROUTES_CACHE, self::getRouting()->getRoutes(), false);
 			}
 			else
 			{
@@ -831,20 +838,20 @@
 		protected static function loadPostModuleRoutes()
 		{
 			TBGLogging::log('Loading last batch of routes', 'routing');
-			if (!($routes = TBGCache::get(TBGCache::KEY_POSTMODULES_ROUTES_CACHE, false)))
+			if (self::isInstallmode() || !($routes = TBGCache::get(TBGCache::KEY_POSTMODULES_ROUTES_CACHE, false)))
 			{
-				if (!($routes = TBGCache::fileGet(TBGCache::KEY_POSTMODULES_ROUTES_CACHE, false)))
+				if (self::isInstallmode() || !($routes = TBGCache::fileGet(TBGCache::KEY_POSTMODULES_ROUTES_CACHE, false)))
 				{
 					TBGLogging::log('generating postmodule routes', 'routing');
 					require THEBUGGENIE_CORE_PATH . 'load_routes_postmodules.inc.php';
-					TBGCache::fileAdd(TBGCache::KEY_POSTMODULES_ROUTES_CACHE, self::getRouting()->getRoutes(), false);
+					if (!self::isInstallmode()) TBGCache::fileAdd(TBGCache::KEY_POSTMODULES_ROUTES_CACHE, self::getRouting()->getRoutes(), false);
 				}
 				else
 				{
 					TBGLogging::log('using disk cached postmodule routes', 'routing');
 					self::getRouting()->setRoutes($routes);
 				}
-				TBGCache::add(TBGCache::KEY_POSTMODULES_ROUTES_CACHE, self::getRouting()->getRoutes(), false);
+				if (!self::isInstallmode()) TBGCache::add(TBGCache::KEY_POSTMODULES_ROUTES_CACHE, self::getRouting()->getRoutes(), false);
 			}
 			else
 			{
@@ -1253,14 +1260,14 @@
 			TBGLogging::log('caches permissions');
 			self::$_permissions = array();
 			
-			if ($permissions = TBGCache::get(TBGCache::KEY_PERMISSIONS_CACHE))
+			if (!self::isInstallmode() && $permissions = TBGCache::get(TBGCache::KEY_PERMISSIONS_CACHE))
 			{
 				self::$_permissions = $permissions;
 				TBGLogging::log('Using cached permissions');
 			}
 			else
 			{
-				if (!$permissions = TBGCache::fileGet(TBGCache::KEY_PERMISSIONS_CACHE))
+				if (self::isInstallmode() || !$permissions = TBGCache::fileGet(TBGCache::KEY_PERMISSIONS_CACHE))
 				{
 					TBGLogging::log('starting to cache access permissions');
 					if ($res = \b2db\Core::getTable('TBGPermissionsTable')->getAll())
@@ -1283,13 +1290,13 @@
 						}
 					}
 					TBGLogging::log('done (starting to cache access permissions)');
-					TBGCache::fileAdd(TBGCache::KEY_PERMISSIONS_CACHE, self::$_permissions);
+					if (!self::isInstallmode()) TBGCache::fileAdd(TBGCache::KEY_PERMISSIONS_CACHE, self::$_permissions);
 				}
 				else
 				{
 					self::$_permissions = $permissions;
 				}
-				TBGCache::add(TBGCache::KEY_PERMISSIONS_CACHE, self::$_permissions);
+				if (!self::isInstallmode()) TBGCache::add(TBGCache::KEY_PERMISSIONS_CACHE, self::$_permissions);
 			}
 			TBGLogging::log('...cached');
 		}
@@ -2405,7 +2412,7 @@
 			if (!$links = TBGCache::get(TBGCache::KEY_MAIN_MENU_LINKS))
 			{
 				$links = TBGLinksTable::getTable()->getMainLinks();
-				TBGCache::add(TBGCache::KEY_MAIN_MENU_LINKS, $links);
+				if (!self::isInstallmode()) TBGCache::add(TBGCache::KEY_MAIN_MENU_LINKS, $links);
 			}
 			return $links;
 		}

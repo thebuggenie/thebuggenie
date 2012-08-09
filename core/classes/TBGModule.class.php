@@ -418,7 +418,7 @@
 			{
 				$this->_addAvailablePermissions();
 				$this->_addListeners();
-				if (!TBGCache::has(TBGCache::KEY_POSTMODULES_ROUTES_CACHE))
+				if (!TBGCache::has(TBGCache::KEY_POSTMODULES_ROUTES_CACHE, false))
 				{
 					$this->_addRoutes();
 					$this->_loadRoutes();
