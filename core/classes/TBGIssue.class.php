@@ -4693,6 +4693,10 @@
 				$this->addLogEntry(TBGLogTable::LOG_ISSUE_CREATED, null, false, $this->getPosted());
 				TBGEvent::createNew('core', 'TBGIssue::createNew', $this)->trigger();
 			}
+			if ($this->getMilestone() instanceof TBGMilestone)
+			{
+				$this->getMilestone()->updateStatus();
+			}
 			
 			unset($this->related_issues_to_save, $this->comment, $this->comment_lines);
 			return true;
