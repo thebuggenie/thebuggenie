@@ -94,6 +94,7 @@
 		const SETTING_UPLOAD_STORAGE = 'upload_storage';
 		const SETTING_USER_GROUP = 'defaultgroup';
 		const SETTING_USER_TIMEZONE = 'timezone';
+		const SETTING_USER_KEYBOARD_NAVIGATION = 'keyboard_navigation';
 		const SETTING_USER_LANGUAGE = 'language';
 		const SETTING_AUTH_BACKEND = 'auth_backend';
 		const SETTING_MAINTENANCE_MODE = 'offline';

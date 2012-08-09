@@ -154,6 +154,18 @@
 							<tr>
 								<td colspan="2" style="padding: 5px; text-align: right;">&nbsp;</td>
 							</tr>
+							<tr>
+								<td style="width: 200px; padding: 5px;"><label for="profile_enable_keyboard_navigation_yes"><?php echo __('Enable keyboard navigation'); ?></label></td>
+								<td>
+									<input type="radio" name="enable_keyboard_navigation" value="1" id="profile_enable_keyboard_navigation_yes"<?php if ($tbg_user->usesGravatar()): ?> checked<?php endif; ?>>&nbsp;<label for="profile_use_gravatar_yes"><?php echo __('Yes'); ?></label>&nbsp;&nbsp;
+									<input type="radio" name="enable_keyboard_navigation" value="0" id="profile_enable_keyboard_navigation_no"<?php if (!$tbg_user->usesGravatar()): ?> checked<?php endif; ?>>&nbsp;<label for="profile_use_gravatar_no"><?php echo __('No'); ?></label>
+								</td>
+							</tr>
+							<tr>
+								<td class="config_explanation" colspan="2">
+									<?php echo __('Lets you use arrow up / down in issue lists to navigate'); ?><br>
+								</td>
+							</tr>
 						</table>
 					</div>
 					<div class="rounded_box iceblue borderless cut_top" style="margin: 0 0 5px 0; width: 895px; border-top: 0; padding: 3px; height: 26px;">

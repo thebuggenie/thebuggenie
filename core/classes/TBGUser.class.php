@@ -715,11 +715,11 @@
 			
 			if ($this->_timezone !== null)
 			{
-				TBGSettings::saveSetting('timezone', $this->_timezone, 'core', null, $this->getID());
+				TBGSettings::saveSetting(TBGSettings::SETTING_USER_TIMEZONE, $this->_timezone, 'core', null, $this->getID());
 			}
 			else
 			{
-				TBGSettings::saveSetting('timezone', 'sys', 'core', null, $this->getID());
+				TBGSettings::saveSetting(TBGSettings::SETTING_USER_TIMEZONE, 'sys', 'core', null, $this->getID());
 			}
 			
 			if ($this->_language != null)
@@ -1677,6 +1677,18 @@
 			if ($this->isGuest()) return false;
 			return (bool) $this->_use_gravatar;
 		}
+
+		public function isKeyboardNavigationEnabled()
+		{
+			$val = TBGSettings::get('timezone', 'core', TBGContext::getScope(), $this->getID());
+			return ($val !== null) ? $val : true;
+		}
+
+		public function setKeyboardNavigationEnabled($value = true)
+		{
+			if (!$value) TBGSettings::saveSetting(TBGSettings::SETTING_USER_KEYBOARD_NAVIGATION, $this->_timezone, 'core', null, $this->getID());
+			else TBGSettings::deleteSetting(TBGSettings::SETTING_USER_KEYBOARD_NAVIGATION, 'core', null, $this->getID());
+		}
 		
 		/**
 		 * Set the users email address
@@ -1874,7 +1886,7 @@
 		{
 			if ($this->_timezone == null)
 			{
-				$this->_timezone = TBGSettings::get('timezone', 'core', TBGContext::getScope(), $this->getID());
+				$this->_timezone = TBGSettings::get(TBGSettings::SETTING_USER_TIMEZONE, 'core', TBGContext::getScope(), $this->getID());
 			}
 			return $this->_timezone;
 		}

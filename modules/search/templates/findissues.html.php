@@ -64,11 +64,13 @@
 				<?php else: ?>
 					<div class="faded_out" id="no_issues"><?php echo __('No issues were found'); ?></div>
 				<?php endif; ?>
-				<script>
-					Event.observe(document, 'dom:loaded', function() {
-						TBG.Search.initializeKeyboardNavigation();
-					});
-				</script>
+				<?php if ($tbg_user->isKeyboardNavigationEnabled()): ?>
+					<script>
+						Event.observe(document, 'dom:loaded', function() {
+							TBG.Search.initializeKeyboardNavigation();
+						});
+					</script>
+				<?php endif; ?>
 			<?php endif; ?>
 		</td>
 	</tr>

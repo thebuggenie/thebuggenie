@@ -836,6 +836,7 @@
 						TBGContext::getUser()->setUsesGravatar((bool) $request['use_gravatar']);
 						TBGContext::getUser()->setTimezone($request['timezone']);
 						TBGContext::getUser()->setLanguage($request['profile_language']);
+						TBGContext::getUser()->setKeyboardNavigationEnabled($request['enable_keyboard_navigation']);
 						TBGContext::getUser()->save();
 
 						return $this->renderJSON(array('title' => TBGContext::getI18n()->__('Profile settings saved')));
