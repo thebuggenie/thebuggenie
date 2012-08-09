@@ -380,6 +380,7 @@
 			{
 				$this->error = "Couldn't remove the file " . THEBUGGENIE_PATH . "upgrade. Please remove this file manually.";
 			}
+			TBGContext::clearRoutingCache();
 		}
 
 		protected function _upgradeFrom3dot0()

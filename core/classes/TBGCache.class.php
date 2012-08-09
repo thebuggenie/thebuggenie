@@ -43,7 +43,7 @@
 		* If APC is present, it will be automatically set to APC [apc].
 		* If no opcache present, it will fall back to caching into filesystem [file]
 		*/
-		protected static $type;
+		protected static $_type;
 
 		/**
 		* container holding already loaded classes from filesystem so each cached file is loaded only once and later served from memory
@@ -61,7 +61,7 @@
 
 			$success = false;
 
-			switch (self::$type)
+			switch (self::$_type)
 			{
 				case self::TYPE_APC:
 					$key = self::getScopedKeyIfAppliccable($key, $prepend_scope);
@@ -82,7 +82,7 @@
 
 			$success = false;
 			
-			switch (self::$type)
+			switch (self::$_type)
 			{
 				case self::TYPE_APC:
 					$key = self::getScopedKeyIfAppliccable($key, $prepend_scope);
@@ -101,7 +101,7 @@
 			if (!self::isEnabled()) return false;
 
 			
-			switch (self::$type)
+			switch (self::$_type)
 			{
 				case self::TYPE_APC:
 					$key = self::getScopedKeyIfAppliccable($key, $prepend_scope);
@@ -119,9 +119,8 @@
 		public static function delete($key, $prepend_scope = true)
 		{
 			if (!self::isEnabled()) return false;
-
 			
-			switch (self::$type)
+			switch (self::$_type)
 			{
 				case self::TYPE_APC:
 					$key = self::getScopedKeyIfAppliccable($key, $prepend_scope);
@@ -201,8 +200,13 @@
 		public static function checkEnabled()
 		{
 			if (self::$_enabled){
-				self::$type = function_exists('apc_add') ? self::TYPE_APC : self::TYPE_FILE;
+				self::$_type = function_exists('apc_add') ? self::TYPE_APC : self::TYPE_FILE;
 			}
+		}
+
+		public static function getCacheType()
+		{
+			return self::$_type;
 		}
 
 		public static function isEnabled()
