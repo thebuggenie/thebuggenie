@@ -3836,7 +3836,17 @@ TBG.Search.move = function(old_selected_element, new_selected_element, event, mo
 		var offsets = ns.cumulativeOffset();
 		var dimensions = ($('bulk_action_form_top')) ? $('bulk_action_form_top').getDimensions() : ns.getDimensions();
 		if (event) event.preventDefault();
-		if (move) window.scrollTo(0, offsets.top - dimensions.height);
+		if (move) {
+			var top = document.viewport.getScrollOffsets().top;
+			var v_height = document.viewport.getDimensions().height;
+			var bottom = top + v_height;
+			var is_above = top > offsets.top - dimensions.height;
+			var is_below = bottom < offsets.top + dimensions.height;
+			if (is_above || is_below) {
+				if (is_above) window.scrollTo(0, offsets.top - dimensions.height);
+				if (is_below) window.scrollTo(0, offsets.top + dimensions.height - v_height);
+			}
+		}
 	}
 }
 
