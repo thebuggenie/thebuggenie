@@ -980,6 +980,10 @@
 		public function setDuplicateOf($d_id)
 		{
 			TBGIssuesTable::getTable()->setDuplicate($this->getID(), $d_id);
+			if ($d_id)
+			{
+				TBGUserIssuesTable::getTable()->copyStarrers($this->getID(), $d_id);
+			}
 			$this->_duplicate_of = $d_id;
 		}
 		
