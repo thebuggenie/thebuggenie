@@ -37,11 +37,11 @@
 				<td class="config_explanation" colspan="2"><?php echo __('Enter the name of the property containing the distinguished name of an object. On Linux systems this may be entrydn (which is the default value if this is left blank), on Active Directory it is distinguishedName.'); ?></td>
 			</tr>
 			<tr>
-				<td style="padding: 5px;"><label for="u_type"><?php echo __('User class'); ?></label></td>
-				<td><input type="text"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> name="u_type" id="u_type" value="<?php echo $module->getSetting('u_type'); ?>" style="width: 100%;"></td>
+				<td style="padding: 5px;"><label for="fr_attr"><?php echo __('Filter'); ?></label></td>
+				<td><input type="text"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> name="fr_attr" id="fr_attr" value="<?php echo $module->getSetting('fr_attr'); ?>" style="width: 100%;"></td>
 			</tr>
 			<tr>
-				<td class="config_explanation" colspan="2"><?php echo __('Enter the value to check for in objectClass for users. Leave blank to use the default of person'); ?></td>
+				<td class="config_explanation" colspan="2"><?php echo __('Enter the value to filter for users. Leave blank to use the default of (objectClass=person)'); ?></td>
 			</tr>
 			<tr>
 				<td style="padding: 5px;"><label for="u_attr"><?php echo __('Username attribute'); ?></label></td>
