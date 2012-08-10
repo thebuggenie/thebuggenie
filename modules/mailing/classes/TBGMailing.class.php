@@ -1081,7 +1081,7 @@
 				}
 				catch (Exception $e)
 				{
-					return null;
+					throw $e;
 				}
 			}
 			
@@ -1184,7 +1184,6 @@
 							{
 								foreach ($message->getAttachments() as $attachment_no => $attachment)
 								{
-									echo 'saving attachment '.$attachment_no;
 									$name = $attachment['filename'];
 									$new_filename = TBGContext::getUser()->getID() . '_' . NOW . '_' . basename($name);
 									if (TBGSettings::getUploadStorage() == 'files')
@@ -1197,7 +1196,6 @@
 										$filename = $name;
 									}
 									TBGLogging::log('Creating issue attachment '.$filename.' from attachment '.$attachment_no);
-									echo 'Creating issue attachment '.$filename.' from attachment '.$attachment_no;
 									$content_type = $attachment['type'].'/'.$attachment['subtype'];
 									$file = new TBGFile();
 									$file->setRealFilename($new_filename);
@@ -1212,7 +1210,7 @@
 									else
 									{
 										TBGLogging::log('Saving file '.$new_filename.' with content from attachment '.$attachment_no);
-										file_put_contents($new_filename, $attachment['data']);
+										file_put_contents($filename, $attachment['data']);
 									}
 									$file->save();
 									$issue->attachFile($file);
@@ -1221,10 +1219,15 @@
 
 							$count++;
 						}
+						else
+						{
+							throw new Exception("Couldn't find or create user from email: '{$email->from}");
+						}
 					}
 				}
 				catch (Exception $e)
 				{
+					throw $e;
 				}
 				if (TBGContext::getUser()->getID() != $current_user->getID()) TBGContext::switchUserContext($current_user);
 			}
