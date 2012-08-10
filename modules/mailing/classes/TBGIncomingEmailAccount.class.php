@@ -146,7 +146,7 @@
 		
 		public function setFoldername($folder)
 		{
-			$this->_Foldername = $folder;
+			$this->_folder = $folder;
 		}
 
 		public function getPort()
