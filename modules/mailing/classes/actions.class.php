@@ -108,6 +108,7 @@
 					$account->setProject($project);
 					$account->setPort((integer) $request['port']);
 					$account->setName($request['name']);
+                                        $account->setFoldername($request['folder']);
 					$account->setServer($request['servername']);
 					$account->setUsername($request['username']);
 					$account->setPassword($request['password']);
