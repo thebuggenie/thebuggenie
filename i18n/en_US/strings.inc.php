@@ -1700,6 +1700,7 @@
   $strings['Enter the name of the incoming email server'] = 'Enter the name of the incoming email server';
   $strings['Port number:'] = 'Port number:';
   $strings['Email folder name:'] = 'Folder Name:';
+  $strings['Enter folder name to read from. Leave blank for default (INBOX)'] = 'Enter folder name to read from. Leave blank for default (INBOX)';
   $strings['Email username:'] = 'Email username:';
   $strings['Email password:'] = 'Email password:';
   $strings['Account type'] = 'Account type';
