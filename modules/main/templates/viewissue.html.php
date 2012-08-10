@@ -278,10 +278,10 @@
 						</li>
 						<?php $cc++; ?>
 					<?php endforeach; ?>
-					<li class="more_actions">
-						<input class="button button-silver first last" id="more_actions_<?php echo $issue->getID(); ?>_button" type="button" value="<?php echo __('More actions'); ?>" onclick="$(this).toggleClassName('button-pressed');$('more_actions_<?php echo $issue->getID(); ?>').toggle();">
-					</li>
 				<?php endif; ?>
+				<li class="more_actions">
+					<input class="button button-silver first last" id="more_actions_<?php echo $issue->getID(); ?>_button" type="button" value="<?php echo ($issue->isWorkflowTransitionsAvailable()) ? __('More actions') : __('Actions'); ?>" onclick="$(this).toggleClassName('button-pressed');$('more_actions_<?php echo $issue->getID(); ?>').toggle();">
+				</li>
 			</ul>
 			<?php include_template('main/issuemoreactions', array('issue' => $issue, 'times' => false)); ?>
 		</div>
