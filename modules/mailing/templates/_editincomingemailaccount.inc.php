@@ -47,6 +47,10 @@
 					<td><label for="account_foldername"><?php echo __('Email folder name:'); ?></label></td>
 					<td><input type="text" name="folder" id="account_foldername" style="width: 200px;" value="<?php echo $account->getFoldername(); ?>"></td>
 				</tr>
+                                <tr>
+					<td>&nbsp;</td>
+					<td class="faded_out"><?php echo __('Enter folder name to read from. Leave blank for default (INBOX)'); ?></td>
+				</tr>
 				<tr>
 					<td><label for="account_username"><?php echo __('Email username:'); ?></label></td>
 					<td><input type="text" name="username" id="account_username" style="width: 200px;" value="<?php echo $account->getUsername(); ?>"></td>
