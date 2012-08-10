@@ -25,6 +25,11 @@
 		protected $_port;
 		
 		/**
+		 * @Column(type="string", length=200)
+		 */
+		protected $_folder;
+		
+		/**
 		 * @Column(type="integer", length=10)
 		 */
 		protected $_server_type;
@@ -132,6 +137,16 @@
 		public function setServer($server)
 		{
 			$this->_server = $server;
+		}
+		
+		public function getFoldername()
+		{
+			return $this->_folder;
+		}
+		
+		public function setFoldername($folder)
+		{
+			$this->_Foldername = $folder;
 		}
 
 		public function getPort()
@@ -246,7 +261,10 @@
 			
 			if ($this->usesSSL()) $conn_string .= "/ssl";
 			
-			$conn_string .= "}INBOX";
+			$conn_string .= "}";
+			
+			$conn_string .= ($this->getFoldername() == '') ? "INBOX" : $this->getFoldername();
+			
 			
 			return $conn_string;
 		}
@@ -258,7 +276,7 @@
 		{
 			if ($this->_connection === null)
 			{
-				$this->_connection = imap_open($this->getConnectionString(), $this->getUsername(), $this->getPassword());
+				$this->_connection = imap_open($this->getConnectionString(), $this->getUsername(), $this->getPassword());				
 			}
 			if (!is_resource($this->_connection))
 			{

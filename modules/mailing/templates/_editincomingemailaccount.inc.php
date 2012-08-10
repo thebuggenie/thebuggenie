@@ -43,6 +43,10 @@
 					<td><label for="account_port"><?php echo __('Port number:'); ?></label></td>
 					<td><input type="text" name="port" id="account_port" style="width: 50px;" value="<?php echo $account->getPort(); ?>"></td>
 				</tr>
+                <tr>
+					<td><label for="account_foldername"><?php echo __('Email folder name:'); ?></label></td>
+					<td><input type="text" name="folder" id="account_foldername" style="width: 200px;" value="<?php echo $account->getFoldername(); ?>"></td>
+				</tr>
 				<tr>
 					<td><label for="account_username"><?php echo __('Email username:'); ?></label></td>
 					<td><input type="text" name="username" id="account_username" style="width: 200px;" value="<?php echo $account->getUsername(); ?>"></td>
