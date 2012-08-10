@@ -26,10 +26,14 @@
 			{
 				return false;
 			}
-			else
+			elseif (property_exists($structure, 'parts'))
 			{
 				$this->recurse($structure->parts);
 				return true;
+			}
+			else
+			{
+				$this->recurse(array($structure));
 			}
 		}
 
@@ -39,9 +43,9 @@
 			{
 				$partNumber = $prefix . $index;
 
-				if ($part->type == 0)
+				if ($part->type != 2 && !isset($part->parts) && !$this->getFilenameFromPart($part))
 				{
-					if ($part->subtype == 'PLAIN')
+					if ($part->type == 0 && $part->subtype == 'PLAIN')
 					{
 						$this->bodyPlain .= $this->getPart($partNumber, $part->encoding);
 					}
@@ -73,7 +77,7 @@
 						$this->recurse($part->parts, $prefix);
 					}
 				}
-				elseif ($part->type > 2)
+				elseif ($part->type != 2)
 				{
 					if (isset($part->id))
 					{
