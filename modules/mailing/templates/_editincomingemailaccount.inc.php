@@ -43,11 +43,11 @@
 					<td><label for="account_port"><?php echo __('Port number:'); ?></label></td>
 					<td><input type="text" name="port" id="account_port" style="width: 50px;" value="<?php echo $account->getPort(); ?>"></td>
 				</tr>
-                <tr>
+				<tr>
 					<td><label for="account_foldername"><?php echo __('Email folder name:'); ?></label></td>
 					<td><input type="text" name="folder" id="account_foldername" style="width: 200px;" value="<?php echo $account->getFoldername(); ?>"></td>
 				</tr>
-                                <tr>
+				<tr>
 					<td>&nbsp;</td>
 					<td class="faded_out"><?php echo __('Enter folder name to read from. Leave blank for default (INBOX)'); ?></td>
 				</tr>
