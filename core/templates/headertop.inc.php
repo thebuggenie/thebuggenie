@@ -1,7 +1,7 @@
 <header>
 	<div id="logo_container">
 		<?php $link = (TBGSettings::getHeaderLink() == '') ? TBGContext::getTBGPath() : TBGSettings::getHeaderLink(); ?>
-		<a class="logo" href="<?php print $link; ?>"><?php echo image_tag(TBGSettings::getHeaderIconUrl(), array('style' => 'width: 24px; height: 24px;'), TBGSettings::isUsingCustomHeaderIcon()); ?></a>
+		<a class="logo" href="<?php print $link; ?>"><?php echo image_tag(TBGSettings::getHeaderIconUrl(), array('style' => 'max-height: 24px;'), TBGSettings::isUsingCustomHeaderIcon()); ?></a>
 		<div class="logo_name"><?php echo TBGSettings::getTBGname(); ?></div>
 	</div>
 	<?php if (!TBGSettings::isMaintenanceModeEnabled()): ?>
