@@ -19,6 +19,7 @@
 		const PASSWORD = 'mailing_incoming_email_account.password';
 		const SERVER = 'mailing_incoming_email_account.server';
 		const PORT = 'mailing_incoming_email_account.port';
+		const FOLDER = 'mailing_incoming_email_account.folder';
 		const SERVER_TYPE = 'mailing_incoming_email_account.server_type';
 		const SSL = 'mailing_incoming_email_account.ssl';
 		const KEEP_EMAIL = 'mailing_incoming_email_account.keep_email';
