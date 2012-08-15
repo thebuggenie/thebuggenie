@@ -52,6 +52,17 @@
 					<td class="faded_out"><?php echo __('Enter folder name to read from. Leave blank for default (INBOX)'); ?></td>
 				</tr>
 				<tr>
+					<td><label for="keepemail"><?php echo __('Keep email:'); ?></label></td>
+					<td>
+					    <input type="radio" name="keepemail" id="account_keepemail_yes" value="1"<?php if ($account->doesKeepEmails()) echo ' checked'; ?>><label for="account_keepemail_yes" style="font-weight: normal;"><?php echo __('Yes'); ?></label>
+					    <input type="radio" name="keepemail" id="account_keepemail_no" value="0"<?php if (!$account->doesKeepEmails()) echo ' checked'; ?>><label for="account_keepemail_no" style="font-weight: normal;"><?php echo __('No'); ?></label>
+					</td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td class="faded_out"><?php echo __('Select whether emails should be kept or removed from the account after being downloaded'); ?></td>
+				</tr>
+				<tr>
 					<td><label for="account_username"><?php echo __('Email username:'); ?></label></td>
 					<td><input type="text" name="username" id="account_username" style="width: 200px;" value="<?php echo $account->getUsername(); ?>"></td>
 				</tr>
