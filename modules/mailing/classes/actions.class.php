@@ -109,6 +109,7 @@
 					$account->setPort((integer) $request['port']);
 					$account->setName($request['name']);
 					$account->setFoldername($request['folder']);
+					$account->setKeepEmails($request['keepemail']);
 					$account->setServer($request['servername']);
 					$account->setUsername($request['username']);
 					$account->setPassword($request['password']);

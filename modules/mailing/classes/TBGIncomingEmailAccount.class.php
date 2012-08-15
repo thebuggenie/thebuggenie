@@ -287,10 +287,14 @@
 		}
 		
 		/**
-		 * Disconnects this account from the imap resource
+		 * Disconnects this account from the imap resource		 * 
 		 */
 		public function disconnect()
 		{
+			if(!$this->doesKeepEmails())
+			{
+			    imap_expunge($this->connection);
+			}
 			imap_close($this->_connection);
 			$this->_connection = null;
 		}
@@ -327,6 +331,7 @@
 		/**
 		 * Takes an email object and looks up details for this particular email
 		 * Returns the primary body and the mime type
+		 * Sets the message for deletion when chosen to do not keep emails 
 		 * 
 		 * @param stdObject $email
 		 * @return TBGIncomingEmailMessage the message
@@ -334,7 +339,11 @@
 		public function getMessage($email)
 		{
 			$message = new TBGIncomingEmailMessage($this->_connection, $email->msgno);
-			$message->fetch();
+			$is_structure = $message->fetch();
+			if($is_structure && !$this->doesKeepEmails())
+			{
+			    imap_delete($this->_connection, $email->msgno);
+			}
 			return $message;
 		}
 		
