@@ -466,6 +466,23 @@
 		{
 			return self::get(self::SETTING_DEFAULT_USER_ID);
 		}
+
+		/**
+		 * Return the default user
+		 *
+		 * @return TBGUser
+		 */
+		public static function getDefaultUser()
+		{
+			try
+			{
+				return TBGContext::factory()->TBGUser((int) self::get(self::SETTING_DEFAULT_USER_ID));
+			}
+			catch (Exception $e)
+			{
+				return null;
+			}
+		}
 		
 		public static function allowRegistration()
 		{
