@@ -127,6 +127,14 @@
 			}
 		}
 
+		public function componentIssueFieldPermissions()
+		{
+		}
+
+		public function componentPermissionsPopup()
+		{
+		}
+
 		public function componentIssueTypeSchemeOptions()
 		{
 			$this->issuetype = TBGContext::factory()->TBGIssuetype($this->id);
