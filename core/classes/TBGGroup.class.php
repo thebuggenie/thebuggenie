@@ -126,6 +126,11 @@
 			$this->_name = $name;
 		}
 
+		public function isDefaultUserGroup()
+		{
+			return (bool) (TBGSettings::getDefaultUser()->getGroupID() == $this->getID());
+		}
+
 		protected function _preDelete()
 		{
 			TBGUserScopesTable::getTable()->clearUserGroups($this->getID());

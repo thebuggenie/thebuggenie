@@ -1251,7 +1251,7 @@
 		{
 			try
 			{
-				if (!(!in_array($request['group_id'], TBGSettings::getDefaultGroupIDs())))
+				if (in_array($request['group_id'], TBGSettings::getDefaultGroupIDs()))
 				{
 					throw new Exception(TBGContext::getI18n()->__("You cannot delete the default groups"));
 				}
@@ -1264,6 +1264,10 @@
 				if (!$group instanceof TBGGroup)
 				{
 					throw new Exception(TBGContext::getI18n()->__("You cannot delete this group"));
+				}
+				if ($group->isDefaultUserGroup())
+				{
+					throw new Exception(TBGContext::getI18n()->__("You cannot delete the group for the default user"));
 				}
 				$group->delete();
 				return $this->renderJSON(array('success' => true, 'message' => TBGContext::getI18n()->__('The group was deleted')));
