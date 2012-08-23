@@ -4,7 +4,7 @@
 	<?php if (is_bool($val)): ?>
 		<?php $image_tag = ($val) ? image_tag('permission_set_ok.png') : image_tag('permission_set_denied.png'); ?>
 	<?php elseif ($mode == 'datatype'): ?>
-		<?php $image_tag = image_tag('permission_set_unset.png'); ?>
+		<?php $image_tag = image_tag('permission_unset_ok.png'); ?>
 	<?php elseif ($mode == 'general' && $type == 'everyone'): ?>
 		<?php $image_tag = (TBGSettings::isPermissive()) ? image_tag('permission_unset_ok.png') : image_tag('permission_unset_denied.png'); ?>
 	<?php elseif ($mode == 'configuration' && $type == 'everyone'): ?>

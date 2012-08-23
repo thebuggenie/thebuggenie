@@ -2780,6 +2780,20 @@
 						$options['project'] = TBGContext::factory()->TBGProject($request['project_id']);
 						break;
 					case 'permissions':
+						$template_name = 'configuration/permissionspopup';
+						$options['mode'] = $request['mode'];
+						$options['module'] = $request['target_module'];
+						$options['item_name'] = $request['item_name'];
+						$options['target_id'] = $request['target_id'];
+						$options['key'] = $request['permission_key'];
+						$options['access_level'] = $request['access_level'];
+						break;
+					case 'issuefield_permissions':
+						$template_name = 'configuration/issuefieldpermissions';
+						$options['item_name'] = $request['item_name'];
+						$options['item_id'] = $request['item_id'];
+						$options['item_key'] = $request['item_key'];
+						$options['access_level'] = $request['access_level'];
 						break;
 					case 'site_icons':
 						$template_name = 'configuration/siteicons';

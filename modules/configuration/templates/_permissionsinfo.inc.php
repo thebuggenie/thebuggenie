@@ -1,5 +1,7 @@
 <?php if ($mode == 'configuration'): ?>
 	<?php echo __('Configuration access is always "Restrictive", regardless of the system settings.'); ?> 
+<?php elseif ($mode == 'datatype'): ?>
+	<?php echo __("This setting allows who can set this datatype, assuming the have access to manipulate the field itself. Ex: If you don't have access to setting the status field, giving a user access to set one specific status won't let them manipulate the status field."); ?> 
 <?php endif; ?>
 <?php echo tbg_parse_text(__('Please see [[ConfigurePermissions]] for more information about how permissions work in general.', array(), true)); ?><br>
 <table cellpadding="0" cellspacing="0" style="width: 100%; margin-top: 10px;">
