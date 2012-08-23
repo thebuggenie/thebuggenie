@@ -2490,14 +2490,10 @@ TBG.Config.User.getPermissionsBlock = function(url, user_id) {
 	if ($('users_results_user_' + user_id + '_permissions').innerHTML == '') {
 		TBG.Main.Helpers.ajax(url, {
 			loading: {
-				indicator: 'permissions_' + user_id + '_indicator',
-				hide: 'permissions_' + user_id + '_link'
+				indicator: 'permissions_' + user_id + '_indicator'
 			},
 			success: {
 				update: 'users_results_user_' + user_id + '_permissions'
-			},
-			complete: {
-				hide: 'permissions_' + user_id + '_link'
 			}
 		});
 	}
