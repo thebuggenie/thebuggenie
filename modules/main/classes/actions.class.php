@@ -2157,6 +2157,12 @@
 			return $this->renderJSON(array('hidden' => true));
 		}
 
+		public function runSetToggle(TBGRequest $request)
+		{
+			TBGSettings::setToggle($request['key'], $request['state']);
+			return $this->renderJSON(array('state' => $request['state']));
+		}
+
 		public function runGetUploadStatus(TBGRequest $request)
 		{
 			$id = $request->getParameter('upload_id', 0);

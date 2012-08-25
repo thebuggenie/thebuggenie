@@ -26,6 +26,7 @@
 	$routes[] = array('set_state', '/set/state/:state_id', 'main', 'setState');
 	$routes[] = array('logout', '/logout', 'main', 'logout');
 	$routes[] = array('hide_infobox', '/hide/infobox/:key', 'main', 'hideInfobox');
+	$routes[] = array('set_toggle_state', '/toggle/:key/:state', 'main', 'setToggle');
 	$routes[] = array('getreportissuefields', '/reportissue/get/fields/for/project/:project_key', 'main', 'reportIssueGetFields');
 	$routes[] = array('search_paginated', '/issues/paginated/*', 'search', 'findIssuesPaginated');
 	$routes[] = array('search_add_filter', '/issues/add/filter/*', 'search', 'addFilter');
