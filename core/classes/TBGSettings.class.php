@@ -47,6 +47,7 @@
 		const SYNTAX_HIHGLIGHTING_NO_NUMBERS = 3;
 
 		const INFOBOX_PREFIX = 'hide_infobox_';
+		const TOGGLE_PREFIX = 'toggle_';
 
 		const SETTING_ADMIN_GROUP = 'admingroup';
 		const SETTING_ALLOW_REGISTRATION = 'allowreg';
@@ -671,6 +672,16 @@
 		public static function showInfoBox($key)
 		{
 			self::deleteSetting(self::INFOBOX_PREFIX . $key);
+		}
+
+		public static function setToggle($toggle, $state)
+		{
+			self::saveSetting(self::TOGGLE_PREFIX . $toggle, $state, 'core', TBGContext::getScope()->getID(), TBGContext::getUser()->getID());
+		}
+
+		public static function getToggle($toggle)
+		{
+			return (bool) self::get(self::TOGGLE_PREFIX . $toggle, 'core', TBGContext::getScope()->getID(), TBGContext::getUser()->getID());
 		}
 
 		public static function isPermissive()
