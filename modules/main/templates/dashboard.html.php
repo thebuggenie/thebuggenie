@@ -12,7 +12,7 @@
 	<tr>
 		<td id="dashboard_lefthand" class="side_bar<?php echo TBGSettings::getToggle('dashboard_lefthand') ? '' : ' collapsed'; ?>">
 			<?php TBGEvent::createNew('core', 'dashboard_left_top')->trigger(); ?>
-			<div class="collapser_link" onclick="TBG.Main.setToogleState('dashboard_lefthand', $('dashboard_lefthand').hasClassName('collapsed'));$('dashboard_lefthand').toggleClassName('collapsed');">
+			<div class="collapser_link" onclick="TBG.Main.setToogleState('<?php echo make_url('set_toggle_state', array('key' => 'dashboard_lefthand', 'state' => '')); ?>', $('dashboard_lefthand').hasClassName('collapsed'));$('dashboard_lefthand').toggleClassName('collapsed');">
 				<a href="javascript:void(0);">
 					<?php echo image_tag('sidebar_collapse.png', array('class' => 'collapser')); ?>
 					<?php echo image_tag('sidebar_expand.png', array('class' => 'expander')); ?>

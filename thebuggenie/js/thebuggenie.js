@@ -1063,8 +1063,8 @@ TBG.Main.hideInfobox = function(url, boxkey) {
 	$('infobox_' + boxkey).fade({duration: 0.3});
 };
 
-TBG.Main.setToogleState = function (toggle, state) {
-	var url = '/toggle/' + toggle + '/' + (state ? '1' : 0);
+TBG.Main.setToogleState = function (url, state) {
+	url += '/' + (state ? '1' : 0);
 	TBG.Main.Helpers.ajax(url, {});
 }
 
