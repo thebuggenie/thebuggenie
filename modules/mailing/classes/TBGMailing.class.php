@@ -655,9 +655,15 @@
 			}
 		}
 
-		public function getCLIMailingUrl()
+		public function getCLIMailingUrl($clean = false)
 		{
-			return $this->getSetting('cli_mailing_url');
+			$url = $this->getSetting('cli_mailing_url');
+			if ($clean)
+			{
+				$url = parse_url($url);
+				return $url['host'];
+			}
+			return $url;
 		}
 
 		public function getMailerType()

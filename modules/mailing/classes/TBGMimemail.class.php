@@ -110,7 +110,7 @@
 			$this->headers['Subject'] = $subject;
 			$this->headers['Date'] = date('r');
 			$this->headers['MIME-Version'] = "1.0";
-			$server_name = TBGContext::getScope()->getCurrentHostname(true);
+			$server_name = (TBGContext::isCLI()) ? TBGContext::getModule('mailing')->getCLIMailingUrl(true) : TBGContext::getScope()->getCurrentHostname(true);
 			$this->headers['Message-ID'] = "<{$this->sep1}@{$server_name}>";
 		}
 
