@@ -1134,11 +1134,15 @@ table.issue_affects td img { vertical-align: bottom; }
 #dashboard .latest_action_dates{ font-weight: bold; padding: 10px 0 0 0; }
 #dashboard .faded_out.smaller { font-size: 0.8em; padding-right: 5px; }
 
-#dashboard_lefthand, #dashboard_righthand { font-size: 0.95em; position: relative; }
+#dashboard_lefthand, #dashboard_righthand { font-size: 0.95em; padding: 5px; position: relative; }
 #dashboard_righthand { padding-left: 0; }
-#dashboard_lefthand { width: 250px; }
+#dashboard_lefthand { width: 250px; box-shadow: -5px 0 5px -5px rgba(0, 0, 0, 0.3) inset; border-right: 1px dotted #DDD;}
 #dashboard_lefthand a.friend { color: #00a400; }
 #dashboard_lefthand a.friend:hover { border-bottom: 1px solid #CCC; }
+#dashboard_lefthand.side_bar.collapsed { width: 25px; border: none; padding: 0; margin: 0; }
+
+#dashboard_lefthand .collapser_link { left: 236px; }
+#dashboard_lefthand.collapsed .collapser_link { left: 6px; margin-top: 5px; }
 
 .milestone_box { margin: 5px 5px 5px 0; font-size: 1em; position: relative; }
 .milestone_box.highlighted { background-color: #FFF299; }
