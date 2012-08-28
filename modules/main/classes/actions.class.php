@@ -231,7 +231,7 @@
 		{
 			if (TBGSettings::isSingleProjectTracker())
 			{
-				if (($projects = TBGProject::getAll()) && $project = array_shift($projects))
+				if (($projects = TBGProject::getAllRootProjects()) && $project = array_shift($projects))
 				{
 					$this->forward(TBGContext::getRouting()->generate('project_dashboard', array('project_key' => $project->getKey())));
 				}
