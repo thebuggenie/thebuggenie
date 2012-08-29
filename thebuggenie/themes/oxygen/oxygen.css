@@ -312,7 +312,7 @@ footer td { font-size: 0.9em; line-height: 1.2; padding: 5px; text-shadow: 1px 1
 .commentbody .image_container.thumb img.image { width: 130px; }
 .commenttools { float: right; padding: 5px; margin: 5px; font-size: 0.9em; text-align: right; }
 .commenttools .button { font-weight: normal !important; }
-.commenttools img { vertical-align: bottom; margin-right: 5px; }
+.commenttools img { width: 20px; }
 .comment_controls { margin-top: 10px; }
 .comment_edit, .comment_add_main { padding: 5px; background-color: #F1F1F1; border: 1px dotted #CCC; }
 .comment_editsave, .comment_addsave { font-weight: bold; }
@@ -411,6 +411,54 @@ div.dropdown_separator { border-left: 1px dotted #EAEAF5; padding: 0 0 0 4px; ma
 .tab_menu .tab_menu_dropdown a:hover, .tab_menu_container .tab_menu_dropdown a:hover { background-color: #669BDA; border: 0; }
 .tab_menu li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_menu_dropdown a:hover { background-color: #EAEAF5; border: 0; }
 .tab_menu .tab_menu_dropdown a.selected, .tab_menu_container .tab_menu_dropdown a.selected { font-weight: bold; font-style: italic; border: 0; padding: 3px 5px; }
+.tab_menu.inset {
+	margin: 15px 0;
+	padding: 10px 5px 0;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	box-shadow: 0 0 3px rgba(0, 0, 0, 0.2) inset;
+	-moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.2) inset;
+	-webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.2) inset;
+	background-color: #F8F8F8;
+}
+.tab_menu.inset .selected a {
+	box-shadow: none;
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+}
+.tab_menu.inset li.selected {
+	border-bottom-color: #FFF;
+}
+.tab_menu.inset li.selected a {
+	padding: 3px 8px 3px 5px;
+}
+.tab_menu.inset li {
+	padding: 0;
+	border-width: 1px;
+	border-color: rgba(0, 0, 0, 0.2);
+	border-top-left-radius: 5px;
+	-moz-border-radius-topleft: 5px;
+	-webkit-border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	-moz-border-radius-topright: 5px;
+	-webkit-border-top-right-radius: 5px;
+}
+.tab_menu.inset li a {
+	border-top-left-radius: 5px;
+	-moz-border-radius-topleft: 5px;
+	-webkit-border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	-moz-border-radius-topright: 5px;
+	-webkit-border-top-right-radius: 5px;
+	font-size: 1.1em !important;
+	padding: 3px 5px 3px 3px;
+	box-shadow: inset 0 -3px 3px -3px rgba(0, 0, 0, 0.4);
+}
+.tab_menu.inset li a img {
+	float: left;
+	margin: 1px 5px 0 2px;
+	height: 20px;
+	width: 20px;
+}
 /* end tabbed menu */
 
 /* header tabbed menu */
