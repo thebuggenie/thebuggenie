@@ -460,14 +460,6 @@
 			return array_keys($this->_validation_errors);
 		}
 		
-		public function listenIssueSaveAddComment(TBGEvent $event)
-		{
-			$comment = $event->getParameter('comment');
-			$comment->setContent($this->_request->getParameter('comment_body', null, false) . "\n\n" . $comment->getContent());
-			$comment->setSystemComment(false);
-			$comment->save();
-		}
-
 		/**
 		 * Transition an issue to the outgoing step, based on request data if available
 		 * 
@@ -478,11 +470,6 @@
 		{
 			$request = ($request !== null) ? $request : $this->_request;
 			$this->getOutgoingStep()->applyToIssue($issue);
-			if ($request->hasParameter('comment_body') && trim($request['comment_body'] != '')) {
-				$this->_request = $request;
-				TBGEvent::listen('core', 'TBGIssue::save', array($this, 'listenIssueSaveAddComment'));
-			}
-			
 			if (!empty($this->_validation_errors)) return false;
 			
 			foreach ($this->getActions() as $action)
@@ -490,6 +477,20 @@
 				$action->perform($issue, $request);
 			}
 			
+			if ($request->hasParameter('comment_body') && trim($request['comment_body'] != '')) {
+				$comment = new TBGComment();
+				$comment->setTitle('');
+				$comment->setContent($request->getParameter('comment_body', null, false));
+				$comment->setPostedBy(TBGContext::getUser()->getID());
+				$comment->setTargetID($issue->getID());
+				$comment->setTargetType(TBGComment::TYPE_ISSUE);
+				$comment->setModuleName('core');
+				$comment->setIsPublic(true);
+				$comment->setSystemComment(false);
+				$comment->save();
+				$issue->setSaveComment($comment);
+			}
+
 			$issue->save();
 		}
 

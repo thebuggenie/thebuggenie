@@ -1008,18 +1008,25 @@
 						}
 					}
 				}
-				TBGEvent::listen('core', 'TBGIssue::save', function(TBGEvent $event) {
-					$comment = $event->getParameter('comment');
-					$comment->setContent($request->getRawParameter('message') . "\n\n" . $comment->getContent());
-					$comment->setSystemComment(false);
-					$comment->save();
-				});
 				
 				if (!$workflow_transition instanceof TBGWorkflowTransition)
 					$issue->getWorkflow()->moveIssueToMatchingWorkflowStep($issue);
 
 				if (!array_key_exists('transition_ok', $return_values) || $return_values['transition_ok'])
+				{
+					$comment = new TBGComment();
+					$comment->setTitle('');
+					$comment->setContent($request->getParameter('message', null, false));
+					$comment->setPostedBy(TBGContext::getUser()->getID());
+					$comment->setTargetID($issue->getID());
+					$comment->setTargetType(TBGComment::TYPE_ISSUE);
+					$comment->setModuleName('core');
+					$comment->setIsPublic(true);
+					$comment->setSystemComment(false);
+					$comment->save();
+					$issue->setSaveComment($comment);
 					$issue->save();
+				}
 
 				$this->return_values = $return_values;
 			}

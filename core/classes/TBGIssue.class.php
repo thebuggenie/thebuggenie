@@ -498,6 +498,10 @@
 
 		protected $_custom_populated = false;
 
+		protected $_log_items_added = array();
+
+		protected $_save_comment = '';
+
 		/**
 		 * All custom data type properties
 		 *
@@ -2371,10 +2375,7 @@
 		protected function _removeParentIssue($related_issue, $relation_id)
 		{
 			$this->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('This issue no longer depends on the solution of issue %issue_no%', array('%issue_no%' => $related_issue->getFormattedIssueNo())));
-			$this->addSystemComment(TBGContext::getI18n()->__('Issue dependancy removed'), TBGContext::getI18n()->__('This issue no longer depends on the solution of issue %issue_no%', array('%issue_no%' => $related_issue->getFormattedIssueNo())), TBGContext::getUser()->getID());
-			
 			$related_issue->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('Issue %issue_no% no longer depends on the solution of this issue', array('%issue_no%' => $this->getFormattedIssueNo())));
-			$related_issue->addSystemComment(TBGContext::getI18n()->__('Issue dependancy removed'), TBGContext::getI18n()->__('Issue %issue_no% no longer depends on the solution of this issue', array('%issue_no%' => $this->getFormattedIssueNo())), TBGContext::getUser()->getID());
 			
 			if ($this->_parent_issues !== null && array_key_exists($relation_id, $this->_parent_issues))
 			{
@@ -2393,10 +2394,7 @@
 		protected function _removeChildIssue($related_issue, $relation_id)
 		{
 			$this->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('Issue %issue_no% no longer depends on the solution of this issue', array('%issue_no%' => $related_issue->getFormattedIssueNo())));
-			$this->addSystemComment(TBGContext::getI18n()->__('Issue dependancy removed'), TBGContext::getI18n()->__('Issue %issue_no% no longer depends on the solution of this issue', array('%issue_no%' => $related_issue->getFormattedIssueNo())), TBGContext::getUser()->getID());
-			
 			$related_issue->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('This issue no longer depends on the solution of issue %issue_no%', array('%issue_no%' => $this->getFormattedIssueNo())));
-			$related_issue->addSystemComment(TBGContext::getI18n()->__('Issue dependancy removed'), TBGContext::getI18n()->__('This issue no longer depends on the solution of issue %issue_no%', array('%issue_no%' => $this->getFormattedIssueNo())), TBGContext::getUser()->getID());
 			
 			if ($this->_child_issues !== null && array_key_exists($relation_id, $this->_child_issues))
 			{
@@ -2413,18 +2411,15 @@
 		 */
 		public function addParentIssue(TBGIssue $related_issue)
 		{
-			if (!$row = \b2db\Core::getTable('TBGIssueRelationsTable')->getIssueRelation($this->getID(), $related_issue->getID()))
+			if (!$row = TBGIssueRelationsTable::getTable()->getIssueRelation($this->getID(), $related_issue->getID()))
 			{
-				$res = \b2db\Core::getTable('TBGIssueRelationsTable')->addParentIssue($this->getID(), $related_issue->getID());
+				TBGIssueRelationsTable::getTable()->addParentIssue($this->getID(), $related_issue->getID());
 				$this->_parent_issues = null;
 				
 				$related_issue->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('This %this_issuetype% now depends on the solution of %issuetype% %issue_no%', array('%this_issuetype%' => $related_issue->getIssueType()->getName(), '%issuetype%' => $this->getIssueType()->getName(), '%issue_no%' => $this->getFormattedIssueNo())));
-				$related_issue->addSystemComment(TBGContext::getI18n()->__('Dependancy added'), TBGContext::getI18n()->__('This %this_issuetype% now depends on the solution of %issuetype% %issue_no%', array('%this_issuetype%' => $related_issue->getIssueType()->getName(), '%issuetype%' => $this->getIssueType()->getName(), '%issue_no%' => $this->getFormattedIssueNo())), TBGContext::getUser()->getID());
-				
 				$this->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('%issuetype% %issue_no% now depends on the solution of this %this_issuetype%', array('%this_issuetype%' => $this->getIssueType()->getName(), '%issuetype%' => $related_issue->getIssueType()->getName(), '%issue_no%' => $related_issue->getFormattedIssueNo())));
-				$comment = $this->addSystemComment(TBGContext::getI18n()->__('Dependancy added'), TBGContext::getI18n()->__('%issuetype% %issue_no% now depends on the solution of this %this_issuetype%', array('%this_issuetype%' => $this->getIssueType()->getName(), '%issuetype%' => $related_issue->getIssueType()->getName(), '%issue_no%' => $related_issue->getFormattedIssueNo())), TBGContext::getUser()->getID());
 				
-				return ($comment instanceof TBGComment) ? $comment : true;
+				return true;
 			}
 			return false;
 		}
@@ -2438,16 +2433,13 @@
 		 */
 		public function addChildIssue(TBGIssue $related_issue)
 		{
-			if (!$row = \b2db\Core::getTable('TBGIssueRelationsTable')->getIssueRelation($this->getID(), $related_issue->getID()))
+			if (!$row = TBGIssueRelationsTable::getTable()->getIssueRelation($this->getID(), $related_issue->getID()))
 			{
-				$res = \b2db\Core::getTable('TBGIssueRelationsTable')->addChildIssue($this->getID(), $related_issue->getID());
+				$res = TBGIssueRelationsTable::getTable()->addChildIssue($this->getID(), $related_issue->getID());
 				$this->_child_issues = null;
 				
 				$related_issue->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('%issuetype% %issue_no% now depends on the solution of this %this_issuetype%', array('%this_issuetype%' => $related_issue->getIssueType()->getName(), '%issuetype%' => $this->getIssueType()->getName(), '%issue_no%' => $this->getFormattedIssueNo())));
-				$related_issue->addSystemComment(TBGContext::getI18n()->__('Dependancy added'), TBGContext::getI18n()->__('%issuetype% %issue_no% now depends on the solution of this %this_issuetype%', array('%this_issuetype%' => $related_issue->getIssueType()->getName(), '%issuetype%' => $this->getIssueType()->getName(), '%issue_no%' => $this->getFormattedIssueNo())), TBGContext::getUser()->getID());
-				
 				$this->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('This %this_issuetype% now depends on the solution of %issuetype% %issue_no%', array('%this_issuetype%' => $this->getIssueType()->getName(), '%issuetype%' => $related_issue->getIssueType()->getName(), '%issue_no%' => $related_issue->getFormattedIssueNo())));
-				$comment = $this->addSystemComment(TBGContext::getI18n()->__('Dependancy added'), TBGContext::getI18n()->__('This %this_issuetype% now depends on the solution of %issuetype% %issue_no%', array('%this_issuetype%' => $this->getIssueType()->getName(), '%issuetype%' => $related_issue->getIssueType()->getName(), '%issue_no%' => $related_issue->getFormattedIssueNo())), TBGContext::getUser()->getID());
 				
 				return ($comment instanceof TBGComment) ? $comment : true;
 			}
@@ -3362,7 +3354,6 @@
 				if ($retval !== false)
 				{
 					$this->addLogEntry(TBGLogTable::LOG_AFF_ADD, TBGContext::getI18n()->__("'%release_name%' added", array('%release_name%' => $build->getName())));
-					$this->addSystemComment(TBGContext::getI18n()->__("Affected releases"), TBGContext::getI18n()->__('\'\'\'%release_name%\'\'\' is now affected by this issue', array('%release_name%' => $build->getName())), TBGContext::getUser()->getID());
 					return array('a_id' => $retval, 'build' => $build, 'confirmed' => 0, 'status' => null);
 				}
 			}
@@ -3384,7 +3375,6 @@
 				if ($retval !== false)
 				{
 					$this->addLogEntry(TBGLogTable::LOG_AFF_ADD, TBGContext::getI18n()->__("'%edition_name%' added", array('%edition_name%' => $edition->getName())));
-					$this->addSystemComment(TBGContext::getI18n()->__("Affected editions"), TBGContext::getI18n()->__('\'\'\'%edition_name%\'\'\' is now affected by this issue', array('%edition_name%' => $edition->getName())), TBGContext::getUser()->getID());
 					return array('a_id' => $retval, 'edition' => $edition, 'confirmed' => 0, 'status' => null);
 				}
 			}
@@ -3406,7 +3396,6 @@
 				if ($retval !== false)
 				{
 					$this->addLogEntry(TBGLogTable::LOG_AFF_ADD, TBGContext::getI18n()->__("'%component_name%' added", array('%component_name%' => $component->getName())));
-					$this->addSystemComment(TBGContext::getI18n()->__("Affected components"), TBGContext::getI18n()->__('\'\'\'%component_name%\'\'\' is now affected by this issue', array('%component_name%' => $component->getName())), TBGContext::getUser()->getID());
 					return array('a_id' => $retval, 'component' => $component, 'confirmed' => 0, 'status' => null);
 				}
 			}
@@ -3429,7 +3418,6 @@
 			if (\b2db\Core::getTable('TBGIssueAffectsEditionTable')->deleteByIssueIDandEditionID($this->getID(), $item->getID()))
 			{
 				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, TBGContext::getI18n()->__("'%item_name%' removed", array('%item_name%' => $item->getName())));
-				$this->addSystemComment(TBGContext::getI18n()->__('Affected edition removed'), TBGContext::getI18n()->__('Edition \'\'\'%edition%\'\'\' is no longer affected by issue', array('%edition%' => $item->getName())), TBGContext::getUser()->getID());
 				return true;
 			}
 			return false;
@@ -3451,7 +3439,6 @@
 			if (\b2db\Core::getTable('TBGIssueAffectsBuildTable')->deleteByIssueIDandBuildID($this->getID(), $item->getID()))
 			{
 				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, TBGContext::getI18n()->__("'%item_name%' removed", array('%item_name%' => $item->getName())));
-				$this->addSystemComment(TBGContext::getI18n()->__('Affected build removed'), TBGContext::getI18n()->__('Build \'\'\'%build%\'\'\' is no longer affected by issue', array('%build%' => $item->getName())), TBGContext::getUser()->getID());
 				return true;
 			}
 			return false;
@@ -3473,7 +3460,6 @@
 			if (\b2db\Core::getTable('TBGIssueAffectsComponentTable')->deleteByIssueIDandComponentID($this->getID(), $item->getID()))
 			{
 				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, TBGContext::getI18n()->__("'%item_name%' removed", array('%item_name%' => $item->getName())));
-				$this->addSystemComment(TBGContext::getI18n()->__('Affected component removed'), TBGContext::getI18n()->__('Component \'\'\'%component%\'\'\' is no longer affected by issue', array('%component%' => $item->getName())), TBGContext::getUser()->getID());
 				return true;
 			}
 			return false;
@@ -3493,16 +3479,15 @@
 		 */
 		public function confirmAffectedEdition($item, $confirmed = true)
 		{
-			if (\b2db\Core::getTable('TBGIssueAffectsEditionTable')->confirmByIssueIDandEditionID($this->getID(), $item->getID(), $confirmed))
+			if (TBGIssueAffectsEditionTable::getTable()->confirmByIssueIDandEditionID($this->getID(), $item->getID(), $confirmed))
 			{
-				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, TBGContext::getI18n()->__("'%item_name%' confirmed", array('%item_name%' => $item->getName())));
 				if ($confirmed)
 				{
-					$this->addSystemComment(TBGContext::getI18n()->__('Affected edition updated'), TBGContext::getI18n()->__('Edition \'\'\'%edition%\'\'\' is now confirmed for this issue', array('%edition%' => $item->getName())), TBGContext::getUser()->getID());
+					$this->addLogEntry(TBGLogTable::LOG_AFF_UPDATE, TBGContext::getI18n()->__("'%edition%' is now confirmed for this issue", array('%edition%' => $item->getName())));
 				}
 				else
 				{
-					$this->addSystemComment(TBGContext::getI18n()->__('Affected edition updated'), TBGContext::getI18n()->__('Edition \'\'\'%edition%\'\'\' is now unconfirmed for this issue', array('%edition%' => $item->getName())), TBGContext::getUser()->getID());
+					$this->addLogEntry(TBGLogTable::LOG_AFF_UPDATE, TBGContext::getI18n()->__("'%edition%' is now unconfirmed for this issue", array('%edition%' => $item->getName())));
 				}
 				return true;
 			}
@@ -3523,16 +3508,15 @@
 		 */
 		public function confirmAffectedBuild($item, $confirmed = true)
 		{
-			if (\b2db\Core::getTable('TBGIssueAffectsBuildTable')->confirmByIssueIDandBuildID($this->getID(), $item->getID(), $confirmed))
+			if (TBGIssueAffectsBuildTable::getTable()->confirmByIssueIDandBuildID($this->getID(), $item->getID(), $confirmed))
 			{
-				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, TBGContext::getI18n()->__("'%item_name%' confirmed", array('%item_name%' => $item->getName())));
 				if ($confirmed)
 				{
-					$this->addSystemComment(TBGContext::getI18n()->__('Affected build updated'), TBGContext::getI18n()->__('Build \'\'\'%build%\'\'\' is now confirmed for this issue', array('%build%' => $item->getName())), TBGContext::getUser()->getID());
+					$this->addLogEntry(TBGLogTable::LOG_AFF_UPDATE, TBGContext::getI18n()->__("'%build%' is now confirmed for this issue", array('%build%' => $item->getName())));
 				}
 				else
 				{
-					$this->addSystemComment(TBGContext::getI18n()->__('Affected build updated'), TBGContext::getI18n()->__('Build \'\'\'%build%\'\'\' is now unconfirmed for this issue', array('%build%' => $item->getName())), TBGContext::getUser()->getID());
+					$this->addLogEntry(TBGLogTable::LOG_AFF_UPDATE, TBGContext::getI18n()->__("'%build%' is now unconfirmed for this issue", array('%build%' => $item->getName())));
 				}
 				return true;
 			}
@@ -3553,17 +3537,15 @@
 		 */
 		public function confirmAffectedComponent($item, $confirmed = true)
 		{
-			if (\b2db\Core::getTable('TBGIssueAffectsComponentTable')->confirmByIssueIDandComponentID($this->getID(), $item->getID(), $confirmed))
+			if (TBGIssueAffectsComponentTable::getTable()->confirmByIssueIDandComponentID($this->getID(), $item->getID(), $confirmed))
 			{
-				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, TBGContext::getI18n()->__("'%item_name%' confirmed", array('%item_name%' => $item->getName())));
-				
 				if ($confirmed)
 				{
-					$this->addSystemComment(TBGContext::getI18n()->__('Affected component updated'), TBGContext::getI18n()->__('Component \'\'\'%component%\'\'\' is now confirmed for this issue', array('%component%' => $item->getName())), TBGContext::getUser()->getID());
+					$this->addLogEntry(TBGLogTable::LOG_AFF_UPDATE, TBGContext::getI18n()->__("'%component%' is now confirmed for this issue", array('%component%' => $item->getName())));
 				}
 				else
 				{
-					$this->addSystemComment(TBGContext::getI18n()->__('Affected component updated'), TBGContext::getI18n()->__('Component \'\'\'%component%\'\'\' is now unconfirmed for this issue', array('%component%' => $item->getName())), TBGContext::getUser()->getID());
+					$this->addLogEntry(TBGLogTable::LOG_AFF_UPDATE, TBGContext::getI18n()->__("'%component%' is now unconfirmed for this issue", array('%component%' => $item->getName())));
 				}
 				return true;
 			}
@@ -3584,10 +3566,9 @@
 		 */
 		public function setAffectedEditionStatus($item, $status)
 		{
-			if (\b2db\Core::getTable('TBGIssueAffectsEditionTable')->setStatusByIssueIDandEditionID($this->getID(), $item->getID(), $status->getID()))
+			if (TBGIssueAffectsEditionTable::getTable()->setStatusByIssueIDandEditionID($this->getID(), $item->getID(), $status->getID()))
 			{
 				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, TBGContext::getI18n()->__("'%item_name%' -> '%status_name%", array('%item_name%' => $item->getName(), '%status_name%' => $status->getName())));
-				$this->addSystemComment(TBGContext::getI18n()->__('Affected edition updated'), TBGContext::getI18n()->__('Edition \'\'\'%edition%\'\'\' is now %status%', array('%edition%' => $item->getName(), '%status%' => $status->getName())), TBGContext::getUser()->getID());
 				return true;
 			}
 			return false;
@@ -3607,10 +3588,9 @@
 		 */
 		public function setAffectedBuildStatus($item, $status)
 		{
-			if (\b2db\Core::getTable('TBGIssueAffectsBuildTable')->setStatusByIssueIDandBuildID($this->getID(), $item->getID(), $status->getID()))
+			if (TBGIssueAffectsBuildTable::getTable()->setStatusByIssueIDandBuildID($this->getID(), $item->getID(), $status->getID()))
 			{
 				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, TBGContext::getI18n()->__("'%item_name%' -> '%status_name%", array('%item_name%' => $item->getName(), '%status_name%' => $status->getName())));
-				$this->addSystemComment(TBGContext::getI18n()->__('Affected build updated'), TBGContext::getI18n()->__('Build \'\'\'%build%\'\'\' is now %status%', array('%build%' => $item->getName(), '%status%' => $status->getName())), TBGContext::getUser()->getID());
 				return true;
 			}
 			return false;
@@ -3630,10 +3610,9 @@
 		 */
 		public function setAffectedComponentStatus($item, $status)
 		{
-			if (\b2db\Core::getTable('TBGIssueAffectsComponentTable')->setStatusByIssueIDandComponentID($this->getID(), $item->getID(), $status->getID()))
+			if (TBGIssueAffectsComponentTable::getTable()->setStatusByIssueIDandComponentID($this->getID(), $item->getID(), $status->getID()))
 			{
 				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, TBGContext::getI18n()->__("'%item_name%' -> '%status_name%", array('%item_name%' => $item->getName(), '%status_name%' => $status->getName())));
-				$this->addSystemComment(TBGContext::getI18n()->__('Affected component updated'), TBGContext::getI18n()->__('Component \'\'\'%component%\'\'\' is now %status%', array('%component%' => $item->getName(), '%status%' => $status->getName())), TBGContext::getUser()->getID());
 				return true;
 			}
 			return false;
@@ -3665,7 +3644,15 @@
 		public function addLogEntry($change_type, $text = null, $system = false, $time = null)
 		{
 			$uid = ($system) ? 0 : TBGContext::getUser()->getID();
-			TBGLogTable::getTable()->createNew($this->getID(), TBGLogTable::TYPE_ISSUE, $change_type, $text, $uid, $time);
+			$log_item = new TBGLogItem();
+			$log_item->setChangeType($change_type);
+			$log_item->setText($text);
+			$log_item->setTargetType(TBGLogTable::TYPE_ISSUE);
+			$log_item->setTarget($this->getID());
+			$log_item->setUser($uid);
+			$log_item->save();
+			$this->_log_items_added[$log_item->getID()] = $log_item;
+			return $log_item;
 		}
 	
 		/**
@@ -3677,10 +3664,10 @@
 		 * 
 		 * @return TBGComment
 		 */
-		public function addSystemComment($title, $text, $uid)
+		public function addSystemComment($text, $uid)
 		{
 			$comment = new TBGComment();
-			$comment->setTitle($title);
+			$comment->setTitle('');
 			$comment->setContent($text);
 			$comment->setPostedBy($uid);
 			$comment->setTargetID($this->getID());
@@ -3690,7 +3677,6 @@
 			{
 				$comment->save();
 			}
-			TBGEvent::createNew('core', 'TBGIssue::addSystemComment', $this, array('comment' => $comment))->trigger();
 			return $comment;
 		}
 	
@@ -4219,486 +4205,464 @@
 			}
 
 			$this->_last_updated = NOW;
-			$comment_lines = array();
+		}
+
+		protected function _processChanges()
+		{
 			$related_issues_to_save = array();
-			$is_saved_estimated = false;
-			$is_saved_spent = false;
-			$is_saved_assignee = false;
-			$is_saved_owner = false;
 			$changed_properties = $this->_getChangedProperties();
-			
-			if (count($changed_properties) == 0) return false;
-			
-			foreach ($changed_properties as $property => $value)
+
+			if (count($changed_properties))
 			{
-				$compare_value = (is_object($this->$property)) ? $this->$property->getID() : $this->$property;
-				if ($value['original_value'] != $compare_value)
+				$is_saved_estimated = false;
+				$is_saved_spent = false;
+				$is_saved_assignee = false;
+				$is_saved_owner = false;
+				foreach ($changed_properties as $property => $value)
 				{
-					switch ($property)
+					$compare_value = (is_object($this->$property)) ? $this->$property->getID() : $this->$property;
+					if ($value['original_value'] != $compare_value)
 					{
-						case '_title':
-							$this->addLogEntry(TBGLogTable::LOG_ISSUE_UPDATE, TBGContext::getI18n()->__("Title updated"));
-							$comment_lines[] = TBGContext::getI18n()->__("This issue's title has been changed");
-							break;
-						case '_description':
-							$this->addLogEntry(TBGLogTable::LOG_ISSUE_UPDATE, TBGContext::getI18n()->__("Description updated"));
-							$comment_lines[] = TBGContext::getI18n()->__("This issue's description has been changed");
-							break;
-						case '_reproduction_steps':
-							$this->addLogEntry(TBGLogTable::LOG_ISSUE_REPRODUCABILITY, TBGContext::getI18n()->__("Reproduction steps updated"));
-							$comment_lines[] = TBGContext::getI18n()->__("This issue's reproduction steps has been changed");
-							break;
-						case '_category':
-							if ($value['original_value'] != 0)
-							{
-								$old_name = ($old_item = TBGContext::factory()->TBGCategory($value['original_value'])) ? $old_item->getName() : TBGContext::getI18n()->__('Not determined');
-							}
-							else
-							{
-								$old_name = TBGContext::getI18n()->__('Not determined');
-							}
-							$new_name = ($this->getCategory() instanceof TBGDatatype) ? $this->getCategory()->getName() : TBGContext::getI18n()->__('Not determined');
-							
-							$this->addLogEntry(TBGLogTable::LOG_ISSUE_CATEGORY, $old_name . ' &rArr; ' . $new_name);
-							$comment_lines[] = TBGContext::getI18n()->__("The category has been updated, from '''%previous_category%''' to '''%new_category%'''.", array('%previous_category%' => $old_name, '%new_category%' => $new_name));
-							break;
-						case '_pain_bug_type':
-							if ($value['original_value'] != 0)
-							{
-								$old_name = ($old_item = self::getPainTypesOrLabel('pain_bug_type', $value['original_value'])) ? $old_item : TBGContext::getI18n()->__('Not determined');
-							}
-							else
-							{
-								$old_name = TBGContext::getI18n()->__('Not determined');
-							}
-							$new_name = ($new_item = self::getPainTypesOrLabel('pain_bug_type', $value['current_value'])) ? $new_item : TBGContext::getI18n()->__('Not determined');
-
-							$this->addLogEntry(TBGLogTable::LOG_ISSUE_PAIN_BUG_TYPE, $old_name . ' &rArr; ' . $new_name);
-							$comment_lines[] = TBGContext::getI18n()->__("The triaging criteria 'bug type' has been updated, from '''%previous_name%''' to '''%new_name%'''.", array('%previous_name%' => $old_name, '%new_name%' => $new_name));
-							break;
-						case '_pain_effect':
-							if ($value['original_value'] != 0)
-							{
-								$old_name = ($old_item = self::getPainTypesOrLabel('pain_effect', $value['original_value'])) ? $old_item : TBGContext::getI18n()->__('Not determined');
-							}
-							else
-							{
-								$old_name = TBGContext::getI18n()->__('Not determined');
-							}
-							$new_name = ($new_item = self::getPainTypesOrLabel('pain_effect', $value['current_value'])) ? $new_item : TBGContext::getI18n()->__('Not determined');
-
-							$this->addLogEntry(TBGLogTable::LOG_ISSUE_PAIN_EFFECT, $old_name . ' &rArr; ' . $new_name);
-							$comment_lines[] = TBGContext::getI18n()->__("The triaging criteria 'effect' has been updated, from '''%previous_name%''' to '''%new_name%'''.", array('%previous_name%' => $old_name, '%new_name%' => $new_name));
-							break;
-						case '_pain_likelihood':
-							if ($value['original_value'] != 0)
-							{
-								$old_name = ($old_item = self::getPainTypesOrLabel('pain_likelihood', $value['original_value'])) ? $old_item : TBGContext::getI18n()->__('Not determined');
-							}
-							else
-							{
-								$old_name = TBGContext::getI18n()->__('Not determined');
-							}
-							$new_name = ($new_item = self::getPainTypesOrLabel('pain_likelihood', $value['current_value'])) ? $new_item : TBGContext::getI18n()->__('Not determined');
-
-							$this->addLogEntry(TBGLogTable::LOG_ISSUE_PAIN_LIKELIHOOD, $old_name . ' &rArr; ' . $new_name);
-							$comment_lines[] = TBGContext::getI18n()->__("The triaging criteria 'likelihood' has been updated, from '''%previous_name%''' to '''%new_name%'''.", array('%previous_name%' => $old_name, '%new_name%' => $new_name));
-							break;
-						case '_user_pain':
-							$this->addLogEntry(TBGLogTable::LOG_ISSUE_PAIN_CALCULATED, $value['original_value'] . ' &rArr; ' . $value['current_value']);
-							$comment_lines[] = TBGContext::getI18n()->__("The calculated user pain has changed, from '''%previous_value%''' to '''%new_value%'''.", array('%previous_value%' => $value['original_value'], '%new_value%' => $value['current_value']));
-							break;
-						case '_status':
-							if ($value['original_value'] != 0)
-							{
-								$old_name = ($old_item = TBGContext::factory()->TBGStatus($value['original_value'])) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
-							}
-							else
-							{
-								$old_name = TBGContext::getI18n()->__('Not determined');
-							}
-							$new_name = ($this->getStatus() instanceof TBGDatatype) ? $this->getStatus()->getName() : TBGContext::getI18n()->__('Not determined');
-							
-							$this->addLogEntry(TBGLogTable::LOG_ISSUE_STATUS, $old_name . ' &rArr; ' . $new_name);
-							$comment_lines[] = TBGContext::getI18n()->__("The status has been updated, from '''%previous_status%''' to '''%new_status%'''.", array('%previous_status%' => $old_name, '%new_status%' => $new_name));
-							break;
-						case '_reproducability':
-							if ($value['original_value'] != 0)
-							{
-								$old_name = ($old_item = TBGContext::factory()->TBGReproducability($value['original_value'])) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
-							}
-							else
-							{
-								$old_name = TBGContext::getI18n()->__('Not determined');
-							}
-							$new_name = ($this->getReproducability() instanceof TBGDatatype) ? $this->getReproducability()->getName() : TBGContext::getI18n()->__('Not determined');
-							
-							$this->addLogEntry(TBGLogTable::LOG_ISSUE_REPRODUCABILITY, $old_name . ' &rArr; ' . $new_name);
-							$comment_lines[] = TBGContext::getI18n()->__("The reproducability has been updated, from '''%previous_reproducability%''' to '''%new_reproducability%'''.", array('%previous_reproducability%' => $old_name, '%new_reproducability%' => $new_name));
-							
-							break;
-						case '_priority':
-							if ($value['original_value'] != 0)
-							{
-								$old_name = ($old_item = TBGContext::factory()->TBGPriority($value['original_value'])) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
-							}
-							else
-							{
-								$old_name = TBGContext::getI18n()->__('Not determined');
-							}
-							$new_name = ($this->getPriority() instanceof TBGDatatype) ? $this->getPriority()->getName() : TBGContext::getI18n()->__('Not determined');
-							
-							$this->addLogEntry(TBGLogTable::LOG_ISSUE_PRIORITY, $old_name . ' &rArr; ' . $new_name);
-							$comment_lines[] = TBGContext::getI18n()->__("The priority has been updated, from '''%previous_priority%''' to '''%new_priority%'''.", array('%previous_priority%' => $old_name, '%new_priority%' => $new_name));
-							break;
-						case '_assignee_team':
-						case '_assignee_user':
-							if (!$is_saved_assignee)
-							{
-								$new_name = ($this->getAssignee() instanceof TBGIdentifiable) ? $this->getAssignee()->getName() : TBGContext::getI18n()->__('Not assigned');
-								
-								if ($this->getAssignee() instanceof TBGUser)
+						switch ($property)
+						{
+							case '_title':
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_UPDATE, TBGContext::getI18n()->__("Title updated"));
+								break;
+							case '_description':
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_UPDATE, TBGContext::getI18n()->__("Description updated"));
+								break;
+							case '_reproduction_steps':
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_REPRODUCABILITY, TBGContext::getI18n()->__("Reproduction steps updated"));
+								break;
+							case '_category':
+								if ($value['original_value'] != 0)
 								{
-									$this->startWorkingOnIssue($this->getAssignee());
+									$old_name = ($old_item = TBGContext::factory()->TBGCategory($value['original_value'])) ? $old_item->getName() : TBGContext::getI18n()->__('Not determined');
 								}
-								
-								$this->addLogEntry(TBGLogTable::LOG_ISSUE_ASSIGNED, $new_name);
-								$comment_lines[] = TBGContext::getI18n()->__("The assignee has been changed to '''%new_name%'''.", array('%new_name%' => $new_name));
-								$is_saved_assignee = true;
-							}
-							break;
-						case '_posted_by':
-							$old_identifiable = ($value['original_value']) ? TBGContext::factory()->TBGUser($value['original_value']) : TBGContext::getI18n()->__('Unknown');
-							$old_name = ($old_identifiable instanceof TBGUser) ? $old_identifiable->getName() : TBGContext::getI18n()->__('Unknown');
-							$new_name = $this->getPostedBy()->getName();
-							
-							$this->addLogEntry(TBGLogTable::LOG_ISSUE_POSTED, $old_name . ' &rArr; ' . $new_name);
-							$comment_lines[] = TBGContext::getI18n()->__("The issue's poster has been changed, from '''%previous_name%''' to '''%new_name%'''.", array('%previous_name%' => $old_name, '%new_name%' => $new_name));
-							break;
-						case '_being_worked_on_by_user':
-							if ($value['original_value'] != 0)
-							{
-								$old_identifiable = TBGContext::factory()->TBGUser($value['original_value']);
-								$old_name = ($old_identifiable instanceof TBGUser) ? $old_identifiable->getName() : TBGContext::getI18n()->__('Unknown');
-							}
-							else
-							{
-								$old_name = TBGContext::getI18n()->__('Not being worked on');
-							}
-							$new_name = ($this->getUserWorkingOnIssue() instanceof TBGUser) ? $this->getUserWorkingOnIssue()->getName() : TBGContext::getI18n()->__('Not being worked on');
-
-							$this->addLogEntry(TBGLogTable::LOG_ISSUE_USERS, $old_name . ' &rArr; ' . $new_name);
-							$comment_lines[] = TBGContext::getI18n()->__("Information about the user working on this issue has been changed, from '''%previous_name%''' to '''%new_name%'''.", array('%previous_name%' => $old_name, '%new_name%' => $new_name));
-							break;
-						case '_owner_team':
-						case '_owner_user':
-							if (!$is_saved_owner)
-							{
-								$new_name = ($this->getOwner() instanceof TBGIdentifiable) ? $this->getOwner()->getName() : TBGContext::getI18n()->__('Not owned by anyone');
-								
-								$this->addLogEntry(TBGLogTable::LOG_ISSUE_OWNED, $new_name);
-								$comment_lines[] = TBGContext::getI18n()->__("The owner has been changed to '''%new_name%'''.", array('%new_name%' => $new_name));
-								$is_saved_owner = true;
-							}
-							break;
-						case '_percent_complete':
-							$this->addLogEntry(TBGLogTable::LOG_ISSUE_PERCENT, $value['original_value'] . '% &rArr; ' . $this->getPercentCompleted() . '%');
-							$comment_lines[] = TBGContext::getI18n()->__("This issue's progression has been updated to %percent_completed% percent completed.", array('%percent_completed%' => $this->getPercentCompleted()));
-							break;
-						case '_resolution':
-							if ($value['original_value'] != 0)
-							{
-								$old_name = ($old_item = TBGContext::factory()->TBGResolution($value['original_value'])) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
-							}
-							else
-							{
-								$old_name = TBGContext::getI18n()->__('Not determined');
-							}
-							$new_name = ($this->getResolution() instanceof TBGDatatype) ? $this->getResolution()->getName() : TBGContext::getI18n()->__('Not determined');
-							
-							$this->addLogEntry(TBGLogTable::LOG_ISSUE_RESOLUTION, $old_name . ' &rArr; ' . $new_name);
-							$comment_lines[] = TBGContext::getI18n()->__("The resolution has been updated, from '''%previous_resolution%''' to '''%new_resolution%'''.", array('%previous_resolution%' => $old_name, '%new_resolution%' => $new_name));
-							break;
-						case '_severity':
-							if ($value['original_value'] != 0)
-							{
-								$old_name = ($old_item = TBGContext::factory()->TBGSeverity($value['original_value'])) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
-							}
-							else
-							{
-								$old_name = TBGContext::getI18n()->__('Not determined');
-							}
-							$new_name = ($this->getSeverity() instanceof TBGDatatype) ? $this->getSeverity()->getName() : TBGContext::getI18n()->__('Not determined');
-							
-							$this->addLogEntry(TBGLogTable::LOG_ISSUE_SEVERITY, $old_name . ' &rArr; ' . $new_name);
-							$comment_lines[] = TBGContext::getI18n()->__("The severity has been updated, from '''%previous_severity%''' to '''%new_severity%'''.", array('%previous_severity%' => $old_name, '%new_severity%' => $new_name));
-							break;
-						case '_milestone':
-							if ($value['original_value'] != 0)
-							{
-								$old_name = ($old_item = TBGContext::factory()->TBGMilestone($value['original_value'])) ? $old_item->getName() : TBGContext::getI18n()->__('Not determined');
-							}
-							else
-							{
-								$old_name = TBGContext::getI18n()->__('Not determined');
-							}
-							$new_name = ($this->getMilestone() instanceof TBGMilestone) ? $this->getMilestone()->getName() : TBGContext::getI18n()->__('Not determined');
-							
-							$this->addLogEntry(TBGLogTable::LOG_ISSUE_MILESTONE, $old_name . ' &rArr; ' . $new_name);
-							$comment_lines[] = TBGContext::getI18n()->__("The milestone has been updated, from '''%previous_milestone%''' to '''%new_milestone%'''.", array('%previous_milestone%' => $old_name, '%new_milestone%' => $new_name));
-							break;
-						case '_issuetype':
-							if ($value['original_value'] != 0)
-							{
-								$old_name = ($old_item = TBGContext::factory()->TBGIssuetype($value['original_value'])) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
-							}
-							else
-							{
-								$old_name = TBGContext::getI18n()->__('Unknown');
-							}
-							$new_name = ($this->getIssuetype() instanceof TBGIssuetype) ? $this->getIssuetype()->getName() : TBGContext::getI18n()->__('Unknown');
-							
-							$this->addLogEntry(TBGLogTable::LOG_ISSUE_ISSUETYPE, $old_name . ' &rArr; ' . $new_name);
-							$comment_lines[] = TBGContext::getI18n()->__("The issue type has been updated, from '''%previous_type%''' to '''%new_type%'''.", array('%previous_type%' => $old_name, '%new_type%' => $new_name));
-							break;
-						case '_estimated_months':
-						case '_estimated_weeks':
-						case '_estimated_days':
-						case '_estimated_hours':
-						case '_estimated_points':
-							if (!$is_saved_estimated)
-							{
-								$old_time = array('months' => $this->getChangedPropertyOriginal('_estimated_months'),
-													'weeks' => $this->getChangedPropertyOriginal('_estimated_weeks'),
-													'days' => $this->getChangedPropertyOriginal('_estimated_days'),
-													'hours' => $this->getChangedPropertyOriginal('_estimated_hours'),
-													'points' => $this->getChangedPropertyOriginal('_estimated_points'));
-
-								$old_formatted_time = (array_sum($old_time) > 0) ? $this->getFormattedTime($old_time) : TBGContext::getI18n()->__('Not estimated');
-								$new_formatted_time = ($this->hasEstimatedTime()) ? $this->getFormattedTime($this->getEstimatedTime()) : TBGContext::getI18n()->__('Not estimated');
-								$this->addLogEntry(TBGLogTable::LOG_ISSUE_TIME_ESTIMATED, $old_formatted_time . ' &rArr; ' . $new_formatted_time);
-								$comment_lines[] = TBGContext::getI18n()->__("The issue has been (re-)estimated, from '''%previous_time%''' to '''%new_time%'''.", array('%previous_time%' => $old_formatted_time, '%new_time%' => $new_formatted_time));
-								$is_saved_estimated = true;
-							}
-							break;
-						case '_spent_months':
-						case '_spent_weeks':
-						case '_spent_days':
-						case '_spent_hours':
-						case '_spent_points':
-							if (!$is_saved_spent)
-							{
-								$old_time = array('months' => $this->getChangedPropertyOriginal('_spent_months'),
-													'weeks' => $this->getChangedPropertyOriginal('_spent_weeks'),
-													'days' => $this->getChangedPropertyOriginal('_spent_days'),
-													'hours' => $this->getChangedPropertyOriginal('_spent_hours'),
-													'points' => $this->getChangedPropertyOriginal('_spent_points'));
-
-								$old_formatted_time = (array_sum($old_time) > 0) ? $this->getFormattedTime($old_time) : TBGContext::getI18n()->__('No time spent');
-								$new_formatted_time = ($this->hasSpentTime()) ? $this->getFormattedTime($this->getSpentTime()) : TBGContext::getI18n()->__('No time spent');
-								$this->addLogEntry(TBGLogTable::LOG_ISSUE_TIME_SPENT, $old_formatted_time . ' &rArr; ' . $new_formatted_time);
-								$comment_lines[] = TBGContext::getI18n()->__("Time spent on this issue, from '''%previous_time%''' to '''%new_time%'''.", array('%previous_time%' => $old_formatted_time, '%new_time%' => $new_formatted_time));
-								$is_saved_spent = true;
-							}
-							break;
-						case '_state':
-							if ($this->isClosed())
-							{
-								$this->addLogEntry(TBGLogTable::LOG_ISSUE_CLOSE);
-								$comment_lines[] = TBGContext::getI18n()->__("This issue has been closed");
-								if ($this->getMilestone() instanceof TBGMilestone)
+								else
 								{
-									if ($this->getMilestone()->isSprint())
+									$old_name = TBGContext::getI18n()->__('Not determined');
+								}
+								$new_name = ($this->getCategory() instanceof TBGDatatype) ? $this->getCategory()->getName() : TBGContext::getI18n()->__('Not determined');
+
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_CATEGORY, $old_name . ' &rArr; ' . $new_name);
+								break;
+							case '_pain_bug_type':
+								if ($value['original_value'] != 0)
+								{
+									$old_name = ($old_item = self::getPainTypesOrLabel('pain_bug_type', $value['original_value'])) ? $old_item : TBGContext::getI18n()->__('Not determined');
+								}
+								else
+								{
+									$old_name = TBGContext::getI18n()->__('Not determined');
+								}
+								$new_name = ($new_item = self::getPainTypesOrLabel('pain_bug_type', $value['current_value'])) ? $new_item : TBGContext::getI18n()->__('Not determined');
+
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_PAIN_BUG_TYPE, $old_name . ' &rArr; ' . $new_name);
+								break;
+							case '_pain_effect':
+								if ($value['original_value'] != 0)
+								{
+									$old_name = ($old_item = self::getPainTypesOrLabel('pain_effect', $value['original_value'])) ? $old_item : TBGContext::getI18n()->__('Not determined');
+								}
+								else
+								{
+									$old_name = TBGContext::getI18n()->__('Not determined');
+								}
+								$new_name = ($new_item = self::getPainTypesOrLabel('pain_effect', $value['current_value'])) ? $new_item : TBGContext::getI18n()->__('Not determined');
+
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_PAIN_EFFECT, $old_name . ' &rArr; ' . $new_name);
+								break;
+							case '_pain_likelihood':
+								if ($value['original_value'] != 0)
+								{
+									$old_name = ($old_item = self::getPainTypesOrLabel('pain_likelihood', $value['original_value'])) ? $old_item : TBGContext::getI18n()->__('Not determined');
+								}
+								else
+								{
+									$old_name = TBGContext::getI18n()->__('Not determined');
+								}
+								$new_name = ($new_item = self::getPainTypesOrLabel('pain_likelihood', $value['current_value'])) ? $new_item : TBGContext::getI18n()->__('Not determined');
+
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_PAIN_LIKELIHOOD, $old_name . ' &rArr; ' . $new_name);
+								break;
+							case '_user_pain':
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_PAIN_CALCULATED, $value['original_value'] . ' &rArr; ' . $value['current_value']);
+								break;
+							case '_status':
+								if ($value['original_value'] != 0)
+								{
+									$old_name = ($old_item = TBGContext::factory()->TBGStatus($value['original_value'])) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
+								}
+								else
+								{
+									$old_name = TBGContext::getI18n()->__('Not determined');
+								}
+								$new_name = ($this->getStatus() instanceof TBGDatatype) ? $this->getStatus()->getName() : TBGContext::getI18n()->__('Not determined');
+
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_STATUS, $old_name . ' &rArr; ' . $new_name);
+								break;
+							case '_reproducability':
+								if ($value['original_value'] != 0)
+								{
+									$old_name = ($old_item = TBGContext::factory()->TBGReproducability($value['original_value'])) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
+								}
+								else
+								{
+									$old_name = TBGContext::getI18n()->__('Not determined');
+								}
+								$new_name = ($this->getReproducability() instanceof TBGDatatype) ? $this->getReproducability()->getName() : TBGContext::getI18n()->__('Not determined');
+
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_REPRODUCABILITY, $old_name . ' &rArr; ' . $new_name);
+								break;
+							case '_priority':
+								if ($value['original_value'] != 0)
+								{
+									$old_name = ($old_item = TBGContext::factory()->TBGPriority($value['original_value'])) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
+								}
+								else
+								{
+									$old_name = TBGContext::getI18n()->__('Not determined');
+								}
+								$new_name = ($this->getPriority() instanceof TBGDatatype) ? $this->getPriority()->getName() : TBGContext::getI18n()->__('Not determined');
+
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_PRIORITY, $old_name . ' &rArr; ' . $new_name);
+								break;
+							case '_assignee_team':
+							case '_assignee_user':
+								if (!$is_saved_assignee)
+								{
+									$new_name = ($this->getAssignee() instanceof TBGIdentifiable) ? $this->getAssignee()->getName() : TBGContext::getI18n()->__('Not assigned');
+
+									if ($this->getAssignee() instanceof TBGUser)
 									{
-										if (!$this->getIssueType()->isTask())
+										$this->startWorkingOnIssue($this->getAssignee());
+									}
+
+									$this->addLogEntry(TBGLogTable::LOG_ISSUE_ASSIGNED, $new_name);
+									$is_saved_assignee = true;
+								}
+								break;
+							case '_posted_by':
+								$old_identifiable = ($value['original_value']) ? TBGContext::factory()->TBGUser($value['original_value']) : TBGContext::getI18n()->__('Unknown');
+								$old_name = ($old_identifiable instanceof TBGUser) ? $old_identifiable->getName() : TBGContext::getI18n()->__('Unknown');
+								$new_name = $this->getPostedBy()->getName();
+
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_POSTED, $old_name . ' &rArr; ' . $new_name);
+								break;
+							case '_being_worked_on_by_user':
+								if ($value['original_value'] != 0)
+								{
+									$old_identifiable = TBGContext::factory()->TBGUser($value['original_value']);
+									$old_name = ($old_identifiable instanceof TBGUser) ? $old_identifiable->getName() : TBGContext::getI18n()->__('Unknown');
+								}
+								else
+								{
+									$old_name = TBGContext::getI18n()->__('Not being worked on');
+								}
+								$new_name = ($this->getUserWorkingOnIssue() instanceof TBGUser) ? $this->getUserWorkingOnIssue()->getName() : TBGContext::getI18n()->__('Not being worked on');
+
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_USERS, $old_name . ' &rArr; ' . $new_name);
+								break;
+							case '_owner_team':
+							case '_owner_user':
+								if (!$is_saved_owner)
+								{
+									$new_name = ($this->getOwner() instanceof TBGIdentifiable) ? $this->getOwner()->getName() : TBGContext::getI18n()->__('Not owned by anyone');
+
+									$this->addLogEntry(TBGLogTable::LOG_ISSUE_OWNED, $new_name);
+									$is_saved_owner = true;
+								}
+								break;
+							case '_percent_complete':
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_PERCENT, $value['original_value'] . '% &rArr; ' . $this->getPercentCompleted() . '%');
+								break;
+							case '_resolution':
+								if ($value['original_value'] != 0)
+								{
+									$old_name = ($old_item = TBGContext::factory()->TBGResolution($value['original_value'])) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
+								}
+								else
+								{
+									$old_name = TBGContext::getI18n()->__('Not determined');
+								}
+								$new_name = ($this->getResolution() instanceof TBGDatatype) ? $this->getResolution()->getName() : TBGContext::getI18n()->__('Not determined');
+
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_RESOLUTION, $old_name . ' &rArr; ' . $new_name);
+								break;
+							case '_severity':
+								if ($value['original_value'] != 0)
+								{
+									$old_name = ($old_item = TBGContext::factory()->TBGSeverity($value['original_value'])) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
+								}
+								else
+								{
+									$old_name = TBGContext::getI18n()->__('Not determined');
+								}
+								$new_name = ($this->getSeverity() instanceof TBGDatatype) ? $this->getSeverity()->getName() : TBGContext::getI18n()->__('Not determined');
+
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_SEVERITY, $old_name . ' &rArr; ' . $new_name);
+								break;
+							case '_milestone':
+								if ($value['original_value'] != 0)
+								{
+									$old_name = ($old_item = TBGContext::factory()->TBGMilestone($value['original_value'])) ? $old_item->getName() : TBGContext::getI18n()->__('Not determined');
+								}
+								else
+								{
+									$old_name = TBGContext::getI18n()->__('Not determined');
+								}
+								$new_name = ($this->getMilestone() instanceof TBGMilestone) ? $this->getMilestone()->getName() : TBGContext::getI18n()->__('Not determined');
+
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_MILESTONE, $old_name . ' &rArr; ' . $new_name);
+								break;
+							case '_issuetype':
+								if ($value['original_value'] != 0)
+								{
+									$old_name = ($old_item = TBGContext::factory()->TBGIssuetype($value['original_value'])) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
+								}
+								else
+								{
+									$old_name = TBGContext::getI18n()->__('Unknown');
+								}
+								$new_name = ($this->getIssuetype() instanceof TBGIssuetype) ? $this->getIssuetype()->getName() : TBGContext::getI18n()->__('Unknown');
+
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_ISSUETYPE, $old_name . ' &rArr; ' . $new_name);
+								break;
+							case '_estimated_months':
+							case '_estimated_weeks':
+							case '_estimated_days':
+							case '_estimated_hours':
+							case '_estimated_points':
+								if (!$is_saved_estimated)
+								{
+									$old_time = array('months' => $this->getChangedPropertyOriginal('_estimated_months'),
+														'weeks' => $this->getChangedPropertyOriginal('_estimated_weeks'),
+														'days' => $this->getChangedPropertyOriginal('_estimated_days'),
+														'hours' => $this->getChangedPropertyOriginal('_estimated_hours'),
+														'points' => $this->getChangedPropertyOriginal('_estimated_points'));
+
+									$old_formatted_time = (array_sum($old_time) > 0) ? $this->getFormattedTime($old_time) : TBGContext::getI18n()->__('Not estimated');
+									$new_formatted_time = ($this->hasEstimatedTime()) ? $this->getFormattedTime($this->getEstimatedTime()) : TBGContext::getI18n()->__('Not estimated');
+									$this->addLogEntry(TBGLogTable::LOG_ISSUE_TIME_ESTIMATED, $old_formatted_time . ' &rArr; ' . $new_formatted_time);
+									$is_saved_estimated = true;
+								}
+								break;
+							case '_spent_months':
+							case '_spent_weeks':
+							case '_spent_days':
+							case '_spent_hours':
+							case '_spent_points':
+								if (!$is_saved_spent)
+								{
+									$old_time = array('months' => $this->getChangedPropertyOriginal('_spent_months'),
+														'weeks' => $this->getChangedPropertyOriginal('_spent_weeks'),
+														'days' => $this->getChangedPropertyOriginal('_spent_days'),
+														'hours' => $this->getChangedPropertyOriginal('_spent_hours'),
+														'points' => $this->getChangedPropertyOriginal('_spent_points'));
+
+									$old_formatted_time = (array_sum($old_time) > 0) ? $this->getFormattedTime($old_time) : TBGContext::getI18n()->__('No time spent');
+									$new_formatted_time = ($this->hasSpentTime()) ? $this->getFormattedTime($this->getSpentTime()) : TBGContext::getI18n()->__('No time spent');
+									$this->addLogEntry(TBGLogTable::LOG_ISSUE_TIME_SPENT, $old_formatted_time . ' &rArr; ' . $new_formatted_time);
+									$is_saved_spent = true;
+								}
+								break;
+							case '_state':
+								if ($this->isClosed())
+								{
+									$this->addLogEntry(TBGLogTable::LOG_ISSUE_CLOSE);
+									if ($this->getMilestone() instanceof TBGMilestone)
+									{
+										if ($this->getMilestone()->isSprint())
 										{
-											$this->setSpentPoints($this->getEstimatedPoints());
-										}
-										else
-										{
-											if ($this->getSpentHours() < $this->getEstimatedHours())
+											if (!$this->getIssueType()->isTask())
 											{
-												$this->setSpentHours($this->getEstimatedHours());
+												$this->setSpentPoints($this->getEstimatedPoints());
 											}
-											foreach ($this->getParentIssues() as $parent_issue)
+											else
 											{
-												if ($parent_issue->checkTaskStates())
+												if ($this->getSpentHours() < $this->getEstimatedHours())
 												{
-													$related_issues_to_save[$parent_issue->getID()] = true;
+													$this->setSpentHours($this->getEstimatedHours());
+												}
+												foreach ($this->getParentIssues() as $parent_issue)
+												{
+													if ($parent_issue->checkTaskStates())
+													{
+														$related_issues_to_save[$parent_issue->getID()] = true;
+													}
 												}
 											}
 										}
+										$this->getMilestone()->updateStatus();
 									}
-									$this->getMilestone()->updateStatus();
 								}
-							}
-							else
-							{
-								$this->addLogEntry(TBGLogTable::LOG_ISSUE_REOPEN);
-								$comment_lines[] = TBGContext::getI18n()->__("This issue has been reopened");
-							}
-							break;
-						case '_blocking':
-							if ($this->isBlocking())
-							{
-								$this->addLogEntry(TBGLogTable::LOG_ISSUE_BLOCKED);
-								$comment_lines[] = TBGContext::getI18n()->__("This issue is now blocking the next release");
-							}
-							else
-							{
-								$this->addLogEntry(TBGLogTable::LOG_ISSUE_UNBLOCKED);
-								$comment_lines[] = TBGContext::getI18n()->__("This issue is no longer blocking the next release");
-							}
-							break;
-						default:
-							if (mb_substr($property, 0, 12) == '_customfield')
-							{
-								$key = mb_substr($property, 12);
-								$customdatatype = TBGCustomDatatype::getByKey($key);
-								
-								switch ($customdatatype->getType())
+								else
 								{
-									case TBGCustomDatatype::INPUT_TEXT:
-										$new_value = ($this->getCustomField($key) != '') ? $this->getCustomField($key) : TBGContext::getI18n()->__('Unknown');
-										$this->addLogEntry(TBGLogTable::LOG_ISSUE_CUSTOMFIELD_CHANGED, $new_value);
-										$comment_lines[] = TBGContext::getI18n()->__("The custom field %customfield_name% has been changed to '''%new_value%'''.", array('%customfield_name%' => $customdatatype->getDescription(), '%new_value%' => $new_value));
-
-										break;
-									case TBGCustomDatatype::INPUT_TEXTAREA_SMALL:
-									case TBGCustomDatatype::INPUT_TEXTAREA_MAIN:
-										$new_value = ($this->getCustomField($key) != '') ? $this->getCustomField($key) : TBGContext::getI18n()->__('Unknown');
-										$this->addLogEntry(TBGLogTable::LOG_ISSUE_CUSTOMFIELD_CHANGED, $new_value);
-										$comment_lines[] = TBGContext::getI18n()->__("The custom field %customfield_name% has been changed.", array('%customfield_name%' => $customdatatype->getDescription()));
-										break;
-									case TBGCustomDatatype::EDITIONS_CHOICE:
-									case TBGCustomDatatype::COMPONENTS_CHOICE:
-									case TBGCustomDatatype::RELEASES_CHOICE:
-									case TBGCustomDatatype::STATUS_CHOICE:
-										$old_object = null;
-										$new_object = null;
-										try
-										{
-											switch ($customdatatype->getType())
-											{
-												case TBGCustomDatatype::EDITIONS_CHOICE:
-													$old_object = TBGContext::factory()->TBGEdition($value['original_value']);
-													break;
-												case TBGCustomDatatype::COMPONENTS_CHOICE:
-													$old_object = TBGContext::factory()->TBGComponent($value['original_value']);
-													break;
-												case TBGCustomDatatype::RELEASES_CHOICE:
-													$old_object = TBGContext::factory()->TBGBuild($value['original_value']);
-													break;
-												case TBGCustomDatatype::STATUS_CHOICE:
-													$old_object = TBGContext::factory()->TBGStatus($value['original_value']);
-													break;
-											}
-										}
-										catch (Exception $e) {}
-										try
-										{
-											switch ($customdatatype->getType())
-											{
-												case TBGCustomDatatype::EDITIONS_CHOICE:
-													$new_object = TBGContext::factory()->TBGEdition($this->getCustomField($key));
-													break;
-												case TBGCustomDatatype::COMPONENTS_CHOICE:
-													$new_object = TBGContext::factory()->TBGComponent($this->getCustomField($key));
-													break;
-												case TBGCustomDatatype::RELEASES_CHOICE:
-													$new_object = TBGContext::factory()->TBGBuild($this->getCustomField($key));
-													break;
-												case TBGCustomDatatype::STATUS_CHOICE:
-													$new_object = TBGContext::factory()->TBGStatus($this->getCustomField($key));
-													break;
-											}
-										}
-										catch (Exception $e) {}
-										$old_value = (is_object($old_object)) ? $old_object->getName() : TBGContext::getI18n()->__('Unknown');
-										$new_value = (is_object($new_object)) ? $new_object->getName() : TBGContext::getI18n()->__('Unknown');
-										$this->addLogEntry(TBGLogTable::LOG_ISSUE_CUSTOMFIELD_CHANGED, $old_value . ' &rArr; ' . $new_value);
-										$comment_lines[] = TBGContext::getI18n()->__("The custom field %customfield_name% has been updated, from '''%previous_value%''' to '''%new_value%'''.", array('%customfield_name%' => $customdatatype->getDescription(), '%previous_value%' => $old_value, '%new_value%' => $new_value));
-										break;
-									default:
-										$old_item = null;
-										try
-										{
-											$old_item = ($value['original_value']) ? new TBGCustomDatatypeOption($value['original_value']) : null;
-										}
-										catch (Exception $e) {}
-										$old_value = ($old_item instanceof TBGCustomDatatypeOption) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
-										$new_value = ($this->getCustomField($key) instanceof TBGCustomDatatypeOption) ? $this->getCustomField($key)->getName() : TBGContext::getI18n()->__('Unknown');
-										$this->addLogEntry(TBGLogTable::LOG_ISSUE_CUSTOMFIELD_CHANGED, $old_value . ' &rArr; ' . $new_value);
-										$comment_lines[] = TBGContext::getI18n()->__("The custom field %customfield_name% has been updated to '''%new_value%'''.", array('%customfield_name%' => $customdatatype->getDescription(), '%new_value%' => $new_value));
-										break;
+									$this->addLogEntry(TBGLogTable::LOG_ISSUE_REOPEN);
 								}
-							}
-							break;
+								break;
+							case '_blocking':
+								if ($this->isBlocking())
+								{
+									$this->addLogEntry(TBGLogTable::LOG_ISSUE_BLOCKED);
+								}
+								else
+								{
+									$this->addLogEntry(TBGLogTable::LOG_ISSUE_UNBLOCKED);
+								}
+								break;
+							default:
+								if (mb_substr($property, 0, 12) == '_customfield')
+								{
+									$key = mb_substr($property, 12);
+									$customdatatype = TBGCustomDatatype::getByKey($key);
+
+									switch ($customdatatype->getType())
+									{
+										case TBGCustomDatatype::INPUT_TEXT:
+											$new_value = ($this->getCustomField($key) != '') ? $this->getCustomField($key) : TBGContext::getI18n()->__('Unknown');
+											$this->addLogEntry(TBGLogTable::LOG_ISSUE_CUSTOMFIELD_CHANGED, $customdatatype->getDescription() . ': ' . $new_value);
+											break;
+										case TBGCustomDatatype::INPUT_TEXTAREA_SMALL:
+										case TBGCustomDatatype::INPUT_TEXTAREA_MAIN:
+											$new_value = ($this->getCustomField($key) != '') ? $this->getCustomField($key) : TBGContext::getI18n()->__('Unknown');
+											$this->addLogEntry(TBGLogTable::LOG_ISSUE_CUSTOMFIELD_CHANGED, $customdatatype->getDescription() . ': ' . $new_value);
+											break;
+										case TBGCustomDatatype::EDITIONS_CHOICE:
+										case TBGCustomDatatype::COMPONENTS_CHOICE:
+										case TBGCustomDatatype::RELEASES_CHOICE:
+										case TBGCustomDatatype::STATUS_CHOICE:
+											$old_object = null;
+											$new_object = null;
+											try
+											{
+												switch ($customdatatype->getType())
+												{
+													case TBGCustomDatatype::EDITIONS_CHOICE:
+														$old_object = TBGContext::factory()->TBGEdition($value['original_value']);
+														break;
+													case TBGCustomDatatype::COMPONENTS_CHOICE:
+														$old_object = TBGContext::factory()->TBGComponent($value['original_value']);
+														break;
+													case TBGCustomDatatype::RELEASES_CHOICE:
+														$old_object = TBGContext::factory()->TBGBuild($value['original_value']);
+														break;
+													case TBGCustomDatatype::STATUS_CHOICE:
+														$old_object = TBGContext::factory()->TBGStatus($value['original_value']);
+														break;
+												}
+											}
+											catch (Exception $e) {}
+											try
+											{
+												switch ($customdatatype->getType())
+												{
+													case TBGCustomDatatype::EDITIONS_CHOICE:
+														$new_object = TBGContext::factory()->TBGEdition($this->getCustomField($key));
+														break;
+													case TBGCustomDatatype::COMPONENTS_CHOICE:
+														$new_object = TBGContext::factory()->TBGComponent($this->getCustomField($key));
+														break;
+													case TBGCustomDatatype::RELEASES_CHOICE:
+														$new_object = TBGContext::factory()->TBGBuild($this->getCustomField($key));
+														break;
+													case TBGCustomDatatype::STATUS_CHOICE:
+														$new_object = TBGContext::factory()->TBGStatus($this->getCustomField($key));
+														break;
+												}
+											}
+											catch (Exception $e) {}
+											$old_value = (is_object($old_object)) ? $old_object->getName() : TBGContext::getI18n()->__('Unknown');
+											$new_value = (is_object($new_object)) ? $new_object->getName() : TBGContext::getI18n()->__('Unknown');
+											$this->addLogEntry(TBGLogTable::LOG_ISSUE_CUSTOMFIELD_CHANGED, $customdatatype->getDescription() . ': ' . $old_value . ' &rArr; ' . $new_value);
+											break;
+										default:
+											$old_item = null;
+											try
+											{
+												$old_item = ($value['original_value']) ? new TBGCustomDatatypeOption($value['original_value']) : null;
+											}
+											catch (Exception $e) {}
+											$old_value = ($old_item instanceof TBGCustomDatatypeOption) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
+											$new_value = ($this->getCustomField($key) instanceof TBGCustomDatatypeOption) ? $this->getCustomField($key)->getName() : TBGContext::getI18n()->__('Unknown');
+											$this->addLogEntry(TBGLogTable::LOG_ISSUE_CUSTOMFIELD_CHANGED, $customdatatype->getDescription() . ': ' . $old_value . ' &rArr; ' . $new_value);
+											break;
+									}
+								}
+								break;
+						}
+					}
+				}
+
+				if ($is_saved_estimated)
+				{
+					TBGIssueEstimates::getTable()->saveEstimate($this->getID(), $this->_estimated_months, $this->_estimated_weeks, $this->_estimated_days, $this->_estimated_hours, $this->_estimated_points);
+				}
+
+				if ($is_saved_spent)
+				{
+					TBGIssueSpentTimes::getTable()->saveSpentTime($this->getID(), $this->_spent_months, $this->_spent_weeks, $this->_spent_days, $this->_spent_hours, $this->_spent_points);
+				}
+
+			}
+
+			return $related_issues_to_save;
+		}
+
+		public function triggerSaveEvent($comment, $updated_by)
+		{
+			$log_items = $this->_log_items_added;
+			if ($comment instanceof TBGComment && count($log_items))
+			{
+				if ($comment->getID())
+				{
+					foreach ($log_items as $item)
+					{
+						$item->setComment($comment);
+						$item->save();
 					}
 				}
 			}
-
-			if (count($comment_lines) == 0)
-			{
-				$comment = TBGContext::getI18n()->__("The issue has been updated");
-				$this->comment = $this->addSystemComment(TBGContext::getI18n()->__('Issue updated'), $comment, TBGContext::getUser()->getID());
-				$this->comment_lines = $comment_lines;
-			}
-			else
-			{
-				$comment = TBGContext::getI18n()->__("The issue was updated with the following change(s):%list_of_changes%", array('%list_of_changes%' => "\n* ".join("\n* ", $comment_lines)), true);
-				$this->comment = $this->addSystemComment(TBGContext::getI18n()->__('Issue updated'), $comment, TBGContext::getUser()->getID());
-				$this->comment_lines = $comment_lines;
-			}
-
-			if ($is_saved_estimated)
-			{
-				TBGIssueEstimates::getTable()->saveEstimate($this->getID(), $this->_estimated_months, $this->_estimated_weeks, $this->_estimated_days, $this->_estimated_hours, $this->_estimated_points);
-			}
-
-			if ($is_saved_spent)
-			{
-				TBGIssueSpentTimes::getTable()->saveSpentTime($this->getID(), $this->_spent_months, $this->_spent_weeks, $this->_spent_days, $this->_spent_hours, $this->_spent_points);
-			}
-
-			$this->related_issues_to_save = $related_issues_to_save;
-			$this->_clearChangedProperties();
+			$event = TBGEvent::createNew('core', 'TBGIssue::save', $this, compact('comment', 'log_items', 'updated_by'));
+			$event->trigger();
 		}
-		
+
 		protected function _postSave($is_new)
 		{
-			$this->_clearChangedProperties();
-			if (!$is_new && isset($this->comment) && isset($this->comment_lines))
-			{
-				$event = TBGEvent::createNew('core', 'TBGIssue::save', $this, array('changed_properties' => $this->_getChangedProperties(), 'comment' => $this->comment, 'comment_lines' => $this->comment_lines, 'updated_by' => TBGContext::getUser()));
-				$event->trigger();
-			}
-
 			$this->_saveCustomFieldValues();
-			$this->getProject()->clearRecentActivities();
 
-			if (isset($this->related_issues_to_save))
+			if (!$is_new)
 			{
-				$related_issues_to_save = $this->related_issues_to_save;
+				$related_issues_to_save = $this->_processChanges();
+				$comment = (isset($this->_save_comment)) ? $this->_save_comment : $this->addSystemComment('', TBGContext::getUser()->getID());
 
-				foreach (array_keys($related_issues_to_save) as $i_id)
+				$this->triggerSaveEvent($comment, TBGContext::getUser());
+
+				if (count($related_issues_to_save))
 				{
-					$related_issue = TBGContext::factory()->TBGIssue($i_id);
-					$related_issue->save();
+					foreach (array_keys($related_issues_to_save) as $i_id)
+					{
+						$related_issue = TBGIssuesTable::getTable()->selectById((int) $i_id);
+						$related_issue->save();
+					}
 				}
 			}
-
-			if ($is_new)
+			else
 			{
 				$this->addLogEntry(TBGLogTable::LOG_ISSUE_CREATED, null, false, $this->getPosted());
 				TBGEvent::createNew('core', 'TBGIssue::createNew', $this)->trigger();
 			}
+
+			$this->_clearChangedProperties();
+			$this->_log_items_added = array();
+			$this->getProject()->clearRecentActivities();
+
 			if ($this->getMilestone() instanceof TBGMilestone)
 			{
 				$this->getMilestone()->updateStatus();
 			}
 			
-			unset($this->related_issues_to_save, $this->comment, $this->comment_lines);
 			return true;
 		}
 		
@@ -5108,6 +5072,11 @@
 		{
 			$this->_owner_team = null;
 			$this->_owner_user = null;
+		}
+
+		public function setSaveComment($comment)
+		{
+			$this->_save_comment = $comment;
 		}
 
 	}

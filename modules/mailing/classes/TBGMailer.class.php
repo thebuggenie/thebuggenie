@@ -19,7 +19,7 @@
 	class TBGMailer
 	{
 		const MAIL_TYPE_PHP = 1;
-		const MAIL_TYPE_B2M = 2;
+		const MAIL_TYPE_CUSTOM = 2;
 
 		protected $debug = false;
 
@@ -122,6 +122,7 @@
 				}
 				else
 				{
+					require_once THEBUGGENIE_CORE_PATH . 'lib' . DS . 'swift' . DS . 'lib' . DS . 'swift_required.php';
 					$retval = $this->_mail2($email);
 				}
 			}
@@ -135,8 +136,6 @@
 
 		protected function _mail(TBGMimemail $email)
 		{
-			$boundary = md5(date('U'));
-
 			if (!$this->no_dash_f)
 			{
 				$retval = mail($email->getRecipientsAsString(), $email->getSubject(), $email->getBodyAsString(), $email->getHeadersAsString(false, false), '-f'.$email->getFromAddress());

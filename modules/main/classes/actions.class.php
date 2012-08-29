@@ -2501,61 +2501,55 @@
 		public function runAddComment(TBGRequest $request)
 		{
 			$i18n = TBGContext::getI18n();
-			$comment = null;
 			$comment_applies_type = $request['comment_applies_type'];
 			try
 			{
 				if (!TBGContext::getUser()->canPostComments())
-					throw new Exception($i18n->__('You are not allowed to do this'));
-				else
 				{
-					if ($request['comment_body'] == '')
-						throw new Exception($i18n->__('The comment must have some content'));
-
-					if ($comment_applies_type == TBGComment::TYPE_ISSUE && !$request->isAjaxCall())
-					{
-						$this->comment_lines = array();
-						$this->comment = '';
-						TBGEvent::listen('core', 'TBGIssue::save', array($this, 'listenIssueSaveAddComment'));
-						$issue = TBGContext::factory()->TBGIssue($request['comment_applies_id']);
-						$issue->save(false);
-					}
-
-					if (empty($this->comment) == false) // prevent empty lines when only user comment
-						$comment_body = $this->comment . "\n\n" . $request->getParameter('comment_body', null, false);
-					else
-						$comment_body = $request->getParameter('comment_body', null, false);
-
-					$comment = new TBGComment();
-					$comment->setTitle($i18n->__('Untitled comment'));
-					$comment->setContent($comment_body);
-					$comment->setPostedBy(TBGContext::getUser()->getID());
-					$comment->setTargetID($request['comment_applies_id']);
-					$comment->setTargetType($request['comment_applies_type']);
-					$comment->setReplyToComment($request['reply_to_comment_id']);
-					$comment->setModuleName($request['comment_module']);
-					$comment->setIsPublic((bool) $request['comment_visibility']);
-					$comment->save();
-
-					switch ($comment_applies_type)
-					{
-						case TBGComment::TYPE_ISSUE:
-							$comment_html = $this->getTemplateHTML('main/comment', array('comment' => $comment, 'issue' => TBGContext::factory()->TBGIssue($request['comment_applies_id'])));
-							break;
-						case TBGComment::TYPE_ARTICLE:
-							$comment_html = $this->getTemplateHTML('main/comment', array('comment' => $comment));
-							break;
-						default:
-							$comment_html = 'OH NO!';
-					}
-					
-					if ($comment_applies_type == TBGComment::TYPE_ISSUE)
-					{
-						$issue = TBGContext::factory()->TBGIssue($request['comment_applies_id']);
-						TBGEvent::createNew('core', 'TBGComment::createNew', $issue, array('comment' => $comment))->trigger();
-						$issue->save();
-					}
+					throw new Exception($i18n->__('You are not allowed to do this'));
 				}
+				if (!trim($request['comment_body']))
+				{
+					throw new Exception($i18n->__('The comment must have some content'));
+				}
+
+				$comment = new TBGComment();
+				$comment->setTitle('');
+				$comment->setContent($request->getParameter('comment_body', null, false));
+				$comment->setPostedBy(TBGContext::getUser()->getID());
+				$comment->setTargetID($request['comment_applies_id']);
+				$comment->setTargetType($request['comment_applies_type']);
+				$comment->setReplyToComment($request['reply_to_comment_id']);
+				$comment->setModuleName($request['comment_module']);
+				$comment->setIsPublic((bool) $request['comment_visibility']);
+				$comment->save();
+
+				if ($comment_applies_type == TBGComment::TYPE_ISSUE)
+				{
+					$issue = TBGIssuesTable::getTable()->selectById((int) $request['comment_applies_id']);
+					if (!$request->isAjaxCall())
+					{
+						$issue->setSaveComment($comment);
+					}
+					else
+					{
+						TBGEvent::createNew('core', 'TBGComment::createNew', $comment, compact('issue'))->trigger();
+					}
+					$issue->save();
+				}
+
+				switch ($comment_applies_type)
+				{
+					case TBGComment::TYPE_ISSUE:
+						$comment_html = $this->getTemplateHTML('main/comment', array('comment' => $comment, 'issue' => TBGContext::factory()->TBGIssue($request['comment_applies_id'])));
+						break;
+					case TBGComment::TYPE_ARTICLE:
+						$comment_html = $this->getTemplateHTML('main/comment', array('comment' => $comment));
+						break;
+					default:
+						$comment_html = 'OH NO!';
+				}
+
 			}
 			catch (Exception $e)
 			{
@@ -2574,7 +2568,7 @@
 			}
 			if ($request->isAjaxCall())
 				return $this->renderJSON(array('title' => $i18n->__('Comment added!'), 'comment_data' => $comment_html, 'continue_url' => $request['forward_url'], 'commentcount' => TBGComment::countComments($request['comment_applies_id'], $request['comment_applies_type']/*, $request['comment_module']*/)));
-			if ($comment instanceof TBGComment)
+			if (isset($comment) && $comment instanceof TBGComment)
 				$this->forward($request['forward_url'] . "#comment_{$request['comment_applies_type']}_{$request['comment_applies_id']}_{$comment->getID()}");
 			else
 				$this->forward($request['forward_url']);

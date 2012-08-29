@@ -38,9 +38,9 @@
 				$this->cliEcho("\n");
 				return;
 			}
-			if (!$mailing->getCLIMailingUrl())
+			if (!$mailing->getMailingUrl())
 			{
-				$this->cliEcho("You must configure the CLI mailing url via the web interface before you can use this feature.\n", 'red', 'bold');
+				$this->cliEcho("You must configure the mailing url via the web interface before you can use this feature.\n", 'red', 'bold');
 				$this->cliEcho("\n");
 				return;
 			}
@@ -56,14 +56,14 @@
 			{
 				if (count($messages) > 0)
 				{
-					$mailer = $mailing->getMailer();
+//					$mailer = $mailing->getMailer();
 					$processed_messages = array();
 					$failed_messages = 0;
 					try
 					{
 						foreach ($messages as $message_id => $message)
 						{
-							$retval = $mailer->send($message);
+							$retval = $mailing->send($message);
 							$processed_messages[] = $message_id;
 							if (!$retval) $failed_messages++;
 						}

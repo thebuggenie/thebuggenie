@@ -93,7 +93,7 @@
 			TBGEvent::listen('core', 'TBGUser::addScope', array($this, 'listen_addScope'));
 			TBGEvent::listen('core', 'TBGIssue::createNew', array($this, 'listen_issueCreate'));
 			TBGEvent::listen('core', 'TBGUser::_postSave', array($this, 'listen_createUser'));
-			TBGEvent::listen('core', 'TBGIssue::addSystemComment', array($this, 'listen_TBGComment_createNew'));
+			TBGEvent::listen('core', 'TBGIssue::save', array($this, 'listen_issueSave'));
 			TBGEvent::listen('core', 'TBGComment::createNew', array($this, 'listen_TBGComment_createNew'));
 			TBGEvent::listen('core', 'header_begins', array($this, 'listen_headerBegins'));
 			TBGEvent::listen('core', 'viewissue', array($this, 'listen_viewissue'));
@@ -114,14 +114,14 @@
 		
 		protected function _install($scope)
 		{
-			$this->saveSetting('smtp_host', '');
-			$this->saveSetting('smtp_port', 25);
-			$this->saveSetting('smtp_user', '');
-			$this->saveSetting('smtp_pwd', '');
-			$this->saveSetting('headcharset', TBGContext::getI18n()->getLangCharset());
-			$this->saveSetting('from_name', 'The Bug Genie Automailer');
-			$this->saveSetting('from_addr', '');
-			$this->saveSetting('ehlo', 1);
+			$this->saveSetting('smtp_host', '', 0, $scope);
+			$this->saveSetting('smtp_port', 25, 0, $scope);
+			$this->saveSetting('smtp_user', '', 0, $scope);
+			$this->saveSetting('smtp_pwd', '', 0, $scope);
+			$this->saveSetting('headcharset', TBGContext::getI18n()->getLangCharset(), 0, $scope);
+			$this->saveSetting('from_name', 'The Bug Genie Automailer', 0, $scope);
+			$this->saveSetting('from_addr', '', 0, $scope);
+			$this->saveSetting('ehlo', 1, 0, $scope);
 		}
 		
 		protected function _uninstall()
@@ -139,12 +139,10 @@
 				if ($request->getParameter($setting) !== null || $setting == 'no_dash_f' || $setting == 'activation_needed')
 				{
 					$value = $request->getParameter($setting);
-					$dns_regex = '(\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b|(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\]))';
-					$mail_regex = '(?:[a-z0-9!#$%&\'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&\'*+\/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@';
 					switch($setting)
 					{
 						case 'smtp_host':
-							if ($request['mail_type'] == TBGMailer::MAIL_TYPE_B2M && !tbg_check_syntax($value, "MAILSERVER"))
+							if ($request['mail_type'] == TBGMailer::MAIL_TYPE_CUSTOM && !tbg_check_syntax($value, "MAILSERVER"))
 							{
 								throw new Exception(TBGContext::getI18n()->__('Please provide a valid setting for SMTP server address'));
 							}
@@ -156,13 +154,13 @@
 							}
 							break;
 						case 'timeout':
-							if ($request['mail_type'] == TBGMailer::MAIL_TYPE_B2M && !is_numeric($value) || $value < 0)
+							if ($request['mail_type'] == TBGMailer::MAIL_TYPE_CUSTOM && !is_numeric($value) || $value < 0)
 							{
 								throw new Exception(TBGContext::getI18n()->__('Please provide a valid setting for SMTP server timeout'));
 							}
 							break;
 						case 'smtp_port':
-							if ($request['mail_type'] == TBGMailer::MAIL_TYPE_B2M && !is_numeric($value) || $value < 1)
+							if ($request['mail_type'] == TBGMailer::MAIL_TYPE_CUSTOM && !is_numeric($value) || $value < 1)
 							{
 								throw new Exception(TBGContext::getI18n()->__('Please provide a valid setting for SMTP server port'));
 							}							
@@ -211,34 +209,121 @@
 			foreach ($settings as $setting)
 				$this->saveSetting($setting, 1, $uid);
 		}
+
+		public function generateURL($route, $parameters = array())
+		{
+			$url = TBGContext::getRouting()->generate($route, $parameters);
+			return $this->getMailingUrl() . $url;
+		}
 		
+		public function getEmailTemplates($template, $parameters = array())
+		{
+			if (!array_key_exists('module', $parameters)) $parameters['module'] = $this;
+			$message_plain = TBGAction::returnTemplateHTML("mailing/{$template}.text", $parameters);
+			$html = TBGAction::returnTemplateHTML("mailing/{$template}.html", $parameters);
+			$styles = file_get_contents(THEBUGGENIE_MODULES_PATH . 'mailing' . DS . 'fixtures' . DS . TBGSettings::getThemeName() . '.css');
+			$message_html = <<<EOT
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+	<html>
+		<head>
+			<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+			<style type="text/css">
+				$styles
+			</style>
+		</head>
+		<body>
+			$html
+		</body>
+	</html>
+EOT;
+			return array($message_plain, $message_html);
+		}
+
+		/**
+		 * Gets a configured Swift_Message object
+		 *
+		 * @param Swift_Message $subject
+		 */
+		public function getSwiftMessage($subject, $message_plain, $message_html)
+		{
+			require_once THEBUGGENIE_CORE_PATH . 'lib' . DS . 'swift' . DS . 'lib' . DS . 'swift_required.php';
+			$message = Swift_Message::newInstance();
+			$message->setSubject($subject);
+			$message->setFrom(array($this->getEmailFromAddress() => $this->getEmailFromName()));
+			$message->setBody($message_plain);
+			$message->addPart($message_html, 'text/html');
+			return $message;
+		}
+
+		public function getUsersAndLanguages($users)
+		{
+			$langs = array();
+			foreach ($users as $user)
+			{
+				if ($user instanceof TBGUser)
+				{
+					$user_language = $user->getLanguage();
+					if (!array_key_exists($user_language, $langs)) $langs[$user_language] = array();
+					$langs[$user_language][] = $user;
+				}
+			}
+
+			return $langs;
+		}
+
+		public function getTranslatedMessages($subject, $template, $parameters, $users)
+		{
+			if (!is_array($parameters)) $parameters = array();
+			$langs = $this->getUsersAndLanguages($users);
+			$messages = array();
+			$parameters['module'] = $this;
+
+			foreach ($langs as $language => $users)
+			{
+				$current_language = TBGContext::getI18n()->getCurrentLanguage();
+				try
+				{
+					TBGContext::getI18n()->setLanguage($language);
+					$body_parts = $this->getEmailTemplates($template, $parameters);
+					$subject = TBGContext::getI18n()->__($subject);
+					$message = $this->getSwiftMessage($subject, $body_parts[0], $body_parts[1]);
+					foreach ($users as $user)
+					{
+						$message->addTo($user->getEmail(), $user->getBuddyname());
+					}
+					$messages[] = $message;
+					TBGContext::getI18n()->setLanguage($current_language);
+				}
+				catch (Exception $e)
+				{
+					TBGContext::getI18n()->setLanguage($current_language);
+					throw $e;
+				}
+			}
+
+			return $messages;
+		}
+
 		public function listen_registerUser(TBGEvent $event)
 		{
-			if ($this->isActivationNeeded())
+			if ($this->isActivationNeeded() && $this->isOutgoingNotificationsEnabled())
 			{
+//				The following line is included for the i18n parser to pick up the translatable string:
+//				__('User account registered with The Bug Genie');
+				$subject = 'User account registered with The Bug Genie';
 				$user = $event->getSubject();
 				$password = TBGUser::createPassword(8);
 				$user->setPassword($password);
 				$user->save();
-				if ($this->isOutgoingNotificationsEnabled())
+				$link_to_activate = $this->generateURL('activate', array('user' => str_replace('.', '%2E', $user->getUsername()), 'key' => $user->getHashPassword()));
+				$parameters = compact('user', 'password', 'link_to_activate');
+				$messages = $this->getTranslatedMessages($subject, 'registeruser', $parameters, array($user));
+
+				foreach ($messages as $message)
 				{
-					$subject = TBGContext::getI18n()->__('User account registered with The Bug Genie');
-					$message = $this->createNewTBGMimemailFromTemplate($subject, 'registeruser', array('user' => $user, 'password' => $password), null, array(array('name' => $user->getBuddyname(), 'address' => $user->getEmail())));
-	
-					$message->addReplacementValues(array('%user_buddyname%' => $user->getBuddyname()));
-					$message->addReplacementValues(array('%user_username%' => $user->getUsername()));
-					$message->addReplacementValues(array('%password%' => $password));
-	
-					try
-					{
-						$this->sendMail($message);
-						$event->setProcessed();
-					}
-					catch (Exception $e)
-					{
-						throw $e;
-					}
+					$this->sendMail($message);
 				}
+				$event->setProcessed();
 			}
 		}
 
@@ -246,90 +331,66 @@
 		{
 			if ($this->isOutgoingNotificationsEnabled())
 			{
+//				The following line is included for the i18n parser to pick up the translatable string:
+//				__('Your account in The Bug Genie has been added to a new scope');
+				$subject = 'Your account in The Bug Genie has been added to a new scope';
 				$user = $event->getSubject();
-				$subject = TBGContext::getI18n()->__('Your account in The Bug Genie has been added to a new scope');
 				$scope = $event->getParameter('scope');
-				$message = $this->createNewTBGMimemailFromTemplate($subject, 'addtoscope', array('user' => $user, 'scope' => $scope), null, array(array($user->getBuddyname(), $user->getEmail())));
+				$parameters = compact('user', 'scope');
+				$messages = $this->getTranslatedMessages($subject, 'addtoscope', $parameters, array($user));
 
-				$message->addReplacementValues(array('%user_buddyname%' => $user->getBuddyname()));
-				$message->addReplacementValues(array('%user_username%' => $user->getUsername()));
-
-				try
+				foreach ($messages as $message)
 				{
 					$this->sendMail($message);
-					$event->setProcessed();
 				}
-				catch (Exception $e)
-				{
-					throw $e;
-				}
+				$event->setProcessed();
 			}
 		}
 
-		public function listen_loginPane(TBGEvent $event)
-		{
-			if ($this->isOutgoingNotificationsEnabled())
-			{
-				TBGActionComponent::includeComponent('mailing/forgotPasswordPane', $event->getParameters());
-			}
-		}
-
-		public function listen_loginTab(TBGEvent $event)
-		{
-			if ($this->isOutgoingNotificationsEnabled())
-			{
-				TBGActionComponent::includeComponent('mailing/forgotPasswordTab', $event->getParameters());
-			}
-		}			
-		
 		public function listen_forgottenPassword(TBGEvent $event)
 		{
 			if ($this->isOutgoingNotificationsEnabled())
 			{
-				$subject = TBGContext::getI18n()->__('Password reset');
-				$message = $this->createNewTBGMimemailFromTemplate($subject, 'passwordreset', array('password' => $event->getParameter('password')));
-				$message->addReplacementValues(array('%password%' => $event->getParameter('password')));
-				$this->_sendToUsers($event->getSubject(), $message);
-			}
-		}
-		
-		public function listen_headerBegins(TBGEvent $event)
-		{
+//				The following line is included for the i18n parser to pick up the translatable string:
+//				__('Password reset');
+				$subject = 'Password reset';
+				$user = $event->getSubject();
+				$parameters = array('user' => $user, 'password' => $event->getParameter('password'));
+				$messages = $this->getTranslatedMessages($subject, 'passwordreset', $parameters, array($user));
 
-		}
-		
-		public function listen_userDropdownAnon(TBGEvent $event)
-		{
-			if ($this->isOutgoingNotificationsEnabled())
-			{
-				TBGActionComponent::includeTemplate('mailing/userDropdownAnon', $event->getParameters());
+				foreach ($messages as $message)
+				{
+					$this->sendMail($message);
+				}
 			}
 		}
-		
+
 		public function sendforgottenPasswordEmail($user)
 		{
 			if ($this->isOutgoingNotificationsEnabled())
 			{
-				$subject = TBGContext::getI18n()->__('Forgot your password?');
-				$message = $this->createNewTBGMimemailFromTemplate($subject, 'forgottenpassword', array('user' => $user));
-				$this->_sendToUsers($user, $message);
+//				The following line is included for the i18n parser to pick up the translatable string:
+//				__('Forgot your password?');
+				$subject = 'Forgot your password?';
+				$parameters = compact('user');
+				$messages = $this->getTranslatedMessages($subject, 'forgottenpassword', $parameters, array($user));
+
+				foreach ($messages as $message)
+				{
+					$this->sendMail($message);
+				}
 			}
 		}
-		
+
 		public function sendTestEmail($email_address)
 		{
 			if ($this->isOutgoingNotificationsEnabled())
 			{
-				try
-				{
-					$subject = TBGContext::getI18n()->__('Test email');
-					$message = $this->createNewTBGMimemailFromTemplate($subject, 'testemail', array(), null, array($email_address));
-					return $this->sendMail($message);
-				}
-				catch (Exception $e)
-				{
-					throw $e;
-				}
+				$subject = TBGContext::getI18n()->__('Test email');
+				$body_parts = $this->getEmailTemplates('testemail');
+				$message = $this->getSwiftMessage($subject, $body_parts[0], $body_parts[1]);
+				$message->addTo($email_address);
+				return $this->sendMail($message);
 			}
 			else
 			{
@@ -538,14 +599,6 @@
 			return $uids;
 		}
 		
-		public function listen_viewissue(TBGEvent $event)
-		{
-			if ($this->getSetting(self::NOTIFY_ISSUE_ONCE))
-			{
-				$this->deleteSetting(self::NOTIFY_ISSUE_ONCE . '_' . $event->getSubject()->getID(), $uid);
-			}
-		}
-		
 		public function listen_issueCreate(TBGEvent $event)
 		{
 			if ($this->isOutgoingNotificationsEnabled())
@@ -553,41 +606,53 @@
 				$issue = $event->getSubject();
 				if ($issue instanceof TBGIssue)
 				{
+					$subject = '['.$issue->getProject()->getKey().'] ' . $issue->getIssueType()->getName() . ' ' . $issue->getFormattedIssueNo(true) . ' - ' . html_entity_decode($issue->getTitle(), ENT_COMPAT, TBGContext::getI18n()->getCharset());
+					$parameters = compact('issue');
 					$to_users = $this->_getIssueRelatedUsers($issue);
-					$subject = TBGContext::getI18n()->__('[%project_name%] %issue_type% %issue_no% - %issue_title%', array('%project_name%' => $issue->getProject()->getKey(), '%issue_type%' => TBGContext::getI18n()->__($issue->getIssueType()->getName()), '%issue_no%' => $issue->getFormattedIssueNo(true), '%issue_title%' => html_entity_decode($issue->getTitle(), ENT_COMPAT, TBGContext::getI18n()->getCharset())));
-					$message = $this->createNewTBGMimemailFromTemplate($subject, 'issuecreate', array('issue' => $issue));
-					$this->_sendToUsers($to_users, $message);
+					$messages = $this->getTranslatedMessages($subject, 'issuecreate', $parameters, $to_users);
+
+					foreach ($messages as $message)
+					{
+						$this->sendMail($message);
+					}
 				}
 			}
 		}
 		
-		protected function _sendToUsers($to_users, TBGMimemail $message)
+		public function listen_viewissue(TBGEvent $event)
+		{
+			if ($this->getSetting(self::NOTIFY_ISSUE_ONCE))
+			{
+				$this->deleteSetting(self::NOTIFY_ISSUE_ONCE . '_' . $event->getSubject()->getID(), $uid);
+			}
+		}
+
+		public function listen_loginPane(TBGEvent $event)
 		{
 			if ($this->isOutgoingNotificationsEnabled())
 			{
-				if (!is_array($to_users))
-				{
-					$to_users = array($to_users);
-				}
-				foreach ($to_users as $user)
-				{
-					if ($user instanceof TBGUser && $user->isEnabled() && $user->isActivated() && !$user->isDeleted() && !$user->isGuest() && $user->getEmail())
-					{
-						$message->setLanguage($user->getLanguage());
-						$message->clearRecipients();
-						$message->addReplacementValues(array('%user_buddyname%' => $user->getBuddyname(), '%user_username%' => $user->getUsername()));
-						$message->addTo($user->getEmail(), mb_encode_mimeheader($user->getBuddyname(), TBGContext::getI18n()->getCharset(), 'B'));
+				TBGActionComponent::includeComponent('mailing/forgotPasswordPane', $event->getParameters());
+			}
+		}
 
-						try
-						{
-							$this->sendMail($message);
-						}
-						catch (Exception $e)
-						{
-							$this->log("There was an error when trying to send email to some recipients:\n" . $e->getMessage(), TBGLogging::LEVEL_NOTICE);
-						}
-					}
-				}
+		public function listen_loginTab(TBGEvent $event)
+		{
+			if ($this->isOutgoingNotificationsEnabled())
+			{
+				TBGActionComponent::includeComponent('mailing/forgotPasswordTab', $event->getParameters());
+			}
+		}
+
+		public function listen_headerBegins(TBGEvent $event)
+		{
+
+		}
+
+		public function listen_userDropdownAnon(TBGEvent $event)
+		{
+			if ($this->isOutgoingNotificationsEnabled())
+			{
+				TBGActionComponent::includeTemplate('mailing/userDropdownAnon', $event->getParameters());
 			}
 		}
 
@@ -612,50 +677,7 @@
 			TBGActionComponent::includeTemplate('mailing/projectconfig_panel', array('selected_tab' => $event->getParameter('selected_tab'), 'access_level' => $event->getParameter('access_level'), 'project' => $event->getParameter('project')));
 		}
 		
-		public function listen_TBGComment_createNew(TBGEvent $event)
-		{
-			if ($this->isOutgoingNotificationsEnabled())
-			{
-				$comment = $event->getParameter('comment');
-				if ($comment instanceof TBGComment && $comment->getTargetType() == TBGComment::TYPE_ISSUE)
-				{
-					try
-					{
-						$issue = $event->getSubject();
-						$title = $comment->getTitle();
-						$content = $comment->getContent();
-						$to_users = $this->_getIssueRelatedUsers($issue);
-						
-						$subject = TBGContext::getI18n()->__('Re: [%project_name%] %issue_type% %issue_no% - %issue_title%', array('%project_name%' => $issue->getProject()->getKey(), '%issue_type%' => TBGContext::getI18n()->__($issue->getIssueType()->getName()), '%issue_no%' => $issue->getFormattedIssueNo(true), '%issue_title%' => html_entity_decode($issue->getTitle(), ENT_COMPAT, TBGContext::getI18n()->getCharset())));
-						$message = $this->createNewTBGMimemailFromTemplate($subject, 'issueupdate', array('issue' => $issue, 'comment' => $content, 'updated_by' => $comment->getPostedBy()));
-						$this->_sendToUsers($to_users, $message);
-					}
-					catch (Exception $e)
-					{
-						throw $e;
-					}
-				}
-			}
-		}
-		
-		public function listen_issueSave(TBGEvent $event)
-		{
-			if ($this->isOutgoingNotificationsEnabled())
-			{
-				$issue = $event->getSubject();
-
-				if ($issue instanceof TBGIssue)
-				{
-					$to_users = $this->_getIssueRelatedUsers($issue);
-
-					$subject = TBGContext::getI18n()->__('Re: [%project_name%] %issue_type% %issue_no% - %issue_title%', array('%project_name%' => $issue->getProject()->getKey(), '%issue_type%' => TBGContext::getI18n()->__($issue->getIssueType()->getName()), '%issue_no%' => $issue->getFormattedIssueNo(true), '%issue_title%' => html_entity_decode($issue->getTitle(), ENT_COMPAT, TBGContext::getI18n()->getCharset())));
-					$message = $this->createNewTBGMimemailFromTemplate($subject, 'issueupdate', array('issue' => $issue, 'comment_lines' => $event->getParameter('comment_lines'), 'updated_by' => $event->getParameter('updated_by')));
-					$this->_sendToUsers($to_users, $message);
-				}
-			}
-		}
-
-		public function getCLIMailingUrl($clean = false)
+		public function getMailingUrl($clean = false)
 		{
 			$url = $this->getSetting('cli_mailing_url');
 			if ($clean)
@@ -699,25 +721,24 @@
 		/**
 		 * Retrieve the instantiated and configured mailer object
 		 *
-		 * @return TBGMailer
+		 * @return Swift_Mailer
 		 */
 		public function getMailer()
 		{
 			if ($this->mailer === null)
 			{
-				$this->mailer = new TBGMailer($this->getMailerType());
-				if ($this->mailer->getType() == TBGMailer::MAIL_TYPE_B2M)
+				if ($this->getMailerType() == TBGMailer::MAIL_TYPE_CUSTOM)
 				{
-					$this->mailer->setServer($this->getSmtpHost());
-					$this->mailer->setPort($this->getSmtpPort());
-					$this->mailer->setUsername($this->getSmtpUsername());
-					$this->mailer->setPassword($this->getSmtpPassword());
-					$this->getEhlo() ? $this->mailer->setEhlo() : $this->mailer->setHelo(); 
+					$transport = Swift_SmtpTransport::newInstance($this->getSmtpHost(), $this->getSmtpPort());
+					$transport->setUsername($this->getSmtpUsername());
+					$transport->setPassword($this->getSmtpPassword());
 				}
 				else
 				{
-					$this->mailer->setNoDashF((bool) $this->getSetting('no_dash_f'));
+					$transport = Swift_MailTransport::newInstance();
 				}
+				$mailer = Swift_Mailer::newInstance($transport);
+				$this->mailer = $mailer;
 			}
 
 			return $this->mailer;
@@ -725,9 +746,7 @@
 
 		protected function _setInitialMailValues(TBGMimemail $mail)
 		{
-			$from_name = $this->getEmailFromName();
-			$from_email = $this->getEmailFromAddress();
-			if (!$from_email)
+			if (!$this->getEmailFromAddress())
 			{
 				throw new Exception('The email module does not have a "from" address');
 			}
@@ -735,28 +754,13 @@
 			$pre_html_message = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html><head><meta http-equiv=Content-Type content="text/html; charset=' . $mail->getCharset() . '"><title>' . TBGSettings::getTBGname() . '</title></head><body>';
 			$post_html_message = '</body></html>';
 			$mail->decorateMessageHTML($pre_html_message, $post_html_message);
-			if (TBGContext::isCLI())
-			{
-				$mail->addReplacementValues(array('%thebuggenie_url%' => $this->getCLIMailingUrl() . TBGContext::getRouting()->generate('home')));
-			}
-			else
-			{
-				$mail->addReplacementValues(array('%thebuggenie_url%' => TBGContext::getRouting()->generate('home', array(), false)));
-			}
+			$mail->addReplacementValues(array('%thebuggenie_url%' => $this->getMailingUrl() . TBGContext::getRouting()->generate('home')));
 		}
 		
 		protected function _setAdditionalMailValues(TBGMimemail $mail, array $parameters)
 		{
-			if (TBGContext::isCLI())
-			{
-				$mail->addReplacementValues(array('%link_to_reset_password%' => isset($parameters['user']) ? $this->getCLIMailingUrl() . TBGContext::getRouting()->generate('reset_password', array('user' => str_replace('.', '%2E', $parameters['user']->getUsername()), 'reset_hash' => $parameters['user']->getHashPassword())) : '' ));
-				$mail->addReplacementValues(array('%link_to_activate%' => isset($parameters['user']) ? $this->getCLIMailingUrl() . TBGContext::getRouting()->generate('activate', array('user' => str_replace('.', '%2E', $parameters['user']->getUsername()), 'key' => $parameters['user']->getHashPassword())) : ''));
-			}
-			else
-			{
-				$mail->addReplacementValues(array('%link_to_reset_password%' => isset($parameters['user']) ? TBGContext::getRouting()->generate('reset_password', array('user' => str_replace('.', '%2E', $parameters['user']->getUsername()), 'reset_hash' => $parameters['user']->getHashPassword()), false) : '' ));
-				$mail->addReplacementValues(array('%link_to_activate%' => isset($parameters['user']) ? TBGContext::getRouting()->generate('activate', array('user' => str_replace('.', '%2E', $parameters['user']->getUsername()), 'key' => $parameters['user']->getHashPassword()), false) : ''));
-			}
+			$mail->addReplacementValues(array('%link_to_reset_password%' => isset($parameters['user']) ? $this->getMailingUrl() . TBGContext::getRouting()->generate('reset_password', array('user' => str_replace('.', '%2E', $parameters['user']->getUsername()), 'reset_hash' => $parameters['user']->getHashPassword())) : '' ));
+			$mail->addReplacementValues(array('%link_to_activate%' => isset($parameters['user']) ? $this->getMailingUrl() . TBGContext::getRouting()->generate('activate', array('user' => str_replace('.', '%2E', $parameters['user']->getUsername()), 'key' => $parameters['user']->getHashPassword())) : ''));
 		}
 
 		/**
@@ -813,19 +817,25 @@
 			}
 		}
 
-		public function sendMail(TBGMimemail $mail, $debug = false)
+		public function mail(Swift_Message $message)
+		{
+			require_once THEBUGGENIE_CORE_PATH . 'lib' . DS . 'swift' . DS . 'lib' . DS . 'swift_required.php';
+			$mailer = $this->getMailer();
+			return $mailer->send($message);
+		}
+
+		public function sendMail(Swift_Message $email, $debug = false)
 		{
 			if ($this->isOutgoingNotificationsEnabled())
 			{
 				if ($this->usesEmailQueue())
 				{
-					TBGMailQueueTable::getTable()->addMailToQueue($mail);
+					TBGMailQueueTable::getTable()->addMailToQueue($email);
 					return true;
 				}
 				else
 				{
-					$mailer = $this->getMailer();
-					$retval = $mailer->send($mail);
+					$retval = $this->mail($email);
 				}
 
 				return $retval;

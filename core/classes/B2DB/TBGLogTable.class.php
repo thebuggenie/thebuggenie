@@ -20,12 +20,13 @@
 	 * @package thebuggenie
 	 * @subpackage tables
 	 *
+	 * @Entity(class="TBGLogItem")
 	 * @Table(name="log")
 	 */
 	class TBGLogTable extends TBGB2DBTable 
 	{
 
-		const B2DB_TABLE_VERSION = 1;
+		const B2DB_TABLE_VERSION = 2;
 		const TYPE_ISSUE = 1;
 		
 		const LOG_MILESTONE_REMOVE = 1;
@@ -82,21 +83,8 @@
 		const TEXT = 'log.text';
 		const TIME = 'log.time';
 		const UID = 'log.uid';
+		const COMMENT_ID = 'log.comment_id';
 
-		protected function _initialize()
-		{
-			parent::_setup(self::B2DBNAME, self::ID);
-			parent::_addInteger(self::TARGET, 10);
-			parent::_addInteger(self::TARGET_TYPE, 3);
-			parent::_addInteger(self::CHANGE_TYPE, 3);
-			parent::_addText(self::TEXT, false);
-			parent::_addText(self::PREVIOUS_VALUE, false);
-			parent::_addText(self::CURRENT_VALUE, false);
-			parent::_addInteger(self::TIME, 10);
-			parent::_addForeignKeyColumn(self::UID, TBGUsersTable::getTable(), TBGUsersTable::ID);
-			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
-		}
-		
 		public function createNew($target, $target_type, $change_type, $text = null, $uid = 0, $time = null)
 		{
 			$crit = $this->getCriteria();
