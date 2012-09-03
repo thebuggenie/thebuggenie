@@ -1171,15 +1171,17 @@ EOT;
 							if ($issue instanceof TBGIssue)
 							{
 								$text = preg_replace('#(^\w.+:\n)?(^>.*(\n|$))+#mi', "", $data);
-								$text = trim($text);
+								$text = trim($text);								
 								if (!$this->processIncomingEmailCommand($text, $issue, $user) && $user->canPostComments())
 								{
 									$comment = new TBGComment();
+									$comment->setTitle('Untitled comment');
 									$comment->setContent($text);
 									$comment->setPostedBy($user);
 									$comment->setTargetID($issue->getID());
 									$comment->setTargetType(TBGComment::TYPE_ISSUE);
 									$comment->save();
+									TBGEvent::createNew('core', 'TBGComment::createNew', $issue, array('comment' => $comment))->trigger();								
 								}
 							}
 							else
