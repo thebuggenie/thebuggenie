@@ -649,79 +649,82 @@
 				$crit->addWhere(TBGIssuesTable::SCOPE, $scope->getID());
 				$crit->addWhere(TBGIssuesTable::DELETED, false);
 				$res = $table->doSelect($crit);
-				while ($row = $res->getNextRow())
+				if ($res)
 				{
-					$crit = TBGLogTable::getTable()->getCriteria();
-					$crit->addSelectionColumn(TBGLogTable::UID);
-					$crit->addWhere(TBGLogTable::CHANGE_TYPE, TBGLogTable::LOG_ISSUE_ASSIGNED);
-					$crit->addWhere(TBGLogTable::TARGET, $row->get(TBGIssuesTable::ID));
-					$crit->addWhere(TBGLogTable::TARGET_TYPE, TBGLogTable::TYPE_ISSUE);
-					$crit->addOrderBy(TBGLogTable::TIME, b2db\Criteria::SORT_DESC);
-					$crit->addOrderBy(TBGLogTable::ID, b2db\Criteria::SORT_DESC);
-					
-					if ($row2 = TBGLogTable::getTable()->doSelectOne($crit))
+					while ($row = $res->getNextRow())
 					{
-						$assigned_by = $row2->get(TBGLogTable::UID);
-					}
-			
-					$crit = TBGLogTable::getTable()->getCriteria();
-					$crit->addSelectionColumn(TBGLogTable::UID);
-					$crit->addWhere(TBGLogTable::TARGET, $row->get(TBGIssuesTable::ID));
-					$crit->addWhere(TBGLogTable::TARGET_TYPE, TBGLogTable::TYPE_ISSUE);
-					$crit->addOrderBy(TBGLogTable::TIME, b2db\Criteria::SORT_DESC);
-					$crit->addOrderBy(TBGLogTable::ID, b2db\Criteria::SORT_DESC);
-					
-					if ($row2 = TBGLogTable::getTable()->doSelectOne($crit))
-					{
-						$updated_by = $row2->get(TBGLogTable::UID);
-					}
-					unset($crit);
-					unset($row2);
-					
-					if (array_key_exists('uid_'.$row->get(TBGIssuesTable::POSTED_BY), $offsets['users']))
-					{
-						$offset = $offsets['users']['uid_'.$row->get(TBGIssuesTable::POSTED_BY)];
-					}
-					else
-					{
-						$offset = $offsets['system'];
-					}
-					
-					if (isset($updated_by) && array_key_exists('uid_'.$updated_by, $offsets['users']))
-					{
-						$offset2 = $offsets['users']['uid_'.$updated_by];
-					}
-					elseif (isset($updated_by))
-					{
-						$offset2 = $offsets['system'];
-					}
-					
-					if (isset($assigned_by) && array_key_exists('uid_'.$assigned_by, $offsets['users']))
-					{
-						$offset3 = $offsets['users']['uid_'.$assigned_by];
-					}
-					elseif (isset($assigned_by))
-					{
-						$offset3 = $offsets['system'];
-					}
+						$crit = TBGLogTable::getTable()->getCriteria();
+						$crit->addSelectionColumn(TBGLogTable::UID);
+						$crit->addWhere(TBGLogTable::CHANGE_TYPE, TBGLogTable::LOG_ISSUE_ASSIGNED);
+						$crit->addWhere(TBGLogTable::TARGET, $row->get(TBGIssuesTable::ID));
+						$crit->addWhere(TBGLogTable::TARGET_TYPE, TBGLogTable::TYPE_ISSUE);
+						$crit->addOrderBy(TBGLogTable::TIME, b2db\Criteria::SORT_DESC);
+						$crit->addOrderBy(TBGLogTable::ID, b2db\Criteria::SORT_DESC);
 
-					$crit2 = $table->getCriteria();
-					$crit2->addUpdate(TBGIssuesTable::POSTED, (int) $row->get(TBGIssuesTable::POSTED) + $offset);
+						if ($row2 = TBGLogTable::getTable()->doSelectOne($crit))
+						{
+							$assigned_by = $row2->get(TBGLogTable::UID);
+						}
 
-					if (isset($offset2))
-					{
-						$crit2->addUpdate(TBGIssuesTable::LAST_UPDATED, (int) $row->get(TBGIssuesTable::LAST_UPDATED) + $offset2);
-						unset($offset2);
+						$crit = TBGLogTable::getTable()->getCriteria();
+						$crit->addSelectionColumn(TBGLogTable::UID);
+						$crit->addWhere(TBGLogTable::TARGET, $row->get(TBGIssuesTable::ID));
+						$crit->addWhere(TBGLogTable::TARGET_TYPE, TBGLogTable::TYPE_ISSUE);
+						$crit->addOrderBy(TBGLogTable::TIME, b2db\Criteria::SORT_DESC);
+						$crit->addOrderBy(TBGLogTable::ID, b2db\Criteria::SORT_DESC);
+
+						if ($row2 = TBGLogTable::getTable()->doSelectOne($crit))
+						{
+							$updated_by = $row2->get(TBGLogTable::UID);
+						}
+						unset($crit);
+						unset($row2);
+
+						if (array_key_exists('uid_'.$row->get(TBGIssuesTable::POSTED_BY), $offsets['users']))
+						{
+							$offset = $offsets['users']['uid_'.$row->get(TBGIssuesTable::POSTED_BY)];
+						}
+						else
+						{
+							$offset = $offsets['system'];
+						}
+
+						if (isset($updated_by) && array_key_exists('uid_'.$updated_by, $offsets['users']))
+						{
+							$offset2 = $offsets['users']['uid_'.$updated_by];
+						}
+						elseif (isset($updated_by))
+						{
+							$offset2 = $offsets['system'];
+						}
+
+						if (isset($assigned_by) && array_key_exists('uid_'.$assigned_by, $offsets['users']))
+						{
+							$offset3 = $offsets['users']['uid_'.$assigned_by];
+						}
+						elseif (isset($assigned_by))
+						{
+							$offset3 = $offsets['system'];
+						}
+
+						$crit2 = $table->getCriteria();
+						$crit2->addUpdate(TBGIssuesTable::POSTED, (int) $row->get(TBGIssuesTable::POSTED) + $offset);
+
+						if (isset($offset2))
+						{
+							$crit2->addUpdate(TBGIssuesTable::LAST_UPDATED, (int) $row->get(TBGIssuesTable::LAST_UPDATED) + $offset2);
+							unset($offset2);
+						}
+
+						if (isset($offset3))
+						{
+							$crit2->addUpdate(TBGIssuesTable::BEING_WORKED_ON_BY_USER_SINCE, (int) $row->get(TBGIssuesTable::BEING_WORKED_ON_BY_USER_SINCE) + $offset3);
+							unset($offset3);
+						}
+
+						$crit2->addWhere(TBGIssuesTable::ID, $row->get(TBGIssuesTable::ID));
+						$table->doUpdate($crit2);
 					}
-					
-					if (isset($offset3))
-					{
-						$crit2->addUpdate(TBGIssuesTable::BEING_WORKED_ON_BY_USER_SINCE, (int) $row->get(TBGIssuesTable::BEING_WORKED_ON_BY_USER_SINCE) + $offset3);
-						unset($offset3);
-					}
-					
-					$crit2->addWhere(TBGIssuesTable::ID, $row->get(TBGIssuesTable::ID));
-					$table->doUpdate($crit2);
 				}
 
 				// LOG
