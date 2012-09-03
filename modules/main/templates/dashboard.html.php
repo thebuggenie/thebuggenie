@@ -12,7 +12,7 @@
 	<tr>
 		<td id="dashboard_lefthand" class="side_bar<?php echo TBGSettings::getToggle('dashboard_lefthand') ? ' collapsed' : ''; ?>">
 			<?php TBGEvent::createNew('core', 'dashboard_left_top')->trigger(); ?>
-			<div class="collapser_link" onclick="TBG.Main.setToogleState('<?php echo make_url('set_toggle_state', array('key' => 'dashboard_lefthand', 'state' => '')); ?>', !$('dashboard_lefthand').hasClassName('collapsed'));$('dashboard_lefthand').toggleClassName('collapsed');TBG.Core._resizeWatcher();">
+			<div class="collapser_link" onclick="TBG.Main.Dashboard.sidebar('<?php echo make_url('set_toggle_state', array('key' => 'dashboard_lefthand', 'state' => '')); ?>', 'dashboard_lefthand');">
 				<a href="javascript:void(0);">
 					<?php echo image_tag('sidebar_collapse.png', array('class' => 'collapser')); ?>
 					<?php echo image_tag('sidebar_expand.png', array('class' => 'expander')); ?>
@@ -49,7 +49,7 @@
 			<?php TBGEvent::createNew('core', 'dashboard_main_bottom')->trigger(); ?>
 		</td>
 		<td id="dashboard_righthand" class="side_bar<?php echo TBGSettings::getToggle('dashboard_righthand') ? ' collapsed' : ''; ?>">
-			<div class="collapser_link" onclick="TBG.Main.setToogleState('<?php echo make_url('set_toggle_state', array('key' => 'dashboard_righthand', 'state' => '')); ?>', !$('dashboard_righthand').hasClassName('collapsed'));$('dashboard_righthand').toggleClassName('collapsed');TBG.Core._resizeWatcher();">
+			<div class="collapser_link" onclick="TBG.Main.Dashboard.sidebar('<?php echo make_url('set_toggle_state', array('key' => 'dashboard_righthand', 'state' => '')); ?>', 'dashboard_righthand');">
 				<a href="javascript:void(0);">
 					<?php echo image_tag('sidebar_expand.png', array('class' => 'collapser')); ?>
 					<?php echo image_tag('sidebar_collapse.png', array('class' => 'expander')); ?>
