@@ -1164,6 +1164,7 @@ EOT;
 							$data = ($message->getBodyPlain()) ? $message->getBodyPlain() : strip_tags($message->getBodyHTML());
 							if ($data)
 							{
+								if (mb_detect_encoding($data, 'UTF-8', true) === false) $data = utf8_encode($data);
 								$new_data = '';
 								foreach (explode("\n", $data) as $line)
 								{
