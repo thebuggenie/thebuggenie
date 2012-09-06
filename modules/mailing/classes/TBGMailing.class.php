@@ -1158,8 +1158,16 @@
 								$new_data = '';
 								foreach (explode("\n", $data) as $line)
 								{
-									if (trim($line)) $new_data .= $line . "\n";
-									else $new_data .= "\n";
+									$line = trim($line);
+									if ($line)
+									{
+										$line = preg_replace('/^(_{2,}|-{2,})$/', "<hr>", $line);
+										$new_data .= $line . "\n";
+									}
+									else
+									{
+										$new_data .= "\n";
+									}
 								}
 								$data = nl2br($new_data, false);
 							}
