@@ -1011,6 +1011,14 @@ TBG.Main.Dashboard.save = function(url)
 	});
 }
 
+TBG.Main.Dashboard.sidebar = function (url, id)
+{
+	TBG.Main.setToggleState(url, !$(id).hasClassName('collapsed'));
+	$(id).toggleClassName('collapsed');
+	TBG.Core._resizeWatcher();
+	TBG.Core._scrollWatcher();
+}
+
 TBG.Main.Profile.setState = function(url, ind) {
 	TBG.Main.Helpers.ajax(url, {
 		loading: {indicator: ind},
@@ -1063,7 +1071,7 @@ TBG.Main.hideInfobox = function(url, boxkey) {
 	$('infobox_' + boxkey).fade({duration: 0.3});
 };
 
-TBG.Main.setToogleState = function (url, state) {
+TBG.Main.setToggleState = function (url, state) {
 	url += '/' + (state ? '1' : 0);
 	TBG.Main.Helpers.ajax(url, {});
 }
