@@ -1152,6 +1152,16 @@
 
 							$message = $account->getMessage($email);
 							$data = ($message->getBodyPlain()) ? $message->getBodyPlain() : strip_tags($message->getBodyHTML());
+							if ($data)
+							{
+								$new_data = '';
+								foreach (explode("\n", $data) as $line)
+								{
+									if (trim($line)) $new_data .= $line . "\n";
+									else $new_data .= "\n";
+								}
+								$data = nl2br($new_data, false);
+							}
 
 							$matches = array();
 							preg_match(TBGTextParser::getIssueRegex(), mb_decode_mimeheader($email->subject), $matches);
