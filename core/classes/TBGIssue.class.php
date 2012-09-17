@@ -2231,13 +2231,50 @@
 			$var_name = "_customfield{$key}";
 			if (property_exists($this, $var_name))
 			{
-				if ($this->$var_name)
+				$customtype = TBGCustomDatatype::getByKey($key);
+				if ($customtype->getType() == TBGCustomDatatype::CALCULATED_FIELD)
 				{
-					$customtype = TBGCustomDatatype::getByKey($key);
-					if ($customtype->hasCustomOptions() && !$this->$var_name instanceof TBGCustomDatatypeOption)
-					{
-						$this->$var_name = new TBGCustomDatatypeOption($this->$var_name);
+					$result = null;
+					$options = $customtype->getOptions();
+					if (!empty($options)) {
+						$formula = array_pop($options)->getValue();
+
+						preg_match_all('/{([[:alnum:]]+)}/', $formula, $matches);
+
+						$hasValues = false;
+						for($i=0; $i<count($matches[0]); $i++) {
+							$value = $this->getCustomField($matches[1][$i]);
+							if ($value instanceof TBGCustomDatatypeOption) {
+								$value = $value->getValue();
+							}
+							if (is_numeric($value)) {
+								$hasValues = true;
+							}
+							$value = floatval($value);
+							$formula = str_replace($matches[0][$i], $value, $formula);
+						}
+
+						// Check to verify formula only includes numbers and allowed operators
+						if ($hasValues && !preg_match('/[^0-9\+-\/*\(\)%]/', $formula)) {
+							try {
+								$m = new EvalMath();
+								$m->suppress_errors = true;
+								$result = $m->evaluate($formula);
+								if (!empty($m->last_error)) {
+									$result = $m->last_error;
+								} else {
+									$result = round($result, 2);
+								}
+							} catch (Exception $e) {
+								$result = 'N/A';
+							}
+						}
 					}
+					return $result;
+				}
+				elseif ($this->$var_name && $customtype->hasCustomOptions() && !$this->$var_name instanceof TBGCustomDatatypeOption)
+				{
+					$this->$var_name = new TBGCustomDatatypeOption($this->$var_name);
 				}
 				return $this->$var_name;
 			}

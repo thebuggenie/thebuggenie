@@ -26,7 +26,7 @@
 						<label for="new_custom_field_name" style="width: 100px; display: block; float: left;"><?php echo __('Custom type'); ?></label>
 						<select id="new_custom_field_type" name="field_type" style="width: 375px;">
 							<?php foreach (TBGCustomDatatype::getFieldTypes() as $type => $description): ?>
-								<option value="<?php echo $type; ?>"<?php if ($type == TBGCustomDatatype::INPUT_TEXTAREA_MAIN || $type == TBGCustomDatatype::DROPDOWN_CHOICE_TEXT || $type == TBGCustomDatatype::INPUT_TEXT || $type == TBGCustomDatatype::RADIO_CHOICE || $type == TBGCustomDatatype::INPUT_TEXTAREA_SMALL || $type == TBGCustomDatatype::EDITIONS_CHOICE || $type == TBGCustomDatatype::COMPONENTS_CHOICE || $type == TBGCustomDatatype::RELEASES_CHOICE || $type == TBGCustomDatatype::STATUS_CHOICE): ?> selected<?php else: ?> disabled<?php endif; ?>><?php echo $description; ?></option>
+								<option value="<?php echo $type; ?>"><?php echo $description; ?></option>
 							<?php endforeach; ?>
 						</select>
 						<br style="clear: both;">
