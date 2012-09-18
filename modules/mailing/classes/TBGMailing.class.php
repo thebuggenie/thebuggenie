@@ -1161,7 +1161,7 @@
 									$line = trim($line);
 									if ($line)
 									{
-										$line = preg_replace('/^(_{2,}|-{2,})$/', "<hr>", $line);
+										$line = preg_replace('/^(_{2,}|-{2,})$/', "<hr />", $line);
 										$new_data .= $line . "\n";
 									}
 									else
