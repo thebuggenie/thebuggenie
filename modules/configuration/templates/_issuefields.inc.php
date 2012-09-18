@@ -1,4 +1,19 @@
 <?php if ($showitems): ?>
+<?php if (isset($customtype) && $customtype->getType() == TBGCustomDatatype::CALCULATED_FIELD): ?>
+	<div class="header_div" style="margin-top: 15px;">
+		<?php echo __('Formula'); ?>
+	</div>
+	<p><?php echo __('To use a custom field in the formula, enter the field key (displayed in light gray text next to the name) between curly braces.'); ?></p>
+	<p><?php echo __('Example: ({myfield}+{otherfield})/({thirdfield}*2)'); ?></p>
+	<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuefields_add', array('type' => $type)); ?>" onsubmit="TBG.Config.Issuefields.Options.add('<?php echo make_url('configure_issuefields_add', array('type' => $type)); ?>', '<?php echo $type; ?>');return false;" id="add_<?php echo $type; ?>_form">
+		<label for="add_option_<?php echo $type; ?>_itemdata"><?php echo __('Value'); ?></label>
+		<input type="hidden" id="add_option_<?php echo $type; ?>_name" name="name" value="Formula">
+		<?php $value = (!empty($items) ? array_pop($items)->getValue() : ''); ?>
+		<input type="text" id="add_option_<?php echo $type; ?>_itemdata" name="value" value="<?php echo $value ?>" style="width: 400px;">
+		<input type="submit" value="<?php echo __('Save'); ?>" style="margin-right: 5px; font-weight: bold;">
+		<?php echo image_tag('spinning_16.gif', array('style' => 'margin-right: 5px; display: none;', 'id' => 'add_' . $type . '_indicator')); ?>
+	</form>
+<?php else: ?>
 	<div class="header_div" style="margin-top: 15px;">
 		<?php echo __('Existing choices'); ?>
 		<?php echo image_tag('spinning_16.gif', array('style' => 'margin-right: 5px; display: none; float: right;', 'id' => $type . '_sort_indicator')); ?>
@@ -29,4 +44,5 @@
 	<script>
 		Sortable.create('<?php echo $type; ?>_list', {constraint: '', onUpdate: function(container) { TBG.Config.Issuefields.saveOrder(container, '<?php echo $type; ?>', '<?php echo make_url('configure_issuefields_saveorder', array('type' => $type)); ?>'); }});
 	</script>
+<?php endif; ?>
 <?php endif; ?>

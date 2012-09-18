@@ -22,6 +22,7 @@
 		const USER_CHOICE = 14;
 		const TEAM_CHOICE = 15;
 		const USER_OR_TEAM_CHOICE = 17;
+		const CALCULATED_FIELD = 18;
 
 		protected static $_types = null;
 
@@ -83,6 +84,7 @@
 			// $types[self::EDITIONS_LIST] = $i18n->__('Add one or more editions from the list of available editions');
 			$types[self::EDITIONS_CHOICE] = $i18n->__('Select a edition from the list of available editions');
 			$types[self::STATUS_CHOICE] = $i18n->__('Dropdown list with statuses');
+			$types[self::CALCULATED_FIELD] = $i18n->__('Calculated Field');
 			// $types[self::USER_CHOICE] = $i18n->__('Find and pick a user');
 			// $types[self::TEAM_CHOICE] = $i18n->__('Find and pick a team');
 			// $types[self::USER_OR_TEAM_CHOICE] = $i18n->__('Find and pick a user or a team');
@@ -139,7 +141,11 @@
 
 		public static function getCustomChoiceFieldsAsArray()
 		{
-			return array(self::CHECKBOX_CHOICES, self::DROPDOWN_CHOICE_TEXT, self::RADIO_CHOICE);
+			return array(self::CHECKBOX_CHOICES,
+						self::DROPDOWN_CHOICE_TEXT,
+						self::RADIO_CHOICE,
+						self::CALCULATED_FIELD
+            );
 		}
 
 		public static function getChoiceFieldsAsArray()
@@ -178,6 +184,14 @@
 
 		public function createNewOption($name, $value, $itemdata = null)
 		{
+			if ($this->getType() == self::CALCULATED_FIELD) {
+				// Only allow one option/formula for the calculated field
+				$opts = $this->getOptions();
+				foreach ($opts as $option) {
+					$option->delete();
+				}
+			}
+
 			$option = new TBGCustomDatatypeOption();
 			$option->setName($name);
 			$option->setItemtype($this->_itemtype);
@@ -296,6 +310,34 @@
 		 */
 		public function isVisibleForIssuetype($issuetype_id)
 		{
+			return true;
+		}
+
+		/**
+		 * Whether or not this custom data type is searchable from the Issues filter
+		 *
+		 * @return bool
+		 */
+		public function isSearchable()
+		{
+			switch ($this->getType()) {
+				case self::CALCULATED_FIELD:
+					return false;
+			}
+			return true;
+		}
+
+		/**
+		 * Whether or not this custom data type is editable from the Issues detail page
+		 *
+		 * @return bool
+		 */
+		public function isEditable()
+		{
+			switch ($this->getType()) {
+				case self::CALCULATED_FIELD:
+					return false;
+			}
 			return true;
 		}
 

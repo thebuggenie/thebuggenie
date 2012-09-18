@@ -48,6 +48,7 @@
 						<option value="posted"><?php echo __("Date reported - when was the issue reported"); ?></option>
 						<option value="last_updated"><?php echo __("Date last updated - when was the issue last updated"); ?></option>
 						<?php foreach (TBGCustomDatatype::getAll() as $customdatatype): ?>
+							<?php if (!$customdatatype->isSearchable()) { continue; } ?>
 							<option value="<?php echo $customdatatype->getKey(); ?>"><?php echo __($customdatatype->getDescription()); ?></option>
 						<?php endforeach; ?>
 					</select>

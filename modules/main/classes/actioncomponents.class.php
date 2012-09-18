@@ -168,6 +168,7 @@
 					$customfields_list[$key] = array('type' => $customdatatype->getType(),
 													'title' => $i18n->__($customdatatype->getDescription()),
 													'visible' => $this->issue->isFieldVisible($key),
+													'editable' => $customdatatype->isEditable(),
 													'changed' => $this->issue->$changed_methodname(),
 													'merged' => $this->issue->$merged_methodname(),
 													'change_tip' => $i18n->__($customdatatype->getInstructions()),
@@ -175,7 +176,14 @@
 													'clear' => $i18n->__('Clear this field'),
 													'select' => $i18n->__('%clear_this_field% or click to set a new value', array('%clear_this_field%' => '')));
 
-					if ($customdatatype->hasCustomOptions())
+					if ($customdatatype->getType() == TBGCustomDatatype::CALCULATED_FIELD)
+					{
+						$result = $this->issue->getCustomField($key);
+						$customfields_list[$key]['name'] = $result;
+						$customfields_list[$key]['name_visible'] = !is_null($result);
+						$customfields_list[$key]['noname_visible'] = is_null($result);
+					}
+					elseif ($customdatatype->hasCustomOptions())
 					{
 						$customfields_list[$key]['name'] = ($customvalue instanceof TBGCustomDatatypeOption) ? $customvalue->getName() : '';
 						$customfields_list[$key]['name_visible'] = (bool) ($customvalue instanceof TBGCustomDatatypeOption);
