@@ -399,8 +399,9 @@
 		public function listen_MenustripLinks(TBGEvent $event)
 		{
 			$project_url = (TBGContext::isProjectContext()) ? TBGContext::getRouting()->generate('publish_article', array('article_name' => ucfirst(TBGContext::getCurrentProject()->getKey()).':MainPage')) : null;
+			$wiki_url = (TBGContext::isProjectContext() && TBGContext::getCurrentProject()->hasWikiURL()) ? TBGContext::getCurrentProject()->getWikiURL() : null;
 			$url = TBGContext::getRouting()->generate('publish');
-			TBGActionComponent::includeTemplate('publish/menustriplinks', array('url' => $url, 'project_url' => $project_url, 'selected_tab' => $event->getParameter('selected_tab')));
+			TBGActionComponent::includeTemplate('publish/menustriplinks', array('url' => $url, 'project_url' => $project_url, 'wiki_url' => $wiki_url, 'selected_tab' => $event->getParameter('selected_tab')));
 		}
 
 		public function listen_createNewProject(TBGEvent $event)

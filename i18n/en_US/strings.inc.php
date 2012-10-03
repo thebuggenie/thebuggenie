@@ -710,6 +710,7 @@
 	$strings['Documentation: A documentation issue'] = 'Documentation: A documentation issue';
 	$strings['Documentation request'] = 'Documentation request';
 	$strings['Documentation URL'] = 'Documentation URL';
+	$strings['Wiki URL'] = 'Wiki URL';
 	$strings['Done'] = 'Done';
 	$strings['Do nothing'] = 'Do nothing';
 	$strings['Don\'t change the password'] = 'Don\'t change the password';
@@ -1243,6 +1244,7 @@
 	$strings['No description provided'] = 'No description provided';
 	$strings['No description set'] = 'No description set';
 	$strings['No documentation URL provided'] = 'No documentation URL provided';
+	$strings['No wiki URL provided'] = 'No wiki URL provided';
 	$strings['no, don\'t delete it'] = 'no, don\'t delete it';
 	$strings['No error message provided'] = 'No error message provided';
 	$strings['No files have been affected by this commit'] = 'No files have been affected by this commit';

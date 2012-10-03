@@ -188,6 +188,14 @@
 		 * @Column(type="string", length=200)
 		 */
 		protected $_doc_url = '';
+
+		/**
+		 * The projects wiki URL
+		 * 
+		 * @var string
+		 * @Column(type="string", length=200)
+		 */
+		protected $_wiki_url = '';
 		
 		/**
 		 * The project description
@@ -951,6 +959,36 @@
 		public function setDocumentationURL($doc_url)
 		{
 			$this->_doc_url = $doc_url;
+		}
+
+		/**
+		 * Returns the wiki url
+		 *
+		 * @return string
+		 */
+		public function getWikiURL()
+		{
+			return $this->_wiki_url;
+		}
+		
+		/**
+		 * Returns whether or not this project has a wiki set
+		 * 
+		 * @return boolean
+		 */
+		public function hasWikiURL()
+		{
+			return ($this->_wiki_url != '') ? true : false;
+		}
+		
+		/**
+		 * Set the projects wiki url
+		 *
+		 * @param string $wiki_url
+		 */
+		public function setWikiURL($wiki_url)
+		{
+			$this->_wiki_url = $wiki_url;
 		}
 		
 		/**
