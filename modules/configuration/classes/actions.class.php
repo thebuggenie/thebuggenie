@@ -18,6 +18,7 @@
 		const CSV_PROJECT_QA_TYPE          = 'qa_type';
 		const CSV_PROJECT_DESCR            = 'descr';
 		const CSV_PROJECT_DOC_URL          = 'doc_url';
+		const CSV_PROJECT_WIKI_URL         = 'wiki_url';
 		const CSV_PROJECT_FREELANCE        = 'freelance';
 		const CSV_PROJECT_EN_BUILDS        = 'en_builds';
 		const CSV_PROJECT_EN_COMPS         = 'en_comps';
@@ -2967,6 +2968,9 @@
 									
 								if (isset($activerow[self::CSV_PROJECT_DOC_URL]))
 									$project->setDocumentationUrl($activerow[self::CSV_PROJECT_DOC_URL]);
+
+								if (isset($activerow[self::CSV_PROJECT_WIKI_URL]))
+									$project->setWikiUrl($activerow[self::CSV_PROJECT_WIKI_URL]);
 									
 								if (isset($activerow[self::CSV_PROJECT_FREELANCE]))
 								{
