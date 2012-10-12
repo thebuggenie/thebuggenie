@@ -1664,9 +1664,6 @@
 				if ($request->hasParameter('doc_url'))
 					$this->selected_project->setDocumentationURL($request['doc_url']);
 
-				if ($request->hasParameter('wiki_url'))
-					$this->selected_project->setWikiURL($request['wiki_url']);
-
 				if ($request->hasParameter('released'))
 					$this->selected_project->setReleased((int) $request['released']);
 
