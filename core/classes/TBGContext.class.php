@@ -1111,7 +1111,7 @@
 		/**
 		 * Returns an array of modules
 		 *
-		 * @return array
+		 * @return array|TBGModule
 		 */
 		public static function getModules()
 		{
