@@ -193,7 +193,7 @@
 				}
 				if ($row === null)
 				{
-					$row = self::getB2DBTable()->getByID($id);
+					$row = static::getB2DBTable()->getByID($id);
 				}
 
 				if (!$row instanceof Row)
