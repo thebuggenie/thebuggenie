@@ -93,16 +93,38 @@
 
   			if (!TBGContext::getScope() instanceof TBGScope) throw new Exception('No scope??');
 
-			TBGLogging::log('installing module ' . $module_name);
-			$module_id = TBGModulesTable::getTable()->installModule($module_name, $classname, $version, $scope_id);
-
-			if (!class_exists($classname))
+			if ($scope_id != TBGContext::getScope()->getID())
 			{
-				throw new Exception('Can not load new instance of type ' . $classname . ', is not loaded');
+				$prev_scope = TBGContext::getScope();
+				TBGContext::setScope($scope);
 			}
+			TBGLogging::log('installing module ' . $module_name);
+			try
+			{
+				$module_id = TBGModulesTable::getTable()->installModule($module_name, $classname, $version, $scope_id);
 
-			$module = new $classname($module_id);
-			$module->install($scope_id);
+				if (!class_exists($classname))
+				{
+					throw new Exception('Can not load new instance of type ' . $classname . ', is not loaded');
+				}
+
+				$module = new $classname($module_id);
+				$module->install($scope_id);
+			}
+			catch (\Exception $e)
+			{
+				if (isset($prev_scope))
+				{
+					TBGContext::setScope($prev_scope);
+					TBGContext::clearPermissionsCache();
+				}
+				throw $e;
+			}
+			if (isset($prev_scope))
+			{
+				TBGContext::setScope($prev_scope);
+				TBGContext::clearPermissionsCache();
+			}
 
 			return $module;
 		}
