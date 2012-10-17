@@ -60,9 +60,6 @@
 		
 		protected function _loadFixtures($scope)
 		{
-			TBGVCSIntegrationCommitsTable::getTable()->createIndexes();
-			TBGVCSIntegrationFilesTable::getTable()->createIndexes();
-			TBGVCSIntegrationIssueLinksTable::getTable()->createIndexes();
 		}
 		
 		protected function _addListeners()
