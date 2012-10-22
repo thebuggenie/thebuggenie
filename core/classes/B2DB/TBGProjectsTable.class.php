@@ -43,6 +43,7 @@
 		const CLIENT = 'projects.client';
 		const DESCRIPTION = 'projects.description';
 		const DOC_URL = 'projects.doc_url';
+		const WIKI_URL = 'projects.wiki_url';
 		const RELEASED = 'projects.isreleased';
 		const PLANNED_RELEASED = 'projects.isplannedreleased';
 		const RELEASE_DATE = 'projects.release_date';

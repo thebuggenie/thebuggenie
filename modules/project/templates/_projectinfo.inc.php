@@ -129,6 +129,18 @@
 			<?php endif; ?>
 		</td>
 	</tr>
+	<tr>
+		<td><label for="wiki_url"><?php echo __('Wiki URL'); ?></label></td>
+		<td>
+			<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
+				<input type="text" name="wiki_url" id="wiki_url" value="<?php echo $project->getWikiURL(); ?>" style="width: 100%;">
+			<?php elseif ($project->hasWikiURL()): ?>
+				<a href="<?php echo $project->getWikiURL(); ?>"><?php echo $project->getWikiURL(); ?></a>
+			<?php else: ?>
+				<span class="faded_out"><?php echo __('No wiki URL provided'); ?></span>
+			<?php endif; ?>
+		</td>
+	</tr>
 	<?php TBGEvent::createNew('core', 'project/projectinfo', $project)->trigger(); ?>
 <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 	<tr>
