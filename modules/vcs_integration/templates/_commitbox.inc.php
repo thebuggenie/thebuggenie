@@ -98,7 +98,7 @@
 							
 							$link_file = $base_url.str_replace('%file%', $file->getFile(), $link_file);
 							
-							$link_diff = str_replace('%revno%', $revision, TBGContext::getModule('vcs_integration')->getSetting('blob_url_' . $projectId));
+							$link_diff = str_replace('%revno%', $revision, TBGContext::getModule('vcs_integration')->getSetting('diff_url_' . $projectId));
 							$link_diff = str_replace('%oldrev%', $oldrevision, $link_diff);
 							
 							if ($branchname !== null)
@@ -108,7 +108,7 @@
 							
 							$link_diff = $base_url.str_replace('%file%', $file->getFile(), $link_diff);
 							
-							$link_view = str_replace('%revno%', $revision, TBGContext::getModule('vcs_integration')->getSetting('diff_url_' . $projectId));
+							$link_view = str_replace('%revno%', $revision, TBGContext::getModule('vcs_integration')->getSetting('blob_url_' . $projectId));
 							$link_view = str_replace('%oldrev%', $oldrevision, $link_view);
 							
 							if ($branchname !== null)
