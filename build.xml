@@ -14,9 +14,17 @@
     <property name="po_file_name" value="messages.po"/>
     <property name="po_file_backup_name" value="messages_old.po"/>
 
+    <property name="ts_file_name" value="strings.inc.ts"/>
+    <property name="ts_file_backup_name" value="strings._bak_.ts"/>
+    
     <property name="strings_file_name" value="strings.inc.php"/>
     <property name="strings_file_backup_name" value="strings._bak_.php"/>
 
+    <!-- ============================================  -->
+    <!-- Locale settings                               -->
+    <!-- ============================================  -->
+    <property name="base_locale" value="en_US" />
+    
     <!-- =================================================================  -->
     <!-- Path to gettext tools binaries                                     -->
     <!-- For Windows systems, download gettext from the following site:     -->
@@ -25,19 +33,10 @@
     <!--  or specify the /bin directory path in toolsDir property.          -->
     <!-- =================================================================  -->
     <property name="tools_dir" value="" description="Path to gettext tools bin directory"/>
-    <property name="xgettext_executable" value="xgettext"/>
-    <property name="msgmerge_executable" value="msgmerge"/>
+    <property name="xgettext_executable" value="xgettext.exe"/>
+    <property name="msgmerge_executable" value="msgmerge.exe"/>
 
     <property name="xgettext_keyword" value="__" description="Name of the i18n function"/>
-
-    <!-- Updating properties if tools_dir is specified -->
-    <if>
-        <isset property="tools_dir"/>
-        <then>
-            <property name="xgettext_executable" value="${tools_dir}/${xgettext_executable}"/>
-            <property name="msgmerge_executable" value="${tools_dir}/${msgmerge_executable}"/>
-        </then>
-    </if>
 
     <!-- ============================================  -->
     <!-- Fileset for gettext tools                     -->
@@ -90,6 +89,7 @@
         <echo msg="Deleting old translation files in ${current_locale_array}"/>
         <delete failonerror="false" file="${current_locale_abs}/${po_file_name}"/>
         <delete failonerror="false" file="${current_locale_abs}/${po_file_backup_name}"/>
+        <delete failonerror="false" file="${current_locale_abs}/${ts_file_backup_name}"/>
         <delete failonerror="false" file="${current_locale_abs}/${strings_file_backup_name}"/>
     </target>
 
@@ -146,15 +146,15 @@
         <if>
             <available file="${localesDir}/${po_file_name}" property="existingPoFile" value="true"/>
             <then>
-                <echo msg="${xgettext_executable} --from-code=UTF-8 --no-wrap --keyword=${xgettext_keyword} --keyword -n -j -F ${gettext_file_abs} -o ${localesDir}/${po_file_name}"/>
+                <echo msg="${tools_dir}${xgettext_executable} --from-code=UTF-8 --no-wrap --keyword=${xgettext_keyword} --keyword -n -j -F ${gettext_file_abs} -o ${localesDir}/${po_file_name}"/>
                 <exec dir="${project.basedir}"
-                      command="${xgettext_executable} --from-code=UTF-8 --no-wrap --keyword=${xgettext_keyword} --keyword -n -j -F ${gettext_file_abs} -o ${localesDir}/${po_file_name}"
+                      command="${tools_dir}${xgettext_executable} --from-code=UTF-8 --no-wrap --keyword=${xgettext_keyword} --keyword -n -j -F ${gettext_file_abs} -o ${localesDir}/${po_file_name}"
                       logoutput="true"/>
             </then>
             <else>
-                <echo msg="${xgettext_executable} --from-code=UTF-8 --no-wrap --keyword=${xgettext_keyword} --keyword -n -F ${gettext_file_abs} -o ${localesDir}/${po_file_name}"/>
+                <echo msg="${tools_dir}${xgettext_executable} --from-code=UTF-8 --no-wrap --keyword=${xgettext_keyword} --keyword -n -F ${gettext_file_abs} -o ${localesDir}/${po_file_name}"/>
                 <exec dir="${project.basedir}"
-                      command="${xgettext_executable} --from-code=UTF-8 --no-wrap --keyword=${xgettext_keyword} --keyword -n -F ${gettext_file_abs} -o ${localesDir}/${po_file_name}"
+                      command="${tools_dir}${xgettext_executable} --from-code=UTF-8 --no-wrap --keyword=${xgettext_keyword} --keyword -n -F ${gettext_file_abs} -o ${localesDir}/${po_file_name}"
                       logoutput="true"/>
             </else>
         </if>
@@ -194,10 +194,50 @@
               logoutput="true"/>
 
         <move file="${localesDir}/${current_locale_array}/${strings_file_name}"
-              tofile="${localesDir}/${current_locale_array}/${strings_file_backup_name}"/>
+              tofile="${localesDir}/${current_locale_array}/${strings_file_backup_name}"
+              tstamp="true"/>
+
+        <if>
+            <available file="${localesDir}/${current_locale_array}/${ts_file_name}" property="tsFileExists" value="true"/>
+            <then>
+                <echo msg="TS File exists."/>
+
+                <php function="filemtime" returnProperty="ts_timestamp">
+                    <param value="${localesDir}/${current_locale_array}/${ts_file_name}"/>
+                </php>
+
+                <php function="filemtime" returnProperty="strings_timestamp">
+                    <param value="${localesDir}/${current_locale_array}/${strings_file_backup_name}"/>
+                </php>
+
+                <echo msg="TS File timestamp is: ${ts_timestamp}"/>
+                <echo msg="Strings File timestamp is: ${strings_timestamp}"/>
+
+                <php expression="${ts_timestamp} > ${strings_timestamp}" returnProperty="tsIsNewer" />
+
+                <if>
+                    <isfalse value="${tsIsNewer}" />
+                    <then>
+                        <echo msg="TS File is older, updating TS file..." />
+
+                        <exec dir="${localesDir}"
+                              command="php -f ./_tools/convert_to_ts.php ./${current_locale_array}/ ${base_locale} ${po_file_name} ${current_locale_array} ${ts_file_name}"
+                              logoutput="true"/>
+                    </then>
+                </if>
+
+            </then>
+            <else>
+                <echo msg="TS File not exists, generating..." />
+
+                <exec dir="${localesDir}"
+                      command="php -f ./_tools/convert_to_ts.php ./${current_locale_array}/ ${base_locale} ${po_file_name} ${current_locale_array} ${ts_file_name}"
+                      logoutput="true"/>
+            </else>
+        </if>
 
         <exec dir="${localesDir}"
-              command="php -f ./_tools/convert_to_array.php ./${current_locale_array}/ en_US ${po_file_name} ${current_locale_array} ${strings_file_name}"
+              command="php -f ./_tools/convert_to_array.php ./${current_locale_array}/ ${base_locale} ${ts_file_name} ${current_locale_array} ${strings_file_name}"
               logoutput="true"/>
 
         <if>
@@ -206,9 +246,14 @@
             <else>
                 <echo msg="New strings file is missing in ${current_locale_array}, restoring backup"/>
                 <copy file="${localesDir}/${current_locale_array}/${strings_file_backup_name}"
-                      tofile="${localesDir}/${current_locale_array}/${strings_file_name}"/>
+                      tofile="${localesDir}/${current_locale_array}/${strings_file_name}"
+                      tstamp="true"/>
             </else>
         </if>
+
+        <echo msg="Touching files to match mtime..."/>
+        <touch file="${localesDir}/${current_locale_array}/${strings_file_name}" />
+        <touch file="${localesDir}/${current_locale_array}/${ts_file_name}" />
 
         <if>
             <equals arg1="${keepDebugFiles}" arg2="N" casesensitive="true" trim="true"/>
