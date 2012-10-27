@@ -13,7 +13,7 @@
 			</span>
 		</h1>
 		<h3 style="margin-top: 0; padding-top: 0;">Beautiful issue tracking and project management</h3>
-		<?php echo __('The Bug Genie is an issue tracking system with a strong focus on being friendly &ndash; both for regular users and power users'); ?>.<br>
+		<?php echo __('The Bug Genie is an issue tracking system with a strong focus on being friendly – both for regular users and power users'); ?>.<br>
 		<br>
 		<?php echo __('The Bug Genie follows an open development model, and is released under an open source software license called the MPL (Mozilla Public License). This license gives you the freedom to pick up the sourcecode for The Bug Genie and work with it any way you need.'); ?><br>
 		<br>

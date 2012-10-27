@@ -1,7 +1,7 @@
 <?php
 
-// Number of Sections: 268
-// Updated at: 2012 Jun 22.
+// Number of Sections: 272
+// Updated at: 2012 Oct 27.
 // Translator: 
 // Translator email: 
 
@@ -147,12 +147,14 @@
   $strings['Select a component from the list of available components'] = 'Select a component from the list of available components';
   $strings['Select a edition from the list of available editions'] = 'Select a edition from the list of available editions';
   $strings['Dropdown list with statuses'] = 'Dropdown list with statuses';
+  $strings['Calculated Field'] = 'Calculated Field';
   $strings['This field key already exists'] = 'This field key already exists';
 
 // First occurrence is in: .\core\classes\TBGDashboardView.class.php
 // ----------------------------------------------------------------------------
   $strings['Issues reported by me'] = 'Issues reported by me';
   $strings['Open issues assigned to me'] = 'Open issues assigned to me';
+  $strings['Open issues owned by me'] = 'Open issues owned by me';
   $strings['Open issues assigned to my teams'] = 'Open issues assigned to my teams';
   $strings["What you've done recently"] = "What you've done recently";
   $strings['Recent comments'] = 'Recent comments';
@@ -191,7 +193,6 @@
   $strings['Will affect average number of users'] = 'Will affect average number of users';
   $strings['Will only affect a few users'] = 'Will only affect a few users';
   $strings['Will affect almost no one'] = 'Will affect almost no one';
-  $strings['This issue has been deleted'] = 'This issue has been deleted';
   $strings['Unknown issuetype'] = 'Unknown issuetype';
   $strings['%number_of% months'] = '%number_of% months';
   $strings['1 month'] = '1 month';
@@ -204,85 +205,33 @@
   $strings['%number_of% points'] = '%number_of% points';
   $strings['1 point'] = '1 point';
   $strings['No time'] = 'No time';
+  $strings['A file was uploaded. %link_to_file% This comment was attached: %comment%'] = 'A file was uploaded. %link_to_file% This comment was attached: %comment%';
+  $strings['A file was uploaded. %link_to_file%'] = 'A file was uploaded. %link_to_file%';
   $strings['This issue no longer depends on the solution of issue %issue_no%'] = 'This issue no longer depends on the solution of issue %issue_no%';
-  $strings['Issue dependancy removed'] = 'Issue dependancy removed';
   $strings['Issue %issue_no% no longer depends on the solution of this issue'] = 'Issue %issue_no% no longer depends on the solution of this issue';
   $strings['This %this_issuetype% now depends on the solution of %issuetype% %issue_no%'] = 'This %this_issuetype% now depends on the solution of %issuetype% %issue_no%';
-  $strings['Dependancy added'] = 'Dependancy added';
   $strings['%issuetype% %issue_no% now depends on the solution of this %this_issuetype%'] = '%issuetype% %issue_no% now depends on the solution of this %this_issuetype%';
   $strings["'%release_name%' added"] = "'%release_name%' added";
-  $strings["'''%release_name%''' is now affected by this issue"] = "'''%release_name%''' is now affected by this issue";
-  $strings['Affected releases'] = 'Affected releases';
   $strings["'%edition_name%' added"] = "'%edition_name%' added";
-  $strings["'''%edition_name%''' is now affected by this issue"] = "'''%edition_name%''' is now affected by this issue";
-  $strings['Affected editions'] = 'Affected editions';
   $strings["'%component_name%' added"] = "'%component_name%' added";
-  $strings["'''%component_name%''' is now affected by this issue"] = "'''%component_name%''' is now affected by this issue";
-  $strings['Affected components'] = 'Affected components';
   $strings["'%item_name%' removed"] = "'%item_name%' removed";
-  $strings['Affected edition removed'] = 'Affected edition removed';
-  $strings["Edition '''%edition%''' is no longer affected by issue"] = "Edition '''%edition%''' is no longer affected by issue";
-  $strings['Affected build removed'] = 'Affected build removed';
-  $strings["Build '''%build%''' is no longer affected by issue"] = "Build '''%build%''' is no longer affected by issue";
-  $strings['Affected component removed'] = 'Affected component removed';
-  $strings["Component '''%component%''' is no longer affected by issue"] = "Component '''%component%''' is no longer affected by issue";
-  $strings["'%item_name%' confirmed"] = "'%item_name%' confirmed";
-  $strings['Affected edition updated'] = 'Affected edition updated';
-  $strings["Edition '''%edition%''' is now confirmed for this issue"] = "Edition '''%edition%''' is now confirmed for this issue";
-  $strings["Edition '''%edition%''' is now unconfirmed for this issue"] = "Edition '''%edition%''' is now unconfirmed for this issue";
-  $strings['Affected build updated'] = 'Affected build updated';
-  $strings["Build '''%build%''' is now confirmed for this issue"] = "Build '''%build%''' is now confirmed for this issue";
-  $strings["Build '''%build%''' is now unconfirmed for this issue"] = "Build '''%build%''' is now unconfirmed for this issue";
-  $strings['Affected component updated'] = 'Affected component updated';
-  $strings["Component '''%component%''' is now confirmed for this issue"] = "Component '''%component%''' is now confirmed for this issue";
-  $strings["Component '''%component%''' is now unconfirmed for this issue"] = "Component '''%component%''' is now unconfirmed for this issue";
+  $strings["'%edition%' is now confirmed for this issue"] = "'%edition%' is now confirmed for this issue";
+  $strings["'%edition%' is now unconfirmed for this issue"] = "'%edition%' is now unconfirmed for this issue";
+  $strings["'%build%' is now confirmed for this issue"] = "'%build%' is now confirmed for this issue";
+  $strings["'%build%' is now unconfirmed for this issue"] = "'%build%' is now unconfirmed for this issue";
+  $strings["'%component%' is now confirmed for this issue"] = "'%component%' is now confirmed for this issue";
+  $strings["'%component%' is now unconfirmed for this issue"] = "'%component%' is now unconfirmed for this issue";
   $strings["'%item_name%' -> '%status_name%"] = "'%item_name%' -> '%status_name%";
-  $strings["Edition '''%edition%''' is now %status%"] = "Edition '''%edition%''' is now %status%";
-  $strings["Build '''%build%''' is now %status%"] = "Build '''%build%''' is now %status%";
-  $strings["Component '''%component%''' is now %status%"] = "Component '''%component%''' is now %status%";
   $strings['Title updated'] = 'Title updated';
-  $strings["This issue's title has been changed"] = "This issue's title has been changed";
   $strings['Description updated'] = 'Description updated';
-  $strings["This issue's description has been changed"] = "This issue's description has been changed";
   $strings['Reproduction steps updated'] = 'Reproduction steps updated';
-  $strings["This issue's reproduction steps has been changed"] = "This issue's reproduction steps has been changed";
   $strings['Not determined'] = 'Not determined';
-  $strings["The category has been updated, from '''%previous_category%''' to '''%new_category%'''."] = "The category has been updated, from '''%previous_category%''' to '''%new_category%'''.";
-  $strings["The triaging criteria 'bug type' has been updated, from '''%previous_name%''' to '''%new_name%'''."] = "The triaging criteria 'bug type' has been updated, from '''%previous_name%''' to '''%new_name%'''.";
-  $strings["The triaging criteria 'effect' has been updated, from '''%previous_name%''' to '''%new_name%'''."] = "The triaging criteria 'effect' has been updated, from '''%previous_name%''' to '''%new_name%'''.";
-  $strings["The triaging criteria 'likelihood' has been updated, from '''%previous_name%''' to '''%new_name%'''."] = "The triaging criteria 'likelihood' has been updated, from '''%previous_name%''' to '''%new_name%'''.";
-  $strings["The calculated user pain has changed, from '''%previous_value%''' to '''%new_value%'''."] = "The calculated user pain has changed, from '''%previous_value%''' to '''%new_value%'''.";
   $strings['Unknown'] = 'Unknown';
-  $strings["The status has been updated, from '''%previous_status%''' to '''%new_status%'''."] = "The status has been updated, from '''%previous_status%''' to '''%new_status%'''.";
-  $strings["The reproducability has been updated, from '''%previous_reproducability%''' to '''%new_reproducability%'''."] = "The reproducability has been updated, from '''%previous_reproducability%''' to '''%new_reproducability%'''.";
-  $strings["The priority has been updated, from '''%previous_priority%''' to '''%new_priority%'''."] = "The priority has been updated, from '''%previous_priority%''' to '''%new_priority%'''.";
   $strings['Not assigned'] = 'Not assigned';
-  $strings["The assignee has been changed to '''%new_name%'''."] = "The assignee has been changed to '''%new_name%'''.";
-  $strings["The issue's poster has been changed, from '''%previous_name%''' to '''%new_name%'''."] = "The issue's poster has been changed, from '''%previous_name%''' to '''%new_name%'''.";
   $strings['Not being worked on'] = 'Not being worked on';
-  $strings["Information about the user working on this issue has been changed, from '''%previous_name%''' to '''%new_name%'''."] = "Information about the user working on this issue has been changed, from '''%previous_name%''' to '''%new_name%'''.";
   $strings['Not owned by anyone'] = 'Not owned by anyone';
-  $strings["The owner has been changed to '''%new_name%'''."] = "The owner has been changed to '''%new_name%'''.";
-  $strings["This issue's progression has been updated to %percent_completed% percent completed."] = "This issue's progression has been updated to %percent_completed% percent completed.";
-  $strings["The resolution has been updated, from '''%previous_resolution%''' to '''%new_resolution%'''."] = "The resolution has been updated, from '''%previous_resolution%''' to '''%new_resolution%'''.";
-  $strings["The severity has been updated, from '''%previous_severity%''' to '''%new_severity%'''."] = "The severity has been updated, from '''%previous_severity%''' to '''%new_severity%'''.";
-  $strings["The milestone has been updated, from '''%previous_milestone%''' to '''%new_milestone%'''."] = "The milestone has been updated, from '''%previous_milestone%''' to '''%new_milestone%'''.";
-  $strings["The issue type has been updated, from '''%previous_type%''' to '''%new_type%'''."] = "The issue type has been updated, from '''%previous_type%''' to '''%new_type%'''.";
   $strings['Not estimated'] = 'Not estimated';
-  $strings["The issue has been (re-)estimated, from '''%previous_time%''' to '''%new_time%'''."] = "The issue has been (re-)estimated, from '''%previous_time%''' to '''%new_time%'''.";
   $strings['No time spent'] = 'No time spent';
-  $strings["Time spent on this issue, from '''%previous_time%''' to '''%new_time%'''."] = "Time spent on this issue, from '''%previous_time%''' to '''%new_time%'''.";
-  $strings['This issue has been closed'] = 'This issue has been closed';
-  $strings['This issue has been reopened'] = 'This issue has been reopened';
-  $strings['This issue is now blocking the next release'] = 'This issue is now blocking the next release';
-  $strings['This issue is no longer blocking the next release'] = 'This issue is no longer blocking the next release';
-  $strings["The custom field %customfield_name% has been changed to '''%new_value%'''."] = "The custom field %customfield_name% has been changed to '''%new_value%'''.";
-  $strings['The custom field %customfield_name% has been changed.'] = 'The custom field %customfield_name% has been changed.';
-  $strings["The custom field %customfield_name% has been updated, from '''%previous_value%''' to '''%new_value%'''."] = "The custom field %customfield_name% has been updated, from '''%previous_value%''' to '''%new_value%'''.";
-  $strings["The custom field %customfield_name% has been updated to '''%new_value%'''."] = "The custom field %customfield_name% has been updated to '''%new_value%'''.";
-  $strings['The issue has been updated'] = 'The issue has been updated';
-  $strings['Issue updated'] = 'Issue updated';
-  $strings['The issue was updated with the following change(s):%list_of_changes%'] = 'The issue was updated with the following change(s):%list_of_changes%';
 
 // First occurrence is in: .\core\classes\TBGIssuetype.class.php
 // ----------------------------------------------------------------------------
@@ -578,6 +527,7 @@
   $strings['The maximum file size must be a number'] = 'The maximum file size must be a number';
   $strings['You cannot delete the default groups'] = 'You cannot delete the default groups';
   $strings['You cannot delete this group'] = 'You cannot delete this group';
+  $strings['You cannot delete the group for the default user'] = 'You cannot delete the group for the default user';
   $strings['The group was deleted'] = 'The group was deleted';
   $strings['You cannot clone this group'] = 'You cannot clone this group';
   $strings["Please enter a group name that doesn't already exist"] = "Please enter a group name that doesn't already exist";
@@ -803,6 +753,8 @@
 // First occurrence is in: .\modules\configuration\templates\_groupbox.inc.php
 // ----------------------------------------------------------------------------
   $strings['List users in this group'] = 'List users in this group';
+  $strings['This group has a lot of members'] = 'This group has a lot of members';
+  $strings['Trying to list all users in this group may time out or take a while. Are you sure you want to list all users in this group?'] = 'Trying to list all users in this group may time out or take a while. Are you sure you want to list all users in this group?';
   $strings['Clone this user group'] = 'Clone this user group';
   $strings['Delete this user group'] = 'Delete this user group';
   $strings['Do you really want to delete this group?'] = 'Do you really want to delete this group?';
@@ -857,16 +809,22 @@
   $strings['This item cannot be deleted'] = 'This item cannot be deleted';
   $strings['Update'] = 'Update';
   $strings['%update% or %cancel%'] = '%update% or %cancel%';
+
+// First occurrence is in: .\modules\configuration\templates\_issuefieldpermissions.inc.php
+// ----------------------------------------------------------------------------
   $strings['Permission details for "%itemname%"'] = 'Permission details for "%itemname%"';
   $strings['Specify who can set this value for issues.'] = 'Specify who can set this value for issues.';
 
 // First occurrence is in: .\modules\configuration\templates\_issuefields.inc.php
 // ----------------------------------------------------------------------------
+  $strings['Formula'] = 'Formula';
+  $strings['To use a custom field in the formula, enter the field key (displayed in light gray text next to the name) between curly braces.'] = 'To use a custom field in the formula, enter the field key (displayed in light gray text next to the name) between curly braces.';
+  $strings['Example: ({myfield}+{otherfield})/({thirdfield}*2)'] = 'Example: ({myfield}+{otherfield})/({thirdfield}*2)';
+  $strings['Value'] = 'Value';
   $strings['Existing choices'] = 'Existing choices';
   $strings['There are no items'] = 'There are no items';
   $strings['Add an option'] = 'Add an option';
   $strings['Color'] = 'Color';
-  $strings['Value'] = 'Value';
   $strings['Add'] = 'Add';
 
 // First occurrence is in: .\modules\configuration\templates\_issuefields_customtype.inc.php
@@ -993,6 +951,7 @@
 // First occurrence is in: .\modules\configuration\templates\_permissionsinfo.inc.php
 // ----------------------------------------------------------------------------
   $strings['Configuration access is always "Restrictive", regardless of the system settings.'] = 'Configuration access is always "Restrictive", regardless of the system settings.';
+  $strings["This setting allows who can set this datatype, assuming the have access to manipulate the field itself. Ex: If you don't have access to setting the status field, giving a user access to set one specific status won't let them manipulate the status field."] = "This setting allows who can set this datatype, assuming the have access to manipulate the field itself. Ex: If you don't have access to setting the status field, giving a user access to set one specific status won't let them manipulate the status field.";
   $strings['Please see [[ConfigurePermissions]] for more information about how permissions work in general.'] = 'Please see [[ConfigurePermissions]] for more information about how permissions work in general.';
   $strings['Users / groups / teams'] = 'Users / groups / teams';
   $strings['Can set'] = 'Can set';
@@ -1642,14 +1601,8 @@
   $strings['Please provide a valid setting for SMTP server timeout'] = 'Please provide a valid setting for SMTP server timeout';
   $strings['Please provide a valid setting for SMTP server port'] = 'Please provide a valid setting for SMTP server port';
   $strings['Please provide a valid setting for email header charset'] = 'Please provide a valid setting for email header charset';
-  $strings['User account registered with The Bug Genie'] = 'User account registered with The Bug Genie';
-  $strings['Your account in The Bug Genie has been added to a new scope'] = 'Your account in The Bug Genie has been added to a new scope';
-  $strings['Password reset'] = 'Password reset';
-  $strings['Forgot your password?'] = 'Forgot your password?';
   $strings['Test email'] = 'Test email';
   $strings['The email module is not configured for outgoing emails'] = 'The email module is not configured for outgoing emails';
-  $strings['[%project_name%] %issue_type% %issue_no% - %issue_title%'] = '[%project_name%] %issue_type% %issue_no% - %issue_title%';
-  $strings['Re: [%project_name%] %issue_type% %issue_no% - %issue_title%'] = 'Re: [%project_name%] %issue_type% %issue_no% - %issue_title%';
 
 // First occurrence is in: .\modules\mailing\classes\actioncomponents.class.php
 // ----------------------------------------------------------------------------
@@ -1699,7 +1652,7 @@
   $strings['Server name:'] = 'Server name:';
   $strings['Enter the name of the incoming email server'] = 'Enter the name of the incoming email server';
   $strings['Port number:'] = 'Port number:';
-  $strings['Email folder name:'] = 'Folder Name:';
+  $strings['Email folder name:'] = 'Email folder name:';
   $strings['Enter folder name to read from. Leave blank for default (INBOX)'] = 'Enter folder name to read from. Leave blank for default (INBOX)';
   $strings['Keep email:'] = 'Keep email:';
   $strings['Select whether emails should be kept or removed from the account after being downloaded'] = 'Select whether emails should be kept or removed from the account after being downloaded';
@@ -1735,6 +1688,31 @@
   $strings['Last checked: %time%'] = 'Last checked: %time%';
   $strings['Email(s) processed: %number%'] = 'Email(s) processed: %number%';
 
+// First occurrence is in: .\modules\mailing\templates\_issueupdate.html.inc.php
+// ----------------------------------------------------------------------------
+  $strings['Issue closed'] = 'Issue closed';
+  $strings['Issue reopened'] = 'Issue reopened';
+  $strings['Triaged bug type: %text%'] = 'Triaged bug type: %text%';
+  $strings['Triaged likelihood: %text%'] = 'Triaged likelihood: %text%';
+  $strings['Triaged effect: %text%'] = 'Triaged effect: %text%';
+  $strings['Calculated user pain: %text%'] = 'Calculated user pain: %text%';
+  $strings['Category changed: %text%'] = 'Category changed: %text%';
+  $strings['Custom field changed: %text%'] = 'Custom field changed: %text%';
+  $strings['Status changed: %text%'] = 'Status changed: %text%';
+  $strings['Reproducability changed: %text%'] = 'Reproducability changed: %text%';
+  $strings['Priority changed: %text%'] = 'Priority changed: %text%';
+  $strings['Severity changed: %text%'] = 'Severity changed: %text%';
+  $strings['Resolution changed: %text%'] = 'Resolution changed: %text%';
+  $strings['Percent completed: %text%'] = 'Percent completed: %text%';
+  $strings['Target milestone changed: %text%'] = 'Target milestone changed: %text%';
+  $strings['Issue type changed: %text%'] = 'Issue type changed: %text%';
+  $strings['Estimation changed: %text%'] = 'Estimation changed: %text%';
+  $strings['Time spent: %text%'] = 'Time spent: %text%';
+  $strings['Assignee changed: %text%'] = 'Assignee changed: %text%';
+  $strings['Owner changed: %text%'] = 'Owner changed: %text%';
+  $strings['Posted by changed: %text%'] = 'Posted by changed: %text%';
+  $strings['Issue updated'] = 'Issue updated';
+
 // First occurrence is in: .\modules\mailing\templates\_projectconfig_panel.inc.php
 // ----------------------------------------------------------------------------
   $strings['You do not have the relevant permissions to access email settings'] = 'You do not have the relevant permissions to access email settings';
@@ -1754,8 +1732,8 @@
   $strings['Email "from"-name'] = 'Email "from"-name';
   $strings['Email "from"-address'] = 'Email "from"-address';
   $strings['This is the name and email address email notifications from The Bug Genie will be sent from'] = 'This is the name and email address email notifications from The Bug Genie will be sent from';
-  $strings["Don't use sendmail '-f'"] = "Don't use sendmail '-f'";
-  $strings["Don't use the '-f' sendmail parameter (some systems may not allow it)"] = "Don't use the '-f' sendmail parameter (some systems may not allow it)";
+  $strings['Issue tracker URL'] = 'Issue tracker URL';
+  $strings["This is the full URL to the issue tracker, used when sending outgoing emails. If this isn't configured, you will not be able to use the outgoing email feature."] = "This is the full URL to the issue tracker, used when sending outgoing emails. If this isn't configured, you will not be able to use the outgoing email feature.";
   $strings['Email header charset'] = 'Email header charset';
   $strings['The character encoding used in outgoing emails'] = 'The character encoding used in outgoing emails';
   $strings['Queue emails for batch processing'] = 'Queue emails for batch processing';
@@ -1766,6 +1744,8 @@
   $strings['Use php settings'] = 'Use php settings';
   $strings['Use custom settings'] = 'Use custom settings';
   $strings['This setting determines whether The Bug Genie uses the built-in php email function, or a custom configuration'] = 'This setting determines whether The Bug Genie uses the built-in php email function, or a custom configuration';
+  $strings["Don't use sendmail '-f'"] = "Don't use sendmail '-f'";
+  $strings["Don't use the '-f' sendmail parameter (some systems may not allow it)"] = "Don't use the '-f' sendmail parameter (some systems may not allow it)";
   $strings['SMTP server address'] = 'SMTP server address';
   $strings['SMTP address port'] = 'SMTP address port';
   $strings['SMTP server timeout'] = 'SMTP server timeout';
@@ -1853,14 +1833,13 @@
   $strings['An error occured while creating this story: %errors%'] = 'An error occured while creating this story: %errors%';
   $strings['You do not have permission to perform this action'] = 'You do not have permission to perform this action';
   $strings['You have to provide a title'] = 'You have to provide a title';
+  $strings['This issue cannot be updated'] = 'This issue cannot be updated';
   $strings['Enter time spent here'] = 'Enter time spent here';
   $strings['No valid field value specified'] = 'No valid field value specified';
   $strings['No valid field specified (%field%)'] = 'No valid field specified (%field%)';
   $strings['This issue does not exist'] = 'This issue does not exist';
   $strings['Issue access policy updated'] = 'Issue access policy updated';
   $strings["You don't have access to update the issue access policy"] = "You don't have access to update the issue access policy";
-  $strings['A file was uploaded. %link_to_file% This comment was attached: %comment%'] = 'A file was uploaded. %link_to_file% This comment was attached: %comment%';
-  $strings['A file was uploaded. %link_to_file%'] = 'A file was uploaded. %link_to_file%';
   $strings['An unhandled error occured with the upload'] = 'An unhandled error occured with the upload';
   $strings['You are not allowed to attach files here'] = 'You are not allowed to attach files here';
   $strings['The attachment has been removed'] = 'The attachment has been removed';
@@ -1978,7 +1957,6 @@
 
 // First occurrence is in: .\modules\main\templates\_comment.inc.php
 // ----------------------------------------------------------------------------
-  $strings['Reply'] = 'Reply';
   $strings['Comment posted on behalf of %user%'] = 'Comment posted on behalf of %user%';
   $strings['Comment posted by %user%'] = 'Comment posted by %user%';
   $strings['%comment_date%, in reply to comment %replied_comment_number%'] = '%comment_date%, in reply to comment %replied_comment_number%';
@@ -2169,6 +2147,7 @@
   $strings['Additional actions available'] = 'Additional actions available';
   $strings['Mark as not blocking the next release'] = 'Mark as not blocking the next release';
   $strings['Mark as blocking the next release'] = 'Mark as blocking the next release';
+  $strings['This action is not available when this issue is closed'] = 'This action is not available when this issue is closed';
   $strings['Attach a link'] = 'Attach a link';
   $strings['Attach a file'] = 'Attach a file';
   $strings['Before you can upload attachments, file uploads needs to be activated'] = 'Before you can upload attachments, file uploads needs to be activated';
@@ -2177,10 +2156,13 @@
   $strings['Create a new related issue'] = 'Create a new related issue';
   $strings['Relate to an existing issue'] = 'Relate to an existing issue';
   $strings['Move issue to another project'] = 'Move issue to another project';
+  $strings['This action is not available at this stage in the workflow'] = 'This action is not available at this stage in the workflow';
   $strings['Update issue access policy'] = 'Update issue access policy';
   $strings['Are you sure you wish to delete this issue? It will remain in the database for your records, but will not be accessible via The Bug Genie.'] = 'Are you sure you wish to delete this issue? It will remain in the database for your records, but will not be accessible via The Bug Genie.';
   $strings['Permanently delete this issue'] = 'Permanently delete this issue';
   $strings['Permanently delete this issue?'] = 'Permanently delete this issue?';
+  $strings['Change estimate'] = 'Change estimate';
+  $strings['Change time spent'] = 'Change time spent';
   $strings['No additional actions available'] = 'No additional actions available';
 
 // First occurrence is in: .\modules\main\templates\_issuepermissions.inc.php
@@ -2217,26 +2199,6 @@
   $strings['Unknown user'] = 'Unknown user';
   $strings['Issue created'] = 'Issue created';
   $strings['Issue closed %text%'] = 'Issue closed %text%';
-  $strings['Issue reopened'] = 'Issue reopened';
-  $strings['Triaged bug type: %text%'] = 'Triaged bug type: %text%';
-  $strings['Triaged likelihood: %text%'] = 'Triaged likelihood: %text%';
-  $strings['Triaged effect: %text%'] = 'Triaged effect: %text%';
-  $strings['Calculated user pain: %text%'] = 'Calculated user pain: %text%';
-  $strings['Category changed: %text%'] = 'Category changed: %text%';
-  $strings['Custom field changed: %text%'] = 'Custom field changed: %text%';
-  $strings['Status changed: %text%'] = 'Status changed: %text%';
-  $strings['Reproducability changed: %text%'] = 'Reproducability changed: %text%';
-  $strings['Priority changed: %text%'] = 'Priority changed: %text%';
-  $strings['Severity changed: %text%'] = 'Severity changed: %text%';
-  $strings['Resolution changed: %text%'] = 'Resolution changed: %text%';
-  $strings['Percent completed: %text%'] = 'Percent completed: %text%';
-  $strings['Target milestone changed: %text%'] = 'Target milestone changed: %text%';
-  $strings['Issue type changed: %text%'] = 'Issue type changed: %text%';
-  $strings['Estimation changed: %text%'] = 'Estimation changed: %text%';
-  $strings['Time spent: %text%'] = 'Time spent: %text%';
-  $strings['Assignee changed: %text%'] = 'Assignee changed: %text%';
-  $strings['Owner changed: %text%'] = 'Owner changed: %text%';
-  $strings['Posted by changed: %text%'] = 'Posted by changed: %text%';
 
 // First occurrence is in: .\modules\main\templates\_menulink.inc.php
 // ----------------------------------------------------------------------------
@@ -2380,6 +2342,7 @@
   $strings['Please enter a valid triaged effect'] = 'Please enter a valid triaged effect';
   $strings['Please triage the reported issue, so the user pain score can be properly calculated'] = 'Please triage the reported issue, so the user pain score can be properly calculated';
   $strings['Required field "%field_name%" is missing or invalid'] = 'Required field "%field_name%" is missing or invalid';
+  $strings['A validation error occured: %error%'] = 'A validation error occured: %error%';
   $strings["You don't have access to enter a description"] = "You don't have access to enter a description";
   $strings["You don't have access to enter steps to reproduce"] = "You don't have access to enter steps to reproduce";
   $strings["You don't have access to add edition information"] = "You don't have access to add edition information";
@@ -2549,7 +2512,7 @@
 // First occurrence is in: .\modules\main\templates\about.html.php
 // ----------------------------------------------------------------------------
   $strings['Version %thebuggenie_version%'] = 'Version %thebuggenie_version%';
-  $strings['The Bug Genie is an issue tracking system with a strong focus on being friendly &ndash; both for regular users and power users'] = 'The Bug Genie is an issue tracking system with a strong focus on being friendly &ndash; both for regular users and power users';
+  $strings['The Bug Genie is an issue tracking system with a strong focus on being friendly – both for regular users and power users'] = 'The Bug Genie is an issue tracking system with a strong focus on being friendly – both for regular users and power users';
   $strings['The Bug Genie follows an open development model, and is released under an open source software license called the MPL (Mozilla Public License). This license gives you the freedom to pick up the sourcecode for The Bug Genie and work with it any way you need.'] = 'The Bug Genie follows an open development model, and is released under an open source software license called the MPL (Mozilla Public License). This license gives you the freedom to pick up the sourcecode for The Bug Genie and work with it any way you need.';
   $strings['Extend, develop and change The Bug Genie in any way you want, and do whatever you want with the new piece of software (The only thing you cannot do is call your software The Bug Genie). Please do send us your modifications for inclusion in The Bug Genie.'] = 'Extend, develop and change The Bug Genie in any way you want, and do whatever you want with the new piece of software (The only thing you cannot do is call your software The Bug Genie). Please do send us your modifications for inclusion in The Bug Genie.';
   $strings['Enjoy using The Bug Genie!'] = 'Enjoy using The Bug Genie!';
@@ -2603,12 +2566,16 @@
 // ----------------------------------------------------------------------------
   $strings['403 - Forbidden'] = '403 - Forbidden';
 
+// First occurrence is in: .\modules\main\templates\forbidden.json.php
+// ----------------------------------------------------------------------------
+  $strings['You do not have access to this action'] = 'You do not have access to this action';
+
 // First occurrence is in: .\modules\main\templates\index.html.php
 // ----------------------------------------------------------------------------
-  $strings['Configure &ndash;&gt; Settings'] = 'Configure &ndash;&gt; Settings';
+  $strings['Configure –> Settings'] = 'Configure –> Settings';
   $strings["It looks likes you're only using The Bug Genie to track issues for one project. If you don't want to use this homepage, you can set The Bug Genie to <i>single project tracker mode</i>, which will automatically forward the frontpage to the project overview page.<br><br><i>Single project tracker mode</i> can be enabled from %configure_settings%."] = "It looks likes you're only using The Bug Genie to track issues for one project. If you don't want to use this homepage, you can set The Bug Genie to <i>single project tracker mode</i>, which will automatically forward the frontpage to the project overview page.<br><br><i>Single project tracker mode</i> can be enabled from %configure_settings%.";
   $strings['Only using The Bug Genie to track issues for one project?'] = 'Only using The Bug Genie to track issues for one project?';
-  $strings['Configure &ndash;&gt; Import'] = 'Configure &ndash;&gt; Import';
+  $strings['Configure –> Import'] = 'Configure –> Import';
   $strings["It doesn't look like you have had the chance to add any projects yet. If you want to play around a bit with The Bug Genie before you start using it for your own projects, you can import some sample data before adding your own projects."] = "It doesn't look like you have had the chance to add any projects yet. If you want to play around a bit with The Bug Genie before you start using it for your own projects, you can import some sample data before adding your own projects.";
   $strings['Oh noes! There are no projects!'] = 'Oh noes! There are no projects!';
   $strings['Sample data can be imported from %configure_import%.'] = 'Sample data can be imported from %configure_import%.';
@@ -2642,6 +2609,8 @@
   $strings['Use global setting - %lang%'] = 'Use global setting - %lang%';
   $strings['(site default)'] = '(site default)';
   $strings['The language you select here will be used instead of the language chosen by the administrator.'] = 'The language you select here will be used instead of the language chosen by the administrator.';
+  $strings['Enable keyboard navigation'] = 'Enable keyboard navigation';
+  $strings['Lets you use arrow up / down in issue lists to navigate'] = 'Lets you use arrow up / down in issue lists to navigate';
   $strings['Click "%save%" to save your profile settings'] = 'Click "%save%" to save your profile settings';
   $strings['The Bug Genie supports logging in via external authentication providers via %openid%. This means you can use your account details from other services (such as Google, Wordpress, etc.) to log in here, without having to remember another set of login details.'] = 'The Bug Genie supports logging in via external authentication providers via %openid%. This means you can use your account details from other services (such as Google, Wordpress, etc.) to log in here, without having to remember another set of login details.';
   $strings['Add login from another provider'] = 'Add login from another provider';
@@ -2660,7 +2629,7 @@
   $strings['Confirmed memberships'] = 'Confirmed memberships';
   $strings['An error occurred'] = 'An error occurred';
   $strings['Before you can use the new username to log in, you must pick a password via the "%change_password%" button.'] = 'Before you can use the new username to log in, you must pick a password via the "%change_password%" button.';
-  $strings["You\\'ve chosen the username \\'%username%\\'"] = "You\\'ve chosen the username \\'%username%\\'";
+  $strings["You've chosen the username '%username%'"] = "You've chosen the username '%username%'";
   $strings['Someone is already using this identity. Check to see if you have already added this account.'] = 'Someone is already using this identity. Check to see if you have already added this account.';
   $strings['This OpenID identity is already in use'] = 'This OpenID identity is already in use';
 
@@ -2674,6 +2643,11 @@
   $strings['Reporting disabled'] = 'Reporting disabled';
   $strings['The administrator has disabled reporting issues for this project'] = 'The administrator has disabled reporting issues for this project';
   $strings["What's the issue?"] = "What's the issue?";
+
+// First occurrence is in: .\modules\main\templates\reportissue.json.php
+// ----------------------------------------------------------------------------
+  $strings['This page cannot be loaded'] = 'This page cannot be loaded';
+  $strings['There was an error creating this issue'] = 'There was an error creating this issue';
 
 // First occurrence is in: .\modules\main\templates\teamdashboard.html.php
 // ----------------------------------------------------------------------------
@@ -2692,12 +2666,12 @@
 // First occurrence is in: .\modules\main\templates\viewissue.html.php
 // ----------------------------------------------------------------------------
   $strings['Please wait while updating issue type'] = 'Please wait while updating issue type';
-  $strings['This is the user pain value for this issue'] = 'This is the user pain value for this issue';
   $strings['Please log in to bookmark issues'] = 'Please log in to bookmark issues';
-  $strings['Click to start following this issue'] = 'Click to start following this issue';
-  $strings['Click to stop following this issue'] = 'Click to stop following this issue';
+  $strings['You are involved with this issue and may be notified whenever it is updated or changed'] = 'You are involved with this issue and may be notified whenever it is updated or changed';
+  $strings['Click the star to toggle whether you want to be notified whenever this issue updates or changes'] = 'Click the star to toggle whether you want to be notified whenever this issue updates or changes';
   $strings['%issuetype% %issue_no%'] = '%issuetype% %issue_no%';
   $strings['Posted %posted_at_time% - updated %last_updated_at_time%'] = 'Posted %posted_at_time% - updated %last_updated_at_time%';
+  $strings['This is the user pain value for this issue'] = 'This is the user pain value for this issue';
   $strings['Could not save your changes'] = 'Could not save your changes';
   $strings['This issue has been changed since you started editing it'] = 'This issue has been changed since you started editing it';
   $strings['Data that has been changed is highlighted in red below. Undo your changes to see the updated information'] = 'Data that has been changed is highlighted in red below. Undo your changes to see the updated information';
@@ -2733,10 +2707,10 @@
   $strings['Click here to edit reproduction steps'] = 'Click here to edit reproduction steps';
   $strings['Steps to reproduce this issue'] = 'Steps to reproduce this issue';
   $strings['Comments (%count%)'] = 'Comments (%count%)';
-  $strings['Attached information (%count%)'] = 'Attached information (%count%)';
-  $strings['Affected items (%count%)'] = 'Affected items (%count%)';
-  $strings['Related issues and tasks (%count%)'] = 'Related issues and tasks (%count%)';
-  $strings['Duplicate issues (%count%)'] = 'Duplicate issues (%count%)';
+  $strings['Attachments (%count%)'] = 'Attachments (%count%)';
+  $strings['Affects (%count%)'] = 'Affects (%count%)';
+  $strings['Related to (%count%)'] = 'Related to (%count%)';
+  $strings['Duplicates (%count%)'] = 'Duplicates (%count%)';
   $strings['There is nothing attached to this issue'] = 'There is nothing attached to this issue';
   $strings['The following issues are duplicates of this issue:'] = 'The following issues are duplicates of this issue:';
   $strings['This issue has no duplicates'] = 'This issue has no duplicates';
@@ -2783,6 +2757,7 @@
   $strings['Invalid title'] = 'Invalid title';
   $strings['Invalid field'] = 'Invalid field';
   $strings['Invalid milestone'] = 'Invalid milestone';
+  $strings["You don't have access to modify milestones"] = "You don't have access to modify milestones";
   $strings['You must provide a valid milestone name'] = 'You must provide a valid milestone name';
   $strings['Milestone updated'] = 'Milestone updated';
   $strings['Milestone created'] = 'Milestone created';
@@ -2812,12 +2787,6 @@
   $strings['You need to specify a name for the new component'] = 'You need to specify a name for the new component';
   $strings['The component could not be added'] = 'The component could not be added';
   $strings["You don't have access to add components"] = "You don't have access to add components";
-  $strings['This milestone already exists for this project'] = 'This milestone already exists for this project';
-  $strings['The milestone needs to have a name'] = 'The milestone needs to have a name';
-  $strings['You do not have access to this milestone'] = 'You do not have access to this milestone';
-  $strings['You need to specify a milestone'] = 'You need to specify a milestone';
-  $strings['Could not update the milestone'] = 'Could not update the milestone';
-  $strings["You don't have access to modify milestones"] = "You don't have access to modify milestones";
   $strings['The component could not be added to this edition'] = 'The component could not be added to this edition';
   $strings["You don't have access to modify components"] = "You don't have access to modify components";
   $strings['You need to specify a name for this component'] = 'You need to specify a name for this component';
@@ -3001,8 +2970,6 @@
 // First occurrence is in: .\modules\project\templates\_milestonedetailsissue.inc.php
 // ----------------------------------------------------------------------------
   $strings['Show more actions'] = 'Show more actions';
-  $strings['Change estimate'] = 'Change estimate';
-  $strings['Change time spent'] = 'Change time spent';
 
 // First occurrence is in: .\modules\project\templates\_milestoneissue.inc.php
 // ----------------------------------------------------------------------------
@@ -3023,7 +2990,6 @@
   $strings['Go to project website'] = 'Go to project website';
   $strings['No homepage provided'] = 'No homepage provided';
   $strings['No documentation URL provided'] = 'No documentation URL provided';
-  $strings['No wiki URL provided'] = 'No wiki URL provided';
   $strings['%closed% closed of %issues% reported'] = '%closed% closed of %issues% reported';
   $strings['%closed% closed of %issues% assigned'] = '%closed% closed of %issues% assigned';
 
@@ -3133,6 +3099,7 @@
   $strings['No homepage set'] = 'No homepage set';
   $strings['Documentation URL'] = 'Documentation URL';
   $strings['Wiki URL'] = 'Wiki URL';
+  $strings['No wiki URL provided'] = 'No wiki URL provided';
 
 // First occurrence is in: .\modules\project\templates\_projectinfolinks.inc.php
 // ----------------------------------------------------------------------------
@@ -3525,7 +3492,7 @@
   $strings['If you confirm, all changes after this revision will be lost, and the article reverted back to the state it was in revision %revision_number%'] = 'If you confirm, all changes after this revision will be lost, and the article reverted back to the state it was in revision %revision_number%';
   $strings['%yes% or %cancel%'] = '%yes% or %cancel%';
   $strings['%revision_number%, by %author% [%date%]'] = '%revision_number%, by %author% [%date%]';
-  $strings['Showing the difference between revisions: %from_revision% &rArr; %to_revision%'] = 'Showing the difference between revisions: %from_revision% &rArr; %to_revision%';
+  $strings['Showing the difference between revisions: %from_revision% => %to_revision%'] = 'Showing the difference between revisions: %from_revision% => %to_revision%';
   $strings['Back to history'] = 'Back to history';
 
 // First occurrence is in: .\modules\publish\templates\articlepermissions.html.php

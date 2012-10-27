@@ -1,7 +1,7 @@
 <?php
 
-// Number of Sections: 268
-// Updated at: 2012 Jun 22.
+// Number of Sections: 272
+// Updated at: 2012 Oct 27.
 // Translator: 
 // Translator email: 
 
@@ -147,12 +147,14 @@
   $strings['Select a component from the list of available components'] = 'Seleccionar un componente de la lista de componentes disponibles';
   $strings['Select a edition from the list of available editions'] = 'Seleccionar una edición de la lista de ediciones disponibles';
   $strings['Dropdown list with statuses'] = 'Lista desplegable con estados';
+//$strings['Calculated Field'] = '';
 //$strings['This field key already exists'] = '';
 
 // First occurrence is in: .\core\classes\TBGDashboardView.class.php
 // ----------------------------------------------------------------------------
   $strings['Issues reported by me'] = 'Peticiones registradas por mi';
   $strings['Open issues assigned to me'] = 'Peticiones abiertas que tengo asignadas';
+//$strings['Open issues owned by me'] = '';
   $strings['Open issues assigned to my teams'] = 'Peticiones abiertas asignadas a mis equipos';
   $strings["What you've done recently"] = "Lo que ha hecho recientemente";
   $strings['Recent comments'] = 'Comentarios recientes';
@@ -191,7 +193,6 @@
   $strings['Will affect average number of users'] = 'Afectará un número medio de usuarios';
   $strings['Will only affect a few users'] = 'Solo afectará a unos pocos usuarios';
   $strings['Will affect almost no one'] = 'Afectará a casi nadie';
-//$strings['This issue has been deleted'] = '';
 //$strings['Unknown issuetype'] = '';
   $strings['%number_of% months'] = '%number_of% meses';
 //$strings['1 month'] = '';
@@ -204,85 +205,33 @@
   $strings['%number_of% points'] = '%number_of% puntos';
 //$strings['1 point'] = '';
   $strings['No time'] = 'Sin tiempo';
+  $strings['A file was uploaded. %link_to_file% This comment was attached: %comment%'] = 'Un archivo fue subido. %link_to_file% Este comentario fue adjuntado: %comment%';
+  $strings['A file was uploaded. %link_to_file%'] = 'Un archivo fue subido. %link_to_file%';
 //$strings['This issue no longer depends on the solution of issue %issue_no%'] = '';
-//$strings['Issue dependancy removed'] = '';
 //$strings['Issue %issue_no% no longer depends on the solution of this issue'] = '';
   $strings['This %this_issuetype% now depends on the solution of %issuetype% %issue_no%'] = 'El pedido %this_issuetype% ahora depende de la resolución de %issuetype% %issue_no%';
-  $strings['Dependancy added'] = 'Dependencia agregada';
   $strings['%issuetype% %issue_no% now depends on the solution of this %this_issuetype%'] = '%issuetype% %issue_no% ahora depende de la resolución de %this_issuetype%';
 //$strings["'%release_name%' added"] = "";
-//$strings["'''%release_name%''' is now affected by this issue"] = "";
-//$strings['Affected releases'] = '';
 //$strings["'%edition_name%' added"] = "";
-//$strings["'''%edition_name%''' is now affected by this issue"] = "";
-//$strings['Affected editions'] = '';
 //$strings["'%component_name%' added"] = "";
-//$strings["'''%component_name%''' is now affected by this issue"] = "";
-//$strings['Affected components'] = '';
 //$strings["'%item_name%' removed"] = "";
-//$strings['Affected edition removed'] = '';
-//$strings["Edition '''%edition%''' is no longer affected by issue"] = "";
-//$strings['Affected build removed'] = '';
-//$strings["Build '''%build%''' is no longer affected by issue"] = "";
-//$strings['Affected component removed'] = '';
-//$strings["Component '''%component%''' is no longer affected by issue"] = "";
-//$strings["'%item_name%' confirmed"] = "";
-//$strings['Affected edition updated'] = '';
-//$strings["Edition '''%edition%''' is now confirmed for this issue"] = "";
-//$strings["Edition '''%edition%''' is now unconfirmed for this issue"] = "";
-//$strings['Affected build updated'] = '';
-//$strings["Build '''%build%''' is now confirmed for this issue"] = "";
-//$strings["Build '''%build%''' is now unconfirmed for this issue"] = "";
-//$strings['Affected component updated'] = '';
-//$strings["Component '''%component%''' is now confirmed for this issue"] = "";
-//$strings["Component '''%component%''' is now unconfirmed for this issue"] = "";
+//$strings["'%edition%' is now confirmed for this issue"] = "";
+//$strings["'%edition%' is now unconfirmed for this issue"] = "";
+//$strings["'%build%' is now confirmed for this issue"] = "";
+//$strings["'%build%' is now unconfirmed for this issue"] = "";
+//$strings["'%component%' is now confirmed for this issue"] = "";
+//$strings["'%component%' is now unconfirmed for this issue"] = "";
 //$strings["'%item_name%' -> '%status_name%"] = "";
-//$strings["Edition '''%edition%''' is now %status%"] = "";
-//$strings["Build '''%build%''' is now %status%"] = "";
-//$strings["Component '''%component%''' is now %status%"] = "";
 //$strings['Title updated'] = '';
-//$strings["This issue's title has been changed"] = "";
 //$strings['Description updated'] = '';
-//$strings["This issue's description has been changed"] = "";
 //$strings['Reproduction steps updated'] = '';
-//$strings["This issue's reproduction steps has been changed"] = "";
   $strings['Not determined'] = 'Indeterminado';
-//$strings["The category has been updated, from '''%previous_category%''' to '''%new_category%'''."] = "";
-//$strings["The triaging criteria 'bug type' has been updated, from '''%previous_name%''' to '''%new_name%'''."] = "";
-//$strings["The triaging criteria 'effect' has been updated, from '''%previous_name%''' to '''%new_name%'''."] = "";
-//$strings["The triaging criteria 'likelihood' has been updated, from '''%previous_name%''' to '''%new_name%'''."] = "";
-//$strings["The calculated user pain has changed, from '''%previous_value%''' to '''%new_value%'''."] = "";
   $strings['Unknown'] = 'Desconocido';
-  $strings["The status has been updated, from '''%previous_status%''' to '''%new_status%'''."] = "El estado ha sido actualizado, de '''%previous_status%''' a '''%new_status%'''.";
-//$strings["The reproducability has been updated, from '''%previous_reproducability%''' to '''%new_reproducability%'''."] = "";
-//$strings["The priority has been updated, from '''%previous_priority%''' to '''%new_priority%'''."] = "";
   $strings['Not assigned'] = 'Sin asignar';
-//$strings["The assignee has been changed to '''%new_name%'''."] = "";
-//$strings["The issue's poster has been changed, from '''%previous_name%''' to '''%new_name%'''."] = "";
   $strings['Not being worked on'] = 'No se está trabajando';
-  $strings["Information about the user working on this issue has been changed, from '''%previous_name%''' to '''%new_name%'''."] = "La información acerca del usuario que está trabajando en este pedido ha sido cambiada, de '''%previous_name%''' a '''%new_name%'''.";
   $strings['Not owned by anyone'] = 'Sin propietario';
-//$strings["The owner has been changed to '''%new_name%'''."] = "";
-  $strings["This issue's progression has been updated to %percent_completed% percent completed."] = "Este avance de la petición ha sido modificado a %percent_completed% por ciento completado.";
-  $strings["The resolution has been updated, from '''%previous_resolution%''' to '''%new_resolution%'''."] = "La resolución ha sido modificada, de '''%previous_resolution%''' a '''%new_resolution%'''.";
-  $strings["The severity has been updated, from '''%previous_severity%''' to '''%new_severity%'''."] = "La gravaedad ha sido actualizada, de '''%previous_severity%''' a '''%new_severity%'''.";
-  $strings["The milestone has been updated, from '''%previous_milestone%''' to '''%new_milestone%'''."] = "El punto de control ha sido actualizado, de '''%previous_milestone%''' a '''%new_milestone%'''.";
-  $strings["The issue type has been updated, from '''%previous_type%''' to '''%new_type%'''."] = "El tipo de petición ha sido actualizado, de '''%previous_type%''' a '''%new_type%'''.";
   $strings['Not estimated'] = 'Sin estimar';
-  $strings["The issue has been (re-)estimated, from '''%previous_time%''' to '''%new_time%'''."] = "La petición ha sido (re-)estimada, de '''%previous_time%''' a '''%new_time%'''.";
   $strings['No time spent'] = 'Sin dedicar';
-  $strings["Time spent on this issue, from '''%previous_time%''' to '''%new_time%'''."] = "El tiempo dedicado a este pedido ha sido actualizado, de '''%previous_time%''' a '''%new_time%'''.";
-  $strings['This issue has been closed'] = 'Esta petición ha sido cerrada';
-  $strings['This issue has been reopened'] = 'Esta petición ha sido reabierta';
-  $strings['This issue is now blocking the next release'] = 'Esta petición ahora está bloqueando la próxima liberación';
-  $strings['This issue is no longer blocking the next release'] = 'Esta petición no está bloqueando más la próxima liberación';
-  $strings["The custom field %customfield_name% has been changed to '''%new_value%'''."] = "El campo personalizado %customfield_name% ha sido modificado a '''%new_value%'''.";
-  $strings['The custom field %customfield_name% has been changed.'] = 'El campo personalizado %customfield_name% ha sido modificado.';
-  $strings["The custom field %customfield_name% has been updated, from '''%previous_value%''' to '''%new_value%'''."] = "El campo personalizado %customfield_name% ha sido actualizado, de '''%previous_value%''' a '''%new_value%'''.";
-//$strings["The custom field %customfield_name% has been updated to '''%new_value%'''."] = "";
-//$strings['The issue has been updated'] = '';
-  $strings['Issue updated'] = 'Petición actualizada';
-  $strings['The issue was updated with the following change(s):%list_of_changes%'] = 'La petición fue actualizada con el/los siguiente(s) cambio(s):%list_of_changes%';
 
 // First occurrence is in: .\core\classes\TBGIssuetype.class.php
 // ----------------------------------------------------------------------------
@@ -578,6 +527,7 @@
 //$strings['The maximum file size must be a number'] = '';
 //$strings['You cannot delete the default groups'] = '';
   $strings['You cannot delete this group'] = 'No puede borrar este grupo';
+//$strings['You cannot delete the group for the default user'] = '';
   $strings['The group was deleted'] = 'El grupo fue borrado';
   $strings['You cannot clone this group'] = 'No puede clonar este grupo';
   $strings["Please enter a group name that doesn't already exist"] = "Por favor ingrese un nombre de grupo que no exista";
@@ -803,6 +753,8 @@
 // First occurrence is in: .\modules\configuration\templates\_groupbox.inc.php
 // ----------------------------------------------------------------------------
   $strings['List users in this group'] = 'Listar usuarios de este grupo';
+//$strings['This group has a lot of members'] = '';
+//$strings['Trying to list all users in this group may time out or take a while. Are you sure you want to list all users in this group?'] = '';
   $strings['Clone this user group'] = 'Copiar este grupo de usuarios';
   $strings['Delete this user group'] = 'Borrar este grupo de usuarios';
   $strings['Do you really want to delete this group?'] = '¿Realmente quiere borrar este grupo?';
@@ -857,16 +809,22 @@
   $strings['This item cannot be deleted'] = 'Este ítem no puede ser borrado';
   $strings['Update'] = 'Actualizar';
   $strings['%update% or %cancel%'] = '%update% o %cancel%';
+
+// First occurrence is in: .\modules\configuration\templates\_issuefieldpermissions.inc.php
+// ----------------------------------------------------------------------------
   $strings['Permission details for "%itemname%"'] = 'Detalle de permisos para "%itemname%"';
   $strings['Specify who can set this value for issues.'] = 'Establece quien puede definir este valor para las peticiones.';
 
 // First occurrence is in: .\modules\configuration\templates\_issuefields.inc.php
 // ----------------------------------------------------------------------------
+//$strings['Formula'] = '';
+//$strings['To use a custom field in the formula, enter the field key (displayed in light gray text next to the name) between curly braces.'] = '';
+//$strings['Example: ({myfield}+{otherfield})/({thirdfield}*2)'] = '';
+//$strings['Value'] = '';
   $strings['Existing choices'] = 'Opciones existentes';
   $strings['There are no items'] = 'No hay ítems';
   $strings['Add an option'] = 'Agregar una opción';
   $strings['Color'] = 'Color';
-//$strings['Value'] = '';
   $strings['Add'] = 'Agregar';
 
 // First occurrence is in: .\modules\configuration\templates\_issuefields_customtype.inc.php
@@ -993,6 +951,7 @@
 // First occurrence is in: .\modules\configuration\templates\_permissionsinfo.inc.php
 // ----------------------------------------------------------------------------
   $strings['Configuration access is always "Restrictive", regardless of the system settings.'] = 'La configuración de acceso siempre es "Restrictiva", independientemente de la configuración del sistema.';
+//$strings["This setting allows who can set this datatype, assuming the have access to manipulate the field itself. Ex: If you don't have access to setting the status field, giving a user access to set one specific status won't let them manipulate the status field."] = "";
   $strings['Please see [[ConfigurePermissions]] for more information about how permissions work in general.'] = 'Por favor vea [[ConfigurePermissions]] para mayor información acerca de como trabajan los permisos en general.';
   $strings['Users / groups / teams'] = 'Usuarios / grupos / equipos';
   $strings['Can set'] = 'Se puede establecer';
@@ -1642,14 +1601,8 @@
 //$strings['Please provide a valid setting for SMTP server timeout'] = '';
 //$strings['Please provide a valid setting for SMTP server port'] = '';
 //$strings['Please provide a valid setting for email header charset'] = '';
-//$strings['User account registered with The Bug Genie'] = '';
-//$strings['Your account in The Bug Genie has been added to a new scope'] = '';
-//$strings['Password reset'] = '';
-//$strings['Forgot your password?'] = '';
 //$strings['Test email'] = '';
   $strings['The email module is not configured for outgoing emails'] = 'El módulo de correo no está configurado para correo saliente';
-//$strings['[%project_name%] %issue_type% %issue_no% - %issue_title%'] = '';
-//$strings['Re: [%project_name%] %issue_type% %issue_no% - %issue_title%'] = '';
 
 // First occurrence is in: .\modules\mailing\classes\actioncomponents.class.php
 // ----------------------------------------------------------------------------
@@ -1699,6 +1652,10 @@
   $strings['Server name:'] = 'Nombre del servidor';
   $strings['Enter the name of the incoming email server'] = 'Ingrese el nombre del servidor de correo entrante';
   $strings['Port number:'] = 'Número de puerto:';
+//$strings['Email folder name:'] = '';
+//$strings['Enter folder name to read from. Leave blank for default (INBOX)'] = '';
+//$strings['Keep email:'] = '';
+//$strings['Select whether emails should be kept or removed from the account after being downloaded'] = '';
   $strings['Email username:'] = 'Nombre de usuario:';
   $strings['Email password:'] = 'Contraseña:';
   $strings['Account type'] = 'Tipo de cuenta';
@@ -1731,6 +1688,31 @@
 //$strings['Last checked: %time%'] = '';
 //$strings['Email(s) processed: %number%'] = '';
 
+// First occurrence is in: .\modules\mailing\templates\_issueupdate.html.inc.php
+// ----------------------------------------------------------------------------
+//$strings['Issue closed'] = '';
+  $strings['Issue reopened'] = 'Petición reabierta';
+  $strings['Triaged bug type: %text%'] = 'Tipo de error Triaje: %text%';
+  $strings['Triaged likelihood: %text%'] = 'Riesgo de triaje: %text%';
+  $strings['Triaged effect: %text%'] = 'Efecto del triaje: %text%';
+  $strings['Calculated user pain: %text%'] = 'Calculado el sufrimiento del usuario: %text%';
+  $strings['Category changed: %text%'] = 'Cambio en la categoría: %text%';
+//$strings['Custom field changed: %text%'] = '';
+  $strings['Status changed: %text%'] = 'Cambio en el estado: %text%';
+  $strings['Reproducability changed: %text%'] = 'Cambio en la frecuencia: %text%';
+  $strings['Priority changed: %text%'] = 'Cambio en la prioridad: %text%';
+  $strings['Severity changed: %text%'] = 'Cambio en la gravedad: %text%';
+  $strings['Resolution changed: %text%'] = 'Cambio en la resolución: %text%';
+  $strings['Percent completed: %text%'] = 'Porcentaje completado: %text%';
+  $strings['Target milestone changed: %text%'] = 'Punto de control cambiado: %text%';
+  $strings['Issue type changed: %text%'] = 'El tipo de pedido cambió: %text%';
+  $strings['Estimation changed: %text%'] = 'Cambio en estimación: %text%';
+  $strings['Time spent: %text%'] = 'Tiempo dedicado: %text%';
+  $strings['Assignee changed: %text%'] = 'Asignación cambiada: %text%';
+//$strings['Owner changed: %text%'] = '';
+//$strings['Posted by changed: %text%'] = '';
+  $strings['Issue updated'] = 'Petición actualizada';
+
 // First occurrence is in: .\modules\mailing\templates\_projectconfig_panel.inc.php
 // ----------------------------------------------------------------------------
 //$strings['You do not have the relevant permissions to access email settings'] = '';
@@ -1750,8 +1732,8 @@
   $strings['Email "from"-name'] = 'Nombre "de" para correo';
   $strings['Email "from"-address'] = 'Dirección "de" para correo';
   $strings['This is the name and email address email notifications from The Bug Genie will be sent from'] = 'Este es el nombre y dirección de correo que The Bug Genie utilizará';
-  $strings["Don't use sendmail '-f'"] = "No utilizar sendmail '-f'";
-  $strings["Don't use the '-f' sendmail parameter (some systems may not allow it)"] = "No utiliza el parámetro '-f' de sendmail (algunos sistemas no lo permiten)";
+//$strings['Issue tracker URL'] = '';
+//$strings["This is the full URL to the issue tracker, used when sending outgoing emails. If this isn't configured, you will not be able to use the outgoing email feature."] = "";
   $strings['Email header charset'] = 'Juego de caracteres';
   $strings['The character encoding used in outgoing emails'] = 'La codificación de los caracteres usada en los correos salientes';
   $strings['Queue emails for batch processing'] = 'Correos electrónicos a la cola para el procesamiento en lote';
@@ -1762,6 +1744,8 @@
   $strings['Use php settings'] = 'Usar configuración de php';
   $strings['Use custom settings'] = 'Usar configuración personal';
   $strings['This setting determines whether The Bug Genie uses the built-in php email function, or a custom configuration'] = 'Esta opción determina si The Bug Genie utiliza funciones de correo propias de php, o una configuración personalizada';
+  $strings["Don't use sendmail '-f'"] = "No utilizar sendmail '-f'";
+  $strings["Don't use the '-f' sendmail parameter (some systems may not allow it)"] = "No utiliza el parámetro '-f' de sendmail (algunos sistemas no lo permiten)";
   $strings['SMTP server address'] = 'Dirección del servidor SMTP';
   $strings['SMTP address port'] = 'Puerto del servidor SMTP';
   $strings['SMTP server timeout'] = 'Tiempo de espera del servidor SMTP';
@@ -1849,14 +1833,13 @@
 //$strings['An error occured while creating this story: %errors%'] = '';
 //$strings['You do not have permission to perform this action'] = '';
 //$strings['You have to provide a title'] = '';
+//$strings['This issue cannot be updated'] = '';
   $strings['Enter time spent here'] = 'Ingrese el tiempo pasado aquí';
   $strings['No valid field value specified'] = 'No especificó un valor válido para el campo';
   $strings['No valid field specified (%field%)'] = 'No especificó un campo válido (%field%)';
   $strings['This issue does not exist'] = 'Esta petición no existe';
   $strings['Issue access policy updated'] = 'Política de acceso a petición actualizada';
 //$strings["You don't have access to update the issue access policy"] = "";
-  $strings['A file was uploaded. %link_to_file% This comment was attached: %comment%'] = 'Un archivo fue subido. %link_to_file% Este comentario fue adjuntado: %comment%';
-  $strings['A file was uploaded. %link_to_file%'] = 'Un archivo fue subido. %link_to_file%';
   $strings['An unhandled error occured with the upload'] = 'Un error no controlado ocurrió con la carga';
   $strings['You are not allowed to attach files here'] = 'No tiene permitido adjuntar archivos aquí';
 //$strings['The attachment has been removed'] = '';
@@ -1974,7 +1957,6 @@
 
 // First occurrence is in: .\modules\main\templates\_comment.inc.php
 // ----------------------------------------------------------------------------
-//$strings['Reply'] = '';
   $strings['Comment posted on behalf of %user%'] = 'Comentario publicado por %user%';
   $strings['Comment posted by %user%'] = 'Comentario publicado por %user%';
 //$strings['%comment_date%, in reply to comment %replied_comment_number%'] = '';
@@ -2165,6 +2147,7 @@
   $strings['Additional actions available'] = 'Acciones adicionales dispoibles';
   $strings['Mark as not blocking the next release'] = 'Marcar como no bloqueado para la próxima liberación';
   $strings['Mark as blocking the next release'] = 'Marcar como bloqueo para la próxima liberación';
+//$strings['This action is not available when this issue is closed'] = '';
   $strings['Attach a link'] = 'Adjuntar un enlace';
   $strings['Attach a file'] = 'Adjuntar un archivo';
 //$strings['Before you can upload attachments, file uploads needs to be activated'] = '';
@@ -2173,10 +2156,13 @@
   $strings['Create a new related issue'] = 'Crear una nueva petición relacionada';
   $strings['Relate to an existing issue'] = 'Relacionar a una petición existente';
   $strings['Move issue to another project'] = 'Mover pedido a otro proyecto';
+//$strings['This action is not available at this stage in the workflow'] = '';
   $strings['Update issue access policy'] = 'Actualizar políticas de acceso a la petición';
   $strings['Are you sure you wish to delete this issue? It will remain in the database for your records, but will not be accessible via The Bug Genie.'] = '¿Desea borrar esta petición? Permanecerá en la base de datos, pero no será accesible a través de The Bug Genie.';
   $strings['Permanently delete this issue'] = 'Borrar definitivamente este pedido';
   $strings['Permanently delete this issue?'] = '¿Borra definitivamente este pedido?';
+  $strings['Change estimate'] = 'Cambiar estimación';
+  $strings['Change time spent'] = 'Cambiar tiempo transcurrido';
 //$strings['No additional actions available'] = '';
 
 // First occurrence is in: .\modules\main\templates\_issuepermissions.inc.php
@@ -2213,26 +2199,6 @@
 //$strings['Unknown user'] = '';
   $strings['Issue created'] = 'Petición creada';
   $strings['Issue closed %text%'] = 'Petición cerrada %text%';
-  $strings['Issue reopened'] = 'Petición reabierta';
-  $strings['Triaged bug type: %text%'] = 'Tipo de error Triaje: %text%';
-  $strings['Triaged likelihood: %text%'] = 'Riesgo de triaje: %text%';
-  $strings['Triaged effect: %text%'] = 'Efecto del triaje: %text%';
-  $strings['Calculated user pain: %text%'] = 'Calculado el sufrimiento del usuario: %text%';
-  $strings['Category changed: %text%'] = 'Cambio en la categoría: %text%';
-//$strings['Custom field changed: %text%'] = '';
-  $strings['Status changed: %text%'] = 'Cambio en el estado: %text%';
-  $strings['Reproducability changed: %text%'] = 'Cambio en la frecuencia: %text%';
-  $strings['Priority changed: %text%'] = 'Cambio en la prioridad: %text%';
-  $strings['Severity changed: %text%'] = 'Cambio en la gravedad: %text%';
-  $strings['Resolution changed: %text%'] = 'Cambio en la resolución: %text%';
-  $strings['Percent completed: %text%'] = 'Porcentaje completado: %text%';
-  $strings['Target milestone changed: %text%'] = 'Punto de control cambiado: %text%';
-  $strings['Issue type changed: %text%'] = 'El tipo de pedido cambió: %text%';
-  $strings['Estimation changed: %text%'] = 'Cambio en estimación: %text%';
-  $strings['Time spent: %text%'] = 'Tiempo dedicado: %text%';
-  $strings['Assignee changed: %text%'] = 'Asignación cambiada: %text%';
-//$strings['Owner changed: %text%'] = '';
-//$strings['Posted by changed: %text%'] = '';
 
 // First occurrence is in: .\modules\main\templates\_menulink.inc.php
 // ----------------------------------------------------------------------------
@@ -2376,6 +2342,7 @@
 //$strings['Please enter a valid triaged effect'] = '';
 //$strings['Please triage the reported issue, so the user pain score can be properly calculated'] = '';
 //$strings['Required field "%field_name%" is missing or invalid'] = '';
+//$strings['A validation error occured: %error%'] = '';
 //$strings["You don't have access to enter a description"] = "";
 //$strings["You don't have access to enter steps to reproduce"] = "";
 //$strings["You don't have access to add edition information"] = "";
@@ -2545,7 +2512,7 @@
 // First occurrence is in: .\modules\main\templates\about.html.php
 // ----------------------------------------------------------------------------
   $strings['Version %thebuggenie_version%'] = 'Versión %thebuggenie_version%';
-  $strings['The Bug Genie is an issue tracking system with a strong focus on being friendly &ndash; both for regular users and power users'] = 'The Bug Genie es un sistema de seguimiento de peticiones con un fuerte enfoque en la simplicidad &ndash; tanto para usuarios comunes como exigentes';
+//$strings['The Bug Genie is an issue tracking system with a strong focus on being friendly – both for regular users and power users'] = '';
   $strings['The Bug Genie follows an open development model, and is released under an open source software license called the MPL (Mozilla Public License). This license gives you the freedom to pick up the sourcecode for The Bug Genie and work with it any way you need.'] = 'The Bug Genie está bajo el modelo de desarrollo abierto, y es liberado bajo la licencia de software abierto llamada MPL (Mozilla Public License). Esta licencia le da la libertad de elegir el código fuente de The Bug Genie y trabajar con él de acuerdo a sus necesidades.';
   $strings['Extend, develop and change The Bug Genie in any way you want, and do whatever you want with the new piece of software (The only thing you cannot do is call your software The Bug Genie). Please do send us your modifications for inclusion in The Bug Genie.'] = 'Amplíe, desarrolle y modifique The Bug Genie de la manera que quiera, y haga lo que desee con la nueva pieza de software (Lo único que no puede hacer es llamar a su software The Bug Genie). Por favor envíenos sus modificaciones para incluirlas en The Bug Genie.';
   $strings['Enjoy using The Bug Genie!'] = 'Disfrute utilizando The Bug Genie!';
@@ -2599,12 +2566,16 @@
 // ----------------------------------------------------------------------------
 //$strings['403 - Forbidden'] = '';
 
+// First occurrence is in: .\modules\main\templates\forbidden.json.php
+// ----------------------------------------------------------------------------
+//$strings['You do not have access to this action'] = '';
+
 // First occurrence is in: .\modules\main\templates\index.html.php
 // ----------------------------------------------------------------------------
-  $strings['Configure &ndash;&gt; Settings'] = 'Configurar &ndash;&gt; Opciones';
+//$strings['Configure –> Settings'] = '';
   $strings["It looks likes you're only using The Bug Genie to track issues for one project. If you don't want to use this homepage, you can set The Bug Genie to <i>single project tracker mode</i>, which will automatically forward the frontpage to the project overview page.<br><br><i>Single project tracker mode</i> can be enabled from %configure_settings%."] = "Parece que sólo usa The Bug Genie para seguir peticiones de un proyecto. Si no quiere utilizar esta página de inicio, puede establecer a The Bug Genie en <i>modo de seguimiento de proyecto único</i>, lo cual llevará automáticamente al resumen del proyecto.<br><br><i>El modo de seguimiento de proyecto único</i> puede ser habilitado desde %configure_settings%.";
   $strings['Only using The Bug Genie to track issues for one project?'] = '¿Sólo usa The Bug Genie para seguimiento de peticiones de un proyecto?';
-  $strings['Configure &ndash;&gt; Import'] = 'Configurar &ndash;&gt; Importar';
+//$strings['Configure –> Import'] = '';
   $strings["It doesn't look like you have had the chance to add any projects yet. If you want to play around a bit with The Bug Genie before you start using it for your own projects, you can import some sample data before adding your own projects."] = "Parece que no ha tenido la oportunidad de agregar ningun proyecto. Si quiere jugar un poco con The Bug Genie antes de comenzar con sus propios proyectos, puede importar algunos datos de ejemplo antes de comenzar con sus proyectos.";
   $strings['Oh noes! There are no projects!'] = 'Oh no! No hay proyectos!';
   $strings['Sample data can be imported from %configure_import%.'] = 'Datos de ejemplos pueden set importados desde %configure_import%.';
@@ -2638,6 +2609,8 @@
   $strings['Use global setting - %lang%'] = 'Utilizar opción general - %lang%';
   $strings['(site default)'] = '(Predeterminado del sitio)';
   $strings['The language you select here will be used instead of the language chosen by the administrator.'] = 'El idioma que seleccione aquí será usado en lugar del idioma elegido por el administrador';
+//$strings['Enable keyboard navigation'] = '';
+//$strings['Lets you use arrow up / down in issue lists to navigate'] = '';
   $strings['Click "%save%" to save your profile settings'] = 'Haga clic en "%save%" para guardar la configuración de su perfil';
   $strings['The Bug Genie supports logging in via external authentication providers via %openid%. This means you can use your account details from other services (such as Google, Wordpress, etc.) to log in here, without having to remember another set of login details.'] = 'The Bug Genie soporta registro a través de proveedores de autentificación externos via %openid%. Esto quiere decir que puede utilizar los detalles de cuenta de otros servicios (como Google, Wordpress, etc.) para acceder aquí, sin tener que recordar otro conjunto de detalles de acceso.';
   $strings['Add login from another provider'] = 'Agregar acceso desde otro proveedor';
@@ -2656,7 +2629,7 @@
 //$strings['Confirmed memberships'] = '';
 //$strings['An error occurred'] = '';
 //$strings['Before you can use the new username to log in, you must pick a password via the "%change_password%" button.'] = '';
-//$strings["You\\'ve chosen the username \\'%username%\\'"] = "";
+//$strings["You've chosen the username '%username%'"] = "";
 //$strings['Someone is already using this identity. Check to see if you have already added this account.'] = '';
 //$strings['This OpenID identity is already in use'] = '';
 
@@ -2670,6 +2643,11 @@
 //$strings['Reporting disabled'] = '';
 //$strings['The administrator has disabled reporting issues for this project'] = '';
   $strings["What's the issue?"] = "¿Cuál es el tipo de petición?";
+
+// First occurrence is in: .\modules\main\templates\reportissue.json.php
+// ----------------------------------------------------------------------------
+//$strings['This page cannot be loaded'] = '';
+//$strings['There was an error creating this issue'] = '';
 
 // First occurrence is in: .\modules\main\templates\teamdashboard.html.php
 // ----------------------------------------------------------------------------
@@ -2688,12 +2666,12 @@
 // First occurrence is in: .\modules\main\templates\viewissue.html.php
 // ----------------------------------------------------------------------------
   $strings['Please wait while updating issue type'] = 'Por favor espere mientras se actualiza el tipo de petición';
-  $strings['This is the user pain value for this issue'] = 'Este es la valuación del sufrimiento del usuario por esta petición';
 //$strings['Please log in to bookmark issues'] = '';
-  $strings['Click to start following this issue'] = 'Haga clic para seguir esta petición';
-  $strings['Click to stop following this issue'] = 'Haga clic para detener el seguimiento de esta petición';
+//$strings['You are involved with this issue and may be notified whenever it is updated or changed'] = '';
+//$strings['Click the star to toggle whether you want to be notified whenever this issue updates or changes'] = '';
   $strings['%issuetype% %issue_no%'] = '%issuetype% %issue_no%';
   $strings['Posted %posted_at_time% - updated %last_updated_at_time%'] = 'Publicado %posted_at_time% - actualizado %last_updated_at_time%';
+  $strings['This is the user pain value for this issue'] = 'Este es la valuación del sufrimiento del usuario por esta petición';
   $strings['Could not save your changes'] = 'No se pudieron guardar sus cambios';
   $strings['This issue has been changed since you started editing it'] = 'Esta petición ha sido modificada desde que empezó a editarla';
   $strings['Data that has been changed is highlighted in red below. Undo your changes to see the updated information'] = 'Los datos que han sido cambiados están marcados debajo en rojo. Deshaga los cambios para ver la información actualizada';
@@ -2729,10 +2707,10 @@
   $strings['Click here to edit reproduction steps'] = 'Haga clic aquí para editar la secuencia de pasos';
   $strings['Steps to reproduce this issue'] = 'Pasos para repetir este pedido';
   $strings['Comments (%count%)'] = 'Comentarios (%count%)';
-  $strings['Attached information (%count%)'] = 'Información adjunta (%count%)';
-  $strings['Affected items (%count%)'] = 'Items afectados (%count%)';
-  $strings['Related issues and tasks (%count%)'] = 'Pedidos/tareas relacionadas (%count%)';
-  $strings['Duplicate issues (%count%)'] = 'Peticiones duplicadas (%count%)';
+//$strings['Attachments (%count%)'] = '';
+//$strings['Affects (%count%)'] = '';
+//$strings['Related to (%count%)'] = '';
+//$strings['Duplicates (%count%)'] = '';
   $strings['There is nothing attached to this issue'] = 'No hay adjuntos a este pedido';
   $strings['The following issues are duplicates of this issue:'] = 'Las siguientes peticiones están como duplicadas de este pedido:';
   $strings['This issue has no duplicates'] = 'Esta petición no tiene duplicadas';
@@ -2779,6 +2757,7 @@
 //$strings['Invalid title'] = '';
 //$strings['Invalid field'] = '';
 //$strings['Invalid milestone'] = '';
+  $strings["You don't have access to modify milestones"] = "No posee permisos para modificar puntos de control";
 //$strings['You must provide a valid milestone name'] = '';
   $strings['Milestone updated'] = 'Punto de control actualizado';
 //$strings['Milestone created'] = '';
@@ -2808,12 +2787,6 @@
   $strings['You need to specify a name for the new component'] = 'Debe especificar un nombre para el nuevo componente';
   $strings['The component could not be added'] = 'El componente no pudo ser agregado';
   $strings["You don't have access to add components"] = "No posee permisos para agregar componentes";
-  $strings['This milestone already exists for this project'] = 'Este punto de control existe en este proyecto';
-  $strings['The milestone needs to have a name'] = 'El punto de control debe tener un nombre';
-  $strings['You do not have access to this milestone'] = 'No tiene permisos de acceso para este punto de control';
-  $strings['You need to specify a milestone'] = 'Necesita definir un punto de control';
-  $strings['Could not update the milestone'] = 'No se pudo actualizar el punto de control';
-  $strings["You don't have access to modify milestones"] = "No posee permisos para modificar puntos de control";
   $strings['The component could not be added to this edition'] = 'El componente no pudo ser agregado a esta edición';
   $strings["You don't have access to modify components"] = "No posee permisos para modificar componentes";
   $strings['You need to specify a name for this component'] = 'Defina un nombre para este componente';
@@ -2997,8 +2970,6 @@
 // First occurrence is in: .\modules\project\templates\_milestonedetailsissue.inc.php
 // ----------------------------------------------------------------------------
   $strings['Show more actions'] = 'Mostrar más acciones';
-  $strings['Change estimate'] = 'Cambiar estimación';
-  $strings['Change time spent'] = 'Cambiar tiempo transcurrido';
 
 // First occurrence is in: .\modules\project\templates\_milestoneissue.inc.php
 // ----------------------------------------------------------------------------
@@ -3127,6 +3098,8 @@
   $strings['No client'] = 'Sin cliente';
 //$strings['No homepage set'] = '';
   $strings['Documentation URL'] = 'URL de la Documentación';
+//$strings['Wiki URL'] = '';
+//$strings['No wiki URL provided'] = '';
 
 // First occurrence is in: .\modules\project\templates\_projectinfolinks.inc.php
 // ----------------------------------------------------------------------------
@@ -3519,7 +3492,7 @@
   $strings['If you confirm, all changes after this revision will be lost, and the article reverted back to the state it was in revision %revision_number%'] = 'Si confirma, todos los cambios posteriores a esta revisión se perderán, y el artículo revertido a la revisión %revision_number%';
   $strings['%yes% or %cancel%'] = '%yes% o %cancel%';
   $strings['%revision_number%, by %author% [%date%]'] = '%revision_number%, por %author% [%date%]';
-//$strings['Showing the difference between revisions: %from_revision% &rArr; %to_revision%'] = '';
+//$strings['Showing the difference between revisions: %from_revision% => %to_revision%'] = '';
   $strings['Back to history'] = 'Volver al historial';
 
 // First occurrence is in: .\modules\publish\templates\articlepermissions.html.php
