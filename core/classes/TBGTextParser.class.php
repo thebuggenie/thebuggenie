@@ -325,7 +325,7 @@
 
 		protected function _parse_internallink($matches)
 		{
-			$href = html_entity_decode($matches[4]);
+			$href = html_entity_decode($matches[4], ENT_QUOTES, 'UTF-8');
 			
 			if (isset($matches[6]) && $matches[6])
 			{
