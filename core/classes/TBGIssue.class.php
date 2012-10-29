@@ -934,6 +934,21 @@
 		{
 			return $this->_issue_no;
 		}
+                
+ 		/**
+		 * Returns the issue no for this issue including the project prefix (if activated)
+		 * 
+		 * @return string
+		 */
+		public function getIssueNoWithPrefix()
+		{
+                	$project = $this->getProject();
+                        $no = $this->getIssueNo();
+                        if ($project->usePrefix()) {
+                            $no = $project->getPrefix() . "-" . $no;
+                        }
+                	return $no;
+		}               
 		
 		/**
 		 * Returns the title for this issue
