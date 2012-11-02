@@ -619,7 +619,7 @@
 				$inst->setIssue($issue);
 				$inst->setCommit($commit);
 				$inst->save();
-				foreach ($transitions[$issue->getIssueNo()] as $issue_transition_block)
+				foreach ($transitions[$issue->getFormattedIssueNo()] as $issue_transition_block)
 				{
 					preg_match('/(?<=\()(.*)(?=\))/', $issue_transition_block, $issue_transitions, null);
 					
