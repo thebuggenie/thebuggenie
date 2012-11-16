@@ -3023,6 +3023,7 @@
   $strings['Go to project website'] = 'Go to project website';
   $strings['No homepage provided'] = 'No homepage provided';
   $strings['No documentation URL provided'] = 'No documentation URL provided';
+  $strings['No wiki URL provided'] = 'No wiki URL provided';
   $strings['%closed% closed of %issues% reported'] = '%closed% closed of %issues% reported';
   $strings['%closed% closed of %issues% assigned'] = '%closed% closed of %issues% assigned';
 
@@ -3131,6 +3132,7 @@
   $strings['No client'] = 'No client';
   $strings['No homepage set'] = 'No homepage set';
   $strings['Documentation URL'] = 'Documentation URL';
+  $strings['Wiki URL'] = 'Wiki URL';
 
 // First occurrence is in: .\modules\project\templates\_projectinfolinks.inc.php
 // ----------------------------------------------------------------------------
