@@ -7,7 +7,7 @@
 
 // First occurrence is in: .\core\classes\TBGAction.class.php
 // ----------------------------------------------------------------------------
-  $strings['You are not allowed to access to this page'] = 'No tiene permitido acceder a esta página';
+  $strings['You are not allowed to access this page'] = 'No tiene permitido acceder a esta página';
 
 // First occurrence is in: .\core\classes\TBGContext.class.php
 // ----------------------------------------------------------------------------
