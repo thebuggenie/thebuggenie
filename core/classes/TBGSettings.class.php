@@ -104,8 +104,8 @@
 
 		protected static $_ver_mj = 3;
 		protected static $_ver_mn = 2;
-		protected static $_ver_rev = '4-dev';
-		protected static $_ver_name = "Talks like a duck";
+		protected static $_ver_rev = '4';
+		protected static $_ver_name = "Aut viam inveniam aut faciam";
 		protected static $_defaultscope = null;
 		protected static $_settings = null;
 		protected static $_loadedsettings = array();
