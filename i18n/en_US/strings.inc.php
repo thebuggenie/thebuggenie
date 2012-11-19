@@ -2719,7 +2719,7 @@
 	$strings['You are a member of this team'] = 'You are a member of this team';
 	$strings['You are currently not registered in this scope'] = 'You are currently not registered in this scope';
 	$strings['You are involved with this issue and may be notified whenever it is updated or changed'] = 'You are involved with this issue and may be notified whenever it is updated or changed';
-	$strings['You are not allowed to access to this page'] = 'You are not allowed to access to this page';
+	$strings['You are not allowed to access this page'] = 'You are not allowed to access this page';
 	$strings['You are not allowed to add an item to this list'] = 'You are not allowed to add an item to this list';
 	$strings['You are not allowed to attach files here'] = 'You are not allowed to attach files here';
 	$strings['You are not allowed to do this'] = 'You are not allowed to do this';
