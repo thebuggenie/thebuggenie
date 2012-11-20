@@ -1797,11 +1797,11 @@
 			{
 				case 'description':
 					$issue->revertDescription();
-					$field = array('id' => (int) ($issue->getDescription() != ''), 'name' => tbg_parse_text($issue->getDescription(), false, null, array('issue' => $issue, 'headers' => false)), 'form_value' => $issue->getDescription());
+					$field = array('id' => (int) ($issue->getDescription() != ''), 'name' => tbg_parse_text($issue->getDescription(), false, null, array('issue' => $issue)), 'form_value' => $issue->getDescription());
 					break;
 				case 'reproduction_steps':
 					$issue->revertReproduction_Steps();
-					$field = array('id' => (int) ($issue->getReproductionSteps() != ''), 'name' => tbg_parse_text($issue->getReproductionSteps(), false, null, array('issue' => $issue, 'headers' => false)), 'form_value' => $issue->getReproductionSteps());
+					$field = array('id' => (int) ($issue->getReproductionSteps() != ''), 'name' => tbg_parse_text($issue->getReproductionSteps(), false, null, array('issue' => $issue)), 'form_value' => $issue->getReproductionSteps());
 					break;
 				case 'title':
 					$issue->revertTitle();
