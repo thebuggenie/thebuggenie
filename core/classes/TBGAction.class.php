@@ -172,7 +172,7 @@
 		{
 			if (!$condition)
 			{
-				$message = ($message === null) ? TBGContext::getI18n()->__("You are not allowed to access to this page") : $message;
+				$message = ($message === null) ? TBGContext::getI18n()->__("You are not allowed to access this page") : $message;
 				if (TBGContext::getUser()->isGuest())
 				{
 					TBGContext::setMessage('login_message_err', $message);
