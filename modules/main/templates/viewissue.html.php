@@ -308,7 +308,7 @@
 							<div class="faded_out" id="no_description" <?php if ($issue->getDescription() != ''):?> style="display: none;" <?php endif; ?>><?php echo __('Nothing entered.'); ?></div>
 							<div id="description_name" class="issue_inline_description">
 								<?php if ($issue->getDescription()): ?>
-									<?php echo tbg_parse_text($issue->getDescription(), false, null, array('headers' => false, 'issue' => $issue)); ?>
+									<?php echo tbg_parse_text($issue->getDescription(), false, null, array('issue' => $issue)); ?>
 								<?php endif; ?>
 							</div>
 						</div>
@@ -336,7 +336,7 @@
 							<div class="faded_out" id="no_reproduction_steps" <?php if ($issue->getReproductionSteps() != ''):?> style="display: none;" <?php endif; ?>><?php echo __('Nothing entered.'); ?></div>
 							<div id="reproduction_steps_name" class="issue_inline_description">
 								<?php if ($issue->getReproductionSteps()): ?>
-									<?php echo tbg_parse_text($issue->getReproductionSteps(), false, null, array('headers' => false, 'issue' => $issue)); ?>
+									<?php echo tbg_parse_text($issue->getReproductionSteps(), false, null, array('issue' => $issue)); ?>
 								<?php endif; ?>
 							</div>
 						</div>
