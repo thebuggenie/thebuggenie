@@ -1085,6 +1085,7 @@ dd { float: left; display: block; width: 195px; font-weight: normal; margin: 0; 
 .dropdown_content ul li { font-size: 1em; font-weight: normal; margin: 0; text-align: left; min-height: 18px; padding: 1px; }
 .dropdown_content table, .dropdown_content table td { font-weight: normal; margin: 0; text-align: left; height: 18px; padding: 1px; }
 .dropdown_content table { margin-top: 5px; }
+.dropdown_content > ul.choices { max-height: 250px; overflow-y: auto; }
 /* end dropdown */
 /* end left hand list */
 
