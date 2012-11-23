@@ -114,7 +114,7 @@
 		protected function _preDelete()
 		{
 			TBGCustomFieldOptionsTable::getTable()->deleteCustomFieldOptions($this->getID());
-			\b2db\Core::getTable('TBGIssueFieldsTable')->deleteByIssueFieldKey($key);
+			\b2db\Core::getTable('TBGIssueFieldsTable')->deleteByIssueFieldKey($this->getKey());
 		}
 
 		public static function doesKeyExist($key)

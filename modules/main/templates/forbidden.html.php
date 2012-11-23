@@ -4,7 +4,7 @@
 		<?php if (isset($message) && $message): ?>
 			<?php echo $message; ?>
 		<?php else: ?>
-			<?php echo __("You are not allowed to access to this page"); ?>
+			<?php echo __("You are not allowed to access this page"); ?>
 		<?php endif; ?>
 	</div>
 </div>
