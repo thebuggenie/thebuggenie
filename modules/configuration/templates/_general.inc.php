@@ -4,14 +4,19 @@
 		<td style="width: auto;"><input type="text" name="<?php echo TBGSettings::SETTING_TBG_NAME; ?>" id="b2_name" value="<?php echo str_replace('"', '&quot;', TBGSettings::getTBGname()); ?>" style="width: 100%;"<?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>></td>
 	</tr>
 	<tr>
-		<td class="config_explanation" colspan="2"><?php echo __('This is the name appearing in the headers and several other places, usually displaying "The Bug Genie"'); ?> <i>(<?php echo __('HTML allowed'); ?>)</i></td>
+		<td class="config_explanation" colspan="2"><?php echo __('This is the name appearing in the headers and several other places, usually displaying "The Bug Genie"'); ?></td>
 	</tr>
 	<tr>
-		<td><label for="b2_tagline"><?php echo __('Tagline / slogan'); ?></label></td>
-		<td><input type="text" name="<?php echo TBGSettings::SETTING_TBG_TAGLINE; ?>" id="b2_tagline" value="<?php echo str_replace('"', '&quot;', TBGSettings::getTBGtagline()); ?>" style="width: 100%;"<?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>></td>
+		<td><label for="tbg_header_name_html"><?php echo __('Allow HTML in site title'); ?></label></td>
+		<td>
+			<select name="<?php echo TBGSettings::SETTING_TBG_NAME_HTML; ?>" id="tbg_header_name_html" <?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>>
+				<option value=1<?php if (TBGSettings::isHeaderHtmlFormattingAllowed()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
+				<option value=0<?php if (!TBGSettings::isHeaderHtmlFormattingAllowed()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
+			</select>
+		</td>
 	</tr>
 	<tr>
-		<td class="config_explanation" colspan="2"><?php echo __('This will appear beneath the name in the header on all pages'); ?> <i>(<?php echo __('HTML allowed'); ?>)</i></td>
+		<td class="config_explanation" colspan="2"><?php echo __('Enabling this setting allows a malicious admin user to potentially insert harmful code'); ?></td>
 	</tr>
 	<tr>
 		<td><label for="singleprojecttracker"><?php echo __('Single project tracker mode'); ?></label></td>

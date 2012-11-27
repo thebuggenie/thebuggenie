@@ -3,7 +3,7 @@
 	<channel>
 		<title><?php echo TBGSettings::getTBGname() . ' ~ '. __('%project_name% project timeline', array('%project_name%' => TBGContext::getCurrentProject()->getName())); ?></title>
 		<link><?php echo make_url('project_timeline', array('project_key' => TBGContext::getCurrentProject()->getKey()), false); ?></link>
-		<description><?php echo strip_tags(TBGSettings::getTBGtagline()); ?></description>
+		<description><?php echo strip_tags(TBGSettings::getTBGname()); ?></description>
 		<language><?php echo (mb_strtolower(str_replace('_', '-', TBGContext::getI18n()->getCurrentLanguage()))); ?></language>
 		<image>
 		<?php if (TBGSettings::isUsingCustomHeaderIcon() == '2'): ?>

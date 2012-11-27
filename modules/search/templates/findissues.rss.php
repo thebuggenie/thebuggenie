@@ -3,7 +3,7 @@
 	<channel>
 		<title><?php echo TBGSettings::getTBGname() . ' ~ '. $searchtitle; ?></title>
 		<link><?php echo make_url('home', array(), false); ?></link>
-		<description><?php echo strip_tags(TBGSettings::getTBGtagline()); ?></description>
+		<description><?php echo strip_tags(TBGSettings::getTBGname()); ?></description>
 		<language><?php echo (mb_strtolower(str_replace('_', '-', TBGContext::getI18n()->getCurrentLanguage()))); ?></language>
 		<image>
 		<?php if (TBGSettings::isUsingCustomHeaderIcon() == '2'): ?>
