@@ -18,7 +18,7 @@
 			<button class="button button-green" onclick="$('new_project_role').toggle();if ($('new_project_role').visible()) { $('add_new_role_input').focus(); }" style="float: right;"><?php echo __('Create new project-specific role'); ?></button>
 			<?php echo __('Project-specific roles'); ?>
 		</h5>
-		<div class="rounded_box white shadowed" id="new_project_role" style="display: none; position: absolute; right: 0;">
+		<div class="rounded_box white shadowed" id="new_project_role" style="display: none; position: absolute; right: 0; z-index: 10">
 			<form id="new_project_role_form" method="post" action="<?php echo make_url('project_create_role', array('project_key' => $project->getKey())); ?>" onsubmit="TBG.Project.Roles.add('<?php echo make_url('project_create_role', array('project_key' => $project->getKey())); ?>'); return false;" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>">
 				<label for="new_project_role_name"><?php echo __('Role name'); ?></label>
 				<input type="text" style="width: 300px;" name="role_name" id="add_new_role_input">
