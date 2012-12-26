@@ -321,12 +321,12 @@
         <if>
             <istrue value="${isMacOrUnix}"/>
             <then>
-                <propertyprompt propertyName="tools_dir" defaultValue=""
-                                promptText="Path to gettext tools bin directory?"
-                                useExistingValue="true" />
+                <property name="tools_dir" value="" />
             </then>
             <else>
-                <property name="tools_dir" value="" />
+                <propertyprompt propertyName="tools_dir" defaultValue=""
+                                promptText="Path to gettext tools bin directory? Not required if xgettexts bin directory added to System Path"
+                                useExistingValue="true" />
             </else>
         </if>
 
