@@ -40,8 +40,21 @@
     <!--  or specify the /bin directory path in toolsDir property.          -->
     <!-- =================================================================  -->
     <property name="tools_dir" value="" description="Path to gettext tools bin directory"/>
-    <property name="xgettext_executable" value="xgettext.exe"/>
-    <property name="msgmerge_executable" value="msgmerge.exe"/>
+
+    <if>
+        <or>
+            <os family="mac"/>
+            <os family="Unix"/>
+        </or>
+        <then>
+            <property name="xgettext_executable" value="xgettext"/>
+            <property name="msgmerge_executable" value="msgmerge"/>
+        </then>
+        <else>
+            <property name="xgettext_executable" value="xgettext.exe"/>
+            <property name="msgmerge_executable" value="msgmerge.exe"/>
+        </else>
+    </if>
 
     <property name="xgettext_keyword" value="__" description="Name of the i18n function"/>
 
