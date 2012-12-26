@@ -3,6 +3,13 @@
 <project name="thebuggenie" basedir="." default="build">
 
     <!-- ============================================  -->
+    <!-- Run settings                                  -->
+    <!-- ============================================  -->
+    <property name="keepDebugFiles" value=""/>
+    <property name="usePlainMessages" value=""/>
+    <property name="generateOnlyForDefaultLanguage" value=""/>
+
+    <!-- ============================================  -->
     <!-- Directory settings                            -->
     <!-- ============================================  -->
     <property name="projectDir" value="."/>
@@ -16,15 +23,15 @@
 
     <property name="ts_file_name" value="strings.inc.ts"/>
     <property name="ts_file_backup_name" value="strings._bak_.ts"/>
-    
+
     <property name="strings_file_name" value="strings.inc.php"/>
     <property name="strings_file_backup_name" value="strings._bak_.php"/>
 
     <!-- ============================================  -->
     <!-- Locale settings                               -->
     <!-- ============================================  -->
-    <property name="base_locale" value="en_US" />
-    
+    <property name="base_locale" value="en_US"/>
+
     <!-- =================================================================  -->
     <!-- Path to gettext tools binaries                                     -->
     <!-- For Windows systems, download gettext from the following site:     -->
@@ -102,10 +109,10 @@
         <if>
             <equals arg1="${generateOnlyForDefaultLanguage}" arg2="Y" casesensitive="false" trim="true"/>
             <then>
-                <property name="current_locale_abs"   value="${localesDir}/${base_locale}"/>
-                <property name="current_locale_array" value="${base_locale}" />
+                <property name="current_locale_abs" value="${localesDir}/${base_locale}"/>
+                <property name="current_locale_array" value="${base_locale}"/>
 
-                <phingcall target="generate_po_from_array" />
+                <phingcall target="generate_po_from_array"/>
             </then>
             <else>
                 <foreach param="current_locale_array" absparam="current_locale_abs" target="generate_po_from_array">
@@ -180,10 +187,10 @@
         <if>
             <equals arg1="${generateOnlyForDefaultLanguage}" arg2="Y" casesensitive="false" trim="true"/>
             <then>
-                <property name="current_locale_abs"   value="${localesDir}/${base_locale}"/>
-                <property name="current_locale_array" value="${base_locale}" />
+                <property name="current_locale_abs" value="${localesDir}/${base_locale}"/>
+                <property name="current_locale_array" value="${base_locale}"/>
 
-                <phingcall target="merge_translation" />
+                <phingcall target="merge_translation"/>
             </then>
             <else>
                 <foreach param="current_locale_array" absparam="current_locale_abs" target="merge_translation">
@@ -221,7 +228,8 @@
               tstamp="true"/>
 
         <if>
-            <available file="${localesDir}/${current_locale_array}/${ts_file_name}" property="tsFileExists" value="true"/>
+            <available file="${localesDir}/${current_locale_array}/${ts_file_name}" property="tsFileExists"
+                       value="true"/>
             <then>
                 <echo msg="TS File exists."/>
 
@@ -236,12 +244,12 @@
                 <echo msg="TS File timestamp is: ${ts_timestamp}"/>
                 <echo msg="Strings File timestamp is: ${strings_timestamp}"/>
 
-                <php expression="${ts_timestamp} > ${strings_timestamp}" returnProperty="tsIsNewer" />
+                <php expression="${ts_timestamp} > ${strings_timestamp}" returnProperty="tsIsNewer"/>
 
                 <if>
-                    <isfalse value="${tsIsNewer}" />
+                    <isfalse value="${tsIsNewer}"/>
                     <then>
-                        <echo msg="TS File is older, updating TS file..." />
+                        <echo msg="TS File is older, updating TS file..."/>
 
                         <exec dir="${localesDir}"
                               command="php -f ./_tools/convert_to_ts.php ./${current_locale_array}/ ${base_locale} ${po_file_name} ${current_locale_array} ${ts_file_name}"
@@ -251,7 +259,7 @@
 
             </then>
             <else>
-                <echo msg="TS File not exists, generating..." />
+                <echo msg="TS File not exists, generating..."/>
 
                 <exec dir="${localesDir}"
                       command="php -f ./_tools/convert_to_ts.php ./${current_locale_array}/ ${base_locale} ${po_file_name} ${current_locale_array} ${ts_file_name}"
@@ -275,8 +283,8 @@
         </if>
 
         <echo msg="Touching files to match mtime..."/>
-        <touch file="${localesDir}/${current_locale_array}/${strings_file_name}" />
-        <touch file="${localesDir}/${current_locale_array}/${ts_file_name}" />
+        <touch file="${localesDir}/${current_locale_array}/${strings_file_name}"/>
+        <touch file="${localesDir}/${current_locale_array}/${ts_file_name}"/>
 
         <if>
             <equals arg1="${keepDebugFiles}" arg2="N" casesensitive="true" trim="true"/>
@@ -294,12 +302,29 @@
     <!-- ============================================  -->
     <target name="build" description="Runs every target (clean, prepare, generate_translate, merge_translation)">
 
-        <propertyprompt propertyName="keepDebugFiles" defaultValue="N"
-                        promptText="Are you want to keep temporary files?"/>
-        <propertyprompt propertyName="usePlainMessages" defaultValue="Y"
-                        promptText="Are you want to keep plain messages.po (Next time, you don't need to rebuild these file)?"/>
-        <propertyprompt propertyName="generateOnlyForDefaultLanguage" defaultValue="Y"
-                        promptText="Generate only for default language? (Y = en_US only)"/>
+        <if>
+            <equals arg1="${keepDebugFiles}" arg2="" casesensitive="false" trim="true" />
+            <then>
+                <propertyprompt propertyName="keepDebugFiles" defaultValue="N"
+                                promptText="Are you want to keep temporary files?"/>
+            </then>
+        </if>
+
+        <if>
+            <equals arg1="${usePlainMessages}" arg2="" casesensitive="false" trim="true" />
+            <then>
+                <propertyprompt propertyName="usePlainMessages" defaultValue="Y"
+                                promptText="Are you want to keep plain messages.po (Next time, you don't need to rebuild these file)?"/>
+            </then>
+        </if>
+
+        <if>
+            <equals arg1="${generateOnlyForDefaultLanguage}" arg2="" casesensitive="false" trim="true" />
+            <then>
+                <propertyprompt propertyName="generateOnlyForDefaultLanguage" defaultValue="Y"
+                                promptText="Generate only for default language? (Y = en_US only)"/>
+            </then>
+        </if>
 
         <phingcall target="clean"/>
         <phingcall target="prepare"/>
