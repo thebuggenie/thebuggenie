@@ -5,9 +5,14 @@
     <!-- ============================================  -->
     <!-- Run settings                                  -->
     <!-- ============================================  -->
-    <property name="keepDebugFiles" value=""/>
-    <property name="usePlainMessages" value=""/>
-    <property name="generateOnlyForDefaultLanguage" value=""/>
+    <property name="isMacOrUnix" value="false" />
+
+    <condition property="isMacOrUnix">
+        <or>
+            <os family="mac" />
+            <os family="Unix" />
+        </or>
+    </condition>
 
     <!-- ============================================  -->
     <!-- Directory settings                            -->
@@ -39,22 +44,8 @@
     <!-- Install or Unpack the package, and add its /bin directory to PATH  -->
     <!--  or specify the /bin directory path in toolsDir property.          -->
     <!-- =================================================================  -->
-    <property name="tools_dir" value="" description="Path to gettext tools bin directory"/>
-
-    <if>
-        <or>
-            <os family="mac"/>
-            <os family="Unix"/>
-        </or>
-        <then>
-            <property name="xgettext_executable" value="xgettext"/>
-            <property name="msgmerge_executable" value="msgmerge"/>
-        </then>
-        <else>
-            <property name="xgettext_executable" value="xgettext.exe"/>
-            <property name="msgmerge_executable" value="msgmerge.exe"/>
-        </else>
-    </if>
+    <property name="xgettext_executable" value="xgettext"/>
+    <property name="msgmerge_executable" value="msgmerge"/>
 
     <property name="xgettext_keyword" value="__" description="Name of the i18n function"/>
 
@@ -89,9 +80,9 @@
         <echo msg="Removing old translation files (po only)..."/>
 
         <if>
-            <equals arg1="${usePlainMessages}" arg2="N" casesensitive="true" trim="true"/>
+            <equals arg1="${usePlainMessages}" arg2="N" casesensitive="false" trim="true"/>
             <then>
-                <delete failonerror="false" file="${localesDir}/${po_file_name}"/>
+                <delete failonerror="false" file="${localesDir}/${po_file_name}" quiet="true"/>
             </then>
         </if>
 
@@ -107,10 +98,10 @@
     <!-- ============================================  -->
     <target name="remove_translation" description="Removes outdates translation file (.po only)" hidden="true">
         <echo msg="Deleting old translation files in ${current_locale_array}"/>
-        <delete failonerror="false" file="${current_locale_abs}/${po_file_name}"/>
-        <delete failonerror="false" file="${current_locale_abs}/${po_file_backup_name}"/>
-        <delete failonerror="false" file="${current_locale_abs}/${ts_file_backup_name}"/>
-        <delete failonerror="false" file="${current_locale_abs}/${strings_file_backup_name}"/>
+        <delete failonerror="false" file="${current_locale_abs}/${po_file_name}" quiet="true"/>
+        <delete failonerror="false" file="${current_locale_abs}/${po_file_backup_name}" quiet="true"/>
+        <delete failonerror="false" file="${current_locale_abs}/${ts_file_backup_name}" quiet="true"/>
+        <delete failonerror="false" file="${current_locale_abs}/${strings_file_backup_name}" quiet="true"/>
     </target>
 
     <!-- ============================================  -->
@@ -303,9 +294,9 @@
             <equals arg1="${keepDebugFiles}" arg2="N" casesensitive="true" trim="true"/>
             <then>
                 <echo msg="Deleting temporary files in ${current_locale_array} directory..."/>
-                <delete failonerror="false" file="${localesDir}/${current_locale_array}/${po_file_backup_name}"/>
-                <delete failonerror="false" file="${localesDir}/${current_locale_array}/${po_file_name}"/>
-                <delete failonerror="false" file="${localesDir}/${current_locale_array}/${strings_file_backup_name}"/>
+                <delete failonerror="false" file="${localesDir}/${current_locale_array}/${po_file_backup_name}" quiet="true"/>
+                <delete failonerror="false" file="${localesDir}/${current_locale_array}/${po_file_name}" quiet="true"/>
+                <delete failonerror="false" file="${localesDir}/${current_locale_array}/${strings_file_backup_name}" quiet="true"/>
             </then>
         </if>
     </target>
@@ -315,28 +306,28 @@
     <!-- ============================================  -->
     <target name="build" description="Runs every target (clean, prepare, generate_translate, merge_translation)">
 
-        <if>
-            <equals arg1="${keepDebugFiles}" arg2="" casesensitive="false" trim="true" />
-            <then>
-                <propertyprompt propertyName="keepDebugFiles" defaultValue="N"
-                                promptText="Are you want to keep temporary files?"/>
-            </then>
-        </if>
+        <propertyprompt propertyName="keepDebugFiles" defaultValue="N"
+                        promptText="Are you want to keep temporary files?"
+                        useExistingValue="true" />
+
+        <propertyprompt propertyName="usePlainMessages" defaultValue="Y"
+                        promptText="Are you want to keep plain messages.po (Next time, you don't need to rebuild these file)?"
+                        useExistingValue="true" />
+
+        <propertyprompt propertyName="generateOnlyForDefaultLanguage" defaultValue="Y"
+                        promptText="Generate only for default language? (Y = en_US only)"
+                        useExistingValue="true" />
 
         <if>
-            <equals arg1="${usePlainMessages}" arg2="" casesensitive="false" trim="true" />
+            <istrue value="${isMacOrUnix}"/>
             <then>
-                <propertyprompt propertyName="usePlainMessages" defaultValue="Y"
-                                promptText="Are you want to keep plain messages.po (Next time, you don't need to rebuild these file)?"/>
+                <propertyprompt propertyName="tools_dir" defaultValue=""
+                                promptText="Path to gettext tools bin directory?"
+                                useExistingValue="true" />
             </then>
-        </if>
-
-        <if>
-            <equals arg1="${generateOnlyForDefaultLanguage}" arg2="" casesensitive="false" trim="true" />
-            <then>
-                <propertyprompt propertyName="generateOnlyForDefaultLanguage" defaultValue="Y"
-                                promptText="Generate only for default language? (Y = en_US only)"/>
-            </then>
+            <else>
+                <property name="tools_dir" value="" />
+            </else>
         </if>
 
         <phingcall target="clean"/>
