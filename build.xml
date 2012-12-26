@@ -99,9 +99,20 @@
     <target name="prepare" description="Creates build directory and structure">
         <echo msg="Creating a backup from previous translations..."/>
 
-        <foreach param="current_locale_array" absparam="current_locale_abs" target="generate_po_from_array">
-            <fileset refid="locales_list"/>
-        </foreach>
+        <if>
+            <equals arg1="${generateOnlyForDefaultLanguage}" arg2="Y" casesensitive="false" trim="true"/>
+            <then>
+                <property name="current_locale_abs"   value="${localesDir}/${base_locale}"/>
+                <property name="current_locale_array" value="${base_locale}" />
+
+                <phingcall target="generate_po_from_array" />
+            </then>
+            <else>
+                <foreach param="current_locale_array" absparam="current_locale_abs" target="generate_po_from_array">
+                    <fileset refid="locales_list"/>
+                </foreach>
+            </else>
+        </if>
 
         <echo msg="Backups created successfully..."/>
     </target>
@@ -165,9 +176,21 @@
     <!-- ============================================  -->
     <target name="merge_translations" description="Merge old .po files with the new messages.po">
         <echo msg="Merging old locales with the new messages.po ..."/>
-        <foreach param="current_locale_array" absparam="current_locale_abs" target="merge_translation">
-            <fileset refid="locales_list"/>
-        </foreach>
+
+        <if>
+            <equals arg1="${generateOnlyForDefaultLanguage}" arg2="Y" casesensitive="false" trim="true"/>
+            <then>
+                <property name="current_locale_abs"   value="${localesDir}/${base_locale}"/>
+                <property name="current_locale_array" value="${base_locale}" />
+
+                <phingcall target="merge_translation" />
+            </then>
+            <else>
+                <foreach param="current_locale_array" absparam="current_locale_abs" target="merge_translation">
+                    <fileset refid="locales_list"/>
+                </foreach>
+            </else>
+        </if>
     </target>
 
     <!-- ============================================  -->
@@ -275,6 +298,8 @@
                         promptText="Are you want to keep temporary files?"/>
         <propertyprompt propertyName="usePlainMessages" defaultValue="Y"
                         promptText="Are you want to keep plain messages.po (Next time, you don't need to rebuild these file)?"/>
+        <propertyprompt propertyName="generateOnlyForDefaultLanguage" defaultValue="Y"
+                        promptText="Generate only for default language? (Y = en_US only)"/>
 
         <phingcall target="clean"/>
         <phingcall target="prepare"/>
