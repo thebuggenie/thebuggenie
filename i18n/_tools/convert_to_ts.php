@@ -3,7 +3,7 @@
 /**
  * Simple PO to TS converter for TBG
  */
-define('__NEWLINE__', "\r\n");
+define('__NEWLINE__', PHP_EOL);
 
 /**
  * Checking arguments
