@@ -57,7 +57,13 @@ if($fromFile->getExtension() == "po") {
     foreach ($fromFile as $lineNumber => $line) {
 
         if ($lineNumber > 0 && $previousLine == __NEWLINE__ && mb_substr($line, 0, 2) == '#:') {
-            $category = trim(mb_substr(trim(mb_substr($line, 0, mb_strpos($line, ':', 3))), 3));
+            $category = trim(mb_substr(mb_substr($line, 0, mb_strpos($line, ':', 3)), 2));
+
+            if(mb_substr($category, 0, 1) == '.') {
+                $category = mb_substr($category, 1);
+            }
+
+            $category = str_replace(array('\\'), array('/'), $category);
         }
 
         if (mb_substr($line, 0, 5) == 'msgid') {
@@ -79,7 +85,7 @@ if($fromFile->getExtension() == "po") {
     while($xmlReader->read()) {
         
         if($xmlReader->nodeType == XMLReader::ELEMENT && $xmlReader->name == 'name') {
-            $category = '.\\' . $xmlReader->readString();
+            $category = $xmlReader->readString();
             $current_key = '';
         }
         
