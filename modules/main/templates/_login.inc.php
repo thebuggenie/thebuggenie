@@ -25,7 +25,7 @@
 						<?php else: ?>
 							<input type="hidden" id="return_to" name="return_to" value="<?php echo $referer; ?>" />
 						<?php endif; ?>
-						<div style="width:300px;" class="login_boxheader"><?php echo __('Log in to an existing account'); ?></div>
+						<div class="login_boxheader regular"><?php echo __('Log in to an existing account'); ?></div>
 						<div>
 							<table border="0" class="login_fieldtable">
 								<tr>
