@@ -3510,17 +3510,17 @@
 // First occurrence is in: .\modules\publish\templates\articlehistory.html.php
 // ----------------------------------------------------------------------------
 //$strings['%article_name% history'] = '';
-//$strings['Updated'] = '';
-//$strings['Author'] = '';
-//$strings['Compare'] = '';
-//$strings['Initial import'] = '';
-//$strings['Restore this version'] = '';
-//$strings['Are you sure you want to restore this revision?'] = '';
-//$strings['If you confirm, all changes after this revision will be lost, and the article reverted back to the state it was in revision %revision_number%'] = '';
-//$strings['%yes% or %cancel%'] = '';
-//$strings['%revision_number%, by %author% [%date%]'] = '';
-//$strings['Showing the difference between revisions: %from_revision% &rArr; %to_revision%'] = '';
-//$strings['Back to history'] = '';
+$strings['Updated'] = 'Mis &agrave; jour';
+$strings['Author'] = 'Auteur';
+$strings['Compare'] = 'Comparer';
+$strings['Initial import'] = 'Import initial';
+$strings['Restore this version'] = 'Restorer cette version';
+$strings['Are you sure you want to restore this revision?'] = 'Etes-vous sure de vouloir restorer cette revision?';
+$strings['If you confirm, all changes after this revision will be lost, and the article reverted back to the state it was in revision %revision_number%'] = 'Si vous confirmez, tous les changements qui ont &eacute;t&eacute; fait apr&egraves;s cette version seront perdus et l\'article sera remis &agrave; l\'&eacute;tat de la version %revision_number%';
+$strings['%yes% or %cancel%'] = '%yes% ou %cancel%';
+$strings['%revision_number%, by %author% [%date%]'] = '%revision_number%, par %author% [%date%]';
+$strings['Showing the difference between revisions: %from_revision% &rArr; %to_revision%'] = 'Voir les diff&eacute;rence entre les versions: %from_revision% &rArr; %to_revision%';
+$strings['Back to history'] = 'Retour &agrave; l\'historique';
 
 // First occurrence is in: .\modules\publish\templates\articlepermissions.html.php
 // ----------------------------------------------------------------------------
@@ -3540,89 +3540,89 @@
 
 // First occurrence is in: .\modules\publish\templates\editarticle.html.php
 // ----------------------------------------------------------------------------
-//$strings['Editing %article_name%'] = '';
-//$strings['This is a preview of the article'] = '';
-//$strings['Continue editing'] = '';
-//$strings['The article has not been saved yet'] = '';
-//$strings['This is the name you use when you link to this article'] = '';
-//$strings['Article content'] = '';
-//$strings['Change reason'] = '';
-//$strings['Enter a short reason summarizing your changes (max. 255 characters)'] = '';
-//$strings['Actions available'] = '';
-//$strings['Create article'] = '';
-//$strings['Preview article'] = '';
-//$strings['Preview changes'] = '';
+$strings['Editing %article_name%'] = 'Edition de %article_name%';
+$strings['This is a preview of the article'] = 'Ceci est la pr&eacute;visualisation de l\'article';
+$strings['Continue editing'] = 'Continuer l\'&eacute;dition';
+$strings['The article has not been saved yet'] = 'Cet article n\'a pas &eacute;t&eacute; sauvegard&eacute;';
+$strings['This is the name you use when you link to this article'] = 'C\'est le nom que vous utilisez lorsque vous liez cet article';
+$strings['Article content'] = 'Contenu de l\'article';
+$strings['Change reason'] = 'Raison du changement';
+$strings['Enter a short reason summarizing your changes (max. 255 characters)'] = 'Entrer une courte raison r&eacute;sumant vos modifications (max. 255 caract&egrave;res)';
+$strings['Actions available'] = 'Actions disponibles';
+$strings['Create article'] = 'Cr&eacute;er un article';
+$strings['Preview article'] = 'Pr&eacute;visualiser l\'article';
+$strings['Preview changes'] = 'Pr&eacute;visualiser les changements';
 
 // First occurrence is in: .\modules\publish\templates\findarticles.html.php
 // ----------------------------------------------------------------------------
-//$strings['Find articles'] = '';
-//$strings['Find articles by name'] = '';
-//$strings['Found %num% article(s)'] = '';
-//$strings['No articles found'] = '';
-//$strings['Enter something to search for in the input box above'] = '';
+  $strings['Find articles'] = 'Trouver des articles';
+  $strings['Find articles by name'] = 'Trouvers des articles par noms';
+  $strings['Found %num% article(s)'] = '%num% article(s) trouv&eacute;(s)';
+  $strings['No articles found'] = 'Aucun article trouv&eacute;';
+  $strings['Enter something to search for in the input box above'] = 'Entrer quelque chose &agrave; rechercher dans la zone de saisie ci-dessus';
 
 // First occurrence is in: .\modules\publish\templates\showarticle.html.php
 // ----------------------------------------------------------------------------
-//$strings['You are now viewing a previous revision of this article - revision %revision_number% %date%, by %author%'] = '';
-//$strings['Show current version'] = '';
+  $strings['You are now viewing a previous revision of this article - revision %revision_number% %date%, by %author%'] = 'Vous regardez actuellement une version pr&eacute;c&eacute;dente de cet article - revision %revision_number% %date%, par %author%';
+  $strings['Show current version'] = 'Voir la version courante';
   $strings['Article comments (%count%)'] = 'Commentaires de l\'article (%count%)';
 
 // First occurrence is in: .\modules\search\classes\actioncomponents.class.php
 // ----------------------------------------------------------------------------
-//$strings['Build'] = '';
-//$strings['Assigned to user'] = '';
-//$strings['Assigned to team'] = '';
-//$strings['Owned by user'] = '';
-//$strings['Owned by team'] = '';
-//$strings['Date reported'] = '';
-//$strings['Date last updated'] = '';
-//$strings['% completed'] = '';
-//$strings['Component(s)'] = '';
-//$strings['Issue title'] = '';
-//$strings['Last updated time'] = '';
-//$strings['Number of comments'] = '';
+  $strings['Build'] = 'Build';
+  $strings['Assigned to user'] = 'Assign&eacute; &agrave; l\'utilisateur';
+  $strings['Assigned to team'] = 'Assign&eacute; &agrave; l\'&eacute;quipe';
+  $strings['Owned by user'] = 'Poss&eacute;d&eacute; par l\'utilisateur';
+  $strings['Owned by team'] = 'Poss&eacute;d&eacute; par l\'&eacute;quipe';
+  $strings['Date reported'] = 'Date de cr&eacute;tion';
+  $strings['Date last updated'] = 'Date de derni&egrave;re mise &agrave; jour';
+  $strings['% completed'] = '% compl&eacute;t&eacute;';
+  $strings['Component(s)'] = 'Composant(s)';
+  $strings['Issue title'] = 'Titre de la demande';
+  $strings['Last updated time'] = 'Derni&egrave;re mise &agrave; jour';
+  $strings['Number of comments'] = 'Nombre de commentaires';
 
 // First occurrence is in: .\modules\search\classes\actions.class.php
 // ----------------------------------------------------------------------------
   $strings['Search results'] = 'Chercher des demandes';
-//$strings['Showing "bug report" issues sorted by user pain, threshold set at %threshold%'] = '';
-//$strings['Showing issues ordered by number of votes'] = '';
-//$strings['All open issues'] = '';
+  $strings['Showing "bug report" issues sorted by user pain, threshold set at %threshold%'] = 'Affichage du "rapport de bogue" des demandes tri&eacute; par retour utilisateur, seuil fixeacute; &agrave; %threshold%';
+  $strings['Showing issues ordered by number of votes'] = 'Affichage des demandes tri&eacute;es par nombre de votes';
+  $strings['All open issues'] = 'Toutes les demandes ouvertes';
   $strings['Open issues for %project_name%'] = 'Demandes ouvertes pour %project_name%';
-//$strings['All closed issues'] = '';
+  $strings['All closed issues'] = 'Toutes les demandes ferm&eacute;es';
   $strings['Closed issues for %project_name%'] = 'Demande ferm&eacute;es pour %project_name%';
-//$strings['%project_name% wishlist'] = '';
+  $strings['%project_name% wishlist'] = 'liste de souhait de %project_name%';
   $strings['Milestone todo-list for %project_name%'] = 'Liste des t&acirc;ches jalonn&eacute;e pour %project_name%';
   $strings['Most voted issues'] = 'Demandes les plus vot&eacute;es';
-//$strings['Most voted issues for %project_name%'] = '';
+  $strings['Most voted issues for %project_name%'] = 'Les demandes les plus vot&eacute;es pour le projet %project_name%';
   $strings['Standard search results'] = 'R&eacute;sultats de recherche standard';
   $strings['Todo-list with progress indicator'] = 'Liste des t&acirc;ches avec indicateur de progression';
   $strings['Most voted-for issues'] = 'Demandes ayant le plus de votes';
   $strings['User pain indicator with custom single bug pain threshold'] = 'Indicateur de nuisance utilisateur avec un seuil personnalis&eacute; unique de nuisance des d&eacute;fauts';
-//$strings['RSS feed'] = '';
-//$strings['The saved search was deleted successfully'] = '';
-//$strings['Cannot delete this saved search'] = '';
-//$strings['The saved search was updated'] = '';
-//$strings['The saved search has been created'] = '';
-//$strings['You have to specify a name for the saved search'] = '';
-//$strings['No projects exist so this filter can not be added'] = '';
-//$strings['This is not a valid search field'] = '';
+  $strings['RSS feed'] = 'Flux RSS';
+  $strings['The saved search was deleted successfully'] = 'La recherche sauvegard&eacute;e a &eacute;t&eacute; effac&eacute;e avec succ&egrave;s';
+  $strings['Cannot delete this saved search'] = 'Ne peut effacer cette  recherche sauvegard&eacute;e';
+  $strings['The saved search was updated'] = 'La recherche sauvegard&eacute;e a &eacute;t&eacute; mis &agrave; jour';
+  $strings['The saved search has been created'] = 'La recherche sauvegard&eacute;e a &eacute;t&eacute; cr&eacute;e';
+  $strings['You have to specify a name for the saved search'] = 'Vous devez sp&eacute;cifier un nom pour la recherche sauvegard&eacute;';
+  $strings['No projects exist so this filter can not be added'] = 'Aucun projet n\'existe donc ce filtre ne peut &ecirc;tre ajout&eacute;';
+  $strings['This is not a valid search field'] = 'Ce n\'est pas un champ de recherche valide';
   $strings['Not targetted'] = 'Non planifi&eacute;e';
 
 // First occurrence is in: .\modules\search\templates\_bulkactions.inc.php
 // ----------------------------------------------------------------------------
-//$strings['With selected issue(s): %action%'] = '';
-//$strings['Do nothing'] = '';
-//$strings['Assign to milestone'] = '';
-//$strings['Set category'] = '';
-//$strings['Choose workflow step to perform'] = '';
-//$strings['No milestone'] = '';
-//$strings['Create new milestone from selected issues'] = '';
-//$strings['No resolution'] = '';
-//$strings['No priority'] = '';
-//$strings['No category'] = '';
-//$strings['No severity'] = '';
-//$strings['Apply'] = '';
+  $strings['With selected issue(s): %action%'] = 'Avec la/les demande(s) s&eacute;l&eacute;tionn&eacute;e(s):  %action%';
+  $strings['Do nothing'] = 'Ne rien faire';
+  $strings['Assign to milestone'] = 'Assigner &agrave; l\'&eacute;tape';
+  $strings['Set category'] = 'Mettre la cat&eacute;gorie';
+  $strings['Choose workflow step to perform'] = 'Choisissez l\'&eacute;tape du workflow'; // Need to find a best translation
+  $strings['No milestone'] = 'Aucune &eacute;tape';
+  $strings['Create new milestone from selected issues'] = 'Cr&eacute;er une &eacute;tape pour les demandes s&eacute;l&eacute;tionn&eacute;es';
+  $strings['No resolution'] = 'Aucune r&eacute;solution';
+  $strings['No priority'] = 'Aucune priorit&eacute;';
+  $strings['No category'] = 'Aucune cat&eacute;gorie';
+  $strings['No severity'] = 'Aucune s&eacute;verit&eacute;';
+  $strings['Apply'] = 'Appliquer';
 
 // First occurrence is in: .\modules\search\templates\_bulkworkflow.inc.php
 // ----------------------------------------------------------------------------
@@ -3658,25 +3658,25 @@
 
 // First occurrence is in: .\modules\search\templates\_pagination.inc.php
 // ----------------------------------------------------------------------------
-//$strings['First page'] = '';
-//$strings['Previous page'] = '';
-//$strings['Next page'] = '';
-//$strings['Last page'] = '';
+  $strings['First page'] = 'Premi&egrave;re page';
+  $strings['Previous page'] = 'Page pr&eacute;c&eacute;dente';
+  $strings['Next page'] = 'Page suivante';
+  $strings['Last page'] = 'Derni&egrave;re page';
 
 // First occurrence is in: .\modules\search\templates\_results_normal.inc.php
 // ----------------------------------------------------------------------------
   $strings['Total number of issues in this group: %number%'] = 'Nombre total de demandes dans ce groupe : %number%';
   $strings['Last updated'] = 'Modifi&eacute; le';
   $strings['Number of user comments on this issue'] = 'Nombre de commentaires utilisateurs pour cette demande';
-//$strings['This issue has %num% attachments'] = '';
-//$strings['Access to this issue is restricted'] = '';
+  $strings['This issue has %num% attachments'] = 'Cette demande a %num% attachements';
+  $strings['Access to this issue is restricted'] = 'L\'acc&egrave;s &agrave; cette demande est restreinte';
 
 // First occurrence is in: .\modules\search\templates\_results_normal_csv.inc.php
 // ----------------------------------------------------------------------------
-//$strings['Issue number'] = '';
-//$strings['Percentage complete'] = '';
-//$strings['Time estimated'] = '';
-//$strings['User pain'] = '';
+  $strings['Issue number'] = 'Num&eacute;ro de demande';
+  $strings['Percentage complete'] = 'Pourcentage complet';
+  $strings['Time estimated'] = 'Temps estim&eacute;';
+  $strings['User pain'] = 'Retour utilisateur';
 
 // First occurrence is in: .\modules\search\templates\_results_todo.inc.php
 // ----------------------------------------------------------------------------
@@ -3691,7 +3691,7 @@
 
 // First occurrence is in: .\modules\search\templates\_searchbuilder.inc.php
 // ----------------------------------------------------------------------------
-//$strings['Search for (text)'] = '';
+  $strings['Search for (text)'] = 'Rechercher (texte)';
   $strings['Issues containing'] = 'Demandes contenant';
   $strings['Issues not containing'] = 'Demandes ne contenant pas';
   $strings['Leave this input field blank to list all issues based on filters below'] = 'Laisser ce champ vide pour lister toutes les demandes bas&eacute;es sur les filtres ci-dessous';
@@ -3704,25 +3704,25 @@
   $strings['Severity - how serious the issue is'] = 'S&eacute;v&eacute;rit&eacute; - combien la demande est s&eacute;rieuse';
   $strings['Reproducability - how often you can reproduce the issue'] = 'Reproductibilit&eacute; - combien de fois la demande peut &ecirc;tre reprojete';
   $strings['Issue type - what kind of issue it is'] = 'Type de demande - quelle sorte de demande est-ce';
-//$strings['Milestone - which milestone an issue is targetted for'] = '';
-//$strings['Component - which components have been affected'] = '';
-//$strings['Build - which builds have been affected'] = '';
-//$strings['Edition - which editions have been affected'] = '';
-//$strings['Posted by user - which user posted the issue'] = '';
-//$strings['Owned by user - which user owns an issue'] = '';
-//$strings['Owned by team - which team owns an issue'] = '';
-//$strings['Assigned to user - which user is an issue assigned to'] = '';
-//$strings['Assigned to team - which team is an issue assigned to'] = '';
-//$strings['Date reported - when was the issue reported'] = '';
-//$strings['Date last updated - when was the issue last updated'] = '';
+  $strings['Milestone - which milestone an issue is targetted for'] = 'Etape - quelle &eacute;tape d\'une demande est cibl&eacute;e pour'; // Need to find something better
+  $strings['Component - which components have been affected'] = 'Composant - composants qui ont &eacute;t&eacute; affect&eacute;s';
+  $strings['Build - which builds have been affected'] = 'Build - buils qui ont &eacute;t&eacute; affect&eacute;s'; // Yeah build in french :x
+  $strings['Edition - which editions have been affected'] = 'Edition - les &eacute;ditions qui ont &eacute;t&eacute; affect&eacute;es';
+  $strings['Posted by user - which user posted the issue'] = 'Post&eacute; par l\'utilisateur - l\'utilisateur qui a post&eacute; la demande';
+  $strings['Owned by user - which user owns an issue'] = 'Poss&eacute;d&eacute; par l\'utilisateur - l\'utilisateur qui poss&eacute;de la demande';
+  $strings['Owned by team - which team owns an issue'] = 'Poss&eacute;d&eacute; par l\'&eacute;quipe - l\'&eacute;quipe qui poss&eacute;de la demande';
+  $strings['Assigned to user - which user is an issue assigned to'] = 'Attribu&eacute; &agrave; l\'utilisateur - l\'utilisateur a qui est attribu&eacute; la demande';
+  $strings['Assigned to team - which team is an issue assigned to'] = 'Attribu&eacute; &agrave; l\'&eacute;quipe - l\'&eacute;quipe a qui est attribu&eacute; la demande';
+  $strings['Date reported - when was the issue reported'] = 'Date de cr&eacute;atio - &agrave; quand remonte la cr&eacute;ation de la demande'; // création or signalement
+  $strings['Date last updated - when was the issue last updated'] = 'Date de derni&eagrave;re mise &agrave; jour - lorsque la demade a &eacute;t&eacute; mise &agrave; jour le';
   $strings['Adding the same filter more than once means that any of the given values for that filter will return a match if you are matching with "is", and neither of the given values if you are matching with "is not"'] = 'Ajouter le m&ecirc;me filtre plus d\'une fois signifie que chaque valeur de ce filtre retournera un r&eacute;sultat si vous utilisez "est", et au contraire aucune des valeurs donn&eacute;es si vous utilisez "n\'est pas"';
-//$strings['Edit saved search details'] = '';
-//$strings['Save as new saved search'] = '';
-//$strings['More search details'] = '';
+  $strings['Edit saved search details'] = 'Editer les d&eacute;tails de la recherche sauvegard&eacute;e';
+  $strings['Save as new saved search'] = 'Enregistrer en tant que nouvelle recherche sauv&eacute;gard&eacute;e';
+  $strings['More search details'] = 'Plus de d&eacute;tail de la recherche';
   $strings['Search'] = 'Rechercher';
   $strings['Display results as'] = 'Afficher les r&eacute;sultats comme';
   $strings['Template parameter'] = 'Param&egrave;tre du mod&egrave;le';
-//$strings['User pain threshold'] = '';
+  $strings['User pain threshold'] = 'Seuil de retour utilisateur'; // Huh ???
   $strings['If the template has a custom parameter, use this field to specify it'] = 'Si le mod&egrave;le a un param&egrave;tre personnalis&eacute;, utilisez ce champ pour le sp&eacute;cifier';
   $strings['Issues per page'] = 'Demandes par page';
   $strings['%number_of_issues% issues per page'] = '%number_of_issues% demandes par page';
@@ -3745,46 +3745,46 @@
 // First occurrence is in: .\modules\search\templates\_sidebar.inc.php
 // ----------------------------------------------------------------------------
   $strings['Predefined searches'] = 'Recherches pr&eacute;d&eacute;finies';
-//$strings['Project wishlist'] = '';
+  $strings['Project wishlist'] = 'Liste de projets';
   $strings['Your saved searches'] = 'Vos recherches enregistr&eacute;es';
   $strings['Your saved searches for this project'] = 'Vos recherches enregistr&eacute;es pour ce projet';
-//$strings['Delete saved search'] = '';
-//$strings['Edit saved search'] = '';
-//$strings['Do you really want to delete this saved search?'] = '';
-//$strings['This action cannot be reverted. Note: this will not modify any issues affected by this search'] = '';
-//$strings['Yes, delete'] = '';
-//$strings['%yes_delete% or %cancel%'] = '';
+  $strings['Delete saved search'] = 'Effacer la recherche sauvegard&eacute;e';
+  $strings['Edit saved search'] = 'Editer la recherche sauvegard&eacute;e';
+  $strings['Do you really want to delete this saved search?'] = 'Souhaitez-vous r&eacute;ellement supprimer cette recherche sauvegard&eacute;e';
+  $strings['This action cannot be reverted. Note: this will not modify any issues affected by this search'] = 'Cette action est irr&eacute;versible. Remarque: cela ne modifie pas les demandes affect&eacute;es par cette recherche';
+  $strings['Yes, delete'] = 'Oui, effacer';
+  $strings['%yes_delete% or %cancel%'] = '%yes_delete% ou %cancel%';
   $strings["You don't have any saved searches"] = "Vous n'avez pas de recherches enregistr&eacute;es";
   $strings["You don't have any saved searches for this project"] = "Vous n'avez pas de recherches enregistr&eacute;es pour ce projet";
   $strings['Public saved searches'] = 'Recherches enregistr&eacute;es publiques';
   $strings['Public saved searches for this project'] = 'Recherches publiques de ce projet';
-//$strings['There are no public saved searches'] = '';
+  $strings['There are no public saved searches'] = 'Il n\y a aucune recherche publique sauvegard&eacute;e';
   $strings['There are no saved searches for this project'] = 'Il n\'y a pas de recherche enregistr&eacute;e pour ce projet';
 
 // First occurrence is in: .\modules\search\templates\findissues.html.php
 // ----------------------------------------------------------------------------
   $strings['Find issues for %project_name%'] = 'Trouver des demandes pour %project_name%';
-//$strings['Wishlist for %project_name%'] = '';
-//$strings['Issues reported for %project_name% this month'] = '';
-//$strings['Issues reported for %project_name% last 30 days'] = '';
+  $strings['Wishlist for %project_name%'] = 'Liste de voeux pour %project_name%'; // Huh ??
+  $strings['Issues reported for %project_name% this month'] = 'Demandes signal&eacute;es pour %project_name% ce mois-ci';
+  $strings['Issues reported for %project_name% last 30 days'] = 'Demandes signal&eacute;es pour %project_name% les 30 derniers jours';
   $strings['%number_of% issue(s)'] = '%number_of% demande(s)';
   $strings['No issues were found'] = 'Aucune demande trouv&eacute;e';
 
 // First occurrence is in: .\modules\search\templates\quicksearch.html.php
 // ----------------------------------------------------------------------------
-//$strings['Press "Enter" twice to find issues matching your query'] = '';
-//$strings['%num% issue(s) found'] = '';
-//$strings['Issue %issue_no% - %title%'] = '';
-//$strings['Resolution: %resolution%'] = '';
+  $strings['Press "Enter" twice to find issues matching your query'] = 'Appuyer sur Entrer deux fois pour trouver les demandes correspondantes &agrave; votre requ&ecirc;te';
+  $strings['%num% issue(s) found'] = '%num% demande(s) trouv&eacute;(s)';
+  $strings['Issue %issue_no% - %title%'] = 'Demande %issue_no% - %title%';
+  $strings['Resolution: %resolution%'] = 'R&eacute;solution %resolution%';
   $strings['Status: %status%'] = 'Statut : %status%';
-//$strings['See %num% more issues ...'] = '';
-//$strings['No issues found matching your query'] = '';
+  $strings['See %num% more issues ...'] = 'Voir plus de demandes (%num%)'; // Not the best
+  $strings['No issues found matching your query'] = 'Aucune demande ne correspond &agrave; votre requ&ecirc;te';
 
 // First occurrence is in: .\modules\vcs_integration\classes\TBGVCSIntegration.class.php
 // ----------------------------------------------------------------------------
-//$strings['Commits'] = '';
-//$strings['Issue updated from code repository'] = '';
-//$strings['This issue has been updated with the latest changes from the code repository.<source>%commit_msg%</source>'] = '';
+  $strings['Commits'] = 'Commits'; // Or Changements, but french dev use commit
+  $strings['Issue updated from code repository'] = 'La demande a &eacute;t&eacute; mis &agrave; jour &agrave; partir du d&eacute;p&ocirc;t de code';
+  $strings['This issue has been updated with the latest changes from the code repository.<source>%commit_msg%</source>'] = 'Cette demande &eacute;t&eacute; mis &agrave; jour avec les derniers changements du d&eacute;p&ocirc;t de code <source>%commit_msg%</source>';
 
 // First occurrence is in: .\modules\vcs_integration\classes\actions.class.php
 // ----------------------------------------------------------------------------
@@ -3792,21 +3792,21 @@
 
 // First occurrence is in: .\modules\vcs_integration\templates\_commitbox.inc.php
 // ----------------------------------------------------------------------------
-//$strings['Revision %rev% by %user%'] = '';
-//$strings['Preceeded by %prev%'] = '';
-//$strings['Show more details'] = '';
-//$strings['Hide details'] = '';
-//$strings['Log entry'] = '';
-//$strings['Changed files'] = '';
-//$strings['No files have been affected by this commit'] = '';
-//$strings['directory'] = '';
-//$strings['Diff'] = '';
-//$strings['deleted'] = '';
-//$strings['new file'] = '';
-//$strings['View'] = '';
-//$strings['Affected issues'] = '';
-//$strings['This commit affects no issues'] = '';
-//$strings['This commit only affects issues you do not hae access to'] = '';
+  $strings['Revision %rev% by %user%'] = 'La r&eacute;vision %rev% par %user%';
+  $strings['Preceeded by %prev%'] = 'Pr&eacute;c&eacute;d&eacute; par  %prev%';
+  $strings['Show more details'] = 'Voir plus de d&eacute;tails';
+  $strings['Hide details'] = 'Cacher les d&eacute;tails';
+  $strings['Log entry'] = 'Entr&eacute;e du journal';
+  $strings['Changed files'] = 'Fichiers chang&eacute;s';
+  $strings['No files have been affected by this commit'] = 'Aucun fichier n\'a &eacute;t&eacute; affect&eacute; par ce commit';
+  $strings['directory'] = 'R&eacute;pertoire';
+  $strings['Diff'] = 'Diff';
+  $strings['deleted'] = 'supprim&eacute;';
+  $strings['new file'] = 'nouveau fichier';
+  $strings['View'] = 'Voir'; // Or Vue ??
+  $strings['Affected issues'] = 'Demandes concern&eacute;es';
+  $strings['This commit affects no issues'] = 'Ce commit n\'affecte aucune demande';
+  $strings['This commit only affects issues you do not hae access to'] = 'Ce commit affecte uniquement des demandes auxquelles vous n\'avez pas acc&egrave;s';
 
 // First occurrence is in: .\modules\vcs_integration\templates\_menustriplinks.inc.php
 // ----------------------------------------------------------------------------
@@ -3816,11 +3816,11 @@
 // ----------------------------------------------------------------------------
 //$strings['You do not have the relevant permissions to access VCS Integration settings'] = '';
 //$strings["Remember to set up the hook after saving these settings - see the %documentation%. You will need this project's ID number: %id%"] = "";
-//$strings['documentation'] = '';
+  $strings['documentation'] = 'documentation';
 //$strings['Enable VCS Integration?'] = '';
-//$strings['Enable workflow?'] = '';
+  $strings['Enable workflow?'] = 'Activer le flux de travaux?';
 //$strings['This will allow specially-crafted commit messages to cause a workflow transition, in the same way as incoming emails. See the documentation for details.'] = '';
-//$strings['Access method'] = '';
+  $strings['Access method'] = 'M&eacute;thode d\'acc&egrave;s';
 //$strings['Direct Access (via a call to tbg_cli)'] = '';
 //$strings['HTTP Access (via a call to a URL)'] = '';
 //$strings['Required for Github, Gitorious and Bitbucket users'] = '';
@@ -3829,11 +3829,11 @@
 //$strings['If the repository name is part of the URL (e.g. http://www.example.com/viewvc/myrepo), please include it as part of this field.'] = '';
 //$strings['Repository browser type'] = '';
 //$strings['Set URLs manually'] = '';
-//$strings['Multi-system'] = '';
+  $strings['Multi-system'] = 'Multi-syst&egrave;mes';
 //$strings['using MultiViews'] = '';
-//$strings['locally hosted'] = '';
+  $strings['locally hosted'] = 'h&eacute;berger localement';
 //$strings['If you are setting up for the first time, it is recommended you set a browser type, which will automatically set the URLs for you.'] = '';
-//$strings['Repository name'] = '';
+  $strings['Repository name'] = 'Nom du d&eacute;p&ocirc;t';
 //$strings['Custom browser URLs'] = '';
 //$strings['In the Commit details page field, the following parameters will be replaced with a real value when link is generated:'] = '';
 //$strings['Revision number/hash of either the current or previous revision (the one to use is automatically chosen as appropriate)'] = '';
@@ -3854,7 +3854,7 @@
 
 // First occurrence is in: .\modules\vcs_integration\templates\_projectheaderbutton.inc.php
 // ----------------------------------------------------------------------------
-//$strings['Source code'] = '';
+  $strings['Source code'] = 'Code source';
 
 // First occurrence is in: .\modules\vcs_integration\templates\_viewissue_commits_top.inc.php
 // ----------------------------------------------------------------------------
@@ -3866,6 +3866,6 @@
 
 // First occurrence is in: .\modules\vcs_integration\templates\projectcommits.html.php
 // ----------------------------------------------------------------------------
-//$strings['"%project_name%" commits'] = '';
-//$strings['No commits have been found for this project'] = '';
+  $strings['"%project_name%" commits'] = 'Commits du "%project_name%"';
+  $strings['No commits have been found for this project'] = 'Aucun commit n\'a &eacute;t&eacute; trouv&eacute; pour ce projet';
 
