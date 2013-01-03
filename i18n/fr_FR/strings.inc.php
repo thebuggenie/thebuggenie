@@ -12,7 +12,7 @@
 // First occurrence is in: .\core\classes\TBGContext.class.php
 // ----------------------------------------------------------------------------
   $strings['Can see issues reported by other users'] = 'Peut voir les demandes soumises par d\'autres utilisateurs';
-//$strings['Can see issues reported by users in the same group'] = '';
+  $strings['Can see issues reported by users in the same group'] = 'Peut voir les demandes soumises par les utilisateurs dans le m&ecirc;me groupe';
   $strings['Can access the configuration page and edit all configuration'] = 'Peut acc&eacute;der &agrave; la page de configuration page et &eacute;diter la configuration';
   $strings['Read-only access: "Settings" configuration page'] = 'Acc&egrave;s en lecture seule : page de configuration "Param&egrave;tres"';
   $strings['Read + write access: "Settings" configuration page'] = 'Acc&egrave;s en lecture + &eacute;criture : page de configuration "Param&egrave;tres"';
@@ -61,11 +61,11 @@
   $strings['Can see all components'] = 'Peut voir tous les composants';
   $strings['Can see all releases'] = 'Peut voir toutes les livraisons';
   $strings['Can see all milestones'] = 'Peut voir tous les jalons';
-//$strings['Can manage stories, tasks, sprints and backlog on the project planning page'] = '';
-//$strings['Can add new issues/tasks/stories to the backlog on the project planning page'] = '';
-//$strings['Can manage the backlog on the project planning page'] = '';
-//$strings['Can add milestones/sprints on the project planning page'] = '';
-//$strings['Can (re-)assign issues/tasks/stories to milestones/sprints on the project planning page'] = '';
+  $strings['Can manage stories, tasks, sprints and backlog on the project planning page'] = 'Peut g&eacute;rer les histoires, t&acirc;ches, sprints et backlog sur la page de planning du projet';
+  $strings['Can add new issues/tasks/stories to the backlog on the project planning page'] = 'Peut ajouter des demandes/t&acirc;ches/histoires au backlog sur la page de planning du projet';
+  $strings['Can manage the backlog on the project planning page'] = 'Peut g&eacute;rer le backlog sur la page de planning du projet';
+  $strings['Can add milestones/sprints on the project planning page'] = 'Peut ajouter des &eacute;tapes/sprints sur la page de planning du projet';
+  $strings['Can (re-)assign issues/tasks/stories to milestones/sprints on the project planning page'] = 'Peut r&eacute;assigner des demandes/t&acirc;ches/histoires aux &eacute;tapes/sprints sur la page de planing du projet';
   $strings['Can manage project'] = 'Peut g&eacute;rer le projet';
   $strings['Can manage project releases and components'] = 'Peut g&eacute;rer les livraisons et les composants du projet';
   $strings['Can edit project details and settings'] = 'Peut &eacute;diter les d&eacute;tails et les param&egrave;tres du projet';
@@ -74,7 +74,7 @@
   $strings['Can see this release'] = 'Peut voir cette livraison';
   $strings['Can see this milestone'] = 'Peut voir ce jalon';
   $strings['Can vote for issues'] = 'Peut voter pour les demandes';
-//$strings['Can toggle issue access between restricted and public'] = '';
+  $strings['Can toggle issue access between restricted and public'] = 'Peut basculer, sur les demandes, de restreint à public l\'acc&egrave;s';
   $strings['Can create issues, edit basic information on issues reported by the user and close/re-open them'] = 'Peut cr&eacute;er des demandes, &eacute;diter les informations de base des demandes soumises par l\'utilisateur et les fermer/r&eacute;-ouvrir';
   $strings['Can create new issues'] = 'Peut cr&eacute;er de nouvelles demandes';
   $strings['Can edit title and description on issues reported by the user'] = 'Peut &eacute;diter le titre et la description des demandes soumises par l\'utilisateur';
@@ -84,7 +84,7 @@
   $strings['Can close and reopen issues reported by the user'] = 'Peut fermer et r&eacute;-ouvir des demandes soumises par l\'utilisateur';
   $strings['Can close issues reported by the user'] = 'Peut fermer des demandes soumises par l\'utilisateur';
   $strings['Can re-open issues reported by the user'] = 'Peut r&eacute;-ouvir des demandes soumises par l\'utilisateur';
-  $strings['Can delete, close, reopen and update any issue details and progress'] = 'Peut effacer, fermer, r&eacute;-ouvrir et mettre &agrave; jour tous les d&eacute;taisl des demandes et les progressions';
+  $strings['Can delete, close, reopen and update any issue details and progress'] = 'Peut effacer, fermer, r&eacute;-ouvrir et mettre &agrave; jour tous les d&eacute;tails des demandes et les progressions';
   $strings['Can edit title and description on any issues'] = 'Peut &eacute;diter le titre et la description de toutes les demandes';
   $strings['Can edit any issue title'] = 'Peut &eacute;diter le titre de toutes les demandes';
   $strings['Can edit any issue description'] = 'Peut &eacute;diter la description de toutes les demandes';
@@ -109,7 +109,7 @@
   $strings['Can change custom field values for any issues'] = 'Peut modifier les valeurs de champs personnalis&eacute;s de toutes les demandes';
   $strings['Can change custom field "%field_name%" for issues reported by the user'] = 'Peut changer le champ personnalis&eacute; "%field_name%" des demandes soumises par l\'utilisateur';
   $strings['Can change custom field "%field_name%" for any issues'] = 'Peut changer le champ personnalis&eacute; "%field_name%" de toutes les demandes';
-//$strings['Can add/remove extra information and link issues (edition, component, release, links and files) to issues'] = '';
+  $strings['Can add/remove extra information and link issues (edition, component, release, links and files) to issues'] = 'Peut ajouter/supprimer des informations suppl&eacute;mentaires et des liaisons interdemandes (&eacute;dition, composants, version, liens et fichiers) aux demandes';
   $strings['Can add releases / versions to list of affected versions for issues reported by the user'] = 'Peut ajouter des livraisons/versions &agrave; la liste des versions affect&eacute;es des demandes soumises par l\'utilisateur';
   $strings['Can add releases / versions to list of affected versions for any issues'] = 'Peut ajouter des livraisons/versions &agrave; la liste des versions affect&eacute;es de toutes les demandes';
   $strings['Can add components to list of affected components for issues reported by the user'] = 'Peut ajouter des composants &agrave; la liste des composants affect&eacute;s des demandes soumises par l\'utilisateur';
@@ -132,8 +132,8 @@
   $strings['Can see all comments including hidden'] = 'Peut voir tous les commentaires y compris ceux masqu&eacute;s';
   $strings['Can edit all comments'] = 'Peut modifier tous les commentaires';
   $strings['Can delete any comments'] = 'Peut supprimer tous les commentaires';
-//$strings['A loop has been found in the project heirarchy. Go to project configuration, and alter the subproject setting for this project so that this project is not a subproject of one which is a subproject of this one.'] = '';
-//$strings['An authentication error occured. Please reload your page and try again'] = '';
+  $strings['A loop has been found in the project heirarchy. Go to project configuration, and alter the subproject setting for this project so that this project is not a subproject of one which is a subproject of this one.'] = 'Une boucle a &eacute;t&eacute; trouv&eacute;e dans la hierarchie de projet. Aller &agrave; la configuration de projet et modifier la configuration de sous-projet afin que ce projet ne soit plus un sous-projet d\'un sous-projet de celui-ci';
+  $strings['An authentication error occured. Please reload your page and try again'] = 'Une erreur d\'authenfication &agrave; eu lieu. Merci de recharger la page et de r&eacute;essayer';
   $strings['Please log in'] = 'Veuillez vous connecter';
 
 // First occurrence is in: .\core\classes\TBGCustomDatatype.class.php
@@ -147,7 +147,7 @@
   $strings['Select a component from the list of available components'] = 'S&eacute;l&eacute;tionner un composant dans la liste des composants disponibles';
   $strings['Select a edition from the list of available editions'] = 'S&eacute;l&eacute;tionner une &eacute;dition dans la liste des &eacute;ditions disponibles';
   $strings['Dropdown list with statuses'] = 'Liste d&eacute;roulante avec les statuts';
-//$strings['This field key already exists'] = '';
+  $strings['This field key already exists'] = 'Cette clef de champ existe d&eacute;j&agrave;';
 
 // First occurrence is in: .\core\classes\TBGDashboardView.class.php
 // ----------------------------------------------------------------------------
@@ -156,21 +156,21 @@
   $strings['Open issues assigned to my teams'] = 'Demandes ouvertes assign&eacute;es &agrave; mes &eacute;quipes';
   $strings["What you've done recently"] = "Ce que vous avez fait r&eacute;cement";
   $strings['Recent comments'] = 'Commentaires r&eacute;cents';
-//$strings['Recent issues: %issuetype%'] = '';
-//$strings['About this project'] = '';
+  $strings['Recent issues: %issuetype%'] = 'Demandes r&eacute;centes';
+  $strings['About this project'] = 'A propos de ce projet';
   $strings['Project team'] = 'Equipe projet';
-//$strings['Project client'] = '';
-//$strings['Subprojects'] = '';
-//$strings['Graph of closed vs open issues, past 15 days'] = '';
-//$strings['Statistics by priority'] = '';
-//$strings['Statistics by category'] = '';
-//$strings['Statistics by status'] = '';
-//$strings['Statistics by resolution'] = '';
-//$strings['Statistics by workflow step'] = '';
-//$strings['Recent activities'] = '';
-//$strings['Upcoming milestones and deadlines'] = '';
-//$strings['Latest downloads'] = '';
-//$strings['Unknown dashboard item'] = '';
+  $strings['Project client'] = 'Client projet';
+  $strings['Subprojects'] = 'Sous-projets';
+  $strings['Graph of closed vs open issues, past 15 days'] = 'Graphiques des demandes ferm&eacute;es vs ouvertes, des 15 derniers jours';
+  $strings['Statistics by priority'] = 'Statistiques par priorit&eacute;';
+  $strings['Statistics by category'] = 'Statistiques par cat&eacute;gorie';
+  $strings['Statistics by status'] = 'Statistiques par status';
+  $strings['Statistics by resolution'] = 'Statistiques par r&eacute;solution';
+  $strings['Statistics by workflow step'] = 'Statistiques par &eacute;tape de flux de travaux';
+  $strings['Recent activities'] = 'Activit&eacute;s r&eacute;centes';
+  $strings['Upcoming milestones and deadlines'] = 'Etapes &agrave; venir et deadlines';
+  $strings['Latest downloads'] = 'Derniers t&eacute;l&eacute;chargements';
+  $strings['Unknown dashboard item'] = 'Objet de tableau de bord inconnu';
 
 // First occurrence is in: .\core\classes\TBGIssue.class.php
 // ----------------------------------------------------------------------------
@@ -191,29 +191,29 @@
   $strings['Will affect average number of users'] = 'Affectera la majorit&eacute; des utilisateurs';
   $strings['Will only affect a few users'] = 'Affectera un petit nombre d\'utilisateurs';
   $strings['Will affect almost no one'] = 'Affectera personne ou presque';
-//$strings['This issue has been deleted'] = '';
-//$strings['Unknown issuetype'] = '';
+  $strings['This issue has been deleted'] = 'Cette demande a &eacute;t&eacute; effac&eacute;e';
+  $strings['Unknown issuetype'] = 'Type de demande inconnue';
   $strings['%number_of% months'] = '%number_of% mois';
-//$strings['1 month'] = '';
+  $strings['1 month'] = '1 mois';
   $strings['%number_of% weeks'] = '%number_of% semaines';
-//$strings['1 week'] = '';
+  $strings['1 week'] = '1 semaine';
   $strings['%number_of% days'] = '%number_of% jours';
-//$strings['1 day'] = '';
+  $strings['1 day'] = '1 jour';
   $strings['%number_of% hours'] = '%number_of% heures';
   $strings['1 hour'] = '1 heure';
   $strings['%number_of% points'] = '%number_of% points';
-//$strings['1 point'] = '';
+  $strings['1 point'] = '1 point';
   $strings['No time'] = 'Pas de dur&eacute;e';
-//$strings['This issue no longer depends on the solution of issue %issue_no%'] = '';
-//$strings['Issue dependancy removed'] = '';
-//$strings['Issue %issue_no% no longer depends on the solution of this issue'] = '';
-//$strings['This %this_issuetype% now depends on the solution of %issuetype% %issue_no%'] = '';
-//$strings['Dependancy added'] = '';
+  $strings['This issue no longer depends on the solution of issue %issue_no%'] = 'Cette demande ne d&eacute;pend plus de la solution de la demande %issue_no%';
+  $strings['Issue dependancy removed'] = 'D&eacute;pendance de demande supprim&eacute;e';
+  $strings['Issue %issue_no% no longer depends on the solution of this issue'] = 'La demande %issue_no% ne d&eacute;pend plus de la solution de cette demande';
+  $strings['This %this_issuetype% now depends on the solution of %issuetype% %issue_no%'] = 'Ce %this_issuetype% d&eacute;pend maintenant de la solution de %issuetype% %issue_no%';
+  $strings['Dependancy added'] = 'D&eacute;pendance ajout&eacute;e';
 //$strings['%issuetype% %issue_no% now depends on the solution of this %this_issuetype%'] = '';
 //$strings["'%release_name%' added"] = "";
 //$strings["'''%release_name%''' is now affected by this issue"] = "";
-//$strings['Affected releases'] = '';
-//$strings["'%edition_name%' added"] = "";
+  $strings['Affected releases'] = 'Version concern&eacute;e';
+  $strings["'%edition_name%' added"] = "'%edition_name%' ajout&eacute;";
 //$strings["'''%edition_name%''' is now affected by this issue"] = "";
 //$strings['Affected editions'] = '';
 //$strings["'%component_name%' added"] = "";
@@ -3868,3 +3868,4 @@
 // ----------------------------------------------------------------------------
 //$strings['"%project_name%" commits'] = '';
 //$strings['No commits have been found for this project'] = '';
+
