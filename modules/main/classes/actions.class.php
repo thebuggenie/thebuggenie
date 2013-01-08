@@ -3701,7 +3701,8 @@
 					header('Content-type: text/javascript');
 					foreach($itemarray['js'] as $file)
 					{
-						if(file_exists($file) && strpos(realpath($file), THEBUGGENIE_PATH) !== false)
+						$ext = substr($file, -2);
+						if($ext == 'js' && file_exists($file) && strpos(realpath($file), THEBUGGENIE_PATH) !== false)
 						{
 							echo file_get_contents($file);
 						}
@@ -3712,7 +3713,8 @@
 					header('Content-type: text/css');
 					foreach($itemarray['css'] as $file)
 					{
-                        if(file_exists($file) && strpos(realpath($file), THEBUGGENIE_PATH) !== false)
+						$ext = substr($file, -3);
+                        if($ext == 'css' && file_exists($file) && strpos(realpath($file), THEBUGGENIE_PATH) !== false)
 						{
 							echo file_get_contents($file);
 						}
