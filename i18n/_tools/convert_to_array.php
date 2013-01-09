@@ -3,7 +3,7 @@
 /**
  * Simple PO to Array converter for TBG
  */
-define('__NEWLINE__', "\r\n");
+define('__NEWLINE__', PHP_EOL);
 
 /**
  * Checking arguments
@@ -21,10 +21,10 @@ if (!$baseDir) {
     return FALSE;
 }
 
-$poFilePointer  = $baseDir . '/' . $argv[3];
+$fromFilePointer  = $baseDir . '/' . $argv[3];
 $phpFilePointer = $baseDir . '/' . $argv[5];
 
-if(!is_file($poFilePointer)) {
+if(!is_file($fromFilePointer)) {
     echo 'Source file is missing!';
     return FALSE;
 }
@@ -33,7 +33,7 @@ if(!is_file($poFilePointer)) {
 /**
  * Creating FileObject instances
  */
-$poFile  = new SplFileObject($poFilePointer, 'r');
+$fromFile  = new SplFileObject($fromFilePointer, 'r');
 $phpFile = new SplFileObject($phpFilePointer, 'w');
 
 /**
@@ -53,21 +53,66 @@ $translations = array();
 /**
  * Reading PO file and generates translation array
  */
-foreach ($poFile as $lineNumber => $line) {
+if($fromFile->getExtension() == "po") {
+    foreach ($fromFile as $lineNumber => $line) {
 
-    if ($lineNumber > 0 && $previousLine == __NEWLINE__ && mb_substr($line, 0, 2) == '#:') {
-        $category = trim(mb_substr(trim(mb_substr($line, 0, mb_strpos($line, ':', 3))), 3));
+        if ($lineNumber > 0 && $previousLine == __NEWLINE__ && mb_substr($line, 0, 2) == '#:') {
+            $category = trim(mb_substr(mb_substr($line, 0, mb_strpos($line, ':', 3)), 2));
+
+            if(mb_substr($category, 0, 1) == '.') {
+                $category = mb_substr($category, 1);
+            }
+
+            $category = str_replace(array('\\'), array('/'), $category);
+        }
+
+        if (mb_substr($line, 0, 5) == 'msgid') {
+            $current_key = trim(mb_substr(trim(mb_substr($line, 5)), 1, -1));
+        }
+
+        if (!empty($category) && mb_substr($line, 0, 6) == 'msgstr') {
+            $translations[$category][$current_key] = trim(mb_substr(trim(mb_substr($line, 6)), 1, -1));
+        }
+
+        $previousLine = $line;
     }
-
-    if (mb_substr($line, 0, 5) == 'msgid') {
-        $current_key = trim(mb_substr(trim(mb_substr($line, 5)), 1, -1));
+} elseif($fromFile->getExtension() == "ts") {
+    
+    $xmlReader = new XMLReader();
+    $xmlReader->open($fromFilePointer, "utf-8");
+    
+    $value = '';
+    while($xmlReader->read()) {
+        
+        if($xmlReader->nodeType == XMLReader::ELEMENT && $xmlReader->name == 'name') {
+            $category = $xmlReader->readString();
+            $current_key = '';
+        }
+        
+        if($xmlReader->nodeType == XMLReader::ELEMENT && $xmlReader->name == 'source') {
+            $current_key = str_replace(array('"', '&'), array('\"', "&amp;") ,$xmlReader->readString());
+        }
+        
+        if($xmlReader->nodeType == XMLReader::ELEMENT && $xmlReader->name == 'translation') {
+            
+            if($xmlReader->getAttribute('type') == 'unfinished') {
+                $value = '';
+            } else {
+                $value = str_replace(array('"', '&'), array('\"', "&amp;") ,$xmlReader->readString());
+            }
+            
+        }
+        
+        if(!empty($category) && !empty($current_key)) {
+            $translations[$category][$current_key] = $value;
+        }
     }
+    
+} else {
+    
+    echo 'Not valid extension!';
+    exit;
 
-    if (!empty($category) && mb_substr($line, 0, 6) == 'msgstr') {
-        $translations[$category][$current_key] = trim(mb_substr(trim(mb_substr($line, 6)), 1, -1));
-    }
-
-    $previousLine = $line;
 }
 
 /**
