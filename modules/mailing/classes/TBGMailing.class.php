@@ -220,7 +220,9 @@
 				$password = TBGUser::createPassword(8);
 				$user->setPassword($password);
 				$user->save();
-				if ($this->isOutgoingNotificationsEnabled())
+                
+                $email_address = $user->getEmail();
+				if ($this->isOutgoingNotificationsEnabled() && !empty($email_address))
 				{
 					$subject = TBGContext::getI18n()->__('User account registered with The Bug Genie');
 					$message = $this->createNewTBGMimemailFromTemplate($subject, 'registeruser', array('user' => $user, 'password' => $password), null, array(array('name' => $user->getBuddyname(), 'address' => $user->getEmail())));
