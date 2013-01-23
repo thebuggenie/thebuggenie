@@ -553,7 +553,7 @@
 							TBGContext::getResponse()->setCookie('tbg3_username', $user->getUsername());
 							if ($this->checkScopeMembership($user)) return true;
 
-							return $this->forward(TBGContext::getRouting()->generate('account'));
+							return $this->forward(TBGContext::getRouting()->generate(TBGSettings::get('returnfromlogin')));
 						}
 						else
 						{
