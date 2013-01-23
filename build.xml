@@ -3,6 +3,18 @@
 <project name="thebuggenie" basedir="." default="build">
 
     <!-- ============================================  -->
+    <!-- Run settings                                  -->
+    <!-- ============================================  -->
+    <property name="isMacOrUnix" value="false" />
+
+    <condition property="isMacOrUnix">
+        <or>
+            <os family="mac" />
+            <os family="Unix" />
+        </or>
+    </condition>
+
+    <!-- ============================================  -->
     <!-- Directory settings                            -->
     <!-- ============================================  -->
     <property name="projectDir" value="."/>
@@ -14,8 +26,16 @@
     <property name="po_file_name" value="messages.po"/>
     <property name="po_file_backup_name" value="messages_old.po"/>
 
+    <property name="ts_file_name" value="strings.inc.ts"/>
+    <property name="ts_file_backup_name" value="strings._bak_.ts"/>
+
     <property name="strings_file_name" value="strings.inc.php"/>
     <property name="strings_file_backup_name" value="strings._bak_.php"/>
+
+    <!-- ============================================  -->
+    <!-- Locale settings                               -->
+    <!-- ============================================  -->
+    <property name="base_locale" value="en_US"/>
 
     <!-- =================================================================  -->
     <!-- Path to gettext tools binaries                                     -->
@@ -24,20 +44,10 @@
     <!-- Install or Unpack the package, and add its /bin directory to PATH  -->
     <!--  or specify the /bin directory path in toolsDir property.          -->
     <!-- =================================================================  -->
-    <property name="tools_dir" value="" description="Path to gettext tools bin directory"/>
     <property name="xgettext_executable" value="xgettext"/>
     <property name="msgmerge_executable" value="msgmerge"/>
 
     <property name="xgettext_keyword" value="__" description="Name of the i18n function"/>
-
-    <!-- Updating properties if tools_dir is specified -->
-    <if>
-        <isset property="tools_dir"/>
-        <then>
-            <property name="xgettext_executable" value="${tools_dir}/${xgettext_executable}"/>
-            <property name="msgmerge_executable" value="${tools_dir}/${msgmerge_executable}"/>
-        </then>
-    </if>
 
     <!-- ============================================  -->
     <!-- Fileset for gettext tools                     -->
@@ -70,9 +80,9 @@
         <echo msg="Removing old translation files (po only)..."/>
 
         <if>
-            <equals arg1="${usePlainMessages}" arg2="N" casesensitive="true" trim="true"/>
+            <equals arg1="${usePlainMessages}" arg2="N" casesensitive="false" trim="true"/>
             <then>
-                <delete failonerror="false" file="${localesDir}/${po_file_name}"/>
+                <delete failonerror="false" file="${localesDir}/${po_file_name}" quiet="true"/>
             </then>
         </if>
 
@@ -88,9 +98,10 @@
     <!-- ============================================  -->
     <target name="remove_translation" description="Removes outdates translation file (.po only)" hidden="true">
         <echo msg="Deleting old translation files in ${current_locale_array}"/>
-        <delete failonerror="false" file="${current_locale_abs}/${po_file_name}"/>
-        <delete failonerror="false" file="${current_locale_abs}/${po_file_backup_name}"/>
-        <delete failonerror="false" file="${current_locale_abs}/${strings_file_backup_name}"/>
+        <delete failonerror="false" file="${current_locale_abs}/${po_file_name}" quiet="true"/>
+        <delete failonerror="false" file="${current_locale_abs}/${po_file_backup_name}" quiet="true"/>
+        <delete failonerror="false" file="${current_locale_abs}/${ts_file_backup_name}" quiet="true"/>
+        <delete failonerror="false" file="${current_locale_abs}/${strings_file_backup_name}" quiet="true"/>
     </target>
 
     <!-- ============================================  -->
@@ -99,9 +110,20 @@
     <target name="prepare" description="Creates build directory and structure">
         <echo msg="Creating a backup from previous translations..."/>
 
-        <foreach param="current_locale_array" absparam="current_locale_abs" target="generate_po_from_array">
-            <fileset refid="locales_list"/>
-        </foreach>
+        <if>
+            <equals arg1="${generateOnlyForDefaultLanguage}" arg2="Y" casesensitive="false" trim="true"/>
+            <then>
+                <property name="current_locale_abs" value="${localesDir}/${base_locale}"/>
+                <property name="current_locale_array" value="${base_locale}"/>
+
+                <phingcall target="generate_po_from_array"/>
+            </then>
+            <else>
+                <foreach param="current_locale_array" absparam="current_locale_abs" target="generate_po_from_array">
+                    <fileset refid="locales_list"/>
+                </foreach>
+            </else>
+        </if>
 
         <echo msg="Backups created successfully..."/>
     </target>
@@ -146,15 +168,15 @@
         <if>
             <available file="${localesDir}/${po_file_name}" property="existingPoFile" value="true"/>
             <then>
-                <echo msg="${xgettext_executable} --from-code=UTF-8 --no-wrap --keyword=${xgettext_keyword} --keyword -n -j -F ${gettext_file_abs} -o ${localesDir}/${po_file_name}"/>
+                <echo msg="${tools_dir}${xgettext_executable} --from-code=UTF-8 --no-wrap --keyword=${xgettext_keyword} --keyword -n -j -F ${gettext_file_abs} -o ${localesDir}/${po_file_name}"/>
                 <exec dir="${project.basedir}"
-                      command="${xgettext_executable} --from-code=UTF-8 --no-wrap --keyword=${xgettext_keyword} --keyword -n -j -F ${gettext_file_abs} -o ${localesDir}/${po_file_name}"
+                      command="${tools_dir}${xgettext_executable} --from-code=UTF-8 --no-wrap --keyword=${xgettext_keyword} --keyword -n -j -F ${gettext_file_abs} -o ${localesDir}/${po_file_name}"
                       logoutput="true"/>
             </then>
             <else>
-                <echo msg="${xgettext_executable} --from-code=UTF-8 --no-wrap --keyword=${xgettext_keyword} --keyword -n -F ${gettext_file_abs} -o ${localesDir}/${po_file_name}"/>
+                <echo msg="${tools_dir}${xgettext_executable} --from-code=UTF-8 --no-wrap --keyword=${xgettext_keyword} --keyword -n -F ${gettext_file_abs} -o ${localesDir}/${po_file_name}"/>
                 <exec dir="${project.basedir}"
-                      command="${xgettext_executable} --from-code=UTF-8 --no-wrap --keyword=${xgettext_keyword} --keyword -n -F ${gettext_file_abs} -o ${localesDir}/${po_file_name}"
+                      command="${tools_dir}${xgettext_executable} --from-code=UTF-8 --no-wrap --keyword=${xgettext_keyword} --keyword -n -F ${gettext_file_abs} -o ${localesDir}/${po_file_name}"
                       logoutput="true"/>
             </else>
         </if>
@@ -165,9 +187,21 @@
     <!-- ============================================  -->
     <target name="merge_translations" description="Merge old .po files with the new messages.po">
         <echo msg="Merging old locales with the new messages.po ..."/>
-        <foreach param="current_locale_array" absparam="current_locale_abs" target="merge_translation">
-            <fileset refid="locales_list"/>
-        </foreach>
+
+        <if>
+            <equals arg1="${generateOnlyForDefaultLanguage}" arg2="Y" casesensitive="false" trim="true"/>
+            <then>
+                <property name="current_locale_abs" value="${localesDir}/${base_locale}"/>
+                <property name="current_locale_array" value="${base_locale}"/>
+
+                <phingcall target="merge_translation"/>
+            </then>
+            <else>
+                <foreach param="current_locale_array" absparam="current_locale_abs" target="merge_translation">
+                    <fileset refid="locales_list"/>
+                </foreach>
+            </else>
+        </if>
     </target>
 
     <!-- ============================================  -->
@@ -194,10 +228,51 @@
               logoutput="true"/>
 
         <move file="${localesDir}/${current_locale_array}/${strings_file_name}"
-              tofile="${localesDir}/${current_locale_array}/${strings_file_backup_name}"/>
+              tofile="${localesDir}/${current_locale_array}/${strings_file_backup_name}"
+              tstamp="true"/>
+
+        <if>
+            <available file="${localesDir}/${current_locale_array}/${ts_file_name}" property="tsFileExists"
+                       value="true"/>
+            <then>
+                <echo msg="TS File exists."/>
+
+                <php function="filemtime" returnProperty="ts_timestamp">
+                    <param value="${localesDir}/${current_locale_array}/${ts_file_name}"/>
+                </php>
+
+                <php function="filemtime" returnProperty="strings_timestamp">
+                    <param value="${localesDir}/${current_locale_array}/${strings_file_backup_name}"/>
+                </php>
+
+                <echo msg="TS File timestamp is: ${ts_timestamp}"/>
+                <echo msg="Strings File timestamp is: ${strings_timestamp}"/>
+
+                <php expression="${ts_timestamp} > ${strings_timestamp}" returnProperty="tsIsNewer"/>
+
+                <if>
+                    <isfalse value="${tsIsNewer}"/>
+                    <then>
+                        <echo msg="TS File is older, updating TS file..."/>
+
+                        <exec dir="${localesDir}"
+                              command="php -f ./_tools/convert_to_ts.php ./${current_locale_array}/ ${base_locale} ${po_file_name} ${current_locale_array} ${ts_file_name}"
+                              logoutput="true"/>
+                    </then>
+                </if>
+
+            </then>
+            <else>
+                <echo msg="TS File not exists, generating..."/>
+
+                <exec dir="${localesDir}"
+                      command="php -f ./_tools/convert_to_ts.php ./${current_locale_array}/ ${base_locale} ${po_file_name} ${current_locale_array} ${ts_file_name}"
+                      logoutput="true"/>
+            </else>
+        </if>
 
         <exec dir="${localesDir}"
-              command="php -f ./_tools/convert_to_array.php ./${current_locale_array}/ en_US ${po_file_name} ${current_locale_array} ${strings_file_name}"
+              command="php -f ./_tools/convert_to_array.php ./${current_locale_array}/ ${base_locale} ${ts_file_name} ${current_locale_array} ${strings_file_name}"
               logoutput="true"/>
 
         <if>
@@ -206,17 +281,22 @@
             <else>
                 <echo msg="New strings file is missing in ${current_locale_array}, restoring backup"/>
                 <copy file="${localesDir}/${current_locale_array}/${strings_file_backup_name}"
-                      tofile="${localesDir}/${current_locale_array}/${strings_file_name}"/>
+                      tofile="${localesDir}/${current_locale_array}/${strings_file_name}"
+                      tstamp="true"/>
             </else>
         </if>
+
+        <echo msg="Touching files to match mtime..."/>
+        <touch file="${localesDir}/${current_locale_array}/${strings_file_name}"/>
+        <touch file="${localesDir}/${current_locale_array}/${ts_file_name}"/>
 
         <if>
             <equals arg1="${keepDebugFiles}" arg2="N" casesensitive="true" trim="true"/>
             <then>
                 <echo msg="Deleting temporary files in ${current_locale_array} directory..."/>
-                <delete failonerror="false" file="${localesDir}/${current_locale_array}/${po_file_backup_name}"/>
-                <delete failonerror="false" file="${localesDir}/${current_locale_array}/${po_file_name}"/>
-                <delete failonerror="false" file="${localesDir}/${current_locale_array}/${strings_file_backup_name}"/>
+                <delete failonerror="false" file="${localesDir}/${current_locale_array}/${po_file_backup_name}" quiet="true"/>
+                <delete failonerror="false" file="${localesDir}/${current_locale_array}/${po_file_name}" quiet="true"/>
+                <delete failonerror="false" file="${localesDir}/${current_locale_array}/${strings_file_backup_name}" quiet="true"/>
             </then>
         </if>
     </target>
@@ -227,9 +307,28 @@
     <target name="build" description="Runs every target (clean, prepare, generate_translate, merge_translation)">
 
         <propertyprompt propertyName="keepDebugFiles" defaultValue="N"
-                        promptText="Are you want to keep temporary files?"/>
+                        promptText="Are you want to keep temporary files?"
+                        useExistingValue="true" />
+
         <propertyprompt propertyName="usePlainMessages" defaultValue="Y"
-                        promptText="Are you want to keep plain messages.po (Next time, you don't need to rebuild these file)?"/>
+                        promptText="Are you want to keep plain messages.po (Next time, you don't need to rebuild these file)?"
+                        useExistingValue="true" />
+
+        <propertyprompt propertyName="generateOnlyForDefaultLanguage" defaultValue="Y"
+                        promptText="Generate only for default language? (Y = en_US only)"
+                        useExistingValue="true" />
+
+        <if>
+            <istrue value="${isMacOrUnix}"/>
+            <then>
+                <property name="tools_dir" value="" />
+            </then>
+            <else>
+                <propertyprompt propertyName="tools_dir" defaultValue=""
+                                promptText="Path to gettext tools bin directory? Not required if xgettexts bin directory added to System Path"
+                                useExistingValue="true" />
+            </else>
+        </if>
 
         <phingcall target="clean"/>
         <phingcall target="prepare"/>

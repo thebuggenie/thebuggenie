@@ -191,6 +191,7 @@ footer td { font-size: 0.9em; line-height: 1.2; padding: 5px; text-shadow: 1px 1
 .logindiv.openid_container { width: 600px; float: right; }
 .logindiv.openid_container form { width: 590px; }
 .login_boxheader { font-size: 1.4em; font-weight: bold; padding-bottom: 10px; }
+.login_boxheader.regular { width:300px; }
 .login_fieldheader { font-weight: bold; }
 .login_fieldtable { margin-left: auto; margin-right: auto; }
 .logindiv input[type='password'] { font-family: sans-serif; } /* IE does not like web fonts on password boxes, and turns it into blankness, so we will use a different font */
