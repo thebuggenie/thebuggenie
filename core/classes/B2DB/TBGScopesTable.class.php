@@ -74,8 +74,7 @@
 			$crit = $this->getCriteria();
 			$crit->addJoin(TBGScopeHostnamesTable::getTable(), TBGScopeHostnamesTable::SCOPE_ID, self::ID);
 			$crit->addWhere(TBGScopeHostnamesTable::HOSTNAME, $hostname);
-			$row = $this->doSelectOne($crit);
-			return $row;
+			return $this->selectOne($crit);
 		}
 
 		public function getDefault()
