@@ -3616,7 +3616,7 @@
 					$user = TBGUser::getByUsername(str_replace('%2E', '.', $request['user']));
 					if ($user instanceof TBGUser)
 					{
-						if ($request['reset_hash'] == $user->getHashPassword())
+						if ($request['reset_hash'] == $user->getActivationKey())
 						{
 							$password = $user->createPassword();
 							$user->changePassword($password);
