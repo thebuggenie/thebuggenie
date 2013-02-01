@@ -318,7 +318,7 @@ EOT;
 	//				__('User account registered with The Bug Genie');
 					$subject = 'User account registered with The Bug Genie';
 					$user = $event->getSubject();
-					$link_to_activate = $this->generateURL('activate', array('user' => str_replace('.', '%2E', $user->getUsername()), 'key' => $user->getHashPassword()));
+					$link_to_activate = $this->generateURL('activate', array('user' => str_replace('.', '%2E', $user->getUsername()), 'key' => $user->generateActivationKey()));
 					$parameters = compact('user', 'password', 'link_to_activate');
 					$messages = $this->getTranslatedMessages($subject, 'registeruser', $parameters, array($user));
 

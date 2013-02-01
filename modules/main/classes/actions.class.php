@@ -616,7 +616,7 @@
 					{
 						$this->getResponse()->setHttpStatus(401);
 						TBGLogging::log($e->getMessage(), 'openid', TBGLogging::LEVEL_WARNING_RISK);
-						return $this->renderJSON(array("error" => $i18n->__("Could not validate against the OpenID provider")));
+						return $this->renderJSON(array("error" => $i18n->__("Invalid login details")));
 					}
 					else
 					{
@@ -787,7 +787,7 @@
 			$user = TBGUsersTable::getTable()->getByUsername(str_replace('%2E', '.', $request['user']));
 			if ($user instanceof TBGUser)
 			{
-				if ($user->getHashPassword() != $request['key'])
+				if ($user->getActivationKey() != $request['key'])
 				{
 					 TBGContext::setMessage('login_message_err', TBGContext::getI18n()->__('This activation link is not valid'));
 				}
