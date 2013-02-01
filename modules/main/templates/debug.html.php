@@ -21,6 +21,10 @@
 					<?php echo image_tag('debug_time.png', array('style' => 'float: left; margin-right: 5px;')); ?>
 					<?php echo $tbg_summary['load_time']; ?>
 				</td>
+				<td style="width: 100px; cursor: pointer; padding: 3px; font-size: 11px;">
+					<?php echo image_tag('debug_icon_memusage.png', array('style' => 'float: left; margin-right: 5px;')); ?>
+					<?php echo round($tbg_summary['memory'] / 1000000, 2); ?>MiB
+				</td>
 				<td style="width: 100px; cursor: pointer; padding: 3px; font-size: 11px;" onclick="$('log_ajax').toggle();" title="Click to toggle ajax calls list">
 					<?php echo image_tag('debug_ajax.png', array('style' => 'float: left; margin-right: 5px;')); ?>
 					<span id="debug_ajax_count">1</span>
