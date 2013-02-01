@@ -308,6 +308,7 @@ EOT;
 		{
 			if ($this->isActivationNeeded() && $this->isOutgoingNotificationsEnabled())
 			{
+				$user = $event->getSubject();
 				$password = TBGUser::createPassword(8);
 				$user->setPassword($password);
 				$user->save();
@@ -317,7 +318,6 @@ EOT;
 	//				The following line is included for the i18n parser to pick up the translatable string:
 	//				__('User account registered with The Bug Genie');
 					$subject = 'User account registered with The Bug Genie';
-					$user = $event->getSubject();
 					$link_to_activate = $this->generateURL('activate', array('user' => str_replace('.', '%2E', $user->getUsername()), 'key' => $user->generateActivationKey()));
 					$parameters = compact('user', 'password', 'link_to_activate');
 					$messages = $this->getTranslatedMessages($subject, 'registeruser', $parameters, array($user));
