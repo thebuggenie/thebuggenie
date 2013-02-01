@@ -34,6 +34,8 @@
 		const CUSTOMFIELDS_ID = 'issuecustomfields.customfields_id';
 		const OPTION_VALUE = 'issuecustomfields.option_value';
 
+		protected $_preloaded_custom_fields = null;
+
 		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
@@ -44,15 +46,66 @@
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 
-		public function getAllValuesByIssueID($issue_id)
+		public function getAllValuesByIssueIDs($issue_ids)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::ISSUE_ID, $issue_id);
+			$crit->addWhere(self::ISSUE_ID, $issue_ids, Criteria::DB_IN);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 
 			$res = $this->doSelect($crit, false);
 
 			return $res;
+		}
+
+		public function getAllValuesByIssueID($issue_id)
+		{
+			if (is_array($this->_preloaded_custom_fields))
+			{
+				if (array_key_exists($issue_id, $this->_preloaded_custom_fields))
+				{
+					$values = $this->_preloaded_custom_fields[$issue_id];
+					unset($this->_preloaded_custom_fields[$issue_id]);
+					return $values;
+				}
+				else
+				{
+					return array();
+				}
+			}
+			else
+			{
+				$res = $this->getAllValuesByIssueIDs(array($issue_id));
+				$rows = array();
+				if ($res)
+				{
+					while ($row = $res->getNextRow())
+					{
+						$rows[] = $row;
+					}
+				}
+
+				return $rows;
+			}
+		}
+
+		public function preloadValuesByIssueIDs($issue_ids)
+		{
+			$this->_preloaded_custom_fields = array();
+			$res = $this->getAllValuesByIssueIDs($issue_ids);
+			if ($res)
+			{
+				while ($row = $res->getNextRow())
+				{
+					$issue_id = $row->get(self::ISSUE_ID);
+					if (!array_key_exists($issue_id, $this->_preloaded_custom_fields)) $this->_preloaded_custom_fields[$issue_id] = array();
+					$this->_preloaded_custom_fields[$issue_id][] = $row;
+				}
+			}
+		}
+
+		public function clearPreloadedValues()
+		{
+			$this->_preloaded_custom_fields = null;
 		}
 
 		public function getRowByCustomFieldIDandIssueID($customdatatype_id, $issue_id)

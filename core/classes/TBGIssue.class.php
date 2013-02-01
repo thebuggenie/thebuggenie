@@ -642,19 +642,32 @@
 		public static function findIssues($filters = array(), $results_per_page = 30, $offset = 0, $groupby = null, $grouporder = null)
 		{
 			$issues = array();
-			list ($res, $count) = TBGIssuesTable::getTable()->findIssues($filters, $results_per_page, $offset, $groupby, $grouporder);
-			if ($res)
+			list ($rows, $count, $ids) = TBGIssuesTable::getTable()->findIssues($filters, $results_per_page, $offset, $groupby, $grouporder);
+			if ($rows)
 			{
-				while ($row = $res->getNextRow())
+				TBGIssueCustomFieldsTable::getTable()->preloadValuesByIssueIDs($ids);
+				TBGIssueAffectsBuildTable::getTable()->preloadValuesByIssueIDs($ids);
+				TBGIssueAffectsEditionTable::getTable()->preloadValuesByIssueIDs($ids);
+				TBGIssueAffectsComponentTable::getTable()->preloadValuesByIssueIDs($ids);
+				TBGCommentsTable::getTable()->preloadIssueCommentCounts($ids);
+				TBGIssueFilesTable::getTable()->preloadIssueFileCounts($ids);
+				foreach ($rows as $key => $row)
 				{
 					try
 					{
 						$issue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
 						if (!$issue->hasAccess() || $issue->getProject()->isDeleted()) continue;
 						$issues[] = $issue;
+						unset($rows[$key]);
 					}
 					catch (Exception $e) {}
 				}
+				TBGIssueCustomFieldsTable::getTable()->clearPreloadedValues();
+				TBGIssueAffectsBuildTable::getTable()->clearPreloadedValues();
+				TBGIssueAffectsEditionTable::getTable()->clearPreloadedValues();
+				TBGIssueAffectsComponentTable::getTable()->clearPreloadedValues();
+				TBGCommentsTable::getTable()->clearPreloadedIssueCommentCounts();
+				TBGIssueFilesTable::getTable()->clearPreloadedIssueFileCounts();
 			}
 			return array($issues, $count);
 		}
@@ -682,6 +695,8 @@
 		{
 			$this->_initializeCustomfields();
 			$this->_mergeChangedProperties();
+			$this->_num_user_comments = TBGCommentsTable::getTable()->getPreloadedIssueCommentCount($this->_id);
+			$this->_num_files = TBGIssueFilesTable::getTable()->getPreloadedIssueFileCount($this->_id);
 //			if ($this->isDeleted())
 //			{
 //				throw new Exception(TBGContext::geti18n()->__('This issue has been deleted'));
@@ -827,9 +842,9 @@
 				$var_name = "_customfield".$key;
 				$this->$var_name = null;
 			}
-			if ($res = TBGIssueCustomFieldsTable::getTable()->getAllValuesByIssueID($this->getID()))
+			if ($rows = TBGIssueCustomFieldsTable::getTable()->getAllValuesByIssueID($this->getID()))
 			{
-				while ($row = $res->getNextRow())
+				foreach ($rows as $row)
 				{
 					$datatype = new TBGCustomDatatype($row->get(TBGIssueCustomFieldsTable::CUSTOMFIELDS_ID));
 					$var_name = "_customfield".$datatype->getKey();
@@ -867,7 +882,7 @@
 		
 				if ($res = TBGIssueAffectsEditionTable::getTable()->getByIssueID($this->getID()))
 				{
-					while ($row = $res->getNextRow())
+					foreach($res as $row)
 					{
 						try
 						{
@@ -883,7 +898,7 @@
 				
 				if ($res = TBGIssueAffectsBuildTable::getTable()->getByIssueID($this->getID()))
 				{
-					while ($row = $res->getNextRow())
+					foreach($res as $row)
 					{
 						try
 						{
@@ -899,7 +914,7 @@
 				
 				if ($res = TBGIssueAffectsComponentTable::getTable()->getByIssueID($this->getID()))
 				{
-					while ($row = $res->getNextRow())
+					foreach($res as $row)
 					{
 						try
 						{

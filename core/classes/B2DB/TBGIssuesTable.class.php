@@ -797,8 +797,10 @@
 				$crit2->addOrderBy(self::ID, $ids);
 				
 				$res = $this->doSelect($crit2);
+				$rows = $res->getAllRows();
+				unset($res);
 				
-				return array($res, $count);
+				return array($rows, $count, $ids);
 			}
 			else
 			{
