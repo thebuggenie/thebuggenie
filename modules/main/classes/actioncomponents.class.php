@@ -530,6 +530,8 @@
 					$this->points = $this->issue->getSpentPoints();
 					break;
 			}
+			$this->project_key = $this->issue->getProject()->getKey();
+			$this->issue_id = $this->issue->getID();
 		}
 
 	}
