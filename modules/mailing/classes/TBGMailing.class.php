@@ -542,9 +542,10 @@
 
 		public function listen_viewissue(TBGEvent $event)
 		{
-			if ($this->getSetting(self::NOTIFY_ISSUE_ONCE))
+			$uid= TBGContext::getUser()->getID();
+			if ($this->getSetting(self::NOTIFY_ISSUE_ONCE,$uid))
 			{
-				$this->deleteSetting(self::NOTIFY_ISSUE_ONCE . '_' . $event->getSubject()->getID(), $uid);
+			$this->deleteSetting(self::NOTIFY_ISSUE_ONCE . '_' . $event->getSubject()->getID(), $uid);
 			}
 		}
 
