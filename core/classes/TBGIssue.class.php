@@ -504,6 +504,10 @@
 
 		protected $_can_permission_cache = array();
 
+		protected $_editable;
+
+		protected $_updateable;
+
 		/**
 		 * All custom data type properties
 		 *
@@ -1062,14 +1066,22 @@
 
 		public function isEditable()
 		{
-			if ($this->getProject()->isArchived()) return false;
-			return ($this->isOpen() && ($this->getProject()->canChangeIssuesWithoutWorkingOnThem() || ($this->getWorkflowStep() instanceof TBGWorkflowStep && $this->getWorkflowStep()->isEditable())));
+			if ($this->_editable !== null) return $this->_editable;
+
+			if ($this->getProject()->isArchived()) $this->_editable = false;
+			else $this->_editable = ($this->isOpen() && ($this->getProject()->canChangeIssuesWithoutWorkingOnThem() || ($this->getWorkflowStep() instanceof TBGWorkflowStep && $this->getWorkflowStep()->isEditable())));
+
+			return $this->_editable;
 		}
 		
 		public function isUpdateable()
 		{
-			if ($this->getProject()->isArchived()) return false;
-			return ($this->isOpen() && ($this->getProject()->canChangeIssuesWithoutWorkingOnThem() || !($this->getWorkflowStep() instanceof TBGWorkflowStep) || !$this->getWorkflowStep()->isClosed()));
+			if ($this->_updateable !== null) return $this->_updateable;
+
+			if ($this->getProject()->isArchived()) $this->_updateable = false;
+			else $this->_updateable = ($this->isOpen() && ($this->getProject()->canChangeIssuesWithoutWorkingOnThem() || !($this->getWorkflowStep() instanceof TBGWorkflowStep) || !$this->getWorkflowStep()->isClosed()));
+
+			return $this->_updateable;
 		}
 		
 		/**

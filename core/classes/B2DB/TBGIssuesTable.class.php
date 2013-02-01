@@ -804,7 +804,7 @@
 			}
 			else
 			{
-				return array(null, 0);
+				return array(null, 0, array());
 			}
 
 		}
