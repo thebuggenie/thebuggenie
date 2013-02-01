@@ -63,10 +63,10 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addWhere((($type == 'step') ? self::FROM_STEP_ID : self::TRANSITION_ID), $id);
-		//	$crit->addJoin(self::TRANSITION_ID, TBGWorkflowTransitionsTable::getTable());
+			$crit->addJoin(TBGWorkflowTransitionsTable::getTable(), TBGWorkflowTransitionsTable::ID, self::TRANSITION_ID);
 
 			$return_array = array();
-			if ($res = $this->doSelect($crit))
+			if ($res = $this->doSelect($crit, false))
 			{
 				while ($row = $res->getNextRow())
 				{

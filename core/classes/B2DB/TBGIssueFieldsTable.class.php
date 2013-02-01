@@ -134,7 +134,7 @@
 			$crit->addWhere(self::ISSUETYPE_SCHEME_ID, $scheme_id);
 			$crit->addWhere(self::ISSUETYPE_ID, $issuetype_id);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
-			$res = $this->doSelect($crit);
+			$res = $this->doSelect($crit, false);
 			return $res;
 		}
 		

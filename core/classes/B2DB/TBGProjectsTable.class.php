@@ -128,7 +128,7 @@
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addWhere(self::DELETED, false);
 			$crit->indexBy(self::KEY);
-			$res = $this->select($crit);
+			$res = $this->select($crit, false);
 			return $res;
 		}
 		

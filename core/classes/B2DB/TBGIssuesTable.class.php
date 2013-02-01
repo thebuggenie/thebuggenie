@@ -322,7 +322,7 @@
 			$crit->addWhere(TBGProjectsTable::PREFIX, mb_strtolower($prefix), Criteria::DB_EQUALS, '', '', Criteria::DB_LOWER);
 			$crit->addWhere(TBGProjectsTable::DELETED, false);
 			$crit->addWhere(self::ISSUE_NO, $issue_no);
-			return $this->selectOne($crit);
+			return $this->selectOne($crit, false);
 		}
 
 		public function getByProjectIDAndIssueNo($project_id, $issue_no)
@@ -331,7 +331,7 @@
 			$crit->addWhere(self::DELETED, false);
 			$crit->addWhere(self::PROJECT_ID, $project_id);
 			$crit->addWhere(self::ISSUE_NO, $issue_no);
-			return $this->selectOne($crit);
+			return $this->selectOne($crit, false);
 		}
 
 		public function setDuplicate($issue_id, $duplicate_of)

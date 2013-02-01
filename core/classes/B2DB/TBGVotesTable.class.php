@@ -47,7 +47,7 @@
 			$crit = $this->getCriteria();
 			$crit->addSelectionColumn(self::VOTE, 'votes_total', Criteria::DB_SUM);
 			$crit->addWhere(self::TARGET, $issue_id);
-			$res = $this->doSelectOne($crit);
+			$res = $this->doSelectOne($crit, false);
 
 			return ($res) ? $res->get('votes_total') : 0;
 		}
@@ -56,7 +56,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::TARGET, $issue_id);
-			$res = $this->doSelect($crit);
+			$res = $this->doSelect($crit, false);
 			return $res;
 		}
 		
