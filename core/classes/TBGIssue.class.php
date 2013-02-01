@@ -1816,7 +1816,7 @@
 		 */
 		public function attachLink($url, $description = null)
 		{
-			$link_id = \b2db\Core::getTable('TBGLinksTable')->addLinkToIssue($this->getID(), $url, $description);
+			$link_id = TBGLinksTable::getTable()->addLinkToIssue($this->getID(), $url, $description);
 			return $link_id;
 		}
 

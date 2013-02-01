@@ -73,6 +73,8 @@
 			$crit->addInsert(self::SCOPE, $scope);
 			$res = $this->doInsert($crit);
 
+			TBGCache::clearCacheKeys(array(TBGCache::KEY_MAIN_MENU_LINKS));
+
 			return $res->getInsertID();
 		}
 		
@@ -120,6 +122,8 @@
 			}
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$res = $this->doDelete($crit);
+
+			TBGCache::clearCacheKeys(array(TBGCache::KEY_MAIN_MENU_LINKS));
 			
 			return true;
 		}
@@ -143,6 +147,7 @@
 				$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 				$this->doUpdateById($crit, $link_id);
 			}
+			TBGCache::clearCacheKeys(array(TBGCache::KEY_MAIN_MENU_LINKS));
 		}
 
 		public function loadFixtures(TBGScope $scope)
