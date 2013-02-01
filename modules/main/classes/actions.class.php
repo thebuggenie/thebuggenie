@@ -568,7 +568,7 @@
 				}
 				catch (Exception $e)
 				{
-					$this->error = TBGContext::getI18n()->__("Could not validate against the OpenID provider: %message%", array('%message%' => $e->getMessage()));
+					$this->error = TBGContext::getI18n()->__("Could not validate against the OpenID provider: %message%", array('%message%' => htmlentities($e->getMessage(), ENT_COMPAT, TBGContext::getI18n()->getCharset())));
 				}
 			}
 			elseif ($request->getMethod() == TBGRequest::POST)
@@ -610,7 +610,8 @@
 					if ($request->isAjaxCall())
 					{
 						$this->getResponse()->setHttpStatus(401);
-						return $this->renderJSON(array("error" => $i18n->__($e->getMessage())));
+						TBGLogging::log($e->getMessage(), 'openid', TBGLogging::LEVEL_WARNING_RISK);
+						return $this->renderJSON(array("error" => $i18n->__("Could not validate against the OpenID provider")));
 					}
 					else
 					{
