@@ -88,7 +88,7 @@
 					<li>
 						<label for="issues_per_page"><?php echo __('Issues per page'); ?></label>
 						<select name="issues_per_page" id="issues_per_page">
-							<?php foreach (array(15, 30, 50, 100) as $cc): ?>
+							<?php foreach (array(15, 30, 50, 100, 250, 500) as $cc): ?>
 								<option value="<?php echo $cc; ?>"<?php if ($ipp == $cc): ?> selected<?php endif; ?>><?php echo __('%number_of_issues% issues per page', array('%number_of_issues%' => $cc)); ?></option>
 							<?php endforeach; ?>
 							<option value="0"<?php if ($ipp == 0): ?> selected<?php endif; ?>><?php echo __('All results on one page'); ?></option>
