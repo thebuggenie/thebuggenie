@@ -74,10 +74,11 @@
 			if ($this->_statement == null)
 				throw new Exception('Statement did not execute, cannot return unknown value for column ' . $column);
 
-			$column = $this->_getColumnName($column, $foreign_key);
+			$column = $this->_statement->getCriteria()->getColumnName($column, $foreign_key);
+			$alias = $this->_statement->getCriteria()->getSelectionAlias($column);
 
-			if (isset($this->_fields[$this->_statement->getCriteria()->getSelectionAlias($column)]))
-				return $this->_fields[$this->_statement->getCriteria()->getSelectionAlias($column)];
+			if (isset($this->_fields[$alias]))
+				return $this->_fields[$alias];
 			else
 				return null;
 		}
@@ -94,7 +95,7 @@
 
 		public function offsetExists($offset)
 		{
-			$column = $this->_getColumnName($column, $foreign_key);
+			$column = $this->_statement->getCriteria()->getColumnName($column, $foreign_key);
 
 			return (bool) array_key_exists($this->_statement->getCriteria()->getSelectionAlias($column), $this->_fields);
 		}
