@@ -341,6 +341,8 @@
 			} else {
 				$object = $this->getB2DBCachedObject($id);
 			}
+
+			return $object;
 		}
 
 		/**
