@@ -283,7 +283,8 @@
 		public function runDashboardSave(TBGRequest $request)
 		{
 			$i18n = TBGContext::getI18n();
-			$this->login_referer = (array_key_exists('HTTP_REFERER', $_SERVER) && isset($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : '';
+			$login_referer = (array_key_exists('HTTP_REFERER', $_SERVER) && isset($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : '';
+			$this->login_referer = htmlentities($login_referer, ENT_COMPAT, TBGContext::getI18n()->getCharset());
 			$this->options = $request->getParameters();
 			try
 			{
@@ -320,7 +321,7 @@
 			catch (Exception $e)
 			{
 				$this->getResponse()->setHttpStatus(400);
-				return $this->renderJSON(array('error' => $i18n->__($e->getMessage()), 'referer' => $request['tbg3_referer']));
+				return $this->renderJSON(array('error' => $i18n->__($e->getMessage()), 'referer' => htmlentities($request['tbg3_referer'], ENT_COMPAT, TBGContext::getI18n()->getCharset())));
 			}
 		}
 		
@@ -597,6 +598,7 @@
 								$forward_url = TBGContext::getRouting()->generate(TBGSettings::get('returnfromlogin'));
 							}
 						}
+						$forward_url = htmlentities($forward_url, ENT_COMPAT, TBGContext::getI18n()->getCharset());
 					}
 					else
 					{

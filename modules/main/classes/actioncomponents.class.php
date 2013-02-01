@@ -362,9 +362,9 @@
 			$this->options = $this->getParameterHolder();
 			
 			if (array_key_exists('HTTP_REFERER', $_SERVER)):
-				$this->referer = $_SERVER['HTTP_REFERER'];
+				$this->referer = htmlentities($_SERVER['HTTP_REFERER'], ENT_COMPAT, TBGContext::getI18n()->getCharset());
 			elseif (TBGContext::hasMessage('login_referer')):
-				$this->referer = TBGContext::getMessage('login_referer');
+				$this->referer = htmlentities(TBGContext::getMessage('login_referer'), ENT_COMPAT, TBGContext::getI18n()->getCharset());
 			else:
 				$this->referer = TBGContext::getRouting()->generate('dashboard');
 			endif;
