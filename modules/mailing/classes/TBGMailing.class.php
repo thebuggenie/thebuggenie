@@ -805,8 +805,8 @@ EOT;
 
 		protected function _setAdditionalMailValues(TBGMimemail $mail, array $parameters)
 		{
-			$mail->addReplacementValues(array('%link_to_reset_password%' => isset($parameters['user']) ? $this->getMailingUrl() . TBGContext::getRouting()->generate('reset_password', array('user' => str_replace('.', '%2E', $parameters['user']->getUsername()), 'reset_hash' => $parameters['user']->getHashPassword())) : '' ));
-			$mail->addReplacementValues(array('%link_to_activate%' => isset($parameters['user']) ? $this->getMailingUrl() . TBGContext::getRouting()->generate('activate', array('user' => str_replace('.', '%2E', $parameters['user']->getUsername()), 'key' => $parameters['user']->getHashPassword())) : ''));
+			$mail->addReplacementValues(array('%link_to_reset_password%' => isset($parameters['user']) ? $this->getMailingUrl() . TBGContext::getRouting()->generate('reset_password', array('user' => str_replace('.', '%2E', $parameters['user']->getUsername()), 'reset_hash' => $parameters['user']->getActivationKey())) : '' ));
+			$mail->addReplacementValues(array('%link_to_activate%' => isset($parameters['user']) ? $this->getMailingUrl() . TBGContext::getRouting()->generate('activate', array('user' => str_replace('.', '%2E', $parameters['user']->getUsername()), 'key' => $parameters['user']->getActivationKey())) : ''));
 		}
 
 		/**
