@@ -502,6 +502,8 @@
 
 		protected $_save_comment = '';
 
+		protected $_can_permission_cache = array();
+
 		/**
 		 * All custom data type properties
 		 *
@@ -1083,9 +1085,11 @@
 		protected function _permissionCheck($key, $exclusive = false)
 		{
 			if (TBGContext::getUser()->isGuest()) return false;
+			if (isset($this->_can_permission_cache[$key])) return $this->_can_permission_cache[$key];
 			$retval = ($this->isInvolved() && !$exclusive) ? $this->getProject()->permissionCheck($key.'own', true) : null;
 			$retval = ($retval !== null) ? $retval : $this->getProject()->permissionCheck($key, !$this->isInvolved());
 
+			$this->_can_permission_cache[$key] = $retval;
 			return $retval;
 		}
 
@@ -1118,11 +1122,16 @@
 		 */
 		public function canEditIssueDetails()
 		{
+			static $retval = null;
+			if ($retval !== null) return $retval;
+
 			$retval = $this->_permissionCheck('caneditissuebasic');
 			$retval = ($retval === null) ? ($this->isInvolved() || $this->_permissionCheck('cancreateandeditissues')) : $retval;
 			$retval = ($retval === null) ? $this->_permissionCheck('caneditissue', true) : $retval;
 
-			return ($retval !== null) ? $retval : TBGSettings::isPermissive();
+			$retval = ($retval !== null) ? $retval : TBGSettings::isPermissive();
+
+			return $retval;
 		}
 		
 		/**
@@ -1196,17 +1205,18 @@
 		
 		protected function _canPermissionOrEditIssue($permission, $fallback = null)
 		{
+			if (isset($this->_can_permission_cache[$permission])) return $this->_can_permission_cache[$permission];
+			
 			$retval = $this->_permissionCheck($permission);
 			$retval = ($retval === null) ? $this->canEditIssue() : $retval;
 			
-			if ($retval !== null)
+			if ($retval === null)
 			{
-				return $retval;
+				$retval = ($fallback !== null) ? $fallback : TBGSettings::isPermissive();
 			}
-			else
-			{
-				return ($fallback !== null) ? $fallback : TBGSettings::isPermissive();
-			}
+
+			$this->_can_permission_cache[$permission] = $retval;
+			return $retval;
 		}
 		
 		/**
@@ -1366,11 +1376,15 @@
 		 */
 		public function canCloseIssue()
 		{
+			static $retval = null;
+			if ($retval !== null) return $retval;
+
 			$retval = $this->_permissionCheck('cancloseissues');
 			$retval = ($retval === null) ? $this->_permissionCheck('canclosereopenissues') : $retval;
 			$retval = ($retval === null) ? $this->canEditIssue() : $retval;
-			
-			return ($retval !== null) ? $retval : TBGSettings::isPermissive();
+			$retval = ($retval !== null) ? $retval : TBGSettings::isPermissive();
+
+			return $retval;
 		}
 
 		/**
@@ -1380,11 +1394,15 @@
 		 */
 		public function canReopenIssue()
 		{
+			static $retval = null;
+			if ($retval !== null) return $retval;
+
 			$retval = $this->_permissionCheck('canreopenissues');
 			$retval = ($retval === null) ? $this->_permissionCheck('canclosereopenissues') : $retval;
 			$retval = ($retval === null) ? $this->canEditIssue() : $retval;
-			
-			return ($retval !== null) ? $retval : TBGSettings::isPermissive();
+			$retval = ($retval !== null) ? $retval : TBGSettings::isPermissive();
+
+			return $retval;
 		}
 
 		protected function _dualPermissionsCheck($permission_1, $permission_2)
@@ -1407,9 +1425,11 @@
 
 		protected function _canPermissionsOrExtraInformation($permission)
 		{
+			if (isset($this->_can_permission_cache[$permission])) return $this->_can_permission_cache[$permission];
 			$retval = $this->_permissionCheck($permission);
 			$retval = ($retval === null) ? $this->canAddExtraInformation() : $retval;
-			
+
+			$this->_can_permission_cache[$permission] = $retval;
 			return ($retval !== null) ? $retval : TBGSettings::isPermissive();
 		}
 		
@@ -1420,7 +1440,12 @@
 		 */
 		public function canPostComments()
 		{
-			return $this->_dualPermissionsCheck('canpostcomments', 'canpostandeditcomments');
+			static $retval = null;
+			if ($retval !== null) return $retval;
+
+			$retval = $this->_dualPermissionsCheck('canpostcomments', 'canpostandeditcomments');
+
+			return $retval;
 		}
 
 		/**
