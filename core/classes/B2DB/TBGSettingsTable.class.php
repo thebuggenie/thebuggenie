@@ -135,7 +135,6 @@
 			$settings[TBGSettings::SETTING_UPLOAD_STORAGE] = 'files';
 			$settings[TBGSettings::SETTING_UPLOAD_LOCAL_PATH] = THEBUGGENIE_PATH . 'files/';
 			$settings[TBGSettings::SETTING_TBG_NAME] = 'The Bug Genie';
-			$settings[TBGSettings::SETTING_TBG_TAGLINE] = '<b>Friendly</b> issue tracking and project management';
 			$settings[TBGSettings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_LANGUAGE] = 'html4strict';
 			$settings[TBGSettings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_NUMBERING] = '3';
 			$settings[TBGSettings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_INTERVAL] = '10';

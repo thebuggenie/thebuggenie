@@ -367,6 +367,7 @@
 				<li id="tab_related_issues_and_tasks"><?php echo javascript_link_tag(image_tag('spinning_16.gif', array('style' => 'display: none;', 'id' => 'related_issues_indicator')) . image_tag('viewissue_tab_related.png') . __('Related to (%count%)', array('%count%' => '<span id="viewissue_related_issues_count">'.(count($issue->getParentIssues())+count($issue->getChildIssues())).'</span>')), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_related_issues_and_tasks', 'viewissue_menu');")); ?></li>
 				<li id="tab_duplicate_issues"><?php echo javascript_link_tag(image_tag('viewissue_tab_duplicate.png') . __('Duplicates (%count%)', array('%count%' => '<span id="viewissue_duplicate_issues_count">'.(count($issue->getDuplicateIssues())).'</span>')), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_duplicate_issues', 'viewissue_menu');")); ?></li>
 				<?php TBGEvent::createNew('core', 'viewissue_tabs', $issue)->trigger(); ?>
+				<li id="tab_log"><?php echo javascript_link_tag(image_tag('viewissue_tab_log.png') . __('History'), array('onclick' => "TBG.Issues.showLog('".make_url('issue_log', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID()))."');")); ?></li>
 			</ul>
 		</div>
 		<div id="viewissue_menu_panes">
@@ -374,6 +375,11 @@
 			<div id="tab_comments_pane" style="padding-top: 0; margin: 5px;" class="comments">
 				<div id="viewissue_comments">
 					<?php include_template('main/comments', array('target_id' => $issue->getID(), 'target_type' => TBGComment::TYPE_ISSUE, 'comment_count_div' => 'viewissue_comment_count', 'save_changes_checked' => $issue->hasUnsavedChanges(), 'issue' => $issue, 'forward_url' => make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo()), false))); ?>
+				</div>
+			</div>
+			<div id="tab_log_pane" style="padding-top: 0; margin: 5px; display: none;">
+				<div id="viewissue_log_loading_indicator"><?php echo image_tag('spinning_32.gif'); ?></div>
+				<div id="viewissue_log_items">
 				</div>
 			</div>
 			<div id="tab_attached_information_pane" style="padding-top: 0; margin: 0 5px 0 5px; display: none;">

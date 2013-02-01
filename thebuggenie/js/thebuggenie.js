@@ -2889,6 +2889,18 @@ TBG.Issues.showWorkflowTransition = function(transition_id) {
 	}});
 };
 
+TBG.Issues.showLog = function(url) {
+	TBG.Main.Helpers.tabSwitcher('tab_log', 'viewissue_menu');
+	if ($('viewissue_log_items').childElements().size() == 0) {
+		TBG.Main.Helpers.ajax(url, {
+			loading: {indicator: 'viewissue_log_loading_indicator'},
+			success: {
+				update: {element: 'viewissue_log_items'}
+			}
+		});
+	}
+}
+
 TBG.Issues.refreshRelatedIssues = function(url) {
 	if ($('related_child_issues_inline')) {
 		TBG.Main.Helpers.ajax(url, {

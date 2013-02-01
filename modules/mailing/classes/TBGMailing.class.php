@@ -10,32 +10,32 @@
 		 * Notify the user when an issue I posted gets updated
 		 */
 		const NOTIFY_ISSUE_POSTED_UPDATED = 'notify_issue_posted_updated';
-		
+
 		/**
 		 * Only notify me once per issue
 		 */
 		const NOTIFY_ISSUE_ONCE = 'notify_issue_once';
-		
+
 		/**
 		 * Notify the user when an issue I'm assigned to gets updated
 		 */
 		const NOTIFY_ISSUE_ASSIGNED_UPDATED = 'notify_issue_assigned_updated';
-		
+
 		/**
 		 * Notify the user when he updates an issue
 		 */
 		const NOTIFY_ISSUE_UPDATED_SELF = 'notify_issue_updated_self';
-		
+
 		/**
 		 * Notify the user when an issue assigned to one of my teams is updated
 		 */
 		const NOTIFY_ISSUE_TEAMASSIGNED_UPDATED = 'notify_issue_teamassigned_updated';
-		
+
 		/**
 		 * Notify the user when an issue related to one of my team assigned projects is updated
 		 */
 		const NOTIFY_ISSUE_RELATED_PROJECT_TEAMASSIGNED = 'notify_issue_related_project_teamassigned';
-		
+
 		/**
 		 * Notify the user when an issue related to one of my assigned projects is updated
 		 */
@@ -45,45 +45,45 @@
 		 * Notify the user when an issue he commented on is updated
 		 */
 		const NOTIFY_ISSUE_COMMENTED_ON = 'notify_issue_commented_on';
-		
+
 		const MAIL_ENCODING_BASE64 = 3;
 		const MAIL_ENCODING_QUOTED = 4;
 		const MAIL_ENCODING_UTF7 = 0;
-		
+
 		protected $_longname = 'Email communication';
-		
+
 		protected $_description = 'Enables in- and outgoing email functionality';
-		
+
 		protected $_module_config_title = 'Email communication';
-		
+
 		protected $_module_config_description = 'Set up in- and outgoing email communication from this section';
-		
+
 		protected $_account_settings_name = 'Notification settings';
-		
+
 		protected $_account_settings_logo = 'notification_settings.png';
-		
+
 		protected $_has_account_settings = true;
 
 		protected $_has_config_settings = true;
-		
+
 		protected $_module_version = '1.0';
 
 		protected $mailer = null;
 
 		/**
 		 * Get an instance of this module
-		 * 
+		 *
 		 * @return TBGMailing
 		 */
 		public static function getModule()
 		{
 			return TBGContext::getModule('mailing');
 		}
-		
+
 		protected function _initialize()
 		{
 		}
-		
+
 		protected function _addListeners()
 		{
 			TBGEvent::listen('core', 'TBGUser::_postSave', array($this, 'listen_registerUser'));
@@ -111,7 +111,7 @@
 			$this->addRoute('mailing_check_account', '/mailing/incoming_account/:account_id/check', 'checkIncomingAccount');
 			$this->addRoute('mailing_delete_account', '/mailing/incoming_account/:account_id/delete', 'deleteIncomingAccount');
 		}
-		
+
 		protected function _install($scope)
 		{
 			$this->saveSetting('smtp_host', '', 0, $scope);
@@ -123,7 +123,7 @@
 			$this->saveSetting('from_addr', '', 0, $scope);
 			$this->saveSetting('ehlo', 1, 0, $scope);
 		}
-		
+
 		protected function _uninstall()
 		{
 			parent::_uninstall();
@@ -149,7 +149,7 @@
 							break;
 						case 'from_addr':
 							if (!tbg_check_syntax($value, "EMAIL"))
-							{						
+							{
 								throw new Exception(TBGContext::getI18n()->__('Please provide a valid setting for email "from"-address'));
 							}
 							break;
@@ -163,15 +163,15 @@
 							if ($request['mail_type'] == TBGMailer::MAIL_TYPE_CUSTOM && !is_numeric($value) || $value < 1)
 							{
 								throw new Exception(TBGContext::getI18n()->__('Please provide a valid setting for SMTP server port'));
-							}							
-							break;							
+							}
+							break;
 						case 'headcharset':
 							// list of supported character sets based on PHP doc : http://www.php.net/manual/en/function.htmlentities.php
 							if (!tbg_check_syntax($value, "CHARSET"))
 							{
 									throw new Exception(TBGContext::getI18n()->__('Please provide a valid setting for email header charset'));
-							}							
-							break;	
+							}
+							break;
 						case 'no_dash_f':
 							$value = (int) $request->getParameter($setting, 0);
 							break;
@@ -195,7 +195,7 @@
 		{
 			return $this->getSetting('from_addr');
 		}
-					
+
 		public function getEmailFromName()
 		{
 			return $this->getSetting('from_name');
@@ -215,7 +215,7 @@
 			$url = TBGContext::getRouting()->generate($route, $parameters);
 			return $this->getMailingUrl() . $url;
 		}
-		
+
 		public function getEmailTemplates($template, $parameters = array())
 		{
 			if (!array_key_exists('module', $parameters)) $parameters['module'] = $this;
@@ -403,10 +403,10 @@ EOT;
 			$uids = array();
 			$cu = TBGContext::getUser()->getID();
 			$ns = $this->getSetting(self::NOTIFY_ISSUE_UPDATED_SELF, $cu);
-	
+
 			// Add all users who's marked this issue as interesting
 			$uids = TBGUserIssuesTable::getTable()->getUserIDsByIssueID($issue->getID());
-	
+
 			// Add all users from the team owning the issue if valid
 			// or add the owning user if a user owns the issue
 			if ($issue->getOwner() instanceof TBGTeam)
@@ -456,7 +456,7 @@ EOT;
 				if (!($issue->getAssignee()->getID() == $cu && !$ns) && !(!$this->getSetting(self::NOTIFY_ISSUE_ASSIGNED_UPDATED, $issue->getAssignee()->getID())))
 					$uids[$issue->getAssignee()->getID()] = $issue->getAssignee()->getID();
 			}
-			
+
 			// Add all users in the team who leads the project, if valid
 			// or add the user who leads the project, if valid
 			if ($issue->getProject()->getLeader() instanceof TBGTeam)
@@ -474,7 +474,7 @@ EOT;
 				if (!($lid == $cu && !$ns) && !(!$this->getSetting(self::NOTIFY_ISSUE_PROJECT_ASSIGNED, $lid)))
 					$uids[$lid] = $lid;
 			}
-	
+
 			// Same for QA
 			if ($issue->getProject()->getQaResponsible() instanceof TBGTeam)
 			{
@@ -491,7 +491,7 @@ EOT;
 				if (!($qaid == $cu && !$ns) && !(!$this->getSetting(self::NOTIFY_ISSUE_PROJECT_ASSIGNED, $qaid)))
 					$uids[$qaid] = $qaid;
 			}
-			
+
 			foreach ($issue->getProject()->getAssignedTeams() as $team_id => $assignments)
 			{
 				foreach (TBGContext::factory()->TBGTeam($team_id)->getMembers() as $member)
@@ -507,7 +507,7 @@ EOT;
 				if (!($member->getID() == $cu && !$ns) && !(!$this->getSetting(self::NOTIFY_ISSUE_PROJECT_ASSIGNED, $member->getID())))
 					$uids[$member->getID()] = $member->getID();
 			}
-			
+
 			// Add all users relevant for all affected editions
 			foreach ($issue->getEditions() as $edition_list)
 			{
@@ -525,7 +525,7 @@ EOT;
 					if (!($edition_list['edition']->getLeaderID() == $cu && !$ns) && !(!$this->getSetting(self::NOTIFY_ISSUE_PROJECT_ASSIGNED, $edition_list['edition']->getLeaderID())))
 						$uids[$edition_list['edition']->getLeaderID()] = $edition_list['edition']->getLeaderID();
 				}
-				
+
 				if ($edition_list['edition']->getQaResponsible() instanceof TBGTeam)
 				{
 					foreach ($edition_list['edition']->getQaResponsible()->getMembers() as $member)
@@ -557,7 +557,7 @@ EOT;
 					$uids[$member->getID()] = $member->getID();
 				}
 			}
-			
+
 			// Add all users relevant for all affected components
 			foreach ($issue->getComponents() as $component_list)
 			{
@@ -578,7 +578,7 @@ EOT;
 					$uids[$member->getID()] = $member->getID();
 				}
 			}
-			
+
 			foreach ($uids as $uid => $val)
 			{
 				if ($this->getSetting(self::NOTIFY_ISSUE_ONCE, $uid))
@@ -595,10 +595,10 @@ EOT;
 				}
 				$uids[$uid] = TBGContext::factory()->TBGUser($uid);
 			}
-			
+
 			return $uids;
 		}
-		
+
 		public function listen_issueCreate(TBGEvent $event)
 		{
 			if ($this->isOutgoingNotificationsEnabled())
@@ -618,7 +618,49 @@ EOT;
 				}
 			}
 		}
-		
+
+		public function listen_TBGComment_createNew(TBGEvent $event)
+		{
+			if ($this->isOutgoingNotificationsEnabled())
+			{
+				$comment = $event->getSubject();
+				if ($comment instanceof TBGComment && $comment->getTargetType() == TBGComment::TYPE_ISSUE)
+				{
+					$issue = $event->getParameter('issue');
+					$subject = 'Re: ['.$issue->getProject()->getKey().'] ' . $issue->getIssueType()->getName() . ' ' . $issue->getFormattedIssueNo(true) . ' - ' . html_entity_decode($issue->getTitle(), ENT_COMPAT, TBGContext::getI18n()->getCharset());
+					$parameters = compact('issue', 'comment');
+					$to_users = $this->_getIssueRelatedUsers($issue);
+					$messages = $this->getTranslatedMessages($subject, 'issuecomment', $parameters, $to_users);
+
+					foreach ($messages as $message)
+					{
+						$this->sendMail($message);
+					}
+				}
+			}
+		}
+
+		public function listen_issueSave(TBGEvent $event)
+		{
+			if ($this->isOutgoingNotificationsEnabled())
+			{
+				$issue = $event->getSubject();
+				if ($issue instanceof TBGIssue)
+				{
+					$subject = 'Re: ['.$issue->getProject()->getKey().'] ' . $issue->getIssueType()->getName() . ' ' . $issue->getFormattedIssueNo(true) . ' - ' . html_entity_decode($issue->getTitle(), ENT_COMPAT, TBGContext::getI18n()->getCharset());
+					$parameters = array('issue' => $issue, 'comment' => $event->getParameter('comment'), 'log_items' => $event->getParameter('log_items'), 'updated_by' => $event->getParameter('updated_by'));
+					$to_users = $this->_getIssueRelatedUsers($issue);
+					$messages = $this->getTranslatedMessages($subject, 'issueupdate', $parameters, $to_users);
+
+					foreach ($messages as $message)
+					{
+						$this->sendMail($message);
+					}
+					//$message = $this->createNewTBGMimemailFromTemplate($subject, 'issueupdate', array('issue' => $issue, 'comment_lines' => $event->getParameter('comment_lines'), 'updated_by' => $event->getParameter('updated_by')));
+				}
+			}
+		}
+
 		public function listen_viewissue(TBGEvent $event)
 		{
 			if ($this->getSetting(self::NOTIFY_ISSUE_ONCE))
@@ -660,7 +702,7 @@ EOT;
 		{
 			TBGActionComponent::includeTemplate('mailing/projectconfig_tab', array('selected_tab' => $event->getParameter('selected_tab')));
 		}
-		
+
 		public function listen_get_backdrop_partial(TBGEvent $event)
 		{
 			if ($event->getSubject() == 'mailing_editincomingemailaccount')
@@ -671,12 +713,12 @@ EOT;
 				$event->setProcessed();
 			}
 		}
-		
+
 		public function listen_projectconfig_panel(TBGEvent $event)
 		{
 			TBGActionComponent::includeTemplate('mailing/projectconfig_panel', array('selected_tab' => $event->getParameter('selected_tab'), 'access_level' => $event->getParameter('access_level'), 'project' => $event->getParameter('project')));
 		}
-		
+
 		public function getMailingUrl($clean = false)
 		{
 			$url = $this->getSetting('cli_mailing_url');
@@ -756,7 +798,7 @@ EOT;
 			$mail->decorateMessageHTML($pre_html_message, $post_html_message);
 			$mail->addReplacementValues(array('%thebuggenie_url%' => $this->getMailingUrl() . TBGContext::getRouting()->generate('home')));
 		}
-		
+
 		protected function _setAdditionalMailValues(TBGMimemail $mail, array $parameters)
 		{
 			$mail->addReplacementValues(array('%link_to_reset_password%' => isset($parameters['user']) ? $this->getMailingUrl() . TBGContext::getRouting()->generate('reset_password', array('user' => str_replace('.', '%2E', $parameters['user']->getUsername()), 'reset_hash' => $parameters['user']->getHashPassword())) : '' ));
@@ -849,33 +891,33 @@ EOT;
 			{
 				case 'silent':
 					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_POSTED_UPDATED, true, $uid);
-					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_ONCE, true, $uid); 
-					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_ASSIGNED_UPDATED, false, $uid); 
-					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_UPDATED_SELF, false, $uid); 
-					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_TEAMASSIGNED_UPDATED, false, $uid); 
-					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_RELATED_PROJECT_TEAMASSIGNED, false, $uid); 
-					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_PROJECT_ASSIGNED, false, $uid); 
-					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_COMMENTED_ON, false, $uid); 
+					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_ONCE, true, $uid);
+					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_ASSIGNED_UPDATED, false, $uid);
+					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_UPDATED_SELF, false, $uid);
+					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_TEAMASSIGNED_UPDATED, false, $uid);
+					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_RELATED_PROJECT_TEAMASSIGNED, false, $uid);
+					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_PROJECT_ASSIGNED, false, $uid);
+					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_COMMENTED_ON, false, $uid);
 					break;
 				case 'recommended':
 					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_POSTED_UPDATED, true, $uid);
-					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_ONCE, true, $uid); 
-					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_ASSIGNED_UPDATED, true, $uid); 
-					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_UPDATED_SELF, false, $uid); 
-					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_TEAMASSIGNED_UPDATED, true, $uid); 
-					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_RELATED_PROJECT_TEAMASSIGNED, false, $uid); 
-					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_PROJECT_ASSIGNED, true, $uid); 
-					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_COMMENTED_ON, true, $uid); 
+					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_ONCE, true, $uid);
+					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_ASSIGNED_UPDATED, true, $uid);
+					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_UPDATED_SELF, false, $uid);
+					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_TEAMASSIGNED_UPDATED, true, $uid);
+					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_RELATED_PROJECT_TEAMASSIGNED, false, $uid);
+					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_PROJECT_ASSIGNED, true, $uid);
+					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_COMMENTED_ON, true, $uid);
 					break;
 				case 'verbose':
 					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_POSTED_UPDATED, true, $uid);
-					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_ONCE, false, $uid); 
-					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_ASSIGNED_UPDATED, true, $uid); 
-					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_UPDATED_SELF, true, $uid); 
-					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_TEAMASSIGNED_UPDATED, true, $uid); 
-					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_RELATED_PROJECT_TEAMASSIGNED, true, $uid); 
-					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_PROJECT_ASSIGNED, true, $uid); 
-					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_COMMENTED_ON, true, $uid); 
+					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_ONCE, false, $uid);
+					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_ASSIGNED_UPDATED, true, $uid);
+					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_UPDATED_SELF, true, $uid);
+					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_TEAMASSIGNED_UPDATED, true, $uid);
+					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_RELATED_PROJECT_TEAMASSIGNED, true, $uid);
+					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_PROJECT_ASSIGNED, true, $uid);
+					$this->saveSetting(TBGMailing::NOTIFY_ISSUE_COMMENTED_ON, true, $uid);
 					break;
 				default:
 					$settings = array(self::NOTIFY_ISSUE_ASSIGNED_UPDATED, self::NOTIFY_ISSUE_ONCE, self::NOTIFY_ISSUE_POSTED_UPDATED, self::NOTIFY_ISSUE_PROJECT_ASSIGNED, self::NOTIFY_ISSUE_RELATED_PROJECT_TEAMASSIGNED, self::NOTIFY_ISSUE_TEAMASSIGNED_UPDATED, self::NOTIFY_ISSUE_UPDATED_SELF, self::NOTIFY_ISSUE_COMMENTED_ON);
@@ -891,7 +933,7 @@ EOT;
 		{
 			return (bool) $this->getSetting('enable_outgoing_notifications');
 		}
-		
+
 		public function isActivationNeeded()
 		{
 			return (bool) $this->getSetting('activation_needed');
@@ -906,7 +948,7 @@ EOT;
 		{
 			$this->saveSetting('enable_outgoing_notifications', $enabled);
 		}
-		
+
 		protected function addDefaultSettingsToAllUsers()
 		{
 			$settings = array(self::NOTIFY_ISSUE_ASSIGNED_UPDATED, self::NOTIFY_ISSUE_ONCE, self::NOTIFY_ISSUE_POSTED_UPDATED, self::NOTIFY_ISSUE_PROJECT_ASSIGNED, self::NOTIFY_ISSUE_RELATED_PROJECT_TEAMASSIGNED, self::NOTIFY_ISSUE_TEAMASSIGNED_UPDATED, self::NOTIFY_ISSUE_COMMENTED_ON);
@@ -937,7 +979,7 @@ EOT;
 			}
 			return $type;
 		}
-		
+
 		function getMailPart($stream, $msg_number, $mime_type, $structure, $part_number = false)
 		{
 			if ($mime_type == $this->getMailMimeType($structure))
@@ -959,7 +1001,7 @@ EOT;
 				{
 					$ret_val = $text;
 				}
-				
+
 				return $ret_val;
 			}
 
@@ -1041,17 +1083,17 @@ EOT;
 
 			return $attachments;
 		}
-		
+
 		public function getIncomingEmailAccounts()
 		{
 			return TBGIncomingEmailAccount::getAll();
 		}
-		
+
 		public function getIncomingEmailAccountsForProject(TBGProject $project)
 		{
 			return TBGIncomingEmailAccount::getAllByProjectID($project->getID());
 		}
-		
+
 		public function processIncomingEmails($limit = 25)
 		{
 			foreach ($this->getIncomingEmailAccounts() as $account)
@@ -1059,7 +1101,7 @@ EOT;
 				$this->processIncomingEmailAccount($account, $limit);
 			}
 		}
-		
+
 		public function getEmailAdressFromSenderString($from)
 		{
 			$tokens = explode(" ", $from);
@@ -1070,7 +1112,7 @@ EOT;
 					return $email;
 			}
 		}
-		
+
 		public function getOrCreateUserFromEmailString($email_string)
 		{
 			$email = $this->getEmailAdressFromSenderString($email_string);
@@ -1084,7 +1126,7 @@ EOT;
 				}
 
 				$user = new TBGUser();
-				
+
 				try
 				{
 					$user->setBuddyname($name);
@@ -1100,14 +1142,14 @@ EOT;
 					return null;
 				}
 			}
-			
+
 			return $user;
 		}
 
 		public function processIncomingEmailCommand($content, TBGIssue $issue, TBGUser $user)
 		{
 			if (!$issue->isWorkflowTransitionsAvailable()) return false;
-			
+
 			$lines = preg_split("/(\r?\n)/", $content);
 			$first_line = array_shift($lines);
 			$commands = explode(" ", trim($first_line));
@@ -1143,7 +1185,7 @@ EOT;
 				}
 			}
 		}
-		
+
 		public function processIncomingEmailAccount(TBGIncomingEmailAccount $account, $limit = 25)
 		{
 			$count = 0;

@@ -291,10 +291,17 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::DELETED, false);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
-			$row = $this->doSelectById($id, $crit, false);
-			return $row;
+			return $this->doSelectById($id, $crit);
 		}
 		
+		public function getIssueByID($id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::DELETED, false);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			return $this->selectById($id, $crit);
+		}
+
 		public function getCountByProjectID($project_id)
 		{
 			$crit = $this->getCriteria();

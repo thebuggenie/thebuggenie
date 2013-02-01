@@ -105,6 +105,16 @@
 		 */
 		protected $_reply_to_comment = 0;
 
+		/**
+		 * List of log items linked to this comment
+		 *
+		 * @var array
+		 * @Relates(class="TBGLogItem", collection=true, foreign_column="comment_id")
+		 */
+		protected $_log_items;
+
+		protected $_log_item_count = null;
+
 		protected static $_comment_count = array();
 
 		/**
@@ -443,6 +453,24 @@
 		public function isReply()
 		{
 			return (bool) ($this->getReplyToComment() instanceof TBGComment);
+		}
+
+		public function hasAssociatedChanges()
+		{
+			if (is_array($this->_log_items))
+			{
+				$this->_log_item_count = count($this->_log_items);
+			}
+			elseif ($this->_log_item_count === null)
+			{
+				$this->_log_item_count = $this->_b2dbLazycount('_log_items');
+			}
+			return $this->_log_item_count;
+		}
+
+		public function getLogItems()
+		{
+			return $this->_b2dbLazyload('_log_items');
 		}
 
 	}

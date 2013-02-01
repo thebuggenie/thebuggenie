@@ -148,7 +148,12 @@
 				{
 					try
 					{
-						$an_issue = new TBGIssue($i_id);
+						$an_issue = TBGIssuesTable::getTable()->getIssueById($i_id);
+						if (!$an_issue instanceof TBGIssue)
+						{
+							unset($_SESSION['viewissue_list'][$k]);
+							continue;
+						}
 						array_unshift($issuelist, array('url' => TBGContext::getRouting()->generate('viewissue', array('project_key' => $an_issue->getProject()->getKey(), 'issue_no' => $an_issue->getFormattedIssueNo())), 'title' => $an_issue->getFormattedTitle(true, true)));
 					}
 					catch (Exception $e)
@@ -442,7 +447,7 @@
 		 */
 		public function runLogin(TBGRequest $request)
 		{
-			if (!TBGContext::getUser()->isGuest()) return $this->forward(TBGContext::getRouting()->generate('home'));
+			//if (!TBGContext::getUser()->isGuest()) return $this->forward(TBGContext::getRouting()->generate('home'));
 			$this->section = $request->getParameter('section', 'login');
 		}
 		
@@ -1394,7 +1399,7 @@
 			{
 				case 'description':
 					if (!$issue->canEditDescription()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
-					
+
 					$issue->setDescription($request->getRawParameter('value'));
 					return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>$issue->isDescriptionChanged(), 'field' => array('id' => (int) ($issue->getDescription() != ''), 'name' => tbg_parse_text($issue->getDescription(), false, null, array('issue' => $issue))), 'description' => tbg_parse_text($issue->getDescription(), false, null, array('issue' => $issue))));
 					break;
@@ -2527,15 +2532,15 @@
 				if ($comment_applies_type == TBGComment::TYPE_ISSUE)
 				{
 					$issue = TBGIssuesTable::getTable()->selectById((int) $request['comment_applies_id']);
-					if (!$request->isAjaxCall())
+					if (!$request->isAjaxCall() || $request['comment_save_changes'])
 					{
 						$issue->setSaveComment($comment);
+						$issue->save();
 					}
 					else
 					{
 						TBGEvent::createNew('core', 'TBGComment::createNew', $comment, compact('issue'))->trigger();
 					}
-					$issue->save();
 				}
 
 				switch ($comment_applies_type)
@@ -2799,6 +2804,10 @@
 							$options['item_name'] = $details['description'];
 							$options['item_id'] = $request['item_id'];
 							$options['access_level'] = $request['access_level'];
+						}
+						else
+						{
+							die('fu');
 						}
 						break;
 					case 'site_icons':
@@ -3896,6 +3905,20 @@
 				$this->getUser()->confirmScope($scope->getID());
 				$route = (TBGSettings::getLoginReturnRoute() != 'referer') ? TBGSettings::getLoginReturnRoute() : 'home';
 				$this->forward(TBGContext::getRouting()->generate($route));
+			}
+		}
+
+		public function runIssueLog(TBGRequest $request)
+		{
+			try
+			{
+				$this->issue = TBGIssuesTable::getTable()->selectById((int) $request['issue_id']);
+				$this->log_items = $this->issue->getLogEntries();
+				if ($this->issue->isDeleted() || !$this->issue->hasAccess()) $this->issue = null;
+			}
+			catch (Exception $e)
+			{
+				throw $e;
 			}
 		}
 

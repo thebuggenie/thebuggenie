@@ -769,7 +769,7 @@
 			catch (Exception $e)
 			{
 				TBGLogging::log("Something happened while setting up user: ". $e->getMessage(), 'main', TBGLogging::LEVEL_WARNING);
-				$allow_anonymous_routes = array('register', 'register1', 'register2', 'activate', 'reset_password', 'captcha', 'login', 'getBackdropPartial', 'serve', 'doLogin');
+				$allow_anonymous_routes = array('register', 'register1', 'register2', 'activate', 'reset_password', 'captcha', 'login', 'login_page', 'getBackdropPartial', 'serve', 'doLogin');
 				if (!self::isCLI() && (self::getRouting()->getCurrentRouteModule() != 'main' || !in_array(self::getRouting()->getCurrentRouteAction(), $allow_anonymous_routes)))
 				{
 					TBGContext::setMessage('login_message_err', $e->getMessage());
@@ -1541,6 +1541,7 @@
 		{
 			self::_cacheAvailablePermissions();
 			$permissions_list = ($permissions_list === null) ? self::$_available_permissions : $permissions_list;
+			var_dump($permissions_list);die();
 			foreach ($permissions_list as $permission_key => $permission_info)
 			{
 				if (is_numeric($permission_key)) return null;
@@ -2476,7 +2477,7 @@
 			catch (TBGTemplateNotFoundException $e)
 			{
 				\b2db\Core::closeDBLink();
-				header("HTTP/1.0 404 Not Found", true, 404);
+				//header("HTTP/1.0 404 Not Found", true, 404);
 				throw $e;
 			}
 			catch (TBGActionNotFoundException $e)
@@ -2504,7 +2505,7 @@
 			catch (Exception $e)
 			{
 				\b2db\Core::closeDBLink();
-				header("HTTP/1.0 404 Not Found", true, 404);
+				//header("HTTP/1.0 404 Not Found", true, 404);
 				throw $e;
 			}
 		}

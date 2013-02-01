@@ -1123,7 +1123,14 @@ dd { float: left; display: block; width: 195px; font-weight: normal; margin: 0; 
 .priority_percentage .percent_unfilled, .priority_percentage .faded_out .percent_unfilled { background-color: #E2FFE1; }
 
 #upload_error_div { margin: 10px 5px 5px 5px; }
-#viewissue_attached_information, #viewissue_comments, #viewissue_related, #viewissue_duplicates, #viewissue_affected { margin: 5px 0 0 0; }
+#viewissue_attached_information, #viewissue_comments, #viewissue_log_items, #viewissue_related, #viewissue_duplicates, #viewissue_affected { margin: 5px 0 0 0; }
+#viewissue_log_items ul { list-style: none; margin: 10px; padding: 0; }
+#viewissue_log_items ul li { list-style: none; margin: 0; padding: 2px 0; }
+#viewissue_log_items ul li img { margin: 3px 5px -3px 5px; }
+#viewissue_log_items ul li span.date { font-size: 0.85em; color: #AAA; }
+.comment_log_items { list-style: none; margin: 5px 10px; padding: 0; }
+.comment_log_items span.date { display: none; }
+.comment_log_items img { margin: 3px 5px -3px 5px; }
 #affected_list th { font-size: 0.85em; }
 #viewissue_commits { margin: 10px 0 0 0; }
 #viewissue_attached_information .header_div a { float: right; margin-left: 5px; }

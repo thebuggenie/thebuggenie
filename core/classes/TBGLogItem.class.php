@@ -173,4 +173,9 @@
 			$this->_comment_id = $comment_id;
 		}
 
+		public function hasChangeDetails()
+		{
+			return ($this->_comment_id !== null);
+		}
+
 	}

@@ -619,9 +619,8 @@
 				case 'TOC':
 					return '{{TOC}}';
 				case 'SITENAME':
-					return TBGSettings::getTBGname();
 				case 'SITETAGLINE':
-					return TBGSettings::getTBGtagline();
+					return TBGSettings::getTBGname();
 				default:
 					return '';
 			}

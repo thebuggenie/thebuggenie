@@ -13,7 +13,13 @@
 		 */
 		public function preExecute(TBGRequest $request, $action)
 		{
-			$this->getResponse()->setPage('wiki');
+			if ($this->getRouting()->getCurrentRouteName() == 'publish_article')
+			{
+				$this->getResponse()->setDecoration(TBGResponse::DECORATE_CUSTOM, array('header' => THEBUGGENIE_PATH.'../dragonevo/templates/header.php', 'footer' => THEBUGGENIE_PATH.'../dragonevo/templates/footer.php'));
+				$this->getResponse()->setPage('wiki');
+				$this->getResponse()->addJavascript('/js/main.js');
+				$this->getResponse()->addStylesheet('/css/styles.css');
+			} else { die($this->getRouting()->getCurrentRouteName()); }
 			$i18n = TBGContext::getI18n();
 
 			$this->article = null;

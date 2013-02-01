@@ -87,7 +87,6 @@
 		const SETTING_SYNTAX_HIGHLIGHT_DEFAULT_INTERVAL = 'highlight_default_interval';
 		const SETTING_TBG_NAME = 'b2_name';
 		const SETTING_TBG_NAME_HTML = 'tbg_header_name_html';
-		const SETTING_TBG_TAGLINE = 'b2_tagline';
 		const SETTING_THEME_NAME = 'theme_name';
 		const SETTING_UPLOAD_EXTENSIONS_LIST = 'upload_extensions_list';
 		const SETTING_UPLOAD_LOCAL_PATH = 'upload_localpath';
@@ -406,11 +405,6 @@
 			return $name;
 		}
 	
-		public static function getTBGtagline()
-		{
-			return self::get(self::SETTING_TBG_TAGLINE);
-		}
-		
 		public static function isFrontpageProjectListVisible()
 		{
 			return (bool) self::get(self::SETTING_SHOW_PROJECTS_OVERVIEW);

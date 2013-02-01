@@ -23,7 +23,7 @@
 				<?php if ($comment->isReply()): ?>
 					<?php echo image_tag('icon_reply.png', array('style' => 'margin: 2px 5px -2px 0; height: 12px; width: 12px;')).__('%comment_date%, in reply to comment %replied_comment_number%', array('%comment_date%' => tbg_formattime($comment->getPosted(), 12), '%replied_comment_number%' => link_tag("#comment_{$comment->getReplyToComment()->getTargetType()}_{$comment->getReplyToComment()->getTargetID()}_{$comment->getReplyToComment()->getID()}", '#'.$comment->getReplyToComment()->getCommentNumber()))); ?>
 				<?php else: ?>
-					<?php echo tbg_formattime($comment->getPosted(), 12); ?>
+					<?php echo tbg_formattime($comment->getPosted(), 9); ?>
 				<?php endif; ?>
 			</div>
 		</div>
@@ -38,6 +38,16 @@
 		</div>
 		<div class="commentbody article" id="comment_<?php echo $comment->getID(); ?>_body">
 			<?php echo tbg_parse_text($comment->getContent(), false, null, $options); ?>
+			<?php if ($comment->hasAssociatedChanges()): ?><br>
+			<br>
+			<strong><?php echo __('Changes: %list_of_changes%', array('%list_of_changes%' => '')); ?></strong><br>
+			<ul class="comment_log_items">
+				<?php foreach ($comment->getLogItems() as $item): ?>
+					<?php if (!$item instanceof TBGLogItem) continue; ?>
+					<?php include_template('main/issuelogitem', compact('item')); ?>
+				<?php endforeach; ?>
+			</ul>
+			<?php endif; ?>
 		</div>
 	</div>
 	

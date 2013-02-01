@@ -2411,8 +2411,8 @@
 		 */
 		protected function _removeParentIssue($related_issue, $relation_id)
 		{
-			$this->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('This issue no longer depends on the solution of issue %issue_no%', array('%issue_no%' => $related_issue->getFormattedIssueNo())));
-			$related_issue->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('Issue %issue_no% no longer depends on the solution of this issue', array('%issue_no%' => $this->getFormattedIssueNo())));
+			$this->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('This issue no longer depends on the solution of issue %issue_no%', array('%issue_no%' => $related_issue->getFormattedIssueNo())), $related_issue->getID(), 0);
+			$related_issue->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('Issue %issue_no% no longer depends on the solution of this issue', array('%issue_no%' => $this->getFormattedIssueNo())), $this->getID(), 0);
 			
 			if ($this->_parent_issues !== null && array_key_exists($relation_id, $this->_parent_issues))
 			{
@@ -2430,8 +2430,8 @@
 		 */
 		protected function _removeChildIssue($related_issue, $relation_id)
 		{
-			$this->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('Issue %issue_no% no longer depends on the solution of this issue', array('%issue_no%' => $related_issue->getFormattedIssueNo())));
-			$related_issue->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('This issue no longer depends on the solution of issue %issue_no%', array('%issue_no%' => $this->getFormattedIssueNo())));
+			$this->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('Issue %issue_no% no longer depends on the solution of this issue', array('%issue_no%' => $related_issue->getFormattedIssueNo())), $this->getID(), 0);
+			$related_issue->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('This issue no longer depends on the solution of issue %issue_no%', array('%issue_no%' => $this->getFormattedIssueNo())), $related_issue->getID(), 0);
 			
 			if ($this->_child_issues !== null && array_key_exists($relation_id, $this->_child_issues))
 			{
@@ -3678,12 +3678,15 @@
 		 * @param string $text The text to log
 		 * @param boolean $system Whether this is a user entry or a system entry
 		 */
-		public function addLogEntry($change_type, $text = null, $system = false, $time = null)
+		public function addLogEntry($change_type, $text = null, $previous_value = null, $current_value = null, $system = false, $time = null)
 		{
 			$uid = ($system) ? 0 : TBGContext::getUser()->getID();
 			$log_item = new TBGLogItem();
 			$log_item->setChangeType($change_type);
 			$log_item->setText($text);
+			if ($time !== null) $log_item->setTime($time);
+			if ($previous_value !== null) $log_item->setPreviousValue($previous_value);
+			if ($current_value !== null) $log_item->setCurrentValue($current_value);
 			$log_item->setTargetType(TBGLogTable::TYPE_ISSUE);
 			$log_item->setTarget($this->getID());
 			$log_item->setUser($uid);
@@ -4258,23 +4261,24 @@
 				foreach ($changed_properties as $property => $value)
 				{
 					$compare_value = (is_object($this->$property)) ? $this->$property->getID() : $this->$property;
-					if ($value['original_value'] != $compare_value)
+					$original_value = $value['original_value'];
+					if ($original_value != $compare_value)
 					{
 						switch ($property)
 						{
 							case '_title':
-								$this->addLogEntry(TBGLogTable::LOG_ISSUE_UPDATE, TBGContext::getI18n()->__("Title updated"));
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_UPDATE, TBGContext::getI18n()->__("Title updated"), $original_value, $compare_value);
 								break;
 							case '_description':
-								$this->addLogEntry(TBGLogTable::LOG_ISSUE_UPDATE, TBGContext::getI18n()->__("Description updated"));
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_UPDATE, TBGContext::getI18n()->__("Description updated"), $original_value, $compare_value);
 								break;
 							case '_reproduction_steps':
-								$this->addLogEntry(TBGLogTable::LOG_ISSUE_REPRODUCABILITY, TBGContext::getI18n()->__("Reproduction steps updated"));
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_REPRODUCABILITY, TBGContext::getI18n()->__("Reproduction steps updated"), $original_value, $compare_value);
 								break;
 							case '_category':
-								if ($value['original_value'] != 0)
+								if ($original_value != 0)
 								{
-									$old_name = ($old_item = TBGContext::factory()->TBGCategory($value['original_value'])) ? $old_item->getName() : TBGContext::getI18n()->__('Not determined');
+									$old_name = ($old_item = TBGContext::factory()->TBGCategory($original_value)) ? $old_item->getName() : TBGContext::getI18n()->__('Not determined');
 								}
 								else
 								{
@@ -4282,12 +4286,12 @@
 								}
 								$new_name = ($this->getCategory() instanceof TBGDatatype) ? $this->getCategory()->getName() : TBGContext::getI18n()->__('Not determined');
 
-								$this->addLogEntry(TBGLogTable::LOG_ISSUE_CATEGORY, $old_name . ' &rArr; ' . $new_name);
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_CATEGORY, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
 								break;
 							case '_pain_bug_type':
-								if ($value['original_value'] != 0)
+								if ($original_value != 0)
 								{
-									$old_name = ($old_item = self::getPainTypesOrLabel('pain_bug_type', $value['original_value'])) ? $old_item : TBGContext::getI18n()->__('Not determined');
+									$old_name = ($old_item = self::getPainTypesOrLabel('pain_bug_type', $original_value)) ? $old_item : TBGContext::getI18n()->__('Not determined');
 								}
 								else
 								{
@@ -4295,12 +4299,12 @@
 								}
 								$new_name = ($new_item = self::getPainTypesOrLabel('pain_bug_type', $value['current_value'])) ? $new_item : TBGContext::getI18n()->__('Not determined');
 
-								$this->addLogEntry(TBGLogTable::LOG_ISSUE_PAIN_BUG_TYPE, $old_name . ' &rArr; ' . $new_name);
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_PAIN_BUG_TYPE, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
 								break;
 							case '_pain_effect':
-								if ($value['original_value'] != 0)
+								if ($original_value != 0)
 								{
-									$old_name = ($old_item = self::getPainTypesOrLabel('pain_effect', $value['original_value'])) ? $old_item : TBGContext::getI18n()->__('Not determined');
+									$old_name = ($old_item = self::getPainTypesOrLabel('pain_effect', $original_value)) ? $old_item : TBGContext::getI18n()->__('Not determined');
 								}
 								else
 								{
@@ -4308,12 +4312,12 @@
 								}
 								$new_name = ($new_item = self::getPainTypesOrLabel('pain_effect', $value['current_value'])) ? $new_item : TBGContext::getI18n()->__('Not determined');
 
-								$this->addLogEntry(TBGLogTable::LOG_ISSUE_PAIN_EFFECT, $old_name . ' &rArr; ' . $new_name);
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_PAIN_EFFECT, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
 								break;
 							case '_pain_likelihood':
-								if ($value['original_value'] != 0)
+								if ($original_value != 0)
 								{
-									$old_name = ($old_item = self::getPainTypesOrLabel('pain_likelihood', $value['original_value'])) ? $old_item : TBGContext::getI18n()->__('Not determined');
+									$old_name = ($old_item = self::getPainTypesOrLabel('pain_likelihood', $original_value)) ? $old_item : TBGContext::getI18n()->__('Not determined');
 								}
 								else
 								{
@@ -4321,15 +4325,15 @@
 								}
 								$new_name = ($new_item = self::getPainTypesOrLabel('pain_likelihood', $value['current_value'])) ? $new_item : TBGContext::getI18n()->__('Not determined');
 
-								$this->addLogEntry(TBGLogTable::LOG_ISSUE_PAIN_LIKELIHOOD, $old_name . ' &rArr; ' . $new_name);
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_PAIN_LIKELIHOOD, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
 								break;
 							case '_user_pain':
-								$this->addLogEntry(TBGLogTable::LOG_ISSUE_PAIN_CALCULATED, $value['original_value'] . ' &rArr; ' . $value['current_value']);
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_PAIN_CALCULATED, $original_value . ' &rArr; ' . $value['current_value']);
 								break;
 							case '_status':
-								if ($value['original_value'] != 0)
+								if ($original_value != 0)
 								{
-									$old_name = ($old_item = TBGContext::factory()->TBGStatus($value['original_value'])) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
+									$old_name = ($old_item = TBGContext::factory()->TBGStatus($original_value)) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
 								}
 								else
 								{
@@ -4337,12 +4341,12 @@
 								}
 								$new_name = ($this->getStatus() instanceof TBGDatatype) ? $this->getStatus()->getName() : TBGContext::getI18n()->__('Not determined');
 
-								$this->addLogEntry(TBGLogTable::LOG_ISSUE_STATUS, $old_name . ' &rArr; ' . $new_name);
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_STATUS, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
 								break;
 							case '_reproducability':
-								if ($value['original_value'] != 0)
+								if ($original_value != 0)
 								{
-									$old_name = ($old_item = TBGContext::factory()->TBGReproducability($value['original_value'])) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
+									$old_name = ($old_item = TBGContext::factory()->TBGReproducability($original_value)) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
 								}
 								else
 								{
@@ -4350,12 +4354,12 @@
 								}
 								$new_name = ($this->getReproducability() instanceof TBGDatatype) ? $this->getReproducability()->getName() : TBGContext::getI18n()->__('Not determined');
 
-								$this->addLogEntry(TBGLogTable::LOG_ISSUE_REPRODUCABILITY, $old_name . ' &rArr; ' . $new_name);
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_REPRODUCABILITY, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
 								break;
 							case '_priority':
-								if ($value['original_value'] != 0)
+								if ($original_value != 0)
 								{
-									$old_name = ($old_item = TBGContext::factory()->TBGPriority($value['original_value'])) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
+									$old_name = ($old_item = TBGContext::factory()->TBGPriority($original_value)) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
 								}
 								else
 								{
@@ -4363,7 +4367,7 @@
 								}
 								$new_name = ($this->getPriority() instanceof TBGDatatype) ? $this->getPriority()->getName() : TBGContext::getI18n()->__('Not determined');
 
-								$this->addLogEntry(TBGLogTable::LOG_ISSUE_PRIORITY, $old_name . ' &rArr; ' . $new_name);
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_PRIORITY, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
 								break;
 							case '_assignee_team':
 							case '_assignee_user':
@@ -4381,16 +4385,16 @@
 								}
 								break;
 							case '_posted_by':
-								$old_identifiable = ($value['original_value']) ? TBGContext::factory()->TBGUser($value['original_value']) : TBGContext::getI18n()->__('Unknown');
+								$old_identifiable = ($original_value) ? TBGContext::factory()->TBGUser($original_value) : TBGContext::getI18n()->__('Unknown');
 								$old_name = ($old_identifiable instanceof TBGUser) ? $old_identifiable->getName() : TBGContext::getI18n()->__('Unknown');
 								$new_name = $this->getPostedBy()->getName();
 
-								$this->addLogEntry(TBGLogTable::LOG_ISSUE_POSTED, $old_name . ' &rArr; ' . $new_name);
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_POSTED, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
 								break;
 							case '_being_worked_on_by_user':
-								if ($value['original_value'] != 0)
+								if ($original_value != 0)
 								{
-									$old_identifiable = TBGContext::factory()->TBGUser($value['original_value']);
+									$old_identifiable = TBGContext::factory()->TBGUser($original_value);
 									$old_name = ($old_identifiable instanceof TBGUser) ? $old_identifiable->getName() : TBGContext::getI18n()->__('Unknown');
 								}
 								else
@@ -4399,7 +4403,7 @@
 								}
 								$new_name = ($this->getUserWorkingOnIssue() instanceof TBGUser) ? $this->getUserWorkingOnIssue()->getName() : TBGContext::getI18n()->__('Not being worked on');
 
-								$this->addLogEntry(TBGLogTable::LOG_ISSUE_USERS, $old_name . ' &rArr; ' . $new_name);
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_USERS, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
 								break;
 							case '_owner_team':
 							case '_owner_user':
@@ -4412,12 +4416,12 @@
 								}
 								break;
 							case '_percent_complete':
-								$this->addLogEntry(TBGLogTable::LOG_ISSUE_PERCENT, $value['original_value'] . '% &rArr; ' . $this->getPercentCompleted() . '%');
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_PERCENT, $original_value . '% &rArr; ' . $this->getPercentCompleted() . '%', $original_value, $compare_value);
 								break;
 							case '_resolution':
-								if ($value['original_value'] != 0)
+								if ($original_value != 0)
 								{
-									$old_name = ($old_item = TBGContext::factory()->TBGResolution($value['original_value'])) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
+									$old_name = ($old_item = TBGContext::factory()->TBGResolution($original_value)) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
 								}
 								else
 								{
@@ -4425,12 +4429,12 @@
 								}
 								$new_name = ($this->getResolution() instanceof TBGDatatype) ? $this->getResolution()->getName() : TBGContext::getI18n()->__('Not determined');
 
-								$this->addLogEntry(TBGLogTable::LOG_ISSUE_RESOLUTION, $old_name . ' &rArr; ' . $new_name);
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_RESOLUTION, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
 								break;
 							case '_severity':
-								if ($value['original_value'] != 0)
+								if ($original_value != 0)
 								{
-									$old_name = ($old_item = TBGContext::factory()->TBGSeverity($value['original_value'])) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
+									$old_name = ($old_item = TBGContext::factory()->TBGSeverity($original_value)) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
 								}
 								else
 								{
@@ -4438,12 +4442,12 @@
 								}
 								$new_name = ($this->getSeverity() instanceof TBGDatatype) ? $this->getSeverity()->getName() : TBGContext::getI18n()->__('Not determined');
 
-								$this->addLogEntry(TBGLogTable::LOG_ISSUE_SEVERITY, $old_name . ' &rArr; ' . $new_name);
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_SEVERITY, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
 								break;
 							case '_milestone':
-								if ($value['original_value'] != 0)
+								if ($original_value != 0)
 								{
-									$old_name = ($old_item = TBGContext::factory()->TBGMilestone($value['original_value'])) ? $old_item->getName() : TBGContext::getI18n()->__('Not determined');
+									$old_name = ($old_item = TBGContext::factory()->TBGMilestone($original_value)) ? $old_item->getName() : TBGContext::getI18n()->__('Not determined');
 								}
 								else
 								{
@@ -4451,12 +4455,12 @@
 								}
 								$new_name = ($this->getMilestone() instanceof TBGMilestone) ? $this->getMilestone()->getName() : TBGContext::getI18n()->__('Not determined');
 
-								$this->addLogEntry(TBGLogTable::LOG_ISSUE_MILESTONE, $old_name . ' &rArr; ' . $new_name);
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_MILESTONE, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
 								break;
 							case '_issuetype':
-								if ($value['original_value'] != 0)
+								if ($original_value != 0)
 								{
-									$old_name = ($old_item = TBGContext::factory()->TBGIssuetype($value['original_value'])) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
+									$old_name = ($old_item = TBGContext::factory()->TBGIssuetype($original_value)) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
 								}
 								else
 								{
@@ -4464,7 +4468,7 @@
 								}
 								$new_name = ($this->getIssuetype() instanceof TBGIssuetype) ? $this->getIssuetype()->getName() : TBGContext::getI18n()->__('Unknown');
 
-								$this->addLogEntry(TBGLogTable::LOG_ISSUE_ISSUETYPE, $old_name . ' &rArr; ' . $new_name);
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_ISSUETYPE, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
 								break;
 							case '_estimated_months':
 							case '_estimated_weeks':
@@ -4481,7 +4485,7 @@
 
 									$old_formatted_time = (array_sum($old_time) > 0) ? $this->getFormattedTime($old_time) : TBGContext::getI18n()->__('Not estimated');
 									$new_formatted_time = ($this->hasEstimatedTime()) ? $this->getFormattedTime($this->getEstimatedTime()) : TBGContext::getI18n()->__('Not estimated');
-									$this->addLogEntry(TBGLogTable::LOG_ISSUE_TIME_ESTIMATED, $old_formatted_time . ' &rArr; ' . $new_formatted_time);
+									$this->addLogEntry(TBGLogTable::LOG_ISSUE_TIME_ESTIMATED, $old_formatted_time . ' &rArr; ' . $new_formatted_time, serialize($old_time), serialize($this->getEstimatedTime()));
 									$is_saved_estimated = true;
 								}
 								break;
@@ -4500,7 +4504,7 @@
 
 									$old_formatted_time = (array_sum($old_time) > 0) ? $this->getFormattedTime($old_time) : TBGContext::getI18n()->__('No time spent');
 									$new_formatted_time = ($this->hasSpentTime()) ? $this->getFormattedTime($this->getSpentTime()) : TBGContext::getI18n()->__('No time spent');
-									$this->addLogEntry(TBGLogTable::LOG_ISSUE_TIME_SPENT, $old_formatted_time . ' &rArr; ' . $new_formatted_time);
+									$this->addLogEntry(TBGLogTable::LOG_ISSUE_TIME_SPENT, $old_formatted_time . ' &rArr; ' . $new_formatted_time, serialize($old_time), serialize($this->getSpentTime()));
 									$is_saved_spent = true;
 								}
 								break;
@@ -4559,12 +4563,12 @@
 									{
 										case TBGCustomDatatype::INPUT_TEXT:
 											$new_value = ($this->getCustomField($key) != '') ? $this->getCustomField($key) : TBGContext::getI18n()->__('Unknown');
-											$this->addLogEntry(TBGLogTable::LOG_ISSUE_CUSTOMFIELD_CHANGED, $customdatatype->getDescription() . ': ' . $new_value);
+											$this->addLogEntry(TBGLogTable::LOG_ISSUE_CUSTOMFIELD_CHANGED, $customdatatype->getDescription() . ': ' . $new_value, $original_value, $compare_value);
 											break;
 										case TBGCustomDatatype::INPUT_TEXTAREA_SMALL:
 										case TBGCustomDatatype::INPUT_TEXTAREA_MAIN:
 											$new_value = ($this->getCustomField($key) != '') ? $this->getCustomField($key) : TBGContext::getI18n()->__('Unknown');
-											$this->addLogEntry(TBGLogTable::LOG_ISSUE_CUSTOMFIELD_CHANGED, $customdatatype->getDescription() . ': ' . $new_value);
+											$this->addLogEntry(TBGLogTable::LOG_ISSUE_CUSTOMFIELD_CHANGED, $customdatatype->getDescription() . ': ' . $new_value, $original_value, $compare_value);
 											break;
 										case TBGCustomDatatype::EDITIONS_CHOICE:
 										case TBGCustomDatatype::COMPONENTS_CHOICE:
@@ -4577,16 +4581,16 @@
 												switch ($customdatatype->getType())
 												{
 													case TBGCustomDatatype::EDITIONS_CHOICE:
-														$old_object = TBGContext::factory()->TBGEdition($value['original_value']);
+														$old_object = TBGContext::factory()->TBGEdition($original_value);
 														break;
 													case TBGCustomDatatype::COMPONENTS_CHOICE:
-														$old_object = TBGContext::factory()->TBGComponent($value['original_value']);
+														$old_object = TBGContext::factory()->TBGComponent($original_value);
 														break;
 													case TBGCustomDatatype::RELEASES_CHOICE:
-														$old_object = TBGContext::factory()->TBGBuild($value['original_value']);
+														$old_object = TBGContext::factory()->TBGBuild($original_value);
 														break;
 													case TBGCustomDatatype::STATUS_CHOICE:
-														$old_object = TBGContext::factory()->TBGStatus($value['original_value']);
+														$old_object = TBGContext::factory()->TBGStatus($original_value);
 														break;
 												}
 											}
@@ -4612,18 +4616,18 @@
 											catch (Exception $e) {}
 											$old_value = (is_object($old_object)) ? $old_object->getName() : TBGContext::getI18n()->__('Unknown');
 											$new_value = (is_object($new_object)) ? $new_object->getName() : TBGContext::getI18n()->__('Unknown');
-											$this->addLogEntry(TBGLogTable::LOG_ISSUE_CUSTOMFIELD_CHANGED, $customdatatype->getDescription() . ': ' . $old_value . ' &rArr; ' . $new_value);
+											$this->addLogEntry(TBGLogTable::LOG_ISSUE_CUSTOMFIELD_CHANGED, $customdatatype->getDescription() . ': ' . $old_value . ' &rArr; ' . $new_value, $original_value, $compare_value);
 											break;
 										default:
 											$old_item = null;
 											try
 											{
-												$old_item = ($value['original_value']) ? new TBGCustomDatatypeOption($value['original_value']) : null;
+												$old_item = ($original_value) ? new TBGCustomDatatypeOption($original_value) : null;
 											}
 											catch (Exception $e) {}
 											$old_value = ($old_item instanceof TBGCustomDatatypeOption) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
 											$new_value = ($this->getCustomField($key) instanceof TBGCustomDatatypeOption) ? $this->getCustomField($key)->getName() : TBGContext::getI18n()->__('Unknown');
-											$this->addLogEntry(TBGLogTable::LOG_ISSUE_CUSTOMFIELD_CHANGED, $customdatatype->getDescription() . ': ' . $old_value . ' &rArr; ' . $new_value);
+											$this->addLogEntry(TBGLogTable::LOG_ISSUE_CUSTOMFIELD_CHANGED, $customdatatype->getDescription() . ': ' . $old_value . ' &rArr; ' . $new_value, $original_value, $compare_value);
 											break;
 									}
 								}
