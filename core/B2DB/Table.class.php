@@ -23,6 +23,7 @@
 		protected $b2db_name;
 		protected $id_column;
 		protected $b2db_alias;
+		protected $_cached_entities = array();
 		protected $_columns;
 		protected $_indexes = array();
 		protected $_charset = 'utf8';
@@ -334,8 +335,12 @@
 		 */
 		public function selectById($id, Criteria $crit = null, $join = 'all')
 		{
-			$row = $this->doSelectById($id, $crit, $join);
-			return $this->_populateFromRow($row);
+			if (!$this->hasCachedB2DBObject($id)) {
+				$row = $this->doSelectById($id, $crit, $join);
+				$object = $this->_populateFromRow($row);
+			} else {
+				$object = $this->getB2DBCachedObject($id);
+			}
 		}
 
 		/**
@@ -858,7 +863,7 @@
 
 				$id_column = ($id_column !== null) ? $id_column : $row->getCriteria()->getTable()->getIdColumn();
 				$row_id = $row->get($id_column);
-				$item = new $classname($row_id, $row);
+				$item = $classname::getB2DBCachedObjectIfAvailable($row_id, $classname, $row);
 			}
 			return $item;
 		}
@@ -956,6 +961,21 @@
 			list ($criteria, $item_class, $item_column) = $this->generateForeignItemsCriteria($class, $relation_details);
 			$result = $this->doCount($criteria);
 			return $result;
+		}
+
+		public function cacheB2DBObject($id, $object)
+		{
+			$this->_cached_entities[$id] = $object;
+		}
+
+		public function hasCachedB2DBObject($id)
+		{
+			return array_key_exists($id, $this->_cached_entities);
+		}
+
+		public function getB2DBCachedObject($id)
+		{
+			return $this->_cached_entities[$id];
 		}
 
 	}

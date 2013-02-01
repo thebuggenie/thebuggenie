@@ -34,6 +34,15 @@
 			return $b2dbtablename::getTable();
 		}
 
+		public static function getB2DBCachedObjectIfAvailable($id, $classname, $row = null)
+		{
+			$has_cached = self::getB2DBTable()->hasCachedB2DBObject($id);
+			$object = ($has_cached) ? self::getB2DBTable()->getB2DBCachedObject($id) : new $classname($id, $row);
+			if (!$has_cached) self::getB2DBTable()->cacheB2DBObject($id, $object);
+
+			return $object;
+		}
+
 		protected function _b2dbLazycount($property)
 		{
 			$relation_details = Core::getCachedEntityRelationDetails(\get_class($this), $property);
@@ -46,7 +55,7 @@
 			return $count;
 		}
 
-		protected function _b2dbLazyload($property)
+		protected function _b2dbLazyload($property, $use_cache = true)
 		{
 			$relation_details = Core::getCachedEntityRelationDetails(\get_class($this), $property);
 			if ($relation_details['collection']) {
@@ -66,7 +75,14 @@
 					$classname = $relation_details['class'];
 					try
 					{
-						$this->$property = new $classname($this->$property);
+						if (!$use_cache)
+						{
+							$this->$property = new $classname($this->$property);
+						}
+						else
+						{
+							$this->$property = $classname::getB2DBCachedObjectIfAvailable($this->$property, $classname);
+						}
 					}
 					catch (\Exception $e)
 					{
