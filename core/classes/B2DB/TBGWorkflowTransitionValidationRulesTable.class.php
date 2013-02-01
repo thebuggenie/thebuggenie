@@ -54,7 +54,7 @@
 			$crit->addWhere(self::TRANSITION_ID, $transition_id);
 			
 			$actions = array('pre' => array(), 'post' => array());
-			if ($res = $this->doSelect($crit))
+			if ($res = $this->doSelect($crit, false))
 			{
 				while ($row = $res->getNextRow())
 				{
