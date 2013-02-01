@@ -1,14 +1,14 @@
 <li id="<?php echo $link['target_type']; ?>_<?php echo $link['target_id']; ?>_links_<?php echo $link_id; ?>" style="clear: both;">
 	<?php if ($link['target_type'] == 'wiki' && $link['url'] != ''): ?>
 		<?php if ($tbg_routing->getCurrentRouteModule() == 'publish' && $tbg_request['article_name'] == $link['url']): ?>
-			<?php echo link_tag(make_url('publish_article', array('article_name' => $link['url'])), (($link['description'] != '') ? $link['description'] : $link['url']), array('class' => 'selected')); ?>
+			<?php echo link_tag(make_url('publish_article', array('article_name' => strip_tags($link['url']))), (($link['description'] != '') ? tbg_parse_text($link['description']) : strip_tags($link['url'])), array('class' => 'selected')); ?>
 		<?php else: ?>
-			<?php echo link_tag(make_url('publish_article', array('article_name' => $link['url'])), (($link['description'] != '') ? $link['description'] : $link['url'])); ?>
+			<?php echo link_tag(make_url('publish_article', array('article_name' => strip_tags($link['url']))), (($link['description'] != '') ? tbg_parse_text($link['description']) : strip_tags($link['url']))); ?>
 		<?php endif; ?>
 	<?php elseif (mb_substr($link['url'], 0, 1) == '@'): ?>
-		<?php echo link_tag(make_url($link['url']), (($link['description'] != '') ? $link['description'] : $link['url'])); ?>
+		<?php echo link_tag(make_url($link['url']), (($link['description'] != '') ? tbg_parse_text($link['description']) : strip_tags($link['url']))); ?>
 	<?php elseif ($link['url'] != ''): ?>
-		<?php echo link_tag($link['url'], (($link['description'] != '') ? $link['description'] : $link['url'])); ?>
+		<?php echo link_tag($link['url'], (($link['description'] != '') ? tbg_parse_text($link['description']) : strip_tags($link['url']))); ?>
 	<?php elseif ($link['description'] != ''): ?>
 		<?php echo tbg_parse_text($link['description']); ?>
 	<?php else: ?>
