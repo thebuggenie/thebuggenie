@@ -1690,6 +1690,23 @@
 			else TBGSettings::deleteSetting(TBGSettings::SETTING_USER_KEYBOARD_NAVIGATION, 'core', null, $this->getID());
 		}
 		
+		public function getActivationKey()
+		{
+			return TBGSettings::get(TBGSettings::SETTING_USER_ACTIVATION_KEY, 'core', TBGContext::getScope(), $this->getID());
+		}
+
+		public function generateActivationKey()
+		{
+			$value = $this->getActivationKey();
+			if (!$value)
+			{
+				$value = md5(uniqid().rand(100, 100000));
+				TBGSettings::saveSetting(TBGSettings::SETTING_USER_ACTIVATION_KEY, $value, 'core', null, $this->getID());
+			}
+
+			return $value;
+		}
+
 		/**
 		 * Set the users email address
 		 *
