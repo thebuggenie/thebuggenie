@@ -384,8 +384,8 @@
 					}
 					if ($file instanceof TBGFile)
 					{
-						$caption = (!empty($options)) ? array_pop($options) : $file->getDescription();
-						$caption = ($caption != '') ? $caption : $file->getOriginalFilename();
+						$caption = (!empty($options)) ? array_pop($options) : htmlentities($file->getDescription(), ENT_COMPAT, TBGContext::getI18n()->getCharset());
+						$caption = ($caption != '') ? $caption : htmlentities($file->getOriginalFilename(), ENT_COMPAT, TBGContext::getI18n()->getCharset());
 						$file_link = make_url('showfile', array('id' => $file->getID()));
 					}
 					else
