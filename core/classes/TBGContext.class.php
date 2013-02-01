@@ -592,6 +592,7 @@
 				self::$_installmode = true;
 				self::$_upgrademode = true;
 				\b2db\Core::setCachingEnabled(false);
+				TBGCache::disable();
 			}
 			elseif (!\b2db\Core::isInitialized())
 			{

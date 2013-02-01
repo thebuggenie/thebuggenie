@@ -214,6 +214,11 @@
 			return self::$_enabled;
 		}
 
+		public static function disable()
+		{
+			self::$_enabled = false;
+		}
+
 		public static function clearCacheKeys($keys)
 		{
 			foreach ($keys as $key)
