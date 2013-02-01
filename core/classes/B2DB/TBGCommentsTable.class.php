@@ -45,6 +45,8 @@
 		const COMMENT_NUMBER = 'comments.comment_number';
 		const SYSTEM_COMMENT = 'comments.system_comment';
 
+		protected $_preloaded_issue_counts;
+
 		protected function _setupIndexes()
 		{
 			$this->_addIndex('type_target', array(self::TARGET_TYPE, self::TARGET_ID));
@@ -61,7 +63,8 @@
 			$crit->addWhere(self::TARGET_TYPE, $target_type);
 			$crit->addWhere(self::DELETED, 0);
 			$crit->addOrderBy(self::POSTED, $sort_order);
-			$res = $this->doSelect($crit);
+			$res = $this->select($crit, false);
+			
 			return $res;
 		}
 
@@ -78,6 +81,46 @@
 				$crit->addWhere(self::SYSTEM_COMMENT, false);
 			
 			return $this->doCount($crit);
+		}
+
+		public function preloadIssueCommentCounts($target_ids)
+		{
+			$crit = $this->getCriteria();
+			$crit->addSelectionColumn(self::ID, 'num_comments', Criteria::DB_COUNT);
+			$crit->addSelectionColumn(self::TARGET_ID, 'issue_id');
+			$crit->addWhere(self::TARGET_ID, $target_ids, Criteria::DB_IN);
+			$crit->addWhere(self::TARGET_TYPE, TBGComment::TYPE_ISSUE);
+			$crit->addWhere(self::DELETED, 0);
+			$crit->addWhere(self::SYSTEM_COMMENT, false);
+			$crit->addGroupBy(self::TARGET_ID);
+
+			$res = $this->doSelect($crit, false);
+			$this->_preloaded_issue_counts = array();
+			if ($res)
+			{
+				while ($row = $res->getNextRow())
+				{
+					$this->_preloaded_issue_counts[$row->get('issue_id')] = $row->get('num_comments');
+				}
+			}
+		}
+
+		public function clearPreloadedIssueCommentCounts()
+		{
+			$this->_preloaded_issue_counts = null;
+		}
+
+		public function getPreloadedIssueCommentCount($target_id)
+		{
+			if (!is_array($this->_preloaded_issue_counts)) return null;
+
+			if (isset($this->_preloaded_issue_counts[$target_id]))
+			{
+				$val = $this->_preloaded_issue_counts[$target_id];
+				unset($this->_preloaded_issue_counts[$target_id]);
+				return $val;
+			}
+			return 0;
 		}
 
 		public function getNextCommentNumber($target_id, $target_type)

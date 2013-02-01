@@ -114,17 +114,10 @@
 		 */
 		static function getComments($target_id, $target_type, $sort_order = \b2db\Criteria::SORT_ASC)
 		{
-			$retval = array();
-			if ($res = TBGCommentsTable::getTable()->getComments($target_id, $target_type, $sort_order))
-			{
-				while ($row = $res->getNextRow())
-				{
-					$comment = TBGContext::factory()->TBGComment($row->get(TBGCommentsTable::ID), $row);
-					$retval[$comment->getID()] = $comment;
-				}
-				self::$_comment_count[$target_type][$target_id] = count($retval);
-			}
-			return $retval;
+			$comments = TBGCommentsTable::getTable()->getComments($target_id, $target_type, $sort_order);
+			self::$_comment_count[$target_type][$target_id] = count($comments);
+
+			return $comments;
 		}
 		
 		static function getRecentCommentsByAuthor($user_id, $target_type = self::TYPE_ISSUE, $limit = 10)

@@ -34,6 +34,8 @@
 		const FILE_ID = 'issuefiles.file_id';
 		const ISSUE_ID = 'issuefiles.issue_id';
 
+		protected $_preloaded_issue_counts;
+
 		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
@@ -70,7 +72,8 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::ISSUE_ID, $issue_id);
-			$res = $this->doSelect($crit);
+			$crit->addJoin(TBGFilesTable::getTable(), TBGFilesTable::ID, self::FILE_ID);
+			$res = $this->doSelect($crit, false);
 			
 			$ret_arr = array();
 
@@ -85,6 +88,43 @@
 			}
 			
 			return $ret_arr;
+		}
+
+		public function preloadIssueFileCounts($target_ids)
+		{
+			$crit = $this->getCriteria();
+			$crit->addSelectionColumn(self::ID, 'num_files', Criteria::DB_COUNT);
+			$crit->addSelectionColumn(self::ISSUE_ID);
+			$crit->addWhere(self::ISSUE_ID, $target_ids, Criteria::DB_IN);
+			$crit->addGroupBy(self::ISSUE_ID);
+
+			$res = $this->doSelect($crit, false);
+			$this->_preloaded_issue_counts = array();
+			if ($res)
+			{
+				while ($row = $res->getNextRow())
+				{
+					$this->_preloaded_issue_counts[$row->get(self::ISSUE_ID)] = $row->get('num_files');
+				}
+			}
+		}
+
+		public function clearPreloadedIssueFileCounts()
+		{
+			$this->_preloaded_issue_counts = null;
+		}
+
+		public function getPreloadedIssueFileCount($target_id)
+		{
+			if (!is_array($this->_preloaded_issue_counts)) return null;
+
+			if (isset($this->_preloaded_issue_counts[$target_id]))
+			{
+				$val = $this->_preloaded_issue_counts[$target_id];
+				unset($this->_preloaded_issue_counts[$target_id]);
+				return $val;
+			}
+			return 0;
 		}
 
 		public function countByIssueID($issue_id)

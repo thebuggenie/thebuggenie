@@ -34,6 +34,8 @@
 		const CONFIRMED = 'issueaffectscomponent.confirmed';
 		const STATUS = 'issueaffectscomponent.status';
 		
+		protected $_preloaded_values = null;
+
 		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
@@ -49,14 +51,65 @@
 			$this->_addIndex('issue', self::ISSUE);
 		}
 
-		public function getByIssueID($issue_id)
+		public function getByIssueIDs($issue_ids)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::ISSUE, $issue_id);
-			$res = $this->doSelect($crit);
+			$crit->addWhere(self::ISSUE, $issue_ids, Criteria::DB_IN);
+			$res = $this->doSelect($crit, false);
 			return $res;
 		}
-		
+
+		public function getByIssueID($issue_id)
+		{
+			if (is_array($this->_preloaded_values))
+			{
+				if (array_key_exists($issue_id, $this->_preloaded_values))
+				{
+					$values = $this->_preloaded_values[$issue_id];
+					unset($this->_preloaded_values[$issue_id]);
+					return $values;
+				}
+				else
+				{
+					return array();
+				}
+			}
+			else
+			{
+				$res = $this->getByIssueIDs(array($issue_id));
+				$rows = array();
+				if ($res)
+				{
+					while ($row = $res->getNextRow())
+					{
+						$rows[] = $row;
+					}
+				}
+
+				return $rows;
+			}
+		}
+
+		public function preloadValuesByIssueIDs($issue_ids)
+		{
+			$this->_preloaded_values = array();
+			$res = $this->getByIssueIDs($issue_ids);
+			if ($res)
+			{
+				while ($row = $res->getNextRow())
+				{
+					$issue_id = $row->get(self::ISSUE);
+					if (!array_key_exists($issue_id, $this->_preloaded_values)) $this->_preloaded_values[$issue_id] = array();
+					$this->_preloaded_values[$issue_id][] = $row;
+				}
+			}
+		}
+
+		public function clearPreloadedValues()
+		{
+			$this->_preloaded_custom_fields = null;
+		}
+
 		public function getByIssueIDandComponentID($issue_id, $component_id)
 		{
 			$crit = $this->getCriteria();
