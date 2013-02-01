@@ -1692,12 +1692,12 @@
 		
 		public function getActivationKey()
 		{
-			return TBGSettings::get(TBGSettings::SETTING_USER_ACTIVATION_KEY, 'core', TBGContext::getScope(), $this->getID());
+			return $this->generateActivationKey();
 		}
 
 		public function generateActivationKey()
 		{
-			$value = $this->getActivationKey();
+			$value = TBGSettings::get(TBGSettings::SETTING_USER_ACTIVATION_KEY, 'core', TBGContext::getScope(), $this->getID());
 			if (!$value)
 			{
 				$value = md5(uniqid().rand(100, 100000));
