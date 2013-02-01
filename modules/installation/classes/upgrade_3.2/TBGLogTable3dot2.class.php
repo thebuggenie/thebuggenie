@@ -20,7 +20,7 @@
 	 * @package thebuggenie
 	 * @subpackage tables
 	 *
-	 * @Table(name="log")
+	 * @Table(name="log_32")
 	 */
 	class TBGLogTable3dot2 extends TBGB2DBTable
 	{

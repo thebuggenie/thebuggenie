@@ -587,6 +587,16 @@
 			$this->upgrade_complete = true;
 		}
 
+		protected function _upgradeFrom3dot2()
+		{
+			TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'installation' . DS . 'classes' . DS . 'upgrade_3.2');
+
+			TBGProjectsTable::getTable()->upgrade(TBGProjectsTable3dot2::getTable());
+			TBGLogTable::getTable()->upgrade(TBGLogTable3dot2::getTable());
+
+			$this->upgrade_complete = true;
+		}
+
 		private function _fixTimestamps()
 		{
 			// Unlimited execution time
@@ -913,7 +923,7 @@
 		{
 			$version_info = explode(',', file_get_contents(THEBUGGENIE_PATH . 'installed'));
 			$this->current_version = $version_info[0];
-			$this->upgrade_available = ($this->current_version != '3.2');
+			$this->upgrade_available = ($this->current_version != '3.3');
 			
 			if ($this->upgrade_available)
 			{
@@ -933,6 +943,8 @@
 						$this->_upgradeFrom3dot0();
 					case '3.1':
 						$this->_upgradeFrom3dot1();
+					case '3.2':
+						$this->_upgradeFrom3dot2();
 				}
 				
 				if ($this->upgrade_complete)
