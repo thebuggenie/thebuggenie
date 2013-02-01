@@ -308,20 +308,24 @@ EOT;
 		{
 			if ($this->isActivationNeeded() && $this->isOutgoingNotificationsEnabled())
 			{
-//				The following line is included for the i18n parser to pick up the translatable string:
-//				__('User account registered with The Bug Genie');
-				$subject = 'User account registered with The Bug Genie';
-				$user = $event->getSubject();
 				$password = TBGUser::createPassword(8);
 				$user->setPassword($password);
 				$user->save();
-				$link_to_activate = $this->generateURL('activate', array('user' => str_replace('.', '%2E', $user->getUsername()), 'key' => $user->getHashPassword()));
-				$parameters = compact('user', 'password', 'link_to_activate');
-				$messages = $this->getTranslatedMessages($subject, 'registeruser', $parameters, array($user));
 
-				foreach ($messages as $message)
+				if ($user->getEmail())
 				{
-					$this->sendMail($message);
+	//				The following line is included for the i18n parser to pick up the translatable string:
+	//				__('User account registered with The Bug Genie');
+					$subject = 'User account registered with The Bug Genie';
+					$user = $event->getSubject();
+					$link_to_activate = $this->generateURL('activate', array('user' => str_replace('.', '%2E', $user->getUsername()), 'key' => $user->getHashPassword()));
+					$parameters = compact('user', 'password', 'link_to_activate');
+					$messages = $this->getTranslatedMessages($subject, 'registeruser', $parameters, array($user));
+
+					foreach ($messages as $message)
+					{
+						$this->sendMail($message);
+					}
 				}
 				$event->setProcessed();
 			}
