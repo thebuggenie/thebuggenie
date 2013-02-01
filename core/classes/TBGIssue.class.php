@@ -1581,6 +1581,16 @@
 		}
 		
 		/**
+		 * Set the issue no
+		 * 
+		 * @param integer $no 
+		 */
+		public function setIssueNo($no)
+		{
+			$this->_issue_no = $no;
+		}
+		
+		/**
 		 * Return timestamp for when the issue was posted
 		 *
 		 * @return integer

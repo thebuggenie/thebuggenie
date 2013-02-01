@@ -56,8 +56,10 @@
 		const CSV_ISSUE_REPRODUCIBILITY = 'reproducability';
 		const CSV_ISSUE_VOTES           = 'votes';
 		const CSV_ISSUE_PERCENTAGE      = 'percentage';
+		const CSV_ISSUE_ISSUENO         = 'issue_no';
 		const CSV_ISSUE_BLOCKING        = 'blocking';
 		const CSV_ISSUE_MILESTONE       = 'milestone';
+		const CSV_ISSUE_POSTED          = 'posted';
 		
 		const CSV_IDENTIFIER_TYPE_USER  = 1;
 		const CSV_IDENTIFIER_TYPE_TEAM  = 2;
@@ -2578,7 +2580,7 @@
 								}
 								
 								// Now numerics
-								$numericitems = array(self::CSV_ISSUE_VOTES, self::CSV_ISSUE_PERCENTAGE);
+								$numericitems = array(self::CSV_ISSUE_VOTES, self::CSV_ISSUE_PERCENTAGE, self::CSV_ISSUE_ISSUENO);
 								
 								foreach ($numericitems as $numericitem)
 								{
@@ -2644,6 +2646,12 @@
 												break;
 										}
 									}
+								}
+								
+								// Now timestamps
+								if (array_key_exists(self::CSV_ISSUE_POSTED, $activerow) && isset($activerow[self::CSV_ISSUE_POSTED]) && ((string) (int) $activerow[self::CSV_ISSUE_POSTED] !== $activerow[self::CSV_ISSUE_POSTED]) && $activerow[self::CSV_ISSUE_POSTED] >= PHP_INT_MAX && $activerow[self::CSV_ISSUE_POSTED] <= ~PHP_INT_MAX)
+								{
+									$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a Unix timestamp)', array('%col%' => self::CSV_ISSUE_POSTED, '%row%' => $i+1));
 								}
 								
 								// Now check user exists for postedby
@@ -3110,8 +3118,14 @@
 								if (isset($activerow[self::CSV_ISSUE_PERCENTAGE]))
 									$issue->setPercentCompleted($activerow[self::CSV_ISSUE_PERCENTAGE]);
 								
+								if (isset($activerow[self::CSV_ISSUE_ISSUENO]))
+									$issue->setIssueNo((int) $activerow[self::CSV_ISSUE_ISSUENO]);
+								
 								if (isset($activerow[self::CSV_ISSUE_MILESTONE]))
 									$issue->setMilestone($activerow[self::CSV_ISSUE_MILESTONE]);
+								
+								if (isset($activerow[self::CSV_ISSUE_POSTED]))
+									$issue->setPosted((int) $activerow[self::CSV_ISSUE_POSTED]);
 								
 								$issue->save();
 							}
