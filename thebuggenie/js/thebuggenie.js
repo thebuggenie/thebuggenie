@@ -2893,6 +2893,7 @@ TBG.Issues.showLog = function(url) {
 	TBG.Main.Helpers.tabSwitcher('tab_log', 'viewissue_menu');
 	if ($('viewissue_log_items').childElements().size() == 0) {
 		TBG.Main.Helpers.ajax(url, {
+			url_method: 'get',
 			loading: {indicator: 'viewissue_log_loading_indicator'},
 			success: {
 				update: {element: 'viewissue_log_items'}
@@ -4152,8 +4153,6 @@ TBG.Chart.burndownChart = function(burndown_data, time) {
 	}
 	var d_e_velocity_hours = [[eh_keys.min() * 1000, eh_values.max()], [eh_keys.max() * 1000, 0]];
 	var d_e_velocity_points = [[ep_keys.min() * 1000, ep_values.max()], [ep_keys.max() * 1000, 0]];
-	console.log(d_e_velocity_points);
-	console.log(d_b_hours);
 		var x_config = TBG.Chart.config.x_config;
 		x_config.mode = 'time';
 		var grid_config = TBG.Chart.config.grid_config;

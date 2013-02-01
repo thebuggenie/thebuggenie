@@ -4625,12 +4625,12 @@
 									{
 										case TBGCustomDatatype::INPUT_TEXT:
 											$new_value = ($this->getCustomField($key) != '') ? $this->getCustomField($key) : TBGContext::getI18n()->__('Unknown');
-											$this->addLogEntry(TBGLogTable::LOG_ISSUE_CUSTOMFIELD_CHANGED, $customdatatype->getDescription() . ': ' . $new_value, $original_value, $compare_value);
+											$this->addLogEntry(TBGLogTable::LOG_ISSUE_CUSTOMFIELD_CHANGED, $key . ': ' . $new_value, $original_value, $compare_value);
 											break;
 										case TBGCustomDatatype::INPUT_TEXTAREA_SMALL:
 										case TBGCustomDatatype::INPUT_TEXTAREA_MAIN:
 											$new_value = ($this->getCustomField($key) != '') ? $this->getCustomField($key) : TBGContext::getI18n()->__('Unknown');
-											$this->addLogEntry(TBGLogTable::LOG_ISSUE_CUSTOMFIELD_CHANGED, $customdatatype->getDescription() . ': ' . $new_value, $original_value, $compare_value);
+											$this->addLogEntry(TBGLogTable::LOG_ISSUE_CUSTOMFIELD_CHANGED, $key . ': ' . $new_value, $original_value, $compare_value);
 											break;
 										case TBGCustomDatatype::EDITIONS_CHOICE:
 										case TBGCustomDatatype::COMPONENTS_CHOICE:
@@ -4678,7 +4678,7 @@
 											catch (Exception $e) {}
 											$old_value = (is_object($old_object)) ? $old_object->getName() : TBGContext::getI18n()->__('Unknown');
 											$new_value = (is_object($new_object)) ? $new_object->getName() : TBGContext::getI18n()->__('Unknown');
-											$this->addLogEntry(TBGLogTable::LOG_ISSUE_CUSTOMFIELD_CHANGED, $customdatatype->getDescription() . ': ' . $old_value . ' &rArr; ' . $new_value, $original_value, $compare_value);
+											$this->addLogEntry(TBGLogTable::LOG_ISSUE_CUSTOMFIELD_CHANGED, $key . ': ' . $old_value . ' &rArr; ' . $new_value, $original_value, $compare_value);
 											break;
 										default:
 											$old_item = null;
@@ -4689,7 +4689,7 @@
 											catch (Exception $e) {}
 											$old_value = ($old_item instanceof TBGCustomDatatypeOption) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
 											$new_value = ($this->getCustomField($key) instanceof TBGCustomDatatypeOption) ? $this->getCustomField($key)->getName() : TBGContext::getI18n()->__('Unknown');
-											$this->addLogEntry(TBGLogTable::LOG_ISSUE_CUSTOMFIELD_CHANGED, $customdatatype->getDescription() . ': ' . $old_value . ' &rArr; ' . $new_value, $original_value, $compare_value);
+											$this->addLogEntry(TBGLogTable::LOG_ISSUE_CUSTOMFIELD_CHANGED, $key . ': ' . $old_value . ' &rArr; ' . $new_value, $original_value, $compare_value);
 											break;
 									}
 								}

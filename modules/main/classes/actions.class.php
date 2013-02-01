@@ -3912,7 +3912,7 @@
 		{
 			try
 			{
-				$this->issue = TBGIssuesTable::getTable()->selectById((int) $request['issue_id']);
+				$this->issue = TBGIssuesTable::getTable()->getIssueById((int) $request['issue_id']);
 				$this->log_items = $this->issue->getLogEntries();
 				if ($this->issue->isDeleted() || !$this->issue->hasAccess()) $this->issue = null;
 			}

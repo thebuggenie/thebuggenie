@@ -93,6 +93,93 @@
 							echo __("Milestone changed: %previous_value% => %new_value%", array('%previous_value%' => '<strong>'.$previous_value.'</strong>', '%new_value%' => '<strong>'.$new_value.'</strong>'));
 						}
 						break;
+					case TBGLogTable::LOG_ISSUE_CUSTOMFIELD_CHANGED:
+						echo image_tag('icon_customdatatype.png');
+						if ($item->hasChangeDetails())
+						{
+							$key_data = explode(':', $item->getText());
+							$key = $key_data[0];
+							$customdatatype = TBGCustomDatatype::getByKey($key);
+
+							if ($customdatatype instanceof TBGCustomDatatype)
+							{
+								$old_value = $item->getPreviousValue();
+								$new_value = $item->getCurrentValue();
+								switch ($customdatatype->getType())
+								{
+									case TBGCustomDatatype::INPUT_TEXT:
+									case TBGCustomDatatype::INPUT_TEXTAREA_SMALL:
+									case TBGCustomDatatype::INPUT_TEXTAREA_MAIN:
+										break;
+									case TBGCustomDatatype::EDITIONS_CHOICE:
+									case TBGCustomDatatype::COMPONENTS_CHOICE:
+									case TBGCustomDatatype::RELEASES_CHOICE:
+									case TBGCustomDatatype::STATUS_CHOICE:
+										$old_object = null;
+										$new_object = null;
+										try
+										{
+											switch ($customdatatype->getType())
+											{
+												case TBGCustomDatatype::EDITIONS_CHOICE:
+													$old_object = TBGContext::factory()->TBGEdition($old_value);
+													break;
+												case TBGCustomDatatype::COMPONENTS_CHOICE:
+													$old_object = TBGContext::factory()->TBGComponent($old_value);
+													break;
+												case TBGCustomDatatype::RELEASES_CHOICE:
+													$old_object = TBGContext::factory()->TBGBuild($old_value);
+													break;
+												case TBGCustomDatatype::STATUS_CHOICE:
+													$old_object = TBGContext::factory()->TBGStatus($old_value);
+													break;
+											}
+										}
+										catch (Exception $e) {}
+										try
+										{
+											switch ($customdatatype->getType())
+											{
+												case TBGCustomDatatype::EDITIONS_CHOICE:
+													$new_object = TBGContext::factory()->TBGEdition($new_value);
+													break;
+												case TBGCustomDatatype::COMPONENTS_CHOICE:
+													$new_object = TBGContext::factory()->TBGComponent($new_value);
+													break;
+												case TBGCustomDatatype::RELEASES_CHOICE:
+													$new_object = TBGContext::factory()->TBGBuild($new_value);
+													break;
+												case TBGCustomDatatype::STATUS_CHOICE:
+													$new_object = TBGContext::factory()->TBGStatus($new_value);
+													break;
+											}
+										}
+										catch (Exception $e) {}
+										$old_value = (is_object($old_object)) ? $old_object->getName() : TBGContext::getI18n()->__('Unknown');
+										$new_value = (is_object($new_object)) ? $new_object->getName() : TBGContext::getI18n()->__('Unknown');
+										break;
+									default:
+										$old_item = null;
+										$new_item = null;
+										try
+										{
+											$old_item = ($old_value) ? new TBGCustomDatatypeOption($old_value) : null;
+										}
+										catch (Exception $e) {}
+										try
+										{
+											$new_item = ($new_value) ? new TBGCustomDatatypeOption($new_value) : null;
+										}
+										catch (Exception $e) {}
+										$old_value = ($old_item instanceof TBGCustomDatatypeOption) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
+										$new_value = ($new_item instanceof TBGCustomDatatypeOption) ? $new_item->getName() : TBGContext::getI18n()->__('Unknown');
+										break;
+								}
+								echo __("%field_name% changed: %previous_value% => %new_value%", array('%field_name%' => $customdatatype->getName(), '%previous_value%' => '<strong>'.$old_value.'</strong>', '%new_value%' => '<strong>'.$new_value.'</strong>'));
+							}
+							echo __('Custom field changed');
+						}
+						break;
 					case TBGLogTable::LOG_ISSUE_USERS:
 						echo image_tag('icon_user.png');
 						if ($item->hasChangeDetails())
