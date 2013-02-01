@@ -204,7 +204,7 @@
 			{
 				$issue->setProject($project);
 				$issue->clearUserWorkingOnIssue();
-				$issue->unsetAssignee();
+				$issue->clearAssignee();
 				$issue->clearOwner();
 				$issue->setPercentCompleted(0);
 				$issue->setMilestone(null);

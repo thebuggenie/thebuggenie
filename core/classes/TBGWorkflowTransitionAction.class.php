@@ -194,7 +194,7 @@
 						$issue->setReproducability($request['reproducability_id']);
 					break;
 				case self::ACTION_CLEAR_ASSIGNEE:
-					$issue->unsetAssignee();
+					$issue->clearAssignee();
 					break;
 				case self::ACTION_ASSIGN_ISSUE:
 					if ($this->getTargetValue())
