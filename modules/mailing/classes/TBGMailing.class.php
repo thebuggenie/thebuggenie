@@ -182,10 +182,7 @@
 							break;
 						case 'cli_mailing_url':
 							$value = $request->getParameter($setting);
-							if (substr($value, -1) == '/')
-							{
-								$value = substr($value, 0, strlen($value) - 1);
-							}
+							if (substr($value, -1) == '/') $value = substr($value, 0, strlen($value) - 1);
 							break;
 					}
 					$this->saveSetting($setting, $value);
@@ -739,20 +736,18 @@
 			$post_html_message = '</body></html>';
 			$mail->decorateMessageHTML($pre_html_message, $post_html_message);
 			$base_url = $this->getCLIMailingUrl();
-			if (!$base_url)
+			if (empty($base_url))
 			{
-				$mail->addReplacementValues(array('%thebuggenie_url%' => $base_url . TBGContext::getRouting()->generate('home')));
+				$base_url = TBGContext::getRouting()->generate('home', array(), false);
+				if (substr($base_url, -1, 1) == '/') $base_url = substr($base_url, 0, strlen($base_url) - 1);
 			}
-			else
-			{
-				$mail->addReplacementValues(array('%thebuggenie_url%' => TBGContext::getRouting()->generate('home', array(), false)));
-			}
+			$mail->addReplacementValues(array('%thebuggenie_url%' => $base_url));
 		}
 
 		protected function _setAdditionalMailValues(TBGMimemail $mail, array $parameters)
 		{
 			$base_url = $this->getCLIMailingUrl();
-			if (!$base_url)
+			if (!empty($base_url))
 			{
 				$mail->addReplacementValues(array('%link_to_reset_password%' => isset($parameters['user']) ? $base_url . TBGContext::getRouting()->generate('reset_password', array('user' => str_replace('.', '%2E', $parameters['user']->getUsername()), 'reset_hash' => $parameters['user']->getActivationKey())) : '' ));
 				$mail->addReplacementValues(array('%link_to_activate%' => isset($parameters['user']) ? $base_url . TBGContext::getRouting()->generate('activate', array('user' => str_replace('.', '%2E', $parameters['user']->getUsername()), 'key' => $parameters['user']->getActivationKey())) : ''));
