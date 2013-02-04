@@ -544,7 +544,7 @@
 		{
 			if (self::$_stripped_tbgpath === null)
 			{
-				self::$_stripped_tbgpath = mb_substr(self::getTBGPath(), 0, mb_strlen(self::getTBGPath()) - 1);
+				self::$_stripped_tbgpath = (TBGContext::isCLI()) ? '' : mb_substr(self::getTBGPath(), 0, mb_strlen(self::getTBGPath()) - 1);
 			}
 			return self::$_stripped_tbgpath;
 		}
