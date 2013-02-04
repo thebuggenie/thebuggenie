@@ -497,8 +497,8 @@
 				{
 					TBGContext::getModule('vcs_integration')->saveSetting('browser_url_'.$project_id, $base_url);
 					TBGContext::getModule('vcs_integration')->saveSetting('log_url_'.$project_id, $link_file);
-					TBGContext::getModule('vcs_integration')->saveSetting('blob_url_'.$project_id, $link_diff);
-					TBGContext::getModule('vcs_integration')->saveSetting('diff_url_'.$project_id, $link_view);
+					TBGContext::getModule('vcs_integration')->saveSetting('blob_url_'.$project_id, $link_view);
+					TBGContext::getModule('vcs_integration')->saveSetting('diff_url_'.$project_id, $link_diff);
 					TBGContext::getModule('vcs_integration')->saveSetting('commit_url_'.$project_id, $link_rev);
 				}
 				
