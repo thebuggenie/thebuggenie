@@ -738,9 +738,10 @@
 			$pre_html_message = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html><head><meta http-equiv=Content-Type content="text/html; charset=' . $mail->getCharset() . '"><title>' . TBGSettings::getTBGname() . '</title></head><body>';
 			$post_html_message = '</body></html>';
 			$mail->decorateMessageHTML($pre_html_message, $post_html_message);
-			if (TBGContext::isCLI())
+			$base_url = $this->getCLIMailingUrl();
+			if (!$base_url)
 			{
-				$mail->addReplacementValues(array('%thebuggenie_url%' => $this->getCLIMailingUrl() . TBGContext::getRouting()->generate('home')));
+				$mail->addReplacementValues(array('%thebuggenie_url%' => $base_url . TBGContext::getRouting()->generate('home')));
 			}
 			else
 			{
@@ -750,10 +751,11 @@
 
 		protected function _setAdditionalMailValues(TBGMimemail $mail, array $parameters)
 		{
-			if (TBGContext::isCLI())
+			$base_url = $this->getCLIMailingUrl();
+			if (!$base_url)
 			{
-				$mail->addReplacementValues(array('%link_to_reset_password%' => isset($parameters['user']) ? $this->getCLIMailingUrl() . TBGContext::getRouting()->generate('reset_password', array('user' => str_replace('.', '%2E', $parameters['user']->getUsername()), 'reset_hash' => $parameters['user']->getActivationKey())) : '' ));
-				$mail->addReplacementValues(array('%link_to_activate%' => isset($parameters['user']) ? $this->getCLIMailingUrl() . TBGContext::getRouting()->generate('activate', array('user' => str_replace('.', '%2E', $parameters['user']->getUsername()), 'key' => $parameters['user']->getActivationKey())) : ''));
+				$mail->addReplacementValues(array('%link_to_reset_password%' => isset($parameters['user']) ? $base_url . TBGContext::getRouting()->generate('reset_password', array('user' => str_replace('.', '%2E', $parameters['user']->getUsername()), 'reset_hash' => $parameters['user']->getActivationKey())) : '' ));
+				$mail->addReplacementValues(array('%link_to_activate%' => isset($parameters['user']) ? $base_url . TBGContext::getRouting()->generate('activate', array('user' => str_replace('.', '%2E', $parameters['user']->getUsername()), 'key' => $parameters['user']->getActivationKey())) : ''));
 			}
 			else
 			{
