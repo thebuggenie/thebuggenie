@@ -2242,7 +2242,7 @@ TBG.Config.Issuefields.Options.update = function(url, type, id) {
 		form: 'edit_' + type + '_' + id + '_form',
 		loading: {indicator: 'edit_' + type + '_' + id + '_indicator'},
 		success: {
-			show: 'item_option_' + type + '_' + id,
+			show: 'item_option_' + type + '_' + id + '_content',
 			hide: 'edit_item_option_' + id,
 			callback: function(json) {
 				$(type + '_' + id + '_name').update($(type + '_' + id + '_name_input').getValue());
