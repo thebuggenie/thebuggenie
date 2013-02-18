@@ -77,7 +77,7 @@
 			return false;
 		}
 
-		public function removeTeamFromProject($team, $project_id)
+		public function removeTeamFromProject($project_id, $team)
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::PROJECT_ID, $project_id);
