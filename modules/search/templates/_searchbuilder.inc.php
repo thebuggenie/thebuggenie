@@ -56,8 +56,8 @@
 					<div class="faded_out" style="clear: both; padding: 0 0 5px 2px;"><?php echo __('Adding the same filter more than once means that any of the given values for that filter will return a match if you are matching with "is", and neither of the given values if you are matching with "is not"'); ?></div>
 				</li>
 			</ul>
-			<?php if (!$tbg_user->isGuest()): ?>
-				<div class="search_buttons button-group">
+			<div class="search_buttons button-group">
+				<?php if (!$tbg_user->isGuest()): ?>
 					<?php if ($issavedsearch && ((TBGContext::isProjectContext() && !TBGContext::getCurrentProject()->isArchived()) || !TBGContext::isProjectContext())): ?>
 						<input type="button" class="button button-silver" onclick="$('find_issues_form').method = 'post';$('saved_search_details').show();$('saved_search_name').enable();$('saved_search_description').enable();<?php if ($tbg_user->canCreatePublicSearches()): ?>$('saved_search_public').enable();<?php endif; ?>$('save_search').enable();$('search_button_bottom').disable();$('search_button_bottom').hide();$('saved_search_id').enable();$('search_button_save_new').hide();$('search_button_save').show();return false;" value="<?php echo __('Edit saved search details'); ?>">
 						<input type="button" class="button button-silver" onclick="$('find_issues_form').method = 'post';$('save_search').enable();$('saved_search_name').enable();$('saved_search_name').focus();$('saved_search_description').enable();<?php if ($tbg_user->canCreatePublicSearches()): ?>$('saved_search_public').enable();<?php endif; ?>$('search_button_bottom').disable();$('search_button_bottom').hide();$('saved_search_id').disable();$('search_button_save_new').show();$('search_button_save').hide();if ($('saved_search_details').visible()) { return true; } else { $('saved_search_details').show(); return false; };" value="<?php echo __('Save as new saved search'); ?>">
@@ -65,9 +65,9 @@
 						<input type="button" class="button button-silver" onclick="$('find_issues_form').method = 'post';$('saved_search_details').show();$('saved_search_name').enable();$('saved_search_name').focus();$('saved_search_description').enable();<?php if ($tbg_user->canCreatePublicSearches()): ?>$('saved_search_public').enable();<?php endif; ?>$('save_search').enable();$('search_button_bottom').disable();$('search_button_bottom').hide();$('search_button_save').hide();return false;" value="<?php echo __('Save this search'); ?>">
 					<?php endif; ?>
 					<input type="button" class="button button-silver" onclick="$('search_advanced_details').toggle();return false;" value="<?php echo __('More search details'); ?>">
-					<input type="submit" class="button button-silver" value="<?php echo __('Search'); ?>" id="search_button_bottom" onclick="$('save_search').disable();$('saved_search_name').disable();$('saved_search_description').disable();<?php if ($tbg_user->canCreatePublicSearches()): ?>$('saved_search_public').disable();<?php endif; ?>$('find_issues_form').method = 'get';">
-				</div>
-			<?php endif; ?>
+				<?php endif; ?>
+				<input type="submit" class="button button-silver" value="<?php echo __('Search'); ?>" id="search_button_bottom" onclick="$('save_search').disable();$('saved_search_name').disable();$('saved_search_description').disable();<?php if ($tbg_user->canCreatePublicSearches()): ?>$('saved_search_public').disable();<?php endif; ?>$('find_issues_form').method = 'get';">
+			</div>
 			<br style="clear: both;">
 			<div class="rounded_box white borderless" style="display: none; margin: 5px 0 5px 0; padding: 3px 10px 3px 10px;" id="search_advanced_details">
 				<ul class="simple_list">
