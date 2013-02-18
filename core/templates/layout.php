@@ -59,7 +59,9 @@
 		<?php endif; ?>
 
 		<?php list ($cssstring, $sepcss) = tbg_get_stylesheets(); ?>
-		<link rel="stylesheet" href="<?php print make_url('serve'); ?>?g=css&files=<?php print base64_encode($cssstring); ?>">
+		<?php foreach (explode(',', $cssstring) as $css): ?>
+			<link rel="stylesheet" href="<?php print make_url('home').$css; ?>">
+		<?php endforeach; ?>
 		<?php foreach ($sepcss as $css): ?>
 			<link rel="stylesheet" href="<?php echo $css; ?>">
 		<?php endforeach; ?>
@@ -89,7 +91,9 @@
 		</style>
 
 		<?php list ($jsstring, $sepjs) = tbg_get_javascripts(); ?>
-		<script type="text/javascript" src="<?php print make_url('serve'); ?>?g=js&files=<?php print base64_encode($jsstring); ?>"></script>
+		<?php foreach (explode(',', $jsstring) as $js): ?>
+			<script type="text/javascript" src="<?php print make_url('home').$js; ?>"></script>
+		<?php endforeach; ?>
 		<?php foreach ($sepjs as $js): ?>
 			<script type="text/javascript" src="<?php echo $js; ?>"></script>
 		<?php endforeach; ?>
