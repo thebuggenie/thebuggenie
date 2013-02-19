@@ -785,19 +785,25 @@
 				$res = $this->doSelect($crit, 'none');
 				$ids = array();
 
-				while ($row = $res->getNextRow())
+				if ($res)
 				{
-					$ids[] = $row->get(self::ID);
+					while ($row = $res->getNextRow())
+					{
+						$ids[] = $row->get(self::ID);
+					}
+					$ids = array_reverse($ids);
+					$crit2 = $this->getCriteria();
+					$crit2->addWhere(self::ID, $ids, Criteria::DB_IN);
+					$crit2->addOrderBy(self::ID, $ids);
+
+					$res = $this->doSelect($crit2);
+					$rows = $res->getAllRows();
+				}
+				else
+				{
+					$rows = array();
 				}
 				
-				$ids = array_reverse($ids);
-				
-				$crit2 = $this->getCriteria();
-				$crit2->addWhere(self::ID, $ids, Criteria::DB_IN);
-				$crit2->addOrderBy(self::ID, $ids);
-				
-				$res = $this->doSelect($crit2);
-				$rows = $res->getAllRows();
 				unset($res);
 				
 				return array($rows, $count, $ids);
