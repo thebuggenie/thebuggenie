@@ -270,11 +270,10 @@
 			$conn_string .= ($this->getServerType() == self::SERVER_IMAP) ? "imap" : "pop3";
 			
 			if ($this->usesSSL()) $conn_string .= "/ssl";
+			if ($this->doesIgnoreCertificateValidation()) $conn_string .= "/novalidate-cert";
 			
 			$conn_string .= "}";
-			
 			$conn_string .= ($this->getFoldername() == '') ? "INBOX" : $this->getFoldername();
-			
 			
 			return $conn_string;
 		}
@@ -286,7 +285,10 @@
 		{
 			if ($this->_connection === null)
 			{
-				$this->_connection = imap_open($this->getConnectionString(), $this->getUsername(), $this->getPassword());				
+				$options = array();
+				if ($this->usesPlaintextAuthentication()) $options['DISABLE_AUTHENTICATOR'] = 'GSSAPI';
+
+				$this->_connection = imap_open($this->getConnectionString(), $this->getUsername(), $this->getPassword(), $options);
 			}
 			if (!is_resource($this->_connection))
 			{
@@ -393,6 +395,31 @@
 		{
 			$issuetype = $this->getIssuetype();
 			return ($issuetype instanceof TBGIssuetype) ? $issuetype->getID() : null;
+		}
+
+		public function setIgnoreCertificateValidation($value = true)
+		{
+			$this->_ignore_certificate_validation = $value;
+		}
+
+		public function doesIgnoreCertificateValidation()
+		{
+			return $this->_ignore_certificate_validation;
+		}
+
+		public function setUsePlaintextAuthentication($value = true)
+		{
+			$this->_plaintext_authentication = $value;
+		}
+
+		public function usesPlaintextAuthentication()
+		{
+			return $this->_plaintext_authentication;
+		}
+
+		public function doesUsePlaintextAuthentication()
+		{
+			return $this->usesPlaintextAuthentication();
 		}
 
 	}

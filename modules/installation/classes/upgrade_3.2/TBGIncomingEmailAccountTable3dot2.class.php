@@ -34,7 +34,6 @@
 			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addVarchar(self::NAME, 200);
 			parent::_addVarchar(self::SERVER, 200);
-			parent::_addVarchar(self::FOLDER, 200);
 			parent::_addVarchar(self::USERNAME, 200);
 			parent::_addVarchar(self::PASSWORD, 200);
 			parent::_addInteger(self::SERVER_TYPE, 10);

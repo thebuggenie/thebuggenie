@@ -52,7 +52,7 @@
 					<td class="faded_out"><?php echo __('Enter folder name to read from. Leave blank for default (INBOX)'); ?></td>
 				</tr>
 				<tr>
-					<td><label for="keepemail"><?php echo __('Keep email:'); ?></label></td>
+					<td><label for="account_keepemail_yes"><?php echo __('Keep email:'); ?></label></td>
 					<td>
 					    <input type="radio" name="keepemail" id="account_keepemail_yes" value="1"<?php if ($account->doesKeepEmails()) echo ' checked'; ?>><label for="account_keepemail_yes" style="font-weight: normal;"><?php echo __('Yes'); ?></label>
 					    <input type="radio" name="keepemail" id="account_keepemail_no" value="0"<?php if (!$account->doesKeepEmails()) echo ' checked'; ?>><label for="account_keepemail_no" style="font-weight: normal;"><?php echo __('No'); ?></label>
@@ -71,6 +71,13 @@
 					<td><input type="password" name="password" id="account_password" style="width: 200px;" value="<?php echo $account->getPassword(); ?>"></td>
 				</tr>
 				<tr>
+					<td><label for="account_plaintext_authentication_yes"><?php echo __('Use plaintext authentication'); ?></label></td>
+					<td>
+					    <input type="radio" name="plaintext_authentication" id="account_plaintext_authentication_yes" value="1"<?php if ($account->usesPlaintextAuthentication()) echo ' checked'; ?>><label for="account_plaintext_authentication_yes" style="font-weight: normal;"><?php echo __('Yes'); ?></label>
+					    <input type="radio" name="plaintext_authentication" id="account_plaintext_authentication_no" value="0"<?php if (!$account->usesPlaintextAuthentication()) echo ' checked'; ?>><label for="account_plaintext_authentication_no" style="font-weight: normal;"><?php echo __('No'); ?></label>
+					</td>
+				</tr>
+				<tr>
 					<td><label for="account_type_imap"><?php echo __('Account type'); ?></label></td>
 					<td>
 						<input type="radio" name="account_type" id="account_type_imap" value="<?php echo TBGIncomingEmailAccount::SERVER_IMAP; ?>"<?php if ($account->isImap()) echo ' checked'; ?>><label for="account_type_imap" style="font-weight: normal;"><?php echo __('Microsoft Exchange / IMAP'); ?></label>
@@ -83,6 +90,17 @@
 						<input type="radio" name="ssl" id="ssl_yes" value="1"<?php if ($account->usesSSL()) echo ' checked'; ?>><label for="ssl_yes" style="font-weight: normal;"><?php echo __('Yes'); ?></label>
 						<input type="radio" name="ssl" id="ssl_no" value="0"<?php if (!$account->usesSSL()) echo ' checked'; ?>><label for="ssl_no" style="font-weight: normal;"><?php echo __('No'); ?></label>
 					</td>
+				</tr>
+				<tr>
+					<td><label for="account_ignore_certificate_validation_yes"><?php echo __('Ignore certificate errors'); ?></label></td>
+					<td>
+					    <input type="radio" name="ignore_certificate_validation" id="account_ignore_certificate_validation_yes" value="1"<?php if ($account->doesIgnoreCertificateValidation()) echo ' checked'; ?>><label for="account_ignore_certificate_validation_yes" style="font-weight: normal;"><?php echo __('Yes'); ?></label>
+					    <input type="radio" name="ignore_certificate_validation" id="account_ignore_certificate_validation_no" value="0"<?php if (!$account->doesIgnoreCertificateValidation()) echo ' checked'; ?>><label for="account_ignore_certificate_validation_no" style="font-weight: normal;"><?php echo __('No'); ?></label>
+					</td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td class="faded_out"><?php echo __('Select this to ignore certificate validation error messages'); ?></td>
 				</tr>
 				<tr>
 					<td><label for="account_issuetype"><?php echo __('Issuetype'); ?></label></td>

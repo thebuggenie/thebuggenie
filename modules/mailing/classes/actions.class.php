@@ -114,6 +114,8 @@
 					$account->setUsername($request['username']);
 					$account->setPassword($request['password']);
 					$account->setSSL((boolean) $request['ssl']);
+					$account->setIgnoreCertificateValidation((boolean) $request['ignore_certificate_validation']);
+					$account->setUsePlaintextAuthentication((boolean) $request['plaintext_authentication']);
 					$account->setServerType((integer) $request['account_type']);
 					$account->save();
 
