@@ -1361,7 +1361,13 @@
 			else
 			{
 				$retval = $user->addStarredIssue($issue_id);
+				if ($user->getID() != $this->getUser()->getID())
+				{
+					TBGEvent::createNew('core', 'issue_subscribe_user', $issue, compact('user'))->trigger();
+				}
 			}
+
+
 			return $this->renderText(json_encode(array('starred' => $retval, 'subscriber' => $this->getTemplateHTML('main/issuesubscriber', array('user' => $user, 'issue' => $issue)))));
 		}
 		

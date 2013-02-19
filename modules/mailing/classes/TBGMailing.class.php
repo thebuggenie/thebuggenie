@@ -97,6 +97,7 @@
 			TBGEvent::listen('core', 'TBGComment::createNew', array($this, 'listen_TBGComment_createNew'));
 			TBGEvent::listen('core', 'header_begins', array($this, 'listen_headerBegins'));
 			TBGEvent::listen('core', 'viewissue', array($this, 'listen_viewissue'));
+			TBGEvent::listen('core', 'issue_subscribe_user', array($this, 'listen_issueSubscribeUser'));
 			TBGEvent::listen('core', 'user_dropdown_anon', array($this, 'listen_userDropdownAnon'));
 			TBGEvent::listen('core', 'config_project_tabs', array($this, 'listen_projectconfig_tab'));
 			TBGEvent::listen('core', 'config_project_panes', array($this, 'listen_projectconfig_panel'));
@@ -660,7 +661,27 @@ EOT;
 					{
 						$this->sendMail($message);
 					}
-					//$message = $this->createNewTBGMimemailFromTemplate($subject, 'issueupdate', array('issue' => $issue, 'comment_lines' => $event->getParameter('comment_lines'), 'updated_by' => $event->getParameter('updated_by')));
+				}
+			}
+		}
+
+		public function listen_issueSubscribeUser(TBGEvent $event)
+		{
+			if ($this->isOutgoingNotificationsEnabled())
+			{
+				$issue = $event->getSubject();
+				if ($issue instanceof TBGIssue)
+				{
+					$subject = 'Re: ['.$issue->getProject()->getKey().'] ' . $issue->getIssueType()->getName() . ' ' . $issue->getFormattedIssueNo(true) . ' - ' . html_entity_decode($issue->getTitle(), ENT_COMPAT, TBGContext::getI18n()->getCharset());
+					$parameters = array('issue' => $issue);
+					$to_users = array($event->getParameter('user'));
+					$messages = $this->getTranslatedMessages($subject, 'issuesubscribed', $parameters, $to_users);
+
+					foreach ($messages as $message)
+					{
+						$this->sendMail($message);
+					}
+					$this->deleteSetting(self::NOTIFY_ISSUE_ONCE . '_' . $issue->getID(), $event->getParameter('user')->getID());
 				}
 			}
 		}
