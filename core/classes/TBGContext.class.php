@@ -1055,9 +1055,20 @@
 		public static function loadModules()
 		{
 			TBGLogging::log('Loading modules');
-			if (self::isInstallmode()) return;
+			
+			if (self::isInstallmode())
+			{
+				if ($res = \b2db\Core::getTable('TBGModulesTable')->getAll())
+				{
+					while ($moduleRow = $res->getNextRow())
+					{
+						$module_name = $moduleRow->get(TBGModulesTable::MODULE_NAME);
+						self::$_modules[$module_name] = true;
+					}
+				}
+				return;
+			}
 
-			$modules = array();
 
 			TBGLogging::log('getting modules from database');
 			$module_paths = array();
@@ -1189,14 +1200,7 @@
 		 */
 		public static function isModuleLoaded($module_name)
 		{
-			if (isset(self::$_modules[$module_name]))
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
+			return isset(self::$_modules[$module_name]);
 		}
 
 		/**
