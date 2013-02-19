@@ -2798,11 +2798,11 @@
 			{
 				if ($archived)
 				{
-					if ($project->isArchived()): $f_projects[] = $project; endif;
+					if ($project->isArchived() && $project->hasAccess()): $f_projects[] = $project; endif;
 				}
 				else
 				{
-					if (!$project->isArchived()): $f_projects[] = $project; endif;
+					if (!$project->isArchived() && $project->hasAccess()): $f_projects[] = $project; endif;
 				}
 			}
 			
