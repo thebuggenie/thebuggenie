@@ -1542,7 +1542,6 @@
 		{
 			self::_cacheAvailablePermissions();
 			$permissions_list = ($permissions_list === null) ? self::$_available_permissions : $permissions_list;
-			var_dump($permissions_list);die();
 			foreach ($permissions_list as $permission_key => $permission_info)
 			{
 				if (is_numeric($permission_key)) return null;
@@ -1665,6 +1664,20 @@
 				{
 					self::$_available_permissions['issues']['caneditissuecustomfieldsown']['details']['caneditissuecustomfields'.$cdf->getKey().'own'] = array('description' => $i18n->__('Can change custom field "%field_name%" for issues reported by the user', array('%field_name%' => $cdf->getDescription())));
 					self::$_available_permissions['issues']['caneditissuecustomfields']['details']['caneditissuecustomfields'.$cdf->getKey()] = array('description' => $i18n->__('Can change custom field "%field_name%" for any issues', array('%field_name%' => $cdf->getDescription())));
+					
+					// Set permissions for custom option types
+					if ($cdf->hasCustomOptions())
+					{
+						$options = $cdf->getOptions();
+						foreach ($options as $option)
+						{
+							self::$_available_permissions['issues']['set_datatype_' . $option->getID()] = array('description' => $i18n->__('Can change issue field to "%option_name%" for issues reported by the user', array('%option_name%' => $option->getValue())));
+						}//endforeach
+					}//endif
+				}
+				foreach (TBGDatatype::getTypes() as $type => $class)
+				{
+					self::$_available_permissions['issues']['set_datatype_'.$type] = array('description' => $i18n->__('Can change issue field "%type_name%" for issues reported by the user', array('%type_name%' => $type)));
 				}
 				self::$_available_permissions['issues']['canaddextrainformationtoissues'] = array('description' => $i18n->__('Can add/remove extra information and link issues (edition, component, release, links and files) to issues'), 'details' => array());
 				self::$_available_permissions['issues']['canaddextrainformationtoissues']['details']['canaddbuildsown'] = array('description' => $i18n->__('Can add releases / versions to list of affected versions for issues reported by the user'));
