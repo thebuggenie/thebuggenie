@@ -509,6 +509,12 @@
 			$this->al_items = $al_items;
 		}
 
+		public function componentIssueSubscribers()
+		{
+			$uids = TBGUserIssuesTable::getTable()->getUserIDsByIssueID($this->issue->getID());
+			$this->users = TBGUsersTable::getTable()->getByUserIDs($uids);
+		}
+
 		public function componentDashboardViewRecentComments()
 		{
 			$this->comments = TBGComment::getRecentCommentsByAuthor($this->getUser()->getID());

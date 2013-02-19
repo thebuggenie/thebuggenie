@@ -123,6 +123,17 @@
 			return $this->selectOne($crit);
 		}
 
+		public function getByUserIDs($userids)
+		{
+			if (empty($userids)) return array();
+			
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::DELETED, false);
+			$crit->addWhere(self::ID, $userids, Criteria::DB_IN);
+
+			return $this->select($crit);
+		}
+
 		public function getByUserID($userid)
 		{
 			$crit = $this->getCriteria();

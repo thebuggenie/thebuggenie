@@ -1342,6 +1342,7 @@
 				try
 				{
 					$issue = TBGContext::factory()->TBGIssue($issue_id);
+					$user = TBGUsersTable::getTable()->selectById($request['user_id']);
 				}
 				catch (Exception $e)
 				{
@@ -1353,15 +1354,15 @@
 				return $this->renderText('no issue');
 			}
 			
-			if (TBGContext::getUser()->isIssueStarred($issue_id))
+			if ($user->isIssueStarred($issue_id))
 			{
-				$retval = !TBGContext::getUser()->removeStarredIssue($issue_id);
+				$retval = !$user->removeStarredIssue($issue_id);
 			}
 			else
 			{
-				$retval = TBGContext::getUser()->addStarredIssue($issue_id);
+				$retval = $user->addStarredIssue($issue_id);
 			}
-			return $this->renderText(json_encode(array('starred' => $retval)));
+			return $this->renderText(json_encode(array('starred' => $retval, 'subscriber' => $this->getTemplateHTML('main/issuesubscriber', array('user' => $user, 'issue' => $issue)))));
 		}
 		
 		public function _setFieldFromRequest(TBGRequest $request)
@@ -2763,6 +2764,9 @@
 						break;
 					case 'issue_permissions':
 						$template_name = 'main/issuepermissions';
+						break;
+					case 'issue_subscribers':
+						$template_name = 'main/issuesubscribers';
 						break;
 					case 'relate_issue':
 						$template_name = 'main/relateissue';

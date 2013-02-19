@@ -36,11 +36,13 @@
 							</div>
 						<?php else: ?>
 							<div class="tooltip from-above leftie">
-								<?php echo __('Click the star to toggle whether you want to be notified whenever this issue updates or changes'); ?>
+								<?php echo __('Click the star to toggle whether you want to be notified whenever this issue updates or changes'); ?><br>
+								<br>
+								<?php echo __('You can add other users to this list via the "%more_actions%"-button', array('%more_actions%' => __('More actions'))); ?>
 							</div>
 							<?php echo image_tag('spinning_20.gif', array('id' => 'issue_favourite_indicator_'.$issue->getId(), 'style' => 'display: none;')); ?>
-							<?php echo image_tag('star_faded.png', array('id' => 'issue_favourite_faded_'.$issue->getId(), 'style' => 'cursor: pointer;'.(($tbg_user->isIssueStarred($issue->getID())) ? 'display: none;' : ''), 'onclick' => "TBG.Issues.toggleFavourite('".make_url('toggle_favourite_issue', array('issue_id' => $issue->getID()))."', ".$issue->getID().");")); ?>
-							<?php echo image_tag('star.png', array('id' => 'issue_favourite_normal_'.$issue->getId(), 'style' => 'cursor: pointer;'.((!$tbg_user->isIssueStarred($issue->getID())) ? 'display: none;' : ''), 'onclick' => "TBG.Issues.toggleFavourite('".make_url('toggle_favourite_issue', array('issue_id' => $issue->getID()))."', ".$issue->getID().");")); ?>
+							<?php echo image_tag('star_faded.png', array('id' => 'issue_favourite_faded_'.$issue->getId(), 'style' => 'cursor: pointer;'.(($tbg_user->isIssueStarred($issue->getID())) ? 'display: none;' : ''), 'onclick' => "TBG.Issues.toggleFavourite('".make_url('toggle_favourite_issue', array('issue_id' => $issue->getID(), 'user_id' => $tbg_user->getID()))."', ".$issue->getID().");")); ?>
+							<?php echo image_tag('star.png', array('id' => 'issue_favourite_normal_'.$issue->getId(), 'style' => 'cursor: pointer;'.((!$tbg_user->isIssueStarred($issue->getID())) ? 'display: none;' : ''), 'onclick' => "TBG.Issues.toggleFavourite('".make_url('toggle_favourite_issue', array('issue_id' => $issue->getID(), 'user_id' => $tbg_user->getID()))."', ".$issue->getID().");")); ?>
 						<?php endif; ?>
 					</td>
 					<td class="title_left_images">

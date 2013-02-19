@@ -3000,14 +3000,18 @@ TBG.Issues.toggleFavourite = function(url, issue_id)
 		},
 		success: {
 			callback: function(json) {
-				if (json.starred) {
-					$('issue_favourite_faded_' + issue_id).hide();
-					$('issue_favourite_indicator_' + issue_id).hide();
-					$('issue_favourite_normal_' + issue_id).show();
-				} else {
-					$('issue_favourite_normal_' + issue_id).hide();
-					$('issue_favourite_indicator_' + issue_id).hide();
-					$('issue_favourite_faded_' + issue_id).show();
+				if ($('issue_favourite_faded_' + issue_id)) {
+					if (json.starred) {
+						$('issue_favourite_faded_' + issue_id).hide();
+						$('issue_favourite_indicator_' + issue_id).hide();
+						$('issue_favourite_normal_' + issue_id).show();
+					} else {
+						$('issue_favourite_normal_' + issue_id).hide();
+						$('issue_favourite_indicator_' + issue_id).hide();
+						$('issue_favourite_faded_' + issue_id).show();
+					}
+				} else if (json.subscriber != '') {
+					$('subscribers_list').insert(json.subscriber);
 				}
 			}
 		}
