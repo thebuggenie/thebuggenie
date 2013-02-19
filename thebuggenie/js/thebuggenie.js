@@ -373,8 +373,9 @@ TBG.initialize = function(options) {
 };
 
 TBG.loadDebugInfo = function(debug_id, cb) {
-	url = TBG.debugUrl.replace('___debugid___', debug_id);
+	var url = TBG.debugUrl.replace('___debugid___', debug_id);
 	TBG.Main.Helpers.ajax(url, {
+		url_method: 'get',
 		loading: {indicator: 'tbg___DEBUGINFO___indicator'},
 		success: {update: 'tbg___DEBUGINFO___'},
 		complete: {
