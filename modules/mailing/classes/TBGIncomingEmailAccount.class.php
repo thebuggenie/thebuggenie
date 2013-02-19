@@ -42,6 +42,16 @@
 		/**
 		 * @Column(type="boolean")
 		 */
+		protected $_ignore_certificate_validation = false;
+
+		/**
+		 * @Column(type="boolean")
+		 */
+		protected $_plaintext_authentication = false;
+
+		/**
+		 * @Column(type="boolean")
+		 */
 		protected $_keep_email;
 		
 		/**

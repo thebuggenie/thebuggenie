@@ -8,10 +8,10 @@
 	 * @Table(name="mailing_incoming_email_account")
 	 * @Entity(class="TBGIncomingEmailAccount")
 	 */
-	class TBGIncomingEmailAccountTable extends TBGB2DBTable
+	class TBGIncomingEmailAccountTable3dot2 extends TBGB2DBTable
 	{
 		
-		const B2DB_TABLE_VERSION = 2;
+		const B2DB_TABLE_VERSION = 1;
 		const B2DBNAME = 'mailing_incoming_email_account';
 		const ID = 'mailing_incoming_email_account.id';
 		const NAME = 'mailing_incoming_email_account.name';
@@ -29,19 +29,20 @@
 		const TIME_LAST_FETCHED = 'mailing_incoming_email_account.time_last_fetched';
 		const SCOPE = 'mailing_incoming_email_account.scope';
 
-		public function getAll()
+		protected function _initialize()
 		{
-			$crit = $this->getCriteria();
-			$crit->addOrderBy('mailing_incoming_email_account.project', Criteria::SORT_ASC);
-			return $this->select($crit);
+			parent::_setup(self::B2DBNAME, self::ID);
+			parent::_addVarchar(self::NAME, 200);
+			parent::_addVarchar(self::SERVER, 200);
+			parent::_addVarchar(self::FOLDER, 200);
+			parent::_addVarchar(self::USERNAME, 200);
+			parent::_addVarchar(self::PASSWORD, 200);
+			parent::_addInteger(self::SERVER_TYPE, 10);
+			parent::_addInteger(self::PORT, 3);
+			parent::_addBoolean(self::KEEP_EMAIL);
+			parent::_addBoolean(self::SSL);
+			parent::_addForeignKeyColumn(self::PROJECT, TBGProjectsTable::getTable(), TBGProjectsTable::ID);
+			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 
-		public function getAllByProjectID($project_id)
-		{
-			$crit = $this->getCriteria();
-			$crit->addWhere(self::PROJECT, $project_id);
-			
-			return $this->doSelect($crit);
-		}
-		
 	}
