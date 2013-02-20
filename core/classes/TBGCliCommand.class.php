@@ -257,7 +257,7 @@
 
 		public static function cli_echo($text, $color = 'white', $style = null)
 		{
-			if (PHP_OS == 'Windows')
+			if (stristr(PHP_OS, 'WIN'))
 			{
 				$return_text = $text;
 			}
