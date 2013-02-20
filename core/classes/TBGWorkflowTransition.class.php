@@ -234,7 +234,6 @@
 		 */
 		public function isCore()
 		{
-			return false;
 			return $this->getWorkflow()->isCore();
 		}
 

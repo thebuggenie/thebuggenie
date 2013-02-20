@@ -162,7 +162,7 @@
 		 */
 		public function isCore()
 		{
-			return ($this->getWorkflow()->getID() == 1);
+			return $this->getWorkflow()->isCore();
 		}
 
 		/**
@@ -237,7 +237,7 @@
 		/**
 		 * Get all outgoing transitions from this step
 		 *
-		 * @return array An array of TBGWorkflowTransition objects
+		 * @return array|TBGWorkflowTransition An array of TBGWorkflowTransition objects
 		 */
 		public function getOutgoingTransitions()
 		{

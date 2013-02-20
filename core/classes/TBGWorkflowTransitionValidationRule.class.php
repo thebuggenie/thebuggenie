@@ -233,7 +233,7 @@
 						{
 							$type = "TBG{$fieldname}";
 							$getter = "get{$fieldname}";
-							if (TBGContext::factory()->$type((int) $item)->getID() == $issue->$getter()->getID())
+							if (TBGContext::factory()->$type((int) $item)->getID() == $input->$getter()->getID())
 							{
 								$valid = true;
 								break;
