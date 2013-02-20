@@ -288,6 +288,7 @@ footer td { font-size: 0.9em; line-height: 1.2; padding: 5px; text-shadow: 1px 1
 .tooltip.rightie:after {
 	left: 90%;
 }
+#search_more_actions .tooltip.rightie { right: 50px; left: auto; }
 
 /* end tooltip styling */
 
