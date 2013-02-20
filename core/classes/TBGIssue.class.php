@@ -1124,7 +1124,10 @@
 		 */
 		public function canEditAccessPolicy()
 		{
-			return $this->_permissionCheck('canlockandeditlockedissues');
+			$retval = $this->_permissionCheck('canlockandeditlockedissues', true);
+			$retval = ($retval !== null) ? $retval : TBGSettings::isPermissive();
+
+			return $retval;
 		}
 
 		/**
