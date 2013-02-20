@@ -2584,8 +2584,22 @@
 
 		public static function getCurrentCLIusername()
 		{
-			$processUser = posix_getpwuid(posix_geteuid());
-			return $processUser['name'];
+			if(extension_loaded('posix'))
+			{
+				// Original code
+				$processUser = posix_getpwuid(posix_geteuid());
+					return $processUser['name'];
+			}
+			else
+			{
+				// Try to get CLI process owner without the POSIX extension
+				$environmentUser = getenv('USERNAME');
+				if($environmentUser === false)
+				{
+					$environmentUser = 'Unknown';
+				}
+				return $environmentUser;
+			}
 		}
 
 		public static function isDebugMode()
