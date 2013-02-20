@@ -607,6 +607,7 @@
 			<div class="rounded_box report_issue_desc borderless lightgrey" id="report_issue_add_extra" style="vertical-align: middle; padding: 5px;">
 				<strong><?php echo __('Add more information to your issue'); ?></strong><br>
 				<p><?php echo __('Specify additional information by clicking the links below before submitting your issue'); ?></p>
+				<p id="reportissue_extrafields_none" style="display: none;"><?php echo __('No additional actions available'); ?></p>
 				<ul id="reportissue_extrafields">
 					<?php /*<li><?php echo image_tag('icon_file.png'); ?><a href="javascript:void(0);" onclick="TBG.Main.Helpers.Message.success('<?php echo __('Please file the issue before attaching a file'); ?>');"><?php echo __('Attach a file'); ?></a></li>
 					<li><?php echo image_tag('icon_link.png'); ?><a href="javascript:void(0);" onclick="TBG.Main.Helpers.Message.success('<?php echo __('Please file the issue before attaching a link'); ?>');"><?php echo __('Add a link'); ?></a></li> */ ?>

@@ -2859,7 +2859,16 @@ TBG.Issues.updateFields = function(url)
 								if ($(fieldname + '_value_additional')) $(fieldname + '_value_additional').disable();
 							}
 						}
-					});				
+					});
+					var visible_fields = false;
+					$('reportissue_extrafields').childElements().each(function(elm) {
+						if (elm.visible()) visible_fields = true;
+					})
+					if (visible_fields) {
+						$('reportissue_extrafields_none').hide();
+					} else {
+						$('reportissue_extrafields_none').show();
+					}
 				}
 			},
 			complete: {
