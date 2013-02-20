@@ -271,7 +271,6 @@
 		 */
 		public function canUserEditOwnComment()
 		{
-			if ($this->isSystemComment()) return false;
 			$retval = $this->_canPermissionOrSeeAndEditComments('caneditcommentsown');
 
 			return ($retval !== null) ? $retval : TBGSettings::isPermissive();
