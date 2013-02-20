@@ -1055,8 +1055,9 @@
 		public static function loadModules()
 		{
 			TBGLogging::log('Loading modules');
-			
-			if (self::isInstallmode())
+
+			if (self::isInstallmode()) return;
+			if (self::isUpgrademode())
 			{
 				if ($res = \b2db\Core::getTable('TBGModulesTable')->getAll())
 				{
