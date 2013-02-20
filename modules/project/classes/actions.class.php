@@ -1477,7 +1477,7 @@
 							$this->selected_project->save();
 							break;
 					}
-					return $this->renderJSON(array('title' => TBGContext::getI18n()->__('Your changes has been saved'), 'message' => ''));
+					return $this->renderJSON(array('title' => TBGContext::getI18n()->__('Your changes have been saved'), 'message' => ''));
 				}
 				catch (Exception $e)
 				{

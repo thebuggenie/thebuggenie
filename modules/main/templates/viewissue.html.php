@@ -201,7 +201,7 @@
 				<?php endif; ?>
 				<?php if (isset($issue_saved)): ?>
 					<div class="issue_info successful" id="viewissue_saved">
-						<?php echo __('Your changes has been saved'); ?>
+						<?php echo __('Your changes have been saved'); ?>
 						<div class="buttons">
 							<button class="button button-silver" onclick="$('viewissue_saved').hide();"><?php echo __('OK'); ?></button>
 						</div>

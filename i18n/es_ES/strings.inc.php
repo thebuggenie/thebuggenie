@@ -2714,7 +2714,7 @@
 //$strings['Could not set issue status because none was provided'] = '';
   $strings['There was an error trying to save changes to this issue'] = 'Hubo un error al intentar guardar los cambios de esta petición';
 //$strings['No workflow step matches this issue after changes are saved. Please either use the workflow action buttons, or make sure your changes are valid within the current project workflow for this issue type.'] = '';
-  $strings['Your changes has been saved'] = 'Sus cambios han sido guardados';
+  $strings['Your changes have been saved'] = 'Sus cambios han sido guardados';
 //$strings['OK'] = '';
 //$strings['The file was attached to this issue'] = '';
   $strings['You have been working on this issue since %time%'] = 'Ha estado trabajando en esta petición desde %time%';

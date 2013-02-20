@@ -2739,7 +2739,7 @@
   $strings['Could not set issue status because none was provided'] = 'Could not set issue status because none was provided';
   $strings['There was an error trying to save changes to this issue'] = 'There was an error trying to save changes to this issue';
   $strings['No workflow step matches this issue after changes are saved. Please either use the workflow action buttons, or make sure your changes are valid within the current project workflow for this issue type.'] = 'No workflow step matches this issue after changes are saved. Please either use the workflow action buttons, or make sure your changes are valid within the current project workflow for this issue type.';
-  $strings['Your changes has been saved'] = 'Your changes has been saved';
+  $strings['Your changes have been saved'] = 'Your changes have been saved';
   $strings['OK'] = 'OK';
   $strings['The file was attached to this issue'] = 'The file was attached to this issue';
   $strings['You have been working on this issue since %time%'] = 'You have been working on this issue since %time%';
