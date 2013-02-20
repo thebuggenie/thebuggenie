@@ -2010,6 +2010,7 @@ table.sortable tr th.nosort {
 	clear:both;
 	line-height:18px;
 	overflow:auto;
+	display: block;
 }
 .markItUpPreviewFrame	{
 	overflow:auto;

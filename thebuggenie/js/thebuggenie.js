@@ -1111,7 +1111,7 @@ TBG.Main.Comment.update = function(url, cid) {
 	TBG.Main.Helpers.ajax(url, {
 		form: 'comment_edit_form_' + cid,
 		loading: {
-			indicator: 'comment_edit_controls_' + cid,
+			indicator: 'comment_edit_indicator_' + cid,
 			hide: 'comment_edit_controls_' + cid
 		},
 		success: {

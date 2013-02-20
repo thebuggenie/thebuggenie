@@ -62,8 +62,8 @@
 			<br />
 			<label for="comment_bodybox"><?php echo __('Comment'); ?></label><br />
 			<?php include_template('main/textarea', array('area_name' => 'comment_body', 'area_id' => 'comment_bodybox', 'height' => '200px', 'width' => '970px', 'value' => tbg_decodeUTF8($comment->getContent(), true))); ?>
-			<div id="comment_edit_indicator_<?php echo $comment->getID(); ?>" style="display: none;">
-				<?php echo image_tag('spinning_16.gif', array('class' => 'spinning')); ?>
+			<div id="comment_edit_indicator_<?php echo $comment->getID(); ?>" style="display: none; text-align: left;">
+				<?php echo image_tag('spinning_16.gif'); ?>
 			</div>
 			<div id="comment_edit_controls_<?php echo $comment->getID(); ?>" class="comment_controls">
 				<input type="submit" class="comment_editsave" value="<?php echo __('Save changes'); ?>" /> <a href="javascript:void(0)" onclick="$('comment_edit_<?php echo $comment->getID(); ?>').hide();$('comment_view_<?php echo $comment->getID(); ?>').show();"><?php echo __('or cancel'); ?></a>
