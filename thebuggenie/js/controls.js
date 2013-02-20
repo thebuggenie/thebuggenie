@@ -131,7 +131,7 @@ Autocompleter.Base = Class.create({
       switch(event.keyCode) {
        case Event.KEY_TAB:
        case Event.KEY_RETURN:
-         this.selectEntry();
+         this.selectEntry(event);
          Event.stop(event);
        case Event.KEY_ESC:
          this.hide();
@@ -191,7 +191,7 @@ Autocompleter.Base = Class.create({
 	else
 	{
     this.index = element.autocompleteIndex;
-    this.selectEntry();
+    this.selectEntry(event);
     this.hide();
 	}
   },
@@ -253,14 +253,14 @@ Autocompleter.Base = Class.create({
     return this.getEntry(this.index);
   },
 
-  selectEntry: function() {
+  selectEntry: function(e) {
     this.active = false;
-    this.updateElement(this.getCurrentEntry());
+    this.updateElement(this.getCurrentEntry(), e);
   },
 
-  updateElement: function(selectedElement) {
+  updateElement: function(selectedElement, e) {
     if (this.options.updateElement) {
-      this.options.updateElement(selectedElement);
+      this.options.updateElement(selectedElement, e);
       return;
     }
     var value = '';
@@ -284,7 +284,7 @@ Autocompleter.Base = Class.create({
     this.element.focus();
 
     if (this.options.afterUpdateElement)
-      this.options.afterUpdateElement(this.element, selectedElement);
+      this.options.afterUpdateElement(this.element, selectedElement, e);
   },
 
   updateChoices: function(choices) {

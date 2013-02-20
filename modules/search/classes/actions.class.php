@@ -41,6 +41,11 @@
 		 */		
 		public function runQuickSearch(TBGRequest $request)
 		{
+			if ($this->getUser()->canAccessConfigurationPage(TBGSettings::CONFIGURATION_SECTION_USERS))
+			{
+				$this->found_users = TBGUsersTable::getTable()->findInConfig($this->searchterm);
+				$this->num_users = count($this->found_users);
+			}
 		}
 
 		protected function _getSearchDetailsFromRequest(TBGRequest $request)

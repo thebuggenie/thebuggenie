@@ -1,6 +1,30 @@
 <ul class="rounded_box white shadowed cut_top">
 	<li class="searchterm"><?php echo $searchterm; ?><br><span class="informal"><?php echo __('Press "Enter" twice to find issues matching your query'); ?></span></li>
 	<?php TBGEvent::createNew('core', 'quicksearch_dropdown_firstitems', $searchterm)->trigger(); ?>
+	<?php if ($tbg_user->canAccessConfigurationPage(TBGSettings::CONFIGURATION_SECTION_USERS)): ?>
+		<li class="searchterm"><?php echo $searchterm; ?><br><span class="informal"><?php echo __('Select this to search for this user'); ?></span><span class="url informal"><?php echo make_url('configure_users').'?finduser='.$searchterm; ?></span></li>
+		<?php if ($num_users > 0): ?>
+			<li class="header disabled"><?php echo __('%num% user(s) found', array('%num%' => $num_users)); ?></li>
+			<?php $cc = 0; ?>
+			<?php foreach ($found_users as $user): ?>
+				<?php $cc++; ?>
+				<?php if ($user instanceof TBGUser): ?>
+					<li class="<?php if ($cc == count($found_users) && $num_users == count($found_users)): ?> last<?php endif; ?>">
+						<?php echo image_tag($user->getAvatarURL(), array('alt' => ' ', 'style' => "width: 12px; height: 12px; float: left; margin-right: 5px;"), true); ?>
+						<?php echo $user->getNameWithUsername(); ?>
+						<span class="hidden backdrop"><span class="backdrop_url"><?php echo make_url('get_partial_for_backdrop', array('key' => 'usercard', 'user_id' => $user->getID())); ?></span></span>
+					</li>
+				<?php endif; ?>
+				<?php if ($cc == 10) break; ?>
+			<?php endforeach; ?>
+			<?php if ($num_users - $cc > 0): ?>
+				<li class="find_more_issues last">
+					<span class="informal"><?php echo __('See %num% more users ...', array('%num%' => $num_users - $cc)); ?></span>
+					<div class="hidden url"><?php echo make_url('configure_users').'?finduser='.$searchterm; ?></div>
+				</li>
+			<?php endif; ?>
+		<?php endif; ?>
+	<?php endif; ?>
 	<li class="header disabled"><?php echo __('%num% issue(s) found', array('%num%' => $resultcount)); ?></li>
 	<?php $cc = 0; ?>
 	<?php if ($resultcount > 0): ?>

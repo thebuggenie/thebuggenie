@@ -147,7 +147,7 @@ TBG.Core._initializeAutocompleter = function() {
 /**
  * Helper function to extract url from autocomplete response container
  */
-TBG.Core._extractAutocompleteValue = function(elem, value) {
+TBG.Core._extractAutocompleteValue = function(elem, value, event) {
 	var elements = value.select('.url');
 	if (elements.size() == 1) {
 		window.location = elements[0].innerHTML.unescapeHTML();
@@ -156,6 +156,18 @@ TBG.Core._extractAutocompleteValue = function(elem, value) {
 		$('quicksearch_submit').removeClassName('button-blue');
 		$('quicksearch_submit').addClassName('button-silver');
 		$('searchfor').blur();
+		$('searchfor').setValue('');
+	} else {
+		var cb_elements = value.select('.backdrop');
+		if (cb_elements.size() == 1) {
+			var elm = cb_elements[0];
+			var backdrop_url = elm.down('.backdrop_url').innerHTML;
+			TBG.Main.Helpers.Backdrop.show(backdrop_url);
+			$('searchfor').blur();
+			$('searchfor').setValue('');
+			event.stopPropagation();
+			event.preventDefault();
+		}
 	}
 };
 
