@@ -1,4 +1,8 @@
 <?php $options = (isset($issue)) ? array('issue' => $issue) : array(); ?>
+<?php if ((!$comment->isPublic() && $tbg_user->canSeeNonPublicComments()) || //the user can see hidden comments
+	 	($comment->isPublic() && $tbg_user->canViewComments()) || //the user can see public comments
+	 	((int)$comment->getPostedByID() == (int)$tbg_user->getID())): //the user posted the comment
+?> 
 <div class="comment<?php if ($comment->isSystemComment()): ?> system_comment<?php endif; ?>" id="comment_<?php echo $comment->getID(); ?>"<?php if ($comment->isSystemComment()): ?> style="display: none;"<?php endif; ?>>
 	<div style="position: relative; overflow: visible; padding: 5px;" id="comment_view_<?php echo $comment->getID(); ?>" class="comment_main">
 		<div id="comment_<?php echo $comment->getID(); ?>_header" class="commentheader">
@@ -79,4 +83,4 @@
 			</div>
 		</form>
 	</div>
-</div>
+</div><?php endif; ?>
