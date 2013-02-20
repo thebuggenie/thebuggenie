@@ -301,7 +301,7 @@
 							if ($transition->hasPostValidationRule(TBGWorkflowTransitionValidationRule::RULE_STATUS_VALID))
 							{
 								$rule = $transition->getPostValidationRule(TBGWorkflowTransitionValidationRule::RULE_STATUS_VALID);
-								if ($rule->isValid($issue->getStatus()))
+								if ($rule->isValid($issue))
 								{
 									$step->applyToIssue($issue);
 									return true;

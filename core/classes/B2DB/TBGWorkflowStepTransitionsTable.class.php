@@ -72,11 +72,11 @@
 				{
 					if ($type == 'step')
 					{
-						$return_array[$row->get(self::TRANSITION_ID)] = TBGContext::factory()->TBGWorkflowTransition($row->get(self::TRANSITION_ID), $row);
+						$return_array[$row->get(self::TRANSITION_ID)] = TBGContext::factory()->TBGWorkflowTransition($row->get(self::TRANSITION_ID));
 					}
 					else
 					{
-						$return_array[$row->get(self::FROM_STEP_ID)] = TBGContext::factory()->TBGWorkflowStep($row->get(self::FROM_STEP_ID), $row);
+						$return_array[$row->get(self::FROM_STEP_ID)] = TBGContext::factory()->TBGWorkflowStep($row->get(self::FROM_STEP_ID));
 					}
 				}
 			}
