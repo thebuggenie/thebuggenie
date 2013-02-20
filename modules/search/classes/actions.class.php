@@ -52,7 +52,7 @@
 		{
 			$this->ipp = $request->getParameter('issues_per_page', 50);
 			$this->offset = $request->getParameter('offset', 0);
-			$filters = $request->getParameter('filters', array());
+			$filters = $request->getRawParameter('filters', array());
 			if ($request['quicksearch'])
 			{
 				$filters['text']['operator'] = '=';
