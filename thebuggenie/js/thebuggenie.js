@@ -3574,6 +3574,7 @@ TBG.Search.setColumns = function(resultview, available_columns, visible_columns,
 	});
 	$('scs_current_template').setValue(resultview);
 	$('search_column_settings_toggler').show();
+	$('search_column_settings_notoggler').hide();
 }
 
 TBG.Search.saveVisibleColumns = function(url) {
@@ -3582,18 +3583,18 @@ TBG.Search.saveVisibleColumns = function(url) {
 		loading: {
 			indicator: 'search_column_settings_indicator',
 			callback: function() {
-				$('search_column_settings_button').addClassName('disabled');
+				$('search_column_settings_save_button').addClassName('disabled');
 			}
 		},
 		success: {
 			hide: 'search_column_settings_container',
 			callback: function() {
-				$('search_column_settings_button').toggleClassName('button-pressed');
+				$('search_column_settings_save_button').toggleClassName('button-pressed');
 			}
 		},
 		complete: {
 			callback: function() {
-				$('search_column_settings_button').removeClassName('disabled');
+				$('search_column_settings_save_button').removeClassName('disabled');
 			}
 		}
 	});

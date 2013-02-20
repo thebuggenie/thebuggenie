@@ -7,7 +7,8 @@
 			<li id="save_search_builder_toggler"><a href="javascript:void(0);" onclick="$(this).toggle();$('search_builder').toggle();$('find_issues_form').method = 'post';$('saved_search_details').show();$('saved_search_name').enable();$('saved_search_name').focus();$('saved_search_description').enable();<?php if ($tbg_user->canCreatePublicSearches()): ?>$('saved_search_public').enable();<?php endif; ?>$('save_search').enable();$('search_button_bottom').disable();$('search_button_bottom').hide();$('search_button_top').disable();$('search_button_save').hide();$('search_button_top').hide();return false;"><?php echo __('Save this search'); ?></a></li>
 		<?php endif; ?>
 	<?php endif; ?>
-	<li id="search_column_settings_button"><a href="javascript:void(0);" onclick="$('search_column_settings_container').toggle();" title="<?php echo __('Configure visible columns'); ?>"><?php echo __('Configure visible columns'); ?></a></li>
+	<li id="search_column_settings_toggler" style="display: none;"><a href="javascript:void(0);" onclick="$('search_column_settings_container').toggle();" title="<?php echo __('Configure visible columns'); ?>"><?php echo __('Configure visible columns'); ?></a></li>
+	<li id="search_column_settings_notoggler" class="disabled"><a href="javascript:void(0);"><?php echo __("Configure visible columns"); ?></a><div class="tooltip rightie" style="font-weight: normal;"><?php echo __('This issue list template does not support configuring visible columns'); ?></div></li>
 	<li class="header" style="margin-top: 10px;"><?php echo __('Download search results'); ?></li>
 	<li><a href="<?php echo $csv_url; ?>"><?php echo image_tag('icon_csv.png') . __('Download as CSV'); ?></a></li>
 	<li><a href="<?php echo $rss_url; ?>"><?php echo image_tag('icon_rss.png') . __('Download as RSS'); ?></a></li>
@@ -29,11 +30,12 @@
 						<?php endforeach; ?>
 					</ul>
 					<?php if (!$tbg_user->isGuest()): ?>
-						<div style="text-align: right; clear: both;">
-							<div style="float: left; padding: 8px;"><?php echo javascript_link_tag(__('Reset columns'), array('onclick' => 'TBG.Search.resetColumns()')); ?></div>
-							<div id="search_column_settings_save_button" class="column_settings_save_button button button-green" onclick="TBG.Search.saveVisibleColumns('<?php echo make_url('search_save_column_settings'); ?>');" style="margin-top: 7px;"><span><?php echo __('Ok'); ?></span></div>
-							<div id="search_column_settings_indicator" style="display: none; float: right; margin: 7px 5px 0 10px;"><?php echo image_tag('spinning_20.gif'); ?></div>
+						<div style="float: right;" class="button-group">
+							<?php echo javascript_link_tag(__('Reset columns'), array('onclick' => 'TBG.Search.resetColumns()', 'class' => 'button button-silver', 'style' => 'padding: 8px 15px !important; font-weight: normal;')); ?>
+							<a href="javascript:void(0);" id="search_column_settings_save_button" class="column_settings_save_button button button-green" onclick="TBG.Search.saveVisibleColumns('<?php echo make_url('search_save_column_settings'); ?>');" style="padding: 8px 15px !important; font-size: 1.1em;"><?php echo __('Done'); ?></a>
 						</div>
+						<div id="search_column_settings_indicator" style="display: none; float: right; margin: 7px 5px 0 10px;"><?php echo image_tag('spinning_20.gif'); ?></div>
+						<br style="clear: both;">
 					<?php else: ?>
 						<div style="text-align: right; clear: both;">
 							<a href="javascript:void(0);" onclick="$('search_column_settings_container').toggle();" title="<?php echo __('Done'); ?>" class="button button-silver"><?php echo __('Done'); ?></a>
