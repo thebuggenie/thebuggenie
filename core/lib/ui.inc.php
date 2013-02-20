@@ -197,6 +197,7 @@
 	 * 
 	 * @param string	$name 	The route key
 	 * @param array 	$params	key => value pairs of route parameters
+	 * @param bool		$relative[optional] Whether to generate a full url or relative
 	 * 
 	 * @return string
 	 */

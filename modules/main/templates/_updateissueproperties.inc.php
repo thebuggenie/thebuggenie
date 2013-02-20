@@ -47,7 +47,6 @@
 						<script type="text/javascript">
 							var transition_id = <?php echo $transition->getID(); ?>;
 							$('viewissue_find_issue_' + transition_id + '_input').observe('keypress', function(event) {
-								console.log(event.keyCode);
 								if (event.keyCode == Event.KEY_RETURN) {
 									TBG.Issues.findDuplicate($('duplicate_finder_transition_' + transition_id).getValue(), transition_id);
 									event.stop();
