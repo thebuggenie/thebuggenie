@@ -180,11 +180,16 @@
 		{
 			$option = new TBGCustomDatatypeOption();
 			$option->setName($name);
-			$option->setItemtype($this->_itemtype);
 			$option->setKey($this->getKey());
 			$option->setValue($value);
 			$option->setItemdata($itemdata);
 			$option->setCustomdatatype($this->_id);
+			$option->save();
+			
+			// In order to set permissions correctly the item type has to be the same
+			// as the option id not the item field. set the opton id with the newly generated 
+			// option ID and save again
+			$option->setItemtype($option->getID());
 			$option->save();
 			$this->_options = null;
 			return $option;
