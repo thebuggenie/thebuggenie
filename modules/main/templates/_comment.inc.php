@@ -1,7 +1,9 @@
 <?php $options = (isset($issue)) ? array('issue' => $issue) : array(); ?>
-<?php if ((!$comment->isPublic() && $tbg_user->canSeeNonPublicComments()) || //the user can see hidden comments
-	 	($comment->isPublic() && $tbg_user->canViewComments()) || //the user can see public comments
-	 	((int)$comment->getPostedByID() == (int)$tbg_user->getID())): //the user posted the comment
+<?php
+	// Show comment if... 
+	if ((!$comment->isPublic() && $tbg_user->canSeeNonPublicComments()) // the comment is hidden and the user can see hidden comments
+	 	|| ($comment->isPublic() && $tbg_user->canViewComments()) // OR the comment is public and  user can see public comments
+	 	|| ($comment->postedByUser($tbg_user->getID()))): // OR the user posted the comment
 ?> 
 <div class="comment<?php if ($comment->isSystemComment()): ?> system_comment<?php endif; ?>" id="comment_<?php echo $comment->getID(); ?>"<?php if ($comment->isSystemComment()): ?> style="display: none;"<?php endif; ?>>
 	<div style="position: relative; overflow: visible; padding: 5px;" id="comment_view_<?php echo $comment->getID(); ?>" class="comment_main">
@@ -9,8 +11,20 @@
 			<a href="#comment_<?php echo $comment->getID(); ?>" class="comment_hash">#<?php echo $comment->getCommentNumber(); ?></a>
 			<?php if (($comment->canUserEditComment() || $comment->canUserDeleteComment()) && ((TBGContext::isProjectContext() && !TBGContext::getCurrentProject()->isArchived()) || !TBGContext::isProjectContext())) : ?>
 				<div class="commenttools button-group">
-					<?php if ($comment->canUserEditComment()): ?><a href="javascript:void(0)" class="button button-silver" onclick="$('comment_view_<?php echo $comment->getID(); ?>').hide();$('comment_edit_<?php echo $comment->getID(); ?>').show();"><?php echo image_tag('icon_edit.png', array('title' => __('Edit'))); ?><?php echo __('Edit'); ?></a><?php endif; ?>
-					<?php if ($comment->canUserDeleteComment()): ?><a href="javascript:void(0)" class="button button-silver" onclick="$('comment_delete_confirm_<?php echo $comment->getID(); ?>').toggle();"><?php echo image_tag('icon_comment_delete.png', array('title' => __('Delete'))); ?><?php echo __('Delete'); ?></a><?php endif; ?>
+					<?php
+						// Edit the comment if... 
+						if (($comment->postedByUser($tbg_user->getID()) && $comment->canUserEditOwnComment()) // the user posted the comment AND the user can edit own comments
+							&& $comment->canUserEditComment()): // AND the comment can be edited
+						?>
+						<a href="javascript:void(0)" class="button button-silver" onclick="$('comment_view_<?php echo $comment->getID(); ?>').hide();$('comment_edit_<?php echo $comment->getID(); ?>').show();"><?php echo image_tag('icon_edit.png', array('title' => __('Edit'))); ?><?php echo __('Edit'); ?></a>
+					<?php endif; ?>
+					<?php 
+						// Delete the comment if... 
+						if (($comment->postedByUser($tbg_user->getID()) && $comment->canUserDeleteOwnComment()) // the user posted the comment AND the user can delete own comments
+							&& $comment->canUserDeleteComment()): // AND the comment can be deleted
+						?>
+						<a href="javascript:void(0)" class="button button-silver" onclick="$('comment_delete_confirm_<?php echo $comment->getID(); ?>').toggle();"><?php echo image_tag('icon_comment_delete.png', array('title' => __('Delete'))); ?><?php echo __('Delete'); ?></a>
+					<?php endif; ?>
 				</div>
 			<?php endif; ?>
 			<?php if (!$comment->isSystemComment() && $tbg_user->canPostComments() && ((TBGContext::isProjectContext() && !TBGContext::getCurrentProject()->isArchived()) || !TBGContext::isProjectContext())): ?>
