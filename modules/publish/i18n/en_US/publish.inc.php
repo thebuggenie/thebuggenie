@@ -43,7 +43,7 @@
 	$strings['Cancel'] = 'Cancel';
 	$strings['cancel'] = 'cancel';
 	$strings['Save'] = 'Save';
-	$strings['Your changes has been saved'] = 'Your changes has been saved';
+	$strings['Your changes have been saved'] = 'Your changes have been saved';
 	$strings['Category'] = 'Category';
 	$strings['Comment'] = 'Comment';
 	$strings['Title'] = 'Title';

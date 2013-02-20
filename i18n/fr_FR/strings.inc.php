@@ -2714,7 +2714,7 @@
 //$strings['Could not set issue status because none was provided'] = '';
   $strings['There was an error trying to save changes to this issue'] = 'Une erreur est survenur pendant la sauvegarde des modifications de cette demande';
 //$strings['No workflow step matches this issue after changes are saved. Please either use the workflow action buttons, or make sure your changes are valid within the current project workflow for this issue type.'] = '';
-  $strings['Your changes has been saved'] = 'Vos changements sont enregistr&eacute;s';
+  $strings['Your changes have been saved'] = 'Vos changements sont enregistr&eacute;s';
 //$strings['OK'] = '';
 //$strings['The file was attached to this issue'] = '';
   $strings['You have been working on this issue since %time%'] = 'Vous travaillez sur cette demande depuis %time%';

@@ -6,7 +6,7 @@
 	$strings['Edit'] = 'Modifier';
 	$strings['Cancel'] = 'Annuler';
 	$strings['Save'] = 'Enregistrer';
-	$strings['Your changes has been saved'] = 'Vos changements sont enregistr&eacute;s';
+	$strings['Your changes have been saved'] = 'Vos changements sont enregistr&eacute;s';
 	$strings['Category'] = 'Category';
 	$strings['URL:'] = 'URL:';
 	$strings['Comment'] = 'Commentaire';

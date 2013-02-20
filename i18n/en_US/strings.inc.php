@@ -2857,7 +2857,7 @@
 	$strings['Your account has been activated! You can now log in with the username %user% and the password in your activation email.'] = 'Your account has been activated! You can now log in with the username %user% and the password in your activation email.';
 	$strings['Your account in The Bug Genie has been added to a new scope'] = 'Your account in The Bug Genie has been added to a new scope';
 	$strings['Your Blogger account'] = 'Your Blogger account';
-	$strings['Your changes has been saved'] = 'Your changes has been saved';
+	$strings['Your changes have been saved'] = 'Your changes have been saved';
 	$strings['Your ClaimID username'] = 'Your ClaimID username';
 	$strings['Your dashboard'] = 'Your dashboard';
 	$strings['Your drafts'] = 'Your drafts';
