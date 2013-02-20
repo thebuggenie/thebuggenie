@@ -14,14 +14,14 @@
 					<?php
 						// Edit the comment if... 
 						if (($comment->postedByUser($tbg_user->getID()) && $comment->canUserEditOwnComment()) // the user posted the comment AND the user can edit own comments
-							&& $comment->canUserEditComment()): // AND the comment can be edited
+							|| $comment->canUserEditComment()): // OR the user can edit all comments
 						?>
 						<a href="javascript:void(0)" class="button button-silver" onclick="$('comment_view_<?php echo $comment->getID(); ?>').hide();$('comment_edit_<?php echo $comment->getID(); ?>').show();"><?php echo image_tag('icon_edit.png', array('title' => __('Edit'))); ?><?php echo __('Edit'); ?></a>
 					<?php endif; ?>
 					<?php 
 						// Delete the comment if... 
 						if (($comment->postedByUser($tbg_user->getID()) && $comment->canUserDeleteOwnComment()) // the user posted the comment AND the user can delete own comments
-							&& $comment->canUserDeleteComment()): // AND the comment can be deleted
+							|| $comment->canUserDeleteComment()): // OR the user can delete all comments
 						?>
 						<a href="javascript:void(0)" class="button button-silver" onclick="$('comment_delete_confirm_<?php echo $comment->getID(); ?>').toggle();"><?php echo image_tag('icon_comment_delete.png', array('title' => __('Delete'))); ?><?php echo __('Delete'); ?></a>
 					<?php endif; ?>
@@ -97,4 +97,5 @@
 			</div>
 		</form>
 	</div>
-</div><?php endif; ?>
+</div>
+<?php endif; ?>

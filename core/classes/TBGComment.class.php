@@ -259,8 +259,7 @@
 		public function canUserEditComment()
 		{
 			if ($this->isSystemComment()) return false;
-			$retval = $this->_canPermissionOrSeeAndEditComments('caneditcomments');
-			$retval = ($retval === null) ? $this->_canPermissionOrSeeAndEditAllComments('caneditcomments') : $retval;
+			$retval = $this->_canPermissionOrSeeAndEditAllComments('caneditcomments');
 
 			return ($retval !== null) ? $retval : TBGSettings::isPermissive();
 		}
@@ -285,8 +284,7 @@
 		 */
 		public function canUserDeleteComment()
 		{
-			$retval = $this->_canPermissionOrSeeAndEditComments('candeletecomments');
-			$retval = ($retval === null) ? $this->_canPermissionOrSeeAndEditAllComments('candeletecomments') : $retval;
+			$retval = $this->_canPermissionOrSeeAndEditAllComments('candeletecomments');
 
 			return ($retval !== null) ? $retval : TBGSettings::isPermissive();
 		}
