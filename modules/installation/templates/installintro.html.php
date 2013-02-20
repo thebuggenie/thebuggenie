@@ -4,7 +4,7 @@
 	Even though this software has been provided to you free of charge, developing it would not have been possible without support from our users. By making a donation, or buying a support contract you can help us continue development.<br>
 	<h4>If this software proves valuable to you - please consider supporting it.</h4>
 	More information about supporting The Bug Genie development can be found here:
-	<a target="_blank" href="http://www.thebuggenie.com/giving_back.php">http://www.thebuggenie.com/giving_back.php</a> <i>(opens in a new window)</i>
+	<a target="_blank" href="http://www.thebuggenie.com/help">http://www.thebuggenie.com/help</a> <i>(opens in a new window)</i>
 </div>
 <div class="installation_box">
 	<h2>We value your feedback</h2>
