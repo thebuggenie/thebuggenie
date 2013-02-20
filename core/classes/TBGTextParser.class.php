@@ -504,11 +504,11 @@
 				if (is_null($matches)) return '';
 
 				$this->linknumber++;
-				$href = $title = html_entity_decode($matches);
+				$href = $title = html_entity_decode($matches, ENT_QUOTES, 'UTF-8');
 			}
 			else
 			{
-				$href = html_entity_decode($matches[2]);
+				$href = html_entity_decode($matches[2], ENT_QUOTES, 'UTF-8');
 				$title = null;
 				$title = (array_key_exists(3, $matches)) ? $matches[3] : $matches[2];
 				if (!$title)
