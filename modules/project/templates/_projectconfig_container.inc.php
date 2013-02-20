@@ -56,7 +56,7 @@
 				<td><label for="prefix_input"><?php echo __('Issue prefix'); ?></label></td>
 				<td>
 					<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-						<input type="text" name="prefix" id="prefix_input" value="<?php print $project->getPrefix(); ?>" style="width: 70px;"<?php if (!$project->usePrefix()): ?> disabled<?php endif; ?>>
+						<input type="text" name="prefix" id="prefix_input" maxlength="5" value="<?php print $project->getPrefix(); ?>" style="width: 70px;"<?php if (!$project->usePrefix()): ?> disabled<?php endif; ?>>
 					<?php elseif ($project->hasPrefix()): ?>
 						<?php echo $project->getPrefix(); ?>
 					<?php else: ?>
