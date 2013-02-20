@@ -283,6 +283,7 @@
 		 */
 		public function canUserDeleteComment()
 		{
+			if ($this->isSystemComment()) return false;
 			$retval = $this->_canPermissionOrSeeAndEditAllComments('candeletecomments');
 
 			return ($retval !== null) ? $retval : TBGSettings::isPermissive();
