@@ -2546,7 +2546,7 @@
 			$tbg_summary['memory'] = memory_get_usage();
 			$tbg_summary['partials'] = self::getVisitedPartials();
 			if (self::$_i18n instanceof TBGI18n) {
-				foreach (self::getI18n()->getMissingStrings() as $text) {
+				foreach (self::getI18n()->getMissingStrings() as $text => $value) {
 					TBGLogging::log('The text "' . $text . '" does not exist in list of translated strings, and was added automatically', 'i18n', TBGLogging::LEVEL_NOTICE);
 				}
 			}
