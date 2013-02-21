@@ -2590,11 +2590,11 @@
 
 		public static function getCurrentCLIusername()
 		{
-			if(extension_loaded('posix'))
+			if (extension_loaded('posix'))
 			{
 				// Original code
 				$processUser = posix_getpwuid(posix_geteuid());
-					return $processUser['name'];
+				return $processUser['name'];
 			}
 			else
 			{
