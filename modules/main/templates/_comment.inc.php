@@ -9,7 +9,7 @@
 	<div style="position: relative; overflow: visible; padding: 5px;" id="comment_view_<?php echo $comment->getID(); ?>" class="comment_main">
 		<div id="comment_<?php echo $comment->getID(); ?>_header" class="commentheader">
 			<a href="#comment_<?php echo $comment->getID(); ?>" class="comment_hash">#<?php echo $comment->getCommentNumber(); ?></a>
-			<?php if (($comment->canUserEditComment() || $comment->canUserDeleteComment()) && ((TBGContext::isProjectContext() && !TBGContext::getCurrentProject()->isArchived()) || !TBGContext::isProjectContext())) : ?>
+			<?php if ((TBGContext::isProjectContext() && !TBGContext::getCurrentProject()->isArchived()) || !TBGContext::isProjectContext()) : ?>
 				<div class="commenttools button-group">
 					<?php
 						// Edit the comment if... 
