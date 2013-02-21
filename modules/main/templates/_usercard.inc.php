@@ -56,7 +56,7 @@
 					<i><?php echo __('There is no recent activity available for this user'); ?></i>
 				<?php else: ?>
 					<?php foreach ($user->getLatestActions(1) as $action): ?>
-						<?php echo '<b>' . __('Last user activy was at %time%', array('%time%' => '</b>' . tbg_formatTime($action['timestamp'], 11))); ?>
+						<?php echo '<b>' . __('Last user activity was at %time%', array('%time%' => '</b>' . tbg_formatTime($action['timestamp'], 11))); ?>
 					<?php endforeach; ?>
 				<?php endif; ?>
 				<br>

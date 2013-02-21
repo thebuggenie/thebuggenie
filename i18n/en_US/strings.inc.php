@@ -2532,7 +2532,7 @@
   $strings['This user has not logged in yet'] = 'This user has not logged in yet';
   $strings['This user was last seen online at %time%'] = 'This user was last seen online at %time%';
   $strings['There is no recent activity available for this user'] = 'There is no recent activity available for this user';
-  $strings['Last user activy was at %time%'] = 'Last user activy was at %time%';
+  $strings['Last user activity was at %time%'] = 'Last user activity was at %time%';
   $strings['This user has reported %issues% issue(s)'] = 'This user has reported %issues% issue(s)';
   $strings['Show issues'] = 'Show issues';
   $strings['Show issues reported by this user'] = 'Show issues reported by this user';
