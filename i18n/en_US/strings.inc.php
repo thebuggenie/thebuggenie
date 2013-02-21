@@ -1106,7 +1106,7 @@
 	$strings['Last updated'] = 'Last updated';
 	$strings['Last updated at %time%, by %user%'] = 'Last updated at %time%, by %user%';
 	$strings['Last updated %updated_at%'] = 'Last updated %updated_at%';
-	$strings['Last user activy was at %time%'] = 'Last user activy was at %time%';
+	$strings['Last user activity was at %time%'] = 'Last user activity was at %time%';
 	$strings['Latest downloads'] = 'Latest downloads';
 	$strings['LDAP support is not installed'] = 'LDAP support is not installed';
 	$strings['Lead by'] = 'Lead by';
