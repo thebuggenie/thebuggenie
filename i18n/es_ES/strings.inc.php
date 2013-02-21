@@ -2518,7 +2518,7 @@
   $strings['This user has not logged in yet'] = 'Este usuario no ha ingresado todavía';
   $strings['This user was last seen online at %time%'] = 'Este usuario fue visto por última vez %time%';
   $strings['There is no recent activity available for this user'] = 'No hay actividad reciente disponible para este usuario';
-  $strings['Last user activy was at %time%'] = 'La última actividad del usuario fue %time%';
+  $strings['Last user activity was at %time%'] = 'La última actividad del usuario fue %time%';
   $strings['This user has reported %issues% issue(s)'] = 'Este usuario ha registrado %issues% petición(es)';
   $strings['Show issues'] = 'Mostrar peticiones';
 //$strings['Show issues reported by this user'] = '';
