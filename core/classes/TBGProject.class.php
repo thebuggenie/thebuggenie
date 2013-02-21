@@ -1976,7 +1976,9 @@
 			{
 				while ($row = $res->getNextRow())
 				{
-					$issue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID));;
+					$issue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID));
+					if (!$issue->hasAccess()) continue;
+
 					if (!$merged)
 					{
 						$retval[$row->get(TBGIssuesTable::ISSUE_TYPE)]['issues'][] = $issue;
