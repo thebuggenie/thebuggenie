@@ -354,8 +354,8 @@
 				// Edit comment if valid user and... 
 				if ($user instanceof TBGUser)
 				{
-					if (($this->postedByUser($user->getID()) && $this->canUserEditOwnComment()) // the user posted the comment AND the user can delete own comments
-						|| $this->canUserEditComment()) // OR the user can delete all comments
+					if (($this->postedByUser($user->getID()) && $this->canUserEditOwnComment()) // the user posted the comment AND the user can edit own comments
+						|| $this->canUserEditComment()) // OR the user can edit all comments
 					{
 						$can_edit = true;
 					}//endif
