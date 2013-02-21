@@ -50,6 +50,11 @@
 		{
 			return $this->routes;
 		}
+
+		public function hasRoute($route)
+		{
+			return array_key_exists($route, $this->routes);
+		}
 		
 		public function addRoute($name, $route, $module, $action, $params = array(), $csrf_enabled = false)
 		{
