@@ -143,11 +143,18 @@
 			return $res;
 		}
 		
-		public function getByID($id)
+		public function getByID($id, $scoped = true)
 		{
-			$crit = $this->getCriteria();
-			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
-			$row = $this->doSelectById($id, $crit, false);
+			if ($scoped)
+			{
+				$crit = $this->getCriteria();
+				$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+				$row = $this->doSelectById($id, $crit, false);
+			}
+			else
+			{
+				$row = $this->doSelectById($id);
+			}
 			return $row;
 		}
 		

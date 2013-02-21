@@ -40,11 +40,13 @@
 			try
 			{
 				$project_id = $this->getProvidedArgument('projectid');
-				$project = new TBGProject($project_id);
-				TBGContext::setScope($project->getScope());
+				$project_row = TBGProjectsTable::getTable()->getById($project_id, false);
+				TBGContext::setScope(new TBGScope($project_row[TBGProjectsTable::SCOPE]));
+				$project = new TBGProject($project_id, $project_row);
 			}
 			catch (Exception $e)
 			{
+				throw $e;
 				$this->cliEcho("The project with the ID ".$this->getProvidedArgument('projectid')." does not exist\n", 'red', 'bold');
 				exit;
 			}
