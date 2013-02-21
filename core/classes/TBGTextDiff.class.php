@@ -141,11 +141,11 @@
 			{
 				if ($change['type'] === "+")
 				{
-					$str = str_replace($str, $change['val'], $change['pos'], 0);
+					$str = substr_replace($str, $change['val'], $change['pos'], 0);
 				}
 				if ($change['type'] === "-")
 				{
-					$str = str_replace($str, "", $change['pos'], mb_strlen($change['val']));
+					$str = substr_replace($str, "", $change['pos'], mb_strlen($change['val']));
 				}
 			}
 			return $str;
