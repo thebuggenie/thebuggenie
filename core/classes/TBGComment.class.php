@@ -269,8 +269,19 @@
 		public function canUserEditComment()
 		{
 			if ($this->isSystemComment()) return false;
-			$retval = $this->_canPermissionOrSeeAndEditComments('caneditcomments');
-			$retval = ($retval === null) ? $this->_canPermissionOrSeeAndEditAllComments('caneditcomments') : $retval;
+			$retval = $this->_canPermissionOrSeeAndEditAllComments('caneditcomments');
+
+			return ($retval !== null) ? $retval : TBGSettings::isPermissive();
+		}
+
+		/**
+		 * Return if the user can edit own comment
+		 *
+		 * @return boolean
+		 */
+		public function canUserEditOwnComment()
+		{
+			$retval = $this->_canPermissionOrSeeAndEditComments('caneditcommentsown');
 
 			return ($retval !== null) ? $retval : TBGSettings::isPermissive();
 		}
@@ -282,8 +293,20 @@
 		 */
 		public function canUserDeleteComment()
 		{
-			$retval = $this->_canPermissionOrSeeAndEditComments('candeletecomments');
-			$retval = ($retval === null) ? $this->_canPermissionOrSeeAndEditAllComments('candeletecomments') : $retval;
+			if ($this->isSystemComment()) return false;
+			$retval = $this->_canPermissionOrSeeAndEditAllComments('candeletecomments');
+
+			return ($retval !== null) ? $retval : TBGSettings::isPermissive();
+		}
+
+		/**
+		 * Return if the user can delete own comment
+		 *
+		 * @return boolean
+		 */
+		public function canUserDeleteOwnComment()
+		{
+			$retval = $this->_canPermissionOrSeeAndEditComments('candeletecommentsown');
 
 			return ($retval !== null) ? $retval : TBGSettings::isPermissive();
 		}
@@ -335,6 +358,35 @@
 			catch (Exception $e) {}
 			return ($poster instanceof TBGIdentifiable) ? $poster->getID() : null;
 		}
+
+		/**
+		 * Return the whether or not the user owns this comment
+		 *
+		 * @return bool
+		 */
+		public function postedByUser($user_id)
+		{
+			$posted_by_id = null;
+			
+			try
+			{
+				$posted_by_id = $this->getPostedByID();
+				
+				if (!empty($posted_by_id) && !empty($user_id))
+				{
+					if ($posted_by_id == $user_id)
+					{
+						return true;
+					}//endif
+				}//endif
+				else
+				{
+					return false;
+				}//endelse
+			}//endtry
+			catch (Exception $e) { return false; }
+			return false;
+		}//end postedByUser
 
 		public function setPostedBy($var)
 		{
