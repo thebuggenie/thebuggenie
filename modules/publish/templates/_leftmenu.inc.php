@@ -32,6 +32,4 @@
 		<span class="faded_out" style="padding-left: 5px; font-size: 12px;"><?php echo __("You don't have any unpublished pages"); ?></span>
 	<?php endif; ?>
 </div> */ ?>
-<?php if (!TBGContext::isProjectContext()): ?>
-	<?php include_component('publish/latestArticles'); ?>
-<?php endif; ?>
+<?php include_component('publish/latestArticles'); ?>

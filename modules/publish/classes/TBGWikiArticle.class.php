@@ -637,16 +637,11 @@
 			if(count($namespaces) > 0)
 			{
 				$key = $namespaces[0];
-				$row = TBGProjectsTable::getTable()->getByKey($key);
-				
-				if ($row instanceof \b2db\Row)
+				$project = TBGProject::getByKey($key);
+				if ($project instanceof TBGProject)
 				{
-					$project = TBGContext::factory()->TBGProject($row->get(TBGProjectsTable::ID), $row);
-					if ($project instanceof TBGProject)
-					{
-						if ($project->isArchived())
-							return false;
-					}
+					if ($project->isArchived())
+						return false;
 				}
 			}
 			
@@ -660,16 +655,11 @@
 			if(count($namespaces) > 0)
 			{
 				$key = $namespaces[0];
-				$row = TBGProjectsTable::getTable()->getByKey($key);
-				
-				if ($row instanceof \b2db\Row)
+				$project = TBGProject::getByKey($key);
+				if ($project instanceof TBGProject)
 				{
-					$project = TBGContext::factory()->TBGProject($row->get(TBGProjectsTable::ID), $row);
-					if ($project instanceof TBGProject)
-					{
-						if ($project->isArchived())
-							return false;
-					}
+					if ($project->isArchived())
+						return false;
 				}
 			}
 			
@@ -688,16 +678,11 @@
 			if(count($namespaces) > 0)
 			{
 				$key = $namespaces[0];
-				$row = TBGProjectsTable::getTable()->getByKey($key);
-				
-				if ($row instanceof \b2db\Row)
+				$project = TBGProject::getByKey($key);
+				if ($project instanceof TBGProject)
 				{
-					$project = TBGContext::factory()->TBGProject($row->get(TBGProjectsTable::ID), $row);
-					if ($project instanceof TBGProject)
-					{
-						if (!$project->hasAccess())
-							return false;
-					}
+					if ($project->isArchived())
+						return false;
 				}
 			}
 			
