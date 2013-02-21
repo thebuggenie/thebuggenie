@@ -5,7 +5,12 @@
 	$tbg_response->setTitle($article_name);
 
 ?>
-		<div class="main_area article">
+<table style="margin-top: 0px; table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
+	<tr>
+		<td class="side_bar">
+			<?php include_component('leftmenu', array('article' => $article)); ?>
+		</td>
+		<td class="main_area article">
 			<a name="top"></a>
 			<?php if ($error): ?>
 				<div class="rounded_box red borderless" style="margin: 0 0 5px 0; padding: 8px; font-size: 14px; color: #FFF;">
@@ -24,7 +29,7 @@
 				</div>
 			<?php endif; ?>
 			<?php if ($article instanceof TBGWikiArticle): ?>
-				<?php include_component('articledisplay', array('article' => $article, 'show_article' => true, 'redirected_from' => $redirected_from, 'show_actions' => false)); ?>
+				<?php include_component('articledisplay', array('article' => $article, 'show_article' => true, 'redirected_from' => $redirected_from)); ?>
 				<?php $article_name = $article->getName(); ?>
 			<?php else: ?>
 				<div class="article">
@@ -43,4 +48,12 @@
 					</form>
 				</div>
 			<?php endif; ?>
-		</div>
+			<?php if ($article instanceof TBGWikiArticle): ?>
+				<div id="article_comments">
+					<h4><?php echo __('Article comments (%count%)', array('%count%' => TBGComment::countComments($article->getID(), TBGComment::TYPE_ARTICLE))); ?></h4>
+					<?php include_template('main/comments', array('target_id' => $article->getID(), 'target_type' => TBGComment::TYPE_ARTICLE, 'comment_count_div' => 'article_comment_count', 'forward_url' => make_url('publish_article', array('article_name' => $article->getName())))); ?>
+				</div>
+			<?php endif; ?>
+		</td>
+	</tr>
+</table>
