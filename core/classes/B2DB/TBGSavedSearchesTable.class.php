@@ -194,8 +194,8 @@
 				}
 				else
 				{
-					$crit->addUpdate(self::IS_PUBLIC, 0);
-					$crit->addUpdate(self::UID, TBGContext::getUser()->getID());
+					$crit->addUpdate(self::IS_PUBLIC, false);
+					$crit->addWhere(self::UID, TBGContext::getUser()->getID());
 				}
 				$crit->addUpdate(self::SCOPE, TBGContext::getScope()->getID());
 				$this->doUpdateById($crit, $saved_search_id);
@@ -217,8 +217,8 @@
 				}
 				else
 				{
-					$crit->addInsert(self::IS_PUBLIC, 0);
-					$crit->addUpdate(self::UID, TBGContext::getUser()->getID());
+					$crit->addInsert(self::IS_PUBLIC, false);
+					$crit->addInsert(self::UID, TBGContext::getUser()->getID());
 				}
 				$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
 				$saved_search_id = $this->doInsert($crit)->getInsertID();
