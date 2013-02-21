@@ -456,11 +456,19 @@
 			if ($namespace == 'TBG')
 			{
 				if (TBGContext::isCLI()) return $href;
+				if (!TBGContext::getRouting()->hasRoute($href)) return $href;
 
 				$options = explode('|',$title);
 				$title = array_pop($options);
 
-				return link_tag(make_url($href), $title); // $this->parse_image($href,$title,$options);
+				try
+				{
+					return link_tag(make_url($href), $title); // $this->parse_image($href,$title,$options);
+				}
+				catch (Exception $e)
+				{
+					return $href;
+				}
 			}
 
 			if (mb_substr($href, 0, 1) == '/')

@@ -5,11 +5,7 @@
 		
 		public function componentLatestArticles()
 		{
-			$publish_module = TBGPublish::getModule();
-			$publish_module->log('retrieving latest articles');
-			
-			$this->latest_articles = $publish_module->getLatestArticles();
-			$publish_module->log('done (retrieving latest articles)');
+			$this->latest_articles = TBGPublish::getModule()->getLatestArticles(TBGContext::getCurrentProject());
 		}
 
 		public function componentArticledisplay()

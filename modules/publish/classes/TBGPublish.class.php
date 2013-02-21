@@ -273,9 +273,9 @@
 			}
 		}
 
-		public function getLatestArticles($limit = 5)
+		public function getLatestArticles(TBGProject $project = null)
 		{
-			return TBGArticlesTable::getTable()->getArticles($limit, true);
+			return TBGArticlesTable::getTable()->getArticles($project);
 		}
 	
 		public function getMenuItems($target_id = 0)

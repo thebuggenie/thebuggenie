@@ -664,6 +664,8 @@
 				catch (Exception $e) {}
 				
 				$this->_group_id = null;
+				$this->_buddyname = $this->_username;
+				$this->_username = '';
 				TBGTeamMembersTable::getTable()->clearTeamsByUserID($this->getID());
 				TBGClientMembersTable::getTable()->clearClientsByUserID($this->getID());
 				TBGUserScopesTable::getTable()->clearUserScopes($this->getID());

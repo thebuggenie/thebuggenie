@@ -58,21 +58,32 @@
 			return $articles;
 		}
 		
-		public function getArticles($num_articles = 5, $news = false, $published = true)
+		public function getArticles(TBGProject $project = null)
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
-			$crit->addWhere(self::NAME, 'Category:%', Criteria::DB_NOT_LIKE);
 			
+			if ($project instanceof TBGProject)
+			{
+				$crit->addWhere(self::NAME, "Category:" . ucfirst($project->getKey()) . "%", Criteria::DB_LIKE);
+				$crit->addOr(self::NAME, ucfirst($project->getKey()) . ":%", Criteria::DB_LIKE);
+			}
+			else
+			{
+				foreach (TBGProjectsTable::getTable()->getAllIncludingDeleted() as $project)
+				{
+					$crit->addWhere(self::NAME, "Category:" . ucfirst($project->getKey()) . "%", Criteria::DB_NOT_LIKE);
+					$crit->addWhere(self::NAME, ucfirst($project->getKey()) . ":%", Criteria::DB_NOT_LIKE);
+				}
+			}
+
 			$crit->addOrderBy(self::DATE, 'desc');
 			
-			if ($published) $crit->addWhere(self::IS_PUBLISHED, 1);
-	
 			$articles = array();
 			
 			if ($res = self::getTable()->doSelect($crit))
 			{
-				while (($row = $res->getNextRow()) && (count($articles) < $num_articles))
+				while (($row = $res->getNextRow()) && (count($articles) < 10))
 				{
 					try
 					{
