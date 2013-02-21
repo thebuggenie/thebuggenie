@@ -132,6 +132,16 @@
 			return $res;
 		}
 		
+		public function getAllIncludingDeleted()
+		{
+			$crit = $this->getCriteria();
+			$crit->addOrderBy(self::NAME, Criteria::SORT_ASC);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$crit->indexBy(self::KEY);
+			$res = $this->select($crit, false);
+			return $res;
+		}
+
 		public function getAllSortedByIsDefault()
 		{
 			$crit = $this->getCriteria();
