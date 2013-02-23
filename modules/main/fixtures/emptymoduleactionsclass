@@ -6,6 +6,11 @@
 	class %module_key%Actions extends TBGAction
 	{
 
+		/**
+		 * Index page
+		 * 
+		 * @param TBGRequest $request The incoming request
+		 */
 		public function runIndex(TBGRequest $request)
 		{
 		}
