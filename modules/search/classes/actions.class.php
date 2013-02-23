@@ -386,8 +386,16 @@
 					case 'edition':
 						if ($issue->getEditions())
 						{
-							$groupby_id = $issue->getFirstAffectedEdition()->getID();
-							$groupby_description = $issue->getFirstAffectedEdition()->getName();
+							if ($prevgroup_id > 0 && $issue->isEditionIDAffected($prevgroup_id))
+							{
+								$groupby_id = $prevgroup_id;
+								$groupby_description = TBGEditionsTable::getTable()->selectById($prevgroup_id)->getName();
+							}
+							else
+							{
+								$groupby_id = $issue->getFirstAffectedEdition()->getID();
+								$groupby_description = $issue->getFirstAffectedEdition()->getName();
+							}
 						}
 						else
 						{
@@ -398,8 +406,16 @@
 					case 'build':
 						if ($issue->getBuilds())
 						{
-							$groupby_id = $issue->getFirstAffectedBuild()->getID();
-							$groupby_description = $issue->getFirstAffectedBuild()->getName();
+							if ($prevgroup_id > 0 && $issue->isBuildIDAffected($prevgroup_id))
+							{
+								$groupby_id = $prevgroup_id;
+								$groupby_description = TBGBuildsTable::getTable()->selectById($prevgroup_id)->getName();
+							}
+							else
+							{
+								$groupby_id = $issue->getFirstAffectedBuild()->getID();
+								$groupby_description = $issue->getFirstAffectedBuild()->getName();
+							}
 						}
 						else
 						{
@@ -410,8 +426,16 @@
 					case 'component':
 						if ($issue->getComponents())
 						{
-							$groupby_id = $issue->getFirstAffectedComponent()->getID();
-							$groupby_description = $issue->getFirstAffectedComponent()->getName();
+							if ($prevgroup_id > 0 && $issue->isComponentIDAffected($prevgroup_id))
+							{
+								$groupby_id = $prevgroup_id;
+								$groupby_description = TBGComponentsTable::getTable()->selectById($prevgroup_id)->getName();
+							}
+							else
+							{
+								$groupby_id = $issue->getFirstAffectedComponent()->getID();
+								$groupby_description = $issue->getFirstAffectedComponent()->getName();
+							}
 						}
 						else
 						{

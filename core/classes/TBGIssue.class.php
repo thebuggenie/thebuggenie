@@ -1638,12 +1638,17 @@
 		
 		public function isEditionAffected(TBGEdition $edition)
 		{
+			return $this->isEditionIDAffected($edition->getID());
+		}
+
+		public function isEditionIDAffected($edition_id)
+		{
 			$editions = $this->getEditions();
 			if (count($editions))
 			{
 				foreach ($editions as $info)
 				{
-					if ($info['edition']->getID() == $edition->getID())
+					if ($info['edition']->getID() == $edition_id)
 						return true;
 				}
 			}
@@ -1675,12 +1680,17 @@
 	
 		public function isBuildAffected(TBGBuild $build)
 		{
+			return $this->isBuildIDAffected($build->getID());
+		}
+
+		public function isBuildIDAffected($build_id)
+		{
 			$builds = $this->getBuilds();
 			if (count($builds))
 			{
 				foreach ($builds as $info)
 				{
-					if ($info['build']->getID() == $build->getID())
+					if ($info['build']->getID() == $build_id)
 						return true;
 				}
 			}
@@ -1712,12 +1722,17 @@
 		
 		public function isComponentAffected(TBGComponent $component)
 		{
+			return $this->isComponentIDAffected($component->getID());
+		}
+
+		public function isComponentIDAffected($component_id)
+		{
 			$components = $this->getComponents();
 			if (count($components))
 			{
 				foreach ($components as $info)
 				{
-					if ($info['component']->getID() == $component->getID())
+					if ($info['component']->getID() == $component_id)
 						return true;
 				}
 			}
