@@ -595,6 +595,19 @@
 								$crit->addWhere($ctn);
 							}
 						}
+						elseif ($filter == 'assignee_user')
+						{
+							$ctn = $crit->returnCriterion($dbname.'.'.$filter, $filter_info['value'], urldecode($filter_info['operator']));
+							$user = TBGUsersTable::getTable()->selectById((int) $filter_info['value']);
+							if ($user instanceof TBGUser)
+							{
+								foreach ($user->getOndemandTeams() as $team_id => $team)
+								{
+									$ctn->addOr($dbname.'.'.'assignee_team', $team_id);
+								}
+							}
+							$crit->addWhere($ctn);
+						}
 						elseif (in_array($filter, self::getValidSearchFilters()))
 						{
 							$crit->addWhere($dbname.'.'.$filter, $filter_info['value'], urldecode($filter_info['operator']));
