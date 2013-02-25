@@ -350,7 +350,7 @@ footer td { font-size: 0.9em; line-height: 1.2; padding: 5px; text-shadow: 1px 1
 /* end faded text */
 
 /* autocompleter styling */
-div.autocomplete { position: absolute; z-index: 200000; background-color: white; border: 0; padding: 0px; }
+div.autocomplete { position: absolute; z-index: 200000; background-color: white; border: 0; padding: 0px; box-shadow: 0 3px 3px 2px rgba(0, 0, 0, 0.2); }
 div.autocomplete ul { list-style-type: none; margin: 0px; width: 320px; padding: 0px; border: 0; }
 div.autocomplete li.header { padding-top: 15px; font-size: 1.2em; font-weight: bold; border-top: 0; }
 div.autocomplete ul li.selected, div.autocomplete ul li.selected:hover { background-color: #F1F1F1; text-align: left; font-weight: normal; border-top: 1px dotted #BBB; color: #333; text-align: left; }
