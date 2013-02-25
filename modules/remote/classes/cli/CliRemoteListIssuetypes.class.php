@@ -36,10 +36,12 @@
 
 			if (!empty($response))
 			{
-				$this->cliEcho("Available issuetypes\n", 'white', 'bold');
-				foreach ($response as $issuetype)
+				$this->cliEcho("issuetype_key", 'yellow', 'bold');
+				$this->cliEcho(" - Description\n", 'white', 'bold');
+				foreach ($response as $key => $issuetype)
 				{
-					$this->cliEcho("$issuetype\n", 'yellow');
+					$this->cliEcho("$key", 'yellow');
+					$this->cliEcho(" - $issuetype\n");
 				}
 				$this->cliEcho("\n");
 				$this->cliEcho("When using ");
