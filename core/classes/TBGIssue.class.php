@@ -5029,7 +5029,7 @@
 				'state' => $this->getState(),
 				'created_at' => $this->getPosted(),
 				'updated_at' => $this->getLastUpdatedTime(),
-				'title' => $this->getTitle(),
+				'title' => $this->getRawTitle(),
 				'posted_by' => ($this->getPostedBy() instanceof TBGIdentifiable) ? $this->getPostedBy()->toJSON() : null,
 				'assignee' => ($this->getAssignee() instanceof TBGIdentifiable) ? $this->getAssignee()->toJSON() : null,
 				'status' => ($this->getStatus() instanceof TBGIdentifiable) ? $this->getStatus()->toJSON() : null,

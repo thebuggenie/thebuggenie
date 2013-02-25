@@ -2609,7 +2609,7 @@
 			$return_array = array();
 			foreach ($issuetypes as $issuetype)
 			{
-				$return_array[] = $issuetype->getName();
+				$return_array[$issuetype->getKey()] = $issuetype->getName();
 			}
 
 			$this->issuetypes = $return_array;
