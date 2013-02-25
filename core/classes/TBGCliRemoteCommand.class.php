@@ -85,7 +85,20 @@
 				$this->cliEcho('Please enter the password for user ');
 				$this->cliEcho($this->_getCurrentRemoteUser(), 'white', 'bold');
 				$this->cliEcho(' (the password will not be stored): ');
-				$this->_current_remote_password_hash = TBGUser::hashPassword($this->_getCliInput());
+				$password = $this->_getCliInput();
+				if ($password != '')
+				{
+					$this->cliEcho("Please enter the remote security key (required): ", 'white', 'bold');
+					$salt = $this->_getCliInput();
+					if ($password != '' && $salt != '')
+					{
+						$this->_current_remote_password_hash = TBGUser::hashPassword($password, $salt);
+					}
+				}
+				if (!$this->_getCurrentRemotePasswordHash())
+				{
+					throw new Exception('You have to provide a password and authentication key to connect.');
+				}
 			}
 
 		}
@@ -157,7 +170,7 @@
 			$host = $this->_getCurrentRemoteServer();
 			if (mb_substr($host, mb_strlen($host) - 2) != '/') $host .= '/';
 
-			return $host . mb_substr($url, 2);
+			return $host . mb_substr($url, 1);
 		}
 
 	}
