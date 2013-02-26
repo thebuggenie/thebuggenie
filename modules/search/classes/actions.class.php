@@ -57,6 +57,7 @@
 			{
 				$this->filters['project_id'][0] = array('operator' => '=', 'value' => TBGContext::getCurrentProject()->getID());
 			}
+			$this->dateorder = ($request['quicksearch']) ? 'desc' : 'asc';
 			$this->groupby = $request['groupby'];
 			$this->grouporder = $request->getParameter('grouporder', 'asc');
 			$this->predefined_search = $request->getParameter('predefined_search', false);
@@ -128,7 +129,7 @@
 					$this->groupby = 'votes';
 					$this->grouporder = 'desc';
 				}
-				list ($this->foundissues, $this->resultcount) = TBGIssue::findIssues($this->filters, $this->ipp, $this->offset, $this->groupby, $this->grouporder);
+				list ($this->foundissues, $this->resultcount) = TBGIssue::findIssues($this->filters, $this->ipp, $this->offset, $this->groupby, $this->grouporder, $this->dateorder);
 			}
 			elseif (count($this->foundissues) == 1 && !$request['quicksearch'])
 			{
