@@ -2509,16 +2509,16 @@
 			{
 				\b2db\Core::closeDBLink();
 				if (self::isDebugMode()) self::generateDebugInfo();
-				$this->getResponse()->setHttpStatus(301);
+				self::getResponse()->setHttpStatus(301);
 				$message = $e->getMessage();
 
 				if (self::getRequest()->getRequestedFormat() == 'json')
 				{
-					$this->getResponse()->setContentType('application/json');
+					self::getResponse()->setContentType('application/json');
 					$message = json_encode(array('message' => $message));
 				}
 
-				$this->getResponse()->renderHeaders();
+				self::getResponse()->renderHeaders();
 				echo $message;
 			}
 			catch (Exception $e)
