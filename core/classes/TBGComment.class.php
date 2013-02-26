@@ -269,8 +269,19 @@
 		public function canUserEditComment()
 		{
 			if ($this->isSystemComment()) return false;
-			$retval = $this->_canPermissionOrSeeAndEditComments('caneditcomments');
-			$retval = ($retval === null) ? $this->_canPermissionOrSeeAndEditAllComments('caneditcomments') : $retval;
+			$retval = $this->_canPermissionOrSeeAndEditAllComments('caneditcomments');
+
+			return ($retval !== null) ? $retval : TBGSettings::isPermissive();
+		}
+
+		/**
+		 * Return if the user can edit own comment
+		 *
+		 * @return boolean
+		 */
+		public function canUserEditOwnComment()
+		{
+			$retval = $this->_canPermissionOrSeeAndEditComments('caneditcommentsown');
 
 			return ($retval !== null) ? $retval : TBGSettings::isPermissive();
 		}
@@ -282,10 +293,106 @@
 		 */
 		public function canUserDeleteComment()
 		{
-			$retval = $this->_canPermissionOrSeeAndEditComments('candeletecomments');
-			$retval = ($retval === null) ? $this->_canPermissionOrSeeAndEditAllComments('candeletecomments') : $retval;
+			if ($this->isSystemComment()) return false;
+			$retval = $this->_canPermissionOrSeeAndEditAllComments('candeletecomments');
 
 			return ($retval !== null) ? $retval : TBGSettings::isPermissive();
+		}
+
+		/**
+		 * Return if the user can delete own comment
+		 *
+		 * @return boolean
+		 */
+		public function canUserDeleteOwnComment()
+		{
+			$retval = $this->_canPermissionOrSeeAndEditComments('candeletecommentsown');
+
+			return ($retval !== null) ? $retval : TBGSettings::isPermissive();
+		}
+
+		/**
+		 * Return if the user can delete comment
+		 *
+		 * @param TBGUser $user A User
+		 *
+		 * @return boolean
+		 */
+		public function canUserDelete(TBGUser $user)
+		{
+			$can_delete = false;
+			
+			try
+			{
+				// Delete comment if valid user and... 
+				if ($user instanceof TBGUser)
+				{
+					if (($this->postedByUser($user->getID()) && $this->canUserDeleteOwnComment()) // the user posted the comment AND the user can delete own comments
+						|| $this->canUserDeleteComment()) // OR the user can delete all comments
+					{
+						$can_delete = true;
+					}//endif
+				}//endif
+			}//endtry
+			catch (Exception $e){ }
+			return $can_delete;
+		}
+
+		/**
+		 * Return if the user can edit comment
+		 *
+		 * @param TBGUser $user A User
+		 *
+		 * @return boolean
+		 */
+		public function canUserEdit(TBGUser $user)
+		{
+			$can_edit = false;
+			
+			try
+			{
+				// Edit comment if valid user and... 
+				if ($user instanceof TBGUser)
+				{
+					if (($this->postedByUser($user->getID()) && $this->canUserEditOwnComment()) // the user posted the comment AND the user can edit own comments
+						|| $this->canUserEditComment()) // OR the user can edit all comments
+					{
+						$can_edit = true;
+					}//endif
+				}//endif
+			}//endtry
+			catch (Exception $e){ }
+			return $can_edit;
+		}
+		
+		/**
+		 * Return if the specified user can view this comment
+		 *
+		 * @param TBGUser $user A User
+		 *
+		 * @return boolean
+		 */
+		public function isViewableByUser(TBGUser $user)
+		{
+			$can_view = false;
+			
+			try
+			{
+				// Show comment if valid user and... 
+				if ($user instanceof TBGUser)
+				{
+					
+					if ((!$this->isPublic() && $user->canSeeNonPublicComments()) // the comment is hidden and the user can see hidden comments
+						|| ($this->isPublic() && $user->canViewComments()) // OR the comment is public and  user can see public comments
+						|| ($this->postedByUser($user->getID()))) // OR the user posted the comment
+					{
+						$can_view = true;
+					}//endif
+					
+				}//endif
+			}//endtry
+			catch (Exception $e){ }
+			return $can_view;
 		}
 
 		public function __toString()
@@ -335,6 +442,37 @@
 			catch (Exception $e) {}
 			return ($poster instanceof TBGIdentifiable) ? $poster->getID() : null;
 		}
+
+		/**
+		 * Return the whether or not the user owns this comment
+		 *
+		 * @param int $user_id A user's ID
+		 *
+		 * @return bool
+		 */
+		public function postedByUser($user_id)
+		{
+			$posted_by_id = null;
+			
+			try
+			{
+				$posted_by_id = $this->getPostedByID();
+				
+				if (!empty($posted_by_id) && !empty($user_id))
+				{
+					if ($posted_by_id == $user_id)
+					{
+						return true;
+					}//endif
+				}//endif
+				else
+				{
+					return false;
+				}//endelse
+			}//endtry
+			catch (Exception $e) { }
+			return false;
+		}//end postedByUser
 
 		public function setPostedBy($var)
 		{

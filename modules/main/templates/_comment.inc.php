@@ -1,15 +1,20 @@
 <?php $options = (isset($issue)) ? array('issue' => $issue) : array(); ?>
+<?php if ($comment->isViewableByUser($tbg_user)): ?> 
 <div class="comment<?php if ($comment->isSystemComment()): ?> system_comment<?php endif; ?>" id="comment_<?php echo $comment->getID(); ?>"<?php if ($comment->isSystemComment()): ?> style="display: none;"<?php endif; ?>>
 	<div style="position: relative; overflow: visible; padding: 5px;" id="comment_view_<?php echo $comment->getID(); ?>" class="comment_main">
 		<div id="comment_<?php echo $comment->getID(); ?>_header" class="commentheader">
 			<a href="#comment_<?php echo $comment->getID(); ?>" class="comment_hash">#<?php echo $comment->getCommentNumber(); ?></a>
-			<?php if (($comment->canUserEditComment() || $comment->canUserDeleteComment()) && ((TBGContext::isProjectContext() && !TBGContext::getCurrentProject()->isArchived()) || !TBGContext::isProjectContext())) : ?>
+			<?php if ((TBGContext::isProjectContext() && !TBGContext::getCurrentProject()->isArchived()) || !TBGContext::isProjectContext()) : ?>
 				<div class="commenttools button-group">
 					<?php if (!$comment->isSystemComment() && $tbg_user->canPostComments() && ((TBGContext::isProjectContext() && !TBGContext::getCurrentProject()->isArchived()) || !TBGContext::isProjectContext())): ?>
 						<a class="button button-icon button-silver" href="javascript:void(0);" onclick="$('comment_reply_<?php echo $comment->getID(); ?>').show();$('comment_reply_bodybox_<?php echo $comment->getID(); ?>').focus();"><?php echo image_tag('reply.png'); ?></a>
 					<?php endif; ?>
-					<?php if ($comment->canUserEditComment()): ?><a href="javascript:void(0)" class="button button-icon button-silver" onclick="$('comment_view_<?php echo $comment->getID(); ?>').hide();$('comment_edit_<?php echo $comment->getID(); ?>').show();"><?php echo image_tag('edit.png', array('title' => __('Edit'))); ?></a><?php endif; ?>
-					<?php if ($comment->canUserDeleteComment()): ?><a href="javascript:void(0)" class="button button-icon button-silver" onclick="$('comment_delete_confirm_<?php echo $comment->getID(); ?>').toggle();"><?php echo image_tag('delete.png', array('title' => __('Delete'))); ?></a><?php endif; ?>
+					<?php if ($comment->canUserEdit($tbg_user)): ?>
+					        <a href="javascript:void(0)" class="button button-icon button-silver" onclick="$('comment_view_<?php echo $comment->getID(); ?>').hide();$('comment_edit_<?php echo $comment->getID(); ?>').show();"><?php echo image_tag('edit.png', array('title' => __('Edit'))); ?></a>
+					<?php endif; ?>
+					<?php if ($comment->canUserDelete($tbg_user)): ?>
+					       <a href="javascript:void(0)" class="button button-icon button-silver" onclick="$('comment_delete_confirm_<?php echo $comment->getID(); ?>').toggle();"><?php echo image_tag('delete.png', array('title' => __('Delete'))); ?></a>
+					<?php endif; ?>
 				</div>
 			<?php endif; ?>
 			<div class="commenttitle">
@@ -90,3 +95,4 @@
 		</form>
 	</div>
 </div>
+<?php endif; ?>
