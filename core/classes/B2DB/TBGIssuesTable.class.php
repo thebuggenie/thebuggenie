@@ -548,7 +548,7 @@
 			$this->doUpdate($crit);
 		}
 
-		public function findIssues($filters = array(), $results_per_page = 30, $offset = 0, $groupby = null, $grouporder = null)
+		public function findIssues($filters = array(), $results_per_page = 30, $offset = 0, $groupby = null, $grouporder = null, $dateorder = 'asc')
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::DELETED, false);
@@ -811,7 +811,7 @@
 				}
 				
 				$crit->addSelectionColumn(self::LAST_UPDATED);
-				$crit->addOrderBy(self::LAST_UPDATED, 'asc');
+				$crit->addOrderBy(self::LAST_UPDATED, $dateorder);
 
 				$res = $this->doSelect($crit, 'none');
 				$ids = array();
