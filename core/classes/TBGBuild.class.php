@@ -515,4 +515,19 @@
 			$this->_name = $name;
 		}
 
+		public static function listen_TBGFile_hasAccess(TBGEvent $event)
+		{
+			$file = $event->getSubject();
+			$builds = self::getB2DBTable()->getByFileID($file->getID());
+			foreach ($builds as $build)
+			{
+				if ($build->hasAccess())
+				{
+					$event->setReturnValue(true);
+					$event->setProcessed();
+					break;
+				}
+			}
+		}
+
 	}

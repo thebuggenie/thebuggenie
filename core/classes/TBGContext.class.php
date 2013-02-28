@@ -787,6 +787,7 @@
 		protected static function setupCoreListeners()
 		{
 			TBGEvent::listen('core', 'TBGFile::hasAccess', 'TBGProject::listen_TBGFile_hasAccess');
+			TBGEvent::listen('core', 'TBGFile::hasAccess', 'TBGBuild::listen_TBGFile_hasAccess');
 			TBGEvent::listen('core', 'TBGFile::hasAccess', 'TBGSettings::listen_TBGFile_hasAccess');
 		}
 
