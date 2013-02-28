@@ -106,8 +106,8 @@
 
 		protected static $_ver_mj = 3;
 		protected static $_ver_mn = 2;
-		protected static $_ver_rev = '5-dev';
-		protected static $_ver_name = "Aut viam inveniam aut faciam";
+		protected static $_ver_rev = 5;
+		protected static $_ver_name = "De gustibus non est disputandum";
 		protected static $_defaultscope = null;
 		protected static $_settings = null;
 		protected static $_loadedsettings = array();
