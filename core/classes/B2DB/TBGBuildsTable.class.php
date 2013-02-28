@@ -103,6 +103,13 @@
 			return $this->select($crit);
 		}
 
+		public function getByFileID($file_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::FILE_ID, $file_id);
+			return $this->select($crit);
+		}
+
 		public function getByEditionID($edition_id)
 		{
 			$crit = $this->getCriteria();
