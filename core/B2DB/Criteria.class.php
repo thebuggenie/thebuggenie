@@ -33,6 +33,10 @@
 		protected $return_selections = array();
 		protected $indexby = null;
 
+		protected $_cached_cols = array();
+		protected $_cached_joined_cols = array();
+		protected $_cached_foreign_cols = array();
+
 		/**
 		 * Parent table
 		 *
@@ -274,14 +278,14 @@
 			{
 				throw new Exception('Cannot use ' . print_r($this->fromtable) . ' as a table. You need to call setTable() before trying to join a new table', $this->getSQL());
 			}
-			$col1 = $jointable->getB2DBAlias() . '.' . $this->getColumnName($foreigncol);
+			$col1 = $jointable->getB2DBAlias() . '.' . $this->_getColumnName($foreigncol);
 			if ($ontable === null)
 			{
-				$col2 = $this->fromtable->getB2DBAlias() . '.' . $this->getColumnName($tablecol);
+				$col2 = $this->fromtable->getB2DBAlias() . '.' . $this->_getColumnName($tablecol);
 			}
 			else
 			{
-				$col2 = $ontable->getB2DBAlias() . '.' . $this->getColumnName($tablecol);
+				$col2 = $ontable->getB2DBAlias() . '.' . $this->_getColumnName($tablecol);
 			}
 
 			$this->jointables[$jointable->getB2DBAlias()] = array('jointable' => $jointable, 'col1' => $col1, 'col2' => $col2, 'original_column' => $this->getRealColumnName($tablecol), 'criterias' => $criterias, 'jointype' => $jointype);
@@ -383,7 +387,7 @@
 		 *
 		 * @return string
 		 */
-		public function getColumnName($column)
+		protected function _getColumnName($column)
 		{
 			if (mb_stripos($column, '.') > 0)
 			{
@@ -393,6 +397,33 @@
 			{
 				return $column;
 			}
+		}
+
+		public function getColumnName($column, $foreign_key = null)
+		{
+			if ($foreign_key !== null)
+			{
+				if (array_key_exists($column, $this->_cached_foreign_cols))
+				{
+					$column = $this->_cached_foreign_cols[$column];
+				}
+				else
+				{
+					foreach ($this->getForeignTables() as $aft)
+					{
+						if ($aft['original_column'] == $foreign_key)
+						{
+							$this->_cached_foreign_cols[$column] = $aft['jointable']->getB2DBAlias() . '.' . $this->_getColumnName($column);
+							$column = $this->_cached_foreign_cols[$column];
+							break;
+						}
+					}
+				}
+			}
+			else
+				$column = $this->getSelectionColumn($column);
+
+			return $column;
 		}
 
 		/**
@@ -416,12 +447,22 @@
 		 */
 		public function getSelectionColumn($column, $join_column = null, $throw_exceptions = true)
 		{
+			if ($join_column !== null && array_key_exists($join_column, $this->_cached_joined_cols) && array_key_exists($column, $this->_cached_joined_cols[$join_column]))
+			{
+				return $this->_cached_joined_cols[$join_column][$column];
+			}
+			elseif ($join_column === null && array_key_exists($column, $this->_cached_cols))
+			{
+				return $this->_cached_cols[$column];
+			}
+
 			if (isset($this->selections[$column])) return $this->selections[$column];
 			$retval = '';
 			foreach ($this->selections as $a_sel)
 			{
 				if ($a_sel['alias'] == $column)
 				{
+					$this->_cached_cols[$column] = $column;
 					return $column;
 				}
 			}
@@ -431,15 +472,22 @@
 				if ($this->fromtable->getB2DBAlias() == $table_name || $this->fromtable->getB2DBName() == $table_name)
 				{
 					$retval = $this->fromtable->getB2DBAlias() . '.' . $column_name;
+					$this->_cached_cols[$column] = $retval;
 					return $retval;
 				}
-				if (isset($this->jointables[$table_name])) return $this->jointables[$table_name]['jointable']->getB2DBAlias() . '.' . $column_name;
+				if (isset($this->jointables[$table_name])) 
+				{
+					$retval = $this->jointables[$table_name]['jointable']->getB2DBAlias() . '.' . $column_name;
+					$this->_cached_cols[$column] = $retval;
+					return $retval;
+				}
 			}
 			foreach ($this->jointables as $a_table)
 			{
 				if (($join_column !== null && $a_table['col2'] == $join_column) || ($join_column === null && $a_table['jointable']->getB2DBName() == $table_name))
 				{
 					$retval = $a_table['jointable']->getB2DBAlias() . '.' . $column_name;
+					$this->_cached_joined_cols[$join_column][$column] = $retval;
 					return $retval;
 				}
 			}
@@ -589,8 +637,8 @@
 				foreach ($foreign_tables as $aForeign)
 				{
 					$fTable = array_shift($aForeign);
-					$fKey = $fTable->getB2DBAlias() . '.' . $this->getColumnName(array_shift($aForeign));
-					$fColumn = $this->fromtable->getB2DBAlias() . '.' . $this->getColumnName(array_shift($aForeign));
+					$fKey = $fTable->getB2DBAlias() . '.' . $this->_getColumnName(array_shift($aForeign));
+					$fColumn = $this->fromtable->getB2DBAlias() . '.' . $this->_getColumnName(array_shift($aForeign));
 					$this->addJoin($fTable, $fKey, $fColumn);
 				}
 			}
@@ -599,7 +647,7 @@
 				foreach ($join as $join_column)
 				{
 					$foreign = $this->fromtable->getForeignTableByLocalColumn($join_column);
-					$this->addJoin($foreign['table'], $foreign['table']->getB2DBAlias() . '.' . $this->getColumnName($foreign['key']), $this->fromtable->getB2DBAlias() . '.' . $this->getColumnName($foreign['column']));
+					$this->addJoin($foreign['table'], $foreign['table']->getB2DBAlias() . '.' . $this->_getColumnName($foreign['key']), $this->fromtable->getB2DBAlias() . '.' . $this->_getColumnName($foreign['column']));
 				}
 			}
 		}
@@ -968,7 +1016,7 @@
 					{
 						$sql .= $a_crit['special'] . '(';
 					}
-					$sql .= ($strip) ? $this->getColumnName($a_crit['column']) : $this->getSelectionColumn($a_crit['column']);
+					$sql .= ($strip) ? $this->_getColumnName($a_crit['column']) : $this->getSelectionColumn($a_crit['column']);
 					if (isset($a_crit['special']) && $a_crit['special'] != '')
 					{
 						$sql .= ')';
@@ -1031,7 +1079,7 @@
 					if (!in_array($an_or['operator'], array(self::DB_EQUALS, self::DB_GREATER_THAN, self::DB_GREATER_THAN_EQUAL, self::DB_ILIKE, self::DB_IN, self::DB_IS_NOT_NULL, self::DB_IS_NULL, self::DB_LESS_THAN, self::DB_LESS_THAN_EQUAL, self::DB_LIKE, self::DB_NOT_EQUALS, self::DB_NOT_ILIKE, self::DB_NOT_IN, self::DB_NOT_LIKE)))
 						throw new Exception("Invalid operator", $this->getSQL());
 					
-					$sql .= ($strip) ? $this->getColumnName($an_or['column']) : $this->getSelectionColumn($an_or['column']);
+					$sql .= ($strip) ? $this->_getColumnName($an_or['column']) : $this->getSelectionColumn($an_or['column']);
 					if (is_null($an_or['value']) && !in_array($an_or['operator'], array(self::DB_IS_NOT_NULL, self::DB_IS_NULL)))
 					{
 						$an_or['operator'] = ($an_or['operator'] == self::DB_EQUALS) ? self::DB_IS_NULL : self::DB_IS_NOT_NULL; 
