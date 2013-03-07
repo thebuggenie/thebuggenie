@@ -33,6 +33,7 @@
 		public function componentReglang()
 		{
 			$this->languages = TBGI18n::getLanguages();
+			$this->timezones = tbg_get_timezones();
 		}
 		
 		public function componentOffline()

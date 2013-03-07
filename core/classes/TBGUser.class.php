@@ -219,8 +219,8 @@
 		/**
 		 * The timezone this user is in
 		 *
-		 * @var integer
-		 * @Colum(type="string", length=10)
+		 * @var DateTimeZone
+		 * @Column(type="string", length=100)
 		 */
 		protected $_timezone = null;
 
@@ -648,6 +648,10 @@
 			{
 				$this->_buddyname = $this->_username;
 			}
+			if (is_object($this->_timezone))
+			{
+				$this->_timezone = $this->_timezone->getName();
+			}
 			if ($is_new && $this->_group_id === null)
 			{
 				$this->setGroup(TBGSettings::getDefaultGroup());
@@ -715,23 +719,6 @@
 				TBGUserScopesTable::getTable()->updateUserScopeGroup($this->getID(), TBGContext::getScope()->getID(), $this->_group_id);
 			}
 			
-			if ($this->_timezone !== null)
-			{
-				TBGSettings::saveSetting(TBGSettings::SETTING_USER_TIMEZONE, $this->_timezone, 'core', null, $this->getID());
-			}
-			else
-			{
-				TBGSettings::saveSetting(TBGSettings::SETTING_USER_TIMEZONE, 'sys', 'core', null, $this->getID());
-			}
-			
-			if ($this->_language != null)
-			{
-				TBGSettings::saveSetting('language', $this->_language, 'core', null, $this->getID());
-			}
-			else
-			{
-				TBGSettings::saveSetting('language', 'sys', 'core', null, $this->getID());
-			}
 		}
 		
 		/**
@@ -1778,7 +1765,7 @@
 		{
 			if ($val === null)
 			{
-				$val = time();
+				$val = NOW;
 			}
 			$this->_joined = $val;
 		}
@@ -1896,16 +1883,28 @@
 			return ($retval !== null) ? $retval : TBGSettings::isPermissive();
 		}
 
+		public function getTimezoneIdentifier()
+		{
+			return (is_object($this->_timezone)) ? $this->_timezone->getName() : $this->_timezone;
+		}
+
 		/**
 		 * Get this users timezone
 		 *
-		 * @return mixed
+		 * @return DateTimeZone
 		 */
 		public function getTimezone()
 		{
-			if ($this->_timezone == null)
+			if (!is_object($this->_timezone))
 			{
-				$this->_timezone = TBGSettings::get(TBGSettings::SETTING_USER_TIMEZONE, 'core', TBGContext::getScope(), $this->getID());
+				if ($this->_timezone == 'sys' || $this->_timezone == null)
+				{
+					$this->_timezone = TBGSettings::getServerTimezone();
+				}
+				else
+				{
+					$this->_timezone = new DateTimeZone($this->_timezone);
+				}
 			}
 			return $this->_timezone;
 		}
@@ -1913,7 +1912,7 @@
 		/**
 		 * Set this users timezone
 		 *
-		 * @param integer $timezone
+		 * @param string $timezone
 		 */
 		public function setTimezone($timezone)
 		{

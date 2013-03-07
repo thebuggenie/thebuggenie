@@ -590,7 +590,7 @@
 			$output .= '[VCS '.$project->getKey().'] Commit to be logged by user ' . $user->getName() . "\n";
 
 			if ($date == null):
-				$date = time();
+				$date = NOW;
 			endif;
 			
 			// Create the commit data

@@ -30,7 +30,7 @@
 			$message = serialize($mail);
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::MESSAGE, $message);
-			$crit->addInsert(self::DATE, time());
+			$crit->addInsert(self::DATE, NOW);
 			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
 
 			$res = $this->doInsert($crit);

@@ -1006,8 +1006,6 @@
 					{
 						self::getResponse()->headerRedirect(self::getRouting()->generate('add_scope'));
 					}
-					self::$_user->setTimezone(TBGSettings::getUserTimezone());
-					self::$_user->setLanguage(TBGSettings::getUserLanguage());
 					self::$_user->save();
 					if (!(self::$_user->getGroup() instanceof TBGGroup))
 					{

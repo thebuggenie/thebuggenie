@@ -1270,7 +1270,7 @@
 			$return_array = array();
 			if ($milestones = $this->getMilestones())
 			{
-				$curr_day = time();
+				$curr_day = NOW;
 				foreach ($milestones as $milestone)
 				{
 					if (($milestone->getScheduledDate() >= $curr_day || $milestone->isOverdue()) && (($milestone->getScheduledDate() <= ($curr_day + (86400 * $days))) || ($milestone->getType() == TBGMilestone::TYPE_SCRUMSPRINT && $milestone->isCurrent())))
@@ -1294,7 +1294,7 @@
 			$return_array = array();
 			if ($milestones = $this->getMilestones())
 			{
-				$curr_day = time();
+				$curr_day = NOW;
 				foreach ($milestones as $milestone)
 				{
 					if (($milestone->getStartingDate() > $curr_day) && ($milestone->getStartingDate() < ($curr_day + (86400 * $days))))
@@ -2460,9 +2460,9 @@
 				$this->_recentactivities = array();
 				foreach ($this->getBuilds() as $build)
 				{
-					if ($build->isReleased() && $build->getReleaseDate() <= time())
+					if ($build->isReleased() && $build->getReleaseDate() <= NOW)
 					{
-						if ($build->getReleaseDate() > time()) continue;
+						if ($build->getReleaseDate() > NOW) continue;
 						if (!array_key_exists($build->getReleaseDate(), $this->_recentactivities))
 						{
 							$this->_recentactivities[$build->getReleaseDate()] = array();
@@ -2474,7 +2474,7 @@
 				{
 					if ($milestone->isStarting() && $milestone->isSprint())
 					{
-						if ($milestone->getStartingDate() > time()) continue;
+						if ($milestone->getStartingDate() > NOW) continue;
 						if (!array_key_exists($milestone->getStartingDate(), $this->_recentactivities))
 						{
 							$this->_recentactivities[$milestone->getStartingDate()] = array();
@@ -2483,7 +2483,7 @@
 					}
 					if ($milestone->isScheduled() && $milestone->isReached())
 					{
-						if ($milestone->getReachedDate() > time()) continue;
+						if ($milestone->getReachedDate() > NOW) continue;
 						if (!array_key_exists($milestone->getReachedDate(), $this->_recentactivities))
 						{
 							$this->_recentactivities[$milestone->getReachedDate()] = array();

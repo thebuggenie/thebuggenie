@@ -381,7 +381,7 @@
 		 */
 		public function isOverdue()
 		{
-			return ($this->getScheduledDate() && $this->getScheduledDate() < time() && !$this->isReached()) ? true : false;
+			return ($this->getScheduledDate() && $this->getScheduledDate() < NOW && !$this->isReached()) ? true : false;
 		}
 		
 		/**
@@ -583,7 +583,7 @@
 		public function isCurrent()
 		{
 			if (!$this->isScheduled()) return false;
-			if ($this->getStartingDate() <= time() && $this->getScheduledDate() >= time()) return true;
+			if ($this->getStartingDate() <= NOW && $this->getScheduledDate() >= NOW) return true;
 			if (!$this->isStarting() && $this->isScheduled()) return true;
 			return $this->isOverdue();
 		}
@@ -677,22 +677,22 @@
 			$i18n = TBGContext::getI18n();
 			if ($this->hasStartingDate() && $this->hasScheduledDate())
 			{
-				if ($this->getStartingDate() < time() && $this->getScheduledDate() < time())
+				if ($this->getStartingDate() < NOW && $this->getScheduledDate() < NOW)
 				{
 					return $i18n->__('%milestone_name% (started %start_date% - ended %end_date%)', array('%milestone_name%' => '', '%start_date%' => tbg_formatTime($this->getStartingDate(), 23, true, true), '%end_date%' => tbg_formatTime($this->getScheduledDate(), 23, true, true)));
 				}
-				elseif ($this->getStartingDate() < time() && $this->getScheduledDate() > time())
+				elseif ($this->getStartingDate() < NOW && $this->getScheduledDate() > NOW)
 				{
 					return $i18n->__('%milestone_name% (started %start_date% - ends %end_date%)', array('%milestone_name%' => '', '%start_date%' => tbg_formatTime($this->getStartingDate(), 23, true, true), '%end_date%' => tbg_formatTime($this->getScheduledDate(), 23, true, true)));
 				}
-				elseif ($this->getStartingDate() > time())
+				elseif ($this->getStartingDate() > NOW)
 				{
 					return $i18n->__('%milestone_name% (starts %start_date% - ended %end_date%)', array('%milestone_name%' => '', '%start_date%' => tbg_formatTime($this->getStartingDate(), 23, true, true), '%end_date%' => tbg_formatTime($this->getScheduledDate(), 23, true, true)));
 				}
 			}
 			elseif ($this->hasStartingDate())
 			{
-				if ($this->getStartingDate() < time())
+				if ($this->getStartingDate() < NOW)
 				{
 					return $i18n->__('%milestone_name% (started %start_date%)', array('%milestone_name%' => '', '%start_date%' => tbg_formatTime($this->getStartingDate(), 23, true, true)));
 				}
@@ -703,7 +703,7 @@
 			}
 			elseif ($this->hasScheduledDate())
 			{
-				if ($this->getScheduledDate() < time())
+				if ($this->getScheduledDate() < NOW)
 				{
 					return $i18n->__('%milestone_name% (released: %date%)', array('%milestone_name%' => '', '%date%' => tbg_formatTime($this->getScheduledDate(), 23, true, true)));
 				}

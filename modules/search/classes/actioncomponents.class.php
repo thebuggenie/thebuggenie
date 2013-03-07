@@ -53,7 +53,7 @@
 			$this->filter = (isset($this->filter)) ? $this->filter : null;
 			if (in_array($this->filter, array('posted', 'last_updated')))
 			{
-				$this->selected_value = ($this->selected_value) ? $this->selected_value : time();
+				$this->selected_value = ($this->selected_value) ? $this->selected_value : NOW;
 			}
 			else
 			{

@@ -84,7 +84,7 @@
 								var d_b_hours = [];
 
 								<?php if ($milestone->hasStartingDate() && $milestone->hasScheduledDate()): ?>
-									TBG.Chart.burndownChart(<?php echo json_encode($burndown_data); ?>, '<?php echo time() * 1000; ?>');
+									TBG.Chart.burndownChart(<?php echo json_encode($burndown_data); ?>, '<?php echo NOW * 1000; ?>');
 								<?php else: ?>
 									<?php foreach (range(0, 8) as $cc): ?>
 										<?php $eh_val = ($cc != 3) ? 0 : array_sum($burndown_data['estimations']['hours']); ?>

@@ -44,7 +44,7 @@
 						}
 
 					?>; font-weight: bold;"><?php echo $issue->getPercentCompleted(); ?>%</td>
-					<td style="padding: 3px; font-size: 0.9em;"><?php echo (mb_strlen($issue->getTitle()) > 60) ? mb_substr($issue->getTitle(), 0 , 57) . '...' : $issue->getTitle(); ?></td>
+					<td style="padding: 3px; font-weight: bold;"><?php echo (mb_strlen($issue->getTitle()) > 60) ? mb_substr($issue->getTitle(), 0 , 57) . '...' : $issue->getTitle(); ?></td>
 					<td style="padding: 3px; color: #888;">
 						<?php if ($issue->hasDescription()): ?>
 							<?php echo (mb_strlen($issue->getDescription()) > 120) ? mb_substr($issue->getDescription(), 0 , 117) . '...' : $issue->getDescription(); ?>

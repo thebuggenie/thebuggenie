@@ -67,7 +67,7 @@
 		// offset the timestamp properly
 		if (!$skiptimestamp)
 		{
-			$tstamp += tbg_get_timezone_offset($skiptimestamp);
+			$tstamp += tbg_get_timezone_offset($skipusertimestamp);
 		}
 			
 		switch ($format)
@@ -200,52 +200,52 @@
 				break;
 			case 21:
 				$tstring = strftime('%a, %d %b %Y %H:%M:%S ', $tstamp);
-				if (!$skipusertimestamp && TBGSettings::getUserTimezone() != 'sys')
-				{
-					if (TBGSettings::getUserTimezone() != 0)
-					{
-						$offset = TBGSettings::getUserTimezone() * 100;
-					}
-				}
-				elseif (TBGSettings::getGMToffset() != 0)
-				{
-					$offset = TBGSettings::getGMToffset() * 100;
-				}
-				
-				if (!isset($offset))
-				{
-					$offset = 'GMT';
-				}
-				
-				if ($offset == 0)
-				{
-					$offset = 'GMT';
-				}
-				elseif ($offset != 'GMT')
-				{
-					$negative = false;
-					if (strstr($offset, '-'))
-					{
-						$offset = trim($offset, '-');
-						$negative = true;
-					}
-					
-					if ($offset < 1000)
-					{
-						$offset = '0'.$offset;
-					}
-					
-					if ($negative)
-					{
-						$offset = '-'.$offset;
-					}
-					else
-					{
-						$offset = '+'.$offset;
-					}
-				}
-
-				$tstring .= $offset;
+//				if (!$skipusertimestamp && TBGSettings::getUserTimezone() != 'sys')
+//				{
+//					if (TBGSettings::getUserTimezone() != 0)
+//					{
+//						$offset = TBGSettings::getUserTimezone() * 100;
+//					}
+//				}
+//				elseif (TBGSettings::getGMToffset() != 0)
+//				{
+//					$offset = TBGSettings::getGMToffset() * 100;
+//				}
+//
+//				if (!isset($offset))
+//				{
+//					$offset = 'GMT';
+//				}
+//
+//				if ($offset == 0)
+//				{
+//					$offset = 'GMT';
+//				}
+//				elseif ($offset != 'GMT')
+//				{
+//					$negative = false;
+//					if (strstr($offset, '-'))
+//					{
+//						$offset = trim($offset, '-');
+//						$negative = true;
+//					}
+//
+//					if ($offset < 1000)
+//					{
+//						$offset = '0'.$offset;
+//					}
+//
+//					if ($negative)
+//					{
+//						$offset = '-'.$offset;
+//					}
+//					else
+//					{
+//						$offset = '+'.$offset;
+//					}
+//				}
+//
+//				$tstring .= $offset;
 				return ($tstring);
 				break;
 			case 22:
@@ -433,18 +433,19 @@
 		$tstamp = 0;
 		
 		// offset the timestamp properly
-		if (!$skipusertimestamp && TBGSettings::getUserTimezone() != 'sys')
+		if (!$skipusertimestamp)
 		{
-			if (TBGSettings::getUserTimezone() != 0)
-			{
-				$tstamp = TBGSettings::getUserTimezone() * 60 * 60;
-			}
+			$tz = TBGContext::getUser()->getTimezone();
+			$tstamp = $tz->getOffset(new DateTime(null, TBGSettings::getServerTimezone()));
 		}
-		elseif (TBGSettings::getGMToffset() != 0)
+		else
 		{
-			$tstamp = TBGSettings::getGMToffset() * 60 * 60;
+			$tstamp = TBGSettings::getServerTimezone()->getOffset(new DateTimeZone('GMT'));
 		}
-		
 		return $tstamp;
 	}
-	
+
+	function tbg_get_timezones()
+	{
+		return TBGI18n::getTimezones();
+	}

@@ -61,7 +61,7 @@
 			$crit->addInsert(self::SPENT_HOURS, $hours);
 			$crit->addInsert(self::SPENT_POINTS, $points);
 			$crit->addInsert(self::ISSUE_ID, $issue_id);
-			$crit->addInsert(self::EDITED_AT, time());
+			$crit->addInsert(self::EDITED_AT, NOW);
 			$crit->addInsert(self::EDITED_BY, TBGContext::getUser()->getID());
 			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
 			$this->doInsert($crit);

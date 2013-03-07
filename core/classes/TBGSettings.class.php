@@ -109,6 +109,12 @@
 		protected static $_ver_name = "Fearless Opposum";
 		protected static $_defaultscope = null;
 		protected static $_settings = null;
+		
+		/**
+		 * @var DateTimeZone
+		 */
+		protected static $_timezone = null;
+
 		protected static $_loadedsettings = array();
 
 		protected static $_core_workflow = null;
@@ -150,6 +156,7 @@
 					throw new TBGSettingsException('Could not retrieve settings from database');
 				}
 				self::$_loadedsettings[$uid] = true;
+				self::$_timezone = new DateTimeZone(self::getServerTimezoneIdentifier());
 				TBGLogging::log('Retrieved');
 			}
 			
@@ -601,18 +608,19 @@
 			return self::get(self::SETTING_SERVER_TIMEZONE);
 		}
 		
-		public static function getUserTimezone()
+		public static function getServerTimezoneIdentifier()
 		{
-			if (!TBGContext::getUser() instanceof TBGUser) return 'sys';
-			return self::get(self::SETTING_USER_TIMEZONE, 'core', null, TBGContext::getUser()->getID());
+			return self::get(self::SETTING_SERVER_TIMEZONE);
 		}
-		
-		public static function getUserLanguage()
+
+		/**
+		 * @return DateTimeZone
+		 */
+		public static function getServerTimezone()
 		{
-			if (!TBGContext::getUser() instanceof TBGUser) return null;
-			return self::get(self::SETTING_USER_LANGUAGE, 'core', null, TBGContext::getUser()->getID());
+			return self::$_timezone;
 		}
-		
+
 		public static function isUploadsEnabled()
 		{
 			return (bool) (TBGContext::getScope()->isUploadsEnabled() && self::get(self::SETTING_ENABLE_UPLOADS));

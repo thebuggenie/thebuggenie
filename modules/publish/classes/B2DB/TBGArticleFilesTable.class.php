@@ -54,7 +54,7 @@
 			{
 				$crit = $this->getCriteria();
 				$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
-				$crit->addInsert(self::ATTACHED_AT, time());
+				$crit->addInsert(self::ATTACHED_AT, NOW);
 				$crit->addInsert(self::ARTICLE_ID, $article_id);
 				$crit->addInsert(self::FILE_ID, $file_id);
 				$this->doInsert($crit);

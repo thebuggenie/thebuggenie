@@ -842,7 +842,7 @@
 						break;
 					case 'settings':
 						TBGContext::getUser()->setUsesGravatar((bool) $request['use_gravatar']);
-						TBGContext::getUser()->setTimezone($request['timezone']);
+						TBGContext::getUser()->setTimezone($request->getRawParameter('timezone'));
 						TBGContext::getUser()->setLanguage($request['profile_language']);
 						TBGContext::getUser()->setKeyboardNavigationEnabled($request['enable_keyboard_navigation']);
 						TBGContext::getUser()->save();
@@ -870,6 +870,7 @@
 			}
 			$this->rnd_no = rand();
 			$this->languages = TBGI18n::getLanguages();
+			$this->timezones = TBGI18n::getTimezones();
 			$this->error = TBGContext::getMessageAndClear('error');
 			$this->username_chosen = TBGContext::getMessageAndClear('username_chosen');
 			$this->openid_used = TBGContext::getMessageAndClear('openid_used');

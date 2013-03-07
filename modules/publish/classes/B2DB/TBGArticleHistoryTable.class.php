@@ -78,7 +78,7 @@
 			}
 			
 			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
-			$crit->addInsert(self::DATE, time());
+			$crit->addInsert(self::DATE, NOW);
 
 			$res = $this->doInsert($crit);
 			$transaction->commitAndEnd();

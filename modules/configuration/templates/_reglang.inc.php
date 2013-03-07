@@ -25,20 +25,17 @@
 	<tr>
 		<td><label for="server_timezone"><?php echo __('Server timezone'); ?></label></td>
 		<td>
-			<select name="<?php echo TBGSettings::SETTING_SERVER_TIMEZONE; ?>" id="server_timezone" style="width: 150px;"<?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>>
-				<?php for ($cc = 12;$cc >= 1;$cc--): ?>
-					<option value="-<?php echo $cc; ?>"<?php if (TBGSettings::getGMToffset() == -$cc): ?> selected<?php endif; ?>>GMT -<?php echo $cc; ?></option>
-				<?php endfor; ?>
-				<option value="0"<?php if (TBGSettings::getGMToffset() == 0): ?> selected<?php endif; ?>>GMT/UTC</option>
-				<?php for ($cc = 1;$cc <= 12;$cc++): ?>
-					<option value="<?php echo $cc; ?>"<?php if (TBGSettings::getGMToffset() == $cc): ?> selected<?php endif; ?>>GMT +<?php echo $cc; ?></option>
-				<?php endfor; ?>
+			<select name="<?php echo TBGSettings::SETTING_SERVER_TIMEZONE; ?>" id="server_timezone" style=""<?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>>
+				<option value=""<?php if (TBGSettings::getServerTimezoneIdentifier() == ''): ?> selected<?php endif; ?>><?php echo __('Not set'); ?></option>
+				<?php foreach ($timezones as $timezone => $description): ?>
+					<option value="<?php echo $timezone; ?>"<?php if (TBGSettings::getServerTimezoneIdentifier() == $timezone): ?> selected<?php endif; ?>><?php echo $description; ?></option>
+				<?php endforeach; ?>
 			</select>
 		</td>
 	</tr>
 	<tr>
 		<td class="config_explanation" colspan="2">
-			<?php echo __('The timezone used for The Bug Genie'); ?><br>
+			<?php echo __('The timezone for the server hosting The Bug Genie. Make sure this is the same as the timezone the server is running in - this is not necessarily the same as your own timezone!'); ?><br>
 			<?php echo __('The time is now: %time%', array('%time%' => tbg_formatTime(time(), 1, true))); ?>
 		</td>
 	</tr>

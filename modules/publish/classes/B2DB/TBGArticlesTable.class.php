@@ -216,7 +216,7 @@
 				$crit->addInsert(self::CONTENT, $content);
 				$crit->addInsert(self::IS_PUBLISHED, (bool) $published);
 				$crit->addInsert(self::AUTHOR, $author);
-				$crit->addInsert(self::DATE, time());
+				$crit->addInsert(self::DATE, NOW);
 				$crit->addInsert(self::SCOPE, $scope);
 				$res = $this->doInsert($crit);
 				return $res->getInsertID();
@@ -227,7 +227,7 @@
 				$crit->addUpdate(self::CONTENT, $content);
 				$crit->addUpdate(self::IS_PUBLISHED, (bool) $published);
 				$crit->addUpdate(self::AUTHOR, $author);
-				$crit->addUpdate(self::DATE, time());
+				$crit->addUpdate(self::DATE, NOW);
 				$res = $this->doUpdateById($crit, $id);
 				return $res;
 			}
