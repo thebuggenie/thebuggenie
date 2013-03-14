@@ -69,6 +69,12 @@
 			}
 		}
 
+		public function getLeaderID()
+		{
+			$leader = $this->getLeader();
+			return ($leader instanceof TBGIdentifiable) ? $leader->getID() : null;
+		}
+
 		public function hasLeader()
 		{
 			return (bool) ($this->getLeader() instanceof TBGIdentifiable);
@@ -106,6 +112,12 @@
 			} else {
 				return null;
 			}
+		}
+
+		public function getQaResponsibleID()
+		{
+			$qa_responsible = $this->getQaResponsible();
+			return ($qa_responsible instanceof TBGIdentifiable) ? $qa_responsible->getID() : null;
 		}
 
 		public function hasQaResponsible()
