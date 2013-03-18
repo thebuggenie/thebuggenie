@@ -2635,6 +2635,7 @@
 // ----------------------------------------------------------------------------
   $strings['Profile information'] = 'Profile information';
   $strings['General settings'] = 'General settings';
+  $strings['Notification settings'] = 'Notification settings';
   $strings['Login accounts'] = 'Login accounts';
   $strings['Scope memberships'] = 'Scope memberships';
   $strings['Edit your profile details here, including additional information.'] = 'Edit your profile details here, including additional information.';
