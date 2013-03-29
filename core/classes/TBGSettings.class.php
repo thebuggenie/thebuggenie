@@ -611,14 +611,10 @@
 		public static function getServerTimezoneIdentifier()
 		{
 			$timezone = self::get(self::SETTING_SERVER_TIMEZONE);
-			if ($timezone == null)
-			{
-				$timezone = date_default_timezone_get();
-			}
 
 			if ($timezone == null)
 			{
-				return "UTC";
+				$timezone = date_default_timezone_get();
 			}
 
 			return $timezone;
