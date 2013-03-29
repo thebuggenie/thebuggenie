@@ -598,6 +598,8 @@
 			{
 				TBGIncomingEmailAccountTable::getTable()->upgrade(TBGIncomingEmailAccountTable3dot2::getTable());
 			}
+			// Add new settings.
+			TBGSettings::saveSetting(TBGSettings::SETTING_SERVER_TIMEZONE, 'core', date_default_timezone_get(), 0, 1);
 
 			$this->upgrade_complete = true;
 		}
