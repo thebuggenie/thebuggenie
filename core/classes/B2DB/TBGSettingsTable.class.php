@@ -139,6 +139,7 @@
 			$settings[TBGSettings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_NUMBERING] = '3';
 			$settings[TBGSettings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_INTERVAL] = '10';
 			$settings[TBGSettings::SETTING_ICONSET] = 'oxygen';
+			$settings[TBGSettings::SETTING_SERVER_TIMEZONE] = date_default_timezone_get();
 			if ($scope->isDefault())
 			{
 				$settings[TBGSettings::SETTING_SALT] = sha1(time().mt_rand(1000, 10000));
