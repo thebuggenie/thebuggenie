@@ -425,36 +425,56 @@
 				return $output;
 			}
 			
-			$fixes_grep = TBGTextParser::getIssueRegex();
+			$issue_match_regexes = TBGTextParser::getIssueRegex();
 
 			// Build list of affected issues and their transitions
-			$temp = array(); // All data from regexp
-			$temp2 = array(); // Issue numbers
 			$issues = array(); // Issue objects
 			$transitions = array(); // Transition strings
-			
-			if (preg_match_all($fixes_grep, $commit_msg, $temp))
+
+			// Iterate over all regular expressions that should be used for
+			// issue/transition matching in commit message.
+			foreach($issue_match_regexes as $fixes_grep)
 			{
-				foreach ($temp[0] as $key => $item)
+				$tmp_issue_numbers = array(); // Issue numbers
+				$tmp_regex_matches = array(); // All data from regexp
+
+				// If any match is found using the current regular expression, extract
+				// the information.
+				if (preg_match_all($fixes_grep, $commit_msg, $tmp_regex_matches))
 				{
-					// Preserve workflow step data
-					if (!array_key_exists($temp[4][$key], $transitions))
+
+					// Identified issues are kept inside of named regex group.
+					foreach ($tmp_regex_matches["issues"] as $key => $item)
 					{
-						$transitions[$temp[4][$key]] = array();
+						// Create an empty array to store transitions for an issue. Don't
+						// overwrite it. Use issue number as key for transitions.
+						if (!array_key_exists($tmp_regex_matches["issues"][$key], $transitions))
+						{
+							$transitions[$tmp_regex_matches["issues"][$key]] = array();
+						}
+
+						// Each issue has corresponding transition string under a named
+						// regex group (with corresponding key).
+						$count = preg_match('/ \((.*)\)/i', $tmp_regex_matches["transitions"][$key], $tmp_transition);
+
+						// Add the transition information (if any) for an issue.
+						if ($count == 1)
+						{
+							$transitions[$tmp_regex_matches["issues"][$key]][] = $tmp_transition[0];
+						}
+
+						// Add the issue number to the list.
+						$tmp_issue_numbers[] = $tmp_regex_matches["issues"][$key];
 					}
 					
-					$count = preg_match('/ \((.*)\)/i', $temp[6][$key], $stuff);
-					
-					if ($count == 1)
-					{
-						$transitions[$temp[4][$key]][] = $stuff[0];
-					}
-					
-					$temp2[] = $temp[4][$key];
 				}
-				
-				$temp2 = array_unique($temp2);
-				foreach ($temp2 as $issue_no)
+
+				// Make sure that each issue gets procssed only once for a single commit
+				// (avoid duplication of commits).
+				$tmp_issue_numbers = array_unique($tmp_issue_numbers);
+
+				// Fetch all issues affected by the comit.
+				foreach ($tmp_issue_numbers as $issue_no)
 				{
 					$issue = TBGIssue::getIssueFromLink($issue_no);
 					if ($issue instanceof TBGIssue): $issues[] = $issue; endif;
@@ -619,7 +639,7 @@
 				foreach ($transitions[$issue->getFormattedIssueNo()] as $issue_transition_block)
 				{
 					preg_match('/(?<=\()(.*)(?=\))/', $issue_transition_block, $issue_transitions, null);
-					
+
 					if (TBGSettings::get('vcs_workflow_'.$project->getID(), 'vcs_integration') == TBGVCSIntegration::WORKFLOW_ENABLED)
 					{
 						TBGContext::setUser($user);
