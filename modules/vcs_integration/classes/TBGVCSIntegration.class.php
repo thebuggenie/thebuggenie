@@ -428,33 +428,33 @@
 			$fixes_grep = TBGTextParser::getIssueRegex();
 
 			// Build list of affected issues and their transitions
-			$temp = array(); // All data from regexp
-			$temp2 = array(); // Issue numbers
+			$tmp_regex_matches = array(); // All data from regexp
+			$tmp_issue_numbers = array(); // Issue numbers
 			$issues = array(); // Issue objects
 			$transitions = array(); // Transition strings
 			
-			if (preg_match_all($fixes_grep, $commit_msg, $temp))
+			if (preg_match_all($fixes_grep, $commit_msg, $tmp_regex_matches))
 			{
-				foreach ($temp[0] as $key => $item)
+				foreach ($tmp_regex_matches["issues"] as $key => $item)
 				{
 					// Preserve workflow step data
-					if (!array_key_exists($temp[4][$key], $transitions))
+					if (!array_key_exists($tmp_regex_matches["issues"][$key], $transitions))
 					{
-						$transitions[$temp[4][$key]] = array();
+						$transitions[$tmp_regex_matches["issues"][$key]] = array();
 					}
 					
-					$count = preg_match('/ \((.*)\)/i', $temp[6][$key], $stuff);
+					$count = preg_match('/ \((.*)\)/i', $tmp_regex_matches["transitions"][$key], $tmp_transition);
 					
 					if ($count == 1)
 					{
-						$transitions[$temp[4][$key]][] = $stuff[0];
+						$transitions[$tmp_regex_matches["issues"][$key]][] = $tmp_transition[0];
 					}
 					
-					$temp2[] = $temp[4][$key];
+					$tmp_issue_numbers[] = $tmp_regex_matches["issues"][$key];
 				}
 				
-				$temp2 = array_unique($temp2);
-				foreach ($temp2 as $issue_no)
+				$tmp_issue_numbers = array_unique($tmp_issue_numbers);
+				foreach ($tmp_issue_numbers as $issue_no)
 				{
 					$issue = TBGIssue::getIssueFromLink($issue_no);
 					if ($issue instanceof TBGIssue): $issues[] = $issue; endif;
@@ -619,7 +619,7 @@
 				foreach ($transitions[$issue->getFormattedIssueNo()] as $issue_transition_block)
 				{
 					preg_match('/(?<=\()(.*)(?=\))/', $issue_transition_block, $issue_transitions, null);
-					
+
 					if (TBGSettings::get('vcs_workflow_'.$project->getID(), 'vcs_integration') == TBGVCSIntegration::WORKFLOW_ENABLED)
 					{
 						TBGContext::setUser($user);
