@@ -320,6 +320,8 @@ footer td { font-size: 0.9em; line-height: 1.2; padding: 5px; text-shadow: 1px 1
 .comment_editsave, .comment_addsave { font-weight: bold; }
 .comment_titlebox { width: 600px; margin-bottom: 8px; }
 .comment_visibilitybox { width: 400px; margin-bottom: 8px; }
+.system_comment { background-color: #EBEBEB; border: 1px solid #DDD; }
+.private_comment { background-color: #E8F6E8; border: 1px solid #D8E6D8; }
 
 .commit_header { font-weight: bold; font-size: larger; }
 .commit_expander { float: right; }
