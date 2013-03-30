@@ -20,6 +20,9 @@
 			<div class="commenttitle">
 				<?php if ($comment->isSystemComment()): ?>
 					<?php echo __('Comment posted on behalf of %user%', array('%user%' => '<div style="display: inline;">'.get_component_html('main/userdropdown', array('user' => $comment->getPostedBy(), 'size' => 'small')).'</div>')); ?>
+				<?php elseif(!$comment->isPublic()): ?>
+					<?php echo image_tag('icon_locked.png', array('style' => 'float: left; margin-right: 3px;', 'title' => __('Access to this comment is restricted'))); ?>
+					<?php echo __('Private comment posted by %user%', array('%user%' => '<div style="display: inline;">'.get_component_html('main/userdropdown', array('user' => $comment->getPostedBy(), 'size' => 'small')).'</div>')); ?>
 				<?php else: ?>
 					<?php echo __('Comment posted by %user%', array('%user%' => '<div style="display: inline;">'.get_component_html('main/userdropdown', array('user' => $comment->getPostedBy(), 'size' => 'small')).'</div>')); ?>
 				<?php endif; ?>
