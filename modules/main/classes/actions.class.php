@@ -3678,11 +3678,11 @@
 			$this->getResponse()->setContentType('image/png');
 			$this->getResponse()->setDecoration(TBGResponse::DECORATE_NONE);
 			$chain = str_split($_SESSION['activation_number'],1);
-			$size = getimagesize(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'iconsets' . DS . TBGSettings::getThemeName() . DS . 'numbers/0.png');
+			$size = getimagesize(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'iconsets' . DS . TBGSettings::getIconsetName() . DS . 'numbers/0.png');
 			$captcha = imagecreatetruecolor($size[0]*sizeof($chain), $size[1]);
 			foreach ($chain as $n => $number)
 			{
-				$pic = imagecreatefrompng(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'iconsets' . DS . TBGSettings::getThemeName() . DS . 'numbers/' . $number . '.png');
+				$pic = imagecreatefrompng(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'iconsets' . DS . TBGSettings::getIconsetName() . DS . 'numbers/' . $number . '.png');
 				imagecopymerge($captcha, $pic, $size[0]*$n, 0, 0, 0, imagesx($pic), imagesy($pic), 100);
 				imagedestroy($pic);
 			}
