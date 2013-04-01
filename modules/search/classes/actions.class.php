@@ -308,7 +308,7 @@
 
 		public function extractIssues($matches)
 		{
-			$issue = TBGIssue::getIssueFromLink($matches[0]);
+			$issue = TBGIssue::getIssueFromLink($matches["issues"]);
 			if ($issue instanceof TBGIssue)
 			{
 				if (!TBGContext::isProjectContext() || (TBGContext::isProjectContext() && $issue->getProjectID() == TBGContext::getCurrentProject()->getID()))

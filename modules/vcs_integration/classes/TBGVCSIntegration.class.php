@@ -424,62 +424,11 @@
 				$output .= '[VCS '.$project->getKey().'] This project does not use VCS Integration' . "\n";
 				return $output;
 			}
-			
-			$issue_match_regexes = TBGTextParser::getIssueRegex();
 
-			// Build list of affected issues and their transitions
-			$issues = array(); // Issue objects
-			$transitions = array(); // Transition strings
-
-			// Iterate over all regular expressions that should be used for
-			// issue/transition matching in commit message.
-			foreach($issue_match_regexes as $fixes_grep)
-			{
-				$tmp_issue_numbers = array(); // Issue numbers
-				$tmp_regex_matches = array(); // All data from regexp
-
-				// If any match is found using the current regular expression, extract
-				// the information.
-				if (preg_match_all($fixes_grep, $commit_msg, $tmp_regex_matches))
-				{
-
-					// Identified issues are kept inside of named regex group.
-					foreach ($tmp_regex_matches["issues"] as $key => $item)
-					{
-						// Create an empty array to store transitions for an issue. Don't
-						// overwrite it. Use issue number as key for transitions.
-						if (!array_key_exists($tmp_regex_matches["issues"][$key], $transitions))
-						{
-							$transitions[$tmp_regex_matches["issues"][$key]] = array();
-						}
-
-						// Each issue has corresponding transition string under a named
-						// regex group (with corresponding key).
-						$count = preg_match('/ \((.*)\)/i', $tmp_regex_matches["transitions"][$key], $tmp_transition);
-
-						// Add the transition information (if any) for an issue.
-						if ($count == 1)
-						{
-							$transitions[$tmp_regex_matches["issues"][$key]][] = $tmp_transition[0];
-						}
-
-						// Add the issue number to the list.
-						$tmp_issue_numbers[] = $tmp_regex_matches["issues"][$key];
-					}
-					
-				}
-
-				// Make sure that each issue gets procssed only once for a single commit
-				// (avoid duplication of commits).
-				$tmp_issue_numbers = array_unique($tmp_issue_numbers);
-
-				// Fetch all issues affected by the comit.
-				foreach ($tmp_issue_numbers as $issue_no)
-				{
-					$issue = TBGIssue::getIssueFromLink($issue_no);
-					if ($issue instanceof TBGIssue): $issues[] = $issue; endif;
-				}
-			}
+			// Parse the commit message, and obtain the issues and transitions for issues.
+			$parsed_commit = TBGIssue::getIssuesFromTextByRegex($commit_msg);
+			$issues = $parsed_commit["issues"];
+			$transitions = $parsed_commit["transitions"];
 
 			// If no issues exist, we may not be able to continue
 			if (count($issues) == 0)
@@ -629,74 +578,69 @@
 			
 			$output .= '[VCS '.$project->getKey().'] Commit logged with revision ' . $commit->getRevision() . "\n";
 			
-			// Create issue links
+			// Iterate over affected issues and update them.
 			foreach ($issues as $issue)
 			{
 				$inst = new TBGVCSIntegrationIssueLink();
 				$inst->setIssue($issue);
 				$inst->setCommit($commit);
 				$inst->save();
-				foreach ($transitions[$issue->getFormattedIssueNo()] as $issue_transition_block)
-				{
-					preg_match('/(?<=\()(.*)(?=\))/', $issue_transition_block, $issue_transitions, null);
 
+				// Process all commit-message transitions for an issue.
+				foreach ($transitions[$issue->getFormattedIssueNo()] as $transition)
+				{
 					if (TBGSettings::get('vcs_workflow_'.$project->getID(), 'vcs_integration') == TBGVCSIntegration::WORKFLOW_ENABLED)
 					{
 						TBGContext::setUser($user);
 						TBGSettings::forceSettingsReload();
 						TBGContext::cacheAllPermissions();
-						
+
 						if ($issue->isWorkflowTransitionsAvailable())
 						{
-							foreach (explode('; ', $issue_transitions[0]) as $workflow_individual_data)
+							// Go through the list of possible transitions for an issue. Only
+							// process transitions that are applicable to issue's workflow.
+							foreach ($issue->getAvailableWorkflowTransitions() as $possible_transition)
 							{
-								$data = explode(": ", $workflow_individual_data);
-								if (count($data) == 2)
+								if (mb_strtolower($possible_transition->getName()) == mb_strtolower($transition[0]))
 								{
-									$command = $data[0];
-									$parameters = $data[1];
-								}
-								else
-								{
-									$command = $data[0];
-									$parameters = null;
-								}
-								foreach ($issue->getAvailableWorkflowTransitions() as $transition)
-								{
-									if (mb_strtolower($transition->getName()) == mb_strtolower($command))
+									$output .= '[VCS '.$project->getKey().'] Running transition '.$transition[0].' on issue '.$issue->getFormattedIssueNo()."\n";
+									// String representation of parameters. Used for log message.
+									$parameters_string = "";
+
+									// Iterate over the list of this transition's parameters, and
+									// set them.
+									foreach ($transition[1] as $parameter => $value)
 									{
-										$output .= '[VCS '.$project->getKey().'] Running transition '.$command.' on issue '.$issue->getFormattedIssueNo()."\n";
-										foreach (explode(" ", $parameters) as $single_command)
+										$parameters_string .= "$parameter=$value ";
+
+										switch ($parameter)
 										{
-											if (mb_strpos($single_command, '='))
+										case 'resolution':
+											if (($resolution = TBGResolution::getResolutionByKeyish($value)) instanceof TBGResolution)
 											{
-												list($key, $val) = explode('=', $single_command);
-												switch ($key)
-												{
-													case 'resolution':
-														if (($resolution = TBGResolution::getResolutionByKeyish($val)) instanceof TBGResolution)
-														{
-															TBGContext::getRequest()->setParameter('resolution_id', $resolution->getID());
-														}
-														break;
-													case 'status':
-														if (($status = TBGStatus::getStatusByKeyish($val)) instanceof TBGStatus)
-														{
-															TBGContext::getRequest()->setParameter('status_id', $status->getID());
-														}
-														break;
-												}
+												TBGContext::getRequest()->setParameter('resolution_id', $resolution->getID());
 											}
+											break;
+										case 'status':
+											if (($status = TBGStatus::getStatusByKeyish($value)) instanceof TBGStatus)
+											{
+												TBGContext::getRequest()->setParameter('status_id', $status->getID());
+											}
+											break;
 										}
-										$transition->transitionIssueToOutgoingStepFromRequest($issue, TBGContext::getRequest());
-										$output .= '[VCS '.$project->getKey().'] Ran transition '.$transition->getName().' with parameters \''.$parameters.'\' on issue '.$issue->getFormattedIssueNo()."\n";
 									}
+
+									// Run the transition.
+									$possible_transition->transitionIssueToOutgoingStepFromRequest($issue, TBGContext::getRequest());
+
+									// Log an informative message about the transition.
+									$output .= '[VCS '.$project->getKey().'] Ran transition '.$possible_transition->getName().' with parameters \''.$parameters_string.'\' on issue '.$issue->getFormattedIssueNo()."\n";
 								}
 							}
 						}
 					}
 				}
-				
+
 				$issue->addSystemComment(TBGContext::getI18n()->__('Issue updated from code repository'), TBGContext::getI18n()->__('This issue has been updated with the latest changes from the code repository.<source>%commit_msg%</source>', array('%commit_msg%' => $commit_msg)), $uid);
 				$output .= '[VCS '.$project->getKey().'] Updated issue ' . $issue->getFormattedIssueNo() . "\n";
 			}
