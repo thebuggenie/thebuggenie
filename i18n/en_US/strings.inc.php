@@ -3825,7 +3825,7 @@
   $strings['View'] = 'View';
   $strings['Affected issues'] = 'Affected issues';
   $strings['This commit affects no issues'] = 'This commit affects no issues';
-  $strings['This commit only affects issues you do not hae access to'] = 'This commit only affects issues you do not hae access to';
+  $strings['This commit only affects issues you do not have access to'] = 'This commit only affects issues you do not have access to';
 
 // First occurrence is in: modules/vcs_integration/templates/_menustriplinks.inc.php
 // ----------------------------------------------------------------------------
