@@ -424,9 +424,9 @@
 				$output .= '[VCS '.$project->getKey().'] This project does not use VCS Integration' . "\n";
 				return $output;
 			}
-			
-			$parsed_commit = TBGIssue::getIssuesFromTextByRegex($commit_msg);
 
+			// Parse the commit message, and obtain the issues and transitions for issues.
+			$parsed_commit = TBGIssue::getIssuesFromTextByRegex($commit_msg);
 			$issues = $parsed_commit["issues"];
 			$transitions = $parsed_commit["transitions"];
 
