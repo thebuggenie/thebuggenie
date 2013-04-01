@@ -690,11 +690,30 @@
 
 		/** 
 		 * Runs one or more regular expressions against a supplied text, extracts
-		 * issue numbers from it, and then obtains corresponding issues.
+		 * issue numbers from it, and then obtains corresponding issues. The
+		 * function will also obtain information about transitions (if this was
+		 * specified in the text). This data can be used for transitioning the
+		 * issues through a workflow.
 		 *
-		 * If requested, the function will also obtain information about transitions
-		 * specified in the supplied text (which is useful for automatic transitions
-		 * of issues using VCS integration or mail parsing, for example).
+		 * Once the function finishes processing, it will return an array of format:
+		 *
+		 * array('issues' => tbg_issues, 'transitions' => transitions).
+		 *
+		 * tbgissues is an array consisting of TBGIssue instances.
+		 *
+		 * transitions is an array containing transition arrays. The transition
+		 * arrays are accessed with issue numbers as keys (e.g. 'PREFIX-1',
+		 * 'PREFIX-5' or '2', '3' etc). Each transition array has the following
+		 * format:
+		 *
+		 * array(0 => command, 1 => parameters)
+		 *
+		 * command is a string representing the transision command (for example
+		 * 'Resolve issue') from the workflow definition. parameters is an array
+		 * that contains parameters and their values that should be passed to the
+		 * transition step:
+		 *
+		 * array( 'PARAM1' => 'VALUE1', 'PARAM2' => 'VALUE2', ...)
 		 * 
 		 *
 		 * @param text Text that should be parsed for issue numbers and transitions.
@@ -711,7 +730,9 @@
 		 * keys 'issues', and 'transitions'. The key 'issues' can be used for
 		 * accessing an array made-up of TBGIssue instances. The key 'transitions'
 		 * can be used for accessing an array containing transition information
-		 * about each issue. The 'transitions' array uses issue numbers as keys.
+		 * about each issue. The 'transitions' array uses issue numbers as keys,
+		 * and contains ordered transition information (see above for detailed
+		 * description of format).
 		 */
 		public static function getIssuesFromTextByRegex($text, $preg = array())
 		{
@@ -723,41 +744,67 @@
 
 			$issue_numbers = array(); // Issue numbers
 			$issues = array(); // Issue objects
-			$transitions = array(); // Transition strings
+			$transitions = array(); // Transition information
 
 			// Iterate over all regular expressions that should be used for
 			// issue/transition matching in commit message.
-			foreach($issue_match_regexes as $fixes_grep)
+			foreach ($issue_match_regexes as $issue_match_regex)
 			{
-				$tmp_regex_matches = array(); // All data from regexp
+				$matched_issue_data = array(); // All data from regexp
 
 				// If any match is found using the current regular expression, extract
 				// the information.
-				if (preg_match_all($fixes_grep, $text, $tmp_regex_matches))
+				if (preg_match_all($issue_match_regex, $text, $matched_issue_data))
 				{
 
 					// Identified issues are kept inside of named regex group.
-					foreach ($tmp_regex_matches["issues"] as $key => $item)
+					foreach ($matched_issue_data["issues"] as $key => $issue_number)
 					{
+						// Get the matched transitions for the issue.
+						$matched_issue_transitions = $matched_issue_data["transitions"][$key];
+
 						// Create an empty array to store transitions for an issue. Don't
 						// overwrite it. Use issue number as key for transitions.
-						if (!array_key_exists($tmp_regex_matches["issues"][$key], $transitions))
+						if (!array_key_exists($issue_number, $transitions))
 						{
-							$transitions[$tmp_regex_matches["issues"][$key]] = array();
+							$transitions[$issue_number] = array();
 						}
 
-						// Each issue has corresponding transition string under a named
-						// regex group (with corresponding key).
-						$count = preg_match('/ \((.*)\)/i', $tmp_regex_matches["transitions"][$key], $tmp_transition);
-
 						// Add the transition information (if any) for an issue.
-						if ($count == 1)
+						if ($matched_issue_transitions )
 						{
-							$transitions[$tmp_regex_matches["issues"][$key]][] = $tmp_transition[0];
+							// Parse the transition information. Each transition string is in
+							// format:
+							// 'TRANSITION1: PARAM1_1=VALUE1_1 PARAM1_2=VALUE1_2; TRANSITION2: PARAM2_1=VALUE2_1 PARAM2_2=VALUE2_2'
+							foreach (explode("; ", $matched_issue_transitions) as $transition)
+							{
+								// Split command from its parameters.
+								$transition_data = explode(": ", $transition);
+								$transition_command = $transition_data[0];
+								// Set-up array that will contain parameters
+								$transition_parameters = array();
+
+								// Process parameters if they were present.
+								if (count($transition_data) == 2)
+								{
+									// Split into induvidual parameters.
+									foreach (explode(" ", $transition_data[1]) as $parameter)
+									{
+										// Only process proper parameters (of format 'PARAM=VALUE')
+										if (mb_strpos($parameter, '='))
+										{
+											list($param_key, $param_value) = explode('=', $parameter);
+											$transition_parameters[$param_key] = $param_value;
+										}
+									}					
+								}
+								// Append the transition information for the current issue number.
+								$transitions[$issue_number][] = array($transition_command, $transition_parameters);
+							}
 						}
 
 						// Add the issue number to the list.
-						$issue_numbers[] = $tmp_regex_matches["issues"][$key];
+						$issue_numbers[] = $issue_number;
 					}
 					
 				}
@@ -774,6 +821,9 @@
 				if ($issue instanceof TBGIssue): $issues[] = $issue; endif;
 			}
 
+			// Return array consisting out of two arrays - one with TBGIssue
+			// instances, and the second one with transition information for those
+			// issues.
 			return array("issues" => $issues, "transitions" => $transitions);
 		}
 
