@@ -691,7 +691,96 @@
 			}
 			return self::findIssues($filters);
 		}
-		
+
+		/** 
+		 * Runs one or more regular expressions against a supplied text, extracts
+		 * issue numbers from it, and then obtains corresponding issues.
+		 *
+		 * If requested, the function will also obtain information about transitions
+		 * specified in the supplied text (which is useful for automatic transitions
+		 * of issues using VCS integration or mail parsing, for example).
+		 * 
+		 *
+		 * @param text Text that should be parsed for issue numbers and transitions.
+		 *
+		 * @param preg An array of regular expressions that should be used for
+		 * matching issue numbers. If an empty array is provided (default), regular
+		 * expressions are obtained through TBGTextParser::getIssueRegex() call. The
+		 * regular expressions should contain two named parameters - 'issues' and
+		 * 'transitions'. These two will be used for extracting the issue number and
+		 * transition information.
+		 * 
+		 * @return An array with two elements, one denoting the matched issues, one
+		 * denoting the transitions for issues. These elements can be accessed using
+		 * keys 'issues', and 'transitions'. The key 'issues' can be used for
+		 * accessing an array made-up of TBGIssue instances. The key 'transitions'
+		 * can be used for accessing an array containing transition information
+		 * about each issue. The 'transitions' array uses issue numbers as keys.
+		 */
+		public static function getIssuesFromTextByRegex($text, $preg = array())
+		{
+			// Fetch the default regular expressions if required.
+			if (!$preg)
+			{
+				$issue_match_regexes = TBGTextParser::getIssueRegex();
+			}
+
+			$issue_numbers = array(); // Issue numbers
+			$issues = array(); // Issue objects
+			$transitions = array(); // Transition strings
+
+			// Iterate over all regular expressions that should be used for
+			// issue/transition matching in commit message.
+			foreach($issue_match_regexes as $fixes_grep)
+			{
+				$tmp_regex_matches = array(); // All data from regexp
+
+				// If any match is found using the current regular expression, extract
+				// the information.
+				if (preg_match_all($fixes_grep, $text, $tmp_regex_matches))
+				{
+
+					// Identified issues are kept inside of named regex group.
+					foreach ($tmp_regex_matches["issues"] as $key => $item)
+					{
+						// Create an empty array to store transitions for an issue. Don't
+						// overwrite it. Use issue number as key for transitions.
+						if (!array_key_exists($tmp_regex_matches["issues"][$key], $transitions))
+						{
+							$transitions[$tmp_regex_matches["issues"][$key]] = array();
+						}
+
+						// Each issue has corresponding transition string under a named
+						// regex group (with corresponding key).
+						$count = preg_match('/ \((.*)\)/i', $tmp_regex_matches["transitions"][$key], $tmp_transition);
+
+						// Add the transition information (if any) for an issue.
+						if ($count == 1)
+						{
+							$transitions[$tmp_regex_matches["issues"][$key]][] = $tmp_transition[0];
+						}
+
+						// Add the issue number to the list.
+						$issue_numbers[] = $tmp_regex_matches["issues"][$key];
+					}
+					
+				}
+			}
+
+			// Make sure that each issue gets procssed only once for a single commit
+			// (avoid duplication of commits).
+			$issue_numbers = array_unique($issue_numbers);
+			
+			// Fetch all issues affected by the commit.
+			foreach ($issue_numbers as $issue_no)
+			{
+				$issue = TBGIssue::getIssueFromLink($issue_no);
+				if ($issue instanceof TBGIssue): $issues[] = $issue; endif;
+			}
+
+			return array("issues" => $issues, "transitions" => $transitions);
+		}
+
 		/**
 		 * Class constructor
 		 *
