@@ -118,10 +118,10 @@
 				// (#)ISSUE_NUMBER (TRANSITIONS)" (parenthesis means optional). For
 				// example:
 				// "Resolves issue #2 (Resolve issue)"
-				$regex[] = '#( |^)(?<!\!)(('.$issue_string.')\s\#?(?P<issues>([A-Z0-9]+\-)?\d+))(?P<transitions> \(.*?\))?#i';
+				$regex[] = '#( |^)(?<!\!)(('.$issue_string.')\s\#?(?P<issues>([A-Z0-9]+\-)?\d+))( \((?P<transitions>.*?)\))?#i';
 				// This regex will match messages that contain template at the beginning
 				// of message in format "ISSUE_NUMBER: (TRANSITIONS)".
-				$regex[] = '#^(?<!\!)((?P<issues>([A-Z0-9]+\-)?\d+)):(?P<transitions> \(.*?\))?#i';
+				$regex[] = '#^(?<!\!)((?P<issues>([A-Z0-9]+\-)?\d+)):( \((?P<transitions>.*?)\))?#i';
 
 				// Add the constructed regexes to cache.
 				TBGCache::add(TBGCache::KEY_TEXTPARSER_ISSUE_REGEX, $regex);

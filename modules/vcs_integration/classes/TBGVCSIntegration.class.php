@@ -581,74 +581,69 @@
 			
 			$output .= '[VCS '.$project->getKey().'] Commit logged with revision ' . $commit->getRevision() . "\n";
 			
-			// Create issue links
+			// Iterate over affected issues and update them.
 			foreach ($issues as $issue)
 			{
 				$inst = new TBGVCSIntegrationIssueLink();
 				$inst->setIssue($issue);
 				$inst->setCommit($commit);
 				$inst->save();
-				foreach ($transitions[$issue->getFormattedIssueNo()] as $issue_transition_block)
-				{
-					preg_match('/(?<=\()(.*)(?=\))/', $issue_transition_block, $issue_transitions, null);
 
+				// Process all commit-message transitions for an issue.
+				foreach ($transitions[$issue->getFormattedIssueNo()] as $transition)
+				{
 					if (TBGSettings::get('vcs_workflow_'.$project->getID(), 'vcs_integration') == TBGVCSIntegration::WORKFLOW_ENABLED)
 					{
 						TBGContext::setUser($user);
 						TBGSettings::forceSettingsReload();
 						TBGContext::cacheAllPermissions();
-						
+
 						if ($issue->isWorkflowTransitionsAvailable())
 						{
-							foreach (explode('; ', $issue_transitions[0]) as $workflow_individual_data)
+							// Go through the list of possible transitions for an issue. Only
+							// process transitions that are applicable to issue's workflow.
+							foreach ($issue->getAvailableWorkflowTransitions() as $possible_transition)
 							{
-								$data = explode(": ", $workflow_individual_data);
-								if (count($data) == 2)
+								if (mb_strtolower($possible_transition->getName()) == mb_strtolower($transition[0]))
 								{
-									$command = $data[0];
-									$parameters = $data[1];
-								}
-								else
-								{
-									$command = $data[0];
-									$parameters = null;
-								}
-								foreach ($issue->getAvailableWorkflowTransitions() as $transition)
-								{
-									if (mb_strtolower($transition->getName()) == mb_strtolower($command))
+									$output .= '[VCS '.$project->getKey().'] Running transition '.$transition[0].' on issue '.$issue->getFormattedIssueNo()."\n";
+									// String representation of parameters. Used for log message.
+									$parameters_string = "";
+
+									// Iterate over the list of this transition's parameters, and
+									// set them.
+									foreach ($transition[1] as $parameter => $value)
 									{
-										$output .= '[VCS '.$project->getKey().'] Running transition '.$command.' on issue '.$issue->getFormattedIssueNo()."\n";
-										foreach (explode(" ", $parameters) as $single_command)
+										$parameters_string .= "$parameter=$value ";
+
+										switch ($parameter)
 										{
-											if (mb_strpos($single_command, '='))
+										case 'resolution':
+											if (($resolution = TBGResolution::getResolutionByKeyish($value)) instanceof TBGResolution)
 											{
-												list($key, $val) = explode('=', $single_command);
-												switch ($key)
-												{
-													case 'resolution':
-														if (($resolution = TBGResolution::getResolutionByKeyish($val)) instanceof TBGResolution)
-														{
-															TBGContext::getRequest()->setParameter('resolution_id', $resolution->getID());
-														}
-														break;
-													case 'status':
-														if (($status = TBGStatus::getStatusByKeyish($val)) instanceof TBGStatus)
-														{
-															TBGContext::getRequest()->setParameter('status_id', $status->getID());
-														}
-														break;
-												}
+												TBGContext::getRequest()->setParameter('resolution_id', $resolution->getID());
 											}
+											break;
+										case 'status':
+											if (($status = TBGStatus::getStatusByKeyish($value)) instanceof TBGStatus)
+											{
+												TBGContext::getRequest()->setParameter('status_id', $status->getID());
+											}
+											break;
 										}
-										$transition->transitionIssueToOutgoingStepFromRequest($issue, TBGContext::getRequest());
-										$output .= '[VCS '.$project->getKey().'] Ran transition '.$transition->getName().' with parameters \''.$parameters.'\' on issue '.$issue->getFormattedIssueNo()."\n";
 									}
+
+									// Run the transition.
+									$possible_transition->transitionIssueToOutgoingStepFromRequest($issue, TBGContext::getRequest());
+
+									// Log an informative message about the transition.
+									$output .= '[VCS '.$project->getKey().'] Ran transition '.$possible_transition->getName().' with parameters \''.$parameters_string.'\' on issue '.$issue->getFormattedIssueNo()."\n";
 								}
 							}
 						}
 					}
 				}
-				
+
 				$issue->addSystemComment(TBGContext::getI18n()->__('Issue updated from code repository'), TBGContext::getI18n()->__('This issue has been updated with the latest changes from the code repository.<source>%commit_msg%</source>', array('%commit_msg%' => $commit_msg)), $uid);
 				$output .= '[VCS '.$project->getKey().'] Updated issue ' . $issue->getFormattedIssueNo() . "\n";
 			}

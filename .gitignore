@@ -17,3 +17,5 @@ web.config
 .remote_server
 .remote_username
 tmp
+thebuggenie/test.php
+*~
