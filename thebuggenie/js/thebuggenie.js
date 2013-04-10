@@ -3335,7 +3335,7 @@ TBG.Issues.markAsChanged = function(field)
 {
 	if (!$('viewissue_changed').visible()) {
 		$('viewissue_changed').show();
-		Effect.Pulsate($('issue_info_container'), {pulses: 6, duration: 2});
+		Effect.Pulsate($('issue_info_container'), {pulses: 3, duration: 2});
 	}
 	
 	$(field + '_field').addClassName('issue_detail_changed');
