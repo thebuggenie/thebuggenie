@@ -1250,25 +1250,30 @@ EOT;
 								$data = nl2br($new_data, false);
 							}
 
-							$matches = array();
-							preg_match(TBGTextParser::getIssueRegex(), mb_decode_mimeheader($email->subject), $matches);
+							// Parse the subject, and obtain the issues.
+							$parsed_commit = TBGIssue::getIssuesFromTextByRegex(mb_decode_mimeheader($email->subject));
+							$issues = $parsed_commit["issues"];
 
-							$issue = ($matches) ? TBGIssue::getIssueFromLink($matches[0], $account->getProject()) : null;
-
-							if ($issue instanceof TBGIssue)
+							// If any issues were found, add new comment to each issue.
+							if ($issues)
 							{
-								$text = preg_replace('#(^\w.+:\n)?(^>.*(\n|$))+#mi', "", $data);
-								$text = trim($text);
-								if (!$this->processIncomingEmailCommand($text, $issue, $user) && $user->canPostComments())
+								foreach($issues as $issue)
 								{
-									$comment = new TBGComment();
-									$comment->setContent($text);
-									$comment->setPostedBy($user);
-									$comment->setTargetID($issue->getID());
-									$comment->setTargetType(TBGComment::TYPE_ISSUE);
-									$comment->save();
+									$text = preg_replace('#(^\w.+:\n)?(^>.*(\n|$))+#mi', "", $data);
+									$text = trim($text);
+									if (!$this->processIncomingEmailCommand($text, $issue, $user) && $user->canPostComments())
+									{
+										$comment = new TBGComment();
+										$comment->setContent($text);
+										$comment->setPostedBy($user);
+										$comment->setTargetID($issue->getID());
+										$comment->setTargetType(TBGComment::TYPE_ISSUE);
+										$comment->save();
+									}
 								}
 							}
+							// If not issues were found, open a new issue if user has the
+							// proper permissions.
 							else
 							{
 								if ($user->canReportIssues($account->getProject()))
@@ -1280,10 +1285,15 @@ EOT;
 									$issue->setPostedBy($user);
 									$issue->setIssuetype($account->getIssuetype());
 									$issue->save();
+									// Append the new issue to the list of affected issues. This
+									// is necessary in order to process the attachments properly.
+									$issues[] = $issue;
 								}
 							}
 
-							if ($issue instanceof TBGIssue && $message->hasAttachments())
+							// If there was at least a single affected issue, and mail
+							// contains attachments, add those attachments to related issues.
+							if ($issues && $message->hasAttachments())
 							{
 								foreach ($message->getAttachments() as $attachment_no => $attachment)
 								{
@@ -1318,7 +1328,11 @@ EOT;
 										file_put_contents($new_filename, $attachment['data']);
 									}
 									$file->save();
-									$issue->attachFile($file);
+									// Attach file to each related issue.
+									foreach($issues as $issue)
+									{
+										$issue->attachFile($file);
+									}
 								}
 							}
 

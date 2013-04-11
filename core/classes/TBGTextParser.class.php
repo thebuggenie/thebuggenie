@@ -75,21 +75,59 @@
 			return self::$additional_regexes;
 		}
 
+		/** 
+		 * Returns an array of regular expressions that should be used for matching
+		 * the issue numbers and workflow transitions in a VCS commit.
+		 *
+		 * Each element of an array is a single regular expression that will be
+		 * applied against the incoming commit message. Each regular expression
+		 * should have two named patterns - one denoting the issue number (should
+		 * include prefix if used in project), and one denoting workflow
+		 * transitions.
+		 *
+		 * Simple example would be:
+		 *
+		 * '#fixes issue #(?P<issues>([A-Z0-9]+\-)?\d+) (?P<transitions> \(.*?\))?#i'
+		 * 
+		 * @return array
+		 */
 		public static function getIssueRegex()
 		{
+			// Try getting the regexes from cache first.
 			if (!$regex = TBGCache::get(TBGCache::KEY_TEXTPARSER_ISSUE_REGEX))
 			{
+				// List of keywords that are expected to prefix the issue number in a
+				// commit message (these are _not_ project prefixes).
 				$issue_strings = array('bug', 'issue', 'ticket', 'fix', 'fixes', 'fixed', 'fixing', 'applies to', 'closes', 'references', 'ref', 'addresses', 're', 'see', 'according to', 'also see', 'story');
+
+				// Add the issue types as prefixes as well.
 				foreach (TBGIssuetype::getAll() as $issuetype)
 				{
 					$issue_strings[] = $issuetype->getName();
 				}
+
+				// Construct the OR'ed (|) regex out of issue prefixes.
 				$issue_string = join('|', $issue_strings);
 				$issue_string = html_entity_decode($issue_string, ENT_QUOTES);
 				$issue_string = str_replace(array(' ', "'"), array('\s{1,1}', "\'"), $issue_string);
-				$regex = '#( |^)(?<!\!)(('.$issue_string.')\s\#?(([A-Z0-9]+\-)?\d+))( \(.*?\))?#i';
+
+				// Store all regular expressions for mathces in an array.
+				$regex = array();
+
+				// This regex will match messages that contain template like "KEYWORD
+				// (#)ISSUE_NUMBER (TRANSITIONS)" (parenthesis means optional). For
+				// example:
+				// "Resolves issue #2 (Resolve issue)"
+				$regex[] = '#( |^)(?<!\!)(('.$issue_string.')\s\#?(?P<issues>([A-Z0-9]+\-)?\d+))( \((?P<transitions>.*?)\))?#i';
+				// This regex will match messages that contain template at the beginning
+				// of message in format "ISSUE_NUMBER: (TRANSITIONS)".
+				$regex[] = '#^(?<!\!)((?P<issues>([A-Z0-9]+\-)?\d+)):( \((?P<transitions>.*?)\))?#i';
+
+				// Add the constructed regexes to cache.
 				TBGCache::add(TBGCache::KEY_TEXTPARSER_ISSUE_REGEX, $regex);
 			}
+
+			// Return the regular expressions.
 			return $regex;
 		}
 
