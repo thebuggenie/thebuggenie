@@ -368,8 +368,21 @@
 			die();
 		}
 
+		/**
+		 * Custom PHP error handler.
+		 *
+		 * @see http://php.net/manual/en/function.set-error-handler.php
+		 *
+		 */
 		public static function errorHandler($code, $error, $file, $line)
 		{
+			// Ignore errors for function calls that were called with error control
+			// operator ('@').
+			if (error_reporting() == 0)
+			{
+				return;
+			}
+
 			if (self::isDebugMode()) self::generateDebugInfo();
 
 			if (self::getRequest() instanceof TBGRequest && self::getRequest()->isAjaxCall()) {

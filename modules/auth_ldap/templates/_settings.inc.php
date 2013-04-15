@@ -20,7 +20,7 @@
 				<td><input type="text"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> name="hostname" id="hostname" value="<?php echo $module->getSetting('hostname'); ?>" style="width: 100%;"></td>
 			</tr>
 			<tr>
-				<td class="config_explanation" colspan="2"><?php echo __('Use URL syntax (ldap://hostname:port). If your server requires SSL, use ldaps://hostname/ in this field.'); ?></td>
+				<td class="config_explanation" colspan="2"><?php echo __('Use URL syntax (ldap://hostname:port). If your server requires SSL, use ldaps://hostname/ in this field. You can specify multiple URL\'s by separating them with spaces, in which case they will be tried in succession until a successful connection is established.'); ?></td>
 			</tr>
 			<tr>
 				<td style="padding: 5px;"><label for="b_dn"><?php echo __('Base DN'); ?></label></td>

@@ -102,22 +102,63 @@
 			}
 		}
 		
+		/**
+		 * Establishes a connection to an LDAP server. Multiple URIs will be
+		 * attempted until at least one connection is successful, or until all
+		 * attempts fail.
+		 *
+		 * The URIs are read from the module's 'hostname' setting.
+		 *
+		 * @return LDAP connection handler if connecting to at least one of the URIs
+		 * was successfull.
+		 *
+		 * @throws If no connection was possible, throws an Exception
+		 * with message containg failure reason for each URI.
+		 */
 		public function connect()
 		{
-			$host = $this->getSetting('hostname');
-			$failed = false;
+			// URIs are separated with spaces.
+			$uris = explode(" ", $this->getSetting('hostname'));
+			// Store error messages in an array for each failed URI.
+			$error_messages = array();
+			// Connection handle
+			$connection = false;
 
-			$connection = ldap_connect($host);
-			ldap_set_option($connection, LDAP_OPT_PROTOCOL_VERSION, 3);
-			ldap_set_option($connection, LDAP_OPT_REFERRALS, 0);
-						
-			if ($connection == false): $failed = true; endif;
-
-			if ($failed)
+			// Keep trying as long as there's at least one URI left or until a
+			// connection is made.
+			while ((list($uri_index, $uri) = each($uris)) && $connection == false)
 			{
-				throw new Exception(TBGContext::geti18n()->__('Failed to connect to server'));
+				// Create the connection handle.
+				$connection = ldap_connect($uri);
+
+				// Set-up some basic options for the connection. Timeout is important in
+				// case one of the URIs fail.
+				ldap_set_option($connection, LDAP_OPT_NETWORK_TIMEOUT, 1);
+				ldap_set_option($connection, LDAP_OPT_PROTOCOL_VERSION, 3);
+				ldap_set_option($connection, LDAP_OPT_REFERRALS, 0);
+
+				// Attempt anonymous bind to test the connectivity. If it fails, clear
+				// the connection.
+				if (!@ldap_bind($connection))
+				{
+					// Store LDAP error message for a URI.
+					$error_messages[] = $uri.": ".ldap_error($connection).".";
+					ldap_unbind($connection);
+					$connection = false;
+				}
 			}
-			
+
+			// Check if we failed to establish the connection.
+			if ($connection == false)
+			{
+				// Assemble a detailed error message.
+				$error_message = TBGContext::geti18n()->__('Could not connect to any of the specified LDAP servers.');
+				$error_message .= " ".implode(" ", $error_messages);
+				error_log($error_message);
+				throw new Exception($error_message);
+			}
+
+			// Finally return the usable LDAP connection handle.
 			return $connection;
 		}
 		
