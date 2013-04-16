@@ -2225,14 +2225,26 @@ TBG.Config.Issuefields.Options.show = function(url, field) {
 	}
 }
 
-TBG.Config.Issuefields.Options.add = function(url, type) {
-	TBG.Main.Helpers.ajax(url, {
+/**
+ * Helper function for adding a new option to an issue field.
+ *
+ * @param url_add string URL POST target for adding the new option.
+ * @param url_saveorder string URL POST target for saving the new order of
+ * options.
+ */
+TBG.Config.Issuefields.Options.add = function(url_add, url_saveorder, type) {
+	TBG.Main.Helpers.ajax(url_add, {
 		form: 'add_' + type + '_form',
 		loading: {indicator: 'add_' + type + '_indicator'},
 		success: {
 			reset: 'add_' + type + '_form',
 			hide: 'no_' + type + '_items',
-			update: {element: type + '_list', insertion: true}
+			update: {element: type + '_list', insertion: true},
+			callback: function(json) {
+				// Re-create the Sortable so that the new element can be moved around
+				// (this is the equivalent of refreshing a Sortable).
+				Sortable.create(type + '_list', {constraint: '', onUpdate: function(container) { TBG.Config.Issuefields.saveOrder(container, type, url_saveorder); }});
+			}
 		}
 	});
 }

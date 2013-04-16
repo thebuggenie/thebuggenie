@@ -80,6 +80,26 @@
 			return $items;
 		}
 
+		/**
+		 * Returns the next order number for the specified item type. Useful for
+		 * adding new items at the bottom of a list.
+		 *
+		 * The number is calculated by finding the largest order number amongst the
+		 * items, and incrementing this number by 1.
+		 *
+		 * @param itemtype string Item type.
+		 *
+		 * @return integer Next smallest available order number.
+		 */
+		public function getNextOrderByItemType($itemtype)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::ITEMTYPE, $itemtype);
+			$crit->addSelectionColumn(self::ORDER, 'next_order', Criteria::DB_MAX, '', '+1');
+
+			return $this->doSelectOne($crit, 'none')->get('next_order');
+		}
+
 		public function deleteByTypeAndId($type, $id)
 		{
 			$crit = $this->getCriteria();

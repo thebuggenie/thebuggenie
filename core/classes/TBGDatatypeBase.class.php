@@ -154,4 +154,17 @@
 			return array('id' => $this->getID(), 'itemdata' => $this->getItemdata(), 'itemtype' => $this->_itemtype, 'name' => $this->getName(), 'key' => $this->getKey());
 		}
 
+		protected function _preSave($is_new)
+		{
+			parent::_preSave($is_new);
+
+			// If it's a new entry, and its order has not been set, set it to the next
+			// available order value for item's type (no two items of same type should
+			// have same order value).
+			if ($is_new && $this->getOrder() == null)
+			{
+				$this->setOrder(TBGListTypesTable::getTable()->getNextOrderByItemType($this->getItemtype()));
+			}
+		}
 	}
+
