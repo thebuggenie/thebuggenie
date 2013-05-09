@@ -50,7 +50,7 @@
 						echo '<i>' . __('Issue created') . '</i>';
 						if (isset($include_details) && $include_details)
 						{
-							echo '<div class="timeline_inline_details">'.nl2br($issue->getDescription()).'</div>';
+							echo '<div class="timeline_inline_details">'.nl2br(htmlentities($issue->getDescription())).'</div>';
 						}
 						break;
 					case TBGLogTable::LOG_COMMENT:
