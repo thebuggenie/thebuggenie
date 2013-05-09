@@ -213,7 +213,7 @@ class LightOpenID
     protected function request_streams($url, $method='GET', $params=array())
     {
         if(!$this->hostExists($url)) {
-            throw new ErrorException("Could not connect to $url.", 404);
+            throw new ErrorException("Could not connect to ".htmlentities($url), 404);
         }
 
         $params = http_build_query($params, '', '&');
