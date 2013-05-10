@@ -106,8 +106,8 @@
 
 		protected static $_ver_mj = 3;
 		protected static $_ver_mn = 2;
-		protected static $_ver_rev = 5;
-		protected static $_ver_name = "De gustibus non est disputandum";
+		protected static $_ver_rev = 6;
+		protected static $_ver_name = "Ab uno disce omnes";
 		protected static $_defaultscope = null;
 		protected static $_settings = null;
 		protected static $_loadedsettings = array();
