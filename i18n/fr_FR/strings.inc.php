@@ -162,7 +162,7 @@
   $strings['Project team'] = 'Équipe projet';
   $strings['Project client'] = 'Clients du projet';
   $strings['Subprojects'] = 'Sous-projets';
-  $strings['Graph of closed vs open issues, past 15 days'] = 'Graphique des demandes fermées par rapport aux demandes ouvertes, 15 derniers jours';
+  $strings['Graph of closed vs open issues, past 15 days'] = 'Graphique des demandes fermées vs ouvertes, 15 derniers jours';
   $strings['Statistics by priority'] = 'Statistiques par priorité';
   $strings['Statistics by category'] = 'Statistiques par catégorie';
   $strings['Statistics by status'] = 'Statistiques par statut';
@@ -389,13 +389,13 @@
   $strings['Open issues for this project'] = 'Demandes ouvertes pour ce projet';
   $strings['Closed issues for this project'] = 'Demande fermées pour ce projet';
   $strings['Wishlist for this project'] = 'Liste de souhait pour ce projet';
-  $strings['Milestone todo-list for this project'] = 'Liste des tâches jalonnée pour ce projet';
+  $strings['Milestone todo-list for this project'] = 'Liste des tâches jalonnées pour ce projet';
   $strings['Most voted for issues'] = 'Demandes les plus votées';
   $strings['Issues reported this month'] = 'Demandes soumises ce mois';
   $strings['Issues reported last 30 days'] = 'Demandes soumises durant les 30 derniers jours';
   $strings['You are not logged in'] = 'Vous n\'êtes pas connecté';
-  $strings['Login'] = 'Connexion';
-  $strings['Register'] = 'Enregistrer';
+  $strings['Login'] = 'Se connecter';
+  $strings['Register'] = 'S\'enregistrer';
   $strings['Change'] = 'Modification';
   $strings['You are: %userstate%'] = 'Vous êtes : %userstate%';
   $strings['Your dashboard'] = 'Votre tableau de bord';
@@ -2413,7 +2413,7 @@
   $strings['Any issues you create will be related to %related_issue_title%'] = 'Toutes les demandes que vous créez seront associées à %related_issue_title%';
   $strings['You are adding an issue to release %release_name%'] = 'Vous avez ajouté une demande à la livraison %release_name%';
   $strings['Choose %issuetype_name%'] = 'Choisir %issuetype_name%';
-  $strings["Hold your mouse over an issuetype to see what it's used for"] = "Tenez votre souris sur un type de demande pour voir à quoi il sert";
+  $strings["Hold your mouse over an issuetype to see what it's used for"] = "Placez votre souris sur un type de demande pour voir à quoi il sert";
   $strings['Short summary'] = 'Résumé court';
   $strings['Enter a short, but descriptive summary of the issue here'] = 'Saisissez un résumé court mais descriptif de la demande ici';
   $strings['Select issue type'] = 'Sélectionner le type de demande';
@@ -2447,7 +2447,7 @@
   $strings['Choose a severity for this issue'] = 'Choisir une sévérité pour cette demande';
   $strings['When you are satisfied, click the %file_issue% button to file your issue'] = 'Quand vous êtes satisfait, cliquer sur le bouton %file_issue% pour soumettre votre demande';
   $strings['Add more information to your issue'] = 'Ajouter d\'autres informations à votre demande';
-  $strings['Specify additional information by clicking the links below before submitting your issue'] = 'Spécifier des informations complétaires en cliquant sur les liens ci-dessous avant de soumettre votre demande';
+  $strings['Specify additional information by clicking the links below before submitting your issue'] = 'Spécifiez des informations complétaires en cliquant sur les liens ci-dessous avant de soumettre votre demande';
   $strings['Set initial status'] = 'Définir le statut initial';
   $strings['Specify edition'] = 'Spécifier l\'édition';
   $strings['Specify release'] = 'Spécifier la livraison';
@@ -3610,7 +3610,7 @@
   $strings['All closed issues'] = 'Toutes les demandes fermées';
   $strings['Closed issues for %project_name%'] = 'Demande fermées pour %project_name%';
   $strings['%project_name% wishlist'] = 'liste d\'envies %project_name%';
-  $strings['Milestone todo-list for %project_name%'] = 'Liste des tâches jalonnée pour %project_name%';
+  $strings['Milestone todo-list for %project_name%'] = 'Liste des tâches jalonnées pour %project_name%';
   $strings['Most voted issues'] = 'Demandes les plus votées';
   $strings['Most voted issues for %project_name%'] = 'Demande la plus votée pour %project_name%';
   $strings['Standard search results'] = 'Résultats de recherche standard';
@@ -3687,7 +3687,7 @@
   $strings['Last updated'] = 'Modifié le';
   $strings['Number of user comments on this issue'] = 'Nombre de commentaires utilisateurs pour cette demande';
   $strings['This issue has %num% attachments'] = 'Cette demande à %num% pièces jointes';
-  $strings['Access to this issue is restricted'] = 'L\'accès à cette demande est restreinte';
+  $strings['Access to this issue is restricted'] = 'L\'accès à cette demande est restreint';
 
 // First occurrence is in: modules/search/templates/_results_normal_csv.inc.php
 // ----------------------------------------------------------------------------
