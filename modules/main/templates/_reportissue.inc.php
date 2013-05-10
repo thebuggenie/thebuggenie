@@ -81,7 +81,7 @@
 							<?php echo __('Required field "%field_name%" is missing or invalid', array('%field_name%' => TBGCustomDatatype::getByKey($key)->getDescription())); ?>
 						<?php else:
 
-							$event = new TBGEvent('core', 'reportissue.validationerror', $key);
+							$event = TBGEvent::createNew('core', 'reportissue.validationerror', $key);
 							$event->setReturnValue($key);
 							$event->triggerUntilProcessed();
 							echo __('A validation error occured: %error%', array('%error%' => $event->getReturnValue()));

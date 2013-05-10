@@ -1135,7 +1135,7 @@
 						}
 					}
 				}
-				$event = new TBGEvent('core', 'mainActions::_postIssueValidation', null, array(), $errors);
+				$event = TBGEvent::createNew('core', 'mainActions::_postIssueValidation', null, array(), $errors);
 				$event->trigger();
 				$errors = $event->getReturnList();
 			}
@@ -2877,7 +2877,7 @@
 						$options['user'] = new TBGUser((int) $request['user_id']);
 						break;
 					default:
-						$event = new TBGEvent('core', 'get_backdrop_partial', $request['key']);
+						$event = TBGEvent::createNew('core', 'get_backdrop_partial', $request['key']);
 						$event->triggerUntilProcessed();
 						$options = $event->getReturnList();
 						$template_name = $event->getReturnValue();
