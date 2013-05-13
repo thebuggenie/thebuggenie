@@ -7,8 +7,12 @@
 ?>
 <table style="margin-top: 0px; table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
 	<tr>
-		<td class="side_bar">
-			<?php include_component('leftmenu', array('article' => $article)); ?>
+		<td class="side_bar <?php if ($article->getArticleType() == TBGWikiArticle::TYPE_MANUAL) echo 'manual'; ?>">
+			<?php if ($article->getArticleType() == TBGWikiArticle::TYPE_MANUAL): ?>
+				<?php include_component('manualsidebar', array('article' => $article)); ?>
+			<?php else: ?>
+				<?php include_component('leftmenu', array('article' => $article)); ?>
+			<?php endif; ?>
 		</td>
 		<td class="main_area article">
 			<a name="top"></a>
@@ -28,12 +32,12 @@
 					<b><?php echo link_tag(make_url('publish_article', array('article_name' => $article->getName())), __('Show current version')); ?></b>
 				</div>
 			<?php endif; ?>
-			<?php if ($article instanceof TBGWikiArticle): ?>
+			<?php if ($article->getID()): ?>
 				<?php include_component('articledisplay', array('article' => $article, 'show_article' => true, 'redirected_from' => $redirected_from)); ?>
 				<?php $article_name = $article->getName(); ?>
 			<?php else: ?>
 				<div class="article">
-					<?php include_template('publish/header', array('article_name' => $article_name, 'show_actions' => true, 'mode' => 'view')); ?>
+					<?php include_template('publish/header', array('article' => $article, 'show_actions' => true, 'mode' => 'view')); ?>
 					<?php if (TBGContext::isProjectContext() && TBGContext::getCurrentProject()->isArchived()): ?>
 						<?php include_template('publish/placeholder', array('article_name' => $article_name, 'nocreate' => true)); ?>
 					<?php else: ?>
@@ -41,14 +45,26 @@
 					<?php endif; ?>
 				</div>
 			<?php endif; ?>
-			<?php if (!$article instanceof TBGWikiArticle && ((TBGContext::isProjectContext() && !TBGContext::getCurrentProject()->isArchived()) || (!TBGContext::isProjectContext() && TBGContext::getModule('publish')->canUserEditArticle($article_name)))): ?>
+			<?php if (!$article->getID() && ((TBGContext::isProjectContext() && !TBGContext::getCurrentProject()->isArchived()) || (!TBGContext::isProjectContext() && TBGContext::getModule('publish')->canUserEditArticle($article_name)))): ?>
 				<div class="publish_article_actions">
 					<form action="<?php echo make_url('publish_article_edit', array('article_name' => $article_name)); ?>" method="get" style="float: left; margin-right: 10px;">
 						<input class="button button-green" type="submit" value="<?php echo __('Create this article'); ?>">
 					</form>
 				</div>
 			<?php endif; ?>
-			<?php if ($article instanceof TBGWikiArticle): ?>
+			<?php if ($article->getID()): ?>
+				<?php $attachments = $article->getFiles(); ?>
+				<div id="article_attachments">
+					<h4><?php echo __('Article attachments (%count%)', array('%count%' => count($attachments))); ?></h4>
+					<?php if (TBGSettings::isUploadsEnabled() && $article->canEdit()): ?>
+						<?php include_component('main/uploader', array('article' => $article, 'mode' => 'article')); ?>
+						<button class="button button-green" onclick="$('attach_file').show();"><?php echo __('Attach a file'); ?></button>
+					<?php else: ?>
+						<button class="button button-silver disabled" onclick="TBG.Main.Helpers.Message.error('<?php echo __('File uploads are not enabled'); ?>');"><?php echo __('Attach a file'); ?></button>
+					<?php endif; ?>
+					<br style="clear: both;">
+					<?php include_template('publish/attachments', array('article' => $article, 'attachments' => $attachments)); ?>
+				</div>
 				<div id="article_comments">
 					<h4><?php echo __('Article comments (%count%)', array('%count%' => TBGComment::countComments($article->getID(), TBGComment::TYPE_ARTICLE))); ?></h4>
 					<?php include_template('main/comments', array('target_id' => $article->getID(), 'target_type' => TBGComment::TYPE_ARTICLE, 'comment_count_div' => 'article_comment_count', 'forward_url' => make_url('publish_article', array('article_name' => $article->getName())))); ?>

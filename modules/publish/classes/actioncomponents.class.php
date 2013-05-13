@@ -58,4 +58,24 @@
 			$this->whatlinkshere = ($this->article instanceof TBGWikiArticle) ? $this->article->getLinkingArticles() : null;
 		}
 
+		public function componentManualSidebar()
+		{
+			$this->articles = TBGArticlesTable::getTable()->getManualSidebarArticles(TBGContext::getCurrentProject());
+			$this->categories = TBGArticlesTable::getTable()->getManualSidebarCategories(TBGContext::getCurrentProject());
+			$parents = array();
+			$article = $this->article;
+			do
+			{
+				$parent = $article->getParentArticle();
+				if ($parent instanceof TBGWikiArticle)
+				{
+					$parents[] = $parent->getId();
+					$article = $parent;
+				}
+			}
+			while ($parent instanceof TBGWikiArticle);
+			
+			$this->parents = $parents;
+		}
+
 	}

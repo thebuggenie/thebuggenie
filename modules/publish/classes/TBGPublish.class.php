@@ -313,11 +313,8 @@
 		public function getFrontpageArticle($type)
 		{
 			$article_name = ($type == 'main') ? 'FrontpageArticle' : 'FrontpageLeftmenu';
-			if ($row = TBGArticlesTable::getTable()->getArticleByName($article_name))
-			{
-				return PublishFactory::article($row->get(TBGArticlesTable::ID), $row);
-			}
-			return null;
+			$article = TBGArticlesTable::getTable()->getArticleByName($article_name);
+			return $article;
 		}
 		
 		public function listen_frontpageArticle(TBGEvent $event)

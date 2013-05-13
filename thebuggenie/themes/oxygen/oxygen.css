@@ -400,7 +400,7 @@ a.not_clickable:hover { cursor: default; }
 .tab_menu .tab_menu_dropdown, .tab_menu_container .tab_menu_dropdown { display: none; position: absolute; top: 25px; margin-left: -5px; width: 250px; font-size: 1em; background-color: #A4C0E4; color: #FFF; padding: 5px 0; z-index: 10000; border-top-right-radius: 3px; border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; -moz-border-radius-bottomleft: 5px; -moz-border-radius-topright: 5px; -moz-border-radius-bottomright: 5px; -webkit-border-bottom-left-radius: 3px; -webkit-border-bottom-right-radius: 3px; -webkit-border-top-right-radius: 3px; }
 #header_userinfo .tab_menu_dropdown { top: 25px; right: 0; -webkit-border-top-right-radius: 0; border-top-right-radius: 0; -moz-border-radius-topright: 0; -webkit-border-top-left-radius: 0px; border-top-left-radius: 0px; -moz-border-radius-topleft: 0px; }
 .user_menu_dropdown a { font-size: 0.9em; }
-.user_menu_dropdown .header { padding-top: 0; margin-top: 0 !important; }
+.user_menu_dropdown .header:first-child { padding-top: 0; margin-top: 0 !important; }
 .tab_menu .tab_menu_dropdown a, .tab_menu_container .tab_menu_dropdown a { float: none; }
 #header_userinfo .tab_menu_dropdown a { font-weight: normal; }
 #header_userinfo .tab_menu_dropdown .userstate { font-weight: normal; }
@@ -412,7 +412,8 @@ div.dropdown_separator { border-left: 1px dotted #EAEAF5; padding: 0 0 0 4px; ma
 .tab_menu li.selected .tab_menu_dropdown, .tab_menu_container li.selected .tab_menu_dropdown { background-color: #FFF; color: #333; }
 .tab_menu li.selected:hover img.menu_dropdown { background-color: #F5F5F5; border: 1px solid #CCC; }
 .tab_menu .tab_menu_dropdown a, .tab_menu_container .tab_menu_dropdown a { color: inherit; font-weight: normal; display: block; padding: 3px 5px; background-color: transparent; }
-.tab_menu .tab_menu_dropdown div.header, .tab_menu_container .tab_menu_dropdown div.header { font-weight: bold; color: inherit; margin: 5px 5px 2px 5px; }
+.tab_menu .tab_menu_dropdown div.header, .tab_menu_container .tab_menu_dropdown div.header { font-weight: bold; color: inherit; margin: 15px 5px 2px 5px; }
+.tab_menu .tab_menu_dropdown div.header:first-child, .tab_menu_container .tab_menu_dropdown div.header:first-child { margin-top: 5px; }
 .tab_menu .tab_menu_dropdown a:hover, .tab_menu_container .tab_menu_dropdown a:hover { background-color: #669BDA; border: 0; }
 .tab_menu li.selected .tab_menu_dropdown a:hover, .tab_menu_container li.selected .tab_menu_dropdown a:hover { background-color: #EAEAF5; border: 0; }
 .tab_menu .tab_menu_dropdown a.selected, .tab_menu_container .tab_menu_dropdown a.selected { font-weight: bold; font-style: italic; border: 0; padding: 3px 5px; }

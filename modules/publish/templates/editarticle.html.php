@@ -17,18 +17,13 @@
 					<?php echo $error; ?>
 				</div>
 			<?php endif; ?>
-			<?php if ($preview): ?>
+			<?php include_template('publish/header', array('article' => $article, 'show_actions' => true, 'mode' => 'edit')); ?>
+			<?php if (isset($preview) && $preview): ?>
 				<div class="rounded_box yellow borderless" style="margin: 0 5px 5px 5px; padding: 7px; font-size: 14px;">
 					<?php echo __('This is a preview of the article'); ?><br>
 					<b><?php echo __('The article has not been saved yet'); ?>&nbsp;&nbsp;</b>[<a href="#edit_article" onclick="$('article_content').focus();"><?php echo __('Continue editing'); ?></a>]
 				</div>
-			<?php endif; ?>
-			<?php if ($article instanceof TBGWikiArticle): ?>
 				<?php include_component('articledisplay', array('article' => $article, 'show_article' => $preview, 'show_category_contains' => false, 'show_actions' => true, 'mode' => 'edit')); ?>
-				<?php $art_name = $article->getName(); ?>
-			<?php else: ?>
-				<?php include_template('publish/header', array('article_name' => $article_name, 'show_actions' => true, 'mode' => 'edit')); ?>
-				<?php $art_name = $article_name; ?>
 			<?php endif; ?>
 			<a name="edit_article"></a>
 			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('publish_article_edit', array('article_name' => $article_name)); ?>" method="post" id="edit_article_form" onsubmit="Event.stopObserving(window, 'beforeunload');">
@@ -38,10 +33,24 @@
 				<div class="rounded_box green borderless" style="margin: 5px;">
 					<table style="border: 0;" class="padded_table" cellpadding=0 cellspacing=0>
 						<tr>
-							<td style="padding: 5px;"><label for="article_name"><?php echo __('Article name'); ?></label></td>
+							<td style="padding: 5px;"><label for="new_article_name"><?php echo __('Article name'); ?></label></td>
 							<td>
-								<input type="text" name="new_article_name" id="new_article_name" value="<?php echo $art_name; ?>" style="width: 250px;">
-								&nbsp;<span style="font-size: 13px;" class="faded_out"><?php echo __('This is the name you use when you link to this article'); ?></span>
+								<input type="text" name="new_article_name" id="new_article_name" value="<?php echo $article->getName(); ?>" style="width: 400px;">
+							</td>
+						</tr>
+						<tr>
+							<td style="padding: 5px;"><label for="article_type"><?php echo __('Article type'); ?></label></td>
+							<td>
+								<select name="article_type" id="article_type" style="width: 200px;" onchange="if ($(this).getValue() == <?php echo TBGWikiArticle::TYPE_WIKI; ?>) { $('article_parent_container').hide(); } else { $('article_parent_container').show(); }">
+									<option value="<?php echo TBGWikiArticle::TYPE_WIKI; ?>" <?php if ($article->getArticleType() == TBGWikiArticle::TYPE_WIKI) echo 'selected'; ?>><?php echo __('Classic wiki'); ?></option>
+									<option value="<?php echo TBGWikiArticle::TYPE_MANUAL; ?>" <?php if ($article->getArticleType() == TBGWikiArticle::TYPE_MANUAL) echo 'selected'; ?>><?php echo __('Manual style'); ?></option>
+								</select>
+							</td>
+						</tr>
+						<tr id="article_parent_container" style="<?php if ($article->getArticleType() != TBGWikiArticle::TYPE_MANUAL) echo 'display: none;'; ?>">
+							<td style="padding: 5px;"><label for="parent_article_name"><?php echo __('Parent article'); ?></label></td>
+							<td>
+								<input type="text" name="parent_article_name" id="parent_article_name" value="<?php echo $article->getParentArticleName(); ?>" style="width: 400px;"><br>
 							</td>
 						</tr>
 					</table>
@@ -49,7 +58,7 @@
 				<br style="clear: both;">
 				<label for="article_content" style="margin-left: 5px; clear: both;"><?php echo __('Article content'); ?></label><br>
 				<div style="margin: 5px 10px 5px 5px;">
-					<?php include_template('main/textarea', array('area_name' => 'new_article_content', 'area_id' => 'article_content', 'height' => '350px', 'width' => '100%', 'value' => htmlspecialchars($article_content))); ?>
+					<?php include_template('main/textarea', array('area_name' => 'article_content', 'area_id' => 'article_content', 'height' => '350px', 'width' => '100%', 'value' => htmlspecialchars($article->getContent()))); ?>
 				</div>
 				<label for="change_reason" style="margin-left: 5px; clear: both;"><?php echo __('Change reason'); ?>
 					<?php if (TBGPublish::getModule()->getSetting('require_change_reason') == 0) : ?>
@@ -57,7 +66,7 @@
 					<?php endif; ?>
 				</label><br>
 				<div style="margin: 5px 15px 5px 5px;">
-					<input type="text" name="change_reason" id="change_reason" style="width: 100%;" maxlength="255" value="<?php echo $change_reason; ?>"><br>
+					<input type="text" name="change_reason" id="change_reason" style="width: 100%;" maxlength="255" value="<?php if (isset($change_reason)) echo $change_reason; ?>"><br>
 				</div>
 				<div class="faded_out dark" style="padding: 5px 5px 15px 5px; font-size: 13px;"><?php echo __('Enter a short reason summarizing your changes (max. 255 characters)'); ?></div>
 				<div class="rounded_box lightgrey borderless" style="margin: 0 5px 5px 5px; padding: 7px; min-height: 27px;">

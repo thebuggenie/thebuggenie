@@ -58,7 +58,67 @@
 			return $articles;
 		}
 		
-		public function getArticles(TBGProject $project = null)
+		public function getManualSidebarArticles(TBGProject $project = null)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$crit->addWhere('articles.article_type', TBGWikiArticle::TYPE_MANUAL);
+			$crit->addWhere('articles.parent_article_id', 0);
+			if ($project instanceof TBGProject)
+			{
+				$crit->addWhere(self::NAME, ucfirst($project->getKey()) . ":%", Criteria::DB_LIKE);
+			}
+			else
+			{
+				foreach (TBGProjectsTable::getTable()->getAllIncludingDeleted() as $project)
+				{
+					$crit->addWhere(self::NAME, "Category:" . ucfirst($project->getKey()) . "%", Criteria::DB_NOT_LIKE);
+					$crit->addWhere(self::NAME, ucfirst($project->getKey()) . ":%", Criteria::DB_NOT_LIKE);
+				}
+			}
+
+			$crit->addOrderBy(self::NAME, 'asc');
+			
+			$articles = $this->select($crit);
+			foreach ($articles as $i => $article)
+			{
+				if (!$article->hasAccess()) unset($articles[$i]);
+			}
+			
+			return $articles;
+		}
+		
+		public function getManualSidebarCategories(TBGProject $project = null)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$crit->addWhere('articles.article_type', TBGWikiArticle::TYPE_MANUAL);
+			$crit->addWhere('articles.parent_article_id', 0);
+			if ($project instanceof TBGProject)
+			{
+				$crit->addWhere(self::NAME, "Category:" . ucfirst($project->getKey()) . "%", Criteria::DB_LIKE);
+			}
+			else
+			{
+				foreach (TBGProjectsTable::getTable()->getAllIncludingDeleted() as $project)
+				{
+					$crit->addWhere(self::NAME, "Category:" . ucfirst($project->getKey()) . "%", Criteria::DB_NOT_LIKE);
+					$crit->addWhere(self::NAME, ucfirst($project->getKey()) . ":%", Criteria::DB_NOT_LIKE);
+				}
+			}
+
+			$crit->addOrderBy(self::NAME, 'asc');
+			
+			$articles = $this->select($crit);
+			foreach ($articles as $i => $article)
+			{
+				if (!$article->hasAccess()) unset($articles[$i]);
+			}
+			
+			return $articles;
+		}
+		
+		public function getArticles(TBGProject $project = null, $limit = 10)
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
@@ -83,7 +143,7 @@
 			
 			if ($res = self::getTable()->doSelect($crit))
 			{
-				while (($row = $res->getNextRow()) && (count($articles) < 10))
+				while (($row = $res->getNextRow()) && ($limit === null || count($articles) < $limit))
 				{
 					try
 					{
@@ -109,9 +169,7 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::NAME, $name);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
-			$row = $this->doSelectOne($crit, 'none');
-
-			return $row;
+			return $this->selectOne($crit, 'none');
 		}
 
 		public function doesArticleExist($name)

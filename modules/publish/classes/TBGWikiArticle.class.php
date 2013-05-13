@@ -6,6 +6,9 @@
 	class TBGWikiArticle extends TBGIdentifiableScopedClass
 	{
 
+		const TYPE_WIKI = 1;
+		const TYPE_MANUAL = 2;
+
 		/**
 		 * The article author
 		 *
@@ -29,6 +32,14 @@
 		protected $_date = null;
 
 		/**
+		 * What type of article this is
+		 *
+		 * @var integer
+		 * @Column(type="integer", length=10, default=1)
+		 */
+		protected $_article_type = self::TYPE_WIKI;
+
+		/**
 		 * The old article content, used for history when saving
 		 *
 		 * @var string
@@ -50,6 +61,23 @@
 		 * @Column(type="boolean")
 		 */
 		protected $_is_published = false;
+
+		/**
+		 * The parent article, if this article has one
+		 *
+		 * @var TBGWikiArticle
+		 * @Column(type="integer", length=10)
+		 * @Relates(class="TBGWikiArticle")
+		 */
+		protected $_parent_article_id = false;
+
+		/**
+		 * Child article, if this article has any
+		 *
+		 * @var array|TBGWikiArticle
+		 * @Relates(class="TBGWikiArticle", collection=true, foreign_column="parent_article_id")
+		 */
+		protected $_child_articles = null;
 
 		/**
 		 * A list of articles that links to this article
@@ -98,6 +126,8 @@
 		protected $_category_name = null;
 		
 		protected $_namespaces = null;
+		
+		protected $_redirect_article = null;
 
 		/**
 		 * Article constructor
@@ -396,6 +426,27 @@
 			return $this->_history;
 		}
 
+		public function isRedirect()
+		{
+			if (mb_substr($this->getContent(), 0, 10) == "#REDIRECT ")
+			{
+				$content = explode("\n", $this->getContent());
+				preg_match('/(\[\[([^\]]*?)\]\])$/im', mb_substr(array_shift($content), 10), $matches);
+				if (count($matches) == 3)
+				{
+					$this->_redirect_article = $matches[2];
+					return true;
+				}
+			}
+			
+			return false;
+		}
+		
+		public function getRedirectArticle()
+		{
+			return ($this->isRedirect()) ? $this->_redirect_article : null;
+		}
+		
 		public function doSave($options = array(), $reason = null)
 		{	
 			if (TBGArticlesTable::getTable()->doesNameConflictExist($this->_name, $this->_id, TBGContext::getScope()->getID()))
@@ -707,6 +758,42 @@
 		public function setName($name)
 		{
 			$this->_name = $name;
+		}
+
+		public function setParentArticle($parent_article)
+		{
+			$this->_parent_article_id = $parent_article;
+		}
+
+		/**
+		 * Return the parent article (if any)
+		 *
+		 * @return TBGWikiArticle
+		 */
+		public function getParentArticle()
+		{
+			return $this->_b2dbLazyload('_parent_article_id');
+		}
+
+		public function getParentArticleName()
+		{
+			$article = $this->getParentArticle();
+			return ($article instanceof TBGWikiArticle) ? $article->getName() : null;
+		}
+
+		public function getChildArticles()
+		{
+			return $this->_b2dbLazyload('_child_articles');
+		}
+
+		public function setArticleType($article_type)
+		{
+			$this->_article_type = $article_type;
+		}
+		
+		public function getArticleType()
+		{
+			return $this->_article_type;
 		}
 
 	}
