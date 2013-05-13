@@ -35,7 +35,7 @@
 									</div>
 									<div style="position: relative;">
 										<ul id="users_more_actions_dropdown" style="display: none; position: absolute; width: 300px; font-size: 1.1em; top: 20px; margin-top: 0; right: 0; z-index: 1000;" class="simple_list rounded_box white shadowed popup_box more_actions_dropdown" onclick="$('users_more_actions').toggleClassName('button-pressed');$('users_more_actions_dropdown').toggle();">
-											<li><?php echo javascript_link_tag('Show all users', array('onclick' => "TBG.Config.User.show('".make_url('configure_users_find_user')."', 'all');")); ?></li>
+											<li><?php echo javascript_link_tag(__('Show all users'), array('onclick' => "TBG.Config.User.show('".make_url('configure_users_find_user')."', 'all');")); ?></li>
 											<li><?php echo javascript_link_tag(__('Show unactivated users'), array('onclick' => "TBG.Config.User.show('".make_url('configure_users_find_user')."', 'unactivated');")); ?></li>
 											<li><?php echo javascript_link_tag(__('Show newly created users'), array('onclick' => "TBG.Config.User.show('".make_url('configure_users_find_user')."', 'newusers');")); ?></li>
 										</ul>
