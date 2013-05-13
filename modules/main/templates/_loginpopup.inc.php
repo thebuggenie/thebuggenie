@@ -4,7 +4,7 @@
 	</div>
 	<div class="backdrop_detail_footer">
 	<?php if ($mandatory != true): ?>
-		<a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.reset();"><?php echo __('Close'); ?></a>
+		<a href="javascript:void(0);" onclick="$('login_backdrop').hide();"><?php echo __('Close'); ?></a>
 	<?php endif; ?>
 	</div>
 </div>
@@ -13,6 +13,3 @@
 		TBG.Main.Helpers.Message.error('<?php echo $options['error']; ?>');
 	</script>
 <?php endif; ?>
-<script type="text/javascript">
-	$('tbg3_username').focus();
-</script>

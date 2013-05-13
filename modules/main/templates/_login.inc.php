@@ -46,6 +46,15 @@
 				<?php if (TBGSettings::isOpenIDavailable()): ?>
 					<?php include_template('main/openidbuttons'); ?>
 				<?php endif; ?>
+				<?php if (TBGSettings::isPersonaAvailable()): ?>
+					<br style="clear: both;">
+					<div style="text-align: center;">
+						<fieldset style="border: 0; border-top: 1px dotted rgba(0, 0, 0, 0.3); padding: 10px 100px; width: 100px; margin: 20px auto 0 auto;">
+							<legend style="text-align: center; width: 100%; background-color: transparent;">or</legend>
+						</fieldset>
+						<a class="persona-button" id="persona-signin-button" href="#"><span><?php echo __('Sign in with Persona'); ?></span></a>
+					</div>
+				<?php endif; ?>
 			</div>
 			<br style="clear: both;">
 			<?php TBGEvent::createNew('core', 'login_form_pane')->trigger(array_merge(array('selected_tab' => $selected_tab), $options)); ?>
@@ -62,12 +71,3 @@
 		TBG.Main.Helpers.Message.error('<?php echo $error; ?>');
 	</script>
 <?php endif; ?>
-<script type="text/javascript">
-	<?php if (!$tbg_request->isAjaxCall()): ?>
-	document.observe('dom:loaded', function() {
-	<?php endif; ?>
-		$('tbg3_username').focus();
-	<?php if (!$tbg_request->isAjaxCall()): ?>
-	});
-	<?php endif; ?>
-</script>
