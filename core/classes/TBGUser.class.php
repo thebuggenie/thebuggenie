@@ -1657,18 +1657,23 @@
 		 */
 		public function getAvatarURL($small = true)
 		{
-			$url = '';
-			if ($this->usesGravatar() && $this->getEmail())
+			$event = TBGEvent::createNew('core', 'TBGUser::getAvatarURL', $this)->trigger();
+			$url = $event->getReturnValue();
+			
+			if ($url === null)
 			{
-				$url = (TBGContext::getScope()->isSecure()) ? 'https://secure.gravatar.com/avatar/' : 'http://www.gravatar.com/avatar/';
-				$url .= md5(trim($this->getEmail())) . '.png?d=wavatar&amp;s=';
-				$url .= ($small) ? 22 : 48; 
-			}
-			else
-			{
-				$url = TBGContext::getTBGPath() . 'avatars/' . $this->getAvatar();
-				if ($small) $url .= '_small';
-				$url .= '.png';
+				if ($this->usesGravatar() && $this->getEmail())
+				{
+					$url = (TBGContext::getScope()->isSecure()) ? 'https://secure.gravatar.com/avatar/' : 'http://www.gravatar.com/avatar/';
+					$url .= md5(trim($this->getEmail())) . '.png?d=wavatar&amp;s=';
+					$url .= ($small) ? 22 : 48; 
+				}
+				else
+				{
+					$url = TBGContext::getTBGPath() . 'avatars/' . $this->getAvatar();
+					if ($small) $url .= '_small';
+					$url .= '.png';
+				}
 			}
 			return $url;
 		}
