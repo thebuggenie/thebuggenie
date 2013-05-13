@@ -5,12 +5,13 @@
 <div class="login_page_div">
 <?php include_component('main/login', compact('section', 'error')); ?>
 </div>
-<?php if (TBGContext::hasMessage('login_message')): ?>
 <script type="text/javascript">
-	TBG.Main.Helpers.Message.success('<?php echo TBGContext::getMessageAndClear('login_message'); ?>');
+	<?php if (TBGContext::hasMessage('login_message')): ?>
+		TBG.Main.Helpers.Message.success('<?php echo TBGContext::getMessageAndClear('login_message'); ?>');
+	<?php elseif (TBGContext::hasMessage('login_message_err')): ?>
+		TBG.Main.Helpers.Message.error('<?php echo TBGContext::getMessageAndClear('login_message_err'); ?>');
+	<?php endif; ?>
+	document.observe('dom:loaded', function() {
+		$('tbg3_username').focus();
+	});
 </script>
-<?php elseif (TBGContext::hasMessage('login_message_err')): ?>
-<script type="text/javascript">
-	TBG.Main.Helpers.Message.error('<?php echo TBGContext::getMessageAndClear('login_message_err'); ?>');
-</script>
-<?php endif; ?>

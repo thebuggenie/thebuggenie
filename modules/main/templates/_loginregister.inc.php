@@ -41,7 +41,7 @@ else
 					</table>
 					<br>
 					
-					<?php TBGActionComponent::includeComponent('captcha'); ?>
+					<?php TBGActionComponent::includeComponent('main/captcha'); ?>
 					
 					<br><b><?php echo __('Enter the above number in this box'); ?></b><br><br>
 					<label class="login_fieldheader" for="verification_no">*&nbsp;<?php echo __('Security check'); ?></label>
