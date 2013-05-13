@@ -538,7 +538,8 @@
 					{
 						TBGContext::getResponse()->setCookie('tbg3_password', $user->getPassword());
 						TBGContext::getResponse()->setCookie('tbg3_username', $user->getUsername());
-						return $this->renderJSON('login ok');
+						TBGContext::getResponse()->setCookie('tbg3_persona_session', true);
+						return $this->renderJSON(array('status' => 'login ok', 'redirect' => in_array($request['referrer_route'], array('home', 'login'))));
 					}
 				}
 				

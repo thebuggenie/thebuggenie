@@ -1782,6 +1782,7 @@
 			TBGEvent::createNew('core', 'pre_logout')->trigger();
 			self::getResponse()->deleteCookie('tbg3_username');
 			self::getResponse()->deleteCookie('tbg3_password');
+			self::getResponse()->deleteCookie('tbg3_persona_session');
 			self::getResponse()->deleteCookie('THEBUGGENIE');
 			session_regenerate_id(true);
 			TBGEvent::createNew('core', 'post_logout')->trigger();

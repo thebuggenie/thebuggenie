@@ -26,7 +26,7 @@
 		</div>
 	</div>
 <?php endif; ?>
-<?php if (TBGSettings::isPersonaAvailable()): ?>
+<?php if (TBGSettings::isPersonaAvailable() && ($tbg_user->isGuest() || $tbg_request->hasCookie('tbg3_persona_session'))): ?>
 	<script src="https://login.persona.org/include.js"></script>
 	<script type="text/javascript">
 		document.observe('dom:loaded', function() {
@@ -40,7 +40,7 @@
 				// 2. Update your UI.
 				TBG.Main.Helpers.ajax('<?php echo make_url('login'); ?>', {
 					url_method: 'post',
-					additional_params: '&persona=true&assertion='+assertion,
+					additional_params: '&persona=true&assertion='+assertion+'&referrer_route=<?php echo TBGContext::getRouting()->getCurrentRouteName(); ?>',
 					loading: {
 						indicator: 'fullpage_backdrop',
 						clear: 'fullpage_backdrop_content',
