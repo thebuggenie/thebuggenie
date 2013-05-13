@@ -628,9 +628,14 @@
 		{
 			$timezone = self::get(self::SETTING_SERVER_TIMEZONE);
 
-			if ($timezone == null)
+			if (is_numeric($timezone) || $timezone == null)
 			{
 				$timezone = date_default_timezone_get();
+			}
+			
+			if (!$timezone)
+			{
+				throw new TBGConfigurationException('No timezone specified, not even in php configuration.<br>For more information on how to fix this, see <a href="http://www.php.net/manual/en/datetime.configuration.php#ini.date.timezone">php.net &raquo; Runtime configuration &raquo; date.timezone</a>');
 			}
 
 			return $timezone;

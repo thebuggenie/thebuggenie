@@ -260,7 +260,6 @@
 					$statuses = TBGStatus::getAll();
 					$reproducabilities = TBGReproducability::getAll();
 					$lorem_ipsum = TBGArticlesTable::getTable()->getArticleByName('LoremIpsum');
-					$lorem_ipsum = PublishFactory::article($lorem_ipsum->get(TBGArticlesTable::ID), $lorem_ipsum);
 					$lorem_words = explode(' ', $lorem_ipsum->getContent());
 					
 					foreach (array('bugreport', 'featurerequest', 'enhancement', 'idea') as $issuetype)

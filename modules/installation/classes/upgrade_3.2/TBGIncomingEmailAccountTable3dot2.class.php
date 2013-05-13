@@ -5,8 +5,7 @@
 		b2db\Criterion;
 
 	/**
-	 * @Table(name="mailing_incoming_email_account")
-	 * @Entity(class="TBGIncomingEmailAccount")
+	 * @Table(name="mailing_incoming_email_account_32")
 	 */
 	class TBGIncomingEmailAccountTable3dot2 extends TBGB2DBTable
 	{

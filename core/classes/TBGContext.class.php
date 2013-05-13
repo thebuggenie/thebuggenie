@@ -598,6 +598,15 @@
 			{
 				throw new Exception("The Bug Genie seems installed, but B2DB isn't configured. This usually indicates an error with the installation. Try removing the file ".THEBUGGENIE_PATH."installed and try again.");
 			}
+			else
+			{
+				$version_info = explode(',', file_get_contents(THEBUGGENIE_PATH . 'installed'));
+				$current_version = $version_info[0];
+				if ($current_version != TBGSettings::getVersion(false, false))
+				{
+					throw new TBGConfigurationException("It seems you are trying to use a newer version of The Bug Genie than the one you installed. Please upgrade before continuing.\n\nPlease see the upgrade instructions here: <a href='http://issues.thebuggenie.com/wiki/TheBugGenie%3AFAQ'>thebuggenie.com &raquo; wiki &raquo; FAQ</a> for more information.");
+				}
+			}
 		}
 
 		public static function initializeSession()
