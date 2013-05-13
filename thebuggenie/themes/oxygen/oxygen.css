@@ -316,12 +316,13 @@ footer td { font-size: 0.9em; line-height: 1.2; padding: 5px; text-shadow: 1px 1
 .commenttools .button { font-weight: normal !important; }
 .commenttools img { width: 20px; }
 .comment_controls { margin-top: 10px; }
-.comment_edit, .comment_add_main { padding: 5px; background-color: #F1F1F1; border: 1px dotted #CCC; }
+/*.comment_edit, .comment_add_main { padding: 5px; background-color: #F1F1F1; border: 1px dotted #CCC; }*/
 .comment_editsave, .comment_addsave { font-weight: bold; }
 .comment_titlebox { width: 600px; margin-bottom: 8px; }
 .comment_visibilitybox { width: 400px; margin-bottom: 8px; }
 .system_comment { background-color: #EBEBEB; border: 1px solid #DDD; }
 .private_comment { background-color: #E8F6E8; border: 1px solid #D8E6D8; }
+.comment_editor { position: fixed; width: 650px; z-index: 100; padding: 10px; bottom: 5px; right: 5px; box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); background-color: #FFF; border: 0; }
 
 .commit_header { font-weight: bold; font-size: larger; }
 .commit_expander { float: right; }
