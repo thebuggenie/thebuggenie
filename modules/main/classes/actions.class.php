@@ -439,6 +439,10 @@
 				TBGContext::getUser()->setOffline();
 			}
 			TBGContext::logout();
+			if ($request->isAjaxCall())
+			{
+				return $this->renderJSON(array('status' => 'logout ok', 'url' => TBGContext::getRouting()->generate(TBGSettings::getLogoutReturnRoute())));
+			}
 			$this->forward(TBGContext::getRouting()->generate(TBGSettings::getLogoutReturnRoute()));
 		}
 		
@@ -503,6 +507,49 @@
 			$options = $request->getParameters();
 			$forward_url = TBGContext::getRouting()->generate('home');
 
+			if ($request->hasParameter('persona') && $request['persona'] == 'true') 
+			{
+				$url = 'https://verifier.login.persona.org/verify';
+				$assert = filter_input(
+					INPUT_POST,
+					'assertion',
+					FILTER_UNSAFE_RAW,
+					FILTER_FLAG_STRIP_LOW|FILTER_FLAG_STRIP_HIGH
+				);
+				//Use the $_POST superglobal array for PHP < 5.2 and write your own filter 
+				$params = 'assertion=' . urlencode($assert) . '&audience=' .
+						   urlencode(TBGContext::getURLhost().':80');
+				$ch = curl_init();
+				$options = array(
+					CURLOPT_URL => $url,
+					CURLOPT_RETURNTRANSFER => TRUE,
+					CURLOPT_POST => 2,
+					CURLOPT_POSTFIELDS => $params
+				);
+				curl_setopt_array($ch, $options);
+				$result = curl_exec($ch);
+				curl_close($ch);
+				$details = json_decode($result);
+				$user = null;
+				if ($details->status == 'okay')
+				{
+					$user = TBGUser::getByEmail($details->email);
+					if ($user instanceof TBGUser)
+					{
+						TBGContext::getResponse()->setCookie('tbg3_password', $user->getPassword());
+						TBGContext::getResponse()->setCookie('tbg3_username', $user->getUsername());
+						return $this->renderJSON('login ok');
+					}
+				}
+				
+				if (!$user instanceof TBGUser)
+				{
+					$this->getResponse()->setHttpStatus(401);
+					$this->renderJSON(array('message' => $this->getI18n()->__('Invalid login')));
+				}
+				return;
+			}
+			
 			if (TBGSettings::isOpenIDavailable())
 				$openid = new LightOpenID(TBGContext::getRouting()->generate('login_page', array(), false));
 
