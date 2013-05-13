@@ -20,7 +20,6 @@
 	{
 
 		protected static $additional_regexes = null;
-		protected static $current_parser = null;
 
 		protected $preformat = null;
 		protected $quote = null;
@@ -52,16 +51,6 @@
 		{
 			if (self::$additional_regexes === null) self::$additional_regexes = array();
 			self::$additional_regexes[] = array($regex, $callback);
-		}
-
-		/**
-		 * Returns the current parser object, only valid when the _parseText method is running,
-		 *
-		 * @return TBGTextParser
-		 */
-		public static function getCurrentParser()
-		{
-			return self::$current_parser;
 		}
 
 		/**
@@ -639,9 +628,27 @@
 			return $output;
 		}
 
-		protected function _parse_variable($matches)
+		protected function _parse_insert_variables($matches)
 		{
-			switch($matches[2])
+			$param_detail = explode('|', $matches[1]);
+			$param_name = array_shift($param_detail);
+			$param_default = (!empty($param_detail)) ? array_shift($param_detail) : null;
+			
+			if (isset($this->options['parameters']) && isset($this->options['parameters'][$param_name]))
+			{
+				$val = trim($this->options['parameters'][$param_name]);
+			}
+			else
+			{
+				$val = ($param_default !== null) ? trim($param_default) : trim($param_name);
+			}
+			
+			return $val;
+		}
+
+		protected function _parse_insert_template($matches)
+		{
+			switch($matches[1])
 			{
 				case 'CURRENTMONTH':
 					return date('m');
@@ -663,12 +670,36 @@
 				case 'NAMESPACE':
 					return 'None';
 				case 'TOC':
-					return '{{TOC}}';
+					return (isset($this->options['included'])) ? '' : '{{TOC}}';
 				case 'SITENAME':
 				case 'SITETAGLINE':
 					return TBGSettings::getTBGname();
 				default:
-					return '';
+					$details = explode('|', $matches[1]);
+					$template_name = array_shift($details);
+					if (substr($template_name, 0, 1) == ':') $template_name = substr($template_name, 1);
+					$template_name = (TBGWikiArticle::doesArticleExist($template_name)) ? $template_name : 'Template:'.$template_name;
+					$template_article = TBGArticlesTable::getTable()->getArticleByName($template_name);
+					$parameters = array();
+					if (count($details))
+					{
+						foreach ($details as $parameter)
+						{
+							$param = explode('=', $parameter);
+							if (count($param) == 2)
+								$parameters[$param[0]] = $param[1];
+							else
+								$parameters[] = $parameter;
+						}
+					}
+					if ($template_article instanceof TBGWikiArticle)
+					{
+						return tbg_parse_text($template_article->getContent(), false, null, array('included' => true, 'parameters' => $parameters));
+					}
+					else
+					{
+						return $matches[0];
+					}
 			}
 		}
 
@@ -807,19 +838,11 @@
 			$char_regexes = array();
 			$char_regexes[] = array('/(\'{2,5})/i', array($this, '_parse_emphasize'));
 			$char_regexes[] = array('/(__NOTOC__|__NOEDITSECTION__)/i', array($this, '_parse_eliminate'));
-			if (!array_key_exists('ignore_vars', $options))
-			{
-				$char_regexes[] = array('/(\{\{([^\}]*?)\}\})/i', array($this, '_parse_variable'));
-			}
 			$char_regexes[] = array('/(\[\[(\:?([^\]]*?)\:)?([^\]]*?)(\|([^\]]*?))?\]\]([a-z]+)?)/i', array($this, "_parse_save_ilink"));
 			$char_regexes[] = array('/(^|[ \t\r\n])((ftp|http|https|gopher|mailto|news|nntp|telnet|wais|file|prospero|aim|webcal):(([A-Za-z0-9$_.+!*(),;\[\]\/?:@&~=-])|%[A-Fa-f0-9]{2}){2,}(#([a-zA-Z0-9][a-zA-Z0-9\[\]$_.+!*(),;\/?:@&~=%-]*))?([A-Za-z0-9\[\]$_+!*();\/?:~-]))/', array($this, '_parse_autosensedlink'));
 			$char_regexes[] = array('/(\[([^\]]*?)(\s+[^\]]*?)?\])/i', array($this, "_parse_save_elink"));
 			$char_regexes[] = array(self::getIssueRegex(), array($this, '_parse_issuelink'));
 			$char_regexes[] = array('/(?<=\s|^)(\:\(|\:-\(|\:\)|\:-\)|8\)|8-\)|B\)|B-\)|\:-\/|\:-D|\:-P|\(\!\)|\(\?\))(?=\s|$)/i', array($this, '_getsmiley'));
-			foreach (self::getRegexes() as $regex)
-			{
-				$char_regexes[] = array($regex[0], $regex[1]);
-			}
 
 			$this->stop = false;
 			$this->stop_all = false;
@@ -845,6 +868,12 @@
 					$line = preg_replace_callback($regex[0], $regex[1], $line);
 					if ($this->stop) break;
 				}
+				foreach (self::getRegexes() as $regex)
+				{
+					$parser = $this;
+					$line = preg_replace_callback($regex[0], function($matches) use ($regex, $parser) { call_user_func($regex[1], $matches, $parser); }, $line);
+					if ($this->stop) break;
+				}
 			}
 
 			$isline = (bool) (mb_strlen(trim($line)) > 0);
@@ -861,7 +890,7 @@
 
 			if (mb_substr($line, -1) != "\n")
 			{
-				$line = $line . " \n";
+				$line .= (isset($this->options['included'])) ? "\n" : " \n";
 			}
 
 			return $line;
@@ -872,7 +901,6 @@
 			$options = array_merge($options, $this->options);
 			TBGContext::loadLibrary('common');
 			
-			self::$current_parser = $this;
 			$this->list_level_types = array();
 			$this->list_level = 0;
 			$this->deflist = false;
@@ -882,10 +910,25 @@
 			$text = $this->text;
 			
 			$text = preg_replace_callback('/<nowiki>(.+?)<\/nowiki>(?!<\/nowiki>)/ism', array($this, "_parse_save_nowiki"), $text);
+			$text = preg_replace_callback('/[\{]{3,3}([\d|\w|\|]*)[\}]{3,3}/ismU', array($this, "_parse_insert_variables"), $text);
+			$text = preg_replace_callback('/(?<!\{)[\{]{2,2}([^{^}.]*)[\}]{2,2}(?!\})/ismU', array($this, "_parse_insert_template"), $text);
+			if (isset($this->options['included'])) 
+			{
+				$text = preg_replace_callback('/<noinclude>(.+?)<\/noinclude>(?!<\/noinclude>)/ism', array($this, "_parse_remove_noinclude"), $text);
+				$text = preg_replace_callback('/<includeonly>(.+?)<\/includeonly>(?!<\/includeonly>)/ism', array($this, "_parse_preserve_includeonly"), $text);
+				return $text;
+			}
+			
+			if (!isset($this->options['included']))
+			{
+				$text = preg_replace_callback('/<includeonly>(.+?)<\/includeonly>(?!<\/includeonly>)/ism', array($this, "_parse_remove_includeonly"), $text);
+				$text = preg_replace_callback('/<noinclude>(.+?)<\/noinclude>(?!<\/noinclude>)/ism', array($this, "_parse_preserve_noinclude"), $text);
+			}
 			$text = preg_replace_callback('/<source((?:\s+[^\s]+=".*")*)>\s*?(.+)\s*?<\/source>/ismU', array($this, "_parse_save_code"), $text);
 			// Thanks to Mike Smith (scgtrp) for the above regexp
-
+			
 			$text = tbg_decodeUTF8($text, true);
+
 			$text = preg_replace('/&lt;((\/)?u|(\/)?strike|br|code)&gt;/ism', '<\\1>' ,$text);
 			
 			$lines = explode("\n", $text);
@@ -925,7 +968,6 @@
 			$output = preg_replace_callback('/~~~ILINK~~~/i', array($this, "_parse_restore_ilink"), $output);
 			$output = preg_replace_callback('/~~~ELINK~~~/i', array($this, "_parse_restore_elink"), $output);
 
-			self::$current_parser = null;
 			return $output;
 		}
 
@@ -957,6 +999,26 @@
 		{
 			array_push($this->nowikis, $matches[1]);
 			return "|||NOWIKI|||";
+		}
+		
+		protected function _parse_remove_noinclude($matches)
+		{
+			return "";
+		}
+		
+		protected function _parse_preserve_noinclude($matches)
+		{
+			return $matches[1];
+		}
+		
+		protected function _parse_remove_includeonly($matches)
+		{
+			return "";
+		}
+		
+		protected function _parse_preserve_includeonly($matches)
+		{
+			return $matches[1];
 		}
 		
 		protected function _parse_save_ilink($matches)
