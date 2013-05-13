@@ -1,6 +1,6 @@
 <?php if ($item instanceof TBGLogItem): ?>
 	<li>
-		<span class="date"><?php echo tbg_formatTime($item->getTime(), 6); ?></span>&nbsp;
+		<span class="date"><?php echo (date('YmdHis', $previous_time) != date('YmdHis', $item->getTime())) ? tbg_formatTime($item->getTime(), 6) : ''; ?></span>&nbsp;
 		<?php
 
 			$previous_value = null;
@@ -201,7 +201,7 @@
 						echo image_tag('icon_percent.png');
 						if ($item->hasChangeDetails())
 						{
-							echo __("Milestone changed: %previous_value% => %new_value%", array('%previous_value%' => '<strong>'.(int) $item->getPreviousValue().'</strong>', '%new_value%' => '<strong>'.(int) $item->getCurrentValue().'</strong>'));
+							echo __("Percent complete changed: %previous_value% => %new_value%", array('%previous_value%' => '<strong>'.(int) $item->getPreviousValue().'</strong>', '%new_value%' => '<strong>'.(int) $item->getCurrentValue().'</strong>'));
 						}
 						break;
 					default:

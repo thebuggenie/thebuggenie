@@ -1131,7 +1131,7 @@ dd { float: left; display: block; width: 195px; font-weight: normal; margin: 0; 
 #viewissue_log_items ul { list-style: none; margin: 10px; padding: 0; }
 #viewissue_log_items ul li { list-style: none; margin: 0; padding: 2px 0; }
 #viewissue_log_items ul li img { margin: 3px 5px -3px 5px; }
-#viewissue_log_items ul li span.date { font-size: 0.85em; color: #AAA; }
+#viewissue_log_items ul li span.date { font-size: 0.85em; color: #AAA; display: inline-block; min-width: 120px; }
 .comment_log_items { list-style: none; margin: 5px 10px; padding: 0; }
 .comment_log_items span.date { display: none; }
 .comment_log_items img { margin: 3px 5px -3px 5px; }
