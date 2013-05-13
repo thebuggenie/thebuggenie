@@ -293,6 +293,24 @@
 			return TBGUsersTable::getTable()->getByUsername($username);
 		}
 		
+		public static function getByEmail($email)
+		{
+			$user = TBGUsersTable::getTable()->getByEmail($email);
+			if (!$user instanceof TBGUser && !TBGSettings::isUsingExternalAuthenticationBackend())
+			{
+				$user = new TBGUser();
+				$user->setPassword(TBGUser::createPassword());
+				$user->setUsername($email);
+				$user->setEmail($email);
+				$user->setActivated();
+				$user->setEnabled();
+				$user->setValidated();
+				$user->save();
+			}
+			
+			return $user;
+		}
+
 		/**
 		 * Return (or create, assuming no external auth backend) a user based on
 		 * a provided openid identity

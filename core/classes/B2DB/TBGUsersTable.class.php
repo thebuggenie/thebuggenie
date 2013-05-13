@@ -106,6 +106,15 @@
 			return $this->selectOne($crit);
 		}
 		
+		public function getByEmail($email)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::EMAIL, $email);
+			$crit->addWhere(self::DELETED, false);
+			
+			return $this->selectOne($crit);
+		}
+		
 		public function isUsernameAvailable($username)
 		{
 			$crit = $this->getCriteria();
