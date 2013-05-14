@@ -46,6 +46,16 @@
 		 */
 		const NOTIFY_ISSUE_COMMENTED_ON = 'notify_issue_commented_on';
 
+		/**
+		 * Notify the user when an article he created, updated or commented on is commented on
+		 */
+		const NOTIFY_ARTICLE_COMMENTS = 'notify_article_commented_on';
+
+		/**
+		 * Notify the user when an article he created, updated or commented on is updated
+		 */
+		const NOTIFY_ARTICLE_EDITS = 'notify_article_edits';
+
 		const MAIL_ENCODING_BASE64 = 3;
 		const MAIL_ENCODING_QUOTED = 4;
 		const MAIL_ENCODING_UTF7 = 0;
@@ -95,6 +105,7 @@
 			TBGEvent::listen('core', 'TBGUser::_postSave', array($this, 'listen_createUser'));
 			TBGEvent::listen('core', 'TBGIssue::save', array($this, 'listen_issueSave'));
 			TBGEvent::listen('core', 'TBGComment::createNew', array($this, 'listen_TBGComment_createNew'));
+			TBGEvent::listen('core', 'TBGWikiArticle::doSave', array($this, 'listen_TBGWikiArticle_doSave'));
 			TBGEvent::listen('core', 'header_begins', array($this, 'listen_headerBegins'));
 			TBGEvent::listen('core', 'viewissue', array($this, 'listen_viewissue'));
 			TBGEvent::listen('core', 'issue_subscribe_user', array($this, 'listen_issueSubscribeUser'));
@@ -272,7 +283,7 @@ EOT;
 			return $langs;
 		}
 
-		public function getTranslatedMessages($subject, $template, $parameters, $users)
+		public function getTranslatedMessages($template, $parameters, $users, $subject, $subject_parameters = array())
 		{
 			if (!is_array($parameters)) $parameters = array();
 			$langs = $this->getUsersAndLanguages($users);
@@ -286,8 +297,8 @@ EOT;
 				{
 					TBGContext::getI18n()->setLanguage($language);
 					$body_parts = $this->getEmailTemplates($template, $parameters);
-					$subject = TBGContext::getI18n()->__($subject);
-					$message = $this->getSwiftMessage($subject, $body_parts[0], $body_parts[1]);
+					$translated_subject = TBGContext::getI18n()->__($subject, $subject_parameters);
+					$message = $this->getSwiftMessage($translated_subject, $body_parts[0], $body_parts[1]);
 					foreach ($users as $user)
 					{
 						$message->addTo($user->getEmail(), $user->getBuddyname());
@@ -321,7 +332,7 @@ EOT;
 					$subject = 'User account registered with The Bug Genie';
 					$link_to_activate = $this->generateURL('activate', array('user' => str_replace('.', '%2E', $user->getUsername()), 'key' => $user->generateActivationKey()));
 					$parameters = compact('user', 'password', 'link_to_activate');
-					$messages = $this->getTranslatedMessages($subject, 'registeruser', $parameters, array($user));
+					$messages = $this->getTranslatedMessages('registeruser', $parameters, array($user), $subject);
 
 					foreach ($messages as $message)
 					{
@@ -342,7 +353,7 @@ EOT;
 				$user = $event->getSubject();
 				$scope = $event->getParameter('scope');
 				$parameters = compact('user', 'scope');
-				$messages = $this->getTranslatedMessages($subject, 'addtoscope', $parameters, array($user));
+				$messages = $this->getTranslatedMessages('addtoscope', $parameters, array($user), $subject);
 
 				foreach ($messages as $message)
 				{
@@ -361,7 +372,7 @@ EOT;
 				$subject = 'Password reset';
 				$user = $event->getSubject();
 				$parameters = array('user' => $user, 'password' => $event->getParameter('password'));
-				$messages = $this->getTranslatedMessages($subject, 'passwordreset', $parameters, array($user));
+				$messages = $this->getTranslatedMessages('passwordreset', $parameters, array($user), $subject);
 
 				foreach ($messages as $message)
 				{
@@ -378,7 +389,7 @@ EOT;
 //				__('Forgot your password?');
 				$subject = 'Forgot your password?';
 				$parameters = compact('user');
-				$messages = $this->getTranslatedMessages($subject, 'forgottenpassword', $parameters, array($user));
+				$messages = $this->getTranslatedMessages('forgottenpassword', $parameters, array($user), $subject);
 
 				foreach ($messages as $message)
 				{
@@ -401,6 +412,23 @@ EOT;
 			{
 				throw new Exception(TBGContext::getI18n()->__('The email module is not configured for outgoing emails'));
 			}
+		}
+
+		protected function _getArticleRelatedUsers(TBGWikiArticle $article)
+		{
+			$uids = array();
+			$uids[$article->getAuthor()->getID()] = $article->getAuthor()->getID();
+			foreach (TBGArticleHistoryTable::getTable()->getUserIDsByArticleName($article->getName()) as $uid)
+			{
+				$uids[$uid] = $uid;
+			}
+			
+			foreach ($uids as $uid => $user_id)
+			{
+				$uids[$uid] = TBGContext::factory()->TBGUser($user_id);
+			}
+			
+			return $uids;
 		}
 
 		protected function _getIssueRelatedUsers(TBGIssue $issue)
@@ -614,7 +642,7 @@ EOT;
 					$subject = '['.$issue->getProject()->getKey().'] ' . $issue->getIssueType()->getName() . ' ' . $issue->getFormattedIssueNo(true) . ' - ' . html_entity_decode($issue->getTitle(), ENT_COMPAT, TBGContext::getI18n()->getCharset());
 					$parameters = compact('issue');
 					$to_users = $this->_getIssueRelatedUsers($issue);
-					$messages = $this->getTranslatedMessages($subject, 'issuecreate', $parameters, $to_users);
+					$messages = $this->getTranslatedMessages('issuecreate', $parameters, $to_users, $subject);
 
 					foreach ($messages as $message)
 					{
@@ -624,18 +652,47 @@ EOT;
 			}
 		}
 
+		public function listen_TBGWikiArticle_doSave(TBGEvent $event)
+		{
+			$article = $event->getSubject();
+			$change_reason = $event->getParameter('reason');
+			$revision = $event->getParameter('revision');
+			$subject = 'Wiki article updated: %article_name%';
+			$user = TBGUsersTable::getTable()->selectById((int) $event->getParameter('user_id'));
+			$parameters = compact('article', 'change_reason', 'user', 'revision');
+			$to_users = $this->_getArticleRelatedUsers($article);
+			$messages = $this->getTranslatedMessages('articleupdate', $parameters, $to_users, $subject, array('%article_name%' => html_entity_decode($article->getTitle(), ENT_COMPAT, TBGContext::getI18n()->getCharset())));
+			
+			foreach ($messages as $message)
+			{
+				$this->sendMail($message);
+			}
+		}
+
 		public function listen_TBGComment_createNew(TBGEvent $event)
 		{
 			if ($this->isOutgoingNotificationsEnabled())
 			{
 				$comment = $event->getSubject();
-				if ($comment instanceof TBGComment && $comment->getTargetType() == TBGComment::TYPE_ISSUE)
+				if ($comment instanceof TBGComment)
 				{
-					$issue = $event->getParameter('issue');
-					$subject = 'Re: ['.$issue->getProject()->getKey().'] ' . $issue->getIssueType()->getName() . ' ' . $issue->getFormattedIssueNo(true) . ' - ' . html_entity_decode($issue->getTitle(), ENT_COMPAT, TBGContext::getI18n()->getCharset());
-					$parameters = compact('issue', 'comment');
-					$to_users = $this->_getIssueRelatedUsers($issue);
-					$messages = $this->getTranslatedMessages($subject, 'issuecomment', $parameters, $to_users);
+					switch ($comment->getTargetType())
+					{
+						case TBGComment::TYPE_ISSUE:
+							$issue = $event->getParameter('issue');
+							$subject = 'Re: ['.$issue->getProject()->getKey().'] ' . $issue->getIssueType()->getName() . ' ' . $issue->getFormattedIssueNo(true) . ' - ' . html_entity_decode($issue->getTitle(), ENT_COMPAT, TBGContext::getI18n()->getCharset());
+							$parameters = compact('issue', 'comment');
+							$to_users = $this->_getIssueRelatedUsers($issue);
+							$messages = $this->getTranslatedMessages('issuecomment', $parameters, $to_users, $subject);
+							break;
+						case TBGComment::TYPE_ARTICLE:
+							$article = $event->getParameter('article');
+							$subject = 'Comment posted on article %article_name%';
+							$parameters = compact('article', 'comment');
+							$to_users = $this->_getArticleRelatedUsers($article);
+							$messages = $this->getTranslatedMessages('articlecomment', $parameters, $to_users, $subject, array('%article_name%' => html_entity_decode($article->getTitle(), ENT_COMPAT, TBGContext::getI18n()->getCharset())));
+							break;
+					}
 
 					foreach ($messages as $message)
 					{
@@ -655,7 +712,7 @@ EOT;
 					$subject = 'Re: ['.$issue->getProject()->getKey().'] ' . $issue->getIssueType()->getName() . ' ' . $issue->getFormattedIssueNo(true) . ' - ' . html_entity_decode($issue->getTitle(), ENT_COMPAT, TBGContext::getI18n()->getCharset());
 					$parameters = array('issue' => $issue, 'comment' => $event->getParameter('comment'), 'log_items' => $event->getParameter('log_items'), 'updated_by' => $event->getParameter('updated_by'));
 					$to_users = $this->_getIssueRelatedUsers($issue);
-					$messages = $this->getTranslatedMessages($subject, 'issueupdate', $parameters, $to_users);
+					$messages = $this->getTranslatedMessages('issueupdate', $parameters, $to_users, $subject);
 
 					foreach ($messages as $message)
 					{
@@ -675,7 +732,7 @@ EOT;
 					$subject = 'Re: ['.$issue->getProject()->getKey().'] ' . $issue->getIssueType()->getName() . ' ' . $issue->getFormattedIssueNo(true) . ' - ' . html_entity_decode($issue->getTitle(), ENT_COMPAT, TBGContext::getI18n()->getCharset());
 					$parameters = array('issue' => $issue);
 					$to_users = array($event->getParameter('user'));
-					$messages = $this->getTranslatedMessages($subject, 'issuesubscribed', $parameters, $to_users);
+					$messages = $this->getTranslatedMessages('issuesubscribed', $parameters, $to_users, $subject);
 
 					foreach ($messages as $message)
 					{

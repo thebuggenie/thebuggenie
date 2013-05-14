@@ -30,6 +30,8 @@
 				!$module->getSetting(TBGMailing::NOTIFY_ISSUE_TEAMASSIGNED_UPDATED, $uid) && 
 				!$module->getSetting(TBGMailing::NOTIFY_ISSUE_RELATED_PROJECT_TEAMASSIGNED, $uid) && 
 				!$module->getSetting(TBGMailing::NOTIFY_ISSUE_PROJECT_ASSIGNED, $uid) && 
+				($module->getSetting(TBGMailing::NOTIFY_ARTICLE_COMMENTS, $uid) !== null && !$module->getSetting(TBGMailing::NOTIFY_ARTICLE_COMMENTS, $uid)) && 
+				($module->getSetting(TBGMailing::NOTIFY_ARTICLE_EDITS, $uid) !== null && !$module->getSetting(TBGMailing::NOTIFY_ARTICLE_EDITS, $uid)) && 
 				!$module->getSetting(TBGMailing::NOTIFY_ISSUE_COMMENTED_ON, $uid)) 
 			{
 				return 'silent';
@@ -41,6 +43,8 @@
 				$module->getSetting(TBGMailing::NOTIFY_ISSUE_TEAMASSIGNED_UPDATED, $uid) && 
 				!$module->getSetting(TBGMailing::NOTIFY_ISSUE_RELATED_PROJECT_TEAMASSIGNED, $uid) && 
 				$module->getSetting(TBGMailing::NOTIFY_ISSUE_PROJECT_ASSIGNED, $uid) && 
+				($module->getSetting(TBGMailing::NOTIFY_ARTICLE_COMMENTS, $uid) === null || $module->getSetting(TBGMailing::NOTIFY_ARTICLE_COMMENTS, $uid)) && 
+				($module->getSetting(TBGMailing::NOTIFY_ARTICLE_EDITS, $uid) === null || $module->getSetting(TBGMailing::NOTIFY_ARTICLE_EDITS, $uid)) && 
 				$module->getSetting(TBGMailing::NOTIFY_ISSUE_COMMENTED_ON, $uid)) 
 			{
 				return 'recommended';
@@ -52,6 +56,8 @@
 				$module->getSetting(TBGMailing::NOTIFY_ISSUE_TEAMASSIGNED_UPDATED, $uid) && 
 				$module->getSetting(TBGMailing::NOTIFY_ISSUE_RELATED_PROJECT_TEAMASSIGNED, $uid) && 
 				$module->getSetting(TBGMailing::NOTIFY_ISSUE_PROJECT_ASSIGNED, $uid) && 
+				($module->getSetting(TBGMailing::NOTIFY_ARTICLE_COMMENTS, $uid) === null || $module->getSetting(TBGMailing::NOTIFY_ARTICLE_COMMENTS, $uid)) && 
+				($module->getSetting(TBGMailing::NOTIFY_ARTICLE_EDITS, $uid) === null || $module->getSetting(TBGMailing::NOTIFY_ARTICLE_EDITS, $uid)) && 
 				$module->getSetting(TBGMailing::NOTIFY_ISSUE_COMMENTED_ON, $uid)) 
 			{
 				return 'verbose';
@@ -75,6 +81,8 @@
 			$issues_settings[TBGMailing::NOTIFY_ISSUE_RELATED_PROJECT_TEAMASSIGNED] = $i18n->__("Notify me when an issue assigned to one of my team projects is updated or created");
 			$issues_settings[TBGMailing::NOTIFY_ISSUE_PROJECT_ASSIGNED] = $i18n->__("Notify me when an issue assigned to one of my projects is updated or created");
 			$issues_settings[TBGMailing::NOTIFY_ISSUE_COMMENTED_ON] = $i18n->__("Notify me when an issue I commented on gets updated");
+			$issues_settings[TBGMailing::NOTIFY_ARTICLE_COMMENTS] = $i18n->__("Notify me when an article I commented, created or updated receives comments");
+			$issues_settings[TBGMailing::NOTIFY_ARTICLE_EDITS] = $i18n->__("Notify me when an article I commented, created or updated is edited");
 
 			$this->issues_settings = $issues_settings;
 			$this->selected_preset = $this->_getNotificationPreset();

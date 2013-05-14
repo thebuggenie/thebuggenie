@@ -460,7 +460,11 @@
 
 			if (!isset($options['revert']) || !$options['revert'])
 			{
-				TBGArticleHistoryTable::getTable()->addArticleHistory($this->_name, $this->_old_content, $this->_content, $user_id, $reason);
+				$revision = TBGArticleHistoryTable::getTable()->addArticleHistory($this->_name, $this->_old_content, $this->_content, $user_id, $reason);
+			}
+			else
+			{
+				$revision = null;
 			}
 
 			TBGArticleLinksTable::getTable()->deleteLinksByArticle($this->_name);
@@ -492,6 +496,8 @@
 			}
 
 			$this->_history  = null;
+			
+			TBGEvent::createNew('core', 'TBGWikiArticle::doSave', $this, compact('reason', 'revision', 'user_id'))->trigger();
 
 			return true;
 		}

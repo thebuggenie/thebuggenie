@@ -2601,6 +2601,11 @@
 						TBGEvent::createNew('core', 'TBGComment::createNew', $comment, compact('issue'))->trigger();
 					}
 				}
+				elseif ($comment_applies_type == TBGComment::TYPE_ARTICLE)
+				{
+					$article = TBGArticlesTable::getTable()->selectById((int) $request['comment_applies_id']);
+					TBGEvent::createNew('core', 'TBGComment::createNew', $comment, compact('article'))->trigger();
+				}
 
 				switch ($comment_applies_type)
 				{
