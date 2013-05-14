@@ -286,7 +286,7 @@
 			if (!$this->preformat) $output .= "<pre>";
 			$this->preformat = true;
 
-			$output .= $matches[0];
+			$output .= htmlentities($matches[0]);
 
 			return $output."\n";
 		}
@@ -314,11 +314,6 @@
 		protected function _parse_horizontalrule($matches)
 		{
 			return "<hr />";
-		}
-
-		protected function _parse_underline($matches)
-		{
-			return "<u>".$matches[1]."</u>";
 		}
 
 		protected function _wiki_link($topic)
@@ -705,15 +700,12 @@
 
 		protected function _parse_tableopener($matches)
 		{
-			$output = "<table";
-			if (array_key_exists(1, $matches))
-			{
-				$output .= $matches[1];
-			}
-			if (mb_strpos($output, "cellspacing") === false)
-			{
-				$output .= " class=\"sortable resizable\" cellspacing=0";
-			}
+			$element = simplexml_load_string("<table ".trim($matches[1])."></table>");
+			$output = "<table class=\"";
+			$output .= ($element['class']) ? $element['class'] : 'sortable resizable';
+			$output .= '"';
+			if ($element['style']) $output .= ' style="'.$element['style'].'"';
+			if ($element['align']) $output .= ' align="'.$element['align'].'"';
 			$output .= ">";
 			$this->tablemode = true;
 			$this->opentablecol = false;
@@ -746,7 +738,12 @@
 				$output .= '</td></tr>';
 				$this->opentablecol = false;
 			}
-			$output .= "<tr>";
+			$element = simplexml_load_string("<tr ".trim($matches[1])."></tr>");
+			$output .= "<tr";
+			if ($element['class']) $output .= ' class="'.$element['class'].'"';
+			if ($element['style']) $output .= ' style="'.$element['style'].'"';
+			if ($element['align']) $output .= ' align="'.$element['align'].'"';
+			$output .= ">";
 
 			return $output;
 		}
@@ -760,7 +757,7 @@
 				$cols = explode(' !! ', $matches[1]);
 				foreach ($cols as $col)
 				{
-					$output .= "<th>{$col}</th>";
+					$output .= $this->_parse_tablecellcontent($col, 'h')."</th>";
 				}
 			}
 			$output .= "</thead>";
@@ -768,23 +765,64 @@
 			return $output;
 		}
 
+		protected function _parse_tablecellcontent($content, $mode)
+		{
+			$matches = explode('|', $content);
+			$output = "<t{$mode}";
+			if (count($matches) > 1)
+			{
+				$element = simplexml_load_string("<t{$mode} ".trim($matches[0])."></t{$mode}>");
+				if ($element['class']) $output .= ' class="'.$element['class'].'"';
+				if ($element['style']) $output .= ' style="'.$element['style'].'"';
+				if ($element['align']) $output .= ' align="'.$element['align'].'"';
+				if ($element['scope']) $output .= ' scope="'.$element['scope'].'"';
+				if ($element['colspan']) $output .= ' colspan="'.$element['colspan'].'"';
+				if ($mode == 'd')
+				{
+					if ($element['rowspan']) $output .= ' rowspan="'.$element['rowspan'].'"';
+				}
+				$output .= ">{$matches[1]}";
+			}
+			else
+			{
+				$output .= ">{$matches[0]}";
+			}
+			
+			return $output;
+		}
+		
 		protected function _parse_tablerowcontent($matches)
 		{
 			$this->opentablecol = true;
 			$first = true;
-			$output = '<td>';
+			$output = '';
 			if (array_key_exists(1, $matches))
 			{
 				$cols = explode(' || ', $matches[1]);
 				foreach ($cols as $col)
 				{
-					if (!$first) $output .= "</td><td>";
-					$output .= $col;
+					if (!$first) $output .= "</td>";
+					$output .= $this->_parse_tablecellcontent($col, 'd');
 					$first = false;
 				}
 			}
 
 			return $output;
+		}
+
+		protected function _parse_allowed_tags($matches)
+		{
+			$element = simplexml_load_string(htmlspecialchars_decode($matches[0]));
+			$html = "<{$element->getName()}";
+			if (isset($element['style'])) $html .= ' style="'.$element['style'].'"';
+			$html .= ">".$element."</{$element->getName()}>";
+			
+			return $html;
+		}
+
+		protected function _parse_specialchar($matches)
+		{
+			return '<span title="&amp;'.$matches[1].';">&'.$matches[1].';</span>';
 		}
 
 		protected function _getsmiley($smiley_code)
@@ -829,9 +867,9 @@
 			$line_regexes['list'] = '^([\*\#]+)(.*?)$';
 			$line_regexes['tableopener'] = '^\{\|(.*?)$';
 			$line_regexes['tablecloser'] = '^\|\}$';
-			$line_regexes['tablerow'] = '^\|-$';
-			$line_regexes['tableheader'] = '^\!\s{1}(.*?)$';
-			$line_regexes['tablerowcontent'] = '^\|{1,2}\s{1}(.*?)$';
+			$line_regexes['tablerow'] = '^\|-(.*?)$';
+			$line_regexes['tableheader'] = '^\!(.*?)$';
+			$line_regexes['tablerowcontent'] = '^\|{1,2}\s?(.*?)$';
 			$line_regexes['headers'] = '^(={1,6})(.*?)(={1,6})$';
 			$line_regexes['horizontalrule'] = '^----$';
 
@@ -843,6 +881,7 @@
 			$char_regexes[] = array('/(\[([^\]]*?)(\s+[^\]]*?)?\])/i', array($this, "_parse_save_elink"));
 			$char_regexes[] = array(self::getIssueRegex(), array($this, '_parse_issuelink'));
 			$char_regexes[] = array('/(?<=\s|^)(\:\(|\:-\(|\:\)|\:-\)|8\)|8-\)|B\)|B-\)|\:-\/|\:-D|\:-P|\(\!\)|\(\?\))(?=\s|$)/i', array($this, '_getsmiley'));
+			$char_regexes[] = array('/\&amp\;(.*)\;/i', array($this, '_parse_specialchar'));
 
 			$this->stop = false;
 			$this->stop_all = false;
@@ -909,7 +948,7 @@
 			$output = "";
 			$text = $this->text;
 			
-			$text = preg_replace_callback('/<nowiki>(.+?)<\/nowiki>(?!<\/nowiki>)/ism', array($this, "_parse_save_nowiki"), $text);
+			$text = preg_replace_callback('/<(nowiki|pre)>(.*)<\/(\\1)>(?!<\/(\\1)>)/ismU', array($this, "_parse_save_nowiki"), $text);
 			$text = preg_replace_callback('/[\{]{3,3}([\d|\w|\|]*)[\}]{3,3}/ismU', array($this, "_parse_insert_variables"), $text);
 			$text = preg_replace_callback('/(?<!\{)[\{]{2,2}([^{^}.]*)[\}]{2,2}(?!\})/ismU', array($this, "_parse_insert_template"), $text);
 			if (isset($this->options['included'])) 
@@ -928,8 +967,9 @@
 			// Thanks to Mike Smith (scgtrp) for the above regexp
 			
 			$text = tbg_decodeUTF8($text, true);
+			$text = preg_replace_callback('/&lt;(strike|u|pre|tt|s|del|ins|u|blockquote|div|span|font)(\s.*)&gt;(.*)&lt;\/(\\1)&gt;/ismU', array($this, '_parse_allowed_tags') ,$text);
 
-			$text = preg_replace('/&lt;((\/)?u|(\/)?strike|br|code)&gt;/ism', '<\\1>' ,$text);
+			$text = str_replace('&lt;br&gt;', '<br>' ,$text);
 			
 			$lines = explode("\n", $text);
 			foreach ($lines as $line)
@@ -959,10 +999,10 @@
 			{
 				$output = str_replace('{{TOC}}', '', $output);
 			}
-			$output = preg_replace_callback('/\|\|\|NOWIKI\|\|\|/i', array($this, "_parse_restore_nowiki"), $output);
+			$output = preg_replace_callback('/~~~NOWIKI~~~/i', array($this, "_parse_restore_nowiki"), $output);
 			if (!isset($options['no_code_highlighting']))
 			{
-				$output = preg_replace_callback('/\|\|\|CODE\|\|\|/Ui', array($this, "_parse_restore_code"), $output);
+				$output = preg_replace_callback('/~~~CODE~~~/Ui', array($this, "_parse_restore_code"), $output);
 			}
 
 			$output = preg_replace_callback('/~~~ILINK~~~/i', array($this, "_parse_restore_ilink"), $output);
@@ -997,8 +1037,8 @@
 
 		protected function _parse_save_nowiki($matches)
 		{
-			array_push($this->nowikis, $matches[1]);
-			return "|||NOWIKI|||";
+			array_push($this->nowikis, $matches[2]);
+			return "~~~NOWIKI~~~";
 		}
 		
 		protected function _parse_remove_noinclude($matches)
@@ -1045,13 +1085,13 @@
 
 		protected function _parse_restore_nowiki($matches)
 		{
-			return array_pop($this->nowikis);
+			return nl2br(htmlspecialchars(array_pop($this->nowikis)));
 		}
 
 		protected function _parse_save_code($matches)
 		{
 			array_push($this->codeblocks, $matches);
-			return "|||CODE|||";
+			return "~~~CODE~~~";
 		}
 
 		protected function _geshify($matches)
