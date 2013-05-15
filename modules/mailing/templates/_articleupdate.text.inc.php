@@ -1,7 +1,7 @@
 * <?php echo $article->getTitle(); ?> updated *
 
 The article has been updated by <?php echo $user->getBuddyname(); ?> (<?php echo $user->getUsername(); ?>):
-"<?php echo $change_reason; ?>"
+<?php echo (trim($change_reason) != '') ? '"'.$change_reason.'"' : '(No change reason provided)'; ?><?php echo "\n"; ?>
 
 Show article: <?php echo $module->generateURL('publish_article', array('article_name' => $article->getTitle()))."\n"; ?>
 Show changes: <?php echo $module->generateURL('publish_article_diff', array('article_name' => $article->getTitle(), 'from_revision' => $revision - 1, 'to_revision' => $revision))."\n"; ?>
