@@ -1056,32 +1056,19 @@
 		public function addStarredIssue($issue_id)
 		{
 			$this->_populateStarredIssues();
-			TBGLogging::log("Starring issue with id {$issue_id} for user with id " . $this->getID());
-			if ($this->isLoggedIn() == true && $this->isGuest() == false)
+			if ($this->isLoggedIn() && !$this->isGuest())
 			{
 				if (array_key_exists($issue_id, $this->_starredissues))
-				{
-					TBGLogging::log('Already starred');
 					return true;
-				}
-				TBGLogging::log('Logged in and unstarred, continuing');
-				$crit = new \b2db\Criteria();
-				$crit->addInsert(TBGUserIssuesTable::ISSUE, $issue_id);
-				$crit->addInsert(TBGUserIssuesTable::UID, $this->_id);
-				$crit->addInsert(TBGUserIssuesTable::SCOPE, TBGContext::getScope()->getID());
-				
-				\b2db\Core::getTable('TBGUserIssuesTable')->doInsert($crit);
-				$issue = TBGContext::factory()->TBGIssue($issue_id);
+
+				TBGUserIssuesTable::getTable()->addStarredIssue($this->getID(), $issue_id);
+				$issue = TBGIssuesTable::getTable()->selectById($issue_id);
 				$this->_starredissues[$issue->getID()] = $issue;
 				ksort($this->_starredissues);
-				TBGLogging::log('Starred');
 				return true;
 			}
-			else
-			{
-				TBGLogging::log('Not logged in');
-				return false;
-			}
+
+			return false;
 		}
 	
 		/**
@@ -1091,12 +1078,14 @@
 		 */
 		public function removeStarredIssue($issue_id)
 		{
-			$crit = new \b2db\Criteria();
-			$crit->addWhere(TBGUserIssuesTable::ISSUE, $issue_id);
-			$crit->addWhere(TBGUserIssuesTable::UID, $this->_id);
-				
-			\b2db\Core::getTable('TBGUserIssuesTable')->doDelete($crit);
-			unset($this->_starredissues[$issue_id]);
+			TBGUserIssuesTable::getTable()->removeStarredIssue($this->getID(), $issue_id);
+			if (is_array($this->_starredissues) && array_key_exists($issue_id, $this->_starredissues))
+			{
+				unset($this->_starredissues[$issue_id]);
+			}
+			return true;
+		}
+	
 		/**
 		 * Populate the array of starred articles
 		 */

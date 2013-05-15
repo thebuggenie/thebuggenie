@@ -32,7 +32,9 @@
 						<?php elseif (($issue->isOwned() && $issue->getOwner() instanceof TBGUser && $issue->getOwner()->getID() == $tbg_user->getID()) || ($issue->isAssigned() && $issue->getAssignee() instanceof TBGUser && $issue->getAssignee()->getID() == $tbg_user->getID()) ||($issue->getPostedBy() instanceof TBGUser && $issue->getPostedBy()->getID() == $tbg_user->getID())): ?>
 							<?php echo image_tag('star.png', array('id' => 'issue_favourite_faded_'.$issue->getId())); ?>
 							<div class="tooltip from-above leftie">
-								<?php echo __('You are involved with this issue and may be notified whenever it is updated or changed'); ?>
+								<?php echo __('You are involved with this issue and may be notified whenever it is updated or changed.'); ?><br>
+								<br>
+								<?php echo __('If you have the proper permissions, you can manage issue subscribers via the "More actions" button to the right.'); ?>
 							</div>
 						<?php else: ?>
 							<div class="tooltip from-above leftie">
