@@ -174,6 +174,14 @@
 		protected $_starredissues = null;
 
 		/**
+		 * Array of articles to follow up
+		 *
+		 * @var array
+		 * @Relates(class="TBGWikiArticle", collection=true, manytomany=true, joinclass="TBGUserArticlesTable")
+		 */
+		protected $_starredarticles = null;
+
+		/**
 		 * Array of issues assigned to the user
 		 *
 		 * @var array
@@ -1089,6 +1097,78 @@
 				
 			\b2db\Core::getTable('TBGUserIssuesTable')->doDelete($crit);
 			unset($this->_starredissues[$issue_id]);
+		/**
+		 * Populate the array of starred articles
+		 */
+		protected function _populateStarredArticles()
+		{
+			if ($this->_starredarticles === null)
+			{
+				$this->_b2dbLazyload('_starredarticles');
+				ksort($this->_starredarticles, SORT_NUMERIC);
+			}
+		}
+		
+		/**
+		 * Returns an array of articles ids which are "starred" by this user
+		 *
+		 * @return array
+		 */
+		public function getStarredArticles()
+		{
+			$this->_populateStarredArticles();
+			return $this->_starredarticles;
+		}
+		
+		/**
+		 * Returns whether or not an article is starred
+		 * 
+		 * @param integer $article_id The article ID to check
+		 * 
+		 * @return boolean
+		 */
+		public function isArticleStarred($article_id)
+		{
+			$this->_populateStarredArticles();
+			return array_key_exists($article_id, $this->_starredarticles);
+		}
+		
+		/**
+		 * Adds an article to the list of articles "starred" by this user 
+		 *
+		 * @param integer $article_id ID of article to add
+		 * @return boolean
+		 */
+		public function addStarredArticle($article_id)
+		{
+			$this->_populateStarredArticles();
+			if ($this->isLoggedIn() && !$this->isGuest())
+			{
+				if (array_key_exists($article_id, $this->_starredarticles))
+					return true;
+
+				TBGUserArticlesTable::getTable()->addStarredArticle($this->getID(), $article_id);
+				$article = TBGArticlesTable::getTable()->selectById($article_id);
+				$this->_starredarticles[$article->getID()] = $article;
+				ksort($this->_starredarticles);
+				return true;
+			}
+
+			return false;
+		}
+	
+		/**
+		 * Removes an article from the list of flagged articles
+		 *
+		 * @param integer $article_id ID of article to remove
+		 */
+		public function removeStarredArticle($article_id)
+		{
+			TBGUserArticlesTable::getTable()->removeStarredArticle($this->getID(), $article_id);
+			if (is_array($this->_starredarticles) && array_key_exists($article_id, $this->_starredarticles))
+			{
+				unset($this->_starredarticles[$article_id]);
+			}
 			return true;
 		}
 	

@@ -832,6 +832,33 @@ TBG.Main.detachFileFromArticle = function(url, file_id, article_name) {
 	TBG.Core._detachFile(url, file_id, 'article_' + article_name + '_files_');
 };
 
+TBG.Main.toggleFavouriteArticle = function(url, article_id)
+{
+	TBG.Main.Helpers.ajax(url, {
+		loading: {
+			indicator: 'article_favourite_indicator_' + article_id,
+			hide: ['article_favourite_normal_' + article_id, 'article_favourite_faded_' + article_id]
+		},
+		success: {
+			callback: function(json) {
+				if ($('article_favourite_faded_' + article_id)) {
+					if (json.starred) {
+						$('article_favourite_faded_' + article_id).hide();
+						$('article_favourite_indicator_' + article_id).hide();
+						$('article_favourite_normal_' + article_id).show();
+					} else {
+						$('article_favourite_normal_' + article_id).hide();
+						$('article_favourite_indicator_' + article_id).hide();
+						$('article_favourite_faded_' + article_id).show();
+					}
+				} else if (json.subscriber != '') {
+					$('subscribers_list').insert(json.subscriber);
+				}
+			}
+		}
+	});
+};
+
 TBG.Main.reloadImage = function(id) {
    var src = $(id).src;
    var date = new Date();

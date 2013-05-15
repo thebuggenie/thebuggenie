@@ -5,7 +5,7 @@
 		b2db\Criterion;
 
 	/**
-	 * User issues table
+	 * User articles table
 	 *
 	 * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
 	 * @version 3.1
@@ -15,27 +15,27 @@
 	 */
 
 	/**
-	 * User issues table
+	 * User articles table
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
 	 *
-	 * @Table(name="userissues")
+	 * @Table(name="userarticles")
 	 */
-	class TBGUserIssuesTable extends TBGB2DBTable 
+	class TBGUserArticlesTable extends TBGB2DBTable 
 	{
 
 		const B2DB_TABLE_VERSION = 1;
-		const B2DBNAME = 'userissues';
-		const ID = 'userissues.id';
-		const SCOPE = 'userissues.scope';
-		const ISSUE = 'userissues.issue';
-		const UID = 'userissues.uid';
+		const B2DBNAME = 'userarticles';
+		const ID = 'userarticles.id';
+		const SCOPE = 'userarticles.scope';
+		const ARTICLE = 'userarticles.article';
+		const UID = 'userarticles.uid';
 
 		protected function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
-			parent::_addForeignKeyColumn(self::ISSUE, TBGIssuesTable::getTable(), TBGIssuesTable::ID);
+			parent::_addForeignKeyColumn(self::ARTICLE, TBGArticlesTable::getTable(), TBGArticlesTable::ID);
 			parent::_addForeignKeyColumn(self::UID, TBGUsersTable::getTable(), TBGUsersTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
@@ -45,18 +45,18 @@
 			$this->_addIndex('uid_scope', array(self::UID, self::SCOPE));
 		}
 
-		public function getUserIDsByIssueID($issue_id)
+		public function getUserIDsByArticleID($article_id)
 		{
 			$uids = array();
 			$crit = $this->getCriteria();
 			
-			$crit->addWhere(self::ISSUE, $issue_id);
+			$crit->addWhere(self::ARTICLE, $article_id);
 			
 			if ($res = $this->doSelect($crit))
 			{
 				while ($row = $res->getNextRow())
 				{
-					$uid = $row->get(TBGUserIssuesTable::UID);
+					$uid = $row->get(self::UID);
 					$uids[$uid] = $uid;
 				}
 			}
@@ -64,15 +64,15 @@
 			return $uids;
 		}
 
-		public function copyStarrers($from_issue_id, $to_issue_id)
+		public function copyStarrers($from_article_id, $to_article_id)
 		{
-			$old_watchers = $this->getUserIDsByIssueID($from_issue_id);
-			$new_watchers = $this->getUserIDsByIssueID($to_issue_id);
+			$old_watchers = $this->getUserIDsByIssueID($from_article_id);
+			$new_watchers = $this->getUserIDsByIssueID($to_article_id);
 
 			if (count($old_watchers))
 			{
 				$crit = $this->getCriteria();
-				$crit->addInsert(self::ISSUE, $to_issue_id);
+				$crit->addInsert(self::ARTICLE, $to_article_id);
 				$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
 				foreach ($old_watchers as $uid)
 				{
@@ -85,16 +85,35 @@
 			}
 		}
 		
-		public function getUserStarredIssues($user_id)
+		public function getUserStarredArticles($user_id)
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::UID, $user_id);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
-			$crit->addJoin(TBGIssuesTable::getTable(), TBGIssuesTable::ID, self::ISSUE);
-			$crit->addWhere(TBGIssuesTable::DELETED, 0);
+			$crit->addJoin(TBGArticlesTable::getTable(), TBGArticlesTable::ID, self::ARTICLE);
+			$crit->addWhere(TBGArticlesTable::DELETED, 0);
 			
 			$res = $this->doSelect($crit);
 			return $res;
 		}
 		
+		public function addStarredArticle($user_id, $article_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addInsert(self::ARTICLE, $article_id);
+			$crit->addInsert(self::UID, $user_id);
+			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
+
+			$this->doInsert($crit);
+		}
+		
+		public function removeStarredArticle($user_id, $article_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::ARTICLE, $article_id);
+			$crit->addWhere(self::UID, $user_id);
+				
+			$this->doDelete($crit);
+			return true;
+		}
 	}

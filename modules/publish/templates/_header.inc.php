@@ -1,5 +1,25 @@
 <?php $article_name = $article->getName(); ?>
 <div class="header tab_menu">
+	<div class="title_left_images">
+		<?php if ($tbg_user->isGuest()): ?>
+			<?php echo image_tag('star_faded.png', array('id' => 'article_favourite_faded_'.$article->getId())); ?>
+			<div class="tooltip from-above leftie">
+				<?php echo __('Please log in to subscribe to updates for this article'); ?>
+			</div>
+		<?php elseif ($article->getAuthor() instanceof TBGUser && $article->getAuthor()->getID() == $tbg_user->getID() || in_array($tbg_user->getID(), $article->getHistoryUserIDs())): ?>
+			<?php echo image_tag('star.png', array('id' => 'article_favourite_faded_'.$article->getId())); ?>
+			<div class="tooltip from-above leftie">
+				<?php echo __('You have edited this article and may be notified whenever it is updated or changed.'); ?><br>
+			</div>
+		<?php else: ?>
+			<div class="tooltip from-above leftie">
+				<?php echo __('Click the star to toggle whether you want to be notified whenever this article updates or changes'); ?><br>
+			</div>
+			<?php echo image_tag('spinning_20.gif', array('id' => 'article_favourite_indicator_'.$article->getId(), 'style' => 'display: none;')); ?>
+			<?php echo image_tag('star_faded.png', array('id' => 'article_favourite_faded_'.$article->getId(), 'style' => 'cursor: pointer;'.(($tbg_user->isArticleStarred($article->getID())) ? 'display: none;' : ''), 'onclick' => "TBG.Main.toggleFavouriteArticle('".make_url('toggle_favourite_article', array('article_id' => $article->getID(), 'user_id' => $tbg_user->getID()))."', ".$article->getID().");")); ?>
+			<?php echo image_tag('star.png', array('id' => 'article_favourite_normal_'.$article->getId(), 'style' => 'cursor: pointer;'.((!$tbg_user->isArticleStarred($article->getID())) ? 'display: none;' : ''), 'onclick' => "TBG.Main.toggleFavouriteArticle('".make_url('toggle_favourite_article', array('article_id' => $article->getID(), 'user_id' => $tbg_user->getID()))."', ".$article->getID().");")); ?>
+		<?php endif; ?>
+	</div>
 	<?php if ($article->getID() || $mode == 'edit'): ?>
 		<?php if ($show_actions): ?>
 			<ul class="right">

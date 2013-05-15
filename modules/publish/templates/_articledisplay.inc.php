@@ -4,7 +4,7 @@
 		<?php include_template('publish/header', array('article_name' => $article->getName(), 'article' => $article, 'show_actions' => $show_actions, 'mode' => $mode)); ?>
 	<?php endif; ?>
 	<?php if (!$embedded && $article->canDelete()): ?>
-		<div style="position: absolute; top: 40px; right: 10px;">
+		<div style="position: absolute; top: 55px; right: 15px;">
 			<a class="button button-silver more_actions_button" id="more_actions_article_<?php echo $article->getID(); ?>_button" onclick="$(this).toggleClassName('button-pressed');$('more_actions_article_<?php echo $article->getID(); ?>').toggle();"><?php echo __('Actions'); ?></a>
 			<ul id="more_actions_article_<?php echo $article->getID(); ?>" style="display: none;" class="simple_list rounded_box white shadowed more_actions_dropdown dropdown_box popup_box" onclick="$('more_actions_article_<?php echo $article->getID(); ?>_button').toggleClassName('button-pressed');TBG.Main.Profile.clearPopupsAndButtons();">
 				<li><?php echo javascript_link_tag(__('Delete this article'), array('onclick' => "TBG.Main.Helpers.Dialog.show('".__('Please confirm')."', '".__('Do you really want to delete this article?')."', {yes: {click: function() {TBG.Main.Helpers.ajax('".make_url('publish_article_delete', array('article_name' => $article->getName()))."', {method: 'post'}); TBG.Main.Helpers.Dialog.dismiss(); }}, no: {click: TBG.Main.Helpers.Dialog.dismiss}})")); ?></li>

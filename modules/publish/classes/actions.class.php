@@ -291,4 +291,44 @@
 			}
 		}
 
+		/**
+		 * Toggle favourite article (starring)
+		 *  
+		 * @param TBGRequest $request
+		 */
+		public function runToggleFavouriteArticle(TBGRequest $request)
+		{
+			if ($article_id = $request['article_id'])
+			{
+				try
+				{
+					$article = TBGArticlesTable::getTable()->selectById($article_id);
+					$user = TBGUsersTable::getTable()->selectById($request['user_id']);
+				}
+				catch (Exception $e)
+				{
+					return $this->renderText('fail');
+				}
+			}
+			else
+			{
+				return $this->renderText('no article');
+			}
+			
+			if ($user->isArticleStarred($article_id))
+			{
+				$retval = !$user->removeStarredArticle($article_id);
+			}
+			else
+			{
+				$retval = $user->addStarredArticle($article_id);
+				if ($user->getID() != $this->getUser()->getID())
+				{
+					TBGEvent::createNew('core', 'article_subscribe_user', $article, compact('user'))->trigger();
+				}
+			}
+
+			return $this->renderText(json_encode(array('starred' => $retval, 'subscriber' => $this->getTemplateHTML('publish/articlesubscriber', array('user' => $user, 'article' => $article)))));
+		}
+		
 	}

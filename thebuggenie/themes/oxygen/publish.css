@@ -40,12 +40,14 @@
 .article.edit input[type="text"] { font-size: 1.2em; padding: 5px; }
 .article.edit textarea { font-family: "DroidSansMono", monospace; }
 
-.article .header { margin: 0 0 5px 0; padding: 3px; font-weight: bold; font-size: 17px; border-bottom: 1px solid #CCC; }
+.article .header { margin: 0 0 5px 0; padding: 2px 3px 3px 0; font-weight: normal; font-size: 21px; border-bottom: 1px solid #CCC; }
 .article .header a { font-size: 12px; border-bottom: 0; }
+.article .header .title_left_images { font-size: 0.6em; font-weight: normal; display: inline-block; height: 26px; width: 38px; }
 
 .article .details { color: #AAA; padding-bottom: 5px; }
 
-.article .toc { float: right; margin: 5px 0 15px 5px; width: 350px; box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); padding: 5px; font-size: 12px; position: relative; overflow: visible; background-color: rgba(200, 200, 200, 0.1); }
+.article .greybox { box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); background-color: rgba(200, 200, 200, 0.1); padding: 5px; }
+.article .toc { float: right; margin: 17px 0 15px 5px; width: 350px; box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); padding: 5px; font-size: 12px; position: relative; overflow: visible; background-color: rgba(200, 200, 200, 0.1); }
 .article .toc .header { margin: 0; padding: 2px 3px 3px 0; font-weight: bold; font-size: 15px; border-bottom: 1px dotted #CCC; }
 .article .toc .header a { color: #555; font-size: 16px; }
 .article .toc .faded_out { display: none; }
