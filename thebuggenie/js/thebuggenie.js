@@ -1313,7 +1313,16 @@ TBG.Project.Milestone.toggle = function(url, milestone_id) {
 	}
 };
 
-TBG.Project.Planning.toggleIssues = function(url, milestone_id) {
+TBG.Project.Planning.saveOrder = function(container, milestone_id, url) {
+	TBG.Main.Helpers.ajax(url, {
+		additional_params: Sortable.serialize(container)+'&milestone_id'+milestone_id,
+		loading: {
+			indicator: 'milestone_' + milestone_id + '_issues_indicator'
+		}
+	});
+};
+
+TBG.Project.Planning.toggleIssues = function(url, milestone_id, sort_url) {
 	if (!$('milestone_' + milestone_id + '_container').visible()) {
 		if ($('milestone_' + milestone_id + '_list').childElements().size() == 0) {
 			TBG.Main.Helpers.ajax(url, {
@@ -1322,9 +1331,14 @@ TBG.Project.Planning.toggleIssues = function(url, milestone_id) {
 					update: 'milestone_' + milestone_id + '_list',
 					show: ['milestone_' + milestone_id + '_container', 'milestone_' + milestone_id + '_reload_button'],
 					callback: function(json) {
-						$('milestone_' + milestone_id + '_list').childElements().each(function(element) {
-							new Draggable(element.id + '_draggable', {revert: true, handle: element.id + '_handle'});
-						});
+						console.log(sort_url);
+//						$('milestone_' + milestone_id + '_list').select('.milestone_issue_row').each(function(element) {
+//							new Draggable(element.id + '_draggable', {revert: true, handle: element.id + '_handle'});
+//						});
+						if (sort_url != undefined) {
+							console.log('sortable');
+							Sortable.create('milestone_' + milestone_id + '_list', {tag: 'tr', only: 'milestone_issue_row', containment: 'milestone_' + milestone_id + '_list', constraint: '', onUpdate: function(container) { TBG.Project.Planning.saveOrder(container, milestone_id, sort_url); }});
+						}
 					}
 				}
 			});
@@ -1461,7 +1475,7 @@ TBG.Project.Planning.assign = function(url, dragged, dropped)
 	if (dropped.id == dragged.up('.milestone_box').id) return;
 	
 	TBG.Main.Helpers.ajax(url, {
-		params: {story_id: $(dragged.down('input')).getValue(), sprint_id: $(dropped.id + '_id').getValue()},
+		params: {story_id: $(dragged.select('input')[0]).value, sprint_id: $(dropped.id + '_id').getValue()},
 		loading: {
 			indicator: 'fullpage_backdrop',
 			clear: 'fullpage_backdrop_content',
@@ -1469,7 +1483,7 @@ TBG.Project.Planning.assign = function(url, dragged, dropped)
 		},
 		success: {
 			callback: function(json) {
-				var elm = Element.remove(dragged.up('tr'));
+				var elm = Element.remove(dragged);
 				if ($(dropped.id + '_list').childElements().size() > 0) {
 					$(dropped.id + '_list').insert({'top':elm});
 				}

@@ -64,6 +64,7 @@
 	$routes[] = array('project_planning_milestone', '/:project_key/planning/milestone/:milestone_id', 'project', 'getMilestone');
 	$routes[] = array('project_planning_milestone_remove', '/:project_key/planning/milestone/:milestone_id/remove', 'project', 'removeMilestone');
 	$routes[] = array('project_planning_milestone_issues', '/:project_key/planning/milestone/:milestone_id/get/issues', 'project', 'getMilestoneIssues', array('mode' => 'planning'));
+	$routes[] = array('project_planning_milestone_sort_issues', '/:project_key/planning/milestone/:milestone_id/sort/issues', 'project', 'sortMilestoneIssues', array('mode' => 'planning'));
 	$routes[] = array('project_planning_update_milestone_issues', '/:project_key/planning/milestone/:milestone_id/update/issues', 'project', 'updateMilestoneIssues');
 	$routes[] = array('project_planning_save_column_settings', '/:project_key/planning/save/columnsettings', 'project', 'savePlanningColumnSettings');
 	$routes[] = array('project_roadmap', '/:project_key/roadmap', 'project', 'roadmap');

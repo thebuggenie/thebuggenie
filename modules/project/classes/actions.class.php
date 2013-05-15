@@ -1037,6 +1037,18 @@
 			}
 		}
 
+		public function runSortMilestoneIssues(TBGRequest $request)
+		{
+			$issue_table = TBGIssuesTable::getTable();
+			$milestone_id = $request['milestone_id'];
+			$orders = array_keys($request["milestone_{$milestone_id}_list"]);
+			foreach ($request["milestone_{$milestone_id}_list"] as $issue_id)
+			{
+				$issue_table->setOrderByMilestoneIdAndIssueId(array_pop($orders), $milestone_id, $issue_id);
+			}
+			return $this->renderJSON('sorted ok');
+		}
+
 		public function runGetMilestoneIssues(TBGRequest $request)
 		{
 			try

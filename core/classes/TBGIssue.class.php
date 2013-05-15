@@ -422,6 +422,14 @@
 		protected $_votes_total = null;
 		
 		/**
+		 * Milestone sorting order for this issue
+		 *
+		 * @var integer
+		 * @Column(type="integer", length=10)
+		 */
+		protected $_milestone_order = null;
+		
+		/**
 		 * The issue this issue is a duplicate of
 		 * 
 		 * @var TBGIssue
@@ -4660,6 +4668,7 @@
 								$new_name = ($this->getMilestone() instanceof TBGMilestone) ? $this->getMilestone()->getName() : TBGContext::getI18n()->__('Not determined');
 
 								$this->addLogEntry(TBGLogTable::LOG_ISSUE_MILESTONE, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
+								$this->_milestone_order = 0;
 								break;
 							case '_issuetype':
 								if ($original_value != 0)

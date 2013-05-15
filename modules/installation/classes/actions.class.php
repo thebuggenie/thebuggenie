@@ -594,6 +594,7 @@
 			TBGProjectsTable::getTable()->upgrade(TBGProjectsTable3dot2::getTable());
 			TBGLogTable::getTable()->upgrade(TBGLogTable3dot2::getTable());
 			TBGUsersTable::getTable()->upgrade(TBGUsersTable3dot2::getTable());
+			TBGIssuesTable::getTable()->upgrade(TBGIssuesTable3dot2::getTable());
 			if (TBGContext::isModuleLoaded('mailing'))
 			{
 				TBGIncomingEmailAccountTable::getTable()->upgrade(TBGIncomingEmailAccountTable3dot2::getTable());

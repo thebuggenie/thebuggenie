@@ -26,7 +26,7 @@
 	class TBGIssuesTable extends TBGB2DBTable 
 	{
 		
-		const B2DB_TABLE_VERSION = 2;
+		const B2DB_TABLE_VERSION = 3;
 		const B2DBNAME = 'issues';
 		const ID = 'issues.id';
 		const SCOPE = 'issues.scope';
@@ -75,6 +75,7 @@
 		const WORKFLOW_STEP_ID = 'issues.workflow_step_id';
 		const MILESTONE = 'issues.milestone';
 		const VOTES_TOTAL = 'issues.votes_total';
+		const MILESTONE_ORDER = 'issues.milestone_order';
 
 		protected function _setupIndexes()
 		{
@@ -364,7 +365,27 @@
 			{
 				$crit->addWhere(self::MILESTONE, $milestone_id);
 			}
+			$crit->addOrderBy(self::MILESTONE_ORDER, Criteria::SORT_DESC);
+			
 			return $this->select($crit);
+		}
+		
+		public function setOrderByMilestoneIdAndIssueId($order, $milestone_id, $issue_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::DELETED, false);
+			if (!$milestone_id)
+			{
+				$ctn = $crit->returnCriterion(self::MILESTONE, null);
+				$ctn->addOr(self::MILESTONE, 0);
+				$crit->addWhere($ctn);
+			}
+			else
+			{
+				$crit->addWhere(self::MILESTONE, $milestone_id);
+			}
+			$crit->addUpdate(self::MILESTONE_ORDER, $order);
+			$this->doUpdateById($crit, $issue_id);
 		}
 		
 		public function getPointsAndTimeByMilestone($milestone_id)
