@@ -285,6 +285,7 @@ EOT;
 
 		public function getTranslatedMessages($template, $parameters, $users, $subject, $subject_parameters = array())
 		{
+			if (empty($users)) return array();
 			if (!is_array($parameters)) $parameters = array();
 			$langs = $this->getUsersAndLanguages($users);
 			$messages = array();
@@ -422,6 +423,8 @@ EOT;
 			{
 				$uids[$uid] = $uid;
 			}
+			
+			if (isset($uids[TBGContext::getUser()->getID()])) unset($uids[TBGContext::getUser()->getID()]);
 			
 			foreach ($uids as $uid => $user_id)
 			{
@@ -661,11 +664,15 @@ EOT;
 			$user = TBGUsersTable::getTable()->selectById((int) $event->getParameter('user_id'));
 			$parameters = compact('article', 'change_reason', 'user', 'revision');
 			$to_users = $this->_getArticleRelatedUsers($article);
-			$messages = $this->getTranslatedMessages('articleupdate', $parameters, $to_users, $subject, array('%article_name%' => html_entity_decode($article->getTitle(), ENT_COMPAT, TBGContext::getI18n()->getCharset())));
 			
-			foreach ($messages as $message)
+			if (!empty($to_users))
 			{
-				$this->sendMail($message);
+				$messages = $this->getTranslatedMessages('articleupdate', $parameters, $to_users, $subject, array('%article_name%' => html_entity_decode($article->getTitle(), ENT_COMPAT, TBGContext::getI18n()->getCharset())));
+
+				foreach ($messages as $message)
+				{
+					$this->sendMail($message);
+				}
 			}
 		}
 
@@ -690,7 +697,7 @@ EOT;
 							$subject = 'Comment posted on article %article_name%';
 							$parameters = compact('article', 'comment');
 							$to_users = $this->_getArticleRelatedUsers($article);
-							$messages = $this->getTranslatedMessages('articlecomment', $parameters, $to_users, $subject, array('%article_name%' => html_entity_decode($article->getTitle(), ENT_COMPAT, TBGContext::getI18n()->getCharset())));
+							$messages = (empty($to_users)) ? array() : $this->getTranslatedMessages('articlecomment', $parameters, $to_users, $subject, array('%article_name%' => html_entity_decode($article->getTitle(), ENT_COMPAT, TBGContext::getI18n()->getCharset())));
 							break;
 					}
 
