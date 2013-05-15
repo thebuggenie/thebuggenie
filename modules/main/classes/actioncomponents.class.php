@@ -472,6 +472,10 @@
 
 		public function componentReportIssue()
 		{
+			$introarticle = TBGArticlesTable::getTable()->getArticleByName(ucfirst(TBGContext::getCurrentProject()->getKey()).':ReportIssueIntro');
+			$this->introarticle = ($introarticle instanceof TBGWikiArticle) ? $introarticle : TBGArticlesTable::getTable()->getArticleByName('ReportIssueIntro');
+			$reporthelparticle = TBGArticlesTable::getTable()->getArticleByName(ucfirst(TBGContext::getCurrentProject()->getKey()).':ReportIssueHelp');
+			$this->reporthelparticle = ($reporthelparticle instanceof TBGWikiArticle) ? $reporthelparticle : TBGArticlesTable::getTable()->getArticleByName('ReportIssueHelp');
 			$this->uniqid = TBGContext::getRequest()->getParameter('uniqid', uniqid());
 			$this->_setupReportIssueProperties();
 		}
