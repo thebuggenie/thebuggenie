@@ -812,10 +812,21 @@
 
 		protected function _parse_allowed_tags($matches)
 		{
-			$element = simplexml_load_string(htmlspecialchars_decode($matches[0]));
-			$html = "<{$element->getName()}";
-			if (isset($element['style'])) $html .= ' style="'.$element['style'].'"';
-			$html .= ">".$element."</{$element->getName()}>";
+			libxml_use_internal_errors(true);
+			$element = simplexml_load_string("<{$matches[1]}{$matches[2]}>{$matches[3]}</{$matches[1]}>");
+			
+			if ($element instanceof SimpleXMLElement)
+			{
+				$html = "<{$element->getName()}";
+				if (isset($element['style'])) $html .= ' style="'.$element['style'].'"';
+				if (isset($element['class'])) $html .= ' class="'.$element['class'].'"';
+				$html .= ">".$element."</{$element->getName()}>";
+			}
+			else
+			{
+				$html = $matches[0];
+			}
+			libxml_use_internal_errors(false);
 			
 			return $html;
 		}
