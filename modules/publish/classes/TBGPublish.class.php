@@ -258,8 +258,8 @@
 
 		public function getArticleLinkTag($matches, $parser)
 		{
-			$article_name = $matches[0];
-			$parser->addInternalLinkOccurrence($article_name);
+			$article_link = $matches[0];
+			$parser->addInternalLinkOccurrence($article_link);
 			$article_name = $this->getSpacedName($matches[0]);
 			if (!TBGContext::isCLI())
 			{

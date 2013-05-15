@@ -921,7 +921,7 @@
 				foreach (self::getRegexes() as $regex)
 				{
 					$parser = $this;
-					$line = preg_replace_callback($regex[0], function($matches) use ($regex, $parser) { call_user_func($regex[1], $matches, $parser); }, $line);
+					$line = preg_replace_callback($regex[0], function($matches) use ($regex, $parser) { return call_user_func($regex[1], $matches, $parser); }, $line);
 					if ($this->stop) break;
 				}
 			}

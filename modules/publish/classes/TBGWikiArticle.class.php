@@ -181,15 +181,7 @@
 
 		public static function getByName($article_name, $row = null)
 		{
-			if ($row === null)
-			{
-				$row = TBGArticlesTable::getTable()->getArticleByName($article_name);
-			}
-			if ($row instanceof \b2db\Row)
-			{
-				return PublishFactory::article($row->get(TBGArticlesTable::ID), $row);
-			}
-			return null;
+			return TBGArticlesTable::getTable()->getArticleByName($article_name);
 		}
 
 		public static function doesArticleExist($article_name)

@@ -2896,10 +2896,6 @@ TBG.Issues.updateFields = function(url)
 					} else {
 						$('reportissue_extrafields_none').show();
 					}
-				}
-			},
-			complete: {
-				callback: function() {
 					$('title').focus();
 					$('report_issue_more_options_indicator').hide();
 				}
