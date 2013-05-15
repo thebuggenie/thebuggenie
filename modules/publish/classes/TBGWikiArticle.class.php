@@ -801,5 +801,13 @@
 		{
 			return $this->_article_type;
 		}
+		
+		public function getHistoryUserIDs()
+		{
+			static $uids = null;
+			if ($uids === null) $uids = TBGArticleHistoryTable::getTable()->getUserIDsByArticleName($this->getName());
+			
+			return $uids;
+		}
 
 	}

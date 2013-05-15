@@ -417,8 +417,8 @@ EOT;
 		protected function _getArticleRelatedUsers(TBGWikiArticle $article)
 		{
 			$uids = array();
-			$uids[$article->getAuthor()->getID()] = $article->getAuthor()->getID();
-			foreach (TBGArticleHistoryTable::getTable()->getUserIDsByArticleName($article->getName()) as $uid)
+			if ($article->getAuthor() instanceof TBGUser) $uids[$article->getAuthor()->getID()] = $article->getAuthor()->getID();
+			foreach ($article->getHistoryUserIDs() as $uid)
 			{
 				$uids[$uid] = $uid;
 			}

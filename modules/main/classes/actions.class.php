@@ -1380,7 +1380,7 @@
 		}
 
 		/**
-		 * Retrieves the fields which are valid for that product and issue type combination
+		 * Toggle favourite issue (starring)
 		 *  
 		 * @param TBGRequest $request
 		 */
