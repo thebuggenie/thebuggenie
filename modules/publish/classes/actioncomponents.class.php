@@ -8,6 +8,16 @@
 			$this->latest_articles = TBGPublish::getModule()->getLatestArticles(TBGContext::getCurrentProject());
 		}
 
+		public function componentWhatlinkshere()
+		{
+			$this->whatlinkshere = ($this->article instanceof TBGWikiArticle) ? $this->article->getLinkingArticles() : array();
+		}
+
+		public function componentTools()
+		{
+			$this->whatlinkshere = ($this->article instanceof TBGWikiArticle) ? $this->article->getLinkingArticles() : array();
+		}
+
 		public function componentArticledisplay()
 		{
 			$this->show_title = (isset($this->show_title)) ? $this->show_title : true;
@@ -55,7 +65,6 @@
 			$this->links_target_id = (TBGContext::isProjectContext()) ? TBGContext::getCurrentProject()->getID() : 0;
 			$this->links = TBGPublish::getModule()->getMenuItems($this->links_target_id);
 			$this->user_drafts = TBGPublish::getModule()->getUserDrafts();
-			$this->whatlinkshere = ($this->article instanceof TBGWikiArticle) ? $this->article->getLinkingArticles() : null;
 		}
 
 		public function componentManualSidebar()
@@ -76,6 +85,10 @@
 			while ($parent instanceof TBGWikiArticle);
 			
 			$this->parents = $parents;
+		}
+
+		public function componentSpecialSpecialPages()
+		{
 		}
 
 	}

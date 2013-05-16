@@ -55,19 +55,27 @@
 			<?php if ($article->getID()): ?>
 				<?php $attachments = $article->getFiles(); ?>
 				<div id="article_attachments">
-					<h4><?php echo __('Article attachments (%count%)', array('%count%' => count($attachments))); ?></h4>
 					<?php if (TBGSettings::isUploadsEnabled() && $article->canEdit()): ?>
 						<?php include_component('main/uploader', array('article' => $article, 'mode' => 'article')); ?>
-						<button class="button button-green" onclick="$('attach_file').show();"><?php echo __('Attach a file'); ?></button>
-					<?php else: ?>
-						<button class="button button-silver disabled" onclick="TBG.Main.Helpers.Message.error('<?php echo __('File uploads are not enabled'); ?>');"><?php echo __('Attach a file'); ?></button>
 					<?php endif; ?>
-					<br style="clear: both;">
+					<h4>
+						<?php echo __('Article attachments (%count%)', array('%count%' => count($attachments))); ?>
+						<?php if (TBGSettings::isUploadsEnabled() && $article->canEdit()): ?>
+							<button class="button button-silver" onclick="$('attach_file').show();"><?php echo __('Attach a file'); ?></button>
+						<?php else: ?>
+							<button class="button button-silver disabled" onclick="TBG.Main.Helpers.Message.error('<?php echo __('File uploads are not enabled'); ?>');"><?php echo __('Attach a file'); ?></button>
+						<?php endif; ?>
+					</h4>
 					<?php include_template('publish/attachments', array('article' => $article, 'attachments' => $attachments)); ?>
 				</div>
 				<div id="article_comments">
-					<h4><?php echo __('Article comments (%count%)', array('%count%' => TBGComment::countComments($article->getID(), TBGComment::TYPE_ARTICLE))); ?></h4>
-					<?php include_template('main/comments', array('target_id' => $article->getID(), 'target_type' => TBGComment::TYPE_ARTICLE, 'comment_count_div' => 'article_comment_count', 'forward_url' => make_url('publish_article', array('article_name' => $article->getName())))); ?>
+					<h4>
+						<?php echo __('Article comments (%count%)', array('%count%' => TBGComment::countComments($article->getID(), TBGComment::TYPE_ARTICLE))); ?>
+						<?php if ($tbg_user->canPostComments() && ((TBGContext::isProjectContext() && !TBGContext::getCurrentProject()->isArchived()) || !TBGContext::isProjectContext())): ?>
+							<button id="comment_add_button" class="button button-silver" onclick="$$('.comment_editor').each(Element.hide);$('comment_add_button').hide(); $('comment_add').show();$('comment_bodybox').focus();"><?php echo __('Post comment'); ?></button>
+						<?php endif; ?>
+					</h4>
+					<?php include_template('main/comments', array('target_id' => $article->getID(), 'target_type' => TBGComment::TYPE_ARTICLE, 'show_button' => false, 'comment_count_div' => 'article_comment_count', 'forward_url' => make_url('publish_article', array('article_name' => $article->getName())))); ?>
 				</div>
 			<?php endif; ?>
 		</td>

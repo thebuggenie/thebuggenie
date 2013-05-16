@@ -978,7 +978,7 @@
 			// Thanks to Mike Smith (scgtrp) for the above regexp
 			
 			$text = tbg_decodeUTF8($text, true);
-			$text = preg_replace_callback('/&lt;(strike|u|pre|tt|s|del|ins|u|blockquote|div|span|font)(\s.*)&gt;(.*)&lt;\/(\\1)&gt;/ismU', array($this, '_parse_allowed_tags') ,$text);
+			$text = preg_replace_callback('/&lt;(strike|u|pre|tt|s|del|ins|u|blockquote|div|span|font)(\s.*)?&gt;(.*)&lt;\/(\\1)&gt;/ismU', array($this, '_parse_allowed_tags') ,$text);
 
 			$text = str_replace('&lt;br&gt;', '<br>' ,$text);
 			

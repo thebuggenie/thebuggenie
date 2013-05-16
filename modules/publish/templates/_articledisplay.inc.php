@@ -5,7 +5,7 @@
 	<?php endif; ?>
 	<?php if (!$embedded && $article->canDelete()): ?>
 		<div style="position: absolute; top: 55px; right: 15px;">
-			<a class="button button-silver more_actions_button" id="more_actions_article_<?php echo $article->getID(); ?>_button" onclick="$(this).toggleClassName('button-pressed');$('more_actions_article_<?php echo $article->getID(); ?>').toggle();"><?php echo __('Actions'); ?></a>
+			<a class="button button-silver more_actions_button" id="more_actions_article_<?php echo $article->getID(); ?>_button" onclick="$(this).toggleClassName('button-pressed');$('more_actions_article_<?php echo $article->getID(); ?>').toggle();"><?php echo __('More actions'); ?></a>
 			<ul id="more_actions_article_<?php echo $article->getID(); ?>" style="display: none;" class="simple_list rounded_box white shadowed more_actions_dropdown dropdown_box popup_box" onclick="$('more_actions_article_<?php echo $article->getID(); ?>_button').toggleClassName('button-pressed');TBG.Main.Profile.clearPopupsAndButtons();">
 				<li><?php echo javascript_link_tag(__('Delete this article'), array('onclick' => "TBG.Main.Helpers.Dialog.show('".__('Please confirm')."', '".__('Do you really want to delete this article?')."', {yes: {click: function() {TBG.Main.Helpers.ajax('".make_url('publish_article_delete', array('article_name' => $article->getName()))."', {method: 'post'}); TBG.Main.Helpers.Dialog.dismiss(); }}, no: {click: TBG.Main.Helpers.Dialog.dismiss}})")); ?></li>
 				<?php if (TBGSettings::isUploadsEnabled() && $article->canEdit()): ?>
@@ -57,18 +57,16 @@
 <?php endif; ?>
 <?php if (!$embedded && $show_article): ?>
 	<br style="clear: both;">
-	<div class="rounded_box lightgrey borderless" style="margin: 30px 5px 20px 5px; padding: 3px 10px 3px 10px; font-size: 1.1em;">
-		<div class="content">
-			<b><?php echo __('Categories:'); ?></b>
-			<?php if (count($article->getCategories()) > 0): ?>
-				<?php $category_links = array(); ?>
-				<?php foreach ($article->getCategories() as $category): ?>
-					<?php $category_links[] = link_tag(make_url('publish_article', array('article_name' => 'Category:'.$category)), $category); ?>
-				<?php endforeach; ?>
-				<?php echo join(', ', $category_links); ?>
-			<?php else: ?>
-				<span class="faded_out dark"><?php echo __('This article is not in any categories'); ?></span>
-			<?php endif; ?>
-		</div>
+	<div class="greybox categories">
+		<b><?php echo __('Categories:'); ?></b>
+		<?php if (count($article->getCategories()) > 0): ?>
+			<?php $category_links = array(); ?>
+			<?php foreach ($article->getCategories() as $category): ?>
+				<?php $category_links[] = link_tag(make_url('publish_article', array('article_name' => 'Category:'.$category)), $category); ?>
+			<?php endforeach; ?>
+			<?php echo join(', ', $category_links); ?>
+		<?php else: ?>
+			<span class="faded_out dark"><?php echo __('This article is not in any categories'); ?></span>
+		<?php endif; ?>
 	</div>
 <?php endif; ?>

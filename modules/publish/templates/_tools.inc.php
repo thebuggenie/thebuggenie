@@ -1,0 +1,20 @@
+<div class="container_div toggled<?php if (isset($special) && $special) echo ' visible'; ?>" style="margin: 0 0 5px 5px;">
+	<div class="header" onclick="$(this).up().toggleClassName('visible');">
+		<?php echo __('Wiki tools'); ?>
+	</div>
+	<div class="toggle_info"><?php echo __('Click the header to show / hide'); ?></div>
+	<div class="content">
+		<ul class="article_list special_pages">
+			<?php if (TBGContext::isProjectContext()): ?>
+				<li>
+					<?php echo image_tag('news_item.png', array('style' => 'float: left;'), false, 'publish'); ?>
+					<?php echo link_tag(make_url('publish_article', array('article_name' => 'Special:'.ucfirst(mb_strtolower(TBGContext::getCurrentProject()->getKey())).':SpecialPages')), __('Project special pages')); ?>
+				</li>
+			<?php endif; ?>
+			<li>
+				<?php echo image_tag('news_item.png', array('style' => 'float: left;'), false, 'publish'); ?>
+				<?php echo link_tag(make_url('publish_article', array('article_name' => 'Special:SpecialPages')), __('Special pages')); ?>
+			</li>
+		</ul>
+	</div>
+</div>

@@ -219,7 +219,7 @@
 	$routes[] = array('publish_article_restore', '/wiki/:article_name/revert/to/revision/:revision', 'publish', 'articleHistory', array('history_action' => 'revert'));
 	$routes[] = array('publish_find_project_articles', '/wiki/:project_key/find/*', 'publish', 'findArticles');
 	$routes[] = array('publish_find_articles', '/wiki/find/*', 'publish', 'findArticles');
-	$routes[] = array('publish_article', '/wiki/:article_name', 'publish', 'showArticle');
+	$routes[] = array('publish_article', '/wiki/:article_name/*', 'publish', 'showArticle');
 	$routes[] = array('toggle_favourite_article', '/toggle_favourite_article/:article_id/:user_id', 'publish', 'toggleFavouriteArticle', array('format' => 'json'));
 	
 	foreach ($routes as $route)

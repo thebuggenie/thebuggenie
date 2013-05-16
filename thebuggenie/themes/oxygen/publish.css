@@ -4,6 +4,8 @@
 .article_list span a { font-size: 0.8em; font-weight: normal; }
 .article_list .more_news { margin: 10px 0 0 0; }
 .article_list li { margin: 0 5px 8px 0; }
+.article_list.special_pages a { font-size: 1.2em; }
+.article_list.special_pages img { margin-top: 1px; }
 
 .toc .publish_toc_1 { margin: 15px 0 3px 0; font-size: 1.1em; font-weight: bold; }
 .toc .publish_toc_2 { margin: 0 0 3px 4px; font-size: 1.0em; }
@@ -40,21 +42,25 @@
 .article.edit input[type="text"] { font-size: 1.2em; padding: 5px; }
 .article.edit textarea { font-family: "DroidSansMono", monospace; }
 
-.article .header { margin: 0 0 5px 0; padding: 2px 3px 3px 0; font-weight: normal; font-size: 21px; border-bottom: 1px solid #CCC; }
+.article .header, #article_attachments > h4, #article_comments > h4 { margin: 0 0 5px 0; padding: 2px 3px 3px 0; font-weight: normal; font-size: 21px; border-bottom: none; }
+#article_attachments > h4, #article_comments > h4 { font-size: 17px; border-bottom: 1px solid #CCC; }
+.article > .header { border-bottom: 1px solid #CCC; }
 .article .header a { font-size: 12px; border-bottom: 0; }
 .article .header .title_left_images { font-size: 0.6em; font-weight: normal; display: inline-block; height: 26px; width: 38px; }
 
 .article .details { color: #AAA; padding-bottom: 5px; }
 
 .article .greybox { box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); background-color: rgba(200, 200, 200, 0.1); padding: 5px; }
-.article .toc { float: right; margin: 17px 0 15px 5px; width: 350px; box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); padding: 5px; font-size: 12px; position: relative; overflow: visible; background-color: rgba(200, 200, 200, 0.1); }
-.article .toc .header { margin: 0; padding: 2px 3px 3px 0; font-weight: bold; font-size: 15px; border-bottom: 1px dotted #CCC; }
-.article .toc .header a { color: #555; font-size: 16px; }
+.article .toc { float: right; margin: 17px 0 15px 5px; width: 350px; box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); padding: 5px; font-size: 12px; position: relative; overflow: visible; background-color: rgba(245, 245, 245, 0.9); }
+.article .toc.fixed { position: fixed; top: 147px; right: 10px; }
+.article .toc .header { margin: 0; padding: 2px 3px 3px 0; font-weight: bold; font-size: 16px; color: #555; border-bottom: 1px dotted #CCC; }
+.article .toc .header .button-group { float: right; }
+.article .toc .header .button-group button { float: left; font-size: 0.9em !important; font-weight: normal !important; padding: 2px !important; }
 .article .toc .faded_out { display: none; }
 .article .content .toc a, .article .content .toc a:hover { border-bottom: 0; }
 .article .textarea_hint .header { font-size: 1.2em; color: #999; border: 0; }
 .article .textarea_hint { color: #999; font-size: 1.1em; }
-
+.article .categories { margin: 30px 5px 20px 5px; font-size: 1.1em; }
 .article .content { padding-bottom: 5px; clear: both; }
 .frontpage .article .content .toc { margin-top: 0; }
 
@@ -82,7 +88,8 @@
 #article_diff tr:hover { background-color: #EEE; }
 INS { display: inline; background-color: #8D8; text-decoration: none; } DEL { display: inline; text-decoration: line-through; background-color: #D88; }
 
-.article .more_actions_dropdown { position: absolute; margin-top: 25px; width: 200px; top: 0; right: 0; z-index: 1000; }
+.article .more_actions_dropdown { position: absolute; margin-top: 25px; width: 200px; top: 0; right: 0; z-index: 1000; font-size: 1.1em; }
+.article .more_actions_dropdown li { padding: 3px 7px; }
 .article .content ul.simple_list li { padding: 5px 0; margin-bottom: 15px; }
 .article ul.simple_list li div.namespace_header { font-size: 1.2em; font-weight: bold; }
 .article ul.simple_list li div.namespace_header span.namespace { text-decoration: underline; }
@@ -99,9 +106,16 @@ INS { display: inline; background-color: #8D8; text-decoration: none; } DEL { di
 
 #article_comments, #article_attachments { margin: 20px 0 0 5px; }
 #article_comments h4, #article_attachments h4 { color: #888; padding: 5px 5px 5px 0; }
-#article_comments button, #article_attachments button { margin-bottom: 15px; }
+#article_comments button, #article_attachments button { float: right; font-weight: normal !important; padding: 4px 8px !important; font-size: 0.8em !important; }
+#article_attachments .no_items { padding: inherit; font-size: inherit; }
 
 .side_bar.manual { padding-top: 5px; }
+.side_bar .toggled .header { cursor: pointer; }
+.side_bar .toggled .content { display: none; }
+.side_bar .toggled.visible .content { display: block; }
+.side_bar .toggled .toggle_info { display: block; color: #AAA; font-size: 1em; padding: 5px 5px 8px 10px; }
+.side_bar .toggled.visible .toggle_info { display: none; }
+.side_bar .no_items { font-size: 1.1em; }
 #manual_sidebar ul { list-style: none; margin: 0 0 0 5px; padding: 0; }
 #manual_sidebar ul li { font-style: normal; font-weight: normal; }
 #manual_sidebar ul li > ul { margin-left: 0; }

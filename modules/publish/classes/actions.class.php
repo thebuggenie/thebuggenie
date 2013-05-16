@@ -19,13 +19,25 @@
 			$this->article = null;
 			$this->article_name = $request['article_name'];
 			$this->article_id = (int) $request['article_id'];
+			$this->special = false;
 
 			if ($request->hasParameter('article_name') && mb_strpos($request['article_name'], ':') !== false)
 			{
 				$namespace = mb_substr($this->article_name, 0, mb_strpos($this->article_name, ':'));
 				$article_name = mb_substr($this->article_name, mb_strpos($this->article_name, ':') + 1);
 
-				if ($namespace == 'Category')
+				if (strtolower($namespace) == 'special')
+				{
+					$this->special = true;
+					$namespace = mb_substr($article_name, 0, mb_strpos($article_name, ':'));
+					if ($namespace) 
+					{
+						$this->selected_project = TBGProject::getByKey($namespace);
+						$article_name = mb_substr($article_name, mb_strpos($article_name, $namespace) + strlen($namespace) + 1);
+					}
+					$this->article_name = mb_strtolower(mb_substr($article_name, mb_strpos($article_name, ':')));
+				}
+				elseif ($namespace == 'Category')
 				{
 					$namespace = mb_substr($article_name, 0, mb_strpos($article_name, ':'));
 					$article_name = mb_substr($article_name, mb_strpos($article_name, ':') + 1);
@@ -65,19 +77,32 @@
 				}
 			}
 
-			if ($this->article_id)
+			if (!$this->special)
 			{
-				$this->article = TBGArticlesTable::getTable()->selectById($this->article_id);
-			}
-			elseif ($this->article_name)
-			{
-				$this->article = TBGArticlesTable::getTable()->getArticleByName($this->article_name);
-			}
+				if ($this->article_id)
+				{
+					$this->article = TBGArticlesTable::getTable()->selectById($this->article_id);
+				}
+				elseif ($this->article_name)
+				{
+					$this->article = TBGArticlesTable::getTable()->getArticleByName($this->article_name);
+				}
 
-			if (!$this->article instanceof TBGWikiArticle)
+				if (!$this->article instanceof TBGWikiArticle)
+				{
+					$this->article = new TBGWikiArticle();
+					if ($this->article_name) $this->article->setName($this->article_name);
+				}
+			}
+		}
+		
+		public function runSpecialArticle(TBGRequest $request)
+		{
+			$this->component = null;
+			if (TBGActionComponent::doesComponentExist("publish/special{$this->article_name}", false))
 			{
-				$this->article = new TBGWikiArticle();
-				if ($this->article_name) $this->article->setName($this->article_name);
+				$this->component = $this->article_name;
+				$this->projectnamespace = ($this->selected_project instanceof TBGProject) ? ucfirst($this->selected_project->getKey()).':' : '';
 			}
 		}
 
@@ -88,6 +113,8 @@
 		 */
 		public function runShowArticle(TBGRequest $request)
 		{
+			if ($this->special) $this->redirect('specialArticle');
+
 			$this->message = TBGContext::getMessageAndClear('publish_article_message');
 			$this->error = TBGContext::getMessageAndClear('publish_article_error');
 			$this->redirected_from = TBGContext::getMessageAndClear('publish_redirected_article');
