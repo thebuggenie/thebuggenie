@@ -17,7 +17,7 @@
 		<td class="main_area article">
 			<a name="top"></a>
 			<?php if ($error): ?>
-				<div class="rounded_box red borderless" style="margin: 0 0 5px 0; padding: 8px; font-size: 14px; color: #FFF;">
+				<div class="redbox">
 					<?php echo $error; ?>
 				</div>
 			<?php endif; ?>

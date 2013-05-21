@@ -121,4 +121,10 @@
 			$this->articles = TBGArticlesTable::getTable()->getAllTemplates(TBGContext::getCurrentProject());
 		}
 
+		public function componentSpecialWhatLinksHere()
+		{
+			$this->linked_article_name = TBGContext::getRequest()->getParameter('linked_article_name');
+			$this->articles = TBGArticlesTable::getTable()->getAllByLinksToArticleName($this->linked_article_name);
+		}
+
 	}

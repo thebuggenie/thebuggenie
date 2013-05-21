@@ -2,7 +2,7 @@
 <?php if ($article instanceof TBGWikiArticle): ?>
 	<?php include_component('publish/whatlinkshere'); ?>
 <?php endif; ?>
-<?php include_component('publish/tools', compact('special')); ?>
+<?php include_component('publish/tools', compact('special', 'article')); ?>
 <?php include_component('publish/latestArticles'); ?>
 <?php /*?>
 <div style="margin: 10px 0 5px 5px;">

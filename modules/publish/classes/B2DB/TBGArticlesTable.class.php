@@ -315,6 +315,25 @@
 			
 			return $this->select($crit);
 		}
+
+		public function getAllByLinksToArticleName($article_name)
+		{
+			$names_res = TBGArticleLinksTable::getTable()->getLinkingArticles($article_name);
+			
+			if (empty($names_res)) return array();
+
+			$names = array();
+			while ($row = $names_res->getNextRow())
+			{
+				$names[] = $row[TBGArticleLinksTable::ARTICLE_NAME];
+			}
+			
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::NAME, $names, Criteria::DB_IN);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+
+			return $this->select($crit);
+		}
 		
 		public function getUnlinkedArticles(TBGProject $project = null)
 		{

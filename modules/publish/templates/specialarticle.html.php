@@ -15,7 +15,7 @@
 			<?php if ($component): ?>
 				<?php include_component("publish/special{$component}", compact('projectnamespace')); ?>
 			<?php else: ?>
-				<div class="rounded_box red borderless" style="margin: 0 0 5px 0; padding: 8px; font-size: 14px; color: #FFF;">
+				<div class="redbox" style="margin: 15px;">
 					<?php echo __('This special page does not exist'); ?>
 				</div>
 			<?php endif; ?>
