@@ -436,7 +436,20 @@
 		
 		public function getRedirectArticle()
 		{
-			return ($this->isRedirect()) ? $this->_redirect_article : null;
+			if (!$this->isRedirect()) return null;
+			
+			if (!$this->_redirect_article instanceof TBGWikiArticle)
+			{
+				$article = TBGArticlesTable::getTable()->getArticleByName($this->_redirect_article);
+				if ($article instanceof TBGWikiArticle) $this->_redirect_article = $article;
+			}
+			
+			return $this->_redirect_article;
+		}
+		
+		public function getRedirectArticleName()
+		{
+			return ($this->_redirect_article instanceof TBGWikiArticle) ? $this->_redirect_article->getName() : $this->_redirect_article;
 		}
 		
 		public function doSave($options = array(), $reason = null)

@@ -130,7 +130,7 @@
 				{
 					if (!$request->hasParameter('no_redirect') && $this->article->isRedirect())
 					{
-						if ($redirect_article = $this->article->getRedirectArticle())
+						if ($redirect_article = $this->article->getRedirectArticleName())
 						{
 							TBGContext::setMessage('publish_redirected_article', $this->article->getName());
 							$this->forward(TBGContext::getRouting()->generate('publish_article', array('article_name' => $redirect_article)));

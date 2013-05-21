@@ -771,17 +771,27 @@
 			$output = "<t{$mode}";
 			if (count($matches) > 1)
 			{
+				libxml_use_internal_errors(true);
 				$element = simplexml_load_string("<t{$mode} ".trim($matches[0])."></t{$mode}>");
-				if ($element['class']) $output .= ' class="'.$element['class'].'"';
-				if ($element['style']) $output .= ' style="'.$element['style'].'"';
-				if ($element['align']) $output .= ' align="'.$element['align'].'"';
-				if ($element['scope']) $output .= ' scope="'.$element['scope'].'"';
-				if ($element['colspan']) $output .= ' colspan="'.$element['colspan'].'"';
-				if ($mode == 'd')
+
+				if ($element instanceof SimpleXMLElement)
 				{
-					if ($element['rowspan']) $output .= ' rowspan="'.$element['rowspan'].'"';
+					if ($element['class']) $output .= ' class="'.$element['class'].'"';
+					if ($element['style']) $output .= ' style="'.$element['style'].'"';
+					if ($element['align']) $output .= ' align="'.$element['align'].'"';
+					if ($element['scope']) $output .= ' scope="'.$element['scope'].'"';
+					if ($element['colspan']) $output .= ' colspan="'.$element['colspan'].'"';
+					if ($mode == 'd')
+					{
+						if ($element['rowspan']) $output .= ' rowspan="'.$element['rowspan'].'"';
+					}
+					$output .= ">{$matches[1]}";
 				}
-				$output .= ">{$matches[1]}";
+				else
+				{
+					$output .= ">{$matches[0]}";
+				}
+				libxml_use_internal_errors(false);
 			}
 			else
 			{

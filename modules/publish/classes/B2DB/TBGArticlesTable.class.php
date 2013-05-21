@@ -291,5 +291,155 @@
 			}
 		}
 
+		public function getDeadEndArticles(TBGProject $project = null)
+		{
+			$names = TBGArticleLinksTable::getTable()->getUniqueArticleNames();
+			
+			$crit = $this->getCriteria();
+			if ($project instanceof TBGProject)
+			{
+				$crit->addWhere(self::NAME, ucfirst($project->getKey()) . ":%", Criteria::DB_LIKE);
+			}
+			else
+			{
+				foreach (TBGProjectsTable::getTable()->getAllIncludingDeleted() as $project)
+				{
+					if (trim($project->getKey()) == '') continue;
+					$crit->addWhere(self::NAME, "Category:" . ucfirst($project->getKey()) . "%", Criteria::DB_NOT_LIKE);
+					$crit->addWhere(self::NAME, ucfirst($project->getKey()) . ":%", Criteria::DB_NOT_LIKE);
+				}
+			}
+			$crit->addWhere(self::NAME, $names, Criteria::DB_NOT_IN);
+			$crit->addWhere(self::CONTENT, '#REDIRECT%', Criteria::DB_NOT_LIKE);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			
+			return $this->select($crit);
+		}
+		
+		public function getUnlinkedArticles(TBGProject $project = null)
+		{
+			$names = TBGArticleLinksTable::getTable()->getUniqueLinkedArticleNames();
+			
+			$crit = $this->getCriteria();
+			if ($project instanceof TBGProject)
+			{
+				$crit->addWhere(self::NAME, ucfirst($project->getKey()) . ":%", Criteria::DB_LIKE);
+			}
+			else
+			{
+				foreach (TBGProjectsTable::getTable()->getAllIncludingDeleted() as $project)
+				{
+					if (trim($project->getKey()) == '') continue;
+					$crit->addWhere(self::NAME, "Category:" . ucfirst($project->getKey()) . "%", Criteria::DB_NOT_LIKE);
+					$crit->addWhere(self::NAME, ucfirst($project->getKey()) . ":%", Criteria::DB_NOT_LIKE);
+				}
+			}
+			$crit->addWhere(self::NAME, $names, Criteria::DB_NOT_IN);
+			$crit->addWhere(self::CONTENT, '#REDIRECT%', Criteria::DB_NOT_LIKE);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			
+			return $this->select($crit);
+		}
+		
+		public function getUncategorizedArticles(TBGProject $project = null)
+		{
+			$crit = $this->getCriteria();
+			if ($project instanceof TBGProject)
+			{
+				$crit->addWhere(self::NAME, ucfirst($project->getKey()) . ":%", Criteria::DB_LIKE);
+			}
+			else
+			{
+				foreach (TBGProjectsTable::getTable()->getAllIncludingDeleted() as $project)
+				{
+					if (trim($project->getKey()) == '') continue;
+					$crit->addWhere(self::NAME, "Category:" . ucfirst($project->getKey()) . "%", Criteria::DB_NOT_LIKE);
+					$crit->addWhere(self::NAME, ucfirst($project->getKey()) . ":%", Criteria::DB_NOT_LIKE);
+				}
+			}
+			$crit->addWhere(self::NAME, "Category:%", Criteria::DB_NOT_LIKE);
+			$crit->addWhere(self::CONTENT, '#REDIRECT%', Criteria::DB_NOT_LIKE);
+			$crit->addWhere(self::CONTENT, '%[Category:%', Criteria::DB_NOT_LIKE);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			
+			return $this->select($crit);
+		}
+		
+		public function getUncategorizedCategories(TBGProject $project = null)
+		{
+			$crit = $this->getCriteria();
+			if ($project instanceof TBGProject)
+			{
+				$crit->addWhere(self::NAME, "Category:" . ucfirst($project->getKey()) . ":%", Criteria::DB_LIKE);
+			}
+			else
+			{
+				foreach (TBGProjectsTable::getTable()->getAllIncludingDeleted() as $project)
+				{
+					if (trim($project->getKey()) == '') continue;
+					$crit->addWhere(self::NAME, "Category:" . ucfirst($project->getKey()) . "%", Criteria::DB_NOT_LIKE);
+					$crit->addWhere(self::NAME, ucfirst($project->getKey()) . ":%", Criteria::DB_NOT_LIKE);
+				}
+			}
+			$crit->addWhere(self::CONTENT, '#REDIRECT%', Criteria::DB_NOT_LIKE);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			
+			return $this->select($crit);
+		}
+		
+		public function getAllArticlesSpecial(TBGProject $project = null)
+		{
+			$crit = $this->getCriteria();
+			if ($project instanceof TBGProject)
+			{
+				$crit->addWhere(self::NAME, "Category:" . ucfirst($project->getKey()) . ":%", Criteria::DB_NOT_LIKE);
+				$crit->addWhere(self::NAME, ucfirst($project->getKey()) . ":%", Criteria::DB_LIKE);
+			}
+			else
+			{
+				foreach (TBGProjectsTable::getTable()->getAllIncludingDeleted() as $project)
+				{
+					if (trim($project->getKey()) == '') continue;
+					$crit->addWhere(self::NAME, "Category:" . ucfirst($project->getKey()) . "%", Criteria::DB_NOT_LIKE);
+					$crit->addWhere(self::NAME, ucfirst($project->getKey()) . ":%", Criteria::DB_NOT_LIKE);
+				}
+			}
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			
+			return $this->select($crit);
+		}
+		
+		protected function _getAllInNamespace($namespace, TBGProject $project = null)
+		{
+			$crit = $this->getCriteria();
+			if ($project instanceof TBGProject)
+			{
+				$crit->addWhere(self::NAME, "{$namespace}:" . ucfirst($project->getKey()) . ":%", Criteria::DB_LIKE);
+			}
+			else
+			{
+				$crit->addWhere(self::NAME, "{$namespace}:%", Criteria::DB_LIKE);
+				foreach (TBGProjectsTable::getTable()->getAllIncludingDeleted() as $project)
+				{
+					if (trim($project->getKey()) == '') continue;
+					$crit->addWhere(self::NAME, "{$namespace}:" . ucfirst($project->getKey()) . "%", Criteria::DB_NOT_LIKE);
+					$crit->addWhere(self::NAME, ucfirst($project->getKey()) . ":%", Criteria::DB_NOT_LIKE);
+				}
+			}
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			
+			return $this->select($crit);
+		}
+		
+		public function getAllCategories(TBGProject $project = null)
+		{
+			return $this->_getAllInNamespace('Category', $project);
+		}
+		
+		public function getAllTemplates(TBGProject $project = null)
+		{
+			return $this->_getAllInNamespace('Template', $project);
+		}
+		
 	}
 

@@ -31,6 +31,7 @@
 .article h6 { font-size: 1.05em; padding: 3px 3px 3px 0; }
 .article h6:target { color: #77B; background-color: #F6F6F6; }
 .article h6 a { font-size: 10px; }
+.article .no_articles { color: #AAA; margin: 10px 0; }
 
 .article pre { border: 1px dotted #AAA; background-color: #F1F1F1; padding: 3px; margin: 5px 0 5px 0; font-family: "DroidSansMono", monospace; font-size: 12px; }
 

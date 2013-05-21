@@ -11,6 +11,16 @@
 	<h3><?php echo __('Wiki maintenance'); ?></h3>
 	<ul class="category_list">
 		<li><?php echo link_tag(make_url('publish_article', array('article_name' => "Special:{$projectnamespace}DeadEndPages")), __('Dead end pages'), array('title' => "Special:{$projectnamespace}DeadEndPages")); ?></li>
-		<li><?php echo link_tag(make_url('publish_article', array('article_name' => "Special:{$projectnamespace}OrphanedPages")), __('Oprhaned pages'), array('title' => "Special:{$projectnamespace}OrphanedPages")); ?></li>
+		<li><?php echo link_tag(make_url('publish_article', array('article_name' => "Special:{$projectnamespace}UncategorizedPages")), __('Uncategorized pages'), array('title' => "Special:{$projectnamespace}UncategorizedPages")); ?></li>
+		<li><?php echo link_tag(make_url('publish_article', array('article_name' => "Special:{$projectnamespace}OrphanedPages")), __('Orphaned pages'), array('title' => "Special:{$projectnamespace}OrphanedPages")); ?></li>
+		<li><?php echo link_tag(make_url('publish_article', array('article_name' => "Special:{$projectnamespace}UncategorizedCategories")), __('Uncategorized categories'), array('title' => "Special:{$projectnamespace}UncategorizedCategories")); ?></li>
+	</ul>
+	<br style="clear: both;">
+	<br style="clear: both;">
+	<h3><?php echo __('Page lists'); ?></h3>
+	<ul class="category_list">
+		<li><?php echo link_tag(make_url('publish_article', array('article_name' => "Special:{$projectnamespace}AllPages")), __('All pages'), array('title' => "Special:{$projectnamespace}AllPages")); ?></li>
+		<li><?php echo link_tag(make_url('publish_article', array('article_name' => "Special:{$projectnamespace}AllCategories")), __('All categories'), array('title' => "Special:{$projectnamespace}AllCategories")); ?></li>
+		<li><?php echo link_tag(make_url('publish_article', array('article_name' => "Special:{$projectnamespace}AllTemplates")), __('All templates'), array('title' => "Special:{$projectnamespace}AllTemplates")); ?></li>
 	</ul>
 </div>

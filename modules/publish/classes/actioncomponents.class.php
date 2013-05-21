@@ -91,4 +91,34 @@
 		{
 		}
 
+		public function componentSpecialDeadEndPages()
+		{
+			$this->articles = TBGArticlesTable::getTable()->getDeadEndArticles(TBGContext::getCurrentProject());
+		}
+		
+		public function componentSpecialOrphanedPages()
+		{
+			$this->articles = TBGArticlesTable::getTable()->getUnlinkedArticles(TBGContext::getCurrentProject());
+		}
+
+		public function componentSpecialUncategorizedPages()
+		{
+			$this->articles = TBGArticlesTable::getTable()->getUncategorizedArticles(TBGContext::getCurrentProject());
+		}
+
+		public function componentSpecialAllPages()
+		{
+			$this->articles = TBGArticlesTable::getTable()->getAllArticlesSpecial(TBGContext::getCurrentProject());
+		}
+
+		public function componentSpecialAllCategories()
+		{
+			$this->articles = TBGArticlesTable::getTable()->getAllCategories(TBGContext::getCurrentProject());
+		}
+		
+		public function componentSpecialAllTemplates()
+		{
+			$this->articles = TBGArticlesTable::getTable()->getAllTemplates(TBGContext::getCurrentProject());
+		}
+
 	}
