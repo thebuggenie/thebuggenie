@@ -56,16 +56,26 @@
 			{
 				if (count($messages) > 0)
 				{
-					$mailer = $mailing->getMailer();
-					$processed_messages = array();
-					$failed_messages = 0;
 					try
 					{
-						foreach ($messages as $message_id => $message)
+						if (in_array($mailing->getMailerType(), array(TBGMailer::MAIL_TYPE_CUSTOM, TBGMailer::MAIL_TYPE_PHP)))
 						{
-							$retval = $mailer->send($message);
-							$processed_messages[] = $message_id;
-							if (!$retval) $failed_messages++;
+							$processed_messages = array();
+							$failed_messages = 0;
+							$mailer = $mailing->getMailer();
+							foreach ($messages as $message_id => $message)
+							{
+								$retval = $mailer->send($message);
+								$processed_messages[] = $message_id;
+								if (!$retval) $failed_messages++;
+							}
+						}
+						else
+						{
+							$event = TBGEvent::createNew('mailing', 'CliMailingProcessMailQueue::sendMail', $mailing, array('messages' => $messages));
+							$event->trigger();
+							$processed_messages = $event->getReturnListValue('processed_messages');
+							$failed_messages = $event->getReturnListValue('failed_messages');
 						}
 					}
 					catch (Exception $e) { throw $e; }

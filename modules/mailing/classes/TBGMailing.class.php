@@ -134,58 +134,65 @@
 			TBGContext::loadLibrary('common');
 			$settings = array('smtp_host', 'smtp_port', 'smtp_user', 'timeout', 'mail_type', 'enable_outgoing_notifications', 'cli_mailing_url',
 								'smtp_pwd', 'headcharset', 'from_name', 'from_addr', 'ehlo', 'use_queue', 'no_dash_f', 'activation_needed');
-			foreach ($settings as $setting)
+			
+			$event = TBGEvent::createNew('mailing', 'TBGMailing::postConfigSettings', null, compact($request));
+			$event->trigger();
+			
+			if (!$event->isProcessed())
 			{
-				if ($request->getParameter($setting) !== null || $setting == 'no_dash_f' || $setting == 'activation_needed')
+				foreach ($settings as $setting)
 				{
-					$value = $request->getParameter($setting);
-					$dns_regex = '(\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b|(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\]))';
-					$mail_regex = '(?:[a-z0-9!#$%&\'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&\'*+\/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@';
-					switch($setting)
+					if ($request->getParameter($setting) !== null || $setting == 'no_dash_f' || $setting == 'activation_needed')
 					{
-						case 'smtp_host':
-							if ($request['mail_type'] == TBGMailer::MAIL_TYPE_B2M && !tbg_check_syntax($value, "MAILSERVER"))
-							{
-								throw new Exception(TBGContext::getI18n()->__('Please provide a valid setting for SMTP server address'));
-							}
-							break;
-						case 'from_addr':
-							if (!tbg_check_syntax($value, "EMAIL"))
-							{
-								throw new Exception(TBGContext::getI18n()->__('Please provide a valid setting for email "from"-address'));
-							}
-							break;
-						case 'timeout':
-							if ($request['mail_type'] == TBGMailer::MAIL_TYPE_B2M && !is_numeric($value) || $value < 0)
-							{
-								throw new Exception(TBGContext::getI18n()->__('Please provide a valid setting for SMTP server timeout'));
-							}
-							break;
-						case 'smtp_port':
-							if ($request['mail_type'] == TBGMailer::MAIL_TYPE_B2M && !is_numeric($value) || $value < 1)
-							{
-								throw new Exception(TBGContext::getI18n()->__('Please provide a valid setting for SMTP server port'));
-							}
-							break;
-						case 'headcharset':
-							// list of supported character sets based on PHP doc : http://www.php.net/manual/en/function.htmlentities.php
-							if (!tbg_check_syntax($value, "CHARSET"))
-							{
-									throw new Exception(TBGContext::getI18n()->__('Please provide a valid setting for email header charset'));
-							}
-							break;
-						case 'no_dash_f':
-							$value = (int) $request->getParameter($setting, 0);
-							break;
-						case 'activation_needed':
-							$value = (int) $request->getParameter($setting, 0);
-							break;
-						case 'cli_mailing_url':
-							$value = $request->getParameter($setting);
-							if (substr($value, -1) == '/') $value = substr($value, 0, strlen($value) - 1);
-							break;
+						$value = $request->getParameter($setting);
+						$dns_regex = '(\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b|(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\]))';
+						$mail_regex = '(?:[a-z0-9!#$%&\'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&\'*+\/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@';
+						switch($setting)
+						{
+							case 'smtp_host':
+								if ($request['mail_type'] == TBGMailer::MAIL_TYPE_B2M && !tbg_check_syntax($value, "MAILSERVER"))
+								{
+									throw new Exception(TBGContext::getI18n()->__('Please provide a valid setting for SMTP server address'));
+								}
+								break;
+							case 'from_addr':
+								if (!tbg_check_syntax($value, "EMAIL"))
+								{
+									throw new Exception(TBGContext::getI18n()->__('Please provide a valid setting for email "from"-address'));
+								}
+								break;
+							case 'timeout':
+								if ($request['mail_type'] == TBGMailer::MAIL_TYPE_B2M && !is_numeric($value) || $value < 0)
+								{
+									throw new Exception(TBGContext::getI18n()->__('Please provide a valid setting for SMTP server timeout'));
+								}
+								break;
+							case 'smtp_port':
+								if ($request['mail_type'] == TBGMailer::MAIL_TYPE_B2M && !is_numeric($value) || $value < 1)
+								{
+									throw new Exception(TBGContext::getI18n()->__('Please provide a valid setting for SMTP server port'));
+								}
+								break;
+							case 'headcharset':
+								// list of supported character sets based on PHP doc : http://www.php.net/manual/en/function.htmlentities.php
+								if (!tbg_check_syntax($value, "CHARSET"))
+								{
+										throw new Exception(TBGContext::getI18n()->__('Please provide a valid setting for email header charset'));
+								}
+								break;
+							case 'no_dash_f':
+								$value = (int) $request->getParameter($setting, 0);
+								break;
+							case 'activation_needed':
+								$value = (int) $request->getParameter($setting, 0);
+								break;
+							case 'cli_mailing_url':
+								$value = $request->getParameter($setting);
+								if (substr($value, -1) == '/') $value = substr($value, 0, strlen($value) - 1);
+								break;
+						}
+						$this->saveSetting($setting, $value);
 					}
-					$this->saveSetting($setting, $value);
 				}
 			}
 		}
@@ -824,8 +831,15 @@
 				}
 				else
 				{
-					$mailer = $this->getMailer();
-					$retval = $mailer->send($mail);
+					if (in_array($this->getMailerType(), array(TBGMailer::MAIL_TYPE_CUSTOM, TBGMailer::MAIL_TYPE_PHP)))
+					{
+						$mailer = $this->getMailer();
+						$retval = $mailer->send($mail);
+					}
+					else
+					{
+						TBGEvent::createNew('mailing', 'TBGMailing::sendMail', $mail)->trigger();
+					}
 				}
 
 				return $retval;

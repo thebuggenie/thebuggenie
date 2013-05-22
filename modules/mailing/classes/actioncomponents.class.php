@@ -16,6 +16,9 @@
 		
 		public function componentSettings()
 		{
+			$event = TBGEvent::createNew('mailing', 'list_mailproviders');
+			$event->trigger();
+			$this->providers = $event->getReturnList();
 		}
 
 		protected function _getNotificationPreset()

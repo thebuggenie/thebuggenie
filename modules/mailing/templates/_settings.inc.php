@@ -30,13 +30,6 @@
 				<td class="config_explanation" colspan="2"><?php echo __('This is the name and email address email notifications from The Bug Genie will be sent from'); ?></td>
 			</tr>
 			<tr>
-				<td style="padding: 5px;"><label for="no_dash_f"><?php echo __("Don't use sendmail '-f'"); ?></label></td>
-				<td><input type="checkbox" name="no_dash_f" id="no_dash_f" value="1" <?php if ($module->getSetting('no_dash_f')): ?>checked<?php endif; ?> style="width: 100%;"<?php echo ($access_level != TBGSettings::ACCESS_FULL || !$module->isOutgoingNotificationsEnabled()) ? ' disabled' : ''; ?>></td>
-			</tr>
-			<tr>
-				<td class="config_explanation" colspan="2"><?php echo __("Don't use the '-f' sendmail parameter (some systems may not allow it)"); ?></td>
-			</tr>
-			<tr>
 				<td style="padding: 5px;"><label for="headcharset"><?php echo __('Email header charset'); ?></label></td>
 				<td><input type="text" name="headcharset" id="headcharset" value="<?php echo $module->getSetting('headcharset'); ?>" style="width: 100px;"<?php echo ($access_level != TBGSettings::ACCESS_FULL || !$module->isOutgoingNotificationsEnabled()) ? ' disabled' : ''; ?>></td>
 			</tr>
@@ -66,15 +59,28 @@
 			<tr>
 				<td style="padding: 5px;"><label for="mail_type_php"><?php echo __('Mail configuration'); ?></label></td>
 				<td>
-					<input type="radio" name="mail_type" value="<?php echo TBGMailer::MAIL_TYPE_PHP; ?>" id="mail_type_php"<?php if ($module->getSetting('mail_type') != TBGMailer::MAIL_TYPE_B2M): ?> checked<?php endif; ?> onclick="$('mail_type_b2m_info').hide();"<?php echo ($access_level != TBGSettings::ACCESS_FULL || !$module->isOutgoingNotificationsEnabled()) ? ' disabled' : ''; ?>>&nbsp;<label for="mail_type_php"><?php echo __('Use php settings'); ?></label><br>
-					<input type="radio" name="mail_type" value="<?php echo TBGMailer::MAIL_TYPE_B2M; ?>" id="mail_type_b2m"<?php if ($module->getSetting('mail_type') == TBGMailer::MAIL_TYPE_B2M): ?> checked<?php endif; ?> onclick="$('mail_type_b2m_info').show();"<?php echo ($access_level != TBGSettings::ACCESS_FULL || !$module->isOutgoingNotificationsEnabled()) ? ' disabled' : ''; ?>>&nbsp;<label for="mail_type_b2m"><?php echo __('Use custom settings'); ?></label>
+					<input type="radio" name="mail_type" value="<?php echo TBGMailer::MAIL_TYPE_PHP; ?>" id="mail_type_php"<?php if ($module->getSetting('mail_type') != TBGMailer::MAIL_TYPE_B2M): ?> checked<?php endif; ?> onclick="$$('.mail_config').each(Element.hide);$('mail_type_php_info').show();"<?php echo ($access_level != TBGSettings::ACCESS_FULL || !$module->isOutgoingNotificationsEnabled()) ? ' disabled' : ''; ?>>&nbsp;<label for="mail_type_php"><?php echo __('Use php settings'); ?></label><br>
+					<input type="radio" name="mail_type" value="<?php echo TBGMailer::MAIL_TYPE_B2M; ?>" id="mail_type_b2m"<?php if ($module->getSetting('mail_type') == TBGMailer::MAIL_TYPE_B2M): ?> checked<?php endif; ?> onclick="$$('.mail_config').each(Element.hide);$('mail_type_b2m_info').show();"<?php echo ($access_level != TBGSettings::ACCESS_FULL || !$module->isOutgoingNotificationsEnabled()) ? ' disabled' : ''; ?>>&nbsp;<label for="mail_type_b2m"><?php echo __('Use custom settings'); ?></label><br>
+					<?php foreach ($providers as $key => $description): ?>
+						<input type="radio" name="mail_type" value="<?php echo $key; ?>" id="mail_type_<?php echo $key; ?>"<?php if ($module->getSetting('mail_type') == $key): ?> checked<?php endif; ?> onclick="$('mail_type_b2m_info').show();"<?php echo ($access_level != TBGSettings::ACCESS_FULL || !$module->isOutgoingNotificationsEnabled()) ? ' disabled' : ''; ?>>&nbsp;<label for="mail_type_<?php echo $key; ?>"><?php echo $description; ?></label><br>
+					<?php endforeach; ?>
 				</td>
 			</tr>
 			<tr>
 				<td class="config_explanation" colspan="2"><?php echo __('This setting determines whether The Bug Genie uses the built-in php email function, or a custom configuration'); ?></td>
 			</tr>
 		</table>
-		<table style="width: 680px; margin-top: 10px;<?php if ($module->getSetting('mail_type') != TBGMailer::MAIL_TYPE_B2M): ?> display: none;<?php endif; ?>" class="padded_table" cellpadding=0 cellspacing=0 id="mail_type_b2m_info">
+		<?php TBGEvent::createNew('mailing', 'settings_provider_config')->trigger(); ?>
+		<table style="width: 680px; margin-top: 10px;<?php if ($module->getSetting('mail_type') != TBGMailer::MAIL_TYPE_PHP): ?> display: none;<?php endif; ?>" class="padded_table mail_config" cellpadding=0 cellspacing=0 id="mail_type_php_info">
+			<tr>
+				<td style="width: 300px; padding: 5px;"><label for="no_dash_f"><?php echo __("Don't use sendmail '-f'"); ?></label></td>
+				<td style="text-align: left;"><input type="checkbox" name="no_dash_f" id="no_dash_f" value="1" <?php if ($module->getSetting('no_dash_f')): ?>checked<?php endif; ?> style="width: 100%;"<?php echo ($access_level != TBGSettings::ACCESS_FULL || !$module->isOutgoingNotificationsEnabled()) ? ' disabled' : ''; ?>></td>
+			</tr>
+			<tr>
+				<td class="config_explanation" colspan="2"><?php echo __("Don't use the '-f' sendmail parameter (some systems may not allow it)"); ?></td>
+			</tr>
+		</table>
+		<table style="width: 680px; margin-top: 10px;<?php if ($module->getSetting('mail_type') != TBGMailer::MAIL_TYPE_B2M): ?> display: none;<?php endif; ?>" class="padded_table mail_config" cellpadding=0 cellspacing=0 id="mail_type_b2m_info">
 			<tr>
 				<td style="width: 300px; padding: 5px;"><label for="smtp_host"><?php echo __('SMTP server address'); ?></label></td>
 				<td style="width: auto;"><input type="text" name="smtp_host" id="smtp_host" value="<?php echo $module->getSetting('smtp_host'); ?>" style="width: 100%;"<?php echo ($access_level != TBGSettings::ACCESS_FULL) ? ' disabled' : ''; ?>></td>
