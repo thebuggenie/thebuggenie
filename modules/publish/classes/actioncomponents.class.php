@@ -15,7 +15,6 @@
 
 		public function componentTools()
 		{
-			$this->whatlinkshere = ($this->article instanceof TBGWikiArticle) ? $this->article->getLinkingArticles() : array();
 		}
 
 		public function componentArticledisplay()

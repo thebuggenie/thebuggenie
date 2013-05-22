@@ -253,18 +253,8 @@
 		{
 			if ($this->_linking_articles === null)
 			{
-				$this->_linking_articles = array();
-				if ($res = TBGArticleLinksTable::getTable()->getLinkingArticles($this->getName()))
-				{
-					while ($row = $res->getNextRow())
-					{
-						try
-						{
-							$this->_linking_articles[$row->get(TBGArticleLinksTable::ARTICLE_NAME)] = PublishFactory::articleName($row->get(TBGArticleLinksTable::ARTICLE_NAME));
-						}
-						catch (Exception $e) {}
-					}
-				}
+				$this->_linking_articles = TBGArticlesTable::getTable()->getAllByLinksToArticleName($this->_name);
+				foreach ($this->_linking_articles as $k => $article) if (!$article->hasAccess()) unset($this->_linking_articles[$k]);
 			}
 		}
 
