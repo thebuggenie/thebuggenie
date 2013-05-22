@@ -56,6 +56,11 @@
 		 */
 		const NOTIFY_ARTICLE_EDITS = 'notify_article_edits';
 
+		/**
+		 * Notify the user when an article he created, updated or commented on is updated
+		 */
+		const NOTIFY_ARTICLE_ACTIVITY_OWN = 'notify_article_activity_own';
+
 		const MAIL_ENCODING_BASE64 = 3;
 		const MAIL_ENCODING_QUOTED = 4;
 		const MAIL_ENCODING_UTF7 = 0;
@@ -415,16 +420,26 @@ EOT;
 			}
 		}
 
-		protected function _getArticleRelatedUsers(TBGWikiArticle $article)
+		protected function _getArticleRelatedUsers(TBGWikiArticle $article, $mode)
 		{
+			switch ($mode)
+			{
+				case 'comment':
+					$setting = self::NOTIFY_ARTICLE_COMMENTS;
+					break;
+				case 'edit':
+					$setting = self::NOTIFY_ARTICLE_EDITS;
+					break;
+			}
 			$uids = array();
-			if ($article->getAuthor() instanceof TBGUser) $uids[$article->getAuthor()->getID()] = $article->getAuthor()->getID();
+			if ($article->getAuthor() instanceof TBGUser && $this->getSetting($setting, $article->getAuthor()->getID())) $uids[$article->getAuthor()->getID()] = $article->getAuthor()->getID();
 			foreach ($article->getHistoryUserIDs() as $uid)
 			{
+				if (!$this->getSetting($setting, $uid)) continue;
 				$uids[$uid] = $uid;
 			}
 			
-			if (isset($uids[TBGContext::getUser()->getID()])) unset($uids[TBGContext::getUser()->getID()]);
+			if (isset($uids[TBGContext::getUser()->getID()]) && !$this->getSetting(self::NOTIFY_ARTICLE_ACTIVITY_OWN, TBGContext::getUser()->getID())) unset($uids[TBGContext::getUser()->getID()]);
 			
 			foreach ($uids as $uid => $user_id)
 			{
@@ -663,7 +678,7 @@ EOT;
 			$subject = 'Wiki article updated: %article_name%';
 			$user = TBGUsersTable::getTable()->selectById((int) $event->getParameter('user_id'));
 			$parameters = compact('article', 'change_reason', 'user', 'revision');
-			$to_users = $this->_getArticleRelatedUsers($article);
+			$to_users = $this->_getArticleRelatedUsers($article, 'edit');
 			
 			if (!empty($to_users))
 			{
@@ -696,7 +711,7 @@ EOT;
 							$article = $event->getParameter('article');
 							$subject = 'Comment posted on article %article_name%';
 							$parameters = compact('article', 'comment');
-							$to_users = $this->_getArticleRelatedUsers($article);
+							$to_users = $this->_getArticleRelatedUsers($article, 'comment');
 							$messages = (empty($to_users)) ? array() : $this->getTranslatedMessages('articlecomment', $parameters, $to_users, $subject, array('%article_name%' => html_entity_decode($article->getTitle(), ENT_COMPAT, TBGContext::getI18n()->getCharset())));
 							break;
 					}
