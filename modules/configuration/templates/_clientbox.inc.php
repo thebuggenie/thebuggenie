@@ -2,6 +2,7 @@
 	<div style="padding: 5px;">
 		<?php echo image_tag('client_large.png', array('style' => 'float: left; margin-right: 5px;')); ?>
 		<div class="button-group" style="float: right;">
+			<?php echo javascript_link_tag(image_tag('collection_addmember.png'), array('title' => __('Add member(s) to this client'), 'onclick' => '$(\'addmember_client_'.$client->getID().'\').toggle();', 'class' => 'button button-silver button-icon')); ?>
 			<?php echo javascript_link_tag(image_tag('client_list_users.png'), array('title' => __('List users in this client'), 'onclick' => 'TBG.Config.Client.showMembers(\''.make_url('configure_users_get_client_members', array('client_id' => $client->getID())).'\', '.$client->getID().');', 'class' => 'button button-silver button-icon')); ?>
 			<?php echo javascript_link_tag(image_tag('icon_edit.png'), array('title' => __('Edit this user client'), 'onclick' => '$(\'edit_client_'.$client->getID().'\').toggle();', 'class' => 'button button-silver button-icon')); ?>
 			<?php echo javascript_link_tag(image_tag('action_delete.png'), array('title' => __('Delete this user client'), 'onclick' => "TBG.Main.Helpers.Dialog.show('".__('Do you really want to delete this team?')."', '".__('If you delete this client, any projects this client is assigned to will be set to having no client')."', {yes: {click: function() {TBG.Config.Client.remove('".make_url('configure_users_delete_client', array('client_id' => $client->getID()))."', {$client->getID()}); }}, no: { click: TBG.Main.Helpers.Dialog.dismiss }});", 'class' => 'button button-silver button-icon')); ?>
@@ -69,6 +70,13 @@
 				</table>
 			</div>
 		</div>
+		<?php include_component('main/identifiableselector', array(	'html_id'		=> "addmember_client_{$client->getID()}",
+																'header' 			=> __('Add a member to this client'),
+																'callback'		 	=> "TBG.Config.Client.addMember('".make_url('configure_users_add_client_member', array('client_id' => $client->getID(), 'user_id' => '%identifiable_value%'))."', ".$client->getID().", '%identifiable_value%');$('addmember_client_{$client->getID()}').hide();",
+																'base_id'			=> "addmember_client_{$client->getID()}",
+																'include_clients'		=> false,
+																'allow_clear'		=> false,
+																'absolute'			=> true)); ?>
 	</div>
 	<div class="rounded_box lightgrey" style="margin-bottom: 5px; display: none;" id="client_members_<?php echo $client->getID(); ?>_container">
 		<div class="dropdown_header"><?php echo __('Users in this client'); ?></div>

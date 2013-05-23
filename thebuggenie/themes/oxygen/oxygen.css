@@ -724,6 +724,11 @@ table.cleantable th { text-align: center; }
 #create_group_form input[type="submit"], #create_team_form input[type="submit"], #create_client_form input[type="submit"] { font-size: 0.9em; }
 .groupbox_header, .teambox_header, .clientbox_header { font-weight: bold; }
 .groupbox_membercount, .teambox_membercount, .clientbox_membercount { font-weight: normal; font-size: 0.8em; color: #888; }
+
+.collection_user_list li { padding: 3px; }
+.collection_user_list li:hover { background-color: rgba(255, 255, 255, 0.4); }
+.collection_user_list li > .button { float: right; font-weight: normal; }
+
 /* end users / teams / groups */
 
 #project_table .config_header { font-size: 0.9em; }
@@ -1196,9 +1201,9 @@ table.issue_affects td img { vertical-align: bottom; }
 #dashboard .latest_action_dates{ font-weight: bold; padding: 10px 0 0 0; }
 #dashboard .faded_out.smaller { font-size: 0.8em; padding-right: 5px; }
 
-#dashboard_lefthand, #dashboard_righthand { font-size: 0.95em; padding: 5px; position: relative; }
-#dashboard_lefthand { width: 250px; box-shadow: -5px 0 5px -5px rgba(0, 0, 0, 0.3) inset; border-right: 1px dotted #DDD;}
-#dashboard_righthand { width: 250px; box-shadow: 5px 0 5px -5px rgba(0, 0, 0, 0.3) inset; border-left: 1px dotted #DDD;}
+#dashboard_lefthand, #dashboard_righthand { font-size: 0.95em; position: relative; }
+#dashboard_lefthand { width: 250px; padding: 5px 10px 5px 0; box-shadow: -5px 0 5px -5px rgba(0, 0, 0, 0.3) inset; border-right: 1px dotted #DDD;}
+#dashboard_righthand { width: 250px; padding: 5px 5px 5px 10px; box-shadow: 5px 0 5px -5px rgba(0, 0, 0, 0.3) inset; border-left: 1px dotted #DDD;}
 #dashboard_lefthand a.friend { color: #00a400; }
 #dashboard_lefthand a.friend:hover { border-bottom: 1px solid #CCC; }
 #dashboard_lefthand.side_bar.collapsed { width: 25px; border: none; padding: 0; margin: 0; }

@@ -1490,7 +1490,42 @@
 			{
 				$team = TBGContext::factory()->TBGTeam((int) $request['team_id']);
 				$users = $team->getMembers();
-				return $this->renderJSON(array('content' => $this->getTemplateHTML('configuration/teamuserlist', array('users' => $users))));
+				return $this->renderJSON(array('content' => $this->getTemplateHTML('configuration/teamuserlist', compact('users', 'team'))));
+			}
+			catch (Exception $e)
+			{
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('error' => $e->getMessage()));
+			}
+		}
+
+		public function runRemoveTeamMember(TBGRequest $request)
+		{
+			try
+			{
+				$team = TBGTeamsTable::getTable()->selectById((int) $request['team_id']);
+				$user = TBGUsersTable::getTable()->selectById((int) $request['user_id']);
+
+				$team->removeMember($user);
+				return $this->renderJSON(array('update_teams' => array('ids' => array($team->getID()), 'membercounts' => array($team->getID() => $team->getNumberOfMembers()))));
+			}
+			catch (Exception $e)
+			{
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('error' => $e->getMessage()));
+			}
+		}
+
+		public function runAddTeamMember(TBGRequest $request)
+		{
+			try
+			{
+				$user_id = (int) $request['user_id'];
+				$team = TBGTeamsTable::getTable()->selectById((int) $request['team_id']);
+				$user = TBGUsersTable::getTable()->selectById($user_id);
+				
+				$team->addMember($user);
+				return $this->renderJSON(array('teamlistitem' => $this->getTemplateHTML('configuration/teamuserlistitem', compact('team', 'user_id', 'user')), 'update_teams' => array('ids' => array($team->getID()), 'membercounts' => array($team->getID() => $team->getNumberOfMembers()))));
 			}
 			catch (Exception $e)
 			{
@@ -2264,7 +2299,7 @@
 			{
 				$client = TBGContext::factory()->TBGClient((int) $request['client_id']);
 				$users = $client->getMembers();
-				return $this->renderJSON(array('content' => $this->getTemplateHTML('configuration/clientuserlist', array('users' => $users))));
+				return $this->renderJSON(array('content' => $this->getTemplateHTML('configuration/clientuserlist', compact('users', 'client'))));
 			}
 			catch (Exception $e)
 			{
@@ -2273,6 +2308,41 @@
 			}
 		}
 		
+		public function runRemoveClientMember(TBGRequest $request)
+		{
+			try
+			{
+				$client = TBGClientsTable::getTable()->selectById((int) $request['client_id']);
+				$user = TBGUsersTable::getTable()->selectById((int) $request['user_id']);
+
+				$client->removeMember($user);
+				return $this->renderJSON(array('update_clients' => array('ids' => array($client->getID()), 'membercounts' => array($client->getID() => $client->getNumberOfMembers()))));
+			}
+			catch (Exception $e)
+			{
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('error' => $e->getMessage()));
+			}
+		}
+
+		public function runAddClientMember(TBGRequest $request)
+		{
+			try
+			{
+				$user_id = (int) $request['user_id'];
+				$client = TBGClientsTable::getTable()->selectById((int) $request['client_id']);
+				$user = TBGUsersTable::getTable()->selectById($user_id);
+				
+				$client->addMember($user);
+				return $this->renderJSON(array('clientlistitem' => $this->getTemplateHTML('configuration/clientuserlistitem', compact('client', 'user_id', 'user')), 'update_clients' => array('ids' => array($client->getID()), 'membercounts' => array($client->getID() => $client->getNumberOfMembers()))));
+			}
+			catch (Exception $e)
+			{
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('error' => $e->getMessage()));
+			}
+		}
+
 		public function runEditClient(TBGRequest $request)
 		{
 			try

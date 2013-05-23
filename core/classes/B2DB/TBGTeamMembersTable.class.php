@@ -136,4 +136,21 @@
 			$this->doInsert($crit);
 		}
 		
+		public function removeUserFromTeam($user_id, $team_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$crit->addWhere(self::TID, $team_id);
+			$crit->addWhere(self::UID, $user_id);
+			$this->doDelete($crit);
+		}
+		
+		public function removeUsersFromTeam($team_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$crit->addWhere(self::TID, $team_id);
+			$this->doDelete($crit);
+		}
+		
 	}

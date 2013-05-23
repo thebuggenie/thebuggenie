@@ -1,9 +1,6 @@
-<?php if (count($users) == 0): ?>
-	<div class="faded_out"><?php echo __('There are no users in this client'); ?></div>
-<?php else: ?>
-	<ul class="simple_list" style="max-height: 350px; overflow-y: auto;">
-		<?php foreach ($users as $user_id => $user): ?>
-			<li><?php include_component('main/userdropdown', array('user' => $user)); ?></li>
-		<?php endforeach; ?>
-	</ul>
-<?php endif; ?>
+<div class="faded_out" id="client_members_<?php echo $client->getID(); ?>_no_users" style="<?php if (count($users) > 0) echo 'display: none;'; ?>"><?php echo __('There are no users in this client'); ?></div>
+<ul class="simple_list collection_user_list" style="max-height: 350px; overflow-y: auto;">
+	<?php foreach ($users as $user_id => $user): ?>
+		<?php include_template('configuration/clientuserlistitem', compact('client', 'user_id', 'user')); ?>
+	<?php endforeach; ?>
+</ul>

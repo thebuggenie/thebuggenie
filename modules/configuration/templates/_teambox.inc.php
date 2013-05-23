@@ -2,6 +2,7 @@
 	<div style="padding: 5px;">
 		<?php echo image_tag('team_large.png', array('style' => 'float: left; margin-right: 5px;')); ?>
 		<div class="button-group" style="float: right;">
+			<?php echo javascript_link_tag(image_tag('collection_addmember.png'), array('title' => __('Add member(s) to this team'), 'onclick' => '$(\'addmember_team_'.$team->getID().'\').toggle();', 'class' => 'button button-silver button-icon')); ?>
 			<?php echo javascript_link_tag(image_tag('team_list_users.png'), array('title' => __('List users in this team'), 'onclick' => 'TBG.Config.Team.showMembers(\''.make_url('configure_users_get_team_members', array('team_id' => $team->getID())).'\', '.$team->getID().');', 'class' => 'button button-silver button-icon')); ?>
 			<?php echo javascript_link_tag(image_tag('team_clone.png'), array('title' => __('Clone this user team'), 'onclick' => '$(\'clone_team_'.$team->getID().'\').toggle();', 'class' => 'button button-silver button-icon')); ?>
 			<?php echo javascript_link_tag(image_tag('action_delete.png'), array('title' => __('Delete this user team'), 'onclick' => "TBG.Main.Helpers.Dialog.show('".__('Do you really want to delete this team?')."', '".__('If you delete this team, then all users in this team will be lose the permissions given via this team')."', {yes: {click: function() {TBG.Config.Team.remove('".make_url('configure_users_delete_team', array('team_id' => $team->getID()))."', {$team->getID()}); }}, no: { click: TBG.Main.Helpers.Dialog.dismiss }});", 'class' => 'button button-silver button-icon')); ?>
@@ -32,6 +33,13 @@
 				</table>
 			</div>
 		</div>
+		<?php include_component('main/identifiableselector', array(	'html_id'		=> "addmember_team_{$team->getID()}",
+																'header' 			=> __('Add a member to this team'),
+																'callback'		 	=> "TBG.Config.Team.addMember('".make_url('configure_users_add_team_member', array('team_id' => $team->getID(), 'user_id' => '%identifiable_value%'))."', ".$team->getID().", '%identifiable_value%');$('addmember_team_{$team->getID()}').hide();",
+																'base_id'			=> "addmember_team_{$team->getID()}",
+																'include_teams'		=> false,
+																'allow_clear'		=> false,
+																'absolute'			=> true)); ?>
 	</div>
 	<div class="rounded_box lightgrey" style="margin-bottom: 5px; display: none;" id="team_members_<?php echo $team->getID(); ?>_container">
 		<div class="dropdown_header"><?php echo __('Users in this team'); ?></div>

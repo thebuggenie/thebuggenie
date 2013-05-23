@@ -178,17 +178,10 @@
 		 */
 		public function addMember(TBGUser $user)
 		{
-			$crit = new \b2db\Criteria();
-			$crit->addInsert(TBGClientMembersTable::SCOPE, TBGContext::getScope()->getID());
-			$crit->addInsert(TBGClientMembersTable::CID, $this->_id);
-			$crit->addInsert(TBGClientMembersTable::UID, $user->getID());
-			\b2db\Core::getTable('TBGClientMembersTable')->doInsert($crit);
-			if ($this->_members === null)
-			{
-				$this->_members = array();
-			}
-			$this->_members[] = $user->getID();
-			array_unique($this->_members);
+			TBGClientMembersTable::getTable()->addUserToClient($user->getID(), $this->getID());
+			
+			if (is_array($this->_members))
+				$this->_members[$user->getID()] = $user->getID();
 		}
 		
 		public function getMembers()
@@ -204,24 +197,22 @@
 			return $this->_members;
 		}
 
-		/**
-		 * Removes a user from the client
-		 *
-		 * @param integer $uid
-		 */
-		public function removeMember($uid)
+		public function removeMember(TBGUser $user)
 		{
-			$crit = new \b2db\Criteria();
-			$crit->addWhere(TBGClientMembersTable::UID, $uid);
-			$crit->addWhere(TBGClientMembersTable::CID, $this->_id);
-			\b2db\Core::getTable('TBGClientMembersTable')->doDelete($crit);
+			if ($this->_members !== null)
+			{
+				unset($this->_members[$user->getID()]);
+			}
+			if ($this->_num_members !== null)
+			{
+				$this->_num_members--;
+			}
+			TBGClientMembersTable::getTable()->removeUserFromClient($user->getID(), $this->getID());
 		}
 		
 		protected function _preDelete()
 		{
-			$crit = TBGClientMembersTable::getTable()->getCriteria();
-			$crit->addWhere(TBGClientMembersTable::CID, $this->getID());
-			$res = TBGClientMembersTable::getTable()->doDelete($crit);
+			TBGClientMembersTable::getTable()->removeUsersFromClient($this->getID());
 		}
 		
 		public static function findClients($details)

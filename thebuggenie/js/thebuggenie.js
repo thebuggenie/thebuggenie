@@ -2613,19 +2613,62 @@ TBG.Config.Collection.showMembers = function(url, type, cid) {
 	}
 }
 
-TBG.Config.Collection.updateDetailsFromJSON = function(json) {
+TBG.Config.Collection.removeMember = function(url, type, cid, user_id) {
+	TBG.Main.Helpers.ajax(url, {
+		loading: {indicator: type + '_members_' + cid + '_indicator'},
+		success: {
+			callback: function(json) {
+				TBG.Main.Helpers.Dialog.dismiss();
+				$(type + '_' + cid + '_' + user_id + '_item').remove();
+				TBG.Config.Collection.updateDetailsFromJSON(json, false);
+				var ul = $(type + '_members_' + cid + '_list').down('ul');
+				if (ul != undefined && ul.childElements().size() == 0) $(type + '_members_' + cid + '_no_users').show();
+			}
+		}
+	});
+};
+
+TBG.Config.Collection.addMember = function(url, type, cid, user_id) {
+	TBG.Main.Helpers.ajax(url, {
+		loading: {indicator: type + '_members_' + cid + '_indicator'},
+		success: {
+			callback: function(json) {
+				TBG.Config.Collection.updateDetailsFromJSON(json, false);
+				if ($(type + '_members_' + cid + '_list').down('ul').innerHTML != '') {
+					if ($(type + '_members_' + cid + '_no_users')) $(type + '_members_' + cid + '_no_users').hide();
+					$(type + '_members_' + cid + '_list').down('ul').insert({bottom: json[type + 'listitem']});
+				}
+			}
+		}
+	});
+};
+
+TBG.Config.Collection.updateDetailsFromJSON = function(json, clear) {
 	if (json.update_groups) {
 		json.update_groups.ids.each(function(group_id) {
 			if ($('group_'+group_id+'_membercount')) $('group_'+group_id+'_membercount').update(json.update_groups.membercounts[group_id]);
-			$('group_members_'+group_id+'_container').hide();
-			$('group_members_'+group_id+'_list').update('');
+			if (clear == undefined || clear == true)  {
+				$('group_members_'+group_id+'_container').hide();
+				$('group_members_'+group_id+'_list').update('');
+			}
 		});
 	}
 	if (json.update_teams) {
 		json.update_teams.ids.each(function(team_id) {
 			if ($('team_'+team_id+'_membercount')) $('team_'+team_id+'_membercount').update(json.update_teams.membercounts[team_id]);
-			$('team_members_'+team_id+'_container').hide();
-			$('team_members_'+team_id+'_list').update('');
+			if (clear == undefined || clear == true)  {
+				$('team_members_'+team_id+'_container').hide();
+				$('team_members_'+team_id+'_list').update('');
+			}
+		});
+	}
+	if (json.update_clients) {
+		json.update_clients.ids.each(function(client_id) {
+			if ($('client_'+client_id+'_membercount')) $('client_'+client_id+'_membercount').update(json.update_clients.membercounts[client_id]);
+			if (clear == undefined || clear == true)  {
+				$('client_members_'+client_id+'_container').hide();
+				$('client_members_'+client_id+'_list').update('');
+			}
 		});
 	}
 }
@@ -2670,6 +2713,14 @@ TBG.Config.Team.showMembers = function(url, team_id) {
 	TBG.Config.Collection.showMembers(url, 'team', team_id);
 }
 
+TBG.Config.Team.removeMember = function(url, team_id, member_id) {
+	TBG.Config.Collection.removeMember(url, 'team', team_id, member_id);
+}
+
+TBG.Config.Team.addMember = function(url, team_id, member_id) {
+	TBG.Config.Collection.addMember(url, 'team', team_id, member_id);
+}
+
 TBG.Config.Client.add = function(url) {
 	TBG.Config.Collection.add(url, 'client');
 }
@@ -2680,6 +2731,14 @@ TBG.Config.Client.remove = function(url, client_id) {
 
 TBG.Config.Client.showMembers = function(url, client_id) {
 	TBG.Config.Collection.showMembers(url, 'client', client_id);
+}
+
+TBG.Config.Client.removeMember = function(url, client_id, member_id) {
+	TBG.Config.Collection.removeMember(url, 'client', client_id, member_id);
+}
+
+TBG.Config.Client.addMember = function(url, client_id, member_id) {
+	TBG.Config.Collection.addMember(url, 'client', client_id, member_id);
 }
 
 TBG.Config.Client.update = function(url, client_id) {

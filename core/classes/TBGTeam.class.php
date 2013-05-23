@@ -135,13 +135,12 @@
 			{
 				$this->_num_members--;
 			}
+			TBGTeamMembersTable::getTable()->removeUserFromTeam($user->getID(), $this->getID());
 		}
 		
 		protected function _preDelete()
 		{
-			$crit = TBGTeamMembersTable::getTable()->getCriteria();
-			$crit->addWhere(TBGTeamMembersTable::TID, $this->getID());
-			$res = TBGTeamMembersTable::getTable()->doDelete($crit);
+			TBGTeamMembersTable::getTable()->removeUsersFromTeam($this->getID());
 		}
 		
 		public static function findTeams($details)
