@@ -275,7 +275,7 @@
 
 		public function getJS()
 		{
-			return array(make_url('home').'js/jquery.flot.min.js', make_url('home').'js/jquery.flot.resize.min.js');
+			return array(make_url('home').'js/excanvas.js', make_url('home').'js/jquery.flot.min.js', make_url('home').'js/jquery.flot.resize.min.js');
 		}
 
 		public function getRSSUrl()
