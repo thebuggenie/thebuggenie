@@ -738,9 +738,9 @@
 						case 'status':
 							$crit->addJoin(TBGListTypesTable::getTable(), TBGListTypesTable::ID, self::STATUS);
 							$crit->addSelectionColumn(self::STATUS);
-							$crit->addOrderBy(self::STATUS, $grouporder);
+							$crit->addOrderBy(TBGListTypesTable::ORDER, Criteria::SORT_DESC);
 							$crit3->addJoin(TBGListTypesTable::getTable(), TBGListTypesTable::ID, self::STATUS);
-							$crit3->addOrderBy(self::STATUS, $grouporder);
+							$crit3->addOrderBy(TBGListTypesTable::ORDER, Criteria::SORT_DESC);
 							break;
 						case 'milestone':
 							$crit->addSelectionColumn(self::MILESTONE);
@@ -766,9 +766,9 @@
 						case 'severity':
 							$crit->addJoin(TBGListTypesTable::getTable(), TBGListTypesTable::ID, self::SEVERITY);
 							$crit->addSelectionColumn(self::SEVERITY);
-							$crit->addOrderBy(self::SEVERITY, $grouporder);
+							$crit->addOrderBy(TBGListTypesTable::ORDER, Criteria::SORT_DESC);
 							$crit3->addJoin(TBGListTypesTable::getTable(), TBGListTypesTable::ID, self::SEVERITY);
-							$crit3->addOrderBy(self::SEVERITY, $grouporder);
+							$crit3->addOrderBy(TBGListTypesTable::ORDER, Criteria::SORT_DESC);
 							break;
 						case 'user_pain':
 							$crit->addSelectionColumn(self::USER_PAIN);
@@ -783,16 +783,16 @@
 						case 'resolution':
 							$crit->addJoin(TBGListTypesTable::getTable(), TBGListTypesTable::ID, self::RESOLUTION);
 							$crit->addSelectionColumn(self::RESOLUTION);
-							$crit->addOrderBy(self::RESOLUTION, $grouporder);
+							$crit->addOrderBy(TBGListTypesTable::ORDER, Criteria::SORT_DESC);
 							$crit3->addJoin(TBGListTypesTable::getTable(), TBGListTypesTable::ID, self::RESOLUTION);
-							$crit3->addOrderBy(self::RESOLUTION, $grouporder);
+							$crit3->addOrderBy(TBGListTypesTable::ORDER, Criteria::SORT_DESC);
 							break;
 						case 'priority':
 							$crit->addJoin(TBGListTypesTable::getTable(), TBGListTypesTable::ID, self::PRIORITY);
 							$crit->addSelectionColumn(self::PRIORITY);
-							$crit->addOrderBy(self::PRIORITY, $grouporder);
+							$crit->addOrderBy(TBGListTypesTable::ORDER, Criteria::SORT_DESC);
 							$crit3->addJoin(TBGListTypesTable::getTable(), TBGListTypesTable::ID, self::PRIORITY);
-							$crit3->addOrderBy(self::PRIORITY, $grouporder);
+							$crit3->addOrderBy(TBGListTypesTable::ORDER, Criteria::SORT_DESC);
 							break;
 						case 'issuetype':
 							$crit->addJoin(TBGIssueTypesTable::getTable(), TBGIssueTypesTable::ID, self::ISSUE_TYPE);
