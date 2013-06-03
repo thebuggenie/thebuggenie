@@ -26,7 +26,7 @@
 	class TBGWorkflowsTable extends TBGB2DBTable
 	{
 
-		const B2DB_TABLE_VERSION = 1;
+		const B2DB_TABLE_VERSION = 2;
 		const B2DBNAME = 'workflows';
 		const ID = 'workflows.id';
 		const SCOPE = 'workflows.scope';

@@ -319,7 +319,6 @@
 		public function getAllByLinksToArticleName($article_name)
 		{
 			$names_res = TBGArticleLinksTable::getTable()->getLinkingArticles($article_name);
-			
 			if (empty($names_res)) return array();
 
 			$names = array();

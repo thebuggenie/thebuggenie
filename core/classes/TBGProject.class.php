@@ -522,22 +522,27 @@
 		 * 
 		 * @return array
 		 */
-		public static function getAllRootProjects($archived = false)
+		public static function getAllRootProjects($archived = null)
 		{
 			self::_populateProjects();
+
 			$final = array();
 			foreach (self::$_projects as $project)
 			{
-				if ($archived)
+				if ($archived === null && !$project->hasParent())
 				{
-					if (!($project->getParent() instanceof TBGProject) && $project->isArchived())
+					$final[] = $project;
+				}
+				elseif ($archived === true)
+				{
+					if (!$project->hasParent() && $project->isArchived())
 					{
 						$final[] = $project;
 					}
 				}
-				else
+				elseif ($archived === false)
 				{
-					if (!($project->getParent() instanceof TBGProject) && !$project->isArchived())
+					if (!$project->hasParent() && !$project->isArchived())
 					{
 						$final[] = $project;
 					}
@@ -2787,7 +2792,8 @@
 		}
 		
 		/**
-		 * Get all children
+		 * Get children based on archived state
+		 * 
 		 * @param bool $archived[optional] Show archived projects
 		 */
 		public function getChildren($archived = false)
@@ -2810,23 +2816,23 @@
 			return $f_projects;
 		}
 		
+		/**
+		 * Get all child projects
+		 * @param bool $archived[optional] Show archived projects
+		 */
+		public function getAllChildren($archived = false)
+		{
+			$this->_populateChildren();
+			return $this->_children;
+		}
+		
 		protected function _populateChildren()
 		{
 			if ($this->_children === null)
 			{
-				$this->_children = array();
-				$res = TBGProjectsTable::getTable()->getByParentID($this->getID());
-
-				if ($res == false): return; endif;
-
-				foreach ($res->getAllRows() as $row)
-				{
-					if ($row->get(TBGProjectsTable::DELETED) == false)
-					{
-						$this->_children[] = TBGContext::factory()->TBGProject($row->get(TBGProjectsTable::ID), $row);
-					}
-				}
+				$this->_children = TBGProjectsTable::getTable()->getByParentID($this->getID());
 			}
+			return $this->_children;
 		}
 		
 		/**

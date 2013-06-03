@@ -51,8 +51,6 @@
 
 .article .details { color: #AAA; padding-bottom: 5px; }
 
-.article .redbox { box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 25, 25, 0.5); color: #333; background-color: rgba(255, 50, 50, 0.6); padding: 5px; }
-.article .greybox { box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); background-color: rgba(200, 200, 200, 0.1); padding: 5px; }
 .article .toc { float: right; margin: 17px 0 15px 5px; width: 350px; box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); padding: 5px; font-size: 12px; position: relative; overflow: visible; background-color: rgba(245, 245, 245, 0.9); }
 .article .toc.fixed { position: fixed; top: 147px; right: 10px; }
 .article .toc .header { margin: 0; padding: 2px 3px 3px 0; font-weight: bold; font-size: 16px; color: #555; border-bottom: 1px dotted #CCC; }

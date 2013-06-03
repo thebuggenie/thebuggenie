@@ -634,7 +634,7 @@
 									}
 
 									// Run the transition.
-									$possible_transition->transitionIssueToOutgoingStepFromRequest($issue, TBGContext::getRequest());
+									$possible_transition->transitionIssueToOutgoingStepWithoutRequest($issue);
 
 									// Log an informative message about the transition.
 									$output .= '[VCS '.$project->getKey().'] Ran transition '.$possible_transition->getName().' with parameters \''.$parameters_string.'\' on issue '.$issue->getFormattedIssueNo()."\n";

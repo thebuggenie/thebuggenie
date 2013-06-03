@@ -1,8 +1,8 @@
-<div class="rounded_box<?php if ($scope->isDefault()): ?> lightgrey<?php else: ?> lightyellow<?php endif; ?> borderless" style="margin-bottom: 5px; min-height: 25px;">
+<div class="<?php if ($scope->isDefault()): ?> greybox<?php else: ?> lightyellowbox<?php endif; ?>" style="margin-bottom: 5px; min-height: 25px;">
 	<?php if (!$scope->isDefault()): ?>
 		<div class="button-group" style="float: right;">
 			<?php echo link_tag(make_url('configure_scope', array('id' => $scope->getID())), image_tag('icon_edit.png', array('title' => __('Edit scope settings'))), array('class' => 'button button-silver button-icon')); ?></a>
-			<a href="javascript:void(0);" onclick="$('delete_scope_<?php echo $scope->getID(); ?>').toggle();" class="button button-icon button-silver"><?php echo image_tag('icon_delete.png', array('title' => __('Delete this scope'))); ?></a>
+			<a href="javascript:void(0);" onclick="TBG.Main.Helpers.Dialog.show('<?php echo __('Do you really want to delete this scope?'); ?>', '<?php echo __('Deleting this scope will destroy all data that exists inside this scope.'); ?> <i><?php echo __('This action cannot be undone.'); ?></i>', {yes: {click: function() {$('delete_scope_<?php echo $scope->getID(); ?>_form').submit();}}, no: {click: TBG.Main.Helpers.Dialog.dismiss}});" class="button button-icon button-silver"><?php echo image_tag('icon_delete.png', array('title' => __('Delete this scope'))); ?></a>
 		</div>
 	<?php endif; ?>
 	<div class="header">
@@ -15,28 +15,20 @@
 			<?php endif; ?>
 		</span>
 	</div>
-	<div class="content">
-		<div class="faded_out scope_description">
-			<?php if (!$scope->isDefault()): ?>
-				<?php echo $scope->getDescription(); ?>
-			<?php else: ?>
-				<?php echo __('This is the default scope. It will be loaded and used whenever The Bug Genie is accessed on a hostname for which there is not explicit scope defined.'); ?>
-			<?php endif; ?>
-		</div>
-	</div>
-	<?php if (!$scope->isDefault()): ?>
-		<div class="rounded_box white shadowed" id="delete_scope_<?php echo $scope->getID(); ?>" style="display: none;">
-			<div class="header"><?php echo __('Do you really want to delete this scope?'); ?></div>
-			<div class="content">
-				<?php echo __('Deleting this scope will destroy all data that exists inside this scope.'); ?> <i><?php echo __('This action cannot be undone.'); ?></i>
-				<div style="text-align: right; margin: 10px 0;">
-					<form action="<?php echo make_url('configure_scope', array('id' => $scope->getID())); ?>" method="post" style="display: inline;">
-						<input type="submit" value="<?php echo __('Yes, delete it'); ?>">
-						<input type="hidden" name="scope_action" value="delete">
-					</form>
-					<?php echo __('%yes_delete_it% or %no_dont_delete_it%', array('%yes_delete_it%' => '', '%no_dont_delete_it%' => '<b>'.javascript_link_tag(__("no, don't delete it"), array('onclick' => "$('delete_scope_{$scope->getID()}').toggle();")).'</b>')); ?>
-				</div>
+	<?php if ($scope->isDefault() || !strlen(trim($scope->getDescription()))): ?>
+		<div class="content">
+			<div class="faded_out scope_description">
+				<?php if (!$scope->isDefault()): ?>
+					<?php echo $scope->getDescription(); ?>
+				<?php else: ?>
+					<?php echo __('This is the default scope. It will be loaded and used whenever The Bug Genie is accessed on a hostname for which there is not explicit scope defined.'); ?>
+				<?php endif; ?>
 			</div>
 		</div>
+	<?php endif; ?>
+	<?php if (!$scope->isDefault()): ?>
+		<form action="<?php echo make_url('configure_scope', array('id' => $scope->getID())); ?>" method="post" style="display: none;" id="delete_scope_<?php echo $scope->getID(); ?>_form">
+			<input type="hidden" name="scope_action" value="delete">
+		</form>
 	<?php endif; ?>
 </div>

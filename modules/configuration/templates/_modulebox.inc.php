@@ -1,38 +1,43 @@
-<div class="rounded_box<?php if ($module->isEnabled()): ?> iceblue<?php else: ?> lightgrey<?php endif; ?> borderless" style="margin: 5px 0px 5px 0px; width: 783px; vertical-align: middle; text-align: right; min-height: 40px;" id="module_<?php echo $module->getID(); ?>">
-	<div style="float: left;">
-		<div class="header"><?php echo __($module->getLongName()); ?><span class="module_shortname faded_out"> <?php echo $module->getVersion(); ?> (<?php echo $module->getName(); ?>) <?php if ($module->getType() == TBGModule::MODULE_AUTH): echo ' - '.__('Authentication module'); endif; ?></span></div>
-		<div class="content"><?php echo __($module->getDescription()); ?></div>
-	</div>
-	<div style="text-align: right; font-size: 13px; font-weight: normal; padding-top: 3px;">
-		<div>
+<div class="<?php if ($module->isEnabled()): ?> bluebox<?php else: ?> greybox<?php endif; ?>" style="margin: 5px 0px 5px 0px; position: relative; vertical-align: middle; text-align: right; min-height: 40px;" id="module_<?php echo $module->getID(); ?>">
+	<div class="header">
+		<div class="module_status<?php if ($module->isCore()) echo ' core'; elseif ($module->isEnabled()) echo ' enabled'; ?>">
 			<?php if (!$module->isCore()): ?>
 				<?php if ($module->isEnabled()): ?>
-					<?php echo image_tag('icon_enabled.png', array('style' => 'margin-right: 3px;')); ?>
-					<span style="float: right; font-weight: bold;"><?php echo __('Enabled'); ?></span><br>
+					<?php echo image_tag('icon_enabled.png') . __('Enabled'); ?>
 				<?php else: ?>
-					<?php echo image_tag('icon_disabled.png', array('style' => 'margin-right: 3px;')); ?>
-					<span style="float: right; font-weight: bold;"><?php echo __('Disabled'); ?></span><br>
+					<?php echo image_tag('icon_disabled.png') . __('Disabled'); ?>
 				<?php endif; ?>
 			<?php else: ?>
-				<span style="float: right; font-weight: normal;" class="faded_out"><?php echo __('Core module'); ?></span><br>
-			<?php endif; ?>
-			<?php if ($module->hasConfigSettings()): ?>
-				<?php echo link_tag(make_url('configure_module', array('config_module' => $module->getName())), image_tag('action_configure_module.png', array('style' => 'margin-right: 5px;', 'title' => __('Configure module'))), array('class' => 'image')); ?>
-			<?php endif; ?>
-			<a href="javascript:void(0);" class="image" onclick="$('permissions_module_<?php echo($module->getID()); ?>').toggle();$('uninstall_module_<?php echo $module->getID(); ?>').hide();$('<?php if($module->isEnabled()): ?>disable<?php else: ?>enable<?php endif; ?>_module_<?php echo $module->getID(); ?>').hide();"><?php echo image_tag('action_edit_permissions.png', array('style' => 'margin-right: 5px;', 'title' => __('Edit permissions'))); ?></a>
-			<?php if (!$module->isCore()): ?>
-				<?php if ($module->getType() !== TBGModule::MODULE_AUTH): ?>
-					<?php if ($module->isEnabled()): ?>
-						<a href="javascript:void(0);" class="image" onclick="$('disable_module_<?php echo $module->getID(); ?>').toggle();$('permissions_module_<?php echo($module->getID()); ?>').hide();$('uninstall_module_<?php echo $module->getID(); ?>').hide();"><?php echo image_tag('action_enable_module.png', array('style' => 'margin-right: 5px;', 'title' => __('Disable module'))); ?></a>
-					<?php else: ?>
-						<a href="javascript:void(0);" class="image" onclick="$('enable_module_<?php echo $module->getID(); ?>').toggle();$('permissions_module_<?php echo($module->getID()); ?>').hide();$('uninstall_module_<?php echo $module->getID(); ?>').hide();"><?php echo image_tag('action_disable_module.png', array('style' => 'margin-right: 5px;', 'title' => __('Enable module'))) ?></a>
-					<?php endif; ?>
-				<?php endif; ?>
-				<?php if (TBGContext::getScope()->isDefault()): ?>
-					<a href="javascript:void(0);" class="image" onclick="$('uninstall_module_<?php echo $module->getID(); ?>').toggle();$('permissions_module_<?php echo($module->getID()); ?>').hide();$('<?php if($module->isEnabled()): ?>disable<?php else: ?>enable<?php endif; ?>_module_<?php echo $module->getID(); ?>').hide();"><?php echo image_tag('action_uninstall_module.png', array('title' => __('Uninstall module'))); ?></a>
-				<?php endif; ?>
+				<?php echo __('Core module'); ?>
 			<?php endif; ?>
 		</div>
+		<?php echo __($module->getLongName()); ?><span class="module_shortname faded_out"> <?php echo $module->getVersion(); ?> (<?php echo $module->getName(); ?>) <?php if ($module->getType() == TBGModule::MODULE_AUTH): echo ' - '.__('Authentication module'); endif; ?></span>
+	</div>
+	<div class="content"><?php echo __($module->getDescription()); ?></div>
+	<div style="position: absolute; right: 12px; top: 12px;">
+		<button class="button button-silver" id="module_<?php echo $module->getID(); ?>_more_actions" onclick="$(this).toggleClassName('button-pressed');$('module_<?php echo $module->getID(); ?>_more_actions_dropdown').toggle(); "><?php echo __('Actions'); ?></button>
+		<ul id="module_<?php echo $module->getID(); ?>_more_actions_dropdown" style="display: none; position: absolute; font-size: 1.1em; width: 200px; top: 23px; margin-top: 0; right: 0; text-align: right; z-index: 1000;" class="simple_list rounded_box white shadowed popup_box more_actions_dropdown" onclick="$('module_<?php echo $module->getID(); ?>_more_actions').toggleClassName('button-pressed');$('module_<?php echo $module->getID(); ?>_more_actions_dropdown').toggle();">
+			<?php if ($module->hasConfigSettings()): ?>
+				<li>
+					<?php echo link_tag(make_url('configure_module', array('config_module' => $module->getName())), __('Configure module')); ?>
+				</li>
+			<?php endif; ?>
+			<li>
+				<a href="javascript:void(0);" onclick="$('permissions_module_<?php echo($module->getID()); ?>').toggle();$('uninstall_module_<?php echo $module->getID(); ?>').hide();$('<?php if($module->isEnabled()): ?>disable<?php else: ?>enable<?php endif; ?>_module_<?php echo $module->getID(); ?>').hide();"><?php echo __('Edit permissions'); ?></a>
+			</li>
+			<?php if ($module->getType() !== TBGModule::MODULE_AUTH): ?>
+				<li>
+					<?php if ($module->isEnabled()): ?>
+						<a href="javascript:void(0);" onclick="$('disable_module_<?php echo $module->getID(); ?>').toggle();$('permissions_module_<?php echo($module->getID()); ?>').hide();$('uninstall_module_<?php echo $module->getID(); ?>').hide();"><?php echo __('Disable module'); ?></a>
+					<?php else: ?>
+						<a href="javascript:void(0);" onclick="$('enable_module_<?php echo $module->getID(); ?>').toggle();$('permissions_module_<?php echo($module->getID()); ?>').hide();$('uninstall_module_<?php echo $module->getID(); ?>').hide();"><?php echo __('Enable module'); ?></a>
+					<?php endif; ?>
+				</li>
+			<?php endif; ?>
+			<?php if (!$module->isCore() && TBGContext::getScope()->isDefault()): ?>
+				<li><a href="javascript:void(0);" onclick="$('uninstall_module_<?php echo $module->getID(); ?>').toggle();$('permissions_module_<?php echo($module->getID()); ?>').hide();$('<?php if($module->isEnabled()): ?>disable<?php else: ?>enable<?php endif; ?>_module_<?php echo $module->getID(); ?>').hide();"><?php echo __('Uninstall module'); ?></a></li>
+			<?php endif; ?>
+		</ul>
 	</div>
 	<?php if (!$module->isCore()): ?>
 		<?php if ($module->isEnabled()): ?>

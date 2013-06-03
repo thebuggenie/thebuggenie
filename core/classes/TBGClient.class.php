@@ -178,6 +178,8 @@
 		 */
 		public function addMember(TBGUser $user)
 		{
+			if (!$user->getID()) throw new Exception('Cannot add user object to client until the object is saved');
+
 			TBGClientMembersTable::getTable()->addUserToClient($user->getID(), $this->getID());
 			
 			if (is_array($this->_members))

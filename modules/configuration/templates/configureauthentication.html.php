@@ -8,7 +8,7 @@
 	<tr>
 		<?php include_component('leftmenu', array('selected_section' => TBGSettings::CONFIGURATION_SECTION_AUTHENTICATION)); ?>
 		<td valign="top" style="padding-left: 15px;">
-			<div style="width: 788px;">
+			<div style="width: 730px;">
 				<h3><?php echo __('Configure authentication'); ?></h3>
 				<div class="content faded_out">
 					<?php echo __('Please remember to install and configure your chosen authentication backend before setting it here. Changing settings on this page will result in you being logged out.'); ?>
@@ -67,7 +67,7 @@
 					</tr>
 				</table>
 				<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-						<div class="rounded_box mediumgrey" style="margin: 5px 0px 5px 0px; width: 700px; height: 23px; padding: 5px 10px 5px 10px;">
+						<div class="greybox" style="margin: 5px 0px 5px 0px; height: 23px; padding: 5px 10px 5px 10px;">
 							<div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "%save%" to save your changes in all categories', array('%save%' => __('Save'))); ?></div>
 							<input type="submit" id="config_auth_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
 						</div>

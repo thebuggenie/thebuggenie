@@ -3,7 +3,7 @@
 	<tr>
 		<?php include_component('leftmenu', array('selected_section' => TBGSettings::CONFIGURATION_SECTION_ROLES)); ?>
 		<td valign="top" style="padding-left: 15px;">
-			<div id="config_roles" style="position: relative; width: 788px;">
+			<div id="config_roles" style="position: relative; width: 730px;">
 				<h3>
 					<?php echo __('Configure roles'); ?>
 				</h3>
@@ -22,7 +22,7 @@
 						<input type="submit" value="<?php echo __('Create role'); ?>" class="button button-silver" style="float: right; margin: 1px 1px 1px 5px;">
 					</form>
 				</div>
-				<ul id="global_roles_list" class="simple_list" style="width: 788px;">
+				<ul id="global_roles_list" class="simple_list" style="width: 730px;">
 					<?php foreach ($roles as $role): ?>
 						<?php include_template('configuration/role', array('role' => $role)); ?>
 					<?php endforeach; ?>

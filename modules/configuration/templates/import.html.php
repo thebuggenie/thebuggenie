@@ -7,9 +7,9 @@
 	<tr>
 		<?php include_component('leftmenu', array('selected_section' => TBGSettings::CONFIGURATION_SECTION_IMPORT)); ?>
 		<td valign="top" style="padding-left: 15px;">
-			<div style="width: 788px;">
+			<div style="width: 730px;">
 				<h3><?php echo __('Import data'); ?></h3>
-				<div style="width: 100%; clear: both; height: 30px; margin-top: 15px;" class="tab_menu">
+				<div style="margin-top: 15px;" class="tab_menu inset">
 					<ul id="import_menu">
 						<li id="tab_csv" class="selected"><?php echo javascript_link_tag(image_tag('icon_csv.png', array('style' => 'float: left; margin-right: 5px;')) . __('CSV'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_csv', 'import_menu');")); ?></li>
 						<li id="tab_tbg"><?php echo javascript_link_tag(image_tag('favicon.png', array('style' => 'float: left; margin-right: 5px;')) . __('BUGS 1.x/The Bug Genie 2'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_tbg', 'import_menu');")); ?></li>
@@ -17,7 +17,7 @@
 					</ul>
 				</div>
 				<div id="import_menu_panes">
-					<div id="tab_csv_pane" style="padding-top: 0; width: 100%;">
+					<div id="tab_csv_pane" style="padding-top: 0;">
 						<div class="tab_content">
 							<?php echo __('You can import data from a CSV file copied into a text box in The Bug Genie, exported from other sources. Please see the %CSVImport% wiki article for further details and instructions.', array('%CSVImport%' => link_tag(make_url('publish_article', array('article_name' => 'CSVImport')), __('CSVImport'), array('target' => '_blank')))); ?>
 							<div id="csv_button_area" class="button-group">
@@ -39,14 +39,14 @@
 							</div>
 						</div>
 					</div>
-					<div id="tab_tbg_pane" style="padding-top: 0; width: 100%; display: none;">
+					<div id="tab_tbg_pane" style="padding-top: 0; display: none;">
 						<div class="tab_content"><?php echo __('You can import data from previous version of The Bug Genie into your version 3 installation.'); ?></div>
 						<div class="tab_header"><?php echo __('BUGS 1.x'); ?></div>
 						<div class="tab_content"><?php echo __('Please upgrade to BUGS 1.9, followed by The Bug Genie 2 (an upgrade script is included in the installation package for The Bug Genie 2). After upgrading, then follow the instructions below to upgrade from The Bug Genie 2.'); ?></div>
 						<div class="tab_header"><?php echo __('The Bug Genie 2'); ?></div>
 						<div class="tab_content"><?php echo __("Please upgrade to The Bug Genie 2.1 if you haven't already done so, then follow the %upgrade_instructions% on The Bug Genie wiki to upgrade your data. There is not a built in upgrade script.", array('%upgrade_instructions%' => link_tag('http://issues.thebuggenie.com/wiki/TheBugGenie:ImportFromTheBugGenieVersion2x', __('upgrade instructions')))); ?></div>
 					</div>
-					<div id="tab_sample_pane" style="padding-top: 0; width: 100%; display: none;">
+					<div id="tab_sample_pane" style="padding-top: 0; display: none;">
 						<div class="tab_header"><?php echo __('Importing sample data'); ?></div>
 						<div class="tab_content">
 							<?php echo __('The Bug Genie can load sample data for you, so you can play around without having to use your own data. Press the button below to import sample projects and issues.'); ?>

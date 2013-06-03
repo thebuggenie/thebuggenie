@@ -1,26 +1,37 @@
-<div id="item_<?php echo $type_key; ?>_<?php echo $type->getID(); ?>" class="rounded_box borderless mediumgrey" style="margin: 5px 0 0 0; padding: 3px; font-size: 12px;">
+<div id="item_<?php echo $type_key; ?>_<?php echo $type->getID(); ?>" class="greybox" style="margin: 5px 0 0 0; position: relative;">
+	<div style="position: absolute; right: 5px; top: 30px;">
+		<button class="button button-silver" id="<?php echo $type_key; ?>_<?php echo $type->getID(); ?>_more_actions" onclick="$(this).toggleClassName('button-pressed');$('<?php echo $type_key; ?>_<?php echo $type->getID(); ?>_more_actions_dropdown').toggle(); "><?php echo __('Actions'); ?></button>
+		<ul id="<?php echo $type_key; ?>_<?php echo $type->getID(); ?>_more_actions_dropdown" style="display: none; position: absolute; font-size: 1.1em; width: 200px; top: 23px; margin-top: 0; right: 0; text-align: right; z-index: 1000;" class="simple_list rounded_box white shadowed popup_box more_actions_dropdown" onclick="$('<?php echo $type_key; ?>_<?php echo $type->getID(); ?>_more_actions').toggleClassName('button-pressed');$('<?php echo $type_key; ?>_<?php echo $type->getID(); ?>_more_actions_dropdown').toggle();">
+			<li>
+				<a href="javascript:void(0);" onclick="$('edit_custom_type_<?php echo $type_key; ?>_form').toggle();$('custom_type_<?php echo $type_key; ?>_info').toggle();"><?php echo __('Edit this issue field'); ?></a>
+			</li>
+			<li>
+				<?php
+					switch ($type->getType())
+					{
+						case TBGCustomDatatype::INPUT_TEXT:
+						case TBGCustomDatatype::INPUT_TEXTAREA_MAIN:
+						case TBGCustomDatatype::INPUT_TEXTAREA_SMALL:
+						case TBGCustomDatatype::EDITIONS_CHOICE:
+						case TBGCustomDatatype::COMPONENTS_CHOICE:
+						case TBGCustomDatatype::RELEASES_CHOICE:
+						case TBGCustomDatatype::STATUS_CHOICE:
+							break;
+						default:
+							?><a href="javascript:void(0);" onclick="TBG.Config.Issuefields.Options.show('<?php echo make_url('configure_issuefields_getoptions', array('type' => $type_key)); ?>', '<?php echo $type_key; ?>');"><?php echo __('Show and edit available choices'); ?></a><?php
+							break;
+					}
+				?>
+			</li>
+			<li>
+				<?php echo javascript_link_tag(__('Delete'), array('onclick' => "TBG.Main.Helpers.Dialog.show('".__('Do you really want to delete this issue field?')."', '".__('This will also remove the value of this issue field from all issues, along with any possible options this field can have.')."', {yes: {click: function() {TBG.Config.Issuefields.Custom.remove('".make_url('configure_issuefields_delete_customtype', array('type' => $type_key))."', '".$type_key."', '".$type->getID()."'); }}, no: { click: TBG.Main.Helpers.Dialog.dismiss }});")); ?>
+			</li>
+		</ul>
+	</div>
 	<?php echo image_tag('spinning_32.gif', array('style' => 'float: right; margin-left: 5px; display: none;', 'id' => $type_key . '_indicator')); ?>
 	<div class="header"><?php echo $type->getName(); ?>&nbsp;<span class="faded_out dark" style="font-weight: normal; font-size: 12px;"><?php echo $type_key; ?></span>
 	</div>
 	<div class="content">
-		<a title="<?php echo __('Edit this custom type'); ?>" href="javascript:void(0);" onclick="$('edit_custom_type_<?php echo $type_key; ?>_form').toggle();$('custom_type_<?php echo $type_key; ?>_info').toggle();" class="image" style="float: right; margin-right: 5px;"><?php echo image_tag('icon_edit.png'); ?></a>
-		<?php
-			switch ($type->getType())
-			{
-				case TBGCustomDatatype::INPUT_TEXT:
-				case TBGCustomDatatype::INPUT_TEXTAREA_MAIN:
-				case TBGCustomDatatype::INPUT_TEXTAREA_SMALL:
-				case TBGCustomDatatype::EDITIONS_CHOICE:
-				case TBGCustomDatatype::COMPONENTS_CHOICE:
-				case TBGCustomDatatype::RELEASES_CHOICE:
-				case TBGCustomDatatype::STATUS_CHOICE:
-					break;
-				default:
-					?><a title="<?php echo __('Show and edit available choices'); ?>" href="javascript:void(0);" onclick="TBG.Config.Issuefields.Options.show('<?php echo make_url('configure_issuefields_getoptions', array('type' => $type_key)); ?>', '<?php echo $type_key; ?>');" class="image" style="float: right; margin-right: 5px;"><?php echo image_tag('action_dropdown_small.png'); ?></a><?php
-					break;
-			}
-		?>
-		<a href="javascript:void(0);" onclick="$('delete_item_<?php echo $type->getID(); ?>').toggle();" class="image" style="float: right; margin-right: 5px;" id="delete_<?php echo $type->getID(); ?>_link"><?php echo image_tag('icon_delete.png'); ?></a>
 		<b><?php echo __('Type'); ?>:</b>&nbsp;<?php echo $type->getTypeDescription(); ?>
 	</div>
 	<div id="delete_item_<?php echo $type->getID(); ?>" class="rounded_box white shadowed" style="margin: 5px 0 10px 0; font-size: 12px; display: none;">

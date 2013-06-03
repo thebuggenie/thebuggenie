@@ -1215,7 +1215,7 @@
 				
 				if ($transition->validateFromRequest($request))
 				{
-					$transition->transitionIssueToOutgoingStepFromRequest($issue);
+					$transition->transitionIssueToOutgoingStepFromRequest($issue, $request);
 				}
 				else
 				{
@@ -1258,7 +1258,7 @@
 
 					try
 					{
-						$transition->transitionIssueToOutgoingStepFromRequest($issue);
+						$transition->transitionIssueToOutgoingStepFromRequest($issue, $request);
 					}
 					catch (Exception $e)
 					{

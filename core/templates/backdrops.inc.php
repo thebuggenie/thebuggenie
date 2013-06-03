@@ -5,6 +5,16 @@
 		<span id="thebuggenie_failuremessage_content"></span>
 	</div>
 </div>
+<div class="tutorial-message" id="tutorial-message" style="display: none;">
+	<div id="tutorial-message-container"></div>
+	<br>
+	<div class="tutorial-buttons">
+		<button class="button button-standard button-next" id="tutorial-next-button"></button>
+		<button class="button button-silver button-disable" onclick="TBG.Tutorial.disable();">Skip this tutorial</button>
+	</div>
+	<br style="clear: both;">
+	<div class="tutorial-status"><span id="tutorial-current-step"></span> of <span id="tutorial-total-steps"></span></div>
+</div>
 <div class="almost_not_transparent shadowed popup_message success" onclick="TBG.Main.Helpers.Message.clear();" style="display: none;" id="thebuggenie_successmessage">
 	<div style="padding: 10px 0 10px 0;">
 		<div class="dismiss_me"><?php echo __('Click this message to dismiss it'); ?></div>

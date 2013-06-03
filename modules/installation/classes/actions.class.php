@@ -595,6 +595,8 @@
 			TBGLogTable::getTable()->upgrade(TBGLogTable3dot2::getTable());
 			TBGUsersTable::getTable()->upgrade(TBGUsersTable3dot2::getTable());
 			TBGIssuesTable::getTable()->upgrade(TBGIssuesTable3dot2::getTable());
+			TBGWorkflowsTable::getTable()->upgrade(TBGWorkflowsTable3dot2::getTable());
+
 			if (TBGContext::isModuleLoaded('mailing'))
 			{
 				TBGIncomingEmailAccountTable::getTable()->upgrade(TBGIncomingEmailAccountTable3dot2::getTable());
@@ -944,6 +946,8 @@
 				$scope->setID(1);
 				$scope->setEnabled();
 				TBGContext::setScope($scope);
+				
+				$this->statuses = TBGListTypesTable::getTable()->getStatusListForUpgrade();
 			}
 			$this->upgrade_complete = false;
 
@@ -965,7 +969,7 @@
 					$existing_installed_content = file_get_contents(THEBUGGENIE_PATH . 'installed');
 					file_put_contents(THEBUGGENIE_PATH . 'installed', TBGSettings::getVersion(false, false) . ', upgraded ' . date('d.m.Y H:i') . "\n" . $existing_installed_content);
 					unlink(THEBUGGENIE_PATH . 'upgrade');
-					$this->current_version = '3.2';
+					$this->current_version = TBGSettings::getVersion(false, false);
 					$this->upgrade_available = false;
 				}
 			}

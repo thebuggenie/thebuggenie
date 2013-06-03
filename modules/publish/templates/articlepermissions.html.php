@@ -57,7 +57,7 @@
 						<?php endforeach; ?>
 						</ul>
 					<?php else: ?>
-						<div class="rounded_box red borderless" style="margin: 0 5px 5px 5px; padding: 7px; font-size: 14px; color: #FFF;">
+						<div class="redbox" style="margin: 0 5px 5px 5px; font-size: 14px;">
 							<?php echo __('You do not have access to edit permissions for this article'); ?>
 						</div>
 					<?php endif; ?>

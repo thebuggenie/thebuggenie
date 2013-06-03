@@ -28,6 +28,7 @@ var TBG = {
 	Core: {
 		AjaxCalls: []
 	}, // The "Core" namespace is for functions used by thebuggenie core, not to be invoked outside the js class
+	Tutorial: {},
 	Main: { // The "Main" namespace contains regular functions in use across the site
 		Helpers: {
 			Message: {},
@@ -175,11 +176,12 @@ TBG.Core._extractAutocompleteValue = function(elem, value, event) {
  * Monitors viewport resize to adapt backdrops and dashboard containers
  */
 TBG.Core._resizeWatcher = function() {
+	TBG.Core._vp_width = document.viewport.getWidth();
+	TBG.Core._vp_height = document.viewport.getHeight();
 	if (($('attach_file') && $('attach_file').visible())) {
-		var docheight = document.viewport.getHeight();
 		var backdropheight = $('backdrop_detail_content').getHeight();
 		if (backdropheight > (docheight - 100)) {
-			$('backdrop_detail_content').setStyle({height: docheight - 100 + 'px', overflow: 'scroll'});
+			$('backdrop_detail_content').setStyle({height: TBG.Core._vp_height - 100 + 'px', overflow: 'scroll'});
 		} else {
 			$('backdrop_detail_content').setStyle({height: 'auto', overflow: ''});
 		}
@@ -971,7 +973,7 @@ TBG.Main.Profile.confirmScopeMembership = function(url, sid) {
 	});
 }
 
-TBG.Main.Profile.clearPopupsAndButtons = function() {
+TBG.Main.Profile.clearPopupsAndButtons = function(event) {
 	if ($('account_info_container')) {
 		var pbuttons = $('account_info_container').down('.profile_buttons');
 		pbuttons.select('.button').each(function(element) {
@@ -1589,7 +1591,7 @@ TBG.Project.archive = function(url, pid) {
 		success: {
 			remove: 'project_box_' + pid,
 			update: {
-				element: 'project_table',
+				element: 'project_table_archived',
 				insertion: true,
 				from: 'box'
 			},
@@ -1601,7 +1603,7 @@ TBG.Project.archive = function(url, pid) {
 TBG.Project.unarchive = function(url, pid) {
 	TBG.Main.Helpers.ajax(url, {
 		loading: {
-			indicator: 'project_' + pid + '_unarchive_indicator',
+			indicator: 'project_' + pid + '_archive_indicator',
 			hide: 'project_' + pid + '_unarchive'
 		},
 		success: {
@@ -2255,7 +2257,10 @@ TBG.Config.IssuetypeScheme.remove = function(url, scheme_id) {
 		},
 		success: {
 			remove: ['delete_scheme_' + scheme_id + '_popup', 'copy_scheme_' + scheme_id + '_popup', 'issuetype_scheme_' + scheme_id],
-			update: {element: 'issuetype_schemes_list', insertion: true}
+			update: {element: 'issuetype_schemes_list', insertion: true},
+			callback: function() {
+				TBG.Main.Helpers.Dialog.dismiss();
+			}
 		}
 	});
 }
@@ -2311,7 +2316,10 @@ TBG.Config.Issuefields.Options.remove = function(url, type, id) {
 	TBG.Main.Helpers.ajax(url, {
 		loading: {indicator: 'delete_' + type + '_' + id + '_indicator'},
 		success: {
-			remove: ['delete_item_option_' + id, 'item_option_' + type + '_' + id]
+			remove: 'item_option_' + type + '_' + id,
+			callback: function(json) {
+				TBG.Main.Helpers.Dialog.dismiss();
+			}
 		}
 	});
 }
@@ -2357,7 +2365,15 @@ TBG.Config.Issuefields.Custom.update = function(url, type) {
 }
 
 TBG.Config.Issuefields.Custom.remove = function(url, type, id) {
-	TBG.Config.Issuefields.Options.remove(url, type, id);
+	TBG.Main.Helpers.ajax(url, {
+		loading: {indicator: 'delete_' + type + '_' + id + '_indicator'},
+		success: {
+			remove: 'item_' + type + '_' + id,
+			callback: function(json) {
+				TBG.Main.Helpers.Dialog.dismiss();
+			}
+		}
+	});
 };
 
 TBG.Config.Permissions.set = function(url, field) {
@@ -2466,13 +2482,18 @@ TBG.Config.User.show = function(url, findstring) {
 	});
 }
 
-TBG.Config.User.add = function(url, callback_function_for_import) {
+TBG.Config.User.add = function(url, callback_function_for_import, form) {
+	f = (form !== undefined) ? form : 'createuser_form';
 	TBG.Main.Helpers.ajax(url, {
-		form: 'createuser_form',
+		form: f,
 		loading: {indicator: 'find_users_indicator'},
 		success: {
 			update: 'users_results',
-			callback: TBG.Config.User._updateLinks
+			callback: function(json) {
+				TBG.Config.User._updateLinks(json);
+				f.reset();
+				$('adduser_div').hide();
+			}
 		},
 		failure: {
 			callback: function(json) {
@@ -2883,7 +2904,10 @@ TBG.Config.Workflows.Transition.Actions.remove = function(url, action_id, type) 
 		loading: {indicator: 'workflowtransitionaction_' + action_id + '_delete_indicator'},
 		success: {
 			hide: ['workflowtransitionaction_' + action_id + '_delete', 'workflowtransitionaction_' + action_id],
-			show: ['add_workflowtransitionaction_' + type]
+			show: ['add_workflowtransitionaction_' + type],
+			callback: function() {
+				TBG.Main.Helpers.Dialog.dismiss();
+			}
 		}
 	});
 }
@@ -4316,6 +4340,150 @@ TBG.Chart.burndownChart = function(burndown_data, time) {
 		});
 };
 
-	jQuery(document).ready(function(){
-		TBG.Main.Helpers.MarkitUp(jQuery('textarea'));
+TBG.Tutorial.highlightArea = function(top, left, width, height, blocked, seethrough) {
+	var backdrop_class = (seethrough != undefined && seethrough == true) ? 'seethrough' : 'dark';
+	var d1 = '<div class="fullpage_backdrop '+backdrop_class+' tutorial" style="top: 0; left: 0; width: '+left+'px;"></div>';
+	var d2_width = TBG.Core._vp_width - left - width;
+	var d2 = '<div class="fullpage_backdrop '+backdrop_class+' tutorial" style="top: 0; left: '+(left+width)+'px; width: '+d2_width+'px;"></div>';
+	var d3 = '<div class="fullpage_backdrop '+backdrop_class+' tutorial" style="top: 0; left: '+left+'px; width: '+width+'px; height: '+top+'px"></div>';
+	var vp_height = document.viewport.getHeight();
+	var d4_height = vp_height - top - height;
+	var d4 = '<div class="fullpage_backdrop '+backdrop_class+' tutorial" style="top: '+(top+height)+'px; left: '+left+'px; width: '+width+'px; height: '+d4_height+'px"></div>';
+	if (blocked == true) {
+		var d_overlay = '<div class="tutorial block_overlay" style="top: '+top+'px; left: '+left+'px; width: '+width+'px; height: '+height+'px;"></div>';
+		$('fullscreen-container').insert(d_overlay);
+	}
+	$('fullscreen-container').insert(d1);
+	$('fullscreen-container').insert(d2);
+	$('fullscreen-container').insert(d3);
+	$('fullscreen-container').insert(d4);
+	TBG.Tutorial.positionMessage(top, left, width, height);
+};
+TBG.Tutorial.highlightElement = function(element, blocked, seethrough) {
+	element = $(element);
+	var el = element.getLayout();
+	var os = element.cumulativeOffset();
+	var width = el.get('width') + el.get('padding-left') + el.get('padding-right');
+	var height = el.get('height') + el.get('padding-top') + el.get('padding-bottom');
+	TBG.Tutorial.highlightArea(os.top, os.left, width, height, blocked, seethrough);
+};
+TBG.Tutorial.positionMessage = function(top, left, width, height) {
+	var tm = $('tutorial-message');
+	['above', 'below', 'left', 'right'].each(function(pos) { tm.removeClassName(pos); });
+	if (top + left + width + height == 0) {
+		tm.addClassName('full');
+		tm.setStyle({top: '', left: ''});
+	} else {
+		tm.removeClassName('full');
+		var step = parseInt($('tutorial-message').dataset.tutorialStep);
+		var key = $('tutorial-message').dataset.tutorialKey;
+		var td = TBG.Tutorial.Stories[key][step];
+		tm.addClassName(td.messagePosition);
+		var tl = tm.getLayout();
+		var twidth = tl.get('width') + tl.get('padding-left') + tl.get('padding-right');
+		switch (td.messagePosition) {
+			case 'right':
+				tm.setStyle({top: top + 'px', left: (left + width + 15)+'px'});
+				break;
+			case 'left':
+				var tl = tm.getLayout();
+				var width = tl.get('width') + tl.get('padding-left') + tl.get('padding-right');
+				tm.setStyle({top: top + 'px', left: (left - width - 15)+'px'});
+				break;
+			case 'below':
+				tm.setStyle({top: (top + height + 15)+'px', left: ((left - parseInt(twidth / 2)) + width / 2) + 'px'});
+				break;
+			case 'above':
+				var tl = tm.getLayout();
+				var th = tl.get('height') + tl.get('padding-top') + tl.get('padding-bottom');
+				tm.setStyle({top: (top - th - 15)+'px', left: ((left - parseInt(twidth / 2)) + width / 2) + 'px'});
+				break;
+			case 'center':
+				var tl = tm.getLayout();
+				var th = tl.get('height') + tl.get('padding-top') + tl.get('padding-bottom');
+				tm.setStyle({top: (top + (height / 2) - (th / 2))+'px', left: ((left - parseInt(twidth / 2)) + width / 2) + 'px'});
+				break;
+		}
+	}
+	tm.show();
+};
+TBG.Tutorial.resetHighlight = function() {
+	$$('.tutorial').each(Element.remove);
+};
+TBG.Tutorial.disable = function() {
+	var key = $('tutorial-message').dataset.tutorialKey;
+	TBG.Main.Helpers.ajax(TBG.options['say_url'], {
+		params: '&topic=disable_tutorial&key='+key
 	});
+	$('tutorial-next-button').stopObserving('click');
+	TBG.Tutorial.resetHighlight();
+	$('tutorial-message').hide();
+};
+TBG.Tutorial.enable = function(key) {
+	TBG.Main.Helpers.ajax(TBG.options['say_url'], {
+		params: '&topic=enable_tutorial&key='+key
+	});
+};
+TBG.Tutorial.playNextStep = function() {
+	TBG.Tutorial.resetHighlight();
+	var tm = $('tutorial-message');
+	var step = parseInt(tm.dataset.tutorialStep);
+	var key = tm.dataset.tutorialKey;
+	step++;
+	$('tutorial-current-step').update(step);
+	tm.dataset.tutorialStep = step;
+	var tutorialData = TBG.Tutorial.Stories[key][step];
+	if (tutorialData != undefined) {
+		$('tutorial-message-container').update(tutorialData.message);
+		var tbn = tm.down('.tutorial-buttons').down('.button-next');
+		var tb = tm.down('.tutorial-buttons').down('.button-disable');
+		if (tutorialData.button != undefined) {
+			tbn.update(tutorialData.button);
+			tbn.show();
+			if (step > 1) {
+				tb.hide();
+			} else {
+				tb.show();
+			}
+		} else {
+			tbn.hide();
+			tb.hide();
+		}
+		['small', 'medium', 'large'].each(function(cn) { tm.removeClassName(cn); });
+		tm.addClassName(tutorialData.messageSize);
+		if (tutorialData.highlight != undefined) {
+			var tdh = tutorialData.highlight;
+			if (tdh.element != undefined) {
+				var seethrough = (tdh.seethrough != undefined) ? tdh.seethrough : false;
+				TBG.Tutorial.highlightElement(tdh.element, tdh.blocked, seethrough);
+			} else {
+				TBG.Tutorial.highlightArea(tdh.top, tdh.left, tdh.width, tdh.height, tdh.blocked);
+			}
+		} else {
+			TBG.Tutorial.highlightArea(0, 0, 0, 0, true);
+		}
+		if (tutorialData.cb) {
+			tutorialData.cb(tutorialData);
+		}
+	} else {
+		TBG.Tutorial.disable();
+	}
+};
+TBG.Tutorial.start = function(key) {
+	var tutorial = TBG.Tutorial.Stories[key];
+	var ts = 0;
+	for (var d in tutorial) {
+		ts++;
+	}
+	$('tutorial-message').dataset.tutorialKey = key;
+	$('tutorial-message').dataset.tutorialStep = 0;
+	$('tutorial-message').dataset.tutorialSteps = ts;
+	$('tutorial-total-steps').update(ts);
+	$('tutorial-next-button').stopObserving('click');
+	$('tutorial-next-button').observe('click', TBG.Tutorial.playNextStep);
+	TBG.Tutorial.playNextStep();
+}
+
+jQuery(document).ready(function(){
+	TBG.Main.Helpers.MarkitUp(jQuery('textarea'));
+});

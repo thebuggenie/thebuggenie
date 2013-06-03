@@ -440,7 +440,7 @@
 		}
 		else
 		{
-			$tstamp = TBGSettings::getServerTimezone()->getOffset(new DateTimeZone('GMT'));
+			$tstamp = TBGSettings::getServerTimezone()->getOffset(new DateTime('GMT'));
 		}
 		return $tstamp;
 	}

@@ -33,7 +33,7 @@
 	<tr>
 		<?php include_component('leftmenu', array('selected_section' => TBGSettings::CONFIGURATION_SECTION_UPLOADS)); ?>
 		<td valign="top" style="padding-left: 15px;">
-			<div style="width: 788px;">
+			<div style="width: 730px;">
 				<h3><?php echo __('Configure uploads &amp; attachments'); ?></h3>
 				<?php if ($uploads_enabled && $access_level == TBGSettings::ACCESS_FULL): ?>
 					<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_files'); ?>" method="post" onsubmit="TBG.Main.Helpers.formSubmit('<?php echo make_url('configure_files'); ?>', 'config_uploads'); return false;" id="config_uploads">
@@ -119,13 +119,13 @@
 						</tr>
 					</table>
 				<?php else: ?>
-					<div class="content faded_out dark" style="width: 750px;">
+					<div class="content faded_out dark" style="width: 730px;">
 						<?php echo __('File uploads are not available in this instance of The Bug Genie.'); ?>
 						<?php echo __('When uploads are disabled, users will not be able to attach files to issues or upload documents, images or PDFs in project planning. More fine-grained permissions are available from the permissions configuration.'); ?>
 					</div>
 				<?php endif; ?>
 				<?php if ($uploads_enabled && $access_level == TBGSettings::ACCESS_FULL): ?>
-						<div class="rounded_box mediumgrey" style="margin: 5px 0px 5px 0px; width: 700px; height: 23px; padding: 5px 10px 5px 10px;">
+						<div class="greybox" style="margin: 5px 0px 5px 0px; height: 23px; padding: 5px 10px 5px 10px;">
 							<div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "%save%" to save your changes in all categories', array('%save%' => __('Save'))); ?></div>
 							<input type="submit" id="config_uploads_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
 							<span id="config_uploads_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>

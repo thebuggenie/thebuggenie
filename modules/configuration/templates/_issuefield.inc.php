@@ -1,4 +1,4 @@
-<li class="hover_highlight issuefield_item_option" id="item_option_<?php echo $type; ?>_<?php echo $item->getID(); ?>" style="clear: both; height: 24px;">
+<li class="issuefield_item_option" id="item_option_<?php echo $type; ?>_<?php echo $item->getID(); ?>" style="clear: both; height: 24px;">
 	<div id="item_option_<?php echo $type; ?>_<?php echo $item->getID(); ?>_content">
 		<?php if ($type == 'status'): ?>
 			<div style="border: 0; background-color: <?php echo $item->getColor(); ?>; font-size: 1px; width: 16px; border: 1px solid rgba(0, 0, 0, 0.2); height: 16px; margin-right: 2px; float: left;" id="<?php echo $type; ?>_<?php echo $item->getID(); ?>_itemdata">&nbsp;</div>

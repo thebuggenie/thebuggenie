@@ -22,12 +22,12 @@
 				</div>
 			<?php endif; ?>
 			<?php if ($message): ?>
-				<div class="rounded_box green borderless" style="margin: 0 0 5px 5px; padding: 8px; font-size: 14px;">
+				<div class="greenbox" style="margin: 0 0 5px 5px; font-size: 14px;">
 					<b><?php echo $message; ?></b>
 				</div>
 			<?php endif; ?>
 			<?php if (isset($revision) && !$error): ?>
-				<div class="rounded_box yellow borderless" style="margin: 0 0 5px 5px; padding: 8px; font-size: 14px;">
+				<div class="lightyellowbox" style="margin: 0 0 5px 5px; font-size: 14px;">
 					<?php echo __('You are now viewing a previous revision of this article - revision %revision_number% %date%, by %author%', array('%revision_number%' => '<b>'.$revision.'</b>', '%date%' => '<span class="faded_out">[ '.tbg_formatTime($article->getPostedDate(), 20).' ]</span>', '%author%' => (($article->getAuthor() instanceof TBGUser) ? $article->getAuthor()->getName() : __('System')))); ?><br>
 					<b><?php echo link_tag(make_url('publish_article', array('article_name' => $article->getName())), __('Show current version')); ?></b>
 				</div>

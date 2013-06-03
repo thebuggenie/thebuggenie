@@ -3,7 +3,7 @@
 	<tr>
 		<?php include_component('leftmenu', array('selected_section' => TBGSettings::CONFIGURATION_SECTION_SCOPES)); ?>
 		<td valign="top" style="padding-left: 15px;">
-			<div style="width: 788px;" id="config_scopes">
+			<div style="width: 730px;" id="config_scopes">
 				<h3><?php echo __('Configure scopes'); ?></h3>
 				<div class="content faded_out">
 					<p>
@@ -16,21 +16,21 @@
 					<?php echo __('Scopes available on this installation'); ?>
 				</h5>
 				<?php if (isset($scope_deleted)): ?>
-					<div class="rounded_box green borderless" style="margin: 0 0 5px 0; padding: 8px; font-size: 14px;">
+					<div class="greenbox" style="margin: 0 0 5px 0; font-size: 14px;">
 						<?php echo __('The scope was deleted'); ?>
 					</div>
 				<?php endif; ?>
 				<?php if (isset($scope_hostname_error)): ?>
-					<div class="rounded_box red borderless" style="margin: 0 0 5px 0; padding: 8px; font-size: 14px; color: #FFF;">
+					<div class="redbox" style="margin: 0 0 5px 0; font-size: 14px;">
 						<?php echo __('The hostname must be unique and cannot be blank'); ?>
 					</div>
 				<?php endif; ?>
 				<?php if (isset($scope_name_error)): ?>
-					<div class="rounded_box red borderless" style="margin: 0 0 5px 0; padding: 8px; font-size: 14px; color: #FFF;">
+					<div class="redbox" style="margin: 0 0 5px 0; font-size: 14px;">
 						<?php echo __('The scope name must be unique and cannot be blank'); ?>
 					</div>
 				<?php endif; ?>
-				<div class="rounded_box lightgrey shadowed borderless" id="new_scope_hostname" style="display: none; position: absolute; width: 740px;">
+				<div class="greybox" id="new_scope_hostname" style="display: none; position: absolute; width: 740px;">
 					<form action="<?php echo make_url('configure_scopes'); ?>" onsubmit="$('add_scope_indicator').show();$('add_scope_submit_button').hide();return true;" method="POST">
 						<div class="content">
 							<div class="header" style="margin-top: 0;"><?php echo __('Create a new scope'); ?></div>

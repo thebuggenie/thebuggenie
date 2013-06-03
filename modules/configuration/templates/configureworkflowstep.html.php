@@ -16,9 +16,9 @@
 		<?php include_component('leftmenu', array('selected_section' => TBGSettings::CONFIGURATION_SECTION_WORKFLOW)); ?>
 		<td valign="top" style="padding-left: 15px;">
 			<?php include_template('configuration/workflowmenu', array('selected_tab' => 'step', 'workflow' => $workflow, 'step' => $step)); ?>
-			<div class="content" style="width: 788px;" id="workflow_step_container">
+			<div class="content" style="width: 730px;" id="workflow_step_container">
 				<?php if ($step instanceof TBGWorkflowStep): ?>
-					<div class="rounded_box lightgrey borderless workflow_step_intro">
+					<div class="workflow_step_intro">
 						<div class="header"><?php echo __('Workflow step "%step_name%"', array('%step_name%' => $step->getName())); ?></div>
 						<div class="content">
 							<?php echo __('This page shows all the available details for this step for the selected workflow, as well as transitions to and from this step.'); ?>
@@ -30,9 +30,47 @@
 							<?php endif; ?>
 						</div>
 					</div>
+					<div class="lightyellowbox" id="workflow_browser_step">
+						<div class="header"><?php echo __('Step path'); ?></div>
+						<div class="content">
+							<?php if ($step->getNumberOfIncomingTransitions() == 0 && $workflow->getFirstStep() !== $step): ?>
+								<div class="faded_out"><?php echo __("This step doesn't have any incoming transitions"); ?></div>
+							<?php elseif ($step->getNumberOfIncomingTransitions() > 0): ?>
+								<?php
+
+								$output = array();
+								foreach ($step->getIncomingTransitions() as $transition)
+								{
+									$output[] = get_template_html('configuration/workflowtransition', array('transition' => $transition, 'direction' => 'incoming'));
+								}
+								echo join($glue, $output);
+
+								?>
+							<?php endif; ?>
+							<div class="workflow_browser_step_image"><?php echo image_tag('workflow_step_transitions_outgoing.png'); ?></div>
+							<div class="workflow_browser_step_name"><?php echo $step->getName(); ?></div>
+							<div class="workflow_browser_step_image"><?php echo image_tag('workflow_step_transitions_outgoing.png'); ?></div>
+							<?php if ($step->getNumberOfOutgoingTransitions() == 0): ?>
+								<div class="faded_out"><?php echo __("This step doesn't have any outgoing transitions"); ?></div>
+							<?php else: ?>
+								<?php 
+								
+								$output = array();
+								foreach ($step->getOutgoingTransitions() as $transition)
+								{
+									$output[] = get_template_html('configuration/workflowtransition', array('transition' => $transition, 'direction' => 'outgoing'));
+								}
+								echo join($glue, $output);
+
+								?>
+							<?php endif; ?>
+						</div>
+					</div>
 					<?php include_template('configuration/workflowaddtransition', array('step' => $step)); ?>
 					<div id="workflow_details_step">
 						<dl id="step_details_info">
+							<dt><?php echo __('Name'); ?></dt>
+							<dd><?php echo $step->getName(); ?></dd>
 							<dt><?php echo __('Description'); ?></dt>
 							<dd class="description"><?php echo $step->getDescription(); ?></dd>
 							<dt><?php echo __('State'); ?></dt>
@@ -91,51 +129,9 @@
 							</form>
 						<?php endif; ?>
 					</div>
-					<div class="rounded_box lightyellow" id="workflow_browser_step">
-						<div class="header"><?php echo __('Step path'); ?></div>
-						<div class="content">
-							<?php if ($workflow->getFirstStep() === $step): ?>
-								<div class="workflow_browser_step_transition"><?php echo __('Issue is created'); ?><br><span class="faded_out"><?php echo __('This is the initial reporting step'); ?></span></div>
-								<?php if ($step->getNumberOfIncomingTransitions() > 0): ?>
-									<div class="faded_out"><?php echo __('%a_workflow_step_transition% or %a_workflow_step_transition%', array('%a_workflow_step_transition%' => '')); ?></div>
-								<?php endif; ?>
-							<?php elseif ($step->getNumberOfIncomingTransitions() == 0): ?>
-								<div class="faded_out"><?php echo __("This step doesn't have any incoming transitions"); ?></div>
-							<?php endif; ?>
-							<?php if ($step->getNumberOfIncomingTransitions() > 0): ?>
-								<?php
-
-								$output = array();
-								foreach ($step->getIncomingTransitions() as $transition)
-								{
-									$output[] = get_template_html('configuration/workflowtransition', array('transition' => $transition, 'direction' => 'incoming'));
-								}
-								echo join($glue, $output);
-
-								?>
-							<?php endif; ?>
-							<div class="workflow_browser_step_image"><?php echo image_tag('workflow_step_transitions_outgoing.png'); ?></div>
-							<div class="workflow_browser_step_name"><?php echo $step->getName(); ?></div>
-							<div class="workflow_browser_step_image"><?php echo image_tag('workflow_step_transitions_outgoing.png'); ?></div>
-							<?php if ($step->getNumberOfOutgoingTransitions() == 0): ?>
-								<div class="faded_out"><?php echo __("This step doesn't have any outgoing transitions"); ?></div>
-							<?php else: ?>
-								<?php 
-								
-								$output = array();
-								foreach ($step->getOutgoingTransitions() as $transition)
-								{
-									$output[] = get_template_html('configuration/workflowtransition', array('transition' => $transition, 'direction' => 'outgoing'));
-								}
-								echo join($glue, $output);
-
-								?>
-							<?php endif; ?>
-						</div>
-					</div>
 					<br style="clear: both;">
 				<?php else: ?>
-					<div class="rounded_box red borderless" id="no_such_workflow_error">
+					<div class="redbox" id="no_such_workflow_error">
 						<div class="header"><?php echo $error; ?></div>
 					</div>
 				<?php endif; ?>

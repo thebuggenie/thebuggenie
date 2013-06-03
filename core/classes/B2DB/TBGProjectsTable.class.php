@@ -182,8 +182,10 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addWhere(self::PARENT_PROJECT_ID, $id);
-			$row = $this->doSelect($crit, false);
-			return $row;
+			$crit->addWhere(self::DELETED, false);
+			
+			$res = $this->select($crit, false);
+			return $res;
 		}
 		
 		public function getByKey($key)

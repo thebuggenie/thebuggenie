@@ -1,11 +1,11 @@
-<div style="margin-top: 5px; width: 750px; clear: both; height: 30px;" class="tab_menu">
+<div style="margin-top: 5px;" class="tab_menu inset">
 	<ul id="publish_settings_menu">
 		<li class="selected" id="publish_tab_settings"><a onclick="TBG.Main.Helpers.tabSwitcher('publish_tab_settings', 'publish_settings_menu');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_general.png', array('style' => 'float: left;')).__('General wiki settings'); ?></a></li>
 		<li id="publish_tab_import"><a onclick="TBG.Main.Helpers.tabSwitcher('publish_tab_import', 'publish_settings_menu');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_import.png', array('style' => 'float: left;')).__('Import wiki articles'); ?></a></li>
 	</ul>
 </div>
 <div id="publish_settings_menu_panes">
-	<div id="publish_tab_settings_pane" style="margin: 10px 0 0 0; width: 740px;<?php if ($access_level == TBGSettings::ACCESS_FULL): ?> border-bottom: 0;<?php endif; ?>">
+	<div id="publish_tab_settings_pane" style="margin: 10px 0 0 0;">
 		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_module', array('config_module' => $module->getName())); ?>" enctype="multipart/form-data" method="post">
 			<table style="width: 680px;" class="padded_table" cellpadding=0 cellspacing=0>
 				<tr>
@@ -71,33 +71,33 @@
 				</tr>
 			</table>
 		<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-			<div class="rounded_box iceblue borderless" style="margin: 0 0 5px 0; width: 740px; border-top: 0; padding: 8px 5px 2px 5px; height: 25px;">
-				<div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "%save%" to save wiki settings', array('%save%' => __('Save'))); ?></div>
-				<input type="submit" id="submit_settings_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
+			<div class="bluebox" style="margin: 0 0 5px 0;">
+				<?php echo __('Click "%save%" to save wiki notification settings', array('%save%' => __('Save'))); ?>
+				<input type="submit" id="submit_settings_button" style="margin: -3px -3px 0 0; float: right; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
 			</div>
 		<?php endif; ?>
 		</form>
 	</div>
-	<div id="publish_tab_import_pane" style="margin: 10px 0 0 0; width: 740px; display: none;<?php if ($access_level == TBGSettings::ACCESS_FULL): ?> border-bottom: 0;<?php endif; ?>">
+	<div id="publish_tab_import_pane" style="margin: 10px 0 0 0; display: none;">
 		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_module', array('config_module' => $module->getName())); ?>" enctype="multipart/form-data" method="post">
 			<input type="hidden" name="import_articles" value="1">
-			<div class="rounded_box lightgrey borderless" style="margin-bottom: 5px;">
-				<label for="select_article_categories"><?php echo __('Show articles in category'); ?>: </label>
-				<select id="select_article_categories" onchange="$('import_articles_list').childElements().each(function (elm) { if ($('select_article_categories').getValue() == '' || elm.hasClassName('article_category_' + $('select_article_categories').getValue())) { elm.show(); var chkval = true; } else { elm.hide(); } elm.select('input[type=checkbox]').each(function (chkbx) { chkbx.enabled = chkval; }); })">
-					<option value="" selected><?php echo __('All categories'); ?></option>
+			<div class="greybox" style="margin-bottom: 5px;">
+				<label for="select_article_categories"><?php echo __('Show articles in namespace'); ?>: </label>
+				<select id="select_article_categories" onchange="$('import_articles_list').childElements().each(function (elm) { if (elm.hasClassName('article_category_' + $('select_article_categories').getValue())) { elm.show(); var chkval = true; } else { elm.hide(); } elm.select('input[type=checkbox]').each(function (chkbx) { chkbx.enabled = chkval; }); })">
+					<option value="" selected><?php echo __('Without namespace'); ?></option>
 					<?php foreach ($categories as $category_key => $category_name): ?>
 						<option value="<?php echo $category_key; ?>"><?php echo $category_name; ?></option>
 					<?php endforeach; ?>
 				</select>
 				<br style="clear: both;">
-				<input type="checkbox" id="import_articles_select_all" onchange="$('import_articles_list').childElements().each(function (elm) { elm.select('input[type=checkbox]').each(function (chkbx) { chkbx.checked = $('import_articles_select_all').checked; }); })">&nbsp;<?php echo __('Toggle selection on visible articles'); ?>
+				<input type="checkbox" id="import_articles_select_all" onchange="$('import_articles_list').childElements().each(function (elm) { elm.select('input[type=checkbox]').each(function (chkbx) { chkbx.checked = elm.hasClassName('article_category_' + $('select_article_categories').getValue()) && $('import_articles_select_all').checked; }); })">&nbsp;<?php echo __('Toggle selection on visible articles'); ?>
 			</div>
 			<p class="faded_out" style="margin-bottom: 5px;">
 				<?php echo __('Please select which articles to import, from the list of available articles below. When you are finished, click the %import_articles% button at the bottom', array('%import_articles%' => __('Import articles'))); ?>
 			</p>
 			<ul class="simple_list" id="import_articles_list">
 			<?php foreach ($articles as $article_name => $details): ?>
-				<li class="article_category_<?php echo $details['category']; ?>">
+				<li class="article_category_<?php echo $details['category']; ?>" style="<?php if ($details['category'] != '') echo 'display: none;'; ?>">
 					<input type="checkbox" value="1" name="import_article[<?php echo $article_name; ?>]" id="import_article_<?php echo mb_strtolower($article_name); ?>"<?php if (!$details['exists']) echo ' selected'; ?>>&nbsp;
 					<label for="import_article_<?php echo mb_strtolower($article_name); ?>"><?php echo urldecode($article_name); ?></label>
 					<?php if ($details['exists']): ?>
@@ -109,9 +109,9 @@
 			</ul>
 		<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 			<br style="clear: both;">
-			<div class="rounded_box iceblue borderless" style="margin: 0 0 5px 0; width: 740px; border-top: 0; padding: 8px 5px 2px 5px; height: 25px;">
-				<div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "%import_articles%" to import the selected articles', array('%import_articles%' => __('Import articles'))); ?></div>
-				<input type="submit" id="submit_import_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Import articles'); ?>">
+			<div class="bluebox" style="margin: 0 0 5px 0;">
+				<?php echo __('Click "%import_articles%" to import the selected articles', array('%import_articles%' => __('Import articles'))); ?>
+				<input type="submit" id="submit_import_button" style="margin: -3px -3px 0 0; float: right; font-size: 14px; font-weight: bold;" value="<?php echo __('Import articles'); ?>">
 			</div>
 		<?php endif; ?>
 		</form>

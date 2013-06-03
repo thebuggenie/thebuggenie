@@ -1286,7 +1286,7 @@ EOT;
 						}
 					}
 					TBGContext::getRequest()->setParameter('comment_body', join("\n", $lines));
-					return $transition->transitionIssueToOutgoingStepFromRequest($issue, TBGContext::getRequest());
+					return $transition->transitionIssueToOutgoingStepWithoutRequest($issue);
 				}
 			}
 		}

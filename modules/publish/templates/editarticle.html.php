@@ -13,7 +13,7 @@
 		<td class="main_area article edit">
 			<a name="top"></a>
 			<?php if (isset($error)): ?>
-				<div class="rounded_box red borderless" style="margin: 0 5px 5px 5px; padding: 7px; font-size: 14px; color: #FFF;">
+				<div class="redbox" style="margin: 0 5px 5px 5px; font-size: 14px;">
 					<?php echo $error; ?>
 				</div>
 			<?php endif; ?>
@@ -30,7 +30,7 @@
 				<input type="hidden" name="preview" value="0" id="article_preview">
 				<input type="hidden" name="article_id" value="<?php echo ($article instanceof TBGWikiArticle) ? $article->getID() : 0; ?>">
 				<input type="hidden" name="last_modified" value="<?php echo ($article instanceof TBGWikiArticle) ? $article->getPostedDate() : 0; ?>">
-				<div class="rounded_box green borderless" style="margin: 5px;">
+				<div class="greenbox" style="margin: 5px;">
 					<table style="border: 0;" class="padded_table" cellpadding=0 cellspacing=0>
 						<tr>
 							<td style="padding: 5px;"><label for="new_article_name"><?php echo __('Article name'); ?></label></td>

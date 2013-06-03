@@ -444,7 +444,7 @@
 		<?php endif; ?>
 	</div>
 <?php else: ?>
-	<div class="rounded_box red borderless" id="notfound_error">
+	<div class="redbox" id="notfound_error">
 		<div class="header"><?php echo __("You have specified an issue that can't be shown"); ?></div>
 		<div class="content"><?php echo __("This could be because you the issue doesn't exist, has been deleted or you don't have permission to see it"); ?></div>
 	</div>

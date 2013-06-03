@@ -1,4 +1,4 @@
-<li id="issuetype_scheme_<?php echo $scheme->getID(); ?>" class="rounded_box lightgrey" style="margin-bottom: 5px;">
+<li id="issuetype_scheme_<?php echo $scheme->getID(); ?>" class="greybox" style="margin-bottom: 5px;">
 	<table>
 		<tr>
 			<td class="workflow_info scheme">

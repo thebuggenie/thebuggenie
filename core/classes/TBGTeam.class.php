@@ -106,6 +106,8 @@
 		 */
 		public function addMember(TBGUser $user)
 		{
+			if (!$user->getID()) throw new Exception('Cannot add user object to team until the object is saved');
+			
 			TBGTeamMembersTable::getTable()->addUserToTeam($user->getID(), $this->getID());
 			
 			if (is_array($this->_members))

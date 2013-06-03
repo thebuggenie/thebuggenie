@@ -14,13 +14,13 @@
 	<tr>
 		<?php include_component('leftmenu', array('selected_section' => TBGSettings::CONFIGURATION_SECTION_WORKFLOW)); ?>
 		<td valign="top" style="padding-left: 15px;">
-			<?php include_template('configuration/workflowmenu', array('selected_tab' => 'workflow', 'workflow' => $workflow_scheme)); ?>
-			<div class="content" style="width: 788px;" id="workflow_steps_container">
+			<?php include_template('configuration/workflowmenu', array('selected_tab' => 'scheme', 'scheme' => $workflow_scheme)); ?>
+			<div class="content" style="width: 730px;" id="workflow_steps_container">
 				<?php if ($workflow_scheme instanceof TBGWorkflowScheme): ?>
-					<div class="rounded_box lightgrey workflow_steps_intro">
+					<div class="greybox workflow_steps_intro">
 						<div class="header"><?php echo __('Workflow scheme "%workflow_scheme_name%"', array('%workflow_scheme_name%' => $workflow_scheme->getName())); ?></div>
 						<div class="content">
-							<?php echo __('This page shows all the issuetype / workflow associations for the selected workflow scheme'); ?>
+							<?php echo __('This page shows all the issuetype / workflow associations for the selected workflow scheme. Select the appropriate workflow schemes for each issue type in the list below, and press the "%save_workflow_associations%" button when done.', array('%save_workflow_associations%' => __('Save workflow assocations'))); ?>
 						</div>
 					</div>
 					<?php if (!$workflow_scheme->isCore()): ?>
@@ -63,7 +63,7 @@
 						</form>
 					<?php endif; ?>
 				<?php else: ?>
-					<div class="rounded_box red borderless" id="no_such_workflow_error">
+					<div class="redbox" id="no_such_workflow_error">
 						<div class="header"><?php echo $error; ?></div>
 					</div>
 				<?php endif; ?>
