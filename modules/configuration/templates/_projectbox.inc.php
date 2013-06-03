@@ -53,7 +53,7 @@
 	</div>
 </div>
 <?php if ($project->hasChildren()): ?>
-	<div class="child_project_container">
+	<div class="child_project_container" id="project_<?php echo $project->getID(); ?>_children">
 		<?php foreach ($project->getChildren() as $child_project): ?>
 			<?php include_template('projectbox', array('project' => $child_project, 'access_level' => $access_level)); ?>
 		<?php endforeach; ?>

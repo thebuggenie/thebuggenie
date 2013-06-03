@@ -49,7 +49,7 @@
 					<?php echo __('There are no projects available'); ?>
 				</div>
 				<h4 style="margin-top: 30px;"><?php echo __('Archived projects'); ?></h4>
-				<div id="project_table">
+				<div id="project_table_archived">
 					<?php foreach ($archived_projects as $project): ?>
 						<?php include_template('projectbox', array('project' => $project, 'access_level' => $access_level)); ?>
 					<?php endforeach; ?>

@@ -935,7 +935,7 @@
 					$theProject->save();
 					
 					$projectbox = $this->getTemplateHtml('projectbox', array('project' => $theProject, 'access_level' => $this->access_level));
-					return $this->renderJSON(array('message' => $i18n->__('Project successfully updated'), 'box' => $projectbox));
+					return $this->renderJSON(array('message' => $i18n->__('Project successfully updated'), 'parent_id' => $theProject->getParentID(), 'box' => $projectbox));
 				}
 				catch (Exception $e)
 				{

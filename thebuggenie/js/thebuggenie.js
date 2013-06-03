@@ -1585,17 +1585,14 @@ TBG.Project.remove = function(url, pid) {
 TBG.Project.archive = function(url, pid) {
 	TBG.Main.Helpers.ajax(url, {
 		loading: {
-			indicator: 'project_' + pid + '_archive_indicator',
-			hide: 'project_' + pid + '_archive'
+			indicator: 'project_' + pid + '_archive_indicator'
 		},
 		success: {
 			remove: 'project_box_' + pid,
-			update: {
-				element: 'project_table_archived',
-				insertion: true,
-				from: 'box'
-			},
-			callback: TBG.Main.Helpers.Dialog.dismiss
+			callback: function(json) {
+				$('project_table_archived').insert({top: json.box});
+				TBG.Main.Helpers.Dialog.dismiss();
+			}
 		}
 	});
 }
@@ -1603,15 +1600,17 @@ TBG.Project.archive = function(url, pid) {
 TBG.Project.unarchive = function(url, pid) {
 	TBG.Main.Helpers.ajax(url, {
 		loading: {
-			indicator: 'project_' + pid + '_archive_indicator',
-			hide: 'project_' + pid + '_unarchive'
+			indicator: 'project_' + pid + '_archive_indicator'
 		},
 		success: {
 			remove: 'project_box_' + pid,
-			update: {
-				element: 'project_table',
-				insertion: true,
-				from: 'box'
+			callback: function(json) {
+				if (json.parent_id != 0) {
+					$('project_'+json.parent_id+'_children').insert({bottom: json.box});
+				} else {
+					$('project_table').insert({bottom: json.box});
+				}
+				console.log('test');
 			}
 		},
 		failure: {

@@ -535,7 +535,7 @@
 				}
 				elseif ($archived === true)
 				{
-					if (!$project->hasParent() && $project->isArchived())
+					if ($project->isArchived())
 					{
 						$final[] = $project;
 					}
@@ -2779,6 +2779,11 @@
 		{
 //			if ($this->getKey() == 'sampleproject2'): return TBGProject::getByKey('sampleproject1'); endif;
 			return $this->_b2dbLazyload('_parent');
+		}
+		
+		public function getParentID()
+		{
+			return ($this->getParent() instanceof TBGProject) ? $this->getParent()->getID() : 0;
 		}
 		
 		public function clearParent()
