@@ -25,9 +25,15 @@
 				<tr>
 					<td class="issue_navigation" id="go_previous_open_issue">
 						<?php echo link_tag(make_url('previousopenissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), image_tag('previous_open_issue.png'), array('class' => 'image')); ?>
+						<div class="tooltip from-above leftie">
+							<?php echo __('Go to the previous open issue'); ?>
+						</div>
 					</td>
 					<td class="issue_navigation" id="go_previous_issue">
 						<?php echo link_tag(make_url('previousissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), image_tag('previous_issue.png'), array('class' => 'image')); ?>
+						<div class="tooltip from-above leftie">
+							<?php echo __('Go to the previous issue (open or closed)'); ?>
+						</div>
 					</td>
 					<td class="title_left_images">
 						<?php if ($tbg_user->isGuest()): ?>
@@ -122,9 +128,15 @@
 					</td>
 					<td class="issue_navigation" id="go_next_issue">
 						<?php echo link_tag(make_url('nextissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), image_tag('next_issue.png'), array('class' => 'image')); ?>
+						<div class="tooltip from-above rightie">
+							<?php echo __('Go to the next issue (open or closed)'); ?>
+						</div>
 					</td>
 					<td class="issue_navigation" id="go_next_open_issue">
 						<?php echo link_tag(make_url('nextopenissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), image_tag('next_open_issue.png'), array('class' => 'image')); ?>
+						<div class="tooltip from-above rightie">
+							<?php echo __('Go to the next open issue'); ?>
+						</div>
 					</td>
 				</tr>
 			</table>

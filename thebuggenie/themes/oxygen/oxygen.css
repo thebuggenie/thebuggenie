@@ -1086,6 +1086,7 @@ ul.workflow_actions li:hover { box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); -webkit-b
 .issue_navigation { 
 	width: 30px;
 	text-align: center;
+	position: relative;
 	background: -khtml-gradient(linear, left top, left bottom, color-stop(0%,#FAFAFA), color-stop(100%,#EAEAEA)); /* Chrome,Safari4+ */
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FAFAFA), color-stop(100%,#EAEAEA)); /* Chrome,Safari4+ */
 	background: -webkit-linear-gradient(top, #FAFAFA 0%,#EAEAEA 100%); /* Chrome10+,Safari5.1+ */
@@ -1103,6 +1104,21 @@ ul.workflow_actions li:hover { box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); -webkit-b
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#F5F5F5', endColorstr='#E5E5E5',GradientType=0 ); /* IE6-9 */
 	background: linear-gradient(to bottom, #F5F5F5 0%,#E5E5E5 100%); /* W3C */
 }
+.issue_navigation:hover .tooltip { top: 65px; bottom: auto; right: auto; left: auto; width: 300px; position: absolute; text-align: left; }
+.issue_navigation:hover .tooltip.leftie:before, issue_navigation:hover .tooltip.leftie:after { left: 25px; right: auto; }
+.issue_navigation:hover .tooltip.rightie:before, issue_navigation:hover .tooltip.rightie:after { right: 24px; left: auto; }
+.issue_navigation:hover .tooltip.leftie:before,
+.issue_navigation:hover .tooltip.leftie:after {
+	left: 15px;
+}
+.issue_navigation:hover .tooltip.rightie:before,
+.issue_navigation:hover .tooltip.rightie:after {
+	left: 305px;
+}
+#go_previous_issue:hover .tooltip { left: 30px; }
+#go_previous_open_issue:hover .tooltip { left: 0px; }
+#go_next_issue:hover .tooltip { right: 25px; }
+#go_next_open_issue:hover .tooltip { right: 0px; }
 #go_next_issue { border-left: 1px solid rgba(100, 100, 100, 0.3); }
 #go_previous_issue { border-right: 1px solid rgba(100, 100, 100, 0.3); }
 .issue_navigation a { display: block; padding-top: 20px; padding-bottom: 20px; }
@@ -1142,7 +1158,7 @@ dd { float: left; display: block; width: 195px; font-weight: normal; margin: 0; 
 .more_actions_dropdown li.disabled a { color: #AAA !important; text-shadow: 1px 1px 1px #FFF; }
 .title_left_images { width: 32px; padding: 0; position: relative; }
 .title_left_images:first-child { width: 42px; }
-.title_left_images:hover .tooltip { left: 5px; top: 65px; bottom: auto; width: 370px; position: absolute; }
+.title_left_images:hover .tooltip { left: 60px; top: 65px; bottom: auto; width: 370px; position: absolute; }
 .title_left_images:hover .tooltip:before, .title_left_images:hover .tooltip:after { left: 15px; }
 .title_left_images img { margin-left: 5px; }
 .title_left_images:first-child img { margin-left: 10px; }

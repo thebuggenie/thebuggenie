@@ -66,15 +66,20 @@
 				$this->getResponse()->setTemplate('viewissue');
 				return;
 			}
-				
-			if ($request['direction'] == 'next')
+		
+			do
 			{
-				$found_issue = TBGIssuesTable::getTable()->getNextIssueFromIssueIDAndProjectID($issue->getID(), $issue->getProject()->getID(), $request['mode'] == 'open');
+				if ($request['direction'] == 'next')
+				{
+					$found_issue = TBGIssuesTable::getTable()->getNextIssueFromIssueIDAndProjectID($issue->getID(), $issue->getProject()->getID(), $request['mode'] == 'open');
+				}
+				else
+				{
+					$found_issue = TBGIssuesTable::getTable()->getPreviousIssueFromIssueIDAndProjectID($issue->getID(), $issue->getProject()->getID(), $request['mode'] == 'open');
+				}
+				if (is_null($found_issue)) break;
 			}
-			else
-			{
-				$found_issue = TBGIssuesTable::getTable()->getPreviousIssueFromIssueIDAndProjectID($issue->getID(), $issue->getProject()->getID(), $request['mode'] == 'open');
-			}
+			while ($found_issue instanceof TBGIssue && !$found_issue->hasAccess());
 			
 			if ($found_issue instanceof TBGIssue)
 			{
