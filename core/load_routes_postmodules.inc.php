@@ -49,6 +49,10 @@
 	$routes[] = array('project_search_paginated', '/:project_key/issues/paginated/*', 'search', 'findIssuesPaginated');
 	$routes[] = array('project_search_add_filter', '/:project_key/issues/add/filter/*', 'search', 'addFilter');
 	$routes[] = array('project_issues', '/:project_key/issues/find/*', 'search', 'findIssues');
+	$routes[] = array('nextopenissue', '/:project_key/issues/:issue_no/next/open', 'main', 'navigateIssue', array('direction' => 'next', 'mode' => 'open'));
+	$routes[] = array('nextissue', '/:project_key/issues/:issue_no/next', 'main', 'navigateIssue', array('direction' => 'next'));
+	$routes[] = array('previousopenissue', '/:project_key/issues/:issue_no/previous/open', 'main', 'navigateIssue', array('direction' => 'previous', 'mode' => 'open'));
+	$routes[] = array('previousissue', '/:project_key/issues/:issue_no/previous', 'main', 'navigateIssue', array('direction' => 'previous'));
 	$routes[] = array('viewissue', '/:project_key/issues/:issue_no/*', 'main', 'viewIssue');
 	$routes[] = array('issue_log', '/:project_key/issuelog/:issue_id', 'main', 'issueLog');
 	$routes[] = array('project_quicksearch', '/:project_key/quicksearch/*', 'search', 'findIssues', array('quicksearch' => true, 'issues_per_page' => 6));

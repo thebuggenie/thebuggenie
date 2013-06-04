@@ -141,10 +141,6 @@
 				$issue = array_shift($this->foundissues);
 				$this->forward(TBGContext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
 			}
-			elseif ($request->hasParameter('sortby'))
-			{
-
-			}
 			else
 			{
 				$this->resultcount = count($this->foundissues);

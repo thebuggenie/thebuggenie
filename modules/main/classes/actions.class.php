@@ -27,15 +27,8 @@
 			catch (Exception $e) {}
 		}
 		
-		/**
-		 * View an issue
-		 * 
-		 * @param TBGRequest $request
-		 */
-		public function runViewIssue(TBGRequest $request)
+		protected function _getIssueFromRequest(TBGRequest $request)
 		{
-			TBGLogging::log('Loading issue');
-			
 			if ($issue_no = TBGContext::getRequest()->getParameter('issue_no'))
 			{
 				$issue = TBGIssue::getIssueFromLink($issue_no);
@@ -55,6 +48,55 @@
 			//$this->getResponse()->setPage('viewissue');
 			if ($issue instanceof TBGIssue && (!$issue->hasAccess() || $issue->isDeleted()))
 				$issue = null;
+
+			return $issue;
+		}
+
+		/**
+		 * Go to the next/previous open issue
+		 *
+		 * @param TBGRequest $request
+		 */
+		public function runNavigateIssue(TBGRequest $request)
+		{
+			$issue = $this->_getIssueFromRequest($request);
+			
+			if (!$issue instanceof TBGIssue)
+			{
+				$this->getResponse()->setTemplate('viewissue');
+				return;
+			}
+				
+			if ($request['direction'] == 'next')
+			{
+				$found_issue = TBGIssuesTable::getTable()->getNextIssueFromIssueIDAndProjectID($issue->getID(), $issue->getProject()->getID(), $request['mode'] == 'open');
+			}
+			else
+			{
+				$found_issue = TBGIssuesTable::getTable()->getPreviousIssueFromIssueIDAndProjectID($issue->getID(), $issue->getProject()->getID(), $request['mode'] == 'open');
+			}
+			
+			if ($found_issue instanceof TBGIssue)
+			{
+				$this->forward(TBGContext::getRouting()->generate('viewissue', array('project_key' => $found_issue->getProject()->getKey(), 'issue_no' => $found_issue->getFormattedIssueNo())));
+			}
+			else
+			{
+				TBGContext::setMessage('issue_message', $this->getI18n()->__('There are no more issues in that direction.'));
+				$this->forward(TBGContext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
+			}
+		}
+
+		/**
+		 * View an issue
+		 * 
+		 * @param TBGRequest $request
+		 */
+		public function runViewIssue(TBGRequest $request)
+		{
+			TBGLogging::log('Loading issue');
+			
+			$issue = $this->_getIssueFromRequest($request);
 
 			if ($issue instanceof TBGIssue)
 			{
@@ -110,6 +152,10 @@
 						$this->issue_unsaved = true;
 					}
 				}
+			}
+			elseif (TBGContext::hasMessage('issue_deleted'))
+			{
+				$this->issue_deleted = TBGContext::getMessageAndClear('issue_deleted');
 			}
 			elseif ($message == true)
 			{
@@ -2181,6 +2227,7 @@
 			$issue->deleteIssue();
 			$issue->save();
 			
+			TBGContext::setMessage('issue_deleted', true);
 			$this->forward(TBGContext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
 		}
 		

@@ -23,6 +23,12 @@
 		<div id="viewissue_header_container">
 			<table cellpadding=0 cellspacing=0 class="title_area">
 				<tr>
+					<td class="issue_navigation" id="go_previous_open_issue">
+						<?php echo link_tag(make_url('previousopenissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), image_tag('previous_open_issue.png'), array('class' => 'image')); ?>
+					</td>
+					<td class="issue_navigation" id="go_previous_issue">
+						<?php echo link_tag(make_url('previousissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), image_tag('previous_issue.png'), array('class' => 'image')); ?>
+					</td>
 					<td class="title_left_images">
 						<?php if ($tbg_user->isGuest()): ?>
 							<?php echo image_tag('star_faded.png', array('id' => 'issue_favourite_faded_'.$issue->getId())); ?>
@@ -113,6 +119,12 @@
 							<div class="user_pain" id="issue_user_pain"><?php echo $issue->getUserPain(); ?></div>
 							<div class="user_pain_calculated" id="issue_user_pain_calculated"><?php echo $issue->getUserPainDiffText(); ?></div>
 						</div>
+					</td>
+					<td class="issue_navigation" id="go_next_issue">
+						<?php echo link_tag(make_url('nextissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), image_tag('next_issue.png'), array('class' => 'image')); ?>
+					</td>
+					<td class="issue_navigation" id="go_next_open_issue">
+						<?php echo link_tag(make_url('nextopenissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), image_tag('next_open_issue.png'), array('class' => 'image')); ?>
 					</td>
 				</tr>
 			</table>
@@ -443,11 +455,15 @@
 			<?php endforeach; ?>
 		<?php endif; ?>
 	</div>
+	<div id="workflow_transition_fullpage" class="fullpage_backdrop" style="display: none;"></div>
+<?php elseif (isset($issue_deleted)): ?>
+	<div class="greenbox" id="issue_deleted_message">
+		<div class="header"><?php echo __("The issue has been deleted"); ?></div>
+		<div class="content"><?php echo __("The issue you selected has been deleted. This message will disappear when you reload the page."); ?></div>
+	</div>
 <?php else: ?>
 	<div class="redbox" id="notfound_error">
 		<div class="header"><?php echo __("You have specified an issue that can't be shown"); ?></div>
 		<div class="content"><?php echo __("This could be because you the issue doesn't exist, has been deleted or you don't have permission to see it"); ?></div>
 	</div>
-	<?php return; ?>
 <?php endif; ?>
-<div id="workflow_transition_fullpage" class="fullpage_backdrop" style="display: none;"></div>

@@ -935,4 +935,28 @@
 			}
 		}
 
+		public function getNextIssueFromIssueIDAndProjectID($issue_id, $project_id, $only_open = false)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::ID, $issue_id, Criteria::DB_GREATER_THAN);
+			$crit->addWhere(self::PROJECT_ID, $project_id);
+			if ($only_open) $crit->addWhere(self::STATE, TBGIssue::STATE_OPEN);
+
+			$crit->addOrderBy(self::ISSUE_NO, Criteria::SORT_ASC);
+
+			return $this->selectOne($crit);
+		}
+
+		public function getPreviousIssueFromIssueIDAndProjectID($issue_id, $project_id, $only_open = false)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::ID, $issue_id, Criteria::DB_LESS_THAN);
+			$crit->addWhere(self::PROJECT_ID, $project_id);
+			if ($only_open) $crit->addWhere(self::STATE, TBGIssue::STATE_OPEN);
+
+			$crit->addOrderBy(self::ISSUE_NO, Criteria::SORT_DESC);
+
+			return $this->selectOne($crit);
+		}
+
 	}
