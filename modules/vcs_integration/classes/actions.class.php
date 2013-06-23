@@ -491,6 +491,13 @@
 						$link_diff = '/commit/%revno%';
 						$link_view = '/blobs/%revno%/%file%';
 						break;
+					case 'rhodecode':
+						$base_url = $request['browser_url'];
+						$link_rev = '/changeset/%revno%';
+						$link_file = '/changelog/%revno%/%file%';
+						$link_diff = '/diff/%file%?diff2=%revno%&amp;diff1=%oldrev%&amp;fulldiff=1&amp;diff=diff';
+						$link_view = '/files/%revno%/%file%';
+						break;
 				}
 
 				if ($request['browser_type'] != 'other')
