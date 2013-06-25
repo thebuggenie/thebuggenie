@@ -2,10 +2,13 @@
 
 	/**
 	 * Main action components
+	 * 
+	 * @property TBGIssue $issue The issue
+	 * 
 	 */
 	class mainActionComponents extends TBGActionComponent
 	{
-		
+
 		public function componentUserdropdown()
 		{
 			TBGLogging::log('user dropdown component');
@@ -344,17 +347,11 @@
 
 		public function componentRelatedissues()
 		{
-			$parent_issues = array();
 			$child_issues = array();
-			foreach ($this->issue->getParentIssues() as $parent_issue)
-			{
-				if ($parent_issue->hasAccess()) $parent_issues[] = $parent_issue;
-			}
 			foreach ($this->issue->getChildIssues() as $child_issue)
 			{
 				if ($child_issue->hasAccess()) $child_issues[] = $child_issue;
 			}
-			$this->parent_issues = $parent_issues;
 			$this->child_issues = $child_issues;
 		}
 
@@ -515,8 +512,16 @@
 
 		public function componentIssueSubscribers()
 		{
-			$uids = TBGUserIssuesTable::getTable()->getUserIDsByIssueID($this->issue->getID());
-			$this->users = TBGUsersTable::getTable()->getByUserIDs($uids);
+			$this->users = $this->issue->getSubscribers();
+		}
+
+		public function componentIssueSpenttimes()
+		{
+		}
+
+		public function componentIssueSpenttime()
+		{
+			$this->entry = TBGIssueSpentTimesTable::getTable()->selectById($this->entry_id);
 		}
 
 		public function componentDashboardViewRecentComments()
@@ -541,11 +546,11 @@
 					$this->points = $this->issue->getEstimatedPoints();
 					break;
 				case 'spent_time':
-					$this->months = $this->issue->getSpentMonths();
-					$this->weeks = $this->issue->getSpentWeeks();
-					$this->days = $this->issue->getSpentDays();
-					$this->hours = $this->issue->getSpentHours();
-					$this->points = $this->issue->getSpentPoints();
+					$this->months = 0;
+					$this->weeks = 0;
+					$this->days = 0;
+					$this->hours = 0;
+					$this->points = 0;
 					break;
 			}
 			$this->project_key = $this->issue->getProject()->getKey();

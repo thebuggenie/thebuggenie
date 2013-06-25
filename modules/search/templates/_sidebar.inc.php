@@ -14,8 +14,16 @@
 					<?php echo link_tag(make_url('project_open_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Open issues for this project')); ?><br>
 				</li>
 				<li style="clear: both;">
+					<?php echo link_tag(make_url('project_allopen_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
+					<?php echo link_tag(make_url('project_allopen_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Open issues (including subprojects)')); ?><br>
+				</li>
+				<li style="clear: both;">
 					<?php echo link_tag(make_url('project_closed_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
 					<?php echo link_tag(make_url('project_closed_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Closed issues for this project')); ?>
+				</li>
+				<li style="clear: both;">
+					<?php echo link_tag(make_url('project_allclosed_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
+					<?php echo link_tag(make_url('project_allclosed_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Closed issues (including subprojects)')); ?>
 				</li>
 				<li style="clear: both; margin-bottom: 20px;">
 					<?php echo link_tag(make_url('project_wishlist_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>

@@ -33,10 +33,10 @@
 		<?php endif; ?>
 		<?php if ($issue->isUpdateable()): ?>
 			<?php if ($issue->canAddRelatedIssues() && $tbg_user->canReportIssues($issue->getProject())): ?>
-				<li><?php echo javascript_link_tag(image_tag('icon_new_related_issue.png').__('Create a new related issue'), array('onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'reportissue', 'project_id' => $issue->getProject()->getId(), 'parent_issue_id' => $issue->getID()))."');", 'title' => __('Create a new related issue'))); ?></li>
+				<li><?php echo javascript_link_tag(image_tag('icon_new_related_issue.png').__('Create a new related issue'), array('onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'reportissue', 'project_id' => $issue->getProject()->getId(), 'parent_issue_id' => $issue->getID()))."');", 'title' => __('Create a new child issue'))); ?></li>
 			<?php endif; ?>
 			<?php if ($issue->canAddRelatedIssues()): ?>
-				<li><a href="javascript:void(0)" id="relate_to_existing_issue_button" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'relate_issue', 'issue_id' => $issue->getID())); ?>');"><?php echo image_tag('action_add_related.png').__('Relate to an existing issue'); ?></a></li>
+				<li><a href="javascript:void(0)" id="relate_to_existing_issue_button" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'relate_issue', 'issue_id' => $issue->getID())); ?>');"><?php echo image_tag('action_add_related.png').__('Add an existing issue as a child issue'); ?></a></li>
 			<?php endif; ?>
 			<?php if ($issue->canEditIssueDetails()): ?>
 				<li><a href="javascript:void(0)" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'move_issue', 'issue_id' => $issue->getID())); ?>');"><?php echo image_tag('icon_move.png').__("Move issue to another project"); ?></a></li>

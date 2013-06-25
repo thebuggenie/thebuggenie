@@ -24,16 +24,13 @@
 						<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" method="post" id="add_project_form" onsubmit="TBG.Project.add('<?php echo make_url('configure_projects_add_project'); ?>');return false;">
 							<div style="height: 25px;">
 								<input type="hidden" name="add_project" value="true">
-								<label for="add_project_input" style="float: left;"><?php echo __('Create a new project'); ?></label>
-								<input type="submit" style="float: right; margin-left: 5px; padding: 2px 5px 3px !important;" value="<?php echo __('Add'); ?>">
-								<input type="text" style="width: 400px; text-align: left; float: right;" id="add_project_input" name="p_name">
+								<label for="add_project_input"><?php echo __('Create a new project'); ?></label>
+								<input type="text" style="width: 300px;" id="add_project_input" name="p_name">
+								<div style="text-align: right; float: right;">
+									<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; margin: 3px 5px -4px;', 'id' => 'project_add_indicator')); ?>
+									<input type="submit" value="<?php echo __('Create project'); ?>" class="button button-silver">
+								</div>
 							</div>
-							<table cellpadding=0 cellspacing=0 style="display: none; margin-left: 5px; width: 300px;" id="project_add_indicator">
-								<tr>
-									<td style="width: 20px; padding: 2px;"><?php echo image_tag('spinning_20.gif'); ?></td>
-									<td style="padding: 0px; text-align: left;"><?php echo __('Adding project, please wait'); ?>...</td>
-								</tr>
-							</table>
 						</form>
 					</div>
 				<?php endif; ?>

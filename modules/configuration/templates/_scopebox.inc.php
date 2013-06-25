@@ -1,4 +1,4 @@
-<div class="<?php if ($scope->isDefault()): ?> greybox<?php else: ?> lightyellowbox<?php endif; ?>" style="margin-bottom: 5px; min-height: 25px;">
+<div class="<?php if ($scope->isDefault()): ?> bluebox<?php else: ?> greybox<?php endif; ?>" style="margin-bottom: 5px; min-height: 25px;">
 	<?php if (!$scope->isDefault()): ?>
 		<div class="button-group" style="float: right;">
 			<?php echo link_tag(make_url('configure_scope', array('id' => $scope->getID())), image_tag('icon_edit.png', array('title' => __('Edit scope settings'))), array('class' => 'button button-silver button-icon')); ?></a>

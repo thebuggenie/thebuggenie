@@ -655,13 +655,30 @@
 			}
 			return $final;
 		}
-				
+		
+		public static function getIncludingAllSubprojectsAsArray(TBGProject $project)
+		{
+			$projects = array();
+			self::getSubprojectsArray($project, $projects);
+			
+			return $projects;
+		}
+		
+		public static function getSubprojectsArray(TBGProject $project, &$projects)
+		{
+			$projects[$project->getID()] = $project;
+			foreach ($project->getChildProjects() as $subproject)
+			{
+				self::getSubprojectsArray($subproject, $projects);
+			}
+		}
+
 		/**
 		 * Retrieve the default project
 		 * 
 		 * @return TBGProject
 		 */
-		static function getDefaultProject()
+		public static function getDefaultProject()
 		{
 			if ($res = TBGProjectsTable::getTable()->getAllSortedByIsDefault())
 			{
@@ -2794,6 +2811,11 @@
 		public function setParent(TBGProject $project)
 		{
 			$this->_parent = $project;
+		}
+		
+		public function getChildProjects($archived = false)
+		{
+			return $this->getChildren($archived);
 		}
 		
 		/**

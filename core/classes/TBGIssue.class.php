@@ -500,6 +500,14 @@
 		 */
 		protected $_comments;
 
+		/**
+		 * An array of TBGIssueSpentTimes
+		 *
+		 * @var array
+		 * @Relates(class="TBGIssueSpentTime", collection=true, foreign_column="issue_id")
+		 */
+		protected $_spent_times;
+
 		protected $_num_comments;
 
 		protected $_num_user_comments;
@@ -516,6 +524,14 @@
 
 		protected $_updateable;
 
+		/**
+		 * Array of users that are subscribed to this issue
+		 *
+		 * @var array
+		 * @Relates(class="TBGUser", collection=true, manytomany=true, joinclass="TBGUserIssuesTable")
+		 */
+		protected $_subscribers = null;
+		
 		/**
 		 * All custom data type properties
 		 *
@@ -2893,7 +2909,7 @@
 		 * 
 		 * @return array
 		 */
-		protected function _convertFancyStringToTime($string)
+		public static function convertFancyStringToTime($string)
 		{
 			$retarr = array('months' => 0, 'weeks' => 0, 'days' => 0, 'hours' => 0, 'points' => 0);
 			$string = mb_strtolower(trim($string));
@@ -2915,7 +2931,7 @@
 							$retarr['days'] = (int) trim($time_parts[0]);
 							break;
 						case mb_stristr($time_parts[1], 'hour'):
-							$retarr['hours'] = (int) trim($time_parts[0]);
+							$retarr['hours'] = trim($time_parts[0]);
 							break;
 						case mb_stristr($time_parts[1], 'point'):
 							$retarr['points'] = (int) trim($time_parts[0]);
@@ -2954,7 +2970,7 @@
 			}
 			else
 			{
-				$time = $this->_convertFancyStringToTime($time);
+				$time = self::convertFancyStringToTime($time);
 				$this->_addChangedProperty('_estimated_months', $time['months']);
 				$this->_addChangedProperty('_estimated_weeks', $time['weeks']);
 				$this->_addChangedProperty('_estimated_days', $time['days']);
@@ -3238,7 +3254,7 @@
 		 */
 		public function getSpentTime()
 		{
-			return array('months' => (int) $this->_spent_months, 'weeks' => (int) $this->_spent_weeks, 'days' => (int) $this->_spent_days, 'hours' => (int) $this->_spent_hours, 'points' => (int) $this->_spent_points);
+			return array('months' => (int) $this->_spent_months, 'weeks' => (int) $this->_spent_weeks, 'days' => (int) $this->_spent_days, 'hours' => round($this->_spent_hours / 100, 2), 'points' => (int) $this->_spent_points);
 		}
 		
 		/**
@@ -3304,69 +3320,6 @@
 		}
 
 		/**
-		 * Set time spent on this issue
-		 *
-		 * @param integer $time
-		 */
-		public function setSpentTime($time)
-		{
-			if (is_numeric($time))
-			{
-				$this->_addChangedProperty('_spent_months', 0);
-				$this->_addChangedProperty('_spent_weeks', 0);
-				$this->_addChangedProperty('_spent_days', 0);
-				if ($this->getIssueType()->isTask())
-				{
-					$this->_addChangedProperty('_spent_points', 0);
-					$this->_addChangedProperty('_spent_hours', (int) $time);
-				}
-				else
-				{
-					$this->_addChangedProperty('_spent_hours', 0);
-					$this->_addChangedProperty('_spent_points', (int) $time);
-				}
-			}
-			else
-			{
-				$time = $this->_convertFancyStringToTime($time);
-				$this->_addChangedProperty('_spent_months', $time['months']);
-				$this->_addChangedProperty('_spent_weeks', $time['weeks']);
-				$this->_addChangedProperty('_spent_days', $time['days']);
-				$this->_addChangedProperty('_spent_hours', $time['hours']);
-				$this->_addChangedProperty('_spent_points', $time['points']);
-			}
-		}
-		
-		/**
-		 * Add to spent time
-		 *
-		 * @param integer $time
-		 */
-		public function addSpentTime($time)
-		{
-			if (is_numeric($time))
-			{
-				if ($this->getIssuetype()->isTask())
-				{
-					$this->_addChangedProperty('_spent_hours', $this->_spent_hours + (int) $time);
-				}
-				else
-				{
-					$this->_addChangedProperty('_spent_points', $this->_spent_points + (int) $time);
-				}
-			}
-			else
-			{
-				$time = $this->_convertFancyStringToTime($time);
-				$this->_addChangedProperty('_spent_months', $this->_spent_months + $time['months']);
-				$this->_addChangedProperty('_spent_weeks', $this->_spent_weeks + $time['weeks']);
-				$this->_addChangedProperty('_spent_days', $this->_spent_days + $time['days']);
-				$this->_addChangedProperty('_spent_hours', $this->_spent_hours + $time['hours']);
-				$this->_addChangedProperty('_spent_points', $this->_spent_points + $time['points']);
-			}
-		}		
-
-		/**
 		 * Set spent months
 		 * 
 		 * @param integer $months The number of months spent
@@ -3416,88 +3369,6 @@
 			$this->_addChangedProperty('_spent_points', $points);
 		}
 
-		/**
-		 * Add spent months
-		 * 
-		 * @param integer $months The number of months spent
-		 */
-		public function addSpentMonths($months)
-		{
-			$this->_addChangedProperty('_spent_months', $this->_spent_months + $months);
-		}
-	
-		/**
-		 * Add spent weeks
-		 * 
-		 * @param integer $weeks The number of weeks spent
-		 */
-		public function addSpentWeeks($weeks)
-		{
-			$this->_addChangedProperty('_spent_weeks', $this->_spent_weeks + $weeks);
-		}
-	
-		/**
-		 * Add spent days
-		 * 
-		 * @param integer $days The number of days spent
-		 */
-		public function addSpentDays($days)
-		{
-			$this->_addChangedProperty('_spent_days', $this->_spent_days + $days);
-		}
-	
-		/**
-		 * Add spent hours
-		 * 
-		 * @param integer $hours The number of hours spent
-		 */
-		public function addSpentHours($hours)
-		{
-			$this->_addChangedProperty('_spent_hours', $this->_spent_hours + $hours);
-		}
-	
-		/**
-		 * Add spent points
-		 * 
-		 * @param integer $points The number of points spent
-		 */
-		public function addSpentPoints($points)
-		{
-			$this->_addChangedProperty('_spent_points', $this->_spent_points + $points);
-		}
-		
-		/**
-		 * Check to see whether the spent time is changed
-		 * 
-		 * @return boolean
-		 */
-		public function isSpentTimeChanged()
-		{
-			return (bool) ($this->isSpent_MonthsChanged() || $this->isSpent_WeeksChanged() || $this->isSpent_DaysChanged() || $this->isSpent_HoursChanged() || $this->isSpent_PointsChanged());
-		}
-
-		/**
-		 * Check to see whether the spent time is merged
-		 * 
-		 * @return boolean
-		 */
-		public function isSpentTimeMerged()
-		{
-			return (bool) ($this->isSpent_MonthsMerged() || $this->isSpent_WeeksMerged() || $this->isSpent_DaysMerged() || $this->isSpent_HoursMerged() || $this->isSpent_PointsMerged());
-		}
-		
-		/**
-		 * Reverts spent time
-		 */
-		public function revertSpentTime()
-		{
-			$this->revertSpent_Months();
-			$this->revertSpent_Weeks();
-			$this->revertSpent_Days();
-			$this->revertSpent_Hours();
-			$this->revertSpent_Points();
-		}
-		
 		/**
 		 * Returns whether or not there is an spent time for this issue
 		 * 
@@ -4089,8 +3960,30 @@
 		}
 		
 		/**
-		 * Retrieve all comments for this issue
+		 * Retrieve all spent times for this issue
 		 * 
+		 * @return array|TBGIssueSpentTime
+		 */
+		public function getSpentTimes()
+		{
+			$this->_populateSpentTimes();
+			return $this->_spent_times;
+		}
+		
+		/**
+		 * Populate comments array
+		 */
+		protected function _populateSpentTimes()
+		{
+			if ($this->_spent_times === null)
+			{
+				$this->_b2dbLazyload('_spent_times');
+			}
+		}
+		
+		/**
+		 * Retrieve all comments for this issue
+		 *
 		 * @return array
 		 */
 		public function getComments()
@@ -4098,7 +3991,7 @@
 			$this->_populateComments();
 			return $this->_comments;
 		}
-		
+
 		/**
 		 * Populate comments array
 		 */
@@ -4106,19 +3999,10 @@
 		{
 			if ($this->_comments === null)
 			{
-//				$this->_comments = TBGComment::getComments($this->getID(), TBGComment::TYPE_ISSUE);
-//				$this->_num_comments = count($this->_comments);
-//				$sc = 0;
-//				foreach ($this->_comments as $comment)
-//				{
-//					if ($comment->isSystemComment())
-//						$sc++;
-//				}
-//				$this->_num_user_comments = $sc;
 				$this->_b2dbLazyload('_comments');
 			}
 		}
-		
+
 		/**
 		 * Return the number of comments
 		 * 
@@ -4479,10 +4363,10 @@
 						switch ($property)
 						{
 							case '_title':
-								$this->addLogEntry(TBGLogTable::LOG_ISSUE_UPDATE, TBGContext::getI18n()->__("Title updated"), $original_value, $compare_value);
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_UPDATE_TITLE, TBGContext::getI18n()->__("Title updated"), $original_value, $compare_value);
 								break;
 							case '_description':
-								$this->addLogEntry(TBGLogTable::LOG_ISSUE_UPDATE, TBGContext::getI18n()->__("Description updated"), $original_value, $compare_value);
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_UPDATE_DESCRIPTION, TBGContext::getI18n()->__("Description updated"), $original_value, $compare_value);
 								break;
 							case '_reproduction_steps':
 								$this->addLogEntry(TBGLogTable::LOG_ISSUE_REPRODUCABILITY, TBGContext::getI18n()->__("Reproduction steps updated"), $original_value, $compare_value);
@@ -4852,11 +4736,6 @@
 				if ($is_saved_estimated)
 				{
 					TBGIssueEstimates::getTable()->saveEstimate($this->getID(), $this->_estimated_months, $this->_estimated_weeks, $this->_estimated_days, $this->_estimated_hours, $this->_estimated_points);
-				}
-
-				if ($is_saved_spent)
-				{
-					TBGIssueSpentTimes::getTable()->saveSpentTime($this->getID(), $this->_spent_months, $this->_spent_weeks, $this->_spent_days, $this->_spent_hours, $this->_spent_points);
 				}
 
 			}
@@ -5333,4 +5212,10 @@
 			$this->_save_comment = $comment;
 		}
 
+		public function getSubscribers()
+		{
+			$this->_b2dbLazyload('_subscribers');
+			return $this->_subscribers;
+		}
+		
 	}

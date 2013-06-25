@@ -24,6 +24,51 @@
 				</li>
 			<?php endif; ?>
 		<?php endif; ?>
+		<?php if ($num_teams > 0): ?>
+			<li class="header disabled"><?php echo __('%num% team(s) found', array('%num%' => $num_teams)); ?></li>
+			<?php $cc = 0; ?>
+			<?php foreach ($found_teams as $team): ?>
+				<?php $cc++; ?>
+				<?php if ($team instanceof TBGTeam): ?>
+					<li class="<?php if ($cc == count($found_teams) && $num_teams == count($found_teams)): ?> last<?php endif; ?>">
+						<?php echo image_tag('icon_team.png', array('alt' => ' ', 'style' => "width: 12px; height: 12px; float: left; margin-right: 5px;")); ?>
+						<?php echo $team->getName(); ?>
+						<span class="hidden url"><?php echo make_url('team_dashboard', array('team_id' => $team->getID())); ?></span>
+					</li>
+				<?php endif; ?>
+				<?php if ($cc == 10) break; ?>
+			<?php endforeach; ?>
+		<?php endif; ?>
+		<?php if ($num_clients > 0): ?>
+			<li class="header disabled"><?php echo __('%num% client(s) found', array('%num%' => $num_clients)); ?></li>
+			<?php $cc = 0; ?>
+			<?php foreach ($found_clients as $client): ?>
+				<?php $cc++; ?>
+				<?php if ($client instanceof TBGClient): ?>
+					<li class="<?php if ($cc == count($found_clients) && $num_clients == count($found_clients)): ?> last<?php endif; ?>">
+						<?php echo image_tag('icon_client.png', array('alt' => ' ', 'style' => "width: 12px; height: 12px; float: left; margin-right: 5px;")); ?>
+						<?php echo $client->getName(); ?>
+						<span class="hidden url"><?php echo make_url('client_dashboard', array('client_id' => $client->getID())); ?></span>
+					</li>
+				<?php endif; ?>
+				<?php if ($cc == 10) break; ?>
+			<?php endforeach; ?>
+		<?php endif; ?>
+	<?php endif; ?>
+	<?php if ($num_projects > 0): ?>
+		<li class="header disabled"><?php echo __('%num% project(s) found', array('%num%' => $num_projects)); ?></li>
+		<?php $cc = 0; ?>
+		<?php foreach ($found_projects as $project): ?>
+			<?php $cc++; ?>
+			<?php if ($project instanceof TBGProject): ?>
+				<li class="<?php if ($cc == count($found_projects) && $num_projects == count($found_projects)): ?> last<?php endif; ?>">
+					<?php echo image_tag($project->getSmallIconName(), array('alt' => ' ', 'style' => "width: 12px; height: 12px; float: left; margin-right: 5px;")); ?>
+					<?php echo $project->getName(); ?>
+					<span class="hidden url"><?php echo make_url('project_dashboard', array('project_key' => $project->getKey())); ?></span>
+				</li>
+			<?php endif; ?>
+			<?php if ($cc == 10) break; ?>
+		<?php endforeach; ?>
 	<?php endif; ?>
 	<li class="header disabled"><?php echo __('%num% issue(s) found', array('%num%' => $resultcount)); ?></li>
 	<?php $cc = 0; ?>

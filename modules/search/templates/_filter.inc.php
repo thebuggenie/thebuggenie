@@ -15,6 +15,15 @@
 				</select>
 				<?php $show_button = true; ?>
 			<?php endif; ?>
+		<?php elseif ($filter == 'subprojects' && TBGContext::isProjectContext()): ?>
+			<label<?php if (!TBGContext::isProjectContext()): ?> for="filter_subprojects_<?php echo $key; ?>"<?php endif; ?>><?php echo __('Include subprojects'); ?></label>
+			<input type="hidden" name="filters[subprojects][<?php echo $key; ?>][operator]" value="=">
+			<select name="filters[subprojects][<?php echo $key; ?>][value]" id="filter_subprojects_<?php echo $key; ?>">
+				<?php foreach ($filters['subprojects']['options'] as $value => $description): ?>
+					<option value="<?php echo $value; ?>"<?php if ($selected_value == $value): ?> selected<?php endif; ?>><?php echo $description; ?></option>
+				<?php endforeach; ?>
+			</select>
+			<?php $show_button = true; ?>
 		<?php elseif (in_array($filter, array('posted', 'last_updated'))): ?>
 			<label for="filter_<?php echo $filter; ?>_<?php echo $key; ?>"><?php echo $filters[$filter]['description']; ?></label>
 			<select name="filters[<?php echo $filter; ?>][<?php echo $key; ?>][operator]">
@@ -90,7 +99,11 @@
 			<select name="filters[<?php echo $filter; ?>][<?php echo $key; ?>][value]" id="filter_<?php echo $filter; ?>_<?php echo $key; ?>">
 				<option value="0"> - </option>
 				<?php foreach ($filters[$filter]['options'] as $item): ?>
-					<option value="<?php echo $item->getID(); ?>"<?php if ($selected_value == $item->getID()): ?> selected<?php endif; ?>><?php echo $item->getName(); ?></option>
+					<?php if (method_exists($item, 'getProject') && ((TBGContext::isProjectContext() && $item->getProject()->getID() != TBGContext::getCurrentProject()->getID()) || !TBGContext::isProjectContext())): ?>
+						<option value="<?php echo $item->getID(); ?>"<?php if ($selected_value == $item->getID()): ?> selected<?php endif; ?>><?php echo $item->getProject()->getName() . '&nbsp;&ndash;&nbsp;' . $item->getName(); ?></option>
+					<?php else: ?>
+						<option value="<?php echo $item->getID(); ?>"<?php if ($selected_value == $item->getID()): ?> selected<?php endif; ?>><?php echo $item->getName(); ?></option>
+					<?php endif; ?>
 				<?php endforeach; ?>
 			</select>
 			<?php $show_button = true; ?>

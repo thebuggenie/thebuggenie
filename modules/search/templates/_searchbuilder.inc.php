@@ -26,7 +26,9 @@
 					<label for="add_filter"><?php echo __('Add filter'); ?></label>
 					<select name="filter_name" id="add_search_filter_dropdown">
 						<?php if (!TBGContext::isProjectContext()): ?>
-							<option value="project_id"><?php echo __('Project'); ?></option>
+							<option value="project_id"><?php echo __('Project - which project an issue is reported for'); ?></option>
+						<?php else: ?>
+							<option value="subprojects"><?php echo __('Subproject - whether to include subprojects or not'); ?></option>
 						<?php endif; ?>
 						<option value="state"><?php echo __('Issue state - whether an issue is open or closed'); ?></option>
 						<option value="status"><?php echo __('Status - what status an issue has'); ?></option>

@@ -1,7 +1,9 @@
 <?php
 
 	$routes[] = array('project_open_issues', '/:project_key/issues/open/*', 'search', 'findIssues', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES, 'search' => true));
+	$routes[] = array('project_allopen_issues', '/:project_key/issues/allopen/*', 'search', 'findIssues', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES_INCLUDING_SUBPROJECTS, 'search' => true));
 	$routes[] = array('project_closed_issues', '/:project_key/issues/closed/*', 'search', 'findIssues', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES, 'search' => true));
+	$routes[] = array('project_allclosed_issues', '/:project_key/issues/allclosed/*', 'search', 'findIssues', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES_INCLUDING_SUBPROJECTS, 'search' => true));
 	$routes[] = array('project_wishlist_issues', '/:project_key/issues/wishlist/*', 'search', 'findIssues', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_PROJECT_WISHLIST, 'search' => true));
 	$routes[] = array('project_milestone_todo_list', '/:project_key/issues/todo/*', 'search', 'findIssues', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_PROJECT_MILESTONE_TODO, 'search' => true));
 	$routes[] = array('project_most_voted_issues', '/:project_key/issues/mostvoted/*', 'search', 'findIssues', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_PROJECT_MOST_VOTED, 'search' => true));
@@ -22,6 +24,8 @@
 	$routes[] = array('unblock', '/:project_key/issues/:issue_id/unblock', 'main', 'markAsNotBlocker');
 	$routes[] = array('issue_gettempfieldvalue', '/get/temp/value/for/:field/*', 'main', 'issueGetTempFieldValue');
 	$routes[] = array('issue_setfield', '/:project_key/issues/:issue_id/set/:field/*', 'main', 'issueSetField');
+	$routes[] = array('issue_edittimespent', '/:project_key/issues/:issue_id/timespent/:entry_id', 'main', 'issueEditTimeSpent');
+	$routes[] = array('issue_deletetimespent', '/:project_key/issues/:issue_id/timespent/:entry_id/remove', 'main', 'issueDeleteTimeSpent');
 	$routes[] = array('issue_revertfield', '/:project_key/issues/:issue_id/revert/:field', 'main', 'issueRevertField');
 	$routes[] = array('getacl_formentry', '/get/acl/formentry/for/:identifiable_type/:identifiable_value', 'main', 'getACLFormEntry');
 	$routes[] = array('main_find_identifiable', '/find/identifiable/by/*', 'main', 'findIdentifiable');

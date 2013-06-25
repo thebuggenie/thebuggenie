@@ -205,29 +205,42 @@
 			return $users;
 		}
 
-		public function findInConfig($details, $limit = 50)
+		public function findInConfig($details, $limit = 50, $allow_keywords = true)
 		{
 			$crit = $this->getCriteria();
+
 			switch ($details)
 			{
 				case 'unactivated':
-					$crit->addWhere(self::ACTIVATED, false);
-					$limit = 500;
-					break;
+					if ($allow_keywords)
+					{
+						$crit->addWhere(self::ACTIVATED, false);
+						$limit = 500;
+						break;
+					}
 				case 'newusers':
-					$crit->addWhere(self::JOINED, NOW - 1814400, Criteria::DB_GREATER_THAN_EQUAL);
-					$limit = 500;
-					break;
+					if ($allow_keywords)
+					{
+						$crit->addWhere(self::JOINED, NOW - 1814400, Criteria::DB_GREATER_THAN_EQUAL);
+						$limit = 500;
+						break;
+					}
 				case '0-9':
-					$ctn = $crit->returnCriterion(self::UNAME, array('0%', '1%', '2%', '3%', '4%', '5%', '6%', '7%', '8%', '9%'), Criteria::DB_IN);
-					$ctn->addOr(self::BUDDYNAME, array('0%', '1%', '2%', '3%', '4%', '5%', '6%', '7%', '8%', '9%'), Criteria::DB_IN);
-					$ctn->addOr(self::REALNAME, array('0%', '1%', '2%', '3%', '4%', '5%', '6%', '7%', '8%', '9%'), Criteria::DB_IN);
-					$crit->addWhere($ctn);
-					$limit = 500;
-					break;
+					if ($allow_keywords)
+					{
+						$ctn = $crit->returnCriterion(self::UNAME, array('0%', '1%', '2%', '3%', '4%', '5%', '6%', '7%', '8%', '9%'), Criteria::DB_IN);
+						$ctn->addOr(self::BUDDYNAME, array('0%', '1%', '2%', '3%', '4%', '5%', '6%', '7%', '8%', '9%'), Criteria::DB_IN);
+						$ctn->addOr(self::REALNAME, array('0%', '1%', '2%', '3%', '4%', '5%', '6%', '7%', '8%', '9%'), Criteria::DB_IN);
+						$crit->addWhere($ctn);
+						$limit = 500;
+						break;
+					}
 				case 'all':
-					$limit = 50000;
-					break;
+					if ($allow_keywords)
+					{
+						$limit = 50000;
+						break;
+					}
 				default:
 					if (mb_strlen($details) == 1) $limit = 50000;
 					$details = (mb_strlen($details) == 1) ? mb_strtolower("$details%") : mb_strtolower("%$details%");

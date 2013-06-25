@@ -11,6 +11,7 @@
 																'base_id'			=> "popup_find_subscriber_{$issue->getID()}",
 																'include_teams'		=> false,
 																'allow_clear'		=> false,
+																'style'             => array('right' => '8px'),
 																'absolute'			=> true)); ?>
 		<p>
 			<?php echo __('The list below shows all users manually subscribed to notifications about this issue. To toggle whether they receive notifications, click the star next to their name.'); ?>

@@ -767,6 +767,8 @@ EOT;
 
 		public function listen_viewissue(TBGEvent $event)
 		{
+			if (!$event->getSubject() instanceof TBGIssue) return;
+
 			$uid = TBGContext::getUser()->getID();
 			if ($this->getSetting(self::NOTIFY_ISSUE_ONCE,$uid))
 			{

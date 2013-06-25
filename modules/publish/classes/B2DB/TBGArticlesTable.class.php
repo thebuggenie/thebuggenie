@@ -11,7 +11,7 @@
 	class TBGArticlesTable extends TBGB2DBTable 
 	{
 
-		const B2DB_TABLE_VERSION = 1;
+		const B2DB_TABLE_VERSION = 2;
 		const B2DBNAME = 'articles';
 		const ID = 'articles.id';
 		const NAME = 'articles.name';

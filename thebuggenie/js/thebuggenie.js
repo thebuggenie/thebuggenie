@@ -194,13 +194,21 @@ TBG.Core._resizeWatcher = function() {
 		});
 	}
 	if ($('issue_details')) {
-		var il = $('issue_details').getLayout();
-		var container_width = il.get('width') - il.get('padding-left') - il.get('padding-right');
-		var element_width = (container_width > 650) ? parseInt(container_width / 2) : container_width;
-		$('issue_details_fieldslist').childElements().each(function(item) {
-			var l = $(item).getLayout();
-			item.setStyle({width: element_width + 'px'});
+		var id = $('issue_details');
+		var vlbtl = $('viewissue_left_box_top').getLayout();
+		var vlbt_width = vlbtl.get('width') - vlbtl.get('padding-left') - vlbtl.get('padding-right') - vlbtl.get('margin-left') - vlbtl.get('margin-right');
+		var idl = id.getLayout();
+		var id_width = idl.get('width') + idl.get('padding-left') + idl.get('padding-right') + idl.get('margin-right');
+		$('issue_main').setStyle({width: (vlbt_width - id_width) + 'px'});
+		$('issue_main').childElements().each(function(fieldset) {
+			fieldset.select('.resizable').each(function(elm) {
+				elm.setStyle({width: (vlbt_width - id_width) + 'px'});
+			});
 		});
+//		var element_width = (container_width > 650) ? parseInt(container_width / 2) : container_width;
+//		$('issue_details_fieldslist').childElements().each(function(item) {
+//			var l = $(item).getLayout();
+//		});
 	}
 	TBG.Core.popupVisiblizer();
 };
@@ -3051,9 +3059,7 @@ TBG.Issues.refreshRelatedIssues = function(url) {
 				hide: 'no_child_issues',
 				update: {element: 'related_child_issues_inline'},
 				callback: function() {
-					var childcount = $('related_child_issues_inline').childElements().size();
-					var parentcount = $('related_parent_issues_inline').childElements().size();
-					$('viewissue_related_issues_count').update(childcount + parentcount);
+					$('viewissue_related_issues_count').update($('related_child_issues_inline').childElements().size());
 				}
 			}
 		});
@@ -3077,16 +3083,54 @@ TBG.Issues.findDuplicate = function(url, transition_id) {
 	});
 };
 
+TBG.Issues.editTimeEntry = function(form) {
+    var url = form.action;
+    TBG.Main.Helpers.ajax(url, {
+        form: form,
+        loading: { indicator: form.id + '_indicator' },
+        success: {
+            callback: function(json) {
+                $('fullpage_backdrop_content').update(json.timeentries);
+                if (json.timesum == 0) {
+                    $('no_spent_time_'+json.issue_id).show();
+                    $('spent_time_'+json.issue_id+'_name').hide();
+                } else {
+                    $('no_spent_time_'+json.issue_id).hide();
+                    $('spent_time_'+json.issue_id+'_value').update(json.spenttime);
+                }
+            }
+        }
+    });
+};
+
+TBG.Issues.deleteTimeEntry = function(url, entry_id) {
+    TBG.Main.Helpers.ajax(url, {
+        loading: { indicator: 'dialog_indicator' },
+        success: {
+            callback: function(json) {
+                $('issue_spenttime_'+entry_id).remove();
+                if ($('issue_spenttime_'+entry_id+'_comment')) $('issue_spenttime_'+entry_id+'_comment').remove();
+                if (json.timesum == 0) {
+                    $('no_spent_time_'+json.issue_id).show();
+                    $('spent_time_'+json.issue_id+'_name').hide();
+                } else {
+                    $('no_spent_time_'+json.issue_id).hide();
+                    $('spent_time_'+json.issue_id+'_value').update(json.spenttime);
+                }
+                TBG.Main.Helpers.Dialog.dismiss();
+            }
+        }
+    });
+};
+
 TBG.Issues.relate = function(url) {
-	var hide_div = ($('relate_issue_with_selected').getValue() == 'relate_children') ? 'no_child_issues' : 'no_parent_issues';
-	var update_div = ($('relate_issue_with_selected').getValue() == 'relate_children') ? 'related_child_issues_inline' : 'related_parent_issues_inline';
 	
 	TBG.Main.Helpers.ajax(url, {
 		form: 'viewissue_relate_issues_form',
 		loading: {indicator: 'relate_issues_indicator'},
 		success: {
-			update: {element: update_div, insertion: true}, 
-			hide: hide_div
+			update: {element: 'related_child_issues_inline', insertion: true}, 
+			hide: 'no_child_issues'
 		}
 	});
 	return false;
@@ -3099,10 +3143,8 @@ TBG.Issues.removeRelated = function(url, issue_id) {
 			remove: 'related_issue_'+issue_id,
 			callback: function() {
 				var childcount = $('related_child_issues_inline').childElements().size();
-				var parentcount = $('related_parent_issues_inline').childElements().size();
 				if (childcount == 0) $('no_child_issues').show();
-				if (parentcount == 0) $('no_parent_issues').show();
-				$('viewissue_related_issues_count').update(childcount + parentcount);
+				$('viewissue_related_issues_count').update(childcount);
 			}
 		}
 	});
@@ -3283,7 +3325,7 @@ TBG.Issues.Field.Updaters.timeFromObject = function(issue_id, object, values, fi
 		}
 	}
 	['points', 'hours', 'days', 'weeks', 'months'].each(function(unit) {
-		if ($(field + '_' + issue_id + '_' + unit + '_input'))
+		if (field != 'spent_time' && $(field + '_' + issue_id + '_' + unit + '_input'))
 			$(field + '_' + issue_id + '_' + unit + '_input').setValue(values[unit]);
 
 		if ($(field + '_' + issue_id + '_' + unit)) {

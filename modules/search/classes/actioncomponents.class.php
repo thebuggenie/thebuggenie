@@ -42,7 +42,7 @@
 			$this->route = $route;
 			$this->parameters = join('&', $parameters);
 		}
-
+		
 		public function componentFilter()
 		{
 			$pkey = (TBGContext::isProjectContext()) ? TBGContext::getCurrentProject()->getID() : null;
@@ -69,12 +69,39 @@
 			$filters['reproducability'] = array('description' => $i18n->__('Reproducability'), 'options' => TBGReproducability::getAll());
 			$filters['resolution'] = array('description' => $i18n->__('Resolution'), 'options' => TBGResolution::getAll());
 			$filters['issuetype'] = array('description' => $i18n->__('Issue type'), 'options' => TBGIssuetype::getAll());
+			$filters['component'] = array('description' => $i18n->__('Component'), 'options' => array());
+			$filters['build'] = array('description' => $i18n->__('Build'), 'options' => array());
+			$filters['edition'] = array('description' => $i18n->__('Edition'), 'options' => array());
+			$filters['milestone'] = array('description' => $i18n->__('Milestone'), 'options' => array());
+
 			if (TBGContext::isProjectContext())
 			{
-				$filters['component'] = array('description' => $i18n->__('Component'), 'options' => TBGContext::getCurrentProject()->getComponents());
-				$filters['build'] = array('description' => $i18n->__('Build'), 'options' => TBGContext::getCurrentProject()->getBuilds());
-				$filters['edition'] = array('description' => $i18n->__('Edition'), 'options' => TBGContext::getCurrentProject()->getEditions());
-				$filters['milestone'] = array('description' => $i18n->__('Milestone'), 'options' => TBGContext::getCurrentProject()->getMilestones());
+				$filters['subprojects'] = array('description' => $i18n->__('Include subproject(s)'), 'options' => array('all' => $this->getI18n()->__('All subprojects'), 'none' => $this->getI18n()->__("Don't include subprojects (default, unless specified otherwise)")));
+				$projects = TBGProject::getIncludingAllSubprojectsAsArray(TBGContext::getCurrentProject());
+				foreach ($projects as $project)
+				{
+					if ($project->getID() == TBGContext::getCurrentProject()->getID()) continue;
+					
+					$filters['subprojects']['options'][$project->getID()] = "{$project->getName()} ({$project->getKey()})";
+				}
+			}
+			else
+			{
+				$projects = array();
+				foreach (TBGProject::getAllRootProjects() as $project)
+				{
+					TBGProject::getSubprojectsArray($project, $projects);
+				}
+			}
+			if (count($projects) > 0)
+			{
+				foreach ($projects as $project)
+				{
+					foreach ($project->getComponents() as $component) $filters['component']['options'][] = $component;
+					foreach ($project->getBuilds() as $build) $filters['build']['options'][] = $build;
+					foreach ($project->getEditions() as $edition) $filters['edition']['options'][] = $edition;
+					foreach ($project->getMilestones() as $milestone) $filters['milestone']['options'][] = $milestone;
+				}
 			}
 			$filters['posted_by'] = array('description' => $i18n->__('Posted by'));
 			$filters['assignee_user'] = array('description' => $i18n->__('Assigned to user'));

@@ -64,4 +64,13 @@
             return (bool) $this->doCount($crit);
 		}
 
+		public function quickfind($client_name)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::NAME, "%{$client_name}%", Criteria::DB_LIKE);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+
+			return $this->select($crit);
+		}
+
 	}

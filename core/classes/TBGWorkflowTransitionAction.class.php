@@ -245,21 +245,30 @@
 					}
 					elseif ($request->getParameter('did', 'nothing') == 'this')
 					{
-						if ($request['spent_time'])
+						$times = array();
+						if ($request['timespent_manual'])
 						{
-							$issue->setSpentTime($request['spent_time']);
+							$times = TBGIssue::convertFancyStringToTime($request['timespent_manual']);
 						}
-						elseif ($request->hasParameter('value'))
+						elseif ($request['timespent_specified_type'])
 						{
-							$issue->setSpentTime($request['value']);
+							$times = array('points' => 0, 'hours' => 0, 'days' => 0, 'weeks' => 0, 'months' => 0);
+							$times[$request['timespent_specified_type']] = $request['timespent_specified_value'];
 						}
-						else
+						if (array_sum($times) > 0)
 						{
-							$issue->setSpentMonths($request['months']);
-							$issue->setSpentWeeks($request['weeks']);
-							$issue->setSpentDays($request['days']);
-							$issue->setSpentHours($request['hours']);
-							$issue->setSpentPoints($request['points']);
+							$times['hours'] *= 100;
+							$spenttime = new TBGIssueSpentTime();
+							$spenttime->setIssue($issue);
+							$spenttime->setUser(TBGContext::getUser());
+							$spenttime->setSpentPoints($times['points']);
+							$spenttime->setSpentHours($times['hours']);
+							$spenttime->setSpentDays($times['days']);
+							$spenttime->setSpentWeeks($times['weeks']);
+							$spenttime->setSpentMonths($times['months']);
+							$spenttime->setActivityType($request['timespent_activitytype']);
+							$spenttime->setComment($request['timespent_comment']);
+							$spenttime->save();
 						}
 						$issue->clearUserWorkingOnIssue();
 					}

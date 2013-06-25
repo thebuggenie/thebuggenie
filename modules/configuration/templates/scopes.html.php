@@ -11,10 +11,6 @@
 						<?php echo __('The default scope (which is created during the first installation) is used for all hostnames where there is no other scope defined. Read more about scopes in %ConfigureScopes%.', array('%ConfigureScopes%' => link_Tag(make_url('publish_article', array('article_name' => 'ConfigureScopes')), 'ConfigureScopes'))); ?>
 					</p>
 				</div>
-				<h5 style="margin-top: 10px;">
-					<button class="button button-green" onclick="$('new_scope_hostname').toggle();if ($('new_scope_hostname').visible()) { $('new_scope_name_input').focus(); }" style="float: right;"><?php echo __('Create a new scope'); ?></button>
-					<?php echo __('Scopes available on this installation'); ?>
-				</h5>
 				<?php if (isset($scope_deleted)): ?>
 					<div class="greenbox" style="margin: 0 0 5px 0; font-size: 14px;">
 						<?php echo __('The scope was deleted'); ?>
@@ -30,7 +26,11 @@
 						<?php echo __('The scope name must be unique and cannot be blank'); ?>
 					</div>
 				<?php endif; ?>
-				<div class="greybox" id="new_scope_hostname" style="display: none; position: absolute; width: 740px;">
+				<h5 style="margin-top: 10px;">
+					<button class="button button-green" onclick="$('new_scope_hostname').toggle();if ($('new_scope_hostname').visible()) { $('new_scope_name_input').focus(); }" style="float: right;"><?php echo __('Create a new scope'); ?></button>
+					<?php echo __('Scopes available on this installation'); ?>
+				</h5>
+				<div class="yellowbox" id="new_scope_hostname" style="display: none; position: absolute; width: 720px; z-index: 100;">
 					<form action="<?php echo make_url('configure_scopes'); ?>" onsubmit="$('add_scope_indicator').show();$('add_scope_submit_button').hide();return true;" method="POST">
 						<div class="content">
 							<div class="header" style="margin-top: 0;"><?php echo __('Create a new scope'); ?></div>

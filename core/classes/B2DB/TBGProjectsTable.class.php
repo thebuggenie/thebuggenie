@@ -187,7 +187,18 @@
 			$res = $this->select($crit, false);
 			return $res;
 		}
-		
+
+		public function quickfind($projectname)
+		{
+			$crit = $this->getCriteria();
+			$ctn = $crit->returnCriterion(self::NAME, "%{$projectname}%", Criteria::DB_LIKE);
+			$ctn->addOr(self::KEY, strtolower("%{$projectname}%"), Criteria::DB_LIKE);
+			$crit->addWhere($ctn);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+
+			return $this->select($crit);
+		}
+
 		public function getByKey($key)
 		{
 			$crit = $this->getCriteria();

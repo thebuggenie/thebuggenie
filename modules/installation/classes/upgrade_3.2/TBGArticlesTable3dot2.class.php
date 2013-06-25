@@ -10,7 +10,7 @@
 	class TBGArticlesTable3dot2 extends TBGB2DBTable 
 	{
 
-		const B2DB_TABLE_VERSION = 2;
+		const B2DB_TABLE_VERSION = 1;
 		const B2DBNAME = 'articles';
 		const ID = 'articles.id';
 		const NAME = 'articles.name';
@@ -20,7 +20,7 @@
 		const AUTHOR = 'articles.author';
 		const SCOPE = 'articles.scope';
 		
-		public function __construct()
+		public function _initialize()
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addVarchar(self::NAME, 255);

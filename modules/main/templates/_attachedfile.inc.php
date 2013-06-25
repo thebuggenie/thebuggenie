@@ -22,7 +22,7 @@
 		</td>
 		<?php if ($can_remove): ?>
 			<td style="width: 20px;">
-				<?php echo javascript_link_tag(image_tag('action_delete.png'), array('class' => 'image', 'id' => $base_id . '_' . $file_id . '_remove_link', 'onclick' => "$('{$base_id}_{$file_id}_remove_confirm').toggle();")); ?>
+				<?php echo javascript_link_tag(__('Remove'), array('class' => 'button button-silver', 'id' => $base_id . '_' . $file_id . '_remove_link', 'onclick' => "$('{$base_id}_{$file_id}_remove_confirm').toggle();")); ?>
 				<?php echo image_tag('spinning_16.gif', array('id' => $base_id . '_' . $file_id . '_remove_indicator', 'style' => 'display: none;')); ?>
 			</td>
 		<?php endif; ?>

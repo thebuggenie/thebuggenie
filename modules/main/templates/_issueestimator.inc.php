@@ -8,11 +8,11 @@
 			<?php if ($field == 'estimated_time'): ?>
 				<?php echo __('Estimate this issue'); ?>
 			<?php else: ?>
-				<?php echo __('Time spent on this issue'); ?>
+				<?php echo __('Log time spent on this issue'); ?>
 			<?php endif; ?>
 		</div>
 	<?php endif; ?>
-		<?php if (!isset($clear) || $clear == true): ?>
+		<?php if ($field == 'estimated_time' && (!isset($clear) || $clear == true)): ?>
 			<div class="dropdown_content">
 				<a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $project_key, 'issue_id' => $issue_id, 'field' => $field, 'value' => 0)); ?>', '<?php echo $field; ?>');"><?php echo ($field == 'estimated_time') ? __('Clear current estimate') : __('Clear time spent on this issue'); ?></a><br>
 			</div>
@@ -22,12 +22,12 @@
 				<?php if ($field == 'estimated_time'): ?>
 					<?php echo trim(__('%clear_current_estimate% type a new estimate %or_specify_below%', array('%clear_current_estimate%' => '', '%or_specify_below%' => ''))); ?>:
 				<?php else: ?>
-					<?php echo trim(__('%clear_current_time_spent% type a new value for time spent %or_specify_below%', array('%clear_current_time_spent%' => '', '%or_specify_below%' => ''))); ?>:
+					<?php echo trim(__('Type a value for the time spent %or_specify_below%', array('%clear_current_time_spent%' => '', '%or_specify_below%' => ''))); ?>:
 				<?php endif; ?>
 			</label><br>
 			<input type="text" name="<?php echo $field; ?>" id="<?php echo $field . '_' . $issue_id; ?>_input" placeholder="<?php echo ($field == 'estimated_time') ? __('Enter your estimate here') : __('Enter time spent here'); ?>" style="width: 240px; padding: 1px 1px 1px;">
 		<?php if (!isset($save) || $save == true): ?>
-			<input type="submit" style="width: 60px;" value="<?php echo __('Set'); ?>">
+			<input type="submit" style="width: 60px;" value="<?php echo ($field == 'estimated_time') ? __('Set') : __('Add'); ?>">
 		<?php endif; ?>
 		<?php if (!isset($headers) || $headers == true): ?>
 			<div class="faded_out" style="padding: 5px 0 5px 0;">
@@ -36,16 +36,16 @@
 		<?php endif; ?>
 		</div>
 		<div class="dropdown_content">
-			<label for="<?php echo $field . '_' . $issue_id; ?>_months"><?php echo __('%enter_a_value_in_plain_text% or specify below', array('%enter_a_value_in_plain_text%' => '')); ?>:</label><br>
-			<input type="text" style="width: 20px;" value="<?php echo $months; ?>" name="months" id="<?php echo $field . '_' . $issue_id; ?>_months_input"><b><?php echo __('%number_of% months', array('%number_of%' => '')); ?></b><?php if (isset($mode) && $mode == 'inline'): ?>&nbsp;<?php else: ?><br><?php endif; ?>
-			<input type="text" style="width: 20px;" value="<?php echo $weeks; ?>" name="weeks" id="<?php echo $field . '_' . $issue_id; ?>_weeks_input"><b><?php echo __('%number_of% weeks', array('%number_of%' => '')); ?></b><?php if (isset($mode) && $mode == 'inline'): ?>&nbsp;<?php else: ?><br><?php endif; ?>
-			<input type="text" style="width: 20px;" value="<?php echo $days; ?>" name="days" id="<?php echo $field . '_' . $issue_id; ?>_days_input"><b><?php echo __('%number_of% days', array('%number_of%' => '')); ?></b><?php if (isset($mode) && $mode == 'inline'): ?>&nbsp;<?php else: ?><br><?php endif; ?>
-			<input type="text" style="width: 20px;" value="<?php echo $hours; ?>" name="hours" id="<?php echo $field . '_' . $issue_id; ?>_hours_input"><b><?php echo __('%number_of% hours', array('%number_of%' => '')); ?></b><?php if (isset($mode) && $mode == 'inline'): ?>&nbsp;<?php else: ?><br><?php endif; ?>
+		<label for="<?php echo $field . '_' . $issue_id; ?>_months"><?php echo __('%enter_a_value_in_plain_text% or specify below', array('%enter_a_value_in_plain_text%' => '')); ?>:</label><br>
+		<input type="text" style="width: 20px;" value="<?php echo $hours; ?>" name="hours" id="<?php echo $field . '_' . $issue_id; ?>_hours_input"><b><?php echo __('%number_of% hours', array('%number_of%' => '')); ?></b><?php if (isset($mode) && $mode == 'inline'): ?>&nbsp;<?php else: ?><br><?php endif; ?>
+		<input type="text" style="width: 20px;" value="<?php echo $days; ?>" name="days" id="<?php echo $field . '_' . $issue_id; ?>_days_input"><b><?php echo __('%number_of% days', array('%number_of%' => '')); ?></b><?php if (isset($mode) && $mode == 'inline'): ?>&nbsp;<?php else: ?><br><?php endif; ?>
+		<input type="text" style="width: 20px;" value="<?php echo $weeks; ?>" name="weeks" id="<?php echo $field . '_' . $issue_id; ?>_weeks_input"><b><?php echo __('%number_of% weeks', array('%number_of%' => '')); ?></b><?php if (isset($mode) && $mode == 'inline'): ?>&nbsp;<?php else: ?><br><?php endif; ?>
+		<input type="text" style="width: 20px;" value="<?php echo $months; ?>" name="months" id="<?php echo $field . '_' . $issue_id; ?>_months_input"><b><?php echo __('%number_of% months', array('%number_of%' => '')); ?></b><?php if (isset($mode) && $mode == 'inline'): ?>&nbsp;<?php else: ?><br><?php endif; ?>
+		<input type="text" style="width: 20px;" value="<?php echo $points; ?>" name="points" id="<?php echo $field . '_' . $issue_id; ?>_points_input"><b><?php echo __('%number_of% points', array('%number_of%' => '')); ?></b><br>
 		<?php if (!isset($save) || $save == true): ?>
 			<a href="javascript:void(0);" onclick="$('<?php echo $field . '_' . $issue_id; ?>_change').hide();" style="float: right; margin-left: 5px;" class="button button-silver"><?php echo __('Cancel'); ?></a>
-			<input type="submit" style="float: right;" value="<?php echo __('Save'); ?>">
+			<input type="submit" style="float: right;" value="<?php echo ($field == 'estimated_time') ? __('Save') : __('Add time spent'); ?>">
 		<?php endif; ?>
-			<input type="text" style="width: 20px;" value="<?php echo $points; ?>" name="points" id="<?php echo $field . '_' . $issue_id; ?>_points_input"><b><?php echo __('%number_of% points', array('%number_of%' => '')); ?></b><br>
 		</div>
 <?php if (!isset($save) || $save == true): ?>
 	</form>

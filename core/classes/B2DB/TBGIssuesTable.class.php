@@ -111,7 +111,7 @@
 
 		public static function getValidSearchFilters()
 		{
-			return array('project_id', 'text', 'state', 'issuetype', 'status', 'resolution', 'reproducability', 'category', 'severity', 'priority', 'posted_by', 'assignee_user', 'assignee_team', 'owner_user', 'owner_team', 'component', 'build', 'edition', 'posted', 'last_updated', 'milestone');
+			return array('project_id', 'subprojects', 'text', 'state', 'issuetype', 'status', 'resolution', 'reproducability', 'category', 'severity', 'priority', 'posted_by', 'assignee_user', 'assignee_team', 'owner_user', 'owner_team', 'component', 'build', 'edition', 'posted', 'last_updated', 'milestone');
 		}
 
 		public function getCountsByProjectID($project_id)
@@ -624,8 +624,34 @@
 								$crit->addWhere($ctn);
 							}
 						}
+						elseif ($filter == 'subprojects')
+						{
+							if (TBGContext::isProjectContext())
+							{
+								$ctn = $crit->returnCriterion(self::PROJECT_ID, TBGContext::getCurrentProject()->getID());
+								switch ($filter_info['value'])
+								{
+									case 'all':
+										$subprojects = TBGProject::getIncludingAllSubprojectsAsArray(TBGContext::getCurrentProject());
+										foreach ($subprojects as $subproject)
+										{
+											if ($subproject->getID() == TBGContext::getCurrentProject()->getID()) continue;
+											$ctn->addOr(self::PROJECT_ID, $subproject->getID());
+										}
+										break;
+									case 'none':
+										break;
+									default:
+										$ctn->addOr(self::PROJECT_ID, (int) $filter_info['value']);
+										break;
+								}
+								$crit->addWhere($ctn);
+							}
+						}
 						elseif (in_array($filter, self::getValidSearchFilters()))
 						{
+							if ($filter == 'project_id' && array_key_exists('subprojects', $filters)) continue;
+
 							$crit->addWhere($dbname.'.'.$filter, $filter_info['value'], urldecode($filter_info['operator']));
 						}
 						elseif (TBGCustomDatatype::doesKeyExist($filter))
@@ -662,8 +688,34 @@
 									$crit->addWhere($ctn);
 								}
 							}
+							elseif ($filter == 'subprojects')
+							{
+								if (TBGContext::isProjectContext())
+								{
+									$ctn = $crit->returnCriterion(self::PROJECT_ID, TBGContext::getCurrentProject()->getID());
+									switch ($first_val['value'])
+									{
+										case 'all':
+											$subprojects = TBGProject::getIncludingAllSubprojectsAsArray(TBGContext::getCurrentProject());
+											foreach ($subprojects as $subproject)
+											{
+												if ($subproject->getID() == TBGContext::getCurrentProject()->getID()) continue;
+												$ctn->addOr(self::PROJECT_ID, $subproject->getID());
+											}
+											break;
+										case 'none':
+											break;
+										default:
+											$ctn->addOr(self::PROJECT_ID, (int) $first_val['value']);
+											break;
+									}
+									$crit->addWhere($ctn);
+								}
+							}
 							else
 							{
+								if ($filter == 'project_id' && array_key_exists('subprojects', $filters)) continue;
+
 								$ctn = $crit->returnCriterion($dbname.'.'.$filter, $first_val['value'], urldecode($first_val['operator']));
 								if (count($filter_info) > 0)
 								{
@@ -940,6 +992,7 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::ID, $issue_id, Criteria::DB_GREATER_THAN);
 			$crit->addWhere(self::PROJECT_ID, $project_id);
+			$crit->addWhere(self::DELETED, false);
 			if ($only_open) $crit->addWhere(self::STATE, TBGIssue::STATE_OPEN);
 
 			$crit->addOrderBy(self::ISSUE_NO, Criteria::SORT_ASC);
@@ -952,6 +1005,7 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::ID, $issue_id, Criteria::DB_LESS_THAN);
 			$crit->addWhere(self::PROJECT_ID, $project_id);
+			$crit->addWhere(self::DELETED, false);
 			if ($only_open) $crit->addWhere(self::STATE, TBGIssue::STATE_OPEN);
 
 			$crit->addOrderBy(self::ISSUE_NO, Criteria::SORT_DESC);

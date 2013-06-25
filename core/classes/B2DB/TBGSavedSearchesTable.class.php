@@ -37,9 +37,21 @@
 					$filters['project_id'] = array('operator' => '=', 'value' => TBGContext::getCurrentProject()->getID());
 					$groupby = 'issuetype';
 					break;
+				case TBGContext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES_INCLUDING_SUBPROJECTS:
+					$filters['state'] = array('operator' => '=', 'value' => TBGIssue::STATE_OPEN);
+					$filters['project_id'] = array('operator' => '=', 'value' => TBGContext::getCurrentProject()->getID());
+					$filters['subprojects'] = array('operator' => '=', 'value' => 'all');
+					$groupby = 'issuetype';
+					break;
 				case TBGContext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES:
 					$filters['state'] = array('operator' => '=', 'value' => TBGIssue::STATE_CLOSED);
 					$filters['project_id'] = array('operator' => '=', 'value' => TBGContext::getCurrentProject()->getID());
+					$groupby = 'issuetype';
+					break;
+				case TBGContext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES_INCLUDING_SUBPROJECTS:
+					$filters['state'] = array('operator' => '=', 'value' => TBGIssue::STATE_CLOSED);
+					$filters['project_id'] = array('operator' => '=', 'value' => TBGContext::getCurrentProject()->getID());
+					$filters['subprojects'] = array('operator' => '=', 'value' => 'all');
 					$groupby = 'issuetype';
 					break;
 				case TBGContext::PREDEFINED_SEARCH_PROJECT_WISHLIST:

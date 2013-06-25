@@ -16,10 +16,7 @@
 		</table>
 		</div>
 		<div style="text-align: right; border-top: 1px dotted #CCC; padding-top: 5px;">
-			<select id="relate_issue_with_selected" name="relate_action">
-				<option value="relate_children" selected><?php echo __('Mark selected issues as child issues of this issue'); ?></option>
-				<option value="relate_parents"><?php echo __('Mark selected issues as parent issues of this issue'); ?></option>
-			</select>
+			<input type="hidden" id="relate_issue_with_selected" name="relate_action" value="relate_children">
 			<input type="submit" value="<?php echo __('Relate these issues'); ?>">
 			<?php echo image_tag('spinning_20.gif', array('id' => 'relate_issues_indicator', 'style' => 'display: none;')); ?><br>
 		</div>

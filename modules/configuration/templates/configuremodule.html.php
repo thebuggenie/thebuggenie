@@ -27,7 +27,7 @@
 				<?php endif; ?>
 				<?php if ($module_message !== null): ?>
 					<div class="greenbox" style="margin: 5px 0px 5px 0px; width: 730px;" id="module_message">
-						<div class="header"><?php echo $module_message; ?></div>
+						<?php echo $module_message; ?>
 					</div>
 				<?php endif; ?>
 				<?php include_component($module->getName() . '/settings', array('access_level' => $access_level, 'module' => $module)); ?>

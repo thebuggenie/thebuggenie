@@ -79,27 +79,24 @@
 		{
 			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addInteger(self::ISSUE_NO, 10);
-			parent::_addVarchar(self::TITLE, 200);
+			parent::_addVarchar(self::TITLE, 255);
 			parent::_addInteger(self::POSTED, 10);
 			parent::_addInteger(self::LAST_UPDATED, 10);
+			parent::_addInteger(self::PROJECT_ID, 10);
 			parent::_addText(self::DESCRIPTION, false);
 			parent::_addBoolean(self::STATE);
-			parent::_addInteger(self::OWNER, 10);
-			parent::_addInteger(self::OWNER_TYPE, 2);
+			parent::_addInteger(self::POSTED_BY, 10);
 			parent::_addFloat(self::USER_PAIN, 3);
 			parent::_addInteger(self::PAIN_BUG_TYPE, 3);
 			parent::_addInteger(self::PAIN_EFFECT, 3);
 			parent::_addInteger(self::PAIN_LIKELIHOOD, 3);
-			parent::_addInteger(self::ASSIGNED_TO, 10);
 			parent::_addText(self::REPRODUCTION_STEPS, false);
+			parent::_addInteger(self::RESOLUTION, 10);
+			parent::_addInteger(self::ISSUE_TYPE, 10);
 			parent::_addInteger(self::STATUS, 10);
 			parent::_addInteger(self::PRIORITY, 10);
 			parent::_addInteger(self::CATEGORY, 10);
 			parent::_addInteger(self::SEVERITY, 10);
-			parent::_addInteger(self::POSTED_BY, 10);
-			parent::_addInteger(self::PROJECT_ID, 10);
-			parent::_addInteger(self::RESOLUTION, 10);
-			parent::_addInteger(self::ISSUE_TYPE, 10);
 			parent::_addInteger(self::REPRODUCABILITY, 10);
 			parent::_addVarchar(self::SCRUMCOLOR, 7, '#FFFFFF');
 			parent::_addInteger(self::ESTIMATED_MONTHS, 10);
@@ -114,7 +111,6 @@
 			parent::_addInteger(self::VOTES_TOTAL, 10);
 			parent::_addInteger(self::SPENT_POINTS);
 			parent::_addInteger(self::PERCENT_COMPLETE, 2);
-			parent::_addInteger(self::ASSIGNED_TYPE, 2);
 			parent::_addInteger(self::DUPLICATE_OF, 10);
 			parent::_addBoolean(self::DELETED);
 			parent::_addBoolean(self::BLOCKING);
@@ -124,6 +120,10 @@
 			parent::_addInteger(self::MILESTONE, 10);
 			parent::_addInteger(self::WORKFLOW_STEP_ID, 10);
 			parent::_addInteger(self::SCOPE, 10);
+			parent::_addInteger(self::OWNER_USER, 10);
+			parent::_addInteger(self::OWNER_TEAM, 10);
+			parent::_addInteger(self::ASSIGNEE_TEAM, 10);
+			parent::_addInteger(self::ASSIGNEE_USER, 10);
 		}
 
 	}

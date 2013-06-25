@@ -65,17 +65,17 @@
 					<td id="title_field">
 						<div class="viewissue_title hoverable">
 							<span class="faded_out <?php if ($issue->isTitleChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isTitleMerged()): ?> issue_detail_unmerged<?php endif; ?>" id="title_header">
+								<?php include_template('issueparent_crumbs', array('issue' => $issue)); ?>
+							</span>
+							<span id="issue_title">
 								<?php if ($issue->isEditable() && $issue->canEditTitle()): ?>
 									<?php echo image_tag('icon_edit.png', array('class' => 'dropdown', 'id' => 'title_edit', 'onclick' => "$('title_change').show(); $('title_name').hide(); $('no_title').hide();")); ?>
 									<a class="undo" href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'title')); ?>', 'title');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
 									<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'title_undo_spinning')); ?>
 								<?php endif; ?>
-								<?php echo $issue->isClosed() ? mb_strtoupper(__('Closed')) : mb_strtoupper(__('Open')); ?>&nbsp;&nbsp;<b><?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), __('%issuetype% %issue_no%', array('%issuetype%' => (($issue->hasIssueType()) ? $issue->getIssueType()->getName() : __('Unknown issuetype')), '%issue_no%' => $issue->getFormattedIssueNo(true)))); ?>&nbsp;&nbsp;-&nbsp;</b>
-							</span>
-							<span id="issue_title">
 								<span id="title_content" class="<?php if ($issue->isTitleChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isTitleMerged()): ?> issue_detail_unmerged<?php endif; ?>">
 									<span class="faded_out" id="no_title" <?php if ($issue->getTitle() != ''):?> style="display: none;" <?php endif; ?>><?php echo __('Nothing entered.'); ?></span>
-									<span id="title_name" style="font-weight: bold;">
+									<span id="title_name" title="<?php echo tbg_decodeUTF8($issue->getTitle()); ?>">
 										<?php echo tbg_decodeUTF8($issue->getTitle()); ?>
 									</span>
 								</span>
@@ -89,9 +89,6 @@
 								<span id="title_change_error" class="error_message" style="display: none;"></span>
 							</span>
 							<?php endif; ?>
-						</div>
-						<div style="font-size: 12px;">
-							<?php echo '<b>' . __('Posted %posted_at_time% - updated %last_updated_at_time%', array('%posted_at_time%' => '</b><i title="'.tbg_formatTime($issue->getPosted(), 21).'">' . tbg_formatTime($issue->getPosted(), 20) . '</i><b>', '%last_updated_at_time%' => '</b><i title="'.tbg_formatTime($issue->getLastUpdatedTime(), 21).'">' . tbg_formatTime($issue->getLastUpdatedTime(), 20) . '</i>')); ?>
 						</div>
 					</td>
 					<td style="width: 100px; text-align: right;<?php if (!$issue->isVotesVisible()): ?> display: none;<?php endif; ?>" id="votes_additional">
@@ -315,14 +312,17 @@
 		</div>
 		<div id="viewissue_left_box_top">
 			<div id="issue_view">
-				<fieldset id="issue_details">
-					<legend><?php echo __('Issue details'); ?></legend>
-					<?php TBGEvent::createNew('core', 'viewissue_left_top', $issue)->trigger(); ?>
+				<div id="issue_details">
+					<div class="collapser_link" onclick="$('issue_details').toggleClassName('collapsed');TBG.Core._resizeWatcher();">
+						<a href="javascript:void(0);" class="image">
+							<?php echo image_tag('sidebar_collapse.png', array('class' => 'collapser')); ?>
+							<?php echo image_tag('sidebar_expand.png', array('class' => 'expander')); ?>
+						</a>
+					</div>
 					<?php include_component('main/issuedetailslisteditable', array('issue' => $issue)); ?>
 					<div style="clear: both; margin-bottom: 5px;"> </div>
-					<?php TBGEvent::createNew('core', 'viewissue_left_bottom', $issue)->trigger(); ?>
-				</fieldset>
-				<div class="issue_main">
+				</div>
+				<div class="issue_main" id="issue_main">
 					<?php TBGEvent::createNew('core', 'viewissue_right_top', $issue)->trigger(); ?>
 					<fieldset id="description_field"<?php if (!$issue->isDescriptionVisible()): ?> style="display: none;"<?php endif; ?> class="viewissue_description<?php if ($issue->isDescriptionChanged()): ?> issue_detail_changed<?php endif; ?><?php if (!$issue->isDescriptionMerged()): ?> issue_detail_unmerged<?php endif; ?> hoverable">
 						<legend id="description_header">
@@ -330,9 +330,9 @@
 								<a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'description')); ?>', 'description');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a> <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'description_undo_spinning')); ?>
 								<?php echo image_tag('icon_edit.png', array('class' => 'dropdown', 'id' => 'description_edit', 'onclick' => "$('description_change').show(); $('description_name').hide(); $('no_description').hide();", 'title' => __('Click here to edit description'))); ?>
 							<?php endif; ?>
-							<?php echo __('Issue description'); ?>
+							<?php echo __('Description'); ?>
 						</legend>
-						<div id="description_content" class="<?php if ($issue->isDescriptionChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isDescriptionMerged()): ?> issue_detail_unmerged<?php endif; ?>">
+						<div id="description_content" class="resizable <?php if ($issue->isDescriptionChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isDescriptionMerged()): ?> issue_detail_unmerged<?php endif; ?>">
 							<div class="faded_out" id="no_description" <?php if ($issue->getDescription() != ''):?> style="display: none;" <?php endif; ?>><?php echo __('Nothing entered.'); ?></div>
 							<div id="description_name" class="issue_inline_description">
 								<?php if ($issue->getDescription()): ?>
@@ -341,7 +341,7 @@
 							</div>
 						</div>
 						<?php if ($issue->isEditable() && $issue->canEditDescription()): ?>
-							<div id="description_change" style="display: none;">
+							<div id="description_change" style="display: none;" class="resizable">
 								<form id="description_form" action="<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'description')); ?>" method="post" onSubmit="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'description')) ?>', 'description'); return false;">
 									<?php include_template('main/textarea', array('area_name' => 'value', 'area_id' => 'description_form_value', 'height' => '250px', 'width' => '100%', 'value' => htmlentities($issue->getDescription(), ENT_COMPAT, TBGContext::getI18n()->getCharset()))); ?>
 									<br>
@@ -360,7 +360,7 @@
 							<?php endif; ?>
 							<?php echo __('Steps to reproduce this issue'); ?>
 						</legend>
-						<div id="reproduction_steps_content" class="<?php if ($issue->isReproduction_StepsChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isReproduction_StepsMerged()): ?> issue_detail_unmerged<?php endif; ?>">
+						<div id="reproduction_steps_content" class="resizable <?php if ($issue->isReproduction_StepsChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isReproduction_StepsMerged()): ?> issue_detail_unmerged<?php endif; ?>">
 							<div class="faded_out" id="no_reproduction_steps" <?php if ($issue->getReproductionSteps() != ''):?> style="display: none;" <?php endif; ?>><?php echo __('Nothing entered.'); ?></div>
 							<div id="reproduction_steps_name" class="issue_inline_description">
 								<?php if ($issue->getReproductionSteps()): ?>
@@ -369,7 +369,7 @@
 							</div>
 						</div>
 						<?php if ($issue->isEditable() && $issue->canEditReproductionSteps()): ?>
-							<div id="reproduction_steps_change" style="display: none;">
+							<div id="reproduction_steps_change" class="resizable" style="display: none;">
 								<form id="reproduction_steps_form" action="<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'reproduction_steps')); ?>" method="post" onSubmit="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'reproduction_steps')) ?>', 'reproduction_steps'); return false;">
 									<?php include_template('main/textarea', array('area_name' => 'value', 'area_id' => 'reproduction_steps_form_value', 'height' => '250px', 'width' => '100%', 'value' => htmlentities($issue->getReproductionSteps(), ENT_COMPAT, TBGContext::getI18n()->getCharset()))); ?>
 									<br>
@@ -380,7 +380,6 @@
 							</div>
 						<?php endif; ?>
 					</fieldset>
-					<br />
 					<?php include_component('main/issuemaincustomfields', array('issue' => $issue)); ?>
 					<?php TBGEvent::createNew('core', 'viewissue_right_bottom', $issue)->trigger(); ?>
 				</div>
@@ -390,9 +389,7 @@
 		<div style="clear: both; height: 30px; margin: 20px 5px 0 5px;" class="tab_menu inset">
 			<ul id="viewissue_menu">
 				<li id="tab_comments" class="selected"><?php echo javascript_link_tag(image_tag('viewissue_tab_comments.png') . __('Comments (%count%)', array('%count%' => '<span id="viewissue_comment_count">'.$issue->getCommentCount().'</span>')), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_comments', 'viewissue_menu');")); ?></li>
-				<li id="tab_attached_information"><?php echo javascript_link_tag(image_tag('viewissue_tab_attachments.png') . __('Attachments (%count%)', array('%count%' => '<span id="viewissue_uploaded_attachments_count">'.(count($issue->getLinks()) + count($issue->getFiles())).'</span>')), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_attached_information', 'viewissue_menu');")); ?></li>
 				<li id="tab_affected"><?php echo javascript_link_tag(image_tag('viewissue_tab_affected.png') . __('Affects (%count%)', array('%count%' => '<span id="viewissue_affects_count">'.$affected_count.'</span>')), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_affected', 'viewissue_menu');")); ?></li>
-				<li id="tab_related_issues_and_tasks"><?php echo javascript_link_tag(image_tag('spinning_16.gif', array('style' => 'display: none;', 'id' => 'related_issues_indicator')) . image_tag('viewissue_tab_related.png') . __('Related to (%count%)', array('%count%' => '<span id="viewissue_related_issues_count">'.(count($issue->getParentIssues())+count($issue->getChildIssues())).'</span>')), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_related_issues_and_tasks', 'viewissue_menu');")); ?></li>
 				<li id="tab_duplicate_issues"><?php echo javascript_link_tag(image_tag('viewissue_tab_duplicate.png') . __('Duplicates (%count%)', array('%count%' => '<span id="viewissue_duplicate_issues_count">'.(count($issue->getDuplicateIssues())).'</span>')), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_duplicate_issues', 'viewissue_menu');")); ?></li>
 				<?php TBGEvent::createNew('core', 'viewissue_tabs', $issue)->trigger(); ?>
 				<li id="tab_log"><?php echo javascript_link_tag(image_tag('viewissue_tab_log.png') . __('History'), array('onclick' => "TBG.Issues.showLog('".make_url('issue_log', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID()))."');")); ?></li>
@@ -408,30 +405,6 @@
 			<div id="tab_log_pane" style="padding-top: 0; margin: 5px; display: none;">
 				<div id="viewissue_log_loading_indicator"><?php echo image_tag('spinning_32.gif'); ?></div>
 				<div id="viewissue_log_items">
-				</div>
-			</div>
-			<div id="tab_attached_information_pane" style="padding-top: 0; margin: 0 5px 0 5px; display: none;">
-				<div id="viewissue_attached_information">
-					<div class="no_items" id="viewissue_no_uploaded_files"<?php if (count($issue->getFiles()) + count($issue->getLinks()) > 0): ?> style="display: none;"<?php endif; ?>><?php echo __('There is nothing attached to this issue'); ?></div>
-					<table style="table-layout: fixed; width: 100%; background-color: #FFF;" cellpadding=0 cellspacing=0>
-						<tbody id="viewissue_uploaded_links" class="hover_highlight">
-							<?php foreach ($issue->getLinks() as $link_id => $link): ?>
-								<?php include_template('attachedlink', array('issue' => $issue, 'link' => $link, 'link_id' => $link_id)); ?>
-							<?php endforeach; ?>
-						</tbody>
-					</table>
-					<table style="table-layout: fixed; width: 100%; background-color: #FFF;" cellpadding=0 cellspacing=0>
-						<tbody id="viewissue_uploaded_files" class="hover_highlight">
-							<?php foreach ($issue->getFiles() as $file_id => $file): ?>
-								<?php include_component('main/attachedfile', array('base_id' => 'viewissue_files', 'mode' => 'issue', 'issue' => $issue, 'file' => $file)); ?>
-							<?php endforeach; ?>
-						</tbody>
-					</table>
-				</div>
-			</div>
-			<div id="tab_related_issues_and_tasks_pane" style="padding-top: 5px; margin: 0 5px 0 5px; display: none;">
-				<div id="viewissue_related">
-					<?php include_component('main/relatedissues', array('issue' => $issue)); ?>
 				</div>
 			</div>
 			<div id="tab_duplicate_issues_pane" style="padding-top: 0; margin: 0 5px 0 5px; display: none;">

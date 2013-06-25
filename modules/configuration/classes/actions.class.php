@@ -482,12 +482,13 @@
 		{
 			$i18n = TBGContext::getI18n();
 			$builtin_types = array();
-			$builtin_types['status'] = array('description' => $i18n->__('Status types'), 'key' => 'status');
-			$builtin_types['resolution'] = array('description' => $i18n->__('Resolution types'), 'key' => 'resolution');
-			$builtin_types['priority'] = array('description' => $i18n->__('Priority levels'), 'key' => 'priority');
-			$builtin_types['severity'] = array('description' => $i18n->__('Severity levels'), 'key' => 'severity');
-			$builtin_types['category'] = array('description' => $i18n->__('Categories'), 'key' => 'category');
-			$builtin_types['reproducability'] = array('description' => $i18n->__('Reproducability'), 'key' => 'reproducability');
+			$builtin_types[TBGDatatype::STATUS] = array('description' => $i18n->__('Status types'), 'key' => TBGDatatype::STATUS);
+			$builtin_types[TBGDatatype::RESOLUTION] = array('description' => $i18n->__('Resolution types'), 'key' => TBGDatatype::RESOLUTION);
+			$builtin_types[TBGDatatype::PRIORITY] = array('description' => $i18n->__('Priority levels'), 'key' => TBGDatatype::PRIORITY);
+			$builtin_types[TBGDatatype::SEVERITY] = array('description' => $i18n->__('Severity levels'), 'key' => TBGDatatype::SEVERITY);
+			$builtin_types[TBGDatatype::CATEGORY] = array('description' => $i18n->__('Categories'), 'key' => TBGDatatype::CATEGORY);
+			$builtin_types[TBGDatatype::REPRODUCABILITY] = array('description' => $i18n->__('Reproducability'), 'key' => TBGDatatype::REPRODUCABILITY);
+			$builtin_types[TBGDatatype::ACTIVITYTYPE] = array('description' => $i18n->__('Activity types'), 'key' => TBGDatatype::ACTIVITYTYPE);
 
 			$this->builtin_types = $builtin_types;
 			$this->custom_types = TBGCustomDatatype::getAll();

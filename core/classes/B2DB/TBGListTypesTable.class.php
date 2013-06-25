@@ -23,7 +23,7 @@
 	 * @Table(name="listtypes")
 	 * @Entity(class="TBGDatatypeBase")
 	 * @Entities(identifier="itemtype")
-	 * @SubClasses(status="TBGStatus", category="TBGCategory", priority="TBGPriority", role="TBGRole", resolution="TBGResolution", reproducability="TBGReproducability", severity="TBGSeverity")
+	 * @SubClasses(status="TBGStatus", category="TBGCategory", priority="TBGPriority", role="TBGRole", resolution="TBGResolution", reproducability="TBGReproducability", severity="TBGSeverity", activitytype="TBGActivityType")
 	 */
 	class TBGListTypesTable extends TBGB2DBTable 
 	{
@@ -107,13 +107,13 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::ITEMTYPE, TBGDatatype::STATUS);
 			$crit->addJoin(TBGScopesTable::getTable(), TBGScopesTable::ID, self::SCOPE);
-			$res = $this->select($crit);
+			$res = $this->doSelect($crit);
 			
 			$statuses = array();
 			while ($row = $res->getNextRow())
 			{
-				if (array_key_exists($row[self::SCOPE], $statuses)) $statuses[$row[self::SCOPE]] = array('scopename' => $row[TBGScopesTable::NAME], 'statuses' => array());
-				$statuses[$row[self::SCOPE]]['statuses'][self::ID] = self::NAME;
+				if (!array_key_exists($row[self::SCOPE], $statuses)) $statuses[$row[self::SCOPE]] = array('scopename' => $row[TBGScopesTable::NAME], 'statuses' => array());
+				$statuses[$row[self::SCOPE]]['statuses'][$row[self::ID]] = $row[self::NAME];
 			}
 			
 			return $statuses;

@@ -1476,6 +1476,101 @@
 			
 		}
 
+		public function runIssueDeleteTimeSpent(TBGRequest $request)
+		{
+			if ($issue_id = $request['issue_id'])
+			{
+				try
+				{
+					$issue = TBGIssuesTable::getTable()->selectById($issue_id);
+					if ($entry_id = $request['entry_id'])
+					{
+						$spenttime = TBGIssueSpentTimesTable::getTable()->selectById($entry_id);
+					}
+				}
+				catch (Exception $e)
+				{
+					$this->getResponse()->setHttpStatus(400);
+					return $this->renderText('fail');
+				}
+			}
+			else
+			{
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderText('no issue');
+			}
+
+			$spenttime->delete();
+			$spenttime->getIssue()->save();
+			$timesum = array_sum($spenttime->getIssue()->getSpentTime());
+
+			return $this->renderJSON(array('deleted' => 'ok', 'issue_id' => $issue_id, 'timesum' => $timesum, 'spenttime' => $spenttime->getIssue()->getFormattedTime($spenttime->getIssue()->getSpentTime())));
+		}
+
+		public function runIssueEditTimeSpent(TBGRequest $request)
+		{
+			$entry_id = $request['entry_id'];
+			$spenttime = ($entry_id) ? TBGIssueSpentTimesTable::getTable()->selectById($entry_id) : new TBGIssueSpentTime();
+
+			if ($issue_id = $request['issue_id'])
+			{
+				try
+				{
+					$issue = TBGContext::factory()->TBGIssue($issue_id);
+				}
+				catch (Exception $e)
+				{
+					$this->getResponse()->setHttpStatus(400);
+					return $this->renderText('fail');
+				}
+			}
+			else
+			{
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderText('no issue');
+			}
+
+			if (!$spenttime->getID())
+			{
+				if ($request['timespent_manual'])
+				{
+					$times = TBGIssue::convertFancyStringToTime($request['timespent_manual']);
+				}
+				else
+				{
+					$times = array('points' => 0, 'hours' => 0, 'days' => 0, 'weeks' => 0, 'months' => 0);
+					$times[$request['timespent_specified_type']] = $request['timespent_specified_value'];
+				}
+				$spenttime->setIssue($issue);
+				$spenttime->setUser($this->getUser());
+			}
+			else
+			{
+				$times = array('points' => $request['points'],
+								'hours' => $request['hours'],
+								'days' => $request['days'],
+								'weeks' => $request['weeks'],
+								'months' => $request['months']);
+				$edited_at = $request['edited_at'];
+				$spenttime->setEditedAt(mktime(0, 0, 1, $edited_at['month'], $edited_at['day'], $edited_at['year']));
+			}
+			$times['hours'] *= 100;
+			$spenttime->setSpentPoints($times['points']);
+			$spenttime->setSpentHours($times['hours']);
+			$spenttime->setSpentDays($times['days']);
+			$spenttime->setSpentWeeks($times['weeks']);
+			$spenttime->setSpentMonths($times['months']);
+			$spenttime->setActivityType($request['timespent_activitytype']);
+			$spenttime->setComment($request['timespent_comment']);
+			$spenttime->save();
+
+			$spenttime->getIssue()->save();
+
+			$timesum = array_sum($spenttime->getIssue()->getSpentTime());
+
+			return $this->renderJSON(array('edited' => 'ok', 'issue_id' => $issue_id, 'timesum' => $timesum, 'spenttime' => $spenttime->getIssue()->getFormattedTime($spenttime->getIssue()->getSpentTime()), 'timeentries' => $this->getComponentHTML('main/issuespenttimes', array('issue' => $spenttime->getIssue()))));
+		}
+
 		/**
 		 * Sets an issue field to a specified value
 		 * 
@@ -1487,7 +1582,7 @@
 			{
 				try
 				{
-					$issue = TBGContext::factory()->TBGIssue($issue_id);
+					$issue = TBGIssuesTable::getTable()->selectById($issue_id);
 				}
 				catch (Exception $e)
 				{
@@ -1530,7 +1625,7 @@
 					else
 					{
 						$issue->setTitle($request->getRawParameter('value'));
-						return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>$issue->isTitleChanged(), 'field' => array('id' => 1, 'name' => strip_tags($issue->getTitle())), 'title' => strip_tags($issue->getTitle())));
+						return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>$issue->isTitleChanged(), 'field' => array('id' => 1, 'name' => strip_tags($issue->getTitle()))));
 					}
 					break;
 				case 'percent_complete':
@@ -1630,31 +1725,19 @@
 					
 					if ($request['spent_time'] != TBGContext::getI18n()->__('Enter time spent here') && $request['spent_time'])
 					{
-						$function = ($request->hasParameter('spent_time_added_text')) ? 'addSpentTime' : 'setSpentTime';
-						$issue->$function($request['spent_time']);
+						$issue->addSpentTime($request['spent_time']);
 					}
 					elseif ($request->hasParameter('value'))
 					{
-						$issue->setSpentTime($request['value']);
+						$issue->addSpentTime($request['value']);
 					}
 					else
 					{
-						if ($request->hasParameter('spent_time_added_input'))
-						{
-							$issue->addSpentMonths($request['months']);
-							$issue->addSpentWeeks($request['weeks']);
-							$issue->addSpentDays($request['days']);
-							$issue->addSpentHours($request['hours']);
-							$issue->addSpentPoints($request['points']);
-						}
-						else
-						{
-							$issue->setSpentMonths($request['months']);
-							$issue->setSpentWeeks($request['weeks']);
-							$issue->setSpentDays($request['days']);
-							$issue->setSpentHours($request['hours']);
-							$issue->setSpentPoints($request['points']);
-						}
+						$issue->addSpentMonths($request['months']);
+						$issue->addSpentWeeks($request['weeks']);
+						$issue->addSpentDays($request['days']);
+						$issue->addSpentHours($request['hours']);
+						$issue->addSpentPoints($request['points']);
 					}
 					return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>$issue->isSpentTimeChanged(), 'field' => (($issue->hasSpentTime()) ? array('id' => 1, 'name' => $issue->getFormattedTime($issue->getSpentTime())) : array('id' => 0)), 'values' => $issue->getSpentTime()));
 					break;
@@ -2879,6 +2962,14 @@
 						break;
 					case 'issue_subscribers':
 						$template_name = 'main/issuesubscribers';
+						break;
+					case 'issue_spenttimes':
+						$template_name = 'main/issuespenttimes';
+						$options['initial_view'] = $request->getParameter('initial_view', 'list');
+						break;
+					case 'issue_spenttime':
+						$template_name = 'main/issuespenttime';
+						$options['entry_id'] = $request->getParameter('entry_id');
 						break;
 					case 'relate_issue':
 						$template_name = 'main/relateissue';
