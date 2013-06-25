@@ -301,6 +301,13 @@
 								$link_diff = '/commit/%revno%';
 								$link_view = '/blobs/%revno%/%file%';
 								break;
+							case 'rhodecode':
+								$base_url = $web_path . '/' . $web_repo;
+								$link_rev = '/changeset/%revno%';
+								$link_file = '/changelog/%revno%/%file%';
+								$link_diff = '/diff/%file%?diff2=%revno%&amp;diff1=%oldrev%&amp;fulldiff=1&amp;diff=diff';
+								$link_view = '/files/%revno%/%file%';
+								break;
 						}
 						$this->saveSetting('browser_url_'.$projectId, $base_url);
 						$this->saveSetting('log_url_'.$projectId, $link_file);
