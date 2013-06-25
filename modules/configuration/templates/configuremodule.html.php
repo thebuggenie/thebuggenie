@@ -7,10 +7,10 @@
 	<tr>
 		<?php include_component('leftmenu', array('selected_section' => TBGSettings::CONFIGURATION_SECTION_MODULES)); ?>
 		<td valign="top" style="padding-left: 15px;">
-			<div style="width: 788px;" id="config_modules">
+			<div style="width: 730px;" id="config_modules">
 				<h3><?php echo __('Configure module "%module_name%"', array('%module_name%' => $module->getLongName())); ?></h3>
 				<?php if ($module_error !== null): ?>
-					<div class="rounded_box red borderless" style="margin: 5px 0px 5px 0px; color: #FFF; width: 750px;" id="module_error">
+					<div class="redbox" style="margin: 5px 0px 5px 0px;" id="module_error">
 						<div class="header"><?php echo $module_error; ?></div>
 						<div class="content"><b><?php echo __('Error details:'); ?></b><br>
 							<?php if ($module_error_details !== null): ?>
@@ -26,8 +26,8 @@
 					</div>
 				<?php endif; ?>
 				<?php if ($module_message !== null): ?>
-					<div class="rounded_box green borderless" style="margin: 5px 0px 5px 0px; width: 750px;" id="module_message">
-						<div class="header"><?php echo $module_message; ?></div>
+					<div class="greenbox" style="margin: 5px 0px 5px 0px; width: 730px;" id="module_message">
+						<?php echo $module_message; ?>
 					</div>
 				<?php endif; ?>
 				<?php include_component($module->getName() . '/settings', array('access_level' => $access_level, 'module' => $module)); ?>

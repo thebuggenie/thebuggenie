@@ -83,7 +83,7 @@
 			$res = $this->doInsert($crit);
 			$transaction->commitAndEnd();
 
-			return $res->getInsertID();
+			return $revision_number;
 		}
 
 		public function getHistoryByArticleName($article_name)
@@ -95,6 +95,27 @@
 			$res = $this->doSelect($crit);
 
 			return $res;
+		}
+
+		public function getUserIDsByArticleName($article_name)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::ARTICLE_NAME, $article_name);
+			$crit->addSelectionColumn(self::AUTHOR);
+
+			$res = $this->doSelect($crit);
+			$uids = array();
+			
+			if ($res)
+			{
+				while ($row = $res->getNextRow())
+				{
+					$a_id = $row[self::AUTHOR];
+					if ($a_id > 0) $uids[$a_id] = $a_id;
+				}
+			}
+
+			return $uids;
 		}
 
 		public function getRevisionContentFromArticleName($article_name, $from_revision, $to_revision = null)

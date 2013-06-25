@@ -1,4 +1,4 @@
-<div class="backdrop_box medium issuedetailspopup workflow_transition" style="padding: 5px; text-align: left; font-size: 13px; <?php if ($issue instanceof TBGIssue): ?>display: none;<?php endif; ?>" id="issue_transition_container_<?php echo $transition->getId(); ?>">
+<div class="backdrop_box large issuedetailspopup workflow_transition" style="padding: 5px; text-align: left; font-size: 13px; <?php if ($issue instanceof TBGIssue): ?>display: none;<?php endif; ?>" id="issue_transition_container_<?php echo $transition->getId(); ?>">
 	<div class="backdrop_detail_header"><?php echo $transition->getDescription(); ?></div>
 <?php if ($issue instanceof TBGIssue): ?>
 	<form action="<?php echo make_url('transition_issue', array('project_key' => $project->getKey(), 'issue_id' => $issue->getID(), 'transition_id' => $transition->getID())); ?>" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>">
@@ -38,8 +38,8 @@
 					<li class="duplicate_search">
 						<h6><?php echo __('Mark as duplicate of another, existing issue'); ?></h6>
 						<label for="viewissue_find_issue_<?php echo $transition->getID(); ?>_input"><?php echo __('Find issue(s)'); ?>&nbsp;</label>
-						<input class="button button-blue" style="float: right;" type="button" onclick="TBG.Issues.findDuplicate($('duplicate_finder_transition_<?php echo $transition->getID(); ?>').getValue(), <?php echo $transition->getID(); ?>);return false;" value="<?php echo __('Find'); ?>" id="viewissue_find_issue_<?php echo $transition->getID(); ?>_submit">
 						<input type="text" name="searchfor" id="viewissue_find_issue_<?php echo $transition->getID(); ?>_input">
+						<input class="button button-blue" type="button" onclick="TBG.Issues.findDuplicate($('duplicate_finder_transition_<?php echo $transition->getID(); ?>').getValue(), <?php echo $transition->getID(); ?>);return false;" value="<?php echo __('Find'); ?>" id="viewissue_find_issue_<?php echo $transition->getID(); ?>_submit">
 						<?php echo image_tag('spinning_20.gif', array('id' => 'find_issue_'.$transition->getID().'_indicator', 'style' => 'display: none;')); ?><br>
 						<div id="viewissue_<?php echo $transition->getID(); ?>_duplicate_results"></div>
 						<input type="hidden" name="transition_duplicate_ulr[<?php echo $transition->getID(); ?>]" id="duplicate_finder_transition_<?php echo $transition->getID(); ?>" value="<?php echo ($issue instanceof TBGIssue) ? make_url('viewissue_find_issue', array('project_key' => $project->getKey(), 'issue_id' => $issue->getID(), 'type' => 'duplicate')) : make_url('viewissue_find_issue', array('project_key' => $project->getKey(), 'type' => 'duplicate')); ?>">
@@ -165,11 +165,11 @@
 								<input type="radio" name="did" id="transition_popup_set_stop_working_<?php echo $transition->getID(); ?>" value="something" checked onchange="$('transition_popup_set_stop_working_specify_log_div_<?php echo $transition->getID(); ?>').hide();"><label for="transition_popup_set_stop_working_<?php echo $transition->getID(); ?>" class="simple"><?php echo __('Yes'); ?></label>&nbsp;&nbsp;&nbsp;&nbsp;<span class="faded_out"><?php echo __('Adds %hours% hour(s), %days% day(s) and %weeks% week(s)', array('%hours%' => $time_spent['hours'], '%days%' => $time_spent['days'], '%weeks%' => $time_spent['weeks'])); ?></span><br>
 								<input type="radio" name="did" id="transition_popup_set_stop_working_no_log_<?php echo $transition->getID(); ?>" value="nothing" onchange="$('transition_popup_set_stop_working_specify_log_div_<?php echo $transition->getID(); ?>').hide();"><label for="transition_popup_set_stop_working_no_log_<?php echo $transition->getID(); ?>" class="simple"><?php echo __('No'); ?></label><br>
 								<input type="radio" name="did" id="transition_popup_set_stop_working_specify_log_<?php echo $transition->getID(); ?>" value="this" onchange="$('transition_popup_set_stop_working_specify_log_div_<?php echo $transition->getID(); ?>').show()"><label for="transition_popup_set_stop_working_specify_log_<?php echo $transition->getID(); ?>" class="simple"><?php echo __('Yes, let me specify'); ?></label>
-								<div id="transition_popup_set_stop_working_specify_log_div_<?php echo $transition->getID(); ?>" style="display: none;">
-									<?php include_component('main/issueestimator', array('issue' => $issue, 'field' => 'spent_time', 'mode' => 'inline', 'clear' => false, 'save' => false, 'hidden' => false, 'headers' => false)); ?>
-								</div>
 							</div>
 							<br style="clear: both;">
+						</li>
+						<li id="transition_popup_set_stop_working_specify_log_div_<?php echo $transition->getID(); ?>" class="lightyellowbox issue_timespent_form" style="display: none;">
+							<?php include_template('main/issuespenttimeentry', compact('issue')); ?>
 						</li>
 					<?php else: ?>
 						<input type="hidden" name="did" id="transition_popup_set_stop_working_no_log_<?php echo $transition->getID(); ?>" value="nothing">
@@ -177,7 +177,7 @@
 				<?php endif; ?>
 				<li style="margin-top: 10px;">
 					<label for="transition_popup_comment_body"><?php echo __('Write a comment if you want it to be added'); ?></label><br>
-					<?php include_template('main/textarea', array('area_name' => 'comment_body', 'area_id' => 'transition_popup_comment_body_'.$transition->getID(), 'height' => '120px', 'width' => '585px', 'value' => '')); ?>
+					<?php include_template('main/textarea', array('area_name' => 'comment_body', 'area_id' => 'transition_popup_comment_body_'.$transition->getID(), 'height' => '120px', 'width' => '785px', 'value' => '')); ?>
 				</li>
 			</ul>
 			<div style="text-align: right; margin-right: 5px;">

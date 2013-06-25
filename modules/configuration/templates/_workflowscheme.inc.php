@@ -1,4 +1,4 @@
-<li id="workflow_scheme_<?php echo $scheme->getID(); ?>" class="rounded_box lightgrey" style="margin-bottom: 5px;">
+<li id="workflow_scheme_<?php echo $scheme->getID(); ?>" class="greybox" style="margin-bottom: 5px;">
 	<table>
 		<tr>
 			<td class="workflow_info scheme">
@@ -18,7 +18,7 @@
 						<?php if ($scheme->isInUse()): ?>
 							<a href="javascript:void(0);" onclick="TBG.Main.Helpers.Message.error('<?php echo __('Cannot delete workflow scheme'); ?>', '<?php echo __('This workflow scheme can not be deleted as it is being used by %number_of_projects% project(s)', array('%number_of_projects%' => $scheme->getNumberOfProjects())); ?>');" class="button button-icon button-silver"><?php echo image_tag('icon_delete.png', array('title' => __('Delete this issue type scheme'))); ?></a>
 						<?php else: ?>
-							<a href="javascript:void(0);" onclick="$('delete_scheme_<?php echo $scheme->getID(); ?>_popup').toggle();" class="button button-icon button-silver"><?php echo image_tag('icon_delete.png', array('title' => __('Delete this issue type scheme'))); ?></a>
+							<a href="javascript:void(0);" onclick="TBG.Main.Helpers.Dialog.show('<?php echo __('Do you really want to delete this workflow scheme?'); ?>', '<?php echo __('Please confirm that you want to completely remove this workflow scheme.'); ?>', {yes: {click: function() { TBG.Config.Workflows.Scheme.remove('<?php echo make_url('configure_workflow_delete_scheme', array('scheme_id' => $scheme->getID())); ?>', <?php echo $scheme->getID(); ?>); }}, no: { click: TBG.Main.Helpers.Dialog.dismiss }});" class="button button-icon button-silver"><?php echo image_tag('icon_delete.png', array('title' => __('Delete this workflow scheme'))); ?></a>
 						<?php endif; ?>
 					<?php endif; ?>
 				</div>
@@ -36,21 +36,7 @@
 				<input type="text" name="new_name" id="copy_scheme_<?php echo $scheme->getID(); ?>_new_name" value="<?php echo __('Copy of %old_name%', array('%old_name%' => addslashes($scheme->getName()))); ?>" style="width: 300px;">
 				<div style="text-align: right;">
 					<?php echo image_tag('spinning_16.gif', array('style' => 'margin-right: 5px; display: none;', 'id' => 'copy_workflow_scheme_'.$scheme->getID().'_indicator')); ?>
-					<input type="submit" value="<?php echo __('Copy worfklow scheme'); ?>">
-				</div>
-			</form>
-		</div>
-	</li>
-<?php endif; ?>
-<?php if (!$scheme->isCore() && !$scheme->isInUse()): ?>
-	<li class="rounded_box white shadowed" id="delete_scheme_<?php echo $scheme->getID(); ?>_popup" style="margin-bottom: 5px; padding: 10px; display: none;">
-		<div class="header"><?php echo __('Are you sure?'); ?></div>
-		<div class="content">
-			<?php echo __('Please confirm that you want to delete this worfklow scheme.'); ?><br>
-			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_workflow_delete_scheme', array('scheme_id' => $scheme->getID())); ?>" onsubmit="TBG.Config.Workflows.Scheme.remove('<?php echo make_url('configure_workflow_delete_scheme', array('scheme_id' => $scheme->getID())); ?>', <?php echo $scheme->getID(); ?>);return false;" id="delete_workflow_scheme_<?php echo $scheme->getID(); ?>_form">
-				<div style="text-align: right;">
-					<?php echo image_tag('spinning_16.gif', array('style' => 'margin-right: 5px; display: none;', 'id' => 'delete_workflow_scheme_'.$scheme->getID().'_indicator')); ?>
-					<input type="submit" value="<?php echo __('Yes, delete it'); ?>"><?php echo __('%delete% or %cancel%', array('%delete%' => '', '%cancel%' => '<b>'.javascript_link_tag(__('cancel'), array('onclick' => "$('delete_scheme_{$scheme->getID()}_popup').toggle();")).'</b>')); ?>
+					<?php echo __('%copy_workflow_scheme% or %cancel%', array('%copy_workflow_scheme%' => '<input type="submit" value="'.__('Copy worfklow scheme').'">', '%cancel%' => javascript_link_tag(__('cancel'), array('onclick' => "$('copy_scheme_{$scheme->getID()}_popup').toggle();")))); ?>
 				</div>
 			</form>
 		</div>

@@ -28,6 +28,7 @@ var TBG = {
 	Core: {
 		AjaxCalls: []
 	}, // The "Core" namespace is for functions used by thebuggenie core, not to be invoked outside the js class
+	Tutorial: {},
 	Main: { // The "Main" namespace contains regular functions in use across the site
 		Helpers: {
 			Message: {},
@@ -175,11 +176,12 @@ TBG.Core._extractAutocompleteValue = function(elem, value, event) {
  * Monitors viewport resize to adapt backdrops and dashboard containers
  */
 TBG.Core._resizeWatcher = function() {
+	TBG.Core._vp_width = document.viewport.getWidth();
+	TBG.Core._vp_height = document.viewport.getHeight();
 	if (($('attach_file') && $('attach_file').visible())) {
-		var docheight = document.viewport.getHeight();
 		var backdropheight = $('backdrop_detail_content').getHeight();
 		if (backdropheight > (docheight - 100)) {
-			$('backdrop_detail_content').setStyle({height: docheight - 100 + 'px', overflow: 'scroll'});
+			$('backdrop_detail_content').setStyle({height: TBG.Core._vp_height - 100 + 'px', overflow: 'scroll'});
 		} else {
 			$('backdrop_detail_content').setStyle({height: 'auto', overflow: ''});
 		}
@@ -192,13 +194,21 @@ TBG.Core._resizeWatcher = function() {
 		});
 	}
 	if ($('issue_details')) {
-		var il = $('issue_details').getLayout();
-		var container_width = il.get('width') - il.get('padding-left') - il.get('padding-right');
-		var element_width = (container_width > 650) ? parseInt(container_width / 2) : container_width;
-		$('issue_details_fieldslist').childElements().each(function(item) {
-			var l = $(item).getLayout();
-			item.setStyle({width: element_width + 'px'});
+		var id = $('issue_details');
+		var vlbtl = $('viewissue_left_box_top').getLayout();
+		var vlbt_width = vlbtl.get('width') - vlbtl.get('padding-left') - vlbtl.get('padding-right') - vlbtl.get('margin-left') - vlbtl.get('margin-right');
+		var idl = id.getLayout();
+		var id_width = idl.get('width') + idl.get('padding-left') + idl.get('padding-right') + idl.get('margin-right');
+		$('issue_main').setStyle({width: (vlbt_width - id_width) + 'px'});
+		$('issue_main').childElements().each(function(fieldset) {
+			fieldset.select('.resizable').each(function(elm) {
+				elm.setStyle({width: (vlbt_width - id_width) + 'px'});
+			});
 		});
+//		var element_width = (container_width > 650) ? parseInt(container_width / 2) : container_width;
+//		$('issue_details_fieldslist').childElements().each(function(item) {
+//			var l = $(item).getLayout();
+//		});
 	}
 	TBG.Core.popupVisiblizer();
 };
@@ -832,6 +842,33 @@ TBG.Main.detachFileFromArticle = function(url, file_id, article_name) {
 	TBG.Core._detachFile(url, file_id, 'article_' + article_name + '_files_');
 };
 
+TBG.Main.toggleFavouriteArticle = function(url, article_id)
+{
+	TBG.Main.Helpers.ajax(url, {
+		loading: {
+			indicator: 'article_favourite_indicator_' + article_id,
+			hide: ['article_favourite_normal_' + article_id, 'article_favourite_faded_' + article_id]
+		},
+		success: {
+			callback: function(json) {
+				if ($('article_favourite_faded_' + article_id)) {
+					if (json.starred) {
+						$('article_favourite_faded_' + article_id).hide();
+						$('article_favourite_indicator_' + article_id).hide();
+						$('article_favourite_normal_' + article_id).show();
+					} else {
+						$('article_favourite_normal_' + article_id).hide();
+						$('article_favourite_indicator_' + article_id).hide();
+						$('article_favourite_faded_' + article_id).show();
+					}
+				} else if (json.subscriber != '') {
+					$('subscribers_list').insert(json.subscriber);
+				}
+			}
+		}
+	});
+};
+
 TBG.Main.reloadImage = function(id) {
    var src = $(id).src;
    var date = new Date();
@@ -944,7 +981,7 @@ TBG.Main.Profile.confirmScopeMembership = function(url, sid) {
 	});
 }
 
-TBG.Main.Profile.clearPopupsAndButtons = function() {
+TBG.Main.Profile.clearPopupsAndButtons = function(event) {
 	if ($('account_info_container')) {
 		var pbuttons = $('account_info_container').down('.profile_buttons');
 		pbuttons.select('.button').each(function(element) {
@@ -1286,7 +1323,16 @@ TBG.Project.Milestone.toggle = function(url, milestone_id) {
 	}
 };
 
-TBG.Project.Planning.toggleIssues = function(url, milestone_id) {
+TBG.Project.Planning.saveOrder = function(container, milestone_id, url) {
+	TBG.Main.Helpers.ajax(url, {
+		additional_params: Sortable.serialize(container)+'&milestone_id'+milestone_id,
+		loading: {
+			indicator: 'milestone_' + milestone_id + '_issues_indicator'
+		}
+	});
+};
+
+TBG.Project.Planning.toggleIssues = function(url, milestone_id, sort_url) {
 	if (!$('milestone_' + milestone_id + '_container').visible()) {
 		if ($('milestone_' + milestone_id + '_list').childElements().size() == 0) {
 			TBG.Main.Helpers.ajax(url, {
@@ -1295,9 +1341,14 @@ TBG.Project.Planning.toggleIssues = function(url, milestone_id) {
 					update: 'milestone_' + milestone_id + '_list',
 					show: ['milestone_' + milestone_id + '_container', 'milestone_' + milestone_id + '_reload_button'],
 					callback: function(json) {
-						$('milestone_' + milestone_id + '_list').childElements().each(function(element) {
-							new Draggable(element.id + '_draggable', {revert: true, handle: element.id + '_handle'});
-						});
+						console.log(sort_url);
+//						$('milestone_' + milestone_id + '_list').select('.milestone_issue_row').each(function(element) {
+//							new Draggable(element.id + '_draggable', {revert: true, handle: element.id + '_handle'});
+//						});
+						if (sort_url != undefined) {
+							console.log('sortable');
+							Sortable.create('milestone_' + milestone_id + '_list', {tag: 'tr', only: 'milestone_issue_row', containment: 'milestone_' + milestone_id + '_list', constraint: '', onUpdate: function(container) { TBG.Project.Planning.saveOrder(container, milestone_id, sort_url); }});
+						}
 					}
 				}
 			});
@@ -1434,7 +1485,7 @@ TBG.Project.Planning.assign = function(url, dragged, dropped)
 	if (dropped.id == dragged.up('.milestone_box').id) return;
 	
 	TBG.Main.Helpers.ajax(url, {
-		params: {story_id: $(dragged.down('input')).getValue(), sprint_id: $(dropped.id + '_id').getValue()},
+		params: {story_id: $(dragged.select('input')[0]).value, sprint_id: $(dropped.id + '_id').getValue()},
 		loading: {
 			indicator: 'fullpage_backdrop',
 			clear: 'fullpage_backdrop_content',
@@ -1442,7 +1493,7 @@ TBG.Project.Planning.assign = function(url, dragged, dropped)
 		},
 		success: {
 			callback: function(json) {
-				var elm = Element.remove(dragged.up('tr'));
+				var elm = Element.remove(dragged);
 				if ($(dropped.id + '_list').childElements().size() > 0) {
 					$(dropped.id + '_list').insert({'top':elm});
 				}
@@ -1542,17 +1593,14 @@ TBG.Project.remove = function(url, pid) {
 TBG.Project.archive = function(url, pid) {
 	TBG.Main.Helpers.ajax(url, {
 		loading: {
-			indicator: 'project_' + pid + '_archive_indicator',
-			hide: 'project_' + pid + '_archive'
+			indicator: 'project_' + pid + '_archive_indicator'
 		},
 		success: {
 			remove: 'project_box_' + pid,
-			update: {
-				element: 'project_table',
-				insertion: true,
-				from: 'box'
-			},
-			callback: TBG.Main.Helpers.Dialog.dismiss
+			callback: function(json) {
+				$('project_table_archived').insert({top: json.box});
+				TBG.Main.Helpers.Dialog.dismiss();
+			}
 		}
 	});
 }
@@ -1560,15 +1608,17 @@ TBG.Project.archive = function(url, pid) {
 TBG.Project.unarchive = function(url, pid) {
 	TBG.Main.Helpers.ajax(url, {
 		loading: {
-			indicator: 'project_' + pid + '_unarchive_indicator',
-			hide: 'project_' + pid + '_unarchive'
+			indicator: 'project_' + pid + '_archive_indicator'
 		},
 		success: {
 			remove: 'project_box_' + pid,
-			update: {
-				element: 'project_table',
-				insertion: true,
-				from: 'box'
+			callback: function(json) {
+				if (json.parent_id != 0) {
+					$('project_'+json.parent_id+'_children').insert({bottom: json.box});
+				} else {
+					$('project_table').insert({bottom: json.box});
+				}
+				console.log('test');
 			}
 		},
 		failure: {
@@ -2214,7 +2264,10 @@ TBG.Config.IssuetypeScheme.remove = function(url, scheme_id) {
 		},
 		success: {
 			remove: ['delete_scheme_' + scheme_id + '_popup', 'copy_scheme_' + scheme_id + '_popup', 'issuetype_scheme_' + scheme_id],
-			update: {element: 'issuetype_schemes_list', insertion: true}
+			update: {element: 'issuetype_schemes_list', insertion: true},
+			callback: function() {
+				TBG.Main.Helpers.Dialog.dismiss();
+			}
 		}
 	});
 }
@@ -2270,7 +2323,10 @@ TBG.Config.Issuefields.Options.remove = function(url, type, id) {
 	TBG.Main.Helpers.ajax(url, {
 		loading: {indicator: 'delete_' + type + '_' + id + '_indicator'},
 		success: {
-			remove: ['delete_item_option_' + id, 'item_option_' + type + '_' + id]
+			remove: 'item_option_' + type + '_' + id,
+			callback: function(json) {
+				TBG.Main.Helpers.Dialog.dismiss();
+			}
 		}
 	});
 }
@@ -2316,7 +2372,15 @@ TBG.Config.Issuefields.Custom.update = function(url, type) {
 }
 
 TBG.Config.Issuefields.Custom.remove = function(url, type, id) {
-	TBG.Config.Issuefields.Options.remove(url, type, id);
+	TBG.Main.Helpers.ajax(url, {
+		loading: {indicator: 'delete_' + type + '_' + id + '_indicator'},
+		success: {
+			remove: 'item_' + type + '_' + id,
+			callback: function(json) {
+				TBG.Main.Helpers.Dialog.dismiss();
+			}
+		}
+	});
 };
 
 TBG.Config.Permissions.set = function(url, field) {
@@ -2425,13 +2489,18 @@ TBG.Config.User.show = function(url, findstring) {
 	});
 }
 
-TBG.Config.User.add = function(url, callback_function_for_import) {
+TBG.Config.User.add = function(url, callback_function_for_import, form) {
+	f = (form !== undefined) ? form : 'createuser_form';
 	TBG.Main.Helpers.ajax(url, {
-		form: 'createuser_form',
+		form: f,
 		loading: {indicator: 'find_users_indicator'},
 		success: {
 			update: 'users_results',
-			callback: TBG.Config.User._updateLinks
+			callback: function(json) {
+				TBG.Config.User._updateLinks(json);
+				f.reset();
+				$('adduser_div').hide();
+			}
 		},
 		failure: {
 			callback: function(json) {
@@ -2572,19 +2641,62 @@ TBG.Config.Collection.showMembers = function(url, type, cid) {
 	}
 }
 
-TBG.Config.Collection.updateDetailsFromJSON = function(json) {
+TBG.Config.Collection.removeMember = function(url, type, cid, user_id) {
+	TBG.Main.Helpers.ajax(url, {
+		loading: {indicator: type + '_members_' + cid + '_indicator'},
+		success: {
+			callback: function(json) {
+				TBG.Main.Helpers.Dialog.dismiss();
+				$(type + '_' + cid + '_' + user_id + '_item').remove();
+				TBG.Config.Collection.updateDetailsFromJSON(json, false);
+				var ul = $(type + '_members_' + cid + '_list').down('ul');
+				if (ul != undefined && ul.childElements().size() == 0) $(type + '_members_' + cid + '_no_users').show();
+			}
+		}
+	});
+};
+
+TBG.Config.Collection.addMember = function(url, type, cid, user_id) {
+	TBG.Main.Helpers.ajax(url, {
+		loading: {indicator: type + '_members_' + cid + '_indicator'},
+		success: {
+			callback: function(json) {
+				TBG.Config.Collection.updateDetailsFromJSON(json, false);
+				if ($(type + '_members_' + cid + '_list').down('ul').innerHTML != '') {
+					if ($(type + '_members_' + cid + '_no_users')) $(type + '_members_' + cid + '_no_users').hide();
+					$(type + '_members_' + cid + '_list').down('ul').insert({bottom: json[type + 'listitem']});
+				}
+			}
+		}
+	});
+};
+
+TBG.Config.Collection.updateDetailsFromJSON = function(json, clear) {
 	if (json.update_groups) {
 		json.update_groups.ids.each(function(group_id) {
 			if ($('group_'+group_id+'_membercount')) $('group_'+group_id+'_membercount').update(json.update_groups.membercounts[group_id]);
-			$('group_members_'+group_id+'_container').hide();
-			$('group_members_'+group_id+'_list').update('');
+			if (clear == undefined || clear == true)  {
+				$('group_members_'+group_id+'_container').hide();
+				$('group_members_'+group_id+'_list').update('');
+			}
 		});
 	}
 	if (json.update_teams) {
 		json.update_teams.ids.each(function(team_id) {
 			if ($('team_'+team_id+'_membercount')) $('team_'+team_id+'_membercount').update(json.update_teams.membercounts[team_id]);
-			$('team_members_'+team_id+'_container').hide();
-			$('team_members_'+team_id+'_list').update('');
+			if (clear == undefined || clear == true)  {
+				$('team_members_'+team_id+'_container').hide();
+				$('team_members_'+team_id+'_list').update('');
+			}
+		});
+	}
+	if (json.update_clients) {
+		json.update_clients.ids.each(function(client_id) {
+			if ($('client_'+client_id+'_membercount')) $('client_'+client_id+'_membercount').update(json.update_clients.membercounts[client_id]);
+			if (clear == undefined || clear == true)  {
+				$('client_members_'+client_id+'_container').hide();
+				$('client_members_'+client_id+'_list').update('');
+			}
 		});
 	}
 }
@@ -2629,6 +2741,14 @@ TBG.Config.Team.showMembers = function(url, team_id) {
 	TBG.Config.Collection.showMembers(url, 'team', team_id);
 }
 
+TBG.Config.Team.removeMember = function(url, team_id, member_id) {
+	TBG.Config.Collection.removeMember(url, 'team', team_id, member_id);
+}
+
+TBG.Config.Team.addMember = function(url, team_id, member_id) {
+	TBG.Config.Collection.addMember(url, 'team', team_id, member_id);
+}
+
 TBG.Config.Client.add = function(url) {
 	TBG.Config.Collection.add(url, 'client');
 }
@@ -2639,6 +2759,14 @@ TBG.Config.Client.remove = function(url, client_id) {
 
 TBG.Config.Client.showMembers = function(url, client_id) {
 	TBG.Config.Collection.showMembers(url, 'client', client_id);
+}
+
+TBG.Config.Client.removeMember = function(url, client_id, member_id) {
+	TBG.Config.Collection.removeMember(url, 'client', client_id, member_id);
+}
+
+TBG.Config.Client.addMember = function(url, client_id, member_id) {
+	TBG.Config.Collection.addMember(url, 'client', client_id, member_id);
 }
 
 TBG.Config.Client.update = function(url, client_id) {
@@ -2783,7 +2911,10 @@ TBG.Config.Workflows.Transition.Actions.remove = function(url, action_id, type) 
 		loading: {indicator: 'workflowtransitionaction_' + action_id + '_delete_indicator'},
 		success: {
 			hide: ['workflowtransitionaction_' + action_id + '_delete', 'workflowtransitionaction_' + action_id],
-			show: ['add_workflowtransitionaction_' + type]
+			show: ['add_workflowtransitionaction_' + type],
+			callback: function() {
+				TBG.Main.Helpers.Dialog.dismiss();
+			}
 		}
 	});
 }
@@ -2869,10 +3000,6 @@ TBG.Issues.updateFields = function(url)
 					} else {
 						$('reportissue_extrafields_none').show();
 					}
-				}
-			},
-			complete: {
-				callback: function() {
 					$('title').focus();
 					$('report_issue_more_options_indicator').hide();
 				}
@@ -2932,9 +3059,7 @@ TBG.Issues.refreshRelatedIssues = function(url) {
 				hide: 'no_child_issues',
 				update: {element: 'related_child_issues_inline'},
 				callback: function() {
-					var childcount = $('related_child_issues_inline').childElements().size();
-					var parentcount = $('related_parent_issues_inline').childElements().size();
-					$('viewissue_related_issues_count').update(childcount + parentcount);
+					$('viewissue_related_issues_count').update($('related_child_issues_inline').childElements().size());
 				}
 			}
 		});
@@ -2958,16 +3083,54 @@ TBG.Issues.findDuplicate = function(url, transition_id) {
 	});
 };
 
+TBG.Issues.editTimeEntry = function(form) {
+    var url = form.action;
+    TBG.Main.Helpers.ajax(url, {
+        form: form,
+        loading: { indicator: form.id + '_indicator' },
+        success: {
+            callback: function(json) {
+                $('fullpage_backdrop_content').update(json.timeentries);
+                if (json.timesum == 0) {
+                    $('no_spent_time_'+json.issue_id).show();
+                    $('spent_time_'+json.issue_id+'_name').hide();
+                } else {
+                    $('no_spent_time_'+json.issue_id).hide();
+                    $('spent_time_'+json.issue_id+'_value').update(json.spenttime);
+                }
+            }
+        }
+    });
+};
+
+TBG.Issues.deleteTimeEntry = function(url, entry_id) {
+    TBG.Main.Helpers.ajax(url, {
+        loading: { indicator: 'dialog_indicator' },
+        success: {
+            callback: function(json) {
+                $('issue_spenttime_'+entry_id).remove();
+                if ($('issue_spenttime_'+entry_id+'_comment')) $('issue_spenttime_'+entry_id+'_comment').remove();
+                if (json.timesum == 0) {
+                    $('no_spent_time_'+json.issue_id).show();
+                    $('spent_time_'+json.issue_id+'_name').hide();
+                } else {
+                    $('no_spent_time_'+json.issue_id).hide();
+                    $('spent_time_'+json.issue_id+'_value').update(json.spenttime);
+                }
+                TBG.Main.Helpers.Dialog.dismiss();
+            }
+        }
+    });
+};
+
 TBG.Issues.relate = function(url) {
-	var hide_div = ($('relate_issue_with_selected').getValue() == 'relate_children') ? 'no_child_issues' : 'no_parent_issues';
-	var update_div = ($('relate_issue_with_selected').getValue() == 'relate_children') ? 'related_child_issues_inline' : 'related_parent_issues_inline';
 	
 	TBG.Main.Helpers.ajax(url, {
 		form: 'viewissue_relate_issues_form',
 		loading: {indicator: 'relate_issues_indicator'},
 		success: {
-			update: {element: update_div, insertion: true}, 
-			hide: hide_div
+			update: {element: 'related_child_issues_inline', insertion: true}, 
+			hide: 'no_child_issues'
 		}
 	});
 	return false;
@@ -2980,10 +3143,8 @@ TBG.Issues.removeRelated = function(url, issue_id) {
 			remove: 'related_issue_'+issue_id,
 			callback: function() {
 				var childcount = $('related_child_issues_inline').childElements().size();
-				var parentcount = $('related_parent_issues_inline').childElements().size();
 				if (childcount == 0) $('no_child_issues').show();
-				if (parentcount == 0) $('no_parent_issues').show();
-				$('viewissue_related_issues_count').update(childcount + parentcount);
+				$('viewissue_related_issues_count').update(childcount);
 			}
 		}
 	});
@@ -3164,7 +3325,7 @@ TBG.Issues.Field.Updaters.timeFromObject = function(issue_id, object, values, fi
 		}
 	}
 	['points', 'hours', 'days', 'weeks', 'months'].each(function(unit) {
-		if ($(field + '_' + issue_id + '_' + unit + '_input'))
+		if (field != 'spent_time' && $(field + '_' + issue_id + '_' + unit + '_input'))
 			$(field + '_' + issue_id + '_' + unit + '_input').setValue(values[unit]);
 
 		if ($(field + '_' + issue_id + '_' + unit)) {
@@ -4220,6 +4381,150 @@ TBG.Chart.burndownChart = function(burndown_data, time) {
 		});
 };
 
-	jQuery(document).ready(function(){
-		TBG.Main.Helpers.MarkitUp(jQuery('textarea'));
+TBG.Tutorial.highlightArea = function(top, left, width, height, blocked, seethrough) {
+	var backdrop_class = (seethrough != undefined && seethrough == true) ? 'seethrough' : 'dark';
+	var d1 = '<div class="fullpage_backdrop '+backdrop_class+' tutorial" style="top: 0; left: 0; width: '+left+'px;"></div>';
+	var d2_width = TBG.Core._vp_width - left - width;
+	var d2 = '<div class="fullpage_backdrop '+backdrop_class+' tutorial" style="top: 0; left: '+(left+width)+'px; width: '+d2_width+'px;"></div>';
+	var d3 = '<div class="fullpage_backdrop '+backdrop_class+' tutorial" style="top: 0; left: '+left+'px; width: '+width+'px; height: '+top+'px"></div>';
+	var vp_height = document.viewport.getHeight();
+	var d4_height = vp_height - top - height;
+	var d4 = '<div class="fullpage_backdrop '+backdrop_class+' tutorial" style="top: '+(top+height)+'px; left: '+left+'px; width: '+width+'px; height: '+d4_height+'px"></div>';
+	if (blocked == true) {
+		var d_overlay = '<div class="tutorial block_overlay" style="top: '+top+'px; left: '+left+'px; width: '+width+'px; height: '+height+'px;"></div>';
+		$('fullscreen-container').insert(d_overlay);
+	}
+	$('fullscreen-container').insert(d1);
+	$('fullscreen-container').insert(d2);
+	$('fullscreen-container').insert(d3);
+	$('fullscreen-container').insert(d4);
+	TBG.Tutorial.positionMessage(top, left, width, height);
+};
+TBG.Tutorial.highlightElement = function(element, blocked, seethrough) {
+	element = $(element);
+	var el = element.getLayout();
+	var os = element.cumulativeOffset();
+	var width = el.get('width') + el.get('padding-left') + el.get('padding-right');
+	var height = el.get('height') + el.get('padding-top') + el.get('padding-bottom');
+	TBG.Tutorial.highlightArea(os.top, os.left, width, height, blocked, seethrough);
+};
+TBG.Tutorial.positionMessage = function(top, left, width, height) {
+	var tm = $('tutorial-message');
+	['above', 'below', 'left', 'right'].each(function(pos) { tm.removeClassName(pos); });
+	if (top + left + width + height == 0) {
+		tm.addClassName('full');
+		tm.setStyle({top: '', left: ''});
+	} else {
+		tm.removeClassName('full');
+		var step = parseInt($('tutorial-message').dataset.tutorialStep);
+		var key = $('tutorial-message').dataset.tutorialKey;
+		var td = TBG.Tutorial.Stories[key][step];
+		tm.addClassName(td.messagePosition);
+		var tl = tm.getLayout();
+		var twidth = tl.get('width') + tl.get('padding-left') + tl.get('padding-right');
+		switch (td.messagePosition) {
+			case 'right':
+				tm.setStyle({top: top + 'px', left: (left + width + 15)+'px'});
+				break;
+			case 'left':
+				var tl = tm.getLayout();
+				var width = tl.get('width') + tl.get('padding-left') + tl.get('padding-right');
+				tm.setStyle({top: top + 'px', left: (left - width - 15)+'px'});
+				break;
+			case 'below':
+				tm.setStyle({top: (top + height + 15)+'px', left: ((left - parseInt(twidth / 2)) + width / 2) + 'px'});
+				break;
+			case 'above':
+				var tl = tm.getLayout();
+				var th = tl.get('height') + tl.get('padding-top') + tl.get('padding-bottom');
+				tm.setStyle({top: (top - th - 15)+'px', left: ((left - parseInt(twidth / 2)) + width / 2) + 'px'});
+				break;
+			case 'center':
+				var tl = tm.getLayout();
+				var th = tl.get('height') + tl.get('padding-top') + tl.get('padding-bottom');
+				tm.setStyle({top: (top + (height / 2) - (th / 2))+'px', left: ((left - parseInt(twidth / 2)) + width / 2) + 'px'});
+				break;
+		}
+	}
+	tm.show();
+};
+TBG.Tutorial.resetHighlight = function() {
+	$$('.tutorial').each(Element.remove);
+};
+TBG.Tutorial.disable = function() {
+	var key = $('tutorial-message').dataset.tutorialKey;
+	TBG.Main.Helpers.ajax(TBG.options['say_url'], {
+		params: '&topic=disable_tutorial&key='+key
 	});
+	$('tutorial-next-button').stopObserving('click');
+	TBG.Tutorial.resetHighlight();
+	$('tutorial-message').hide();
+};
+TBG.Tutorial.enable = function(key) {
+	TBG.Main.Helpers.ajax(TBG.options['say_url'], {
+		params: '&topic=enable_tutorial&key='+key
+	});
+};
+TBG.Tutorial.playNextStep = function() {
+	TBG.Tutorial.resetHighlight();
+	var tm = $('tutorial-message');
+	var step = parseInt(tm.dataset.tutorialStep);
+	var key = tm.dataset.tutorialKey;
+	step++;
+	$('tutorial-current-step').update(step);
+	tm.dataset.tutorialStep = step;
+	var tutorialData = TBG.Tutorial.Stories[key][step];
+	if (tutorialData != undefined) {
+		$('tutorial-message-container').update(tutorialData.message);
+		var tbn = tm.down('.tutorial-buttons').down('.button-next');
+		var tb = tm.down('.tutorial-buttons').down('.button-disable');
+		if (tutorialData.button != undefined) {
+			tbn.update(tutorialData.button);
+			tbn.show();
+			if (step > 1) {
+				tb.hide();
+			} else {
+				tb.show();
+			}
+		} else {
+			tbn.hide();
+			tb.hide();
+		}
+		['small', 'medium', 'large'].each(function(cn) { tm.removeClassName(cn); });
+		tm.addClassName(tutorialData.messageSize);
+		if (tutorialData.highlight != undefined) {
+			var tdh = tutorialData.highlight;
+			if (tdh.element != undefined) {
+				var seethrough = (tdh.seethrough != undefined) ? tdh.seethrough : false;
+				TBG.Tutorial.highlightElement(tdh.element, tdh.blocked, seethrough);
+			} else {
+				TBG.Tutorial.highlightArea(tdh.top, tdh.left, tdh.width, tdh.height, tdh.blocked);
+			}
+		} else {
+			TBG.Tutorial.highlightArea(0, 0, 0, 0, true);
+		}
+		if (tutorialData.cb) {
+			tutorialData.cb(tutorialData);
+		}
+	} else {
+		TBG.Tutorial.disable();
+	}
+};
+TBG.Tutorial.start = function(key) {
+	var tutorial = TBG.Tutorial.Stories[key];
+	var ts = 0;
+	for (var d in tutorial) {
+		ts++;
+	}
+	$('tutorial-message').dataset.tutorialKey = key;
+	$('tutorial-message').dataset.tutorialStep = 0;
+	$('tutorial-message').dataset.tutorialSteps = ts;
+	$('tutorial-total-steps').update(ts);
+	$('tutorial-next-button').stopObserving('click');
+	$('tutorial-next-button').observe('click', TBG.Tutorial.playNextStep);
+	TBG.Tutorial.playNextStep();
+}
+
+jQuery(document).ready(function(){
+	TBG.Main.Helpers.MarkitUp(jQuery('textarea'));
+});

@@ -1,4 +1,4 @@
-<div style="margin: 10px 0 0 0; clear: both; height: 30px;" class="tab_menu">
+<div style="margin: 10px 0 0 0; clear: both;" class="tab_menu inset">
 	<ul id="permissions_<?php echo $base_id; ?>_tabs">
 		<li class="selected" id="<?php echo $base_id; ?>_tab_general"><a onclick="TBG.Main.Helpers.tabSwitcher('<?php echo $base_id; ?>_tab_general', 'permissions_<?php echo $base_id; ?>_tabs');" href="javascript:void(0);"><?php echo __('General permissions'); ?></a></li>
 		<li id="<?php echo $base_id; ?>_tab_pages"><a onclick="TBG.Main.Helpers.tabSwitcher('<?php echo $base_id; ?>_tab_pages', 'permissions_<?php echo $base_id; ?>_tabs');" href="javascript:void(0);"><?php echo __('Page access permissions'); ?></a></li>

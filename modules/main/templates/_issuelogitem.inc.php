@@ -1,6 +1,6 @@
 <?php if ($item instanceof TBGLogItem): ?>
 	<li>
-		<span class="date"><?php echo tbg_formatTime($item->getTime(), 6); ?></span>&nbsp;
+		<span class="date"><?php echo (date('YmdHis', $previous_time) != date('YmdHis', $item->getTime())) ? tbg_formatTime($item->getTime(), 6) : ''; ?></span>&nbsp;
 		<?php
 
 			$previous_value = null;
@@ -20,6 +20,20 @@
 						break;
 					case TBGLogTable::LOG_ISSUE_DEPENDS:
 						echo __('The issue was reopened');
+						break;
+					case TBGLogTable::LOG_ISSUE_UPDATE:
+						echo __('The issue was updated: %change%', array('%change%' => $item->getText()));
+						if (trim($item->getPreviousValue()) || trim($item->getCurrentValue()))
+						{
+							echo '<br>';
+							echo $item->getPreviousValue() . ' &rArr; ' . $item->getCurrentValue();
+						}
+						break;
+					case TBGLogTable::LOG_ISSUE_UPDATE_TITLE:
+						echo __('Title updated: %previous_value% => %new_value%', array('%previous_value%' => $item->getPreviousValue(), '%new_value%' => $item->getCurrentValue()));
+						break;
+					case TBGLogTable::LOG_ISSUE_UPDATE_DESCRIPTION:
+						echo __('Description updated: %previous_value% => %new_value%', array('%previous_value%' => $item->getPreviousValue(), '%new_value%' => $item->getCurrentValue()));
 						break;
 					case TBGLogTable::LOG_ISSUE_STATUS:
 						echo image_tag('icon_status.png');
@@ -201,7 +215,7 @@
 						echo image_tag('icon_percent.png');
 						if ($item->hasChangeDetails())
 						{
-							echo __("Milestone changed: %previous_value% => %new_value%", array('%previous_value%' => '<strong>'.(int) $item->getPreviousValue().'</strong>', '%new_value%' => '<strong>'.(int) $item->getCurrentValue().'</strong>'));
+							echo __("Percent complete changed: %previous_value% => %new_value%", array('%previous_value%' => '<strong>'.(int) $item->getPreviousValue().'</strong>', '%new_value%' => '<strong>'.(int) $item->getCurrentValue().'</strong>'));
 						}
 						break;
 					default:

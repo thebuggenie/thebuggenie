@@ -5,8 +5,7 @@
 		b2db\Criterion;
 
 	/**
-	 * @Table(name="mailing_incoming_email_account")
-	 * @Entity(class="TBGIncomingEmailAccount")
+	 * @Table(name="mailing_incoming_email_account_32")
 	 */
 	class TBGIncomingEmailAccountTable3dot2 extends TBGB2DBTable
 	{
@@ -19,7 +18,6 @@
 		const PASSWORD = 'mailing_incoming_email_account.password';
 		const SERVER = 'mailing_incoming_email_account.server';
 		const PORT = 'mailing_incoming_email_account.port';
-		const FOLDER = 'mailing_incoming_email_account.folder';
 		const SERVER_TYPE = 'mailing_incoming_email_account.server_type';
 		const SSL = 'mailing_incoming_email_account.ssl';
 		const KEEP_EMAIL = 'mailing_incoming_email_account.keep_email';
@@ -34,13 +32,16 @@
 			parent::_setup(self::B2DBNAME, self::ID);
 			parent::_addVarchar(self::NAME, 200);
 			parent::_addVarchar(self::SERVER, 200);
+			parent::_addInteger(self::PORT, 3);
+			parent::_addInteger(self::SERVER_TYPE, 10);
+			parent::_addBoolean(self::SSL);
+			parent::_addBoolean(self::KEEP_EMAIL);
 			parent::_addVarchar(self::USERNAME, 200);
 			parent::_addVarchar(self::PASSWORD, 200);
-			parent::_addInteger(self::SERVER_TYPE, 10);
-			parent::_addInteger(self::PORT, 3);
-			parent::_addBoolean(self::KEEP_EMAIL);
-			parent::_addBoolean(self::SSL);
 			parent::_addForeignKeyColumn(self::PROJECT, TBGProjectsTable::getTable(), TBGProjectsTable::ID);
+			parent::_addInteger(self::ISSUETYPE, 10);
+			parent::_addInteger(self::NUM_LAST_FETCHED, 10);
+			parent::_addInteger(self::TIME_LAST_FETCHED, 10);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 

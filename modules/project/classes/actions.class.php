@@ -1037,6 +1037,18 @@
 			}
 		}
 
+		public function runSortMilestoneIssues(TBGRequest $request)
+		{
+			$issue_table = TBGIssuesTable::getTable();
+			$milestone_id = $request['milestone_id'];
+			$orders = array_keys($request["milestone_{$milestone_id}_list"]);
+			foreach ($request["milestone_{$milestone_id}_list"] as $issue_id)
+			{
+				$issue_table->setOrderByMilestoneIdAndIssueId(array_pop($orders), $milestone_id, $issue_id);
+			}
+			return $this->renderJSON('sorted ok');
+		}
+
 		public function runGetMilestoneIssues(TBGRequest $request)
 		{
 			try
@@ -1203,7 +1215,7 @@
 				
 				if ($transition->validateFromRequest($request))
 				{
-					$transition->transitionIssueToOutgoingStepFromRequest($issue);
+					$transition->transitionIssueToOutgoingStepFromRequest($issue, $request);
 				}
 				else
 				{
@@ -1246,7 +1258,7 @@
 
 					try
 					{
-						$transition->transitionIssueToOutgoingStepFromRequest($issue);
+						$transition->transitionIssueToOutgoingStepFromRequest($issue, $request);
 					}
 					catch (Exception $e)
 					{
@@ -1363,7 +1375,7 @@
 			{
 				$this->selected_project = TBGContext::factory()->TBGProject($request['project_id']);
 				$this->users = TBGUser::findUsers($request['find_by'], 10);
-				$this->teams = TBGTeam::findTeams($request['find_by']);
+				$this->teams = TBGTeamsTable::quickfind($request['find_by']);
 				$this->global_roles = TBGRole::getAll();
 				$this->project_roles = TBGRole::getByProjectID($this->selected_project->getID());
 			}

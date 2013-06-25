@@ -1,5 +1,5 @@
 <?php if ($role instanceof TBGRole): ?>
-	<li class="rounded_box lightgrey" style="padding: 3px 5px; margin-bottom: 5px;" id="role_<?php echo $role->getID(); ?>_container">
+	<li class="greybox" style="padding: 3px 5px; margin-bottom: 5px;" id="role_<?php echo $role->getID(); ?>_container">
 		<div class="button-group" style="float: right; margin-left: 10px;">
 			<?php echo javascript_link_tag(__('Details'), array('onclick' => "TBG.Config.Roles.getPermissions('".make_url('configure_role', array('role_id' => $role->getID(), 'mode' => 'list_permissions'))."', 'role_{$role->getID()}_permissions_list');", 'class' => 'button button-silver')); ?>
 			<?php if (!TBGContext::isProjectContext() || !$role->isSystemRole()): ?>

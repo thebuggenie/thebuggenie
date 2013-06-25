@@ -270,6 +270,9 @@
 					$tstring .= strftime(TBGContext::getI18n()->getDateTimeFormat(15), $tstamp);
 				}
 				break;
+			case 24:
+				$tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(18), $tstamp);
+				break;
 			default:
 				return $tstamp;
 		}
@@ -440,7 +443,7 @@
 		}
 		else
 		{
-			$tstamp = TBGSettings::getServerTimezone()->getOffset(new DateTimeZone('GMT'));
+			$tstamp = TBGSettings::getServerTimezone()->getOffset(new DateTime('GMT'));
 		}
 		return $tstamp;
 	}

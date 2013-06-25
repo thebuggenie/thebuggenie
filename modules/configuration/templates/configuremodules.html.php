@@ -3,20 +3,20 @@
 	<tr>
 		<?php include_component('leftmenu', array('selected_section' => TBGSettings::CONFIGURATION_SECTION_MODULES)); ?>
 		<td valign="top" style="padding-left: 15px;">
-			<div style="width: 788px;" id="config_modules">
+			<div style="width: 730px;" id="config_modules">
 				<h3><?php echo __('Configure modules'); ?></h3>
 				<div class="content faded_out">
 					<p>
-						<?php echo __('This is where you manage all modules available in this installation of The Bug Genie. Remember that you can find more module online.'); ?>
+						<?php echo __('This is where you manage all modules available in this installation of The Bug Genie. You can find even more modules online.'); ?>
 					</p>
 				</div>
 				<?php if ($module_error !== null): ?>
-					<div class="rounded_box red borderless" style="margin: 5px 0px 5px 0px; color: #FFF; width: 783px;" id="module_error">
+					<div class="redbox" style="margin: 5px 0px 5px 0px;" id="module_error">
 						<div class="header"><?php echo $module_error; ?></div>
 					</div>
 				<?php endif; ?>
 				<?php if ($module_message !== null): ?>
-					<div class="rounded_box green borderless" style="margin: 5px 0px 5px 0px; width: 783px;" id="module_message">
+					<div class="greenbox" style="margin: 5px 0px 5px 0px;" id="module_message">
 						<div class="header"><?php echo $module_message; ?></div>
 					</div>
 				<?php endif; ?>
@@ -25,7 +25,7 @@
 						<div class="header"><?php echo __('You have %count% outdated modules. They have been disabled until you upgrade them, you can upgrade them on this page.', array('%count%' => count($outdated_modules))); ?></div>
 					</div>
 				<?php endif; ?>
-				<div style="width: 100%; margin-top: 15px; clear: both; height: 30px;" class="tab_menu">
+				<div style="margin-top: 15px; clear: both;" class="tab_menu inset">
 					<ul id="modules_menu">
 						<li id="tab_installed" class="selected"><?php echo javascript_link_tag(__('Installed modules (%count%)', array('%count%' => count($modules))), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_installed', 'modules_menu');")); ?></li>
 						<li id="tab_outdated"><?php echo javascript_link_tag(__('Outdated modules (%count%)', array('%count%' => count($outdated_modules))), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_outdated', 'modules_menu');")); ?></li>
@@ -33,12 +33,7 @@
 					</ul>
 				</div>
 				<div id="modules_menu_panes">
-					<div id="tab_installed_pane" style="padding-top: 0; width: 100%;">
-						<div class="content faded_out">
-							<p>
-								<?php echo __('This is a list of all modules that are installed on this system'); ?>
-							</p>
-						</div>
+					<div id="tab_installed_pane" style="padding-top: 0;">
 						<?php foreach ($modules as $module_key => $module): ?>
 							<?php if (!$module->isOutdated()): ?>
 								<?php include_template('modulebox', array('module' => $module)); ?>

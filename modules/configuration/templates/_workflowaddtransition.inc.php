@@ -12,7 +12,6 @@
 							<option value="<?php echo $transition->getID(); ?>"><?php echo $transition->getName(); ?> &rarr; <?php echo $transition->getOutgoingStep()->getName(); ?></option>
 						<?php endforeach; ?>
 					</select>
-					<input type="submit" value="<?php echo __('Add transition'); ?>">
 					<div class="add_transition_separation"> </div>
 				</li>
 				<li>

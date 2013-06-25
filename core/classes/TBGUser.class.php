@@ -174,6 +174,14 @@
 		protected $_starredissues = null;
 
 		/**
+		 * Array of articles to follow up
+		 *
+		 * @var array
+		 * @Relates(class="TBGWikiArticle", collection=true, manytomany=true, joinclass="TBGUserArticlesTable")
+		 */
+		protected $_starredarticles = null;
+
+		/**
 		 * Array of issues assigned to the user
 		 *
 		 * @var array
@@ -293,6 +301,24 @@
 			return TBGUsersTable::getTable()->getByUsername($username);
 		}
 		
+		public static function getByEmail($email)
+		{
+			$user = TBGUsersTable::getTable()->getByEmail($email);
+			if (!$user instanceof TBGUser && !TBGSettings::isUsingExternalAuthenticationBackend())
+			{
+				$user = new TBGUser();
+				$user->setPassword(TBGUser::createPassword());
+				$user->setUsername($email);
+				$user->setEmail($email);
+				$user->setActivated();
+				$user->setEnabled();
+				$user->setValidated();
+				$user->save();
+			}
+			
+			return $user;
+		}
+
 		/**
 		 * Return (or create, assuming no external auth backend) a user based on
 		 * a provided openid identity
@@ -1030,32 +1056,19 @@
 		public function addStarredIssue($issue_id)
 		{
 			$this->_populateStarredIssues();
-			TBGLogging::log("Starring issue with id {$issue_id} for user with id " . $this->getID());
-			if ($this->isLoggedIn() == true && $this->isGuest() == false)
+			if ($this->isLoggedIn() && !$this->isGuest())
 			{
 				if (array_key_exists($issue_id, $this->_starredissues))
-				{
-					TBGLogging::log('Already starred');
 					return true;
-				}
-				TBGLogging::log('Logged in and unstarred, continuing');
-				$crit = new \b2db\Criteria();
-				$crit->addInsert(TBGUserIssuesTable::ISSUE, $issue_id);
-				$crit->addInsert(TBGUserIssuesTable::UID, $this->_id);
-				$crit->addInsert(TBGUserIssuesTable::SCOPE, TBGContext::getScope()->getID());
-				
-				\b2db\Core::getTable('TBGUserIssuesTable')->doInsert($crit);
-				$issue = TBGContext::factory()->TBGIssue($issue_id);
+
+				TBGUserIssuesTable::getTable()->addStarredIssue($this->getID(), $issue_id);
+				$issue = TBGIssuesTable::getTable()->selectById($issue_id);
 				$this->_starredissues[$issue->getID()] = $issue;
 				ksort($this->_starredissues);
-				TBGLogging::log('Starred');
 				return true;
 			}
-			else
-			{
-				TBGLogging::log('Not logged in');
-				return false;
-			}
+
+			return false;
 		}
 	
 		/**
@@ -1065,12 +1078,86 @@
 		 */
 		public function removeStarredIssue($issue_id)
 		{
-			$crit = new \b2db\Criteria();
-			$crit->addWhere(TBGUserIssuesTable::ISSUE, $issue_id);
-			$crit->addWhere(TBGUserIssuesTable::UID, $this->_id);
-				
-			\b2db\Core::getTable('TBGUserIssuesTable')->doDelete($crit);
-			unset($this->_starredissues[$issue_id]);
+			TBGUserIssuesTable::getTable()->removeStarredIssue($this->getID(), $issue_id);
+			if (is_array($this->_starredissues) && array_key_exists($issue_id, $this->_starredissues))
+			{
+				unset($this->_starredissues[$issue_id]);
+			}
+			return true;
+		}
+	
+		/**
+		 * Populate the array of starred articles
+		 */
+		protected function _populateStarredArticles()
+		{
+			if ($this->_starredarticles === null)
+			{
+				$this->_b2dbLazyload('_starredarticles');
+				ksort($this->_starredarticles, SORT_NUMERIC);
+			}
+		}
+		
+		/**
+		 * Returns an array of articles ids which are "starred" by this user
+		 *
+		 * @return array
+		 */
+		public function getStarredArticles()
+		{
+			$this->_populateStarredArticles();
+			return $this->_starredarticles;
+		}
+		
+		/**
+		 * Returns whether or not an article is starred
+		 * 
+		 * @param integer $article_id The article ID to check
+		 * 
+		 * @return boolean
+		 */
+		public function isArticleStarred($article_id)
+		{
+			$this->_populateStarredArticles();
+			return array_key_exists($article_id, $this->_starredarticles);
+		}
+		
+		/**
+		 * Adds an article to the list of articles "starred" by this user 
+		 *
+		 * @param integer $article_id ID of article to add
+		 * @return boolean
+		 */
+		public function addStarredArticle($article_id)
+		{
+			$this->_populateStarredArticles();
+			if ($this->isLoggedIn() && !$this->isGuest())
+			{
+				if (array_key_exists($article_id, $this->_starredarticles))
+					return true;
+
+				TBGUserArticlesTable::getTable()->addStarredArticle($this->getID(), $article_id);
+				$article = TBGArticlesTable::getTable()->selectById($article_id);
+				$this->_starredarticles[$article->getID()] = $article;
+				ksort($this->_starredarticles);
+				return true;
+			}
+
+			return false;
+		}
+	
+		/**
+		 * Removes an article from the list of flagged articles
+		 *
+		 * @param integer $article_id ID of article to remove
+		 */
+		public function removeStarredArticle($article_id)
+		{
+			TBGUserArticlesTable::getTable()->removeStarredArticle($this->getID(), $article_id);
+			if (is_array($this->_starredarticles) && array_key_exists($article_id, $this->_starredarticles))
+			{
+				unset($this->_starredarticles[$article_id]);
+			}
 			return true;
 		}
 	
@@ -1639,18 +1726,23 @@
 		 */
 		public function getAvatarURL($small = true)
 		{
-			$url = '';
-			if ($this->usesGravatar() && $this->getEmail())
+			$event = TBGEvent::createNew('core', 'TBGUser::getAvatarURL', $this)->trigger();
+			$url = $event->getReturnValue();
+			
+			if ($url === null)
 			{
-				$url = (TBGContext::getScope()->isSecure()) ? 'https://secure.gravatar.com/avatar/' : 'http://www.gravatar.com/avatar/';
-				$url .= md5(trim($this->getEmail())) . '.png?d=wavatar&amp;s=';
-				$url .= ($small) ? 22 : 48; 
-			}
-			else
-			{
-				$url = TBGContext::getTBGPath() . 'avatars/' . $this->getAvatar();
-				if ($small) $url .= '_small';
-				$url .= '.png';
+				if ($this->usesGravatar() && $this->getEmail())
+				{
+					$url = (TBGContext::getScope()->isSecure()) ? 'https://secure.gravatar.com/avatar/' : 'http://www.gravatar.com/avatar/';
+					$url .= md5(trim($this->getEmail())) . '.png?d=wavatar&amp;s=';
+					$url .= ($small) ? 22 : 48; 
+				}
+				else
+				{
+					$url = TBGContext::getTBGPath() . 'avatars/' . $this->getAvatar();
+					if ($small) $url .= '_small';
+					$url .= '.png';
+				}
 			}
 			return $url;
 		}

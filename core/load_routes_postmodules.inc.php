@@ -1,7 +1,9 @@
 <?php
 
 	$routes[] = array('project_open_issues', '/:project_key/issues/open/*', 'search', 'findIssues', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES, 'search' => true));
+	$routes[] = array('project_allopen_issues', '/:project_key/issues/allopen/*', 'search', 'findIssues', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES_INCLUDING_SUBPROJECTS, 'search' => true));
 	$routes[] = array('project_closed_issues', '/:project_key/issues/closed/*', 'search', 'findIssues', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES, 'search' => true));
+	$routes[] = array('project_allclosed_issues', '/:project_key/issues/allclosed/*', 'search', 'findIssues', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES_INCLUDING_SUBPROJECTS, 'search' => true));
 	$routes[] = array('project_wishlist_issues', '/:project_key/issues/wishlist/*', 'search', 'findIssues', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_PROJECT_WISHLIST, 'search' => true));
 	$routes[] = array('project_milestone_todo_list', '/:project_key/issues/todo/*', 'search', 'findIssues', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_PROJECT_MILESTONE_TODO, 'search' => true));
 	$routes[] = array('project_most_voted_issues', '/:project_key/issues/mostvoted/*', 'search', 'findIssues', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_PROJECT_MOST_VOTED, 'search' => true));
@@ -22,6 +24,8 @@
 	$routes[] = array('unblock', '/:project_key/issues/:issue_id/unblock', 'main', 'markAsNotBlocker');
 	$routes[] = array('issue_gettempfieldvalue', '/get/temp/value/for/:field/*', 'main', 'issueGetTempFieldValue');
 	$routes[] = array('issue_setfield', '/:project_key/issues/:issue_id/set/:field/*', 'main', 'issueSetField');
+	$routes[] = array('issue_edittimespent', '/:project_key/issues/:issue_id/timespent/:entry_id', 'main', 'issueEditTimeSpent');
+	$routes[] = array('issue_deletetimespent', '/:project_key/issues/:issue_id/timespent/:entry_id/remove', 'main', 'issueDeleteTimeSpent');
 	$routes[] = array('issue_revertfield', '/:project_key/issues/:issue_id/revert/:field', 'main', 'issueRevertField');
 	$routes[] = array('getacl_formentry', '/get/acl/formentry/for/:identifiable_type/:identifiable_value', 'main', 'getACLFormEntry');
 	$routes[] = array('main_find_identifiable', '/find/identifiable/by/*', 'main', 'findIdentifiable');
@@ -49,6 +53,10 @@
 	$routes[] = array('project_search_paginated', '/:project_key/issues/paginated/*', 'search', 'findIssuesPaginated');
 	$routes[] = array('project_search_add_filter', '/:project_key/issues/add/filter/*', 'search', 'addFilter');
 	$routes[] = array('project_issues', '/:project_key/issues/find/*', 'search', 'findIssues');
+	$routes[] = array('nextopenissue', '/:project_key/issues/:issue_no/next/open', 'main', 'navigateIssue', array('direction' => 'next', 'mode' => 'open'));
+	$routes[] = array('nextissue', '/:project_key/issues/:issue_no/next', 'main', 'navigateIssue', array('direction' => 'next'));
+	$routes[] = array('previousopenissue', '/:project_key/issues/:issue_no/previous/open', 'main', 'navigateIssue', array('direction' => 'previous', 'mode' => 'open'));
+	$routes[] = array('previousissue', '/:project_key/issues/:issue_no/previous', 'main', 'navigateIssue', array('direction' => 'previous'));
 	$routes[] = array('viewissue', '/:project_key/issues/:issue_no/*', 'main', 'viewIssue');
 	$routes[] = array('issue_log', '/:project_key/issuelog/:issue_id', 'main', 'issueLog');
 	$routes[] = array('project_quicksearch', '/:project_key/quicksearch/*', 'search', 'findIssues', array('quicksearch' => true, 'issues_per_page' => 6));
@@ -64,6 +72,7 @@
 	$routes[] = array('project_planning_milestone', '/:project_key/planning/milestone/:milestone_id', 'project', 'getMilestone');
 	$routes[] = array('project_planning_milestone_remove', '/:project_key/planning/milestone/:milestone_id/remove', 'project', 'removeMilestone');
 	$routes[] = array('project_planning_milestone_issues', '/:project_key/planning/milestone/:milestone_id/get/issues', 'project', 'getMilestoneIssues', array('mode' => 'planning'));
+	$routes[] = array('project_planning_milestone_sort_issues', '/:project_key/planning/milestone/:milestone_id/sort/issues', 'project', 'sortMilestoneIssues', array('mode' => 'planning'));
 	$routes[] = array('project_planning_update_milestone_issues', '/:project_key/planning/milestone/:milestone_id/update/issues', 'project', 'updateMilestoneIssues');
 	$routes[] = array('project_planning_save_column_settings', '/:project_key/planning/save/columnsettings', 'project', 'savePlanningColumnSettings');
 	$routes[] = array('project_roadmap', '/:project_key/roadmap', 'project', 'roadmap');

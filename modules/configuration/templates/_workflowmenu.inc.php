@@ -1,4 +1,4 @@
-<div style="width: 788px;" id="config_workflows">
+<div style="width: 730px;" id="config_workflows">
 	<h3><?php echo __('Configure workflows'); ?></h3>
 	<div class="content faded_out">
 		<p>
@@ -12,7 +12,7 @@
 		</div>
 	<?php endif; ?>
 	<br style="clear: both;">
-	<div class="tab_menu" style="margin-top: 20px;">
+	<div class="tab_menu inset">
 		<ul id="workflow_menu">
 			<li<?php if ($selected_tab == 'workflows'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('configure_workflow_workflows'), __('Workflows')); ?></li>
 			<?php if (isset($workflow)): ?>
@@ -25,6 +25,9 @@
 				<?php endif; ?>
 			<?php endif; ?>
 			<li<?php if ($selected_tab == 'schemes'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('configure_workflow_schemes'), __('Workflow schemes')); ?></li>
+			<?php if (isset($scheme)): ?>
+				<li<?php if ($selected_tab == 'scheme'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('configure_workflow_scheme', array('scheme_id' => $scheme->getID())), $scheme->getName()); ?></li>
+			<?php endif; ?>
 		</ul>
 	</div>
 </div>

@@ -381,6 +381,9 @@
 				case 17 : // Thu, 30 December 2010 14:45:45 GMT
 					$format = '%a, %d %b %Y %H:%M:%S GMT';
 					break;
+				case 18 : // Thu, 30 December 2010 14:45:45 GMT
+					$format = '%Y-%M-%D';
+					break;
 				default : // local server setting
 					$format = '%c';
 			}

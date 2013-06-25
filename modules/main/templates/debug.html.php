@@ -17,12 +17,9 @@
 						<b>Current route: </b>[<i><?php echo $tbg_summary['routing']['name']; ?></i>] <?php echo $tbg_summary['routing']['module']; ?> / <?php echo $tbg_summary['routing']['action']; ?>
 					</span>
 				</td>
-				<td style="width: 100px; cursor: pointer; padding: 3px; font-size: 11px;" onclick="$('log_timing').toggle();" title="Click to toggle timing overview">
+				<td style="width: 150px; cursor: pointer; padding: 3px; font-size: 11px;" onclick="$('log_timing').toggle();" title="Click to toggle timing overview">
 					<?php echo image_tag('debug_time.png', array('style' => 'float: left; margin-right: 5px;')); ?>
-					<?php echo $tbg_summary['load_time']; ?>
-				</td>
-				<td style="width: 100px; cursor: pointer; padding: 3px; font-size: 11px;">
-					<?php echo image_tag('debug_icon_memusage.png', array('style' => 'float: left; margin-right: 5px;')); ?>
+					<?php echo $tbg_summary['load_time']; ?> / 
 					<?php echo round($tbg_summary['memory'] / 1000000, 2); ?>MiB
 				</td>
 				<td style="width: 100px; cursor: pointer; padding: 3px; font-size: 11px;" onclick="$('log_ajax').toggle();" title="Click to toggle ajax calls list">
@@ -33,18 +30,17 @@
 					<?php echo image_tag('debug_scope.png', array('style' => 'float: left; margin-right: 5px;')); ?>
 					<b>Scope: </b><?php echo $tbg_summary['scope']['id']; ?>
 				</td>
-				<td onclick="$('log_sql').toggle();" style="width: 200px; cursor: pointer; padding: 3px; font-size: 11px;<?php if (!\b2db\Core::isDebugMode()) echo ' color: #AAA;'; ?>">
+				<td onclick="$('log_sql').toggle();" style="width: 100px; cursor: pointer; padding: 3px; font-size: 11px;<?php if (!\b2db\Core::isDebugMode()) echo ' color: #AAA;'; ?>" title="Database queries">
 					<?php echo image_tag('debug_database.png', array('style' => 'float: left; margin-right: 5px;')); ?>
 					<?php if (array_key_exists('db', $tbg_summary)): ?>
-						<b><?php echo count($tbg_summary['db']['queries']); ?></b> database queries (<?php echo ($tbg_summary['db']['timing'] > 1) ? round($tbg_summary['db']['timing'], 2) . 's' : round($tbg_summary['db']['timing'] * 1000, 1) . 'ms'; ?>)
+						<b><?php echo count($tbg_summary['db']['queries']); ?></b> (<?php echo ($tbg_summary['db']['timing'] > 1) ? round($tbg_summary['db']['timing'], 2) . 's' : round($tbg_summary['db']['timing'] * 1000, 1) . 'ms'; ?>)
 					<?php else: ?>
 						<span class="faded_out">No database queries</span>
 					<?php endif; ?>
 				</td>
 				<td style="padding: 3px; font-size: 11px; text-align: right;">
 					<span onclick="$('log_messages').toggle();" style="cursor: pointer;">
-						Toggle log messages
-						<?php echo image_tag('debug_log.png', array('style' => 'float: right; margin-left: 5px; cursor: pointer;')); ?>
+						Log <?php echo image_tag('debug_log.png', array('style' => 'float: right; margin-left: 5px; cursor: pointer;')); ?>
 					</span>
 				</td>
 			</tr>

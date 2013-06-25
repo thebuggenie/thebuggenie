@@ -15,9 +15,9 @@
 		<?php include_component('leftmenu', array('selected_section' => TBGSettings::CONFIGURATION_SECTION_WORKFLOW)); ?>
 		<td valign="top" style="padding-left: 15px;">
 			<?php include_template('configuration/workflowmenu', array('selected_tab' => 'workflow', 'workflow' => $workflow)); ?>
-			<div class="content" style="width: 788px;" id="workflow_steps_container">
+			<div class="content" style="width: 730px;" id="workflow_steps_container">
 				<?php if ($workflow instanceof TBGWorkflow): ?>
-					<div class="rounded_box lightgrey workflow_steps_intro">
+					<div class="greybox workflow_steps_intro">
 						<div class="header"><?php echo __('Editing steps for %workflow_name%', array('%workflow_name%' => $workflow->getName())); ?></div>
 						<div class="content">
 							<?php echo __('This page shows all the available steps for the selected workflow, as well as transitions between these steps.'); ?>
@@ -80,13 +80,15 @@
 							</tr>
 						</thead>
 						<tbody class="padded_table hover_highlight" id="workflow_steps_list_tbody">
+							<?php include_template('configuration/workflowstep', array('step' => $workflow->getInitialTransition()->getOutgoingStep(), 'workflow' => $workflow)); ?>
 							<?php foreach ($workflow->getSteps() as $step): ?>
-								<?php include_template('configuration/workflowstep', array('step' => $step)); ?>
+								<?php if ($step->getID() == $workflow->getInitialTransition()->getOutgoingStep()->getID()) continue; ?>
+								<?php include_template('configuration/workflowstep', array('step' => $step, 'workflow' => $workflow)); ?>
 							<?php endforeach; ?>
 						</tbody>
 					</table>
 				<?php else: ?>
-					<div class="rounded_box red borderless" id="no_such_workflow_error">
+					<div class="redbox" id="no_such_workflow_error">
 						<div class="header"><?php echo $error; ?></div>
 					</div>
 				<?php endif; ?>

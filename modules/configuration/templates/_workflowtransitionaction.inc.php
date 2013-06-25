@@ -1,5 +1,7 @@
 <tr id="workflowtransitionaction_<?php echo $action->getID(); ?>">
 	<?php
+	
+		$show_edit = true;
 
 		switch ($action->getActionType())
 		{
@@ -40,12 +42,8 @@
 						<?php echo __('Mark issue as unique (no longer a duplicate) issue'); ?>
 					<?php endif; ?>
 				</td>
-				<?php if (!$action->getTransition()->isCore()): ?>
-					<td style="width: 100px; text-align: right;">
-						<button id="workflowtransitionaction_<?php echo $action->getID(); ?>_delete_button" onclick="$('workflowtransitionaction_<?php echo $action->getID(); ?>_delete').toggle();"><?php echo __('Delete'); ?></button>
-					</td>
-				<?php endif; ?>
 				<?php
+				$show_edit = false;
 				break;
 			case TBGWorkflowTransitionAction::ACTION_SET_STATUS:
 			case TBGWorkflowTransitionAction::ACTION_SET_PRIORITY:
@@ -137,32 +135,21 @@
 							<?php echo image_tag('spinning_16.gif', array('id' => 'workflowtransitionaction_' . $action->getID() . '_indicator', 'style' => 'display: none; margin-left: 5px;')); ?>
 						</form>
 					</td>
-					<td style="width: 100px; text-align: right;">
-						<button id="workflowtransitionaction_<?php echo $action->getID(); ?>_edit_button" onclick="$('workflowtransitionaction_<?php echo $action->getID(); ?>_edit_button').toggle();$('workflowtransitionaction_<?php echo $action->getID(); ?>_delete_button').toggle();$('workflowtransitionaction_<?php echo $action->getID(); ?>_cancel_button').toggle();$('workflowtransitionaction_<?php echo $action->getID(); ?>_description').toggle();$('workflowtransitionaction_<?php echo $action->getID(); ?>_edit').toggle();"><?php echo __('Edit'); ?></button>
-						<button id="workflowtransitionaction_<?php echo $action->getID(); ?>_delete_button" onclick="$('workflowtransitionaction_<?php echo $action->getID(); ?>_delete').toggle();"><?php echo __('Delete'); ?></button>
-						<button id="workflowtransitionaction_<?php echo $action->getID(); ?>_cancel_button" onclick="$('workflowtransitionaction_<?php echo $action->getID(); ?>_edit_button').toggle();$('workflowtransitionaction_<?php echo $action->getID(); ?>_delete_button').toggle();$('workflowtransitionaction_<?php echo $action->getID(); ?>_cancel_button').toggle();$('workflowtransitionaction_<?php echo $action->getID(); ?>_description').toggle();$('workflowtransitionaction_<?php echo $action->getID(); ?>_edit').toggle();" style="display: none;"><?php echo __('Cancel'); ?></button>
-					</td>
 				<?php endif; ?>
 				<?php
 				break;
 		}
 
 	?>
+	<?php if (!$action->getTransition()->isCore()): ?>
+		<td style="width: 100px; text-align: right;">
+			<?php if ($show_edit): ?>
+				<button id="workflowtransitionaction_<?php echo $action->getID(); ?>_edit_button" onclick="$('workflowtransitionaction_<?php echo $action->getID(); ?>_edit_button').toggle();$('workflowtransitionaction_<?php echo $action->getID(); ?>_delete_button').toggle();$('workflowtransitionaction_<?php echo $action->getID(); ?>_cancel_button').toggle();$('workflowtransitionaction_<?php echo $action->getID(); ?>_description').toggle();$('workflowtransitionaction_<?php echo $action->getID(); ?>_edit').toggle();"><?php echo __('Edit'); ?></button>
+			<?php endif; ?>
+			<button id="workflowtransitionaction_<?php echo $action->getID(); ?>_delete_button" onclick="TBG.Main.Helpers.Dialog.show('<?php echo __('Do you really want to delete this transition action?'); ?>', '<?php echo __('Please confirm that you really want to delete this transition action.'); ?>', {yes: {click: function() {TBG.Config.Workflows.Transition.Actions.remove('<?php echo make_url('configure_workflow_transition_delete_action', array('workflow_id' => $action->getWorkflow()->getID(), 'transition_id' => $action->getTransition()->getID(), 'action_id' => $action->getID())); ?>', <?php echo $action->getID(); ?>, '<?php echo $action->getActionType(); ?>'); }}, no: { click: TBG.Main.Helpers.Dialog.dismiss }});"><?php echo __('Delete'); ?></button>
+			<?php if ($show_edit): ?>
+				<button id="workflowtransitionaction_<?php echo $action->getID(); ?>_cancel_button" onclick="$('workflowtransitionaction_<?php echo $action->getID(); ?>_edit_button').toggle();$('workflowtransitionaction_<?php echo $action->getID(); ?>_delete_button').toggle();$('workflowtransitionaction_<?php echo $action->getID(); ?>_cancel_button').toggle();$('workflowtransitionaction_<?php echo $action->getID(); ?>_description').toggle();$('workflowtransitionaction_<?php echo $action->getID(); ?>_edit').toggle();" style="display: none;"><?php echo __('Cancel'); ?></button>
+			<?php endif; ?>
+		</td>
+	<?php endif; ?>
 </tr>
-<?php if (!$action->getTransition()->isCore()): ?>
-<tr>
-	<td colspan="2">
-		<div class="rounded_box white shadowed" style="position: absolute; width: 285px; display: none;" id="workflowtransitionaction_<?php echo $action->getID(); ?>_delete">
-			<div class="header"><?php echo __('Confirm delete transition action'); ?></div>
-			<div class="content">
-				<?php echo __('Do you really want to delete this transition action?'); ?>
-				<div style="text-align: right;">
-					<?php echo javascript_link_tag(__('Yes'), array('onclick' => "TBG.Config.Workflows.Transition.Actions.remove('".make_url('configure_workflow_transition_delete_action', array('workflow_id' => $action->getWorkflow()->getID(), 'transition_id' => $action->getTransition()->getID(), 'action_id' => $action->getID()))."', {$action->getID()}, '{$action->getActionType()}');")); ?> ::
-					<b><?php echo javascript_link_tag(__('No'), array('onclick' => "\$('workflowtransitionaction_{$action->getID()}_delete').toggle();")); ?></b>
-				</div>
-				<div style="padding: 10px 0 10px 0; display: none;" id="workflowtransitionaction_<?php echo $action->getID(); ?>_delete_indicator"><span style="float: left;"><?php echo image_tag('spinning_16.gif'); ?></span>&nbsp;<?php echo __('Please wait'); ?></div>
-			</div>
-		</div>
-	</td>
-</tr>
-<?php endif; ?>

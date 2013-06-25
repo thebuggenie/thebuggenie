@@ -1,4 +1,4 @@
-<li id="workflow_<?php echo $workflow->getID(); ?>" class="rounded_box lightgrey" style="margin-bottom: 5px;">
+<li id="workflow_<?php echo $workflow->getID(); ?>" class="greybox" style="margin-bottom: 5px;">
 	<table>
 		<tr>
 			<td class="workflow_info scheme">

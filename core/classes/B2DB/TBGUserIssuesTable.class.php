@@ -97,4 +97,23 @@
 			return $res;
 		}
 		
+		public function addStarredIssue($user_id, $issue_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addInsert(self::ISSUE, $issue_id);
+			$crit->addInsert(self::UID, $user_id);
+			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
+
+			$this->doInsert($crit);
+		}
+		
+		public function removeStarredIssue($user_id, $issue_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::ISSUE, $issue_id);
+			$crit->addWhere(self::UID, $user_id);
+				
+			$this->doDelete($crit);
+			return true;
+		}
 	}

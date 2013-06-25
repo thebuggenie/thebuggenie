@@ -27,15 +27,8 @@
 			catch (Exception $e) {}
 		}
 		
-		/**
-		 * View an issue
-		 * 
-		 * @param TBGRequest $request
-		 */
-		public function runViewIssue(TBGRequest $request)
+		protected function _getIssueFromRequest(TBGRequest $request)
 		{
-			TBGLogging::log('Loading issue');
-			
 			if ($issue_no = TBGContext::getRequest()->getParameter('issue_no'))
 			{
 				$issue = TBGIssue::getIssueFromLink($issue_no);
@@ -55,6 +48,60 @@
 			//$this->getResponse()->setPage('viewissue');
 			if ($issue instanceof TBGIssue && (!$issue->hasAccess() || $issue->isDeleted()))
 				$issue = null;
+
+			return $issue;
+		}
+
+		/**
+		 * Go to the next/previous open issue
+		 *
+		 * @param TBGRequest $request
+		 */
+		public function runNavigateIssue(TBGRequest $request)
+		{
+			$issue = $this->_getIssueFromRequest($request);
+			
+			if (!$issue instanceof TBGIssue)
+			{
+				$this->getResponse()->setTemplate('viewissue');
+				return;
+			}
+		
+			do
+			{
+				if ($request['direction'] == 'next')
+				{
+					$found_issue = TBGIssuesTable::getTable()->getNextIssueFromIssueIDAndProjectID($issue->getID(), $issue->getProject()->getID(), $request['mode'] == 'open');
+				}
+				else
+				{
+					$found_issue = TBGIssuesTable::getTable()->getPreviousIssueFromIssueIDAndProjectID($issue->getID(), $issue->getProject()->getID(), $request['mode'] == 'open');
+				}
+				if (is_null($found_issue)) break;
+			}
+			while ($found_issue instanceof TBGIssue && !$found_issue->hasAccess());
+			
+			if ($found_issue instanceof TBGIssue)
+			{
+				$this->forward(TBGContext::getRouting()->generate('viewissue', array('project_key' => $found_issue->getProject()->getKey(), 'issue_no' => $found_issue->getFormattedIssueNo())));
+			}
+			else
+			{
+				TBGContext::setMessage('issue_message', $this->getI18n()->__('There are no more issues in that direction.'));
+				$this->forward(TBGContext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
+			}
+		}
+
+		/**
+		 * View an issue
+		 * 
+		 * @param TBGRequest $request
+		 */
+		public function runViewIssue(TBGRequest $request)
+		{
+			TBGLogging::log('Loading issue');
+			
+			$issue = $this->_getIssueFromRequest($request);
 
 			if ($issue instanceof TBGIssue)
 			{
@@ -110,6 +157,10 @@
 						$this->issue_unsaved = true;
 					}
 				}
+			}
+			elseif (TBGContext::hasMessage('issue_deleted'))
+			{
+				$this->issue_deleted = TBGContext::getMessageAndClear('issue_deleted');
 			}
 			elseif ($message == true)
 			{
@@ -236,7 +287,7 @@
 		{
 			if (TBGSettings::isSingleProjectTracker())
 			{
-				if (($projects = TBGProject::getAllRootProjects()) && $project = array_shift($projects))
+				if (($projects = TBGProject::getAllRootProjects(false)) && $project = array_shift($projects))
 				{
 					$this->forward(TBGContext::getRouting()->generate('project_dashboard', array('project_key' => $project->getKey())));
 				}
@@ -439,6 +490,10 @@
 				TBGContext::getUser()->setOffline();
 			}
 			TBGContext::logout();
+			if ($request->isAjaxCall())
+			{
+				return $this->renderJSON(array('status' => 'logout ok', 'url' => TBGContext::getRouting()->generate(TBGSettings::getLogoutReturnRoute())));
+			}
 			$this->forward(TBGContext::getRouting()->generate(TBGSettings::getLogoutReturnRoute()));
 		}
 		
@@ -503,6 +558,50 @@
 			$options = $request->getParameters();
 			$forward_url = TBGContext::getRouting()->generate('home');
 
+			if ($request->hasParameter('persona') && $request['persona'] == 'true') 
+			{
+				$url = 'https://verifier.login.persona.org/verify';
+				$assert = filter_input(
+					INPUT_POST,
+					'assertion',
+					FILTER_UNSAFE_RAW,
+					FILTER_FLAG_STRIP_LOW|FILTER_FLAG_STRIP_HIGH
+				);
+				//Use the $_POST superglobal array for PHP < 5.2 and write your own filter 
+				$params = 'assertion=' . urlencode($assert) . '&audience=' .
+						   urlencode(TBGContext::getURLhost().':80');
+				$ch = curl_init();
+				$options = array(
+					CURLOPT_URL => $url,
+					CURLOPT_RETURNTRANSFER => TRUE,
+					CURLOPT_POST => 2,
+					CURLOPT_POSTFIELDS => $params
+				);
+				curl_setopt_array($ch, $options);
+				$result = curl_exec($ch);
+				curl_close($ch);
+				$details = json_decode($result);
+				$user = null;
+				if ($details->status == 'okay')
+				{
+					$user = TBGUser::getByEmail($details->email);
+					if ($user instanceof TBGUser)
+					{
+						TBGContext::getResponse()->setCookie('tbg3_password', $user->getPassword());
+						TBGContext::getResponse()->setCookie('tbg3_username', $user->getUsername());
+						TBGContext::getResponse()->setCookie('tbg3_persona_session', true);
+						return $this->renderJSON(array('status' => 'login ok', 'redirect' => in_array($request['referrer_route'], array('home', 'login'))));
+					}
+				}
+				
+				if (!$user instanceof TBGUser)
+				{
+					$this->getResponse()->setHttpStatus(401);
+					$this->renderJSON(array('message' => $this->getI18n()->__('Invalid login')));
+				}
+				return;
+			}
+			
 			if (TBGSettings::isOpenIDavailable())
 				$openid = new LightOpenID(TBGContext::getRouting()->generate('login_page', array(), false));
 
@@ -1332,7 +1431,7 @@
 		}
 
 		/**
-		 * Retrieves the fields which are valid for that product and issue type combination
+		 * Toggle favourite issue (starring)
 		 *  
 		 * @param TBGRequest $request
 		 */
@@ -1377,6 +1476,101 @@
 			
 		}
 
+		public function runIssueDeleteTimeSpent(TBGRequest $request)
+		{
+			if ($issue_id = $request['issue_id'])
+			{
+				try
+				{
+					$issue = TBGIssuesTable::getTable()->selectById($issue_id);
+					if ($entry_id = $request['entry_id'])
+					{
+						$spenttime = TBGIssueSpentTimesTable::getTable()->selectById($entry_id);
+					}
+				}
+				catch (Exception $e)
+				{
+					$this->getResponse()->setHttpStatus(400);
+					return $this->renderText('fail');
+				}
+			}
+			else
+			{
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderText('no issue');
+			}
+
+			$spenttime->delete();
+			$spenttime->getIssue()->save();
+			$timesum = array_sum($spenttime->getIssue()->getSpentTime());
+
+			return $this->renderJSON(array('deleted' => 'ok', 'issue_id' => $issue_id, 'timesum' => $timesum, 'spenttime' => $spenttime->getIssue()->getFormattedTime($spenttime->getIssue()->getSpentTime())));
+		}
+
+		public function runIssueEditTimeSpent(TBGRequest $request)
+		{
+			$entry_id = $request['entry_id'];
+			$spenttime = ($entry_id) ? TBGIssueSpentTimesTable::getTable()->selectById($entry_id) : new TBGIssueSpentTime();
+
+			if ($issue_id = $request['issue_id'])
+			{
+				try
+				{
+					$issue = TBGContext::factory()->TBGIssue($issue_id);
+				}
+				catch (Exception $e)
+				{
+					$this->getResponse()->setHttpStatus(400);
+					return $this->renderText('fail');
+				}
+			}
+			else
+			{
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderText('no issue');
+			}
+
+			if (!$spenttime->getID())
+			{
+				if ($request['timespent_manual'])
+				{
+					$times = TBGIssue::convertFancyStringToTime($request['timespent_manual']);
+				}
+				else
+				{
+					$times = array('points' => 0, 'hours' => 0, 'days' => 0, 'weeks' => 0, 'months' => 0);
+					$times[$request['timespent_specified_type']] = $request['timespent_specified_value'];
+				}
+				$spenttime->setIssue($issue);
+				$spenttime->setUser($this->getUser());
+			}
+			else
+			{
+				$times = array('points' => $request['points'],
+								'hours' => $request['hours'],
+								'days' => $request['days'],
+								'weeks' => $request['weeks'],
+								'months' => $request['months']);
+				$edited_at = $request['edited_at'];
+				$spenttime->setEditedAt(mktime(0, 0, 1, $edited_at['month'], $edited_at['day'], $edited_at['year']));
+			}
+			$times['hours'] *= 100;
+			$spenttime->setSpentPoints($times['points']);
+			$spenttime->setSpentHours($times['hours']);
+			$spenttime->setSpentDays($times['days']);
+			$spenttime->setSpentWeeks($times['weeks']);
+			$spenttime->setSpentMonths($times['months']);
+			$spenttime->setActivityType($request['timespent_activitytype']);
+			$spenttime->setComment($request['timespent_comment']);
+			$spenttime->save();
+
+			$spenttime->getIssue()->save();
+
+			$timesum = array_sum($spenttime->getIssue()->getSpentTime());
+
+			return $this->renderJSON(array('edited' => 'ok', 'issue_id' => $issue_id, 'timesum' => $timesum, 'spenttime' => $spenttime->getIssue()->getFormattedTime($spenttime->getIssue()->getSpentTime()), 'timeentries' => $this->getComponentHTML('main/issuespenttimes', array('issue' => $spenttime->getIssue()))));
+		}
+
 		/**
 		 * Sets an issue field to a specified value
 		 * 
@@ -1388,7 +1582,7 @@
 			{
 				try
 				{
-					$issue = TBGContext::factory()->TBGIssue($issue_id);
+					$issue = TBGIssuesTable::getTable()->selectById($issue_id);
 				}
 				catch (Exception $e)
 				{
@@ -1431,7 +1625,7 @@
 					else
 					{
 						$issue->setTitle($request->getRawParameter('value'));
-						return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>$issue->isTitleChanged(), 'field' => array('id' => 1, 'name' => strip_tags($issue->getTitle())), 'title' => strip_tags($issue->getTitle())));
+						return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>$issue->isTitleChanged(), 'field' => array('id' => 1, 'name' => strip_tags($issue->getTitle()))));
 					}
 					break;
 				case 'percent_complete':
@@ -1531,31 +1725,19 @@
 					
 					if ($request['spent_time'] != TBGContext::getI18n()->__('Enter time spent here') && $request['spent_time'])
 					{
-						$function = ($request->hasParameter('spent_time_added_text')) ? 'addSpentTime' : 'setSpentTime';
-						$issue->$function($request['spent_time']);
+						$issue->addSpentTime($request['spent_time']);
 					}
 					elseif ($request->hasParameter('value'))
 					{
-						$issue->setSpentTime($request['value']);
+						$issue->addSpentTime($request['value']);
 					}
 					else
 					{
-						if ($request->hasParameter('spent_time_added_input'))
-						{
-							$issue->addSpentMonths($request['months']);
-							$issue->addSpentWeeks($request['weeks']);
-							$issue->addSpentDays($request['days']);
-							$issue->addSpentHours($request['hours']);
-							$issue->addSpentPoints($request['points']);
-						}
-						else
-						{
-							$issue->setSpentMonths($request['months']);
-							$issue->setSpentWeeks($request['weeks']);
-							$issue->setSpentDays($request['days']);
-							$issue->setSpentHours($request['hours']);
-							$issue->setSpentPoints($request['points']);
-						}
+						$issue->addSpentMonths($request['months']);
+						$issue->addSpentWeeks($request['weeks']);
+						$issue->addSpentDays($request['days']);
+						$issue->addSpentHours($request['hours']);
+						$issue->addSpentPoints($request['points']);
 					}
 					return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>$issue->isSpentTimeChanged(), 'field' => (($issue->hasSpentTime()) ? array('id' => 1, 'name' => $issue->getFormattedTime($issue->getSpentTime())) : array('id' => 0)), 'values' => $issue->getSpentTime()));
 					break;
@@ -2133,6 +2315,7 @@
 			$issue->deleteIssue();
 			$issue->save();
 			
+			TBGContext::setMessage('issue_deleted', true);
 			$this->forward(TBGContext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
 		}
 		
@@ -2553,6 +2736,11 @@
 						TBGEvent::createNew('core', 'TBGComment::createNew', $comment, compact('issue'))->trigger();
 					}
 				}
+				elseif ($comment_applies_type == TBGComment::TYPE_ARTICLE)
+				{
+					$article = TBGArticlesTable::getTable()->selectById((int) $request['comment_applies_id']);
+					TBGEvent::createNew('core', 'TBGComment::createNew', $comment, compact('article'))->trigger();
+				}
 
 				switch ($comment_applies_type)
 				{
@@ -2774,6 +2962,14 @@
 						break;
 					case 'issue_subscribers':
 						$template_name = 'main/issuesubscribers';
+						break;
+					case 'issue_spenttimes':
+						$template_name = 'main/issuespenttimes';
+						$options['initial_view'] = $request->getParameter('initial_view', 'list');
+						break;
+					case 'issue_spenttime':
+						$template_name = 'main/issuespenttime';
+						$options['entry_id'] = $request->getParameter('entry_id');
 						break;
 					case 'relate_issue':
 						$template_name = 'main/relateissue';

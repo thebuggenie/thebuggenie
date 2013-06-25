@@ -1,10 +1,10 @@
 <?php if (!isset($scheme)): ?>
-<div class="rounded_box mediumgrey borderless" style="margin: 5px 0 0 0; font-size: 12px;" id="issuetype_<?php echo $type->getID(); ?>_box">
+<div class="greybox" style="margin: 5px 0 0 0;" id="issuetype_<?php echo $type->getID(); ?>_box">
 <?php else: ?>
-<div class="rounded_box <?php if ($scheme->isSchemeAssociatedWithIssuetype($type)): ?>green<?php else: ?>lightgrey<?php endif; ?> borderless issuetype_box" style="margin: 5px 0 0 0; font-size: 12px;" id="issuetype_<?php echo $type->getID(); ?>_box">
+<div class="<?php if ($scheme->isSchemeAssociatedWithIssuetype($type)): ?>greenbox<?php else: ?>greybox<?php endif; ?>" style="margin: 5px 0 0 0;" id="issuetype_<?php echo $type->getID(); ?>_box">
 <?php endif; ?>
 	<?php echo image_tag('spinning_32.gif', array('style' => 'float: right; margin-left: 5px; display: none;', 'id' => 'issuetype_' . $type->getID() . '_indicator')); ?>
-	<div class="header" style="padding: 5px 0 5px 5px;">
+	<div class="header" style="font-size: 1.1em;">
 		<span id="issuetype_<?php echo $type->getID(); ?>_name_span"><?php echo $type->getName(); ?></span>&nbsp;
 		<?php if (isset($scheme)): ?>
 			<?php if (!$scheme->isCore()): ?>
@@ -24,7 +24,7 @@
 		<?php endif; ?>
 	</div>
 	<?php if (!isset($scheme)): ?>
-		<div id="issuetype_<?php echo $type->getID(); ?>_info">
+		<div id="issuetype_<?php echo $type->getID(); ?>_info" class="issuetype_description">
 			<b><?php echo __('Description'); ?>:</b>&nbsp;<span id="issuetype_<?php echo $type->getID(); ?>_description_span"><?php echo $type->getDescription(); ?></span><br>
 		</div>
 	<?php endif; ?>

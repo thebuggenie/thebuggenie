@@ -5,7 +5,7 @@
 	
 ?>
 <?php if (TBGContext::getCurrentProject()->isLocked() == true): ?>
-	<div class="rounded_box red borderless" id="notfound_error">
+	<div class="redbox" id="notfound_error">
 		<div class="viewissue_info_header"><?php echo __("Reporting disabled"); ?></div>
 		<div class="viewissue_info_content">
 			<?php if (isset($message) && $message): ?>

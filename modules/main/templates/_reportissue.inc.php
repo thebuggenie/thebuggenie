@@ -208,13 +208,16 @@
 	<?php endif; ?>
 	<?php if (count($issuetypes) > 0): ?>
 		<div class="issuetype_list" id="issuetype_list"<?php if ($selected_issuetype instanceof TBGIssuetype): ?> style="display: none;"<?php endif; ?>>
-		<?php foreach ($issuetypes as $issuetype): ?>
-			<?php if (!$selected_project->getIssuetypeScheme()->isIssuetypeReportable($issuetype) && !$tbg_request->isAjaxCall()) continue; ?>
-			<a class="button button-silver" href="javascript:void(0);" onclick="$('issuetype_id').setValue(<?php echo $issuetype->getID(); ?>);TBG.Issues.updateFields('<?php echo make_url('getreportissuefields', array('project_key' => $selected_project->getKey())); ?>');" onmouseover="$('issuetype_description_help').hide();$('issuetype_<?php echo $issuetype->getKey(); ?>_description').show();" onmouseout="$('issuetype_<?php echo $issuetype->getKey(); ?>_description').hide();$('issuetype_description_help').show();" style="font-size: 13px; font-weight: bold;">
-				<?php echo image_tag($issuetype->getIcon() . '.png'); ?>
-				<?php echo __('Choose %issuetype_name%', array('%issuetype_name%' => '<br>'.$issuetype->getName())); ?>
-			</a>
-		<?php endforeach; ?>
+			<?php if ($introarticle instanceof TBGWikiArticle): ?>
+				<?php include_component('publish/articledisplay', array('article' => $introarticle, 'show_title' => false, 'show_details' => false, 'show_actions' => false, 'embedded' => true)); ?>
+			<?php endif; ?>
+			<?php foreach ($issuetypes as $issuetype): ?>
+				<?php if (!$selected_project->getIssuetypeScheme()->isIssuetypeReportable($issuetype) && !$tbg_request->isAjaxCall()) continue; ?>
+				<a class="button button-silver" href="javascript:void(0);" onclick="$('issuetype_id').setValue(<?php echo $issuetype->getID(); ?>);TBG.Issues.updateFields('<?php echo make_url('getreportissuefields', array('project_key' => $selected_project->getKey())); ?>');" onmouseover="$('issuetype_description_help').hide();$('issuetype_<?php echo $issuetype->getKey(); ?>_description').show();" onmouseout="$('issuetype_<?php echo $issuetype->getKey(); ?>_description').hide();$('issuetype_description_help').show();" style="font-size: 13px; font-weight: bold;">
+					<?php echo image_tag($issuetype->getIcon() . '.png'); ?>
+					<?php echo __('Choose %issuetype_name%', array('%issuetype_name%' => '<br>'.$issuetype->getName())); ?>
+				</a>
+			<?php endforeach; ?>
 		</div>
 	<?php endif; ?>
 	<div style="clear: both;"></div>
@@ -233,6 +236,9 @@
 			<?php endforeach; ?>
 		</div>
 		<div class="report_form" id="report_form"<?php if (!$selected_project instanceof TBGProject || !$selected_issuetype instanceof TBGIssuetype): ?> style="display: none;"<?php endif; ?>>
+			<?php if ($reporthelparticle instanceof TBGWikiArticle): ?>
+				<?php include_component('publish/articledisplay', array('article' => $reporthelparticle, 'show_title' => false, 'show_details' => false, 'show_actions' => false, 'embedded' => true)); ?>
+			<?php endif; ?>
 			<table cellpadding="0" cellspacing="0"<?php if (array_key_exists('title', $errors)): ?> class="reportissue_error"<?php endif; ?>>
 				<tr>
 					<td style="width: 180px;"><label for="title" class="required"><span>* </span><?php echo __('Short summary'); ?></label></td>
@@ -253,7 +259,7 @@
 					</td>
 				</tr>
 			</table>
-			<div id="report_issue_more_options_indicator">
+			<div id="report_issue_more_options_indicator" style="display: none;">
 				<?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')); ?>
 				<div style="padding-top: 2px;"><?php echo __('Checking fields, please wait'); ?>...</div>
 			</div>
@@ -595,7 +601,9 @@
 			</div>
 			<?php if ($selected_issuetype != null && $selected_project != null): ?>
 				<script type="text/javascript">
-					TBG.Issues.updateFields('<?php echo make_url('getreportissuefields', array('project_key' => $selected_project->getKey())); ?>');
+					document.observe('dom:loaded', function() {
+						TBG.Issues.updateFields('<?php echo make_url('getreportissuefields', array('project_key' => $selected_project->getKey())); ?>');
+					});
 				</script>
 			<?php endif; ?>
 			<?php TBGEvent::createNew('core', 'reportissue.prefile')->trigger(); ?>

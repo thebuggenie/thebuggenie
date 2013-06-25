@@ -590,17 +590,44 @@
 		protected function _upgradeFrom3dot2()
 		{
 			TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'installation' . DS . 'classes' . DS . 'upgrade_3.2');
+			foreach (array('publish', 'mailing') as $module)
+			{
+				TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . $module . DS . 'classes');
+				TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . $module . DS . 'classes' . DS . 'B2DB');
+			}
 
+			TBGArticlesTable::getTable()->upgrade(TBGArticlesTable3dot2::getTable());
 			TBGProjectsTable::getTable()->upgrade(TBGProjectsTable3dot2::getTable());
 			TBGLogTable::getTable()->upgrade(TBGLogTable3dot2::getTable());
 			TBGUsersTable::getTable()->upgrade(TBGUsersTable3dot2::getTable());
-			if (TBGContext::isModuleLoaded('mailing'))
-			{
-				TBGIncomingEmailAccountTable::getTable()->upgrade(TBGIncomingEmailAccountTable3dot2::getTable());
-			}
+			TBGIssuesTable::getTable()->upgrade(TBGIssuesTable3dot2::getTable());
+			TBGWorkflowsTable::getTable()->upgrade(TBGWorkflowsTable3dot2::getTable());
+			TBGIncomingEmailAccountTable::getTable()->upgrade(TBGIncomingEmailAccountTable3dot2::getTable());
+			TBGUserArticlesTable::getTable()->create();
+			
+			$transaction = \b2db\Core::startTransaction();
 			// Add new settings.
 			TBGSettings::saveSetting(TBGSettings::SETTING_SERVER_TIMEZONE, 'core', date_default_timezone_get(), 0, 1);
 
+			foreach (TBGContext::getRequest()->getParameter('status') as $scope_id => $status_id)
+			{
+				$transition = new TBGWorkflowTransition();
+				$workflow = TBGWorkflowsTable::getTable()->selectById(TBGWorkflowsTable::getTable()->getFirstIdByScope((int) $scope_id));
+				$steps = $workflow->getSteps();
+				$step = array_shift($steps);
+				$step->setLinkedStatusID((int) $status_id);
+				$step->save();
+				$transition->setOutgoingStep($step);
+				$transition->setName('Issue created');
+				$transition->setWorkflow($workflow);
+				$transition->setScope(TBGScopesTable::getTable()->selectById((int) $scope_id));
+				$transition->setDescription('This is the initial transition for issues using this workflow');
+				$transition->save();
+				$workflow->setInitialTransition($transition);
+				$workflow->save();
+			}
+			$transaction->commitAndEnd();
+			
 			$this->upgrade_complete = true;
 		}
 
@@ -938,6 +965,8 @@
 				$scope->setID(1);
 				$scope->setEnabled();
 				TBGContext::setScope($scope);
+				
+				$this->statuses = TBGListTypesTable::getTable()->getStatusListForUpgrade();
 			}
 			$this->upgrade_complete = false;
 
@@ -958,8 +987,11 @@
 				{
 					$existing_installed_content = file_get_contents(THEBUGGENIE_PATH . 'installed');
 					file_put_contents(THEBUGGENIE_PATH . 'installed', TBGSettings::getVersion(false, false) . ', upgraded ' . date('d.m.Y H:i') . "\n" . $existing_installed_content);
+					$prev_error_reportiong_level = error_reporting(0);
 					unlink(THEBUGGENIE_PATH . 'upgrade');
-					$this->current_version = '3.2';
+					error_reporting($prev_error_reportiong_level);
+					if (file_exists(THEBUGGENIE_PATH . 'upgrade')) $this->upgrade_file_failed = true;
+					$this->current_version = TBGSettings::getVersion(false, false);
 					$this->upgrade_available = false;
 				}
 			}

@@ -463,6 +463,24 @@
 		 * Transition an issue to the outgoing step, based on request data if available
 		 * 
 		 * @param TBGIssue $issue
+		 */
+		public function transitionIssueToOutgoingStepWithoutRequest(TBGIssue $issue)
+		{
+			$this->getOutgoingStep()->applyToIssue($issue);
+			if (!empty($this->_validation_errors)) return false;
+			
+			foreach ($this->getActions() as $action)
+			{
+				$action->perform($issue);
+			}
+			
+			$issue->save();
+		}
+		
+		/**
+		 * Transition an issue to the outgoing step, based on request data if available
+		 * 
+		 * @param TBGIssue $issue
 		 * @param TBGRequest $request 
 		 */
 		public function transitionIssueToOutgoingStepFromRequest(TBGIssue $issue, $request = null)
@@ -526,4 +544,9 @@
 			return $new_transition;
 		}
 
+		public function isInitialTransition()
+		{
+			return ($this->getWorkflow()->getInitialTransition()->getID() == $this->getID());
+		}
+		
 	}

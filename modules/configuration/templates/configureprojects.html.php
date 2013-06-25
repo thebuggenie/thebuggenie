@@ -7,7 +7,7 @@
 	<tr>
 		<?php include_component('leftmenu', array('selected_section' => 10)); ?>
 		<td valign="top" style="padding-left: 15px;">
-			<div style="width: 788px;">
+			<div style="width: 730px;">
 				<h3><?php echo __('Configure projects'); ?></h3>
 				<div class="content faded_out">
 					<p>
@@ -20,32 +20,38 @@
 					</p>
 				</div>
 				<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-					<div class="rounded_box lightgrey" style="width: 788px; padding: 5px; margin: 10px 0;<?php if (!TBGContext::getScope()->hasProjectsAvailable()): ?> display: none;<?php endif; ?>" id="add_project_div">
+					<div class="lightyellowbox" style="padding: 5px; margin: 10px 0;<?php if (!TBGContext::getScope()->hasProjectsAvailable()): ?> display: none;<?php endif; ?>" id="add_project_div">
 						<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" method="post" id="add_project_form" onsubmit="TBG.Project.add('<?php echo make_url('configure_projects_add_project'); ?>');return false;">
 							<div style="height: 25px;">
 								<input type="hidden" name="add_project" value="true">
-								<label for="add_project_input" style="float: left;"><?php echo __('Create a new project'); ?></label>
-								<input type="submit" style="float: right; margin-left: 5px; padding: 2px 5px 3px !important;" value="<?php echo __('Add'); ?>">
-								<input type="text" style="width: 400px; text-align: left; float: right;" id="add_project_input" name="p_name">
+								<label for="add_project_input"><?php echo __('Create a new project'); ?></label>
+								<input type="text" style="width: 300px;" id="add_project_input" name="p_name">
+								<div style="text-align: right; float: right;">
+									<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; margin: 3px 5px -4px;', 'id' => 'project_add_indicator')); ?>
+									<input type="submit" value="<?php echo __('Create project'); ?>" class="button button-silver">
+								</div>
 							</div>
-							<table cellpadding=0 cellspacing=0 style="display: none; margin-left: 5px; width: 300px;" id="project_add_indicator">
-								<tr>
-									<td style="width: 20px; padding: 2px;"><?php echo image_tag('spinning_20.gif'); ?></td>
-									<td style="padding: 0px; text-align: left;"><?php echo __('Adding project, please wait'); ?>...</td>
-								</tr>
-							</table>
 						</form>
 					</div>
 				<?php endif; ?>
-				<h4><?php echo __('Existing projects'); ?></h4>
+				<h4><?php echo __('Active projects'); ?></h4>
 				<div id="project_table">
-					<?php if (count($allProjects) > 0): ?>
-						<?php foreach ($allProjects as $project): ?>
+					<?php if (count($active_projects) > 0): ?>
+						<?php foreach ($active_projects as $project): ?>
 							<?php include_template('projectbox', array('project' => $project, 'access_level' => $access_level)); ?>
 						<?php endforeach; ?>
 					<?php endif; ?>
 				</div>
-				<div id="noprojects_tr" style="padding: 3px; color: #AAA;<?php if (count($allProjects) > 0): ?> display: none;<?php endif;?>">
+				<div id="noprojects_tr" style="padding: 3px; color: #AAA;<?php if (count($active_projects) > 0): ?> display: none;<?php endif;?>">
+					<?php echo __('There are no projects available'); ?>
+				</div>
+				<h4 style="margin-top: 30px;"><?php echo __('Archived projects'); ?></h4>
+				<div id="project_table_archived">
+					<?php foreach ($archived_projects as $project): ?>
+						<?php include_template('projectbox', array('project' => $project, 'access_level' => $access_level)); ?>
+					<?php endforeach; ?>
+				</div>
+				<div id="noprojects_tr" style="padding: 3px; color: #AAA;<?php if (count($archived_projects) > 0): ?> display: none;<?php endif;?>">
 					<?php echo __('There are no projects available'); ?>
 				</div>
 			</div>

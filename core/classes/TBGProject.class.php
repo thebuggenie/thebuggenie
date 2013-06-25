@@ -522,22 +522,27 @@
 		 * 
 		 * @return array
 		 */
-		public static function getAllRootProjects($archived = false)
+		public static function getAllRootProjects($archived = null)
 		{
 			self::_populateProjects();
+
 			$final = array();
 			foreach (self::$_projects as $project)
 			{
-				if ($archived)
+				if ($archived === null && !$project->hasParent())
 				{
-					if (!($project->getParent() instanceof TBGProject) && $project->isArchived())
+					$final[] = $project;
+				}
+				elseif ($archived === true)
+				{
+					if ($project->isArchived())
 					{
 						$final[] = $project;
 					}
 				}
-				else
+				elseif ($archived === false)
 				{
-					if (!($project->getParent() instanceof TBGProject) && !$project->isArchived())
+					if (!$project->hasParent() && !$project->isArchived())
 					{
 						$final[] = $project;
 					}
@@ -650,13 +655,30 @@
 			}
 			return $final;
 		}
-				
+		
+		public static function getIncludingAllSubprojectsAsArray(TBGProject $project)
+		{
+			$projects = array();
+			self::getSubprojectsArray($project, $projects);
+			
+			return $projects;
+		}
+		
+		public static function getSubprojectsArray(TBGProject $project, &$projects)
+		{
+			$projects[$project->getID()] = $project;
+			foreach ($project->getChildProjects() as $subproject)
+			{
+				self::getSubprojectsArray($subproject, $projects);
+			}
+		}
+
 		/**
 		 * Retrieve the default project
 		 * 
 		 * @return TBGProject
 		 */
-		static function getDefaultProject()
+		public static function getDefaultProject()
 		{
 			if ($res = TBGProjectsTable::getTable()->getAllSortedByIsDefault())
 			{
@@ -680,7 +702,7 @@
 		protected function _preSave($is_new)
 		{
 			parent::_preSave($is_new);
-			$project = self::getByKey($this->getKey()); // TBGProjectsTable::getTable()->getByKey($this->getKey());
+			$project = self::getByKey($this->getKey());
 			if ($project instanceof TBGProject && $project->getID() != $this->getID())
 			{
 				throw new InvalidArgumentException("A project with this key already exists");
@@ -2776,6 +2798,11 @@
 			return $this->_b2dbLazyload('_parent');
 		}
 		
+		public function getParentID()
+		{
+			return ($this->getParent() instanceof TBGProject) ? $this->getParent()->getID() : 0;
+		}
+		
 		public function clearParent()
 		{
 			$this->_parent = null;
@@ -2786,8 +2813,14 @@
 			$this->_parent = $project;
 		}
 		
+		public function getChildProjects($archived = false)
+		{
+			return $this->getChildren($archived);
+		}
+		
 		/**
-		 * Get all children
+		 * Get children based on archived state
+		 * 
 		 * @param bool $archived[optional] Show archived projects
 		 */
 		public function getChildren($archived = false)
@@ -2810,23 +2843,23 @@
 			return $f_projects;
 		}
 		
+		/**
+		 * Get all child projects
+		 * @param bool $archived[optional] Show archived projects
+		 */
+		public function getAllChildren($archived = false)
+		{
+			$this->_populateChildren();
+			return $this->_children;
+		}
+		
 		protected function _populateChildren()
 		{
 			if ($this->_children === null)
 			{
-				$this->_children = array();
-				$res = TBGProjectsTable::getTable()->getByParentID($this->getID());
-
-				if ($res == false): return; endif;
-
-				foreach ($res->getAllRows() as $row)
-				{
-					if ($row->get(TBGProjectsTable::DELETED) == false)
-					{
-						$this->_children[] = TBGContext::factory()->TBGProject($row->get(TBGProjectsTable::ID), $row);
-					}
-				}
+				$this->_children = TBGProjectsTable::getTable()->getByParentID($this->getID());
 			}
+			return $this->_children;
 		}
 		
 		/**

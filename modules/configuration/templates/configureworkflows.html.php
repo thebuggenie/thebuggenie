@@ -8,13 +8,13 @@
 		<?php include_component('leftmenu', array('selected_section' => TBGSettings::CONFIGURATION_SECTION_WORKFLOW)); ?>
 		<td valign="top" style="padding-left: 15px;">
 			<?php include_template('configuration/workflowmenu', array('selected_tab' => 'workflows')); ?>
-			<div class="content" style="width: 788px;">
+			<div class="content" style="width: 730px;">
 				<?php if (isset($error)): ?>
-					<div class="rounded_box red borderless" style="margin-top: 5px;">
+					<div class="redbox" style="margin-top: 5px;">
 						<?php echo $error; ?>
 					</div>
 				<?php endif; ?>
-				<div class="rounded_box lightyellow" style="margin-top: 5px;">
+				<div class="lightyellowbox" style="margin-top: 5px;">
 					<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_workflow'); ?>" id="add_workflow_form" method="post">
 						<label for="add_workflow_name"><?php echo __('Add an empty workflow'); ?></label>
 						<input type="text" name="workflow_name" id="add_workflow_name" value="<?php echo __('Blank workflow'); ?>" style="width: 300px;">

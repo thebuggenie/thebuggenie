@@ -12,7 +12,9 @@
 	{
 		$tbg_response->addBreadcrumb(__('Issues'), make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), tbg_get_breadcrumblinks('project_summary', TBGContext::getCurrentProject()));
 		$tbg_response->addFeed(make_url('project_open_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'rss')), __('Open issues for %project_name%', array('%project_name%' => TBGContext::getCurrentProject()->getName())));
+		$tbg_response->addFeed(make_url('project_allopen_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'rss')), __('Open issues for %project_name% (including subprojects)', array('%project_name%' => TBGContext::getCurrentProject()->getName())));
 		$tbg_response->addFeed(make_url('project_closed_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'rss')), __('Closed issues for %project_name%', array('%project_name%' => TBGContext::getCurrentProject()->getName())));
+		$tbg_response->addFeed(make_url('project_allclosed_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'rss')), __('Closed issues for %project_name% (including subprojects)', array('%project_name%' => TBGContext::getCurrentProject()->getName())));
 		$tbg_response->addFeed(make_url('project_wishlist_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'rss')), __('Wishlist for %project_name%', array('%project_name%' => TBGContext::getCurrentProject()->getName())));
 		$tbg_response->addFeed(make_url('project_milestone_todo_list', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'rss')), __('Milestone todo-list for %project_name%', array('%project_name%' => TBGContext::getCurrentProject()->getName())));
 		$tbg_response->addFeed(make_url('project_month_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'rss')), __('Issues reported for %project_name% this month', array('%project_name%' => TBGContext::getCurrentProject()->getName())));
@@ -41,12 +43,12 @@
 		<?php include_component('search/sidebar', array('hide' => ($show_results && $resultcount))); ?>
 		<td style="width: auto; padding: 5px; vertical-align: top;" id="find_issues">
 			<?php if ($search_error !== null): ?>
-				<div class="rounded_box red borderless" style="margin: 0; vertical-align: middle;" id="search_error">
+				<div class="redbox" style="margin: 0; vertical-align: middle;" id="search_error">
 					<div class="header"><?php echo $search_error; ?></div>
 				</div>
 			<?php endif; ?>
 			<?php if ($search_message !== null): ?>
-				<div class="rounded_box green borderless" style="margin: 0; vertical-align: middle;" id="search_message">
+				<div class="greenbox" style="margin: 0; vertical-align: middle;" id="search_message">
 					<div class="header"><?php echo $search_message; ?></div>
 				</div>
 			<?php endif; ?>

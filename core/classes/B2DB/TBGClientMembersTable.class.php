@@ -103,4 +103,30 @@
 			return $this->doSelect($crit);
 		}
 
+		public function addUserToClient($user_id, $client_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
+			$crit->addInsert(self::CID, $client_id);
+			$crit->addInsert(self::UID, $user_id);
+			$this->doInsert($crit);
+		}
+		
+		public function removeUserFromClient($user_id, $client_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$crit->addWhere(self::CID, $client_id);
+			$crit->addWhere(self::UID, $user_id);
+			$this->doDelete($crit);
+		}
+		
+		public function removeUsersFromClient($client_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$crit->addWhere(self::CID, $client_id);
+			$this->doDelete($crit);
+		}
+
 	}

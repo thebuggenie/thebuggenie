@@ -7,9 +7,9 @@
 	<tr>
 		<?php include_component('leftmenu', array('selected_section' => 5)); ?>
 		<td valign="top" style="padding-left: 15px;">
-			<div style="width: 788px;">
+			<div style="width: 730px;">
 				<h3><?php echo __('Configure permissions'); ?></h3>
-				<div class="config_permissions rounded_box borderless mediumgrey" style="margin: 0 0 10px 10px; min-height: 85px; width: 330px; float: right;">
+				<div class="config_permissions greybox" style="margin: 0 0 10px 10px; min-height: 85px; width: 330px; float: right;">
 					<div class="header_div smaller" style="clear: both; margin: 0 0 5px 0;"><?php echo __('Icon legend:'); ?></div>
 					<div style="clear: both;">
 						<?php echo image_tag('icon_project_permissions.png', array('style' => 'float: left; margin: 0 5px 0 10px;')); ?><span style="float: left;"><?php echo __('Show more detailed permissions'); ?></span>

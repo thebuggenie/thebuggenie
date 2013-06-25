@@ -26,7 +26,7 @@
 	class TBGIssuesTable extends TBGB2DBTable 
 	{
 		
-		const B2DB_TABLE_VERSION = 2;
+		const B2DB_TABLE_VERSION = 3;
 		const B2DBNAME = 'issues';
 		const ID = 'issues.id';
 		const SCOPE = 'issues.scope';
@@ -75,6 +75,7 @@
 		const WORKFLOW_STEP_ID = 'issues.workflow_step_id';
 		const MILESTONE = 'issues.milestone';
 		const VOTES_TOTAL = 'issues.votes_total';
+		const MILESTONE_ORDER = 'issues.milestone_order';
 
 		protected function _setupIndexes()
 		{
@@ -110,7 +111,7 @@
 
 		public static function getValidSearchFilters()
 		{
-			return array('project_id', 'text', 'state', 'issuetype', 'status', 'resolution', 'reproducability', 'category', 'severity', 'priority', 'posted_by', 'assignee_user', 'assignee_team', 'owner_user', 'owner_team', 'component', 'build', 'edition', 'posted', 'last_updated', 'milestone');
+			return array('project_id', 'subprojects', 'text', 'state', 'issuetype', 'status', 'resolution', 'reproducability', 'category', 'severity', 'priority', 'posted_by', 'assignee_user', 'assignee_team', 'owner_user', 'owner_team', 'component', 'build', 'edition', 'posted', 'last_updated', 'milestone');
 		}
 
 		public function getCountsByProjectID($project_id)
@@ -364,7 +365,27 @@
 			{
 				$crit->addWhere(self::MILESTONE, $milestone_id);
 			}
+			$crit->addOrderBy(self::MILESTONE_ORDER, Criteria::SORT_DESC);
+			
 			return $this->select($crit);
+		}
+		
+		public function setOrderByMilestoneIdAndIssueId($order, $milestone_id, $issue_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::DELETED, false);
+			if (!$milestone_id)
+			{
+				$ctn = $crit->returnCriterion(self::MILESTONE, null);
+				$ctn->addOr(self::MILESTONE, 0);
+				$crit->addWhere($ctn);
+			}
+			else
+			{
+				$crit->addWhere(self::MILESTONE, $milestone_id);
+			}
+			$crit->addUpdate(self::MILESTONE_ORDER, $order);
+			$this->doUpdateById($crit, $issue_id);
 		}
 		
 		public function getPointsAndTimeByMilestone($milestone_id)
@@ -603,8 +624,34 @@
 								$crit->addWhere($ctn);
 							}
 						}
+						elseif ($filter == 'subprojects')
+						{
+							if (TBGContext::isProjectContext())
+							{
+								$ctn = $crit->returnCriterion(self::PROJECT_ID, TBGContext::getCurrentProject()->getID());
+								switch ($filter_info['value'])
+								{
+									case 'all':
+										$subprojects = TBGProject::getIncludingAllSubprojectsAsArray(TBGContext::getCurrentProject());
+										foreach ($subprojects as $subproject)
+										{
+											if ($subproject->getID() == TBGContext::getCurrentProject()->getID()) continue;
+											$ctn->addOr(self::PROJECT_ID, $subproject->getID());
+										}
+										break;
+									case 'none':
+										break;
+									default:
+										$ctn->addOr(self::PROJECT_ID, (int) $filter_info['value']);
+										break;
+								}
+								$crit->addWhere($ctn);
+							}
+						}
 						elseif (in_array($filter, self::getValidSearchFilters()))
 						{
+							if ($filter == 'project_id' && array_key_exists('subprojects', $filters)) continue;
+
 							$crit->addWhere($dbname.'.'.$filter, $filter_info['value'], urldecode($filter_info['operator']));
 						}
 						elseif (TBGCustomDatatype::doesKeyExist($filter))
@@ -641,8 +688,34 @@
 									$crit->addWhere($ctn);
 								}
 							}
+							elseif ($filter == 'subprojects')
+							{
+								if (TBGContext::isProjectContext())
+								{
+									$ctn = $crit->returnCriterion(self::PROJECT_ID, TBGContext::getCurrentProject()->getID());
+									switch ($first_val['value'])
+									{
+										case 'all':
+											$subprojects = TBGProject::getIncludingAllSubprojectsAsArray(TBGContext::getCurrentProject());
+											foreach ($subprojects as $subproject)
+											{
+												if ($subproject->getID() == TBGContext::getCurrentProject()->getID()) continue;
+												$ctn->addOr(self::PROJECT_ID, $subproject->getID());
+											}
+											break;
+										case 'none':
+											break;
+										default:
+											$ctn->addOr(self::PROJECT_ID, (int) $first_val['value']);
+											break;
+									}
+									$crit->addWhere($ctn);
+								}
+							}
 							else
 							{
+								if ($filter == 'project_id' && array_key_exists('subprojects', $filters)) continue;
+
 								$ctn = $crit->returnCriterion($dbname.'.'.$filter, $first_val['value'], urldecode($first_val['operator']));
 								if (count($filter_info) > 0)
 								{
@@ -717,9 +790,9 @@
 						case 'status':
 							$crit->addJoin(TBGListTypesTable::getTable(), TBGListTypesTable::ID, self::STATUS);
 							$crit->addSelectionColumn(self::STATUS);
-							$crit->addOrderBy(self::STATUS, $grouporder);
+							$crit->addOrderBy(TBGListTypesTable::ORDER, Criteria::SORT_DESC);
 							$crit3->addJoin(TBGListTypesTable::getTable(), TBGListTypesTable::ID, self::STATUS);
-							$crit3->addOrderBy(self::STATUS, $grouporder);
+							$crit3->addOrderBy(TBGListTypesTable::ORDER, Criteria::SORT_DESC);
 							break;
 						case 'milestone':
 							$crit->addSelectionColumn(self::MILESTONE);
@@ -745,9 +818,9 @@
 						case 'severity':
 							$crit->addJoin(TBGListTypesTable::getTable(), TBGListTypesTable::ID, self::SEVERITY);
 							$crit->addSelectionColumn(self::SEVERITY);
-							$crit->addOrderBy(self::SEVERITY, $grouporder);
+							$crit->addOrderBy(TBGListTypesTable::ORDER, Criteria::SORT_DESC);
 							$crit3->addJoin(TBGListTypesTable::getTable(), TBGListTypesTable::ID, self::SEVERITY);
-							$crit3->addOrderBy(self::SEVERITY, $grouporder);
+							$crit3->addOrderBy(TBGListTypesTable::ORDER, Criteria::SORT_DESC);
 							break;
 						case 'user_pain':
 							$crit->addSelectionColumn(self::USER_PAIN);
@@ -762,16 +835,16 @@
 						case 'resolution':
 							$crit->addJoin(TBGListTypesTable::getTable(), TBGListTypesTable::ID, self::RESOLUTION);
 							$crit->addSelectionColumn(self::RESOLUTION);
-							$crit->addOrderBy(self::RESOLUTION, $grouporder);
+							$crit->addOrderBy(TBGListTypesTable::ORDER, Criteria::SORT_DESC);
 							$crit3->addJoin(TBGListTypesTable::getTable(), TBGListTypesTable::ID, self::RESOLUTION);
-							$crit3->addOrderBy(self::RESOLUTION, $grouporder);
+							$crit3->addOrderBy(TBGListTypesTable::ORDER, Criteria::SORT_DESC);
 							break;
 						case 'priority':
 							$crit->addJoin(TBGListTypesTable::getTable(), TBGListTypesTable::ID, self::PRIORITY);
 							$crit->addSelectionColumn(self::PRIORITY);
-							$crit->addOrderBy(self::PRIORITY, $grouporder);
+							$crit->addOrderBy(TBGListTypesTable::ORDER, Criteria::SORT_DESC);
 							$crit3->addJoin(TBGListTypesTable::getTable(), TBGListTypesTable::ID, self::PRIORITY);
-							$crit3->addOrderBy(self::PRIORITY, $grouporder);
+							$crit3->addOrderBy(TBGListTypesTable::ORDER, Criteria::SORT_DESC);
 							break;
 						case 'issuetype':
 							$crit->addJoin(TBGIssueTypesTable::getTable(), TBGIssueTypesTable::ID, self::ISSUE_TYPE);
@@ -912,6 +985,32 @@
 				$crit->addUpdate(self::WORKFLOW_STEP_ID, $conversion[1]);
 				$this->doUpdate($crit);
 			}
+		}
+
+		public function getNextIssueFromIssueIDAndProjectID($issue_id, $project_id, $only_open = false)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::ID, $issue_id, Criteria::DB_GREATER_THAN);
+			$crit->addWhere(self::PROJECT_ID, $project_id);
+			$crit->addWhere(self::DELETED, false);
+			if ($only_open) $crit->addWhere(self::STATE, TBGIssue::STATE_OPEN);
+
+			$crit->addOrderBy(self::ISSUE_NO, Criteria::SORT_ASC);
+
+			return $this->selectOne($crit);
+		}
+
+		public function getPreviousIssueFromIssueIDAndProjectID($issue_id, $project_id, $only_open = false)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::ID, $issue_id, Criteria::DB_LESS_THAN);
+			$crit->addWhere(self::PROJECT_ID, $project_id);
+			$crit->addWhere(self::DELETED, false);
+			if ($only_open) $crit->addWhere(self::STATE, TBGIssue::STATE_OPEN);
+
+			$crit->addOrderBy(self::ISSUE_NO, Criteria::SORT_DESC);
+
+			return $this->selectOne($crit);
 		}
 
 	}

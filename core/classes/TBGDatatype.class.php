@@ -68,6 +68,12 @@
 		 */
 		const ROLE = 'role';
 		
+		/**
+		 * Item type activity type
+		 *
+		 */
+		const ACTIVITYTYPE = 'activitytype';
+
 		public static function loadFixtures(TBGScope $scope)
 		{
 			TBGCategory::loadFixtures($scope);
@@ -86,12 +92,15 @@
 		public static function getTypes()
 		{
 			$types = array();
-			$types['status'] = 'TBGStatus';
-			$types['priority'] = 'TBGPriority';
-			$types['category'] = 'TBGCategory';
-			$types['severity'] = 'TBGSeverity';
-			$types['reproducability'] = 'TBGReproducability';
-			$types['resolution'] = 'TBGResolution';
+			$types[self::STATUS] = 'TBGStatus';
+			$types[self::PRIORITY] = 'TBGPriority';
+			$types[self::CATEGORY] = 'TBGCategory';
+			$types[self::SEVERITY] = 'TBGSeverity';
+			$types[self::REPRODUCABILITY] = 'TBGReproducability';
+			$types[self::RESOLUTION] = 'TBGResolution';
+			$types[self::ACTIVITYTYPE] = 'TBGActivityType';
+
+			$types = TBGEvent::createNew('core', 'TBGDatatype::getTypes', null, array(), $types)->getReturnList();
 			
 			return $types;
 		}

@@ -3,10 +3,12 @@
 	<div style="float: right; padding: 5px;"><label><?php echo __('Show system-generated comments'); ?><input type="checkbox" id="comments_show_system_comments_toggle" onchange="$$('#comments_box .system_comment').each(function (elm) { $(elm).toggle(); })" /></label></div>
 <?php endif; ?>
 <?php if ($tbg_user->canPostComments() && ((TBGContext::isProjectContext() && !TBGContext::getCurrentProject()->isArchived()) || !TBGContext::isProjectContext())): ?>
-	<ul class="simple_list" id="add_comment_button_container">
-		<li id="comment_add_button"><input class="button button-green first last" type="button" onclick="$('comment_add_button').hide(); $('comment_add').show();$('comment_bodybox').focus();" value="<?php echo __('Post comment'); ?>"></li>
-	</ul>
-	<div id="comment_add" class="comment_add" style="<?php if (!(isset($comment_error) && $comment_error)): ?>display: none; <?php endif; ?>margin-top: 5px;">
+	<?php if (!isset($show_button) || $show_button == true): ?>
+		<ul class="simple_list" id="add_comment_button_container">
+			<li id="comment_add_button"><input class="button button-green first last" type="button" onclick="$$('.comment_editor').each(Element.hide);$('comment_add_button').hide(); $('comment_add').show();$('comment_bodybox').focus();" value="<?php echo __('Post comment'); ?>"></li>
+		</ul>
+	<?php endif; ?>
+	<div id="comment_add" class="comment_add comment_editor" style="<?php if (!(isset($comment_error) && $comment_error)): ?>display: none; <?php endif; ?>margin-top: 5px;">
 		<div class="comment_add_main">
 			<div class="comment_add_title"><?php echo __('Create a comment'); ?></div><br>
 			<form id="comment_form" accept-charset="<?php echo mb_strtoupper(TBGContext::getI18n()->getCharset()); ?>" action="<?php echo make_url('comment_add', array('comment_applies_id' => $target_id, 'comment_applies_type' => $target_type, 'comment_module' => $module)); ?>" method="post" onSubmit="TBG.Main.Comment.add('<?php echo make_url('comment_add', array('comment_applies_id' => $target_id, 'comment_applies_type' => $target_type, 'comment_module' => 'core')); ?>', '<?php echo $comment_count_div; ?>');return false;">

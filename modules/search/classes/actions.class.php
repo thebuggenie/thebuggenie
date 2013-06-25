@@ -43,9 +43,21 @@
 		{
 			if ($this->getUser()->canAccessConfigurationPage(TBGSettings::CONFIGURATION_SECTION_USERS))
 			{
-				$this->found_users = TBGUsersTable::getTable()->findInConfig($this->searchterm);
+				$this->found_users = TBGUsersTable::getTable()->findInConfig($this->searchterm, 10, false);
+				$this->found_teams = TBGTeamsTable::getTable()->quickfind($this->searchterm);
+				$this->found_clients = TBGClientsTable::getTable()->quickfind($this->searchterm);
 				$this->num_users = count($this->found_users);
+				$this->num_teams = count($this->found_teams);
+				$this->num_clients = count($this->found_clients);
 			}
+			$found_projects = TBGProjectsTable::getTable()->quickfind($this->searchterm);
+			$projects = array();
+			foreach ($found_projects as $project)
+			{
+				if ($project->hasAccess()) $projects[$project->getID()] = $project;
+			}
+			$this->found_projects = $projects;
+			$this->num_projects = count($projects);
 		}
 
 		protected function _getSearchDetailsFromRequest(TBGRequest $request)
@@ -141,10 +153,6 @@
 				$issue = array_shift($this->foundissues);
 				$this->forward(TBGContext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
 			}
-			elseif ($request->hasParameter('sortby'))
-			{
-
-			}
 			else
 			{
 				$this->resultcount = count($this->foundissues);
@@ -161,8 +169,14 @@
 					case TBGContext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES:
 						$this->searchtitle = (TBGContext::isProjectContext()) ? $i18n->__('Open issues for %project_name%', array('%project_name%' => TBGContext::getCurrentProject()->getName())) : $i18n->__('All open issues');
 						break;
+					case TBGContext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES_INCLUDING_SUBPROJECTS:
+						$this->searchtitle = $i18n->__('Open issues for %project_name% (including subprojects)', array('%project_name%' => TBGContext::getCurrentProject()->getName()));
+						break;
 					case TBGContext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES:
 						$this->searchtitle = (TBGContext::isProjectContext()) ? $i18n->__('Closed issues for %project_name%', array('%project_name%' => TBGContext::getCurrentProject()->getName())) : $i18n->__('All closed issues');
+						break;
+					case TBGContext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES_INCLUDING_SUBPROJECTS:
+						$this->searchtitle = $i18n->__('Closed issues for %project_name% (including subprojects)', array('%project_name%' => TBGContext::getCurrentProject()->getName()));
 						break;
 					case TBGContext::PREDEFINED_SEARCH_PROJECT_WISHLIST:
 						$this->searchtitle = $i18n->__('%project_name% wishlist', array('%project_name%' => TBGContext::getCurrentProject()->getName()));

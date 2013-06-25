@@ -251,16 +251,15 @@
 			return preg_replace('/(?<=[a-z])(?=[A-Z])/',' ', $camelcased);
 		}
 
-		public function stripExclamationMark($matches)
+		public function stripExclamationMark($matches, $parser)
 		{
 			return mb_substr($matches[0], 1);
 		}
 
-		public function getArticleLinkTag($matches)
+		public function getArticleLinkTag($matches, $parser)
 		{
-			$article_name = $matches[0];
-			if (TBGTextParser::getCurrentParser() instanceof TBGTextParser)
-				TBGTextParser::getCurrentParser()->addInternalLinkOccurrence($article_name);
+			$article_link = $matches[0];
+			$parser->addInternalLinkOccurrence($article_link);
 			$article_name = $this->getSpacedName($matches[0]);
 			if (!TBGContext::isCLI())
 			{
@@ -313,11 +312,8 @@
 		public function getFrontpageArticle($type)
 		{
 			$article_name = ($type == 'main') ? 'FrontpageArticle' : 'FrontpageLeftmenu';
-			if ($row = TBGArticlesTable::getTable()->getArticleByName($article_name))
-			{
-				return PublishFactory::article($row->get(TBGArticlesTable::ID), $row);
-			}
-			return null;
+			$article = TBGArticlesTable::getTable()->getArticleByName($article_name);
+			return $article;
 		}
 		
 		public function listen_frontpageArticle(TBGEvent $event)

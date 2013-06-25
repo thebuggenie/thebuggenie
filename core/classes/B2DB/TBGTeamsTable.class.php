@@ -46,7 +46,7 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addWhere(self::ONDEMAND, false);
-			
+
 			return $this->select($crit);
 		}
 
@@ -57,6 +57,16 @@
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 
 			return (bool) $this->doCount($crit);
+		}
+
+		public function quickfind($team_name)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::NAME, "%{$team_name}%", Criteria::DB_LIKE);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$crit->addWhere(self::ONDEMAND, false);
+
+			return $this->select($crit);
 		}
 
 		public function countTeams()

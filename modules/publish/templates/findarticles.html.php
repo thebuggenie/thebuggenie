@@ -13,12 +13,12 @@
 		<td class="main_area article">
 			<a name="top"></a>
 			<?php if (isset($error) && $error): ?>
-				<div class="rounded_box red borderless" style="margin: 0 0 5px 0; padding: 8px; font-size: 14px; color: #FFF;">
+				<div class="redbox" style="margin: 0 0 5px 0; font-size: 14px;">
 					<?php echo $error; ?>
 				</div>
 			<?php endif; ?>
 			<?php if (isset($message) && $message): ?>
-				<div class="rounded_box green borderless" style="margin: 0 0 5px 5px; padding: 8px; font-size: 14px;">
+				<div class="greenbox" style="margin: 0 0 5px 5px; font-size: 14px;">
 					<b><?php echo $message; ?></b>
 				</div>
 			<?php endif; ?>

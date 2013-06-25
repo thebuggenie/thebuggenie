@@ -7,8 +7,8 @@
 	<tr>
 		<?php include_component('leftmenu', array('selected_section' => 6)); ?>
 		<td valign="top" style="padding-left: 15px;">
-			<div style="width: 788px;" id="config_issuetypes">
-				<div style="width: 788px; clear: both; height: 30px; margin-top: 15px;" class="tab_menu">
+			<div style="width: 730px;" id="config_issuetypes">
+				<div style="clear: both; margin-top: 15px;" class="tab_menu inset">
 					<ul id="issuetypes_menu">
 						<li id="tab_types"<?php if ($mode == 'issuetypes'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('configure_issuetypes'), __('Available issue types')); ?></li>
 						<li id="tab_schemes"<?php if ($mode == 'schemes'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('configure_issuetypes_schemes'), __('Issue type schemes')); ?></li>
@@ -19,19 +19,13 @@
 				</div>
 				<div id="issuetypes_menu_panes">
 					<?php if ($mode == 'issuetypes'): ?>
-						<div id="tab_types_pane" style="padding-top: 0; width: 788px;">
+						<div id="tab_types_pane" style="padding-top: 0;">
 							<div class="content">
 								<?php echo __('In this tab you can add/remove/edit what issue types are available to issue type schemes. If you add a new issue type on this page, remember to associate it to an issue type scheme on the %issue_type_schemes% tab to get it to show up for users.', array('%issue_type_schemes%' => javascript_link_tag(__('Issue type schemes'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_schemes', 'issuetypes_menu');")))); ?>
 							</div>
-							<div id="issuetypes_list">
-								<?php foreach ($issue_types as $type): ?>
-									<?php include_component('issuetype', array('type' => $type)); ?>
-								<?php endforeach; ?>
-							</div>
-							<div class="header_div" style="margin-top: 20px;"><?php echo __('Add a new issue type'); ?></div>
-							<div class="rounded_box yellow borderless" style="margin: 5px 0 0 0; padding: 3px; font-size: 12px;">
+							<div class="lightyellowbox" style="margin: 5px 0 0 0;">
 								<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuetypes_add'); ?>" onsubmit="TBG.Config.Issuetype.add('<?php echo make_url('configure_issuetypes_add'); ?>');return false;" id="add_issuetype_form">
-									<label for="new_issuetype_name"><?php echo __('Issue type name'); ?></label>
+									<label for="new_issuetype_name"><?php echo __('Add new issue type'); ?>:</label>
 									<input type="text" name="name" id="new_issuetype_name" style="width: 200px;">
 									<label for="new_issuetype_icon"><?php echo __('Type'); ?></label>
 									<select name="icon" id="new_issuetype_icon">
@@ -39,13 +33,18 @@
 											<option value="<?php echo $icon; ?>"<?php if ($icon == 'bug_report'): ?> selected<?php endif; ?>><?php echo $description; ?></option>
 										<?php endforeach; ?>
 									</select>
-									<input type="submit" value="<?php echo __('Add'); ?>" style="font-weight: bold;" id="add_issuetype_button">
+									<input type="submit" value="<?php echo __('Add'); ?>" id="add_issuetype_button">
 									<?php echo image_tag('spinning_16.gif', array('style' => 'margin-right: 5px; display: none;', 'id' => 'add_issuetype_indicator')); ?>
 								</form>
 							</div>
+							<div id="issuetypes_list">
+								<?php foreach ($issue_types as $type): ?>
+									<?php include_component('issuetype', array('type' => $type)); ?>
+								<?php endforeach; ?>
+							</div>
 						</div>
 					<?php elseif ($mode == 'schemes'): ?>
-						<div id="tab_schemes_pane" style="padding-top: 0; width: 750px;">
+						<div id="tab_schemes_pane" style="padding-top: 0; width: 730px;">
 							<div class="content">
 								<?php echo __('In this tab you can add/remove/edit issue type schemes. If you add a new issue type on the previous tab, you must associate it with an issue type scheme in this tab to get it to show up for users.'); ?><br>
 								<br>
@@ -58,7 +57,7 @@
 							</ul>
 						</div>
 					<?php elseif ($mode == 'scheme'): ?>
-						<div id="tab_scheme_pane" style="padding-top: 0; width: 750px;">
+						<div id="tab_scheme_pane" style="padding-top: 0; width: 730px;">
 							<div class="content">
 								<?php echo __('In this tab you can edit issue type associations for this issue type scheme. Enable/disable available issue types, and set options such as reportable issue types and reportable/visible/required issue details.'); ?>
 							</div>

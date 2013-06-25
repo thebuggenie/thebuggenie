@@ -5,7 +5,7 @@
 		</td>
 		<td class="main_area article">
 			<a name="top"></a>
-			<div class="rounded_box red borderless" style="margin: 0 0 5px 0; width: 740px; padding: 3px; font-size: 14px; color: #FFF;">
+			<div class="redbox" style="margin: 0 0 5px 0; width: 740px; font-size: 14px;">
 				<?php echo __('The article was deleted') ?>
 			</div>
 		</td>

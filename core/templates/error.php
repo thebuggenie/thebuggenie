@@ -39,19 +39,23 @@ body { background-color: #DFDFDF; font-family: sans-serif; font-size: 13px; }
 	<div class="rounded_box" style="margin: 30px auto 0 auto; width: 700px;">
 		<img style="float: left; margin: 10px;" src="<?php echo TBGContext::getTBGPath(); ?>header.png"><h1>An error occured in The Bug Genie</h1>
 		<div class="error_content">
-			<h2><?php echo (isset($exception)) ? $exception->getMessage() : $error; ?></h2>
+			<h2><?php echo nl2br((isset($exception)) ? $exception->getMessage() : $error); ?></h2>
 			<?php if (isset($exception) && $exception instanceof Exception): ?>
-				<?php if ($exception instanceof ActionNotFoundException): ?>
+				<?php if ($exception instanceof TBGActionNotFoundException): ?>
 					<h3>Could not find the specified action</h3>
-				<?php elseif ($exception instanceof TemplateNotFoundException): ?>
+				<?php elseif ($exception instanceof TBGTemplateNotFoundException): ?>
 					<h3>Could not find the template file for the specified action</h3>
+				<?php elseif ($exception instanceof TBGConfigurationException): ?>
+					<h3>There is an issue with the configuration. Please see the message above.</h3>
 				<?php elseif ($exception instanceof \b2db\Exception): ?>
 					<h3>An exception was thrown in the B2DB framework</h3>
 				<?php else: ?>
 					<h3>An unhandled exception occurred:</h3>
 				<?php endif; ?>
-				<span style="color: #55F;"><?php echo $exception->getFile(); ?></span>, line <b><?php echo $exception->getLine(); ?></b>:<br>
-				<i><?php echo $exception->getMessage(); ?></i>
+				<?php if (class_exists("TBGContext") && TBGContext::isDebugMode()): ?>
+					<span style="color: #55F;"><?php echo $exception->getFile(); ?></span>, line <b><?php echo $exception->getLine(); ?></b>:<br>
+					<i><?php echo $exception->getMessage(); ?></i>
+				<?php endif; ?>
 			<?php else: ?>
 				<?php if ($code == 8): ?>
 					<h3>The following notice has stopped further execution:</h3>

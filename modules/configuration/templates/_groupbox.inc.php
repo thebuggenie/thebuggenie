@@ -1,14 +1,23 @@
-<div class="rounded_box mediumgrey borderless" style="padding: 0; margin-top: 5px;" id="groupbox_<?php echo $group->getID(); ?>">
-	<div style="padding: 5px;">
+<div class="greybox" style="padding: 0; margin-top: 5px;" id="groupbox_<?php echo $group->getID(); ?>">
+	<div style="padding: 5px; position: relative;">
 		<?php echo image_tag('group_large.png', array('style' => 'float: left; margin-right: 5px;')); ?>
-		<div class="button-group" style="float: right;">
-			<?php if ($group->getNumberOfMembers() > 100): ?>
-				<?php echo javascript_link_tag(image_tag('group_list_users.png'), array('title' => __('List users in this group'), 'onclick' => "TBG.Main.Helpers.Dialog.show('".__('This group has a lot of members')."', '".__('Trying to list all users in this group may time out or take a while. Are you sure you want to list all users in this group?')."', {yes: {click: function() {TBG.Config.Group.showMembers('".make_url('configure_users_get_group_members', array('group_id' => $group->getID()))."', ".$group->getID().");TBG.Main.Helpers.Dialog.dismiss(); }}, no: { click: TBG.Main.Helpers.Dialog.dismiss }});", 'class' => 'button button-silver button-icon')); ?>
-			<?php else: ?>
-				<?php echo javascript_link_tag(image_tag('group_list_users.png'), array('title' => __('List users in this group'), 'onclick' => 'TBG.Config.Group.showMembers(\''.make_url('configure_users_get_group_members', array('group_id' => $group->getID())).'\', '.$group->getID().');', 'class' => 'button button-silver button-icon')); ?>
-			<?php endif; ?>
-			<?php echo javascript_link_tag(image_tag('group_clone.png'), array('title' => __('Clone this user group'), 'onclick' => '$(\'clone_group_'.$group->getID().'\').toggle();', 'class' => 'button button-silver button-icon')); ?>
-			<?php if (!in_array($group->getID(), TBGSettings::getDefaultGroupIDs()) && !$group->isDefaultUserGroup()) echo javascript_link_tag(image_tag('action_delete.png'), array('title' => __('Delete this user group'), 'onclick' => "TBG.Main.Helpers.Dialog.show('".__('Do you really want to delete this group?')."', '".__('If you delete this group, then all users in this group will be disabled until moved to a different group')."', {yes: {click: function() {TBG.Config.Group.remove('".make_url('configure_users_delete_group', array('group_id' => $group->getID()))."', {$group->getID()}); }}, no: { click: TBG.Main.Helpers.Dialog.dismiss }});", 'class' => 'button button-silver button-icon')); ?>
+		<div style="position: absolute; right: 12px; top: 12px;">
+			<button class="button button-silver" id="group_<?php echo $group->getID(); ?>_more_actions" onclick="$(this).toggleClassName('button-pressed');$('group_<?php echo $group->getID(); ?>_more_actions_dropdown').toggle(); "><?php echo __('Actions'); ?></button>
+			<ul id="group_<?php echo $group->getID(); ?>_more_actions_dropdown" style="display: none; position: absolute; font-size: 1.1em; width: 200px; top: 23px; margin-top: 0; right: 0; text-align: right; z-index: 1000;" class="simple_list rounded_box white shadowed popup_box more_actions_dropdown" onclick="$('group_<?php echo $group->getID(); ?>_more_actions').toggleClassName('button-pressed');$('group_<?php echo $group->getID(); ?>_more_actions_dropdown').toggle();">
+				<li>
+					<?php if ($group->getNumberOfMembers() > 100): ?>
+						<?php echo javascript_link_tag(__('List users in this group'), array('onclick' => "TBG.Main.Helpers.Dialog.show('".__('This group has a lot of members')."', '".__('Trying to list all users in this group may time out or take a while. Are you sure you want to list all users in this group?')."', {yes: {click: function() {TBG.Config.Group.showMembers('".make_url('configure_users_get_group_members', array('group_id' => $group->getID()))."', ".$group->getID().");TBG.Main.Helpers.Dialog.dismiss(); }}, no: { click: TBG.Main.Helpers.Dialog.dismiss }});")); ?>
+					<?php else: ?>
+						<?php echo javascript_link_tag(__('List users in this group'), array('onclick' => 'TBG.Config.Group.showMembers(\''.make_url('configure_users_get_group_members', array('group_id' => $group->getID())).'\', '.$group->getID().');')); ?>
+					<?php endif; ?>
+				</li>
+				<li><?php echo javascript_link_tag(__('Clone this user group'), array('onclick' => '$(\'clone_group_'.$group->getID().'\').toggle();')); ?></li>
+				<?php if (!in_array($group->getID(), TBGSettings::getDefaultGroupIDs()) && !$group->isDefaultUserGroup()): ?>
+					<li><?php echo javascript_link_tag(__('Delete this user group'), array('onclick' => "TBG.Main.Helpers.Dialog.show('".__('Do you really want to delete this group?')."', '".__('If you delete this group, then all users in this group will be disabled until moved to a different group')."', {yes: {click: function() {TBG.Config.Group.remove('".make_url('configure_users_delete_group', array('group_id' => $group->getID()))."', {$group->getID()}); }}, no: { click: TBG.Main.Helpers.Dialog.dismiss }});")); ?></li>
+				<?php else: ?>
+					<li class="disabled" title="<?php echo __('The default group cannot be deleted'); ?>"><a href="javascript:void(0);"><?php echo __('Delete this user group'); ?></a></li>
+				<?php endif; ?>
+			</ul>
 		</div>
 		<p class="groupbox_header"><?php echo $group->getName(); ?></p>
 		<p class="groupbox_membercount"><?php echo __('ID: %id%', array('%id%' => $group->getID())); ?> - <?php echo __('%number_of% member(s)', array('%number_of%' => '<span id="group_'.$group->getID().'_membercount">'.$group->getNumberOfMembers().'</span>')); ?></p>

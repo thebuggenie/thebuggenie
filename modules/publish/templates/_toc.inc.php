@@ -1,7 +1,12 @@
-<div class="rounded_box iceblue borderless toc">
-	<div class="header"><a href="javascript:void(0);" onclick="$('publish_toc').toggle();"><?php echo __('Table of contents'); ?></a></div>
-	<div class="faded_out"><?php echo __('Move your mouse here to toggle the table of contents'); ?></div>
-	<div class="content rounded_box iceblue borderless" id="publish_toc">
+<div class="toc">
+	<div class="header">
+		<?php echo __('Table of contents'); ?>
+		<div class="button-group">
+			<button class="first" title="<?php echo __('Minimize'); ?>" onclick="$(this).toggleClassName('button-pressed');$('publish_toc').toggle();">M</button>
+			<button class="button button-silver last" title="<?php echo __('Stick to top'); ?>" onclick="$(this).toggleClassName('button-pressed');$(this).up('.toc').toggleClassName('fixed');">S</button>
+		</div>
+	</div>
+	<div class="content" id="publish_toc">
 		<?php foreach ($toc as $entry): ?>
 			<div class="publish_toc_<?php echo $entry['level']; ?>"><a href="#<?php echo $entry['id']; ?>"><?php echo $entry['content']; ?></a></div>
 		<?php endforeach; ?>

@@ -8,6 +8,15 @@
 			$this->latest_articles = TBGPublish::getModule()->getLatestArticles(TBGContext::getCurrentProject());
 		}
 
+		public function componentWhatlinkshere()
+		{
+			$this->whatlinkshere = ($this->article instanceof TBGWikiArticle) ? $this->article->getLinkingArticles() : array();
+		}
+
+		public function componentTools()
+		{
+		}
+
 		public function componentArticledisplay()
 		{
 			$this->show_title = (isset($this->show_title)) ? $this->show_title : true;
@@ -55,7 +64,66 @@
 			$this->links_target_id = (TBGContext::isProjectContext()) ? TBGContext::getCurrentProject()->getID() : 0;
 			$this->links = TBGPublish::getModule()->getMenuItems($this->links_target_id);
 			$this->user_drafts = TBGPublish::getModule()->getUserDrafts();
-			$this->whatlinkshere = ($this->article instanceof TBGWikiArticle) ? $this->article->getLinkingArticles() : null;
+		}
+
+		public function componentManualSidebar()
+		{
+			$this->articles = TBGArticlesTable::getTable()->getManualSidebarArticles(TBGContext::getCurrentProject());
+			$this->categories = TBGArticlesTable::getTable()->getManualSidebarCategories(TBGContext::getCurrentProject());
+			$parents = array();
+			$article = $this->article;
+			do
+			{
+				$parent = $article->getParentArticle();
+				if ($parent instanceof TBGWikiArticle)
+				{
+					$parents[] = $parent->getId();
+					$article = $parent;
+				}
+			}
+			while ($parent instanceof TBGWikiArticle);
+			
+			$this->parents = $parents;
+		}
+
+		public function componentSpecialSpecialPages()
+		{
+		}
+
+		public function componentSpecialDeadEndPages()
+		{
+			$this->articles = TBGArticlesTable::getTable()->getDeadEndArticles(TBGContext::getCurrentProject());
+		}
+		
+		public function componentSpecialOrphanedPages()
+		{
+			$this->articles = TBGArticlesTable::getTable()->getUnlinkedArticles(TBGContext::getCurrentProject());
+		}
+
+		public function componentSpecialUncategorizedPages()
+		{
+			$this->articles = TBGArticlesTable::getTable()->getUncategorizedArticles(TBGContext::getCurrentProject());
+		}
+
+		public function componentSpecialAllPages()
+		{
+			$this->articles = TBGArticlesTable::getTable()->getAllArticlesSpecial(TBGContext::getCurrentProject());
+		}
+
+		public function componentSpecialAllCategories()
+		{
+			$this->articles = TBGArticlesTable::getTable()->getAllCategories(TBGContext::getCurrentProject());
+		}
+		
+		public function componentSpecialAllTemplates()
+		{
+			$this->articles = TBGArticlesTable::getTable()->getAllTemplates(TBGContext::getCurrentProject());
+		}
+
+		public function componentSpecialWhatLinksHere()
+		{
+			$this->linked_article_name = TBGContext::getRequest()->getParameter('linked_article_name');
+			$this->articles = TBGArticlesTable::getTable()->getAllByLinksToArticleName($this->linked_article_name);
 		}
 
 	}

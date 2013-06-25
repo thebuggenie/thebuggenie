@@ -20,7 +20,9 @@
 	{
 
 		const PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES = 1;
+		const PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES_INCLUDING_SUBPROJECTS = 12;
 		const PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES = 2;
+		const PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES_INCLUDING_SUBPROJECTS = 13;
 		const PREDEFINED_SEARCH_PROJECT_WISHLIST = 10;
 		const PREDEFINED_SEARCH_PROJECT_MILESTONE_TODO = 6;
 		const PREDEFINED_SEARCH_PROJECT_MOST_VOTED = 7;
@@ -30,7 +32,7 @@
 		const PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES = 4;
 		const PREDEFINED_SEARCH_MY_REPORTED_ISSUES = 5;
 		const PREDEFINED_SEARCH_MY_OWNED_OPEN_ISSUES = 11;
-		
+
 		protected static $_environment = 2;
 
 		protected static $_debug_mode = true;
@@ -597,6 +599,15 @@
 			elseif (!\b2db\Core::isInitialized())
 			{
 				throw new Exception("The Bug Genie seems installed, but B2DB isn't configured. This usually indicates an error with the installation. Try removing the file ".THEBUGGENIE_PATH."installed and try again.");
+			}
+			else
+			{
+				$version_info = explode(',', file_get_contents(THEBUGGENIE_PATH . 'installed'));
+				$current_version = $version_info[0];
+				if ($current_version != TBGSettings::getVersion(false, false))
+				{
+					throw new TBGConfigurationException("It seems you are trying to use a newer version of The Bug Genie than the one you installed. Please upgrade before continuing.\n\nPlease see the upgrade instructions here: <a href='http://issues.thebuggenie.com/wiki/TheBugGenie%3AFAQ'>thebuggenie.com &raquo; wiki &raquo; FAQ</a> for more information.");
+				}
 			}
 		}
 
@@ -1773,6 +1784,7 @@
 			TBGEvent::createNew('core', 'pre_logout')->trigger();
 			self::getResponse()->deleteCookie('tbg3_username');
 			self::getResponse()->deleteCookie('tbg3_password');
+			self::getResponse()->deleteCookie('tbg3_persona_session');
 			self::getResponse()->deleteCookie('THEBUGGENIE');
 			session_regenerate_id(true);
 			TBGEvent::createNew('core', 'post_logout')->trigger();

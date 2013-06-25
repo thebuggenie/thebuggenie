@@ -73,6 +73,11 @@
 			return array($module_file, $actionClassName, $actionToRunName);
 		}
 
+		public static function doesComponentExist($template, $throw_exceptions = true)
+		{
+			return self::_doesComponentExist($template, $throw_exceptions);
+		}
+		
 		protected static function _doesComponentExist($template, $throw_exceptions = true)
 		{
 			list ($module_file, $actionClassName, $actionToRunName) = self::_getComponentDetails($template);

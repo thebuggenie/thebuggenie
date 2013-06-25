@@ -6,6 +6,9 @@
 	class TBGWikiArticle extends TBGIdentifiableScopedClass
 	{
 
+		const TYPE_WIKI = 1;
+		const TYPE_MANUAL = 2;
+
 		/**
 		 * The article author
 		 *
@@ -29,6 +32,14 @@
 		protected $_date = null;
 
 		/**
+		 * What type of article this is
+		 *
+		 * @var integer
+		 * @Column(type="integer", length=10, default=1)
+		 */
+		protected $_article_type = self::TYPE_WIKI;
+
+		/**
 		 * The old article content, used for history when saving
 		 *
 		 * @var string
@@ -50,6 +61,23 @@
 		 * @Column(type="boolean")
 		 */
 		protected $_is_published = false;
+
+		/**
+		 * The parent article, if this article has one
+		 *
+		 * @var TBGWikiArticle
+		 * @Column(type="integer", length=10)
+		 * @Relates(class="TBGWikiArticle")
+		 */
+		protected $_parent_article_id = false;
+
+		/**
+		 * Child article, if this article has any
+		 *
+		 * @var array|TBGWikiArticle
+		 * @Relates(class="TBGWikiArticle", collection=true, foreign_column="parent_article_id")
+		 */
+		protected $_child_articles = null;
 
 		/**
 		 * A list of articles that links to this article
@@ -98,6 +126,8 @@
 		protected $_category_name = null;
 		
 		protected $_namespaces = null;
+		
+		protected $_redirect_article = null;
 
 		/**
 		 * Article constructor
@@ -151,15 +181,7 @@
 
 		public static function getByName($article_name, $row = null)
 		{
-			if ($row === null)
-			{
-				$row = TBGArticlesTable::getTable()->getArticleByName($article_name);
-			}
-			if ($row instanceof \b2db\Row)
-			{
-				return PublishFactory::article($row->get(TBGArticlesTable::ID), $row);
-			}
-			return null;
+			return TBGArticlesTable::getTable()->getArticleByName($article_name);
 		}
 
 		public static function doesArticleExist($article_name)
@@ -231,18 +253,8 @@
 		{
 			if ($this->_linking_articles === null)
 			{
-				$this->_linking_articles = array();
-				if ($res = TBGArticleLinksTable::getTable()->getLinkingArticles($this->getName()))
-				{
-					while ($row = $res->getNextRow())
-					{
-						try
-						{
-							$this->_linking_articles[$row->get(TBGArticleLinksTable::ARTICLE_NAME)] = PublishFactory::articleName($row->get(TBGArticleLinksTable::ARTICLE_NAME));
-						}
-						catch (Exception $e) {}
-					}
-				}
+				$this->_linking_articles = TBGArticlesTable::getTable()->getAllByLinksToArticleName($this->_name);
+				foreach ($this->_linking_articles as $k => $article) if (!$article->hasAccess()) unset($this->_linking_articles[$k]);
 			}
 		}
 
@@ -396,6 +408,40 @@
 			return $this->_history;
 		}
 
+		public function isRedirect()
+		{
+			if (mb_substr($this->getContent(), 0, 10) == "#REDIRECT ")
+			{
+				$content = explode("\n", $this->getContent());
+				preg_match('/(\[\[([^\]]*?)\]\])$/im', mb_substr(array_shift($content), 10), $matches);
+				if (count($matches) == 3)
+				{
+					$this->_redirect_article = $matches[2];
+					return true;
+				}
+			}
+			
+			return false;
+		}
+		
+		public function getRedirectArticle()
+		{
+			if (!$this->isRedirect()) return null;
+			
+			if (!$this->_redirect_article instanceof TBGWikiArticle)
+			{
+				$article = TBGArticlesTable::getTable()->getArticleByName($this->_redirect_article);
+				if ($article instanceof TBGWikiArticle) $this->_redirect_article = $article;
+			}
+			
+			return $this->_redirect_article;
+		}
+		
+		public function getRedirectArticleName()
+		{
+			return ($this->_redirect_article instanceof TBGWikiArticle) ? $this->_redirect_article->getName() : $this->_redirect_article;
+		}
+		
 		public function doSave($options = array(), $reason = null)
 		{	
 			if (TBGArticlesTable::getTable()->doesNameConflictExist($this->_name, $this->_id, TBGContext::getScope()->getID()))
@@ -409,7 +455,11 @@
 
 			if (!isset($options['revert']) || !$options['revert'])
 			{
-				TBGArticleHistoryTable::getTable()->addArticleHistory($this->_name, $this->_old_content, $this->_content, $user_id, $reason);
+				$revision = TBGArticleHistoryTable::getTable()->addArticleHistory($this->_name, $this->_old_content, $this->_content, $user_id, $reason);
+			}
+			else
+			{
+				$revision = null;
 			}
 
 			TBGArticleLinksTable::getTable()->deleteLinksByArticle($this->_name);
@@ -441,6 +491,8 @@
 			}
 
 			$this->_history  = null;
+			
+			TBGEvent::createNew('core', 'TBGWikiArticle::doSave', $this, compact('reason', 'revision', 'user_id'))->trigger();
 
 			return true;
 		}
@@ -707,6 +759,50 @@
 		public function setName($name)
 		{
 			$this->_name = $name;
+		}
+
+		public function setParentArticle($parent_article)
+		{
+			$this->_parent_article_id = $parent_article;
+		}
+
+		/**
+		 * Return the parent article (if any)
+		 *
+		 * @return TBGWikiArticle
+		 */
+		public function getParentArticle()
+		{
+			return $this->_b2dbLazyload('_parent_article_id');
+		}
+
+		public function getParentArticleName()
+		{
+			$article = $this->getParentArticle();
+			return ($article instanceof TBGWikiArticle) ? $article->getName() : null;
+		}
+
+		public function getChildArticles()
+		{
+			return $this->_b2dbLazyload('_child_articles');
+		}
+
+		public function setArticleType($article_type)
+		{
+			$this->_article_type = $article_type;
+		}
+		
+		public function getArticleType()
+		{
+			return $this->_article_type;
+		}
+		
+		public function getHistoryUserIDs()
+		{
+			static $uids = null;
+			if ($uids === null) $uids = TBGArticleHistoryTable::getTable()->getUserIDsByArticleName($this->getName());
+			
+			return $uids;
 		}
 
 	}

@@ -52,6 +52,7 @@
 		const SETTING_ADMIN_GROUP = 'admingroup';
 		const SETTING_ALLOW_REGISTRATION = 'allowreg';
 		const SETTING_ALLOW_OPENID = 'allowopenid';
+		const SETTING_ALLOW_PERSONA = 'allowpersona';
 		const SETTING_ALLOW_USER_THEMES = 'userthemes';
 		const SETTING_AWAYSTATE = 'awaystate';
 		const SETTING_DEFAULT_CHARSET = 'charset';
@@ -351,6 +352,12 @@
 			return ($setting === null) ? 'all' : $setting;
 		}
 		
+		public static function isPersonaEnabled()
+		{
+			$setting = self::get(self::SETTING_ALLOW_PERSONA);
+			return ($setting === null) ? true : (bool) $setting;
+		}
+		
 		public static function isOpenIDavailable()
 		{
 			if (TBGSettings::isUsingExternalAuthenticationBackend())
@@ -358,6 +365,15 @@
 				return false; // No openID when using external auth
 			}
 			return (bool) (self::getOpenIDStatus() != 'none');
+		}
+		
+		public static function isPersonaAvailable()
+		{
+			if (TBGSettings::isUsingExternalAuthenticationBackend())
+			{
+				return false; // No openID when using external auth
+			}
+			return (bool) self::isPersonaEnabled();
 		}
 		
 		public static function isGravatarsEnabled()
@@ -612,9 +628,14 @@
 		{
 			$timezone = self::get(self::SETTING_SERVER_TIMEZONE);
 
-			if ($timezone == null)
+			if (is_numeric($timezone) || $timezone == null)
 			{
 				$timezone = date_default_timezone_get();
+			}
+			
+			if (!$timezone)
+			{
+				throw new TBGConfigurationException('No timezone specified, not even in php configuration.<br>For more information on how to fix this, see <a href="http://www.php.net/manual/en/datetime.configuration.php#ini.date.timezone">php.net &raquo; Runtime configuration &raquo; date.timezone</a>');
 			}
 
 			return $timezone;

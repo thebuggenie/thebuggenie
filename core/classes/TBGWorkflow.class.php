@@ -60,6 +60,15 @@
 		protected $_num_steps = null;
 
 		/**
+		 * The initial transition for incoming issues in this workflow
+		 *
+		 * @var TBGWorkflowTransition
+		 * @Column(type="integer", length=10)
+		 * @Relates(class="TBGWorkflowTransition")
+		 */
+		protected $_initial_transition_id = null;
+
+		/**
 		 * This workflow's transitions
 		 *
 		 * @var array|TBGWorkflowTransition
@@ -172,6 +181,7 @@
 			if ($this->_transitions === null)
 			{
 				$this->_b2dbLazyload('_transitions');
+				if (array_key_exists($this->getInitialTransition()->getID(), $this->_transitions)) unset($this->_transitions[$this->getInitialTransition()->getID()]);
 			}
 		}
 		
@@ -212,8 +222,7 @@
 		 */
 		public function getFirstStep()
 		{
-			$steps = $this->getSteps();
-			return (is_array($steps)) ? array_shift($steps) : null;
+			return $this->getInitialTransition()->getOutgoingStep();
 		}
 
 		public function getNumberOfSteps()
@@ -224,9 +233,9 @@
 			}
 			elseif ($this->_num_steps === null)
 			{
-				$this->_b2dbLazycount('_steps');
+				$this->_num_steps = $this->_b2dbLazycount('_steps');
 			}
-			return $this->_num_steps;
+			return (int) $this->_num_steps;
 		}
 
 		public function isInUse()
@@ -331,6 +340,21 @@
 		public function setName($name)
 		{
 			$this->_name = $name;
+		}
+
+		/**
+		 * Return the workflow's initial transition
+		 *
+		 * @return TBGWorkflowTransition
+		 */
+		public function getInitialTransition()
+		{
+			return $this->_b2dbLazyload('_initial_transition_id');
+		}
+
+		public function setInitialTransition(TBGWorkflowTransition $transition)
+		{
+			$this->_initial_transition_id = $transition;
 		}
 
 	}

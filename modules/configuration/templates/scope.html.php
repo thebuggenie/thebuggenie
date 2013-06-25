@@ -4,18 +4,18 @@
 		<?php include_component('leftmenu', array('selected_section' => TBGSettings::CONFIGURATION_SECTION_SCOPES)); ?>
 		<td valign="top" style="padding-left: 15px;">
 			<form method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>">
-				<div style="width: 750px;" class="config_header"><?php echo __('Configure scope "%scope_name%"', array('%scope_name%' => $scope->getName())); ?></div>
-				<div style="width: 750px;" id="config_scopes">
+				<div style="width: 730px;" class="config_header"><?php echo __('Configure scope "%scope_name%"', array('%scope_name%' => $scope->getName())); ?></div>
+				<div style="width: 730px;" id="config_scopes">
 					<?php if ($scope_save_error): ?>
-						<div class="rounded_box red borderless" style="margin: 0 0 5px 0; padding: 8px; font-size: 14px; color: #FFF;">
+						<div class="redbox" style="margin: 0 0 5px 0; font-size: 14px;">
 							<?php echo $scope_save_error; ?>
 						</div>
 					<?php elseif ($scope_saved): ?>
-						<div class="rounded_box green borderless" style="margin: 0 0 5px 0; padding: 8px; font-size: 14px;">
+						<div class="greenbox" style="margin: 0 0 5px 0; font-size: 14px;">
 							<?php echo __('The settings were saved successfully'); ?>
 						</div>
 					<?php endif; ?>
-					<div class="rounded_box lightgrey borderless">
+					<div class="greybox">
 						<div class="content">
 							<table style="clear: both; width: 700px; margin-top: 5px;" class="padded_table" cellpadding=0 cellspacing=0>
 								<tr>

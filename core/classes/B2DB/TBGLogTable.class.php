@@ -71,6 +71,8 @@
 		const LOG_ISSUE_PAIN_CALCULATED = 40;
 		const LOG_ISSUE_BLOCKED = 41;
 		const LOG_ISSUE_UNBLOCKED = 42;
+		const LOG_ISSUE_UPDATE_TITLE = 43;
+		const LOG_ISSUE_UPDATE_DESCRIPTION = 44;
 		
 		const B2DBNAME = 'log';
 		const ID = 'log.id';

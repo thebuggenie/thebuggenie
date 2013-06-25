@@ -10,6 +10,7 @@
 		$tbg_response->addBreadcrumb(__('No sprint selected'));
 	}
 	$tbg_response->setTitle(__('"%project_name%" sprint overview', array('%project_name%' => $selected_project->getName())));
+	$tbg_response->addJavascript(make_url('home').'js/excanvas.js', false);
 	$tbg_response->addJavascript(make_url('home').'js/jquery.flot.min.js', false);
 	$tbg_response->addJavascript(make_url('home').'js/jquery.flot.resize.min.js', false);
 	$tbg_response->addJavascript(make_url('home').'js/jquery.flot.dashes.js', false);

@@ -1,5 +1,5 @@
 <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_module', array('config_module' => $module->getName())); ?>" enctype="multipart/form-data" method="post">
-	<div id="mailnotification_settings_container" class="rounded_box borderless mediumgrey<?php if ($access_level == TBGSettings::ACCESS_FULL): ?> cut_bottom<?php endif; ?>" style="margin: 10px 0 0 0; width: 744px;<?php if ($access_level == TBGSettings::ACCESS_FULL): ?> border-bottom: 0;<?php endif; ?>">
+	<div id="mailnotification_settings_container" style="margin: 10px 0 0 0;">
 		<div class="content" style="padding-bottom: 10px;"><?php echo __('These are the settings for outgoing emails, such as notification emails and registration emails.'); ?></div>
 		<table style="width: 680px;" class="padded_table" cellpadding=0 cellspacing=0 id="mailnotification_settings_table">
 			<tr>
@@ -121,15 +121,15 @@
 		</table>
 	</div>
 <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-	<div class="rounded_box iceblue borderless cut_top" style="margin: 0 0 5px 0; width: 740px; border-top: 0; padding: 8px 5px 2px 5px; height: 25px;">
-		<div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "%save%" to save email notification settings', array('%save%' => __('Save'))); ?></div>
-		<input type="submit" id="submit_settings_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
+	<div class="bluebox" style="margin: 0 0 5px 0;">
+		<?php echo __('Click "%save%" to save email notification settings', array('%save%' => __('Save'))); ?>
+		<input type="submit" id="submit_settings_button" style="margin: -3px -3px 0 0; float: right; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
 	</div>
 <?php endif; ?>
 </form>
 <?php if ($module->isEnabled()): ?>
 	<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('mailing_test_email'); ?>" method="post">
-		<div class="rounded_box borderless mediumgrey" style="margin: 10px 0 0 0; width: 740px; padding: 5px 5px 30px 5px;">
+		<div class="greybox" style="margin: 5px 0 30px 0;">
 			<table style="width: 680px;" class="padded_table" cellpadding=0 cellspacing=0>
 				<tr>
 					<td style="width: 125px; padding: 5px;"><label for="test_email_to"><?php echo __('Send test email'); ?></label></td>
@@ -143,7 +143,9 @@
 					</td>
 				</tr>
 			</table>
-			<input type="submit" id="submit_settings_button" style="float: right; padding: 0 10px 0 10px; font-size: 13px; font-weight: bold;" value="<?php echo __('Send test email'); ?>">
+			<div style="text-align: right;">
+				<input type="submit" id="submit_settings_button" style="padding: 0 10px 0 10px; font-size: 13px; font-weight: bold;" value="<?php echo __('Send test email'); ?>">
+			</div>
 		</div>
 	</form>
 <?php endif; ?>

@@ -5,6 +5,16 @@
 		<span id="thebuggenie_failuremessage_content"></span>
 	</div>
 </div>
+<div class="tutorial-message" id="tutorial-message" style="display: none;">
+	<div id="tutorial-message-container"></div>
+	<br>
+	<div class="tutorial-buttons">
+		<button class="button button-standard button-next" id="tutorial-next-button"></button>
+		<button class="button button-silver button-disable" onclick="TBG.Tutorial.disable();">Skip this tutorial</button>
+	</div>
+	<br style="clear: both;">
+	<div class="tutorial-status"><span id="tutorial-current-step"></span> of <span id="tutorial-total-steps"></span></div>
+</div>
 <div class="almost_not_transparent shadowed popup_message success" onclick="TBG.Main.Helpers.Message.clear();" style="display: none;" id="thebuggenie_successmessage">
 	<div style="padding: 10px 0 10px 0;">
 		<div class="dismiss_me"><?php echo __('Click this message to dismiss it'); ?></div>
@@ -19,6 +29,70 @@
 	</div>
 	<div id="fullpage_backdrop_content" class="fullpage_backdrop_content"> </div>
 </div>
+<?php if (TBGContext::getRouting()->getCurrentRouteName() != 'login_page' && $tbg_user->isGuest()): ?>
+	<div id="login_backdrop" class="fullpage_backdrop" style="display: none;">
+		<div id="login_content" class="fullpage_backdrop_content">
+			<?php include_component('main/loginpopup', array('content' => get_component_html('main/login'), 'mandatory' => false)); ?>
+		</div>
+	</div>
+<?php endif; ?>
+<?php if (TBGSettings::isPersonaAvailable() && ($tbg_user->isGuest() || $tbg_request->hasCookie('tbg3_persona_session'))): ?>
+	<script src="https://login.persona.org/include.js"></script>
+	<script type="text/javascript">
+		document.observe('dom:loaded', function() {
+			var currentUser = <?php echo (!$tbg_user->isGuest()) ? "'{$tbg_user->getEmail()}'" : 'null'; ?>;
+
+			navigator.id.watch({
+			  loggedInUser: currentUser,
+			  onlogin: function(assertion) {
+				// A user has logged in! Here you need to:
+				// 1. Send the assertion to your backend for verification and to create a session.
+				// 2. Update your UI.
+				TBG.Main.Helpers.ajax('<?php echo make_url('login'); ?>', {
+					url_method: 'post',
+					additional_params: '&persona=true&assertion='+assertion+'&referrer_route=<?php echo TBGContext::getRouting()->getCurrentRouteName(); ?>',
+					loading: {
+						indicator: 'fullpage_backdrop',
+						clear: 'fullpage_backdrop_content',
+						hide: 'login_backdrop',
+						show: 'fullpage_backdrop_indicator'
+					},
+					success: {
+						callback: function(json) {
+							window.location.reload();
+						}
+					},
+					failure: {
+						callback: function(json) {
+							navigator.id.logout();
+						}
+					}
+				});
+			  },
+			  onlogout: function() {
+				// A user has logged out! Here you need to:
+				// Tear down the user's session by redirecting the user or making a call to your backend.
+				// Also, make sure loggedInUser will get set to null on the next page load.
+				// (That's a literal JavaScript null. Not false, 0, or undefined. null.)
+				TBG.Main.Helpers.ajax('<?php echo make_url('logout'); ?>', {
+					url_method: 'post',
+					loading: {
+						indicator: 'fullpage_backdrop',
+						clear: 'fullpage_backdrop_content',
+						show: 'fullpage_backdrop_indicator'
+					},
+					success: {
+						callback: function(json) {
+							window.location = json.url;
+						}
+					}
+				});
+			  }
+			});
+			if ($('persona-signin-button')) $('persona-signin-button').observe('click', function() { navigator.id.request(); } );
+		});
+	</script>
+<?php endif; ?>
 <div id="dialog_backdrop" style="display: none; background-color: transparent; width: 100%; height: 100%; position: fixed; top: 0; left: 0; margin: 0; padding: 0; text-align: center; z-index: 100000;">
 	<div id="dialog_backdrop_content" class="fullpage_backdrop_content">
 		<div class="rounded_box shadowed_box white cut_top cut_bottom bigger">

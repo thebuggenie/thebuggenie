@@ -21,21 +21,24 @@
 					<span style="font-weight: normal;">You are performing the following upgrade: </span><?php echo $current_version; ?>.x => <?php echo TBGSettings::getVersion(false, true); ?><br>
 					<span class="smaller">Make a backup of your installation before you continue!</span>
 				</h2>
-				<?php if (version_compare($current_version, '3.1', '<')): ?>
+				<?php if (version_compare($current_version, '3.2', '<')): ?>
 					<div class="rounded_box shadowed padded_box yellow" style="font-size: 1.1em; margin-bottom: 10px;">
-						<u>You are performing an update from an older version of The Bug Genie (<?php echo $current_version; ?>), and not 3.1.x</u>. This is a valid upgrade, but often happens if the version number in the "installed" file is incorrect (due to a bug in 3.1.5 and earlier). Please read the <a href="http://thebuggenie.com/release/3_2#upgrade">upgrade notes</a> and make sure your version information is correct.<br>
-						If you really are upgrading from <?php echo $current_version; ?>, you need to upgrade to 3.1.x first, and then upgrade to <?php echo TBGSettings::getVersion(false, true); ?>.
+						<u>You are performing an update from an older version of The Bug Genie (<?php echo $current_version; ?>), and not 3.2.x</u>.<br>
+						This is a valid upgrade, but if you really are upgrading from <?php echo $current_version; ?>, you need to upgrade to the latest 3.2.x release first, and then upgrade to <?php echo TBGSettings::getVersion(false, true); ?>.
 					</div>
 				<?php else: ?>
 					<form accept-charset="utf-8" action="<?php echo make_url('upgrade'); ?>" method="post">
-						<?php if (version_compare($current_version, '3.2', '<')): ?>
-							<?php /* <b>A straightforward fix is available - </b>please see <a target="_blank" href="http://thebuggenie.wordpress.com/2011/12/30/how-the-bug-genie-3-2s-upgrader-fixes-your-timestamps/">our blog post</a> for details. <i>(opens in a new window)</i> */ ?>
-							<input type="checkbox" name="fix_my_timestamps" value="1" id="fix_my_timestamps">
-							<label for="fix_my_timestamps" style="font-weight: bold; font-size: 1.1em;">Fix incorrect time and date values</label><br>
-							<b style="font-size: 1.1em;">This function will take some time and consume a lot of memory. Do not enable on installations with > 500 tickets.</b><br>
-							Please see <a target="_blank" href="http://thebuggenie.wordpress.com/2011/12/30/how-the-bug-genie-3-2s-upgrader-fixes-your-timestamps/">our blog post</a> for more details. <i>(opens in a new window)</i><br>
-							<br>
-						<?php endif; ?>
+						Please select the initial status for issues for each scope in this installation:<br>
+						<?php foreach ($statuses as $scope_id => $details): ?>
+							<label for="status_<?php echo $scope_id; ?>" style="font-weight: bold; font-size: 1.1em;">Initial status for scope <?php echo $details['scopename']; ?>:</label>
+							<select name="status[<?php echo $scope_id; ?>]">
+								<?php foreach ($details['statuses'] as $status_id => $status_name): ?>
+									<option value="<?php echo $status_id; ?>" <?php if (trim(strtolower($status_name)) == 'new') echo 'selected'; ?>><?php echo $status_name; ?></option>
+								<?php endforeach; ?>
+							</select>
+							<br style="clear: both;">
+						<?php endforeach; ?>
+						<br>
 						<input type="hidden" name="perform_upgrade" value="1">
 						<input type="checkbox" name="confirm_backup" id="confirm_backup" onclick="($('confirm_backup').checked) ? $('start_upgrade').enable() : $('start_upgrade').disable();">
 						<label for="confirm_backup" style="font-weight: bold; font-size: 1.1em;">I have read and understand the <a href="http://thebuggenie.com/release/3_2#upgrade">upgrade notes</a> - and I've taken steps to make sure my data is backed up</label><br>
@@ -58,7 +61,10 @@
 	<?php elseif ($upgrade_complete): ?>
 		<h2>Upgrade successfully completed!</h2>
 		<p style="font-size: 1.2em;">
-			If the file <span class="command_box"><?php echo THEBUGGENIE_PATH . 'upgrade'; ?></span> exists, please remove this file and click the "Finish" button below.
+			<?php if (isset($upgrade_file_failed)): ?>
+				The file <span class="command_box"><?php echo THEBUGGENIE_PATH . 'upgrade'; ?></span> could not be removed.<br>
+			<?php endif; ?>
+			Make sure that the file <span class="command_box"><?php echo THEBUGGENIE_PATH . 'upgrade'; ?></span> is removed before you click the "Finish" button below.
 		</p>
 		<div style="margin-top: 15px;">
 			<a href="<?php echo make_url('logout'); ?>" class="button button-silver" style="font-size: 1.2em !important; padding: 3px 10px !important;">Finish</a>
@@ -66,7 +72,7 @@
 	<?php else: ?>
 		<h2>No upgrade necessary!</h2>
 		<p style="font-size: 1.2em;">
-			If the file <span class="command_box"><?php echo THEBUGGENIE_PATH . 'upgrade'; ?></span> exists, please remove this file and click the "Finish" button below.
+			Make sure that the file <span class="command_box"><?php echo THEBUGGENIE_PATH . 'upgrade'; ?></span> is removed before you click the "Finish" button below.
 		</p>
 		<div style="margin-top: 15px;">
 			<a href="<?php echo make_url('logout'); ?>" class="button button-silver" style="font-size: 1.2em !important; padding: 3px 10px !important;">Finish</a>

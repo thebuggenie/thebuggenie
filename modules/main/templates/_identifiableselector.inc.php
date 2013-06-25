@@ -53,4 +53,9 @@
 	</div>
 	<div id="<?php echo $base_id; ?>_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</div>
 	<div id="<?php echo $base_id; ?>_change_error" class="error_message" style="display: none;"></div>
+	<?php if (isset($allow_close) && $allow_close == true): ?>
+		<div style="text-align: right;">
+			<a href="javascript:void(0);" onclick="$('<?php echo $html_id; ?>').toggle();"><?php echo __('Close popup'); ?></a>
+		</div>
+	<?php endif; ?>
 </div>
