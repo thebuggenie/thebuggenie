@@ -228,6 +228,7 @@
 		{
 			$crit = new \b2db\Criteria();
 			$crit->addWhere(TBGClientsTable::NAME, "%$details%", \b2db\Criteria::DB_LIKE);
+			$crit->addWhere(TBGClientsTable::SCOPE, TBGContext::getScope()->getID());
 			$clients = array();
 			if ($res = \b2db\Core::getTable('TBGClientsTable')->doSelect($crit))
 			{
