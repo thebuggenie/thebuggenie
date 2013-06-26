@@ -69,6 +69,7 @@
 							</optgroup>
 							<optgroup label="Mercurial">
 								<option value='hgweb'>hgweb</option>
+								<option value='rhodecode'>RhodeCode</option>
 							</optgroup>
 							<optgroup label="Git">
 								<option value='gitweb'>gitweb</option>
@@ -76,6 +77,7 @@
 								<option value='gitorious'>Gitorious (<?php echo __('locally hosted'); ?>)</option>
 								<option value='github'>Github</option>
 								<option value='bitbucket'>Bitbucket</option>
+								<option value='rhodecode'>RhodeCode</option>
 							</optgroup>
 							<optgroup label="Bazaar">
 								<option value='loggerhead'>Loggerhead</option>
