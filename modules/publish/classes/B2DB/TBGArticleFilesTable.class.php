@@ -65,6 +65,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::ARTICLE_ID, $article_id);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$res = $this->doSelect($crit);
 			
 			$ret_arr = array();
@@ -113,6 +114,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::FILE_ID, $file_id);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 
 			$article_ids = array();
 			if ($res = $this->doSelect($crit))
