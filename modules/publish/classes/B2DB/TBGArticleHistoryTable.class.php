@@ -40,6 +40,7 @@
 			$crit = $this->getCriteria();
 			$crit->addSelectionColumn(self::REVISION, 'next_revision', Criteria::DB_MAX, '', '+1');
 			$crit->addWhere(self::ARTICLE_NAME, $article_name);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 
 			$row = $this->doSelectOne($crit);
 			return ($row->get('next_revision')) ? $row->get('next_revision') : 1;
@@ -90,6 +91,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::ARTICLE_NAME, $article_name);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addOrderBy(self::REVISION, 'desc');
 
 			$res = $this->doSelect($crit);
@@ -101,6 +103,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::ARTICLE_NAME, $article_name);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addSelectionColumn(self::AUTHOR);
 
 			$res = $this->doSelect($crit);
@@ -137,6 +140,7 @@
 				$retval = array();
 				while ($row = $res->getNextRow())
 				{
+					var_dump($row);
 					$author = ($row->get(self::AUTHOR)) ? TBGContext::factory()->TBGUser($row->get(self::AUTHOR)) : null;
 					$retval[$row->get(self::REVISION)] = array('old_content' => $row->get(self::OLD_CONTENT), 'new_content' => $row->get(self::NEW_CONTENT), 'date' => $row->get(self::DATE), 'author' => $author);
 				}
