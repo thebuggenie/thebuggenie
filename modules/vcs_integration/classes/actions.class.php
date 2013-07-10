@@ -154,7 +154,14 @@
 			$data = html_entity_decode(TBGContext::getRequest()->getParameter('payload'));
 			if (empty($data) || $data == null)
 			{
-				die('Error: No payload was provided');
+				//Need to check if payload is in unwrapped form from GitLab (until support is added)
+				//Obtain raw input from request
+				$data = file_get_contents("php://input");
+				if (empty($data) || $data == null)
+				{
+					die('Error: No payload was provided');
+				}
+				
 			}
 
 			$entries = json_decode($data);
