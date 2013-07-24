@@ -653,6 +653,7 @@
 				TBGCache::checkEnabled();
 				if (TBGCache::isEnabled())
 				{
+					TBGCache::setPrefix(str_replace('.', '_', TBGSettings::getVersion(false, false)));
 					TBGLogging::log((TBGCache::getCacheType() == TBGCache::TYPE_APC) ? 'Caching enabled: APC, filesystem' : 'Caching enabled: filesystem');
 				}
 				else

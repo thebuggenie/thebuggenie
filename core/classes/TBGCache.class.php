@@ -45,6 +45,8 @@
 		*/
 		protected static $_type;
 
+		protected static $_prefix;
+
 		/**
 		* container holding already loaded classes from filesystem so each cached file is loaded only once and later served from memory
 		*/
@@ -52,6 +54,7 @@
 		
 		protected static function getScopedKeyIfAppliccable($key, $prepend_scope)
 		{
+			$key = self::$_prefix . $key;
 			return ($prepend_scope) ? "{$key}." . TBGContext::getScope()->getID() : $key;
 		}
 
@@ -217,6 +220,11 @@
 		public static function disable()
 		{
 			self::$_enabled = false;
+		}
+
+		public static function setPrefix($prefix)
+		{
+			self::$_prefix = $prefix;
 		}
 
 		public static function clearCacheKeys($keys)
