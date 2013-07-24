@@ -12,14 +12,12 @@
 		<b class="project_name"><?php echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), '<span id="project_name_span">'.$project->getName()."</span>"); ?> <?php if ($project->usePrefix()): ?>(<?php echo mb_strtoupper($project->getPrefix()); ?>)<?php endif; ?></b><?php if ($tbg_user->canEditProjectDetails($project)): ?>&nbsp;&nbsp;<span class="faded_out button-group" style="float: none;"><?php echo javascript_link_tag(__('Quick edit'), array('class' => 'button button-silver', 'onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'project_config', 'project_id' => $project->getID()))."');", 'style' => 'font-size: 0.85em !important; padding: 0 3px !important; float: none;')); ?><?php echo link_tag(make_url('project_settings', array('project_key' => $project->getKey())), __('Settings'), array('class' => 'button button-silver', 'style' => 'font-size: 0.85em !important; padding: 0 3px !important; float: none;')); ?></span><?php endif; ?><br>
 		<?php if ($project->hasHomepage()): ?>
 			<a href="<?php echo $project->getHomepage(); ?>" target="_blank"><?php echo __('Go to project website'); ?></a>
-		<?php else: ?>
-			<span class="faded_out" style="font-weight: normal;"><?php echo __('No homepage provided'); ?></span>
 		<?php endif; ?>
-		|
+		<?php if ($project->hasHomepage() && $project->hasDocumentationURL()): ?>
+		|  
+		<?php endif; ?>
 		<?php if ($project->hasDocumentationURL()): ?>
 			<a href="<?php echo $project->getDocumentationURL(); ?>" target="_blank"><?php echo __('Open documentation'); ?></a>
-		<?php else: ?>
-			<span class="faded_out" style="font-weight: normal;"><?php echo __('No documentation URL provided'); ?></span>
 		<?php endif; ?>
 	</div>
 	<nav class="button-group">
