@@ -2331,10 +2331,10 @@
 			
 			if ($find_identifiable_by = $request['find_identifiable_by'])
 			{
-				$this->users = TBGUser::findUsers($find_identifiable_by, 10);
+				$this->users = TBGUsersTable::getTable()->getByDetails($find_identifiable_by, 10);
 				if ($request['include_teams'])
 				{
-					$this->teams = TBGTeam::findTeams($find_identifiable_by);
+					$this->teams = TBGTeamsTable::quickfind($find_identifiable_by);
 				}
 				else
 				{

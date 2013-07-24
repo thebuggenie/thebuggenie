@@ -888,7 +888,7 @@
 				{
 					foreach ($this->teams as $team)
 					{
-						if ($team->getScope()->getID() != TBGContext::getScope()->getID()) continue;
+						if (!$team->getScope() instanceof TBGScope || $team->getScope()->getID() != TBGContext::getScope()->getID()) continue;
 						$key = ($team->isOndemand()) ? 'ondemand' : 'assigned';
 						$this->_teams[$key][$team->getID()] = $team;
 					}
