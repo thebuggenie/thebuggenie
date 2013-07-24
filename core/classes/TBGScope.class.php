@@ -97,6 +97,16 @@
 		protected $_max_teams = 0;
 
 		/**
+		 * @Relates(class="TBGProject", collection=true, foreign_column="scope")
+		 */
+		protected $_projects = null;
+
+		/**
+		 * @Relates(class="TBGIssue", collection=true, foreign_column="scope")
+		 */
+		protected $_issues = null;
+
+		/**
 		 * Return all available scopes
 		 * 
 		 * @return array|TBGScope
@@ -410,5 +420,15 @@
 		{
 			return ($this->getMaxTeams()) ? (TBGTeam::countAll() < $this->getMaxTeams()) : true;
 		}
-		
+
+		public function getNumberOfProjects()
+		{
+			return (int) $this->_b2dbLazycount('_projects');
+		}
+
+		public function getNumberOfIssues()
+		{
+			return (int) $this->_b2dbLazycount('_issues');
+		}
+
 	}

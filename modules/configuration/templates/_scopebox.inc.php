@@ -15,8 +15,11 @@
 			<?php endif; ?>
 		</span>
 	</div>
-	<?php if ($scope->isDefault() || !strlen(trim($scope->getDescription()))): ?>
-		<div class="content">
+	<div class="content">
+		<?php if (!$scope->isDefault()): ?>
+			<?php echo __('%num_projects% project(s), %num_issues% issue(s)', array('%num_projects%' => $scope->getNumberOfProjects(), '%num_issues%' => $scope->getNumberOfIssues())); ?>
+		<?php endif; ?>
+		<?php if ($scope->isDefault() || !strlen(trim($scope->getDescription()))): ?>
 			<div class="faded_out scope_description">
 				<?php if (!$scope->isDefault()): ?>
 					<?php echo $scope->getDescription(); ?>
@@ -24,8 +27,8 @@
 					<?php echo __('This is the default scope. It will be loaded and used whenever The Bug Genie is accessed on a hostname for which there is not explicit scope defined.'); ?>
 				<?php endif; ?>
 			</div>
-		</div>
-	<?php endif; ?>
+		<?php endif; ?>
+	</div>
 	<?php if (!$scope->isDefault()): ?>
 		<form action="<?php echo make_url('configure_scope', array('id' => $scope->getID())); ?>" method="post" style="display: none;" id="delete_scope_<?php echo $scope->getID(); ?>_form">
 			<input type="hidden" name="scope_action" value="delete">
