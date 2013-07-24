@@ -6,9 +6,9 @@
 </h3>
 <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 	<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_projects_add_edition', array('project_id' => $project->getID())); ?>" method="post" id="add_edition_form" onsubmit="TBG.Project.Edition.add('<?php echo make_url('configure_projects_add_edition', array('project_id' => $project->getID())); ?>');return false;" style="display: none;">
-		<div class="rounded_box lightgrey" style="vertical-align: middle; padding: 5px; font-size: 12px;">
+		<div class="lightyellowbox">
 			<input class="button button-silver" style="float: right; margin: -2px 0;" type="submit" value="<?php echo __('Create'); ?>">
-			<label for="edition_name"><?php echo __('Edition name'); ?></label>
+			<label for="edition_name"><?php echo __('Add edition'); ?></label>
 			<input type="text" id="edition_name" name="e_name" style="width: 500px;">
 		</div>
 		<table cellpadding=0 cellspacing=0 style="display: none; margin-left: 5px; width: 300px;" id="edition_add_indicator">
@@ -36,9 +36,9 @@
 </h3>
 <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 	<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_projects_add_component', array('project_id' => $project->getID())); ?>" method="post" id="add_component_form" onsubmit="TBG.Project.Component.add('<?php echo make_url('configure_projects_add_component', array('project_id' => $project->getID())); ?>');return false;" style="display: none;">
-		<div class="rounded_box lightgrey" style="vertical-align: middle; padding: 5px; font-size: 12px;">
+		<div class="lightyellowbox">
 			<input class="button button-silver" style="float: right; margin: -2px 0;" type="submit" value="<?php echo __('Create'); ?>">
-			<label for="component_name"><?php echo __('Component name'); ?></label>
+			<label for="component_name"><?php echo __('Add component'); ?></label>
 			<input type="text" id="component_name" name="c_name" style="width: 500px;">
 		</div>
 		<table cellpadding=0 cellspacing=0 style="display: none; margin-left: 5px; width: 300px;" id="component_add_indicator">

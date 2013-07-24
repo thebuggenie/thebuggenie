@@ -1,6 +1,6 @@
 <li class="rounded_box invisible" style="line-height: 1.3;">
 	<?php if ($build->isActive()): ?>
-		<div class="build_buttons" style="float: right; margin: 6px 3px 0 0;">
+		<div class="button-group" style="float: right; margin: 6px 3px 0 0;">
 			<?php if ($build->hasDownload()): ?>
 				<?php echo ($build->hasFile()) ? link_tag(make_url('downloadfile', array('id' => $build->getFile()->getID())), image_tag('icon_download.png').__('Download'), array('class' => 'button button-orange')) : link_tag($build->getFileURL(), image_tag('icon_download.png').__('Download'), array('class' => 'button button-orange')); ?>
 			<?php endif; ?>
