@@ -274,7 +274,7 @@
 																		'classes'			=> 'dropdown_box')); ?>
 			<?php endif; ?>
 		</li>
-		<li id="owned_by_field" class="issue_detail_field<?php if ($issue->isOwnerChanged()): ?> issue_detail_changed<?php endif; ?><?php if (!$issue->isOwnerMerged()): ?> issue_detail_unmerged<?php endif; ?>">
+		<li id="owned_by_field" style="<?php if (!$issue->isOwnedByVisible()): ?> display: none;<?php endif; ?>" class="issue_detail_field<?php if ($issue->isOwnerChanged()): ?> issue_detail_changed<?php endif; ?><?php if (!$issue->isOwnerMerged()): ?> issue_detail_unmerged<?php endif; ?>">
 			<dl class="viewissue_list">
 				<dt id="owned_by_header"><?php echo __('Owned by'); ?></dt>
 				<dd id="owned_by_content" class="<?php if ($issue->isOwnerChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isOwnerMerged()): ?> issue_detail_unmerged<?php endif; ?>">

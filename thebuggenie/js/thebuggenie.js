@@ -111,7 +111,7 @@ var TBG = {
 	debug: false,
 	activated_popoutmenu: undefined,
 	autocompleter_url: undefined,
-	available_fields: ['description', 'user_pain', 'reproduction_steps', 'category', 'resolution', 'priority', 'reproducability', 'percent_complete', 'severity', 'edition', 'build', 'component', 'estimated_time', 'spent_time', 'milestone']
+	available_fields: ['description', 'user_pain', 'reproduction_steps', 'category', 'resolution', 'priority', 'reproducability', 'percent_complete', 'severity', 'edition', 'build', 'component', 'estimated_time', 'spent_time', 'milestone', 'owned_by']
 };
 
 /**

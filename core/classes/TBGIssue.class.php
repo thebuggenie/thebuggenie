@@ -4083,8 +4083,18 @@
 		}
 
 		/**
-		 * Return whether or not the "description" field is visible
+		 * Return whether or not the "owned by" field is visible
 		 * 
+		 * @return boolean
+		 */
+		public function isOwnedByVisible()
+		{
+			return (bool) ($this->isFieldVisible('owned_by') || $this->isOwned());
+		}
+
+		/**
+		 * Return whether or not the "description" field is visible
+		 *
 		 * @return boolean
 		 */
 		public function isDescriptionVisible()

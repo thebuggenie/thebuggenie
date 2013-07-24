@@ -43,6 +43,9 @@
 					case 'votes':
 						echo __('Votes');
 						break;
+					case 'owned_by':
+						echo __('Owner');
+						break;
 					default:
 						echo __(ucfirst($item));
 						break;
