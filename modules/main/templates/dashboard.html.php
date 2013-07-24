@@ -35,7 +35,7 @@
 					</form>
 				</div>
 			<?php else: ?>
-				<ul id="dashboard" class="column-4s" style="margin: 10px 5px;">
+				<ul id="dashboard" class="column-4s" style="margin: 0 5px;">
 					<?php foreach($views as $_id => $view): ?>
 						<li style="clear: none;" id="dashboard_container_<?php echo $_id; ?>">
 							<?php include_component('dashboardview', array('view' => $view, 'show' => false)); ?>
