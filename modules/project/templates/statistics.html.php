@@ -21,6 +21,7 @@
 				<input type="hidden" id="statistics_mini_1_main" value="">
 				<input type="hidden" id="statistics_mini_2_main" value="">
 				<input type="hidden" id="statistics_mini_3_main" value="">
+				<?php TBGEvent::createNew('core', 'projectstatistics_image', $selected_project)->trigger(); ?>
 			</div>
 			<div class="rounded_box verylightgrey borderless" style="width: 690px; text-align: center; padding: 150px 5px 150px 5px; color: #AAA; font-size: 19px;" id="statistics_help">
 				<?php echo __('Select an item in the left menu to show more details'); ?>

@@ -51,6 +51,7 @@
 			<li><a href="javascript:void(0);" onclick="TBG.Project.Statistics.get('<?php echo make_url('project_statistics_imagesets', array('project_key' => $selected_project->getKey(), 'set' => 'issues_per_reproducability')); ?>');"><?php echo __('%number_of_issues_per% Reproducability', array('%number_of_issues_per%' => '')); ?></a></li>
 			<li><a href="javascript:void(0);" onclick="TBG.Project.Statistics.get('<?php echo make_url('project_statistics_imagesets', array('project_key' => $selected_project->getKey(), 'set' => 'issues_per_status')); ?>');"><?php echo __('%number_of_issues_per% Status type', array('%number_of_issues_per%' => '')); ?></a></li>
 		</ul>
+		<?php TBGEvent::createNew('core', 'projectstatistics_links', $selected_project)->trigger(); ?>
 	<?php endif; ?>
 	<?php TBGEvent::createNew('core', 'project_sidebar_links_statistics')->trigger(array('submenu' => $submenu)); ?>
 <?php endif; ?>
