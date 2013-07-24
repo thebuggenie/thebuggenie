@@ -56,6 +56,7 @@ dt label { padding-left: 0; }
 dd { margin-left: 0px; margin-bottom: 15px; vertical-align: middle; }
 label { font-weight: bold; margin: 0px; padding: 2px; cursor: pointer; }
 label .faded_out { font-weight: normal; }
+label.optional { font-weight: normal; }
 label > input[type="checkbox"] { margin: 0 3px; position: relative; top: 2px;}
 
 div.image_container { border: 1px solid #CCC; padding: 3px; background-color: #F3F3F3; width: auto; margin: 0 5px 0 5px; float: right; clear: right; }
@@ -941,8 +942,8 @@ reportissue_additional_information_container .markItUp { display: none; }
 .nice_button.workflow input:active { background-color: #E9E9B0; }
 .nice_button.workflow input:hover { background-color: #D3CE99; }
 .workflow_actions .button, .workflow_actions .button:hover, .button-group .button, .button-group .button:hover { border-radius: 0; border-left-width: 0; -moz-border-radius: 0; -webkit-border-radius: 0; font-size: 1em; padding: 2px 5px !important; }
-.workflow_actions .button.first, .workflow_actions .button.first:hover, .button-group .button:first-child, .button-group .button:first-child:hover { border-left-width: 1px; border-top-left-radius: 3px; -moz-border-radius-topleft: 3px; -webkit-border-top-left-radius: 3px; border-bottom-left-radius: 3px; -moz-border-radius-bottomleft: 3px; -webkit-border-bottom-left-radius: 3px; }
-.workflow_actions .button.last, .button-group .button:last-child { border-top-right-radius: 3px; -moz-border-radius-topright: 3px; -webkit-border-top-right-radius: 3px; border-bottom-right-radius: 3px; -moz-border-radius-bottomright: 3px; -webkit-border-bottom-right-radius: 3px; }
+.workflow_actions .button.first, .workflow_actions .button.first:hover, .button-group .button:first-child, .button-group .button:first-child:hover, .button-group .button.first, .button-group .button.first:hover { border-left-width: 1px; border-top-left-radius: 3px; -moz-border-radius-topleft: 3px; -webkit-border-top-left-radius: 3px; border-bottom-left-radius: 3px; -moz-border-radius-bottomleft: 3px; -webkit-border-bottom-left-radius: 3px; }
+.workflow_actions .button.last, .button-group .button:last-child, .button-group .button.last { border-top-right-radius: 3px; -moz-border-radius-topright: 3px; -webkit-border-top-right-radius: 3px; border-bottom-right-radius: 3px; -moz-border-radius-bottomright: 3px; -webkit-border-bottom-right-radius: 3px; }
 .workflow_actions li.more_actions { margin-left: 5px; }
 #workflow_actions .more_actions_dropdown { margin-top: 20px; }
 .workflow_actions li.workflow { position: relative; }

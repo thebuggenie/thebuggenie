@@ -860,6 +860,8 @@
 					{
 						$project = new TBGProject();
 						$project->setName($p_name);
+						$project->setWorkflowSchemeID($request['workflow_scheme_id']);
+						$project->setIssuetypeSchemeID($request['issuetype_scheme_id']);
 						$project->save();
 						return $this->renderJSON(array('message' => $i18n->__('The project has been added'), 'content' => $this->getTemplateHTML('projectbox', array('project' => $project, 'access_level' => $this->access_level)), 'total_count' => TBGProject::getProjectsCount(), 'more_available' => TBGContext::getScope()->hasProjectsAvailable()));
 					}

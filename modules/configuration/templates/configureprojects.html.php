@@ -26,10 +26,26 @@
 								<input type="hidden" name="add_project" value="true">
 								<label for="add_project_input"><?php echo __('Create a new project'); ?></label>
 								<input type="text" style="width: 300px;" id="add_project_input" name="p_name">
-								<div style="text-align: right; float: right;">
+								<div style="text-align: right; float: right;" class="button-group">
 									<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; margin: 3px 5px -4px;', 'id' => 'project_add_indicator')); ?>
-									<input type="submit" value="<?php echo __('Create project'); ?>" class="button button-silver">
+									<input type="submit" value="<?php echo __('Create project'); ?>" class="button button-silver first">
+									<input type="button" class="button button-silver last" onclick="$('add_project_additional').toggle();$(this).toggleClassName('button-pressed');" value="&#x25BC;">
 								</div>
+							</div>
+							<div id="add_project_additional" style="display: none; margin-top: 15px; font-size: 0.9em;">
+								<div class="header"><?php echo __('Additional settings'); ?></div>
+								<label class="optional" for="add_project_workflow_scheme"><?php echo __('Workflow scheme'); ?></label>
+								<select name="workflow_scheme_id" id="add_project_workflow_scheme">
+									<?php foreach (TBGWorkflowScheme::getAll() as $workflowscheme): ?>
+										<option value="<?php echo $workflowscheme->getID(); ?>" <?php if (TBGSettings::getCoreWorkflowScheme()->getID() == $workflowscheme->getID()) echo ' selected'; ?>><?php echo $workflowscheme->getName(); ?></option>
+									<?php endforeach; ?>
+								</select><br>
+								<label class="optional" for="add_project_issuetype_scheme"><?php echo __('Issue type scheme'); ?></label>
+								<select name="issuetype_scheme_id" id="add_project_issuetype_scheme">
+									<?php foreach (TBGIssuetypeScheme::getAll() as $issuetypescheme): ?>
+										<option value="<?php echo $issuetypescheme->getID(); ?>" <?php if (TBGSettings::getCoreIssuetypeScheme()->getID() == $issuetypescheme->getID()) echo ' selected'; ?>><?php echo $issuetypescheme->getName(); ?></option>
+									<?php endforeach; ?>
+								</select>
 							</div>
 						</form>
 					</div>

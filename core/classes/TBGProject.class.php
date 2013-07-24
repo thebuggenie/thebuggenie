@@ -709,8 +709,8 @@
 			}
 			if ($is_new)
 			{
-				$this->setIssuetypeScheme(TBGSettings::getCoreIssuetypeScheme());
-				$this->setWorkflowScheme(TBGSettings::getCoreWorkflowScheme());
+				if (!$this->_issuetype_scheme_id) $this->setIssuetypeScheme(TBGSettings::getCoreIssuetypeScheme());
+				if (!$this->_workflow_scheme_id) $this->setWorkflowScheme(TBGSettings::getCoreWorkflowScheme());
 			}
 		}
 
@@ -2573,7 +2573,12 @@
 
 			return $this->_workflow_scheme_id;
 		}
-		
+
+		public function setWorkflowSchemeID($scheme_id)
+		{
+			$this->_workflow_scheme_id = $scheme_id;
+		}
+
 		public function setWorkflowScheme(TBGWorkflowScheme $scheme)
 		{
 			$this->_workflow_scheme_id = $scheme;
@@ -2600,6 +2605,11 @@
 		public function setIssuetypeScheme(TBGIssuetypeScheme $scheme)
 		{
 			$this->_issuetype_scheme_id = $scheme;
+		}
+
+		public function setIssuetypeSchemeID($scheme_id)
+		{
+			$this->_issuetype_scheme_id = $scheme_id;
 		}
 
 		/**
