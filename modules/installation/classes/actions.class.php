@@ -603,8 +603,9 @@
 			TBGIssuesTable::getTable()->upgrade(TBGIssuesTable3dot2::getTable());
 			TBGWorkflowsTable::getTable()->upgrade(TBGWorkflowsTable3dot2::getTable());
 			TBGIncomingEmailAccountTable::getTable()->upgrade(TBGIncomingEmailAccountTable3dot2::getTable());
+			TBGIssueSpentTimesTable::getTable()->upgrade(TBGIssueSpentTimesTable3dot2::getTable());
 			TBGUserArticlesTable::getTable()->create();
-			
+
 			$transaction = \b2db\Core::startTransaction();
 			// Add new settings.
 			TBGSettings::saveSetting(TBGSettings::SETTING_SERVER_TIMEZONE, 'core', date_default_timezone_get(), 0, 1);
@@ -625,6 +626,8 @@
 				$transition->save();
 				$workflow->setInitialTransition($transition);
 				$workflow->save();
+				$scope = TBGScopesTable::getTable()->selectById((int) $scope_id);
+				TBGActivityType::loadFixtures($scope);
 			}
 			$transaction->commitAndEnd();
 			

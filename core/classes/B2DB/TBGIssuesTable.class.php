@@ -1013,4 +1013,12 @@
 			return $this->selectOne($crit);
 		}
 
+		public function fixHours($issue_id)
+		{
+			$times = TBGIssueSpentTimesTable::getTable()->getSpentTimeSumsByIssueId($issue_id);
+			$crit = $this->getCriteria();
+			$crit->addUpdate(self::SPENT_HOURS, $times['hours']);
+			$this->doUpdate($crit);
+		}
+
 	}

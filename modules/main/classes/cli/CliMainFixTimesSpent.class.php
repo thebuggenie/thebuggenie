@@ -34,7 +34,7 @@
 			else
 			{
 				$this->cliEcho("Finding times to fix\n", 'white', 'bold');
-				$issuetimes = TBGIssueSpentTimes::getTable()->getAllSpentTimesForFixing();
+				$issuetimes = TBGIssueSpentTimesTable::getTable()->getAllSpentTimesForFixing();
 				$error_issues = array();
 				foreach ($issuetimes as $issue_id => $times)
 				{
@@ -44,25 +44,34 @@
 						$prev_times = array('hours' => 0, 'days' => 0, 'weeks' => 0, 'months' => 0, 'points' => 0);
 						foreach ($times as $k => $row)
 						{
-							if ($row[TBGIssueSpentTimes::SPENT_DAYS] < $prev_times['days'] ||
-								$row[TBGIssueSpentTimes::SPENT_HOURS] < $prev_times['hours'] ||
-								$row[TBGIssueSpentTimes::SPENT_WEEKS] < $prev_times['weeks'] ||
-								$row[TBGIssueSpentTimes::SPENT_MONTHS] < $prev_times['months'] ||
-								$row[TBGIssueSpentTimes::SPENT_POINTS] < $prev_times['points'])
+							if ($row[TBGIssueSpentTimesTable::SPENT_DAYS] < $prev_times['days'] ||
+								$row[TBGIssueSpentTimesTable::SPENT_HOURS] < $prev_times['hours'] ||
+								$row[TBGIssueSpentTimesTable::SPENT_WEEKS] < $prev_times['weeks'] ||
+								$row[TBGIssueSpentTimesTable::SPENT_MONTHS] < $prev_times['months'] ||
+								$row[TBGIssueSpentTimesTable::SPENT_POINTS] < $prev_times['points'])
 							{
 								$error_issues[] = $issue_id;
 							}
 							else
 							{
-								TBGIssueSpentTimes::getTable()->fixRow($row, $prev_times);
-								$prev_times['points'] += $row[TBGIssueSpentTimes::SPENT_POINTS];
-								$prev_times['hours'] += $row[TBGIssueSpentTimes::SPENT_HOURS];
-								$prev_times['days'] += $row[TBGIssueSpentTimes::SPENT_DAYS];
-								$prev_times['weeks'] += $row[TBGIssueSpentTimes::SPENT_WEEKS];
-								$prev_times['months'] += $row[TBGIssueSpentTimes::SPENT_MONTHS];
+								TBGIssueSpentTimesTable::getTable()->fixRow($row, $prev_times);
+								$prev_times['points'] += $row[TBGIssueSpentTimesTable::SPENT_POINTS];
+								$prev_times['hours'] += $row[TBGIssueSpentTimesTable::SPENT_HOURS];
+								$prev_times['days'] += $row[TBGIssueSpentTimesTable::SPENT_DAYS];
+								$prev_times['weeks'] += $row[TBGIssueSpentTimesTable::SPENT_WEEKS];
+								$prev_times['months'] += $row[TBGIssueSpentTimesTable::SPENT_MONTHS];
 							}
 						}
 					}
+
+				}
+				foreach (TBGIssueSpentTimesTable::getTable()->getAllSpentTimesForFixing() as $issue_id => $times)
+				{
+					foreach ($times as $row)
+					{
+						TBGIssueSpentTimesTable::getTable()->fixHours($row);
+					}
+					TBGIssuesTable::getTable()->fixHours($issue_id);
 				}
 				if (count($error_issues) > 0)
 				{

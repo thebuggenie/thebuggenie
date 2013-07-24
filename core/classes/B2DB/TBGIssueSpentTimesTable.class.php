@@ -165,6 +165,15 @@
 			$this->doUpdateById($crit, $row[self::ID]);
 		}
 
+		public function fixHours($row)
+		{
+			if ($row[self::SPENT_HOURS] == 0) return;
+
+			$crit = $this->getCriteria();
+			$crit->addUpdate(self::SPENT_HOURS, $row[self::SPENT_HOURS] * 100);
+			$this->doUpdateById($crit, $row[self::ID]);
+		}
+
 		public function getSpentTimeSumsByIssueId($issue_id)
 		{
 			$crit = $this->getCriteria();

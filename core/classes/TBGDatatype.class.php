@@ -83,6 +83,7 @@
 			TBGSeverity::loadFixtures($scope);
 			TBGStatus::loadFixtures($scope);
 			TBGRole::loadFixtures($scope);
+			TBGActivityType::loadFixtures($scope);
 			foreach (self::getTypes() as $type => $class)
 			{
 				TBGContext::setPermission('set_datatype_'.$type, 0, 'core', 0, 0, 0, true, $scope->getID());
