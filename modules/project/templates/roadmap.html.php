@@ -13,6 +13,11 @@
 					<?php foreach ($milestones as $milestone): ?>
 						<div class="roadmap_milestone" id="roadmap_milestone_<?php echo $milestone->getID(); ?>">
 							<div class="roadmap_header">
+								<div class="button-group" style="float: right; margin-right: 0;">
+									<?php echo javascript_link_tag(image_tag('view_list_details.png', array('title' => __('Show issues'))), array('onclick' => "TBG.Project.Milestone.toggle('".make_url('project_roadmap_milestone_issues', array('project_key' => $selected_project->getKey(), 'milestone_id' => $milestone->getID()))."', ".$milestone->getID().");", 'class' => 'button-icon button button-silver')); ?>
+									<?php echo javascript_link_tag(image_tag('refresh.png', array('title' => __('Update (regenerate) milestone details'))), array('onclick' => "TBG.Project.Milestone.refresh('".make_url('project_roadmap_milestone_refresh', array('project_key' => $selected_project->getKey(), 'milestone_id' => $milestone->getID()))."', ".$milestone->getID().");", 'class' => 'button-icon button button-silver')); ?>
+									<?php echo link_tag(make_url('project_milestone_details', array('project_key' => $milestone->getProject()->getKey(), 'milestone_id' => $milestone->getID())), image_tag('show_sprint_details.png'), array('title' => __('Show milestone details'), 'class' => 'button button-icon button-silver')); ?>
+								</div>
 								<?php echo link_tag(make_url('project_milestone_details', array('project_key' => $milestone->getProject()->getKey(), 'milestone_id' => $milestone->getID())), $milestone->getName(), array('title' => __('Show milestone details'), 'style' => 'color: #555;')); ?>
 								<div class="roadmap_dates" id="milestone_<?php echo $milestone->getID(); ?>_date_string"><?php echo $milestone->getDateString(); ?></div>
 							</div>
@@ -31,11 +36,6 @@
 										<?php echo __('%num_closed% issue(s) closed of %num_assigned% assigned', array('%num_closed%' => '<b id="milestone_'.$milestone->getID().'_closed_issues">'.$milestone->countClosedIssues().'</b>', '%num_assigned%' => '<b id="milestone_'.$milestone->getID().'_assigned_issues">'.$milestone->countIssues().'</b>')); ?>
 									<?php endif; ?>
 								</div>
-							</div>
-							<div class="button-group" style="float: right; margin-right: 5px;">
-								<?php echo javascript_link_tag(image_tag('view_list_details.png', array('title' => __('Show issues'))), array('onclick' => "TBG.Project.Milestone.toggle('".make_url('project_roadmap_milestone_issues', array('project_key' => $selected_project->getKey(), 'milestone_id' => $milestone->getID()))."', ".$milestone->getID().");", 'class' => 'button-icon button button-silver')); ?>
-								<?php echo javascript_link_tag(image_tag('refresh.png', array('title' => __('Update (regenerate) milestone details'))), array('onclick' => "TBG.Project.Milestone.refresh('".make_url('project_roadmap_milestone_refresh', array('project_key' => $selected_project->getKey(), 'milestone_id' => $milestone->getID()))."', ".$milestone->getID().");", 'class' => 'button-icon button button-silver')); ?>
-								<?php echo link_tag(make_url('project_milestone_details', array('project_key' => $milestone->getProject()->getKey(), 'milestone_id' => $milestone->getID())), image_tag('show_sprint_details.png'), array('title' => __('Show milestone details'), 'class' => 'button button-icon button-silver')); ?>
 							</div>
 							<br style="clear: both;">
 							<div id="milestone_<?php echo $milestone->getID(); ?>_changed" class="milestones_indicator" style="display: none;">

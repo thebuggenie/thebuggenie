@@ -583,8 +583,8 @@
 		public function isCurrent()
 		{
 			if (!$this->isScheduled()) return false;
-			if ($this->getStartingDate() <= NOW && $this->getScheduledDate() >= NOW) return true;
-			if (!$this->isStarting() && $this->isScheduled()) return true;
+			if (($this->isStarting() && $this->getStartingDate() <= NOW) && $this->getScheduledDate() >= NOW) return true;
+			if (!$this->isStarting() && $this->isScheduled() && $this->getScheduledDate() >= NOW) return true;
 			return $this->isOverdue();
 		}
 
