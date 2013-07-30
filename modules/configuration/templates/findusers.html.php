@@ -40,8 +40,13 @@
 							</td>
 						</tr>
 					<?php endif; ?>
-					<tr id="users_results_user_<?php echo $user->getID(); ?>_permissions_row" style="display: none;">
-						<td id="users_results_user_<?php echo $user->getID(); ?>_permissions" colspan="7" class="config_permissions" style="padding-bottom: 5px;"></td>
+					<tr id="users_results_user_<?php echo $user->getID(); ?>_permissions_row" style="display: none;" class="fullpage_backdrop">
+						<td id="users_results_user_<?php echo $user->getID(); ?>_permissions_container" colspan="7" class="fullpage_backdrop_content backdrop_box large">
+							<div class="backdrop_detail_header"><?php echo __('Configure advanced permissions for %username%', array('%username%' => $user->getNameWithUsername())); ?></div>
+							<?php echo image_tag('spinning_16.gif', array('id' => 'permissions_'.$user->getID().'_indicator', 'style' => 'display: none;')); ?>
+							<div class="backdrop_detail_content config_permissions" id="users_results_user_<?php echo $user->getID(); ?>_permissions"></div>
+							<div class="backdrop_detail_footer"><?php echo javascript_link_tag(__('Close'), array('onclick' => "TBG.Config.User.getPermissionsBlock('".make_url('configure_permissions_get_configurator', array('user_id' => $user->getID(), 'base_id' => $user->getID())). "', ".$user->getID().");")); ?></div>
+						</td>
 					</tr>
 				<?php endforeach; ?>
 			</tbody>

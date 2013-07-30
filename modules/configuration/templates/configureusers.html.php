@@ -156,14 +156,9 @@
 								<label for="team_name"><?php echo __('Create a new team'); ?></label>
 								<input type="text" id="team_name" name="team_name" placeholder="<?php echo __('Enter team name here'); ?>">
 								<input type="submit" value="<?php echo __('Create'); ?>">
+								<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; margin: 3px 5px -4px;', 'id' => 'create_team_indicator')); ?>
 							</form>
 						</div>
-						<table cellpadding=0 cellspacing=0 style="display: none; margin-left: 5px; width: 300px;" id="create_team_indicator">
-							<tr>
-								<td style="width: 20px; padding: 2px;"><?php echo image_tag('spinning_20.gif'); ?></td>
-								<td style="padding: 0px; text-align: left;"><?php echo __('Adding team, please wait'); ?>...</td>
-							</tr>
-						</table>
 						<div id="teamconfig_list">
 							<?php foreach ($teams as $team): ?>
 								<?php include_template('configuration/teambox', array('team' => $team)); ?>
@@ -177,16 +172,11 @@
 									<label for="client_name"><?php echo __('Create a new client'); ?></label>
 									<input type="text" id="client_name" name="client_name" placeholder="<?php echo __('Enter client name here'); ?>">
 									<input type="submit" value="<?php echo __('Create'); ?>">
+									<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; margin: 3px 5px -4px;', 'id' => 'create_client_indicator')); ?>
 								</div>
 							</form>
 							<?php echo __('You can set other details, such as an email address or telephone number, after creating the client.'); ?>
 						</div>
-						<table cellpadding=0 cellspacing=0 style="display: none; margin-left: 5px; width: 300px;" id="create_client_indicator">
-							<tr>
-								<td style="width: 20px; padding: 2px;"><?php echo image_tag('spinning_20.gif'); ?></td>
-								<td style="padding: 0px; text-align: left;"><?php echo __('Adding client, please wait'); ?>...</td>
-							</tr>
-						</table>
 						<div id="clientconfig_list">
 							<?php foreach ($clients as $client): ?>
 								<?php include_template('configuration/clientbox', array('client' => $client)); ?>

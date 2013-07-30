@@ -64,5 +64,4 @@
 			<?php endif; ?>
 		</ul>
 	</div>
-	<?php echo javascript_link_tag(image_tag('spinning_16.gif'), array('id' => 'permissions_'.$user->getID().'_indicator', 'style' => 'display: none;')); ?>
 </td>

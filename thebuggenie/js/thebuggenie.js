@@ -2588,7 +2588,8 @@ TBG.Config.User.getPermissionsBlock = function(url, user_id) {
 				indicator: 'permissions_' + user_id + '_indicator'
 			},
 			success: {
-				update: 'users_results_user_' + user_id + '_permissions'
+				update: 'users_results_user_' + user_id + '_permissions',
+                show: 'users_results_user_' + user_id + '_permissions'
 			}
 		});
 	}
