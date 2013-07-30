@@ -14,17 +14,25 @@
 			<a href="<?php echo $project->getHomepage(); ?>" target="_blank"><?php echo __('Go to project website'); ?></a>
 		<?php endif; ?>
 		<?php if ($project->hasHomepage() && $project->hasDocumentationURL()): ?>
-		|  
+		|
 		<?php endif; ?>
 		<?php if ($project->hasDocumentationURL()): ?>
 			<a href="<?php echo $project->getDocumentationURL(); ?>" target="_blank"><?php echo __('Open documentation'); ?></a>
 		<?php endif; ?>
 	</div>
-	<nav class="button-group">
+	<nav class="button-group" style="position: relative;">
 <?php if ($tbg_user->hasPageAccess('project_dashboard', $project->getID()) || $tbg_user->hasPageAccess('project_allpages', $project->getID())) echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), __('Dashboard'), array('class' => 'button button-silver')); ?>
 <?php if ($tbg_user->canSearchForIssues() && ($tbg_user->hasPageAccess('project_issues', $project->getID()) || $tbg_user->hasPageAccess('project_allpages', $project->getID()))) echo link_tag(make_url('project_open_issues', array('project_key' => $project->getKey())), __('Issues'), array('class' => 'button button-silver')); ?>
 <?php TBGEvent::createNew('core', 'project_overview_item_links', $project)->trigger(); ?>
-<?php if (!$project->isLocked() && $tbg_user->canReportIssues($project)) echo link_tag(make_url('project_reportissue', array('project_key' => $project->getKey())), __('Report an issue'), array('class' => 'button button-green')); ?>
+<?php if (!$project->isLocked() && $tbg_user->canReportIssues($project)): ?>
+	<?php echo link_tag(make_url('project_reportissue', array('project_key' => $project->getKey())), __('Report an issue'), array('class' => 'button button-green')); ?>
+	<input type="button" class="button button-green last" onclick="$('create_issue_<?php echo $project->getID(); ?>').toggle();$(this).toggleClassName('button-pressed');TBG.Core.popupVisiblizer();" value="&#x25BC;" style="font-size: 0.9em;">
+	<ul id="create_issue_<?php echo $project->getID(); ?>" class="simple_list rounded_box white shadowed more_actions_dropdown dropdown_box popup_box" style="position: absolute; right: 0; margin-top: 25px; display: none;">
+		<?php foreach ($project->getIssuetypeScheme()->getReportableIssuetypes() as $issuetype): ?>
+			<li><?php echo link_tag(make_url('project_reportissue', array('project_key' => $project->getKey(), 'issuetype' => $issuetype->getKey())), image_tag($issuetype->getIcon() . '_tiny.png' ) . __($issuetype->getName())); ?></li>
+		<?php endforeach;?>
+	</ul>
+<?php endif; ?>
 	</nav>
 	<?php if ($project->hasChildren()): ?>
 	<div class="subprojects_list">
