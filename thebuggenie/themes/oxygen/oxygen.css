@@ -314,6 +314,10 @@ footer img { margin: 4px 3px -6px 0; }
 	left: 90%;
 }
 #search_more_actions .tooltip.rightie { right: 50px; left: auto; }
+.sc_actions .dropdown_box:before,
+.sc_actions .dropdown_box:after {
+    left: 95%;
+}
 
 /* end tooltip styling */
 
@@ -1209,7 +1213,7 @@ dd { float: left; display: block; width: 195px; font-weight: normal; margin: 0; 
 #viewissue_left_box_status { font-weight: normal; }
 #viewissue_left_box_status table tr td { font-weight: normal; }
 #viewissue_left_box_top #status_header { padding: 2px; }
-.status_badge { display: inline-block; color: rgba(0, 0, 0, 0.6); text-transform: uppercase; border: 1px solid rgba(0, 0, 0, 0.3); padding: 3px 5px; line-height: 1; border-radius: 3px; }
+.status_badge { display: inline-block; color: rgba(0, 0, 0, 0.45); text-transform: uppercase; border: 1px solid rgba(0, 0, 0, 0.2); padding: 3px 5px; line-height: 1; border-radius: 3px; }
 .more_actions_dropdown { padding: 0; position: absolute; z-index: 1000001; }
 .more_actions_dropdown li { white-space: nowrap; height: 23px; position: relative; display: block; line-height: 1.3; }
 .more_actions_dropdown li a, .more_actions_dropdown li a:hover { display: block; font-size: 0.9em; font-weight: normal; color: #333; text-decoration: none; border: 0; padding: 3px 5px; line-height: 1.3; }
