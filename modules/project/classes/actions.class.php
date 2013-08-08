@@ -517,9 +517,9 @@
 			{
 				$success = true;
 				$base_url = TBGContext::getRouting()->generate('project_statistics_image', array('project_key' => $this->selected_project->getKey(), 'key' => '%key%', 'mode' => '%mode%', 'image_number' => '%image_number%'));
-				$key = urlencode('%key%');
-				$mode = urlencode('%mode%');
-				$image_number = urlencode('%image_number%');
+				$key = '%key%';
+				$mode = '%mode%';
+				$image_number = '%image_number%';
 				$set = $request['set'];
 				if ($set != 'issues_per_state')
 				{
@@ -550,6 +550,7 @@
 			$i18n = TBGContext::getI18n();
 			$labels = array();
 			$values = array();
+			$colors = array();
 			foreach ($counts as $item_id => $details)
 			{
 				if ($this->image_number == 1)
@@ -592,6 +593,8 @@
 						if ($this->key != 'issues_per_state')
 						{
 							$labels[] = ($item instanceof TBGDatatype) ? html_entity_decode($item->getName()) : $i18n->__('Unknown', array(), true);
+							TBGContext::loadLibrary('common');
+							if ($item instanceof TBGStatus) $colors[] = tbg_hex_to_rgb($item->getColor());
 						}
 						else
 						{
@@ -606,7 +609,7 @@
 				}
 			}
 
-			return array($values, $labels);
+			return array($values, $labels, $colors);
 		}
 
 		protected function _generateImageDetailsFromKey($mode = null)
@@ -717,9 +720,10 @@
 					throw new Exception(__("unknown key '%key%'", array('%key%' => $this->key)));
 			}
 			$this->title = html_entity_decode($this->title);
-			list ($values, $labels) = $this->_calculateImageDetails($counts);
+			list ($values, $labels, $colors) = $this->_calculateImageDetails($counts);
 			$this->values = $values;
 			$this->labels = $labels;
+			$this->colors = $colors;
 		}
 
 		public function runStatisticsGetImage(TBGRequest $request)

@@ -452,3 +452,27 @@
 	{
 		return TBGI18n::getTimezones();
 	}
+
+	function tbg_hex_to_rgb($hex)
+	{
+		$hex = preg_replace("/[^0-9A-Fa-f]/", '', $hex);
+		$rgb = array();
+		if (strlen($hex) == 6)
+		{
+			$color = hexdec($hex);
+			$rgb['r'] = 0xFF & ($color >> 0x10);
+			$rgb['g'] = 0xFF & ($color >> 0x8);
+			$rgb['b'] = 0xFF & $color;
+		}
+		elseif (strlen($hex) == 3)
+		{
+			$rgb['r'] = hexdec(str_repeat(substr($hex, 0, 1), 2));
+			$rgb['g'] = hexdec(str_repeat(substr($hex, 1, 1), 2));
+			$rgb['b'] = hexdec(str_repeat(substr($hex, 2, 1), 2));
+		}
+		else
+		{
+			return false; //Invalid hex color code
+		}
+		return $rgb;
+	}

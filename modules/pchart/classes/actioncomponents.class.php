@@ -124,6 +124,10 @@
 
 			$Test->drawFilledRoundedRectangle(2, 2, $this->width - 3, $this->height - 3, 5, 240, 240, 240);
 			$Test->drawRoundedRectangle(0, 0, $this->width - 1, $this->height - 1, 5, 230, 230, 230);
+			foreach ($this->colors as $id => $color)
+			{
+				$Test->setColorPalette($id, $color['r'], $color['g'], $color['b']);
+			}
 
 			if ($this->height > 200 && $this->width > 250)
 			{
