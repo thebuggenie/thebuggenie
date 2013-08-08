@@ -21,13 +21,13 @@
 			<thead>
 				<tr>
 					<?php if (!$tbg_user->isGuest()): ?>
-						<th class="nosort" style="width: 20px; padding: 1px !important;"><input type="checkbox" onclick="TBG.Search.toggleCheckboxes(this);"></th>
+						<th class="nosort sca_action_selector" style="width: 20px; padding: 1px !important;"><input type="checkbox" onclick="TBG.Search.toggleCheckboxes(this);"></th>
 					<?php endif; ?>
 					<?php if (!TBGContext::isProjectContext() && $show_project == true): ?>
 						<th style="padding-left: 3px;"><?php echo __('Project'); ?></th>
 					<?php endif; ?>
 					<th class="sc_issuetype"<?php if (!in_array('issuetype', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Issue type'); ?></th>
-					<th><span class="sc_title"<?php if (!in_array('title', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Issue'); ?></span></th>
+					<th class="sc_title_container"><span class="sc_title"<?php if (!in_array('title', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Issue'); ?></span></th>
 					<th class="sc_assigned_to"<?php if (!in_array('assigned_to', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Assigned to'); ?></th>
 					<th class="sc_status"<?php if (!in_array('status', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Status'); ?></th>
 					<th class="sc_resolution"<?php if (!in_array('resolution', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Resolution'); ?></th>
@@ -49,7 +49,7 @@
 	<?php endif; ?>
 				<tr class="<?php if ($issue->isClosed()): ?> closed<?php endif; ?><?php if ($issue->hasUnsavedChanges()): ?> changed<?php endif; ?><?php if ($issue->isBlocking()): ?> blocking<?php endif; ?> priority_<?php echo ($issue->getPriority() instanceof TBGPriority) ? $issue->getPriority()->getValue() : 0; ?>" id="issue_<?php echo $issue->getID(); ?>">
 					<?php if (!$tbg_user->isGuest()): ?>
-						<td style="padding: 2px;">
+						<td class="sca_actions" style="padding: 2px;">
 							<?php if ($issue->isWorkflowTransitionsAvailable()): ?>
 								<input type="checkbox" name="update_issue[<?php echo $issue->getID(); ?>]" onclick="TBG.Search.toggleCheckbox(this);" value="<?php echo $issue->getID(); ?>">
 							<?php endif; ?>
@@ -62,15 +62,18 @@
 						<?php echo image_tag((($issue->hasIssueType()) ? $issue->getIssueType()->getIcon() : 'icon_unknown') . '_tiny.png', array('title' => (($issue->hasIssueType()) ? $issue->getIssueType()->getName() : __('Unknown issuetype')))); ?>
 						<?php echo ($issue->hasIssueType()) ? $issue->getIssueType()->getName() : __('Unknown issuetype'); ?>
 					</td>
-					<td class="result_issue"<?php if (TBGContext::isProjectContext()): ?> style="padding-left: 3px;"<?php endif; ?>>
-						<?php if ($issue->countFiles()): ?>
-							<?php echo image_tag('icon_attached_information.png', array('style' => 'float: left; margin-right: 3px;', 'title' => __('This issue has %num% attachments', array('%num%' => $issue->countFiles())))); ?>
-						<?php endif; ?>
-						<?php if ($issue->isLocked()): ?>
-							<?php echo image_tag('icon_locked.png', array('style' => 'float: left; margin-right: 3px;', 'title' => __('Access to this issue is restricted'))); ?>
-						<?php endif; ?>
+					<td class="result_issue">
 						<?php $title_visible = (in_array('title', $visible_columns)) ? '' : ' style="display: none;'; ?>
-						<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), '<span class="issue_no">' . $issue->getFormattedIssueNo(true) . '</span><span class="issue_title sc_title"'.$title_visible.'> - ' . $issue->getTitle() . '</span>', array('class' => 'issue_link')); ?>
+						<a class="issue_link" href="<?php echo make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())); ?>">
+							<?php if ($issue->countFiles()): ?>
+								<?php echo image_tag('icon_attached_information.png', array('title' => __('This issue has %num% attachments', array('%num%' => $issue->countFiles())))); ?>
+							<?php endif; ?>
+							<?php if ($issue->isLocked()): ?>
+								<?php echo image_tag('icon_locked.png', array('title' => __('Access to this issue is restricted'))); ?>
+							<?php endif; ?>
+							<span class="issue_no"><?php echo $issue->getFormattedIssueNo(true); ?></span><span class="issue_state <?php echo $issue->isClosed() ? 'closed' : 'open'; ?>"><?php echo $issue->isClosed() ? __('Closed') : __('Open'); ?></span>
+							<span class="issue_title sc_title"<?php echo $title_visible; ?>><span class="sc_dash"> - </span><?php echo $issue->getTitle(); ?></span>
+						</a>
 					</td>
 					<td class="sc_assigned_to<?php if (!$issue->isAssigned()): ?> faded_out<?php endif; ?>"<?php if (!in_array('assigned_to', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
 						<?php if ($issue->isAssigned()): ?>
@@ -85,12 +88,7 @@
 					</td>
 					<td class="sc_status<?php if (!$issue->getStatus() instanceof TBGDatatype): ?> faded_out<?php endif; ?>"<?php if (!in_array('status', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
 						<?php if ($issue->getStatus() instanceof TBGDatatype): ?>
-							<table style="table-layout: auto; width: auto;" cellpadding=0 cellspacing=0>
-								<tr>
-									<td style="width: 12px; height: 12px;"><div class="sc_status_color" style="border: 1px solid rgba(0, 0, 0, 0.2); background-color: <?php echo ($issue->getStatus() instanceof TBGDatatype) ? $issue->getStatus()->getColor() : '#FFF'; ?>; font-size: 1px; width: 11px; height: 11px; margin-right: 2px;">&nbsp;</div></td>
-									<td class="sc_status_name" style="padding-left: 0px; font-size: 1em;"><?php echo $issue->getStatus()->getName(); ?></td>
-								</tr>
-							</table>
+							<div class="sc_status_color status_badge" style="background-color: <?php echo ($issue->getStatus() instanceof TBGDatatype) ? $issue->getStatus()->getColor() : '#FFF'; ?>;"><span class="sc_status_name"><?php echo $issue->getStatus()->getName(); ?></span></div>
 						<?php else: ?>
 							-
 						<?php endif; ?>

@@ -46,6 +46,7 @@
 		</div>
 		<div class="commentbody article" id="comment_<?php echo $comment->getID(); ?>_body">
 			<?php echo tbg_parse_text($comment->getContent(), false, null, $options); ?>
+			<br style="clear: both;">
 			<?php if ($comment->hasAssociatedChanges()): ?><br>
 			<br>
 			<strong><?php echo __('Changes: %list_of_changes%', array('%list_of_changes%' => '')); ?></strong><br>

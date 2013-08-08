@@ -1,5 +1,5 @@
 <li<?php if ($selected_tab == 'wiki'): ?> class="selected"<?php endif; ?>>
-	<div>
+	<div class="menuitem_container">
 		<?php if (!isset($wiki_url)): ?>
 			<?php echo link_tag(((isset($project_url)) ? $project_url : $url), image_tag('tab_publish.png', array(), false, 'publish') . TBGContext::getModule('publish')->getMenuTitle()); ?>
 		<?php else: ?>

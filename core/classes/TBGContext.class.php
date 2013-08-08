@@ -2311,6 +2311,13 @@
 						// Check to see if we have a translated version of the template
 						if (($templateName = self::getI18n()->hasTranslatedTemplate(self::getResponse()->getTemplate())) === false)
 						{
+							// Check to see if any modules provide an alternate template
+							$event = TBGEvent::createNew('core', "TBGContext::performAction::renderTemplate")->triggerUntilProcessed(array('class' => $actionClassName, 'action' => $actionToRunName));
+							if ($event->isProcessed())
+							{
+								$templateName = $event->getReturnValue();
+							}
+
 							// Check to see if the template has been changed, and whether it's in a
 							// different module, specified by "module/templatename"
 							if (mb_strpos(self::getResponse()->getTemplate(), '/'))

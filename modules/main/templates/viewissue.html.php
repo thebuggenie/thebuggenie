@@ -19,7 +19,7 @@
 			<?php echo __('Please wait while updating issue type'); ?>...
 		</div>
 	</div>
-	<div style="width: auto; text-align: left; padding: 5px 5px 50px 5px; margin: 0;" id="issue_<?php echo $issue->getID(); ?>" class="<?php if ($issue->isBlocking()) echo ' blocking'; ?>">
+	<div id="issue_<?php echo $issue->getID(); ?>" class="viewissue_container <?php if ($issue->isBlocking()) echo ' blocking'; ?>">
 		<div id="viewissue_header_container">
 			<table cellpadding=0 cellspacing=0 class="title_area">
 				<tr>
@@ -312,7 +312,7 @@
 		</div>
 		<div id="viewissue_left_box_top">
 			<div id="issue_view">
-				<div id="issue_details">
+				<div id="issue_details" data-resizable>
 					<div class="collapser_link" onclick="$('issue_details').toggleClassName('collapsed');TBG.Core._resizeWatcher();">
 						<a href="javascript:void(0);" class="image">
 							<?php echo image_tag('sidebar_collapse.png', array('class' => 'collapser')); ?>
@@ -388,11 +388,11 @@
 		<?php TBGEvent::createNew('core', 'viewissue_before_tabs', $issue)->trigger(); ?>
 		<div style="clear: both; height: 30px; margin: 20px 5px 0 5px;" class="tab_menu inset">
 			<ul id="viewissue_menu">
-				<li id="tab_comments" class="selected"><?php echo javascript_link_tag(image_tag('viewissue_tab_comments.png') . __('Comments (%count%)', array('%count%' => '<span id="viewissue_comment_count">'.$issue->getCommentCount().'</span>')), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_comments', 'viewissue_menu');")); ?></li>
-				<li id="tab_affected"><?php echo javascript_link_tag(image_tag('viewissue_tab_affected.png') . __('Affects (%count%)', array('%count%' => '<span id="viewissue_affects_count">'.$affected_count.'</span>')), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_affected', 'viewissue_menu');")); ?></li>
-				<li id="tab_duplicate_issues"><?php echo javascript_link_tag(image_tag('viewissue_tab_duplicate.png') . __('Duplicates (%count%)', array('%count%' => '<span id="viewissue_duplicate_issues_count">'.(count($issue->getDuplicateIssues())).'</span>')), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_duplicate_issues', 'viewissue_menu');")); ?></li>
+				<li id="tab_comments" class="selected"><?php echo javascript_link_tag(image_tag('viewissue_tab_comments.png') . '<span>'.__('Comments (%count%)', array('%count%' => '</span><span id="viewissue_comment_count" class="tab_count">'.$issue->getCommentCount().'</span>')), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_comments', 'viewissue_menu');")); ?></li>
+				<li id="tab_affected"><?php echo javascript_link_tag(image_tag('viewissue_tab_affected.png') . '<span>'.__('Affects (%count%)', array('%count%' => '</span><span id="viewissue_affects_count" class="tab_count">'.$affected_count.'</span>')), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_affected', 'viewissue_menu');")); ?></li>
+				<li id="tab_duplicate_issues"><?php echo javascript_link_tag(image_tag('viewissue_tab_duplicate.png') . '<span>'.__('Duplicates (%count%)', array('%count%' => '</span><span id="viewissue_duplicate_issues_count" class="tab_count">'.(count($issue->getDuplicateIssues())).'</span>')), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_duplicate_issues', 'viewissue_menu');")); ?></li>
 				<?php TBGEvent::createNew('core', 'viewissue_tabs', $issue)->trigger(); ?>
-				<li id="tab_log"><?php echo javascript_link_tag(image_tag('viewissue_tab_log.png') . __('History'), array('onclick' => "TBG.Issues.showLog('".make_url('issue_log', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID()))."');")); ?></li>
+				<li id="tab_log"><?php echo javascript_link_tag(image_tag('viewissue_tab_log.png') . '<span>'.__('History'), array('onclick' => "TBG.Issues.showLog('".make_url('issue_log', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID()))."');")).'</span>'; ?></li>
 			</ul>
 		</div>
 		<div id="viewissue_menu_panes">

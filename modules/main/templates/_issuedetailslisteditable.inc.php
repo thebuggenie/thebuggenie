@@ -2,7 +2,7 @@
 <fieldset>
 	<legend onclick="$('issue_details_fieldslist_basics').toggle();"><?php echo __('Issue basics'); ?></legend>
 	<ul class="issue_details simple_list" id="issue_details_fieldslist_basics">
-		<li id="issuetype_field" class="issue_detail_field <?php if ($issue->isIssuetypeChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isIssuetypeMerged()): ?> issue_detail_unmerged<?php endif; ?>">
+		<li id="issuetype_field" class="issue_detail_field primary <?php if ($issue->isIssuetypeChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isIssuetypeMerged()): ?> issue_detail_unmerged<?php endif; ?>">
 			<dl class="viewissue_list">
 				<dt id="issuetype_header">
 					<?php echo __('Type of issue'); ?>
@@ -36,7 +36,7 @@
 				</div>
 			<?php endif; ?>
 		</li>
-		<li id="posted_at_field" class="issue_detail_field">
+		<li id="posted_at_field" class="issue_detail_field primary">
 			<dl class="viewissue_list">
 				<dt id="posted_at_header">
 					<?php echo __('Posted at'); ?>
@@ -60,7 +60,7 @@
 		<?php include_template('main/issuedetailslistfield', array('field' => 'category', 'info' => $field, 'issue' => $issue)); ?>
 		<?php $field = $fields_list['milestone']; unset($fields_list['milestone']); ?>
 		<?php include_template('main/issuedetailslistfield', array('field' => 'milestone', 'info' => $field, 'issue' => $issue)); ?>
-		<li id="status_field" class="issue_detail_field <?php if ($issue->isStatusChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isStatusMerged()): ?> issue_detail_unmerged<?php endif; ?>">
+		<li id="status_field" class="issue_detail_field primary <?php if ($issue->isStatusChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isStatusMerged()): ?> issue_detail_unmerged<?php endif; ?>">
 			<dl class="viewissue_list">
 				<dt id="status_header">
 					<?php echo __('Status'); ?>
@@ -72,8 +72,9 @@
 						<a href="javascript:void(0);" onclick="if ($('status_change').visible()) { $$('div.dropdown_box').each(Element.hide); } else { $$('div.dropdown_box').each(Element.hide); $('status_change').toggle(); }" title="<?php echo __('Click to change status'); ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
 					<?php endif; ?>
 					<div style="display: inline-block; float: left; width: auto;<?php if (!$issue->getStatus() instanceof TBGDatatype): ?> display: none;<?php endif; ?>" id="status_table">
-						<div style="display: inline-block; float: left; border: 1px solid rgba(0, 0, 0, 0.3); background-color: <?php echo ($issue->getStatus() instanceof TBGDatatype) ? $issue->getStatus()->getColor() : '#FFF'; ?>; font-size: 1px; width: 15px; height: 15px; margin-right: 5px;" id="status_<?php echo $issue->getID(); ?>_color">&nbsp;</div>
-						<span id="status_content"><?php if ($issue->getStatus() instanceof TBGDatatype) echo __($issue->getStatus()->getName()); ?></span>
+						<div class="status_badge" style="background-color: <?php echo ($issue->getStatus() instanceof TBGDatatype) ? $issue->getStatus()->getColor() : '#FFF'; ?>;" id="status_<?php echo $issue->getID(); ?>_color">
+							<span id="status_content"><?php if ($issue->getStatus() instanceof TBGDatatype) echo __($issue->getStatus()->getName()); ?></span>
+						</div>
 					</div>
 					<span class="faded_out" id="no_status"<?php if ($issue->getStatus() instanceof TBGDatatype): ?> style="display: none;"<?php endif; ?>><?php echo __('Status not determined'); ?></span>
 				</dd>
@@ -306,7 +307,7 @@
 																		'classes'			=> 'dropdown_box')); ?>
 			<?php endif; ?>
 		</li>
-		<li id="assigned_to_field" class="issue_detail_field<?php if ($issue->isAssigneeChanged()): ?> issue_detail_changed<?php endif; ?><?php if (!$issue->isAssigneeMerged()): ?> issue_detail_unmerged<?php endif; ?>">
+		<li id="assigned_to_field" class="issue_detail_field primary<?php if ($issue->isAssigneeChanged()): ?> issue_detail_changed<?php endif; ?><?php if (!$issue->isAssigneeMerged()): ?> issue_detail_unmerged<?php endif; ?>">
 			<dl class="viewissue_list">
 				<dt id="assigned_to_header"><?php echo __('Assigned to'); ?></dt>
 				<dd id="assigned_to_content" class="<?php if ($issue->isAssigneeChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isAssigneeMerged()): ?> issue_detail_unmerged<?php endif; ?>">

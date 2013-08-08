@@ -41,7 +41,7 @@
 <table style="width: 100%; height: 100%;" cellpadding="0" cellspacing="0">
 	<tr>
 		<?php include_component('search/sidebar', array('hide' => ($show_results && $resultcount))); ?>
-		<td style="width: auto; padding: 5px; vertical-align: top;" id="find_issues">
+		<td id="find_issues">
 			<?php if ($search_error !== null): ?>
 				<div class="redbox" style="margin: 0; vertical-align: middle;" id="search_error">
 					<div class="header"><?php echo $search_error; ?></div>

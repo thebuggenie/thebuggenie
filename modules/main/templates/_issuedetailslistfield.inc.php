@@ -1,4 +1,9 @@
-<li id="<?php echo $field; ?>_field" class="issue_detail_field<?php if (!$info['merged']): ?> issue_detail_unmerged<?php elseif ($info['changed']): ?> issue_detail_changed<?php endif; ?>"<?php if (!$info['visible']): ?> style="display: none;"<?php endif; ?>>
+<?php
+
+	if (in_array($field, array('priority'))) $primary = true;
+
+?>
+<li id="<?php echo $field; ?>_field" class="issue_detail_field <?php echo (isset($primary)) ? ' primary ' : ' secondary '; ?> <?php if (!$info['merged']): ?> issue_detail_unmerged<?php elseif ($info['changed']): ?> issue_detail_changed<?php endif; ?>"<?php if (!$info['visible']): ?> style="display: none;"<?php endif; ?>>
 	<dl class="viewissue_list">
 		<dt id="<?php echo $field; ?>_header">
 			<?php echo $info['title']; ?>

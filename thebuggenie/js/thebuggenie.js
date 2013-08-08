@@ -193,7 +193,7 @@ TBG.Core._resizeWatcher = function() {
 			item.setStyle({width: element_width + 'px'});
 		});
 	}
-	if ($('issue_details')) {
+	if ($('issue_details') && $('issue_details').dataset.resizable == true) {
 		var id = $('issue_details');
 		var vlbtl = $('viewissue_left_box_top').getLayout();
 		var vlbt_width = vlbtl.get('width') - vlbtl.get('padding-left') - vlbtl.get('padding-right') - vlbtl.get('margin-left') - vlbtl.get('margin-right');

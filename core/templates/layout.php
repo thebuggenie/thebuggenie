@@ -103,28 +103,21 @@
 		  <![endif]-->
 		<?php TBGEvent::createNew('core', 'header_ends')->trigger(); ?>
 	</head>
-	<body>
+	<body id="body">
 		<?php require THEBUGGENIE_CORE_PATH . 'templates/backdrops.inc.php'; ?>
-		<table style="width: 100%; height: 100%; table-layout: fixed; min-width: 1020px;" cellpadding=0 cellspacing=0>
-			<tr>
-				<td style="height: auto; overflow: hidden;" valign="top" id="maintd">
-					<?php TBGLogging::log('Rendering header'); ?>
-					<?php require THEBUGGENIE_CORE_PATH . 'templates/headertop.inc.php'; ?>
-					<?php TBGLogging::log('done (rendering header)'); ?>
-					<?php if (!TBGSettings::isMaintenanceModeEnabled()) require THEBUGGENIE_CORE_PATH . 'templates/submenu.inc.php'; ?>
-					<?php TBGLogging::log('Rendering content'); ?>
-					<?php echo $content; ?>
-					<?php TBGLogging::log('done (rendering content)'); ?>
-				</td>
-			</tr>
-			<tr>
-				<td class="footer_bar">
-					<?php TBGEvent::createNew('core', 'footer_begin')->trigger(); ?>
-					<?php require THEBUGGENIE_CORE_PATH . 'templates/footer.inc.php'; ?>
-					<?php TBGEvent::createNew('core', 'footer_end')->trigger(); ?>
-				</td>
-			</tr>
-		</table>
+		<div id="main_container">
+			<?php TBGLogging::log('Rendering header'); ?>
+			<?php require THEBUGGENIE_CORE_PATH . 'templates/headertop.inc.php'; ?>
+			<?php TBGLogging::log('done (rendering header)'); ?>
+			<div id="content_container">
+				<?php TBGLogging::log('Rendering content'); ?>
+				<?php echo $content; ?>
+				<?php TBGLogging::log('done (rendering content)'); ?>
+			</div>
+			<?php TBGEvent::createNew('core', 'footer_begin')->trigger(); ?>
+			<?php require THEBUGGENIE_CORE_PATH . 'templates/footer.inc.php'; ?>
+			<?php TBGEvent::createNew('core', 'footer_end')->trigger(); ?>
+		</div>
 		<script type="text/javascript">
 			document.observe('dom:loaded', function() {
 				var f_init = function() {TBG.initialize({ basepath: '<?php echo TBGContext::getTBGPath(); ?>', autocompleter_url: '<?php echo (TBGContext::isProjectContext()) ? make_url('project_quicksearch', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('quicksearch'); ?>'})};
