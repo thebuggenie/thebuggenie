@@ -97,10 +97,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::PROJECT, $project_id);
-			$crit->addOrderBy(self::VERSION_MAJOR, Criteria::SORT_DESC);
-			$crit->addOrderBy(self::VERSION_MINOR, Criteria::SORT_DESC);
-			$crit->addOrderBy(self::VERSION_REVISION, Criteria::SORT_DESC);
-			$crit->addOrderBy(self::NAME);
+			$crit->addOrderBy(self::RELEASE_DATE, Criteria::SORT_DESC);
 			return $this->select($crit);
 		}
 
@@ -115,10 +112,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::EDITION, $edition_id);
-			$crit->addOrderBy(self::VERSION_MAJOR, Criteria::SORT_DESC);
-			$crit->addOrderBy(self::VERSION_MINOR, Criteria::SORT_DESC);
-			$crit->addOrderBy(self::VERSION_REVISION, Criteria::SORT_DESC);
-			$crit->addOrderBy(self::NAME);
+			$crit->addOrderBy(self::RELEASE_DATE, Criteria::SORT_DESC);
 			$res = $this->doSelect($crit);
 			
 			return $res;
