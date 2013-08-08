@@ -100,6 +100,7 @@
 			$crit->addOrderBy(self::VERSION_MAJOR, Criteria::SORT_DESC);
 			$crit->addOrderBy(self::VERSION_MINOR, Criteria::SORT_DESC);
 			$crit->addOrderBy(self::VERSION_REVISION, Criteria::SORT_DESC);
+			$crit->addOrderBy(self::NAME);
 			return $this->select($crit);
 		}
 
@@ -117,6 +118,7 @@
 			$crit->addOrderBy(self::VERSION_MAJOR, Criteria::SORT_DESC);
 			$crit->addOrderBy(self::VERSION_MINOR, Criteria::SORT_DESC);
 			$crit->addOrderBy(self::VERSION_REVISION, Criteria::SORT_DESC);
+			$crit->addOrderBy(self::NAME);
 			$res = $this->doSelect($crit);
 			
 			return $res;
