@@ -33,6 +33,8 @@
 		
 		protected $_has_config_settings = true;
 
+		protected $_user_header = 'REMOTE_USER';
+
 		/**
 		 * Return an instance of this module
 		 *
@@ -74,7 +76,7 @@
 
 		public function postConfigSettings(TBGRequest $request)
 		{
-			$settings = array('hostname', 'u_type', 'g_type', 'b_dn', 'groups', 'dn_attr', 'u_attr', 'g_attr', 'e_attr', 'f_attr', 'g_dn', 'control_user', 'control_pass');
+			$settings = array('hostname', 'u_type', 'g_type', 'b_dn', 'groups', 'dn_attr', 'u_attr', 'g_attr', 'e_attr', 'f_attr', 'g_dn', 'control_user', 'control_pass', 'integrated_auth');
 			foreach ($settings as $setting)
 			{
 				if (($setting == 'u_type' || $setting == 'g_type' || $setting == 'dn_attr') && $request->getParameter($setting) == '')
@@ -91,6 +93,10 @@
 					{
 						$this->saveSetting($setting, 'entrydn');
 					}
+				}
+				elseif ($setting == 'integrated_auth') 
+				{
+					$this->saveSetting($setting, $request->getParameter($setting, 0));
 				}
 				else
 				{
@@ -158,6 +164,8 @@
 			$group_class = TBGContext::getModule('auth_ldap')->getSetting('g_type');
 			
 			$email = null;
+
+			$integrated_auth = $this->getSetting('integrated_auth');
 			
 			/*
 			 * Do the LDAP check here.
@@ -313,13 +321,14 @@
 				}
 				
 				/*
-				 * If we are performing a login, now bind to the user and see if the credentials
+				 * If we are performing a non integrated authentication login, 
+				 * now bind to the user and see if the credentials
 				 * are valid. We bind using the full DN of the user, so no need for DOMAIN\ stuff
 				 * on Windows, and more importantly it fixes other servers.
 				 * 
 				 * If the bind fails (exception), we throw a nicer exception and don't continue.
 				 */
-				if ($mode == 1)
+				if ($mode == 1 && !$integrated_auth)
 				{
 					try
 					{
@@ -336,6 +345,18 @@
 					catch (Exception $e)
 					{
 						throw new Exception(TBGContext::geti18n()->__('Your password was not accepted by the server'));
+					}
+				}
+				/*
+				 * Performing a login using the HTTP authentication header REMOTE_USER to identify
+				 * the current user. Password will NOT be checked as the web server is handling 
+				 * authentication which we are trusting.
+				 */
+				elseif ($mode == 1) 
+				{
+					if (!isset($_SERVER[$this->_user_header]) || $_SERVER[$this->_user_header] != $username) 
+					{
+						throw new Exception(TBGContext::geti18n()->__('HTTP authentication internal error.'));
 					}
 				}
 			}
@@ -418,8 +439,9 @@
 		
 		/*
 		 * Actions on login - if there are no credentials supplied try an autologin
-		 * Not applicable for this module
 		 * 
+		 * Will activate auto-login process if HTTP integrated authentication is enabled.
+
 		 * Return:
 		 * true - succeeded operation but no autologin
 		 * false - invalid cookies found
@@ -428,7 +450,20 @@
 		 */
 		public function doAutoLogin()
 		{
-			return true;
+			if ($this->getSetting('integrated_auth')) 
+			{
+  				if (isset($_SERVER[$this->_user_header])) 
+				{
+					return $this->doLogin($_SERVER[$this->_user_header],'a',1);
+				}
+				else
+				{
+					throw new Exception(TBGContext::geti18n()->__('HTTP integrated authentication is enabled but the HTTP header has not been provided by the web server.'));
+				}
+			}
+			else {
+				return true;
+			}
 		}
 	}
 
