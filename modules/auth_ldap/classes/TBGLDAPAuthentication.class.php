@@ -96,7 +96,7 @@
 				}
 				elseif ($setting == 'integrated_auth') 
 				{
-					$this->saveSetting($setting, $request->getParameter($setting, 0));
+					$this->saveSetting($setting, (int) $request->getParameter($setting, 0));
 				}
 				else
 				{
