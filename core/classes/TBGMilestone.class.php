@@ -644,7 +644,7 @@
 				}
 				
 				$estimations = TBGIssueEstimates::getTable()->getEstimatesByDateAndIssueIDs($this->getStartingDate(), $this->getScheduledDate(), $issues);
-				$spent_times = TBGIssueSpentTimes::getTable()->getSpentTimesByDateAndIssueIDs($this->getStartingDate(), $this->getScheduledDate(), $issues);
+				$spent_times = TBGIssueSpentTimesTable::getTable()->getSpentTimesByDateAndIssueIDs($this->getStartingDate(), $this->getScheduledDate(), $issues);
 				
 				$burndown = array();
 				foreach ($estimations['hours'] as $key => $val)
