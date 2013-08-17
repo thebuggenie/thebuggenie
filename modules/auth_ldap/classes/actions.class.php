@@ -17,7 +17,7 @@
 			$base_dn = TBGContext::getModule('auth_ldap')->getSetting('b_dn');
 			$groups_members_attr = TBGContext::getModule('auth_ldap')->getSetting('g_attr');
 			$group_class = TBGContext::getModule('auth_ldap')->getSetting('g_type');
-			
+		
 			try
 			{
 				$connection = TBGContext::getModule('auth_ldap')->connect();
@@ -84,12 +84,33 @@
 				TBGContext::setMessage('module_error_details', $e->getMessage());
 				$this->forward(TBGContext::getRouting()->generate('configure_module', array('config_module' => 'auth_ldap')));
 			}
-			
+		
 			if (count($nonexisting) == 0)
 			{
 				ldap_unbind($connection);
-				TBGContext::setMessage('module_message', TBGContext::getI18n()->__('Connection test successful'));
-				$this->forward(TBGContext::getRouting()->generate('configure_module', array('config_module' => 'auth_ldap')));
+          
+     		/*
+	 		  * Test if REMOTE_USER header is being provided by web server if HTTP integrated authentication option is enabled. 
+	 		  */                                                       
+        if (TBGContext::getModule('auth_ldap')->getSetting('integrated_auth')) 
+        {                                                                      
+          if (!isset($_SERVER['REMOTE_USER'])) 
+          {                                          
+            TBGContext::setMessage('module_error', TBGContext::getI18n()->__('HTTP Authentication Header not present'));
+  				  TBGContext::setMessage('module_error_details', 'HTTP integrated authentication is enabled but the REMOTE_USER header is not being provided to Bug Genie. Please check your web server configuration');
+	 	 		    $this->forward(TBGContext::getRouting()->generate('configure_module', array('config_module' => 'auth_ldap')));
+	 	 		  }
+	 	 		  else
+	 	 		  {   
+				    TBGContext::setMessage('module_message', TBGContext::getI18n()->__('Connection test successful. HTTP integrated authentication states your username is "USER"', array('USER' => $_SERVER['REMOTE_USER'])));
+				    $this->forward(TBGContext::getRouting()->generate('configure_module', array('config_module' => 'auth_ldap')));
+          }
+        }			
+        else
+        {
+				  TBGContext::setMessage('module_message', TBGContext::getI18n()->__('Connection test successful'));
+				  $this->forward(TBGContext::getRouting()->generate('configure_module', array('config_module' => 'auth_ldap')));
+				}
 			}
 			else
 			{
