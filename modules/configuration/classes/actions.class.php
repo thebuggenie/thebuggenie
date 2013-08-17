@@ -996,7 +996,7 @@
 					}
 					else
 					{
-						TBGContext::setMessage('module_error', TBGContext::getI18n()->__('There was an error install the module %module_name%', array('%module_name%' => $request['module_key'])));
+						TBGContext::setMessage('module_error', TBGContext::getI18n()->__('There was an error install the module "%module_name%"', array('%module_name%' => $request['module_key'])));
 					}
 				}
 				else if ($request['mode'] == 'upload')
