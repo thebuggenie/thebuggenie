@@ -20,12 +20,7 @@
 			</td>
 			<td<?php if (!$issue->getStatus() instanceof TBGDatatype): ?> class="faded_out"<?php endif; ?>>
 				<?php if ($issue->getStatus() instanceof TBGDatatype): ?>
-					<table style="table-layout: auto; width: auto;" cellpadding=0 cellspacing=0 class="status_table">
-						<tr>
-							<td style="width: 24px;"><div style="border: 1px solid #AAA; background-color: <?php echo ($issue->getStatus() instanceof TBGDatatype) ? $issue->getStatus()->getColor() : '#FFF'; ?>; font-size: 1px; width: 20px; height: 15px; margin-right: 2px;">&nbsp;</div></td>
-							<td style="padding-left: 5px;"><?php echo $issue->getStatus()->getName(); ?></td>
-						</tr>
-					</table>
+					<div class="sc_status_color status_badge" style="background-color: <?php echo ($issue->getStatus() instanceof TBGDatatype) ? $issue->getStatus()->getColor() : '#FFF'; ?>;"><span class="sc_status_name"><?php echo $issue->getStatus()->getName(); ?></span></div>
 				<?php else: ?>
 					-
 				<?php endif; ?>

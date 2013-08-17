@@ -46,7 +46,13 @@
 			-
 		<?php endif; ?>
 	</td>
-	<td class="sc_status"><span class="sc_status_name"><?php echo ($issue->getStatus() instanceof TBGStatus) ? $issue->getStatus()->getName() : '-' ?></span></td>
+	<td class="sc_status">
+		<?php if ($issue->getStatus() instanceof TBGDatatype): ?>
+			<div class="sc_status_color status_badge" style="background-color: <?php echo ($issue->getStatus() instanceof TBGDatatype) ? $issue->getStatus()->getColor() : '#FFF'; ?>;"><span class="sc_status_name"><?php echo $issue->getStatus()->getName(); ?></span></div>
+		<?php else: ?>
+			-
+		<?php endif; ?>
+	</td>
 	<?php if ($issue->canEditIssue()): ?>
 		<?php foreach ($selected_columns as $key => $data):
 			if (!isset($all_columns[$key])) { continue; }

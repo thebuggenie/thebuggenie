@@ -13,6 +13,7 @@
 					<th style="text-align: center; width: 60px;"><?php echo __('Progress'); ?></th>
 					<th style="width: auto; padding-left: 2px;"><?php echo __('Title'); ?></th>
 					<th style="width: auto;"><?php echo __('Description'); ?></th>
+					<th style="width: auto; padding-left: 2px;"><?php echo __('Status'); ?></th>
 					<th style="width: 170px;"><?php echo __('More info'); ?></th>
 				</tr>
 			</thead>
@@ -50,6 +51,13 @@
 							<?php echo (mb_strlen($issue->getDescription()) > 120) ? mb_substr($issue->getDescription(), 0 , 117) . '...' : $issue->getDescription(); ?>
 						<?php else: ?>
 							<span class="faded_out"><?php echo __('No description provided'); ?></span>
+						<?php endif; ?>
+					</td>
+					<td style="padding: 3px;">
+						<?php if ($issue->getStatus() instanceof TBGDatatype): ?>
+							<div class="sc_status_color status_badge" style="background-color: <?php echo ($issue->getStatus() instanceof TBGDatatype) ? $issue->getStatus()->getColor() : '#FFF'; ?>;"><span class="sc_status_name"><?php echo $issue->getStatus()->getName(); ?></span></div>
+						<?php else: ?>
+							-
 						<?php endif; ?>
 					</td>
 					<td class="result_issue"><?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue->getFormattedIssueNo(true, true), array('class' => 'issue_link')); ?></td>

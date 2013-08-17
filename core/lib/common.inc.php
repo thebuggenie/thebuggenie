@@ -476,3 +476,30 @@
 		}
 		return $rgb;
 	}
+
+	function tbg_get_userstate_image(TBGUser $user)
+	{
+		switch (true)
+		{
+			case $user->isOffline():
+				return image_tag('user-offline.png', array('class' => 'userstate', 'title' => __($user->getState()->getName())));
+				break;
+			case $user->getState()->isBusy():
+			case $user->getState()->isUnavailable():
+				return image_tag('user-busy.png', array('class' => 'userstate', 'title' => __($user->getState()->getName())));
+				break;
+			case $user->getState()->isAbsent():
+				return image_tag('user-invisible.png', array('class' => 'userstate', 'title' => __($user->getState()->getName())));
+				break;
+			case $user->getState()->isInMeeting():
+				return image_tag('user-away-extended.png', array('class' => 'userstate', 'title' => __($user->getState()->getName())));
+				break;
+			case $user->getState()->isUnavailable():
+				return image_tag('user-away.png', array('class' => 'userstate', 'title' => __($user->getState()->getName())));
+				break;
+			default:
+				return image_tag('user-online.png', array('class' => 'userstate', 'title' => __($user->getState()->getName())));
+				break;
+		}
+	}
+

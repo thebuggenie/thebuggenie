@@ -3,11 +3,8 @@
 	<?php foreach ($friends as $friend): ?>
 		<div style="padding: 5px 0 5px 10px; clear: both;">
 			<div>
-				<?php echo include_component('main/userdropdown', array('user' => $friend)); ?>
+				<?php echo include_component('main/userdropdown', array('user' => $friend, 'class' => 'leftie')); ?>
 			</div>
-			<?php if ($friend instanceof TBGUser): ?>
-				<div class="friends_status"><?php echo $friend->getState()->getName(); ?></div>
-			<?php endif; ?>
 		</div>
 	<?php endforeach; ?>
 <?php else: ?>

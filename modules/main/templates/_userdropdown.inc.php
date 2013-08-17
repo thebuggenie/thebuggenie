@@ -3,19 +3,21 @@
 <?php elseif (!$user->isScopeConfirmed()): ?>
 	<span class="faded_out" title="<?php echo __('This user has not been confirmed yet'); ?>"><?php echo $user->getUsername() ?></span>
 <?php else: ?>
-	<?php $avatar_dimensions = (!isset($size) || $size == 'small') ? 16 : 22; ?>
-	<?php if ($show_avatar): ?>
-		<a href="javascript:void(0);" onclick="$('bud_<?php echo $user->getUsername() . "_" . $rnd_no; ?>').toggle();" class="image"><?php echo image_tag($user->getAvatarURL(), array('alt' => ' ', 'style' => "width: {$avatar_dimensions}px; height: {$avatar_dimensions}px; float: left; border-radius: 5px; margin-right: 5px;"), true); ?></a>
-	<?php endif; ?>
-	<a href="javascript:void(0);" onclick="$('bud_<?php echo $user->getUsername() . "_" . $rnd_no; ?>').toggle();" style="font-weight: normal;"<?php if ($tbg_user->isFriend($user)): ?> class="friend" title="<?php echo __('This is one of your friends'); ?>"<?php endif; ?>><?php echo (isset($displayname)) ? $displayname : $user->getBuddyname(); ?></a>
-	<div id="bud_<?php echo $user->getUsername() . '_' . $rnd_no; ?>" style="z-index: 100; width: 300px; display: none; position: absolute;" class="rounded_box white shadowed user_popup dropdown_box">
+	<a href="javascript:void(0);" onclick="$('bud_<?php echo $user->getUsername() . "_" . $rnd_no; ?>').toggle();" class="userlink <?php if ($tbg_user->isFriend($user)): ?> friend" title="<?php echo __('This is one of your friends'); ?><?php endif; ?>">
+		<?php echo tbg_get_userstate_image($user); ?>
+		<?php if ($show_avatar): ?>
+			<?php $avatar_dimensions = (!isset($size) || $size == 'small') ? 16 : 22; ?>
+			<?php echo image_tag($user->getAvatarURL(), array('alt' => ' ', 'class' => 'avatar', 'style' => "width: {$avatar_dimensions}px; height: {$avatar_dimensions}px; "), true); ?>
+		<?php endif; ?>
+		<?php echo (isset($displayname)) ? $displayname : $user->getBuddyname(); ?>
+	</a>
+	<div id="bud_<?php echo $user->getUsername() . '_' . $rnd_no; ?>" style="z-index: 100; width: 300px; display: none; position: absolute;" class="rounded_box white shadowed user_popup dropdown_box <?php if (isset($class)) echo $class; ?>">
 		<div style="padding: 3px;">
 			<div style="padding: 2px; width: 36px; height: 36px; text-align: center; background-color: #FFF; border: 1px solid #DDD; float: left;">
 				<?php echo image_tag($user->getAvatarURL(false), array('alt' => ' ', 'style' => "width: 36px; height: 36px;"), true); ?>
 			</div>
 			<div class="user_realname">
 				<?php echo $user->getRealname(); ?>
-				<div class="user_status"><?php echo $user->getState()->getName(); ?></div>
 			</div>
 			<div class="user_details">
 				<?php if(!$user->getLastSeen()): ?>
