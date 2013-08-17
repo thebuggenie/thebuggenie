@@ -613,20 +613,22 @@
 
 			foreach (TBGContext::getRequest()->getParameter('status') as $scope_id => $status_id)
 			{
-				$transition = new TBGWorkflowTransition();
-				$workflow = TBGWorkflowsTable::getTable()->selectById(TBGWorkflowsTable::getTable()->getFirstIdByScope((int) $scope_id));
-				$steps = $workflow->getSteps();
-				$step = array_shift($steps);
-				$step->setLinkedStatusID((int) $status_id);
-				$step->save();
-				$transition->setOutgoingStep($step);
-				$transition->setName('Issue created');
-				$transition->setWorkflow($workflow);
-				$transition->setScope(TBGScopesTable::getTable()->selectById((int) $scope_id));
-				$transition->setDescription('This is the initial transition for issues using this workflow');
-				$transition->save();
-				$workflow->setInitialTransition($transition);
-				$workflow->save();
+				foreach (TBGWorkflowsTable::getTable()->getAll((int) $scope_id) as $workflow)
+				{
+					$transition = new TBGWorkflowTransition();
+					$steps = $workflow->getSteps();
+					$step = array_shift($steps);
+					$step->setLinkedStatusID((int) $status_id);
+					$step->save();
+					$transition->setOutgoingStep($step);
+					$transition->setName('Issue created');
+					$transition->setWorkflow($workflow);
+					$transition->setScope(TBGScopesTable::getTable()->selectById((int) $scope_id));
+					$transition->setDescription('This is the initial transition for issues using this workflow');
+					$transition->save();
+					$workflow->setInitialTransition($transition);
+					$workflow->save();
+				}
 				$scope = TBGScopesTable::getTable()->selectById((int) $scope_id);
 				TBGActivityType::loadFixtures($scope);
 			}
