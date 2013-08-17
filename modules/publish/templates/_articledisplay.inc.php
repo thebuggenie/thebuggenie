@@ -1,5 +1,5 @@
 <?php TBGContext::loadLibrary('publish/publish'); ?>
-<div class="article">
+<div class="article syntax_<?php echo ($article->getContentSyntax() == TBGSettings::SYNTAX_MW) ? 'mw' : 'md'; ?>">
 	<?php if ($show_title): ?>
 		<?php include_template('publish/header', array('article_name' => $article->getName(), 'article' => $article, 'show_actions' => $show_actions, 'mode' => $mode)); ?>
 	<?php endif; ?>
@@ -23,7 +23,7 @@
 		</div>
 	<?php endif; ?>
 	<?php if ($show_article): ?>
-		<div class="content"><?php echo tbg_parse_text($article->getContent(), true, $article->getID(), array('embedded' => $embedded, 'article' => $article)); ?></div>
+		<div class="content"><?php echo $article->getParsedContent(array('embedded' => $embedded, 'article' => $article)); ?></div>
 	<?php endif; ?>
 </div>
 <?php if ($article->isCategory() && !$embedded && $show_category_contains): ?>
@@ -55,7 +55,7 @@
 	</div>
 	<br style="clear: both;">
 <?php endif; ?>
-<?php if (!$embedded && $show_article): ?>
+<?php if (!$embedded && $show_article && $article->getContentSyntax() == TBGSettings::SYNTAX_MW): ?>
 	<br style="clear: both;">
 	<div class="greybox categories">
 		<b><?php echo __('Categories:'); ?></b>

@@ -4,7 +4,7 @@ Updated by <?php echo $updated_by->getBuddyname(); ?> (<?php echo $updated_by->g
 
 <?php if (isset($comment) && $comment instanceof TBGComment): ?>
 * Comment by <?php echo $comment->getPostedBy()->getBuddyname(); ?> (<?php echo $comment->getPostedBy()->getUsername(); ?>) *
-<?php echo tbg_parse_text($comment->getContent()); ?>
+<?php echo $comment->getContent(); ?>
 <?php endif; ?>
 
 <?php if (count($log_items)): ?>

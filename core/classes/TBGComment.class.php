@@ -1,5 +1,7 @@
 <?php
 
+	use \Michelf\MarkdownExtra;
+
 	/**
 	 * Class used for comments
 	 *
@@ -104,6 +106,11 @@
 		 * @Relates(class="TBGComment")
 		 */
 		protected $_reply_to_comment = 0;
+
+		/**
+		 * @Column(type="integer", length=10, default=1)
+		 */
+		protected $_syntax = 1;
 
 		/**
 		 * List of log items linked to this comment
@@ -497,6 +504,27 @@
 		{
 			return $this->_content;
 		}
+
+		public function getParsedContent($options = array())
+		{
+			switch ($this->_syntax)
+			{
+				case TBGSettings::SYNTAX_MW:
+					$wiki_parser = new TBGTextParser($this->_content);
+					foreach ($options as $option => $value)
+					{
+						$wiki_parser->setOption($option, $value);
+					}
+					$text = $wiki_parser->getParsedText();
+					break;
+				case TBGSettings::SYNTAX_MD:
+					$parser = new TBGTextParserMarkdown();
+					$text = $parser->transform($this->_content);
+					break;
+			}
+
+			return $text;
+		}
 		
 		public function getUpdated()
 		{
@@ -602,6 +630,34 @@
 		public function getLogItems()
 		{
 			return $this->_b2dbLazyload('_log_items');
+		}
+
+		public function getSyntax()
+		{
+			return $this->_syntax;
+		}
+
+		public function setSyntax($syntax)
+		{
+			if (!is_numeric($syntax)) $syntax = ($syntax == 'mw') ? TBGSettings::SYNTAX_MW : TBGSettings::SYNTAX_MD;
+
+			$this->_syntax = (int) $syntax;
+		}
+
+		/**
+		 * @return bool Whether this comment is written using mediawiki syntax
+		 */
+		public function isMwSyntax()
+		{
+			return ($this->_syntax == TBGSettings::SYNTAX_MW);
+		}
+
+		/**
+		 * @return bool Whether this comment is written using markdown syntax
+		 */
+		public function isMdSyntax()
+		{
+			return ($this->_syntax == TBGSettings::SYNTAX_MD);
 		}
 
 	}

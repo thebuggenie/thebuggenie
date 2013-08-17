@@ -286,7 +286,7 @@
 			if (!$this->preformat) $output .= "<pre>";
 			$this->preformat = true;
 
-			$output .= htmlentities($matches[0]);
+			$output .= $matches[0]; //htmlentities($matches[0]);
 
 			return $output."\n";
 		}
@@ -603,7 +603,7 @@
 			return "";
 		}
 
-		protected function _parse_issuelink($matches)
+		public static function parseIssuelink($matches)
 		{
 			$theIssue = TBGIssue::getIssueFromLink($matches[0]);
 			$output = '';
@@ -621,6 +621,11 @@
 				$output = $matches[1];
 			}
 			return $output;
+		}
+
+		protected function _parse_issuelink($matches)
+		{
+			return self::parseIssuelink($matches);
 		}
 
 		protected function _parse_insert_variables($matches)

@@ -58,7 +58,7 @@
 				<br style="clear: both;">
 				<label for="article_content" style="margin-left: 5px; clear: both;"><?php echo __('Article content'); ?></label><br>
 				<div style="margin: 5px 10px 5px 5px;">
-					<?php include_template('main/textarea', array('area_name' => 'article_content', 'area_id' => 'article_content', 'height' => '350px', 'width' => '100%', 'value' => htmlspecialchars($article->getContent()))); ?>
+					<?php include_template('main/textarea', array('area_name' => 'article_content', 'area_id' => 'article_content', 'syntax' => $article->getContentSyntax(), 'height' => '350px', 'width' => '100%', 'value' => htmlspecialchars($article->getContent()))); ?>
 				</div>
 				<label for="change_reason" style="margin-left: 5px; clear: both;"><?php echo __('Change reason'); ?>
 					<?php if (TBGPublish::getModule()->getSetting('require_change_reason') == 0) : ?>

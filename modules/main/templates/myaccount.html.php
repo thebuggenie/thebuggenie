@@ -162,6 +162,30 @@
 									<?php echo __('Lets you use arrow up / down in issue lists to navigate'); ?><br>
 								</td>
 							</tr>
+							<tr>
+								<td colspan="2" style="padding: 5px; text-align: right;">&nbsp;</td>
+							</tr>
+							<tr>
+								<td style="width: 200px; padding: 5px;"><label for="profile_syntax"><?php echo __('Preferred syntax'); ?></label></td>
+								<td>
+									<select name="profile_syntax" id="profile_syntax" style="width: 300px;" onchange="($(this).getValue() == '<?php echo TBGSettings::SYNTAX_MW; ?>') ? $('prefer_markdown_container').hide() : $('prefer_markdown_container').show();">
+										<option value="<?php echo TBGSettings::SYNTAX_MW; ?>"<?php if ($tbg_user->getPreferredSyntax(true) == TBGSettings::SYNTAX_MW): ?> selected<?php endif; ?>><?php echo __('Mediawiki'); ?></option>
+										<option value="<?php echo TBGSettings::SYNTAX_MD; ?>"<?php if ($tbg_user->getPreferredSyntax(true) == TBGSettings::SYNTAX_MD): ?> selected<?php endif; ?>><?php echo __('Markdown'); ?></option>
+									</select>
+									<div id="prefer_markdown_container" style="<?php if ($tbg_user->getPreferredSyntax(true) == TBGSettings::SYNTAX_MW) echo 'display: none;'; ?>">
+										<input type="checkbox" id="profile_prefer_wiki_markdown" name="prefer_wiki_markdown" <?php if ($tbg_user->preferWikiMarkdown()) echo 'checked'; ?>>
+										<label for="profile_prefer_wiki_markdown"><?php echo __('Prefer markdown also in the wiki'); ?></label><br>
+										<div class="config_explanation">
+											<?php echo __('The markdown syntax is good for basic formatting, but does not support wiki features such as internal links, categorization and more. Still, if you only write simple wiki pages, this might be good enough.'); ?>
+										</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td class="config_explanation" colspan="2">
+									<?php echo __('The syntax you select here will be used as the default formatting syntax for comments you post, issues you create and articles you write. Remember that you can switch this on a case by case basis - look for the syntax selector next to any text area with formatting buttons.'); ?><br>
+								</td>
+							</tr>
 						</table>
 					</div>
 					<div class="rounded_box iceblue borderless cut_top" style="margin: 0 0 5px 0; width: 895px; border-top: 0; padding: 3px; height: 26px;">

@@ -6,7 +6,7 @@
 	</h3>
 	<?php if (isset($comment) && $comment instanceof TBGComment): ?>
 		<h4>Comment by <?php echo $comment->getPostedBy()->getBuddyname(); ?> (<?php echo $comment->getPostedBy()->getUsername(); ?>)</h4>
-		<p><?php echo tbg_parse_text($comment->getContent()); ?></p>
+		<p><?php echo $comment->getParsedContent(); ?></p>
 		<br>
 	<?php endif; ?>
 	<?php if (count($log_items)): ?>

@@ -2,7 +2,7 @@
 	<h3><?php echo $article->getTitle(); ?></h3>
 	<br>
 	<h4>Comment by <?php echo $comment->getPostedBy()->getBuddyname(); ?> (<?php echo $comment->getPostedBy()->getUsername(); ?>)</h4>
-	<p><?php echo tbg_parse_text($comment->getContent()); ?></p>
+	<p><?php echo $comment->getParsedContent(); ?></p>
 	<br>
 	<div style="color: #888;">
 		Show article: <?php echo link_tag($module->generateURL('publish_article', array('article_name' => $article->getTitle()))); ?><br>

@@ -701,31 +701,97 @@ TBG.Main.Helpers.tabSwitcher = function(visibletab, menu) {
 };
 
 TBG.Main.Helpers.MarkitUp = function(element) {
-	element.markItUp({
-		previewParserPath:	'', // path to your Wiki parser
-		onShiftEnter:		{keepDefault:false, replaceWith:'\n\n'},
-		markupSet: [
-			{name:'Heading 1', key:'1', openWith:'== ', closeWith:' ==', placeHolder:'Your title here...'},
-			{name:'Heading 2', key:'2', openWith:'=== ', closeWith:' ===', placeHolder:'Your title here...'},
-			{name:'Heading 3', key:'3', openWith:'==== ', closeWith:' ====', placeHolder:'Your title here...'},
-			{name:'Heading 4', key:'4', openWith:'===== ', closeWith:' =====', placeHolder:'Your title here...'},
-			{name:'Heading 5', key:'5', openWith:'====== ', closeWith:' ======', placeHolder:'Your title here...'},
-			{separator:'---------------'},
-			{name:'Bold', key:'B', openWith:"'''", closeWith:"'''"},
-			{name:'Italic', key:'I', openWith:"''", closeWith:"''"},
-			{name:'Stroke through', key:'S', openWith:'<strike>', closeWith:'</strike>'},
-			{separator:'---------------'},
-			{name:'Bulleted list', openWith:'(!(* |!|*)!)'},
-			{name:'Numeric list', openWith:'(!(# |!|#)!)'},
-			{separator:'---------------'},
-			{name:'Picture', key:"P", replaceWith:'[[Image:[![Url:!:http://]!]|[![name]!]]]'},
-			{name:'Link', key:"L", openWith:"[[[![Link]!]|", closeWith:']]', placeHolder:'Your text to link here...'},
-			{name:'Url', openWith:"[[![Url:!:http://]!] ", closeWith:']', placeHolder:'Your text to link here...'},
-			{separator:'---------------'},
-			{name:'Quotes', openWith:'(!(> |!|>)!)', placeHolder:''},
-			{name:'Code', openWith:'(!(<source lang="[![Language:!:php]!]">|!|<pre>)!)', closeWith:'(!(</source>|!|</pre>)!)'}
-		]
-	});
+    var elements = (element.hasClassName) ? [element] : element;
+
+    elements.each(function(elm) {
+        if ($(elm).hasClassName('syntax_mw')) {
+            var ms = [
+                {name:'Heading 1', key:'1', openWith:'== ', closeWith:' ==', placeHolder:'Your title here...'},
+                {name:'Heading 2', key:'2', openWith:'=== ', closeWith:' ===', placeHolder:'Your title here...'},
+                {name:'Heading 3', key:'3', openWith:'==== ', closeWith:' ====', placeHolder:'Your title here...'},
+                {name:'Heading 4', key:'4', openWith:'===== ', closeWith:' =====', placeHolder:'Your title here...'},
+                {name:'Heading 5', key:'5', openWith:'====== ', closeWith:' ======', placeHolder:'Your title here...'},
+                {separator:'---------------'},
+                {name:'Bold', key:'B', openWith:"'''", closeWith:"'''"},
+                {name:'Italic', key:'I', openWith:"''", closeWith:"''"},
+                {name:'Stroke through', key:'S', openWith:'<strike>', closeWith:'</strike>'},
+                {separator:'---------------'},
+                {name:'Bulleted list', openWith:'(!(* |!|*)!)'},
+                {name:'Numeric list', openWith:'(!(# |!|#)!)'},
+                {separator:'---------------'},
+                {name:'Picture', key:"P", replaceWith:'[[Image:[![Url:!:http://]!]|[![name]!]]]'},
+                {name:'Link', key:"L", openWith:"[[[![Link]!]|", closeWith:']]', placeHolder:'Your text to link here...'},
+                {name:'Url', openWith:"[[![Url:!:http://]!] ", closeWith:']', placeHolder:'Your text to link here...'},
+                {separator:'---------------'},
+                {name:'Quotes', openWith:'(!(> |!|>)!)', placeHolder:''},
+                {name:'Code', openWith:'(!(<source lang="[![Language:!:php]!]">|!|<pre>)!)', closeWith:'(!(</source>|!|</pre>)!)'}
+            ];
+        } else {
+            var ms = [
+                {name:'First Level Heading', key:'1', placeHolder:'Your title here...', closeWith:function(markItUp) { return TBG.Main.Helpers.miu.markdownTitle(markItUp, '=') } },
+                {name:'Second Level Heading', key:'2', placeHolder:'Your title here...', closeWith:function(markItUp) { return TBG.Main.Helpers.miu.markdownTitle(markItUp, '-') } },
+                {name:'Heading 3', key:'3', openWith:'### ', placeHolder:'Your title here...' },
+                {name:'Heading 4', key:'4', openWith:'#### ', placeHolder:'Your title here...' },
+                {name:'Heading 5', key:'5', openWith:'##### ', placeHolder:'Your title here...' },
+                {separator:'---------------' },
+                {name:'Bold', key:'B', openWith:'*', closeWith:'*'},
+                {name:'Italic', key:'I', openWith:'_', closeWith:'_'},
+                {name:'Stroke through', key:'S', openWith:'-', closeWith:'-'},
+                {separator:'---------------' },
+                {name:'Bulleted List', openWith:'- ' },
+                {name:'Numeric List', openWith:function(markItUp) {
+                    return markItUp.line+'. ';
+                }},
+                {separator:'---------------' },
+                {name:'Picture', key:'P', replaceWith:'![[![Alternative text]!]]([![Url:!:http://]!] "[![Title]!]")'},
+                {name:'Link', key:'L', openWith:'[', closeWith:']([![Url:!:http://]!] "[![Title]!]")', placeHolder:'Your text to link here...' },
+                {name:'Url', openWith:"[[![Url:!:http://]!] ", closeWith:']', placeHolder:'Your text to link here...'},
+                {separator:'---------------'},
+                {name:'Quotes', openWith:'> '},
+                {name:'Code', openWith:'(!(\t|!|`)!)', closeWith:'(!(`)!)'}
+            ];
+        }
+        jQuery(elm).markItUpRemove();
+        jQuery(elm).markItUp({
+            previewParserPath:	'', // path to your Wiki parser
+            onShiftEnter:		{keepDefault:false, replaceWith:'\n\n'},
+            markupSet: ms
+        });
+    });
+};
+
+// mIu nameSpace to avoid conflict.
+TBG.Main.Helpers.miu = {
+    markdownTitle: function(markItUp, char) {
+        heading = '';
+        n = jQuery.trim(markItUp.selection||markItUp.placeHolder).length;
+        for(i = 0; i < n; i++) {
+            heading += char;
+        }
+        return '\n'+heading;
+    }
+};
+
+TBG.Main.Helpers.setSyntax = function(base_id, syntax) {
+    var ce = $(base_id);
+    var cec = $(base_id).up('.textarea_container');
+
+    ce.removeClassName('syntax_md');
+    ce.removeClassName('syntax_mw');
+    cec.removeClassName('syntax_md');
+    cec.removeClassName('syntax_mw');
+
+    ce.addClassName('syntax_' + syntax);
+    cec.addClassName('syntax_' + syntax);
+
+    $(base_id + '_selected_syntax').update((syntax == 'mw') ? 'mediawiki' : 'markdown');
+    $(base_id + '_syntax').setValue(syntax);
+
+    $(base_id + '_syntax_picker').childElements().each(function(elm) {
+        (elm.hasClassName(syntax)) ? elm.addClassName('selected') : elm.removeClassName('selected');
+    })
+
+    TBG.Main.Helpers.MarkitUp(ce);
 };
 
 TBG.Main.toggleBreadcrumbMenuPopout = function(event) {
@@ -4527,5 +4593,5 @@ TBG.Tutorial.start = function(key) {
 }
 
 jQuery(document).ready(function(){
-	TBG.Main.Helpers.MarkitUp(jQuery('textarea'));
+	TBG.Main.Helpers.MarkitUp($$('textarea'));
 });

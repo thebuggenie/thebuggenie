@@ -92,6 +92,7 @@
 				{
 					$this->article = new TBGWikiArticle();
 					if ($this->article_name) $this->article->setName($this->article_name);
+					if ($this->getUser()->preferWikiMarkdown() && $this->getUser()->getPreferredSyntax(true) == TBGSettings::SYNTAX_MD) $this->article->setContentSyntax(TBGSettings::SYNTAX_MD);
 				}
 			}
 		}
@@ -290,6 +291,7 @@
 						throw new Exception(TBGContext::getI18n()->__('An article with that name already exists. Please choose a different article name'));
 
 					$this->article->setName($request['new_article_name']);
+					$this->article->setContentSyntax($request['article_content_syntax']);
 					$this->article->setContent($request->getRawParameter('article_content'));
 					$this->article->setArticleType($request['article_type']);
 					$this->article->setParentArticle(TBGArticlesTable::getTable()->getArticleByName($request['parent_article_name']));

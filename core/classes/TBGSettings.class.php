@@ -49,6 +49,9 @@
 		const INFOBOX_PREFIX = 'hide_infobox_';
 		const TOGGLE_PREFIX = 'toggle_';
 
+		const SYNTAX_MW = 1;
+		const SYNTAX_MD = 2;
+
 		const SETTING_ADMIN_GROUP = 'admingroup';
 		const SETTING_ALLOW_REGISTRATION = 'allowreg';
 		const SETTING_ALLOW_OPENID = 'allowopenid';
@@ -56,6 +59,8 @@
 		const SETTING_ALLOW_USER_THEMES = 'userthemes';
 		const SETTING_AWAYSTATE = 'awaystate';
 		const SETTING_DEFAULT_CHARSET = 'charset';
+		const SETTING_DEFAULT_COMMENT_SYNTAX = 'comment_syntax';
+		const SETTING_DEFAULT_ISSUE_SYNTAX = 'issue_syntax';
 		const SETTING_DEFAULT_LANGUAGE = 'language';
 		const SETTING_DEFAULT_USER_IS_GUEST = 'defaultisguest';
 		const SETTING_DEFAULT_USER_ID = 'defaultuserid';
@@ -758,6 +763,18 @@
 			return self::get(self::SETTING_AUTH_BACKEND);
 		}
 		
+		public static function getDefaultCommentSyntax()
+		{
+			$syntax = self::get(self::SETTING_DEFAULT_COMMENT_SYNTAX);
+			return ($syntax == null) ? TBGSettings::SYNTAX_MW : $syntax;
+		}
+
+		public static function getDefaultIssueSyntax()
+		{
+			$syntax = self::get(self::SETTING_DEFAULT_ISSUE_SYNTAX);
+			return ($syntax == null) ? TBGSettings::SYNTAX_MW : $syntax;
+		}
+
 		public static function isUsingExternalAuthenticationBackend()
 		{
 			if (TBGSettings::getAuthenticationBackend() !== null && TBGSettings::getAuthenticationBackend() !== 'tbg'): return true; else: return false; endif;

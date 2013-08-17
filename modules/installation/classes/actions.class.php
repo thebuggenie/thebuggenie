@@ -604,6 +604,7 @@
 			TBGWorkflowsTable::getTable()->upgrade(TBGWorkflowsTable3dot2::getTable());
 			TBGIncomingEmailAccountTable::getTable()->upgrade(TBGIncomingEmailAccountTable3dot2::getTable());
 			TBGIssueSpentTimesTable::getTable()->upgrade(TBGIssueSpentTimesTable3dot2::getTable());
+			TBGCommentsTable::getTable()->upgrade(TBGCommentsTable3dot2::getTable());
 			TBGUserArticlesTable::getTable()->create();
 
 			$transaction = \b2db\Core::startTransaction();

@@ -118,13 +118,29 @@
 		protected $_description;
 		
 		/**
+		 * The syntax used for this issue's long description
+		 *
+		 * @var integer
+		 * @Column(type="integer", length=2, default=1)
+		 */
+		protected $_description_syntax;
+
+		/**
 		 * This issues reproduction steps
 		 * 
 		 * @var string
 		 * @Column(type="text")
 		 */
 		protected $_reproduction_steps;
-		
+
+		/**
+		 * The syntax used for this issue's reproduction steps
+		 *
+		 * @var integer
+		 * @Column(type="integer", length=2, default=1)
+		 */
+		protected $_reproduction_steps_syntax;
+
 		/**
 		 * When the issue was posted
 		 * 
@@ -2287,7 +2303,43 @@
 		{
 			return $this->_description;
 		}
+
+		public function getParsedDescription($options)
+		{
+			return $this->_getParsedText($this->getDescription(), $this->getDescriptionSyntax(), $options);
+		}
 		
+		/**
+		 * Returns the description syntax
+		 *
+		 * @return integer
+		 */
+		public function getDescriptionSyntax()
+		{
+			return $this->_description_syntax;
+		}
+
+		protected function _getParsedText($text, $syntax, $options = array())
+		{
+			switch ($syntax)
+			{
+				case TBGSettings::SYNTAX_MW:
+					$wiki_parser = new TBGTextParser($text);
+					foreach ($options as $option => $value)
+					{
+						$wiki_parser->setOption($option, $value);
+					}
+					$text = $wiki_parser->getParsedText();
+					break;
+				case TBGSettings::SYNTAX_MD:
+					$parser = new TBGTextParserMarkdown();
+					$text = $parser->transform($text);
+					break;
+			}
+
+			return $text;
+		}
+
 		/**
 		 * Return whether or not this issue has a description set
 		 * 
@@ -2309,6 +2361,18 @@
 		}
 	
 		/**
+		 * Set the description syntax
+		 *
+		 * @param integer $syntax
+		 */
+		public function setDescriptionSyntax($syntax)
+		{
+			if (!is_numeric($syntax)) $syntax = ($syntax == 'mw') ? TBGSettings::SYNTAX_MW : TBGSettings::SYNTAX_MD;
+
+			$this->_addChangedProperty('_description_syntax', $syntax);
+		}
+
+		/**
 		 * Returns the issues reproduction steps
 		 *
 		 * @return string
@@ -2317,7 +2381,22 @@
 		{
 			return $this->_reproduction_steps;
 		}
-		
+
+		public function getParsedReproductionSteps($options)
+		{
+			return $this->_getParsedText($this->getReproductionSteps(), $this->getReproductionStepsSyntax(), $options);
+		}
+
+		/**
+		 * Returns the issues reproduction steps syntax
+		 *
+		 * @return integer
+		 */
+		public function getReproductionStepsSyntax()
+		{
+			return $this->_reproduction_steps_syntax;
+		}
+
 		/**
 		 * Set the reproduction steps
 		 * 
@@ -2328,6 +2407,18 @@
 			$this->_addChangedProperty('_reproduction_steps', $reproduction_steps);
 		}
 		
+		/**
+		 * Set the reproduction steps syntax
+		 *
+		 * @param integer $syntax
+		 */
+		public function setReproductionStepsSyntax($syntax)
+		{
+			if (!is_numeric($syntax)) $syntax = ($syntax == 'mw') ? TBGSettings::SYNTAX_MW : TBGSettings::SYNTAX_MD;
+
+			$this->_addChangedProperty('_reproduction_steps_syntax', $syntax);
+		}
+
 		/**
 		 * Returns the category
 		 *
@@ -4038,7 +4129,12 @@
 		
 		public function isReproductionStepsChanged()
 		{
-			return $this->isReproduction_StepsChanged();
+			return $this->isReproduction_StepsChanged() || $this->isReproduction_Steps_SyntaxChanged();
+		}
+
+		public function isDescriptionChanged()
+		{
+			return $this->_isPropertyChanged('_description') || $this->isDescription_SyntaxChanged();
 		}
 
 		/**

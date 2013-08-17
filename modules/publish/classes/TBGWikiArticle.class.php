@@ -55,6 +55,14 @@
 		protected $_content = null;
 
 		/**
+		 * The article content syntax
+		 *
+		 * @var integer
+		 * @Column(type="integer", length=3, default=1)
+		 */
+		protected $_content_syntax = TBGSettings::SYNTAX_MW;
+
+		/**
 		 * Whether the article is published or not
 		 * 
 		 * @var boolean
@@ -231,12 +239,48 @@
 			return $this->_content;
 		}
 
+		public function getParsedContent($options = array())
+		{
+			switch ($this->_content_syntax)
+			{
+				case TBGSettings::SYNTAX_MW:
+					$wiki_parser = new TBGTextParser($this->_content, true, $this->getID());
+					foreach ($options as $option => $value)
+					{
+						$wiki_parser->setOption($option, $value);
+					}
+					$text = $wiki_parser->getParsedText();
+					break;
+				case TBGSettings::SYNTAX_MD:
+					$parser = new TBGTextParserMarkdown();
+					$text = $parser->transform($this->_content);
+					break;
+			}
+
+			return $text;
+		}
+
+		public function setContentSyntax($syntax)
+		{
+			if (!is_numeric($syntax)) $syntax = ($syntax == 'mw') ? TBGSettings::SYNTAX_MW : TBGSettings::SYNTAX_MD;
+
+			$this->_content_syntax = $syntax;
+		}
+
+		public function getContentSyntax()
+		{
+			return $this->_content_syntax;
+		}
+
 		public function setContent($content)
 		{
 			$this->_content = str_replace("\r\n", "\n", $content);
-			$parser = new TBGTextParser($content);
-			$parser->doParse();
-			$this->_populateCategories($parser->getCategories());
+			if ($this->_content_syntax == TBGSettings::SYNTAX_MW)
+			{
+				$parser = new TBGTextParser($content);
+				$parser->doParse();
+				$this->_populateCategories($parser->getCategories());
+			}
 		}
 
 		public function getTitle()

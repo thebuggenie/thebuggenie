@@ -287,6 +287,22 @@
 		 */
 		protected $_deleted = false;
 
+		/**
+		 * The users preferred formatting syntax
+		 *
+		 * @var integer
+		 * @Column(type="integer", length=3, default=2)
+		 */
+		protected $_preferred_syntax = 1;
+
+		/**
+		 * Whether the user wants to default to markdown in wiki pages
+		 *
+		 * @var boolean
+		 * @Column(type="boolean")
+		 */
+		protected $_prefer_wiki_markdown = false;
+
 		protected $_openid_accounts;
 		
 		/**
@@ -2009,6 +2025,34 @@
 		public function setTimezone($timezone)
 		{
 			$this->_timezone = $timezone;
+		}
+
+		public function getPreferredSyntax($real_value = false)
+		{
+			if ($real_value)
+				return $this->_preferred_syntax;
+
+			return ($this->_preferred_syntax == TBGSettings::SYNTAX_MW) ? 'mw' : 'md';
+		}
+
+		public function setPreferredSyntax($preferred_syntax)
+		{
+			$this->_preferred_syntax = $preferred_syntax;
+		}
+
+		public function getPreferWikiMarkdown()
+		{
+			return $this->_prefer_wiki_markdown;
+		}
+
+		public function preferWikiMarkdown()
+		{
+			return $this->getPreferWikiMarkdown();
+		}
+
+		public function setPreferWikiMarkdown($prefer_markdown)
+		{
+			$this->_prefer_wiki_markdown = $prefer_markdown;
 		}
 		
 		protected function _dualPermissionsCheck($permission_1, $permission_1_target, $permission_2, $permission_2_target, $fallback)

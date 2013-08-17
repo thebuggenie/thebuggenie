@@ -5,7 +5,7 @@
 	</h3>
 	<br>
 	<h4>Comment by <?php echo $comment->getPostedBy()->getBuddyname(); ?> (<?php echo $comment->getPostedBy()->getUsername(); ?>)</h4>
-	<p><?php echo tbg_parse_text($comment->getContent()); ?></p>
+	<p><?php echo $comment->getParsedContent(); ?></p>
 	<br>
 	<div style="color: #888;">
 		Show issue: <?php echo link_tag($module->generateURL('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo()))); ?><br>
