@@ -9,8 +9,8 @@
 			<?php foreach ($found_users as $user): ?>
 				<?php $cc++; ?>
 				<?php if ($user instanceof TBGUser): ?>
-					<li class="<?php if ($cc == count($found_users) && $num_users == count($found_users)): ?> last<?php endif; ?>">
-						<?php echo image_tag($user->getAvatarURL(), array('alt' => ' ', 'style' => "width: 12px; height: 12px; float: left; margin-right: 5px;"), true); ?>
+					<li class="quicksearch_user_item <?php if ($cc == count($found_users) && $num_users == count($found_users)): ?> last<?php endif; ?>">
+						<?php echo tbg_get_userstate_image($user) . image_tag($user->getAvatarURL(), array('alt' => ' ', 'class' => 'avatar', 'style' => "width: 12px; height: 12px;"), true); ?>
 						<?php echo $user->getNameWithUsername(); ?>
 						<span class="hidden backdrop"><span class="backdrop_url"><?php echo make_url('get_partial_for_backdrop', array('key' => 'usercard', 'user_id' => $user->getID())); ?></span></span>
 					</li>

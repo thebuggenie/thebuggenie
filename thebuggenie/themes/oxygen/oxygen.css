@@ -155,6 +155,7 @@ header nav ul { position: relative !important; }
   border: 1px solid rgba(0, 0, 0, 0.3);
 }
 #quicksearch_indicator { position: absolute; left: 10px; top: 3px; z-index: 10; }
+div.autocomplete ul li.quicksearch_user_item img { float: none; }
 /* End main header area */
 
 /* error and success message popups / slidedowns */
