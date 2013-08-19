@@ -3217,6 +3217,19 @@ TBG.Issues.removeRelated = function(url, issue_id) {
 	});
 };
 
+TBG.Issues.move = function(form, issue_id) {
+	TBG.Main.Helpers.ajax(form.action, {
+        form: form,
+		loading: {
+            indicator: 'move_issue_indicator'
+        },
+		success: {
+			remove: 'issue_'+issue_id,
+			update: 'viewissue_move_issue_div'
+		}
+	});
+};
+
 TBG.Issues._addVote = function(url, direction) {
 	var opp_direction = (direction == 'up') ? 'down' : 'up';
 	

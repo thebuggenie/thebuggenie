@@ -229,6 +229,7 @@
 		{
 			$issue = null;
 			$project = null;
+			$multi = (bool) $request->getParameter('multi', false);
 			if ($issue_id = $request['issue_id'])
 			{
 				try
@@ -248,11 +249,21 @@
 			
 			if (!$issue instanceof TBGIssue)
 			{
+				if ($multi)
+				{
+					$this->getResponse()->setHttpStatus(400);
+					return $this->renderJSON(array('error' => $this->getI18n()->__('Cannot find the issue specified')));
+				}
 				return $this->return404(TBGContext::getI18n()->__('Cannot find the issue specified'));
 			}
 
 			if (!$project instanceof TBGProject)
 			{
+				if ($multi)
+				{
+					$this->getResponse()->setHttpStatus(400);
+					return $this->renderJSON(array('error' => $this->getI18n()->__('Cannot find the project specified')));
+				}
 				return $this->return404(TBGContext::getI18n()->__('Cannot find the project specified'));
 			}
 
@@ -268,10 +279,19 @@
 				$step = $issue->getProject()->getWorkflowScheme()->getWorkflowForIssuetype($issue->getIssueType())->getFirstStep();
 				$step->applyToIssue($issue);
 				$issue->save();
+				if ($multi)
+				{
+					return $this->renderJSON(array('content' => $this->getTemplateHTML('issuemoved', compact('issue', 'project'))));
+				}
 				TBGContext::setMessage('issue_message', TBGContext::getI18n()->__('The issue was moved'));
 			}
 			else
 			{
+				if ($multi)
+				{
+					$this->getResponse()->setHttpStatus(400);
+					return $this->renderJSON(array('error' => $this->getI18n()->__('The issue was not moved, since the project is the same')));
+				}
 				TBGContext::setMessage('issue_error', TBGContext::getI18n()->__('The issue was not moved, since the project is the same'));
 			}
 			
@@ -2970,6 +2990,7 @@
 						break;
 					case 'move_issue':
 						$template_name = 'main/moveissue';
+						$options['multi'] = (bool) $request->getParameter('multi', false);
 						break;
 					case 'issue_permissions':
 						$template_name = 'main/issuepermissions';

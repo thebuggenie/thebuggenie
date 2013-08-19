@@ -1,7 +1,8 @@
 <div class="backdrop_box medium" id="viewissue_move_issue_div">
 	<div class="backdrop_detail_header"><?php echo __('Move issue to a different project'); ?></div>
 	<div id="backdrop_detail_content" class="backdrop_detail_content">
-		<form action="<?php echo make_url('move_issue', array('issue_id' => $issue->getID())); ?>" method="post">
+		<form action="<?php echo make_url('move_issue', array('issue_id' => $issue->getID())); ?>" method="post" <?php if (isset($multi) && $multi): ?>onsubmit="TBG.Issues.move($(this), <?php echo $issue->getID(); ?>);return false;"<?php endif; ?>>
+			<input type="hidden" name="multi" value="<?php echo (int) (isset($multi) && $multi); ?>">
 			<div class="rounded_box borderless yellow" style="margin: 5px 0 20px 0;">
 				<p><?php echo __('Please be aware that moving this issue to a different project will reset details such as status, category, etc., and may also make some fields invisible, depending on the issue type configuration for that project. The issue will also be renumbered.'); ?></p>
 			</div>
