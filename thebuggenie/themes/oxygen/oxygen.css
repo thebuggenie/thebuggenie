@@ -324,6 +324,12 @@ footer img { margin: 4px 3px -6px 0; }
 .sc_actions .dropdown_box:after {
     left: 95%;
 }
+*.no_direction:before,
+*.no_direction:after {
+    border: none;
+    content: '';
+    display: none;
+}
 
 /* end tooltip styling */
 
@@ -912,6 +918,8 @@ ul.project_list li { margin: 0px; font-size: 1.0em; font-weight: bold; padding: 
 .team_dashboard .header, .project_overview .header { padding: 5px; margin-bottom: 8px; border-bottom: 1px solid #DDD; font-size: 1.1em; }
 .project_overview .button-group { float: right; }
 .project_overview .button-group .button { font-weight: normal !important; }
+.project_overview .button-group .button.lefthugging, .project_overview .button-group .button.lefthugging:hover { padding-left: 7px !important; }
+.project_overview .button-group .button.righthugging, .project_overview .button-group .button.righthugging:hover { padding-right: 0 !important; }
 .team_dashboard { padding: 10px; }
 .dashboard_client_info { margin-bottom: 10px; width: 100%; }
 .dashboard_client_info .dashboard_client_header { font-weight: bold; font-size: 2.1em; }
@@ -1004,9 +1012,11 @@ reportissue_additional_information_container .markItUp { display: none; }
 .nice_button.workflow input { border: 0; border-top: 0; border-left: 1px solid #CDC895; border-bottom: 1px solid #CDC895; color: #6E6E53; padding: 2px 3px; font-weight: normal; background-color: #E3DDA5; cursor: pointer; }
 .nice_button.workflow input:active { background-color: #E9E9B0; }
 .nice_button.workflow input:hover { background-color: #D3CE99; }
-.workflow_actions .button, .workflow_actions .button:hover, .button-group .button, .button-group .button:hover { border-radius: 0; border-left-width: 0; -moz-border-radius: 0; -webkit-border-radius: 0; font-size: 1em; padding: 2px 5px !important; }
+.workflow_actions .button, .workflow_actions .button:hover, .button-group .button, .button-group .button:hover { border-radius: 0; border-left-width: 0; -moz-border-radius: 0; -webkit-border-radius: 0; font-size: 1em; padding: 2px 5px; }
 .workflow_actions .button.first, .workflow_actions .button.first:hover, .button-group .button:first-child, .button-group .button:first-child:hover, .button-group .button.first, .button-group .button.first:hover { border-left-width: 1px; border-top-left-radius: 3px; -moz-border-radius-topleft: 3px; -webkit-border-top-left-radius: 3px; border-bottom-left-radius: 3px; -moz-border-radius-bottomleft: 3px; -webkit-border-bottom-left-radius: 3px; }
 .workflow_actions .button.last, .button-group .button:last-child, .button-group .button.last { border-top-right-radius: 3px; -moz-border-radius-topright: 3px; -webkit-border-top-right-radius: 3px; border-bottom-right-radius: 3px; -moz-border-radius-bottomright: 3px; -webkit-border-bottom-right-radius: 3px; }
+.button-group .button.lefthugging { border-left: none; }
+.button-group .button.righthugging { border-right: none; }
 .workflow_actions li.more_actions { margin-left: 5px; }
 #workflow_actions .more_actions_dropdown { margin-top: 33px; }
 .workflow_actions li.workflow { position: relative; }
@@ -1014,6 +1024,7 @@ reportissue_additional_information_container .markItUp { display: none; }
 .workflow_actions li.workflow .tooltip:before, .workflow_actions li.workflow .tooltip:after { left: auto; right: 10px; }
 .button-group .button { float: left; }
 .project_header_right .button, .project_header_right .button:hover, #tab_csv_pane .button-group .button, #tab_csv_pane .button-group .button:hover, .project_strip .button-group .button, .project_strip .button-group .button:hover { padding: 4px 10px !important; font-size: 1em; font-weight: normal !important; }
+.project_header_right .button.reportissue_dropdown_button, .project_header_right .button.reportissue_dropdown_button:hover { padding-left: 0px !important; }
 /* end very visible button */
 
 .rounded_list_first_item { border-top-right-radius: 3px; -moz-border-radius-topright: 5px; -webkit-border-top-right-radius: 3px; border-top-left-radius: 3px; -moz-border-radius-topleft: 5px; -webkit-border-top-left-radius: 3px; }
@@ -1816,7 +1827,7 @@ input[type=submit], input[type=submit]:hover, button, .button, .button:hover {
 	line-height: 17px !important; 
 	height: auto; 
 	margin: 0;
-	padding: 1px 3px !important; 
+	padding: 1px 3px !important;
 	font-size: 12px; 
 	text-decoration: none;
 	border: 1px solid #AAA; /* Fallback style */

@@ -108,7 +108,7 @@
 			if ($this->searchterm)
 			{
 				preg_replace_callback(TBGTextParser::getIssueRegex(), array($this, 'extractIssues'), $this->searchterm);
-				
+
 				if (!count($this->foundissues))
 				{
 					$issue = TBGIssue::getIssueFromLink($this->searchterm);
@@ -284,7 +284,19 @@
 				$this->issues = $this->foundissues;
 				if ($request['quicksearch'] == true)
 				{
-					$this->redirect('quicksearch');
+					if ($request->isAjaxCall())
+					{
+						$this->redirect('quicksearch');
+					}
+					else
+					{
+						$issues = $this->issues;
+						$issue = array_shift($issues);
+						if ($issue instanceof TBGIssue)
+						{
+							return $this->forward($this->getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
+						}
+					}
 				}
 			}
 			$this->search_error = TBGContext::getMessageAndClear('search_error');
