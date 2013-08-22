@@ -40,6 +40,7 @@
 		const VIEW_PROJECT_STATISTICS_RESOLUTION = 112;
 		const VIEW_PROJECT_STATISTICS_STATE = 113;
 		const VIEW_PROJECT_STATISTICS_CATEGORY = 114;
+		const VIEW_PROJECT_STATISTICS_SEVERITY = 116;
 		const VIEW_PROJECT_RECENT_ISSUES = 107;
 		const VIEW_PROJECT_RECENT_ACTIVITIES = 108;
 		const VIEW_PROJECT_UPCOMING = 109;
@@ -142,6 +143,7 @@
 					$searches[self::VIEW_PROJECT_SUBPROJECTS] = array(0 => TBGContext::getI18n()->__('Subprojects'));
 					$searches[self::VIEW_PROJECT_STATISTICS_LAST15] = array(0 => TBGContext::getI18n()->__('Graph of closed vs open issues, past 15 days'));
 					$searches[self::VIEW_PROJECT_STATISTICS_PRIORITY] = array(0 => TBGContext::getI18n()->__('Statistics by priority'));
+					$searches[self::VIEW_PROJECT_STATISTICS_SEVERITY] = array(0 => TBGContext::getI18n()->__('Statistics by severity'));
 					$searches[self::VIEW_PROJECT_STATISTICS_CATEGORY] = array(0 => TBGContext::getI18n()->__('Statistics by category'));
 					$searches[self::VIEW_PROJECT_STATISTICS_STATUS] = array(0 => TBGContext::getI18n()->__('Statistics by status'));
 					$searches[self::VIEW_PROJECT_STATISTICS_RESOLUTION] = array(0 => TBGContext::getI18n()->__('Statistics by resolution'));
@@ -351,6 +353,7 @@
 					return 'project/dashboardviewprojectrecentactivities';
 				case self::VIEW_PROJECT_STATISTICS_CATEGORY:
 				case self::VIEW_PROJECT_STATISTICS_PRIORITY:
+				case self::VIEW_PROJECT_STATISTICS_SEVERITY:
 				case self::VIEW_PROJECT_STATISTICS_RESOLUTION:
 				case self::VIEW_PROJECT_STATISTICS_STATE:
 				case self::VIEW_PROJECT_STATISTICS_STATUS:
