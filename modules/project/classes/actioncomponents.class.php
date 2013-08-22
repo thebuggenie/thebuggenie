@@ -86,6 +86,11 @@
 					$items = TBGPriority::getAll();
 					$key = 'priority';
 					break;
+				case TBGDashboardView::VIEW_PROJECT_STATISTICS_SEVERITY:
+					$counts = TBGContext::getCurrentProject()->getSeverityCount();
+					$items = TBGSeverity::getAll();
+					$key = 'priority';
+					break;
 				case TBGDashboardView::VIEW_PROJECT_STATISTICS_CATEGORY:
 					$counts = TBGContext::getCurrentProject()->getCategoryCount();
 					$items = TBGCategory::getAll();

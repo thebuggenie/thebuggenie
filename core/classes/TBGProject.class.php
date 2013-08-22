@@ -315,6 +315,13 @@
 		protected $_prioritycount = null;
 
 		/**
+		 * Severity count
+		 *
+		 * @var array
+		 */
+		protected $_severitycount = null;
+
+		/**
 		 * Workflow step count
 		 *
 		 * @var array
@@ -2329,6 +2336,29 @@
 		{
 			$this->_populatePriorityCount();
 			return $this->_prioritycount;
+		}
+
+		protected function _populateSeverityCount()
+		{
+			if ($this->_severitycount === null)
+			{
+				$this->_severitycount = array();
+				$this->_severitycount[0] = array('open' => 0, 'closed' => 0, 'percentage' => 0);
+				foreach (TBGSeverity::getAll() as $severity_id => $severity)
+				{
+					$this->_severitycount[$severity_id] = array('open' => 0, 'closed' => 0, 'percentage' => 0);
+				}
+				foreach (TBGIssuesTable::getTable()->getSeverityCountByProjectID($this->getID()) as $severity_id => $severity_count)
+				{
+					$this->_severitycount[$severity_id] = $severity_count;
+				}
+			}
+		}
+
+		public function getSeverityCount()
+		{
+			$this->_populateSeverityCount();
+			return $this->_severitycount;
 		}
 
 		protected function _populateWorkflowCount()

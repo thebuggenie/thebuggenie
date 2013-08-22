@@ -234,6 +234,11 @@
 			return $this->_getCountByProjectIDAndColumn($project_id, self::PRIORITY);
 		}
 
+		public function getSeverityCountByProjectID($project_id)
+		{
+			return $this->_getCountByProjectIDAndColumn($project_id, self::SEVERITY);
+		}
+
 		public function getStatusCountByProjectID($project_id)
 		{
 			return $this->_getCountByProjectIDAndColumn($project_id, self::STATUS);
