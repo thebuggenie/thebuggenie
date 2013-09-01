@@ -1966,6 +1966,7 @@
 								throw new Exception($i18n->__('This component already exists for this project'));
 							}
 							$component->setName($c_name);
+							$component->save();
 							return $this->renderJSON(array('failed' => false, 'newname' => $component->getName()));
 						}
 						else
