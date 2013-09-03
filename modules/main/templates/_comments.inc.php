@@ -19,9 +19,6 @@
 				</select>
 				<br />
 				<label for="comment_bodybox"><?php echo __('Comment'); ?></label><br />
-				<input id="comment_syntax_mw" type="radio" name="comment_syntax" value="<?php echo TBGSettings::SYNTAX_MW; ?>"<?php if (TBGSettings::getDefaultCommentSyntax() == TBGSettings::SYNTAX_MW): ?> checked <?php endif; ?>><label for="comment_syntax_mw" class="optional"><?php echo __('Mediawiki-formatted'); ?></label>
-				<input id="comment_syntax_md" type="radio" name="comment_syntax" value="<?php echo TBGSettings::SYNTAX_MD; ?>"<?php if (TBGSettings::getDefaultCommentSyntax() == TBGSettings::SYNTAX_MD): ?> checked <?php endif; ?>><label for="comment_syntax_md" class="optional"><?php echo __('Markdown-formatted'); ?></label>
-				<br />
 				<?php include_template('main/textarea', array('area_name' => 'comment_body', 'area_id' => 'comment_bodybox', 'height' => '250px', 'width' => '100%', 'value' => ((isset($comment_error) && $comment_error) ? $comment_error_body : ''))); ?>
 				<div id="comment_add_indicator" style="display: none;">
 					<?php echo image_tag('spinning_20.gif'); ?>

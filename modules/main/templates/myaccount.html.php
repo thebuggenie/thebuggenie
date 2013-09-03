@@ -175,9 +175,6 @@
 									<div id="prefer_markdown_container" style="<?php if ($tbg_user->getPreferredSyntax(true) == TBGSettings::SYNTAX_MW) echo 'display: none;'; ?>">
 										<input type="checkbox" id="profile_prefer_wiki_markdown" name="prefer_wiki_markdown" <?php if ($tbg_user->preferWikiMarkdown()) echo 'checked'; ?>>
 										<label for="profile_prefer_wiki_markdown"><?php echo __('Prefer markdown also in the wiki'); ?></label><br>
-										<div class="config_explanation">
-											<?php echo __('The markdown syntax is good for basic formatting, but does not support wiki features such as internal links, categorization and more. Still, if you only write simple wiki pages, this might be good enough.'); ?>
-										</div>
 									</div>
 								</td>
 							</tr>
