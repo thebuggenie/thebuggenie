@@ -179,6 +179,8 @@
 			{
 				while ($row = $res->getNextRow())
 				{
+					if ($row->get(self::UID) == 0 && $row->get(self::IS_PUBLIC) == 0) continue;
+
 					$retarr[($row->get(self::UID) != 0) ? 'user' : 'public'][$row->get(self::ID)] = $row;
 				}
 			}

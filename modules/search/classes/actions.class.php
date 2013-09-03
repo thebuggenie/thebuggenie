@@ -99,6 +99,10 @@
 					$this->searchtitle = $savedsearch->get(TBGSavedSearchesTable::NAME);
 					$this->filters = \b2db\Core::getTable('TBGSavedSearchFiltersTable')->getFiltersBySavedSearchID($savedsearch->get(TBGSavedSearchesTable::ID));
 				}
+				else
+				{
+					TBGContext::setMessage('search_error', TBGContext::getI18n()->__("You don't have access to this saved search"));
+				}
 			}
 		}
 
