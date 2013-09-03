@@ -91,10 +91,6 @@
 				<option value="0"<?php if (!$comment->isPublic()): ?> selected="selected" <?php endif; ?>><?php echo __('Visible for me, developers and administrators only'); ?></option>
 			</select>
 			<br />
-			<label for="comment_reply_<?php echo $comment->getID(); ?>_bodybox"><?php echo __('Comment'); ?></label><br />
-			<input id="comment_reply_<?php echo $comment->getID(); ?>_syntax_mw" type="radio" name="comment_syntax" value="<?php echo TBGSettings::SYNTAX_MW; ?>"<?php if ($comment->isMwSyntax()): ?> checked <?php endif; ?>><label for="comment_reply_<?php echo $comment->getID(); ?>_syntax_mw" class="optional"><?php echo __('Mediawiki-formatted'); ?></label>
-			<input id="comment_reply_<?php echo $comment->getID(); ?>_syntax_md" type="radio" name="comment_syntax" value="<?php echo TBGSettings::SYNTAX_MD; ?>"<?php if ($comment->isMdSyntax()): ?> checked <?php endif; ?>><label for="comment_reply_<?php echo $comment->getID(); ?>_syntax_md" class="optional"><?php echo __('Markdown-formatted'); ?></label>
-			<br />
 			<?php include_template('main/textarea', array('area_name' => 'comment_body', 'area_id' => 'comment_reply_'.$comment->getID().'_bodybox', 'height' => '200px', 'width' => '100%', 'syntax' => (($comment->isMwSyntax()) ? 'mw' : 'md'), 'value' => tbg_decodeUTF8("\n\n\n'''".__('%user% wrote:', array('%user%' => $comment->getPostedBy()->getName()))."'''\n>".str_replace("\n", "\n>", wordwrap(html_entity_decode(strip_tags($comment->getParsedContent($options)), ENT_COMPAT, TBGContext::getI18n()->getCharset()), 75, "\n"))."\n", true))); ?>
 			<div id="comment_reply_indicator_<?php echo $comment->getID(); ?>" style="display: none;">
 				<?php echo image_tag('spinning_16.gif', array('class' => 'spinning')); ?>
