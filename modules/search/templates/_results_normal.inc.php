@@ -119,10 +119,10 @@
 						<?php echo ($issue->getMilestone() instanceof TBGMilestone) ? link_tag(make_url('project_milestone_details', array('project_key' => $issue->getProject()->getKey(), 'milestone_id' => $issue->getMilestone()->getID())), $issue->getMilestone()->getName()) : '-'; ?>
 					</td>
 					<td class="sc_estimated_time<?php if (!$issue->hasEstimatedTime()): ?> faded_out<?php endif; ?>"<?php if (!in_array('estimated_time', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
-						<?php echo (!$issue->hasEstimatedTime()) ? '-' : $issue->getFormattedTime($issue->getEstimatedTime()); ?>
+						<?php echo (!$issue->hasEstimatedTime()) ? '-' : TBGIssue::getFormattedTime($issue->getEstimatedTime()); ?>
 					</td>
 					<td class="sc_spent_time<?php if (!$issue->hasSpentTime()): ?> faded_out<?php endif; ?>"<?php if (!in_array('spent_time', $visible_columns)): ?> style="display: none;"<?php endif; ?>>
-						<?php echo (!$issue->hasSpentTime()) ? '-' : $issue->getFormattedTime($issue->getSpentTime()); ?>
+						<?php echo (!$issue->hasSpentTime()) ? '-' : TBGIssue::getFormattedTime($issue->getSpentTime()); ?>
 					</td>
 					<td class="smaller sc_last_updated" title="<?php echo tbg_formatTime($issue->getLastUpdatedTime(), 21); ?>"<?php if (!in_array('last_updated', $visible_columns)): ?> style="display: none;"<?php endif; ?>><span style="display: none;"><?php echo $issue->getLastUpdatedTime(); ?></span><?php echo tbg_formatTime($issue->getLastUpdatedTime(), 20); ?></td>
 					<td class="smaller sc_comments" style="text-align: center;<?php if (!in_array('comments', $visible_columns)): ?> display: none;<?php endif; ?>">

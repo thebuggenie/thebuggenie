@@ -368,7 +368,7 @@
 						<a href="javascript:void(0);" onclick="if ($('estimated_time_<?php echo $issue->getID(); ?>_change').visible()) { $$('div.dropdown_box').each(Element.hide); } else { $$('div.dropdown_box').each(Element.hide); $('estimated_time_<?php echo $issue->getID(); ?>_change').toggle(); }" title="<?php echo __('Click to estimate this issue'); ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
 					<?php endif; ?>
 					<span id="estimated_time_<?php echo $issue->getID(); ?>_name"<?php if (!$issue->hasEstimatedTime()): ?> style="display: none;"<?php endif; ?>>
-						<?php echo $issue->getFormattedTime($issue->getEstimatedTime()); ?>
+						<?php echo TBGIssue::getFormattedTime($issue->getEstimatedTime()); ?>
 					</span>
 					<span class="faded_out" id="no_estimated_time_<?php echo $issue->getID(); ?>"<?php if ($issue->hasEstimatedTime()): ?> style="display: none;"<?php endif; ?>><?php echo __('Not estimated'); ?></span>
 				</dd>
@@ -382,7 +382,7 @@
 				<dt id="spent_time_header"><?php echo __('Time spent'); ?></dt>
 				<dd id="spent_time_content">
 					<span id="spent_time_<?php echo $issue->getID(); ?>_name"<?php if (!$issue->hasSpentTime()): ?> style="display: none;"<?php endif; ?>>
-						<a href="javascript:void(0)" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'issue_spenttimes', 'issue_id' => $issue->getID())); ?>');" id="spent_time_<?php echo $issue->getID(); ?>_value"><?php echo $issue->getFormattedTime($issue->getSpentTime()); ?></a>
+						<a href="javascript:void(0)" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'issue_spenttimes', 'issue_id' => $issue->getID())); ?>');" id="spent_time_<?php echo $issue->getID(); ?>_value"><?php echo TBGIssue::getFormattedTime($issue->getSpentTime()); ?></a>
 					</span>
 					<span class="faded_out" id="no_spent_time_<?php echo $issue->getID(); ?>"<?php if ($issue->hasSpentTime()): ?> style="display: none;"<?php endif; ?>><?php echo __('No time spent'); ?></span>
 				</dd>

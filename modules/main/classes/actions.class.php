@@ -1532,7 +1532,7 @@
 			$spenttime->getIssue()->save();
 			$timesum = array_sum($spenttime->getIssue()->getSpentTime());
 
-			return $this->renderJSON(array('deleted' => 'ok', 'issue_id' => $issue_id, 'timesum' => $timesum, 'spenttime' => $spenttime->getIssue()->getFormattedTime($spenttime->getIssue()->getSpentTime())));
+			return $this->renderJSON(array('deleted' => 'ok', 'issue_id' => $issue_id, 'timesum' => $timesum, 'spenttime' => TBGIssue::getFormattedTime($spenttime->getIssue()->getSpentTime())));
 		}
 
 		public function runIssueEditTimeSpent(TBGRequest $request)
@@ -1596,7 +1596,7 @@
 
 			$timesum = array_sum($spenttime->getIssue()->getSpentTime());
 
-			return $this->renderJSON(array('edited' => 'ok', 'issue_id' => $issue_id, 'timesum' => $timesum, 'spenttime' => $spenttime->getIssue()->getFormattedTime($spenttime->getIssue()->getSpentTime()), 'timeentries' => $this->getComponentHTML('main/issuespenttimes', array('issue' => $spenttime->getIssue()))));
+			return $this->renderJSON(array('edited' => 'ok', 'issue_id' => $issue_id, 'timesum' => $timesum, 'spenttime' => TBGIssue::getFormattedTime($spenttime->getIssue()->getSpentTime()), 'timeentries' => $this->getComponentHTML('main/issuespenttimes', array('issue' => $spenttime->getIssue()))));
 		}
 
 		/**
@@ -1688,7 +1688,7 @@
 					{
 						$issue->save();
 					}
-					return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>$issue->isEstimatedTimeChanged(), 'field' => (($issue->hasEstimatedTime()) ? array('id' => 1, 'name' => $issue->getFormattedTime($issue->getEstimatedTime())) : array('id' => 0)), 'values' => $issue->getEstimatedTime()));
+					return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>$issue->isEstimatedTimeChanged(), 'field' => (($issue->hasEstimatedTime()) ? array('id' => 1, 'name' => TBGIssue::getFormattedTime($issue->getEstimatedTime())) : array('id' => 0)), 'values' => $issue->getEstimatedTime()));
 					break;
 				case 'posted_by':
 				case 'owned_by':
@@ -1769,7 +1769,7 @@
 						$issue->addSpentHours($request['hours']);
 						$issue->addSpentPoints($request['points']);
 					}
-					return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>$issue->isSpentTimeChanged(), 'field' => (($issue->hasSpentTime()) ? array('id' => 1, 'name' => $issue->getFormattedTime($issue->getSpentTime())) : array('id' => 0)), 'values' => $issue->getSpentTime()));
+					return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>$issue->isSpentTimeChanged(), 'field' => (($issue->hasSpentTime()) ? array('id' => 1, 'name' => TBGIssue::getFormattedTime($issue->getSpentTime())) : array('id' => 0)), 'values' => $issue->getSpentTime()));
 					break;
 				case 'category':
 				case 'resolution':
@@ -2089,11 +2089,11 @@
 					break;
 				case 'estimated_time':
 					$issue->revertEstimatedTime();
-					return $this->renderJSON(array('ok' => true, 'issue_id' => $issue->getID(), 'field' => (($issue->hasEstimatedTime()) ? array('id' => 1, 'name' => $issue->getFormattedTime($issue->getEstimatedTime())) : array('id' => 0)), 'values' => $issue->getEstimatedTime()));
+					return $this->renderJSON(array('ok' => true, 'issue_id' => $issue->getID(), 'field' => (($issue->hasEstimatedTime()) ? array('id' => 1, 'name' => TBGIssue::getFormattedTime($issue->getEstimatedTime())) : array('id' => 0)), 'values' => $issue->getEstimatedTime()));
 					break;
 				case 'spent_time':
 					$issue->revertSpentTime();
-					return $this->renderJSON(array('ok' => true, 'issue_id' => $issue->getID(), 'field' => (($issue->hasSpentTime()) ? array('id' => 1, 'name' => $issue->getFormattedTime($issue->getSpentTime())) : array('id' => 0)), 'values' => $issue->getSpentTime()));
+					return $this->renderJSON(array('ok' => true, 'issue_id' => $issue->getID(), 'field' => (($issue->hasSpentTime()) ? array('id' => 1, 'name' => TBGIssue::getFormattedTime($issue->getSpentTime())) : array('id' => 0)), 'values' => $issue->getSpentTime()));
 					break;
 				case 'owned_by':
 					$issue->revertOwner();

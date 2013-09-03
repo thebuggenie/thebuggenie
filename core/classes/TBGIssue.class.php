@@ -1955,7 +1955,7 @@
 		 * 
 		 * @return string
 		 */
-		public function getFormattedTime($time)
+		public static function getFormattedTime($time, $strict = true)
 		{
 			$values = array();
 			$i18n = TBGContext::getI18n();
@@ -1968,17 +1968,17 @@
 			{
 				$values[] = ($time['weeks'] == 1) ? $i18n->__('1 week') : $i18n->__('%number_of% weeks', array('%number_of%' => $time['weeks']));
 			}
-			if (array_key_exists('days', $time) && $time['days'] > 0)
+			if (array_key_exists('days', $time) && ($time['days'] > 0 || !$strict))
 			{
 				$values[] = ($time['days'] == 1) ? $i18n->__('1 day') : $i18n->__('%number_of% days', array('%number_of%' => $time['days']));
 			}
-			if (array_key_exists('hours', $time) && $time['hours'] > 0)
+			if (array_key_exists('hours', $time) && ($time['hours'] > 0 || !$strict))
 			{
 				$values[] = ($time['hours'] == 1) ? $i18n->__('1 hour') : $i18n->__('%number_of% hours', array('%number_of%' => $time['hours']));
 			}
 			$retval = join(', ', $values);
 			
-			if (array_key_exists('points', $time) && $time['points'] > 0)
+			if (array_key_exists('points', $time) && ($time['points'] > 0 || !$strict))
 			{
 				if (!empty($values))
 				{
@@ -4686,8 +4686,8 @@
 														'hours' => $this->getChangedPropertyOriginal('_estimated_hours'),
 														'points' => $this->getChangedPropertyOriginal('_estimated_points'));
 
-									$old_formatted_time = (array_sum($old_time) > 0) ? $this->getFormattedTime($old_time) : TBGContext::getI18n()->__('Not estimated');
-									$new_formatted_time = ($this->hasEstimatedTime()) ? $this->getFormattedTime($this->getEstimatedTime()) : TBGContext::getI18n()->__('Not estimated');
+									$old_formatted_time = (array_sum($old_time) > 0) ? TBGIssue::getFormattedTime($old_time) : TBGContext::getI18n()->__('Not estimated');
+									$new_formatted_time = ($this->hasEstimatedTime()) ? TBGIssue::getFormattedTime($this->getEstimatedTime()) : TBGContext::getI18n()->__('Not estimated');
 									$this->addLogEntry(TBGLogTable::LOG_ISSUE_TIME_ESTIMATED, $old_formatted_time . ' &rArr; ' . $new_formatted_time, serialize($old_time), serialize($this->getEstimatedTime()));
 									$is_saved_estimated = true;
 								}
@@ -4705,8 +4705,8 @@
 														'hours' => $this->getChangedPropertyOriginal('_spent_hours'),
 														'points' => $this->getChangedPropertyOriginal('_spent_points'));
 
-									$old_formatted_time = (array_sum($old_time) > 0) ? $this->getFormattedTime($old_time) : TBGContext::getI18n()->__('No time spent');
-									$new_formatted_time = ($this->hasSpentTime()) ? $this->getFormattedTime($this->getSpentTime()) : TBGContext::getI18n()->__('No time spent');
+									$old_formatted_time = (array_sum($old_time) > 0) ? TBGIssue::getFormattedTime($old_time) : TBGContext::getI18n()->__('No time spent');
+									$new_formatted_time = ($this->hasSpentTime()) ? TBGIssue::getFormattedTime($this->getSpentTime()) : TBGContext::getI18n()->__('No time spent');
 									$this->addLogEntry(TBGLogTable::LOG_ISSUE_TIME_SPENT, $old_formatted_time . ' &rArr; ' . $new_formatted_time, serialize($old_time), serialize($this->getSpentTime()));
 									$is_saved_spent = true;
 								}
