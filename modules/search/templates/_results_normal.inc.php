@@ -1,13 +1,21 @@
 <?php if (!$tbg_user->isGuest()) include_template('search/bulkactions', array('mode' => 'top')); ?>
 <?php $current_count = 0; ?>
+<?php $current_estimated_time = array('months' => 0, 'weeks' => 0, 'days' => 0, 'hours' => 0, 'points' => 0); ?>
+<?php $current_spent_time = $current_estimated_time; ?>
 <?php foreach ($issues as $issue): ?>
 	<?php list ($showtablestart, $showheader, $prevgroup_id, $groupby_description) = searchActions::resultGrouping($issue, $groupby, $cc, $prevgroup_id); ?>
 	<?php if (($showtablestart || $showheader) && $cc > 1): ?>
 		<?php echo '</tbody></table>'; ?>
-		<div class="results_summary"><?php echo __('Total number of issues in this group: %number%', array('%number%' => "<b>{$current_count}</b>")); ?></div>
+		<?php include_template('search/results_summary', compact('current_count', 'current_estimated_time', 'current_spent_time')); ?>
 		<?php $current_count = 0; ?>
+		<?php $current_estimated_time = array('months' => 0, 'weeks' => 0, 'days' => 0, 'hours' => 0, 'points' => 0); ?>
+		<?php $current_spent_time = $current_estimated_time; ?>
 	<?php endif; ?>
 	<?php $current_count++; ?>
+	<?php $estimate = $issue->getEstimatedTime(); ?>
+	<?php $spenttime = $issue->getSpentTime(); ?>
+	<?php foreach ($current_estimated_time as $key => $value) $current_estimated_time[$key] += $estimate[$key]; ?>
+	<?php foreach ($current_spent_time as $key => $value) $current_spent_time[$key] += $spenttime[$key]; ?>
 	<?php if ($showheader): ?>
 		<h5>
 			<?php if ($groupby == 'issuetype'): ?>
@@ -138,7 +146,7 @@
 	<?php if ($cc == count($issues)): ?>
 			</tbody>
 		</table>
-		<div class="results_summary"><?php echo __('Total number of issues in this group: %number%', array('%number%' => "<b>{$current_count}</b>")); ?></div>
+		<?php include_template('search/results_summary', compact('current_count', 'current_estimated_time', 'current_spent_time')); ?>
 	<?php endif; ?>
 	<?php $cc++; ?>
 <?php endforeach; ?>
