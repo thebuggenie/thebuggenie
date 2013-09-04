@@ -58,7 +58,7 @@
 				{
 					try
 					{
-						if (in_array($mailing->getMailerType(), array(TBGMailer::MAIL_TYPE_CUSTOM, TBGMailer::MAIL_TYPE_PHP)))
+						if (in_array($mailing->getMailerType(), array(TBGMailer::MAIL_TYPE_B2M, TBGMailer::MAIL_TYPE_PHP)))
 						{
 							$processed_messages = array();
 							$failed_messages = 0;

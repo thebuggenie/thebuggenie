@@ -831,7 +831,7 @@
 				}
 				else
 				{
-					if (in_array($this->getMailerType(), array(TBGMailer::MAIL_TYPE_CUSTOM, TBGMailer::MAIL_TYPE_PHP)))
+					if (in_array($this->getMailerType(), array(TBGMailer::MAIL_TYPE_B2M, TBGMailer::MAIL_TYPE_PHP)))
 					{
 						$mailer = $this->getMailer();
 						$retval = $mailer->send($mail);
