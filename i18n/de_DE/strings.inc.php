@@ -61,10 +61,10 @@
 	$strings['Can see all components'] = 'Kann alle Komponenten sehen';
 	$strings['Can see all releases'] = 'Kann alle Releases sehen';
 	$strings['Can see all milestones'] = 'Kann alle Meilensteine sehen';
-	$strings['Can manage stories, tasks, sprints and backlog on the project planning page'] = 'Kann auf der Projektplanungsseite Berichte, Aufgaben, Sprints und den Backlog verwalten';
+	$strings['Can manage stories, tasks, sprints and backlog on the project planning page'] = 'Kann auf der Projektplanungsseite Berichte, Aufgaben, Zwischenziele und den Backlog verwalten';
 	$strings['Can add new issues/tasks/stories to the backlog on the project planning page'] = 'Kann auf der Projektplanungsseite Fälle, Aufgaben und Berichte erstellen';
 	$strings['Can manage the backlog on the project planning page'] = 'Kann auf der Projektplanungsseite den Backlog verwalten';
-	$strings['Can add milestones/sprints on the project planning page'] = 'Kann Meilensteine und sprints auf der Projektplanungsseite hinzufügen';
+	$strings['Can add milestones/sprints on the project planning page'] = 'Kann Meilensteine und Zwischenziele auf der Projektplanungsseite hinzufügen';
 	$strings['Can (re-)assign issues/tasks/stories to milestones/sprints on the project planning page'] = 'Kann Fälle, Aufgaben und Berichte auf der Projektplanungsseite (neu-)zuweisen';
 	$strings['Can manage project'] = 'Kann Projekte verwalten';
 	$strings['Can manage project releases and components'] = 'Kann Releases und Komponenten verwalten';
@@ -105,7 +105,7 @@
 	$strings['Can spend time working on issues'] = 'Kann Fälle bearbeiten mit Bearbeitungszeit';
 	$strings['Can edit issue percent complete'] = 'Kann Fälle bearbeiten mit prozentualem Abschluss';
 	$strings['Can set issue milestone'] = 'Kann Fälle bearbeiten mit Meilenstein';
-	$strings['Can change custom field values for issues reported by the user'] = 'Kann benutzerdefinierte, vom Benutzer gemeldete, Felder editieren';
+	$strings['Can change custom field values for issues reported by the user'] = 'Kann benutzerdefinierte, vom Benutzer gemeldete Felder editieren';
 	$strings['Can change custom field values for any issues'] = 'Kann benutzerdefinierte Felder aller Fälle editieren';
 	$strings['Can change custom field "%field_name%" for issues reported by the user'] = 'Kann benutzerdefiniertes Feld "%field_name%" des Benutzers editieren';
 	$strings['Can change custom field "%field_name%" for any issues'] = 'Kann benutzerdefinierte Felder "%field_name%" für alle Fälle editieren';
@@ -119,9 +119,9 @@
 	$strings['Can add links to issues reported by the user'] = 'Kann Links zu selbst gemeldeten Fällen einreichen';
 	$strings['Can add links to any issues'] = 'Kann Links zu allen gemeldeten Fällen einreichen';
 	$strings['Can add files to and remove own files from issues reported by the user'] = 'Kann Dateien von selbst eingereichten Fällen hinzufügen und Löschen';
-	$strings['Can add files to and remove own files from any issues'] = 'Kann Dateien aller eingereichten Fällen hinzufügen und löschen';
+	$strings['Can add files to and remove own files from any issues'] = 'Kann Dateien aller eingereichten Fälle hinzufügen und löschen';
 	$strings['Can remove any attachments from issues reported by the user'] = 'Kann Dateien von selbst eingereichten Fällen löschen';
-	$strings['Can remove any attachments from any issues'] = 'Kann Dateien aller eingereichten Fällen löschen';
+	$strings['Can remove any attachments from any issues'] = 'Kann Dateien aller eingereichten Fälle löschen';
 	$strings['Can add related issues to other issues'] = 'Kann Fälle mit anderen Fällen verknüpfen';
 	$strings['Can see public comments, post new, edit own and delete own comments'] = 'Kann öffentliche Kommentare sehen, neue erstellen, eigene editieren und löschen';
 	$strings['Can see public comments'] = 'Kann öffentliche Kommentare sehen';
@@ -129,10 +129,10 @@
 	$strings['Can edit own comments'] = 'Kann eigene Kommentare editieren';
 	$strings['Can delete own comments'] = 'Kann eigene Kommentare löschen';
 	$strings['Can see all comments (including non-public), post new, edit and delete all comments'] = 'Kann alle Kommentare sehen, neue erstellen, editieren und löschen';
-	$strings['Can see all comments including hidden'] = 'Kann alle Kommentare inkl. verstecken sehen';
+	$strings['Can see all comments including hidden'] = 'Kann alle Kommentare inkl. versteckte sehen';
 	$strings['Can edit all comments'] = 'Kann alle Kommentare bearbeiten';
 	$strings['Can delete any comments'] = 'Kann alle Kommentare löschen';
-	$strings['A loop has been found in the project heirarchy. Go to project configuration, and alter the subproject setting for this project so that this project is not a subproject of one which is a subproject of this one.'] = 'Ein Zirkelbezug wurde in der Projekthirarchie gefunden. Gehen Sie zur Konfiguration dieses Projektes um es so zu ändern, dass es nicht Unterprojekt eines Projektes ist, welches selbst Unterprojekt von diesem ist.';
+	$strings['A loop has been found in the project heirarchy. Go to project configuration, and alter the subproject setting for this project so that this project is not a subproject of one which is a subproject of this one.'] = 'Ein Zirkelbezug wurde in der Projektheirarchie gefunden. Gehen Sie zur Konfiguration dieses Projektes um es so zu ändern, dass es nicht Unterprojekt eines Projektes ist, welches selbst Unterprojekt von diesem ist.';
 	$strings['An authentication error occured. Please reload your page and try again'] = 'Ein Authentifizierungsfehler ist aufgetreten. Bitte laden Sie die Seite erneut.';
 	$strings['Please log in'] = 'Bitte einloggen';
 
@@ -176,7 +176,7 @@
 	// ----------------------------------------------------------------------------
 	$strings['Crash: Bug causes crash or data loss / asserts in the debug release'] = 'Crash: Fehler löst Absturz oder Datenverlust aus';
 	$strings['Major usability: Impairs usability in key scenarios'] = 'Schwerer Fehler: Verhindert die Ausführung von primären Aufgaben';
-	$strings['Minor usability: Impairs usability in secondary scenarios'] = 'Mittlerer Fehler: Verhindert die Ausführung von sekundüren Aufgaben';
+	$strings['Minor usability: Impairs usability in secondary scenarios'] = 'Mittlerer Fehler: Verhindert die Ausführung von sekundären Aufgaben';
 	$strings['Balancing: Enables degenerate usage strategies that harm the experience'] = 'Niederer Fehler: Produziert Fehler, welche die Nutzung beeinträchtigen';
 	$strings['Visual and Sound Polish: Aesthetic issues'] = 'Fehler auf der Oberfläche';
 	$strings['Localization'] = 'Lokalisierung/Übersetzung';
@@ -273,7 +273,7 @@
 	$strings['No time spent'] = 'Keine Zeit benötigt';
 	$strings["Time spent on this issue, from '''%previous_time%''' to '''%new_time%'''."] = "Bearbeitungszeit geändert, von '''%previous_time%''' auf '''%new_time%'''.";
 	$strings['This issue has been closed'] = 'Dieser Fall wurde geschlossen';
-	$strings['This issue has been reopened'] = 'Dieser Fall wieder wieder geöffnet';
+	$strings['This issue has been reopened'] = 'Dieser Fall wurde wieder geöffnet';
 	$strings['This issue is now blocking the next release'] = 'Dieser Fall blockiert nun das nächste Release';
 	$strings['This issue is no longer blocking the next release'] = 'Dieser Fall blockiert nicht länger das nächste Release';
 	$strings["The custom field %customfield_name% has been changed to '''%new_value%'''."] = "Das Feld %customfield_name% wurde geändert zu '''%new_value%'''.";
@@ -329,7 +329,7 @@
 	$strings['No file was uploaded'] = 'Keine Datei hochgeladen';
 	$strings['An unhandled error occured'] = 'Ein nicht verarbeiteter Fehler ist aufgetreten';
 	$strings['Uploads are not enabled'] = 'Uploads sind nicht aktiviert';
-	$strings['The file could not be uploaded'] = '';
+	$strings['The file could not be uploaded'] = 'Die Datei konnte nicht hochgeladen werden';
 	$strings['Could not find the uploaded file. Please make sure that it is not too big.'] = 'Hochgeladene Datei konnte nicht gefunden werden. Bitte stellen Sie sicher, daß sie nicht zu groß ist.';
 
 	// First occurrence is in: .\core\classes\TBGResponse.class.php
@@ -489,7 +489,7 @@
 	$strings['Scopes'] = 'Bereiche';
 	$strings['Permissions'] = 'Berechtigungen';
 	$strings['Roles'] = 'Rollen';
-	$strings['Authentication'] = 'Auhentifizierung';
+	$strings['Authentication'] = 'Authentifizierung';
 	$strings['Uploads &amp; attachments'] = 'Uploads &amp; Anhänge';
 	$strings['Import data'] = 'Daten importieren';
 	$strings['Projects'] = 'Projekte';
@@ -512,7 +512,7 @@
 	$strings['Manage issue types and configure issue fields for each issue type here'] = 'Verwaltung von Falltypen und deren Feldern für jeden Falltyp';
 	$strings['Status types, resolution types, categories, custom fields, etc. are configurable from this section.'] = 'Statustypen, Kategorien, benutzerdefinierte Felder etc. können hier konfiguriert werden.';
 	$strings['Set up and edit workflow configuration from this section'] = 'Einrichtung und Verwaltung der internen Workflows';
-	$strings['Manage users, user groups, clients and user teams from this section.'] = 'Verwaltung von Benutzer, Gruppen, Kunden und Teams';
+	$strings['Manage users, user groups, clients and user teams from this section.'] = 'Verwaltung von Benutzern, Gruppen, Kunden und Teams';
 	$strings['Manage Bug Genie extensions from this section. New modules are installed from here.'] = 'Hier können die Erweiterungen verwaltet und installiert werden.';
 	$strings['Module settings'] = 'Moduleinstellungen';
 	$strings['Failed to check for updates'] = 'Fehler bei der Suche nach Aktualisierungen';
@@ -527,10 +527,10 @@
 	$strings['Status types'] = 'Statustypen';
 	$strings['Resolution types'] = 'Lösungstypen';
 	$strings['Priority levels'] = 'Prioritäten';
-	$strings['Severity levels'] = 'Gewichtigungstlevels';
+	$strings['Severity levels'] = 'Gewichtungslevels';
 	$strings['Categories'] = 'Kategorien';
 	$strings['Reproducability'] = 'Reproduzierbarkeit';
-	$strings['Please enter a valid name'] = 'Bitte geben sie einen gültigen Namen ein';
+	$strings['Please enter a valid name'] = 'Bitte geben Sie einen gültigen Namen ein';
 	//$strings['The issuetype scheme was deleted'] = '';
 	$strings['Issue type created'] = 'Falltyp erstellt';
 	$strings['Please provide a valid name for the issue type'] = 'Bitte geben Sie eine gültige Fallbezeichnung ein';
@@ -556,7 +556,7 @@
 	$strings['The project has been added'] = 'Das Projekt wurde hinzugefügt';
 	$strings['A project with the same key already exists'] = 'Ein Projekt mit dem gleichen Schlüssel existiert bereits';
 	$strings['An error occurred:'] = 'Ein Fehler ist aufgetreten:';
-	$strings['Please specify a valid project name'] = 'Bitte geben Sie einen validen Projektnamen ein';
+	$strings['Please specify a valid project name'] = 'Bitte geben Sie einen gültigen Projektnamen ein';
 	$strings["You don't have access to add projects"] = "Sie haben keine Berechtigung neue Projekte hinzuzufügen";
 	$strings['The project was deleted'] = 'Das Projekt wurde gelöscht';
 	$strings['An error occured'] = 'Ein Fehler ist aufgetreten';
@@ -566,7 +566,7 @@
 	$strings['The module "%module_name%" was installed successfully'] = 'Das Modul "%module_name%" wurde erfolgreich installiert';
 	$strings['There was an error install the module %module_name%'] = 'Ein Installationsfehler trat auf im Modul %module_name%';
 	$strings['Invalid or empty archive uploaded'] = 'Ungültiges oder leeres Archiv';
-	$strings['The module "%module_name%" was uploaded successfully'] = 'Das Modul "%module_name%" wurde erfolgreich hoch geladen';
+	$strings['The module "%module_name%" was uploaded successfully'] = 'Das Modul "%module_name%" wurde erfolgreich hochgeladen';
 	$strings['The module "%module_name%" was uninstalled successfully'] = 'Das Modul "%module_name%" wurde erfolgreich deinstalliert';
 	$strings['The module "%module_name%" was successfully upgraded and can now be used again'] = 'Das Modul "%module_name%" wurde erfolgreich aktualisiert und kann nun wieder verwendet werden';
 	$strings['The module "%module_name%" was not successfully upgraded'] = 'Das Modul "%module_name%" konnte nicht erfolgreich aktualisiert werden';
@@ -607,7 +607,7 @@
 	$strings['Please enter the new password twice'] = 'Bitte bestätigen Sie Ihr Passwort durch doppelte Eingabe';
 	$strings['Invalid user group'] = 'Ungültige Nutzergruppe';
 	$strings['One or more teams were invalid'] = 'Mindestens ein Team war ungültig';
-	$strings['One or more clients were invalid'] = 'Mindestens ein Kunden waren ungültig';
+	$strings['One or more clients were invalid'] = 'Mindestens ein Kunde war ungültig';
 	$strings['User updated!'] = 'Benutzer aktualisiert!';
 	$strings['The password was changed'] = 'Das Passwort wurde geändert';
 	//$strings['This user could not be updated: %message%'] = '';
@@ -637,7 +637,7 @@
 	$strings['This workflow / transition does not exist'] = 'Dieser Workflow / Transaktion existiert nicht';
 	$strings["Please enter a client name that doesn't already exist"] = "Bitte geben Sie einen Kundennamen an, der nicht bereits vorhanden ist";
 	$strings['The client was added'] = 'Kunde hinzugefügt';
-	$strings['Please enter a client name'] = 'Bitte geben Sei einen Namen für den Kunden ein';
+	$strings['Please enter a client name'] = 'Bitte geben Sie einen Namen für den Kunden ein';
 	$strings['You cannot delete this client'] = 'Sie können diesen Kunden nicht löschen';
 	$strings['The client was deleted'] = 'Kunde wurde gelöscht';
 	$strings['You cannot edit this client'] = 'Sie können diesen Kunden nicht bearbeiten';
@@ -652,8 +652,8 @@
 	//$strings['Row %row%: Both the type and item ID must be supplied for owner/lead/qa fields'] = '';
 	$strings['Row %row% column %col%: invalid value (must be 1 for a user or 2 for a team)'] = 'Zeile %row% Spalte %col%: Ungültiger Wert (erlaubt: 1 für Benutzer, 2 für Team)';
 	$strings['Row %row% column %col%: invalid value (must be a number)'] = 'Zeile %row% Spalte %col%: Ungültiger Wert (Zahlen erlaubt)';
-	$strings['Row %row% column %col%: user does not exist'] = 'Zeile %row% Spalte %col%: Nutzer exisitiert nicht';
-	$strings['Row %row% column %col%: team does not exist'] = 'Zeile %row% Spalte %col%: Team exisitiert nicht';
+	$strings['Row %row% column %col%: user does not exist'] = 'Zeile %row% Spalte %col%: Nutzer existiert nicht';
+	$strings['Row %row% column %col%: team does not exist'] = 'Zeile %row% Spalte %col%: Team existiert nicht';
 	$strings['Row %row% column %col%: client does not exist'] = 'Zeile %row% Spalte %col%: Kunde existiert nicht';
 	//$strings['Row %row% column %col%: workflow scheme does not exist'] = 'Zeile %row% Spalte %col%: ';
 	//$strings['Row %row% column %col%: issuetype scheme does not exist'] = 'Zeile %row% Spalte %col%: ';
@@ -661,15 +661,15 @@
 	$strings['Row %row% column %col%: Project does not exist'] = 'Zeile %row% Spalte %col%: Projekt existiert nicht';
 	$strings['Row %row% column %col%: Percentage must be from 0 to 100 inclusive'] = 'Zeile %row% Spalte %col%: Prozentwerte müssen im Bereich von 0 bis einschließlich 100 liegen';
 	//$strings['Row %row% column %col%: milestone does not apply to the specified project'] = 'Zeile %row% Spalte %col%: ';
-	$strings['Row %row% column %col%: milestone does not exist'] = 'Zeile %row% Spalte %col%: Meilenstein exisitiert nicht';
+	$strings['Row %row% column %col%: milestone does not exist'] = 'Zeile %row% Spalte %col%: Meilenstein existiert nicht';
 	$strings['Row %row% column %col%: status does not exist'] = 'Zeile %row% Spalte %col%: Status existiert nicht';
 	//$strings['Row %row% column %col%: resolution does not exist'] = 'Zeile %row% Spalte %col%: ';
 	$strings['Row %row% column %col%: priority does not exist'] = 'Zeile %row% Spalte %col%: Priorität existiert nicht';
 	$strings['Row %row% column %col%: category does not exist'] = 'Zeile %row% Spalte %col%: Kategorie existiert nicht';
 	//$strings['Row %row% column %col%: severity does not exist'] = 'Zeile %row% Spalte %col%: ';
 	//$strings['Row %row% column %col%: reproducability does not exist'] = 'Zeile %row% Spalte %col%: ';
-	$strings['Row %row% column %col%: this project does not support issues of this type (%type%)'] = 'Zeile %row% Spalte %col%: das Projekte unterstützt Fälle diesen Types nicht (%type%)';
-	$strings['Row %row% column %col%: issue type does not exist'] = 'Zeile %row% Spalte %col%: Falltyp exisitiert nicht';
+	$strings['Row %row% column %col%: this project does not support issues of this type (%type%)'] = 'Zeile %row% Spalte %col%: das Projekte unterstützt Fälle diesen Typs nicht (%type%)';
+	$strings['Row %row% column %col%: issue type does not exist'] = 'Zeile %row% Spalte %col%: Falltyp existiert nicht';
 	$strings['Errors occured while importing, see the error list in the import screen for further details'] = 'Beim Import sind Fehler aufgetreten. Prüfen Sie die Fehlerliste für mehr Informationen.';
 	//$strings['Dry-run successful, you can now uncheck the dry-run box and import your data.'] = '';
 	$strings['Row %row% failed: %err%'] = 'Fehler in Zeile %row: %err%';
@@ -691,7 +691,7 @@
 	$strings['Selected iconset'] = 'Iconset wählen';
 	$strings['An iconset contains all the icons used in The Bug Genie. You can change the icons to be used using this option'] = 'Ein Iconset enthält alle von The Bug Genie verwendeten Icons. Mit dieser Option können sie das verwendete Iconset ändern.';
 	$strings['Custom header and favicons'] = 'Anpassung von Kopfzeile und Favicon';
-	$strings['Configure icons'] = 'Icons configurieren';
+	$strings['Configure icons'] = 'Icons konfigurieren';
 	$strings['Custom header link'] = 'Angepasster Kopf-Link';
 	$strings['You can alter the webpage that clicking on the header icon navigates to. If left blank it will link to the main page of this installation.'] = 'Sie können die Webseite ändern, die aufgerufen wird wenn das Icon in der Kopfzeile geklickt wird. Wenn dieses Feld leer gelassen wird, wird zur Hauptseite dieser Installation verlinkt.';
 
@@ -704,7 +704,7 @@
 	$strings['If you delete this client, any projects this client is assigned to will be set to having no client'] = 'Wenn Sie diesen Kunden löschen wird jedes Projekt, dem dieser Kunde zugordnet ist, konfiguriert als "hat keinen Kunden".';
 	$strings['%number_of% member(s)'] = '%number_of% Mitglieder';
 	$strings['ID: %id%'] = 'ID: %id%';
-	$strings['Edit client settings'] = 'Editere Kundeneinstellungen';
+	$strings['Edit client settings'] = 'Editiere Kundeneinstellungen';
 	$strings['Client name'] = 'Kundenname';
 	$strings['Email Address'] = 'E-Mail-Adresse';
 	$strings['Website'] = 'Webseite';
@@ -780,7 +780,7 @@
 	$strings['In single project tracker mode, The Bug Genie will display the homepage for the first project as the main page instead of the regular index page'] = 'Im Einzelprojektmodus wird anstelle der normalen Startseite direkt die Startseite des ersten Projekts angezeigt';
 	$strings['More than one project exists. When in "single project" mode, accessing other projects than the first will become harder.'] = 'Es existiert mehr als ein Projekt. Sofern der Einzelprojektmodus aktiv ist, wird es schwieriger die Seiten der anderen Projekte zu finden.';
 	$strings['Show project list on frontpage'] = 'Zeige Projektliste auf Startseite';
-	$strings['Whether the project overview list should appear on the frontpage or not'] = 'Ob die Projekt auf der Startseite erscheinen soll oder nicht';
+	$strings['Whether the project overview list should appear on the frontpage or not'] = 'Ob die Projektübersicht auf der Startseite erscheinen soll oder nicht';
 	$strings['Comment trail'] = 'Kommentarliste';
 	$strings["Don't post system comments when an issue is updated"] = "Erstelle keine automatischen Kommentare, wenn ein Fall aktualisiert wird";
 	$strings['Always post comments when an issue is updated'] = 'Automatisch kommentieren, sobald der Fall geändert wurde';
@@ -888,8 +888,8 @@
 	// ----------------------------------------------------------------------------
 	//$strings['Enable issue type for this scheme'] = '';
 	//$strings['Disable issue type for this scheme'] = '';
-	$strings['Show / edit issue type settings'] = 'Zeige / Editiere Einstellungen des Falltyp';
-	$strings['Show / edit available choices'] = 'Zeige/Editiere verfügbare Möglichkeiten';
+	$strings['Show / edit issue type settings'] = 'Zeige / editiere Einstellungen des Falltyp';
+	$strings['Show / edit available choices'] = 'Zeige / editiere verfügbare Möglichkeiten';
 	//$strings['Cannot remove this issue type'] = '';
 	//$strings['Delete this issue type?'] = '';
 	//$strings['Do you really want to delete this issue type? Issues with this issue type will be unavailable.'] = '';
@@ -907,14 +907,14 @@
 	$strings['Redirect'] = 'Weiterleitung';
 	$strings['A blank "%report_issue%" page with a link to the reported issue at the top will be shown after the issue is reported'] = 'Eine leere "%report_issue%"-Seite mit einem Link zum gemeldeten Fall erscheint, wenn der Fall gemeldet wurde.';
 	$strings['Report issue'] = 'Fall melden';
-	$strings['The user is redirected to the reported issue after it has been reported'] = 'Der Benutzer wird auf den gemeldete Fall weitergeleitet, sobald er gemeldet wurde';
+	$strings['The user is redirected to the reported issue after it has been reported'] = 'Der Benutzer wird auf den gemeldeten Fall weitergeleitet, sobald er gemeldet wurde';
 	$strings['Whether to forward the user to the reported issue after it has been reported'] = 'Weiterleitung auf den gemeldeten Fall, sofern er abgeschickt wurde';
 
 	// First occurrence is in: .\modules\configuration\templates\_issuetypescheme.inc.php
 	// ----------------------------------------------------------------------------
 	$strings['In use by %number_of_associated_projects% project(s)'] = 'In Benutzung von %number_of_associated_projects% Projekt(en)';
 	//$strings['Not used by any projects'] = '';
-	$strings['Show / edit issue type associations'] = 'Zeige/Editiere Falltyp-Verbindungen';
+	$strings['Show / edit issue type associations'] = 'Zeige / editiere Falltyp-Verbindungen';
 	$strings['Create a copy of this issue type scheme'] = 'Erstelle hiervon eine Kopie';
 	//$strings['Cannot delete issuetype scheme'] = '';
 	//$strings['Delete this issue type scheme'] = '';
@@ -1047,7 +1047,7 @@
 	$strings['Edit'] = 'Editieren';
 	$strings['Delete this role?'] = 'Diese Rolle löschen?';
 	$strings['Do you really want to delete this role?'] = 'Soll diese Rolle wirklich gelöscht werden?';
-	$strings['Users assigned via this role will be unassigned, and depending on other roles their project permissions may be reset.'] = 'Nutzern, die dieser Rolle zugewiesen sind, wird die Zuweisung entfernt. Abhängig von anderen Rollen könnten ihre Projekt-Rechte zurück gesetzt werden.';
+	$strings['Users assigned via this role will be unassigned, and depending on other roles their project permissions may be reset.'] = 'Nutzern, die dieser Rolle zugewiesen sind, wird die Zuweisung entfernt. Abhängig von anderen Rollen könnten ihre Projekt-Rechte zurückgesetzt werden.';
 	$strings['%number_of_permissions% permission(s)'] = '%number_of_permissions% Recht(e)';
 
 	// First occurrence is in: .\modules\configuration\templates\_rolepermissionsedit.inc.php
@@ -1135,7 +1135,7 @@
 	//$strings['OpenID authentication is disabled'] = '';
 	//$strings['OpenID support is not available when not using internal authentication'] = '';
 	$strings['Registration domain whitelist'] = 'Registrierungsdomains Whitelist';
-	$strings['Comma-separated list of allowed domains (ex: %example%). Leave empty to allow all domains.'] = 'Kommaseperierte Liste von erlaubten Domains (z.B. <i>%example%</i>). Leer lassen zum Erlauben aller Domains.';
+	$strings['Comma-separated list of allowed domains (ex: %example%). Leave empty to allow all domains.'] = 'Kommaseparierte Liste von erlaubten Domains (z.B. <i>%example%</i>). Leer lassen zum Erlauben aller Domains.';
 	$strings['Default user group'] = 'Standardgruppe für Benutzer';
 	$strings['New users will automatically be added to this group'] = 'Neue Benutzer treten dieser Gruppe automatisch bei';
 	$strings['Redirect after login'] = 'Weiterleitung nach Login';
@@ -1156,7 +1156,7 @@
 	$strings['Active'] = 'Aktiv';
 	$strings['Inactive'] = 'Inaktiv';
 	$strings['Steps: %number_of_workflow_steps%'] = 'Schritte: %number_of_workflow_steps%';
-	$strings['Show workflow details'] = 'Zeige Workflow details';
+	$strings['Show workflow details'] = 'Zeige Workflow Details';
 	$strings['Create a copy of this workflow'] = 'Kopie dieses Workflows erstellen';
 	$strings['Cannot delete workflow'] = 'Kann Workflow nicht löschen';
 	$strings['Delete this workflow'] = 'Diesen Workflow löschen';
@@ -1216,7 +1216,7 @@
 
 	// First occurrence is in: .\modules\configuration\templates\_workflowtransition.inc.php
 	// ----------------------------------------------------------------------------
-	$strings['Confirm delete transition'] = 'Bestätige Löschung der Transaktion';
+	$strings['Confirm delete transition'] = 'Löschung der Transaktion bestätigen';
 	$strings['Do you really want to delete this transition? If this transition is used by more than one step, it will be removed from these steps as well!'] = 'Möchten Sie diese Transaktion wirklich löschen? Die Transaktion wird von sämtlichen Schritten entfernt!';
 
 	// First occurrence is in: .\modules\configuration\templates\_workflowtransitionaction.inc.php
@@ -1371,7 +1371,7 @@
 	// ----------------------------------------------------------------------------
 	$strings['Configure uploads &amp; attachments'] = 'Konfiguration der Uploads &amp; Dateianhänge';
 	//$strings['The file upload functionality can be enhanced with file type detection. To enable this, please install and enable the fileinfo extension.'] = '';
-	$strings['Enable uploads'] = 'Aktivere Uploads';
+	$strings['Enable uploads'] = 'Aktiviere Uploads';
 	//$strings['When uploads are disabled, users will not be able to attach files to issues or upload documents, images or PDFs in project planning. More fine-grained permissions are available from the permissions configuration.'] = '';
 	$strings['Max upload file size'] = 'Maximale Upload-Dateigröße';
 	$strings['MB'] = 'MB';
@@ -1383,11 +1383,11 @@
 	$strings['Denied extensions'] = 'Verbotene Dateiendungen';
 	$strings['Use a whitelist (only allow the following of extensions)'] = 'Nutze Whitelist (nur Zulassen von angegebenen Endungen)';
 	$strings['Use a blacklist (allow everything except the following extensions)'] = 'Nutze Blacklist (nur Verbieten von angegebenen Endungen)';
-	$strings['A space-, comma- or semicolon-separated list of extensions used to filter uploads, based on the %upload_restrictions% setting above.'] = 'Bitte geben Sie die Endungen mit den Trennzeichen Komma, Leerzeichen oder Simikolon an.';
+	$strings['A space-, comma- or semicolon-separated list of extensions used to filter uploads, based on the %upload_restrictions% setting above.'] = 'Bitte geben Sie die Endungen mit den Trennzeichen Komma, Leerzeichen oder Semikolon an.';
 	$strings['Ex: "%example_1%" or "%example_2%" or "%example_3%"'] = 'Beispiel: "%example_1%" oder "%example_2%" oder "%example_3%"';
 	$strings['File storage'] = 'Speicherort';
 	$strings['Store it in the folder specified below'] = 'Auf Dateisystem (Pfadangabe unten)';
-	$strings['Use the database to store files'] = 'In Datebank';
+	$strings['Use the database to store files'] = 'In Datenbank';
 	$strings['Specify whether you want to use the filesystem or database to store uploaded files. Using the database will make it easier to move your installation to another server.'] = 'Spezifizieren Sie hier, ob das Dateisystem oder die Datenbank als Speicherort für hochgeladene Dateien dienen soll.';
 	$strings['Upload location'] = 'Speicherpfad';
 	$strings["If you're storing files on the filesystem, specify where you want to save the files, here. Default location is the %files% folder in the main folder (not the public folder)"] = "Sie können hier den Speicherpfad definieren, in welchem die hochgeladenen Dateien abgelegt werden. Der Standardwert ist der %files% Ordner im Hauptordner";
@@ -1535,8 +1535,8 @@
 	$strings['Sample data'] = 'Beispieldaten';
 	$strings['CSVImport'] = 'CSVImport';
 	$strings['You can import data from a CSV file copied into a text box in The Bug Genie, exported from other sources. Please see the %CSVImport% wiki article for further details and instructions.'] = 'Sie können Daten von einer CSV Datei in eine Textbox vom Bug Genie importieren, welche von anderen Quellen exportiert wurden. Besuchen Sie unseren %CSVImport% Wiki-Artikel für weitere Details und Anleitungen';
-	$strings['To import some fields, ID numbers are required, which can be seen below. User, team, group and client IDs can be found in user configuration.'] = 'Für den Import einiger Felder sind IDs notwendig. Diese können Sie unten einsehen. Für die IDs von Nutzern, Teams, Gruppen und Kunden konsultieren sie bitte die Nutzereinstellungen.';
-	$strings['Toggle list of ID numbers'] = 'Liste der IDs ein/ausblenden';
+	$strings['To import some fields, ID numbers are required, which can be seen below. User, team, group and client IDs can be found in user configuration.'] = 'Für den Import einiger Felder sind IDs notwendig. Diese können Sie unten einsehen. Für die IDs von Nutzern, Teams, Gruppen und Kunden konsultieren Sie bitte die Nutzereinstellungen.';
+	$strings['Toggle list of ID numbers'] = 'Liste der IDs ein-/ausblenden';
 	$strings['You can import data from previous version of The Bug Genie into your version 3 installation.'] = 'Sie können Daten von vorherigen Versionen des Bug Genies in Ihre Version (3) importieren.';
 	$strings['BUGS 1.x'] = 'BUGS 1.x';
 	$strings['Please upgrade to BUGS 1.9, followed by The Bug Genie 2 (an upgrade script is included in the installation package for The Bug Genie 2). After upgrading, then follow the instructions below to upgrade from The Bug Genie 2.'] = 'Bitte upgraden Sie zu BUGS 1.9, gefolgt von The Bug Genie 2 (ein Upgradescript befindet sich in dieser Installationpaket). Nach dem Upgrade folgen Sie bitte den Anweisungen unten, um von The Bug Genie 2 upzugraden.';
@@ -1681,11 +1681,11 @@
 	// ----------------------------------------------------------------------------
 	$strings['Notification preset'] = 'Einstellungen für Meldungen';
 	$strings['Silent notification settings'] = 'Stille Einstellung';
-	$strings['We will hardly ever send you any notification emails. Check back regularly.'] = 'Es werden nur sehr wenige Meldungen schicken. Prüfen Sie den Account regelmäßig';
+	$strings['We will hardly ever send you any notification emails. Check back regularly.'] = 'Es werden nur sehr wenige Meldungen versandt. Prüfen Sie den Account regelmäßig';
 	$strings['Recommended notification settings'] = 'Empfohlene Einstellung';
-	$strings["We will keep you updated when important stuff happens, but we'll keep quiet about less important stuff."] = "Sie werden informiert wenn etwas Wichtiges passiert. Weniger wichtige Dinge werden zurück gehalten.";
+	$strings["We will keep you updated when important stuff happens, but we'll keep quiet about less important stuff."] = "Sie werden informiert wenn etwas Wichtiges passiert. Weniger wichtige Dinge werden zurückgehalten.";
 	$strings['Verbose notification settings'] = 'viele Meldungen';
-	$strings["If anything happens, you'll know. You should read up on email filters."] = "Es wird über alles informiert was passiert. MailFilter könnten angebracht sein.";
+	$strings["If anything happens, you'll know. You should read up on email filters."] = "Es wird über alles informiert was passiert. Mail-Filter könnten angebracht sein.";
 	$strings['Advanced settings'] = 'Erweiterte Einstellungen';
 	$strings["Pick and choose, mix or match - it's like an all-you-can-eat notification feast."] = "Wählen Sie selbst worüber Sie informiert werden möchten.";
 
@@ -1803,8 +1803,8 @@
 	$strings['Clear the severity'] = 'Gewichtung leeren';
 	$strings['Click to change severity'] = 'Klicken um Gewichtung zu ändern';
 	$strings['Severity'] = 'Gewichtung';
-	$strings['%set_as_not_targetted% or click to set a new target milestone'] = '%set_as_not_targetted% oder Klicken Sie für einen neuen Zielmeilenstein';
-	$strings['Click to change which milestone this issue is targetted for'] = 'Klicken um diesem Fall einem Meilenstein zuzuordnen';
+	$strings['%set_as_not_targetted% or click to set a new target milestone'] = '%set_as_not_targetted% oder klicken Sie für einen neuen Zielmeilenstein';
+	$strings['Click to change which milestone this issue is targetted for'] = 'Klicken um diesem Fall einen Meilenstein zuzuordnen';
 	$strings['Set as not targetted'] = 'Setze ohne Zielsetzung';
 	$strings['Set issue target / milestone'] = 'Setze Fallziel / Meilenstein';
 	$strings['Targetted for'] = 'Ziel';
@@ -1874,7 +1874,7 @@
 	$strings['Comment deleted!'] = 'Kommentar gelöscht!';
 	$strings['Comment ID is invalid'] = 'Kommentar-ID ungültig';
 	$strings['The comment must have some content'] = 'Der Kommentar muss Inhalt haben';
-	$strings['Untitled comment'] = 'titelloser Kommentar';
+	$strings['Untitled comment'] = 'Titelloser Kommentar';
 	$strings['Comment edited!'] = 'Kommentar editiert!';
 	$strings['Comment added!'] = 'Kommentar hinzugefügt!';
 	$strings['Single line text input without formatting'] = 'Einzeilige Eingabe ohne Formatierung';
@@ -1963,7 +1963,7 @@
 	//$strings['Attach a link to this issue'] = '';
 	$strings['URL'] = 'URL';
 	$strings['Attach link'] = 'Link hinzufügen';
-	$strings['Enter the link URL here, along with an optional description. Press "%attach_link%" to attach it to the issue.'] = 'Geben Sie die Link-URL, sowie eine optionale Beschreibung hier ein. Klicken Sie auf "%attach_link%" um die URL mit dem Fall zu vernknüpfen.';
+	$strings['Enter the link URL here, along with an optional description. Press "%attach_link%" to attach it to the issue.'] = 'Geben Sie die Link-URL, sowie eine optionale Beschreibung hier ein. Klicken Sie auf "%attach_link%" um die URL mit dem Fall zu verknüpfen.';
 	$strings['%attach_link% or %cancel%'] = '%attach_link% order %cancel%';
 
 	// First occurrence is in: .\modules\main\templates\_clientusers.inc.php
@@ -2198,7 +2198,7 @@
 	// First occurrence is in: .\modules\main\templates\_loginregister.inc.php
 	// ----------------------------------------------------------------------------
 	$strings['Register a new account'] = 'Neuen Account registrieren';
-	$strings['To register, please fill out the information below.'] = 'Zur Registrierung füllen sie bitte die Angaben unten aus';
+	$strings['To register, please fill out the information below.'] = 'Zur Registrierung füllen Sie bitte die Angaben unten aus';
 	$strings['Required information is marked with an asterisk'] = 'Pflichtangaben sind mit einem Sternchen versehen.';
 	$strings['Display name'] = 'Anzeigename';
 	$strings['The "display name" is the name shown to others'] = 'Dieser Name wird anderen Nutzern gezeigt';
@@ -2247,8 +2247,8 @@
 	$strings['Article name'] = 'Artikelname';
 	$strings['Add link'] = 'Link hinzufügen';
 	$strings['Enter the name of the article to link to here, along with an (optional) description, and press "%add_link%" to add it to the menu.'] = 'Bitte geben Sie einen Namen, sowie eine Beschreibung (optional) des Artikels ein und bestätigen Sie mit einem Klick auf "%add_link%"';
-	$strings['Enter the link URL here, along with an (optional) description, and press "%add_link%" to add it to the menu.'] = 'Geben Sie hier die Link-URl ein, sowie eine optinale Beschreibung und klicken Sie auf "%add_link%" um diesen hinzuzufügen..';
-	$strings['To add free text, just enter text in the description - without any url - and press the "%add_link%" button (Text will be parsed according to the %wiki_formatting%).'] = 'Um einen Freitext hinzuzufügen, klicken Sie in die Beschreibung -ohne einen Link- und klicken Sie auf "%add_link%" (Der Text wird mit formatiert mit %wiki_formatting%).';
+	$strings['Enter the link URL here, along with an (optional) description, and press "%add_link%" to add it to the menu.'] = 'Geben Sie hier die Link-URL ein, sowie eine optionale Beschreibung und klicken Sie auf "%add_link%" um diesen hinzuzufügen.';
+	$strings['To add free text, just enter text in the description - without any url - and press the "%add_link%" button (Text will be parsed according to the %wiki_formatting%).'] = 'Um einen Freitext hinzuzufügen, klicken Sie in die Beschreibung -ohne einen Link- und klicken Sie auf "%add_link%" (Der Text wird formatiert mit %wiki_formatting%).';
 	$strings['To add a spacer, just press "%add_link%", without any url or description.'] = 'Um eine Zwischenraum hinzuzufügen, lassen Sie alle Felder frei und klicken auf "%add_link%".';
 	$strings['There are no links in this menu'] = 'Es befinden sich keine Links im Menü';
 
@@ -2309,14 +2309,14 @@
 	$strings['Changing password disabled'] = 'Passwortänderung deaktiviert';
 	$strings['Changing your password can not be done via this interface. Please contact your administrator to change your password.'] = 'Sie können Ihr Passwort nicht selbst ändern. Bitte kontaktieren Sie den Administrator für die Passwortänderung';
 	$strings['My security key'] = 'Mein API-Key';
-	$strings['Show my issues'] = 'Zeige Meine Fälle';
+	$strings['Show my issues'] = 'Zeige meine Fälle';
 	$strings['Pick a username'] = 'Benutzernamen wählen';
 	$strings['Your security key is %securitykey%'] = 'Ihr API-Key ist: %securitykey%';
 	$strings["Show issues I've reported"] = "Zeige Fälle, die ich gemeldet habe";
 	$strings['Show open issues assigned to me'] = 'Zeige offene Fälle, die mir zugewiesen sind';
-	$strings['Show open issues assigned to my teams'] = 'zeige offene Fälle, die meinem Team zugewiesen sind';
+	$strings['Show open issues assigned to my teams'] = 'Zeige offene Fälle, die meinem Team zugewiesen sind';
 	$strings['Picking a username'] = 'Benutzernamen wählen';
-	$strings['Since this account was created via an OpenID login, you will have to pick a username to be able to log in with a username or password. You can continue to use your account with your OpenID login, so this is only if you want to pick a username for your account.'] = 'Da dieser Account per OpenID erstellt wurde müssen Sie einen benutzernamen wählen, um sich mit diesem und einem Passwort anmelden zu können. Sie können weiterhin OpenID für die Anmeldung nutzen.';
+	$strings['Since this account was created via an OpenID login, you will have to pick a username to be able to log in with a username or password. You can continue to use your account with your OpenID login, so this is only if you want to pick a username for your account.'] = 'Da dieser Account per OpenID erstellt wurde müssen Sie einen Benutzernamen wählen, um sich mit diesem und einem Passwort anmelden zu können. Sie können weiterhin OpenID für die Anmeldung nutzen.';
 	$strings['Check availability'] = 'Verfügbarkeit prüfen';
 	$strings['Click "%check_availability%" to see if your desired username is available.'] = 'Klicken Sie "%check_availability%" um zu prüfen, ob der gewählte Name verfügbar ist.';
 	$strings['Type desired username'] = 'Gewünschten Benutzernamen eingeben';
@@ -2433,7 +2433,7 @@
 	$strings['Choose a severity for this issue'] = 'Eine Gewichtung für diesen Fall auswählen';
 	$strings['When you are satisfied, click the %file_issue% button to file your issue'] = 'Wenn Sie fertig sind, klicken Sie auf "%file_issue%" um den Fall einzureichen.';
 	$strings['Add more information to your issue'] = 'Weitere Informationen zu Ihrem Fall einreichen';
-	$strings['Specify additional information by clicking the links below before submitting your issue'] = 'Sie können zusätzliche Informationen mit einem Klick auf den Link unten hinzufügen, bevor Sie Ihre Fall einreichen';
+	$strings['Specify additional information by clicking the links below before submitting your issue'] = 'Sie können zusätzliche Informationen mit einem Klick auf den Link unten hinzufügen, bevor Sie Ihren Fall einreichen';
 	$strings['Set initial status'] = 'Setze anfänglichen Status';
 	$strings['Specify edition'] = 'Edition festlegen';
 	$strings['Specify release'] = 'Release festlegen';
@@ -2464,15 +2464,15 @@
 	$strings['Formatting tips'] = 'Formatierungshinweise';
 	$strings['URLs will be automatically transformed to links. If you want to add a title, use the link formatter: [[http://awesome.com/something An awesome link]].'] = 'URLs werden automatisch in Links umgewandelt. Wenn Sie einen Titel hinzufügen wollen, verwenden Sie folgende Schreibweise: [[http://grossartig.de/foo Eine interessante Seite]]';
 	$strings['To auto-link to an existing issue, write "issue", "bug", "ticket" or the issue type (like "bug report" or "enhancement") followed by the issue number (ex: "%ticket_example_1%" or "%ticket_example_2%"). Enclose sourcecode samples in <source></source> tags.'] = 'Um automatisch auf einen bestehenden Fall zu verweisen, schreiben Sie "Fall", "Bug", "Ticket" oder den Falltyp ("bug report" oder "enhancement") gefolgt von der Fallnummer (z.B. "%ticket_example_1%" oder "%ticket_example_2%"). Umschließen Sie Quellcode mit <source></source>.';
-	$strings['To create a bulleted list, start one or more lines with a star ("* bulleted list item"). You can create a numbered list by using the hash/pund sign instead ("# numbered list item").'] = '';
+	$strings['To create a bulleted list, start one or more lines with a star ("* bulleted list item"). You can create a numbered list by using the hash/pund sign instead ("# numbered list item").'] = 'Um eine aufzählende Liste zu erstellen, beginnen Sie eine oder mehrere Linien mit einem Stern ("* Aufzählungseintrag"). Sie können stattdessen eine nummerierte Liste erstellen wenn Sie das Doppelkreuz-Zeichen verwenden ("# Nummerierter Eintrag").';
 	//$strings["If you have certain text you don't want to be formatted, enclose it in <nowiki></nowiki> tags: \"'''formatted''' text <nowiki>'''non-formatted''' text</nowiki>."] = "";
 	//$strings['Code samples are best presented in <source></source> tags.'] = '';
 	//$strings['The Bug Genie uses %geshi% for syntax highlighting with support for over 100 languages!'] = '';
 	//$strings['You can use simple formatting tags for underlined text (<b></b>) or strikethrough (<strike></strike>).'] = '';
 	//$strings['You can create a link directly to a wikipedia page by using the "WIKIPEDIA:" link namespace: "Here is a link to the wikipedia article about [[WIKIPEDIA:Norway|Norway]].'] = '';
 	//$strings['If you want to put a horizontal line in the document, use four dashes: "----".'] = '';
-	$strings['The Bug Genie will automatically add new lines when you add two new lines in your text, whereas one new line is used for formatting as you type. To force a new line, use the <br> tag: "There is a new<br>line here".'] = 'The Bug Genie wird automatisch Zeilenumbrüche einfügen, wenn Sie eine Leerzeile einfügen. Wenn Sei einen zeilenumbruch erzwingen wollen, nutzen Sie das <br> tag.';
-	$strings['If you want to add text that is not supposed to be parsed, put it inside <nowiki> tags, or start the line with a space.'] = 'Wenn Ihr eingegebener Text nicht umgewandelt werden soll. Umschließen Sie ihn mit <nowiki> tags oder beginnen Sie die Zeile mit einem Leerzeichen.';
+	$strings['The Bug Genie will automatically add new lines when you add two new lines in your text, whereas one new line is used for formatting as you type. To force a new line, use the <br> tag: "There is a new<br>line here".'] = 'The Bug Genie wird automatisch Zeilenumbrüche einfügen, wenn Sie eine Leerzeile einfügen. Wenn Sie einen Zeilenumbruch erzwingen wollen, nutzen Sie das <br> tag.';
+	$strings['If you want to add text that is not supposed to be parsed, put it inside <nowiki> tags, or start the line with a space.'] = 'Wenn Ihr eingegebener Text nicht umgewandelt werden soll, umschließen Sie ihn mit <nowiki> tags oder beginnen Sie die Zeile mit einem Leerzeichen.';
 	$strings['See more formatting tips in %wiki_formatting%.'] = 'Lesen Sie weitere Hinweise zur Formatierung in %wiki_formatting%.';
 
 	// First occurrence is in: .\modules\main\templates\_updateissueproperties.inc.php
@@ -2490,7 +2490,7 @@
 	$strings['Log time spent'] = 'Logzeit gebraucht';
 	//$strings['Adds %hours% hour(s), %days% day(s) and %weeks% week(s)'] = '';
 	//$strings['Yes, let me specify'] = '';
-	$strings['Write a comment if you want it to be added'] = 'Schreiben Sie einen Kommentar, sofern Sie hinzugefügt werden möchten';
+	$strings['Write a comment if you want it to be added'] = 'Schreiben Sie einen Kommentar, sofern Sie ihn hinzugefügt haben möchten';
 
 	// First occurrence is in: .\modules\main\templates\_uploader.inc.php
 	// ----------------------------------------------------------------------------
@@ -2499,12 +2499,12 @@
 	$strings['Select a file'] = 'Datei wählen';
 	$strings['Files bigger than %max_filesize% can not be attached. Please check that the file you are attaching is not bigger than this.'] = 'Dateien größer als %max_filesize% können nicht angehängt werden. Bitte prüfen Sie, dass die Datei nicht größer als dieses Limit ist.';
 	$strings['Describe the file'] = 'Dateibeschreibung';
-	$strings['Enter a few words about the file, so people can understand what it is/does'] = 'Beschreiben Sie die Datei in einigen Worten, damit verständlich wird was es enthält.';
+	$strings['Enter a few words about the file, so people can understand what it is/does'] = 'Beschreiben Sie die Datei in einigen Worten, damit verständlich wird was sie enthält.';
 	$strings['optional'] = 'optional';
 	$strings['If you want to add a comment with the file, enter the comment here, and it will automatically be added to the issue with the file'] = 'Wenn Sie mit der Datei einen Kommentar anhängen wollen, geben Sie diesen hier ein. Er wird automatisch zusammen mit der Datei an den Fall verknüpft';
-	$strings['Press the %upload_and_attach% button to upload and attach the file'] = 'Wählen Sie %upload_and_attach% um den Upload zu starten die Datei anzuhängen.';
+	$strings['Press the %upload_and_attach% button to upload and attach the file'] = 'Wählen Sie %upload_and_attach% um den Upload zu starten und die Datei anzuhängen.';
 	$strings['Upload and attach'] = 'Hochladen und anhängen';
-	$strings['Uploading file, please wait'] = 'Datei wird hoch geladen, bitte warten';
+	$strings['Uploading file, please wait'] = 'Datei wird hochgeladen, bitte warten';
 	$strings['Files already attached'] = 'Dateien sind bereits angehängt';
 	//$strings["You haven't uploaded any files right now (not including already attached files)"] = "";
 	//$strings['Click %done% when you have uploaded the files you want to attach'] = '';
@@ -2529,7 +2529,7 @@
 	// First occurrence is in: .\modules\main\templates\_userdropdown.inc.php
 	// ----------------------------------------------------------------------------
 	$strings['This is one of your friends'] = 'Einer Ihrer Freunde';
-	$strings['Switch to this user'] = 'Zu beutzer wechseln';
+	$strings['Switch to this user'] = 'Zu Benutzer wechseln';
 
 	// First occurrence is in: .\modules\main\templates\_userscope.inc.php
 	// ----------------------------------------------------------------------------
@@ -2582,18 +2582,18 @@
 	// First occurrence is in: .\modules\main\templates\dashboard.html.php
 	// ----------------------------------------------------------------------------
 	$strings['Open issues assigned to you'] = 'Ihre zugewiesenen, offenen F&auml;lle';
-	$strings['Open issues assigned to your teams'] = 'Ihrem Team zugewiesenen, offenen F&auml;lle';
+	$strings['Open issues assigned to your teams'] = 'Ihrem Team zugewiesene, offene F&auml;lle';
 	$strings['This is your personal dashboard'] = 'Dies ist Ihre persönliche Übersicht';
-	$strings['This is your personal dashboard page - your starting point when logging in to The Bug Genie. This dashboard page will show projects and people you are associated with, as well as interesting views.'] = 'Dies ist Ihre persönliche Übersicht - die erste Anlaufstelle nach dem Login in den Bug Genie. Diese Übersicht zeigt Projekte und andere Benutzer, mit welchen Sie verbunden sind ebenso, wie weitere interessante Informationen.';
+	$strings['This is your personal dashboard page - your starting point when logging in to The Bug Genie. This dashboard page will show projects and people you are associated with, as well as interesting views.'] = 'Dies ist Ihre persönliche Übersicht - die erste Anlaufstelle nach dem Login in The Bug Genie. Diese Übersicht zeigt Projekte und andere Benutzer, mit welchen Sie verbunden sind ebenso, wie weitere interessante Informationen.';
 	$strings['Your dashboard can be configured and personalized. To configure what views to show on this dashboard, click the "Customize dashboard"-icon to the far right, below this box.'] = 'Ihre Übersicht kann konfiguriert und personalisiert werden. Um sie zu konfigurieren, klicken Sie auf "Übersicht anpassen" in Ihrem Menu - ganz oben rechts über dieser Box.';
 	$strings['Your dashboard page is accessible from anywhere - click your username in the top right header area at any time to access your dashboard.'] = 'Ihre Übersichtsseite ist von überall aus erreichbar - Klicken Sie auf Ihren Benutzernamen rechts oben in der Kopfzeile um sie aufzurufen.';
 	$strings["This dashboard doesn't contain any views."] = "Diese Übersicht enthält keine Ansichten";
 	$strings['Setup my dashboard'] = 'Meine Übersicht konfigurieren';
 	$strings['Your projects'] = 'Ihre Projekte';
 	$strings['You are not associated with any projects'] = 'Sie sind mit keinem Projekt verknüpft';
-	$strings['Upcoming milestones / sprints'] = 'Anstehende Meilensteine und Sprints';
-	$strings['Showing milestones and sprint for the next 21 days'] = 'zeige Meinensteine und Sprints der nächsten 21 Tage';
-	$strings['There are no upcoming milestones for any of your associated projects'] = 'Es konnten keine Meilensteine für ihre zugewiesenen Projekte gefunden werden';
+	$strings['Upcoming milestones / sprints'] = 'Anstehende Meilensteine und Zwischenziele';
+	$strings['Showing milestones and sprint for the next 21 days'] = 'zeige Meilensteine und Zwischenziele der nächsten 21 Tage';
+	$strings['There are no upcoming milestones for any of your associated projects'] = 'Es konnten keine Meilensteine für Ihre zugewiesenen Projekte gefunden werden';
 
 	// First occurrence is in: .\modules\main\templates\forbidden.html.php
 	// ----------------------------------------------------------------------------
@@ -2605,18 +2605,18 @@
 	$strings["It looks likes you're only using The Bug Genie to track issues for one project. If you don't want to use this homepage, you can set The Bug Genie to <i>single project tracker mode</i>, which will automatically forward the frontpage to the project overview page.<br><br><i>Single project tracker mode</i> can be enabled from %configure_settings%."] = "Wie es scheint, nutzen Sie Bug Genie nur für das Fallmanagement eines Projekts. Sie können, sofern gewünscht, den Einzelprojektmodus aktivieren.<br><br><i>Der Einzelprojektmodus</i> kann konfiguriert werden unter %configure_settings%.";
 	$strings['Only using The Bug Genie to track issues for one project?'] = 'Sie nutzen Bug Genie nur für ein Projekt?';
 	$strings['Configure &ndash;&gt; Import'] = 'Konfiguration &ndash;&gt; Import';
-	$strings["It doesn't look like you have had the chance to add any projects yet. If you want to play around a bit with The Bug Genie before you start using it for your own projects, you can import some sample data before adding your own projects."] = "Wie es scheint, haben Sie bisher noch kein Projekt hinzugefügt. Sie können ein wenig mit dem Bug Genie experimentieren und ein paar Beispieldaten importieren.";
+	$strings["It doesn't look like you have had the chance to add any projects yet. If you want to play around a bit with The Bug Genie before you start using it for your own projects, you can import some sample data before adding your own projects."] = "Wie es scheint, haben Sie bisher noch kein Projekt hinzugefügt. Sie können ein wenig mit The Bug Genie experimentieren und ein paar Beispieldaten importieren.";
 	$strings['Oh noes! There are no projects!'] = 'Oh nein, es existieren keine Projekte!';
 	$strings['Sample data can be imported from %configure_import%.'] = 'Beispieldaten können importiert werden von %configure_import%.';
 	$strings['Quick links'] = 'Quick links';
-	$strings['There are no top-level projects'] = 'Keine Top-Level projekte vorhanden';
+	$strings['There are no top-level projects'] = 'Keine Top-Level Projekte vorhanden';
 	$strings['Go to project management'] = 'Zurück zur Projektverwaltung';
 	$strings['Projects can only be created by an administrator'] = 'Projekte können nur durch einen Administrator erstellt werden';
 
 	// First occurrence is in: .\modules\main\templates\myaccount.html.php
 	// ----------------------------------------------------------------------------
 	$strings['Profile information'] = 'Profilinformationen';
-	$strings['General settings'] = 'Allegemeine Einstellungen';
+	$strings['General settings'] = 'Allgemeine Einstellungen';
 	$strings['Login accounts'] = 'Login-Accounts';
 	//$strings['Scope memberships'] = '';
 	$strings['Edit your profile details here, including additional information.'] = 'Editieren Sie hier Ihr Profil inkl. erweiterten Informationen';
@@ -2637,12 +2637,12 @@
 	$strings['Language'] = 'Sprache';
 	$strings['Use global setting - %lang%'] = 'Globale Einstellung nutzen - %lang%';
 	$strings['(site default)'] = 'Site-Standard';
-	$strings['The language you select here will be used instead of the language chosen by the administrator.'] = 'Die Sprache, die Sie hier wählen, wird statt der Sprache verwendet, dier Administrator konfiguriert hat.';
+	$strings['The language you select here will be used instead of the language chosen by the administrator.'] = 'Die Sprache, die Sie hier wählen, wird statt der Sprache verwendet, die der Administrator konfiguriert hat.';
 	$strings['Click "%save%" to save your profile settings'] = 'Klicken Sie "%save%" um Ihre Einstellungen zu speichern';
 	$strings['The Bug Genie supports logging in via external authentication providers via %openid%. This means you can use your account details from other services (such as Google, Wordpress, etc.) to log in here, without having to remember another set of login details.'] = 'The Bug Genie unterstützt externe Authentifizierungsanbieter über %openid%. Das bedeutet, dass Sie Ihren Account bei anderen Diensten (wie Google, Wordpress usw) hier nutzen können, ohne sich an weitere Anmeldedaten erinnern zu müssen.';
 	$strings['Add login from another provider'] = 'Authentifizierungsanbieter hinzufügen';
 	$strings['You have not linked your account with any external authentication providers.'] = 'Sie haben Ihrem Account noch keinen externen Authentifizierungsanbieter hinzugefügt.';
-	$strings['By doing this, it will not be possible to log into this account via this authentication provider'] = 'Wenn Sie das zun können Sie sich in diesen Account nicht mehr über diesen Anbieter einloggen';
+	$strings['By doing this, it will not be possible to log into this account via this authentication provider'] = 'Wenn Sie das tun können Sie sich in diesen Account nicht mehr über diesen Anbieter einloggen';
 	$strings['Do you really want to remove the link to this external account?'] = 'Wollen Sie die Verknüpfung mit dem externen Account wirklich entfernen?';
 	$strings['Remove this account link?'] = 'Diese Account-verknüpfung wirklich entfernen?';
 	$strings['Google account'] = 'Google account';
@@ -2657,7 +2657,7 @@
 	$strings['An error occurred'] = 'Ein Fehler ist aufgetreten';
 	$strings['Before you can use the new username to log in, you must pick a password via the "%change_password%" button.'] = 'Bevor Sie den neuen Nutzernamen verwenden können müssen Sie ein Passwort über den "%change_password%" Button wählen';
 	$strings["You\\'ve chosen the username \\'%username%\\'"] = "Sie haben den Benutzernamen \\'%username%\\' gewählt";
-	$strings['Someone is already using this identity. Check to see if you have already added this account.'] = 'Diese Identität wird bereits von einem benutzer verwendet. Bitte prüfen Sie, ob Sie diesen Account bereits hinzugefügt haben.';
+	$strings['Someone is already using this identity. Check to see if you have already added this account.'] = 'Diese Identität wird bereits von einem Benutzer verwendet. Bitte prüfen Sie, ob Sie diesen Account bereits hinzugefügt haben.';
 	$strings['This OpenID identity is already in use'] = 'Diese OpenID-Identität wird bereits verwendet';
 
 	// First occurrence is in: .\modules\main\templates\notfound.html.php
@@ -2679,7 +2679,7 @@
 	$strings["There are no upcoming milestones for any of this team's associated projects"] = "Keine bevorstehenden Meilensteine für die Projekte des Teams";
 	$strings['There are no projects linked to this team'] = 'Keine Projekte zu diesem Team zugeordnet';
 	$strings['Members of %team%'] = 'Mitglieder von %team%';
-	$strings['This team has no members'] = 'Dieses Team hat keine Mitgleider';
+	$strings['This team has no members'] = 'Dieses Team hat keine Mitglieder';
 
 	// First occurrence is in: .\modules\main\templates\upload.html.php
 	// ----------------------------------------------------------------------------
@@ -2725,7 +2725,7 @@
 	//$strings['The project this issue belongs to has been archived, and so this issue is now read only'] = '';
 	//$strings['More actions'] = '';
 	//$strings['Issue details'] = '';
-	$strings['Click here to edit description'] = 'Klicken Sie hier um Beschreibung zu editieren';
+	$strings['Click here to edit description'] = 'Klicken Sie hier um die Beschreibung zu editieren';
 	$strings['Click here to edit reproduction steps'] = 'Klicken Sie hier um Reproduktionsschritte zu editieren';
 	//$strings['Steps to reproduce this issue'] = '';
 	$strings['Comments (%count%)'] = 'Kommentare (%count%)';
@@ -2736,7 +2736,7 @@
 	$strings['There is nothing attached to this issue'] = 'Diesem Fall wurde nichts hinzugefügt';
 	$strings['The following issues are duplicates of this issue:'] = 'Folgende Fälle sind zu diesem hier identisch:';
 	$strings['This issue has no duplicates'] = 'Kein doppelter Fall zugeordnet.';
-	$strings["You have specified an issue that can't be shown"] = "Sie haben eine Fall ausgewählt, welcher nicht angezeit werden kann";
+	$strings["You have specified an issue that can't be shown"] = "Sie haben einen Fall ausgewählt, welcher nicht angezeigt werden kann";
 	$strings["This could be because you the issue doesn't exist, has been deleted or you don't have permission to see it"] = "Konnte nicht durchgeführt werden, da dieser Fall nicht existiert, gelöscht wurde oder Sie keine Berechtigung haben diesen einzusehen";
 
 	// First occurrence is in: .\modules\project\classes\actioncomponents.class.php
@@ -2801,7 +2801,7 @@
 	$strings['The release was deleted'] = 'Das Release wurde gelöscht';
 	$strings['You do not have access to this release'] = 'Sie haben keinen Zugriff auf dieses Release.';
 	$strings['You need to specify a release'] = 'Sie müssen ein Release angeben.';
-	$strings["You don't have access to manage releases"] = "Sie haben nicht die Rechte um releases zu verwalten.";
+	$strings["You don't have access to manage releases"] = "Sie haben nicht die Rechte um Releases zu verwalten.";
 	$strings['You need to specify a name for the release'] = 'Sie müssen einen Namen für das Release angeben.';
 	$strings["You don't have access to add releases"] = "Sie haben keine Berechtigung ein Release hinzuzufügen";
 	$strings['This component already exists for this project'] = 'Diese Komponente existiert bereits für dieses Projekt';
@@ -2837,7 +2837,7 @@
 	// ----------------------------------------------------------------------------
 	//$strings['Add new release'] = '';
 	//$strings['Edit release details'] = '';
-	$strings['Release name:'] = 'Name der Release:';
+	$strings['Release name:'] = 'Name des Release:';
 	$strings['Version: %version_number%'] = 'Version: %version_number%';
 	$strings['Released'] = 'Veröffentlicht';
 	//$strings['Archived'] = '';
@@ -2910,9 +2910,9 @@
 
 	// First occurrence is in: .\modules\project\templates\_dashboardviewprojectrecentactivities.inc.php
 	// ----------------------------------------------------------------------------
-	$strings['Show complete timeline'] = 'Zeige komplette Zeitplan';
+	$strings['Show complete timeline'] = 'Zeige kompletten Zeitplan';
 	$strings['Show more'] = 'mehr anzeigen';
-	$strings['Show timeline for important events'] = 'zeitplan für wichtige Ereignisse zeigen';
+	$strings['Show timeline for important events'] = 'Zeitplan für wichtige Ereignisse zeigen';
 	$strings['As soon as something important happens it will appear here.'] = 'Sobald etwas interessantes passiert wird es hier angezeigt.';
 	$strings['No recent activity registered for this project.'] = 'In diesem Projekt wurden zuletzt keine Aktivitäten erfasst.';
 
@@ -3059,7 +3059,7 @@
 	$strings['Change / set QA responsible'] = 'Ändern/Setzen QA-Verantwortung';
 	$strings['Set QA responsible to noone'] = 'Setze "Niemand"';
 	$strings['Change Qa responsible'] = 'QA-Verantwortlichen ändern';
-	$strings['Add people to this project'] = 'Nutzer zum projekt hinzufügen';
+	$strings['Add people to this project'] = 'Nutzer zum Projekt hinzufügen';
 	$strings['Find team or user'] = 'Finde Team oder Benutzer';
 	//$strings['To add people to this project, enter the name of a user or team to search for it'] = '';
 
@@ -3119,9 +3119,9 @@
 	//$strings['Project icons'] = '';
 	//$strings['Do you really want to reset the project icons? Please confirm.'] = '';
 	$strings['Reset icons'] = 'Icon zurück setzen';
-	$strings['Reset project icons?'] = 'Project-Icon zurück setzen';
-	$strings['Change project icons'] = 'Project-Icon ändern';
-	$strings['Set project icons'] = 'Project-Icon setzen';
+	$strings['Reset project icons?'] = 'Projekt-Icon zurücksetzen';
+	$strings['Change project icons'] = 'Projekt-Icon ändern';
+	$strings['Set project icons'] = 'Projekt-Icon setzen';
 	$strings['Not a subproject'] = 'ist kein Unterprojekt';
 	$strings['Client'] = 'Kunde';
 	$strings['No client'] = 'Kein Kunde';
@@ -3295,7 +3295,7 @@
 	// ----------------------------------------------------------------------------
 	$strings['"%project_name%" project planning'] = '"%project_name%" Projektplanung';
 	$strings['Add new milestone'] = 'Meilenstein hinzufügen';
-	$strings['Configure columns'] = 'meilenstein bearbeiten';
+	$strings['Configure columns'] = 'Spalten bearbeiten';
 	$strings['Project milestones'] = 'Projekt-Meilensteine';
 	$strings['Adding sprint, please wait'] = 'Zwischenziel wird gespeichert. Bitte warten.';
 	$strings['No milestones have been created yet.'] = 'Bisher wurden keine Meilensteine erstellt.';
@@ -3306,7 +3306,7 @@
 	$strings['Add new project release'] = 'Neues Release hinzufügen';
 	$strings['Active project releases'] = 'Aktive Releases des Projektes';
 	$strings['There are no active releases for this project'] = 'Im Projekt sind keine aktiven Releases vorhanden.';
-	$strings['Add new edition release'] = 'Neues release hinzufügen';
+	$strings['Add new edition release'] = 'Neues Release hinzufügen';
 	//$strings['Active %edition_name% releases'] = '';
 	$strings['There are no active releases for this edition'] = 'In dieser Edition sind keine aktiven Releases vorhanden.';
 	$strings['Archived releases'] = 'Archivierte Releases';
@@ -3320,7 +3320,7 @@
 
 	// First occurrence is in: .\modules\project\templates\roadmap.html.php
 	// ----------------------------------------------------------------------------
-	$strings['"%project_name%" roadmap'] = '"%project_name%" Planung';
+	$strings['"%project_name%" roadmap'] = '"%project_name%" Roadmap';
 	$strings['There is no roadmap to be shown for this project, as it does not have any available milestones'] = 'Für dieses Projekt kann keine Roadmap angezeigt werden. Es sind keine Meilensteine verfügbar.';
 	$strings['Show milestone details'] = 'Zeige Details des Meilensteines';
 	$strings['Update (regenerate) milestone details'] = 'Aktualisiere (regeneriere) Meilenstein-Details';
@@ -3329,7 +3329,7 @@
 	// First occurrence is in: .\modules\project\templates\scrumshowburndownimage.html.php
 	// ----------------------------------------------------------------------------
 	$strings['Date'] = 'Datum';
-	$strings['Sprint burndown graph - %sprint_name% (starts %starting_date%, ends %scheduled_date%)'] = 'Sprint-Burndownchart - %sprint_name% (beginnt %starting_date%, endet %scheduled_date%)';
+	$strings['Sprint burndown graph - %sprint_name% (starts %starting_date%, ends %scheduled_date%)'] = 'Zwischenziel-Burndownchart - %sprint_name% (beginnt %starting_date%, endet %scheduled_date%)';
 
 	// First occurrence is in: .\modules\project\templates\settings.html.php
 	// ----------------------------------------------------------------------------
@@ -3355,7 +3355,7 @@
 	$strings['Timeline actions'] = 'Aktionen';
 	$strings['Subscribe to updates via RSS'] = 'Updates via RSS Feed';
 	$strings['Show all items'] = 'Alle Einträge zeigen';
-	$strings['Only show important items'] = 'nur wichtige Einträge zeigen';
+	$strings['Only show important items'] = 'Nur wichtige Einträge zeigen';
 
 	// First occurrence is in: .\modules\project\templates\timeline.rss.php
 	// ----------------------------------------------------------------------------
@@ -3375,8 +3375,8 @@
 	$strings['Wiki'] = 'Wiki';
 	$strings['Can edit the wiki lefthand menu'] = 'Kann das Wiki-Menu bearbeiten';
 	$strings['Can access the project wiki'] = 'Kann auf die Projekt-Wiki zugreifen';
-	$strings['Can write articles in project wiki'] = 'Kann Artikel im projekt-Wiki erstellen';
-	$strings['Can delete articles from project wiki'] = 'Kann Artikel im projekt-Wiki löschen';
+	$strings['Can write articles in project wiki'] = 'Kann Artikel im Projekt-Wiki erstellen';
+	$strings['Can delete articles from project wiki'] = 'Kann Artikel im Projekt-Wiki löschen';
 
 	// First occurrence is in: .\modules\publish\classes\TBGWikiArticle.class.php
 	// ----------------------------------------------------------------------------
@@ -3616,7 +3616,7 @@
 	$strings['Assign to milestone'] = 'Einem Meilensteil zuweisen';
 	$strings['Set category'] = 'Kategorie setzen';
 	//$strings['Choose workflow step to perform'] = '';
-	$strings['No milestone'] = 'Kein meilenstein';
+	$strings['No milestone'] = 'Kein Meilenstein';
 	$strings['Create new milestone from selected issues'] = 'Meilenstein aus gewähltem Fall erstellen';
 	//$strings['No resolution'] = '';
 	$strings['No priority'] = 'Keine Priorität';
@@ -3643,7 +3643,7 @@
 
 	// First occurrence is in: .\modules\search\templates\_filter.inc.php
 	// ----------------------------------------------------------------------------
-	$strings['Project'] = 'projekt';
+	$strings['Project'] = 'Projekt';
 	$strings['%field% is %value%'] = '%field% ist %value%';
 	$strings['%field% is not %value%'] = '%field% ist nicht %value%';
 	//$strings['%posted_or_updated% before %value%'] = '';
@@ -3702,7 +3702,7 @@
 	$strings['Category - which category an issue is in'] = 'Kategorie - nach Kategorisierung der Fälle';
 	$strings['Priority - how high the issue is prioritised'] = 'Priorität - nach Höhe der Priorität';
 	$strings['Severity - how serious the issue is'] = 'Gewichtung - wie ernst ein Fall ist';
-	$strings['Reproducability - how often you can reproduce the issue'] = 'Reproduzierbarkeit - wie oft ein Fall gestellt werden kann';
+	$strings['Reproducability - how often you can reproduce the issue'] = 'Reproduzierbarkeit - wie oft ein Fall nachgestellt werden kann';
 	$strings['Issue type - what kind of issue it is'] = 'Falltyp - welcher Typ Fall eingeordnet wurde';
 	//$strings['Milestone - which milestone an issue is targetted for'] = '';
 	//$strings['Component - which components have been affected'] = '';
