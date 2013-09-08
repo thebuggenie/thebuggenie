@@ -61,10 +61,10 @@
 	$strings['Can see all components'] = 'Kann alle Komponenten sehen';
 	$strings['Can see all releases'] = 'Kann alle Releases sehen';
 	$strings['Can see all milestones'] = 'Kann alle Meilensteine sehen';
-	$strings['Can manage stories, tasks, sprints and backlog on the project planning page'] = 'Kann auf der Projektplanungsseite Berichte, Aufgaben, Sprints und den Backlog verwalten';
+	$strings['Can manage stories, tasks, sprints and backlog on the project planning page'] = 'Kann auf der Projektplanungsseite Berichte, Aufgaben, Zwischenziele und den Backlog verwalten';
 	$strings['Can add new issues/tasks/stories to the backlog on the project planning page'] = 'Kann auf der Projektplanungsseite Fälle, Aufgaben und Berichte erstellen';
 	$strings['Can manage the backlog on the project planning page'] = 'Kann auf der Projektplanungsseite den Backlog verwalten';
-	$strings['Can add milestones/sprints on the project planning page'] = 'Kann Meilensteine und sprints auf der Projektplanungsseite hinzufügen';
+	$strings['Can add milestones/sprints on the project planning page'] = 'Kann Meilensteine und Zwischenziele auf der Projektplanungsseite hinzufügen';
 	$strings['Can (re-)assign issues/tasks/stories to milestones/sprints on the project planning page'] = 'Kann Fälle, Aufgaben und Berichte auf der Projektplanungsseite (neu-)zuweisen';
 	$strings['Can manage project'] = 'Kann Projekte verwalten';
 	$strings['Can manage project releases and components'] = 'Kann Releases und Komponenten verwalten';
@@ -105,7 +105,7 @@
 	$strings['Can spend time working on issues'] = 'Kann Fälle bearbeiten mit Bearbeitungszeit';
 	$strings['Can edit issue percent complete'] = 'Kann Fälle bearbeiten mit prozentualem Abschluss';
 	$strings['Can set issue milestone'] = 'Kann Fälle bearbeiten mit Meilenstein';
-	$strings['Can change custom field values for issues reported by the user'] = 'Kann benutzerdefinierte, vom Benutzer gemeldete, Felder editieren';
+	$strings['Can change custom field values for issues reported by the user'] = 'Kann benutzerdefinierte, vom Benutzer gemeldete Felder editieren';
 	$strings['Can change custom field values for any issues'] = 'Kann benutzerdefinierte Felder aller Fälle editieren';
 	$strings['Can change custom field "%field_name%" for issues reported by the user'] = 'Kann benutzerdefiniertes Feld "%field_name%" des Benutzers editieren';
 	$strings['Can change custom field "%field_name%" for any issues'] = 'Kann benutzerdefinierte Felder "%field_name%" für alle Fälle editieren';
@@ -119,9 +119,9 @@
 	$strings['Can add links to issues reported by the user'] = 'Kann Links zu selbst gemeldeten Fällen einreichen';
 	$strings['Can add links to any issues'] = 'Kann Links zu allen gemeldeten Fällen einreichen';
 	$strings['Can add files to and remove own files from issues reported by the user'] = 'Kann Dateien von selbst eingereichten Fällen hinzufügen und Löschen';
-	$strings['Can add files to and remove own files from any issues'] = 'Kann Dateien aller eingereichten Fällen hinzufügen und löschen';
+	$strings['Can add files to and remove own files from any issues'] = 'Kann Dateien aller eingereichten Fälle hinzufügen und löschen';
 	$strings['Can remove any attachments from issues reported by the user'] = 'Kann Dateien von selbst eingereichten Fällen löschen';
-	$strings['Can remove any attachments from any issues'] = 'Kann Dateien aller eingereichten Fällen löschen';
+	$strings['Can remove any attachments from any issues'] = 'Kann Dateien aller eingereichten Fälle löschen';
 	$strings['Can add related issues to other issues'] = 'Kann Fälle mit anderen Fällen verknüpfen';
 	$strings['Can see public comments, post new, edit own and delete own comments'] = 'Kann öffentliche Kommentare sehen, neue erstellen, eigene editieren und löschen';
 	$strings['Can see public comments'] = 'Kann öffentliche Kommentare sehen';
@@ -129,10 +129,10 @@
 	$strings['Can edit own comments'] = 'Kann eigene Kommentare editieren';
 	$strings['Can delete own comments'] = 'Kann eigene Kommentare löschen';
 	$strings['Can see all comments (including non-public), post new, edit and delete all comments'] = 'Kann alle Kommentare sehen, neue erstellen, editieren und löschen';
-	$strings['Can see all comments including hidden'] = 'Kann alle Kommentare inkl. verstecken sehen';
+	$strings['Can see all comments including hidden'] = 'Kann alle Kommentare inkl. versteckte sehen';
 	$strings['Can edit all comments'] = 'Kann alle Kommentare bearbeiten';
 	$strings['Can delete any comments'] = 'Kann alle Kommentare löschen';
-	$strings['A loop has been found in the project heirarchy. Go to project configuration, and alter the subproject setting for this project so that this project is not a subproject of one which is a subproject of this one.'] = 'Ein Zirkelbezug wurde in der Projekthirarchie gefunden. Gehen Sie zur Konfiguration dieses Projektes um es so zu ändern, dass es nicht Unterprojekt eines Projektes ist, welches selbst Unterprojekt von diesem ist.';
+	$strings['A loop has been found in the project heirarchy. Go to project configuration, and alter the subproject setting for this project so that this project is not a subproject of one which is a subproject of this one.'] = 'Ein Zirkelbezug wurde in der Projektheirarchie gefunden. Gehen Sie zur Konfiguration dieses Projektes um es so zu ändern, dass es nicht Unterprojekt eines Projektes ist, welches selbst Unterprojekt von diesem ist.';
 	$strings['An authentication error occured. Please reload your page and try again'] = 'Ein Authentifizierungsfehler ist aufgetreten. Bitte laden Sie die Seite erneut.';
 	$strings['Please log in'] = 'Bitte einloggen';
 
@@ -176,7 +176,7 @@
 	// ----------------------------------------------------------------------------
 	$strings['Crash: Bug causes crash or data loss / asserts in the debug release'] = 'Crash: Fehler löst Absturz oder Datenverlust aus';
 	$strings['Major usability: Impairs usability in key scenarios'] = 'Schwerer Fehler: Verhindert die Ausführung von primären Aufgaben';
-	$strings['Minor usability: Impairs usability in secondary scenarios'] = 'Mittlerer Fehler: Verhindert die Ausführung von sekundüren Aufgaben';
+	$strings['Minor usability: Impairs usability in secondary scenarios'] = 'Mittlerer Fehler: Verhindert die Ausführung von sekundären Aufgaben';
 	$strings['Balancing: Enables degenerate usage strategies that harm the experience'] = 'Niederer Fehler: Produziert Fehler, welche die Nutzung beeinträchtigen';
 	$strings['Visual and Sound Polish: Aesthetic issues'] = 'Fehler auf der Oberfläche';
 	$strings['Localization'] = 'Lokalisierung/Übersetzung';
@@ -273,7 +273,7 @@
 	$strings['No time spent'] = 'Keine Zeit benötigt';
 	$strings["Time spent on this issue, from '''%previous_time%''' to '''%new_time%'''."] = "Bearbeitungszeit geändert, von '''%previous_time%''' auf '''%new_time%'''.";
 	$strings['This issue has been closed'] = 'Dieser Fall wurde geschlossen';
-	$strings['This issue has been reopened'] = 'Dieser Fall wieder wieder geöffnet';
+	$strings['This issue has been reopened'] = 'Dieser Fall wurde wieder geöffnet';
 	$strings['This issue is now blocking the next release'] = 'Dieser Fall blockiert nun das nächste Release';
 	$strings['This issue is no longer blocking the next release'] = 'Dieser Fall blockiert nicht länger das nächste Release';
 	$strings["The custom field %customfield_name% has been changed to '''%new_value%'''."] = "Das Feld %customfield_name% wurde geändert zu '''%new_value%'''.";
@@ -329,7 +329,7 @@
 	$strings['No file was uploaded'] = 'Keine Datei hochgeladen';
 	$strings['An unhandled error occured'] = 'Ein nicht verarbeiteter Fehler ist aufgetreten';
 	$strings['Uploads are not enabled'] = 'Uploads sind nicht aktiviert';
-	$strings['The file could not be uploaded'] = '';
+	$strings['The file could not be uploaded'] = 'Die Datei konnte nicht hochgeladen werden';
 	$strings['Could not find the uploaded file. Please make sure that it is not too big.'] = 'Hochgeladene Datei konnte nicht gefunden werden. Bitte stellen Sie sicher, daß sie nicht zu groß ist.';
 
 	// First occurrence is in: .\core\classes\TBGResponse.class.php
@@ -489,7 +489,7 @@
 	$strings['Scopes'] = 'Bereiche';
 	$strings['Permissions'] = 'Berechtigungen';
 	$strings['Roles'] = 'Rollen';
-	$strings['Authentication'] = 'Auhentifizierung';
+	$strings['Authentication'] = 'Authentifizierung';
 	$strings['Uploads &amp; attachments'] = 'Uploads &amp; Anhänge';
 	$strings['Import data'] = 'Daten importieren';
 	$strings['Projects'] = 'Projekte';
@@ -689,7 +689,7 @@
 	$strings['Selected theme'] = 'Design wählen';
 	$strings['Themes provide the look and feel of The Bug Genie, other than the icons. Therefore, changing the theme will change the colours, fonts and layout of your installation'] = 'Designes legen das Aussehen von The Bug Genie fest. Wird ein anderes Design gewählt, so ändern sich Farben, Schriftarten und das Layout der Installation.';
 	$strings['Selected iconset'] = 'Iconset wählen';
-	$strings['An iconset contains all the icons used in The Bug Genie. You can change the icons to be used using this option'] = 'Ein Iconset enthält alle von The Bug Genie verwendeten Icons. Mit dieser Option können sie das verwendete Iconset ändern.';
+	$strings['An iconset contains all the icons used in The Bug Genie. You can change the icons to be used using this option'] = 'Ein Iconset enthält alle von The Bug Genie verwendeten Icons. Mit dieser Option können Sie das verwendete Iconset ändern.';
 	$strings['Custom header and favicons'] = 'Anpassung von Kopfzeile und Favicon';
 	$strings['Configure icons'] = 'Icons configurieren';
 	$strings['Custom header link'] = 'Angepasster Kopf-Link';
@@ -1553,7 +1553,7 @@
 	// First occurrence is in: .\modules\configuration\templates\index.html.php
 	// ----------------------------------------------------------------------------
 	$strings['Configuration center'] = 'Konfigurationszentrale';
-	$strings['Check for the latest updates'] = 'Nach Aktualisierungen scuehn';
+	$strings['Check for the latest updates'] = 'Nach Aktualisierungen suchen';
 	$strings['Checking for updates and installing the latest releases ensures you have the latest improvements, fixes and features for The Bug Genie.'] = 'Halten Sie The Bug Genie aktuell und profitieren so von den neuesten Verbesserungen, Fehlerbehebungen und Funktionen.';
 	$strings['You currently have version %thebuggenie_version% of The Bug Genie.'] = 'Sie nutzen aktuelle Version %thebuggenie_version% von The Bug Genie.';
 	$strings['Check for updates now'] = 'jetzt prüfen';
@@ -2591,8 +2591,8 @@
 	$strings['Setup my dashboard'] = 'Meine Übersicht konfigurieren';
 	$strings['Your projects'] = 'Ihre Projekte';
 	$strings['You are not associated with any projects'] = 'Sie sind mit keinem Projekt verknüpft';
-	$strings['Upcoming milestones / sprints'] = 'Anstehende Meilensteine und Sprints';
-	$strings['Showing milestones and sprint for the next 21 days'] = 'zeige Meinensteine und Sprints der nächsten 21 Tage';
+	$strings['Upcoming milestones / sprints'] = 'Anstehende Meilensteine und Zwischenziele';
+	$strings['Showing milestones and sprint for the next 21 days'] = 'zeige Meinensteine und Zwischenziele der nächsten 21 Tage';
 	$strings['There are no upcoming milestones for any of your associated projects'] = 'Es konnten keine Meilensteine für ihre zugewiesenen Projekte gefunden werden';
 
 	// First occurrence is in: .\modules\main\templates\forbidden.html.php
