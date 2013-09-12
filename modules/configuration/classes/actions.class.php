@@ -83,7 +83,7 @@
 			{
 				$this->getResponse()->setPage('config');
 				TBGContext::loadLibrary('ui');
-				$this->getResponse()->addBreadcrumb(TBGContext::getI18n()->__('Configure The Bug Genie'), TBGContext::getRouting()->generate('configure'), $this->getResponse()->getPredefinedBreadcrumbLinks('main_links'));
+				$this->getResponse()->addBreadcrumb(TBGContext::getI18n()->__('Configure ' . TBGSettings::getTBGname()), TBGContext::getRouting()->generate('configure'), $this->getResponse()->getPredefinedBreadcrumbLinks('main_links'));
 			}
 			
 		}
