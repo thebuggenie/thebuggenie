@@ -6,7 +6,7 @@
 				<?php echo __('%thebuggenie%, <b>friendly</b> issue tracking since 2002', array('%thebuggenie%' => link_tag(make_url('about'), 'The Bug Genie'))); ?>.
 				<?php echo __('Licensed under the MPL 1.1 only, read it at %link_to_MPL%', array('%link_to_MPL%' => '<a href="http://www.opensource.org/licenses/mozilla1.1.php">opensource.org</a>')); ?>
 				<?php if ($tbg_user->canAccessConfigurationPage()): ?>
-					| <b><?php echo link_tag(make_url('configure'), __('Configure The Bug Genie')); ?></b>
+					| <b><?php echo link_tag(make_url('configure'), __('Configure ' . TBGSettings::getTBGname())); ?></b>
 				<?php endif; ?>
 			</td>
 		</tr>

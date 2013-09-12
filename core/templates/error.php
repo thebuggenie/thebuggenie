@@ -37,7 +37,7 @@ body { background-color: #DFDFDF; font-family: sans-serif; font-size: 13px; }
 </head>
 <body>
 	<div class="rounded_box" style="margin: 30px auto 0 auto; width: 700px;">
-		<img style="float: left; margin: 10px;" src="<?php echo TBGContext::getTBGPath(); ?>header.png"><h1>An error occured in The Bug Genie</h1>
+		<img style="float: left; margin: 10px;" src="<?php echo TBGContext::getTBGPath(); ?>header.png"><h1>An error occured in <?php echo TBGSettings::getTBGname(); ?></h1>
 		<div class="error_content">
 			<h2><?php echo (isset($exception)) ? $exception->getMessage() : $error; ?></h2>
 			<?php if (isset($exception) && $exception instanceof Exception): ?>
