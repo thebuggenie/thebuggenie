@@ -101,7 +101,7 @@
 			$types[self::RESOLUTION] = 'TBGResolution';
 			$types[self::ACTIVITYTYPE] = 'TBGActivityType';
 
-			$types = TBGEvent::createNew('core', 'TBGDatatype::getTypes', null, array(), $types)->getReturnList();
+			$types = TBGEvent::createNew('core', 'TBGDatatype::getTypes', null, array(), $types)->trigger()->getReturnList();
 			
 			return $types;
 		}
