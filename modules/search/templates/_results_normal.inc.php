@@ -2,8 +2,8 @@
 <?php $current_count = 0; ?>
 <?php $current_estimated_time = array('months' => 0, 'weeks' => 0, 'days' => 0, 'hours' => 0, 'points' => 0); ?>
 <?php $current_spent_time = $current_estimated_time; ?>
-<?php foreach ($issues as $issue): ?>
-	<?php list ($showtablestart, $showheader, $prevgroup_id, $groupby_description) = searchActions::resultGrouping($issue, $groupby, $cc, $prevgroup_id); ?>
+<?php foreach ($search_object->getIssues() as $issue): ?>
+	<?php list ($showtablestart, $showheader, $prevgroup_id, $groupby_description) = searchActions::resultGrouping($issue, $search_object->getGroupBy(), $cc, $prevgroup_id); ?>
 	<?php if (($showtablestart || $showheader) && $cc > 1): ?>
 		<?php echo '</tbody></table>'; ?>
 		<?php include_template('search/results_summary', compact('current_count', 'current_estimated_time', 'current_spent_time')); ?>
@@ -18,7 +18,7 @@
 	<?php foreach ($current_spent_time as $key => $value) $current_spent_time[$key] += $spenttime[$key]; ?>
 	<?php if ($showheader): ?>
 		<h5>
-			<?php if ($groupby == 'issuetype'): ?>
+			<?php if ($search_object->getGroupBy() == 'issuetype'): ?>
 				<?php echo image_tag((($issue->hasIssueType()) ? $issue->getIssueType()->getIcon() : 'icon_unknown') . '_small.png', array('title' => (($issue->hasIssueType()) ? $issue->getIssueType()->getName() : __('Unknown issuetype')))); ?>
 			<?php endif; ?>
 			<?php echo $groupby_description; ?>
@@ -143,7 +143,7 @@
 						</div>
 					</td>
 				</tr>
-	<?php if ($cc == count($issues)): ?>
+	<?php if ($cc == $search_object->getNumberOfIssues()): ?>
 			</tbody>
 		</table>
 		<?php include_template('search/results_summary', compact('current_count', 'current_estimated_time', 'current_spent_time')); ?>

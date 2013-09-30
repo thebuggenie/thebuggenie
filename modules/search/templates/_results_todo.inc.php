@@ -1,5 +1,5 @@
-<?php foreach ($issues as $issue): ?>
-	<?php list ($showtablestart, $showheader, $prevgroup_id, $groupby_description) = searchActions::resultGrouping($issue, $groupby, $cc, $prevgroup_id); ?>
+<?php foreach ($search_object->getIssues() as $issue): ?>
+	<?php list ($showtablestart, $showheader, $prevgroup_id, $groupby_description) = searchActions::resultGrouping($issue, $search_object->getGroupby(), $cc, $prevgroup_id); ?>
 	<?php if ($showtablestart && $cc > 1): ?>
 		<?php echo '</tbody></table>'; ?>
 	<?php endif; ?>
@@ -62,7 +62,7 @@
 					</td>
 					<td class="result_issue"><?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue->getFormattedIssueNo(true, true), array('class' => 'issue_link')); ?></td>
 				</tr>
-	<?php if ($cc == count($issues)): ?>
+	<?php if ($cc == $search_object->getTotalNumberOfIssues()): ?>
 			</tbody>
 		</table>
 	<?php endif; ?>

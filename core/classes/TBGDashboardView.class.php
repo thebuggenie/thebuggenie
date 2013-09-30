@@ -125,7 +125,7 @@
 					{
 						foreach ($savedsearches as $a_savedsearch)
 						{
-							$searches[self::VIEW_SAVED_SEARCH][$a_savedsearch->get(TBGSavedSearchesTable::ID)] = $a_savedsearch->get(TBGSavedSearchesTable::NAME);
+							$searches[self::VIEW_SAVED_SEARCH][$a_savedsearch->getID()] = $a_savedsearch->getName();
 						}
 					}
 					break;

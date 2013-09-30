@@ -59,6 +59,8 @@
 		{
 			$relation_details = Core::getCachedEntityRelationDetails(\get_class($this), $property);
 			if ($relation_details['collection']) {
+				if (!$this->getB2DBID()) return array();
+
 				if (array_key_exists('manytomany', $relation_details) && $relation_details['manytomany']) {
 					$table = $relation_details['joinclass'];
 				} elseif (array_key_exists('class', $relation_details) && $relation_details['class']) {

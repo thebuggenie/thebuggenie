@@ -939,6 +939,8 @@
 
 		public function getForeignItems(Saveable $class, $relation_details)
 		{
+			if (!$class->getB2DBID()) return array();
+
 			list ($criteria, $item_class, $item_column) = $this->generateForeignItemsCriteria($class, $relation_details);
 			if (!$item_class) {
 				$items = array();

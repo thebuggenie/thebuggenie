@@ -52,28 +52,32 @@
 					<div class="header"><?php echo $search_message; ?></div>
 				</div>
 			<?php endif; ?>
-			<?php include_component('search/searchbuilder', compact('appliedfilters', 'ipp', 'groupby', 'grouporder', 'issavedsearch', 'savedsearch', 'searchterm', 'show_results', 'templatename', 'template_parameter')); ?>
-			<?php if ($show_results): ?>
-				<div class="results_header">
-					<?php echo $searchtitle; ?>
-					&nbsp;&nbsp;<span class="faded_out"><?php echo __('%number_of% issue(s)', array('%number_of%' => (int) $resultcount)); ?></span>
-					<?php include_component('search/extralinks', compact('show_results', 'issavedsearch')); ?>
+			<div class="results_header">
+				<?php echo ($searchtitle) ? $searchtitle : __('Find issues'); ?>
+				&nbsp;&nbsp;<span id="findissues_num_results" class="faded_out" style="<?php if (!$show_results) echo 'display: none;'; ?>"><?php echo __('%number_of% issue(s)', array('%number_of%' => '<span id="findissues_num_results_span">'.(int) $resultcount.'</span>')); ?></span>
+				<?php include_component('search/extralinks', compact('show_results', 'issavedsearch')); ?>
+			</div>
+			<?php include_component('search/searchbuilder', compact('search_object', 'show_results')); ?>
+			<div id="search_results_container">
+				<div id="search_results_loading_indicator" style="display: none;"><?php echo image_tag('spinning_30.gif'); ?></div>
+				<div id="search_results" class="search_results">
+					<?php if ($resultcount > 0): ?>
+						<?php if ($show_results): ?>
+							<?php include_template('search/issues_paginated', compact('search_object')); ?>
+						<?php endif; ?>
+					<?php else: ?>
+						<div class="faded_out" id="no_issues"><?php echo __('No issues were found'); ?></div>
+					<?php endif; ?>
 				</div>
-				<?php if ($resultcount > 0): ?>
-					<div id="search_results" class="search_results">
-						<?php include_template('search/issues_paginated', array('issues' => $issues, 'templatename' => $templatename, 'template_parameter' => $template_parameter, 'searchterm' => $searchterm, 'filters' => $appliedfilters, 'groupby' => $groupby, 'grouporder' => $grouporder, 'resultcount' => $resultcount, 'ipp' => $ipp, 'offset' => $offset)); ?>
-					</div>
-				<?php else: ?>
-					<div class="faded_out" id="no_issues"><?php echo __('No issues were found'); ?></div>
-				<?php endif; ?>
-				<?php if ($tbg_user->isKeyboardNavigationEnabled()): ?>
-					<script>
-						Event.observe(document, 'dom:loaded', function() {
-							TBG.Search.initializeKeyboardNavigation();
-						});
-					</script>
-				<?php endif; ?>
-			<?php endif; ?>
+			</div>
+			<script>
+				Event.observe(document, 'dom:loaded', function() {
+					TBG.Search.initializeFilters();
+					<?php if ($tbg_user->isKeyboardNavigationEnabled()): ?>
+						TBG.Search.initializeKeyboardNavigation();
+					<?php endif; ?>
+				});
+			</script>
 		</td>
 	</tr>
 </table>

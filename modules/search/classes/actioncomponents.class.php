@@ -3,46 +3,24 @@
 	class searchActionComponents extends TBGActionComponent
 	{
 
+		/**
+		 * @protected TBGSavedSearch $search_object
+		 */
+
 		public function componentPagination()
 		{
-			$this->currentpage = ceil($this->offset / $this->ipp) + 1;
-			$this->pagecount = ceil($this->resultcount / $this->ipp);
-			$parameters = array();
-			foreach ($this->filters as $key => $filter)
-			{
-				if (is_array($filter))
-				{
-					foreach ($filter as $subkey => $subfilter)
-					{
-						if (is_array($subfilter))
-						{
-							foreach ($subfilter as $subsubkey => $subsubfilter)
-							{
-								$parameters[] = "filters[{$key}][{$subkey}][{$subsubkey}]=".urlencode($subsubfilter);
-							}
-						}
-						else
-						{
-							$parameters[] = "filters[{$key}][{$subkey}]=".urlencode($subfilter);
-						}
-					}
-				}
-				else
-				{
-					$parameters[] = "filters[{$key}]=".urlencode($filter);
-				}
-			}
-			$parameters[] = 'template='.$this->templatename;
-			$parameters[] = 'template_parameter='.$this->template_parameter;
-			$parameters[] = 'searchterm='.$this->searchterm;
-			$parameters[] = 'groupby='.$this->groupby;
-			$parameters[] = 'grouporder='.$this->grouporder;
-			$parameters[] = 'issues_per_page='.$this->ipp;
-			$route = (TBGContext::isProjectContext()) ? TBGContext::getRouting()->generate('project_search_paginated', array('project_key' => TBGContext::getCurrentProject()->getKey())) : TBGContext::getRouting()->generate('search_paginated');
-			$this->route = $route;
-			$this->parameters = join('&', $parameters);
+			$this->currentpage = $this->search_object->getCurrentPage();
+			$this->pagecount = $this->search_object->getNumberOfPages();
+			$this->ipp = $this->search_object->getIssuesPerPage();
+			$this->route = (TBGContext::isProjectContext()) ? TBGContext::getRouting()->generate('project_search_paginated', array('project_key' => TBGContext::getCurrentProject()->getKey())) : TBGContext::getRouting()->generate('search_paginated');
+			$this->parameters = $this->search_object->getParametersAsString();
 		}
-		
+
+		public function componentInteractiveFilter()
+		{
+
+		}
+
 		public function componentFilter()
 		{
 			$pkey = (TBGContext::isProjectContext()) ? TBGContext::getCurrentProject()->getID() : null;
@@ -148,26 +126,27 @@
 			}
 			elseif ($this->view->getType() == TBGDashboardView::VIEW_SAVED_SEARCH)
 			{
-				$filters = TBGSavedSearchFiltersTable::getTable()->getFiltersBySavedSearchID($this->view->getDetail());
+				$search = TBGSavedSearchesTable::getTable()->selectById($this->view->getDetail());
+				$filters = $search->getFilters(); // TBGSavedSearchFiltersTable::getTable()->getFiltersBySavedSearchID($this->view->getDetail());
 			}
 			list ($this->issues, $this->resultcount) = TBGIssue::findIssues($filters);
 		}		
 		
 		public function componentSidebar()
 		{
-			$savedsearches = \b2db\Core::getTable('TBGSavedSearchesTable')->getAllSavedSearchesByUserIDAndPossiblyProjectID(TBGContext::getUser()->getID(), (TBGContext::isProjectContext()) ? TBGContext::getCurrentProject()->getID() : 0);
+			$savedsearches = TBGSavedSearchesTable::getTable()->getAllSavedSearchesByUserIDAndPossiblyProjectID(TBGContext::getUser()->getID(), (TBGContext::isProjectContext()) ? TBGContext::getCurrentProject()->getID() : 0);
 			foreach ($savedsearches['user'] as $a_savedsearch)
-				$this->getResponse()->addFeed(make_url('search', array('saved_search' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => true, 'format' => 'rss')), __($a_savedsearch->get(TBGSavedSearchesTable::NAME)));
+				$this->getResponse()->addFeed(make_url('search', array('saved_search' => $a_savedsearch->getID(), 'search' => true, 'format' => 'rss')), __($a_savedsearch->getName()));
 
 			foreach ($savedsearches['public'] as $a_savedsearch)
-				$this->getResponse()->addFeed(make_url('search', array('saved_search' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => true, 'format' => 'rss')), __($a_savedsearch->get(TBGSavedSearchesTable::NAME)));
+				$this->getResponse()->addFeed(make_url('search', array('saved_search' => $a_savedsearch->getID(), 'search' => true, 'format' => 'rss')), __($a_savedsearch->getName()));
 			
 			$this->savedsearches = $savedsearches;
 		}
 		
 		public function componentSearchbuilder()
 		{
-			$this->templates = searchActions::getTemplates();
+			$this->templates = TBGSavedSearch::getTemplates();
 			$this->filters = $this->appliedfilters;
 		}
 

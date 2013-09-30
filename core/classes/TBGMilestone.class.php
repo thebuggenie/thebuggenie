@@ -25,7 +25,7 @@
 		const TYPE_SCRUMSPRINT = 2;
 
 		/**
-		 * This components project
+		 * This milestone's project
 		 *
 		 * @var TBGProject
 		 * @Column(type="integer", length=10)
