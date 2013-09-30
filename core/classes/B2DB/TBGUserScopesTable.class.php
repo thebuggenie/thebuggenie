@@ -153,13 +153,14 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::USER_ID, $user_id);
-			$res = $this->doSelect($crit);
 
 			$scopes = array();
-
-			while ($row = $res->getNextRow())
+			if ($res = $this->doSelect($crit))
 			{
-				$scopes[$row->get(self::SCOPE)] = array('confirmed' => (boolean) $row->get(self::CONFIRMED), 'group_id' => $row->get(self::GROUP_ID));
+				while ($row = $res->getNextRow())
+				{
+					$scopes[$row->get(self::SCOPE)] = array('confirmed' => (boolean) $row->get(self::CONFIRMED), 'group_id' => $row->get(self::GROUP_ID));
+				}
 			}
 
 			return $scopes;
