@@ -6,6 +6,7 @@
 
 	/**
 	 * @Table(name="savedsearches")
+	 * @Entity(class="TBGSavedSearch")
 	 */
 	class TBGSavedSearchesTable extends TBGB2DBTable 
 	{
@@ -145,22 +146,6 @@
 			return array($filters, $groupby, $grouporder);
 		}
 
-		protected function _initialize()
-		{
-			parent::_setup(self::B2DBNAME, self::ID);
-			parent::_addVarchar(self::NAME, 200);
-			parent::_addVarchar(self::DESCRIPTION, 255, '');
-			parent::_addBoolean(self::IS_PUBLIC);
-			parent::_addVarchar(self::TEMPLATE_NAME, 200);
-			parent::_addVarchar(self::TEMPLATE_PARAMETER, 200);
-			parent::_addInteger(self::ISSUES_PER_PAGE, 10);
-			parent::_addVarchar(self::GROUPBY, 100);
-			parent::_addVarchar(self::GROUPORDER, 5);
-			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
-			parent::_addForeignKeyColumn(self::APPLIES_TO_PROJECT, TBGProjectsTable::getTable(), TBGProjectsTable::ID);
-			parent::_addForeignKeyColumn(self::UID, TBGUsersTable::getTable(), TBGUsersTable::ID);
-		}
-
 		public function getAllSavedSearchesByUserIDAndPossiblyProjectID($user_id, $project_id = 0)
 		{
 			$crit = $this->getCriteria();
@@ -175,13 +160,13 @@
 
 			$retarr = array('user' => array(), 'public' => array());
 			
-			if ($res = $this->doSelect($crit, 'none'))
+			if ($res = $this->select($crit, 'none'))
 			{
-				while ($row = $res->getNextRow())
+				foreach ($res as $id => $search)
 				{
-					if ($row->get(self::UID) == 0 && $row->get(self::IS_PUBLIC) == 0) continue;
+					if ($search->getUserID() == 0 && !$search->isPublic()) continue;
 
-					$retarr[($row->get(self::UID) != 0) ? 'user' : 'public'][$row->get(self::ID)] = $row;
+					$retarr[($search->getUserID() != 0) ? 'user' : 'public'][$id] = $search;
 				}
 			}
 

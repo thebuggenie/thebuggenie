@@ -6,6 +6,7 @@
 
 	/**
 	 * @Table(name="savedsearchfilters")
+	 * @Entity(class="TBGSearchFilter")
 	 */
 	class TBGSavedSearchFiltersTable extends TBGB2DBTable
 	{

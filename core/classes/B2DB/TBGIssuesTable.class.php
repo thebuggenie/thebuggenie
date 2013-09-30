@@ -109,11 +109,6 @@
 			}
 		}
 
-		public static function getValidSearchFilters()
-		{
-			return array('project_id', 'subprojects', 'text', 'state', 'issuetype', 'status', 'resolution', 'reproducability', 'category', 'severity', 'priority', 'posted_by', 'assignee_user', 'assignee_team', 'owner_user', 'owner_team', 'component', 'build', 'edition', 'posted', 'last_updated', 'milestone');
-		}
-
 		public function getCountsByProjectID($project_id)
 		{
 			$crit = $this->getCriteria();
@@ -574,6 +569,25 @@
 			$this->doUpdate($crit);
 		}
 
+		public static function parseFilter($crit, $filter, $filters, $ctn = null)
+		{
+			if (is_array($filter))
+			{
+				foreach ($filter as $single_filter)
+				{
+					$ctn = self::parseFilter($crit, $single_filter, $filters, $ctn);
+				}
+			}
+			elseif ($filter instanceof TBGSearchFilter)
+			{
+				if ($filter->hasValue())
+				{
+					$ctn = $filter->addToCriteria($crit, $filters, $ctn);
+					$crit->addWhere($ctn);
+				}
+			}
+		}
+
 		public function findIssues($filters = array(), $results_per_page = 30, $offset = 0, $groupby = null, $grouporder = null, $dateorder = 'asc')
 		{
 			$crit = $this->getCriteria();
@@ -586,178 +600,10 @@
 				$crit->addJoin(TBGIssueAffectsEditionTable::getTable(), TBGIssueAffectsEditionTable::ISSUE, self::ID);
 				$crit->addJoin(TBGIssueAffectsBuildTable::getTable(), TBGIssueAffectsBuildTable::ISSUE, self::ID);
 
-				foreach ($filters as $filter => $filter_info)
+				$filter_keys = array_keys($filters);
+				foreach ($filters as $filter)
 				{
-					if ($filter == 'component')
-					{
-						$dbname = TBGIssueAffectsComponentTable::getTable();
-					}
-					elseif ($filter == 'edition')
-					{
-						$dbname = TBGIssueAffectsEditionTable::getTable();
-					}
-					elseif ($filter == 'build')
-					{
-						$dbname = TBGIssueAffectsBuildTable::getTable();
-					}
-					else
-					{
-						$dbname = $this->getB2DBName();
-					}
-
-					if (array_key_exists('value', $filter_info) && in_array($filter_info['operator'], array('=', '!=', '<=', '>=', '<', '>')))
-					{
-						if ($filter == 'text')
-						{
-							if ($filter_info['value'] != '')
-							{
-								$searchterm = (mb_strpos($filter_info['value'], '%') !== false) ? $filter_info['value'] : "%{$filter_info['value']}%";
-								if ($filter_info['operator'] == '=')
-								{
-									$ctn = $crit->returnCriterion(self::TITLE, $searchterm, Criteria::DB_LIKE);
-									$ctn->addOr(self::DESCRIPTION, $searchterm, Criteria::DB_LIKE);
-									$ctn->addOr(self::REPRODUCTION_STEPS, $searchterm, Criteria::DB_LIKE);
-									$ctn->addOr(TBGIssueCustomFieldsTable::OPTION_VALUE, $searchterm, Criteria::DB_LIKE);
-								}
-								else
-								{
-									$ctn = $crit->returnCriterion(self::TITLE, $searchterm, Criteria::DB_NOT_LIKE);
-									$ctn->addWhere(self::DESCRIPTION, $searchterm, Criteria::DB_NOT_LIKE);
-									$ctn->addWhere(self::REPRODUCTION_STEPS, $searchterm, Criteria::DB_NOT_LIKE);
-									$ctn->addOr(TBGIssueCustomFieldsTable::OPTION_VALUE, $searchterm, Criteria::DB_NOT_LIKE);
-								}
-								$crit->addWhere($ctn);
-							}
-						}
-						elseif ($filter == 'subprojects')
-						{
-							if (TBGContext::isProjectContext())
-							{
-								$ctn = $crit->returnCriterion(self::PROJECT_ID, TBGContext::getCurrentProject()->getID());
-								switch ($filter_info['value'])
-								{
-									case 'all':
-										$subprojects = TBGProject::getIncludingAllSubprojectsAsArray(TBGContext::getCurrentProject());
-										foreach ($subprojects as $subproject)
-										{
-											if ($subproject->getID() == TBGContext::getCurrentProject()->getID()) continue;
-											$ctn->addOr(self::PROJECT_ID, $subproject->getID());
-										}
-										break;
-									case 'none':
-										break;
-									default:
-										$ctn->addOr(self::PROJECT_ID, (int) $filter_info['value']);
-										break;
-								}
-								$crit->addWhere($ctn);
-							}
-						}
-						elseif (in_array($filter, self::getValidSearchFilters()))
-						{
-							if ($filter == 'project_id' && array_key_exists('subprojects', $filters)) continue;
-
-							$crit->addWhere($dbname.'.'.$filter, $filter_info['value'], urldecode($filter_info['operator']));
-						}
-						elseif (TBGCustomDatatype::doesKeyExist($filter))
-						{
-							$customdatatype = TBGCustomDatatype::getByKey($filter);
-							$ctn = $crit->returnCriterion(TBGIssueCustomFieldsTable::CUSTOMFIELDS_ID, $customdatatype->getID());
-							$ctn->addWhere(TBGIssueCustomFieldsTable::CUSTOMFIELDOPTION_ID, $filter_info['value'], $filter_info['operator']);
-							$crit->addWhere($ctn);
-						}
-					}
-					else
-					{
-						if (in_array($filter, self::getValidSearchFilters()))
-						{
-							$first_val = array_shift($filter_info);
-							if ($filter == 'text')
-							{
-								$filter_info = $first_val;
-								if ($filter_info['value'] != '')
-								{
-									$searchterm = (mb_strpos($filter_info['value'], '%') !== false) ? $filter_info['value'] : "%{$filter_info['value']}%";
-									if ($filter_info['operator'] == '=')
-									{
-										$ctn = $crit->returnCriterion(self::TITLE, $searchterm, Criteria::DB_LIKE);
-										$ctn->addOr(self::DESCRIPTION, $searchterm, Criteria::DB_LIKE);
-										$ctn->addOr(self::REPRODUCTION_STEPS, $searchterm, Criteria::DB_LIKE);
-									}
-									else
-									{
-										$ctn = $crit->returnCriterion(self::TITLE, $searchterm, Criteria::DB_NOT_LIKE);
-										$ctn->addWhere(self::DESCRIPTION, $searchterm, Criteria::DB_NOT_LIKE);
-										$ctn->addWhere(self::REPRODUCTION_STEPS, $searchterm, Criteria::DB_NOT_LIKE);
-									}
-									$crit->addWhere($ctn);
-								}
-							}
-							elseif ($filter == 'subprojects')
-							{
-								if (TBGContext::isProjectContext())
-								{
-									$ctn = $crit->returnCriterion(self::PROJECT_ID, TBGContext::getCurrentProject()->getID());
-									switch ($first_val['value'])
-									{
-										case 'all':
-											$subprojects = TBGProject::getIncludingAllSubprojectsAsArray(TBGContext::getCurrentProject());
-											foreach ($subprojects as $subproject)
-											{
-												if ($subproject->getID() == TBGContext::getCurrentProject()->getID()) continue;
-												$ctn->addOr(self::PROJECT_ID, $subproject->getID());
-											}
-											break;
-										case 'none':
-											break;
-										default:
-											$ctn->addOr(self::PROJECT_ID, (int) $first_val['value']);
-											break;
-									}
-									$crit->addWhere($ctn);
-								}
-							}
-							else
-							{
-								if ($filter == 'project_id' && array_key_exists('subprojects', $filters)) continue;
-
-								$ctn = $crit->returnCriterion($dbname.'.'.$filter, $first_val['value'], urldecode($first_val['operator']));
-								if (count($filter_info) > 0)
-								{
-									foreach ($filter_info as $single_filter)
-									{
-										if (in_array($single_filter['operator'], array('=', '<=', '>=', '<', '>')) && !in_array($filter, array('posted', 'last_updated')))
-										{
-											$ctn->addOr($dbname.'.'.$filter, $single_filter['value'], urldecode($single_filter['operator']));
-										}
-										elseif ($single_filter['operator'] == '!=' || in_array($filter, array('posted', 'last_updated')))
-										{
-											$ctn->addWhere($dbname.'.'.$filter, $single_filter['value'], urldecode($single_filter['operator']));
-										}
-									}
-								}
-								$crit->addWhere($ctn);
-							}
-						}
-						elseif (TBGCustomDatatype::doesKeyExist($filter))
-						{
-							$customdatatype = TBGCustomDatatype::getByKey($filter);
-							$first_val = array_shift($filter_info);
-							$ctn = $crit->returnCriterion(TBGIssueCustomFieldsTable::CUSTOMFIELDS_ID, $customdatatype->getID());
-							$ctn->addWhere(TBGIssueCustomFieldsTable::CUSTOMFIELDOPTION_ID, $first_val['value'], $first_val['operator']);
-							if (count($filter_info) > 0)
-							{
-								foreach ($filter_info as $single_filter)
-								{
-									if (in_array($single_filter['operator'], array('=', '!=', '<=', '>=', '<', '>')))
-									{
-										$ctn->addOr(TBGIssueCustomFieldsTable::CUSTOMFIELDOPTION_ID, $single_filter['value'], $single_filter['operator']);
-									}
-								}
-							}
-							$crit->addWhere($ctn);
-						}
-					}
+					self::parseFilter($crit, $filter, $filter_keys);
 				}
 			}
 			

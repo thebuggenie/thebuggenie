@@ -2153,9 +2153,9 @@
 		 * 
 		 * @return boolean
 		 */
-		public function canAccessSavedSearch($savedsearch)
+		public function canAccessSavedSearch(TBGSavedSearch $savedsearch)
 		{
-			return (bool) ($savedsearch->get(TBGSavedSearchesTable::IS_PUBLIC) || $savedsearch->get(TBGSavedSearchesTable::UID) == $this->getID());
+			return (bool) ($savedsearch->isPublic() || $savedsearch->getUserID() == $this->getID());
 		}
 
 		/**

@@ -1,6 +1,83 @@
-<div class="rounded_box iceblue borderless searchbox_container"<?php if ($show_results): ?> style="display: none;"<?php endif; ?> id="search_builder">
-	<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo (TBGContext::isProjectContext()) ? make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('search'); ?>" method="get" id="find_issues_form">
-		<div style="padding-top: 5px;" id="search_filters">
+<div class="interactive_searchbuilder" id="search_builder">
+	<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo (TBGContext::isProjectContext()) ? make_url('project_search_paginated', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('search_paginated'); ?>" method="get" id="find_issues_form" <?php if ($show_results): ?>data-results-loaded<?php endif; ?> onsubmit="TBG.Search.liveUpdate(true);return false;">
+		<div class="searchbuilder_filterstrip" id="searchbuilder_filterstrip">
+			<?php include_component('search/interactivefilter', array('filter' => $search_object->getFilter('issuetype'))); ?>
+			<?php include_component('search/interactivefilter', array('filter' => $search_object->getFilter('status'))); ?>
+			<?php include_component('search/interactivefilter', array('filter' => $search_object->getFilter('category'))); ?>
+			<input type="hidden" name="filters[text][operator]" value="=">
+			<input type="search" name="filters[text][value]" id="interactive_filter_text" value="<?php echo $search_object->getSearchTerm(); ?>" class="filter_searchfield" placeholder="<?php echo __('Enter a search term here'); ?>">
+			<div class="interactive_plus_container" id="interactive_filters_availablefilters_container">
+				<div class="interactive_plus_button" id="interactive_plus_button">+</div>
+				<div class="interactive_filters_list two_columns">
+					<div class="column">
+						<h1><?php echo __('People filters'); ?></h1>
+						<ul>
+							<li class="disabled"><?php echo __('Posted by user'); ?></li>
+							<li class="disabled"><?php echo __('Assigned to user'); ?></li>
+							<li class="disabled"><?php echo __('Assigned to team'); ?></li>
+							<li class="disabled"><?php echo __('Owned by user'); ?></li>
+							<li class="disabled"><?php echo __('Owned by team'); ?></li>
+						</ul>
+						<h1><?php echo __('Time filters'); ?></h1>
+						<ul>
+							<li class="disabled"><?php echo __('Created before'); ?></li>
+							<li class="disabled"><?php echo __('Created after'); ?></li>
+							<li class="disabled"><?php echo __('Last updated before'); ?></li>
+							<li class="disabled"><?php echo __('Last updated after'); ?></li>
+						</ul>
+					</div>
+					<div class="column">
+						<h1><?php echo __('Project detail filters'); ?></h1>
+						<ul>
+							<li class="disabled"><?php echo __('Including subprojects'); ?></li>
+							<li class="disabled"><?php echo __('Reported against a specific release'); ?></li>
+							<li class="disabled"><?php echo __('Affecting a specific component'); ?></li>
+							<li class="disabled"><?php echo __('Affecting a specific edition'); ?></li>
+							<li class="disabled"><?php echo __('Targetting a specific milestone'); ?></li>
+						</ul>
+						<h1><?php echo __('Issue detail filters'); ?></h1>
+						<ul>
+							<li data-filter="priority" id="additional_filter_priority_link"><?php echo __('Priority'); ?></li>
+							<li data-filter="severity" id="additional_filter_severity_link"><?php echo __('Severity'); ?></li>
+							<li data-filter="resolution" id="additional_filter_resolution_link"><?php echo __('Resolution'); ?></li>
+							<li data-filter="reproducability" id="additional_filter_reproducability_link"><?php echo __('Reproducability'); ?></li>
+						</ul>
+					</div>
+					<input type="hidden" name="issues_per_page" value="50">
+				</div>
+			</div>
+			<div class="interactive_plus_container">
+				<div class="interactive_plus_button" id="interactive_template_button"><?php echo image_tag('icon_gear.png'); ?></div>
+				<div class="interactive_filters_list two_columns wide">
+					<h1><?php echo __('Select how to present search results'); ?></h1>
+					<input type="hidden" name="template" id="filter_selected_template" value="<?php echo $search_object->getTemplateName(); ?>">
+					<div class="search_template_list">
+						<ul>
+							<?php foreach ($templates as $template_name => $template_details): ?>
+								<li data-template-name="<?php echo $template_name; ?>" class="template-picker <?php if ($template_name == $search_object->getTemplateName()) echo 'selected'; ?>">
+									<?php echo image_tag('search_template_'.$template_name.'.png'); ?>
+									<h1><?php echo $template_details['title']; ?></h1>
+									<?php echo $template_details['description']; ?>
+								</li>
+							<?php endforeach; ?>
+						</ul>
+					</div>
+					<h1><?php echo __('Select how many issues to show per page'); ?></h1>
+					<input type="hidden" name="issues_per_page" id="filter_issues_per_page" value="<?php echo $search_object->getIssuesPerPage(); ?>">
+					<div class="slider_container">
+						<div class="slider" id="issues_per_page_slider">
+							<div class="handle" id="issues_per_page_handle"></div>
+						</div>
+						<div id="issues_per_page_slider_value" class="slider_value"><?php echo $search_object->getIssuesPerPage(); ?></div>
+					</div>
+				</div>
+			</div>
+			<div id="searchbuilder_filterstrip_filtercontainer">
+				<?php foreach ($search_object->getFilters() as $filter): ?>
+				<?php endforeach; ?>
+			</div>
+		</div>
+		<?php /*<div style="padding-top: 5px;" id="search_filters">
 			<ul id="search_filters_list">
 				<li>
 					<label for="issues_searchfor"><?php echo __('Search for (text)'); ?></label>
@@ -124,32 +201,42 @@
 				</ul>
 			</div>
 			<?php if (!$tbg_user->isGuest()): ?>
-				<div class="rounded_box white borderless" style="display: none; margin: 5px 0 5px 0; padding: 3px 10px 3px 10px; font-size: 14px;" id="saved_search_details">
-					<?php if (TBGContext::isProjectContext()): ?>
-						<p style="padding-bottom: 15px;" class="faded_out"><?php echo __('This saved search will be available under this project only. To make a non-project-specific search, use the main "%find_issues%" page instead', array('%find_issues%' => link_tag(make_url('search'), __('Find issues')))); ?></p>
-					<?php endif; ?>
-					<?php if ($issavedsearch): ?>
-						<input type="hidden" name="saved_search_id" id="saved_search_id" value="<?php echo $savedsearch->get(TBGSavedSearchesTable::ID); ?>">
-					<?php endif; ?>
-					<input type="hidden" name="save" value="1" id="save_search" disabled>
-					<label for="saved_search_name"><?php echo __('Saved search name'); ?></label>
-					<input type="text" name="saved_search_name" id="saved_search_name"<?php if ($issavedsearch): ?> value="<?php echo $savedsearch->get(TBGSavedSearchesTable::NAME); ?>"<?php endif; ?> style="width: 350px;" disabled><br>
-					<label for="saved_search_description"><?php echo __('Description'); ?> <span style="font-weight: normal;">(<?php echo __('Optional'); ?>)</span></label>
-					<input type="text" name="saved_search_description" id="saved_search_description"<?php if ($issavedsearch): ?> value="<?php echo $savedsearch->get(TBGSavedSearchesTable::DESCRIPTION); ?>"<?php endif; ?> style="width: 350px;" disabled><br>
-					<?php if ($tbg_user->canCreatePublicSearches()): ?>
-						<label for="saved_search_public"><?php echo __('Available to'); ?></label>
-						<select name="saved_search_public" id="saved_search_public" disabled>
-							<option value="0"<?php if ($issavedsearch && $savedsearch->get(TBGSavedSearchesTable::IS_PUBLIC) == 0): ?> selected<?php endif; ?>><?php echo __('Only to me'); ?></option>
-							<option value="1"<?php if ($issavedsearch && $savedsearch->get(TBGSavedSearchesTable::IS_PUBLIC) == 1): ?> selected<?php endif; ?>><?php echo __('To everyone'); ?></option>
-						</select>
-					<?php endif; ?>
-					<div style="text-align: right;">
-						<input type="submit" value="<?php echo __('Update this saved search'); ?>" id="search_button_save" onclick="$('find_issues_form').method = 'post';$('save_search').enable();return true;">
-						<input type="submit" value="<?php echo __('Save this search'); ?>" id="search_button_save_new" onclick="$('find_issues_form').method = 'post';$('save_search').enable();return true;">
-						<?php echo __('%update_or_save_search% or %cancel%', array('%update_or_save_search%' => '', '%cancel%' => "<a href=\"javascript:void('0');\" onclick=\"$('saved_search_details').hide();$('saved_search_name').disable();$('saved_search_description').disable();".(($tbg_user->canCreatePublicSearches()) ? "$('saved_search_public').disable();" : '')."$('search_button_bottom').enable();$('search_button_bottom').show();\"><b>".__('cancel').'</b></a>')); ?>
+				<div class="fullpage_backdrop" style="display: none;" id="saved_search_details">
+					<div class="backdrop_box large">
+						<div class="backdrop_detail_content" style="font-size: 14px; text-align: left;">
+							<?php if (TBGContext::isProjectContext()): ?>
+								<p style="padding-bottom: 15px;" class="faded_out"><?php echo __('This saved search will be available under this project only. To make a non-project-specific search, use the main "%find_issues%" page instead', array('%find_issues%' => link_tag(make_url('search'), __('Find issues')))); ?></p>
+							<?php endif; ?>
+							<?php if ($issavedsearch): ?>
+								<input type="hidden" name="saved_search_id" id="saved_search_id" value="<?php echo $savedsearch->get(TBGSavedSearchesTable::ID); ?>">
+							<?php endif; ?>
+							<input type="hidden" name="save" value="1" id="save_search" disabled>
+							<label for="saved_search_name"><?php echo __('Saved search name'); ?></label>
+							<input type="text" name="saved_search_name" id="saved_search_name"<?php if ($issavedsearch): ?> value="<?php echo $savedsearch->get(TBGSavedSearchesTable::NAME); ?>"<?php endif; ?> style="width: 350px;" disabled><br>
+							<label for="saved_search_description"><?php echo __('Description'); ?> <span style="font-weight: normal;">(<?php echo __('Optional'); ?>)</span></label>
+							<input type="text" name="saved_search_description" id="saved_search_description"<?php if ($issavedsearch): ?> value="<?php echo $savedsearch->get(TBGSavedSearchesTable::DESCRIPTION); ?>"<?php endif; ?> style="width: 350px;" disabled><br>
+							<?php if ($tbg_user->canCreatePublicSearches()): ?>
+								<label for="saved_search_public"><?php echo __('Available to'); ?></label>
+								<select name="saved_search_public" id="saved_search_public" disabled>
+									<option value="0"<?php if ($issavedsearch && $savedsearch->get(TBGSavedSearchesTable::IS_PUBLIC) == 0): ?> selected<?php endif; ?>><?php echo __('Only to me'); ?></option>
+									<option value="1"<?php if ($issavedsearch && $savedsearch->get(TBGSavedSearchesTable::IS_PUBLIC) == 1): ?> selected<?php endif; ?>><?php echo __('To everyone'); ?></option>
+								</select>
+							<?php endif; ?>
+							<div style="text-align: right;">
+								<input type="submit" value="<?php echo __('Update this saved search'); ?>" id="search_button_save" onclick="$('find_issues_form').method = 'post';$('save_search').enable();return true;">
+								<input type="submit" value="<?php echo __('Save this search'); ?>" id="search_button_save_new" onclick="$('find_issues_form').method = 'post';$('save_search').enable();return true;">
+								<?php echo __('%update_or_save_search% or %cancel%', array('%update_or_save_search%' => '', '%cancel%' => "<a href=\"javascript:void('0');\" onclick=\"$('saved_search_details').hide();$('saved_search_name').disable();$('saved_search_description').disable();".(($tbg_user->canCreatePublicSearches()) ? "$('saved_search_public').disable();" : '')."$('search_button_bottom').enable();$('search_button_bottom').show();\"><b>".__('cancel').'</b></a>')); ?>
+							</div>
+						</div>
 					</div>
 				</div>
 			<?php endif; ?>
-		</div>
+		</div> */ ?>
 	</form>
+	<div id="searchbuilder_filter_hiddencontainer" style="display: none;">
+		<?php include_component('search/interactivefilter', array('filter' => TBGSearchFilter::createFilter('priority'))); ?>
+		<?php include_component('search/interactivefilter', array('filter' => TBGSearchFilter::createFilter('severity'))); ?>
+		<?php include_component('search/interactivefilter', array('filter' => TBGSearchFilter::createFilter('reproducability'))); ?>
+		<?php include_component('search/interactivefilter', array('filter' => TBGSearchFilter::createFilter('resolution'))); ?>
+	</div>
 </div>

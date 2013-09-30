@@ -262,7 +262,8 @@ TBG.Core._scrollWatcher = function() {
 	}
 	if ($('bulk_action_form_top')) {
 		var y = document.viewport.getScrollOffsets().top;
-		if (y >= $('bulk_action_form_top').up('.bulk_action_container').offsetTop) {
+        var co = $('bulk_action_form_top').up('.bulk_action_container').cumulativeOffset();
+		if (y >= co.top) {
 			$('bulk_action_form_top').addClassName('fixed');
 		} else {
 			$('bulk_action_form_top').removeClassName('fixed');
@@ -4150,6 +4151,231 @@ TBG.Search.moveTo = function(event) {
 			event.preventDefault();
 		}
 	}
+};
+
+TBG.Search.initializeFilterField = function(filter) {
+    filter.on('click', TBG.Search.toggleInteractiveFilter);
+    filter.select('li.filtervalue').each(function(filtervalue) {
+        filtervalue.on('click', TBG.Search.toggleFilterValue);
+    });
+    if (filter.down('input[type=search]'))
+    TBG.Search.calculateFilterDetails(filter);
+};
+
+TBG.Search.addFilter = function(event, element) {
+    if (!this.hasClassName('disabled')) {
+        var filter = this.dataset.filter;
+        $('searchbuilder_filterstrip_filtercontainer').insert($('interactive_filter_'+filter).remove());
+        setTimeout(function() {
+            $('interactive_filter_'+filter).addClassName('selected');
+        }, 500);
+        this.addClassName('disabled');
+    }
+};
+
+TBG.Search.removeFilter = function(element) {
+    var do_update = ($('filter_'+element.dataset.filterkey+'_value_input').getValue() != '');
+    $('additional_filter_'+element.dataset.filterkey+'_link').removeClassName('disabled');
+    $('searchbuilder_filter_hiddencontainer').insert(element.remove());
+
+    if (do_update) TBG.Search.liveUpdate();
+}
+
+TBG.Search.initializeFilters = function() {
+    var fif = $('find_issues_form');
+    fif.reset();
+    $$('.filter').each(function (filter) {
+        TBG.Search.initializeFilterField(filter);
+    });
+    ['interactive_plus_button', 'interactive_template_button'].each(function (element) { $(element).on('click', TBG.Search.toggleInteractiveFilter); });
+    $$('.template-picker').each(function(element) {
+        element.on('click', TBG.Search.pickTemplate);
+    });
+    document.observe('click', function(event, element) {
+        $$('.filter,.interactive_plus_button').each(function (element) { element.removeClassName('selected'); });
+    });
+    var sff = $('searchbuilder_filterstrip_filtercontainer');
+    $('interactive_filters_availablefilters_container').select('li').each(function (element) {
+        element.on('click', TBG.Search.addFilter);
+        if (sff.down('#interactive_filter_'+element.dataset.filter)) {
+            element.addClassName('disabled');
+        }
+    });
+    var ift = $('interactive_filter_text');
+    ift.dataset.lastValue = '';
+    ift.on('keyup', function(event, element) {
+        if (TBG.ift_observer) clearTimeout(TBG.ift_observer);
+        if ((ift.getValue().length >= 3 || ift.getValue().length == 0) && ift.getValue() != ift.dataset.lastValue) {
+            TBG.ift_observer = setTimeout(function() {
+                TBG.Search.liveUpdate(true);
+                ift.dataset.lastValue = ift.getValue();
+            }, 1000);
+        }
+    });
+};
+
+TBG.Search.pickTemplate = function(event, element) {
+    event.stopPropagation();
+    var is_selected = this.hasClassName('selected');
+    var current_elm = this;
+    if (!is_selected) {
+        $$('.template-picker').each(function (element) {
+            if (element == current_elm) {
+                current_elm.addClassName('selected');
+                $('filter_selected_template').setValue(current_elm.dataset.templateName);
+            } else {
+                element.removeClassName('selected');
+            }
+        });
+    }
+    $$('.filter,.interactive_plus_button').each(function (element) { if (element != this) element.removeClassName('selected'); });
+    if (is_selected) this.removeClassName('selected');
+    else this.addClassName('selected');
+};
+
+TBG.Search.toggleInteractiveFilter = function(event, element) {
+    event.stopPropagation();
+    var is_selected = this.hasClassName('selected');
+    $$('.filter,.interactive_plus_button').each(function (element) { if (element != this) element.removeClassName('selected'); });
+    if (is_selected) this.removeClassName('selected');
+    else this.addClassName('selected');
+
+    if (this.id == 'interactive_template_button' && this.hasClassName('selected')) {
+        TBG.Search.initializeIssuesPerPageSlider();
+    }
+};
+
+TBG.Search.moveIssuesPerPageSlider = function(step) {
+    var ipp_value = $('issues_per_page_slider_value');
+    var value = 50;
+    switch (step) {
+        case 1:
+            value = 25;
+            break;
+        case 2:
+            value = 50;
+            break;
+        case 3:
+            value = 100;
+            break;
+        case 4:
+            value = 250;
+            break;
+        case 5:
+            value = 500;
+            break;
+    }
+    ipp_value.update(value);
+    return value;
+};
+
+TBG.Search.liveUpdate = function(force) {
+    var fif = $('find_issues_form');
+    var url = fif.action;
+    var parameters = fif.serialize();
+
+    var results_loaded = fif.dataset.resultsLoaded != undefined;
+
+    if (force == true || results_loaded) {
+        $('search_sidebar').addClassName('collapsed');
+        TBG.Main.Helpers.ajax(url, {
+            params: parameters,
+            loading: {indicator: 'search_results_loading_indicator'},
+            success: {update: 'search_results'},
+            complete: {
+                callback: function(json) {
+                    $('findissues_num_results_span').update(json.num_issues);
+                    $('findissues_num_results').show();
+                    fif.dataset.resultsLoaded = true;
+                    TableKit.load();
+                }
+            }
+        });
+    }
+};
+
+TBG.Search.setIssuesPerPage = function(value) {
+    var fip_value = $('filter_issues_per_page');
+    fip_value.setValue(parseInt(value));
+    TBG.Search.liveUpdate();
+};
+
+TBG.Search.initializeIssuesPerPageSlider = function() {
+    var ipp_slider = $('issues_per_page_slider');
+    if (ipp_slider.dataset.initialized == undefined) {
+        var fip_value = $('filter_issues_per_page');
+        var ipp_value = $('issues_per_page_slider_value');
+        var step_start = 1;
+        switch (parseInt(fip_value.getValue())) {
+            case 25:
+                step_start = 1;
+                break;
+            case 50:
+                step_start = 2;
+                break;
+            case 100:
+                step_start = 3;
+                break;
+            case 250:
+                step_start = 4;
+                break;
+            case 500:
+                step_start = 5;
+                break;
+        }
+        new Control.Slider('issues_per_page_handle', ipp_slider, {
+            range: $R(1, 5),
+            values: [1, 2, 3, 4, 5],
+            sliderValue: step_start,
+            onSlide: function(step) {
+                TBG.Search.moveIssuesPerPageSlider(step);
+            },
+            onChange: function(step) {
+                var value = TBG.Search.moveIssuesPerPageSlider(step);
+                TBG.Search.setIssuesPerPage(value);
+            }
+        });
+        ipp_slider.dataset.initialized = true;
+    }
+};
+
+TBG.Search.toggleFilterValue = function(event, element) {
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+    event.preventDefault();
+    if (this.down('input').checked) {
+        this.removeClassName('selected');
+        this.down('input').checked = false;
+    } else {
+        this.addClassName('selected');
+        this.down('input').checked = true;
+    }
+    TBG.Search.calculateFilterDetails(this.up('.filter'));
+    TBG.Search.liveUpdate(true);
+};
+
+TBG.Search.calculateFilterDetails = function(filter) {
+    var string = '';
+    var value_string = '';
+    var selected_elements = [];
+    var selected_values = [];
+    filter.down('.interactive_menu_values').select('input').each(function (element) {
+        if (element.checked) {
+            selected_elements.push(element.dataset.text);
+            selected_values.push(element.getValue());
+        }
+    });
+    if (selected_elements.size() > 0) {
+        string = selected_elements.join(', ');
+        value_string = selected_values.join(',');
+    } else {
+        string = filter.dataset.allValue;
+    }
+    if (string.length > 23) {
+        string = string.substr(0, 20) + '...';
+    }
+    filter.down('.value').update(string);
+    $('filter_'+filter.dataset.filterkey+'_value_input').setValue(value_string);
 };
 
 TBG.Search.initializeKeyboardNavigation = function() {
