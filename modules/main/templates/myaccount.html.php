@@ -37,7 +37,7 @@
 		<div id="account_tabs_panes">
 			<div id="tab_profile_pane">
 				<?php if (TBGSettings::isUsingExternalAuthenticationBackend()): ?>
-					<?php tbg_parse_text(TBGSettings::get('changedetails_message'), null, null, array('embedded' => true)); ?>
+					<?php echo tbg_parse_text(TBGSettings::get('changedetails_message'), null, null, array('embedded' => true)); ?>
 				<?php else: ?>
 					<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_save_information'); ?>" onsubmit="TBG.Main.Profile.updateInformation('<?php echo make_url('account_save_information'); ?>'); return false;" method="post" id="profile_information_form">
 						<div class="rounded_box borderless lightgrey cut_bottom" style="margin: 5px 0 0 0; width: 895px; border-bottom: 0;">
