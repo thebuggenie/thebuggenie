@@ -20,6 +20,7 @@
 	TBGContext::addAutoloaderClassPath(THEBUGGENIE_CORE_PATH . 'classes' . DS);
 	TBGContext::addAutoloaderClassPath(THEBUGGENIE_CORE_PATH . 'classes' . DS . 'B2DB' . DS);
 	TBGContext::autoloadNamespace('b2db', THEBUGGENIE_CORE_PATH . 'B2DB' . DS);
+	TBGContext::autoloadNamespace('Michelf', THEBUGGENIE_CORE_PATH . 'lib' . DS . 'Michelf' . DS);
 
 	TBGContext::initialize();
 
