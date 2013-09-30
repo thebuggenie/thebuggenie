@@ -1,13 +1,16 @@
 <div class="interactive_searchbuilder" id="search_builder">
 	<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo (TBGContext::isProjectContext()) ? make_url('project_search_paginated', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('search_paginated'); ?>" method="get" id="find_issues_form" <?php if ($show_results): ?>data-results-loaded<?php endif; ?> onsubmit="TBG.Search.liveUpdate(true);return false;">
 		<div class="searchbuilder_filterstrip" id="searchbuilder_filterstrip">
+			<?php if (!TBGContext::isProjectContext()): ?>
+				<?php include_component('search/interactivefilter', array('filter' => $search_object->getFilter('project_id'))); ?>
+			<?php endif; ?>
 			<?php include_component('search/interactivefilter', array('filter' => $search_object->getFilter('issuetype'))); ?>
 			<?php include_component('search/interactivefilter', array('filter' => $search_object->getFilter('status'))); ?>
 			<?php include_component('search/interactivefilter', array('filter' => $search_object->getFilter('category'))); ?>
 			<input type="hidden" name="filters[text][operator]" value="=">
 			<input type="search" name="filters[text][value]" id="interactive_filter_text" value="<?php echo $search_object->getSearchTerm(); ?>" class="filter_searchfield" placeholder="<?php echo __('Enter a search term here'); ?>">
 			<div class="interactive_plus_container" id="interactive_filters_availablefilters_container">
-				<div class="interactive_plus_button" id="interactive_plus_button">+</div>
+				<div class="interactive_plus_button" id="interactive_plus_button"><?php echo image_tag('icon-mono-add.png'); ?></div>
 				<div class="interactive_filters_list two_columns">
 					<div class="column">
 						<h1><?php echo __('People filters'); ?></h1>
@@ -29,7 +32,9 @@
 					<div class="column">
 						<h1><?php echo __('Project detail filters'); ?></h1>
 						<ul>
-							<li class="disabled"><?php echo __('Including subprojects'); ?></li>
+							<?php if (TBGContext::isProjectContext()): ?>
+								<li data-filter="subprojects" id="additional_filter_subprojects_link"><?php echo __('Including subproject(s)'); ?></li>
+							<?php endif; ?>
 							<li class="disabled"><?php echo __('Reported against a specific release'); ?></li>
 							<li class="disabled"><?php echo __('Affecting a specific component'); ?></li>
 							<li class="disabled"><?php echo __('Affecting a specific edition'); ?></li>
@@ -46,8 +51,8 @@
 					<input type="hidden" name="issues_per_page" value="50">
 				</div>
 			</div>
-			<div class="interactive_plus_container">
-				<div class="interactive_plus_button" id="interactive_template_button"><?php echo image_tag('icon_gear.png'); ?></div>
+			<div class="interactive_plus_container" id="interactive_settings_container">
+				<div class="interactive_plus_button" id="interactive_template_button"><?php echo image_tag('icon-mono-settings.png'); ?></div>
 				<div class="interactive_filters_list two_columns wide">
 					<h1><?php echo __('Select how to present search results'); ?></h1>
 					<input type="hidden" name="template" id="filter_selected_template" value="<?php echo $search_object->getTemplateName(); ?>">
@@ -71,9 +76,14 @@
 						<div id="issues_per_page_slider_value" class="slider_value"><?php echo $search_object->getIssuesPerPage(); ?></div>
 					</div>
 				</div>
+				<?php if (!$tbg_user->isGuest()): ?>
+					<div class="interactive_plus_button" id="interactive_save_button" style="<?php if (!$show_results) echo 'display: none;'; ?>" onclick="$('saved_search_details').toggle();"><?php echo image_tag('icon-mono-bookmark.png'); ?></div>
+				<?php endif; ?>
 			</div>
 			<div id="searchbuilder_filterstrip_filtercontainer">
 				<?php foreach ($search_object->getFilters() as $filter): ?>
+					<?php if (in_array($filter->getFilterKey(), array('project_id', 'status', 'issuetype', 'category'))) continue; ?>
+					<?php include_component('search/interactivefilter', compact('filter')); ?>
 				<?php endforeach; ?>
 			</div>
 		</div>
@@ -234,9 +244,52 @@
 		</div> */ ?>
 	</form>
 	<div id="searchbuilder_filter_hiddencontainer" style="display: none;">
-		<?php include_component('search/interactivefilter', array('filter' => TBGSearchFilter::createFilter('priority'))); ?>
-		<?php include_component('search/interactivefilter', array('filter' => TBGSearchFilter::createFilter('severity'))); ?>
-		<?php include_component('search/interactivefilter', array('filter' => TBGSearchFilter::createFilter('reproducability'))); ?>
-		<?php include_component('search/interactivefilter', array('filter' => TBGSearchFilter::createFilter('resolution'))); ?>
+		<?php if (TBGContext::isProjectContext()): ?>
+			<?php if (!$search_object->hasFilter('subprojects')) include_component('search/interactivefilter', array('filter' => TBGSearchFilter::createFilter('subprojects'))); ?>
+		<?php endif; ?>
+		<?php foreach (array('priority', 'severity', 'reproducability', 'resolution') as $key): ?>
+		<?php if (!$search_object->hasFilter($key)) include_component('search/interactivefilter', array('filter' => TBGSearchFilter::createFilter($key))); ?>
+		<?php endforeach; ?>
 	</div>
+	<?php if (!$tbg_user->isGuest()): ?>
+		<div class="fullpage_backdrop" style="display: none;" id="saved_search_details">
+			<div class="backdrop_box large">
+				<div class="backdrop_detail_header"><?php echo __('Save this search'); ?></div>
+				<div class="backdrop_detail_content">
+					<?php if (TBGContext::isProjectContext()): ?>
+						<p style="padding-bottom: 15px;" class="faded_out"><?php echo __('This saved search will be available under this project only. To make a non-project-specific search, use the main "%find_issues%" page instead', array('%find_issues%' => link_tag(make_url('search'), __('Find issues')))); ?></p>
+					<?php endif; ?>
+					<?php if ($search_object->getID()): ?>
+						<input type="hidden" name="saved_search_id" id="saved_search_id" value="<?php echo $search_object->getID(); ?>">
+					<?php endif; ?>
+					<table class="padded_table" style="width: 780px;">
+						<tr>
+							<td style="width: 200px; font-size: 1.15em;"><label for="saved_search_name"><?php echo __('Saved search name'); ?></label></td>
+							<td><input type="text" name="saved_search_name" id="saved_search_name"<?php if ($search_object->getID()): ?> value="<?php echo $search_object->getName(); ?>"<?php endif; ?> style="width: 576px; font-size: 1.2em; padding: 4px;"><br></td>
+						</tr>
+						<tr>
+							<td><label for="saved_search_description" class="optional"><?php echo __('Description'); ?></label></td>
+							<td><input type="text" name="saved_search_description" id="saved_search_description"<?php if ($search_object->getID()): ?> value="<?php echo $search_object->getDescription(); ?>"<?php endif; ?> style="width: 350px;"><br></td>
+						</tr>
+						<?php if ($tbg_user->canCreatePublicSearches()): ?>
+							<tr>
+								<td><label for="saved_search_public" class="optional"><?php echo __('Visibility'); ?></label></td>
+								<td>
+									<select name="saved_search_public" id="saved_search_public">
+										<option value="0"<?php if ($search_object->getID() && !$search_object->isPublic()): ?> selected<?php endif; ?>><?php echo __('Only visible for me'); ?></option>
+										<option value="1"<?php if ($search_object->getID() && $search_object->isPublic()): ?> selected<?php endif; ?>><?php echo __('Shared with others'); ?></option>
+									</select>
+								</td>
+							</tr>
+						<?php endif; ?>
+					</table>
+					<div style="text-align: right;">
+						<input type="submit" value="<?php echo __('Update this saved search'); ?>" id="search_button_save">
+						<input type="submit" value="<?php echo __('Save this search'); ?>" id="search_button_save_new">
+						<?php echo __('%update_or_save_search% or %cancel%', array('%update_or_save_search%' => '', '%cancel%' => "<a href=\"javascript:void('0');\" onclick=\"$('saved_search_details').hide();$('saved_search_name').disable();$('saved_search_description').disable();".(($tbg_user->canCreatePublicSearches()) ? "$('saved_search_public').disable();" : '')."$('search_button_bottom').enable();$('search_button_bottom').show();\"><b>".__('cancel').'</b></a>')); ?>
+					</div>
+				</div>
+			</div>
+		</div>
+	<?php endif; ?>
 </div>

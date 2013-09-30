@@ -344,6 +344,20 @@
 				case 'resolution':
 					return TBGResolution::getAll();
 					break;
+				case 'project_id':
+					return TBGProject::getAll();
+					break;
+				case 'subprojects':
+					$filters = array();
+					$projects = TBGProject::getIncludingAllSubprojectsAsArray(TBGContext::getCurrentProject());
+					foreach ($projects as $project)
+					{
+						if ($project->getID() == TBGContext::getCurrentProject()->getID()) continue;
+
+						$filters[$project->getID()] = $project;
+					}
+					return $filters;
+					break;
 				default:
 					return array();
 			}
@@ -481,28 +495,35 @@
 						if (TBGContext::isProjectContext())
 						{
 							if ($ctn === null) $ctn = $crit->returnCriterion(TBGIssuesTable::PROJECT_ID, TBGContext::getCurrentProject()->getID());
-							switch ($this['value'])
+							if ($this->hasValue())
 							{
-								case 'all':
-									$subprojects = TBGProject::getIncludingAllSubprojectsAsArray(TBGContext::getCurrentProject());
-									foreach ($subprojects as $subproject)
+								foreach ($this->getValues() as $value)
+								{
+									switch ($value)
 									{
-										if ($subproject->getID() == TBGContext::getCurrentProject()->getID()) continue;
-										$ctn->addOr(TBGIssuesTable::PROJECT_ID, $subproject->getID());
+										case 'all':
+											$subprojects = TBGProject::getIncludingAllSubprojectsAsArray(TBGContext::getCurrentProject());
+											foreach ($subprojects as $subproject)
+											{
+												if ($subproject->getID() == TBGContext::getCurrentProject()->getID()) continue;
+												$ctn->addOr(TBGIssuesTable::PROJECT_ID, $subproject->getID());
+											}
+											break;
+										case 'none':
+										case '':
+											break;
+										default:
+											$ctn->addOr(TBGIssuesTable::PROJECT_ID, (int) $value);
+											break;
 									}
-									break;
-								case 'none':
-									break;
-								default:
-									$ctn->addOr(TBGIssuesTable::PROJECT_ID, (int) $this['value']);
-									break;
+								}
 							}
 							return $ctn;
 						}
 					}
 					else
 					{
-						if ($filter_key == 'project_id' && in_array('subprojects', $filters)) return $ctn;
+						if ($filter_key == 'project_id' && in_array('subprojects', $filters)) return null;
 
 						$values = $this->getValues();
 						$num_values = 0;

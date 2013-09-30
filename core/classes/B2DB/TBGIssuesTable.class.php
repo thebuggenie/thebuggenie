@@ -583,7 +583,7 @@
 				if ($filter->hasValue())
 				{
 					$ctn = $filter->addToCriteria($crit, $filters, $ctn);
-					$crit->addWhere($ctn);
+					if ($ctn !== null) $crit->addWhere($ctn);
 				}
 			}
 		}
