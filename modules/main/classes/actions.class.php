@@ -20,7 +20,7 @@
 				if ($project_key = $request['project_key'])
 					$this->selected_project = TBGProject::getByKey($project_key);
 				elseif ($project_id = (int) $request['project_id'])
-					$this->selected_project = TBGContext::factory()->TBGProject($project_id);
+					$this->selected_project = TBGProjectsTable::getTable()->selectById($project_id);
 				
 				TBGContext::setCurrentProject($this->selected_project);
 			}

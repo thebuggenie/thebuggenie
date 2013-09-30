@@ -4380,6 +4380,27 @@ TBG.Search.toggleFilterValue = function(event, element) {
     TBG.Search.liveUpdate((f_element.dataset.filterkey != 'project_id'));
 };
 
+TBG.Search.saveSearch = function() {
+    var fif = $('find_issues_form');
+    var find_parameters = fif.serialize();
+    var ssf = $('save_search_form');
+    var p = find_parameters + '&' + ssf.serialize();
+
+    console.log(p);
+    console.log(ssf.action);
+    var button = ssf.down('input[type=submit]');
+    TBG.Main.Helpers.ajax(ssf.action, {
+        params: p,
+        loading: {
+            indicator: 'save_search_indicator',
+            callback: function() { button.disable(); }
+        },
+        complete: {
+            callback: function() { button.enable(); }
+        }
+    });
+};
+
 TBG.Search.calculateFilterDetails = function(filter) {
     var string = '';
     var value_string = '';
@@ -4403,15 +4424,6 @@ TBG.Search.calculateFilterDetails = function(filter) {
     filter.down('.value').update(string);
     $('filter_'+filter.dataset.filterkey+'_value_input').setValue(value_string);
 };
-
-TBG.Search.filter = function() {
-    var f = $('find_issues_form');
-    var p = f.serialize();
-    p += '&'
-    TBG.Main.Helpers.ajax(f.action, {
-
-    });
-}
 
 TBG.Search.initializeKeyboardNavigation = function() {
 	Event.observe(document, 'keydown', function(event) {

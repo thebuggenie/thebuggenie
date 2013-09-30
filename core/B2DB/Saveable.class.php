@@ -235,10 +235,15 @@
 				$this->_preInitialize();
 			}
 		}
+
+		public function clearID()
+		{
+			$this->_id = null;
+		}
 		
 		final public function __clone()
 		{
-			$this->_id = null;
+			$this->clearID();
 			$this->_clone();
 		}
 

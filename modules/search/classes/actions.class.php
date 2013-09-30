@@ -22,18 +22,21 @@
 		public function preExecute(TBGRequest $request, $action)
 		{
 			$this->forward403unless(TBGContext::getUser()->hasPageAccess('search') && TBGContext::getUser()->canSearchForIssues());
-			if ($request->hasParameter('project_key'))
+
+			if ($project_key = $request['project_key'])
+				$project = TBGProject::getByKey($project_key);
+			elseif ($project_id = (int) $request['project_id'])
+				$project = TBGProjectsTable::getTable()->selectById($project_id);
+
+			if ($project instanceof TBGProject)
 			{
-				if (($project = TBGProject::getByKey($request['project_key'])) instanceof TBGProject)
-				{
-					$this->forward403unless(TBGContext::getUser()->hasProjectPageAccess('project_issues', $project));
-					TBGContext::getResponse()->setPage('project_issues');
-					TBGContext::setCurrentProject($project);
-				}
+				$this->forward403unless(TBGContext::getUser()->hasProjectPageAccess('project_issues', $project));
+				TBGContext::getResponse()->setPage('project_issues');
+				TBGContext::setCurrentProject($project);
 			}
 			$this->search_object = TBGSavedSearch::getFromRequest($request);
 			$this->issavedsearch = ($this->search_object instanceof TBGSavedSearch && $this->search_object->getB2DBID());
-			$this->show_results = ($request->hasParameter('quicksearch') || $request->hasParameter('filters') || $request->getParameter('search', false)) ? true : false;
+			$this->show_results = ($this->issavedsearch || $request->hasParameter('quicksearch') || $request->hasParameter('filters') || $request->getParameter('search', false)) ? true : false;
 
 			$this->searchterm = $this->search_object->getSearchterm();
 			$this->searchtitle = $this->search_object->getTitle();
@@ -108,6 +111,32 @@
 				{
 					usort($this->foundissues, array('searchActions', 'userPainSort'));
 				}
+			}
+		}
+
+		public function runSaveSearch(TBGRequest $request)
+		{
+			$name = trim($request['name']);
+			if (strlen($name) > 0)
+			{
+				$this->search_object->setName($request['name']);
+				$this->search_object->setDescription($request['description']);
+				$this->search_object->setIsPublic((bool) $request['is_public']);
+				$this->search_object->setUser($this->getUser());
+				if ($request['project_id']) $this->search_object->setAppliesToProject((int) $request['project_id']);
+
+				if (!$request['update_saved_search']) $this->search_object->clearID();
+
+				$this->search_object->save();
+				if ($request['project_id'])
+					return $this->renderJSON(array('forward' => $this->getRouting()->generate('project_issues', array('project_key' => $this->search_object->getProject()->getKey(), 'saved_search_id' => $this->search_object->getID()), false)));
+				else
+					return $this->renderJSON(array('forward' => $this->getRouting()->generate('search', array('saved_search_id' => $this->search_object->getID()), false)));
+			}
+			else
+			{
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('error' => $this->getI18n()->__('Please provide a name for the saved search')));
 			}
 		}
 
