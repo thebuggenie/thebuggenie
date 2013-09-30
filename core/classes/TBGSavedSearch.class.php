@@ -462,6 +462,7 @@
 			if (!isset($this->_filters['issuetype'])) $this->_filters['issuetype'] = TBGSearchFilter::createFilter('issuetype');
 			if (!isset($this->_filters['status'])) $this->_filters['status'] = TBGSearchFilter::createFilter('status');
 			if (!isset($this->_filters['category'])) $this->_filters['category'] = TBGSearchFilter::createFilter('category');
+			if (!TBGContext::isProjectContext() && !isset($this->_filters['project_id'])) $this->_filters['project_id'] = TBGSearchFilter::createFilter('project_id');
 		}
 
 		public function getFilters()
@@ -469,9 +470,14 @@
 			return ($this->_filters === null) ? $this->_b2dbLazyload('_filters') : $this->_filters;
 		}
 
+		public function hasFilter($key)
+		{
+			return isset($this->_filters[$key]);
+		}
+
 		public function getFilter($key)
 		{
-			return (isset($this->_filters[$key])) ? $this->_filters[$key] : null;
+			return ($this->hasFilter($key)) ? $this->_filters[$key] : null;
 		}
 
 		public function getSearchterm()

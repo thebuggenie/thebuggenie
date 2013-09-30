@@ -4286,6 +4286,7 @@ TBG.Search.liveUpdate = function(force) {
                 callback: function(json) {
                     $('findissues_num_results_span').update(json.num_issues);
                     $('findissues_num_results').show();
+                    $('interactive_save_button').show();
                     fif.dataset.resultsLoaded = true;
                     TableKit.load();
                 }
@@ -4339,19 +4340,44 @@ TBG.Search.initializeIssuesPerPageSlider = function() {
     }
 };
 
+TBG.Search.setFilterValue = function(element, checked) {
+    console.log(element);
+    if (checked) {
+        element.addClassName('selected');
+        element.down('input').checked = true;
+    } else {
+        element.removeClassName('selected');
+        element.down('input').checked = false;
+    }
+};
+
 TBG.Search.toggleFilterValue = function(event, element) {
     event.stopPropagation();
     event.stopImmediatePropagation();
     event.preventDefault();
     if (this.down('input').checked) {
-        this.removeClassName('selected');
-        this.down('input').checked = false;
+        TBG.Search.setFilterValue(this, false);
     } else {
-        this.addClassName('selected');
-        this.down('input').checked = true;
+        TBG.Search.setFilterValue(this, true);
     }
-    TBG.Search.calculateFilterDetails(this.up('.filter'));
-    TBG.Search.liveUpdate(true);
+    var current_element = this;
+    if (this.dataset.exclusive != undefined) {
+        this.up('.interactive_menu_values').childElements().each(function (filter_element) {
+            if (filter_element.hasClassName('filtervalue')) {
+                if (filter_element.dataset.value != current_element.dataset.value) TBG.Search.setFilterValue(filter_element, false);
+            }
+        });
+    }
+    else if (this.dataset.excludeGroup != undefined) {
+        this.up('.interactive_menu_values').childElements().each(function (filter_element) {
+            if (filter_element.hasClassName('filtervalue')) {
+                if (filter_element.dataset.selectionGroup != current_element.dataset.selectionGroup) TBG.Search.setFilterValue(filter_element, false);
+            }
+        });
+    }
+    var f_element = this.up('.filter');
+    TBG.Search.calculateFilterDetails(f_element);
+    TBG.Search.liveUpdate((f_element.dataset.filterkey != 'project_id'));
 };
 
 TBG.Search.calculateFilterDetails = function(filter) {
@@ -4377,6 +4403,15 @@ TBG.Search.calculateFilterDetails = function(filter) {
     filter.down('.value').update(string);
     $('filter_'+filter.dataset.filterkey+'_value_input').setValue(value_string);
 };
+
+TBG.Search.filter = function() {
+    var f = $('find_issues_form');
+    var p = f.serialize();
+    p += '&'
+    TBG.Main.Helpers.ajax(f.action, {
+
+    });
+}
 
 TBG.Search.initializeKeyboardNavigation = function() {
 	Event.observe(document, 'keydown', function(event) {

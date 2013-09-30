@@ -10,8 +10,12 @@
 	<li id="search_column_settings_toggler" style="display: none;"><a href="javascript:void(0);" onclick="$('search_column_settings_container').toggle();" title="<?php echo __('Configure visible columns'); ?>"><?php echo __('Configure visible columns'); ?></a></li>
 	<li id="search_column_settings_notoggler" class="disabled"><a href="javascript:void(0);"><?php echo __("Configure visible columns"); ?></a><div class="tooltip rightie" style="font-weight: normal;"><?php echo __('This issue list template does not support configuring visible columns'); ?></div></li>
 	<li class="header" style="margin-top: 10px;"><?php echo __('Download search results'); ?></li>
-	<li><a href="<?php echo $csv_url; ?>"><?php echo image_tag('icon_csv.png') . __('Download as CSV'); ?></a></li>
-	<li><a href="<?php echo $rss_url; ?>"><?php echo image_tag('icon_rss.png') . __('Download as RSS'); ?></a></li>
+	<?php if (isset($csv_url)): ?>
+		<li><a href="<?php echo $csv_url; ?>"><?php echo image_tag('icon_csv.png') . __('Download as CSV'); ?></a></li>
+	<?php endif; ?>
+	<?php if (isset($rss_url)): ?>
+		<li><a href="<?php echo $rss_url; ?>"><?php echo image_tag('icon_rss.png') . __('Download as RSS'); ?></a></li>
+	<?php endif; ?>
 </ul>
 <div id="search_column_settings_container" style="display: none;" class="fullpage_backdrop">
 	<div class="backdrop_box medium">

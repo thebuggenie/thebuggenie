@@ -75,7 +75,7 @@ blockquote { border-left: 2px solid rgba(97, 147, 207, 0.5); padding: 0 0 0 5px;
 /* end general styles */
 
 /* Main header area */
-header, .backdrop_detail_header {
+header {
 	background: #6193cf; /* Old browsers */
 	background: -moz-linear-gradient(top, #6193cf 0%, #396ba7 100%); /* FF3.6+ */
 	background: -khtml-gradient(linear, left top, left bottom, from(#6193cf), to(#396ba7)); /* KHTML */
@@ -88,7 +88,13 @@ header, .backdrop_detail_header {
 	color: white;
 }
 .backdrop_detail_header {
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.4); -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, 0.4); -moz-box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+    box-shadow: none;
+    padding: 10px 0 5px 0;
+    border-bottom: 1px dotted rgba(100, 100, 100, 0.3);
+    color: #888;
+    font-weight: normal;
+    font-size: 1.2em;
+    margin: 0 7px;
 }
 #header_container { }
 
@@ -1087,7 +1093,7 @@ ul.workflow_actions li:hover { box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); -webkit-b
 #fullpage_backdrop ul.duplicate_issues { margin: 10px 0 5px 0; }
 
 .fullpage_backdrop_content { position: relative; z-index: 100001; }
-.fullpage_backdrop { background-color: rgba(0, 0, 0, 0.5); z-index: 100000; width: 100%; height: 100%; overflow: auto; position: fixed; top: 0; left: 0; margin: 0; padding: 0; text-align: center; }
+.fullpage_backdrop { background-color: rgba(255, 255, 255, 0.7); z-index: 100000; width: 100%; height: 100%; overflow: auto; position: fixed; top: 0; left: 0; margin: 0; padding: 0; text-align: center; }
 
 .backdrop_box { position: absolute; top: 60px; left: 50%; z-index: 100001; clear: both; padding: 0 !important; }
 .backdrop_box#reportissue_container { top: 10px; }
@@ -1096,7 +1102,7 @@ ul.workflow_actions li:hover { box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); -webkit-b
 .backdrop_box.medium { width: 600px; margin: 0 -300px 0 -300px; }
 .backdrop_box.large { width: 800px; margin: 0 -400px 200px -400px; }
 .backdrop_box.huge { width: 1010px; margin: 0 -500px 200px -500px; }
-.backdrop_box .backdrop_detail_header { font-weight: bold; padding: 7px; font-size: 0.9em; text-align: left; color: white; text-shadow: 1px 1px 2px #000000; filter: dropshadow(color=#000000, offx=1, offy=1); }
+.backdrop_box .backdrop_detail_header { text-align: left; }
 .backdrop_detail_content { font-weight: normal; font-size: 1.0em; padding: 5px; background: white; text-align: left; }
 #reportissue_container .backdrop_detail_content { padding: 5px; font-size: 0.9em; }
 #reportissue_container .backdrop_detail_footer { padding: 5px; font-size: 1.1em; }
@@ -1700,13 +1706,22 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .interactive_plus_button img {
     display: inline;
     vertical-align: middle;
-    margin: -1px 0 1px 0;
+    width: 16px;
+    height: 16px;
+    margin: -1px -4px 1px -4px;
 }
 .interactive_plus_button.selected + .interactive_filters_list {
     display: block;
     right: 0;
     margin-right: 0;
     z-index: 1;
+}
+#interactive_settings_container {
+    position: absolute;
+    right: 10px;
+}
+#interactive_save_button {
+    cursor: pointer;
 }
 .interactive_dropdown:after {
     content: '';
@@ -1840,11 +1855,13 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
     left: -1px;
     z-index: 1;
 }
-.interactive_menu .separator {
+.interactive_menu .separator, .interactive_menu .separator:hover {
     display: block;
     padding: 5px 0 0 0;
     margin: 0 5px 5px 5px;
     border-bottom: 1px dotted rgba(0, 0, 0, 0.2);
+    background-color: transparent;
+    cursor: default;
 }
 .interactive_menu ul, .interactive_filters_list ul {
     list-style: none;
@@ -1873,9 +1890,20 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
     background-color: rgba(100, 200, 100, 0.3);
     cursor: pointer;
 }
-.interactive_menu li input[type=checkbox] {
+.interactive_menu li img.checked {
     display: inline-block;
     margin: 0 5px 0 0;
+    opacity: 0.1;
+    transition: opacity 0.3s ease;
+    vertical-align: text-top;
+}
+.interactive_menu li.selected img.checked {
+    opacity: 1;
+}
+.interactive_menu li input[type=checkbox], .interactive_menu li input[type=radio] {
+    /*display: inline-block;*/
+    /*margin: 0 5px 0 0;*/
+    display: none;
 }
 .interactive_menu li span {
     display: inline-block;
@@ -2879,7 +2907,6 @@ table.sortable tr th.nosort {
 	font-size: 14px;
 	font-weight: normal;
 }
-.fullpage_backdrop.tutorial { background-color: rgba(0, 0, 0, 0.8); }
 .tutorial-message { position: fixed; z-index: 9999999; margin: 0; }
 .tutorial-message:before, .tutorial-message:after, .popup-menu.above:before, .popup-menu.above:after, .popup-menu.below:before, .popup-menu.below:after {
 	content: '';
