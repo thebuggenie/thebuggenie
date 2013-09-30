@@ -30,6 +30,7 @@
 	$routes[] = array('getreportissuefields', '/reportissue/get/fields/for/project/:project_key', 'main', 'reportIssueGetFields');
 	$routes[] = array('search_paginated', '/issues/paginated/*', 'search', 'findIssuesPaginated');
 	$routes[] = array('search_add_filter', '/issues/add/filter/*', 'search', 'addFilter');
+	$routes[] = array('search_save', '/issues/save/search', 'search', 'saveSearch');
 	$routes[] = array('search_save_column_settings', '/search/save/columnsettings', 'search', 'saveColumnSettings');
 	$routes[] = array('my_teams_assigned_issues', '/issues/my/assigned/teams/*', 'search', 'findIssues', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true));
 	$routes[] = array('my_assigned_issues', '/issues/my/assigned/*', 'search', 'findIssues', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true));

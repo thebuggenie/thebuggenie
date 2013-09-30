@@ -61,18 +61,14 @@
 		 */
 		protected $_search_id;
 
-		public static function createFilter($key, $options = array())
+		public static function createFilter($key, $options = array(), TBGSavedSearch $search = null)
 		{
-			if (!is_array($options)) {
-				var_dump($key);
-				var_dump($options);
-				die();
-			}
 			$options = array_merge(array('operator' => '=', 'value' => ''), $options);
 			$filter = new TBGSearchFilter();
 			$filter->setFilterKey($key);
 			$filter->setOperator($options['operator']);
 			$filter->setValue($options['value']);
+			$filter->setSearchId($search);
 
 			return $filter;
 		}
@@ -82,32 +78,32 @@
 			return array('project_id', 'subprojects', 'text', 'state', 'issuetype', 'status', 'resolution', 'reproducability', 'category', 'severity', 'priority', 'posted_by', 'assignee_user', 'assignee_team', 'owner_user', 'owner_team', 'component', 'build', 'edition', 'posted', 'last_updated', 'milestone');
 		}
 
-		public static function getPredefinedFilters($type)
+		public static function getPredefinedFilters($type, TBGSavedSearch $search)
 		{
 			$filters = array();
 			switch ($type)
 			{
 				case TBGContext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES:
-					$filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'open'));
-					$filters['project_id'] = self::createFilter('project_id', array('operator' => '=', 'value' => TBGContext::getCurrentProject()->getID()));
+					$filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'open'), $search);
+					$filters['project_id'] = self::createFilter('project_id', array('operator' => '=', 'value' => TBGContext::getCurrentProject()->getID()), $search);
 					break;
 				case TBGContext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES_INCLUDING_SUBPROJECTS:
-					$filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'open'));
-					$filters['project_id'] = self::createFilter('project_id', array('operator' => '=', 'value' => TBGContext::getCurrentProject()->getID()));
-					$filters['subprojects'] = self::createFilter('subprojects', array('operator' => '=', 'value' => 'all'));
+					$filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'open'), $search);
+					$filters['project_id'] = self::createFilter('project_id', array('operator' => '=', 'value' => TBGContext::getCurrentProject()->getID()), $search);
+					$filters['subprojects'] = self::createFilter('subprojects', array('operator' => '=', 'value' => 'all'), $search);
 					break;
 				case TBGContext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES:
-					$filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'closed'));
-					$filters['project_id'] = self::createFilter('project_id', array('operator' => '=', 'value' => TBGContext::getCurrentProject()->getID()));
+					$filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'closed'), $search);
+					$filters['project_id'] = self::createFilter('project_id', array('operator' => '=', 'value' => TBGContext::getCurrentProject()->getID()), $search);
 					break;
 				case TBGContext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES_INCLUDING_SUBPROJECTS:
-					$filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'closed'));
-					$filters['project_id'] = self::createFilter('project_id', array('operator' => '=', 'value' => TBGContext::getCurrentProject()->getID()));
-					$filters['subprojects'] = self::createFilter('subprojects', array('operator' => '=', 'value' => 'all'));
+					$filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'closed'), $search);
+					$filters['project_id'] = self::createFilter('project_id', array('operator' => '=', 'value' => TBGContext::getCurrentProject()->getID()), $search);
+					$filters['subprojects'] = self::createFilter('subprojects', array('operator' => '=', 'value' => 'all'), $search);
 					break;
 				case TBGContext::PREDEFINED_SEARCH_PROJECT_WISHLIST:
-					$filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'open'));
-					$filters['project_id'] = self::createFilter('project_id', array('operator' => '=', 'value' => TBGContext::getCurrentProject()->getID()));
+					$filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'open'), $search);
+					$filters['project_id'] = self::createFilter('project_id', array('operator' => '=', 'value' => TBGContext::getCurrentProject()->getID()), $search);
 					$types = array();
 					foreach (TBGContext::getCurrentProject()->getIssuetypeScheme()->getIssuetypes() as $issuetype)
 					{
@@ -120,7 +116,7 @@
 					}
 					break;
 				case TBGContext::PREDEFINED_SEARCH_PROJECT_REPORTED_LAST_NUMBEROF_TIMEUNITS:
-					$filters['project_id'] = self::createFilter('project_id', array('operator' => '=', 'value' => TBGContext::getCurrentProject()->getID()));
+					$filters['project_id'] = self::createFilter('project_id', array('operator' => '=', 'value' => TBGContext::getCurrentProject()->getID()), $search);
 					$units = TBGContext::getRequest()->getParameter('units');
 					switch (TBGContext::getRequest()->getParameter('time_unit'))
 					{
@@ -149,51 +145,51 @@
 							$time_unit = NOW - (86400 * 30);
 					}
 					$filters['posted'] = array(
-						self::createFilter('posted', array('operator' => '<=', 'value' => NOW)),
-						self::createFilter('posted', array('operator' => '>=', 'value' => $time_unit))
+						self::createFilter('posted', array('operator' => '<=', 'value' => NOW), $search),
+						self::createFilter('posted', array('operator' => '>=', 'value' => $time_unit), $search)
 					);
 					break;
 				case TBGContext::PREDEFINED_SEARCH_PROJECT_REPORTED_THIS_MONTH:
-					$filters['project_id'] = self::createFilter('project_id', array('operator' => '=', 'value' => TBGContext::getCurrentProject()->getID()));
+					$filters['project_id'] = self::createFilter('project_id', array('operator' => '=', 'value' => TBGContext::getCurrentProject()->getID()), $search);
 					$filters['posted'] = array(
-						self::createFilter('posted', array('operator' => '<=', 'value' => mktime(date('H'), date('i'), date('s'), date('n')))),
-						self::createFilter('posted', array('operator' => '>=', 'value' => mktime(date('H'), date('i'), date('s'), date('n'), 1)))
+						self::createFilter('posted', array('operator' => '<=', 'value' => mktime(date('H'), date('i'), date('s'), date('n'))), $search),
+						self::createFilter('posted', array('operator' => '>=', 'value' => mktime(date('H'), date('i'), date('s'), date('n'), 1)), $search)
 					);
 					break;
 				case TBGContext::PREDEFINED_SEARCH_PROJECT_MILESTONE_TODO:
-					$filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'open'));
-					$filters['project_id'] = self::createFilter('project_id', array('operator' => '=', 'value' => TBGContext::getCurrentProject()->getID()));
-					$filters['milestone'] = self::createFilter('milestone', array('operator' => '!=', 'value' => 0));
+					$filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'open'), $search);
+					$filters['project_id'] = self::createFilter('project_id', array('operator' => '=', 'value' => TBGContext::getCurrentProject()->getID()), $search);
+					$filters['milestone'] = self::createFilter('milestone', array('operator' => '!=', 'value' => 0), $search);
 					break;
 				case TBGContext::PREDEFINED_SEARCH_PROJECT_MOST_VOTED:
-					$filters['project_id'] = self::createFilter('project_id', array('operator' => '=', 'value' => TBGContext::getCurrentProject()->getID()));
-					$filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'open'));
+					$filters['project_id'] = self::createFilter('project_id', array('operator' => '=', 'value' => TBGContext::getCurrentProject()->getID()), $search);
+					$filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'open'), $search);
 					break;
 				case TBGContext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES:
-					$filters['posted_by'] = self::createFilter('posted_by', array('operator' => '=', 'value' => TBGContext::getUser()->getID()));
+					$filters['posted_by'] = self::createFilter('posted_by', array('operator' => '=', 'value' => TBGContext::getUser()->getID()), $search);
 					break;
 				case TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES:
-					$filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'open'));
-					$filters['assignee_user'] = self::createFilter('assignee_user', array('operator' => '=', 'value' => TBGContext::getUser()->getID()));
+					$filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'open'), $search);
+					$filters['assignee_user'] = self::createFilter('assignee_user', array('operator' => '=', 'value' => TBGContext::getUser()->getID()), $search);
 					break;
 				case TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES:
-					$filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'open'));
+					$filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'open'), $search);
 					foreach (TBGContext::getUser()->getTeams() as $team_id => $team)
 					{
-						$filters['assignee_team'][] = self::createFilter('assignee_team', array('operator' => '=', 'value' => $team_id));
+						$filters['assignee_team'][] = self::createFilter('assignee_team', array('operator' => '=', 'value' => $team_id), $search);
 					}
-					$filters['assignee_team'][] = self::createFilter('assignee_team', array('operator' => '!=', 'value' => 0));
+					$filters['assignee_team'][] = self::createFilter('assignee_team', array('operator' => '!=', 'value' => 0), $search);
 					break;
 				case TBGContext::PREDEFINED_SEARCH_MY_OWNED_OPEN_ISSUES:
-					$filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'open'));
-					$filters['owner_user'] = self::createFilter('owner_user', array('operator' => '=', 'value' => TBGContext::getUser()->getID()));
+					$filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'open'), $search);
+					$filters['owner_user'] = self::createFilter('owner_user', array('operator' => '=', 'value' => TBGContext::getUser()->getID()), $search);
 					break;
 			}
 
 			return $filters;
 		}
 
-		public static function getFromRequest(TBGRequest $request)
+		public static function getFromRequest(TBGRequest $request, TBGSavedSearch $search)
 		{
 			$filters = $request->getRawParameter('filters', array());
 			if ($request['quicksearch'])
@@ -212,12 +208,12 @@
 				{
 					foreach ($details as $subdetails)
 					{
-						$return_filters[$key][] = self::createFilter($key, $subdetails);
+						$return_filters[$key][] = self::createFilter($key, $subdetails, $search);
 					}
 				}
 				else
 				{
-					$return_filters[$key] = self::createFilter($key, $details);
+					$return_filters[$key] = self::createFilter($key, $details, $search);
 				}
 			}
 

@@ -82,7 +82,7 @@
 			</div>
 			<div id="searchbuilder_filterstrip_filtercontainer">
 				<?php foreach ($search_object->getFilters() as $filter): ?>
-					<?php if (in_array($filter->getFilterKey(), array('project_id', 'status', 'issuetype', 'category'))) continue; ?>
+					<?php if (in_array($filter->getFilterKey(), array('project_id', 'status', 'issuetype', 'category', 'text'))) continue; ?>
 					<?php include_component('search/interactivefilter', compact('filter')); ?>
 				<?php endforeach; ?>
 			</div>
@@ -256,38 +256,47 @@
 			<div class="backdrop_box large">
 				<div class="backdrop_detail_header"><?php echo __('Save this search'); ?></div>
 				<div class="backdrop_detail_content">
-					<?php if (TBGContext::isProjectContext()): ?>
-						<p style="padding-bottom: 15px;" class="faded_out"><?php echo __('This saved search will be available under this project only. To make a non-project-specific search, use the main "%find_issues%" page instead', array('%find_issues%' => link_tag(make_url('search'), __('Find issues')))); ?></p>
-					<?php endif; ?>
-					<?php if ($search_object->getID()): ?>
-						<input type="hidden" name="saved_search_id" id="saved_search_id" value="<?php echo $search_object->getID(); ?>">
-					<?php endif; ?>
-					<table class="padded_table" style="width: 780px;">
-						<tr>
-							<td style="width: 200px; font-size: 1.15em;"><label for="saved_search_name"><?php echo __('Saved search name'); ?></label></td>
-							<td><input type="text" name="saved_search_name" id="saved_search_name"<?php if ($search_object->getID()): ?> value="<?php echo $search_object->getName(); ?>"<?php endif; ?> style="width: 576px; font-size: 1.2em; padding: 4px;"><br></td>
-						</tr>
-						<tr>
-							<td><label for="saved_search_description" class="optional"><?php echo __('Description'); ?></label></td>
-							<td><input type="text" name="saved_search_description" id="saved_search_description"<?php if ($search_object->getID()): ?> value="<?php echo $search_object->getDescription(); ?>"<?php endif; ?> style="width: 350px;"><br></td>
-						</tr>
-						<?php if ($tbg_user->canCreatePublicSearches()): ?>
+					<form id="save_search_form" action="<?php echo make_url('search_save'); ?>" method="post" onsubmit="TBG.Search.saveSearch();return false;">
+						<?php if (TBGContext::isProjectContext()): ?>
+							<input type="hidden" name="project_id" value="<?php echo TBGContext::getCurrentProject()->getID(); ?>">
+							<p style="padding-bottom: 15px;" class="faded_out"><?php echo __('This saved search will be available under this project only. To make a non-project-specific search, use the main "%find_issues%" page instead', array('%find_issues%' => link_tag(make_url('search'), __('Find issues')))); ?></p>
+						<?php endif; ?>
+						<?php if ($search_object->getID()): ?>
+							<input type="hidden" name="saved_search_id" id="saved_search_id" value="<?php echo $search_object->getID(); ?>">
+						<?php endif; ?>
+						<table class="padded_table" style="width: 780px;">
 							<tr>
-								<td><label for="saved_search_public" class="optional"><?php echo __('Visibility'); ?></label></td>
-								<td>
-									<select name="saved_search_public" id="saved_search_public">
-										<option value="0"<?php if ($search_object->getID() && !$search_object->isPublic()): ?> selected<?php endif; ?>><?php echo __('Only visible for me'); ?></option>
-										<option value="1"<?php if ($search_object->getID() && $search_object->isPublic()): ?> selected<?php endif; ?>><?php echo __('Shared with others'); ?></option>
-									</select>
+								<td style="vertical-align: top; width: 200px; font-size: 1.15em;"><label for="saved_search_name"><?php echo __('Saved search name'); ?></label></td>
+								<td style="vertical-align: top;">
+									<input type="text" name="name" id="saved_search_name"<?php if ($search_object->getID()): ?> value="<?php echo $search_object->getName(); ?>"<?php endif; ?> style="width: 576px; font-size: 1.2em; padding: 4px;">
+									<?php if ($search_object->getID()): ?>
+										<br>
+										<input type="checkbox" id="update_saved_search" name="update_saved_search" checked><label style="font-size: 1em; font-weight: normal;" for="update_saved_search"><?php echo __('Update this saved search'); ?></label>
+									<?php endif; ?>
+
 								</td>
 							</tr>
-						<?php endif; ?>
-					</table>
-					<div style="text-align: right;">
-						<input type="submit" value="<?php echo __('Update this saved search'); ?>" id="search_button_save">
-						<input type="submit" value="<?php echo __('Save this search'); ?>" id="search_button_save_new">
-						<?php echo __('%update_or_save_search% or %cancel%', array('%update_or_save_search%' => '', '%cancel%' => "<a href=\"javascript:void('0');\" onclick=\"$('saved_search_details').hide();$('saved_search_name').disable();$('saved_search_description').disable();".(($tbg_user->canCreatePublicSearches()) ? "$('saved_search_public').disable();" : '')."$('search_button_bottom').enable();$('search_button_bottom').show();\"><b>".__('cancel').'</b></a>')); ?>
-					</div>
+							<tr>
+								<td><label for="saved_search_description" class="optional"><?php echo __('Description'); ?></label></td>
+								<td><input type="text" name="description" id="saved_search_description"<?php if ($search_object->getID()): ?> value="<?php echo $search_object->getDescription(); ?>"<?php endif; ?> style="width: 350px;"><br></td>
+							</tr>
+							<?php if ($tbg_user->canCreatePublicSearches()): ?>
+								<tr>
+									<td><label for="saved_search_public" class="optional"><?php echo __('Visibility'); ?></label></td>
+									<td>
+										<select name="is_public" id="saved_search_public">
+											<option value="0"<?php if ($search_object->getID() && !$search_object->isPublic()): ?> selected<?php endif; ?>><?php echo __('Only visible for me'); ?></option>
+											<option value="1"<?php if ($search_object->getID() && $search_object->isPublic()): ?> selected<?php endif; ?>><?php echo __('Shared with others'); ?></option>
+										</select>
+									</td>
+								</tr>
+							<?php endif; ?>
+						</table>
+						<div style="text-align: right;">
+							<?php echo image_tag('spinning_16.gif', array('style' => 'margin-left: 5px; display: none;', 'id' => 'save_search_indicator')); ?>
+							<?php echo __('%cancel% or %save_search%', array('%save_search%' => '<input type="submit" value="'.__('Save search').'">', '%cancel%' => '<a href="javascript:void(0);" onclick="$(\'saved_search_details\').hide();">'.__('cancel').'</b></a>')); ?>
+						</div>
+					</form>
 				</div>
 			</div>
 		</div>

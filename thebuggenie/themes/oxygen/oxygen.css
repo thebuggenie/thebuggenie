@@ -1945,12 +1945,12 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 }
 .slider_container {
     position: relative;
-    width: 100%;
+    width: auto;
     margin: 20px 0 20px 25px;
     height: 60px;
 }
 .slider {
-    width: 550px;
+    width: 500px;
     height: 10px;
     margin: 0 50px 20px 0;
     padding: 0;
@@ -2008,6 +2008,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .generic_error_message { font-weight: normal; color: #E44; }
 
 /* search results */
+#saved_search_details input[type=submit] { font-size: 1em; }
 #search_results_container { position: relative; }
 #search_results_loading_indicator { width: 100%; height: 100%; padding: 0; margin: 0; vertical-align: middle; text-align: center; position: absolute; background-color: rgba(255, 255, 255, 0.6); }
 #search_results_loading_indicator img { vertical-align: middle; }

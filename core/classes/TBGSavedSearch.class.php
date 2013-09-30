@@ -167,6 +167,19 @@
 			return in_array($template_name, array_keys(self::getTemplates(false)));
 		}
 
+		protected function _postSave($is_new)
+		{
+			if ($is_new)
+			{
+				foreach ($this->getFilters() as $filter)
+				{
+					$filter->clearID();
+					$filter->setSearchId($this);
+					$filter->save();
+				}
+			}
+		}
+
 		public function setPredefinedVariables($type)
 		{
 			$i18n = TBGContext::getI18n();
@@ -228,7 +241,7 @@
 			if ($request->hasParameter('predefined_search'))
 			{
 				$this->setPredefinedVariables($request['predefined_search']);
-				$this->_filters = TBGSearchFilter::getPredefinedFilters($request['predefined_search']);
+				$this->_filters = TBGSearchFilter::getPredefinedFilters($request['predefined_search'], $this);
 			}
 			else
 			{
@@ -237,7 +250,7 @@
 
 				$this->_issues_per_page = $request->getParameter('issues_per_page', 50);
 				$this->_offset = $request->getParameter('offset', 0);
-				$this->_filters = TBGSearchFilter::getFromRequest($request);
+				$this->_filters = TBGSearchFilter::getFromRequest($request, $this);
 				$this->_applies_to_project = TBGContext::getCurrentProject();
 
 				if ($request['quicksearch']) $this->_dateorder = 'desc';
@@ -300,6 +313,11 @@
 		public function getAppliesToProject()
 		{
 			return $this->_b2dbLazyload('_applies_to_project');
+		}
+
+		public function getProject()
+		{
+			return $this->getAppliesToProject();
 		}
 
 		/**
@@ -443,6 +461,11 @@
 			$this->_uid = $uid;
 		}
 
+		public function setUser($user)
+		{
+			$this->setUid($user);
+		}
+
 		/**
 		 * @return \TBGUser
 		 */
@@ -459,15 +482,26 @@
 
 		protected function _setupGenericFilters()
 		{
-			if (!isset($this->_filters['issuetype'])) $this->_filters['issuetype'] = TBGSearchFilter::createFilter('issuetype');
-			if (!isset($this->_filters['status'])) $this->_filters['status'] = TBGSearchFilter::createFilter('status');
-			if (!isset($this->_filters['category'])) $this->_filters['category'] = TBGSearchFilter::createFilter('category');
-			if (!TBGContext::isProjectContext() && !isset($this->_filters['project_id'])) $this->_filters['project_id'] = TBGSearchFilter::createFilter('project_id');
+			if (!isset($this->_filters['issuetype'])) $this->_filters['issuetype'] = TBGSearchFilter::createFilter('issuetype', array(), $this);
+			if (!isset($this->_filters['status'])) $this->_filters['status'] = TBGSearchFilter::createFilter('status', array(), $this);
+			if (!isset($this->_filters['category'])) $this->_filters['category'] = TBGSearchFilter::createFilter('category', array(), $this);
+			if (!TBGContext::isProjectContext() && !isset($this->_filters['project_id'])) $this->_filters['project_id'] = TBGSearchFilter::createFilter('project_id', array(), $this);
 		}
 
 		public function getFilters()
 		{
-			return ($this->_filters === null) ? $this->_b2dbLazyload('_filters') : $this->_filters;
+			if ($this->_filters === null)
+			{
+				$filters = array();
+				$this->_b2dbLazyload('_filters');
+				foreach ($this->_filters as $filter)
+				{
+					$filters[$filter->getFilterKey()] = $filter;
+				}
+				$this->_filters = $filters;
+				$this->_setupGenericFilters();
+			}
+			return $this->_filters;
 		}
 
 		public function hasFilter($key)
