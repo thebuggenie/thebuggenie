@@ -1,5 +1,6 @@
 core/b2db_bootstrap.inc.php
 core/cache
+core/lib/*
 files/
 .settings/
 thebuggenie/.htaccess
@@ -19,3 +20,4 @@ web.config
 tmp
 thebuggenie/test.php
 *~
+/composer.phar
