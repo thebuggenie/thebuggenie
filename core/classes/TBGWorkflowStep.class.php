@@ -96,7 +96,17 @@
 			}
 			
 			$transitions = TBGWorkflowTransition::loadFixtures($scope, $workflow, $steps);
-			
+
+			$transition = new TBGWorkflowTransition();
+			$step = $steps['new']['step'];
+			$transition->setOutgoingStep($step);
+			$transition->setName('Issue created');
+			$transition->setWorkflow($workflow);
+			$transition->setDescription('This is the initial transition for issues using this workflow');
+			$transition->save();
+			$workflow->setInitialTransition($transition);
+			$workflow->save();
+
 			foreach ($steps as $step)
 			{
 				foreach ($step['transitions'] as $transition)
