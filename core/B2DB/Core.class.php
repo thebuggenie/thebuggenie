@@ -756,9 +756,13 @@
 			}
 			self::$_cached_table_classes[$classname] = array('entity' => null, 'name' => null, 'discriminator' => null);
 
-			$reflection = new \ReflectionClass($classname);
-			$docblock = $reflection->getDocComment();
-			$annotationset = new AnnotationSet($docblock);
+			try {
+				$reflection = new \ReflectionClass($classname);
+				$annotationset = new AnnotationSet($reflection->getDocComment());
+				if (!$annotationset->hasAnnotations()) throw new Exception('Empty annotationset!');
+			} catch (\Exception $e) {
+				throw new Exception("An error occured when trying to load the database details for class {$classname}: ".$e->getMessage());
+			}
 			if (!$table_annotation = $annotationset->getAnnotation('Table')) {
 				throw new Exception("The class '{$classname}' does not have a proper @Table annotation");
 			}
@@ -793,8 +797,13 @@
 		protected static function cacheEntityClass($classname, $reflection_classname = null)
 		{
 			$rc_name = ($reflection_classname !== null) ? $reflection_classname : $classname;
-			$reflection = new \ReflectionClass($rc_name);
-			$annotationset = new AnnotationSet($reflection->getDocComment());
+			try {
+				$reflection = new \ReflectionClass($rc_name);
+				$annotationset = new AnnotationSet($reflection->getDocComment());
+				if (!$annotationset->hasAnnotations()) throw new Exception('Empty annotationset!');
+			} catch (\Exception $e) {
+				throw new Exception("An error occured when trying to load the database details for class {$classname}: ".$e->getMessage());
+			}
 
 			if ($reflection_classname === null) {
 				self::$_cached_entity_classes[$classname] = array('columns' => array(), 'relations' => array(), 'foreign_columns' => array(), );
