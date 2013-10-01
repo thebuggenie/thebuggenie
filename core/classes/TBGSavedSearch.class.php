@@ -169,14 +169,12 @@
 
 		protected function _postSave($is_new)
 		{
-			if ($is_new)
+			foreach ($this->getFilters() as $filter)
 			{
-				foreach ($this->getFilters() as $filter)
-				{
-					$filter->clearID();
-					$filter->setSearchId($this);
-					$filter->save();
-				}
+				if ($is_new) $filter->clearID();
+
+				$filter->setSearchId($this);
+				$filter->save();
 			}
 		}
 
