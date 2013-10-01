@@ -253,6 +253,13 @@
 			$this->show_box = TBGSettings::isInfoBoxVisible($this->key);
 		}
 
+		public function componentHideableInfoBoxModal()
+		{
+			if (!isset($this->options)) $this->options = array();
+			if (!isset($this->button_label)) $this->button_label = $this->getI18n()->__('Hide');
+			$this->show_box = TBGSettings::isInfoBoxVisible($this->key);
+		}
+
 		public function componentUploader()
 		{
 			switch ($this->mode)
