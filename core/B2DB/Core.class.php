@@ -891,6 +891,10 @@
 					self::cacheEntityClass($classname);
 				}
 			}
+			elseif (self::$_cached_entity_classes[$classname] === null)
+			{
+				self::cacheEntityClass($classname);
+			}
 		}
 		
 		protected static function _populateCachedTableClassFiles($classname)
@@ -905,6 +909,10 @@
 				} else {
 					self::cacheTableClass($classname);
 				}
+			}
+			elseif (self::$_cached_table_classes[$classname] === null)
+			{
+				self::cacheTableClass($classname);
 			}
 		}
 
@@ -1009,4 +1017,3 @@
 		}
 
 	}
-	
