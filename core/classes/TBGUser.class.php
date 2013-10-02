@@ -731,6 +731,18 @@
 		{
 			if ($is_new)
 			{
+				// Set up a default dashboard for the user
+				TBGDashboardViewsTable::getTable()->setDefaultViews($this->getID(), TBGDashboardViewsTable::TYPE_USER);
+				$scope = TBGContext::factory()->TBGScope((int) TBGSettings::getDefaultScopeID());
+				$this->addScope($scope, false);
+				$this->confirmScope($scope->getID());
+				if (!TBGContext::getScope()->isDefault())
+				{
+					$scope = TBGContext::getScope();
+					$this->addScope($scope, false);
+					$this->confirmScope($scope->getID());
+				}
+				
 				$event = TBGEvent::createNew('core', 'TBGUser::_postSave', $this);
 				$event->trigger();
 				
@@ -743,17 +755,6 @@
 					$this->save();
 				}
 				
-				// Set up a default dashboard for the user
-				TBGDashboardViewsTable::getTable()->setDefaultViews($this->getID(), TBGDashboardViewsTable::TYPE_USER);
-				$scope = TBGContext::factory()->TBGScope((int) TBGSettings::getDefaultScopeID());
-				$this->addScope($scope, false);
-				$this->confirmScope($scope->getID());
-				if (!TBGContext::getScope()->isDefault())
-				{
-					$scope = TBGContext::getScope();
-					$this->addScope($scope, false);
-					$this->confirmScope($scope->getID());
-				}
 			}
 
 			if ($this->_group_id !== null)
