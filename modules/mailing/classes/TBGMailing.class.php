@@ -486,6 +486,9 @@ EOT;
 			foreach ($cmts as $cmt)
 			{
 				$pbid = $cmt->getPostedByID();
+				
+				if ($pbid == $cu && !$ns) { continue; }
+				
 				if ($pbid && $this->getSetting(self::NOTIFY_ISSUE_COMMENTED_ON, $pbid))
 					$uids[$pbid] = $pbid;
 			}
