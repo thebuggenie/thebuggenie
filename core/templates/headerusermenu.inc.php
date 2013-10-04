@@ -28,7 +28,7 @@
 				<?php echo link_tag(make_url('switch_back_user'), image_tag('switchuser.png').__('Switch back to original user')); ?>
 			<?php endif; ?>
 			<?php if ($tbg_user->canAccessConfigurationPage()): ?>
-				<?php echo link_tag(make_url('configure'), image_tag('tab_config.png').__('Configure The Bug Genie')); ?>
+				<?php echo link_tag(make_url('configure'), image_tag('tab_config.png').__('Configure %thebuggenie_name%', array('%thebuggenie_name%' => TBGSettings::getTBGname()))); ?>
 			<?php endif; ?>
 			<?php TBGEvent::createNew('core', 'user_dropdown_reg')->trigger(); ?>
 			<?php echo link_tag('http://www.thebuggenie.com/help/'.TBGContext::getRouting()->getCurrentRouteName(), image_tag('help.png').__('Help for this page')); ?>
