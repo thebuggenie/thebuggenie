@@ -562,6 +562,10 @@
 				$user = TBGContext::factory()->TBGUser(TBGSettings::getDefaultUserID());
 				$uid = TBGSettings::getDefaultUserID();
 			}
+			
+			TBGContext::setUser($user);
+			TBGSettings::forceSettingsReload();
+			TBGContext::cacheAllPermissions();
 								
 			$output .= '[VCS '.$project->getKey().'] Commit to be logged by user ' . $user->getName() . "\n";
 
