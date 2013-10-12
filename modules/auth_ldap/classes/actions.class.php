@@ -264,6 +264,7 @@
 			$dn_attr = TBGContext::getModule('auth_ldap')->getSetting('dn_attr');
 			$username_attr = TBGContext::getModule('auth_ldap')->getSetting('u_attr');
 			$fullname_attr = TBGContext::getModule('auth_ldap')->getSetting('f_attr');
+			$buddyname_attr = TBGContext::getModule('auth_ldap')->getSetting('b_attr');			
 			$email_attr = TBGContext::getModule('auth_ldap')->getSetting('e_attr');
 			$groups_members_attr = TBGContext::getModule('auth_ldap')->getSetting('g_attr');
 			
@@ -285,7 +286,7 @@
 				/*
 				 * Get a list of all users of a certain objectClass
 				 */
-				$fields = array($fullname_attr, $username_attr, $email_attr, 'cn', $dn_attr);
+				$fields = array($fullname_attr, $buddyname_attr, $username_attr, $email_attr, 'cn', $dn_attr);
 				$filter = '(objectClass='.TBGLDAPAuthentication::getModule()->escape($user_class).')';
 
 				$results = ldap_search($connection, $base_dn, $filter, $fields);
@@ -388,6 +389,15 @@
 						$users[$i]['realname'] = $data[$i][strtolower($fullname_attr)][0];
 					}
 					
+					if (!array_key_exists(strtolower($buddyname_attr), $data[$i]))
+					{
+						$users[$i]['buddyname'] = $data[$i]['cn'][0];
+					}
+					else
+					{
+						$users[$i]['buddyname'] = $data[$i][strtolower($buddyname_attr)][0];
+					}
+										
 					if (!array_key_exists(strtolower($email_attr), $data[$i]))
 					{
 						$users[$i]['email'] = '';
@@ -416,6 +426,7 @@
 				$username = $ldapuser['username'];
 				$email = $ldapuser['email'];
 				$realname = $ldapuser['realname'];
+				$buddyname = $ldapuser['buddyname'];
 				
 				try
 				{
@@ -423,7 +434,7 @@
 					if ($user instanceof TBGUser)
 					{
 						$user->setRealname($realname);
-						$user->setEmail($email); // update emaila ddress
+						$user->setEmail($email); // update email address
 						$user->save();
 						$updatecount++;
 					}
@@ -433,7 +444,7 @@
 						$user = new TBGUser();
 						$user->setUsername($username);
 						$user->setRealname($realname);
-						$user->setBuddyname($realname);
+						$user->setBuddyname($buddyname);
 						$user->setEmail($email);
 						$user->setEnabled();
 						$user->setActivated();

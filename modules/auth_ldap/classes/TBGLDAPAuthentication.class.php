@@ -76,7 +76,7 @@
 
 		public function postConfigSettings(TBGRequest $request)
 		{
-			$settings = array('hostname', 'u_type', 'g_type', 'b_dn', 'groups', 'dn_attr', 'u_attr', 'g_attr', 'e_attr', 'f_attr', 'g_dn', 'control_user', 'control_pass', 'integrated_auth');
+			$settings = array('hostname', 'u_type', 'g_type', 'b_dn', 'groups', 'dn_attr', 'u_attr', 'g_attr', 'e_attr', 'f_attr', 'b_attr', 'g_dn', 'control_user', 'control_pass', 'integrated_auth');
 			foreach ($settings as $setting)
 			{
 				if (($setting == 'u_type' || $setting == 'g_type' || $setting == 'dn_attr') && $request->getParameter($setting) == '')
@@ -157,6 +157,7 @@
 			$dn_attr = $this->escape($this->getSetting('dn_attr'));
 			$username_attr = $this->escape($this->getSetting('u_attr'));
 			$fullname_attr = $this->escape($this->getSetting('f_attr'));
+			$buddyname_attr = $this->escape($this->getSetting('b_attr'));
 			$email_attr = $this->escape($this->getSetting('e_attr'));
 			$groups_members_attr = $this->escape($this->getSetting('g_attr'));
 			
@@ -201,7 +202,7 @@
 				 * We want exactly 1 user to be returned. We get the user's full name, email, cn
 				 * and dn.
 				 */
-				$fields = array($fullname_attr, $email_attr, 'cn', $dn_attr);
+				$fields = array($fullname_attr, $buddyname_attr, $email_attr, 'cn', $dn_attr);
 				$filter = '(&(objectClass='.TBGLDAPAuthentication::getModule()->escape($user_class).')('.$username_attr.'='.$this->escape($username).'))';
 				
 				$results = ldap_search($connection, $base_dn, $filter, $fields);
@@ -310,6 +311,15 @@
 				{
 					$realname = $data[0][strtolower($fullname_attr)][0];
 				}
+
+				if (!array_key_exists(strtolower($buddyname_attr), $data[0]))
+				{
+					$buddyname = $username;
+				}
+				else
+				{
+					$buddyname = $data[0][strtolower($buddyname_attr)][0];
+				}
 				
 				if (!array_key_exists(strtolower($email_attr), $data[0]))
 				{
@@ -375,7 +385,7 @@
 				$user = TBGUser::getByUsername($username);
 				if ($user instanceof TBGUser)
 				{					
-					$user->setBuddyname($realname);
+					$user->setBuddyname($buddyname);
 					$user->setRealname($realname);
 					$user->setPassword($user->getJoinedDate().$username); // update password
 					$user->setEmail($email); // update email address
