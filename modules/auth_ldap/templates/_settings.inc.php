@@ -55,6 +55,10 @@
 				<td><input type="text"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> name="f_attr" id="f_attr" value="<?php echo $module->getSetting('f_attr'); ?>" style="width: 100%;"></td>
 			</tr>
 			<tr>
+				<td style="padding: 5px;"><label for="b_attr"><?php echo __('Given name attribute'); ?></label></td>
+				<td><input type="text"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> name="b_attr" id="b_attr" value="<?php echo $module->getSetting('b_attr'); ?>" style="width: 100%;"></td>
+			</tr>
+			<tr>
 				<td style="padding: 5px;"><label for="e_attr"><?php echo __('Email address attribute'); ?></label></td>
 				<td><input type="text"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> name="e_attr" id="e_attr" value="<?php echo $module->getSetting('e_attr'); ?>" style="width: 100%;"></td>
 			</tr>
