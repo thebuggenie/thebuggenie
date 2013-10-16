@@ -69,7 +69,7 @@
 								throw new Exception(TBGContext::getI18n()->__('You cannot upload files bigger than %max_size% MB', array('%max_size%' => TBGSettings::getUploadsEffectiveMaxSize())));
 							}
 							TBGLogging::log('Upload filesize ok');
-							$extension = mb_substr(basename($thefile['name']), mb_strpos(basename($thefile['name']), '.'));
+							$extension = mb_substr(basename($thefile['name']), mb_strrpos(basename($thefile['name']), '.'));
 							if ($extension == '')
 							{
 								TBGLogging::log('OOps, could not determine upload filetype', 'main', TBGLogging::LEVEL_WARNING_RISK);
