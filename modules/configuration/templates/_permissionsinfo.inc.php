@@ -30,7 +30,7 @@
 		<?php $gcount = count($groups); $cc = 1; ?>
 		<?php foreach ($groups as $group): ?>
 			<tr class="hover_highlight">
-				<td style="padding: 2px;<?php if ($cc == $gcount): ?> border-bottom: 1px solid #EAEAEA;<?php endif; ?>"><?php echo '<b>'.__('Group: %group_name%', array('%group_name%' => '</b>'.$group->getName())); ?></td>
+				<td style="padding: 2px;<?php if ($cc == $gcount): ?> border-bottom: 1px solid #EAEAEA;<?php endif; ?>"><?php echo '<b>'.__('Group: %group_name', array('%group_name' => '</b>'.$group->getName())); ?></td>
 				<td style="padding: 2px;<?php if ($cc == $gcount): ?> border-bottom: 1px solid #EAEAEA;<?php endif; ?> text-align: center;">
 					<?php include_component('configuration/permissionsinfoitem', array('key' => $key, 'target_id' => $target_id, 'type' => 'group', 'mode' => $mode, 'item_id' => $group->getID(), 'item_name' => $group->getName(), 'module' => $module, 'access_level' => $access_level)); ?>
 				</td>
@@ -40,7 +40,7 @@
 		<?php $teams = TBGTeam::getAll(); ?>
 		<?php foreach ($teams as $team): ?>
 			<tr class="hover_highlight">
-				<td style="padding: 2px;"><?php echo '<b>'.__('Team: %team_name%', array('%team_name%' => '</b>'.$team->getName())); ?></td>
+				<td style="padding: 2px;"><?php echo '<b>'.__('Team: %team_name', array('%team_name' => '</b>'.$team->getName())); ?></td>
 				<td style="padding: 2px; text-align: center;">
 					<?php include_component('configuration/permissionsinfoitem', array('key' => $key, 'type' => 'team', 'target_id' => $target_id, 'mode' => $mode, 'item_id' => $team->getID(), 'item_name' => $team->getName(), 'module' => $module, 'access_level' => $access_level)); ?>
 				</td>

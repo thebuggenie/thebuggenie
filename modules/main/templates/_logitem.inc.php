@@ -29,7 +29,7 @@
 						<?php if ($log_action['change_type'] != TBGLogTable::LOG_COMMENT): ?>
 							<?php echo $user->getBuddyname(); ?> (<?php echo $user->getUsername(); ?>)
 						<?php else: ?>
-							<?php echo __('%buddy_name% (%username%) said', array('%username%' => $user->getUsername(), '%buddy_name%' => $user->getBuddyname())); ?>
+							<?php echo __('%buddy_name (%username) said', array('%username' => $user->getUsername(), '%buddy_name' => $user->getBuddyname())); ?>
 						<?php endif; ?>
 					<?php else: ?>
 						<?php if ($log_action['change_type'] != TBGLogTable::LOG_COMMENT): ?>
@@ -60,7 +60,7 @@
 						echo '</div>';
 						break;
 					case TBGLogTable::LOG_ISSUE_CLOSE:
-						echo '<span class="issue_closed"><i>' . __('Issue closed %text%', array('%text%' => $log_action['text'])) . '</i></span>';
+						echo '<span class="issue_closed"><i>' . __('Issue closed %text', array('%text' => $log_action['text'])) . '</i></span>';
 						break;
 					case TBGLogTable::LOG_ISSUE_REOPEN:
 						echo '<i>' . __('Issue reopened') . '</i>';
@@ -69,61 +69,61 @@
 						echo '<i>' . $log_action['text'] . '</i>';
 						break;
 					case TBGLogTable::LOG_ISSUE_PAIN_BUG_TYPE:
-						echo '<i>' . __('Triaged bug type: %text%', array('%text%' => $log_action['text'])) . '</i>';
+						echo '<i>' . __('Triaged bug type: %text', array('%text' => $log_action['text'])) . '</i>';
 						break;
 					case TBGLogTable::LOG_ISSUE_PAIN_LIKELIHOOD:
-						echo '<i>' . __('Triaged likelihood: %text%', array('%text%' => $log_action['text'])) . '</i>';
+						echo '<i>' . __('Triaged likelihood: %text', array('%text' => $log_action['text'])) . '</i>';
 						break;
 					case TBGLogTable::LOG_ISSUE_PAIN_EFFECT:
-						echo '<i>' . __('Triaged effect: %text%', array('%text%' => $log_action['text'])) . '</i>';
+						echo '<i>' . __('Triaged effect: %text', array('%text' => $log_action['text'])) . '</i>';
 						break;
 					case TBGLogTable::LOG_ISSUE_PAIN_CALCULATED:
-						echo '<i>' . __('Calculated user pain: %text%', array('%text%' => $log_action['text'])) . '</i>';
+						echo '<i>' . __('Calculated user pain: %text', array('%text' => $log_action['text'])) . '</i>';
 						break;
 					case TBGLogTable::LOG_ISSUE_CATEGORY:
-						echo '<i>' . __('Category changed: %text%', array('%text%' => $log_action['text'])) . '</i>';
+						echo '<i>' . __('Category changed: %text', array('%text' => $log_action['text'])) . '</i>';
 						break;
 					case TBGLogTable::LOG_ISSUE_CUSTOMFIELD_CHANGED:
-						echo '<i>' . __('Custom field changed: %text%', array('%text%' => $log_action['text'])) . '</i>';
+						echo '<i>' . __('Custom field changed: %text', array('%text' => $log_action['text'])) . '</i>';
 						break;
 					case TBGLogTable::LOG_ISSUE_STATUS:
-						echo '<i>' . __('Status changed: %text%', array('%text%' => $log_action['text'])) . '</i>';
+						echo '<i>' . __('Status changed: %text', array('%text' => $log_action['text'])) . '</i>';
 						break;
 					case TBGLogTable::LOG_ISSUE_REPRODUCABILITY:
-						echo '<i>' . __('Reproducability changed: %text%', array('%text%' => $log_action['text'])) . '</i>';
+						echo '<i>' . __('Reproducability changed: %text', array('%text' => $log_action['text'])) . '</i>';
 						break;
 					case TBGLogTable::LOG_ISSUE_PRIORITY:
-						echo '<i>' . __('Priority changed: %text%', array('%text%' => $log_action['text'])) . '</i>';
+						echo '<i>' . __('Priority changed: %text', array('%text' => $log_action['text'])) . '</i>';
 						break;
 					case TBGLogTable::LOG_ISSUE_SEVERITY:
-						echo '<i>' . __('Severity changed: %text%', array('%text%' => $log_action['text'])) . '</i>';
+						echo '<i>' . __('Severity changed: %text', array('%text' => $log_action['text'])) . '</i>';
 						break;
 					case TBGLogTable::LOG_ISSUE_RESOLUTION:
-						echo '<i>' . __('Resolution changed: %text%', array('%text%' => $log_action['text'])) . '</i>';
+						echo '<i>' . __('Resolution changed: %text', array('%text' => $log_action['text'])) . '</i>';
 						break;
 					case TBGLogTable::LOG_ISSUE_PERCENT:
-						echo '<i>' . __('Percent completed: %text%', array('%text%' => $log_action['text'])) . '</i>';
+						echo '<i>' . __('Percent completed: %text', array('%text' => $log_action['text'])) . '</i>';
 						break;
 					case TBGLogTable::LOG_ISSUE_MILESTONE:
-						echo '<i>' . __('Target milestone changed: %text%', array('%text%' => $log_action['text'])) . '</i>';
+						echo '<i>' . __('Target milestone changed: %text', array('%text' => $log_action['text'])) . '</i>';
 						break;
 					case TBGLogTable::LOG_ISSUE_ISSUETYPE:
-						echo '<i>' . __('Issue type changed: %text%', array('%text%' => $log_action['text'])) . '</i>';
+						echo '<i>' . __('Issue type changed: %text', array('%text' => $log_action['text'])) . '</i>';
 						break;
 					case TBGLogTable::LOG_ISSUE_TIME_ESTIMATED:
-						echo '<i>' . __('Estimation changed: %text%', array('%text%' => $log_action['text'])) . '</i>';
+						echo '<i>' . __('Estimation changed: %text', array('%text' => $log_action['text'])) . '</i>';
 						break;
 					case TBGLogTable::LOG_ISSUE_TIME_SPENT:
-						echo '<i>' . __('Time spent: %text%', array('%text%' => $log_action['text'])) . '</i>';
+						echo '<i>' . __('Time spent: %text', array('%text' => $log_action['text'])) . '</i>';
 						break;
 					case TBGLogTable::LOG_ISSUE_ASSIGNED:
-						echo '<i>' . __('Assignee changed: %text%', array('%text%' => $log_action['text'])) . '</i>';
+						echo '<i>' . __('Assignee changed: %text', array('%text' => $log_action['text'])) . '</i>';
 						break;
 					case TBGLogTable::LOG_ISSUE_OWNED:
-						echo '<i>' . __('Owner changed: %text%', array('%text%' => $log_action['text'])) . '</i>';
+						echo '<i>' . __('Owner changed: %text', array('%text' => $log_action['text'])) . '</i>';
 						break;
 					case TBGLogTable::LOG_ISSUE_POSTED:
-						echo '<i>' . __('Posted by changed: %text%', array('%text%' => $log_action['text'])) . '</i>';
+						echo '<i>' . __('Posted by changed: %text', array('%text' => $log_action['text'])) . '</i>';
 						break;
 					default:
 						if (empty($log_action['text']))

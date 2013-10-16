@@ -184,32 +184,32 @@
 			switch ($type)
 			{
 				case TBGContext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES:
-					$this->_searchtitle = (TBGContext::isProjectContext()) ? $i18n->__('Open issues for %project_name%', array('%project_name%' => TBGContext::getCurrentProject()->getName())) : $i18n->__('All open issues');
+					$this->_searchtitle = (TBGContext::isProjectContext()) ? $i18n->__('Open issues for %project_name', array('%project_name' => TBGContext::getCurrentProject()->getName())) : $i18n->__('All open issues');
 					$this->_groupby = 'issuetype';
 					break;
 				case TBGContext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES_INCLUDING_SUBPROJECTS:
-					$this->_searchtitle = $i18n->__('Open issues for %project_name% (including subprojects)', array('%project_name%' => TBGContext::getCurrentProject()->getName()));
+					$this->_searchtitle = $i18n->__('Open issues for %project_name (including subprojects)', array('%project_name' => TBGContext::getCurrentProject()->getName()));
 					$this->_groupby = 'issuetype';
 					break;
 				case TBGContext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES:
-					$this->_searchtitle = (TBGContext::isProjectContext()) ? $i18n->__('Closed issues for %project_name%', array('%project_name%' => TBGContext::getCurrentProject()->getName())) : $i18n->__('All closed issues');
+					$this->_searchtitle = (TBGContext::isProjectContext()) ? $i18n->__('Closed issues for %project_name', array('%project_name' => TBGContext::getCurrentProject()->getName())) : $i18n->__('All closed issues');
 					$this->_groupby = 'issuetype';
 					break;
 				case TBGContext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES_INCLUDING_SUBPROJECTS:
-					$this->_searchtitle = $i18n->__('Closed issues for %project_name% (including subprojects)', array('%project_name%' => TBGContext::getCurrentProject()->getName()));
+					$this->_searchtitle = $i18n->__('Closed issues for %project_name (including subprojects)', array('%project_name' => TBGContext::getCurrentProject()->getName()));
 					$this->_groupby = 'issuetype';
 					break;
 				case TBGContext::PREDEFINED_SEARCH_PROJECT_WISHLIST:
-					$this->_searchtitle = $i18n->__('%project_name% wishlist', array('%project_name%' => TBGContext::getCurrentProject()->getName()));
+					$this->_searchtitle = $i18n->__('%project_name wishlist', array('%project_name' => TBGContext::getCurrentProject()->getName()));
 					$this->_groupby = 'issuetype';
 					break;
 				case TBGContext::PREDEFINED_SEARCH_PROJECT_MILESTONE_TODO:
-					$this->_searchtitle = $i18n->__('Milestone todo-list for %project_name%', array('%project_name%' => TBGContext::getCurrentProject()->getName()));
+					$this->_searchtitle = $i18n->__('Milestone todo-list for %project_name', array('%project_name' => TBGContext::getCurrentProject()->getName()));
 					$this->_templatename = 'results_todo';
 					$this->_groupby = 'milestone';
 					break;
 				case TBGContext::PREDEFINED_SEARCH_PROJECT_MOST_VOTED:
-					$this->_searchtitle = (TBGContext::isProjectContext()) ? $i18n->__('Most voted issues for %project_name%', array('%project_name%' => TBGContext::getCurrentProject()->getName())) : $i18n->__('Most voted issues');
+					$this->_searchtitle = (TBGContext::isProjectContext()) ? $i18n->__('Most voted issues for %project_name', array('%project_name' => TBGContext::getCurrentProject()->getName())) : $i18n->__('Most voted issues');
 					$this->_templatename = 'results_votes';
 					$this->_groupby = 'votes';
 					$this->_grouporder = 'desc';
@@ -258,7 +258,7 @@
 
 				if (in_array($this->_templatename, array('results_userpain_singlepainthreshold', 'results_userpain_totalpainthreshold')))
 				{
-					$this->_searchtitle = TBGContext::getI18n()->__('Showing "bug report" issues sorted by user pain, threshold set at %threshold%', array('%threshold%' => $this->_template_parameter));
+					$this->_searchtitle = TBGContext::getI18n()->__('Showing "bug report" issues sorted by user pain, threshold set at %threshold', array('%threshold' => $this->_template_parameter));
 					$this->_issues_per_page = 0;
 					$this->_groupby = 'user_pain';
 					$this->_grouporder = 'desc';

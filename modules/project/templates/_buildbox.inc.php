@@ -12,14 +12,14 @@
 	<br>
 	<div class="faded_out" style="font-size: 0.8em;">
 		<?php if ($build->isReleased()): ?>
-			<?php echo __('Released %release_date%', array('%release_date%' => '<span id="build_'.$b_id.'_release_date">'.tbg_formatTime($build->getReleaseDate(), 7, true, true).'</span>')); ?>
+			<?php echo __('Released %release_date', array('%release_date' => '<span id="build_'.$b_id.'_release_date">'.tbg_formatTime($build->getReleaseDate(), 7, true, true).'</span>')); ?>
 		<?php else: ?>
 			<span class="faded_out" id="build_<?php echo $b_id; ?>_not_released"><?php echo __('Not released yet'); ?></span>
 		<?php endif; ?>
 		<?php if ($build->hasDownload()): ?>
-			<?php echo __('%release_date%, download: %download_filename%', array('%release_date%' => '', '%download_filename%' => ($build->hasFile()) ? link_tag(make_url('downloadfile', array('id' => $build->getFile()->getID())), $build->getFile()->getOriginalFilename()) : link_tag($build->getFileURL()))); ?>
+			<?php echo __('%release_date, download: %download_filename', array('%release_date' => '', '%download_filename' => ($build->hasFile()) ? link_tag(make_url('downloadfile', array('id' => $build->getFile()->getID())), $build->getFile()->getOriginalFilename()) : link_tag($build->getFileURL()))); ?>
 		<?php else: ?>
-			<span class="faded_out" id="build_<?php echo $b_id; ?>_not_released"><?php echo __('%release_date%, no download available', array('%release_date%' => '')); ?></span>
+			<span class="faded_out" id="build_<?php echo $b_id; ?>_not_released"><?php echo __('%release_date, no download available', array('%release_date' => '')); ?></span>
 		<?php endif; ?>
 	</div>
 </li>

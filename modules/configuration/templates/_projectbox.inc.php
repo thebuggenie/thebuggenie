@@ -12,7 +12,7 @@
 			&nbsp;-&nbsp;<?php echo __('Subproject of'); ?> <i><?php echo $project->getParent()->getName(); ?></i>
 		<?php endif; ?>
 	</div>
-	<div style="display: inline-block; padding-left: 3px; width: 80px;"><b><?php echo __('Owner: %user_or_team%', array('%user_or_team%' => '')); ?></b></div>
+	<div style="display: inline-block; padding-left: 3px; width: 80px;"><b><?php echo __('Owner: %user_or_team', array('%user_or_team' => '')); ?></b></div>
 	<div style="display: inline-block; clear: right; padding-left: 3px; width: auto;">
 		<?php if ($project->getOwner() != null): ?>
 			<?php if ($project->getOwner() instanceof TBGUser): ?>

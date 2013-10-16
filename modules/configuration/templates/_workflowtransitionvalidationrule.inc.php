@@ -6,7 +6,7 @@
 			case TBGWorkflowTransitionValidationRule::RULE_MAX_ASSIGNED_ISSUES:
 				?>
 				<td id="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_description" style="padding: 2px;">
-					<?php echo __('Current user can have no more than %number% issues already assigned', array('%number%' => '<span id="workflowtransitionvalidationrule_'.$rule->getID().'_value" style="font-weight: bold;">' . (($rule->getRuleValue()) ? (int) $rule->getRuleValue() : __('Unlimited')) . '</span>')); ?>
+					<?php echo __('Current user can have no more than %number issues already assigned', array('%number' => '<span id="workflowtransitionvalidationrule_'.$rule->getID().'_value" style="font-weight: bold;">' . (($rule->getRuleValue()) ? (int) $rule->getRuleValue() : __('Unlimited')) . '</span>')); ?>
 				</td>
 				<?php if (!$rule->getTransition()->isCore()): ?>
 					<td id="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_edit" style="display: none; padding: 2px;">
@@ -36,13 +36,13 @@
 				?>
 				<td id="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_description" style="padding: 2px;">
 					<?php if ($rule->getRule() == TBGWorkflowTransitionValidationRule::RULE_STATUS_VALID): ?>
-						<?php echo __('Status is any of these values: %statuses%', array('%statuses%' => '<span id="workflowtransitionvalidationrule_'.$rule->getID().'_value" style="font-weight: bold;">' . (($rule->getRuleValue()) ? $rule->getRuleValueAsJoinedString() : __('Any valid value')) . '</span>')); ?>
+						<?php echo __('Status is any of these values: %statuses', array('%statuses' => '<span id="workflowtransitionvalidationrule_'.$rule->getID().'_value" style="font-weight: bold;">' . (($rule->getRuleValue()) ? $rule->getRuleValueAsJoinedString() : __('Any valid value')) . '</span>')); ?>
 					<?php elseif ($rule->getRule() == TBGWorkflowTransitionValidationRule::RULE_PRIORITY_VALID): ?>
-						<?php echo __('Priority is any of these values: %priorities%', array('%priorities%' => '<span id="workflowtransitionvalidationrule_'.$rule->getID().'_value" style="font-weight: bold;">' . (($rule->getRuleValue()) ? $rule->getRuleValueAsJoinedString() : __('Any valid value')) . '</span>')); ?>
+						<?php echo __('Priority is any of these values: %priorities', array('%priorities' => '<span id="workflowtransitionvalidationrule_'.$rule->getID().'_value" style="font-weight: bold;">' . (($rule->getRuleValue()) ? $rule->getRuleValueAsJoinedString() : __('Any valid value')) . '</span>')); ?>
 					<?php elseif ($rule->getRule() == TBGWorkflowTransitionValidationRule::RULE_RESOLUTION_VALID): ?>
-						<?php echo __('Resolution is any of these values: %resolutions%', array('%resolutions%' => '<span id="workflowtransitionvalidationrule_'.$rule->getID().'_value" style="font-weight: bold;">' . (($rule->getRuleValue()) ? $rule->getRuleValueAsJoinedString() : __('Any valid value')) . '</span>')); ?>
+						<?php echo __('Resolution is any of these values: %resolutions', array('%resolutions' => '<span id="workflowtransitionvalidationrule_'.$rule->getID().'_value" style="font-weight: bold;">' . (($rule->getRuleValue()) ? $rule->getRuleValueAsJoinedString() : __('Any valid value')) . '</span>')); ?>
 					<?php elseif ($rule->getRule() == TBGWorkflowTransitionValidationRule::RULE_REPRODUCABILITY_VALID): ?>
-						<?php echo __('Reproducability is any of these values: %reproducabilities%', array('%reproducabilities%' => '<span id="workflowtransitionvalidationrule_'.$rule->getID().'_value" style="font-weight: bold;">' . (($rule->getRuleValue()) ? $rule->getRuleValueAsJoinedString() : __('Any valid value')) . '</span>')); ?>
+						<?php echo __('Reproducability is any of these values: %reproducabilities', array('%reproducabilities' => '<span id="workflowtransitionvalidationrule_'.$rule->getID().'_value" style="font-weight: bold;">' . (($rule->getRuleValue()) ? $rule->getRuleValueAsJoinedString() : __('Any valid value')) . '</span>')); ?>
 					<?php endif; ?>
 				</td>
 				<?php if (!$rule->getTransition()->isCore()): ?>

@@ -5,8 +5,8 @@
 			<label<?php if (!TBGContext::isProjectContext()): ?> for="filter_project_id_<?php echo $key; ?>"<?php endif; ?>><?php echo __('Project'); ?></label>
 			<?php if (!TBGContext::isProjectContext()): ?>
 				<select name="filters[project_id][<?php echo $key; ?>][operator]">
-					<option value="="<?php if ($selected_operator == '='): ?> selected<?php endif; ?>><?php echo __('%field% is %value%', array('%field%' => '', '%value%' => '')); ?></option>
-					<option value="!="<?php if ($selected_operator == '!='): ?> selected<?php endif; ?>><?php echo __('%field% is not %value%', array('%field%' => '', '%value%' => '')); ?></option>
+					<option value="="<?php if ($selected_operator == '='): ?> selected<?php endif; ?>><?php echo __('%field is %value', array('%field' => '', '%value' => '')); ?></option>
+					<option value="!="<?php if ($selected_operator == '!='): ?> selected<?php endif; ?>><?php echo __('%field is not %value', array('%field' => '', '%value' => '')); ?></option>
 				</select>
 				<select name="filters[project_id][<?php echo $key; ?>][value]" id="filter_project_id_<?php echo $key; ?>">
 					<?php foreach (TBGProject::getAll() as $project): ?>
@@ -27,8 +27,8 @@
 		<?php elseif (in_array($filter, array('posted', 'last_updated'))): ?>
 			<label for="filter_<?php echo $filter; ?>_<?php echo $key; ?>"><?php echo $filters[$filter]['description']; ?></label>
 			<select name="filters[<?php echo $filter; ?>][<?php echo $key; ?>][operator]">
-				<option value="<?php echo urlencode('<='); ?>"<?php if (urldecode($selected_operator) == '<='): ?> selected<?php endif; ?>><?php echo __('%posted_or_updated% before %value%', array('%posted_or_updated%' => '', '%value%' => '')); ?></option>
-				<option value="<?php echo urlencode('>='); ?>"<?php if (urldecode($selected_operator) == '>='): ?> selected<?php endif; ?>><?php echo __('%posted_or_updated% on or after %value%', array('%posted_or_updated%' => '', '%value%' => '')); ?></option>
+				<option value="<?php echo urlencode('<='); ?>"<?php if (urldecode($selected_operator) == '<='): ?> selected<?php endif; ?>><?php echo __('%posted_or_updated before %value', array('%posted_or_updated' => '', '%value' => '')); ?></option>
+				<option value="<?php echo urlencode('>='); ?>"<?php if (urldecode($selected_operator) == '>='): ?> selected<?php endif; ?>><?php echo __('%posted_or_updated on or after %value', array('%posted_or_updated' => '', '%value' => '')); ?></option>
 			</select>
 			<select id="filter_<?php echo $filter; ?>_<?php echo $key; ?>_day" onchange="TBG.Search.Filter.setTimestamp('<?php echo $filter; ?>', '<?php echo $key; ?>');">
 				<?php for($cc = 1; $cc <= 31; $cc++): ?>
@@ -50,8 +50,8 @@
 		<?php elseif (in_array($filter, array('assignee_user', 'posted_by', 'owner_user'))): ?>
 			<label for="filter_<?php echo $filter; ?>_<?php echo $key; ?>"><?php echo $filters[$filter]['description']; ?></label>
 			<select name="filters[<?php echo $filter; ?>][<?php echo $key; ?>][operator]">
-				<option value="="<?php if ($selected_operator == '='): ?> selected<?php endif; ?>><?php echo __('%field% is %value%', array('%field%' => '', '%value%' => '')); ?></option>
-				<option value="!="<?php if ($selected_operator == '!='): ?> selected<?php endif; ?>><?php echo __('%field% is not %value%', array('%field%' => '', '%value%' => '')); ?></option>
+				<option value="="<?php if ($selected_operator == '='): ?> selected<?php endif; ?>><?php echo __('%field is %value', array('%field' => '', '%value' => '')); ?></option>
+				<option value="!="<?php if ($selected_operator == '!='): ?> selected<?php endif; ?>><?php echo __('%field is not %value', array('%field' => '', '%value' => '')); ?></option>
 			</select>
 			<?php echo image_tag('spinning_16.gif', array('style' => 'float: left; margin: 0 5px; display: none;', 'id' => 'filter_'.$filter.'_'.$key.'_indicator')); ?>
 			<div id="filter_<?php echo $filter; ?>_<?php echo $key; ?>_name" style="display: block; float: left; margin: 3px 10px;">
@@ -60,7 +60,7 @@
 			<input type="hidden" name="filters[<?php echo $filter; ?>][<?php echo $key; ?>][value]" id="filter_<?php echo $filter; ?>_<?php echo $key; ?>" value="<?php echo $selected_value; ?>">
 			<?php include_component('main/identifiableselector', array(	'html_id' 			=> 'filter_'.$filter.'_'.$key.'_popup',
 																		'header' 			=> __('Please select'),
-																		'callback'		 	=> "TBG.Search.Filter.setIdentifiable('" . make_url('get_temp_identifiable') . "', '".$filter."', '".$key."', %identifiable_value%, 'user');",
+																		'callback'		 	=> "TBG.Search.Filter.setIdentifiable('" . make_url('get_temp_identifiable') . "', '".$filter."', '".$key."', %identifiable_value, 'user');",
 																		'clear_link_text'	=> __('Clear selected user'),
 																		'base_id'			=> 'filter_'.$filter.'_'.$key.'_popup',
 																		'include_teams'		=> false,
@@ -71,8 +71,8 @@
 		<?php elseif (in_array($filter, array('assignee_team', 'owner_team'))): ?>
 			<label for="filter_<?php echo $filter; ?>_<?php echo $key; ?>"><?php echo $filters[$filter]['description']; ?></label>
 			<select name="filters[<?php echo $filter; ?>][<?php echo $key; ?>][operator]">
-				<option value="="<?php if ($selected_operator == '='): ?> selected<?php endif; ?>><?php echo __('%field% is %value%', array('%field%' => '', '%value%' => '')); ?></option>
-				<option value="!="<?php if ($selected_operator == '!='): ?> selected<?php endif; ?>><?php echo __('%field% is not %value%', array('%field%' => '', '%value%' => '')); ?></option>
+				<option value="="<?php if ($selected_operator == '='): ?> selected<?php endif; ?>><?php echo __('%field is %value', array('%field' => '', '%value' => '')); ?></option>
+				<option value="!="<?php if ($selected_operator == '!='): ?> selected<?php endif; ?>><?php echo __('%field is not %value', array('%field' => '', '%value' => '')); ?></option>
 			</select>
 			<?php echo image_tag('spinning_16.gif', array('style' => 'float: left; margin: 0 5px; display: none;', 'id' => 'filter_'.$filter.'_'.$key.'_indicator')); ?>
 			<div id="filter_<?php echo $filter; ?>_<?php echo $key; ?>_name" style="display: block; float: left; margin: 3px 10px;">
@@ -81,7 +81,7 @@
 			<input type="hidden" name="filters[<?php echo $filter; ?>][<?php echo $key; ?>][value]" id="filter_<?php echo $filter; ?>_<?php echo $key; ?>" value="<?php echo $selected_value; ?>">
 			<?php include_component('main/identifiableselector', array(	'html_id' 			=> 'filter_'.$filter.'_'.$key.'_popup',
 																		'header' 			=> __('Please select'),
-																		'team_callback'	 	=> "TBG.Search.Filter.setIdentifiable('" . make_url('get_temp_identifiable') . "', '".$filter."', '".$key."', %identifiable_value%, 'team');",
+																		'team_callback'	 	=> "TBG.Search.Filter.setIdentifiable('" . make_url('get_temp_identifiable') . "', '".$filter."', '".$key."', %identifiable_value, 'team');",
 																		'clear_link_text'	=> __('Clear selected team'),
 																		'base_id'			=> 'filter_'.$filter.'_'.$key.'_popup',
 																		'include_teams'		=> true,
@@ -93,8 +93,8 @@
 		<?php elseif (in_array($filter, array_keys($filters))): ?>
 			<label for="filter_<?php echo $filter; ?>_<?php echo $key; ?>"><?php echo $filters[$filter]['description']; ?></label>
 			<select name="filters[<?php echo $filter; ?>][<?php echo $key; ?>][operator]">
-				<option value="="<?php if ($selected_operator == '='): ?> selected<?php endif; ?>><?php echo __('%field% is %value%', array('%field%' => '', '%value%' => '')); ?></option>
-				<option value="!="<?php if ($selected_operator == '!='): ?> selected<?php endif; ?>><?php echo __('%field% is not %value%', array('%field%' => '', '%value%' => '')); ?></option>
+				<option value="="<?php if ($selected_operator == '='): ?> selected<?php endif; ?>><?php echo __('%field is %value', array('%field' => '', '%value' => '')); ?></option>
+				<option value="!="<?php if ($selected_operator == '!='): ?> selected<?php endif; ?>><?php echo __('%field is not %value', array('%field' => '', '%value' => '')); ?></option>
 			</select>
 			<select name="filters[<?php echo $filter; ?>][<?php echo $key; ?>][value]" id="filter_<?php echo $filter; ?>_<?php echo $key; ?>">
 				<option value="0"> - </option>
@@ -110,8 +110,8 @@
 		<?php elseif ($filter == 'state'): ?>
 			<label for="filter_state_<?php echo $key; ?>"><?php echo __('Issue state'); ?></label>
 			<select name="filters[state][<?php echo $key; ?>][operator]">
-				<option value="="<?php if ($selected_operator == '='): ?> selected<?php endif; ?>><?php echo __('%field% is %value%', array('%field%' => '', '%value%' => '')); ?></option>
-				<option value="!="<?php if ($selected_operator == '!='): ?> selected<?php endif; ?>><?php echo __('%field% is not %value%', array('%field%' => '', '%value%' => '')); ?></option>
+				<option value="="<?php if ($selected_operator == '='): ?> selected<?php endif; ?>><?php echo __('%field is %value', array('%field' => '', '%value' => '')); ?></option>
+				<option value="!="<?php if ($selected_operator == '!='): ?> selected<?php endif; ?>><?php echo __('%field is not %value', array('%field' => '', '%value' => '')); ?></option>
 			</select>
 			<select name="filters[state][<?php echo $key; ?>][value]" id="filter_state_<?php echo $key; ?>">
 				<option value="<?php echo TBGIssue::STATE_OPEN; ?>"<?php if ($selected_value == TBGIssue::STATE_OPEN): ?> selected<?php endif; ?>><?php echo __('Open'); ?></option>
@@ -123,8 +123,8 @@
 		<?php $customdatatype = TBGCustomDatatype::getByKey($filter); ?>
 		<label for="filter_<?php echo $filter; ?>_<?php echo $key; ?>"><?php echo __($customdatatype->getDescription()); ?></label>
 		<select name="filters[<?php echo $filter; ?>][<?php echo $key; ?>][operator]">
-			<option value="="<?php if ($selected_operator == '='): ?> selected<?php endif; ?>><?php echo __('%field% is provided and is %value%', array('%field%' => '', '%value%' => '')); ?></option>
-			<option value="!="<?php if ($selected_operator == '!='): ?> selected<?php endif; ?>><?php echo __('%field% is provided and is not %value%', array('%field%' => '', '%value%' => '')); ?></option>
+			<option value="="<?php if ($selected_operator == '='): ?> selected<?php endif; ?>><?php echo __('%field is provided and is %value', array('%field' => '', '%value' => '')); ?></option>
+			<option value="!="<?php if ($selected_operator == '!='): ?> selected<?php endif; ?>><?php echo __('%field is provided and is not %value', array('%field' => '', '%value' => '')); ?></option>
 		</select>
 		<?php if ($customdatatype->hasCustomOptions()): ?>
 			<select name="filters[<?php echo $filter; ?>][<?php echo $key; ?>][value]" id="filter_<?php echo $filter; ?>_<?php echo $key; ?>">

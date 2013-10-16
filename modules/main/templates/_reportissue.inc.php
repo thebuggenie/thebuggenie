@@ -18,10 +18,10 @@
 										echo __('You have to specify a title');
 										break;
 									case 'description':
-										echo __('You have to enter a description in the "%description%" field', array('%description%' => __('Description')));
+										echo __('You have to enter a description in the "%description" field', array('%description' => __('Description')));
 										break;
 									case 'reproduction_steps':
-										echo __('You have to enter something in the "%steps_to_reproduce%" field', array('%steps_to_reproduce%' => __('Steps to reproduce')));
+										echo __('You have to enter something in the "%steps_to_reproduce" field', array('%steps_to_reproduce' => __('Steps to reproduce')));
 										break;
 									case 'edition':
 										echo __("Please specify a valid edition");
@@ -78,13 +78,13 @@
 
 							?>
 						<?php elseif (TBGCustomDatatype::doesKeyExist($key)): ?>
-							<?php echo __('Required field "%field_name%" is missing or invalid', array('%field_name%' => TBGCustomDatatype::getByKey($key)->getDescription())); ?>
+							<?php echo __('Required field "%field_name" is missing or invalid', array('%field_name' => TBGCustomDatatype::getByKey($key)->getDescription())); ?>
 						<?php else:
 
 							$event = new TBGEvent('core', 'reportissue.validationerror', $key);
 							$event->setReturnValue($key);
 							$event->triggerUntilProcessed();
-							echo __('A validation error occured: %error%', array('%error%' => $event->getReturnValue()));
+							echo __('A validation error occured: %error', array('%error' => $event->getReturnValue()));
 
 						?>
 						<?php endif; ?>
@@ -151,7 +151,7 @@
 
 							?>
 						<?php else: ?>
-							<?php echo __('You don\'t have access to enter "%field_name%"', array('%field_name%' => TBGCustomDatatype::getByKey($key)->getDescription())); ?>
+							<?php echo __('You don\'t have access to enter "%field_name"', array('%field_name' => TBGCustomDatatype::getByKey($key)->getDescription())); ?>
 						<?php endif; ?>
 					</li>
 				<?php else: ?>
@@ -159,12 +159,12 @@
 				<?php endif; ?>
 			<?php endforeach; ?>
 		</ul>
-		<?php echo __('Please try to fix the error described above, and then click the %file_issue% button again', array('%file_issue%' => '<b>'.__('File issue').'</b>')); ?>.
+		<?php echo __('Please try to fix the error described above, and then click the %file_issue button again', array('%file_issue' => '<b>'.__('File issue').'</b>')); ?>.
 	</div>
 <?php elseif ($issue instanceof TBGIssue): ?>
 	<div class="rounded_box report_issue_desc <?php if (!$tbg_request->isAjaxCall()): ?>green<?php endif; ?> borderless" style="margin-bottom: 10px;" id="report_issue_reported_issue_details">
 		<div style="font-size: 1.1em;">
-			<strong><?php echo __('The following issue was reported: %issue_title%', array('%issue_title%' => '')); ?>:</strong>
+			<strong><?php echo __('The following issue was reported: %issue_title', array('%issue_title' => '')); ?>:</strong>
 			<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue->getFormattedIssueNo(true) . ' - ' . $issue->getTitle()); ?><br>
 		</div>
 		<span class="faded_out"><?php echo __('Click the link to visit the reported issue'); ?></span>
@@ -181,14 +181,14 @@
 			<ul class="simple_list" style="padding: 5px; margin: 5px; font-size: 1.2em;">
 				<?php if (isset($selected_milestone)): ?>
 					<li>
-						<?php echo __('You are adding an issue to %milestone_name%', array('%milestone_name%' => '<b>'.$selected_milestone->getName().'</b>')); ?>
+						<?php echo __('You are adding an issue to %milestone_name', array('%milestone_name' => '<b>'.$selected_milestone->getName().'</b>')); ?>
 						<input type="hidden" name="milestone_id" id="reportissue_selected_milestone_id" value="<?php echo $selected_milestone->getID(); ?>">
 						<input type="hidden" name="milestone_fixed" value="1">
 					</li>
 				<?php endif; ?>
 				<?php if (isset($parent_issue)): ?>
 					<li>
-						<?php echo __('Any issues you create will be related to %related_issue_title%', array('%related_issue_title%' => '<b>'.$parent_issue->getFormattedTitle().'</b>')); ?>
+						<?php echo __('Any issues you create will be related to %related_issue_title', array('%related_issue_title' => '<b>'.$parent_issue->getFormattedTitle().'</b>')); ?>
 						<input type="hidden" name="parent_issue_id" id="reportissue_parent_issue_id" value="<?php echo $parent_issue->getID(); ?>">
 						<?php if ($issue instanceof TBGIssue): ?>
 						<script>
@@ -199,7 +199,7 @@
 				<?php endif; ?>
 				<?php if (isset($selected_build)): ?>
 					<li>
-						<?php echo __('You are adding an issue to release %release_name%', array('%release_name%' => '<b>'.$selected_build->getName().'</b>')); ?>
+						<?php echo __('You are adding an issue to release %release_name', array('%release_name' => '<b>'.$selected_build->getName().'</b>')); ?>
 						<input type="hidden" name="build_id" id="reportissue_selected_build_id" value="<?php echo $selected_build->getID(); ?>">
 					</li>
 				<?php endif; ?>
@@ -215,7 +215,7 @@
 				<?php if (!$selected_project->getIssuetypeScheme()->isIssuetypeReportable($issuetype) && !$tbg_request->isAjaxCall()) continue; ?>
 				<a class="button button-silver" href="javascript:void(0);" onclick="$('issuetype_id').setValue(<?php echo $issuetype->getID(); ?>);TBG.Issues.updateFields('<?php echo make_url('getreportissuefields', array('project_key' => $selected_project->getKey())); ?>');" onmouseover="$('issuetype_description_help').hide();$('issuetype_<?php echo $issuetype->getKey(); ?>_description').show();" onmouseout="$('issuetype_<?php echo $issuetype->getKey(); ?>_description').hide();$('issuetype_description_help').show();" style="font-size: 13px; font-weight: bold;">
 					<?php echo image_tag($issuetype->getIcon() . '.png'); ?>
-					<?php echo __('Choose %issuetype_name%', array('%issuetype_name%' => '<br>'.$issuetype->getName())); ?>
+					<?php echo __('Choose %issuetype_name', array('%issuetype_name' => '<br>'.$issuetype->getName())); ?>
 				</a>
 			<?php endforeach; ?>
 		</div>
@@ -608,7 +608,7 @@
 			<?php endif; ?>
 			<?php TBGEvent::createNew('core', 'reportissue.prefile')->trigger(); ?>
 			<div class="rounded_box report_issue_submit_container report_issue_desc green borderless" style="clear: both; vertical-align: middle; margin-top: 10px; padding: 5px; height: 25px;">
-				<div style="float: left; padding-top: 3px;"><?php echo __('When you are satisfied, click the %file_issue% button to file your issue', array('%file_issue%' => '<strong>'.__('File issue').'</strong>')); ?></div>
+				<div style="float: left; padding-top: 3px;"><?php echo __('When you are satisfied, click the %file_issue button to file your issue', array('%file_issue' => '<strong>'.__('File issue').'</strong>')); ?></div>
 				<input type="submit" class="button button-silver" value="<?php echo __('File issue'); ?>" id="report_issue_submit_button">
 				<?php echo image_tag('spinning_20.gif', array('id' => 'report_issue_indicator', 'style' => 'display: none;')); ?>
 			</div>

@@ -213,7 +213,7 @@
 					$content = file_get_contents(THEBUGGENIE_MODULES_PATH . 'publish' . DS . 'fixtures' . DS . $article_name);
 					TBGWikiArticle::createNew(urldecode($article_name), $content, true, null, array('overwrite' => true, 'noauthor' => true));
 				}
-				TBGContext::setMessage('module_message', TBGContext::getI18n()->__('%number_of_articles% articles imported successfully', array('%number_of_articles%' => $cc)));
+				TBGContext::setMessage('module_message', TBGContext::getI18n()->__('%number_of_articles articles imported successfully', array('%number_of_articles' => $cc)));
 			}
 			else
 			{
@@ -360,7 +360,7 @@
 
 		public function listen_rolePermissionsEdit(TBGEvent $event)
 		{
-			TBGActionComponent::includeTemplate('configuration/rolepermissionseditlist', array('role' => $event->getSubject(), 'permissions_list' => $this->_getPermissionslist(), 'module' => 'publish', 'target_id' => '%project_key%'));
+			TBGActionComponent::includeTemplate('configuration/rolepermissionseditlist', array('role' => $event->getSubject(), 'permissions_list' => $this->_getPermissionslist(), 'module' => 'publish', 'target_id' => '%project_key'));
 		}
 
 		public function listen_BreadcrumbMainLinks(TBGEvent $event)

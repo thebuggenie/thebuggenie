@@ -21,7 +21,7 @@
 					<?php if ($mode == 'issuetypes'): ?>
 						<div id="tab_types_pane" style="padding-top: 0;">
 							<div class="content">
-								<?php echo __('In this tab you can add/remove/edit what issue types are available to issue type schemes. If you add a new issue type on this page, remember to associate it to an issue type scheme on the %issue_type_schemes% tab to get it to show up for users.', array('%issue_type_schemes%' => javascript_link_tag(__('Issue type schemes'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_schemes', 'issuetypes_menu');")))); ?>
+								<?php echo __('In this tab you can add/remove/edit what issue types are available to issue type schemes. If you add a new issue type on this page, remember to associate it to an issue type scheme on the %issue_type_schemes tab to get it to show up for users.', array('%issue_type_schemes' => javascript_link_tag(__('Issue type schemes'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_schemes', 'issuetypes_menu');")))); ?>
 							</div>
 							<div class="lightyellowbox" style="margin: 5px 0 0 0;">
 								<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuetypes_add'); ?>" onsubmit="TBG.Config.Issuetype.add('<?php echo make_url('configure_issuetypes_add'); ?>');return false;" id="add_issuetype_form">

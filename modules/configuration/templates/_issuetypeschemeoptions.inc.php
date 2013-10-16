@@ -28,7 +28,7 @@
 		</table>
 		<?php if (!$scheme->isCore()): ?>
 			<div style="margin: 10px 0 0 0; height: 25px;">
-				<div style="float: left; font-size: 13px; padding-top: 2px; font-weight: bold;"><?php echo __('Click "%save%" to save your changes', array('%save%' => __('Save'))); ?></div>
+				<div style="float: left; font-size: 13px; padding-top: 2px; font-weight: bold;"><?php echo __('Click "%save" to save your changes', array('%save' => __('Save'))); ?></div>
 				<input type="submit" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
 				<span id="update_<?php echo $issuetype->getID(); ?>_choices_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
 			</div>

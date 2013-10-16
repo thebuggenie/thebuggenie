@@ -6,7 +6,7 @@
 			<div style="width: 730px;" id="config_issuefields">
 				<h3><?php echo __('Configure issue fields'); ?></h3>
 				<div class="content faded_out">
-					<p><?php echo __('Edit built-in and custom issue fields and values here. Remember that the issue fields visibility (in the issue view or during reporting) is decided by the %issuetype_scheme% in use by the project.', array('%issuetype_scheme%' => link_tag(make_url('configure_issuetypes_schemes'), __('Issuetype scheme')))); ?></p>
+					<p><?php echo __('Edit built-in and custom issue fields and values here. Remember that the issue fields visibility (in the issue view or during reporting) is decided by the %issuetype_scheme in use by the project.', array('%issuetype_scheme' => link_tag(make_url('configure_issuetypes_schemes'), __('Issuetype scheme')))); ?></p>
 				</div>
 				<div class="lightyellowbox" style="margin: 15px 0 10px 0; position: relative;">
 					<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuefields_add_customtype'); ?>" onsubmit="TBG.Config.Issuefields.Custom.add('<?php echo make_url('configure_issuefields_add_customtype'); ?>');return false;" id="add_custom_type_form">

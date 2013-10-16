@@ -22,7 +22,7 @@
 																						'clear_link_text'	=> __('Set owned by noone'),
 																						'absolute'			=> true,
 																						'style'				=> array('position' => 'absolute'),
-																						'callback'		 	=> "TBG.Project.setUser('" . make_url('configure_edition_set_leadby', array('project_id' => $edition->getProject()->getID(), 'edition_id' => $edition->getID(), 'field' => 'owned_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'owned_by');",
+																						'callback'		 	=> "TBG.Project.setUser('" . make_url('configure_edition_set_leadby', array('project_id' => $edition->getProject()->getID(), 'edition_id' => $edition->getID(), 'field' => 'owned_by', 'identifiable_type' => '%identifiable_type', 'value' => '%identifiable_value')) . "', 'owned_by');",
 																						'base_id'			=> 'owned_by')); ?>
 							<?php endif; ?>
 						</td>
@@ -52,7 +52,7 @@
 																					'clear_link_text'	=> __('Set lead by noone'),
 																					'absolute'			=> true,
 																					'style'				=> array('position' => 'absolute'),
-																					'callback'		 	=> "TBG.Project.setUser('" . make_url('configure_edition_set_leadby', array('project_id' => $edition->getProject()->getID(), 'edition_id' => $edition->getID(), 'field' => 'lead_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'lead_by');",
+																					'callback'		 	=> "TBG.Project.setUser('" . make_url('configure_edition_set_leadby', array('project_id' => $edition->getProject()->getID(), 'edition_id' => $edition->getID(), 'field' => 'lead_by', 'identifiable_type' => '%identifiable_type', 'value' => '%identifiable_value')) . "', 'lead_by');",
 																					'base_id'			=> 'lead_by')); ?>
 							<?php endif; ?>
 						</td>
@@ -82,7 +82,7 @@
 																						'clear_link_text'	=> __('Set QA resp. noone'),
 																						'absolute'			=> true,
 																						'style'				=> array('position' => 'absolute'),
-																						'callback'		 	=> "TBG.Project.setUser('" . make_url('configure_edition_set_leadby', array('project_id' => $edition->getProject()->getID(), 'edition_id' => $edition->getID(), 'field' => 'qa_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'qa_by');",
+																						'callback'		 	=> "TBG.Project.setUser('" . make_url('configure_edition_set_leadby', array('project_id' => $edition->getProject()->getID(), 'edition_id' => $edition->getID(), 'field' => 'qa_by', 'identifiable_type' => '%identifiable_type', 'value' => '%identifiable_value')) . "', 'qa_by');",
 																						'base_id'			=> 'qa_by')); ?>
 							<?php endif; ?>
 						</td>
@@ -165,7 +165,7 @@
 						<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 							<tr>
 								<td colspan="2" style="padding: 10px 0 10px 10px; text-align: right;">
-									<div style="float: left; font-size: 13px; padding-top: 2px; font-style: italic;" class="config_explanation"><?php echo __('When you are done, click "%save%" to save your changes', array('%save%' => __('Save'))); ?></div>
+									<div style="float: left; font-size: 13px; padding-top: 2px; font-style: italic;" class="config_explanation"><?php echo __('When you are done, click "%save" to save your changes', array('%save' => __('Save'))); ?></div>
 									<input class="button button-green" type="submit" style="float: right;" id="edition_submit_settings_button" value="<?php echo __('Save'); ?>">
 									<span id="edition_save_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
 								</td>

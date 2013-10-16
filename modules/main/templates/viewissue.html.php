@@ -14,7 +14,7 @@
 		<?php include_template('main/attachlink', array('issue' => $issue)); ?>
 	<?php endif; ?>
 	<div id="issuetype_indicator_fullpage" style="display: none;" class="fullpage_backdrop">
-		<div style="position: absolute; top: 45%; left: 40%; z-index: 100001; color: #FFF; font-size: 15px; font-weight: bold;">
+		<div style="position: absolute; top: 45%; left: 40; z-index: 100001; color: #FFF; font-size: 15px; font-weight: bold;">
 			<?php echo image_tag('spinning_32.gif'); ?><br>
 			<?php echo __('Please wait while updating issue type'); ?>...
 		</div>
@@ -52,7 +52,7 @@
 							<div class="tooltip from-above leftie">
 								<?php echo __('Click the star to toggle whether you want to be notified whenever this issue updates or changes'); ?><br>
 								<br>
-								<?php echo __('You can add other users to this list via the "%more_actions%"-button', array('%more_actions%' => __('More actions'))); ?>
+								<?php echo __('You can add other users to this list via the "%more_actions"-button', array('%more_actions' => __('More actions'))); ?>
 							</div>
 							<?php echo image_tag('spinning_20.gif', array('id' => 'issue_favourite_indicator_'.$issue->getId(), 'style' => 'display: none;')); ?>
 							<?php echo image_tag('star_faded.png', array('id' => 'issue_favourite_faded_'.$issue->getId(), 'style' => 'cursor: pointer;'.(($tbg_user->isIssueStarred($issue->getID())) ? 'display: none;' : ''), 'onclick' => "TBG.Issues.toggleFavourite('".make_url('toggle_favourite_issue', array('issue_id' => $issue->getID(), 'user_id' => $tbg_user->getID()))."', ".$issue->getID().");")); ?>
@@ -83,7 +83,7 @@
 							<?php if ($issue->isEditable() && $issue->canEditTitle()): ?>
 							<span id="title_change" style="display: none;">
 								<form id="title_form" action="<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'title')); ?>" method="post" onSubmit="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'title')) ?>', 'title'); return false;">
-									<input type="text" name="value" value="<?php echo $issue->getTitle(); ?>" /><?php echo __('%save% or %cancel%', array('%save%' => '<input type="submit" style="font-size: 1em; margin: -3px 5px 2px 0; padding: 2px 10px !important;" value="'.__('Save').'">', '%cancel%' => '<a href="#" onclick="$(\'title_change\').hide(); $(\'title_name\').show(); return false;">'.__('cancel').'</a>')); ?>
+									<input type="text" name="value" value="<?php echo $issue->getTitle(); ?>" /><?php echo __('%save or %cancel', array('%save' => '<input type="submit" style="font-size: 1em; margin: -3px 5px 2px 0; padding: 2px 10px !important;" value="'.__('Save').'">', '%cancel' => '<a href="#" onclick="$(\'title_change\').hide(); $(\'title_name\').show(); return false;">'.__('cancel').'</a>')); ?>
 								</form>
 								<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'title_spinning')); ?>
 								<span id="title_change_error" class="error_message" style="display: none;"></span>
@@ -154,14 +154,14 @@
 						</div>
 						<input type="hidden" name="issue_action" value="save">
 					</form>
-					<?php echo __("You have changed this issue, but haven't saved your changes yet. To save it, press the %save_changes% button to the right", array('%save_changes%' => '<b>' . __("Save changes") . '</b>')); ?>
+					<?php echo __("You have changed this issue, but haven't saved your changes yet. To save it, press the %save_changes button to the right", array('%save_changes' => '<b>' . __("Save changes") . '</b>')); ?>
 				</div>
 				<?php if (isset($error) && $error): ?>
 					<div class="issue_info error" id="viewissue_error">
 						<?php if ($error == 'transition_error'): ?>
 							<div class="header"><?php echo __('There was an error trying to move this issue to the next step in the workflow'); ?></div>
 							<div class="content" style="text-align: left;">
-								<?php echo __('The following actions could not be performed because of missing or invalid values: %list%', array('%list%' => '')); ?><br>
+								<?php echo __('The following actions could not be performed because of missing or invalid values: %list', array('%list' => '')); ?><br>
 								<ul>
 									<?php foreach (TBGContext::getMessageAndClear('issue_workflow_errors') as $error_field): ?>
 										<li><?php 
@@ -249,11 +249,11 @@
 				<?php if ($issue->isBeingWorkedOn() && $issue->isOpen()): ?>
 					<div class="issue_info information" id="viewissue_being_worked_on">
 						<?php if ($issue->getUserWorkingOnIssue()->getID() == $tbg_user->getID()): ?>
-							<?php echo __('You have been working on this issue since %time%', array('%time%' => tbg_formatTime($issue->getWorkedOnSince(), 6))); ?>
+							<?php echo __('You have been working on this issue since %time', array('%time' => tbg_formatTime($issue->getWorkedOnSince(), 6))); ?>
 						<?php elseif ($issue->getAssignee() instanceof TBGTeam): ?>
-							<?php echo __('%teamname% has been working on this issue since %time%', array('%teamname%' => $issue->getAssignee()->getName(), '%time%' => tbg_formatTime($issue->getWorkedOnSince(), 6))); ?>
+							<?php echo __('%teamname has been working on this issue since %time', array('%teamname' => $issue->getAssignee()->getName(), '%time' => tbg_formatTime($issue->getWorkedOnSince(), 6))); ?>
 						<?php else: ?>
-							<?php echo __('%user% has been working on this issue since %time%', array('%user%' => $issue->getUserWorkingOnIssue()->getNameWithUsername(), '%time%' => tbg_formatTime($issue->getWorkedOnSince(), 6))); ?>
+							<?php echo __('%user has been working on this issue since %time', array('%user' => $issue->getUserWorkingOnIssue()->getNameWithUsername(), '%time' => tbg_formatTime($issue->getWorkedOnSince(), 6))); ?>
 						<?php endif; ?>
 						<div class="buttons">
 							<button class="button button-silver" onclick="$('viewissue_being_worked_on').hide();"><?php echo __('OK'); ?></button>
@@ -266,13 +266,13 @@
 				<?php if ($issue->isDuplicate()): ?>
 					<div class="issue_info information" id="viewissue_duplicate">
 						<?php echo image_tag('icon_info.png', array('style' => 'float: left; margin: 0 5px 0 5px;')); ?>
-						<?php echo __('This issue is a duplicate of issue %link_to_duplicate_issue%', array('%link_to_duplicate_issue%' => link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getDuplicateOf()->getFormattedIssueNo())), $issue->getDuplicateOf()->getFormattedIssueNo(true)) . ' - "' . $issue->getDuplicateOf()->getTitle() . '"')); ?>
+						<?php echo __('This issue is a duplicate of issue %link_to_duplicate_issue', array('%link_to_duplicate_issue' => link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getDuplicateOf()->getFormattedIssueNo())), $issue->getDuplicateOf()->getFormattedIssueNo(true)) . ' - "' . $issue->getDuplicateOf()->getTitle() . '"')); ?>
 					</div>
 				<?php endif; ?>
 				<?php if ($issue->isClosed()): ?>
 					<div class="issue_info information" id="viewissue_closed">
 						<?php echo image_tag('icon_info.png', array('style' => 'float: left; margin: 0 5px 0 5px;')); ?>
-						<?php echo __('This issue has been closed with status "%status_name%" and resolution "%resolution%".', array('%status_name%' => (($issue->getStatus() instanceof TBGStatus) ? $issue->getStatus()->getName() : __('Not determined')), '%resolution%' => (($issue->getResolution() instanceof TBGResolution) ? $issue->getResolution()->getName() : __('Not determined')))); ?>
+						<?php echo __('This issue has been closed with status "%status_name" and resolution "%resolution".', array('%status_name' => (($issue->getStatus() instanceof TBGStatus) ? $issue->getStatus()->getName() : __('Not determined')), '%resolution' => (($issue->getResolution() instanceof TBGResolution) ? $issue->getResolution()->getName() : __('Not determined')))); ?>
 					</div>
 				<?php endif; ?>
 				<?php if ($issue->getProject()->isArchived()): ?>
@@ -345,7 +345,7 @@
 								<form id="description_form" action="<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'description')); ?>" method="post" onSubmit="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'description')) ?>', 'description'); return false;">
 									<?php include_template('main/textarea', array('area_name' => 'value', 'area_id' => 'description_form_value', 'syntax' => (($issue->getDescriptionSyntax() == TBGSettings::SYNTAX_MW) ? 'mw' : 'md'), 'height' => '250px', 'width' => '100%', 'value' => htmlentities($issue->getDescription(), ENT_COMPAT, TBGContext::getI18n()->getCharset()))); ?>
 									<br>
-									<input class="button button-silver" style="float: left; margin: -3px 5px 0 0; font-weight: bold;" type="submit" value="<?php echo __('Save'); ?>"><?php echo __('%save% or %cancel%', array('%save%' => '', '%cancel%' => javascript_link_tag(__('cancel'), array('style' => 'font-weight: bold;', 'onclick' => "$('description_change').hide();".(($issue->getDescription() != '') ? "$('description_name').show();" : "$('no_description').show();")."return false;")))); ?>
+									<input class="button button-silver" style="float: left; margin: -3px 5px 0 0; font-weight: bold;" type="submit" value="<?php echo __('Save'); ?>"><?php echo __('%save or %cancel', array('%save' => '', '%cancel' => javascript_link_tag(__('cancel'), array('style' => 'font-weight: bold;', 'onclick' => "$('description_change').hide();".(($issue->getDescription() != '') ? "$('description_name').show();" : "$('no_description').show();")."return false;")))); ?>
 								</form>
 								<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'description_spinning')); ?>
 								<div id="description_change_error" class="error_message" style="display: none;"></div>
@@ -373,7 +373,7 @@
 								<form id="reproduction_steps_form" action="<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'reproduction_steps')); ?>" method="post" onSubmit="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'reproduction_steps')) ?>', 'reproduction_steps'); return false;">
 									<?php include_template('main/textarea', array('area_name' => 'value', 'area_id' => 'reproduction_steps_form_value', 'syntax' => (($issue->getReproductionStepsSyntax() == TBGSettings::SYNTAX_MW) ? 'mw' : 'md'), 'height' => '250px', 'width' => '100%', 'value' => htmlentities($issue->getReproductionSteps(), ENT_COMPAT, TBGContext::getI18n()->getCharset()))); ?>
 									<br>
-									<input class="button button-silver" style="float: left; margin: -3px 5px 0 0; font-weight: bold;" type="submit" value="<?php echo __('Save'); ?>"><?php echo __('%save% or %cancel%', array('%save%' => '', '%cancel%' => javascript_link_tag(__('cancel'), array('style' => 'font-weight: bold;', 'onclick' => "$('reproduction_steps_change').hide();".(($issue->getReproductionSteps() != '') ? "$('reproduction_steps_name').show();" : "$('no_reproduction_steps').show();")."return false;")))); ?>
+									<input class="button button-silver" style="float: left; margin: -3px 5px 0 0; font-weight: bold;" type="submit" value="<?php echo __('Save'); ?>"><?php echo __('%save or %cancel', array('%save' => '', '%cancel' => javascript_link_tag(__('cancel'), array('style' => 'font-weight: bold;', 'onclick' => "$('reproduction_steps_change').hide();".(($issue->getReproductionSteps() != '') ? "$('reproduction_steps_name').show();" : "$('no_reproduction_steps').show();")."return false;")))); ?>
 								</form>
 								<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'reproduction_steps_spinning')); ?>
 								<div id="reproduction_steps_change_error" class="error_message" style="display: none;"></div>
@@ -388,9 +388,9 @@
 		<?php TBGEvent::createNew('core', 'viewissue_before_tabs', $issue)->trigger(); ?>
 		<div style="clear: both; height: 30px; margin: 20px 5px 0 5px;" class="tab_menu inset">
 			<ul id="viewissue_menu">
-				<li id="tab_comments" class="selected"><?php echo javascript_link_tag(image_tag('viewissue_tab_comments.png') . '<span>'.__('Comments (%count%)', array('%count%' => '</span><span id="viewissue_comment_count" class="tab_count">'.$issue->getCommentCount().'</span>')), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_comments', 'viewissue_menu');")); ?></li>
-				<li id="tab_affected"><?php echo javascript_link_tag(image_tag('viewissue_tab_affected.png') . '<span>'.__('Affects (%count%)', array('%count%' => '</span><span id="viewissue_affects_count" class="tab_count">'.$affected_count.'</span>')), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_affected', 'viewissue_menu');")); ?></li>
-				<li id="tab_duplicate_issues"><?php echo javascript_link_tag(image_tag('viewissue_tab_duplicate.png') . '<span>'.__('Duplicates (%count%)', array('%count%' => '</span><span id="viewissue_duplicate_issues_count" class="tab_count">'.(count($issue->getDuplicateIssues())).'</span>')), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_duplicate_issues', 'viewissue_menu');")); ?></li>
+				<li id="tab_comments" class="selected"><?php echo javascript_link_tag(image_tag('viewissue_tab_comments.png') . '<span>'.__('Comments (%count)', array('%count' => '</span><span id="viewissue_comment_count" class="tab_count">'.$issue->getCommentCount().'</span>')), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_comments', 'viewissue_menu');")); ?></li>
+				<li id="tab_affected"><?php echo javascript_link_tag(image_tag('viewissue_tab_affected.png') . '<span>'.__('Affects (%count)', array('%count' => '</span><span id="viewissue_affects_count" class="tab_count">'.$affected_count.'</span>')), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_affected', 'viewissue_menu');")); ?></li>
+				<li id="tab_duplicate_issues"><?php echo javascript_link_tag(image_tag('viewissue_tab_duplicate.png') . '<span>'.__('Duplicates (%count)', array('%count' => '</span><span id="viewissue_duplicate_issues_count" class="tab_count">'.(count($issue->getDuplicateIssues())).'</span>')), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_duplicate_issues', 'viewissue_menu');")); ?></li>
 				<?php TBGEvent::createNew('core', 'viewissue_tabs', $issue)->trigger(); ?>
 				<li id="tab_log"><?php echo javascript_link_tag(image_tag('viewissue_tab_log.png') . '<span>'.__('History'), array('onclick' => "TBG.Issues.showLog('".make_url('issue_log', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID()))."');")).'</span>'; ?></li>
 			</ul>

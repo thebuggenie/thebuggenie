@@ -46,8 +46,8 @@
 	</tr>
 	<tr>
 		<td class="config_explanation" colspan="2">
-			<?php echo __("%restrictive%: With this security policy, users don't automatically get access to projects, modules, etc., but must be granted access specifically.", array('%restrictive%' => '<b>'.__('Restrictive').'</b>')); ?><br>
-			<?php echo __("%permissive%: This security policy assume you have access to things like projects, pages, etc.", array('%permissive%' => '<b>'.__('Permissive').'</b>')); ?><br>
+			<?php echo __("%restrictive: With this security policy, users don't automatically get access to projects, modules, etc., but must be granted access specifically.", array('%restrictive' => '<b>'.__('Restrictive').'</b>')); ?><br>
+			<?php echo __("%permissive: This security policy assume you have access to things like projects, pages, etc.", array('%permissive' => '<b>'.__('Permissive').'</b>')); ?><br>
 			<br>
 			<?php echo __("If you're running a public tracker, or a tracker with several projects you probably want to use a restrictive security policy - however, with smaller teams or and simpler projects, permissive security policy will be most efficient."); ?><br>
 			<i><?php echo __("Some permissions, such as configuration access are not affected by this setting, but must always be explicitly defined"); ?></i>
@@ -64,7 +64,7 @@
 	</tr>
 	<tr>
 		<td class="config_explanation" colspan="2">
-			<?php echo __('Select whether to use the %gravatar.com% user icon service for user avatars, or just use the default ones', array('%gravatar.com%' => link_tag('http://www.gravatar.com', 'gravatar.com'))); ?>
+			<?php echo __('Select whether to use the %gravatar.com user icon service for user avatars, or just use the default ones', array('%gravatar.com' => link_tag('http://www.gravatar.com', 'gravatar.com'))); ?>
 		</td>
 	</tr>
 	<tr>
@@ -108,7 +108,7 @@
 		<td><input type="text" name="<?php echo TBGSettings::SETTING_REGISTRATION_DOMAIN_WHITELIST; ?>" id="limit_registration"<?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?> value="<?php echo TBGSettings::getRegistrationDomainWhitelist(); ?>" style="width: 400px;"></td>
 	</tr>
 	<tr>
-		<td class="config_explanation" colspan="2"><?php echo __('Comma-separated list of allowed domains (ex: %example%). Leave empty to allow all domains.', array('%example%' => 'thebuggenie.com, zegeniestudios.net')); ?></td>
+		<td class="config_explanation" colspan="2"><?php echo __('Comma-separated list of allowed domains (ex: %example). Leave empty to allow all domains.', array('%example' => 'thebuggenie.com, zegeniestudios.net')); ?></td>
 	</tr>
 	<tr>
 		<td><label for="defaultgroup"><?php echo __('Default user group'); ?></label></td>

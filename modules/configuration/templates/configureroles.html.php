@@ -8,7 +8,7 @@
 					<?php echo __('Configure roles'); ?>
 				</h3>
 				<div class="content faded_out">
-					<p><?php echo __("These roles acts as permission templates and can be applied when assigning people (or teams) to a project. When people (or teams) are unassigned from the project they will keep all permissions applied by any roles until their last role in the project is unassigned. Read more about roles and permissions in the %online_documentation%", array('%online_documentation%' => link_tag('http://issues.thebuggenie.com/wiki/TheBugGenie:RolesAndPermissions', '<b>'.__('online documentation').'</b>'))); ?></p>
+					<p><?php echo __("These roles acts as permission templates and can be applied when assigning people (or teams) to a project. When people (or teams) are unassigned from the project they will keep all permissions applied by any roles until their last role in the project is unassigned. Read more about roles and permissions in the %online_documentation", array('%online_documentation' => link_tag('http://issues.thebuggenie.com/wiki/TheBugGenie:RolesAndPermissions', '<b>'.__('online documentation').'</b>'))); ?></p>
 				</div>
 				<div class="lightyellowbox" id="new_role" style="margin-top: 15px;">
 					<form id="new_role_form" method="post" action="<?php echo make_url('configure_roles', array('mode' => 'new')); ?>" onsubmit="TBG.Config.Roles.add('<?php echo make_url('configure_roles', array('mode' => 'new')); ?>'); return false;" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>">

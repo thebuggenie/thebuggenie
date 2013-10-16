@@ -31,7 +31,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="config_explanation" colspan="2"><?php echo __('Traditionally, %CamelCasing% has been used to specify links between documents in Wikis. If you want to keep this turned on, specify so here. Make sure you read the %wikiformatting% wiki article if you are unsure how to use this feature.', array('%CamelCasing%' => link_tag('http://wikipedia.org/wiki/CamelCase', __('CamelCasing'), array('target' => '_blank')), '%wikiformatting%' => link_tag(make_url('publish_article', array('article_name' => 'WikiFormatting')), 'WikiFormatting', array('target' => '_blank')))); ?></td>
+					<td class="config_explanation" colspan="2"><?php echo __('Traditionally, %CamelCasing has been used to specify links between documents in Wikis. If you want to keep this turned on, specify so here. Make sure you read the %wikiformatting wiki article if you are unsure how to use this feature.', array('%CamelCasing' => link_tag('http://wikipedia.org/wiki/CamelCase', __('CamelCasing'), array('target' => '_blank')), '%wikiformatting' => link_tag(make_url('publish_article', array('article_name' => 'WikiFormatting')), 'WikiFormatting', array('target' => '_blank')))); ?></td>
 				</tr>
 				<tr>
 					<td style="padding: 5px;"><label for="hide_wiki_links_no"><?php echo __('Show "Wiki" links'); ?></label></td>
@@ -41,7 +41,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="config_explanation" colspan="2"><?php echo __('Setting this to "%no%" will hide all "Wiki" tabs and links', array('%no%' => __('No'))); ?></td>
+					<td class="config_explanation" colspan="2"><?php echo __('Setting this to "%no" will hide all "Wiki" tabs and links', array('%no' => __('No'))); ?></td>
 				</tr>
 				<tr>
 					<td style="padding: 5px;"><label for="require_change_reason_yes"><?php echo __('Require change reason'); ?></label></td>
@@ -51,7 +51,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="config_explanation" colspan="2"><?php echo __('Setting this to "%no%" will not require users to enter a reason when saving Wiki changes', array('%no%' => __('No'))); ?></td>
+					<td class="config_explanation" colspan="2"><?php echo __('Setting this to "%no" will not require users to enter a reason when saving Wiki changes', array('%no' => __('No'))); ?></td>
 				</tr>
 				<tr>
 					<td style="padding: 5px;"><label for="wiki_free_edit"><?php echo __('Wiki permissions'); ?></label></td>
@@ -72,7 +72,7 @@
 			</table>
 		<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 			<div class="bluebox" style="margin: 0 0 5px 0;">
-				<?php echo __('Click "%save%" to save wiki notification settings', array('%save%' => __('Save'))); ?>
+				<?php echo __('Click "%save" to save wiki notification settings', array('%save' => __('Save'))); ?>
 				<input type="submit" id="submit_settings_button" style="margin: -3px -3px 0 0; float: right; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
 			</div>
 		<?php endif; ?>
@@ -93,7 +93,7 @@
 				<input type="checkbox" id="import_articles_select_all" onchange="$('import_articles_list').childElements().each(function (elm) { elm.select('input[type=checkbox]').each(function (chkbx) { chkbx.checked = elm.hasClassName('article_category_' + $('select_article_categories').getValue()) && $('import_articles_select_all').checked; }); })">&nbsp;<?php echo __('Toggle selection on visible articles'); ?>
 			</div>
 			<p class="faded_out" style="margin-bottom: 5px;">
-				<?php echo __('Please select which articles to import, from the list of available articles below. When you are finished, click the %import_articles% button at the bottom', array('%import_articles%' => __('Import articles'))); ?>
+				<?php echo __('Please select which articles to import, from the list of available articles below. When you are finished, click the %import_articles button at the bottom', array('%import_articles' => __('Import articles'))); ?>
 			</p>
 			<ul class="simple_list" id="import_articles_list">
 			<?php foreach ($articles as $article_name => $details): ?>
@@ -110,7 +110,7 @@
 		<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 			<br style="clear: both;">
 			<div class="bluebox" style="margin: 0 0 5px 0;">
-				<?php echo __('Click "%import_articles%" to import the selected articles', array('%import_articles%' => __('Import articles'))); ?>
+				<?php echo __('Click "%import_articles" to import the selected articles', array('%import_articles' => __('Import articles'))); ?>
 				<input type="submit" id="submit_import_button" style="margin: -3px -3px 0 0; float: right; font-size: 14px; font-weight: bold;" value="<?php echo __('Import articles'); ?>">
 			</div>
 		<?php endif; ?>

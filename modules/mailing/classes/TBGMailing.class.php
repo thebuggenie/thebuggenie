@@ -678,14 +678,14 @@ EOT;
 			$article = $event->getSubject();
 			$change_reason = $event->getParameter('reason');
 			$revision = $event->getParameter('revision');
-			$subject = 'Wiki article updated: %article_name%';
+			$subject = 'Wiki article updated: %article_name';
 			$user = TBGUsersTable::getTable()->selectById((int) $event->getParameter('user_id'));
 			$parameters = compact('article', 'change_reason', 'user', 'revision');
 			$to_users = $this->_getArticleRelatedUsers($article, 'edit');
 			
 			if (!empty($to_users))
 			{
-				$messages = $this->getTranslatedMessages('articleupdate', $parameters, $to_users, $subject, array('%article_name%' => html_entity_decode($article->getTitle(), ENT_COMPAT, TBGContext::getI18n()->getCharset())));
+				$messages = $this->getTranslatedMessages('articleupdate', $parameters, $to_users, $subject, array('%article_name' => html_entity_decode($article->getTitle(), ENT_COMPAT, TBGContext::getI18n()->getCharset())));
 
 				foreach ($messages as $message)
 				{
@@ -712,10 +712,10 @@ EOT;
 							break;
 						case TBGComment::TYPE_ARTICLE:
 							$article = $event->getParameter('article');
-							$subject = 'Comment posted on article %article_name%';
+							$subject = 'Comment posted on article %article_name';
 							$parameters = compact('article', 'comment');
 							$to_users = $this->_getArticleRelatedUsers($article, 'comment');
-							$messages = (empty($to_users)) ? array() : $this->getTranslatedMessages('articlecomment', $parameters, $to_users, $subject, array('%article_name%' => html_entity_decode($article->getTitle(), ENT_COMPAT, TBGContext::getI18n()->getCharset())));
+							$messages = (empty($to_users)) ? array() : $this->getTranslatedMessages('articlecomment', $parameters, $to_users, $subject, array('%article_name' => html_entity_decode($article->getTitle(), ENT_COMPAT, TBGContext::getI18n()->getCharset())));
 							break;
 					}
 
@@ -906,13 +906,13 @@ EOT;
 			$pre_html_message = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html><head><meta http-equiv=Content-Type content="text/html; charset=' . $mail->getCharset() . '"><title>' . TBGSettings::getTBGname() . '</title></head><body>';
 			$post_html_message = '</body></html>';
 			$mail->decorateMessageHTML($pre_html_message, $post_html_message);
-			$mail->addReplacementValues(array('%thebuggenie_url%' => $this->getMailingUrl() . TBGContext::getRouting()->generate('home')));
+			$mail->addReplacementValues(array('%thebuggenie_url' => $this->getMailingUrl() . TBGContext::getRouting()->generate('home')));
 		}
 
 		protected function _setAdditionalMailValues(TBGMimemail $mail, array $parameters)
 		{
-			$mail->addReplacementValues(array('%link_to_reset_password%' => isset($parameters['user']) ? $this->getMailingUrl() . TBGContext::getRouting()->generate('reset_password', array('user' => str_replace('.', '%2E', $parameters['user']->getUsername()), 'reset_hash' => $parameters['user']->getActivationKey())) : '' ));
-			$mail->addReplacementValues(array('%link_to_activate%' => isset($parameters['user']) ? $this->getMailingUrl() . TBGContext::getRouting()->generate('activate', array('user' => str_replace('.', '%2E', $parameters['user']->getUsername()), 'key' => $parameters['user']->getActivationKey())) : ''));
+			$mail->addReplacementValues(array('%link_to_reset_password' => isset($parameters['user']) ? $this->getMailingUrl() . TBGContext::getRouting()->generate('reset_password', array('user' => str_replace('.', '%2E', $parameters['user']->getUsername()), 'reset_hash' => $parameters['user']->getActivationKey())) : '' ));
+			$mail->addReplacementValues(array('%link_to_activate' => isset($parameters['user']) ? $this->getMailingUrl() . TBGContext::getRouting()->generate('activate', array('user' => str_replace('.', '%2E', $parameters['user']->getUsername()), 'key' => $parameters['user']->getActivationKey())) : ''));
 		}
 
 		/**

@@ -3,13 +3,13 @@
 	$tbg_response->addBreadcrumb(link_tag(make_url('project_planning', array('project_key' => $selected_project->getKey())), __('Project sprint planning')));
 	if ($milestone instanceof TBGMilestone)
 	{
-		$tbg_response->addBreadcrumb(__('%sprint_name% overview', array('%sprint_name%' => $milestone->getName())));
+		$tbg_response->addBreadcrumb(__('%sprint_name overview', array('%sprint_name' => $milestone->getName())));
 	}
 	else
 	{
 		$tbg_response->addBreadcrumb(__('No sprint selected'));
 	}
-	$tbg_response->setTitle(__('"%project_name%" sprint overview', array('%project_name%' => $selected_project->getName())));
+	$tbg_response->setTitle(__('"%project_name" sprint overview', array('%project_name' => $selected_project->getName())));
 	$tbg_response->addJavascript(make_url('home').'js/excanvas.js', false);
 	$tbg_response->addJavascript(make_url('home').'js/jquery.flot.min.js', false);
 	$tbg_response->addJavascript(make_url('home').'js/jquery.flot.resize.min.js', false);
@@ -28,9 +28,9 @@
 							<?php if ($milestone->getStartingDate() && $milestone->isScheduled()): ?>
 								(<?php echo tbg_formatTime($milestone->getStartingDate(), 22, true, true); ?> - <?php echo tbg_formatTime($milestone->getScheduledDate(), 22, true, true); ?>)
 							<?php elseif ($milestone->getStartingDate() && !$milestone->isScheduled()): ?>
-								(<?php echo __('Starting %start_date%', array('%start_date%' => tbg_formatTime($milestone->getStartingDate(), 22, true, true))); ?>)
+								(<?php echo __('Starting %start_date', array('%start_date' => tbg_formatTime($milestone->getStartingDate(), 22, true, true))); ?>)
 							<?php elseif (!$milestone->getStartingDate() && $milestone->isScheduled()): ?>
-								(<?php echo __('Ends %end_date%', array('%end_date%' => tbg_formatTime($milestone->getScheduledDate(), 22, true, true))); ?>)
+								(<?php echo __('Ends %end_date', array('%end_date' => tbg_formatTime($milestone->getScheduledDate(), 22, true, true))); ?>)
 							<?php endif; ?>
 						</span>
 					</h3>

@@ -1,5 +1,5 @@
 <div class="rounded_box shadowed white" id="step_<?php echo $step->getID(); ?>_transition_add" style="width: 720px; position: absolute; padding: 5px; margin: 5px; display: none; z-index: 100;">
-	<div class="header"><?php echo __('Add outgoing transition from step "%step_name%"', array('%step_name%' => $step->getName())); ?></div>
+	<div class="header"><?php echo __('Add outgoing transition from step "%step_name"', array('%step_name' => $step->getName())); ?></div>
 	<div class="content">
 		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" method="post" action="<?php echo make_url('configure_workflow_add_transition', array('workflow_id' => $step->getWorkflow()->getID(), 'step_id' => $step->getID())); ?>">
 			<ul class="simple_list">
@@ -49,7 +49,7 @@
 			<br style="clear: both;">
 			<div style="text-align: center; padding: 10px;">
 				<input type="submit" value="<?php echo __('Add transition'); ?>">
-				<?php echo __('%add_transition% or %cancel%', array('%add_transition%' => '', '%cancel%' => '')); ?>
+				<?php echo __('%add_transition or %cancel', array('%add_transition' => '', '%cancel' => '')); ?>
 				<?php echo javascript_link_tag(__('cancel'), array('onclick' => "$('step_{$step->getID()}_transition_add').toggle()")); ?>
 			</div>
 		</form>

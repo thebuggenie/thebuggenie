@@ -423,87 +423,87 @@
 				{
 					case 'viewvc':
 						$base_url = $request['browser_url'];
-						$link_rev = '&amp;view=rev&amp;revision=%revno%';
+						$link_rev = '&amp;view=rev&amp;revision=%revno';
 						$link_file = '&amp;view=log';
-						$link_diff = '&amp;r1=%revno%&amp;r2=%oldrev%';
-						$link_view = '&amp;revision=%revno%&amp;view=markup';
+						$link_diff = '&amp;r1=%revno&amp;r2=%oldrev';
+						$link_view = '&amp;revision=%revno&amp;view=markup';
 						break;
 					case 'viewvc_repo':
 						$base_url = $request['browser_url'];
-						$link_rev = '/?view=rev&amp;revision=%revno%';
-						$link_file = '/%file%?view=log';
-						$link_diff = '/%file%?r1=%revno%&amp;r2=%oldrev%';
-						$link_view = '/%file%?revision=%revno%&amp;view=markup';
+						$link_rev = '/?view=rev&amp;revision=%revno';
+						$link_file = '/%file?view=log';
+						$link_diff = '/%file?r1=%revno&amp;r2=%oldrev';
+						$link_view = '/%file?revision=%revno&amp;view=markup';
 						break;
 					case 'websvn':
 						$base_url = $request['browser_url'];
-						$link_rev = '/revision.php?repname=' . $request['repository'] . '&amp;isdir=1&amp;rev=%revno%';
-						$link_file = '/log.php?repname=' . $request['repository'] . '&amp;path=/$%file%';
-						$link_diff = '/comp.php?repname=' . $request['repository'] . '&amp;compare[]=/%file%@%revno%&amp;compare[]=/%file%@%oldrev%';
-						$link_view = '/filedetails.php?repname=' . $request['repository'] . '&path=/%file%&amp;rev=%revno%';
+						$link_rev = '/revision.php?repname=' . $request['repository'] . '&amp;isdir=1&amp;rev=%revno';
+						$link_file = '/log.php?repname=' . $request['repository'] . '&amp;path=/$%file';
+						$link_diff = '/comp.php?repname=' . $request['repository'] . '&amp;compare[]=/%file@%revno&amp;compare[]=/%file@%oldrev';
+						$link_view = '/filedetails.php?repname=' . $request['repository'] . '&path=/%file&amp;rev=%revno';
 						break;
 					case 'websvn_mv':
 						$base_url = $request['browser_url'];
-						$link_rev = '/' . '?repname=' . $request['repository'] . '&amp;op=log&isdir=1&amp;rev=%revno%';
-						$link_file = '/%file%?repname=' . $request['repository'];
-						$link_diff = '/%file%?repname=' . $request['repository'] . '&amp;compare[]=/%file%@%revno%&amp;compare[]=/%file%@%oldrev%';
-						$link_view = '/%file%?repname=' . $request['repository'] . '&amp;rev=%revno%';
+						$link_rev = '/' . '?repname=' . $request['repository'] . '&amp;op=log&isdir=1&amp;rev=%revno';
+						$link_file = '/%file?repname=' . $request['repository'];
+						$link_diff = '/%file?repname=' . $request['repository'] . '&amp;compare[]=/%file@%revno&amp;compare[]=/%file@%oldrev';
+						$link_view = '/%file?repname=' . $request['repository'] . '&amp;rev=%revno';
 						break;
 					case 'loggerhead':
 						$base_url = $request['browser_url'];
-						$link_rev = '/revision/%revno%';
+						$link_rev = '/revision/%revno';
 						$link_file = '/changes';
-						$link_diff = '/revision/%revno%?compare_revid=%oldrev%';
-						$link_view = '/annotate/head:/%file%';
+						$link_diff = '/revision/%revno?compare_revid=%oldrev';
+						$link_view = '/annotate/head:/%file';
 						break;
 					case 'gitweb':
 						$base_url = $request['browser_url'];
-						$link_rev = ';a=commitdiff;h=%revno%';
-						$link_file = ';a=history;f=%file%;hb=HEAD';
-						$link_diff = ';a=blobdiff;f=%file%;hb=%revno%;hpb=%oldrev%';
-						$link_view = ';a=blob;f=%file%;hb=%revno%';
+						$link_rev = ';a=commitdiff;h=%revno';
+						$link_file = ';a=history;f=%file;hb=HEAD';
+						$link_diff = ';a=blobdiff;f=%file;hb=%revno;hpb=%oldrev';
+						$link_view = ';a=blob;f=%file;hb=%revno';
 						break;
 					case 'cgit':
 						$base_url = $request['browser_url'];
-						$link_rev = '/commit/?id=%revno%';
+						$link_rev = '/commit/?id=%revno';
 						$link_file = '/log';
-						$link_diff = '/diff/%file%?id=%revno%?id2=%oldrev%';
-						$link_view = '/tree/%file%?id=%revno%';
+						$link_diff = '/diff/%file?id=%revno?id2=%oldrev';
+						$link_view = '/tree/%file?id=%revno';
 						break;
 					case 'hgweb':
 						$base_url = $request['browser_url'];
-						$link_rev = '/rev/%revno%';
-						$link_file = '/log/tip/%file%';
-						$link_diff = '/diff/%revno%/%file%';
-						$link_view = '/file/%revno%/%file%';
+						$link_rev = '/rev/%revno';
+						$link_file = '/log/tip/%file';
+						$link_diff = '/diff/%revno/%file';
+						$link_view = '/file/%revno/%file';
 						break;
 					case 'github':
 						$base_url = $request['browser_url'];
-						$link_rev = '/commit/%revno%';
-						$link_file = '/commits/%branch%/%file%';
-						$link_diff = '/commit/%revno%';
-						$link_view = '/blob/%revno%/%file%';
+						$link_rev = '/commit/%revno';
+						$link_file = '/commits/%branch/%file';
+						$link_diff = '/commit/%revno';
+						$link_view = '/blob/%revno/%file';
 						break;
 					case 'bitbucket':
 						  $base_url = $request['browser_url'];
-						  $link_rev = '/changeset/%revno%';
-						  $link_file = '/history/%file%';
-						  $link_diff = '/changeset/%revno%#chg-%file%';
-						  $link_view = '/src/%revno%/%file%';
+						  $link_rev = '/changeset/%revno';
+						  $link_file = '/history/%file';
+						  $link_diff = '/changeset/%revno#chg-%file';
+						  $link_view = '/src/%revno/%file';
 						  break;
 					case 'gitorious':
 						$base_url = $request['browser_url'];
-						$link_rev = '/commit/%revno%';
-						$link_file = '/blobs/history/%branch%/%file%';
-						$link_diff = '/commit/%revno%';
-						$link_view = '/blobs/%revno%/%file%';
+						$link_rev = '/commit/%revno';
+						$link_file = '/blobs/history/%branch/%file';
+						$link_diff = '/commit/%revno';
+						$link_view = '/blobs/%revno/%file';
 						break;
 					case 'rhodecode':
 						$base_url = $request['browser_url'];
-						$link_rev = '/changeset/%revno%';
-						$link_file = '/changelog/%revno%/%file%';
-						$link_diff = '/diff/%file%?diff2=%revno%&amp;diff1=%oldrev%&amp;fulldiff=1&amp;diff=diff';
-						$link_view = '/files/%revno%/%file%';
+						$link_rev = '/changeset/%revno';
+						$link_file = '/changelog/%revno/%file';
+						$link_diff = '/diff/%file?diff2=%revno&amp;diff1=%oldrev&amp;fulldiff=1&amp;diff=diff';
+						$link_view = '/files/%revno/%file';
 						break;
 				}
 

@@ -7,19 +7,19 @@
 				if ($milestone->getScheduledDate() > 0): echo tbg_formatTime($milestone->getScheduledDate(), 20, true, true); else: echo __('No scheduled date specified'); endif;
 			?>
 		<?php else: ?>
-			<?php if ($milestone->getScheduledDate() > 0): echo __('Scheduled for %scheduled_date%', array('%scheduled_date%' => tbg_formatTime($milestone->getScheduledDate(), 20, true, true))); else: echo __('No scheduled date specified'); endif; ?>
+			<?php if ($milestone->getScheduledDate() > 0): echo __('Scheduled for %scheduled_date', array('%scheduled_date' => tbg_formatTime($milestone->getScheduledDate(), 20, true, true))); else: echo __('No scheduled date specified'); endif; ?>
 		<?php endif; ?>
 	</div>
 	<div class="percentage">
 		<div class="numbers">
 			<?php if ($milestone->isSprint()): ?>
 				<?php if ($milestone->countClosedIssues() == 1): ?>
-					<?php echo __('%num_closed% story (%closed_points% pts) closed of %num_assigned% (%assigned_points% pts) assigned', array('%num_closed%' => '<b>'.$milestone->countClosedIssues().'</b>', '%closed_points%' => '<i>'.$milestone->getPointsSpent().'</i>', '%num_assigned%' => '<b>'.$milestone->countIssues().'</b>', '%assigned_points%' => '<i>'.$milestone->getPointsEstimated().'</i>')); ?>
+					<?php echo __('%num_closed story (%closed_points pts) closed of %num_assigned (%assigned_points pts) assigned', array('%num_closed' => '<b>'.$milestone->countClosedIssues().'</b>', '%closed_points' => '<i>'.$milestone->getPointsSpent().'</i>', '%num_assigned' => '<b>'.$milestone->countIssues().'</b>', '%assigned_points' => '<i>'.$milestone->getPointsEstimated().'</i>')); ?>
 				<?php else: ?>
-					<?php echo __('%num_closed% stories (%closed_points% pts) closed of %num_assigned% (%assigned_points% pts) assigned', array('%num_closed%' => '<b>'.$milestone->countClosedIssues().'</b>', '%closed_points%' => '<i>'.$milestone->getPointsSpent().'</i>', '%num_assigned%' => '<b>'.$milestone->countIssues().'</b>', '%assigned_points%' => '<i>'.$milestone->getPointsEstimated().'</i>')); ?>
+					<?php echo __('%num_closed stories (%closed_points pts) closed of %num_assigned (%assigned_points pts) assigned', array('%num_closed' => '<b>'.$milestone->countClosedIssues().'</b>', '%closed_points' => '<i>'.$milestone->getPointsSpent().'</i>', '%num_assigned' => '<b>'.$milestone->countIssues().'</b>', '%assigned_points' => '<i>'.$milestone->getPointsEstimated().'</i>')); ?>
 				<?php endif; ?>
 			<?php else: ?>
-				<?php echo __('%num_closed% issue(s) closed of %num_assigned% assigned', array('%num_closed%' => '<b>'.$milestone->countClosedIssues().'</b>', '%num_assigned%' => '<b>'.$milestone->countIssues().'</b>')); ?>
+				<?php echo __('%num_closed issue(s) closed of %num_assigned assigned', array('%num_closed' => '<b>'.$milestone->countClosedIssues().'</b>', '%num_assigned' => '<b>'.$milestone->countIssues().'</b>')); ?>
 			<?php endif; ?>
 		</div>
 		<?php include_template('main/percentbar', array('percent' => $milestone->getPercentComplete(), 'height' => 14)); ?>

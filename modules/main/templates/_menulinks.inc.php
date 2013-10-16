@@ -20,14 +20,14 @@
 				</dl>
 				<div style="font-size: 12px; padding: 15px 2px 10px 2px;" class="faded_out" id="attach_link_<?php echo $target_type; ?>_<?php echo $target_id; ?>_submit">
 					<?php if ($target_type == 'wiki'): ?>
-						<?php echo __('Enter the name of the article to link to here, along with an (optional) description, and press "%add_link%" to add it to the menu.', array('%add_link%' => __('Add link'))); ?><br /><br />
+						<?php echo __('Enter the name of the article to link to here, along with an (optional) description, and press "%add_link" to add it to the menu.', array('%add_link' => __('Add link'))); ?><br /><br />
 					<?php else: ?>
-						<?php echo __('Enter the link URL here, along with an (optional) description, and press "%add_link%" to add it to the menu.', array('%add_link%' => __('Add link'))); ?><br /><br />
+						<?php echo __('Enter the link URL here, along with an (optional) description, and press "%add_link" to add it to the menu.', array('%add_link' => __('Add link'))); ?><br /><br />
 					<?php endif; ?>
-					<?php echo __('To add free text, just enter text in the description - without any url - and press the "%add_link%" button (Text will be parsed according to the %wiki_formatting%).', array('%add_link%' => __('Add link'), '%wiki_formatting%' => link_tag(make_url('publish_article', array('article_name' => 'WikiFormatting')), 'WikiFormatting'))); ?><br /><br />
-					<?php echo __('To add a spacer, just press "%add_link%", without any url or description.', array('%add_link%' => __('Add link'))); ?>
+					<?php echo __('To add free text, just enter text in the description - without any url - and press the "%add_link" button (Text will be parsed according to the %wiki_formatting).', array('%add_link' => __('Add link'), '%wiki_formatting' => link_tag(make_url('publish_article', array('article_name' => 'WikiFormatting')), 'WikiFormatting'))); ?><br /><br />
+					<?php echo __('To add a spacer, just press "%add_link", without any url or description.', array('%add_link' => __('Add link'))); ?>
 					<div style="text-align: center; padding: 10px; display: none;" id="attach_link_<?php echo $target_type; ?>_<?php echo $target_id; ?>_indicator"><?php echo image_tag('spinning_26.gif'); ?></div>
-					<div style="text-align: center;"><input type="submit" value="<?php echo __('Add link'); ?>" style="font-weight: bold;"><?php echo __('%attach_link% or %cancel%', array('%attach_link%' => '', '%cancel%' => '<b>'.javascript_link_tag(__('cancel'), array('onclick' => "$('attach_link_{$target_type}_{$target_id}').toggle();")).'</b>')); ?></div>
+					<div style="text-align: center;"><input type="submit" value="<?php echo __('Add link'); ?>" style="font-weight: bold;"><?php echo __('%attach_link or %cancel', array('%attach_link' => '', '%cancel' => '<b>'.javascript_link_tag(__('cancel'), array('onclick' => "$('attach_link_{$target_type}_{$target_id}').toggle();")).'</b>')); ?></div>
 				</div>
 			</form>
 		</div>

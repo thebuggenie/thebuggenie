@@ -2,7 +2,7 @@
 
 	if ($workflow instanceof TBGWorkflow)
 	{
-		$tbg_response->setTitle(__('Configure workflow "%workflow_name%"', array('%workflow_name%' => $workflow->getName())));
+		$tbg_response->setTitle(__('Configure workflow "%workflow_name"', array('%workflow_name' => $workflow->getName())));
 	}
 	else
 	{
@@ -18,7 +18,7 @@
 			<div class="content" style="width: 730px;" id="workflow_steps_container">
 				<?php if ($workflow instanceof TBGWorkflow): ?>
 					<div class="greybox workflow_steps_intro">
-						<div class="header"><?php echo __('Editing steps for %workflow_name%', array('%workflow_name%' => $workflow->getName())); ?></div>
+						<div class="header"><?php echo __('Editing steps for %workflow_name', array('%workflow_name' => $workflow->getName())); ?></div>
 						<div class="content">
 							<?php echo __('This page shows all the available steps for the selected workflow, as well as transitions between these steps.'); ?>
 							<?php echo __('You can add and remove steps from this page, as well as manage the transitions between them.'); ?><br>
@@ -63,7 +63,7 @@
 								<br style="clear: both;">
 								<div style="text-align: right; clear: both; padding: 10px 0 0 0;" id="update_step_buttons">
 									<input type="submit" value="<?php echo __('Update step details'); ?>" name="edit">
-									<?php echo __('%update_step_details% or %cancel%', array('%update_step_details%' => '', '%cancel%' => '')); ?>
+									<?php echo __('%update_step_details or %cancel', array('%update_step_details' => '', '%cancel' => '')); ?>
 									<b><?php echo javascript_link_tag(__('cancel'), array('onclick' => "\$('add_step_div').toggle();")); ?></b>
 								</div>
 								<div style="text-align: right; padding: 10px 0 10px 0; display: none;" id="step_update_indicator"><span style="float: right;"><?php echo image_tag('spinning_16.gif'); ?></span>&nbsp;<?php echo __('Please wait'); ?></div>

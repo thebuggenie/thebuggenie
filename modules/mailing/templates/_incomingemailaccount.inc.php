@@ -10,8 +10,8 @@
 		<?php echo image_tag('spinning_16.gif', array('style' => 'float: right; margin: 13px 10px 0 0; display: none;', 'id' => 'mailing_account_'.$account->getID().'_indicator')); ?>
 		<span id="mailing_account_<?php echo $account->getID(); ?>_name"><?php echo $account->getName(); ?></span> <span class="faded_out" style="font-size: 0.8em; font-weight: normal;"><?php echo $account->getServer(); ?></span>
 		<div style="font-size: 0.9em; font-weight: normal;">
-			<span><?php echo __('Last checked: %time%', array('%time%' => '')); ?><span id="mailing_account_<?php echo $account->getID(); ?>_time" style="font-style: italic;"><?php echo ($account->getTimeLastFetched()) ? tbg_formatTime($account->getTimeLastFetched(), 6) : __('%last_checked% never', array('%last_checked%' => '')); ?></span>.</span>
-			<span><?php echo __('Email(s) processed: %number%', array('%number%' => '<span id="mailing_account_'.$account->getID().'_count" style="font-style: italic;">'.$account->getNumberOfEmailsLastFetched().'</span>')); ?></span>
+			<span><?php echo __('Last checked: %time', array('%time' => '')); ?><span id="mailing_account_<?php echo $account->getID(); ?>_time" style="font-style: italic;"><?php echo ($account->getTimeLastFetched()) ? tbg_formatTime($account->getTimeLastFetched(), 6) : __('%last_checked never', array('%last_checked' => '')); ?></span>.</span>
+			<span><?php echo __('Email(s) processed: %number', array('%number' => '<span id="mailing_account_'.$account->getID().'_count" style="font-style: italic;">'.$account->getNumberOfEmailsLastFetched().'</span>')); ?></span>
 		</div>
 	</h5>
 </div>

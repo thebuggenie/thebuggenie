@@ -62,7 +62,7 @@
 					<?php else: ?>
 						<span class="faded_out"><?php echo __('No prefix set'); ?></span>
 					<?php endif; ?>
-					<div style="float: right; margin-right: 5px;" class="faded_out"><?php echo __('See %about_issue_prefix% for an explanation about issue prefixes', array('%about_issue_prefix%' => link_tag(make_url('publish_article', array('article_name' => 'AboutIssuePrefixes')), __('about issue prefixes'), array('target' => '_new')))); ?></div>
+					<div style="float: right; margin-right: 5px;" class="faded_out"><?php echo __('See %about_issue_prefix for an explanation about issue prefixes', array('%about_issue_prefix' => link_tag(make_url('publish_article', array('article_name' => 'AboutIssuePrefixes')), __('about issue prefixes'), array('target' => '_new')))); ?></div>
 				</td>
 			</tr>
 			<tr>
@@ -80,7 +80,7 @@
 		<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 			<tr>
 				<td colspan="2" style="padding: 10px 0 10px 10px; text-align: right;">
-					<div style="float: left; font-size: 13px; padding-top: 2px; font-style: italic;" class="config_explanation"><?php echo __('When you are done, click "%save%" to save your changes', array('%save%' => __('Save'))); ?></div>
+					<div style="float: left; font-size: 13px; padding-top: 2px; font-style: italic;" class="config_explanation"><?php echo __('When you are done, click "%save" to save your changes', array('%save' => __('Save'))); ?></div>
 					<div class="button button-green" id="project_submit_settings_button" onclick="TBG.Project.submitInfo('<?php echo make_url('configure_project_settings', array('project_id' => $project->getID())); ?>', <?php echo $project->getID(); ?>);"><span><?php echo image_tag('spinning_16.gif', array('id' => 'project_info_indicator', 'style' => 'display: none; float: left; margin-right: 5px;')).__('Save'); ?></span></div>
 				</td>
 			</tr>

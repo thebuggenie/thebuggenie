@@ -21,7 +21,7 @@
 					</div>
 					<br style="clear: both;">
 					<div style="margin: 5px;">
-						<?php echo javascript_link_tag(__('%color_list% or keep the current color', array('%color_list%' => '')), array('onclick' => "$('color_selector_{$issue->getID()}').toggle()")); ?>
+						<?php echo javascript_link_tag(__('%color_list or keep the current color', array('%color_list' => '')), array('onclick' => "$('color_selector_{$issue->getID()}').toggle()")); ?>
 					</div>
 				</div>
 			<?php endif; ?>

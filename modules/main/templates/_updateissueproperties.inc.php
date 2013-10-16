@@ -10,7 +10,7 @@
 <?php endif; ?>
 		<div id="backdrop_detail_content" class="backdrop_detail_content">
 			<?php if (!$issue instanceof TBGIssue): ?>
-			<div class="rounded_box yellow borderless"><?php echo __('This transition will be applied to %count% selected issues', array('%count%' => count($issues))); ?></div>
+			<div class="rounded_box yellow borderless"><?php echo __('This transition will be applied to %count selected issues', array('%count' => count($issues))); ?></div>
 			<?php endif; ?>
 			<ul class="simple_list">
 				<?php if ((($issue instanceof TBGIssue && $issue->isUpdateable() && $issue->canEditAssignee()) || isset($issues)) && $transition->hasAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE) && !$transition->getAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE)->hasTargetValue()): ?>
@@ -162,7 +162,7 @@
 							<label for="transition_popup_set_stop_working"><?php echo __('Log time spent'); ?></label>
 							<div style="width: 435px; float: left;">
 								<?php $time_spent = $issue->calculateTimeSpent(); ?>
-								<input type="radio" name="did" id="transition_popup_set_stop_working_<?php echo $transition->getID(); ?>" value="something" checked onchange="$('transition_popup_set_stop_working_specify_log_div_<?php echo $transition->getID(); ?>').hide();"><label for="transition_popup_set_stop_working_<?php echo $transition->getID(); ?>" class="simple"><?php echo __('Yes'); ?></label>&nbsp;&nbsp;&nbsp;&nbsp;<span class="faded_out"><?php echo __('Adds %hours% hour(s), %days% day(s) and %weeks% week(s)', array('%hours%' => $time_spent['hours'], '%days%' => $time_spent['days'], '%weeks%' => $time_spent['weeks'])); ?></span><br>
+								<input type="radio" name="did" id="transition_popup_set_stop_working_<?php echo $transition->getID(); ?>" value="something" checked onchange="$('transition_popup_set_stop_working_specify_log_div_<?php echo $transition->getID(); ?>').hide();"><label for="transition_popup_set_stop_working_<?php echo $transition->getID(); ?>" class="simple"><?php echo __('Yes'); ?></label>&nbsp;&nbsp;&nbsp;&nbsp;<span class="faded_out"><?php echo __('Adds %hours hour(s), %days day(s) and %weeks week(s)', array('%hours' => $time_spent['hours'], '%days' => $time_spent['days'], '%weeks' => $time_spent['weeks'])); ?></span><br>
 								<input type="radio" name="did" id="transition_popup_set_stop_working_no_log_<?php echo $transition->getID(); ?>" value="nothing" onchange="$('transition_popup_set_stop_working_specify_log_div_<?php echo $transition->getID(); ?>').hide();"><label for="transition_popup_set_stop_working_no_log_<?php echo $transition->getID(); ?>" class="simple"><?php echo __('No'); ?></label><br>
 								<input type="radio" name="did" id="transition_popup_set_stop_working_specify_log_<?php echo $transition->getID(); ?>" value="this" onchange="$('transition_popup_set_stop_working_specify_log_div_<?php echo $transition->getID(); ?>').show()"><label for="transition_popup_set_stop_working_specify_log_<?php echo $transition->getID(); ?>" class="simple"><?php echo __('Yes, let me specify'); ?></label>
 							</div>
@@ -192,8 +192,8 @@
 	<?php if (($issue instanceof TBGIssue && ($issue->canEditAssignee()) || isset($issues)) && $transition->hasAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE) && !$transition->getAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE)->hasTargetValue()): ?>
 		<?php include_component('identifiableselector', array(	'html_id' 			=> 'popup_assigned_to_change_'.$transition->getID(),
 																'header' 			=> __('Assign this issue'),
-																'callback'		 	=> "TBG.Issues.updateWorkflowAssignee('" . make_url('issue_gettempfieldvalue', array('field' => 'assigned_to', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', %identifiable_value%, %identifiable_type%, ".$transition->getID().");",
-																'teamup_callback' 	=> "TBG.Issues.updateWorkflowAssigneeTeamup('" . make_url('issue_gettempfieldvalue', array('field' => 'assigned_to', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', %identifiable_value%, %identifiable_type%, ".$transition->getID().");",
+																'callback'		 	=> "TBG.Issues.updateWorkflowAssignee('" . make_url('issue_gettempfieldvalue', array('field' => 'assigned_to', 'identifiable_type' => '%identifiable_type', 'value' => '%identifiable_value')) . "', %identifiable_value, %identifiable_type, ".$transition->getID().");",
+																'teamup_callback' 	=> "TBG.Issues.updateWorkflowAssigneeTeamup('" . make_url('issue_gettempfieldvalue', array('field' => 'assigned_to', 'identifiable_type' => '%identifiable_type', 'value' => '%identifiable_value')) . "', %identifiable_value, %identifiable_type, ".$transition->getID().");",
 																'clear_link_text'	=> __('Clear current assignee'),
 																'base_id'			=> 'popup_assigned_to',
 																'include_teams'		=> true,

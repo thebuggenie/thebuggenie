@@ -43,25 +43,25 @@
 				<?php if (!$user->getJoinedDate()): ?>
 					<i><?php echo __('This user has been a member for a while'); ?></i>
 				<?php else: ?>
-					<?php echo '<b>' . __('This user has been a member since %date%', array('%date%' => '</b>' . tbg_formatTime($user->getJoinedDate(), 11))); ?>
+					<?php echo '<b>' . __('This user has been a member since %date', array('%date' => '</b>' . tbg_formatTime($user->getJoinedDate(), 11))); ?>
 				<?php endif; ?>
 				<br>
 				<?php if (!$user->getLastSeen()): ?>
 					<i><?php echo __('This user has not logged in yet'); ?></i>
 				<?php else: ?>
-					<?php echo '<b>' . __('This user was last seen online at %time%', array('%time%' => '</b>' . tbg_formatTime($user->getLastSeen(), 11))); ?>
+					<?php echo '<b>' . __('This user was last seen online at %time', array('%time' => '</b>' . tbg_formatTime($user->getLastSeen(), 11))); ?>
 				<?php endif; ?>
 				<br>
 				<?php if (!$user->getLatestActions(1)): ?>
 					<i><?php echo __('There is no recent activity available for this user'); ?></i>
 				<?php else: ?>
 					<?php foreach ($user->getLatestActions(1) as $action): ?>
-						<?php echo '<b>' . __('Last user activity was at %time%', array('%time%' => '</b>' . tbg_formatTime($action['timestamp'], 11))); ?>
+						<?php echo '<b>' . __('Last user activity was at %time', array('%time' => '</b>' . tbg_formatTime($action['timestamp'], 11))); ?>
 					<?php endforeach; ?>
 				<?php endif; ?>
 				<br>
 				<?php if (count($issues)): ?>
-					<?php echo __('This user has reported %issues% issue(s)', array('%issues%' => '<b>'.count($issues).'</b>')); ?>
+					<?php echo __('This user has reported %issues issue(s)', array('%issues' => '<b>'.count($issues).'</b>')); ?>
 					<?php echo link_tag(make_url('search', array('search' => true, 'filters[posted_by]' => array('operator' => '=', 'value' => $user->getID()))), __('Show issues'), array('class' => 'button button-silver', 'title' => __('Show issues reported by this user'))); ?>
 					<?php $seen = 0; ?>
 					<h4><?php echo __('Last reported issues:') . ' '; ?></h4>
@@ -81,7 +81,7 @@
 				<?php endif; ?>
 				<br>
 				<?php if (count($user->getTeams())): ?>
-					<b><?php echo __('Member of the following teams:</b> %list_of_teams%', array('%list_of_teams%' => '')); ?></b><br>
+					<b><?php echo __('Member of the following teams:</b> %list_of_teams', array('%list_of_teams' => '')); ?></b><br>
 					<ul class="teamlist">
 						<?php foreach ($user->getTeams() as $team): ?>
 							<li><?php include_component('main/teamdropdown', array('team' => $team)); ?></li>

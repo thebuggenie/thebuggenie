@@ -4,7 +4,7 @@
 		<?php include_component('leftmenu', array('selected_section' => TBGSettings::CONFIGURATION_SECTION_SCOPES)); ?>
 		<td valign="top" style="padding-left: 15px;">
 			<form method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>">
-				<div style="width: 730px;" class="config_header"><?php echo __('Configure scope "%scope_name%"', array('%scope_name%' => $scope->getName())); ?></div>
+				<div style="width: 730px;" class="config_header"><?php echo __('Configure scope "%scope_name"', array('%scope_name' => $scope->getName())); ?></div>
 				<div style="width: 730px;" id="config_scopes">
 					<?php if ($scope_save_error): ?>
 						<div class="redbox" style="margin: 0 0 5px 0; font-size: 14px;">

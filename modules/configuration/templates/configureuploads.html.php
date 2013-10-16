@@ -66,11 +66,11 @@
 						<tr>
 							<td class="config_explanation" colspan="2">
 								<?php echo __('Enter the maximum allowed file size for uploads here. Remember that this value cannot be higher than the current php max_upload_size or post_max_size, both defined in php.ini.'); ?>
-								<u><?php echo __('Currently, these values are max_upload_size: %ini_max_upload_size% and post_max_size: %ini_post_max_size%.', array('%ini_max_upload_size%' => '<b>' . (int) ini_get('upload_max_filesize') . __('MB') . '</b>', '%ini_post_max_size%' => '<b>' . (int) ini_get('post_max_size') . __('MB') . '</b>')); ?></u>
+								<u><?php echo __('Currently, these values are max_upload_size: %ini_max_upload_size and post_max_size: %ini_post_max_size.', array('%ini_max_upload_size' => '<b>' . (int) ini_get('upload_max_filesize') . __('MB') . '</b>', '%ini_post_max_size' => '<b>' . (int) ini_get('post_max_size') . __('MB') . '</b>')); ?></u>
 								<?php if (TBGContext::getScope()->getMaxUploadLimit()): ?>
 								<br>
 								<br>
-								<b><?php echo __('Also note that there is a total upload limit on this instance, which is %limit% MB.', array('%limit%' => '<u>' . TBGContext::getScope()->getMaxUploadLimit() . '</u>')); ?><br></b>
+								<b><?php echo __('Also note that there is a total upload limit on this instance, which is %limit MB.', array('%limit' => '<u>' . TBGContext::getScope()->getMaxUploadLimit() . '</u>')); ?><br></b>
 								<br>
 								<?php endif; ?>
 							</td>
@@ -92,8 +92,8 @@
 						</tr>
 						<tr>
 							<td class="config_explanation" colspan="2">
-								<?php echo __('A space-, comma- or semicolon-separated list of extensions used to filter uploads, based on the %upload_restrictions% setting above.', array('%upload_restrictions%' => '<i><b>'.__('Upload restrictions').'</i></b>')); ?><br>
-								<?php echo '<b>' . __('Ex: "%example_1%" or "%example_2%" or "%example_3%"', array('%example_1%' => '</b><i>txt doc jpg png</i>', '%example_2%' => '<i>txt,doc,jpg,png</i>', '%example_3%' => '<i>txt;doc;jpg;png</i>')); ?>
+								<?php echo __('A space-, comma- or semicolon-separated list of extensions used to filter uploads, based on the %upload_restrictions setting above.', array('%upload_restrictions' => '<i><b>'.__('Upload restrictions').'</i></b>')); ?><br>
+								<?php echo '<b>' . __('Ex: "%example_1" or "%example_2" or "%example_3"', array('%example_1' => '</b><i>txt doc jpg png</i>', '%example_2' => '<i>txt,doc,jpg,png</i>', '%example_3' => '<i>txt;doc;jpg;png</i>')); ?>
 							</td>
 						</tr>
 						<tr>
@@ -115,7 +115,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td class="config_explanation" colspan="2"><?php echo __("If you're storing files on the filesystem, specify where you want to save the files, here. Default location is the %files% folder in the main folder (not the public folder)", array('%files%' => '<b>files/</b>')); ?></td>
+							<td class="config_explanation" colspan="2"><?php echo __("If you're storing files on the filesystem, specify where you want to save the files, here. Default location is the %files folder in the main folder (not the public folder)", array('%files' => '<b>files/</b>')); ?></td>
 						</tr>
 					</table>
 				<?php else: ?>
@@ -126,7 +126,7 @@
 				<?php endif; ?>
 				<?php if ($uploads_enabled && $access_level == TBGSettings::ACCESS_FULL): ?>
 						<div class="greybox" style="margin: 5px 0px 5px 0px; height: 23px; padding: 5px 10px 5px 10px;">
-							<div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "%save%" to save your changes in all categories', array('%save%' => __('Save'))); ?></div>
+							<div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "%save" to save your changes in all categories', array('%save' => __('Save'))); ?></div>
 							<input type="submit" id="config_uploads_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
 							<span id="config_uploads_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
 						</div>

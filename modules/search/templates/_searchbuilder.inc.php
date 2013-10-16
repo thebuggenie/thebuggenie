@@ -178,7 +178,7 @@
 						<label for="issues_per_page"><?php echo __('Issues per page'); ?></label>
 						<select name="issues_per_page" id="issues_per_page">
 							<?php foreach (array(15, 30, 50, 100, 250, 500) as $cc): ?>
-								<option value="<?php echo $cc; ?>"<?php if ($ipp == $cc): ?> selected<?php endif; ?>><?php echo __('%number_of_issues% issues per page', array('%number_of_issues%' => $cc)); ?></option>
+								<option value="<?php echo $cc; ?>"<?php if ($ipp == $cc): ?> selected<?php endif; ?>><?php echo __('%number_of_issues issues per page', array('%number_of_issues' => $cc)); ?></option>
 							<?php endforeach; ?>
 							<option value="0"<?php if ($ipp == 0): ?> selected<?php endif; ?>><?php echo __('All results on one page'); ?></option>
 						</select>
@@ -215,7 +215,7 @@
 					<div class="backdrop_box large">
 						<div class="backdrop_detail_content" style="font-size: 14px; text-align: left;">
 							<?php if (TBGContext::isProjectContext()): ?>
-								<p style="padding-bottom: 15px;" class="faded_out"><?php echo __('This saved search will be available under this project only. To make a non-project-specific search, use the main "%find_issues%" page instead', array('%find_issues%' => link_tag(make_url('search'), __('Find issues')))); ?></p>
+								<p style="padding-bottom: 15px;" class="faded_out"><?php echo __('This saved search will be available under this project only. To make a non-project-specific search, use the main "%find_issues" page instead', array('%find_issues' => link_tag(make_url('search'), __('Find issues')))); ?></p>
 							<?php endif; ?>
 							<?php if ($issavedsearch): ?>
 								<input type="hidden" name="saved_search_id" id="saved_search_id" value="<?php echo $savedsearch->get(TBGSavedSearchesTable::ID); ?>">
@@ -235,7 +235,7 @@
 							<div style="text-align: right;">
 								<input type="submit" value="<?php echo __('Update this saved search'); ?>" id="search_button_save" onclick="$('find_issues_form').method = 'post';$('save_search').enable();return true;">
 								<input type="submit" value="<?php echo __('Save this search'); ?>" id="search_button_save_new" onclick="$('find_issues_form').method = 'post';$('save_search').enable();return true;">
-								<?php echo __('%update_or_save_search% or %cancel%', array('%update_or_save_search%' => '', '%cancel%' => "<a href=\"javascript:void('0');\" onclick=\"$('saved_search_details').hide();$('saved_search_name').disable();$('saved_search_description').disable();".(($tbg_user->canCreatePublicSearches()) ? "$('saved_search_public').disable();" : '')."$('search_button_bottom').enable();$('search_button_bottom').show();\"><b>".__('cancel').'</b></a>')); ?>
+								<?php echo __('%update_or_save_search or %cancel', array('%update_or_save_search' => '', '%cancel' => "<a href=\"javascript:void('0');\" onclick=\"$('saved_search_details').hide();$('saved_search_name').disable();$('saved_search_description').disable();".(($tbg_user->canCreatePublicSearches()) ? "$('saved_search_public').disable();" : '')."$('search_button_bottom').enable();$('search_button_bottom').show();\"><b>".__('cancel').'</b></a>')); ?>
 							</div>
 						</div>
 					</div>
@@ -259,7 +259,7 @@
 					<form id="save_search_form" action="<?php echo make_url('search_save'); ?>" method="post" onsubmit="TBG.Search.saveSearch();return false;">
 						<?php if (TBGContext::isProjectContext()): ?>
 							<input type="hidden" name="project_id" value="<?php echo TBGContext::getCurrentProject()->getID(); ?>">
-							<p style="padding-bottom: 15px;" class="faded_out"><?php echo __('This saved search will be available under this project only. To make a non-project-specific search, use the main "%find_issues%" page instead', array('%find_issues%' => link_tag(make_url('search'), __('Find issues')))); ?></p>
+							<p style="padding-bottom: 15px;" class="faded_out"><?php echo __('This saved search will be available under this project only. To make a non-project-specific search, use the main "%find_issues" page instead', array('%find_issues' => link_tag(make_url('search'), __('Find issues')))); ?></p>
 						<?php endif; ?>
 						<?php if ($search_object->getID()): ?>
 							<input type="hidden" name="saved_search_id" id="saved_search_id" value="<?php echo $search_object->getID(); ?>">
@@ -294,7 +294,7 @@
 						</table>
 						<div style="text-align: right;">
 							<?php echo image_tag('spinning_16.gif', array('style' => 'margin-left: 5px; display: none;', 'id' => 'save_search_indicator')); ?>
-							<?php echo __('%cancel% or %save_search%', array('%save_search%' => '<input type="submit" value="'.__('Save search').'">', '%cancel%' => '<a href="javascript:void(0);" onclick="$(\'saved_search_details\').hide();">'.__('cancel').'</b></a>')); ?>
+							<?php echo __('%cancel or %save_search', array('%save_search' => '<input type="submit" value="'.__('Save search').'">', '%cancel' => '<a href="javascript:void(0);" onclick="$(\'saved_search_details\').hide();">'.__('cancel').'</b></a>')); ?>
 						</div>
 					</form>
 				</div>

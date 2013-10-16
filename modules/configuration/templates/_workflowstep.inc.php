@@ -3,7 +3,7 @@
 		<?php echo link_tag(make_url('configure_workflow_step', array('workflow_id' => $step->getWorkflow()->getID(), 'step_id' => $step->getID())), $step->getName(), array('class' => 'step_name'.((!$step->hasIncomingTransitions()) ? ' faded_out' : ''))); ?>
 		<?php if (!$step->isCore()): ?>
 			<div class="rounded_box shadowed white" id="step_<?php echo $step->getID(); ?>_transitions_delete" style="width: 720px; position: absolute; padding: 5px; margin: 5px; display: none;">
-				<div class="header"><?php echo __('Delete all outgoing transition from step "%step_name%"', array('%step_name%' => $step->getName())); ?></div>
+				<div class="header"><?php echo __('Delete all outgoing transition from step "%step_name"', array('%step_name' => $step->getName())); ?></div>
 				<div class="content">
 					<?php echo __('Are you sure you want to delete ALL outgoing transitions from this step? This action cannot be reverted.'); ?>
 					<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" method="post" action="<?php echo make_url('configure_workflow_delete_step_transitions', array('workflow_id' => $step->getWorkflow()->getID(), 'step_id' => $step->getID())); ?>">
@@ -17,7 +17,7 @@
 			</div>
 			<?php include_template('configuration/workflowaddtransition', array('step' => $step)); ?>
 			<div class="rounded_box shadowed white" id="step_<?php echo $step->getID(); ?>_delete" style="width: 720px; position: absolute; padding: 5px; margin: 5px; display: none;">
-				<div class="header"><?php echo __('Completely delete step "%step_name%"', array('%step_name%' => $step->getName())); ?></div>
+				<div class="header"><?php echo __('Completely delete step "%step_name"', array('%step_name' => $step->getName())); ?></div>
 				<div class="content">
 					<?php echo __('Are you sure you want to completely delete this step? This action cannot be reverted.'); ?>
 					<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" method="post" action="<?php echo make_url('configure_workflow_delete_step', array('workflow_id' => $step->getWorkflow()->getID(), 'step_id' => $step->getID())); ?>">

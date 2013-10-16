@@ -3,7 +3,7 @@
 	$tbg_response->addBreadcrumb(__('Clients'), null, tbg_get_breadcrumblinks('main_links'));
 	if ($client instanceof TBGClient)
 	{
-		$tbg_response->setTitle(__('Client dashboard for %client_name%', array('%client_name%' => $client->getName())));
+		$tbg_response->setTitle(__('Client dashboard for %client_name', array('%client_name' => $client->getName())));
 		$tbg_response->setPage('client');
 		$tbg_response->addBreadcrumb($client->getName(), make_url('client_dashboard', array('client_id' => $client->getID())), tbg_get_breadcrumblinks('client_list'));
 	}
@@ -41,7 +41,7 @@
 			<tr>
 				<td class="client_dashboard_projects padded">
 					<div class="header">
-						<?php echo __('Projects for %client%', array('%client%' => $client->getName())); ?>
+						<?php echo __('Projects for %client', array('%client' => $client->getName())); ?>
 						<a style="float: right;" class="button button-silver" href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'client_archived_projects', 'cid' => $client->getID())); ?>');"><?php echo __('Show archived projects'); ?></a>
 					</div>
 		
@@ -70,7 +70,7 @@
 				</td>
 			<td class="client_dashboard_users padded">
 				<div class="header">
-					<?php echo __('Members of %client%', array('%client%' => $client->getName())); ?>
+					<?php echo __('Members of %client', array('%client' => $client->getName())); ?>
 				</div>
 				<?php if ($client->getNumberOfMembers() > 0): ?>
 					<ul class="client_users">

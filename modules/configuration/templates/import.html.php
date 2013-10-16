@@ -19,7 +19,7 @@
 				<div id="import_menu_panes">
 					<div id="tab_csv_pane" style="padding-top: 0;">
 						<div class="tab_content">
-							<?php echo __('You can import data from a CSV file copied into a text box in The Bug Genie, exported from other sources. Please see the %CSVImport% wiki article for further details and instructions.', array('%CSVImport%' => link_tag(make_url('publish_article', array('article_name' => 'CSVImport')), __('CSVImport'), array('target' => '_blank')))); ?>
+							<?php echo __('You can import data from a CSV file copied into a text box in The Bug Genie, exported from other sources. Please see the %CSVImport wiki article for further details and instructions.', array('%CSVImport' => link_tag(make_url('publish_article', array('article_name' => 'CSVImport')), __('CSVImport'), array('target' => '_blank')))); ?>
 							<div id="csv_button_area" class="button-group">
 								<button class="button" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('configure_import_csv', array('type' => 'issues')); ?>');"><?php echo __('Issues'); ?></button>
 								<button class="button" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('configure_import_csv', array('type' => 'projects')); ?>');"><?php echo __('Projects'); ?></button>
@@ -44,7 +44,7 @@
 						<div class="tab_header"><?php echo __('BUGS 1.x'); ?></div>
 						<div class="tab_content"><?php echo __('Please upgrade to BUGS 1.9, followed by The Bug Genie 2 (an upgrade script is included in the installation package for The Bug Genie 2). After upgrading, then follow the instructions below to upgrade from The Bug Genie 2.'); ?></div>
 						<div class="tab_header"><?php echo __('The Bug Genie 2'); ?></div>
-						<div class="tab_content"><?php echo __("Please upgrade to The Bug Genie 2.1 if you haven't already done so, then follow the %upgrade_instructions% on The Bug Genie wiki to upgrade your data. There is not a built in upgrade script.", array('%upgrade_instructions%' => link_tag('http://issues.thebuggenie.com/wiki/TheBugGenie:ImportFromTheBugGenieVersion2x', __('upgrade instructions')))); ?></div>
+						<div class="tab_content"><?php echo __("Please upgrade to The Bug Genie 2.1 if you haven't already done so, then follow the %upgrade_instructions on The Bug Genie wiki to upgrade your data. There is not a built in upgrade script.", array('%upgrade_instructions' => link_tag('http://issues.thebuggenie.com/wiki/TheBugGenie:ImportFromTheBugGenieVersion2x', __('upgrade instructions')))); ?></div>
 					</div>
 					<div id="tab_sample_pane" style="padding-top: 0; display: none;">
 						<div class="tab_header"><?php echo __('Importing sample data'); ?></div>

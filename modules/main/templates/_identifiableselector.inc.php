@@ -3,7 +3,7 @@
 		<div class="dropdown_header"><?php echo $header; ?></div>
 		<?php if ($allow_clear): ?>
 			<div class="dropdown_content">
-				<a href="javascript:void(0);" onclick="<?php echo str_replace(array(urlencode('%identifiable_value%'), '%identifiable_value%'), array(0, 0), $callback); ?>"><?php echo $clear_link_text; ?></a><br>
+				<a href="javascript:void(0);" onclick="<?php echo str_replace(array(urlencode('%identifiable_value'), '%identifiable_value'), array(0, 0), $callback); ?>"><?php echo $clear_link_text; ?></a><br>
 			</div>
 		<?php endif; ?>
 		<div class="dropdown_content">
@@ -32,7 +32,7 @@
 	<div class="dropdown_content">
 		<?php if ($include_users): ?>
 			<b><?php echo __('Select yourself or a friend below'); ?>:</b><br>
-			<a href="javascript:void(0);" onclick="<?php echo str_replace(array(urlencode('%identifiable_value%'), '%identifiable_value%', urlencode('%identifiable_type%'), '%identifiable_type%'), array($tbg_user->getID(), $tbg_user->getID(), 'user', "'user'"), $callback); ?>"><?php echo __('Select yourself'); ?> (<?php echo $tbg_user->getUsername(); ?>)</a><br>
+			<a href="javascript:void(0);" onclick="<?php echo str_replace(array(urlencode('%identifiable_value'), '%identifiable_value', urlencode('%identifiable_type'), '%identifiable_type'), array($tbg_user->getID(), $tbg_user->getID(), 'user', "'user'"), $callback); ?>"><?php echo __('Select yourself'); ?> (<?php echo $tbg_user->getUsername(); ?>)</a><br>
 			<?php if (count($tbg_user->getFriends()) == 0): ?>
 				<span class="faded_out"><?php echo __("Your friends will appear here"); ?></span><br>
 			<?php else: ?>
@@ -42,12 +42,12 @@
 		<?php if (isset($team_callback) && count($tbg_user->getTeams()) > 0): ?>
 			<br>
 			<?php if ($include_users): ?>
-				<b><?php echo __('%select_yourself_or_a_friend% or select one of your teams', array('%select_yourself_or_a_friend%' => '')); ?>:</b><br>
+				<b><?php echo __('%select_yourself_or_a_friend or select one of your teams', array('%select_yourself_or_a_friend' => '')); ?>:</b><br>
 			<?php else: ?>
 				<b><?php echo __('Select one of your teams'); ?>:</b><br>
 			<?php endif; ?>
 			<?php foreach ($tbg_user->getTeams() as $team): ?>
-				<a href="javascript:void(0);" onclick="<?php echo str_replace(array(urlencode('%identifiable_value%'), '%identifiable_value%', urlencode('%identifiable_type%'), '%identifiable_type%'), array($team->getID(), $team->getID(), 'team', "'team'"), $team_callback); ?>"><?php echo __('Select %teamname%', array('%teamname%' => $team->getName())); ?> (<?php echo $team->getName(); ?>)</a><br>
+				<a href="javascript:void(0);" onclick="<?php echo str_replace(array(urlencode('%identifiable_value'), '%identifiable_value', urlencode('%identifiable_type'), '%identifiable_type'), array($team->getID(), $team->getID(), 'team', "'team'"), $team_callback); ?>"><?php echo __('Select %teamname', array('%teamname' => $team->getName())); ?> (<?php echo $team->getName(); ?>)</a><br>
 			<?php endforeach; ?>
 		<?php endif; ?>
 	</div>

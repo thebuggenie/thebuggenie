@@ -17,7 +17,7 @@
 	</div>
 	<div class="content">
 		<?php if (!$scope->isDefault()): ?>
-			<?php echo __('%num_projects% project(s), %num_issues% issue(s)', array('%num_projects%' => $scope->getNumberOfProjects(), '%num_issues%' => $scope->getNumberOfIssues())); ?>
+			<?php echo __('%num_projects project(s), %num_issues issue(s)', array('%num_projects' => $scope->getNumberOfProjects(), '%num_issues' => $scope->getNumberOfIssues())); ?>
 		<?php endif; ?>
 		<?php if ($scope->isDefault() || !strlen(trim($scope->getDescription()))): ?>
 			<div class="faded_out scope_description">

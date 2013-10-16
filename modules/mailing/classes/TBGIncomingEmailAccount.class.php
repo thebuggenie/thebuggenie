@@ -294,7 +294,7 @@
 			{
 				$error = imap_last_error();
 				$error = ($error === false) ? TBGContext::getI18n()->__('No error message provided') : $error;
-				throw new Exception(TBGContext::getI18n()->__('Could not connect to the specified email server(%connection_string%): %error_message%', array('%connection_string%' => $this->getConnectionString(), '%error_message%' => $error)));
+				throw new Exception(TBGContext::getI18n()->__('Could not connect to the specified email server(%connection_string): %error_message', array('%connection_string' => $this->getConnectionString(), '%error_message' => $error)));
 			}
 		}
 		

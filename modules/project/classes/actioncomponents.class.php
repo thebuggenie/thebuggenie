@@ -208,7 +208,7 @@
 			{
 				$this->build = new TBGBuild();
 				$this->build->setProject(TBGContext::getCurrentProject());
-				$this->build->setName(TBGContext::getI18n()->__('%project_name% version 0.0.0', array('%project_name%' => $this->project->getName())));
+				$this->build->setName(TBGContext::getI18n()->__('%project_name version 0.0.0', array('%project_name' => $this->project->getName())));
 				if (TBGContext::getRequest()->getParameter('edition_id') && $edition = TBGContext::factory()->TBGEdition(TBGContext::getRequest()->getParameter('edition_id')))
 				{
 					$this->build->setEdition($edition);

@@ -4,7 +4,7 @@
 <div id="project_no_description"<?php if (TBGContext::getCurrentProject()->hasDescription()): ?> style="display: none;"<?php endif; ?>><?php echo __('This project has no description'); ?></div>
 <?php if (TBGContext::getCurrentProject()->hasOwner()): ?>
 	<div id="project_owner">
-		<div style="font-weight: bold; float: left; margin: 0 10px 0 0;"><?php echo __('Owned by: %name%', array('%name%' => '')); ?></div>
+		<div style="font-weight: bold; float: left; margin: 0 10px 0 0;"><?php echo __('Owned by: %name', array('%name' => '')); ?></div>
 		<?php if (TBGContext::getCurrentProject()->getOwner() instanceof TBGUser): ?>
 			<div style="width: auto; display: table-cell; clear: none; padding: 0 10px 0 0; ">
 				<?php echo include_component('main/userdropdown', array('user' => TBGContext::getCurrentProject()->getOwner())); ?>
@@ -18,7 +18,7 @@
 <?php endif; ?>
 <?php if (TBGContext::getCurrentProject()->hasLeader()): ?>
 	<div id="project_leader">
-		<div style="font-weight: bold; float: left; margin: 0 10px 0 0;"><?php echo __('Lead by: %name%', array('%name%' => '')); ?></div>
+		<div style="font-weight: bold; float: left; margin: 0 10px 0 0;"><?php echo __('Lead by: %name', array('%name' => '')); ?></div>
 		<?php if (TBGContext::getCurrentProject()->getLeader() instanceof TBGUser): ?>
 			<div style="width: auto; display: table-cell; clear: none; padding: 0 10px 0 0; ">
 				<?php echo include_component('main/userdropdown', array('user' => TBGContext::getCurrentProject()->getLeader())); ?>
@@ -32,7 +32,7 @@
 <?php endif; ?>
 <?php if (TBGContext::getCurrentProject()->hasQaResponsible()): ?>
 	<div id="project_qa">
-		<div style="font-weight: bold; float: left; margin: 0 10px 0 0;"><?php echo __('QA responsible: %name%', array('%name%' => '')); ?></div>
+		<div style="font-weight: bold; float: left; margin: 0 10px 0 0;"><?php echo __('QA responsible: %name', array('%name' => '')); ?></div>
 		<?php if (TBGContext::getCurrentProject()->getQaResponsible() instanceof TBGUser): ?>
 			<div style="width: auto; display: table-cell; clear: none; padding: 0 10px 0 0; ">
 				<?php echo include_component('main/userdropdown', array('user' => TBGContext::getCurrentProject()->getQaResponsible())); ?>
