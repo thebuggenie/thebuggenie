@@ -1,5 +1,5 @@
 <p><?php echo __('Use this page to set up the connection details for your LDAP or Active Directory server. It is highly recommended that you read the online help before use, as misconfiguration may prevent you from accessing configuration pages to rectify issues.'); ?></p>
-<p><b><?php echo link_tag('http://issues.thebuggenie.com/wiki/Category%3ATheBugGenie%3AUserGuide%3AModules%3ALDAP', __('View the online documentation')); ?></b></p>
+<p><b><?php echo link_tag('http://issues.thebuggenie.com/wiki/Category%3ATheBugGenie3AUserGuide%3AModules3ALDAP', __('View the online documentation')); ?></b></p>
 <?php if ($noldap): ?>
 <div class="rounded_box red" style="margin-top: 5px">
 	<div class="header"><?php echo __('LDAP support is not installed'); ?></div>
@@ -105,7 +105,7 @@
 	</div>
 <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 	<div class="rounded_box iceblue borderless cut_top" style="margin: 0 0 5px 0; width: 700px; border-top: 0; padding: 8px 5px 2px 5px; height: 25px;">
-		<div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "%save%" to save the settings', array('%save%' => __('Save'))); ?></div>
+		<div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "%save" to save the settings', array('%save' => __('Save'))); ?></div>
 		<input type="submit" id="submit_settings_button"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
 	</div>
 <?php endif; ?>

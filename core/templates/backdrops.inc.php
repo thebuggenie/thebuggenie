@@ -23,7 +23,7 @@
 	</div>
 </div>
 <div id="fullpage_backdrop" class="fullpage_backdrop" style="display: none;">
-	<div style="position: absolute; top: 45%; left: 40%; z-index: 100001; color: #FFF; font-size: 15px; font-weight: bold;" id="fullpage_backdrop_indicator">
+	<div style="position: absolute; top: 45%; left: 40; z-index: 100001; color: #FFF; font-size: 15px; font-weight: bold;" id="fullpage_backdrop_indicator">
 		<?php echo image_tag('spinning_32.gif'); ?><br>
 		<?php echo __('Please wait ...'); ?>
 	</div>
@@ -93,7 +93,7 @@
 		});
 	</script>
 <?php endif; ?>
-<div id="dialog_backdrop" style="display: none; background-color: transparent; width: 100%; height: 100%; position: fixed; top: 0; left: 0; margin: 0; padding: 0; text-align: center; z-index: 100000;">
+<div id="dialog_backdrop" style="display: none; background-color: transparent; width: 100%; height: 100; position: fixed; top: 0; left: 0; margin: 0; padding: 0; text-align: center; z-index: 100000;">
 	<div id="dialog_backdrop_content" class="fullpage_backdrop_content">
 		<div class="rounded_box shadowed_box white cut_top cut_bottom bigger">
 			<div style="width: 900px; text-align: left; margin: 0 auto; font-size: 13px;">
@@ -108,5 +108,5 @@
 			</div>
 		</div>
 	</div>
-	<div style="background-color: #000; width: 100%; height: 100%; position: absolute; top: 0; left: 0; margin: 0; padding: 0; z-index: 999;" class="semi_transparent"> </div>
+	<div style="background-color: #000; width: 100%; height: 100; position: absolute; top: 0; left: 0; margin: 0; padding: 0; z-index: 999;" class="semi_transparent"> </div>
 </div>

@@ -19,7 +19,7 @@
 			</ul>
 		</div>
 		<p class="teambox_header"><?php echo $team->getName(); ?></p>
-		<p class="teambox_membercount"><?php echo __('ID: %id%', array('%id%' => $team->getID())); ?> - <?php echo __('%number_of% member(s)', array('%number_of%' => '<span id="team_'.$team->getID().'_membercount">'.$team->getNumberOfMembers().'</span>')); ?></p>
+		<p class="teambox_membercount"><?php echo __('ID: %id', array('%id' => $team->getID())); ?> - <?php echo __('%number_of member(s)', array('%number_of' => '<span id="team_'.$team->getID().'_membercount">'.$team->getNumberOfMembers().'</span>')); ?></p>
 		<div class="rounded_box white shadowed" style="margin: 5px; display: none;" id="clone_team_<?php echo $team->getID(); ?>">
 			<div class="dropdown_header"><?php echo __('Please specify what parts of this team you want to clone'); ?></div>
 			<div class="dropdown_content copy_team_link">
@@ -46,7 +46,7 @@
 		</div>
 		<?php include_component('main/identifiableselector', array(	'html_id'		=> "addmember_team_{$team->getID()}",
 																'header' 			=> __('Add a member to this team'),
-																'callback'		 	=> "TBG.Config.Team.addMember('".make_url('configure_users_add_team_member', array('team_id' => $team->getID(), 'user_id' => '%identifiable_value%'))."', ".$team->getID().", '%identifiable_value%');$('addmember_team_{$team->getID()}').hide();",
+																'callback'		 	=> "TBG.Config.Team.addMember('".make_url('configure_users_add_team_member', array('team_id' => $team->getID(), 'user_id' => '%identifiable_value'))."', ".$team->getID().", '%identifiable_value');$('addmember_team_{$team->getID()}').hide();",
 																'base_id'			=> "addmember_team_{$team->getID()}",
 																'include_teams'		=> false,
 																'allow_clear'		=> false,

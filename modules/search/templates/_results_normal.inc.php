@@ -74,7 +74,7 @@
 						<?php $title_visible = (in_array('title', $visible_columns)) ? '' : ' style="display: none;'; ?>
 						<a class="issue_link" href="<?php echo make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())); ?>">
 							<?php if ($issue->countFiles()): ?>
-								<?php echo image_tag('icon_attached_information.png', array('title' => __('This issue has %num% attachments', array('%num%' => $issue->countFiles())))); ?>
+								<?php echo image_tag('icon_attached_information.png', array('title' => __('This issue has %num attachments', array('%num' => $issue->countFiles())))); ?>
 							<?php endif; ?>
 							<?php if ($issue->isLocked()): ?>
 								<?php echo image_tag('icon_locked.png', array('title' => __('Access to this issue is restricted'))); ?>

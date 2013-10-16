@@ -18,7 +18,7 @@ $all_columns = $selected_project->getIssueFields(false, array('status', 'milesto
 							<li class="pcs_<?php echo $fieldname; ?>">
 								<label>
 									<input type="checkbox" name="planning_column[<?php echo $fieldname; ?>]" value="<?php echo $fieldname; ?>" <?php if (isset($selected_columns[$fieldname])): ?> checked<?php endif; ?>/>
-									<div><?php echo __('Show %fieldlabel%', array('%fieldlabel%' => $fieldopts['label'])); ?></div>
+									<div><?php echo __('Show %fieldlabel', array('%fieldlabel' => $fieldopts['label'])); ?></div>
 								</label>
 							</li>
 						<?php endforeach; ?>

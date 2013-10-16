@@ -1,7 +1,7 @@
 <?php
 
 	if ($workflow instanceof TBGWorkflow)
-		$tbg_response->setTitle(__('Configure workflow "%workflow_name%"', array('%workflow_name%' => $workflow->getName())));
+		$tbg_response->setTitle(__('Configure workflow "%workflow_name"', array('%workflow_name' => $workflow->getName())));
 	else
 		$tbg_response->setTitle(__('Configure workflows'));
 	
@@ -14,7 +14,7 @@
 			<div class="content" style="width: 730px;" id="workflow_step_container">
 				<?php if ($transition instanceof TBGWorkflowTransition): ?>
 					<div class="workflow_step_intro">
-						<div class="header"><?php echo __('Transition "%transition_name%"', array('%transition_name%' => $transition->getName())); ?></div>
+						<div class="header"><?php echo __('Transition "%transition_name"', array('%transition_name' => $transition->getName())); ?></div>
 						<div class="content">
 							<?php echo __('This page shows all the available details for this transition for the selected workflow, as well as incoming and outgoing steps from this transition.'); ?>
 							<?php echo __('You can edit all details about the selected transitions from this page.'); ?><br>
@@ -39,7 +39,7 @@
 								{
 									$output[] = '<div class="workflow_browser_step_transition">'.link_tag(make_url('configure_workflow_step', array('workflow_id' => $step->getWorkflow()->getID(), 'step_id' => $step->getID())), $step->getName())."</div>";
 								}
-								$glue = "<div class=\"faded_out\">".__('%a_workflow_step_transition% or %a_workflow_step_transition%', array('%a_workflow_step_transition%' => ''))."</div>";
+								$glue = "<div class=\"faded_out\">".__('%a_workflow_step_transition or %a_workflow_step_transition', array('%a_workflow_step_transition' => ''))."</div>";
 								echo join($glue, $output);
 
 								?>
@@ -104,7 +104,7 @@
 								<br style="clear: both;">
 								<div style="text-align: right; clear: both; padding: 10px 0 0 0;" id="update_transition_buttons">
 									<input type="submit" value="<?php echo __('Update transition details'); ?>" name="edit">
-									<?php echo __('%update_transition_details% or %cancel%', array('%update_transition_details%' => '', '%cancel%' => '')); ?>
+									<?php echo __('%update_transition_details or %cancel', array('%update_transition_details' => '', '%cancel' => '')); ?>
 									<b><?php echo javascript_link_tag(__('cancel'), array('onclick' => "\$('transition_details_form').toggle();\$('transition_details_info').toggle();")); ?></b>
 								</div>
 								<div style="text-align: right; padding: 10px 0 10px 0; display: none;" id="transition_update_indicator"><span style="float: right;"><?php echo image_tag('spinning_16.gif'); ?></span>&nbsp;<?php echo __('Please wait'); ?></div>

@@ -1,7 +1,7 @@
 <?php
 
 	$tbg_response->addBreadcrumb(__('Roadmap'), null, tbg_get_breadcrumblinks('project_summary', $selected_project));
-	$tbg_response->setTitle(__('"%project_name%" roadmap', array('%project_name%' => $selected_project->getName())));
+	$tbg_response->setTitle(__('"%project_name" roadmap', array('%project_name' => $selected_project->getName())));
 
 ?>
 			<?php include_template('project/projectheader', array('selected_project' => $selected_project)); ?>
@@ -28,12 +28,12 @@
 								<div class="roadmap_percentdescription">
 									<?php if ($milestone->isSprint()): ?>
 										<?php if ($milestone->countClosedIssues() == 1): ?>
-											<?php echo __('%num_closed% story (%closed_points% pts) closed of %num_assigned% (%assigned_points% pts) assigned', array('%num_closed%' => '<b id="milestone_'.$milestone->getID().'_closed_issues">'.$milestone->countClosedIssues().'</b>', '%closed_points%' => '<i id="milestone_'.$milestone->getID().'_closed_points">'.$milestone->getPointsSpent().'</i>', '%num_assigned%' => '<b id="milestone_'.$milestone->getID().'_assigned_issues">'.$milestone->countIssues().'</b>', '%assigned_points%' => '<i id="milestone_'.$milestone->getID().'_assigned_points">'.$milestone->getPointsEstimated().'</i>')); ?>
+											<?php echo __('%num_closed story (%closed_points pts) closed of %num_assigned (%assigned_points pts) assigned', array('%num_closed' => '<b id="milestone_'.$milestone->getID().'_closed_issues">'.$milestone->countClosedIssues().'</b>', '%closed_points' => '<i id="milestone_'.$milestone->getID().'_closed_points">'.$milestone->getPointsSpent().'</i>', '%num_assigned' => '<b id="milestone_'.$milestone->getID().'_assigned_issues">'.$milestone->countIssues().'</b>', '%assigned_points' => '<i id="milestone_'.$milestone->getID().'_assigned_points">'.$milestone->getPointsEstimated().'</i>')); ?>
 										<?php else: ?>
-											<?php echo __('%num_closed% stories (%closed_points% pts) closed of %num_assigned% (%assigned_points% pts) assigned', array('%num_closed%' => '<b id="milestone_'.$milestone->getID().'_closed_issues">'.$milestone->countClosedIssues().'</b>', '%closed_points%' => '<i id="milestone_'.$milestone->getID().'_closed_points">'.$milestone->getPointsSpent().'</i>', '%num_assigned%' => '<b id="milestone_'.$milestone->getID().'_assigned_issues">'.$milestone->countIssues().'</b>', '%assigned_points%' => '<i id="milestone_'.$milestone->getID().'_assigned_points">'.$milestone->getPointsEstimated().'</i>')); ?>
+											<?php echo __('%num_closed stories (%closed_points pts) closed of %num_assigned (%assigned_points pts) assigned', array('%num_closed' => '<b id="milestone_'.$milestone->getID().'_closed_issues">'.$milestone->countClosedIssues().'</b>', '%closed_points' => '<i id="milestone_'.$milestone->getID().'_closed_points">'.$milestone->getPointsSpent().'</i>', '%num_assigned' => '<b id="milestone_'.$milestone->getID().'_assigned_issues">'.$milestone->countIssues().'</b>', '%assigned_points' => '<i id="milestone_'.$milestone->getID().'_assigned_points">'.$milestone->getPointsEstimated().'</i>')); ?>
 										<?php endif; ?>
 									<?php else: ?>
-										<?php echo __('%num_closed% issue(s) closed of %num_assigned% assigned', array('%num_closed%' => '<b id="milestone_'.$milestone->getID().'_closed_issues">'.$milestone->countClosedIssues().'</b>', '%num_assigned%' => '<b id="milestone_'.$milestone->getID().'_assigned_issues">'.$milestone->countIssues().'</b>')); ?>
+										<?php echo __('%num_closed issue(s) closed of %num_assigned assigned', array('%num_closed' => '<b id="milestone_'.$milestone->getID().'_closed_issues">'.$milestone->countClosedIssues().'</b>', '%num_assigned' => '<b id="milestone_'.$milestone->getID().'_assigned_issues">'.$milestone->countIssues().'</b>')); ?>
 									<?php endif; ?>
 								</div>
 							</div>

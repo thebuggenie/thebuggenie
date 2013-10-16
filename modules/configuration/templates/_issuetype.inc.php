@@ -81,11 +81,11 @@
 						<?php endif; ?>
 						<td>
 							<?php if ($scheme->isCore()): ?>
-								<?php echo ($scheme->isIssuetypeRedirectedAfterReporting($type)) ? __('The user is redirected to the reported issue after it has been reported') : __('A blank "%report_issue%" page with a link to the reported issue at the top will be shown after the issue is reported', array('%report_issue%' => __('Report issue'))); ?>
+								<?php echo ($scheme->isIssuetypeRedirectedAfterReporting($type)) ? __('The user is redirected to the reported issue after it has been reported') : __('A blank "%report_issue" page with a link to the reported issue at the top will be shown after the issue is reported', array('%report_issue' => __('Report issue'))); ?>
 							<?php else: ?>
 								<select name="redirect_after_reporting" id="issuetype_<?php echo $type->getID(); ?>_redirect">
 									<option value="1"<?php if ($scheme->isIssuetypeRedirectedAfterReporting($type)): ?> selected<?php endif; ?>><?php echo __('The user is redirected to the reported issue after it has been reported'); ?></option>
-									<option value="0"<?php if (!$scheme->isIssuetypeRedirectedAfterReporting($type)): ?> selected<?php endif; ?>><?php echo __('A blank "%report_issue%" page with a link to the reported issue at the top will be shown after the issue is reported', array('%report_issue%' => __('Report issue'))); ?></option>
+									<option value="0"<?php if (!$scheme->isIssuetypeRedirectedAfterReporting($type)): ?> selected<?php endif; ?>><?php echo __('A blank "%report_issue" page with a link to the reported issue at the top will be shown after the issue is reported', array('%report_issue' => __('Report issue'))); ?></option>
 								</select>
 								<div class="faded_out" style="margin-bottom: 10px; padding: 2px; font-size: 12px;"><?php echo __('Whether to forward the user to the reported issue after it has been reported'); ?>.</div>
 							<?php endif; ?>
@@ -95,7 +95,7 @@
 			</table>
 			<?php if (!isset($scheme) || !$scheme->isCore()): ?>
 				<input type="submit" value="<?php echo __('Update details'); ?>" style="font-weight: bold; font-size: 13px;">
-				<?php echo __('%update_details% or %cancel%', array('%update_details%' => '', '%cancel%' => '<a href="javascript:void(0);" onclick="$(\'edit_issuetype_' . $type->getID() . '_form\').toggle();$(\'issuetype_' . $type->getID() . '_info\').toggle();"><b>' . __('cancel') . '</b></a>')); ?>
+				<?php echo __('%update_details or %cancel', array('%update_details' => '', '%cancel' => '<a href="javascript:void(0);" onclick="$(\'edit_issuetype_' . $type->getID() . '_form\').toggle();$(\'issuetype_' . $type->getID() . '_info\').toggle();"><b>' . __('cancel') . '</b></a>')); ?>
 			<?php endif; ?>
 		</div>
 	<?php if (!isset($scheme) || !$scheme->isCore()): ?>

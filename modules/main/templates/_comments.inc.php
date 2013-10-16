@@ -29,7 +29,7 @@
 						<br><br>
 					<?php endif; ?>
 					<input type="hidden" name="forward_url" value="<?php echo $forward_url; ?>">
-					<?php echo __('%create_comment% or %cancel%', array('%create_comment%' => '<input type="submit" class="button button-green" value="'.__('Create comment').'" />', '%cancel%' => javascript_link_tag(__('cancel'), array('onclick'=> "$('comment_add').hide();$('comment_add_button').show();")))); ?>
+					<?php echo __('%create_comment or %cancel', array('%create_comment' => '<input type="submit" class="button button-green" value="'.__('Create comment').'" />', '%cancel' => javascript_link_tag(__('cancel'), array('onclick'=> "$('comment_add').hide();$('comment_add_button').show();")))); ?>
 				</div>
 			</form>
 		</div>

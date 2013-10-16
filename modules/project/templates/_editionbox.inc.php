@@ -12,7 +12,7 @@
 </li>
 <li id="edition_<?php echo $edition->getID(); ?>_permissions" style="display: none;">
 	<div class="rounded_box white" style="margin: 5px 0 10px 0; padding: 3px; font-size: 12px;">
-		<div class="header"><?php echo __('Permission details for "%itemname%"', array('%itemname%' => $edition->getName())); ?></div>
+		<div class="header"><?php echo __('Permission details for "%itemname"', array('%itemname' => $edition->getName())); ?></div>
 		<div class="content">
 			<?php echo __('Specify who can access this edition.'); ?>
 			<?php include_component('configuration/permissionsinfo', array('key' => 'canseeedition', 'mode' => 'project_hierarchy', 'target_id' => $edition->getID(), 'module' => 'core', 'access_level' => $access_level)); ?>

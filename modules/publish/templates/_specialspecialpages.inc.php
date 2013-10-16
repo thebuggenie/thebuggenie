@@ -2,7 +2,7 @@
 	<div class="header"><?php echo __('Wiki special pages'); ?></div>
 	<?php if (TBGContext::isProjectContext()): ?>
 		<div class="greybox" style="margin: 15px;">
-			<?php echo __('Note: This page lists all project-specific special pages for "%project_name%". For a list of global special pages, see %special_pages%', array('%project_name%' => TBGContext::getCurrentProject()->getName(), '%special_pages%' => link_tag(make_url('publish_article', array('article_name' => "Special:SpecialPages")), __('Special pages')))); ?>
+			<?php echo __('Note: This page lists all project-specific special pages for "%project_name". For a list of global special pages, see %special_pages', array('%project_name' => TBGContext::getCurrentProject()->getName(), '%special_pages' => link_tag(make_url('publish_article', array('article_name' => "Special:SpecialPages")), __('Special pages')))); ?>
 		</div>
 	<?php endif; ?>
 	<p>

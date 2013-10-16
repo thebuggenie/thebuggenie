@@ -18,7 +18,7 @@
 	</div>
 	<div id="backdrop_detail_content" class="backdrop_detail_content">
 		<div class="content" style="padding: 4px;">
-			<?php echo __('The Bug Genie can check email accounts and create issues from incoming emails. Set up a new account here, and check the %online_documentation% for more information.', array('%online_documentation%' => link_tag('http://issues.thebuggenie.com/wiki/TheBugGenie:IncomingEmail', '<b>'.__('online documentation').'</b>'))); ?>
+			<?php echo __('The Bug Genie can check email accounts and create issues from incoming emails. Set up a new account here, and check the %online_documentation for more information.', array('%online_documentation' => link_tag('http://issues.thebuggenie.com/wiki/TheBugGenie:IncomingEmail', '<b>'.__('online documentation').'</b>'))); ?>
 		</div>
 		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" id="incoming_email_account_form" action="<?php echo make_url('mailing_save_incoming_account', array('project_key' => $project->getKey())); ?>" method="post" id="build_form" onsubmit="TBG.Modules.mailing.saveIncomingEmailAccount('<?php echo make_url('mailing_save_incoming_account', array('project_key' => $project->getKey())); ?>');return false;">
 			<input type="hidden" name="account_id" value="<?php echo $account->getID(); ?>">
@@ -122,9 +122,9 @@
 					<td colspan="2" style="padding: 10px 0 10px 10px; text-align: right;">
 						<div style="float: left; font-size: 13px; padding-top: 2px; font-style: italic;" class="config_explanation">
 							<?php if ($account->getId()): ?>
-								<?php echo __('When you are done, click "%save_changes%" to update the details for this account', array('%save_changes%' => __('Save changes'))); ?>
+								<?php echo __('When you are done, click "%save_changes" to update the details for this account', array('%save_changes' => __('Save changes'))); ?>
 							<?php else: ?>
-								<?php echo __('When you are done, click "%add_account%" to add this account', array('%add_account%' => __('Add account'))); ?>
+								<?php echo __('When you are done, click "%add_account" to add this account', array('%add_account' => __('Add account'))); ?>
 							<?php endif; ?>
 						</div>
 						<?php if ($account->getID()): ?>

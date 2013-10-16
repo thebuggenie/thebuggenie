@@ -5,7 +5,7 @@
 	<div id="backdrop_detail_content" class="backdrop_detail_content">
 		<div style="padding: 5px;">
 			<div class="header">
-				<?php echo __('Importing %type%', array('%type%' => __($type))); ?>
+				<?php echo __('Importing %type', array('%type' => __($type))); ?>
 			</div>
 			<p class="faded_out"><?php echo __('By default a dry-run will be used so any errors in your data can be found and fixed before importing proper. To turn off the dry-run mode, uncheck the box below.'); ?></p>
 		</div>

@@ -7,7 +7,7 @@
 		},
 		2: {
 			highlight: {element: 'global_help_link', blocked: true, delay: 500},
-			message: "<h3><?php echo __('Getting help'); ?></h3><?php echo __("Remember that you can always get help on any page in The Bug Genie by clicking '%help_for_this_page%' in the user menu.", array('%help_for_this_page%' => __('Help for this page'))).'<br>'.__("This will take you to the online help page for the specific page you are on."); ?>",
+			message: "<h3><?php echo __('Getting help'); ?></h3><?php echo __("Remember that you can always get help on any page in The Bug Genie by clicking '%help_for_this_page' in the user menu.", array('%help_for_this_page' => __('Help for this page'))).'<br>'.__("This will take you to the online help page for the specific page you are on."); ?>",
 			messageSize: 'large',
 			messagePosition: 'left',
 			button: "<?php echo __('Got it!'); ?>",

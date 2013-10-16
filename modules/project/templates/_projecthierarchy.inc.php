@@ -27,7 +27,7 @@
 		<?php endforeach; ?>
 	</ul>
 </div>
-<div style="padding: 2px 5px 5px 5px;<?php if ($project->isEditionsEnabled()): ?> display: none;<?php endif; ?>" id="project_editions_disabled" class="faded_out"><?php echo __('This project does not use editions. Editions can be enabled in %advanced_settings%', array('%advanced_settings%' => javascript_link_tag(__('Advanced settings'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_settings', 'project_config_menu');")))); ?>.</div>
+<div style="padding: 2px 5px 5px 5px;<?php if ($project->isEditionsEnabled()): ?> display: none;<?php endif; ?>" id="project_editions_disabled" class="faded_out"><?php echo __('This project does not use editions. Editions can be enabled in %advanced_settings', array('%advanced_settings' => javascript_link_tag(__('Advanced settings'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_settings', 'project_config_menu');")))); ?>.</div>
 <h3>
 	<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 		<div class="button button-green" id="add_component_button" style="float: right; margin-top: -3px;<?php if (!$project->isComponentsEnabled()): ?> display: none;<?php endif; ?>" onclick="$('add_component_form').toggle();if ($('add_component_form').visible()) $('component_name').focus();"><?php echo __('Add a component'); ?></div>
@@ -59,4 +59,4 @@
 		</tbody>
 	</table>
 </div>
-<div style="padding: 2px 5px 5px 5px;<?php if ($project->isComponentsEnabled()): ?> display: none;<?php endif; ?>" id="project_components_disabled" class="faded_out"><?php echo __('This project does not use components. Components can be enabled in %advanced_settings%', array('%advanced_settings%' => javascript_link_tag(__('Advanced settings'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_settings', 'project_config_menu');")))); ?>.</div>
+<div style="padding: 2px 5px 5px 5px;<?php if ($project->isComponentsEnabled()): ?> display: none;<?php endif; ?>" id="project_components_disabled" class="faded_out"><?php echo __('This project does not use components. Components can be enabled in %advanced_settings', array('%advanced_settings' => javascript_link_tag(__('Advanced settings'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_settings', 'project_config_menu');")))); ?>.</div>

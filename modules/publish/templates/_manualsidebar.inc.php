@@ -1,7 +1,7 @@
 <div id="manual_sidebar">
 	<h3>
 		<?php if (TBGContext::isProjectContext()): ?>
-			<?php echo __('%project% manual', array('%project%' => TBGContext::getCurrentProject()->getName())); ?>
+			<?php echo __('%project manual', array('%project' => TBGContext::getCurrentProject()->getName())); ?>
 		<?php else: ?>
 			<?php echo __('Main manual'); ?>
 		<?php endif; ?>

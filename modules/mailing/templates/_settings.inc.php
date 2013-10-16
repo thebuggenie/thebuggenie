@@ -53,7 +53,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="config_explanation" colspan="2"><?php echo __("If you're using a queue, outgoing emails will not slow down the system. Read more about how to set up email queueing in %email_queueing%", array('%email_queueing%' => link_tag(make_url('@publish_article?article_name=EmailQueueing'), 'EmailQueueing'))); ?></td>
+				<td class="config_explanation" colspan="2"><?php echo __("If you're using a queue, outgoing emails will not slow down the system. Read more about how to set up email queueing in %email_queueing", array('%email_queueing' => link_tag(make_url('@publish_article?article_name=EmailQueueing'), 'EmailQueueing'))); ?></td>
 			</tr>
 			<tr>
 				<td style="padding: 5px;"><label for="mail_type_php"><?php echo __('Mail configuration'); ?></label></td>
@@ -86,7 +86,7 @@
 			</tr>
 			<tr>
 				<td style="padding: 5px;"><label for="timeout"><?php echo __('SMTP server timeout'); ?></label></td>
-				<td><input type="text" name="timeout" id="timeout" value="<?php echo $module->getSetting('timeout'); ?>" style="width: 40px;"<?php echo ($access_level != TBGSettings::ACCESS_FULL || !$module->isOutgoingNotificationsEnabled()) ? ' disabled' : ''; ?>><?php echo __('%number_of% seconds', array('%number_of%' => '')); ?></td>
+				<td><input type="text" name="timeout" id="timeout" value="<?php echo $module->getSetting('timeout'); ?>" style="width: 40px;"<?php echo ($access_level != TBGSettings::ACCESS_FULL || !$module->isOutgoingNotificationsEnabled()) ? ' disabled' : ''; ?>><?php echo __('%number_of seconds', array('%number_of' => '')); ?></td>
 			</tr>
 			<tr>
 				<td class="config_explanation" colspan="2"><?php echo __('Connection information for the outgoing email server'); ?></td>
@@ -122,7 +122,7 @@
 	</div>
 <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 	<div class="bluebox" style="margin: 0 0 5px 0;">
-		<?php echo __('Click "%save%" to save email notification settings', array('%save%' => __('Save'))); ?>
+		<?php echo __('Click "%save" to save email notification settings', array('%save' => __('Save'))); ?>
 		<input type="submit" id="submit_settings_button" style="margin: -3px -3px 0 0; float: right; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
 	</div>
 <?php endif; ?>
@@ -138,7 +138,7 @@
 				<tr>
 					<td class="config_explanation" colspan="2" style="font-size: 13px;">
 						<span class="faded_out">
-							<?php echo __('Enter an email address, and click "%send_test_email%" to check if the email module is configured correctly', array('%send_test_email%' => __('Send test email'))); ?>
+							<?php echo __('Enter an email address, and click "%send_test_email" to check if the email module is configured correctly', array('%send_test_email' => __('Send test email'))); ?>
 						</span>
 					</td>
 				</tr>

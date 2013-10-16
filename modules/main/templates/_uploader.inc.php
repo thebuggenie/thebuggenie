@@ -17,7 +17,7 @@
 						<dl>
 							<dt style="width: 120px;"><label for="uploader_file"><?php echo __('Select a file'); ?></label></dt>
 							<dd style="margin-bottom: 3px;"><input type="file" name="uploader_file" id="uploader_file"></dd>
-							<dd style="width: 100%;"><?php echo __('Files bigger than %max_filesize% can not be attached. Please check that the file you are attaching is not bigger than this.', array('%max_filesize%' => '<b>'.TBGSettings::getUploadsEffectiveMaxSize().'MB</b>')); ?></dd>
+							<dd style="width: 100%;"><?php echo __('Files bigger than max_filesize% can not be attached. Please check that the file you are attaching is not bigger than this.', array('max_filesize%' => '<b>'.TBGSettings::getUploadsEffectiveMaxSize().'MB</b>')); ?></dd>
 							<dt style="width: 120px;"><label for="upload_file_description"><?php echo __('Describe the file'); ?></label></dt>
 							<dd style="margin-bottom: 3px;"><input type="text" name="uploader_file_description" id="upload_file_description" style="width: 440px;"></dd>
 							<dd class="faded_out" style="width: 100%;"><?php echo __('Enter a few words about the file, so people can understand what it is/does'); ?></dd>
@@ -29,7 +29,7 @@
 						<?php endif; ?>
 					</div>
 					<div style="text-align: center; clear: both;" id="upload_and_attach">
-						<p style="margin-bottom: 5px;"><?php echo __('Press the %upload_and_attach% button to upload and attach the file', array('%upload_and_attach%' => '<i>'.__('Upload and attach').'</i>')); ?></p>
+						<p style="margin-bottom: 5px;"><?php echo __('Press the %upload_and_attach button to upload and attach the file', array('%upload_and_attach' => '<i>'.__('Upload and attach').'</i>')); ?></p>
 						<input type="submit" name="submit" value="<?php echo __('Upload and attach'); ?>" style="font-weight: bold; font-size: 13px;">
 					</div>
 				</form>
@@ -57,7 +57,7 @@
 			</div>
 			<div class="faded_out" id="uploader_no_uploaded_files"<?php if (count($existing_files) > 0): ?> style="display: none;"<?php endif; ?>><?php echo __("You haven't uploaded any files right now (not including already attached files)"); ?></div>
 			<div id="done_div">
-				<?php echo __('Click %done% when you have uploaded the files you want to attach', array('%done%' => '<a href="javascript:void(0)" onclick="$(\'attach_file\').hide();"><b>'.__('Done').'</b></a>')); ?>
+				<?php echo __('Click %done when you have uploaded the files you want to attach', array('%done' => '<a href="javascript:void(0)" onclick="$(\'attach_file\').hide();"><b>'.__('Done').'</b></a>')); ?>
 			</div>
 		</div>
 		<div class="backdrop_detail_footer">

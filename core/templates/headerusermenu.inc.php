@@ -10,7 +10,7 @@
 			<div class="header" style="margin-bottom: 5px;">
 				<a href="javascript:void(0);" onclick="$('usermenu_changestate').toggle();" id="usermenu_changestate_toggler" class="button button-lightblue"><?php echo __('Change'); ?></a>
 				<?php echo image_tag('spinning_16.gif', array('style' => 'display: none;', 'id' => 'change_userstate_dropdown')); ?>
-				<?php echo __('You are: %userstate%', array('%userstate%' => '<span class="current_userstate userstate">'.__($tbg_user->getState()->getName()).'</span>')); ?>
+				<?php echo __('You are: %userstate', array('%userstate' => '<span class="current_userstate userstate">'.__($tbg_user->getState()->getName()).'</span>')); ?>
 			</div>
 			<div id="usermenu_changestate" style="display: none;" onclick="$('usermenu_changestate').toggle();">
 				<?php foreach (TBGUserstate::getAll() as $state): ?>
@@ -28,7 +28,7 @@
 				<?php echo link_tag(make_url('switch_back_user'), image_tag('switchuser.png').__('Switch back to original user')); ?>
 			<?php endif; ?>
 			<?php if ($tbg_user->canAccessConfigurationPage()): ?>
-				<?php echo link_tag(make_url('configure'), image_tag('tab_config.png').__('Configure %thebuggenie_name%', array('%thebuggenie_name%' => TBGSettings::getTBGname()))); ?>
+				<?php echo link_tag(make_url('configure'), image_tag('tab_config.png').__('Configure %thebuggenie_name', array('%thebuggenie_name' => TBGSettings::getTBGname()))); ?>
 			<?php endif; ?>
 			<?php TBGEvent::createNew('core', 'user_dropdown_reg')->trigger(); ?>
 			<?php echo link_tag('http://www.thebuggenie.com/help/'.TBGContext::getRouting()->getCurrentRouteName(), image_tag('help.png').__('Help for this page')); ?>

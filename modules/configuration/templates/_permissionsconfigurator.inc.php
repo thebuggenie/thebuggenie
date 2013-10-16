@@ -8,7 +8,7 @@
 </div>
 <div id="permissions_<?php echo $base_id; ?>_tabs_panes" class="permission_list">
 	<div id="<?php echo $base_id; ?>_tab_general_pane" class="tab_pane">
-		<p><?php echo __('These permissions control what you can do in The Bug Genie. Some of these permissions are also available as project-specific permissions, from the "%project_specific_permissions%" tab.', array('%project_specific_permissions%' => '<i>'.__('Project-specific permissions').'</i>')); ?></p>
+		<p><?php echo __('These permissions control what you can do in The Bug Genie. Some of these permissions are also available as project-specific permissions, from the "%project_specific_permissions" tab.', array('%project_specific_permissions' => '<i>'.__('Project-specific permissions').'</i>')); ?></p>
 		<ul>
 			<?php include_template('configuration/permissionsblock', array('base_id' => $base_id . 'general_permissions', 'permissions_list' => TBGContext::getAvailablePermissions('general'), 'mode' => 'general', 'target_id' => 0, 'module' => 'core', 'user_id' => $user_id, 'access_level' => $access_level)); ?>
 			<?php include_template('configuration/permissionsblock', array('base_id' => $base_id . 'user_permissions', 'permissions_list' => TBGContext::getAvailablePermissions('user'), 'mode' => 'user', 'target_id' => 0, 'module' => 'core', 'user_id' => $user_id, 'access_level' => $access_level)); ?>
@@ -17,7 +17,7 @@
 		</ul>
 	</div>
 	<div id="<?php echo $base_id; ?>_tab_pages_pane" class="tab_pane" style="display: none;">
-		<p><?php echo __('These permissions control which pages you can access in The Bug Genie. Some of these permissions are also available as project-specific permissions, from the "%project_specific_permissions%" tab.', array('%project_specific_permissions%' => '<i>'.__('Project-specific permissions').'</i>')); ?></p>
+		<p><?php echo __('These permissions control which pages you can access in The Bug Genie. Some of these permissions are also available as project-specific permissions, from the "%project_specific_permissions" tab.', array('%project_specific_permissions' => '<i>'.__('Project-specific permissions').'</i>')); ?></p>
 		<ul>
 			<?php include_template('configuration/permissionsblock', array('base_id' => $base_id . 'page_permissions', 'permissions_list' => TBGContext::getAvailablePermissions('pages'), 'mode' => 'pages', 'target_id' => 0, 'module' => 'core', 'user_id' => $user_id, 'access_level' => $access_level)); ?>
 			<?php include_template('configuration/permissionsblock', array('base_id' => $base_id . 'configuration_permissions', 'permissions_list' => TBGContext::getAvailablePermissions('configuration'), 'mode' => 'configuration', 'target_id' => 0, 'module' => 'core', 'user_id' => $user_id, 'access_level' => $access_level)); ?>
@@ -25,7 +25,7 @@
 		</ul>
 	</div>
 	<div id="<?php echo $base_id; ?>_tab_modules_pane" class="tab_pane" style="display: none;">
-		<p><?php echo __('Module-specific permissions are also available from the "%configure_modules%" configuration page', array('%configure_modules%' => link_tag(make_url('configure_modules'), __('Configure modules')))); ?></p>
+		<p><?php echo __('Module-specific permissions are also available from the "%configure_modules" configuration page', array('%configure_modules' => link_tag(make_url('configure_modules'), __('Configure modules')))); ?></p>
 		<ul>
 		<?php foreach (TBGContext::getModules() as $module_key => $module): ?>
 			<li>
@@ -38,7 +38,7 @@
 		</ul>
 	</div>
 	<div id="<?php echo $base_id; ?>_tab_projects_pane" class="tab_pane" style="display: none;">
-		<p><?php echo __('These permissions control what you can do, and which pages you can access in The Bug Genie - on a project-specific basis. Some of these permissions are also available as site-wide permissions, from the "%general_permissions%" tab.', array('%general_permissions%' => '<i>'.__('General permissions').'</i>')); ?></p>
+		<p><?php echo __('These permissions control what you can do, and which pages you can access in The Bug Genie - on a project-specific basis. Some of these permissions are also available as site-wide permissions, from the "%general_permissions" tab.', array('%general_permissions' => '<i>'.__('General permissions').'</i>')); ?></p>
 		<?php if (count(TBGProject::getAll()) > 0): ?>
 			<ul>
 				<?php foreach (TBGProject::getAll() as $project): ?>

@@ -2,7 +2,7 @@
 
 	include_template('publish/wikibreadcrumbs', array('article_name' => $article_name, 'edit' => true));
 	TBGContext::loadLibrary('publish/publish');
-	$tbg_response->setTitle(__('Editing %article_name%', array('%article_name%' => $article_name)));
+	$tbg_response->setTitle(__('Editing %article_name', array('%article_name' => $article_name)));
 
 ?>
 <table style="margin-top: 0px; table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>

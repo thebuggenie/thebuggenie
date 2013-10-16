@@ -16,7 +16,7 @@
 		<?php endif; ?>
 	</div>
 	<div id="security_key" style="display: none; position: absolute; width: 350px; padding: 10px; top: 23px; right: 0; z-index: 1000;" class="rounded_box white shadowed popup_box">
-		<?php echo __('Your security key is %securitykey%', array('%securitykey%' => '<b>'.TBGSettings::getRemoteSecurityKey().'</b>')); ?>
+		<?php echo __('Your security key is %securitykey', array('%securitykey' => '<b>'.TBGSettings::getRemoteSecurityKey().'</b>')); ?>
 	</div>
 	<ul id="more_actions" style="display: none; position: absolute; width: 300px; top: 23px; margin-top: 0; right: 0; z-index: 1000;" class="simple_list rounded_box white shadowed popup_box more_actions_dropdown" onclick="$('more_actions_button').toggleClassName('button-pressed');$('more_actions').toggle();">
 		<li><?php echo link_tag(make_url('my_reported_issues'), image_tag('tab_search.png', array('style' => 'float: left; margin-right: 5px;')).__("Show issues I've reported")); ?></li>
@@ -28,13 +28,13 @@
 			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_check_username'); ?>" onsubmit="TBG.Main.Profile.checkUsernameAvailability('<?php echo make_url('account_check_username'); ?>'); return false;" method="post" id="check_username_form">
 				<b><?php echo __('Picking a username'); ?></b><br>
 				<div style="font-size: 13px; margin-bottom: 10px;"><?php echo __('Since this account was created via an OpenID login, you will have to pick a username to be able to log in with a username or password. You can continue to use your account with your OpenID login, so this is only if you want to pick a username for your account.'); ?><br>
-				<br><?php echo __('Click "%check_availability%" to see if your desired username is available.', array('%check_availability%' => __('Check availability'))); ?></div>
+				<br><?php echo __('Click "%check_availability" to see if your desired username is available.', array('%check_availability' => __('Check availability'))); ?></div>
 				<label for="username_pick" class="smaller"><?php echo __('Type desired username'); ?></label><br>
 				<input type="text" name="desired_username" id="username_pick" style="width: 390px;"><br>
 				<?php echo csrf_tag(); ?>
 				<div id="username_unavailable" style="display: none;"><?php echo __('This username is not available'); ?></div>
 				<div class="smaller" style="text-align: right; margin: 10px 2px 5px 0; height: 23px;">
-					<div style="float: right; padding: 3px;"><?php echo __('%check_availability% or %cancel%', array('%check_availability%' => '', '%cancel%' => '<a href="javascript:void(0);" onclick="$(\'pick_username_div\').toggle();$(\'pick_username_button\').toggleClassName(\'button-pressed\');"><b>' . __('cancel') . '</b></a>')); ?></div>
+					<div style="float: right; padding: 3px;"><?php echo __('%check_availability or %cancel', array('%check_availability' => '', '%cancel' => '<a href="javascript:void(0);" onclick="$(\'pick_username_div\').toggle();$(\'pick_username_button\').toggleClassName(\'button-pressed\');"><b>' . __('cancel') . '</b></a>')); ?></div>
 					<input type="submit" value="<?php echo __('Check availability'); ?>" style="font-weight: bold; float: right;">
 					<span id="pick_username_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
 				</div>
@@ -49,7 +49,7 @@
 				<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_change_password'); ?>" onsubmit="TBG.Main.Profile.changePassword('<?php echo make_url('account_change_password'); ?>'); return false;" method="post" id="change_password_form">
 					<b><?php echo __('Changing your password'); ?></b><br>
 					<div style="font-size: 13px; margin-bottom: 10px;"><?php echo __('Enter your current password in the first box, then enter your new password twice (to prevent you from typing mistakes).'); ?><br>
-					<br><?php echo __('Click "%change_password%" to change it.', array('%change_password%' => __('Change password'))); ?></div>
+					<br><?php echo __('Click "%change_password" to change it.', array('%change_password' => __('Change password'))); ?></div>
 					<label for="current_password" class="smaller"><?php echo __('Current password'); ?></label><br>
 					<input type="password" name="current_password" id="current_password" value="" style="width: 200px;"><br>
 					<br>
@@ -58,7 +58,7 @@
 					<label for="new_password_2" class="smaller"><?php echo __('New password (repeat it)'); ?></label><br>
 					<input type="password" name="new_password_2" id="new_password_2" value="" style="width: 200px;"><br>
 					<div class="smaller" style="text-align: right; margin: 10px 2px 5px 0; height: 23px;">
-						<div style="float: right; padding: 3px;"><?php echo __('%change_password% or %cancel%', array('%change_password%' => '', '%cancel%' => '<a href="javascript:void(0);" onclick="$(\'change_password_div\').toggle();$(\'change_password_button\').toggleClassName(\'button-pressed\');"><b>' . __('cancel') . '</b></a>')); ?></div>
+						<div style="float: right; padding: 3px;"><?php echo __('%change_password or %cancel', array('%change_password' => '', '%cancel' => '<a href="javascript:void(0);" onclick="$(\'change_password_div\').toggle();$(\'change_password_button\').toggleClassName(\'button-pressed\');"><b>' . __('cancel') . '</b></a>')); ?></div>
 						<input type="submit" value="<?php echo __('Change password'); ?>" style="font-weight: bold; float: right;">
 						<span id="change_password_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
 					</div>

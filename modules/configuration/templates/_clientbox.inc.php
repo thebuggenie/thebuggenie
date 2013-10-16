@@ -19,7 +19,7 @@
 			</ul>
 		</div>
 		<p class="clientbox_header"><?php echo $client->getName(); ?></p>
-		<p class="clientbox_membercount"><?php echo __('ID: %id%', array('%id%' => $client->getID())); ?> - <?php echo __('%number_of% member(s)', array('%number_of%' => '<span id="client_'.$client->getID().'_membercount">'.$client->getNumberOfMembers().'</span>')); ?></p>
+		<p class="clientbox_membercount"><?php echo __('ID: %id', array('%id' => $client->getID())); ?> - <?php echo __('%number_of member(s)', array('%number_of' => '<span id="client_'.$client->getID().'_membercount">'.$client->getNumberOfMembers().'</span>')); ?></p>
 		<div class="fullpage_backdrop" style="margin: 5px; display: none;" id="edit_client_<?php echo $client->getID(); ?>">
 			<div class="fullpage_backdrop_content backdrop_box medium">
 				<div class="backdrop_detail_header"><?php echo __('Edit client settings'); ?></div>
@@ -85,7 +85,7 @@
 		</div>
 		<?php include_component('main/identifiableselector', array(	'html_id'		=> "addmember_client_{$client->getID()}",
 																'header' 			=> __('Add a member to this client'),
-																'callback'		 	=> "TBG.Config.Client.addMember('".make_url('configure_users_add_client_member', array('client_id' => $client->getID(), 'user_id' => '%identifiable_value%'))."', ".$client->getID().", '%identifiable_value%');$('addmember_client_{$client->getID()}').hide();",
+																'callback'		 	=> "TBG.Config.Client.addMember('".make_url('configure_users_add_client_member', array('client_id' => $client->getID(), 'user_id' => '%identifiable_value'))."', ".$client->getID().", '%identifiable_value');$('addmember_client_{$client->getID()}').hide();",
 																'base_id'			=> "addmember_client_{$client->getID()}",
 																'include_teams'		=> false,
 																'style'				=> array('right' => '0', 'top' => '30px'),

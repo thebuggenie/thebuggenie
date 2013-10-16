@@ -2,7 +2,7 @@
 
 	include_template('publish/wikibreadcrumbs', array('article_name' => $article_name));
 	TBGContext::loadLibrary('publish/publish');
-	$tbg_response->setTitle(__('%article_name% history', array('%article_name%' => $article_name)));
+	$tbg_response->setTitle(__('%article_name history', array('%article_name' => $article_name)));
 
 ?>
 <table style="margin-top: 0px; table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
@@ -56,10 +56,10 @@
 															<div class="rounded_box white shadowed" style="width: 400px; position: absolute; right: 15px; display: none; z-index: 100;" id="restore_article_revision_<?php echo $revision; ?>">
 																<div class="header_div"><?php echo __('Are you sure you want to restore this revision?'); ?></div>
 																<div class="content" style="padding: 5px;">
-																	<?php echo __('If you confirm, all changes after this revision will be lost, and the article reverted back to the state it was in revision %revision_number%', array('%revision_number%' => '<b>'.$revision.'</b>')); ?>
+																	<?php echo __('If you confirm, all changes after this revision will be lost, and the article reverted back to the state it was in revision %revision_number', array('%revision_number' => '<b>'.$revision.'</b>')); ?>
 																	<div style="text-align: right; padding: 5px;">
 																		<input type="hidden" name="restore">
-																		<?php echo __('%yes% or %cancel%', array('%yes%' => link_tag(make_url('publish_article_restore', array('article_name' => $article->getName(), 'revision' => $revision)), __('Yes')), '%cancel%' => javascript_link_tag(__('cancel'), array('onclick' => "$('restore_article_revision_{$revision}').toggle();", 'style' => 'font-weight: bold;')))); ?>
+																		<?php echo __('%yes or %cancel', array('%yes' => link_tag(make_url('publish_article_restore', array('article_name' => $article->getName(), 'revision' => $revision)), __('Yes')), '%cancel' => javascript_link_tag(__('cancel'), array('onclick' => "$('restore_article_revision_{$revision}').toggle();", 'style' => 'font-weight: bold;')))); ?>
 																	</div>
 																</div>
 															</div>
@@ -82,7 +82,7 @@
 						</form>
 					<?php elseif ($history_action == 'diff'): ?>
 						<p style="padding: 0 5px 10px 10px; font-size: 13px;">
-							<?php echo '<b>'.__('Showing the difference between revisions: %from_revision% &rArr; %to_revision%', array('&rArr;' => '<b>&rArr;</b>', '%from_revision%' => '</b><i>'.__('%revision_number%, by %author% [%date%]', array('%revision_number%' => link_tag(make_url('publish_article_revision', array('article_name' => $article->getName(), 'revision' => $from_revision)), $from_revision, array('style' => 'font-weight: bold;')), '%author%' => $from_revision_author, '%date%' => tbg_formatTime($from_revision_date, 20))).'</i>', '%to_revision%' => '<i>'.__('%revision_number%, by %author% [%date%]', array('%revision_number%' => (($to_revision < $revision_count) ? link_tag(make_url('publish_article_revision', array('article_name' => $article->getName(), 'revision' => $to_revision)), $to_revision, array('style' => 'font-weight: bold;')) : $to_revision)."/{$revision_count}</b>", '%author%' => $to_revision_author, '%date%' => tbg_formatTime($to_revision_date, 20))).'</i>')); ?><br />
+							<?php echo '<b>'.__('Showing the difference between revisions: %from_revision &rArr; %to_revision', array('&rArr;' => '<b>&rArr;</b>', '%from_revision' => '</b><i>'.__('%revision_number, by %author [%date]', array('%revision_number' => link_tag(make_url('publish_article_revision', array('article_name' => $article->getName(), 'revision' => $from_revision)), $from_revision, array('style' => 'font-weight: bold;')), '%author' => $from_revision_author, '%date' => tbg_formatTime($from_revision_date, 20))).'</i>', '%to_revision' => '<i>'.__('%revision_number, by %author [%date]', array('%revision_number' => (($to_revision < $revision_count) ? link_tag(make_url('publish_article_revision', array('article_name' => $article->getName(), 'revision' => $to_revision)), $to_revision, array('style' => 'font-weight: bold;')) : $to_revision)."/{$revision_count}</b>", '%author' => $to_revision_author, '%date' => tbg_formatTime($to_revision_date, 20))).'</i>')); ?><br />
 							<?php echo link_tag(make_url('publish_article_history', array('article_name' => $article->getName())), '&lt;&lt; '.__('Back to history')); ?>
 						</p>
 						<?php $cc = 1; ?>

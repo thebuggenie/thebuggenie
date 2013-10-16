@@ -15,7 +15,7 @@
 		</span>
 	</div>
 	<?php include_template('main/profilebuttons'); ?>
-	<div style="margin: 0 0 20px 0; table-layout: fixed; width: 100%; height: 100%;">
+	<div style="margin: 0 0 20px 0; table-layout: fixed; width: 100%; height: 100;">
 		<div style="margin: 0; clear: both; height: 30px; width: 100%;" class="tab_menu">
 			<ul id="account_tabs">
 				<li class="selected" id="tab_profile"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_profile', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_users.png', array('style' => 'float: left;')).__('Profile information'); ?></a></li>
@@ -89,7 +89,7 @@
 							</table>
 						</div>
 						<div class="rounded_box iceblue borderless cut_top" style="margin: 0 0 5px 0; width: 895px; border-top: 0; padding: 3px; height: 26px;">
-							<div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "%save%" to save your account information', array('%save%' => __('Save'))); ?></div>
+							<div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "%save" to save your account information', array('%save' => __('Save'))); ?></div>
 							<input type="submit" id="submit_settings_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
 							<span id="profile_save_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
 						</div>
@@ -111,7 +111,7 @@
 								<td class="config_explanation" colspan="2">
 									<?php echo __("The Bug Genie can use your <a href=\"http://www.gravatar.com\" target=\"_blank\">Gravatar</a> profile picture, if you have one. If you don't have one but still want to use Gravatar for profile pictures, The Bug Genie will use a Gravatar <a href=\"http://blog.gravatar.com/2008/04/22/identicons-monsterids-and-wavatars-oh-my/\" target=\"_blank\">auto-generated image unique for your email address</a>."); ?><br>
 									<br>
-									<?php echo __("Don't have a Gravatar yet? %link_to_get_one_now%", array('%link_to_get_one_now%' => link_tag('http://en.gravatar.com/site/signup/'.urlencode($tbg_user->getEmail()), __('Get one now!'), array('target' => '_blank')))); ?>
+									<?php echo __("Don't have a Gravatar yet? %link_to_get_one_now", array('%link_to_get_one_now' => link_tag('http://en.gravatar.com/site/signup/'.urlencode($tbg_user->getEmail()), __('Get one now!'), array('target' => '_blank')))); ?>
 								</td>
 							</tr>
 							<tr>
@@ -128,14 +128,14 @@
 							<tr>
 								<td class="config_explanation" colspan="2">
 									<?php echo __('This setting is used to display issues, comments and more in your local timezone.'); ?><br>
-									<?php echo __('The time is now: %time%', array('%time%' => tbg_formatTime(time(), 1))); ?>
+									<?php echo __('The time is now: %time', array('%time' => tbg_formatTime(time(), 1))); ?>
 								</td>
 							</tr>
 							<tr>
 								<td style="width: 200px; padding: 5px;"><label for="profile_timezone"><?php echo __('Language'); ?></label></td>
 								<td>
 									<select name="profile_language" id="profile_language" style="width: 300px;">
-										<option value="sys"<?php if ($tbg_user->getLanguage() == 'sys'): ?> selected<?php endif; ?>><?php echo __('Use global setting - %lang%', array('%lang%' => TBGSettings::getLanguage())); ?></option>
+										<option value="sys"<?php if ($tbg_user->getLanguage() == 'sys'): ?> selected<?php endif; ?>><?php echo __('Use global setting - %lang', array('%lang' => TBGSettings::getLanguage())); ?></option>
 									<?php foreach ($languages as $lang_code => $lang_desc): ?>
 										<option value="<?php echo $lang_code; ?>" <?php if ($tbg_user->getLanguage() == $lang_code): ?> selected<?php endif; ?>><?php echo $lang_desc; ?><?php if (TBGSettings::getLanguage() == $lang_code): ?> <?php echo __('(site default)'); endif;?></option>
 									<?php endforeach; ?>
@@ -186,7 +186,7 @@
 						</table>
 					</div>
 					<div class="rounded_box iceblue borderless cut_top" style="margin: 0 0 5px 0; width: 895px; border-top: 0; padding: 3px; height: 26px;">
-						<div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "%save%" to save your profile settings', array('%save%' => __('Save'))); ?></div>
+						<div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "%save" to save your profile settings', array('%save' => __('Save'))); ?></div>
 						<input type="submit" id="submit_settings_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
 						<span id="profile_settings_save_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
 					</div>
@@ -195,7 +195,7 @@
 			<?php if (TBGSettings::isOpenIDavailable()): ?>
 				<div id="tab_openid_pane" style="display: none;">
 					<div style="padding: 10px;">
-						<?php echo __('The Bug Genie supports logging in via external authentication providers via %openid%. This means you can use your account details from other services (such as Google, Wordpress, etc.) to log in here, without having to remember another set of login details.', array('%openid%' => link_tag('http://openid.net', 'OpenID'))); ?><br>
+						<?php echo __('The Bug Genie supports logging in via external authentication providers via %openid. This means you can use your account details from other services (such as Google, Wordpress, etc.) to log in here, without having to remember another set of login details.', array('%openid' => link_tag('http://openid.net', 'OpenID'))); ?><br>
 						<div style="padding: 15px 0;"><button class="button button-blue" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'openid')); ?>');"><?php echo __('Add login from another provider'); ?></button></div>
 						<div class="faded_out" id="no_openid_accounts"<?php if (count($tbg_user->getOpenIDAccounts())): ?> style="display: none;"<?php endif; ?>><?php echo __('You have not linked your account with any external authentication providers.'); ?></div>
 						<?php if (count($tbg_user->getOpenIDAccounts())): ?>
@@ -235,7 +235,7 @@
 								<?php include_component("{$module_name}/accountsettings", array('module' => $module)); ?>
 							</div>
 							<div class="rounded_box iceblue borderless cut_top" style="margin: 0 0 5px 0; width: 895px; border-top: 0; padding: 3px; height: 26px;">
-								<div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "%save%" to save changes in the "%module_settings_name%" category', array('%save%' => __('Save'), '%module_settings_name%' => $module->getAccountSettingsName())); ?></div>
+								<div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "%save" to save changes in the "%module_settings_name" category', array('%save' => __('Save'), '%module_settings_name' => $module->getAccountSettingsName())); ?></div>
 								<input type="submit" id="submit_settings_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
 								<span id="profile_<?php echo $module_name; ?>_save_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
 							</div>
@@ -272,7 +272,7 @@
 <?php endif; ?>
 <?php if ($username_chosen): ?>
 	<script type="text/javascript">
-		TBG.Main.Helpers.Message.success('<?php echo __("You\'ve chosen the username \'%username%\'", array('%username%' => $tbg_user->getUsername())); ?>', '<?php echo __('Before you can use the new username to log in, you must pick a password via the "%change_password%" button.', array('%change_password%' => __('Change password'))); ?>');
+		TBG.Main.Helpers.Message.success('<?php echo __("You\'ve chosen the username \'%username\'", array('%username' => $tbg_user->getUsername())); ?>', '<?php echo __('Before you can use the new username to log in, you must pick a password via the "%change_password" button.', array('%change_password' => __('Change password'))); ?>');
 	</script>
 <?php endif; ?>
 <?php if ($openid_used): ?>

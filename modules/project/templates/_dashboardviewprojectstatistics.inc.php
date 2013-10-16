@@ -6,13 +6,13 @@
 	<?php foreach ($items as $item_id => $item): ?>
 		<tr class="hover_highlight">
 			<td style="font-weight: normal; font-size: 13px; padding-left: 3px;"><?php echo (is_object($item)) ? $item->getName() : $item; ?></td>
-			<td style="text-align: right; font-weight: bold; padding-right: 5px; vertical-align: middle;" title="<?php echo __('%count% issues open of %total_count% issues total', array('%count%' => $counts[$item_id]['open'], '%total_count%' => $counts[$item_id]['open'] + $counts[$item_id]['closed'])); ?>"><?php echo $counts[$item_id]['open']; ?>&nbsp;<span style="font-weight: normal;">/&nbsp;<?php echo $counts[$item_id]['open'] + $counts[$item_id]['closed']; ?> (<?php echo (int) $counts[$item_id]['percentage']; ?>%)</span></td>
+			<td style="text-align: right; font-weight: bold; padding-right: 5px; vertical-align: middle;" title="<?php echo __('%count issues open of %total_count issues total', array('%count' => $counts[$item_id]['open'], '%total_count' => $counts[$item_id]['open'] + $counts[$item_id]['closed'])); ?>"><?php echo $counts[$item_id]['open']; ?>&nbsp;<span style="font-weight: normal;">/&nbsp;<?php echo $counts[$item_id]['open'] + $counts[$item_id]['closed']; ?> (<?php echo (int) $counts[$item_id]['percentage']; ?>%)</span></td>
 			<td style="width: 50%; vertical-align: middle;"><?php include_template('main/percentbar', array('percent' => 100 - $counts[$item_id]['percentage'], 'height' => 14)); ?></td>
 		</tr>
 	<?php endforeach; ?>
 	<tr class="hover_highlight">
 		<td style="font-weight: normal; font-size: 13px; padding-left: 3px;" class="faded_out"><?php echo __('Not set'); ?></td>
-		<td style="text-align: right; font-weight: bold; padding-right: 5px; vertical-align: middle;" class="faded_out" title="<?php echo __('%count% issues open of %total_count% issues total', array('%count%' => $counts[0]['open'], '%total_count%' => $counts[0]['open'] + $counts[0]['closed'])); ?>"><?php echo $counts[0]['open']; ?>&nbsp;<span style="font-weight: normal;">/&nbsp;<?php echo $counts[0]['open'] + $counts[0]['closed']; ?> (<?php echo (int) $counts[0]['percentage']; ?>%)</span></td>
+		<td style="text-align: right; font-weight: bold; padding-right: 5px; vertical-align: middle;" class="faded_out" title="<?php echo __('%count issues open of %total_count issues total', array('%count' => $counts[0]['open'], '%total_count' => $counts[0]['open'] + $counts[0]['closed'])); ?>"><?php echo $counts[0]['open']; ?>&nbsp;<span style="font-weight: normal;">/&nbsp;<?php echo $counts[0]['open'] + $counts[0]['closed']; ?> (<?php echo (int) $counts[0]['percentage']; ?>%)</span></td>
 		<td style="width: 50%; vertical-align: middle;" class="faded_out"><?php include_template('main/percentbar', array('percent' => 100 - $counts[0]['percentage'], 'height' => 14)); ?></td>
 	</tr>
 </table>

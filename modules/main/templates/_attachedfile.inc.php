@@ -13,10 +13,10 @@
 		<td>
 			<?php echo link_tag(make_url('showfile', array('id' => $file_id)), (($file->hasDescription()) ? $file->getDescription() : $file->getOriginalFilename())); ?>
 			<div class="upload_details">
-				<?php echo __('%filename%, uploaded %date%', array('%filename%' => '<span class="filename">'.$file->getOriginalFilename().'</span>', '%date%' => tbg_formatTime($file->getUploadedAt(), 13))); ?>
+				<?php echo __('%filename, uploaded %date', array('%filename' => '<span class="filename">'.$file->getOriginalFilename().'</span>', '%date' => tbg_formatTime($file->getUploadedAt(), 13))); ?>
 				<?php if ($mode == 'article' && $article->canEdit() && $file->isImage()): ?>
 					<br>
-					<?php echo __('Use this tag to include this image: [[Image:%filename%|thumb|Image description]]', array('%filename%' => $file->getOriginalFilename())); ?>
+					<?php echo __('Use this tag to include this image: [[Image:%filename|thumb|Image description]]', array('%filename' => $file->getOriginalFilename())); ?>
 				<?php endif; ?>
 			</div>
 		</td>

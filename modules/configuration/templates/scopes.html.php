@@ -8,7 +8,7 @@
 				<div class="content faded_out">
 					<p>
 						<?php echo __('The Bug Genie scopes are self-contained environments within the same The Bug Genie installation, set up to be initialized when The Bug Genie is accessed via different hostnames.'); ?>
-						<?php echo __('The default scope (which is created during the first installation) is used for all hostnames where there is no other scope defined. Read more about scopes in %ConfigureScopes%.', array('%ConfigureScopes%' => link_Tag(make_url('publish_article', array('article_name' => 'ConfigureScopes')), 'ConfigureScopes'))); ?>
+						<?php echo __('The default scope (which is created during the first installation) is used for all hostnames where there is no other scope defined. Read more about scopes in %ConfigureScopes.', array('%ConfigureScopes' => link_Tag(make_url('publish_article', array('article_name' => 'ConfigureScopes')), 'ConfigureScopes'))); ?>
 					</p>
 				</div>
 				<?php if (isset($scope_deleted)): ?>
@@ -42,11 +42,11 @@
 							<label for="new_scope_hostname_input"><?php echo __('Scope hostname'); ?></label>
 							<input id="new_scope_hostname_input" name="hostname" style="width: 250px;">
 							<div class="content faded_out">
-								<?php echo __('The hostname should be provided without protocol or the trailing slash (.com, not .com/) and port specified if desired. Valid examples are: %examples%', array('%examples%' => '')); ?>
+								<?php echo __('The hostname should be provided without protocol or the trailing slash (.com, not .com/) and port specified if desired. Valid examples are: %examples', array('%examples' => '')); ?>
 								<i>bugs.mycompany.com , internal.company.org , thebuggenie.company.com , dev.company.com:8080</i>
 							</div>
 						</div>
-						<div style="float: right; padding: 2px 5px 0 5px;"><?php echo __('%create_scope% or %cancel%', array('%create_scope%' => '', '%cancel%' => javascript_link_tag(__('cancel'), array('onclick' => "$('new_scope_hostname').toggle();")))); ?></div>
+						<div style="float: right; padding: 2px 5px 0 5px;"><?php echo __('%create_scope or %cancel', array('%create_scope' => '', '%cancel' => javascript_link_tag(__('cancel'), array('onclick' => "$('new_scope_hostname').toggle();")))); ?></div>
 						<input type="submit" value="<?php echo __('Create scope'); ?>" style="float: right; font-weight: bold;" id="add_scope_submit_button">
 						<?php echo image_tag('spinning_16.gif', array('id' => 'add_scope_indicator', 'style' => 'float: right; display: none;')); ?>
 					</form>

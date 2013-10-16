@@ -1,8 +1,8 @@
 <?php
 
 	$tbg_response->setTitle(__('Configure users, teams and groups'));
-	$users_text = (TBGContext::getScope()->getMaxUsers()) ? __('Users (%num%/%max%)', array('%num%' => '<span id="current_user_num_count">'.TBGUser::getUsersCount().'</span>', '%max%' => TBGContext::getScope()->getMaxUsers())) : __('Users');
-	$teams_text = (TBGContext::getScope()->getMaxTeams()) ? __('Teams (%num%/%max%)', array('%num%' => '<span id="current_team_num_count">'.TBGTeam::countAll().'</span>', '%max%' => TBGContext::getScope()->getMaxTeams())) : __('Teams');
+	$users_text = (TBGContext::getScope()->getMaxUsers()) ? __('Users (%num/%max)', array('%num' => '<span id="current_user_num_count">'.TBGUser::getUsersCount().'</span>', '%max' => TBGContext::getScope()->getMaxUsers())) : __('Users');
+	$teams_text = (TBGContext::getScope()->getMaxTeams()) ? __('Teams (%num/%max)', array('%num' => '<span id="current_team_num_count">'.TBGTeam::countAll().'</span>', '%max' => TBGContext::getScope()->getMaxTeams())) : __('Teams');
 
 ?>
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
@@ -57,7 +57,7 @@
 							<script>
 								var import_cb = function () { 
 									TBG.Main.Helpers.Dialog.show('<?php echo __('Would you like to add this user to the current scope?'); ?>',
-																 '<?php echo __('The username you tried to create already exists. You can give this user access to the current scope by pressing "%yes%" below. If you want to create a different user, press "%no%" and enter a different username.', array('%yes%' => __('yes'), '%no%' => __('no'))); ?>',
+																 '<?php echo __('The username you tried to create already exists. You can give this user access to the current scope by pressing "%yes" below. If you want to create a different user, press "%no" and enter a different username.', array('%yes' => __('yes'), '%no' => __('no'))); ?>',
 																 {
 																	 yes: {
 																		 click: function() {TBG.Config.User.addToScope('<?php echo make_url('configure_users_import_user'); ?>');}
@@ -118,7 +118,7 @@
 										</dl>
 										<br style="clear: both;">
 										<div class="createuser_submit_container">
-											<input type="submit" value="<?php echo (TBGContext::getScope()->isDefault()) ? __('Create user') : __('Create or add user'); ?>"><?php echo __('%create_user% or %cancel%', array('%create_user%' => '', '%cancel%' => javascript_link_tag(__('cancel'), array('onclick' => "$('adduser_div').toggle();")))); ?>
+											<input type="submit" value="<?php echo (TBGContext::getScope()->isDefault()) ? __('Create user') : __('Create or add user'); ?>"><?php echo __('%create_user or %cancel', array('%create_user' => '', '%cancel' => javascript_link_tag(__('cancel'), array('onclick' => "$('adduser_div').toggle();")))); ?>
 										</div>
 									</form>
 								</div>

@@ -86,7 +86,7 @@
 			{
 				$this->getResponse()->setPage('config');
 				TBGContext::loadLibrary('ui');
-				$this->getResponse()->addBreadcrumb(TBGContext::getI18n()->__('Configure %thebuggenie_name%', array('%thebuggenie_name%' => TBGSettings::getTBGname())), TBGContext::getRouting()->generate('configure'), $this->getResponse()->getPredefinedBreadcrumbLinks('main_links'));
+				$this->getResponse()->addBreadcrumb(TBGContext::getI18n()->__('Configure %thebuggenie_name', array('%thebuggenie_name' => TBGSettings::getTBGname())), TBGContext::getRouting()->generate('configure'), $this->getResponse()->getPredefinedBreadcrumbLinks('main_links'));
 			}
 			
 		}
@@ -164,11 +164,11 @@
 			
 			if (!$outofdate)
 			{
-				return $this->renderJSON(array('uptodate' => true, 'title' => TBGContext::getI18n()->__('The Bug Genie is up to date'), 'message' => TBGContext::getI18n()->__('The latest version is %ver%', array('%ver%' => $data->nicever))));
+				return $this->renderJSON(array('uptodate' => true, 'title' => TBGContext::getI18n()->__('The Bug Genie is up to date'), 'message' => TBGContext::getI18n()->__('The latest version is %ver', array('%ver' => $data->nicever))));
 			}
 			else
 			{
-				return $this->renderJSON(array('uptodate' => false, 'title' => TBGContext::getI18n()->__('The Bug Genie is out of date'), 'message' => TBGContext::getI18n()->__('The latest version is %ver%. Update now from www.thebuggenie.com.', array('%ver%' => $data->nicever))));
+				return $this->renderJSON(array('uptodate' => false, 'title' => TBGContext::getI18n()->__('The Bug Genie is out of date'), 'message' => TBGContext::getI18n()->__('The latest version is %ver. Update now from www.thebuggenie.com.', array('%ver' => $data->nicever))));
 			}
 		}
 		
@@ -992,11 +992,11 @@
 				{
 					if (TBGModule::installModule($request['module_key']))
 					{
-						TBGContext::setMessage('module_message', TBGContext::getI18n()->__('The module "%module_name%" was installed successfully', array('%module_name%' => $request['module_key'])));
+						TBGContext::setMessage('module_message', TBGContext::getI18n()->__('The module "%module_name" was installed successfully', array('%module_name' => $request['module_key'])));
 					}
 					else
 					{
-						TBGContext::setMessage('module_error', TBGContext::getI18n()->__('There was an error install the module "%module_name%"', array('%module_name%' => $request['module_key'])));
+						TBGContext::setMessage('module_error', TBGContext::getI18n()->__('There was an error install the module "%module_name"', array('%module_name' => $request['module_key'])));
 					}
 				}
 				else if ($request['mode'] == 'upload')
@@ -1009,7 +1009,7 @@
 					else
 					{
 						$module_name = TBGModule::uploadModule($archive);
-						TBGContext::setMessage('module_message', TBGContext::getI18n()->__('The module "%module_name%" was uploaded successfully', array('%module_name%' => $module_name)));
+						TBGContext::setMessage('module_message', TBGContext::getI18n()->__('The module "%module_name" was uploaded successfully', array('%module_name' => $module_name)));
 					}
 				}				
 				else
@@ -1030,17 +1030,17 @@
 								break;
 							case 'uninstall':
 								$module->uninstall();
-								TBGContext::setMessage('module_message', TBGContext::getI18n()->__('The module "%module_name%" was uninstalled successfully', array('%module_name%' => $module->getName())));
+								TBGContext::setMessage('module_message', TBGContext::getI18n()->__('The module "%module_name" was uninstalled successfully', array('%module_name' => $module->getName())));
 								break;
 							case 'update':
 								try
 								{
 									$module->upgrade();
-									TBGContext::setMessage('module_message', TBGContext::getI18n()->__('The module "%module_name%" was successfully upgraded and can now be used again', array('%module_name%' => $module->getName())));
+									TBGContext::setMessage('module_message', TBGContext::getI18n()->__('The module "%module_name" was successfully upgraded and can now be used again', array('%module_name' => $module->getName())));
 								}
 								catch (Exception $e)
 								{ throw $e;
-									TBGContext::setMessage('module_error', TBGContext::getI18n()->__('The module "%module_name%" was not successfully upgraded', array('%module_name%' => $module->getName())));	
+									TBGContext::setMessage('module_error', TBGContext::getI18n()->__('The module "%module_name" was not successfully upgraded', array('%module_name' => $module->getName())));	
 								}
 								break;
 						}
@@ -1049,7 +1049,7 @@
 			catch (Exception $e)
 			{ throw $e;
 				TBGLogging::log('Trying to run action ' . $request['mode'] . ' on module ' . $request['module_key'] . ' made an exception: ' . $e->getMessage(), TBGLogging::LEVEL_FATAL);
-				TBGContext::setMessage('module_error', TBGContext::getI18n()->__('This module (%module_name%) does not exist', array('%module_name%' => $request['module_key'])));
+				TBGContext::setMessage('module_error', TBGContext::getI18n()->__('This module (%module_name) does not exist', array('%module_name' => $request['module_key'])));
 			}
 			$this->forward(TBGContext::getRouting()->generate('configure_modules'));
 		}
@@ -1155,7 +1155,7 @@
 			catch (Exception $e)
 			{
 				TBGLogging::log('Trying to configure module ' . $request['config_module'] . " which isn't configurable", 'main', TBGLogging::LEVEL_FATAL);
-				TBGContext::setMessage('module_error', TBGContext::getI18n()->__('The module "%module_name%" is not configurable', array('%module_name%' => $request['config_module'])));
+				TBGContext::setMessage('module_error', TBGContext::getI18n()->__('The module "%module_name" is not configurable', array('%module_name' => $request['config_module'])));
 				$this->forward(TBGContext::getRouting()->generate('configure_modules'));
 			}
 			$this->module_message = TBGContext::getMessageAndClear('module_message');
@@ -1630,7 +1630,7 @@
 				$this->created_user = true;
 				$this->users = array($user);
 				$this->total_results = 1;
-				$this->title = $this->getI18n()->__('User %username% created', array('%username%' => $username));
+				$this->title = $this->getI18n()->__('User %username created', array('%username' => $username));
 				$this->total_count = TBGUser::getUsersCount();
 				$this->more_available = TBGContext::getScope()->hasUsersAvailable();
 			}
@@ -1794,7 +1794,7 @@
 			catch (Exception $e)
 			{
 				$this->getResponse()->setHttpStatus(400);
-				return $this->renderJSON(array('error' => $this->getI18n()->__('This user could not be updated: %message%', array('%message%' => $e->getMessage()))));
+				return $this->renderJSON(array('error' => $this->getI18n()->__('This user could not be updated: %message', array('%message' => $e->getMessage()))));
 			}
 			$this->getResponse()->setHttpStatus(400);
 			return $this->renderJSON(array('error' => $this->getI18n()->__('This user could not be updated')));
@@ -1838,7 +1838,7 @@
 			catch (Exception $e)
 			{
 				$this->getResponse()->setHttpStatus(400);
-				return $this->renderJSON(array('error' => $this->getI18n()->__('This user could not be updated: %message%', array('%message%' => $e->getMessage()))));
+				return $this->renderJSON(array('error' => $this->getI18n()->__('This user could not be updated: %message', array('%message' => $e->getMessage()))));
 			}
 			$this->getResponse()->setHttpStatus(400);
 			return $this->renderJSON(array('error' => $this->getI18n()->__('This user could not be updated')));
@@ -2449,7 +2449,7 @@
 						if (count($headerrow) == count($row)) {
 							$data[] = array_combine($headerrow, $row);
 						} else {
-							$errors[] = $this->getI18n()->__('Row %row% does not have the same number of elements as the header row', array('%row%' => $i));
+							$errors[] = $this->getI18n()->__('Row %row does not have the same number of elements as the header row', array('%row' => $i));
 						}
 					}
 					$i++;
@@ -2476,7 +2476,7 @@
 				foreach ($requiredcols[$request['type']] as $col) {
 					if (!in_array($col, $headerrow))
 					{
-						$errors[] = $this->getI18n()->__('Required column \'%col%\' not found in header row', array('%col%' => $col));
+						$errors[] = $this->getI18n()->__('Required column \'%col\' not found in header row', array('%col' => $col));
 					}
 				}
 				
@@ -2490,7 +2490,7 @@
 					{
 						if (strlen($val) == 0)
 						{
-							$errors[] = $this->getI18n()->__('Row %row% column %col% has no value', array('%col%' => $col, '%row%' => $i+1));
+							$errors[] = $this->getI18n()->__('Row %row column %col has no value', array('%col' => $col, '%row' => $i+1));
 						}
 					}
 				}
@@ -2513,7 +2513,7 @@
 								
 								if ($tmp !== null)
 								{
-									$errors[] = $this->getI18n()->__('Row %row%: A project with this name already exists', array('%row%' => $i+1));
+									$errors[] = $this->getI18n()->__('Row %row: A project with this name already exists', array('%row' => $i+1));
 								}
 								
 								// First off are booleans
@@ -2524,7 +2524,7 @@
 								{
 									if (array_key_exists($boolitem, $activerow) && isset($activerow[$boolitem]) && $activerow[$boolitem] != 1 && $activerow[$boolitem] != 0)
 									{
-											$errors[] = $this->getI18n()->__('Row %row% column %col%: invalid value (must be 1/0)', array('%col%' => $boolitem, '%row%' => $i+1));
+											$errors[] = $this->getI18n()->__('Row %row column %col: invalid value (must be 1/0)', array('%col' => $boolitem, '%row' => $i+1));
 									}
 								}
 								
@@ -2540,18 +2540,18 @@
 
 									if ((!array_key_exists($identifiableitem[1], $activerow) && array_key_exists($identifiableitem[0], $activerow)) || (array_key_exists($identifiableitem[1], $activerow) && !array_key_exists($identifiableitem[0], $activerow)))
 									{
-											$errors[] = $this->getI18n()->__('Row %row%: Both the type and item ID must be supplied for owner/lead/qa fields', array('%row%' => $i+1));
+											$errors[] = $this->getI18n()->__('Row %row: Both the type and item ID must be supplied for owner/lead/qa fields', array('%row' => $i+1));
 											continue;
 									}
 									
 									if (array_key_exists($identifiableitem[1], $activerow) && isset($activerow[$identifiableitem[1]]) !== null && $activerow[$identifiableitem[1]] != self::CSV_IDENTIFIER_TYPE_USER && $activerow[$identifiableitem[1]] != self::CSV_IDENTIFIER_TYPE_TEAM)
 									{
-											$errors[] = $this->getI18n()->__('Row %row% column %col%: invalid value (must be 1 for a user or 2 for a team)', array('%col%' => $identifiableitem[1], '%row%' => $i+1));
+											$errors[] = $this->getI18n()->__('Row %row column %col: invalid value (must be 1 for a user or 2 for a team)', array('%col' => $identifiableitem[1], '%row' => $i+1));
 									}
 									
 									if (array_key_exists($identifiableitem[0], $activerow) && isset($activerow[$identifiableitem[0]]) && !is_numeric($activerow[$identifiableitem[0]]))
 									{
-											$errors[] = $this->getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $identifiableitem[0], '%row%' => $i+1));
+											$errors[] = $this->getI18n()->__('Row %row column %col: invalid value (must be a number)', array('%col' => $identifiableitem[0], '%row' => $i+1));
 									}
 									elseif (array_key_exists($identifiableitem[0], $activerow) && isset($activerow[$identifiableitem[0]]) && is_numeric($activerow[$identifiableitem[0]]))
 									{
@@ -2565,7 +2565,7 @@
 												}
 												catch (Exception $e)
 												{
-													$errors[] = $this->getI18n()->__('Row %row% column %col%: user does not exist', array('%col%' => $identifiableitem[0], '%row%' => $i+1));
+													$errors[] = $this->getI18n()->__('Row %row column %col: user does not exist', array('%col' => $identifiableitem[0], '%row' => $i+1));
 												}
 												break;
 											case self::CSV_IDENTIFIER_TYPE_TEAM:
@@ -2575,7 +2575,7 @@
 												}
 												catch (Exception $e)
 												{
-													$errors[] = $this->getI18n()->__('Row %row% column %col%: team does not exist', array('%col%' => $identifiableitem[0], '%row%' => $i+1));
+													$errors[] = $this->getI18n()->__('Row %row column %col: team does not exist', array('%col' => $identifiableitem[0], '%row' => $i+1));
 												}
 												break;
 										}
@@ -2587,7 +2587,7 @@
 								{
 									if (!is_numeric($activerow[self::CSV_PROJECT_CLIENT]))
 									{
-										$errors[] = $this->getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => self::CSV_PROJECT_CLIENT, '%row%' => $i+1));
+										$errors[] = $this->getI18n()->__('Row %row column %col: invalid value (must be a number)', array('%col' => self::CSV_PROJECT_CLIENT, '%row' => $i+1));
 									}
 									else
 									{
@@ -2597,7 +2597,7 @@
 										}
 										catch (Exception $e)
 										{
-											$errors[] = $this->getI18n()->__('Row %row% column %col%: client does not exist', array('%col%' => self::CSV_PROJECT_CLIENT, '%row%' => $i+1));
+											$errors[] = $this->getI18n()->__('Row %row column %col: client does not exist', array('%col' => self::CSV_PROJECT_CLIENT, '%row' => $i+1));
 										}
 									}
 								}
@@ -2607,7 +2607,7 @@
 								{
 									if (!is_numeric($activerow[self::CSV_PROJECT_WORKFLOW_ID]))
 									{
-										$errors[] = $this->getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => self::CSV_PROJECT_WORKFLOW_ID, '%row%' => $i+1));
+										$errors[] = $this->getI18n()->__('Row %row column %col: invalid value (must be a number)', array('%col' => self::CSV_PROJECT_WORKFLOW_ID, '%row' => $i+1));
 									}
 									else
 									{
@@ -2617,7 +2617,7 @@
 										}
 										catch (Exception $e)
 										{
-											$errors[] = $this->getI18n()->__('Row %row% column %col%: workflow scheme does not exist', array('%col%' => self::CSV_PROJECT_WORKFLOW_ID, '%row%' => $i+1));
+											$errors[] = $this->getI18n()->__('Row %row column %col: workflow scheme does not exist', array('%col' => self::CSV_PROJECT_WORKFLOW_ID, '%row' => $i+1));
 										}
 									}
 								}
@@ -2627,7 +2627,7 @@
 								{
 									if (!is_numeric($activerow[self::CSV_PROJECT_ISSUETYPE_SCHEME]))
 									{
-										$errors[] = $this->getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => self::CSV_PROJECT_ISSUETYPE_SCHEME, '%row%' => $i+1));
+										$errors[] = $this->getI18n()->__('Row %row column %col: invalid value (must be a number)', array('%col' => self::CSV_PROJECT_ISSUETYPE_SCHEME, '%row' => $i+1));
 									}
 									else
 									{
@@ -2637,7 +2637,7 @@
 										}
 										catch (Exception $e)
 										{
-											$errors[] = $this->getI18n()->__('Row %row% column %col%: issuetype scheme does not exist', array('%col%' => self::CSV_PROJECT_ISSUETYPE_SCHEME, '%row%' => $i+1));
+											$errors[] = $this->getI18n()->__('Row %row column %col: issuetype scheme does not exist', array('%col' => self::CSV_PROJECT_ISSUETYPE_SCHEME, '%row' => $i+1));
 										}
 									}
 								}
@@ -2647,7 +2647,7 @@
 								{
 									if ($activerow[self::CSV_PROJECT_SUMMARY_TYPE] != 'issuetypes' && $activerow[self::CSV_PROJECT_SHOW_SUMMARY] != 'milestones')
 									{
-										$errors[] = $this->getI18n()->__('Row %row% column %col%: invalid value (must be \'issuetypes\' or \'milestones\')', array('%col%' => self::CSV_PROJECT_SUMMARY_TYPE, '%row%' => $i+1));
+										$errors[] = $this->getI18n()->__('Row %row column %col: invalid value (must be \'issuetypes\' or \'milestones\')', array('%col' => self::CSV_PROJECT_SUMMARY_TYPE, '%row' => $i+1));
 									}
 								}
 							}
@@ -2664,7 +2664,7 @@
 								}
 								catch (Exception $e)
 								{
-									$errors[] = $this->getI18n()->__('Row %row% column %col%: Project does not exist', array('%col%' => self::CSV_ISSUE_PROJECT, '%row%' => $i+1));
+									$errors[] = $this->getI18n()->__('Row %row column %col: Project does not exist', array('%col' => self::CSV_ISSUE_PROJECT, '%row' => $i+1));
 									break;
 								}
 								
@@ -2675,7 +2675,7 @@
 								{
 									if (array_key_exists($boolitem, $activerow) && isset($activerow[$boolitem]) && $activerow[$boolitem] != 1 && $activerow[$boolitem] != 0)
 									{
-											$errors[] = $this->getI18n()->__('Row %row% column %col%: invalid value (must be 1/0)', array('%col%' => $boolitem, '%row%' => $i+1));
+											$errors[] = $this->getI18n()->__('Row %row column %col: invalid value (must be 1/0)', array('%col' => $boolitem, '%row' => $i+1));
 									}
 								}
 								
@@ -2686,14 +2686,14 @@
 								{
 									if (array_key_exists($numericitem, $activerow) && isset($activerow[$numericitem]) && !(is_numeric($activerow[$numericitem])))
 									{
-											$errors[] = $this->getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $numericitem, '%row%' => $i+1));
+											$errors[] = $this->getI18n()->__('Row %row column %col: invalid value (must be a number)', array('%col' => $numericitem, '%row' => $i+1));
 									}
 								}
 								
 								// Percentage must be 0-100
 								if (array_key_exists(self::CSV_ISSUE_PERCENTAGE, $activerow) && isset($activerow[self::CSV_ISSUE_PERCENTAGE]) && (($activerow[self::CSV_ISSUE_PERCENTAGE] < 0) || ($activerow[self::CSV_ISSUE_PERCENTAGE] > 100)))
 								{
-									$errors[] = $this->getI18n()->__('Row %row% column %col%: Percentage must be from 0 to 100 inclusive', array('%col%' => self::CSV_ISSUE_PERCENTAGE, '%row%' => $i+1));
+									$errors[] = $this->getI18n()->__('Row %row column %col: Percentage must be from 0 to 100 inclusive', array('%col' => self::CSV_ISSUE_PERCENTAGE, '%row' => $i+1));
 								}
 									
 								// Now identifiables
@@ -2706,18 +2706,18 @@
 								{
 									if ((!array_key_exists($identifiableitem[1], $activerow) && array_key_exists($identifiableitem[0], $activerow)) || (array_key_exists($identifiableitem[1], $activerow) && !array_key_exists($identifiableitem[0], $activerow)))
 									{
-											$errors[] = $this->getI18n()->__('Row %row%: Both the type and item ID must be supplied for owner/lead/qa fields', array('%row%' => $i+1));
+											$errors[] = $this->getI18n()->__('Row %row: Both the type and item ID must be supplied for owner/lead/qa fields', array('%row' => $i+1));
 											continue;
 									}
 									
 									if (array_key_exists($identifiableitem[1], $activerow) && isset($activerow[$identifiableitem[1]]) && $activerow[$identifiableitem[1]] != self::CSV_IDENTIFIER_TYPE_USER && $activerow[$identifiableitem[1]] != self::CSV_IDENTIFIER_TYPE_TEAM)
 									{
-											$errors[] = $this->getI18n()->__('Row %row% column %col%: invalid value (must be 1 for a user or 2 for a team)', array('%col%' => $identifiableitem[1], '%row%' => $i+1));
+											$errors[] = $this->getI18n()->__('Row %row column %col: invalid value (must be 1 for a user or 2 for a team)', array('%col' => $identifiableitem[1], '%row' => $i+1));
 									}
 									
 									if (array_key_exists($identifiableitem[0], $activerow) && isset($activerow[$identifiableitem[0]]) && !is_numeric($activerow[$identifiableitem[0]]))
 									{
-											$errors[] = $this->getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $identifiableitem[0], '%row%' => $i+1));
+											$errors[] = $this->getI18n()->__('Row %row column %col: invalid value (must be a number)', array('%col' => $identifiableitem[0], '%row' => $i+1));
 									}
 									elseif (array_key_exists($identifiableitem[0], $activerow) && isset($activerow[$identifiableitem[0]]) && is_numeric($activerow[$identifiableitem[0]]))
 									{
@@ -2731,7 +2731,7 @@
 												}
 												catch (Exception $e)
 												{
-													$errors[] = $this->getI18n()->__('Row %row% column %col%: user does not exist', array('%col%' => $identifiableitem[0], '%row%' => $i+1));
+													$errors[] = $this->getI18n()->__('Row %row column %col: user does not exist', array('%col' => $identifiableitem[0], '%row' => $i+1));
 												}
 												break;
 											case self::CSV_IDENTIFIER_TYPE_TEAM:
@@ -2741,7 +2741,7 @@
 												}
 												catch (Exception $e)
 												{
-													$errors[] = $this->getI18n()->__('Row %row% column %col%: team does not exist', array('%col%' => $identifiableitem[0], '%row%' => $i+1));
+													$errors[] = $this->getI18n()->__('Row %row column %col: team does not exist', array('%col' => $identifiableitem[0], '%row' => $i+1));
 												}
 												break;
 										}
@@ -2751,7 +2751,7 @@
 								// Now timestamps
 								if (array_key_exists(self::CSV_ISSUE_POSTED, $activerow) && isset($activerow[self::CSV_ISSUE_POSTED]) && ((string) (int) $activerow[self::CSV_ISSUE_POSTED] !== $activerow[self::CSV_ISSUE_POSTED]) && $activerow[self::CSV_ISSUE_POSTED] >= PHP_INT_MAX && $activerow[self::CSV_ISSUE_POSTED] <= ~PHP_INT_MAX)
 								{
-									$errors[] = $this->getI18n()->__('Row %row% column %col%: invalid value (must be a Unix timestamp)', array('%col%' => self::CSV_ISSUE_POSTED, '%row%' => $i+1));
+									$errors[] = $this->getI18n()->__('Row %row column %col: invalid value (must be a Unix timestamp)', array('%col' => self::CSV_ISSUE_POSTED, '%row' => $i+1));
 								}
 								
 								// Now check user exists for postedby
@@ -2759,7 +2759,7 @@
 								{
 									if (!is_numeric($activerow[self::CSV_ISSUE_POSTED_BY]))
 									{
-										$errors[] = $this->getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => self::CSV_ISSUE_POSTED_BY, '%row%' => $i+1));
+										$errors[] = $this->getI18n()->__('Row %row column %col: invalid value (must be a number)', array('%col' => self::CSV_ISSUE_POSTED_BY, '%row' => $i+1));
 									}
 									else
 									{
@@ -2769,7 +2769,7 @@
 										}
 										catch (Exception $e)
 										{
-											$errors[] = $this->getI18n()->__('Row %row% column %col%: user does not exist', array('%col%' => self::CSV_ISSUE_POSTED_BY, '%row%' => $i+1));
+											$errors[] = $this->getI18n()->__('Row %row column %col: user does not exist', array('%col' => self::CSV_ISSUE_POSTED_BY, '%row' => $i+1));
 										}
 									}
 								}
@@ -2779,7 +2779,7 @@
 								{
 									if (!is_numeric($activerow[self::CSV_ISSUE_MILESTONE]))
 									{
-										$errors[] = $this->getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => self::CSV_ISSUE_MILESTONE, '%row%' => $i+1));
+										$errors[] = $this->getI18n()->__('Row %row column %col: invalid value (must be a number)', array('%col' => self::CSV_ISSUE_MILESTONE, '%row' => $i+1));
 									}
 									else
 									{
@@ -2788,12 +2788,12 @@
 											$milestonetmp = TBGContext::factory()->TBGMilestone($activerow[self::CSV_ISSUE_MILESTONE]);
 											if ($milestonetmp->getProject()->getID() != $activerow[self::CSV_ISSUE_PROJECT])
 											{
-												$errors[] = $this->getI18n()->__('Row %row% column %col%: milestone does not apply to the specified project', array('%col%' => self::CSV_ISSUE_MILESTONE, '%row%' => $i+1));
+												$errors[] = $this->getI18n()->__('Row %row column %col: milestone does not apply to the specified project', array('%col' => self::CSV_ISSUE_MILESTONE, '%row' => $i+1));
 											}
 										}
 										catch (Exception $e)
 										{
-											$errors[] = $this->getI18n()->__('Row %row% column %col%: milestone does not exist', array('%col%' => self::CSV_ISSUE_MILESTONE, '%row%' => $i+1));
+											$errors[] = $this->getI18n()->__('Row %row column %col: milestone does not exist', array('%col' => self::CSV_ISSUE_MILESTONE, '%row' => $i+1));
 										}
 									}
 								}
@@ -2803,7 +2803,7 @@
 								{
 									if (!is_numeric($activerow[self::CSV_ISSUE_STATUS]))
 									{
-										$errors[] = $this->getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => self::CSV_ISSUE_STATUS, '%row%' => $i+1));
+										$errors[] = $this->getI18n()->__('Row %row column %col: invalid value (must be a number)', array('%col' => self::CSV_ISSUE_STATUS, '%row' => $i+1));
 									}
 									else
 									{
@@ -2813,7 +2813,7 @@
 										}
 										catch (Exception $e)
 										{
-											$errors[] = $this->getI18n()->__('Row %row% column %col%: status does not exist', array('%col%' => self::CSV_ISSUE_STATUS, '%row%' => $i+1));
+											$errors[] = $this->getI18n()->__('Row %row column %col: status does not exist', array('%col' => self::CSV_ISSUE_STATUS, '%row' => $i+1));
 										}
 									}
 								}
@@ -2823,7 +2823,7 @@
 								{
 									if (!is_numeric($activerow[self::CSV_ISSUE_RESOLUTION]))
 									{
-										$errors[] = $this->getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => self::CSV_ISSUE_RESOLUTION, '%row%' => $i+1));
+										$errors[] = $this->getI18n()->__('Row %row column %col: invalid value (must be a number)', array('%col' => self::CSV_ISSUE_RESOLUTION, '%row' => $i+1));
 									}
 									else
 									{
@@ -2833,7 +2833,7 @@
 										}
 										catch (Exception $e)
 										{
-											$errors[] = $this->getI18n()->__('Row %row% column %col%: resolution does not exist', array('%col%' => self::CSV_ISSUE_RESOLUTION, '%row%' => $i+1));
+											$errors[] = $this->getI18n()->__('Row %row column %col: resolution does not exist', array('%col' => self::CSV_ISSUE_RESOLUTION, '%row' => $i+1));
 										}
 									}
 								}
@@ -2843,7 +2843,7 @@
 								{
 									if (!is_numeric($activerow[self::CSV_ISSUE_PRIORITY]))
 									{
-										$errors[] = $this->getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => self::CSV_ISSUE_PRIORITY, '%row%' => $i+1));
+										$errors[] = $this->getI18n()->__('Row %row column %col: invalid value (must be a number)', array('%col' => self::CSV_ISSUE_PRIORITY, '%row' => $i+1));
 									}
 									else
 									{
@@ -2853,7 +2853,7 @@
 										}
 										catch (Exception $e)
 										{
-											$errors[] = $this->getI18n()->__('Row %row% column %col%: priority does not exist', array('%col%' => self::CSV_ISSUE_PRIORITY, '%row%' => $i+1));
+											$errors[] = $this->getI18n()->__('Row %row column %col: priority does not exist', array('%col' => self::CSV_ISSUE_PRIORITY, '%row' => $i+1));
 										}
 									}
 								}
@@ -2863,7 +2863,7 @@
 								{
 									if (!is_numeric($activerow[self::CSV_ISSUE_CATEGORY]))
 									{
-										$errors[] = $this->getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => self::CSV_ISSUE_CATEGORY, '%row%' => $i+1));
+										$errors[] = $this->getI18n()->__('Row %row column %col: invalid value (must be a number)', array('%col' => self::CSV_ISSUE_CATEGORY, '%row' => $i+1));
 									}
 									else
 									{
@@ -2873,7 +2873,7 @@
 										}
 										catch (Exception $e)
 										{
-											$errors[] = $this->getI18n()->__('Row %row% column %col%: category does not exist', array('%col%' => self::CSV_ISSUE_CATEGORY, '%row%' => $i+1));
+											$errors[] = $this->getI18n()->__('Row %row column %col: category does not exist', array('%col' => self::CSV_ISSUE_CATEGORY, '%row' => $i+1));
 										}
 									}
 								}
@@ -2883,7 +2883,7 @@
 								{
 									if (!is_numeric($activerow[self::CSV_ISSUE_SEVERITY]))
 									{
-										$errors[] = $this->getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => self::CSV_ISSUE_SEVERITY, '%row%' => $i+1));
+										$errors[] = $this->getI18n()->__('Row %row column %col: invalid value (must be a number)', array('%col' => self::CSV_ISSUE_SEVERITY, '%row' => $i+1));
 									}
 									else
 									{
@@ -2893,7 +2893,7 @@
 										}
 										catch (Exception $e)
 										{
-											$errors[] = $this->getI18n()->__('Row %row% column %col%: severity does not exist', array('%col%' => self::CSV_ISSUE_SEVERITY, '%row%' => $i+1));
+											$errors[] = $this->getI18n()->__('Row %row column %col: severity does not exist', array('%col' => self::CSV_ISSUE_SEVERITY, '%row' => $i+1));
 										}
 									}
 								}
@@ -2903,7 +2903,7 @@
 								{
 									if (!is_numeric($activerow[self::CSV_ISSUE_REPRODUCIBILITY]))
 									{
-										$errors[] = $this->getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => self::CSV_ISSUE_REPRODUCIBILITY, '%row%' => $i+1));
+										$errors[] = $this->getI18n()->__('Row %row column %col: invalid value (must be a number)', array('%col' => self::CSV_ISSUE_REPRODUCIBILITY, '%row' => $i+1));
 									}
 									else
 									{
@@ -2913,7 +2913,7 @@
 										}
 										catch (Exception $e)
 										{
-											$errors[] = $this->getI18n()->__('Row %row% column %col%: reproducability does not exist', array('%col%' => self::CSV_ISSUE_REPRODUCIBILITY, '%row%' => $i+1));
+											$errors[] = $this->getI18n()->__('Row %row column %col: reproducability does not exist', array('%col' => self::CSV_ISSUE_REPRODUCIBILITY, '%row' => $i+1));
 										}
 									}
 								}
@@ -2923,7 +2923,7 @@
 								{
 									if (!is_numeric($activerow[self::CSV_ISSUE_ISSUE_TYPE]))
 									{
-										$errors[] = $this->getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => self::CSV_ISSUE_ISSUE_TYPE, '%row%' => $i+1));
+										$errors[] = $this->getI18n()->__('Row %row column %col: invalid value (must be a number)', array('%col' => self::CSV_ISSUE_ISSUE_TYPE, '%row' => $i+1));
 									}
 									else
 									{
@@ -2931,11 +2931,11 @@
 										{
 											$typetmp = TBGContext::factory()->TBGIssuetype($activerow[self::CSV_ISSUE_ISSUE_TYPE]);
 											if (!($prjtmp->getIssuetypeScheme()->isSchemeAssociatedWithIssuetype($typetmp)))
-												$errors[] = $this->getI18n()->__('Row %row% column %col%: this project does not support issues of this type (%type%)', array('%type%' => $typetmp->getName(), '%col%' => self::CSV_ISSUE_ISSUE_TYPE, '%row%' => $i+1));
+												$errors[] = $this->getI18n()->__('Row %row column %col: this project does not support issues of this type (%type)', array('%type' => $typetmp->getName(), '%col' => self::CSV_ISSUE_ISSUE_TYPE, '%row' => $i+1));
 										}
 										catch (Exception $e)
 										{
-											$errors[] = $this->getI18n()->__('Row %row% column %col%: issue type does not exist', array('%col%' => self::CSV_ISSUE_ISSUE_TYPE, '%row%' => $i+1));
+											$errors[] = $this->getI18n()->__('Row %row column %col: issue type does not exist', array('%col' => self::CSV_ISSUE_ISSUE_TYPE, '%row' => $i+1));
 										}
 									}
 								}
@@ -2997,7 +2997,7 @@
 							}
 							catch (Exception $e)
 							{
-									$errors[] = $this->getI18n()->__('Row %row% failed: %err%', array('%row%' => $i+1, '%err%' => $e->getMessage()));
+									$errors[] = $this->getI18n()->__('Row %row failed: %err', array('%row' => $i+1, '%err' => $e->getMessage()));
 							}
 						}
 						break;
@@ -3131,7 +3131,7 @@
 							}
 							catch (Exception $e)
 							{
-								$errors[] = $this->getI18n()->__('Row %row% failed: %err%', array('%row%' => $i+1, '%err%' => $e->getMessage()));
+								$errors[] = $this->getI18n()->__('Row %row failed: %err', array('%row' => $i+1, '%err' => $e->getMessage()));
 							}
 						}
 						break;
@@ -3231,7 +3231,7 @@
 							}
 							catch (Exception $e)
 							{
-								$errors[] = $this->getI18n()->__('Row %row% failed: %err%', array('%row%' => $i+1, '%err%' => $e->getMessage()));
+								$errors[] = $this->getI18n()->__('Row %row failed: %err', array('%row' => $i+1, '%err' => $e->getMessage()));
 							}
 						}
 						break;
@@ -3251,7 +3251,7 @@
 				}
 				else
 				{
-					return $this->renderJSON(array('message' => $this->getI18n()->__('Successfully imported %num% rows!', array('%num%' => count($data)))));
+					return $this->renderJSON(array('message' => $this->getI18n()->__('Successfully imported %num rows!', array('%num' => count($data)))));
 				}
 			}
 		}

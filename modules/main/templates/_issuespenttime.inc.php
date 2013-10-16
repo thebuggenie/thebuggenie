@@ -32,23 +32,23 @@
 				</li>
 				<li>
 					<label for="issue_timespent_<?php echo $entry->getID(); ?>_points"><?php echo __('Points spent'); ?></label>
-					<input type="text" style="width: 40px;" id="issue_timespent_<?php echo $entry->getID(); ?>_points" name="points" value="<?php echo $entry->getSpentPoints(); ?>"><?php echo __('%number_of% points', array('%number_of%' => '')); ?><br>
+					<input type="text" style="width: 40px;" id="issue_timespent_<?php echo $entry->getID(); ?>_points" name="points" value="<?php echo $entry->getSpentPoints(); ?>"><?php echo __('%number_of points', array('%number_of' => '')); ?><br>
 				</li>
 				<li>
 					<label for="issue_timespent_<?php echo $entry->getID(); ?>_hours"><?php echo __('Hours spent'); ?></label>
-					<input type="text" style="width: 40px;" id="issue_timespent_<?php echo $entry->getID(); ?>_hours" name="hours" value="<?php echo round($entry->getSpentHours() / 100, 2); ?>"><?php echo __('%number_of% hours', array('%number_of%' => '')); ?><br>
+					<input type="text" style="width: 40px;" id="issue_timespent_<?php echo $entry->getID(); ?>_hours" name="hours" value="<?php echo round($entry->getSpentHours() / 100, 2); ?>"><?php echo __('%number_of hours', array('%number_of' => '')); ?><br>
 				</li>
 				<li>
 					<label for="issue_timespent_<?php echo $entry->getID(); ?>_days"><?php echo __('Days spent'); ?></label>
-					<input type="text" style="width: 40px;" id="issue_timespent_<?php echo $entry->getID(); ?>_days" name="days" value="<?php echo $entry->getSpentDays(); ?>"><?php echo __('%number_of% days', array('%number_of%' => '')); ?><br>
+					<input type="text" style="width: 40px;" id="issue_timespent_<?php echo $entry->getID(); ?>_days" name="days" value="<?php echo $entry->getSpentDays(); ?>"><?php echo __('%number_of days', array('%number_of' => '')); ?><br>
 				</li>
 				<li>
 					<label for="issue_timespent_<?php echo $entry->getID(); ?>_weeks"><?php echo __('Weeks spent'); ?></label>
-					<input type="text" style="width: 40px;" id="issue_timespent_<?php echo $entry->getID(); ?>_weeks" name="weeks" value="<?php echo $entry->getSpentWeeks(); ?>"><?php echo __('%number_of% weeks', array('%number_of%' => '')); ?><br>
+					<input type="text" style="width: 40px;" id="issue_timespent_<?php echo $entry->getID(); ?>_weeks" name="weeks" value="<?php echo $entry->getSpentWeeks(); ?>"><?php echo __('%number_of weeks', array('%number_of' => '')); ?><br>
 				</li>
 				<li>
 					<label for="issue_timespent_<?php echo $entry->getID(); ?>_months"><?php echo __('Months spent'); ?></label>
-					<input type="text" style="width: 40px;" id="issue_timespent_<?php echo $entry->getID(); ?>_months" name="months" value="<?php echo $entry->getSpentMonths(); ?>"><?php echo __('%number_of% months', array('%number_of%' => '')); ?><br>
+					<input type="text" style="width: 40px;" id="issue_timespent_<?php echo $entry->getID(); ?>_months" name="months" value="<?php echo $entry->getSpentMonths(); ?>"><?php echo __('%number_of months', array('%number_of' => '')); ?><br>
 				</li>
 				<li>
 					<label for="issue_timespent_<?php echo $entry->getID(); ?>_comment" class="optional"><?php echo __('Comment (optional)'); ?></label>

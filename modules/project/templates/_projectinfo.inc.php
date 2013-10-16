@@ -90,7 +90,7 @@
 			<?php else: ?>
 				<span class="faded_out"><?php echo __('No prefix set'); ?></span>
 			<?php endif; ?>
-			<div style="float: right; margin-right: 5px;" class="faded_out"><?php echo __('See %about_issue_prefix% for an explanation about issue prefixes', array('%about_issue_prefix%' => link_tag(make_url('publish_article', array('article_name' => 'AboutIssuePrefixes')), __('about issue prefixes'), array('target' => '_new')))); ?></div>
+			<div style="float: right; margin-right: 5px;" class="faded_out"><?php echo __('See %about_issue_prefix for an explanation about issue prefixes', array('%about_issue_prefix' => link_tag(make_url('publish_article', array('article_name' => 'AboutIssuePrefixes')), __('about issue prefixes'), array('target' => '_new')))); ?></div>
 		</td>
 	</tr>
 	<tr>
@@ -145,7 +145,7 @@
 <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 	<tr>
 		<td colspan="2" style="padding: 10px 0 10px 10px; text-align: right;">
-			<div style="float: left; font-size: 13px; padding-top: 2px; font-style: italic;" class="config_explanation"><?php echo __('When you are done, click "%save%" to save your changes', array('%save%' => __('Save'))); ?></div>
+			<div style="float: left; font-size: 13px; padding-top: 2px; font-style: italic;" class="config_explanation"><?php echo __('When you are done, click "%save" to save your changes', array('%save' => __('Save'))); ?></div>
 			<input class="button button-green" style="float: right;" type="submit" id="project_submit_settings_button" value="<?php echo __('Save'); ?>">
 			<span id="project_info_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
 		</td>

@@ -133,7 +133,7 @@
 					$issuetype_icons = array();
 					foreach (TBGIssuetype::getAll() as $id => $issuetype)
 					{
-						$issuetype_icons[$id] = TBGContext::getI18n()->__('Recent issues: %issuetype%', array('%issuetype%' => $issuetype->getName()));
+						$issuetype_icons[$id] = TBGContext::getI18n()->__('Recent issues: %issuetype', array('%issuetype' => $issuetype->getName()));
 					}
 
 					$searches = array();

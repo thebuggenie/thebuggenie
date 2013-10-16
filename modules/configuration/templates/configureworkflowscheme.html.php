@@ -2,7 +2,7 @@
 
 	if ($workflow_scheme instanceof TBGWorkflowScheme)
 	{
-		$tbg_response->setTitle(__('Configure workflow scheme "%workflow_scheme_name%"', array('%workflow_scheme_name%' => $workflow_scheme->getName())));
+		$tbg_response->setTitle(__('Configure workflow scheme "%workflow_scheme_name"', array('%workflow_scheme_name' => $workflow_scheme->getName())));
 	}
 	else
 	{
@@ -18,9 +18,9 @@
 			<div class="content" style="width: 730px;" id="workflow_steps_container">
 				<?php if ($workflow_scheme instanceof TBGWorkflowScheme): ?>
 					<div class="greybox workflow_steps_intro">
-						<div class="header"><?php echo __('Workflow scheme "%workflow_scheme_name%"', array('%workflow_scheme_name%' => $workflow_scheme->getName())); ?></div>
+						<div class="header"><?php echo __('Workflow scheme "%workflow_scheme_name"', array('%workflow_scheme_name' => $workflow_scheme->getName())); ?></div>
 						<div class="content">
-							<?php echo __('This page shows all the issuetype / workflow associations for the selected workflow scheme. Select the appropriate workflow schemes for each issue type in the list below, and press the "%save_workflow_associations%" button when done.', array('%save_workflow_associations%' => __('Save workflow assocations'))); ?>
+							<?php echo __('This page shows all the issuetype / workflow associations for the selected workflow scheme. Select the appropriate workflow schemes for each issue type in the list below, and press the "%save_workflow_associations" button when done.', array('%save_workflow_associations' => __('Save workflow assocations'))); ?>
 						</div>
 					</div>
 					<?php if (!$workflow_scheme->isCore()): ?>

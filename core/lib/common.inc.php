@@ -183,15 +183,15 @@
 				$tstring = '';
 				if (date('dmY', $tstamp) == date('dmY'))
 				{
-					$tstring .= __('Today') . ' (' . strftime('%H:%M', $tstamp) . ')';
+					$tstring .= __('Today') . ' (' . strftime('%H:M', $tstamp) . ')';
 				}
 				elseif (date('dmY', $tstamp) == date('dmY', mktime(0, 0, 0, date('m'), (date('d') - 1))))
 				{
-					$tstring .= __('Yesterday') . ' (' . strftime('%H:%M', $tstamp) . ')';
+					$tstring .= __('Yesterday') . ' (' . strftime('%H:M', $tstamp) . ')';
 				}
 				elseif (date('dmY', $tstamp) == date('dmY', mktime(0, 0, 0, date('m'), (date('d') + 1))))
 				{
-					$tstring .= __('Tomorrow') . ' (' . strftime('%H:%M', $tstamp) . ')';
+					$tstring .= __('Tomorrow') . ' (' . strftime('%H:M', $tstamp) . ')';
 				}
 				else
 				{
@@ -199,7 +199,7 @@
 				}
 				break;
 			case 21:
-				$tstring = strftime('%a, %d %b %Y %H:%M:%S ', $tstamp);
+				$tstring = strftime('%a, d %b Y %H:M:%S ', $tstamp);
 //				if (!$skipusertimestamp && TBGSettings::getUserTimezone() != 'sys')
 //				{
 //					if (TBGSettings::getUserTimezone() != 0)
@@ -350,7 +350,7 @@
 		// based on RFC 2822
 		$ip_regex = '\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b';
 		$dns_regex = '(' . $ip_regex . '|(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\]))';
-		$addr_regex = '(?:[a-z0-9!#$%&\'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&\'*+\/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@' . $dns_regex;
+		$addr_regex = '(?:[a-z0-9!#$%&\'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$&\'*+\/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@' . $dns_regex;
 		$serv_regex = '(ssl:\/\/)?(' . $dns_regex . ')';
 		// list of supported character sets based on PHP doc : http://www.php.net/manual/en/function.htmlentities.php
 		$charset_regex = '((ISO-?8859-1)|(ISO-?8859-15)|(UTF-8)|((cp|ibm)?866)|((cp|Windows-|win-)+1251)|((cp|Windows-)+1252)|(KOI8-?RU?)|(BIG5)|(950)|(GB2312)|(936)|(BIG5-HKSCS)|(S(hift_)?JIS)|(932)|(EUC-?JP))';

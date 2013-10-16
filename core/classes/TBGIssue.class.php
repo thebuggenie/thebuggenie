@@ -1962,19 +1962,19 @@
 			if (!is_array($time)) throw new Exception("That's not a valid time");
 			if (array_key_exists('months', $time) && $time['months'] > 0)
 			{
-				$values[] = ($time['months'] == 1) ? $i18n->__('1 month') : $i18n->__('%number_of% months', array('%number_of%' => $time['months']));
+				$values[] = ($time['months'] == 1) ? $i18n->__('1 month') : $i18n->__('%number_of months', array('%number_of' => $time['months']));
 			}
 			if (array_key_exists('weeks', $time) && $time['weeks'] > 0)
 			{
-				$values[] = ($time['weeks'] == 1) ? $i18n->__('1 week') : $i18n->__('%number_of% weeks', array('%number_of%' => $time['weeks']));
+				$values[] = ($time['weeks'] == 1) ? $i18n->__('1 week') : $i18n->__('%number_of weeks', array('%number_of' => $time['weeks']));
 			}
 			if (array_key_exists('days', $time) && ($time['days'] > 0 || !$strict))
 			{
-				$values[] = ($time['days'] == 1) ? $i18n->__('1 day') : $i18n->__('%number_of% days', array('%number_of%' => $time['days']));
+				$values[] = ($time['days'] == 1) ? $i18n->__('1 day') : $i18n->__('%number_of days', array('%number_of' => $time['days']));
 			}
 			if (array_key_exists('hours', $time) && ($time['hours'] > 0 || !$strict))
 			{
-				$values[] = ($time['hours'] == 1) ? $i18n->__('1 hour') : $i18n->__('%number_of% hours', array('%number_of%' => $time['hours']));
+				$values[] = ($time['hours'] == 1) ? $i18n->__('1 hour') : $i18n->__('%number_of hours', array('%number_of' => $time['hours']));
 			}
 			$retval = join(', ', $values);
 			
@@ -1984,7 +1984,7 @@
 				{
 					$retval .= ' / ';
 				}
-				$retval .= ($time['points'] == 1) ? $i18n->__('1 point') : $i18n->__('%number_of% points', array('%number_of%' => $time['points']));
+				$retval .= ($time['points'] == 1) ? $i18n->__('1 point') : $i18n->__('%number_of points', array('%number_of' => $time['points']));
 			}
 
 			return ($retval != '') ? $retval : $i18n->__('No time');
@@ -2016,11 +2016,11 @@
 			$comment->setTargetType(TBGComment::TYPE_ISSUE);
 			if ($file_comment)
 			{
-				$comment->setContent(TBGContext::getI18n()->__('A file was uploaded. %link_to_file% This comment was attached: %comment%', array('%comment%' => "\n\n".$file_comment, '%link_to_file%' => "[[File:{$file->getOriginalFilename()}|thumb|{$description}]]")));
+				$comment->setContent(TBGContext::getI18n()->__('A file was uploaded. %link_to_file This comment was attached: %comment', array('%comment' => "\n\n".$file_comment, '%link_to_file' => "[[File:{$file->getOriginalFilename()}|thumb|{$description}]]")));
 			}
 			else
 			{
-				$comment->setContent(TBGContext::getI18n()->__('A file was uploaded. %link_to_file%', array('%link_to_file%' => "[[File:{$file->getOriginalFilename()}|thumb|{$description}]]")));
+				$comment->setContent(TBGContext::getI18n()->__('A file was uploaded. %link_to_file', array('%link_to_file' => "[[File:{$file->getOriginalFilename()}|thumb|{$description}]]")));
 			}
 			$comment->save();
 			if ($this->_files !== null)
@@ -2730,8 +2730,8 @@
 		 */
 		protected function _removeParentIssue($related_issue, $relation_id)
 		{
-			$this->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('This issue no longer depends on the solution of issue %issue_no%', array('%issue_no%' => $related_issue->getFormattedIssueNo())), $related_issue->getID(), 0);
-			$related_issue->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('Issue %issue_no% no longer depends on the solution of this issue', array('%issue_no%' => $this->getFormattedIssueNo())), $this->getID(), 0);
+			$this->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('This issue no longer depends on the solution of issue %issue_no', array('%issue_no' => $related_issue->getFormattedIssueNo())), $related_issue->getID(), 0);
+			$related_issue->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('Issue %issue_no no longer depends on the solution of this issue', array('%issue_no' => $this->getFormattedIssueNo())), $this->getID(), 0);
 			
 			if ($this->_parent_issues !== null && array_key_exists($relation_id, $this->_parent_issues))
 			{
@@ -2749,8 +2749,8 @@
 		 */
 		protected function _removeChildIssue($related_issue, $relation_id)
 		{
-			$this->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('Issue %issue_no% no longer depends on the solution of this issue', array('%issue_no%' => $related_issue->getFormattedIssueNo())), $this->getID(), 0);
-			$related_issue->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('This issue no longer depends on the solution of issue %issue_no%', array('%issue_no%' => $this->getFormattedIssueNo())), $related_issue->getID(), 0);
+			$this->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('Issue %issue_no no longer depends on the solution of this issue', array('%issue_no' => $related_issue->getFormattedIssueNo())), $this->getID(), 0);
+			$related_issue->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('This issue no longer depends on the solution of issue %issue_no', array('%issue_no' => $this->getFormattedIssueNo())), $related_issue->getID(), 0);
 			
 			if ($this->_child_issues !== null && array_key_exists($relation_id, $this->_child_issues))
 			{
@@ -2772,8 +2772,8 @@
 				TBGIssueRelationsTable::getTable()->addParentIssue($this->getID(), $related_issue->getID());
 				$this->_parent_issues = null;
 				
-				$related_issue->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('This %this_issuetype% now depends on the solution of %issuetype% %issue_no%', array('%this_issuetype%' => $related_issue->getIssueType()->getName(), '%issuetype%' => $this->getIssueType()->getName(), '%issue_no%' => $this->getFormattedIssueNo())));
-				$this->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('%issuetype% %issue_no% now depends on the solution of this %this_issuetype%', array('%this_issuetype%' => $this->getIssueType()->getName(), '%issuetype%' => $related_issue->getIssueType()->getName(), '%issue_no%' => $related_issue->getFormattedIssueNo())));
+				$related_issue->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('This %this_issuetype now depends on the solution of %issuetype %issue_no', array('%this_issuetype' => $related_issue->getIssueType()->getName(), '%issuetype' => $this->getIssueType()->getName(), '%issue_no' => $this->getFormattedIssueNo())));
+				$this->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('%issuetype %issue_no now depends on the solution of this %this_issuetype', array('%this_issuetype' => $this->getIssueType()->getName(), '%issuetype' => $related_issue->getIssueType()->getName(), '%issue_no' => $related_issue->getFormattedIssueNo())));
 				
 				return true;
 			}
@@ -2794,8 +2794,8 @@
 				$res = TBGIssueRelationsTable::getTable()->addChildIssue($this->getID(), $related_issue->getID());
 				$this->_child_issues = null;
 				
-				$related_issue->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('%issuetype% %issue_no% now depends on the solution of this %this_issuetype%', array('%this_issuetype%' => $related_issue->getIssueType()->getName(), '%issuetype%' => $this->getIssueType()->getName(), '%issue_no%' => $this->getFormattedIssueNo())));
-				$this->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('This %this_issuetype% now depends on the solution of %issuetype% %issue_no%', array('%this_issuetype%' => $this->getIssueType()->getName(), '%issuetype%' => $related_issue->getIssueType()->getName(), '%issue_no%' => $related_issue->getFormattedIssueNo())));
+				$related_issue->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('%issuetype %issue_no now depends on the solution of this %this_issuetype', array('%this_issuetype' => $related_issue->getIssueType()->getName(), '%issuetype' => $this->getIssueType()->getName(), '%issue_no' => $this->getFormattedIssueNo())));
+				$this->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('This %this_issuetype now depends on the solution of %issuetype %issue_no', array('%this_issuetype' => $this->getIssueType()->getName(), '%issuetype' => $related_issue->getIssueType()->getName(), '%issue_no' => $related_issue->getFormattedIssueNo())));
 				
 				return ($comment instanceof TBGComment) ? $comment : true;
 			}
@@ -3564,7 +3564,7 @@
 				$retval = \b2db\Core::getTable('TBGIssueAffectsBuildTable')->setIssueAffected($this->getID(), $build->getID());
 				if ($retval !== false)
 				{
-					$this->addLogEntry(TBGLogTable::LOG_AFF_ADD, TBGContext::getI18n()->__("'%release_name%' added", array('%release_name%' => $build->getName())));
+					$this->addLogEntry(TBGLogTable::LOG_AFF_ADD, TBGContext::getI18n()->__("'%release_name' added", array('%release_name' => $build->getName())));
 					return array('a_id' => $retval, 'build' => $build, 'confirmed' => 0, 'status' => null);
 				}
 			}
@@ -3585,7 +3585,7 @@
 				$retval = \b2db\Core::getTable('TBGIssueAffectsEditionTable')->setIssueAffected($this->getID(), $edition->getID());
 				if ($retval !== false)
 				{
-					$this->addLogEntry(TBGLogTable::LOG_AFF_ADD, TBGContext::getI18n()->__("'%edition_name%' added", array('%edition_name%' => $edition->getName())));
+					$this->addLogEntry(TBGLogTable::LOG_AFF_ADD, TBGContext::getI18n()->__("'%edition_name' added", array('%edition_name' => $edition->getName())));
 					return array('a_id' => $retval, 'edition' => $edition, 'confirmed' => 0, 'status' => null);
 				}
 			}
@@ -3606,7 +3606,7 @@
 				$retval = \b2db\Core::getTable('TBGIssueAffectsComponentTable')->setIssueAffected($this->getID(), $component->getID());
 				if ($retval !== false)
 				{
-					$this->addLogEntry(TBGLogTable::LOG_AFF_ADD, TBGContext::getI18n()->__("'%component_name%' added", array('%component_name%' => $component->getName())));
+					$this->addLogEntry(TBGLogTable::LOG_AFF_ADD, TBGContext::getI18n()->__("'%component_name' added", array('%component_name' => $component->getName())));
 					return array('a_id' => $retval, 'component' => $component, 'confirmed' => 0, 'status' => null);
 				}
 			}
@@ -3628,7 +3628,7 @@
 		{
 			if (\b2db\Core::getTable('TBGIssueAffectsEditionTable')->deleteByIssueIDandEditionID($this->getID(), $item->getID()))
 			{
-				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, TBGContext::getI18n()->__("'%item_name%' removed", array('%item_name%' => $item->getName())));
+				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, TBGContext::getI18n()->__("'%item_name' removed", array('%item_name' => $item->getName())));
 				return true;
 			}
 			return false;
@@ -3649,7 +3649,7 @@
 		{
 			if (\b2db\Core::getTable('TBGIssueAffectsBuildTable')->deleteByIssueIDandBuildID($this->getID(), $item->getID()))
 			{
-				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, TBGContext::getI18n()->__("'%item_name%' removed", array('%item_name%' => $item->getName())));
+				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, TBGContext::getI18n()->__("'%item_name' removed", array('%item_name' => $item->getName())));
 				return true;
 			}
 			return false;
@@ -3670,7 +3670,7 @@
 		{
 			if (\b2db\Core::getTable('TBGIssueAffectsComponentTable')->deleteByIssueIDandComponentID($this->getID(), $item->getID()))
 			{
-				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, TBGContext::getI18n()->__("'%item_name%' removed", array('%item_name%' => $item->getName())));
+				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, TBGContext::getI18n()->__("'%item_name' removed", array('%item_name' => $item->getName())));
 				return true;
 			}
 			return false;
@@ -3694,11 +3694,11 @@
 			{
 				if ($confirmed)
 				{
-					$this->addLogEntry(TBGLogTable::LOG_AFF_UPDATE, TBGContext::getI18n()->__("'%edition%' is now confirmed for this issue", array('%edition%' => $item->getName())));
+					$this->addLogEntry(TBGLogTable::LOG_AFF_UPDATE, TBGContext::getI18n()->__("'%edition' is now confirmed for this issue", array('%edition' => $item->getName())));
 				}
 				else
 				{
-					$this->addLogEntry(TBGLogTable::LOG_AFF_UPDATE, TBGContext::getI18n()->__("'%edition%' is now unconfirmed for this issue", array('%edition%' => $item->getName())));
+					$this->addLogEntry(TBGLogTable::LOG_AFF_UPDATE, TBGContext::getI18n()->__("'%edition' is now unconfirmed for this issue", array('%edition' => $item->getName())));
 				}
 				return true;
 			}
@@ -3723,11 +3723,11 @@
 			{
 				if ($confirmed)
 				{
-					$this->addLogEntry(TBGLogTable::LOG_AFF_UPDATE, TBGContext::getI18n()->__("'%build%' is now confirmed for this issue", array('%build%' => $item->getName())));
+					$this->addLogEntry(TBGLogTable::LOG_AFF_UPDATE, TBGContext::getI18n()->__("'%build' is now confirmed for this issue", array('%build' => $item->getName())));
 				}
 				else
 				{
-					$this->addLogEntry(TBGLogTable::LOG_AFF_UPDATE, TBGContext::getI18n()->__("'%build%' is now unconfirmed for this issue", array('%build%' => $item->getName())));
+					$this->addLogEntry(TBGLogTable::LOG_AFF_UPDATE, TBGContext::getI18n()->__("'%build' is now unconfirmed for this issue", array('%build' => $item->getName())));
 				}
 				return true;
 			}
@@ -3752,11 +3752,11 @@
 			{
 				if ($confirmed)
 				{
-					$this->addLogEntry(TBGLogTable::LOG_AFF_UPDATE, TBGContext::getI18n()->__("'%component%' is now confirmed for this issue", array('%component%' => $item->getName())));
+					$this->addLogEntry(TBGLogTable::LOG_AFF_UPDATE, TBGContext::getI18n()->__("'%component' is now confirmed for this issue", array('%component' => $item->getName())));
 				}
 				else
 				{
-					$this->addLogEntry(TBGLogTable::LOG_AFF_UPDATE, TBGContext::getI18n()->__("'%component%' is now unconfirmed for this issue", array('%component%' => $item->getName())));
+					$this->addLogEntry(TBGLogTable::LOG_AFF_UPDATE, TBGContext::getI18n()->__("'%component' is now unconfirmed for this issue", array('%component' => $item->getName())));
 				}
 				return true;
 			}
@@ -3779,7 +3779,7 @@
 		{
 			if (TBGIssueAffectsEditionTable::getTable()->setStatusByIssueIDandEditionID($this->getID(), $item->getID(), $status->getID()))
 			{
-				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, TBGContext::getI18n()->__("'%item_name%' -> '%status_name%", array('%item_name%' => $item->getName(), '%status_name%' => $status->getName())));
+				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, TBGContext::getI18n()->__("'%item_name' -> '%status_name", array('%item_name' => $item->getName(), '%status_name' => $status->getName())));
 				return true;
 			}
 			return false;
@@ -3801,7 +3801,7 @@
 		{
 			if (TBGIssueAffectsBuildTable::getTable()->setStatusByIssueIDandBuildID($this->getID(), $item->getID(), $status->getID()))
 			{
-				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, TBGContext::getI18n()->__("'%item_name%' -> '%status_name%", array('%item_name%' => $item->getName(), '%status_name%' => $status->getName())));
+				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, TBGContext::getI18n()->__("'%item_name' -> '%status_name", array('%item_name' => $item->getName(), '%status_name' => $status->getName())));
 				return true;
 			}
 			return false;
@@ -3823,7 +3823,7 @@
 		{
 			if (TBGIssueAffectsComponentTable::getTable()->setStatusByIssueIDandComponentID($this->getID(), $item->getID(), $status->getID()))
 			{
-				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, TBGContext::getI18n()->__("'%item_name%' -> '%status_name%", array('%item_name%' => $item->getName(), '%status_name%' => $status->getName())));
+				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, TBGContext::getI18n()->__("'%item_name' -> '%status_name", array('%item_name' => $item->getName(), '%status_name' => $status->getName())));
 				return true;
 			}
 			return false;
@@ -4618,7 +4618,7 @@
 								}
 								break;
 							case '_percent_complete':
-								$this->addLogEntry(TBGLogTable::LOG_ISSUE_PERCENT, $original_value . '% &rArr; ' . $this->getPercentCompleted() . '%', $original_value, $compare_value);
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_PERCENT, $original_value . '% &rArr; ' . $this->getPercentCompleted() . '', $original_value, $compare_value);
 								break;
 							case '_resolution':
 								if ($original_value != 0)

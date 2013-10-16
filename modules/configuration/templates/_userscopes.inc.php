@@ -3,7 +3,7 @@
 	<div id="backdrop_detail_content" class="backdrop_detail_content">
 		<h5 style="text-align: left;">
 			<?php echo __('The user can access the following scopes'); ?>
-			<div class="faded_out" style="font-size: 0.9em; font-weight: normal;"><?php echo __('Editing scopes for user %username%', array('%username%' => '<b>'.$user->getUsername().'</b>')); ?></div>
+			<div class="faded_out" style="font-size: 0.9em; font-weight: normal;"><?php echo __('Editing scopes for user %username', array('%username' => '<b>'.$user->getUsername().'</b>')); ?></div>
 		</h5>
 		<form action="<?php echo make_url('configure_users_update_user_scopes', array('user_id' => $user->getID())); ?>" method="post" onsubmit="TBG.Config.User.updateScopes('<?php echo make_url('configure_users_update_user_scopes', array('user_id' => $user->getID())); ?>', '<?php echo $user->getID(); ?>');return false;" id="edituser_<?php echo $user->getID(); ?>_scopes_form">
 			<?php foreach ($scopes as $scope): ?>

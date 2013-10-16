@@ -6,15 +6,15 @@
 			<?php if ($issue->isAssigned()): ?>
 				<span class="faded_out">
 					<?php if ($issue->getAssignee() instanceof TBGUser): ?>
-						(<?php echo __('Assigned to %assignee%', array('%assignee%' => get_component_html('main/userdropdown', array('user' => $issue->getAssignee(), 'show_avatar' => false)))); ?>)
+						(<?php echo __('Assigned to %assignee', array('%assignee' => get_component_html('main/userdropdown', array('user' => $issue->getAssignee(), 'show_avatar' => false)))); ?>)
 					<?php else: ?>
-						(<?php echo __('Assigned to %assignee%', array('%assignee%' => get_component_html('main/teamdropdown', array('team' => $issue->getAssignee())))); ?>)
+						(<?php echo __('Assigned to %assignee', array('%assignee' => get_component_html('main/teamdropdown', array('team' => $issue->getAssignee())))); ?>)
 					<?php endif; ?>
 				</span>
 			<?php endif; ?>
 			<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue->getFormattedIssueNo(true, true) . ' - <span class="issue_title">' . $issue->getTitle() . '</span>'); ?>
 			<?php if ($milestone->isSprint()): ?>
-				<div class="issue_points"><?php echo __('%pts% points', array('%pts%' => $issue->getEstimatedPoints())); ?></div>
+				<div class="issue_points"><?php echo __('%pts points', array('%pts' => $issue->getEstimatedPoints())); ?></div>
 			<?php endif; ?>
 		</div>
 	<?php else: ?>
