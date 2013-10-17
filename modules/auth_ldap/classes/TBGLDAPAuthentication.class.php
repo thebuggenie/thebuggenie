@@ -33,8 +33,6 @@
 		
 		protected $_has_config_settings = true;
 
-		protected $_user_header = 'REMOTE_USER';
-
 		/**
 		 * Return an instance of this module
 		 *
@@ -76,7 +74,7 @@
 
 		public function postConfigSettings(TBGRequest $request)
 		{
-			$settings = array('hostname', 'u_type', 'g_type', 'b_dn', 'groups', 'dn_attr', 'u_attr', 'g_attr', 'e_attr', 'f_attr', 'b_attr', 'g_dn', 'control_user', 'control_pass', 'integrated_auth');
+			$settings = array('hostname', 'u_type', 'g_type', 'b_dn', 'groups', 'dn_attr', 'u_attr', 'g_attr', 'e_attr', 'f_attr', 'b_attr', 'g_dn', 'control_user', 'control_pass', 'integrated_auth', 'integrated_auth_header');
 			foreach ($settings as $setting)
 			{
 				if (($setting == 'u_type' || $setting == 'g_type' || $setting == 'dn_attr') && $request->getParameter($setting) == '')
@@ -364,7 +362,7 @@
 				 */
 				elseif ($mode == 1) 
 				{
-					if (!isset($_SERVER[$this->_user_header]) || $_SERVER[$this->_user_header] != $username) 
+					if (!isset($_SERVER[$this->getSetting('integrated_auth_header')]) || $_SERVER[$this->getSetting('integrated_auth_header')] != $username) 
 					{
 						throw new Exception(TBGContext::geti18n()->__('HTTP authentication internal error.'));
 					}
@@ -462,9 +460,9 @@
 		{
 			if ($this->getSetting('integrated_auth')) 
 			{
-  				if (isset($_SERVER[$this->_user_header])) 
+  				if (isset($_SERVER[$this->getSetting('integrated_auth_header')])) 
 				{
-					return $this->doLogin($_SERVER[$this->_user_header],'a',1);
+					return $this->doLogin($_SERVER[$this->getSetting('integrated_auth_header')],'a',1);
 				}
 				else
 				{
