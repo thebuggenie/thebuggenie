@@ -10,7 +10,7 @@
 					<td style="width: 580px;"><input type="text" name="build_name" id="build_name" style="width: 570px;" value="<?php echo $build->getName(); ?>"></td>
 				</tr>
 				<tr>
-					<td><label for="ver_mj"><?php echo __('Version: %version_number%', array('%version_number%' => '')); ?></label></td>
+					<td><label for="ver_mj"><?php echo __('Version: %version_number', array('%version_number' => '')); ?></label></td>
 					<td><input type="text" name="ver_mj" id="ver_mj" style="width: 20px; font-size: 0.9em; text-align: center;" value="<?php echo $build->getVersionMajor(); ?>">&nbsp;.&nbsp;<input type="text" name="ver_mn" id="ver_mn" style="width: 20px; font-size: 0.9em; text-align: center;" value="<?php echo $build->getVersionMinor(); ?>">&nbsp;.&nbsp;<input type="text" name="ver_rev" id="ver_rev" style="width: 20px; font-size: 0.9em; text-align: center;" value="<?php echo $build->getVersionRevision(); ?>"></td>
 				</tr>
 				<tr>
@@ -49,7 +49,7 @@
 							<option value=<?php print $cc; ?><?php echo (($build->getReleaseDateYear() == $cc) ? " selected" : "") ?>><?php echo $cc; ?></option>
 						<?php endfor; ?>
 						</select>
-						<b><?php echo __('%release_date_input% - time: %time_input%', array('%release_date_input%' => '', '%time_input%' => '')); ?></b>
+						<b><?php echo __('%release_date_input - time: %time_input', array('%release_date_input' => '', '%time_input' => '')); ?></b>
 						<input type="text" id="release_hour" name="release_hour" style="width: 20px; font-size: 0.9em; text-align: center;" value="<?php echo $build->getReleaseDateHour(); ?>"<?php if (!$build->hasReleaseDate()): ?> disabled<?php endif; ?>>&nbsp;:&nbsp;
 						<input type="text" id="release_minute" name="release_minute" style="width: 20px; font-size: 0.9em; text-align: center;" value="<?php echo $build->getReleaseDateMinute(); ?>"<?php if (!$build->hasReleaseDate()): ?> disabled<?php endif; ?>>
 					</td>
@@ -60,7 +60,7 @@
 						<select name="milestone" id="build_milestone_dropdown">
 							<option value="0"<?php if (!$build->getMilestone() instanceof TBGMilestone) echo ' selected'; ?>><?php echo __('This release is not related to a milestone'); ?></option>
 							<?php foreach ($project->getMilestones() as $milestone): ?>
-								<option value="<?php echo $milestone->getID(); ?>"<?php if ($build->getMilestone() instanceof TBGMilestone && $build->getMilestone()->getID() == $milestone->getID()) echo ' selected'; ?>><?php echo __('This is a release of milestone %milestone_name%', array('%milestone_name%' => $milestone->getName())); ?></option>
+								<option value="<?php echo $milestone->getID(); ?>"<?php if ($build->getMilestone() instanceof TBGMilestone && $build->getMilestone()->getID() == $milestone->getID()) echo ' selected'; ?>><?php echo __('This is a release of milestone %milestone_name', array('%milestone_name' => $milestone->getName())); ?></option>
 							<?php endforeach; ?>
 						</select>
 					</td>
@@ -72,7 +72,7 @@
 							<select name="edition" id="build_edition_dropdown">
 								<option value="0"<?php if (!$build->getEdition() instanceof TBGEdition) echo ' selected'; ?>><?php echo __('This release is not related to a edition'); ?></option>
 								<?php foreach ($project->getEditions() as $edition): ?>
-									<option value="<?php echo $edition->getID(); ?>"<?php if ($build->getEdition() instanceof TBGEdition && $build->getEdition()->getID() == $edition->getID()) echo ' selected'; ?>><?php echo __('This is a release of edition %edition_name%', array('%edition_name%' => $edition->getName())); ?></option>
+									<option value="<?php echo $edition->getID(); ?>"<?php if ($build->getEdition() instanceof TBGEdition && $build->getEdition()->getID() == $edition->getID()) echo ' selected'; ?>><?php echo __('This is a release of edition %edition_name', array('%edition_name' => $edition->getName())); ?></option>
 								<?php endforeach; ?>
 							</select>
 						</td>
@@ -84,9 +84,9 @@
 					<td style="width: 200px;"><label><?php echo __('Release download'); ?></label></td>
 					<td>
 						<ul class="simple_list" style="margin-top: 0;" id="edit_build_download_options">
-							<li><input type="radio" id="download_none" name="download" value="0"<?php if (!$build->hasDownload()) echo ' checked'; ?>><label for="download_none"><?php echo ($build->hasDownload()) ? __('Clear download information') : __('Leave as is %no_download%', array('%no_download%' => '<span class="faded_out">('.__('no download').')</span>')).'</span>'; ?></label></li>
+							<li><input type="radio" id="download_none" name="download" value="0"<?php if (!$build->hasDownload()) echo ' checked'; ?>><label for="download_none"><?php echo ($build->hasDownload()) ? __('Clear download information') : __('Leave as is %no_download', array('%no_download' => '<span class="faded_out">('.__('no download').')</span>')).'</span>'; ?></label></li>
 							<?php if ($build->hasFile()): ?>
-								<li><input type="radio" id="download_leave_file" name="download" value="leave_file" checked><label for="download_leave_file"><?php echo __('Use existing file %filename%', array('%filename%' => '<span class="faded_out" style="font-weight: normal;">('.$build->getFile()->getOriginalFilename().')</span>')); ?></label></li>
+								<li><input type="radio" id="download_leave_file" name="download" value="leave_file" checked><label for="download_leave_file"><?php echo __('Use existing file %filename', array('%filename' => '<span class="faded_out" style="font-weight: normal;">('.$build->getFile()->getOriginalFilename().')</span>')); ?></label></li>
 							<?php endif; ?>
 							<?php if (TBGSettings::isUploadsEnabled()): ?>
 								<li><input type="radio" id="download_upload" name="download" value="upload_file"><label for="download_upload"><?php echo __('Upload file for download'); ?>:</label>&nbsp;<input type="file" name="upload_file"></li>
@@ -103,9 +103,9 @@
 					<td colspan="2" style="padding: 10px 0 10px 10px; text-align: right;">
 						<div style="float: left; font-size: 13px; padding-top: 2px; font-style: italic;" class="config_explanation">
 							<?php if ($build->getId()): ?>
-								<?php echo __('When you are done, click "%update_release%" to update the details for this release', array('%update_release%' => __('Update release'))); ?>
+								<?php echo __('When you are done, click "%update_release" to update the details for this release', array('%update_release' => __('Update release'))); ?>
 							<?php else: ?>
-								<?php echo __('When you are done, click "%add_release%" to publish this release', array('%add_release%' => __('Add release'))); ?>
+								<?php echo __('When you are done, click "%add_release" to publish this release', array('%add_release' => __('Add release'))); ?>
 							<?php endif; ?>
 						</div>
 						<?php if ($build->getID()): ?>

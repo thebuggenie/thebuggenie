@@ -116,7 +116,7 @@
 			{
 				ldap_unbind($connection);
 				TBGContext::setMessage('module_error', TBGContext::getI18n()->__('Some of the groups you specified don\'t exist'));
-				TBGContext::setMessage('module_error_details', TBGContext::getI18n()->__('The following groups for the group restriction could not be found: %groups%', array('%groups%' => implode(', ', $nonexisting))));
+				TBGContext::setMessage('module_error_details', TBGContext::getI18n()->__('The following groups for the group restriction could not be found: %groups', array('%groups' => implode(', ', $nonexisting))));
 				$this->forward(TBGContext::getRouting()->generate('configure_module', array('config_module' => 'auth_ldap')));
 			}
 		}
@@ -248,7 +248,7 @@
 			}
 			
 			ldap_unbind($connection);
-			TBGContext::setMessage('module_message', TBGContext::getI18n()->__('Pruning successful! %del% users deleted', array('%del%' => $deletecount)));
+			TBGContext::setMessage('module_message', TBGContext::getI18n()->__('Pruning successful! %del users deleted', array('%del' => $deletecount)));
 			$this->forward(TBGContext::getRouting()->generate('configure_module', array('config_module' => 'auth_ldap')));
 		}
 		
@@ -464,7 +464,7 @@
 			}
 			
 			ldap_unbind($connection);
-			TBGContext::setMessage('module_message', TBGContext::getI18n()->__('Import successful! %imp% users imported, %upd% users updated from LDAP', array('%imp%' => $importcount, '%upd%' => $updatecount)));
+			TBGContext::setMessage('module_message', TBGContext::getI18n()->__('Import successful! %imp users imported, %upd users updated from LDAP', array('%imp' => $importcount, '%upd' => $updatecount)));
 			$this->forward(TBGContext::getRouting()->generate('configure_module', array('config_module' => 'auth_ldap')));
 		}
 

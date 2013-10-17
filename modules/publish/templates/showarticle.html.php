@@ -28,7 +28,7 @@
 			<?php endif; ?>
 			<?php if (isset($revision) && !$error): ?>
 				<div class="lightyellowbox" style="margin: 0 0 5px 5px; font-size: 14px;">
-					<?php echo __('You are now viewing a previous revision of this article - revision %revision_number% %date%, by %author%', array('%revision_number%' => '<b>'.$revision.'</b>', '%date%' => '<span class="faded_out">[ '.tbg_formatTime($article->getPostedDate(), 20).' ]</span>', '%author%' => (($article->getAuthor() instanceof TBGUser) ? $article->getAuthor()->getName() : __('System')))); ?><br>
+					<?php echo __('You are now viewing a previous revision of this article - revision %revision_number %date, by %author', array('%revision_number' => '<b>'.$revision.'</b>', '%date' => '<span class="faded_out">[ '.tbg_formatTime($article->getPostedDate(), 20).' ]</span>', '%author' => (($article->getAuthor() instanceof TBGUser) ? $article->getAuthor()->getName() : __('System')))); ?><br>
 					<b><?php echo link_tag(make_url('publish_article', array('article_name' => $article->getName())), __('Show current version')); ?></b>
 				</div>
 			<?php endif; ?>
@@ -59,7 +59,7 @@
 						<?php include_component('main/uploader', array('article' => $article, 'mode' => 'article')); ?>
 					<?php endif; ?>
 					<h4>
-						<?php echo __('Article attachments (%count%)', array('%count%' => count($attachments))); ?>
+						<?php echo __('Article attachments (%count)', array('%count' => count($attachments))); ?>
 						<?php if (TBGSettings::isUploadsEnabled() && $article->canEdit()): ?>
 							<button class="button button-silver" onclick="$('attach_file').show();"><?php echo __('Attach a file'); ?></button>
 						<?php else: ?>
@@ -70,7 +70,7 @@
 				</div>
 				<div id="article_comments">
 					<h4>
-						<?php echo __('Article comments (%count%)', array('%count%' => TBGComment::countComments($article->getID(), TBGComment::TYPE_ARTICLE))); ?>
+						<?php echo __('Article comments (%count)', array('%count' => TBGComment::countComments($article->getID(), TBGComment::TYPE_ARTICLE))); ?>
 						<?php if ($tbg_user->canPostComments() && ((TBGContext::isProjectContext() && !TBGContext::getCurrentProject()->isArchived()) || !TBGContext::isProjectContext())): ?>
 							<button id="comment_add_button" class="button button-silver" onclick="$$('.comment_editor').each(Element.hide);$('comment_add_button').hide(); $('comment_add').show();$('comment_bodybox').focus();"><?php echo __('Post comment'); ?></button>
 						<?php endif; ?>

@@ -8,7 +8,7 @@
 		<?php include_component('leftmenu', array('selected_section' => TBGSettings::CONFIGURATION_SECTION_MODULES)); ?>
 		<td valign="top" style="padding-left: 15px;">
 			<div style="width: 730px;" id="config_modules">
-				<h3><?php echo __('Configure module "%module_name%"', array('%module_name%' => $module->getLongName())); ?></h3>
+				<h3><?php echo __('Configure module "%module_name"', array('%module_name' => $module->getLongName())); ?></h3>
 				<?php if ($module_error !== null): ?>
 					<div class="redbox" style="margin: 5px 0px 5px 0px;" id="module_error">
 						<div class="header"><?php echo $module_error; ?></div>

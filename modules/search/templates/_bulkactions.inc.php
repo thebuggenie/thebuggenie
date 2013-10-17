@@ -4,7 +4,7 @@
 			<input type="hidden" name="project_key" value="<?php echo TBGContext::getCurrentProject()->getKey(); ?>">
 		<?php endif; ?>
 		<div class="search_bulk_container <?php echo $mode; ?> unavailable" id="search_bulk_container_<?php echo $mode; ?>">
-			<label for="bulk_action_selector_<?php echo $mode; ?>"><?php echo __('With selected issue(s): %action%', array('%action%' => '')); ?></label>
+			<label for="bulk_action_selector_<?php echo $mode; ?>"><?php echo __('With selected issue(s): %action', array('%action' => '')); ?></label>
 			<select name="bulk_action" id="bulk_action_selector_<?php echo $mode; ?>" onchange="TBG.Search.bulkContainerChanger('<?php echo $mode; ?>');">
 				<option value=""><?php echo __('Do nothing'); ?></option>
 				<?php if (TBGContext::isProjectContext()): ?>

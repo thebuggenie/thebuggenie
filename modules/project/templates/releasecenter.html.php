@@ -1,7 +1,7 @@
 <?php
 
 	$tbg_response->addBreadcrumb(__('Release center'), null, tbg_get_breadcrumblinks('project_summary', $selected_project));
-	$tbg_response->setTitle(__('"%project_name%" release center', array('%project_name%' => $selected_project->getName())));
+	$tbg_response->setTitle(__('"%project_name" release center', array('%project_name' => $selected_project->getName())));
 
 ?>
 			<?php include_template('project/projectheader', array('selected_project' => $selected_project)); ?>
@@ -28,7 +28,7 @@
 							<?php if ($tbg_user->canManageProjectReleases($selected_project)): ?>
 							<div class="button button-green" style="float: right; margin-top: -5px;" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'project_build', 'project_id' => $selected_project->getId(), 'edition_id' => $edition_id)); ?>');"><?php echo __('Add new edition release'); ?></div>
 							<?php endif; ?>
-							<?php echo __('Active %edition_name% releases', array('%edition_name%' => $edition->getName())); ?>
+							<?php echo __('Active %edition_name releases', array('%edition_name' => $edition->getName())); ?>
 						</h5>
 						<ul class="simple_list" id="active_builds_<?php echo $edition_id; ?>">
 							<?php if (count($active_builds[$edition_id])): ?>
@@ -53,7 +53,7 @@
 			<?php if ($selected_project->isEditionsEnabled()): ?>
 				<?php foreach ($selected_project->getEditions() as $edition_id => $edition): ?>
 					<div style="margin: 20px 0 0 0;">
-						<h5><?php echo __('Archived %edition_name% releases', array('%edition_name%' => $edition->getName())); ?></h5>
+						<h5><?php echo __('Archived %edition_name releases', array('%edition_name' => $edition->getName())); ?></h5>
 						<ul class="simple_list" id="archived_builds_<?php echo $edition_id; ?>">
 							<?php if (count($archived_builds[$edition_id])): ?>
 								<?php foreach ($archived_builds[$edition_id] as $build): ?>

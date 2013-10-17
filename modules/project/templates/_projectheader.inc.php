@@ -5,7 +5,7 @@
 			<?php echo link_tag(make_url('project_releases', array('project_key' => $selected_project->getKey())), image_tag('icon_download.png').__('Download'), array('class' => 'button button-orange')); ?>
 		<?php endif; ?>
 		<?php if ($selected_project->hasParent()): ?>
-			<?php echo link_tag(make_url('project_dashboard', array('project_key' => $selected_project->getParent()->getKey())), image_tag($selected_project->getParent()->getSmallIconName(), array('style' => 'width: 16px; height: 16px;'), $selected_project->getParent()->hasSmallIcon()) . __('Up to %parent%', array('%parent%' => $selected_project->getParent()->getName())), array('class' => 'button button-silver')); ?>
+			<?php echo link_tag(make_url('project_dashboard', array('project_key' => $selected_project->getParent()->getKey())), image_tag($selected_project->getParent()->getSmallIconName(), array('style' => 'width: 16px; height: 16px;'), $selected_project->getParent()->hasSmallIcon()) . __('Up to %parent', array('%parent' => $selected_project->getParent()->getName())), array('class' => 'button button-silver')); ?>
 		<?php endif; ?>
 		<?php if (TBGContext::getUser()->canReportIssues($selected_project) && !$selected_project->isLocked()): ?>
 			<?php echo link_tag(make_url('project_reportissue', array('project_key' => $selected_project->getKey())), image_tag('tab_reportissue.png' ) . __('Report an issue'), array('class' => 'button button-green')); ?>

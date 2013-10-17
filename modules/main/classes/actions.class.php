@@ -692,7 +692,7 @@
 				}
 				catch (Exception $e)
 				{
-					$this->error = TBGContext::getI18n()->__("Could not validate against the OpenID provider: %message%", array('%message%' => htmlentities($e->getMessage(), ENT_COMPAT, TBGContext::getI18n()->getCharset())));
+					$this->error = TBGContext::getI18n()->__("Could not validate against the OpenID provider: %message", array('%message' => htmlentities($e->getMessage(), ENT_COMPAT, TBGContext::getI18n()->getCharset())));
 				}
 			}
 			elseif ($request->getMethod() == TBGRequest::POST)
@@ -914,7 +914,7 @@
 				{
 					$user->setValidated(true);
 					$user->save();
-					TBGContext::setMessage('login_message', TBGContext::getI18n()->__('Your account has been activated! You can now log in with the username %user% and the password in your activation email.', array('%user%' => $user->getUsername())));
+					TBGContext::setMessage('login_message', TBGContext::getI18n()->__('Your account has been activated! You can now log in with the username %user and the password in your activation email.', array('%user' => $user->getUsername())));
 				}
 			}
 			else
@@ -1428,10 +1428,10 @@
 				$err_msg = array();
 				foreach ($errors as $field => $value)
 				{
-					$err_msg[] = $i18n->__('Please provide a value for the %field_name% field', array('%field_name%' => $field));
+					$err_msg[] = $i18n->__('Please provide a value for the %field_name field', array('%field_name' => $field));
 				}
 				$this->getResponse()->setHttpStatus(400);
-				return $this->renderJSON(array('error' => $i18n->__('An error occured while creating this story: %errors%', array('%errors%' => '')), 'message' => join('<br>', $err_msg)));
+				return $this->renderJSON(array('error' => $i18n->__('An error occured while creating this story: %errors', array('%errors' => '')), 'message' => join('<br>', $err_msg)));
 			}
 			$this->errors = $errors;
 			$this->permission_errors = $permission_errors;
@@ -1991,7 +1991,7 @@
 			}
 			
 			$this->getResponse()->setHttpStatus(400);
-			return $this->renderJSON(array('error' => TBGContext::getI18n()->__('No valid field specified (%field%)', array('%field%' => $request['field']))));
+			return $this->renderJSON(array('error' => TBGContext::getI18n()->__('No valid field specified (%field)', array('%field' => $request['field']))));
 		}
 
 		/**
@@ -2142,7 +2142,7 @@
 			else
 			{
 				$this->getResponse()->setHttpStatus(400);
-				return $this->renderJSON(array('error' => TBGContext::getI18n()->__('No valid field specified (%field%)', array('%field%' => $request['field']))));
+				return $this->renderJSON(array('error' => TBGContext::getI18n()->__('No valid field specified (%field)', array('%field' => $request['field']))));
 			}
 		}
 		
@@ -3136,7 +3136,7 @@
 			{
 				$this->getResponse()->cleanBuffer();
 				$this->getResponse()->setHttpStatus(400);
-				return $this->renderJSON(array('error' => TBGContext::getI18n()->__('An error occured: %error_message%', array('%error_message%' => $e->getMessage()))));
+				return $this->renderJSON(array('error' => TBGContext::getI18n()->__('An error occured: %error_message', array('%error_message' => $e->getMessage()))));
 			}
 			$this->getResponse()->cleanBuffer();
 			$this->getResponse()->setHttpStatus(400);
@@ -3171,7 +3171,7 @@
 			if (mb_strlen(trim($searchfor)) < 3 && !is_numeric($searchfor) && mb_substr($searchfor, 0, 1) != '#')
 			{
 //				$status = 400;
-//				$message = TBGContext::getI18n()->__('Please enter something to search for (3 characters or more) %searchfor%', array('searchfor' => $searchfor));
+//				$message = TBGContext::getI18n()->__('Please enter something to search for (3 characters or more) %searchfor', array('searchfor' => $searchfor));
 				$issues = array();
 				$count = 0;
 			}
@@ -3218,7 +3218,7 @@
 			if (mb_strlen(trim($searchfor)) < 3 && !is_numeric($searchfor))
 			{
 				$status = 400;
-				$message = TBGContext::getI18n()->__('Please enter something to search for (3 characters or more) %searchfor%', array('searchfor' => $searchfor));
+				$message = TBGContext::getI18n()->__('Please enter something to search for (3 characters or more) %searchfor', array('searchfor' => $searchfor));
 			}
 
 			$this->getResponse()->setHttpStatus($status);
@@ -3328,7 +3328,7 @@
 					catch (Exception $e)
 					{
 						$this->getResponse()->setHttpStatus(400);
-						return $this->renderJSON(array('error' => TBGContext::getI18n()->__('An error occured when relating issues: %error%', array('%error%' => $e->getMessage()))));
+						return $this->renderJSON(array('error' => TBGContext::getI18n()->__('An error occured when relating issues: %error', array('%error' => $e->getMessage()))));
 					}
 				}
 			}
@@ -3344,7 +3344,7 @@
 			else
 			{
 				$this->getResponse()->setHttpStatus(400);
-				return $this->renderJSON(array('error' => TBGContext::getI18n()->__('An error occured when relating issues: %error%', array('%error%' => $message))));
+				return $this->renderJSON(array('error' => TBGContext::getI18n()->__('An error occured when relating issues: %error', array('%error' => $message))));
 			}
 		}
 
@@ -3451,7 +3451,7 @@
 						{
 							$issue->confirmAffectedEdition($edition['edition'], false);
 							
-							$message = TBGContext::getI18n()->__('Edition <b>%edition%</b> is now unconfirmed for this issue', array('%edition%' => $edition['edition']->getName()));
+							$message = TBGContext::getI18n()->__('Edition <b>%edition</b> is now unconfirmed for this issue', array('%edition' => $edition['edition']->getName()));
 							$alt = TBGContext::getI18n()->__('No');
 							$src = image_url('action_cancel_small.png');
 						}
@@ -3459,7 +3459,7 @@
 						{
 							$issue->confirmAffectedEdition($edition['edition']);
 							
-							$message = TBGContext::getI18n()->__('Edition <b>%edition%</b> is now confirmed for this issue', array('%edition%' => $edition['edition']->getName()));
+							$message = TBGContext::getI18n()->__('Edition <b>%edition</b> is now confirmed for this issue', array('%edition' => $edition['edition']->getName()));
 							$alt = TBGContext::getI18n()->__('Yes');
 							$src = image_url('action_ok_small.png');
 						}
@@ -3482,7 +3482,7 @@
 						{
 							$issue->confirmAffectedComponent($component['component'], false);
 							
-							$message = TBGContext::getI18n()->__('Component <b>%component%</b> is now unconfirmed for this issue', array('%component%' => $component['component']->getName()));
+							$message = TBGContext::getI18n()->__('Component <b>%component</b> is now unconfirmed for this issue', array('%component' => $component['component']->getName()));
 							$alt = TBGContext::getI18n()->__('No');
 							$src = image_url('action_cancel_small.png');
 						}
@@ -3490,7 +3490,7 @@
 						{
 							$issue->confirmAffectedComponent($component['component']);
 							
-							$message = TBGContext::getI18n()->__('Component <b>%component%</b> is now confirmed for this issue', array('%component%' => $component['component']->getName()));
+							$message = TBGContext::getI18n()->__('Component <b>%component</b> is now confirmed for this issue', array('%component' => $component['component']->getName()));
 							$alt = TBGContext::getI18n()->__('Yes');
 							$src = image_url('action_ok_small.png');
 						}
@@ -3513,7 +3513,7 @@
 						{
 							$issue->confirmAffectedBuild($build['build'], false);
 							
-							$message = TBGContext::getI18n()->__('Release <b>%build%</b> is now unconfirmed for this issue', array('%build%' => $build['build']->getName()));
+							$message = TBGContext::getI18n()->__('Release <b>%build</b> is now unconfirmed for this issue', array('%build' => $build['build']->getName()));
 							$alt = TBGContext::getI18n()->__('No');
 							$src = image_url('action_cancel_small.png');
 						}
@@ -3521,7 +3521,7 @@
 						{
 							$issue->confirmAffectedBuild($build['build']);
 							
-							$message = TBGContext::getI18n()->__('Release <b>%build%</b> is now confirmed for this issue', array('%build%' => $build['build']->getName()));
+							$message = TBGContext::getI18n()->__('Release <b>%build</b> is now confirmed for this issue', array('%build' => $build['build']->getName()));
 							$alt = TBGContext::getI18n()->__('Yes');
 							$src = image_url('action_ok_small.png');
 						}
@@ -3568,7 +3568,7 @@
 						
 						$issue->removeAffectedEdition($edition['edition']);
 						
-						$message = TBGContext::getI18n()->__('Edition <b>%edition%</b> is no longer affected by this issue', array('%edition%' => $edition['edition']->getName()));
+						$message = TBGContext::getI18n()->__('Edition <b>%edition</b> is no longer affected by this issue', array('%edition' => $edition['edition']->getName()));
 												
 						break;
 					case 'component':
@@ -3583,7 +3583,7 @@
 						
 						$issue->removeAffectedComponent($component['component']);
 						
-						$message = TBGContext::getI18n()->__('Component <b>%component%</b> is no longer affected by this issue', array('%component%' => $component['component']->getName()));
+						$message = TBGContext::getI18n()->__('Component <b>%component</b> is no longer affected by this issue', array('%component' => $component['component']->getName()));
 												
 						break;
 					case 'build':
@@ -3598,7 +3598,7 @@
 						
 						$issue->removeAffectedBuild($build['build']);
 						
-						$message = TBGContext::getI18n()->__('Release <b>%build%</b> is no longer affected by this issue', array('%build%' => $build['build']->getName()));
+						$message = TBGContext::getI18n()->__('Release <b>%build</b> is no longer affected by this issue', array('%build' => $build['build']->getName()));
 											
 						break;
 					default:
@@ -3662,7 +3662,7 @@
 
 						$issue->setAffectedEditionStatus($edition['edition'], $status);
 						
-						$message = TBGContext::getI18n()->__('Edition <b>%edition%</b> is now %status%', array('%edition%' => $edition['edition']->getName(), '%status%' => $status->getName()));
+						$message = TBGContext::getI18n()->__('Edition <b>%edition</b> is now %status', array('%edition' => $edition['edition']->getName(), '%status' => $status->getName()));
 												
 						break;
 					case 'component':
@@ -3676,7 +3676,7 @@
 						
 						$issue->setAffectedcomponentStatus($component['component'], $status);
 						
-						$message = TBGContext::getI18n()->__('Component <b>%component%</b> is now %status%', array('%component%' => $component['component']->getName(), '%status%' => $status->getName()));
+						$message = TBGContext::getI18n()->__('Component <b>%component</b> is now %status', array('%component' => $component['component']->getName(), '%status' => $status->getName()));
 												
 						break;
 					case 'build':
@@ -3690,7 +3690,7 @@
 
 						$issue->setAffectedbuildStatus($build['build'], $status);
 						
-						$message = TBGContext::getI18n()->__('Release <b>%build%</b> is now %status%', array('%build%' => $build['build']->getName(), '%status%' => $status->getName()));
+						$message = TBGContext::getI18n()->__('Release <b>%build</b> is now %status', array('%build' => $build['build']->getName(), '%status' => $status->getName()));
 												
 						break;
 					default:
@@ -3735,7 +3735,7 @@
 						if (TBGIssueAffectsEditionTable::getTable()->getByIssueIDandEditionID($issue->getID(), $edition->getID()))
 						{
 							$this->getResponse()->setHttpStatus(400);
-							return $this->renderJSON(array('error' => TBGContext::getI18n()->__('%item% is already affected by this issue', array('%item%' => $edition->getName()))));
+							return $this->renderJSON(array('error' => TBGContext::getI18n()->__('%item is already affected by this issue', array('%item' => $edition->getName()))));
 						}
 						
 						$edition = $issue->addAffectedEdition($edition);
@@ -3745,7 +3745,7 @@
 						$itemtypename = TBGContext::getI18n()->__('Edition');
 						$content = get_template_html('main/affecteditem', array('item' => $item, 'itemtype' => $itemtype, 'itemtypename' => $itemtypename, 'issue' => $issue, 'statuses' => $statuses));
 						
-						$message = TBGContext::getI18n()->__('Edition <b>%edition%</b> is now affected by this issue', array('%edition%' => $edition['edition']->getName()));
+						$message = TBGContext::getI18n()->__('Edition <b>%edition</b> is now affected by this issue', array('%edition' => $edition['edition']->getName()));
 												
 						break;
 					case 'component':
@@ -3765,7 +3765,7 @@
 						if (TBGIssueAffectsComponentTable::getTable()->getByIssueIDandComponentID($issue->getID(), $component->getID()))
 						{
 							$this->getResponse()->setHttpStatus(400);
-							return $this->renderJSON(array('error' => TBGContext::getI18n()->__('%item% is already affected by this issue', array('%item%' => $component->getName()))));
+							return $this->renderJSON(array('error' => TBGContext::getI18n()->__('%item is already affected by this issue', array('%item' => $component->getName()))));
 						}
 						
 						$component = $issue->addAffectedComponent($component);
@@ -3775,7 +3775,7 @@
 						$itemtypename = TBGContext::getI18n()->__('Component');
 						$content = get_template_html('main/affecteditem', array('item' => $item, 'itemtype' => $itemtype, 'itemtypename' => $itemtypename, 'issue' => $issue, 'statuses' => $statuses));
 						
-						$message = TBGContext::getI18n()->__('Component <b>%component%</b> is now affected by this issue', array('%component%' => $component['component']->getName()));
+						$message = TBGContext::getI18n()->__('Component <b>%component</b> is now affected by this issue', array('%component' => $component['component']->getName()));
 												
 						break;
 					case 'build':
@@ -3796,7 +3796,7 @@
 						if (TBGIssueAffectsBuildTable::getTable()->getByIssueIDandBuildID($issue->getID(), $build->getID()))
 						{
 							$this->getResponse()->setHttpStatus(400);
-							return $this->renderJSON(array('error' => TBGContext::getI18n()->__('%item% is already affected by this issue', array('%item%' => $build->getName()))));
+							return $this->renderJSON(array('error' => TBGContext::getI18n()->__('%item is already affected by this issue', array('%item' => $build->getName()))));
 						}
 												
 						$build = $issue->addAffectedBuild($build);
@@ -3806,7 +3806,7 @@
 						$itemtypename = TBGContext::getI18n()->__('Release');
 						$content = get_template_html('main/affecteditem', array('item' => $item, 'itemtype' => $itemtype, 'itemtypename' => $itemtypename, 'issue' => $issue, 'statuses' => $statuses));
 												
-						$message = TBGContext::getI18n()->__('Release <b>%build%</b> is now affected by this issue', array('%build%' => $build['build']->getName()));
+						$message = TBGContext::getI18n()->__('Release <b>%build</b> is now affected by this issue', array('%build' => $build['build']->getName()));
 												
 						break;
 					default:
@@ -4073,7 +4073,7 @@
 				$this->forward($this->getRouting()->generate('account'));
 			}
 			
-			TBGContext::setMessage('error', $this->getI18n()->__('Could not pick the username "%username%"', array('%username%' => $request['selected_username'])));
+			TBGContext::setMessage('error', $this->getI18n()->__('Could not pick the username "%username"', array('%username' => $request['selected_username'])));
 			$this->forward($this->getRouting()->generate('account'));
 		}
 

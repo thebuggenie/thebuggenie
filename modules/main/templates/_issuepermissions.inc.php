@@ -18,8 +18,8 @@
 			</h4>
 			<?php include_component('identifiableselector', array(	'html_id' 			=> "popup_find_acl_{$issue->getID()}",
 																	'header' 			=> __('Give someone access to this issue'),
-																	'callback'		 	=> "TBG.Issues.ACL.addTarget('" . make_url('getacl_formentry', array('identifiable_type' => 'user', 'identifiable_value' => '%identifiable_value%')) . "', {$issue->getID()});",
-																	'team_callback' 	=> "TBG.Issues.ACL.addTarget('" . make_url('getacl_formentry', array('identifiable_type' => 'team', 'identifiable_value' => '%identifiable_value%')) . "', {$issue->getID()});",
+																	'callback'		 	=> "TBG.Issues.ACL.addTarget('" . make_url('getacl_formentry', array('identifiable_type' => 'user', 'identifiable_value' => '%identifiable_value')) . "', {$issue->getID()});",
+																	'team_callback' 	=> "TBG.Issues.ACL.addTarget('" . make_url('getacl_formentry', array('identifiable_type' => 'team', 'identifiable_value' => '%identifiable_value')) . "', {$issue->getID()});",
 																	'base_id'			=> "popup_find_acl_{$issue->getID()}",
 																	'include_teams'		=> true,
 																	'allow_clear'		=> false,

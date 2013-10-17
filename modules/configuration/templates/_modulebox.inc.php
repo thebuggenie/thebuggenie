@@ -42,19 +42,19 @@
 	<?php if (!$module->isCore()): ?>
 		<?php if ($module->isEnabled()): ?>
 			<div id="disable_module_<?php echo($module->getID()); ?>" style="display: none; margin-top: 10px; padding: 0 10px 5px 10px; text-align: left;" class="rounded_box white shadowed">
-				<h4><?php echo __('Really disable "%module_name%"?', array('%module_name%' => $module->getLongname())); ?></h4>
+				<h4><?php echo __('Really disable "%module_name"?', array('%module_name' => $module->getLongname())); ?></h4>
 				<span class="question_header"><?php echo __('Disabling this module will prevent users from accessing it or any associated data.'); ?></span><br>
 				<div style="text-align: right;" id="disable_module_controls_<?php echo $module->getID(); ?>"><?php echo link_tag(make_url('configure_disable_module', array('module_key' => $module->getName())), __('Yes'), array('class' => 'xboxlink')); ?> :: <a href="javascript:void(0)" class="xboxlink" onclick="$('disable_module_<?php echo $module->getID(); ?>').hide();"><?php echo __('No'); ?></a></div>
 			</div>
 		<?php else: ?>
 			<div id="enable_module_<?php echo($module->getID()); ?>" style="display: none; margin-top: 10px; padding: 0 10px 5px 10px; text-align: left;" class="rounded_box white shadowed">
-				<h4><?php echo __('Really enable "%module_name%"?', array('%module_name%' => $module->getLongname())); ?></h4>
+				<h4><?php echo __('Really enable "%module_name"?', array('%module_name' => $module->getLongname())); ?></h4>
 				<span class="question_header"><?php echo __('Enabling this module will give users access to it and all associated data.'); ?></span><br>
 				<div style="text-align: right;" id="enable_module_controls_<?php echo $module->getID(); ?>"><?php echo link_tag(make_url('configure_enable_module', array('module_key' => $module->getName())), __('Yes'), array('class' => 'xboxlink')); ?> :: <a href="javascript:void(0)" class="xboxlink" onclick="$('enable_module_<?php echo $module->getID(); ?>').hide();"><?php echo __('No'); ?></a></div>
 			</div>
 		<?php endif; ?>
 		<div id="uninstall_module_<?php echo($module->getID()); ?>" style="display: none; margin-top: 10px; padding: 0 10px 5px 10px; text-align: left;" class="rounded_box white shadowed">
-			<h4><?php echo __('Really uninstall "%module_name%"?', array('%module_name%' => $module->getLongname())); ?></h4>
+			<h4><?php echo __('Really uninstall "%module_name"?', array('%module_name' => $module->getLongname())); ?></h4>
 			<span class="question_header"><?php echo __('Uninstalling this module will permanently prevent users from accessing it or any associated data. If you just want to prevent access to the module temporarily, disable the module instead.'); ?></span><br>
 			<div style="text-align: right;" id="uninstall_module_controls_<?php echo $module->getID(); ?>"><?php echo link_tag(make_url('configure_uninstall_module', array('module_key' => $module->getName())), __('Yes'), array('class' => 'xboxlink')); ?> :: <a href="javascript:void(0)" class="xboxlink" onclick="$('uninstall_module_<?php echo $module->getID(); ?>').hide();"><?php echo __('No'); ?></a></div>
 		</div>

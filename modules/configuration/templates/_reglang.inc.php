@@ -16,7 +16,7 @@
 		<td><label for="charset"><?php echo __('Charset'); ?></label></td>
 		<td>
 			<input type="text" name="<?php echo TBGSettings::SETTING_DEFAULT_CHARSET; ?>" id="charset" value="<?php echo TBGSettings::getCharset(); ?>" style="width: 150px;"<?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>>
-			<span class="config_explanation"><?php echo __('Current character set is %charset%', array('%charset%' => '<b>' . TBGContext::getI18n()->getLangCharset() . '</b>')); ?></span>
+			<span class="config_explanation"><?php echo __('Current character set is %charset', array('%charset' => '<b>' . TBGContext::getI18n()->getLangCharset() . '</b>')); ?></span>
 		</td>
 	</tr>
 	<tr>
@@ -36,7 +36,7 @@
 	<tr>
 		<td class="config_explanation" colspan="2">
 			<?php echo __('The timezone for the server hosting The Bug Genie. Make sure this is the same as the timezone the server is running in - this is not necessarily the same as your own timezone!'); ?><br>
-			<?php echo __('The time is now: %time%', array('%time%' => tbg_formatTime(time(), 1, true))); ?>
+			<?php echo __('The time is now: %time', array('%time' => tbg_formatTime(time(), 1, true))); ?>
 		</td>
 	</tr>
 </table>

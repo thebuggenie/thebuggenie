@@ -223,7 +223,7 @@
 			}
 			catch (Exception $e)
 			{
-				return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__("An error occured while trying to create a new task: %exception_message%", array('%exception_message%' => $e->getMessage()))));
+				return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__("An error occured while trying to create a new task: %exception_message", array('%exception_message' => $e->getMessage()))));
 			}
 		}
 
@@ -387,7 +387,7 @@
 
 				$issue->save();
 			}
-			return $this->renderJSON(array('estimated_hours' => $milestone->getHoursEstimated(), 'estimated_points' => $milestone->getPointsEstimated(), 'message' => TBGContext::getI18n()->__('%num% issue(s) updated', array('%num%' => count($request['issue_id'])))));
+			return $this->renderJSON(array('estimated_hours' => $milestone->getHoursEstimated(), 'estimated_points' => $milestone->getPointsEstimated(), 'message' => TBGContext::getI18n()->__('%num issue(s) updated', array('%num' => count($request['issue_id'])))));
 		}
 		
 		/**
@@ -516,10 +516,10 @@
 			if (in_array($request['set'], array('issues_per_status', 'issues_per_state', 'issues_per_priority', 'issues_per_category', 'issues_per_resolution', 'issues_per_reproducability')))
 			{
 				$success = true;
-				$base_url = TBGContext::getRouting()->generate('project_statistics_image', array('project_key' => $this->selected_project->getKey(), 'key' => '%key%', 'mode' => '%mode%', 'image_number' => '%image_number%'));
-				$key = '%key%';
-				$mode = '%mode%';
-				$image_number = '%image_number%';
+				$base_url = TBGContext::getRouting()->generate('project_statistics_image', array('project_key' => $this->selected_project->getKey(), 'key' => '%key', 'mode' => '%mode', 'image_number' => '%image_number'));
+				$key = '%key';
+				$mode = '%mode';
+				$image_number = '%image_number';
 				$set = $request['set'];
 				if ($set != 'issues_per_state')
 				{
@@ -717,7 +717,7 @@
 					}
 					break;
 				default:
-					throw new Exception(__("unknown key '%key%'", array('%key%' => $this->key)));
+					throw new Exception(__("unknown key '%key'", array('%key' => $this->key)));
 			}
 			$this->title = html_entity_decode($this->title);
 			list ($values, $labels, $colors) = $this->_calculateImageDetails($counts);
@@ -1257,7 +1257,7 @@
 					if (!$issue->isWorkflowTransitionsAvailable() || !$transition->validateFromRequest($request))
 					{
 						$this->getResponse()->setHttpStatus(400);
-						return $this->renderJSON(array('error' => TBGContext::getI18n()->__('The transition could not be applied to issue %issue_number% because of %errors%', array('%issue_number%' => $issue->getFormattedIssueNo(), '%errors%' => join(', ', $transition->getValidationErrors())))));
+						return $this->renderJSON(array('error' => TBGContext::getI18n()->__('The transition could not be applied to issue %issue_number because of %errors', array('%issue_number' => $issue->getFormattedIssueNo(), '%errors' => join(', ', $transition->getValidationErrors())))));
 					}
 
 					try
@@ -1614,7 +1614,7 @@
 				}
 
 
-				$message = ($old_key != $this->selected_project->getKey()) ? TBGContext::getI18n()->__('%IMPORTANT%: The project key has changed. Remember to replace the current url with the new project key', array('%IMPORTANT%' => '<b>'.TBGContext::getI18n()->__('IMPORTANT').'</b>')) : '';
+				$message = ($old_key != $this->selected_project->getKey()) ? TBGContext::getI18n()->__('%IMPORTANT: The project key has changed. Remember to replace the current url with the new project key', array('%IMPORTANT' => '<b>'.TBGContext::getI18n()->__('IMPORTANT').'</b>')) : '';
 
 				if ($request->hasParameter('project_key'))
 					$this->selected_project->setKey($request['project_key']);

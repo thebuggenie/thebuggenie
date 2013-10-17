@@ -1,6 +1,6 @@
 <div class="backdrop_box large">
 	<div class="backdrop_detail_header">
-		<?php echo __('Permission details for "%itemname%"', array('%itemname%' => $item_name)); ?>
+		<?php echo __('Permission details for "%itemname"', array('%itemname' => $item_name)); ?>
 	</div>
 	<div id="backdrop_detail_content" class="backdrop_detail_content">
 		<?php echo __('Specify who can set this value for issues.'); ?>

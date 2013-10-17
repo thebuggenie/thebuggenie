@@ -22,7 +22,7 @@
 						echo __('The issue was reopened');
 						break;
 					case TBGLogTable::LOG_ISSUE_UPDATE:
-						echo __('The issue was updated: %change%', array('%change%' => $item->getText()));
+						echo __('The issue was updated: %change', array('%change' => $item->getText()));
 						if (trim($item->getPreviousValue()) || trim($item->getCurrentValue()))
 						{
 							echo '<br>';
@@ -30,10 +30,10 @@
 						}
 						break;
 					case TBGLogTable::LOG_ISSUE_UPDATE_TITLE:
-						echo __('Title updated: %previous_value% => %new_value%', array('%previous_value%' => $item->getPreviousValue(), '%new_value%' => $item->getCurrentValue()));
+						echo __('Title updated: %previous_value => %new_value', array('%previous_value' => $item->getPreviousValue(), '%new_value' => $item->getCurrentValue()));
 						break;
 					case TBGLogTable::LOG_ISSUE_UPDATE_DESCRIPTION:
-						echo __('Description updated: %previous_value% => %new_value%', array('%previous_value%' => $item->getPreviousValue(), '%new_value%' => $item->getCurrentValue()));
+						echo __('Description updated: %previous_value => %new_value', array('%previous_value' => $item->getPreviousValue(), '%new_value' => $item->getCurrentValue()));
 						break;
 					case TBGLogTable::LOG_ISSUE_STATUS:
 						echo image_tag('icon_status.png');
@@ -41,7 +41,7 @@
 						{
 							$previous_value = ($item->getPreviousValue()) ? (($old_item = TBGContext::factory()->TBGStatus($item->getPreviousValue())) ? __($old_item->getName()) : __('Unknown')) : __('Not determined');
 							$new_value = ($item->getCurrentValue()) ? (($new_item = TBGContext::factory()->TBGStatus($item->getCurrentValue())) ? __($new_item->getName()) : __('Unknown')) : __('Not determined');
-							echo __("Status changed: %previous_value% => %new_value%", array('%previous_value%' => '<strong>'.$previous_value.'</strong>', '%new_value%' => '<strong>'.$new_value.'</strong>'));
+							echo __("Status changed: %previous_value => %new_value", array('%previous_value' => '<strong>'.$previous_value.'</strong>', '%new_value' => '<strong>'.$new_value.'</strong>'));
 						}
 						break;
 					case TBGLogTable::LOG_ISSUE_RESOLUTION:
@@ -50,7 +50,7 @@
 						{
 							$previous_value = ($item->getPreviousValue()) ? (($old_item = TBGContext::factory()->TBGResolution($item->getPreviousValue())) ? __($old_item->getName()) : __('Unknown')) : __('Not determined');
 							$new_value = ($item->getCurrentValue()) ? (($new_item = TBGContext::factory()->TBGResolution($item->getCurrentValue())) ? __($new_item->getName()) : __('Unknown')) : __('Not determined');
-							echo __("Resolution changed: %previous_value% => %new_value%", array('%previous_value%' => '<strong>'.$previous_value.'</strong>', '%new_value%' => '<strong>'.$new_value.'</strong>'));
+							echo __("Resolution changed: %previous_value => %new_value", array('%previous_value' => '<strong>'.$previous_value.'</strong>', '%new_value' => '<strong>'.$new_value.'</strong>'));
 						}
 						break;
 					case TBGLogTable::LOG_ISSUE_PRIORITY:
@@ -59,7 +59,7 @@
 						{
 							$previous_value = ($item->getPreviousValue()) ? (($old_item = TBGContext::factory()->TBGPriority($item->getPreviousValue())) ? __($old_item->getName()) : __('Unknown')) : __('Not determined');
 							$new_value = ($item->getCurrentValue()) ? (($new_item = TBGContext::factory()->TBGPriority($item->getCurrentValue())) ? __($new_item->getName()) : __('Unknown')) : __('Not determined');
-							echo __("Priority changed: %previous_value% => %new_value%", array('%previous_value%' => '<strong>'.$previous_value.'</strong>', '%new_value%' => '<strong>'.$new_value.'</strong>'));
+							echo __("Priority changed: %previous_value => %new_value", array('%previous_value' => '<strong>'.$previous_value.'</strong>', '%new_value' => '<strong>'.$new_value.'</strong>'));
 						}
 						break;
 					case TBGLogTable::LOG_ISSUE_SEVERITY:
@@ -68,7 +68,7 @@
 						{
 							$previous_value = ($item->getPreviousValue()) ? (($old_item = TBGContext::factory()->TBGSeverity($item->getPreviousValue())) ? __($old_item->getName()) : __('Unknown')) : __('Not determined');
 							$new_value = ($item->getCurrentValue()) ? (($new_item = TBGContext::factory()->TBGSeverity($item->getCurrentValue())) ? __($new_item->getName()) : __('Unknown')) : __('Not determined');
-							echo __("Severity changed: %previous_value% => %new_value%", array('%previous_value%' => '<strong>'.$previous_value.'</strong>', '%new_value%' => '<strong>'.$new_value.'</strong>'));
+							echo __("Severity changed: %previous_value => %new_value", array('%previous_value' => '<strong>'.$previous_value.'</strong>', '%new_value' => '<strong>'.$new_value.'</strong>'));
 						}
 						break;
 					case TBGLogTable::LOG_ISSUE_REPRODUCABILITY:
@@ -77,7 +77,7 @@
 						{
 							$previous_value = ($item->getPreviousValue()) ? (($old_item = TBGContext::factory()->TBGReproducability($item->getPreviousValue())) ? __($old_item->getName()) : __('Unknown')) : __('Not determined');
 							$new_value = ($item->getCurrentValue()) ? (($new_item = TBGContext::factory()->TBGReproducability($item->getCurrentValue())) ? __($new_item->getName()) : __('Unknown')) : __('Not determined');
-							echo __("Reproducability changed: %previous_value% => %new_value%", array('%previous_value%' => '<strong>'.$previous_value.'</strong>', '%new_value%' => '<strong>'.$new_value.'</strong>'));
+							echo __("Reproducability changed: %previous_value => %new_value", array('%previous_value' => '<strong>'.$previous_value.'</strong>', '%new_value' => '<strong>'.$new_value.'</strong>'));
 						}
 						break;
 					case TBGLogTable::LOG_ISSUE_ISSUETYPE:
@@ -86,7 +86,7 @@
 						{
 							$previous_value = ($item->getPreviousValue()) ? (($old_item = TBGContext::factory()->TBGIssuetype($item->getPreviousValue())) ? __($old_item->getName()) : __('Unknown')) : __('Not determined');
 							$new_value = ($item->getCurrentValue()) ? (($new_item = TBGContext::factory()->TBGIssuetype($item->getCurrentValue())) ? __($new_item->getName()) : __('Unknown')) : __('Not determined');
-							echo __("Issuetype changed: %previous_value% => %new_value%", array('%previous_value%' => '<strong>'.$previous_value.'</strong>', '%new_value%' => '<strong>'.$new_value.'</strong>'));
+							echo __("Issuetype changed: %previous_value => %new_value", array('%previous_value' => '<strong>'.$previous_value.'</strong>', '%new_value' => '<strong>'.$new_value.'</strong>'));
 						}
 						break;
 					case TBGLogTable::LOG_ISSUE_CATEGORY:
@@ -95,7 +95,7 @@
 						{
 							$previous_value = ($item->getPreviousValue()) ? (($old_item = TBGContext::factory()->TBGCategory($item->getPreviousValue())) ? __($old_item->getName()) : __('Unknown')) : __('Not determined');
 							$new_value = ($item->getCurrentValue()) ? (($new_item = TBGContext::factory()->TBGCategory($item->getCurrentValue())) ? __($new_item->getName()) : __('Unknown')) : __('Not determined');
-							echo __("Category changed: %previous_value% => %new_value%", array('%previous_value%' => '<strong>'.$previous_value.'</strong>', '%new_value%' => '<strong>'.$new_value.'</strong>'));
+							echo __("Category changed: %previous_value => %new_value", array('%previous_value' => '<strong>'.$previous_value.'</strong>', '%new_value' => '<strong>'.$new_value.'</strong>'));
 						}
 						break;
 					case TBGLogTable::LOG_ISSUE_MILESTONE:
@@ -104,7 +104,7 @@
 						{
 							$previous_value = ($item->getPreviousValue()) ? (($old_item = TBGContext::factory()->TBGMilestone($item->getPreviousValue())) ? __($old_item->getName()) : __('Unknown')) : __('Not determined');
 							$new_value = ($item->getCurrentValue()) ? (($new_item = TBGContext::factory()->TBGMilestone($item->getCurrentValue())) ? __($new_item->getName()) : __('Unknown')) : __('Not determined');
-							echo __("Milestone changed: %previous_value% => %new_value%", array('%previous_value%' => '<strong>'.$previous_value.'</strong>', '%new_value%' => '<strong>'.$new_value.'</strong>'));
+							echo __("Milestone changed: %previous_value => %new_value", array('%previous_value' => '<strong>'.$previous_value.'</strong>', '%new_value' => '<strong>'.$new_value.'</strong>'));
 						}
 						break;
 					case TBGLogTable::LOG_ISSUE_CUSTOMFIELD_CHANGED:
@@ -189,7 +189,7 @@
 										$new_value = ($new_item instanceof TBGCustomDatatypeOption) ? $new_item->getName() : TBGContext::getI18n()->__('Unknown');
 										break;
 								}
-								echo __("%field_name% changed: %previous_value% => %new_value%", array('%field_name%' => $customdatatype->getName(), '%previous_value%' => '<strong>'.$old_value.'</strong>', '%new_value%' => '<strong>'.$new_value.'</strong>'));
+								echo __("%field_name changed: %previous_value => %new_value", array('%field_name' => $customdatatype->getName(), '%previous_value' => '<strong>'.$old_value.'</strong>', '%new_value' => '<strong>'.$new_value.'</strong>'));
 							}
 							echo __('Custom field changed');
 						}
@@ -200,22 +200,22 @@
 						{
 							$previous_value = ($item->getPreviousValue()) ? (($old_item = TBGContext::factory()->TBGUser($item->getPreviousValue())) ? __($old_item->getName()) : __('Unknown')) : __('Not determined');
 							$new_value = ($item->getCurrentValue()) ? (($new_item = TBGContext::factory()->TBGUser($item->getCurrentValue())) ? __($new_item->getName()) : __('Unknown')) : __('Not determined');
-							echo __("User working on issue changed: %previous_value% => %new_value%", array('%previous_value%' => '<strong>'.$previous_value.'</strong>', '%new_value%' => '<strong>'.$new_value.'</strong>'));
+							echo __("User working on issue changed: %previous_value => %new_value", array('%previous_value' => '<strong>'.$previous_value.'</strong>', '%new_value' => '<strong>'.$new_value.'</strong>'));
 						}
 						break;
 					case TBGLogTable::LOG_ISSUE_ASSIGNED:
 						echo image_tag('icon_user.png');
-						echo __("Assignee changed to %new_value%", array('%new_value%' => '<strong>'.$item->getText().'</strong>'));
+						echo __("Assignee changed to %new_value", array('%new_value' => '<strong>'.$item->getText().'</strong>'));
 						break;
 					case TBGLogTable::LOG_ISSUE_TIME_SPENT:
 						echo image_tag('icon_time.png');
-						echo __("Time spent changed: %value%", array('%value%' => '<strong>'.$item->getText().'</strong>'));
+						echo __("Time spent changed: %value", array('%value' => '<strong>'.$item->getText().'</strong>'));
 						break;
 					case TBGLogTable::LOG_ISSUE_PERCENT:
 						echo image_tag('icon_percent.png');
 						if ($item->hasChangeDetails())
 						{
-							echo __("Percent complete changed: %previous_value% => %new_value%", array('%previous_value%' => '<strong>'.(int) $item->getPreviousValue().'</strong>', '%new_value%' => '<strong>'.(int) $item->getCurrentValue().'</strong>'));
+							echo __("Percent complete changed: %previous_value => %new_value", array('%previous_value' => '<strong>'.(int) $item->getPreviousValue().'</strong>', '%new_value' => '<strong>'.(int) $item->getCurrentValue().'</strong>'));
 						}
 						break;
 					default:

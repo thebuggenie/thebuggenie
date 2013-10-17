@@ -7,7 +7,7 @@
 		</h4>
 		<?php include_component('identifiableselector', array(	'html_id' 			=> "popup_find_subscriber_{$issue->getID()}",
 																'header' 			=> __('Subscribe someone to this issue'),
-																'callback'		 	=> "TBG.Issues.toggleFavourite('".make_url('toggle_favourite_issue', array('issue_id' => $issue->getID(), 'user_id' => '%identifiable_value%'))."', '".$issue->getID()."_%identifiable_value%');$('popup_find_subscriber_{$issue->getID()}').hide();",
+																'callback'		 	=> "TBG.Issues.toggleFavourite('".make_url('toggle_favourite_issue', array('issue_id' => $issue->getID(), 'user_id' => '%identifiable_value'))."', '".$issue->getID()."_%identifiable_value');$('popup_find_subscriber_{$issue->getID()}').hide();",
 																'base_id'			=> "popup_find_subscriber_{$issue->getID()}",
 																'include_teams'		=> false,
 																'allow_clear'		=> false,

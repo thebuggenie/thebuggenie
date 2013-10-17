@@ -78,9 +78,9 @@
 					<td colspan="2" style="padding: 10px 0 10px 10px; text-align: right;">
 						<div style="float: left; font-size: 13px; padding-top: 2px; font-style: italic;" class="config_explanation">
 							<?php if ($milestone->getId()): ?>
-								<?php echo __('When you are done, click "%update_milestone%" to update the details for this milestone', array('%update_milestone%' => __('Update milestone'))); ?>
+								<?php echo __('When you are done, click "%update_milestone" to update the details for this milestone', array('%update_milestone' => __('Update milestone'))); ?>
 							<?php else: ?>
-								<?php echo __('When you are done, click "%add_milestone%" to publish this milestone', array('%add_milestone%' => __('Add milestone'))); ?>
+								<?php echo __('When you are done, click "%add_milestone" to publish this milestone', array('%add_milestone' => __('Add milestone'))); ?>
 							<?php endif; ?>
 						</div>
 						<?php if ($milestone->getID()): ?>

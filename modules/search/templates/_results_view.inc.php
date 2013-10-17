@@ -6,7 +6,7 @@
 			<td>
 				<span class="faded_out smaller"><?php echo link_tag(make_url('project_dashboard', array('project_key' => $issue->getProject()->getKey())), '['.$issue->getProject()->getKey().']'); ?></span>
 				<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue->getFormattedTitle(true)); ?>
-				<div class="faded_out"><?php echo __('<strong>%status%</strong>, updated %updated_at%', array('%status%' => (($issue->getStatus() instanceof TBGDatatype) ? $issue->getStatus()->getName() : __('Status not determined')), '%updated_at%' => tbg_formatTime($issue->getLastUpdatedTime(), 12))); ?></div>
+				<div class="faded_out"><?php echo __('<strong>%status</strong>, updated %updated_at', array('%status' => (($issue->getStatus() instanceof TBGDatatype) ? $issue->getStatus()->getName() : __('Status not determined')), '%updated_at' => tbg_formatTime($issue->getLastUpdatedTime(), 12))); ?></div>
 			</td>
 		</tr>
 	<?php endforeach; ?>

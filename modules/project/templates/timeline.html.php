@@ -1,8 +1,8 @@
 <?php
 
 	$tbg_response->addBreadcrumb(__('Timeline'), null, tbg_get_breadcrumblinks('project_summary', $selected_project));
-	$tbg_response->setTitle(__('"%project_name%" project timeline', array('%project_name%' => $selected_project->getName())));
-	$tbg_response->addFeed(make_url('project_timeline', array('project_key' => $selected_project->getKey(), 'format' => 'rss')), __('"%project_name%" project timeline', array('%project_name%' => $selected_project->getName())));
+	$tbg_response->setTitle(__('"%project_name" project timeline', array('%project_name' => $selected_project->getName())));
+	$tbg_response->addFeed(make_url('project_timeline', array('project_key' => $selected_project->getKey(), 'format' => 'rss')), __('"%project_name" project timeline', array('%project_name' => $selected_project->getName())));
 
 ?>
 			<?php include_template('project/projectheader', array('selected_project' => $selected_project)); ?>

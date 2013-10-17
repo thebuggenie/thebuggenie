@@ -3,7 +3,7 @@
 	$tbg_response->addBreadcrumb(__('Teams'), null, tbg_get_breadcrumblinks('main_links'));
 	if ($team instanceof TBGTeam)
 	{
-		$tbg_response->setTitle(__('Team dashboard for %team_name%', array('%team_name%' => $team->getName())));
+		$tbg_response->setTitle(__('Team dashboard for %team_name', array('%team_name' => $team->getName())));
 		$tbg_response->setPage('team');
 		$tbg_response->addBreadcrumb(__($team->getName()), make_url('team_dashboard', array('team_id' => $team->getID())), tbg_get_breadcrumblinks('team_list'));
 	}
@@ -24,7 +24,7 @@
 		<tr>
 			<td class="team_dashboard_projects padded">
 				<div class="header">
-					<?php echo __('Projects for %team%', array('%team%' => __($team->getName()))); ?>
+					<?php echo __('Projects for %team', array('%team' => __($team->getName()))); ?>
 						<a style="float: right;" class="button button-silver" href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'team_archived_projects', 'tid' => $team->getID())); ?>');"><?php echo __('Show archived projects'); ?></a>
 				</div>
 				<?php if (count($projects) > 0): ?>
@@ -52,7 +52,7 @@
 			</td>
 			<td class="team_dashboard_users padded">
 				<div class="header">
-					<?php echo __('Members of %team%', array('%team%' => __($team->getName()))); ?>
+					<?php echo __('Members of %team', array('%team' => __($team->getName()))); ?>
 				</div>
 				<?php if (count($users) > 0): ?>
 					<ul class="team_users">

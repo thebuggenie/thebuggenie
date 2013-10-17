@@ -42,7 +42,7 @@
 																		'header' 			=> __('Change / set auto assignee'),
 																		'clear_link_text'	=> __('Set auto assignee by noone'),
 																		'style'				=> array('position' => 'absolute'),
-																		'callback'			=> "TBG.Project.setUser('" . make_url('configure_component_set_assignedto', array('project_id' => $component->getProject()->getID(), 'component_id' => $component->getID(), 'field' => 'lead_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'comp_".$component->getID()."_auto_assign');",
+																		'callback'			=> "TBG.Project.setUser('" . make_url('configure_component_set_assignedto', array('project_id' => $component->getProject()->getID(), 'component_id' => $component->getID(), 'field' => 'lead_by', 'identifiable_type' => '%identifiable_type', 'value' => '%identifiable_value')) . "', 'comp_".$component->getID()."_auto_assign');",
 																		'base_id'			=> 'comp_'.$component->getID().'_auto_assign',
 																		'absolute'			=> true,
 																		'include_teams'		=> true)); ?>
@@ -57,7 +57,7 @@
 <tr id="component_<?php echo $component->getID(); ?>_permissions" style="display: none;">
 	<td colspan="3">
 		<div class="rounded_box white" style="margin: 5px 0 10px 0; padding: 3px; font-size: 12px;">
-			<div class="header"><?php echo __('Permission details for "%itemname%"', array('%itemname%' => $component->getName())); ?></div>
+			<div class="header"><?php echo __('Permission details for "%itemname"', array('%itemname' => $component->getName())); ?></div>
 			<div class="content">
 				<?php echo __('Specify who can access this component.'); ?>
 				<?php include_component('configuration/permissionsinfo', array('key' => 'canseecomponent', 'mode' => 'project_hierarchy', 'target_id' => $component->getID(), 'module' => 'core', 'access_level' => $access_level)); ?>

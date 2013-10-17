@@ -1,7 +1,7 @@
 <?php
 
 	$tbg_response->addBreadcrumb(__('Releases'), null, tbg_get_breadcrumblinks('project_summary', $selected_project));
-	$tbg_response->setTitle(__('"%project_name%" releases', array('%project_name%' => $selected_project->getName())));
+	$tbg_response->setTitle(__('"%project_name" releases', array('%project_name' => $selected_project->getName())));
 
 	if (!$selected_project instanceof TBGProject) exit();
 	
@@ -20,7 +20,7 @@
 			<?php endif; ?>
 			<?php if ($selected_project->isEditionsEnabled()): ?>
 				<?php foreach ($selected_project->getEditions() as $edition_id => $edition): ?>
-					<h4 style="margin-top: 30px;"><?php echo __('Active %edition_name% releases', array('%edition_name%' => $edition->getName())); ?></h4>
+					<h4 style="margin-top: 30px;"><?php echo __('Active %edition_name releases', array('%edition_name' => $edition->getName())); ?></h4>
 					<?php if (count($active_builds[$edition_id])): ?>
 						<ul class="simple_list">
 						<?php foreach ($active_builds[$edition_id] as $build): ?>
@@ -44,7 +44,7 @@
 			<?php endif; ?>
 			<?php if ($selected_project->isEditionsEnabled()): ?>
 				<?php foreach ($selected_project->getEditions() as $edition_id => $edition): ?>
-					<h4 style="margin-top: 30px;"><?php echo __('Archived %edition_name% releases', array('%edition_name%' => $edition->getName())); ?></h4>
+					<h4 style="margin-top: 30px;"><?php echo __('Archived %edition_name releases', array('%edition_name' => $edition->getName())); ?></h4>
 					<?php if (count($archived_builds[$edition_id])): ?>
 						<ul class="simple_list">
 						<?php foreach ($archived_builds[$edition_id] as $build): ?>

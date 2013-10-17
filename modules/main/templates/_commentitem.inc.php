@@ -15,7 +15,7 @@
 			<br>
 			<span class="user">
 				<?php if (($user = $comment->getPostedBy()) instanceof TBGUser): ?>
-					<?php echo __('%username% (%buddy_name%) said', array('%username%' => $user->getUsername(), '%buddy_name%' => $user->getBuddyname())); ?>
+					<?php echo __('%username (%buddy_name) said', array('%username' => $user->getUsername(), '%buddy_name' => $user->getBuddyname())); ?>
 				<?php else: ?>
 					<?php echo __('Unknown user said'); ?>
 				<?php endif; ?>:

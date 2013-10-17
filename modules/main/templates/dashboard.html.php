@@ -8,7 +8,7 @@
 
 ?>
 <?php include_component('main/hideableInfoBox', array('key' => 'dashboard_didyouknow', 'title' => __('This is your personal dashboard'), 'content' => __('This is your personal dashboard page - your starting point when logging in to The Bug Genie. This dashboard page will show projects and people you are associated with, as well as interesting views.') . '<br>' . __('Your dashboard can be configured and personalized. To configure what views to show on this dashboard, click the "Customize dashboard"-icon to the far right, below this box.') . '<br><br><i>' . __('Your dashboard page is accessible from anywhere - click your username in the top right header area at any time to access your dashboard.') . '</i>')); ?>
-<table style="margin: 0 0 20px 0; table-layout: fixed; width: 100%; height: 100%;" cellpadding=0 cellspacing=0>
+<table style="margin: 0 0 20px 0; table-layout: fixed; width: 100%; height: 100;" cellpadding=0 cellspacing=0>
 	<tr>
 		<td id="dashboard_lefthand" class="side_bar<?php echo TBGSettings::getToggle('dashboard_lefthand') ? ' collapsed' : ''; ?>">
 			<?php TBGEvent::createNew('core', 'dashboard_left_top')->trigger(); ?>

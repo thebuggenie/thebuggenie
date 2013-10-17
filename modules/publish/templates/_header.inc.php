@@ -55,16 +55,16 @@
 			switch ($mode)
 			{
 				case 'edit':
-					?><span class="faded_out"><?php echo __('%article_name% ~ Edit', array('%article_name%' => '')); ?></span><?php
+					?><span class="faded_out"><?php echo __('%article_name ~ Edit', array('%article_name' => '')); ?></span><?php
 					break;
 				case 'history':
-					?><span class="faded_out"><?php echo __('%article_name% ~ History', array('%article_name%' => '')); ?></span><?php
+					?><span class="faded_out"><?php echo __('%article_name ~ History', array('%article_name' => '')); ?></span><?php
 					break;
 				case 'permissions':
-					?><span class="faded_out"><?php echo __('%article_name% ~ Permissions', array('%article_name%' => '')); ?></span><?php
+					?><span class="faded_out"><?php echo __('%article_name ~ Permissions', array('%article_name' => '')); ?></span><?php
 					break;
 				case 'attachments':
-					?><span class="faded_out"><?php echo __('%article_name% ~ Attachments', array('%article_name%' => '')); ?></span><?php
+					?><span class="faded_out"><?php echo __('%article_name ~ Attachments', array('%article_name' => '')); ?></span><?php
 					break;
 			}
 		}

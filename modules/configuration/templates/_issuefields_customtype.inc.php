@@ -35,7 +35,7 @@
 		<b><?php echo __('Type'); ?>:</b>&nbsp;<?php echo $type->getTypeDescription(); ?>
 	</div>
 	<div id="delete_item_<?php echo $type->getID(); ?>" class="rounded_box white shadowed" style="margin: 5px 0 10px 0; font-size: 12px; display: none;">
-		<div class="header"><?php echo __('Really delete "%itemname%"?', array('%itemname%' => $type->getName())); ?></div>
+		<div class="header"><?php echo __('Really delete "%itemname"?', array('%itemname' => $type->getName())); ?></div>
 		<div class="content">
 			<?php echo __('Are you really sure you want to delete this item?'); ?><br>
 			<?php echo __('This will also remove the value of this custom field from all issues, along with any possible options this field can take.')?>
@@ -63,7 +63,7 @@
 			<label for="custom_type_<?php echo $type_key; ?>_instructions"><?php echo __('Instructions'); ?></label>&nbsp;<span class="faded_out"><?php echo __('Optional instruction that will be displayed to users'); ?></span><br>
 			<textarea name="instructions" id="custom_type_<?php echo $type_key; ?>_instructions" style="width: 500px; height: 70px;" cols="70" rows="5"><?php echo $type->getInstructions(); ?></textarea><br>
 			<input type="submit" value="<?php echo __('Update details'); ?>" style="font-weight: bold; font-size: 13px;">
-			<?php echo __('%update_details% or %cancel%', array('%update_details%' => '', '%cancel%' => '<a href="javascript:void(0);" onclick="$(\'edit_custom_type_' . $type_key . '_form\').toggle();$(\'custom_type_' . $type_key . '_info\').toggle();"><b>' . __('cancel') . '</b></a>')); ?>
+			<?php echo __('%update_details or %cancel', array('%update_details' => '', '%cancel' => '<a href="javascript:void(0);" onclick="$(\'edit_custom_type_' . $type_key . '_form\').toggle();$(\'custom_type_' . $type_key . '_info\').toggle();"><b>' . __('cancel') . '</b></a>')); ?>
 			<?php echo image_tag('spinning_20.gif', array('style' => 'margin-left: 5px; display: none;', 'id' => 'edit_custom_type_' . $type_key . '_indicator')); ?>
 		</div>
 	</form>

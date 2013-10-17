@@ -20,7 +20,7 @@
 			</ul>
 		</div>
 		<p class="groupbox_header"><?php echo $group->getName(); ?></p>
-		<p class="groupbox_membercount"><?php echo __('ID: %id%', array('%id%' => $group->getID())); ?> - <?php echo __('%number_of% member(s)', array('%number_of%' => '<span id="group_'.$group->getID().'_membercount">'.$group->getNumberOfMembers().'</span>')); ?></p>
+		<p class="groupbox_membercount"><?php echo __('ID: %id', array('%id' => $group->getID())); ?> - <?php echo __('%number_of member(s)', array('%number_of' => '<span id="group_'.$group->getID().'_membercount">'.$group->getNumberOfMembers().'</span>')); ?></p>
 		<div class="rounded_box white shadowed" style="margin: 5px; display: none;" id="clone_group_<?php echo $group->getID(); ?>">
 			<div class="dropdown_header"><?php echo __('Please specify what parts of this group you want to clone'); ?></div>
 			<div class="dropdown_content">
