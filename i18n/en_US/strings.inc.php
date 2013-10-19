@@ -2709,7 +2709,7 @@
   $strings['Attach one or more file(s) to this issue'] = 'Attach one or more file(s) to this issue';
   $strings['Attach one or more file(s) to this article'] = 'Attach one or more file(s) to this article';
   $strings['Select a file'] = 'Select a file';
-  $strings['Files bigger than max_filesize% can not be attached. Please check that the file you are attaching is not bigger than this.'] = 'Files bigger than max_filesize% can not be attached. Please check that the file you are attaching is not bigger than this.';
+  $strings['Files bigger than %max_filesize can not be attached. Please check that the file you are attaching is not bigger than this.'] = 'Files bigger than %max_filesize can not be attached. Please check that the file you are attaching is not bigger than this.';
   $strings['Describe the file'] = 'Describe the file';
   $strings['Enter a few words about the file, so people can understand what it is/does'] = 'Enter a few words about the file, so people can understand what it is/does';
   $strings['optional'] = 'optional';
