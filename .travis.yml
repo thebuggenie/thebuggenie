@@ -9,3 +9,5 @@ php:
 env:
   - DB=mysql
   - DB=pgsql
+
+script: phpunit --coverage-text
