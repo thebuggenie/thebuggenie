@@ -396,6 +396,7 @@
 						$this->cliEcho("\n");
 
 						$this->cliEcho("Finishing installation... \n", 'white', 'bold');
+						$installed_string = TBGSettings::getMajorVer() . '.' . TBGSettings::getMinorVer() . ', installed ' . date('d.m.Y H:i')
 						if (!is_writable(THEBUGGENIE_PATH . 'installed'))
 						{
 							$this->cliEcho("\n");
@@ -403,10 +404,10 @@
 							$this->cliEcho("Please create the file ");
 							$this->cliEcho(THEBUGGENIE_PATH . "installed\n", 'white', 'bold');
 							$this->cliEcho("with the following line inside:\n");
-							$this->cliEcho(TBGSettings::getMajorVer() . '.' . TBGSettings::getMinorVer() . ', installed ' . date('d.m.Y H:i'), 'blue', 'bold');
+							$this->cliEcho($installed_string, 'blue', 'bold');
 							$this->cliEcho("\n");
 							$this->cliEcho("This can be done by running the following command when installation has finished:\n");
-							$this->cliEcho('echo "3.0, installed ' . date('d.m.Y H:i').'" > '.THEBUGGENIE_PATH.'installed', 'white', 'bold');
+							$this->cliEcho('echo "' . $installed_string . '" > '.THEBUGGENIE_PATH.'installed', 'white', 'bold');
 							$this->cliEcho("\n");
 							$this->cliEcho("Press ENTER to continue ... ");
 							$this->pressEnterToContinue();
@@ -415,7 +416,7 @@
 						}
 						else
 						{
-							file_put_contents(THEBUGGENIE_PATH . 'installed', TBGSettings::getMajorVer() . '.' . TBGSettings::getMinorVer() . ', installed ' . date('d.m.Y H:i'));
+							file_put_contents(THEBUGGENIE_PATH . 'installed', $installed_string);
 						}
 						$this->cliEcho("The installation was completed successfully!\n", 'green', 'bold');
 						$this->cliEcho("\nTo use The Bug Genie, access http://example.com" . $url_subdir . "index.php with a web-browser.\n");
