@@ -10,4 +10,4 @@ env:
   - DB=mysql
   - DB=pgsql
 
-script: phpunit --coverage-text
+script: phpunit --coverage-text .
