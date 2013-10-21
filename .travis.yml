@@ -10,4 +10,7 @@ env:
   - DB=mysql
   - DB=pgsql
 
+before_script:
+  - composer install
+
 script: phpunit --coverage-text .
