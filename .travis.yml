@@ -1,0 +1,13 @@
+language: php
+
+php:
+  # We don't support PHP <5.3, so no need to test that.
+  - 5.3
+  - 5.4
+  - 5.5
+
+env:
+  - DB=mysql
+  - DB=pgsql
+
+script: phpunit --coverage-text .
