@@ -667,7 +667,12 @@
 			$url = $this->getSetting('cli_mailing_url');
 			if ($clean)
 			{
-				$url = parse_url($url);
+				// a scheme is needed before php 5.4.7
+				// thus, let's add the prefix http://
+				if (!stristr($url,'http'))
+					$url = parse_url('http://'.$url);
+				else
+					$url = parse_url($url);
 				return $url['host'];
 			}
 			return $url;
