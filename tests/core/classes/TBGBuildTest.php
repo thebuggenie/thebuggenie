@@ -4,12 +4,7 @@ defined('DS') || define('DS', DIRECTORY_SEPARATOR);
 defined('THEBUGGENIE_PATH') || define('THEBUGGENIE_PATH', realpath(getcwd() . DS) . DS);
 defined('THEBUGGENIE_CORE_PATH') || define('THEBUGGENIE_CORE_PATH', THEBUGGENIE_PATH . 'core' . DS);
 
-require THEBUGGENIE_PATH . 'tests/core/classes/B2DB.class.php';
-require THEBUGGENIE_CORE_PATH . 'classes/TBGIdentifiableClass.class.php';
-require THEBUGGENIE_CORE_PATH . 'classes/TBGIdentifiableScopedClass.class.php';
-require THEBUGGENIE_CORE_PATH . 'classes/TBGOwnableItem.class.php';
-require THEBUGGENIE_CORE_PATH . 'classes/TBGReleaseableItem.class.php';
-require THEBUGGENIE_CORE_PATH . 'classes/TBGBuild.class.php';
+require THEBUGGENIE_CORE_PATH . 'bootstrap.php';
 
 class TBGBuildsTable
 {
