@@ -22,11 +22,14 @@
 		public function preExecute(TBGRequest $request, $action)
 		{
 			$this->forward403unless(TBGContext::getUser()->hasPageAccess('search') && TBGContext::getUser()->canSearchForIssues());
-
-			if ($project_key = $request['project_key'])
+			
+			if ($project_key = $request['project_key']) {
 				$project = TBGProject::getByKey($project_key);
-			elseif ($project_id = (int) $request['project_id'])
+			} elseif ($project_id = (int) $request['project_id']) {
 				$project = TBGProjectsTable::getTable()->selectById($project_id);
+			} else {
+				$project = false;
+			}
 
 			if ($project instanceof TBGProject)
 			{
