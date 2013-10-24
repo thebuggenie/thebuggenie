@@ -429,9 +429,17 @@
 		
 		public static function getTBGname()
 		{
-			$name = self::get(self::SETTING_TBG_NAME);
-			if (!self::isHeaderHtmlFormattingAllowed()) $name = htmlspecialchars($name, ENT_COMPAT, TBGContext::getI18n()->getCharset());
-			return $name;
+			try
+			{
+				if (!TBGContext::isReadySetup()) return 'The Bug Genie';
+				$name = self::get(self::SETTING_TBG_NAME);
+				if (!self::isHeaderHtmlFormattingAllowed()) $name = htmlspecialchars($name, ENT_COMPAT, TBGContext::getI18n()->getCharset());
+				return $name;
+			}
+			catch (Exception $e)
+			{
+				return 'The Bug Genie';
+			}
 		}
 	
 		public static function isFrontpageProjectListVisible()

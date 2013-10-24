@@ -43,7 +43,7 @@
 		protected static function getFinalTemplateName($template, $module_file = null)
 		{
 			if (!isset($module_file)) $module_file = self::getModuleAndTemplate($template);
-			if (($template_name = TBGContext::getI18n()->hasTranslatedTemplate($template, true)) === false)
+			if (!TBGContext::isReadySetup() || ($template_name = TBGContext::getI18n()->hasTranslatedTemplate($template, true)) === false)
 			{
 				$template_name = THEBUGGENIE_MODULES_PATH . $module_file['module'] . DS . 'templates' . DS . "_{$module_file['file']}.inc.php";
 			}

@@ -596,10 +596,6 @@
 				\b2db\Core::setCachingEnabled(false);
 				TBGCache::disable();
 			}
-			elseif (!\b2db\Core::isInitialized())
-			{
-				throw new Exception("The Bug Genie seems installed, but B2DB isn't configured. This usually indicates an error with the installation. Try removing the file ".THEBUGGENIE_PATH."installed and try again.");
-			}
 			else
 			{
 				$version_info = explode(',', file_get_contents(THEBUGGENIE_PATH . 'installed'));
@@ -609,6 +605,11 @@
 					throw new TBGConfigurationException("It seems you are trying to use a newer version of The Bug Genie than the one you installed. Please upgrade before continuing.\n\nPlease see the upgrade instructions here: <a href='http://issues.thebuggenie.com/wiki/TheBugGenie%3AFAQ'>thebuggenie.com &raquo; wiki &raquo; FAQ</a> for more information.");
 				}
 			}
+		}
+		
+		public static function isReadySetup()
+		{
+			return (!(self::isInstallmode() || self::isUpgrademode()));
 		}
 
 		public static function initializeSession()
@@ -644,6 +645,8 @@
 				TBGLogging::log('PHP_SAPI says "' . PHP_SAPI . '"');
 				TBGLogging::log('We are version "' . TBGSettings::getVersion() . '"');
 
+				self::checkInstallMode();
+
 				if (!is_writable(THEBUGGENIE_CORE_PATH . DIRECTORY_SEPARATOR . 'cache'))
 					throw new Exception('The cache directory is not writable. Please correct the permissions of core/cache, and try again');
 
@@ -664,6 +667,14 @@
 				TBGLogging::log('Loading B2DB');
 				if (self::isCLI()) \b2db\Core::setHTMLException(false);
 				\b2db\Core::initialize(THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php');
+				if (!\b2db\Core::isInitialized())
+				{
+					throw new Exception("The Bug Genie seems installed, but B2DB isn't configured. This usually indicates an error with the installation. Try removing the file ".THEBUGGENIE_PATH."installed and try again.");
+				}
+				if (!self::isReadySetup())
+				{
+					\b2db\Core::setCachingEnabled(false);
+				}
 				TBGLogging::log('...done (Initializing B2DB)');
 
 				if (\b2db\Core::isInitialized())
@@ -680,8 +691,6 @@
 				mb_internal_encoding("UTF-8");
 				mb_language('uni');
 				mb_http_output("UTF-8");
-
-				self::checkInstallMode();
 
 				TBGLogging::log('Loading pre-module routes');
 				self::loadPreModuleRoutes();
@@ -2309,7 +2318,7 @@
 						TBGLogging::log('Displaying template');
 
 						// Check to see if we have a translated version of the template
-						if (($templateName = self::getI18n()->hasTranslatedTemplate(self::getResponse()->getTemplate())) === false)
+						if (!self::isReadySetup() || ($templateName = self::getI18n()->hasTranslatedTemplate(self::getResponse()->getTemplate())) === false)
 						{
 							// Check to see if any modules provide an alternate template
 							$event = TBGEvent::createNew('core', "TBGContext::performAction::renderTemplate")->triggerUntilProcessed(array('class' => $actionClassName, 'action' => $actionToRunName));
@@ -2430,7 +2439,7 @@
 				}
 				TBGLogging::log('done (rendering final content)');
 
-				if (self::isDebugMode()) self::getI18n()->addMissingStringsToStringsFile();
+				if (self::isReadySetup() && self::isDebugMode()) self::getI18n()->addMissingStringsToStringsFile();
 				
 				return true;
 			}
