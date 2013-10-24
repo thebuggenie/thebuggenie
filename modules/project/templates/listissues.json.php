@@ -5,7 +5,7 @@
 		foreach ($issues as $issue)
 		{
 			$return_issues[$issue->getID()] = array('id' => $issue->getID(),
-													'title' => $issue->getTitle(),
+													'title' => $issue->getRawTitle(),
 													'state' => $issue->getState(),
 													'issue_no' => $issue->getFormattedIssueNo(true, true),
 													'posted_by' => ($issue->getPostedBy() instanceof TBGIdentifiable) ? $issue->getPostedBy()->getUsername() : __('Unknown'),
