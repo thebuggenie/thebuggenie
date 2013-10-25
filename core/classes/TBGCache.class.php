@@ -101,7 +101,6 @@
 		public static function add($key, $value, $prepend_scope = true)
 		{
 			if (!self::isEnabled()) return false;
-
 			
 			switch (self::$_type)
 			{
@@ -118,9 +117,9 @@
 			return true;
 		}
 		
-		public static function delete($key, $prepend_scope = true)
+		public static function delete($key, $prepend_scope = true, $force = false)
 		{
-			if (!self::isEnabled()) return false;
+			if (!$force && !self::isEnabled()) return false;
 			
 			switch (self::$_type)
 			{
@@ -165,9 +164,9 @@
 			self::$loaded[$key] = $value;
 		}
 		
-		public static function fileDelete($key, $prepend_scope = true)
+		public static function fileDelete($key, $prepend_scope = true, $force = false)
 		{
-			if (!self::isEnabled()) return false;
+			if (!$force && !self::isEnabled()) return false;
 
 			$key = self::getScopedKeyIfAppliccable($key, $prepend_scope);
 			$filename = self::_getFilenameForKey($key);

@@ -656,7 +656,7 @@
 				TBGCache::checkEnabled();
 				if (TBGCache::isEnabled())
 				{
-					TBGCache::setPrefix(str_replace('.', '_', TBGSettings::getVersion(false, false)));
+					TBGCache::setPrefix(str_replace('.', '_', TBGSettings::getVersion()));
 					TBGLogging::log((TBGCache::getCacheType() == TBGCache::TYPE_APC) ? 'Caching enabled: APC, filesystem' : 'Caching enabled: filesystem');
 				}
 				else
@@ -816,11 +816,10 @@
 
 		public static function clearRoutingCache()
 		{
-			if (!TBGCache::isEnabled()) return;
-			foreach (array(TBGCache::KEY_PREMODULES_ROUTES_CACHE, TBGCache::KEY_POSTMODULES_ROUTES_CACHE) as $key)
+			foreach (array(TBGCache::KEY_ROUTES_CACHE) as $key)
 			{
-				TBGCache::delete($key);
-				TBGCache::fileDelete($key);
+				TBGCache::delete($key, true, true);
+				TBGCache::fileDelete($key, true, true);
 			}
 		}
 
@@ -1327,8 +1326,8 @@
 
 		public static function clearPermissionsCache()
 		{
-			TBGCache::delete(TBGCache::KEY_PERMISSIONS_CACHE);
-			TBGCache::fileDelete(TBGCache::KEY_PERMISSIONS_CACHE);
+			TBGCache::delete(TBGCache::KEY_PERMISSIONS_CACHE, true, true);
+			TBGCache::fileDelete(TBGCache::KEY_PERMISSIONS_CACHE, true, true);
 		}
 
 		/**
