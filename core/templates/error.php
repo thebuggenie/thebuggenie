@@ -28,6 +28,7 @@ label span { font-weight: normal; color: #888; }
 .error_content { padding: 10px; }
 .description { padding: 3px 3px 3px 0;}
 pre { overflow: scroll; padding: 5px; }
+.command_box { border: 1px dashed #DDD; background-color: #F5F5F5; padding: 4px; font-family: 'Droid Sans Mono', monospace; display: inline-block; margin-top: 5px; margin-bottom: 15px; }
 </style>
 <!--[if IE]>
 <style>
@@ -39,24 +40,38 @@ body { background-color: #DFDFDF; font-family: sans-serif; font-size: 13px; }
 	<div class="rounded_box" style="margin: 30px auto 0 auto; width: 700px;">
 		<img style="float: left; margin: 10px;" src="<?php echo TBGContext::getTBGPath(); ?>header.png"><h1>An error occurred in <?php echo TBGSettings::getTBGname(); ?></h1>
 		<div class="error_content">
-			<h2><?php echo nl2br((isset($exception)) ? $exception->getMessage() : $error); ?></h2>
 			<?php if (isset($exception) && $exception instanceof Exception): ?>
-				<?php if ($exception instanceof TBGActionNotFoundException): ?>
-					<h3>Could not find the specified action</h3>
-				<?php elseif ($exception instanceof TBGTemplateNotFoundException): ?>
-					<h3>Could not find the template file for the specified action</h3>
-				<?php elseif ($exception instanceof TBGConfigurationException): ?>
-					<h3>There is an issue with the configuration. Please see the message above.</h3>
-				<?php elseif ($exception instanceof \b2db\Exception): ?>
-					<h3>An exception was thrown in the B2DB framework</h3>
+				<?php if ($exception instanceof TBGComposerException): ?>
+					<h2>External libraries not initialized</h2>
+					<p>
+						The Bug Genie uses the <a href="http://getcomposer.org">composer</a> dependency management tool to control external libraries.<br>
+						<br>
+						Before you can use or install The Bug Genie, you must initialize the vendor libraries by running the following command from the directory containing The Bug Genie:<br>
+						<div class="command_box">php composer.phar install</div><br>
+						When the command completes. refresh this page and continue.<br>
+						<br>
+						You can read more about composer on <a href="http://getcomposer.org">http://getcomposer.org</a>
+					</p>
 				<?php else: ?>
-					<h3>An unhandled exception occurred:</h3>
-				<?php endif; ?>
-				<?php if (class_exists("TBGContext") && TBGContext::isDebugMode()): ?>
-					<span style="color: #55F;"><?php echo $exception->getFile(); ?></span>, line <b><?php echo $exception->getLine(); ?></b>:<br>
-					<i><?php echo $exception->getMessage(); ?></i>
+					<h2><?php echo nl2br($exception->getMessage()); ?></h2>
+					<?php if ($exception instanceof TBGActionNotFoundException): ?>
+						<h3>Could not find the specified action</h3>
+					<?php elseif ($exception instanceof TBGTemplateNotFoundException): ?>
+						<h3>Could not find the template file for the specified action</h3>
+					<?php elseif ($exception instanceof TBGConfigurationException): ?>
+						<h3>There is an issue with the configuration. Please see the message above.</h3>
+					<?php elseif ($exception instanceof \b2db\Exception): ?>
+						<h3>An exception was thrown in the B2DB framework</h3>
+					<?php else: ?>
+						<h3>An unhandled exception occurred:</h3>
+					<?php endif; ?>
+					<?php if (class_exists("TBGContext") && TBGContext::isDebugMode()): ?>
+						<span style="color: #55F;"><?php echo $exception->getFile(); ?></span>, line <b><?php echo $exception->getLine(); ?></b>:<br>
+						<i><?php echo $exception->getMessage(); ?></i>
+					<?php endif; ?>
 				<?php endif; ?>
 			<?php else: ?>
+				<h2><?php echo nl2br($error); ?></h2>
 				<?php if ($code == 8): ?>
 					<h3>The following notice has stopped further execution:</h3>
 				<?php else: ?>
@@ -69,7 +84,7 @@ body { background-color: #DFDFDF; font-family: sans-serif; font-size: 13px; }
 				<h3>SQL:</h3>
 				<?php echo $exception->getSQL(); ?>
 			<?php endif; ?>
-			<?php if (class_exists("TBGContext") && TBGContext::isDebugMode()): ?>
+			<?php if (class_exists("TBGContext") && TBGContext::isDebugMode() && (!isset($exception) || !$exception instanceof TBGComposerException)): ?>
 				<h3>Stack trace:</h3>
 				<ul>
 					<?php $trace = (isset($exception)) ? $exception->getTrace() : debug_backtrace(); ?>
@@ -93,7 +108,7 @@ body { background-color: #DFDFDF; font-family: sans-serif; font-size: 13px; }
 					<?php endforeach; ?>
 				</ul>
 			<?php endif; ?>
-			<?php if (class_exists("TBGContext") && class_exists("TBGLogging") && TBGContext::isDebugMode()): ?>
+			<?php if (class_exists("TBGContext") && class_exists("TBGLogging") && TBGContext::isDebugMode() && (!isset($exception) || !$exception instanceof TBGComposerException)): ?>
 				<h3>Log messages:</h3>
 				<?php foreach (TBGLogging::getEntries() as $entry): ?>
 					<?php $color = TBGLogging::getCategoryColor($entry['category']); ?>
@@ -101,7 +116,7 @@ body { background-color: #DFDFDF; font-family: sans-serif; font-size: 13px; }
 					<div class="log_<?php echo $entry['category']; ?>"><strong><?php echo $lname; ?></strong> <strong style="color: #<?php echo $color; ?>">[<?php echo $entry['category']; ?>]</strong> <span style="color: #555; font-size: 10px; font-style: italic;"><?php echo $entry['time']; ?></span>&nbsp;&nbsp;<?php echo $entry['message']; ?></div>
 				<?php endforeach; ?>
 			<?php endif; ?>
-			<?php if (class_exists("\b2db\Core") && TBGContext::isDebugMode()): ?>
+			<?php if (class_exists("\b2db\Core") && TBGContext::isDebugMode() && (!isset($exception) || !$exception instanceof TBGComposerException)): ?>
 				<h3>SQL queries:</h3>
 					<ol>
 					<?php foreach (\b2db\Core::getSQLHits() as $details): ?>

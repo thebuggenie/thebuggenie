@@ -25,6 +25,6 @@
 
 	// Initialize all composer loaded vendor packages
 	if (! file_exists(THEBUGGENIE_CORE_PATH . 'lib' . DS . 'autoload.php')) {
-		throw new \Exception('You must initialize vendor libraries by running `composer.phar install` via cli');
+		throw new \TBGComposerException('You must initialize vendor libraries by running `composer.phar install` via cli');
 	} 
 	require THEBUGGENIE_CORE_PATH . 'lib' . DS . 'autoload.php';

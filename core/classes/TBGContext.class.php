@@ -692,13 +692,13 @@
 				mb_language('uni');
 				mb_http_output("UTF-8");
 
-				TBGLogging::log('Loading pre-module routes');
-				self::loadPreModuleRoutes();
-				TBGLogging::log('done (loading pre-module routes)');
-
 				TBGLogging::log('Loading scope');
 				self::setScope();
 				TBGLogging::log('done (loading scope)');
+
+				TBGLogging::log('Loading pre-module routes');
+				self::loadPreModuleRoutes();
+				TBGLogging::log('done (loading pre-module routes)');
 
 				if (!self::$_installmode) self::setupCoreListeners();
 
@@ -817,8 +817,8 @@
 			if (!TBGCache::isEnabled()) return;
 			foreach (array(TBGCache::KEY_PREMODULES_ROUTES_CACHE, TBGCache::KEY_POSTMODULES_ROUTES_CACHE) as $key)
 			{
-				TBGCache::delete($key, false);
-				TBGCache::fileDelete($key, false);
+				TBGCache::delete($key);
+				TBGCache::fileDelete($key);
 			}
 		}
 
@@ -835,20 +835,20 @@
 		protected static function loadPreModuleRoutes()
 		{
 			TBGLogging::log('Loading first batch of routes', 'routing');
-			if (self::isInstallmode() || !($routes_1 = TBGCache::get(TBGCache::KEY_PREMODULES_ROUTES_CACHE, false)))
+			if (self::isInstallmode() || !($routes_1 = TBGCache::get(TBGCache::KEY_PREMODULES_ROUTES_CACHE)))
 			{
-				if (self::isInstallmode() || !($routes_1 = TBGCache::fileGet(TBGCache::KEY_PREMODULES_ROUTES_CACHE, false)))
+				if (self::isInstallmode() || !($routes_1 = TBGCache::fileGet(TBGCache::KEY_PREMODULES_ROUTES_CACHE)))
 				{
 					TBGLogging::log('generating routes', 'routing');
 					require THEBUGGENIE_CORE_PATH . 'load_routes.inc.php';
-					if (!self::isInstallmode()) TBGCache::fileAdd(TBGCache::KEY_PREMODULES_ROUTES_CACHE, self::getRouting()->getRoutes(), false);
+					if (!self::isInstallmode()) TBGCache::fileAdd(TBGCache::KEY_PREMODULES_ROUTES_CACHE, self::getRouting()->getRoutes());
 				}
 				else
 				{
 					TBGLogging::log('using disk cached routes', 'routing');
 					self::getRouting()->setRoutes($routes_1);
 				}
-				if (!self::isInstallmode()) TBGCache::add(TBGCache::KEY_PREMODULES_ROUTES_CACHE, self::getRouting()->getRoutes(), false);
+				if (!self::isInstallmode()) TBGCache::add(TBGCache::KEY_PREMODULES_ROUTES_CACHE, self::getRouting()->getRoutes());
 			}
 			else
 			{
@@ -861,20 +861,20 @@
 		protected static function loadPostModuleRoutes()
 		{
 			TBGLogging::log('Loading last batch of routes', 'routing');
-			if (self::isInstallmode() || !($routes = TBGCache::get(TBGCache::KEY_POSTMODULES_ROUTES_CACHE, false)))
+			if (self::isInstallmode() || !($routes = TBGCache::get(TBGCache::KEY_POSTMODULES_ROUTES_CACHE)))
 			{
-				if (self::isInstallmode() || !($routes = TBGCache::fileGet(TBGCache::KEY_POSTMODULES_ROUTES_CACHE, false)))
+				if (self::isInstallmode() || !($routes = TBGCache::fileGet(TBGCache::KEY_POSTMODULES_ROUTES_CACHE)))
 				{
 					TBGLogging::log('generating postmodule routes', 'routing');
 					require THEBUGGENIE_CORE_PATH . 'load_routes_postmodules.inc.php';
-					if (!self::isInstallmode()) TBGCache::fileAdd(TBGCache::KEY_POSTMODULES_ROUTES_CACHE, self::getRouting()->getRoutes(), false);
+					if (!self::isInstallmode()) TBGCache::fileAdd(TBGCache::KEY_POSTMODULES_ROUTES_CACHE, self::getRouting()->getRoutes());
 				}
 				else
 				{
 					TBGLogging::log('using disk cached postmodule routes', 'routing');
 					self::getRouting()->setRoutes($routes);
 				}
-				if (!self::isInstallmode()) TBGCache::add(TBGCache::KEY_POSTMODULES_ROUTES_CACHE, self::getRouting()->getRoutes(), false);
+				if (!self::isInstallmode()) TBGCache::add(TBGCache::KEY_POSTMODULES_ROUTES_CACHE, self::getRouting()->getRoutes());
 			}
 			else
 			{
