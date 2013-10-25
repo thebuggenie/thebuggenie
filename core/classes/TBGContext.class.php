@@ -681,15 +681,13 @@
 				mb_language('uni');
 				mb_http_output("UTF-8");
 
-				self::checkInstallMode();
-
-				TBGLogging::log('Loading pre-module routes');
-				self::loadPreModuleRoutes();
-				TBGLogging::log('done (loading pre-module routes)');
-
 				TBGLogging::log('Loading scope');
 				self::setScope();
 				TBGLogging::log('done (loading scope)');
+
+				self::checkInstallMode();
+
+				if (!self::getRouting()->hasCachedRoutes()) self::loadPreModuleRoutes(); 
 
 				if (!self::$_installmode) self::setupCoreListeners();
 
@@ -703,9 +701,15 @@
 				self::setupI18n();
 				TBGLogging::log('done (initializing i18n)');
 
-				TBGLogging::log('Loading post-module routes');
-				self::loadPostModuleRoutes();
-				TBGLogging::log('done (loading post-module routes)');
+				if (!self::getRouting()->hasCachedRoutes())
+				{
+					self::loadPostModuleRoutes();
+					if (!self::isInstallmode()) self::getRouting()->cacheRoutes();
+				}
+				else
+				{
+					self::loadCachedRoutes();
+				}
 
 				TBGLogging::log('...done');
 				TBGLogging::log('...done initializing');
@@ -826,55 +830,39 @@
 		protected static function loadPreModuleRoutes()
 		{
 			TBGLogging::log('Loading first batch of routes', 'routing');
-			if (self::isInstallmode() || !($routes_1 = TBGCache::get(TBGCache::KEY_PREMODULES_ROUTES_CACHE, false)))
-			{
-				if (self::isInstallmode() || !($routes_1 = TBGCache::fileGet(TBGCache::KEY_PREMODULES_ROUTES_CACHE, false)))
-				{
-					TBGLogging::log('generating routes', 'routing');
-					require THEBUGGENIE_CORE_PATH . 'load_routes.inc.php';
-					if (!self::isInstallmode()) TBGCache::fileAdd(TBGCache::KEY_PREMODULES_ROUTES_CACHE, self::getRouting()->getRoutes(), false);
-				}
-				else
-				{
-					TBGLogging::log('using disk cached routes', 'routing');
-					self::getRouting()->setRoutes($routes_1);
-				}
-				if (!self::isInstallmode()) TBGCache::add(TBGCache::KEY_PREMODULES_ROUTES_CACHE, self::getRouting()->getRoutes(), false);
-			}
-			else
-			{
-				TBGLogging::log('loading routes from cache', 'routing');
-				self::getRouting()->setRoutes($routes_1);
-			}
-			TBGLogging::log('...done', 'routing');
+			require THEBUGGENIE_CORE_PATH . 'load_routes.inc.php';
+			TBGLogging::log('...done (loading first batch of routes)', 'routing');
 		}
 
 		protected static function loadPostModuleRoutes()
 		{
 			TBGLogging::log('Loading last batch of routes', 'routing');
-			if (self::isInstallmode() || !($routes = TBGCache::get(TBGCache::KEY_POSTMODULES_ROUTES_CACHE, false)))
+			require THEBUGGENIE_CORE_PATH . 'load_routes_postmodules.inc.php';
+			TBGLogging::log('...done (loading last batch of routes)', 'routing');
+		}
+
+		protected static function loadCachedRoutes()
+		{
+			TBGLogging::log('Loading routes from cache', 'routing');
+			$routes = TBGCache::get(TBGCache::KEY_ROUTES_CACHE);
+			if (!$routes)
 			{
-				if (self::isInstallmode() || !($routes = TBGCache::fileGet(TBGCache::KEY_POSTMODULES_ROUTES_CACHE, false)))
-				{
-					TBGLogging::log('generating postmodule routes', 'routing');
-					require THEBUGGENIE_CORE_PATH . 'load_routes_postmodules.inc.php';
-					if (!self::isInstallmode()) TBGCache::fileAdd(TBGCache::KEY_POSTMODULES_ROUTES_CACHE, self::getRouting()->getRoutes(), false);
-				}
-				else
-				{
-					TBGLogging::log('using disk cached postmodule routes', 'routing');
-					self::getRouting()->setRoutes($routes);
-				}
-				if (!self::isInstallmode()) TBGCache::add(TBGCache::KEY_POSTMODULES_ROUTES_CACHE, self::getRouting()->getRoutes(), false);
+				TBGLogging::log('Loading routes from disk cache', 'routing');
+				$routes = TBGCache::fileGet(TBGCache::KEY_ROUTES_CACHE);
+			}
+
+			if (!$routes)
+			{
+				throw new \Exception('Routes should be cached, but no routes found!'); 
 			}
 			else
 			{
 				TBGLogging::log('loading postmodule routes from cache', 'routing');
+				TBGLogging::log('Setting routes from cache', 'routing');
 				self::getRouting()->setRoutes($routes);
 			}
-			TBGLogging::log('...done', 'routing');
+			TBGLogging::log('...done', 'routing'); 
 		}
-
 		/**
 		 * Returns the factory object
 		 *

@@ -20,8 +20,7 @@
 	{
 
 		const KEY_SCOPES = '_scopes';
-		const KEY_PREMODULES_ROUTES_CACHE = '_routes';
-		const KEY_POSTMODULES_ROUTES_CACHE = '_routes_postmodules';
+		const KEY_ROUTES_CACHE = '_all_routes';
 		const KEY_PERMISSIONS_CACHE = '_permissions';
 		const KEY_MAIN_MENU_LINKS = '_mainmenu_links';
 		const KEY_TBG_FACTORY = 'TBGFactory_cache';
@@ -142,11 +141,11 @@
 			return $key.'-'.substr(md5(serialize($key)), 0, 5);
 		}
 
-		public static function fileHas($key, $prepend_scope = true)
+		public static function fileHas($key, $prepend_scope = true, $scoped = false)
 		{
 			if (!self::isEnabled()) return false;
 
-			$key = self::getScopedKeyIfAppliccable($key, $prepend_scope);
+			$key = (!$scoped) ? self::getScopedKeyIfAppliccable($key, $prepend_scope) : $key;
 			$filename = self::_getFilenameForKey($key);
 			return (array_key_exists($key, self::$loaded) || file_exists($filename));
 		}
@@ -179,7 +178,7 @@
 			if (!self::isEnabled()) return null;
 
 			$key = self::getScopedKeyIfAppliccable($key, $prepend_scope);
-			if (!self::fileHas($key, $prepend_scope)) return null;
+			if (!self::fileHas($key, $prepend_scope, true)) return null;
 			
 			if (array_key_exists($key, self::$loaded)){
 				return self::$loaded[$key];

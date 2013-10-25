@@ -19,6 +19,7 @@
 	class TBGRouting
 	{
 		protected $routes = array();
+		protected $has_cached_routes = null;
 		protected $current_route_name = null;
 		protected $current_route_module = null;
 		protected $current_route_action = null;
@@ -29,6 +30,36 @@
 			if ($current_module !== null) $this->current_route_module = $current_module;
 			if ($current_action !== null) $this->current_route_action = $current_action;
 			if ($current_name !== null) $this->current_route_name = $current_name;
+		}
+
+		public function hasCachedRoutes()
+		{
+			if ($this->has_cached_routes === null)
+			{
+				if (TBGContext::isInstallmode())
+				{
+					$this->has_cached_routes = false;
+				}
+				else
+				{
+					$this->has_cached_routes = TBGCache::has(TBGCache::KEY_ROUTES_CACHE);
+					if ($this->has_cached_routes)
+					{
+						TBGLogging::log('Routes are cached', 'routing');
+					}
+					else
+					{
+						TBGLogging::log('Routes are not cached', 'routing');
+					}
+				}
+			}
+			return $this->has_cached_routes;
+		}
+
+		public function cacheRoutes()
+		{
+			TBGCache::fileAdd(TBGCache::KEY_ROUTES_CACHE, $this->getRoutes());
+			TBGCache::add(TBGCache::KEY_ROUTES_CACHE, $this->getRoutes());
 		}
 
 		/**
@@ -438,8 +469,13 @@
 				$params['csrf_token'] = TBGContext::generateCSRFtoken();
 			}
 
-			$real_url = preg_replace('/\:([^\/]+)/e', 'urlencode($params["\\1"])', $url);
-	
+			$real_url = preg_replace_callback(
+				'/\:([^\/]+)/',
+				function ($match) use ($params) {
+					return urlencode($params[$match[1]]);
+				},
+				$url
+			);	
 			// we add all other params if *
 			if (mb_strpos($real_url, '*'))
 			{
