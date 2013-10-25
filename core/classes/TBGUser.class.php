@@ -891,9 +891,13 @@
 				TBGLogging::log('Populating user teams');
 				if (count($this->teams))
 				{
-					foreach ($this->teams as $team)
+					foreach ($this->teams as $id => $team)
 					{
-						if ($team->getScope()->getID() != TBGContext::getScope()->getID()) continue;
+						if (!$team->getScope() instanceof TBGScope || $team->getScope()->getID() != TBGContext::getScope()->getID()) 
+						{
+							unset($this->teams[$id]);
+							continue;
+						}
 						$key = ($team->isOndemand()) ? 'ondemand' : 'assigned';
 						$this->_teams[$key][$team->getID()] = $team;
 					}
@@ -1024,6 +1028,10 @@
 			if ($this->_starredissues === null)
 			{
 				$this->_b2dbLazyload('_starredissues');
+				foreach ($this->_starredissues as $k => $issue)
+				{
+					if (!$issue->getScope() instanceof TBGScope || $issue->getScope()->getID() != TBGContext::getScope()->getID()) unset($this->_starredissues[$k]);
+				}
 				ksort($this->_starredissues, SORT_NUMERIC);
 			}
 		}
