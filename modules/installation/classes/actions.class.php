@@ -372,7 +372,7 @@
 		 */
 		public function runInstallStep6(TBGRequest $request)
 		{
-			$installed_string = TBGSettings::getMajorVer() . '.' . TBGSettings::getMinorVer() . ', installed ' . date('d.m.Y H:i')
+			$installed_string = TBGSettings::getMajorVer() . '.' . TBGSettings::getMinorVer() . ', installed ' . date('d.m.Y H:i');
 
 			if (file_put_contents(THEBUGGENIE_PATH . 'installed', $installed_string) === false)
 			{

@@ -1036,10 +1036,10 @@
 			if ($this->_starredissues === null)
 			{
 				$this->_b2dbLazyload('_starredissues');
-                                foreach ($this->_starredissues as $k => $issue)
-                                {
-                                        if ($issue->getScope()->getID() != TBGContext::getScope()->getID()) unset($this->_starredissues[$k]);
-                                }
+				foreach ($this->_starredissues as $k => $issue)
+				{
+					if (!$issue->getScope() instanceof TBGScope || $issue->getScope()->getID() != TBGContext::getScope()->getID()) unset($this->_starredissues[$k]);
+				}
 				ksort($this->_starredissues, SORT_NUMERIC);
 			}
 		}
