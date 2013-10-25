@@ -89,6 +89,7 @@
 		{
 			$this->getResponse()->setContentType('application/json');
 			$this->getResponse()->setDecoration(TBGResponse::DECORATE_NONE);
+			array_walk_recursive($text , function(&$item) { $item = iconv('UTF-8', 'UTF-8//IGNORE', $item); });
 			echo json_encode($text);
 			return true;
 		}
