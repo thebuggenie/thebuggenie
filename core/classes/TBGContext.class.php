@@ -696,25 +696,26 @@
 				self::setScope();
 				TBGLogging::log('done (loading scope)');
 
-				TBGLogging::log('Loading pre-module routes');
-				self::loadPreModuleRoutes();
-				TBGLogging::log('done (loading pre-module routes)');
+				if (!self::getRouting()->hasCachedRoutes()) self::loadPreModuleRoutes();
 
-				if (!self::$_installmode) self::setupCoreListeners();
-
-				TBGLogging::log('Loading modules');
-				self::loadModules();
-				TBGLogging::log('done (loading modules)');
-
-				if (!self::$_installmode) self::initializeUser();
-
-				TBGLogging::log('Initializing i18n');
+				if (!self::isInstallmode()) 
+				{
+					self::setupCoreListeners();
+					self::loadModules();
+					self::initializeUser();
+				}
+				
 				self::setupI18n();
-				TBGLogging::log('done (initializing i18n)');
 
-				TBGLogging::log('Loading post-module routes');
-				self::loadPostModuleRoutes();
-				TBGLogging::log('done (loading post-module routes)');
+				if (!self::getRouting()->hasCachedRoutes())
+				{
+					self::loadPostModuleRoutes();
+					if (!self::isInstallmode()) self::getRouting()->cacheRoutes();
+				}
+				else
+				{
+					self::loadCachedRoutes();
+				}
 
 				TBGLogging::log('...done');
 				TBGLogging::log('...done initializing');
@@ -730,29 +731,30 @@
 		
 		protected static function setupI18n()
 		{
-			if (TBGContext::isCLI())
-				return null;
+			TBGLogging::log('Initializing i18n');
+			if (!TBGContext::isCLI())
+			{
+				$language = (self::$_user instanceof TBGUser) ? self::$_user->getLanguage() : TBGSettings::getLanguage();
 
-			$language = (self::$_user instanceof TBGUser) ? self::$_user->getLanguage() : TBGSettings::getLanguage();
-			
-			if (self::$_user instanceof TBGUser && self::$_user->getLanguage() == 'sys')
-			{
-				$language = TBGSettings::getLanguage();
+				if (self::$_user instanceof TBGUser && self::$_user->getLanguage() == 'sys')
+				{
+					$language = TBGSettings::getLanguage();
+				}
+
+				TBGLogging::log('Loading i18n strings');
+				if (!self::$_i18n = TBGCache::get(TBGCache::KEY_I18N.$language, false))
+				{
+					TBGLogging::log("Loading strings from file ({$language})");
+					self::$_i18n = new TBGI18n($language);
+					if (!self::isInstallmode()) TBGCache::add(TBGCache::KEY_I18N.$language, self::$_i18n, false);
+				}
+				else
+				{
+					TBGLogging::log('Using cached i18n strings');
+				}
+				self::$_i18n->initialize();
 			}
-			
-			TBGLogging::log('Loading i18n strings');
-			if (!self::$_i18n = TBGCache::get(TBGCache::KEY_I18N.$language, false))
-			{
-				TBGLogging::log("Loading strings from file ({$language})");
-				self::$_i18n = new TBGI18n($language);
-				if (!self::isInstallmode()) TBGCache::add(TBGCache::KEY_I18N.$language, self::$_i18n, false);
-			}
-			else
-			{
-				TBGLogging::log('Using cached i18n strings');
-			}
-			self::$_i18n->initialize();
-			TBGLogging::log('...done');
+			TBGLogging::log('done (initializing i18n)');
 		}
 
 		protected static function initializeUser()
@@ -835,50 +837,34 @@
 		protected static function loadPreModuleRoutes()
 		{
 			TBGLogging::log('Loading first batch of routes', 'routing');
-			if (self::isInstallmode() || !($routes_1 = TBGCache::get(TBGCache::KEY_PREMODULES_ROUTES_CACHE)))
-			{
-				if (self::isInstallmode() || !($routes_1 = TBGCache::fileGet(TBGCache::KEY_PREMODULES_ROUTES_CACHE)))
-				{
-					TBGLogging::log('generating routes', 'routing');
-					require THEBUGGENIE_CORE_PATH . 'load_routes.inc.php';
-					if (!self::isInstallmode()) TBGCache::fileAdd(TBGCache::KEY_PREMODULES_ROUTES_CACHE, self::getRouting()->getRoutes());
-				}
-				else
-				{
-					TBGLogging::log('using disk cached routes', 'routing');
-					self::getRouting()->setRoutes($routes_1);
-				}
-				if (!self::isInstallmode()) TBGCache::add(TBGCache::KEY_PREMODULES_ROUTES_CACHE, self::getRouting()->getRoutes());
-			}
-			else
-			{
-				TBGLogging::log('loading routes from cache', 'routing');
-				self::getRouting()->setRoutes($routes_1);
-			}
-			TBGLogging::log('...done', 'routing');
+			require THEBUGGENIE_CORE_PATH . 'load_routes.inc.php';
+			TBGLogging::log('...done (loading first batch of routes)', 'routing');
 		}
 
 		protected static function loadPostModuleRoutes()
 		{
 			TBGLogging::log('Loading last batch of routes', 'routing');
-			if (self::isInstallmode() || !($routes = TBGCache::get(TBGCache::KEY_POSTMODULES_ROUTES_CACHE)))
+			require THEBUGGENIE_CORE_PATH . 'load_routes_postmodules.inc.php';
+			TBGLogging::log('...done (loading last batch of routes)', 'routing');
+		}
+
+		protected static function loadCachedRoutes()
+		{
+			TBGLogging::log('Loading routes from cache', 'routing');
+			$routes = TBGCache::get(TBGCache::KEY_ROUTES_CACHE);
+			if (!$routes)
 			{
-				if (self::isInstallmode() || !($routes = TBGCache::fileGet(TBGCache::KEY_POSTMODULES_ROUTES_CACHE)))
-				{
-					TBGLogging::log('generating postmodule routes', 'routing');
-					require THEBUGGENIE_CORE_PATH . 'load_routes_postmodules.inc.php';
-					if (!self::isInstallmode()) TBGCache::fileAdd(TBGCache::KEY_POSTMODULES_ROUTES_CACHE, self::getRouting()->getRoutes());
-				}
-				else
-				{
-					TBGLogging::log('using disk cached postmodule routes', 'routing');
-					self::getRouting()->setRoutes($routes);
-				}
-				if (!self::isInstallmode()) TBGCache::add(TBGCache::KEY_POSTMODULES_ROUTES_CACHE, self::getRouting()->getRoutes());
+				TBGLogging::log('Loading routes from disk cache', 'routing');
+				$routes = TBGCache::fileGet(TBGCache::KEY_ROUTES_CACHE);
+			}
+			
+			if (!$routes)
+			{
+				throw new \Exception('Routes should be cached, but no routes found!');
 			}
 			else
 			{
-				TBGLogging::log('loading postmodule routes from cache', 'routing');
+				TBGLogging::log('Setting routes from cache', 'routing');
 				self::getRouting()->setRoutes($routes);
 			}
 			TBGLogging::log('...done', 'routing');
@@ -1124,7 +1110,7 @@
 			{
 				TBGLogging::log('no modules found');
 			}
-			TBGLogging::log('...done');
+			TBGLogging::log('...done (loading modules)');
 		}
 		
 		/**
