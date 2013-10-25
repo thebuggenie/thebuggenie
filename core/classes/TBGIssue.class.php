@@ -282,7 +282,7 @@
 		 * The scrum color
 		 *
 		 * @var string
-		 * @Column(type="string", length=7, default_value="#FFFFFF")
+		 * @Column(type="string", length=7, default="#FFFFFF")
 		 */
 		protected $_scrumcolor;
 

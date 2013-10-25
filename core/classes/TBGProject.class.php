@@ -230,7 +230,7 @@
 		 * Whether or not this project is visible in the frontpage summary
 		 * 
 		 * @var boolean
-		 * @Column(type="boolean", default_value=true)
+		 * @Column(type="boolean", default=true)
 		 */
 		protected $_show_in_summary = null;
 		
@@ -238,7 +238,7 @@
 		 * What to show on the frontpage summary
 		 * 
 		 * @var string
-		 * @Column(type="string", length=15, default_value="issuetypes")
+		 * @Column(type="string", length=15, default="issuetypes")
 		 */
 		protected $_summary_display = null;
 		

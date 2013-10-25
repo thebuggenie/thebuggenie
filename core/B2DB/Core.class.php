@@ -836,7 +836,7 @@
 					if ($column_annotation = $annotationset->getAnnotation('Column'))
 					{
 						$column_name = $column_prefix . (($column_annotation->hasProperty('name')) ? $column_annotation->getProperty('name') : substr($property_name, 1));
-						$column = array('property' => $property_name, 'default_value' => (($column_annotation->hasProperty('default_value')) ? $column_annotation->getProperty('default_value') : null), 'not_null' => (($column_annotation->hasProperty('not_null')) ? $column_annotation->getProperty('not_null') : false), 'name' => $column_name, 'type' => $column_annotation->getProperty('type'));
+						$column = array('property' => $property_name, 'default_value' => (($column_annotation->hasProperty('default')) ? $column_annotation->getProperty('default') : null), 'not_null' => (($column_annotation->hasProperty('not_null')) ? $column_annotation->getProperty('not_null') : false), 'name' => $column_name, 'type' => $column_annotation->getProperty('type'));
 						switch ($column['type']) {
 							case 'varchar':
 							case 'string':
@@ -850,7 +850,7 @@
 								$column['unsigned'] = ($column_annotation->hasProperty('unsigned')) ? $column_annotation->getProperty('unsigned') : false;
 								$column['length'] = ($column_annotation->hasProperty('length')) ? $column_annotation->getProperty('length') : 10;
 								if ($column['type'] != 'float') {
-									$column['default_value'] = ($column_annotation->hasProperty('default_value')) ? $column_annotation->getProperty('default_value') : 0;
+									$column['default_value'] = ($column_annotation->hasProperty('default')) ? $column_annotation->getProperty('default') : 0;
 								}
 								break;
 						}
