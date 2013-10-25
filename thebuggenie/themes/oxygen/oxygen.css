@@ -1868,6 +1868,9 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
     background-color: transparent;
     cursor: default;
 }
+.interactive_menu.filtered .separator, .interactive_menu.filtered .separator:hover {
+	display: none;
+}
 .interactive_menu ul, .interactive_filters_list ul {
     list-style: none;
     padding: 0;
@@ -1891,8 +1894,22 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
     background-color: transparent;
     cursor: default;
 }
+.searchable .interactive_menu li.filtervalue {
+	display: none;
+}
+.searchable .interactive_menu li.filtervalue.unfiltered {
+	display: block;
+}
+.interactive_menu li.highlighted {
+    background-color: rgba(200, 200, 200, 0.2);
+    cursor: pointer;
+}
 .interactive_menu li.selected {
     background-color: rgba(100, 200, 100, 0.3);
+    cursor: pointer;
+}
+.interactive_menu li.highlighted.selected {
+    background-color: rgba(50, 150, 50, 0.3);
     cursor: pointer;
 }
 .interactive_menu li img.checked {
@@ -2068,7 +2085,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 /* end results */
 
 /* paginator */
-.issue_paginator { text-align: center;" style="width: 100%; margin: 10px auto 10px auto; padding: 3px 5px 3px 5px; font-size: 13px; text-align: center; }
+.issue_paginator { text-align: center; width: auto; margin: 10px auto 10px auto; padding: 3px 5px 3px 5px; font-size: 13px; text-align: center; }
 /* end paginator */
 
 /* saved searches */

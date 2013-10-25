@@ -78,6 +78,11 @@
 				</div>
 				<?php if (!$tbg_user->isGuest()): ?>
 					<div class="interactive_plus_button" id="interactive_save_button" style="<?php if (!$show_results) echo 'display: none;'; ?>" onclick="$('saved_search_details').toggle();"><?php echo image_tag('icon-mono-bookmark.png'); ?></div>
+				<?php else: ?>
+					<div class="interactive_plus_button disabled" id="interactive_save_button" style="<?php if (!$show_results) echo 'display: none;'; ?>">
+						<div class="tooltip from-above rightie" style="right: -5px; left: auto; margin-top: 10px;"><?php echo __('You have to be signed in to save this search'); ?></div>
+						<?php echo image_tag('icon-mono-bookmark.png', array('style' => 'opacity: 0.4;')); ?>
+					</div>
 				<?php endif; ?>
 			</div>
 			<div id="searchbuilder_filterstrip_filtercontainer">
