@@ -4,9 +4,13 @@
 // If you would like to help translating TBG,
 // please visit https://www.transifex.com/projects/p/tbg
 
-// Number of Sections: 304
-// Number of Strings: 3258
-// Strings extracted on: 2013 Oct 16.
+// Number of Sections: 305
+// Number of Strings: 3262
+// Strings extracted on: 2013 Oct 26.
+
+// First occurrence is in: core/classes/TBGAction.class.php
+// ----------------------------------------------------------------------------
+  $strings['You are not allowed to access this page'] = 'You are not allowed to access this page';
 
 // First occurrence is in: core/classes/TBGContext.class.php
 // ----------------------------------------------------------------------------
@@ -188,8 +192,8 @@
   $strings['Blocking further progress on the daily build'] = 'Blocking further progress on the daily build';
   $strings['A User would return the product / cannot RTM / the team would hold the release for this bug'] = 'A User would return the product / cannot RTM / the team would hold the release for this bug';
   $strings['A User would likely not purchase the product / will show up in review / clearly a noticeable issue'] = 'A User would likely not purchase the product / will show up in review / clearly a noticeable issue';
-  $strings["A Pain  users won't like this once they notice it / a moderate number of users won't buy"] = "A Pain  users won't like this once they notice it / a moderate number of users won't buy";
-  $strings['Nuisance  not a big deal but noticeable / extremely unlikely to affect sales'] = 'Nuisance  not a big deal but noticeable / extremely unlikely to affect sales';
+  $strings["A Pain – users won't like this once they notice it / a moderate number of users won't buy"] = "A Pain – users won't like this once they notice it / a moderate number of users won't buy";
+  $strings['Nuisance – not a big deal but noticeable / extremely unlikely to affect sales'] = 'Nuisance – not a big deal but noticeable / extremely unlikely to affect sales';
   $strings['Will affect all users'] = 'Will affect all users';
   $strings['Will affect most users'] = 'Will affect most users';
   $strings['Will affect average number of users'] = 'Will affect average number of users';
@@ -462,7 +466,9 @@
   $strings['Control user password'] = 'Control user password';
   $strings['Please insert the authentication details for a user who can access all LDAP records. Only read only access is necessary, and for an anonyous bind leave this blank.'] = 'Please insert the authentication details for a user who can access all LDAP records. Only read only access is necessary, and for an anonyous bind leave this blank.';
   $strings['Use HTTP Integrated Authentication'] = 'Use HTTP Integrated Authentication';
-  $strings['Activate to enabled automatic user login using HTTP integrated authentication. This requires your web server to be authenticating the user (e.g. HTTP Basic Authentication, Kerberos etc) and providing the "REMOTE_USER" HTTP header so Bug Genie can identify the current user.'] = 'Activate to enabled automatic user login using HTTP integrated authentication. This requires your web server to be authenticating the user (e.g. HTTP Basic Authentication, Kerberos etc) and providing the "REMOTE_USER" HTTP header so Bug Genie can identify the current user.';
+  $strings['Activate to enabled automatic user login using HTTP integrated authentication. This requires your web server to be authenticating the user (e.g. HTTP Basic Authentication, Kerberos etc).'] = 'Activate to enabled automatic user login using HTTP integrated authentication. This requires your web server to be authenticating the user (e.g. HTTP Basic Authentication, Kerberos etc).';
+  $strings['HTTP header field'] = 'HTTP header field';
+  $strings['If using HTTP integrated authentication specify the HTTP header field that will contain the user name.'] = 'If using HTTP integrated authentication specify the HTTP header field that will contain the user name.';
   $strings['Click "%save" to save the settings'] = 'Click "%save" to save the settings';
   $strings['Save'] = 'Save';
   $strings['Test connection'] = 'Test connection';
@@ -4032,6 +4038,7 @@
   $strings['Issue detail filters'] = 'Issue detail filters';
   $strings['Select how to present search results'] = 'Select how to present search results';
   $strings['Select how many issues to show per page'] = 'Select how many issues to show per page';
+  $strings['You have to be signed in to save this search'] = 'You have to be signed in to save this search';
   $strings['Find issues'] = 'Find issues';
   $strings['This saved search will be available under this project only. To make a non-project-specific search, use the main "%find_issues" page instead'] = 'This saved search will be available under this project only. To make a non-project-specific search, use the main "%find_issues" page instead';
   $strings['Saved search name'] = 'Saved search name';
