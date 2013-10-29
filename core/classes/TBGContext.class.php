@@ -695,12 +695,6 @@
 				self::loadModules();
 				TBGLogging::log('done (loading modules)');
 
-				if (!self::$_installmode) self::initializeUser();
-
-				TBGLogging::log('Initializing i18n');
-				self::setupI18n();
-				TBGLogging::log('done (initializing i18n)');
-
 				if (!self::getRouting()->hasCachedRoutes())
 				{
 					self::loadPostModuleRoutes();
@@ -710,6 +704,12 @@
 				{
 					self::loadCachedRoutes();
 				}
+
+				if (!self::$_installmode) self::initializeUser();
+
+				TBGLogging::log('Initializing i18n');
+				self::setupI18n();
+				TBGLogging::log('done (initializing i18n)');
 
 				TBGLogging::log('...done');
 				TBGLogging::log('...done initializing');

@@ -554,9 +554,7 @@
 				if (!$user instanceof TBGUser && TBGContext::isCLI())
 				{
 					$user = TBGUsersTable::getTable()->getByUsername(TBGContext::getCurrentCLIusername());
-				
 				}
-				// guest user
 				elseif (!$user instanceof TBGUser && !TBGSettings::isLoginRequired())
 				{
 					$user = TBGUsersTable::getTable()->getByUserID(TBGSettings::getDefaultUserID());
