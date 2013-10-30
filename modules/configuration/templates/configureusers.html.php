@@ -188,10 +188,14 @@
 		</td>
 	</tr>
 </table>
-<?php if ($finduser): ?>
 	<script type="text/javascript">
 		Event.observe(window, 'load', function() {
-			TBG.Config.User.show('<?php echo make_url('configure_users_find_user'); ?>', '<?php echo $finduser; ?>');
+			$('findusers').on('click', function(event, element) {
+				event.preventDefault();
+				event.stopPropagation();
+			});
+			<?php if ($finduser): ?>
+				TBG.Config.User.show('<?php echo make_url('configure_users_find_user'); ?>', '<?php echo $finduser; ?>');
+			<?php endif; ?>
 		});
 	</script>
-<?php endif; ?>

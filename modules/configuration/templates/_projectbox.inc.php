@@ -4,7 +4,7 @@
 		<?php if ($project->isArchived()): ?>
 			<span class="faded_out"><?php echo __('ARCHIVED'); ?> </span>
 		<?php endif; ?>
-		<strong><?php echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), $project->getName()); ?></strong>&nbsp;(<?php echo $project->getKey(); ?>)
+			<strong><?php echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), $project->getName()); ?></strong>&nbsp;<span class="project_key" style="position: relative;">(<div class="tooltip leftie"><?php echo __('This is the project key, used in most places when accessing the project'); ?></div><?php echo $project->getKey(); ?>)</span>
 		<?php if ($project->usePrefix()): ?>
 			&nbsp;-&nbsp;<i><?php echo $project->getPrefix(); ?></i>
 		<?php endif; ?>

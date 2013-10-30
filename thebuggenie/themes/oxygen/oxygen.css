@@ -820,7 +820,12 @@ table.cleantable th { text-align: center; }
 /* end table styling */
 
 /* configuration section styling */
-.config_header { margin: 5px 0px 5px 0px; background-color: transparent; font-weight: bold; border: 0px; padding: 7px 0px 3px 0px; border-bottom: 1px solid #DDD; font-size: 1.1em; }
+.configuration_update_check_container { background-color: rgba(200, 200, 200, 0.1); padding: 5px; margin: 10px; border: 1px solid rgba(100, 100, 100, 0.3); }
+#update_button { float: right; margin-left: 5px; font-size: 1em; }
+#update_spinner { float: right; }
+.configuration_container { padding: 0 10px; }
+.configuration_container h1 { margin: 15px 0 5px 0; background-color: transparent; font-weight: normal; border: 0px; padding: 7px 0px 3px 0px; border-bottom: 1px dotted #CCC; font-size: 1.4em; }
+.configuration_container h1:first-child { margin-top: 5px; }
 
 .config_explanation { color: #999; padding: 5px 0 10px 5px; }
 .config_explanation a { color: #549D54; font-weight: bold; }
@@ -833,8 +838,8 @@ table.cleantable th { text-align: center; }
 .config_buttons li a:hover { border: 0px; }
 
 .config_badges { margin: 0; }
-.config_badges li { margin: 5px 10px 5px 0; width: 315px; font-size: 0.9em; border: 1px solid #DDD; padding: 0px; background-color: #FFF; float: left; }
-.config_badges li:hover	{ border-color: #AAA; background-color: #F5F5F5; }
+.config_badges li { margin: 5px 10px 5px 0; width: 315px; font-size: 0.9em; border: 1px solid #DDD; padding: 0px; background-color: #FFF; display: inline-block; vertical-align: top; box-shadow: 0 0 3px rgba(200, 200, 200, 0.3); }
+.config_badges li:hover	{ border-color: #CCC; box-shadow: 0 0 4px rgba(200, 200, 200, 0.7); }
 .config_badges li a	{ display: block; height: 60px; padding: 7px; }
 .config_badges li a:hover { border: 0px; }
 .config_badges li a span { color: #555; }
@@ -2264,10 +2269,6 @@ a:hover .issue_title { color: #555; }
 
 a.action_button { padding: 3px; background-color: #FAFAFA; border: 1px solid #CCC; display: block; line-height: 0; margin-left: 5px; }
 a.action_button:hover { background-color: #FCFCFC; border-color: #AAA; }
-
-/* updates */
-.update_div { font-size: 0.9em; margin: 10px; margin-bottom: -10px; width: 970px; }
-#update_button, #update_spinner { margin-top: 10px; }
 
 #views_list li { margin: 5px 10px; float: left; width: 360px; cursor: move; text-align: left; }
 #views_list li .available_views_list { width: 340px; margin-left: 15px; cursor: default; display: none; }

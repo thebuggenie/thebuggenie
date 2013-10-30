@@ -43,48 +43,21 @@
 
 		public function componentLeftmenu()
 		{
-			$i18n = TBGContext::getI18n();
-			$config_sections = array();
-
-			if (TBGContext::getScope()->getID() == 1)
-				$config_sections[TBGSettings::CONFIGURATION_SECTION_SCOPES] = array('route' => 'configure_scopes', 'description' => $i18n->__('Scopes'), 'icon' => 'scopes', 'module' => 'core');
-
-			$config_sections[TBGSettings::CONFIGURATION_SECTION_SETTINGS] = array('route' => 'configure_settings', 'description' => $i18n->__('Settings'), 'icon' => 'general', 'module' => 'core');
-			$config_sections[TBGSettings::CONFIGURATION_SECTION_PERMISSIONS] = array('route' => 'configure_permissions', 'description' => $i18n->__('Permissions'), 'icon' => 'permissions', 'module' => 'core');
-			$config_sections[TBGSettings::CONFIGURATION_SECTION_ROLES] = array('route' => 'configure_roles', 'description' => $i18n->__('Roles'), 'icon' => 'roles', 'module' => 'core');
-			$config_sections[TBGSettings::CONFIGURATION_SECTION_AUTHENTICATION] = array('route' => 'configure_authentication', 'description' => $i18n->__('Authentication'), 'icon' => 'authentication', 'module' => 'core');
-
-			if (TBGContext::getScope()->isUploadsEnabled())
-				$config_sections[TBGSettings::CONFIGURATION_SECTION_UPLOADS] = array('route' => 'configure_files', 'description' => $i18n->__('Uploads &amp; attachments'), 'icon' => 'files', 'module' => 'core');
-			
-			$config_sections[TBGSettings::CONFIGURATION_SECTION_IMPORT] = array('route' => 'configure_import', 'description' => $i18n->__('Import data'), 'icon' => 'import', 'module' => 'core');
-			$config_sections[TBGSettings::CONFIGURATION_SECTION_PROJECTS] = array('route' => 'configure_projects', 'description' => $i18n->__('Projects'), 'icon' => 'projects', 'module' => 'core');
-			$config_sections[TBGSettings::CONFIGURATION_SECTION_ISSUETYPES] = array('icon' => 'issuetypes', 'description' => $i18n->__('Issue types'), 'route' => 'configure_issuetypes', 'module' => 'core');
-			$config_sections[TBGSettings::CONFIGURATION_SECTION_ISSUEFIELDS] = array('icon' => 'resolutiontypes', 'description' => $i18n->__('Issue fields'), 'route' => 'configure_issuefields', 'module' => 'core');
-			$config_sections[TBGSettings::CONFIGURATION_SECTION_WORKFLOW] = array('icon' => 'workflow', 'description' => $i18n->__('Workflow'), 'route' => 'configure_workflow', 'module' => 'core');
-			$config_sections[TBGSettings::CONFIGURATION_SECTION_USERS] = array('route' => 'configure_users', 'description' => $i18n->__('Users, teams, clients &amp; groups'), 'icon' => 'users', 'module' => 'core');
-			$config_sections[TBGSettings::CONFIGURATION_SECTION_MODULES][] = array('route' => 'configure_modules', 'description' => $i18n->__('Modules'), 'icon' => 'modules', 'module' => 'core');
-			foreach (TBGContext::getModules() as $module)
-			{
-				if ($module->hasConfigSettings() && $module->isEnabled())
-				{
-					$config_sections[TBGSettings::CONFIGURATION_SECTION_MODULES][] = array('route' => array('configure_module', array('config_module' => $module->getName())), 'description' => TBGContext::geti18n()->__($module->getConfigTitle()), 'icon' => $module->getName(), 'module' => $module->getName());
-				}
-			}
+			$config_sections = TBGSettings::getConfigSections(TBGContext::getI18n());
 			$breadcrumblinks = array();
-			foreach ($config_sections as $section)
+			foreach ($config_sections as $key => $sections)
 			{
-				if (is_array($section) && !array_key_exists('route', $section))
+				foreach ($sections as $section)
 				{
-					foreach ($section as $subsection)
+					if ($key == TBGSettings::CONFIGURATION_SECTION_MODULES)
 					{
-						$url = (is_array($subsection['route'])) ? make_url($subsection['route'][0], $subsection['route'][1]) : make_url($subsection['route']);
-						$breadcrumblinks[] = array('url' => $url, 'title' => $subsection['description']);
+						$url = (is_array($section['route'])) ? make_url($section['route'][0], $section['route'][1]) : make_url($section['route']);
+						$breadcrumblinks[] = array('url' => $url, 'title' => $section['description']);
 					}
-				}
-				else
-				{
-					$breadcrumblinks[] = array('url' => make_url($section['route']), 'title' => $section['description']);
+					else
+					{
+						$breadcrumblinks[] = array('url' => make_url($section['route']), 'title' => $section['description']);
+					}
 				}
 			}
 			$this->breadcrumblinks = $breadcrumblinks;
