@@ -701,9 +701,7 @@
 				{
 					if ($request->hasParameter('tbg3_username') && $request->hasParameter('tbg3_password') && $request['tbg3_username'] != '' && $request['tbg3_password'] != '')
 					{
-						$username = $request['tbg3_username'];
-						$password = $request['tbg3_password'];
-						$user = TBGUser::loginCheck($username, $password, true);
+						$user = TBGUser::loginCheck($request);
 
 						TBGContext::setUser($user);
 						if ($this->checkScopeMembership($user)) return true;

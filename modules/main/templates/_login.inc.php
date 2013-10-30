@@ -1,71 +1,66 @@
-		<div class="tab_menu">
-			<ul id="login_menu">
-				<li id="tab_login"<?php if ($selected_tab == 'login'): ?> class="selected"<?php endif; ?>><?php echo javascript_link_tag(image_tag('icon_login.png', array('style' => 'float: left;')).__('Login'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_login', 'login_menu');")); ?></li>
-				<?php TBGEvent::createNew('core', 'login_form_tab')->trigger(array('selected_tab' => $selected_tab)); ?>
-				<?php if (TBGSettings::get('allowreg') == true): ?>
-					<li id="tab_register"<?php if ($selected_tab == 'register'): ?> class="selected"<?php endif; ?>><?php echo javascript_link_tag(image_tag('icon_register.png', array('style' => 'float: left;')).__('Register new account'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_register', 'login_menu');")); ?></li>
-				<?php endif; ?>
-			</ul>
+<?php /* TBGEvent::createNew('core', 'login_form_tab')->trigger(array('selected_tab' => $selected_tab)); */ ?>
+<script language="text/javascript">
+	if (document.location.href.search('<?php echo make_url('login_page'); ?>') != -1)
+		$('tbg3_referer').setValue('<?php echo make_url('dashboard'); ?>');
+
+</script>
+<div class="logindiv regular active" id="regular_login_container">
+	<?php if ($loginintro instanceof TBGWikiArticle): ?>
+		<?php include_component('publish/articledisplay', array('article' => $loginintro, 'show_title' => false, 'show_details' => false, 'show_actions' => false, 'embedded' => true)); ?>
+	<?php endif; ?>
+	<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('login'); ?>" method="post" id="login_form" onsubmit="TBG.Main.Login.login('<?php echo make_url('login'); ?>'); return false;">
+		<?php if (!TBGContext::hasMessage('login_force_redirect') || TBGContext::getMessage('login_force_redirect') !== true): ?>
+			<input type="hidden" id="tbg3_referer" name="tbg3_referer" value="<?php echo $referer; ?>" />
+		<?php else: ?>
+			<input type="hidden" id="return_to" name="return_to" value="<?php echo $referer; ?>" />
+		<?php endif; ?>
+		<h2 class="login_header"><?php echo __('Log in with your username and password'); ?></h2>
+		<ul class="login_formlist">
+			<li>
+				<label for="tbg3_username"><?php echo __('Username'); ?></label>
+				<input type="text" id="tbg3_username" name="tbg3_username">
+			</li>
+			<li>
+				<label for="tbg3_password"><?php echo __('Password'); ?></label>
+				<input type="password" id="tbg3_password" name="tbg3_password"><br>
+			</li>
+			<li>
+				<input type="checkbox" name="tbg3_rememberme" value="1" id="tbg3_rememberme"><label class="login_fieldlabel" for="tbg3_rememberme"><?php echo __('Keep me logged in'); ?></label>
+			</li>
+		</ul>
+		<div class="login_button_container">
+			<?php TBGEvent::createNew('core', 'login_button_container')->trigger(); ?>
+			<?php echo image_tag('spinning_20.gif', array('id' => 'login_indicator', 'style' => 'display: none;')); ?>
+			<input type="submit" id="login_button" class="button button-silver" value="<?php echo __('Log in'); ?>">
 		</div>
-		<div id="login_menu_panes">
-			<div id="tab_login_pane"<?php if ($selected_tab != 'login'): ?> style="display: none;"<?php endif; ?>>
-				<script language="text/javascript">
-					if (document.location.href.search('<?php echo make_url('login_page'); ?>') != -1)
-					{
-						$('tbg3_referer').setValue('<?php echo make_url('dashboard'); ?>');
-					}
-				</script>
-				<?php if ($article instanceof TBGWikiArticle): ?>
-					<?php include_component('publish/articledisplay', array('article' => $article, 'show_title' => false, 'show_details' => false, 'show_actions' => false, 'embedded' => true)); ?>
-				<?php endif; ?>
-				<div class="logindiv regular">			
-					<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('login'); ?>" method="post" id="login_form" onsubmit="TBG.Main.Login.login('<?php echo make_url('login'); ?>'); return false;">
-						<?php if (!TBGContext::hasMessage('login_force_redirect') || TBGContext::getMessage('login_force_redirect') !== true): ?>
-							<input type="hidden" id="tbg3_referer" name="tbg3_referer" value="<?php echo $referer; ?>" />
-						<?php else: ?>
-							<input type="hidden" id="return_to" name="return_to" value="<?php echo $referer; ?>" />
-						<?php endif; ?>
-						<div class="login_boxheader regular"><?php echo __('Log in to an existing account'); ?></div>
-						<div>
-							<table border="0" class="login_fieldtable">
-								<tr>
-									<td><label class="login_fieldheader" for="tbg3_username"><?php echo __('Username'); ?></label></td>
-									<td><input type="text" id="tbg3_username" name="tbg3_username" style="width: 170px;"></td>
-								</tr>
-								<tr>
-									<td><label class="login_fieldheader" for="tbg3_password"><?php echo __('Password'); ?></label></td>
-									<td><input type="password" id="tbg3_password" name="tbg3_password" style="width: 170px;"></td>
-								</tr>
-							</table>
-							<br>
-							<input type="submit" id="login_button" class="button button-green" value="<?php echo __('Continue'); ?>">
-							<span id="login_indicator" style="display: none;"><?php echo image_tag('spinning_20.gif'); ?></span>
-						</div>
-					</form>
-				</div>
-				<?php if (TBGSettings::isOpenIDavailable()): ?>
-					<?php include_template('main/openidbuttons'); ?>
-				<?php endif; ?>
-				<?php if (TBGSettings::isPersonaAvailable()): ?>
-					<br style="clear: both;">
-					<div style="text-align: center;">
-						<fieldset style="border: 0; border-top: 1px dotted rgba(0, 0, 0, 0.3); padding: 10px 100px; width: 100px; margin: 20px auto 0 auto;">
-							<legend style="text-align: center; width: 100%; background-color: transparent;">or</legend>
-						</fieldset>
-						<a class="persona-button" id="persona-signin-button" href="#"><span><?php echo __('Sign in with Persona'); ?></span></a>
-					</div>
-				<?php endif; ?>
-			</div>
-			<br style="clear: both;">
-			<?php TBGEvent::createNew('core', 'login_form_pane')->trigger(array_merge(array('selected_tab' => $selected_tab), $options)); ?>
-			<?php if (TBGSettings::get('allowreg') == true): ?>
-				<?php include_template('main/loginregister', array('selected_tab' => $selected_tab)); ?>
+	</form>
+	<?php if (TBGSettings::isPersonaAvailable() || TBGSettings::isOpenIDavailable()): ?>
+		<div style="text-align: center;">
+			<fieldset style="border: 0; border-top: 1px dotted rgba(0, 0, 0, 0.3); padding: 10px 100px; width: 100px; margin: 15px auto 0 auto;">
+				<legend style="text-align: center; width: 100%; background-color: transparent;"><?php echo __('%regular_login or %persona_or_openid_login', array('%regular_login' => '', '%persona_or_openid_login' => '')); ?></legend>
+			</fieldset>
+			<?php if (TBGSettings::isPersonaAvailable()): ?>
+				<a class="persona-button" id="persona-signin-button" href="#"><span><?php echo __('Sign in with Persona'); ?></span></a>
 			<?php endif; ?>
-			
+			<?php if (TBGSettings::isOpenIDavailable()): ?>
+				<a class="persona-button orange" id="openid-signin-button" href="javascript:void(0);" onclick="$('regular_login_container').toggleClassName('active');$('openid_container').toggleClassName('active');"><span><?php echo __('Sign in with OpenID'); ?></span></a>
+			<?php endif; ?>
 		</div>
-		<div id="backdrop_detail_indicator" style="text-align: center; padding: 50px; display: none;">
-			<?php echo image_tag('spinning_32.gif'); ?>
-		</div>
+	<?php endif; ?>
+</div>
+<?php if (TBGSettings::isOpenIDavailable()): ?>
+	<?php include_component('main/openidbuttons'); ?>
+<?php endif; ?>
+<?php TBGEvent::createNew('core', 'login_form_pane')->trigger(array_merge(array('selected_tab' => $selected_tab), $options)); ?>
+<?php if (TBGSettings::isRegistrationAllowed()): ?>
+	<div style="text-align: center;" id="registration-button-container" class="logindiv login_button_container registration_button_container active">
+		<fieldset style="border: 0; border-top: 1px dotted rgba(0, 0, 0, 0.3); padding: 5px 100px; width: 100px; margin: 5px auto 0 auto;">
+			<legend style="text-align: center; width: 100%; background-color: transparent;"><?php echo __('%login or %signup', array('%login' => '', '%signup' => '')); ?></legend>
+		</fieldset>
+		<a href="javascript:void(0);" id="create-account-button" onclick="$('register').addClassName('active');$('registration-button-container').removeClassName('active');$('regular_login_container').removeClassName('active');$('openid_container').removeClassName('active');" class="button button-green"><?php echo __('Create an account'); ?></a>
+	</div>
+	<?php include_template('main/loginregister', compact('registrationintro')); ?>
+<?php endif; ?>
 <?php if (isset($error)): ?>
 	<script type="text/javascript">
 		TBG.Main.Helpers.Message.error('<?php echo $error; ?>');

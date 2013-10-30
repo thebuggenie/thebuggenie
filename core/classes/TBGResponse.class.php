@@ -476,10 +476,25 @@
 		 */
 		public function setCookie($key, $value, $expiration = 864000)
 		{
-			setcookie($key, $value, NOW + $expiration, TBGContext::getTBGPath());
+			$expiration = ($expiration !== null) ? NOW + $expiration : null;
+			setcookie($key, $value, $expiration, TBGContext::getTBGPath());
 			return true;
 		}
 		
+		/**
+		 * Sets a cookie on the client, default expiration when session end
+		 *
+		 * @param $key string the cookie key
+		 * @param $value string the cookie value
+		 *
+		 * @return bool
+		 */
+		public function setSessionCookie($key, $value)
+		{
+			$this->setCookie($key, $value, null);
+			return true;
+		}
+
 		/**
 		 * Deletes a cookie on the client
 		 * 

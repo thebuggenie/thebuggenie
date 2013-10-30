@@ -106,9 +106,11 @@
 	<body id="body">
 		<?php require THEBUGGENIE_CORE_PATH . 'templates/backdrops.inc.php'; ?>
 		<div id="main_container">
-			<?php TBGLogging::log('Rendering header'); ?>
-			<?php require THEBUGGENIE_CORE_PATH . 'templates/headertop.inc.php'; ?>
-			<?php TBGLogging::log('done (rendering header)'); ?>
+			<?php if (TBGContext::getRouting()->getCurrentRouteName() != 'login_page'): ?>
+				<?php TBGLogging::log('Rendering header'); ?>
+				<?php require THEBUGGENIE_CORE_PATH . 'templates/headertop.inc.php'; ?>
+				<?php TBGLogging::log('done (rendering header)'); ?>
+			<?php endif; ?>
 			<div id="content_container">
 				<?php TBGLogging::log('Rendering content'); ?>
 				<?php echo $content; ?>

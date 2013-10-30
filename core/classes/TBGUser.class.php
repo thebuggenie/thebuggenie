@@ -448,15 +448,16 @@
 		/**
 		 * Returns the logged in user, or default user if not logged in
 		 *
-		 * @param string $uname
-		 * @param string $upwd
-		 * 
+		 * @param TBGRequest $request
+		 *
 		 * @return TBGUser
 		 */
-		public static function loginCheck($username = null, $password = null)
+		public static function loginCheck(TBGRequest $request)
 		{
 			try
 			{
+				$username = $request['tbg3_username'];
+				$password = $request['tbg3_password'];
 				$user = null;
 				$external = false;
 				$raw = true;
@@ -578,7 +579,6 @@
 				if (!$user instanceof TBGUser && TBGContext::isCLI())
 				{
 					$user = TBGUsersTable::getTable()->getByUsername(TBGContext::getCurrentCLIusername());
-				
 				}
 				// guest user
 				elseif (!$user instanceof TBGUser && !TBGSettings::isLoginRequired())
@@ -606,15 +606,21 @@
 					
 					if ($external == false)
 					{
-						if ($raw == false)
+						if ($raw == true) $password = TBGUser::hashPassword($password);
+
+						if (!$request->hasCookie('tbg3_username'))
 						{
-							TBGContext::getResponse()->setCookie('tbg3_password', $password);
+							if ($request->getParameter('tbg3_rememberme'))
+							{
+								TBGContext::getResponse()->setCookie('tbg3_username', $username);
+								TBGContext::getResponse()->setCookie('tbg3_password', $password);
+							}
+							else
+							{
+								TBGContext::getResponse()->setSessionCookie('tbg3_username', $username);
+								TBGContext::getResponse()->setSessionCookie('tbg3_password', $password);
+							}
 						}
-						else
-						{
-							TBGContext::getResponse()->setCookie('tbg3_password', TBGUser::hashPassword($password));
-						}
-						TBGContext::getResponse()->setCookie('tbg3_username', $username);
 					}
 				}
 				elseif (TBGSettings::isLoginRequired())

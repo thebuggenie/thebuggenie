@@ -383,8 +383,10 @@
 			
 			try
 			{
-				$this->article = null;
-				$this->article = PublishFactory::articleName('LoginIntro');
+				$this->loginintro = null;
+				$this->registrationintro = null;
+				$this->loginintro = TBGArticlesTable::getTable()->getArticleByName('LoginIntro');
+				$this->registrationintro = TBGArticlesTable::getTable()->getArticleByName('RegistrationIntro');
 			}
 			catch (Exception $e) {}
 
@@ -402,6 +404,11 @@
 			{
 			//$this->error = TBGContext::geti18n()->__('Please log in');
 			}
+		}
+
+		public function componentOpenidButtons()
+		{
+			$this->openidintro = TBGArticlesTable::getTable()->getArticleByName('OpenidIntro');
 		}
 		
 		public function componentLoginRegister()

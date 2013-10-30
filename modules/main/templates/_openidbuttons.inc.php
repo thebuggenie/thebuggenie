@@ -1,14 +1,10 @@
-<div class="logindiv openid_container">
+<div class="logindiv openid_container" id="openid_container">
 	<form action="<?php echo make_url('login'); ?>" method="post" id="openid_form" onsubmit="return TBG.OpenID.submit();">
+		<?php if ($openidintro instanceof TBGWikiArticle): ?>
+			<?php include_component('publish/articledisplay', array('article' => $openidintro, 'show_title' => false, 'show_details' => false, 'show_actions' => false, 'embedded' => true)); ?>
+		<?php endif; ?>
 		<input type="hidden" name="action" value="verify" />
 		<div id="openid_choice">
-			<div class="login_boxheader">
-				<?php if (TBGSettings::get('allowreg') && TBGSettings::getOpenIDStatus() == 'all'): ?>
-					<?php echo __('Log in or register with your OpenID'); ?>
-				<?php else: ?>
-					<?php echo __('Log in with your OpenID'); ?>
-				<?php endif; ?>
-			</div>
 			<div id="openid_btns"></div>
 		</div>
 		<div id="openid_input_area">
@@ -17,31 +13,46 @@
 		<input id="openid_provider" type="hidden" value="" />
 		<input id="openid_submit_button" type="submit" value="<?php echo __('Sign in'); ?>" class="button button-silver" style="display: none;">
 	</form>
+	<br style="clear: both;">
+	<div style="text-align: center;">
+		<fieldset style="border: 0; border-top: 1px dotted rgba(0, 0, 0, 0.3); padding: 10px 100px; width: 100px; margin: 20px auto 0 auto;">
+			<legend style="text-align: center; width: 100%; background-color: transparent;"><?php echo __('%regular_login or %persona_or_openid_login', array('%regular_login' => '', '%persona_or_openid_login' => '')); ?></legend>
+		</fieldset>
+		<?php if (TBGSettings::isPersonaAvailable()): ?>
+			<a class="persona-button" id="persona-signin-button" href="#"><span><?php echo __('Sign in with Persona'); ?></span></a>
+		<?php endif; ?>
+		<a class="persona-button dark" id="regular-signin-button" href="javascript:void(0);" onclick="$('regular_login_container').toggleClassName('active');$('openid_container').toggleClassName('active');"><span><?php echo __('Regular signin'); ?></span></a>
+	</div>
 </div>
 <script type="text/javascript">
 
 	var providers_large = {
+		google : {
+			name : 'Google',
+			url : 'https://www.google.com/accounts/o8/id'
+		},
 		openid : {
 			name : 'OpenID',
 			label : '<?php echo htmlspecialchars(__('Enter your OpenID'), ENT_QUOTES, TBGContext::getI18n()->getCharset()); ?>',
 			url : null
 		},
-		myopenid : {
-			name : 'MyOpenID',
-			label : '<?php echo htmlspecialchars(__('Enter your MyOpenID username'), ENT_QUOTES, TBGContext::getI18n()->getCharset()); ?>',
-			url : 'http://{username}.myopenid.com/'
+		wordpress : {
+			name : 'Wordpress',
+			label : '<?php echo htmlspecialchars(__('Enter your Wordpress.com username'), ENT_QUOTES, TBGContext::getI18n()->getCharset()); ?>',
+			url : 'http://{username}.wordpress.com/'
 		},
-		yahoo : {
-			name : 'Yahoo',
-			url : 'http://me.yahoo.com/'
-		},
-		google : {
-			name : 'Google',
-			url : 'https://www.google.com/accounts/o8/id'
+		launchpad: {
+			name: 'Launchpad',
+			label : '<?php echo htmlspecialchars(__('Your Launchpad username'), ENT_QUOTES, TBGContext::getI18n()->getCharset()); ?>',
+			url: 'https://launchpad.net/~{username}'
 		}
 	};
 
 	var providers_small = {
+		yahoo : {
+			name : 'Yahoo',
+			url : 'http://me.yahoo.com/'
+		},
 		livejournal : {
 			name : 'LiveJournal',
 			label : '<?php echo htmlspecialchars(__('Enter your Livejournal username'), ENT_QUOTES, TBGContext::getI18n()->getCharset()); ?>',
@@ -62,11 +73,6 @@
 			label : '<?php echo htmlspecialchars(__('Your Technorati username'), ENT_QUOTES, TBGContext::getI18n()->getCharset()); ?>',
 			url: 'http://technorati.com/people/technorati/{username}/'
 		},
-		wordpress : {
-			name : 'Wordpress',
-			label : '<?php echo htmlspecialchars(__('Enter your Wordpress.com username'), ENT_QUOTES, TBGContext::getI18n()->getCharset()); ?>',
-			url : 'http://{username}.wordpress.com/'
-		},
 		blogger : {
 			name : 'Blogger',
 			label : '<?php echo htmlspecialchars(__('Your Blogger account'), ENT_QUOTES, TBGContext::getI18n()->getCharset()); ?>',
@@ -81,11 +87,6 @@
 			name: 'Vidoop',
 			label : '<?php echo htmlspecialchars(__('Your Vidoop username'), ENT_QUOTES, TBGContext::getI18n()->getCharset()); ?>',
 			url: 'http://{username}.myvidoop.com/'
-		},
-		launchpad: {
-			name: 'Launchpad',
-			label : '<?php echo htmlspecialchars(__('Your Launchpad username'), ENT_QUOTES, TBGContext::getI18n()->getCharset()); ?>',
-			url: 'https://launchpad.net/~{username}'
 		},
 		claimid : {
 			name : 'ClaimID',

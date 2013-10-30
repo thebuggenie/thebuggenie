@@ -104,7 +104,7 @@
 			TBGEvent::listen('core', 'TBGUser::_postSave', array($this, 'listen_registerUser'));
 			TBGEvent::listen('core', 'password_reset', array($this, 'listen_forgottenPassword'));
 			TBGEvent::listen('core', 'login_form_pane', array($this, 'listen_loginPane'));
-			TBGEvent::listen('core', 'login_form_tab', array($this, 'listen_loginTab'));
+			TBGEvent::listen('core', 'login_button_container', array($this, 'listen_loginButtonContainer'));
 			TBGEvent::listen('core', 'TBGUser::addScope', array($this, 'listen_addScope'));
 			TBGEvent::listen('core', 'TBGIssue::createNew', array($this, 'listen_issueCreate'));
 			TBGEvent::listen('core', 'TBGUser::_postSave', array($this, 'listen_createUser'));
@@ -263,7 +263,7 @@ EOT;
 		 */
 		public function getSwiftMessage($subject, $message_plain, $message_html)
 		{
-			require_once THEBUGGENIE_CORE_PATH . 'lib' . DS . 'swift' . DS . 'lib' . DS . 'swift_required.php';
+			require_once THEBUGGENIE_CORE_PATH . 'lib' . DS . 'swiftmailer' . DS . 'swiftmailer' . DS . 'lib' . DS . 'swift_required.php';
 			$message = Swift_Message::newInstance();
 			$message->setSubject($subject);
 			$message->setFrom(array($this->getEmailFromAddress() => $this->getEmailFromName()));
@@ -787,11 +787,11 @@ EOT;
 			}
 		}
 
-		public function listen_loginTab(TBGEvent $event)
+		public function listen_loginButtonContainer(TBGEvent $event)
 		{
 			if ($this->isOutgoingNotificationsEnabled())
 			{
-				TBGActionComponent::includeComponent('mailing/forgotPasswordTab', $event->getParameters());
+				TBGActionComponent::includeComponent('mailing/forgotPasswordLink', $event->getParameters());
 			}
 		}
 
@@ -976,7 +976,7 @@ EOT;
 
 		public function mail(Swift_Message $message)
 		{
-			require_once THEBUGGENIE_CORE_PATH . 'lib' . DS . 'swift' . DS . 'lib' . DS . 'swift_required.php';
+			require_once THEBUGGENIE_CORE_PATH . 'lib' . DS . 'swiftmailer' . DS . 'swiftmailer' . DS . 'lib' . DS . 'swift_required.php';
 			$mailer = $this->getMailer();
 			return $mailer->send($message);
 		}

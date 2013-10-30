@@ -8,9 +8,10 @@
 
 		public function componentForgotPasswordPane()
 		{
-		}		
+			$this->forgottenintro = TBGArticlesTable::getTable()->getArticleByName('ForgottenPasswordIntro');
+		}
 
-		public function componentForgotPasswordTab()
+		public function componentForgotPasswordLink()
 		{
 		}			
 		

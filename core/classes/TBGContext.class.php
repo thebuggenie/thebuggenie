@@ -702,11 +702,8 @@
 				{
 					self::setupCoreListeners();
 					self::loadModules();
-					self::initializeUser();
 				}
 				
-				self::setupI18n();
-
 				if (!self::getRouting()->hasCachedRoutes())
 				{
 					self::loadPostModuleRoutes();
@@ -716,6 +713,10 @@
 				{
 					self::loadCachedRoutes();
 				}
+
+				if (!self::isInstallmode()) self::initializeUser();
+
+				self::setupI18n();
 
 				TBGLogging::log('...done');
 				TBGLogging::log('...done initializing');
@@ -997,7 +998,7 @@
 		{
 			try
 			{
-				self::$_user = ($user === null) ? TBGUser::loginCheck(self::getRequest()->getParameter('tbg3_username'), self::getRequest()->getParameter('tbg3_password')) : $user;
+				self::$_user = ($user === null) ? TBGUser::loginCheck(self::getRequest()) : $user;
 				if (self::$_user->isAuthenticated())
 				{
 					if (self::$_user->isOffline() || self::$_user->isAway())

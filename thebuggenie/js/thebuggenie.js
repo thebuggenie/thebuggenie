@@ -283,10 +283,12 @@ TBG.Core._toggleBreadcrumbItem = function(item) {
  * Toggles one breadcrumb item in the breadcrumb bar
  */
 TBG.Core._hideBreadcrumbItem = function() {
-	$('submenu').select('.popped_out').each(function(element) {
-		element.removeClassName('popped_out');
-		element.previous().down('.activated').removeClassName('activated');
-	});
+    if ($('submenu')) {
+        $('submenu').select('.popped_out').each(function(element) {
+            element.removeClassName('popped_out');
+            element.previous().down('.activated').removeClassName('activated');
+        });
+    }
 };
 
 TBG.Core._detachFile = function(url, file_id, base_id) {
@@ -695,10 +697,12 @@ TBG.Main.Helpers.Backdrop.reset = function() {
 };
 
 TBG.Main.Helpers.tabSwitcher = function(visibletab, menu) {
-	$(menu).childElements().each(function(item){item.removeClassName('selected');});
-	$(visibletab).addClassName('selected');
-	$(menu + '_panes').childElements().each(function(item){item.hide();});
-	$(visibletab + '_pane').show();
+    if ($(menu)) {
+        $(menu).childElements().each(function(item){item.removeClassName('selected');});
+        $(visibletab).addClassName('selected');
+        $(menu + '_panes').childElements().each(function(item){item.hide();});
+        $(visibletab + '_pane').show();
+    }
 };
 
 TBG.Main.Helpers.MarkitUp = function(element) {
@@ -1313,11 +1317,16 @@ TBG.Main.Login.login = function(url)
 		form: 'login_form',
 		loading: {
 			indicator: 'login_indicator',
-			hide: 'login_button'
+			callback: function() {
+                $('login_button').disable();
+                $('login_indicator').show();
+            }
 		},
-		failure: {
-			show: 'login_button',
-			reset: 'login_form'
+		complete: {
+            callback: function() {
+                $('login_indicator').hide();
+                $('login_button').enable();
+            }
 		}
 	});
 }
@@ -1333,9 +1342,40 @@ TBG.Main.Login.resetForgotPassword = function(url) {
 			reset: 'forgot_password_form'
 		},
 		complete: {
-			show: 'forgot_password_button'
+			show: 'forgot_password_button',
+            callback: function() {
+                $('regular_login_container').up().select('.logindiv').each(function(elm) {
+                    elm.removeClassName('active');
+                });
+                $('regular_login_container').addClassName('active');
+            }
 		}
 	});
+};
+
+TBG.Main.Login.showLogin = function(section) {
+    $('login_backdrop').select('.logindiv').each(function(elm) {
+        elm.removeClassName('active');
+    });
+    $(section).addClassName('active');
+    if (section != 'register') {
+        $('registration-button-container').addClassName('active');
+    }
+    $('login_backdrop').show();
+    setTimeout(function() {
+        if (section == 'register') {
+            $('fieldusername').focus();
+        } else if (section == 'regular_login_container') {
+            $('tbg3_username').focus();
+        }
+    }, 250);
+};
+
+TBG.Main.Login.forgotToggle = function() {
+    $('regular_login_container').up().select('.logindiv').each(function(elm) {
+        elm.removeClassName('active');
+    });
+    $('forgot_password_container').addClassName('active');
 };
 
 TBG.Project.Statistics.get = function(url) {
@@ -4734,7 +4774,7 @@ TBG.OpenID = {
 	// openid-<locale>.js
 	signin_text : null, // text on submit button on the form
 	all_small : false, // output large providers w/ small icons
-	image_title : '%openid_provider_name%', // for image title
+	image_title : '%openid_provider_name', // for image title
 
 	input_id : 'openid_identifier',
 	provider_url : null,
@@ -4782,7 +4822,7 @@ TBG.OpenID = {
 	 */
 	getBoxHTML : function(box_id, provider, box_size, index) {
 		var image_ext = box_size == 'small' ? '.ico.png' : '.png';
-		return '<a title="' + this.image_title.replace('%openid_provider_name%', provider["name"]) + '" href="javascript:TBG.OpenID.signin(\'' + box_id + '\');"'
+		return '<a title="' + this.image_title.replace('%openid_provider_name', provider["name"]) + '" href="javascript:TBG.OpenID.signin(\'' + box_id + '\');"'
 				+ 'class="' + box_id + ' openid_' + box_size + '_btn button button-silver"><img src="' + TBG.basepath + 'iconsets/oxygen/openid_providers.' + box_size + '/' + box_id + image_ext + '"></a>';
 	},
 

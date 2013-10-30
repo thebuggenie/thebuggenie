@@ -1,9 +1,9 @@
 <?php if (TBGContext::getRouting()->getCurrentRouteName() != 'login_page'): ?>
 	<div class="tab_menu_dropdown user_menu_dropdown" id="user_menu">
 		<?php if ($tbg_user->isGuest()): ?>
-			<a href="javascript:void(0);" onclick="$('login_backdrop').show();TBG.Main.Helpers.tabSwitcher('tab_login', 'login_menu');$('tbg3_username').focus();"><?php echo image_tag('icon_login.png').__('Login'); ?></a>
+			<a href="javascript:void(0);" onclick="TBG.Main.Login.showLogin('regular_login_container');"><?php echo image_tag('icon_login.png').__('Login'); ?></a>
 			<?php if (TBGSettings::isRegistrationAllowed()): ?>
-				<a href="javascript:void(0);" onclick="$('login_backdrop').show();TBG.Main.Helpers.tabSwitcher('tab_register', 'login_menu');$('fieldusername').focus();"><?php echo image_tag('icon_register.png').__('Register'); ?></a>
+				<a href="javascript:void(0);" onclick="TBG.Main.Login.showLogin('register');"><?php echo image_tag('icon_register.png').__('Register'); ?></a>
 			<?php endif; ?>
 			<?php TBGEvent::createNew('core', 'user_dropdown_anon')->trigger(); ?>
 		<?php else: ?>
