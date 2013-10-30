@@ -1,9 +1,7 @@
 <div class="interactive_searchbuilder" id="search_builder">
-	<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo (TBGContext::isProjectContext()) ? make_url('project_search_paginated', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('search_paginated'); ?>" method="get" id="find_issues_form" <?php if ($show_results): ?>data-results-loaded<?php endif; ?> onsubmit="TBG.Search.liveUpdate(true);return false;">
+	<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo (TBGContext::isProjectContext()) ? make_url('project_search_paginated', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('search_paginated'); ?>" method="get" id="find_issues_form" <?php if ($show_results): ?>data-results-loaded<?php endif; ?> data-dynamic-callback-url="<?php echo make_url('search_filter_getdynamicchoices'); ?>" onsubmit="TBG.Search.liveUpdate(true);return false;">
 		<div class="searchbuilder_filterstrip" id="searchbuilder_filterstrip">
-			<?php if (!TBGContext::isProjectContext()): ?>
-				<?php include_component('search/interactivefilter', array('filter' => $search_object->getFilter('project_id'))); ?>
-			<?php endif; ?>
+			<?php include_component('search/interactivefilter', array('filter' => $search_object->getFilter('project_id'))); ?>
 			<?php include_component('search/interactivefilter', array('filter' => $search_object->getFilter('issuetype'))); ?>
 			<?php include_component('search/interactivefilter', array('filter' => $search_object->getFilter('status'))); ?>
 			<?php include_component('search/interactivefilter', array('filter' => $search_object->getFilter('category'))); ?>
@@ -15,11 +13,11 @@
 					<div class="column">
 						<h1><?php echo __('People filters'); ?></h1>
 						<ul>
-							<li class="disabled"><?php echo __('Posted by user'); ?></li>
-							<li class="disabled"><?php echo __('Assigned to user'); ?></li>
-							<li class="disabled"><?php echo __('Assigned to team'); ?></li>
-							<li class="disabled"><?php echo __('Owned by user'); ?></li>
-							<li class="disabled"><?php echo __('Owned by team'); ?></li>
+							<li data-filter="posted_by" id="additional_filter_posted_by_link"><?php echo __('Posted by user'); ?></li>
+							<li data-filter="assignee_user" id="additional_filter_assignee_user_link"><?php echo __('Assigned to user'); ?></li>
+							<li data-filter="assignee_team" id="additional_filter_assignee_team_link"><?php echo __('Assigned to team'); ?></li>
+							<li data-filter="owner_user" id="additional_filter_owner_user_link"><?php echo __('Owned by user'); ?></li>
+							<li data-filter="owner_team" id="additional_filter_owner_team_link"><?php echo __('Owned by team'); ?></li>
 						</ul>
 						<h1><?php echo __('Time filters'); ?></h1>
 						<ul>
@@ -34,11 +32,16 @@
 						<ul>
 							<?php if (TBGContext::isProjectContext()): ?>
 								<li data-filter="subprojects" id="additional_filter_subprojects_link"><?php echo __('Including subproject(s)'); ?></li>
+							<?php else: ?>
+								<li class="disabled">
+									<?php echo __('Including subproject(s)'); ?>
+									<div class="tooltip from-above leftie"><?php echo __('This filter is only available in project context'); ?></div>
+								</li>
 							<?php endif; ?>
-							<li class="disabled"><?php echo __('Reported against a specific release'); ?></li>
-							<li class="disabled"><?php echo __('Affecting a specific component'); ?></li>
-							<li class="disabled"><?php echo __('Affecting a specific edition'); ?></li>
-							<li class="disabled"><?php echo __('Targetting a specific milestone'); ?></li>
+							<li data-filter="build" id="additional_filter_build_link"><?php echo __('Reported against a specific release'); ?></li>
+							<li data-filter="component" id="additional_filter_component_link"><?php echo __('Affecting a specific component'); ?></li>
+							<li data-filter="edition" id="additional_filter_edition_link"><?php echo __('Affecting a specific edition'); ?></li>
+							<li data-filter="milestone" id="additional_filter_milestone_link"><?php echo __('Targetting a specific milestone'); ?></li>
 						</ul>
 						<h1><?php echo __('Issue detail filters'); ?></h1>
 						<ul>
@@ -252,7 +255,7 @@
 		<?php if (TBGContext::isProjectContext()): ?>
 			<?php if (!$search_object->hasFilter('subprojects')) include_component('search/interactivefilter', array('filter' => TBGSearchFilter::createFilter('subprojects'))); ?>
 		<?php endif; ?>
-		<?php foreach (array('priority', 'severity', 'reproducability', 'resolution') as $key): ?>
+		<?php foreach (array('priority', 'severity', 'reproducability', 'resolution', 'posted_by', 'assignee_user', 'assignee_team', 'owner_user', 'owner_team', 'milestone', 'edition', 'component', 'build') as $key): ?>
 		<?php if (!$search_object->hasFilter($key)) include_component('search/interactivefilter', array('filter' => TBGSearchFilter::createFilter($key))); ?>
 		<?php endforeach; ?>
 	</div>

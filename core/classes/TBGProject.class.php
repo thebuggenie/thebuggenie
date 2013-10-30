@@ -495,7 +495,7 @@
 		/**
 		 * Retrieve all projects
 		 * 
-		 * @return array
+		 * @return array|TBGProject
 		 */
 		public static function getAll()
 		{
@@ -503,6 +503,26 @@
 			return self::$_projects;
 		}
 		
+		/**
+		 * Retrieve all projects by id
+		 *
+		 * @return array|TBGProject
+		 */
+		public static function getAllByIDs($ids)
+		{
+			if (empty($ids)) return array();
+
+			self::_populateProjects();
+			$projects = array();
+			foreach (self::$_projects as $project)
+			{
+				if (in_array($project->getID(), $ids)) $projects[$project->getID()] = $project;
+				if (count($projects) == count($ids)) break;
+			}
+
+			return $projects;
+		}
+
 		/**
 		 * Retrieve all projects by parent ID
 		 * 

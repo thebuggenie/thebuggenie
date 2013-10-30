@@ -25,7 +25,7 @@
 			
 			if ($project_key = $request['project_key']) {
 				$project = TBGProject::getByKey($project_key);
-			} elseif ($project_id = (int) $request['project_id']) {
+			} elseif (is_numeric($request['project_id']) && $project_id = (int) $request['project_id']) {
 				$project = TBGProjectsTable::getTable()->selectById($project_id);
 			} else {
 				$project = false;
@@ -276,6 +276,108 @@
 				$this->getResponse()->setHttpStatus(400);
 				return $this->renderJSON(array('error' => TBGContext::getI18n()->__('This is not a valid search field')));
 			}
+		}
+		
+		public function runFilterFindUsers(TBGRequest $request)
+		{
+			$filter = $request['filter'];
+			$filterkey = $request['filterkey'];
+			$existing_users = $request['existing_id'];
+			
+			if (strlen($filter) < 3) return $this->renderJSON(array('results' => '<li>'.$this->getI18n()->__('Please enter 3 characters or more').'</li>'));
+			
+			$users = TBGUsersTable::getTable()->getByDetails($filter, 10);
+			foreach ($existing_users as $id) 
+			{ 
+				if (isset($users[$id])) 
+					unset($users[$id]); 
+			}
+			
+			return $this->renderJSON(array('results' => $this->getTemplateHTML('search/filterfindusers', compact('users', 'filterkey'))));
+		}
+
+		public function runFilterFindTeams(TBGRequest $request)
+		{
+			$filter = $request['filter'];
+			$filterkey = $request['filterkey'];
+			$existing_teams = $request['existing_id'];
+			
+			if (strlen($filter) < 3) return $this->renderJSON(array('results' => '<li>'.$this->getI18n()->__('Please enter 3 characters or more').'</li>'));
+			
+			$teams = TBGTeamsTable::getTable()->quickfind($filter, 10);
+			foreach ($existing_teams as $id) 
+			{ 
+				if (isset($teams[$id])) 
+					unset($teams[$id]); 
+			}
+			
+			return $this->renderJSON(array('results' => $this->getTemplateHTML('search/filterfindteams', compact('teams', 'filterkey'))));
+		}
+
+		public function runFilterGetDynamicChoices(TBGRequest $request)
+		{
+			$subproject_ids = explode(',', $request['subprojects']);
+			$existing_ids = $request['existing_ids'];
+			$results = array();
+			$projects = ($request['project_id'] != '') ? TBGProject::getAllByIDs(explode(',', $request['project_id'])) : TBGProject::getAll();
+
+			$items = array('build' => array(), 'edition' => array(), 'component' => array(), 'milestone' => array());
+
+			foreach ($projects as $project)
+			{
+				foreach ($project->getBuilds() as $build) 
+					$items['build'][$build->getID()] = $build;
+
+				foreach ($project->getEditions() as $edition) 
+					$items['edition'][$edition->getID()] = $edition;
+
+				foreach ($project->getComponents() as $component) 
+					$items['component'][$component->getID()] = $component;
+
+				foreach ($project->getMilestones() as $milestone) 
+					$items['milestone'][$milestone->getID()] = $milestone;
+			}
+
+			$filters = array();
+			$filters['build'] = TBGSearchFilter::createFilter('build');
+			$filters['edition'] = TBGSearchFilter::createFilter('edition');
+			$filters['component'] = TBGSearchFilter::createFilter('component');
+			$filters['milestone'] = TBGSearchFilter::createFilter('milestone');
+			if (isset($existing_ids['build']))
+			{
+				foreach (TBGBuildsTable::getTable()->getByIDs($existing_ids['build']) as $build)
+					$items['build'][$build->getID()] = $build;
+
+				$filters['build']->setValue(join(',', $existing_ids['build']));
+			}
+			if (isset($existing_ids['edition']))
+			{
+				foreach (TBGEditionsTable::getTable()->getByIDs($existing_ids['edition']) as $edition)
+					$items['edition'][$edition->getID()] = $edition;
+
+				$filters['edition']->setValue(join(',', $existing_ids['edition']));
+			}
+			if (isset($existing_ids['component']))
+			{
+				foreach (TBGComponentsTable::getTable()->getByIDs($existing_ids['component']) as $component)
+					$items['component'][$component->getID()] = $component;
+
+				$filters['component']->setValue(join(',', $existing_ids['component']));
+			}
+			if (isset($existing_ids['milestone']))
+			{
+				foreach (TBGMilestonesTable::getTable()->getByIDs($existing_ids['milestone']) as $milestone)
+					$items['milestone'][$milestone->getID()] = $milestone;
+
+				$filters['milestone']->setValue(join(',', $existing_ids['milestone']));
+			}
+
+			foreach (array('build', 'edition', 'component', 'milestone') as $k)
+			{
+				$results[$k] = $this->getTemplateHTML('search/interactivefilterdynamicchoicelist', array('filter' => $filters[$k], 'items' => $items[$k]));
+			}
+
+			return $this->renderJSON(compact('results'));
 		}
 
 		public function extractIssues($matches)

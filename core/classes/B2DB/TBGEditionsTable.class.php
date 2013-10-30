@@ -91,4 +91,14 @@
 			return $edition_ids;
 		}
 
+		public function getByIDs($ids)
+		{
+			if (empty($ids)) return array();
+
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$crit->addWhere(self::ID, $ids, Criteria::DB_IN);
+			return $this->select($crit);
+		}
+
 	}

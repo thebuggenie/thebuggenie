@@ -4153,6 +4153,48 @@ TBG.Search.moveTo = function(event) {
 	}
 };
 
+TBG.Search.getFilterValues = function(element) {
+	var filter = element.up('.filter');
+	var results_container = filter.down('.filter_callback_results');
+	var existing_container = filter.down('.filter_existing_values');
+	var url = element.dataset.callbackUrl;
+	var value = element.getValue();
+	results_container.childElements().each(function(existing_element) {
+		if (existing_element.hasClassName('selected')) {
+			existing_container.insert(existing_element.remove());
+		}
+	});
+	if (value == '') {
+		results_container.update('');
+		TBG.Search.filterFilterOptionsElement(element);
+	} else {
+		var parameters = '&filter='+value;
+		filter.down('.filter_existing_values').select('input[type=checkbox]').each(function(checkbox) {
+			parameters += '&existing_id['+checkbox.value+']=1';
+		});
+		TBG.Main.Helpers.ajax(url, {
+			params: parameters,
+			loading: {
+				callback: function() {
+					TBG.Search.filterFilterOptionsElement(element);
+					element.addClassName('filtering');
+				}
+			},
+			success: {
+				callback: function(json) {
+					results_container.update(json.results);
+					window.setTimeout(function() {
+						results_container.select('li.filtervalue').each(function(filtervalue) {
+							filtervalue.on('click', TBG.Search.toggleFilterValue);
+						});
+					}, 250);
+					element.removeClassName('filtering');
+				}
+			}
+		});
+	}
+};
+
 TBG.Search.initializeFilterField = function(filter) {
     filter.on('click', TBG.Search.toggleInteractiveFilter);
     filter.select('li.filtervalue').each(function(filtervalue) {
@@ -4162,7 +4204,20 @@ TBG.Search.initializeFilterField = function(filter) {
     if (si != undefined)
 	{
 		si.dataset.previousValue = '';
-		si.on('keyup', TBG.Search.filterFilterOptions);
+		if (si.dataset.callbackUrl !== undefined) {
+			var fk = filter.dataset.filterKey;
+			si.on('keyup', function(event, element) {
+				if (TBG.ift_observers[fk]) clearTimeout(TBG.ift_observers[fk]);
+				if ((si.getValue().length >= 3 || si.getValue().length == 0) && si.getValue() != si.dataset.lastValue) {
+					TBG.ift_observers[fk] = setTimeout(function() {
+						TBG.Search.getFilterValues(si);
+						si.dataset.lastValue = si.getValue();
+					}, 1000);
+				}
+			});
+		} else {
+			si.on('keyup', TBG.Search.filterFilterOptions);
+		}
 		si.on('click', function(event, element) {
 			event.stopPropagation();
 			event.preventDefault();
@@ -4200,15 +4255,19 @@ TBG.Search.initializeFilterNavigation = function(filter) {
 };
 
 TBG.Search.filterFilterOptions = function(event, element) {
-    event.stopPropagation();
-	var filtervalue = element.getValue();
+	event.stopPropagation();
+	TBG.Search.filterFilterOptionsElement(element);
+};
+
+TBG.Search.filterFilterOptionsElement = function(element) {
+    var filtervalue = element.getValue();
 	if (filtervalue !== element.dataset.previousValue) {
 		if (filtervalue !== '') element.up().addClassName('filtered');
 		else element.up().removeClassName('filtered');
 		
 		element.up().select('.filtervalue').each(function(elm) {
 			if (filtervalue !== '') {
-				if (elm.innerHTML.toLowerCase().indexOf(filtervalue.toLowerCase()) !== -1) {
+				if (elm.innerHTML.toLowerCase().indexOf(filtervalue.toLowerCase()) !== -1 || elm.hasClassName('selected')) {
 					elm.addClassName('unfiltered');
 				} else {
 					elm.removeClassName('unfiltered');
@@ -4258,8 +4317,8 @@ TBG.Search.addFilter = function(event, element) {
         var filter = this.dataset.filter;
         $('searchbuilder_filterstrip_filtercontainer').insert($('interactive_filter_'+filter).remove());
         setTimeout(function() {
-            $('interactive_filter_'+filter).addClassName('selected');
-        }, 500);
+            TBG.Search.toggleInteractiveFilterElement($('interactive_filter_'+filter));
+        }, 250);
         this.addClassName('disabled');
     }
 };
@@ -4267,6 +4326,9 @@ TBG.Search.addFilter = function(event, element) {
 TBG.Search.removeFilter = function(element) {
     var do_update = ($('filter_'+element.dataset.filterkey+'_value_input').getValue() != '');
     $('additional_filter_'+element.dataset.filterkey+'_link').removeClassName('disabled');
+	element.select('.filtervalue').each(function(elm) {
+		
+	});
     $('searchbuilder_filter_hiddencontainer').insert(element.remove());
 
     if (do_update) TBG.Search.liveUpdate();
@@ -4294,6 +4356,7 @@ TBG.Search.initializeFilters = function() {
     });
     var ift = $('interactive_filter_text');
     ift.dataset.lastValue = '';
+	TBG.ift_observers = {};
     ift.on('keyup', function(event, element) {
         if (TBG.ift_observer) clearTimeout(TBG.ift_observer);
         if ((ift.getValue().length >= 3 || ift.getValue().length == 0) && ift.getValue() != ift.dataset.lastValue) {
@@ -4372,6 +4435,71 @@ TBG.Search.moveIssuesPerPageSlider = function(step) {
     return value;
 };
 
+TBG.Search.isDirty = function() {
+    if ($('filter_project_id_value_input').dataset.dirty == 'dirty') return true;
+    if ($('filter_subprojects_value_input') && $('filter_subprojects_value_input').dataset.dirty == 'dirty') return true;
+
+    return false;
+};
+
+TBG.Search.clearDirty = function() {
+    $('filter_project_id_value_input').dataset.dirty = undefined;
+    $('filter_subprojects_value_input').dataset.dirty = undefined;
+};
+
+TBG.Search.loadDynamicChoices = function() {
+    console.log('loading dynamic choices');
+    var fif = $('find_issues_form');
+    var url = fif.dataset.dynamicCallbackUrl;
+    console.log(url);
+    var parameters = '&project_id='+$('filter_project_id_value_input').getValue();
+    console.log(parameters);
+    var filters_containers = [];
+    var fsvi = $('filter_subprojects_value_input');
+    if (fsvi) parameters += '&subprojects='+fsvi.getValue();
+    console.log(parameters);
+    ['build', 'component', 'edition', 'milestone'].each(function(elm) {
+        var filter = $('interactive_filter_'+elm);
+        console.log(filter);
+        var results_container = filter.down('.interactive_menu_values');
+        results_container.select('input[type=checkbox]').each(function(checkbox) {
+            if (checkbox.checked) parameters += '&existing_ids['+filter.dataset.filterkey+']['+checkbox.value+']='+checkbox.value;
+        });
+        filters_containers.push({filter: filter, container: results_container});
+    });
+    console.log(parameters);
+    TBG.Main.Helpers.ajax(url, {
+        params: parameters,
+        loading: {
+            callback: function() {
+                filters_containers.each(function(details) {
+                    details['container'].addClassName('updating');
+                });
+            }
+        },
+        success: {
+            callback: function(json) {
+                filters_containers.each(function(details) {
+                    console.log('updating '+details['filter'].dataset.filterkey+' results');
+                    console.log(details['container']);
+                    details['container'].update(json.results[details['filter'].dataset.filterkey]);
+                    window.setTimeout(function() {
+                        details['container'].select('li.filtervalue').each(function(filtervalue) {
+                            filtervalue.on('click', TBG.Search.toggleFilterValue);
+                        });
+                        var si = details['filter'].down('input[type=search]');
+                        if (si != undefined) {
+                            si.dataset.previousValue = '';
+                            TBG.Search.filterFilterOptionsElement(si);
+                        }
+                    }, 250);
+                    details['container'].removeClassName('updating');
+                });
+            }
+        }
+    });
+};
+
 TBG.Search.liveUpdate = function(force) {
     var fif = $('find_issues_form');
     var url = fif.action;
@@ -4392,6 +4520,10 @@ TBG.Search.liveUpdate = function(force) {
                     $('interactive_save_button').show();
                     fif.dataset.resultsLoaded = true;
                     TableKit.load();
+                    if (TBG.Search.isDirty()) {
+                        TBG.Search.loadDynamicChoices();
+                        TBG.Search.clearDirty();
+                    }
                 }
             }
         });
@@ -4461,16 +4593,20 @@ TBG.Search.toggleFilterValue = function(event, element) {
 	TBG.Search.toggleFilterValueElement(this);
 };
 
-TBG.Search.toggleFilterValueElement = function(element) {
-    if (element.down('input').checked) {
-        TBG.Search.setFilterValue(element, false);
-    } else {
-        TBG.Search.setFilterValue(element, true);
-    }
+TBG.Search.toggleFilterValueElement = function(element, checked) {
+	if (checked == undefined) {
+		if (element.down('input').checked) {
+			TBG.Search.setFilterValue(element, false);
+		} else {
+			TBG.Search.setFilterValue(element, true);
+		}
+	} else {
+		TBG.Search.setFilterValue(element, checked);
+	}
     var current_element = element;
-    if (element.dataset.exclusive != undefined) {
+    if (element.dataset.exclusive !== undefined) {
         element.up('.interactive_menu_values').childElements().each(function (filter_element) {
-            if (filter_element.hasClassName('filtervalue')) {
+            if (filter_element.hasClassName('filtervalue') && ((element.dataset.excludeGroup !== undefined && filter_element.dataset.selectionGroup == element.dataset.excludeGroup) || element.dataset.selectionGroup == filter_element.dataset.selectionGroup)) {
                 if (filter_element.dataset.value != current_element.dataset.value) TBG.Search.setFilterValue(filter_element, false);
             }
         });
@@ -4484,7 +4620,8 @@ TBG.Search.toggleFilterValueElement = function(element) {
     }
     var f_element = element.up('.filter');
     TBG.Search.calculateFilterDetails(f_element);
-    TBG.Search.liveUpdate((f_element.dataset.filterkey != 'project_id'));
+    $('filter_'+current_element.up('.filter').dataset.filterkey+'_value_input').dataset.dirty = 'dirty';
+    TBG.Search.liveUpdate(true);
 };
 
 TBG.Search.saveSearch = function() {
@@ -4513,7 +4650,7 @@ TBG.Search.calculateFilterDetails = function(filter) {
     var value_string = '';
     var selected_elements = [];
     var selected_values = [];
-    filter.down('.interactive_menu_values').select('input').each(function (element) {
+    filter.select('input[type=checkbox]').each(function (element) {
         if (element.checked) {
             selected_elements.push(element.dataset.text);
             selected_values.push(element.getValue());

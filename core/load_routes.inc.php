@@ -29,6 +29,9 @@
 	$routes[] = array('set_toggle_state', '/toggle/:key/:state', 'main', 'setToggle');
 	$routes[] = array('getreportissuefields', '/reportissue/get/fields/for/project/:project_key', 'main', 'reportIssueGetFields');
 	$routes[] = array('search_paginated', '/issues/paginated/*', 'search', 'findIssuesPaginated');
+	$routes[] = array('search_filter_findusers', '/issues/filter/:filterkey/findusers', 'search', 'filterFindUsers');
+	$routes[] = array('search_filter_findteams', '/issues/filter/:filterkey/findteams', 'search', 'filterFindTeams');
+	$routes[] = array('search_filter_getdynamicchoices', '/issues/filters/getdynamicchoices', 'search', 'filterGetDynamicChoices');
 	$routes[] = array('search_add_filter', '/issues/add/filter/*', 'search', 'addFilter');
 	$routes[] = array('search_save', '/issues/save/search', 'search', 'saveSearch');
 	$routes[] = array('search_save_column_settings', '/search/save/columnsettings', 'search', 'saveColumnSettings');

@@ -315,7 +315,7 @@
 			}
 		}
 
-		public function getAvailableValues()
+		public function getAvailableValues($filters = array())
 		{
 			switch ($this->getFilterKey())
 			{
@@ -343,6 +343,54 @@
 				case 'project_id':
 					return TBGProject::getAll();
 					break;
+				case 'build':
+					if (TBGContext::isProjectContext()) return TBGContext::getCurrentProject()->getBuilds();
+
+					$builds = array();
+					foreach (TBGProject::getAll() as $project)
+					{
+						foreach ($project->getBuilds() as $build)
+							$builds[$build->getID()] = $build;
+					}
+
+					return $builds;
+					break;
+				case 'component':
+					if (TBGContext::isProjectContext()) return TBGContext::getCurrentProject()->getComponents();
+
+					$components = array();
+					foreach (TBGProject::getAll() as $project)
+					{
+						foreach ($project->getComponents() as $component)
+							$components[$component->getID()] = $component;
+					}
+
+					return $components;
+					break;
+				case 'edition':
+					if (TBGContext::isProjectContext()) return TBGContext::getCurrentProject()->getEditions();
+
+					$editions = array();
+					foreach (TBGProject::getAll() as $project)
+					{
+						foreach ($project->getEditions() as $edition)
+							$editions[$edition->getID()] = $edition;
+					}
+
+					return $editions;
+					break;
+				case 'milestone':
+					if (TBGContext::isProjectContext()) return TBGContext::getCurrentProject()->getMilestones();
+
+					$milestones = array();
+					foreach (TBGProject::getAll() as $project)
+					{
+						foreach ($project->getMilestones() as $milestone)
+							$milestones[$milestone->getID()] = $milestone;
+					}
+
+					return $milestones;
+					break;
 				case 'subprojects':
 					$filters = array();
 					$projects = TBGProject::getIncludingAllSubprojectsAsArray(TBGContext::getCurrentProject());
@@ -353,6 +401,37 @@
 						$filters[$project->getID()] = $project;
 					}
 					return $filters;
+					break;
+				case 'owner_user':
+				case 'assignee_user':
+				case 'posted_by':
+					$me = TBGContext::getUser();
+					$filters = array($me->getID() => $me);
+					foreach ($me->getFriends() as $user)
+					{
+						$filters[$user->getID()] = $user;
+					}
+					if (count($this->getValues()))
+					{
+						$users = TBGUsersTable::getTable()->getByUserIDs($this->getValues());
+						foreach ($users as $user)
+						{
+							$filters[$user->getID()] = $user;
+						}
+					}
+					return $filters;
+					break;
+				case 'owner_team':
+				case 'assignee_team':
+					$teams = TBGContext::getUser()->getTeams();
+					if (TBGContext::isProjectContext())
+					{
+						foreach (TBGContext::getCurrentProject()->getAssignedTeams() as $team)
+						{
+							$teams[$team->getID()] = $team;
+						}
+					}
+					return $teams;
 					break;
 				default:
 					return array();
