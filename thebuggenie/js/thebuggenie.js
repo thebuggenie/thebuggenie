@@ -1448,12 +1448,7 @@ TBG.Project.Planning.toggleIssues = function(url, milestone_id, sort_url) {
 					update: 'milestone_' + milestone_id + '_list',
 					show: ['milestone_' + milestone_id + '_container', 'milestone_' + milestone_id + '_reload_button'],
 					callback: function(json) {
-						console.log(sort_url);
-//						$('milestone_' + milestone_id + '_list').select('.milestone_issue_row').each(function(element) {
-//							new Draggable(element.id + '_draggable', {revert: true, handle: element.id + '_handle'});
-//						});
 						if (sort_url != undefined) {
-							console.log('sortable');
 							Sortable.create('milestone_' + milestone_id + '_list', {tag: 'tr', only: 'milestone_issue_row', containment: 'milestone_' + milestone_id + '_list', constraint: '', onUpdate: function(container) { TBG.Project.Planning.saveOrder(container, milestone_id, sort_url); }});
 						}
 					}
@@ -1725,7 +1720,6 @@ TBG.Project.unarchive = function(url, pid) {
 				} else {
 					$('project_table').insert({bottom: json.box});
 				}
-				console.log('test');
 			}
 		},
 		failure: {
@@ -4616,7 +4610,6 @@ TBG.Search.initializeIssuesPerPageSlider = function() {
 };
 
 TBG.Search.setFilterValue = function(element, checked) {
-    console.log(element);
     if (checked) {
         element.addClassName('selected');
         element.down('input').checked = true;
@@ -4670,8 +4663,6 @@ TBG.Search.saveSearch = function() {
     var ssf = $('save_search_form');
     var p = find_parameters + '&' + ssf.serialize();
 
-    console.log(p);
-    console.log(ssf.action);
     var button = ssf.down('input[type=submit]');
     TBG.Main.Helpers.ajax(ssf.action, {
         params: p,

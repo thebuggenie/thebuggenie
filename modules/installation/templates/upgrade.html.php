@@ -28,16 +28,19 @@
 					</div>
 				<?php else: ?>
 					<form accept-charset="utf-8" action="<?php echo make_url('upgrade'); ?>" method="post">
-						Please select the initial status for issues for each scope in this installation:<br>
+						<p style="font-size: 1.2em;">Please select the initial status for issues for each scope in this installation:<p>
+						<ul class="scope_upgrade">
 						<?php foreach ($statuses as $scope_id => $details): ?>
-							<label for="status_<?php echo $scope_id; ?>" style="font-weight: bold; font-size: 1.1em;">Initial status for scope <?php echo $details['scopename']; ?>:</label>
-							<select name="status[<?php echo $scope_id; ?>]">
-								<?php foreach ($details['statuses'] as $status_id => $status_name): ?>
-									<option value="<?php echo $status_id; ?>" <?php if (trim(strtolower($status_name)) == 'new') echo 'selected'; ?>><?php echo $status_name; ?></option>
-								<?php endforeach; ?>
-							</select>
-							<br style="clear: both;">
+							<li>
+								<label for="upgrade_scope_<?php echo $scope_id; ?>" style="font-weight: bold; font-size: 1.1em;"><?php echo $details['scopename']; ?>:</label>
+								<select name="status[<?php echo $scope_id; ?>]" id="upgrade_scope_<?php echo $scope_id; ?>">
+									<?php foreach ($details['statuses'] as $status_id => $status_name): ?>
+										<option value="<?php echo $status_id; ?>" <?php if (trim(strtolower($status_name)) == 'new') echo 'selected'; ?>><?php echo $status_name; ?></option>
+									<?php endforeach; ?>
+								</select>
+							</li>
 						<?php endforeach; ?>
+						</ul>
 						<br>
 						<input type="hidden" name="perform_upgrade" value="1">
 						<input type="checkbox" name="confirm_backup" id="confirm_backup" onclick="($('confirm_backup').checked) ? $('start_upgrade').enable() : $('start_upgrade').disable();">

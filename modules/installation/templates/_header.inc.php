@@ -124,6 +124,12 @@
 			
 			#logo_container .logo { margin-right: 10px; }
 			#logo_container .logo_name { font-size: 1.7em; float: none; }
+
+			.scope_upgrade { margin: 5px; padding: 0; }
+			.scope_upgrade li { margin: 0; padding: 2px 0; list-style: none; }
+			.scope_upgrade li:hover { background-color: rgba(200, 230, 200, 0.3); }
+			.scope_upgrade li label { display: inline-block; width: 250px; text-align: right; }
+
 		</style>
 	</head>
 	<body>

@@ -396,7 +396,7 @@
 						$this->cliEcho("\n");
 
 						$this->cliEcho("Finishing installation... \n", 'white', 'bold');
-						$installed_string = TBGSettings::getMajorVer() . '.' . TBGSettings::getMinorVer() . ', installed ' . date('d.m.Y H:i')
+						$installed_string = TBGSettings::getMajorVer() . '.' . TBGSettings::getMinorVer() . ', installed ' . date('d.m.Y H:i');
 						if (!is_writable(THEBUGGENIE_PATH . 'installed'))
 						{
 							$this->cliEcho("\n");
