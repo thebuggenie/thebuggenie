@@ -345,6 +345,10 @@ footer img { margin: 4px 3px -6px 0; }
 	bottom: auto;
 	top: 20px;
 }
+.article .title_left_images .tooltip.from-above {
+    top: 35px;
+    left: 5px;
+}
 .tooltip.big {
 	width: 450px;
 }
@@ -1657,10 +1661,10 @@ ul.milestone_issues_container li .actions label { float: left; font-weight: bold
 .menu_links .content a { font-weight: bold; }
 .menu_links .content a.selected { font-weight: bold; color: #006700; }
 .menu_links .content a.selected:hover { font-weight: bold; color: #00a400; }
-.menu_links .content .button { display: none; }
+.menu_links .content .delete-icon { display: none; }
 .menu_links li { cursor: default; }
-.menu_links.menu_editing .content .button { display: inline; }
-.menu_links.menu_editing li { cursor: move; }
+.menu_links.menu_editing .content .delete-icon { display: inline; }
+.menu_links.menu_editing li:hover { cursor: move; background-color: rgba(230, 230, 230, 0.4); }
 /* end menu links */
 
 /* generic blue infobox */

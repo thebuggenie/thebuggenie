@@ -1,7 +1,7 @@
 <td style="width: 255px; padding-top: 10px;" valign="top" class="project_information_sidebar">
 	<div class="sidebar_links">
-	<?php foreach ($config_sections as $section => $config_info): ?>
-		<?php foreach ($config_info as $info): ?>
+	<?php foreach ($config_sections as $config_info): ?>
+		<?php foreach ($config_info as $section => $info): ?>
 			<?php //if ($info['module'] != 'core' && !TBGContext::getModule($info['module'])->hasConfigSettings()) continue; ?>
 			<?php $is_selected = (bool) (($selected_section == TBGSettings::CONFIGURATION_SECTION_MODULES && $section == TBGSettings::CONFIGURATION_SECTION_MODULES && $selected_subsection == $info['module']) || ($selected_section != TBGSettings::CONFIGURATION_SECTION_MODULES && $selected_section == $section)); ?>
 			<?php if (is_array($info['route'])): ?>

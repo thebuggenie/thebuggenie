@@ -22,8 +22,8 @@
 						<li class="selected" id="tab_general_settings"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_general_settings', 'settings_menu');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_general.png', array('style' => 'float: left;')).__('General'); ?></a></li>
 						<li id="tab_appearance_settings"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_appearance_settings', 'settings_menu');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_appearance.png', array('style' => 'float: left;')).__('Appearance'); ?></a></li>
 						<li id="tab_reglang_settings"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_reglang_settings', 'settings_menu');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_reglang.png', array('style' => 'float: left;')).__('Regional &amp; language'); ?></a></li>
-						<li id="tab_user_settings"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_user_settings', 'settings_menu');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_users.png', array('style' => 'float: left;')).__('Users &amp; security'); ?></a></li>
-						<li id="tab_offline_settings"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_offline_settings', 'settings_menu');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_offline.png', array('style' => 'float: left;')).__('Maintenance mode'); ?></a></li>
+						<li id="tab_user_settings"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_user_settings', 'settings_menu');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_security.png', array('style' => 'float: left;')).__('Users &amp; security'); ?></a></li>
+						<li id="tab_offline_settings"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_offline_settings', 'settings_menu');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_maintenance.png', array('style' => 'float: left;')).__('Maintenance mode'); ?></a></li>
 					</ul>
 				</div>
 				<div id="settings_menu_panes">
