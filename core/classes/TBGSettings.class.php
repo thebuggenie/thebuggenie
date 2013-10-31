@@ -261,7 +261,7 @@
 		public static function getVersion($with_codename = false, $with_revision = true)
 		{
 			$retvar = self::$_ver_mj . '.' . self::$_ver_mn;
-			if ($with_revision) $retvar .= '.' . self::$_ver_rev;
+			if ($with_revision) $retvar .= (is_numeric(self::$_ver_rev)) ? '.' . self::$_ver_rev : self::$_ver_rev;
 			if ($with_codename) $retvar .= ' ("' . self::$_ver_name . '")';
 			return $retvar;  
 		}

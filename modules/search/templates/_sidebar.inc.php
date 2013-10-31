@@ -45,35 +45,49 @@
 					<?php echo link_tag(make_url('project_last_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'rss', 'units' => 30, 'time_unit' => 'days')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
 					<?php echo link_tag(make_url('project_last_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'units' => 30, 'time_unit' => 'days')), __('Issues reported last 30 days')); ?>
 				</li>
-				<li style="clear: both;">
-					<?php echo link_tag(make_url('project_my_reported_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
-					<?php echo link_tag(make_url('project_my_reported_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Issues reported by me')); ?><br>
-				</li>
-				<li style="clear: both;">
-					<?php echo link_tag(make_url('project_my_assigned_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
-					<?php echo link_tag(make_url('project_my_assigned_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Open issues assigned to me')); ?><br>
-				</li>
-				<li style="clear: both;">
-					<?php echo link_tag(make_url('project_my_teams_assigned_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
-					<?php echo link_tag(make_url('project_my_teams_assigned_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Open issues assigned to my teams')); ?><br>
-				</li>
+				<?php if (!$tbg_user->isGuest()): ?>
+					<li style="clear: both;">
+						<?php echo link_tag(make_url('project_my_reported_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
+						<?php echo link_tag(make_url('project_my_reported_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Issues reported by me')); ?><br>
+					</li>
+					<li style="clear: both;">
+						<?php echo link_tag(make_url('project_my_assigned_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
+						<?php echo link_tag(make_url('project_my_assigned_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Open issues assigned to me')); ?><br>
+					</li>
+					<li style="clear: both;">
+						<?php echo link_tag(make_url('project_my_teams_assigned_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
+						<?php echo link_tag(make_url('project_my_teams_assigned_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Open issues assigned to my teams')); ?><br>
+					</li>
+				<?php endif; ?>
 			<?php else: ?>
 				<li style="clear: both;">
-					<?php echo link_tag(make_url('my_reported_issues', array('format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
-					<?php echo link_tag(make_url('my_reported_issues'), __('Issues reported by me')); ?><br>
+					<?php echo link_tag(make_url('project_month_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
+					<?php echo link_tag(make_url('project_month_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Issues reported this month')); ?>
 				</li>
-				<li style="clear: both;">
-					<?php echo link_tag(make_url('my_assigned_issues', array('format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
-					<?php echo link_tag(make_url('my_assigned_issues'), __('Open issues assigned to me')); ?><br>
+				<li style="clear: both; margin-bottom: 20px;">
+					<?php echo link_tag(make_url('project_last_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'rss', 'units' => 30, 'time_unit' => 'days')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
+					<?php echo link_tag(make_url('project_last_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'units' => 30, 'time_unit' => 'days')), __('Issues reported last 30 days')); ?>
 				</li>
-				<li style="clear: both;">
-					<?php echo link_tag(make_url('my_owned_issues', array('format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
-					<?php echo link_tag(make_url('my_owned_issues'), __('Open issues owned by me')); ?><br>
-				</li>
-				<li style="clear: both;">
-					<?php echo link_tag(make_url('my_teams_assigned_issues', array('format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
-					<?php echo link_tag(make_url('my_teams_assigned_issues'), __('Open issues assigned to my teams')); ?><br>
-				</li>
+				<?php if (!$tbg_user->isGuest()): ?>
+					<li style="clear: both;">
+						<?php echo link_tag(make_url('my_reported_issues', array('format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
+						<?php echo link_tag(make_url('my_reported_issues'), __('Issues reported by me')); ?><br>
+					</li>
+					<li style="clear: both;">
+						<?php echo link_tag(make_url('my_assigned_issues', array('format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
+						<?php echo link_tag(make_url('my_assigned_issues'), __('Open issues assigned to me')); ?><br>
+					</li>
+					<li style="clear: both;">
+						<?php echo link_tag(make_url('my_owned_issues', array('format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
+						<?php echo link_tag(make_url('my_owned_issues'), __('Open issues owned by me')); ?><br>
+					</li>
+					<?php if ($tbg_user->hasTeams()): ?>
+						<li style="clear: both;">
+							<?php echo link_tag(make_url('my_teams_assigned_issues', array('format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
+							<?php echo link_tag(make_url('my_teams_assigned_issues'), __('Open issues assigned to my teams')); ?><br>
+						</li>
+					<?php endif; ?>
+				<?php endif; ?>
 			<?php endif; ?>
 		</ul>
 	</div>

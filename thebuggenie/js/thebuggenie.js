@@ -4657,6 +4657,13 @@ TBG.Search.toggleFilterValueElement = function(element, checked) {
     TBG.Search.liveUpdate(true);
 };
 
+TBG.Search.setInteractiveDate = function(element) {
+    var f_element = element.up('.filter');
+    TBG.Search.calculateFilterDetails(f_element);
+    element.dataset.dirty = 'dirty';
+    TBG.Search.liveUpdate(true);
+}
+
 TBG.Search.saveSearch = function() {
     var fif = $('find_issues_form');
     var find_parameters = fif.serialize();
@@ -4684,7 +4691,11 @@ TBG.Search.calculateFilterDetails = function(filter) {
     filter.select('input[type=checkbox]').each(function (element) {
         if (element.checked) {
             selected_elements.push(element.dataset.text);
-            selected_values.push(element.getValue());
+            if (element.up('.filtervalue').dataset.operator == undefined) {
+                selected_values.push(element.getValue());
+            } else {
+                $('filter_'+filter.dataset.filterkey+'_operator_input').setValue(element.getValue());
+            }
         }
     });
     if (selected_elements.size() > 0) {
@@ -4693,11 +4704,15 @@ TBG.Search.calculateFilterDetails = function(filter) {
     } else {
         string = filter.dataset.allValue;
     }
+    if (filter.dataset.isdate !== undefined) {
+        selected_elements.push($('filter_'+filter.dataset.filterkey+'_value_input').dataset.displayValue);
+        string = selected_elements.join(' ');
+    }
     if (string.length > 23) {
         string = string.substr(0, 20) + '...';
     }
     filter.down('.value').update(string);
-    $('filter_'+filter.dataset.filterkey+'_value_input').setValue(value_string);
+    if (filter.dataset.isdate === undefined) $('filter_'+filter.dataset.filterkey+'_value_input').setValue(value_string);
 };
 
 TBG.Search.initializeKeyboardNavigation = function() {

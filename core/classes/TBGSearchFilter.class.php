@@ -144,17 +144,11 @@
 						default:
 							$time_unit = NOW - (86400 * 30);
 					}
-					$filters['posted'] = array(
-						self::createFilter('posted', array('operator' => '<=', 'value' => NOW), $search),
-						self::createFilter('posted', array('operator' => '>=', 'value' => $time_unit), $search)
-					);
+					$filters['posted'] = self::createFilter('posted', array('operator' => '>=', 'value' => $time_unit), $search);
 					break;
 				case TBGContext::PREDEFINED_SEARCH_PROJECT_REPORTED_THIS_MONTH:
 					$filters['project_id'] = self::createFilter('project_id', array('operator' => '=', 'value' => TBGContext::getCurrentProject()->getID()), $search);
-					$filters['posted'] = array(
-						self::createFilter('posted', array('operator' => '<=', 'value' => mktime(date('H'), date('i'), date('s'), date('n'))), $search),
-						self::createFilter('posted', array('operator' => '>=', 'value' => mktime(date('H'), date('i'), date('s'), date('n'), 1)), $search)
-					);
+					$filters['posted'] = self::createFilter('posted', array('operator' => '>=', 'value' => mktime(date('H'), date('i'), date('s'), date('n'), 1)), $search);
 					break;
 				case TBGContext::PREDEFINED_SEARCH_PROJECT_MILESTONE_TODO:
 					$filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'open'), $search);
@@ -174,11 +168,12 @@
 					break;
 				case TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES:
 					$filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'open'), $search);
+					$teams = array();
 					foreach (TBGContext::getUser()->getTeams() as $team_id => $team)
 					{
-						$filters['assignee_team'][] = self::createFilter('assignee_team', array('operator' => '=', 'value' => $team_id), $search);
+						$teams[] = $team_id;
 					}
-					$filters['assignee_team'][] = self::createFilter('assignee_team', array('operator' => '!=', 'value' => 0), $search);
+					$filters['assignee_team'] = self::createFilter('assignee_team', array('operator' => '=', 'value' => join(',', $teams)), $search);
 					break;
 				case TBGContext::PREDEFINED_SEARCH_MY_OWNED_OPEN_ISSUES:
 					$filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'open'), $search);

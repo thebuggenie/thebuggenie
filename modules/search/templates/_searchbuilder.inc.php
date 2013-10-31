@@ -1,3 +1,8 @@
+<?php
+
+	$tbg_response->addJavascript('calendarview.js');
+
+?>
 <div class="interactive_searchbuilder" id="search_builder">
 	<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo (TBGContext::isProjectContext()) ? make_url('project_search_paginated', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('search_paginated'); ?>" method="get" id="find_issues_form" <?php if ($show_results): ?>data-results-loaded<?php endif; ?> data-dynamic-callback-url="<?php echo make_url('search_filter_getdynamicchoices'); ?>" onsubmit="TBG.Search.liveUpdate(true);return false;">
 		<div class="searchbuilder_filterstrip" id="searchbuilder_filterstrip">
@@ -21,10 +26,8 @@
 						</ul>
 						<h1><?php echo __('Time filters'); ?></h1>
 						<ul>
-							<li class="disabled"><?php echo __('Created before'); ?></li>
-							<li class="disabled"><?php echo __('Created after'); ?></li>
-							<li class="disabled"><?php echo __('Last updated before'); ?></li>
-							<li class="disabled"><?php echo __('Last updated after'); ?></li>
+							<li data-filter="posted" id="additional_filter_posted_link"><?php echo __('Created before / after'); ?></li>
+							<li data-filter="last_updated" id="additional_filter_last_updated_link"><?php echo __('Last updated before / after'); ?></li>
 						</ul>
 					</div>
 					<div class="column">
@@ -256,7 +259,10 @@
 			<?php if (!$search_object->hasFilter('subprojects')) include_component('search/interactivefilter', array('filter' => TBGSearchFilter::createFilter('subprojects'))); ?>
 		<?php endif; ?>
 		<?php foreach (array('priority', 'severity', 'reproducability', 'resolution', 'posted_by', 'assignee_user', 'assignee_team', 'owner_user', 'owner_team', 'milestone', 'edition', 'component', 'build') as $key): ?>
-		<?php if (!$search_object->hasFilter($key)) include_component('search/interactivefilter', array('filter' => TBGSearchFilter::createFilter($key))); ?>
+			<?php if (!$search_object->hasFilter($key)) include_component('search/interactivefilter', array('filter' => TBGSearchFilter::createFilter($key))); ?>
+		<?php endforeach; ?>
+		<?php foreach (array('posted', 'last_updated') as $key): ?>
+			<?php if (!$search_object->hasFilter($key)) include_component('search/interactivefilter', array('filter' => TBGSearchFilter::createFilter($key, array('operator' => '<=', 'value' => time())))); ?>
 		<?php endforeach; ?>
 	</div>
 	<?php if (!$tbg_user->isGuest()): ?>

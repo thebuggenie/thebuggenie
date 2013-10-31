@@ -1434,6 +1434,12 @@
 			$this->_populateTeams();
 			return $this->_teams['assigned'];
 		}
+
+		public function hasTeams()
+		{
+			$this->_populateTeams();
+			return count($this->_teams['assigned']);
+		}
 		
 		/**
 		 * Returns an array of teams which the current user is a member of

@@ -1926,6 +1926,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
     list-style: none;
     margin: 5px;
     padding: 0;
+    white-space: normal;
 }
 .interactive_filters_list .search_template_list li {
     display: inline-block;
@@ -3117,3 +3118,91 @@ table.sortable tr th.nosort {
 .fullpage_backdrop.tutorial { background-color: rgba(255, 255, 255, 0.8); }
 .fullpage_backdrop.dark { background-color: rgba(0, 0, 0, 0.7); }
 .fullpage_backdrop.tutorial.seethrough { background-color: rgba(0, 0, 0, 0); }
+
+div.calendar
+{
+    font-size: smaller;
+    color: #000;
+}
+
+div.calendar.popup
+{
+    margin-left: -40px;
+    margin-top: -100px;
+}
+
+div.calendar table
+{
+    background-color: #eee;
+    border: none;
+    border-collapse: collapse;
+}
+
+div.calendar thead {
+    background-color: white;
+}
+
+div.calendar td,
+div.calendar th
+{
+    padding: 5px 10px;
+    text-align: center;
+}
+
+div.calendar td.title
+{
+    font-weight: normal;
+    font-size: 1.4em;
+}
+
+div.calendar th
+{
+    background: #ddd;
+    border-bottom: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    font-weight: bold;
+    color: #555;
+}
+
+div.calendar tr.days td {
+    width: 2em;
+    color: #555;
+    text-align: center;
+    cursor: pointer;
+}
+
+div.calendar td.button {
+    float: none;
+    display: table-cell;
+}
+
+div.calendar tr.days td:hover,
+div.calendar td.button:hover
+{
+    background-color: #34ABFA;
+    cursor: pointer;
+}
+
+div.calendar tr.days td:active,
+div.calendar td.button:active
+{
+    background-color: #cde;
+}
+
+div.calendar tr.days td.selected
+{
+    font-weight: bold;
+    background-color: #fff;
+    color: #000;
+}
+
+div.calendar tr.days td.today
+{
+    font-weight: bold;
+    color: #D50000;
+}
+
+div.calendar tr.days td.otherDay
+{
+    color: #bbb;
+}
