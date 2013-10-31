@@ -28,7 +28,7 @@
 						<ul>
 							<li data-filter="posted" id="additional_filter_posted_link"><?php echo __('Created before / after'); ?></li>
 							<li data-filter="last_updated" id="additional_filter_last_updated_link"><?php echo __('Last updated before / after'); ?></li>
-							<?php foreach (TBGCustomDatatype::getByFieldType(TBGCustomDatatype::DATE_PICKER) as $field): ?>
+							<?php foreach ($datecustomfields as $field): ?>
 								<li data-filter="<?php echo $field->getKey(); ?>" id="additional_filter_<?php echo $field->getKey(); ?>_link"><?php echo __($field->getDescription()); ?></li>
 							<?php endforeach; ?>
 						</ul>
@@ -57,6 +57,16 @@
 							<li data-filter="reproducability" id="additional_filter_reproducability_link"><?php echo __('Reproducability'); ?></li>
 						</ul>
 					</div>
+					<?php if (count($nondatecustomfields)): ?>
+						<div class="column">
+							<h1><?php echo __('Other filters'); ?></h1>
+							<ul>
+								<?php foreach ($nondatecustomfields as $field): ?>
+									<li data-filter="<?php echo $field->getKey(); ?>" id="additional_filter_<?php echo $field->getKey(); ?>_link"><?php echo __($field->getDescription()); ?></li>
+								<?php endforeach; ?>
+							</ul>
+						</div>
+					<?php endif; ?>
 					<input type="hidden" name="issues_per_page" value="50">
 				</div>
 			</div>

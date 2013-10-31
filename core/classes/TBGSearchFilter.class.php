@@ -441,6 +441,11 @@
 					return $teams;
 					break;
 				default:
+					$customdatatype = TBGCustomDatatype::getByKey($this->getFilterKey());
+					if ($customdatatype instanceof TBGCustomDatatype && $customdatatype->hasCustomOptions())
+					{
+						return $customdatatype->getOptions();
+					}
 					return array();
 			}
 		}
@@ -677,28 +682,31 @@
 				elseif (TBGCustomDatatype::doesKeyExist($filter_key))
 				{
 					$customdatatype = TBGCustomDatatype::getByKey($filter_key);
-					if ($customdatatype->hasCustomOptions())
+					foreach ($this->getValues() as $value)
 					{
-						if ($ctn === null)
+						if ($customdatatype->hasCustomOptions())
 						{
-							$ctn = $crit->returnCriterion(TBGIssueCustomFieldsTable::CUSTOMFIELDS_ID, $customdatatype->getID());
-							$ctn->addWhere(TBGIssueCustomFieldsTable::CUSTOMFIELDOPTION_ID, $this['value'], $this['operator']);
+							if ($ctn === null)
+							{
+								$ctn = $crit->returnCriterion(TBGIssueCustomFieldsTable::CUSTOMFIELDS_ID, $customdatatype->getID());
+								$ctn->addWhere(TBGIssueCustomFieldsTable::CUSTOMFIELDOPTION_ID, $value, $this['operator']);
+							}
+							else
+							{
+								$ctn->addOr(TBGIssueCustomFieldsTable::CUSTOMFIELDOPTION_ID, $value, $this['operator']);
+							}
 						}
 						else
 						{
-							$ctn->addOr(TBGIssueCustomFieldsTable::CUSTOMFIELDOPTION_ID, $this['value'], $this['operator']);
-						}
-					}
-					else
-					{
-						if ($ctn === null)
-						{
-							$ctn = $crit->returnCriterion(TBGIssueCustomFieldsTable::CUSTOMFIELDS_ID, $customdatatype->getID());
-							$ctn->addWhere(TBGIssueCustomFieldsTable::OPTION_VALUE, $this['value'], $this['operator']);
-						}
-						else
-						{
-							$ctn->addOr(TBGIssueCustomFieldsTable::OPTION_VALUE, $this['value'], $this['operator']);
+							if ($ctn === null)
+							{
+								$ctn = $crit->returnCriterion(TBGIssueCustomFieldsTable::CUSTOMFIELDS_ID, $customdatatype->getID());
+								$ctn->addWhere(TBGIssueCustomFieldsTable::OPTION_VALUE, $value, $this['operator']);
+							}
+							else
+							{
+								$ctn->addOr(TBGIssueCustomFieldsTable::OPTION_VALUE, $value, $this['operator']);
+							}
 						}
 					}
 					return $ctn;
