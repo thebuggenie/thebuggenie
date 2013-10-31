@@ -51,11 +51,8 @@
 			<li class="disabled"><a href="javascript:void(0);"><?php echo image_tag('icon_move.png').__("Move issue to another project"); ?></a><div class="tooltip rightie"><?php echo __('This action is not available at this stage in the workflow'); ?></div></li>
 		<?php endif; ?>
 		<?php if ($issue->canEditAccessPolicy()): ?>
-			<li><a href="javascript:void(0)" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'issue_permissions', 'issue_id' => $issue->getID())); ?>');"><?php echo image_tag('icon_unlocked.png').__("Update issue access policy"); ?></a></li>
+			<li><a href="javascript:void(0)" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'issue_permissions', 'issue_id' => $issue->getID())); ?>');"><?php echo image_tag('action_update_access_policy.png').__("Update issue access policy"); ?></a></li>
 			<li><a href="javascript:void(0)" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'issue_subscribers', 'issue_id' => $issue->getID())); ?>');"><?php echo image_tag('star_list_small.png').__("Manage issue subscribers"); ?></a></li>
-		<?php endif; ?>
-		<?php if ($issue->canDeleteIssue()): ?>
-			<li><a href="javascript:void(0)" onclick="TBG.Main.Helpers.Dialog.show('<?php echo __('Permanently delete this issue?'); ?>', '<?php echo __('Are you sure you wish to delete this issue? It will remain in the database for your records, but will not be accessible via The Bug Genie.'); ?>', {yes: {href: '<?php echo make_url('deleteissue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getId())); ?>' }, no: {click: TBG.Main.Helpers.Dialog.dismiss}});"><?php echo image_tag('icon_delete.png').__("Permanently delete this issue"); ?></a></li>
 		<?php endif; ?>
 		<?php if (!isset($times) || $times): ?>
 			<?php if ($issue->canEditEstimatedTime()): ?>
@@ -68,6 +65,9 @@
 			<?php if ($issue->canEditSpentTime()): ?>
 				<li><a href="javascript:void(0);" onclick="$('spent_time_<?php echo $issue->getID(); ?>_change').toggle();" title="<?php echo __('Change time spent'); ?>"><?php echo image_tag('icon_spent_time.png').__('Change time spent'); ?></a></li>
 			<?php endif; ?>
+		<?php endif; ?>
+		<?php if ($issue->canDeleteIssue()): ?>
+			<li><a href="javascript:void(0)" onclick="TBG.Main.Helpers.Dialog.show('<?php echo __('Permanently delete this issue?'); ?>', '<?php echo __('Are you sure you wish to delete this issue? It will remain in the database for your records, but will not be accessible via The Bug Genie.'); ?>', {yes: {href: '<?php echo make_url('deleteissue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getId())); ?>' }, no: {click: TBG.Main.Helpers.Dialog.dismiss}});"><?php echo image_tag('icon_delete.png').__("Permanently delete this issue"); ?></a></li>
 		<?php endif; ?>
 	<?php else: ?>
 		<li class="disabled"><a href="#"><?php echo __('No additional actions available'); ?></a></li>

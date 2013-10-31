@@ -28,7 +28,7 @@
 	</dl>
 	<div style="clear: both;"> </div>
 	<?php if (array_key_exists('choices', $info) && isset($info['choices']) && $issue->$canEditField()): ?>
-		<div class="rounded_box white shadowed dropdown_box" id="<?php echo $field; ?>_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0; padding: 5px;">
+		<div class="rounded_box white shadowed dropdown_box leftie" id="<?php echo $field; ?>_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0; padding: 5px;">
 			<div class="dropdown_header"><?php echo $info['change_header']; ?></div>
 			<div class="dropdown_content">
 				<a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_id' => 0)); ?>', '<?php echo $field; ?>');"><?php echo $info['clear']; ?></a><br>

@@ -18,7 +18,7 @@
 				</dd>
 			</dl>
 			<?php if ($issue->isEditable() && $issue->canEditIssuetype()): ?>
-				<div id="issuetype_change" class="rounded_box white shadowed dropdown_box" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0;">
+				<div id="issuetype_change" class="rounded_box white shadowed dropdown_box leftie" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0;">
 					<div class="dropdown_header"><?php echo __('Set issue type'); ?></div>
 					<div class="dropdown_content">
 						<?php echo __('Select a new issue type'); ?>:<br>
@@ -80,7 +80,7 @@
 				</dd>
 			</dl>
 			<?php if ($issue->isUpdateable() && $issue->canEditStatus()): ?>
-				<div class="rounded_box white shadowed dropdown_box" id="status_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0; padding: 5px;">
+				<div class="rounded_box white shadowed dropdown_box leftie" id="status_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0; padding: 5px;">
 					<div class="dropdown_header"><?php echo __('Set status'); ?></div>
 					<div class="dropdown_content">
 						<a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'status', 'status_id' => 0)); ?>', 'status');"><?php echo __('Clear the status'); ?></a><br>
@@ -118,7 +118,7 @@
 				</dd>
 			</dl>
 			<?php if ($issue->canEditPercentage()): ?>
-				<div class="rounded_box white shadowed dropdown_box" id="percent_complete_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0; padding: 5px;">
+				<div class="rounded_box white shadowed dropdown_box leftie" id="percent_complete_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0; padding: 5px;">
 					<div class="dropdown_header"><?php echo __('Set percent completed'); ?></div>
 					<div class="dropdown_content">
 						<form id="percent_complete_form" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="" onsubmit="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'percent_complete')); ?>', 'percent_complete', 'percent_complete');return false;">
@@ -152,7 +152,7 @@
 				</dd>
 			</dl>
 			<?php if ($issue->isUpdateable() && $issue->canEditUserPain()): ?>
-				<div class="rounded_box white shadowed dropdown_box" id="pain_bug_type_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0; padding: 5px;">
+				<div class="rounded_box white shadowed dropdown_box leftie" id="pain_bug_type_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0; padding: 5px;">
 					<div class="dropdown_header"><?php echo __('Triage bug type'); ?></div>
 					<div class="dropdown_content">
 						<a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'pain_bug_type', 'pain_bug_type_id' => 0)); ?>', 'pain_bug_type');"><?php echo __('Clear bug type'); ?></a><br>
@@ -188,7 +188,7 @@
 				</dd>
 			</dl>
 			<?php if ($issue->isUpdateable() && $issue->canEditUserPain()): ?>
-				<div class="rounded_box white shadowed dropdown_box" id="pain_likelihood_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0; padding: 5px;">
+				<div class="rounded_box white shadowed dropdown_box leftie" id="pain_likelihood_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0; padding: 5px;">
 					<div class="dropdown_header"><?php echo __('Triage likelihood'); ?></div>
 					<div class="dropdown_content">
 						<a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'pain_likelihood', 'pain_likelihood_id' => 0)); ?>', 'pain_likelihood');"><?php echo __('Clear likelihood'); ?></a><br>
@@ -224,7 +224,7 @@
 				</dd>
 			</dl>
 			<?php if ($issue->isUpdateable() && $issue->canEditUserPain()): ?>
-				<div class="rounded_box white shadowed dropdown_box" id="pain_effect_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0; padding: 5px;">
+				<div class="rounded_box white shadowed dropdown_box leftie" id="pain_effect_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0; padding: 5px;">
 					<div class="dropdown_header"><?php echo __('Triage effect'); ?></div>
 					<div class="dropdown_content">
 						<a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'pain_effect', 'pain_effect_id' => 0)); ?>', 'pain_effect');"><?php echo __('Clear effect'); ?></a><br>
@@ -272,7 +272,7 @@
 																		'callback'		 	=> "TBG.Issues.Field.set('" . make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'posted_by', 'value' => '%identifiable_value')) . "', 'posted_by');",
 																		'base_id'			=> 'posted_by',
 																		'absolute'			=> true,
-																		'classes'			=> 'dropdown_box')); ?>
+																		'classes'			=> 'dropdown_box leftie')); ?>
 			<?php endif; ?>
 		</li>
 		<li id="owned_by_field" style="<?php if (!$issue->isOwnedByVisible()): ?> display: none;<?php endif; ?>" class="issue_detail_field<?php if ($issue->isOwnerChanged()): ?> issue_detail_changed<?php endif; ?><?php if (!$issue->isOwnerMerged()): ?> issue_detail_unmerged<?php endif; ?>">
@@ -304,7 +304,7 @@
 																		'base_id'			=> 'owned_by',
 																		'include_teams'		=> true,
 																		'absolute'			=> true,
-																		'classes'			=> 'dropdown_box')); ?>
+																		'classes'			=> 'dropdown_box leftie')); ?>
 			<?php endif; ?>
 		</li>
 		<li id="assigned_to_field" class="issue_detail_field primary<?php if ($issue->isAssigneeChanged()): ?> issue_detail_changed<?php endif; ?><?php if (!$issue->isAssigneeMerged()): ?> issue_detail_unmerged<?php endif; ?>">
@@ -336,7 +336,7 @@
 																		'base_id'			=> 'assigned_to',
 																		'include_teams'		=> true,
 																		'absolute'			=> true,
-																		'classes'			=> 'dropdown_box')); ?>
+																		'classes'			=> 'dropdown_box leftie')); ?>
 			<?php endif; ?>
 		</li>
 		<li id="subscribers_field" class="issue_detail_field" style="position: relative;">
@@ -410,12 +410,19 @@
 							<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => $field . '_undo_spinning')); ?>
 							<a href="javascript:void(0);" onclick="if ($('<?php echo $field; ?>_change').visible()) { $$('div.dropdown_box').each(Element.hide); } else { $$('div.dropdown_box').each(Element.hide); $('<?php echo $field; ?>_change').toggle(); }" title="<?php echo $info['change_tip']; ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
 						<?php endif; ?>
-						<?php echo image_tag('icon_customdatatype.png', array('style' => 'float: left; margin-right: 5px;')); ?>
+						<?php //echo image_tag('icon_customdatatype.png', array('style' => 'float: left; margin-right: 5px;')); ?>
 						<?php
 							switch ($info['type'])
 							{
 								case TBGCustomDatatype::INPUT_TEXTAREA_SMALL:
-									?><span id="<?php echo $field; ?>_name"<?php if (!$info['name_visible']): ?> style="display: none;"<?php endif; ?>><?php echo tbg_parse_text($info['name'], false, null, array('headers' => false)); ?></span><span class="faded_out" id="no_<?php echo $field; ?>"<?php if (!$info['noname_visible']): ?> style="display: none;"<?php endif; ?>><?php echo __('Not determined'); ?></span><?php
+									?>
+									<span id="<?php echo $field; ?>_name"<?php if (!$info['name_visible']): ?> style="display: none;"<?php endif; ?>>
+										<?php echo tbg_parse_text($info['name'], false, null, array('headers' => false)); ?>
+									</span>
+									<span class="faded_out" id="no_<?php echo $field; ?>"<?php if (!$info['noname_visible']): ?> style="display: none;"<?php endif; ?>>
+										<?php echo __('Not determined'); ?>
+									</span>
+									<?php
 									break;
 								case TBGCustomDatatype::EDITIONS_CHOICE:
 								case TBGCustomDatatype::COMPONENTS_CHOICE:
@@ -441,7 +448,13 @@
 										}
 									}
 									catch (Exception $e) { }
-									?><span id="<?php echo $field; ?>_name"<?php if (!$info['name_visible']): ?> style="display: none;"<?php endif; ?>><?php echo $value; ?></span><span class="faded_out" id="no_<?php echo $field; ?>"<?php if (!$info['noname_visible']): ?> style="display: none;"<?php endif; ?>><?php echo __('Not determined'); ?></span><?php
+									?>
+									<span id="<?php echo $field; ?>_name"<?php if (!$info['name_visible']): ?> style="display: none;"<?php endif; ?>>
+										<?php echo $value; ?>
+									</span>
+									<span class="faded_out" id="no_<?php echo $field; ?>"<?php if (!$info['noname_visible']): ?> style="display: none;"<?php endif; ?>>
+										<?php echo __('Not determined'); ?>
+									</span><?php
 									break;
 								case TBGCustomDatatype::STATUS_CHOICE:
 									$status = null;
@@ -456,6 +469,11 @@
 									catch (Exception $e) { }
 									?><span id="<?php echo $field; ?>_name"<?php if (!$info['name_visible']): ?> style="display: none;"<?php endif; ?>><div style="border: 1px solid #AAA; background-color: <?php echo $color; ?>; font-size: 1px; width: 20px; height: 15px; margin-right: 5px; float: left;" id="status_color">&nbsp;</div><?php echo __($value); ?></span><span class="faded_out" id="no_<?php echo $field; ?>"<?php if (!$info['noname_visible']): ?> style="display: none;"<?php endif; ?>><?php echo __('Not determined'); ?></span><?php
 									break;
+								case TBGCustomDatatype::DATE_PICKER:
+									$tbg_response->addJavascript('calendarview.js');
+									$value = ($info['name']) ? date('Y-m-d', $info['name']) : __('Not set');
+									?><span id="<?php echo $field; ?>_name"<?php if (!$info['name_visible']): ?> style="display: none;"<?php endif; ?>><?php echo $value; ?></span><span class="faded_out" id="no_<?php echo $field; ?>"<?php if (!$info['noname_visible']): ?> style="display: none;"<?php endif; ?>><?php echo __('Not set'); ?></span><?php
+									break;
 								default:
 									?><span id="<?php echo $field; ?>_name"<?php if (!$info['name_visible']): ?> style="display: none;"<?php endif; ?>><?php echo (filter_var($info['name'], FILTER_VALIDATE_URL) !== false) ? link_tag($info['name'], $info['name']) : $info['name']; ?></span><span class="faded_out" id="no_<?php echo $field; ?>"<?php if (!$info['noname_visible']): ?> style="display: none;"<?php endif; ?>><?php echo __('Not determined'); ?></span><?php
 									break;
@@ -465,12 +483,12 @@
 				</dl>
 				<div style="clear: both;"> </div>
 				<?php if ($issue->isUpdateable() && $issue->canEditCustomFields()): ?>
-					<div class="rounded_box white shadowed dropdown_box" id="<?php echo $field; ?>_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0; padding: 5px;">
+					<div class="rounded_box white shadowed dropdown_box leftie" id="<?php echo $field; ?>_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0; padding: 5px;">
 						<div class="dropdown_header"><?php echo $info['change_header']; ?></div>
 						<div class="dropdown_content">
 							<?php if (array_key_exists('choices', $info)): ?>
-								<?php echo $info['select']; ?>:<br>
 								<a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => "")); ?>', '<?php echo $field; ?>');"><?php echo $info['clear']; ?></a><br>
+								<?php echo $info['select']; ?>:<br>
 								<ul class="choices">
 									<?php foreach ($info['choices'] as $choice): ?>
 										<?php //if (!$choice->canUserSet($tbg_user)) continue; ?>
@@ -479,6 +497,22 @@
 										</li>
 									<?php endforeach; ?>
 								</ul>
+							<?php elseif ($info['type'] == TBGCustomDatatype::DATE_PICKER): ?>
+								<a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => "")); ?>', '<?php echo $field; ?>');"><?php echo $info['clear']; ?></a><br>
+								<?php echo $info['select']; ?>:<br>
+								<div id="customfield_<?php echo $field; ?>_calendar_container"></div>
+								<script type="text/javascript">
+									document.observe('dom:loaded', function () {
+										Calendar.setup({
+											dateField: '<?php echo $field; ?>_name',
+											parentElement: 'customfield_<?php echo $field; ?>_calendar_container',
+											valueCallback: function(element, date) {
+												var value = Math.floor(date.getTime() / 1000);
+												TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field)); ?>?<?php echo $field; ?>_value='+value, '<?php echo $field; ?>');
+											}
+										});
+									});
+								</script>
 							<?php else: ?>
 								<?php echo $info['select']; ?>:<br>
 								<?php
