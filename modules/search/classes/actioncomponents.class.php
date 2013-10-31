@@ -148,6 +148,8 @@
 		{
 			$this->templates = TBGSavedSearch::getTemplates();
 			$this->filters = $this->appliedfilters;
+			$this->nondatecustomfields = TBGCustomDatatype::getAllExceptTypes(array(TBGCustomDatatype::DATE_PICKER));
+			$this->datecustomfields = TBGCustomDatatype::getByFieldType(TBGCustomDatatype::DATE_PICKER);
 		}
 
 		public function componentExtralinks()

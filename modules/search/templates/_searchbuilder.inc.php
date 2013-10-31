@@ -14,7 +14,7 @@
 			<input type="search" name="filters[text][value]" id="interactive_filter_text" value="<?php echo $search_object->getSearchTerm(); ?>" class="filter_searchfield" placeholder="<?php echo __('Enter a search term here'); ?>">
 			<div class="interactive_plus_container" id="interactive_filters_availablefilters_container">
 				<div class="interactive_plus_button" id="interactive_plus_button"><?php echo image_tag('icon-mono-add.png'); ?></div>
-				<div class="interactive_filters_list two_columns">
+				<div class="interactive_filters_list <?php echo (count($nondatecustomfields)) ? 'three_columns' : 'two_columns'; ?>">
 					<div class="column">
 						<h1><?php echo __('People filters'); ?></h1>
 						<ul>
@@ -28,6 +28,9 @@
 						<ul>
 							<li data-filter="posted" id="additional_filter_posted_link"><?php echo __('Created before / after'); ?></li>
 							<li data-filter="last_updated" id="additional_filter_last_updated_link"><?php echo __('Last updated before / after'); ?></li>
+							<?php foreach (TBGCustomDatatype::getByFieldType(TBGCustomDatatype::DATE_PICKER) as $field): ?>
+								<li data-filter="<?php echo $field->getKey(); ?>" id="additional_filter_<?php echo $field->getKey(); ?>_link"><?php echo __($field->getDescription()); ?></li>
+							<?php endforeach; ?>
 						</ul>
 					</div>
 					<div class="column">
@@ -263,6 +266,13 @@
 		<?php endforeach; ?>
 		<?php foreach (array('posted', 'last_updated') as $key): ?>
 			<?php if (!$search_object->hasFilter($key)) include_component('search/interactivefilter', array('filter' => TBGSearchFilter::createFilter($key, array('operator' => '<=', 'value' => time())))); ?>
+		<?php endforeach; ?>
+		<?php foreach ($nondatecustomfields as $customtype): ?>
+			<?php if ($customtype->getType() == TBGCustomDatatype::DATE_PICKER) continue; ?>
+			<?php if (!$search_object->hasFilter($customtype->getKey())) include_component('search/interactivefilter', array('filter' => TBGSearchFilter::createFilter($customtype->getKey()))); ?>
+		<?php endforeach; ?>
+		<?php foreach ($datecustomfields as $customtype): ?>
+			<?php if (!$search_object->hasFilter($customtype->getKey())) include_component('search/interactivefilter', array('filter' => TBGSearchFilter::createFilter($customtype->getKey(), array('operator' => '<=', 'value' => time())))); ?>
 		<?php endforeach; ?>
 	</div>
 	<?php if (!$tbg_user->isGuest()): ?>

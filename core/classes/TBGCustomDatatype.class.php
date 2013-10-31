@@ -23,6 +23,7 @@
 		const TEAM_CHOICE = 15;
 		const USER_OR_TEAM_CHOICE = 17;
 		const CALCULATED_FIELD = 18;
+		const DATE_PICKER = 19;
 
 		protected static $_types = null;
 
@@ -64,6 +65,28 @@
 			return self::$_types;
 		}
 
+		public static function getByFieldType($type)
+		{
+			$return_fields = array();
+			foreach (self::getAll() as $field)
+			{
+				if ($field->getType() == $type) $return_fields[$field->getID()] = $field;
+			}
+
+			return $return_fields;
+		}
+
+		public static function getAllExceptTypes($types)
+		{
+			$return_fields = array();
+			foreach (self::getAll() as $field)
+			{
+				if (!in_array($field->getType(), $types)) $return_fields[$field->getID()] = $field;
+			}
+
+			return $return_fields;
+		}
+
 		public static function getFieldTypes()
 		{
 			$i18n = TBGContext::getI18n();
@@ -78,13 +101,14 @@
 			$types[self::RADIO_CHOICE] = $i18n->__('Radio choices');
 			// $types[self::CHECKBOX_CHOICES] = $i18n->__('Checkbox choices');
 			// $types[self::RELEASES_LIST] = $i18n->__('Add one or more releases from the list of available releases');
-			$types[self::RELEASES_CHOICE] = $i18n->__('Select a release from the list of available releases');
+			$types[self::RELEASES_CHOICE] = $i18n->__('Dropdown list of available releases');
 			// $types[self::COMPONENTS_LIST] = $i18n->__('Add one or more components from the list of available components');
-			$types[self::COMPONENTS_CHOICE] = $i18n->__('Select a component from the list of available components');
+			$types[self::COMPONENTS_CHOICE] = $i18n->__('Dropdown list of available components');
 			// $types[self::EDITIONS_LIST] = $i18n->__('Add one or more editions from the list of available editions');
-			$types[self::EDITIONS_CHOICE] = $i18n->__('Select a edition from the list of available editions');
-			$types[self::STATUS_CHOICE] = $i18n->__('Dropdown list with statuses');
-			$types[self::CALCULATED_FIELD] = $i18n->__('Calculated Field');
+			$types[self::EDITIONS_CHOICE] = $i18n->__('Dropdown list of available editions');
+			$types[self::STATUS_CHOICE] = $i18n->__('Dropdown list of all statuses');
+			$types[self::CALCULATED_FIELD] = $i18n->__('Calculated field');
+			$types[self::DATE_PICKER] = $i18n->__('Date picker');
 			// $types[self::USER_CHOICE] = $i18n->__('Find and pick a user');
 			// $types[self::TEAM_CHOICE] = $i18n->__('Find and pick a team');
 			// $types[self::USER_OR_TEAM_CHOICE] = $i18n->__('Find and pick a user or a team');
@@ -131,10 +155,9 @@
 		 */
 		public static function getByKey($key)
 		{
-			$row = \b2db\Core::getTable('TBGCustomFieldsTable')->getByKey($key);
-			if ($row)
+			foreach (self::getAll() as $field)
 			{
-				return TBGContext::factory()->TBGCustomDatatype($row->get(TBGCustomFieldsTable::ID), $row);
+				if ($field->getKey() == $key) return $field;
 			}
 			return null;
 		}

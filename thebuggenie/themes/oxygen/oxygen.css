@@ -1815,6 +1815,9 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
     margin-right: 0;
     z-index: 1;
 }
+.interactive_plus_button.selected + .interactive_filters_list.three_columns {
+    margin-right: -175px;
+}
 #interactive_settings_container {
     position: absolute;
     right: 10px;
@@ -1890,21 +1893,24 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .interactive_menu.two_columns, .interactive_filters_list.two_columns {
     width: 500px;
 }
+.interactive_menu.three_columns, .interactive_filters_list.three_columns {
+    width: 750px;
+}
 .interactive_menu.two_columns.wide, .interactive_filters_list.two_columns.wide {
     width: 650px;
 }
 .interactive_menu.two_columns.wide .column, .interactive_filters_list.two_columns.wide .column {
     width: 320px;
 }
-.interactive_menu.two_columns .column, .interactive_filters_list.two_columns .column {
+.interactive_menu.two_columns .column, .interactive_filters_list.two_columns .column, .interactive_menu.three_columns .column, .interactive_filters_list.three_columns .column {
     width: 245px;
     display: inline-block;
     vertical-align: top;
 }
-.interactive_menu.two_columns .column h1, .interactive_filters_list.two_columns .column h1 {
+.interactive_menu.two_columns .column h1, .interactive_filters_list.two_columns .column h1, .interactive_menu.three_columns .column h1, .interactive_filters_list.three_columns .column h1 {
     margin-top: 10px;
 }
-.interactive_menu.two_columns .column h1:first-child, .interactive_filters_list.two_columns .column h1:first-child {
+.interactive_menu.two_columns .column h1:first-child, .interactive_filters_list.two_columns .column h1:first-child, .interactive_menu.three_columns .column h1:first-child, .interactive_filters_list.three_columns .column h1:first-child {
     margin-top: 0;
 }
 .interactive_menu input[type=search] {

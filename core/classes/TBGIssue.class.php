@@ -4386,6 +4386,7 @@
 					case TBGCustomDatatype::INPUT_TEXT:
 					case TBGCustomDatatype::INPUT_TEXTAREA_SMALL:
 					case TBGCustomDatatype::INPUT_TEXTAREA_MAIN:
+					case TBGCustomDatatype::DATE_PICKER:
 						$option_id = $this->getCustomField($key);
 						TBGIssueCustomFieldsTable::getTable()->saveIssueCustomFieldValue($option_id, $customdatatype->getID(), $this->getID());
 						break;
