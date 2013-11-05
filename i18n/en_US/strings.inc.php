@@ -4,9 +4,9 @@
 // If you would like to help translating TBG,
 // please visit https://www.transifex.com/projects/p/tbg
 
-// Number of Sections: 305
-// Number of Strings: 3262
-// Strings extracted on: 2013 Oct 26.
+// Number of Sections: 308
+// Number of Strings: 3293
+// Strings extracted on: 2013 Nov 05.
 
 // First occurrence is in: core/classes/TBGAction.class.php
 // ----------------------------------------------------------------------------
@@ -148,11 +148,12 @@
   $strings['Textarea in issue main area'] = 'Textarea in issue main area';
   $strings['Textarea (small) in issue details list'] = 'Textarea (small) in issue details list';
   $strings['Radio choices'] = 'Radio choices';
-  $strings['Select a release from the list of available releases'] = 'Select a release from the list of available releases';
-  $strings['Select a component from the list of available components'] = 'Select a component from the list of available components';
-  $strings['Select a edition from the list of available editions'] = 'Select a edition from the list of available editions';
-  $strings['Dropdown list with statuses'] = 'Dropdown list with statuses';
-  $strings['Calculated Field'] = 'Calculated Field';
+  $strings['Dropdown list of available releases'] = 'Dropdown list of available releases';
+  $strings['Dropdown list of available components'] = 'Dropdown list of available components';
+  $strings['Dropdown list of available editions'] = 'Dropdown list of available editions';
+  $strings['Dropdown list of all statuses'] = 'Dropdown list of all statuses';
+  $strings['Calculated field'] = 'Calculated field';
+  $strings['Date picker'] = 'Date picker';
   $strings['This field key already exists'] = 'This field key already exists';
 
 // First occurrence is in: core/classes/TBGDashboardView.class.php
@@ -331,6 +332,34 @@
   $strings['Showing "bug report" issues sorted by user pain, threshold set at %threshold'] = 'Showing "bug report" issues sorted by user pain, threshold set at %threshold';
   $strings['Showing issues ordered by number of votes'] = 'Showing issues ordered by number of votes';
 
+// First occurrence is in: core/classes/TBGSettings.class.php
+// ----------------------------------------------------------------------------
+  $strings['Scopes'] = 'Scopes';
+  $strings['Scopes are self-contained Bug Genie environments. Configure them here.'] = 'Scopes are self-contained Bug Genie environments. Configure them here.';
+  $strings['Every setting in the bug genie can be adjusted in this section.'] = 'Every setting in the bug genie can be adjusted in this section.';
+  $strings['Configure permissions in this section'] = 'Configure permissions in this section';
+  $strings['Permissions'] = 'Permissions';
+  $strings['Configure roles (permission templates) in this section'] = 'Configure roles (permission templates) in this section';
+  $strings['Roles'] = 'Roles';
+  $strings['Authentication'] = 'Authentication';
+  $strings['Configure the authentication method in this section'] = 'Configure the authentication method in this section';
+  $strings['All settings related to file uploads are controlled from this section.'] = 'All settings related to file uploads are controlled from this section.';
+  $strings['Uploads &amp; attachments'] = 'Uploads &amp; attachments';
+  $strings['Import data'] = 'Import data';
+  $strings['Import data from CSV files and other sources.'] = 'Import data from CSV files and other sources.';
+  $strings['Projects'] = 'Projects';
+  $strings['Set up all projects in this configuration section.'] = 'Set up all projects in this configuration section.';
+  $strings['Issue types'] = 'Issue types';
+  $strings['Manage issue types and configure issue fields for each issue type here'] = 'Manage issue types and configure issue fields for each issue type here';
+  $strings['Issue fields'] = 'Issue fields';
+  $strings['Status types, resolution types, categories, custom fields, etc. are configurable from this section.'] = 'Status types, resolution types, categories, custom fields, etc. are configurable from this section.';
+  $strings['Set up and edit workflow configuration from this section'] = 'Set up and edit workflow configuration from this section';
+  $strings['Workflow'] = 'Workflow';
+  $strings['Manage users, user groups, clients and user teams from this section.'] = 'Manage users, user groups, clients and user teams from this section.';
+  $strings['Users, teams, clients &amp; groups'] = 'Users, teams, clients &amp; groups';
+  $strings['Manage Bug Genie extensions from this section. New modules are installed from here.'] = 'Manage Bug Genie extensions from this section. New modules are installed from here.';
+  $strings['Module settings'] = 'Module settings';
+
 // First occurrence is in: core/classes/TBGTextParser.class.php
 // ----------------------------------------------------------------------------
   $strings['top'] = 'top';
@@ -479,37 +508,8 @@
   $strings['Prune users'] = 'Prune users';
   $strings['To remove the data from The Bug Genie of users who can no longer log in via LDAP, run this tool. These users would not be able to log in anyway, but it will keep your user list clean. The guest user is not affected, but it may affect your current user - if this is deleted you will be logged out.'] = 'To remove the data from The Bug Genie of users who can no longer log in via LDAP, run this tool. These users would not be able to log in anyway, but it will keep your user list clean. The guest user is not affected, but it may affect your current user - if this is deleted you will be logged out.';
 
-// First occurrence is in: modules/configuration/classes/actioncomponents.class.php
-// ----------------------------------------------------------------------------
-  $strings['Scopes'] = 'Scopes';
-  $strings['Permissions'] = 'Permissions';
-  $strings['Roles'] = 'Roles';
-  $strings['Authentication'] = 'Authentication';
-  $strings['Uploads &amp; attachments'] = 'Uploads &amp; attachments';
-  $strings['Import data'] = 'Import data';
-  $strings['Projects'] = 'Projects';
-  $strings['Issue types'] = 'Issue types';
-  $strings['Issue fields'] = 'Issue fields';
-  $strings['Workflow'] = 'Workflow';
-  $strings['Users, teams, clients &amp; groups'] = 'Users, teams, clients &amp; groups';
-  $strings['Modules'] = 'Modules';
-
 // First occurrence is in: modules/configuration/classes/actions.class.php
 // ----------------------------------------------------------------------------
-  $strings['Scopes are self-contained Bug Genie environments. Configure them here.'] = 'Scopes are self-contained Bug Genie environments. Configure them here.';
-  $strings['Every setting in the bug genie can be adjusted in this section.'] = 'Every setting in the bug genie can be adjusted in this section.';
-  $strings['Configure permissions in this section'] = 'Configure permissions in this section';
-  $strings['Configure roles (permission templates) in this section'] = 'Configure roles (permission templates) in this section';
-  $strings['Configure the authentication method in this section'] = 'Configure the authentication method in this section';
-  $strings['All settings related to file uploads are controlled from this section.'] = 'All settings related to file uploads are controlled from this section.';
-  $strings['Import data from CSV files and other sources.'] = 'Import data from CSV files and other sources.';
-  $strings['Set up all projects in this configuration section.'] = 'Set up all projects in this configuration section.';
-  $strings['Manage issue types and configure issue fields for each issue type here'] = 'Manage issue types and configure issue fields for each issue type here';
-  $strings['Status types, resolution types, categories, custom fields, etc. are configurable from this section.'] = 'Status types, resolution types, categories, custom fields, etc. are configurable from this section.';
-  $strings['Set up and edit workflow configuration from this section'] = 'Set up and edit workflow configuration from this section';
-  $strings['Manage users, user groups, clients and user teams from this section.'] = 'Manage users, user groups, clients and user teams from this section.';
-  $strings['Manage Bug Genie extensions from this section. New modules are installed from here.'] = 'Manage Bug Genie extensions from this section. New modules are installed from here.';
-  $strings['Module settings'] = 'Module settings';
   $strings['Failed to check for updates'] = 'Failed to check for updates';
   $strings['The response from The Bug Genie website was invalid'] = 'The response from The Bug Genie website was invalid';
   $strings['The Bug Genie is up to date'] = 'The Bug Genie is up to date';
@@ -1038,6 +1038,7 @@
 // First occurrence is in: modules/configuration/templates/_projectbox.inc.php
 // ----------------------------------------------------------------------------
   $strings['ARCHIVED'] = 'ARCHIVED';
+  $strings['This is the project key, used in most places when accessing the project'] = 'This is the project key, used in most places when accessing the project';
   $strings['Subproject of'] = 'Subproject of';
   $strings['Owner: %user_or_team'] = 'Owner: %user_or_team';
   $strings['Edit project'] = 'Edit project';
@@ -1601,10 +1602,8 @@
 // First occurrence is in: modules/configuration/templates/index.html.php
 // ----------------------------------------------------------------------------
   $strings['Configuration center'] = 'Configuration center';
-  $strings['Check for the latest updates'] = 'Check for the latest updates';
-  $strings['Checking for updates and installing the latest releases ensures you have the latest improvements, fixes and features for The Bug Genie.'] = 'Checking for updates and installing the latest releases ensures you have the latest improvements, fixes and features for The Bug Genie.';
-  $strings['You currently have version %thebuggenie_version of The Bug Genie.'] = 'You currently have version %thebuggenie_version of The Bug Genie.';
   $strings['Check for updates now'] = 'Check for updates now';
+  $strings['You currently have version %thebuggenie_version of The Bug Genie.'] = 'You currently have version %thebuggenie_version of The Bug Genie.';
   $strings['You have %count outdated modules. They have been disabled until you upgrade them, you can upgrade them from Module settings.'] = 'You have %count outdated modules. They have been disabled until you upgrade them, you can upgrade them from Module settings.';
   $strings['Further details'] = 'Further details';
   $strings['You appear to have Magic Quotes enabled. This will cause problems with The Bug Genie, and so it is highly recommended that you disable it in your PHP configuration. Please note that this feature has been deprecated by the PHP developers, and so leaving it enabled is not advised. %furtherdetails'] = 'You appear to have Magic Quotes enabled. This will cause problems with The Bug Genie, and so it is highly recommended that you disable it in your PHP configuration. Please note that this feature has been deprecated by the PHP developers, and so leaving it enabled is not advised. %furtherdetails';
@@ -1764,15 +1763,15 @@
   $strings['Add account'] = 'Add account';
   $strings['When you are done, click "%add_account" to add this account'] = 'When you are done, click "%add_account" to add this account';
 
-// First occurrence is in: modules/mailing/templates/_forgotPasswordPane.inc.php
-// ----------------------------------------------------------------------------
-  $strings['Forgot password?'] = 'Forgot password?';
-  $strings['If you have forgot your password, enter your username here, and we will send you an email that will allow you to change your password'] = 'If you have forgot your password, enter your username here, and we will send you an email that will allow you to change your password';
-  $strings['Send email'] = 'Send email';
-
-// First occurrence is in: modules/mailing/templates/_forgotPasswordTab.inc.php
+// First occurrence is in: modules/mailing/templates/_forgotPasswordLink.inc.php
 // ----------------------------------------------------------------------------
   $strings['Forgot password'] = 'Forgot password';
+
+// First occurrence is in: modules/mailing/templates/_forgotPasswordPane.inc.php
+// ----------------------------------------------------------------------------
+  $strings['Username or email address'] = 'Username or email address';
+  $strings['Back'] = 'Back';
+  $strings['Send email'] = 'Send email';
 
 // First occurrence is in: modules/mailing/templates/_incomingemailaccount.inc.php
 // ----------------------------------------------------------------------------
@@ -2325,11 +2324,11 @@
   $strings['Relate to an existing issue'] = 'Relate to an existing issue';
   $strings['Update issue access policy'] = 'Update issue access policy';
   $strings['Manage issue subscribers'] = 'Manage issue subscribers';
+  $strings['Change estimate'] = 'Change estimate';
+  $strings['Change time spent'] = 'Change time spent';
   $strings['Are you sure you wish to delete this issue? It will remain in the database for your records, but will not be accessible via The Bug Genie.'] = 'Are you sure you wish to delete this issue? It will remain in the database for your records, but will not be accessible via The Bug Genie.';
   $strings['Permanently delete this issue'] = 'Permanently delete this issue';
   $strings['Permanently delete this issue?'] = 'Permanently delete this issue?';
-  $strings['Change estimate'] = 'Change estimate';
-  $strings['Change time spent'] = 'Change time spent';
   $strings['No additional actions available'] = 'No additional actions available';
 
 // First occurrence is in: modules/main/templates/_issuemoved.inc.php
@@ -2364,7 +2363,6 @@
   $strings['Months spent'] = 'Months spent';
   $strings['Comment (optional)'] = 'Comment (optional)';
   $strings['Update entry'] = 'Update entry';
-  $strings['Back'] = 'Back';
 
 // First occurrence is in: modules/main/templates/_issuespenttimeentry.inc.php
 // ----------------------------------------------------------------------------
@@ -2400,21 +2398,22 @@
 
 // First occurrence is in: modules/main/templates/_login.inc.php
 // ----------------------------------------------------------------------------
-  $strings['Register new account'] = 'Register new account';
-  $strings['Log in to an existing account'] = 'Log in to an existing account';
+  $strings['Log in with your username and password'] = 'Log in with your username and password';
+  $strings['Keep me logged in'] = 'Keep me logged in';
+  $strings['Log in'] = 'Log in';
+  $strings['%regular_login or %persona_or_openid_login'] = '%regular_login or %persona_or_openid_login';
   $strings['Sign in with Persona'] = 'Sign in with Persona';
+  $strings['Sign in with OpenID'] = 'Sign in with OpenID';
+  $strings['%login or %signup'] = '%login or %signup';
+  $strings['Create an account'] = 'Create an account';
 
 // First occurrence is in: modules/main/templates/_loginregister.inc.php
 // ----------------------------------------------------------------------------
-  $strings['Register a new account'] = 'Register a new account';
-  $strings['To register, please fill out the information below.'] = 'To register, please fill out the information below.';
-  $strings['Required information is marked with an asterisk'] = 'Required information is marked with an asterisk';
-  $strings['Display name'] = 'Display name';
-  $strings['The "display name" is the name shown to others'] = 'The "display name" is the name shown to others';
+  $strings['The "nickname" will be shown to other users'] = 'The "nickname" will be shown to other users';
   $strings['E-mail address'] = 'E-mail address';
   $strings['Confirm e-mail'] = 'Confirm e-mail';
-  $strings['Enter the above number in this box'] = 'Enter the above number in this box';
-  $strings['Security check'] = 'Security check';
+  $strings['Enter the number you see above'] = 'Enter the number you see above';
+  $strings['Register a new account'] = 'Register a new account';
   $strings['Thank you for registering!'] = 'Thank you for registering!';
 
 // First occurrence is in: modules/main/templates/_logitem.inc.php
@@ -2473,20 +2472,18 @@
 
 // First occurrence is in: modules/main/templates/_openidbuttons.inc.php
 // ----------------------------------------------------------------------------
-  $strings['Log in or register with your OpenID'] = 'Log in or register with your OpenID';
-  $strings['Log in with your OpenID'] = 'Log in with your OpenID';
   $strings['Sign in'] = 'Sign in';
+  $strings['Regular signin'] = 'Regular signin';
   $strings['Enter your OpenID'] = 'Enter your OpenID';
-  $strings['Enter your MyOpenID username'] = 'Enter your MyOpenID username';
+  $strings['Enter your Wordpress.com username'] = 'Enter your Wordpress.com username';
+  $strings['Your Launchpad username'] = 'Your Launchpad username';
   $strings['Enter your Livejournal username'] = 'Enter your Livejournal username';
   $strings['Enter your AOL screenname'] = 'Enter your AOL screenname';
   $strings['Enter your Flickr username'] = 'Enter your Flickr username';
   $strings['Your Technorati username'] = 'Your Technorati username';
-  $strings['Enter your Wordpress.com username'] = 'Enter your Wordpress.com username';
   $strings['Your Blogger account'] = 'Your Blogger account';
   $strings['Your Verisign username'] = 'Your Verisign username';
   $strings['Your Vidoop username'] = 'Your Vidoop username';
-  $strings['Your Launchpad username'] = 'Your Launchpad username';
   $strings['Your ClaimID username'] = 'Your ClaimID username';
   $strings['Enter your ClickPass username'] = 'Enter your ClickPass username';
   $strings['Enter your Google Profile username'] = 'Enter your Google Profile username';
@@ -2843,6 +2840,7 @@
   $strings['Scope memberships'] = 'Scope memberships';
   $strings['Edit your profile details here, including additional information.'] = 'Edit your profile details here, including additional information.';
   $strings['Required fields are marked with a little star.'] = 'Required fields are marked with a little star.';
+  $strings['Display name'] = 'Display name';
   $strings['This is the name used across the site for your profile.'] = 'This is the name used across the site for your profile.';
   $strings['This is your real name, mostly used in communication with you, and rarely shown to others'] = 'This is your real name, mostly used in communication with you, and rarely shown to others';
   $strings['Show my email address to others'] = 'Show my email address to others';
@@ -3766,6 +3764,13 @@
   $strings['Note: This page lists all project-specific special pages for "%project_name". For a list of global special pages, see %special_pages'] = 'Note: This page lists all project-specific special pages for "%project_name". For a list of global special pages, see %special_pages';
   $strings['Special pages'] = 'Special pages';
   $strings['This is a list of all the "special pages" available in The Bug Genie wiki. These are generated automatically and cannot be edited via the builtin wiki-editor.'] = 'This is a list of all the "special pages" available in The Bug Genie wiki. These are generated automatically and cannot be edited via the builtin wiki-editor.';
+  $strings['Automatic pages'] = 'Automatic pages';
+  $strings['Frontpage article'] = 'Frontpage article';
+  $strings['Frontpage left menu footer'] = 'Frontpage left menu footer';
+  $strings['Login introduction header'] = 'Login introduction header';
+  $strings['OpenID login introduction header'] = 'OpenID login introduction header';
+  $strings['Registration introduction header'] = 'Registration introduction header';
+  $strings['Forgotten password introduction header'] = 'Forgotten password introduction header';
   $strings['Wiki maintenance'] = 'Wiki maintenance';
   $strings['Dead end pages'] = 'Dead end pages';
   $strings['Uncategorized pages'] = 'Uncategorized pages';
@@ -3908,6 +3913,7 @@
   $strings['You have to specify a name for the saved search'] = 'You have to specify a name for the saved search';
   $strings['No projects exist so this filter can not be added'] = 'No projects exist so this filter can not be added';
   $strings['This is not a valid search field'] = 'This is not a valid search field';
+  $strings['Please enter 3 characters or more'] = 'Please enter 3 characters or more';
   $strings['Not targetted'] = 'Not targetted';
 
 // First occurrence is in: modules/search/templates/_bulkactions.inc.php
@@ -3959,6 +3965,10 @@
   $strings['%field is provided and is %value'] = '%field is provided and is %value';
   $strings['%field is provided and is not %value'] = '%field is provided and is not %value';
 
+// First occurrence is in: modules/search/templates/_filterfindusers.inc.php
+// ----------------------------------------------------------------------------
+  $strings['Yourself'] = 'Yourself';
+
 // First occurrence is in: modules/search/templates/_infobox_saved_search_saved.inc.php
 // ----------------------------------------------------------------------------
   $strings['You can edit the details for this saved search later by opening it up in the left sidebar.'] = 'You can edit the details for this saved search later by opening it up in the left sidebar.';
@@ -3971,14 +3981,44 @@
   $strings['Choose issues from project(s)'] = 'Choose issues from project(s)';
   $strings['Filter values'] = 'Filter values';
   $strings['Filter on issuetype'] = 'Filter on issuetype';
+  $strings['Anyone'] = 'Anyone';
+  $strings['Assigned user'] = 'Assigned user';
+  $strings['Select user(s)'] = 'Select user(s)';
+  $strings['Search for a user'] = 'Search for a user';
+  $strings['Assigned team'] = 'Assigned team';
+  $strings['Any team'] = 'Any team';
+  $strings['Select team(s)'] = 'Select team(s)';
+  $strings['Search for a team'] = 'Search for a team';
   $strings['Filter on status'] = 'Filter on status';
   $strings['Filter on category'] = 'Filter on category';
+  $strings['Any'] = 'Any';
+  $strings['Affects release(s)'] = 'Affects release(s)';
+  $strings['Affects component(s)'] = 'Affects component(s)';
+  $strings['Affects edition(s)'] = 'Affects edition(s)';
+  $strings['Targetted milestone(s)'] = 'Targetted milestone(s)';
+  $strings['Filter on affected release(s)'] = 'Filter on affected release(s)';
+  $strings['Filter on affected component(s)'] = 'Filter on affected component(s)';
+  $strings['Filter on affected edition(s)'] = 'Filter on affected edition(s)';
+  $strings['Filter on targetted milestone(s)'] = 'Filter on targetted milestone(s)';
   $strings['Subproject(s)'] = 'Subproject(s)';
   $strings['Include issues from subproject(s)'] = 'Include issues from subproject(s)';
+
+// First occurrence is in: modules/search/templates/_interactivefilter_choice.inc.php
+// ----------------------------------------------------------------------------
   $strings['Filter on priority'] = 'Filter on priority';
   $strings['Filter on resolution'] = 'Filter on resolution';
   $strings['Filter on severity'] = 'Filter on severity';
   $strings['Filter on reproducability'] = 'Filter on reproducability';
+  $strings['Filter on %customfield'] = 'Filter on %customfield';
+
+// First occurrence is in: modules/search/templates/_interactivefilter_date.inc.php
+// ----------------------------------------------------------------------------
+  $strings['Posted'] = 'Posted';
+  $strings['Filter on posted date'] = 'Filter on posted date';
+  $strings['Filter on last updated date'] = 'Filter on last updated date';
+  $strings['Before %time'] = 'Before %time';
+  $strings['After %time'] = 'After %time';
+  $strings['Any time'] = 'Any time';
 
 // First occurrence is in: modules/search/templates/_pagination.inc.php
 // ----------------------------------------------------------------------------
@@ -4025,17 +4065,17 @@
   $strings['People filters'] = 'People filters';
   $strings['Posted by user'] = 'Posted by user';
   $strings['Time filters'] = 'Time filters';
-  $strings['Created before'] = 'Created before';
-  $strings['Created after'] = 'Created after';
-  $strings['Last updated before'] = 'Last updated before';
-  $strings['Last updated after'] = 'Last updated after';
+  $strings['Created before / after'] = 'Created before / after';
+  $strings['Last updated before / after'] = 'Last updated before / after';
   $strings['Project detail filters'] = 'Project detail filters';
   $strings['Including subproject(s)'] = 'Including subproject(s)';
+  $strings['This filter is only available in project context'] = 'This filter is only available in project context';
   $strings['Reported against a specific release'] = 'Reported against a specific release';
   $strings['Affecting a specific component'] = 'Affecting a specific component';
   $strings['Affecting a specific edition'] = 'Affecting a specific edition';
   $strings['Targetting a specific milestone'] = 'Targetting a specific milestone';
   $strings['Issue detail filters'] = 'Issue detail filters';
+  $strings['Other filters'] = 'Other filters';
   $strings['Select how to present search results'] = 'Select how to present search results';
   $strings['Select how many issues to show per page'] = 'Select how many issues to show per page';
   $strings['You have to be signed in to save this search'] = 'You have to be signed in to save this search';
