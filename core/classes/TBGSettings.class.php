@@ -298,7 +298,24 @@
 			\b2db\Core::getTable('TBGSettingsTable')->doDelete($crit);
 			unset(self::$_settings[$name][$uid]);
 		}
-	
+
+		public static function getScopeSetting($name, $module = 'core', $scope = 0)
+		{
+			$crit = new \b2db\Criteria();
+			$crit->addWhere(TBGSettingsTable::NAME, $name);
+			$crit->addWhere(TBGSettingsTable::MODULE, $module);
+			$crit->addWhere(TBGSettingsTable::SCOPE, $scope);
+			$row = \b2db\Core::getTable('TBGSettingsTable')->doSelectOne($crit);
+			if ($row)
+			{
+				return $row->get(TBGSettingsTable::VALUE);
+			}
+			else
+			{
+				return null;
+			}
+		}
+
 		private static function _loadSetting($name, $module = 'core', $scope = 0)
 		{
 			$crit = new \b2db\Criteria();

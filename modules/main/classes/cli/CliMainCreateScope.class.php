@@ -73,7 +73,7 @@
 					if ($user instanceof TBGUser)
 					{
 						$this->cliEcho("Adding user {$admin_user} to scope\n");
-						$admin_group_id = TBGSettings::get(TBGSettings::SETTING_ADMIN_GROUP, 'core', $scope->getID());
+						$admin_group_id = (int) TBGSettings::getScopeSetting(TBGSettings::SETTING_ADMIN_GROUP, 'core', $scope->getID());
 						TBGUserScopesTable::getTable()->addUserToScope($user->getID(), $scope->getID(), $admin_group_id, true);
 					}
 					else
