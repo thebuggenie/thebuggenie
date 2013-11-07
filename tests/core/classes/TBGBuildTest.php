@@ -39,17 +39,6 @@ class TBGBuildTest extends PHPUnit_Framework_TestCase
 {
 
 	/**
-	 * @covers TBGBuild::__construct
-	 */
-	public function testConstruct()
-	{
-		$build = new TBGBuild(1);
-		$this->assertInstanceOf('TBGBuild', $build);
-
-		return $build;
-	}
-
-	/**
 	 * @covers TBGBuild::getID
 	 * @depends testConstruct
 	 */
