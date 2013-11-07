@@ -1,7 +1,7 @@
 <?php
 
 //require THEBUGGENIE_CORE_PATH . 'classes/TBGEvent.class.php';
-
+/*
 class TBGLogging
 {
 	public function log($message, $module = '', $level = '')
@@ -9,6 +9,7 @@ class TBGLogging
 		
 	}
 }
+*/
 
 /**
  * Test class for TBGEvent.
