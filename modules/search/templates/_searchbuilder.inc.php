@@ -4,7 +4,7 @@
 
 ?>
 <div class="interactive_searchbuilder" id="search_builder">
-	<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo (TBGContext::isProjectContext()) ? make_url('project_search_paginated', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('search_paginated'); ?>" method="get" id="find_issues_form" <?php if ($show_results): ?>data-results-loaded<?php endif; ?> <?php if ($search_object->getID()): ?>data-is-saved<?php endif; ?> data-dynamic-callback-url="<?php echo make_url('search_filter_getdynamicchoices'); ?>" onsubmit="TBG.Search.liveUpdate(true);return false;">
+	<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo (TBGContext::isProjectContext()) ? make_url('project_search_paginated', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('search_paginated'); ?>" method="get" id="find_issues_form" <?php if ($show_results): ?>data-results-loaded<?php endif; ?> <?php if ($search_object->getID()): ?>data-is-saved<?php endif; ?> data-history-url="<?php echo (TBGContext::isProjectContext()) ? make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('search'); ?>" data-dynamic-callback-url="<?php echo make_url('search_filter_getdynamicchoices'); ?>" onsubmit="TBG.Search.liveUpdate(true);return false;">
 		<div class="searchbuilder_filterstrip" id="searchbuilder_filterstrip">
 			<?php include_component('search/interactivefilter', array('filter' => $search_object->getFilter('project_id'))); ?>
 			<?php include_component('search/interactivefilter', array('filter' => $search_object->getFilter('issuetype'))); ?>
@@ -68,6 +68,12 @@
 							</ul>
 						</div>
 					<?php endif; ?>
+				</div>
+			</div>
+			<div style="display: inline-block; position: relative;">
+				<input type="image" src="<?php echo image_url('icon-mono-search.png'); ?>">
+				<div class="tooltip from-above rightie" style="margin: 10px -25px 0 0; left: auto; right: 0;">
+					<?php echo __("Press the search button to trigger a search if it doesn't happen automatically"); ?>
 				</div>
 			</div>
 			<div class="interactive_plus_container" id="interactive_settings_container">

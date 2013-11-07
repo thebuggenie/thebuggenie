@@ -4540,7 +4540,14 @@ TBG.Search.liveUpdate = function(force) {
         $('search_sidebar').addClassName('collapsed');
         TBG.Main.Helpers.ajax(url, {
             params: parameters,
-            loading: {indicator: 'search_results_loading_indicator'},
+            loading: {
+                indicator: 'search_results_loading_indicator',
+                callback: function() {
+                    if (history.pushState) {
+                        history.pushState({caller: 'liveUpdate'}, '', fif.dataset.historyUrl + '?' + parameters);
+                    }
+                }
+            },
             success: {update: 'search_results'},
             complete: {
                 callback: function(json) {

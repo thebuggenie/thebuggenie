@@ -1790,6 +1790,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 /*.searchbox_container label { font-size: 0.9em; }
 .searchbox_container input[type="text"], .searchbox_container select { font-size: 0.9em; }*/
 .searchbuilder_filterstrip { background-color: rgba(200, 200, 200, 0.2); border-bottom: 1px solid rgba(200, 200, 200, 0.6); padding: 5px; }
+.searchbuilder_filterstrip input[type=image] { vertical-align: middle; margin: 0 5px; }
 .interactive_dropdown, .interactive_plus_button {
     display: inline-block;
     position: relative;
