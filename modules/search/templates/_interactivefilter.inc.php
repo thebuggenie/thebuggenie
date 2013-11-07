@@ -6,12 +6,12 @@
 			case 'project_id':
 				?>
 				<?php if (TBGContext::isProjectContext()): ?>
-					<input type="hidden" name="filters[project_id][operator]" value="=">
-					<input type="hidden" name="filters[project_id][value]" value="<?php echo TBGContext::getCurrentProject()->getID(); ?>" id="filter_project_id_value_input">
+					<input type="hidden" name="fs[project_id][o]" value="=">
+					<input type="hidden" name="fs[project_id][v]" value="<?php echo TBGContext::getCurrentProject()->getID(); ?>" id="filter_project_id_value_input">
 				<?php else: ?>
 					<div class="filter interactive_dropdown" data-filterkey="project_id" data-value="<?php echo $filter->getValue(); ?>" data-all-value="<?php echo __('All'); ?>">
-						<input type="hidden" name="filters[project_id][operator]" value="=">
-						<input type="hidden" name="filters[project_id][value]" value="" id="filter_project_id_value_input">
+						<input type="hidden" name="fs[project_id][o]" value="=">
+						<input type="hidden" name="fs[project_id][v]" value="" id="filter_project_id_value_input">
 						<label><?php echo __('Project(s)'); ?></label>
 						<span class="value"><?php if (!$filter->hasValue()) echo __('All'); ?></span>
 						<div class="interactive_menu">
@@ -37,8 +37,8 @@
 			case 'issuetype':
 				?>
 				<div class="filter interactive_dropdown" data-filterkey="issuetype" data-value="<?php echo $filter->getValue(); ?>" data-all-value="<?php echo __('All'); ?>">
-					<input type="hidden" name="filters[issuetype][operator]" value="=">
-					<input type="hidden" name="filters[issuetype][value]" value="" id="filter_issuetype_value_input">
+					<input type="hidden" name="fs[issuetype][o]" value="=">
+					<input type="hidden" name="fs[issuetype][v]" value="" id="filter_issuetype_value_input">
 					<label><?php echo __('Issuetype'); ?></label>
 					<span class="value"><?php if (!$filter->hasValue()) echo __('All'); ?></span>
 					<div class="interactive_menu">
@@ -64,8 +64,8 @@
 			case 'assignee_user':
 				?>
 				<div class="filter interactive_dropdown" id="interactive_filter_<?php echo $filter->getFilterKey(); ?>" data-filterkey="<?php echo $filter->getFilterKey(); ?>" data-value="<?php echo $filter->getValue(); ?>" data-all-value="<?php echo __('Anyone'); ?>">
-					<input type="hidden" name="filters[<?php echo $filter->getFilterKey(); ?>][operator]" value="=">
-					<input type="hidden" name="filters[<?php echo $filter->getFilterKey(); ?>][value]" value="" id="filter_<?php echo $filter->getFilterKey(); ?>_value_input">
+					<input type="hidden" name="fs[<?php echo $filter->getFilterKey(); ?>][o]" value="=">
+					<input type="hidden" name="fs[<?php echo $filter->getFilterKey(); ?>][v]" value="" id="filter_<?php echo $filter->getFilterKey(); ?>_value_input">
 					<label><?php 
 					
 						switch ($filter->getFilterKey())
@@ -108,8 +108,8 @@
 			case 'assignee_team':
 				?>
 				<div class="filter interactive_dropdown" id="interactive_filter_<?php echo $filter->getFilterKey(); ?>" data-filterkey="<?php echo $filter->getFilterKey(); ?>" data-value="<?php echo $filter->getValue(); ?>" data-all-value="<?php echo __('Anyone'); ?>">
-					<input type="hidden" name="filters[<?php echo $filter->getFilterKey(); ?>][operator]" value="=">
-					<input type="hidden" name="filters[<?php echo $filter->getFilterKey(); ?>][value]" value="" id="filter_<?php echo $filter->getFilterKey(); ?>_value_input">
+					<input type="hidden" name="fs[<?php echo $filter->getFilterKey(); ?>][o]" value="=">
+					<input type="hidden" name="fs[<?php echo $filter->getFilterKey(); ?>][v]" value="" id="filter_<?php echo $filter->getFilterKey(); ?>_value_input">
 					<label><?php 
 					
 						switch ($filter->getFilterKey())
@@ -148,8 +148,8 @@
 			case 'status':
 				?>
 				<div class="filter interactive_dropdown" data-filterkey="status" data-value="<?php echo $filter->getValue(); ?>" data-all-value="<?php echo __('All'); ?>">
-					<input type="hidden" name="filters[status][operator]" value="=">
-					<input type="hidden" name="filters[status][value]" value="" id="filter_status_value_input">
+					<input type="hidden" name="fs[status][o]" value="=">
+					<input type="hidden" name="fs[status][v]" value="" id="filter_status_value_input">
 					<label><?php echo __('Status'); ?></label>
 					<span class="value"><?php if (!$filter->hasValue()) echo __('All'); ?></span>
 					<div class="interactive_menu">
@@ -184,8 +184,8 @@
 			case 'category':
 				?>
 				<div class="filter interactive_dropdown" data-filterkey="category" data-value="<?php echo $filter->getValue(); ?>" data-all-value="<?php echo __('All'); ?>">
-					<input type="hidden" name="filters[category][operator]" value="=">
-					<input type="hidden" name="filters[category][value]" value="" id="filter_category_value_input">
+					<input type="hidden" name="fs[category][o]" value="=">
+					<input type="hidden" name="fs[category][v]" value="" id="filter_category_value_input">
 					<label><?php echo __('Category'); ?></label>
 					<span class="value"><?php if (!$filter->hasValue()) echo __('All'); ?></span>
 					<div class="interactive_menu">
@@ -212,8 +212,8 @@
 			case 'milestone':
 				?>
 				<div class="filter interactive_dropdown" id="interactive_filter_<?php echo $filter->getFilterKey(); ?>" data-filterkey="<?php echo $filter->getFilterKey(); ?>" data-value="<?php echo $filter->getValue(); ?>" data-all-value="<?php echo __('Any'); ?>">
-					<input type="hidden" name="filters[<?php echo $filter->getFilterKey(); ?>][operator]" value="=">
-					<input type="hidden" name="filters[<?php echo $filter->getFilterKey(); ?>][value]" value="" id="filter_<?php echo $filter->getFilterKey(); ?>_value_input">
+					<input type="hidden" name="fs[<?php echo $filter->getFilterKey(); ?>][o]" value="=">
+					<input type="hidden" name="fs[<?php echo $filter->getFilterKey(); ?>][v]" value="" id="filter_<?php echo $filter->getFilterKey(); ?>_value_input">
 					<label><?php
 
 							switch ($filter->getFilterKey())
@@ -268,8 +268,8 @@
 			case 'subprojects':
 				?>
 				<div class="filter interactive_dropdown" id="interactive_filter_subprojects" data-filterkey="subprojects" data-value="<?php echo $filter->getValue(); ?>" data-all-value="<?php echo __('All'); ?>">
-					<input type="hidden" name="filters[subprojects][operator]" value="=">
-					<input type="hidden" name="filters[subprojects][value]" value="" id="filter_subprojects_value_input">
+					<input type="hidden" name="fs[subprojects][o]" value="=">
+					<input type="hidden" name="fs[subprojects][v]" value="" id="filter_subprojects_value_input">
 					<label><?php echo __('Subproject(s)'); ?></label>
 					<span class="value"><?php if (!$filter->hasValue()) echo __('All'); ?></span>
 					<div class="interactive_menu">
@@ -305,8 +305,8 @@
 			case 'blocking':
 				?>
 				<div class="filter interactive_dropdown" id="interactive_filter_blocking" data-filterkey="blocking" data-value="<?php echo $filter->getValue(); ?>" data-all-value="<?php echo __('Any'); ?>">
-					<input type="hidden" name="filters[blocking][operator]" value="=">
-					<input type="hidden" name="filters[blocking][value]" value="" id="filter_blocking_value_input">
+					<input type="hidden" name="fs[blocking][o]" value="=">
+					<input type="hidden" name="fs[blocking][v]" value="" id="filter_blocking_value_input">
 					<label><?php echo __('Blocker status'); ?></label>
 					<span class="value"><?php if (!$filter->hasValue()) echo __('Any'); ?></span>
 					<div class="interactive_menu">

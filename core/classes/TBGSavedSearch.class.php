@@ -714,19 +714,19 @@
 						{
 							foreach ($subfilter as $subsubkey => $subsubfilter)
 							{
-								$parameters[] = "filters[{$key}][{$subkey}][{$subsubkey}]=".urlencode($subsubfilter['value']);
+								$parameters[] = "fs[{$key}][{$subkey}][{$subsubkey}]=".urlencode($subsubfilter['value']);
 							}
 						}
 						else
 						{
-							$parameters[] = "filters[{$key}][{$subkey}]=".urlencode($subfilter['value']);
+							$parameters[] = "fs[{$key}][{$subkey}]=".urlencode($subfilter['value']);
 						}
 					}
 				}
 				else
 				{
-					$parameters[] = "filters[{$key}][operator]=".urlencode($filter['operator']);
-					$parameters[] = "filters[{$key}][value]=".urlencode($filter['value']);
+					$parameters[] = "fs[{$key}][o]=".urlencode($filter['operator']);
+					$parameters[] = "fs[{$key}][v]=".urlencode($filter['value']);
 				}
 			}
 			$parameters[] = 'template='.$this->getTemplateName();

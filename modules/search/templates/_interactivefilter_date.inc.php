@@ -19,9 +19,9 @@
 	<div class="filter interactive_dropdown" id="interactive_filter_<?php echo $key; ?>"
 	     data-filterkey="<?php echo $key; ?>" data-value="<?php echo $filter->getValue(); ?>"
 	     data-all-value="<?php echo __('Today'); ?>" data-isdate>
-		<input type="hidden" name="filters[<?php echo $key; ?>][operator]" value="="
+		<input type="hidden" name="fs[<?php echo $key; ?>][o]" value="="
 		       id="filter_<?php echo $key; ?>_operator_input">
-		<input type="hidden" name="filters[<?php echo $key; ?>][value]" value="<?php echo (int)$filter->getValue(); ?>"
+		<input type="hidden" name="fs[<?php echo $key; ?>][v]" value="<?php echo (int)$filter->getValue(); ?>"
 		       data-display-value="<?php echo (date('Ymd', (int)$filter->getValue()) == date('Ymd')) ? __('Today') : date('Y-m-d', (int)$filter->getValue()); ?>"
 		       id="filter_<?php echo $key; ?>_value_input">
 		<label><?php echo $title; ?></label>

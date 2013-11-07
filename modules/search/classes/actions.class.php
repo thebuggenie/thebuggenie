@@ -39,7 +39,7 @@
 			}
 			$this->search_object = TBGSavedSearch::getFromRequest($request);
 			$this->issavedsearch = ($this->search_object instanceof TBGSavedSearch && $this->search_object->getB2DBID());
-			$this->show_results = ($this->issavedsearch || $request->hasParameter('quicksearch') || $request->hasParameter('filters') || $request->getParameter('search', false)) ? true : false;
+			$this->show_results = ($this->issavedsearch || $request->hasParameter('quicksearch') || $request->hasParameter('fs') || $request->getParameter('search', false)) ? true : false;
 
 			$this->searchterm = $this->search_object->getSearchterm();
 			$this->searchtitle = $this->search_object->getTitle();
@@ -192,7 +192,7 @@
 				else
 				{
 					TBGContext::setMessage('search_error', TBGContext::getI18n()->__('You have to specify a name for the saved search'));
-					$params = array('filters' => $this->filters, 'groupby' => $this->groupby, 'grouporder' => $this->grouporder, 'templatename' => $this->templatename, 'saved_search' => $request['saved_search_id'], 'issues_per_page' => $this->ipp);
+					$params = array('fs' => $this->filters, 'groupby' => $this->groupby, 'grouporder' => $this->grouporder, 'templatename' => $this->templatename, 'saved_search' => $request['saved_search_id'], 'issues_per_page' => $this->ipp);
 				}
 				if (TBGContext::isProjectContext())
 				{

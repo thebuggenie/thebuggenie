@@ -126,8 +126,8 @@ TBG.Core._initializeAutocompleter = function() {
 			"searchfor_autocomplete_choices",
 			TBG.autocompleter_url,
 			{
-				paramName: "filters[text][value]",
-				parameters: "filters[text][operator]==",
+				paramName: "fs[text][v]",
+				parameters: "fs[text][o]==",
 				minChars: 2,
 				indicator: 'quicksearch_indicator',
 				callback: function(element, entry) {

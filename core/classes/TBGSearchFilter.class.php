@@ -63,6 +63,9 @@
 
 		public static function createFilter($key, $options = array(), TBGSavedSearch $search = null)
 		{
+			if (isset($options['o'])) $options['operator'] = $options['o'];
+			if (isset($options['v'])) $options['value'] = $options['v'];
+
 			$options = array_merge(array('operator' => '=', 'value' => ''), $options);
 			$filter = new TBGSearchFilter();
 			$filter->setFilterKey($key);
@@ -186,20 +189,20 @@
 
 		public static function getFromRequest(TBGRequest $request, TBGSavedSearch $search)
 		{
-			$filters = $request->getRawParameter('filters', array());
+			$filters = $request->getRawParameter('fs', array());
 			if ($request['quicksearch'])
 			{
-				$filters['text']['operator'] = '=';
+				$filters['text']['o'] = '=';
 			}
 			if (TBGContext::isProjectContext())
 			{
-				$filters['project_id'] = array('operator' => '=', 'value' => TBGContext::getCurrentProject()->getID());
+				$filters['project_id'] = array('o' => '=', 'v' => TBGContext::getCurrentProject()->getID());
 			}
 
 			$return_filters = array();
 			foreach ($filters as $key => $details)
 			{
-				if (!isset($details['operator']))
+				if (!isset($details['o']))
 				{
 					foreach ($details as $subdetails)
 					{
@@ -464,7 +467,7 @@
 		 */
 		public function offsetExists($offset)
 		{
-			return in_array($offset, array('operator', 'value', 'key', 'filter', 'filter_key'));
+			return in_array($offset, array('operator', 'o', 'value', 'v', 'key', 'filter', 'filter_key'));
 		}
 
 		/**
@@ -481,8 +484,10 @@
 			switch ($offset)
 			{
 				case 'operator':
+				case 'o':
 					return $this->_operator;
 				case 'value':
+				case 'v':
 					return $this->_value;
 				case 'key':
 				case 'filter':

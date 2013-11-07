@@ -27,8 +27,8 @@
 <div class="filter interactive_dropdown" id="interactive_filter_<?php echo $key; ?>"
      data-filterkey="<?php echo $key; ?>" data-value="<?php echo $filter->getValue(); ?>"
      data-all-value="<?php echo __('All'); ?>">
-	<input type="hidden" name="filters[<?php echo $key; ?>][operator]" value="=">
-	<input type="hidden" name="filters[<?php echo $key; ?>][value]" value=""
+	<input type="hidden" name="fs[<?php echo $key; ?>][o]" value="=">
+	<input type="hidden" name="fs[<?php echo $key; ?>][v]" value=""
 	       id="filter_<?php echo $key; ?>_value_input">
 	<label><?php echo $title; ?></label>
 	<span class="value"><?php if (!$filter->hasValue()) echo __('All'); ?></span>
