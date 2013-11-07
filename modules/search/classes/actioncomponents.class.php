@@ -150,6 +150,25 @@
 			$this->filters = $this->appliedfilters;
 			$this->nondatecustomfields = TBGCustomDatatype::getAllExceptTypes(array(TBGCustomDatatype::DATE_PICKER));
 			$this->datecustomfields = TBGCustomDatatype::getByFieldType(TBGCustomDatatype::DATE_PICKER);
+			$i18n = TBGContext::getI18n();
+			$this->columns = array('title' => $i18n->__('Issue title'), 'issuetype' => $i18n->__('Issue type'), 'assigned_to' => $i18n->__('Assigned to'), 'status' => $i18n->__('Status'), 'resolution' => $i18n->__('Resolution'), 'category' => $i18n->__('Category'), 'severity' => $i18n->__('Severity'), 'percent_complete' => $i18n->__('% completed'), 'reproducability' => $i18n->__('Reproducability'), 'priority' => $i18n->__('Priority'), 'components' => $i18n->__('Component(s)'), 'milestone' => $i18n->__('Milestone'), 'estimated_time' => $i18n->__('Estimate'), 'spent_time' => $i18n->__('Time spent'), 'last_updated' => $i18n->__('Last updated time'), 'comments' => $i18n->__('Number of comments'));
+			$groupoptions = array();
+			if (!TBGContext::isProjectContext()) $groupoptions['project_id'] = $i18n->__('Project');
+
+			$groupoptions['milestone'] = $i18n->__('Milestone');
+			$groupoptions['assignee'] = $i18n->__("Who's assigned");
+			$groupoptions['state'] = $i18n->__('State (open or closed)');
+			$groupoptions['status'] = $i18n->__('Status');
+			$groupoptions['category'] = $i18n->__('Category');
+			$groupoptions['priority'] = $i18n->__('Priority');
+			$groupoptions['severity'] = $i18n->__('Severity');
+			$groupoptions['resolution'] = $i18n->__('Resolution');
+			$groupoptions['issuetype'] = $i18n->__('Issue type');
+			$groupoptions['edition'] = $i18n->__('Edition');
+			$groupoptions['build'] = $i18n->__('Release');
+			$groupoptions['component'] = $i18n->__('Component');
+
+			$this->groupoptions = $groupoptions;
 		}
 
 		public function componentExtralinks()

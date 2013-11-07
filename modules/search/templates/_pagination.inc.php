@@ -1,4 +1,4 @@
-<div class="issue_paginator">
+<div class="issue_paginator fixed" id="issues_paginator">
 	<?php if ($currentpage > 1): ?>
 		<?php if ($currentpage > 2): ?>
 		<button class="button button-silver" title="<?php echo __('First page'); ?>" onclick="TBG.Search.toPage('<?php echo $route; ?>', '<?php echo $parameters; ?>', 0);">&larrb;</button>

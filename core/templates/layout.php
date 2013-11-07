@@ -66,30 +66,6 @@
 		<?php foreach ($sepcss as $css): ?>
 			<link rel="stylesheet" href="<?php echo $css; ?>">
 		<?php endforeach; ?>
-		<style>
-			.sortasc { background-image: url('<?php echo TBGContext::getTBGPath(); ?>iconsets/oxygen/sort_up.png') !important; }
-			.sortdesc { background-image: url('<?php echo TBGContext::getTBGPath(); ?>iconsets/oxygen/sort_down.png') !important; }
-			table.sortable tr th { background-image: url('<?php echo TBGContext::getTBGPath(); ?>iconsets/oxygen/sort_none.png'); }
-			.markItUp .markItUpButton1 a { background-image:url('<?php echo TBGContext::getTBGPath(); ?>iconsets/oxygen/markitup/h1.png'); }
-			.markItUp .markItUpButton2 a { background-image:url('<?php echo TBGContext::getTBGPath(); ?>iconsets/oxygen/markitup/h2.png'); }
-			.markItUp .markItUpButton3 a { background-image:url('<?php echo TBGContext::getTBGPath(); ?>iconsets/oxygen/markitup/h3.png'); }
-			.markItUp .markItUpButton4 a { background-image:url('<?php echo TBGContext::getTBGPath(); ?>iconsets/oxygen/markitup/h4.png'); }
-			.markItUp .markItUpButton5 a { background-image:url('<?php echo TBGContext::getTBGPath(); ?>iconsets/oxygen/markitup/h5.png'); }
-			.markItUp .markItUpButton6 a { background-image:url('<?php echo TBGContext::getTBGPath(); ?>iconsets/oxygen/markitup/bold.png'); }
-			.markItUp .markItUpButton7 a { background-image:url('<?php echo TBGContext::getTBGPath(); ?>iconsets/oxygen/markitup/italic.png'); }
-			.markItUp .markItUpButton8 a { background-image:url('<?php echo TBGContext::getTBGPath(); ?>iconsets/oxygen/markitup/stroke.png'); }
-			.markItUp .markItUpButton9 a { background-image:url('<?php echo TBGContext::getTBGPath(); ?>iconsets/oxygen/markitup/list-bullet.png'); }
-			.markItUp .markItUpButton10 a { background-image:url('<?php echo TBGContext::getTBGPath(); ?>iconsets/oxygen/markitup/list-numeric.png'); }
-			.markItUp .markItUpButton11 a { background-image:url('<?php echo TBGContext::getTBGPath(); ?>iconsets/oxygen/markitup/picture.png'); }
-			.markItUp .markItUpButton12 a { background-image:url('<?php echo TBGContext::getTBGPath(); ?>iconsets/oxygen/markitup/link.png'); }
-			.markItUp .markItUpButton13 a { background-image:url('<?php echo TBGContext::getTBGPath(); ?>iconsets/oxygen/markitup/url.png'); }
-			.markItUp .markItUpButton14 a { background-image:url('<?php echo TBGContext::getTBGPath(); ?>iconsets/oxygen/markitup/quotes.png'); }
-			.markItUp .markItUpButton15 a { background-image:url('<?php echo TBGContext::getTBGPath(); ?>iconsets/oxygen/markitup/code.png'); }
-			.markItUp .preview a { background-image:url('<?php echo TBGContext::getTBGPath(); ?>iconsets/oxygen/markitup/preview.png'); }
-			.markItUpResizeHandle { background-image:url('<?php echo TBGContext::getTBGPath(); ?>iconsets/oxygen/markitup/handle.png'); }
-			.markItUpHeader ul .markItUpDropMenu { background-image: url('<?php echo TBGContext::getTBGPath(); ?>iconsets/oxygen/markitup/menu.png'); }
-			.markItUpHeader ul ul .markItUpDropMenu { background-image: url('<?php echo TBGContext::getTBGPath(); ?>iconsets/oxygen/markitup/submenu.png'); }
-		</style>
 
 		<?php list ($jsstring, $sepjs) = tbg_get_javascripts(); ?>
 		<?php foreach (explode(',', $jsstring) as $js): ?>

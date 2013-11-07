@@ -279,12 +279,12 @@
 							<ul class="interactive_menu_values">
 								<li data-value="all" class="filtervalue <?php if ($filter->hasValue('all')) echo ' selected'; ?>" data-exclusive data-selection-group="1" data-exclude-group="2">
 									<?php echo image_tag('icon-mono-checked.png', array('class' => 'checked')); ?>
-									<input type="radio" value="all" name="filters_subprojects_value_exclusive" data-text="<?php echo __('All'); ?>" id="filters_subprojects_value_all" <?php if ($filter->hasValue('all')) echo 'checked'; ?>>
+									<input type="checkbox" value="all" name="filters_subprojects_value_exclusive_all" data-text="<?php echo __('All'); ?>" id="filters_subprojects_value_all" <?php if ($filter->hasValue('all')) echo 'checked'; ?>>
 									<label for="filters_subprojects_value_all"><?php echo __('All'); ?></label>
 								</li>
 								<li data-value="none" class="filtervalue <?php if ($filter->hasValue('none')) echo ' selected'; ?>" data-exclusive data-selection-group="1" data-exclude-group="2">
 									<?php echo image_tag('icon-mono-checked.png', array('class' => 'checked')); ?>
-									<input type="radio" value="none" name="filters_subprojects_value_exclusive" data-text="<?php echo __('None'); ?>" id="filters_subprojects_value_none" <?php if ($filter->hasValue('none')) echo 'checked'; ?>>
+									<input type="checkbox" value="none" name="filters_subprojects_value_exclusive_none" data-text="<?php echo __('None'); ?>" id="filters_subprojects_value_none" <?php if ($filter->hasValue('none')) echo 'checked'; ?>>
 									<label for="filters_subprojects_value_none"><?php echo __('None'); ?></label>
 								</li>
 								<li class="separator"></li>
@@ -295,6 +295,34 @@
 										<label for="filters_subprojects_value_<?php echo $subproject->getID(); ?>"><?php echo $subproject->getName(); ?>&nbsp;&nbsp;<span class="faded_out"><?php echo $subproject->getKey(); ?></span></label>
 									</li>
 								<?php endforeach; ?>
+							</ul>
+						</div>
+					</div>
+					<div class="filter_remove_button" onclick="TBG.Search.removeFilter($(this).up());"><?php echo image_tag('icon-mono-remove.png'); ?></div>
+				</div>
+				<?php
+				break;
+			case 'blocking':
+				?>
+				<div class="filter interactive_dropdown" id="interactive_filter_blocking" data-filterkey="blocking" data-value="<?php echo $filter->getValue(); ?>" data-all-value="<?php echo __('Any'); ?>">
+					<input type="hidden" name="filters[blocking][operator]" value="=">
+					<input type="hidden" name="filters[blocking][value]" value="" id="filter_blocking_value_input">
+					<label><?php echo __('Blocker status'); ?></label>
+					<span class="value"><?php if (!$filter->hasValue()) echo __('Any'); ?></span>
+					<div class="interactive_menu">
+						<h1><?php echo __('Filter on blocker status'); ?></h1>
+						<div class="interactive_values_container">
+							<ul class="interactive_menu_values">
+								<li data-value="1" class="filtervalue <?php if ($filter->hasValue('1')) echo ' selected'; ?>" data-exclusive data-selection-group="1">
+									<?php echo image_tag('icon-mono-checked.png', array('class' => 'checked')); ?>
+									<input type="checkbox" value="1" name="filters_blocking_value" data-text="<?php echo __('Only blocker issues'); ?>" id="filters_blocking_value_yes" <?php if ($filter->hasValue('1')) echo 'checked'; ?>>
+									<label for="filters_blocking_value_yes"><?php echo __('Only blocker issues'); ?></label>
+								</li>
+								<li data-value="0" class="filtervalue <?php if ($filter->hasValue('0')) echo ' selected'; ?>" data-exclusive data-selection-group="1">
+									<?php echo image_tag('icon-mono-checked.png', array('class' => 'checked')); ?>
+									<input type="checkbox" value="0" name="filters_blocking_value" data-text="<?php echo __('Not blocker issues'); ?>" id="filters_blocking_value_none" <?php if ($filter->hasValue('0')) echo 'checked'; ?>>
+									<label for="filters_blocking_value_no"><?php echo __('Not blocker issues'); ?></label>
+								</li>
 							</ul>
 						</div>
 					</div>

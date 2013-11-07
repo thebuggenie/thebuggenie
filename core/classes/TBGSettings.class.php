@@ -207,7 +207,7 @@
 		{
 			self::$_settings[$module][$name][$uid] = $value;
 		}
-	
+
 		public static function get($name, $module = 'core', $scope = null, $uid = 0)
 		{
 			if (TBGContext::isInstallmode() && !TBGContext::getScope() instanceof TBGScope)

@@ -685,10 +685,10 @@
 			return ($theIssue instanceof TBGIssue) ? $theIssue : null;
 		}
 
-		public static function findIssues($filters = array(), $results_per_page = 30, $offset = 0, $groupby = null, $grouporder = null, $dateorder = 'asc')
+		public static function findIssues($filters = array(), $results_per_page = 30, $offset = 0, $groupby = null, $grouporder = null, $sortfields = array(TBGIssuesTable::LAST_UPDATED => 'asc'))
 		{
 			$issues = array();
-			list ($rows, $count, $ids) = TBGIssuesTable::getTable()->findIssues($filters, $results_per_page, $offset, $groupby, $grouporder, $dateorder);
+			list ($rows, $count, $ids) = TBGIssuesTable::getTable()->findIssues($filters, $results_per_page, $offset, $groupby, $grouporder, $sortfields);
 			if ($rows)
 			{
 				TBGIssueCustomFieldsTable::getTable()->preloadValuesByIssueIDs($ids);

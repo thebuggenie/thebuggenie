@@ -28,7 +28,9 @@ var TBG = {
 	Core: {
 		AjaxCalls: []
 	}, // The "Core" namespace is for functions used by thebuggenie core, not to be invoked outside the js class
-	Tutorial: {},
+	Tutorial: {
+        Stories: {}
+    },
 	Main: { // The "Main" namespace contains regular functions in use across the site
 		Helpers: {
 			Message: {},
@@ -251,7 +253,7 @@ TBG.Core._scrollWatcher = function() {
 				var button = $('comment_add_button').remove();
 				$('add_comment_button_container').update(button);
 			}
-		}else {
+		} else {
 			$('viewissue_header_container').removeClassName('fixed');
 			$('workflow_actions').removeClassName('fixed');
 			if ($('comment_add_button') != undefined) {
@@ -269,6 +271,19 @@ TBG.Core._scrollWatcher = function() {
 			$('bulk_action_form_top').removeClassName('fixed');
 		}
 	}
+    if ($('issues_paginator')) {
+        var ip = $('issues_paginator');
+        var ipl = ip.getLayout();
+        var ip_height = ipl.get('height') + ipl.get('padding-top') + ipl.get('padding-bottom');
+
+        var y = document.viewport.getScrollOffsets().top + document.viewport.getHeight();
+        var y2 = $('body').scrollHeight;
+        if (y >= y2 - ip_height) {
+            ip.removeClassName('fixed');
+        } else {
+            ip.addClassName('fixed');
+        }
+    }
 };
 
 /**
@@ -3783,52 +3798,6 @@ TBG.Issues.updateWorkflowAssigneeTeamup = function(url, assignee_id, assignee_ty
 	TBG.Issues.updateWorkflowAssignee(url, assignee_id, assignee_type, transition_id, true);
 }
 
-TBG.Search.Filter.add = function(url) {
-	TBG.Main.Helpers.ajax(url, {
-		params: '&filter_name=' + $('add_search_filter_dropdown').value + '&key=' + $('max_filters').value,
-		loading: {indicator: 'add_filter_indicator'},
-		success: {
-			update: {element: 'search_filters_list', insertion: true},
-			callback: function() {
-				$('max_filters').value++;
-			}
-		}
-	});
-};
-
-TBG.Search.Filter.remove = function(key) {
-	$('filter_' + key).remove();
-	if ($('search_filters_list').childElements().size() == 0) {
-		$('max_filters').value = 0;
-	}
-};
-
-TBG.Search.Filter.setIdentifiable = function(url, filter, key, i_id, i_type)
-{
-	TBG.Main.Helpers.ajax(url, {
-		additional_params: '&i_id=' + i_id + '&i_type=' + i_type,
-		loading: {
-			indicator: 'filter_'+filter+'_'+key+'_indicator'
-		},
-		success: {
-			update: 'filter_'+filter+'_'+key+'_name'
-		},
-		complete: {
-			callback: function() {
-				$('filter_'+filter+'_'+key).setValue(i_id);
-				$('filter_'+filter+'_'+key+'_type').setValue(i_id);
-			},
-			hide: 'filter_'+filter+'_'+key+'_popup'
-		}
-	});
-}
-
-TBG.Search.Filter.setTimestamp = function(filter, key) {
-	var d = new Date();
-	d.setFullYear($('filter_'+filter+'_'+key+'_year').value, $('filter_'+filter+'_'+key+'_month').value, $('filter_'+filter+'_'+key+'_day').value);
-	$('filter_'+filter+'_'+key).setValue(parseInt(+d / 1000));
-};
-
 TBG.Search.deleteSavedSearch = function(url, id) {
 	TBG.Main.Helpers.ajax(url, {
 		loading: {indicator: 'delete_search_' + id + '_indicator'},
@@ -3858,18 +3827,15 @@ TBG.Search.toggleColumn = function(column) {
 
 TBG.Search.resetColumns = function() {
 	TBG.Search.ResultViews[TBG.Search.current_result_view].visible.each(function(column) {
-		$$('.scs_' + column).each(function(element) {
-			element.show();
-			if (TBG.Search.ResultViews[TBG.Search.current_result_view].default_visible.indexOf(column) != -1) {
-				element.down('input').checked = true;
-			} else {
-				element.down('input').checked = false;
-			}
-		});
-		$$('.sc_' + column).each(function(element) {
-			element.show();
-		});
+        if (TBG.Search.ResultViews[TBG.Search.current_result_view].default_visible.indexOf(column) != -1) {
+            TBG.Search.setFilterValue($('search_column_'+column+'_toggler'), true);
+            $$('.sc_' + column).each(Element.show);
+        } else {
+            TBG.Search.setFilterValue($('search_column_'+column+'_toggler'), false);
+            $$('.sc_' + column).each(Element.hide);
+        }
 	});
+    TBG.Search.saveColumnVisibility();
 };
 
 TBG.Search.setColumns = function(resultview, available_columns, visible_columns, default_columns) {
@@ -3880,40 +3846,16 @@ TBG.Search.setColumns = function(resultview, available_columns, visible_columns,
 		default_visible: default_columns
 	};
 	TBG.Search.ResultViews[resultview].available.each(function(column) {
-		$$('.scs_' + column).each(function(element) {
-			element.show();
-			if (TBG.Search.ResultViews[resultview].visible.indexOf(column) != -1) {
-				element.down('input').checked = true;
-			}
-		});
+        if (TBG.Search.ResultViews[resultview].visible.indexOf(column) != -1) {
+            TBG.Search.setFilterValue($('search_column_'+column+'_toggler'), true);
+        } else {
+            TBG.Search.setFilterValue($('search_column_'+column+'_toggler'), false);
+        }
 	});
 	$('scs_current_template').setValue(resultview);
 	$('search_column_settings_toggler').show();
 	$('search_column_settings_notoggler').hide();
 }
-
-TBG.Search.saveVisibleColumns = function(url) {
-	TBG.Main.Helpers.ajax(url, {
-		form: 'scs_column_settings_form',
-		loading: {
-			indicator: 'search_column_settings_indicator',
-			callback: function() {
-				$('search_column_settings_save_button').addClassName('disabled');
-			}
-		},
-		success: {
-			hide: 'search_column_settings_container',
-			callback: function() {
-				$('search_column_settings_save_button').toggleClassName('button-pressed');
-			}
-		},
-		complete: {
-			callback: function() {
-				$('search_column_settings_save_button').removeClassName('disabled');
-			}
-		}
-	});
-};
 
 TBG.Search.checkToggledCheckboxes = function() {
 	var num_checked = 0;
@@ -4229,35 +4171,39 @@ TBG.Search.getFilterValues = function(element) {
 	}
 };
 
+TBG.Search.initializeFilterSearchValues = function(filter) {
+    var si = filter.down('input[type=search]');
+    if (si != undefined)
+    {
+        si.dataset.previousValue = '';
+        if (si.dataset.callbackUrl !== undefined) {
+            var fk = filter.dataset.filterKey;
+            si.on('keyup', function(event, element) {
+                if (TBG.ift_observers[fk]) clearTimeout(TBG.ift_observers[fk]);
+                if ((si.getValue().length >= 3 || si.getValue().length == 0) && si.getValue() != si.dataset.lastValue) {
+                    TBG.ift_observers[fk] = setTimeout(function() {
+                        TBG.Search.getFilterValues(si);
+                        si.dataset.lastValue = si.getValue();
+                    }, 1000);
+                }
+            });
+        } else {
+            si.on('keyup', TBG.Search.filterFilterOptions);
+        }
+        si.on('click', function(event, element) {
+            event.stopPropagation();
+            event.preventDefault();
+        });
+        filter.addClassName('searchable');
+    }
+};
+
 TBG.Search.initializeFilterField = function(filter) {
     filter.on('click', TBG.Search.toggleInteractiveFilter);
     filter.select('li.filtervalue').each(function(filtervalue) {
         filtervalue.on('click', TBG.Search.toggleFilterValue);
     });
-	var si = filter.down('input[type=search]');
-    if (si != undefined)
-	{
-		si.dataset.previousValue = '';
-		if (si.dataset.callbackUrl !== undefined) {
-			var fk = filter.dataset.filterKey;
-			si.on('keyup', function(event, element) {
-				if (TBG.ift_observers[fk]) clearTimeout(TBG.ift_observers[fk]);
-				if ((si.getValue().length >= 3 || si.getValue().length == 0) && si.getValue() != si.dataset.lastValue) {
-					TBG.ift_observers[fk] = setTimeout(function() {
-						TBG.Search.getFilterValues(si);
-						si.dataset.lastValue = si.getValue();
-					}, 1000);
-				}
-			});
-		} else {
-			si.on('keyup', TBG.Search.filterFilterOptions);
-		}
-		si.on('click', function(event, element) {
-			event.stopPropagation();
-			event.preventDefault();
-		});
-		filter.addClassName('searchable');
-	}
+    TBG.Search.initializeFilterSearchValues(filter);
 	TBG.Search.initializeFilterNavigation(filter);
     TBG.Search.calculateFilterDetails(filter);
 };
@@ -4300,6 +4246,7 @@ TBG.Search.filterFilterOptionsElement = function(element) {
 		else element.up().removeClassName('filtered');
 		
 		element.up().select('.filtervalue').each(function(elm) {
+            if (elm.hasClassName('sticky')) return;
 			if (filtervalue !== '') {
 				if (elm.innerHTML.toLowerCase().indexOf(filtervalue.toLowerCase()) !== -1 || elm.hasClassName('selected')) {
 					elm.addClassName('unfiltered');
@@ -4368,13 +4315,44 @@ TBG.Search.removeFilter = function(element) {
     if (do_update) TBG.Search.liveUpdate();
 }
 
+TBG.Search.saveColumnVisibility = function() {
+    var fif = $('find_issues_form');
+    var scc = $('search_columns_container');
+    var parameters = fif.serialize();
+    TBG.Main.Helpers.ajax(scc.dataset.url, {
+        params: parameters,
+        loading: { indicator: 'search_column_settings_indicator' },
+        success: { hide: 'search_column_settings_indicator' }
+    });
+};
+
+TBG.Search.updateColumnVisibility = function(event, element) {
+    event.preventDefault();
+    event.stopPropagation();
+    if (element.down('input').checked) {
+        TBG.Search.setFilterValue(element, false);
+    } else {
+        TBG.Search.setFilterValue(element, true);
+    }
+    TBG.Search.toggleColumn(element.dataset.value);
+    TBG.Search.saveColumnVisibility();
+};
+
 TBG.Search.initializeFilters = function() {
     var fif = $('find_issues_form');
     fif.reset();
     $$('.filter').each(function (filter) {
         TBG.Search.initializeFilterField(filter);
     });
-    ['interactive_plus_button', 'interactive_template_button'].each(function (element) { $(element).on('click', TBG.Search.toggleInteractiveFilter); });
+    ['interactive_plus_button', 'interactive_template_button', 'interactive_grouping_button'].each(function (element) { $(element).on('click', TBG.Search.toggleInteractiveFilter); });
+    TBG.Search.initializeFilterSearchValues($('search_column_settings_container'));
+    TBG.Search.initializeFilterSearchValues($('search_grouping_container'));
+    $('search_columns_container').select('li').each(function(element) {
+        element.on('click', TBG.Search.updateColumnVisibility);
+    });
+    $('search_grouping_container').select('li').each(function(element) {
+        element.on('click', TBG.Search.setGrouping);
+    });
     $$('.template-picker').each(function(element) {
         element.on('click', TBG.Search.pickTemplate);
     });
@@ -4419,10 +4397,29 @@ TBG.Search.pickTemplate = function(event, element) {
     $$('.filter,.interactive_plus_button').each(function (element) { if (element != this) element.removeClassName('selected'); });
     if (is_selected) this.removeClassName('selected');
     else this.addClassName('selected');
+
+    TBG.Search.liveUpdate();
+};
+
+TBG.Search.setGrouping = function(event, element) {
+    event.stopPropagation();
+    TBG.Search.setFilterSelectionGroupSelections(this);
+    TBG.Search.setFilterValue(element, true);
+
+    if (element.hasClassName('groupby')) {
+        if (element.dataset.groupby == '') {
+            $('filter_grouping_options').hide();
+        } else {
+            $('filter_grouping_options').show();
+        }
+    }
+
+    TBG.Search.liveUpdate();
 };
 
 TBG.Search.toggleInteractiveFilter = function(event, element) {
     event.stopPropagation();
+    if (['INPUT'].indexOf(event.target.nodeName) != -1) return;
 	TBG.Search.toggleInteractiveFilterElement(this);
 };
 
@@ -4436,7 +4433,7 @@ TBG.Search.toggleInteractiveFilterElement = function(element) {
     else
 	{
 		element.addClassName('selected');
-		var search_inputs = element.select('input[type=search]');
+		var search_inputs = (element.hasClassName('interactive_plus_button')) ? element.next().select('input[type=search]') : element.select('input[type=search]');
 		if (search_inputs.size() > 0) search_inputs[0].focus();
 	}
 
@@ -4482,26 +4479,20 @@ TBG.Search.clearDirty = function() {
 };
 
 TBG.Search.loadDynamicChoices = function() {
-    console.log('loading dynamic choices');
     var fif = $('find_issues_form');
     var url = fif.dataset.dynamicCallbackUrl;
-    console.log(url);
     var parameters = '&project_id='+$('filter_project_id_value_input').getValue();
-    console.log(parameters);
     var filters_containers = [];
     var fsvi = $('filter_subprojects_value_input');
     if (fsvi) parameters += '&subprojects='+fsvi.getValue();
-    console.log(parameters);
     ['build', 'component', 'edition', 'milestone'].each(function(elm) {
         var filter = $('interactive_filter_'+elm);
-        console.log(filter);
         var results_container = filter.down('.interactive_menu_values');
         results_container.select('input[type=checkbox]').each(function(checkbox) {
             if (checkbox.checked) parameters += '&existing_ids['+filter.dataset.filterkey+']['+checkbox.value+']='+checkbox.value;
         });
         filters_containers.push({filter: filter, container: results_container});
     });
-    console.log(parameters);
     TBG.Main.Helpers.ajax(url, {
         params: parameters,
         loading: {
@@ -4514,8 +4505,6 @@ TBG.Search.loadDynamicChoices = function() {
         success: {
             callback: function(json) {
                 filters_containers.each(function(details) {
-                    console.log('updating '+details['filter'].dataset.filterkey+' results');
-                    console.log(details['container']);
                     details['container'].update(json.results[details['filter'].dataset.filterkey]);
                     window.setTimeout(function() {
                         details['container'].select('li.filtervalue').each(function(filtervalue) {
@@ -4534,6 +4523,10 @@ TBG.Search.loadDynamicChoices = function() {
     });
 };
 
+TBG.Search.sortResults = function (event, element) {
+
+}
+
 TBG.Search.liveUpdate = function(force) {
     var fif = $('find_issues_form');
     var url = fif.action;
@@ -4550,10 +4543,17 @@ TBG.Search.liveUpdate = function(force) {
             complete: {
                 callback: function(json) {
                     $('findissues_num_results_span').update(json.num_issues);
+                    $('findissues_search_title').hide();
+                    $('findissues_search_generictitle').show();
                     $('findissues_num_results').show();
                     $('interactive_save_button').show();
                     fif.dataset.resultsLoaded = true;
-                    TableKit.load();
+//                    TableKit.load();
+                    $('search_results').select('th').each(function (header_elm) {
+                        if (!elm.hasClassName('nosort')) {
+                            header_elm.on('click', TBG.Search.sortResults);
+                        }
+                    })
                     if (TBG.Search.isDirty()) {
                         TBG.Search.loadDynamicChoices();
                         TBG.Search.clearDirty();
@@ -4610,6 +4610,7 @@ TBG.Search.initializeIssuesPerPageSlider = function() {
 };
 
 TBG.Search.setFilterValue = function(element, checked) {
+    if (element.hasClassName('separator')) return;
     if (checked) {
         element.addClassName('selected');
         element.down('input').checked = true;
@@ -4626,6 +4627,27 @@ TBG.Search.toggleFilterValue = function(event, element) {
 	TBG.Search.toggleFilterValueElement(this);
 };
 
+TBG.Search.setFilterSelectionGroupSelections = function(element) {
+    var current_element = element;
+    if (element.dataset.exclusive !== undefined) {
+        element.up('.interactive_menu_values').childElements().each(function (filter_element) {
+            if (filter_element.hasClassName('filtervalue')) {
+                if ((element.dataset.excludeGroup !== undefined && filter_element.dataset.selectionGroup == element.dataset.excludeGroup) ||
+                    element.dataset.selectionGroup == filter_element.dataset.selectionGroup) {
+                    if (filter_element.dataset.value != current_element.dataset.value) TBG.Search.setFilterValue(filter_element, false);
+                }
+            }
+        });
+    }
+    else if (element.dataset.excludeGroup !== undefined) {
+        element.up('.interactive_menu_values').childElements().each(function (filter_element) {
+            if (filter_element.hasClassName('filtervalue')) {
+                if (filter_element.dataset.selectionGroup != current_element.dataset.selectionGroup) TBG.Search.setFilterValue(filter_element, false);
+            }
+        });
+    }
+};
+
 TBG.Search.toggleFilterValueElement = function(element, checked) {
 	if (checked == undefined) {
 		if (element.down('input').checked) {
@@ -4636,24 +4658,10 @@ TBG.Search.toggleFilterValueElement = function(element, checked) {
 	} else {
 		TBG.Search.setFilterValue(element, checked);
 	}
-    var current_element = element;
-    if (element.dataset.exclusive !== undefined) {
-        element.up('.interactive_menu_values').childElements().each(function (filter_element) {
-            if (filter_element.hasClassName('filtervalue') && ((element.dataset.excludeGroup !== undefined && filter_element.dataset.selectionGroup == element.dataset.excludeGroup) || element.dataset.selectionGroup == filter_element.dataset.selectionGroup)) {
-                if (filter_element.dataset.value != current_element.dataset.value) TBG.Search.setFilterValue(filter_element, false);
-            }
-        });
-    }
-    else if (element.dataset.excludeGroup != undefined) {
-        element.up('.interactive_menu_values').childElements().each(function (filter_element) {
-            if (filter_element.hasClassName('filtervalue')) {
-                if (filter_element.dataset.selectionGroup != current_element.dataset.selectionGroup) TBG.Search.setFilterValue(filter_element, false);
-            }
-        });
-    }
+    TBG.Search.setFilterSelectionGroupSelections(element);
     var f_element = element.up('.filter');
     TBG.Search.calculateFilterDetails(f_element);
-    $('filter_'+current_element.up('.filter').dataset.filterkey+'_value_input').dataset.dirty = 'dirty';
+    $('filter_'+f_element.dataset.filterkey+'_value_input').dataset.dirty = 'dirty';
     TBG.Search.liveUpdate(true);
 };
 
@@ -5025,7 +5033,7 @@ TBG.Chart.burndownChart = function(burndown_data, time) {
 };
 
 TBG.Tutorial.highlightArea = function(top, left, width, height, blocked, seethrough) {
-	var backdrop_class = (seethrough != undefined && seethrough == true) ? 'seethrough' : 'dark';
+	var backdrop_class = (seethrough != undefined && seethrough == true) ? 'seethrough' : '';
 	var d1 = '<div class="fullpage_backdrop '+backdrop_class+' tutorial" style="top: 0; left: 0; width: '+left+'px;"></div>';
 	var d2_width = TBG.Core._vp_width - left - width;
 	var d2 = '<div class="fullpage_backdrop '+backdrop_class+' tutorial" style="top: 0; left: '+(left+width)+'px; width: '+d2_width+'px;"></div>';
@@ -5033,14 +5041,15 @@ TBG.Tutorial.highlightArea = function(top, left, width, height, blocked, seethro
 	var vp_height = document.viewport.getHeight();
 	var d4_height = vp_height - top - height;
 	var d4 = '<div class="fullpage_backdrop '+backdrop_class+' tutorial" style="top: '+(top+height)+'px; left: '+left+'px; width: '+width+'px; height: '+d4_height+'px"></div>';
+    var mc = $('main_container');
 	if (blocked == true) {
 		var d_overlay = '<div class="tutorial block_overlay" style="top: '+top+'px; left: '+left+'px; width: '+width+'px; height: '+height+'px;"></div>';
-		$('fullscreen-container').insert(d_overlay);
+		mc.insert(d_overlay);
 	}
-	$('fullscreen-container').insert(d1);
-	$('fullscreen-container').insert(d2);
-	$('fullscreen-container').insert(d3);
-	$('fullscreen-container').insert(d4);
+	mc.insert(d1);
+	mc.insert(d2);
+	mc.insert(d3);
+	mc.insert(d4);
 	TBG.Tutorial.positionMessage(top, left, width, height);
 };
 TBG.Tutorial.highlightElement = function(element, blocked, seethrough) {
@@ -5059,20 +5068,23 @@ TBG.Tutorial.positionMessage = function(top, left, width, height) {
 		tm.setStyle({top: '', left: ''});
 	} else {
 		tm.removeClassName('full');
-		var step = parseInt($('tutorial-message').dataset.tutorialStep);
-		var key = $('tutorial-message').dataset.tutorialKey;
+		var step = parseInt(tm.dataset.tutorialStep);
+		var key = tm.dataset.tutorialKey;
 		var td = TBG.Tutorial.Stories[key][step];
 		tm.addClassName(td.messagePosition);
 		var tl = tm.getLayout();
 		var twidth = tl.get('width') + tl.get('padding-left') + tl.get('padding-right');
 		switch (td.messagePosition) {
 			case 'right':
-				tm.setStyle({top: top + 'px', left: (left + width + 15)+'px'});
+                var tl = tm.getLayout();
+                var th = tl.get('height') + tl.get('padding-top') + tl.get('padding-bottom');
+				tm.setStyle({top: (top - parseInt(th / 2)) + 'px', left: (left + width + 15)+'px'});
 				break;
 			case 'left':
 				var tl = tm.getLayout();
 				var width = tl.get('width') + tl.get('padding-left') + tl.get('padding-right');
-				tm.setStyle({top: top + 'px', left: (left - width - 15)+'px'});
+                var th = tl.get('height') + tl.get('padding-top') + tl.get('padding-bottom');
+				tm.setStyle({top: (top - parseInt(th / 2)) + 'px', left: (left - width - 15)+'px'});
 				break;
 			case 'below':
 				tm.setStyle({top: (top + height + 15)+'px', left: ((left - parseInt(twidth / 2)) + width / 2) + 'px'});
@@ -5095,19 +5107,21 @@ TBG.Tutorial.resetHighlight = function() {
 	$$('.tutorial').each(Element.remove);
 };
 TBG.Tutorial.disable = function() {
-	var key = $('tutorial-message').dataset.tutorialKey;
-	TBG.Main.Helpers.ajax(TBG.options['say_url'], {
-		params: '&topic=disable_tutorial&key='+key
-	});
+    var tm = $('tutorial-message');
+	var key = tm.dataset.tutorialKey;
+    var url = tm.dataset.disableUrl;
+//	TBG.Main.Helpers.ajax(url, {
+//		params: '&key='+key
+//	});
 	$('tutorial-next-button').stopObserving('click');
 	TBG.Tutorial.resetHighlight();
 	$('tutorial-message').hide();
 };
-TBG.Tutorial.enable = function(key) {
-	TBG.Main.Helpers.ajax(TBG.options['say_url'], {
-		params: '&topic=enable_tutorial&key='+key
-	});
-};
+//TBG.Tutorial.enable = function(key) {
+//	TBG.Main.Helpers.ajax(TBG.options['say_url'], {
+//		params: '&topic=enable_tutorial&key='+key
+//	});
+//};
 TBG.Tutorial.playNextStep = function() {
 	TBG.Tutorial.resetHighlight();
 	var tm = $('tutorial-message');
@@ -5118,6 +5132,9 @@ TBG.Tutorial.playNextStep = function() {
 	tm.dataset.tutorialStep = step;
 	var tutorialData = TBG.Tutorial.Stories[key][step];
 	if (tutorialData != undefined) {
+        if (tutorialData.cb) {
+            tutorialData.cb(tutorialData);
+        }
 		$('tutorial-message-container').update(tutorialData.message);
 		var tbn = tm.down('.tutorial-buttons').down('.button-next');
 		var tb = tm.down('.tutorial-buttons').down('.button-disable');
@@ -5137,31 +5154,33 @@ TBG.Tutorial.playNextStep = function() {
 		tm.addClassName(tutorialData.messageSize);
 		if (tutorialData.highlight != undefined) {
 			var tdh = tutorialData.highlight;
-			if (tdh.element != undefined) {
-				var seethrough = (tdh.seethrough != undefined) ? tdh.seethrough : false;
-				TBG.Tutorial.highlightElement(tdh.element, tdh.blocked, seethrough);
-			} else {
-				TBG.Tutorial.highlightArea(tdh.top, tdh.left, tdh.width, tdh.height, tdh.blocked);
-			}
+            var timeout = (tdh.delay) ? tdh.delay : 50;
+            window.setTimeout(function() {
+                if (tdh.element != undefined) {
+                    var seethrough = (tdh.seethrough != undefined) ? tdh.seethrough : false;
+                    TBG.Tutorial.highlightElement(tdh.element, tdh.blocked, seethrough);
+                } else {
+                    TBG.Tutorial.highlightArea(tdh.top, tdh.left, tdh.width, tdh.height, tdh.blocked);
+                }
+            }, timeout);
 		} else {
 			TBG.Tutorial.highlightArea(0, 0, 0, 0, true);
-		}
-		if (tutorialData.cb) {
-			tutorialData.cb(tutorialData);
 		}
 	} else {
 		TBG.Tutorial.disable();
 	}
 };
-TBG.Tutorial.start = function(key) {
+TBG.Tutorial.start = function(key, initial_step) {
 	var tutorial = TBG.Tutorial.Stories[key];
 	var ts = 0;
+    var is = (initial_step != undefined) ? (initial_step - 1) : 0;
 	for (var d in tutorial) {
 		ts++;
 	}
-	$('tutorial-message').dataset.tutorialKey = key;
-	$('tutorial-message').dataset.tutorialStep = 0;
-	$('tutorial-message').dataset.tutorialSteps = ts;
+    var tm = $('tutorial-message');
+    tm.dataset.tutorialKey = key;
+	tm.dataset.tutorialStep = is;
+	tm.dataset.tutorialSteps = ts;
 	$('tutorial-total-steps').update(ts);
 	$('tutorial-next-button').stopObserving('click');
 	$('tutorial-next-button').observe('click', TBG.Tutorial.playNextStep);

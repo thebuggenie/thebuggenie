@@ -84,11 +84,12 @@
 		protected $_searchtitle;
 
 		/**
-		 * Date order
+		 * Sort fields
 		 *
 		 * @var string
+		 * @Column(type="string", length=400)
 		 */
-		protected $_dateorder = 'asc';
+		protected $_sortfields = "";
 
 		/**
 		 * The grouping used by the saved search
@@ -165,6 +166,16 @@
 		public static function isTemplateValid($template_name)
 		{
 			return in_array($template_name, array_keys(self::getTemplates(false)));
+		}
+
+		protected function _preSave($is_new)
+		{
+			$str = "";
+			foreach ($this->getSortFields() as $field => $sort)
+			{
+				$str .= "{$field}={$sort}";
+			}
+			$this->_sortfields = $str;
 		}
 
 		protected function _postSave($is_new)
@@ -541,24 +552,52 @@
 		}
 
 		/**
-		 * @param string $dateorder
+		 * @param string $fields
 		 */
-		public function setDateorder($dateorder)
+		public function setSortFields($fields)
 		{
-			$this->_dateorder = $dateorder;
+			$this->_sortfields = $fields;
+		}
+
+		public function addSortField($field, $sort_order)
+		{
+			$this->_initializeSortFields();
+			$this->_sortfields[$field] = $sort_order;
+		}
+
+		protected function _initializeSortFields()
+		{
+			if (!is_array($this->_sortfields))
+			{
+				if (!strlen($this->_sortfields))
+				{
+					$this->_sortfields = array(TBGIssuesTable::LAST_UPDATED => 'asc');
+				}
+				else
+				{
+					$fields = explode(',', $this->_sortfields);
+					$this->_sortfields = array();
+					foreach ($fields as $field)
+					{
+						$sort_details = explode('=', $field);
+						$this->_sortfields[$sort_details[0]] = $sort_details[1];
+					}
+				}
+			}
 		}
 
 		/**
-		 * @return string
+		 * @return array
 		 */
-		public function getDateorder()
+		public function getSortFields()
 		{
-			return $this->_dateorder;
+			$this->_initializeSortFields();
+			return $this->_sortfields;
 		}
 
 		protected function _performSearch()
 		{
-			list ($this->_issues, $this->_total_number_of_issues) = TBGIssue::findIssues($this->getFilters(), $this->getIssuesPerPage(), $this->getOffset(), $this->getGroupby(), $this->getGrouporder(), $this->getDateorder());
+			list ($this->_issues, $this->_total_number_of_issues) = TBGIssue::findIssues($this->getFilters(), $this->getIssuesPerPage(), $this->getOffset(), $this->getGroupby(), $this->getGrouporder(), $this->getSortFields());
 		}
 
 		public function getIssues()

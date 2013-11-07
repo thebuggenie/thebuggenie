@@ -588,7 +588,7 @@
 			}
 		}
 
-		public function findIssues($filters = array(), $results_per_page = 30, $offset = 0, $groupby = null, $grouporder = null, $dateorder = 'asc')
+		public function findIssues($filters = array(), $results_per_page = 30, $offset = 0, $groupby = null, $grouporder = null, $sortfields = array(self::LAST_UPDATED => 'asc'))
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::DELETED, false);
@@ -669,9 +669,9 @@
 						case 'severity':
 							$crit->addJoin(TBGListTypesTable::getTable(), TBGListTypesTable::ID, self::SEVERITY);
 							$crit->addSelectionColumn(self::SEVERITY);
-							$crit->addOrderBy(TBGListTypesTable::ORDER, Criteria::SORT_DESC);
+							$crit->addOrderBy(TBGListTypesTable::ORDER, $grouporder);
 							$crit3->addJoin(TBGListTypesTable::getTable(), TBGListTypesTable::ID, self::SEVERITY);
-							$crit3->addOrderBy(TBGListTypesTable::ORDER, Criteria::SORT_DESC);
+							$crit3->addOrderBy(TBGListTypesTable::ORDER, $grouporder);
 							break;
 						case 'user_pain':
 							$crit->addSelectionColumn(self::USER_PAIN);
@@ -686,16 +686,16 @@
 						case 'resolution':
 							$crit->addJoin(TBGListTypesTable::getTable(), TBGListTypesTable::ID, self::RESOLUTION);
 							$crit->addSelectionColumn(self::RESOLUTION);
-							$crit->addOrderBy(TBGListTypesTable::ORDER, Criteria::SORT_DESC);
+							$crit->addOrderBy(TBGListTypesTable::ORDER, $grouporder);
 							$crit3->addJoin(TBGListTypesTable::getTable(), TBGListTypesTable::ID, self::RESOLUTION);
-							$crit3->addOrderBy(TBGListTypesTable::ORDER, Criteria::SORT_DESC);
+							$crit3->addOrderBy(TBGListTypesTable::ORDER, $grouporder);
 							break;
 						case 'priority':
 							$crit->addJoin(TBGListTypesTable::getTable(), TBGListTypesTable::ID, self::PRIORITY);
 							$crit->addSelectionColumn(self::PRIORITY);
-							$crit->addOrderBy(TBGListTypesTable::ORDER, Criteria::SORT_DESC);
+							$crit->addOrderBy(TBGListTypesTable::ORDER, $grouporder);
 							$crit3->addJoin(TBGListTypesTable::getTable(), TBGListTypesTable::ID, self::PRIORITY);
-							$crit3->addOrderBy(TBGListTypesTable::ORDER, Criteria::SORT_DESC);
+							$crit3->addOrderBy(TBGListTypesTable::ORDER, $grouporder);
 							break;
 						case 'issuetype':
 							$crit->addJoin(TBGIssueTypesTable::getTable(), TBGIssueTypesTable::ID, self::ISSUE_TYPE);
@@ -733,9 +733,12 @@
 							break;
 					}
 				}
-				
-				$crit->addSelectionColumn(self::LAST_UPDATED);
-				$crit->addOrderBy(self::LAST_UPDATED, $dateorder);
+
+				foreach ($sortfields as $field => $sortorder)
+				{
+					$crit->addSelectionColumn($field);
+					$crit->addOrderBy($field, $sortorder);
+				}
 
 				$res = $this->doSelect($crit, 'none');
 				$ids = array();
@@ -749,7 +752,10 @@
 					$ids = array_reverse($ids);
 
 					$crit3->addWhere(self::ID, $ids, Criteria::DB_IN);
-					$crit3->addOrderBy(self::LAST_UPDATED, $dateorder);
+					foreach ($sortfields as $field => $sortorder)
+					{
+						$crit3->addOrderBy($field, $sortorder);
+					}
 
 					$res = $this->doSelect($crit3);
 					$rows = $res->getAllRows();

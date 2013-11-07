@@ -55,6 +55,7 @@
 							<li data-filter="severity" id="additional_filter_severity_link"><?php echo __('Severity'); ?></li>
 							<li data-filter="resolution" id="additional_filter_resolution_link"><?php echo __('Resolution'); ?></li>
 							<li data-filter="reproducability" id="additional_filter_reproducability_link"><?php echo __('Reproducability'); ?></li>
+							<li data-filter="blocking" id="additional_filter_blocking_link"><?php echo __('Blocker status'); ?></li>
 						</ul>
 					</div>
 					<?php if (count($nondatecustomfields)): ?>
@@ -67,24 +68,82 @@
 							</ul>
 						</div>
 					<?php endif; ?>
-					<input type="hidden" name="issues_per_page" value="50">
 				</div>
 			</div>
 			<div class="interactive_plus_container" id="interactive_settings_container">
+				<div class="interactive_plus_button" id="interactive_grouping_button"><?php echo image_tag('icon-mono-grouping.png'); ?></div>
+				<div class="interactive_menu" id="search_columns_container" data-url="<?php echo make_url('search_save_column_settings'); ?>">
+					<div id="search_column_settings_container" class="column">
+						<h1><?php echo __('Select columns to show'); ?></h1>
+						<input type="hidden" name="scs_current_template" value="" id="scs_current_template">
+						<input type="search" class="interactive_menu_filter" placeholder="<?php echo __('Filter values'); ?>">
+						<div class="interactive_values_container">
+							<ul class="interactive_menu_values">
+								<?php foreach ($columns as $c_key => $c_name): ?>
+									<li data-value="<?php echo $c_key; ?>" class="search_column filtervalue unfiltered scs_<?php echo $c_key; ?>" id="search_column_<?php echo $c_key; ?>_toggler">
+										<?php echo image_tag('icon-mono-checked.png', array('class' => 'checked')); ?>
+										<input id="search_column_<?php echo $c_key; ?>_toggler_checkbox" type="checkbox" value="<?php echo $c_key; ?>" name="columns[<?php echo $c_key; ?>]" data-text="<?php echo $c_name; ?>">
+										<?php echo $c_name; ?>
+									</li>
+								<?php endforeach; ?>
+							</ul>
+						</div>
+						<?php if (!$tbg_user->isGuest()): ?>
+							<div style="padding: 5px;">
+								<div id="search_column_settings_indicator" style="display: none; float: right; margin: 7px 5px 0 10px;"><?php echo image_tag('spinning_20.gif'); ?></div>
+								<?php echo javascript_link_tag(__('Reset columns'), array('onclick' => 'TBG.Search.resetColumns();return false;')); ?>
+							</div>
+						<?php /*else: ?>
+							<div style="text-align: right; clear: both;">
+								<a href="javascript:void(0);" onclick="$('search_column_settings_container').toggle();" title="<?php echo __('Done'); ?>" class="button button-silver"><?php echo __('Done'); ?></a>
+							</div>
+						<?php */ endif; ?>
+					</div>
+				</div>
 				<div class="interactive_plus_button" id="interactive_template_button"><?php echo image_tag('icon-mono-settings.png'); ?></div>
-				<div class="interactive_filters_list two_columns wide">
-					<h1><?php echo __('Select how to present search results'); ?></h1>
-					<input type="hidden" name="template" id="filter_selected_template" value="<?php echo $search_object->getTemplateName(); ?>">
-					<div class="search_template_list">
-						<ul>
-							<?php foreach ($templates as $template_name => $template_details): ?>
-								<li data-template-name="<?php echo $template_name; ?>" class="template-picker <?php if ($template_name == $search_object->getTemplateName()) echo 'selected'; ?>">
-									<?php echo image_tag('search_template_'.$template_name.'.png'); ?>
-									<h1><?php echo $template_details['title']; ?></h1>
-									<?php echo $template_details['description']; ?>
+				<div class="interactive_filters_list interactive_menu two_columns wide">
+					<div class="column">
+						<h1><?php echo __('Select how to present search results'); ?></h1>
+						<input type="hidden" name="template" id="filter_selected_template" value="<?php echo $search_object->getTemplateName(); ?>">
+						<div class="search_template_list">
+							<ul>
+								<?php foreach ($templates as $template_name => $template_details): ?>
+									<li data-template-name="<?php echo $template_name; ?>" class="template-picker <?php if ($template_name == $search_object->getTemplateName()) echo 'selected'; ?>">
+										<?php echo image_tag('search_template_'.$template_name.'.png'); ?>
+										<h1><?php echo $template_details['title']; ?></h1>
+										<?php echo $template_details['description']; ?>
+									</li>
+								<?php endforeach; ?>
+							</ul>
+						</div>
+					</div>
+					<div class="column" id="search_grouping_container">
+						<h1><?php echo __('Search result grouping'); ?></h1>
+						<input type="search" class="interactive_menu_filter" placeholder="<?php echo __('Filter values'); ?>">
+						<div class="interactive_values_container">
+							<ul class="interactive_menu_values" id="filter_grouping_options">
+								<?php foreach (array('asc' => __('Ascending'), 'desc' => __('Descending')) as $dir => $dir_desc): ?>
+									<li data-sort-order="<?php echo $dir; ?>" data-value="<?php echo $dir; ?>" class="grouporder filtervalue sticky unfiltered <?php if ($search_object->getGrouporder() == $dir) echo 'selected'; ?>" data-exclusive data-selection-group="1">
+										<?php echo image_tag('icon-mono-checked.png', array('class' => 'checked')); ?>
+										<input type="radio" value="<?php echo $dir; ?>" name="grouporder" data-text="<?php echo $dir_desc; ?>" id="search_grouping_grouporder_<?php echo $dir; ?>" <?php if ($search_object->getGrouporder() == $dir) echo 'checked'; ?>>
+										<?php echo $dir_desc; ?>
+									</li>
+								<?php endforeach; ?>
+								<li class="separator"></li>
+								<li data-groupby="" data-value="" class="groupby unfiltered <?php if (!$search_object->getGroupby()) echo 'selected'; ?>" data-exclusive data-selection-group="2">
+									<?php echo image_tag('icon-mono-checked.png', array('class' => 'checked')); ?>
+									<input type="radio" value="" name="groupby" data-text="<?php echo __('No grouping'); ?>" id="search_grouping_none" <?php if (!$search_object->getGroupby()) echo 'checked'; ?>>
+									<?php echo __('No grouping'); ?>
 								</li>
-							<?php endforeach; ?>
-						</ul>
+								<?php foreach ($groupoptions as $grouping => $group_desc): ?>
+									<li data-groupby="<?php echo $grouping; ?>" data-value="<?php echo $grouping; ?>" class="groupby filtervalue unfiltered <?php if ($search_object->getGroupby() == $grouping) echo 'selected'; ?>" data-exclusive data-selection-group="2">
+										<?php echo image_tag('icon-mono-checked.png', array('class' => 'checked')); ?>
+										<input type="radio" value="<?php echo $grouping; ?>" name="groupby" data-text="<?php echo $group_desc; ?>" id="search_grouping_groupby_<?php echo $grouping; ?>" <?php if ($search_object->getGroupby() == $grouping) echo 'checked'; ?>>
+										<?php echo $group_desc; ?>
+									</li>
+								<?php endforeach; ?>
+							</ul>
+						</div>
 					</div>
 					<h1><?php echo __('Select how many issues to show per page'); ?></h1>
 					<input type="hidden" name="issues_per_page" id="filter_issues_per_page" value="<?php echo $search_object->getIssuesPerPage(); ?>">
@@ -271,7 +330,7 @@
 		<?php if (TBGContext::isProjectContext()): ?>
 			<?php if (!$search_object->hasFilter('subprojects')) include_component('search/interactivefilter', array('filter' => TBGSearchFilter::createFilter('subprojects'))); ?>
 		<?php endif; ?>
-		<?php foreach (array('priority', 'severity', 'reproducability', 'resolution', 'posted_by', 'assignee_user', 'assignee_team', 'owner_user', 'owner_team', 'milestone', 'edition', 'component', 'build') as $key): ?>
+		<?php foreach (array('priority', 'severity', 'reproducability', 'resolution', 'posted_by', 'assignee_user', 'assignee_team', 'owner_user', 'owner_team', 'milestone', 'edition', 'component', 'build', 'blocking') as $key): ?>
 			<?php if (!$search_object->hasFilter($key)) include_component('search/interactivefilter', array('filter' => TBGSearchFilter::createFilter($key))); ?>
 		<?php endforeach; ?>
 		<?php foreach (array('posted', 'last_updated') as $key): ?>

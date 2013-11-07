@@ -46,7 +46,8 @@
 .article .header, #article_attachments > h4, #article_comments > h4 { margin: 0 0 5px 0; padding: 2px 3px 3px 0; font-weight: normal; font-size: 21px; border-bottom: none; }
 #article_attachments > h4, #article_comments > h4 { font-size: 17px; border-bottom: 1px solid #CCC; }
 .article > .header { border-bottom: 1px solid #CCC; }
-.article .header a { font-size: 12px; border-bottom: 0; }
+.article .header a { font-size: 0.7em; border-bottom: 0; }
+.article .header.tab_menu li { padding: 3px 9px; }
 .article .header .title_left_images { font-size: 0.6em; font-weight: normal; display: inline-block; height: 26px; width: 38px; }
 
 .article .details { color: #AAA; padding-bottom: 5px; }
