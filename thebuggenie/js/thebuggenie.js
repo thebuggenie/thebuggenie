@@ -4317,13 +4317,15 @@ TBG.Search.removeFilter = function(element) {
 
 TBG.Search.saveColumnVisibility = function() {
     var fif = $('find_issues_form');
-    var scc = $('search_columns_container');
-    var parameters = fif.serialize();
-    TBG.Main.Helpers.ajax(scc.dataset.url, {
-        params: parameters,
-        loading: { indicator: 'search_column_settings_indicator' },
-        success: { hide: 'search_column_settings_indicator' }
-    });
+    if (fif.dataset.isSaved === undefined) {
+        var scc = $('search_columns_container');
+        var parameters = fif.serialize();
+        TBG.Main.Helpers.ajax(scc.dataset.url, {
+            params: parameters,
+            loading: { indicator: 'search_column_settings_indicator' },
+            success: { hide: 'search_column_settings_indicator' }
+        });
+    }
 };
 
 TBG.Search.updateColumnVisibility = function(event, element) {
@@ -4548,7 +4550,7 @@ TBG.Search.liveUpdate = function(force) {
                     $('findissues_num_results').show();
                     $('interactive_save_button').show();
                     fif.dataset.resultsLoaded = true;
-//                    TableKit.load();
+                    fif.dataset.isSaved = undefined;
                     $('search_results').select('th').each(function (header_elm) {
                         if (!elm.hasClassName('nosort')) {
                             header_elm.on('click', TBG.Search.sortResults);

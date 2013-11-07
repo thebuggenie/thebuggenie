@@ -92,6 +92,14 @@
 		protected $_sortfields = "";
 
 		/**
+		 * Columns
+		 *
+		 * @var string
+		 * @Column(type="string", length=600)
+		 */
+		protected $_columns = "";
+
+		/**
 		 * The grouping used by the saved search
 		 *
 		 * @var string
@@ -176,6 +184,7 @@
 				$str .= "{$field}={$sort}";
 			}
 			$this->_sortfields = $str;
+			$this->_columns = join(',', $this->getColumns());
 		}
 
 		protected function _postSave($is_new)
@@ -261,8 +270,9 @@
 				$this->_offset = $request->getParameter('offset', 0);
 				$this->_filters = TBGSearchFilter::getFromRequest($request, $this);
 				$this->_applies_to_project = TBGContext::getCurrentProject();
+				$this->_columns = $request->getParameter('columns');
 
-				if ($request['quicksearch']) $this->_dateorder = 'desc';
+				if ($request['quicksearch']) $this->setSortFields(array(TBGIssuesTable::LAST_UPDATED => 'asc'));
 
 				$this->_groupby = $request['groupby'];
 				$this->_grouporder = $request->getParameter('grouporder', 'asc');
@@ -595,6 +605,47 @@
 			return $this->_sortfields;
 		}
 
+		/**
+		 * @param string $columns Comma-separated list of columns to display
+		 */
+		public function setColumns($columns)
+		{
+			$this->_columns = $columns;
+		}
+
+		public function addColumns($column)
+		{
+			$this->_initializeColumns();
+			$this->_columns[] = $column;
+		}
+
+		protected function _initializeColumns()
+		{
+			if (!is_array($this->_columns))
+			{
+				if (!strlen($this->_columns))
+				{
+					if ($columns = TBGSettings::get('search_scs_'.$this->getTemplateName()))
+						$this->_columns = explode(',', $columns);
+					else
+						$this->_columns = self::getDefaultVisibleColumns();
+				}
+				else
+				{
+					$this->_columns = explode(',', $this->_columns);
+				}
+			}
+		}
+
+		/**
+		 * @return array
+		 */
+		public function getColumns()
+		{
+			$this->_initializeColumns();
+			return $this->_columns;
+		}
+
 		protected function _performSearch()
 		{
 			list ($this->_issues, $this->_total_number_of_issues) = TBGIssue::findIssues($this->getFilters(), $this->getIssuesPerPage(), $this->getOffset(), $this->getGroupby(), $this->getGrouporder(), $this->getSortFields());
@@ -691,6 +742,11 @@
 		public function getParametersAsString()
 		{
 			return join('&', $this->getParameters());
+		}
+
+		public static function getDefaultVisibleColumns()
+		{
+			return array('title', 'assigned_to', 'status', 'resolution', 'last_updated', 'comments');
 		}
 
 	}
