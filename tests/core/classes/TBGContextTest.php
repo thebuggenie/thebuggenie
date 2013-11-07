@@ -1,6 +1,6 @@
 <?php
 
-	require THEBUGGENIE_CORE_PATH . 'classes/TBGContext.class.php';
+	//require THEBUGGENIE_CORE_PATH . 'classes/TBGContext.class.php';
 
 	class TBGContextTest extends PHPUnit_Framework_TestCase
 	{

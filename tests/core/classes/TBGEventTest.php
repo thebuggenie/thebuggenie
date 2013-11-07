@@ -1,6 +1,6 @@
 <?php
 
-require THEBUGGENIE_CORE_PATH . 'classes/TBGEvent.class.php';
+//require THEBUGGENIE_CORE_PATH . 'classes/TBGEvent.class.php';
 
 class TBGLogging
 {
