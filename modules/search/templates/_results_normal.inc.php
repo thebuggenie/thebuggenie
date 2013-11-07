@@ -25,7 +25,7 @@
 		</h5>
 	<?php endif; ?>
 	<?php if ($showtablestart): ?>
-		<table style="width: 100%;" cellpadding="0" cellspacing="0" class="results_container resizable sortable">
+		<table style="width: 100%;" cellpadding="0" cellspacing="0" class="results_container results_normal">
 			<thead>
 				<tr>
 					<?php if (!$tbg_user->isGuest()): ?>
@@ -34,23 +34,23 @@
 					<?php if (!TBGContext::isProjectContext() && $show_project == true): ?>
 						<th style="padding-left: 3px;"><?php echo __('Project'); ?></th>
 					<?php endif; ?>
-					<th data-sort-direction="asc" class="sc_issuetype"<?php if (!in_array('issuetype', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Issue type'); ?></th>
-					<th data-sort-direction="asc" class="sc_title_container"><span data-sort-direction="asc" class="sc_title"<?php if (!in_array('title', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Issue'); ?></span></th>
-					<th data-sort-direction="asc" class="sc_assigned_to"<?php if (!in_array('assigned_to', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Assigned to'); ?></th>
-					<th data-sort-direction="asc" class="sc_status"<?php if (!in_array('status', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Status'); ?></th>
-					<th data-sort-direction="asc" class="sc_resolution"<?php if (!in_array('resolution', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Resolution'); ?></th>
-					<th data-sort-direction="asc" class="sc_category"<?php if (!in_array('category', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Category'); ?></th>
-					<th data-sort-direction="asc" class="sc_severity"<?php if (!in_array('severity', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Severity'); ?></th>
-					<th data-sort-direction="asc" class="sc_percent_complete" style="width: 150px;<?php if (!in_array('percent_complete', $visible_columns)): ?> display: none;<?php endif; ?>"><?php echo __('% completed'); ?></th>
-					<th data-sort-direction="asc" class="sc_reproducability"<?php if (!in_array('reproducability', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Reproducability'); ?></th>
-					<th data-sort-direction="asc" class="sc_priority"<?php if (!in_array('priority', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Priority'); ?></th>
-					<th data-sort-direction="asc" class="sc_components"<?php if (!in_array('components', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Component(s)'); ?></th>
-					<th data-sort-direction="asc" class="sc_milestone"<?php if (!in_array('milestone', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Milestone'); ?></th>
-					<th data-sort-direction="asc" class="sc_estimated_time"<?php if (!in_array('estimated_time', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Estimate'); ?></th>
-					<th data-sort-direction="asc" class="sc_spent_time"<?php if (!in_array('spent_time', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Time spent'); ?></th>
-					<th data-sort-direction="asc" class="sc_last_updated numeric"<?php if (!in_array('last_updated', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Last updated'); ?></th>
-					<th data-sort-direction="asc" class="sc_comments" style="width: 20px; padding-bottom: 0; text-align: center;<?php if (!in_array('comments', $visible_columns)): ?> display: none;<?php endif; ?>"><?php echo image_tag('icon_comments.png', array('title' => __('Number of user comments on this issue'))); ?></th>
-					<th data-sort-direction="asc" class="sc_actions nosort" style="width: 20px; padding-bottom: 0; text-align: center;">&nbsp;</th>
+					<th data-sort-direction="<?php echo $search_object->getSortDirection(TBGIssuesTable::ISSUE_TYPE); ?>" data-sort-field="<?php echo TBGIssuesTable::ISSUE_TYPE; ?>" class="sc_issuetype <?php if ($dir = $search_object->getSortDirection(TBGIssuesTable::ISSUE_TYPE)) echo "sort_{$dir}"; ?>" <?php if (!in_array('issuetype', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Issue type'); ?></th>
+					<th data-sort-direction="<?php echo $search_object->getSortDirection(TBGIssuesTable::TITLE); ?>" data-sort-field="<?php echo TBGIssuesTable::TITLE; ?>" class="sc_title_container <?php if ($dir = $search_object->getSortDirection(TBGIssuesTable::TITLE)) echo "sort_{$dir}"; ?>"><span data-sort-direction="asc" class="sc_title"<?php if (!in_array('title', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Issue'); ?></span></th>
+					<th data-sort-direction="<?php echo $search_object->getSortDirection(TBGIssuesTable::ASSIGNEE_USER); ?>" data-sort-field="<?php echo TBGIssuesTable::ASSIGNEE_USER; ?>" class="sc_assigned_to <?php if ($dir = $search_object->getSortDirection(TBGIssuesTable::ASSIGNEE_USER)) echo "sort_{$dir}"; ?>"<?php if (!in_array('assigned_to', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Assigned to'); ?></th>
+					<th data-sort-direction="<?php echo $search_object->getSortDirection(TBGIssuesTable::STATUS); ?>" data-sort-field="<?php echo TBGIssuesTable::STATUS; ?>" class="sc_status <?php if ($dir = $search_object->getSortDirection(TBGIssuesTable::STATUS)) echo "sort_{$dir}"; ?>"<?php if (!in_array('status', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Status'); ?></th>
+					<th data-sort-direction="<?php echo $search_object->getSortDirection(TBGIssuesTable::RESOLUTION); ?>" data-sort-field="<?php echo TBGIssuesTable::RESOLUTION; ?>" class="sc_resolution <?php if ($dir = $search_object->getSortDirection(TBGIssuesTable::RESOLUTION)) echo "sort_{$dir}"; ?>"<?php if (!in_array('resolution', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Resolution'); ?></th>
+					<th data-sort-direction="<?php echo $search_object->getSortDirection(TBGIssuesTable::CATEGORY); ?>" data-sort-field="<?php echo TBGIssuesTable::CATEGORY; ?>" class="sc_category <?php if ($dir = $search_object->getSortDirection(TBGIssuesTable::CATEGORY)) echo "sort_{$dir}"; ?>"<?php if (!in_array('category', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Category'); ?></th>
+					<th data-sort-direction="<?php echo $search_object->getSortDirection(TBGIssuesTable::SEVERITY); ?>" data-sort-field="<?php echo TBGIssuesTable::SEVERITY; ?>" class="sc_severity <?php if ($dir = $search_object->getSortDirection(TBGIssuesTable::SEVERITY)) echo "sort_{$dir}"; ?>"<?php if (!in_array('severity', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Severity'); ?></th>
+					<th data-sort-direction="<?php echo $search_object->getSortDirection(TBGIssuesTable::PERCENT_COMPLETE); ?>" data-sort-field="<?php echo TBGIssuesTable::PERCENT_COMPLETE; ?>" class="sc_percent_complete <?php if ($dir = $search_object->getSortDirection(TBGIssuesTable::PERCENT_COMPLETE)) echo "sort_{$dir}"; ?>" style="width: 150px;<?php if (!in_array('percent_complete', $visible_columns)): ?> display: none;<?php endif; ?>"><?php echo __('% completed'); ?></th>
+					<th data-sort-direction="<?php echo $search_object->getSortDirection(TBGIssuesTable::REPRODUCABILITY); ?>" data-sort-field="<?php echo TBGIssuesTable::REPRODUCABILITY; ?>" class="sc_reproducability <?php if ($dir = $search_object->getSortDirection(TBGIssuesTable::REPRODUCABILITY)) echo "sort_{$dir}"; ?>"<?php if (!in_array('reproducability', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Reproducability'); ?></th>
+					<th data-sort-direction="<?php echo $search_object->getSortDirection(TBGIssuesTable::PRIORITY); ?>" data-sort-field="<?php echo TBGIssuesTable::PRIORITY; ?>" class="sc_priority <?php if ($dir = $search_object->getSortDirection(TBGIssuesTable::PRIORITY)) echo "sort_{$dir}"; ?>"<?php if (!in_array('priority', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Priority'); ?></th>
+					<th class="sc_components nosort"<?php if (!in_array('components', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Component(s)'); ?></th>
+					<th data-sort-direction="<?php echo $search_object->getSortDirection(TBGIssuesTable::MILESTONE); ?>" data-sort-field="<?php echo TBGIssuesTable::MILESTONE; ?>" class="sc_milestone <?php if ($dir = $search_object->getSortDirection(TBGIssuesTable::MILESTONE)) echo "sort_{$dir}"; ?>"<?php if (!in_array('milestone', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Milestone'); ?></th>
+					<th class="sc_estimated_time nosort"<?php if (!in_array('estimated_time', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Estimate'); ?></th>
+					<th class="sc_spent_time nosort"<?php if (!in_array('spent_time', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Time spent'); ?></th>
+					<th data-sort-direction="<?php echo $search_object->getSortDirection(TBGIssuesTable::LAST_UPDATED); ?>" data-sort-field="<?php echo TBGIssuesTable::LAST_UPDATED; ?>" class="sc_last_updated <?php if ($dir = $search_object->getSortDirection(TBGIssuesTable::LAST_UPDATED)) echo "sort_{$dir}"; ?> numeric"<?php if (!in_array('last_updated', $visible_columns)): ?> style="display: none;"<?php endif; ?>><?php echo __('Last updated'); ?></th>
+					<th class="sc_comments nosort" style="width: 20px; padding-bottom: 0; text-align: center;<?php if (!in_array('comments', $visible_columns)): ?> display: none;<?php endif; ?>"><?php echo image_tag('icon_comments.png', array('title' => __('Number of user comments on this issue'))); ?></th>
+					<th class="sc_actions nosort" style="width: 20px; padding-bottom: 0; text-align: center;">&nbsp;</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -155,6 +155,11 @@
 	document.observe('dom:loaded', function() {
 		setTimeout(function() {
 			TBG.Search.setColumns('results_normal', ['title', 'issuetype', 'assigned_to', 'status', 'resolution', 'category', 'severity', 'percent_complete', 'reproducability', 'priority', 'components', 'milestone', 'estimated_time', 'spent_time', 'last_updated', 'comments'], [<?php echo "'".join("', '", $visible_columns)."'"; ?>], [<?php echo "'".join("', '", $default_columns)."'"; ?>]);
+			$('search_results').select('th').each(function (header_elm) {
+				if (!header_elm.hasClassName('nosort')) {
+					header_elm.on('click', TBG.Search.sortResults);
+				}
+			})
 		}, 250);
 	});
 </script>

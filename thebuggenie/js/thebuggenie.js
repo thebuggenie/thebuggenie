@@ -3810,12 +3810,7 @@ TBG.Search.toPage = function(url, parameters, offset) {
 	TBG.Main.Helpers.ajax(url, {
 		params: parameters,
 		loading: {indicator: 'paging_spinning'},
-		success: {update: 'search_results'},
-		complete: {
-			callback: function() {
-				TableKit.load();
-			}
-		}
+		success: {update: 'search_results'}
 	});
 };
 
@@ -4526,7 +4521,11 @@ TBG.Search.loadDynamicChoices = function() {
 };
 
 TBG.Search.sortResults = function (event, element) {
-
+    if (element.dataset.sortField !== undefined) {
+        var direction = (element.dataset.sortDirection == 'asc') ? 'desc' : 'asc';
+        $('search_sortfields_input').setValue(element.dataset.sortField + '=' + direction);
+        TBG.Search.liveUpdate(true);
+    }
 }
 
 TBG.Search.liveUpdate = function(force) {
@@ -4559,7 +4558,7 @@ TBG.Search.liveUpdate = function(force) {
                     fif.dataset.resultsLoaded = true;
                     fif.dataset.isSaved = undefined;
                     $('search_results').select('th').each(function (header_elm) {
-                        if (!elm.hasClassName('nosort')) {
+                        if (!header_elm.hasClassName('nosort')) {
                             header_elm.on('click', TBG.Search.sortResults);
                         }
                     })

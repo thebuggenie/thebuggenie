@@ -178,12 +178,8 @@
 
 		protected function _preSave($is_new)
 		{
-			$str = "";
-			foreach ($this->getSortFields() as $field => $sort)
-			{
-				$str .= "{$field}={$sort}";
-			}
-			$this->_sortfields = $str;
+			parent::_preSave($is_new);
+			$this->_sortfields = $this->getSortFieldsAsString();
 			$this->_columns = join(',', $this->getColumns());
 		}
 
@@ -271,6 +267,7 @@
 				$this->_filters = TBGSearchFilter::getFromRequest($request, $this);
 				$this->_applies_to_project = TBGContext::getCurrentProject();
 				$this->_columns = $request->getParameter('columns');
+				$this->_sortfields = $request->getParameter('sortfields');
 
 				if ($request['quicksearch']) $this->setSortFields(array(TBGIssuesTable::LAST_UPDATED => 'asc'));
 
@@ -603,6 +600,25 @@
 		{
 			$this->_initializeSortFields();
 			return $this->_sortfields;
+		}
+
+		public function getSortFieldsAsString()
+		{
+			$strings = array();
+			foreach ($this->getSortFields() as $field => $sort)
+			{
+				$strings[] = "{$field}={$sort}";
+			}
+			return join(',', $strings);
+		}
+
+		/**
+		 * @return array
+		 */
+		public function getSortDirection($field)
+		{
+			$this->_initializeSortFields();
+			return (isset($this->_sortfields[$field])) ? $this->_sortfields[$field] : null;
 		}
 
 		/**

@@ -59,15 +59,17 @@
 						<?php echo link_tag(make_url('project_my_teams_assigned_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Open issues assigned to my teams')); ?><br>
 					</li>
 				<?php endif; ?>
-			<?php else: ?>
-				<li style="clear: both;">
-					<?php echo link_tag(make_url('project_month_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
-					<?php echo link_tag(make_url('project_month_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Issues reported this month')); ?>
-				</li>
-				<li style="clear: both; margin-bottom: 20px;">
-					<?php echo link_tag(make_url('project_last_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'rss', 'units' => 30, 'time_unit' => 'days')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
-					<?php echo link_tag(make_url('project_last_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'units' => 30, 'time_unit' => 'days')), __('Issues reported last 30 days')); ?>
-				</li>
+			<?php elseif (TBGContext::isProjectContext() || !$tbg_user->isGuest()): ?>
+				<?php if (TBGContext::isProjectContext()): ?>
+					<li style="clear: both;">
+						<?php echo link_tag(make_url('project_month_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
+						<?php echo link_tag(make_url('project_month_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Issues reported this month')); ?>
+					</li>
+					<li style="clear: both; margin-bottom: 20px;">
+						<?php echo link_tag(make_url('project_last_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'rss', 'units' => 30, 'time_unit' => 'days')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
+						<?php echo link_tag(make_url('project_last_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'units' => 30, 'time_unit' => 'days')), __('Issues reported last 30 days')); ?>
+					</li>
+				<?php endif; ?>
 				<?php if (!$tbg_user->isGuest()): ?>
 					<li style="clear: both;">
 						<?php echo link_tag(make_url('my_reported_issues', array('format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
@@ -120,7 +122,7 @@
 							</div>
 							<?php endif; ?>
 							<?php if ($a_savedsearch->getDescription() != ''): ?>
-								<div style="clear: both; padding: 0 0 10px 3px;"><?php echo $a_savedsearch->getDescription(); ?></div>
+								<div style="clear: both; padding: 0 0 10px 26px; font-style: italic; font-size: 0.9em;"><?php echo $a_savedsearch->getDescription(); ?></div>
 							<?php endif; ?>
 						<?php else: ?>
 							<div style="clear: both;">

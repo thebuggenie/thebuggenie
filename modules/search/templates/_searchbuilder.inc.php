@@ -10,6 +10,7 @@
 			<?php include_component('search/interactivefilter', array('filter' => $search_object->getFilter('issuetype'))); ?>
 			<?php include_component('search/interactivefilter', array('filter' => $search_object->getFilter('status'))); ?>
 			<?php include_component('search/interactivefilter', array('filter' => $search_object->getFilter('category'))); ?>
+			<input type="hidden" name="sortfields" value="<?php echo $search_object->getSortFieldsAsString(); ?>" id="search_sortfields_input">
 			<input type="hidden" name="fs[text][o]" value="=">
 			<input type="search" name="fs[text][v]" id="interactive_filter_text" value="<?php echo $search_object->getSearchTerm(); ?>" class="filter_searchfield" placeholder="<?php echo __('Enter a search term here'); ?>">
 			<div class="interactive_plus_container" id="interactive_filters_availablefilters_container">

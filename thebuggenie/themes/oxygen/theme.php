@@ -15,9 +15,8 @@
 	#forgot_password_username { background-image: url('<?php echo TBGContext::getTBGPath() . 'iconsets/' . TBGSettings::getIconsetName() . '/'; ?>user_mono.png'); }
 	.login_popup .article h1 { background: url('<?php echo TBGContext::getTBGPath() . 'iconsets/' . TBGSettings::getIconsetName() . '/'; ?>logo_48.png') 0 0 no-repeat; }
 
-	table.sortable tr th.sortcol.sortasc { background-image: url('<?php echo TBGContext::getTBGPath(); ?>iconsets/oxygen/sort_up.png') !important; padding-left: 25px !important; }
-	table.sortable tr th.sortcol.sortdesc { background-image: url('<?php echo TBGContext::getTBGPath(); ?>iconsets/oxygen/sort_down.png') !important; padding-left: 25px !important; }
-	table.sortable tr th.sortcol { background-image: none; padding-left: 5px !important; }
+	table.results_normal th.sort_asc { background-image: url('<?php echo TBGContext::getTBGPath(); ?>iconsets/oxygen/sort_down.png') !important; padding-left: 25px !important; }
+	table.results_normal th.sort_desc { background-image: url('<?php echo TBGContext::getTBGPath(); ?>iconsets/oxygen/sort_up.png') !important; padding-left: 25px !important; }
 
 	.markItUp .markItUpButton1 a { background-image:url('<?php echo TBGContext::getTBGPath(); ?>iconsets/oxygen/markitup/h1.png'); }
 	.markItUp .markItUpButton2 a { background-image:url('<?php echo TBGContext::getTBGPath(); ?>iconsets/oxygen/markitup/h2.png'); }
