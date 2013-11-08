@@ -1,10 +1,10 @@
 <?php
 
-require THEBUGGENIE_PATH . 'tests/core/classes/B2DB.class.php';
-require THEBUGGENIE_CORE_PATH . 'classes/generics.class.php';
-require THEBUGGENIE_CORE_PATH . 'classes/TBGIdentifiableClass.class.php';
-require THEBUGGENIE_CORE_PATH . 'classes/TBGReleaseableItem.class.php';
-require THEBUGGENIE_CORE_PATH . 'classes/TBGBuild.class.php';
+defined('DS') || define('DS', DIRECTORY_SEPARATOR);
+defined('THEBUGGENIE_PATH') || define('THEBUGGENIE_PATH', realpath(getcwd() . DS) . DS);
+defined('THEBUGGENIE_CORE_PATH') || define('THEBUGGENIE_CORE_PATH', THEBUGGENIE_PATH . 'core' . DS);
+
+require THEBUGGENIE_CORE_PATH . 'bootstrap.php';
 
 class TBGBuildsTable
 {
@@ -37,17 +37,6 @@ class Row
  */
 class TBGBuildTest extends PHPUnit_Framework_TestCase
 {
-
-	/**
-	 * @covers TBGBuild::__construct
-	 */
-	public function testConstruct()
-	{
-		$build = new TBGBuild(1);
-		$this->assertInstanceOf('TBGBuild', $build);
-
-		return $build;
-	}
 
 	/**
 	 * @covers TBGBuild::getID
