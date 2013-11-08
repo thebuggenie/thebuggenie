@@ -162,7 +162,21 @@
 					</div>
 				</div>
 				<?php if (!$tbg_user->isGuest()): ?>
-					<div class="interactive_plus_button" id="interactive_save_button" style="<?php if (!$show_results) echo 'display: none;'; ?>" onclick="$('saved_search_details').toggle();"><?php echo image_tag('icon-mono-bookmark.png'); ?></div>
+					<div class="interactive_plus_button" id="interactive_save_button" style="<?php if (!$show_results) echo 'display: none;'; ?>"><?php echo image_tag('icon-mono-bookmark.png'); ?></div>
+					<div class="interactive_filters_list interactive_menu">
+						<h1><?php echo __('Save or download search results'); ?></h1>
+						<div class="interactive_values_container">
+							<ul class="interactive_menu_values" id="filter_export_options">
+								<li onclick="$('saved_search_details').toggle();"><?php echo image_tag('icon_savedsearch.png', array('class' => 'icon')) . __('Save search filters'); ?></li>
+								<li onclick="TBG.Search.download('csv');">
+									<?php echo image_tag('icon_csv.png', array('class' => 'icon')) . __('Download as CSV file'); ?>
+								</li>
+								<li onclick="TBG.Search.download('rss');">
+									<?php echo image_tag('icon_rss.png', array('class' => 'icon')) . __('Download as RSS feed'); ?>
+								</li>
+							</ul>
+						</div>
+					</div>
 				<?php else: ?>
 					<div class="interactive_plus_button disabled" id="interactive_save_button" style="<?php if (!$show_results) echo 'display: none;'; ?>">
 						<div class="tooltip from-above rightie" style="right: -5px; left: auto; margin-top: 10px;"><?php echo __('You have to be signed in to save this search'); ?></div>

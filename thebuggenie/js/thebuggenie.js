@@ -3848,8 +3848,6 @@ TBG.Search.setColumns = function(resultview, available_columns, visible_columns,
         }
 	});
 	$('scs_current_template').setValue(resultview);
-	$('search_column_settings_toggler').show();
-	$('search_column_settings_notoggler').hide();
 }
 
 TBG.Search.checkToggledCheckboxes = function() {
@@ -4341,7 +4339,7 @@ TBG.Search.initializeFilters = function() {
     $$('.filter').each(function (filter) {
         TBG.Search.initializeFilterField(filter);
     });
-    ['interactive_plus_button', 'interactive_template_button', 'interactive_grouping_button'].each(function (element) { $(element).on('click', TBG.Search.toggleInteractiveFilter); });
+    ['interactive_plus_button', 'interactive_template_button', 'interactive_grouping_button', 'interactive_save_button'].each(function (element) { if ($(element)) $(element).on('click', TBG.Search.toggleInteractiveFilter); });
     TBG.Search.initializeFilterSearchValues($('search_column_settings_container'));
     TBG.Search.initializeFilterSearchValues($('search_grouping_container'));
     $('search_columns_container').select('li').each(function(element) {
@@ -4405,9 +4403,9 @@ TBG.Search.setGrouping = function(event, element) {
 
     if (element.hasClassName('groupby')) {
         if (element.dataset.groupby == '') {
-            $('filter_grouping_options').hide();
+            $('filter_grouping_options').select('.grouporder').each(Element.hide);
         } else {
-            $('filter_grouping_options').show();
+            $('filter_grouping_options').select('.grouporder').each(Element.show);
         }
     }
 
@@ -4526,6 +4524,12 @@ TBG.Search.sortResults = function (event, element) {
         $('search_sortfields_input').setValue(element.dataset.sortField + '=' + direction);
         TBG.Search.liveUpdate(true);
     }
+}
+
+TBG.Search.download = function(format) {
+    var fif = $('find_issues_form');
+    var parameters = fif.serialize();
+    window.location = fif.dataset.historyUrl + '?' + parameters + '&format=' + format;
 }
 
 TBG.Search.liveUpdate = function(force) {

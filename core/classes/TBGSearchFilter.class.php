@@ -78,7 +78,7 @@
 
 		public static function getValidSearchFilters()
 		{
-			return array('project_id', 'subprojects', 'text', 'state', 'issuetype', 'status', 'resolution', 'reproducability', 'category', 'severity', 'priority', 'posted_by', 'assignee_user', 'assignee_team', 'owner_user', 'owner_team', 'component', 'build', 'edition', 'posted', 'last_updated', 'milestone', 'blocking');
+			return array('project_id', 'subprojects', 'text', 'state', 'issuetype', 'status', 'resolution', 'reproducability', 'category', 'severity', 'priority', 'posted_by', 'assignee_user', 'assignee_team', 'owner_user', 'owner_team', 'component', 'build', 'edition', 'posted', 'last_updated', 'milestone', 'blocking', 'votes_total');
 		}
 
 		public static function getPredefinedFilters($type, TBGSavedSearch $search)
@@ -161,6 +161,7 @@
 				case TBGContext::PREDEFINED_SEARCH_PROJECT_MOST_VOTED:
 					$filters['project_id'] = self::createFilter('project_id', array('operator' => '=', 'value' => TBGContext::getCurrentProject()->getID()), $search);
 					$filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'open'), $search);
+					$filters['votes_total'] = self::createFilter('votes_total', array('operator' => '>=', 'value' => '1'), $search);
 					break;
 				case TBGContext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES:
 					$filters['posted_by'] = self::createFilter('posted_by', array('operator' => '=', 'value' => TBGContext::getUser()->getID()), $search);

@@ -176,6 +176,13 @@
 			return in_array($template_name, array_keys(self::getTemplates(false)));
 		}
 
+		public static function getPredefinedSearchObject($predefined_search)
+		{
+			$search = new TBGSavedSearch();
+			$search->setPredefinedVariables($predefined_search);
+			return $search;
+		}
+
 		protected function _preSave($is_new)
 		{
 			parent::_preSave($is_new);
@@ -248,6 +255,7 @@
 					$this->_groupby = 'issuetype';
 					break;
 			}
+			$this->_filters = TBGSearchFilter::getPredefinedFilters($type, $this);
 		}
 
 		public function setValuesFromRequest(TBGRequest $request)
@@ -255,7 +263,6 @@
 			if ($request->hasParameter('predefined_search'))
 			{
 				$this->setPredefinedVariables($request['predefined_search']);
-				$this->_filters = TBGSearchFilter::getPredefinedFilters($request['predefined_search'], $this);
 			}
 			else
 			{

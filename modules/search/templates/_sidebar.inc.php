@@ -11,11 +11,11 @@
 			<?php if (TBGContext::isProjectContext()): ?>
 				<li style="clear: both;">
 					<?php echo link_tag(make_url('project_open_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
-					<?php echo link_tag(make_url('project_open_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Open issues for this project')); ?><br>
+					<?php echo link_tag(make_url('project_open_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Open issues for this project')); ?><span class="num_results_badge"><?php echo TBGSavedSearch::getPredefinedSearchObject(TBGContext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES)->getTotalNumberOfIssues(); ?></span>
 				</li>
 				<li style="clear: both;">
 					<?php echo link_tag(make_url('project_allopen_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
-					<?php echo link_tag(make_url('project_allopen_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Open issues (including subprojects)')); ?><br>
+					<?php echo link_tag(make_url('project_allopen_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Open issues (including subprojects)')); ?><span class="num_results_badge"><?php echo TBGSavedSearch::getPredefinedSearchObject(TBGContext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES_INCLUDING_SUBPROJECTS)->getTotalNumberOfIssues(); ?></span>
 				</li>
 				<li style="clear: both;">
 					<?php echo link_tag(make_url('project_closed_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
@@ -27,7 +27,7 @@
 				</li>
 				<li style="clear: both; margin-bottom: 20px;">
 					<?php echo link_tag(make_url('project_wishlist_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
-					<?php echo link_tag(make_url('project_wishlist_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Project wishlist')); ?>
+					<?php echo link_tag(make_url('project_wishlist_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Project wishlist')); ?><span class="num_results_badge"><?php echo TBGSavedSearch::getPredefinedSearchObject(TBGContext::PREDEFINED_SEARCH_PROJECT_WISHLIST)->getTotalNumberOfIssues(); ?></span>
 				</li>
 				<li>
 					<?php echo link_tag(make_url('project_milestone_todo_list', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
@@ -39,54 +39,46 @@
 				</li>
 				<li style="clear: both;">
 					<?php echo link_tag(make_url('project_month_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
-					<?php echo link_tag(make_url('project_month_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Issues reported this month')); ?>
-				</li>
-				<li style="clear: both; margin-bottom: 20px;">
-					<?php echo link_tag(make_url('project_last_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'rss', 'units' => 30, 'time_unit' => 'days')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
-					<?php echo link_tag(make_url('project_last_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'units' => 30, 'time_unit' => 'days')), __('Issues reported last 30 days')); ?>
+					<?php echo link_tag(make_url('project_month_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Issues reported this month')); ?><span class="num_results_badge"><?php echo TBGSavedSearch::getPredefinedSearchObject(TBGContext::PREDEFINED_SEARCH_PROJECT_REPORTED_THIS_MONTH)->getTotalNumberOfIssues(); ?></span>
 				</li>
 				<?php if (!$tbg_user->isGuest()): ?>
 					<li style="clear: both;">
 						<?php echo link_tag(make_url('project_my_reported_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
-						<?php echo link_tag(make_url('project_my_reported_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Issues reported by me')); ?><br>
+						<?php echo link_tag(make_url('project_my_reported_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Issues reported by me')); ?><span class="num_results_badge"><?php echo TBGSavedSearch::getPredefinedSearchObject(TBGContext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES)->getTotalNumberOfIssues(); ?></span>
 					</li>
 					<li style="clear: both;">
 						<?php echo link_tag(make_url('project_my_assigned_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
-						<?php echo link_tag(make_url('project_my_assigned_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Open issues assigned to me')); ?><br>
+						<?php echo link_tag(make_url('project_my_assigned_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Open issues assigned to me')); ?><span class="num_results_badge"><?php echo TBGSavedSearch::getPredefinedSearchObject(TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES)->getTotalNumberOfIssues(); ?></span>
 					</li>
 					<li style="clear: both;">
 						<?php echo link_tag(make_url('project_my_teams_assigned_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
-						<?php echo link_tag(make_url('project_my_teams_assigned_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Open issues assigned to my teams')); ?><br>
+						<?php echo link_tag(make_url('project_my_teams_assigned_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Open issues assigned to my teams')); ?><span class="num_results_badge"><?php echo TBGSavedSearch::getPredefinedSearchObject(TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES)->getTotalNumberOfIssues(); ?></span>
 					</li>
 				<?php endif; ?>
 			<?php elseif (TBGContext::isProjectContext() || !$tbg_user->isGuest()): ?>
 				<?php if (TBGContext::isProjectContext()): ?>
 					<li style="clear: both;">
 						<?php echo link_tag(make_url('project_month_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
-						<?php echo link_tag(make_url('project_month_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Issues reported this month')); ?>
-					</li>
-					<li style="clear: both; margin-bottom: 20px;">
-						<?php echo link_tag(make_url('project_last_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'format' => 'rss', 'units' => 30, 'time_unit' => 'days')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
-						<?php echo link_tag(make_url('project_last_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'units' => 30, 'time_unit' => 'days')), __('Issues reported last 30 days')); ?>
+						<?php echo link_tag(make_url('project_month_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Issues reported this month')); ?><span class="num_results_badge"><?php echo TBGSavedSearch::getPredefinedSearchObject(TBGContext::PREDEFINED_SEARCH_PROJECT_REPORTED_THIS_MONTH)->getTotalNumberOfIssues(); ?></span>
 					</li>
 				<?php endif; ?>
 				<?php if (!$tbg_user->isGuest()): ?>
 					<li style="clear: both;">
 						<?php echo link_tag(make_url('my_reported_issues', array('format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
-						<?php echo link_tag(make_url('my_reported_issues'), __('Issues reported by me')); ?><br>
+						<?php echo link_tag(make_url('my_reported_issues'), __('Issues reported by me')); ?><span class="num_results_badge"><?php echo TBGSavedSearch::getPredefinedSearchObject(TBGContext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES)->getTotalNumberOfIssues(); ?></span>
 					</li>
 					<li style="clear: both;">
 						<?php echo link_tag(make_url('my_assigned_issues', array('format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
-						<?php echo link_tag(make_url('my_assigned_issues'), __('Open issues assigned to me')); ?><br>
+						<?php echo link_tag(make_url('my_assigned_issues'), __('Open issues assigned to me')); ?><span class="num_results_badge"><?php echo TBGSavedSearch::getPredefinedSearchObject(TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES)->getTotalNumberOfIssues(); ?></span>
 					</li>
 					<li style="clear: both;">
 						<?php echo link_tag(make_url('my_owned_issues', array('format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
-						<?php echo link_tag(make_url('my_owned_issues'), __('Open issues owned by me')); ?><br>
+						<?php echo link_tag(make_url('my_owned_issues'), __('Open issues owned by me')); ?><span class="num_results_badge"><?php echo TBGSavedSearch::getPredefinedSearchObject(TBGContext::PREDEFINED_SEARCH_MY_OWNED_OPEN_ISSUES)->getTotalNumberOfIssues(); ?></span>
 					</li>
 					<?php if ($tbg_user->hasTeams()): ?>
 						<li style="clear: both;">
 							<?php echo link_tag(make_url('my_teams_assigned_issues', array('format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
-							<?php echo link_tag(make_url('my_teams_assigned_issues'), __('Open issues assigned to my teams')); ?><br>
+							<?php echo link_tag(make_url('my_teams_assigned_issues'), __('Open issues assigned to my teams')); ?><span class="num_results_badge"><?php echo TBGSavedSearch::getPredefinedSearchObject(TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES)->getTotalNumberOfIssues(); ?></span>
 						</li>
 					<?php endif; ?>
 				<?php endif; ?>
@@ -95,7 +87,7 @@
 	</div>
 	<div class="container_div">
 		<div class="header"><?php echo (TBGContext::isProjectContext()) ? __('Your saved searches for this project') : __('Your saved searches'); ?></div>
-		<ul class="simple_list content" style="font-size: 1em;">
+		<ul class="simple_list content my_saved_searches">
 			<?php if (count($savedsearches['user']) > 0): ?>
 				<?php foreach ($savedsearches['user'] as $a_savedsearch): ?>
 					<li id="saved_search_<?php echo $a_savedsearch->getID(); ?>_container">
@@ -103,9 +95,12 @@
 							<div style="clear: both;">
 								<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->getID(), 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
 								<?php if (!TBGcontext::getCurrentProject()->isArchived()): ?>
-									<?php echo javascript_link_tag(image_tag('icon_delete.png', array('title' => __('Delete saved search'))), array('style' => 'float: right; margin-left: 2px;', 'onclick' => "$('delete_search_".$a_savedsearch->getID()."').toggle();")); ?>
-									<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->getID(), 'search' => 0)), image_tag('icon_edit.png'), array('title' => __('Edit saved search'), 'style' => 'float: right; margin-left: 5px;')); ?>
+									<div class="action_icons">
+										<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->getID(), 'search' => 0)), image_tag('icon_edit.png'), array('title' => __('Edit saved search'))); ?>
+										<?php echo javascript_link_tag(image_tag('icon_delete.png', array('title' => __('Delete saved search'))), array('onclick' => "$('delete_search_".$a_savedsearch->getID()."').toggle();")); ?>
+									</div>
 								<?php endif; ?>
+								<span class="num_results_badge"><?php echo $a_savedsearch->getTotalNumberOfIssues(); ?></span>
 								<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->getID(), 'search' => true)), __($a_savedsearch->getName())); ?>
 							</div>
 							<?php if (!TBGcontext::getCurrentProject()->isArchived()): ?>
@@ -127,8 +122,11 @@
 						<?php else: ?>
 							<div style="clear: both;">
 								<?php echo link_tag(make_url('search', array('saved_search' => $a_savedsearch->getID(), 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
-								<?php echo javascript_link_tag(image_tag('icon_delete.png', array('title' => __('Delete saved search'))), array('style' => 'float: right; margin-left: 2px;', 'onclick' => "$('delete_search_".$a_savedsearch->getID()."').toggle();")); ?>
-								<?php echo link_tag(make_url('search', array('saved_search' => $a_savedsearch->getID(), 'search' => 0)), image_tag('icon_edit.png'), array('title' => __('Edit saved search'), 'style' => 'float: right; margin-left: 5px;')); ?>
+								<div class="action_icons">
+									<?php echo link_tag(make_url('search', array('saved_search' => $a_savedsearch->getID(), 'search' => 0)), image_tag('icon_edit.png'), array('title' => __('Edit saved search'))); ?>
+									<?php echo javascript_link_tag(image_tag('icon_delete.png', array('title' => __('Delete saved search'))), array('onclick' => "$('delete_search_".$a_savedsearch->getID()."').toggle();")); ?>
+								</div>
+								<span class="num_results_badge"><?php echo $a_savedsearch->getTotalNumberOfIssues(); ?></span>
 								<?php echo link_tag(make_url('search', array('saved_search' => $a_savedsearch->getID(), 'search' => true)), __($a_savedsearch->getName())); ?>
 							</div>
 							<div class="rounded_box white shadowed" style="position: absolute; width: 300px; display: none;" id="delete_search_<?php echo $a_savedsearch->getID(); ?>">
@@ -155,7 +153,7 @@
 	</div>
 	<div class="container_div">
 		<div class="header"><?php echo (TBGContext::isProjectContext()) ? __('Public saved searches for this project') : __('Public saved searches'); ?></div>
-		<ul class="simple_list content" style="font-size: 1em;">
+		<ul class="simple_list content my_saved_searches">
 			<?php if (count($savedsearches['public']) > 0): ?>
 				<?php foreach ($savedsearches['public'] as $a_savedsearch): ?>
 					<li id="saved_search_<?php echo $a_savedsearch->getID(); ?>_container">
@@ -163,15 +161,20 @@
 							<?php if (TBGContext::isProjectContext()): ?>
 								<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->getID(), 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
 								<?php if ($tbg_user->canCreatePublicSearches()): ?>
-									<?php echo javascript_link_tag(image_tag('icon_delete.png', array('title' => __('Delete saved search'))), array('style' => 'float: right; margin-left: 2px;', 'onclick' => "$('delete_search_".$a_savedsearch->getID()."').toggle();")); ?>
-									<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->getID(), 'search' => 0)), image_tag('icon_edit.png'), array('title' => __('Edit saved search'), 'style' => 'float: right; margin-left: 5px;')); ?>
+									<div class="action_icons">
+										<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->getID(), 'search' => 0)), image_tag('icon_edit.png'), array('title' => __('Edit saved search'))); ?>
+										<?php echo javascript_link_tag(image_tag('icon_delete.png', array('title' => __('Delete saved search'))), array('onclick' => "$('delete_search_".$a_savedsearch->getID()."').toggle();")); ?>
+									</div>
 								<?php endif; ?>
+								<span class="num_results_badge"><?php echo $a_savedsearch->getTotalNumberOfIssues(); ?></span>
 								<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->getID(), 'search' => true)), __($a_savedsearch->getName())); ?>
 							<?php else: ?>
 								<?php echo link_tag(make_url('search', array('saved_search' => $a_savedsearch->getID(), 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'))); ?>
 								<?php if ($tbg_user->canCreatePublicSearches()): ?>
-									<?php echo javascript_link_tag(image_tag('icon_delete.png', array('title' => __('Delete saved search'))), array('style' => 'float: right; margin-left: 2px;', 'onclick' => "$('delete_search_".$a_savedsearch->getID()."').toggle();")); ?>
-									<?php echo link_tag(make_url('search', array('saved_search' => $a_savedsearch->getID(), 'search' => 0)), image_tag('icon_edit.png'), array('title' => __('Edit saved search'), 'style' => 'float: right; margin-left: 5px;')); ?>
+									<div class="action_icons">
+										<?php echo javascript_link_tag(image_tag('icon_delete.png', array('title' => __('Delete saved search'))), array('onclick' => "$('delete_search_".$a_savedsearch->getID()."').toggle();")); ?>
+										<?php echo link_tag(make_url('search', array('saved_search' => $a_savedsearch->getID(), 'search' => 0)), image_tag('icon_edit.png'), array('title' => __('Edit saved search'))); ?>
+									</div>
 								<?php endif; ?>
 								<?php echo link_tag(make_url('search', array('saved_search' => $a_savedsearch->getID(), 'search' => true)), __($a_savedsearch->getName())); ?>
 							<?php endif; ?>

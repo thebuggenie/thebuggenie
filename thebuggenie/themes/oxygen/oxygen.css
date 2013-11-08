@@ -1705,10 +1705,17 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 #project_no_description { font-size: 1.1em; font-weight: normal; color: #AAA; }
 .project_information_sidebar { vertical-align: top; border-right: 1px solid #CCC; height: 100%; width: 200px; padding: 0 0 50px 10px; position: relative; }
 #search_sidebar { height: 100%; box-shadow: -5px 0 5px -5px rgba(0, 0, 0, 0.3) inset; border-right: 1px dotted #DDD; font-size: 1.1em; padding-top: 0; }
+#search_sidebar .num_results_badge { vertical-align: middle; float: right; }
 #search_sidebar .container_div { border: none; box-shadow: none; }
 #search_sidebar .header { background: transparent; font-weight: normal; margin: 0; padding: 6px 0; border-bottom: 1px dotted #AAA; font-size: 1em; }
 #search_sidebar .container_div ul { margin: 5px 0; padding: 0; }
-#search_sidebar .container_div li { clear: both; display: block; list-style: none; margin: 0; padding: 0; }
+#search_sidebar .container_div li { clear: both; display: block; list-style: none; margin: 0 0 2px 0; padding: 0; transition: background-color 0.3s ease; }
+#search_sidebar .container_div li .action_icons { float: right; margin-left: 2px; display: none; }
+#search_sidebar .container_div li .action_icons img { vertical-align: middle; display: inline-block; margin: 0; }
+#search_sidebar .container_div li:hover .action_icons { display: block; }
+#search_sidebar .container_div li:hover { background-color: rgba(225, 225, 225, 0.4); }
+#search_sidebar .container_div .my_saved_searches { font-size: 1em; }
+#search_sidebar .container_div .my_saved_searches li:hover .num_results_badge { display: none; }
 #search_sidebar .container_div li a, #search_sidebar .container_div li a:hover { font-weight: normal; display: inline-block; vertical-align: top; text-decoration: none; border: none; }
 .side_bar .expander { display: none; }
 .side_bar .collapser { display: inline; }
@@ -2153,7 +2160,7 @@ li.filtervalue .hidden { display: none; }
 }
 
 #find_issues .results_header .searchterm { font-weight: normal; font-style: italic; }
-#find_issues .results_header .faded_out { font-weight: normal; font-size: 0.8em; background-color: rgba(200, 200, 200, 0.3); color: rgba(50, 50, 50, 0.6); padding: 2px 5px; border-radius: 3px; vertical-align: baseline; }
+#find_issues .results_header .faded_out, .num_results_badge { font-weight: normal; font-size: 0.8em; background-color: rgba(200, 200, 200, 0.3); color: rgba(50, 50, 50, 0.6); margin-left: 5px; padding: 2px 5px; border-radius: 3px; vertical-align: baseline; }
 #find_issues .main_content { font-size: 0.9em; font-weight: normal; padding: 3px; }
 #find_issues #no_issues { padding: 4px; }
 #find_issues .search_export_links { float: right; font-size: 0.8em; }
@@ -2246,7 +2253,9 @@ li.filtervalue .hidden { display: none; }
 /* end paginator */
 
 /* saved searches */
-.saved_searches { font-size: 0.9em; padding: 5px 5px 5px 10px; width: 280px; vertical-align: top; }
+.saved_searches { font-size: 0.9em; padding: 5px 5px 5px 10px; width: 310px; vertical-align: top; }
+.side_bar.saved_searches .collapser_link { left: 306px; transition: left 0.3s ease; }
+.side_bar.saved_searches.collapsed .collapser_link { left: 6px; }
 .saved_searches a { font-size: 0.9em; font-weight: bold; padding-left: 3px; }
 .saved_searches .container_div { margin-bottom: 10px; }
 

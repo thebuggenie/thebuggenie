@@ -58,7 +58,6 @@
 				<span id="findissues_search_title" style="<?php if (!$searchtitle) echo 'display: none'; ?>"><?php echo __($searchtitle); ?></span>
 				<span id="findissues_search_generictitle" style="<?php if ($searchtitle) echo 'display: none'; ?>"><?php echo __("Find issues"); ?></span>
 				&nbsp;&nbsp;<span id="findissues_num_results" class="faded_out" style="<?php if (!$show_results) echo 'display: none;'; ?>"><?php echo __('%number_of issue(s)', array('%number_of' => '<span id="findissues_num_results_span">'.(int) $resultcount.'</span>')); ?></span>
-				<?php include_component('search/extralinks', compact('show_results', 'issavedsearch')); ?>
 			</div>
 			<?php include_component('search/searchbuilder', compact('search_object', 'show_results')); ?>
 			<div id="search_results_container">
