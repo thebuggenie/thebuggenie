@@ -1365,7 +1365,7 @@ dd { float: left; display: block; width: 195px; font-weight: normal; margin: 0; 
 .issue_closed .status_badge { opacity: 0.7; }
 .status_badge { display: inline-block; color: rgba(0, 0, 0, 0.45); text-transform: uppercase; border: 1px solid rgba(0, 0, 0, 0.2); padding: 3px 5px; line-height: 1; border-radius: 3px; }
 .more_actions_dropdown { padding: 0; position: absolute; z-index: 1000001; }
-.more_actions_dropdown li { white-space: nowrap; height: 23px; position: relative; display: block; line-height: 1.3; }
+.more_actions_dropdown li { min-height: 23px; position: relative; display: block; line-height: 1.3; }
 .more_actions_dropdown li a, .more_actions_dropdown li a:hover { display: block; font-size: 0.9em; font-weight: normal; color: #333; text-decoration: none; border: 0; padding: 3px 5px; line-height: 1.3; }
 .more_actions_dropdown li:hover { background-color: #F1F1F1; }
 .more_actions_dropdown li.header:hover { background-color: transparent; }
