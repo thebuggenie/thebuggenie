@@ -127,6 +127,7 @@
 			$this->addRoute('mailing_save_incoming_account', '/mailing/:project_key/incoming_account/*', 'saveIncomingAccount');
 			$this->addRoute('mailing_check_account', '/mailing/incoming_account/:account_id/check', 'checkIncomingAccount');
 			$this->addRoute('mailing_delete_account', '/mailing/incoming_account/:account_id/delete', 'deleteIncomingAccount');
+			$this->addRoute('configure_mailing_settings', '/configure/project/:project_id/mailing', 'configureProjectSettings', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_PROJECTS));
 		}
 
 		protected function _install($scope)
@@ -653,6 +654,18 @@ EOT;
 			return $uids;
 		}
 
+		protected function _addProjectReplyAddress(Swift_Mime_Message $message, TBGProject $project = null)
+		{
+			if ($project instanceof TBGProject)
+			{
+				$address = TBGSettings::get('project_reply_address_'.$issue->getProject()->getID(), 'mailing');
+				if ($address != '')
+				{
+					$message->setReplyTo($address);
+				}
+			}
+		}
+
 		public function listen_issueCreate(TBGEvent $event)
 		{
 			if ($this->isOutgoingNotificationsEnabled())
@@ -667,6 +680,7 @@ EOT;
 
 					foreach ($messages as $message)
 					{
+						$this->_addProjectReplyAddress($message, $issue->getProject());
 						$this->sendMail($message);
 					}
 				}
@@ -689,6 +703,10 @@ EOT;
 
 				foreach ($messages as $message)
 				{
+					if ($project = $article->getProject())
+					{
+						$this->_addProjectReplyAddress($message, $project);
+					}
 					$this->sendMail($message);
 				}
 			}
@@ -705,6 +723,7 @@ EOT;
 					{
 						case TBGComment::TYPE_ISSUE:
 							$issue = $event->getParameter('issue');
+							$project = $issue->getProject();
 							$subject = 'Re: ['.$issue->getProject()->getKey().'] ' . $issue->getIssueType()->getName() . ' ' . $issue->getFormattedIssueNo(true) . ' - ' . html_entity_decode($issue->getTitle(), ENT_COMPAT, TBGContext::getI18n()->getCharset());
 							$parameters = compact('issue', 'comment');
 							$to_users = $this->_getIssueRelatedUsers($issue);
@@ -712,6 +731,7 @@ EOT;
 							break;
 						case TBGComment::TYPE_ARTICLE:
 							$article = $event->getParameter('article');
+							$project = $article->getProject();
 							$subject = 'Comment posted on article %article_name';
 							$parameters = compact('article', 'comment');
 							$to_users = $this->_getArticleRelatedUsers($article, 'comment');
@@ -721,6 +741,10 @@ EOT;
 
 					foreach ($messages as $message)
 					{
+						if (isset($project) && $project instanceof TBGProject)
+						{
+							$this->_addProjectReplyAddress($message, $project);
+						}
 						$this->sendMail($message);
 					}
 				}
@@ -741,6 +765,7 @@ EOT;
 
 					foreach ($messages as $message)
 					{
+						$this->_addProjectReplyAddress($message, $issue->getProject());
 						$this->sendMail($message);
 					}
 				}
@@ -761,6 +786,7 @@ EOT;
 
 					foreach ($messages as $message)
 					{
+						$this->_addProjectReplyAddress($message, $issue->getProject());
 						$this->sendMail($message);
 					}
 					$this->deleteSetting(self::NOTIFY_ISSUE_ONCE . '_' . $issue->getID(), $event->getParameter('user')->getID());
@@ -918,60 +944,6 @@ EOT;
 		{
 			$mail->addReplacementValues(array('%link_to_reset_password' => isset($parameters['user']) ? $this->getMailingUrl() . TBGContext::getRouting()->generate('reset_password', array('user' => str_replace('.', '%2E', $parameters['user']->getUsername()), 'reset_hash' => $parameters['user']->getActivationKey())) : '' ));
 			$mail->addReplacementValues(array('%link_to_activate' => isset($parameters['user']) ? $this->getMailingUrl() . TBGContext::getRouting()->generate('activate', array('user' => str_replace('.', '%2E', $parameters['user']->getUsername()), 'key' => $parameters['user']->getActivationKey())) : ''));
-		}
-
-		/**
-		 * Create a new TBGMimemail and return it
-		 *
-		 * @param string $subject
-		 * @param string $template
-		 * @param array $parameters
-		 * @param string $language
-		 * @param array $recipients
-		 * @param string $charset
-		 *
-		 * @return TBGMimemail
-		 */
-		public function createNewTBGMimemailFromTemplate($subject, $template, $parameters = array(), $language = null, $recipients = array(), $charset = 'utf-8')
-		{
-			try
-			{
-				$mail = TBGMimemail::createNewFromTemplate($subject, $template, $parameters, $language, $recipients, $charset);
-				$this->_setInitialMailValues($mail);
-				$this->_setAdditionalMailValues($mail, $parameters);
-
-				return $mail;
-			}
-			catch (Exception $e)
-			{
-				throw $e;
-			}
-		}
-
-		/**
-		 * Create a new TBGMimemail and return it
-		 *
-		 * @param string $subject
-		 * @param string $message_plain
-		 * @param string $message_html
-		 * @param array $recipients
-		 * @param string $charset
-		 *
-		 * @return TBGMimemail
-		 */
-		public function createNewTBGMimemailFromMessage($subject, $message_plain, $message_html = null, $recipients = array(), $charset = 'utf-8')
-		{
-			try
-			{
-				$mail = TBGMimemail::createNewFromMessage($subject, $message_plain, $message_html, $recipients, $charset);
-				$this->_setInitialMailValues($mail);
-
-				return $mail;
-			}
-			catch (Exception $e)
-			{
-				throw $e;
-			}
 		}
 
 		public function mail(Swift_Message $message)

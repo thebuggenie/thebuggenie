@@ -202,4 +202,36 @@
 			}
 		}
 
+		public function runConfigureProjectSettings(TBGRequest $request)
+		{
+			$this->forward403unless($request->isPost());
+
+			if ($this->access_level != TBGSettings::ACCESS_FULL)
+			{
+				$project_id = $request['project_id'];
+
+				if ($request['mailing_reply_address'] != '')
+				{
+					if (filter_var($request['mailing_reply_address'], FILTER_VALIDATE_EMAIL) !== false)
+					{
+						TBGContext::getModule('mailing')->saveSetting('project_reply_address_'.$project_id, $request->getParameter('mailing_reply_address'));
+					}
+					else
+					{
+						$this->getResponse()->setHttpStatus(400);
+						return $this->renderJSON(array('message' => TBGContext::getI18n()->__('Please enter a valid email address')));
+					}
+				}
+				elseif ($request->getParameter('mailing_reply_address') == '')
+				{
+					TBGContext::getModule('mailing')->saveSetting('project_reply_address_'.$project_id, $request->getParameter('mailing_reply_address'));
+				}
+
+				return $this->renderJSON(array('failed' => false, 'message' => TBGContext::getI18n()->__('Settings saved')));
+			}
+			else
+			{
+				$this->forward403();
+			}
+		}
 	}

@@ -24,6 +24,31 @@
 </script>
 <div id="tab_mailing_pane"<?php if ($selected_tab != 'mailing'): ?> style="display: none;"<?php endif; ?>>
 <h3>Editing email settings</h3>
+	<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_mailing_settings', array('project_id' => $project->getID())); ?>" method="post" onsubmit="TBG.Main.Helpers.formSubmit('<?php echo make_url('configure_mailing_settings', array('project_id' => $project->getID())); ?>', 'vcs'); return false;" id="vcs">
+		<input type="hidden" name="project_id" value="<?php echo $project->getID(); ?>">
+		<table style="clear: both; width: 780px; margin-bottom: 25px;" class="padded_table" cellpadding=0 cellspacing=0>
+			<tr>
+				<td style="width: 200px;"><label for="mailing_reply_address"><?php echo __('Project reply-address'); ?></label></td>
+				<td style="width: 580px;">
+					<input type="email" name="mailing_reply_address" style="width: 300px;" id="mailing_reply_address" value="<?php echo TBGSettings::get('project_reply_address_'.$project->getID(), 'mailing'); ?>">
+				</td>
+			</tr>
+			<tr>
+				<td class="config_explanation" colspan="2"><?php echo __('By specifying a reply-to address here, users can hit the "Reply" button to email notifications and replies will be sent to the specified address.'); ?></td>
+			</tr>
+		</table>
+		<table style="clear: both; width: 780px;" class="padded_table" cellpadding=0 cellspacing=0>
+			<tr>
+				<td colspan="2" style="padding: 10px 0 10px 10px; text-align: right;">
+					<div style="float: left; font-size: 13px; padding-top: 2px; font-style: italic;" class="config_explanation"><?php echo __('When you are done, click "%save" to save your changes', array('%save' => __('Save'))); ?></div>
+					<div id="mailing_button" style="float: right; font-size: 14px; font-weight: bold;">
+						<input type="submit" class="button button-green" value="<?php echo __('Save'); ?>">
+					</div>
+					<span id="mailing_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
+				</td>
+			</tr>
+		</table>
+	</form>
 	<div class="content">
 		<?php echo __('The Bug Genie can check email accounts and create issues from incoming emails. Set up a new account here, and check the %online_documentation for more information.', array('%online_documentation' => link_tag('http://issues.thebuggenie.com/wiki/TheBugGenie:IncomingEmail', '<b>'.__('online documentation').'</b>'))); ?>
 	</div>

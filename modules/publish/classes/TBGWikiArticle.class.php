@@ -766,22 +766,26 @@
 		{
 			return TBGContext::getModule('publish')->canUserReadArticle($this->getName());
 		}
-		
-		public function hasAccess()
+
+		public function getProject()
 		{
 			$namespaces = $this->getNamespaces();
-			
-			if(count($namespaces) > 0)
+
+			if (count($namespaces) > 0)
 			{
 				$key = $namespaces[0];
 				$project = TBGProject::getByKey($key);
-				if ($project instanceof TBGProject)
-				{
-					if ($project->isArchived())
-						return false;
-				}
+				return $project;
 			}
-			
+		}
+
+		public function hasAccess()
+		{
+			$project = $this->getProject();
+
+			if ($project instanceof TBGProject && $project->isArchived())
+				return false;
+
 			return $this->canRead();
 		}
 
