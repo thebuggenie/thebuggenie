@@ -1531,11 +1531,11 @@ table.issue_affects td img { vertical-align: bottom; }
 #dashboard_lefthand.side_bar.collapsed { width: 25px; border: none; padding: 0; margin: 0; }
 #dashboard_righthand.side_bar.collapsed { width: 25px; border: none; padding: 0; margin: 0; }
 
-#dashboard_lefthand .collapser_link { left: 236px; }
-#dashboard_righthand .collapser_link { left: 226px; }
+#dashboard_lefthand .collapser_link { left: 242px; }
+#dashboard_righthand .collapser_link { left: auto; right: 247px; border-left: none; border-right: 1px dotted #CCC; box-shadow: 3px 2px 2px rgba(0, 0, 0, 0.2); }
 #dashboard_lefthand.collapsed .collapser_link { left: 6px; margin-top: 5px; }
-#dashboard_righthand.collapsed .collapser_link { left: 6px; margin-top: 5px; }
-#issue_details .collapser_link { left: 332px; top: 3px; position: absolute; background-color: #FFF; border: 1px dotted #CCC; border-right-color: #FFF; line-height: 1; padding: 3px; box-shadow: -2px 2px 2px rgba(0, 0, 0, 0.2); }
+#dashboard_righthand.collapsed .collapser_link { left: auto; right: 6px; margin-top: 5px; }
+#issue_details .collapser_link { left: 332px; top: 3px; position: absolute; background-color: #FFF; border: 1px dotted #CCC; border-right-style: none; line-height: 1; padding: 3px; box-shadow: -3px 2px 2px rgba(0, 0, 0, 0.2); }
 #issue_details.collapsed .collapser_link { left: 12px; }
 #issue_details .collapser_link .collapser { display: inline; }
 #issue_details .collapser_link .expander { display: none; }
@@ -1722,7 +1722,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .side_bar.collapsed .collapser, .side_bar.collapsed .container_div { display: none; }
 .side_bar.collapsed .expander { display: inline; }
 .side_bar.collapsed { width: 25px; border: none; padding: 0; margin: 0; }
-.side_bar .collapser_link { position: absolute; left: 276px; background-color: #FFF; border: 1px dotted #CCC; border-right-color: #FFF; line-height: 1; padding: 3px; box-shadow: -2px 2px 2px rgba(0, 0, 0, 0.2); }
+.side_bar .collapser_link { cursor: pointer; position: absolute; left: 276px; background-color: #FFF; border: 1px dotted #CCC; border-right-color: #FFF; line-height: 1; padding: 3px; box-shadow: -3px 2px 2px rgba(0, 0, 0, 0.2); }
 .side_bar .collapser_link a { padding: 0; }
 .side_bar.collapsed .collapser_link { left: 6px; margin-top: 5px; }
 .side_bar .collapser_link a:hover { text-decoration: none; border: 0; }

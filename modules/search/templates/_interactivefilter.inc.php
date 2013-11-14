@@ -159,13 +159,13 @@
 							<ul class="interactive_menu_values">
 								<li data-value="open" class="filtervalue <?php if ($filter->hasValue('open')) echo ' selected'; ?>" data-exclusive data-selection-group="1">
 									<?php echo image_tag('icon-mono-checked.png', array('class' => 'checked')); ?>
-									<input type="checkbox" value="open" name="filters_status_value_open" data-text="<?php echo __('All open issues'); ?>" id="filters_status_value_open" <?php if ($filter->hasValue('open')) echo 'checked'; ?>>
-									<label for="filters_status_value_open"><?php echo __('All open issues'); ?></label>
+									<input type="checkbox" value="open" name="filters_status_value_open" data-text="<?php echo __('Only open issues'); ?>" id="filters_status_value_open" <?php if ($filter->hasValue('open')) echo 'checked'; ?>>
+									<label for="filters_status_value_open"><?php echo __('Only open issues'); ?></label>
 								</li>
 								<li data-value="closed" class="filtervalue <?php if ($filter->hasValue('closed')) echo ' selected'; ?>" data-exclusive data-selection-group="1">
 									<?php echo image_tag('icon-mono-checked.png', array('class' => 'checked')); ?>
-									<input type="checkbox" value="closed" name="filters_status_value_closed" data-text="<?php echo __('All closed issues'); ?>" id="filters_status_value_closed" <?php if ($filter->hasValue('closed')) echo 'checked'; ?>>
-									<label for="filters_status_value_closed"><?php echo __('All closed issues'); ?></label>
+									<input type="checkbox" value="closed" name="filters_status_value_closed" data-text="<?php echo __('Only closed issues'); ?>" id="filters_status_value_closed" <?php if ($filter->hasValue('closed')) echo 'checked'; ?>>
+									<label for="filters_status_value_closed"><?php echo __('Only closed issues'); ?></label>
 								</li>
 								<li class="separator"></li>
 								<?php foreach ($filter->getAvailableValues() as $status): ?>
