@@ -1,0 +1,8 @@
+[main]
+host = https://www.transifex.com
+lang_map = en:en_US
+
+[tbg.3-2-strings-inc-php]
+file_filter = i18n/<lang>/strings.inc.php
+source_lang = en_US
+type = PHP_ALT_ARRAY
