@@ -113,6 +113,25 @@
 			$server_name = (TBGContext::isCLI()) ? TBGContext::getModule('mailing')->getCLIMailingUrl(true) : TBGContext::getScope()->getCurrentHostname(true);
 			$this->headers['Message-ID'] = "<{$this->sep1}@{$server_name}>";
 		}
+		
+		protected function __sleep()
+		{
+			return array('charset', 'default_message', 
+				'from', 'to', 'cc', 'bcc', 
+				'replacements', 'sep1', 'sep2', 'headers', 
+				'subject', 'subject_translated', 
+				'template', 'language', 
+				'message_plain', 
+				'message_plain_replaced', 
+				'message_html', 
+				'message_html_replaced', 
+				'message_html_decoration_before',
+				'message_html_decoration_before_replaced',
+				'message_html_decoration_after',
+				'message_html_decoration_after_replaced',
+				'attachments'
+				);
+		}
 
 		public function setLanguage($language)
 		{
