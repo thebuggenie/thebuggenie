@@ -120,6 +120,7 @@
 					break;
 				case TBGContext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES:
 					$filters['posted_by'] = array('operator' => '=', 'value' => TBGContext::getUser()->getID());
+					$filters['state'] = array('operator' => '=', 'value' => TBGIssue::STATE_OPEN);
 					$groupby = 'issuetype';
 					break;
 				case TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES:

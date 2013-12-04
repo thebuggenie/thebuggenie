@@ -93,20 +93,14 @@
 		});
 	</script>
 <?php endif; ?>
-<div id="dialog_backdrop" style="display: none; background-color: transparent; width: 100%; height: 100; position: fixed; top: 0; left: 0; margin: 0; padding: 0; text-align: center; z-index: 100000;">
-	<div id="dialog_backdrop_content" class="fullpage_backdrop_content">
-		<div class="rounded_box shadowed_box white cut_top cut_bottom bigger">
-			<div style="width: 900px; text-align: left; margin: 0 auto; font-size: 13px;">
-				<?php echo image_tag('dialog_question.png', array('style' => 'float: left;')); ?>
-				<h3 id="dialog_title"></h3>
-				<p id="dialog_content"></p>
-			</div>
-			<div style="text-align: center; padding: 10px;">
-				<?php echo image_tag('spinning_20.gif', array('style' => 'float: right; display: none;', 'id' => 'dialog_indicator')); ?>
-				<a href="javascript:void(0)" id="dialog_yes" class="button button-green"><?php echo __('Yes'); ?></a>
-				<a href="javascript:void(0)" id="dialog_no" class="button button-red"><?php echo __('No'); ?></a>
-			</div>
+<div class="fullpage_backdrop" id="dialog_backdrop" style="display: none;">
+	<div id="dialog_backdrop_content" class="backdrop_box backdrop_detail_content">
+		<h3 id="dialog_title"></h3>
+		<p id="dialog_content"></p>
+		<div style="text-align: right; padding: 20px;">
+			<?php echo image_tag('spinning_20.gif', array('style' => 'float: right; display: none;', 'id' => 'dialog_indicator')); ?>
+			<a href="javascript:void(0)" id="dialog_yes" class="button button-silver"><?php echo __('Yes'); ?></a>
+			<a href="javascript:void(0)" id="dialog_no" class="button button-silver"><?php echo __('No'); ?></a>
 		</div>
 	</div>
-	<div style="background-color: #000; width: 100%; height: 100; position: absolute; top: 0; left: 0; margin: 0; padding: 0; z-index: 999;" class="semi_transparent"> </div>
 </div>

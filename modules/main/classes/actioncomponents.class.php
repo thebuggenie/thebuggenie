@@ -304,6 +304,13 @@
 		{
 		}
 		
+		public function componentNotifications()
+		{
+			$this->notifications = $this->getUser()->getNotifications();
+			$this->num_unread = $this->getUser()->getNumberOfUnreadNotifications();
+			$this->num_read = $this->getUser()->getNumberOfReadNotifications();
+		}
+		
 		public function componentFindduplicateissues()
 		{
 			$this->setupVariables();

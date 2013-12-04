@@ -25,6 +25,7 @@
 	$routes[] = array('reset_password', '/reset/password/:user/:reset_hash', 'main', 'reset');
 	$routes[] = array('set_state', '/set/state/:state_id', 'main', 'setState');
 	$routes[] = array('logout', '/logout', 'main', 'logout');
+	$routes[] = array('userdata', '/userdata', 'main', 'userdata');
 	$routes[] = array('hide_infobox', '/hide/infobox/:key', 'main', 'hideInfobox');
 	$routes[] = array('set_toggle_state', '/toggle/:key/:state', 'main', 'setToggle');
 	$routes[] = array('getreportissuefields', '/reportissue/get/fields/for/project/:project_key', 'main', 'reportIssueGetFields');

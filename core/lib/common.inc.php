@@ -183,15 +183,15 @@
 				$tstring = '';
 				if (date('dmY', $tstamp) == date('dmY'))
 				{
-					$tstring .= __('Today') . ' (' . strftime('%H:M', $tstamp) . ')';
+					$tstring .= __('Today') . ' (' . strftime('%H:%M', $tstamp) . ')';
 				}
 				elseif (date('dmY', $tstamp) == date('dmY', mktime(0, 0, 0, date('m'), (date('d') - 1))))
 				{
-					$tstring .= __('Yesterday') . ' (' . strftime('%H:M', $tstamp) . ')';
+					$tstring .= __('Yesterday') . ' (' . strftime('%H:%M', $tstamp) . ')';
 				}
 				elseif (date('dmY', $tstamp) == date('dmY', mktime(0, 0, 0, date('m'), (date('d') + 1))))
 				{
-					$tstring .= __('Tomorrow') . ' (' . strftime('%H:M', $tstamp) . ')';
+					$tstring .= __('Tomorrow') . ' (' . strftime('%H:%M', $tstamp) . ')';
 				}
 				else
 				{
@@ -199,7 +199,7 @@
 				}
 				break;
 			case 21:
-				$tstring = strftime('%a, d %b Y %H:M:%S ', $tstamp);
+				$tstring = strftime('%a, %d %b %Y %H:%M:%S ', $tstamp);
 //				if (!$skipusertimestamp && TBGSettings::getUserTimezone() != 'sys')
 //				{
 //					if (TBGSettings::getUserTimezone() != 0)

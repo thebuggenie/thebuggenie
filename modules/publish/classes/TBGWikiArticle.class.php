@@ -852,5 +852,10 @@
 			
 			return $uids;
 		}
-
+		
+		public function addSubscriber($user_id)
+		{
+			TBGUserIssuesTable::getTable()->addStarredArticle($user_id, $this->getID());
+		}
+		
 	}

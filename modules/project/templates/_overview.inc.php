@@ -29,8 +29,8 @@
 		<li class="finduser_container">
 			<label for="goto_issue_<?php echo $project->getID(); ?>_input"><?php echo __('Jump to an issue'); ?>:</label><br>
 			<form action="<?php echo make_url('project_quicksearch', array('project_key' => $project->getKey())); ?>" method="post">
-				<input type="hidden" name="filters[text][operator]" value="=">
-				<input type="search" name="filters[text][value]" id="goto_issue_<?php echo $project->getID(); ?>_input" value="" placeholder="<?php echo __('Enter an issue number to jump to an issue'); ?>">&nbsp;<input type="submit" value="<?php echo __('Go to'); ?>">
+				<input type="hidden" name="fs[text][o]" value="=">
+				<input type="search" name="fs[text][v]" id="goto_issue_<?php echo $project->getID(); ?>_input" value="" placeholder="<?php echo __('Enter an issue number to jump to an issue'); ?>">&nbsp;<input type="submit" value="<?php echo __('Go to'); ?>">
 			</form>
 		</li>
 	</ul>

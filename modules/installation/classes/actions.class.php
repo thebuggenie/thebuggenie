@@ -608,6 +608,7 @@
 			TBGIssueSpentTimesTable::getTable()->upgrade(TBGIssueSpentTimesTable3dot2::getTable());
 			TBGCommentsTable::getTable()->upgrade(TBGCommentsTable3dot2::getTable());
 			TBGSavedSearchesTable::getTable()->upgrade(TBGSavedSearchesTable3dot2::getTable());
+			TBGNotificationsTable::getTable()->upgrade(TBGNotificationsTable3dot2::getTable());
 			TBGUserArticlesTable::getTable()->create();
 
 			$transaction = \b2db\Core::startTransaction();
@@ -616,24 +617,27 @@
 
 			foreach (TBGContext::getRequest()->getParameter('status') as $scope_id => $status_id)
 			{
-				foreach (TBGWorkflowsTable::getTable()->getAll((int) $scope_id) as $workflow)
-				{
-					$transition = new TBGWorkflowTransition();
-					$steps = $workflow->getSteps();
-					$step = array_shift($steps);
-					$step->setLinkedStatusID((int) $status_id);
-					$step->save();
-					$transition->setOutgoingStep($step);
-					$transition->setName('Issue created');
-					$transition->setWorkflow($workflow);
-					$transition->setScope(TBGScopesTable::getTable()->selectById((int) $scope_id));
-					$transition->setDescription('This is the initial transition for issues using this workflow');
-					$transition->save();
-					$workflow->setInitialTransition($transition);
-					$workflow->save();
-				}
 				$scope = TBGScopesTable::getTable()->selectById((int) $scope_id);
-				TBGActivityType::loadFixtures($scope);
+				if ($scope instanceof TBGScope)
+				{
+					foreach (TBGWorkflowsTable::getTable()->getAll((int) $scope_id) as $workflow)
+					{
+						$transition = new TBGWorkflowTransition();
+						$steps = $workflow->getSteps();
+						$step = array_shift($steps);
+						$step->setLinkedStatusID((int) $status_id);
+						$step->save();
+						$transition->setOutgoingStep($step);
+						$transition->setName('Issue created');
+						$transition->setWorkflow($workflow);
+						$transition->setScope($scope);
+						$transition->setDescription('This is the initial transition for issues using this workflow');
+						$transition->save();
+						$workflow->setInitialTransition($transition);
+						$workflow->save();
+					}
+					TBGActivityType::loadFixtures($scope);
+				}
 			}
 			$transaction->commitAndEnd();
 			

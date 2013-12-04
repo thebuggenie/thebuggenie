@@ -52,5 +52,7 @@
 	</div>
 </div>
 <?php if (isset($initial_view) && $initial_view == 'entry'): ?>
+<script>
 	$('issue_<?php echo $issue->getID(); ?>_timeentry').focus();
+</script>
 <?php endif; ?>

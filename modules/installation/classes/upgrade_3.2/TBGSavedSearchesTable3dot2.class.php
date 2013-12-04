@@ -5,8 +5,7 @@
 		b2db\Criterion;
 
 	/**
-	 * @Table(name="savedsearches")
-	 * @Entity(class="TBGSavedSearch")
+	 * @Table(name="savedsearches_32")
 	 */
 	class TBGSavedSearchesTable3dot2 extends TBGB2DBTable
 	{

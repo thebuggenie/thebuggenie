@@ -72,6 +72,11 @@
 		protected $_target_id;
 		
 		/**
+		 * @var TBGIdentifiableScopedClass
+		 */
+		protected $_target;
+		
+		/**
 		 * @Column(type="integer", length=5)
 		 */
 		protected $_target_type = self::TYPE_ISSUE;
@@ -241,6 +246,24 @@
 			}
 		}
 
+		protected function _addNotification($type, $user)
+		{
+			$notification = new TBGNotification();
+			$notification->setTarget($this);
+			$notification->setTriggeredByUser($this->getPostedByID());
+			$notification->setUser($user);
+			$notification->setNotificationType($type);
+			$notification->save();
+		}
+		
+		protected function _addIssueNotifications()
+		{
+			foreach ($this->getTarget()->getSubscribers() as $user)
+			{
+				$this->_addNotification(TBGNotification::TYPE_ISSUE_COMMENTED, $user);
+			}
+		}
+		
 		protected function _postSave($is_new)
 		{
 			if ($is_new)
@@ -249,6 +272,21 @@
 				$tid = $this->getTargetID();
 				if (array_key_exists($tty, self::$_comment_count) && array_key_exists($tid, self::$_comment_count[$tty]) && array_key_exists((int) $this->isSystemComment(), self::$_comment_count[$tty][$tid]))
 					self::$_comment_count[$tty][$tid][(int) $this->isSystemComment()]++;
+				
+				if (!$this->isSystemComment())
+				{
+					if ($this->getTargetType() == self::TYPE_ISSUE)
+					{
+						$this->_addIssueNotifications();
+						if (TBGSettings::getUserSetting(TBGSettings::SETTINGS_USER_SUBSCRIBE_CREATED_UPDATED_COMMENTED_ISSUES, $this->getPostedByID()))
+							$this->getTarget()->addSubscriber($this->getPostedByID());
+					}
+					if ($this->getTargetType() == self::TYPE_ARTICLE)
+					{
+						if (TBGSettings::getUserSetting(TBGSettings::SETTINGS_USER_SUBSCRIBE_CREATED_UPDATED_COMMENTED_ARTICLES, $this->getPostedByID()))
+							$this->getTarget()->addSubscriber($this->getPostedByID());
+					}
+				}
 			}
 		}
 		
@@ -544,6 +582,28 @@
 		public function getTargetID()
 		{
 			return $this->_target_id;
+		}
+		
+		public function getTarget()
+		{
+			if ($this->_target === null)
+			{
+				switch ($this->getTargetType())
+				{
+					case self::TYPE_ISSUE:
+						$this->_target = TBGIssuesTable::getTable()->selectById($this->_target_id);
+						break;
+					case self::TYPE_ARTICLE:
+						$this->_target = TBGArticlesTable::getTable()->selectById($this->_target_id);
+						break;
+					default:
+						$event = TBGEvent::createNew('core', 'TBGComment::getTarget', $this);
+						$event->trigger();
+						$this->_target = $event->getReturnValue();
+				}
+			}
+			
+			return $this->_target;
 		}
 
 		public function setTargetID($var)

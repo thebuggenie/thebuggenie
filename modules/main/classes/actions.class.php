@@ -122,6 +122,7 @@
 				$this->components = ($issue->getProject()->isComponentsEnabled()) ? $components = $issue->getComponents() : array();
 				$this->builds = ($issue->getProject()->isBuildsEnabled()) ? $builds = $issue->getBuilds(): array();
 				$this->affected_count = count($this->editions) + count($this->components) + count($this->builds);
+				$this->getUser()->markNotificationsRead('issue', $issue->getID());
 
 				TBGEvent::createNew('core', 'viewissue', $issue)->trigger();
 			}
@@ -179,47 +180,6 @@
 				$this->issue_message = TBGContext::getMessageAndClear('issue_message');
 			}
 			
-			$issuelist = array();
-			$issues = $this->getUser()->getStarredIssues();
-
-			if (count($issues))
-			{
-				foreach ($issues as $starred_issue)
-				{
-					if (!$starred_issue instanceof TBGIssue || !$starred_issue->getProject() instanceof TBGProject || !$this->selected_project instanceof TBGProject) continue;
-					if ($starred_issue->isOpen() && $starred_issue->getProject()->getID() == $this->selected_project->getID())
-					{
-						$issuelist[$starred_issue->getID()] = array('url' => TBGContext::getRouting()->generate('viewissue', array('project_key' => $this->selected_project->getKey(), 'issue_no' => $starred_issue->getFormattedIssueNo())), 'title' => $starred_issue->getFormattedTitle(true, true));
-					}
-				}
-			}
-			
-			if (array_key_exists('viewissue_list', $_SESSION) && is_array($_SESSION['viewissue_list'])) {
-				foreach ($_SESSION['viewissue_list'] as $k => $i_id)
-				{
-					try
-					{
-						$an_issue = TBGIssuesTable::getTable()->getIssueById($i_id);
-						if (!$an_issue instanceof TBGIssue)
-						{
-							unset($_SESSION['viewissue_list'][$k]);
-							continue;
-						}
-						array_unshift($issuelist, array('url' => TBGContext::getRouting()->generate('viewissue', array('project_key' => $an_issue->getProject()->getKey(), 'issue_no' => $an_issue->getFormattedIssueNo())), 'title' => $an_issue->getFormattedTitle(true, true)));
-					}
-					catch (Exception $e)
-					{
-						unset($_SESSION['viewissue_list'][$k]);
-					}
-				}
-			}
-			
-			if (count($issuelist) == 1)
-			{
-				$issuelist = null;
-			}
-			
-			$this->issuelist = $issuelist;
 			$this->issue = $issue;
 			$event = TBGEvent::createNew('core', 'viewissue', $issue)->trigger();
 			$this->listenViewIssuePostError($event);
@@ -325,6 +285,17 @@
 				}
 				$this->projects = $projects;
 				$this->project_count = count($this->projects);
+			}
+		}
+		
+		public function runUserdata(TBGRequest $request)
+		{
+			if ($this->getUser()->isGuest()) {
+				return $this->renderJSON(array());
+			} else {
+				$data = array();
+				$data['unread_notifications'] = $this->getUser()->getNumberOfUnreadNotifications();
+				return $this->renderJSON($data);
 			}
 		}
 
@@ -2955,6 +2926,9 @@
 						break;
 					case 'openid':
 						$template_name = 'main/openid';
+						break;
+					case 'notifications':
+						$template_name = 'main/notifications';
 						break;
 					case 'workflow_transition':
 						$transition = TBGContext::factory()->TBGWorkflowTransition($request['transition_id']);

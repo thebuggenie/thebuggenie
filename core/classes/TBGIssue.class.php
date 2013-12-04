@@ -4850,6 +4850,151 @@
 			return $related_issues_to_save;
 		}
 
+		protected function _addNotification($type, $user, $updated_by)
+		{
+			$notification = new TBGNotification();
+			$notification->setTarget($this);
+			$notification->setNotificationType($type);
+			$notification->setTriggeredByUser($updated_by);
+			$notification->setUser($user);
+			$notification->save();
+		}
+
+		public function getRelatedUids($strict = false)
+		{
+			$uids = ($strict) ? array() : TBGUserIssuesTable::getTable()->getUserIDsByIssueID($this->getID());
+			$teams = array();
+
+			// Add the poster
+			$uids[$this->getPostedByID()] = $this->getPostedByID();
+
+			// Add all users from the team owning the issue if valid
+			// or add the owning user if a user owns the issue
+			if ($this->getOwner() instanceof TBGTeam)
+			{
+				$teams[$this->getOwner()] = $this->getOwner();
+			}
+			elseif ($this->getOwner() instanceof TBGUser)
+			{
+				$uids[$this->getOwner()->getID()] = $this->getOwner()->getID();
+			}
+
+			// Add all users from the team assigned to the issue if valid
+			// or add the assigned user if a user is assigned to the issue
+			if ($this->getAssignee() instanceof TBGTeam)
+			{
+				$teams[$this->getAssignee()->getID()] = $this->getAssignee();
+			}
+			elseif ($this->getAssignee() instanceof TBGUser)
+			{
+				$uids[$this->getAssignee()->getID()] = $this->getAssignee()->getID();
+			}
+
+			// Add all users in the team who leads the project, if valid
+			// or add the user who leads the project, if valid
+			if ($this->getProject()->getLeader() instanceof TBGTeam)
+			{
+				$teams[$this->getProject()->getLeader()->getID()] = $this->getProject()->getLeader();
+			}
+			elseif ($this->getProject()->getLeader() instanceof TBGUser)
+			{
+				$uids[$this->getProject()->getLeader()->getID()] = $this->getProject()->getLeader()->getID();
+			}
+
+			// Same for QA
+			if ($this->getProject()->getQaResponsible() instanceof TBGTeam)
+			{
+				$teams[$this->getProject()->getQaResponsible()->getID()] = $this->getProject()->getQaResponsible();
+			}
+			elseif ($this->getProject()->getQaResponsible() instanceof TBGUser)
+			{
+				$uids[$this->getProject()->getQaResponsible()->getID()] = $this->getProject()->getQaResponsible()->getID();
+			}
+
+			foreach ($this->getProject()->getAssignedTeams() as $team)
+			{
+				$teams[$team->getID()] = $team;
+			}
+			foreach ($this->getProject()->getAssignedUsers() as $member)
+			{
+				$uids[$member->getID()] = $member->getID();
+			}
+
+			// Add all users relevant for all affected editions
+			foreach ($this->getEditions() as $edition_list)
+			{
+				if ($edition_list['edition']->getLeader() instanceof TBGTeam)
+				{
+					$teams[$edition_list['edition']->getLeaderID()] = $edition_list['edition']->getLeader();
+				}
+				elseif ($edition_list['edition']->getLeader() instanceof TBGUser)
+				{
+					$uids[$edition_list['edition']->getLeaderID()] = $edition_list['edition']->getLeaderID();
+				}
+				if ($edition_list['edition']->getQaResponsible() instanceof TBGTeam)
+				{
+					$teams[$edition_list['edition']->getQaResponsibleID()] = $edition_list['edition']->getQaResponsible();
+				}
+				elseif ($edition_list['edition']->getQaResponsible() instanceof TBGUser)
+				{
+					$uids[$edition_list['edition']->getQaResponsibleID()] = $edition_list['edition']->getQaResponsibleID();
+				}
+				foreach ($edition_list['edition']->getAssignedTeams() as $team)
+				{
+					$teams[$team->getID()] = $team;
+				}
+				foreach ($edition_list['edition']->getAssignedUsers() as $user)
+				{
+					$uids[$user->getID()] = $user->getID();
+				}
+			}
+
+			// Add all users relevant for all affected components
+			foreach ($this->getComponents() as $component_list)
+			{
+				foreach ($component_list['component']->getAssignedTeams() as $team)
+				{
+					$teams[$team->getID()] = $team;
+				}
+				foreach ($component_list['component']->getAssignedUsers() as $user)
+				{
+					$uids[$user->getID()] = $user->getID();
+				}
+			}
+			
+			foreach ($teams as $team)
+			{
+				foreach ($team->getMembers() as $user)
+				{
+					$uids[$user->getID()] = $user->getID();
+				}
+			}
+
+			return $uids;
+		}
+		
+		protected function _addNotifications($type, $updated_by)
+		{
+			$uids = $this->getRelatedUids();
+			
+			foreach ($uids as $user)
+			{
+				if ($user == TBGContext::getUser()->getID()) continue;
+				
+				$this->_addNotification($type, $user, $updated_by);
+			}
+		}
+		
+		protected function _addUpdateNotifications($updated_by)
+		{
+			$this->_addNotifications(TBGNotification::TYPE_ISSUE_UPDATED, $updated_by);
+		}
+		
+		protected function _addCreateNotifications($updated_by)
+		{
+			$this->_addNotifications(TBGNotification::TYPE_ISSUE_CREATED, $updated_by);
+		}
+		
 		public function triggerSaveEvent($comment, $updated_by)
 		{
 			$log_items = $this->_log_items_added;
@@ -4864,6 +5009,7 @@
 					}
 				}
 			}
+			$this->_addUpdateNotifications($updated_by);
 			$event = TBGEvent::createNew('core', 'TBGIssue::save', $this, compact('comment', 'log_items', 'updated_by'));
 			$event->trigger();
 		}
@@ -4891,7 +5037,13 @@
 			else
 			{
 				$this->addLogEntry(TBGLogTable::LOG_ISSUE_CREATED, null, false, $this->getPosted());
+				$this->_addCreateNotifications($this->getPostedBy());
 				TBGEvent::createNew('core', 'TBGIssue::createNew', $this)->trigger();
+			}
+
+			if (in_array(TBGSettings::getUserSetting(TBGSettings::SETTINGS_USER_SUBSCRIBE_CREATED_UPDATED_COMMENTED_ISSUES, TBGContext::getUser()->getID()), array(null, true)))
+			{
+				$this->addSubscriber(TBGContext::getUser()->getID());
 			}
 
 			$this->_clearChangedProperties();
@@ -5323,6 +5475,11 @@
 		{
 			$this->_b2dbLazyload('_subscribers');
 			return $this->_subscribers;
+		}
+		
+		public function addSubscriber($user_id)
+		{
+			TBGUserIssuesTable::getTable()->addStarredIssue($user_id, $this->getID());
 		}
 		
 	}

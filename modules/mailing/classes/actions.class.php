@@ -210,11 +210,19 @@
 			{
 				$project_id = $request['project_id'];
 
-				if ($request['mailing_reply_address'] != '')
+				if ($request['mailing_from_address'] != '')
 				{
-					if (filter_var($request['mailing_reply_address'], FILTER_VALIDATE_EMAIL) !== false)
+					if (filter_var(trim($request['mailing_from_address']), FILTER_VALIDATE_EMAIL) !== false)
 					{
-						TBGContext::getModule('mailing')->saveSetting('project_reply_address_'.$project_id, $request->getParameter('mailing_reply_address'));
+						TBGContext::getModule('mailing')->saveSetting(TBGMailing::SETTING_PROJECT_FROM_ADDRESS.$project_id, trim(mb_strtolower($request->getParameter('mailing_from_address'))));
+						if (trim($request['mailing_from_name']) !== '')
+						{
+							TBGContext::getModule('mailing')->saveSetting(TBGMailing::SETTING_PROJECT_FROM_NAME.$project_id, trim($request->getParameter('mailing_from_name')));
+						}
+						else
+						{
+							TBGContext::getModule('mailing')->deleteSetting(TBGMailing::SETTING_PROJECT_FROM_NAME.$project_id);
+						}
 					}
 					else
 					{
@@ -224,7 +232,8 @@
 				}
 				elseif ($request->getParameter('mailing_reply_address') == '')
 				{
-					TBGContext::getModule('mailing')->saveSetting('project_reply_address_'.$project_id, $request->getParameter('mailing_reply_address'));
+					TBGContext::getModule('mailing')->deleteSetting(TBGMailing::SETTING_PROJECT_FROM_ADDRESS.$project_id);
+					TBGContext::getModule('mailing')->deleteSetting(TBGMailing::SETTING_PROJECT_FROM_NAME.$project_id);
 				}
 
 				return $this->renderJSON(array('failed' => false, 'message' => TBGContext::getI18n()->__('Settings saved')));

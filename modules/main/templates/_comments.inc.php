@@ -23,7 +23,7 @@
 				<div id="comment_add_indicator" style="display: none;">
 					<?php echo image_tag('spinning_20.gif'); ?>
 				</div>
-				<div id="comment_add_controls" style="font-size: 12px;" class="comment_controls">
+				<div id="comment_add_controls" class="comment_controls">
 					<?php if ($target_type == TBGComment::TYPE_ISSUE): ?>
 						<input type="checkbox" name="comment_save_changes" id="comment_save_changes" value="1"<?php if ($save_changes_checked): ?> checked<?php endif; ?>>&nbsp;<label for="comment_save_changes"><?php echo __('Save my changes with this comment'); ?></label>
 						<br><br>

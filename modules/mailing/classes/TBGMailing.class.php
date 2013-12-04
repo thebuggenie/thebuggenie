@@ -7,9 +7,9 @@
 	{
 
 		/**
-		 * Notify the user when an issue I posted gets updated
+		 * Notify the user when a new issue is posted in his/her project(s)
 		 */
-		const NOTIFY_ISSUE_POSTED_UPDATED = 'notify_issue_posted_updated';
+		const NOTIFY_NEW_ISSUES_MY_PROJECTS = 'notify_new_issues_my_projects';
 
 		/**
 		 * Only notify me once per issue
@@ -17,53 +17,26 @@
 		const NOTIFY_ISSUE_ONCE = 'notify_issue_once';
 
 		/**
-		 * Notify the user when an issue I'm assigned to gets updated
+		 * Notify the user when an issue he/she subscribes to is updated or commented
 		 */
-		const NOTIFY_ISSUE_ASSIGNED_UPDATED = 'notify_issue_assigned_updated';
+		const NOTIFY_SUBSCRIBED_ISSUES = 'notify_subscribed_issues';
+
+		/**
+		 * Notify the user when an article he/she subscribes to is updated or commented
+		 */
+		const NOTIFY_SUBSCRIBED_ARTICLES = 'notify_subscribed_articles';
 
 		/**
 		 * Notify the user when he updates an issue
 		 */
-		const NOTIFY_ISSUE_UPDATED_SELF = 'notify_issue_updated_self';
-
-		/**
-		 * Notify the user when an issue assigned to one of my teams is updated
-		 */
-		const NOTIFY_ISSUE_TEAMASSIGNED_UPDATED = 'notify_issue_teamassigned_updated';
-
-		/**
-		 * Notify the user when an issue related to one of my team assigned projects is updated
-		 */
-		const NOTIFY_ISSUE_RELATED_PROJECT_TEAMASSIGNED = 'notify_issue_related_project_teamassigned';
-
-		/**
-		 * Notify the user when an issue related to one of my assigned projects is updated
-		 */
-		const NOTIFY_ISSUE_PROJECT_ASSIGNED = 'notify_issue_project_vip';
-
-		/**
-		 * Notify the user when an issue he commented on is updated
-		 */
-		const NOTIFY_ISSUE_COMMENTED_ON = 'notify_issue_commented_on';
-
-		/**
-		 * Notify the user when an article he created, updated or commented on is commented on
-		 */
-		const NOTIFY_ARTICLE_COMMENTS = 'notify_article_commented_on';
-
-		/**
-		 * Notify the user when an article he created, updated or commented on is updated
-		 */
-		const NOTIFY_ARTICLE_EDITS = 'notify_article_edits';
-
-		/**
-		 * Notify the user when an article he created, updated or commented on is updated
-		 */
-		const NOTIFY_ARTICLE_ACTIVITY_OWN = 'notify_article_activity_own';
+		const NOTIFY_UPDATED_SELF = 'notify_updated_self';
 
 		const MAIL_ENCODING_BASE64 = 3;
 		const MAIL_ENCODING_QUOTED = 4;
 		const MAIL_ENCODING_UTF7 = 0;
+
+		const SETTING_PROJECT_FROM_ADDRESS = 'project_from_address_';
+		const SETTING_PROJECT_FROM_NAME = 'project_from_name_';
 
 		protected $_longname = 'Email communication';
 
@@ -278,6 +251,8 @@ EOT;
 			$langs = array();
 			foreach ($users as $user)
 			{
+				if (is_numeric($user)) $user = TBGUsersTable::getTable()->selectById($user);
+				
 				if ($user instanceof TBGUser)
 				{
 					$user_language = $user->getLanguage();
@@ -654,14 +629,15 @@ EOT;
 			return $uids;
 		}
 
-		protected function _addProjectReplyAddress(Swift_Mime_Message $message, TBGProject $project = null)
+		protected function _addProjectEmailAddress(Swift_Mime_Message $message, TBGProject $project = null)
 		{
 			if ($project instanceof TBGProject)
 			{
-				$address = TBGSettings::get('project_reply_address_'.$issue->getProject()->getID(), 'mailing');
+				$address = TBGSettings::get(self::SETTING_PROJECT_FROM_ADDRESS.$project->getID(), 'mailing');
+				$name    = TBGSettings::get(self::SETTING_PROJECT_FROM_NAME.$project->getID(), 'mailing');
 				if ($address != '')
 				{
-					$message->setReplyTo($address);
+					$message->setFrom($address, $name);
 				}
 			}
 		}
@@ -675,12 +651,17 @@ EOT;
 				{
 					$subject = '['.$issue->getProject()->getKey().'] ' . $issue->getIssueType()->getName() . ' ' . $issue->getFormattedIssueNo(true) . ' - ' . html_entity_decode($issue->getTitle(), ENT_COMPAT, TBGContext::getI18n()->getCharset());
 					$parameters = compact('issue');
-					$to_users = $this->_getIssueRelatedUsers($issue);
+					$to_users = $issue->getRelatedUids();
+					if (!$this->getSetting(self::NOTIFY_UPDATED_SELF, TBGContext::getUser()->getID())) unset($to_users[TBGContext::getUser()->getID()]);
+					foreach ($to_users as $uid)
+					{
+						if (!$this->getSetting(self::NOTIFY_NEW_ISSUES_MY_PROJECTS, $uid)) unset($to_users[$uid]);
+					}
 					$messages = $this->getTranslatedMessages('issuecreate', $parameters, $to_users, $subject);
 
 					foreach ($messages as $message)
 					{
-						$this->_addProjectReplyAddress($message, $issue->getProject());
+						$this->_addProjectEmailAddress($message, $issue->getProject());
 						$this->sendMail($message);
 					}
 				}
@@ -705,7 +686,7 @@ EOT;
 				{
 					if ($project = $article->getProject())
 					{
-						$this->_addProjectReplyAddress($message, $project);
+						$this->_addProjectEmailAddress($message, $project);
 					}
 					$this->sendMail($message);
 				}
@@ -743,7 +724,7 @@ EOT;
 					{
 						if (isset($project) && $project instanceof TBGProject)
 						{
-							$this->_addProjectReplyAddress($message, $project);
+							$this->_addProjectEmailAddress($message, $project);
 						}
 						$this->sendMail($message);
 					}
@@ -760,12 +741,18 @@ EOT;
 				{
 					$subject = 'Re: ['.$issue->getProject()->getKey().'] ' . $issue->getIssueType()->getName() . ' ' . $issue->getFormattedIssueNo(true) . ' - ' . html_entity_decode($issue->getTitle(), ENT_COMPAT, TBGContext::getI18n()->getCharset());
 					$parameters = array('issue' => $issue, 'comment' => $event->getParameter('comment'), 'log_items' => $event->getParameter('log_items'), 'updated_by' => $event->getParameter('updated_by'));
-					$to_users = $this->_getIssueRelatedUsers($issue);
+					$to_users = $issue->getSubscribers();
+					if (!$this->getSetting(self::NOTIFY_UPDATED_SELF, TBGContext::getUser()->getID())) unset($to_users[TBGContext::getUser()->getID()]);
+					foreach ($to_users as $uid)
+					{
+						if (!$this->getSetting(self::NOTIFY_SUBSCRIBED_ISSUES, $uid)) unset($to_users[$uid]);
+						if ($this->getSetting(self::NOTIFY_ISSUE_ONCE, $uid) && $this->getSetting(self::NOTIFY_ISSUE_ONCE . '_' . $issue->getID(), $uid)) unset($to_users[$uid]);
+					}
 					$messages = $this->getTranslatedMessages('issueupdate', $parameters, $to_users, $subject);
 
 					foreach ($messages as $message)
 					{
-						$this->_addProjectReplyAddress($message, $issue->getProject());
+						$this->_addProjectEmailAddress($message, $issue->getProject());
 						$this->sendMail($message);
 					}
 				}
@@ -786,7 +773,7 @@ EOT;
 
 					foreach ($messages as $message)
 					{
-						$this->_addProjectReplyAddress($message, $issue->getProject());
+						$this->_addProjectEmailAddress($message, $issue->getProject());
 						$this->sendMail($message);
 					}
 					$this->deleteSetting(self::NOTIFY_ISSUE_ONCE . '_' . $issue->getID(), $event->getParameter('user')->getID());
@@ -799,7 +786,7 @@ EOT;
 			if (!$event->getSubject() instanceof TBGIssue) return;
 
 			$uid = TBGContext::getUser()->getID();
-			if ($this->getSetting(self::NOTIFY_ISSUE_ONCE,$uid))
+			if ($this->getSetting(self::NOTIFY_ISSUE_ONCE, $uid))
 			{
 				$this->deleteSetting(self::NOTIFY_ISSUE_ONCE . '_' . $event->getSubject()->getID(), $uid);
 			}

@@ -82,7 +82,7 @@
 		<?php if ($resultcount - $cc > 0): ?>
 			<li class="find_more_issues last">
 				<span class="informal"><?php echo __('See %num more issues ...', array('%num' => $resultcount - $cc)); ?></span>
-				<div class="hidden url"><?php echo (TBGContext::isProjectContext()) ? make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('search'); ?>?filters[text][value]=<?php echo $searchterm; ?>&filters[text][operator]=<?php echo urlencode('='); ?></div>
+				<div class="hidden url"><?php echo (TBGContext::isProjectContext()) ? make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('search'); ?>?fs[text][v]=<?php echo $searchterm; ?>&fs[text][o]=<?php echo urlencode('='); ?></div>
 			</li>
 		<?php endif; ?>
 	<?php else: ?>

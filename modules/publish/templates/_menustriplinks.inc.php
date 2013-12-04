@@ -18,7 +18,7 @@
 					<?php $quicksearch_title = __('Find project article (press enter to search)'); ?>
 					<div style="font-weight: normal; margin: 0 0 15px 5px;">
 						<form action="<?php echo make_url('publish_find_project_articles', array('project_key' => TBGContext::getCurrentProject()->getKey())); ?>" method="get" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>">
-							<input type="text" name="articlename" value="<?php echo $quicksearch_title; ?>" style="width: 230px; font-size: 0.9em;" onblur="if ($(this).getValue() == '') { $(this).value = '<?php echo $quicksearch_title; ?>'; $(this).addClassName('faded_out'); }" onfocus="if ($(this).getValue() == '<?php echo $quicksearch_title; ?>') { $(this).clear(); } $(this).removeClassName('faded_out');" class="faded_out">
+							<input type="search" name="articlename" placeholder="<?php echo $quicksearch_title; ?>">
 						</form>
 					</div>
 				<?php else: ?>
@@ -30,7 +30,7 @@
 			<?php $quicksearch_title = __('Find any article (press enter to search)'); ?>
 			<div style="font-weight: normal; margin: 0 0 15px 5px;">
 				<form action="<?php echo make_url('publish_find_articles'); ?>" method="get" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>">
-					<input type="text" name="articlename" value="<?php echo $quicksearch_title; ?>" style="width: 230px; font-size: 0.9em;" onblur="if ($(this).getValue() == '') { $(this).value = '<?php echo $quicksearch_title; ?>'; $(this).addClassName('faded_out'); }" onfocus="if ($(this).getValue() == '<?php echo $quicksearch_title; ?>') { $(this).clear(); } $(this).removeClassName('faded_out');" class="faded_out">
+					<input type="search" name="articlename" placeholder="<?php echo $quicksearch_title; ?>">
 				</form>
 			</div>
 			<?php if (count(TBGProject::getAll()) > (int) TBGContext::isProjectContext()): ?>

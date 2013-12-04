@@ -26,7 +26,11 @@ Array.range= function(a, b, step){
 // The core js class used by thebuggenie
 var TBG = {
 	Core: {
-		AjaxCalls: []
+		AjaxCalls: [],
+		Pollers: {
+			Callbacks: {},
+			Locks: {}
+		}
 	}, // The "Core" namespace is for functions used by thebuggenie core, not to be invoked outside the js class
 	Tutorial: {
         Stories: {}
@@ -318,6 +322,7 @@ TBG.Core._detachFile = function(url, file_id, base_id) {
 			callback: function(json) {
 				if (json.attachmentcount == 0 && $('viewissue_no_uploaded_files')) $('viewissue_no_uploaded_files').show();
 				if ($('viewissue_uploaded_attachments_count')) $('viewissue_uploaded_attachments_count').update(json.attachmentcount);
+                TBG.Main.Helpers.Dialog.dismiss();
 			}
 		},
 		failure: {
@@ -409,8 +414,55 @@ TBG.initialize = function(options) {
 	$('fullpage_backdrop_content').observe('click', TBG.Core._resizeWatcher);
 	document.observe('click', TBG.Main.toggleBreadcrumbMenuPopout);
 	document.observe('keydown', TBG.Core._escapeWatcher);
+	TBG.Core.Pollers.datapoller = new PeriodicalExecuter(TBG.Core.Pollers.Callbacks.dataPoller, 10);
+	TBG.Core.Pollers.Callbacks.dataPoller();
 	TBG.OpenID.init();
 };
+
+TBG.Core.Pollers.Callbacks.dataPoller = function() {
+	if (!TBG.Core.Pollers.Locks.datapoller) {
+		TBG.Core.Pollers.Locks.datapoller = true;
+		TBG.Main.Helpers.ajax(TBG.data_url, {
+			url_method: 'get',
+			success: {
+				callback: function(json) {
+					var unc = $('user_notifications_count');
+					if (unc) {
+						if (parseInt(json.unread_notifications) != parseInt(unc.innerHTML)) {
+							unc.update(json.unread_notifications);
+							if (parseInt(json.unread_notifications) > 0) {
+								unc.addClassName('unread');
+							} else {
+								unc.removeClassName('unread');
+							}
+						}
+					}
+					TBG.Core.Pollers.Locks.datapoller = false;
+				}
+			}
+		});
+	}
+}
+
+TBG.Main.Profile.toggleNotifications = function() {
+	var un = $('user_notifications');
+	if (un.hasClassName('active')) {
+		un.removeClassName('active');
+	} else {
+		un.addClassName('active');
+		if ($('user_notifications_list').childElements().size() == 0) {
+			TBG.Main.Helpers.ajax($('user_notifications_list').dataset.notificationsUrl, {
+				url_method: 'get',
+				loading: {
+					indicator: 'user_notifications_loading_indicator'
+				},
+				success: {
+					update: 'user_notifications_list'
+				}
+			});
+		}
+	}
+}
 
 TBG.loadDebugInfo = function(debug_id, cb) {
 	var url = TBG.debugUrl.replace('___debugid___', debug_id);

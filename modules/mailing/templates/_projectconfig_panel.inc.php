@@ -28,13 +28,19 @@
 		<input type="hidden" name="project_id" value="<?php echo $project->getID(); ?>">
 		<table style="clear: both; width: 780px; margin-bottom: 25px;" class="padded_table" cellpadding=0 cellspacing=0>
 			<tr>
-				<td style="width: 200px;"><label for="mailing_reply_address"><?php echo __('Project reply-address'); ?></label></td>
+				<td style="width: 200px;"><label for="mailing_from_address"><?php echo __('Project from-address'); ?></label></td>
 				<td style="width: 580px;">
-					<input type="email" name="mailing_reply_address" style="width: 300px;" id="mailing_reply_address" value="<?php echo TBGSettings::get('project_reply_address_'.$project->getID(), 'mailing'); ?>">
+					<input type="email" name="mailing_from_address" style="width: 300px;" id="mailing_from_address" value="<?php echo TBGSettings::get('project_from_address_'.$project->getID(), 'mailing'); ?>">
 				</td>
 			</tr>
 			<tr>
-				<td class="config_explanation" colspan="2"><?php echo __('By specifying a reply-to address here, users can hit the "Reply" button to email notifications and replies will be sent to the specified address.'); ?></td>
+				<td style="width: 200px;"><label for="mailing_from_name"><?php echo __('Project from-name'); ?></label></td>
+				<td style="width: 580px;">
+					<input type="email" name="mailing_from_name" style="width: 300px;" id="mailing_from_name" value="<?php echo TBGSettings::get('project_from_name_'.$project->getID(), 'mailing'); ?>">
+				</td>
+			</tr>
+			<tr>
+				<td class="config_explanation" colspan="2"><?php echo __('By specifying an email address here, users can hit the "Reply" button on email notifications, and replies will be sent to the specified address instead of the usual generic no-reply address.'); ?></td>
 			</tr>
 		</table>
 		<table style="clear: both; width: 780px;" class="padded_table" cellpadding=0 cellspacing=0>

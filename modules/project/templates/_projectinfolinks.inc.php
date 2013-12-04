@@ -59,6 +59,10 @@
 	<?php echo link_tag(make_url('project_timeline_important', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Timeline'), (($tbg_response->getPage() == 'project_timeline') ? array('class' => 'selected') : null)); ?>
 	<?php TBGEvent::createNew('core', 'project_sidebar_links_timeline')->trigger(array('submenu' => $submenu)); ?>
 <?php endif; ?>
+<?php $event = TBGEvent::createNew('core', 'project_sidebar_links')->trigger(array('submenu' => $submenu)); ?>
+<?php foreach ($event->getReturnList() as $menuitem): ?>
+	<?php echo link_tag($menuitem['url'], $menuitem['title'], array('title' => $menuitem['title'])); ?>
+<?php endforeach; ?>
 <?php if ($tbg_user->canEditProjectDetails($selected_project)): ?>
 	<?php if ($selected_project->isBuildsEnabled()): ?>
 		<?php echo link_tag(make_url('project_release_center', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Release center'), (($tbg_response->getPage() == 'project_release_center') ? array('class' => 'selected') : array())); ?>

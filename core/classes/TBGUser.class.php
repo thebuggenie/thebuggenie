@@ -166,7 +166,7 @@
 		protected $_confirmed_scopes = null;
 
 		/**
-		 * Array of issues to follow up
+		 * Array of issues to watch
 		 *
 		 * @var array
 		 * @Relates(class="TBGIssue", collection=true, manytomany=true, joinclass="TBGUserIssuesTable")
@@ -174,7 +174,7 @@
 		protected $_starredissues = null;
 
 		/**
-		 * Array of articles to follow up
+		 * Array of articles to watch
 		 *
 		 * @var array
 		 * @Relates(class="TBGWikiArticle", collection=true, manytomany=true, joinclass="TBGUserArticlesTable")
@@ -304,6 +304,18 @@
 		protected $_prefer_wiki_markdown = false;
 
 		protected $_openid_accounts;
+		
+		/**
+		 * List of user's notifications
+		 *
+		 * @var array|TBGNotification
+		 * @Relates(class="TBGNotification", collection=true, foreign_column="user_id", orderby="created_at")
+		 */
+		protected $_notifications = null;
+		
+		protected $_unread_notifications_count = null;
+		
+		protected $_read_notifications_count = null;
 		
 		/**
 		 * Retrieve a user by username
@@ -2518,6 +2530,95 @@
 		public function isMemberOfScope(TBGScope $scope)
 		{
 			return array_key_exists($scope->getID(), $this->getScopes());
+		}
+		
+		protected function _populateNotifications()
+		{
+			if (!is_array($this->_notifications))
+			{
+				$this->_b2dbLazyload('_notifications');
+				$notifications = array('unread' => array(), 'read' => array(), 'all' => array());
+				foreach ($this->_notifications as $notification)
+				{
+					array_unshift($notifications['all'], $notification);
+					if ($notification->isRead())
+					{
+						array_unshift($notifications['read'], $notification);
+					}
+					else
+					{
+						array_unshift($notifications['unread'], $notification);
+					}
+				}
+				$this->_notifications = $notifications;
+				$this->_unread_notifications_count = count($notifications['unread']);
+				$this->_read_notifications_count = count($notifications['read']);
+			}
+		}
+		
+		/**
+		 * Returns an array of notifications for this user
+		 * 
+		 * @return array|TBGNotification
+		 */
+		public function getNotifications()
+		{
+			$this->_populateNotifications();
+			return $this->_notifications['all'];
+		}
+		
+		/**
+		 * Returns an array of unread notifications for this user
+		 * 
+		 * @return array|TBGNotification
+		 */
+		public function getUnreadNotifications()
+		{
+			$this->_populateNotifications();
+			return $this->_notifications['unread'];
+		}
+		
+		public function getReadNotifications()
+		{
+			$this->_populateNotifications();
+			return $this->_notifications['read'];
+		}
+		
+		protected function _populateNotificationsCounts()
+		{
+			if ($this->_unread_notifications_count === null)
+			{
+				list ($this->_unread_notifications_count, $this->_read_notifications_count) = TBGNotificationsTable::getTable()->getCountsByUserID($this->getID());
+			}
+		}
+		
+		public function getNumberOfUnreadNotifications()
+		{
+			$this->_populateNotificationsCounts();
+			return $this->_unread_notifications_count;
+		}
+
+		public function getNumberOfReadNotifications()
+		{
+			$this->_populateNotificationsCounts();
+			return $this->_read_notifications_count;
+		}
+		
+		public function getNumberOfNotifications()
+		{
+			$this->_populateNotificationsCounts();
+			return $this->_read_notifications_count + $this->_unread_notifications_count;
+		}
+		
+		public function markNotificationsRead($type, $id)
+		{
+			if ($type == 'issue')
+			{
+				TBGNotificationsTable::getTable()->markUserNotificationsReadByTypesAndId(array(TBGNotification::TYPE_ISSUE_COMMENTED, TBGNotification::TYPE_ISSUE_CREATED, TBGNotification::TYPE_ISSUE_UPDATED), $id, $this->getID());
+			}
+			$this->_notifications = null;
+			$this->_unread_notifications_count = null;
+			$this->_read_notifications_count = null;
 		}
 
 	}

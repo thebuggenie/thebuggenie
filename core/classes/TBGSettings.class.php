@@ -104,6 +104,10 @@
 		const SETTING_USER_KEYBOARD_NAVIGATION = 'keyboard_navigation';
 		const SETTING_USER_LANGUAGE = 'language';
 		const SETTING_USER_ACTIVATION_KEY = 'activation_key';
+		const SETTINGS_USER_SUBSCRIBE_CREATED_UPDATED_COMMENTED_ISSUES = 'subscribe_posted_updated_commented_issues';
+		const SETTINGS_USER_SUBSCRIBE_CREATED_UPDATED_COMMENTED_ARTICLES = 'subscribe_created_updated_commented_articles';
+		const SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS = 'subscribe_new_issues_project';
+		const SETTINGS_USER_SUBSCRIBE_NEW_ARTICLES_MY_PROJECTS = 'subscribe_new_articles_project';
 		const SETTING_AUTH_BACKEND = 'auth_backend';
 		const SETTING_MAINTENANCE_MODE = 'offline';
 		const SETTING_MAINTENANCE_MESSAGE = 'offline_msg';
@@ -264,6 +268,11 @@
 			if ($with_revision) $retvar .= (is_numeric(self::$_ver_rev)) ? '.' . self::$_ver_rev : self::$_ver_rev;
 			if ($with_codename) $retvar .= ' ("' . self::$_ver_name . '")';
 			return $retvar;  
+		}
+		
+		public static function getUserSetting($user_id, $name, $module = 'core', $scope = null)
+		{
+			return self::get($name, $module, $scope, $user_id);
 		}
 		
 		public static function getMajorVer()
