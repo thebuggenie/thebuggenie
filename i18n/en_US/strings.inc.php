@@ -4,9 +4,9 @@
 // If you would like to help translating TBG,
 // please visit https://www.transifex.com/projects/p/tbg
 
-// Number of Sections: 308
-// Number of Strings: 3293
-// Strings extracted on: 2013 Nov 05.
+// Number of Sections: 307
+// Number of Strings: 3306
+// Strings extracted on: 2013 Dec 05.
 
 // First occurrence is in: core/classes/TBGAction.class.php
 // ----------------------------------------------------------------------------
@@ -193,8 +193,8 @@
   $strings['Blocking further progress on the daily build'] = 'Blocking further progress on the daily build';
   $strings['A User would return the product / cannot RTM / the team would hold the release for this bug'] = 'A User would return the product / cannot RTM / the team would hold the release for this bug';
   $strings['A User would likely not purchase the product / will show up in review / clearly a noticeable issue'] = 'A User would likely not purchase the product / will show up in review / clearly a noticeable issue';
-  $strings["A Pain – users won't like this once they notice it / a moderate number of users won't buy"] = "A Pain – users won't like this once they notice it / a moderate number of users won't buy";
-  $strings['Nuisance – not a big deal but noticeable / extremely unlikely to affect sales'] = 'Nuisance – not a big deal but noticeable / extremely unlikely to affect sales';
+  $strings["A Pain - users won't like this once they notice it / a moderate number of users won't buy"] = "A Pain - users won't like this once they notice it / a moderate number of users won't buy";
+  $strings['Nuisance - not a big deal but noticeable / extremely unlikely to affect sales'] = 'Nuisance - not a big deal but noticeable / extremely unlikely to affect sales';
   $strings['Will affect all users'] = 'Will affect all users';
   $strings['Will affect most users'] = 'Will affect most users';
   $strings['Will affect average number of users'] = 'Will affect average number of users';
@@ -370,12 +370,6 @@
 // ----------------------------------------------------------------------------
   $strings['This username already exists'] = 'This username already exists';
   $strings['No such user'] = 'No such user';
-
-// First occurrence is in: core/lib/common.inc.php
-// ----------------------------------------------------------------------------
-  $strings['Today'] = 'Today';
-  $strings['Yesterday'] = 'Yesterday';
-  $strings['Tomorrow'] = 'Tomorrow';
 
 // First occurrence is in: core/templates/backdrops.inc.php
 // ----------------------------------------------------------------------------
@@ -2051,7 +2045,6 @@
 // ----------------------------------------------------------------------------
   $strings['%filename, uploaded %date'] = '%filename, uploaded %date';
   $strings['Use this tag to include this image: [[Image:%filename|thumb|Image description]]'] = 'Use this tag to include this image: [[Image:%filename|thumb|Image description]]';
-  $strings['Remove'] = 'Remove';
   $strings['Do you really want to detach this file?'] = 'Do you really want to detach this file?';
   $strings['If you detach this file, it will be deleted. This action cannot be undone. Are you sure you want to remove this file?'] = 'If you detach this file, it will be deleted. This action cannot be undone. Are you sure you want to remove this file?';
   $strings['Invalid file'] = 'Invalid file';
@@ -2387,6 +2380,7 @@
   $strings['Logged by'] = 'Logged by';
   $strings['Time logged'] = 'Time logged';
   $strings['Do you really want to remove this time entry?'] = 'Do you really want to remove this time entry?';
+  $strings['Remove'] = 'Remove';
   $strings['Removing this entry will change the number of points, hours, days, weeks or months spent on this issue.'] = 'Removing this entry will change the number of points, hours, days, weeks or months spent on this issue.';
   $strings['Done'] = 'Done';
 
@@ -3896,11 +3890,14 @@
   $strings['Owned by team'] = 'Owned by team';
   $strings['Date reported'] = 'Date reported';
   $strings['Date last updated'] = 'Date last updated';
-  $strings['% completed'] = '% completed';
   $strings['Component(s)'] = 'Component(s)';
   $strings['Issue title'] = 'Issue title';
   $strings['Last updated time'] = 'Last updated time';
   $strings['Number of comments'] = 'Number of comments';
+  $strings['Project'] = 'Project';
+  $strings["Who's assigned"] = "Who's assigned";
+  $strings['State (open or closed)'] = 'State (open or closed)';
+  $strings['% completed'] = '% completed';
 
 // First occurrence is in: modules/search/classes/actions.class.php
 // ----------------------------------------------------------------------------
@@ -3947,11 +3944,9 @@
   $strings['Download search results'] = 'Download search results';
   $strings['Download as CSV'] = 'Download as CSV';
   $strings['Download as RSS'] = 'Download as RSS';
-  $strings['Reset columns'] = 'Reset columns';
 
 // First occurrence is in: modules/search/templates/_filter.inc.php
 // ----------------------------------------------------------------------------
-  $strings['Project'] = 'Project';
   $strings['%field is %value'] = '%field is %value';
   $strings['%field is not %value'] = '%field is not %value';
   $strings['Include subprojects'] = 'Include subprojects';
@@ -4002,6 +3997,10 @@
   $strings['Filter on targetted milestone(s)'] = 'Filter on targetted milestone(s)';
   $strings['Subproject(s)'] = 'Subproject(s)';
   $strings['Include issues from subproject(s)'] = 'Include issues from subproject(s)';
+  $strings['Blocker status'] = 'Blocker status';
+  $strings['Filter on blocker status'] = 'Filter on blocker status';
+  $strings['Only blocker issues'] = 'Only blocker issues';
+  $strings['Not blocker issues'] = 'Not blocker issues';
 
 // First occurrence is in: modules/search/templates/_interactivefilter_choice.inc.php
 // ----------------------------------------------------------------------------
@@ -4016,6 +4015,7 @@
   $strings['Posted'] = 'Posted';
   $strings['Filter on posted date'] = 'Filter on posted date';
   $strings['Filter on last updated date'] = 'Filter on last updated date';
+  $strings['Today'] = 'Today';
   $strings['Before %time'] = 'Before %time';
   $strings['After %time'] = 'After %time';
   $strings['Any time'] = 'Any time';
@@ -4076,8 +4076,18 @@
   $strings['Targetting a specific milestone'] = 'Targetting a specific milestone';
   $strings['Issue detail filters'] = 'Issue detail filters';
   $strings['Other filters'] = 'Other filters';
+  $strings["Press the search button to trigger a search if it doesn't happen automatically"] = "Press the search button to trigger a search if it doesn't happen automatically";
+  $strings['Reset columns'] = 'Reset columns';
   $strings['Select how to present search results'] = 'Select how to present search results';
+  $strings['Search result grouping'] = 'Search result grouping';
+  $strings['Ascending'] = 'Ascending';
+  $strings['Descending'] = 'Descending';
+  $strings['No grouping'] = 'No grouping';
   $strings['Select how many issues to show per page'] = 'Select how many issues to show per page';
+  $strings['Save or download search results'] = 'Save or download search results';
+  $strings['Save search filters'] = 'Save search filters';
+  $strings['Download as CSV file'] = 'Download as CSV file';
+  $strings['Download as RSS feed'] = 'Download as RSS feed';
   $strings['You have to be signed in to save this search'] = 'You have to be signed in to save this search';
   $strings['Find issues'] = 'Find issues';
   $strings['This saved search will be available under this project only. To make a non-project-specific search, use the main "%find_issues" page instead'] = 'This saved search will be available under this project only. To make a non-project-specific search, use the main "%find_issues" page instead';
@@ -4097,8 +4107,8 @@
   $strings['Project wishlist'] = 'Project wishlist';
   $strings['Your saved searches'] = 'Your saved searches';
   $strings['Your saved searches for this project'] = 'Your saved searches for this project';
-  $strings['Delete saved search'] = 'Delete saved search';
   $strings['Edit saved search'] = 'Edit saved search';
+  $strings['Delete saved search'] = 'Delete saved search';
   $strings['Do you really want to delete this saved search?'] = 'Do you really want to delete this saved search?';
   $strings['This action cannot be reverted. Note: this will not modify any issues affected by this search'] = 'This action cannot be reverted. Note: this will not modify any issues affected by this search';
   $strings['Yes, delete'] = 'Yes, delete';
