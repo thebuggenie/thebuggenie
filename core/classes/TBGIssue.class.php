@@ -584,8 +584,8 @@
 			$effects[5] = $i18n->__('Blocking further progress on the daily build');
 			$effects[4] = $i18n->__('A User would return the product / cannot RTM / the team would hold the release for this bug');
 			$effects[3] = $i18n->__('A User would likely not purchase the product / will show up in review / clearly a noticeable issue');
-			$effects[2] = $i18n->__("A Pain – users won't like this once they notice it / a moderate number of users won't buy");
-			$effects[1] = $i18n->__('Nuisance – not a big deal but noticeable / extremely unlikely to affect sales');
+			$effects[2] = $i18n->__("A Pain - users won't like this once they notice it / a moderate number of users won't buy");
+			$effects[1] = $i18n->__('Nuisance - not a big deal but noticeable / extremely unlikely to affect sales');
 
 			$likelihoods = array();
 			$likelihoods[5] = $i18n->__('Will affect all users');

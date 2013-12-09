@@ -60,6 +60,7 @@
 
             <exclude name="**/*Test*"/>
             <exclude name="**/*Phing*"/>
+            <exclude name="core/lib/**"/>
         </patternset>
     </fileset>
 
@@ -172,12 +173,16 @@
                 <exec dir="${project.basedir}"
                       command="${tools_dir}${xgettext_executable} --from-code=UTF-8 --no-wrap --keyword=${xgettext_keyword} --keyword -n -j -F ${gettext_file_abs} -o ${localesDir}/${po_file_name}"
                       logoutput="true"/>
+                <exec dir="${project.basedir}"
+                      command="sed -i '' -e 's/CHARSET/UTF-8/' ${localesDir}/${po_file_name}"/>
             </then>
             <else>
                 <echo msg="${tools_dir}${xgettext_executable} --from-code=UTF-8 --no-wrap --keyword=${xgettext_keyword} --keyword -n -F ${gettext_file_abs} -o ${localesDir}/${po_file_name}"/>
                 <exec dir="${project.basedir}"
                       command="${tools_dir}${xgettext_executable} --from-code=UTF-8 --no-wrap --keyword=${xgettext_keyword} --keyword -n -F ${gettext_file_abs} -o ${localesDir}/${po_file_name}"
                       logoutput="true"/>
+                <exec dir="${project.basedir}"
+                      command="sed -i '' -e 's/CHARSET/UTF-8/' ${localesDir}/${po_file_name}"/>
             </else>
         </if>
     </target>
