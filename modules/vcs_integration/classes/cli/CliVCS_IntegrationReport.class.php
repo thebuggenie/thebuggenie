@@ -55,7 +55,7 @@
 			$new_rev = $this->getProvidedArgument('revno');
 			$commit_msg = $this->getProvidedArgument('log');
 			$changed = $this->getProvidedArgument('changed');
-			$old_rev = $this->getProvidedArgument('oldrev', $new_rev - 1);
+			$old_rev = $this->getProvidedArgument('oldrev', null);
 			$date = $this->getProvidedArgument('date', null);
 			$branch = $this->getProvidedArgument('branch', null);
 			
@@ -65,12 +65,15 @@
 				exit;
 			}
 
-			if ((!is_numeric($new_rev) && is_numeric($old_rev)) || (is_numeric($new_rev) && !is_numeric($old_rev)))
+			if ($old_rev === null && !is_integer($new_rev))
 			{
-				$this->cliEcho("If the old revision is specified, it must be the same format as the new revision (number or hash)\n", 'red', 'bold');
-				exit;
+				$this->cliEcho("Error: if only the new revision is specified, it must be a number so that old revision can be calculated from it (by substracting 1 from new revision number).");
 			}
-			
+			else if ($old_rev === null)
+			{
+				$old_rev = $new_rev - 1;
+			}
+
 			$output = TBGVCSIntegration::processCommit($project, $commit_msg, $old_rev, $new_rev, $date, $changed, $author, $branch);
 			$this->cliEcho($output);
 		}

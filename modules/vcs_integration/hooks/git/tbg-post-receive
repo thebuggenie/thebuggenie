@@ -26,9 +26,18 @@ update_tbg()
 
     #echo "Attempting to update tbg with oldhash:$oldhash newhash:$newhash"
     changedfiles=`git diff-tree --name-status -r $newhash --no-commit-id`
-    name=`git log ^$oldhash $newhash --pretty=format:"%an <%ae>"`
-    log=`git log ^$oldhash $newhash --pretty=format:"%s %b"`
-    time=`git log ^$oldhash $newhash --pretty=format:"%ct"`
+
+    # Retrieve name, log, and time. Make sure to use correct syntax for the
+    # first commit of repository (where there's no parent/oldrev).
+    if [ "$oldhash" = "0000000000000000000000000000000000000000" ]; then
+        name=`git log $newhash --pretty=format:"%an <%ae>"`
+        log=`git log $newhash --pretty=format:"%s %b"`
+        time=`git log $newhash --pretty=format:"%ct"`
+    else
+        name=`git log ^$oldhash $newhash --pretty=format:"%an <%ae>"`
+        log=`git log ^$oldhash $newhash --pretty=format:"%s %b"`
+        time=`git log ^$oldhash $newhash --pretty=format:"%ct"`
+    fi
 
     #echo "updating with name: $name"
     #echo "updating with log: $log"
