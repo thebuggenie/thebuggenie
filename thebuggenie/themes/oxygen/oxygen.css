@@ -736,8 +736,8 @@ div.dropdown_separator { border-left: 1px dotted #EAEAF5; padding: 0 0 0 4px; ma
     vertical-align: middle;
 }
 .tab_menu.inset li a img {
-	float: left;
-	margin: 1px 5px 0 2px;
+	/*float: left;*/
+	/*margin: 1px 5px 0 2px;*/
 	height: 22px;
 	width: 22px;
     vertical-align: middle;

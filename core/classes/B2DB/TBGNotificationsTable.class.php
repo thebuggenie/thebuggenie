@@ -60,7 +60,14 @@
 			
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::USER_ID, $user_id);
-			$crit->addWhere(self::TARGET_ID, $id);
+			if (is_array($id))
+			{
+				$crit->addWhere(self::TARGET_ID, $id, Criteria::DB_IN);
+			}
+			else
+			{
+				$crit->addWhere(self::TARGET_ID, $id);
+			}
 			$crit->addWhere(self::NOTIFICATION_TYPE, $types, Criteria::DB_IN);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addUpdate(self::IS_READ, true);

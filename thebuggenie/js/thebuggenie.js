@@ -1041,6 +1041,13 @@ TBG.Main.Profile.updateSettings = function(url) {
 	});
 };
 
+TBG.Main.Profile.updateNotificationSettings = function(url) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'profile_notificationsettings_form',
+		loading: {indicator: 'profile_notificationsettings_save_indicator'}
+	});
+};
+
 TBG.Main.Profile.changePassword = function(url) {
 	TBG.Main.Helpers.ajax(url, {
 		form: 'change_password_form',

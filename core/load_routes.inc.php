@@ -72,6 +72,7 @@
 	$routes[] = array('account_remove_scope', '/account/remove/scope/:scope_id/:csrf_token', 'main', 'removeScope', array(), true);
 	$routes[] = array('account_save_information', '/account/save/information/*', 'main', 'myAccount', array('mode' => 'information'), true);
 	$routes[] = array('account_save_settings', '/account/save/settings/*', 'main', 'myAccount', array('mode' => 'settings'), true);
+	$routes[] = array('account_save_notificationsettings', '/account/save/notificationsettings/*', 'main', 'myAccount', array('mode' => 'notificationsettings'), true);
 	$routes[] = array('account_save_module_settings', '/account/save/module/:target_module/settings/*', 'main', 'myAccount', array('mode' => 'module'), true);
 	$routes[] = array('account', '/account/*', 'main', 'myAccount');
 	$routes[] = array('toggle_friend', '/friends/:mode/:user_id', 'main', 'toggleFriend');

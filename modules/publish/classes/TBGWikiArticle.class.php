@@ -138,6 +138,14 @@
 		protected $_redirect_article = null;
 
 		/**
+		 * Array of users that are subscribed to this issue
+		 *
+		 * @var array
+		 * @Relates(class="TBGUser", collection=true, manytomany=true, joinclass="TBGUserArticlesTable")
+		 */
+		protected $_subscribers = null;
+		
+		/**
 		 * Article constructor
 		 *
 		 * @param B2DBrow $row
@@ -853,9 +861,15 @@
 			return $uids;
 		}
 		
+		public function getSubscribers()
+		{
+			$this->_b2dbLazyload('_subscribers');
+			return $this->_subscribers;
+		}
+		
 		public function addSubscriber($user_id)
 		{
-			TBGUserIssuesTable::getTable()->addStarredArticle($user_id, $this->getID());
+			TBGUserArticlesTable::getTable()->addStarredArticle($user_id, $this->getID());
 		}
 		
 	}

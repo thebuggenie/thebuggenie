@@ -901,6 +901,14 @@
 		public function runMyAccount(TBGRequest $request)
 		{
 			$this->forward403unless($this->getUser()->hasPageAccess('account'));
+			$notificationsettings = array();
+			$i18n = $this->getI18n();
+			$notificationsettings[TBGSettings::SETTINGS_USER_SUBSCRIBE_CREATED_UPDATED_COMMENTED_ISSUES] = $i18n->__('Automatically subscribe to issues I create, update or comment on');
+			$notificationsettings[TBGSettings::SETTINGS_USER_SUBSCRIBE_CREATED_UPDATED_COMMENTED_ARTICLES] = $i18n->__('Automatically subscribe to article I create, edit or comment on');
+			$notificationsettings[TBGSettings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS] = $i18n->__('Automatically subscribe to new issues that are created in my project(s)');
+			$notificationsettings[TBGSettings::SETTINGS_USER_SUBSCRIBE_NEW_ARTICLES_MY_PROJECTS] = $i18n->__('Automatically subscribe to new articles that are created in my project(s)');
+			$this->notificationsettings = $notificationsettings;
+			
 			if ($request->isPost() && $request->hasParameter('mode'))
 			{
 				switch ($request['mode'])
@@ -927,6 +935,21 @@
 						$this->getUser()->save();
 
 						return $this->renderJSON(array('title' => TBGContext::getI18n()->__('Account information saved')));
+						break;
+					case 'notificationsettings':
+						foreach ($notificationsettings as $setting => $description)
+						{
+							if ($request->hasParameter($setting))
+							{
+								TBGSettings::saveUserSetting($this->getUser()->getID(), $setting, 1);
+							}
+							else
+							{
+								TBGSettings::deleteUserSetting($setting, $this->getUser()->getID());
+							}
+						}
+						TBGEvent::createNew('core', 'mainActions::myAccount::saveNotificationSettings')->trigger(compact('request'));
+						return $this->renderJSON(array('title' => TBGContext::getI18n()->__('Notification settings saved')));
 						break;
 					case 'settings':
 						$this->getUser()->setUsesGravatar((bool) $request['use_gravatar']);

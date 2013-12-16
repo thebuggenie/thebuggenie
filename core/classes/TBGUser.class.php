@@ -2614,7 +2614,12 @@
 		{
 			if ($type == 'issue')
 			{
-				TBGNotificationsTable::getTable()->markUserNotificationsReadByTypesAndId(array(TBGNotification::TYPE_ISSUE_COMMENTED, TBGNotification::TYPE_ISSUE_CREATED, TBGNotification::TYPE_ISSUE_UPDATED), $id, $this->getID());
+				TBGNotificationsTable::getTable()->markUserNotificationsReadByTypesAndId(array(TBGNotification::TYPE_ISSUE_CREATED, TBGNotification::TYPE_ISSUE_UPDATED), $id, $this->getID());
+				$comment_ids = TBGCommentsTable::getTable()->getCommentIDs($id, TBGComment::TYPE_ISSUE);
+				if (count($comment_ids))
+				{
+					TBGNotificationsTable::getTable()->markUserNotificationsReadByTypesAndId(array(TBGNotification::TYPE_ISSUE_COMMENTED), $comment_ids, $this->getID());
+				}
 			}
 			$this->_notifications = null;
 			$this->_unread_notifications_count = null;

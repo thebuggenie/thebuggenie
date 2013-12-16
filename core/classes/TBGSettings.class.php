@@ -275,6 +275,16 @@
 			return self::get($name, $module, $scope, $user_id);
 		}
 		
+		public static function saveUserSetting($user_id, $name, $value, $module = 'core', $scope = 0)
+		{
+			return self::saveSetting($name, $value, $module, $scope, $user_id);
+		}
+		
+		public static function deleteUserSetting($setting, $user_id, $module = 'core', $scope = null)
+		{
+			return self::deleteSetting($setting, $module, $scope, $user_id);
+		}
+		
 		public static function getMajorVer()
 		{
 			return self::$_ver_mj;

@@ -15,22 +15,23 @@
 		</span>
 	</div>
 	<?php include_template('main/profilebuttons'); ?>
-	<div style="margin: 0 0 20px 0; table-layout: fixed; width: 100%; height: 100;">
-		<div style="margin: 0; clear: both; height: 30px; width: 100%;" class="tab_menu">
+	<div style="margin: 0 0 20px 0; table-layout: fixed; width: 100%; height: 100%;">
+		<div style="clear: both;" class="tab_menu inset">
 			<ul id="account_tabs">
-				<li class="selected" id="tab_profile"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_profile', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_users.png', array('style' => 'float: left;')).__('Profile information'); ?></a></li>
-				<li id="tab_settings"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_settings', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_general.png', array('style' => 'float: left;')).__('General settings'); ?></a></li>
+				<li class="selected" id="tab_profile"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_profile', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag('cfg_user_profilesettings.png').__('Profile information'); ?></a></li>
+				<li id="tab_settings"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_settings', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_general.png').__('General settings'); ?></a></li>
+				<li id="tab_notificationsettings"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_notificationsettings', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag('cfg_user_notificationsettings.png').__('Notifications'); ?></a></li>
 				<?php TBGEvent::createNew('core', 'account_tabs')->trigger(); ?>
 				<?php foreach (TBGContext::getModules() as $module_name => $module): ?>
 					<?php if ($module->hasAccountSettings()): ?>
-						<li id="tab_settings_<?php echo $module_name; ?>"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_settings_<?php echo $module_name; ?>', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag($module->getAccountSettingsLogo(), array('style' => 'float: left;'), false, $module_name).__($module->getAccountSettingsName()); ?></a></li>
+						<li id="tab_settings_<?php echo $module_name; ?>"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_settings_<?php echo $module_name; ?>', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag($module->getAccountSettingsLogo(), false, $module_name).__($module->getAccountSettingsName()); ?></a></li>
 					<?php endif; ?>
 				<?php endforeach; ?>
 				<?php if (TBGSettings::isOpenIDavailable()): ?>
-					<li id="tab_openid"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_openid', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag('icon_openid.png', array('style' => 'float: left;')).__('Login accounts'); ?></a></li>
+					<li id="tab_openid"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_openid', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag('cfg_user_accounts.png').__('Login accounts'); ?></a></li>
 				<?php endif; ?>
 				<?php if (count($tbg_user->getScopes()) > 1): ?>
-					<li id="tab_scopes"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_scopes', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_scopes.png', array('style' => 'float: left;')).__('Scope memberships'); ?></a></li>
+					<li id="tab_scopes"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_scopes', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag('cfg_user_scopes.png').__('Scope memberships'); ?></a></li>
 				<?php endif; ?>
 			</ul>
 		</div>
@@ -189,6 +190,30 @@
 						<div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "%save" to save your profile settings', array('%save' => __('Save'))); ?></div>
 						<input type="submit" id="submit_settings_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
 						<span id="profile_settings_save_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
+					</div>
+				</form>
+			</div>
+			<div id="tab_notificationsettings_pane" style="display: none;">
+				<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_save_notificationsettings'); ?>" onsubmit="TBG.Main.Profile.updateNotificationSettings('<?php echo make_url('account_save_notificationsettings'); ?>'); return false;" method="post" id="profile_notificationsettings_form">
+					<div class="rounded_box borderless white" style="margin: 5px 0 0 0; width: 895px; border-bottom: 0;">
+						<h3><?php echo __('Subscribing to updates'); ?></h3>
+						<p><?php echo __('You will receive notifications (visible in your upper right notification area) for any issues or articles you are subscribed to. The Bug Genie can automatically subscribe to the following items for you.'); ?></p>
+						<table style="width: 885px; margin: 15px 0 25px 0;" class="padded_table" cellpadding=0 cellspacing=0>
+							<?php foreach ($notificationsettings as $key => $description): ?>
+								<tr>
+									<td style="width: auto; padding: 5px; border-bottom: 1px solid #DDD;"><label for="<?php echo $key; ?>_yes" style="font-weight: normal;"><?php echo $description ?></label></td>
+									<td style="width: 50px; padding: 5px; text-align: center; border-bottom: 1px solid #DDD;" valign="middle">
+										<input type="checkbox" name="<?php echo $key; ?>" value="1" id="<?php echo $key; ?>_yes"<?php if (TBGSettings::getUserSetting($tbg_user->getID(), $key)): ?> checked<?php endif; ?>>
+									</td>
+								</tr>
+							<?php endforeach; ?>
+						</table>
+						<?php TBGEvent::createNew('core', 'account_pane_notificationsettings')->trigger(); ?>
+					</div>
+					<div class="greybox" style="margin: 25px 0 0 0; height: 24px;">
+						<div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "%save" to update your notification settings', array('%save' => __('Save'))); ?></div>
+						<input type="submit" id="submit_notificationsettings_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
+						<span id="profile_notificationsettings_save_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
 					</div>
 				</form>
 			</div>

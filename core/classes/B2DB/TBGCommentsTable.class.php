@@ -68,6 +68,29 @@
 			return $res;
 		}
 
+		public function getCommentIDs($target_id, $target_type, $sort_order = Criteria::SORT_ASC)
+		{
+			$crit = $this->getCriteria();
+			if($target_id != 0) 
+			{
+				$crit->addWhere(self::TARGET_ID, $target_id);		
+			}
+			$crit->addWhere(self::TARGET_TYPE, $target_type);
+			$crit->addSelectionColumn(self::ID);
+			$crit->addOrderBy(self::POSTED, $sort_order);
+			$res = $this->doSelect($crit, false);
+			
+			$ids = array();
+			if ($res)
+			{
+				while ($row = $res->getNextRow())
+				{
+					$ids[] = $row[self::ID];
+				}
+			}
+			return $ids;
+		}
+
 		public function countComments($target_id, $target_type, $include_system_comments = true)
 		{
 			$crit = $this->getCriteria();
