@@ -2348,7 +2348,7 @@
 				$this->users = TBGUsersTable::getTable()->getByDetails($find_identifiable_by, 10);
 				if ($request['include_teams'])
 				{
-					$this->teams = TBGTeamsTable::quickfind($find_identifiable_by);
+					$this->teams = TBGTeamsTable::getTable()->quickfind($find_identifiable_by);
 				}
 				else
 				{

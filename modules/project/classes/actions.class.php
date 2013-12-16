@@ -1379,7 +1379,7 @@
 			{
 				$this->selected_project = TBGContext::factory()->TBGProject($request['project_id']);
 				$this->users = TBGUsersTable::getTable()->getByDetails($request['find_by'], 10);
-				$this->teams = TBGTeamsTable::quickfind($request['find_by']);
+				$this->teams = TBGTeamsTable::getTable()->quickfind($request['find_by']);
 				$this->global_roles = TBGRole::getAll();
 				$this->project_roles = TBGRole::getByProjectID($this->selected_project->getID());
 			}
