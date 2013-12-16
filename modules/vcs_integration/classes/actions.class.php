@@ -77,7 +77,12 @@
 			}
 			
 			// Obtain previous revision
-			if (!TBGContext::getRequest()->hasParameter('oldrev'))
+			if (!TBGContext::getRequest()->hasParameter('oldrev') && !is_integer($new_rev))
+			{
+				echo 'Error: If only the new revision is specified, it must be a number so that old revision can be calculated from it (by substracting 1 from new revision number).';
+				exit;
+			}
+			else if (!TBGContext::getRequest()->hasParameter('oldrev'))
 			{
 				$old_rev = $new_rev - 1;
 			}
@@ -85,7 +90,7 @@
 			{
 				$old_rev = TBGContext::getRequest()->getParameter('oldrev'); // for git, etc. which use hashes
 			}
-			
+
 			// Obtain date timestamp
 			if (!TBGContext::getRequest()->hasParameter('date'))
 			{
@@ -100,12 +105,6 @@
 			if (empty($author) || empty($new_rev) || empty($commit_msg) || empty($changed))
 			{
 				echo 'Error: One of the required fields were not specified. The required fields are the author, revision number (or hash), commit log and a list of changed files';
-				exit;
-			}
-			
-			if ((!is_numeric($new_rev) && is_numeric($old_rev)) || (is_numeric($new_rev) && !is_numeric($old_rev)))
-			{
-				echo 'Error: If the old revision is specified, it must be the same format as the new revision (number or hash)';
 				exit;
 			}
 			
