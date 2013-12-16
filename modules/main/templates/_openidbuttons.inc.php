@@ -1,4 +1,4 @@
-<div class="logindiv openid_container" id="openid_container">
+<div class="logindiv openid_container" id="openid_container" style="<?php if (isset($mode) && $mode == 'add_signin') echo 'display: block;'; ?>">
 	<form action="<?php echo make_url('login'); ?>" method="post" id="openid_form" onsubmit="return TBG.OpenID.submit();">
 		<?php if ($openidintro instanceof TBGWikiArticle): ?>
 			<?php include_component('publish/articledisplay', array('article' => $openidintro, 'show_title' => false, 'show_details' => false, 'show_actions' => false, 'embedded' => true)); ?>
@@ -14,7 +14,7 @@
 		<input id="openid_submit_button" type="submit" value="<?php echo __('Sign in'); ?>" class="button button-silver" style="display: none;">
 	</form>
 	<br style="clear: both;">
-	<div style="text-align: center;">
+	<div style="<?php if (isset($mode) && $mode == 'add_signin') echo 'display: none;'; ?> text-align: center;">
 		<fieldset style="border: 0; border-top: 1px dotted rgba(0, 0, 0, 0.3); padding: 10px 100px; width: 100px; margin: 20px auto 0 auto;">
 			<legend style="text-align: center; width: 100%; background-color: transparent;"><?php echo __('%regular_login or %persona_or_openid_login', array('%regular_login' => '', '%persona_or_openid_login' => '')); ?></legend>
 		</fieldset>
