@@ -50,6 +50,9 @@
 							?>
 						<?php endforeach; ?>
 					<?php endif; ?>
+					<?php if (!isset($an_issue)): ?>
+						<a href="javascript:void(0);"><?php echo __('No recent issues'); ?></a>
+					<?php endif; ?>
 				</div>
 			</li>
 		<?php endif; ?>
