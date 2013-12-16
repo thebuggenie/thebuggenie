@@ -780,11 +780,6 @@
 			return self::get(self::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_INTERVAL);
 		}
 
-		public static function getRemoteSecurityKey()
-		{
-			return self::getPasswordSalt();
-		}
-		
 		public static function getAuthenticationBackend()
 		{
 			return self::get(self::SETTING_AUTH_BACKEND);

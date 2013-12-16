@@ -47,6 +47,14 @@
 		protected $_password = '';
 		
 		/**
+		 * Password salt
+		 *
+		 * @var string
+		 * @Column(type="string", length=100)
+		 */
+		protected $_salt = '';
+		
+		/**
 		 * User real name
 		 *
 		 * @var string
@@ -451,9 +459,8 @@
 		 * 
 		 * @return hashed password
 		 */
-		public static function hashPassword($password, $salt = null)
+		public static function hashPassword($password, $salt)
 		{
-			$salt = ($salt !== null) ? $salt : TBGSettings::getPasswordSalt();
 			return crypt($password, '$2a$07$'.$salt.'$');
 		}
 		
@@ -481,13 +488,15 @@
 					{
 						$username = TBGContext::getRequest()->getCookie('tbg3_username');
 						$password = TBGContext::getRequest()->getCookie('tbg3_password');
-						$user = TBGUsersTable::getTable()->getByUsernameAndPassword($username, $password);
+						$user = TBGUsersTable::getTable()->getByUsername($username);
+						if (!$user->hasPasswordHash($password)) $user = null;
+						
 						$raw = false;
 
 						if (!$user instanceof TBGUser)
 						{
 							TBGContext::logout();
-							throw new Exception('No such login u/p');
+							throw new Exception('No such login');
 							//TBGContext::getResponse()->headerRedirect(TBGContext::getRouting()->generate('login'));
 						}
 					}
@@ -554,37 +563,18 @@
 						throw $e;
 					}
 				}
-				elseif ($username !== null && $password !== null)
+				elseif ($username !== null && $password !== null && !$user instanceof TBGUser)
 				{
 					$external = false;
 					TBGLogging::log('Using internal authentication', 'auth', TBGLogging::LEVEL_INFO);
-					// First test a pre-encrypted password
-					$user = TBGUsersTable::getTable()->getByUsernameAndPassword($username, $password);
+
+					$user = TBGUsersTable::getTable()->getByUsername($username);
+					if (!$user->hasPassword($password)) $user = null;
 
 					if (!$user instanceof TBGUser)
 					{
-						// Then test an unencrypted password
-						$user = TBGUsersTable::getTable()->getByUsernameAndPassword($username, self::hashPassword($password));
-
-						if (!$user instanceof TBGUser)
-						{
-							// This is a legacy account from a 3.1 upgrade - try sha1 salted
-							$salt = TBGSettings::getPasswordSalt();
-							$user = TBGUsersTable::getTable()->getByUsernameAndPassword($username, sha1($password.$salt));
-							if (!$user instanceof TBGUser)
-							{
-								// Invalid
-								TBGContext::logout();
-								throw new Exception('No such login');
-								//TBGContext::getResponse()->headerRedirect(TBGContext::getRouting()->generate('login'));
-							}
-							else 
-							{
-								// convert sha1 to new password type
-								$user->changePassword($password);
-								$user->save();
-							}
-						}
+						TBGContext::logout();
+						throw new Exception('No such login');
 					}
 				}
 
@@ -618,7 +608,7 @@
 					
 					if ($external == false)
 					{
-						if ($raw == true) $password = TBGUser::hashPassword($password);
+						$password = $user->getHashPassword();
 
 						if (!$request->hasCookie('tbg3_username'))
 						{
@@ -700,6 +690,18 @@
 			{
 				throw new Exception(TBGContext::getI18n()->__('This username already exists'));
 			}
+			if ($is_new)
+			{
+				// In case the postsave event isn't processed we automatically enable the user
+				// since we can't be sure that an activation email has been sent out
+				$this->setEnabled();
+				$this->setActivated();
+				$this->save();
+			}
+			if (!$this->_salt)
+			{
+				$this->regenerateSalt();
+			}
 			if (!$this->_realname)
 			{
 				$this->_realname = $this->_username;
@@ -763,16 +765,6 @@
 				
 				$event = TBGEvent::createNew('core', 'TBGUser::_postSave', $this);
 				$event->trigger();
-				
-				// If the event isn't processed we automatically enable the user
-				// since we can be sure no activation email has been sent out
-				if (!$event->isProcessed())
-				{
-					$this->setEnabled();
-					$this->setActivated();
-					$this->save();
-				}
-				
 			}
 
 			if ($this->_group_id !== null)
@@ -1296,7 +1288,7 @@
 		 */
 		public function changePassword($newpassword)
 		{
-			$this->_password = self::hashPassword($newpassword);
+			$this->_password = self::hashPassword($newpassword, $this->getSalt());
 		}
 		
 		/**
@@ -1308,6 +1300,10 @@
 		 */
 		public function setPassword($newpassword)
 		{
+			if (!$newpassword)
+			{
+				throw new Exception("Cannot set empty password");
+			}
 			return $this->changePassword($newpassword);
 		}
 		
@@ -1650,6 +1646,37 @@
 		{
 			return $this->getHashPassword();
 		}
+		
+		/**
+		 * Returns the salt used for password hashing
+		 * 
+		 * @return string
+		 */
+		public function getSalt()
+		{
+			return $this->_salt;
+		}
+
+		/**
+		 * Sets the salt used for password hashing
+		 * 
+		 * @param string $salt
+		 */
+		public function setSalt($salt)
+		{
+			$this->_salt = $salt;
+		}
+		
+		/**
+		 * Set (or reset) the users salt
+		 * 
+		 * @return string
+		 */
+		public function regenerateSalt()
+		{
+			$this->_salt = sha1((time()+mt_rand(100, 100000)).mt_rand(1000, 10000));
+			return $this->_salt;
+		}
 
 		/**
 		 * Return whether or not the users password is this
@@ -1660,19 +1687,19 @@
 		 */
 		public function hasPassword($password)
 		{
-			return $this->hasPasswordHash(self::hashPassword($password));
+			return $this->hasPasswordHash(self::hashPassword($password, $this->getSalt()));
 		}
 
 		/**
-		 * Return whether or not the users password is this
+		 * Return whether or not the users password hash matches the provided hash value
 		 *
-		 * @param string $password Hashed password
+		 * @param string $password_hash Hashed password
 		 *
 		 * @return boolean
 		 */
-		public function hasPasswordHash($password)
+		public function hasPasswordHash($password_hash)
 		{
-			return (bool) ($password == $this->getHashPassword());
+			return (bool) ($password_hash == $this->getHashPassword());
 		}
 
 		/**
@@ -1818,16 +1845,23 @@
 		
 		public function getActivationKey()
 		{
-			return $this->generateActivationKey();
+			return $this->_getOrGenerateActivationKey();
 		}
 
-		public function generateActivationKey()
+		public function regenerateActivationKey()
 		{
-			$value = TBGSettings::get(TBGSettings::SETTING_USER_ACTIVATION_KEY, 'core', TBGContext::getScope(), $this->getID());
+			$value = md5(uniqid().rand(100, 100000));
+			TBGSettings::saveUserSetting($this->getID(), TBGSettings::SETTING_USER_ACTIVATION_KEY, $value);
+
+			return $value;
+		}
+		
+		protected function _getOrGenerateActivationKey()
+		{
+			$value = TBGSettings::getUserSetting($this->getID(), TBGSettings::SETTING_USER_ACTIVATION_KEY);
 			if (!$value)
 			{
-				$value = md5(uniqid().rand(100, 100000));
-				TBGSettings::saveSetting(TBGSettings::SETTING_USER_ACTIVATION_KEY, $value, 'core', null, $this->getID());
+				$value = $this->regenerateActivationKey();
 			}
 
 			return $value;

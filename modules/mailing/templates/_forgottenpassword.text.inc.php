@@ -1,8 +1,9 @@
-Hi, %user_buddyname%!
-A request was made to reset your password for your user account at %thebuggenie_url%.
+* Forgot your password? *
+Hi, <?php echo $user->getBuddyname()."\n"; ?>
 
-To change your password, click the following link:
-%link_to_reset_password%
-(if the above link isn't clickable, copy it and paste it into the address field in your web browser)
+A request was made to reset your password for your user account at <?php echo $module->generateUrl('home')."\n"; ?>
+To change your password, click the following link: <?php echo "\n".$module->generateUrl('reset_password', array('user' => $user->getUsername(), 'reset_hash' => $user->getActivationKey()))."\n"; ?>
 
-(If you didn't request this email, just disregard it. Nothing will be done unless you click the link in this email.)
+---
+You were sent this notification email because someone requested a password reset for your account. If you did not authorize this, ignore this email.
+To change when and how often we send these emails, update your account settings: <?php echo $module->generateURL('account'), $module->generateURL('account'); ?>

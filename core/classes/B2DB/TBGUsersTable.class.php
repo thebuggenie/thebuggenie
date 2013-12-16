@@ -123,15 +123,6 @@
 			return !(bool) $this->doCount($crit);
 		}
 
-		public function getByUsernameAndPassword($username, $password)
-		{
-			$crit = $this->getCriteria();
-			$crit->addWhere(self::UNAME, $username);
-			$crit->addWhere(self::PASSWORD, $password);
-			$crit->addWhere(self::DELETED, false);
-			return $this->selectOne($crit);
-		}
-
 		public function getByUserIDs($userids)
 		{
 			if (empty($userids)) return array();

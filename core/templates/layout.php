@@ -82,7 +82,7 @@
 	<body id="body">
 		<?php require THEBUGGENIE_CORE_PATH . 'templates/backdrops.inc.php'; ?>
 		<div id="main_container">
-			<?php if (TBGContext::getRouting()->getCurrentRouteName() != 'login_page'): ?>
+			<?php if (!in_array(TBGContext::getRouting()->getCurrentRouteName(), array('login_page', 'reset_password'))): ?>
 				<?php TBGLogging::log('Rendering header'); ?>
 				<?php require THEBUGGENIE_CORE_PATH . 'templates/headertop.inc.php'; ?>
 				<?php TBGLogging::log('done (rendering header)'); ?>

@@ -62,9 +62,10 @@
 		
 		public function addIdentity($identity, $email, $user_id)
 		{
+			$user = TBGUsersTable::getTable()->selectById($user_id);
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::IDENTITY, $identity);
-			$crit->addInsert(self::IDENTITY_HASH, TBGUser::hashPassword($identity));
+			$crit->addInsert(self::IDENTITY_HASH, TBGUser::hashPassword($identity, $user->getSalt()));
 			$crit->addInsert(self::UID, $user_id);
 			$type = 'openid';
 

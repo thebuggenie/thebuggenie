@@ -1567,14 +1567,6 @@
 							return $this->renderJSON(array('allow_import' => true));
 						}
 					}
-					if ($request->hasParameter('password') && !(empty($request['password']) && empty($request['password_repeat'])))
-					{
-						if (empty($request['password']) || $request['password'] != $request['password_repeat'])
-						{
-							throw new Exception($this->getI18n()->__('Please enter the same password twice'));
-						}
-						$password = $request['password'];
-					}
 					$user = new TBGUser();
 					$user->setUsername($username);
 					$user->setRealname($request->getParameter('realname', $username));
@@ -1583,7 +1575,19 @@
 					$user->setGroup(TBGGroupsTable::getTable()->selectById((int) $request->getParameter('group_id', TBGSettings::get(TBGSettings::SETTING_USER_GROUP))));
 					$user->setEnabled();
 					$user->setActivated();
-					$user->setPassword(TBGUser::hashPassword(TBGUser::createPassword()));
+					if ($request->hasParameter('password') && !(empty($request['password']) && empty($request['password_repeat'])))
+					{
+						if (empty($request['password']) || $request['password'] != $request['password_repeat'])
+						{
+							throw new Exception($this->getI18n()->__('Please enter the same password twice'));
+						}
+						$password = $request['password'];
+						$user->setPassword($password);
+					}
+					else
+					{
+						$user->setPassword(TBGUser::createPassword());
+					}
 					$user->setJoined();
 					$user->save();
 					foreach ((array) $request['teams'] as $team_id)

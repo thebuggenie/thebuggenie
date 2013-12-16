@@ -380,10 +380,10 @@
 			$this->selected_tab = isset($this->section) ? $this->section : 'login';
 			$this->options = $this->getParameterHolder();
 			
-			if (array_key_exists('HTTP_REFERER', $_SERVER)):
-				$this->referer = htmlentities($_SERVER['HTTP_REFERER'], ENT_COMPAT, TBGContext::getI18n()->getCharset());
-			elseif (TBGContext::hasMessage('login_referer')):
+			if (TBGContext::hasMessage('login_referer')):
 				$this->referer = htmlentities(TBGContext::getMessage('login_referer'), ENT_COMPAT, TBGContext::getI18n()->getCharset());
+			elseif (array_key_exists('HTTP_REFERER', $_SERVER)):
+				$this->referer = htmlentities($_SERVER['HTTP_REFERER'], ENT_COMPAT, TBGContext::getI18n()->getCharset());
 			else:
 				$this->referer = TBGContext::getRouting()->generate('dashboard');
 			endif;

@@ -6,15 +6,6 @@
 ?>
 <table style="clear: both; width: 700px; margin-top: 5px;" class="padded_table" cellpadding=0 cellspacing=0>
 	<tr>
-		<td><label for="defaultisguest"><?php echo __('Security key'); ?></label></td>
-		<td>
-			<?php echo TBGSettings::getRemoteSecurityKey(); ?>
-		</td>
-	</tr>
-	<tr>
-		<td class="config_explanation" colspan="2"><?php echo __('Whenever the "remote security key" is needed, this is the key'); ?></td>
-	</tr>
-	<tr>
 		<td><label for="requirelogin"><?php echo __('Anonymous access'); ?></label></td>
 		<td>
 			<select name="<?php echo TBGSettings::SETTING_REQUIRE_LOGIN; ?>" id="requirelogin" style="width: 400px;"<?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>>

@@ -427,7 +427,7 @@
 			 * Set cookies and return user row for general operations.
 			 */
 			TBGContext::getResponse()->setCookie('tbg3_username', $username);
-			TBGContext::getResponse()->setCookie('tbg3_password', TBGUser::hashPassword($user->getJoinedDate().$username));
+			TBGContext::getResponse()->setCookie('tbg3_password', TBGUser::hashPassword($user->getJoinedDate().$username, $user->getSalt()));
 
 			return TBGUsersTable::getTable()->getByUsername($username);
 		}

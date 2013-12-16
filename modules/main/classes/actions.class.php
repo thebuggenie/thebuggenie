@@ -700,6 +700,7 @@
 				}
 				catch (Exception $e)
 				{
+					throw $e;
 					if ($request->isAjaxCall())
 					{
 						$this->getResponse()->setHttpStatus(401);
@@ -3862,20 +3863,40 @@
 		{			
 			$i18n = TBGContext::getI18n();
 			
-			if ($request->hasParameter('user') && $request->hasParameter('reset_hash'))
+			try
 			{
-				try
+				if ($request->hasParameter('user') && $request->hasParameter('reset_hash'))
 				{
 					$user = TBGUser::getByUsername(str_replace('%2E', '.', $request['user']));
 					if ($user instanceof TBGUser)
 					{
 						if ($request['reset_hash'] == $user->getActivationKey())
 						{
-							$password = $user->createPassword();
-							$user->changePassword($password);
-							$user->save();
-							$event = TBGEvent::createNew('core', 'password_reset', $user, array('password' => $password))->trigger();
-							TBGContext::setMessage('login_message', $i18n->__('An email has been sent to you with your new password.'));
+							$this->error = false;
+							if ($request->isPost())
+							{
+								$p1 = trim($request['password_1']);
+								$p2 = trim($request['password_2']);
+								
+								if ($p1 && $p2 && $p1 == $p2)
+								{
+									$user->setPassword($p1);
+									$user->regenerateActivationKey();
+									$user->save();
+									TBGContext::setMessage('login_message', $i18n->__('Your password has been reset. Please log in.'));
+									TBGContext::setMessage('login_referer', $this->getRouting()->generate('home'));
+									return $this->forward(TBGContext::getRouting()->generate('login_page'));
+								}
+								else
+								{
+									$this->error = true;
+								}
+							}
+							else
+							{
+								$user->regenerateActivationKey();
+							}
+							$this->user = $user;
 						}
 						else
 						{
@@ -3887,16 +3908,16 @@
 						throw new Exception('User is invalid or does not exist');	
 					}
 				}
-				catch (Exception $e)
+				else
 				{
-					TBGContext::setMessage('login_message_err', $i18n->__($e->getMessage()));
+					throw new Exception('An internal error has occured');
 				}
 			}
-			else
+			catch (Exception $e)
 			{
-				TBGContext::setMessage('login_message_err', $i18n->__('An internal error has occured'));
+				TBGContext::setMessage('login_message_err', $i18n->__($e->getMessage()));
+				return $this->forward(TBGContext::getRouting()->generate('login_page'));
 			}
-			return $this->forward(TBGContext::getRouting()->generate('login_page'));
 		}
 		
 		/**
