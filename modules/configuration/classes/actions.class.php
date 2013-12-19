@@ -1580,13 +1580,13 @@
 					$user->setRealname($request->getParameter('realname', $username));
 					$user->setBuddyname($request->getParameter('buddyname', $username));
 					$user->setEmail($request->getParameter('email'));
-					$user->setGroup(TBGGroupsTable::getTable()->selectById((int) $request['group_id']));
+					$user->setGroup(TBGGroupsTable::getTable()->selectById((int) $request->getParameter('group_id', TBGSettings::get(TBGSettings::SETTING_USER_GROUP))));
 					$user->setEnabled();
 					$user->setActivated();
 					$user->setPassword(TBGUser::hashPassword(TBGUser::createPassword()));
 					$user->setJoined();
 					$user->save();
-					foreach ($request['teams'] as $team_id)
+					foreach ((array) $request['teams'] as $team_id)
 					{
 						$user->addToTeam(TBGTeamsTable::getTable()->selectById((int) $team_id));
 					}
