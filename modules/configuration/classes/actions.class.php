@@ -1580,7 +1580,7 @@
 					$user->setRealname($request->getParameter('realname', $username));
 					$user->setBuddyname($request->getParameter('buddyname', $username));
 					$user->setEmail($request->getParameter('email'));
-					$user->setGroup(TBGGroupsTable::getTable()->selectById((int) $request->getParameter('group_id', TBGSettings::get('defaultgroup'))));
+					$user->setGroup(TBGGroupsTable::getTable()->selectById((int) $request->getParameter('group_id', TBGSettings::get(TBGSettings::SETTING_USER_GROUP))));
 					$user->setEnabled();
 					$user->setActivated();
 					$user->setPassword(TBGUser::hashPassword(TBGUser::createPassword()));
