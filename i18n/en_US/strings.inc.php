@@ -4,9 +4,9 @@
 // If you would like to help translating TBG,
 // please visit https://www.transifex.com/projects/p/tbg
 
-// Number of Sections: 307
-// Number of Strings: 3306
-// Strings extracted on: 2013 Dec 05.
+// Number of Sections: 308
+// Number of Strings: 3321
+// Strings extracted on: 2013 Dec 19.
 
 // First occurrence is in: core/classes/TBGAction.class.php
 // ----------------------------------------------------------------------------
@@ -394,9 +394,11 @@
   $strings['Most voted for issues'] = 'Most voted for issues';
   $strings['Issues reported this month'] = 'Issues reported this month';
   $strings['Issues reported last 30 days'] = 'Issues reported last 30 days';
+  $strings['Recently watched issues'] = 'Recently watched issues';
 
 // First occurrence is in: core/templates/headertop.inc.php
 // ----------------------------------------------------------------------------
+  $strings['Your notifications'] = 'Your notifications';
   $strings['You are not logged in'] = 'You are not logged in';
 
 // First occurrence is in: core/templates/headerusermenu.inc.php
@@ -1685,20 +1687,11 @@
   $strings['Please provide a valid setting for email header charset'] = 'Please provide a valid setting for email header charset';
   $strings['Test email'] = 'Test email';
   $strings['The email module is not configured for outgoing emails'] = 'The email module is not configured for outgoing emails';
-
-// First occurrence is in: modules/mailing/classes/actioncomponents.class.php
-// ----------------------------------------------------------------------------
-  $strings['Notify me when an issue I posted gets updated or created'] = 'Notify me when an issue I posted gets updated or created';
-  $strings['Only notify me once per issue until I open the issue'] = 'Only notify me once per issue until I open the issue';
-  $strings["Notify me when an issue I'm assigned to gets updated or created"] = "Notify me when an issue I'm assigned to gets updated or created";
-  $strings['Notify me when I update or create an issue'] = 'Notify me when I update or create an issue';
-  $strings['Notify me when an issue assigned to one of my teams is updated or created'] = 'Notify me when an issue assigned to one of my teams is updated or created';
-  $strings['Notify me when an issue assigned to one of my team projects is updated or created'] = 'Notify me when an issue assigned to one of my team projects is updated or created';
-  $strings['Notify me when an issue assigned to one of my projects is updated or created'] = 'Notify me when an issue assigned to one of my projects is updated or created';
-  $strings['Notify me when an issue I commented on gets updated'] = 'Notify me when an issue I commented on gets updated';
-  $strings['Notify me when an article I commented, created or updated receives comments'] = 'Notify me when an article I commented, created or updated receives comments';
-  $strings['Notify me when an article I commented, created or updated is edited'] = 'Notify me when an article I commented, created or updated is edited';
-  $strings['Also notify myself when I comment on or update an article'] = 'Also notify myself when I comment on or update an article';
+  $strings['Notify by email when subscribed issues are updated or commented on'] = 'Notify by email when subscribed issues are updated or commented on';
+  $strings['Notify by email when subscribed articles are updated or commented on'] = 'Notify by email when subscribed articles are updated or commented on';
+  $strings['Notify by email when new issues are created in my project(s)'] = 'Notify by email when new issues are created in my project(s)';
+  $strings['Only send one email per issue or article until I view the issue or article in my browser'] = 'Only send one email per issue or article until I view the issue or article in my browser';
+  $strings['Notify by email also when I am the one making the changes'] = 'Notify by email also when I am the one making the changes';
 
 // First occurrence is in: modules/mailing/classes/actions.class.php
 // ----------------------------------------------------------------------------
@@ -1714,18 +1707,12 @@
   $strings['This is not a valid project'] = 'This is not a valid project';
   $strings['The php imap extension is not installed'] = 'The php imap extension is not installed';
   $strings['Incoming email account deleted'] = 'Incoming email account deleted';
+  $strings['Please enter a valid email address'] = 'Please enter a valid email address';
 
 // First occurrence is in: modules/mailing/templates/_accountsettings.inc.php
 // ----------------------------------------------------------------------------
-  $strings['Notification preset'] = 'Notification preset';
-  $strings['Silent notification settings'] = 'Silent notification settings';
-  $strings['We will hardly ever send you any notification emails. Check back regularly.'] = 'We will hardly ever send you any notification emails. Check back regularly.';
-  $strings['Recommended notification settings'] = 'Recommended notification settings';
-  $strings["We will keep you updated when important stuff happens, but we'll keep quiet about less important stuff."] = "We will keep you updated when important stuff happens, but we'll keep quiet about less important stuff.";
-  $strings['Verbose notification settings'] = 'Verbose notification settings';
-  $strings["If anything happens, you'll know. You should read up on email filters."] = "If anything happens, you'll know. You should read up on email filters.";
-  $strings['Advanced settings'] = 'Advanced settings';
-  $strings["Pick and choose, mix or match - it's like an all-you-can-eat notification feast."] = "Pick and choose, mix or match - it's like an all-you-can-eat notification feast.";
+  $strings['Email notifications'] = 'Email notifications';
+  $strings['In addition to being notified when logging in, you can choose to also be notified via email for issues or articles you subscribe to. The following settings control when you receive emails.'] = 'In addition to being notified when logging in, you can choose to also be notified via email for issues or articles you subscribe to. The following settings control when you receive emails.';
 
 // First occurrence is in: modules/mailing/templates/_editincomingemailaccount.inc.php
 // ----------------------------------------------------------------------------
@@ -1825,6 +1812,10 @@
 
 // First occurrence is in: modules/mailing/templates/_projectconfig_panel.inc.php
 // ----------------------------------------------------------------------------
+  $strings['Project from-address'] = 'Project from-address';
+  $strings['Project from-name'] = 'Project from-name';
+  $strings['By specifying an email address here, users can hit the "Reply" button on email notifications, and replies will be sent to the specified address instead of the usual generic no-reply address.'] = 'By specifying an email address here, users can hit the "Reply" button on email notifications, and replies will be sent to the specified address instead of the usual generic no-reply address.';
+  $strings['When you are done, click "%save" to save your changes'] = 'When you are done, click "%save" to save your changes';
   $strings['You do not have the relevant permissions to access email settings'] = 'You do not have the relevant permissions to access email settings';
   $strings['Add new account'] = 'Add new account';
   $strings['Incoming email accounts'] = 'Incoming email accounts';
@@ -1934,8 +1925,13 @@
   $strings['You need to fill out all fields correctly.'] = 'You need to fill out all fields correctly.';
   $strings['This activation link is not valid'] = 'This activation link is not valid';
   $strings['Your account has been activated! You can now log in with the username %user and the password in your activation email.'] = 'Your account has been activated! You can now log in with the username %user and the password in your activation email.';
+  $strings['Automatically subscribe to issues I create, update or comment on'] = 'Automatically subscribe to issues I create, update or comment on';
+  $strings['Automatically subscribe to article I create, edit or comment on'] = 'Automatically subscribe to article I create, edit or comment on';
+  $strings['Automatically subscribe to new issues that are created in my project(s)'] = 'Automatically subscribe to new issues that are created in my project(s)';
+  $strings['Automatically subscribe to new articles that are created in my project(s)'] = 'Automatically subscribe to new articles that are created in my project(s)';
   $strings['Please fill out all the required fields'] = 'Please fill out all the required fields';
   $strings['Account information saved'] = 'Account information saved';
+  $strings['Notification settings saved'] = 'Notification settings saved';
   $strings['Profile settings saved'] = 'Profile settings saved';
   $strings["You're not allowed to change your password."] = "You're not allowed to change your password.";
   $strings['Please enter your current password'] = 'Please enter your current password';
@@ -2171,6 +2167,14 @@
   $strings["Couldn't find any users"] = "Couldn't find any users";
   $strings['Teams found'] = 'Teams found';
   $strings["Couldn't find any teams"] = "Couldn't find any teams";
+
+// First occurrence is in: modules/main/templates/_intro_index_no_projects.inc.php
+// ----------------------------------------------------------------------------
+  $strings["Welcome to The Bug Genie. This seems like the first time you're using this instance, and it doesn't look like you have had the chance to add any projects yet."] = "Welcome to The Bug Genie. This seems like the first time you're using this instance, and it doesn't look like you have had the chance to add any projects yet.";
+  $strings['If you want to play around a bit with The Bug Genie before you start using it for your own projects, you can generate sample data before adding your own projects. To get started, create a project.'] = 'If you want to play around a bit with The Bug Genie before you start using it for your own projects, you can generate sample data before adding your own projects. To get started, create a project.';
+  $strings['Generate sample data'] = 'Generate sample data';
+  $strings['%generate_sample_data% or %create_a_project%'] = '%generate_sample_data% or %create_a_project%';
+  $strings['Create a project'] = 'Create a project';
 
 // First occurrence is in: modules/main/templates/_issueaclformentry.inc.php
 // ----------------------------------------------------------------------------
@@ -2459,6 +2463,14 @@
 // ----------------------------------------------------------------------------
   $strings['Friends'] = 'Friends';
   $strings["You haven't marked anyone as a friend"] = "You haven't marked anyone as a friend";
+
+// First occurrence is in: modules/main/templates/_notifications.inc.php
+// ----------------------------------------------------------------------------
+  $strings['You have no notifications'] = 'You have no notifications';
+  $strings['%user_name created a new issue under %project_name'] = '%user_name created a new issue under %project_name';
+  $strings['%issue_no was updated by %user_name'] = '%issue_no was updated by %user_name';
+  $strings['%user_name posted a %comment on %issue_no'] = '%user_name posted a %comment on %issue_no';
+  $strings['%username_posted_a comment %on_issue'] = '%username_posted_a comment %on_issue';
 
 // First occurrence is in: modules/main/templates/_openid.inc.php
 // ----------------------------------------------------------------------------
@@ -2830,6 +2842,7 @@
 // ----------------------------------------------------------------------------
   $strings['Profile information'] = 'Profile information';
   $strings['General settings'] = 'General settings';
+  $strings['Notifications'] = 'Notifications';
   $strings['Login accounts'] = 'Login accounts';
   $strings['Scope memberships'] = 'Scope memberships';
   $strings['Edit your profile details here, including additional information.'] = 'Edit your profile details here, including additional information.';
@@ -2859,6 +2872,9 @@
   $strings['Prefer markdown also in the wiki'] = 'Prefer markdown also in the wiki';
   $strings['The syntax you select here will be used as the default formatting syntax for comments you post, issues you create and articles you write. Remember that you can switch this on a case by case basis - look for the syntax selector next to any text area with formatting buttons.'] = 'The syntax you select here will be used as the default formatting syntax for comments you post, issues you create and articles you write. Remember that you can switch this on a case by case basis - look for the syntax selector next to any text area with formatting buttons.';
   $strings['Click "%save" to save your profile settings'] = 'Click "%save" to save your profile settings';
+  $strings['Subscribing to updates'] = 'Subscribing to updates';
+  $strings['You will receive notifications (visible in your upper right notification area) for any issues or articles you are subscribed to. The Bug Genie can automatically subscribe to the following items for you.'] = 'You will receive notifications (visible in your upper right notification area) for any issues or articles you are subscribed to. The Bug Genie can automatically subscribe to the following items for you.';
+  $strings['Click "%save" to update your notification settings'] = 'Click "%save" to update your notification settings';
   $strings['The Bug Genie supports logging in via external authentication providers via %openid. This means you can use your account details from other services (such as Google, Wordpress, etc.) to log in here, without having to remember another set of login details.'] = 'The Bug Genie supports logging in via external authentication providers via %openid. This means you can use your account details from other services (such as Google, Wordpress, etc.) to log in here, without having to remember another set of login details.';
   $strings['Add login from another provider'] = 'Add login from another provider';
   $strings['You have not linked your account with any external authentication providers.'] = 'You have not linked your account with any external authentication providers.';
@@ -3260,7 +3276,6 @@
   $strings['about issue prefixes'] = 'about issue prefixes';
   $strings['Project description'] = 'Project description';
   $strings['No description set'] = 'No description set';
-  $strings['When you are done, click "%save" to save your changes'] = 'When you are done, click "%save" to save your changes';
 
 // First occurrence is in: modules/project/templates/_projectdevelopers.inc.php
 // ----------------------------------------------------------------------------
@@ -3315,6 +3330,7 @@
   $strings['Add edition'] = 'Add edition';
   $strings['Adding edition, please wait'] = 'Adding edition, please wait';
   $strings['There are no editions'] = 'There are no editions';
+  $strings['Advanced settings'] = 'Advanced settings';
   $strings['This project does not use editions. Editions can be enabled in %advanced_settings'] = 'This project does not use editions. Editions can be enabled in %advanced_settings';
   $strings['Add a component'] = 'Add a component';
   $strings['Project components'] = 'Project components';
@@ -3985,6 +4001,8 @@
   $strings['Select team(s)'] = 'Select team(s)';
   $strings['Search for a team'] = 'Search for a team';
   $strings['Filter on status'] = 'Filter on status';
+  $strings['Only open issues'] = 'Only open issues';
+  $strings['Only closed issues'] = 'Only closed issues';
   $strings['Filter on category'] = 'Filter on category';
   $strings['Any'] = 'Any';
   $strings['Affects release(s)'] = 'Affects release(s)';
