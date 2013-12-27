@@ -1,10 +1,12 @@
-*UPGRADE*
+UPGRADE
+=======
 
 NOTE: For the latest installation notes, troubleshooting and tips,
 visit the FAQ: http://issues.thebuggenie.com/wiki/TheBugGenie:FAQ
 
 via web
 -------
+
 To upgrade The Bug Genie, do the following:
 * Make a backup of your database
 * If using file storage, also make a backup of your files/ folder
@@ -20,5 +22,6 @@ upgrade wizard will start, and guide you through the upgrade process.
 The version number in the "installed" file will be automatically updated"
 
 via command-line
-----------------------------------
+----------------
+
 Command-line upgrades are not supported.

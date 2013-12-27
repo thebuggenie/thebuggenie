@@ -1,22 +1,26 @@
-*INSTALLATION*
+INSTALLATION
+============
 
 NOTE: For the latest installation notes, troubleshooting and tips,
 visit the FAQ: http://issues.thebuggenie.com/wiki/TheBugGenie:FAQ
 
-** GENERAL INSTALLATION NOTES **
-via web
--------
+GENERAL INSTALLATION NOTES
+--------------------------
+
+### via web
+
 To install The Bug Genie, copy this folder to your webserver, and visit the
-subfolder /thebuggenie/index.php in your web-browser.
+subfolder `/thebuggenie/index.php` in your web-browser.
 
 The installation script will start automatically and guide you through the
 installation process.
 
 
-via command-line (unix/linux only)
-----------------------------------
+### via command-line (unix/linux only)
+
 You can use the thebuggenie command-line client to install, if you prefer that.
-Run "./tbg_cli" from this folder.
+Run `./tbg_cli` from this folder.
 
 To install:
+
     ./tbg_cli install
