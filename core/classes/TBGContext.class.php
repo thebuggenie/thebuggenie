@@ -128,6 +128,13 @@
 		protected static $_request = null;
 		
 		/**
+		 * The current action object
+		 * 
+		 * @var TBGAction
+		 */
+		protected static $_action = null;
+		
+		/**
 		 * The response object
 		 * 
 		 * @var TBGResponse
@@ -714,10 +721,6 @@
 					self::loadCachedRoutes();
 				}
 
-				if (!self::isInstallmode()) self::initializeUser();
-
-				self::setupI18n();
-
 				TBGLogging::log('...done');
 				TBGLogging::log('...done initializing');
 
@@ -795,7 +798,7 @@
 			{
 				TBGLogging::log("Something happened while setting up user: ". $e->getMessage(), 'main', TBGLogging::LEVEL_WARNING);
 				$allow_anonymous_routes = array('register', 'register1', 'register2', 'activate', 'reset_password', 'captcha', 'login', 'login_page', 'getBackdropPartial', 'serve', 'doLogin');
-				if (!self::isCLI() && (self::getRouting()->getCurrentRouteModule() != 'main' || !in_array(self::getRouting()->getCurrentRouteAction(), $allow_anonymous_routes)))
+				if (!self::isCLI() && (!in_array(self::getRouting()->getCurrentRouteModule(), array('main', 'remote')) || !in_array(self::getRouting()->getCurrentRouteAction(), $allow_anonymous_routes)))
 				{
 					TBGContext::setMessage('login_message_err', $e->getMessage());
 					self::$_redirect_login = true;
@@ -899,6 +902,16 @@
 		}
 		
 		/**
+		 * Returns the current action object
+		 * 
+		 * @return TBGAction
+		 */
+		public static function getCurrentAction()
+		{
+			return self::$_action;
+		}
+		
+		/**
 		 * Returns the response object
 		 * 
 		 * @return TBGResponse
@@ -998,7 +1011,7 @@
 		{
 			try
 			{
-				self::$_user = ($user === null) ? TBGUser::loginCheck(self::getRequest()) : $user;
+				self::$_user = ($user === null) ? TBGUser::loginCheck(self::getRequest(), self::getCurrentAction()) : $user;
 				if (self::$_user->isAuthenticated())
 				{
 					if (self::$_user->isOffline() || self::$_user->isAway())
@@ -2202,19 +2215,18 @@
 		/**
 		 * Performs an action
 		 * 
-		 * @param string $action Name of the action
+		 * @param string $module Name of the action module
 		 * @param string $method Name of the action method to run
 		 */
-		public static function performAction($action, $method)
+		public static function performAction($action, $module, $method)
 		{
 			// Set content variable
 			$content = null;
 			
 			// Set the template to be used when rendering the html (or other) output
-			$templatePath = THEBUGGENIE_MODULES_PATH . $action . DS . 'templates' . DS;
+			$templatePath = THEBUGGENIE_MODULES_PATH . $module . DS . 'templates' . DS;
 
-			// Construct the action class and method name, including any pre- action(s)
-			$actionClassName = $action.'Actions';
+			$actionClassName = get_class($action);
 			$actionToRunName = 'run' . ucfirst($method);
 			$preActionToRunName = 'pre' . ucfirst($method);
 
@@ -2224,11 +2236,8 @@
 			self::getResponse()->setupResponseContentType(self::getRequest()->getRequestedFormat());
 			self::setCurrentProject(null);
 			
-			// Set up the action object
-			$actionObject = new $actionClassName();
-
 			// Run the specified action method set if it exists
-			if (method_exists($actionObject, $actionToRunName))
+			if (method_exists($action, $actionToRunName))
 			{
 				// Turning on output buffering
 				ob_start('mb_output_handler');
@@ -2253,7 +2262,7 @@
 					TBGLogging::log('Running main pre-execute action');
 					// Running any overridden preExecute() method defined for that module
 					// or the default empty one provided by TBGAction
-					if ($pre_action_retval = $actionObject->preExecute(self::getRequest(), $method))
+					if ($pre_action_retval = $action->preExecute(self::getRequest(), $method))
 					{
 						$content = ob_get_clean();
 						TBGLogging::log('preexecute method returned something, skipping further action');
@@ -2268,10 +2277,10 @@
 					{
 						// Checking for and running action-specific preExecute() function if
 						// it exists
-						if (method_exists($actionObject, $preActionToRunName))
+						if (method_exists($action, $preActionToRunName))
 						{
 							TBGLogging::log('Running custom pre-execute action');
-							$actionObject->$preActionToRunName(self::getRequest(), $method);
+							$action->$preActionToRunName(self::getRequest(), $method);
 						}
 
 						// Running main route action
@@ -2281,7 +2290,7 @@
 							$time = explode(' ', microtime());
 							$action_pretime = $time[1] + $time[0];
 						}
-						$action_retval = $actionObject->$actionToRunName(self::getRequest());
+						$action_retval = $action->$actionToRunName(self::getRequest());
 						if (self::$_debug_mode)
 						{
 							$time = explode(' ', microtime());
@@ -2335,7 +2344,7 @@
 
 						self::loadLibrary('common');
 						// Present template for current action
-						TBGActionComponent::presentTemplate($templateName, $actionObject->getParameterHolder());
+						TBGActionComponent::presentTemplate($templateName, $action->getParameterHolder());
 						$content = ob_get_clean();
 						TBGLogging::log('...completed');
 					}
@@ -2469,12 +2478,6 @@
 					{
 						$route = array('module' => 'installation', 'action' => 'installIntro');
 					}
-					if (self::$_redirect_login)
-					{
-						TBGLogging::log('An error occurred setting up the user object, redirecting to login', 'main', TBGLogging::LEVEL_NOTICE);
-						TBGContext::setMessage('login_message_err', TBGContext::geti18n()->__('Please log in'));
-						self::getResponse()->headerRedirect(self::getRouting()->generate('login_page'), 403);
-					}
 					if (is_dir(THEBUGGENIE_MODULES_PATH . $route['module']))
 					{
 						if (!file_exists(THEBUGGENIE_MODULES_PATH . $route['module'] . DS . 'classes' . DS . 'actions.class.php'))
@@ -2485,25 +2488,43 @@
 						{
 							self::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . $route['module'] . DS . 'classes' . DS);
 						}
-						if (self::performAction($route['module'], $route['action']))
-						{
-							if (self::isDebugMode()) self::generateDebugInfo();
-							if (\b2db\Core::isInitialized())
-							{
-								\b2db\Core::closeDBLink();
-							}
-							return true;
-						}
 					}
 					else
 					{
 						throw new Exception('Cannot load the ' . $route['module'] . ' module');
 					}
+
+					// Set up the action object
+					// Construct the action class and method name, including any pre- action(s)
+					$actionClassName = $route['module'].'Actions';
+					$actionObject = new $actionClassName();
+					self::$_action = $actionObject;
+
+					if (!self::isInstallmode()) self::initializeUser();
+
+					self::setupI18n();
+					
+					if (self::$_redirect_login)
+					{
+						TBGLogging::log('An error occurred setting up the user object, redirecting to login', 'main', TBGLogging::LEVEL_NOTICE);
+						TBGContext::setMessage('login_message_err', TBGContext::geti18n()->__('Please log in'));
+						self::getResponse()->headerRedirect(self::getRouting()->generate('login_page'), 403);
+					}
+					if (self::performAction($actionObject, $route['module'], $route['action']))
+					{
+						if (self::isDebugMode()) self::generateDebugInfo();
+						if (\b2db\Core::isInitialized())
+						{
+							\b2db\Core::closeDBLink();
+						}
+						return true;
+					}
 				}
 				else
 				{
 					require THEBUGGENIE_MODULES_PATH . 'main' . DS . 'classes' . DS . 'actions.class.php';
-					self::performAction('main', 'notFound');
+					$actionObject = new mainActions();
+					self::performAction($actionObject, 'main', 'notFound');
 					if (self::isDebugMode()) self::generateDebugInfo();
 				}
 			}

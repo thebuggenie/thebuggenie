@@ -321,6 +321,14 @@
 		 */
 		protected $_notifications = null;
 		
+		/**
+		 * List of user's application-specific passwords
+		 *
+		 * @var array|TBGApplicationPassword
+		 * @Relates(class="TBGApplicationPassword", collection=true, foreign_column="user_id", orderby="created_at")
+		 */
+		protected $_application_passwords = null;
+		
 		protected $_unread_notifications_count = null;
 		
 		protected $_read_notifications_count = null;
@@ -468,124 +476,139 @@
 		 * Returns the logged in user, or default user if not logged in
 		 *
 		 * @param TBGRequest $request
+		 * @param TBGAction  $action
 		 *
 		 * @return TBGUser
 		 */
-		public static function loginCheck(TBGRequest $request)
+		public static function loginCheck(TBGRequest $request, TBGAction $action)
 		{
 			try
 			{
-				$username = $request['tbg3_username'];
-				$password = $request['tbg3_password'];
+				$authentication_method = $action->getAuthenticationMethodForAction(TBGContext::getRouting()->getCurrentRouteAction());
 				$user = null;
 				$external = false;
-				$raw = true;
-
-				// If no username and password specified, check if we have a session that exists already
-				if ($username === null && $password === null)
-				{
-					if (TBGContext::getRequest()->hasCookie('tbg3_username') && TBGContext::getRequest()->hasCookie('tbg3_password'))
-					{
-						$username = TBGContext::getRequest()->getCookie('tbg3_username');
-						$password = TBGContext::getRequest()->getCookie('tbg3_password');
-						$user = TBGUsersTable::getTable()->getByUsername($username);
-						if (!$user->hasPasswordHash($password)) $user = null;
-						
-						$raw = false;
-
-						if (!$user instanceof TBGUser)
-						{
-							TBGContext::logout();
-							throw new Exception('No such login');
-							//TBGContext::getResponse()->headerRedirect(TBGContext::getRouting()->generate('login'));
-						}
-					}
-				}
 				
-				// If we have authentication details, validate them
-				if (TBGSettings::isUsingExternalAuthenticationBackend() && $username !== null && $password !== null)
+				switch ($authentication_method)
 				{
-					$external = true;
-					TBGLogging::log('Authenticating with backend: '.TBGSettings::getAuthenticationBackend(), 'auth', TBGLogging::LEVEL_INFO);
-					try
-					{
-						$mod = TBGContext::getModule(TBGSettings::getAuthenticationBackend());
-						if ($mod->getType() !== TBGModule::MODULE_AUTH)
+					case TBGAction::AUTHENTICATION_METHOD_CORE:
+						$username = $request['tbg3_username'];
+						$password = $request['tbg3_password'];
+						$raw = true;
+
+						// If no username and password specified, check if we have a session that exists already
+						if ($username === null && $password === null)
 						{
-							TBGLogging::log('Auth module is not the right type', 'auth', TBGLogging::LEVEL_FATAL);
-						}
-						if (TBGContext::getRequest()->hasCookie('tbg3_username') && TBGContext::getRequest()->hasCookie('tbg3_password'))
-						{
-							$user = $mod->verifyLogin($username, $password);
-						}
-						else
-						{
-							$user = $mod->doLogin($username, $password);
-						}
-						if (!$user instanceof TBGUser)
-						{
-							// Invalid
-							TBGContext::logout();
-							throw new Exception('No such login');
-							//TBGContext::getResponse()->headerRedirect(TBGContext::getRouting()->generate('login'));
-						}
-					}
-					catch (Exception $e)
-					{
-						throw $e;
-					}
-				}
-				// If we don't have login details, the backend may autologin from cookies or something
-				elseif (TBGSettings::isUsingExternalAuthenticationBackend())
-				{
-					$external = true;
-					TBGLogging::log('Authenticating without credentials with backend: '.TBGSettings::getAuthenticationBackend(), 'auth', TBGLogging::LEVEL_INFO);
-					try
-					{
-						$mod = TBGContext::getModule(TBGSettings::getAuthenticationBackend());
-						if ($mod->getType() !== TBGModule::MODULE_AUTH)
-						{
-							TBGLogging::log('Auth module is not the right type', 'auth', TBGLogging::LEVEL_FATAL);
+							if (TBGContext::getRequest()->hasCookie('tbg3_username') && TBGContext::getRequest()->hasCookie('tbg3_password'))
+							{
+								$username = TBGContext::getRequest()->getCookie('tbg3_username');
+								$password = TBGContext::getRequest()->getCookie('tbg3_password');
+								$user = TBGUsersTable::getTable()->getByUsername($username);
+								if (!$user->hasPasswordHash($password)) $user = null;
+
+								$raw = false;
+
+								if (!$user instanceof TBGUser)
+								{
+									TBGContext::logout();
+									throw new Exception('No such login');
+									//TBGContext::getResponse()->headerRedirect(TBGContext::getRouting()->generate('login'));
+								}
+							}
 						}
 
-						$user = $mod->doAutoLogin();
-						
-						if ($user == false)
+						// If we have authentication details, validate them
+						if (TBGSettings::isUsingExternalAuthenticationBackend() && $username !== null && $password !== null)
 						{
-							// Invalid
-							TBGContext::logout();
-							throw new Exception('No such login');
-							//TBGContext::getResponse()->headerRedirect(TBGContext::getRouting()->generate('login'));
+							$external = true;
+							TBGLogging::log('Authenticating with backend: '.TBGSettings::getAuthenticationBackend(), 'auth', TBGLogging::LEVEL_INFO);
+							try
+							{
+								$mod = TBGContext::getModule(TBGSettings::getAuthenticationBackend());
+								if ($mod->getType() !== TBGModule::MODULE_AUTH)
+								{
+									TBGLogging::log('Auth module is not the right type', 'auth', TBGLogging::LEVEL_FATAL);
+								}
+								if (TBGContext::getRequest()->hasCookie('tbg3_username') && TBGContext::getRequest()->hasCookie('tbg3_password'))
+								{
+									$user = $mod->verifyLogin($username, $password);
+								}
+								else
+								{
+									$user = $mod->doLogin($username, $password);
+								}
+								if (!$user instanceof TBGUser)
+								{
+									// Invalid
+									TBGContext::logout();
+									throw new Exception('No such login');
+									//TBGContext::getResponse()->headerRedirect(TBGContext::getRouting()->generate('login'));
+								}
+							}
+							catch (Exception $e)
+							{
+								throw $e;
+							}
 						}
-					}
-					catch (Exception $e)
-					{
-						throw $e;
-					}
-				}
-				elseif ($username !== null && $password !== null && !$user instanceof TBGUser)
-				{
-					$external = false;
-					TBGLogging::log('Using internal authentication', 'auth', TBGLogging::LEVEL_INFO);
+						// If we don't have login details, the backend may autologin from cookies or something
+						elseif (TBGSettings::isUsingExternalAuthenticationBackend())
+						{
+							$external = true;
+							TBGLogging::log('Authenticating without credentials with backend: '.TBGSettings::getAuthenticationBackend(), 'auth', TBGLogging::LEVEL_INFO);
+							try
+							{
+								$mod = TBGContext::getModule(TBGSettings::getAuthenticationBackend());
+								if ($mod->getType() !== TBGModule::MODULE_AUTH)
+								{
+									TBGLogging::log('Auth module is not the right type', 'auth', TBGLogging::LEVEL_FATAL);
+								}
 
-					$user = TBGUsersTable::getTable()->getByUsername($username);
-					if (!$user->hasPassword($password)) $user = null;
+								$user = $mod->doAutoLogin();
 
-					if (!$user instanceof TBGUser)
-					{
-						TBGContext::logout();
-						throw new Exception('No such login');
-					}
-				}
+								if ($user == false)
+								{
+									// Invalid
+									TBGContext::logout();
+									throw new Exception('No such login');
+									//TBGContext::getResponse()->headerRedirect(TBGContext::getRouting()->generate('login'));
+								}
+							}
+							catch (Exception $e)
+							{
+								throw $e;
+							}
+						}
+						elseif ($username !== null && $password !== null && !$user instanceof TBGUser)
+						{
+							$external = false;
+							TBGLogging::log('Using internal authentication', 'auth', TBGLogging::LEVEL_INFO);
 
-				if (!$user instanceof TBGUser && TBGContext::isCLI())
-				{
-					$user = TBGUsersTable::getTable()->getByUsername(TBGContext::getCurrentCLIusername());
-				}
-				// guest user
-				elseif (!$user instanceof TBGUser && !TBGSettings::isLoginRequired())
-				{
-					$user = TBGUsersTable::getTable()->getByUserID(TBGSettings::getDefaultUserID());
+							$user = TBGUsersTable::getTable()->getByUsername($username);
+							if (!$user->hasPassword($password)) $user = null;
+
+							if (!$user instanceof TBGUser)
+							{
+								TBGContext::logout();
+							}
+						}
+						break;
+					case TBGAction::AUTHENTICATION_METHOD_DUMMY:
+						$user = TBGUsersTable::getTable()->getByUserID(TBGSettings::getDefaultUserID());
+						break;
+					case TBGAction::AUTHENTICATION_METHOD_CLI:
+						$user = TBGUsersTable::getTable()->getByUsername(TBGContext::getCurrentCLIusername());
+						break;
+					case TBGAction::AUTHENTICATION_METHOD_RSS_KEY:
+						$user = TBGUsersTable::getTable()->getByRssKey($request['rsskey']);
+						break;
+					case TBGAction::AUTHENTICATION_METHOD_APPLICATION_PASSWORD:
+						$user = TBGUsersTable::getTable()->getByUsername($request['api_username']);
+						if (!$user->authenticateApplicationPassword($request['api_token'])) $user = null;
+						break;
+					default:
+						if (!TBGSettings::isLoginRequired())
+						{
+							$user = TBGUsersTable::getTable()->getByUserID(TBGSettings::getDefaultUserID());
+						}
 				}
 
 				if ($user instanceof TBGUser)
@@ -606,7 +629,7 @@
 						}
 					}
 					
-					if ($external == false)
+					if ($external == false && $authentication_method == TBGAction::AUTHENTICATION_METHOD_CORE)
 					{
 						$password = $user->getHashPassword();
 
@@ -614,13 +637,13 @@
 						{
 							if ($request->getParameter('tbg3_rememberme'))
 							{
-								TBGContext::getResponse()->setCookie('tbg3_username', $username);
-								TBGContext::getResponse()->setCookie('tbg3_password', $password);
+								TBGContext::getResponse()->setCookie('tbg3_username', $user->getUsername());
+								TBGContext::getResponse()->setCookie('tbg3_password', $user->getPassword());
 							}
 							else
 							{
-								TBGContext::getResponse()->setSessionCookie('tbg3_username', $username);
-								TBGContext::getResponse()->setSessionCookie('tbg3_password', $password);
+								TBGContext::getResponse()->setSessionCookie('tbg3_username', $user->getUsername());
+								TBGContext::getResponse()->setSessionCookie('tbg3_password', $user->getPassword());
 							}
 						}
 					}
@@ -1288,6 +1311,10 @@
 		 */
 		public function changePassword($newpassword)
 		{
+			if (!$newpassword)
+			{
+				throw new Exception("Cannot set empty password");
+			}
 			$this->_password = self::hashPassword($newpassword, $this->getSalt());
 		}
 		
@@ -1300,10 +1327,6 @@
 		 */
 		public function setPassword($newpassword)
 		{
-			if (!$newpassword)
-			{
-				throw new Exception("Cannot set empty password");
-			}
 			return $this->changePassword($newpassword);
 		}
 		
@@ -2658,6 +2681,59 @@
 			$this->_notifications = null;
 			$this->_unread_notifications_count = null;
 			$this->_read_notifications_count = null;
+		}
+		
+		public function regenerateRssKey()
+		{
+			$key = md5(time().rand(1, 10000).$this->getSalt());
+			TBGSettings::saveUserSetting($this->getID(), TBGSettings::USER_RSS_KEY, $key);
+			
+			return $key;
+		}
+		
+		protected function _getOrGenerateRssKey()
+		{
+			static $key;
+			
+			$key = ($key === null) ? TBGSettings::getUserSetting($this->getID(), TBGSettings::USER_RSS_KEY) : $key;
+			
+			if ($key === null)
+			{
+				$key = $this->_generateRssKey();
+			}
+			
+			return $key;
+		}
+		
+		public function getRssKey()
+		{
+			return $this->_getOrGenerateRssKey();
+		}
+		
+		/**
+		 * Returns an array of application passwords
+		 * 
+		 * @return array|TBGApplicationPassword
+		 */
+		public function getApplicationPasswords()
+		{
+			$this->_b2dbLazyload('_application_passwords');
+			return $this->_application_passwords;
+		}
+		
+		public function authenticateApplicationPassword($hashed_password)
+		{
+			foreach ($this->getApplicationPasswords() as $password)
+			{
+				if (sha1($password->getPassword()) == $hashed_password)
+				{
+					$password->useOnce();
+					$password->save();
+					return true;
+				}
+			}
+			
+			return false;
 		}
 
 	}

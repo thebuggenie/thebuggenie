@@ -610,6 +610,7 @@
 			TBGSavedSearchesTable::getTable()->upgrade(TBGSavedSearchesTable3dot2::getTable());
 			TBGNotificationsTable::getTable()->upgrade(TBGNotificationsTable3dot2::getTable());
 			TBGUserArticlesTable::getTable()->create();
+			TBGApplicationPasswordsTable::getTable()->create();
 
 			$transaction = \b2db\Core::startTransaction();
 			// Add new settings.

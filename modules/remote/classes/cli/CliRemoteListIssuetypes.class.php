@@ -32,7 +32,7 @@
 			$this->cliEcho($this->_getCurrentRemoteServer(), 'white', 'bold');
 			$this->cliEcho(" for list of issuetypes ...\n\n");
 
-			$response = $this->getRemoteResponse($this->getRemoteURL('list_issuetypes', array('format' => 'json')));
+			$response = $this->getRemoteResponse($this->getRemoteURL('remote_list_issuetypes', array('format' => 'json')));
 
 			if (!empty($response))
 			{

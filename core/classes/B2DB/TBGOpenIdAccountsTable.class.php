@@ -46,6 +46,7 @@
 			$providers['verisign'] = 'verisignlabs.com';
 			$providers['claimid'] = 'claimid.com';
 			$providers['clickpass'] = 'clickpass.com';
+			$providers['launchpad'] = 'launchpad.net';
 
 			return $providers;
 		}

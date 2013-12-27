@@ -32,7 +32,7 @@
 			$this->cliEcho($this->_getCurrentRemoteServer(), 'white', 'bold');
 			$this->cliEcho(" for list of projects ...\n\n");
 
-			$response = $this->getRemoteResponse($this->getRemoteURL('list_projects', array('format' => 'json')));
+			$response = $this->getRemoteResponse($this->getRemoteURL('api_list_projects', array('format' => 'json')));
 
 			if (!empty($response))
 			{

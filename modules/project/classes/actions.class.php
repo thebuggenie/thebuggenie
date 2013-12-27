@@ -796,22 +796,6 @@
 			$this->return_issues = array();
 		}
 
-		public function runListIssuefields(TBGRequest $request)
-		{
-			try
-			{
-				$issuetype = TBGIssuetype::getIssuetypeByKeyish($request['issuetype']);
-				$issuefields = $this->selected_project->getVisibleFieldsArray($issuetype->getID());
-			}
-			catch (Exception $e)
-			{
-				$this->getResponse()->setHttpStatus(400);
-				return $this->renderJSON(array('error' => 'An exception occurred: '.$e));
-			}
-
-			$this->issuefields = array_keys($issuefields);
-		}
-
 		public function runListWorkflowTransitions(TBGRequest $request)
 		{
 			$i18n = TBGContext::getI18n();

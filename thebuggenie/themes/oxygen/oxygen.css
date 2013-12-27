@@ -370,6 +370,12 @@ footer img { margin: 4px 3px -6px 0; }
     border-radius: 4px;
     width: 383px;
 }
+.account_popupform input[type=text] {
+    padding: 8px;
+    font-size: 1.2em;
+    border-radius: 4px;
+    width: 383px;
+}
 #register input[type=text], #register input[type=email] {
     padding: 6px;
     font-size: 1.1em;
@@ -390,16 +396,16 @@ footer img { margin: 4px 3px -6px 0; }
     margin: 5px 0;
     color: #888;
 }
-.login_formlist {
+.login_formlist, .account_popupform {
     list-style: none;
     margin: 0 0 15px 0;
     padding: 0;
 }
-.login_formlist li {
+.login_formlist li, .account_popupform li {
     padding: 0;
     margin: 5px 0;
 }
-.login_formlist label {
+.login_formlist label, .account_popupform label {
     font-weight: bold;
     font-size: 1.1em;
     padding: 5px 0;
@@ -867,12 +873,52 @@ a.shadowed:active { box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); -webkit-box-shad
 #account_user_info { font-size: 1.2em; font-weight: normal; color: #CCC; margin: 15px 0 0 0; line-height: 1.2; }
 #account_user_info:first-line { font-size: 1.5em; font-weight: bold; color: #333; }
 #account_info_container { width: 900px; margin: 0 auto; }
-#username_unavailable { padding: 10px 5px; font-size: 0.9em; color: darkred; font-weight: bold; }
+#username_unavailable { color: darkred; }
 #username_confirmation_popup { text-align: left; }
 .button-group { position: relative; }
 .profile_buttons { padding: 0; margin: 5px 0 20px 0; height: 20px; position: relative; clear: both; }
 .profile_buttons .button-group { float: right; }
 .profile_buttons .button, .profile_buttons .button:hover { font-weight: normal !important; padding: 2px 3px 3px 3px !important; }
+#account_tabs_panes table { width: 885px; margin-bottom: 25px; }
+#account_tabs_panes td { padding: 5px 0; }
+#account_tabs_panes label { padding: 0; margin: 0; }
+#account_tabs_panes h3 {
+	font-weight: normal;
+	font-size: 1.4em;
+	color: #888;
+	border-bottom: 1px dotted #CCC;
+}
+#account_tabs_panes h3 + p {
+	color: #888;
+	padding: 5px 0 15px;
+}
+label[for=profile_prefer_wiki_markdown] { font-weight: normal; }
+#gravatar_change { font-weight: normal; font-size: 1em; margin: 8px 0; padding: 4px 6px !important; }
+#account_tabs_panes h3 .button { float: right; font-size: 0.7em; }
+#account_tabs_panes h4 { font-size: 1em; font-weight: bold; padding: 0; margin: 0; }
+#account_tabs_panes ul.access_keys_list { margin: 0 0 15px 0; padding: 0; list-style: none; }
+#account_tabs_panes ul.access_keys_list li { display: block; clear: both; margin: 0 0 10px; transition: background-color 0.3s ease; }
+#account_tabs_panes ul.access_keys_list li:hover { background-color: #F5F5F5; }
+#account_tabs_panes ul.access_keys_list li button { float: right; margin: 7px; }
+#account_tabs_panes .access_keys_list p { color: #888; font-weight: normal; font-size: 0.9em; font-style: italic; }
+.application_password_preview {
+	background-color: #F1F1F1;
+    border: 1px solid rgba(200, 200, 200, 0.4);
+    display: block;
+    font-size: 2em;
+    margin: 40px auto;
+    padding: 20px;
+    text-align: center;
+    width: 300px;
+}
+.application_password_preview span {
+	display: inline;
+	margin: 0 0 0 8px;
+}
+#add_application_password_response .button {
+	margin: 0 auto;
+	text-align: center;
+}
 #user_details_popup .user_username { font-weight: normal; font-size: 0.9em; color: #AAA; font-style: italic; line-height: 1.2; }
 #user_details_popup .user_id { float: right; font-size: 2.3em; font-weight: normal; color: #C4CAE9; }
 .user_popup .user_realname .user_status, #user_details_popup .user_realname .user_status { font-size: 0.8em; font-weight: normal; color: #AAA; }

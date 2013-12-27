@@ -112,6 +112,8 @@
 		const SETTING_MAINTENANCE_MODE = 'offline';
 		const SETTING_MAINTENANCE_MESSAGE = 'offline_msg';
 		const SETTING_ICONSET = 'iconset';
+		
+		const USER_RSS_KEY = 'rsskey';
 
 		protected static $_ver_mj = 3;
 		protected static $_ver_mn = 3;
@@ -869,5 +871,5 @@
 			
 			return $config_sections;
 		}
-
+		
 	}

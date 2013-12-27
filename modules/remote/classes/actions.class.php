@@ -6,6 +6,19 @@
 	class remoteActions extends TBGAction
 	{
 
+		public function getAuthenticationMethodForAction($action)
+		{
+			switch ($action)
+			{
+				case 'authenticate':
+					return TBGAction::AUTHENTICATION_METHOD_DUMMY;
+					break;
+				default:
+					return TBGAction::AUTHENTICATION_METHOD_APPLICATION_PASSWORD;
+					break;
+			}
+		}
+		
 		/**
 		 * The currently selected project in actions where there is one
 		 *
@@ -22,9 +35,38 @@
 				elseif ($project_id = (int) $request['project_id'])
 					$this->selected_project = TBGContext::factory()->TBGProject($project_id);
 				
-				TBGContext::setCurrentProject($this->selected_project);
+				if ($this->selected_project instanceof TBGProject)
+					TBGContext::setCurrentProject($this->selected_project);
 			}
 			catch (Exception $e) {}
+		}
+		
+		public function runAuthenticate(TBGRequest $request)
+		{
+			$username = trim($request['username']);
+			$password = trim($request['password']);
+			if ($username)
+			{
+				$user = TBGUsersTable::getTable()->getByUsername($username);
+				if ($password && $user instanceof TBGUser)
+				{
+					foreach ($user->getApplicationPasswords() as $app_password)
+					{
+						if (!$app_password->isUsed())
+						{
+							if ($app_password->getHashPassword() == TBGUser::hashPassword($password, $user->getSalt()))
+							{
+								$app_password->useOnce();
+								$app_password->save();
+								return $this->renderJSON(array('token' => $app_password->getHashPassword()));
+							}
+						}
+					}
+				}
+			}
+			
+			$this->getResponse()->setHttpStatus(400);
+			return $this->renderJSON(array('error' => 'Incorrect username or application password'));
 		}
 		
 		public function runListProjects(TBGRequest $request)
@@ -38,6 +80,22 @@
 			}
 
 			$this->projects = $return_array;
+		}
+
+		public function runListIssuefields(TBGRequest $request)
+		{
+			try
+			{
+				$issuetype = TBGIssuetype::getIssuetypeByKeyish($request['issuetype']);
+				$issuefields = $this->selected_project->getVisibleFieldsArray($issuetype->getID());
+			}
+			catch (Exception $e)
+			{
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('error' => 'An exception occurred: '.$e));
+			}
+
+			$this->issuefields = array_keys($issuefields);
 		}
 
 		public function runListIssuetypes(TBGRequest $request)

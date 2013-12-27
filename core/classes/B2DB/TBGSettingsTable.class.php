@@ -32,6 +32,7 @@
 		const NAME = 'settings.name';
 		const MODULE = 'settings.module';
 		const VALUE = 'settings.value';
+		const UPDATED_AT = 'settings.updated_at';
 		const UID = 'settings.uid';
 
 		/**
@@ -56,6 +57,7 @@
 			parent::_addVarchar(self::MODULE, 45);
 			parent::_addVarchar(self::VALUE, 200);
 			parent::_addInteger(self::UID, 10);
+			parent::_addInteger(self::UPDATED_AT, 10);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable());
 		}
 		
@@ -93,6 +95,7 @@
 				$crit->addUpdate(self::MODULE, $module);
 				$crit->addUpdate(self::UID, $uid);
 				$crit->addUpdate(self::VALUE, $value);
+				$crit->addUpdate(self::UPDATED_AT, time());
 				$this->doUpdateById($crit, $theID);
 			}
 			else
@@ -103,6 +106,7 @@
 				$crit->addInsert(self::VALUE, $value);
 				$crit->addInsert(self::SCOPE, $scope);
 				$crit->addInsert(self::UID, $uid);
+				$crit->addInsert(self::UPDATED_AT, time());
 				$this->doInsert($crit);
 			}
 		}

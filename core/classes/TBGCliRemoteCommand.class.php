@@ -25,7 +25,7 @@
 
 		protected $_current_remote_password_hash = null;
 
-		protected function _setup()
+		protected function _initializeUrlFopen()
 		{
 			if (!ini_get('allow_url_fopen'))
 			{
@@ -44,63 +44,18 @@
 					$this->cliEcho("\n\n");
 				}
 			}
-			$this->addOptionalArgument('server', 'URL for the remote The Bug Genie install');
-			$this->addOptionalArgument('username', "The username to authenticate as");
+		}
+		
+		protected function _setup()
+		{
+			$this->_initializeUrlFopen();
 		}
 
-		final protected function _prepare()
+		protected function _prepare()
 		{
-			if ($this->hasProvidedArgument('server'))
-			{
-				$this->_current_remote_server = $this->getProvidedArgument('server');
-			}
-			elseif (file_exists(THEBUGGENIE_CONFIG_PATH . '.remote_server'))
-			{
-				$this->_current_remote_server = file_get_contents(THEBUGGENIE_CONFIG_PATH . '.remote_server');
-			}
-			else
-			{
-				throw new Exception("Please specify an installation of The Bug Genie to connect to by running the set_remote command first.");
-			}
-
-			if ($this->hasProvidedArgument('username'))
-			{
-				$this->_current_remote_user = $this->getProvidedArgument('username');
-			}
-			elseif (file_exists(THEBUGGENIE_CONFIG_PATH . '.remote_username'))
-			{
-				$this->_current_remote_user = file_get_contents(THEBUGGENIE_CONFIG_PATH . '.remote_username');
-			}
-			else
-			{
-				$this->_current_remote_user = TBGContext::getCurrentCLIusername();
-			}
-
-			if (file_exists(THEBUGGENIE_CONFIG_PATH . '.remote_password_hash'))
-			{
-				$this->_current_remote_password_hash = file_get_contents(THEBUGGENIE_CONFIG_PATH . '.remote_password_hash');
-			}
-			else
-			{
-				$this->cliEcho('Please enter the password for user ');
-				$this->cliEcho($this->_getCurrentRemoteUser(), 'white', 'bold');
-				$this->cliEcho(' (the password will not be stored): ');
-				$password = $this->_getCliInput();
-				if ($password != '')
-				{
-					$this->cliEcho("Please enter the remote security key (required): ", 'white', 'bold');
-					$salt = $this->_getCliInput();
-					if ($password != '' && $salt != '')
-					{
-						$this->_current_remote_password_hash = TBGUser::hashPassword($password, $salt);
-					}
-				}
-				if (!$this->_getCurrentRemotePasswordHash())
-				{
-					throw new Exception('You have to provide a password and authentication key to connect.');
-				}
-			}
-
+			$this->_current_remote_server = file_get_contents(THEBUGGENIE_CONFIG_PATH . '.remote_server');
+			$this->_current_remote_user = file_get_contents(THEBUGGENIE_CONFIG_PATH . '.remote_username');
+			$this->_current_remote_password_hash = file_get_contents(THEBUGGENIE_CONFIG_PATH . '.remote_token');
 		}
 
 		protected function _getCurrentRemoteServer()
@@ -121,7 +76,16 @@
 		protected function getRemoteResponse($url, $postdata = array())
 		{
 			$headers = "Accept-language: en\r\n";
-			$headers .= "Cookie: tbg3_username={$this->_getCurrentRemoteUser()}; tbg3_password={$this->_getCurrentRemotePasswordHash()}\r\n";
+			if ($this->getCommandName() != 'authenticate')
+			{
+				if (!file_exists(THEBUGGENIE_CONFIG_PATH . '.remote_server') ||
+					!file_exists(THEBUGGENIE_CONFIG_PATH . '.remote_username') ||
+					!file_exists(THEBUGGENIE_CONFIG_PATH . '.remote_token'))
+				{
+					throw new \Exception("Please specify an installation of The Bug Genie to connect to by running the remote:authenticate command first");
+				}
+				$headers .= "Cookie: tbg3_username={$this->_getCurrentRemoteUser()}; tbg3_password={$this->_getCurrentRemotePasswordHash()}\r\n";
+			}
 
 			$options = array('http' => array('method' => (empty($postdata)) ? 'GET' : 'POST', 'header' => $headers));
 
@@ -159,14 +123,17 @@
 			}
 
 			if (!is_object($response) && !is_array($response))
+			{
 				throw new Exception('Could not parse the return value from the server. Please re-check the command being executed.');
+			}
 			
 			return $response;
 		}
 
 		protected function getRemoteURL($route_name, $params = array())
 		{
-			$url = TBGContext::getRouting()->generate($route_name, $params, true);
+			$real_params = array_merge(array('api_username' => $this->_getCurrentRemoteUser(), 'api_token' => $this->_getCurrentRemotePasswordHash()), $params);
+			$url = TBGContext::getRouting()->generate($route_name, $real_params, true);
 			$host = $this->_getCurrentRemoteServer();
 			if (mb_substr($host, mb_strlen($host) - 2) != '/') $host .= '/';
 

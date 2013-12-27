@@ -47,9 +47,11 @@
 	$routes[] = array('quicksearch', '/quicksearch/*', 'search', 'findIssues', array('quicksearch' => true, 'issues_per_page' => 6));
 	$routes[] = array('opensearch', '/opensearch.xml', 'search', 'opensearch', array('format' => 'xml'));
 	$routes[] = array('about', '/about', 'main', 'about');
-	$routes[] = array('list_projects', '/list/projects/:format', 'main', 'listProjects');
-	$routes[] = array('list_issuetypes', '/list/issuetypes/:format', 'main', 'listIssuetypes');
-	$routes[] = array('list_fieldvalues', '/list/fieldvalues/for/field/:field_key/:format/*', 'main', 'listFieldvalues');
+	$routes[] = array('api_authenticate', '/api/authenticate/:username', 'remote', 'authenticate');
+	$routes[] = array('api_list_projects', '/api/:api_username/projects/:format', 'remote', 'listProjects');
+	$routes[] = array('api_list_issuetypes', '/api/:api_username/issuetypes/:format', 'remote', 'listIssuetypes');
+	$routes[] = array('api_list_issuefields', '/api/:api_username/list/issuefields/for/:project_key/type/:issuetype/:format', 'remote', 'listIssuefields');
+	$routes[] = array('api_list_fieldvalues', '/api/:api_username/list/fieldvalues/for/field/:field_key/:format/*', 'remote', 'listFieldvalues');
 	$routes[] = array('get_partial_for_backdrop', '/get/partials/:key/*', 'main', 'getBackdropPartial');
 	$routes[] = array('issue_upload', '/upload/to/issue/:issue_id', 'main', 'upload', array('mode' => 'issue'));
 	$routes[] = array('article_upload', '/upload/to/article/:article_name', 'main', 'upload', array('mode' => 'article'));
@@ -64,6 +66,9 @@
 	$routes[] = array('issue_remove_link', '/upload/remove/link/:link_id/from/issue/:issue_id', 'main', 'removeLinkFromIssue');
 	$routes[] = array('upload_status', '/upload/get/status/for/:mode', 'main', 'getUploadStatus');
 	$routes[] = array('upload', '/upload/:mode', 'main', 'upload');
+	$routes[] = array('account_add_application_password', '/account/add/password/*', 'main', 'accountAddPassword', array(), true);
+	$routes[] = array('account_remove_application_password', '/account/remove/password/:id/:csrf_token', 'main', 'accountRemovePassword', array(), true);
+	$routes[] = array('account_regenerate_rss_key', '/account/regenerate/rsskey/:csrf_token', 'main', 'accountRegenerateRssKey', array(), true);
 	$routes[] = array('account_change_password', '/account/change/password/*', 'main', 'accountChangePassword', array(), true);
 	$routes[] = array('account_check_username', '/account/check/username', 'main', 'accountCheckUsername', array(), true);
 	$routes[] = array('account_pick_username', '/account/pick/username/:selected_username', 'main', 'accountPickUsername', array(), true);
@@ -72,7 +77,6 @@
 	$routes[] = array('account_remove_scope', '/account/remove/scope/:scope_id/:csrf_token', 'main', 'removeScope', array(), true);
 	$routes[] = array('account_save_information', '/account/save/information/*', 'main', 'myAccount', array('mode' => 'information'), true);
 	$routes[] = array('account_save_settings', '/account/save/settings/*', 'main', 'myAccount', array('mode' => 'settings'), true);
-	$routes[] = array('account_save_notificationsettings', '/account/save/notificationsettings/*', 'main', 'myAccount', array('mode' => 'notificationsettings'), true);
 	$routes[] = array('account_save_module_settings', '/account/save/module/:target_module/settings/*', 'main', 'myAccount', array('mode' => 'module'), true);
 	$routes[] = array('account', '/account/*', 'main', 'myAccount');
 	$routes[] = array('toggle_friend', '/friends/:mode/:user_id', 'main', 'toggleFriend');

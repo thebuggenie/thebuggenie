@@ -41,7 +41,7 @@
 			{
 				$options['project_key'] = $this->getProvidedArgument('project_key');
 			}
-			$response = $this->getRemoteResponse($this->getRemoteURL('list_fieldvalues', $options));
+			$response = $this->getRemoteResponse($this->getRemoteURL('remote_list_fieldvalues', $options));
 
 			if (!empty($response))
 			{

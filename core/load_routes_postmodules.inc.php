@@ -79,7 +79,6 @@
 	$routes[] = array('project_roadmap_milestone_issues', '/:project_key/milestone/:milestone_id/get/issues', 'project', 'getMilestoneIssues');
 	$routes[] = array('project_roadmap_milestone_refresh', '/:project_key/milestone/:milestone_id/get/details', 'project', 'getMilestoneDetails');
 	$routes[] = array('project_list_issues', '/:project_key/list/issues/:format/*', 'project', 'listIssues');
-	$routes[] = array('project_list_issuefields', '/:project_key/list/issuefields/for/type/:issuetype/:format', 'project', 'listIssuefields');
 	$routes[] = array('project_update_issuedetails', '/:project_key/update/issue/:issue_no/:format/*', 'project', 'updateIssueDetails');
 	$routes[] = array('project_list_workflowtransitions', '/:project_key/list/workflowtransitions/:issue_no/:format/*', 'project', 'listWorkflowTransitions');
 	$routes[] = array('project_dashboard', '/:project_key', 'project', 'dashboard');

@@ -672,7 +672,7 @@
 				{
 					if ($request->hasParameter('tbg3_username') && $request->hasParameter('tbg3_password') && $request['tbg3_username'] != '' && $request['tbg3_password'] != '')
 					{
-						$user = TBGUser::loginCheck($request);
+						$user = TBGUser::loginCheck($request, $this);
 
 						TBGContext::setUser($user);
 						if ($this->checkScopeMembership($user)) return true;
@@ -904,8 +904,8 @@
 			$this->forward403unless($this->getUser()->hasPageAccess('account'));
 			$notificationsettings = array();
 			$i18n = $this->getI18n();
-			$notificationsettings[TBGSettings::SETTINGS_USER_SUBSCRIBE_CREATED_UPDATED_COMMENTED_ISSUES] = $i18n->__('Automatically subscribe to issues I create, update or comment on');
-			$notificationsettings[TBGSettings::SETTINGS_USER_SUBSCRIBE_CREATED_UPDATED_COMMENTED_ARTICLES] = $i18n->__('Automatically subscribe to article I create, edit or comment on');
+			$notificationsettings[TBGSettings::SETTINGS_USER_SUBSCRIBE_CREATED_UPDATED_COMMENTED_ISSUES] = $i18n->__('Automatically subscribe to issues I get involved in');
+			$notificationsettings[TBGSettings::SETTINGS_USER_SUBSCRIBE_CREATED_UPDATED_COMMENTED_ARTICLES] = $i18n->__('Automatically subscribe to article I get involved in');
 			$notificationsettings[TBGSettings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS] = $i18n->__('Automatically subscribe to new issues that are created in my project(s)');
 			$notificationsettings[TBGSettings::SETTINGS_USER_SUBSCRIBE_NEW_ARTICLES_MY_PROJECTS] = $i18n->__('Automatically subscribe to new articles that are created in my project(s)');
 			$this->notificationsettings = $notificationsettings;
@@ -924,6 +924,9 @@
 						$this->getUser()->setRealname($request['realname']);
 						$this->getUser()->setHomepage($request['homepage']);
 						$this->getUser()->setEmailPrivate((bool) $request['email_private']);
+						$this->getUser()->setUsesGravatar((bool) $request['use_gravatar']);
+						$this->getUser()->setTimezone($request->getRawParameter('timezone'));
+						$this->getUser()->setLanguage($request['profile_language']);
 
 						if ($this->getUser()->getEmail() != $request['email'])
 						{
@@ -935,9 +938,12 @@
 
 						$this->getUser()->save();
 
-						return $this->renderJSON(array('title' => TBGContext::getI18n()->__('Account information saved')));
+						return $this->renderJSON(array('title' => TBGContext::getI18n()->__('Profile information saved')));
 						break;
-					case 'notificationsettings':
+					case 'settings':
+						$this->getUser()->setPreferredSyntax($request['profile_syntax']);
+						$this->getUser()->setPreferWikiMarkdown((bool) $request['prefer_wiki_markdown']);
+						$this->getUser()->setKeyboardNavigationEnabled($request['enable_keyboard_navigation']);
 						foreach ($notificationsettings as $setting => $description)
 						{
 							if ($request->hasParameter($setting))
@@ -950,15 +956,6 @@
 							}
 						}
 						TBGEvent::createNew('core', 'mainActions::myAccount::saveNotificationSettings')->trigger(compact('request'));
-						return $this->renderJSON(array('title' => TBGContext::getI18n()->__('Notification settings saved')));
-						break;
-					case 'settings':
-						$this->getUser()->setUsesGravatar((bool) $request['use_gravatar']);
-						$this->getUser()->setTimezone($request->getRawParameter('timezone'));
-						$this->getUser()->setLanguage($request['profile_language']);
-						$this->getUser()->setPreferredSyntax($request['profile_syntax']);
-						$this->getUser()->setPreferWikiMarkdown((bool) $request['prefer_wiki_markdown']);
-						$this->getUser()->setKeyboardNavigationEnabled($request['enable_keyboard_navigation']);
 						$this->getUser()->save();
 
 						return $this->renderJSON(array('title' => TBGContext::getI18n()->__('Profile settings saved')));
@@ -988,6 +985,75 @@
 			$this->error = TBGContext::getMessageAndClear('error');
 			$this->username_chosen = TBGContext::getMessageAndClear('username_chosen');
 			$this->openid_used = TBGContext::getMessageAndClear('openid_used');
+			$this->rsskey_generated = TBGContext::getMessageAndClear('rsskey_generated');
+			
+			$this->selected_tab = 'profile';
+			if ($this->rsskey_generated) $this->selected_tab = 'security';
+		}
+
+		/**
+		 * Change password ajax action
+		 *
+		 * @param TBGRequest $request
+		 */
+		public function runAccountRegenerateRssKey(TBGRequest $request)
+		{
+			$this->getUser()->regenerateRssKey();
+			TBGContext::setMessage('rsskey_generated', true);
+			return $this->forward($this->getRouting()->generate('account'));
+		}
+
+		/**
+		 * Change password ajax action
+		 *
+		 * @param TBGRequest $request
+		 */
+		public function runAccountRemovePassword(TBGRequest $request)
+		{
+			$passwords = $this->getUser()->getApplicationPasswords();
+			foreach ($passwords as $password)
+			{
+				if ($password->getID() == $request['id'])
+				{
+					$password->delete();
+					return $this->renderJSON(array('message' => $this->getI18n()->__('The application password has been deleted')));
+				}
+			}
+			
+			$this->getResponse()->setHttpStatus(400);
+			return $this->renderJSON(array('error' => $this->getI18n()->__('Cannot delete this application-specific password')));
+		}
+
+		/**
+		 * Change password ajax action
+		 *
+		 * @param TBGRequest $request
+		 */
+		public function runAccountAddPassword(TBGRequest $request)
+		{
+			$this->forward403unless($this->getUser()->hasPageAccess('account'));
+			if (trim($request['name']))
+			{
+				$password = new TBGApplicationPassword();
+				$password->setUser($this->getUser());
+				$password->setName(trim($request['name']));
+				$visible_password = strtolower(TBGUser::createPassword());
+				$password->setPassword($visible_password);
+				$password->save();
+				$spans = '';
+				
+				for ($cc = 0; $cc < 4; $cc++)
+				{
+					$spans .= '<span>'.substr($visible_password, $cc * 4, 4).'</span>';
+				}
+				
+				return $this->renderJSON(array('password' => $spans));
+			}
+			else
+			{
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('error' => $this->getI18n()->__('Please enter a valid name')));
+			}
 		}
 
 		/**

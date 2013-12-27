@@ -717,15 +717,18 @@ TBG.Main.Helpers.ajax = function(url, options) {
 };
 
 TBG.updateDebugInfo = function() {
-	if ($('log_ajax_items')) $('log_ajax_items').update('');
-	if ($('debug_ajax_count')) $('debug_ajax_count').update(TBG.Core.AjaxCalls.size());
-	var ct = function(time) {
-		return (time < 10) ? '0'+time : time;
-	};
-	TBG.Core.AjaxCalls.each(function(info) {
-		var content = '<li style="clear: both;"><span class="faded_out dark small">'+ct(info.time.getHours())+':'+ct(info.time.getMinutes())+':'+ct(info.time.getSeconds())+'</span> '+info.location+' <a class="button button-silver" style="float: right;" href="javascript:void(0);" onclick="TBG.loadDebugInfo(\''+info.debug_id+'\');">Show debug info</a></li>';
-		$('log_ajax_items').insert(content, 'top');
-	});
+	var lai = $('log_ajax_items');
+	if (lai) {
+		$('log_ajax_items').update('');
+		if ($('debug_ajax_count')) $('debug_ajax_count').update(TBG.Core.AjaxCalls.size());
+		var ct = function(time) {
+			return (time < 10) ? '0'+time : time;
+		};
+		TBG.Core.AjaxCalls.each(function(info) {
+			var content = '<li style="clear: both;"><span class="faded_out dark small">'+ct(info.time.getHours())+':'+ct(info.time.getMinutes())+':'+ct(info.time.getSeconds())+'</span> '+info.location+' <a class="button button-silver" style="float: right;" href="javascript:void(0);" onclick="TBG.loadDebugInfo(\''+info.debug_id+'\');">Show debug info</a></li>';
+			lai.insert(content, 'top');
+		});
+	}
 };
 
 TBG.Main.Helpers.formSubmit = function(url, form_id) {
@@ -1053,6 +1056,40 @@ TBG.Main.Profile.changePassword = function(url) {
 		form: 'change_password_form',
 		loading: {indicator: 'change_password_indicator'},
 		success: {reset: 'change_password_form'}
+	});
+};
+
+TBG.Main.Profile.addApplicationPassword = function(url) {
+	TBG.Main.Helpers.ajax(url, {
+		form: 'add_application_password_form',
+		loading: {indicator: 'add_application_password_indicator'},
+		success: {
+			hide: 'add_application_password_container',
+			update: {element: 'application_password_preview', from: 'password' },
+			show: 'add_application_password_response'
+		}
+	});
+};
+
+TBG.Main.Profile.removeApplicationPassword = function(url, p_id) {
+	TBG.Main.Helpers.ajax(url, {
+		method: 'post',
+		loading: {
+			callback: function() {
+				$('application_password_'+p_id).down('button').disable();
+			}
+		},
+		success: {
+			remove: 'application_password_'+p_id,
+			callback: function() {
+				TBG.Main.Helpers.Dialog.dismiss();
+			}
+		},
+		failure: {
+			callback: function() {
+				$('application_password_'+p_id).down('button').enable();
+			}
+		}
 	});
 };
 
