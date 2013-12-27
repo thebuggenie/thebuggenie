@@ -4,9 +4,9 @@
 // If you would like to help translating TBG,
 // please visit https://www.transifex.com/projects/p/tbg
 
-// Number of Sections: 308
-// Number of Strings: 3321
-// Strings extracted on: 2013 Dec 19.
+// Number of Sections: 309
+// Number of Strings: 3341
+// Strings extracted on: 2013 Dec 27.
 
 // First occurrence is in: core/classes/TBGAction.class.php
 // ----------------------------------------------------------------------------
@@ -395,6 +395,7 @@
   $strings['Issues reported this month'] = 'Issues reported this month';
   $strings['Issues reported last 30 days'] = 'Issues reported last 30 days';
   $strings['Recently watched issues'] = 'Recently watched issues';
+  $strings['No recent issues'] = 'No recent issues';
 
 // First occurrence is in: core/templates/headertop.inc.php
 // ----------------------------------------------------------------------------
@@ -1134,8 +1135,6 @@
 
 // First occurrence is in: modules/configuration/templates/_user.inc.php
 // ----------------------------------------------------------------------------
-  $strings['Security key'] = 'Security key';
-  $strings['Whenever the "remote security key" is needed, this is the key'] = 'Whenever the "remote security key" is needed, this is the key';
   $strings['Anonymous access'] = 'Anonymous access';
   $strings['You need a valid user account to access any content'] = 'You need a valid user account to access any content';
   $strings['Use the guest user account'] = 'Use the guest user account';
@@ -1687,8 +1686,8 @@
   $strings['Please provide a valid setting for email header charset'] = 'Please provide a valid setting for email header charset';
   $strings['Test email'] = 'Test email';
   $strings['The email module is not configured for outgoing emails'] = 'The email module is not configured for outgoing emails';
-  $strings['Notify by email when subscribed issues are updated or commented on'] = 'Notify by email when subscribed issues are updated or commented on';
-  $strings['Notify by email when subscribed articles are updated or commented on'] = 'Notify by email when subscribed articles are updated or commented on';
+  $strings['Notify by email when there are updates to my subscribed issues'] = 'Notify by email when there are updates to my subscribed issues';
+  $strings['Notify by email when there are updates to my subscribed articles'] = 'Notify by email when there are updates to my subscribed articles';
   $strings['Notify by email when new issues are created in my project(s)'] = 'Notify by email when new issues are created in my project(s)';
   $strings['Only send one email per issue or article until I view the issue or article in my browser'] = 'Only send one email per issue or article until I view the issue or article in my browser';
   $strings['Notify by email also when I am the one making the changes'] = 'Notify by email also when I am the one making the changes';
@@ -1925,14 +1924,15 @@
   $strings['You need to fill out all fields correctly.'] = 'You need to fill out all fields correctly.';
   $strings['This activation link is not valid'] = 'This activation link is not valid';
   $strings['Your account has been activated! You can now log in with the username %user and the password in your activation email.'] = 'Your account has been activated! You can now log in with the username %user and the password in your activation email.';
-  $strings['Automatically subscribe to issues I create, update or comment on'] = 'Automatically subscribe to issues I create, update or comment on';
-  $strings['Automatically subscribe to article I create, edit or comment on'] = 'Automatically subscribe to article I create, edit or comment on';
+  $strings['Automatically subscribe to issues I get involved in'] = 'Automatically subscribe to issues I get involved in';
+  $strings['Automatically subscribe to article I get involved in'] = 'Automatically subscribe to article I get involved in';
   $strings['Automatically subscribe to new issues that are created in my project(s)'] = 'Automatically subscribe to new issues that are created in my project(s)';
   $strings['Automatically subscribe to new articles that are created in my project(s)'] = 'Automatically subscribe to new articles that are created in my project(s)';
   $strings['Please fill out all the required fields'] = 'Please fill out all the required fields';
-  $strings['Account information saved'] = 'Account information saved';
-  $strings['Notification settings saved'] = 'Notification settings saved';
+  $strings['Profile information saved'] = 'Profile information saved';
   $strings['Profile settings saved'] = 'Profile settings saved';
+  $strings['The application password has been deleted'] = 'The application password has been deleted';
+  $strings['Cannot delete this application-specific password'] = 'Cannot delete this application-specific password';
   $strings["You're not allowed to change your password."] = "You're not allowed to change your password.";
   $strings['Please enter your current password'] = 'Please enter your current password';
   $strings['Please enter a new password'] = 'Please enter a new password';
@@ -2019,7 +2019,7 @@
   $strings['Component'] = 'Component';
   $strings['Component <b>%component</b> is now affected by this issue'] = 'Component <b>%component</b> is now affected by this issue';
   $strings['Release <b>%build</b> is now affected by this issue'] = 'Release <b>%build</b> is now affected by this issue';
-  $strings['An email has been sent to you with your new password.'] = 'An email has been sent to you with your new password.';
+  $strings['Your password has been reset. Please log in.'] = 'Your password has been reset. Please log in.';
   $strings['Could not pick the username "%username"'] = 'Could not pick the username "%username"';
   $strings['The OpenID identity has been removed from this user account'] = 'The OpenID identity has been removed from this user account';
   $strings['Could not remove this OpenID account'] = 'Could not remove this OpenID account';
@@ -2497,17 +2497,7 @@
 
 // First occurrence is in: modules/main/templates/_profilebuttons.inc.php
 // ----------------------------------------------------------------------------
-  $strings['Change my profile picture / avatar'] = 'Change my profile picture / avatar';
-  $strings['Change my password'] = 'Change my password';
-  $strings['Changing password disabled'] = 'Changing password disabled';
-  $strings['Changing your password can not be done via this interface. Please contact your administrator to change your password.'] = 'Changing your password can not be done via this interface. Please contact your administrator to change your password.';
-  $strings['My security key'] = 'My security key';
-  $strings['Show my issues'] = 'Show my issues';
   $strings['Pick a username'] = 'Pick a username';
-  $strings['Your security key is %securitykey'] = 'Your security key is %securitykey';
-  $strings["Show issues I've reported"] = "Show issues I've reported";
-  $strings['Show open issues assigned to me'] = 'Show open issues assigned to me';
-  $strings['Show open issues assigned to my teams'] = 'Show open issues assigned to my teams';
   $strings['Picking a username'] = 'Picking a username';
   $strings['Since this account was created via an OpenID login, you will have to pick a username to be able to log in with a username or password. You can continue to use your account with your OpenID login, so this is only if you want to pick a username for your account.'] = 'Since this account was created via an OpenID login, you will have to pick a username to be able to log in with a username or password. You can continue to use your account with your OpenID login, so this is only if you want to pick a username for your account.';
   $strings['Check availability'] = 'Check availability';
@@ -2515,13 +2505,6 @@
   $strings['Type desired username'] = 'Type desired username';
   $strings['This username is not available'] = 'This username is not available';
   $strings['%check_availability or %cancel'] = '%check_availability or %cancel';
-  $strings['Changing your password'] = 'Changing your password';
-  $strings['Enter your current password in the first box, then enter your new password twice (to prevent you from typing mistakes).'] = 'Enter your current password in the first box, then enter your new password twice (to prevent you from typing mistakes).';
-  $strings['Change password'] = 'Change password';
-  $strings['Click "%change_password" to change it.'] = 'Click "%change_password" to change it.';
-  $strings['Current password'] = 'Current password';
-  $strings['New password (repeat it)'] = 'New password (repeat it)';
-  $strings['%change_password or %cancel'] = '%change_password or %cancel';
 
 // First occurrence is in: modules/main/templates/_relatedissue.inc.php
 // ----------------------------------------------------------------------------
@@ -2840,30 +2823,46 @@
 
 // First occurrence is in: modules/main/templates/myaccount.html.php
 // ----------------------------------------------------------------------------
-  $strings['Profile information'] = 'Profile information';
-  $strings['General settings'] = 'General settings';
-  $strings['Notifications'] = 'Notifications';
-  $strings['Login accounts'] = 'Login accounts';
+  $strings['Changing your password'] = 'Changing your password';
+  $strings['Change password'] = 'Change password';
+  $strings['Enter your current password in the first box, then enter your new password twice (to prevent you from typing mistakes). Press the "%change_password" button to change your password.'] = 'Enter your current password in the first box, then enter your new password twice (to prevent you from typing mistakes). Press the "%change_password" button to change your password.';
+  $strings['Current password'] = 'Current password';
+  $strings['New password (repeat it)'] = 'New password (repeat it)';
+  $strings['%change_password or %cancel'] = '%change_password or %cancel';
+  $strings['Add application-specific password'] = 'Add application-specific password';
+  $strings['Please enter the name of the application or computer which will be using this password. Examples include "Toms computer", "Work laptop", "My iPhone" and similar.'] = 'Please enter the name of the application or computer which will be using this password. Examples include "Toms computer", "Work laptop", "My iPhone" and similar.';
+  $strings['Application name'] = 'Application name';
+  $strings['Add application password'] = 'Add application password';
+  $strings['%add_application_password or %cancel'] = '%add_application_password or %cancel';
+  $strings['Application password generated'] = 'Application password generated';
+  $strings["Use this one-time password when authenticating with the application. Spaces don't matter, and you don't have to write it down."] = "Use this one-time password when authenticating with the application. Spaces don't matter, and you don't have to write it down.";
+  $strings['Profile'] = 'Profile';
+  $strings['Security'] = 'Security';
   $strings['Scope memberships'] = 'Scope memberships';
-  $strings['Edit your profile details here, including additional information.'] = 'Edit your profile details here, including additional information.';
-  $strings['Required fields are marked with a little star.'] = 'Required fields are marked with a little star.';
+  $strings['About yourself'] = 'About yourself';
+  $strings['Edit your profile details here, including additional information (Required fields are marked with a little star). Keep in mind that some of this information may be seen by other users.'] = 'Edit your profile details here, including additional information (Required fields are marked with a little star). Keep in mind that some of this information may be seen by other users.';
   $strings['Display name'] = 'Display name';
-  $strings['This is the name used across the site for your profile.'] = 'This is the name used across the site for your profile.';
-  $strings['This is your real name, mostly used in communication with you, and rarely shown to others'] = 'This is your real name, mostly used in communication with you, and rarely shown to others';
+  $strings['This name is what other people will see you as.'] = 'This name is what other people will see you as.';
   $strings['Show my email address to others'] = 'Show my email address to others';
   $strings['Whether your email address is visible to other users in your profile information card. The email address is always visible to admins.'] = 'Whether your email address is visible to other users in your profile information card. The email address is always visible to admins.';
-  $strings['Click "%save" to save your account information'] = 'Click "%save" to save your account information';
   $strings['Use Gravatar avatar'] = 'Use Gravatar avatar';
   $strings["The Bug Genie can use your <a href=\"http://www.gravatar.com\" target=\"_blank\">Gravatar</a> profile picture, if you have one. If you don't have one but still want to use Gravatar for profile pictures, The Bug Genie will use a Gravatar <a href=\"http://blog.gravatar.com/2008/04/22/identicons-monsterids-and-wavatars-oh-my/\" target=\"_blank\">auto-generated image unique for your email address</a>."] = "The Bug Genie can use your <a href=\"http://www.gravatar.com\" target=\"_blank\">Gravatar</a> profile picture, if you have one. If you don't have one but still want to use Gravatar for profile pictures, The Bug Genie will use a Gravatar <a href=\"http://blog.gravatar.com/2008/04/22/identicons-monsterids-and-wavatars-oh-my/\" target=\"_blank\">auto-generated image unique for your email address</a>.";
   $strings["Don't have a Gravatar yet? %link_to_get_one_now"] = "Don't have a Gravatar yet? %link_to_get_one_now";
   $strings['Get one now!'] = 'Get one now!';
+  $strings['Change my profile picture / avatar'] = 'Change my profile picture / avatar';
+  $strings['Language and location'] = 'Language and location';
+  $strings['This information is used to provide a more localized experience based on your location and language preferences. Items such as timestamps will be displayed in your local timezone, and you can choose to use The Bug Genie in your own language.'] = 'This information is used to provide a more localized experience based on your location and language preferences. Items such as timestamps will be displayed in your local timezone, and you can choose to use The Bug Genie in your own language.';
   $strings['Current timezone'] = 'Current timezone';
   $strings['Use server timezone'] = 'Use server timezone';
-  $strings['This setting is used to display issues, comments and more in your local timezone.'] = 'This setting is used to display issues, comments and more in your local timezone.';
+  $strings['Based on this information, the time at your location should be: %time'] = 'Based on this information, the time at your location should be: %time';
   $strings['Language'] = 'Language';
   $strings['Use global setting - %lang'] = 'Use global setting - %lang';
   $strings['(site default)'] = '(site default)';
-  $strings['The language you select here will be used instead of the language chosen by the administrator.'] = 'The language you select here will be used instead of the language chosen by the administrator.';
+  $strings['Additional information'] = 'Additional information';
+  $strings['You may want to provide more information about yourself here. This is completely optional, and only used to show more information about yourself to other users.'] = 'You may want to provide more information about yourself here. This is completely optional, and only used to show more information about yourself to other users.';
+  $strings['Click "%save" to save your account information'] = 'Click "%save" to save your account information';
+  $strings['Navigation and editing'] = 'Navigation and editing';
+  $strings['These settings apply to all areas of The Bug Genie, and lets you customize your experience to fit your own style.'] = 'These settings apply to all areas of The Bug Genie, and lets you customize your experience to fit your own style.';
   $strings['Enable keyboard navigation'] = 'Enable keyboard navigation';
   $strings['Lets you use arrow up / down in issue lists to navigate'] = 'Lets you use arrow up / down in issue lists to navigate';
   $strings['Preferred syntax'] = 'Preferred syntax';
@@ -2871,12 +2870,27 @@
   $strings['Markdown'] = 'Markdown';
   $strings['Prefer markdown also in the wiki'] = 'Prefer markdown also in the wiki';
   $strings['The syntax you select here will be used as the default formatting syntax for comments you post, issues you create and articles you write. Remember that you can switch this on a case by case basis - look for the syntax selector next to any text area with formatting buttons.'] = 'The syntax you select here will be used as the default formatting syntax for comments you post, issues you create and articles you write. Remember that you can switch this on a case by case basis - look for the syntax selector next to any text area with formatting buttons.';
-  $strings['Click "%save" to save your profile settings'] = 'Click "%save" to save your profile settings';
   $strings['Subscribing to updates'] = 'Subscribing to updates';
   $strings['You will receive notifications (visible in your upper right notification area) for any issues or articles you are subscribed to. The Bug Genie can automatically subscribe to the following items for you.'] = 'You will receive notifications (visible in your upper right notification area) for any issues or articles you are subscribed to. The Bug Genie can automatically subscribe to the following items for you.';
-  $strings['Click "%save" to update your notification settings'] = 'Click "%save" to update your notification settings';
-  $strings['The Bug Genie supports logging in via external authentication providers via %openid. This means you can use your account details from other services (such as Google, Wordpress, etc.) to log in here, without having to remember another set of login details.'] = 'The Bug Genie supports logging in via external authentication providers via %openid. This means you can use your account details from other services (such as Google, Wordpress, etc.) to log in here, without having to remember another set of login details.';
-  $strings['Add login from another provider'] = 'Add login from another provider';
+  $strings['Click "%save" to update the settings on this tab'] = 'Click "%save" to update the settings on this tab';
+  $strings['Passwords and keys'] = 'Passwords and keys';
+  $strings['Change my password'] = 'Change my password';
+  $strings['Changing password disabled'] = 'Changing password disabled';
+  $strings['Changing your password can not be done via this interface. Please contact your administrator to change your password.'] = 'Changing your password can not be done via this interface. Please contact your administrator to change your password.';
+  $strings['When authenticating with The Bug Genie you only use your main password on the website - other applications and RSS feeds needs specific access tokens that you can enable / disable on an individual basis. You can control all your passwords and keys from here.'] = 'When authenticating with The Bug Genie you only use your main password on the website - other applications and RSS feeds needs specific access tokens that you can enable / disable on an individual basis. You can control all your passwords and keys from here.';
+  $strings['Do you really want to regenerate your RSS access key? By doing this all your previously bookmarked or linked RSS feeds will stop working and you will have to get the link from inside The Bug Genie again.'] = 'Do you really want to regenerate your RSS access key? By doing this all your previously bookmarked or linked RSS feeds will stop working and you will have to get the link from inside The Bug Genie again.';
+  $strings['Regenerate your RSS key?'] = 'Regenerate your RSS key?';
+  $strings['Reset'] = 'Reset';
+  $strings['RSS feeds access key'] = 'RSS feeds access key';
+  $strings['Automatically used as part of RSS feed URLs. Regenerating this key prevents your previous RSS feed links from working.'] = 'Automatically used as part of RSS feed URLs. Regenerating this key prevents your previous RSS feed links from working.';
+  $strings['Do you really want to remove this application-specific password? By doing this, that application will no longer have access, and you will have to generate a new application password for the application to regain access.'] = 'Do you really want to remove this application-specific password? By doing this, that application will no longer have access, and you will have to generate a new application password for the application to regain access.';
+  $strings['Remove this application-specific password?'] = 'Remove this application-specific password?';
+  $strings['Application password: %password_name'] = 'Application password: %password_name';
+  $strings['Last used: %last_used_time, created at: %created_at_time'] = 'Last used: %last_used_time, created at: %created_at_time';
+  $strings['never used'] = 'never used';
+  $strings['Linked OpenID accounts'] = 'Linked OpenID accounts';
+  $strings['Link an OpenID account'] = 'Link an OpenID account';
+  $strings["Via %openid you can log in to The Bug Genie by authenticating via Google, Wordpress and a lot of other websites. This means you don't have to register an account specifically for The Bug Genie, but authenticate with your existing Google, Wordpress, etc. user account instead. The Bug Genie will not receive or store your external usernames or passwords."] = "Via %openid you can log in to The Bug Genie by authenticating via Google, Wordpress and a lot of other websites. This means you don't have to register an account specifically for The Bug Genie, but authenticate with your existing Google, Wordpress, etc. user account instead. The Bug Genie will not receive or store your external usernames or passwords.";
   $strings['You have not linked your account with any external authentication providers.'] = 'You have not linked your account with any external authentication providers.';
   $strings['By doing this, it will not be possible to log into this account via this authentication provider'] = 'By doing this, it will not be possible to log into this account via this authentication provider';
   $strings['Do you really want to remove the link to this external account?'] = 'Do you really want to remove the link to this external account?';
@@ -2885,12 +2899,15 @@
   $strings['Yahoo account'] = 'Yahoo account';
   $strings['Blogger (google) account'] = 'Blogger (google) account';
   $strings['Wordpress account'] = 'Wordpress account';
+  $strings['Launchpad account'] = 'Launchpad account';
   $strings['Other OpenID provider'] = 'Other OpenID provider';
   $strings['Click "%save" to save changes in the "%module_settings_name" category'] = 'Click "%save" to save changes in the "%module_settings_name" category';
   $strings['Pending memberships'] = 'Pending memberships';
   $strings['You have no pending scope memberships'] = 'You have no pending scope memberships';
   $strings['Confirmed memberships'] = 'Confirmed memberships';
   $strings['An error occurred'] = 'An error occurred';
+  $strings['All previous RSS links have been invalidated.'] = 'All previous RSS links have been invalidated.';
+  $strings['Your RSS key has been regenerated'] = 'Your RSS key has been regenerated';
   $strings['Before you can use the new username to log in, you must pick a password via the "%change_password" button.'] = 'Before you can use the new username to log in, you must pick a password via the "%change_password" button.';
   $strings["You\\'ve chosen the username \\'%username\\'"] = "You\\'ve chosen the username \\'%username\\'";
   $strings['Someone is already using this identity. Check to see if you have already added this account.'] = 'Someone is already using this identity. Check to see if you have already added this account.';
@@ -2911,6 +2928,12 @@
 // ----------------------------------------------------------------------------
   $strings['This page cannot be loaded'] = 'This page cannot be loaded';
   $strings['There was an error creating this issue'] = 'There was an error creating this issue';
+
+// First occurrence is in: modules/main/templates/reset.html.php
+// ----------------------------------------------------------------------------
+  $strings['Reset your password'] = 'Reset your password';
+  $strings['Repeat your new password'] = 'Repeat your new password';
+  $strings['Reset my password'] = 'Reset my password';
 
 // First occurrence is in: modules/main/templates/teamdashboard.html.php
 // ----------------------------------------------------------------------------
