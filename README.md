@@ -1,5 +1,6 @@
 THE BUG GENIE VERSION 3
--------
+=======================
+
 The Bug Genie is an enterprise-grade issue-tracking, development and project
 management system. Main features includes:
 * Integrated wiki
@@ -22,27 +23,29 @@ For up-to-date installation and setup notes, visit the FAQ:
 http://issues.thebuggenie.com/wiki/TheBugGenie:FAQ
 
 
-*GENERAL INSTALLATION NOTES*
+GENERAL INSTALLATION NOTES
+--------------------------
 
-via web
--------
+### via web
+
 To install The Bug Genie, copy this folder to your webserver, and visit the
-subfolder /thebuggenie/index.php in your web-browser.
+subfolder `/thebuggenie/index.php` in your web-browser.
 
 The installation script will start automatically and guide you through the
 installation process.
 
 
-via command-line (unix/linux only)
-----------------------------------
+### via command-line (unix/linux only)
+
 You can use the thebuggenie command-line client to install, if you prefer that.
-Run "./tbg_cli" from this folder.
+Run `./tbg_cli` from this folder.
 
 To install:
-    ./tbg_cli install
+    `./tbg_cli install`
 
 
-*REPORTING ISSUES*
+REPORTING ISSUES
+----------------
 
 Thank you for downloading The Bug Genie
 If you find any issues, please report them in the issue tracker on our website:
