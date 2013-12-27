@@ -608,6 +608,7 @@
 			TBGIssueSpentTimesTable::getTable()->upgrade(TBGIssueSpentTimesTable3dot2::getTable());
 			TBGCommentsTable::getTable()->upgrade(TBGCommentsTable3dot2::getTable());
 			TBGSavedSearchesTable::getTable()->upgrade(TBGSavedSearchesTable3dot2::getTable());
+			TBGSettingsTable::getTable()->upgrade(TBGSettingsTable3dot2::getTable());
 			TBGNotificationsTable::getTable()->upgrade(TBGNotificationsTable3dot2::getTable());
 			TBGUserArticlesTable::getTable()->create();
 			TBGApplicationPasswordsTable::getTable()->create();
