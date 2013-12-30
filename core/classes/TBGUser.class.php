@@ -719,7 +719,6 @@
 				// since we can't be sure that an activation email has been sent out
 				$this->setEnabled();
 				$this->setActivated();
-				$this->save();
 			}
 			if (!$this->_salt)
 			{
