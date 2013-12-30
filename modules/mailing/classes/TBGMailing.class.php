@@ -619,7 +619,7 @@ EOT;
 			$notificationsettings[TBGMailing::NOTIFY_SUBSCRIBED_ISSUES] = $i18n->__('Notify by email when there are updates to my subscribed issues');
 			$notificationsettings[TBGMailing::NOTIFY_SUBSCRIBED_ARTICLES] = $i18n->__('Notify by email when there are updates to my subscribed articles');
 			$notificationsettings[TBGMailing::NOTIFY_NEW_ISSUES_MY_PROJECTS] = $i18n->__('Notify by email when new issues are created in my project(s)');
-			$notificationsettings[TBGMailing::NOTIFY_NEW_ARTICLES_MY_PROJECTS] = $i18n->__('Notify by email when new issues are created in my project(s)');
+			$notificationsettings[TBGMailing::NOTIFY_NEW_ARTICLES_MY_PROJECTS] = $i18n->__('Notify by email when new articles are created in my project(s)');
 			$notificationsettings[TBGMailing::NOTIFY_ITEM_ONCE] = $i18n->__('Only send one email per issue or article until I view the issue or article in my browser');
 			$notificationsettings[TBGMailing::NOTIFY_UPDATED_SELF] = $i18n->__('Notify by email also when I am the one making the changes');
 			return $notificationsettings;
