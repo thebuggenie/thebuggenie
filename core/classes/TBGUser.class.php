@@ -720,10 +720,6 @@
 				$this->setEnabled();
 				$this->setActivated();
 			}
-			if (!$this->_salt)
-			{
-				$this->regenerateSalt();
-			}
 			if (!$this->_realname)
 			{
 				$this->_realname = $this->_username;
@@ -821,6 +817,17 @@
 		public function _construct(\b2db\Row $row, $foreign_key = null)
 		{
 			TBGLogging::log("User with id {$this->getID()} set up successfully");
+		}
+
+		/**
+		 * Post initialization override
+		 */
+		public function _postInitialize()
+		{
+			if (!$this->_salt)
+			{
+				$this->regenerateSalt();
+			}
 		}
 		
 		/**
