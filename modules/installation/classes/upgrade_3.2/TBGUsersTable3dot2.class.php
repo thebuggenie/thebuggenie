@@ -74,4 +74,15 @@
 			parent::_addInteger(self::JOINED, 10);
 		}
 
+		public function getAdminUsername()
+		{
+			$crit = $this->getCriteria();
+			$crit->addSelectionColumn(self::ID);
+			$crit->addSelectionColumn(self::UNAME);
+			$crit->addWhere(self::ID, 1);
+			
+			$row = $this->doSelectOne($crit);
+			return $row[self::UNAME];
+		}
+		
 	}

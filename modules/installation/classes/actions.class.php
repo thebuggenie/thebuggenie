@@ -589,8 +589,10 @@
 			$this->upgrade_complete = true;
 		}
 
-		protected function _upgradeFrom3dot2()
+		protected function _upgradeFrom3dot2(TBGRequest $request)
 		{
+			set_time_limit(0);
+			
 			TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'installation' . DS . 'classes' . DS . 'upgrade_3.2');
 			foreach (array('publish', 'mailing') as $module)
 			{
@@ -614,10 +616,43 @@
 			TBGApplicationPasswordsTable::getTable()->create();
 
 			$transaction = \b2db\Core::startTransaction();
-			// Add new settings.
+			// Upgrade user passwords
+			switch ($request['upgrade_passwords'])
+			{
+				case 'manual':
+					$password = $request['manul_password'];
+					foreach (TBGUsersTable::getTable()->selectAll() as $user)
+					{
+						$user->setPassword($password);
+						$user->save();
+					}
+					break;
+				case 'auto':
+					$field = ($request['upgrade_passwords_pick'] == 'username') ? 'username' : 'email';
+					foreach (TBGUsersTable::getTable()->selectAll() as $user)
+					{
+						if ($field == 'username' && trim($user->getUsername()))
+						{
+							$user->setPassword(trim($user->getUsername()));
+							$user->save();
+						}
+						elseif ($field == 'email' && trim($user->getEmail()))
+						{
+							$user->setPassword(trim($user->getEmail()));
+							$user->save();
+						}
+					}
+					break;
+			}
+			
+			$adminuser = TBGUsersTable::getTable()->selectById(1);
+			$adminuser->setPassword($request['admin_password']);
+			$adminuser->save();
+			
+			// Add new settings
 			TBGSettings::saveSetting(TBGSettings::SETTING_SERVER_TIMEZONE, 'core', date_default_timezone_get(), 0, 1);
 
-			foreach (TBGContext::getRequest()->getParameter('status') as $scope_id => $status_id)
+			foreach ($request->getParameter('status') as $scope_id => $status_id)
 			{
 				$scope = TBGScopesTable::getTable()->selectById((int) $scope_id);
 				if ($scope instanceof TBGScope)
@@ -981,7 +1016,9 @@
 				$scope->setEnabled();
 				TBGContext::setScope($scope);
 				
+				TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . 'installation' . DS . 'classes' . DS . 'upgrade_3.2');
 				$this->statuses = TBGListTypesTable::getTable()->getStatusListForUpgrade();
+				$this->adminusername = TBGUsersTable3dot2::getTable()->getAdminUsername();
 			}
 			$this->upgrade_complete = false;
 
@@ -995,7 +1032,7 @@
 					case '3.1':
 						$this->_upgradeFrom3dot1();
 					case '3.2':
-						$this->_upgradeFrom3dot2();
+						$this->_upgradeFrom3dot2($request);
 				}
 				
 				if ($this->upgrade_complete)

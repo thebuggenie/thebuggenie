@@ -61,11 +61,12 @@
 			}
 		
 			body, html, div, p, td, input { font-family: "Open Sans", arial; font-size: 12px; }
-			h1, h2, h3, h4 { text-shadow: 1px 1px 2px #DDD; }
+			h1, h2, h3, h4, h5 { text-shadow: 1px 1px 2px #DDD; }
 			h1 { font-size: 1.4em; }
 			h2 { font-size: 1.3em; }
 			h3 { font-size: 1.2em; }
 			h4 { font-size: 1.1em; }
+			h5 { font-size: 1.05em; }
 			h2 .smaller { font-size: 0.9em; text-shadow: none; }
 			.install_progress { font-weight: normal; border: 1px solid #DDD; padding: 3px; font-size: 11px; margin-bottom: 2px; width: 930px; background-color: #FDFDFD; }
 			.install_progress:first-line { font-weight: bold; }
@@ -75,7 +76,7 @@
 			.prereq_warn { border: 1px solid #FF9900; background-color: #FFFF99; font-size: 12px; }
 			.installation_box { padding: 3px 10px 10px 10px; width: 950px; margin-left: auto; margin-right: auto; margin-top: 15px; position: relative; font-size: 12px; }
 			.installation_box input[type="submit"] { padding: 5px; font-weight: bold; height: 30px; font-size: 16px; }
-			.donate { border: 1px solid #aaC6aa; background-color: #CFE8CF; }
+			.donate { border: 1px solid #aaC6aa; background-color: #CFE8CF; margin: 0; }
 			.grey_box { border: 1px solid #DDD; background-color: #F5F5F5; }
 			.command_box { border: 1px dashed #DDD; background-color: #F5F5F5; padding: 4px; font-family: 'Droid Sans Mono', monospace; width: 928px; margin-top: 5px; margin-bottom: 15px; }
 			.features { width: 400px; float: right; margin-left: 10px; }
@@ -97,13 +98,14 @@
 				filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6193cf', endColorstr='#396ba7',GradientType=0 ); /* IE6-9 */
 				background: linear-gradient(top, #6193cf 0%,#396ba7 100%); /* W3C */
 				color: white;
-				border-bottom-left-radius: 7px;
-				border-bottom-right-radius: 7px;
+				border-radius: 2px;
+				margin-top: 10px;
+				display: block;
 				-moz-border-radius-bottomleft: 7px;
 				-moz-border-radius-bottomright: 7px;
 				-webkit-border-bottom-left-radius: 7px;
 				-webkit-border-bottom-right-radius: 7px;
-				box-shadow: 0 0 8px rgba(0, 0, 0, 0.4); -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, 0.4); -moz-box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+				box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 				height: 60px !important;
 			}
 			
@@ -114,7 +116,7 @@
 			.ok { padding: 4px; border: 1px solid #aaC6aa; background-color: #CFE8CF; margin: 10px 0 10px 0; }
 			.error:first-line, .ok:first-line { font-weight: bold; }
 			
-			.logo_small { font-size: 0.9em; color: white; white-space: nowrap; }
+			.logo_small { font-size: 1.1em; color: white; white-space: nowrap; }
 
 			fieldset { border: 1px solid #DDD; margin: 10px 0 10px 0; background-color: #F5F5F5; padding: 0 0 0 8px; }
 			legend { font-weight: bold;  }
@@ -122,19 +124,48 @@
 			ul.outlined { margin-top: 5px; }
 			ul.outlined li { font-weight: bold; }
 			
+			#logo_container { line-height: 1em; }
 			#logo_container .logo { margin-right: 10px; }
-			#logo_container .logo_name { font-size: 1.7em; float: none; }
+			#logo_container .logo_name { font-size: 1.8em; float: none; }
 
-			.scope_upgrade { margin: 5px; padding: 0; }
-			.scope_upgrade li { margin: 0; padding: 2px 0; list-style: none; }
+			.scope_upgrade { margin: 5px; padding: 0; font-size: 0.9em; }
+			.scope_upgrade li { margin: 0; padding: 2px 0; list-style: none; display: inline-block; width: 450px; }
 			.scope_upgrade li:hover { background-color: rgba(200, 230, 200, 0.3); }
-			.scope_upgrade li label { display: inline-block; width: 250px; text-align: right; }
+			.scope_upgrade li label { display: inline-block; width: 180px; vertical-align: middle; text-align: right; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+			.scope_upgrade li select { width: 250px; }
 
+			.progress_buttons { padding: 25px 0 0; height: 30px; }
+			.progress_buttons .button { font-size: 1.2em; padding: 4px 10px !important; }
+			.progress_buttons .button-next { float: right; }
+			.progress_buttons .button-previous { float: left; }
+			
+			.installpage { font-size: 1.1em; }
+			ul.backuplist { margin: 15px 0; padding: 0; }
+			ul.backuplist > li { background-position: 0 13px; background-repeat: no-repeat; list-style: none; padding: 10px 0 10px 40px; }
+			ul.backuplist > li:first-line { font-weight: bold; font-size: 1.1em; }
+			ul.backuplist > li.faded { opacity: 0.3; }
+			ul.backuplist > li label, ul.backuplist > li input, ul.passwordlist li label, ul.passwordlist li input { vertical-align: middle; }
+			ul.backuplist > li > ul { margin: 10px 0; padding: 0; }
+			ul.backuplist > li > ul li { margin: 2px 0; display: block; clear: both; float: none; max-width: 800px; }
+			
+			ul.passwordlist { list-style: none; margin: 0; padding: 0; }
+			ul.passwordlist li { margin: 5px 0 15px; }
+			ul.passwordlist li .explanation { padding: 5px; font-size: 1em; }
+			.installpage ul li input[type=text], input.adminpassword { 
+				background-image: url('iconsets/oxygen/password_mono.png'); 
+				background-position: 7px 7px;
+				background-repeat: no-repeat;
+				padding: 5px 5px 5px 28px;
+				font-size: 1.1em;
+				border-radius: 4px;
+				width: 300px;
+				margin-top: 5px;
+			}
 		</style>
 	</head>
 	<body>
 		<table style="width: 1000px; height: 100%; table-layout: fixed;" cellpadding=0 cellspacing=0 align="center">
-			<tr>
+			<tr style="height: 60px;">
 				<td style="overflow: auto;" valign="top" id="maintd" class="main_header_print">
 					<div id="logo_container" width="100%">
 						   <img width=48 height=48 SRC="iconsets/oxygen/logo_48.png" class="logo" alt="The Bug Genie - Installation">

@@ -25,7 +25,7 @@
 	class TBGSettingsTable extends TBGB2DBTable 
 	{
 
-		const B2DB_TABLE_VERSION = 1;
+		const B2DB_TABLE_VERSION = 2;
 		const B2DBNAME = 'settings';
 		const ID = 'settings.id';
 		const SCOPE = 'settings.scope';
@@ -64,6 +64,14 @@
 		public function getSettingsForScope($scope, $uid = 0)
 		{
 			$crit = $this->getCriteria();
+			if (TBGContext::isUpgrademode())
+			{
+				$crit->addSelectionColumn(self::NAME);
+				$crit->addSelectionColumn(self::MODULE);
+				$crit->addSelectionColumn(self::VALUE);
+				$crit->addSelectionColumn(self::UID);
+				$crit->addSelectionColumn(self::SCOPE);
+			}
 			$crit->addWhere(self::SCOPE, $scope);
 			$crit->addWhere(self::UID, $uid);
 			$res = $this->doSelect($crit, 'none');
