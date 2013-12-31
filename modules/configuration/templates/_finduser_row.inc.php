@@ -32,7 +32,7 @@
 	<button class="button button-silver button-icon" id="user_<?php echo $user->getID(); ?>_more_actions" onclick="$('user_<?php echo $user->getID(); ?>_more_actions').toggleClassName('button-pressed');$('user_<?php echo $user->getID(); ?>_more_actions_dropdown').toggle();"><?php echo image_tag('action_dropdown_small.png'); ?></button>
 	<?php echo image_tag('spinning_16.gif', array('id' => "toggle_friend_{$user->getID()}_12_indicator", 'style' => 'display: none;')); ?>
 	<div style="position: relative;">
-		<ul id="user_<?php echo $user->getID(); ?>_more_actions_dropdown" style="display: none; position: absolute; width: auto; font-size: 1.1em; top: 0; margin-top: 0; right: 0; z-index: 1000;" class="simple_list rounded_box white shadowed popup_box more_actions_dropdown" onclick="$('user_<?php echo $user->getID(); ?>_more_actions').toggleClassName('button-pressed');$('user_<?php echo $user->getID(); ?>_more_actions_dropdown').toggle();"></li>
+		<ul id="user_<?php echo $user->getID(); ?>_more_actions_dropdown" style="display: none; position: absolute; width: auto; font-size: 1.1em; top: 0; margin-top: 0; right: 0; z-index: 1000; width: 250px;" class="simple_list rounded_box white shadowed popup_box more_actions_dropdown" onclick="$('user_<?php echo $user->getID(); ?>_more_actions').toggleClassName('button-pressed');$('user_<?php echo $user->getID(); ?>_more_actions_dropdown').toggle();"></li>
 			<?php if ($user->isScopeConfirmed()): ?>
 				<li><?php echo javascript_link_tag(__('Edit this user'), array('onclick' => "TBG.Config.User.getEditForm('".make_url('configure_users_edit_user_form', array('user_id' => $user->getID()))."', ".$user->getID().");$('users_results_user_".$user->getID()."').toggle();")); ?></li>
 			<?php else: ?>

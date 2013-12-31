@@ -2760,7 +2760,7 @@ TBG.Config.User.remove = function(url, user_id) {
 
 TBG.Config.User._updateLinks = function(json) {
 	if ($('current_user_num_count')) $('current_user_num_count').update(json.total_count);
-	(json.more_available) ? $('adduser_div').show() : $('adduser_div').hide();
+	(json.more_available) ? $('adduser_form_container').show() : $('adduser_form_container').hide();
 	TBG.Config.Collection.updateDetailsFromJSON(json);
 }
 

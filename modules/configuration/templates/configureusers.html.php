@@ -21,7 +21,7 @@
 				</div>
 				<div id="usersteamsgroups_menu_panes">
 					<div id="tab_users_pane" style="padding-top: 0; width: 100%;">
-						<div class="lightyellowbox" style="margin-bottom: 10px; padding: 7px;">
+						<div class="lightyellowbox" style="margin-bottom: 10px; padding: 7px;" id="adduser_form_container">
 							<form action="<?php echo make_url('configure_users_add_user'); ?>" method="post" onsubmit="TBG.Config.User.add('<?php echo make_url('configure_users_add_user'); ?>', import_cb, this);return false;" id="createuser_form_quick">
 								<label for="quick_add_user_username"><?php echo __('Quick add user'); ?></label>
 								<input type="text" id="quick_add_user_username" name="username" placeholder="<?php echo __('Enter username to add'); ?>">
