@@ -503,7 +503,7 @@
 								$username = TBGContext::getRequest()->getCookie('tbg3_username');
 								$password = TBGContext::getRequest()->getCookie('tbg3_password');
 								$user = TBGUsersTable::getTable()->getByUsername($username);
-								if (!$user->hasPasswordHash($password)) $user = null;
+								if ($user instanceof TBGUser && !$user->hasPasswordHash($password)) $user = null;
 
 								$raw = false;
 
