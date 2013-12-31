@@ -38,97 +38,53 @@
 			button: '<?php echo __('Nice'); ?>'
 		},
 		6: {
-			highlight: {element: 'issue_details', blocked: true},
-			message: "<h3><?php echo __('Issue details'); ?></h3><?php echo __('This area contains all the basic details'); ?>",
-			messageSize: 'small',
+			highlight: {element: 'issue_details', blocked: true, delay: 500},
+			message: "<h3><?php echo __('Issue details'); ?></h3><?php echo __("This area contains all the data about an issue, such as the status, who's assigned, how much time is spent, etc."); ?><br><br><?php echo __("The sidebar is nicely grouped in sections such as 'People involved' and 'Time tracking' to make it easer to quickly find out what you need to know."); ?>",
+			messageSize: 'large',
 			messagePosition: 'right',
-			cb: function(td) {
-				$('available-quests-list').childElements().each(function(elm) {
-					if (elm.visible()) {
-						elm.observe('click', function() {
-							$('available-quests-list').childElements().each(function(elm) {
-								elm.stopObserving('click');
-								elm.observe('click', Devo.Main.highlightTellable);
-							});
-							Devo.Tutorial.playNextStep();
-						});
-					}
-				});
-			}
+			button: '<?php echo __('I can dig that'); ?>'
 		},
 		7: {
-			highlight: {element: 'adventure-map', blocked: false},
-			message: "<h4>Selecting a quest</h4>As you can see, the map now moved to the position where the selected quest is located. You can click on the point on the map to bring up more details about the quest.<br><br>Some quests are faded out because they are not available. You can see more details about the quest - including requirements and rewards - by holding your mouse over that map point.<br><br><strong>Click on the point on the map</strong>",
-			messageSize: 'small',
-			messagePosition: 'left',
-			cb: function(td) {
-				$('adventure-map').stopObserving('mousedown', Devo.Main.startMapDrag);
-				$('adventure-map').observe('mousedown', function(event) { event.stopPropagation(); });
-				$$('.map-point').each(function(elm) {
-					if (elm.visible()) {
-						elm.observe('click', Devo.Tutorial.playNextStep);
-					}
-				});
-			}
+			highlight: {element: 'issue_main', blocked: true},
+			message: "<h3><?php echo __('Issue main area'); ?></h3><?php echo __('This area contains all the main details, such as the description and reproductions steps.'); ?>",
+			messageSize: 'medium',
+			messagePosition: 'center',
+			button: '<?php echo __('That makes sense'); ?>'
 		},
 		8: {
-			highlight: {element: 'adventure-map', blocked: true},
-			message: "<h4>Selecting a quest</h4>When you've selected a quest, you can see more details about the quest, such as all the main chapters (if you've selected a story).<br><br>Clicking a chapter lets you see more details about that chapter, as well as start it.",
-			messageSize: 'small',
-			messagePosition: 'left',
-			button: 'Next',
-			cb: function(td) {
-				$('adventure-map').stopObserving('mousedown');
-				$('adventure-map').observe('mousedown', Devo.Main.startMapDrag);
-				$$('.map-point').each(function(elm) {
-					if (elm.visible()) {
-						elm.stopObserving('click', Devo.Tutorial.playNextStep);
-						$('tutorial-next-button').stopObserving('click');
-						$('tutorial-next-button').observe('click', function() {
-							$('adventure-book').show();
-							$('tutorial-next-button').stopObserving('click');
-							window.setTimeout(function() {
-								Devo.Tutorial.playNextStep();
-							}, 500);
-						});
-						$('adventure-book').hide();
-					}
-				});
-			}
+			highlight: {element: 'issue_view', blocked: true},
+			message: "<h3><?php echo __('A few notes about editing issues'); ?></h3><?php echo __("Almost everything about an issue can be edited, and - depending on your workflow setup - some items may be locked from changes after a certain step (for example not being allowed to change the description on 'Confirmed' issues)."); ?>",
+			messageSize: 'large',
+			messagePosition: 'center',
+			button: '<?php echo __('That also makes sense'); ?>'
 		},
 		9: {
-			highlight: {element: 'adventure-book', blocked: true},
-			message: "<h4>Selecting a quest</h4>When you've selected a quest on the map, you will see the adventure book pop up.<br><br>The adventure book has more information about the selected quest with the background story and quest description, as well as more information about its rewards.<br><br>It will also keep track of your attempts at that quest (available later).",
+			highlight: {element: 'issue_view', blocked: true},
+			message: "<h3><?php echo __('A few notes about editing issues'); ?></h3><?php echo __('To edit anything about an issue, move your mouse over the detail you want to change and press the edit icon that appears (usually to the left).'); ?><br><br><?php echo __("Any changes you make are temporary until you press the 'Save changes' button below the title (this button appears only when you have unsaved changes)."); ?>",
 			messageSize: 'large',
-			messagePosition: 'above',
-			button: "Next",
-			cb: function(td) {
-				$('tutorial-next-button').stopObserving('click');
-				$('tutorial-next-button').observe('click', Devo.Tutorial.playNextStep);
-			}
+			messagePosition: 'center',
+			button: '<?php echo __('I see'); ?>'
 		},
 		10: {
-			highlight: {element: 'adventure-book', blocked: true},
-			message: '<h4>Selecting a quest</h4>The adventure book also has buttons to start the quest if it is available.<br><br>By the way, if the adventure book is in your way, you can always move it by dragging it around.',
-			messageSize: 'medium',
-			messagePosition: 'above',
-			button: "Can I try moving it now?"
+			highlight: {element: 'issue_view', blocked: true},
+			message: "<h3><?php echo __('A few notes about editing issues'); ?></h3><?php echo __('This does not apply to workflow transitions - which happens instantly when you press a workflow button. However, most workflows allows you to post comments or change details about the issue during the workflow.'); ?><br><br><?php echo __("Keep in mind that most of this can be configured through the workflow configuration."); ?>",
+			messageSize: 'large',
+			messagePosition: 'center',
+			button: "<?php echo __("I think I'm good to go"); ?>"
 		},
 		11: {
-			highlight: {element: 'adventure-book', blocked: true},
-			message: '<h4>Selecting a quest</h4>Not now.',
+			highlight: {element: 'viewissue_menu', blocked: true, delay: 1000},
+			message: "<h3><?php echo __('Just one more thing'); ?></h3><?php echo __("These are the bottom panels, containing user comments, the issue log, code changes and more."); ?>",
 			messageSize: 'medium',
 			messagePosition: 'above',
-			button: "Awww ..."
+			button: "<?php echo __("I'll be sure to check that out"); ?>"
 		},
 		12: {
-			message: "<h1>Have fun!</h1>That was it.<br><br>Don't hesitate to ask someone if you're stuck. Remember, the lobby is always just a click away.",
-			messageSize: 'medium',
-			button: 'Done!',
-			cb: function() {
-				Devo.Main.clearMapSelections();
-			}
+			message: "<h3><?php echo __('Good to go!'); ?></h3><?php echo __("That's all for this tutorial. Don't forget that you can always get help for any page by using the 'Help' menu entry in your user menu at the top right corner."); ?><br><br><?php echo __('Have fun using The Bug Genie!'); ?>",
+			messageSize: 'large',
+			messagePosition: 'center',
+			button: '<?php echo __("I most certainly will!"); ?>'
 		}
 	};
-	TBG.Tutorial.start('viewissue', 4);
+	TBG.Tutorial.start('viewissue');
 </script>

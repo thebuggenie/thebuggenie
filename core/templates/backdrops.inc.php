@@ -5,12 +5,12 @@
 		<span id="thebuggenie_failuremessage_content"></span>
 	</div>
 </div>
-<div class="tutorial-message" id="tutorial-message" style="display: none;">
+<div class="tutorial-message" id="tutorial-message" style="display: none;" data-disable-url="<?php echo make_url('disable_tutorial'); ?>">
 	<div id="tutorial-message-container"></div>
 	<br>
 	<div class="tutorial-buttons">
 		<button class="button button-standard button-next" id="tutorial-next-button"></button>
-		<button class="button button-silver button-disable" onclick="TBG.Tutorial.disable();">Skip this tutorial</button>
+		<a class="button-disable" href="javascript:void(0);" onclick="TBG.Tutorial.disable();"><?php echo __('Skip this tutorial'); ?></a>
 	</div>
 	<br style="clear: both;">
 	<div class="tutorial-status"><span id="tutorial-current-step"></span> of <span id="tutorial-total-steps"></span></div>

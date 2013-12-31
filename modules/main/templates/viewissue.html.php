@@ -441,6 +441,9 @@
 		<?php endif; ?>
 	</div>
 	<div id="workflow_transition_fullpage" class="fullpage_backdrop" style="display: none;"></div>
+	<?php if ($tbg_user->isViewissueTutorialEnabled()): ?>
+		<?php include_template('main/tutorial_viewissue', compact('issue')); ?>
+	<?php endif; ?>
 <?php elseif (isset($issue_deleted)): ?>
 	<div class="greenbox" id="issue_deleted_message">
 		<div class="header"><?php echo __("The issue has been deleted"); ?></div>

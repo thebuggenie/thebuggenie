@@ -5218,21 +5218,17 @@ TBG.Tutorial.disable = function() {
     var tm = $('tutorial-message');
 	var key = tm.dataset.tutorialKey;
     var url = tm.dataset.disableUrl;
-//	TBG.Main.Helpers.ajax(url, {
-//		params: '&key='+key
-//	});
+	TBG.Main.Helpers.ajax(url, {
+		params: '&key='+key
+	});
 	$('tutorial-next-button').stopObserving('click');
 	TBG.Tutorial.resetHighlight();
 	$('tutorial-message').hide();
 };
-//TBG.Tutorial.enable = function(key) {
-//	TBG.Main.Helpers.ajax(TBG.options['say_url'], {
-//		params: '&topic=enable_tutorial&key='+key
-//	});
-//};
 TBG.Tutorial.playNextStep = function() {
 	TBG.Tutorial.resetHighlight();
 	var tm = $('tutorial-message');
+	tm.hide();
 	var step = parseInt(tm.dataset.tutorialStep);
 	var key = tm.dataset.tutorialKey;
 	step++;
@@ -5264,6 +5260,7 @@ TBG.Tutorial.playNextStep = function() {
 			var tdh = tutorialData.highlight;
             var timeout = (tdh.delay) ? tdh.delay : 50;
             window.setTimeout(function() {
+				tm.show();
                 if (tdh.element != undefined) {
                     var seethrough = (tdh.seethrough != undefined) ? tdh.seethrough : false;
                     TBG.Tutorial.highlightElement(tdh.element, tdh.blocked, seethrough);

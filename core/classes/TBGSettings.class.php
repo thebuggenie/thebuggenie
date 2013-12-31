@@ -282,7 +282,7 @@
 			return self::saveSetting($name, $value, $module, $scope, $user_id);
 		}
 		
-		public static function deleteUserSetting($setting, $user_id, $module = 'core', $scope = null)
+		public static function deleteUserSetting($user_id, $setting, $module = 'core', $scope = null)
 		{
 			return self::deleteSetting($setting, $module, $scope, $user_id);
 		}

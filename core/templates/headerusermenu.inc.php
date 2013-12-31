@@ -31,7 +31,7 @@
 				<?php echo link_tag(make_url('configure'), image_tag('tab_config.png').__('Configure %thebuggenie_name', array('%thebuggenie_name' => TBGSettings::getTBGname()))); ?>
 			<?php endif; ?>
 			<?php TBGEvent::createNew('core', 'user_dropdown_reg')->trigger(); ?>
-			<?php echo link_tag('http://www.thebuggenie.com/help/'.TBGContext::getRouting()->getCurrentRouteName(), image_tag('help.png').__('Help for this page')); ?>
+			<?php echo link_tag('http://www.thebuggenie.com/help/'.TBGContext::getRouting()->getCurrentRouteName(), image_tag('help.png').__('Help for this page'), array('id' => 'global_help_link')); ?>
 			<a href="<?php echo make_url('logout'); ?>" onclick="<?php if (TBGSettings::isPersonaAvailable()): ?>if (navigator.id) { navigator.id.logout();return false; }<?php endif; ?>"><?php echo image_tag('logout.png').__('Logout'); ?></a>
 			<div class="header"><?php echo __('Your issues'); ?></div>
 			<?php echo link_tag(make_url('my_reported_issues'), image_tag('icon_savedsearch.png') . __('Issues reported by me')); ?>

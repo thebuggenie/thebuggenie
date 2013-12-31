@@ -1860,6 +1860,27 @@
 			return (bool) $this->_use_gravatar;
 		}
 
+		public function disableTutorial($key)
+		{
+			TBGSettings::saveUserSetting($this->getID(), 'disable_tutorial_'.$key, true);
+		}
+
+		protected function _isTutorialEnabled($key)
+		{
+			if ($this->isGuest()) return false;
+			return !(bool) TBGSettings::getUserSetting($this->getID(), 'disable_tutorial_'.$key);
+		}
+
+		public function enableTutorial($key)
+		{
+			TBGSettings::deleteUserSetting($this->getID(), 'disable_tutorial_'.$key);
+		}
+
+		public function isViewissueTutorialEnabled()
+		{
+			return $this->_isTutorialEnabled('viewissue');
+		}
+
 		public function isKeyboardNavigationEnabled()
 		{
 			$val = TBGSettings::get(TBGSettings::SETTING_USER_KEYBOARD_NAVIGATION, 'core', TBGContext::getScope(), $this->getID());

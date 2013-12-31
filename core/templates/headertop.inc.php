@@ -22,7 +22,7 @@
 						<?php echo image_tag('emblem-generic.png'); ?>
 					</li>
 				<?php endif; ?>
-				<li<?php if ($tbg_request->hasCookie('tbg3_original_username')): ?> class="temporarily_switched"<?php endif; ?>>
+				<li<?php if ($tbg_request->hasCookie('tbg3_original_username')): ?> class="temporarily_switched"<?php endif; ?> id="header_usermenu_link">
 					<div id="header_userinfo_details">
 						<?php if ($tbg_user->isGuest()): ?>
 							<a href="javascript:void(0);" <?php if (TBGContext::getRouting()->getCurrentRouteName() != 'login_page'): ?>onclick="TBG.Main.Login.showLogin('regular_login_container');"<?php endif; ?>><?php echo image_tag($tbg_user->getAvatarURL(true), array('alt' => '[avatar]', 'class' => 'guest_avatar'), true) . __('You are not logged in'); ?></a>

@@ -497,7 +497,15 @@
 			//if (!$this->getUser()->isGuest()) return $this->forward(TBGContext::getRouting()->generate('home'));
 			$this->section = $request->getParameter('section', 'login');
 		}
-		
+
+		public function runDisableTutorial(TBGRequest $request)
+		{
+			if (strlen(trim($request['key'])))
+				$this->getUser()->disableTutorial($request['key']);
+
+			return $this->renderJSON(array('disabled' => $request['key']));
+		}
+
 		public function runSwitchUser(TBGRequest $request)
 		{
 			if (!$this->getUser()->canAccessConfigurationPage(TBGSettings::CONFIGURATION_SECTION_USERS) && !$request->hasCookie('tbg3_original_username'))
@@ -952,7 +960,7 @@
 							}
 							else
 							{
-								TBGSettings::deleteUserSetting($setting, $this->getUser()->getID());
+								TBGSettings::deleteUserSetting($this->getUser()->getID(), $setting);
 							}
 						}
 						TBGEvent::createNew('core', 'mainActions::myAccount::saveNotificationSettings')->trigger(compact('request'));
