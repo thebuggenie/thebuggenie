@@ -41,18 +41,11 @@
 							<div class="tooltip from-above leftie">
 								<?php echo __('Please log in to bookmark issues'); ?>
 							</div>
-						<?php elseif (($issue->isOwned() && $issue->getOwner() instanceof TBGUser && $issue->getOwner()->getID() == $tbg_user->getID()) || ($issue->isAssigned() && $issue->getAssignee() instanceof TBGUser && $issue->getAssignee()->getID() == $tbg_user->getID()) ||($issue->getPostedBy() instanceof TBGUser && $issue->getPostedBy()->getID() == $tbg_user->getID())): ?>
-							<?php echo image_tag('star.png', array('id' => 'issue_favourite_faded_'.$issue->getId())); ?>
-							<div class="tooltip from-above leftie">
-								<?php echo __('You are involved with this issue and may be notified whenever it is updated or changed.'); ?><br>
-								<br>
-								<?php echo __('If you have the proper permissions, you can manage issue subscribers via the "More actions" button to the right.'); ?>
-							</div>
 						<?php else: ?>
 							<div class="tooltip from-above leftie">
 								<?php echo __('Click the star to toggle whether you want to be notified whenever this issue updates or changes'); ?><br>
 								<br>
-								<?php echo __('You can add other users to this list via the "%more_actions"-button', array('%more_actions' => __('More actions'))); ?>
+								<?php echo __('If you have the proper permissions, you can manage issue subscribers via the "%more_actions" button to the right.', array('%more_actions' => __('More actions'))); ?>
 							</div>
 							<?php echo image_tag('spinning_20.gif', array('id' => 'issue_favourite_indicator_'.$issue->getId(), 'style' => 'display: none;')); ?>
 							<?php echo image_tag('star_faded.png', array('id' => 'issue_favourite_faded_'.$issue->getId(), 'style' => 'cursor: pointer;'.(($tbg_user->isIssueStarred($issue->getID())) ? 'display: none;' : ''), 'onclick' => "TBG.Issues.toggleFavourite('".make_url('toggle_favourite_issue', array('issue_id' => $issue->getID(), 'user_id' => $tbg_user->getID()))."', ".$issue->getID().");")); ?>
