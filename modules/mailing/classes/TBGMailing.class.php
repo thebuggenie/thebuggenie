@@ -205,7 +205,9 @@
 			$settings = array(self::NOTIFY_NEW_ARTICLES_MY_PROJECTS, self::NOTIFY_NEW_ISSUES_MY_PROJECTS, self::NOTIFY_SUBSCRIBED_ARTICLES, self::NOTIFY_SUBSCRIBED_ISSUES);
 
 			foreach ($settings as $setting)
+			{
 				$this->saveSetting($setting, 1, $uid);
+			}
 		}
 
 		public function generateURL($route, $parameters = array())
@@ -476,7 +478,7 @@ EOT;
 			$subject = 'Wiki article updated: %article_name';
 			$user = TBGUsersTable::getTable()->selectById((int) $event->getParameter('user_id'));
 			$parameters = compact('article', 'change_reason', 'user', 'revision');
-			$to_users = $this->_getArticleRelatedUsers($article, 'edit');
+			$to_users = $this->_getArticleRelatedUsers($article, $user);
 			
 			if (!empty($to_users))
 			{
