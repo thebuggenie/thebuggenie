@@ -6,11 +6,6 @@
 			<div class="tooltip from-above leftie">
 				<?php echo __('Please log in to subscribe to updates for this article'); ?>
 			</div>
-		<?php elseif ($article->getAuthor() instanceof TBGUser && $article->getAuthor()->getID() == $tbg_user->getID() || in_array($tbg_user->getID(), $article->getHistoryUserIDs())): ?>
-			<?php echo image_tag('star.png', array('id' => 'article_favourite_faded_'.$article->getId())); ?>
-			<div class="tooltip from-above leftie">
-				<?php echo __('You have edited this article and may be notified whenever it is updated or changed.'); ?><br>
-			</div>
 		<?php else: ?>
 			<div class="tooltip from-above leftie">
 				<?php echo __('Click the star to toggle whether you want to be notified whenever this article updates or changes'); ?><br>
