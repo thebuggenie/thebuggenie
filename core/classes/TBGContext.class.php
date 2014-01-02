@@ -1126,6 +1126,13 @@
 			TBGLogging::log('...done (loading modules)');
 		}
 		
+		public static function finishUpgrading()
+		{
+			self::$_upgrademode = false;
+			self::$_installmode = false;
+			self::loadModules();
+		}
+		
 		/**
 		 * Adds a module to the module list
 		 *

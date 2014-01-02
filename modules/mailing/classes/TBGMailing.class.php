@@ -201,13 +201,6 @@
 
 		public function listen_createUser(TBGEvent $event)
 		{
-			$uid = $event->getSubject()->getID();
-			$settings = array(self::NOTIFY_NEW_ARTICLES_MY_PROJECTS, self::NOTIFY_NEW_ISSUES_MY_PROJECTS, self::NOTIFY_SUBSCRIBED_ARTICLES, self::NOTIFY_SUBSCRIBED_ISSUES);
-
-			foreach ($settings as $setting)
-			{
-				$this->saveSetting($setting, 1, $uid);
-			}
 		}
 
 		public function generateURL($route, $parameters = array())
@@ -411,9 +404,9 @@ EOT;
 			$users = $article->getSubscribers();
 			foreach ($users as $user)
 			{
-				if (!$this->getSetting(self::NOTIFY_SUBSCRIBED_ARTICLES, $user->getID())) unset($users[$key]);
-				if (!$this->getSetting(self::NOTIFY_UPDATED_SELF, $user->getID()) && $user->getID() == $triggered_by_user->getID()) unset($users[$key]);
-				if ($this->getSetting(self::NOTIFY_ITEM_ONCE) && $this->getSetting(self::NOTIFY_ITEM_ONCE . '_article_' . $article->getID(), $user->getID())) unset($users[$key]);
+				if ($user->getNotificationSetting(self::NOTIFY_SUBSCRIBED_ARTICLES, true, 'mailing')->isOff()) unset($users[$key]);
+				if ($user->getNotificationSetting(self::NOTIFY_UPDATED_SELF, true, 'mailing')->isOff() && $user->getID() == $u_id) unset($users[$key]);
+				if ($user->getNotificationSetting(self::NOTIFY_ITEM_ONCE, false, 'mailing')->isOn() && $user->getNotificationSetting(self::NOTIFY_ITEM_ONCE . '_article_' . $issue->getID(), false, 'mailing')->isOn()) unset($users[$key]);
 			}
 			return $users;
 		}
@@ -424,9 +417,9 @@ EOT;
 			$users = $issue->getSubscribers();
 			foreach ($users as $key => $user)
 			{
-				if (!$this->getSetting(self::NOTIFY_SUBSCRIBED_ISSUES, $user->getID())) unset($users[$key]);
-				if (!$this->getSetting(self::NOTIFY_UPDATED_SELF, $user->getID()) && $user->getID() == $u_id) unset($users[$key]);
-				if ($this->getSetting(self::NOTIFY_ITEM_ONCE) && $this->getSetting(self::NOTIFY_ITEM_ONCE . '_issue_' . $issue->getID(), $user->getID())) unset($users[$key]);
+				if ($user->getNotificationSetting(self::NOTIFY_SUBSCRIBED_ISSUES, true, 'mailing')->isOff()) unset($users[$key]);
+				if ($user->getNotificationSetting(self::NOTIFY_UPDATED_SELF, true, 'mailing')->isOff() && $user->getID() == $u_id) unset($users[$key]);
+				if ($user->getNotificationSetting(self::NOTIFY_ITEM_ONCE, false, 'mailing')->isOn() && $user->getNotificationSetting(self::NOTIFY_ITEM_ONCE . '_issue_' . $issue->getID(), false, 'mailing')->isOn()) unset($users[$key]);
 			}
 			return $users;
 		}
@@ -453,11 +446,11 @@ EOT;
 				{
 					$subject = '['.$issue->getProject()->getKey().'] ' . $issue->getIssueType()->getName() . ' ' . $issue->getFormattedIssueNo(true) . ' - ' . html_entity_decode($issue->getTitle(), ENT_COMPAT, TBGContext::getI18n()->getCharset());
 					$parameters = compact('issue');
-					$to_users = $issue->getRelatedUids();
+					$to_users = $issue->getRelatedUsers();
 					if (!$this->getSetting(self::NOTIFY_UPDATED_SELF, TBGContext::getUser()->getID())) unset($to_users[TBGContext::getUser()->getID()]);
-					foreach ($to_users as $uid)
+					foreach ($to_users as $uid => $user)
 					{
-						if (!$this->getSetting(self::NOTIFY_NEW_ISSUES_MY_PROJECTS, $uid)) unset($to_users[$uid]);
+						if ($user->getNotificationSetting(self::NOTIFY_NEW_ISSUES_MY_PROJECTS, true, 'mailing')->isOff()) unset($to_users[$uid]);
 					}
 					$messages = $this->getTranslatedMessages('issuecreate', $parameters, $to_users, $subject);
 
@@ -482,6 +475,7 @@ EOT;
 			
 			if (!empty($to_users))
 			{
+				$this->_markArticleSent($article, $to_users);
 				$messages = $this->getTranslatedMessages('articleupdate', $parameters, $to_users, $subject, array('%article_name' => html_entity_decode($article->getTitle(), ENT_COMPAT, TBGContext::getI18n()->getCharset())));
 
 				foreach ($messages as $message)
@@ -510,6 +504,7 @@ EOT;
 							$subject = 'Re: ['.$issue->getProject()->getKey().'] ' . $issue->getIssueType()->getName() . ' ' . $issue->getFormattedIssueNo(true) . ' - ' . html_entity_decode($issue->getTitle(), ENT_COMPAT, TBGContext::getI18n()->getCharset());
 							$parameters = compact('issue', 'comment');
 							$to_users = $this->_getIssueRelatedUsers($issue, $comment->getPostedBy());
+							$this->_markIssueSent($issue, $to_users);
 							$messages = $this->getTranslatedMessages('issuecomment', $parameters, $to_users, $subject);
 							break;
 						case TBGComment::TYPE_ARTICLE:
@@ -518,6 +513,7 @@ EOT;
 							$subject = 'Comment posted on article %article_name';
 							$parameters = compact('article', 'comment');
 							$to_users = $this->_getArticleRelatedUsers($article, $comment->getPostedBy());
+							$this->_markArticleSent($article, $to_users);
 							$messages = (empty($to_users)) ? array() : $this->getTranslatedMessages('articlecomment', $parameters, $to_users, $subject, array('%article_name' => html_entity_decode($article->getTitle(), ENT_COMPAT, TBGContext::getI18n()->getCharset())));
 							break;
 					}
@@ -533,6 +529,40 @@ EOT;
 				}
 			}
 		}
+		
+		/**
+		 * Adds "notify once" settings for necessary issues
+		 * 
+		 * @param TBGIssue $issue
+		 * @param array|TBGUser $users
+		 */
+		protected function _markIssueSent(TBGIssue $issue, $users)
+		{
+			foreach ($users as $user)
+			{
+				if ($user->getNotificationSetting(self::NOTIFY_ITEM_ONCE, false, 'mailing')->isOn())
+				{
+					$user->setNotificationSetting(self::NOTIFY_ITEM_ONCE . '_issue_' . $issue->getID(), true, 'mailing')->save();
+				}
+			}
+		}
+
+		/**
+		 * Adds "notify once" settings for necessary articles
+		 * 
+		 * @param TBGWikiArticle $article
+		 * @param array|TBGUser $users
+		 */
+		protected function _markArticleSent(TBGWikiArticle $article, $users)
+		{
+			foreach ($users as $user)
+			{
+				if ($user->getNotificationSetting(self::NOTIFY_ITEM_ONCE, false, 'mailing')->isOn())
+				{
+					$user->setNotificationSetting(self::NOTIFY_ITEM_ONCE . '_article_' . $article->getID(), true, 'mailing')->save();
+				}
+			}
+		}
 
 		public function listen_issueSave(TBGEvent $event)
 		{
@@ -544,6 +574,7 @@ EOT;
 					$subject = 'Re: ['.$issue->getProject()->getKey().'] ' . $issue->getIssueType()->getName() . ' ' . $issue->getFormattedIssueNo(true) . ' - ' . html_entity_decode($issue->getTitle(), ENT_COMPAT, TBGContext::getI18n()->getCharset());
 					$parameters = array('issue' => $issue, 'comment' => $event->getParameter('comment'), 'log_items' => $event->getParameter('log_items'), 'updated_by' => $event->getParameter('updated_by'));
 					$to_users = $this->_getIssueRelatedUsers($issue, $parameters['updated_by']);
+					$this->_markIssueSent($issue, $to_users);
 					$messages = $this->getTranslatedMessages('issueupdate', $parameters, $to_users, $subject);
 
 					foreach ($messages as $message)
@@ -560,11 +591,12 @@ EOT;
 			if ($this->isOutgoingNotificationsEnabled())
 			{
 				$issue = $event->getSubject();
+				$event->getParameter('user');
 				if ($issue instanceof TBGIssue)
 				{
 					$subject = 'Re: ['.$issue->getProject()->getKey().'] ' . $issue->getIssueType()->getName() . ' ' . $issue->getFormattedIssueNo(true) . ' - ' . html_entity_decode($issue->getTitle(), ENT_COMPAT, TBGContext::getI18n()->getCharset());
 					$parameters = array('issue' => $issue);
-					$to_users = array($event->getParameter('user'));
+					$to_users = array($user);
 					$messages = $this->getTranslatedMessages('issuesubscribed', $parameters, $to_users, $subject);
 
 					foreach ($messages as $message)
@@ -572,7 +604,7 @@ EOT;
 						$this->_addProjectEmailAddress($message, $issue->getProject());
 						$this->sendMail($message);
 					}
-					$this->deleteSetting(self::NOTIFY_ITEM_ONCE . '_issue_' . $issue->getID(), $event->getParameter('user')->getID());
+					$user->setNotificationSetting(self::NOTIFY_ITEM_ONCE . '_issue_' . $issue->getID(), false, 'mailing')->save();
 				}
 			}
 		}
@@ -581,8 +613,7 @@ EOT;
 		{
 			if (!$event->getSubject() instanceof TBGIssue) return;
 
-			$uid = TBGContext::getUser()->getID();
-			$this->deleteSetting(self::NOTIFY_ITEM_ONCE . '_issue_' . $event->getSubject()->getID(), $uid);
+			TBGContext::getUser()->setNotificationSetting(self::NOTIFY_ITEM_ONCE . '_issue_' . $event->getSubject()->getID(), false, 'mailing')->save();
 		}
 
 		public function listen_loginPane(TBGEvent $event)
@@ -643,13 +674,13 @@ EOT;
 			$notificationsettings = $this->_getNotificationSettings();
 			foreach ($notificationsettings as $setting => $description)
 			{
-				if ($request->hasParameter($setting))
+				if ($request->hasParameter('mailing_'.$setting))
 				{
-					$this->saveSetting($setting, 1, TBGContext::getUser()->getID());
+					$this->getUser()->setNotificationSetting($setting, true, 'mailing')->save();
 				}
 				else
 				{
-					$this->deleteSetting($setting, TBGContext::getUser()->getID());
+					$this->getUser()->setNotificationSetting($setting, false, 'mailing')->save();
 				}
 			}
 		}
@@ -806,22 +837,9 @@ EOT;
 			$this->saveSetting('enable_outgoing_notifications', $enabled);
 		}
 
-		protected function addDefaultSettingsToAllUsers()
-		{
-			$settings = array(self::NOTIFY_NEW_ARTICLES_MY_PROJECTS, self::NOTIFY_NEW_ISSUES_MY_PROJECTS, self::NOTIFY_SUBSCRIBED_ARTICLES, self::NOTIFY_SUBSCRIBED_ISSUES);
-			TBGSettingsTable::getTable()->deleteAllUserModuleSettings('mailing');
-			foreach (TBGUsersTable::getTable()->getAllUserIDs() as $uid)
-			{
-				foreach ($settings as $setting)
-				{
-					$this->saveSetting($setting, 1, $uid);
-				}
-			}
-		}
-
 		public function upgradeFrom3dot2()
 		{
-			$this->addDefaultSettingsToAllUsers();
+			TBGSettingsTable::getTable()->deleteAllUserModuleSettings('mailing');
 		}
 
 		function getMailMimeType($structure)
@@ -1182,5 +1200,5 @@ EOT;
 			$account->save();
 			return $count;
 		}
-
+		
 	}

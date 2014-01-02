@@ -4860,9 +4860,15 @@
 			$notification->save();
 		}
 
-		public function getRelatedUids($strict = false)
+		/**
+		 * Returns an array with everyone related to this project
+		 * 
+		 * @param boolean $strict
+		 * @return array|TBGUser
+		 */
+		public function getRelatedUsers()
 		{
-			$uids = ($strict) ? array() : TBGUserIssuesTable::getTable()->getUserIDsByIssueID($this->getID());
+			$uids = array();
 			$teams = array();
 
 			// Add the poster
@@ -4970,29 +4976,28 @@
 				}
 			}
 
-			return $uids;
-		}
-		
-		protected function _addNotifications($type, $updated_by)
-		{
-			$uids = $this->getRelatedUids();
-			
-			foreach ($uids as $user)
-			{
-				if ($user == TBGContext::getUser()->getID()) continue;
-				
-				$this->_addNotification($type, $user, $updated_by);
-			}
+			if (isset($uids[TBGContext::getUser()->getID()])) unset($uids[TBGContext::getUser()->getID()]);
+			$users = TBGUsersTable::getTable()->getByUserIDs($uids);
+			return $users;
 		}
 		
 		protected function _addUpdateNotifications($updated_by)
 		{
-			$this->_addNotifications(TBGNotification::TYPE_ISSUE_UPDATED, $updated_by);
+			$uids = TBGUserIssuesTable::getTable()->getUserIDsByIssueID($this->getID());
+			$users = TBGUsersTable::getTable()->getByUserIDs($uids);
+			
+			foreach ($users as $user)
+			{
+				$this->_addNotification(TBGNotification::TYPE_ISSUE_UPDATED, $user, $updated_by);
+			}
 		}
 		
 		protected function _addCreateNotifications($updated_by)
 		{
-			$this->_addNotifications(TBGNotification::TYPE_ISSUE_CREATED, $updated_by);
+			foreach ($this->getRelatedUsers() as $user)
+			{
+				$this->_addNotification(TBGNotification::TYPE_ISSUE_CREATED, $user, $updated_by);
+			}
 		}
 		
 		public function triggerSaveEvent($comment, $updated_by)

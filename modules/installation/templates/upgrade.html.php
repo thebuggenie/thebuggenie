@@ -175,7 +175,7 @@
 			Make sure that the file <span class="command_box"><?php echo THEBUGGENIE_PATH . 'upgrade'; ?></span> is removed before you click the "Finish" button below.
 		</p>
 		<div style="margin-top: 15px;">
-			<a href="<?php echo make_url('logout'); ?>" class="button button-silver" style="font-size: 1.2em !important; padding: 3px 10px !important;">Finish</a>
+			<a href="<?php echo make_url('home'); ?>" class="button button-silver" style="font-size: 1.2em !important; padding: 3px 10px !important;">Finish</a>
 		</div>
 	<?php endif; ?>
 </div>

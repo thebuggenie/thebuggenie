@@ -72,7 +72,9 @@
 				$crit->addSelectionColumn(self::UID);
 				$crit->addSelectionColumn(self::SCOPE);
 			}
-			$crit->addWhere(self::SCOPE, $scope);
+			$ctn = $crit->returnCriterion(self::SCOPE, $scope);
+			$ctn->addOr(self::SCOPE, 0);
+			$crit->addWhere($ctn);
 			$crit->addWhere(self::UID, $uid);
 			$res = $this->doSelect($crit, 'none');
 			return $res;
@@ -130,11 +132,13 @@
 
 		public function deleteAllUserModuleSettings($module_name, $scope = null)
 		{
-			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::MODULE, $module_name);
 			$crit->addWhere(self::UID, 0, Criteria::DB_GREATER_THAN);
-			$crit->addWhere(self::SCOPE, $scope);
+			if ($scope !== null) 
+			{
+				$crit->addWhere(self::SCOPE, $scope);
+			}
 			$this->doDelete($crit);
 		}
 

@@ -953,13 +953,13 @@
 						$this->getUser()->setKeyboardNavigationEnabled($request['enable_keyboard_navigation']);
 						foreach ($notificationsettings as $setting => $description)
 						{
-							if ($request->hasParameter($setting))
+							if ($request->hasParameter('core_'.$setting))
 							{
-								TBGSettings::saveUserSetting($this->getUser()->getID(), $setting, 1);
+								$this->getUser()->setNotificationSetting($setting, true)->save();
 							}
 							else
 							{
-								TBGSettings::deleteUserSetting($this->getUser()->getID(), $setting);
+								$this->getUser()->setNotificationSetting($setting, false)->save();
 							}
 						}
 						TBGEvent::createNew('core', 'mainActions::myAccount::saveNotificationSettings')->trigger(compact('request'));

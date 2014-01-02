@@ -314,6 +314,16 @@
 		protected $_openid_accounts;
 		
 		/**
+		 * List of user's notification settings
+		 *
+		 * @var array|TBGNotificationSetting
+		 * @Relates(class="TBGNotificationSetting", collection=true, foreign_column="user_id")
+		 */
+		protected $_notification_settings = null;
+		
+		protected $_notification_settings_sorted = null;
+		
+		/**
 		 * List of user's notifications
 		 *
 		 * @var array|TBGNotification
@@ -2761,6 +2771,54 @@
 			}
 			
 			return false;
+		}
+
+		/**
+		 * Get a notification setting for a specific module
+		 * 
+		 * @param type $setting The setting to retrieve
+		 * @param type $module The module if not 'core'
+		 * @return TBGNotificationSetting
+		 */
+		public function getNotificationSetting($setting, $default_value = null, $module = 'core')
+		{
+			if ($this->_notification_settings === null)
+			{
+				$this->_b2dbLazyload('_notification_settings');
+				$this->_notification_settings_sorted = array();
+				foreach ($this->_notification_settings as $ns)
+				{
+					if (!array_key_exists($ns->getModuleName(), $this->_notification_settings_sorted)) $this->_notification_settings_sorted[$ns->getModuleName()] = array();
+					$this->_notification_settings_sorted[$ns->getModuleName()][$ns->getName()] = $ns;
+				}
+			}
+			if (!array_key_exists($module, $this->_notification_settings_sorted)) $this->_notification_settings_sorted[$module] = array();
+			
+			if (!isset($this->_notification_settings_sorted[$module][$setting]))
+			{
+				$notificationsetting = new TBGNotificationSetting();
+				$notificationsetting->setUser($this);
+				$notificationsetting->setName($setting);
+				$notificationsetting->setModuleName($module);
+				$notificationsetting->setValue($default_value);
+				$this->_notification_settings_sorted[$module][$setting] = $notificationsetting;
+			}
+			return $this->_notification_settings_sorted[$module][$setting];
+		}
+		
+		/**
+		 * Set notification setting for a specific setting / module
+		 * 
+		 * @param type $setting The setting name
+		 * @param type $value The value to set
+		 * @param type $module[optional] The module if not 'core'
+		 * @return type
+		 */
+		public function setNotificationSetting($setting, $value, $module = 'core')
+		{
+			$setting = $this->getNotificationSetting($setting, $module);
+			$setting->setValue($value);
+			return $setting;
 		}
 
 	}

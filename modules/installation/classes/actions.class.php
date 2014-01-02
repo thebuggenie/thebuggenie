@@ -614,6 +614,7 @@
 			TBGNotificationsTable::getTable()->upgrade(TBGNotificationsTable3dot2::getTable());
 			TBGUserArticlesTable::getTable()->create();
 			TBGApplicationPasswordsTable::getTable()->create();
+			TBGUserNotificationSettingsTable::getTable()->create();
 
 			$transaction = \b2db\Core::startTransaction();
 			// Upgrade user passwords
@@ -677,6 +678,9 @@
 				}
 			}
 			$transaction->commitAndEnd();
+			
+			TBGContext::finishUpgrading();
+			TBGContext::getModule('mailing')->upgradeFrom3dot2();
 			
 			$this->upgrade_complete = true;
 		}
