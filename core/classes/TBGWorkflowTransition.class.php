@@ -313,6 +313,16 @@
 			$this->_outgoing_step_id = $step;
 		}
 		
+		/**
+		 * Set the outgoing step id
+		 * 
+		 * @param TBGWorkflowStep $step_id A workflow step id
+		 */
+		public function setOutgoingStepID($step_id)
+		{
+			$this->_outgoing_step_id = $step_id;
+		}
+		
 		public function deleteTransition($direction)
 		{
 			if ($direction == 'incoming')

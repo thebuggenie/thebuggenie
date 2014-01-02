@@ -278,6 +278,12 @@
 			TBGWorkflowStepTransitionsTable::getTable()->reMapStepIDsByWorkflowID($new_workflow->getID(), $step_mapper);
 			TBGWorkflowTransitionsTable::getTable()->reMapByWorkflowID($new_workflow->getID(), $step_mapper);
 			TBGWorkflowStepTransitionsTable::getTable()->reMapTransitionIDsByWorkflowID($new_workflow->getID(), $transition_mapper);
+
+			$new_initial_transition = $this->getInitialTransition()->copy($new_workflow);
+			$new_initial_transition->setOutgoingStepID($step_mapper[$this->getInitialTransition()->getOutgoingStep()->getID()]);
+			$new_initial_transition->save();
+			$new_workflow->setInitialTransition($new_initial_transition);
+			$new_workflow->save();
 			
 			return $new_workflow;
 		}
