@@ -708,7 +708,6 @@
 				}
 				catch (Exception $e)
 				{
-					throw $e;
 					if ($request->isAjaxCall())
 					{
 						$this->getResponse()->setHttpStatus(401);

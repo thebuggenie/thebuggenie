@@ -15,7 +15,7 @@
 	 */
 
 	/**
-	 * Application password table
+	 * Application passwords table
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
@@ -26,6 +26,6 @@
 	class TBGApplicationPasswordsTable extends TBGB2DBTable 
 	{
 		
-		const B2DB_TABLE_VERSION = 2;
+		const B2DB_TABLE_VERSION = 1;
 		
 	}

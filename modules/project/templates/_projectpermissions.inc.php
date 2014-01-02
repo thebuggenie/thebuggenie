@@ -1,7 +1,7 @@
 <?php if (isset($roles)): ?>
 	<div id="project_settings_roles" style="position: relative;">
 		<h3>
-			<div class="button button-green" style="float: right;" onclick="$('project_settings_roles').toggle();$('project_settings_advanced_permissions').toggle();"><?php echo __('Show advanded permissions'); ?></div>
+			<div class="button button-green" style="float: right;" onclick="$('project_settings_roles').toggle();$('project_settings_advanced_permissions').toggle();"><?php echo __('Show advanced permissions'); ?></div>
 			<?php echo __('Editing project roles and permissions'); ?>
 		</h3>
 		<div class="content faded_out">

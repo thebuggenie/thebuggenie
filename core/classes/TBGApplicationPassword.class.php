@@ -11,7 +11,7 @@
 	 */
 
 	/**
-	 * Notification item class
+	 * Application password class
 	 *
 	 * @package thebuggenie
 	 * @subpackage main

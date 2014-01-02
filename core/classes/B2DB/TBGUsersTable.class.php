@@ -53,9 +53,8 @@
 		
 		public function getAll()
 		{
-			$res = $this->doSelectAll();
-			
-			return $res;
+			$users = $this->selectAll();
+			return $users;
 		}
 
 		protected function _setupIndexes()

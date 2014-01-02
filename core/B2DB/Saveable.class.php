@@ -261,6 +261,7 @@
 		
 		final public function delete()
 		{
+			if (!$this->getB2DBID()) return;
 			$this->_preDelete();
 			self::getB2DBTable()->doDeleteById($this->getB2DBID());
 			$this->_postDelete();

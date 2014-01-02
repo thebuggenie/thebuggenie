@@ -731,7 +731,7 @@
 		}
 
 		/**
-		 * Set the edition name
+		 * Set the milestone name
 		 *
 		 * @param string $name
 		 */
