@@ -56,6 +56,9 @@
 				<?php if (file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'themes' . DS . TBGSettings::getThemeName() . DS . "{$module->getName()}.css")): ?>
 					<?php $tbg_response->addStylesheet("{$module->getName()}.css"); ?>
 				<?php endif; ?>
+				<?php if (file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . DS . 'js' . DS . "{$module->getName()}.js")): ?>
+					<?php $tbg_response->addJavascript("{$module->getName()}.js"); ?>
+				<?php endif; ?>
 			<?php endforeach; ?>
 		<?php endif; ?>
 
