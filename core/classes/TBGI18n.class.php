@@ -274,6 +274,12 @@
 
 		public function __($text, $replacements = array(), $html_decode = false)
 		{
+			$event = TBGEvent::createNew('core', 'TBGI18n::__()', $this, compact('text', 'replacements', 'html_decode'))->trigger();
+			if ($event->isProcessed())
+			{
+				return $event->getReturnValue();
+			}
+
 			if (isset($this->_strings[$text]))
 			{
 				$retstring = $this->_strings[$text];
