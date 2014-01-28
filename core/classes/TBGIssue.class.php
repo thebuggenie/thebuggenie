@@ -3385,7 +3385,7 @@
 		 */
 		public function getSpentHours()
 		{
-			return (int) $this->_spent_hours;
+			return (int) round($this->_spent_hours / 100, 2);
 		}
 		
 		/**

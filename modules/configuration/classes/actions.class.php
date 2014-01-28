@@ -1843,6 +1843,14 @@
 					$step->setName($this->getI18n()->__('New'));
 					$step->setWorkflow($workflow);
 					$step->save();
+					$transition = new TBGWorkflowTransition();
+					$transition->setOutgoingStep($step);
+					$transition->setName('Issue created');
+					$transition->setWorkflow($workflow);
+					$transition->setDescription('This is the initial transition for issues using this workflow');
+					$transition->save();
+					$workflow->setInitialTransition($transition);
+					$workflow->save();
 					$this->forward(TBGContext::getRouting()->generate('configure_workflow'));
 				}
 				catch (Exception $e)

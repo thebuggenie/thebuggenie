@@ -181,7 +181,7 @@
 						$this->_points['estimated'] += $res->get('estimated_points');
 						$this->_points['spent'] += $res->get('spent_points');
 						$this->_hours['estimated'] += $res->get('estimated_hours');
-						$this->_hours['spent'] += $res->get('spent_hours');
+						$this->_hours['spent'] += round($res->get('spent_hours') / 100, 2);
 					}
 				}
 			}
@@ -655,6 +655,11 @@
 				{
 					$burndown['points'][$key] = (array_key_exists($key, $spent_times['points'])) ? $val - $spent_times['points'][$key] : $val;
 				}
+				foreach ($spent_times['hours'] as $key => $val)
+				{
+					$spent_times['hours'][$key] = round($spent_times['hours'][$key] / 100, 2);
+				}
+
 
 				$this->_burndowndata = array('estimations' => $estimations, 'spent_times' => $spent_times, 'burndown' => $burndown);
 			}
