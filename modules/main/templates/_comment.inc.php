@@ -53,7 +53,9 @@
 			<ul class="comment_log_items">
 				<?php foreach ($comment->getLogItems() as $item): ?>
 					<?php if (!$item instanceof TBGLogItem) continue; ?>
-					<?php include_template('main/issuelogitem', compact('item')); ?>
+					<?php /* Pass item's own time in order to prevent issuelogitem template from including timestamp for the item. The timestamp span is additionally hidden by the CSS.*/ ?>
+					<?php $previous_time = $item->getTime(); ?>
+					<?php include_template('main/issuelogitem', compact('item', 'previous_time')); ?>
 				<?php endforeach; ?>
 			</ul>
 			<?php endif; ?>
