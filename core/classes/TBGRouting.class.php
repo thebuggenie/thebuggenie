@@ -469,8 +469,13 @@
 				$params['csrf_token'] = TBGContext::generateCSRFtoken();
 			}
 
-			$real_url = preg_replace_callback('/\/\:([^\/]+)/', function($matches) use ($params) { return '/'.$params[$matches[1]]; }, $url);
-	
+			// in PHP 5.5, preg_replace with /e modifier is deprecated; preg_replace_callback is recommended
+			$callback = function($matches) use($params) {
+                		return urlencode($params[$matches[1]]);
+            		};
+
+            		$real_url = preg_replace_callback('/\:([^\/]+)/', $callback, $url);
+			
 			// we add all other params if *
 			if (mb_strpos($real_url, '*'))
 			{
