@@ -392,6 +392,10 @@
 				// and the href tag will contain "embed url=" and it must be removed
 				if ($namespace == null) $href = preg_replace("/embed(\s+)url=/","", $href);
 				
+				// if the href is empty or set to 'embed' then stop processing
+				// an empty embed tag was entered '[[embed]]'
+				if ($href == 'embed' || $href == null) return;
+
 				$options = explode('|', $title);
 					
 				// Default values
