@@ -4,9 +4,9 @@
 // If you would like to help translating TBG,
 // please visit https://www.transifex.com/projects/p/tbg
 
-// Number of Sections: 309
-// Number of Strings: 3341
-// Strings extracted on: 2013 Dec 27.
+// Number of Sections: 310
+// Number of Strings: 3359
+// Strings extracted on: 2014 Jan 29.
 
 // First occurrence is in: core/classes/TBGAction.class.php
 // ----------------------------------------------------------------------------
@@ -374,6 +374,7 @@
 // First occurrence is in: core/templates/backdrops.inc.php
 // ----------------------------------------------------------------------------
   $strings['Click this message to dismiss it'] = 'Click this message to dismiss it';
+  $strings['Skip this tutorial'] = 'Skip this tutorial';
   $strings['Please wait ...'] = 'Please wait ...';
   $strings['Yes'] = 'Yes';
   $strings['No'] = 'No';
@@ -1689,6 +1690,7 @@
   $strings['Notify by email when there are updates to my subscribed issues'] = 'Notify by email when there are updates to my subscribed issues';
   $strings['Notify by email when there are updates to my subscribed articles'] = 'Notify by email when there are updates to my subscribed articles';
   $strings['Notify by email when new issues are created in my project(s)'] = 'Notify by email when new issues are created in my project(s)';
+  $strings['Notify by email when new articles are created in my project(s)'] = 'Notify by email when new articles are created in my project(s)';
   $strings['Only send one email per issue or article until I view the issue or article in my browser'] = 'Only send one email per issue or article until I view the issue or article in my browser';
   $strings['Notify by email also when I am the one making the changes'] = 'Notify by email also when I am the one making the changes';
 
@@ -2176,6 +2178,13 @@
   $strings['%generate_sample_data% or %create_a_project%'] = '%generate_sample_data% or %create_a_project%';
   $strings['Create a project'] = 'Create a project';
 
+// First occurrence is in: modules/main/templates/_intro_index_single_tracker.inc.php
+// ----------------------------------------------------------------------------
+  $strings["It looks likes you're only using The Bug Genie to track issues for one project."] = "It looks likes you're only using The Bug Genie to track issues for one project.";
+  $strings["If you don't want to use this homepage, you can set The Bug Genie to %single_project_tracker_mode, which will automatically forward the frontpage to the project overview page."] = "If you don't want to use this homepage, you can set The Bug Genie to %single_project_tracker_mode, which will automatically forward the frontpage to the project overview page.";
+  $strings['%single_project_tracker_mode can be enabled from %configure_settings.'] = '%single_project_tracker_mode can be enabled from %configure_settings.';
+  $strings['Configure –> Settings'] = 'Configure –> Settings';
+
 // First occurrence is in: modules/main/templates/_issueaclformentry.inc.php
 // ----------------------------------------------------------------------------
   $strings['Remove access for this user'] = 'Remove access for this user';
@@ -2569,6 +2578,7 @@
   $strings['Please try to fix the error described above, and then click the %file_issue button again'] = 'Please try to fix the error described above, and then click the %file_issue button again';
   $strings['The following issue was reported: %issue_title'] = 'The following issue was reported: %issue_title';
   $strings['Click the link to visit the reported issue'] = 'Click the link to visit the reported issue';
+  $strings['Report another issue'] = 'Report another issue';
   $strings['You are adding an issue to %milestone_name'] = 'You are adding an issue to %milestone_name';
   $strings['Any issues you create will be related to %related_issue_title'] = 'Any issues you create will be related to %related_issue_title';
   $strings['You are adding an issue to release %release_name'] = 'You are adding an issue to release %release_name';
@@ -2677,7 +2687,28 @@
   $strings['The header area also contains the workflow buttons used to move the issue through its lifecycle.'] = 'The header area also contains the workflow buttons used to move the issue through its lifecycle.';
   $strings['These buttons will also follow you down the page as you scroll.'] = 'These buttons will also follow you down the page as you scroll.';
   $strings['Nice'] = 'Nice';
-  $strings['This area contains all the basic details'] = 'This area contains all the basic details';
+  $strings["The sidebar is nicely grouped in sections such as 'People involved' and 'Time tracking' to make it easer to quickly find out what you need to know."] = "The sidebar is nicely grouped in sections such as 'People involved' and 'Time tracking' to make it easer to quickly find out what you need to know.";
+  $strings["This area contains all the data about an issue, such as the status, who's assigned, how much time is spent, etc."] = "This area contains all the data about an issue, such as the status, who's assigned, how much time is spent, etc.";
+  $strings['I can dig that'] = 'I can dig that';
+  $strings['Issue main area'] = 'Issue main area';
+  $strings['This area contains all the main details, such as the description and reproductions steps.'] = 'This area contains all the main details, such as the description and reproductions steps.';
+  $strings['That makes sense'] = 'That makes sense';
+  $strings['A few notes about editing issues'] = 'A few notes about editing issues';
+  $strings["Almost everything about an issue can be edited, and - depending on your workflow setup - some items may be locked from changes after a certain step (for example not being allowed to change the description on 'Confirmed' issues)."] = "Almost everything about an issue can be edited, and - depending on your workflow setup - some items may be locked from changes after a certain step (for example not being allowed to change the description on 'Confirmed' issues).";
+  $strings['That also makes sense'] = 'That also makes sense';
+  $strings["Any changes you make are temporary until you press the 'Save changes' button below the title (this button appears only when you have unsaved changes)."] = "Any changes you make are temporary until you press the 'Save changes' button below the title (this button appears only when you have unsaved changes).";
+  $strings['To edit anything about an issue, move your mouse over the detail you want to change and press the edit icon that appears (usually to the left).'] = 'To edit anything about an issue, move your mouse over the detail you want to change and press the edit icon that appears (usually to the left).';
+  $strings['I see'] = 'I see';
+  $strings['Keep in mind that most of this can be configured through the workflow configuration.'] = 'Keep in mind that most of this can be configured through the workflow configuration.';
+  $strings['This does not apply to workflow transitions - which happens instantly when you press a workflow button. However, most workflows allows you to post comments or change details about the issue during the workflow.'] = 'This does not apply to workflow transitions - which happens instantly when you press a workflow button. However, most workflows allows you to post comments or change details about the issue during the workflow.';
+  $strings["I think I'm good to go"] = "I think I'm good to go";
+  $strings['Just one more thing'] = 'Just one more thing';
+  $strings['These are the bottom panels, containing user comments, the issue log, code changes and more.'] = 'These are the bottom panels, containing user comments, the issue log, code changes and more.';
+  $strings["I'll be sure to check that out"] = "I'll be sure to check that out";
+  $strings['Good to go!'] = 'Good to go!';
+  $strings['Have fun using The Bug Genie!'] = 'Have fun using The Bug Genie!';
+  $strings["That's all for this tutorial. Don't forget that you can always get help for any page by using the 'Help' menu entry in your user menu at the top right corner."] = "That's all for this tutorial. Don't forget that you can always get help for any page by using the 'Help' menu entry in your user menu at the top right corner.";
+  $strings['I most certainly will!'] = 'I most certainly will!';
 
 // First occurrence is in: modules/main/templates/_updateissueproperties.inc.php
 // ----------------------------------------------------------------------------
@@ -2809,13 +2840,8 @@
 
 // First occurrence is in: modules/main/templates/index.html.php
 // ----------------------------------------------------------------------------
-  $strings['Configure –> Settings'] = 'Configure –> Settings';
-  $strings["It looks likes you're only using The Bug Genie to track issues for one project. If you don't want to use this homepage, you can set The Bug Genie to <i>single project tracker mode</i>, which will automatically forward the frontpage to the project overview page.<br><br><i>Single project tracker mode</i> can be enabled from %configure_settings."] = "It looks likes you're only using The Bug Genie to track issues for one project. If you don't want to use this homepage, you can set The Bug Genie to <i>single project tracker mode</i>, which will automatically forward the frontpage to the project overview page.<br><br><i>Single project tracker mode</i> can be enabled from %configure_settings.";
   $strings['Only using The Bug Genie to track issues for one project?'] = 'Only using The Bug Genie to track issues for one project?';
-  $strings['Configure –> Import'] = 'Configure –> Import';
-  $strings["It doesn't look like you have had the chance to add any projects yet. If you want to play around a bit with The Bug Genie before you start using it for your own projects, you can import some sample data before adding your own projects."] = "It doesn't look like you have had the chance to add any projects yet. If you want to play around a bit with The Bug Genie before you start using it for your own projects, you can import some sample data before adding your own projects.";
-  $strings['Oh noes! There are no projects!'] = 'Oh noes! There are no projects!';
-  $strings['Sample data can be imported from %configure_import.'] = 'Sample data can be imported from %configure_import.';
+  $strings['Get started using The Bug Genie'] = 'Get started using The Bug Genie';
   $strings['Quick links'] = 'Quick links';
   $strings['There are no top-level projects'] = 'There are no top-level projects';
   $strings['Go to project management'] = 'Go to project management';
@@ -2870,8 +2896,8 @@
   $strings['Markdown'] = 'Markdown';
   $strings['Prefer markdown also in the wiki'] = 'Prefer markdown also in the wiki';
   $strings['The syntax you select here will be used as the default formatting syntax for comments you post, issues you create and articles you write. Remember that you can switch this on a case by case basis - look for the syntax selector next to any text area with formatting buttons.'] = 'The syntax you select here will be used as the default formatting syntax for comments you post, issues you create and articles you write. Remember that you can switch this on a case by case basis - look for the syntax selector next to any text area with formatting buttons.';
-  $strings['Subscribing to updates'] = 'Subscribing to updates';
-  $strings['You will receive notifications (visible in your upper right notification area) for any issues or articles you are subscribed to. The Bug Genie can automatically subscribe to the following items for you.'] = 'You will receive notifications (visible in your upper right notification area) for any issues or articles you are subscribed to. The Bug Genie can automatically subscribe to the following items for you.';
+  $strings['Update notifications'] = 'Update notifications';
+  $strings['You will receive notifications (visible in your upper right notification area) for any issues or articles you are subscribed to, and The Bug Genie will automatically subscribe to certain issues and articles for you. Please select when you would like The Bug Genie to subscribe and / or notify you.'] = 'You will receive notifications (visible in your upper right notification area) for any issues or articles you are subscribed to, and The Bug Genie will automatically subscribe to certain issues and articles for you. Please select when you would like The Bug Genie to subscribe and / or notify you.';
   $strings['Click "%save" to update the settings on this tab'] = 'Click "%save" to update the settings on this tab';
   $strings['Passwords and keys'] = 'Passwords and keys';
   $strings['Change my password'] = 'Change my password';
@@ -2955,11 +2981,9 @@
   $strings['Go to the previous open issue'] = 'Go to the previous open issue';
   $strings['Go to the previous issue (open or closed)'] = 'Go to the previous issue (open or closed)';
   $strings['Please log in to bookmark issues'] = 'Please log in to bookmark issues';
-  $strings['You are involved with this issue and may be notified whenever it is updated or changed.'] = 'You are involved with this issue and may be notified whenever it is updated or changed.';
-  $strings['If you have the proper permissions, you can manage issue subscribers via the "More actions" button to the right.'] = 'If you have the proper permissions, you can manage issue subscribers via the "More actions" button to the right.';
   $strings['Click the star to toggle whether you want to be notified whenever this issue updates or changes'] = 'Click the star to toggle whether you want to be notified whenever this issue updates or changes';
+  $strings['If you have the proper permissions, you can manage issue subscribers via the "%more_actions" button to the right.'] = 'If you have the proper permissions, you can manage issue subscribers via the "%more_actions" button to the right.';
   $strings['More actions'] = 'More actions';
-  $strings['You can add other users to this list via the "%more_actions"-button'] = 'You can add other users to this list via the "%more_actions"-button';
   $strings['This is the user pain value for this issue'] = 'This is the user pain value for this issue';
   $strings['Go to the next issue (open or closed)'] = 'Go to the next issue (open or closed)';
   $strings['Go to the next open issue'] = 'Go to the next open issue';
@@ -3420,7 +3444,7 @@
 
 // First occurrence is in: modules/project/templates/_projectpermissions.inc.php
 // ----------------------------------------------------------------------------
-  $strings['Show advanded permissions'] = 'Show advanded permissions';
+  $strings['Show advanced permissions'] = 'Show advanced permissions';
   $strings['Editing project roles and permissions'] = 'Editing project roles and permissions';
   $strings['These roles acts as permission templates and can be applied when assigning people (or teams) to the project. When people (or teams) are unassigned from the project they will keep all permissions applied by any roles until their last role in the project is unassigned. Read more about roles and permissions in the %online_documentation'] = 'These roles acts as permission templates and can be applied when assigning people (or teams) to the project. When people (or teams) are unassigned from the project they will keep all permissions applied by any roles until their last role in the project is unassigned. Read more about roles and permissions in the %online_documentation';
   $strings['Create new project-specific role'] = 'Create new project-specific role';
@@ -3681,7 +3705,6 @@
 // First occurrence is in: modules/publish/templates/_header.inc.php
 // ----------------------------------------------------------------------------
   $strings['Please log in to subscribe to updates for this article'] = 'Please log in to subscribe to updates for this article';
-  $strings['You have edited this article and may be notified whenever it is updated or changed.'] = 'You have edited this article and may be notified whenever it is updated or changed.';
   $strings['Click the star to toggle whether you want to be notified whenever this article updates or changes'] = 'Click the star to toggle whether you want to be notified whenever this article updates or changes';
   $strings['Show'] = 'Show';
   $strings['Create new article'] = 'Create new article';
@@ -3977,9 +4000,6 @@
 
 // First occurrence is in: modules/search/templates/_extralinks.inc.php
 // ----------------------------------------------------------------------------
-  $strings['Refine search'] = 'Refine search';
-  $strings['Save this search'] = 'Save this search';
-  $strings['This issue list template does not support configuring visible columns'] = 'This issue list template does not support configuring visible columns';
   $strings['Download search results'] = 'Download search results';
   $strings['Download as CSV'] = 'Download as CSV';
   $strings['Download as RSS'] = 'Download as RSS';
@@ -4130,6 +4150,7 @@
   $strings['Download as CSV file'] = 'Download as CSV file';
   $strings['Download as RSS feed'] = 'Download as RSS feed';
   $strings['You have to be signed in to save this search'] = 'You have to be signed in to save this search';
+  $strings['Save this search'] = 'Save this search';
   $strings['Find issues'] = 'Find issues';
   $strings['This saved search will be available under this project only. To make a non-project-specific search, use the main "%find_issues" page instead'] = 'This saved search will be available under this project only. To make a non-project-specific search, use the main "%find_issues" page instead';
   $strings['Saved search name'] = 'Saved search name';
