@@ -27,11 +27,11 @@
 			</div>
 		<?php endif; ?>
 		<?php if ($pcre_ok): ?>
-			<div class="install_progress prereq_ok"><?php echo image_tag('iconsets/oxygen/action_ok.png', array(), true); ?>PCRE librairies version (<?php echo $pcre_ver; ?>) meets requirements ...</div>
+			<div class="install_progress prereq_ok"><?php echo image_tag('iconsets/oxygen/action_ok.png', array(), true); ?>PCRE libraries version (<?php echo $pcre_ver; ?>) meets requirements ...</div>
 		<?php else: ?>
 			<div class="install_progress prereq_warn">
-			<b>PCRE librairies version is too old</b><br>
-			The Bug Genie 3 requires PCRE librairies 8.0 or later. You have version <?php echo $pcre_ver; ?>.<br/>Update your system to the latest release from your usual sources.
+			<b>PCRE libraries version is too old</b><br>
+			The Bug Genie 3 requires PCRE libraries 8.0 or later. You have version <?php echo $pcre_ver; ?>.<br/>Update your system to the latest release from your usual sources.
 			</div>
 		<?php endif; ?>		
 		<?php if ($docblock_ok): ?>
