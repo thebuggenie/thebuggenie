@@ -58,7 +58,7 @@
 		/**
 		 * List of modules 
 		 * 
-		 * @var array
+		 * @var array|TBGModule
 		 */
 		protected static $_modules = array();
 		
