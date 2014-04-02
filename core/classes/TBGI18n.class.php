@@ -242,7 +242,7 @@
 				}
 			}
 			if ($html_decode) {
-				$retstring = html_entity_decode($retstring);
+				$retstring = html_entity_decode($retstring, ENT_COMPAT, 'UTF-8');
 			}
 			return $retstring;
 		}
