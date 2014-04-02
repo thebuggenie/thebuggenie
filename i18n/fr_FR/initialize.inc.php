@@ -1,7 +1,7 @@
 <?php
 
 	TBGContext::getI18n()->setCharset('utf-8');
-	setlocale(LC_ALL, array('fr_FR@euro', 'fr_FR', 'fr'));
+	setlocale(LC_ALL, array('fr_FR.utf8', 'fra'));
 	// see TBGi18n::getDateTimeFormat for the list of all available formats
 	TBGContext::getI18n()->setDateTimeFormats( array( 1 => '%H:%M - %a %d %b %Y'
 													, 2 => '%H:%M - %a %d.m %Y'
