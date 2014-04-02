@@ -224,7 +224,7 @@
 			}
 			elseif ($this->_num_steps === null)
 			{
-				$this->_b2dbLazycount('_steps');
+				$this->_num_steps = $this->_b2dbLazycount('_steps');
 			}
 			return $this->_num_steps;
 		}
