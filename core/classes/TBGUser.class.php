@@ -1817,7 +1817,7 @@
 		public static function findUser($details)
 		{
 			$users = TBGUsersTable::getTable()->getByDetails($details);
-			if (is_array($users) && count($users) == 1)
+			if (is_array($users) && count($users) >= 1)
 				return array_shift($users);
 
 			return null;
