@@ -1273,7 +1273,7 @@
 			if ($retval !== null) return $retval;
 
 			$retval = $this->_permissionCheck('caneditissuebasic');
-			$retval = ($retval === null) ? ($this->isInvolved() || $this->_permissionCheck('cancreateandeditissues')) : $retval;
+			if ($this->isInvolved()) $retval = ($retval === null) ? $this->_permissionCheck('cancreateandeditissues') : $retval;
 			$retval = ($retval === null) ? $this->_permissionCheck('caneditissue', true) : $retval;
 
 			$retval = ($retval !== null) ? $retval : TBGSettings::isPermissive();
