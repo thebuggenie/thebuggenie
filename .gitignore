@@ -21,3 +21,4 @@ tmp
 thebuggenie/test.php
 *~
 /composer.phar
+.directory
