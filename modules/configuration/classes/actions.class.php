@@ -2134,14 +2134,19 @@
 						{
 							if (($outgoing_step = TBGContext::factory()->TBGWorkflowStep((int) $request['outgoing_step_id'])) && $step instanceof TBGWorkflowStep)
 							{
-								if (array_key_exists($request['template'], TBGWorkflowTransition::getTemplates()))
+								if (!$request['template'] || array_key_exists($request['template'], TBGWorkflowTransition::getTemplates()))
 								{
 									$transition = new TBGWorkflowTransition();
 									$transition->setWorkflow($this->workflow);
 									$transition->setName($request['transition_name']);
 									$transition->setDescription($request['transition_description']);
 									$transition->setOutgoingStep($outgoing_step);
-									$transition->setTemplate($request['template']);
+
+									if ($request['template'])
+									{
+										$transition->setTemplate($request['template']);
+									}
+
 									$transition->save();
 									$step->addOutgoingTransition($transition);
 									$redirect_transition = true;
