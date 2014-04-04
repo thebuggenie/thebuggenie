@@ -634,13 +634,12 @@
 						$to_users = $this->_getIssueRelatedUsers($issue);
 
 						$limited_users = array();
-						foreach ($to_users as $user_id)
+						foreach ($to_users as $user_id => $user)
 						{
-							$user = TBGUsersTable::getTable()->selectById($user_id);
 							if (!$comment->isViewableByUser($user))
 							{
 								unset($to_users[$user_id]);
-								$limited_users[$user_id] = $user_id;
+								$limited_users[$user_id] = $user;
 							}
 						}
 
