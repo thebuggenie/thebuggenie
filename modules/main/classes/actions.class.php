@@ -2465,7 +2465,7 @@
 			$comment = TBGContext::factory()->TBGComment($request['comment_id']);
 			if ($comment instanceof TBGcomment)
 			{							
-				if (!$comment->canUserDeleteComment())
+				if (!$comment->canUserDelete($this->getUser()))
 				{
 					$this->getResponse()->setHttpStatus(400);
 					return $this->renderJSON(array('error' => TBGContext::getI18n()->__('You are not allowed to do this')));
@@ -2491,7 +2491,7 @@
 			$comment = TBGContext::factory()->TBGComment($request['comment_id']);
 			if ($comment instanceof TBGcomment)
 			{							
-				if (!$comment->canUserEditComment())
+				if (!$comment->canUserEdit($this->getUser()))
 				{
 					$this->getResponse()->setHttpStatus(400);
 					return $this->renderJSON(array('error' => TBGContext::getI18n()->__('You are not allowed to do this')));
