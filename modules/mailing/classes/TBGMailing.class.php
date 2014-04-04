@@ -633,25 +633,25 @@
 						$content = $comment->getContent();
 						$to_users = $this->_getIssueRelatedUsers($issue);
 
-						$limited_users = array();
+//						$limited_users = array();
 						foreach ($to_users as $user_id => $user)
 						{
 							if (!$comment->isViewableByUser($user))
 							{
 								unset($to_users[$user_id]);
-								$limited_users[$user_id] = $user;
+//								$limited_users[$user_id] = $user;
 							}
 						}
 
 						$subject = TBGContext::getI18n()->__('Re: [%project_name%] %issue_type% %issue_no% - %issue_title%', array('%project_name%' => $issue->getProject()->getKey(), '%issue_type%' => TBGContext::getI18n()->__($issue->getIssueType()->getName()), '%issue_no%' => $issue->getFormattedIssueNo(true), '%issue_title%' => html_entity_decode($issue->getTitle(), ENT_COMPAT, TBGContext::getI18n()->getCharset())));
-
-						if (count($limited_users))
-						{
-							$limited_message = $this->createNewTBGMimemailFromTemplate($subject, 'issueupdate', array('issue' => $issue, 'comment' => '', 'updated_by' => $comment->getPostedBy()));
-							$this->_sendToUsers($limited_users, $limited_message);
-						}
 						$message = $this->createNewTBGMimemailFromTemplate($subject, 'issueupdate', array('issue' => $issue, 'comment' => $content, 'updated_by' => $comment->getPostedBy()));
 						$this->_sendToUsers($to_users, $message);
+
+//						if (count($limited_users))
+//						{
+//							$limited_message = $this->createNewTBGMimemailFromTemplate($subject, 'issueupdate', array('issue' => $issue, 'comment' => '', 'updated_by' => $comment->getPostedBy()));
+//							$this->_sendToUsers($limited_users, $limited_message);
+//						}
 					}
 					catch (Exception $e)
 					{
