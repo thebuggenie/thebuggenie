@@ -3896,6 +3896,7 @@
 			{
 				$comment->save();
 			}
+			TBGEvent::createNew('core', 'TBGIssue::preaddSystemComment', $this, array('comment' => $comment))->trigger();
 			TBGEvent::createNew('core', 'TBGIssue::addSystemComment', $this, array('comment' => $comment))->trigger();
 			return $comment;
 		}

@@ -479,7 +479,7 @@
 			$this->getOutgoingStep()->applyToIssue($issue);
 			if ($request->hasParameter('comment_body') && trim($request['comment_body'] != '')) {
 				$this->_request = $request;
-				TBGEvent::listen('core', 'TBGIssue::save', array($this, 'listenIssueSaveAddComment'));
+				TBGEvent::listen('core', 'TBGIssue::preaddSystemComment', array($this, 'listenIssueSaveAddComment'));
 			}
 			
 			if (!empty($this->_validation_errors)) return false;
