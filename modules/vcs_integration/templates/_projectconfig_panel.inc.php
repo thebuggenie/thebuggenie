@@ -1,5 +1,5 @@
 <div id="tab_vcs_pane"<?php if ($selected_tab != 'vcs'): ?> style="display: none;"<?php endif; ?>>
-<h3>Editing VCS connectivity settings</h3>
+<h3><?php echo __('Editing VCS connectivity settings');?></h3>
 	<?php if ($access_level != TBGSettings::ACCESS_FULL): ?>
 		<div class="rounded_box red" style="margin-top: 10px;">
 			<?php echo __('You do not have the relevant permissions to access VCS Integration settings'); ?>
@@ -14,8 +14,8 @@
 					<td style="width: 200px;"><label for="vcs_mode"><?php echo __('Enable VCS Integration?'); ?></label></td>
 					<td style="width: 580px;">
 						<select name="vcs_mode" id="vcs_mode" style="width: 100%">
-							<option value="0"<?php if (TBGSettings::get('vcs_mode_'.$project->getID(), 'vcs_integration') == 0): ?> selected="selected"<?php endif;?>>Disable for this project</option>
-							<option value="1"<?php if (TBGSettings::get('vcs_mode_'.$project->getID(), 'vcs_integration') == 1): ?> selected="selected"<?php endif;?>>Enable for commits applying to existing issues only</option>
+							<option value="0"<?php if (TBGSettings::get('vcs_mode_'.$project->getID(), 'vcs_integration') == 0): ?> selected="selected"<?php endif;?>><?php echo __('Disable for this project');?></option>
+							<option value="1"<?php if (TBGSettings::get('vcs_mode_'.$project->getID(), 'vcs_integration') == 1): ?> selected="selected"<?php endif;?>><?php echo __('Enable for commits applying to existing issues only');?></option>
 						</select>
 					</td>
 				</tr>
@@ -23,8 +23,8 @@
 					<td style="width: 200px;"><label for="vcs_workflow"><?php echo __('Enable workflow?'); ?></label></td>
 					<td style="width: 580px;">
 						<select name="vcs_workflow" id="vcs_workflow" style="width: 100%">
-							<option value="0"<?php if (TBGSettings::get('vcs_workflow_'.$project->getID(), 'vcs_integration') == 0): ?> selected="selected"<?php endif;?>>Disable for this project</option>
-							<option value="1"<?php if (TBGSettings::get('vcs_workflow_'.$project->getID(), 'vcs_integration') == 1): ?> selected="selected"<?php endif;?>>Enable for this project</option>
+							<option value="0"<?php if (TBGSettings::get('vcs_workflow_'.$project->getID(), 'vcs_integration') == 0): ?> selected="selected"<?php endif;?>><?php echo __('Disable for this project');?></option>
+							<option value="1"<?php if (TBGSettings::get('vcs_workflow_'.$project->getID(), 'vcs_integration') == 1): ?> selected="selected"<?php endif;?>><?php echo __('Enable for this project');?></option>
 						</select>
 					</td>
 				</tr>
