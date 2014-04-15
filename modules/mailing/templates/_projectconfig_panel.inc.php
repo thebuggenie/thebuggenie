@@ -23,7 +23,7 @@
 	};
 </script>
 <div id="tab_mailing_pane"<?php if ($selected_tab != 'mailing'): ?> style="display: none;"<?php endif; ?>>
-<h3>Editing email settings</h3>
+<h3><?php echo __('Editing email settings');?></h3>
 	<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_mailing_settings', array('project_id' => $project->getID())); ?>" method="post" onsubmit="TBG.Main.Helpers.formSubmit('<?php echo make_url('configure_mailing_settings', array('project_id' => $project->getID())); ?>', 'vcs'); return false;" id="vcs">
 		<input type="hidden" name="project_id" value="<?php echo $project->getID(); ?>">
 		<table style="clear: both; width: 780px; margin-bottom: 25px;" class="padded_table" cellpadding=0 cellspacing=0>
