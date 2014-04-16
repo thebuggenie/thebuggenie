@@ -222,22 +222,29 @@
 		</div>
 		<script type="text/javascript">
 		(function($) {
+			var issueDescriptions = {
+			<?php foreach ($issuetypes as $issuetype): ?>
+				<?php if (!$selected_project->getIssuetypeScheme()->isIssuetypeReportable($issuetype) && !$tbg_request->isAjaxCall()) continue; ?>
+				"issue<?php echo $issuetype->getKey(); ?>" : "<?php echo $issuetype->getDescription(); ?>",
+			<?php endforeach; ?>
+			};
+			
+			var cachedHelp = $("#issuetype_description_help").text();
+
 			$(".issuetype_list a").each(function() {
 				var issueType = $(this);
 				var issueKey = issueType.attr("data-key");
-				
+
 				issueType
 				.click(function() {
 					$('#issuetype_id').val(issueType.attr("data-id") * 1);
 					TBG.Issues.updateFields('<?php echo make_url('getreportissuefields', array('project_key' => $selected_project->getKey())); ?>');
 				})
 				.mouseover(function() {
-					$('#issuetype_description_help').hide();
-					$('#issuetype_' + issueKey + '_description').show();
+					$('#issuetype_description_help').text(issueDescriptions["issue" + issueKey]);
 				})
 				.mouseout(function() {
-					$('#issuetype_'+issueKey+'_description').hide();
-					$('#issuetype_description_help').show();
+					$('#issuetype_description_help').text(cachedHelp);
 				});
 			});
 		})(jQuery);
@@ -253,10 +260,6 @@
 		<?php endif; ?>
 		<div id="report_more_here"<?php if ($selected_issuetype instanceof TBGIssuetype && $selected_project instanceof TBGProject): ?> style="display: none;"<?php endif; ?>>
 			<span id="issuetype_description_help"><?php echo __("Hold your mouse over an issuetype to see what it's used for"); ?></span>
-			<?php foreach ($issuetypes as $issuetype): ?>
-				<?php if (!$selected_project->getIssuetypeScheme()->isIssuetypeReportable($issuetype) && !$tbg_request->isAjaxCall()) continue; ?>
-				<span id="issuetype_<?php echo $issuetype->getKey(); ?>_description" style="display: none;"><?php echo $issuetype->getDescription(); ?></span>
-			<?php endforeach; ?>
 		</div>
 		<div class="report_form" id="report_form"<?php if (!$selected_project instanceof TBGProject || !$selected_issuetype instanceof TBGIssuetype): ?> style="display: none;"<?php endif; ?>>
 			<?php if ($reporthelparticle instanceof TBGWikiArticle): ?>
