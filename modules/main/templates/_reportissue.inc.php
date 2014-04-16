@@ -214,12 +214,34 @@
 			<?php endif; ?>
 			<?php foreach ($issuetypes as $issuetype): ?>
 				<?php if (!$selected_project->getIssuetypeScheme()->isIssuetypeReportable($issuetype) && !$tbg_request->isAjaxCall()) continue; ?>
-				<a class="button button-silver" href="javascript:void(0);" onclick="$('issuetype_id').setValue(<?php echo $issuetype->getID(); ?>);TBG.Issues.updateFields('<?php echo make_url('getreportissuefields', array('project_key' => $selected_project->getKey())); ?>');" onmouseover="$('issuetype_description_help').hide();$('issuetype_<?php echo $issuetype->getKey(); ?>_description').show();" onmouseout="$('issuetype_<?php echo $issuetype->getKey(); ?>_description').hide();$('issuetype_description_help').show();" style="font-size: 13px; font-weight: bold;">
+				<a class="button button-silver" data-key="<?php echo $issuetype->getKey(); ?>" data-id="<?php echo $issuetype->getID(); ?>" href="javascript:void(0);">
 					<?php echo image_tag($issuetype->getIcon() . '.png'); ?>
 					<?php echo __('Choose %issuetype_name', array('%issuetype_name' => '<br>'.$issuetype->getName())); ?>
 				</a>
 			<?php endforeach; ?>
 		</div>
+		<script type="text/javascript">
+		(function($) {
+			$(".issuetype_list a").each(function() {
+				var issueType = $(this);
+				var issueKey = issueType.attr("data-key");
+				
+				issueType
+				.click(function() {
+					$('#issuetype_id').val(issueType.attr("data-id") * 1);
+					TBG.Issues.updateFields('<?php echo make_url('getreportissuefields', array('project_key' => $selected_project->getKey())); ?>');
+				})
+				.mouseover(function() {
+					$('#issuetype_description_help').hide();
+					$('#issuetype_' + issueKey + '_description').show();
+				})
+				.mouseout(function() {
+					$('#issuetype_'+issueKey+'_description').hide();
+					$('#issuetype_description_help').show();
+				});
+			});
+		})(jQuery);
+		</script>
 	<?php endif; ?>
 	<div style="clear: both;"></div>
 	<?php if (count($issuetypes) > 0): ?>
