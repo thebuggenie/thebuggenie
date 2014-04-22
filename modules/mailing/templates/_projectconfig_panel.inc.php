@@ -36,7 +36,7 @@
 			<tr>
 				<td style="width: 200px;"><label for="mailing_from_name"><?php echo __('Project from-name'); ?></label></td>
 				<td style="width: 580px;">
-					<input type="email" name="mailing_from_name" style="width: 300px;" id="mailing_from_name" value="<?php echo TBGSettings::get('project_from_name_'.$project->getID(), 'mailing'); ?>">
+					<input type="text" name="mailing_from_name" style="width: 300px;" id="mailing_from_name" value="<?php echo TBGSettings::get('project_from_name_'.$project->getID(), 'mailing'); ?>">
 				</td>
 			</tr>
 			<tr>
