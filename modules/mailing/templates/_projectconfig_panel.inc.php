@@ -23,7 +23,7 @@
 	};
 </script>
 <div id="tab_mailing_pane"<?php if ($selected_tab != 'mailing'): ?> style="display: none;"<?php endif; ?>>
-<h3>Editing email settings</h3>
+<h3><?php echo __('Editing email settings');?></h3>
 	<div class="content">
 		<?php echo __('The Bug Genie can check email accounts and create issues from incoming emails. Set up a new account here, and check the %online_documentation% for more information.', array('%online_documentation%' => link_tag('http://issues.thebuggenie.com/wiki/TheBugGenie:IncomingEmail', '<b>'.__('online documentation').'</b>'))); ?>
 	</div>
