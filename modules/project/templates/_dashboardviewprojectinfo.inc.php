@@ -1,7 +1,14 @@
-<div id="project_description_span">
-	<?php if (TBGContext::getCurrentProject()->hasDescription()) echo tbg_parse_text(TBGContext::getCurrentProject()->getDescription()); ?>
+<?php
+	$projectHasDescription = TBGContext::getCurrentProject()->hasDescription();
+?>
+<div id="project_description"<?php if(!$projectHasDescription) echo ' class="none"'; ?>>
+	<?php
+		if ($projectHasDescription)
+			echo tbg_parse_text(TBGContext::getCurrentProject()->getDescription());
+		else
+			echo __('This project has no description');
+	?>
 </div>
-<div id="project_no_description"<?php if (TBGContext::getCurrentProject()->hasDescription()): ?> style="display: none;"<?php endif; ?>><?php echo __('This project has no description'); ?></div>
 <?php if (TBGContext::getCurrentProject()->hasOwner()): ?>
 	<div class="project_role">
 		<div class="label"><?php echo __('Owned by: %name', array('%name' => '')); ?></div>
