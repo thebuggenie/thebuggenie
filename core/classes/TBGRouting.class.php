@@ -470,11 +470,12 @@
 			}
 
 			// in PHP 5.5, preg_replace with /e modifier is deprecated; preg_replace_callback is recommended
-			$callback = function($matches) use($params) {
-                		return urlencode($params[$matches[1]]);
-            		};
+			$callback = function($matches) use($params)
+			{
+				return (array_key_exists($matches[1], $params)) ? urlencode($params[$matches[1]]) : $matches[0];
+			};
 
-            		$real_url = preg_replace_callback('/\:([^\/]+)/', $callback, $url);
+			$real_url = preg_replace_callback('/\:([^\/]+)/', $callback, $url);
 			
 			// we add all other params if *
 			if (mb_strpos($real_url, '*'))
