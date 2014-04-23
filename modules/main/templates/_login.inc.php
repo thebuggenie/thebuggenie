@@ -1,5 +1,5 @@
 <?php /* TBGEvent::createNew('core', 'login_form_tab')->trigger(array('selected_tab' => $selected_tab)); */ ?>
-<script language="text/javascript">
+<script type="text/javascript">
 	if (document.location.href.search('<?php echo make_url('login_page'); ?>') != -1)
 		$('tbg3_referer').setValue('<?php echo make_url('dashboard'); ?>');
 

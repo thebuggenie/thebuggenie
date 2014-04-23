@@ -214,12 +214,41 @@
 			<?php endif; ?>
 			<?php foreach ($issuetypes as $issuetype): ?>
 				<?php if (!$selected_project->getIssuetypeScheme()->isIssuetypeReportable($issuetype) && !$tbg_request->isAjaxCall()) continue; ?>
-				<a class="button button-silver" href="javascript:void(0);" onclick="$('issuetype_id').setValue(<?php echo $issuetype->getID(); ?>);TBG.Issues.updateFields('<?php echo make_url('getreportissuefields', array('project_key' => $selected_project->getKey())); ?>');" onmouseover="$('issuetype_description_help').hide();$('issuetype_<?php echo $issuetype->getKey(); ?>_description').show();" onmouseout="$('issuetype_<?php echo $issuetype->getKey(); ?>_description').hide();$('issuetype_description_help').show();" style="font-size: 13px; font-weight: bold;">
+				<a class="button button-silver" data-key="<?php echo $issuetype->getKey(); ?>" data-id="<?php echo $issuetype->getID(); ?>" href="javascript:void(0);">
 					<?php echo image_tag($issuetype->getIcon() . '.png'); ?>
 					<?php echo __('Choose %issuetype_name', array('%issuetype_name' => '<br>'.$issuetype->getName())); ?>
 				</a>
 			<?php endforeach; ?>
 		</div>
+		<script type="text/javascript">
+		(function($) {
+			var issueDescriptions = {
+			<?php foreach ($issuetypes as $issuetype): ?>
+				<?php if (!$selected_project->getIssuetypeScheme()->isIssuetypeReportable($issuetype) && !$tbg_request->isAjaxCall()) continue; ?>
+				"<?php echo $issuetype->getKey(); ?>" : "<?php echo $issuetype->getDescription(); ?>",
+			<?php endforeach; ?>
+			};
+			
+			var cachedHelp = $("#issuetype_description_help").text();
+
+			$(".issuetype_list a").each(function() {
+				var issueType = $(this);
+				var issueKey = issueType.attr("data-key");
+
+				issueType
+				.click(function() {
+					$('#issuetype_id').val(issueType.attr("data-id") * 1);
+					TBG.Issues.updateFields('<?php echo make_url('getreportissuefields', array('project_key' => $selected_project->getKey())); ?>');
+				})
+				.mouseover(function() {
+					$('#issuetype_description_help').text(issueDescriptions[issueKey]);
+				})
+				.mouseout(function() {
+					$('#issuetype_description_help').text(cachedHelp);
+				});
+			});
+		})(jQuery);
+		</script>
 	<?php endif; ?>
 	<div style="clear: both;"></div>
 	<?php if (count($issuetypes) > 0): ?>
@@ -231,10 +260,6 @@
 		<?php endif; ?>
 		<div id="report_more_here"<?php if ($selected_issuetype instanceof TBGIssuetype && $selected_project instanceof TBGProject): ?> style="display: none;"<?php endif; ?>>
 			<span id="issuetype_description_help"><?php echo __("Hold your mouse over an issuetype to see what it's used for"); ?></span>
-			<?php foreach ($issuetypes as $issuetype): ?>
-				<?php if (!$selected_project->getIssuetypeScheme()->isIssuetypeReportable($issuetype) && !$tbg_request->isAjaxCall()) continue; ?>
-				<span id="issuetype_<?php echo $issuetype->getKey(); ?>_description" style="display: none;"><?php echo $issuetype->getDescription(); ?></span>
-			<?php endforeach; ?>
 		</div>
 		<div class="report_form" id="report_form"<?php if (!$selected_project instanceof TBGProject || !$selected_issuetype instanceof TBGIssuetype): ?> style="display: none;"<?php endif; ?>>
 			<?php if ($reporthelparticle instanceof TBGWikiArticle): ?>

@@ -1240,7 +1240,7 @@ a.friend { color: #0000a4; }
 /* reporting an issue styles */
 .report_button { float: right; }
 .issuetype_list { text-align: center; padding: 0; margin: 10px auto 0 auto; clear: both; }
-.issuetype_list .button, .issuetype_list .button:hover { margin: 10px; font-size: 1.3em; font-weight: normal; padding: 15px !important; text-align: center; min-width: 130px; }
+.issuetype_list .button, .issuetype_list .button:hover { margin: 10px; font-size: 13px; font-weight: bold; padding: 15px !important; text-align: center; min-width: 130px; }
 .issuetype_list .button img { display: block; float: none; clear: both; margin: 10px auto 15px auto; }
 .report_issue_header { margin: 10px auto 0 auto; font-size: 1.5em; font-weight: bold; padding: 2px 0 10px 0; width: 990px; }
 #report_issue_more_options_indicator { text-align: left; margin-top: 10px; }
@@ -1899,7 +1899,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 #project_qa, #project_leader, #project_owner { font-weight: normal; margin: 5px 0; width: 290px; }
 #project_description_span { font-size: 1.1em; font-weight: normal; color: #666; }
 #project_no_description { font-size: 1.1em; font-weight: normal; color: #AAA; }
-.project_information_sidebar { vertical-align: top; border-right: 1px solid #CCC; height: 100%; width: 200px; padding: 0 0 50px 10px; position: relative; }
+.project_information_sidebar { vertical-align: top; border-right: 1px solid #CCC; height: 100%; width: 255px; padding: 10px 0 50px 10px; position: relative; }
 #search_sidebar { height: 100%; box-shadow: -5px 0 5px -5px rgba(0, 0, 0, 0.3) inset; border-right: 1px dotted #DDD; font-size: 1.1em; padding-top: 0; }
 #search_sidebar .num_results_badge { vertical-align: middle; float: right; }
 #search_sidebar .container_div { border: none; box-shadow: none; }
@@ -1934,6 +1934,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .project_information_sidebar .sidebar_links .simple_list li a { border: 0; padding: 3px; margin: 0; background-color: transparent; box-shadow: none; }
 .project_information_sidebar .sidebar_links .simple_list li.selected { font-style: italic; }
 .project_information_sidebar .sidebar_links { box-shadow: -3px 0 3px -3px rgba(0, 0, 0, 0.3) inset; height: 100%; }
+.project_information_sidebar .sidebar_links img {float: left; position: relative; margin-right: 5px;}
 .project_information_main { padding: 10px 15px 10px 15px; vertical-align: top; border-top: 1px solid #ccc; }
 .project_information_main .button, .project_information_main .button:hover { padding: 3px 7px !important; }
 .project_client_info .project_client_header { font-weight: bold; font-size: 1.5em; }
