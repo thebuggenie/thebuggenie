@@ -1892,7 +1892,9 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 #project_name { font-size: 1.8em; font-weight: bold; margin: 10px 5px 5px 0; line-height: 1; }
 #project_key_span { margin: 3px 0 0 0; font-size: 0.5em; font-weight: normal; display: inline; padding: 3px; color: #AAA; }
 #project_team, #project_client { font-weight: normal; margin: 0 5px 5px 0; }
-#project_qa, #project_leader, #project_owner { font-weight: normal; margin: 5px 0; width: 290px; }
+.dashboard_view_content .project_role {font-weight: normal; margin: 5px 0; width: 290px;}
+.project_role .label {font-weight: bold; float: left; margin: 0 10px 0 0;}
+.project_role .value {width: auto; display: table-cell; clear: none; padding: 0 10px 0 0;}
 #project_description_span { font-size: 1.1em; font-weight: normal; color: #666; }
 #project_no_description { font-size: 1.1em; font-weight: normal; color: #AAA; }
 .project_information_sidebar { vertical-align: top; border-right: 1px solid #CCC; height: 100%; width: 255px; padding: 10px 0 50px 10px; position: relative; }
