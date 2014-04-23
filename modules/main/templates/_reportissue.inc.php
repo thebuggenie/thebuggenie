@@ -225,7 +225,7 @@
 			var issueDescriptions = {
 			<?php foreach ($issuetypes as $issuetype): ?>
 				<?php if (!$selected_project->getIssuetypeScheme()->isIssuetypeReportable($issuetype) && !$tbg_request->isAjaxCall()) continue; ?>
-				"issue<?php echo $issuetype->getKey(); ?>" : "<?php echo $issuetype->getDescription(); ?>",
+				"<?php echo $issuetype->getKey(); ?>" : "<?php echo $issuetype->getDescription(); ?>",
 			<?php endforeach; ?>
 			};
 			
@@ -241,7 +241,7 @@
 					TBG.Issues.updateFields('<?php echo make_url('getreportissuefields', array('project_key' => $selected_project->getKey())); ?>');
 				})
 				.mouseover(function() {
-					$('#issuetype_description_help').text(issueDescriptions["issue" + issueKey]);
+					$('#issuetype_description_help').text(issueDescriptions[issueKey]);
 				})
 				.mouseout(function() {
 					$('#issuetype_description_help').text(cachedHelp);
