@@ -8,13 +8,13 @@
 		.log  tr  td:first-child {padding: 1px 5px 1px 1px}
 		.log .time {color: #555; font-size: 10px; font-style: italic;}
 		/* logging colors for categories */
-		.cat-main .catname {color:#55C}
-		.cat-B2DB .catname {color:#33B}
-		.cat-routing .catname {color:#5C5}
-		.cat-i18n .catname {color:#A83}
-		.cat-cache .catname {color:#8A3}
-		.cat-search .catname {color:#2FA}
-		.cat-publish .catname {color:#A79}
+		<?php
+			$categories = array("main", "B2DB", "routing", "i18n", "cache", "search", "publish");
+			foreach($categories as $category)
+			{
+				echo '.cat-'.$category.' .catname {color:#'.TBGLogging::getCategoryColor($category).'}';
+			}
+		?>
 		.cat .catname {color:#999}
 	</style>
 	<div style="border-top: 1px dotted #CCC; width: 100%; padding: 3px; background-color: #F1F1F1; box-shadow: 0 -3px 3px rgba(0, 0, 0, 0.3);">
