@@ -4,6 +4,18 @@
 		#log_messages div.log, #debug_routes div.log, #scope_settings div.log, #log_timing div.log, #log_sql div.log { height: 500px; overflow: auto; font-size: 12px; text-align: left; }
 		div.log table tr:hover td { background-color: #DDD; }
 		div.log table tr.selected { background-color: rgba(200, 200, 100, 0.8); }
+		.log  tr {font-size: 12px;}
+		.log  tr  td:first-child {padding: 1px 5px 1px 1px}
+		.log .time {color: #555; font-size: 10px; font-style: italic;}
+		/* logging colors for categories */
+		.cat-main .catname {color:#55C}
+		.cat-B2DB .catname {color:#33B}
+		.cat-routing .catname {color:#5C5}
+		.cat-i18n .catname {color:#A83}
+		.cat-cache .catname {color:#8A3}
+		.cat-search .catname {color:#2FA}
+		.cat-publish .catname {color:#A79}
+		.cat .catname {color:#999}
 	</style>
 	<div style="border-top: 1px dotted #CCC; width: 100%; padding: 3px; background-color: #F1F1F1; box-shadow: 0 -3px 3px rgba(0, 0, 0, 0.3);">
 		<table style="width: 100%; border: 0;" cellpadding="0" cellspacing="0">
@@ -54,8 +66,8 @@
 				<table style="border: 0;" cellpadding="0" cellspacing="0">
 					<?php foreach ($settings as $setting => $setting_details): ?>
 						<tr>
-							<td style="font-size: 12px; padding: 1px 5px 1px 1px;"><b><?php echo $setting; ?>: </b></td>
-							<td style="font-size: 12px;">
+							<td><b><?php echo $setting; ?>: </b></td>
+							<td>
 								<?php foreach ($setting_details as $uid => $setting): ?>
 									<?php echo htmlspecialchars($setting); ?>&nbsp;<i style="color: #AAA;">(<?php echo (!$uid) ? 'default' : "uid {$uid}"; ?>)</i><br>
 								<?php endforeach; ?>
@@ -90,9 +102,9 @@
 			<table style="border: 0;" cellpadding="0" cellspacing="0">
 			<?php foreach ($tbg_routing->getRoutes() as $route_name => $route): ?>
 				<?php list($route, $regexp, $names, $names_hash, $module, $action, $params, $csrf_enabled) = $route; ?>
-				<tr class="<?php if ($tbg_summary['routing']['name'] == $route_name) echo 'selected'; ?>">
-					<td style="font-size: 12px; padding: 1px 5px 1px 1px;"><b><?php echo $route_name; ?>: </b></td>
-					<td style="font-size: 12px;">
+				<tr <?php if ($tbg_summary['routing']['name'] == $route_name) echo 'class="selected"'; ?>>
+					<td><b><?php echo $route_name; ?>: </b></td>
+					<td>
 						<b class="log_routing"><?php echo $route; ?></b>, <?php echo $module; ?>::<?php echo $action; ?>()
 						<div class="faded">
 							Auto-CSRF protection: <?php echo ($csrf_enabled) ? 'yes' : 'no'; ?>
@@ -124,8 +136,10 @@
 		<div style="font-size: 16px; font-weight: bold; border-bottom: 1px solid #DDD; padding: 4px;">Log messages</div>
 		<div class="log">
 		<?php foreach ($tbg_summary['log'] as $entry): ?>
-			<?php $color = TBGLogging::getCategoryColor($entry['category']); ?>
-			<div class="log_<?php echo $entry['category']; ?>"><strong><?php echo mb_strtoupper(TBGLogging::getLevelName($entry['level'])); ?></strong> <strong style="color: #<?php echo $color; ?>">[<?php echo $entry['category']; ?>]</strong> <span style="color: #555; font-size: 10px; font-style: italic;"><?php echo $entry['time']; ?></span>&nbsp;&nbsp;<?php echo $entry['message']; ?></div>
+			<div class="cat-<?php echo $entry['category']; ?>">
+				<strong><?php echo mb_strtoupper(TBGLogging::getLevelName($entry['level'])); ?></strong>
+				<strong class="catname">[<?php echo $entry['category']; ?>]</strong>
+				<span class="time"><?php echo $entry['time']; ?></span>&nbsp;&nbsp;<?php echo $entry['message']; ?></div>
 		<?php endforeach; ?>
 		</div>
 	</div>

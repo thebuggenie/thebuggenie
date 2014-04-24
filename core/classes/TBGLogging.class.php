@@ -104,36 +104,6 @@
 		}
 
 		/**
-		 * Return the color assigned to a specific category
-		 *
-		 * @param string $category
-		 *
-		 * @return string
-		 */
-		public static function getCategoryColor($category)
-		{
-			switch ($category)
-			{
-				case 'main':
-					return "55C";
-				case 'B2DB':
-					return "33B";
-				case 'routing':
-					return "5C5";
-				case 'i18n':
-					return "A83";
-				case 'cache':
-					return "8A3";
-				case 'search':
-					return "2FA";
-				case 'publish':
-					return "A79";
-				default: 
-					return "999";
-			}
-		}
-
-		/**
 		 * Get current logged entries
 		 *
 		 * @return array
