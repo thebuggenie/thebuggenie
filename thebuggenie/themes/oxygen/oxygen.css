@@ -1702,12 +1702,13 @@ table.issue_affects td img { vertical-align: bottom; }
 #customize_dashboard_icon img, #customize_dashboard_icon span { float: right; margin-right: 10px; }
 #customize_dashboard_icon span { display: none; color: #AAA; font-size: 1.1em; }
 #customize_dashboard_icon:hover span { display: inherit; }
-#dashboard li { font-size: 0.9em; font-weight: normal; clear: none; margin: 5px 5px 5px 0; text-align: left; float: left; width: 49%; }
+#dashboard li { font-size: 0.9em; font-weight: normal; clear: none; margin: 5px 1% 5px 0; text-align: left; float: left; width: 49%; }
 #dashboard li .faded_out { font-size: 0.9em; font-weight: normal; }
 #dashboard li table tr td { font-size: 1em; font-weight: normal; vertical-align: top; }
 #dashboard li table tr.issue_closed td { text-decoration: line-through; color: #AAA; }
 #dashboard li table tr.issue_closed td a { color: #88C688; }
 #dashboard li table tr td .issue_closed { text-decoration: line-through; }
+#dashboard li .imgtd img {padding: 10px 5px 0 0}
 #dashboard li.narrow { width: 300px; }
 #dashboard li.wide { width: 700px; }
 #dashboard li .header, #dashboard_lefthand .header, #dashboard_righthand .header { margin: 1px 0 3px 0; padding: 3px 3px 5px 2px; font-weight: normal; font-size: 1.2em; border-bottom: 1px solid #CCC; background-color: #FFF; }
