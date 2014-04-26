@@ -81,7 +81,6 @@
 			$this->addRoute('vcs_commitspage', '/:project_key/commits', 'projectCommits');
 			$this->addRoute('normalcheckin', '/vcs_integration/report/:project_id/', 'addCommit');
 			$this->addRoute('githubcheckin', '/vcs_integration/report/:project_id/github/', 'addCommitGithub');
-			$this->addRoute('gitlabcheckin', '/vcs_integration/report/:project_id/gitlab/', 'addCommitGitlab');
 			$this->addRoute('bitbucketcheckin', '/vcs_integration/report/:project_id/bitbucket/', 'addCommitBitbucket');
 			$this->addRoute('gitoriouscheckin', '/vcs_integration/report/:project_id/gitorious/', 'addCommitGitorious');
 			$this->addRoute('configure_vcs_settings', '/configure/project/:project_id/vcs', 'configureProjectSettings', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_PROJECTS));
