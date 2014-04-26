@@ -76,6 +76,7 @@
 								<option value='cgit' >cgit</option>
 								<option value='gitorious'>Gitorious (<?php echo __('locally hosted'); ?>)</option>
 								<option value='github'>Github</option>
+								<option value='gitlab'>Gitlab</option>
 								<option value='bitbucket'>Bitbucket</option>
 								<option value='rhodecode'>RhodeCode</option>
 							</optgroup>

@@ -246,6 +246,140 @@
 			}
 			exit();
 		}
+
+        public function runAddCommitGitlab(TBGRequest $request)
+        {
+            TBGContext::getResponse()->setContentType('text/plain');
+            TBGContext::getResponse()->renderHeaders();
+
+            $passkey = TBGContext::getRequest()->getParameter('passkey');
+            $project_id = urldecode(TBGContext::getRequest()->getParameter('project_id'));
+
+            try
+            {
+                $project = TBGContext::factory()->TBGProject($project_id);
+            }
+            catch (Exception $e)
+            {
+                $project = false;
+            }
+
+            // Validate access
+            if (!$project)
+            {
+                echo 'Error: The project with the ID '.$project_id.' does not exist';
+                exit;
+            }
+
+            if (TBGSettings::get('access_method_'.$project->getID(), 'vcs_integration') == TBGVCSIntegration::ACCESS_DIRECT)
+            {
+                echo 'Error: This project uses the CLI access method, and so access via HTTP has been disabled';
+                exit;
+            }
+
+            if (TBGSettings::get('access_passkey_'.$project->getID(), 'vcs_integration') != $passkey)
+            {
+                echo 'Error: The passkey specified does not match the passkey specified for this project';
+                exit;
+            }
+
+            // Validate data
+            $data = html_entity_decode(TBGContext::getRequest()->getParameter('payload'));
+            if (empty($data) || $data == null)
+            {
+                //Need to check if payload is in unwrapped form from GitLab (until support is added)
+                //Obtain raw input from request
+                $data = file_get_contents("php://input");
+                if (empty($data) || $data == null)
+                {
+                    die('Error: No payload was provided');
+                }
+
+            }
+
+            $entries = json_decode($data);
+            if ($entries == null)
+            {
+                die('Error: The payload could not be decoded');
+            }
+
+            $previous = $entries->before;
+
+            // Branch is stored in the ref
+            $ref = $entries->ref;
+            $parts = explode('/', $ref);
+            if (count($parts) == 3)
+            {
+                $branch = $parts[2];
+            }
+            else
+            {
+                $branch = null;
+            }
+
+            // Parse each commit individually
+            foreach ($entries->commits as $commit)
+            {
+                $email = $commit->author->email;
+                $author = $commit->author->name;
+                $new_rev = $commit->id;
+                $old_rev = $previous;
+                $commit_msg = $commit->message;
+                $time = strtotime($commit->timestamp);
+
+                // Build arrays of affected files
+                if (property_exists($commit, 'modified'))
+                {
+                    $modified = $commit->modified;
+                }
+                else
+                {
+                    $modified = array();
+                }
+
+                if (property_exists($commit, 'removed'))
+                {
+                    $removed = $commit->removed;
+                }
+                else
+                {
+                    $removed = array();
+                }
+
+                if (property_exists($commit, 'added'))
+                {
+                    $added = $commit->added;
+                }
+                else
+                {
+                    $added = array();
+                }
+
+                // Build a string from these arrays
+                $entries = array($modified, $added, $removed);
+                $changed = '';
+
+                foreach ($entries[0] as $file)
+                {
+                    $changed .= 'M'.$file."\n";
+                }
+
+                foreach ($entries[1] as $file)
+                {
+                    $changed .= 'A'.$file."\n";
+                }
+
+                foreach ($entries[2] as $file)
+                {
+                    $changed .= 'D'.$file."\n";
+                }
+
+                // Add commit
+                echo TBGVCSIntegration::processCommit($project, $commit_msg, $old_rev, $new_rev, $time, $changed, $author, $branch);
+                $previous = $commit->id;
+            }
+            exit();
+        }
 		
 		/**
 		 * Bitbucket gateway - adding commit
@@ -483,6 +617,13 @@
 						$link_diff = '/commit/%revno';
 						$link_view = '/blob/%revno/%file';
 						break;
+                    case 'gitlab':
+                        $base_url = $request['browser_url'];
+                        $link_rev = '/commit/%revno';
+                        $link_file = '/commits/master/%file';
+                        $link_diff = '/commit/%revno';
+                        $link_view = '/blob/%revno/%file';
+                        break;
 					case 'bitbucket':
 						  $base_url = $request['browser_url'];
 						  $link_rev = '/changeset/%revno';
