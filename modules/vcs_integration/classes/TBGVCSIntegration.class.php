@@ -291,7 +291,7 @@
 							case 'gitlab':
 								$base_url = $web_path . '/' . $web_repo;
 								$link_rev = '/commit/%revno';
-								$link_file = '/commits/%branch%/%file';
+								$link_file = '/commits/%branch/%file';
 								$link_diff = '/commit/%revno';
 								$link_view = '/blob/%revno/%file';
 								break;
