@@ -483,6 +483,13 @@
 						$link_diff = '/commit/%revno';
 						$link_view = '/blob/%revno/%file';
 						break;
+					case 'gitlab':
+						$base_url = $request['browser_url'];
+						$link_rev = '/commit/%revno';
+						$link_file = '/commits/%branch/%file';
+						$link_diff = '/commit/%revno';
+						$link_view = '/blob/%revno/%file';
+						break;
 					case 'bitbucket':
 						  $base_url = $request['browser_url'];
 						  $link_rev = '/changeset/%revno';
