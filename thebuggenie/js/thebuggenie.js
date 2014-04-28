@@ -1,27 +1,27 @@
 function is_string(element) {
-    return (typeof element == 'string');
+	return (typeof element == 'string');
 }
 
 Array.range= function(a, b, step){
-    var A= [];
-    if(typeof a== 'number'){
-        A[0]= a;
-        step= step || 1;
-        while(a+step<= b){
-            A[A.length]= a+= step;
-        }
-    }
-    else{
-        var s= 'abcdefghijklmnopqrstuvwxyz';
-        if(a=== a.toUpperCase()){
-            b=b.toUpperCase();
-            s= s.toUpperCase();
-        }
-        s= s.substring(s.indexOf(a), s.indexOf(b)+ 1);
-        A= s.split('');
-    }
-    return A;
-}
+	var A= [];
+	if(typeof a== 'number'){
+		A[0]= a;
+		step= step || 1;
+		while(a+step<= b){
+			A[A.length]= a+= step;
+		}
+	}
+	else{
+		var s= 'abcdefghijklmnopqrstuvwxyz';
+		if(a=== a.toUpperCase()){
+			b=b.toUpperCase();
+			s= s.toUpperCase();
+		}
+		s= s.substring(s.indexOf(a), s.indexOf(b)+ 1);
+		A= s.split('');
+	}
+	return A;
+};
 
 // The core js class used by thebuggenie
 var TBG = {
@@ -33,14 +33,14 @@ var TBG = {
 		}
 	}, // The "Core" namespace is for functions used by thebuggenie core, not to be invoked outside the js class
 	Tutorial: {
-        Stories: {}
-    },
+		Stories: {}
+	},
 	Main: { // The "Main" namespace contains regular functions in use across the site
 		Helpers: {
 			Message: {},
 			Dialog: {},
 			Backdrop: {}
-		}, 
+		},
 		Profile: {},
 		Dashboard: {
 			views: [],
@@ -68,7 +68,7 @@ var TBG = {
 		Edition: {
 			Component: {}
 		},
-        Commits: {}
+		Commits: {}
 	},
 	Config: {
 		Permissions: {},
@@ -200,7 +200,7 @@ TBG.Core.popupVisiblizer = function() {
 	if (visible_popups.size()) {
 		visible_popups.each(function (element) {
 			var max_bottom = document.viewport.getHeight();
-			var element_height = $(element).getHeight()
+			var element_height = $(element).getHeight();
 			var parent_offset = $(element).up().cumulativeOffset().top;
 			var element_min_bottom = parent_offset + element_height + 35;
 			if (max_bottom < element_min_bottom) {
@@ -244,26 +244,26 @@ TBG.Core._scrollWatcher = function() {
 	}
 	if ($('bulk_action_form_top')) {
 		var y = document.viewport.getScrollOffsets().top;
-        var co = $('bulk_action_form_top').up('.bulk_action_container').cumulativeOffset();
+		var co = $('bulk_action_form_top').up('.bulk_action_container').cumulativeOffset();
 		if (y >= co.top) {
 			$('bulk_action_form_top').addClassName('fixed');
 		} else {
 			$('bulk_action_form_top').removeClassName('fixed');
 		}
 	}
-    if ($('issues_paginator')) {
-        var ip = $('issues_paginator');
-        var ipl = ip.getLayout();
-        var ip_height = ipl.get('height') + ipl.get('padding-top') + ipl.get('padding-bottom');
+	if ($('issues_paginator')) {
+		var ip = $('issues_paginator');
+		var ipl = ip.getLayout();
+		var ip_height = ipl.get('height') + ipl.get('padding-top') + ipl.get('padding-bottom');
 
-        var y = document.viewport.getScrollOffsets().top + document.viewport.getHeight();
-        var y2 = $('body').scrollHeight;
-        if (y >= y2 - ip_height) {
-            ip.removeClassName('fixed');
-        } else {
-            ip.addClassName('fixed');
-        }
-    }
+		var y = document.viewport.getScrollOffsets().top + document.viewport.getHeight();
+		var y2 = $('body').scrollHeight;
+		if (y >= y2 - ip_height) {
+			ip.removeClassName('fixed');
+		} else {
+			ip.addClassName('fixed');
+		}
+	}
 };
 
 /**
@@ -278,12 +278,12 @@ TBG.Core._toggleBreadcrumbItem = function(item) {
  * Toggles one breadcrumb item in the breadcrumb bar
  */
 TBG.Core._hideBreadcrumbItem = function() {
-    if ($('submenu')) {
-        $('submenu').select('.popped_out').each(function(element) {
-            element.removeClassName('popped_out');
-            element.previous().down('.activated').removeClassName('activated');
-        });
-    }
+	if ($('submenu')) {
+		$('submenu').select('.popped_out').each(function(element) {
+			element.removeClassName('popped_out');
+			element.previous().down('.activated').removeClassName('activated');
+		});
+	}
 };
 
 TBG.Core._detachFile = function(url, file_id, base_id) {
@@ -298,12 +298,12 @@ TBG.Core._detachFile = function(url, file_id, base_id) {
 			callback: function(json) {
 				if (json.attachmentcount == 0 && $('viewissue_no_uploaded_files')) $('viewissue_no_uploaded_files').show();
 				if ($('viewissue_uploaded_attachments_count')) $('viewissue_uploaded_attachments_count').update(json.attachmentcount);
-                TBG.Main.Helpers.Dialog.dismiss();
+				TBG.Main.Helpers.Dialog.dismiss();
 			}
 		},
 		failure: {
 			show: [base_id + file_id + '_remove_link', 'uploaded_files_'+ file_id + '_remove_link'],
-			hide: 'uploaded_files_'+ file_id + '_remove_indicator'			
+			hide: 'uploaded_files_'+ file_id + '_remove_indicator'
 		}
 	});
 };
@@ -368,7 +368,7 @@ TBG.Core._escapeWatcher = function(event) {
 /**
  * Main initializer function
  * Sets up and initializes autocompleters, watchers, etc
- * 
+ *
  * @param {Object} options A {key: value} store with options to set
  */
 TBG.initialize = function(options) {
@@ -418,7 +418,7 @@ TBG.Core.Pollers.Callbacks.dataPoller = function() {
 			}
 		});
 	}
-}
+};
 
 TBG.Main.Profile.toggleNotifications = function() {
 	var un = $('user_notifications');
@@ -438,7 +438,7 @@ TBG.Main.Profile.toggleNotifications = function() {
 			});
 		}
 	}
-}
+};
 
 TBG.loadDebugInfo = function(debug_id, cb) {
 	var url = TBG.debugUrl.replace('___debugid___', debug_id);
@@ -470,7 +470,7 @@ TBG.Main.Helpers.Message.clear = function() {
 
 /**
  * Shows an error popup message
- * 
+ *
  * @param title string The title to show
  * @param content string Error details
  */
@@ -492,7 +492,7 @@ TBG.Main.Helpers.Message.error = function(title, content) {
 
 /**
  * Shows a "success"-style popup message
- * 
+ *
  * @param title string The title to show
  * @param content string Message details
  */
@@ -525,37 +525,37 @@ TBG.Main.Helpers.Dialog.show = function(title, content, options) {
 	$('dialog_no').setAttribute('href', 'javascript:void(0)');
 	$('dialog_yes').stopObserving('click');
 	$('dialog_no').stopObserving('click');
-	if (options['yes']['click']) {
-		$('dialog_yes').observe('click', options['yes']['click']);
+	if (options.yes.click) {
+		$('dialog_yes').observe('click', options.yes.click);
 	}
-	if (options['yes']['href']) {
-		$('dialog_yes').setAttribute('href', options['yes']['href']);
+	if (options.yes.href) {
+		$('dialog_yes').setAttribute('href', options.yes.href);
 	}
-	if (options['no']['click']) {
-		$('dialog_no').observe('click', options['no']['click']);
+	if (options.no.click) {
+		$('dialog_no').observe('click', options.no.click);
 	}
-	if (options['no']['href']) {
-		$('dialog_no').setAttribute('href', options['no']['href']);
+	if (options.no.href) {
+		$('dialog_no').setAttribute('href', options.no.href);
 	}
 	$('dialog_backdrop_content').show();
 	$('dialog_backdrop').appear({duration: 0.2});
-}
+};
 
 TBG.Main.Helpers.Dialog.dismiss = function() {
 	$('dialog_backdrop_content').fade({duration: 0.2});
 	$('dialog_backdrop').fade({duration: 0.2});
-}
+};
 
 /**
  * Convenience function for running an AJAX call and updating / showing / hiding
  * divs on json feedback
- * 
+ *
  * Available options:
  *   loading: {} Instructions for the onLoading event
  *   success: {} Instructions for the onSuccess event
  *   failure: {} Instructions for the onComplete event
  *   complete: {} Instructions for the onComplete event
- *   
+ *
  *   Common options for all on* events:
  *     hide: string/array A list of / element id(s) to hide
  *     reset: string/array A list of / element id(s) to reset
@@ -564,24 +564,24 @@ TBG.Main.Helpers.Dialog.dismiss = function() {
  *     remove: string/array A list of / element id(s) to remove
  *     enable: string/array A list of / element id(s) to enable
  *     disable: string/array A list of / element id(s) to disable
- *     callback: a function to call at the end of the event. For 
- *		         success/failure/complete events, the callback 
+ *     callback: a function to call at the end of the event. For
+ *		         success/failure/complete events, the callback
  *		         function retrieves the json object
- *   
- *   The loading.indicator element will be toggled off in the onComplete event 
- *    
+ *
+ *   The loading.indicator element will be toggled off in the onComplete event
+ *
  *   Options for the onSuccess event instruction set:
- *     update: either an element id which will receive the value of the 
+ *     update: either an element id which will receive the value of the
  *             json.content property or an object with instructions:
- *     replace: either an element id which will be replace with the value of the 
+ *     replace: either an element id which will be replace with the value of the
  *             json.content property or an object with instructions:
- *             
+ *
  *     Available instructions for the success "update" object:
  *       element: the id of the element to update
  *       insertion: true / false / ommitted. If "true" the element will get the
  *                  content inserted after the existing content, instead of
  *                  the content replacing the existing content
- *       from: if the json return value does not contain a "content" key, 
+ *       from: if the json return value does not contain a "content" key,
  *			   specify which json key should be used
  *
  * @param url The URL to call
@@ -592,7 +592,7 @@ TBG.Main.Helpers.ajax = function(url, options) {
 	if (options.form && options.form != undefined) params = Form.serialize(options.form);
 	if (options.additional_params) params += options.additional_params;
 	var url_method = (options.url_method) ? options.url_method : 'post';
-	
+
 	new Ajax.Request(url, {
 		asynchronous: true,
 		method: url_method,
@@ -710,7 +710,7 @@ TBG.updateDebugInfo = function() {
 TBG.Main.Helpers.formSubmit = function(url, form_id) {
 	TBG.Main.Helpers.ajax(url, {
 		form: form_id,
-		loading: {indicator: form_id + '_indicator', disable: form_id + '_button'}, 
+		loading: {indicator: form_id + '_indicator', disable: form_id + '_button'},
 		success: {enable: form_id + '_button'},
 		failure: {enable: form_id + '_button'}
 	});
@@ -743,106 +743,106 @@ TBG.Main.Helpers.Backdrop.reset = function() {
 };
 
 TBG.Main.Helpers.tabSwitcher = function(visibletab, menu) {
-    if ($(menu)) {
-        $(menu).childElements().each(function(item){item.removeClassName('selected');});
-        $(visibletab).addClassName('selected');
-        $(menu + '_panes').childElements().each(function(item){item.hide();});
-        $(visibletab + '_pane').show();
-    }
+	if ($(menu)) {
+		$(menu).childElements().each(function(item){item.removeClassName('selected');});
+		$(visibletab).addClassName('selected');
+		$(menu + '_panes').childElements().each(function(item){item.hide();});
+		$(visibletab + '_pane').show();
+	}
 };
 
 TBG.Main.Helpers.MarkitUp = function(element) {
-    var elements = (element.hasClassName) ? [element] : element;
+	var elements = (element.hasClassName) ? [element] : element;
 
-    elements.each(function(elm) {
-        if ($(elm).hasClassName('syntax_mw')) {
-            var ms = [
-                {name:'Heading 1', key:'1', openWith:'== ', closeWith:' ==', placeHolder:'Your title here...'},
-                {name:'Heading 2', key:'2', openWith:'=== ', closeWith:' ===', placeHolder:'Your title here...'},
-                {name:'Heading 3', key:'3', openWith:'==== ', closeWith:' ====', placeHolder:'Your title here...'},
-                {name:'Heading 4', key:'4', openWith:'===== ', closeWith:' =====', placeHolder:'Your title here...'},
-                {name:'Heading 5', key:'5', openWith:'====== ', closeWith:' ======', placeHolder:'Your title here...'},
-                {separator:'---------------'},
-                {name:'Bold', key:'B', openWith:"'''", closeWith:"'''"},
-                {name:'Italic', key:'I', openWith:"''", closeWith:"''"},
-                {name:'Stroke through', key:'S', openWith:'<strike>', closeWith:'</strike>'},
-                {separator:'---------------'},
-                {name:'Bulleted list', openWith:'(!(* |!|*)!)'},
-                {name:'Numeric list', openWith:'(!(# |!|#)!)'},
-                {separator:'---------------'},
-                {name:'Picture', key:"P", replaceWith:'[[Image:[![Url:!:http://]!]|[![name]!]]]'},
-                {name:'Link', key:"L", openWith:"[[[![Link]!]|", closeWith:']]', placeHolder:'Your text to link here...'},
-                {name:'Url', openWith:"[[![Url:!:http://]!] ", closeWith:']', placeHolder:'Your text to link here...'},
-                {separator:'---------------'},
-                {name:'Quotes', openWith:'(!(> |!|>)!)', placeHolder:''},
-                {name:'Code', openWith:'(!(<source lang="[![Language:!:php]!]">|!|<pre>)!)', closeWith:'(!(</source>|!|</pre>)!)'}
-            ];
-        } else {
-            var ms = [
-                {name:'First Level Heading', key:'1', placeHolder:'Your title here...', closeWith:function(markItUp) { return TBG.Main.Helpers.miu.markdownTitle(markItUp, '=') } },
-                {name:'Second Level Heading', key:'2', placeHolder:'Your title here...', closeWith:function(markItUp) { return TBG.Main.Helpers.miu.markdownTitle(markItUp, '-') } },
-                {name:'Heading 3', key:'3', openWith:'### ', placeHolder:'Your title here...' },
-                {name:'Heading 4', key:'4', openWith:'#### ', placeHolder:'Your title here...' },
-                {name:'Heading 5', key:'5', openWith:'##### ', placeHolder:'Your title here...' },
-                {separator:'---------------' },
-                {name:'Bold', key:'B', openWith:'*', closeWith:'*'},
-                {name:'Italic', key:'I', openWith:'_', closeWith:'_'},
-                {name:'Stroke through', key:'S', openWith:'-', closeWith:'-'},
-                {separator:'---------------' },
-                {name:'Bulleted List', openWith:'- ' },
-                {name:'Numeric List', openWith:function(markItUp) {
-                    return markItUp.line+'. ';
-                }},
-                {separator:'---------------' },
-                {name:'Picture', key:'P', replaceWith:'![[![Alternative text]!]]([![Url:!:http://]!] "[![Title]!]")'},
-                {name:'Link', key:'L', openWith:'[', closeWith:']([![Url:!:http://]!] "[![Title]!]")', placeHolder:'Your text to link here...' },
-                {name:'Url', openWith:"[[![Url:!:http://]!] ", closeWith:']', placeHolder:'Your text to link here...'},
-                {separator:'---------------'},
-                {name:'Quotes', openWith:'> '},
-                {name:'Code', openWith:'(!(\t|!|`)!)', closeWith:'(!(`)!)'}
-            ];
-        }
-        jQuery(elm).markItUpRemove();
-        jQuery(elm).markItUp({
-            previewParserPath:	'', // path to your Wiki parser
-            onShiftEnter:		{keepDefault:false, replaceWith:'\n\n'},
-            markupSet: ms
-        });
-    });
+	elements.each(function(elm) {
+		if ($(elm).hasClassName('syntax_mw')) {
+			var ms = [
+				{name:'Heading 1', key:'1', openWith:'== ', closeWith:' ==', placeHolder:'Your title here...'},
+				{name:'Heading 2', key:'2', openWith:'=== ', closeWith:' ===', placeHolder:'Your title here...'},
+				{name:'Heading 3', key:'3', openWith:'==== ', closeWith:' ====', placeHolder:'Your title here...'},
+				{name:'Heading 4', key:'4', openWith:'===== ', closeWith:' =====', placeHolder:'Your title here...'},
+				{name:'Heading 5', key:'5', openWith:'====== ', closeWith:' ======', placeHolder:'Your title here...'},
+				{separator:'---------------'},
+				{name:'Bold', key:'B', openWith:"'''", closeWith:"'''"},
+				{name:'Italic', key:'I', openWith:"''", closeWith:"''"},
+				{name:'Stroke through', key:'S', openWith:'<strike>', closeWith:'</strike>'},
+				{separator:'---------------'},
+				{name:'Bulleted list', openWith:'(!(* |!|*)!)'},
+				{name:'Numeric list', openWith:'(!(# |!|#)!)'},
+				{separator:'---------------'},
+				{name:'Picture', key:"P", replaceWith:'[[Image:[![Url:!:http://]!]|[![name]!]]]'},
+				{name:'Link', key:"L", openWith:"[[[![Link]!]|", closeWith:']]', placeHolder:'Your text to link here...'},
+				{name:'Url', openWith:"[[![Url:!:http://]!] ", closeWith:']', placeHolder:'Your text to link here...'},
+				{separator:'---------------'},
+				{name:'Quotes', openWith:'(!(> |!|>)!)', placeHolder:''},
+				{name:'Code', openWith:'(!(<source lang="[![Language:!:php]!]">|!|<pre>)!)', closeWith:'(!(</source>|!|</pre>)!)'}
+			];
+		} else {
+			var ms = [
+				{name:'First Level Heading', key:'1', placeHolder:'Your title here...', closeWith:function(markItUp) { return TBG.Main.Helpers.miu.markdownTitle(markItUp, '=') } },
+				{name:'Second Level Heading', key:'2', placeHolder:'Your title here...', closeWith:function(markItUp) { return TBG.Main.Helpers.miu.markdownTitle(markItUp, '-') } },
+				{name:'Heading 3', key:'3', openWith:'### ', placeHolder:'Your title here...' },
+				{name:'Heading 4', key:'4', openWith:'#### ', placeHolder:'Your title here...' },
+				{name:'Heading 5', key:'5', openWith:'##### ', placeHolder:'Your title here...' },
+				{separator:'---------------' },
+				{name:'Bold', key:'B', openWith:'*', closeWith:'*'},
+				{name:'Italic', key:'I', openWith:'_', closeWith:'_'},
+				{name:'Stroke through', key:'S', openWith:'-', closeWith:'-'},
+				{separator:'---------------' },
+				{name:'Bulleted List', openWith:'- ' },
+				{name:'Numeric List', openWith:function(markItUp) {
+					return markItUp.line+'. ';
+				}},
+				{separator:'---------------' },
+				{name:'Picture', key:'P', replaceWith:'![[![Alternative text]!]]([![Url:!:http://]!] "[![Title]!]")'},
+				{name:'Link', key:'L', openWith:'[', closeWith:']([![Url:!:http://]!] "[![Title]!]")', placeHolder:'Your text to link here...' },
+				{name:'Url', openWith:"[[![Url:!:http://]!] ", closeWith:']', placeHolder:'Your text to link here...'},
+				{separator:'---------------'},
+				{name:'Quotes', openWith:'> '},
+				{name:'Code', openWith:'(!(\t|!|`)!)', closeWith:'(!(`)!)'}
+			];
+		}
+		jQuery(elm).markItUpRemove();
+		jQuery(elm).markItUp({
+			previewParserPath:	'', // path to your Wiki parser
+			onShiftEnter:		{keepDefault:false, replaceWith:'\n\n'},
+			markupSet: ms
+		});
+	});
 };
 
 // mIu nameSpace to avoid conflict.
 TBG.Main.Helpers.miu = {
-    markdownTitle: function(markItUp, char) {
-        heading = '';
-        n = jQuery.trim(markItUp.selection||markItUp.placeHolder).length;
-        for(i = 0; i < n; i++) {
-            heading += char;
-        }
-        return '\n'+heading;
-    }
+	markdownTitle: function(markItUp, char) {
+		heading = '';
+		n = jQuery.trim(markItUp.selection||markItUp.placeHolder).length;
+		for(i = 0; i < n; i++) {
+			heading += char;
+		}
+		return '\n'+heading;
+	}
 };
 
 TBG.Main.Helpers.setSyntax = function(base_id, syntax) {
-    var ce = $(base_id);
-    var cec = $(base_id).up('.textarea_container');
+	var ce = $(base_id);
+	var cec = $(base_id).up('.textarea_container');
 
-    ce.removeClassName('syntax_md');
-    ce.removeClassName('syntax_mw');
-    cec.removeClassName('syntax_md');
-    cec.removeClassName('syntax_mw');
+	ce.removeClassName('syntax_md');
+	ce.removeClassName('syntax_mw');
+	cec.removeClassName('syntax_md');
+	cec.removeClassName('syntax_mw');
 
-    ce.addClassName('syntax_' + syntax);
-    cec.addClassName('syntax_' + syntax);
+	ce.addClassName('syntax_' + syntax);
+	cec.addClassName('syntax_' + syntax);
 
-    $(base_id + '_selected_syntax').update((syntax == 'mw') ? 'mediawiki' : 'markdown');
-    $(base_id + '_syntax').setValue(syntax);
+	$(base_id + '_selected_syntax').update((syntax == 'mw') ? 'mediawiki' : 'markdown');
+	$(base_id + '_syntax').setValue(syntax);
 
-    $(base_id + '_syntax_picker').childElements().each(function(elm) {
-        (elm.hasClassName(syntax)) ? elm.addClassName('selected') : elm.removeClassName('selected');
-    })
+	$(base_id + '_syntax_picker').childElements().each(function(elm) {
+		(elm.hasClassName(syntax)) ? elm.addClassName('selected') : elm.removeClassName('selected');
+	});
 
-    TBG.Main.Helpers.MarkitUp(ce);
+	TBG.Main.Helpers.MarkitUp(ce);
 };
 
 TBG.Main.toggleBreadcrumbMenuPopout = function(event) {
@@ -864,9 +864,9 @@ TBG.Main.toggleBreadcrumbMenuPopout = function(event) {
 };
 
 TBG.Main.findIdentifiable = function(url, field) {
-	TBG.Main.Helpers.ajax(url, { 
-		form: field + '_form', 
-		loading: {indicator: field + '_spinning'}, 
+	TBG.Main.Helpers.ajax(url, {
+		form: field + '_form',
+		loading: {indicator: field + '_spinning'},
 		success: {update: field + '_results'}
 	});
 };
@@ -878,7 +878,7 @@ TBG.Main.updatePercentageLayout = function(percent) {
 
 TBG.Main.submitIssue = function(url) {
 	if ($('report_issue_submit_button').hasClassName('disabled')) return;
-	
+
 	TBG.Main.Helpers.ajax(url, {
 		form: 'report_issue_form',
 		url_method: 'post',
@@ -897,7 +897,7 @@ TBG.Main.submitIssue = function(url) {
 			}
 		}
 	});
-}
+};
 
 TBG.Main.Link.add = function(url, target_type, target_id) {
 	TBG.Main.Helpers.ajax(url, {
@@ -989,10 +989,10 @@ TBG.Main.toggleFavouriteArticle = function(url, article_id)
 TBG.Main.reloadImage = function(id) {
    var src = $(id).src;
    var date = new Date();
-   
+
    src = (src.indexOf('?') != -1) ? src.substr(0, pos) : src;
    $(id).src = src + '?v=' + date.getTime();
-   
+
    return false;
 };
 
@@ -1095,7 +1095,7 @@ TBG.Main.Profile.toggleNotificationSettings = function(preset) {
 	} else {
 		$('notification_settings_selectors').hide();
 	}
-}
+};
 
 TBG.Main.Profile.removeOpenIDIdentity = function(url, oid) {
 	TBG.Main.Helpers.ajax(url, {
@@ -1155,20 +1155,20 @@ TBG.Main.Dashboard.View.swap = function(source_elm)
 {
 	source_elm = $(source_elm);
 	var target_elm = source_elm.up('li').down('span');
-	
+
 	var orig_text = target_elm.innerHTML;
 	var orig_id = target_elm.id
-	
+
 	target_elm.update(source_elm.innerHTML);
 	target_elm.id = source_elm.id;
-	
+
 	source_elm.update(orig_text);
 	source_elm.id = orig_id;
-	
+
 	source_elm.up('li').toggleClassName('verylightyellow');
 	source_elm.up('li').toggleClassName('mediumgrey');
 
-if (target_elm.hasClassName('template_view')) { 
+if (target_elm.hasClassName('template_view')) {
 		target_elm.removeClassName('template_view');
 		source_elm.remove();
 	}
@@ -1180,7 +1180,7 @@ TBG.Main.Dashboard.View.add = function()
 	element_view.id = 'view_' + new Date().getTime();
 	$('views_list').insert(element_view);
 	element_view = null;
-	
+
 	Sortable.create('views_list');
 }
 
@@ -1208,7 +1208,7 @@ TBG.Main.Dashboard.save = function(url)
 	$('views_list').select('li').each(function (element) {
 		parameters = parameters + element.down('span.dashboard_view_data').id + ';';
 	});
-	
+
 	TBG.Main.Helpers.ajax(url, {
 		params: parameters,
 		loading: {
@@ -1392,11 +1392,11 @@ TBG.Main.Login.register = function(url)
 			callback: function(json) {
 				json.fields.each(function(field) {
 					$(field).setStyle({backgroundColor: '#FBB'});
-				});	
+				});
 			}
 		}
 	});
-}
+};
 
 TBG.Main.Login.login = function(url)
 {
@@ -1405,18 +1405,18 @@ TBG.Main.Login.login = function(url)
 		loading: {
 			indicator: 'login_indicator',
 			callback: function() {
-                $('login_button').disable();
-                $('login_indicator').show();
-            }
+				$('login_button').disable();
+				$('login_indicator').show();
+			}
 		},
 		complete: {
-            callback: function() {
-                $('login_indicator').hide();
-                $('login_button').enable();
-            }
+			callback: function() {
+				$('login_indicator').hide();
+				$('login_button').enable();
+			}
 		}
 	});
-}
+};
 
 TBG.Main.Login.resetForgotPassword = function(url) {
 	TBG.Main.Helpers.ajax(url, {
@@ -1430,45 +1430,45 @@ TBG.Main.Login.resetForgotPassword = function(url) {
 		},
 		complete: {
 			show: 'forgot_password_button',
-            callback: function() {
-                $('regular_login_container').up().select('.logindiv').each(function(elm) {
-                    elm.removeClassName('active');
-                });
-                $('regular_login_container').addClassName('active');
-            }
+			callback: function() {
+				$('regular_login_container').up().select('.logindiv').each(function(elm) {
+					elm.removeClassName('active');
+				});
+				$('regular_login_container').addClassName('active');
+			}
 		}
 	});
 };
 
 TBG.Main.Login.showLogin = function(section) {
-    $('login_backdrop').select('.logindiv').each(function(elm) {
-        elm.removeClassName('active');
-    });
-    $(section).addClassName('active');
-    if (section != 'register') {
-        $('registration-button-container').addClassName('active');
-    }
-    $('login_backdrop').show();
-    setTimeout(function() {
-        if (section == 'register') {
-            $('fieldusername').focus();
-        } else if (section == 'regular_login_container') {
-            $('tbg3_username').focus();
-        }
-    }, 250);
+	$('login_backdrop').select('.logindiv').each(function(elm) {
+		elm.removeClassName('active');
+	});
+	$(section).addClassName('active');
+	if (section != 'register') {
+		$('registration-button-container').addClassName('active');
+	}
+	$('login_backdrop').show();
+	setTimeout(function() {
+		if (section == 'register') {
+			$('fieldusername').focus();
+		} else if (section == 'regular_login_container') {
+			$('tbg3_username').focus();
+		}
+	}, 250);
 };
 
 TBG.Main.Login.forgotToggle = function() {
-    $('regular_login_container').up().select('.logindiv').each(function(elm) {
-        elm.removeClassName('active');
-    });
-    $('forgot_password_container').addClassName('active');
+	$('regular_login_container').up().select('.logindiv').each(function(elm) {
+		elm.removeClassName('active');
+	});
+	$('forgot_password_container').addClassName('active');
 };
 
 TBG.Project.Statistics.get = function(url) {
 	TBG.Main.Helpers.ajax(url, {
 		loading: {
-			show: 'statistics_main', 
+			show: 'statistics_main',
 			hide: 'statistics_help',
 			callback: function() {
 				$('statistics_main_image').src = '';
@@ -1595,7 +1595,7 @@ TBG.Project.Milestone.refresh = function(url, milestone_id) {
 					$('milestone_'+m_id+'_changed').show();
 					$('milestone_'+m_id+'_issues').update('');
 				}
-				
+
 			}
 		}
 	});
@@ -1672,7 +1672,7 @@ TBG.Project.Scrum.Story.add = function(url)
 TBG.Project.Planning.assign = function(url, dragged, dropped)
 {
 	if (dropped.id == dragged.up('.milestone_box').id) return;
-	
+
 	TBG.Main.Helpers.ajax(url, {
 		params: {story_id: $(dragged.select('input')[0]).value, sprint_id: $(dropped.id + '_id').getValue()},
 		loading: {
@@ -2190,7 +2190,7 @@ TBG.Project._submitDetails = function(url, form_id, pid) {
 						$('project_'+element+'s_disabled').show();
 					}
 				});
-				
+
 				if (pid != undefined && $('project_box_' + pid) != undefined) $('project_box_' + pid).update(json.content);
 			}
 		}
@@ -2333,8 +2333,8 @@ TBG.Config.updateCheck = function(url) {
 		},
 		success: {
 			callback: function(json) {
-				(json.uptodate) ? 
-					TBG.Main.Helpers.Message.success(json.title, json.message) : 
+				(json.uptodate) ?
+					TBG.Main.Helpers.Message.success(json.title, json.message) :
 					TBG.Main.Helpers.Message.error(json.title, json.message);
 			}
 		},
@@ -2675,7 +2675,7 @@ TBG.Config.User.show = function(url, findstring) {
 		loading: {indicator: 'find_users_indicator'},
 		success: {update: 'users_results'}
 	});
-}
+};
 
 TBG.Config.User.add = function(url, callback_function_for_import, form) {
 	f = (form !== undefined) ? form : 'createuser_form';
@@ -2698,7 +2698,7 @@ TBG.Config.User.add = function(url, callback_function_for_import, form) {
 			}
 		}
 	});
-}
+};
 
 TBG.Config.User.addToScope = function(url) {
 	TBG.Main.Helpers.ajax(url, {
@@ -2712,7 +2712,7 @@ TBG.Config.User.addToScope = function(url) {
 			}
 		}
 	});
-}
+};
 
 TBG.Config.User.getEditForm = function(url, uid) {
 	TBG.Main.Helpers.ajax(url, {
@@ -2722,7 +2722,7 @@ TBG.Config.User.getEditForm = function(url, uid) {
 			show: 'user_' + uid + '_edit_tr'
 		}
 	});
-}
+};
 
 TBG.Config.User.remove = function(url, user_id) {
 	TBG.Main.Helpers.ajax(url, {
@@ -2732,13 +2732,13 @@ TBG.Config.User.remove = function(url, user_id) {
 			callback: TBG.Config.User._updateLinks
 		}
 	});
-}
+};
 
 TBG.Config.User._updateLinks = function(json) {
 	if ($('current_user_num_count')) $('current_user_num_count').update(json.total_count);
 	(json.more_available) ? $('adduser_form_container').show() : $('adduser_form_container').hide();
 	TBG.Config.Collection.updateDetailsFromJSON(json);
-}
+};
 
 TBG.Config.User.update = function(url, user_id) {
 	TBG.Main.Helpers.ajax(url, {
@@ -2756,7 +2756,7 @@ TBG.Config.User.update = function(url, user_id) {
 			}
 		}
 	});
-}
+};
 
 TBG.Config.User.updateScopes = function(url, user_id) {
 	TBG.Main.Helpers.ajax(url, {
@@ -2766,7 +2766,7 @@ TBG.Config.User.updateScopes = function(url, user_id) {
 			callback: TBG.Main.Helpers.Backdrop.reset
 		}
 	});
-}
+};
 
 TBG.Config.User.getPermissionsBlock = function(url, user_id) {
 	$('users_results_user_' + user_id + '_permissions_row').toggle();
@@ -2777,11 +2777,11 @@ TBG.Config.User.getPermissionsBlock = function(url, user_id) {
 			},
 			success: {
 				update: 'users_results_user_' + user_id + '_permissions',
-                show: 'users_results_user_' + user_id + '_permissions'
+				show: 'users_results_user_' + user_id + '_permissions'
 			}
 		});
 	}
-}
+};
 
 TBG.Config.Collection.add = function(url, type, callback_function) {
 	TBG.Main.Helpers.ajax(url, {
@@ -2792,7 +2792,7 @@ TBG.Config.Collection.add = function(url, type, callback_function) {
 			callback: callback_function
 		}
 	});
-}
+};
 
 TBG.Config.Collection.remove = function(url, type, cid, callback_function) {
 	TBG.Main.Helpers.ajax(url, {
@@ -2805,7 +2805,7 @@ TBG.Config.Collection.remove = function(url, type, cid, callback_function) {
 			}
 		}
 	});
-}
+};
 
 TBG.Config.Collection.clone = function(url, type, cid, callback_function) {
 	TBG.Main.Helpers.ajax(url, {
@@ -2817,7 +2817,7 @@ TBG.Config.Collection.clone = function(url, type, cid, callback_function) {
 			callback: callback_function
 		}
 	});
-}
+};
 
 TBG.Config.Collection.showMembers = function(url, type, cid) {
 	$(type + '_members_' + cid + '_container').toggle();
@@ -2828,7 +2828,7 @@ TBG.Config.Collection.showMembers = function(url, type, cid) {
 			failure: {hide: type + '_members_' + cid + '_container'}
 		});
 	}
-}
+};
 
 TBG.Config.Collection.removeMember = function(url, type, cid, user_id) {
 	TBG.Main.Helpers.ajax(url, {
@@ -3109,7 +3109,7 @@ TBG.Config.Workflows.Transition.Actions.remove = function(url, action_id, type) 
 }
 
 /**
- * This function updates available issue reporting fields on page to match 
+ * This function updates available issue reporting fields on page to match
  * those returned by thebuggenie
  */
 TBG.Issues.updateFields = function(url)
@@ -3120,7 +3120,7 @@ TBG.Issues.updateFields = function(url)
 	if ($('project_id').getValue() != 0 && $('issuetype_id').getValue() != 0) {
 		$('report_more_here').hide();
 		$('report_form').show();
-		
+
 		TBG.Main.Helpers.ajax(url, {
 			loading: {indicator: 'report_issue_more_options_indicator'},
 			params: 'issuetype_id=' + $('issuetype_id').getValue(),
@@ -3199,7 +3199,7 @@ TBG.Issues.updateFields = function(url)
 		$('report_more_here').show();
 		$('issuetype_list').show();
 	}
-	
+
 }
 
 /**
@@ -3223,7 +3223,7 @@ TBG.Issues.showWorkflowTransition = function(transition_id) {
 				}
 			});
 		}
-			
+
 	}});
 };
 
@@ -3273,52 +3273,52 @@ TBG.Issues.findDuplicate = function(url, transition_id) {
 };
 
 TBG.Issues.editTimeEntry = function(form) {
-    var url = form.action;
-    TBG.Main.Helpers.ajax(url, {
-        form: form,
-        loading: { indicator: form.id + '_indicator' },
-        success: {
-            callback: function(json) {
-                $('fullpage_backdrop_content').update(json.timeentries);
-                if (json.timesum == 0) {
-                    $('no_spent_time_'+json.issue_id).show();
-                    $('spent_time_'+json.issue_id+'_name').hide();
-                } else {
-                    $('no_spent_time_'+json.issue_id).hide();
-                    $('spent_time_'+json.issue_id+'_value').update(json.spenttime);
-                }
-            }
-        }
-    });
+	var url = form.action;
+	TBG.Main.Helpers.ajax(url, {
+		form: form,
+		loading: { indicator: form.id + '_indicator' },
+		success: {
+			callback: function(json) {
+				$('fullpage_backdrop_content').update(json.timeentries);
+				if (json.timesum == 0) {
+					$('no_spent_time_'+json.issue_id).show();
+					$('spent_time_'+json.issue_id+'_name').hide();
+				} else {
+					$('no_spent_time_'+json.issue_id).hide();
+					$('spent_time_'+json.issue_id+'_value').update(json.spenttime);
+				}
+			}
+		}
+	});
 };
 
 TBG.Issues.deleteTimeEntry = function(url, entry_id) {
-    TBG.Main.Helpers.ajax(url, {
-        loading: { indicator: 'dialog_indicator' },
-        success: {
-            callback: function(json) {
-                $('issue_spenttime_'+entry_id).remove();
-                if ($('issue_spenttime_'+entry_id+'_comment')) $('issue_spenttime_'+entry_id+'_comment').remove();
-                if (json.timesum == 0) {
-                    $('no_spent_time_'+json.issue_id).show();
-                    $('spent_time_'+json.issue_id+'_name').hide();
-                } else {
-                    $('no_spent_time_'+json.issue_id).hide();
-                    $('spent_time_'+json.issue_id+'_value').update(json.spenttime);
-                }
-                TBG.Main.Helpers.Dialog.dismiss();
-            }
-        }
-    });
+	TBG.Main.Helpers.ajax(url, {
+		loading: { indicator: 'dialog_indicator' },
+		success: {
+			callback: function(json) {
+				$('issue_spenttime_'+entry_id).remove();
+				if ($('issue_spenttime_'+entry_id+'_comment')) $('issue_spenttime_'+entry_id+'_comment').remove();
+				if (json.timesum == 0) {
+					$('no_spent_time_'+json.issue_id).show();
+					$('spent_time_'+json.issue_id+'_name').hide();
+				} else {
+					$('no_spent_time_'+json.issue_id).hide();
+					$('spent_time_'+json.issue_id+'_value').update(json.spenttime);
+				}
+				TBG.Main.Helpers.Dialog.dismiss();
+			}
+		}
+	});
 };
 
 TBG.Issues.relate = function(url) {
-	
+
 	TBG.Main.Helpers.ajax(url, {
 		form: 'viewissue_relate_issues_form',
 		loading: {indicator: 'relate_issues_indicator'},
 		success: {
-			update: {element: 'related_child_issues_inline', insertion: true}, 
+			update: {element: 'related_child_issues_inline', insertion: true},
 			hide: 'no_child_issues'
 		}
 	});
@@ -3341,10 +3341,10 @@ TBG.Issues.removeRelated = function(url, issue_id) {
 
 TBG.Issues.move = function(form, issue_id) {
 	TBG.Main.Helpers.ajax(form.action, {
-        form: form,
+		form: form,
 		loading: {
-            indicator: 'move_issue_indicator'
-        },
+			indicator: 'move_issue_indicator'
+		},
 		success: {
 			remove: 'issue_'+issue_id,
 			update: 'viewissue_move_issue_div'
@@ -3354,10 +3354,10 @@ TBG.Issues.move = function(form, issue_id) {
 
 TBG.Issues._addVote = function(url, direction) {
 	var opp_direction = (direction == 'up') ? 'down' : 'up';
-	
+
 	TBG.Main.Helpers.ajax(url, {
 		loading: {
-			indicator: 'vote_' + direction + '_indicator', 
+			indicator: 'vote_' + direction + '_indicator',
 			hide: 'vote_' + direction + '_link'},
 		success: {
 			update: 'issue_votes',
@@ -3542,7 +3542,7 @@ TBG.Issues.Field.Updaters.timeFromObject = function(issue_id, object, values, fi
 }
 
 TBG.Issues.Field.Updaters.allVisible = function(visible_fields) {
-	TBG.available_fields.each(function (field) 
+	TBG.available_fields.each(function (field)
 	{
 		if ($(field + '_field')) {
 			if (visible_fields[field] != undefined)  {
@@ -3559,10 +3559,10 @@ TBG.Issues.Field.Updaters.allVisible = function(visible_fields) {
 /**
  * This function is triggered every time an issue is updated via the web interface
  * It sends a request that performs the update, and gets JSON back
- * 
- * Depending on the JSON return value, it updates fields, shows/hides boxes on the 
+ *
+ * Depending on the JSON return value, it updates fields, shows/hides boxes on the
  * page, and sets some class values
- * 
+ *
  * @param url The URL to request
  * @param field The field that is being changed
  * @param serialize_form Whether a form is being serialized
@@ -3574,9 +3574,9 @@ TBG.Issues.Field.set = function(url, field, serialize_form) {
 	} else if (serialize_form != undefined) {
 		post_form = serialize_form + '_form';
 	}
-	
+
 	var loading_show = (field == 'issuetype') ? 'issuetype_indicator_fullpage' : undefined;
-	
+
 	TBG.Main.Helpers.ajax(url, {
 		form: post_form,
 		loading: {
@@ -3596,7 +3596,7 @@ TBG.Issues.Field.set = function(url, field, serialize_form) {
 						$(field + '_' + json.issue_id + '_change').hide();
 					}
 					else TBG.Issues.Field.Updaters.fromObject(json.issue_id, json.field, field);
-					
+
 					if (field == 'issuetype') TBG.Issues.Field.Updaters.allVisible(json.visible_fields);
 					else if (field == 'pain_bug_type' || field == 'pain_likelihood' || field == 'pain_effect')
 					{
@@ -3665,7 +3665,7 @@ TBG.Issues.Field.setTime = function(url, field, issue_id) {
 TBG.Issues.Field.revert = function(url, field)
 {
 	var loading_show = (field == 'issuetype') ? 'issuetype_indicator_fullpage' : undefined;
-	
+
 	TBG.Main.Helpers.ajax(url, {
 		loading: {
 			indicator: field + '_undo_spinning',
@@ -3678,14 +3678,14 @@ TBG.Issues.Field.revert = function(url, field)
 					else if (field == 'estimated_time' || field == 'spent_time') TBG.Issues.Field.Updaters.timeFromObject(json.issue_id, json.field, json.values, field);
 					else if (field == 'percent_complete') TBG.Main.updatePercentageLayout(json.field);
 					else TBG.Issues.Field.Updaters.fromObject(json.issue_id, json.field, field);
-					
+
 					if (field == 'issuetype') TBG.Issues.Field.Updaters.allVisible(json.visible_fields);
 					else if (field == 'description' || field == 'reproduction_steps') $(field + '_form_value').update(json.form_value);
 					else if (field == 'pain_bug_type' || field == 'pain_likelihood' || field == 'pain_effect') $('issue_user_pain').update(json.field.user_pain);
 
 					TBG.Issues.markAsUnchanged(field);
 				}
-				
+
 			}
 		},
 		complete: {
@@ -3700,9 +3700,9 @@ TBG.Issues.markAsChanged = function(field)
 		$('viewissue_changed').show();
 		Effect.Pulsate($('issue_info_container'), {pulses: 3, duration: 2});
 	}
-	
+
 	$(field + '_field').addClassName('issue_detail_changed');
-	
+
 	if ($('comment_save_changes')) $('comment_save_changes').checked = true;
 }
 
@@ -3894,15 +3894,15 @@ TBG.Search.toggleColumn = function(column) {
 
 TBG.Search.resetColumns = function() {
 	TBG.Search.ResultViews[TBG.Search.current_result_view].visible.each(function(column) {
-        if (TBG.Search.ResultViews[TBG.Search.current_result_view].default_visible.indexOf(column) != -1) {
-            TBG.Search.setFilterValue($('search_column_'+column+'_toggler'), true);
-            $$('.sc_' + column).each(Element.show);
-        } else {
-            TBG.Search.setFilterValue($('search_column_'+column+'_toggler'), false);
-            $$('.sc_' + column).each(Element.hide);
-        }
+		if (TBG.Search.ResultViews[TBG.Search.current_result_view].default_visible.indexOf(column) != -1) {
+			TBG.Search.setFilterValue($('search_column_'+column+'_toggler'), true);
+			$$('.sc_' + column).each(Element.show);
+		} else {
+			TBG.Search.setFilterValue($('search_column_'+column+'_toggler'), false);
+			$$('.sc_' + column).each(Element.hide);
+		}
 	});
-    TBG.Search.saveColumnVisibility();
+	TBG.Search.saveColumnVisibility();
 };
 
 TBG.Search.setColumns = function(resultview, available_columns, visible_columns, default_columns) {
@@ -3913,14 +3913,14 @@ TBG.Search.setColumns = function(resultview, available_columns, visible_columns,
 		default_visible: default_columns
 	};
 	TBG.Search.ResultViews[resultview].available.each(function(column) {
-        if (TBG.Search.ResultViews[resultview].visible.indexOf(column) != -1) {
-            TBG.Search.setFilterValue($('search_column_'+column+'_toggler'), true);
-        } else {
-            TBG.Search.setFilterValue($('search_column_'+column+'_toggler'), false);
-        }
+		if (TBG.Search.ResultViews[resultview].visible.indexOf(column) != -1) {
+			TBG.Search.setFilterValue($('search_column_'+column+'_toggler'), true);
+		} else {
+			TBG.Search.setFilterValue($('search_column_'+column+'_toggler'), false);
+		}
 	});
 	$('scs_current_template').setValue(resultview);
-}
+};
 
 TBG.Search.checkToggledCheckboxes = function() {
 	var num_checked = 0;
@@ -3936,7 +3936,7 @@ TBG.Search.checkToggledCheckboxes = function() {
 	} else {
 		$('search_bulk_container_top').removeClassName('unavailable');
 		$('search_bulk_container_bottom').removeClassName('unavailable');
-		if ($('bulk_action_selector_top').getValue() != '') 
+		if ($('bulk_action_selector_top').getValue() != '')
 			$('bulk_action_submit_top').removeClassName('disabled');
 
 		if ($('bulk_action_selector_bottom').getValue() != '')
@@ -4035,7 +4035,7 @@ TBG.Search.bulkPostProcess = function(json) {
 				$('bulk_action_assign_milestone_bottom').setValue(json.milestone_id);
 				$('bulk_action_assign_milestone_bottom_name').hide();
 			}
-		} 
+		}
 		json.issue_ids.each(function(issue_id) {
 			var issue_elm = $('issue_' + issue_id);
 			if (issue_elm != undefined) {
@@ -4237,40 +4237,40 @@ TBG.Search.getFilterValues = function(element) {
 };
 
 TBG.Search.initializeFilterSearchValues = function(filter) {
-    var si = filter.down('input[type=search]');
-    if (si != undefined)
-    {
-        si.dataset.previousValue = '';
-        if (si.dataset.callbackUrl !== undefined) {
-            var fk = filter.dataset.filterKey;
-            si.on('keyup', function(event, element) {
-                if (TBG.ift_observers[fk]) clearTimeout(TBG.ift_observers[fk]);
-                if ((si.getValue().length >= 3 || si.getValue().length == 0) && si.getValue() != si.dataset.lastValue) {
-                    TBG.ift_observers[fk] = setTimeout(function() {
-                        TBG.Search.getFilterValues(si);
-                        si.dataset.lastValue = si.getValue();
-                    }, 1000);
-                }
-            });
-        } else {
-            si.on('keyup', TBG.Search.filterFilterOptions);
-        }
-        si.on('click', function(event, element) {
-            event.stopPropagation();
-            event.preventDefault();
-        });
-        filter.addClassName('searchable');
-    }
+	var si = filter.down('input[type=search]');
+	if (si != undefined)
+	{
+		si.dataset.previousValue = '';
+		if (si.dataset.callbackUrl !== undefined) {
+			var fk = filter.dataset.filterKey;
+			si.on('keyup', function(event, element) {
+				if (TBG.ift_observers[fk]) clearTimeout(TBG.ift_observers[fk]);
+				if ((si.getValue().length >= 3 || si.getValue().length == 0) && si.getValue() != si.dataset.lastValue) {
+					TBG.ift_observers[fk] = setTimeout(function() {
+						TBG.Search.getFilterValues(si);
+						si.dataset.lastValue = si.getValue();
+					}, 1000);
+				}
+			});
+		} else {
+			si.on('keyup', TBG.Search.filterFilterOptions);
+		}
+		si.on('click', function(event, element) {
+			event.stopPropagation();
+			event.preventDefault();
+		});
+		filter.addClassName('searchable');
+	}
 };
 
 TBG.Search.initializeFilterField = function(filter) {
-    filter.on('click', TBG.Search.toggleInteractiveFilter);
-    filter.select('li.filtervalue').each(function(filtervalue) {
-        filtervalue.on('click', TBG.Search.toggleFilterValue);
-    });
-    TBG.Search.initializeFilterSearchValues(filter);
+	filter.on('click', TBG.Search.toggleInteractiveFilter);
+	filter.select('li.filtervalue').each(function(filtervalue) {
+		filtervalue.on('click', TBG.Search.toggleFilterValue);
+	});
+	TBG.Search.initializeFilterSearchValues(filter);
 	TBG.Search.initializeFilterNavigation(filter);
-    TBG.Search.calculateFilterDetails(filter);
+	TBG.Search.calculateFilterDetails(filter);
 };
 
 TBG.Search.initializeFilterNavigation = function(filter) {
@@ -4305,13 +4305,13 @@ TBG.Search.filterFilterOptions = function(event, element) {
 };
 
 TBG.Search.filterFilterOptionsElement = function(element) {
-    var filtervalue = element.getValue();
+	var filtervalue = element.getValue();
 	if (filtervalue !== element.dataset.previousValue) {
 		if (filtervalue !== '') element.up().addClassName('filtered');
 		else element.up().removeClassName('filtered');
-		
+
 		element.up().select('.filtervalue').each(function(elm) {
-            if (elm.hasClassName('sticky')) return;
+			if (elm.hasClassName('sticky')) return;
 			if (filtervalue !== '') {
 				if (elm.innerHTML.toLowerCase().indexOf(filtervalue.toLowerCase()) !== -1 || elm.hasClassName('selected')) {
 					elm.addClassName('unfiltered');
@@ -4359,377 +4359,377 @@ TBG.Search.moveFilter = function(old_selected_element, new_selected_element, eve
 };
 
 TBG.Search.addFilter = function(event, element) {
-    if (!this.hasClassName('disabled')) {
-        var filter = this.dataset.filter;
-        $('searchbuilder_filterstrip_filtercontainer').insert($('interactive_filter_'+filter).remove());
-        setTimeout(function() {
-            TBG.Search.toggleInteractiveFilterElement($('interactive_filter_'+filter));
-        }, 250);
-        this.addClassName('disabled');
-    }
+	if (!this.hasClassName('disabled')) {
+		var filter = this.dataset.filter;
+		$('searchbuilder_filterstrip_filtercontainer').insert($('interactive_filter_'+filter).remove());
+		setTimeout(function() {
+			TBG.Search.toggleInteractiveFilterElement($('interactive_filter_'+filter));
+		}, 250);
+		this.addClassName('disabled');
+	}
 };
 
 TBG.Search.removeFilter = function(element) {
-    var do_update = ($('filter_'+element.dataset.filterkey+'_value_input').getValue() != '');
-    $('additional_filter_'+element.dataset.filterkey+'_link').removeClassName('disabled');
+	var do_update = ($('filter_'+element.dataset.filterkey+'_value_input').getValue() != '');
+	$('additional_filter_'+element.dataset.filterkey+'_link').removeClassName('disabled');
 	element.select('.filtervalue').each(function(elm) {
-		
-	});
-    $('searchbuilder_filter_hiddencontainer').insert(element.remove());
 
-    if (do_update) TBG.Search.liveUpdate();
-}
+	});
+	$('searchbuilder_filter_hiddencontainer').insert(element.remove());
+
+	if (do_update) TBG.Search.liveUpdate();
+};
 
 TBG.Search.saveColumnVisibility = function() {
-    var fif = $('find_issues_form');
-    if (fif.dataset.isSaved === undefined) {
-        var scc = $('search_columns_container');
-        var parameters = fif.serialize();
-        TBG.Main.Helpers.ajax(scc.dataset.url, {
-            params: parameters,
-            loading: { indicator: 'search_column_settings_indicator' },
-            success: { hide: 'search_column_settings_indicator' }
-        });
-    }
+	var fif = $('find_issues_form');
+	if (fif.dataset.isSaved === undefined) {
+		var scc = $('search_columns_container');
+		var parameters = fif.serialize();
+		TBG.Main.Helpers.ajax(scc.dataset.url, {
+			params: parameters,
+			loading: { indicator: 'search_column_settings_indicator' },
+			success: { hide: 'search_column_settings_indicator' }
+		});
+	}
 };
 
 TBG.Search.updateColumnVisibility = function(event, element) {
-    event.preventDefault();
-    event.stopPropagation();
-    if (element.down('input').checked) {
-        TBG.Search.setFilterValue(element, false);
-    } else {
-        TBG.Search.setFilterValue(element, true);
-    }
-    TBG.Search.toggleColumn(element.dataset.value);
-    TBG.Search.saveColumnVisibility();
+	event.preventDefault();
+	event.stopPropagation();
+	if (element.down('input').checked) {
+		TBG.Search.setFilterValue(element, false);
+	} else {
+		TBG.Search.setFilterValue(element, true);
+	}
+	TBG.Search.toggleColumn(element.dataset.value);
+	TBG.Search.saveColumnVisibility();
 };
 
 TBG.Search.initializeFilters = function() {
-    var fif = $('find_issues_form');
-    fif.reset();
-    $$('.filter').each(function (filter) {
-        TBG.Search.initializeFilterField(filter);
-    });
-    ['interactive_plus_button', 'interactive_template_button', 'interactive_grouping_button', 'interactive_save_button'].each(function (element) { if ($(element)) $(element).on('click', TBG.Search.toggleInteractiveFilter); });
-    TBG.Search.initializeFilterSearchValues($('search_column_settings_container'));
-    TBG.Search.initializeFilterSearchValues($('search_grouping_container'));
-    $('search_columns_container').select('li').each(function(element) {
-        element.on('click', TBG.Search.updateColumnVisibility);
-    });
-    $('search_grouping_container').select('li').each(function(element) {
-        element.on('click', TBG.Search.setGrouping);
-    });
-    $$('.template-picker').each(function(element) {
-        element.on('click', TBG.Search.pickTemplate);
-    });
-    document.observe('click', function(event, element) {
-        $$('.filter,.interactive_plus_button').each(function (element) { element.removeClassName('selected'); });
-    });
-    var sff = $('searchbuilder_filterstrip_filtercontainer');
-    $('interactive_filters_availablefilters_container').select('li').each(function (element) {
-        element.on('click', TBG.Search.addFilter);
-        if (sff.down('#interactive_filter_'+element.dataset.filter)) {
-            element.addClassName('disabled');
-        }
-    });
-    var ift = $('interactive_filter_text');
-    ift.dataset.lastValue = '';
+	var fif = $('find_issues_form');
+	fif.reset();
+	$$('.filter').each(function (filter) {
+		TBG.Search.initializeFilterField(filter);
+	});
+	['interactive_plus_button', 'interactive_template_button', 'interactive_grouping_button', 'interactive_save_button'].each(function (element) { if ($(element)) $(element).on('click', TBG.Search.toggleInteractiveFilter); });
+	TBG.Search.initializeFilterSearchValues($('search_column_settings_container'));
+	TBG.Search.initializeFilterSearchValues($('search_grouping_container'));
+	$('search_columns_container').select('li').each(function(element) {
+		element.on('click', TBG.Search.updateColumnVisibility);
+	});
+	$('search_grouping_container').select('li').each(function(element) {
+		element.on('click', TBG.Search.setGrouping);
+	});
+	$$('.template-picker').each(function(element) {
+		element.on('click', TBG.Search.pickTemplate);
+	});
+	document.observe('click', function(event, element) {
+		$$('.filter,.interactive_plus_button').each(function (element) { element.removeClassName('selected'); });
+	});
+	var sff = $('searchbuilder_filterstrip_filtercontainer');
+	$('interactive_filters_availablefilters_container').select('li').each(function (element) {
+		element.on('click', TBG.Search.addFilter);
+		if (sff.down('#interactive_filter_'+element.dataset.filter)) {
+			element.addClassName('disabled');
+		}
+	});
+	var ift = $('interactive_filter_text');
+	ift.dataset.lastValue = '';
 	TBG.ift_observers = {};
-    ift.on('keyup', function(event, element) {
-        if (TBG.ift_observer) clearTimeout(TBG.ift_observer);
-        if ((ift.getValue().length >= 3 || ift.getValue().length == 0) && ift.getValue() != ift.dataset.lastValue) {
-            TBG.ift_observer = setTimeout(function() {
-                TBG.Search.liveUpdate(true);
-                ift.dataset.lastValue = ift.getValue();
-            }, 1000);
-        }
-    });
+	ift.on('keyup', function(event, element) {
+		if (TBG.ift_observer) clearTimeout(TBG.ift_observer);
+		if ((ift.getValue().length >= 3 || ift.getValue().length == 0) && ift.getValue() != ift.dataset.lastValue) {
+			TBG.ift_observer = setTimeout(function() {
+				TBG.Search.liveUpdate(true);
+				ift.dataset.lastValue = ift.getValue();
+			}, 1000);
+		}
+	});
 };
 
 TBG.Search.pickTemplate = function(event, element) {
-    event.stopPropagation();
-    var is_selected = this.hasClassName('selected');
-    var current_elm = this;
-    if (!is_selected) {
-        $$('.template-picker').each(function (element) {
-            if (element == current_elm) {
-                current_elm.addClassName('selected');
-                $('filter_selected_template').setValue(current_elm.dataset.templateName);
-            } else {
-                element.removeClassName('selected');
-            }
-        });
-    }
-    $$('.filter,.interactive_plus_button').each(function (element) { if (element != this) element.removeClassName('selected'); });
-    if (is_selected) this.removeClassName('selected');
-    else this.addClassName('selected');
+	event.stopPropagation();
+	var is_selected = this.hasClassName('selected');
+	var current_elm = this;
+	if (!is_selected) {
+		$$('.template-picker').each(function (element) {
+			if (element == current_elm) {
+				current_elm.addClassName('selected');
+				$('filter_selected_template').setValue(current_elm.dataset.templateName);
+			} else {
+				element.removeClassName('selected');
+			}
+		});
+	}
+	$$('.filter,.interactive_plus_button').each(function (element) { if (element != this) element.removeClassName('selected'); });
+	if (is_selected) this.removeClassName('selected');
+	else this.addClassName('selected');
 
-    TBG.Search.liveUpdate();
+	TBG.Search.liveUpdate();
 };
 
 TBG.Search.setGrouping = function(event, element) {
-    event.stopPropagation();
-    TBG.Search.setFilterSelectionGroupSelections(this);
-    TBG.Search.setFilterValue(element, true);
+	event.stopPropagation();
+	TBG.Search.setFilterSelectionGroupSelections(this);
+	TBG.Search.setFilterValue(element, true);
 
-    if (element.hasClassName('groupby')) {
-        if (element.dataset.groupby == '') {
-            $('filter_grouping_options').select('.grouporder').each(Element.hide);
-        } else {
-            $('filter_grouping_options').select('.grouporder').each(Element.show);
-        }
-    }
+	if (element.hasClassName('groupby')) {
+		if (element.dataset.groupby == '') {
+			$('filter_grouping_options').select('.grouporder').each(Element.hide);
+		} else {
+			$('filter_grouping_options').select('.grouporder').each(Element.show);
+		}
+	}
 
-    TBG.Search.liveUpdate();
+	TBG.Search.liveUpdate();
 };
 
 TBG.Search.toggleInteractiveFilter = function(event, element) {
-    event.stopPropagation();
-    if (['INPUT'].indexOf(event.target.nodeName) != -1) return;
+	event.stopPropagation();
+	if (['INPUT'].indexOf(event.target.nodeName) != -1) return;
 	TBG.Search.toggleInteractiveFilterElement(this);
 };
 
 TBG.Search.toggleInteractiveFilterElement = function(element) {
-    var is_selected = element.hasClassName('selected');
-    $$('.filter,.interactive_plus_button').each(function (elm) { if (elm != element) elm.removeClassName('selected'); });
-    if (is_selected)
+	var is_selected = element.hasClassName('selected');
+	$$('.filter,.interactive_plus_button').each(function (elm) { if (elm != element) elm.removeClassName('selected'); });
+	if (is_selected)
 	{
 		element.removeClassName('selected');
 	}
-    else
+	else
 	{
 		element.addClassName('selected');
 		var search_inputs = (element.hasClassName('interactive_plus_button')) ? element.next().select('input[type=search]') : element.select('input[type=search]');
 		if (search_inputs.size() > 0) search_inputs[0].focus();
 	}
 
-    if (element.id == 'interactive_template_button' && element.hasClassName('selected')) {
-        TBG.Search.initializeIssuesPerPageSlider();
-    }
+	if (element.id == 'interactive_template_button' && element.hasClassName('selected')) {
+		TBG.Search.initializeIssuesPerPageSlider();
+	}
 };
 
 TBG.Search.moveIssuesPerPageSlider = function(step) {
-    var ipp_value = $('issues_per_page_slider_value');
-    var value = 50;
-    switch (step) {
-        case 1:
-            value = 25;
-            break;
-        case 2:
-            value = 50;
-            break;
-        case 3:
-            value = 100;
-            break;
-        case 4:
-            value = 250;
-            break;
-        case 5:
-            value = 500;
-            break;
-    }
-    ipp_value.update(value);
-    return value;
+	var ipp_value = $('issues_per_page_slider_value');
+	var value = 50;
+	switch (step) {
+		case 1:
+			value = 25;
+			break;
+		case 2:
+			value = 50;
+			break;
+		case 3:
+			value = 100;
+			break;
+		case 4:
+			value = 250;
+			break;
+		case 5:
+			value = 500;
+			break;
+	}
+	ipp_value.update(value);
+	return value;
 };
 
 TBG.Search.isDirty = function() {
-    if ($('filter_project_id_value_input').dataset.dirty == 'dirty') return true;
-    if ($('filter_subprojects_value_input') && $('filter_subprojects_value_input').dataset.dirty == 'dirty') return true;
+	if ($('filter_project_id_value_input').dataset.dirty == 'dirty') return true;
+	if ($('filter_subprojects_value_input') && $('filter_subprojects_value_input').dataset.dirty == 'dirty') return true;
 
-    return false;
+	return false;
 };
 
 TBG.Search.clearDirty = function() {
-    $('filter_project_id_value_input').dataset.dirty = undefined;
-    $('filter_subprojects_value_input').dataset.dirty = undefined;
+	$('filter_project_id_value_input').dataset.dirty = undefined;
+	$('filter_subprojects_value_input').dataset.dirty = undefined;
 };
 
 TBG.Search.loadDynamicChoices = function() {
-    var fif = $('find_issues_form');
-    var url = fif.dataset.dynamicCallbackUrl;
-    var parameters = '&project_id='+$('filter_project_id_value_input').getValue();
-    var filters_containers = [];
-    var fsvi = $('filter_subprojects_value_input');
-    if (fsvi) parameters += '&subprojects='+fsvi.getValue();
-    ['build', 'component', 'edition', 'milestone'].each(function(elm) {
-        var filter = $('interactive_filter_'+elm);
-        var results_container = filter.down('.interactive_menu_values');
-        results_container.select('input[type=checkbox]').each(function(checkbox) {
-            if (checkbox.checked) parameters += '&existing_ids['+filter.dataset.filterkey+']['+checkbox.value+']='+checkbox.value;
-        });
-        filters_containers.push({filter: filter, container: results_container});
-    });
-    TBG.Main.Helpers.ajax(url, {
-        params: parameters,
-        loading: {
-            callback: function() {
-                filters_containers.each(function(details) {
-                    details['container'].addClassName('updating');
-                });
-            }
-        },
-        success: {
-            callback: function(json) {
-                filters_containers.each(function(details) {
-                    details['container'].update(json.results[details['filter'].dataset.filterkey]);
-                    window.setTimeout(function() {
-                        details['container'].select('li.filtervalue').each(function(filtervalue) {
-                            filtervalue.on('click', TBG.Search.toggleFilterValue);
-                        });
-                        var si = details['filter'].down('input[type=search]');
-                        if (si != undefined) {
-                            si.dataset.previousValue = '';
-                            TBG.Search.filterFilterOptionsElement(si);
-                        }
-                    }, 250);
-                    details['container'].removeClassName('updating');
-                });
-            }
-        }
-    });
+	var fif = $('find_issues_form');
+	var url = fif.dataset.dynamicCallbackUrl;
+	var parameters = '&project_id='+$('filter_project_id_value_input').getValue();
+	var filters_containers = [];
+	var fsvi = $('filter_subprojects_value_input');
+	if (fsvi) parameters += '&subprojects='+fsvi.getValue();
+	['build', 'component', 'edition', 'milestone'].each(function(elm) {
+		var filter = $('interactive_filter_'+elm);
+		var results_container = filter.down('.interactive_menu_values');
+		results_container.select('input[type=checkbox]').each(function(checkbox) {
+			if (checkbox.checked) parameters += '&existing_ids['+filter.dataset.filterkey+']['+checkbox.value+']='+checkbox.value;
+		});
+		filters_containers.push({filter: filter, container: results_container});
+	});
+	TBG.Main.Helpers.ajax(url, {
+		params: parameters,
+		loading: {
+			callback: function() {
+				filters_containers.each(function(details) {
+					details['container'].addClassName('updating');
+				});
+			}
+		},
+		success: {
+			callback: function(json) {
+				filters_containers.each(function(details) {
+					details['container'].update(json.results[details['filter'].dataset.filterkey]);
+					window.setTimeout(function() {
+						details['container'].select('li.filtervalue').each(function(filtervalue) {
+							filtervalue.on('click', TBG.Search.toggleFilterValue);
+						});
+						var si = details['filter'].down('input[type=search]');
+						if (si != undefined) {
+							si.dataset.previousValue = '';
+							TBG.Search.filterFilterOptionsElement(si);
+						}
+					}, 250);
+					details['container'].removeClassName('updating');
+				});
+			}
+		}
+	});
 };
 
 TBG.Search.sortResults = function (event, element) {
-    if (element.dataset.sortField !== undefined) {
-        var direction = (element.dataset.sortDirection == 'asc') ? 'desc' : 'asc';
-        $('search_sortfields_input').setValue(element.dataset.sortField + '=' + direction);
-        TBG.Search.liveUpdate(true);
-    }
-}
+	if (element.dataset.sortField !== undefined) {
+		var direction = (element.dataset.sortDirection == 'asc') ? 'desc' : 'asc';
+		$('search_sortfields_input').setValue(element.dataset.sortField + '=' + direction);
+		TBG.Search.liveUpdate(true);
+	}
+};
 
 TBG.Search.download = function(format) {
-    var fif = $('find_issues_form');
-    var parameters = fif.serialize();
-    window.location = fif.dataset.historyUrl + '?' + parameters + '&format=' + format;
-}
+	var fif = $('find_issues_form');
+	var parameters = fif.serialize();
+	window.location = fif.dataset.historyUrl + '?' + parameters + '&format=' + format;
+};
 
 TBG.Search.liveUpdate = function(force) {
-    var fif = $('find_issues_form');
-    var url = fif.action;
-    var parameters = fif.serialize();
+	var fif = $('find_issues_form');
+	var url = fif.action;
+	var parameters = fif.serialize();
 
-    var results_loaded = fif.dataset.resultsLoaded != undefined;
+	var results_loaded = fif.dataset.resultsLoaded != undefined;
 
-    if (force == true || results_loaded) {
-        $('search_sidebar').addClassName('collapsed');
-        TBG.Main.Helpers.ajax(url, {
-            params: parameters,
-            loading: {
-                indicator: 'search_results_loading_indicator',
-                callback: function() {
-                    if (history.pushState) {
-                        history.pushState({caller: 'liveUpdate'}, '', fif.dataset.historyUrl + '?' + parameters);
-                    }
-                }
-            },
-            success: {update: 'search_results'},
-            complete: {
-                callback: function(json) {
-                    $('findissues_num_results_span').update(json.num_issues);
-                    $('findissues_search_title').hide();
-                    $('findissues_search_generictitle').show();
-                    $('findissues_num_results').show();
-                    $('interactive_save_button').show();
-                    fif.dataset.resultsLoaded = true;
-                    fif.dataset.isSaved = undefined;
-                    $('search_results').select('th').each(function (header_elm) {
-                        if (!header_elm.hasClassName('nosort')) {
-                            header_elm.on('click', TBG.Search.sortResults);
-                        }
-                    })
-                    if (TBG.Search.isDirty()) {
-                        TBG.Search.loadDynamicChoices();
-                        TBG.Search.clearDirty();
-                    }
-                }
-            }
-        });
-    }
+	if (force == true || results_loaded) {
+		$('search_sidebar').addClassName('collapsed');
+		TBG.Main.Helpers.ajax(url, {
+			params: parameters,
+			loading: {
+				indicator: 'search_results_loading_indicator',
+				callback: function() {
+					if (history.pushState) {
+						history.pushState({caller: 'liveUpdate'}, '', fif.dataset.historyUrl + '?' + parameters);
+					}
+				}
+			},
+			success: {update: 'search_results'},
+			complete: {
+				callback: function(json) {
+					$('findissues_num_results_span').update(json.num_issues);
+					$('findissues_search_title').hide();
+					$('findissues_search_generictitle').show();
+					$('findissues_num_results').show();
+					$('interactive_save_button').show();
+					fif.dataset.resultsLoaded = true;
+					fif.dataset.isSaved = undefined;
+					$('search_results').select('th').each(function (header_elm) {
+						if (!header_elm.hasClassName('nosort')) {
+							header_elm.on('click', TBG.Search.sortResults);
+						}
+					})
+					if (TBG.Search.isDirty()) {
+						TBG.Search.loadDynamicChoices();
+						TBG.Search.clearDirty();
+					}
+				}
+			}
+		});
+	}
 };
 
 TBG.Search.setIssuesPerPage = function(value) {
-    var fip_value = $('filter_issues_per_page');
-    fip_value.setValue(parseInt(value));
-    TBG.Search.liveUpdate();
+	var fip_value = $('filter_issues_per_page');
+	fip_value.setValue(parseInt(value));
+	TBG.Search.liveUpdate();
 };
 
 TBG.Search.initializeIssuesPerPageSlider = function() {
-    var ipp_slider = $('issues_per_page_slider');
-    if (ipp_slider.dataset.initialized == undefined) {
-        var fip_value = $('filter_issues_per_page');
-        var ipp_value = $('issues_per_page_slider_value');
-        var step_start = 1;
-        switch (parseInt(fip_value.getValue())) {
-            case 25:
-                step_start = 1;
-                break;
-            case 50:
-                step_start = 2;
-                break;
-            case 100:
-                step_start = 3;
-                break;
-            case 250:
-                step_start = 4;
-                break;
-            case 500:
-                step_start = 5;
-                break;
-        }
-        new Control.Slider('issues_per_page_handle', ipp_slider, {
-            range: $R(1, 5),
-            values: [1, 2, 3, 4, 5],
-            sliderValue: step_start,
-            onSlide: function(step) {
-                TBG.Search.moveIssuesPerPageSlider(step);
-            },
-            onChange: function(step) {
-                var value = TBG.Search.moveIssuesPerPageSlider(step);
-                TBG.Search.setIssuesPerPage(value);
-            }
-        });
-        ipp_slider.dataset.initialized = true;
-    }
+	var ipp_slider = $('issues_per_page_slider');
+	if (ipp_slider.dataset.initialized == undefined) {
+		var fip_value = $('filter_issues_per_page');
+		var ipp_value = $('issues_per_page_slider_value');
+		var step_start = 1;
+		switch (parseInt(fip_value.getValue())) {
+			case 25:
+				step_start = 1;
+				break;
+			case 50:
+				step_start = 2;
+				break;
+			case 100:
+				step_start = 3;
+				break;
+			case 250:
+				step_start = 4;
+				break;
+			case 500:
+				step_start = 5;
+				break;
+		}
+		new Control.Slider('issues_per_page_handle', ipp_slider, {
+			range: $R(1, 5),
+			values: [1, 2, 3, 4, 5],
+			sliderValue: step_start,
+			onSlide: function(step) {
+				TBG.Search.moveIssuesPerPageSlider(step);
+			},
+			onChange: function(step) {
+				var value = TBG.Search.moveIssuesPerPageSlider(step);
+				TBG.Search.setIssuesPerPage(value);
+			}
+		});
+		ipp_slider.dataset.initialized = true;
+	}
 };
 
 TBG.Search.setFilterValue = function(element, checked) {
-    if (element.hasClassName('separator')) return;
-    if (checked) {
-        element.addClassName('selected');
-        element.down('input').checked = true;
-    } else {
-        element.removeClassName('selected');
-        element.down('input').checked = false;
-    }
+	if (element.hasClassName('separator')) return;
+	if (checked) {
+		element.addClassName('selected');
+		element.down('input').checked = true;
+	} else {
+		element.removeClassName('selected');
+		element.down('input').checked = false;
+	}
 };
 
 TBG.Search.toggleFilterValue = function(event, element) {
-    event.stopPropagation();
-    event.stopImmediatePropagation();
-    event.preventDefault();
+	event.stopPropagation();
+	event.stopImmediatePropagation();
+	event.preventDefault();
 	TBG.Search.toggleFilterValueElement(this);
 };
 
 TBG.Search.setFilterSelectionGroupSelections = function(element) {
-    var current_element = element;
-    if (element.dataset.exclusive !== undefined) {
-        element.up('.interactive_menu_values').childElements().each(function (filter_element) {
-            if (filter_element.hasClassName('filtervalue')) {
-                if ((element.dataset.excludeGroup !== undefined && filter_element.dataset.selectionGroup == element.dataset.excludeGroup) ||
-                    element.dataset.selectionGroup == filter_element.dataset.selectionGroup) {
-                    if (filter_element.dataset.value != current_element.dataset.value) TBG.Search.setFilterValue(filter_element, false);
-                }
-            }
-        });
-    }
-    else if (element.dataset.excludeGroup !== undefined) {
-        element.up('.interactive_menu_values').childElements().each(function (filter_element) {
-            if (filter_element.hasClassName('filtervalue')) {
-                if (filter_element.dataset.selectionGroup != current_element.dataset.selectionGroup) TBG.Search.setFilterValue(filter_element, false);
-            }
-        });
-    }
+	var current_element = element;
+	if (element.dataset.exclusive !== undefined) {
+		element.up('.interactive_menu_values').childElements().each(function (filter_element) {
+			if (filter_element.hasClassName('filtervalue')) {
+				if ((element.dataset.excludeGroup !== undefined && filter_element.dataset.selectionGroup == element.dataset.excludeGroup) ||
+					element.dataset.selectionGroup == filter_element.dataset.selectionGroup) {
+					if (filter_element.dataset.value != current_element.dataset.value) TBG.Search.setFilterValue(filter_element, false);
+				}
+			}
+		});
+	}
+	else if (element.dataset.excludeGroup !== undefined) {
+		element.up('.interactive_menu_values').childElements().each(function (filter_element) {
+			if (filter_element.hasClassName('filtervalue')) {
+				if (filter_element.dataset.selectionGroup != current_element.dataset.selectionGroup) TBG.Search.setFilterValue(filter_element, false);
+			}
+		});
+	}
 };
 
 TBG.Search.toggleFilterValueElement = function(element, checked) {
@@ -4742,69 +4742,69 @@ TBG.Search.toggleFilterValueElement = function(element, checked) {
 	} else {
 		TBG.Search.setFilterValue(element, checked);
 	}
-    TBG.Search.setFilterSelectionGroupSelections(element);
-    var f_element = element.up('.filter');
-    TBG.Search.calculateFilterDetails(f_element);
-    $('filter_'+f_element.dataset.filterkey+'_value_input').dataset.dirty = 'dirty';
-    TBG.Search.liveUpdate(true);
+	TBG.Search.setFilterSelectionGroupSelections(element);
+	var f_element = element.up('.filter');
+	TBG.Search.calculateFilterDetails(f_element);
+	$('filter_'+f_element.dataset.filterkey+'_value_input').dataset.dirty = 'dirty';
+	TBG.Search.liveUpdate(true);
 };
 
 TBG.Search.setInteractiveDate = function(element) {
-    var f_element = element.up('.filter');
-    TBG.Search.calculateFilterDetails(f_element);
-    element.dataset.dirty = 'dirty';
-    TBG.Search.liveUpdate(true);
-}
+	var f_element = element.up('.filter');
+	TBG.Search.calculateFilterDetails(f_element);
+	element.dataset.dirty = 'dirty';
+	TBG.Search.liveUpdate(true);
+};
 
 TBG.Search.saveSearch = function() {
-    var fif = $('find_issues_form');
-    var find_parameters = fif.serialize();
-    var ssf = $('save_search_form');
-    var p = find_parameters + '&' + ssf.serialize();
+	var fif = $('find_issues_form');
+	var find_parameters = fif.serialize();
+	var ssf = $('save_search_form');
+	var p = find_parameters + '&' + ssf.serialize();
 
-    var button = ssf.down('input[type=submit]');
-    TBG.Main.Helpers.ajax(ssf.action, {
-        params: p,
-        loading: {
-            indicator: 'save_search_indicator',
-            callback: function() { button.disable(); }
-        },
-        complete: {
-            callback: function() { button.enable(); }
-        }
-    });
+	var button = ssf.down('input[type=submit]');
+	TBG.Main.Helpers.ajax(ssf.action, {
+		params: p,
+		loading: {
+			indicator: 'save_search_indicator',
+			callback: function() { button.disable(); }
+		},
+		complete: {
+			callback: function() { button.enable(); }
+		}
+	});
 };
 
 TBG.Search.calculateFilterDetails = function(filter) {
-    var string = '';
-    var value_string = '';
-    var selected_elements = [];
-    var selected_values = [];
-    filter.select('input[type=checkbox]').each(function (element) {
-        if (element.checked) {
-            selected_elements.push(element.dataset.text);
-            if (element.up('.filtervalue').dataset.operator == undefined) {
-                selected_values.push(element.getValue());
-            } else {
-                $('filter_'+filter.dataset.filterkey+'_operator_input').setValue(element.getValue());
-            }
-        }
-    });
-    if (selected_elements.size() > 0) {
-        string = selected_elements.join(', ');
-        value_string = selected_values.join(',');
-    } else {
-        string = filter.dataset.allValue;
-    }
-    if (filter.dataset.isdate !== undefined) {
-        selected_elements.push($('filter_'+filter.dataset.filterkey+'_value_input').dataset.displayValue);
-        string = selected_elements.join(' ');
-    }
-    if (string.length > 23) {
-        string = string.substr(0, 20) + '...';
-    }
-    filter.down('.value').update(string);
-    if (filter.dataset.isdate === undefined) $('filter_'+filter.dataset.filterkey+'_value_input').setValue(value_string);
+	var string = '';
+	var value_string = '';
+	var selected_elements = [];
+	var selected_values = [];
+	filter.select('input[type=checkbox]').each(function (element) {
+		if (element.checked) {
+			selected_elements.push(element.dataset.text);
+			if (element.up('.filtervalue').dataset.operator == undefined) {
+				selected_values.push(element.getValue());
+			} else {
+				$('filter_'+filter.dataset.filterkey+'_operator_input').setValue(element.getValue());
+			}
+		}
+	});
+	if (selected_elements.size() > 0) {
+		string = selected_elements.join(', ');
+		value_string = selected_values.join(',');
+	} else {
+		string = filter.dataset.allValue;
+	}
+	if (filter.dataset.isdate !== undefined) {
+		selected_elements.push($('filter_'+filter.dataset.filterkey+'_value_input').dataset.displayValue);
+		string = selected_elements.join(' ');
+	}
+	if (string.length > 23) {
+		string = string.substr(0, 20) + '...';
+	}
+	filter.down('.value').update(string);
+	if (filter.dataset.isdate === undefined) $('filter_'+filter.dataset.filterkey+'_value_input').setValue(value_string);
 };
 
 TBG.Search.initializeKeyboardNavigation = function() {
@@ -4837,7 +4837,7 @@ TBG.Search.initializeKeyboardNavigation = function() {
 			TBG.Search.move(old_selected_element, this, null, false);
 		});
 	});
-}
+};
 
 /*
 	Simple OpenID Plugin
@@ -5125,7 +5125,7 @@ TBG.Tutorial.highlightArea = function(top, left, width, height, blocked, seethro
 	var vp_height = document.viewport.getHeight();
 	var d4_height = vp_height - top - height;
 	var d4 = '<div class="fullpage_backdrop '+backdrop_class+' tutorial" style="top: '+(top+height)+'px; left: '+left+'px; width: '+width+'px; height: '+d4_height+'px"></div>';
-    var mc = $('main_container');
+	var mc = $('main_container');
 	if (blocked == true) {
 		var d_overlay = '<div class="tutorial block_overlay" style="top: '+top+'px; left: '+left+'px; width: '+width+'px; height: '+height+'px;"></div>';
 		mc.insert(d_overlay);
@@ -5160,14 +5160,14 @@ TBG.Tutorial.positionMessage = function(top, left, width, height) {
 		var twidth = tl.get('width') + tl.get('padding-left') + tl.get('padding-right');
 		switch (td.messagePosition) {
 			case 'right':
-                var tl = tm.getLayout();
-                var th = tl.get('height') + tl.get('padding-top') + tl.get('padding-bottom');
+				var tl = tm.getLayout();
+				var th = tl.get('height') + tl.get('padding-top') + tl.get('padding-bottom');
 				tm.setStyle({top: (top - parseInt(th / 2)) + 'px', left: (left + width + 15)+'px'});
 				break;
 			case 'left':
 				var tl = tm.getLayout();
 				var width = tl.get('width') + tl.get('padding-left') + tl.get('padding-right');
-                var th = tl.get('height') + tl.get('padding-top') + tl.get('padding-bottom');
+				var th = tl.get('height') + tl.get('padding-top') + tl.get('padding-bottom');
 				tm.setStyle({top: (top - parseInt(th / 2)) + 'px', left: (left - width - 15)+'px'});
 				break;
 			case 'below':
@@ -5191,9 +5191,9 @@ TBG.Tutorial.resetHighlight = function() {
 	$$('.tutorial').each(Element.remove);
 };
 TBG.Tutorial.disable = function() {
-    var tm = $('tutorial-message');
+	var tm = $('tutorial-message');
 	var key = tm.dataset.tutorialKey;
-    var url = tm.dataset.disableUrl;
+	var url = tm.dataset.disableUrl;
 	TBG.Main.Helpers.ajax(url, {
 		params: '&key='+key
 	});
@@ -5212,9 +5212,9 @@ TBG.Tutorial.playNextStep = function() {
 	tm.dataset.tutorialStep = step;
 	var tutorialData = TBG.Tutorial.Stories[key][step];
 	if (tutorialData != undefined) {
-        if (tutorialData.cb) {
-            tutorialData.cb(tutorialData);
-        }
+		if (tutorialData.cb) {
+			tutorialData.cb(tutorialData);
+		}
 		$('tutorial-message-container').update(tutorialData.message);
 		var tbn = tm.down('.tutorial-buttons').down('.button-next');
 		var tb = tm.down('.tutorial-buttons').down('.button-disable');
@@ -5234,16 +5234,16 @@ TBG.Tutorial.playNextStep = function() {
 		tm.addClassName(tutorialData.messageSize);
 		if (tutorialData.highlight != undefined) {
 			var tdh = tutorialData.highlight;
-            var timeout = (tdh.delay) ? tdh.delay : 50;
-            window.setTimeout(function() {
+			var timeout = (tdh.delay) ? tdh.delay : 50;
+			window.setTimeout(function() {
 				tm.show();
-                if (tdh.element != undefined) {
-                    var seethrough = (tdh.seethrough != undefined) ? tdh.seethrough : false;
-                    TBG.Tutorial.highlightElement(tdh.element, tdh.blocked, seethrough);
-                } else {
-                    TBG.Tutorial.highlightArea(tdh.top, tdh.left, tdh.width, tdh.height, tdh.blocked);
-                }
-            }, timeout);
+				if (tdh.element != undefined) {
+					var seethrough = (tdh.seethrough != undefined) ? tdh.seethrough : false;
+					TBG.Tutorial.highlightElement(tdh.element, tdh.blocked, seethrough);
+				} else {
+					TBG.Tutorial.highlightArea(tdh.top, tdh.left, tdh.width, tdh.height, tdh.blocked);
+				}
+			}, timeout);
 		} else {
 			TBG.Tutorial.highlightArea(0, 0, 0, 0, true);
 		}
@@ -5254,19 +5254,19 @@ TBG.Tutorial.playNextStep = function() {
 TBG.Tutorial.start = function(key, initial_step) {
 	var tutorial = TBG.Tutorial.Stories[key];
 	var ts = 0;
-    var is = (initial_step != undefined) ? (initial_step - 1) : 0;
+	var is = (initial_step != undefined) ? (initial_step - 1) : 0;
 	for (var d in tutorial) {
 		ts++;
 	}
-    var tm = $('tutorial-message');
-    tm.dataset.tutorialKey = key;
+	var tm = $('tutorial-message');
+	tm.dataset.tutorialKey = key;
 	tm.dataset.tutorialStep = is;
 	tm.dataset.tutorialSteps = ts;
 	$('tutorial-total-steps').update(ts);
 	$('tutorial-next-button').stopObserving('click');
 	$('tutorial-next-button').observe('click', TBG.Tutorial.playNextStep);
 	TBG.Tutorial.playNextStep();
-}
+};
 
 jQuery(document).ready(function(){
 	TBG.Main.Helpers.MarkitUp($$('textarea'));
