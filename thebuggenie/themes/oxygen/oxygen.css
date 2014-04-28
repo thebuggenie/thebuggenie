@@ -1625,6 +1625,10 @@ dd { float: left; display: block; width: 195px; font-weight: normal; margin: 0; 
 .faded_out .percent_filled { background-color: #BBEDB9; }
 .faded_out .percent_unfilled { background-color: #D8FFD1; }
 .priority_percentage .percent_unfilled, .priority_percentage .faded_out .percent_unfilled { background-color: #E2FFE1; }
+.statistics_percentage .hover_highlight > td:first-child {font-weight: normal; font-size: 13px !important; padding-left: 3px;}
+.statistics_percentage .hover_highlight > td:nth-child(2) {text-align: right; font-weight: bold !important; padding-right: 5px; vertical-align: middle;}
+.statistics_percentage .hover_highlight > td:last-child {width: 50%; vertical-align: middle;}
+
 
 #upload_error_div { margin: 10px 5px 5px 5px; }
 #viewissue_attached_information { margin-top: -5px; }
@@ -1702,12 +1706,13 @@ table.issue_affects td img { vertical-align: bottom; }
 #customize_dashboard_icon img, #customize_dashboard_icon span { float: right; margin-right: 10px; }
 #customize_dashboard_icon span { display: none; color: #AAA; font-size: 1.1em; }
 #customize_dashboard_icon:hover span { display: inherit; }
-#dashboard li { font-size: 0.9em; font-weight: normal; clear: none; margin: 5px 5px 5px 0; text-align: left; float: left; width: 460px; }
+#dashboard li { font-size: 0.9em; font-weight: normal; clear: none; margin: 5px 1% 5px 0; text-align: left; float: left; width: 49%; }
 #dashboard li .faded_out { font-size: 0.9em; font-weight: normal; }
 #dashboard li table tr td { font-size: 1em; font-weight: normal; vertical-align: top; }
 #dashboard li table tr.issue_closed td { text-decoration: line-through; color: #AAA; }
 #dashboard li table tr.issue_closed td a { color: #88C688; }
 #dashboard li table tr td .issue_closed { text-decoration: line-through; }
+#dashboard li .imgtd img {padding: 10px 5px 0 0}
 #dashboard li.narrow { width: 300px; }
 #dashboard li.wide { width: 700px; }
 #dashboard li .header, #dashboard_lefthand .header, #dashboard_righthand .header { margin: 1px 0 3px 0; padding: 3px 3px 5px 2px; font-weight: normal; font-size: 1.2em; border-bottom: 1px solid #CCC; background-color: #FFF; }
@@ -1896,9 +1901,11 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 #project_name { font-size: 1.8em; font-weight: bold; margin: 10px 5px 5px 0; line-height: 1; }
 #project_key_span { margin: 3px 0 0 0; font-size: 0.5em; font-weight: normal; display: inline; padding: 3px; color: #AAA; }
 #project_team, #project_client { font-weight: normal; margin: 0 5px 5px 0; }
-#project_qa, #project_leader, #project_owner { font-weight: normal; margin: 5px 0; width: 290px; }
-#project_description_span { font-size: 1.1em; font-weight: normal; color: #666; }
-#project_no_description { font-size: 1.1em; font-weight: normal; color: #AAA; }
+.dashboard_view_content .project_role {font-weight: normal; margin: 5px 0; width: 290px;}
+.project_role .label {font-weight: bold; float: left; margin: 0 10px 0 0;}
+.project_role .value {width: auto; display: table-cell; clear: none; padding: 0 10px 0 0;}
+#project_description {font-size: 1.1em; font-weight: normal; color: #666;}
+#project_description.none {color: #AAA;}
 .project_information_sidebar { vertical-align: top; border-right: 1px solid #CCC; height: 100%; width: 255px; padding: 10px 0 50px 10px; position: relative; }
 #search_sidebar { height: 100%; box-shadow: -5px 0 5px -5px rgba(0, 0, 0, 0.3) inset; border-right: 1px dotted #DDD; font-size: 1.1em; padding-top: 0; }
 #search_sidebar .num_results_badge { vertical-align: middle; float: right; }
