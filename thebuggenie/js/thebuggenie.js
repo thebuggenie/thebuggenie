@@ -186,7 +186,7 @@ TBG.Core._resizeWatcher = function() {
 	TBG.Core._vp_height = document.viewport.getHeight();
 	if (($('attach_file') && $('attach_file').visible())) {
 		var backdropheight = $('backdrop_detail_content').getHeight();
-		if (backdropheight > (docheight - 100)) {
+		if (backdropheight > (TBG.Core._vp_height - 100)) {
 			$('backdrop_detail_content').setStyle({height: TBG.Core._vp_height - 100 + 'px', overflow: 'scroll'});
 		} else {
 			$('backdrop_detail_content').setStyle({height: 'auto', overflow: ''});
