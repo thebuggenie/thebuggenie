@@ -1707,6 +1707,8 @@ table.issue_affects td img { vertical-align: bottom; }
 #customize_dashboard_icon span { display: none; color: #AAA; font-size: 1.1em; }
 #customize_dashboard_icon:hover span { display: inherit; }
 #dashboard li { font-size: 0.9em; font-weight: normal; clear: none; margin: 5px 1% 5px 0; text-align: left; float: left; width: 49%; }
+#dashboard li .container_div {margin: 0 0 5px 5px;}
+#dashboard li img.toggler {float: left; margin: 3px 5px 0 5px;}
 #dashboard li .faded_out { font-size: 0.9em; font-weight: normal; }
 #dashboard li table tr td { font-size: 1em; font-weight: normal; vertical-align: top; }
 #dashboard li table tr.issue_closed td { text-decoration: line-through; color: #AAA; }
