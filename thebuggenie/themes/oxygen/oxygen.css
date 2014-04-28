@@ -1330,7 +1330,7 @@ reportissue_additional_information_container .markItUp { display: none; }
 .issue_detail_field dl { border-bottom: 1px solid transparent; height: 24px; }
 .issue_detail_field dt { min-width: 150px; }*/
 
-#issue_details { display: inline-block; width: 350px; margin-right: 10px; vertical-align: top; border-right: 1px solid rgba(0, 0, 0, 0.1); box-shadow: 10px 0 15px -18px rgba(0, 0, 0, 0.9); position: relative; }
+#issue_details { display: inline-block; float:left; width: 350px; margin-right: 10px; vertical-align: top; border-right: 1px solid rgba(0, 0, 0, 0.1); box-shadow: 10px 0 15px -18px rgba(0, 0, 0, 0.9); position: relative; }
 #issue_details.collapsed { width: 30px; box-shadow: 10px 0 15px -14px rgba(0, 0, 0, 0.9); }
 #issue_details.collapsed fieldset { 
 	opacity: 0;
@@ -1355,7 +1355,6 @@ reportissue_additional_information_container .markItUp { display: none; }
 .issue_detail_field:hover { background-color: rgba(200, 200, 200, 0.2); border-radius: 3px; }
 .issue_detail_field dt { width: 35%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .issue_detail_field dd { width: auto; }
-#issue_main { display: inline-block; width: 600px; }
 #issue_timetracking_container { position: relative; }
 #issue_timetracking_log_time { position: absolute; top: 4px; right: 10px; }
 

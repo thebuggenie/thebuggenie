@@ -192,18 +192,6 @@ TBG.Core._resizeWatcher = function() {
 			$('backdrop_detail_content').setStyle({height: 'auto', overflow: ''});
 		}
 	}
-	if ($('issue_details') && $('issue_details').dataset.resizable != undefined) {
-		var id = $('issue_details');
-		var vlbtl = $('viewissue_left_box_top').getLayout();
-		var vlbt_width = vlbtl.get('width') - vlbtl.get('padding-left') - vlbtl.get('padding-right') - vlbtl.get('margin-left') - vlbtl.get('margin-right');
-		var idl = id.getLayout();
-		var id_width = idl.get('width') + idl.get('padding-left') + idl.get('padding-right') + idl.get('margin-right');
-		$('issue_main').setStyle({width: (vlbt_width - id_width) + 'px'});
-//		var element_width = (container_width > 650) ? parseInt(container_width / 2) : container_width;
-//		$('issue_details_fieldslist').childElements().each(function(item) {
-//			var l = $(item).getLayout();
-//		});
-	}
 	TBG.Core.popupVisiblizer();
 };
 
