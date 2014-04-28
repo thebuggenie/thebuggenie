@@ -681,11 +681,11 @@
 				mb_language('uni');
 				mb_http_output("UTF-8");
 
+				self::checkInstallMode();
+
 				TBGLogging::log('Loading scope');
 				self::setScope();
 				TBGLogging::log('done (loading scope)');
-
-				self::checkInstallMode();
 
 				if (!self::getRouting()->hasCachedRoutes()) self::loadPreModuleRoutes(); 
 
