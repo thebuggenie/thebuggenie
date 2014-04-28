@@ -385,7 +385,7 @@
 	{
 		$tbg_response = TBGContext::getResponse();
 		$tbg_response->addJavascript('prototype.js', true, true);
-		$tbg_response->addJavascript('jquery-1.6.2.min.js', true, true);
+		$tbg_response->addJavascript('jquery-1.8.3.min.js', true, true);
 		$tbg_response->addJavascript('builder.js');
 		$tbg_response->addJavascript('effects.js');
 		$tbg_response->addJavascript('dragdrop.js');
