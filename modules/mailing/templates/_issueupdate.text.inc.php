@@ -1,10 +1,10 @@
 * <?php echo $issue->getFormattedTitle(true); ?> *
-<?php echo __('Updated by') . ' ' . $updated_by->getBuddyname(). ' (' . $updated_by->getUsername() . ')';?>
+<?php echo __('Updated by %name', array('%name' => $updated_by->getBuddyname())) . ' (' . $updated_by->getUsername() . ')';?>
 
-<?php echo '(' . __('Created by') . ' ' . $issue->getPostedBy()->getBuddyname() . ' / ' . $issue->getPostedBy()->getUsername() . ')'; ?>
+<?php echo '(' . __('Created by %name', array('%name' => $issue->getPostedBy()->getBuddyname())) . ' / ' . $issue->getPostedBy()->getUsername() . ')'; ?>
 
 <?php if (isset($comment) && $comment instanceof TBGComment): ?>
-* <?php echo __('Comment by') . $comment->getPostedBy()->getBuddyname() . ' (' . $comment->getPostedBy()->getUsername() . ')';?> *
+* <?php echo __('Comment by %name', array('%name' => $comment->getPostedBy()->getBuddyname())) . ' (' . $comment->getPostedBy()->getUsername() . ')';?> *
 <?php echo $comment->getContent(); ?>
 <?php endif; ?>
 
@@ -104,7 +104,7 @@
 
 <?php if (isset($comment) && $comment instanceof TBGComment) { echo __('Show comment:') . ' ' . link_tag($module->generateURL('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())) . '#comment_' . $comment->getID()); } ?>
 
-<?php echo __('Show') . ' ' . $issue->getProject()->getName() . ' ' . __('project dashboard:') . ' ' . $module->generateURL('project_dashboard', array('project_key' => $issue->getProject()->getKey())); ?>
+<?php echo __('Show %project project dashboard:', array('%project' => $issue->getProject()->getName())) . ' ' . $module->generateURL('project_dashboard', array('project_key' => $issue->getProject()->getKey())); ?>
 
 
 <?php echo __('You were sent this notification email because you are related to, subscribed to, or commented on the issue mentioned in this email.'); ?>
