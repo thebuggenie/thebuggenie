@@ -199,11 +199,6 @@ TBG.Core._resizeWatcher = function() {
 		var idl = id.getLayout();
 		var id_width = idl.get('width') + idl.get('padding-left') + idl.get('padding-right') + idl.get('margin-right');
 		$('issue_main').setStyle({width: (vlbt_width - id_width) + 'px'});
-		$('issue_main').childElements().each(function(fieldset) {
-			fieldset.select('.resizable').each(function(elm) {
-				elm.setStyle({width: (vlbt_width - id_width) + 'px'});
-			});
-		});
 //		var element_width = (container_width > 650) ? parseInt(container_width / 2) : container_width;
 //		$('issue_details_fieldslist').childElements().each(function(item) {
 //			var l = $(item).getLayout();

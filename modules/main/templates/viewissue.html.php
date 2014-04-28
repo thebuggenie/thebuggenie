@@ -325,7 +325,7 @@
 							<?php endif; ?>
 							<?php echo __('Description'); ?>
 						</legend>
-						<div id="description_content" class="resizable <?php if ($issue->isDescriptionChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isDescriptionMerged()): ?> issue_detail_unmerged<?php endif; ?>">
+						<div id="description_content" class="<?php if ($issue->isDescriptionChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isDescriptionMerged()): ?> issue_detail_unmerged<?php endif; ?>">
 							<div class="faded_out" id="no_description" <?php if ($issue->getDescription() != ''):?> style="display: none;" <?php endif; ?>><?php echo __('Nothing entered.'); ?></div>
 							<div id="description_name" class="issue_inline_description">
 								<?php if ($issue->getDescription()): ?>
@@ -334,7 +334,7 @@
 							</div>
 						</div>
 						<?php if ($issue->isEditable() && $issue->canEditDescription()): ?>
-							<div id="description_change" style="display: none;" class="resizable">
+							<div id="description_change" style="display: none;">
 								<form id="description_form" action="<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'description')); ?>" method="post" onSubmit="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'description')) ?>', 'description'); return false;">
 									<?php include_template('main/textarea', array('area_name' => 'value', 'area_id' => 'description_form_value', 'syntax' => (($issue->getDescriptionSyntax() == TBGSettings::SYNTAX_MW) ? 'mw' : 'md'), 'height' => '250px', 'width' => '100%', 'value' => htmlentities($issue->getDescription(), ENT_COMPAT, TBGContext::getI18n()->getCharset()))); ?>
 									<br>
@@ -353,7 +353,7 @@
 							<?php endif; ?>
 							<?php echo __('Steps to reproduce this issue'); ?>
 						</legend>
-						<div id="reproduction_steps_content" class="resizable <?php if ($issue->isReproduction_StepsChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isReproduction_StepsMerged()): ?> issue_detail_unmerged<?php endif; ?>">
+						<div id="reproduction_steps_content" class="<?php if ($issue->isReproduction_StepsChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isReproduction_StepsMerged()): ?> issue_detail_unmerged<?php endif; ?>">
 							<div class="faded_out" id="no_reproduction_steps" <?php if ($issue->getReproductionSteps() != ''):?> style="display: none;" <?php endif; ?>><?php echo __('Nothing entered.'); ?></div>
 							<div id="reproduction_steps_name" class="issue_inline_description">
 								<?php if ($issue->getReproductionSteps()): ?>
@@ -362,7 +362,7 @@
 							</div>
 						</div>
 						<?php if ($issue->isEditable() && $issue->canEditReproductionSteps()): ?>
-							<div id="reproduction_steps_change" class="resizable" style="display: none;">
+							<div id="reproduction_steps_change" style="display: none;">
 								<form id="reproduction_steps_form" action="<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'reproduction_steps')); ?>" method="post" onSubmit="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'reproduction_steps')) ?>', 'reproduction_steps'); return false;">
 									<?php include_template('main/textarea', array('area_name' => 'value', 'area_id' => 'reproduction_steps_form_value', 'syntax' => (($issue->getReproductionStepsSyntax() == TBGSettings::SYNTAX_MW) ? 'mw' : 'md'), 'height' => '250px', 'width' => '100%', 'value' => htmlentities($issue->getReproductionSteps(), ENT_COMPAT, TBGContext::getI18n()->getCharset()))); ?>
 									<br>
