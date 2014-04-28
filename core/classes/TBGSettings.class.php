@@ -107,7 +107,7 @@
 
 		protected static $_ver_mj = 3;
 		protected static $_ver_mn = 2;
-		protected static $_ver_rev = '7';
+		protected static $_ver_rev = '7.1';
 		protected static $_ver_name = "A posse ad esse";
 		protected static $_defaultscope = null;
 		protected static $_settings = null;
