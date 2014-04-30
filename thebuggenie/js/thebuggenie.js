@@ -179,7 +179,7 @@ TBG.Core._extractAutocompleteValue = function(elem, value, event) {
 };
 
 /**
- * Monitors viewport resize to adapt backdrops and dashboard containers
+ * Monitors viewport resize to adapt backdrops
  */
 TBG.Core._resizeWatcher = function() {
 	TBG.Core._vp_width = document.viewport.getWidth();
@@ -191,13 +191,6 @@ TBG.Core._resizeWatcher = function() {
 		} else {
 			$('backdrop_detail_content').setStyle({height: 'auto', overflow: ''});
 		}
-	}
-	if ($('dashboard')) {
-		var dashboard_width = $('dashboard').getWidth();
-		var element_width = (dashboard_width > 600) ? ((dashboard_width / 2) - 5) : dashboard_width;
-		$('dashboard').childElements().each(function(item) {
-			item.setStyle({width: element_width + 'px'});
-		});
 	}
 	if ($('issue_details') && $('issue_details').dataset.resizable != undefined) {
 		var id = $('issue_details');
