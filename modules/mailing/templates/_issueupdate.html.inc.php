@@ -1,16 +1,16 @@
 <?php if ($issue instanceof TBGIssue): ?>
 	<h3>
 		<?php echo $issue->getFormattedTitle(true); ?><br>
-		<span style="font-size: 0.8em; font-weight: normal;">Updated by <?php echo $updated_by->getBuddyname(); ?> (<?php echo $updated_by->getUsername(); ?>)</span><br>
-		<span style="font-size: 0.8em; color: #AAA; font-weight: normal;">Created by <?php echo $issue->getPostedBy()->getBuddyname(); ?> (<?php echo $issue->getPostedBy()->getUsername(); ?>)</span>
+		<span style="font-size: 0.8em; font-weight: normal;"><?php echo __('Updated by %name', array('%name' => $updated_by->getBuddyname())) . ' (' . $updated_by->getUsername() . ')'; ?></span><br>
+		<span style="font-size: 0.8em; color: #AAA; font-weight: normal;"><?php echo __('Created by %name', array('%name' => $issue->getPostedBy()->getBuddyname())) . ' (' . $issue->getPostedBy()->getUsername() . ')'; ?></span>
 	</h3>
 	<?php if (isset($comment) && $comment instanceof TBGComment): ?>
-		<h4>Comment by <?php echo $comment->getPostedBy()->getBuddyname(); ?> (<?php echo $comment->getPostedBy()->getUsername(); ?>)</h4>
+		<h4><?php echo __('Comment by %name', array('%name' => $comment->getPostedBy()->getBuddyname())) . ' (' . $comment->getPostedBy()->getUsername() . ')'; ?></h4>
 		<p><?php echo $comment->getParsedContent(); ?></p>
 		<br>
 	<?php endif; ?>
 	<?php if (count($log_items)): ?>
-		<h4>Changes</h4>
+		<h4><?php echo __('Changes'); ?></h4>
 		<ul>
 			<?php foreach ($log_items as $item): ?>
 				<li>
@@ -106,14 +106,12 @@
 	<?php endif; ?>
 	<br>
 	<div style="color: #888;">
-		Show issue: <?php echo link_tag($module->generateURL('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo()))); ?><br>
-		<?php if (isset($comment) && $comment instanceof TBGComment): ?>
-			Show comment: <?php echo link_tag($module->generateURL('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())).'#comment_'.$comment->getID()); ?><br>
-		<?php endif; ?>
-		Show <?php echo $issue->getProject()->getName(); ?> project dashboard: <?php echo link_tag($module->generateURL('project_dashboard', array('project_key' => $issue->getProject()->getKey()))); ?><br>
+		<?php echo __('Show issue:') . ' ' . link_tag($module->generateURL('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo()))); ?><br>
+		<?php if (isset($comment) && $comment instanceof TBGComment){echo __('Show comment:') . ' ' . link_tag($module->generateURL('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())).'#comment_'.$comment->getID()) . "<br>";} ?>
+		<?php echo __('Show %project project dashboard:', array('%project' => $issue->getProject()->getName())) . ' ' . link_tag($module->generateURL('project_dashboard', array('project_key' => $issue->getProject()->getKey()))); ?><br>
 		<br>
-		You were sent this notification email because you are related to, subscribed to, or commented on the issue mentioned in this email.<br>
-		Depending on your notification settings, you may or may not be notified again when this issue is updated in the future.<br>
-		To change when and how often we send these emails, update your account settings: <?php echo link_tag($module->generateURL('account'), $module->generateURL('account')); ?>
+		<?php echo __('You were sent this notification email because you are related to, subscribed to, or commented on the issue mentioned in this email.');?><br>
+		<?php echo __('Depending on your notification settings, you may or may not be notified again when this issue is updated in the future.');?><br>
+		<?php echo __('To change when and how often we send these emails, update your account settings:') . ' ' . link_tag($module->generateURL('account'), $module->generateURL('account')); ?>
 	</div>
 <?php endif; ?>
