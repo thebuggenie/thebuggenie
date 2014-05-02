@@ -23,12 +23,12 @@
 	var providers_large = {
 		openid : {
 			name : 'OpenID',
-			label : '<?php echo __('Enter your OpenID'); ?>',
+			label : '<?php echo htmlspecialchars(__('Enter your OpenID'), ENT_QUOTES, TBGContext::getI18n()->getCharset()); ?>',
 			url : null
 		},
 		myopenid : {
 			name : 'MyOpenID',
-			label : '<?php echo __('Enter your MyOpenID username'); ?>',
+			label : '<?php echo htmlspecialchars(__('Enter your MyOpenID username'), ENT_QUOTES, TBGContext::getI18n()->getCharset()); ?>',
 			url : 'http://{username}.myopenid.com/'
 		},
 		yahoo : {
@@ -44,68 +44,68 @@
 	var providers_small = {
 		livejournal : {
 			name : 'LiveJournal',
-			label : '<?php echo __('Enter your Livejournal username'); ?>',
+			label : '<?php echo htmlspecialchars(__('Enter your Livejournal username'), ENT_QUOTES, TBGContext::getI18n()->getCharset()); ?>',
 			url : 'http://{username}.livejournal.com/'
 		},
 		aol : {
 			name : 'AOL',
-			label : '<?php echo __('Enter your AOL screenname'); ?>',
+			label : '<?php echo htmlspecialchars(__('Enter your AOL screenname'), ENT_QUOTES, TBGContext::getI18n()->getCharset()); ?>',
 			url : 'http://openid.aol.com/{username}'
 		},
 		flickr: {
 			name: 'Flickr',
-			label : '<?php echo __('Enter your Flickr username'); ?>',
+			label : '<?php echo htmlspecialchars(__('Enter your Flickr username'), ENT_QUOTES, TBGContext::getI18n()->getCharset()); ?>',
 			url: 'http://flickr.com/{username}/'
 		},
 		technorati: {
 			name: 'Technorati',
-			label : '<?php echo __('Your Technorati username'); ?>',
+			label : '<?php echo htmlspecialchars(__('Your Technorati username'), ENT_QUOTES, TBGContext::getI18n()->getCharset()); ?>',
 			url: 'http://technorati.com/people/technorati/{username}/'
 		},
 		wordpress : {
 			name : 'Wordpress',
-			label : '<?php echo __('Enter your Wordpress.com username'); ?>',
+			label : '<?php echo htmlspecialchars(__('Enter your Wordpress.com username'), ENT_QUOTES, TBGContext::getI18n()->getCharset()); ?>',
 			url : 'http://{username}.wordpress.com/'
 		},
 		blogger : {
 			name : 'Blogger',
-			label : '<?php echo __('Your Blogger account'); ?>',
+			label : '<?php echo htmlspecialchars(__('Your Blogger account'), ENT_QUOTES, TBGContext::getI18n()->getCharset()); ?>',
 			url : 'http://{username}.blogspot.com/'
 		},
 		verisign : {
 			name : 'Verisign',
-			label : '<?php echo __('Your Verisign username'); ?>',
+			label : '<?php echo htmlspecialchars(__('Your Verisign username'), ENT_QUOTES, TBGContext::getI18n()->getCharset()); ?>',
 			url : 'http://{username}.pip.verisignlabs.com/'
 		},
 		vidoop: {
 			name: 'Vidoop',
-			label : '<?php echo __('Your Vidoop username'); ?>',
+			label : '<?php echo htmlspecialchars(__('Your Vidoop username'), ENT_QUOTES, TBGContext::getI18n()->getCharset()); ?>',
 			url: 'http://{username}.myvidoop.com/'
 		},
 		launchpad: {
 			name: 'Launchpad',
-			label : '<?php echo __('Your Launchpad username'); ?>',
+			label : '<?php echo htmlspecialchars(__('Your Launchpad username'), ENT_QUOTES, TBGContext::getI18n()->getCharset()); ?>',
 			url: 'https://launchpad.net/~{username}'
 		},
 		claimid : {
 			name : 'ClaimID',
-			label : '<?php echo __('Your ClaimID username'); ?>',
+			label : '<?php echo htmlspecialchars(__('Your ClaimID username'), ENT_QUOTES, TBGContext::getI18n()->getCharset()); ?>',
 			url : 'http://claimid.com/{username}'
 		},
 		clickpass : {
 			name : 'ClickPass',
-			label : '<?php echo __('Enter your ClickPass username'); ?>',
+			label : '<?php echo htmlspecialchars(__('Enter your ClickPass username'), ENT_QUOTES, TBGContext::getI18n()->getCharset()); ?>',
 			url : 'http://clickpass.com/public/{username}'
 		},
 		google_profile : {
 			name : 'Google Profile',
-			label : '<?php echo __('Enter your Google Profile username'); ?>',
+			label : '<?php echo htmlspecialchars(__('Enter your Google Profile username'), ENT_QUOTES, TBGContext::getI18n()->getCharset()); ?>',
 			url : 'http://www.google.com/profiles/{username}'
 		}
 	};
 
-	TBG.OpenID.signin_text = '<?php echo __('Sign in'); ?>';
-	TBG.OpenID.image_title = '<?php echo __('Log in with %openid_provider_name%'); ?>';
+	TBG.OpenID.signin_text = '<?php echo htmlspecialchars(__('Sign in'), ENT_QUOTES, TBGContext::getI18n()->getCharset()); ?>';
+	TBG.OpenID.image_title = '<?php echo htmlspecialchars(__('Log in with %openid_provider_name%'), ENT_QUOTES, TBGContext::getI18n()->getCharset()); ?>';
 	TBG.OpenID.providers_small = providers_small;
 	TBG.OpenID.providers_large = providers_large;
 	<?php if ($tbg_request->isAjaxCall()): ?>

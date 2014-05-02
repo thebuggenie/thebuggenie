@@ -25,16 +25,16 @@
 						<?php else: ?>
 							<input type="hidden" id="return_to" name="return_to" value="<?php echo $referer; ?>" />
 						<?php endif; ?>
-						<div class="login_boxheader"><?php echo __('Log in to an existing account'); ?></div>
+						<div class="login_boxheader regular"><?php echo __('Log in to an existing account'); ?></div>
 						<div>
 							<table border="0" class="login_fieldtable">
 								<tr>
 									<td><label class="login_fieldheader" for="tbg3_username"><?php echo __('Username'); ?></label></td>
-									<td><input type="text" id="tbg3_username" name="tbg3_username" style="width: 200px;"></td>
+									<td><input type="text" id="tbg3_username" name="tbg3_username" style="width: 170px;"></td>
 								</tr>
 								<tr>
 									<td><label class="login_fieldheader" for="tbg3_password"><?php echo __('Password'); ?></label></td>
-									<td><input type="password" id="tbg3_password" name="tbg3_password" style="width: 200px;"></td>
+									<td><input type="password" id="tbg3_password" name="tbg3_password" style="width: 170px;"></td>
 								</tr>
 							</table>
 							<br>
