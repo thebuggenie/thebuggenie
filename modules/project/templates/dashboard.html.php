@@ -27,9 +27,7 @@
 						</li>
 					<?php endforeach; ?>
 				</ul>
-				<script type="text/javascript">
-					TBG.Main.Dashboard.url = '<?php echo make_url('dashboard_view'); ?>';
-				</script>
+				<?php include_template('main/dashboardjavascript'); ?>
 			<?php endif; ?>
 			<?php TBGEvent::createNew('core', 'project_dashboard_bottom')->trigger(); ?>
 		</td>
