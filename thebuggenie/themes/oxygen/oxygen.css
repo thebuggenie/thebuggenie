@@ -1356,7 +1356,7 @@ reportissue_additional_information_container .markItUp { display: none; }
 .issue_detail_field dt { width: 35%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .issue_detail_field dd { width: auto; }
 #issue_timetracking_container { position: relative; }
-#issue_timetracking_log_time { position: absolute; top: 4px; right: 10px; }
+#issue_timetracking_log_time { position: absolute; top: 4px; right: -25px; }
 
 /* workflow actions */
 #workflow_actions { position: absolute; margin-top: 3px; right: 10px; height: 25px; z-index: 102; }
