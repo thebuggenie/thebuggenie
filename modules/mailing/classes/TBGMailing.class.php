@@ -14,7 +14,7 @@
 		/**
 		 * Notify the user when a new article is created in his/her project(s)
 		 */
-		const NOTIFY_NEW_ARTICLES_MY_PROJECTS = 'notify_new_articles	_my_projects';
+		const NOTIFY_NEW_ARTICLES_MY_PROJECTS = 'notify_new_articles_my_projects';
 
 		/**
 		 * Only notify me once per issue
