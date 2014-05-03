@@ -1,17 +1,17 @@
 <?php if ($article instanceof TBGWikiArticle): ?>
-	<h3><?php echo $article->getTitle(); ?> updated</h3>
-	<h4>The article has been updated by <?php echo $user->getBuddyname(); ?> (<?php echo $user->getUsername(); ?>)</h4>
+	<h3><?php echo __('%article updated', array('%article' => $article->getTitle())); ?></h3>
+	<h4><?php echo __('The article has been updated by %name', array('%name' => $user->getBuddyname())) .' ( ' . $user->getUsername() . '):'; ?></h4>
 	<?php if (trim($change_reason) != ''): ?>
 		<pre><?php echo $change_reason; ?></pre><br>
 	<?php else: ?>
-		<div style="color: #AAA;">No change reason provided</div>
+		<div style="color: #AAA;"><?php echo __('No change reason provided');?></div>
 	<?php endif; ?>
 	<br>
 	<div style="color: #888;">
-		Show article: <?php echo link_tag($module->generateURL('publish_article', array('article_name' => $article->getTitle()))); ?><br>
-		Show changes: <?php echo link_tag($module->generateURL('publish_article_diff', array('article_name' => $article->getTitle(), 'from_revision' => $revision - 1, 'to_revision' => $revision))); ?><br>
+		<?php echo __('Show article:') . ' ' . link_tag($module->generateURL('publish_article', array('article_name' => $article->getTitle()))); ?><br>
+		<?php echo __('Show changes:') . ' ' . link_tag($module->generateURL('publish_article_diff', array('article_name' => $article->getTitle(), 'from_revision' => $revision - 1, 'to_revision' => $revision))); ?><br>
 		<br>
-		You were sent this notification email because you are related to the article mentioned in this email.<br>
-		To change when and how often we send these emails, update your account settings: <?php echo link_tag($module->generateURL('account'), $module->generateURL('account')); ?>
+		<?php echo __('You were sent this notification email because you are related to the article mentioned in this email.'); ?><br>
+		<?php echo __('To change when and how often we send these emails, update your account settings:') . ' ' . link_tag($module->generateURL('account'), $module->generateURL('account')); ?>
 	</div>
 <?php endif; ?>

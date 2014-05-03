@@ -1,12 +1,19 @@
 * <?php echo $issue->getFormattedTitle(true); ?> *
-Created by <?php echo $issue->getPostedBy()->getBuddyname(); ?> (<?php echo $issue->getPostedBy()->getUsername(); ?>)
+<?php echo __('Created by %name', array('%name' =>  $issue->getPostedBy()->getBuddyname())) . ' (' . $issue->getPostedBy()->getUsername() . ')'; ?>
 
-* Comment by <?php echo $comment->getPostedBy()->getBuddyname(); ?> (<?php echo $comment->getPostedBy()->getUsername(); ?>) *
+
+* <?php echo __('Comment by %name', array('%name' => $comment->getPostedBy()->getBuddyname())) . ' (' . $comment->getPostedBy()->getUsername() . ')'; ?> *
 <?php echo $comment->getContent(); ?>
 
-Show issue: <?php echo $module->generateURL('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())); ?>
-Show comment: <?php echo link_tag($module->generateURL('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())).'#comment_'.$comment->getID()); ?>
-Show <?php echo $issue->getProject()->getName(); ?> project dashboard: <?php echo $module->generateURL('project_dashboard', array('project_key' => $issue->getProject()->getKey())); ?>
 
-You were sent this notification email because you are related to the issue mentioned in this email.
-To change when and how often we send these emails, update your account settings: <?php echo link_tag($module->generateURL('account'), $module->generateURL('account')); ?>
+<?php echo __('Show issue:') . ' ' . $module->generateURL('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())); ?>
+
+<?php echo __('Show comment:') . ' ' . $module->generateURL('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())) . '#comment_' . $comment->getID();?>
+
+<?php echo __('Show %project project dashboard:', array('%project' => $issue->getProject()->getName())) . ' ' .  $module->generateURL('project_dashboard', array('project_key' => $issue->getProject()->getKey())); ?>
+
+
+<?php echo __('You were sent this notification email because you are related to the issue mentioned in this email.'); ?>
+
+<?php echo __('To change when and how often we send these emails, update your account settings:') . ' ' . $module->generateURL('account'); ?>
+

@@ -1,10 +1,13 @@
-* <?php echo $article->getTitle(); ?> updated *
+* <?php echo __('%article updated', array('%article' => $article->getTitle())); ?> *
 
-The article has been updated by <?php echo $user->getBuddyname(); ?> (<?php echo $user->getUsername(); ?>):
-<?php echo (trim($change_reason) != '') ? '"'.$change_reason.'"' : '(No change reason provided)'; ?><?php echo "\n"; ?>
+<?php echo __('The article has been updated by %name', array('%name' => $user->getBuddyname())) .' (' . $user->getUsername() . '):'; ?>
 
-Show article: <?php echo $module->generateURL('publish_article', array('article_name' => $article->getTitle()))."\n"; ?>
-Show changes: <?php echo $module->generateURL('publish_article_diff', array('article_name' => $article->getTitle(), 'from_revision' => $revision - 1, 'to_revision' => $revision))."\n"; ?>
+<?php echo (trim($change_reason) != '') ? '"'.$change_reason.'"' : '(' . __('No change reason provided') .')'; echo "\n"; ?>
 
-You were sent this notification email because you are related to the article mentioned in this email.
-To change when and how often we send these emails, update your account settings: <?php echo link_tag($module->generateURL('account'), $module->generateURL('account')); ?>
+<?php echo __('Show article:') . ' ' . $module->generateURL('publish_article', array('article_name' => $article->getTitle()))."\n"; ?>
+<?php echo __('Show changes:') . ' ' . $module->generateURL('publish_article_diff', array('article_name' => $article->getTitle(), 'from_revision' => $revision - 1, 'to_revision' => $revision))."\n"; ?>
+
+
+<?php echo __('You were sent this notification email because you are related to the article mentioned in this email.')?>
+
+<?php echo __('To change when and how often we send these emails, update your account settings:') . ' '. $module->generateURL('account'); ?>
