@@ -1586,7 +1586,8 @@
 					}
 					else
 					{
-						$user->setPassword(TBGUser::createPassword());
+						$password = TBGUser::createPassword();
+						$user->setPassword($password);
 					}
 					$user->setJoined();
 					$user->save();
@@ -1594,6 +1595,7 @@
 					{
 						$user->addToTeam(TBGTeamsTable::getTable()->selectById((int) $team_id));
 					}
+					TBGEvent::createNew('core', 'config.createuser.save', $user, array('password' => $password))->trigger();
 				}
 				else
 				{

@@ -99,6 +99,7 @@
 											<dd>
 												<input type="text" name="email" id="adduser_email" style="width: 300px;">
 											</dd>
+											<?php TBGEvent::createNew('core', 'config.createuser.email')->trigger(); ?>
 											<dt><label for="adduser_group"><?php echo __('Add user to group'); ?>:</label></dt>
 											<dd>
 												<select name="group_id">

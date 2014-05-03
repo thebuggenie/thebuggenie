@@ -96,6 +96,8 @@
 			TBGEvent::listen('core', 'config_project_tabs', array($this, 'listen_projectconfig_tab'));
 			TBGEvent::listen('core', 'config_project_panes', array($this, 'listen_projectconfig_panel'));
 			TBGEvent::listen('core', 'account_pane_notificationsettings', array($this, 'listen_accountNotificationSettings'));
+			TBGEvent::listen('core', 'config.createuser.email', array($this, 'listen_configCreateuserEmail'));
+			TBGEvent::listen('core', 'config.createuser.save', array($this, 'listen_configCreateuserSave'));
 			TBGEvent::listen('core', 'mainActions::myAccount::saveNotificationSettings', array($this, 'listen_accountSaveNotificationSettings'));
 			TBGEvent::listen('core', 'get_backdrop_partial', array($this, 'listen_get_backdrop_partial'));
 		}
@@ -666,6 +668,31 @@ EOT;
 		public function listen_accountNotificationSettings(TBGEvent $event)
 		{
 			TBGActionComponent::includeComponent('mailing/accountsettings', array('notificationsettings' => $this->_getNotificationSettings()));
+		}
+
+		public function listen_configCreateuserEmail(TBGEvent $event)
+		{
+			TBGActionComponent::includeComponent('mailing/configcreateuseremail');
+		}
+
+		public function listen_configCreateuserSave(TBGEvent $event)
+		{
+			if ($this->isOutgoingNotificationsEnabled() && TBGContext::getRequest()->getParameter('send_login_details'))
+			{
+				$user = $event->getSubject();
+				if ($user instanceof TBGUser)
+				{
+					$subject = 'User account created';
+					$parameters = array('user' => $user, 'password' => $event->getParameter('password'));
+					$to_users = array($user);
+					$messages = $this->getTranslatedMessages('config_usercreated', $parameters, $to_users, $subject);
+
+					foreach ($messages as $message)
+					{
+						$this->sendMail($message);
+					}
+				}
+			}
 		}
 
 		public function listen_accountSaveNotificationSettings(TBGEvent $event)

@@ -23,6 +23,10 @@
 		{
 		}
 		
+		public function componentConfigCreateuserEmail()
+		{
+		}
+
 		public function componentEditIncomingEmailAccount()
 		{
 			$this->project = TBGContext::getCurrentProject();
