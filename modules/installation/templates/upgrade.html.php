@@ -155,6 +155,10 @@
 					<span class="command_box"><?php echo THEBUGGENIE_PATH . 'installed'; ?></span> and <span class="command_box"><?php echo THEBUGGENIE_PATH . 'upgrade'; ?></span>.
 					<b>Please fix this error and try again.</b>
 				</div>
+				<div style="font-size: 1.2em; margin-top: 10px; padding-left: 0;">
+					On Linux or Unix systems, you can fix this by running the following command in a console: <br>
+					<div class="command_box" style="font-size: 1em;">chmod a+w <?php echo THEBUGGENIE_PATH . 'installed'; ?> <?php echo THEBUGGENIE_PATH . 'upgrade'; ?></div>
+				</div>
 			</p>
 		<?php endif; ?>
 	<?php elseif ($upgrade_complete): ?>
@@ -164,7 +168,7 @@
 			<?php if (isset($upgrade_file_failed)): ?>
 				The file <span class="command_box"><?php echo THEBUGGENIE_PATH . 'upgrade'; ?></span> could not be removed.<br>
 			<?php endif; ?>
-			Make sure that the file <span class="command_box"><?php echo THEBUGGENIE_PATH . 'upgrade'; ?></span> is removed before you click the "Finish" button below.
+			You should verify that the file <span class="command_box"><?php echo THEBUGGENIE_PATH . 'upgrade'; ?></span> is removed before you click the "Finish" button below.
 		</p>
 		<div style="margin-top: 15px;">
 			<a href="<?php echo make_url('logout'); ?>" class="button button-silver" style="font-size: 1.2em !important; padding: 3px 10px !important;">Finish</a>
