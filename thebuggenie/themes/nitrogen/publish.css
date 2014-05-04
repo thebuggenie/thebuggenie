@@ -1,0 +1,105 @@
+.article_list { list-style-type: none; margin: 10px 0 0 5px; padding: 0; font-size: 0.9em; }
+.article_list img { float: left; margin: 3px 5px 0 0; }
+.article_list span { font-size: 0.9em; }
+.article_list span a { font-size: 0.8em; font-weight: normal; }
+.article_list .more_news { margin: 10px 0 0 0; }
+.article_list li { margin: 0 5px 8px 0; }
+
+.toc .publish_toc_1 { margin: 15px 0 3px 0; font-size: 1.1em; font-weight: bold; }
+.toc .publish_toc_2 { margin: 0 0 3px 4px; font-size: 1.0em; }
+.toc .publish_toc_3 { margin: 0 0 3px 7px; font-size: 0.95em; }
+.toc .publish_toc_4 { margin: 0 0 3px 10px; font-size: 0.9em; }
+.toc .publish_toc_5 { margin: 0 0 3px 13px; font-size: 0.85em; }
+.toc .publish_toc_6 { margin: 0 0 3px 16px; font-size: 0.8em; }
+
+.article .article a { border-bottom: 1px dotted #CCC; }
+.article h1 { font-size: 1.4em; padding: 3px 3px 3px 0; }
+.article h1:target { color: #77B; background-color: #F6F6F6; }
+.article h1 a, .article h2 a, .article h3 a { font-size: 12px; }
+.article h2 { font-size: 1.3em; padding: 3px 3px 3px 0; }
+.article h2:target { color: #77B; background-color: #F6F6F6; }
+.article h3 { font-size: 1.2em; padding: 3px 3px 3px 0; }
+.article h3:target { color: #77B; background-color: #F6F6F6; }
+.article h4 { font-size: 1.15em; padding: 3px 3px 3px 0; }
+.article h4:target { color: #77B; background-color: #F6F6F6; }
+.article h4 a, .article h5 a { font-size: 11px; }
+.article h5 { font-size: 1.1em; padding: 3px 3px 3px 0; }
+.article h5:target { color: #77B; background-color: #F6F6F6; }
+.article h6 { font-size: 1.05em; padding: 3px 3px 3px 0; }
+.article h6:target { color: #77B; background-color: #F6F6F6; }
+.article h6 a { font-size: 10px; }
+
+.article pre { border: 1px dotted #AAA; background-color: #F1F1F1; padding: 3px; margin: 5px 0 5px 0; font-family: "DroidSansMono", monospace; font-size: 12px; }
+
+.article .publish_article_actions .sub_header { font-size: 13px; font-weight: bold; padding: 0 5px; margin-right: 5px; float: left; }
+.article .publish_article_actions { margin-left: 5px; }
+
+.article.edit label { font-size: 1.2em; }
+.article.edit label.small { font-size: 1em; }
+.article.edit input[type="text"] { font-size: 1.2em; padding: 5px; }
+.article.edit textarea { font-family: "DroidSansMono", monospace; }
+
+.article .header { margin: 0 0 5px 0; padding: 3px; font-weight: bold; font-size: 17px; border-bottom: 1px solid #CCC; }
+.article .header a { font-size: 12px; border-bottom: 0; }
+
+.article .details { color: #AAA; padding-bottom: 5px; }
+
+.toc { float: right; margin: 5px 0 15px 5px; width: 300px; box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); padding: 5px; font-size: 12px; position: relative; }
+.toc .header { margin: 0 0 5px 0; padding: 2px 3px 3px 0; font-weight: bold; font-size: 15px; border-bottom: 1px solid #99C; }
+.toc .header a { color: #555; font-size: 16px; }
+.toc .content { display: none; }
+.toc .faded_out { font-size: 11px; margin-bottom: 0; display: inherit; }
+.toc:hover .content { display: block; }
+.toc:hover .faded_out { display: none; }
+.toc:hover { overflow: visible; }
+.toc a, .toc a:hover { border-bottom: 0; }
+.article .textarea_hint .header { font-size: 1.2em; color: #999; border: 0; }
+.article .textarea_hint { color: #999; font-size: 1.1em; }
+
+.article .content { padding-bottom: 5px; clear: both; }
+.frontpage .article .content .toc { margin-top: 0; }
+
+.article table { border: 0; border-collapse: collapse; }
+.article.edit table, .article.edit table td { border: 0; }
+.article table td, .article table th { border: 1px solid #DDD; padding: 2px; font-size: 0.9em; }
+.article table th { text-align: center; }
+
+.category_list { padding: 0; margin: 0 0 10px 10px; width: 100%; }
+.category_list li { margin-left: 10px; float: left; font-size: 1em; width: 33%; }
+.category_list div { font-size: 1em; }
+
+#wiki_menu .header { font-size: 1.1em; font-weight: bold; margin-bottom: 5px; }
+#wiki_menu .content ul { list-style-type: none; margin: 0; padding: 0; }
+#wiki_menu .content ul li { font-size: 0.9em; }
+#wiki_menu .content ul li a { font-weight: bold; }
+
+#article_history, #article_diff { border: 0; width: 100%; }
+#article_diff { margin-left: 5px; }
+#article_history th { background-color: #F1F1F1; border-bottom: 1px dotted #CCC; padding: 2px; }
+#article_history tbody tr:hover { background-color: #F5F5F5; }
+#article_history tfoot td { border: 0; }
+#article_diff tr td { font-family: monospace; border: 0; }
+#article_diff tr.odd { background-color: #F5F5F5; }
+#article_diff tr:hover { background-color: #EEE; }
+INS { display: inline; background-color: #8D8; text-decoration: none; } DEL { display: inline; text-decoration: line-through; background-color: #D88; }
+
+
+.article ul.simple_list li { padding: 5px 0; margin-bottom: 15px; }
+.article ul.simple_list li div.namespace_header { font-size: 1.2em; font-weight: bold; }
+.article ul.simple_list li div.namespace_header span.namespace { text-decoration: underline; }
+
+.article .article .article_attachments td a { border: 0; }
+.article .article .article_attachments .remove_container td { border: 0; }
+.article .article .article_attachments .remove_container:hover { background-color: transparent; }
+
+#article_attach_file_button td { padding: 0; border: 0; }
+
+.article .icleft { float: left; }
+.article .icright { float: right; }
+.article .iccenter { clear: both; display: inline-block; margin: 10px auto; float: none; }
+
+#article_comments { margin: 20px 0 0 5px; }
+#article_comments h4 { color: #888; padding: 5px 5px 5px 0; }
+#article_comments #comment_add_button { margin-bottom: 15px; }
+#article_comments #comment_add { width: 1000px; margin-left: 5px; }
+#article_comments table td.nice_button { border: 0; }
