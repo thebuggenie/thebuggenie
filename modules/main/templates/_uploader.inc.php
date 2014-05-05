@@ -17,15 +17,19 @@
 						<dl>
 							<dt style="width: 120px;"><label for="uploader_file"><?php echo __('Select a file'); ?></label></dt>
 							<dd style="margin-bottom: 3px;"><input type="file" name="uploader_file" id="uploader_file"></dd>
-							<dd style="width: 100%;"><?php echo __('Files bigger than %max_filesize can not be attached. Please check that the file you are attaching is not bigger than this.', array('%max_filesize' => '<b>'.TBGSettings::getUploadsEffectiveMaxSize().'MB</b>')); ?></dd>
+							<?php $max_filesize = TBGSettings::getUploadsEffectiveMaxSize();
+							if($max_filesize != 0):?>
+							<dt style="width: 100%;"><?php echo __('Files bigger than %max_filesize can not be attached. Please check that the file you are attaching is not bigger than this.', array('%max_filesize' => '<b>'.$max_filesize.'MB</b>')); ?></dt>
+							<?php endif; ?>
 							<dt style="width: 120px;"><label for="upload_file_description"><?php echo __('Describe the file'); ?></label></dt>
-							<dd style="margin-bottom: 3px;"><input type="text" name="uploader_file_description" id="upload_file_description" style="width: 440px;"></dd>
-							<dd class="faded_out" style="width: 100%;"><?php echo __('Enter a few words about the file, so people can understand what it is/does'); ?></dd>
+							<dd style="margin-bottom: 3px;"><input type="text" name="uploader_file_description" id="upload_file_description" style="width: 440px;"
+							placeholder="<?php echo __('Describe the file, so people understand what it is/does'); ?>"></dd>
 						</dl>
 						<?php if ($mode == 'issue'): ?>
+							<br style="clear:both" />
 							<label for="upload_file_comment"><?php echo __('Comment'); ?></label> (<?php echo __('optional'); ?>)<br>
-							<textarea name="comment" cols="70" rows="10" id="upload_file_comment" style="width: 560px; height: 150px;"></textarea></dd>
-							<div class="faded_out" style="width: auto;"><?php echo __('If you want to add a comment with the file, enter the comment here, and it will automatically be added to the issue with the file'); ?></div>
+							<textarea name="comment" cols="70" rows="10" id="upload_file_comment" style="width: 560px; height: 150px;"
+							placeholder="<?php echo __('Comments entered here will be added to the issue with the file.'); ?>"></textarea></dd>
 						<?php endif; ?>
 					</div>
 					<div style="text-align: center; clear: both;" id="upload_and_attach">
