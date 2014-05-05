@@ -448,7 +448,7 @@
 				<?php endif; ?>
 				<table cellpadding="0" cellspacing="0" id="pain_bug_type_div" style="display: none;" class="additional_information<?php if (array_key_exists('pain_bug_type', $errors)): ?> reportissue_error<?php endif; ?>">
 					<tr>
-						<td style="width: 180px;"><label for="pain_bug_type_id" id="pain_bug_type_label"><span>* </span><?php echo __('Triaging: Bug type'); ?></label></td>
+						<td style="width: 160px;"><label for="pain_bug_type_id" id="pain_bug_type_label"><span>* </span><?php echo __('Triaging: Bug type'); ?></label></td>
 						<td class="report_issue_help faded_out dark"><?php echo __("What type of bug is this?"); ?></td>
 					<tr>
 						<td colspan="2" style="padding-top: 5px;">
@@ -463,7 +463,7 @@
 				</table>
 				<table cellpadding="0" cellspacing="0" id="pain_likelihood_div" style="display: none;" class="additional_information<?php if (array_key_exists('pain_likelihood', $errors)): ?> reportissue_error<?php endif; ?>">
 					<tr>
-						<td style="width: 180px;"><label for="pain_likelihood_id" id="pain_likelihood_label"><span>* </span><?php echo __('Triaging: Likelihood'); ?></label></td>
+						<td style="width: 320px;"><label for="pain_likelihood_id" id="pain_likelihood_label"><span>* </span><?php echo __('Triaging: Likelihood'); ?></label></td>
 						<td class="report_issue_help faded_out dark"><?php echo __("How likely are users to experience the bug?"); ?></td>
 					<tr>
 						<td colspan="2" style="padding-top: 5px;">
@@ -478,7 +478,7 @@
 				</table>
 				<table cellpadding="0" cellspacing="0" id="pain_effect_div" style="display: none;" class="additional_information<?php if (array_key_exists('pain_effect', $errors)): ?> reportissue_error<?php endif; ?>">
 					<tr>
-						<td style="width: 180px;"><label for="pain_effect_id" id="pain_effect_label"><span>* </span><?php echo __('Triaging: Effect'); ?></label></td>
+						<td style="width: 260px;"><label for="pain_effect_id" id="pain_effect_label"><span>* </span><?php echo __('Triaging: Effect'); ?></label></td>
 						<td class="report_issue_help faded_out dark"><?php echo __("Of the people who experience the bug, how badly does it affect their experience?"); ?></td>
 					<tr>
 						<td colspan="2" style="padding-top: 5px;">

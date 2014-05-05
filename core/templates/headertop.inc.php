@@ -1,37 +1,68 @@
 <header>
+<?php // KEEP OR REMOVE LOGO ?>
+	<?php if (TBGSettings::getThemeName() != 'nitrogen'): ?>
 	<div id="logo_container">
 		<?php $link = (TBGSettings::getHeaderLink() == '') ? TBGContext::getTBGPath() : TBGSettings::getHeaderLink(); ?>
 		<a class="logo" href="<?php print $link; ?>"><?php echo image_tag(TBGSettings::getHeaderIconUrl(), array('style' => 'width: 24px; height: 24px;'), TBGSettings::isUsingCustomHeaderIcon()); ?></a>
 		<div class="logo_name"><?php echo TBGSettings::getTBGname(); ?></div>
-	</div>
+	</div> 
+	<?php endif; ?>
+<?php // BEGIN: SHOW/HIDE FOUR BUTTONS TO FRONT OF TOP MENU FOR FORUM, OVERVIEW (A WIKI PAGE), AND PERMANENT PROJECT PAGE (BUG GENIE FRONTPAGE) ?>
+	<?php if (TBGSettings::getThemeName() == 'nitrogen'): ?>
+        <div><nav class="tab_menu header_menu" id="main_menu">      
+            <li>
+        <div><a class= "tab_menu header_menu" id="main_menu" href="http://YOURSITE.COM/YOURforum/"> Forum</a>
+        </li>
+            <li>
+        <div><a class= "tab_menu header_menu" id="main_menu" href="https://github.com/YOURorganization/"> GitHub</a>
+        </li>        
+                <nav class="tab_menu header_menu" id="main_menu">       
+            <ul>
+            <li <?php if ($_SERVER["REQUEST_URI"] == '/YOURBugGenieFolder/thebuggenie/wiki/Overview'): ?> class="selected"><?php endif; ?>
+            <?php if ($_SERVER["REQUEST_URI"] != '/YOURBugGenieFolder/thebuggenie/wiki/Overview'): ?> class="logo_name"><?php endif; ?>
+            <div><a href="/YOURBugGenieFolder/thebuggenie/wiki/Overview">Overview</a> </div></li>
+        <nav class="tab_menu header_menu" id="main_menu">       
+            <ul>
+            <li <?php if ($_SERVER["REQUEST_URI"] == '/pm/thebuggenie/'): ?> class="selected"><?php endif; ?>
+            <?php if ($tbg_response->getPage() != 'home'): ?> class="logo_name"><?php endif; ?>
+            <div><a href="/YOURBugGenieFolder/thebuggenie">Project Manager</a> </div></li>
+        </div>	
+        <?php endif; ?>
+<?php // END: SHOW/HIDE THREE BUTTONS ... ?>
 	<?php if (!TBGSettings::isMaintenanceModeEnabled()): ?>
 		<nav class="tab_menu header_menu<?php if (TBGContext::isProjectContext()): ?> project_context<?php endif; ?>" id="main_menu">
 			<ul>
 				<?php if (!TBGSettings::isSingleProjectTracker() && !TBGContext::isProjectContext()): ?>
-					<li<?php if ($tbg_response->getPage() == 'home'): ?> class="selected"<?php endif; ?>><div><?php echo link_tag(make_url('home'), image_tag('tab_index.png').__('Frontpage')); ?></div></li>
+<?php // SHOW/HIDE FRONT PAGE BUTTON/TAB ?>
+					<?php if (TBGSettings::getThemeName() != 'nitrogen'): ?><li<?php if ($tbg_response->getPage() == 'home'): ?> class="selected"<?php endif; ?>><div><?php echo link_tag(make_url('home'), image_tag('tab_index.png').__('Frontpage')); ?></div></li><?php endif; ?>
 				<?php elseif (TBGContext::isProjectContext()): ?>
 					<li<?php if (in_array($tbg_response->getPage(), array('project_dashboard', 'project_planning', 'project_scrum', 'project_scrum_sprint_details', 'project_timeline', 'project_team', 'project_roadmap', 'project_statistics', 'vcs_commitspage'))): ?> class="selected"<?php endif; ?>>
 						<div>
-							<?php echo link_tag(make_url('project_dashboard', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('icon_dashboard_small.png').__('Summary')); ?>
+<?php // SHOW/HIDE ICONS ... ?>
+							<?php if (TBGSettings::getThemeName() != 'nitrogen'): ?>							<?php echo link_tag(make_url('project_dashboard', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('icon_dashboard_small.png').__('Summary')); ?>
 							<?php echo javascript_link_tag(image_tag('tabmenu_dropdown.png', array('class' => 'menu_dropdown')), array('onmouseover' => "")); ?>
+							<?php else: ?>
+							<?php echo link_tag(make_url('project_dashboard', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Summary')); ?>
+							<?php endif; ?>
 						</div>
 						<div id="project_information_menu" class="tab_menu_dropdown">
 							<?php include_template('project/projectinfolinks', array('submenu' => true)); ?>
 						</div>
 					</li>
 				<?php endif; ?>
+<?php // CHANGE STRING DASHBOARD TO MY DASHBOARD SO USER CAN SEE DIFFERENCE BETWEEN THEIR DASHBOARD BUTTON AND PROJECT DASHBOARD BUTTON ON BUG GENIE FRONTPAGE ?>
 				<?php if (!$tbg_user->isThisGuest() && !TBGSettings::isSingleProjectTracker() && !TBGContext::isProjectContext()): ?>
-					<li<?php if ($tbg_response->getPage() == 'dashboard'): ?> class="selected"<?php endif; ?>><div><?php echo link_tag(make_url('dashboard'), image_tag('icon_dashboard_small.png').__('Dashboard')); ?></div></li>
+					<li<?php if ($tbg_response->getPage() == 'dashboard'): ?> class="selected"<?php endif; ?>><div><?php echo link_tag(make_url('dashboard'), __('My Dashboard')); ?></div></li>
 				<?php endif; ?>
 			<?php if (TBGContext::isProjectContext() && !TBGContext::getCurrentProject()->isArchived() && !TBGContext::getCurrentProject()->isLocked() && ($tbg_user->canReportIssues() || $tbg_user->canReportIssues(TBGContext::getCurrentProject()->getID()))): ?>
 					<li<?php if ($tbg_response->getPage() == 'reportissue'): ?> class="selected"<?php endif; ?>>
 						<div>
-							<?php echo link_tag(make_url('project_reportissue', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('tab_reportissue.png') . __('Report an issue')); ?>
-							<?php echo javascript_link_tag(image_tag('tabmenu_dropdown.png', array('class' => 'menu_dropdown')), array('onmouseover' => "")); ?>
+							<?php echo link_tag(make_url('project_reportissue', array('project_key' => TBGContext::getCurrentProject()->getKey())),  __('Report an issue')); ?>
+							
 							</div>
 							<div id="project_issue_menu" class="tab_menu_dropdown">
 							<?php foreach (TBGContext::getCurrentProject()->getIssuetypeScheme()->getReportableIssuetypes() as $issuetype): ?>
-								<?php echo link_tag(make_url('project_reportissue', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'issuetype' => $issuetype->getKey())), image_tag($issuetype->getIcon() . '_tiny.png' ) . __($issuetype->getName())); ?>
+								<?php echo link_tag(make_url('project_reportissue', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'issuetype' => $issuetype->getKey())), __($issuetype->getName())); ?>
 							<?php endforeach;?>
 						</div>
 					</li>
@@ -39,20 +70,20 @@
 				<?php if (TBGContext::isProjectContext() && $tbg_user->canSearchForIssues()): ?>
 					<li<?php if (in_array($tbg_response->getPage(), array('project_issues', 'viewissue'))): ?> class="selected"<?php endif; ?>>
 						<div>
-							<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('tab_search.png').__('Issues')); ?>
+							<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Issues')); ?>
 							<?php if (TBGContext::isProjectContext()): ?>
-								<?php echo javascript_link_tag(image_tag('tabmenu_dropdown.png', array('class' => 'menu_dropdown')), array('onmouseover' => "")); ?>
+								
 							<?php endif; ?>
 						</div>
 						<?php if (TBGContext::isProjectContext()): ?>
 							<div id="issues_menu" class="tab_menu_dropdown">
-								<?php echo link_tag(make_url('project_open_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('icon_savedsearch.png') . __('Open issues for this project')); ?>
-								<?php echo link_tag(make_url('project_closed_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('icon_savedsearch.png') . __('Closed issues for this project')); ?>
-								<?php echo link_tag(make_url('project_wishlist_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('icon_savedsearch.png') . __('Wishlist for this project')); ?>
-								<?php echo link_tag(make_url('project_milestone_todo_list', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('icon_savedsearch.png') . __('Milestone todo-list for this project')); ?>
-								<?php echo link_tag(make_url('project_most_voted_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('icon_savedsearch.png') . __('Most voted for issues')); ?>
-								<?php echo link_tag(make_url('project_month_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('icon_savedsearch.png') . __('Issues reported this month')); ?>
-								<?php echo link_tag(make_url('project_last_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'units' => 30, 'time_unit' => 'days')), image_tag('icon_savedsearch.png') . __('Issues reported last 30 days')); ?>
+								<?php echo link_tag(make_url('project_open_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Open issues for this project')); ?>
+								<?php echo link_tag(make_url('project_closed_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Closed issues for this project')); ?>
+								<?php echo link_tag(make_url('project_wishlist_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Wishlist for this project')); ?>
+								<?php echo link_tag(make_url('project_milestone_todo_list', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Milestone todo-list for this project')); ?>
+								<?php echo link_tag(make_url('project_most_voted_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Most voted for issues')); ?>
+								<?php echo link_tag(make_url('project_month_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Issues reported this month')); ?>
+								<?php echo link_tag(make_url('project_last_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'units' => 30, 'time_unit' => 'days')), __('Issues reported last 30 days')); ?>
 							</div>
 						<?php endif; ?>
 					</li>
@@ -60,13 +91,13 @@
 				<?php if (!TBGContext::isProjectContext() && ($tbg_user->hasPageAccess('teamlist') || count($tbg_user->getTeams())) && !is_null(TBGTeamsTable::getTable()->getAll())): ?>
 					<li<?php if ($tbg_response->getPage() == 'team'): ?> class="selected"<?php endif; ?>>
 						<div>
-							<?php echo link_tag('javascript:void(0)', image_tag('tab_teams.png') . __('Teams'), array('class' => 'not_clickable')); ?>
-							<?php echo javascript_link_tag(image_tag('tabmenu_dropdown.png', array('class' => 'menu_dropdown')), array('onmouseover' => "")); ?>
+							<?php echo link_tag('javascript:void(0)', __('Teams'), array('class' => 'not_clickable')); ?>
+							
 						</div>
 						<div id="team_menu" class="tab_menu_dropdown">
 							<?php foreach (TBGTeam::getAll() as $team): ?>
 								<?php if (!$team->hasAccess()) continue; ?>
-								<?php echo link_tag(make_url('team_dashboard', array('team_id' => $team->getID())), image_tag('tab_teams.png' ) . $team->getName()); ?>
+								<?php echo link_tag(make_url('team_dashboard', array('team_id' => $team->getID())),  $team->getName()); ?>
 							<?php endforeach;?>
 						</div>
 					</li>
@@ -74,13 +105,13 @@
 				<?php if (!TBGContext::isProjectContext() && $tbg_user->hasPageAccess('clientlist') && count($tbg_user->getClients()) && !is_null(TBGClient::getAll())): ?>
 					<li<?php if ($tbg_response->getPage() == 'client'): ?> class="selected"<?php endif; ?>>
 						<div>
-							<?php echo link_tag('javascript:void(0)', image_tag('tab_clients.png') . __('Clients'), array('class' => 'not_clickable')); ?>
-							<?php echo javascript_link_tag(image_tag('tabmenu_dropdown.png', array('class' => 'menu_dropdown')), array('onmouseover' => "")); ?>
+							<?php echo link_tag('javascript:void(0)',  __('Clients'), array('class' => 'not_clickable')); ?>
+							
 						</div>
 						<div id="client_menu" class="tab_menu_dropdown">
 							<?php foreach (TBGClient::getAll() as $client): ?>
 								<?php if (!$client->hasAccess()) continue; ?>
-								<?php echo link_tag(make_url('client_dashboard', array('client_id' => $client->getID())), image_tag('tab_clients.png' ) . $client->getName()); ?>
+								<?php echo link_tag(make_url('client_dashboard', array('client_id' => $client->getID())), $client->getName()); ?>
 							<?php endforeach;?>
 						</div>
 					</li>
@@ -94,20 +125,20 @@
 				<li<?php if ($tbg_request->hasCookie('tbg3_original_username')): ?> class="temporarily_switched"<?php endif; ?>>
 					<div>
 						<?php if ($tbg_user->isGuest()): ?>
-							<a href="javascript:void(0);" <?php if (TBGContext::getRouting()->getCurrentRouteName() != 'login_page'): ?>onclick="$('login_backdrop').show();TBG.Main.Helpers.tabSwitcher('tab_login', 'login_menu');$('tbg3_username').focus();"<?php endif; ?>><?php echo image_tag($tbg_user->getAvatarURL(true), array('alt' => '[avatar]'), true) . __('You are not logged in'); ?></a>
+							<a href="javascript:void(0);" <?php if (TBGContext::getRouting()->getCurrentRouteName() != 'login_page'): ?>onclick="$('login_backdrop').show();TBG.Main.Helpers.tabSwitcher('tab_login', 'login_menu');$('tbg3_username').focus();"<?php endif; ?>><?php echo  __('You are not logged in'); ?></a>
 						<?php else: ?>
-							<?php echo link_tag(make_url('dashboard'), image_tag($tbg_user->getAvatarURL(true), array('alt' => '[avatar]', 'id' => 'header_avatar'), true) . tbg_decodeUTF8($tbg_user->getDisplayName())); ?>
+							<?php echo link_tag(make_url('dashboard'),  tbg_decodeUTF8($tbg_user->getDisplayName())); ?>
 						<?php endif; ?>
 						<?php if (TBGContext::getRouting()->getCurrentRouteName() != 'login_page'): ?>
-							<?php echo javascript_link_tag(image_tag('tabmenu_dropdown.png', array('class' => 'menu_dropdown')), array('onmouseover' => "")); ?>
+							
 						<?php endif; ?>
 					</div>
 					<?php if (TBGContext::getRouting()->getCurrentRouteName() != 'login_page'): ?>
 						<div class="tab_menu_dropdown user_menu_dropdown">
 							<?php if ($tbg_user->isGuest()): ?>
-								<a href="javascript:void(0);" onclick="$('login_backdrop').show();TBG.Main.Helpers.tabSwitcher('tab_login', 'login_menu');$('tbg3_username').focus();"><?php echo image_tag('icon_login.png').__('Login'); ?></a>
+								<a href="javascript:void(0);" onclick="$('login_backdrop').show();TBG.Main.Helpers.tabSwitcher('tab_login', 'login_menu');$('tbg3_username').focus();"><?php echo __('Login'); ?></a>
 								<?php if (TBGSettings::isRegistrationAllowed()): ?>
-									<a href="javascript:void(0);" onclick="$('login_backdrop').show();TBG.Main.Helpers.tabSwitcher('tab_register', 'login_menu');$('fieldusername').focus();"><?php echo image_tag('icon_register.png').__('Register'); ?></a>
+									<a href="javascript:void(0);" onclick="$('login_backdrop').show();TBG.Main.Helpers.tabSwitcher('tab_register', 'login_menu');$('fieldusername').focus();"><?php echo __('Register'); ?></a>
 								<?php endif; ?>
 								<?php TBGEvent::createNew('core', 'user_dropdown_anon')->trigger(); ?>
 							<?php else: ?>
@@ -122,25 +153,25 @@
 										<a href="javascript:void(0);" onclick="TBG.Main.Profile.setState('<?php echo make_url('set_state', array('state_id' => $state->getID())); ?>', 'change_userstate_dropdown');"><?php echo __($state->getName()); ?></a>
 									<?php endforeach; ?>
 								</div>
-								<?php echo link_tag(make_url('dashboard'), image_tag('icon_dashboard_small.png').__('Your dashboard')); ?>
+								<?php echo link_tag(make_url('dashboard'), __('Your dashboard')); ?>
 								<?php if ($tbg_response->getPage() == 'dashboard'): ?>
-									<?php echo javascript_link_tag(image_tag('icon_dashboard_config.png').__('Customize your dashboard'), array('title' => __('Customize your dashboard'), 'onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'dashboard_config', 'tid' => TBGContext::getUser()->getID(), 'target_type' => TBGDashboardViewsTable::TYPE_USER))."')")); ?>
+									<?php echo javascript_link_tag(__('Customize your dashboard'), array('title' => __('Customize your dashboard'), 'onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'dashboard_config', 'tid' => TBGContext::getUser()->getID(), 'target_type' => TBGDashboardViewsTable::TYPE_USER))."')")); ?>
 								<?php endif; ?>
-								<?php echo link_tag(make_url('account'), image_tag('icon_account.png').__('Your account')); ?>
+								<?php echo link_tag(make_url('account'), __('Your account')); ?>
 								<?php if ($tbg_request->hasCookie('tbg3_original_username')): ?>
 								<div class="header"><?php echo __('You are temporarily this user'); ?></div>
-								<?php echo link_tag(make_url('switch_back_user'), image_tag('switchuser.png').__('Switch back to original user')); ?>
+								<?php echo link_tag(make_url('switch_back_user'), __('Switch back to original user')); ?>
 								<?php endif; ?>
 								<?php if ($tbg_user->canAccessConfigurationPage()): ?>
-									<?php echo link_tag(make_url('configure'), image_tag('tab_config.png').__('Configure The Bug Genie')); ?>
+									<?php echo link_tag(make_url('configure'), __('Configure The Bug Genie')); ?>
 								<?php endif; ?>
 								<?php TBGEvent::createNew('core', 'user_dropdown_reg')->trigger(); ?>
-								<?php echo link_tag('http://www.thebuggenie.com/help/'.TBGContext::getRouting()->getCurrentRouteName(), image_tag('help.png').__('Help for this page')); ?>
-								<a href="<?php echo make_url('logout'); ?>" onclick="<?php if (TBGSettings::isPersonaAvailable()): ?>navigator.id.logout();return false;<?php endif; ?>"><?php echo image_tag('logout.png').__('Logout'); ?></a>
+								<?php echo link_tag('http://www.thebuggenie.com/help/'.TBGContext::getRouting()->getCurrentRouteName(), __('Help for this page')); ?>
+								<a href="<?php echo make_url('logout'); ?>" onclick="<?php if (TBGSettings::isPersonaAvailable()): ?>navigator.id.logout();return false;<?php endif; ?>"><?php echo __('Logout'); ?></a>
 								<div class="header"><?php echo __('Your issues'); ?></div>
-								<?php echo link_tag(make_url('my_reported_issues'), image_tag('icon_savedsearch.png') . __('Issues reported by me')); ?>
-								<?php echo link_tag(make_url('my_assigned_issues'), image_tag('icon_savedsearch.png') . __('Open issues assigned to me')); ?>
-								<?php echo link_tag(make_url('my_teams_assigned_issues'), image_tag('icon_savedsearch.png') . __('Open issues assigned to my teams')); ?>
+								<?php echo link_tag(make_url('my_reported_issues'),  __('Issues reported by me')); ?>
+								<?php echo link_tag(make_url('my_assigned_issues'),  __('Open issues assigned to me')); ?>
+								<?php echo link_tag(make_url('my_teams_assigned_issues'),  __('Open issues assigned to my teams')); ?>
 								<?php foreach ($tbg_user->getStarredIssues() as $issue): ?>
 									<?php if (!TBGContext::isProjectContext() || $issue->getProject()->getID() != TBGContext::getCurrentProject()->getID()) continue; ?>
 									<?php

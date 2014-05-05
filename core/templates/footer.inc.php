@@ -2,9 +2,15 @@
 	<table cellpadding=0 cellspacing=0 style="table-layout: auto; margin: 0 auto 0 auto;">
 		<tr>
 			<td style="width: auto;">
-				<?php echo image_tag('footer_logo.png'); ?>
-				<?php echo __('%thebuggenie%, <b>friendly</b> issue tracking since 2002', array('%thebuggenie%' => link_tag(make_url('about'), 'The Bug Genie'))); ?>.
-				<?php echo __('Licensed under the MPL 1.1 only, read it at %link_to_MPL%', array('%link_to_MPL%' => '<a href="http://www.opensource.org/licenses/mozilla1.1.php">opensource.org</a>')); ?>
+<?php // BEGIN ADD CONTENT AND LINKS TO FOOTER ?>
+	<?php echo __('%Privacy%', array('%Privacy%' => '<a href="/YOURBugGenieFolder/thebuggenie/wiki/Privacy"  target="_blank">Privacy </a>')); ?>|
+		<?php echo __('%Terms of Use%', array('%Terms of Use%' => '<a href="/YOURBugGenieFolder/thebuggenie/wiki/TermsOfUse"  target="_blank">Terms of Use </a>')); ?>|
+				<?php echo __('Project manager and wiki by %thebuggenie%', array('%thebuggenie%' => '<a href="/YOURBugGenieFolder/thebuggenie/about"  target="_blank">The Bug Genie</a>')); ?>.
+				<?php echo __('Forum by %link_to_MPL%', array('%link_to_MPL%' => '<a href="http://vanillaforums.org/"  target="_blank">Vanilla</a>')); ?>.
+				
+				<?php echo __('Content copyright (except where noted) =
+ %link_to_MPL%', array('%link_to_MPL%' => '<a href="http://creativecommons.org/licenses/by/4.0/"  target="_blank">CC BY 4.0</a>')); ?>.
+<?php // END ADD CONTENT AND LINKS TO FOOTER ?> 
 				<?php if ($tbg_user->canAccessConfigurationPage()): ?>
 					| <b><?php echo link_tag(make_url('configure'), __('Configure The Bug Genie')); ?></b>
 				<?php endif; ?>

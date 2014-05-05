@@ -5,12 +5,14 @@
 .article_list .more_news { margin: 10px 0 0 0; }
 .article_list li { margin: 0 5px 8px 0; }
 
-.toc .publish_toc_1 { margin: 15px 0 3px 0; font-size: 1.1em; font-weight: bold; }
-.toc .publish_toc_2 { margin: 0 0 3px 4px; font-size: 1.0em; }
-.toc .publish_toc_3 { margin: 0 0 3px 7px; font-size: 0.95em; }
-.toc .publish_toc_4 { margin: 0 0 3px 10px; font-size: 0.9em; }
-.toc .publish_toc_5 { margin: 0 0 3px 13px; font-size: 0.85em; }
-.toc .publish_toc_6 { margin: 0 0 3px 16px; font-size: 0.8em; }
+.toc .publish_toc_1 { margin: 0 0 5px 0px; font-weight: bold; font-size: 1.2em; font-family: 'Open Sans', sans-serif;} /*changed font family and size for wiki table of conents primary items*/
+.toc .publish_toc_2 { margin: 0 0 5px 3px; font-size: 1.2em; font-family: 'Open Sans', sans-serif;} /*changed font family and size for wiki table of conents secondary items*/
+.toc .publish_toc_3 { margin: 0 0 3px 10px; font-weight: bold; font-size: 1.2em; font-family: 'Open Sans', sans-serif;} /*changed font family and size for wiki table of conents primary items*/ 
+.toc .publish_toc_4 { margin: 0 0 3px 17px; font-size: 1.2em; font-family: 'Open Sans', sans-serif;} /*changed font family and size for wiki table of conents secondary items*/
+.toc .publish_toc_5 { margin: 0 0 3px 24px; font-size: 1.2em; font-family: 'Open Sans', sans-serif;} /*changed font family and size for wiki table of conents secondary items*/
+.toc .publish_toc_6 { margin: 0 0 3px 31px; font-size: 1.2em; font-family: 'Open Sans', sans-serif;} /*changed font family and size for wiki table of conents secondary items*/ 
+
+/* FYI: Padding = top, right, bottom, left */
 
 .article .article a { border-bottom: 1px dotted #CCC; }
 .article h1 { font-size: 1.4em; padding: 3px 3px 3px 0; }
@@ -18,15 +20,15 @@
 .article h1 a, .article h2 a, .article h3 a { font-size: 12px; }
 .article h2 { font-size: 1.3em; padding: 3px 3px 3px 0; }
 .article h2:target { color: #77B; background-color: #F6F6F6; }
-.article h3 { font-size: 1.2em; padding: 3px 3px 3px 0; }
-.article h3:target { color: #77B; background-color: #F6F6F6; }
+.article h3 { font-size: 1.2em; padding: 20px 3px 0px 0; }
+.article h3:target { color: #444; background-color: #FAF3B8; padding: 20px 0px 0px 6px; }
 .article h4 { font-size: 1.15em; padding: 3px 3px 3px 0; }
 .article h4:target { color: #77B; background-color: #F6F6F6; }
 .article h4 a, .article h5 a { font-size: 11px; }
 .article h5 { font-size: 1.1em; padding: 3px 3px 3px 0; }
 .article h5:target { color: #77B; background-color: #F6F6F6; }
-.article h6 { font-size: 1.05em; padding: 3px 3px 3px 0; }
-.article h6:target { color: #77B; background-color: #F6F6F6; }
+.article h6 { font-size: 1.0em; padding: 10px 3px 0px 0; } /*changed font size for wiki secondary article titles*/ 
+.article h6:target { color: #000; background-color: #FAF3B8; padding: 10px 0px 0px 6px;}
 .article h6 a { font-size: 10px; }
 
 .article pre { border: 1px dotted #AAA; background-color: #F1F1F1; padding: 3px; margin: 5px 0 5px 0; font-family: "DroidSansMono", monospace; font-size: 12px; }
@@ -39,20 +41,22 @@
 .article.edit input[type="text"] { font-size: 1.2em; padding: 5px; }
 .article.edit textarea { font-family: "DroidSansMono", monospace; }
 
-.article .header { margin: 0 0 5px 0; padding: 3px; font-weight: bold; font-size: 17px; border-bottom: 1px solid #CCC; }
+.article .header { margin: 2px 0 5px 0; color: #777; padding: 0px; font-weight: bold; font-size: 17px; border-bottom: 1px solid #CCC; } /*changed font color and padding indent*/
 .article .header a { font-size: 12px; border-bottom: 0; }
 
 .article .details { color: #AAA; padding-bottom: 5px; }
 
 .toc { float: right; margin: 5px 0 15px 5px; width: 300px; box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); padding: 5px; font-size: 12px; position: relative; }
-.toc .header { margin: 0 0 5px 0; padding: 2px 3px 3px 0; font-weight: bold; font-size: 15px; border-bottom: 1px solid #99C; }
+/*changed font family and weight*/
+.toc .header { margin: 0 0 5px 0; padding: 2px 3px 3px 0; font-family: 'Open Sans', sans-serif; font-weight: normal; font-size: 15px; border-bottom: 1px solid #99C; }
 .toc .header a { color: #555; font-size: 16px; }
 .toc .content { display: none; }
 .toc .faded_out { font-size: 11px; margin-bottom: 0; display: inherit; }
 .toc:hover .content { display: block; }
 .toc:hover .faded_out { display: none; }
 .toc:hover { overflow: visible; }
-.toc a, .toc a:hover { border-bottom: 0; }
+/*did not remove .article because then TOC items get underlined*/
+.article .toc a, .toc a:hover { border-bottom: none; }
 .article .textarea_hint .header { font-size: 1.2em; color: #999; border: 0; }
 .article .textarea_hint { color: #999; font-size: 1.1em; }
 
@@ -99,7 +103,7 @@ INS { display: inline; background-color: #8D8; text-decoration: none; } DEL { di
 .article .iccenter { clear: both; display: inline-block; margin: 10px auto; float: none; }
 
 #article_comments { margin: 20px 0 0 5px; }
-#article_comments h4 { color: #888; padding: 5px 5px 5px 0; }
+#article_comments h4 { color: #888; border-top: 1px solid #CCC ; padding: 5px 5px 5px 0; } /* Changed: added line (border) */
 #article_comments #comment_add_button { margin-bottom: 15px; }
 #article_comments #comment_add { width: 1000px; margin-left: 5px; }
 #article_comments table td.nice_button { border: 0; }

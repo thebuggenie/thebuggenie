@@ -388,6 +388,75 @@
 				}
 			}
 
+
+if (preg_match("/embed(\s+url\=)?/", mb_strtolower($namespace)) ||
+preg_match("/embed((:)?|(\s+url\=)?)/", mb_strtolower($matches[0]))) //Ticket #2308
+{
+if (TBGContext::isCLI()) return $href;
+
+// if the name space is null more than likely the user is
+// using embed url= format without the http:// in front of the URL
+// and the href tag will contain "embed url=" and it must be removed
+if ($namespace == null) $href = preg_replace("/embed(\s+)url=/","", $href);
+
+// if the href is empty or set to 'embed' then stop processing
+// an empty embed tag was entered '[[embed]]'
+if ($href == 'embed' || $href == null) return;
+
+$options = explode('|', $title);
+
+// Default values
+$width = 500;
+$height = 400;
+$type = 'iframe';
+
+// if the link is a youtube link prepare it for embedding
+if (tbg_youtube_link($href))
+{
+$href = tbg_youtube_prepare_link($href);
+}	
+
+// check to see if any size options exist
+if (array_key_exists(0, $options))
+{
+$settings = $options[0];
+
+// if width exists override default setting
+if (preg_match_all("/width=(\d+)/", $settings, $width_matches))
+{
+if (!empty($width_matches))
+{
+$width = $width_matches[1][0];
+}
+}
+// if height exists override default setting
+if (preg_match_all("/height=(\d+)/", $settings, $height_matches))
+{
+if (!empty($height_matches))
+{
+$height = $height_matches[1][0];
+}
+}
+// if type exists override default setting
+if (preg_match_all("/type=(iframe|object)/", $settings, $type_matches))
+{
+if (!empty($type_matches))
+{
+$type = $type_matches[1][0];
+}
+}
+}
+
+if ($type == 'object')	
+$code = object_tag($href, $width, $height);
+else
+$code = iframe_tag($href, $width, $height);
+
+return $code;
+}
+
+
+
 			if (mb_strtolower($namespace) == 'wikipedia')
 			{
 				if (TBGContext::isCLI()) return $href;
@@ -1113,3 +1182,4 @@
 		}
 
 	}
+

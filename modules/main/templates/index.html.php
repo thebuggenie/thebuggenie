@@ -13,10 +13,10 @@
 <?php endif; ?>
 <table style="margin-top: 0px; table-layout: fixed; width: 100%;" cellpadding=0 cellspacing=0>
 	<tr>
-		<td class="side_bar">
-			<?php include_template('main/menulinks', array('links' => $links, 'target_type' => 'main_menu', 'target_id' => 0, 'title' => __('Quick links'))); ?>
-			<?php TBGEvent::createNew('core', 'index_left')->trigger(); ?>
-		</td>
+<?php //		<td class="side_bar"> ?>
+<?php //			<?php include_template('main/menulinks', array('links' => $links, 'target_type' => 'main_menu', 'target_id' => 0, 'title' => __('Quick links'))); ?>
+<?php //			<?php TBGEvent::createNew('core', 'index_left')->trigger(); ?>
+<?php //		</td> ?>
 		<td class="main_area frontpage">
 			<?php TBGEvent::createNew('core', 'index_right_top')->trigger(); ?>
 			<?php if ($show_project_list): ?>

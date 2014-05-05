@@ -7,9 +7,15 @@
 ?>
 <table style="margin-top: 0px; table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
 	<tr>
-		<td class="side_bar">
-			<?php include_component('leftmenu', array('article' => $article)); ?>
-		</td>
+	
+	<?php
+// TURNED OFF SIDER BAR
+//		
+//		
+//				<td class="side_bar">
+//			<?php include_component('leftmenu', array('article' => $article)); TOOK OUT QUESTION MARK SYMBOL > 
+//		</td>
+?>
 		<td class="main_area article">
 			<a name="top"></a>
 			<?php if ($error): ?>

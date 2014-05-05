@@ -107,6 +107,45 @@
 		if ($link_text === null) $link_text = $url;
 		return "<a " . parseHTMLoptions($params) . ">{$link_text}</a>";
 	}
+	
+	
+/**
+* Returns an <iframe> tag linking to a specified url
+*
+* @param string $url link target
+* @param string $width width of the frame
+* @param string $height height of the frame
+*
+* @return string
+*/
+function iframe_tag($url, $width = 500, $height = 400) //Ticket #2308
+{
+if ($url == null) return;
+
+return '<iframe width="'.$width.'" height="'.$height.'" src="'.$url.'" frameborder="0" allowfullscreen></iframe>';
+}
+
+
+/**
+* Returns an <object> tag linking to a specified url
+*
+* @param string $url link target
+* @param string $width width of the frame
+* @param string $height height of the frame
+*
+* @return string
+*/
+function object_tag($url, $width = 500, $height = 400) //Ticket #2308
+{
+if ($url == null) return;
+
+return '<object width="'.$width.'" height="'.$height.'">
+<param name="movie" value="'.$url.'?hl=en_US&amp;version=3"></param>
+<param name="allowFullScreen" value="true"></param>
+<param name="allowscriptaccess" value="always"></param>
+<embed src="'.$url.'?hl=en_US&amp;version=3" type="application/x-shockwave-flash" width="'.$width.'" height="'.$height.'" allowscriptaccess="always" allowfullscreen="true"></embed>
+</object>';
+}
 
 	/**
 	 * Returns a csrf_token hidden input tag to use in forms
