@@ -61,7 +61,7 @@ foreach ($search_object->getIssues() as $issue):
 					<?php if (!$tbg_user->isGuest()): ?>
 						<td class="sca_actions">
 							<?php if ($issue->isWorkflowTransitionsAvailable()): ?>
-								<input type="checkbox" name="update_issue[<?php echo $issue->getID(); ?>]" onclick="TBG.Search.toggleCheckbox(this);" value="<?php echo $issue->getID(); ?>">
+								<input type="checkbox" name="update_issue[<?php echo $issue->getID(); ?>]" value="<?php echo $issue->getID(); ?>">
 							<?php endif; ?>
 						</td>
 					<?php endif; ?>
@@ -157,11 +157,10 @@ foreach ($search_object->getIssues() as $issue):
 	document.observe('dom:loaded', function() {
 		setTimeout(function() {
 			TBG.Search.setColumns('results_normal', ['title', 'issuetype', 'assigned_to', 'status', 'resolution', 'category', 'severity', 'percent_complete', 'reproducability', 'priority', 'components', 'milestone', 'estimated_time', 'spent_time', 'last_updated', 'comments'], [<?php echo "'".join("', '", $visible_columns)."'"; ?>], [<?php echo "'".join("', '", $default_columns)."'"; ?>]);
-			$('search_results').select('th').each(function (header_elm) {
-				if (!header_elm.hasClassName('nosort')) {
-					header_elm.on('click', TBG.Search.sortResults);
-				}
-			})
 		}, 250);
+		(function($) {
+			$("#search_results").on("click", "th:not(.nosort)", TBG.Search.sortResults);
+			$(".sca_actions").on("click", "input[type='checkbox']", TBG.Search.toggleCheckbox);
+		})(jQuery);
 	});
 </script>

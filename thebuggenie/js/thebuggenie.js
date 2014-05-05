@@ -3962,15 +3962,15 @@ TBG.Search.toggleCheckboxes = function(chk_box) {
 	TBG.Search.checkToggledCheckboxes();
 };
 
-TBG.Search.toggleCheckbox = function(element) {
+TBG.Search.toggleCheckbox = function() {
 	var num_unchecked = 0;
 	var num_checked = 0;
-	element.up('tbody').select('input[type=checkbox]').each(function(elm) {
+	this.up('tbody').select('input[type=checkbox]').each(function(elm) {
 		if (!elm.checked) num_unchecked++;
 		if (elm.checked) num_checked++;
 	});
 
-	var chk_box = element.up('table').down('thead').down('input[type=checkbox]');
+	var chk_box = this.up('table').down('thead').down('input[type=checkbox]');
 	if (num_unchecked == 0) {
 		chk_box.checked = true;
 		chk_box.removeClassName('semi-checked');
@@ -4590,10 +4590,10 @@ TBG.Search.loadDynamicChoices = function() {
 	});
 };
 
-TBG.Search.sortResults = function (event, element) {
-	if (element.dataset.sortField !== undefined) {
-		var direction = (element.dataset.sortDirection == 'asc') ? 'desc' : 'asc';
-		$('search_sortfields_input').setValue(element.dataset.sortField + '=' + direction);
+TBG.Search.sortResults = function (event) {
+	if (this.dataset.sortField !== undefined) {
+		var direction = (this.dataset.sortDirection == 'asc') ? 'desc' : 'asc';
+		$('search_sortfields_input').setValue(this.dataset.sortField + '=' + direction);
 		TBG.Search.liveUpdate(true);
 	}
 };
