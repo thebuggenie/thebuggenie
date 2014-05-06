@@ -188,7 +188,7 @@
 								
 								if ($c == 0)
 								{
-									echo '<span class="faded_out">'.__('This commit only affects issues you do not hae access to').'</span>';
+									echo '<span class="faded_out">'.__('This commit only affects issues you do not have access to').'</span>';
 								}
 							}
 							echo '</ul>';
