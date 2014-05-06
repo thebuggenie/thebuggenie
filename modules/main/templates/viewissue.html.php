@@ -305,8 +305,8 @@
 		</div>
 		<div id="viewissue_left_box_top">
 			<div id="issue_view">
-				<div id="issue_details" data-resizable>
-					<div class="collapser_link" onclick="$('issue_details').toggleClassName('collapsed');TBG.Core._resizeWatcher();">
+				<div id="issue_details">
+					<div class="collapser_link" onclick="$('issue_details').toggleClassName('collapsed');">
 						<a href="javascript:void(0);" class="image">
 							<?php echo image_tag('sidebar_collapse.png', array('class' => 'collapser')); ?>
 							<?php echo image_tag('sidebar_expand.png', array('class' => 'expander')); ?>

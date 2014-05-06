@@ -1,22 +1,24 @@
-<?php if (!$tbg_user->isGuest()) include_template('search/bulkactions', array('mode' => 'top')); ?>
-<?php $current_count = 0; ?>
-<?php $current_estimated_time = array('months' => 0, 'weeks' => 0, 'days' => 0, 'hours' => 0, 'points' => 0); ?>
-<?php $current_spent_time = $current_estimated_time; ?>
-<?php foreach ($search_object->getIssues() as $issue): ?>
-	<?php list ($showtablestart, $showheader, $prevgroup_id, $groupby_description) = searchActions::resultGrouping($issue, $search_object->getGroupBy(), $cc, $prevgroup_id); ?>
-	<?php if (($showtablestart || $showheader) && $cc > 1): ?>
-		<?php echo '</tbody></table>'; ?>
-		<?php include_template('search/results_summary', compact('current_count', 'current_estimated_time', 'current_spent_time')); ?>
-		<?php $current_count = 0; ?>
-		<?php $current_estimated_time = array('months' => 0, 'weeks' => 0, 'days' => 0, 'hours' => 0, 'points' => 0); ?>
-		<?php $current_spent_time = $current_estimated_time; ?>
-	<?php endif; ?>
-	<?php $current_count++; ?>
-	<?php $estimate = $issue->getEstimatedTime(); ?>
-	<?php $spenttime = $issue->getSpentTime(); ?>
-	<?php foreach ($current_estimated_time as $key => $value) $current_estimated_time[$key] += $estimate[$key]; ?>
-	<?php foreach ($current_spent_time as $key => $value) $current_spent_time[$key] += $spenttime[$key]; ?>
-	<?php if ($showheader): ?>
+<?php
+if (!$tbg_user->isGuest()) include_template('search/bulkactions', array('mode' => 'top'));
+$current_count = 0;
+$current_estimated_time = array('months' => 0, 'weeks' => 0, 'days' => 0, 'hours' => 0, 'points' => 0);
+$current_spent_time = $current_estimated_time;
+foreach ($search_object->getIssues() as $issue):
+	list ($showtablestart, $showheader, $prevgroup_id, $groupby_description) = searchActions::resultGrouping($issue, $search_object->getGroupBy(), $cc, $prevgroup_id);
+	if (($showtablestart || $showheader) && $cc > 1):
+				echo '</tbody></table>';
+				include_template('search/results_summary', compact('current_count', 'current_estimated_time', 'current_spent_time'));
+				$current_count = 0;
+				$current_estimated_time = array('months' => 0, 'weeks' => 0, 'days' => 0, 'hours' => 0, 'points' => 0);
+				$current_spent_time = $current_estimated_time;
+	endif;
+	$current_count++;
+	$estimate = $issue->getEstimatedTime();
+	$spenttime = $issue->getSpentTime();
+	foreach ($current_estimated_time as $key => $value) $current_estimated_time[$key] += $estimate[$key];
+	foreach ($current_spent_time as $key => $value) $current_spent_time[$key] += $spenttime[$key];
+	if ($showheader):
+?>
 		<h5>
 			<?php if ($search_object->getGroupBy() == 'issuetype'): ?>
 				<?php echo image_tag((($issue->hasIssueType()) ? $issue->getIssueType()->getIcon() : 'icon_unknown') . '_small.png', array('title' => (($issue->hasIssueType()) ? $issue->getIssueType()->getName() : __('Unknown issuetype')))); ?>
@@ -29,7 +31,7 @@
 			<thead>
 				<tr>
 					<?php if (!$tbg_user->isGuest()): ?>
-						<th class="nosort sca_action_selector" style="width: 20px; padding: 1px !important;"><input type="checkbox" onclick="TBG.Search.toggleCheckboxes(this);"></th>
+						<th class="nosort sca_action_selector" style="width: 20px; padding: 1px"><input type="checkbox" onclick="TBG.Search.toggleCheckboxes(this);"></th>
 					<?php endif; ?>
 					<?php if (!TBGContext::isProjectContext() && $show_project == true): ?>
 						<th style="padding-left: 3px;"><?php echo __('Project'); ?></th>
@@ -57,9 +59,9 @@
 	<?php endif; ?>
 				<tr class="<?php if ($issue->isClosed()): ?> closed<?php endif; ?><?php if ($issue->hasUnsavedChanges()): ?> changed<?php endif; ?><?php if ($issue->isBlocking()): ?> blocking<?php endif; ?> priority_<?php echo ($issue->getPriority() instanceof TBGPriority) ? $issue->getPriority()->getValue() : 0; ?>" id="issue_<?php echo $issue->getID(); ?>">
 					<?php if (!$tbg_user->isGuest()): ?>
-						<td class="sca_actions" style="padding: 2px;">
+						<td class="sca_actions">
 							<?php if ($issue->isWorkflowTransitionsAvailable()): ?>
-								<input type="checkbox" name="update_issue[<?php echo $issue->getID(); ?>]" onclick="TBG.Search.toggleCheckbox(this);" value="<?php echo $issue->getID(); ?>">
+								<input type="checkbox" name="update_issue[<?php echo $issue->getID(); ?>]" value="<?php echo $issue->getID(); ?>">
 							<?php endif; ?>
 						</td>
 					<?php endif; ?>
@@ -155,11 +157,10 @@
 	document.observe('dom:loaded', function() {
 		setTimeout(function() {
 			TBG.Search.setColumns('results_normal', ['title', 'issuetype', 'assigned_to', 'status', 'resolution', 'category', 'severity', 'percent_complete', 'reproducability', 'priority', 'components', 'milestone', 'estimated_time', 'spent_time', 'last_updated', 'comments'], [<?php echo "'".join("', '", $visible_columns)."'"; ?>], [<?php echo "'".join("', '", $default_columns)."'"; ?>]);
-			$('search_results').select('th').each(function (header_elm) {
-				if (!header_elm.hasClassName('nosort')) {
-					header_elm.on('click', TBG.Search.sortResults);
-				}
-			})
 		}, 250);
+		(function($) {
+			$("#search_results").on("click", "th:not(.nosort)", TBG.Search.sortResults);
+			$(".sca_actions").on("click", "input[type='checkbox']", TBG.Search.toggleCheckbox);
+		})(jQuery);
 	});
 </script>
