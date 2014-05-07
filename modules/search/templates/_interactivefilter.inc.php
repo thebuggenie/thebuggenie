@@ -357,4 +357,6 @@
 		}
 
 	?>
+<?php else: ?>
+	<?php var_dump($filter); ?>
 <?php endif; ?>
