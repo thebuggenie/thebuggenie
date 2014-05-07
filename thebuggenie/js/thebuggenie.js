@@ -871,9 +871,15 @@ TBG.Main.findIdentifiable = function(url, field) {
 	});
 };
 
-TBG.Main.updatePercentageLayout = function(percent) {
-	$('percent_complete_content').select('.percent_filled').first().style.width = percent + '%';
-	$('percent_complete_content').select('.percent_unfilled').first().style.width = (100 - percent) + '%';
+TBG.Main.updatePercentageLayout = function(arg1, arg2) {
+	if(isNaN(arg1))
+	{
+		$(arg1).style.width = arg2 + "%";
+	} else {
+		var percent = arg1;
+		$('percent_complete_content').select('.percent_filled').first().style.width = percent + '%';
+		$('percent_complete_content').select('.percent_unfilled').first().style.width = (100 - percent) + '%';
+	}
 };
 
 TBG.Main.submitIssue = function(url) {
@@ -1560,35 +1566,18 @@ TBG.Project.Milestone.refresh = function(url, milestone_id) {
 				var must_reload_issue_list = false;
 				if (json.percent) {
 					TBG.Main.updatePercentageLayout('milestone_'+m_id+'_percent', json.percent);
+					delete json.percent;
 				}
-				if (json.closed_issues && $('milestone_'+m_id+'_closed_issues')) {
-					if ($('milestone_'+m_id+'_closed_issues').innerHTML != json.closed_issues) {
-						$('milestone_'+m_id+'_closed_issues').update(json.closed_issues);
-						must_reload_issue_list = true;
-					}
-				}
-				if (json.assigned_issues && $('milestone_'+m_id+'_assigned_issues')) {
-					if ($('milestone_'+m_id+'_assigned_issues').innerHTML != json.assigned_issues) {
-						$('milestone_'+m_id+'_assigned_issues').update(json.assigned_issues);
-						must_reload_issue_list = true;
-					}
-				}
-				if (json.assigned_points && $('milestone_'+m_id+'_assigned_points')) {
-					if ($('milestone_'+m_id+'_assigned_points').innerHTML != json.assigned_points) {
-						$('milestone_'+m_id+'_assigned_points').update(json.assigned_points);
-						must_reload_issue_list = true;
-					}
-				}
-				if (json.closed_points && $('milestone_'+m_id+'_closed_points')) {
-					if ($('milestone_'+m_id+'_closed_points').innerHTML != json.closed_points) {
-						$('milestone_'+m_id+'_closed_points').update(json.closed_points);
-						must_reload_issue_list = true;
-					}
-				}
-				if (json.date_string && $('milestone_'+m_id+'_date_string')) {
-					if ($('milestone_'+m_id+'_date_string').innerHTML != json.date_string) {
-						$('milestone_'+m_id+'_date_string').update(json.date_string);
-						must_reload_issue_list = true;
+				for(var item in json)
+				{
+					var existing = $('milestone_' + m_id + '_' + item);
+					if(existing)
+					{
+						if(existing.innerHTML != json[item])
+						{
+							existing.update(json[item]);
+							must_reload_issue_list = true;
+						}
 					}
 				}
 				if (must_reload_issue_list) {
