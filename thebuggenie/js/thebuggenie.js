@@ -4498,26 +4498,9 @@ TBG.Search.toggleInteractiveFilterElement = function(element) {
 };
 
 TBG.Search.moveIssuesPerPageSlider = function(step) {
-	var ipp_value = $('issues_per_page_slider_value');
-	var value = 50;
-	switch (step) {
-		case 1:
-			value = 25;
-			break;
-		case 2:
-			value = 50;
-			break;
-		case 3:
-			value = 100;
-			break;
-		case 4:
-			value = 250;
-			break;
-		case 5:
-			value = 500;
-			break;
-	}
-	ipp_value.update(value);
+	var steps = [25, 50, 100, 250, 500];
+	var value = steps[step - 1];
+	$('issues_per_page_slider_value').update(value);
 	return value;
 };
 
