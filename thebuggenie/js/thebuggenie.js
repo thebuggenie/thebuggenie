@@ -3931,18 +3931,18 @@ TBG.Search.checkToggledCheckboxes = function() {
 	}
 }
 
-TBG.Search.toggleCheckboxes = function(chk_box) {
+TBG.Search.toggleCheckboxes = function() {
 	var do_check = true;
 
-	if ($(chk_box).hasClassName('semi-checked')) {
-		$(chk_box).removeClassName('semi-checked');
-		$(chk_box).checked = true;
+	if ($(this).hasClassName('semi-checked')) {
+		$(this).removeClassName('semi-checked');
+		$(this).checked = true;
 		do_check = true;
 	} else {
-		do_check = $(chk_box).checked;
+		do_check = $(this).checked;
 	}
 
-	$(chk_box).up('table').down('tbody').select('input[type=checkbox]').each(function(element) {
+	$(this).up('table').down('tbody').select('input[type=checkbox]').each(function(element) {
 		element.checked = do_check;
 	});
 

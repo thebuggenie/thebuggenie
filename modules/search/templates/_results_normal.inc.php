@@ -31,7 +31,7 @@ foreach ($search_object->getIssues() as $issue):
 			<thead>
 				<tr>
 					<?php if (!$tbg_user->isGuest()): ?>
-						<th class="nosort sca_action_selector" style="width: 20px; padding: 1px"><input type="checkbox" onclick="TBG.Search.toggleCheckboxes(this);"></th>
+						<th class="nosort sca_action_selector" style="width: 20px; padding: 1px"><input type="checkbox" /></th>
 					<?php endif; ?>
 					<?php if (!TBGContext::isProjectContext() && $show_project == true): ?>
 						<th style="padding-left: 3px;"><?php echo __('Project'); ?></th>
@@ -166,6 +166,8 @@ foreach ($search_object->getIssues() as $issue):
 			$("#search_results").on("click", "th:not(.nosort)", TBG.Search.sortResults);
 			// issue checkboxes
 			$(".sca_actions").on("click", "input[type='checkbox']", TBG.Search.toggleCheckbox);
+			// issue checkboxes select all
+			$(".sca_action_selector").on("click", "input[type='checkbox']", TBG.Search.toggleCheckboxes);
 			// more action dropdown
 			$(".sc_actions").on("click", ".image", function() {
 				var pressed = $(this).hasClass('button-pressed');

@@ -45,4 +45,11 @@
 	</td>
 	</tr>
 </table>
+<script type="text/javascript">
+(function($) {
+	$(".milestone_box")
+		.on("click", ".nosort input[type='checkbox']", TBG.Search.toggleCheckboxes)
+		.on("click", ".milestone_issue_row input[type='checkbox']", TBG.Search.toggleCheckbox);
+})(jQuery);
+</script>
 <?php include_template('project/projectplanningsettings', array('selected_project' => $selected_project)); ?>

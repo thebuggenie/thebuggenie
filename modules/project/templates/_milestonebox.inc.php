@@ -11,7 +11,7 @@ $all_columns = $milestone->getProject()->getIssueFields(false, array('status', '
 				<thead>
 					<tr>
 						<?php if ($tbg_user->canEditProjectDetails(TBGContext::getCurrentProject())): ?>
-							<th class="nosort" style="width: 20px; padding: 1px !important;"><input type="checkbox" onclick="TBG.Search.toggleCheckboxes(this);"></th>
+							<th class="nosort" style="width: 20px; padding: 1px !important;"><input type="checkbox" /></th>
 						<?php endif; ?>
 						<th><?php echo __('Issue'); ?></th>
 						<th><?php echo __('Assigned to'); ?></th>
