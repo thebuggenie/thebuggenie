@@ -1974,6 +1974,8 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .roadmap_milestone { clear: both; padding-bottom: 15px; }
 .milestone_points { color: #888; font-weight: bold; }
 .roadmap_header { padding: 5px; border-bottom: 1px solid #CCC; font-size: 1.1em; font-weight: bold; margin: 5px 5px 5px 0; }
+.roadmap_header .button-group {float:right;}
+.roadmap_header a {color: #555;}
 .roadmap_percentbar .percentcontainer { width: 490px; padding: 1px; border: 1px solid #8a8; float: left; margin-right: 10px; }
 .roadmap_percentdescription { float: left; padding: 5px; font-weight: normal; color: #555; }
 .roadmap_actions { float: right; padding: 5px; }
