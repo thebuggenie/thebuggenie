@@ -3,15 +3,16 @@
 <?php elseif (!$user->isScopeConfirmed()): ?>
 	<span class="faded_out" title="<?php echo __('This user has not been confirmed yet'); ?>"><?php echo $user->getUsername() ?></span>
 <?php else: ?>
-	<a href="javascript:void(0);" onclick="$('bud_<?php echo $user->getUsername() . "_" . $rnd_no; ?>').toggle();" class="userlink <?php if ($tbg_user->isFriend($user)): ?> friend" title="<?php echo __('This is one of your friends'); ?><?php endif; ?>">
+<div class="userdropdown">
+	<a href="javascript:void(0);" class="userlink<?php if ($tbg_user->isFriend($user)): ?> friend" title="<?php echo __('This is one of your friends'); ?><?php endif; ?>">
 		<?php echo tbg_get_userstate_image($user); ?>
 		<?php if ($show_avatar): ?>
-			<?php $avatar_dimensions = (!isset($size) || $size == 'small') ? 16 : 22; ?>
-			<?php echo image_tag($user->getAvatarURL(), array('alt' => ' ', 'class' => 'avatar', 'style' => "width: {$avatar_dimensions}px; height: {$avatar_dimensions}px; "), true); ?>
+			<?php $extraClass = (!isset($size) || $size == 'small') ? "small" : ""; ?>
+			<?php echo image_tag($user->getAvatarURL(), array('alt' => ' ', 'class' => 'avatar '.$extraClass), true); ?>
 		<?php endif; ?>
 		<?php echo (isset($displayname)) ? $displayname : $user->getBuddyname(); ?>
 	</a>
-	<div id="bud_<?php echo $user->getUsername() . '_' . $rnd_no; ?>" style="z-index: 100; width: 300px; margin-top: 10px; display: none; position: absolute;" class="rounded_box white shadowed user_popup dropdown_box <?php if (isset($class)) echo $class; ?> leftie">
+	<div class="rounded_box white shadowed user_popup dropdown_box <?php if (isset($class)) echo $class; ?> leftie">
 		<div style="padding: 3px;">
 			<div style="padding: 2px; width: 36px; height: 36px; text-align: center; background-color: #FFF; border: 1px solid #DDD; float: left;">
 				<?php echo image_tag($user->getAvatarURL(false), array('alt' => ' ', 'style' => "width: 36px; height: 36px;"), true); ?>
@@ -53,4 +54,5 @@
 		</div>
 		<div style="text-align: right; padding: 3px; font-size: 9px;"><a href="javascript:void(0);" onclick="$('bud_<?php echo $user->getUsername() . "_" . $rnd_no; ?>').toggle();"><?php echo __('Close this menu'); ?></a></div>
 	</div>
+</div>
 <?php endif; ?>

@@ -199,6 +199,7 @@ TBG.Core.popupVisiblizer = function() {
 	var visible_popups = $$('.dropdown_box').findAll(function(el) {return el.visible();});
 	if (visible_popups.size()) {
 		visible_popups.each(function (element) {
+			if($(element).hasClassName("user_popup")) return;
 			var max_bottom = document.viewport.getHeight();
 			var element_height = $(element).getHeight();
 			var parent_offset = $(element).up().cumulativeOffset().top;
@@ -5257,4 +5258,9 @@ TBG.Tutorial.start = function(key, initial_step) {
 
 jQuery(document).ready(function(){
 	TBG.Main.Helpers.MarkitUp($$('textarea'));
+	(function($) {
+		$("body").on("click", ".userdropdown a", function() {
+			$(this).next().toggle();
+		});
+	})(jQuery);
 });
