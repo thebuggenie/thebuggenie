@@ -876,9 +876,7 @@ TBG.Main.updatePercentageLayout = function(arg1, arg2) {
 	{
 		$(arg1).style.width = arg2 + "%";
 	} else {
-		var percent = arg1;
-		$('percent_complete_content').select('.percent_filled').first().style.width = percent + '%';
-		$('percent_complete_content').select('.percent_unfilled').first().style.width = (100 - percent) + '%';
+		$('percent_complete_content').select('.percent_filled').first().style.width = arg1 + '%';
 	}
 };
 
