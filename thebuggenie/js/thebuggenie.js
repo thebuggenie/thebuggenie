@@ -199,6 +199,7 @@ TBG.Core.popupVisiblizer = function() {
 	var visible_popups = $$('.dropdown_box').findAll(function(el) {return el.visible();});
 	if (visible_popups.size()) {
 		visible_popups.each(function (element) {
+			if($(element).hasClassName("user_popup")) return;
 			var max_bottom = document.viewport.getHeight();
 			var element_height = $(element).getHeight();
 			var parent_offset = $(element).up().cumulativeOffset().top;
@@ -871,9 +872,13 @@ TBG.Main.findIdentifiable = function(url, field) {
 	});
 };
 
-TBG.Main.updatePercentageLayout = function(percent) {
-	$('percent_complete_content').select('.percent_filled').first().style.width = percent + '%';
-	$('percent_complete_content').select('.percent_unfilled').first().style.width = (100 - percent) + '%';
+TBG.Main.updatePercentageLayout = function(arg1, arg2) {
+	if(isNaN(arg1))
+	{
+		$(arg1).style.width = arg2 + "%";
+	} else {
+		$('percent_complete_content').select('.percent_filled').first().style.width = arg1 + '%';
+	}
 };
 
 TBG.Main.submitIssue = function(url) {
@@ -1560,35 +1565,18 @@ TBG.Project.Milestone.refresh = function(url, milestone_id) {
 				var must_reload_issue_list = false;
 				if (json.percent) {
 					TBG.Main.updatePercentageLayout('milestone_'+m_id+'_percent', json.percent);
+					delete json.percent;
 				}
-				if (json.closed_issues && $('milestone_'+m_id+'_closed_issues')) {
-					if ($('milestone_'+m_id+'_closed_issues').innerHTML != json.closed_issues) {
-						$('milestone_'+m_id+'_closed_issues').update(json.closed_issues);
-						must_reload_issue_list = true;
-					}
-				}
-				if (json.assigned_issues && $('milestone_'+m_id+'_assigned_issues')) {
-					if ($('milestone_'+m_id+'_assigned_issues').innerHTML != json.assigned_issues) {
-						$('milestone_'+m_id+'_assigned_issues').update(json.assigned_issues);
-						must_reload_issue_list = true;
-					}
-				}
-				if (json.assigned_points && $('milestone_'+m_id+'_assigned_points')) {
-					if ($('milestone_'+m_id+'_assigned_points').innerHTML != json.assigned_points) {
-						$('milestone_'+m_id+'_assigned_points').update(json.assigned_points);
-						must_reload_issue_list = true;
-					}
-				}
-				if (json.closed_points && $('milestone_'+m_id+'_closed_points')) {
-					if ($('milestone_'+m_id+'_closed_points').innerHTML != json.closed_points) {
-						$('milestone_'+m_id+'_closed_points').update(json.closed_points);
-						must_reload_issue_list = true;
-					}
-				}
-				if (json.date_string && $('milestone_'+m_id+'_date_string')) {
-					if ($('milestone_'+m_id+'_date_string').innerHTML != json.date_string) {
-						$('milestone_'+m_id+'_date_string').update(json.date_string);
-						must_reload_issue_list = true;
+				for(var item in json)
+				{
+					var existing = $('milestone_' + m_id + '_' + item);
+					if(existing)
+					{
+						if(existing.innerHTML != json[item])
+						{
+							existing.update(json[item]);
+							must_reload_issue_list = true;
+						}
 					}
 				}
 				if (must_reload_issue_list) {
@@ -3944,18 +3932,18 @@ TBG.Search.checkToggledCheckboxes = function() {
 	}
 }
 
-TBG.Search.toggleCheckboxes = function(chk_box) {
+TBG.Search.toggleCheckboxes = function() {
 	var do_check = true;
 
-	if ($(chk_box).hasClassName('semi-checked')) {
-		$(chk_box).removeClassName('semi-checked');
-		$(chk_box).checked = true;
+	if ($(this).hasClassName('semi-checked')) {
+		$(this).removeClassName('semi-checked');
+		$(this).checked = true;
 		do_check = true;
 	} else {
-		do_check = $(chk_box).checked;
+		do_check = $(this).checked;
 	}
 
-	$(chk_box).up('table').down('tbody').select('input[type=checkbox]').each(function(element) {
+	$(this).up('table').down('tbody').select('input[type=checkbox]').each(function(element) {
 		element.checked = do_check;
 	});
 
@@ -4510,26 +4498,9 @@ TBG.Search.toggleInteractiveFilterElement = function(element) {
 };
 
 TBG.Search.moveIssuesPerPageSlider = function(step) {
-	var ipp_value = $('issues_per_page_slider_value');
-	var value = 50;
-	switch (step) {
-		case 1:
-			value = 25;
-			break;
-		case 2:
-			value = 50;
-			break;
-		case 3:
-			value = 100;
-			break;
-		case 4:
-			value = 250;
-			break;
-		case 5:
-			value = 500;
-			break;
-	}
-	ipp_value.update(value);
+	var steps = [25, 50, 100, 250, 500];
+	var value = steps[step - 1];
+	$('issues_per_page_slider_value').update(value);
 	return value;
 };
 
@@ -5270,4 +5241,9 @@ TBG.Tutorial.start = function(key, initial_step) {
 
 jQuery(document).ready(function(){
 	TBG.Main.Helpers.MarkitUp($$('textarea'));
+	(function($) {
+		$("body").on("click", ".userdropdown a", function() {
+			$(this).next().toggle();
+		});
+	})(jQuery);
 });

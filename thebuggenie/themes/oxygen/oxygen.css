@@ -240,10 +240,13 @@ header #header_userinfo li.temporarily_switched { background-color: #fec41e; box
 header #header_userinfo li.temporarily_switched a { color: #333; }
 header #header_userinfo li.temporarily_switched .user_menu_dropdown { background-color: #fec41e; }
 #header_avatar { margin: -2px 10px 0 0; border-radius: 5px; }
+
 .userlink { font-weight: normal; margin-left: 5px; }
 .userlink:hover { text-decoration: none; border: none; font-weight: normal; }
 img.userstate { width: 12px; height: 12px; display: inline-block; margin: -2px 2px 2px 0; vertical-align: middle; }
-img.avatar { border-radius: 5px; display: inline-block; margin: -2px 2px 2px 0; vertical-align: middle; }
+img.avatar { border-radius: 5px; display: inline-block; margin: 0 2px 2px 0; vertical-align: middle; width:22px; height:22px;}
+.avatar.small {width:16px; height:16px;}
+
 header nav ul { position: relative !important; display: inline-block; margin-right: 5px; }
 #usermenu_changestate_toggler { float: right; margin-left: 5px; padding: 1px 3px !important; font-size: 1em !important; border: 1px solid rgba(0, 0, 0, 0.2) !important; }
 #usermenu_changestate { clear: both; margin: 5px 10px 10px 10px; }
@@ -866,6 +869,7 @@ a.shadowed { box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2); -webkit-box-shadow: 2px
 a.shadowed:active { box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); -moz-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); }
 
 /* user popups */
+.user_popup {z-index: 100; width: 300px; margin-top: 10px; display: none; position: absolute;}
 .user_popup, #user_details_popup { font-size: 0.9em; color: #555; }
 .user_popup .user_realname { font-size: 1.2em; font-weight: bold; padding: 0 0 0 7px; width: 240px; float: left; }
 #user_details_popup .user_realname { font-size: 1.5em; font-weight: bold; padding: 2px 0 0 10px; float: left; line-height: 1.2; }
@@ -1974,6 +1978,8 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .roadmap_milestone { clear: both; padding-bottom: 15px; }
 .milestone_points { color: #888; font-weight: bold; }
 .roadmap_header { padding: 5px; border-bottom: 1px solid #CCC; font-size: 1.1em; font-weight: bold; margin: 5px 5px 5px 0; }
+.roadmap_header .button-group {float:right;}
+.roadmap_header a {color: #555;}
 .roadmap_percentbar .percentcontainer { width: 490px; padding: 1px; border: 1px solid #8a8; float: left; margin-right: 10px; }
 .roadmap_percentdescription { float: left; padding: 5px; font-weight: normal; color: #555; }
 .roadmap_actions { float: right; padding: 5px; }

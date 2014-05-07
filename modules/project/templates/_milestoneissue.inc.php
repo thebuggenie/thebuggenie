@@ -1,6 +1,6 @@
 <tr class="milestone_issue_row<?php if ($issue->isClosed()): ?> issue_closed<?php endif; ?>" id="issue_<?php echo $issue->getID(); ?>">
 	<?php if ($issue->canEditIssue()): ?>
-		<td style="padding: 2px;"><input type="checkbox" name="update_issue[<?php echo $issue->getID(); ?>]" onclick="TBG.Search.toggleCheckbox(this);" value="<?php echo $issue->getID(); ?>"></td>
+		<td style="padding: 2px;"><input type="checkbox" name="update_issue[<?php echo $issue->getID(); ?>]" value="<?php echo $issue->getID(); ?>"></td>
 	<?php endif; ?>
 	<td>
 		<?php if ($issue->canEditIssue()): ?>
