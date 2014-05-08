@@ -1,4 +1,12 @@
 <?php include_template('installation/header'); ?>
+<div class="installation_box">
+	<br>
+	<h2>NOTE: You are about to install a remix (nitrogen theme) of The Bug Genie v3.2.7.1</h2>
+	To compare the differences between this remix and the original v3.2.7.1, please visit <a target="_blank" href="https://github.com/virtualdavid/thebuggenie/compare/thebuggenie:branch-32...nitrogen?expand=1"> https://github.com/virtualdavid/thebuggenie/compare/thebuggenie:branch-32...nitrogen?expand=1 </a> <i>(opens in a new window)</i><br>
+	<br>
+	To see screenshots and read a detailed explanation about the remix go here <a target="_blank" href="http://forum.thebuggenie.com/viewtopic.php?f=9&t=1691&sid=628e6e5f3027e56f07651c066c001557"> http://forum.thebuggenie.com/viewtopic.php?f=9&t=1691&sid=628e6e5f3027e56f07651c066c001557 </a> <i>(opens in a new window)</i><br>
+	<br>
+</div>	
 <div class="donate installation_box">
 	<h2>How to support future development</h2>
 	Even though this software has been provided to you free of charge, developing it would not have been possible without support from our users. By making a donation, or buying a support contract you can help us continue development.<br>
