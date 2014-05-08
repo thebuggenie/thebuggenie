@@ -15,8 +15,8 @@
 	</div>
 	<div class="content"><?php echo __($module->getDescription()); ?></div>
 	<div style="position: absolute; right: 12px; top: 12px;">
-		<button class="button button-silver" id="module_<?php echo $module->getID(); ?>_more_actions" onclick="$(this).toggleClassName('button-pressed');$('module_<?php echo $module->getID(); ?>_more_actions_dropdown').toggle(); "><?php echo __('Actions'); ?></button>
-		<ul id="module_<?php echo $module->getID(); ?>_more_actions_dropdown" style="display: none; position: absolute; font-size: 1.1em; width: 200px; top: 23px; margin-top: 0; right: 0; text-align: right; z-index: 1000;" class="simple_list rounded_box white shadowed popup_box more_actions_dropdown" onclick="$('module_<?php echo $module->getID(); ?>_more_actions').toggleClassName('button-pressed');$('module_<?php echo $module->getID(); ?>_more_actions_dropdown').toggle();">
+		<button class="button button-silver dropper" id="module_<?php echo $module->getID(); ?>_more_actions"><?php echo __('Actions'); ?></button>
+		<ul id="module_<?php echo $module->getID(); ?>_more_actions_dropdown" style="font-size: 1.1em; width: 200px; top: 23px; margin-top: 0; text-align: right; z-index: 1000;" class="simple_list rounded_box white shadowed popup_box more_actions_dropdown" onclick="$(this).previous().toggleClassName('button-pressed');$(this).toggle();">
 			<?php if ($module->hasConfigSettings()): ?>
 				<li>
 					<?php echo link_tag(make_url('configure_module', array('config_module' => $module->getName())), __('Configure module')); ?>

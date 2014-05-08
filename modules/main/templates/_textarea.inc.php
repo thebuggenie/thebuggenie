@@ -1,20 +1,19 @@
 <?php
-
 	$syntax = (isset($syntax)) ? $syntax : $tbg_user->getPreferredSyntax(true);
 	if (is_numeric($syntax)) $syntax = ($syntax == TBGSettings::SYNTAX_MW) ? 'mw' : 'md';
 
 	$base_id = (isset($area_id)) ? $area_id : $area_name;
-
 ?>
 <div class="textarea_container syntax_<?php echo $syntax; ?>">
 	<div class="syntax_picker_container">
 		<input type="hidden" id="<?php echo $base_id; ?>_syntax" name="<?php echo $area_name; ?>_syntax" value="<?php echo ($syntax == 'mw') ? TBGSettings::SYNTAX_MW : TBGSettings::SYNTAX_MD; ?>">
-		<button id="<?php echo $base_id; ?>_toggle_syntax_button" onclick="$(this).toggleClassName('button-pressed');$('<?php echo $base_id; ?>_syntax_picker').toggle();return false;" class="syntax_picker"><?php echo __('Selected syntax: %selected_syntax', array('%selected_syntax' => '<span id="'.$base_id.'_selected_syntax">'.(($syntax == 'mw') ? 'mediawiki' : 'markdown').'</span>')); ?>&nbsp;&nbsp;<span style="font-size: 0.8em; float: right;">&#x25BC;</span></button>
-		<ul id="<?php echo $base_id; ?>_syntax_picker" class="simple_list rounded_box white shadowed more_actions_dropdown dropdown_box popup_box" onclick="$('<?php echo $base_id; ?>_toggle_syntax_button').toggleClassName('button-pressed');TBG.Main.Profile.clearPopupsAndButtons();" style="display: none;">
+		<button id="<?php echo $base_id; ?>_toggle_syntax_button" onclick="return false;" class="syntax_picker dropper"><?php echo __('Selected syntax: %selected_syntax', array('%selected_syntax' => '<span id="'.$base_id.'_selected_syntax">'.(($syntax == 'mw') ? 'mediawiki' : 'markdown').'</span>')); ?>&nbsp;&nbsp;<span style="font-size: 0.8em; float: right;">&#x25BC;</span></button>
+		<ul id="<?php echo $base_id; ?>_syntax_picker" class="simple_list rounded_box white shadowed more_actions_dropdown dropdown_box popup_box" onclick="$(this).prev().toggleClassName('button-pressed');TBG.Main.Profile.clearPopupsAndButtons();" style="display: none;">
 			<li class="mw <?php if ($syntax == 'mw') echo 'selected'; ?>"><a href="javascript:void(0);" onclick="TBG.Main.Helpers.setSyntax('<?php echo $base_id; ?>', 'mw');"><?php echo __('Mediawiki syntax'); ?></a></li>
 			<li class="md <?php if ($syntax == 'md') echo 'selected'; ?>"><a href="javascript:void(0);" onclick="TBG.Main.Helpers.setSyntax('<?php echo $base_id; ?>', 'md');"><?php echo __('Markdown syntax'); ?></a></li>
 		</ul>
 	</div>
+	<br style="clear:both" />
 	<textarea name="<?php echo $area_name; ?>" id="<?php echo $base_id; ?>" class="syntax_<?php echo $syntax; ?>" style="height: <?php echo $height; ?>; width: <?php echo $width; ?>;"><?php echo $value; ?></textarea>
 	<?php if (!isset($hide_hint) || $hide_hint == false): ?>
 		<div class="textarea_hint">

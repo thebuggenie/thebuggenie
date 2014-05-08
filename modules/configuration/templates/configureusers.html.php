@@ -37,21 +37,19 @@
 							<?php echo javascript_link_tag('0-9', array('style' => 'width: 23px;', 'class' => 'button button-silver', 'onclick' => "TBG.Config.User.show('".make_url('configure_users_find_user')."', '0-9');")); ?>
 						</div>
 						<div id="users_more_actions_container" style="position: relative;">
-							<div style="position: absolute; right: 0; top: 20px;">
-								<ul id="users_more_actions_dropdown" style="display: none; position: absolute; width: 400px; font-size: 1.1em; top: 2px; margin-top: 0; right: 0; z-index: 1000;" class="simple_list rounded_box white shadowed popup_box more_actions_dropdown" onclick="$('users_more_actions').toggleClassName('button-pressed');$('users_more_actions_dropdown').toggle();">
-									<li class="finduser_container">
-										<label for="findusers"><?php echo __('Find user(s)'); ?>:</label><br>
-										<form action="<?php echo make_url('configure_users_find_user'); ?>" method="post" onsubmit="TBG.Config.User.show('<?php echo make_url('configure_users_find_user'); ?>', $('findusers').getValue());return false;">
-											<input type="text" name="findusers" id="findusers" value="<?php echo $finduser; ?>" placeholder="<?php echo __('Enter something to search for'); ?>">&nbsp;<input type="submit" value="<?php echo __('Find'); ?>">
-										</form>
-									</li>
-									<li class="separator"></li>
-									<li><?php echo javascript_link_tag(__('Show all users'), array('onclick' => "TBG.Config.User.show('".make_url('configure_users_find_user')."', 'all');")); ?></li>
-									<li><?php echo javascript_link_tag(__('Show unactivated users'), array('onclick' => "TBG.Config.User.show('".make_url('configure_users_find_user')."', 'unactivated');")); ?></li>
-									<li><?php echo javascript_link_tag(__('Show newly created users'), array('onclick' => "TBG.Config.User.show('".make_url('configure_users_find_user')."', 'newusers');")); ?></li>
-								</ul>
-							</div>
-							<button class="button button-silver last" id="users_more_actions" onclick="$(this).toggleClassName('button-pressed');$('users_more_actions_dropdown').toggle();if ($(this).hasClassName('button-pressed')){ $('findusers').focus(); }"><?php echo __('Search'); ?></button>
+							<button class="button button-silver last dropper" id="users_more_actions" onclick="if ($(this).hasClassName('button-pressed')){ $('findusers').focus(); }"><?php echo __('Search'); ?></button>
+							<ul id="users_more_actions_dropdown" style="width: 400px; font-size: 1.1em; z-index: 1000; margin-top: 21px;" class="simple_list rounded_box white shadowed popup_box more_actions_dropdown" onclick="$('users_more_actions').toggleClassName('button-pressed');$('users_more_actions_dropdown').toggle();">
+								<li class="finduser_container">
+									<label for="findusers"><?php echo __('Find user(s)'); ?>:</label><br>
+									<form action="<?php echo make_url('configure_users_find_user'); ?>" method="post" onsubmit="TBG.Config.User.show('<?php echo make_url('configure_users_find_user'); ?>', $('findusers').getValue());return false;">
+										<input type="text" name="findusers" id="findusers" value="<?php echo $finduser; ?>" placeholder="<?php echo __('Enter something to search for'); ?>">&nbsp;<input type="submit" value="<?php echo __('Find'); ?>">
+									</form>
+								</li>
+								<li class="separator"></li>
+								<li><?php echo javascript_link_tag(__('Show all users'), array('onclick' => "TBG.Config.User.show('".make_url('configure_users_find_user')."', 'all');")); ?></li>
+								<li><?php echo javascript_link_tag(__('Show unactivated users'), array('onclick' => "TBG.Config.User.show('".make_url('configure_users_find_user')."', 'unactivated');")); ?></li>
+								<li><?php echo javascript_link_tag(__('Show newly created users'), array('onclick' => "TBG.Config.User.show('".make_url('configure_users_find_user')."', 'newusers');")); ?></li>
+							</ul>
 						</div>
 						<div class="fullpage_backdrop" id="adduser_div"style="display: none;">
 							<script>

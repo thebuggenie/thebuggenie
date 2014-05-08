@@ -5242,7 +5242,8 @@ TBG.Tutorial.start = function(key, initial_step) {
 jQuery(document).ready(function(){
 	TBG.Main.Helpers.MarkitUp($$('textarea'));
 	(function($) {
-		$("body").on("click", ".userdropdown a", function() {
+		$("body").on("click", ".dropper", function() {
+			$(this).toggleClass("button-pressed");
 			$(this).next().toggle();
 		});
 	})(jQuery);

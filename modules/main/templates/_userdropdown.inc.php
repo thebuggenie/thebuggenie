@@ -4,7 +4,7 @@
 	<span class="faded_out" title="<?php echo __('This user has not been confirmed yet'); ?>"><?php echo $user->getUsername() ?></span>
 <?php else: ?>
 <div class="userdropdown">
-	<a href="javascript:void(0);" class="userlink<?php if ($tbg_user->isFriend($user)): ?> friend" title="<?php echo __('This is one of your friends'); ?><?php endif; ?>">
+	<a href="javascript:void(0);" class="dropper userlink<?php if ($tbg_user->isFriend($user)): ?> friend" title="<?php echo __('This is one of your friends'); ?><?php endif; ?>">
 		<?php echo tbg_get_userstate_image($user); ?>
 		<?php if ($show_avatar): ?>
 			<?php $extraClass = (!isset($size) || $size == 'small') ? "small" : ""; ?>

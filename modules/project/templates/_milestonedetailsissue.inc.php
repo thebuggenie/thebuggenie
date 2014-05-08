@@ -15,7 +15,7 @@
 	</td>
 	<td class="milestone_issue_actions">
 		<div>
-			<a class="button button-icon button-silver" id="more_actions_<?php echo $issue->getID(); ?>_button" onclick="$(this).toggleClassName('button-pressed');$('more_actions_<?php echo $issue->getID(); ?>').toggle();"><?php echo image_tag('action_dropdown_small.png', array('title' => __('Show more actions'))); ?></a>
+			<a class="dropper button button-icon button-silver" id="more_actions_<?php echo $issue->getID(); ?>_button"><?php echo image_tag('action_dropdown_small.png', array('title' => __('Show more actions'))); ?></a>
 			<?php include_template('main/issuemoreactions', array('issue' => $issue, 'multi' => true)); ?>
 		</div>
 	</td>

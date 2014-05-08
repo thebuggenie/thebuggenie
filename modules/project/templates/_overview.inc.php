@@ -24,7 +24,7 @@
 <?php if ($tbg_user->hasPageAccess('project_dashboard', $project->getID()) || $tbg_user->hasPageAccess('project_allpages', $project->getID())) echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), __('Dashboard'), array('class' => 'button button-silver button-dashboard')); ?>
 <?php if ($tbg_user->canSearchForIssues() && ($tbg_user->hasPageAccess('project_issues', $project->getID()) || $tbg_user->hasPageAccess('project_allpages', $project->getID()))): ?>
 	<?php echo link_tag(make_url('project_open_issues', array('project_key' => $project->getKey())), __('Issues'), array('class' => 'button button-silver button-issues righthugging')); ?>
-	<input type="button" class="button button-silver lefthugging" onclick="$('goto_issue_<?php echo $project->getID(); ?>').toggle();$(this).toggleClassName('button-pressed');TBG.Core.popupVisiblizer();$('goto_issue_<?php echo $project->getID(); ?>_input').focus();" style="font-size: 0.9em;" value="&#x25BC;">
+	<input type="button" class="button button-silver lefthugging dropper" onclick="setTimeout(function() { $('goto_issue_<?php echo $project->getID(); ?>_input').focus(); }, 100);" style="font-size: 0.9em;" value="&#x25BC;">
 	<ul id="goto_issue_<?php echo $project->getID(); ?>" class="simple_list rounded_box white shadowed more_actions_dropdown dropdown_box popup_box no_direction" style="position: absolute; margin-top: 25px; display: none;">
 		<li class="finduser_container">
 			<label for="goto_issue_<?php echo $project->getID(); ?>_input"><?php echo __('Jump to an issue'); ?>:</label><br>
@@ -38,7 +38,7 @@
 <?php TBGEvent::createNew('core', 'project_overview_item_links', $project)->trigger(); ?>
 <?php if (!$project->isLocked() && $tbg_user->canReportIssues($project)): ?>
 	<?php echo link_tag(make_url('project_reportissue', array('project_key' => $project->getKey())), __('Report an issue'), array('class' => 'button button-green button-report-issue righthugging')); ?>
-	<input type="button" class="button button-green last lefthugging reportissue_dropdown_button" onclick="$('create_issue_<?php echo $project->getID(); ?>').toggle();TBG.Core.popupVisiblizer();$(this).toggleClassName('button-pressed');" value="&#x25BC;" style="font-size: 0.9em;">
+	<input type="button" class="dropper button button-green last lefthugging reportissue_dropdown_button" value="&#x25BC;" style="font-size: 0.9em;">
 	<ul id="create_issue_<?php echo $project->getID(); ?>" class="simple_list rounded_box white shadowed more_actions_dropdown dropdown_box popup_box no_direction" style="position: absolute; right: 0; margin-top: 25px; display: none;">
 		<?php foreach ($project->getIssuetypeScheme()->getReportableIssuetypes() as $issuetype): ?>
 			<li><?php echo link_tag(make_url('project_reportissue', array('project_key' => $project->getKey(), 'issuetype' => $issuetype->getKey())), image_tag($issuetype->getIcon() . '_tiny.png' ) . __($issuetype->getName())); ?></li>

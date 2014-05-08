@@ -298,10 +298,10 @@
 					<?php endforeach; ?>
 				<?php endif; ?>
 				<li class="more_actions">
-					<input class="button button-silver first last" id="more_actions_<?php echo $issue->getID(); ?>_button" type="button" value="<?php echo ($issue->isWorkflowTransitionsAvailable()) ? __('More actions') : __('Actions'); ?>" onclick="$(this).toggleClassName('button-pressed');$('more_actions_<?php echo $issue->getID(); ?>').toggle();">
+					<input class="dropper button button-silver first last" id="more_actions_<?php echo $issue->getID(); ?>_button" type="button" value="<?php echo ($issue->isWorkflowTransitionsAvailable()) ? __('More actions') : __('Actions'); ?>">
+					<?php include_template('main/issuemoreactions', array('issue' => $issue, 'times' => false)); ?>
 				</li>
 			</ul>
-			<?php include_template('main/issuemoreactions', array('issue' => $issue, 'times' => false)); ?>
 		</div>
 		<div id="viewissue_left_box_top">
 			<div id="issue_view">
