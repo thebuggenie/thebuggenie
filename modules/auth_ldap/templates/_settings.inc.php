@@ -95,7 +95,7 @@
 				<td><input type="checkbox"<?php if ($noldap): echo ' disabled="disabled"'; endif; ?> name="integrated_auth" id="integrated_auth" value="1" value="1" <?php if ($module->getSetting('integrated_auth')): ?>checked<?php endif; ?> style="width: 100%;"></td>
 			</tr>
 			<tr>
-				<td class="config_explanation" colspan="2"><?php echo __('Activate to enabled automatic user login using HTTP integrated authentication. This requires your web server to be authenticating the user (e.g. HTTP Basic Authentication, Kerberos etc) and providing the "REMOTE_USER" HTTP header so Bug Genie can identify the current user. '); ?></td>
+				<td class="config_explanation" colspan="2"><?php echo __('Activate to enabled automatic user login using HTTP integrated authentication. This requires your web server to be authenticating the user (e.g. HTTP Basic Authentication, Kerberos etc) and providing the "REMOTE_USER" HTTP header so Bug Genie can identify the current user.'); ?></td>
 			</tr>			
 		</table>
 	</div>
