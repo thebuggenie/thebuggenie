@@ -2,8 +2,8 @@
 	<div style="padding: 5px; position: relative;">
 		<?php echo image_tag('team_large.png', array('style' => 'float: left; margin-right: 5px;')); ?>
 		<div style="position: absolute; right: 12px; top: 12px;">
-			<button class="button button-silver" id="team_<?php echo $team->getID(); ?>_more_actions" onclick="$(this).toggleClassName('button-pressed');$('team_<?php echo $team->getID(); ?>_more_actions_dropdown').toggle(); "><?php echo __('Actions'); ?></button>
-			<ul id="team_<?php echo $team->getID(); ?>_more_actions_dropdown" style="display: none; position: absolute; font-size: 1.1em; width: 200px; top: 23px; margin-top: 0; right: 0; text-align: right; z-index: 1000;" class="simple_list rounded_box white shadowed popup_box more_actions_dropdown" onclick="$('team_<?php echo $team->getID(); ?>_more_actions').toggleClassName('button-pressed');$('team_<?php echo $team->getID(); ?>_more_actions_dropdown').toggle();">
+			<button class="button button-silver dropper" id="team_<?php echo $team->getID(); ?>_more_actions"><?php echo __('Actions'); ?></button>
+			<ul id="team_<?php echo $team->getID(); ?>_more_actions_dropdown" style="font-size: 1.1em; width: 200px; top: 23px; margin-top: 0; text-align: right; z-index: 1000;" class="simple_list rounded_box white shadowed popup_box more_actions_dropdown" onclick="$(this).previous().toggleClassName('button-pressed');$(this).toggle();">
 				<li>
 					<?php echo javascript_link_tag(__('Add member(s) to this team'), array('onclick' => '$(\'addmember_team_'.$team->getID().'\').toggle();')); ?>
 				</li>

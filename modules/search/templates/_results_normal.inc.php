@@ -140,7 +140,7 @@ foreach ($search_object->getIssues() as $issue):
 					</td>
 					<td class="sc_actions">
 						<div style="position: relative;">
-							<a title="<?php __('Show more actions'); ?>" class="image" data-id="<?php echo $issue->getID(); ?>" id="more_actions_<?php echo $issue->getID(); ?>_button" href="javascript:void(0);"></a>
+							<a title="<?php echo __('Show more actions'); ?>" class="image dropper" data-id="<?php echo $issue->getID(); ?>" id="more_actions_<?php echo $issue->getID(); ?>_button" href="javascript:void(0);"></a>
 							<?php include_template('main/issuemoreactions', array('issue' => $issue, 'multi' => true)); ?>
 						</div>
 					</td>
@@ -168,15 +168,6 @@ foreach ($search_object->getIssues() as $issue):
 			$(".sca_actions").on("click", "input[type='checkbox']", TBG.Search.toggleCheckbox);
 			// issue checkboxes select all
 			$(".sca_action_selector").on("click", "input[type='checkbox']", TBG.Search.toggleCheckboxes);
-			// more action dropdown
-			$(".sc_actions").on("click", ".image", function() {
-				var pressed = $(this).hasClass('button-pressed');
-				TBG.Main.Profile.clearPopupsAndButtons();
-				$(this).toggleClass('button-pressed');
-				if (!pressed) {
-					$('#more_actions_' + $(this).attr("data-id")).toggle();
-				}
-			});
 		})(jQuery);
 	});
 </script>

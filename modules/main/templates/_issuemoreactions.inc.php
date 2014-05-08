@@ -1,4 +1,4 @@
-<ul id="more_actions_<?php echo $issue->getID(); ?>" style="display: none; position: absolute; width: 300px; top: 0; right: 0; z-index: 1000;" class="simple_list rounded_box white shadowed more_actions_dropdown dropdown_box popup_box" onclick="$('more_actions_<?php echo $issue->getID(); ?>_button').toggleClassName('button-pressed');TBG.Main.Profile.clearPopupsAndButtons();">
+<ul class="simple_list rounded_box white shadowed more_actions_dropdown dropdown_box popup_box">
 	<?php if (!$issue->getProject()->isArchived() && $issue->canEditIssueDetails()): ?>
 		<?php if (!isset($multi) || !$multi): ?>
 			<li class="header"><?php echo __('Additional actions available'); ?></li>
