@@ -17,7 +17,7 @@ This is an overview of the default workflow setup with its steps and transitions
 |-
 | '''Testing''' || ''Testing / QA'' || Open but not editable || Accept issue solution → Closed <br>Reject issue solution → In progress || 
 |-
-| '''Rejected''' || ''Not a bug'' || Closed and not editable || Reopen issue → New || 
+| '''Rejected''' || ''Not an issue'' || Closed and not editable || Reopen issue → New || 
 |-
 | '''Closed''' || - || Closed and not editable || Reopen issue → New || This workflow step is not linked directly to a status
 |}

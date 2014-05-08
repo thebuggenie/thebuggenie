@@ -2,9 +2,17 @@
 	<table cellpadding=0 cellspacing=0 style="table-layout: auto; margin: 0 auto 0 auto;">
 		<tr>
 			<td style="width: auto;">
-				<?php echo image_tag('footer_logo.png'); ?>
-				<?php echo __('%thebuggenie%, <b>friendly</b> issue tracking since 2002', array('%thebuggenie%' => link_tag(make_url('about'), 'The Bug Genie'))); ?>.
-				<?php echo __('Licensed under the MPL 1.1 only, read it at %link_to_MPL%', array('%link_to_MPL%' => '<a href="http://www.opensource.org/licenses/mozilla1.1.php">opensource.org</a>')); ?>
+			
+			
+<?php // BEGIN MODIFY FOOTER ?>
+	<a href="<?php echo TBGContext::getTBGPath(); ?>wiki/Privacy">Privacy </a>|
+	<a href="<?php echo TBGContext::getTBGPath(); ?>wiki/TermsOfUse">Terms of Use </a>|
+	Project manager and wiki by <a href="<?php echo TBGContext::getTBGPath(); ?>about">The Bug Genie</a>
+	Forum by <a href="http://vanillaforums.org/">Vanilla</a>
+	Content copyright (except where noted) = <a href="http://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
+<?php // END MODIFY FOOTER ?> 
+
+
 				<?php if ($tbg_user->canAccessConfigurationPage()): ?>
 					| <b><?php echo link_tag(make_url('configure'), __('Configure The Bug Genie')); ?></b>
 				<?php endif; ?>

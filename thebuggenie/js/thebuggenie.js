@@ -682,11 +682,11 @@ TBG.Main.Helpers.MarkitUp = function(element) {
 		previewParserPath:	'', // path to your Wiki parser
 		onShiftEnter:		{keepDefault:false, replaceWith:'\n\n'},
 		markupSet: [
-			{name:'Heading 1', key:'1', openWith:'== ', closeWith:' ==', placeHolder:'Your title here...'},
-			{name:'Heading 2', key:'2', openWith:'=== ', closeWith:' ===', placeHolder:'Your title here...'},
-			{name:'Heading 3', key:'3', openWith:'==== ', closeWith:' ====', placeHolder:'Your title here...'},
-			{name:'Heading 4', key:'4', openWith:'===== ', closeWith:' =====', placeHolder:'Your title here...'},
-			{name:'Heading 5', key:'5', openWith:'====== ', closeWith:' ======', placeHolder:'Your title here...'},
+				{name:'Heading 1', key:'1', openWith:'=== ', closeWith:' ===', placeHolder:'Your title here...'},
+				{name:'Heading 1', key:'2', openWith:'=== ', closeWith:' ===', placeHolder:'Your title here...'},
+				{name:'Heading 2', key:'3', openWith:'====== ', closeWith:' ======', placeHolder:'Your title here...'},
+				{name:'Heading 2', key:'4', openWith:'====== ', closeWith:' ======', placeHolder:'Your title here...'},
+				{name:'Heading 2', key:'5', openWith:'====== ', closeWith:' ======', placeHolder:'Your title here...'},
 			{separator:'---------------'},
 			{name:'Bold', key:'B', openWith:"'''", closeWith:"'''"},
 			{name:'Italic', key:'I', openWith:"''", closeWith:"''"},
@@ -2225,26 +2225,14 @@ TBG.Config.Issuefields.Options.show = function(url, field) {
 	}
 }
 
-/**
- * Helper function for adding a new option to an issue field.
- *
- * @param url_add string URL POST target for adding the new option.
- * @param url_saveorder string URL POST target for saving the new order of
- * options.
- */
-TBG.Config.Issuefields.Options.add = function(url_add, url_saveorder, type) {
-	TBG.Main.Helpers.ajax(url_add, {
+TBG.Config.Issuefields.Options.add = function(url, type) {
+	TBG.Main.Helpers.ajax(url, {
 		form: 'add_' + type + '_form',
 		loading: {indicator: 'add_' + type + '_indicator'},
 		success: {
 			reset: 'add_' + type + '_form',
 			hide: 'no_' + type + '_items',
-			update: {element: type + '_list', insertion: true},
-			callback: function(json) {
-				// Re-create the Sortable so that the new element can be moved around
-				// (this is the equivalent of refreshing a Sortable).
-				Sortable.create(type + '_list', {constraint: '', onUpdate: function(container) { TBG.Config.Issuefields.saveOrder(container, type, url_saveorder); }});
-			}
+			update: {element: type + '_list', insertion: true}
 		}
 	});
 }

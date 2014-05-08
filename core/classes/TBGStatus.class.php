@@ -18,7 +18,7 @@
 			$statuses['New'] = '#FFF';
 			$statuses['Investigating'] = '#C2F533';
 			$statuses['Confirmed'] = '#FF55AA';
-			$statuses['Not a bug'] = '#44FC1D';
+			$statuses['Not an issue'] = '#44FC1D';
 			$statuses['Being worked on'] = '#5C5';
 			$statuses['Near completion'] = '#7D3';
 			$statuses['Ready for testing / QA'] = '#55C';

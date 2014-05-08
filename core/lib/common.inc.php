@@ -448,3 +448,66 @@
 		return $tstamp;
 	}
 	
+	
+/**
+* Returns a boolean value to determine if a url is a youtube link
+*
+* @param string $url URL
+*
+* @return boolean
+*/
+function tbg_youtube_link($url) //Ticket #2308
+{
+$is_youtube = false;
+
+// check to see if video contains the shortened youtube link
+// if so convert it to the long link
+if (preg_match("/(youtu\.be)|(youtube\.com)/", $url))
+{
+$is_youtube = true;
+}
+
+return $is_youtube;	
+}
+
+/**
+* Returns a properly formatted youtube link
+*
+* @param string $url URL
+*
+* @return string
+*/
+function tbg_youtube_prepare_link($url) //Ticket #2308
+{
+// check to see if video contains the shortened youtube link
+// if so convert it to the long link
+if (preg_match("/youtu\.be/", $url))
+{
+$url = preg_replace("/youtu\.be/", "youtube.com/embed", $url);
+}
+
+// check to see if the http(s): is included
+// if so remove http: or https: from the url link
+if (preg_match("/http(s)?\:/", $url))
+{
+$url = preg_replace("/http(s)?\:/", "", $url);
+}
+
+// check to see if the // now appears at the front of the link
+// if not add it
+if (!preg_match("/^\/\//", $url))
+{
+$url = "//" . $url;
+}
+
+// check to see if video contains the watch param
+// if so convert it to an embedded link
+if (preg_match("/watch\?v\=(.*?)/", $url))
+{
+$url = preg_replace("/watch\?v\=/", "embed/", $url);
+}
+
+return $url;	
+}
+
+
