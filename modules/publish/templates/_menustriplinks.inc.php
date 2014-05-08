@@ -1,8 +1,7 @@
-<?php // changed first line of code adding in the url if question to keep the Overview wiki page from higlighting the wiki button in the header menu. ?>
-<li<?php if (($_SERVER["REQUEST_URI"] != '/YOURBugGenieFolder/thebuggenie/wiki/Overview') && ($selected_tab == 'wiki')): ?> class="selected"<?php endif; ?>>
+<?php // changed first line of code adding in the "if url?" question to keep the wiki button from being highlighted on the Overview wiki page. ?>
+<li<?php if (($tbg_response->getTitle() != 'Overview') && ($selected_tab == 'wiki')): ?> class="selected"<?php endif; ?>>
 	<div>
-		<?php echo link_tag(((isset($project_url)) ? $project_url : $url),  TBGContext::getModule('publish')->getMenuTitle()); ?>
-		
+		<?php echo link_tag(((isset($project_url)) ? $project_url : $url),  TBGContext::getModule('publish')->getMenuTitle()); ?>	
 	</div>
 	<div id="wiki_dropdown_menu" class="tab_menu_dropdown">
 		<?php if (TBGContext::isProjectContext()): ?>

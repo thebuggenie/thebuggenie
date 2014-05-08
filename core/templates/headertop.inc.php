@@ -1,5 +1,5 @@
 <header>
-<?php // KEEP OR REMOVE LOGO ?>
+<?php // SHOW/HIDE LOGO AND TBGNAME ?>
 	<?php if (TBGSettings::getThemeName() != 'nitrogen'): ?>
 	<div id="logo_container">
 		<?php $link = (TBGSettings::getHeaderLink() == '') ? TBGContext::getTBGPath() : TBGSettings::getHeaderLink(); ?>
@@ -7,38 +7,41 @@
 		<div class="logo_name"><?php echo TBGSettings::getTBGname(); ?></div>
 	</div> 
 	<?php endif; ?>
-<?php // BEGIN: SHOW/HIDE FOUR BUTTONS TO FRONT OF TOP MENU FOR FORUM, OVERVIEW (A WIKI PAGE), AND PERMANENT PROJECT PAGE (BUG GENIE FRONTPAGE) ?>
+
+
+<?php // BEGIN: SHOW/HIDE FOUR BUTTONS TO FRONT OF TOP MENU FOR Forum, GitHub, Overview (A WIKI PAGE), AND PERMANENT PROJECT PAGE (BUG GENIE FRONTPAGE) ?>
 	<?php if (TBGSettings::getThemeName() == 'nitrogen'): ?>
-        <div><nav class="tab_menu header_menu" id="main_menu">      
-            <li>
-        <div><a class= "tab_menu header_menu" id="main_menu" href="http://YOURSITE.COM/YOURforum/"> Forum</a>
-        </li>
-            <li>
-        <div><a class= "tab_menu header_menu" id="main_menu" href="https://github.com/YOURorganization/"> GitHub</a>
-        </li>        
-                <nav class="tab_menu header_menu" id="main_menu">       
-            <ul>
-            <li <?php if ($_SERVER["REQUEST_URI"] == '/YOURBugGenieFolder/thebuggenie/wiki/Overview'): ?> class="selected"><?php endif; ?>
-            <?php if ($_SERVER["REQUEST_URI"] != '/YOURBugGenieFolder/thebuggenie/wiki/Overview'): ?> class="logo_name"><?php endif; ?>
-            <div><a href="/YOURBugGenieFolder/thebuggenie/wiki/Overview">Overview</a> </div></li>
-        <nav class="tab_menu header_menu" id="main_menu">       
-            <ul>
-            <li <?php if ($_SERVER["REQUEST_URI"] == '/pm/thebuggenie/'): ?> class="selected"><?php endif; ?>
-            <?php if ($tbg_response->getPage() != 'home'): ?> class="logo_name"><?php endif; ?>
-            <div><a href="/YOURBugGenieFolder/thebuggenie">Project Manager</a> </div></li>
+        <div><nav class="tab_menu header_menu" id="main_menu">
+
+<?php // Code in your forum and GitHub url's ?>      
+            <li><div><a class= "tab_menu header_menu" id="main_menu" href="http://YOURSITE.COM/YOURforum/"> Forum</a></li>
+            <li><div><a class= "tab_menu header_menu" id="main_menu" href="https://github.com/YOURorganization/"> GitHub</a></li>
+                    
+            <li <?php if ($tbg_response->getTitle() == 'Overview'): ?> class="selected"><?php endif; ?>
+                <?php if ($tbg_response->getTitle() != 'Overview'): ?> class="logo_name"><?php endif; ?>
+                <div><a href="<?php echo TBGContext::getTBGPath(); ?>wiki/Overview">Overview</a> </div></li>
+            <li <?php if ($tbg_response->getPage() == 'home'): ?> class="selected"><?php endif; ?>
+                <?php if ($tbg_response->getPage() != 'home'): ?> class="logo_name"><?php endif; ?>
+                <div><a href="<?php echo TBGContext::getTBGPath(); ?>">Project Manager</a> </div></li>
         </div>	
         <?php endif; ?>
-<?php // END: SHOW/HIDE THREE BUTTONS ... ?>
+<?php // END: SHOW/HIDE FOUR BUTTONS ... ?>
+
+
 	<?php if (!TBGSettings::isMaintenanceModeEnabled()): ?>
 		<nav class="tab_menu header_menu<?php if (TBGContext::isProjectContext()): ?> project_context<?php endif; ?>" id="main_menu">
 			<ul>
 				<?php if (!TBGSettings::isSingleProjectTracker() && !TBGContext::isProjectContext()): ?>
+
+
 <?php // SHOW/HIDE FRONT PAGE BUTTON/TAB ?>
 					<?php if (TBGSettings::getThemeName() != 'nitrogen'): ?><li<?php if ($tbg_response->getPage() == 'home'): ?> class="selected"<?php endif; ?>><div><?php echo link_tag(make_url('home'), image_tag('tab_index.png').__('Frontpage')); ?></div></li><?php endif; ?>
 				<?php elseif (TBGContext::isProjectContext()): ?>
 					<li<?php if (in_array($tbg_response->getPage(), array('project_dashboard', 'project_planning', 'project_scrum', 'project_scrum_sprint_details', 'project_timeline', 'project_team', 'project_roadmap', 'project_statistics', 'vcs_commitspage'))): ?> class="selected"<?php endif; ?>>
 						<div>
-<?php // SHOW/HIDE ICONS ... ?>
+
+
+<?php // SHOW/HIDE ICONS  (Not sure if the best method for doing this is one icon a time or all at once.  So, this is the only icon that can be toggled.  Until I learn more, the rest of them are just hidden all the time.) ?>
 							<?php if (TBGSettings::getThemeName() != 'nitrogen'): ?>							<?php echo link_tag(make_url('project_dashboard', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('icon_dashboard_small.png').__('Summary')); ?>
 							<?php echo javascript_link_tag(image_tag('tabmenu_dropdown.png', array('class' => 'menu_dropdown')), array('onmouseover' => "")); ?>
 							<?php else: ?>
@@ -50,10 +53,14 @@
 						</div>
 					</li>
 				<?php endif; ?>
+
+
 <?php // CHANGE STRING DASHBOARD TO MY DASHBOARD SO USER CAN SEE DIFFERENCE BETWEEN THEIR DASHBOARD BUTTON AND PROJECT DASHBOARD BUTTON ON BUG GENIE FRONTPAGE ?>
 				<?php if (!$tbg_user->isThisGuest() && !TBGSettings::isSingleProjectTracker() && !TBGContext::isProjectContext()): ?>
 					<li<?php if ($tbg_response->getPage() == 'dashboard'): ?> class="selected"<?php endif; ?>><div><?php echo link_tag(make_url('dashboard'), __('My Dashboard')); ?></div></li>
 				<?php endif; ?>
+				
+				
 			<?php if (TBGContext::isProjectContext() && !TBGContext::getCurrentProject()->isArchived() && !TBGContext::getCurrentProject()->isLocked() && ($tbg_user->canReportIssues() || $tbg_user->canReportIssues(TBGContext::getCurrentProject()->getID()))): ?>
 					<li<?php if ($tbg_response->getPage() == 'reportissue'): ?> class="selected"<?php endif; ?>>
 						<div>
