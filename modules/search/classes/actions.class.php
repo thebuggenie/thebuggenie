@@ -529,7 +529,7 @@
 		public function runSaveColumnSettings(TBGRequest $request)
 		{
 			TBGSettings::saveSetting('search_scs_'.$request['template'], join(',', $request['columns']));
-			return $this->renderJSON('template '.$request['template'].' columns saved ok');
+			return $this->renderJSON(array('failed' => false, 'message' => TBGContext::getI18n()->__('Visible columns has been set successfully')));
 		}
 
 		public function runBulkUpdateIssues(TBGRequest $request)
