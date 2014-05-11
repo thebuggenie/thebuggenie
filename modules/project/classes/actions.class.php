@@ -517,9 +517,9 @@
 			{
 				$success = true;
 				$base_url = TBGContext::getRouting()->generate('project_statistics_image', array('project_key' => $this->selected_project->getKey(), 'key' => '%key', 'mode' => '%mode', 'image_number' => '%image_number'));
-				$key = '%key';
-				$mode = '%mode';
-				$image_number = '%image_number';
+				$key = urlencode('%key');
+				$mode = urlencode('%mode');
+				$image_number = urlencode('%image_number');
 				$set = $request['set'];
 				if ($set != 'issues_per_state')
 				{
