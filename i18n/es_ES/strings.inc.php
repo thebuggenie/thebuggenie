@@ -6,8 +6,8 @@
 
 // Number of Sections: 271
 // Number of Strings: 3070
-// Keys extracted from sources on: 2013 Jul 30.
-// Translations extracted from Transifex on: 2014 Apr 27.
+// Strings extracted at: 2013 Jul 30.
+// Translations extracted from Transifex on: 2014 May 12.
 
 // First occurrence is in: core/classes/TBGAction.class.php
 // ----------------------------------------------------------------------------
@@ -216,36 +216,36 @@
   $strings['This %this_issuetype% now depends on the solution of %issuetype% %issue_no%'] = 'El pedido %this_issuetype% ahora depende de la resolución de %issuetype% %issue_no%';
   $strings['Dependancy added'] = 'Dependencia agregada';
   $strings['%issuetype% %issue_no% now depends on the solution of this %this_issuetype%'] = '%issuetype% %issue_no% ahora depende de la resolución de %this_issuetype%';
-  $strings["'%release_name%' added"] = "'% release_name%' añadido";
-  $strings["'''%release_name%''' is now affected by this issue"] = "'''% release_name %'' ' ahora se ve afectado por este problema";
+  $strings["'%release_name%' added"] = "'%release_name%' añadido";
+  $strings["'''%release_name%''' is now affected by this issue"] = "'''%release_name%'' ' ahora se ve afectado por este problema";
   $strings['Affected releases'] = 'Versiones afectadas';
-  $strings["'%edition_name%' added"] = "'% edition_name' añadido";
-  $strings["'''%edition_name%''' is now affected by this issue"] = "'''% edition_name %'' ' ahora se ve afectado por este problema";
+  $strings["'%edition_name%' added"] = "'%edition_name' añadido";
+  $strings["'''%edition_name%''' is now affected by this issue"] = "'''%edition_name%'' ' ahora se ve afectado por este problema";
   $strings['Affected editions'] = 'Ediciones afectadas';
-  $strings["'%component_name%' added"] = "'% component_name%' añadido";
-  $strings["'''%component_name%''' is now affected by this issue"] = "'''% component_name %'' ' ahora se ve afectado por este problema";
+  $strings["'%component_name%' added"] = "'%component_name%' añadido";
+  $strings["'''%component_name%''' is now affected by this issue"] = "'''%component_name%'' ' ahora se ve afectado por este problema";
   $strings['Affected components'] = 'Componentes afectados';
-  $strings["'%item_name%' removed"] = "'% item_name%' eliminado";
+  $strings["'%item_name%' removed"] = "'%item_name%' eliminado";
   $strings['Affected edition removed'] = 'Edición afectada eliminada';
   $strings["Edition '''%edition%''' is no longer affected by issue"] = "Edición ''' %edición %'' ' ya no es afectado por tema";
   $strings['Affected build removed'] = 'Construcción afectada eliminada';
-  $strings["Build '''%build%''' is no longer affected by issue"] = "Construir ''' %buil%'' ' ya no es afectado por tema";
+  $strings["Build '''%build%''' is no longer affected by issue"] = "Construir ''' %build%'' ' ya no es afectado por tema";
   $strings['Affected component removed'] = 'Componente afectado eliminado';
-  $strings["Component '''%component%''' is no longer affected by issue"] = "Componente '''% component %'' ' ya no es afectado por tema";
-  $strings["'%item_name%' confirmed"] = "'% item_name%' confirmado";
+  $strings["Component '''%component%''' is no longer affected by issue"] = "Componente '''%component%'' ' ya no es afectado por tema";
+  $strings["'%item_name%' confirmed"] = "'%item_name%' confirmado";
   $strings['Affected edition updated'] = 'Edición afectada actualizada';
-  $strings["Edition '''%edition%''' is now confirmed for this issue"] = "Edición '''% edition %'' ' ahora es confirmado para este problema";
-  $strings["Edition '''%edition%''' is now unconfirmed for this issue"] = "Edición ''' %edition %'' ' es ahora sin confirmar para este problema";
+  $strings["Edition '''%edition%''' is now confirmed for this issue"] = "Edición '''%edition%'' ' ahora es confirmado para este problema";
+  $strings["Edition '''%edition%''' is now unconfirmed for this issue"] = "Edición ''' %edition%'' ' es ahora sin confirmar para este problema";
   $strings['Affected build updated'] = 'Construcción afectada actualizada';
-  $strings["Build '''%build%''' is now confirmed for this issue"] = "Construir '''%build %'' ' ahora es confirmado para este problema";
-  $strings["Build '''%build%''' is now unconfirmed for this issue"] = "Construir ''' %build %'' ' es ahora sin confirmar para este problema";
+  $strings["Build '''%build%''' is now confirmed for this issue"] = "Construir '''%build%'' ' ahora es confirmado para este problema";
+  $strings["Build '''%build%''' is now unconfirmed for this issue"] = "Construir ''' %build%'' ' es ahora sin confirmar para este problema";
   $strings['Affected component updated'] = 'Componente afectado actualizado';
   $strings["Component '''%component%''' is now confirmed for this issue"] = "Componente ''' %component%'' ' ahora es confirmado para este problema";
-  $strings["Component '''%component%''' is now unconfirmed for this issue"] = "Componente ''' %component %'' ' es ahora sin confirmar para este problema";
-  $strings["'%item_name%' -> '%status_name%"] = "'% item_name %'-> ' % status_name %";
-  $strings["Edition '''%edition%''' is now %status%"] = "Edición ''' %edition %''' está ahora %status%";
-  $strings["Build '''%build%''' is now %status%"] = "Construir ''' construir %'' ' está ahora %status %";
-  $strings["Component '''%component%''' is now %status%"] = "Componente ''' %component %'' ' es ahora %status %";
+  $strings["Component '''%component%''' is now unconfirmed for this issue"] = "Componente ''' %component%'' ' es ahora sin confirmar para este problema";
+  $strings["'%item_name%' -> '%status_name%"] = "'%item_name%'-> ' %status_name%";
+  $strings["Edition '''%edition%''' is now %status%"] = "Edición ''' %edition%''' está ahora %status%";
+  $strings["Build '''%build%''' is now %status%"] = "Construir ''' %build%'' ' está ahora %status%";
+  $strings["Component '''%component%''' is now %status%"] = "Componente ''' %component%'' ' es ahora %status%";
   $strings['Title updated'] = 'Titulo actualizado';
   $strings["This issue's title has been changed"] = "Se ha cambiado el título de este tema";
   $strings['Description updated'] = 'Descripción actualizada';
@@ -253,38 +253,38 @@
   $strings['Reproduction steps updated'] = 'Pasos de reproducción actualizados';
   $strings["This issue's reproduction steps has been changed"] = "Pasos de reproducción de este número ha cambiado";
   $strings['Not determined'] = 'Indeterminado';
-  $strings["The category has been updated, from '''%previous_category%''' to '''%new_category%'''."] = "Se ha actualizado la categoría, de '''% previous_category %'' ' a '''% new_category %'' '.";
-  $strings["The triaging criteria 'bug type' has been updated, from '''%previous_name%''' to '''%new_name%'''."] = "Los criterios de Triage 'bug tipo' ha sido actualizado, de '''% previous_name %'' ' a ''' %new_name%'' '.";
-  $strings["The triaging criteria 'effect' has been updated, from '''%previous_name%''' to '''%new_name%'''."] = "Los criterios de Triage 'efecto' ha sido actualizado, de '''% previous_name %'' ' a ''' %new_name%'' '.";
-  $strings["The triaging criteria 'likelihood' has been updated, from '''%previous_name%''' to '''%new_name%'''."] = "Se ha actualizado los criterios Triage 'probabilidad', de '''% previous_name %'' ' a ''' %new_name%'' '.";
+  $strings["The category has been updated, from '''%previous_category%''' to '''%new_category%'''."] = "Se ha actualizado la categoría, de '''%previous_category%'' ' a '''%new_category%'' '.";
+  $strings["The triaging criteria 'bug type' has been updated, from '''%previous_name%''' to '''%new_name%'''."] = "Los criterios de Triage 'bug tipo' ha sido actualizado, de '''%previous_name%'' ' a ''' %new_name%'' '.";
+  $strings["The triaging criteria 'effect' has been updated, from '''%previous_name%''' to '''%new_name%'''."] = "Los criterios de Triage 'efecto' ha sido actualizado, de '''%previous_name%'' ' a ''' %new_name%'' '.";
+  $strings["The triaging criteria 'likelihood' has been updated, from '''%previous_name%''' to '''%new_name%'''."] = "Se ha actualizado los criterios Triage 'probabilidad', de '''%previous_name%'' ' a ''' %new_name%'' '.";
   $strings["The calculated user pain has changed, from '''%previous_value%''' to '''%new_value%'''."] = "El dolor de usuario calculado ha cambiado, de '''%previous_value%'' ' a '''%new_value%'' '.";
   $strings['Unknown'] = 'Desconocido';
-  $strings["The status has been updated, from '''%previous_status%''' to '''%new_status%'''."] = "El estado ha sido actualizado, de '''% previous_status %'' ' a '''% new_status %'' '.";
-  $strings["The reproducability has been updated, from '''%previous_reproducability%''' to '''%new_reproducability%'''."] = "El reproducibilidad ha sido actualizado, de '''% previous_reproducability %'' ' a '''% new_reproducability %'' '.";
-  $strings["The priority has been updated, from '''%previous_priority%''' to '''%new_priority%'''."] = "La prioridad ha sido actualizada, de '''% previous_priority %'' ' a '''% new_priority %'' '.";
+  $strings["The status has been updated, from '''%previous_status%''' to '''%new_status%'''."] = "El estado ha sido actualizado, de '''%previous_status%'' ' a '''%new_status%'' '.";
+  $strings["The reproducability has been updated, from '''%previous_reproducability%''' to '''%new_reproducability%'''."] = "El reproducibilidad ha sido actualizado, de '''%previous_reproducability%'' ' a '''%new_reproducability%'' '.";
+  $strings["The priority has been updated, from '''%previous_priority%''' to '''%new_priority%'''."] = "La prioridad ha sido actualizada, de '''%previous_priority%'' ' a '''%new_priority%'' '.";
   $strings['Not assigned'] = 'Sin asignar';
   $strings["The assignee has been changed to '''%new_name%'''."] = "El cesionario se ha cambiado a '''%new_name%'''";
-  $strings["The issue's poster has been changed, from '''%previous_name%''' to '''%new_name%'''."] = "Cartel de la cuestión ha cambiado, de '''% previous_name %'' ' a ''' %new_name %'' '.";
+  $strings["The issue's poster has been changed, from '''%previous_name%''' to '''%new_name%'''."] = "Cartel de la cuestión ha cambiado, de '''%previous_name%'' ' a ''' %new_name%'' '.";
   $strings['Not being worked on'] = 'No se está trabajando';
-  $strings["Information about the user working on this issue has been changed, from '''%previous_name%''' to '''%new_name%'''."] = "Información sobre el usuario trabajando en este tema se ha cambiado, de '''% previous_name %'' ' a ''' %new_name%'' '.";
+  $strings["Information about the user working on this issue has been changed, from '''%previous_name%''' to '''%new_name%'''."] = "Información sobre el usuario trabajando en este tema se ha cambiado, de '''%previous_name%'' ' a ''' %new_name%'' '.";
   $strings['Not owned by anyone'] = 'Sin propietario';
   $strings["The owner has been changed to '''%new_name%'''."] = "El propietario ha sido cambiado a '''%new_name%'''.";
   $strings["This issue's progression has been updated to %percent_completed% percent completed."] = "La progresión de este tema ha sido actualizada a %percent_completed%p completado.";
-  $strings["The resolution has been updated, from '''%previous_resolution%''' to '''%new_resolution%'''."] = "La resolución ha sido actualizada, de '''% previous_resolution %'' ' a '''% new_resolution %'' '.";
-  $strings["The severity has been updated, from '''%previous_severity%''' to '''%new_severity%'''."] = "Se ha actualizado la severidad, de '''% previous_severity %'' ' a '''% new_severity %'' '.";
-  $strings["The milestone has been updated, from '''%previous_milestone%''' to '''%new_milestone%'''."] = "El hito se ha actualizado, de '''% previous_milestone %'' ' a '''% new_milestone %'' '.";
-  $strings["The issue type has been updated, from '''%previous_type%''' to '''%new_type%'''."] = "Se ha actualizado el tipo de problema, de '''% previous_type %'' ' a '''% new_type %'' '.";
+  $strings["The resolution has been updated, from '''%previous_resolution%''' to '''%new_resolution%'''."] = "La resolución ha sido actualizada, de '''%previous_resolution%'' ' a '''%new_resolution%'' '.";
+  $strings["The severity has been updated, from '''%previous_severity%''' to '''%new_severity%'''."] = "Se ha actualizado la severidad, de '''%previous_severity%'' ' a '''%new_severity%'' '.";
+  $strings["The milestone has been updated, from '''%previous_milestone%''' to '''%new_milestone%'''."] = "El hito se ha actualizado, de '''%previous_milestone%'' ' a '''%new_milestone%'' '.";
+  $strings["The issue type has been updated, from '''%previous_type%''' to '''%new_type%'''."] = "Se ha actualizado el tipo de problema, de '''%previous_type%'' ' a '''%new_type%'' '.";
   $strings['Not estimated'] = 'Sin estimar';
-  $strings["The issue has been (re-)estimated, from '''%previous_time%''' to '''%new_time%'''."] = "La cuestión ha sido (re-) estimado de '''% previous_time %'' ' a '''% new_time %'' '.";
+  $strings["The issue has been (re-)estimated, from '''%previous_time%''' to '''%new_time%'''."] = "La cuestión ha sido (re-) estimado de '''%previous_time%'' ' a '''%new_time%'' '.";
   $strings['No time spent'] = 'Sin dedicar';
-  $strings["Time spent on this issue, from '''%previous_time%''' to '''%new_time%'''."] = "Tiempo dedicado a este tema, de '''% previous_time %'' ' a '''% new_time %'' '.";
+  $strings["Time spent on this issue, from '''%previous_time%''' to '''%new_time%'''."] = "Tiempo dedicado a este tema, de '''%previous_time%'' ' a '''%new_time%'' '.";
   $strings['This issue has been closed'] = 'Esta petición ha sido cerrada';
   $strings['This issue has been reopened'] = 'Esta petición ha sido reabierta';
   $strings['This issue is now blocking the next release'] = 'Esta petición ahora está bloqueando la próxima liberación';
   $strings['This issue is no longer blocking the next release'] = 'Esta petición no está bloqueando más la próxima liberación';
   $strings["The custom field %customfield_name% has been changed to '''%new_value%'''."] = "Se ha cambiado el campo personalizado %customfield_name%h a '''%new_value%'' '.";
   $strings['The custom field %customfield_name% has been changed.'] = 'El campo personalizado %customfield_name% ha sido modificado.';
-  $strings["The custom field %customfield_name% has been updated, from '''%previous_value%''' to '''%new_value%'''."] = "Se ha actualizado el campo personalizado % customfield_name %, de '''% previous_value %'' ' a '''%new_value %'' '.";
+  $strings["The custom field %customfield_name% has been updated, from '''%previous_value%''' to '''%new_value%'''."] = "Se ha actualizado el campo personalizado %customfield_name%, de '''%previous_value%'' ' a '''%new_value%'' '.";
   $strings["The custom field %customfield_name% has been updated to '''%new_value%'''."] = "Se ha actualizado el campo personalizado %customfield_name%h a '''%new_value%'''.";
   $strings['The issue has been updated'] = 'La petición ha sido actualizada';
   $strings['Issue updated'] = 'Petición actualizada';
@@ -384,7 +384,7 @@
 
 // First occurrence is in: core/templates/footer.inc.php
 // ----------------------------------------------------------------------------
-  $strings['%thebuggenie%, <b>friendly</b> issue tracking since 2002'] = '% thebuggenie %, tema <b>amable</b> seguimiento desde 2002';
+  $strings['%thebuggenie%, <b>friendly</b> issue tracking since 2002'] = '%thebuggenie%, tema <b>amable</b> seguimiento desde 2002';
   $strings['Licensed under the MPL 1.1 only, read it at %link_to_MPL%'] = 'Licenciado solo bajo la licencia MPL 1.1, infórmese en %link_to_MPL%';
 
 // First occurrence is in: core/templates/headertop.inc.php
@@ -524,9 +524,9 @@
   $strings['Failed to check for updates'] = 'Fallo al comprobar las actualizaciones';
   $strings['The response from The Bug Genie website was invalid'] = 'La respuesta del sitio web  The Bug Genier no es válida';
   $strings['The Bug Genie is up to date'] = 'The Bug Genie está actualizado';
-  $strings['The latest version is %ver%'] = 'La última versión es %ver %';
+  $strings['The latest version is %ver%'] = 'La última versión es %ver%';
   $strings['The Bug Genie is out of date'] = 'The Bug Genie está desactualizado';
-  $strings['The latest version is %ver%. Update now from www.thebuggenie.com.'] = 'La última versión es %ver %. Actualización ahora de www.thebuggenie.com.';
+  $strings['The latest version is %ver%. Update now from www.thebuggenie.com.'] = 'La última versión es %ver%. Actualización ahora de www.thebuggenie.com.';
   $strings['Please provide a valid setting for highlighting interval'] = 'Por favor defina un valor válido para el intervalo de resaltado';
   $strings['Please provide a valid setting for charset'] = 'Por favor defina un valor para el conjunto de caracteres';
   $strings['All settings saved'] = 'Todas las opciones guardadas';
@@ -680,7 +680,7 @@
   $strings['Errors occured while importing, see the error list in the import screen for further details'] = 'Han ocurrido errores mientras se importaba. Mira la lista de errores en la pantalla de importaciones para más detalles';
   $strings['Dry-run successful, you can now uncheck the dry-run box and import your data.'] = 'Ejecución en seco exitosa, ahora puede desmarcar la casilla de funcionamiento en seco e importar sus datos.';
   $strings['Row %row% failed: %err%'] = 'Fila %row% falló: %err%';
-  $strings['Successfully imported %num% rows!'] = 'Importado con éxito % num % rows!';
+  $strings['Successfully imported %num% rows!'] = 'Importado con éxito %num% rows!';
   $strings['You cannot delete the default scope'] = 'No se puede eliminar el alcance predeterminado';
   $strings['Please specify a scope name'] = 'Por favor, especifica el nombre del ambito';
   $strings['This is not a valid role'] = 'No se trata de un papel válido';
@@ -930,7 +930,7 @@
   $strings['Create a copy of this issue type scheme'] = 'Crear una copia de este esquema de tipos de petición';
   $strings['Cannot delete issuetype scheme'] = 'No se puede eliminar el tipo de pedido del esquema';
   $strings['Delete this issue type scheme'] = 'Eliminar este tipo de problema del esquema';
-  $strings['This issuetype scheme can not be deleted as it is being used by %number_of_projects% project(s)'] = 'Este esquema de issuetype no puede ser eliminado como está siendo utilizado por % number_of_projects % project (s)';
+  $strings['This issuetype scheme can not be deleted as it is being used by %number_of_projects% project(s)'] = 'Este esquema de issuetype no puede ser eliminado como está siendo utilizado por %number_of_projects% project (s)';
   $strings['Copy issue type scheme'] = 'Copia del esquema de tipos de petición';
   $strings['Please enter the name of the new issue type scheme'] = 'Por favor ingrese el nombre del nuevo esquema de tipos de petición';
   $strings['New name'] = 'Nuevo nombre';
@@ -1207,7 +1207,7 @@
   $strings['Issue types with associated workflows: %number_of_associated_issuetypes%'] = 'Tipos de petición con flujos de trabajo asociado: %number_of_associated_issuetypes%';
   $strings['Create a copy of this workflow scheme'] = 'Crear una copia de este esquema de flujo de trabajo';
   $strings['Cannot delete workflow scheme'] = 'No se puede eliminar el esquema de flujo de trabajo';
-  $strings['This workflow scheme can not be deleted as it is being used by %number_of_projects% project(s)'] = 'Este esquema de flujo de trabajo no puede ser eliminado como está siendo utilizado por % number_of_projects % proyecto (s)';
+  $strings['This workflow scheme can not be deleted as it is being used by %number_of_projects% project(s)'] = 'Este esquema de flujo de trabajo no puede ser eliminado como está siendo utilizado por %number_of_projects% proyecto (s)';
   $strings['Copy worfklow scheme'] = 'Copiar el esquema de flujo de trabajo';
   $strings['Please enter the name of the new worfklow scheme'] = 'Por favor ingrese el nombre del nuevo esquema de flujo de trabajo';
   $strings['Please confirm that you want to delete this worfklow scheme.'] = 'Confirme que desea eliminar este esquema del flujo de trabajo';
@@ -1297,7 +1297,7 @@
   $strings['Built-in issue fields'] = 'Campos predefinidos';
   $strings['Custom issue fields'] = 'Campos personalizados';
   $strings['Add new custom field'] = 'Agregar un campo personalizado';
-  $strings['Enter a name for the field (same as ex. "%resolution_types%" above), then click %add%'] = 'Introduzca un nombre para el campo (igual que por ejemplo "% resolution_types %" por encima), luego haga clic en %add%';
+  $strings['Enter a name for the field (same as ex. "%resolution_types%" above), then click %add%'] = 'Introduzca un nombre para el campo (igual que por ejemplo "%resolution_types%" por encima), luego haga clic en %add%';
   $strings['Custom type'] = 'Tipo personalizado';
   $strings['Field name'] = 'Nombre del campo';
   $strings['Field label'] = 'Etiqueta para campo';
@@ -1420,7 +1420,7 @@
   $strings['Find user(s)'] = 'Encontrar usuario(s)';
   $strings['Enter username'] = 'Ingrese el nombre del usuario';
   $strings['Would you like to add this user to the current scope?'] = '¿Quieres añadir este usuario al ámbito actual?';
-  $strings['The username you tried to create already exists. You can give this user access to the current scope by pressing "%yes%" below. If you want to create a different user, press "%no%" and enter a different username.'] = 'El nombre de usuario que ha intentado crear ya existe. Puede dar este acceso de usuario al ámbito actual pulsando "%yes%" a continuación. Si desea crear un usuario diferente, pulse "% no %" e introduzca un nombre de usuario distinto.';
+  $strings['The username you tried to create already exists. You can give this user access to the current scope by pressing "%yes%" below. If you want to create a different user, press "%no%" and enter a different username.'] = 'El nombre de usuario que ha intentado crear ya existe. Puede dar este acceso de usuario al ámbito actual pulsando "%yes%" a continuación. Si desea crear un usuario diferente, pulse "%no%" e introduzca un nombre de usuario distinto.';
   $strings['no'] = 'no';
   $strings['yes'] = 'sí';
   $strings['Create or add user'] = 'Crear o agregar usuario';
@@ -1536,7 +1536,7 @@
 // First occurrence is in: modules/configuration/templates/findusers.html.php
 // ----------------------------------------------------------------------------
   $strings['Please enter something to search for'] = 'Por favor ingrese algo para buscar';
-  $strings['%count% users found when searching for "%searchstring%"'] = '% count % usuarios encontrado al buscar "% searchstring%"';
+  $strings['%count% users found when searching for "%searchstring%"'] = '%count% usuarios encontrado al buscar "% searchstring%"';
   $strings['Real name (nickname)'] = 'Nombre real (apodo)';
   $strings['E-mail'] = 'Correo';
   $strings['Actv.'] = 'Actv.';
@@ -1740,7 +1740,7 @@
   $strings['Check now'] = 'Comprobar ahora';
   $strings['Deleting this incoming email account will stop emails being retrieved from this account. All existing issues are still kept.'] = 'Eliminar esta cuenta de correo electrónico entrante dejará de recibir mensajes de correo electrónico de esta cuenta. Se conservan todos los problemas existentes.';
   $strings['Really delete this incoming email account?'] = 'Realmente quiere eliminar la cuenta de correo entrante?';
-  $strings['%last_checked% never'] = '% last_checked % nunca';
+  $strings['%last_checked% never'] = '%last_checked% nunca';
   $strings['Last checked: %time%'] = 'Última consulta% tiempo%';
   $strings['Email(s) processed: %number%'] = 'Email(s) procesados: %number%';
 
@@ -1814,12 +1814,12 @@
   $strings['Change reproducability'] = 'Cambio reproducibilidad';
   $strings['Clear the reproducability'] = 'Vaciar reproducibilidad';
   $strings['Click to change reproducability'] = 'Haga clic para cambiar reproducibilidad';
-  $strings['%clear_the_severity% or click to select a new severity'] = '% clear_the_severity % o haga clic en para seleccionar una gravedad nueva';
+  $strings['%clear_the_severity% or click to select a new severity'] = '%clear_the_severity% o haga clic en para seleccionar una gravedad nueva';
   $strings['Change severity'] = 'Cambiar la gravedad';
   $strings['Clear the severity'] = 'Vaciar la gravedad';
   $strings['Click to change severity'] = 'Haga clic para cambiar la gravedad';
   $strings['Severity'] = 'Gravedad';
-  $strings['%set_as_not_targetted% or click to set a new target milestone'] = '% set_as_not_targetted % o haga clic en establecer un nuevo hito de destino';
+  $strings['%set_as_not_targetted% or click to set a new target milestone'] = '%set_as_not_targetted% o haga clic en establecer un nuevo hito de destino';
   $strings['Click to change which milestone this issue is targetted for'] = 'Haga clic para cambiar el tema al que va dirigido el hito';
   $strings['Set as not targetted'] = 'Como no dirigido';
   $strings['Set issue target / milestone'] = 'Objetivo determinado tema / hito';
@@ -1924,25 +1924,25 @@
   $strings['Edition <b>%edition%</b> is now confirmed for this issue'] = 'Edición <b>%edition%</b> ahora es confirmado para este problema';
   $strings['Components are disabled'] = 'Los componentes estan desabilitados';
   $strings['This component is not affected by this issue'] = 'Este componente no se ve afectada por este problema';
-  $strings['Component <b>%component%</b> is now unconfirmed for this issue'] = 'Componente <b>%component %</b> queda sin confirmar para este problema';
+  $strings['Component <b>%component%</b> is now unconfirmed for this issue'] = 'Componente <b>%component%</b> queda sin confirmar para este problema';
   $strings['Component <b>%component%</b> is now confirmed for this issue'] = 'Componente <b> %component%</b> ahora es confirmado para este problema';
   $strings['Releases are disabled'] = 'Las liberaciones  están desactivadas';
   $strings['This release is not affected by this issue'] = 'Esta versión no se ve afectada por este problema';
-  $strings['Release <b>%build%</b> is now unconfirmed for this issue'] = 'Versión <b>% build %</b> queda sin confirmar para este problema';
-  $strings['Release <b>%build%</b> is now confirmed for this issue'] = 'Versión <b>% build %</b> ahora es confirmado para este problema';
+  $strings['Release <b>%build%</b> is now unconfirmed for this issue'] = 'Versión <b>%build%</b> queda sin confirmar para este problema';
+  $strings['Release <b>%build%</b> is now confirmed for this issue'] = 'Versión <b>%build%</b> ahora es confirmado para este problema';
   $strings['Edition <b>%edition%</b> is no longer affected by this issue'] = 'Edición <b>%edition%</b> ya no es afectado por este problema';
-  $strings['Component <b>%component%</b> is no longer affected by this issue'] = 'Componente <b>%component %</b> ya no es afectado por este problema';
-  $strings['Release <b>%build%</b> is no longer affected by this issue'] = 'Versión <b>% build %</b> ya no es afectado por este problema';
+  $strings['Component <b>%component%</b> is no longer affected by this issue'] = 'Componente <b>%component%</b> ya no es afectado por este problema';
+  $strings['Release <b>%build%</b> is no longer affected by this issue'] = 'Versión <b>%build%</b> ya no es afectado por este problema';
   $strings['Edition <b>%edition%</b> is now %status%'] = 'Edición <b>%edition%</b> está ahora%status%';
   $strings['Component <b>%component%</b> is now %status%'] = 'Componente <b>%component%</b> está ahora%status%';
   $strings['Release <b>%build%</b> is now %status%'] = 'Versión <b>%build%</b> está ahora%status%';
   $strings['%item% is already affected by this issue'] = '%item%iya es afectado por este problema';
-  $strings['Edition <b>%edition%</b> is now affected by this issue'] = 'Edición <b>%edition %</b> ahora se ve afectado por este problema';
+  $strings['Edition <b>%edition%</b> is now affected by this issue'] = 'Edición <b>%edition%</b> ahora se ve afectado por este problema';
   $strings['Component'] = 'Componente';
-  $strings['Component <b>%component%</b> is now affected by this issue'] = 'Componente <b>%component %</b> ahora se ve afectado por este problema';
-  $strings['Release <b>%build%</b> is now affected by this issue'] = 'Versión <b>% build %</b> ahora se ve afectado por este problema';
+  $strings['Component <b>%component%</b> is now affected by this issue'] = 'Componente <b>%component%</b> ahora se ve afectado por este problema';
+  $strings['Release <b>%build%</b> is now affected by this issue'] = 'Versión <b>%build%</b> ahora se ve afectado por este problema';
   $strings['An email has been sent to you with your new password.'] = 'Se te ha enviando un correo electronico con tu nueva contraseña.';
-  $strings['Could not pick the username "%username%"'] = 'No podría escoger el nombre de usuario "% username %"';
+  $strings['Could not pick the username "%username%"'] = 'No podría escoger el nombre de usuario "%username%"';
   $strings['The OpenID identity has been removed from this user account'] = 'La identidad de OpenID se ha quitado de esta cuenta de usuario';
   $strings['Could not remove this OpenID account'] = 'No es posible eliminar esta cuenta de OpenID';
 
@@ -2053,7 +2053,7 @@
 
 // First occurrence is in: modules/main/templates/_findrelatedissues.inc.php
 // ----------------------------------------------------------------------------
-  $strings['Either use the checkboxes and press the "%relate_these_issues%"-button below or click any issues in the list, and select an action.'] = 'Utilice las casillas de verificación y presione "% relate_these_issues %"-botón abajo o haga clic en cualquier problema en la lista y seleccionar una acción.';
+  $strings['Either use the checkboxes and press the "%relate_these_issues%"-button below or click any issues in the list, and select an action.'] = 'Utilice las casillas de verificación y presione "%relate_these_issues%"-botón abajo o haga clic en cualquier problema en la lista y seleccionar una acción.';
   $strings['Relate these issues'] = 'Relacionar estos pedidos';
   $strings['Mark selected issues as child issues of this issue'] = 'Marcar las peticiones seleccionadas como dependientes de esta petición';
   $strings['Mark selected issues as parent issues of this issue'] = 'Marcar las peticiones seleccionadas como padres de esta petición';
@@ -2266,8 +2266,8 @@
   $strings['Add link'] = 'Agregar enlace';
   $strings['Enter the name of the article to link to here, along with an (optional) description, and press "%add_link%" to add it to the menu.'] = 'Escriba el nombre del artículo para enlazar aquí, junto con una descripción (opcional) y presione "% add_link" para agregar al menú.';
   $strings['Enter the link URL here, along with an (optional) description, and press "%add_link%" to add it to the menu.'] = 'Introduzca la URL de enlace aquí, junto con una descripción (opcional) y presione "% add_link" para agregar al menú.';
-  $strings['To add free text, just enter text in the description - without any url - and press the "%add_link%" button (Text will be parsed according to the %wiki_formatting%).'] = 'Para agregar texto libre, introduce el texto en la descripción - sin cualquier url - y presione el botón de "% add_link" (el texto se analiza según el % wiki_formatting %).';
-  $strings['To add a spacer, just press "%add_link%", without any url or description.'] = 'Para agregar a un espaciador, basta con presionar "% add_link %", sin cualquier url o descripción.';
+  $strings['To add free text, just enter text in the description - without any url - and press the "%add_link%" button (Text will be parsed according to the %wiki_formatting%).'] = 'Para agregar texto libre, introduce el texto en la descripción - sin cualquier url - y presione el botón de "% add_link" (el texto se analiza según el %wiki_formatting%).';
+  $strings['To add a spacer, just press "%add_link%", without any url or description.'] = 'Para agregar a un espaciador, basta con presionar "%add_link%", sin cualquier url o descripción.';
   $strings['There are no links in this menu'] = 'No hay enlaces en este menú';
 
 // First occurrence is in: modules/main/templates/_milestonedashboardbox.inc.php
@@ -2318,7 +2318,7 @@
   $strings['Your ClaimID username'] = 'Tu usario de ClaimID';
   $strings['Enter your ClickPass username'] = 'Introduce tu usuario de ClickPass ';
   $strings['Enter your Google Profile username'] = 'Introduce tu usuario de Google ';
-  $strings['Log in with %openid_provider_name%'] = 'Inicie la sesión con % openid_provider_name %';
+  $strings['Log in with %openid_provider_name%'] = 'Inicie la sesión con %openid_provider_name%';
 
 // First occurrence is in: modules/main/templates/_profilebuttons.inc.php
 // ----------------------------------------------------------------------------
@@ -2543,7 +2543,7 @@
   $strings['Show issues reported by this user'] = 'Mostrar temas registrados por este usuario';
   $strings['Last reported issues:'] = 'Últimas peticiones registradas';
   $strings['This user has not reported any issues yet'] = 'Este usuario aún no ha divulgado cualquier problema';
-  $strings['Member of the following teams:</b> %list_of_teams%'] = 'Miembro de los siguientes equipos:</b> % list_of_teams %';
+  $strings['Member of the following teams:</b> %list_of_teams%'] = 'Miembro de los siguientes equipos:</b> %list_of_teams%';
 
 // First occurrence is in: modules/main/templates/_userdropdown.inc.php
 // ----------------------------------------------------------------------------
@@ -2569,7 +2569,7 @@
   $strings['Extend, develop and change The Bug Genie in any way you want, and do whatever you want with the new piece of software (The only thing you cannot do is call your software The Bug Genie). Please do send us your modifications for inclusion in The Bug Genie.'] = 'Amplíe, desarrolle y modifique The Bug Genie de la manera que quiera, y haga lo que desee con la nueva pieza de software (Lo único que no puede hacer es llamar a su software The Bug Genie). Por favor envíenos sus modificaciones para incluirlas en The Bug Genie.';
   $strings['Enjoy using The Bug Genie!'] = 'Disfrute utilizando The Bug Genie!';
   $strings['The Bug Genie uses icons from the %link_to_iconset%'] = 'The Bug Genie utiliza íconos de %link_to_iconset%';
-  $strings['These icons may be freely distributed under the %link_to_license%'] = 'Estos iconos pueden distribuirse libremente bajo el % link_to_license %';
+  $strings['These icons may be freely distributed under the %link_to_license%'] = 'Estos iconos pueden distribuirse libremente bajo el %link_to_license%';
 
 // First occurrence is in: modules/main/templates/addscope.html.php
 // ----------------------------------------------------------------------------
@@ -2625,12 +2625,12 @@
 // First occurrence is in: modules/main/templates/index.html.php
 // ----------------------------------------------------------------------------
   $strings['Configure &ndash;&gt; Settings'] = 'Configurar &ndash;&gt; Opciones';
-  $strings["It looks likes you're only using The Bug Genie to track issues for one project. If you don't want to use this homepage, you can set The Bug Genie to <i>single project tracker mode</i>, which will automatically forward the frontpage to the project overview page.<br><br><i>Single project tracker mode</i> can be enabled from %configure_settings%."] = "Parece que le gusta sólo usas el Bug Genie para realizar un seguimiento de temas para un proyecto. Si no desea utilizar esta página, puede configurar el genio de error a <i>modo de proyecto único perseguidor</i>, que enviará automáticamente la Página principal a la página de Resumen del proyecto.<br><br><i>Modo de seguimiento proyecto solo</i> puede activarse de % configure_settings %.";
+  $strings["It looks likes you're only using The Bug Genie to track issues for one project. If you don't want to use this homepage, you can set The Bug Genie to <i>single project tracker mode</i>, which will automatically forward the frontpage to the project overview page.<br><br><i>Single project tracker mode</i> can be enabled from %configure_settings%."] = "Parece que le gusta sólo usas el Bug Genie para realizar un seguimiento de temas para un proyecto. Si no desea utilizar esta página, puede configurar el genio de error a <i>modo de proyecto único perseguidor</i>, que enviará automáticamente la Página principal a la página de Resumen del proyecto.<br><br><i>Modo de seguimiento proyecto solo</i> puede activarse de %configure_settings%.";
   $strings['Only using The Bug Genie to track issues for one project?'] = '¿Sólo usa The Bug Genie para seguimiento de peticiones de un proyecto?';
   $strings['Configure &ndash;&gt; Import'] = 'Configurar &ndash;&gt; Importar';
   $strings["It doesn't look like you have had the chance to add any projects yet. If you want to play around a bit with The Bug Genie before you start using it for your own projects, you can import some sample data before adding your own projects."] = "No parece que han tenido la oportunidad de añadir cualquier proyecto todavía. Si usted quiere jugar un poco conThe Bug Genie antes de empezar a utilizarlo para sus propios proyectos, puede importar algunos datos de la muestra antes de añadir tus propios proyectos.";
   $strings['Oh noes! There are no projects!'] = 'Oh no! No hay proyectos!';
-  $strings['Sample data can be imported from %configure_import%.'] = 'Pueden importar datos de muestra de % configure_import %.';
+  $strings['Sample data can be imported from %configure_import%.'] = 'Pueden importar datos de muestra de %configure_import%.';
   $strings['Quick links'] = 'Atajos';
   $strings['There are no top-level projects'] = 'No hay proyectos de alto nivel';
   $strings['Go to project management'] = 'Ir a la gestión de proyectos';
@@ -2652,7 +2652,7 @@
   $strings['Click "%save%" to save your account information'] = 'Haga clic en "%save%" para guardar la información de su cuenta';
   $strings['Use Gravatar avatar'] = 'Utilizar avatar de Gravatar';
   $strings["The Bug Genie can use your <a href=\"http://www.gravatar.com\" target=\"_blank\">Gravatar</a> profile picture, if you have one. If you don't have one but still want to use Gravatar for profile pictures, The Bug Genie will use a Gravatar <a href=\"http://blog.gravatar.com/2008/04/22/identicons-monsterids-and-wavatars-oh-my/\" target=\"_blank\">auto-generated image unique for your email address</a>."] = "El genio de error puede utilizar tu foto de perfil de <a href=\"http://www.gravatar.com\" target=\"_blank\"> Gravatar</a>, si usted tiene uno. Si no tienes uno pero aún desea utilizar Gravatar para fotos de perfil, el genio de error utilizará un Gravatar <a href=\"http://blog.gravatar.com/2008/04/22/identicons-monsterids-and-wavatars-oh-my/\" target=\"_blank\"> generado automáticamente la imagen única para tu dirección de correo electrónico</a>.";
-  $strings["Don't have a Gravatar yet? %link_to_get_one_now%"] = "¿Todavía no tienes un Gravatar? % link_to_get_one_now %";
+  $strings["Don't have a Gravatar yet? %link_to_get_one_now%"] = "¿Todavía no tienes un Gravatar? %link_to_get_one_now%";
   $strings['Get one now!'] = 'Obtenga uno ya!';
   $strings['Current timezone'] = 'Huso horario actual';
   $strings['Use global setting - GMT%time%'] = 'Utilizar opción general - GMT%time%';
@@ -2713,7 +2713,7 @@
 
 // First occurrence is in: modules/main/templates/upload.html.php
 // ----------------------------------------------------------------------------
-  $strings['The file "%filename%" was uploaded successfully'] = 'El archivo "% filename %" fue subido con éxito';
+  $strings['The file "%filename%" was uploaded successfully'] = 'El archivo "%filename%" fue subido con éxito';
 
 // First occurrence is in: modules/main/templates/viewissue.html.php
 // ----------------------------------------------------------------------------
@@ -2876,7 +2876,7 @@
   $strings['This is a release of edition %edition_name%'] = 'Esta es una liberación de la edición %edition_name%';
   $strings['Release download'] = 'Liberación de descarga';
   $strings['Clear download information'] = 'Limpiar información de descarga';
-  $strings['Leave as is %no_download%'] = 'Dejar como % no_download %';
+  $strings['Leave as is %no_download%'] = 'Dejar como %no_download%';
   $strings['no download'] = 'no descargar';
   $strings['Use existing file %filename%'] = 'Utilizar el archivo %filename%';
   $strings['Upload file for download'] = 'Subir archivo para descargar';
@@ -3242,7 +3242,7 @@
 // First occurrence is in: modules/project/templates/_projectworkflow_table.inc.php
 // ----------------------------------------------------------------------------
   $strings["Issues in the workflow step on the left will have their workflow step changed to the one on the right. This will change the issue's status to the one assigned to the new step."] = "Temas en el paso de flujo de trabajo de la izquierda tendrá su paso de flujo de trabajo cambió a uno a la derecha. Esto cambiará el estado de la cuestión al que asigna a la nueva etapa.";
-  $strings['Old: %old_workflow_name%'] = 'Viejo: % old_workflow_name %';
+  $strings['Old: %old_workflow_name%'] = 'Viejo: %old_workflow_name%';
   $strings['New: %new_workflow_name%'] = 'Nuevo: %new_workflow_name%';
   $strings['Choose a different workflow'] = 'Elige un flujo de trabajo diferente';
   $strings['Update workflow'] = 'Axctualizar flujo de trabajo';
@@ -3352,7 +3352,7 @@
 // First occurrence is in: modules/project/templates/scrumshowburndownimage.html.php
 // ----------------------------------------------------------------------------
   $strings['Date'] = 'Fecha';
-  $strings['Sprint burndown graph - %sprint_name% (starts %starting_date%, ends %scheduled_date%)'] = 'Gráfico de la evolución de Sprint-%sprint_name%s (comienza %starting_date% y termina %,scheduled_date%)';
+  $strings['Sprint burndown graph - %sprint_name% (starts %starting_date%, ends %scheduled_date%)'] = 'Gráfico de la evolución de Sprint-%sprint_name%s (comienza %starting_date%y termina%,scheduled_date%)';
 
 // First occurrence is in: modules/project/templates/settings.html.php
 // ----------------------------------------------------------------------------
@@ -3386,7 +3386,7 @@
 
 // First occurrence is in: modules/publish/classes/TBGPublish.class.php
 // ----------------------------------------------------------------------------
-  $strings['%number_of_articles% articles imported successfully'] = '% number_of_articles % artículos importados con éxito';
+  $strings['%number_of_articles% articles imported successfully'] = '%number_of_articles% artículos importados con éxito';
   $strings['Project archive'] = 'Archivo de proyecto';
   $strings['Documentation'] = 'Documentación';
   $strings['Project documentation'] = 'Documentación del proyecto';
@@ -3503,9 +3503,9 @@
   $strings['CamelCasing'] = 'CamelCasing';
   $strings['Traditionally, %CamelCasing% has been used to specify links between documents in Wikis. If you want to keep this turned on, specify so here. Make sure you read the %wikiformatting% wiki article if you are unsure how to use this feature.'] = 'Tradicionalmente, %CamelCasing% ha sido utilizado para crear enlaces entre documentos en la Wiki. Si quiere mantenerlo, hágalo aquí. Asegúrese de haber leido el artículo %wikiformatting% si no está seguro de esta característica.';
   $strings['Show "Wiki" links'] = 'Mostrar enlaces "Wiki"';
-  $strings['Setting this to "%no%" will hide all "Wiki" tabs and links'] = 'Si se establece como "% no %" ocultará todos los "Wiki" fichas y enlaces';
+  $strings['Setting this to "%no%" will hide all "Wiki" tabs and links'] = 'Si se establece como "%no%" ocultará todos los "Wiki" fichas y enlaces';
   $strings['Require change reason'] = 'Necesita motivo para el cambio';
-  $strings['Setting this to "%no%" will not require users to enter a reason when saving Wiki changes'] = 'Si se establece como "% no %" no requerirán que los usuarios que ingresen una razón al guardar cambios de Wiki';
+  $strings['Setting this to "%no%" will not require users to enter a reason when saving Wiki changes'] = 'Si se establece como "%no%" no requerirán que los usuarios que ingresen una razón al guardar cambios de Wiki';
   $strings['Wiki permissions'] = 'Permisos Wiki';
   $strings['Open for everyone with access to add / remove content'] = 'Permitir a cada uno con acceso a agregar / quitar contenido';
   $strings['Only registered users can add / remove content'] = 'Solo los usuarios registrados puede agregar / quitar contenido';
@@ -3807,7 +3807,7 @@
 // ----------------------------------------------------------------------------
   $strings['Commits'] = 'Código confirmado';
   $strings['Issue updated from code repository'] = 'Petición actualizada por código desde el repositorio';
-  $strings['This issue has been updated with the latest changes from the code repository.<source>%commit_msg%</source>'] = 'Este tema ha sido actualizado con los últimos cambios en el repositorio de código.<source>% commit_msg %</source>';
+  $strings['This issue has been updated with the latest changes from the code repository.<source>%commit_msg%</source>'] = 'Este tema ha sido actualizado con los últimos cambios en el repositorio de código.<source>%commit_msg%</source>';
 
 // First occurrence is in: modules/vcs_integration/classes/actions.class.php
 // ----------------------------------------------------------------------------
