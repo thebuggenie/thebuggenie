@@ -703,11 +703,11 @@ EOT;
 			{
 				if ($request->hasParameter('mailing_'.$setting))
 				{
-					$this->getUser()->setNotificationSetting($setting, true, 'mailing')->save();
+					TBGContext::getUser()->setNotificationSetting($setting, true, 'mailing')->save();
 				}
 				else
 				{
-					$this->getUser()->setNotificationSetting($setting, false, 'mailing')->save();
+					TBGContext::getUser()->setNotificationSetting($setting, false, 'mailing')->save();
 				}
 			}
 		}

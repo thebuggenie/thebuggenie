@@ -2816,7 +2816,7 @@
 		 */
 		public function setNotificationSetting($setting, $value, $module = 'core')
 		{
-			$setting = $this->getNotificationSetting($setting, $module);
+			$setting = $this->getNotificationSetting($setting, null, $module);
 			$setting->setValue($value);
 			return $setting;
 		}
