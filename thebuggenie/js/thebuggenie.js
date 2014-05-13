@@ -220,12 +220,15 @@ TBG.Core.popupVisiblizer = function() {
  * Monitors viewport scrolling to adapt fixed positioners
  */
 TBG.Core._scrollWatcher = function() {
-	if ($('viewissue_header_container')) {
+	var vhc = $('viewissue_header_container');
+	if (vhc) {
 		var y = document.viewport.getScrollOffsets().top;
 		if (y >= $('issue_view').offsetTop) {
-			$('viewissue_header_container').addClassName('fixed');
+			vhc.addClassName('fixed');
 			$('workflow_actions').addClassName('fixed');
-			if (y >= $('viewissue_menu_panes').offsetTop) {
+			var vhc_layout = vhc.getLayout();
+			var vhc_height = vhc_layout.get('height') + vhc_layout.get('padding-top') + vhc_layout.get('padding-bottom');
+			if (y >= $('viewissue_menu_panes').offsetTop - vhc_height) {
 				if ($('comment_add_button') != undefined) {
 					var button = $('comment_add_button').remove();
 					$('workflow_actions').down('ul').insert(button);
@@ -235,7 +238,7 @@ TBG.Core._scrollWatcher = function() {
 				$('add_comment_button_container').update(button);
 			}
 		} else {
-			$('viewissue_header_container').removeClassName('fixed');
+			vhc.removeClassName('fixed');
 			$('workflow_actions').removeClassName('fixed');
 			if ($('comment_add_button') != undefined) {
 				var button = $('comment_add_button').remove();
