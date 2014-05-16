@@ -1888,7 +1888,7 @@
 	$strings['Search'] = 'Search';
 	$strings['Search failed'] = 'Search failed';
 	$strings['Search failed:'] = 'Search failed:';
-	$strings['Search for anything here'] = 'Search for anything here';
+	$strings['Search for anything here'] = 'Search Project Manager and Wiki';
 	$strings['Search for (text)'] = 'Search for (text)';
 	$strings['Search results'] = 'Search results';
 	$strings['Security check'] = 'Security check';

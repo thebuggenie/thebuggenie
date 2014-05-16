@@ -5,17 +5,18 @@
 			
 			
 <?php // BEGIN MODIFY FOOTER ?>
-	<a href="<?php echo TBGContext::getTBGPath(); ?>wiki/Privacy">Privacy </a>|
-	<a href="<?php echo TBGContext::getTBGPath(); ?>wiki/TermsOfUse">Terms of Use </a>|
-	Project manager and wiki by <a href="<?php echo TBGContext::getTBGPath(); ?>about">The Bug Genie</a>
-	Forum by <a href="http://vanillaforums.org/">Vanilla</a>
-	Content copyright (except where noted) = <a href="http://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
-<?php // END MODIFY FOOTER ?> 
+	<a href="<?php echo TBGContext::getTBGPath(); ?>wiki/Privacy">Privacy</a> |
+	<a href="<?php echo TBGContext::getTBGPath(); ?>wiki/TermsOfUse">Terms of Use</a> |
+	Project Manager <a href="<?php echo TBGContext::getTBGPath(); ?>about">The Bug Genie</a> | 
+	Forum <a href="http://vanillaforums.org/">Vanilla</a> | 
+	Template <a href="http://helpgivethanks.org/apps/thebuggenie/wiki/WebsiteTemplate">HGT</a> | 
+	Content Copyright (except where noted) <a href="http://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
+	<?php // if ($tbg_user->canAccessConfigurationPage()): ?>
+	<?php // ADD THIS PHP TAG TO TURN OFF THIS LINE OF CODE | <b><?php echo link_tag(make_url('configure'), __('Configure The Bug Genie')); ?></b>
+				<?php // endif; ?>
+<?php // END MODIFY FOOTER ?>
 
 
-				<?php if ($tbg_user->canAccessConfigurationPage()): ?>
-					| <b><?php echo link_tag(make_url('configure'), __('Configure The Bug Genie')); ?></b>
-				<?php endif; ?>
 			</td>
 		</tr>
 	</table>
