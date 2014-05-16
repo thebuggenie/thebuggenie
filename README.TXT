@@ -1,4 +1,4 @@
-NOTE: This is a remix (nitrogen theme) of The Bug Genie v3.2.7.1.
+NOTE: This is a remix (nitrogen template) of The Bug Genie v3.2.7.1.
 
 To compare the differences between this remix and the original v3.2.7.1, please visit https://github.com/virtualdavid/thebuggenie/compare/thebuggenie:branch-32...nitrogen?expand=1
 
