@@ -4,6 +4,8 @@ To compare the differences between this remix and the original v3.2.7.1, please 
 
 To see screenshots and read a detailed explanation about the remix go here http://forum.thebuggenie.com/viewtopic.php?f=9&t=1691&sid=628e6e5f3027e56f07651c066c001557
 
+To download a copy of this template go here https://sourceforge.net/projects/helpgivethanks/"> https://sourceforge.net/projects/helpgivethanks/
+
 THE BUG GENIE VERSION 3
 -------
 The Bug Genie is an enterprise-grade issue-tracking, development and project

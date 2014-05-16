@@ -12,6 +12,19 @@
 				<?php echo __('Version %thebuggenie_version%', array('%thebuggenie_version%' => TBGSettings::getVersion(true))); ?>
 			</span>
 		</h1>
+		
+		
+		<br>
+		<h2>NOTE: This is a remix (nitrogen template) of The Bug Genie v3.2.7.1</h2>
+		To compare the differences between this remix and the original v3.2.7.1, please visit <a target="_blank" href="https://github.com/virtualdavid/thebuggenie/compare/thebuggenie:branch-32...nitrogen?expand=1"> https://github.com/virtualdavid/thebuggenie/compare/thebuggenie:branch-32...nitrogen?expand=1 </a> <i>(opens in a new window)</i><br>
+		<br>
+		To see screenshots and read a detailed explanation about the remix go here <a target="_blank" href="http://forum.thebuggenie.com/viewtopic.php?f=9&t=1691&sid=628e6e5f3027e56f07651c066c001557"> http://forum.thebuggenie.com/viewtopic.php?f=9&t=1691&sid=628e6e5f3027e56f07651c066c001557 </a> <i>(opens in a new window)</i><br>
+		<br>
+		To download a copy of this template go here <a target="_blank" href="https://sourceforge.net/projects/helpgivethanks/"> https://sourceforge.net/projects/helpgivethanks/ </a> <i>(opens in a new window)</i><br>
+		<br>	
+		<br>	
+		
+		
 		<h3 style="margin-top: 0; padding-top: 0;">Beautiful issue tracking and project management</h3>
 		<?php echo __('The Bug Genie is an issue tracking system with a strong focus on being friendly &ndash; both for regular users and power users'); ?>.<br>
 		<br>
