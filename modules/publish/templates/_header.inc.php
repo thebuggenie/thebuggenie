@@ -51,7 +51,7 @@
 			<div class="guest_overview_page"><?php echo image_tag(TBGSettings::getHeaderIconUrl(), array('style' => 'max-height: 24px;'), TBGSettings::isUsingCustomHeaderIcon()); ?><br> 		
  		<?php echo "Welcome to Your Website Name Here!"; ?> <br> <span  style="font-size: .7em" ><?php echo "Feel free to look around.  Website testing and content editing in progress.  <br> Change this title and message in file /YOURBugGenieFolder/modules/publish/templates/_header.inc.php.  It's on line 51."; ?></span></div><br>
 		<?php else: ?>
-		<?php echo "Help Give Thanks Research Project Overview"; ?><?php endif; ?>
+		<?php echo "Your Website Name Overview"; ?><?php endif; ?>
 <?php endif; ?>
 <?php // END IF USER IS LOGGED IN SHOW OVERVIEW WIKI TITLE AND IF GUEST SHOW TITLE BELOW ?>
 
