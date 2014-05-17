@@ -1,7 +1,0 @@
-== Introduction ==
-Components are small snippets of logic and presentation that can be included anywhere in another action/template or as the returned response for an action. These snippets are called "components" when they contain both logic and presentation, and "partials" when they only contain presentation (a template).
-
-== Components, explained ==
-A component is made up of two parts, the logic and the presentation. The presentation is simply a partial, and follows the same conventions as described in the partials documentation.
-
-[[Category:TheBugGenie:Development]]

@@ -1,8 +1,0 @@
-{{TOC}}
-= Introduction =
-A workflow is reprecented by [[WorkflowSteps|steps]] and [[WorkflowTransitions|transitions]] that an issue progresses through, thereby defining an issue lifecycle. Steps and transitions can further be customized with validation, conditional access and permission based access to fields to create a setup perfectly tailored to an individual company workflow.
-
-This defined lifecycle usually represents an internal company setup, or reflects a companys team-based structure, and is usually also anchored in a company or teams development and QA guidelines.
-
-The Bug Genie comes with a default workflow called [[DefaultWorkflow|"Default workflow"]]. This workflow cannot be edited or removed, and is used as a fallback workflow or when a project doesn't have a workflow configured. The editing tools for workflow will of course let you copy this default workflow or create a new one to make your own, and everything in other workflows than the builting one can be customized.
-[[Category:TheBugGenie:Workflow]]
