@@ -20,7 +20,7 @@
 				<div class="rounded_box yellow borderless" style="margin: 5px 0 0 0; font-size: 12px;">
 					<div class="header"><?php echo __('Add new custom field'); ?></div>
 					<div class="content" style="padding: 2px; margin-bottom: 15px;">
-						<?php echo __('Enter a name for the field (same as ex. "%resolution_types%" above), then click %add%', array('%resolution_types%' => __('Resolution types'), '%add%' => '<b>' . __('Add') . '</b>')); ?>
+						<?php echo __('Enter a name for the field (same as ex. "%resolution_types%" above), then click %add%', array('%resolution_types%' => __('Resolution types'), '%add%' => '<b>' . __('Add custom field') . '</b>')); ?>
 					</div>
 					<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuefields_add_customtype'); ?>" onsubmit="TBG.Config.Issuefields.Custom.add('<?php echo make_url('configure_issuefields_add_customtype'); ?>');return false;" id="add_custom_type_form">
 						<label for="new_custom_field_name" style="width: 100px; display: block; float: left;"><?php echo __('Custom type'); ?></label>
