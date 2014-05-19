@@ -222,8 +222,12 @@ TBG.Core.popupVisiblizer = function() {
 TBG.Core._scrollWatcher = function() {
 	var vhc = $('viewissue_header_container');
 	if (vhc) {
+		var iv = $('issue_view');
 		var y = document.viewport.getScrollOffsets().top;
-		if (y >= $('issue_view').offsetTop) {
+		var vihc = $('viewissue_header_container');
+		var vihcl = vihc.getLayout();
+		var compare_coord = (vihc.hasClassName('fixed')) ? iv.offsetTop : vihcl.get('padding-top') + vihcl.get('margin-top') + iv.offsetTop;
+		if (y >= compare_coord) {
 			vhc.addClassName('fixed');
 			$('workflow_actions').addClassName('fixed');
 			var vhc_layout = vhc.getLayout();
