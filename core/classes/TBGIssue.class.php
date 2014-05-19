@@ -1015,10 +1015,32 @@
 		{
 			$this->_addChangedProperty('_workflow_step_id', $step->getID());
 		}
-		
+
+		/**
+		 *
+		 * @return array|TBGWorkflowTransition
+		 */
 		public function getAvailableWorkflowTransitions()
 		{
 			return ($this->getWorkflowStep() instanceof TBGWorkflowStep) ? $this->getWorkflowStep()->getAvailableTransitionsForIssue($this) : array();
+		}
+
+		/**
+		 *
+		 * @return array|TBGStatus
+		 */
+		public function getAvailableStatuses()
+		{
+			$statuses = array();
+			foreach ($this->getAvailableWorkflowTransitions() as $transition)
+			{
+				if ($status = $transition->getOutgoingStep()->getLinkedStatus())
+				{
+					$statuses[$status->getID()] = $status;
+				}
+			}
+
+			return $statuses;
 		}
 
 		protected function _initializeCustomfields()

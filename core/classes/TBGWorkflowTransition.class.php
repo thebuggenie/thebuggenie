@@ -372,7 +372,11 @@
 			$rules = $this->getPreValidationRules();
 			return (array_key_exists($rule, $rules)) ? $rules[$rule] : null;
 		}
-		
+
+		/**
+		 *
+		 * @return array|TBGWorkflowTransitionValidationRule
+		 */
 		public function getPostValidationRules()
 		{
 			$this->_populateValidationRules();

@@ -143,10 +143,10 @@
 		protected function setupVariables()
 		{
 			$i18n = TBGContext::getI18n();
-			$this->statuses = TBGStatus::getAll();
 			if ($this->issue instanceof TBGIssue)
 			{
 				$this->project = $this->issue->getProject();
+				$this->statuses = ($this->project->isFreelancingAllowed()) ? TBGStatus::getAll() : $this->issue->getAvailableStatuses();
 				$this->issuetypes = $this->project->getIssuetypeScheme()->getIssuetypes();
 				$fields_list = array();
 				$fields_list['category'] = array('title' => $i18n->__('Category'), 'choices' => array(), 'visible' => $this->issue->isCategoryVisible(), 'changed' => $this->issue->isCategoryChanged(), 'merged' => $this->issue->isCategoryMerged(), 'name' => (($this->issue->getCategory() instanceof TBGCategory) ? $this->issue->getCategory()->getName() : ''), 'name_visible' => (bool) ($this->issue->getCategory() instanceof TBGCategory), 'noname_visible' => (bool) (!$this->issue->getCategory() instanceof TBGCategory), 'icon' => false, 'change_tip' => $i18n->__('Click to change category'), 'change_header' => $i18n->__('Change category'), 'clear' => $i18n->__('Clear the category'), 'select' => $i18n->__('%clear_the_category or click to select a new category', array('%clear_the_category' => '')));

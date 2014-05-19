@@ -147,7 +147,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="config_explanation" colspan="2"><?php echo __('Whether or not developers can change details on an issue without marking themselves as working on the issue'); ?></td>
+			<td class="config_explanation" colspan="2"><?php echo __('Whether or not developers can change issue status without following the workflow'); ?></td>
 		</tr>
 		<tr>
 			<td><label for="allow_autoassignment"><?php echo __('Enable autoassignment'); ?></label></td>

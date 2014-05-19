@@ -1440,10 +1440,21 @@
 
 		/**
 		 * Return whether a user can change details about an issue without working on the issue
-		 *  
+		 *
+		 * @deprecated since version 3.3
 		 * @return boolean
 		 */
 		public function canChangeIssuesWithoutWorkingOnThem()
+		{
+			return (bool) $this->_allow_freelancing;
+		}
+
+		/**
+		 * Return whether a user can change issue status without following the workflow
+		 *
+		 * @return boolean
+		 */
+		public function isFreelancingAllowed()
 		{
 			return (bool) $this->_allow_freelancing;
 		}
