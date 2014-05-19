@@ -387,7 +387,6 @@
 			<ul id="viewissue_menu">
 				<li id="tab_comments" class="selected"><?php echo javascript_link_tag(image_tag('viewissue_tab_comments.png') . '<span>'.__('Comments (%count)', array('%count' => '</span><span id="viewissue_comment_count" class="tab_count">'.$issue->countUserComments().'</span>')), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_comments', 'viewissue_menu');")); ?></li>
 				<li id="tab_affected"><?php echo javascript_link_tag(image_tag('viewissue_tab_affected.png') . '<span>'.__('Affects (%count)', array('%count' => '</span><span id="viewissue_affects_count" class="tab_count">'.$affected_count.'</span>')), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_affected', 'viewissue_menu');")); ?></li>
-				<li id="tab_duplicate_issues"><?php echo javascript_link_tag(image_tag('viewissue_tab_duplicate.png') . '<span>'.__('Duplicates (%count)', array('%count' => '</span><span id="viewissue_duplicate_issues_count" class="tab_count">'.(count($issue->getDuplicateIssues())).'</span>')), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_duplicate_issues', 'viewissue_menu');")); ?></li>
 				<?php TBGEvent::createNew('core', 'viewissue_tabs', $issue)->trigger(); ?>
 				<li id="tab_log"><?php echo javascript_link_tag(image_tag('viewissue_tab_log.png') . '<span>'.__('History'), array('onclick' => "TBG.Issues.showLog('".make_url('issue_log', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID()))."');")).'</span>'; ?></li>
 			</ul>
@@ -402,21 +401,6 @@
 			<div id="tab_log_pane" style="padding-top: 0; margin: 5px; display: none;">
 				<div id="viewissue_log_loading_indicator"><?php echo image_tag('spinning_32.gif'); ?></div>
 				<div id="viewissue_log_items">
-				</div>
-			</div>
-			<div id="tab_duplicate_issues_pane" style="padding-top: 0; margin: 0 5px 0 5px; display: none;">
-				<div id="viewissue_duplicates">
-					<?php $data = $issue->getDuplicateIssues(); ?>
-					<?php if (count($data) != 0): ?>
-						<div class="header"><?php echo __('The following issues are duplicates of this issue:'); ?></div>
-					<?php else: ?>
-						<div class="no_items"><?php echo __('This issue has no duplicates'); ?></div>
-					<?php endif; ?>
-					<ul>
-						<?php foreach ($data as $duplicate_issue): ?>
-							<?php include_template('main/duplicateissue', array('duplicate_issue' => $duplicate_issue)); ?>
-						<?php endforeach; ?>
-					</ul>
 				</div>
 			</div>
 			<div id="tab_affected_pane" style="padding-top: 0; margin: 0 5px 0 5px; display: none;">

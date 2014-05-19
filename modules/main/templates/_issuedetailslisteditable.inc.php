@@ -626,5 +626,13 @@
 		<?php include_component('main/relatedissues', array('issue' => $issue)); ?>
 	</div>
 </fieldset>
+<fieldset id="viewissue_duplicate_issues_container">
+	<legend>
+		<?php echo image_tag('spinning_16.gif', array('style' => 'display: none;', 'id' => 'duplicate_issues_indicator')) . __('Duplicate issues (%count)', array('%count' => '<span id="viewissue_duplicate_issues_count">'.$issue->getNumberOfDuplicateIssues().'</span>')); ?>
+	</legend>
+	<div id="viewissue_duplicate_issues">
+		<?php include_component('main/duplicateissues', array('issue' => $issue)); ?>
+	</div>
+</fieldset>
 <?php TBGEvent::createNew('core', 'viewissue_left_bottom', $issue)->trigger(); ?>
 <div style="clear: both; margin-bottom: 5px;"> </div>

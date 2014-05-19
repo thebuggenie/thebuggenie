@@ -1637,10 +1637,9 @@ dd { float: left; display: block; width: 195px; font-weight: normal; margin: 0; 
 
 
 #upload_error_div { margin: 10px 5px 5px 5px; }
-#viewissue_attached_information { margin-top: -5px; }
-#viewissue_related_information { margin-top: -5px; }
-#viewissue_related_information li, #viewissue_attached_information li { width: 335px; position: relative; }
-#viewissue_related_information li button, #viewissue_attached_information li button { 
+#viewissue_attached_information, #viewissue_related_information, #viewissue_duplicate_issues { margin-top: -5px; }
+#viewissue_related_information li, #viewissue_attached_information li, #viewissue_duplicate_issues li { width: 335px; position: relative; }
+#viewissue_related_information li button, #viewissue_attached_information li button, #viewissue_duplicate_issues li button { 
 	float: right; 
 	margin-right: 3px; 
 	font-size: 0.9em; 
@@ -1651,8 +1650,9 @@ dd { float: left; display: block; width: 195px; font-weight: normal; margin: 0; 
 	-o-transition: opacity 0.3s ease;
 	transition: opacity 0.3s ease;
 }
-#viewissue_related_information li:hover button, #viewissue_attached_information li:hover button { opacity: 1; }
-#viewissue_related_information li.closed > a { color: #549D54; text-decoration: line-through; }
+#viewissue_related_information li:hover button, #viewissue_attached_information li:hover button, #viewissue_duplicate_issues li:hover button { opacity: 1; }
+#viewissue_related_information li.closed > a, #viewissue_duplicate_issues li.closed > a { color: #549D54; text-decoration: line-through; }
+#viewissue_attached_information .userdropdown, #viewissue_related_information .userdropdown, #viewissue_duplicate_issues .userdropdown { display: inline-block; }
 #viewissue_comments, #viewissue_log_items, #viewissue_duplicates, #viewissue_affected { margin: 5px 0 0 0; }
 #viewissue_log_items ul { list-style: none; margin: 10px; padding: 0; }
 #viewissue_log_items ul li { list-style: none; margin: 0; padding: 2px 0; }
