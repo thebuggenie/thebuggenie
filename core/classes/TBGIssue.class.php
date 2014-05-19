@@ -2257,7 +2257,7 @@
 				}
 			}
 
-			return $this->_tasks;
+			return $this->_tags;
 		}
 
 		/**
@@ -2807,7 +2807,7 @@
 				$related_issue->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('%issuetype %issue_no now depends on the solution of this %this_issuetype', array('%this_issuetype' => $related_issue->getIssueType()->getName(), '%issuetype' => $this->getIssueType()->getName(), '%issue_no' => $this->getFormattedIssueNo())));
 				$this->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('This %this_issuetype now depends on the solution of %issuetype %issue_no', array('%this_issuetype' => $this->getIssueType()->getName(), '%issuetype' => $related_issue->getIssueType()->getName(), '%issue_no' => $related_issue->getFormattedIssueNo())));
 				
-				return ($comment instanceof TBGComment) ? $comment : true;
+				return true;
 			}
 			return false;
 		}
