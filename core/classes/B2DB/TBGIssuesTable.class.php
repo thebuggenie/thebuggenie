@@ -783,7 +783,7 @@
 			$crit->addSelectionColumn(self::ID);
 			$crit->addWhere(self::DUPLICATE_OF, $issue_no);
 			
-			return $this->doSelect($crit);
+			return $this->select($crit);
 		}
 
 		public function saveVotesTotalForIssueID($votes_total, $issue_id)

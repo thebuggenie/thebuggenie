@@ -369,6 +369,11 @@
 			$this->child_issues = $child_issues;
 		}
 
+		public function componentDuplicateissues()
+		{
+			$this->duplicate_issues = $this->issue->getDuplicateIssues();
+		}
+
 		public function componentLoginpopup()
 		{
 			if (TBGContext::getRequest()->getParameter('redirect') == true)

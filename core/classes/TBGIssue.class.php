@@ -480,7 +480,8 @@
 		/**
 		 * List of issues which are duplicates of this one
 		 * 
-		 * @var array
+		 * @var array|TBGIssue
+		 * @Relates(class="TBGIssue", collection=true, foreign_column="duplicate_of")
 		 */
 		protected $_duplicate_issues;
 		
@@ -1185,30 +1186,28 @@
 		 */
 		public function getDuplicateOf()
 		{
-			/*if (is_numeric($this->_duplicate_of))
-			{
-				try
-				{
-					$this->_duplicate_of = TBGContext::factory()->TBGIssue($this->_duplicate_of);
-				}
-				catch (Exception $e) 
-				{
-					$this->_duplicate_of = null;
-				}
-			}
-			return $this->_duplicate_of;*/
 			return $this->_b2dbLazyload('_duplicate_of');
 		}
 		
 		/**
 		 * Returns an array of all issues which are duplicates of this one
 		 * 
-		 * @return array of TBGIssues
+		 * @return array|TBGIssue
 		 */
 		public function getDuplicateIssues()
 		{
 			$this->_populateDuplicateIssues();
 			return $this->_duplicate_issues;
+		}
+
+		public function hasDuplicateIssues()
+		{
+			return (bool) $this->getNumberOfDuplicateIssues();
+		}
+
+		public function getNumberOfDuplicateIssues()
+		{
+			return count($this->getDuplicateIssues());
 		}
 		
 		/**
@@ -2071,21 +2070,10 @@
 		{
 			if ($this->_duplicate_issues === null)
 			{
-				$this->_duplicate_issues = array();
-				
-				if ($res = TBGIssuesTable::getTable()->getDuplicateIssuesByIssueNo($this->getID()))
+				$this->_b2dbLazyload('_duplicate_issues');
+				foreach ($this->_duplicate_issues as $issue_id => $issue)
 				{
-					while ($row = $res->getNextRow())
-					{
-						try
-						{
-							$issue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID));
-							$this->_duplicate_issues[$row->get(TBGIssuesTable::ID)] = $issue;
-						}
-						catch (Exception $e) 
-						{
-						}
-					}
+					if (!$issue->hasAccess()) unset($this->_duplicate_issues[$issue_id]);
 				}
 			}
 		}
