@@ -1681,10 +1681,13 @@ dd { float: left; display: block; width: 195px; font-weight: normal; margin: 0; 
 #viewissue_relation_results .issue_title { width: auto; }
 #viewissue_relation_results .faded_out { font-weight: normal; }
 
-ul#uploaded_files { list-style-type: none; padding: 0; margin: 5px 0 0 5px; }
-tr.attached_item td { padding-bottom: 5px; padding-top: 5px; border: none !important; }
-tr.attached_item td { font-size: 0.9em; line-height: 1.3; }
-tr.attached_item td .upload_details { color: #AAA; font-size: 0.9em; }
+ul.attached_items { list-style: none; padding: 0; margin: 5px 0 0 0; }
+.attached_item a.downloadlink, .attached_item a.downloadlink:hover { display: inline-block; font-size: 1em; width: 305px; vertical-align: middle; overflow: hidden; text-overflow: ellipsis; padding: 0 5px 0 0; text-decoration: none; border: none; }
+.attached_item a.downloadlink img { display: inline-block; vertical-align: middle; margin-right: 5px; }
+.attached_item .removelink, .attached_item .removelink:hover { display: inline-block; vertical-align: middle; margin-right: 5px; width: 17px; opacity: 0.3; transition: opacity 0.3s ease; }
+.attached_item:hover .removelink, .attached_item:hover .removelink:hover { opacity: 1; }
+.attached_item:hover .removelink a:hover { text-decoration: none; border: none; }
+.attached_item .upload_details { display: block; padding: 5px 0; font-size: 0.9em; color: #AAA; font-style: italic; }
 
 .popup_box li.separator {
 	margin: 5px 10px;

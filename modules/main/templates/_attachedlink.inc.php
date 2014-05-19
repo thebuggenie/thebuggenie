@@ -1,28 +1,12 @@
-<tr id="viewissue_links_<?php echo $link_id; ?>" class="attached_item">
-	<td class="imgtd"><?php echo image_tag('icon_link.png'); ?></td>
-	<td style="font-size: 13px; padding: 3px;">
-		<?php echo link_tag($link['url'], (($link['description'] != '') ? $link['description'] : $link['url']), array('title' => $link['url'])); ?><br>
-	</td>
+<li id="viewissue_links_<?php echo $link_id; ?>" class="attached_item">
+	<a href="<?php echo $link['url']; ?>" class="downloadlink" title="<?php echo $link['url']; ?>">
+		<?php echo image_tag('icon_link.png'); ?>
+		<?php echo ($link['description'] != '') ? $link['description'] : $link['url']; ?>
+	</a>
 	<?php if ($issue->canRemoveAttachments()): ?>
-		<td style="width: 20px;">
-			<?php echo javascript_link_tag(image_tag('action_delete.png'), array('class' => 'image', 'id' => 'viewissue_links_' . $link_id . '_remove_link', 'onclick' => "$('viewissue_links_{$link_id}_remove_confirm').toggle();")); ?>
+		<div class="removelink">
+			<?php echo javascript_link_tag(image_tag('action_delete.png'), array('id' => $base_id . '_' . $file_id . '_remove_link', 'onclick' => "TBG.Main.Helpers.Dialog.show('".__('Do you really want to remove this link?')."', '".__('This aciton cannot be reversed. Are you sure you want to do this?')."', {yes: {click: function() {TBG.Issues.Link.remove('".make_url('issue_remove_link', array('issue_id' => $issue->getID(), 'link_id' => $link_id))."', ".$link_id."); }}, no: { click: TBG.Main.Helpers.Dialog.dismiss }});")); ?>
 			<?php echo image_tag('spinning_16.gif', array('id' => 'viewissue_links_' . $link_id . '_remove_indicator', 'style' => 'display: none;')); ?>
-		</td>
+		</div>
 	<?php endif; ?>
-</tr>
-<?php if ($issue->canRemoveAttachments()): ?>
-	<tr id="viewissue_links_<?php echo $link_id; ?>_remove_confirm" style="display: none;">
-		<td colspan="3">
-			<div class="rounded_box lightgrey" style="position: relative; clear: both; left: auto; top: auto; margin-bottom: 10px; width: auto;">
-				<div class="header_div" style="margin-top: 0;"><?php echo __('Do you really want to remove this link?'); ?></div>
-				<div class="content" style="padding: 3px;">
-					<?php echo __('This aciton cannot be reversed. Are you sure you want to do this?'); ?>
-					<div style="text-align: right; font-size: 12px;">
-						<?php echo javascript_link_tag(__('Yes'), array('onclick' => "$('viewissue_links_{$link_id}_remove_confirm').toggle();TBG.Issues.Link.remove('".make_url('issue_remove_link', array('issue_id' => $issue->getID(), 'link_id' => $link_id))."', ".$link_id.");")); ?> ::
-						<?php echo javascript_link_tag('<b>'.__('No').'</b>', array('onclick' => "$('viewissue_links_{$link_id}_remove_confirm').toggle();")); ?>
-					</div>
-				</div>
-			</div>
-		</td>
-	</tr>
-<?php endif; ?>
+</li>

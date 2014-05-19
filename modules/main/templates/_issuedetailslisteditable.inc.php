@@ -602,20 +602,16 @@
 	</legend>
 	<div id="viewissue_attached_information">
 		<div class="no_items" id="viewissue_no_uploaded_files"<?php if (count($issue->getFiles()) + count($issue->getLinks()) > 0): ?> style="display: none;"<?php endif; ?>><?php echo __('There is nothing attached to this issue'); ?></div>
-		<table style="table-layout: fixed; width: 100%; background-color: #FFF;" cellpadding=0 cellspacing=0>
-			<tbody id="viewissue_uploaded_links" class="hover_highlight">
-				<?php foreach ($issue->getLinks() as $link_id => $link): ?>
-					<?php include_template('attachedlink', array('issue' => $issue, 'link' => $link, 'link_id' => $link_id)); ?>
-				<?php endforeach; ?>
-			</tbody>
-		</table>
-		<table style="table-layout: fixed; width: 100%; background-color: #FFF;" cellpadding=0 cellspacing=0>
-			<tbody id="viewissue_uploaded_files" class="hover_highlight">
-				<?php foreach ($issue->getFiles() as $file_id => $file): ?>
-					<?php include_component('main/attachedfile', array('base_id' => 'viewissue_files', 'mode' => 'issue', 'issue' => $issue, 'file' => $file)); ?>
-				<?php endforeach; ?>
-			</tbody>
-		</table>
+		<ul class="attached_items" id="viewissue_uploaded_links">
+			<?php foreach ($issue->getLinks() as $link_id => $link): ?>
+				<?php include_template('attachedlink', array('issue' => $issue, 'link' => $link, 'link_id' => $link_id)); ?>
+			<?php endforeach; ?>
+		</ul>
+		<ul class="attached_items" id="viewissue_uploaded_files">
+			<?php foreach ($issue->getFiles() as $file_id => $file): ?>
+				<?php include_component('main/attachedfile', array('base_id' => 'viewissue_files', 'mode' => 'issue', 'issue' => $issue, 'file' => $file)); ?>
+			<?php endforeach; ?>
+		</ul>
 	</div>
 </fieldset>
 <fieldset id="viewissue_related_information_container">
