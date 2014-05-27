@@ -104,3 +104,12 @@
 		</div>
 	</div>
 </div>
+<div class="fullpage_backdrop" id="dialog_backdrop_modal" style="display: none;">
+	<div id="dialog_backdrop_modal_content" class="backdrop_box backdrop_detail_content">
+		<h3 id="dialog_modal_title"></h3>
+		<p id="dialog_modal_content"></p>
+		<div style="text-align: right; padding: 20px;">
+			<a href="javascript:void(0)" id="dialog_okay" onclick="TBG.Main.Helpers.Dialog.dismissModal();" class="button button-silver"><?php echo __('Okay'); ?></a>
+		</div>
+	</div>
+</div>

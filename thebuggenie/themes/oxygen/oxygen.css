@@ -1403,16 +1403,16 @@ ul.workflow_actions li:hover { box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); -webkit-b
 .backdrop_detail_content .tab_menu { margin-top: 30px; margin-bottom: 10px; font-size: 1.1em; }
 .backdrop_detail_footer { clear: both; font-weight: bold; font-size: 0.9em; padding: 5px; text-align: right; background-color: #FFF; }
 
-#dialog_backdrop_content { margin-left: -450px; width: 900px; overflow: hidden; }
-#dialog_backdrop_content h3 {
+#dialog_backdrop_content, #dialog_backdrop_modal_content { margin-left: -450px; width: 900px; overflow: hidden; }
+#dialog_backdrop_content h3, #dialog_backdrop_modal_content h3 {
     margin: 5px;
     padding: 0 0 7px 0;
     color: #999;
     border-bottom: 1px dotted rgb(185, 185, 185);
     font-weight: normal;
 }
-#dialog_content { padding: 0 7px; font-size: 1em; margin: 0; z-index: 1; background-color: transparent; }
-#dialog_yes, #dialog_no { font-size: 1em; padding: 5px 10px !important; }
+#dialog_content, #dialog_modal_content { padding: 0 7px; font-size: 1em; margin: 0; z-index: 1; background-color: transparent; }
+#dialog_yes, #dialog_no, #dialog_okay { font-size: 1em; padding: 5px 10px !important; }
 /* end backdrop styling */
 
 /* main issue view styling */
@@ -1684,10 +1684,19 @@ dd { float: left; display: block; width: 195px; font-weight: normal; margin: 0; 
 ul.attached_items { list-style: none; padding: 0; margin: 5px 0 0 0; }
 .attached_item a.downloadlink, .attached_item a.downloadlink:hover { display: inline-block; font-size: 1em; width: 305px; vertical-align: middle; overflow: hidden; text-overflow: ellipsis; padding: 0 5px 0 0; text-decoration: none; border: none; }
 .attached_item a.downloadlink img { display: inline-block; vertical-align: middle; margin-right: 5px; }
-.attached_item .removelink, .attached_item .removelink:hover { display: inline-block; vertical-align: middle; margin-right: 5px; width: 17px; opacity: 0.3; transition: opacity 0.3s ease; }
-.attached_item:hover .removelink, .attached_item:hover .removelink:hover { opacity: 1; }
-.attached_item:hover .removelink a:hover { text-decoration: none; border: none; }
+.attached_item .removelink, .relatedissue .removelink, .attached_item .removelink:hover, .relatedissue .removelink:hover { display: inline-block; vertical-align: middle; margin-right: 5px; width: 17px; opacity: 0.3; transition: opacity 0.3s ease; }
+.relatedissue .removelink { float: right; }
+.attached_item:hover .removelink, .relatedissue:hover .removelink, .attached_item:hover .removelink:hover, .relatedissue:hover .removelink:hover { opacity: 1; }
+.attached_item:hover .removelink a:hover, .relatedissue a.removelink:hover { text-decoration: none; border: none; }
 .attached_item .upload_details { display: block; padding: 5px 0; font-size: 0.9em; color: #AAA; font-style: italic; }
+#viewissue_attached_information .attached_item.file_image { display: inline-block; width: 160px; margin-top: 10px; }
+#viewissue_attached_information .attached_item.file_image:nth-child(odd) { margin-right: 5px; }
+#viewissue_attached_information .attached_item.file_image .removelink { position: absolute; top: 5px; right: 0; cursor: pointer; }
+#viewissue_attached_information .attached_item.file_image .removelink:first-of-type { right: 20px; }
+#viewissue_attached_information .attached_item.file_image:hover .removelink { background-color: rgba(255, 255, 255, 0.9); border: 1px solid rgba(200, 200, 200, 0.8); border-radius: 2px; padding: 2px; line-height: 1em; width: 16px; height: 16px; }
+.attached_item.file_image a.imagepreview { display: block; margin: 0; padding: 2px; border: 1px solid rgba(100, 100, 100, 0.3); transition: border-color 0.3s ease; box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); }
+.attached_item.file_image a.imagepreview:hover { border-color: rgba(200, 200, 200, 0.5); }
+.attached_item.file_image a.imagepreview img { display: block; width: 100%; max-height: 115px; margin: 0; padding: 0; }
 
 .popup_box li.separator {
 	margin: 5px 10px;

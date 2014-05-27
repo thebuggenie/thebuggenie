@@ -8,11 +8,18 @@
 
 ?>
 <?php if ($file instanceof TBGFile): ?>
-	<li id="<?php echo $base_id . '_' . $file_id; ?>" class="attached_item">
-		<a href="<?php echo make_url('downloadfile', array('id' => $file_id)); ?>" class="downloadlink">
-			<?php echo image_tag('icon_download.png'); ?>
-			<?php echo ($file->hasDescription()) ? $file->getDescription() : $file->getOriginalFilename(); ?>
-		</a>
+	<li id="<?php echo $base_id . '_' . $file_id; ?>" class="attached_item <?php if ($file->isImage()) echo 'file_image'; ?>">
+		<?php if ($file->isImage()): ?>
+			<a href="<?php echo make_url('downloadfile', array('id' => $file_id)); ?>" class="imagepreview" title="<?php echo ($file->hasDescription()) ? $file->getDescription() : $file->getOriginalFilename(); ?>"><?php echo image_tag(make_url('showfile', array('id' => $file_id)), array(), true); ?></a>
+			<div class="embedlink removelink">
+				<?php echo javascript_link_tag(image_tag('action_embed.png'), array('onclick' => "TBG.Main.Helpers.Dialog.showModal('".__('Embedding this file in descriptions or comments')."', '".__('Use this tag to include this image: [[Image:%filename|thumb|Image description]]', array('%filename' => $file->getOriginalFilename()))."');")); ?>
+			</div>
+		<?php else: ?>
+			<a href="<?php echo make_url('downloadfile', array('id' => $file_id)); ?>" class="downloadlink">
+				<?php echo image_tag('icon_download.png'); ?>
+				<?php echo ($file->hasDescription()) ? $file->getDescription() : $file->getOriginalFilename(); ?>
+			</a>
+		<?php endif; ?>
 		<?php if ($can_remove): ?>
 			<div class="removelink">
 				<?php if ($mode == 'issue'): ?>

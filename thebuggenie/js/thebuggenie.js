@@ -548,10 +548,21 @@ TBG.Main.Helpers.Dialog.show = function(title, content, options) {
 	$('dialog_backdrop_content').show();
 	$('dialog_backdrop').appear({duration: 0.2});
 };
+TBG.Main.Helpers.Dialog.showModal = function(title, content) {
+	TBG.Main.Helpers.Message.clear();
+	$('dialog_modal_title').update(title);
+	$('dialog_modal_content').update(content);
+	$('dialog_backdrop_modal_content').show();
+	$('dialog_backdrop_modal').appear({duration: 0.2});
+};
 
 TBG.Main.Helpers.Dialog.dismiss = function() {
 	$('dialog_backdrop_content').fade({duration: 0.2});
 	$('dialog_backdrop').fade({duration: 0.2});
+};
+TBG.Main.Helpers.Dialog.dismissModal = function() {
+	$('dialog_backdrop_modal_content').fade({duration: 0.2});
+	$('dialog_backdrop_modal').fade({duration: 0.2});
 };
 
 /**
