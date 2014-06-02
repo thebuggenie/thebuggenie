@@ -140,11 +140,11 @@
 		{
 			if (count($this->attachments) > 0)
 			{
-				$this->headers['Content-Type'] = "multipart/mixed;\r\n\tboundary=\"----=_AttaPart_{$this->sep2}\"\r\n\r\nThis is a multi-part message in MIME format.\r\n\r\n------=_AttaPart_{$this->sep2}\r\n";
+				$this->headers['Content-Type'] = "multipart/mixed;\r\n\tboundary=\"----=_AttaPart_{$this->sep2}\"\r\n------=_AttaPart_{$this->sep2}";
 			}
 			elseif ($this->isMultipart())
 			{
-				$this->headers['Content-Type'] = "multipart/alternative;\r\n\tboundary=\"----=_MessPart_{$this->sep1}\"\r\n\r\nThis is a multi-part message in MIME format.\r\n\r\n";
+				$this->headers['Content-Type'] = "multipart/alternative;\r\n\tboundary=\"----=_MessPart_{$this->sep1}\"";
 			}
 			elseif ($this->getMessageHTML(false))
 			{
