@@ -1282,8 +1282,27 @@ reportissue_additional_information_container .markItUp { display: none; }
 #issue_view pre { padding: 3px; background-color: #F1F1F1; border: 1px dotted #AAA; }
 #issue_view { position: relative; z-index: 100; overflow: auto; }
 #issue_main_container { float: left; overflow: hidden; width: 100%; margin-top: 104px; }
-#issue_main { margin: 0 10px 0 380px; overflow: auto; }
-#issue_details_container { float: left; width: 360px; margin-left: -100%; margin-top: 104px; }
+#issue_main { 
+	margin: 0 10px 0 380px; 
+	overflow: auto; 
+	-webkit-transition: margin 0.3s ease; 
+	-moz-transition: margin 0.3s ease; 
+	-ms-transition: margin 0.3s ease; 
+	-o-transition: margin 0.3s ease; 
+	transition: margin 0.3s ease; 
+}
+#issue_main_container.uncollapsed #issue_main { margin-left: 60px; }
+#issue_details_container { 
+	float: left; 
+	width: 360px; 
+	margin-left: -100%; 
+	margin-top: 104px; 
+	-webkit-transition: width 0.3s ease; 
+	-moz-transition: width 0.3s ease; 
+	-ms-transition: width 0.3s ease; 
+	-o-transition: width 0.3s ease; 
+	transition: width 0.3s ease; 
+}
 #issue_view fieldset { border: 0; border-top: 1px dotted #AAA; padding: 5px; margin: 0; }
 #issue_view fieldset legend { border: 0; padding: 5px; font-weight: bold; font-size: 1.1em; }
 .reportissue_error tr { background-color: #FEE; }
@@ -1337,9 +1356,24 @@ reportissue_additional_information_container .markItUp { display: none; }
 .issue_detail_field dl { border-bottom: 1px solid transparent; height: 24px; }
 .issue_detail_field dt { min-width: 150px; }*/
 
-#issue_details { display: inline-block; float:left; width: 350px; margin: 0 10px; vertical-align: top; border-right: 1px solid rgba(0, 0, 0, 0.1); box-shadow: 10px 0 15px -18px rgba(0, 0, 0, 0.9); position: relative; }
-#issue_details.collapsed { width: 30px; box-shadow: 10px 0 15px -14px rgba(0, 0, 0, 0.9); }
-#issue_details.collapsed fieldset { 
+#issue_details { 
+	display: inline-block; 
+	float:left; 
+	width: 350px; 
+	margin: 0 10px; 
+	vertical-align: top; 
+	border-right: 1px solid rgba(0, 0, 0, 0.1); 
+	box-shadow: 10px 0 15px -18px rgba(0, 0, 0, 0.9); 
+	position: relative; 
+	-webkit-transition: width 0.3s ease; 
+	-moz-transition: width 0.3s ease; 
+	-ms-transition: width 0.3s ease; 
+	-o-transition: width 0.3s ease; 
+	transition: width 0.3s ease; 
+}
+#issue_details_container.collapsed { width: 40px; }
+#issue_details_container.collapsed #issue_details { width: 30px; box-shadow: 10px 0 15px -14px rgba(0, 0, 0, 0.9); }
+#issue_details_container.collapsed fieldset { 
 	opacity: 0;
 	margin-left: -400px;
 	margin-right: 30px;
@@ -1348,11 +1382,11 @@ reportissue_additional_information_container .markItUp { display: none; }
 	margin: 0 8px 15px 0; 
 	border-color: rgba(0, 0, 0, 0.2);
 	opacity: 1;
-	-webkit-transition: opacity 0.3s ease;
-	-moz-transition: opacity 0.3s ease;
-	-ms-transition: opacity 0.3s ease;
-	-o-transition: opacity 0.3s ease;
-	transition: opacity 0.3s ease;
+	-webkit-transition: opacity 0.3s ease, margin-left 0.3s ease;
+	-moz-transition: opacity 0.3s ease, margin-left 0.3s ease;
+	-ms-transition: opacity 0.3s ease, margin-left 0.3s ease;
+	-o-transition: opacity 0.3s ease, margin-left 0.3s ease;
+	transition: opacity 0.3s ease, margin-left 0.3s ease;
 }
 #issue_details fieldset ul { margin-top: 0; padding-top: 0; }
 #issue_details legend { cursor: pointer; }

@@ -370,7 +370,7 @@
 				</div>
 				<div id="issue_details_container">
 					<div id="issue_details">
-						<div class="collapser_link" onclick="$('issue_details').toggleClassName('collapsed');">
+						<div class="collapser_link" onclick="$('issue_details_container').toggleClassName('collapsed');$('issue_main_container').toggleClassName('uncollapsed');">
 							<a href="javascript:void(0);" class="image">
 								<?php echo image_tag('sidebar_collapse.png', array('class' => 'collapser')); ?>
 								<?php echo image_tag('sidebar_expand.png', array('class' => 'expander')); ?>
