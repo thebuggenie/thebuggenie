@@ -2514,7 +2514,7 @@
 					if (self::$_redirect_login)
 					{
 						TBGLogging::log('An error occurred setting up the user object, redirecting to login', 'main', TBGLogging::LEVEL_NOTICE);
-						TBGContext::setMessage('login_message_err', TBGContext::geti18n()->__('Please log in'));
+						if (self::getRouting()->getCurrentRouteName() != 'login') TBGContext::setMessage('login_message_err', TBGContext::geti18n()->__('Please log in'));
 						self::getResponse()->headerRedirect(self::getRouting()->generate('login_page'), 403);
 					}
 					if (self::performAction($actionObject, $route['module'], $route['action']))
