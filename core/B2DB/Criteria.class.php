@@ -1025,7 +1025,7 @@
 					{
 						$a_crit['operator'] = ($a_crit['operator'] == self::DB_EQUALS) ? self::DB_IS_NULL : self::DB_IS_NOT_NULL; 
 					}
-					$sql .= ' ' . $a_crit['operator'] . ' ';
+					$sql .= (is_array($a_crit['value'])) ? ' ' . self::DB_IN . ' ' : ' ' . $a_crit['operator'] . ' ';
 					if (is_numeric($a_crit['value']) && $a_crit['operator'] != self::DB_IN)
 					{
 						$sql .= '?';
