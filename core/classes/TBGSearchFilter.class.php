@@ -61,6 +61,13 @@
 		 */
 		protected $_search_id;
 
+		/**
+		 * The related custom data type
+		 * 
+		 * @var TBGCustomDatatype
+		 */
+		protected $_customtype;
+
 		public static function createFilter($key, $options = array(), TBGSavedSearch $search = null)
 		{
 			if (isset($options['o'])) $options['operator'] = $options['o'];
@@ -235,16 +242,29 @@
 			return $this->_filter_key;
 		}
 
+		protected function _populateCustomtype()
+		{
+			if ($this->_customtype === null)
+			{
+				$this->_customtype = TBGCustomDatatype::getByKey($this->getFilterKey());
+			}
+		}
+
+		public function isCustomFilter()
+		{
+			return (!in_array($this->getFilterKey(), self::getValidSearchFilters()));
+		}
+
 		public function getFilterType()
 		{
-			$customtype = TBGCustomDatatype::getByKey($this->getFilterKey());
-			return $customtype->getType();
+			$this->_populateCustomtype();
+			return $this->_customtype->getType();
 		}
 
 		public function getFilterTitle()
 		{
-			$customtype = TBGCustomDatatype::getByKey($this->getFilterKey());
-			return $customtype->getDescription();
+			$this->_populateCustomtype();
+			return $this->_customtype->getDescription();
 		}
 
 		/**
@@ -303,6 +323,12 @@
 			return $this->_value;
 		}
 
+		public function hasExclusiveValues()
+		{
+			$this->_populateCustomtype();
+			return in_array($this->_customtype->getType(), array(TBGCustomDatatype::RADIO_CHOICE, TBGCustomDatatype::COMPONENTS_CHOICE, TBGCustomDatatype::EDITIONS_CHOICE, TBGCustomDatatype::RELEASES_CHOICE, TBGCustomDatatype::STATUS_CHOICE));
+		}
+
 		public function getValues()
 		{
 			if (!$this->hasValue()) return array();
@@ -326,82 +352,122 @@
 			}
 		}
 
+		protected function _getAvailableComponentChoices()
+		{
+			if (TBGContext::isProjectContext()) return TBGContext::getCurrentProject()->getComponents();
+
+			$components = array();
+			foreach (TBGProject::getAll() as $project)
+			{
+				foreach ($project->getComponents() as $component)
+					$components[$component->getID()] = $component;
+			}
+
+			return $components;
+		}
+
+		protected function _getAvailableMilestoneChoices()
+		{
+			if (TBGContext::isProjectContext()) return TBGContext::getCurrentProject()->getMilestones();
+
+			$milestones = array();
+			foreach (TBGProject::getAll() as $project)
+			{
+				foreach ($project->getMilestones() as $milestone)
+					$milestones[$milestone->getID()] = $milestone;
+			}
+
+			return $milestones;
+		}
+
+		protected function _getAvailableBuildChoices()
+		{
+			if (TBGContext::isProjectContext()) return TBGContext::getCurrentProject()->getBuilds();
+
+			$builds = array();
+			foreach (TBGProject::getAll() as $project)
+			{
+				foreach ($project->getBuilds() as $build)
+					$builds[$build->getID()] = $build;
+			}
+
+			return $builds;
+		}
+
+		protected function _getAvailableEditionChoices()
+		{
+			if (TBGContext::isProjectContext()) return TBGContext::getCurrentProject()->getEditions();
+
+			$editions = array();
+			foreach (TBGProject::getAll() as $project)
+			{
+				foreach ($project->getEditions() as $edition)
+					$editions[$edition->getID()] = $edition;
+			}
+
+			return $editions;
+		}
+
+		protected function _getAvailableTeamChoices()
+		{
+			$teams = TBGContext::getUser()->getTeams();
+			if (TBGContext::isProjectContext())
+			{
+				foreach (TBGContext::getCurrentProject()->getAssignedTeams() as $team)
+				{
+					$teams[$team->getID()] = $team;
+				}
+			}
+			return $teams;
+		}
+
+		protected function _getAvailableUserChoices()
+		{
+			$me = TBGContext::getUser();
+			$filters = array($me->getID() => $me);
+			foreach ($me->getFriends() as $user)
+			{
+				$filters[$user->getID()] = $user;
+			}
+			if (count($this->getValues()))
+			{
+				$users = TBGUsersTable::getTable()->getByUserIDs($this->getValues());
+				foreach ($users as $user)
+				{
+					$filters[$user->getID()] = $user;
+				}
+			}
+			return $filters;
+		}
+
 		public function getAvailableValues($filters = array())
 		{
 			switch ($this->getFilterKey())
 			{
 				case 'issuetype':
 					return (TBGContext::isProjectContext()) ? TBGContext::getCurrentProject()->getIssuetypeScheme()->getIssuetypes() : TBGIssuetype::getAll();
-					break;
 				case 'status':
 					return TBGStatus::getAll();
-					break;
 				case 'category':
 					return TBGCategory::getAll();
-					break;
 				case 'priority':
 					return TBGPriority::getAll();
-					break;
 				case 'severity':
 					return TBGSeverity::getAll();
-					break;
 				case 'reproducability':
 					return TBGReproducability::getAll();
-					break;
 				case 'resolution':
 					return TBGResolution::getAll();
-					break;
 				case 'project_id':
 					return TBGProject::getAll();
-					break;
 				case 'build':
-					if (TBGContext::isProjectContext()) return TBGContext::getCurrentProject()->getBuilds();
-
-					$builds = array();
-					foreach (TBGProject::getAll() as $project)
-					{
-						foreach ($project->getBuilds() as $build)
-							$builds[$build->getID()] = $build;
-					}
-
-					return $builds;
-					break;
+					return $this->_getAvailableBuildChoices();
 				case 'component':
-					if (TBGContext::isProjectContext()) return TBGContext::getCurrentProject()->getComponents();
-
-					$components = array();
-					foreach (TBGProject::getAll() as $project)
-					{
-						foreach ($project->getComponents() as $component)
-							$components[$component->getID()] = $component;
-					}
-
-					return $components;
-					break;
+					return $this->_getAvailableComponentChoices();
 				case 'edition':
-					if (TBGContext::isProjectContext()) return TBGContext::getCurrentProject()->getEditions();
-
-					$editions = array();
-					foreach (TBGProject::getAll() as $project)
-					{
-						foreach ($project->getEditions() as $edition)
-							$editions[$edition->getID()] = $edition;
-					}
-
-					return $editions;
-					break;
+					return $this->_getAvailableEditionChoices();
 				case 'milestone':
-					if (TBGContext::isProjectContext()) return TBGContext::getCurrentProject()->getMilestones();
-
-					$milestones = array();
-					foreach (TBGProject::getAll() as $project)
-					{
-						foreach ($project->getMilestones() as $milestone)
-							$milestones[$milestone->getID()] = $milestone;
-					}
-
-					return $milestones;
-					break;
+					return $this->_getAvailableMilestoneChoices();
 				case 'subprojects':
 					$filters = array();
 					$projects = TBGProject::getIncludingAllSubprojectsAsArray(TBGContext::getCurrentProject());
@@ -412,45 +478,41 @@
 						$filters[$project->getID()] = $project;
 					}
 					return $filters;
-					break;
 				case 'owner_user':
 				case 'assignee_user':
 				case 'posted_by':
-					$me = TBGContext::getUser();
-					$filters = array($me->getID() => $me);
-					foreach ($me->getFriends() as $user)
-					{
-						$filters[$user->getID()] = $user;
-					}
-					if (count($this->getValues()))
-					{
-						$users = TBGUsersTable::getTable()->getByUserIDs($this->getValues());
-						foreach ($users as $user)
-						{
-							$filters[$user->getID()] = $user;
-						}
-					}
-					return $filters;
-					break;
+					return $this->_getAvailableUserChoices();
 				case 'owner_team':
 				case 'assignee_team':
-					$teams = TBGContext::getUser()->getTeams();
-					if (TBGContext::isProjectContext())
-					{
-						foreach (TBGContext::getCurrentProject()->getAssignedTeams() as $team)
-						{
-							$teams[$team->getID()] = $team;
-						}
-					}
-					return $teams;
-					break;
+					return $this->_getAvailableTeamChoices();
 				default:
 					$customdatatype = TBGCustomDatatype::getByKey($this->getFilterKey());
 					if ($customdatatype instanceof TBGCustomDatatype && $customdatatype->hasCustomOptions())
 					{
 						return $customdatatype->getOptions();
 					}
-					return array();
+					else
+					{
+						switch ($this->getFilterType())
+						{
+							case TBGCustomDatatype::COMPONENTS_CHOICE:
+								return $this->_getAvailableComponentChoices();
+							case TBGCustomDatatype::RELEASES_CHOICE:
+								return $this->_getAvailableBuildChoices();
+							case TBGCustomDatatype::EDITIONS_CHOICE:
+								return $this->_getAvailableEditionChoices();
+							case TBGCustomDatatype::MILESTONE_CHOICE:
+								return $this->_getAvailableMilestoneChoices();
+							case TBGCustomDatatype::USER_CHOICE:
+								return $this->_getAvailableUserChoices();
+							case TBGCustomDatatype::TEAM_CHOICE:
+								return $this->_getAvailableTeamChoices();
+							case TBGCustomDatatype::STATUS_CHOICE:
+								return TBGStatus::getAll();
+							default:
+								return array();
+						}
+					}
 			}
 		}
 
@@ -538,6 +600,13 @@
 			// TODO: Implement offsetUnset() method.
 		}
 
+		/**
+		 *
+		 * @param \b2db\Criteria $crit
+		 * @param array|TBGSearchFilter $filters
+		 * @param \b2db\Criterion $ctn
+		 * @return null
+		 */
 		public function addToCriteria($crit, $filters, $ctn = null)
 		{
 			$filter_key = $this->getFilterKey();
@@ -688,34 +757,43 @@
 				elseif (TBGCustomDatatype::doesKeyExist($filter_key))
 				{
 					$customdatatype = TBGCustomDatatype::getByKey($filter_key);
-					foreach ($this->getValues() as $value)
+					if (in_array($this->getFilterType(), TBGCustomDatatype::getInternalChoiceFieldsAsArray()))
 					{
-						if ($customdatatype->hasCustomOptions())
-						{
-							if ($ctn === null)
-							{
-								$ctn = $crit->returnCriterion(TBGIssueCustomFieldsTable::CUSTOMFIELDS_ID, $customdatatype->getID());
-								$ctn->addWhere(TBGIssueCustomFieldsTable::CUSTOMFIELDOPTION_ID, $value, $this['operator']);
-							}
-							else
-							{
-								$ctn->addOr(TBGIssueCustomFieldsTable::CUSTOMFIELDOPTION_ID, $value, $this['operator']);
-							}
-						}
-						else
-						{
-							if ($ctn === null)
-							{
-								$ctn = $crit->returnCriterion(TBGIssueCustomFieldsTable::CUSTOMFIELDS_ID, $customdatatype->getID());
-								$ctn->addWhere(TBGIssueCustomFieldsTable::OPTION_VALUE, $value, $this['operator']);
-							}
-							else
-							{
-								$ctn->addOr(TBGIssueCustomFieldsTable::OPTION_VALUE, $value, $this['operator']);
-							}
-						}
+						$tbl = clone TBGIssueCustomFieldsTable::getTable();
+						$crit->addJoin($tbl, TBGIssueCustomFieldsTable::ISSUE_ID, TBGIssuesTable::ID, array(array($tbl->getB2DBAlias().'.customfields_id', $customdatatype->getID()), array($tbl->getB2DBAlias().'.customfieldoption_id', $this->getValues())), \b2db\Criteria::DB_INNER_JOIN);
+						return null;
 					}
-					return $ctn;
+					else
+					{
+						foreach ($this->getValues() as $value)
+						{
+							if ($customdatatype->hasCustomOptions())
+							{
+								if ($ctn === null)
+								{
+									$ctn = $crit->returnCriterion(TBGIssueCustomFieldsTable::CUSTOMFIELDS_ID, $customdatatype->getID());
+									$ctn->addWhere(TBGIssueCustomFieldsTable::CUSTOMFIELDOPTION_ID, $value, $this['operator']);
+								}
+								else
+								{
+									$ctn->addOr(TBGIssueCustomFieldsTable::CUSTOMFIELDOPTION_ID, $value, $this['operator']);
+								}
+							}
+							else
+							{
+								if ($ctn === null)
+								{
+									$ctn = $crit->returnCriterion(TBGIssueCustomFieldsTable::CUSTOMFIELDS_ID, $customdatatype->getID());
+									$ctn->addWhere(TBGIssueCustomFieldsTable::OPTION_VALUE, $value, $this['operator']);
+								}
+								else
+								{
+									$ctn->addOr(TBGIssueCustomFieldsTable::OPTION_VALUE, $value, $this['operator']);
+								}
+							}
+						}
+						return $ctn;
+					}
 				}
 			}
 		}

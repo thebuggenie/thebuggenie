@@ -2179,7 +2179,7 @@
 					{
 						foreach ($retval as $key => $return_details)
 						{
-							if ($key == 'edition' || array_key_exists('custom', $return_details) && $return_details['custom'] && in_array($return_details['custom_type'], array(TBGCustomDatatype::EDITIONS_LIST, TBGCustomDatatype::EDITIONS_CHOICE)))
+							if ($key == 'edition' || array_key_exists('custom', $return_details) && $return_details['custom'] && $return_details['custom_type'] == TBGCustomDatatype::EDITIONS_CHOICE)
 							{
 								$retval[$key]['values'] = array();
 								$retval[$key]['values'][''] = TBGContext::getI18n()->__('None');
@@ -2203,7 +2203,7 @@
 									asort($retval[$key]['values'], SORT_STRING);
 								}
 							}
-							elseif ($key == 'status' || array_key_exists('custom', $return_details) && $return_details['custom'] && in_array($return_details['custom_type'], array(TBGCustomDatatype::EDITIONS_LIST, TBGCustomDatatype::STATUS_CHOICE)))
+							elseif ($key == 'status' || array_key_exists('custom', $return_details) && $return_details['custom'] && $return_details['custom_type'] == TBGCustomDatatype::STATUS_CHOICE)
 							{
 								$retval[$key]['values'] = array();
 								foreach (TBGStatus::getAll() as $status)
@@ -2226,7 +2226,7 @@
 									asort($retval[$key]['values'], SORT_STRING);
 								}
 							}
-							elseif ($key == 'component' || array_key_exists('custom', $return_details) && $return_details['custom'] && in_array($return_details['custom_type'], array(TBGCustomDatatype::COMPONENTS_LIST, TBGCustomDatatype::COMPONENTS_CHOICE)))
+							elseif ($key == 'component' || array_key_exists('custom', $return_details) && $return_details['custom'] && $return_details['custom_type'] == TBGCustomDatatype::COMPONENTS_CHOICE)
 							{
 								$retval[$key]['values'] = array();
 								$retval[$key]['values'][''] = TBGContext::getI18n()->__('None');
@@ -2250,7 +2250,7 @@
 									asort($retval[$key]['values'], SORT_STRING);
 								}
 							}
-							elseif ($key == 'build' || array_key_exists('custom', $return_details) && $return_details['custom'] && in_array($return_details['custom_type'], array(TBGCustomDatatype::RELEASES_LIST, TBGCustomDatatype::RELEASES_CHOICE)))
+							elseif ($key == 'build' || array_key_exists('custom', $return_details) && $return_details['custom'] && $return_details['custom_type'] == TBGCustomDatatype::RELEASES_CHOICE)
 							{
 								$retval[$key]['values'] = array();
 								$retval[$key]['values'][''] = TBGContext::getI18n()->__('None');

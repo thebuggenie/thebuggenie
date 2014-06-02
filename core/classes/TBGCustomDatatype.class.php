@@ -11,17 +11,13 @@
 		const INPUT_TEXTAREA_MAIN = 3;
 		const INPUT_TEXTAREA_SMALL = 4;
 		const RADIO_CHOICE = 5;
-		const CHECKBOX_CHOICES = 6;
-		const RELEASES_LIST = 7;
 		const RELEASES_CHOICE = 8;
-		const COMPONENTS_LIST = 9;
 		const COMPONENTS_CHOICE = 10;
-		const EDITIONS_LIST = 11;
 		const EDITIONS_CHOICE = 12;
+		const MILESTONE_CHOICE = 12;
 		const STATUS_CHOICE = 13;
 		const USER_CHOICE = 14;
 		const TEAM_CHOICE = 15;
-		const USER_OR_TEAM_CHOICE = 17;
 		const CALCULATED_FIELD = 18;
 		const DATE_PICKER = 19;
 
@@ -92,26 +88,19 @@
 			$i18n = TBGContext::getI18n();
 			$types = array();
 			$types[self::DROPDOWN_CHOICE_TEXT] = $i18n->__('Dropdown list with custom text choices');
-			/*$types[self::DROPDOWN_CHOICE_TEXT_COLORED] = $i18n->__('Dropdown list with custom colored text choices');
-			$types[self::DROPDOWN_CHOICE_TEXT_COLOR] = $i18n->__('Dropdown list with custom color and text choices');
-			$types[self::DROPDOWN_CHOICE_TEXT_ICON] = $i18n->__('Dropdown list with custom text choices and icons');*/
 			$types[self::INPUT_TEXT] = $i18n->__('Single line text input');
 			$types[self::INPUT_TEXTAREA_MAIN] = $i18n->__('Textarea in issue main area');
 			$types[self::INPUT_TEXTAREA_SMALL] = $i18n->__('Textarea (small) in issue details list');
 			$types[self::RADIO_CHOICE] = $i18n->__('Radio choices');
-			// $types[self::CHECKBOX_CHOICES] = $i18n->__('Checkbox choices');
-			// $types[self::RELEASES_LIST] = $i18n->__('Add one or more releases from the list of available releases');
 			$types[self::RELEASES_CHOICE] = $i18n->__('Dropdown list of available releases');
-			// $types[self::COMPONENTS_LIST] = $i18n->__('Add one or more components from the list of available components');
 			$types[self::COMPONENTS_CHOICE] = $i18n->__('Dropdown list of available components');
-			// $types[self::EDITIONS_LIST] = $i18n->__('Add one or more editions from the list of available editions');
 			$types[self::EDITIONS_CHOICE] = $i18n->__('Dropdown list of available editions');
+			$types[self::MILESTONE_CHOICE] = $i18n->__('Dropdown list of available milestones');
 			$types[self::STATUS_CHOICE] = $i18n->__('Dropdown list of all statuses');
 			$types[self::CALCULATED_FIELD] = $i18n->__('Calculated field');
 			$types[self::DATE_PICKER] = $i18n->__('Date picker');
-			// $types[self::USER_CHOICE] = $i18n->__('Find and pick a user');
-			// $types[self::TEAM_CHOICE] = $i18n->__('Find and pick a team');
-			// $types[self::USER_OR_TEAM_CHOICE] = $i18n->__('Find and pick a user or a team');
+			$types[self::USER_CHOICE] = $i18n->__('Find and pick a user');
+			$types[self::TEAM_CHOICE] = $i18n->__('Find and pick a team');
 
 			return $types;
 
@@ -164,8 +153,7 @@
 
 		public static function getCustomChoiceFieldsAsArray()
 		{
-			return array(self::CHECKBOX_CHOICES,
-						self::DROPDOWN_CHOICE_TEXT,
+			return array(self::DROPDOWN_CHOICE_TEXT,
 						self::RADIO_CHOICE,
 						self::CALCULATED_FIELD
             );
@@ -173,9 +161,14 @@
 
 		public static function getChoiceFieldsAsArray()
 		{
-			return array(self::CHECKBOX_CHOICES, self::DROPDOWN_CHOICE_TEXT, self::RADIO_CHOICE, self::RELEASES_CHOICE,
-			             self::COMPONENTS_CHOICE, self::EDITIONS_CHOICE, self::STATUS_CHOICE, self::USER_CHOICE,
-			             self::TEAM_CHOICE, self::USER_OR_TEAM_CHOICE);
+			return array(self::DROPDOWN_CHOICE_TEXT, self::RADIO_CHOICE, self::RELEASES_CHOICE, self::COMPONENTS_CHOICE,
+						self::EDITIONS_CHOICE, self::STATUS_CHOICE, self::USER_CHOICE, self::TEAM_CHOICE);
+		}
+
+		public static function getInternalChoiceFieldsAsArray()
+		{
+			return array(self::RELEASES_CHOICE, self::COMPONENTS_CHOICE, self::MILESTONE_CHOICE,
+						self::EDITIONS_CHOICE, self::STATUS_CHOICE, self::USER_CHOICE, self::TEAM_CHOICE);
 		}
 
 		/**
