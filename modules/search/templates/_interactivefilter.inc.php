@@ -352,6 +352,11 @@
 						case TBGCustomDatatype::RADIO_CHOICE:
 							include_template('search/interactivefilter_choice', compact('filter'));
 							break;
+						case TBGCustomDatatype::INPUT_TEXT:
+						case TBGCustomDatatype::INPUT_TEXTAREA_MAIN:
+						case TBGCustomDatatype::INPUT_TEXTAREA_SMALL:
+							include_template('search/interactivefilter_text', compact('filter'));
+							break;
 					}
 				}
 		}

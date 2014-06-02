@@ -4439,17 +4439,24 @@ TBG.Search.initializeFilters = function() {
 			element.addClassName('disabled');
 		}
 	});
-	var ift = $('interactive_filter_text');
-	ift.dataset.lastValue = '';
+	var ifts = $$('.filter_searchfield');
 	TBG.ift_observers = {};
-	ift.on('keyup', function(event, element) {
-		if (TBG.ift_observer) clearTimeout(TBG.ift_observer);
-		if ((ift.getValue().length >= 3 || ift.getValue().length == 0) && ift.getValue() != ift.dataset.lastValue) {
-			TBG.ift_observer = setTimeout(function() {
-				TBG.Search.liveUpdate(true);
-				ift.dataset.lastValue = ift.getValue();
-			}, 1000);
-		}
+	ifts.each(function (ift) {
+		ift.dataset.lastValue = '';
+		ift.on('keyup', function(event, element) {
+			if (TBG.ift_observers[ift.id]) clearTimeout(TBG.ift_observers[ift.id]);
+			if ((ift.getValue().length >= 3 || ift.getValue().length == 0) && ift.getValue() != ift.dataset.lastValue) {
+				TBG.ift_observers[ift.id] = setTimeout(function() {
+					TBG.Search.liveUpdate(true);
+					ift.dataset.lastValue = ift.getValue();
+					var flt = ift.up('.filter');
+					if (flt !== undefined) {
+						TBG.Search.updateFilterVisibleValue(flt, ift.getValue());
+					}
+				}, 1000);
+			}
+		});
+		
 	});
 };
 
@@ -4789,11 +4796,18 @@ TBG.Search.calculateFilterDetails = function(filter) {
 		selected_elements.push($('filter_'+filter.dataset.filterkey+'_value_input').dataset.displayValue);
 		string = selected_elements.join(' ');
 	}
-	if (string.length > 23) {
-		string = string.substr(0, 20) + '...';
+	if (filter.dataset.istext !== undefined) {
+		string = $('filter_'+filter.dataset.filterkey+'_value_input').getValue();
 	}
-	filter.down('.value').update(string);
-	if (filter.dataset.isdate === undefined) $('filter_'+filter.dataset.filterkey+'_value_input').setValue(value_string);
+	TBG.Search.updateFilterVisibleValue(filter, string);
+	if (filter.dataset.isdate === undefined && filter.dataset.istext === undefined) $('filter_'+filter.dataset.filterkey+'_value_input').setValue(value_string);
+};
+
+TBG.Search.updateFilterVisibleValue = function(filter, value) {
+	if (value.length > 23) {
+		value = value.substr(0, 20) + '...';
+	}
+	filter.down('.value').update(value);
 };
 
 TBG.Search.initializeKeyboardNavigation = function() {
