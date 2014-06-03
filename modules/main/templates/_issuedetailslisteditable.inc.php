@@ -555,6 +555,7 @@
 										});
 									</script>
 								<?php else: ?>
+									<a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => "")); ?>', '<?php echo $field; ?>');"><?php echo $info['clear']; ?></a><br>
 									<?php echo $info['select']; ?>:<br>
 									<?php
 
@@ -562,7 +563,6 @@
 									{
 										case TBGCustomDatatype::EDITIONS_CHOICE:
 											?>
-												<a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => "")); ?>', '<?php echo $field; ?>');"><?php echo $info['clear']; ?></a><br>
 												<ul class="choices">
 													<?php foreach ($issue->getProject()->getEditions() as $choice): ?>
 														<li>
@@ -574,7 +574,6 @@
 											break;
 										case TBGCustomDatatype::MILESTONE_CHOICE:
 											?>
-												<a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => "")); ?>', '<?php echo $field; ?>');"><?php echo $info['clear']; ?></a><br>
 												<ul class="choices">
 													<?php foreach ($issue->getProject()->getMilestonesForIssues() as $choice): ?>
 														<li>
@@ -586,7 +585,6 @@
 											break;
 										case TBGCustomDatatype::STATUS_CHOICE:
 											?>
-												<a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => "")); ?>', '<?php echo $field; ?>');"><?php echo $info['clear']; ?></a><br>
 												<ul class="choices">
 													<?php foreach (TBGStatus::getAll($issue->getProject()->getID()) as $choice): ?>
 														<li>
@@ -598,7 +596,6 @@
 											break;
 										case TBGCustomDatatype::COMPONENTS_CHOICE:
 											?>
-												<a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => "")); ?>', '<?php echo $field; ?>');"><?php echo $info['clear']; ?></a><br>
 												<ul class="choices">
 													<?php foreach ($issue->getProject()->getComponents() as $choice): ?>
 														<li>
@@ -610,7 +607,6 @@
 											break;
 										case TBGCustomDatatype::RELEASES_CHOICE:
 											?>
-												<a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => "")); ?>', '<?php echo $field; ?>');"><?php echo $info['clear']; ?></a><br>
 												<ul class="choices">
 													<?php foreach ($issue->getProject()->getBuilds() as $choice): ?>
 														<li>
@@ -622,7 +618,6 @@
 											break;
 										case TBGCustomDatatype::INPUT_TEXT:
 											?>
-												<a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => "")); ?>', '<?php echo $field; ?>');"><?php echo $info['clear']; ?></a><br>
 												<form id="<?php echo $field; ?>_form" action="<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field)); ?>" method="post" onSubmit="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field)) ?>', '<?php echo $field; ?>', '<?php echo $field; ?>'); return false;">
 													<input type="text" name="<?php echo $field; ?>_value" value="<?php echo $info['name'] ?>" /><?php echo __('%save or %cancel', array('%save' => '<input type="submit" value="'.__('Save').'">', '%cancel' => '<a href="#" onclick="$(\''.$field.'_change\').hide(); return false;">'.__('cancel').'</a>')); ?>
 												</form>
@@ -630,7 +625,6 @@
 											break;
 										case TBGCustomDatatype::INPUT_TEXTAREA_SMALL:
 											?>
-												<a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => "")); ?>', '<?php echo $field; ?>');"><?php echo $info['clear']; ?></a><br>
 												<form id="<?php echo $field; ?>_form" action="<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field)); ?>" method="post" onSubmit="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field)) ?>', '<?php echo $field; ?>', '<?php echo $field; ?>'); return false;">
 													<?php include_template('main/textarea', array('area_name' => $field.'_value', 'area_id' => $field.'_value', 'height' => '100px', 'width' => '100%', 'value' => $info['name'])); ?>
 													<br><?php echo __('%save or %cancel', array('%save' => '<input type="submit" value="'.__('Save').'">', '%cancel' => '<a href="#" onclick="$(\''.$field.'_change\').hide(); return false;">'.__('cancel').'</a>')); ?>
