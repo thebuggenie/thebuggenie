@@ -117,14 +117,16 @@
 		{
 			if ($this->view->getType() == TBGDashboardView::VIEW_PREDEFINED_SEARCH)
 			{
-				list($filters, $groupby, $grouporder) = TBGSavedSearchesTable::getPredefinedVariables($this->view->getDetail());
+				$request = TBGContext::getRequest();
+				$request->setParameter('predefined_search', $this->view->getDetail());
+				$search = TBGSavedSearch::getFromRequest($request);
 			}
 			elseif ($this->view->getType() == TBGDashboardView::VIEW_SAVED_SEARCH)
 			{
 				$search = TBGSavedSearchesTable::getTable()->selectById($this->view->getDetail());
-				$filters = $search->getFilters(); // TBGSavedSearchFiltersTable::getTable()->getFiltersBySavedSearchID($this->view->getDetail());
 			}
-			list ($this->issues, $this->resultcount) = TBGIssue::findIssues($filters);
+			$this->issues = $search->getIssues();
+			$this->resultcount = $search->getTotalNumberOfIssues();
 		}		
 		
 		public function componentSidebar()
