@@ -66,7 +66,7 @@
 					<?php echo __('Status'); ?>
 				</dt>
 				<dd class="hoverable">
-					<?php if ($issue->isUpdateable() && $issue->canEditStatus()): ?>
+					<?php if ($issue->canEditStatus()): ?>
 						<a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'status')); ?>', 'status');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
 						<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'status_undo_spinning')); ?>
 						<a href="javascript:void(0);" onclick="if ($('status_change').visible()) { $$('div.dropdown_box').each(Element.hide); } else { $$('div.dropdown_box').each(Element.hide); $('status_change').toggle(); }" title="<?php echo __('Click to change status'); ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
@@ -79,7 +79,7 @@
 					<span class="faded_out" id="no_status"<?php if ($issue->getStatus() instanceof TBGDatatype): ?> style="display: none;"<?php endif; ?>><?php echo __('Status not determined'); ?></span>
 				</dd>
 			</dl>
-			<?php if ($issue->isUpdateable() && $issue->canEditStatus()): ?>
+			<?php if ($issue->canEditStatus()): ?>
 				<div class="rounded_box white shadowed dropdown_box leftie" id="status_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0; padding: 5px;">
 					<div class="dropdown_header"><?php echo __('Set status'); ?></div>
 					<div class="dropdown_content">

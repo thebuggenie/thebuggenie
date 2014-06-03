@@ -1279,7 +1279,7 @@
 			if ($this->_updateable !== null) return $this->_updateable;
 
 			if ($this->getProject()->isArchived()) $this->_updateable = false;
-			else $this->_updateable = ($this->isOpen() && ($this->getProject()->canChangeIssuesWithoutWorkingOnThem() || !($this->getWorkflowStep() instanceof TBGWorkflowStep) || !$this->getWorkflowStep()->isClosed()));
+			else $this->_updateable = ($this->isOpen() && ($this->getProject()->canChangeIssuesWithoutWorkingOnThem() || !$this->getWorkflowStep() instanceof TBGWorkflowStep || !$this->getWorkflowStep()->isClosed()));
 
 			return $this->_updateable;
 		}

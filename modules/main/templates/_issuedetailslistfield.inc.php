@@ -10,7 +10,7 @@
 		</dt>
 		<dd id="<?php echo $field; ?>_content">
 			<?php $canEditField = "canEdit".ucfirst($field); ?>
-			<?php if (array_key_exists('choices', $info) && isset($info['choices']) && $issue->$canEditField()): ?>
+			<?php if (array_key_exists('choices', $info) && count($info['choices']) && $issue->$canEditField()): ?>
 				<a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field)); ?>', '<?php echo $field; ?>');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
 				<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => $field . '_undo_spinning')); ?>
 				<a href="javascript:void(0);" onclick="if ($('<?php echo $field; ?>_change').visible()) { $$('div.dropdown_box').each(Element.hide); } else { $$('div.dropdown_box').each(Element.hide); $('<?php echo $field; ?>_change').toggle(); }" title="<?php echo $info['change_tip']; ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
@@ -27,7 +27,7 @@
 		</dd>
 	</dl>
 	<div style="clear: both;"> </div>
-	<?php if (array_key_exists('choices', $info) && isset($info['choices']) && $issue->$canEditField()): ?>
+	<?php if (array_key_exists('choices', $info) && count($info['choices']) && $issue->$canEditField()): ?>
 		<div class="rounded_box white shadowed dropdown_box leftie" id="<?php echo $field; ?>_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0; padding: 5px;">
 			<div class="dropdown_header"><?php echo $info['change_header']; ?></div>
 			<div class="dropdown_content">
@@ -46,6 +46,8 @@
 					</ul>
 					<div id="<?php echo $field; ?>_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</div>
 				</div>
+			<?php else: ?>
+				<div class="faded_out"><?php echo __('No choices available'); ?></div>
 			<?php endif; ?>
 			<div id="<?php echo $field; ?>_change_error" class="error_message" style="display: none;"></div>
 		</div>
