@@ -600,6 +600,7 @@
 				TBGContext::addAutoloaderClassPath(THEBUGGENIE_MODULES_PATH . $module . DS . 'classes' . DS . 'B2DB');
 			}
 
+			TBGMilestonesTable::getTable()->upgrade(TBGMilestonesTable3dot2::getTable());
 			TBGArticlesTable::getTable()->upgrade(TBGArticlesTable3dot2::getTable());
 			TBGProjectsTable::getTable()->upgrade(TBGProjectsTable3dot2::getTable());
 			TBGLogTable::getTable()->upgrade(TBGLogTable3dot2::getTable());

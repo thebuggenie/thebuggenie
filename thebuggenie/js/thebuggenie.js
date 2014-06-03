@@ -1889,6 +1889,12 @@ TBG.Project.Milestone.update = function(url, milestone_id) {
 				if ($('bulk_action_assign_milestone_bottom_' + milestone_id) != undefined) {
 					$('bulk_action_assign_milestone_bottom_' + milestone_id).update(json.milestone_name);
 				}
+				if (json.available == 1 && $('milestone_' + milestone_id)) {
+					$('milestone_' + milestone_id).removeClassName('unavailable');
+				}
+				else if (json.available == 0 && $('milestone_' + milestone_id)) {
+					$('milestone_' + milestone_id).addClassName('unavailable');
+				}
 				TBG.Main.Helpers.Backdrop.reset();
 			},
 			update: {element: 'milestone_name', from: 'milestone_name'},
@@ -5197,12 +5203,16 @@ TBG.Tutorial.start = function(key, initial_step) {
 	TBG.Tutorial.playNextStep();
 };
 
+TBG.Main.Helpers.toggler = function (elm) {
+	elm.toggleClass("button-pressed");
+	elm.next().toggle();
+};
+
 jQuery(document).ready(function(){
 	TBG.Main.Helpers.MarkitUp($$('textarea'));
 	(function($) {
 		$("body").on("click", ".dropper", function() {
-			$(this).toggleClass("button-pressed");
-			$(this).next().toggle();
+			TBG.Main.Helpers.toggler($(this));
 		});
 	})(jQuery);
 });

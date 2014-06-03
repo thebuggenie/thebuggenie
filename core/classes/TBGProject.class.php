@@ -1299,12 +1299,51 @@
 		/**
 		 * Returns an array with all the milestones
 		 *
-		 * @return array
+		 * @return array|TBGMilestone
 		 */
 		public function getMilestones()
 		{
 			$this->_populateMilestones();
 			return $this->_milestones;
+		}
+
+		public function getMilestonesForRoadmap()
+		{
+			$milestones = array();
+			foreach ($this->getMilestones() as $milestone)
+			{
+				if (!$milestone->isVisibleRoadmap()) continue;
+
+				$milestones[$milestone->getID()] = $milestone;
+			}
+
+			return $milestones;
+		}
+
+		public function getMilestonesForIssues()
+		{
+			$milestones = array();
+			foreach ($this->getMilestones() as $milestone)
+			{
+				if (!$milestone->isVisibleIssues()) continue;
+
+				$milestones[$milestone->getID()] = $milestone;
+			}
+
+			return $milestones;
+		}
+
+		public function getAvailableMilestones()
+		{
+			$milestones = array();
+			foreach ($this->getMilestones() as $milestone)
+			{
+				if (!$milestone->isVisibleIssues() && !$milestone->isVisibleRoadmap()) continue;
+
+				$milestones[$milestone->getID()] = $milestone;
+			}
+
+			return $milestones;
 		}
 
 		/**

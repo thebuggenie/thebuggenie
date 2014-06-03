@@ -96,7 +96,7 @@
 		public function runRoadmap(TBGRequest $request)
 		{
 			$this->forward403unless($this->_checkProjectPageAccess('project_roadmap'));
-			$this->milestones = $this->selected_project->getMilestones();
+			$this->milestones = $this->selected_project->getMilestonesForRoadmap();
 		}
 
 		/**
@@ -138,6 +138,7 @@
 			$this->unassigned_milestone = new TBGMilestone();
 			$this->unassigned_milestone->setName(TBGContext::getI18n()->__('Unassigned issues / backlog'));
 			$this->unassigned_milestone->setId(0);
+			$this->unassigned_milestone->setVisibleRoadmap();
 			$this->unassigned_milestone->setProject($this->selected_project);
 		}
 
@@ -1112,7 +1113,7 @@
 		public function runGetMilestone(TBGRequest $request)
 		{
 			$milestone = new TBGMilestone($request['milestone_id']);
-			return $this->renderJSON(array('content' => TBGAction::returnTemplateHTML('project/milestonebox', array('milestone' => $milestone)), 'milestone_id' => $milestone->getID(), 'milestone_name' => $milestone->getName(), 'milestone_order' => array_keys($milestone->getProject()->getMilestones())));
+			return $this->renderJSON(array('content' => TBGAction::returnTemplateHTML('project/milestonebox', array('milestone' => $milestone)), 'milestone_id' => $milestone->getID(), 'milestone_name' => $milestone->getName(), 'milestone_order' => array_keys($milestone->getProject()->getMilestonesForRoadmap())));
 		}
 		
 		public function runRemoveMilestone(TBGRequest $request)
@@ -1145,6 +1146,8 @@
 						$milestone->setStarting((bool) $request['is_starting']);
 						$milestone->setScheduled((bool) $request['is_scheduled']);
 						$milestone->setDescription($request['description']);
+						$milestone->setVisibleRoadmap($request['visibility_roadmap']);
+						$milestone->setVisibleIssues($request['visibility_issues']);
 						$milestone->setType($request->getParameter('milestone_type', TBGMilestone::TYPE_REGULAR));
 						if ($request->hasParameter('sch_month') && $request->hasParameter('sch_day') && $request->hasParameter('sch_year'))
 						{
@@ -1173,7 +1176,7 @@
 							$message = TBGContext::getI18n()->__('Milestone created');
 							$template = 'milestonebox';
 						}
-						return $this->renderJSON(array('content' => $this->getTemplateHTML($template, array('milestone' => $milestone)), 'milestone_id' => $milestone->getID(), 'milestone_name' => $milestone->getName(), 'milestone_order' => array_keys($this->selected_project->getMilestones())));
+						return $this->renderJSON(array('content' => $this->getTemplateHTML($template, array('milestone' => $milestone)), 'milestone_id' => $milestone->getID(), 'milestone_name' => $milestone->getName(), 'available' => $milestone->isVisibleRoadmap(), 'milestone_order' => array_keys($this->selected_project->getMilestonesForRoadmap())));
 					}
 					catch (Exception $e)
 					{

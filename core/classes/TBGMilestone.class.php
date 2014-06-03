@@ -95,6 +95,22 @@
 		protected $_startingdate;
 		
 		/**
+		 * Whether the milestone is visible on the project roadmap
+		 *
+		 * @var boolean
+		 * @Column(type="boolean", default=true)
+		 */
+		protected $_visible_roadmap;
+
+		/**
+		 * Whether the milestone is available for issues
+		 *
+		 * @var boolean
+		 * @Column(type="boolean", default=true)
+		 */
+		protected $_visible_issues;
+
+		/**
 		 * The milestone description
 		 * 
 		 * @var string
@@ -743,6 +759,36 @@
 		public function setName($name)
 		{
 			$this->_name = $name;
+		}
+
+		public function setVisibleRoadmap($visible = true)
+		{
+			$this->_visible_roadmap = $visible;
+		}
+
+		public function getVisibleRoadmap()
+		{
+			return $this->_visible_roadmap;
+		}
+
+		public function isVisibleRoadmap()
+		{
+			return $this->getVisibleRoadmap();
+		}
+
+		public function setVisibleIssues($visible = true)
+		{
+			$this->_visible_issues = $visible;
+		}
+
+		public function getVisibleIssues()
+		{
+			return $this->_visible_issues;
+		}
+
+		public function isVisibleIssues()
+		{
+			return $this->getVisibleIssues();
 		}
 
 	}

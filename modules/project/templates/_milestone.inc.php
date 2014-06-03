@@ -14,11 +14,15 @@
 					<td style="width: auto;"><input type="text" style="width: 100%;" value="<?php echo $milestone->getDescription(); ?>" name="description" id="milestone_description_<?php echo $milestone->getID(); ?>"></td>
 				</tr>
 				<tr>
-					<td><label for="milestone_type_<?php echo $milestone->getID(); ?>"><?php echo __('Milestone type:'); ?></label></td>
+					<td><label for="milestone_visibility_roadmap_<?php echo $milestone->getID(); ?>"><?php echo __('Visibility:'); ?></label></td>
 					<td style="width: auto;">
-						<select name="milestone_type" id="milestone_type_<?php echo $milestone->getID(); ?>">
-							<option value="1"<?php if ($milestone->getType() == 1): ?> selected<?php endif; ?>><?php echo __('Regular milestone'); ?></option>
-							<option value="2"<?php if ($milestone->getType() == 2): ?> selected<?php endif; ?>><?php echo __('Scrum sprint'); ?></option>
+						<select name="visibility_roadmap" id="milestone_visibility_roadmap_<?php echo $milestone->getID(); ?>">
+							<option value="0"<?php if (!$milestone->isVisibleRoadmap()): ?> selected<?php endif; ?>><?php echo __('Not visible on project roadmap'); ?></option>
+							<option value="1"<?php if ($milestone->isVisibleRoadmap()): ?> selected<?php endif; ?>><?php echo __('Visible on project roadmap'); ?></option>
+						</select>
+						<select name="visibility_issues" id="milestone_visibility_issues_<?php echo $milestone->getID(); ?>">
+							<option value="0"<?php if (!$milestone->isVisibleIssues()): ?> selected<?php endif; ?>><?php echo __('Not available for project issues'); ?></option>
+							<option value="1"<?php if ($milestone->isVisibleIssues()): ?> selected<?php endif; ?>><?php echo __('Available for project issues'); ?></option>
 						</select>
 					</td>
 				</tr>

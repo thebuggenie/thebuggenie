@@ -59,7 +59,7 @@
 					<td>
 						<select name="milestone" id="build_milestone_dropdown">
 							<option value="0"<?php if (!$build->getMilestone() instanceof TBGMilestone) echo ' selected'; ?>><?php echo __('This release is not related to a milestone'); ?></option>
-							<?php foreach ($project->getMilestones() as $milestone): ?>
+							<?php foreach ($project->getAvailableMilestones() as $milestone): ?>
 								<option value="<?php echo $milestone->getID(); ?>"<?php if ($build->getMilestone() instanceof TBGMilestone && $build->getMilestone()->getID() == $milestone->getID()) echo ' selected'; ?>><?php echo __('This is a release of milestone %milestone_name', array('%milestone_name' => $milestone->getName())); ?></option>
 							<?php endforeach; ?>
 						</select>

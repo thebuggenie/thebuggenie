@@ -1795,6 +1795,15 @@ table.issue_affects td img { vertical-align: bottom; }
 
 .milestone_box { margin: 5px 5px 5px 0; font-size: 1em; position: relative; }
 .milestone_box.highlighted { background-color: #FFF299; }
+.milestone_box.unavailable { 
+	-webkit-opacity: 0.2; 
+	-ms-opacity: 0.2; 
+	opacity: 0.2; 
+	-webkit-transition: -webkit-opacity 0.3s ease; 
+	-ms-transition: -ms-opacity 0.3s ease; 
+	transition: opacity 0.3s ease; 
+}
+.milestone_box.unavailable:hover { opacity: 1; -ms-opacity: 1; -webkit-opacity: 1; }
 .milestone_box .date, #milestone_details_overview .date { font-size: 0.9em; color: #888; font-weight: normal; }
 .milestone_box .status { font-weight: normal; text-align: right; margin-top: 10px; }
 .milestone_box .percentage { position: relative; margin-top: 5px; }
@@ -1878,9 +1887,13 @@ ul.milestone_issues_container li .actions label { float: left; font-weight: bold
 #scrum_unassigned .header_div { border: 0; margin: 0; font-size: 1.2em; }
 .planning_container label { float: left; padding-top: 4px; }
 .planning_container h3 .button { float: right; margin-top: -5px; }
+.planning_container h3 .dropdown_box { margin: 25px 17px 0 0; }
+.planning_container h3 .dropdown_box a { font-size: 0.85em; }
 .planning_container label, .planning_container input[type="submit"], .planning_container input[type="submit"]:hover { font-size: 0.9em; font-weight: bold; }
 #scrum_unassigned #story_title { width: 300px; }
 #scrum_unassigned .add_story_header { font-weight: bold; float: left; }
+.planning_container .milestone_box.unavailable { display: none; }
+.planning_container.show_unavailable .milestone_box.unavailable { display: block; }
 .planning_container #sprint_name { width: 250px; }
 .planning_container .sprint_date { font-weight: normal; color: #555; }
 .planning_container .sprint_header { background-color: transparent; padding: 3px; font-weight: normal; font-size: 0.9em; line-height: 1.2; color: #888; position: relative; }

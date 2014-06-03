@@ -142,7 +142,7 @@
 						<label for="transition_popup_set_milestone_<?php echo $transition->getID(); ?>"><?php echo __('Milestone'); ?></label>
 						<select name="milestone_id" id="transition_popup_set_milestone_<?php echo $transition->getID(); ?>">
 							<option value="0"<?php if (!$issue instanceof TBGIssue && $issue->getMilestone() instanceof TBGMilestone): ?> selected<?php endif; ?>><?php echo __('Not determined') ?></option>
-							<?php foreach ($project->getMilestones() as $milestone): ?>
+							<?php foreach ($project->getMilestonesForIssues() as $milestone): ?>
 								<option value="<?php echo $milestone->getID(); ?>"<?php if ($issue instanceof TBGIssue && $issue->getMilestone() instanceof TBGMilestone && $issue->getMilestone()->getID() == $milestone->getID()): ?> selected<?php endif; ?>><?php echo $milestone->getName(); ?></option>
 							<?php endforeach; ?>
 						</select>

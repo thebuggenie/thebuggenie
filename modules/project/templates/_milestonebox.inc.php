@@ -3,7 +3,7 @@ $selected_columns = $milestone->getProject()->getPlanningColumns($tbg_user);
 $all_columns = $milestone->getProject()->getIssueFields(false, array('status', 'milestone', 'resolution', 'assignee', 'user_pain'));
 ?>
 
-<div id="milestone_<?php echo $milestone->getID(); ?>" class="milestone_box">
+<div id="milestone_<?php echo $milestone->getID(); ?>" class="milestone_box<?php if (!$milestone->isVisibleRoadmap()) echo ' unavailable'; ?>">
 	<?php include_template('project/milestoneboxheader', array('milestone' => $milestone)); ?>
 	<div id="milestone_<?php echo $milestone->getID(); ?>_container" style="display: none;">
 		<form action="<?php echo make_url('project_planning_update_milestone_issues', array('project_key' => $milestone->getProject()->getKey(), 'milestone_id' => $milestone->getID())); ?>" onsubmit="TBG.Project.Planning.updateIssues('<?php echo make_url('project_planning_update_milestone_issues', array('project_key' => $milestone->getProject()->getKey(), 'milestone_id' => $milestone->getID())); ?>', <?php echo $milestone->getID(); ?>);return false;" method="post" id="milestone_<?php echo $milestone->getID(); ?>_issues_form">

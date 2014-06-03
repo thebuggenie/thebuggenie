@@ -6,11 +6,15 @@
 ?>
 		<?php include_template('project/projectheader', array('selected_project' => $selected_project)); ?>
 		<?php include_template('project/projectinfosidebar', array('selected_project' => $selected_project, 'table_id' => 'project_planning')); ?>
-		<div class="planning_container">
+		<div class="planning_container" id="planning_container">
 			<h3>
 				<?php if ($tbg_user->canManageProjectReleases($selected_project)): ?>
-					<?php echo javascript_link_tag(__('Add new milestone'), array('onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'milestone', 'project_id' => $selected_project->getId()))."');", 'class' => 'button button-green')); ?>
-					<?php echo javascript_link_tag(__('Configure columns'), array('onclick' => "$('planning_column_settings_container').toggle();", 'class' => 'button button-green', 'style' => 'margin-right: 5px')); ?>
+					<a class="dropper button button-icon button-silver" id="more_actions_milestones_button"><?php echo __('Actions'); ?></a>
+					<ul class="simple_list rounded_box white shadowed more_actions_dropdown dropdown_box popup_box">
+						<li><?php echo javascript_link_tag(__('Add new milestone'), array('onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'milestone', 'project_id' => $selected_project->getId()))."');TBG.Main.Helpers.toggler(jQuery('#more_actions_milestones_button'));")); ?></li>
+						<li><?php echo javascript_link_tag(__('Toggle hidden milestones'), array('onclick' => "$('planning_container').toggleClassName('show_unavailable');TBG.Main.Helpers.toggler(jQuery('#more_actions_milestones_button'));")); ?></li>
+						<li><?php echo javascript_link_tag(__('Configure columns'), array('onclick' => "$('planning_column_settings_container').toggle();TBG.Main.Helpers.toggler(jQuery('#more_actions_milestones_button'));")); ?></li>
+					</ul>
 				<?php endif; ?>
 				<?php echo __('Project milestones'); ?>
 			</h3>
@@ -36,7 +40,7 @@
 		</div>
 		<?php if ($tbg_user->canAssignScrumUserStories($selected_project)): ?>
 			<script type="text/javascript">
-				<?php foreach ($selected_project->getMilestones() as $milestone): ?>
+				<?php foreach ($selected_project->getMilestonesForRoadmap() as $milestone): ?>
 					Droppables.add('milestone_<?php echo $milestone->getID(); ?>', { hoverclass: 'highlighted', onDrop: function (dragged, dropped, event) { TBG.Project.Planning.assign('<?php echo make_url('project_scrum_assign_story', array('project_key' => $selected_project->getKey())); ?>', dragged, dropped)}});
 				<?php endforeach; ?>
 				Droppables.add('milestone_0', { hoverclass: 'highlighted', onDrop: function (dragged, dropped, event) { TBG.Project.Planning.assign('<?php echo make_url('project_scrum_assign_story', array('project_key' => $selected_project->getKey())); ?>', dragged, dropped)}});

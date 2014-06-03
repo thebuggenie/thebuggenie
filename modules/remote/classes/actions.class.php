@@ -164,7 +164,7 @@
 						$return_array['type'] = 'choice';
 						if ($this->selected_project instanceof TBGProject)
 						{
-							$milestones = $this->selected_project->getMilestones();
+							$milestones = $this->selected_project->getAvailableMilestones();
 							foreach ($milestones as $milestone)
 							{
 								$return_array['choices'][$milestone->getID()] = $milestone->getName();

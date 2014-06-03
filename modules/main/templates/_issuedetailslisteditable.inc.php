@@ -576,7 +576,7 @@
 											?>
 												<a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => "")); ?>', '<?php echo $field; ?>');"><?php echo $info['clear']; ?></a><br>
 												<ul class="choices">
-													<?php foreach ($issue->getProject()->getMilestones() as $choice): ?>
+													<?php foreach ($issue->getProject()->getMilestonesForIssues() as $choice): ?>
 														<li>
 															<?php echo image_tag('icon_milestone.png', array('style' => 'float: left; margin-right: 5px;')); ?><a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => $choice->getID())); ?>', '<?php echo $field; ?>');"><?php echo __($choice->getName()); ?></a>
 														</li>

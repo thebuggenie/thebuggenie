@@ -33,7 +33,7 @@
 					<?php if (count($project->getMilestones()) == 0): ?>
 						<div class="faded_out" style="padding: 5px; font-size: 1.1em;"><?php echo __('There are no milestones'); ?></div>
 					<?php else: ?>
-						<?php foreach ($project->getMilestones() as $milestone): ?>
+						<?php foreach ($project->getMilestonesForRoadmap() as $milestone): ?>
 							<div style="clear: both; font-size: 12px;">
 								<input type="checkbox" name="showmilestone[<?php echo $milestone->getID(); ?>]" value="<?php echo $milestone->getID(); ?>"<?php if ($project->isMilestoneVisible($milestone->getID())): ?> checked<?php endif; ?> id="showmilestone_<?php echo $milestone->getID(); ?>" style="float: left;"<?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>>
 								<label for="showmilestone_<?php echo $milestone->getID(); ?>"><?php echo __('Show %milestone', array('%milestone' => $milestone->getName())); ?></label>

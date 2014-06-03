@@ -26,7 +26,7 @@
 	class TBGMilestonesTable extends TBGB2DBTable 
 	{
 
-		const B2DB_TABLE_VERSION = 1;
+		const B2DB_TABLE_VERSION = 2;
 		const B2DBNAME = 'milestones';
 		const ID = 'milestones.id';
 		const SCOPE = 'milestones.scope';
@@ -38,19 +38,6 @@
 		const STARTING = 'milestones.startingdate';
 		const SCHEDULED = 'milestones.scheduleddate';
 
-//		public function __construct()
-//		{
-//			parent::__construct(self::B2DBNAME, self::ID);
-//			parent::_addVarchar(self::NAME, 100);
-//			parent::_addText(self::DESCRIPTION, false);
-//			parent::_addInteger(self::REACHED, 10);
-//			parent::_addInteger(self::MILESTONE_TYPE, 2);
-//			parent::_addInteger(self::STARTING, 10);
-//			parent::_addInteger(self::SCHEDULED, 10);
-//			parent::_addForeignKeyColumn(self::PROJECT, TBGProjectsTable::getTable(), TBGProjectsTable::ID);
-//			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
-//		}
-		
 		public function getAllByProjectID($project_id)
 		{
 			$crit = $this->getCriteria();
