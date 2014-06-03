@@ -611,21 +611,6 @@
 		{
 			$filter_key = $this->getFilterKey();
 
-			switch ($filter_key)
-			{
-				case 'component':
-					$dbname = TBGIssueAffectsComponentTable::getTable();
-					break;
-				case 'edition':
-					$dbname = TBGIssueAffectsEditionTable::getTable();
-					break;
-				case 'build':
-					$dbname = TBGIssueAffectsBuildTable::getTable();
-					break;
-				default:
-					$dbname = TBGIssuesTable::getTable()->getB2DBName();
-			}
-
 			if (in_array($this['operator'], array('=', '!=', '<=', '>=', '<', '>')))
 			{
 				if ($filter_key == 'text')
@@ -683,6 +668,26 @@
 							return $ctn;
 						}
 					}
+					elseif (in_array($filter_key, array('build', 'edition', 'component')))
+					{
+						switch ($filter_key)
+						{
+							case 'component':
+								$tbl = TBGIssueAffectsComponentTable::getTable();
+								$fk  = TBGIssueAffectsComponentTable::ISSUE;
+								break;
+							case 'edition':
+								$tbl = TBGIssueAffectsEditionTable::getTable();
+								$fk  = TBGIssueAffectsEditionTable::ISSUE;
+								break;
+							case 'build':
+								$tbl = TBGIssueAffectsBuildTable::getTable();
+								$fk  = TBGIssueAffectsBuildTable::ISSUE;
+								break;
+						}
+						$crit->addJoin($tbl, $fk, TBGIssuesTable::ID, array(array($tbl->getB2DBAlias().'.'.$filter_key, $this->getValues())), \b2db\Criteria::DB_INNER_JOIN);
+						return null;
+					}
 					else
 					{
 						if ($filter_key == 'project_id' && in_array('subprojects', $filters)) return null;
@@ -710,6 +715,8 @@
 								else $crit->addWhere($c);
 							}
 						}
+
+						$dbname     = TBGIssuesTable::getTable()->getB2DBName();
 
 						foreach ($values as $value)
 						{
@@ -740,16 +747,6 @@
 								$ctn->addWhere($field, $value, urldecode($operator));
 							}
 						}
-
-//						if ($ctn === null) $ctn = $crit->returnCriterion($dbname.'.'.$filter_key, $this['value'], urldecode($this['operator']));
-//						if (in_array($this['operator'], array('=', '<=', '>=', '<', '>')) && !in_array($filter_key, array('posted', 'last_updated')))
-//						{
-//							$ctn->addOr($dbname.'.'.$filter_key, $this['value'], urldecode($this['operator']));
-//						}
-//						elseif ($this['operator'] == '!=' || in_array($filter_key, array('posted', 'last_updated')))
-//						{
-//							$ctn->addWhere($dbname.'.'.$filter_key, $this['value'], urldecode($this['operator']));
-//						}
 
 						return $ctn;
 					}
