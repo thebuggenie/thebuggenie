@@ -855,13 +855,32 @@
 			}
 		}
 
+		protected function _getSubclassNameFromRow($row, $classnames)
+		{
+			$identifier = $row->get($this->getB2DBName() . '.' . $classnames['identifier']);
+			$classname = (\array_key_exists($identifier, $classnames['classes'])) ? $classnames['classes'][$identifier] : null;
+			if (!$classname) {
+				throw new Exception("No classname has been specified in the @SubClasses annotation for identifier '{$identifier}'");
+			}
+
+			return $classname;
+		}
+
 		protected function _populateFromRow($row = null, $classname = null, $id_column = null)
 		{
 			$item = null;
 			if ($row) {
-				$classname = ($classname !== null) ? $classname : Core::getCachedTableEntityClass(\get_class($this));
-				if (!$classname)
-					throw new Exception("Classname '{$classname}' for table '{$this->getB2DBName()}' is not valid");
+				if ($classname === null) {
+					$classnames = Core::getCachedTableEntityClasses(\get_class($this));
+					if ($classnames) {
+						$classname = $this->_getSubclassNameFromRow($row, $classnames);
+					} else {
+						$classname = Core::getCachedTableEntityClass(\get_class($this));
+					}
+					if (!$classname) {
+						throw new Exception("Classname '{$classname}' or subclasses for table '{$this->getB2DBName()}' is not valid");
+					}
+				}
 
 				$id_column = ($id_column !== null) ? $id_column : $row->getCriteria()->getTable()->getIdColumn();
 				$row_id = $row->get($id_column);
@@ -885,11 +904,7 @@
 				}
 				while ($row = $resultset->getNextRow()) {
 					if ($classnames) {
-						$identifier = $row->get($this->getB2DBName() . '.' . $classnames['identifier']);
-						$classname = (\array_key_exists($identifier, $classnames['classes'])) ? $classnames['classes'][$identifier] : null;
-						if (!$classname) {
-							throw new Exception("No classname has been specified in the @SubClasses annotation for identifier '{$identifier}'");
-						}
+						$classname = $this->_getSubclassNameFromRow($row, $classnames);
 					}
 					$item = $this->_populateFromRow($row, $classname, $id_column);
 					$items[$row->get($index_column)] = $item;
