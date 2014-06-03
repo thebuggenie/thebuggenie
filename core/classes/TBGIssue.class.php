@@ -4403,23 +4403,35 @@
 					case TBGCustomDatatype::EDITIONS_CHOICE:
 					case TBGCustomDatatype::COMPONENTS_CHOICE:
 					case TBGCustomDatatype::RELEASES_CHOICE:
+					case TBGCustomDatatype::MILESTONE_CHOICE:
 					case TBGCustomDatatype::STATUS_CHOICE:
+					case TBGCustomDatatype::USER_CHOICE:
+					case TBGCustomDatatype::TEAM_CHOICE:
 						$option_object = null;
 						try
 						{
 							switch ($customdatatype->getType())
 							{
 								case TBGCustomDatatype::EDITIONS_CHOICE:
-									$option_object = TBGContext::factory()->TBGEdition($this->getCustomField($key));
+									$option_object = TBGEditionsTable::getTable()->selectById($this->getCustomField($key));
 									break;
 								case TBGCustomDatatype::COMPONENTS_CHOICE:
-									$option_object = TBGContext::factory()->TBGComponent($this->getCustomField($key));
+									$option_object = TBGComponentsTable::getTable()->selectById($this->getCustomField($key));
 									break;
 								case TBGCustomDatatype::RELEASES_CHOICE:
-									$option_object = TBGContext::factory()->TBGBuild($this->getCustomField($key));
+									$option_object = TBGBuildsTable::getTable()->selectById($this->getCustomField($key));
+									break;
+								case TBGCustomDatatype::MILESTONE_CHOICE:
+									$option_object = TBGMilestonesTable::getTable()->selectById($this->getCustomField($key));
 									break;
 								case TBGCustomDatatype::STATUS_CHOICE:
-									$option_object = TBGContext::factory()->TBGStatus($this->getCustomField($key));
+									$option_object = TBGListTypesTable::getTable()->selectById($this->getCustomField($key));
+									break;
+								case TBGCustomDatatype::USER_CHOICE:
+									$option_object = TBGUsersTable::getTable()->selectById($this->getCustomField($key));
+									break;
+								case TBGCustomDatatype::TEAM_CHOICE:
+									$option_object = TBGTeamsTable::getTable()->selectById($this->getCustomField($key));
 									break;
 							}
 						}

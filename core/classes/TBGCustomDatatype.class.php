@@ -14,7 +14,7 @@
 		const RELEASES_CHOICE = 8;
 		const COMPONENTS_CHOICE = 10;
 		const EDITIONS_CHOICE = 12;
-		const MILESTONE_CHOICE = 12;
+		const MILESTONE_CHOICE = 20;
 		const STATUS_CHOICE = 13;
 		const USER_CHOICE = 14;
 		const TEAM_CHOICE = 15;
@@ -162,7 +162,7 @@
 		public static function getChoiceFieldsAsArray()
 		{
 			return array(self::DROPDOWN_CHOICE_TEXT, self::RADIO_CHOICE, self::RELEASES_CHOICE, self::COMPONENTS_CHOICE,
-						self::EDITIONS_CHOICE, self::STATUS_CHOICE, self::USER_CHOICE, self::TEAM_CHOICE);
+						self::EDITIONS_CHOICE, self::STATUS_CHOICE, self::USER_CHOICE, self::TEAM_CHOICE, self::MILESTONE_CHOICE);
 		}
 
 		public static function getInternalChoiceFieldsAsArray()

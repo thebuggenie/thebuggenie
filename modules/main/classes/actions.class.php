@@ -1974,6 +1974,9 @@
 								case TBGCustomDatatype::COMPONENTS_CHOICE:
 								case TBGCustomDatatype::RELEASES_CHOICE:
 								case TBGCustomDatatype::STATUS_CHOICE:
+								case TBGCustomDatatype::MILESTONE_CHOICE:
+								case TBGCustomDatatype::USER_CHOICE:
+								case TBGCustomDatatype::TEAM_CHOICE:
 									if ($customdatatypeoption_value == '')
 									{
 										$issue->setCustomField($key, "");
@@ -1983,28 +1986,42 @@
 										switch ($customdatatype->getType())
 										{
 											case TBGCustomDatatype::EDITIONS_CHOICE:
-												$temp = new TBGEdition($request->getRawParameter("{$key}_value"));
-												$finalvalue = $temp->getName();
+												$temp = TBGEditionsTable::getTable()->selectById($request->getRawParameter("{$key}_value"));
 												break;
 											case TBGCustomDatatype::COMPONENTS_CHOICE:
-												$temp = new TBGComponent($request->getRawParameter("{$key}_value"));
-												$finalvalue = $temp->getName();
+												$temp = TBGComponentsTable::getTable()->selectById($request->getRawParameter("{$key}_value"));
 												break;
 											case TBGCustomDatatype::RELEASES_CHOICE:
-												$temp = new TBGBuild($request->getRawParameter("{$key}_value"));
-												$finalvalue = $temp->getName();
+												$temp = TBGBuildsTable::getTable()->selectById($request->getRawParameter("{$key}_value"));
+												break;
+											case TBGCustomDatatype::MILESTONE_CHOICE:
+												$temp = TBGMilestonesTable::getTable()->selectById($request->getRawParameter("{$key}_value"));
 												break;
 											case TBGCustomDatatype::STATUS_CHOICE:
-												$temp = new TBGStatus($request->getRawParameter("{$key}_value"));
-												$finalvalue = $temp->getName();
+												$temp = TBGStatus::getB2DBTable()->selectById($request->getRawParameter("{$key}_value"));
+												break;
+											case TBGCustomDatatype::USER_CHOICE:
+												$temp = TBGUsersTable::getTable()->selectById($request->getRawParameter("{$key}_value"));
+												break;
+											case TBGCustomDatatype::TEAM_CHOICE:
+												$temp = TBGTeamsTable::getTable()->selectById($request->getRawParameter("{$key}_value"));
 												break;
 										}
+										$finalvalue = $temp->getName();
 										$issue->setCustomField($key, $request->getRawParameter("{$key}_value"));
 									}
 
-									if (isset($temp) && $customdatatype->getType() == TBGCustomDatatype::STATUS_CHOICE && is_object($temp))
+									if ($customdatatype->getType() == TBGCustomDatatype::STATUS_CHOICE && isset($temp) && is_object($temp))
 									{
-										$finalvalue = '<div style="border: 1px solid #AAA; background-color: '.$temp->getColor().'; font-size: 1px; width: 20px; height: 15px; margin-right: 5px; float: left;" id="status_color">&nbsp;</div>'.$finalvalue;
+										$finalvalue = '<div class="status_badge" style="background-color: '.$temp->getColor().';"><span>'.$finalvalue.'</span></div>';
+									}
+									elseif ($customdatatype->getType() == TBGCustomDatatype::USER_CHOICE && isset($temp) && is_object($temp))
+									{
+										$finalvalue = $this->getComponentHTML('main/userdropdown', array('user' => $temp));
+									}
+									elseif ($customdatatype->getType() == TBGCustomDatatype::TEAM_CHOICE && isset($temp) && is_object($temp))
+									{
+										$finalvalue = $this->getComponentHTML('main/teamdropdown', array('team' => $temp));
 									}
 
 									$changed_methodname = "isCustomfield{$key}Changed";

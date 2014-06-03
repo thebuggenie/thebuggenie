@@ -11,6 +11,9 @@
 			case 'assignee_team':
 				echo __('Assigned team');
 				break;
+			default:
+				echo __($filter->getFilterTitle());
+				break;
 		}
 
 	?></label>

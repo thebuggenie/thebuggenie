@@ -14,6 +14,9 @@
 			case 'assignee_user':
 				echo __('Assigned user');
 				break;
+			default:
+				echo __($filter->getFilterTitle());
+				break;
 		}
 
 	?></label>

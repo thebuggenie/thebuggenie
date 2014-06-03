@@ -164,6 +164,7 @@
 							include_template('search/interactivefilter_date', compact('filter'));
 							break;
 						case TBGCustomDatatype::RADIO_CHOICE:
+						case TBGCustomDatatype::DROPDOWN_CHOICE_TEXT:
 							include_template('search/interactivefilter_choice', compact('filter'));
 							break;
 						case TBGCustomDatatype::COMPONENTS_CHOICE:
@@ -171,6 +172,12 @@
 						case TBGCustomDatatype::RELEASES_CHOICE:
 						case TBGCustomDatatype::MILESTONE_CHOICE:
 							include_template('search/interactivefilter_affected', compact('filter'));
+							break;
+						case TBGCustomDatatype::USER_CHOICE:
+							include_template('search/interactivefilter_user', compact('filter'));
+							break;
+						case TBGCustomDatatype::TEAM_CHOICE:
+							include_template('search/interactivefilter_team', compact('filter'));
 							break;
 						case TBGCustomDatatype::INPUT_TEXT:
 						case TBGCustomDatatype::INPUT_TEXTAREA_MAIN:
