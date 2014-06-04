@@ -1916,7 +1916,7 @@ ul.milestone_issues_container li .actions label { float: left; font-weight: bold
 .planning_container label { float: left; padding-top: 4px; }
 h3 .button, h3 .button:hover { float: right; margin-top: 0; padding: 3px 7px !important; }
 #configure_permissions_advanced h3 .button { float: left; margin-right: 5px; }
-h3 .dropdown_box { margin: 30px 17px 0 0; }
+h3 .dropdown_box { margin: 30px 2px 0 0; }
 h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.85em; }
 .planning_container label, .planning_container input[type="submit"], .planning_container input[type="submit"]:hover { font-size: 0.9em; font-weight: bold; }
 #scrum_unassigned #story_title { width: 300px; }
