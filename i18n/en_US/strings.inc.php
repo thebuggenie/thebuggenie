@@ -4,9 +4,13 @@
 // If you would like to help translating TBG,
 // please visit https://www.transifex.com/projects/p/tbg
 
-// Number of Sections: 269
-// Number of Strings: 3079
-// Keys extracted from sources on: 2014 May 12.
+// Number of Sections: 270
+// Number of Strings: 3080
+// Strings extracted on: 2014 Jun 04.
+
+// First occurrence is in: core/classes/TBGAction.class.php
+// ----------------------------------------------------------------------------
+  $strings['You are not allowed to access this page'] = 'You are not allowed to access this page';
 
 // First occurrence is in: core/classes/TBGContext.class.php
 // ----------------------------------------------------------------------------
@@ -1291,12 +1295,12 @@
   $strings['Built-in issue fields'] = 'Built-in issue fields';
   $strings['Custom issue fields'] = 'Custom issue fields';
   $strings['Add new custom field'] = 'Add new custom field';
+  $strings['Add custom field'] = 'Add custom field';
   $strings['Enter a name for the field (same as ex. "%resolution_types%" above), then click %add%'] = 'Enter a name for the field (same as ex. "%resolution_types%" above), then click %add%';
   $strings['Custom type'] = 'Custom type';
   $strings['Field name'] = 'Field name';
   $strings['Field label'] = 'Field label';
   $strings['The label is shown to the user in issue view'] = 'The label is shown to the user in issue view';
-  $strings['Add custom field'] = 'Add custom field';
 
 // First occurrence is in: modules/configuration/templates/configureissuetypes.html.php
 // ----------------------------------------------------------------------------
