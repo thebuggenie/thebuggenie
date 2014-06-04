@@ -9,7 +9,7 @@
 		<div class="planning_container" id="planning_container">
 			<h3>
 				<?php if ($tbg_user->canManageProjectReleases($selected_project)): ?>
-					<a class="dropper button button-icon button-silver" id="more_actions_milestones_button"><?php echo __('Actions'); ?></a>
+					<a class="dropper button button-silver" id="more_actions_milestones_button"><?php echo __('Actions'); ?></a>
 					<ul class="simple_list rounded_box white shadowed more_actions_dropdown dropdown_box popup_box">
 						<li><?php echo javascript_link_tag(__('Add new milestone'), array('onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'milestone', 'project_id' => $selected_project->getId()))."');TBG.Main.Helpers.toggler(jQuery('#more_actions_milestones_button'));")); ?></li>
 						<li><?php echo javascript_link_tag(__('Toggle hidden milestones'), array('onclick' => "$('planning_container').toggleClassName('show_unavailable');TBG.Main.Helpers.toggler(jQuery('#more_actions_milestones_button'));")); ?></li>

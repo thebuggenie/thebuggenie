@@ -11,6 +11,9 @@
 					<?php echo javascript_link_tag(__('List users in this team'), array('onclick' => 'TBG.Config.Team.showMembers(\''.make_url('configure_users_get_team_members', array('team_id' => $team->getID())).'\', '.$team->getID().');')); ?>
 				</li>
 				<li>
+					<?php echo javascript_link_tag(__('Edit permissions for this team'), array('onclick' => "TBG.Config.Team.getPermissionsBlock('".make_url('configure_permissions_get_configurator', array('team_id' => $team->getID(), 'base_id' => $team->getID())). "', ".$team->getID().");", 'id' => 'team_permissions_'.$team->getID().'_link')); ?>
+				</li>
+				<li>
 					<?php echo javascript_link_tag(__('Clone this user team'), array('onclick' => '$(\'clone_team_'.$team->getID().'\').toggle();')); ?>
 				</li>
 				<li>
@@ -63,5 +66,13 @@
 			</tr>
 		</table>
 		<div id="team_members_<?php echo $team->getID(); ?>_list"></div>
+	</div>
+</div>
+<div id="team_<?php echo $team->getID(); ?>_permissions_container" style="display: none;" class="fullpage_backdrop">
+	<div class="fullpage_backdrop_content backdrop_box large">
+		<div class="backdrop_detail_header"><?php echo __('Configure advanced permissions for %teamname', array('%team' => $team->getName())); ?></div>
+		<?php echo image_tag('spinning_16.gif', array('id' => 'team_'.$team->getID().'_permissions_indicator', 'style' => 'display: none;')); ?>
+		<div class="backdrop_detail_content config_permissions" id="team_<?php echo $team->getID(); ?>_permissions"></div>
+		<div class="backdrop_detail_footer"><?php echo javascript_link_tag(__('Close'), array('onclick' => "$('team_".$team->getID()."_permissions_container').toggle();")); ?></div>
 	</div>
 </div>

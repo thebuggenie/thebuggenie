@@ -712,13 +712,20 @@ div.dropdown_separator { border-left: 1px dotted #EAEAF5; padding: 0 0 0 4px; ma
 	-webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.2) inset;
 	background-color: #F8F8F8;
 }
+.tab_menu.inset ul {
+	display: block;
+}
+.tab_menu.inset ul#usersteamsgroups_menu {
+	width: 710px;
+}
 .tab_menu.inset .selected a {
 	box-shadow: none;
 	-moz-box-shadow: none;
 	-webkit-box-shadow: none;
 }
 .tab_menu.inset li.selected {
-	border-bottom-color: #FFF;
+	/*border-bottom-color: #FFF;*/
+	border-color: transparent;
 }
 .tab_menu.inset li.selected a {
 	padding: 3px 8px 3px 5px;
@@ -726,13 +733,16 @@ div.dropdown_separator { border-left: 1px dotted #EAEAF5; padding: 0 0 0 4px; ma
 .tab_menu.inset li {
 	padding: 0;
 	border-width: 1px;
-	border-color: rgba(0, 0, 0, 0.2);
+	border-color: rgba(100, 100, 100, 0.2);
 	border-top-left-radius: 5px;
 	-moz-border-radius-topleft: 5px;
 	-webkit-border-top-left-radius: 5px;
 	border-top-right-radius: 5px;
 	-moz-border-radius-topright: 5px;
 	-webkit-border-top-right-radius: 5px;
+}
+.tab_menu.inset li.right {
+	float: right;
 }
 .tab_menu.inset li a {
 	border-top-left-radius: 5px;
@@ -744,6 +754,17 @@ div.dropdown_separator { border-left: 1px dotted #EAEAF5; padding: 0 0 0 4px; ma
 	font-size: 1.1em !important;
 	padding: 3px 5px 3px 3px;
 	box-shadow: inset 0 -3px 3px -3px rgba(0, 0, 0, 0.4);
+}
+.tab_menu.inset li.modest {
+	background: transparent;
+	color: rgba(50, 50, 50, 0.6);
+	border-color: transparent;
+}
+.tab_menu.inset li.modest.selected {
+	background-color: #FFF;
+}
+.tab_menu.inset li.modest a {
+	box-shadow: none;
 }
 .tab_menu.inset li a span {
     vertical-align: middle;
@@ -1091,6 +1112,8 @@ table.cleantable th { text-align: center; }
 .permission_list ul li ul li ul li { font-size: 0.8em; }
 .permission_list ul li ul li ul li:hover { background-color: #E8E8E8; }
 .permission_list ul li ul li ul li a.permission_description { display: block; width: 540px; }
+.permissions_warning { background-color: rgba(255, 235, 85, 0.7); border: 1px solid rgba(50, 50, 50, 0.3); padding: 10px; font-size: 1em; font-weight: normal; display: block; margin: 10px; color: rgba(50, 50, 50, 0.8); }
+.permissions_warning strong { display: block; font-weight: bold; text-transform: uppercase; }
 /* end permissions */
 
 /* configure users / teams / groups styling */
@@ -1100,6 +1123,7 @@ table.cleantable th { text-align: center; }
 .groupbox_header, .teambox_header, .clientbox_header { font-weight: bold; }
 .groupbox_membercount, .teambox_membercount, .clientbox_membercount { font-weight: normal; font-size: 0.8em; color: #888; }
 
+#users_results { position: relative; }
 #users_more_actions_container { float: right; }
 #users_more_actions_container button { float: left; }
 #tab_users_pane > strong { font-weight: bold; display: block; }
@@ -1232,6 +1256,7 @@ ul.client_users, ul.team_users, ul.project_users { margin: 0; padding: 0; }
 ul.client_users li, ul.team_users li, ul.project_users li { list-style-type: none; padding-bottom: 5px; margin: 0;}
 .project_commits_box { margin-right: 10px; }
 .commit_box { margin-top: 5px }
+#global_roles_list .button-group .button, #project_roles_list .button-group .button { font-size: 0.9em; padding: 1px 5px !important; }
 /* end project styling */
 
 /* account page tab panes content */
@@ -1602,6 +1627,8 @@ dd { float: left; display: block; width: 195px; font-weight: normal; margin: 0; 
 .status_badge { display: inline-block; color: rgba(0, 0, 0, 0.45); text-transform: uppercase; border: 1px solid rgba(0, 0, 0, 0.2); padding: 3px 5px; line-height: 1; border-radius: 3px; }
 .more_actions_dropdown { padding: 0; position: absolute; z-index: 1000001; right: 0; display:none;}
 .more_actions_dropdown li { min-height: 23px; position: relative; display: block; line-height: 1.3; }
+.more_actions_dropdown li:first-child { border-top-left-radius: 3px; border-top-right-radius: 3px; }
+.more_actions_dropdown li:last-child { border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; }
 .more_actions_dropdown li a, .more_actions_dropdown li a:hover { display: block; font-size: 0.9em; font-weight: normal; color: #333; text-decoration: none; border: 0; padding: 3px 5px; line-height: 1.3; white-space: nowrap; }
 .more_actions_dropdown li:hover { background-color: #F1F1F1; }
 ul.workflow_actions .more_actions_dropdown li:hover { box-shadow: none; -webkit-box-shadow: none; -moz-box-shadow: none; }
@@ -1887,9 +1914,10 @@ ul.milestone_issues_container li .actions label { float: left; font-weight: bold
 #scrum_unassigned { width: 440px; border-top: 1px solid #ccc; padding: 10px 5px; vertical-align: top; }
 #scrum_unassigned .header_div { border: 0; margin: 0; font-size: 1.2em; }
 .planning_container label { float: left; padding-top: 4px; }
-.planning_container h3 .button { float: right; margin-top: -5px; }
-.planning_container h3 .dropdown_box { margin: 25px 17px 0 0; }
-.planning_container h3 .dropdown_box a { font-size: 0.85em; }
+h3 .button, h3 .button:hover { float: right; margin-top: 0; padding: 3px 7px !important; }
+#configure_permissions_advanced h3 .button { float: left; margin-right: 5px; }
+h3 .dropdown_box { margin: 30px 17px 0 0; }
+h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.85em; }
 .planning_container label, .planning_container input[type="submit"], .planning_container input[type="submit"]:hover { font-size: 0.9em; font-weight: bold; }
 #scrum_unassigned #story_title { width: 300px; }
 #scrum_unassigned .add_story_header { font-weight: bold; float: left; }
@@ -2009,7 +2037,6 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .project_information_sidebar .sidebar_links { box-shadow: -3px 0 3px -3px rgba(0, 0, 0, 0.3) inset; height: 100%; }
 .project_information_sidebar .sidebar_links img {float: left; position: relative; margin-right: 5px;}
 .project_information_main { padding: 10px 15px 10px 15px; vertical-align: top; border-top: 1px solid #ccc; }
-.project_information_main .button, .project_information_main .button:hover { padding: 3px 7px !important; }
 .project_client_info .project_client_header { font-weight: bold; font-size: 1.5em; }
 .project_client_info .project_client_viewusers { float: right; }
 .client_users_div { border: 1px solid #BBB; width: 100%; height: 300px; margin-top: 10px; overflow: auto; text-align: left; }
@@ -3342,12 +3369,13 @@ table.sortable tr th.nosort {
   background: linear-gradient(-45deg, #e84a21, #f7ad27); /* flipped for updated spec */
 }
 
-.redbox { box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); border: 1px solid rgba(140, 13, 13, 0.5); color: #8C0D0D; background-color: rgba(255, 50, 50, 0.6); padding: 5px; }
+.redbox { box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); color: #8C0D0D; background-color: rgba(255, 50, 50, 0.6); padding: 5px; }
 .greybox { box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); background-color: rgba(200, 200, 200, 0.1); padding: 5px; }
 .lightyellowbox { box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); background-color: rgba(249, 245, 178, 0.8); padding: 5px; }
 .yellowbox { box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); background-color: rgba(249, 245, 178, 1); padding: 5px; }
-.greenbox { box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); background-color: rgba(177, 210, 143, 0.6); border: 1px solid rgba(147, 174, 118, 0.5); padding: 5px; }
-.bluebox { box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); background-color: rgba(212, 229, 255, 0.6); border: 1px solid rgba(177, 184, 233, 0.7); padding: 5px; }
+.greenbox { box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); background-color: rgba(177, 210, 143, 0.6); padding: 5px; }
+.bluebox { box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); background-color: rgba(212, 229, 255, 0.6); padding: 5px; }
+.redbox, .greybox, .lightyellowbox, .yellowbox, .greenbox, .bluebox { border: 1px solid rgba(50, 50, 50, 0.3); }
 
 .tutorial-message {
 	box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);

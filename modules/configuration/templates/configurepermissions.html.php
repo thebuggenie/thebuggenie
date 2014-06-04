@@ -1,14 +1,18 @@
 <?php
 
-	$tbg_response->setTitle(__('Configure permissions'));
+	$tbg_response->setTitle(__('Configure advanced permissions'));
 
 ?>
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
 	<tr>
 		<?php include_component('leftmenu', array('selected_section' => 5)); ?>
-		<td valign="top" style="padding-left: 15px;">
+		<td valign="top" style="padding-left: 15px;" id="configure_permissions_advanced">
 			<div style="width: 730px;">
-				<h3><?php echo __('Configure permissions'); ?></h3>
+				<h3>
+					<?php echo link_tag(make_url('configure_roles'), '&lt;&lt;'.__('Back to roles'), array('class' => 'button button-green')); ?>
+					<?php echo __('Configure permissions'); ?>
+				</h3>
+				<?php include_template('configuration/permissionswarning'); ?>
 				<div class="config_permissions greybox" style="margin: 0 0 10px 10px; min-height: 85px; width: 330px; float: right;">
 					<div class="header_div smaller" style="clear: both; margin: 0 0 5px 0;"><?php echo __('Icon legend:'); ?></div>
 					<div style="clear: both;">

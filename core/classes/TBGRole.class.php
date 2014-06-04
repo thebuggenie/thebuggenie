@@ -118,6 +118,7 @@
 
 		protected function _preDelete()
 		{
+			TBGRolePermissionsTable::getTable()->clearPermissionsForRole($this->getID());
 			TBGProjectAssignedTeamsTable::getTable()->deleteByRoleID($this->getID());
 			TBGProjectAssignedUsersTable::getTable()->deleteByRoleID($this->getID());
 			TBGEditionAssignedTeamsTable::getTable()->deleteByRoleID($this->getID());
@@ -149,16 +150,52 @@
 			}
 		}
 
-		public function setPermissions($permissions)
+		/**
+		 * Removes a set of permissions
+		 *
+		 * @param array|TBGRolePermission $permissions
+		 */
+		public function removePermissions($permissions)
 		{
-			TBGRolePermissionsTable::getTable()->clearPermissionsForRole($this->getID());
 			foreach ($permissions as $permission)
 			{
-				$permission->setRole($this);
-				$permission->save();
+				$this->removePermission($permission);
 			}
 		}
 
+		public function removePermission(TBGRolePermission $permission)
+		{
+			$this->_populatePermissions();
+			$permission_id = $permission->getID();
+			unset($this->_permissions[$permission_id]);
+			TBGPermissionsTable::getTable()->deleteRolePermission($this->getID(), $permission->getPermission(), $permission->getTargetID());
+			$permission->delete();
+		}
+
+		public function addPermissions($permissions)
+		{
+			foreach ($permissions as $permission)
+			{
+				$this->addPermission($permission);
+			}
+		}
+
+		public function addPermission(TBGRolePermission $permission)
+		{
+			$permission->setRole($this);
+			$permission->save();
+			if ($this->_permissions !== null)
+			{
+				$this->_permissions[$permission->getID()] = $permission;
+			}
+			TBGPermissionsTable::getTable()->addRolePermission($this->getID(), $permission);
+		}
+
+		/**
+		 * Returns all permissions assigned to this role
+		 * 
+		 * @return array|TBGRolePermission An array of all permissions
+		 */
 		public function getPermissions()
 		{
 			$this->_populatePermissions();

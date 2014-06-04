@@ -2926,6 +2926,20 @@ TBG.Config.Team.updateLinks = function(json) {
 	(json.more_available) ? $('add_team_div').show() : $('add_team_div').hide();
 }
 
+TBG.Config.Team.getPermissionsBlock = function(url, team_id) {
+	if ($('team_' + team_id + '_permissions').innerHTML == '') {
+		TBG.Main.Helpers.ajax(url, {
+			loading: {
+				indicator: 'team_' + team_id + '_permissions_indicator'
+			},
+			success: {
+				update: 'team_' + team_id + '_permissions',
+				show: 'team_' + team_id + '_permissions_container'
+			}
+		});
+	}
+};
+
 TBG.Config.Team.add = function(url) {
 	TBG.Config.Collection.add(url, 'team', TBG.Config.Team.updateLinks);
 }

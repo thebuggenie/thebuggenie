@@ -1,11 +1,14 @@
 <?php if (isset($roles)): ?>
 	<div id="project_settings_roles" style="position: relative;">
 		<h3>
-			<div class="button button-green" style="float: right;" onclick="$('project_settings_roles').toggle();$('project_settings_advanced_permissions').toggle();"><?php echo __('Show advanced permissions'); ?></div>
+			<a class="dropper button button-silver"><?php echo __('Actions'); ?></a>
+			<ul class="simple_list rounded_box white shadowed more_actions_dropdown dropdown_box popup_box">
+				<li><?php echo javascript_link_tag(__('Show advanced permissions'), array('onclick' => "$('project_settings_roles').toggle();$('project_settings_advanced_permissions').toggle();")); ?></li>
+			</ul>
 			<?php echo __('Editing project roles and permissions'); ?>
 		</h3>
 		<div class="content faded_out">
-			<p><?php echo __("These roles acts as permission templates and can be applied when assigning people (or teams) to the project. When people (or teams) are unassigned from the project they will keep all permissions applied by any roles until their last role in the project is unassigned. Read more about roles and permissions in the %online_documentation", array('%online_documentation' => link_tag('http://issues.thebuggenie.com/wiki/TheBugGenie:RolesAndPermissions', '<b>'.__('online documentation').'</b>'))); ?></p>
+			<p><?php echo __("Roles are applied when assigning users or teams to a project, granting them access to specific parts of the project or giving users access to update and edit information. Updating permissions in this list will add or remove permissions for all users and / or team members with that role, on all assigned projects. Removing a role removes all permissions granted by that role for all users and teams. Read more about roles and permissions in the %online_documentation", array('%online_documentation' => link_tag('http://issues.thebuggenie.com/wiki/TheBugGenie:RolesAndPermissions', '<b>'.__('online documentation').'</b>'))); ?></p>
 		</div>
 		<h5 style="margin-top: 10px;"><?php echo __('Globally available roles'); ?></h5>
 		<ul id="global_roles_list" class="simple_list" style="width: 788px;">

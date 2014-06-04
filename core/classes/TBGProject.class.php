@@ -1446,7 +1446,7 @@
 				foreach ($role->getPermissions() as $role_permission)
 				{
 					$target_id = ($role_permission->hasTargetID()) ? $role_permission->getReplacedTargetID($this) : $this->getID();
-					TBGContext::setPermission($role_permission->getPermission(), $target_id, $role_permission->getModule(), $user_id, 0, $team_id, true);
+					TBGContext::setPermission($role_permission->getPermission(), $target_id, $role_permission->getModule(), $user_id, 0, $team_id, true, null, $role->getID());
 				}
 			}
 		}

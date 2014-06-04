@@ -496,7 +496,7 @@
 	$strings['Issue types'] = 'Falltypen';
 	$strings['Issue fields'] = 'Fall-Felder';
 	$strings['Workflow'] = 'Workflow';
-	$strings['Users, teams, clients &amp; groups'] = 'Benutzer, Teams, Kunden &amp; Gruppen';
+	$strings['Users, teams &amp; clients'] = 'Benutzer, Teams, Kunden &amp; Gruppen';
 	$strings['Modules'] = 'Module';
 
 	// First occurrence is in: .\modules\configuration\classes\actions.class.php

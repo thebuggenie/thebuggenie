@@ -5,10 +5,14 @@
 		<td valign="top" style="padding-left: 15px;">
 			<div id="config_roles" style="position: relative; width: 730px;">
 				<h3>
+					<a class="dropper button button-silver"><?php echo __('Actions'); ?></a>
+					<ul class="simple_list rounded_box white shadowed more_actions_dropdown dropdown_box popup_box">
+						<li><?php echo link_tag(make_url('configure_permissions'), __('Show advanced permissions')); ?></li>
+					</ul>
 					<?php echo __('Configure roles'); ?>
 				</h3>
 				<div class="content faded_out">
-					<p><?php echo __("These roles acts as permission templates and can be applied when assigning people (or teams) to a project. When people (or teams) are unassigned from the project they will keep all permissions applied by any roles until their last role in the project is unassigned. Read more about roles and permissions in the %online_documentation", array('%online_documentation' => link_tag('http://issues.thebuggenie.com/wiki/TheBugGenie:RolesAndPermissions', '<b>'.__('online documentation').'</b>'))); ?></p>
+					<p><?php echo __("Roles are applied when assigning users or teams to a project, granting them access to specific parts of the project or giving users access to update and edit information. Updating permissions in this list will add or remove permissions for all users and / or team members with that role, on all assigned projects. Removing a role removes all permissions granted by that role for all users and teams. Read more about roles and permissions in the %online_documentation", array('%online_documentation' => link_tag('http://issues.thebuggenie.com/wiki/TheBugGenie:RolesAndPermissions', '<b>'.__('online documentation').'</b>'))); ?></p>
 				</div>
 				<div class="lightyellowbox" id="new_role" style="margin-top: 15px;">
 					<form id="new_role_form" method="post" action="<?php echo make_url('configure_roles', array('mode' => 'new')); ?>" onsubmit="TBG.Config.Roles.add('<?php echo make_url('configure_roles', array('mode' => 'new')); ?>'); return false;" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>">

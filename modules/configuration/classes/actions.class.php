@@ -1035,7 +1035,7 @@
 
 			if ($this->access_level == TBGSettings::ACCESS_FULL)
 			{
-				return $this->renderJSON(array('content' => $this->getComponentHTML('configuration/permissionsblock', array('base_id' => $request['base_id'], 'permissions_list' => $request['permissions_list'], 'mode' => $request['mode'], 'target_id' => $request['target_id'], 'user_id' => $request['user_id'], 'module' => $request['target_module'], 'access_level' => $this->access_level))));
+				return $this->renderJSON(array('content' => $this->getComponentHTML('configuration/permissionsblock', array('base_id' => $request['base_id'], 'permissions_list' => $request['permissions_list'], 'mode' => $request['mode'], 'target_id' => $request['target_id'], 'user_id' => $request['user_id'], 'team_id' => $request['team_id'], 'module' => $request['target_module'], 'access_level' => $this->access_level))));
 			}
 			$this->getResponse()->setHttpStatus(400);
 			return $this->renderJSON(array("error" => $i18n->__("You don't have access to modify permissions")));
@@ -1822,7 +1822,7 @@
 
 		public function runGetPermissionsConfigurator(TBGRequest $request)
 		{
-			return $this->renderComponent('configuration/permissionsconfigurator', array('access_level' => $this->access_level, 'user_id' => $request->getParameter('user_id', 0), 'base_id' => $request->getParameter('base_id', 0)));
+			return $this->renderComponent('configuration/permissionsconfigurator', array('access_level' => $this->access_level, 'user_id' => $request->getParameter('user_id', 0), 'team_id' => $request->getParameter('team_id', 0), 'base_id' => $request->getParameter('base_id', 0)));
 		}
 
 		public function runConfigureWorkflowSchemes(TBGRequest $request)
@@ -3374,19 +3374,28 @@
 					{
 						$role->setName($request['name']);
 						$role->save();
-						$permissions = array();
-						foreach ($request['permissions'] as $permission)
+						$new_permissions = array();
+						foreach ($request['permissions'] as $new_permission)
 						{
-							list ($module, $target_id, $permission_key) = explode(',', $permission);
-							$p = new TBGRolePermission();
-							$p->setRole($role);
-							$p->setModule($module);
-							$p->setPermission($permission_key);
-							if ($target_id) $p->setTargetID($target_id);
-
-							$permissions[] = $p;
+							$permission_details = explode(',', $new_permission);
+							$new_permissions[$permission_details[2]] = array('module' => $permission_details[0], 'target_id' => $permission_details[1]);
 						}
-						$role->setPermissions($permissions);
+						foreach ($role->getPermissions() as $existing_permission)
+						{
+							if (!array_key_exists($existing_permission->getPermission(), $new_permissions))
+							{
+								$role->removePermission($existing_permission);
+							}
+						}
+						foreach ($new_permissions as $permission_key => $details)
+						{
+							$p = new TBGRolePermission();
+							$p->setModule($details['module']);
+							$p->setPermission($permission_key);
+							if ($details['target_id']) $p->setTargetID($details['target_id']);
+
+							$role->addPermission($p);
+						}
 						return $this->renderJSON(array('message' => $this->getI18n()->__('Permissions updated'), 'permissions_count' => count($request['permissions']), 'role_name' => $role->getName()));
 					}
 					return $this->renderTemplate('configuration/rolepermissionsedit', array('role' => $role));

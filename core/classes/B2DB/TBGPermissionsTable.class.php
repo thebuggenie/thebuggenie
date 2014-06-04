@@ -25,7 +25,7 @@
 	class TBGPermissionsTable extends TBGB2DBTable 
 	{
 
-		const B2DB_TABLE_VERSION = 1;
+		const B2DB_TABLE_VERSION = 2;
 		const B2DBNAME = 'permissions';
 		const ID = 'permissions.id';
 		const SCOPE = 'permissions.scope';
@@ -36,6 +36,7 @@
 		const TID = 'permissions.tid';
 		const ALLOWED = 'permissions.allowed';
 		const MODULE = 'permissions.module';
+		const ROLE_ID = 'permissions.role_id';
 
 		protected function _initialize()
 		{
@@ -46,8 +47,9 @@
 			parent::_addVarchar(self::MODULE, 50);
 			parent::_addForeignKeyColumn(self::UID, TBGUsersTable::getTable());
 			parent::_addForeignKeyColumn(self::GID, TBGGroupsTable::getTable());
-			parent::_addForeignKeyColumn(self::TID, Core::getTable('TBGTeamsTable'));
+			parent::_addForeignKeyColumn(self::TID, TBGTeamsTable::getTable());
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable());
+			parent::_addForeignKeyColumn(self::ROLE_ID, TBGListTypesTable::getTable());
 		}
 		
 		protected function _setupIndexes()
@@ -78,21 +80,19 @@
 			$res = $this->doDelete($crit);
 		}
 
-		public function deleteAllPermissionsForCombination($uid, $gid, $tid, $target_id = 0, $module = 'core', $scope = null)
+		public function deleteAllPermissionsForCombination($uid, $gid, $tid, $target_id = 0)
 		{
-			$scope = ($scope !== null) ? $scope : TBGContext::getScope()->getID();
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::UID, $uid);
 			$crit->addWhere(self::GID, $gid);
 			$crit->addWhere(self::TID, $tid);
-			$crit->addWhere(self::MODULE, $module);
 			$crit->addWhere(self::TARGET_ID, $target_id);
-			$crit->addWhere(self::SCOPE, $scope);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 
 			$res = $this->doDelete($crit);
 		}
 
-		public function setPermission($uid, $gid, $tid, $allowed, $module, $permission_type, $target_id, $scope)
+		public function setPermission($uid, $gid, $tid, $allowed, $module, $permission_type, $target_id, $scope, $role_id = null)
 		{
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::UID, (int) $uid);
@@ -103,6 +103,10 @@
 			$crit->addInsert(self::PERMISSION_TYPE, $permission_type);
 			$crit->addInsert(self::TARGET_ID, $target_id);
 			$crit->addInsert(self::SCOPE, $scope);
+			if ($role_id !== null)
+			{
+				$crit->addInsert(self::ROLE_ID, $role_id);
+			}
 			
 			$res = $this->doInsert($crit);
 			return $res->getInsertID();
@@ -112,6 +116,44 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::MODULE, $module_name);
+			$crit->addWhere(self::SCOPE, $scope);
+			$this->doDelete($crit);
+		}
+
+		public function deleteRolePermissions($role_id, $scope = null)
+		{
+			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::ROLE_ID, $role_id);
+			$crit->addWhere(self::SCOPE, $scope);
+			$this->doDelete($crit);
+		}
+
+		public function deleteRolePermission($role_id, $permission_key, $target_id, $scope = null)
+		{
+			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::ROLE_ID, $role_id);
+			$crit->addWhere(self::PERMISSION_TYPE, $permission_key);
+			$crit->addWhere(self::TARGET_ID, $target_id);
+			$crit->addWhere(self::SCOPE, $scope);
+			$this->doDelete($crit);
+		}
+
+		public function deletePermissionsByRoleAndUser($role_id, $user_id, $scope)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::ROLE_ID, $role_id);
+			$crit->addWhere(self::USER_ID, $user_id);
+			$crit->addWhere(self::SCOPE, $scope);
+			$this->doDelete($crit);
+		}
+
+		public function deletePermissionsByRoleAndTeam($role_id, $team_id, $scope)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::ROLE_ID, $role_id);
+			$crit->addWhere(self::TEAM_ID, $team_id);
 			$crit->addWhere(self::SCOPE, $scope);
 			$this->doDelete($crit);
 		}
@@ -198,6 +240,37 @@
 			}
 		}
 
+		public function addRolePermission($role_id, TBGRolePermission $rolepermission)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::ROLE_ID, $role_id);
+			$existing_identifiables = array('users' => array(), 'teams' => array());
+			if ($res = $this->doSelect($crit))
+			{
+				while ($row = $res->getNextRow())
+				{
+					$key = ($row->get(self::UID)) ? self::UID : self::TID;
+					$existing_identifiables[$key][$row->get($key)] = array('id' => $row->get($key), 'target_id' => $row->get(self::TARGET_ID));
+				}
+
+				foreach ($existing_identifiables as $key => $identifiables)
+				{
+					foreach ($identifiables as $identifiable)
+					{
+						$crit = $this->getCriteria();
+						$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
+						$crit->addInsert(self::PERMISSION_TYPE, $rolepermission->getPermission());
+						$crit->addInsert(self::TARGET_ID, $identifiable['target_id']);
+						$crit->addInsert($key, $identifiable['id']);
+						$crit->addInsert(self::ALLOWED, true);
+						$crit->addInsert(self::MODULE, $rolepermission->getModule());
+						$crit->addInsert(self::ROLE_ID, $role_id);
+						$res = $this->doInsert($crit);
+					}
+				}
+			}
+		}
+
 		public function getByPermissionTargetIDAndModule($permission, $target_id, $module = 'core')
 		{
 			$crit = $this->getCriteria();
@@ -240,5 +313,5 @@
 			$crit->addWhere(self::MODULE, $module);
 			$this->doDelete($crit);
 		}
-		
+
 	}

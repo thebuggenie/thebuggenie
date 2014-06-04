@@ -2,8 +2,7 @@
 	<div class="sidebar_links">
 	<?php foreach ($config_sections as $config_info): ?>
 		<?php foreach ($config_info as $section => $info): ?>
-			<?php //if ($info['module'] != 'core' && !TBGContext::getModule($info['module'])->hasConfigSettings()) continue; ?>
-			<?php $is_selected = (bool) (($selected_section == TBGSettings::CONFIGURATION_SECTION_MODULES && $section == TBGSettings::CONFIGURATION_SECTION_MODULES && $selected_subsection == $info['module']) || ($selected_section != TBGSettings::CONFIGURATION_SECTION_MODULES && $selected_section == $section)); ?>
+			<?php $is_selected = (bool) (($selected_section == TBGSettings::CONFIGURATION_SECTION_MODULES && isset($selected_subsection) && array_key_exists('module', $info) && $selected_subsection == $info['module']) || ($selected_section != TBGSettings::CONFIGURATION_SECTION_MODULES && !isset($selected_subsection) && !array_key_exists('module', $info) && $selected_section == $section)); ?>
 			<?php if (is_array($info['route'])): ?>
 				<?php $url = make_url($info['route'][0], $info['route'][1]); ?>
 			<?php else: ?>

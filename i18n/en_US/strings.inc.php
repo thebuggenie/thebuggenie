@@ -356,7 +356,7 @@
   $strings['Set up and edit workflow configuration from this section'] = 'Set up and edit workflow configuration from this section';
   $strings['Workflow'] = 'Workflow';
   $strings['Manage users, user groups, clients and user teams from this section.'] = 'Manage users, user groups, clients and user teams from this section.';
-  $strings['Users, teams, clients &amp; groups'] = 'Users, teams, clients &amp; groups';
+  $strings['Users, teams &amp; clients'] = 'Users, teams &amp; clients';
   $strings['Manage Bug Genie extensions from this section. New modules are installed from here.'] = 'Manage Bug Genie extensions from this section. New modules are installed from here.';
   $strings['Module settings'] = 'Module settings';
 

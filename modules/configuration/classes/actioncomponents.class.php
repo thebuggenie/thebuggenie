@@ -180,6 +180,8 @@
 		{
 			$this->base_id = (isset($this->base_id)) ? $this->base_id : 0;
 			$this->user_id = (isset($this->user_id)) ? $this->user_id : 0;
+			$this->team_id = (isset($this->team_id)) ? $this->team_id : 0;
+			$this->mode = ($this->user_id) ? 'user' : 'team';
 		}
 
 		public function componentWorkflowtransitionaction()

@@ -1,6 +1,6 @@
 <?php
 
-	$tbg_response->setTitle(__('Configure users, teams and groups'));
+	$tbg_response->setTitle(__('Configure users, teams and clients'));
 	$users_text = (TBGContext::getScope()->getMaxUsers()) ? __('Users (%num/%max)', array('%num' => '<span id="current_user_num_count">'.TBGUser::getUsersCount().'</span>', '%max' => TBGContext::getScope()->getMaxUsers())) : __('Users');
 	$teams_text = (TBGContext::getScope()->getMaxTeams()) ? __('Teams (%num/%max)', array('%num' => '<span id="current_team_num_count">'.TBGTeam::countAll().'</span>', '%max' => TBGContext::getScope()->getMaxTeams())) : __('Teams');
 
@@ -14,9 +14,9 @@
 				<div class="tab_menu inset">
 					<ul id="usersteamsgroups_menu">
 						<li id="tab_users" class="selected"><?php echo javascript_link_tag($users_text, array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_users', 'usersteamsgroups_menu');")); ?></li>
-						<li id="tab_groups"><?php echo javascript_link_tag(__('Groups'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_groups', 'usersteamsgroups_menu');")); ?></li>
 						<li id="tab_teams"><?php echo javascript_link_tag($teams_text, array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_teams', 'usersteamsgroups_menu');")); ?></li>
 						<li id="tab_clients"><?php echo javascript_link_tag(__('Clients'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_clients', 'usersteamsgroups_menu');")); ?></li>
+						<li id="tab_groups" class="right modest"><?php echo javascript_link_tag(__('Groups'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_groups', 'usersteamsgroups_menu');")); ?></li>
 					</ul>
 				</div>
 				<div id="usersteamsgroups_menu_panes">

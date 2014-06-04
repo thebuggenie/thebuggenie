@@ -1373,10 +1373,9 @@
 			if ($recache) self::cacheAllPermissions();
 		}
 
-		public static function removeAllPermissionsForCombination($uid, $gid, $tid, $target_id = 0, $module = 'core', $scope = null)
+		public static function removeAllPermissionsForCombination($uid, $gid, $tid, $target_id = 0)
 		{
-			$scope = ($scope !== null) ? $scope : self::getScope()->getID();
-			TBGPermissionsTable::getTable()->deleteAllPermissionsForCombination($uid, $gid, $tid, $target_id, $module, $scope);
+			TBGPermissionsTable::getTable()->deleteAllPermissionsForCombination($uid, $gid, $tid, $target_id);
 			self::clearPermissionsCache();
 		}
 
@@ -1392,12 +1391,15 @@
 		 * @param boolean $allowed Allowed or not
 		 * @param integer $scope[optional] A specified scope if not the default
 		 */
-		public static function setPermission($permission_type, $target_id, $module, $uid, $gid, $tid, $allowed, $scope = null)
+		public static function setPermission($permission_type, $target_id, $module, $uid, $gid, $tid, $allowed, $scope = null, $role_id = null)
 		{
 			if ($scope === null) $scope = self::getScope()->getID();
-			
-			self::removePermission($permission_type, $target_id, $module, $uid, $gid, $tid, false, $scope);
-			TBGPermissionsTable::getTable()->setPermission($uid, $gid, $tid, $allowed, $module, $permission_type, $target_id, $scope);
+
+			if ($role_id === null)
+			{
+				self::removePermission($permission_type, $target_id, $module, $uid, $gid, $tid, false, $scope);
+			}
+			TBGPermissionsTable::getTable()->setPermission($uid, $gid, $tid, $allowed, $module, $permission_type, $target_id, $scope, $role_id);
 			self::clearPermissionsCache();
 
 			self::cacheAllPermissions();

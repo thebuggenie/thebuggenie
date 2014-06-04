@@ -521,7 +521,6 @@
 								{
 									TBGContext::logout();
 									throw new Exception('No such login');
-									//TBGContext::getResponse()->headerRedirect(TBGContext::getRouting()->generate('login'));
 								}
 							}
 						}

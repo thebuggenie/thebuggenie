@@ -613,11 +613,13 @@
 			TBGSavedSearchesTable::getTable()->upgrade(TBGSavedSearchesTable3dot2::getTable());
 			TBGSettingsTable::getTable()->upgrade(TBGSettingsTable3dot2::getTable());
 			TBGNotificationsTable::getTable()->upgrade(TBGNotificationsTable3dot2::getTable());
+			TBGPermissionsTable::getTable()->upgrade(TBGPermissionsTable3dot2::getTable());
 			TBGUserArticlesTable::getTable()->create();
 			TBGApplicationPasswordsTable::getTable()->create();
 			TBGUserNotificationSettingsTable::getTable()->create();
 
 			$transaction = \b2db\Core::startTransaction();
+
 			// Upgrade user passwords
 			switch ($request['upgrade_passwords'])
 			{
