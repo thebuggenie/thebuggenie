@@ -10,7 +10,7 @@
 		<?php include_component('leftmenu', array('selected_section' => TBGSettings::CONFIGURATION_SECTION_USERS)); ?>
 		<td valign="top" style="padding-left: 15px;">
 			<div style="width: 730px;">
-				<h3><?php echo __('Configure users, teams and groups'); ?></h3>
+				<h3><?php echo __('Configure users, teams and clients'); ?></h3>
 				<div class="tab_menu inset">
 					<ul id="usersteamsgroups_menu">
 						<li id="tab_users" class="selected"><?php echo javascript_link_tag($users_text, array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_users', 'usersteamsgroups_menu');")); ?></li>
