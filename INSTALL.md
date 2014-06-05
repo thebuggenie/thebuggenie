@@ -7,20 +7,35 @@ visit the FAQ: http://issues.thebuggenie.com/wiki/TheBugGenie:FAQ
 GENERAL INSTALLATION NOTES
 --------------------------
 
-### via web
+### 1: Download and install composer.json
 
-To install The Bug Genie, copy this folder to your webserver, and visit the
-subfolder `/thebuggenie/index.php` in your web-browser.
+The Bug Genie uses a dependancy resolution tool called composer, which must
+be downloaded and run before The Bug Genie can be installed or used.
+
+Download and install composer.json from http://getcomposer.org
+
+
+### 2: Install The Bug Genie dependencies
+
+After you have followed the instructions in step 1, run
+`php composer.phar install`
+from the main directory of The Bug Genie. Composer will download and install
+all necessary components for The Bug Genie, and you can continue to the actual
+installation as soon as it is completed.
+
+
+### 3: Install via web
+
+Visit the subfolder `/thebuggenie/index.php` in your web-browser.
 
 The installation script will start automatically and guide you through the
 installation process.
 
 
-### via command-line (unix/linux only)
+### 3: Install via command-line (unix/linux only)
 
-You can use the thebuggenie command-line client to install, if you prefer that.
+You can use the included command-line client to install, if you prefer that.
 Run `./tbg_cli` from this folder.
 
 To install:
-
-    ./tbg_cli install
+`./tbg_cli install`
