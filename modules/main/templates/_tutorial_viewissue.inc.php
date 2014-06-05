@@ -52,34 +52,27 @@
 			button: '<?php echo __('That makes sense'); ?>'
 		},
 		8: {
-			highlight: {element: 'issue_view', blocked: true},
+			highlight: {element: 'issue_main', blocked: true},
 			message: "<h3><?php echo __('A few notes about editing issues'); ?></h3><?php echo __("Almost everything about an issue can be edited, and - depending on your workflow setup - some items may be locked from changes after a certain step (for example not being allowed to change the description on 'Confirmed' issues)."); ?>",
 			messageSize: 'large',
 			messagePosition: 'center',
 			button: '<?php echo __('That also makes sense'); ?>'
 		},
 		9: {
-			highlight: {element: 'issue_view', blocked: true},
+			highlight: {element: 'issue_main', blocked: true},
 			message: "<h3><?php echo __('A few notes about editing issues'); ?></h3><?php echo __('To edit anything about an issue, move your mouse over the detail you want to change and press the edit icon that appears (usually to the left).'); ?><br><br><?php echo __("Any changes you make are temporary until you press the 'Save changes' button below the title (this button appears only when you have unsaved changes)."); ?>",
 			messageSize: 'large',
 			messagePosition: 'center',
 			button: '<?php echo __('I see'); ?>'
 		},
 		10: {
-			highlight: {element: 'issue_view', blocked: true},
+			highlight: {element: 'issue_main', blocked: true},
 			message: "<h3><?php echo __('A few notes about editing issues'); ?></h3><?php echo __('This does not apply to workflow transitions - which happens instantly when you press a workflow button. However, most workflows allows you to post comments or change details about the issue during the workflow.'); ?><br><br><?php echo __("Keep in mind that most of this can be configured through the workflow configuration."); ?>",
 			messageSize: 'large',
 			messagePosition: 'center',
 			button: "<?php echo __("I think I'm good to go"); ?>"
 		},
 		11: {
-			highlight: {element: 'viewissue_menu', blocked: true, delay: 1000},
-			message: "<h3><?php echo __('Just one more thing'); ?></h3><?php echo __("These are the bottom panels, containing user comments, the issue log, code changes and more."); ?>",
-			messageSize: 'medium',
-			messagePosition: 'above',
-			button: "<?php echo __("I'll be sure to check that out"); ?>"
-		},
-		12: {
 			message: "<h3><?php echo __('Good to go!'); ?></h3><?php echo __("That's all for this tutorial. Don't forget that you can always get help for any page by using the 'Help' menu entry in your user menu at the top right corner."); ?><br><br><?php echo __('Have fun using The Bug Genie!'); ?>",
 			messageSize: 'large',
 			messagePosition: 'center',
