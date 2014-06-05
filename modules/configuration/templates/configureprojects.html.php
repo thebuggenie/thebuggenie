@@ -3,7 +3,7 @@
 	$tbg_response->setTitle(__('Manage projects'));
 	
 ?>
-<table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
+<table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0 class="configuration_page">
 	<tr>
 		<?php include_component('leftmenu', array('selected_section' => 10)); ?>
 		<td valign="top" style="padding-left: 15px;">

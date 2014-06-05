@@ -3,11 +3,18 @@
 	$tbg_response->setTitle(__('Configure issue types'));
 
 ?>
-<table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
+<table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0 class="configuration_page">
 	<tr>
 		<?php include_component('leftmenu', array('selected_section' => 6)); ?>
 		<td valign="top" style="padding-left: 15px;">
 			<div style="width: 730px;" id="config_issuetypes">
+				<h3><?php echo __('Configure issue types'); ?></h3>
+				<div class="content faded_out">
+					<p>
+						<?php echo __('All issue types have their own settings for which fields are available / required on both the reporting page and on the issue overview page.'); ?>
+						<?php echo __('You can read more about how issue types and schemes in The Bug Genie works and is set up in the %online_documentation', array('%online_documentation' => link_tag('http://issues.thebuggenie.com/wiki/IssuetypeScheme', __('online documentation')))); ?>
+					</p>
+				</div>
 				<div style="clear: both; margin-top: 15px;" class="tab_menu inset">
 					<ul id="issuetypes_menu">
 						<li id="tab_types"<?php if ($mode == 'issuetypes'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('configure_issuetypes'), __('Available issue types')); ?></li>
@@ -21,7 +28,7 @@
 					<?php if ($mode == 'issuetypes'): ?>
 						<div id="tab_types_pane" style="padding-top: 0;">
 							<div class="content">
-								<?php echo __('In this tab you can add/remove/edit what issue types are available to issue type schemes. If you add a new issue type on this page, remember to associate it to an issue type scheme on the %issue_type_schemes tab to get it to show up for users.', array('%issue_type_schemes' => javascript_link_tag(__('Issue type schemes'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_schemes', 'issuetypes_menu');")))); ?>
+								<?php echo __('In this tab you can add/remove/edit what issue types are available to issue type schemes. If you add a new issue type on this page, remember to associate it to an issue type scheme on the %issue_type_schemes tab to get it to show up for users.', array('%issue_type_schemes' => link_tag(make_url('configure_issuetypes_schemes'), __('Issue type schemes')))); ?>
 							</div>
 							<div class="lightyellowbox" style="margin: 5px 0 0 0;">
 								<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuetypes_add'); ?>" onsubmit="TBG.Config.Issuetype.add('<?php echo make_url('configure_issuetypes_add'); ?>');return false;" id="add_issuetype_form">

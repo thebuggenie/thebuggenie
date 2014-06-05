@@ -5,7 +5,7 @@
 	$teams_text = (TBGContext::getScope()->getMaxTeams()) ? __('Teams (%num/%max)', array('%num' => '<span id="current_team_num_count">'.TBGTeam::countAll().'</span>', '%max' => TBGContext::getScope()->getMaxTeams())) : __('Teams');
 
 ?>
-<table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
+<table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0 class="configuration_page">
 	<tr>
 		<?php include_component('leftmenu', array('selected_section' => TBGSettings::CONFIGURATION_SECTION_USERS)); ?>
 		<td valign="top" style="padding-left: 15px;">
