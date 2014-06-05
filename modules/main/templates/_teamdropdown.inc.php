@@ -2,11 +2,11 @@
 	<span class="faded_out"><?php echo __('No such team'); ?></span>
 <?php else: ?>
 <div class="userdropdown">
-	<a href="javascript:void(0);" class="image"<?php if ($tbg_user->isMemberOfTeam($team)): ?> class="friend" title="<?php echo __('You are a member of this team'); ?>"<?php endif; ?>>
+	<a href="javascript:void(0);" class="dropper userlink<?php if ($tbg_user->isMemberOfTeam($team)) echo ' friend'; ?>">
 		<?php echo image_tag('icon_team.png', array('class' => "avatar small")); ?>
 		<?php echo $team->getName(); ?>
 	</a>
-	<div id="team_<?php echo $team->getID() . '_' . $rnd_no; ?>" style="z-index: 100; width: 300px; margin-top: 10px; display: none; position: absolute;" class="rounded_box white shadowed user_popup dropdown_box leftie">
+	<div id="team_<?php echo $team->getID() . '_' . $rnd_no; ?>" style="display: none;" class="rounded_box white shadowed user_popup dropdown_box leftie">
 		<div style="padding: 3px;">
 			<div style="padding: 2px; width: 36px; height: 36px; text-align: center; background-color: #FFF; border: 1px solid #DDD; float: left;">
 				<?php echo image_tag('team_large.png', array('alt' => ' ', 'style' => "width: 36px; height: 36px;")); ?>
