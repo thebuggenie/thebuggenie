@@ -90,9 +90,8 @@
 					if (array_key_exists('target_id', $permission)) $p->setTargetID($permission['target_id']);
 					if (array_key_exists('module', $permission)) $p->setModule($permission['module']);
 					
-					$permissions[$k] = $p;
+					$role->addPermission($p);
 				}
-				$role->setPermissions($permissions);
 			}
 		}
 		
