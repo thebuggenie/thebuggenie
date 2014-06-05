@@ -659,15 +659,6 @@
 			<?php foreach ($issue->getFiles() as $file_id => $file): ?>
 				<?php include_component('main/attachedfile', array('base_id' => 'viewissue_files', 'mode' => 'issue', 'issue' => $issue, 'file' => $file)); ?>
 			<?php endforeach; ?>
-			<?php foreach ($issue->getFiles() as $file_id => $file): ?>
-				<?php include_component('main/attachedfile', array('base_id' => 'viewissue_files', 'mode' => 'issue', 'issue' => $issue, 'file' => $file)); ?>
-			<?php endforeach; ?>
-			<?php foreach ($issue->getFiles() as $file_id => $file): ?>
-				<?php include_component('main/attachedfile', array('base_id' => 'viewissue_files', 'mode' => 'issue', 'issue' => $issue, 'file' => $file)); ?>
-			<?php endforeach; ?>
-			<?php foreach ($issue->getFiles() as $file_id => $file): ?>
-				<?php include_component('main/attachedfile', array('base_id' => 'viewissue_files', 'mode' => 'issue', 'issue' => $issue, 'file' => $file)); ?>
-			<?php endforeach; ?>
 		</ul>
 	</div>
 </fieldset>
