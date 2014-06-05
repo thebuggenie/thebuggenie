@@ -87,7 +87,7 @@ if ($dirname != '/')
 				</div>
 			</div>
 			<div class="feature">
-				<b>See more information and examples at <a href="http://www.thebuggenie.com">www.thebuggenie.com</a></b>
+				<b>See more information and examples at <a href="http://issues.thebuggenie.com/wiki/Category:TheBugGenie:Installation">www.thebuggenie.com</a></b>
 			</div>
 		</div>
 		<h2 style="margin-top: 10px;">Server / URL information</h2>
