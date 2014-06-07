@@ -191,7 +191,10 @@
 								}
 								echo __("%field_name changed: %previous_value => %new_value", array('%field_name' => $customdatatype->getName(), '%previous_value' => '<strong>'.$old_value.'</strong>', '%new_value' => '<strong>'.$new_value.'</strong>'));
 							}
-							echo __('Custom field changed');
+							else
+							{
+								echo __('Custom field changed');
+							}
 						}
 						break;
 					case TBGLogTable::LOG_ISSUE_USERS:
