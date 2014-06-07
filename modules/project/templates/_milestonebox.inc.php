@@ -20,7 +20,7 @@ $all_columns = $milestone->getProject()->getIssueFields(false, array('status', '
 							if (!isset($all_columns[$key])) { continue; }
 							if ($key == 'estimated_time' || $key == 'spent_time') { continue; }
 						?>
-							<th><?php echo $all_columns[$key]['label']; ?></th>
+							<th><?php echo __($all_columns[$key]['label']); ?></th>
 						<?php endforeach ?>
 						<?php if (isset($selected_columns['estimated_time'])) : ?>
 							<th class="pointsandtime"><?php echo __('Est. hrs'); ?></th>
