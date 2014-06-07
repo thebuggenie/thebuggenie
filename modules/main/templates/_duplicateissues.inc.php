@@ -3,4 +3,4 @@
 		<?php include_template('main/relatedissue', array('issue' => $duplicate_issue, 'related_issue' => $issue)); ?>
 	<?php endforeach; ?>
 </ul>
-<div class="no_items" id="no_related_issues"<?php if (count($duplicate_issues) > 0): ?> style="display: none;"<?php endif; ?>><?php echo __('This issue does not have any child issues'); ?></div>
+<div class="no_items" id="no_related_issues"<?php if (count($duplicate_issues) > 0): ?> style="display: none;"<?php endif; ?>><?php echo __('This issue does not have any duplicates'); ?></div>
