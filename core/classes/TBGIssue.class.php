@@ -4501,7 +4501,7 @@
 								$this->addLogEntry(TBGLogTable::LOG_ISSUE_UPDATE_DESCRIPTION, TBGContext::getI18n()->__("Description updated"), $original_value, $compare_value);
 								break;
 							case '_reproduction_steps':
-								$this->addLogEntry(TBGLogTable::LOG_ISSUE_REPRODUCABILITY, TBGContext::getI18n()->__("Reproduction steps updated"), $original_value, $compare_value);
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_UPDATE_REPRODUCTIONSTEPS, TBGContext::getI18n()->__("Reproduction steps updated"), $original_value, $compare_value);
 								break;
 							case '_category':
 								if ($original_value != 0)
