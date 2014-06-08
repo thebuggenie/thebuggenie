@@ -73,6 +73,7 @@
 		const LOG_ISSUE_UNBLOCKED = 42;
 		const LOG_ISSUE_UPDATE_TITLE = 43;
 		const LOG_ISSUE_UPDATE_DESCRIPTION = 44;
+		const LOG_ISSUE_UPDATE_REPRODUCTIONSTEPS = 45;
 		
 		const B2DBNAME = 'log';
 		const ID = 'log.id';
