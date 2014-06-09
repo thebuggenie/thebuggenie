@@ -10,19 +10,23 @@
 				switch($item->getChangeType())
 				{
 					case TBGLogTable::LOG_ISSUE_CREATED:
+						echo image_tag('icon_open_new.png');
 						echo __('The issue was created');
 						break;
 					case TBGLogTable::LOG_ISSUE_CLOSE:
+						echo image_tag('icon_close.png');
 						echo __('The issue was closed');
 						break;
 					case TBGLogTable::LOG_ISSUE_REOPEN:
+						echo image_tag('icon_open_new.png');
 						echo __('The issue was reopened');
 						break;
 					case TBGLogTable::LOG_ISSUE_DEPENDS:
-						echo __('The issue was reopened');
+						echo image_tag('icon_new_related_issue.png');
+						echo __('The issues dependency changed: %change', array('%change' => '<strong>' . $item->getText() . '</strong>'));
 						break;
 					case TBGLogTable::LOG_ISSUE_UPDATE:
-						echo __('The issue was updated: %change', array('%change' => $item->getText()));
+						echo __('The issue was updated: %change', array('%change' => '<strong>' . $item->getText() . '</strong>'));
 						if (trim($item->getPreviousValue()) || trim($item->getCurrentValue()))
 						{
 							echo '<br>';
@@ -30,10 +34,12 @@
 						}
 						break;
 					case TBGLogTable::LOG_ISSUE_UPDATE_TITLE:
-						echo __('Title updated: %previous_value => %new_value', array('%previous_value' => $item->getPreviousValue(), '%new_value' => $item->getCurrentValue()));
+						echo image_tag('icon_title.png');
+						echo __('Title updated: %previous_value => %new_value', array('%previous_value' => '<strong>' . $item->getPreviousValue() . '</strong>', '%new_value' => '<strong>' . $item->getCurrentValue() . '</strong>'));
 						break;
 					case TBGLogTable::LOG_ISSUE_UPDATE_DESCRIPTION:
-						echo __('Description updated: %previous_value => %new_value', array('%previous_value' => $item->getPreviousValue(), '%new_value' => $item->getCurrentValue()));
+						echo image_tag('icon_description.png');
+						echo __('Description updated: %previous_value => %new_value', array('%previous_value' => '<strong>' . $item->getPreviousValue() . '</strong>', '%new_value' => '<strong>' . $item->getCurrentValue() . '</strong>'));
 						break;
 					case TBGLogTable::LOG_ISSUE_STATUS:
 						echo image_tag('icon_status.png');
@@ -107,6 +113,22 @@
 							echo __("Milestone changed: %previous_value => %new_value", array('%previous_value' => '<strong>'.$previous_value.'</strong>', '%new_value' => '<strong>'.$new_value.'</strong>'));
 						}
 						break;
+					case TBGLogTable::LOG_ISSUE_OWNED:
+						echo image_tag('icon_user.png');
+						if ($item->hasChangeDetails())
+						{
+							echo __("Owned by changed to %user", array('%user' => '<strong>'.$item->getText().'</strong>'));
+						}
+						break;
+					case TBGLogTable::LOG_ISSUE_POSTED:
+						echo image_tag('icon_user.png');
+						if ($item->hasChangeDetails())
+						{
+							$previous_value = ($item->getPreviousValue()) ? (($old_item = TBGContext::factory()->TBGUser($item->getPreviousValue())) ? __($old_item->getName()) : __('Unknown')) : __('Not determined');
+							$new_value = ($item->getCurrentValue()) ? (($new_item = TBGContext::factory()->TBGUser($item->getCurrentValue())) ? __($new_item->getName()) : __('Unknown')) : __('Not determined');
+							echo __("Posted by changed: %previous_value => %new_value", array('%previous_value' => '<strong>'.$previous_value.'</strong>', '%new_value' => '<strong>'.$new_value.'</strong>'));
+						}
+						break;
 					case TBGLogTable::LOG_ISSUE_CUSTOMFIELD_CHANGED:
 						echo image_tag('icon_customdatatype.png');
 						if ($item->hasChangeDetails())
@@ -114,7 +136,6 @@
 							$key_data = explode(':', $item->getText());
 							$key = $key_data[0];
 							$customdatatype = TBGCustomDatatype::getByKey($key);
-
 							if ($customdatatype instanceof TBGCustomDatatype)
 							{
 								$old_value = $item->getPreviousValue();
@@ -124,6 +145,10 @@
 									case TBGCustomDatatype::INPUT_TEXT:
 									case TBGCustomDatatype::INPUT_TEXTAREA_SMALL:
 									case TBGCustomDatatype::INPUT_TEXTAREA_MAIN:
+										break;
+									case TBGCustomDatatype::DATE_PICKER:
+										$old_value = ($old_value != null) ? date('Y-m-d', (int)$old_value) : TBGContext::getI18n()->__('Not determined');
+										$new_value = ($new_value != null) ? date('Y-m-d', (int)$new_value) : TBGContext::getI18n()->__('Not determined');
 										break;
 									case TBGCustomDatatype::EDITIONS_CHOICE:
 									case TBGCustomDatatype::COMPONENTS_CHOICE:
@@ -191,7 +216,44 @@
 								}
 								echo __("%field_name changed: %previous_value => %new_value", array('%field_name' => $customdatatype->getName(), '%previous_value' => '<strong>'.$old_value.'</strong>', '%new_value' => '<strong>'.$new_value.'</strong>'));
 							}
-							echo __('Custom field changed');
+							else 
+							{
+								echo __('Custom field changed');
+							}
+						}
+						break;
+					case TBGLogTable::LOG_ISSUE_PAIN_BUG_TYPE:
+						echo image_tag('icon_priority.png');
+						if ($item->hasChangeDetails())
+						{
+							$previous_value = $item->getPreviousValue() ? TBGIssue::getPainTypesOrLabel('pain_bug_type', $item->getPreviousValue()) : __('Not determined');
+							$new_value = $item->getCurrentValue() ? TBGIssue::getPainTypesOrLabel('pain_bug_type', $item->getCurrentValue()) : __('Not determined');
+							echo __("Pain bug type on issue changed: %previous_value => %new_value", array('%previous_value' => '<strong>'.$previous_value.'</strong>', '%new_value' => '<strong>'.$new_value.'</strong>'));
+						}
+						break;
+					case TBGLogTable::LOG_ISSUE_PAIN_EFFECT:
+						echo image_tag('icon_priority.png');
+						if ($item->hasChangeDetails())
+						{
+							$previous_value = $item->getPreviousValue() ? TBGIssue::getPainTypesOrLabel('pain_effect', $item->getPreviousValue()) : __('Not determined');
+							$new_value = $item->getCurrentValue() ? TBGIssue::getPainTypesOrLabel('pain_effect', $item->getCurrentValue()) : __('Not determined');
+							echo __("Pain effect on issue changed: %previous_value => %new_value", array('%previous_value' => '<strong>'.$previous_value.'</strong>', '%new_value' => '<strong>'.$new_value.'</strong>'));
+						}
+						break;
+					case TBGLogTable::LOG_ISSUE_PAIN_LIKELIHOOD:
+						echo image_tag('icon_priority.png');
+						if ($item->hasChangeDetails())
+						{
+							$previous_value = $item->getPreviousValue() ? TBGIssue::getPainTypesOrLabel('pain_likelihood', $item->getPreviousValue()) : __('Not determined');
+							$new_value = $item->getCurrentValue() ? TBGIssue::getPainTypesOrLabel('pain_likelihood', $item->getCurrentValue()) : __('Not determined');
+							echo __("Likelihood on issue changed: %previous_value => %new_value", array('%previous_value' => '<strong>'.$previous_value.'</strong>', '%new_value' => '<strong>'.$new_value.'</strong>'));
+						}
+						break;
+					case TBGLogTable::LOG_ISSUE_PAIN_CALCULATED:
+						echo image_tag('icon_percent.png');
+						if ($item->hasChangeDetails())
+						{
+							echo __("Calculated pain on issue changed: %value", array('%value' => '<strong>'.$item->getText().'</strong>'));
 						}
 						break;
 					case TBGLogTable::LOG_ISSUE_USERS:
@@ -218,10 +280,58 @@
 							echo __("Percent complete changed: %previous_value => %new_value", array('%previous_value' => '<strong>'.(int) $item->getPreviousValue().'</strong>', '%new_value' => '<strong>'.(int) $item->getCurrentValue().'</strong>'));
 						}
 						break;
+					case TBGLogTable::LOG_ISSUE_BLOCKED:
+						echo image_tag('icon_locked.png');
+						echo __('Blocking status changed: %value', array('%value' => '<strong>'. __('This issue is blocking the next release').'</strong>'));
+						break;
+					case TBGLogTable::LOG_ISSUE_UNBLOCKED:
+						echo image_tag('icon_unlocked.png');
+						echo __('Blocking status changed: %value', array('%value' => '<strong>'. __('This issue is no more blocking the next release').'</strong>'));
+						break;
+					case TBGLogTable::LOG_ISSUE_TIME_ESTIMATED:
+						echo image_tag('icon_estimated_time.png');
+						if ($item->hasChangeDetails())
+						{
+							echo __("Estimated time changed: %value", array('%value' => '<strong>'.$item->getText().'</strong>'));
+ 						}
+						break;
+					case TBGLogTable::LOG_AFF_ADD:
+						echo image_tag('icon_affected_items.png');
+						if ($item->hasChangeDetails())
+						{
+							echo __("Affected item added: %value", array('%value' => '<strong>'.$item->getText().'</strong>'));
+ 						}
+						break;
+					case TBGLogTable::LOG_AFF_UPDATE:
+						echo image_tag('icon_affected_items.png');
+						if ($item->hasChangeDetails())
+						{
+							echo __("Affected item updated: %value", array('%value' => '<strong>'.$item->getText().'</strong>'));
+ 						}
+						break;
+					case TBGLogTable::LOG_AFF_DELETE:
+						echo image_tag('icon_affected_items.png');
+						if ($item->hasChangeDetails())
+						{
+							echo __("Affected time removed: %value", array('%value' => '<strong>'.$item->getText().'</strong>'));
+ 						}
+						break;
+					case TBGLogTable::LOG_ISSUE_UPDATE_REPRODUCTIONSTEPS:
+						echo image_tag('icon_reproducability.png');
+						if ($item->hasChangeDetails())
+						{
+							$previous_value = $item->getPreviousValue() ? $item->getPreviousValue()  : __('Not determined');
+							$new_value = $item->getCurrentValue() ? $item->getCurrentValue() : __('Not determined');
+							echo __("Reproduction steps changed: %previous_value => %new_value", array('%previous_value' => '<strong>'.$previous_value.'</strong>', '%new_value' => '<strong>'.$new_value.'</strong>'));
+						}
+						break;
 					default:
 						echo $item->getChangeType();
 				}
-				if (!$item->hasChangeDetails()) echo $item->getText();
+				if (!$item->hasChangeDetails())
+				{
+					echo $item->getText();
+				}
 			}
 			catch (Exception $e)
 			{
