@@ -322,7 +322,10 @@
 			{
 				$dsn .= ';port=' . self::getPort();
 			}
-			$dsn .= ';dbname='.self::getDBname();
+			if (self::getDBname())
+			{
+				$dsn .= ';dbname='.self::getDBname();
+			}
 			self::$_dsn = $dsn;
 		}
 
