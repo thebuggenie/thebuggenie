@@ -510,10 +510,11 @@
 		 */
 		public static function setCLIRouting($module, $action)
 		{
-			self::$_routing->setCurrentRouteModule($module);
-			self::$_routing->setCurrentRouteAction($action);
-			self::$_routing->setCurrentRouteName('cli');
-			self::$_routing->setCurrentRouteCSRFenabled(false);
+			$routing = self::getRouting();
+			$routing->setCurrentRouteModule($module);
+			$routing->setCurrentRouteAction($action);
+			$routing->setCurrentRouteName('cli');
+			$routing->setCurrentRouteCSRFenabled(false);
 		}
 
 		/**
