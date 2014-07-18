@@ -397,7 +397,8 @@
 
 						$this->cliEcho("Finishing installation... \n", 'white', 'bold');
 						$installed_string = TBGSettings::getMajorVer() . '.' . TBGSettings::getMinorVer() . ', installed ' . date('d.m.Y H:i');
-						if (!is_writable(THEBUGGENIE_PATH . 'installed'))
+						if ((file_exists(THEBUGGENIE_PATH . 'installed') && !is_writable(THEBUGGENIE_PATH . 'installed')) ||
+						    (!file_exists(THEBUGGENIE_PATH . 'installed') && !is_writable(THEBUGGENIE_PATH)))
 						{
 							$this->cliEcho("\n");
 							$this->cliEcho("Could not create the 'installed' file.\n", 'red', 'bold');
