@@ -1218,6 +1218,10 @@ table.cleantable th { text-align: center; }
 .workflow_step_transition_name { font-weight: bold; font-size: 0.9em; font-style: italic; }
 .workflow_step_transition_outgoing_step { margin-left: 5px; font-size: 0.95em; color: #AAA; font-weight: normal; font-style: italic; }
 
+#workflow_transition_actions_validations { margin-bottom: 100px;}
+#workflow_transition_actions_validations h3 { margin-top: 25px; position: relative; }
+#workflow_transition_actions_validations h3 ul { margin: 25px 3px 0 0; font-size: 0.8em; }
+#workflow_transition_actions_validations h3 ul#add_post_action { top: auto; bottom: 0; margin-bottom: 30px; }
 #workflow_details_transition, #workflow_details_step { margin-top: 0; float: left; width: 420px; }
 #workflow_details_transition label, #workflow_details_step label { font-size: 0.9em; }
 #workflow_details_transition li, #workflow_details_step li { margin-bottom: 5px; }

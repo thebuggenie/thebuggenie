@@ -186,19 +186,20 @@
 
 		public function componentWorkflowtransitionaction()
 		{
-			$available_assignees = array();
+			$available_assignees_users = array();
 			foreach (TBGContext::getUser()->getTeams() as $team)
 			{
 				foreach ($team->getMembers() as $user)
 				{
-					$available_assignees[$user->getID()] = $user;
+					$available_assignees_users[$user->getID()] = $user;
 				}
 			}
 			foreach (TBGContext::getUser()->getFriends() as $user)
 			{
-				$available_assignees[$user->getID()] = $user;
+				$available_assignees_users[$user->getID()] = $user;
 			}
-			$this->available_assignees = $available_assignees;
+			$this->available_assignees_teams = TBGTeam::getAll();
+			$this->available_assignees_users = $available_assignees_users;
 		}
 
 		public function componentUserscopes()

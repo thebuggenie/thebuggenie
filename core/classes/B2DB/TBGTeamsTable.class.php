@@ -59,6 +59,14 @@
 			return (bool) $this->doCount($crit);
 		}
 
+		public function doesIDExist($id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::ONDEMAND, false);
+			$crit->addWhere(self::ID, $id);
+			return $this->doCount($crit);
+		}
+
 		public function quickfind($team_name)
 		{
 			$crit = $this->getCriteria();

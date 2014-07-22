@@ -20,7 +20,7 @@
 	 */
 	class TBGWorkflowTransitionAction extends TBGIdentifiableScopedClass
 	{
-		
+
 		const ACTION_ASSIGN_ISSUE_SELF = 'assign_self';
 		const ACTION_ASSIGN_ISSUE = 'assign_user';
 		const ACTION_CLEAR_ASSIGNEE = 'clear_assignee';
@@ -199,7 +199,16 @@
 				case self::ACTION_ASSIGN_ISSUE:
 					if ($this->getTargetValue())
 					{
-						$issue->setAssignee(TBGContext::factory()->TBGUser((int) $this->getTargetValue()));
+						$target_details = explode('_', $this->_target_value);
+						if ($target_details[0] == 'user')
+						{
+							$assignee = TBGUser::getB2DBTable()->selectById((int) $target_details[1]);
+						}
+						else
+						{
+							$assignee = TBGTeam::getB2DBTable()->selectById((int) $target_details[1]);
+						}
+						$issue->setAssignee($assignee);
 					}
 					else
 					{
@@ -207,10 +216,10 @@
 						switch ($request['assignee_type'])
 						{
 							case 'user':
-								$assignee = TBGContext::factory()->TBGUser($request['assignee_id']);
+								$assignee = TBGUser::getB2DBTable()->selectById((int) $request['assignee_id']);
 								break;
 							case 'team':
-								$assignee = TBGContext::factory()->TBGTeam($request['assignee_id']);
+								$assignee = TBGTeam::getB2DBTable()->selectById((int) $request['assignee_id']);
 								break;
 						}
 						if ((bool) $request->getParameter('assignee_teamup', false) && $assignee instanceof TBGUser && $assignee->getID() != TBGContext::getUser()->getID())
@@ -287,7 +296,8 @@
 			switch ($this->_action_type)
 			{
 				case self::ACTION_ASSIGN_ISSUE:
-					return (bool) TBGUser::doesIDExist($this->_target_value);
+					$target_details = explode('_', $this->_target_value);
+					return (bool) ($target_details[0] == 'user') ? TBGUser::doesIDExist($target_details[1]) : TBGTeam::doesIDExist($target_details[1]);
 					break;
 				case self::ACTION_SET_PERCENT:
 					return (bool) ($this->_target_value > -1);

@@ -26,6 +26,7 @@
 		const RULE_RESOLUTION_VALID = 'valid_resolution';
 		const RULE_REPRODUCABILITY_VALID = 'valid_reproducability';
 		const RULE_PRIORITY_VALID = 'valid_priority';
+		const RULE_TEAM_MEMBERSHIP_VALID = 'valid_team';
 
 		/**
 		 * @Column(type="string", length=100, name="rule")
@@ -148,13 +149,21 @@
 			{
 				$fieldname = 'TBGPriority';
 			}
+			elseif ($this->_name == self::RULE_TEAM_MEMBERSHIP_VALID)
+			{
+				$fieldname = 'TBGTeam';
+			}
 			$values = explode(',', $this->getRuleValue());
 			$return_values = array();
 			foreach ($values as $value)
 			{
 				try
 				{
-					$return_values[] = TBGContext::factory()->$fieldname((int) $value)->getName();
+					$field = $fieldname::getB2DBTable()->selectByID((int) $value);
+					if ($field instanceof TBGIdentifiable)
+					{
+						$return_values[] = $field->getName();
+					}
 				}
 				catch (Exception $e) {}
 			}
@@ -179,12 +188,17 @@
 			{
 				$fieldname = 'TBGPriority';
 			}
+			elseif ($this->_name == self::RULE_TEAM_MEMBERSHIP_VALID)
+			{
+				$fieldname = 'TBGTeam';
+			}
 			switch ($this->_name)
 			{
 				case self::RULE_STATUS_VALID:
 				case self::RULE_RESOLUTION_VALID:
 				case self::RULE_REPRODUCABILITY_VALID:
 				case self::RULE_PRIORITY_VALID:
+				case self::RULE_TEAM_MEMBERSHIP_VALID:
 					$value = ($value instanceof $fieldname) ? $value->getID() : $value;
 					return ($this->getRuleValue()) ? in_array($value, explode(',', $this->getRuleValue())) : (bool) $value;
 					break;
@@ -200,6 +214,37 @@
 					$num_issues = (int) $this->getRuleValue();
 					return ($num_issues) ? (bool) (count(TBGContext::getUser()->getUserAssignedIssues()) < $num_issues) : true;
 					break;
+				case self::RULE_TEAM_MEMBERSHIP_VALID:
+					$valid_items = explode(',', $this->getRuleValue());
+					$teams = TBGTeam::getAll();
+					if ($this->isPost())
+					{
+						if ($input instanceof TBGIssue)
+						{
+							$assignee = $input->getAssignee();
+						}
+					}
+					else
+					{
+						$assignee = TBGContext::getUser();
+					}
+					if ($assignee instanceof TBGUser)
+					{
+						foreach ($valid_items as $team_id)
+						{
+							if ($assignee->isMemberOfTeam($teams[$team_id]))
+								return true;
+						}
+					}
+					elseif ($assignee instanceof TBGTeam)
+					{
+						foreach ($valid_items as $team_id)
+						{
+							if ($assignee->getID() == $team_id)
+								return true;
+						}
+					}
+					return false;
 				case self::RULE_STATUS_VALID:
 				case self::RULE_PRIORITY_VALID:
 				case self::RULE_RESOLUTION_VALID:

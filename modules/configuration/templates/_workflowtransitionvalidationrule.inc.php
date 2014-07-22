@@ -21,11 +21,6 @@
 							<?php echo image_tag('spinning_16.gif', array('id' => 'workflowtransitionvalidationrule_' . $rule->getID() . '_indicator', 'style' => 'display: none; margin-left: 5px;')); ?>
 						</form>
 					</td>
-					<td style="width: 100px; text-align: right;">
-						<button id="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_edit_button" onclick="$('workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_edit_button').toggle();$('workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_delete_button').toggle();$('workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_cancel_button').toggle();$('workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_description').toggle();$('workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_edit').toggle();"><?php echo __('Edit'); ?></button>
-						<button id="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_delete_button" onclick="$('workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_delete').toggle();"><?php echo __('Delete'); ?></button>
-						<button id="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_cancel_button" onclick="$('workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_edit_button').toggle();$('workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_delete_button').toggle();$('workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_cancel_button').toggle();$('workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_description').toggle();$('workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_edit').toggle();" style="display: none;"><?php echo __('Cancel'); ?></button>
-					</td>
 				<?php endif; ?>
 				<?php
 				break;
@@ -33,6 +28,7 @@
 			case TBGWorkflowTransitionValidationRule::RULE_RESOLUTION_VALID:
 			case TBGWorkflowTransitionValidationRule::RULE_REPRODUCABILITY_VALID:
 			case TBGWorkflowTransitionValidationRule::RULE_PRIORITY_VALID:
+			case TBGWorkflowTransitionValidationRule::RULE_TEAM_MEMBERSHIP_VALID:
 				?>
 				<td id="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_description" style="padding: 2px;">
 					<?php if ($rule->getRule() == TBGWorkflowTransitionValidationRule::RULE_STATUS_VALID): ?>
@@ -43,6 +39,8 @@
 						<?php echo __('Resolution is any of these values: %resolutions', array('%resolutions' => '<span id="workflowtransitionvalidationrule_'.$rule->getID().'_value" style="font-weight: bold;">' . (($rule->getRuleValue()) ? $rule->getRuleValueAsJoinedString() : __('Any valid value')) . '</span>')); ?>
 					<?php elseif ($rule->getRule() == TBGWorkflowTransitionValidationRule::RULE_REPRODUCABILITY_VALID): ?>
 						<?php echo __('Reproducability is any of these values: %reproducabilities', array('%reproducabilities' => '<span id="workflowtransitionvalidationrule_'.$rule->getID().'_value" style="font-weight: bold;">' . (($rule->getRuleValue()) ? $rule->getRuleValueAsJoinedString() : __('Any valid value')) . '</span>')); ?>
+					<?php elseif ($rule->getRule() == TBGWorkflowTransitionValidationRule::RULE_TEAM_MEMBERSHIP_VALID): ?>
+						<?php echo __('Assignee is member of any of these teams: %teams', array('%teams' => '<span id="workflowtransitionvalidationrule_'.$rule->getID().'_value" style="font-weight: bold;">' . (($rule->getRuleValue()) ? $rule->getRuleValueAsJoinedString() : __('Any valid value')) . '</span>')); ?>
 					<?php endif; ?>
 				</td>
 				<?php if (!$rule->getTransition()->isCore()): ?>
@@ -58,6 +56,10 @@
 									<?php echo __('Resolution must be any of these values'); ?>
 								<?php elseif ($rule->getRule() == TBGWorkflowTransitionValidationRule::RULE_REPRODUCABILITY_VALID): ?>
 									<?php echo __('Reproducability must be any of these values'); ?>
+								<?php elseif ($rule->getRule() == TBGWorkflowTransitionValidationRule::RULE_TEAM_MEMBERSHIP_VALID && $rule->isPost()): ?>
+									<?php echo __('Assignee must be member of any of these teams'); ?>
+								<?php elseif ($rule->getRule() == TBGWorkflowTransitionValidationRule::RULE_TEAM_MEMBERSHIP_VALID && $rule->isPre()): ?>
+									<?php echo __('User must be member of any of these teams'); ?>
 								<?php endif; ?>
 							</label>
 							<?php
@@ -70,8 +72,8 @@
 									$options = TBGResolution::getAll();
 								elseif ($rule->getRule() == TBGWorkflowTransitionValidationRule::RULE_REPRODUCABILITY_VALID)
 									$options = TBGReproducability::getAll();
-								elseif ($rule->getRule() == TBGWorkflowTransitionValidationRule::ACTION_ASSIGN_ISSUE)
-									$options = $available_assignees;
+								elseif ($rule->getRule() == TBGWorkflowTransitionValidationRule::RULE_TEAM_MEMBERSHIP_VALID)
+									$options = TBGTeam::getAll();
 
 							?>
 							<?php foreach ($options as $option): ?>
@@ -80,32 +82,17 @@
 							<?php echo image_tag('spinning_16.gif', array('id' => 'workflowtransitionvalidationrule_' . $rule->getID() . '_indicator', 'style' => 'display: none; margin-left: 5px;')); ?>
 						</form>
 					</td>
-					<td style="width: 100px; text-align: right;">
-						<button id="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_edit_button" onclick="$('workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_edit_button').toggle();$('workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_delete_button').toggle();$('workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_cancel_button').toggle();$('workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_description').toggle();$('workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_edit').toggle();"><?php echo __('Edit'); ?></button>
-						<button id="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_delete_button" onclick="$('workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_delete').toggle();"><?php echo __('Delete'); ?></button>
-						<button id="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_cancel_button" onclick="$('workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_edit_button').toggle();$('workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_delete_button').toggle();$('workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_cancel_button').toggle();$('workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_description').toggle();$('workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_edit').toggle();" style="display: none;"><?php echo __('Cancel'); ?></button>
-					</td>
 				<?php endif; ?>
 				<?php
 				break;
 		}
 
 	?>
+	<?php if (!$rule->getTransition()->isCore()): ?>
+		<td style="width: 100px; text-align: right;">
+			<button id="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_edit_button" onclick="$('workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_edit_button').toggle();$('workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_delete_button').toggle();$('workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_cancel_button').toggle();$('workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_description').toggle();$('workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_edit').toggle();"><?php echo __('Edit'); ?></button>
+			<button id="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_delete_button" onclick="TBG.Main.Helpers.Dialog.show('<?php echo __('Do you really want to delete this transition validation rule?'); ?>', '<?php echo __('Please confirm that you really want to delete this transition validation rule.'); ?>', {yes: {click: function() {TBG.Config.Workflows.Transition.Validations.remove('<?php echo make_url('configure_workflow_transition_delete_validation_rule', array('workflow_id' => $rule->getWorkflow()->getID(), 'transition_id' => $rule->getTransition()->getID(), 'rule_id' => $rule->getID())); ?>', <?php echo $rule->getID(); ?>, '<?php echo $rule->isPreOrPost(); ?>', '<?php echo $rule->getRule(); ?>'); }}, no: { click: TBG.Main.Helpers.Dialog.dismiss }});"><?php echo __('Delete'); ?></button>
+			<button id="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_cancel_button" onclick="$('workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_edit_button').toggle();$('workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_delete_button').toggle();$('workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_cancel_button').toggle();$('workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_description').toggle();$('workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_edit').toggle();" style="display: none;"><?php echo __('Cancel'); ?></button>
+		</td>
+	<?php endif; ?>
 </tr>
-<?php if (!$rule->getTransition()->isCore()): ?>
-<tr>
-	<td colspan="2">
-		<div class="rounded_box white shadowed" style="position: absolute; width: 285px; display: none;" id="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_delete">
-			<div class="header"><?php echo __('Confirm delete validation rule'); ?></div>
-			<div class="content">
-				<?php echo __('Do you really want to delete this validation rule?'); ?>
-				<div style="text-align: right;">
-					<?php echo javascript_link_tag(__('Yes'), array('onclick' => "TBG.Config.Workflows.Transition.Validations.remove('".make_url('configure_workflow_transition_delete_validation_rule', array('workflow_id' => $rule->getWorkflow()->getID(), 'transition_id' => $rule->getTransition()->getID(), 'rule_id' => $rule->getID()))."', {$rule->getID()}, '{$rule->isPreOrPost()}', '{$rule->getRule()}');")); ?> ::
-					<b><?php echo javascript_link_tag(__('No'), array('onclick' => "\$('workflowtransitionvalidationrule_{$rule->getID()}_delete').toggle();")); ?></b>
-				</div>
-				<div style="padding: 10px 0 10px 0; display: none;" id="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_delete_indicator"><span style="float: left;"><?php echo image_tag('spinning_16.gif'); ?></span>&nbsp;<?php echo __('Please wait'); ?></div>
-			</div>
-		</div>
-	</td>
-</tr>
-<?php endif; ?>

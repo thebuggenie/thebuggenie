@@ -58,6 +58,11 @@
 			return self::$_teams;
 		}
 		
+		public static function doesIDExist($id)
+		{
+			return (bool) static::getB2DBTable()->doesIDExist($id);
+		}
+		
 		public static function loadFixtures(TBGScope $scope)
 		{
 			$staff_members = new TBGTeam();

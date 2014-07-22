@@ -3121,12 +3121,11 @@ TBG.Config.Workflows.Scheme.update = function(url, scheme_id) {
 	});
 }
 
-TBG.Config.Workflows.Transition.Validations.add = function(url, mode) {
+TBG.Config.Workflows.Transition.Validations.add = function(url, mode, key) {
 	TBG.Main.Helpers.ajax(url, {
-		form: 'workflowtransition' + mode + 'validationrule_add_form',
 		loading: {indicator: 'workflowtransition' + mode + 'validationrule_add_indicator'},
 		success: {
-			hide: ['no_workflowtransition' + mode + 'validationrules', 'add_workflowtransition' + mode + 'validationrule_' + $('workflowtransition' + mode + 'validationrule_add_type').getValue()],
+			hide: ['no_workflowtransition' + mode + 'validationrules', 'add_workflowtransition' + mode + 'validationrule_' + key],
 			update: {element: 'workflowtransition' + mode + 'validationrules_list', insertion: true}
 		}
 	});
@@ -3148,18 +3147,20 @@ TBG.Config.Workflows.Transition.Validations.remove = function(url, rule_id, type
 	TBG.Main.Helpers.ajax(url, {
 		loading: {indicator: 'workflowtransitionvalidationrule_' + rule_id + '_delete_indicator'},
 		success: {
-			remove: ['workflowtransitionvalidationrule_' + rule_id + '_delete', 'workflowtransitionvalidationrule_' + rule_id],
-			show: ['add_workflowtransition' + type + 'validationrule_' + mode]
+			remove: ['workflowtransitionvalidationrule_' + rule_id],
+			show: ['add_workflowtransition' + type + 'validationrule_' + mode],
+			callback: function() {
+				TBG.Main.Helpers.Dialog.dismiss();
+			}
 		}
 	});
 }
 
-TBG.Config.Workflows.Transition.Actions.add = function(url) {
+TBG.Config.Workflows.Transition.Actions.add = function(url, key) {
 	TBG.Main.Helpers.ajax(url, {
-		form: 'workflowtransitionaction_add_form',
 		loading: {indicator: 'workflowtransitionaction_add_indicator'},
 		success: {
-			hide: ['no_workflowtransitionactions', 'add_workflowtransitionaction_' + $('workflowtransitionaction_add_type').getValue()],
+			hide: ['no_workflowtransitionactions', 'add_workflowtransitionaction_' + key],
 			update: {element: 'workflowtransitionactions_list', insertion: true}
 		}
 	});

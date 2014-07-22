@@ -33,9 +33,9 @@
 					<?php elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_CLEAR_RESOLUTION): ?>
 						<?php echo __('Clear issue resolution'); ?>
 					<?php elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_USER_START_WORKING): ?>
-						<?php echo __('Mark issue as being worked on by the assigned user'); ?>
+						<?php echo __('Start logging time'); ?>
 					<?php elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_USER_STOP_WORKING): ?>
-						<?php echo __('Mark issue as no longer being worked on, and optionally add time spent'); ?>
+						<?php echo __('Stop logging time and optionally add time spent'); ?>
 					<?php elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_SET_DUPLICATE): ?>
 						<?php echo __('Mark issue as duplicate of another, existing issue'); ?>
 					<?php elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_CLEAR_DUPLICATE): ?>
@@ -65,7 +65,19 @@
 						<?php elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_SET_REPRODUCABILITY): ?>
 							<?php echo __('Set reproducability to %reproducability', array('%reproducability' => '<span id="workflowtransitionaction_'.$action->getID().'_value" style="font-weight: bold;">' . (($action->getTargetValue()) ? TBGContext::factory()->TBGReproducability((int) $action->getTargetValue())->getName() : __('Reproducability provided by user')) . '</span>')); ?>
 						<?php elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE): ?>
-							<?php echo __('Assign issue to %user', array('%user' => '<span id="workflowtransitionaction_'.$action->getID().'_value" style="font-weight: bold;">' . (($action->getTargetValue()) ? TBGContext::factory()->TBGUser((int) $action->getTargetValue())->getNameWithUsername() : __('User specified during transition')) . '</span>')); ?>
+							<?php 
+
+							if ($action->hasTargetValue())
+							{
+								$target_details = explode('_', $action->getTargetValue());
+								echo __('Assign issue to %assignee', array('%assignee' => '<span id="workflowtransitionaction_'.$action->getID().'_value" style="font-weight: bold;">' . (($target_details[0] == 'user') ? TBGUser::getB2DBTable()->selectById((int) $target_details[1])->getNameWithUsername() : TBGTeam::getB2DBTable()->selectById((int) $target_details[1])->getName()) . '</span>')); 
+							}
+							else
+							{
+								echo __('Assign issue to %assignee', array('%assignee' => '<span id="workflowtransitionaction_'.$action->getID().'_value" style="font-weight: bold;">' . __('User or team specified during transition') . '</span>')); 
+							}
+							
+							?>
 						<?php endif; ?>
 					<?php elseif ($action->getTargetValue()): ?>
 						<span class="generic_error_message"><?php echo __('Invalid transition configuration'); ?></span>
@@ -100,12 +112,10 @@
 									$options = TBGResolution::getAll();
 								elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_SET_REPRODUCABILITY)
 									$options = TBGReproducability::getAll();
-								elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE)
-									$options = $available_assignees;
 
 							?>
 							<select id="workflowtransitionaction_<?php echo $action->getID(); ?>_input" name="target_value">
-								<option value="0"<?php if ((int) $action->getTargetValue() == 0) echo ' selected'; ?>>
+								<option value="0"<?php if ((int) $action->getTargetValue() == 0) echo ' selected'; ?> <?php if (!$action->getTransition()->hasTemplate()): ?>style="display: none;"<?php endif; ?>>
 									<?php if ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_SET_STATUS): ?>
 										<?php echo __('Status provided by user'); ?>
 									<?php elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_SET_PRIORITY): ?>
@@ -117,20 +127,37 @@
 									<?php elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_SET_REPRODUCABILITY): ?>
 										<?php echo __('Reproducability provided by user'); ?>
 									<?php elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE): ?>
-										<?php echo __('User specified during transition'); ?>
+										<?php echo __('User or team specified during transition'); ?>
 									<?php endif; ?>
 								</option>
-								<?php foreach ($options as $option): ?>
-									<option value="<?php echo ($option instanceof TBGIdentifiable) ? $option->getID() : $option; ?>"<?php if (($option instanceof TBGIdentifiable && (int) $action->getTargetValue() == $option->getID()) || (!$option instanceof TBGIdentifiable && (int) $action->getTargetValue() == $option)) echo ' selected'; ?>>
-										<?php if ($option instanceof TBGUser): ?>
-											<?php echo $option->getNameWithUsername(); ?>
-										<?php elseif ($option instanceof TBGIdentifiable): ?>
-											<?php echo $option->getName(); ?>
-										<?php else: ?>
-											<?php echo $option; ?>
-										<?php endif; ?>
-									</option>
-								<?php endforeach; ?>
+								<?php if ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE): ?>
+									<optgroup label="<?php echo __('Available users'); ?>">
+										<?php foreach ($available_assignees_users as $option): ?>
+											<option value="user_<?php echo $option->getID(); ?>"<?php if (isset($target_details) && (int) $target_details[1] == $option->getID()) echo ' selected'; ?>>
+												<?php echo $option->getNameWithUsername(); ?>
+											</option>
+										<?php endforeach; ?>
+									</optgroup>
+									<optgroup label="<?php echo __('Available teams'); ?>">
+										<?php foreach ($available_assignees_teams as $option): ?>
+											<option value="team_<?php echo $option->getID(); ?>"<?php if (isset($target_details) && (int) $target_details[1] == $option->getID()) echo ' selected'; ?>>
+												<?php echo $option->getName(); ?>
+											</option>
+										<?php endforeach; ?>
+									</optgroup>
+								<?php else: ?>
+									<?php foreach ($options as $option): ?>
+										<option value="<?php echo ($option instanceof TBGIdentifiable) ? $option->getID() : $option; ?>"<?php if (($option instanceof TBGIdentifiable && (int) $action->getTargetValue() == $option->getID()) || (!$option instanceof TBGIdentifiable && (int) $action->getTargetValue() == $option)) echo ' selected'; ?>>
+											<?php if ($option instanceof TBGUser): ?>
+												<?php echo $option->getNameWithUsername(); ?>
+											<?php elseif ($option instanceof TBGIdentifiable): ?>
+												<?php echo $option->getName(); ?>
+											<?php else: ?>
+												<?php echo $option; ?>
+											<?php endif; ?>
+										</option>
+									<?php endforeach; ?>
+								<?php endif; ?>
 							</select>
 							<?php echo image_tag('spinning_16.gif', array('id' => 'workflowtransitionaction_' . $action->getID() . '_indicator', 'style' => 'display: none; margin-left: 5px;')); ?>
 						</form>
