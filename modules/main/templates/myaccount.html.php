@@ -5,7 +5,7 @@
 	
 ?>
 <?php if ($tbg_user->canChangePassword()): ?>
-	<div class="fullpage_backdrop" id="change_password_div" style="display: none;">
+	<div class="fullpage_backdrop" id="change_password_div" style="<?php if (!$has_autopassword) echo 'display: none;'; ?>">
 		<div class="backdrop_box login_page login_popup">
 			<div class="backdrop_detail_content login_content">
 				<div class="logindiv regular active" id="change_password_container">
@@ -16,10 +16,16 @@
 							<h2><?php echo __('Changing your password'); ?></h2>
 							<div class="article"><?php echo __('Enter your current password in the first box, then enter your new password twice (to prevent you from typing mistakes). Press the "%change_password" button to change your password.', array('%change_password' => __('Change password'))); ?></div>
 							<ul class="login_formlist">
-								<li>
-									<label for="current_password"><?php echo __('Current password'); ?></label>
-									<input type="password" name="current_password" id="current_password" value="">
-								</li>
+								<?php if (!$has_autopassword): ?>
+									<li>
+										<label for="current_password"><?php echo __('Current password'); ?></label>
+										<input type="password" name="current_password" id="current_password" value="">
+									</li>
+								<?php else: ?>
+									<li style="display: none;">
+										<input type="hidden" name="current_password" id="current_password" value="<?php echo $autopassword; ?>">
+									</li>
+								<?php endif; ?>
 								<li>
 									<label for="new_password_1"><?php echo __('New password'); ?></label>
 									<input type="password" name="new_password_1" id="new_password_1" value="">

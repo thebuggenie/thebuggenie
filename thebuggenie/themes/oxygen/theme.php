@@ -8,7 +8,9 @@
 
 ?>
 <style>
-	#tbg3_username { background-image: url('<?php echo TBGContext::getTBGPath() . 'iconsets/' . TBGSettings::getIconsetName() . '/'; ?>user_mono.png'); }
+	#tbg3_username, #fieldusername { background-image: url('<?php echo TBGContext::getTBGPath() . 'iconsets/' . TBGSettings::getIconsetName() . '/'; ?>user_mono.png'); }
+	#fieldusername.invalid { background-image: url('<?php echo TBGContext::getTBGPath() . 'iconsets/' . TBGSettings::getIconsetName() . '/'; ?>icon_error.png'); background-color: rgba(255, 220, 220, 0.5); }
+	#fieldusername.valid { background-image: url('<?php echo TBGContext::getTBGPath() . 'iconsets/' . TBGSettings::getIconsetName() . '/'; ?>icon_ok.png'); background-color: rgba(220, 255, 220, 0.5); }
 	.login_popup input[type=password] { background-image: url('<?php echo TBGContext::getTBGPath() . 'iconsets/' . TBGSettings::getIconsetName() . '/'; ?>password_mono.png'); }
 	#openid-signin-button.persona-button span:after{ background-image: url('<?php echo TBGContext::getTBGPath() . 'iconsets/' . TBGSettings::getIconsetName() . '/'; ?>openid_providers.small/openid.ico.png'); }
 	#regular-signin-button.persona-button span:after{ background-image: url('<?php echo TBGContext::getTBGPath() . 'iconsets/' . TBGSettings::getIconsetName() . '/'; ?>footer_logo.png'); }

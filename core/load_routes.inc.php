@@ -22,6 +22,7 @@
 	$routes[] = array('login_page', '/login', 'main', 'login');
 	$routes[] = array('login_section', '/login/section/:section/*', 'main', 'login');
 	$routes[] = array('register', '/do/register', 'main', 'register');
+	$routes[] = array('register_check_username', '/check/username', 'main', 'registerCheckUsernameAvailability');
 	$routes[] = array('activate', '/activate/:user/:key', 'main', 'activate');
 	$routes[] = array('reset_password', '/reset/password/:user/:reset_hash', 'main', 'reset');
 	$routes[] = array('set_state', '/set/state/:state_id', 'main', 'setState');

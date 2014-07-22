@@ -118,6 +118,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::UNAME, $username);
+			$crit->addWhere(self::DELETED, false);
 			
 			return !(bool) $this->doCount($crit);
 		}

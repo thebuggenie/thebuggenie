@@ -798,8 +798,8 @@
 			catch (Exception $e)
 			{
 				TBGLogging::log("Something happened while setting up user: ". $e->getMessage(), 'main', TBGLogging::LEVEL_WARNING);
-				$allow_anonymous_routes = array('register', 'register1', 'register2', 'activate', 'reset_password', 'captcha', 'login', 'login_page', 'getBackdropPartial', 'serve', 'doLogin');
-				if (!self::isCLI() && (!in_array(self::getRouting()->getCurrentRouteModule(), array('main', 'remote')) || !in_array(self::getRouting()->getCurrentRouteAction(), $allow_anonymous_routes)))
+				$allow_anonymous_routes = array('register', 'register_check_username', 'register1', 'register2', 'activate', 'reset_password', 'captcha', 'login', 'login_page', 'getBackdropPartial', 'serve', 'doLogin');
+				if (!self::isCLI() && (!in_array(self::getRouting()->getCurrentRouteModule(), array('main', 'remote')) || !in_array(self::getRouting()->getCurrentRouteName(), $allow_anonymous_routes)))
 				{
 					TBGContext::setMessage('login_message_err', $e->getMessage());
 					self::$_redirect_login = true;
@@ -2323,7 +2323,7 @@
 						TBGLogging::log('Displaying template');
 
 						// Check to see if we have a translated version of the template
-						if (!self::isReadySetup() || ($templateName = self::getI18n()->hasTranslatedTemplate(self::getResponse()->getTemplate())) === false)
+						if ($method != 'notFound' && (!self::isReadySetup() || ($templateName = self::getI18n()->hasTranslatedTemplate(self::getResponse()->getTemplate())) === false))
 						{
 							// Check to see if any modules provide an alternate template
 							$event = TBGEvent::createNew('core', "TBGContext::performAction::renderTemplate")->triggerUntilProcessed(array('class' => $actionClassName, 'action' => $actionToRunName));
@@ -2508,34 +2508,40 @@
 					// Construct the action class and method name, including any pre- action(s)
 					$actionClassName = $route['module'].'Actions';
 					$actionObject = new $actionClassName();
-					self::$_action = $actionObject;
-
-					if (!self::isInstallmode()) self::initializeUser();
-
-					self::setupI18n();
-					
-					if (self::$_redirect_login)
-					{
-						TBGLogging::log('An error occurred setting up the user object, redirecting to login', 'main', TBGLogging::LEVEL_NOTICE);
-						if (self::getRouting()->getCurrentRouteName() != 'login') TBGContext::setMessage('login_message_err', TBGContext::geti18n()->__('Please log in'));
-						self::getResponse()->headerRedirect(self::getRouting()->generate('login_page'), 403);
-					}
-					if (self::performAction($actionObject, $route['module'], $route['action']))
-					{
-						if (self::isDebugMode()) self::generateDebugInfo();
-						if (\b2db\Core::isInitialized())
-						{
-							\b2db\Core::closeDBLink();
-						}
-						return true;
-					}
+					$moduleName = $route['module'];
+					$moduleMethod = $route['action'];
 				}
 				else
 				{
+//					self::setupI18n();
 					require THEBUGGENIE_MODULES_PATH . 'main' . DS . 'classes' . DS . 'actions.class.php';
 					$actionObject = new mainActions();
-					self::performAction($actionObject, 'main', 'notFound');
+					$moduleName = 'main';
+					$moduleMethod = 'notFound';
+//					self::performAction($actionObject, 'main', 'notFound');
+//					if (self::isDebugMode()) self::generateDebugInfo();
+				}
+				
+				self::$_action = $actionObject;
+
+				if (!self::isInstallmode()) self::initializeUser();
+
+				self::setupI18n();
+
+				if (self::$_redirect_login)
+				{
+					TBGLogging::log('An error occurred setting up the user object, redirecting to login', 'main', TBGLogging::LEVEL_NOTICE);
+					if (self::getRouting()->getCurrentRouteName() != 'login') TBGContext::setMessage('login_message_err', TBGContext::geti18n()->__('Please log in'));
+					self::getResponse()->headerRedirect(self::getRouting()->generate('login_page'), 403);
+				}
+				if (self::performAction($actionObject, $moduleName, $moduleMethod))
+				{
 					if (self::isDebugMode()) self::generateDebugInfo();
+					if (\b2db\Core::isInitialized())
+					{
+						\b2db\Core::closeDBLink();
+					}
+					return true;
 				}
 			}
 			catch (TBGTemplateNotFoundException $e)

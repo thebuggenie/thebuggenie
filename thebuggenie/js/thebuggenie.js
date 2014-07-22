@@ -1054,7 +1054,7 @@ TBG.Main.Profile.changePassword = function(url) {
 	TBG.Main.Helpers.ajax(url, {
 		form: 'change_password_form',
 		loading: {indicator: 'change_password_indicator'},
-		success: {reset: 'change_password_form'}
+		success: {reset: 'change_password_form', hide: 'change_password_div'}
 	});
 };
 
@@ -1406,9 +1406,18 @@ TBG.Main.Login.register = function(url)
 			}
 		},
 		success: {
-			hide: 'register',
+			hide: 'register_form',
 			update: {element: 'register_message', from: 'loginmessage'},
-			show: 'register2'
+			callback: function(json) {
+				if (json.activated) {
+					$('register_username_hidden').setValue($('fieldusername').getValue());
+					$('register_password_hidden').setValue(json.one_time_password);
+					$('register_auto_form').show();
+				} else {
+					$('register_confirm_back').show();
+				}
+				$('register_confirmation').show();
+			}
 		},
 		failure: {
 			show: 'register_button',
@@ -1416,6 +1425,53 @@ TBG.Main.Login.register = function(url)
 				json.fields.each(function(field) {
 					$(field).setStyle({backgroundColor: '#FBB'});
 				});
+			}
+		}
+	});
+};
+
+TBG.Main.Login.checkUsernameAvailability = function(url)
+{
+	TBG.Main.Helpers.ajax(url, {
+		form: 'register_form',
+		loading: {
+			indicator: 'username_check_indicator',
+			callback: function() {
+				$('register_button').disable();
+				$('username_check_indicator').show();
+			}
+		},
+		complete: {
+			callback: function(json) {
+				$('username_check_indicator').hide();
+				if (json.available) {
+					$('fieldusername').removeClassName('invalid');
+					$('fieldusername').addClassName('valid');
+					$('register_button').enable();
+				} else {
+					$('fieldusername').removeClassName('valid');
+					$('fieldusername').addClassName('invalid');
+				}
+			}
+		}
+	});
+};
+
+TBG.Main.Login.registerAutologin = function(url)
+{
+	TBG.Main.Helpers.ajax(url, {
+		form: 'register_auto_form',
+		loading: {
+			indicator: 'register_autologin_indicator',
+			callback: function() {
+				$('register_autologin_button').disable();
+				$('register_autologin_indicator').show();
+			}
+		},
+		complete: {
+			callback: function() {
+				$('register_autologin_indicator').hide();
+				$('register_autologin_button').enable();
 			}
 		}
 	});

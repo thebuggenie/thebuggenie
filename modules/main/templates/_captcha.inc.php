@@ -1,4 +1,5 @@
 <?php
+
 	$_SESSION['activation_number'] = tbg_printRandomNumber();
 	
 	if (function_exists('imagecreatetruecolor'))
@@ -14,3 +15,9 @@
 			echo image_tag('numbers/' . $number . '.png');
 		}
 	}
+	
+?>
+<li class="security_check">
+	<label for="verification_no"><?php echo __('Enter the number you see above'); ?></label>
+	<input type="text" class="required" id="verification_no" name="verification_no" maxlength="6" value="" autocomplete="off" style="width: 100px;"><br><br>
+</li>

@@ -369,7 +369,7 @@ footer img { margin: 4px 3px -6px 0; }
     margin: 0;
     border: none;
 }
-#tbg3_username, #forgot_password_username, .login_popup input[type=password] {
+#tbg3_username, #forgot_password_username, .login_popup input[type=password], #fieldusername {
     background-position: 7px 10px;
     background-repeat: no-repeat;
     padding: 8px 8px 8px 28px;
@@ -383,12 +383,29 @@ footer img { margin: 4px 3px -6px 0; }
     border-radius: 4px;
     width: 383px;
 }
+#register input[type=text]#fieldusername {
+    padding: 8px 8px 8px 28px;
+    font-size: 1.1em;
+	width: 358px;
+	-webkit-transition: background-image 0.3s ease, background-color 0.3s ease;
+	-moz-transition: background-image 0.3s ease, background-color 0.3s ease;
+	-ms-transition: background-image 0.3s ease, background-color 0.3s ease;
+	transition: background-image 0.3s ease, background-color 0.3s ease;
+}
 #register input[type=text], #register input[type=email] {
     padding: 6px;
     font-size: 1.1em;
     border-radius: 4px;
     width: 383px;
 }
+#register .error_message {
+	display: none;
+	color: #AE0000;
+}
+#register input.invalid + .error_message {
+	display: block;
+}
+#register_message { margin-bottom: 15px; }
 #login_indicator, #register_indicator, .login_button_container .indicator { vertical-align: middle; margin-right: 5px; }
 #tab_forgot_pane { width: 600px; margin-left: auto; margin-right: auto; }
 .logindiv { border: 0px; padding: 10px; display: none; }
@@ -1625,7 +1642,7 @@ dd { float: left; display: block; width: 195px; font-weight: normal; margin: 0; 
 #viewissue_left_box_top #status_header { padding: 2px; }
 .issue_closed .status_badge { opacity: 0.7; }
 .status_badge { display: inline-block; color: rgba(0, 0, 0, 0.45); text-transform: uppercase; border: 1px solid rgba(0, 0, 0, 0.2); padding: 3px 5px; line-height: 1; border-radius: 3px; }
-.more_actions_dropdown { padding: 0; position: absolute; z-index: 1000001; right: 0; display:none;}
+.more_actions_dropdown { padding: 0; position: absolute; z-index: 1000001; right: 0; display: none; }
 .more_actions_dropdown li { min-height: 23px; position: relative; display: block; line-height: 1.3; }
 .more_actions_dropdown li:first-child { border-top-left-radius: 3px; border-top-right-radius: 3px; }
 .more_actions_dropdown li:last-child { border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; }
