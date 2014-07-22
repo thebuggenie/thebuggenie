@@ -500,9 +500,15 @@
 				
 				switch ($authentication_method)
 				{
+					case TBGAction::AUTHENTICATION_METHOD_ELEVATED:
 					case TBGAction::AUTHENTICATION_METHOD_CORE:
 						$username = $request['tbg3_username'];
 						$password = $request['tbg3_password'];
+						if ($authentication_method == TBGAction::AUTHENTICATION_METHOD_ELEVATED)
+						{
+							$elevated_password = $request['tbg3_elevated_password'];
+						}
+						
 						$raw = true;
 
 						// If no username and password specified, check if we have a session that exists already
@@ -513,7 +519,27 @@
 								$username = TBGContext::getRequest()->getCookie('tbg3_username');
 								$password = TBGContext::getRequest()->getCookie('tbg3_password');
 								$user = TBGUsersTable::getTable()->getByUsername($username);
-								if ($user instanceof TBGUser && !$user->hasPasswordHash($password)) $user = null;
+								if ($authentication_method == TBGAction::AUTHENTICATION_METHOD_ELEVATED)
+								{
+									$elevated_password = TBGContext::getRequest()->getCookie('tbg3_elevated_password');
+									if ($user instanceof TBGUser && !$user->hasPasswordHash($password)) 
+									{
+										$user = null;
+									}
+									else
+									{
+										if ($user instanceof TBGUser && !$user->hasPasswordHash($elevated_password))
+										{
+											TBGContext::setUser($user);
+											TBGContext::getRouting()->setCurrentRouteName('elevated_login_page');
+											throw new TBGElevatedLoginException('reenter');
+										}
+									}
+								}
+								else
+								{
+									if ($user instanceof TBGUser && !$user->hasPasswordHash($password)) $user = null;
+								}
 
 								$raw = false;
 

@@ -83,6 +83,7 @@
 		const SETTING_PREVIEW_COMMENT_IMAGES = 'previewcommentimages';
 		const SETTING_REGISTRATION_DOMAIN_WHITELIST = 'limit_registration';
 		const SETTING_REQUIRE_LOGIN = 'requirelogin';
+		const SETTING_ELEVATED_LOGIN_DISABLED = 'elevatedlogindisabled';
 		const SETTING_RETURN_FROM_LOGIN = 'returnfromlogin';
 		const SETTING_RETURN_FROM_LOGOUT = 'returnfromlogout';
 		const SETTING_SALT = 'salt';
@@ -511,6 +512,11 @@
 		public static function isLoginRequired()
 		{
 			return (bool) self::get(self::SETTING_REQUIRE_LOGIN);
+		}
+
+		public static function isElevatedLoginRequired()
+		{
+			return !(bool) self::get(self::SETTING_ELEVATED_LOGIN_DISABLED);
 		}
 		
 		public static function isDefaultUserGuest()

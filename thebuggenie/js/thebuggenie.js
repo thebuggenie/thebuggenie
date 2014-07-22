@@ -1497,6 +1497,31 @@ TBG.Main.Login.login = function(url)
 	});
 };
 
+TBG.Main.Login.elevatedLogin = function(url)
+{
+	TBG.Main.Helpers.ajax(url, {
+		form: 'login_form',
+		loading: {
+			indicator: 'elevated_login_indicator',
+			callback: function() {
+				$('login_button').disable();
+				$('elevated_login_indicator').show();
+			}
+		},
+		complete: {
+			callback: function(json) {
+				$('elevated_login_indicator').hide();
+				if (json.elevated) {
+					window.location.reload(true);
+				} else {
+					TBG.Main.Helpers.Message.error(json.error);
+					$('login_button').enable();
+				}
+			}
+		}
+	});
+};
+
 TBG.Main.Login.resetForgotPassword = function(url) {
 	TBG.Main.Helpers.ajax(url, {
 		form: 'forgot_password_form',

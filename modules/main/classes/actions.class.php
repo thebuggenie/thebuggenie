@@ -497,6 +497,33 @@
 			//if (!$this->getUser()->isGuest()) return $this->forward(TBGContext::getRouting()->generate('home'));
 			$this->section = $request->getParameter('section', 'login');
 		}
+		
+		/**
+		 * Static elevated login page
+		 * @param TBGRequest $request
+		 */
+		public function runDoElevatedLogin(TBGRequest $request)
+		{
+			if ($this->getUser()->hasPassword($request['tbg3_elevated_password']))
+			{
+				$expiration = time() + (60 * $request->getParameter('tbg3_elevation_duration', 30));
+				TBGContext::getResponse()->setCookie('tbg3_elevated_password', $this->getUser()->getPassword(), $expiration);
+				return $this->renderJSON(array('elevated' => true));
+			}
+			else
+			{
+				return $this->renderJSON(array('elevated' => false, 'error' => $this->getI18n()->__('Incorrect password')));
+			}
+		}
+		
+		/**
+		 * Static elevated login page
+		 * @param TBGRequest $request
+		 */
+		public function runElevatedLogin(TBGRequest $request)
+		{
+			if ($this->getUser()->isGuest()) return $this->forward(TBGContext::getRouting()->generate('login_page'));
+		}
 
 		public function runDisableTutorial(TBGRequest $request)
 		{

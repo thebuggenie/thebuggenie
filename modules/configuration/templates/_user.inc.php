@@ -6,6 +6,15 @@
 ?>
 <table style="clear: both; width: 700px; margin-top: 5px;" class="padded_table" cellpadding=0 cellspacing=0>
 	<tr>
+		<td><label for="requirelogin"><?php echo __('Require re-authentication'); ?></label></td>
+		<td>
+			<select name="<?php echo TBGSettings::SETTING_ELEVATED_LOGIN_DISABLED; ?>" id="disableelevatedlogin" style="width: 400px;"<?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>>
+				<option value=0<?php if (TBGSettings::isElevatedLoginRequired()): ?> selected<?php endif; ?>><?php echo __('You need to re-enter your password to access the configuration section'); ?></option>
+				<option value=1<?php if (!TBGSettings::isElevatedLoginRequired()): ?> selected<?php endif; ?>><?php echo __("You don't need to re-enter your password"); ?></option>
+			</select>
+		</td>
+	</tr>
+	<tr>
 		<td><label for="requirelogin"><?php echo __('Anonymous access'); ?></label></td>
 		<td>
 			<select name="<?php echo TBGSettings::SETTING_REQUIRE_LOGIN; ?>" id="requirelogin" style="width: 400px;"<?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>>

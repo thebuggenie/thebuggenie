@@ -24,6 +24,7 @@
 		const AUTHENTICATION_METHOD_CLI = 'cli';
 		const AUTHENTICATION_METHOD_RSS_KEY = 'rss_key';
 		const AUTHENTICATION_METHOD_APPLICATION_PASSWORD = 'application_password';
+		const AUTHENTICATION_METHOD_ELEVATED = 'elevated';
 
 		public function getAuthenticationMethodForAction($action)
 		{

@@ -795,6 +795,12 @@
 					TBGLogging::log('done (caching permissions)');
 				}
 			}
+			catch (TBGElevatedLoginException $e)
+			{
+				TBGLogging::log("Could not reauthenticate elevated permissions: ". $e->getMessage(), 'main', TBGLogging::LEVEL_INFO);
+				TBGContext::setMessage('elevated_login_message_err', $e->getMessage());
+				self::$_redirect_login = 'elevated_login';
+			}
 			catch (Exception $e)
 			{
 				TBGLogging::log("Something happened while setting up user: ". $e->getMessage(), 'main', TBGLogging::LEVEL_WARNING);
@@ -802,7 +808,7 @@
 				if (!self::isCLI() && (!in_array(self::getRouting()->getCurrentRouteModule(), array('main', 'remote')) || !in_array(self::getRouting()->getCurrentRouteName(), $allow_anonymous_routes)))
 				{
 					TBGContext::setMessage('login_message_err', $e->getMessage());
-					self::$_redirect_login = true;
+					self::$_redirect_login = 'login';
 				}
 				else
 				{
@@ -1033,6 +1039,10 @@
 						throw new Exception('This user account belongs to a group that does not exist anymore. <br>Please contact the system administrator.');
 					}
 				}
+			}
+			catch (TBGElevatedLoginException $e)
+			{
+				throw $e;
 			}
 			catch (Exception $e)
 			{
@@ -1803,6 +1813,7 @@
 			TBGEvent::createNew('core', 'pre_logout')->trigger();
 			self::getResponse()->deleteCookie('tbg3_username');
 			self::getResponse()->deleteCookie('tbg3_password');
+			self::getResponse()->deleteCookie('tbg3_elevated_password');
 			self::getResponse()->deleteCookie('tbg3_persona_session');
 			self::getResponse()->deleteCookie('THEBUGGENIE');
 			session_regenerate_id(true);
@@ -2528,11 +2539,23 @@
 
 				self::setupI18n();
 
-				if (self::$_redirect_login)
+				if (self::$_redirect_login == 'login')
 				{
 					TBGLogging::log('An error occurred setting up the user object, redirecting to login', 'main', TBGLogging::LEVEL_NOTICE);
 					if (self::getRouting()->getCurrentRouteName() != 'login') TBGContext::setMessage('login_message_err', TBGContext::geti18n()->__('Please log in'));
 					self::getResponse()->headerRedirect(self::getRouting()->generate('login_page'), 403);
+				}
+				if (self::$_redirect_login == 'elevated_login')
+				{
+					TBGLogging::log('Elevated permissions required', 'main', TBGLogging::LEVEL_NOTICE);
+					if (self::getRouting()->getCurrentRouteName() != 'elevated_login') TBGContext::setMessage('elevated_login_message_err', TBGContext::geti18n()->__('Please re-enter your password to continue'));
+					if (!class_exists('mainActions'))
+					{
+						require THEBUGGENIE_MODULES_PATH . 'main' . DS . 'classes' . DS . 'actions.class.php';
+					}
+					$actionObject = new mainActions();
+					$moduleName = 'main';
+					$moduleMethod = 'elevatedLogin';
 				}
 				if (self::performAction($actionObject, $moduleName, $moduleMethod))
 				{

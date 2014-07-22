@@ -20,6 +20,8 @@
 	$routes[] = array('switch_back_user', '/switch/back', 'main', 'switchUser');
 	$routes[] = array('login', '/do/login', 'main', 'doLogin');
 	$routes[] = array('login_page', '/login', 'main', 'login');
+	$routes[] = array('elevated_login', '/do/relogin', 'main', 'doElevatedLogin');
+	$routes[] = array('elevated_login_page', '/relogin', 'main', 'elevatedLogin');
 	$routes[] = array('login_section', '/login/section/:section/*', 'main', 'login');
 	$routes[] = array('register', '/do/register', 'main', 'register');
 	$routes[] = array('register_check_username', '/check/username', 'main', 'registerCheckUsernameAvailability');
