@@ -501,6 +501,9 @@
 			$this->reporthelparticle = ($reporthelparticle instanceof TBGWikiArticle) ? $reporthelparticle : TBGArticlesTable::getTable()->getArticleByName('ReportIssueHelp');
 			$this->uniqid = TBGContext::getRequest()->getParameter('uniqid', uniqid());
 			$this->_setupReportIssueProperties();
+			$dummyissue = new TBGIssue();
+			$dummyissue->setProject(TBGContext::getCurrentProject());
+			$this->canupload = (TBGSettings::isUploadsEnabled() && $dummyissue->canAttachFiles());
 		}
 
 		public function componentReportIssueContainer()

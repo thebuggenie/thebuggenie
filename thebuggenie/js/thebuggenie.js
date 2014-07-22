@@ -899,6 +899,79 @@ TBG.Main.updatePercentageLayout = function(arg1, arg2) {
 	}
 };
 
+TBG.Main.uploadFile = function(url, file) {
+	var fileSize = 0;
+	if (file.size > 1024 * 1024) {
+		fileSize = (Math.round(file.size * 100 / (1024 * 1024)) / 100).toString() + 'MB';
+	} else {
+		fileSize = (Math.round(file.size * 100 / 1024) / 100).toString() + 'KB';
+	}
+	var ful = $('file_upload_list');
+	var elm = '<li><label>'+ful.dataset.filenameLabel+'</label><span class="filename">' + file.name + '</span> <span class="filesize">' + fileSize + '</span><br><label>'+ful.dataset.descriptionLabel+'</label><input type="text" class="file_description" value="" placeholder="' + ful.dataset.descriptionPlaceholder + '"> <span class="progress"></span></li>';
+	ful.insert(elm);
+	var inserted_elm = $('file_upload_list').childElements().last();
+	var progress_elm = inserted_elm.down('.progress');
+	var formData = new FormData();
+	formData.append(file.name, file);
+
+	var xhr = new XMLHttpRequest();
+	xhr.open('POST', url, true);
+	xhr.onload = function(e) { 
+		var data = JSON.parse(this.response);
+		if (data.file_id != undefined) {
+			inserted_elm.insert('<input type="hidden" name="files['+data.file_id+']" value="'+data.file_id+'">');
+			inserted_elm.down('.file_description').name = "file_description["+data.file_id+']';
+		} else {
+			inserted_elm.remove();
+			TBG.Main.Helpers.Message.error(json.error);
+		}
+	};
+
+	xhr.upload.onprogress = function(e) {
+		if (e.lengthComputable) {
+			var percent = (e.loaded / e.total) * 100;
+			progress_elm.setStyle({width: percent + '%'});
+			if (percent == 100) progress_elm.addClassName('completed');
+//					progressBar.textContent = progressBar.value; // Fallback for unsupported browsers.
+		}
+	};
+
+	xhr.send(formData);
+};
+
+TBG.Main.selectFiles = function(elm) {
+	var files = $(elm).files;
+	var url = elm.dataset.uploadUrl;
+	if (files.length > 0) {
+		for (var i = 0, file; file = files[i]; i++) {
+			TBG.Main.uploadFile(url, file);
+		}
+	}
+}
+
+TBG.Main.dragOverFiles = function (evt) {
+	evt.stopPropagation();
+	evt.preventDefault();
+	if (evt.type == "dragover") {
+		$(evt.target).addClassName("file_hover");
+	} else {
+		$(evt.target).removeClassName("file_hover");
+	}
+	evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
+}
+
+TBG.Main.dropFiles = function (evt) {
+	var elm = $('file_upload_dummy');
+	var url = elm.dataset.uploadUrl;
+	var files = evt.target.files || evt.dataTransfer.files;
+	TBG.Main.dragOverFiles(evt);
+	if (files.length > 0) {
+		for (var i = 0, file; file = files[i]; i++) {
+			TBG.Main.uploadFile(url, file);
+		}
+	}
+}
+
 TBG.Main.submitIssue = function(url) {
 	if ($('report_issue_submit_button').hasClassName('disabled')) return;
 

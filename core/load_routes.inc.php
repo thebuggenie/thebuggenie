@@ -70,6 +70,7 @@
 	$routes[] = array('issue_remove_link', '/upload/remove/link/:link_id/from/issue/:issue_id', 'main', 'removeLinkFromIssue');
 	$routes[] = array('upload_status', '/upload/get/status/for/:mode', 'main', 'getUploadStatus');
 	$routes[] = array('upload', '/upload/:mode', 'main', 'upload');
+	$routes[] = array('upload_file', '/uploadfile', 'main', 'uploadFile');
 	$routes[] = array('account_add_application_password', '/account/add/password/*', 'main', 'accountAddPassword', array(), true);
 	$routes[] = array('account_remove_application_password', '/account/remove/password/:id/:csrf_token', 'main', 'accountRemovePassword', array(), true);
 	$routes[] = array('account_regenerate_rss_key', '/account/regenerate/rsskey/:csrf_token', 'main', 'accountRegenerateRssKey', array(), true);

@@ -398,6 +398,11 @@
 			}
 			return null;
 		}
+		
+		public function getUploadedFiles()
+		{
+			return $this->_files;
+		}
 
 		/**
 		 * Get all parameters from the request

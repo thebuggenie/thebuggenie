@@ -1479,6 +1479,18 @@
 					try
 					{
 						$issue = $this->_postIssue();
+						if ($request->hasParameter('files') && $request->hasParameter('file_description'))
+						{
+							$files = $request['files'];
+							$file_descriptions = $request['file_description'];
+							foreach ($files as $file_id => $nothing)
+							{
+								$file = TBGFilesTable::getTable()->selectById((int) $file_id);
+								$file->setDescription($file_descriptions[$file_id]);
+								$file->save();
+								TBGIssueFilesTable::getTable()->addByIssueIDandFileID($issue->getID(), $file->getID());
+							}
+						}
 						if ($request['return_format'] == 'planning')
 						{
 							$this->_loadSelectedProjectAndIssueTypeFromRequestForReportIssueAction($request);
@@ -2561,6 +2573,55 @@
 			}
 			
 			return $this->renderJSON($status);
+		}
+
+		public function runUploadFile(TBGRequest $request)
+		{
+			if (!isset($_SESSION['upload_files']))
+			{
+				$_SESSION['upload_files'] = array();
+			}
+			
+			$files = array();
+			$files_dir = TBGSettings::getUploadsLocalpath();
+			
+			foreach ($request->getUploadedFiles() as $key => $file)
+			{
+				$new_filename = TBGContext::getUser()->getID() . '_' . NOW . '_' . basename($file['name']);
+				if (TBGSettings::getUploadStorage() == 'files')
+				{
+					$filename = $files_dir.$new_filename;
+				}
+				else
+				{
+					$filename = $file['tmp_name'];
+				}
+				TBGLogging::log('Moving uploaded file to '.$filename);
+				if (TBGSettings::getUploadStorage() == 'files' && !move_uploaded_file($file['tmp_name'], $filename))
+				{
+					TBGLogging::log('Moving uploaded file failed!');
+					throw new Exception(TBGContext::getI18n()->__('An error occured when saving the file'));
+				}
+				else
+				{
+					TBGLogging::log('Upload complete and ok, storing upload status and returning filename '.$new_filename);
+					$content_type = TBGFile::getMimeType($filename);
+					$file_object = new TBGFile();
+					$file_object->setRealFilename($new_filename);
+					$file_object->setOriginalFilename(basename($file['name']));
+					$file_object->setContentType($content_type);
+					$file_object->setDescription('');
+					$file_object->setUploadedBy(TBGContext::getUser());
+					if (TBGSettings::getUploadStorage() == 'database')
+					{
+						$file_object->setContent(file_get_contents($filename));
+					}
+					$file_object->save();
+					return $this->renderJSON(array('file_id' => $file_object->getID()));
+				}
+			}
+			
+			return $this->renderJSON(array('error' => $this->getI18n()->__('An error occurred when uploading the file')));
 		}
 
 		public function runUpload(TBGRequest $request)

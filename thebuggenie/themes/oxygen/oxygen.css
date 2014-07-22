@@ -1324,6 +1324,32 @@ reportissue_additional_information_container .markItUp { display: none; }
 .report_issue_submit_container img { float: right; margin-right: 5px; }
 #report_issue_add_extra { margin-top: 15px; color: #333; }
 #report_form .textarea_hint { color: #AAA; font-weight: normal; padding: 5px 0 0 0; }
+#report_form .upload_container { 
+	padding: 35px 0; 
+	margin: 20px 10px; 
+	color: rgba(100, 100, 100, 0.3); 
+	cursor: pointer; 
+	font-size: 2em; 
+	font-weight: normal; 
+	text-align: center; 
+	border: 3px rgba(100, 100, 100, 0.2) dashed; 
+	border-radius: 5px; 
+	-webkit-transition: background-color 0.3s ease;
+	-moz-transition: background-color 0.3s ease;
+	-ms-transition: background-color 0.3s ease;
+	transition: background-color 0.3s ease;
+}
+#report_form .upload_container .upload_click_here { color: rgba(50, 150, 50, 0.65); }
+#report_form .upload_container.file_hover { background-color: rgba(225, 225, 200, 0.7); }
+#file_upload_list { list-style: none; margin: 0; padding: 0; }
+#file_upload_list li { list-style: none; margin: 0; padding: 7px; font-size: 1.1em; }
+#file_upload_list li .filename { font-style: italic; }
+#file_upload_list li .filesize { color: #AAA; display: inline-block; margin-left: 10px; }
+#report_form #file_upload_list li label { width: 180px; display: inline-block; font-size: 1.1em; font-weight: normal; }
+#report_form #file_upload_list li label:first-child { font-weight: bold; }
+#file_upload_list li input[type="text"] { width: 550px; }
+#file_upload_list .progress { display: block; width: 1%; height: 4px; margin: 5px 0; padding: 0; border-bottom: 1px solid rgba(0, 0, 0, 0.5); background-color: #7777CC; }
+#file_upload_list .progress.completed { background-color: #00CC33; opacity: 0.5; }
 #issue_view .textarea_hint { color: #999; font-weight: normal; padding: 5px 0 0 0; }
 #issue_view pre { padding: 3px; background-color: #F1F1F1; border: 1px dotted #AAA; }
 #issue_view { position: relative; z-index: 100; overflow: auto; }
