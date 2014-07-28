@@ -350,6 +350,7 @@ footer img { margin: 4px 3px -6px 0; }
 
 /* comments and commits styling */
 .comment { padding-bottom: 0; clear: both; }
+.comment_main { position: relative; overflow: visible; padding: 5px; }
 .comment:target .comment_main { border: 1px dotted #CCC; background-color: #F0F7FF; border-radius: 10px; -moz-border-radius: 10px; -webkit-border-radius: 10px; }
 .comment.syntax_md p, .comment.syntax_md pre, .comment.syntax_md code, .article.syntax_md p, .article.syntax_md pre, .article.syntax_md code { margin: 0 0 16px; }
 .comment_delete { margin-top: 10px !important; }

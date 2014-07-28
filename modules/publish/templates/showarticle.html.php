@@ -61,7 +61,7 @@
 					<h4>
 						<?php echo __('Article attachments (%count)', array('%count' => count($attachments))); ?>
 						<?php if (TBGSettings::isUploadsEnabled() && $article->canEdit()): ?>
-							<button class="button button-silver" onclick="$('attach_file').show();"><?php echo __('Attach a file'); ?></button>
+							<button class="button button-silver" onclick="TBG.Main.showUploader('<?php echo make_url('get_partial_for_backdrop', array('key' => 'uploader', 'mode' => 'article', 'article_name' => $article_name)); ?>');"><?php echo __('Attach a file'); ?></button>
 						<?php else: ?>
 							<button class="button button-silver disabled" onclick="TBG.Main.Helpers.Message.error('<?php echo __('File uploads are not enabled'); ?>');"><?php echo __('Attach a file'); ?></button>
 						<?php endif; ?>
@@ -72,7 +72,7 @@
 					<h4>
 						<?php echo __('Article comments (%count)', array('%count' => TBGComment::countComments($article->getID(), TBGComment::TYPE_ARTICLE))); ?>
 						<?php if ($tbg_user->canPostComments() && ((TBGContext::isProjectContext() && !TBGContext::getCurrentProject()->isArchived()) || !TBGContext::isProjectContext())): ?>
-							<button id="comment_add_button" class="button button-silver" onclick="$$('.comment_editor').each(Element.hide);$('comment_add_button').hide(); $('comment_add').show();$('comment_bodybox').focus();"><?php echo __('Post comment'); ?></button>
+							<button id="comment_add_button" class="button button-silver" onclick="TBG.Main.Comment.showPost();"><?php echo __('Post comment'); ?></button>
 						<?php endif; ?>
 					</h4>
 					<?php include_template('main/comments', array('target_id' => $article->getID(), 'target_type' => TBGComment::TYPE_ARTICLE, 'show_button' => false, 'comment_count_div' => 'article_comment_count', 'forward_url' => make_url('publish_article', array('article_name' => $article->getName())))); ?>

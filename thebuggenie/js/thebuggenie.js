@@ -1436,6 +1436,13 @@ TBG.Main.setToggleState = function (url, state) {
 	TBG.Main.Helpers.ajax(url, {});
 }
 
+TBG.Main.Comment.showPost = function() {
+	$$('.comment_editor').each(Element.hide);
+	$('comment_add_button').hide();
+	$('comment_add').show();
+	$('comment_bodybox').focus();	
+}
+
 TBG.Main.Comment.remove = function(url, comment_id) {
 	TBG.Main.Helpers.ajax(url, {
 		loading: {
@@ -1445,6 +1452,7 @@ TBG.Main.Comment.remove = function(url, comment_id) {
 		success: {
 			remove: ['comment_delete_indicator_' + comment_id, 'comment_delete_confirm_' + comment_id, 'comment_' + comment_id],
 			callback: function() {
+				TBG.Main.Helpers.Dialog.dismiss();
 				if ($('comments_box').childElements().size() == 0) $('comments_none').show();
 			}
 		},
@@ -3465,7 +3473,6 @@ TBG.Issues.showWorkflowTransition = function(transition_id) {
 };
 
 TBG.Issues.showLog = function(url) {
-	TBG.Main.Helpers.tabSwitcher('tab_log', 'viewissue_menu');
 	if ($('viewissue_log_items').childElements().size() == 0) {
 		TBG.Main.Helpers.ajax(url, {
 			url_method: 'get',
@@ -5438,6 +5445,9 @@ jQuery(document).ready(function(){
 	(function($) {
 		$("body").on("click", ".dropper", function() {
 			TBG.Main.Helpers.toggler($(this));
+		});
+		$("body").on("click", ".popup_box", function() {
+			TBG.Main.Profile.clearPopupsAndButtons();
 		});
 	})(jQuery);
 });

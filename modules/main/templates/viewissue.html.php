@@ -366,6 +366,55 @@
 						</fieldset>
 						<?php include_component('main/issuemaincustomfields', array('issue' => $issue)); ?>
 						<?php TBGEvent::createNew('core', 'viewissue_right_bottom', $issue)->trigger(); ?>
+						<fieldset class="comments">
+							<legend class="viewissue_comments_header">
+								<?php echo __('Comments (%count)', array('%count' => '<span id="viewissue_comment_count">'.$issue->countUserComments().'</span>')); ?>
+								<div class="dropper_container">
+									<?php echo image_tag('icon-mono-settings.png', array('class' => 'dropper')); ?>
+									<ul class="simple_list rounded_box white shadowed more_actions_dropdown dropdown_box popup_box leftie">
+										<li><a href="javascript:void(0);" id="comments_show_system_comments_toggle" onclick="$$('#comments_box .system_comment').each(function (elm) { $(elm).toggle(); });" /><?php echo __('Toggle system-generated comments'); ?></a></li>
+									</ul>
+								</div>
+								<ul class="simple_list button_container" id="add_comment_button_container">
+									<li id="comment_add_button"><input class="button button-silver first last" type="button" onclick="TBG.Main.Comment.showPost();" value="<?php echo __('Post comment'); ?>"></li>
+								</ul>
+							</legend>
+							<div id="viewissue_comments">
+								<?php include_template('main/comments', array('target_id' => $issue->getID(), 'target_type' => TBGComment::TYPE_ISSUE, 'show_button' => false, 'comment_count_div' => 'viewissue_comment_count', 'save_changes_checked' => $issue->hasUnsavedChanges(), 'issue' => $issue, 'forward_url' => make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo()), false))); ?>
+							</div>
+						</fieldset>
+						<fieldset class="viewissue_history">
+							<legend class="viewissue_history_header">
+								<?php echo __('History'); ?>
+								<?php echo image_tag('spinning_16.gif', array('style' => 'display: none;', 'id' => 'viewissue_log_loading_indicator')); ?>
+								<div class="button_container" id="viewissue_history_button_container">
+									<input class="button button-silver first last" type="button" onclick="TBG.Issues.showLog('<?php echo make_url('issue_log', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())); ?>');" value="<?php echo __('Show issue history'); ?>">
+								</div>
+							</legend>
+							<div id="viewissue_log_items"></div>
+						</fieldset>
+						<?php TBGEvent::createNew('core', 'viewissue_before_tabs', $issue)->trigger(); ?>
+						<div class="tab_menu inset" id="viewissue_tabs">
+							<ul id="viewissue_menu">
+								<li id="tab_affected"><?php echo javascript_link_tag(image_tag('viewissue_tab_affected.png') . '<span>'.__('Affects (%count)', array('%count' => '</span><span id="viewissue_affects_count" class="tab_count">'.$affected_count.'</span>')), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_affected', 'viewissue_menu');")); ?></li>
+								<?php TBGEvent::createNew('core', 'viewissue_tabs', $issue)->trigger(); ?>
+							</ul>
+						</div>
+						<div id="viewissue_menu_panes">
+							<?php TBGEvent::createNew('core', 'viewissue_tab_panes_front', $issue)->trigger(); ?>
+							<div id="tab_log_pane" style="padding-top: 0; margin: 5px; display: none;">
+								<div id="viewissue_log_loading_indicator"><?php echo image_tag('spinning_32.gif'); ?></div>
+								<div id="viewissue_log_items">
+								</div>
+							</div>
+							<div id="tab_affected_pane" style="padding-top: 0; margin: 0 5px 0 5px; display: none;">
+								<div id="viewissue_affected">
+									<?php include_component('main/issueaffected', array('issue' => $issue)); ?>
+								</div>
+							</div>
+							<?php TBGEvent::createNew('core', 'viewissue_tab_panes_back', $issue)->trigger(); ?>
+						</div>
+						<?php TBGEvent::createNew('core', 'viewissue_after_tabs', $issue)->trigger(); ?>
 					</div>
 				</div>
 				<div id="issue_details_container">
@@ -382,35 +431,6 @@
 				</div>
 			</div>
 		</div>
-		<?php TBGEvent::createNew('core', 'viewissue_before_tabs', $issue)->trigger(); ?>
-		<div style="clear: both; height: 30px; margin: 20px 5px 0 5px;" class="tab_menu inset">
-			<ul id="viewissue_menu">
-				<li id="tab_comments" class="selected"><?php echo javascript_link_tag(image_tag('viewissue_tab_comments.png') . '<span>'.__('Comments (%count)', array('%count' => '</span><span id="viewissue_comment_count" class="tab_count">'.$issue->countUserComments().'</span>')), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_comments', 'viewissue_menu');")); ?></li>
-				<li id="tab_affected"><?php echo javascript_link_tag(image_tag('viewissue_tab_affected.png') . '<span>'.__('Affects (%count)', array('%count' => '</span><span id="viewissue_affects_count" class="tab_count">'.$affected_count.'</span>')), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_affected', 'viewissue_menu');")); ?></li>
-				<?php TBGEvent::createNew('core', 'viewissue_tabs', $issue)->trigger(); ?>
-				<li id="tab_log"><?php echo javascript_link_tag(image_tag('viewissue_tab_log.png') . '<span>'.__('History'), array('onclick' => "TBG.Issues.showLog('".make_url('issue_log', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID()))."');")).'</span>'; ?></li>
-			</ul>
-		</div>
-		<div id="viewissue_menu_panes">
-			<?php TBGEvent::createNew('core', 'viewissue_tab_panes_front', $issue)->trigger(); ?>
-			<div id="tab_comments_pane" style="padding-top: 0; margin: 5px;" class="comments">
-				<div id="viewissue_comments">
-					<?php include_template('main/comments', array('target_id' => $issue->getID(), 'target_type' => TBGComment::TYPE_ISSUE, 'comment_count_div' => 'viewissue_comment_count', 'save_changes_checked' => $issue->hasUnsavedChanges(), 'issue' => $issue, 'forward_url' => make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo()), false))); ?>
-				</div>
-			</div>
-			<div id="tab_log_pane" style="padding-top: 0; margin: 5px; display: none;">
-				<div id="viewissue_log_loading_indicator"><?php echo image_tag('spinning_32.gif'); ?></div>
-				<div id="viewissue_log_items">
-				</div>
-			</div>
-			<div id="tab_affected_pane" style="padding-top: 0; margin: 0 5px 0 5px; display: none;">
-				<div id="viewissue_affected">
-					<?php include_component('main/issueaffected', array('issue' => $issue)); ?>
-				</div>
-			</div>
-			<?php TBGEvent::createNew('core', 'viewissue_tab_panes_back', $issue)->trigger(); ?>
-		</div>
-		<?php TBGEvent::createNew('core', 'viewissue_after_tabs', $issue)->trigger(); ?>
 	</div>
 	<div id="workflow_transition_container" style="display: none;">
 		<?php if ($issue->isWorkflowTransitionsAvailable()): ?>

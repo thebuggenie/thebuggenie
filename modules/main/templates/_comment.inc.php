@@ -1,7 +1,7 @@
 <?php $options = (isset($issue)) ? array('issue' => $issue) : array(); ?>
 <?php if ($comment->isViewableByUser($tbg_user)): ?> 
 <div class="comment<?php if ($comment->isSystemComment()): ?> system_comment<?php endif; if (!$comment->isPublic()): ?> private_comment<?php endif; ?> <?php if ($comment->isMwSyntax()) echo ' syntax_mw'; ?><?php if ($comment->isMdSyntax()) echo ' syntax_md'; ?>" id="comment_<?php echo $comment->getID(); ?>"<?php if ($comment->isSystemComment()): ?> style="display: none;"<?php endif; ?>>
-	<div style="position: relative; overflow: visible; padding: 5px;" id="comment_view_<?php echo $comment->getID(); ?>" class="comment_main">
+	<div id="comment_view_<?php echo $comment->getID(); ?>" class="comment_main">
 		<div id="comment_<?php echo $comment->getID(); ?>_header" class="commentheader">
 			<a href="#comment_<?php echo $comment->getID(); ?>" class="comment_hash">#<?php echo $comment->getCommentNumber(); ?></a>
 			<?php if ((TBGContext::isProjectContext() && !TBGContext::getCurrentProject()->isArchived()) || !TBGContext::isProjectContext()) : ?>
@@ -13,19 +13,15 @@
 						<a href="javascript:void(0)" class="button button-icon button-silver" onclick="$$('.comment_editor').each(Element.hide);$('comment_edit_<?php echo $comment->getID(); ?>').show();"><?php echo image_tag('edit.png', array('title' => __('Edit'))); ?></a>
 					<?php endif; ?>
 					<?php if ($comment->canUserDelete($tbg_user)): ?>
-					   <a href="javascript:void(0)" class="button button-icon button-silver" onclick="$('comment_delete_confirm_<?php echo $comment->getID(); ?>').toggle();"><?php echo image_tag('delete.png', array('title' => __('Delete'))); ?></a>
+						<?php echo javascript_link_tag(image_tag('delete.png'), array('class' => 'button button-icon button-silver', 'onclick' => "TBG.Main.Helpers.Dialog.show('".__('Do you really want to delete this comment?')."', '".__('Please confirm that you want to delete this comment.')."', {yes: {click: function() {TBG.Main.Comment.remove('".make_url('comment_delete', array('comment_id' => $comment->getID()))."', ".$comment->getID()."); }}, no: { click: TBG.Main.Helpers.Dialog.dismiss }});")); ?>
 					<?php endif; ?>
 				</div>
 			<?php endif; ?>
 			<div class="commenttitle">
-				<?php if ($comment->isSystemComment()): ?>
-					<?php echo __('Comment posted on behalf of %user', array('%user' => '<div style="display: inline;">'.get_component_html('main/userdropdown', array('user' => $comment->getPostedBy(), 'size' => 'small')).'</div>')); ?>
-				<?php elseif(!$comment->isPublic()): ?>
+				<?php if(!$comment->isPublic()): ?>
 					<?php echo image_tag('icon_locked.png', array('style' => 'float: left; margin-right: 3px;', 'title' => __('Access to this comment is restricted'))); ?>
-					<?php echo __('Private comment posted by %user', array('%user' => '<div style="display: inline;">'.get_component_html('main/userdropdown', array('user' => $comment->getPostedBy(), 'size' => 'small')).'</div>')); ?>
-				<?php else: ?>
-					<?php echo __('Comment posted by %user', array('%user' => '<div style="display: inline;">'.get_component_html('main/userdropdown', array('user' => $comment->getPostedBy(), 'size' => 'small')).'</div>')); ?>
 				<?php endif; ?>
+				<?php echo include_component('main/userdropdown', array('user' => $comment->getPostedBy(), 'size' => 'large')); ?>
 			</div>
 			<div class="commentdate" id="comment_<?php echo $comment->getID(); ?>_date">
 				<?php if ($comment->isReply()): ?>
@@ -35,7 +31,7 @@
 				<?php endif; ?>
 			</div>
 		</div>
-		<div class="rounded_box lightyellow borderless shadowed comment_delete" id="comment_delete_confirm_<?php echo $comment->getID(); ?>" style="display: none; width: 300px; position: absolute; right: 0; top: 0; padding: 5px; z-index: 20;">
+		<?php /* <div class="rounded_box lightyellow borderless shadowed comment_delete" id="comment_delete_confirm_<?php echo $comment->getID(); ?>" style="display: none; width: 300px; position: absolute; right: 0; top: 0; padding: 5px; z-index: 20;">
 			<h5><?php echo __('Really delete this comment?'); ?></h5>
 			<div id="comment_delete_controls_<?php echo $comment->getID(); ?>" style="text-align: right; font-size: 12px;">
 				<a href="javascript:void(0)" onclick="TBG.Main.Comment.remove('<?php echo make_url('comment_delete', array('comment_id' => $comment->getID())); ?>', <?php echo $comment->getID(); ?>)" class="xboxlink"><?php echo __('Yes');?></a> :: <a href="javascript:void(0)" onclick="$('comment_delete_confirm_<?php echo $comment->getID(); ?>').hide();" class="xboxlink"><?php echo __('No'); ?></a>
@@ -43,7 +39,7 @@
 			<div id="comment_delete_indicator_<?php echo $comment->getID(); ?>" style="display: none;">
 				<?php echo image_tag('spinning_16.gif', array('class' => 'spinning')); ?>
 			</div>
-		</div>
+		</div> */ ?>
 		<div class="commentbody article" id="comment_<?php echo $comment->getID(); ?>_body">
 			<?php echo $comment->getParsedContent($options); ?>
 			<br style="clear: both;">

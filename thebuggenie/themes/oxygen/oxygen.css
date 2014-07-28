@@ -597,19 +597,25 @@ footer img { margin: 4px 3px -6px 0; }
 .main_area.frontpage .article h1, .main_area.frontpage .article h2, .main_area.frontpage .article h3, .main_area.frontpage .article h4, .main_area.frontpage .article h5, .main_area.frontpage .article h6 { margin-top: 0; margin-bottom: 5px; }
 
 /* comments and commits styling */
-.comment { padding-bottom: 0; clear: both; }
+.comment { padding-bottom: 10px; clear: both; }
+.comment_main { position: relative; overflow: visible; padding: 5px; }
 .comment:target .comment_main { border: 1px dotted #CCC; background-color: #F0F7FF; border-radius: 10px; -moz-border-radius: 10px; -webkit-border-radius: 10px; }
 .comment.syntax_md p, .comment.syntax_md pre, .comment.syntax_md code, .article.syntax_md p, .article.syntax_md pre, .article.syntax_md code { margin: 0 0 16px; }
 .comment_delete { margin-top: 10px !important; }
-.commenttitle { font-weight: bold; }
-.comment_hash { float: right; font-size: 2.0em; font-weight: normal; color: #B1B8E9; }
+.commenttitle { font-weight: bold; display: inline-block; }
+.viewissue_comments_header .dropper_container { position: relative; display: inline-block; vertical-align: middle; line-height: 1em; }
+.viewissue_comments_header .dropper { cursor: pointer; margin-left: 5px; }
+.viewissue_comments_header .more_actions_dropdown { left: -12px; margin-top: 3px; right: auto; font-size: 0.9em; }
+.commenttitle img.avatar { position: absolute; left: 5px; top: 2px; }
+.commenttitle .userlink { margin-left: 0; }
+.comment_hash { float: right; font-size: 2.0em; line-height: 1em; font-weight: normal; color: #B1B8E9; }
 .comments_none { font-weight: normal; }
-.commentdate { color: #AAA; font-weight: normal; font-size: 0.8em; }
-.commentheader { padding: 0 0 5px 0; border-bottom: 1px dotted #CCC; }
+.commentdate { color: #AAA; font-weight: normal; font-size: 0.8em; display: inline-block; }
+.commentheader { padding: 0 0 1px 40px; border: none; position: relative; }
 .comment_add_title { font-size: 1.1em; font-weight: bold; }
-.commentbody { padding: 5px 5px 5px 0; font-size: 0.9em; }
+.commentbody { padding: 1px 5px 5px 40px; font-size: 1em; }
 .commentbody .image_container.thumb img.image { width: 130px; }
-.commenttools { float: right; padding: 5px; margin: 0 5px 0 0; font-size: 0.9em; text-align: right; }
+.commenttools { float: right; padding: 0 5px; margin: 0 5px 0 0; font-size: 0.9em; text-align: right; z-index: 10; }
 .commenttools .button { font-weight: normal !important; }
 .commenttools img { width: 20px; }
 .comment_controls { margin-top: 10px; font-size: 1em; }
@@ -1230,6 +1236,11 @@ table.cleantable th { text-align: center; }
 #workflow_details_transition dd, #workflow_details_step dd { width: 290px; }
 #workflow_details_transition dd.description, #workflow_details_step dd.description { font-style: italic; }
 #workflow_details_step dd div.workflow_step_status { line-height: 0; height: 14px; width: 14px; font-size: 1px; float: left; margin-right: 5px; border: 1px solid #AAA; }
+#add_post_action.more_actions_dropdown { width: 710px; padding: 0 5px; bottom: 0; margin-bottom: 30px; }
+#add_post_action.more_actions_dropdown .column { width: 230px; margin: 0; padding: 0; display: inline-block; vertical-align: top; }
+#add_post_action.more_actions_dropdown .column .simple_list { margin-top: 0; }
+#add_post_action.more_actions_dropdown .column .simple_list li a { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#add_post_action.more_actions_dropdown h1 { font-size: 0.9em; font-weight: normal; border-bottom: 1px dotted #CCC; color: #AAA; padding: 5px 0; margin: 0; }
 
 #workflow_browser_step { float: right; width: 300px; padding: 5px; text-align: center; margin-left: 0; }
 #workflow_browser_step .header { font-size: 1.1em; text-align: center; margin-bottom: 5px; }
@@ -1324,7 +1335,7 @@ reportissue_additional_information_container .markItUp { display: none; }
 .report_issue_submit_container img { float: right; margin-right: 5px; }
 #report_issue_add_extra { margin-top: 15px; color: #333; }
 #report_form .textarea_hint { color: #AAA; font-weight: normal; padding: 5px 0 0 0; }
-#report_form .upload_container { 
+.upload_container { 
 	padding: 35px 0; 
 	margin: 20px 10px; 
 	color: rgba(100, 100, 100, 0.3); 
@@ -1339,15 +1350,17 @@ reportissue_additional_information_container .markItUp { display: none; }
 	-ms-transition: background-color 0.3s ease;
 	transition: background-color 0.3s ease;
 }
-#report_form .upload_container .upload_click_here { color: rgba(50, 150, 50, 0.65); }
-#report_form .upload_container.file_hover { background-color: rgba(225, 225, 200, 0.7); }
+.upload_container .upload_click_here { color: rgba(50, 150, 50, 0.65); }
+.upload_container.file_hover { background-color: rgba(225, 225, 200, 0.7); }
 #file_upload_list { list-style: none; margin: 0; padding: 0; }
 #file_upload_list li { list-style: none; margin: 0; padding: 7px; font-size: 1.1em; }
+#attach_file #file_upload_list li { height: 125px; position: relative; }
+#attach_file #file_upload_list li .progress { position: absolute; bottom: -7px; left: 0; }
 #file_upload_list li .filename { font-style: italic; }
 #file_upload_list li .filesize { color: #AAA; display: inline-block; margin-left: 10px; }
-#report_form #file_upload_list li label { width: 180px; display: inline-block; font-size: 1.1em; font-weight: normal; }
-#report_form #file_upload_list li label:first-child { font-weight: bold; }
-#file_upload_list li input[type="text"] { width: 550px; }
+#file_upload_list li label { width: 180px; display: inline-block; font-size: 1.1em; font-weight: normal; }
+#file_upload_list li label:first-of-type { font-weight: bold; }
+#file_upload_list li input[type="text"] { width: 400px; }
 #file_upload_list .progress { display: block; width: 1%; height: 4px; margin: 5px 0; padding: 0; border-bottom: 1px solid rgba(0, 0, 0, 0.5); background-color: #7777CC; }
 #file_upload_list .progress.completed { background-color: #00CC33; opacity: 0.5; }
 #issue_view .textarea_hint { color: #999; font-weight: normal; padding: 5px 0 0 0; }
@@ -1375,8 +1388,20 @@ reportissue_additional_information_container .markItUp { display: none; }
 	-o-transition: width 0.3s ease; 
 	transition: width 0.3s ease; 
 }
-#issue_view fieldset { border: 0; border-top: 1px dotted #AAA; padding: 5px; margin: 0; }
-#issue_view fieldset legend { border: 0; padding: 5px; font-weight: bold; font-size: 1.1em; }
+#issue_view fieldset { border: 0; padding: 5px; margin: 0; }
+#issue_view fieldset legend { 
+	border: 0;
+	color: #777;
+    display: block;
+    font-size: 1.2em;
+    font-weight: normal;
+    padding: 30px 0 5px;
+    width: 100%;
+	border-bottom: 1px dotted #CCC;
+}
+#issue_view fieldset:first-of-type legend, #issue_details_container fieldset legend { 
+	padding-top: 5px;
+}
 .reportissue_error tr { background-color: #FEE; }
 .reportissue_error tr td input, .reportissue_error tr td textarea, .reportissue_error tr td select { background-color: #FEE; border-color: #B77; }
 .reportissue_error label { color: #955; }
@@ -1527,6 +1552,7 @@ ul.workflow_actions li:hover { box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); -webkit-b
 #viewissue_menu li { box-shadow: 1px -1px 1px rgba(50, 50, 50, 0.2); -webkit-box-shadow: 1px -1px 1px rgba(50, 50, 50, 0.2); -moz-box-shadow: 1px -1px 1px rgba(50, 50, 50, 0.2); }
 #viewissue_menu li.selected { box-shadow: 2px -2px 2px rgba(50, 50, 50, 0.2); -webkit-box-shadow: 2px -2px 2px rgba(50, 50, 50, 0.2); -moz-box-shadow: 2px -2px 2px rgba(50, 50, 50, 0.2); }
 #viewissue_menu li a { font-size: 1em; }
+#viewissue_tabs { clear: both; height: 30px; margin: 50px 5px 0 5px; }
 #issue_info_container { text-align: left; z-index: 0; vertical-align: middle; font-size: 1em; font-weight: normal; color: #F5F5F5; width: auto; position: relative; margin: 0 5px 3px 5px; }
 .issue_info_backdrop { background-color: #DDD; z-index: 100; filter:alpha(opacity=90); -moz-opacity:.90; opacity:.90; width: 100%; height: 100%; position: absolute; top: 0; left: 0; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; border-top-left-radius: 0; -moz-border-radius-topleft: 0; -webkit-border-top-left-radius: 0; border-top-right-radius: 0; -moz-border-radius-topright: 0; -webkit-border-top-right-radius: 0; }
 .issue_info { z-index: 110; color: #333; text-shadow: 1px 1px 0px #FFF; position: relative; padding: 3px 3px 3px 5px; font-weight: normal; min-height: 22px; }
@@ -1582,6 +1608,8 @@ ul.workflow_actions li:hover { box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); -webkit-b
 #viewissue_header_container.fixed #votes_additional { display: none; }
 #workflow_actions.fixed #comment_add_button { margin-left: 5px; border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; }
 #comment_add_button { padding: 0; }
+#issue_main .button_container { display: inline-block; float: right; margin: -6px 0 0; font-size: 1.1em; }
+#issue_main .button_container .button { font-weight: normal !important; padding: 4px 8px !important; font-size: 0.8em !important; }
 #viewissue_comments #comment_add_button .button { padding: 2px 10px !important; font-size: 1em; }
 .user_pain, .votes { font-size: 2.3em; font-weight: bold; line-height: 1.2; }
 .user_pain { color: #91A291; }
@@ -1731,7 +1759,7 @@ ul.workflow_actions .more_actions_dropdown li:hover { box-shadow: none; -webkit-
 .header_div.smaller, label.smaller, div.smaller { font-size: 0.9em; }
 .header_div.bigger, label.bigger, div.bigger { font-size: 1.2em; }
 .header_div.light { border-color: #EEE; }
-.no_items { color: #AAA; font-size: 0.9em; padding: 5px; }
+.no_items { color: #AAA; font-size: 1em; padding: 5px 0; }
 .percent_filled { background-color: #8C8; }
 .percent_unfilled { background-color: #aFa; }
 .issue_lefthand .percent_filled a, .percent_unfilled a { display: block; height: 14px; }
@@ -1762,8 +1790,9 @@ ul.workflow_actions .more_actions_dropdown li:hover { box-shadow: none; -webkit-
 #viewissue_related_information li:hover button, #viewissue_attached_information li:hover button, #viewissue_duplicate_issues li:hover button { opacity: 1; }
 #viewissue_related_information li.closed > a, #viewissue_duplicate_issues li.closed > a { color: #549D54; text-decoration: line-through; }
 .userdropdown { display: inline-block; }
-#viewissue_comments, #viewissue_log_items, #viewissue_duplicates, #viewissue_affected { margin: 5px 0 0 0; }
-#viewissue_log_items ul { list-style: none; margin: 10px; padding: 0; }
+#viewissue_affected { margin: 5px 0 0 0; }
+#viewissue_log_loading_indicator { display: inline-block; vertical-align: middle; margin-left: 5px; }
+#viewissue_log_items ul { list-style: none; margin: 0 0 10px 0; padding: 0; }
 #viewissue_log_items ul li { list-style: none; margin: 0; padding: 2px 0; }
 #viewissue_log_items ul li img { margin: 3px 5px -3px 5px; }
 #viewissue_log_items ul li span.date { font-size: 0.85em; color: #AAA; display: inline-block; min-width: 120px; }
@@ -1803,9 +1832,11 @@ ul.attached_items { list-style: none; padding: 0; margin: 5px 0 0 0; }
 #viewissue_attached_information .attached_item.file_image .removelink { position: absolute; top: 5px; right: 0; cursor: pointer; }
 #viewissue_attached_information .attached_item.file_image .removelink:first-of-type { right: 20px; }
 #viewissue_attached_information .attached_item.file_image:hover .removelink { background-color: rgba(255, 255, 255, 0.9); border: 1px solid rgba(200, 200, 200, 0.8); border-radius: 2px; padding: 2px; line-height: 1em; width: 16px; height: 16px; }
-.attached_item.file_image a.imagepreview { display: block; margin: 0; padding: 2px; border: 1px solid rgba(100, 100, 100, 0.3); transition: border-color 0.3s ease; box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); }
-.attached_item.file_image a.imagepreview:hover { border-color: rgba(200, 200, 200, 0.5); }
-.attached_item.file_image a.imagepreview img { display: block; width: 100%; max-height: 115px; margin: 0; padding: 0; }
+#file_upload_list li { clear: both; }
+#file_upload_list .imagepreview { display: block; float: left; margin-right: 5px; width: 160px; }
+.imagepreview { display: block; margin: 0; padding: 2px; border: 1px solid rgba(100, 100, 100, 0.3); transition: border-color 0.3s ease; box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); }
+.imagepreview:hover { border-color: rgba(200, 200, 200, 0.5); }
+.imagepreview img { display: block; width: 100%; max-height: 115px; margin: 0; padding: 0; }
 
 .popup_box li.separator {
 	margin: 5px 10px;
