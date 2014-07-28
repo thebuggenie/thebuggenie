@@ -607,10 +607,10 @@ footer img { margin: 4px 3px -6px 0; }
 .viewissue_comments_header .dropper { cursor: pointer; margin-left: 5px; }
 .viewissue_comments_header .more_actions_dropdown { left: -12px; margin-top: 3px; right: auto; font-size: 0.9em; }
 .commenttitle img.avatar { position: absolute; left: 5px; top: 2px; }
-.commenttitle .userlink { margin-left: 0; }
+.commenttitle .userlink { margin-left: 0; font-size: 1.1em; }
 .comment_hash { float: right; font-size: 2.0em; line-height: 1em; font-weight: normal; color: #B1B8E9; }
 .comments_none { font-weight: normal; }
-.commentdate { color: #AAA; font-weight: normal; font-size: 0.8em; display: inline-block; }
+.commentdate { color: #AAA; font-weight: normal; font-size: 0.9em; display: inline-block; margin-left: 5px; }
 .commentheader { padding: 0 0 1px 40px; border: none; position: relative; }
 .comment_add_title { font-size: 1.1em; font-weight: bold; }
 .commentbody { padding: 1px 5px 5px 40px; font-size: 1em; }
