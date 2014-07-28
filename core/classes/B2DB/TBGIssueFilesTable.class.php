@@ -65,7 +65,11 @@
 				$crit->addInsert(self::ISSUE_ID, $issue_id);
 				$crit->addInsert(self::FILE_ID, $file_id);
 				$this->doInsert($crit);
+				
+				return true;
 			}
+			
+			return false;
 		}
 
 		public function getByIssueID($issue_id)

@@ -899,6 +899,49 @@ TBG.Main.updatePercentageLayout = function(arg1, arg2) {
 	}
 };
 
+TBG.Main.showUploader = function(url) {
+	if (window.File && window.FileList && window.FileReader) {
+		url += '&uploader=dynamic';
+	} else {
+		url += '&uploader=legacy';
+	}
+	TBG.Main.Helpers.Backdrop.show(url);
+};
+
+TBG.Main.updateAttachments = function(form) {
+	var url = form.action;
+	TBG.Main.Helpers.ajax(url, {
+		form: form,
+		url_method: 'post',
+		loading: {
+			indicator: 'attachments_indicator',
+			callback: function() {
+				$('dynamic_uploader_submit').addClassName('disabled');
+				$('dynamic_uploader_submit').disable();
+			}
+		},
+		success: {
+			callback: function(json) {
+				var base = $(json.container_id);
+				if (base !== undefined) {
+					base.update('');
+					json.files.each(function(file_elm) {
+						base.insert(file_elm);
+					});
+				}
+				TBG.Main.Helpers.Backdrop.reset();
+			}
+		},
+		complete: {
+			callback: function() {
+				$('dynamic_uploader_submit').addClassName('disabled');
+				$('dynamic_uploader_submit').disable();
+			}
+		}
+	});
+	
+}
+
 TBG.Main.uploadFile = function(url, file) {
 	var fileSize = 0;
 	if (file.size > 1024 * 1024) {
@@ -907,9 +950,22 @@ TBG.Main.uploadFile = function(url, file) {
 		fileSize = (Math.round(file.size * 100 / 1024) / 100).toString() + 'KB';
 	}
 	var ful = $('file_upload_list');
-	var elm = '<li><label>'+ful.dataset.filenameLabel+'</label><span class="filename">' + file.name + '</span> <span class="filesize">' + fileSize + '</span><br><label>'+ful.dataset.descriptionLabel+'</label><input type="text" class="file_description" value="" placeholder="' + ful.dataset.descriptionPlaceholder + '"> <span class="progress"></span></li>';
+	var elm = '<li><span class="imagepreview"><img src=""></span>';
+	var isimage = false;
+	if (file.type.indexOf("image") == 0) {
+		isimage = true;
+	}
+	elm += '<label>'+ful.dataset.filenameLabel+'</label><span class="filename">' + file.name + '</span> <span class="filesize">' + fileSize + '</span><br><label>'+ful.dataset.descriptionLabel+'</label><input type="text" class="file_description" value="" placeholder="' + ful.dataset.descriptionPlaceholder + '"> <span class="progress"></span></li>';
 	ful.insert(elm);
 	var inserted_elm = $('file_upload_list').childElements().last();
+	if (isimage) {
+		var image_elm = inserted_elm.down('img');
+		var reader = new FileReader();
+		reader.onload = function(e) {
+			image_elm.src = e.target.result;
+		};
+		reader.readAsDataURL(file);
+	}
 	var progress_elm = inserted_elm.down('.progress');
 	var formData = new FormData();
 	formData.append(file.name, file);

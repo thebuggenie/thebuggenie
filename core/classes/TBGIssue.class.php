@@ -2030,23 +2030,26 @@
 		 */
 		public function attachFile(TBGFile $file, $file_comment = '', $description = '')
 		{
-			TBGIssueFilesTable::getTable()->addByIssueIDandFileID($this->getID(), $file->getID());
-			$comment = new TBGComment();
-			$comment->setPostedBy(TBGContext::getUser()->getID());
-			$comment->setTargetID($this->getID());
-			$comment->setTargetType(TBGComment::TYPE_ISSUE);
-			if ($file_comment)
+			$existed = !TBGIssueFilesTable::getTable()->addByIssueIDandFileID($this->getID(), $file->getID());
+			if (!$existed)
 			{
-				$comment->setContent(TBGContext::getI18n()->__('A file was uploaded. %link_to_file This comment was attached: %comment', array('%comment' => "\n\n".$file_comment, '%link_to_file' => "[[File:{$file->getOriginalFilename()}|thumb|{$description}]]")));
-			}
-			else
-			{
-				$comment->setContent(TBGContext::getI18n()->__('A file was uploaded. %link_to_file', array('%link_to_file' => "[[File:{$file->getOriginalFilename()}|thumb|{$description}]]")));
-			}
-			$comment->save();
-			if ($this->_files !== null)
-			{
-				$this->_files[$file->getID()] = $file;
+				$comment = new TBGComment();
+				$comment->setPostedBy(TBGContext::getUser()->getID());
+				$comment->setTargetID($this->getID());
+				$comment->setTargetType(TBGComment::TYPE_ISSUE);
+				if ($file_comment)
+				{
+					$comment->setContent(TBGContext::getI18n()->__('A file was uploaded. %link_to_file This comment was attached: %comment', array('%comment' => "\n\n".$file_comment, '%link_to_file' => "[[File:{$file->getOriginalFilename()}|thumb|{$description}]]")));
+				}
+				else
+				{
+					$comment->setContent(TBGContext::getI18n()->__('A file was uploaded. %link_to_file', array('%link_to_file' => "[[File:{$file->getOriginalFilename()}|thumb|{$description}]]")));
+				}
+				$comment->save();
+				if ($this->_files !== null)
+				{
+					$this->_files[$file->getID()] = $file;
+				}
 			}
 		}
 

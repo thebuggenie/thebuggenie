@@ -57,6 +57,7 @@
 	$routes[] = array('api_list_issuefields', '/api/:api_username/list/issuefields/for/:project_key/type/:issuetype/:format', 'remote', 'listIssuefields');
 	$routes[] = array('api_list_fieldvalues', '/api/:api_username/list/fieldvalues/for/field/:field_key/:format/*', 'remote', 'listFieldvalues');
 	$routes[] = array('get_partial_for_backdrop', '/get/partials/:key/*', 'main', 'getBackdropPartial');
+	$routes[] = array('update_attachments', '/attachments/for/:target/:target_id', 'main', 'updateAttachments');
 	$routes[] = array('issue_upload', '/upload/to/issue/:issue_id', 'main', 'upload', array('mode' => 'issue'));
 	$routes[] = array('article_upload', '/upload/to/article/:article_name', 'main', 'upload', array('mode' => 'article'));
 	$routes[] = array('showfile', '/files/show/:id', 'main', 'getFile', array('mode' => 'show'));

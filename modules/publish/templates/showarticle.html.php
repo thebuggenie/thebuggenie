@@ -55,9 +55,9 @@
 			<?php if ($article->getID()): ?>
 				<?php $attachments = $article->getFiles(); ?>
 				<div id="article_attachments">
-					<?php if (TBGSettings::isUploadsEnabled() && $article->canEdit()): ?>
+					<?php /*if (TBGSettings::isUploadsEnabled() && $article->canEdit()): ?>
 						<?php include_component('main/uploader', array('article' => $article, 'mode' => 'article')); ?>
-					<?php endif; ?>
+					<?php endif;*/ ?>
 					<h4>
 						<?php echo __('Article attachments (%count)', array('%count' => count($attachments))); ?>
 						<?php if (TBGSettings::isUploadsEnabled() && $article->canEdit()): ?>

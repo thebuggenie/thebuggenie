@@ -2575,6 +2575,46 @@
 			return $this->renderJSON($status);
 		}
 
+		public function runUpdateAttachments(TBGRequest $request)
+		{
+			switch ($request['target']) 
+			{
+				case 'issue':
+					$target = TBGIssuesTable::getTable()->selectById($request['target_id']);
+					$base_id = 'viewissue_files';
+					$container_id = 'viewissue_uploaded_files';
+					$target_identifier = 'issue_id';
+					$target_id = $target->getID();
+					break;
+				case 'article':
+					$target = TBGArticlesTable::getTable()->selectById($request['target_id']);
+					$base_id = 'article_'.mb_strtolower(urldecode($request['article_name'])).'_files';
+					$target_identifier = 'article_name';
+					$target_id = $request['article_name'];
+					break;
+			}
+			$saved_file_ids = $request['files'];
+			$files = array();
+			foreach ($request['file_description'] as $file_id => $description)
+			{
+				$file = TBGFilesTable::getTable()->selectById($file_id);
+				$file->setDescription($description);
+				$file->save();
+				if (in_array($file_id, $saved_file_ids))
+				{
+					$target->attachFile($file);
+				}
+				else
+				{
+					$target->detachFile($file);
+				}
+				$files[] = $this->getComponentHTML('main/attachedfile', array('base_id' => $base_id, 'mode' => $request['target'], $target_identifier => $target_id, 'file' => $file));
+			}
+			$attachmentcount = ($request['target'] == 'issue') ? $target->countFiles() + $target->countLinks() : $target->countFiles();
+			
+			return $this->renderJSON(array('attached' => 'ok', 'container_id' => $container_id, 'files' => $files, 'attachmentcount' => $attachmentcount));
+		}
+
 		public function runUploadFile(TBGRequest $request)
 		{
 			if (!isset($_SESSION['upload_files']))
@@ -3144,6 +3184,11 @@
 						$options = $request->getParameters();
 						$options['content'] = $this->getComponentHTML('login', array('section' => $request->getParameter('section', 'login')));
 						$options['mandatory'] = false;
+						break;
+					case 'uploader':
+						$template_name = 'main/uploader';
+						$options = $request->getParameters();
+						$options['uploader'] = ($request['uploader'] == 'dynamic') ? 'dynamic' : 'standard';
 						break;
 					case 'openid':
 						$template_name = 'main/openid';

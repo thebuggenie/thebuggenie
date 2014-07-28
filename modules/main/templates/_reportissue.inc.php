@@ -171,9 +171,6 @@
 	</div>
 	<a class="button button-silver" id="report_issue_report_another_button" onclick="[$(this), $('report_issue_form'), $('report_more_here'), $('report_form'), $('issuetype_list')].each(Element.toggle);"><?php echo __('Report another issue'); ?></a>
 <?php endif; ?>
-<?php if ($canupload): ?>
-	<input type="file" id="file_upload_dummy" style="display: none;" multiple onchange="TBG.Main.selectFiles(this);" data-upload-url="<?php echo make_url('upload_file'); ?>">
-<?php endif; ?>
 <?php if ($tbg_request->isAjaxCall()): ?>
 	<form action="<?php echo make_url('project_reportissue', array('project_key' => $selected_project->getKey())); ?>" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" onsubmit="TBG.Main.submitIssue('<?php echo make_url('project_reportissue', array('project_key' => $selected_project->getKey(), 'return_format' => 'planning')); ?>');return false;" id="report_issue_form" style="<?php if (isset($issue) && $issue instanceof TBGIssue) echo 'display: none;'; ?>">
 <?php else: ?>
@@ -315,12 +312,7 @@
 				</tr>
 			</table>
 			<?php if ($canupload): ?>
-				<div class="upload_container" id="upload_drop_zone">
-					<?php echo __('Drop files on this area or %click_here to add files', array('%click_here' => '<span class="upload_click_here">'.__('click here').'</span>')); ?>
-				</div>
-				<div class="upload_file_listing">
-					<ul id="file_upload_list" data-filename-label="<?php echo htmlentities(__('File'), ENT_COMPAT, TBGContext::getI18n()->getCharset()); ?>" data-description-label="<?php echo htmlentities(__('Description'), ENT_COMPAT, TBGContext::getI18n()->getCharset()); ?>" data-description-placeholder="<?php echo htmlentities(__('Enter a short file description here'), ENT_COMPAT, TBGContext::getI18n()->getCharset()); ?>"></ul>
-				</div>
+				<?php include_component('main/dynamicuploader'); ?>
 			<?php endif; ?>
 			<div class="reportissue_additional_information_container">
 				<table cellpadding="0" cellspacing="0" id="edition_div" style="display: none;" class="additional_information<?php if (array_key_exists('edition', $errors)): ?> reportissue_error<?php endif; ?>">
@@ -917,13 +909,4 @@
 		</div>
 	<?php endif; ?>
 </form>
-<?php if ($canupload): ?>
-	<script>
-		var upload_container = $('upload_drop_zone');
-		upload_container.addEventListener('dragover', TBG.Main.dragOverFiles, false);
-		upload_container.addEventListener('dragleave', TBG.Main.dragOverFiles, false);
-		upload_container.addEventListener('drop', TBG.Main.dropFiles, false);
-		upload_container.addEventListener('click', function () {$('file_upload_dummy').click();}, false);
-	</script>
-<?php endif; ?>
 	

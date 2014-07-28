@@ -17,7 +17,7 @@
 				<li><a href="javascript:void(0);" id="attach_link_button" onclick="$('attach_link').toggle();"><?php echo image_tag('action_add_link.png').__('Attach a link'); ?></a></li>
 			<?php endif; ?>
 			<?php if (TBGSettings::isUploadsEnabled() && $issue->canAttachFiles()): ?>
-				<li><a href="javascript:void(0);" id="attach_file_button" onclick="$('attach_file').toggle();"><?php echo image_tag('action_add_file.png').__('Attach a file'); ?></a></li>
+				<li><a href="javascript:void(0);" id="attach_file_button" onclick="TBG.Main.showUploader('<?php echo make_url('get_partial_for_backdrop', array('key' => 'uploader', 'mode' => 'issue', 'issue_id' => $issue->getID())); ?>');"><?php echo image_tag('action_add_file.png').__('Attach a file'); ?></a></li>
 			<?php else: ?>
 				<li class="disabled"><a href="javascript:void(0);" id="attach_file_button" onclick="TBG.Main.Helpers.Message.error('<?php echo __('File uploads are not enabled'); ?>', '<?php echo __('Before you can upload attachments, file uploads needs to be activated'); ?>');"><?php echo image_tag('action_add_file.png').__('Attach a file'); ?></a></li>
 			<?php endif; ?>

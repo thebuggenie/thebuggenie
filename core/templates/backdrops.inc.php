@@ -113,3 +113,4 @@
 		</div>
 	</div>
 </div>
+<input type="file" id="file_upload_dummy" style="display: none;" multiple onchange="TBG.Main.selectFiles(this);" data-upload-url="<?php echo make_url('upload_file'); ?>">
