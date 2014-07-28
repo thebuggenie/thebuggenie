@@ -405,23 +405,7 @@
 			if (TBGContext::getModule('vcs_integration')->getSetting('vcs_mode_' . TBGContext::getCurrentProject()->getID()) == TBGVCSIntegration::MODE_DISABLED): return; endif;
 
 			$links = TBGVCSIntegrationIssueLink::getCommitsByIssue($event->getSubject());
-			
-			if (count($links) == 0 || !is_array($links))
-			{
-				TBGActionComponent::includeTemplate('vcs_integration/viewissue_commits_top', array('items' => false));
-			}
-			else
-			{
-				TBGActionComponent::includeTemplate('vcs_integration/viewissue_commits_top', array('items' => true));
-				
-				/* Now produce each box */
-				foreach ($links as $link)
-				{
-					include_template('vcs_integration/commitbox', array("projectId" => $event->getSubject()->getProject()->getID(), "commit" => $link->getCommit()));
-				}
-				
-				TBGActionComponent::includeTemplate('vcs_integration/viewissue_commits_bottom');
-			}
+			TBGActionComponent::includeTemplate('vcs_integration/viewissue_commits', array('links' => $links));
 		}
 		
 		public static function processCommit(TBGProject $project, $commit_msg, $old_rev, $new_rev, $date = null, $changed, $author, $branch = null)
