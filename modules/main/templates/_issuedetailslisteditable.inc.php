@@ -36,26 +36,6 @@
 				</div>
 			<?php endif; ?>
 		</li>
-		<li id="posted_at_field" class="issue_detail_field primary">
-			<dl class="viewissue_list">
-				<dt id="posted_at_header">
-					<?php echo __('Posted at'); ?>
-				</dt>
-				<dd class="hoverable">
-					<time datetime="<?php echo tbg_formatTime($issue->getPosted(), 24); ?>" title="<?php echo tbg_formatTime($issue->getPosted(), 21); ?>" pubdate><?php echo tbg_formatTime($issue->getPosted(), 20); ?></time>
-				</dd>
-			</dl>
-		</li>
-		<li id="updated_at_field" class="issue_detail_field">
-			<dl class="viewissue_list">
-				<dt id="updated_at_header">
-					<?php echo __('Last updated'); ?>
-				</dt>
-				<dd class="hoverable">
-					<time datetime="<?php echo tbg_formatTime($issue->getLastUpdatedTime(), 24); ?>" title="<?php echo tbg_formatTime($issue->getLastUpdatedTime(), 21); ?>"><?php echo tbg_formatTime($issue->getLastUpdatedTime(), 20); ?></time>
-				</dd>
-			</dl>
-		</li>
 		<?php $field = $fields_list['category']; unset($fields_list['category']); ?>
 		<?php include_template('main/issuedetailslistfield', array('field' => 'category', 'info' => $field, 'issue' => $issue)); ?>
 		<?php $field = $fields_list['milestone']; unset($fields_list['milestone']); ?>
@@ -353,11 +333,31 @@
 	</ul>
 </fieldset>
 <fieldset id="issue_timetracking_container">
-	<legend onclick="$('issue_details_fieldslist_time').toggle();"><?php echo __('Time tracking'); ?></legend>
+	<legend onclick="$('issue_details_fieldslist_time').toggle();"><?php echo __('Times and dates'); ?></legend>
 	<?php if ($issue->canEditSpentTime()): ?>
 		<a class="button button-silver" id="issue_timetracking_log_time" href="javascript:void(0)" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'issue_spenttimes', 'issue_id' => $issue->getID(), 'initial_view' => 'entry')); ?>');"><?php echo __('Log time spent'); ?></a>
 	<?php endif; ?>
 	<ul class="issue_details simple_list" id="issue_details_fieldslist_time">
+		<li id="posted_at_field" class="issue_detail_field primary">
+			<dl class="viewissue_list">
+				<dt id="posted_at_header">
+					<?php echo __('Posted at'); ?>
+				</dt>
+				<dd class="hoverable">
+					<time datetime="<?php echo tbg_formatTime($issue->getPosted(), 24); ?>" title="<?php echo tbg_formatTime($issue->getPosted(), 21); ?>" pubdate><?php echo tbg_formatTime($issue->getPosted(), 20); ?></time>
+				</dd>
+			</dl>
+		</li>
+		<li id="updated_at_field" class="issue_detail_field">
+			<dl class="viewissue_list">
+				<dt id="updated_at_header">
+					<?php echo __('Last updated'); ?>
+				</dt>
+				<dd class="hoverable">
+					<time datetime="<?php echo tbg_formatTime($issue->getLastUpdatedTime(), 24); ?>" title="<?php echo tbg_formatTime($issue->getLastUpdatedTime(), 21); ?>"><?php echo tbg_formatTime($issue->getLastUpdatedTime(), 20); ?></time>
+				</dd>
+			</dl>
+		</li>
 		<li id="estimated_time_field"<?php if (!$issue->isEstimatedTimeVisible()): ?> style="display: none;"<?php endif; ?> class="issue_detail_field<?php if ($issue->isEstimatedTimeChanged()): ?> issue_detail_changed<?php endif; ?><?php if (!$issue->isEstimatedTimeMerged()): ?> issue_detail_unmerged<?php endif; ?>">
 			<dl class="viewissue_list">
 				<dt id="estimated_time_header"><?php echo __('Estimated time'); ?></dt>
