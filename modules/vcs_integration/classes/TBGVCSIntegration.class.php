@@ -69,8 +69,8 @@
 		{
 			TBGEvent::listen('core', 'project_sidebar_links', array($this, 'listen_project_links'));
 			TBGEvent::listen('core', 'breadcrumb_project_links', array($this, 'listen_breadcrumb_links'));
-			TBGEvent::listen('core', 'viewissue_tabs', array($this, 'listen_viewissue_tab'));
-			TBGEvent::listen('core', 'viewissue_tab_panes_back', array($this, 'listen_viewissue_panel'));
+			TBGEvent::listen('core', 'get_backdrop_partial', array($this, 'listen_getcommit'));
+			TBGEvent::listen('core', 'viewissue_left_after_attachments', array($this, 'listen_viewissue_panel'));
 			TBGEvent::listen('core', 'config_project_tabs', array($this, 'listen_projectconfig_tab'));
 			TBGEvent::listen('core', 'config_project_panes', array($this, 'listen_projectconfig_panel'));
 			TBGEvent::listen('core', 'project_header_buttons', array($this, 'listen_projectheader'));
@@ -392,12 +392,11 @@
 			TBGActionComponent::includeTemplate('vcs_integration/projectconfig_panel', array('selected_tab' => $event->getParameter('selected_tab'), 'access_level' => $event->getParameter('access_level'), 'project' => $event->getParameter('project')));
 		}
 		
-		public function listen_viewissue_tab(TBGEvent $event)
+		public function listen_getcommit(TBGEvent $event)
 		{
-			if (TBGContext::getModule('vcs_integration')->getSetting('vcs_mode_' . TBGContext::getCurrentProject()->getID()) == TBGVCSIntegration::MODE_DISABLED): return; endif;
-				
-			$count = count(TBGVCSIntegrationIssueLink::getCommitsByIssue($event->getSubject()));
-			TBGActionComponent::includeTemplate('vcs_integration/viewissue_tab', array('count' => $count));
+			$event->setReturnValue('vcs_integration/commitbackdrop');
+			$event->addToReturnList(TBGContext::getRequest()->getParameter('commit_id'), 'commit_id');
+			$event->setProcessed();
 		}
 		
 		public function listen_viewissue_panel(TBGEvent $event)

@@ -122,16 +122,7 @@
 		 */
 		public function getPreviousCommit()
 		{
-				$row = TBGVCSIntegrationCommitsTable::getTable()->getCommitByCommitId($this->_old_rev, $this->getProject()->getID());
-				
-				if ($row instanceof b2db\Row)
-				{
-					return TBGContext::factory()->TBGVCSIntegrationCommit($row->get(TBGVCSIntegrationCommitsTable::ID), $row);
-				}
-				else
-				{
-					return null;
-				}
+			return TBGVCSIntegrationCommitsTable::getTable()->getCommitByCommitId($this->_old_rev, $this->getProject()->getID());
 		}
 		
 		/**
@@ -297,17 +288,7 @@
 		 */
 		public static function getByProject($id, $limit = 40, $offset = null)
 		{
-			$data = array();
-			
-			if (!is_object(TBGVCSIntegrationCommitsTable::getTable()->getCommitsByProject($id, $limit, $offset)))
-			{
-				return false;
-			}
-			
-			foreach (TBGVCSIntegrationCommitsTable::getTable()->getCommitsByProject($id, $limit, $offset)->getAllRows() as $row)
-			{
-				$data[] = TBGContext::factory()->TBGVCSIntegrationCommit($row->get(TBGVCSIntegrationCommitsTable::ID), $row);
-			}
-			return $data;
+			$commits = TBGVCSIntegrationCommitsTable::getTable()->getCommitsByProject($id, $limit, $offset);
+			return $commits;
 		}
 	}

@@ -66,8 +66,7 @@
 				$crit->setOffset($offset);
 			}
 				
-			$results = $this->doSelect($crit);
-			return $results;
+			return $this->select($crit);
 		}
 		
 		/**
@@ -82,8 +81,7 @@
 			$crit->addWhere(self::NEW_REV, $id);
 			$crit->addWhere(self::PROJECT_ID, $project);
 				
-			$result = $this->doSelectOne($crit);
-			return $result;
+			return $this->selectOne($crit);
 		}
 	}
 

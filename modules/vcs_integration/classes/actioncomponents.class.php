@@ -17,5 +17,11 @@
 	 */
 	class vcs_integrationActionComponents extends TBGActionComponent
 	{
+		
+		public function componentCommitbackdrop()
+		{
+			$this->commit = TBGVCSIntegrationCommitsTable::getTable()->selectById($this->commit_id);
+			$this->projectId = $this->commit->getProject()->getId();
+		}
 
 	}

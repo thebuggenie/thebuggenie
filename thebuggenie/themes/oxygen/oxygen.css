@@ -599,7 +599,7 @@ footer img { margin: 4px 3px -6px 0; }
 /* comments and commits styling */
 .comment { padding-bottom: 10px; clear: both; }
 .comment_main { position: relative; overflow: visible; padding: 5px; }
-.comment:target .comment_main { border: 1px dotted #CCC; background-color: #F0F7FF; border-radius: 10px; -moz-border-radius: 10px; -webkit-border-radius: 10px; }
+.comment:target .comment_main { border: 1px solid rgba(100, 100, 100, 0.2); background-color: rgba(240, 247, 255, 0.6); border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; box-shadow: 0 0 3px rgba(100, 100, 100, 0.2); }
 .comment.syntax_md p, .comment.syntax_md pre, .comment.syntax_md code, .article.syntax_md p, .article.syntax_md pre, .article.syntax_md code { margin: 0 0 16px; }
 .comment_delete { margin-top: 10px !important; }
 .commenttitle { font-weight: bold; display: inline-block; }
@@ -607,13 +607,18 @@ footer img { margin: 4px 3px -6px 0; }
 .viewissue_comments_header .dropper { cursor: pointer; margin-left: 5px; }
 .viewissue_comments_header .more_actions_dropdown { left: -12px; margin-top: 3px; right: auto; font-size: 0.9em; }
 .commenttitle img.avatar { position: absolute; left: 5px; top: 2px; }
+#issue_details .commenttitle img.avatar { top: 7px; left: 3px; }
 .commenttitle .userlink { margin-left: 0; font-size: 1.1em; }
-.comment_hash { float: right; font-size: 2.0em; line-height: 1em; font-weight: normal; color: #B1B8E9; }
+.comment_hash { float: right; font-size: 2.0em; line-height: 1em; font-weight: normal; color: #B1B8E9; text-align: center; }
+.comment_hash a { color: #B1B8E9; }
+#issue_details .comment_hash { font-size: 1.4em; margin-top: 0; }
 .comments_none { font-weight: normal; }
 .commentdate { color: #AAA; font-weight: normal; font-size: 0.9em; display: inline-block; margin-left: 5px; }
+#issue_details .commentdate, .comment.commit .commentdate { display: block; margin-left: 0; }
 .commentheader { padding: 0 0 1px 40px; border: none; position: relative; }
 .comment_add_title { font-size: 1.1em; font-weight: bold; }
 .commentbody { padding: 1px 5px 5px 40px; font-size: 1em; }
+#issue_details .commentbody { padding-left: 0; }
 .commentbody .image_container.thumb img.image { width: 130px; }
 .commenttools { float: right; padding: 0 5px; margin: 0 5px 0 0; font-size: 0.9em; text-align: right; z-index: 10; }
 .commenttools .button { font-weight: normal !important; }
@@ -629,7 +634,7 @@ footer img { margin: 4px 3px -6px 0; }
 .comment_editor { position: fixed; width: 650px; z-index: 100; padding: 10px; bottom: 5px; right: 5px; box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); background-color: #FFF; border: 0; }
 
 .commit_header { font-weight: bold; font-size: larger; }
-.commit_expander { float: right; }
+.commit_expander { display: block; }
 .commit_expander img { vertical-align: text-bottom; }
 .commit_left { min-width: 650px; float: left; margin-top: 10px; margin-bottom: 20px; }
 .commit_right { width: 200px; float: right; margin-top: 10px; margin-bottom: 20px;}
@@ -637,7 +642,7 @@ footer img { margin: 4px 3px -6px 0; }
 .commits_next { clear: both; }
 .commit_left td { border: none !important; }
 .commit_main pre { white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word; }
-.commitbranch { font-weight: normal; background-color: #D4E5FF; color: #99C; padding: 2px; font-size: smaller; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; }
+.commitbranch { display: inline-block; font-weight: normal; background-color: #D4E5FF; color: #99C; padding: 2px; font-size: 0.6em; margin: 7px 0; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; }
 /* end comments and commits styling */
 
 /* generic closed and blocking issue styling */
