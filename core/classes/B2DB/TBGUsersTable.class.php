@@ -99,7 +99,25 @@
 		public function getByUsername($username)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::UNAME, $username);
+			$crit->addWhere(self::UNAME, strtolower($username), Criteria::DB_EQUALS, '', '', Criteria::DB_LOWER);
+			$crit->addWhere(self::DELETED, false);
+			
+			return $this->selectOne($crit);
+		}
+		
+		public function getByRealname($realname)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::REALNAME, strtolower($realname), Criteria::DB_EQUALS, '', '', Criteria::DB_LOWER);
+			$crit->addWhere(self::DELETED, false);
+			
+			return $this->selectOne($crit);
+		}
+		
+		public function getByBuddyname($buddyname)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::BUDDYNAME, strtolower($buddyname), Criteria::DB_EQUALS, '', '', Criteria::DB_LOWER);
 			$crit->addWhere(self::DELETED, false);
 			
 			return $this->selectOne($crit);
@@ -108,7 +126,7 @@
 		public function getByEmail($email)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::EMAIL, $email);
+			$crit->addWhere(self::EMAIL, strtolower($email), Criteria::DB_EQUALS, '', '', Criteria::DB_LOWER);
 			$crit->addWhere(self::DELETED, false);
 			
 			return $this->selectOne($crit);
@@ -117,7 +135,7 @@
 		public function isUsernameAvailable($username)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::UNAME, $username);
+			$crit->addWhere(self::UNAME, strtolower($username), Criteria::DB_EQUALS, '', '', Criteria::DB_LOWER);
 			$crit->addWhere(self::DELETED, false);
 			
 			return !(bool) $this->doCount($crit);
