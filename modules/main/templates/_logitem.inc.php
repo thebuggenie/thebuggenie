@@ -27,9 +27,9 @@
 				<span class="user">
 					<?php if (($user = TBGContext::factory()->TBGUser($log_action['user_id'])) instanceof TBGUser): ?>
 						<?php if ($log_action['change_type'] != TBGLogTable::LOG_COMMENT): ?>
-							<?php echo $user->getBuddyname(); ?> (<?php echo $user->getUsername(); ?>)
+							<?php echo $user->getNameWithUsername(); ?>
 						<?php else: ?>
-							<?php echo __('%buddy_name (%username) said', array('%username' => $user->getUsername(), '%buddy_name' => $user->getBuddyname())); ?>
+							<?php echo __('%user said', array('%user' => $user->getNameWithUsername())); ?>
 						<?php endif; ?>
 					<?php else: ?>
 						<?php if ($log_action['change_type'] != TBGLogTable::LOG_COMMENT): ?>

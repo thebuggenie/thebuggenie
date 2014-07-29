@@ -900,6 +900,10 @@
 			{
 				return __('No such user');
 			}
+			if ($this->isOpenIdLocked())
+			{
+				return $this->_buddyname;
+			}
 			return ($this->_buddyname) ? $this->_buddyname . ' (' . $this->_username . ')' : $this->_username;
 		}
 		
