@@ -1,5 +1,5 @@
 <form action="<?php echo make_url('update_attachments', array('target' => $mode, 'target_id' => $target->getID())); ?>" method="post" onsubmit="TBG.Main.updateAttachments(this);return false;">
-	<div id="backdrop_detail_content" class="backdrop_detail_content">
+	<div class="backdrop_detail_content">
 		<div class="upload_container" id="upload_drop_zone">
 			<span class="double"><?php echo __('Drop files on this area or %click_here to add files', array('%click_here' => '<span class="upload_click_here">'.__('click here').'</span>')); ?></span>
 			<span class="single" style="display: none;"><?php echo __('%click_here to add files', array('%click_here' => '<span class="upload_click_here">'.__('click here').'</span>')); ?></span>

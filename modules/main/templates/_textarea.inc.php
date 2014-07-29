@@ -13,7 +13,6 @@
 			<li class="md <?php if ($syntax == 'md') echo 'selected'; ?>"><a href="javascript:void(0);" onclick="TBG.Main.Helpers.setSyntax('<?php echo $base_id; ?>', 'md');"><?php echo __('Markdown syntax'); ?></a></li>
 		</ul>
 	</div>
-	<br style="clear:both" />
 	<textarea name="<?php echo $area_name; ?>" id="<?php echo $base_id; ?>" class="syntax_<?php echo $syntax; ?>" style="height: <?php echo $height; ?>; width: <?php echo $width; ?>;"><?php echo $value; ?></textarea>
 	<?php if (!isset($hide_hint) || $hide_hint == false): ?>
 		<div class="textarea_hint">
