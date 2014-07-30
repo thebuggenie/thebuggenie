@@ -1,5 +1,5 @@
 <?php TBGContext::loadLibrary('publish/publish'); ?>
-<div class="container_div toggled" style="margin: 0 0 5px 5px;">
+<div class="container_div toggled">
 	<div class="header" onclick="$(this).up().toggleClassName('visible');">
 		<?php echo __('Recently edited pages here'); ?>
 	</div>

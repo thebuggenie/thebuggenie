@@ -3,7 +3,7 @@
 	$article_name = ($article instanceof TBGWikiArticle) ? $article->getName() : $article;
 
 ?>
-<div class="container_div toggled<?php if (isset($special) && $special) echo ' visible'; ?>" style="margin: 0 0 5px 5px;">
+<div class="container_div toggled<?php if (isset($special) && $special) echo ' visible'; ?>">
 	<div class="header" onclick="$(this).up().toggleClassName('visible');">
 		<?php echo __('Wiki tools'); ?>
 	</div>

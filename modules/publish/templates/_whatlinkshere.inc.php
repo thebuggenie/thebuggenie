@@ -1,4 +1,4 @@
-<div class="container_div toggled<?php if (count($whatlinkshere) == 0) echo ' visible'; ?>" style="margin: 0 0 5px 5px;">
+<div class="container_div toggled<?php if (count($whatlinkshere) == 0) echo ' visible'; ?>">
 	<div class="header" onclick="if ($('nothing_links_here') == undefined) $(this).up().toggleClassName('visible');">
 		<?php echo __('Links to this article'); ?>
 	</div>

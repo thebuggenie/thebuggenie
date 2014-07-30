@@ -1,7 +1,7 @@
-<div class="container_div menu_links" id="<?php echo $target_type; ?>_<?php echo $target_id; ?>_container" style="margin: 0 0 5px 5px; position: relative;">
+<div class="container_div menu_links" id="<?php echo $target_type; ?>_<?php echo $target_id; ?>_container">
 	<div class="header">
 		<?php if ($tbg_user->canEditMainMenu() && ((TBGContext::isProjectContext() && !TBGContext::getCurrentProject()->isArchived()) || !TBGContext::isProjectContext())): ?>
-			<div class="button-group" style="float: right; margin: -3px -6px 0 0;">
+			<div class="button-group">
 				<?php echo javascript_link_tag(image_tag('icon_edit.png'), array('class' => 'button button-silver button-icon', 'onclick' => "TBG.Main.Menu.toggleEditMode('{$target_type}', '{$target_id}', '".make_url('save_menu_order', array('target_type' => $target_type, 'target_id' => $target_id))."');", 'title' => __('Toggle menu edit mode'))); ?>
 				<?php echo javascript_link_tag(image_tag('action_add_link.png'), array('class' => 'button button-silver button-icon', 'onclick' => "$('attach_link_{$target_type}_{$target_id}').toggle();", 'title' => __('Add an item to the menu'))); ?>
 			</div>

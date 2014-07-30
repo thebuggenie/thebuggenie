@@ -321,8 +321,33 @@ input[type=checkbox].semi-checked { filter:alpha(opacity=40); -moz-opacity:.40; 
 
 /* main page layout dimensions and details */
 #content_container { padding-bottom: 50px; height: auto; }
-.side_bar { width: 310px; background-color: transparent; vertical-align: top; padding-top: 15px; padding-left: 5px; position: relative; transition: width 0.3s ease; }
-.main_area { text-align: left; vertical-align: top; padding: 10px; width: auto; min-width: 700px; }
+.side_bar { 
+	width: 310px; 
+	background-color: transparent; 
+	vertical-align: top; 
+	padding: 7px 5px 0 5px; 
+	position: relative; 
+	transition: width 0.3s ease; 
+	box-shadow: 10px 0 15px -21px rgba(0, 0, 0, 0.9);
+	box-sizing: border-box;
+	-o-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
+.side_bar .header .button-group { 
+	float: right; 
+	margin: -3px 0 0; 
+	opacity: 0.3;
+	-webkit-transition: opacity 0.3s ease;
+	-moz-transition: opacity 0.3s ease;
+	-ms-transition: opacity 0.3s ease;
+	transition: opacity 0.3s ease;
+}
+.side_bar .header:hover .button-group { 
+	opacity: 1;
+}
+.main_area { text-align: left; vertical-align: top; padding: 10px 10px 10px 15px; width: auto; min-width: 700px; }
 /* end main page layout */
 
 /* footer section */
@@ -593,8 +618,15 @@ footer img { margin: 4px 3px -6px 0; }
 
 /* frontpage article layout styling */
 .article { font-size: 1em; color: #666; width: auto; padding: 5px; position: relative; }
+.main_area.article { padding: 5px 5px 5px 15px; }
 .main_area.frontpage .article { padding-top: 0; }
-.main_area.frontpage .article h1, .main_area.frontpage .article h2, .main_area.frontpage .article h3, .main_area.frontpage .article h4, .main_area.frontpage .article h5, .main_area.frontpage .article h6 { margin-top: 0; margin-bottom: 5px; }
+.main_area.frontpage .article h1, .main_area.frontpage .article h2, .main_area.frontpage .article h3, .main_area.frontpage .article h4, .main_area.frontpage .article h5, .main_area.frontpage .article h6 { 
+	margin: 0 0 5px 0;
+	padding: 5px 0;
+	color: #888;
+	border-bottom: none;
+	font-weight: normal;
+}
 
 /* comments and commits styling */
 .comment { padding-bottom: 10px; clear: both; }
@@ -621,10 +653,10 @@ footer img { margin: 4px 3px -6px 0; }
 #issue_details .commentbody { padding-left: 0; }
 .commentbody .image_container.thumb img.image { width: 130px; }
 .commenttools { float: right; padding: 0 5px; margin: 0 5px 0 0; font-size: 0.9em; text-align: right; z-index: 10; }
-.commenttools .button { font-weight: normal !important; }
+.commenttools .button { font-weight: normal; }
 .commenttools img { width: 20px; }
 .comment_controls { margin-top: 10px; font-size: 1em; }
-.comment_controls .button { font-size: 1.1em; padding: 4px 8px !important; }
+.comment_controls .button, .comment_controls .button:hover { font-size: 1.1em; padding: 4px 8px; }
 /*.comment_edit, .comment_add_main { padding: 5px; background-color: #F1F1F1; border: 1px dotted #CCC; }*/
 .comment_editsave, .comment_addsave { font-weight: bold; }
 .comment_titlebox { width: 600px; margin-bottom: 8px; }
@@ -697,7 +729,7 @@ div.autocomplete ul li .hidden { display: none; }
 .tab_menu li { color: #777; border-bottom: none; border-top: 1px solid #BBB; border-top-right-radius: 3px; border-top-left-radius: 3px; -moz-border-radius-topleft: 3px; -moz-border-radius-topright: 3px; -webkit-border-top-left-radius: 3px; -webkit-border-top-right-radius: 3px; padding: 3px 4px 3px 4px; display: block; }
 .tab_menu li:hover { text-decoration: none; border-bottom: none; display: block; }
 .tab_menu li { float: left; display: block; font-size: 0.9em; border: 1px solid #CCC; border-bottom: 1px solid #BBB; background-color: #EBEBEB; margin: 0 0 0 5px; border-top-right-radius: 3px; border-top-left-radius: 3px; -moz-border-radius-topleft: 5px; -moz-border-radius-topright: 5px; -webkit-border-top-left-radius: 3px; -webkit-border-top-right-radius: 3px; }
-.tab_menu li.selected, .tab_menu li:hover { color: #444; display: block; box-shadow: 0 -1px 1px rgba(0, 0, 0, 0.2); -webkit-box-shadow: 0 -1px 1px rgba(0, 0, 0, 0.2); -moz-box-shadow: 0 -1px 1px rgba(0, 0, 0, 0.2); }
+.tab_menu li.selected, .tab_menu li:hover { color: #444; display: block; box-shadow: 0 -3px 5px -4px rgba(50, 50, 50, 0.5); -webkit-box-shadow: 0 -3px 5px -4px rgba(50, 50, 50, 0.5); -moz-box-shadow: 0 -3px 5px -4px rgba(50, 50, 50, 0.5); }
 .tab_menu li.selected, .tab_menu li.selected:hover { background-color: #FFF; border: 1px solid #BBB; border-bottom: 1px solid #FFF; }
 .tab_menu .selected { font-weight: bold; }
 .tab_menu li:hover { background-color: #EFEFEF; border: 1px solid #BBB; border-top-right-radius: 3px; border-top-left-radius: 3px; -moz-border-radius-topleft: 5px; -moz-border-radius-topright: 5px; -webkit-border-top-left-radius: 3px; -webkit-border-top-right-radius: 3px; }
@@ -1308,9 +1340,8 @@ ul.project_list li { margin: 0px; font-size: 1.0em; font-weight: bold; padding: 
 .client_dashboard .header, .project_overview .header { padding: 5px; margin-bottom: 8px; border-bottom: 1px solid #DDD; font-size: 1.1em; }
 .client_dashboard { padding: 10px; }
 .team_dashboard, .project_overview { clear: both; }
-.team_dashboard .header, .project_overview .header { padding: 5px; margin-bottom: 8px; border-bottom: 1px solid #DDD; font-size: 1.1em; }
 .project_overview .button-group { float: right; }
-.project_overview .button-group .button { font-weight: normal !important; }
+.project_overview .button-group .button { font-weight: normal; }
 .project_overview .button-group .button.lefthugging, .project_overview .button-group .button.lefthugging:hover { padding-left: 7px !important; }
 .project_overview .button-group .button.righthugging, .project_overview .button-group .button.righthugging:hover { padding-right: 0 !important; }
 .team_dashboard { padding: 10px; }
@@ -1328,7 +1359,7 @@ ul.client_users, ul.team_users, ul.project_users { margin: 0; padding: 0; }
 ul.client_users li, ul.team_users li, ul.project_users li { list-style-type: none; padding-bottom: 5px; margin: 0;}
 .project_commits_box { margin-right: 10px; }
 .commit_box { margin-top: 5px }
-#global_roles_list .button-group .button, #project_roles_list .button-group .button { font-size: 0.9em; padding: 1px 5px !important; }
+#global_roles_list .button-group .button, #project_roles_list .button-group .button { font-size: 0.9em; padding: 1px 5px; }
 /* end project styling */
 
 /* account page tab panes content */
@@ -1529,10 +1560,10 @@ reportissue_additional_information_container .markItUp { display: none; }
 #issue_details legend { cursor: pointer; }
 .issue_detail_field .dropdown_box { font-size: 0.9em; }
 .issue_detail_field { font-size: 1.1em; }
-.issue_detail_field dl { height: 23px; }
+.issue_detail_field dl { height: 23px; font-size: 0.9em; }
 .issue_detail_field:hover { background-color: rgba(200, 200, 200, 0.2); border-radius: 3px; }
-.issue_detail_field dt { width: 35%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.issue_detail_field dd { width: auto; }
+.issue_detail_field dt { width: 35%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: normal; color: rgb(125, 125, 125); }
+.issue_detail_field dd { width: auto; color: rgb(35, 35, 35); }
 #issue_timetracking_container { position: relative; }
 #issue_timetracking_log_time { position: absolute; top: -26px; right: 0; }
 
@@ -1541,7 +1572,7 @@ reportissue_additional_information_container .markItUp { display: none; }
 ul.workflow_actions { margin-top: 0; }
 ul.workflow_actions > li { display: block; float: left; border-radius: 0; -moz-border-radius: 0; -webkit-border-radius: 0; padding: 0; line-height: 1; }
 ul.workflow_actions li form { display: inline; margin: 0; padding: 0; }
-ul.workflow_actions li input, ul.workflow_actions li:hover input { padding: 0 2px 1px 2px; font-weight: normal; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important; -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important; -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important; }
+ul.workflow_actions li input, ul.workflow_actions li:hover input { box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important; -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important; -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important; }
 ul.workflow_actions li:hover { box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); -webkit-box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); -moz-box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); }
 
 #viewissue_find_issue_input { width: 350px; }
@@ -1590,7 +1621,7 @@ ul.workflow_actions li:hover { box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); -webkit-b
 .viewissue_container { width: 100%; text-align: left; padding: 0 0 50px 0; margin: 0; }
 /* issue info boxes */
 #viewissue_menu li { box-shadow: 1px -1px 1px rgba(50, 50, 50, 0.2); -webkit-box-shadow: 1px -1px 1px rgba(50, 50, 50, 0.2); -moz-box-shadow: 1px -1px 1px rgba(50, 50, 50, 0.2); }
-#viewissue_menu li.selected { box-shadow: 2px -2px 2px rgba(50, 50, 50, 0.2); -webkit-box-shadow: 2px -2px 2px rgba(50, 50, 50, 0.2); -moz-box-shadow: 2px -2px 2px rgba(50, 50, 50, 0.2); }
+#viewissue_menu li.selected { box-shadow: 0 -3px 5px -4px rgba(50, 50, 50, 0.5); -webkit-box-shadow: 0 -3px 5px -4px rgba(50, 50, 50, 0.5); -moz-box-shadow: 0 -3px 5px -4px rgba(50, 50, 50, 0.5); }
 #viewissue_menu li a { font-size: 1em; }
 #viewissue_tabs { clear: both; height: 30px; margin: 50px 5px 0 5px; }
 #issue_info_container { text-align: left; z-index: 0; vertical-align: middle; font-size: 1em; font-weight: normal; color: #F5F5F5; width: auto; position: relative; margin: 0 5px 3px 5px; }
@@ -1649,8 +1680,8 @@ ul.workflow_actions li:hover { box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); -webkit-b
 #workflow_actions.fixed #comment_add_button { margin-left: 5px; border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; }
 #comment_add_button { padding: 0; }
 #issue_main .button_container { display: inline-block; float: right; margin: -6px 0 0; font-size: 1.1em; }
-#issue_main .button_container .button { font-weight: normal !important; padding: 4px 8px !important; font-size: 0.8em !important; }
-#viewissue_comments #comment_add_button .button { padding: 2px 10px !important; font-size: 1em; }
+#issue_main .button_container .button { font-weight: normal; padding: 4px 8px; font-size: 0.8em; }
+#viewissue_comments #comment_add_button .button { padding: 2px 10px; font-size: 1em; }
 .user_pain, .votes { font-size: 2.3em; font-weight: bold; line-height: 1.2; }
 .user_pain { color: #91A291; }
 #votes_additional { vertical-align: middle; }
@@ -1905,8 +1936,12 @@ table.issue_affects td img { vertical-align: bottom; }
 #customize_dashboard_icon span { display: none; color: #AAA; font-size: 1.1em; }
 #customize_dashboard_icon:hover span { display: inherit; }
 #dashboard li { font-size: 0.9em; font-weight: normal; clear: none; margin: 5px 1% 5px 0; text-align: left; float: left; width: 49%; }
-#dashboard li .container_div {margin: 0 0 5px 5px;}
-#dashboard li img.toggler {float: left; margin: 3px 5px 0 5px;}
+#dashboard li .container_div {
+	margin: 0 0 5px 5px; 
+	border: 1px solid rgba(100, 100, 100, 0.2); 
+	box-shadow: 0 0 3px rgba(100, 100, 100, 0.4); 
+}
+#dashboard li img.toggler { float: none; margin: 3px 5px 0 5px; display: inline-block; }
 #dashboard li .faded_out { font-size: 0.9em; font-weight: normal; }
 #dashboard li table tr td { font-size: 1em; font-weight: normal; vertical-align: top; }
 #dashboard li table tr.issue_closed td { text-decoration: line-through; color: #AAA; }
@@ -1915,7 +1950,7 @@ table.issue_affects td img { vertical-align: bottom; }
 #dashboard li .imgtd img {padding: 10px 5px 0 0}
 #dashboard li.narrow { width: 300px; }
 #dashboard li.wide { width: 700px; }
-#dashboard li .header, #dashboard_lefthand .header, #dashboard_righthand .header { margin: 1px 0 3px 0; padding: 3px 3px 5px 2px; font-weight: normal; font-size: 1.2em; border-bottom: 1px solid #CCC; background-color: #FFF; }
+#dashboard li .header, #dashboard_lefthand .header, #dashboard_righthand .header { margin: 2px 5px; padding: 3px 3px 5px 2px; font-weight: normal; font-size: 1.2em; border-bottom: 1px dotted #CCC; background-color: #FFF; }
 #dashboard li .milestone_box .header { margin: 0; padding: 0; border: none; background: none; }
 #dashboard .dashboard_view_header { font-weight: bold; color: #666; font-size: 1em; padding: 4px; }
 #dashboard .dashboard_view_content { padding: 5px 10px; }
@@ -2088,7 +2123,7 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover { font-size: 0.85em; }
 .infobox_modal .backdrop_detail_content { padding: 10px; }
 .infobox_modal .close_me { padding: 10px; text-align: right; }
 .infobox_modal .close_me label { font-weight: normal; vertical-align: middle; font-size: 0.9em; }
-.infobox_modal .close_me .button { font-size: 1.1em; padding: 3px 7px !important; }
+.infobox_modal .close_me .button { font-size: 1.1em; padding: 3px 7px; }
 .infobox_modal .close_me input[type=submit] { font-size: 1.1em; }
 .infobox_modal .close_me input[type=checkbox] { vertical-align: middle; }
 #scrum .infobox .content ul { list-style-type: disc; margin-left: 30px; }
@@ -2116,7 +2151,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .project_role .value {width: auto; display: table-cell; clear: none; padding: 0 10px 0 0;}
 #project_description {font-size: 1.1em; font-weight: normal; color: #666;}
 #project_description.none {color: #AAA;}
-.project_information_sidebar { vertical-align: top; border-right: 1px solid #CCC; height: 100%; width: 255px; padding: 10px 0 50px 10px; position: relative; }
+.project_information_sidebar { vertical-align: top; border-right: 1px solid #CCC; height: 100%; width: 255px; padding: 0 0 50px 10px; position: relative; }
 #search_sidebar { height: 100%; box-shadow: -5px 0 5px -5px rgba(0, 0, 0, 0.3) inset; border-right: 1px dotted #DDD; font-size: 1.1em; padding-top: 0; }
 #search_sidebar .num_results_badge { vertical-align: middle; float: right; }
 #search_sidebar .container_div { border: none; box-shadow: none; }
@@ -2679,8 +2714,26 @@ li.filtervalue .hidden { display: none; }
 .saved_searches a { font-size: 0.9em; font-weight: bold; padding-left: 3px; }
 .saved_searches .container_div { margin-bottom: 10px; }
 
-.container_div, .backdrop_box { margin: 5px 0; clear: both; font-size: 1em; display: block; padding: 0px; padding-bottom: 2px; background-color: #FFF; border: 1px solid #CCC; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; }
-.container_div .header, .metallic_header { 
+.backdrop_box { margin: 5px 0; clear: both; font-size: 1em; display: block; padding: 0px; padding-bottom: 2px; background-color: #FFF; border: 1px solid #CCC; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; }
+.container_div { margin: 5px; clear: both; font-size: 1.1em; display: block; padding: 0 0 2px; background-color: #FFF; border: none; box-shadow: none; position: relative; }
+.container_div .header, .team_dashboard .header, .project_overview .header { 
+	margin: 5px 0;
+	padding: 5px 0;
+	border: none;
+	border-bottom: 1px dotted #CCC;
+	font-weight: normal;
+	font-size: 1.1em;
+	color: #888;
+	box-sizing: border-box;
+	-o-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
+.team_dashboard .header, .project_overview .header {
+	font-size: 1.2em;
+}
+.metallic_header { 
 	margin-top: 0; 
 	height: 18px; 
 	padding: 2px 5px; 
@@ -2739,12 +2792,12 @@ input[type=submit], input[type=submit]:hover, button, .button, .button:hover {
 	line-height: 17px !important; 
 	height: auto; 
 	margin: 0;
-	padding: 1px 3px !important;
+	padding: 1px 3px;
 	font-size: 12px; 
 	text-decoration: none;
 	border: 1px solid #AAA; /* Fallback style */
 	border: 1px solid rgba(0, 0, 0, 0.2); 
-	border-color: rgba(0, 0, 0, 0.2) !important; 
+	border-color: rgba(0, 0, 0, 0.2);
 	-moz-border-radius: 2px;
 	-webkit-border-radius: 2px;
 	border-radius: 2px;
@@ -2754,10 +2807,11 @@ input[type=submit], input[type=submit]:hover, button, .button, .button:hover {
 	text-align: center;
 }
 .button:hover, input[type=submit]:hover, input[type=button]:hover, button:hover {
-	box-shadow: 0 0 2px rgba(0,0,0,0.3) !important;
-	-moz-box-shadow: 0 0 2px rgba(0,0,0,0.3) !important;
-	-webkit-box-shadow: 0 0 2px rgba(0,0,0,0.3) !important;
-	cursor: pointer; }
+	box-shadow: 0 0 2px rgba(0,0,0,0.3);
+	-moz-box-shadow: 0 0 2px rgba(0,0,0,0.3);
+	-webkit-box-shadow: 0 0 2px rgba(0,0,0,0.3);
+	cursor: pointer; 
+}
 
 .smaller_buttons .button span, .button.big-button span, .smaller_buttons .button input, .smaller_buttons .button button, .button.big-button input, .button.big-button button { padding: 8px 15px; font-size: 18px; }
 
