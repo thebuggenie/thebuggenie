@@ -296,12 +296,28 @@
 		protected $_deleted = false;
 
 		/**
-		 * The users preferred formatting syntax
+		 * The users preferred formatting syntax for issues
 		 *
 		 * @var integer
 		 * @Column(type="integer", length=3, default=2)
 		 */
-		protected $_preferred_syntax = 1;
+		protected $_preferred_issues_syntax = TBGSettings::SYNTAX_MD;
+		
+		/**
+		 * The users preferred formatting syntax for articles
+		 *
+		 * @var integer
+		 * @Column(type="integer", length=3, default=1)
+		 */
+		protected $_preferred_wiki_syntax = TBGSettings::SYNTAX_MW;
+		
+		/**
+		 * The users preferred formatting syntax for comments
+		 *
+		 * @var integer
+		 * @Column(type="integer", length=3, default=2)
+		 */
+		protected $_preferred_comments_syntax = TBGSettings::SYNTAX_MD;
 
 		/**
 		 * Whether the user wants to default to markdown in wiki pages
@@ -2179,34 +2195,45 @@
 			$this->_timezone = $timezone;
 		}
 
-		public function getPreferredSyntax($real_value = false)
+		public function getPreferredWikiSyntax($real_value = false)
 		{
 			if ($real_value)
-				return $this->_preferred_syntax;
+				return $this->_preferred_wiki_syntax;
 
-			return ($this->_preferred_syntax == TBGSettings::SYNTAX_MW) ? 'mw' : 'md';
+			return TBGSettings::getSyntaxClass($this->_preferred_wiki_syntax);
 		}
 
-		public function setPreferredSyntax($preferred_syntax)
+		public function setPreferredWikiSyntax($preferred_syntax)
 		{
-			$this->_preferred_syntax = $preferred_syntax;
+			$this->_preferred_wiki_syntax = $preferred_syntax;
 		}
 
-		public function getPreferWikiMarkdown()
+		public function getPreferredIssuesSyntax($real_value = false)
 		{
-			return $this->_prefer_wiki_markdown;
+			if ($real_value)
+				return $this->_preferred_issues_syntax;
+
+			return TBGSettings::getSyntaxClass($this->_preferred_issues_syntax);
 		}
 
-		public function preferWikiMarkdown()
+		public function setPreferredIssuesSyntax($preferred_syntax)
 		{
-			return $this->getPreferWikiMarkdown();
+			$this->_preferred_issues_syntax = $preferred_syntax;
 		}
 
-		public function setPreferWikiMarkdown($prefer_markdown)
+		public function getPreferredCommentsSyntax($real_value = false)
 		{
-			$this->_prefer_wiki_markdown = $prefer_markdown;
+			if ($real_value)
+				return $this->_preferred_comments_syntax;
+
+			return TBGSettings::getSyntaxClass($this->_preferred_comments_syntax);
 		}
-		
+
+		public function setPreferredCommentsSyntax($preferred_syntax)
+		{
+			$this->_preferred_comments_syntax = $preferred_syntax;
+		}
+
 		protected function _dualPermissionsCheck($permission_1, $permission_1_target, $permission_2, $permission_2_target, $fallback)
 		{
 			$retval = $this->hasPermission($permission_1, $permission_1_target);

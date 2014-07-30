@@ -51,6 +51,7 @@
 
 		const SYNTAX_MW = 1;
 		const SYNTAX_MD = 2;
+		const SYNTAX_PT = 3;
 
 		const SETTING_ADMIN_GROUP = 'admingroup';
 		const SETTING_ALLOW_REGISTRATION = 'allowreg';
@@ -798,6 +799,34 @@
 		{
 			$syntax = self::get(self::SETTING_DEFAULT_ISSUE_SYNTAX);
 			return ($syntax == null) ? TBGSettings::SYNTAX_MW : $syntax;
+		}
+
+		public static function getSyntaxClass($syntax)
+		{
+			switch ($syntax)
+			{
+				case TBGSettings::SYNTAX_MW:
+					return 'mw';
+				case TBGSettings::SYNTAX_PT:
+					return 'pt';
+				case TBGSettings::SYNTAX_MD:
+				default:
+					return 'md';
+			}
+		}
+
+		public static function getSyntaxValue($syntax)
+		{
+			switch ($syntax)
+			{
+				case 'mw':
+					return TBGSettings::SYNTAX_MW;
+				case 'pt':
+					return TBGSettings::SYNTAX_PT;
+				case 'md':
+				default:
+					return TBGSettings::SYNTAX_MD;
+			}
 		}
 
 		public static function isUsingExternalAuthenticationBackend()

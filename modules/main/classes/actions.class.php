@@ -993,8 +993,9 @@
 						return $this->renderJSON(array('title' => TBGContext::getI18n()->__('Profile information saved')));
 						break;
 					case 'settings':
-						$this->getUser()->setPreferredSyntax($request['profile_syntax']);
-						$this->getUser()->setPreferWikiMarkdown((bool) $request['prefer_wiki_markdown']);
+						$this->getUser()->setPreferredWikiSyntax($request['syntax_articles']);
+						$this->getUser()->setPreferredIssuesSyntax($request['syntax_issues']);
+						$this->getUser()->setPreferredCommentsSyntax($request['syntax_comments']);
 						$this->getUser()->setKeyboardNavigationEnabled($request['enable_keyboard_navigation']);
 						foreach ($notificationsettings as $setting => $description)
 						{
@@ -1393,9 +1394,9 @@
 			$issue->setIssuetype($this->issuetype_id);
 			$issue->setProject($this->selected_project);
 			if (isset($fields_array['description'])) $issue->setDescription($this->selected_description);
-			if (isset($fields_array['description_syntax'])) $issue->setDescription($this->selected_description_syntax);
+			if (isset($fields_array['description_syntax'])) $issue->setDescriptionSyntax($this->selected_description_syntax);
 			if (isset($fields_array['reproduction_steps'])) $issue->setReproductionSteps($this->selected_reproduction_steps);
-			if (isset($fields_array['reproduction_steps_syntax'])) $issue->setReproductionSteps($this->selected_reproduction_steps_syntax);
+			if (isset($fields_array['reproduction_steps_syntax'])) $issue->setReproductionStepsSyntax($this->selected_reproduction_steps_syntax);
 			if (isset($fields_array['category']) && $this->selected_category instanceof TBGDatatype) $issue->setCategory($this->selected_category->getID());
 			if (isset($fields_array['status']) && $this->selected_status instanceof TBGDatatype) $issue->setStatus($this->selected_status->getID());
 			if (isset($fields_array['reproducability']) && $this->selected_reproducability instanceof TBGDatatype) $issue->setReproducability($this->selected_reproducability->getID());
@@ -1759,14 +1760,14 @@
 
 					$issue->setDescription($request->getRawParameter('value'));
 					$issue->setDescriptionSyntax($request->getParameter('value_syntax'));
-					return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>$issue->isDescriptionChanged(), 'field' => array('id' => (int) ($issue->getDescription() != ''), 'name' => tbg_parse_text($issue->getDescription(), false, null, array('issue' => $issue))), 'description' => $issue->getParsedDescription(array('issue' => $issue))));
+					return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>$issue->isDescriptionChanged(), 'field' => array('id' => (int) ($issue->getDescription() != ''), 'name' => $issue->getParsedDescription(array('issue' => $issue))), 'description' => $issue->getParsedDescription(array('issue' => $issue))));
 					break;
 				case 'reproduction_steps':
 					if (!$issue->canEditReproductionSteps()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
 					
 					$issue->setReproductionSteps($request->getRawParameter('value'));
 					$issue->setReproductionStepsSyntax($request->getParameter('value_syntax'));
-					return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>$issue->isReproductionStepsChanged(), 'field' => array('id' => (int) ($issue->getReproductionSteps() != ''), 'name' => tbg_parse_text($issue->getReproductionSteps(), false, null, array('issue' => $issue))), 'reproduction_steps' => $issue->getParsedReproductionSteps(array('issue' => $issue))));
+					return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>$issue->isReproductionStepsChanged(), 'field' => array('id' => (int) ($issue->getReproductionSteps() != ''), 'name' => $issue->getParsedReproductionSteps(array('issue' => $issue))), 'reproduction_steps' => $issue->getParsedReproductionSteps(array('issue' => $issue))));
 					break;
 				case 'title':
 					if (!$issue->canEditTitle()) return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' =>false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
@@ -2997,7 +2998,7 @@
 				$comment->setReplyToComment($request['reply_to_comment_id']);
 				$comment->setModuleName($request['comment_module']);
 				$comment->setIsPublic((bool) $request['comment_visibility']);
-				$comment->setSyntax((int) $request['comment_body_syntax']);
+				$comment->setSyntax($request['comment_body_syntax']);
 				$comment->save();
 
 				if ($comment_applies_type == TBGComment::TYPE_ISSUE)

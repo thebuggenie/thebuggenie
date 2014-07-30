@@ -296,7 +296,7 @@
 				</tr>
 				<tr>
 					<td colspan="2" style="padding-top: 5px;">
-						<?php include_template('main/textarea', array('area_name' => 'description', 'height' => ($tbg_request->isAjaxCall() ? '150px' : '250px'), 'width' => '990px', 'value' => ((isset($selected_description)) ? $selected_description : null))); ?>
+						<?php include_template('main/textarea', array('area_name' => 'description', 'height' => ($tbg_request->isAjaxCall() ? '150px' : '250px'), 'width' => '990px', 'syntax' => $tbg_user->getPreferredIssuesSyntax(true), 'value' => ((isset($selected_description)) ? $selected_description : null))); ?>
 					</td>
 				</tr>
 			</table>
@@ -307,7 +307,7 @@
 				</tr>
 				<tr>
 					<td colspan="2" style="padding-top: 5px;">
-						<?php include_template('textarea', array('area_name' => 'reproduction_steps', 'height' => '250px', 'width' => '990px', 'value' => ((isset($selected_reproduction_steps)) ? $selected_reproduction_steps : null))); ?>
+						<?php include_template('textarea', array('area_name' => 'reproduction_steps', 'height' => '250px', 'width' => '990px', 'syntax' => $tbg_user->getPreferredIssuesSyntax(true), 'value' => ((isset($selected_reproduction_steps)) ? $selected_reproduction_steps : null))); ?>
 					</td>
 				</tr>
 			</table>
@@ -617,7 +617,7 @@
 										case TBGCustomDatatype::INPUT_TEXTAREA_SMALL:
 										case TBGCustomDatatype::INPUT_TEXTAREA_MAIN:
 											?>
-											<?php include_template('main/textarea', array('area_name' => $customdatatype->getKey().'_value', 'area_id' => $customdatatype->getKey().'_value', 'height' => '75px', 'width' => '100%', 'value' => $selected_customdatatype[$customdatatype->getKey()])); ?>
+											<?php include_template('main/textarea', array('area_name' => $customdatatype->getKey().'_value', 'area_id' => $customdatatype->getKey().'_value', 'height' => '75px', 'width' => '100%', 'syntax' => $tbg_user->getPreferredIssuesSyntax(true), 'value' => $selected_customdatatype[$customdatatype->getKey()])); ?>
 											<?php
 											break;
 									}

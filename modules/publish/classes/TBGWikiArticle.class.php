@@ -251,6 +251,8 @@
 		{
 			switch ($this->_content_syntax)
 			{
+				case TBGSettings::SYNTAX_PT:
+					$options = array('plain' => true);
 				case TBGSettings::SYNTAX_MW:
 					$wiki_parser = new TBGTextParser($this->_content, true, $this->getID());
 					foreach ($options as $option => $value)
@@ -270,7 +272,7 @@
 
 		public function setContentSyntax($syntax)
 		{
-			if (!is_numeric($syntax)) $syntax = ($syntax == 'mw') ? TBGSettings::SYNTAX_MW : TBGSettings::SYNTAX_MD;
+			if (!is_numeric($syntax)) $syntax = TBGSettings::getSyntaxValue($syntax);
 
 			$this->_content_syntax = $syntax;
 		}

@@ -880,20 +880,24 @@ div.dropdown_separator { border-left: 1px dotted #EAEAF5; padding: 0 0 0 4px; ma
 .header { font-weight: bold; text-align: left; }
 
 /* general text area styling */
-.textarea_container.syntax_md .textarea_hint .syntax_mw_hint { display: none; }
-.textarea_container.syntax_mw .textarea_hint .syntax_md_hint { display: none; }
+.textarea_container .textarea_hint .hint_container { display: none; }
+.textarea_container.syntax_md .textarea_hint .syntax_md_hint { display: block; }
+.textarea_container.syntax_mw .textarea_hint .syntax_mw_hint { display: block; }
+.textarea_container.syntax_pt .textarea_hint .syntax_pt_hint { display: block; }
+.textarea_container.syntax_pt .markItUpHeader { visibility: hidden; }
 .textarea_hint .header { font-weight: bold; }
 .textarea_hint .example { font-style: italic; }
 .syntax_picker_container, .textarea_container {
     position: relative;
 }
-.syntax_picker {
+.button.syntax_picker, .button.syntax_picker:hover {
     position: absolute;
     top: 0;
     right: 0;
     margin-top: -5px;
-    padding: 3px 7px !important;
-    font-size: 1em !important;
+    margin-right: -2px;
+    padding: 3px 7px;
+    font-size: 1em;
 }
 .syntax_picker + ul {
     right: 0;
@@ -936,6 +940,37 @@ a.shadowed:active { box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); -webkit-box-shad
 .profile_buttons { padding: 0; margin: 5px 0 20px 0; height: 20px; position: relative; clear: both; }
 .profile_buttons .button-group { float: right; }
 .profile_buttons .button, .profile_buttons .button:hover { font-weight: normal !important; padding: 2px 3px 3px 3px !important; }
+.profile_syntax_table {
+	border: 0;
+	padding: 0;
+	margin: 0;
+	border-collapse: collapse;
+}
+.profile_syntax_table th {
+	border: 0;
+	margin: 0;
+	background-color: #FFF;
+	text-align: center;
+	font-size: 0.9em;
+	font-weight: normal;
+	width: 100px;
+	color: #888;
+}
+.profile_syntax_table th:first-child {
+	width: auto;
+}
+.profile_syntax_table tbody tr td {
+	border-bottom: 1px dotted #DDD;
+	padding: 3px;
+	margin: 0;
+	text-align: center;
+}
+.profile_syntax_table tbody tr td:first-child {
+	text-align: left;
+}
+.profile_syntax_table tbody tr:hover td {
+	border-color: #888;
+}
 #account_tabs_panes table { width: 885px; margin-bottom: 25px; }
 #account_tabs_panes td { padding: 5px 0; }
 #account_tabs_panes label { padding: 0; margin: 0; }

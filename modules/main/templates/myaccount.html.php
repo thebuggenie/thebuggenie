@@ -247,7 +247,7 @@
 			</div>
 			<div id="tab_settings_pane" style="display: none;">
 				<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_save_settings'); ?>" onsubmit="TBG.Main.Profile.updateSettings('<?php echo make_url('account_save_settings'); ?>'); return false;" method="post" id="profile_settings_form">
-					<h3><?php echo __('Navigation and editing'); ?></h3>
+					<h3><?php echo __('Navigation'); ?></h3>
 					<p><?php echo __('These settings apply to all areas of The Bug Genie, and lets you customize your experience to fit your own style.'); ?></p>
 					<table class="padded_table" cellpadding=0 cellspacing=0>
 						<tr>
@@ -262,22 +262,42 @@
 								<?php echo __('Lets you use arrow up / down in issue lists to navigate'); ?><br>
 							</td>
 						</tr>
+					</table>
+					<h3><?php echo __('Editing'); ?></h3>
+					<p><?php echo __('The settings you select here will be used as the default formatting syntax for comments you post, issues you create and articles you write. Remember that you can switch this on a case by case basis - look for the syntax selector next to any text area with formatting buttons.'); ?></p>
+					<table class="padded_table" cellpadding=0 cellspacing=0>
 						<tr>
-							<td><label for="profile_syntax"><?php echo __('Preferred syntax'); ?></label></td>
-							<td>
-								<select name="profile_syntax" id="profile_syntax" style="width: 300px;" onchange="($(this).getValue() == '<?php echo TBGSettings::SYNTAX_MW; ?>') ? $('prefer_markdown_container').hide() : $('prefer_markdown_container').show();">
-									<option value="<?php echo TBGSettings::SYNTAX_MW; ?>"<?php if ($tbg_user->getPreferredSyntax(true) == TBGSettings::SYNTAX_MW): ?> selected<?php endif; ?>><?php echo __('Mediawiki'); ?></option>
-									<option value="<?php echo TBGSettings::SYNTAX_MD; ?>"<?php if ($tbg_user->getPreferredSyntax(true) == TBGSettings::SYNTAX_MD): ?> selected<?php endif; ?>><?php echo __('Markdown'); ?></option>
-								</select>
-								<div id="prefer_markdown_container" style="<?php if ($tbg_user->getPreferredSyntax(true) == TBGSettings::SYNTAX_MW) echo 'display: none;'; ?>">
-									<input type="checkbox" id="profile_prefer_wiki_markdown" name="prefer_wiki_markdown" <?php if ($tbg_user->preferWikiMarkdown()) echo 'checked'; ?>>
-									<label for="profile_prefer_wiki_markdown"><?php echo __('Prefer markdown also in the wiki'); ?></label><br>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td class="config_explanation" colspan="2">
-								<?php echo __('The syntax you select here will be used as the default formatting syntax for comments you post, issues you create and articles you write. Remember that you can switch this on a case by case basis - look for the syntax selector next to any text area with formatting buttons.'); ?><br>
+							<td colspan="2">
+								<table class="profile_syntax_table">
+									<thead>
+										<tr>
+											<th></th>
+											<th><?php echo __('Mediawiki'); ?></th>
+											<th><?php echo __('Markdown'); ?></th>
+											<th><?php echo __('Plain text'); ?></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td><label for="syntax_issues_md"><?php echo __('Preferred syntax when creating issues'); ?></label></td>
+											<td><input type="radio" name="syntax_issues" value="<?php echo TBGSettings::SYNTAX_MW; ?>" id="syntax_issues_mw" <?php if ($tbg_user->getPreferredIssuesSyntax(true) == TBGSettings::SYNTAX_MW) echo 'checked'; ?>></td>
+											<td><input type="radio" name="syntax_issues" value="<?php echo TBGSettings::SYNTAX_MD; ?>" id="syntax_issues_md" <?php if ($tbg_user->getPreferredIssuesSyntax(true) == TBGSettings::SYNTAX_MD) echo 'checked'; ?>></td>
+											<td><input type="radio" name="syntax_issues" value="<?php echo TBGSettings::SYNTAX_PT; ?>" id="syntax_issues_pt" <?php if ($tbg_user->getPreferredIssuesSyntax(true) == TBGSettings::SYNTAX_PT) echo 'checked'; ?>></td>
+										</tr>
+										<tr>
+											<td><label for="syntax_articles_mw"><?php echo __('Preferred syntax when creating articles'); ?></label></td>
+											<td><input type="radio" name="syntax_articles" value="<?php echo TBGSettings::SYNTAX_MW; ?>" id="syntax_articles_mw" <?php if ($tbg_user->getPreferredWikiSyntax(true) == TBGSettings::SYNTAX_MW) echo 'checked'; ?>></td>
+											<td><input type="radio" name="syntax_articles" value="<?php echo TBGSettings::SYNTAX_MD; ?>" id="syntax_articles_md" <?php if ($tbg_user->getPreferredWikiSyntax(true) == TBGSettings::SYNTAX_MD) echo 'checked'; ?>></td>
+											<td><input type="radio" name="syntax_articles" value="<?php echo TBGSettings::SYNTAX_PT; ?>" id="syntax_articles_pt" <?php if ($tbg_user->getPreferredWikiSyntax(true) == TBGSettings::SYNTAX_PT) echo 'checked'; ?>></td>
+										</tr>
+										<tr>
+											<td><label for="syntax_comments_md"><?php echo __('Preferred syntax when posting comments'); ?></label></td>
+											<td><input type="radio" name="syntax_comments" value="<?php echo TBGSettings::SYNTAX_MW; ?>" id="syntax_comments_mw" <?php if ($tbg_user->getPreferredCommentsSyntax(true) == TBGSettings::SYNTAX_MW) echo 'checked'; ?>></td>
+											<td><input type="radio" name="syntax_comments" value="<?php echo TBGSettings::SYNTAX_MD; ?>" id="syntax_comments_md" <?php if ($tbg_user->getPreferredCommentsSyntax(true) == TBGSettings::SYNTAX_MD) echo 'checked'; ?>></td>
+											<td><input type="radio" name="syntax_comments" value="<?php echo TBGSettings::SYNTAX_PT; ?>" id="syntax_comments_pt" <?php if ($tbg_user->getPreferredCommentsSyntax(true) == TBGSettings::SYNTAX_PT) echo 'checked'; ?>></td>
+										</tr>
+									</tbody>
+								</table>
 							</td>
 						</tr>
 					</table>

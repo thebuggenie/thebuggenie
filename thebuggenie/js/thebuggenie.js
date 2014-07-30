@@ -846,19 +846,23 @@ TBG.Main.Helpers.setSyntax = function(base_id, syntax) {
 	var ce = $(base_id);
 	var cec = $(base_id).up('.textarea_container');
 
-	ce.removeClassName('syntax_md');
-	ce.removeClassName('syntax_mw');
-	cec.removeClassName('syntax_md');
-	cec.removeClassName('syntax_mw');
+	['mw', 'md', 'pt'].each(function(sntx) {
+		ce.removeClassName('syntax_'+sntx);
+		cec.removeClassName('syntax_'+sntx);
+	});
 
 	ce.addClassName('syntax_' + syntax);
 	cec.addClassName('syntax_' + syntax);
 
-	$(base_id + '_selected_syntax').update((syntax == 'mw') ? 'mediawiki' : 'markdown');
 	$(base_id + '_syntax').setValue(syntax);
 
 	$(base_id + '_syntax_picker').childElements().each(function(elm) {
-		(elm.hasClassName(syntax)) ? elm.addClassName('selected') : elm.removeClassName('selected');
+		if (elm.hasClassName(syntax)) {
+			elm.addClassName('selected');
+			$(base_id + '_selected_syntax').update(elm.dataset.syntaxName);
+		} else {
+			elm.removeClassName('selected');
+		}
 	});
 
 	TBG.Main.Helpers.MarkitUp(ce);

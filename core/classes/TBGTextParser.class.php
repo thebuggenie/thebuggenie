@@ -1032,73 +1032,83 @@
 			$options = array_merge($options, $this->options);
 			TBGContext::loadLibrary('common');
 			
-			$this->list_level_types = array();
-			$this->list_level = 0;
-			$this->deflist = false;
-			$this->ignore_newline = false;
-			
 			$output = "";
 			$text = $this->text;
 			
-			$text = preg_replace_callback('/<(nowiki|pre)>(.*)<\/(\\1)>(?!<\/(\\1)>)/ismU', array($this, "_parse_save_nowiki"), $text);
-			$text = preg_replace_callback('/[\{]{3,3}([\d|\w|\|]*)[\}]{3,3}/ismU', array($this, "_parse_insert_variables"), $text);
-			$text = preg_replace_callback('/(?<!\{)[\{]{2,2}([^{^}.]*)[\}]{2,2}(?!\})/ismU', array($this, "_parse_insert_template"), $text);
-			if (isset($this->options['included'])) 
+			if (!isset($this->options['plain']))
 			{
-				$text = preg_replace_callback('/<noinclude>(.+?)<\/noinclude>(?!<\/noinclude>)/ism', array($this, "_parse_remove_noinclude"), $text);
-				$text = preg_replace_callback('/<includeonly>(.+?)<\/includeonly>(?!<\/includeonly>)/ism', array($this, "_parse_preserve_includeonly"), $text);
-				return $text;
-			}
-			
-			if (!isset($this->options['included']))
-			{
-				$text = preg_replace_callback('/<includeonly>(.+?)<\/includeonly>(?!<\/includeonly>)/ism', array($this, "_parse_remove_includeonly"), $text);
-				$text = preg_replace_callback('/<noinclude>(.+?)<\/noinclude>(?!<\/noinclude>)/ism', array($this, "_parse_preserve_noinclude"), $text);
-			}
-			$text = preg_replace_callback('/<source((?:\s+[^\s]+=".*")*)>\s*?(.+)\s*?<\/source>/ismU', array($this, "_parse_save_code"), $text);
-			// Thanks to Mike Smith (scgtrp) for the above regexp
-			
-			$text = tbg_decodeUTF8($text, true);
-			$text = preg_replace_callback('/&lt;(strike|u|pre|tt|s|del|ins|u|blockquote|div|span|font)(\s.*)?&gt;(.*)&lt;\/(\\1)&gt;/ismU', array($this, '_parse_allowed_tags') ,$text);
+				$this->list_level_types = array();
+				$this->list_level = 0;
+				$this->deflist = false;
+				$this->ignore_newline = false;
 
-			$text = str_replace('&lt;br&gt;', '<br>' ,$text);
-			
-			$lines = explode("\n", $text);
-			foreach ($lines as $line)
-			{
-				if (mb_substr($line, -1) == "\r")
+				$text = preg_replace_callback('/<(nowiki|pre)>(.*)<\/(\\1)>(?!<\/(\\1)>)/ismU', array($this, "_parse_save_nowiki"), $text);
+				$text = preg_replace_callback('/[\{]{3,3}([\d|\w|\|]*)[\}]{3,3}/ismU', array($this, "_parse_insert_variables"), $text);
+				$text = preg_replace_callback('/(?<!\{)[\{]{2,2}([^{^}.]*)[\}]{2,2}(?!\})/ismU', array($this, "_parse_insert_template"), $text);
+				if (isset($this->options['included'])) 
 				{
-					$line = mb_substr($line, 0, -1);
+					$text = preg_replace_callback('/<noinclude>(.+?)<\/noinclude>(?!<\/noinclude>)/ism', array($this, "_parse_remove_noinclude"), $text);
+					$text = preg_replace_callback('/<includeonly>(.+?)<\/includeonly>(?!<\/includeonly>)/ism', array($this, "_parse_preserve_includeonly"), $text);
+					return $text;
 				}
-				$output .= $this->_parse_line($line, $options);
-			}
 
-			// Check if we need to close any tags in case the list items, etc were the last line
-			if ($this->list_level > 0) $output .= $this->_parse_list(false, true);
-			if ($this->deflist) $output .= $this->_parse_definitionlist(false, true);
-			if ($this->preformat) $output .= $this->_parse_preformat(false, true);
-			if ($this->quote) $output .= $this->_parse_quote(false, true);
+				if (!isset($this->options['included']))
+				{
+					$text = preg_replace_callback('/<includeonly>(.+?)<\/includeonly>(?!<\/includeonly>)/ism', array($this, "_parse_remove_includeonly"), $text);
+					$text = preg_replace_callback('/<noinclude>(.+?)<\/noinclude>(?!<\/noinclude>)/ism', array($this, "_parse_preserve_noinclude"), $text);
+				}
+				$text = preg_replace_callback('/<source((?:\s+[^\s]+=".*")*)>\s*?(.+)\s*?<\/source>/ismU', array($this, "_parse_save_code"), $text);
+				// Thanks to Mike Smith (scgtrp) for the above regexp
+				
+				$text = tbg_decodeUTF8($text, true);
+
+				$text = preg_replace_callback('/&lt;(strike|u|pre|tt|s|del|ins|u|blockquote|div|span|font)(\s.*)?&gt;(.*)&lt;\/(\\1)&gt;/ismU', array($this, '_parse_allowed_tags') ,$text);
+				$text = str_replace('&lt;br&gt;', '<br>' ,$text);
 			
-			$this->nowikis = array_reverse($this->nowikis);
-			$this->codeblocks = array_reverse($this->codeblocks);
-			$this->elinks = array_reverse($this->elinks);
-			
-			if (!array_key_exists('ignore_toc', $options))
-			{
-				$output = preg_replace_callback('/\{\{TOC\}\}/', array($this, "_parse_add_toc"), $output);
+				$lines = explode("\n", $text);
+				foreach ($lines as $line)
+				{
+					if (mb_substr($line, -1) == "\r")
+					{
+						$line = mb_substr($line, 0, -1);
+					}
+					$output .= $this->_parse_line($line, $options);
+				}
+
+				// Check if we need to close any tags in case the list items, etc were the last line
+				if ($this->list_level > 0) $output .= $this->_parse_list(false, true);
+				if ($this->deflist) $output .= $this->_parse_definitionlist(false, true);
+				if ($this->preformat) $output .= $this->_parse_preformat(false, true);
+				if ($this->quote) $output .= $this->_parse_quote(false, true);
+
+				$this->nowikis = array_reverse($this->nowikis);
+				$this->codeblocks = array_reverse($this->codeblocks);
+				$this->elinks = array_reverse($this->elinks);
+
+				if (!array_key_exists('ignore_toc', $options))
+				{
+					$output = preg_replace_callback('/\{\{TOC\}\}/', array($this, "_parse_add_toc"), $output);
+				}
+				else
+				{
+					$output = str_replace('{{TOC}}', '', $output);
+				}
+				$output = preg_replace_callback('/~~~NOWIKI~~~/i', array($this, "_parse_restore_nowiki"), $output);
+				if (!isset($options['no_code_highlighting']))
+				{
+					$output = preg_replace_callback('/~~~CODE~~~/Ui', array($this, "_parse_restore_code"), $output);
+				}
+
+				$output = preg_replace_callback('/~~~ILINK~~~/i', array($this, "_parse_restore_ilink"), $output);
+				$output = preg_replace_callback('/~~~ELINK~~~/i', array($this, "_parse_restore_elink"), $output);
 			}
 			else
 			{
-				$output = str_replace('{{TOC}}', '', $output);
+				$text = tbg_decodeUTF8($text, true);
+				$text = preg_replace_callback(self::getIssueRegex(), array($this, '_parse_issuelink'), $text);
+				
+				$output = nl2br($text);
 			}
-			$output = preg_replace_callback('/~~~NOWIKI~~~/i', array($this, "_parse_restore_nowiki"), $output);
-			if (!isset($options['no_code_highlighting']))
-			{
-				$output = preg_replace_callback('/~~~CODE~~~/Ui', array($this, "_parse_restore_code"), $output);
-			}
-
-			$output = preg_replace_callback('/~~~ILINK~~~/i', array($this, "_parse_restore_ilink"), $output);
-			$output = preg_replace_callback('/~~~ELINK~~~/i', array($this, "_parse_restore_elink"), $output);
 
 			return $output;
 		}

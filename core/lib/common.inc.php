@@ -279,15 +279,25 @@
 		return htmlentities($tstring, ENT_NOQUOTES+ENT_IGNORE, TBGContext::getI18n()->getCharset());
 	}
 
-	function tbg_parse_text($text, $toc = false, $article_id = null, $options = array())
+	function tbg_parse_text($text, $toc = false, $article_id = null, $options = array(), $syntax = TBGSettings::SYNTAX_MW)
 	{
-		// Perform wiki parsing
-		$wiki_parser = new TBGTextParser($text, $toc, 'article_' . $article_id);
-		foreach ($options as $option => $value)
+		switch ($syntax)
 		{
-			$wiki_parser->setOption($option, $value);
+			case TBGSettings::SYNTAX_PT:
+				$options = array('plain' => true);
+			case TBGSettings::SYNTAX_MW:
+				$wiki_parser = new TBGTextParser($text, $toc, 'article_' . $article_id);
+				foreach ($options as $option => $value)
+				{
+					$wiki_parser->setOption($option, $value);
+				}
+				$text = $wiki_parser->getParsedText();
+				break;
+			case TBGSettings::SYNTAX_MD:
+				$parser = new TBGTextParserMarkdown();
+				$text = $parser->transform($text);
+				break;
 		}
-		$text = $wiki_parser->getParsedText();
 
 		return $text;
 	}

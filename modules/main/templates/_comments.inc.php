@@ -16,7 +16,7 @@
 				</select>
 				<br />
 				<label for="comment_bodybox"><?php echo __('Comment'); ?></label><br />
-				<?php include_template('main/textarea', array('area_name' => 'comment_body', 'area_id' => 'comment_bodybox', 'height' => '250px', 'width' => '100%', 'value' => ((isset($comment_error) && $comment_error) ? $comment_error_body : ''))); ?>
+				<?php include_template('main/textarea', array('area_name' => 'comment_body', 'area_id' => 'comment_bodybox', 'height' => '250px', 'width' => '100%', 'syntax' => $tbg_user->getPreferredCommentsSyntax(true), 'value' => ((isset($comment_error) && $comment_error) ? $comment_error_body : ''))); ?>
 				<div id="comment_add_indicator" style="display: none;">
 					<?php echo image_tag('spinning_20.gif'); ?>
 				</div>

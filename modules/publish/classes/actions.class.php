@@ -92,7 +92,7 @@
 				{
 					$this->article = new TBGWikiArticle();
 					if ($this->article_name) $this->article->setName($this->article_name);
-					if ($this->getUser()->preferWikiMarkdown() && $this->getUser()->getPreferredSyntax(true) == TBGSettings::SYNTAX_MD) $this->article->setContentSyntax(TBGSettings::SYNTAX_MD);
+					$this->article->setContentSyntax($this->getUser()->getPreferredWikiSyntax(true));
 				}
 			}
 		}

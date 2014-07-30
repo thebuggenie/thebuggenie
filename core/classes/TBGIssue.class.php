@@ -2336,6 +2336,8 @@
 		{
 			switch ($syntax)
 			{
+				case TBGSettings::SYNTAX_PT:
+					$options = array('plain' => true);
 				case TBGSettings::SYNTAX_MW:
 					$wiki_parser = new TBGTextParser($text);
 					foreach ($options as $option => $value)
@@ -2380,7 +2382,7 @@
 		 */
 		public function setDescriptionSyntax($syntax)
 		{
-			if (!is_numeric($syntax)) $syntax = ($syntax == 'mw') ? TBGSettings::SYNTAX_MW : TBGSettings::SYNTAX_MD;
+			if (!is_numeric($syntax)) $syntax = TBGSettings::getSyntaxValue($syntax);
 
 			$this->_addChangedProperty('_description_syntax', $syntax);
 		}
@@ -2427,7 +2429,7 @@
 		 */
 		public function setReproductionStepsSyntax($syntax)
 		{
-			if (!is_numeric($syntax)) $syntax = ($syntax == 'mw') ? TBGSettings::SYNTAX_MW : TBGSettings::SYNTAX_MD;
+			if (!is_numeric($syntax)) $syntax = TBGSettings::getSyntaxValue($syntax);
 
 			$this->_addChangedProperty('_reproduction_steps_syntax', $syntax);
 		}

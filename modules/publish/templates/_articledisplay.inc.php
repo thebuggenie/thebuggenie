@@ -1,5 +1,5 @@
 <?php TBGContext::loadLibrary('publish/publish'); ?>
-<div class="article syntax_<?php echo ($article->getContentSyntax() == TBGSettings::SYNTAX_MW) ? 'mw' : 'md'; ?>">
+<div class="article syntax_<?php echo TBGSettings::getSyntaxClass($article->getContentSyntax()); ?>">
 	<?php if ($show_title): ?>
 		<?php include_template('publish/header', array('article_name' => $article->getName(), 'article' => $article, 'show_actions' => $show_actions, 'mode' => $mode)); ?>
 	<?php endif; ?>

@@ -1,6 +1,6 @@
 <?php $options = (isset($issue)) ? array('issue' => $issue) : array(); ?>
 <?php if ($comment->isViewableByUser($tbg_user)): ?> 
-<div class="comment<?php if ($comment->isSystemComment()): ?> system_comment<?php endif; if (!$comment->isPublic()): ?> private_comment<?php endif; ?> <?php if ($comment->isMwSyntax()) echo ' syntax_mw'; ?><?php if ($comment->isMdSyntax()) echo ' syntax_md'; ?>" id="comment_<?php echo $comment->getID(); ?>"<?php if ($comment->isSystemComment()): ?> style="display: none;"<?php endif; ?>>
+<div class="comment<?php if ($comment->isSystemComment()): ?> system_comment<?php endif; if (!$comment->isPublic()): ?> private_comment<?php endif; ?> syntax_<?php echo TBGSettings::getSyntaxClass($comment->getSyntax()); ?>" id="comment_<?php echo $comment->getID(); ?>"<?php if ($comment->isSystemComment()): ?> style="display: none;"<?php endif; ?>>
 	<div id="comment_view_<?php echo $comment->getID(); ?>" class="comment_main">
 		<div id="comment_<?php echo $comment->getID(); ?>_header" class="commentheader">
 			<a href="#comment_<?php echo $comment->getID(); ?>" class="comment_hash">#<?php echo $comment->getCommentNumber(); ?></a>
@@ -43,8 +43,7 @@
 		<div class="commentbody article" id="comment_<?php echo $comment->getID(); ?>_body">
 			<?php echo $comment->getParsedContent($options); ?>
 			<br style="clear: both;">
-			<?php if ($comment->hasAssociatedChanges()): ?><br>
-			<br>
+			<?php if ($comment->hasAssociatedChanges()): ?>
 			<strong><?php echo __('Changes: %list_of_changes', array('%list_of_changes' => '')); ?></strong><br>
 			<ul class="comment_log_items">
 				<?php foreach ($comment->getLogItems() as $item): ?>
@@ -60,7 +59,7 @@
 	
 	<div id="comment_edit_<?php echo $comment->getID(); ?>" class="comment_edit comment_editor" style="display: none;">
 		<div class="comment_add_title"><?php echo __('Edit comment %comment_number', array('%comment_number' => "<a href='#comment_{$comment->getID()}'>#".$comment->getCommentNumber().'</a>')); ?></div><br>
-		<form id="comment_edit_form_<?php echo $comment->getID(); ?>" class="syntax_<?php echo ($comment->isMwSyntax()) ? 'mw' : 'md'; ?>" action="<?php echo make_url('comment_update', array('comment_id' => $comment->getID())); ?>" method="post" onSubmit="TBG.Main.Comment.update('<?php echo make_url('comment_update', array('comment_id' => $comment->getID())); ?>', '<?php echo $comment->getID(); ?>'); return false;">
+		<form id="comment_edit_form_<?php echo $comment->getID(); ?>" class="syntax_<?php echo TBGSettings::getSyntaxClass($comment->getSyntax()); ?>" action="<?php echo make_url('comment_update', array('comment_id' => $comment->getID())); ?>" method="post" onSubmit="TBG.Main.Comment.update('<?php echo make_url('comment_update', array('comment_id' => $comment->getID())); ?>', '<?php echo $comment->getID(); ?>'); return false;">
 			<input type="hidden" name="comment_id" value="<?php echo $comment->getID(); ?>" />
 			<label for="comment_visibility"><?php echo __('Comment visibility'); ?> <span class="faded_out">(<?php echo __('whether to hide this comment for "regular users"'); ?>)</span></label><br />
 			<select class="comment_visibilitybox" id="comment_visibility" name="comment_visibility">
@@ -70,7 +69,7 @@
 			<br />
 			<label for="comment_edit_<?php echo $comment->getId(); ?>_bodybox"><?php echo __('Comment'); ?></label><br />
 			<br />
-			<?php include_template('main/textarea', array('area_name' => 'comment_body', 'area_id' => 'comment_edit_'.$comment->getID().'_bodybox', 'height' => '200px', 'width' => '100%', 'syntax' => (($comment->isMwSyntax()) ? 'mw' : 'md'), 'value' => tbg_decodeUTF8($comment->getContent(), true))); ?>
+			<?php include_template('main/textarea', array('area_name' => 'comment_body', 'area_id' => 'comment_edit_'.$comment->getID().'_bodybox', 'height' => '200px', 'width' => '100%', 'syntax' => $comment->getSyntax(), 'value' => tbg_decodeUTF8($comment->getContent(), true))); ?>
 			<div id="comment_edit_indicator_<?php echo $comment->getID(); ?>" style="display: none; text-align: left;">
 				<?php echo image_tag('spinning_16.gif'); ?>
 			</div>
@@ -89,7 +88,7 @@
 				<option value="0"<?php if (!$comment->isPublic()): ?> selected="selected" <?php endif; ?>><?php echo __('Visible for me, developers and administrators only'); ?></option>
 			</select>
 			<br />
-			<?php include_template('main/textarea', array('area_name' => 'comment_body', 'area_id' => 'comment_reply_'.$comment->getID().'_bodybox', 'height' => '200px', 'width' => '100%', 'syntax' => (($comment->isMwSyntax()) ? 'mw' : 'md'), 'value' => tbg_decodeUTF8("\n\n\n'''".__('%user wrote:', array('user%' => $comment->getPostedBy()->getName()))."'''\n>".str_replace("\n", "\n>", wordwrap(html_entity_decode(strip_tags($comment->getParsedContent($options)), ENT_COMPAT, TBGContext::getI18n()->getCharset()), 75, "\n"))."\n", true))); ?>
+			<?php include_template('main/textarea', array('area_name' => 'comment_body', 'area_id' => 'comment_reply_'.$comment->getID().'_bodybox', 'height' => '200px', 'width' => '100%', 'syntax' => $comment->getSyntax(), 'value' => tbg_decodeUTF8("\n\n\n'''".__('%user wrote:', array('%user' => $comment->getPostedBy()->getName()))."'''\n>".str_replace("\n", "\n>", wordwrap(html_entity_decode(strip_tags($comment->getParsedContent($options)), ENT_COMPAT, TBGContext::getI18n()->getCharset()), 75, "\n"))."\n", true))); ?>
 			<div id="comment_reply_indicator_<?php echo $comment->getID(); ?>" style="display: none;">
 				<?php echo image_tag('spinning_16.gif', array('class' => 'spinning')); ?>
 			</div>
