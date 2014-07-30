@@ -12,10 +12,12 @@
 				<li id="more_actions_mark_blocking_link_<?php echo $issue->getID(); ?>"<?php if ($issue->isBlocking()): ?> style="display: none;"<?php endif; ?> class="disabled"><a href="javascript:void(0);"><?php echo image_tag('icon_block.png').__("Mark as blocking the next release"); ?></a><div class="tooltip rightie"><?php echo __('This action is not available when this issue is closed'); ?></div></li>
 			<?php endif; ?>
 		<?php endif; ?>
-		<?php if ((!isset($multi) || !$multi) && ($issue->isUpdateable() && ($issue->canAttachLinks() || (TBGSettings::isUploadsEnabled() && $issue->canAttachFiles())))): ?>
+		<?php if ((!isset($multi) || !$multi) && $issue->isUpdateable() && $issue->canAttachLinks()): ?>
 			<?php if ($issue->canAttachLinks()): ?>
 				<li><a href="javascript:void(0);" id="attach_link_button" onclick="$('attach_link').toggle();"><?php echo image_tag('action_add_link.png').__('Attach a link'); ?></a></li>
 			<?php endif; ?>
+		<?php endif; ?>
+		<?php if ($issue->isUpdateable() && TBGSettings::isUploadsEnabled() && $issue->canAttachFiles()): ?>
 			<?php if (TBGSettings::isUploadsEnabled() && $issue->canAttachFiles()): ?>
 				<li><a href="javascript:void(0);" id="attach_file_button" onclick="TBG.Main.showUploader('<?php echo make_url('get_partial_for_backdrop', array('key' => 'uploader', 'mode' => 'issue', 'issue_id' => $issue->getID())); ?>');"><?php echo image_tag('action_add_file.png').__('Attach a file'); ?></a></li>
 			<?php else: ?>
@@ -62,9 +64,9 @@
 					<li class="disabled"><a href="javascript:void(0);"><?php echo image_tag('icon_estimated_time.png').__("Change estimate"); ?></a><div class="tooltip rightie"><?php echo __('This action is not available at this stage in the workflow'); ?></div></li>
 				<?php endif; ?>
 			<?php endif; ?>
-			<?php if ($issue->canEditSpentTime()): ?>
-				<li><a href="javascript:void(0);" onclick="$('spent_time_<?php echo $issue->getID(); ?>_change').toggle();" title="<?php echo __('Change time spent'); ?>"><?php echo image_tag('icon_spent_time.png').__('Change time spent'); ?></a></li>
-			<?php endif; ?>
+		<?php endif; ?>
+		<?php if ($issue->canEditSpentTime()): ?>
+			<li><a href="javascript:void(0)" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'issue_spenttimes', 'issue_id' => $issue->getID(), 'initial_view' => 'entry')); ?>');"><?php echo image_tag('icon_time.png').__('Log time spent'); ?></a></li>
 		<?php endif; ?>
 		<?php if ($issue->canDeleteIssue()): ?>
 			<li><a href="javascript:void(0)" onclick="TBG.Main.Helpers.Dialog.show('<?php echo __('Permanently delete this issue?'); ?>', '<?php echo __('Are you sure you wish to delete this issue? It will remain in the database for your records, but will not be accessible via The Bug Genie.'); ?>', {yes: {href: '<?php echo make_url('deleteissue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getId())); ?>' }, no: {click: TBG.Main.Helpers.Dialog.dismiss}});"><?php echo image_tag('icon_delete.png').__("Permanently delete this issue"); ?></a></li>
@@ -76,8 +78,5 @@
 <?php if (!isset($times) || $times): ?>
 	<?php if ($issue->canEditEstimatedTime()): ?>
 		<?php include_component('main/issueestimator', array('issue' => $issue, 'field' => 'estimated_time', 'instant_save' => true)); ?>
-	<?php endif; ?>
-	<?php if ($issue->canEditSpentTime()): ?>
-		<?php include_component('main/issueestimator', array('issue' => $issue, 'field' => 'spent_time', 'instant_save' => true)); ?>
 	<?php endif; ?>
 <?php endif; ?>

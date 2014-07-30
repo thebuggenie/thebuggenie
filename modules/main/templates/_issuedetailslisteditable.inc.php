@@ -334,9 +334,6 @@
 </fieldset>
 <fieldset id="issue_timetracking_container">
 	<legend onclick="$('issue_details_fieldslist_time').toggle();"><?php echo __('Times and dates'); ?></legend>
-	<?php if ($issue->canEditSpentTime()): ?>
-		<a class="button button-silver" id="issue_timetracking_log_time" href="javascript:void(0)" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'issue_spenttimes', 'issue_id' => $issue->getID(), 'initial_view' => 'entry')); ?>');"><?php echo __('Log time spent'); ?></a>
-	<?php endif; ?>
 	<ul class="issue_details simple_list" id="issue_details_fieldslist_time">
 		<li id="posted_at_field" class="issue_detail_field primary">
 			<dl class="viewissue_list">
