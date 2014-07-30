@@ -125,6 +125,10 @@
 									case TBGCustomDatatype::INPUT_TEXTAREA_SMALL:
 									case TBGCustomDatatype::INPUT_TEXTAREA_MAIN:
 										break;
+									case TBGCustomDatatype::DATE_PICKER:
+										$old_value = ($old_value != null) ? date('Y-m-d', (int)$old_value) : TBGContext::getI18n()->__('Not determined');
+										$new_value = date('Y-m-d', (int)$new_value);
+										break;
 									case TBGCustomDatatype::EDITIONS_CHOICE:
 									case TBGCustomDatatype::COMPONENTS_CHOICE:
 									case TBGCustomDatatype::RELEASES_CHOICE:
@@ -191,7 +195,10 @@
 								}
 								echo __("%field_name changed: %previous_value => %new_value", array('%field_name' => $customdatatype->getName(), '%previous_value' => '<strong>'.$old_value.'</strong>', '%new_value' => '<strong>'.$new_value.'</strong>'));
 							}
-							echo __('Custom field changed');
+							else
+							{
+								echo __('Custom field changed');
+							}
 						}
 						break;
 					case TBGLogTable::LOG_ISSUE_USERS:
