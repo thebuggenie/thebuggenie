@@ -1303,6 +1303,10 @@ TBG.Main.Profile.clearPopupsAndButtons = function(event) {
 		});
 	}
 	$$('.popup_box').each(function(element) {
+		var prev = $(element).previous();
+		if (prev) {
+			prev.removeClassName('button-pressed');
+		}
 		$(element).hide();
 	});
 }
@@ -5447,11 +5451,17 @@ TBG.Main.Helpers.toggler = function (elm) {
 jQuery(document).ready(function(){
 	TBG.Main.Helpers.MarkitUp($$('textarea'));
 	(function($) {
-		$("body").on("click", ".dropper", function() {
-			TBG.Main.Helpers.toggler($(this));
-		});
-		$("body").on("click", ".popup_box", function() {
+		$("body").on("click", ".dropper", function(e) {
+			var is_visible = (this).hasClassName('button-pressed');
 			TBG.Main.Profile.clearPopupsAndButtons();
+			if (!is_visible) {
+				TBG.Main.Helpers.toggler($(this));
+				e.stopPropagation();
+			}
+		});
+		$("body").on("click", function(e) {
+			TBG.Main.Profile.clearPopupsAndButtons();
+			e.stopPropagation();
 		});
 	})(jQuery);
 });
