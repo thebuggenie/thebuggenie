@@ -227,7 +227,8 @@
 	$routes[] = array('move_issue', '/issue/:issue_id/move', 'main', 'moveIssue');
 	$routes[] = array('captcha', '/captcha/*', 'main', 'captcha');
 	$routes[] = array('publish', '/wiki', 'publish', 'showArticle', array('article_name' => 'MainPage'));
-	$routes[] = array('publish_article_new', '/wiki/new', 'publish', 'editArticle', array('article_name' => 'NewArticle'));
+	$routes[] = array('publish_article_new', '/wiki/new/*', 'publish', 'editArticle');
+	$routes[] = array('publish_article_parents', '/wiki/getavailableparents/*', 'publish', 'getAvailableParents');
 	$routes[] = array('publish_article_revision', '/wiki/:article_name/revision/:revision', 'publish', 'showArticle');
 	$routes[] = array('publish_article_edit', '/wiki/:article_name/edit', 'publish', 'editArticle');
 	$routes[] = array('publish_article_permissions', '/wiki/:article_name/permissions', 'publish', 'articlePermissions');

@@ -9,6 +9,37 @@
 	class publishActions extends TBGAction
 	{
 
+		protected function _getArticleNameDetails($original_article_name)
+		{
+			$namespace = mb_substr($original_article_name, 0, mb_strpos($original_article_name, ':'));
+			$article_name = mb_substr($original_article_name, mb_strpos($original_article_name, ':') + 1);
+
+			if (strtolower($namespace) == 'special')
+			{
+				$this->special = true;
+				$namespace = mb_substr($article_name, 0, mb_strpos($article_name, ':'));
+				if ($namespace) 
+				{
+					$this->selected_project = TBGProject::getByKey($namespace);
+					$article_name = mb_substr($article_name, mb_strpos($article_name, $namespace) + strlen($namespace) + 1);
+				}
+				$article_name = mb_strtolower(mb_substr($article_name, mb_strpos($article_name, ':')));
+			}
+			elseif ($namespace == 'Category')
+			{
+				$namespace = mb_substr($article_name, 0, mb_strpos($article_name, ':'));
+				$article_name = mb_substr($article_name, mb_strpos($article_name, ':') + 1);
+			}
+
+			if ($namespace != '')
+			{
+				$key = mb_strtolower($namespace);
+				$this->selected_project = TBGProject::getByKey($key);
+			}
+			
+			return ($namespace == 'Category' || $this->special) ? $article_name : $original_article_name;
+		}
+		
 		/**
 		 * Pre-execute function
 		 *
@@ -23,31 +54,7 @@
 
 			if ($request->hasParameter('article_name') && mb_strpos($request['article_name'], ':') !== false)
 			{
-				$namespace = mb_substr($this->article_name, 0, mb_strpos($this->article_name, ':'));
-				$article_name = mb_substr($this->article_name, mb_strpos($this->article_name, ':') + 1);
-
-				if (strtolower($namespace) == 'special')
-				{
-					$this->special = true;
-					$namespace = mb_substr($article_name, 0, mb_strpos($article_name, ':'));
-					if ($namespace) 
-					{
-						$this->selected_project = TBGProject::getByKey($namespace);
-						$article_name = mb_substr($article_name, mb_strpos($article_name, $namespace) + strlen($namespace) + 1);
-					}
-					$this->article_name = mb_strtolower(mb_substr($article_name, mb_strpos($article_name, ':')));
-				}
-				elseif ($namespace == 'Category')
-				{
-					$namespace = mb_substr($article_name, 0, mb_strpos($article_name, ':'));
-					$article_name = mb_substr($article_name, mb_strpos($article_name, ':') + 1);
-				}
-				
-				if ($namespace != '')
-				{
-					$key = mb_strtolower($namespace);
-					$this->selected_project = TBGProject::getByKey($key);
-				}
+				$this->article_name = $this->_getArticleNameDetails($request['article_name']);
 			}
 			else
 			{
@@ -91,7 +98,23 @@
 				if (!$this->article instanceof TBGWikiArticle)
 				{
 					$this->article = new TBGWikiArticle();
-					if ($this->article_name) $this->article->setName($this->article_name);
+					if ($this->article_name) 
+					{
+						$this->article->setName($this->article_name);
+					}
+					elseif ($request->hasParameter('parent_article_name')) 
+					{
+						$this->article->setParentArticle(TBGArticlesTable::getTable()->getArticleByName($request['parent_article_name']));
+						if ($this->article->getParentArticle() instanceof TBGWikiArticle)
+						{
+							if ($this->article->getParentArticle()->getArticleType() == TBGWikiArticle::TYPE_WIKI)
+							{
+								$this->article->setName($this->article->getParentArticle()->getName() . ':');
+							}
+							$this->_getArticleNameDetails($this->article->getParentArticle()->getName());
+							$this->article->setArticleType($this->article->getParentArticle()->getArticleType());
+						}
+					}
 					$this->article->setContentSyntax($this->getUser()->getPreferredWikiSyntax(true));
 				}
 			}
@@ -260,6 +283,25 @@
 		}
 
 		/**
+		 * Get avilable parent articles for an article
+		 *
+		 * @param TBGRequest $request
+		 */
+		public function runGetAvailableParents(TBGRequest $request)
+		{
+			$articles = TBGArticlesTable::getTable()->getManualSidebarArticles(TBGContext::getCurrentProject());
+			
+			$parent_articles = array();
+			foreach ($articles as $article)
+			{
+				if ($article->getID() == $this->article->getID()) continue;
+				$parent_articles[$article->getName()] = $article->getManualName();
+			}
+			
+			return $this->renderJSON(array('list' => $this->getTemplateHTML('publish/getavailableparents', compact('parent_articles'))));
+		}
+
+		/**
 		 * Show an article
 		 *
 		 * @param TBGRequest $request
@@ -271,6 +313,9 @@
 				TBGContext::setMessage('publish_article_error', TBGContext::getI18n()->__('You do not have permission to edit this article'));
 				$this->forward(TBGContext::getRouting()->generate('publish_article', array('article_name' => $this->article_name)));
 			}
+
+			$this->article_route = ($this->article->getID()) ? 'publish_article_edit' : 'publish_article_new';
+			$this->article_route_params = ($this->article->getID()) ? array('article_name' => $this->article_name) : array();
 			
 			if ($request->isPost())
 			{
@@ -278,7 +323,22 @@
 				$this->change_reason = $request['change_reason'];
 				try
 				{
-					if (!$request->hasParameter('new_article_name') || trim($request['new_article_name']) == '' || !preg_match('/[\w:]+/i', $request['new_article_name']))
+					$this->article->setArticleType($request['article_type']);
+					$this->article->setName($request['new_article_name']);
+					$this->article->setParentArticle(TBGArticlesTable::getTable()->getArticleByName($request['parent_article_name']));
+					$this->article->setManualName($request['manual_name']);
+					if ($this->article->getArticleType() == TBGWikiArticle::TYPE_MANUAL && !$this->article->getName())
+					{
+						$article_name_prefix = ($this->article->getParentArticle() instanceof TBGWikiArticle) ? $this->article->getParentArticle()->getName() . ':' : '';
+						$this->article->setName(str_replace(' ', '', $article_name_prefix . $this->article->getManualName()));
+					}
+					$this->article->setContentSyntax($request['article_content_syntax']);
+					$this->article->setContent($request->getRawParameter('article_content'));
+
+					if (!$this->article->getName() || trim($this->article->getName()) == '' || !preg_match('/[\w:]+/i', $this->article->getName()))
+						throw new Exception(TBGContext::getI18n()->__('You need to specify a valid article name'));
+
+					if ($request['article_type'] == TBGWikiArticle::TYPE_MANUAL && (!$this->article->getManualName() || trim($this->article->getManualName()) == '' || !preg_match('/[\w:]+/i', $this->article->getManualName())))
 						throw new Exception(TBGContext::getI18n()->__('You need to specify a valid article name'));
 
 					if (TBGPublish::getModule()->getSetting('require_change_reason') == 1 && (!$this->change_reason || trim($this->change_reason) == ''))
@@ -289,12 +349,6 @@
 
 					if (($article = TBGWikiArticle::getByName($request['new_new_article_name'])) && $article instanceof TBGWikiArticle && $article->getID() != $request['article_id'])
 						throw new Exception(TBGContext::getI18n()->__('An article with that name already exists. Please choose a different article name'));
-
-					$this->article->setName($request['new_article_name']);
-					$this->article->setContentSyntax($request['article_content_syntax']);
-					$this->article->setContent($request->getRawParameter('article_content'));
-					$this->article->setArticleType($request['article_type']);
-					$this->article->setParentArticle(TBGArticlesTable::getTable()->getArticleByName($request['parent_article_name']));
 
 					if (!$this->preview)
 					{

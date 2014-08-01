@@ -31,11 +31,7 @@
 			</div>
 		<?php endif; ?>
 		<div class="upload_details">
-			<?php echo __('%filename, uploaded %date', array('%filename' => '<span class="filename">'.$file->getOriginalFilename().'</span>', '%date' => tbg_formatTime($file->getUploadedAt(), 23))); ?>
-			<?php if ($mode == 'article' && $article->canEdit() && $file->isImage()): ?>
-				<br>
-				<?php echo __('Use this tag to include this image: [[Image:%filename|thumb|Image description]]', array('%filename' => $file->getOriginalFilename())); ?>
-			<?php endif; ?>
+			<?php echo __('%filename uploaded %date by %username', array('%filename' => '<span class="filename">'.$file->getOriginalFilename().'</span>', '%date' => tbg_formatTime($file->getUploadedAt(), 23), '%username' => (($file->getUploadedBy() instanceof TBGUser) ? '<a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show(\'' . make_url('get_partial_for_backdrop', array('key' => 'usercard', 'user_id' => $article->getAuthor()->getID())) . '\');" class="faded_out">' . $file->getUploadedBy()->getNameWithUsername() . '</a>' : __('unknown user')))); ?>
 		</div>
 	</li>
 <?php else: ?>

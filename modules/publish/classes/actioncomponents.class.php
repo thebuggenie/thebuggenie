@@ -68,8 +68,8 @@
 
 		public function componentManualSidebar()
 		{
-			$this->articles = TBGArticlesTable::getTable()->getManualSidebarArticles(TBGContext::getCurrentProject());
-			$this->categories = TBGArticlesTable::getTable()->getManualSidebarCategories(TBGContext::getCurrentProject());
+//			$this->articles = TBGArticlesTable::getTable()->getManualSidebarArticles(TBGContext::getCurrentProject());
+//			$this->categories = TBGArticlesTable::getTable()->getManualSidebarCategories(TBGContext::getCurrentProject());
 			$parents = array();
 			$article = $this->article;
 			do
@@ -77,12 +77,13 @@
 				$parent = $article->getParentArticle();
 				if ($parent instanceof TBGWikiArticle)
 				{
-					$parents[] = $parent->getId();
+					$parents[$parent->getId()] = $parent->getId();
 					$article = $parent;
 				}
 			}
 			while ($parent instanceof TBGWikiArticle);
 			
+			$this->main_article = $article;
 			$this->parents = $parents;
 		}
 

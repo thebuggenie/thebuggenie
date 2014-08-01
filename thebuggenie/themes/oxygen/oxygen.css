@@ -328,7 +328,7 @@ input[type=checkbox].semi-checked { filter:alpha(opacity=40); -moz-opacity:.40; 
 	padding: 7px 5px 0 5px; 
 	position: relative; 
 	transition: width 0.3s ease; 
-	box-shadow: 10px 0 15px -21px rgba(0, 0, 0, 0.9);
+	box-shadow: 10px 0 15px -17px rgba(0, 0, 0, 0.8);
 	box-sizing: border-box;
 	-o-box-sizing: border-box;
 	-ms-box-sizing: border-box;
@@ -635,9 +635,9 @@ footer img { margin: 4px 3px -6px 0; }
 .comment.syntax_md p, .comment.syntax_md pre, .comment.syntax_md code, .article.syntax_md p, .article.syntax_md pre, .article.syntax_md code { margin: 0 0 16px; }
 .comment_delete { margin-top: 10px !important; }
 .commenttitle { font-weight: bold; display: inline-block; }
-.viewissue_comments_header .dropper_container { position: relative; display: inline-block; vertical-align: middle; line-height: 1em; }
-.viewissue_comments_header .dropper { cursor: pointer; margin-left: 5px; }
-.viewissue_comments_header .more_actions_dropdown { left: -12px; margin-top: 3px; right: auto; font-size: 0.9em; }
+.dropper_container { position: relative; display: inline-block; vertical-align: middle; line-height: 1em; }
+.dropper_container .dropper { cursor: pointer; margin-left: 5px; }
+.dropper_container .more_actions_dropdown { left: -6px; margin-top: 5px; right: auto; font-size: 0.9em; }
 .commenttitle img.avatar { position: absolute; left: 5px; top: 2px; }
 #issue_details .commenttitle img.avatar { top: 7px; left: 3px; }
 .commenttitle .userlink { margin-left: 0; font-size: 1.1em; }
@@ -916,7 +916,7 @@ div.dropdown_separator { border-left: 1px dotted #EAEAF5; padding: 0 0 0 4px; ma
 .textarea_container.syntax_md .textarea_hint .syntax_md_hint { display: block; }
 .textarea_container.syntax_mw .textarea_hint .syntax_mw_hint { display: block; }
 .textarea_container.syntax_pt .textarea_hint .syntax_pt_hint { display: block; }
-.textarea_container.syntax_pt .markItUpHeader { visibility: hidden; }
+.textarea_container.syntax_pt .markItUpHeader ul { visibility: hidden; }
 .textarea_hint .header { font-weight: bold; }
 .textarea_hint .example { font-style: italic; }
 .syntax_picker_container, .textarea_container {
@@ -1324,6 +1324,8 @@ table.cleantable th { text-align: center; }
 .workflow_browser_step_transition.outgoing .image { margin: 10px 5px 0 -5px; }
 .workflow_browser_step_transition.transition { padding-left: 15px; }
 .workflow_browser_step_name { padding: 5px; font-size: 1.1em; font-style: italic; font-weight: normal; }
+
+input[type=submit].workflow_transition_submit_button, input[type=submit].workflow_transition_submit_button:hover { padding: 4px 8px; font-size: 1.1em; }
 /* end workflow styling */
 
 /* end config styling */
@@ -1898,11 +1900,12 @@ ul.attached_items { list-style: none; padding: 0; margin: 5px 0 0 0; }
 .attached_item:hover .removelink, .relatedissue:hover .removelink, .attached_item:hover .removelink:hover, .relatedissue:hover .removelink:hover { opacity: 1; }
 .attached_item:hover .removelink a:hover, .relatedissue a.removelink:hover { text-decoration: none; border: none; }
 .attached_item .upload_details { display: block; padding: 5px 0; font-size: 0.9em; color: #AAA; font-style: italic; }
-#viewissue_attached_information .attached_item.file_image { display: inline-block; width: 160px; margin-top: 10px; }
-#viewissue_attached_information .attached_item.file_image:nth-child(odd) { margin-right: 5px; }
-#viewissue_attached_information .attached_item.file_image .removelink { position: absolute; top: 5px; right: 0; cursor: pointer; }
-#viewissue_attached_information .attached_item.file_image .removelink:first-of-type { right: 20px; }
-#viewissue_attached_information .attached_item.file_image:hover .removelink { background-color: rgba(255, 255, 255, 0.9); border: 1px solid rgba(200, 200, 200, 0.8); border-radius: 2px; padding: 2px; line-height: 1em; width: 16px; height: 16px; }
+#viewissue_attached_information .attached_item.file_image, #article_attachments .attached_item.file_image { display: inline-block; width: 160px; margin-top: 10px; position: relative; vertical-align: top; }
+#viewissue_attached_information .attached_item.file_image:nth-child(odd), #article_attachments .attached_item.file_image:nth-child(odd) { margin-right: 5px; }
+#viewissue_attached_information .attached_item.file_image .removelink, #article_attachments .attached_item.file_image .removelink { position: absolute; top: 5px; right: 0; cursor: pointer; }
+#viewissue_attached_information .attached_item .filename, #article_attachments .attached_item .filename { display: block; }
+#viewissue_attached_information .attached_item.file_image .removelink:first-of-type, #article_attachments .attached_item.file_image .removelink:first-of-type { right: 20px; }
+#viewissue_attached_information .attached_item.file_image:hover .removelink, #article_attachments .attached_item.file_image:hover .removelink { background-color: rgba(255, 255, 255, 0.9); border: 1px solid rgba(200, 200, 200, 0.8); border-radius: 2px; padding: 2px; line-height: 1em; width: 16px; height: 16px; }
 #file_upload_list li { clear: both; }
 #file_upload_list .imagepreview { display: block; float: left; margin-right: 5px; width: 160px; }
 .imagepreview { display: block; margin: 0; padding: 2px; border: 1px solid rgba(100, 100, 100, 0.3); transition: border-color 0.3s ease; box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); }
@@ -1912,16 +1915,63 @@ ul.attached_items { list-style: none; padding: 0; margin: 5px 0 0 0; }
 .popup_box li.separator {
 	margin: 5px 10px;
 	padding: 0;
+	height: 1px;
+	min-height: 1px;
 	border-top: 1px dotted rgba(100, 100, 100, 0.2);
 }
 .popup_box li.separator:hover {
 	background-color: #FFF;
 }
 
+.issuedetailspopup .button-group { float: right; }
+.issuedetailspopup .button-group .button { padding: 3px 7px; font-size: 0.85em; }
+.issuedetailspopup ul.simple_list { margin-top: 0; }
+.issuedetailspopup ul.simple_list > li:first-child { padding-top: 0; }
+.issuedetailspopup ul.simple_list > li { clear: both; padding: 5px 0; }
 .issuedetailspopup li.faded_out { padding: 3px 3px 10px 3px; }
-.issuedetailspopup label { display: block; float: left; min-width: 150px; padding: 0; }
-.issuedetailspopup label.simple { display: inline; float: none; width: auto; font-weight: normal; }
+.issuedetailspopup label { display: inline-block; float: none; min-width: 150px; padding: 4px 0; vertical-align: top; color: #888; font-weight: normal; font-size: 1.1em; }
 .issuedetailspopup #popup_assigned_to_change { position: absolute; top: 50%; margin-top: -100px; left: 50%; margin-left: -249px; }
+.issuedetailspopup .time_logger_summary { display: inline-block; float: none; width: 500px; }
+.issuedetailspopup .time_logger_summary label { color: #333; }
+.issuedetailspopup .textarea_hint { color: #AAA; }
+.issuedetailspopup select { 
+	width: 635px; 
+	padding: 5px; 
+	height: 30px;
+	box-sizing: border-box;
+	-o-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
+
+.show_duplicate_search .duplicate_search { display: block; margin: 5px 0; }
+.duplicate_search { display: none; }
+.duplicate_search input[type=text] {
+	font-size: 13px;
+	line-height: 17px;
+	padding: 5px;
+	width: 555px;
+	vertical-align: middle;
+	box-sizing: border-box;
+	-o-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
+.duplicate_search input[type=button] {
+	font-size: 13px;
+	line-height: 17px;
+	padding: 5px;
+	display: inline-block;
+	margin-left: -4px;
+	width: 70px;
+	box-sizing: border-box;
+	-o-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
 
 table.issue_affects td { padding: 3px; }
 table.issue_affects td img { vertical-align: bottom; }
@@ -2257,6 +2307,10 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
     margin-right: 5px;
     border: 1px solid rgba(200, 200, 200, 0.6);
     border-radius: 2px;
+    background: -o-linear-gradient(top, #FFFFFF 0%, #F5F5F5 100%);
+    background: -ms-linear-gradient(top, #FFFFFF 0%, #F5F5F5 100%);
+    background: -moz-linear-gradient(top, #FFFFFF 0%, #F5F5F5 100%);
+    background: -webkit-linear-gradient(top, #FFFFFF 0%, #F5F5F5 100%);
     background: linear-gradient(to bottom, #FFFFFF 0%, #F5F5F5 100%);
     padding: 3px 25px 3px 5px;
     transition: border 0.3s ease;
@@ -2818,8 +2872,7 @@ input[type=submit], input[type=submit]:hover, button, .button, .button:hover {
 
 /* When pressed, move it down 1px */ 
 /*----------------------------*/
-.button-icon { padding: 0 4px; }
-.button-icon, .button-icon:hover { line-height: 18px !important; }
+.button-icon, .button-icon:hover { padding: 1px 2px; line-height: 18px !important; }
 .button img { display: inline-block; margin: 0 5px 0 0; vertical-align: middle; }
 .button-icon img, .button-icon:hover img { margin: 1px; float: none; }
 .button a, .button a:hover, .button a:visited, .button a:active { color: #FFF; }
@@ -2834,6 +2887,11 @@ input[type=submit], input[type=submit]:hover, button, .button, .button:hover {
 	background: -ms-linear-gradient(top, #F5F5F5 0%,#E5E5E5 100%); /* IE10+ */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#F5F5F5', endColorstr='#E5E5E5',GradientType=0 ); /* IE6-9 */
 	background: linear-gradient(top, #F5F5F5 0%,#E5E5E5 100%); /* W3C */
+}
+
+.button-silver:focus, input[type=submit]:focus, button:focus {
+	box-shadow: 0 0 4px rgba(0, 0, 0, 0.2); 
+	border-color: rgba(0, 0, 0, 0.35);
 }
 
 .button-silver:active, input[type=submit]:active, button:active, input[type=submit].button-pressed, button.button-pressed, .button-silver.button-pressed {

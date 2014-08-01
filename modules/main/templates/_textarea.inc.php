@@ -1,6 +1,16 @@
 <?php
-	$syntax = (isset($syntax)) ? $syntax : TBGSettings::SYNTAX_MD;
-	if (is_numeric($syntax)) $syntax = TBGSettings::getSyntaxClass($syntax);
+	$markuppable = (!isset($markuppable)) ? true : $markuppable;
+	
+	if ($markuppable)
+	{
+		$syntax = (isset($syntax)) ? $syntax : TBGSettings::SYNTAX_MW;
+		if (is_numeric($syntax)) $syntax = TBGSettings::getSyntaxClass($syntax);
+	}
+	else
+	{
+		$syntax = TBGSettings::getSyntaxClass(TBGSettings::SYNTAX_MD);
+	}
+
 	switch ($syntax) 
 	{
 		case 'mw':
@@ -13,7 +23,6 @@
 			$syntaxname = __('Plaintext');
 			break;
 	}
-
 	$base_id = (isset($area_id)) ? $area_id : $area_name;
 ?>
 <div class="textarea_container syntax_<?php echo $syntax; ?>">
@@ -26,10 +35,9 @@
 			<li class="pt <?php if ($syntax == 'pt') echo 'selected'; ?>" data-syntax-name="<?php echo __('Plaintext'); ?>"><a href="javascript:void(0);" onclick="TBG.Main.Helpers.setSyntax('<?php echo $base_id; ?>', 'pt');"><?php echo __('Plain text'); ?></a></li>
 		</ul>
 	</div>
-	<textarea name="<?php echo $area_name; ?>" id="<?php echo $base_id; ?>" class="syntax_<?php echo $syntax; ?>" style="height: <?php echo $height; ?>; width: <?php echo $width; ?>;"><?php echo $value; ?></textarea>
+	<textarea name="<?php echo $area_name; ?>" id="<?php echo $base_id; ?>" class="syntax_<?php echo $syntax; ?> <?php if ($markuppable) echo ' markuppable'; ?>" style="height: <?php echo $height; ?>; width: <?php echo $width; ?>;"><?php echo $value; ?></textarea>
 	<?php if (!isset($hide_hint) || $hide_hint == false): ?>
 		<div class="textarea_hint">
-			<div class="header"><?php echo __('Formatting tips'); ?></div>
 			<p class="syntax_pt_hint hint_container">
 				<?php
 

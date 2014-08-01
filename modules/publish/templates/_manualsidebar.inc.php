@@ -1,15 +1,12 @@
-<div id="manual_sidebar">
-	<h3>
-		<?php if (TBGContext::isProjectContext()): ?>
-			<?php echo __('%project manual', array('%project' => TBGContext::getCurrentProject()->getName())); ?>
-		<?php else: ?>
+<div id="manual_sidebar" class="<?php if (TBGContext::isProjectContext()) echo ' single_parent'; ?>">
+	<?php if (!TBGContext::isProjectContext()): ?>
+		<h3>
 			<?php echo __('Main manual'); ?>
-		<?php endif; ?>
-	</h3>
+		</h3>
+	<?php endif; ?>
 	<ul>
 		<?php $level = 0; ?>
-		<?php foreach ($articles as $main_article): ?>
-			<?php include_template('publish/manualsidebarlink', compact('parents', 'article', 'main_article', 'level')); ?>
-		<?php endforeach; ?>
+		<?php $first = true; ?>
+		<?php include_template('publish/manualsidebarlink', compact('parents', 'article', 'main_article', 'level', 'first')); ?>
 	</ul>
 </div>

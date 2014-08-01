@@ -63,10 +63,11 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addWhere('articles.article_type', TBGWikiArticle::TYPE_MANUAL);
-			$crit->addWhere('articles.parent_article_id', 0);
 			if ($project instanceof TBGProject)
 			{
-				$crit->addWhere(self::NAME, ucfirst($project->getKey()) . ":%", Criteria::DB_LIKE);
+				$ctn = $crit->returnCriterion(self::NAME, ucfirst($project->getKey()) . ":%", Criteria::DB_LIKE);
+				$ctn->addOr(self::NAME, "Category:" . ucfirst($project->getKey()) . "%", Criteria::DB_LIKE);
+				$crit->addWhere($ctn);
 			}
 			else
 			{
@@ -122,6 +123,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$crit->addWhere('articles.article_type', TBGWikiArticle::TYPE_WIKI);
 			
 			if ($project instanceof TBGProject)
 			{

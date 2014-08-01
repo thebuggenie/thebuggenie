@@ -19,7 +19,7 @@
 				<?php if ($mode == 'issue'): ?>
 					<br style="clear:both" />
 					<label for="upload_file_comment"><?php echo __('Comment'); ?></label> (<?php echo __('optional'); ?>)<br>
-					<textarea name="comment" cols="70" rows="10" id="upload_file_comment" style="width: 560px; height: 150px;"
+					<textarea name="comment" cols="70" rows="10" id="upload_file_comment" class="markuppable" style="width: 560px; height: 150px;"
 					placeholder="<?php echo __('Comments entered here will be added to the issue with the file.'); ?>"></textarea></dd>
 				<?php endif; ?>
 			</div>

@@ -24,6 +24,11 @@
 		protected $_name;
 
 		/**
+		 * @Column(type="string", length=200)
+		 */
+		protected $_manual_name;
+
+		/**
 		 * When the article was posted
 		 *
 		 * @var integer
@@ -687,6 +692,16 @@
 		}
 
 		/**
+		 * Return an array with all files attached to this issue
+		 * 
+		 * @return array
+		 */
+		public function countFiles()
+		{
+			return count($this->getFiles());
+		}
+
+		/**
 		 * Return a file by the filename if it is attached to this issue
 		 * 
 		 * @param string $filename The original filename to match against
@@ -816,7 +831,27 @@
 		 */
 		public function setName($name)
 		{
-			$this->_name = $name;
+			$this->_name = preg_replace("/[^A-Za-z0-9 :]/", '', $name);
+		}
+
+		/**
+		 * Return the items name
+		 *
+		 * @return string
+		 */
+		public function getManualName()
+		{
+			return $this->_manual_name;
+		}
+
+		/**
+		 * Set the edition name
+		 *
+		 * @param string $name
+		 */
+		public function setManualName($name)
+		{
+			$this->_manual_name = $name;
 		}
 
 		public function setParentArticle($parent_article)

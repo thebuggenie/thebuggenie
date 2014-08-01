@@ -49,7 +49,8 @@ var TBG = {
 		Comment: {},
 		Link: {},
 		Menu: {},
-		Login: {}
+		Login: {},
+		parent_articles: []
 	},
 	Chart: {},
 	Modules: {},
@@ -182,6 +183,7 @@ TBG.Core._extractAutocompleteValue = function(elem, value, event) {
  * Monitors viewport resize to adapt backdrops
  */
 TBG.Core._resizeWatcher = function() {
+	return;
 	TBG.Core._vp_width = document.viewport.getWidth();
 	TBG.Core._vp_height = document.viewport.getHeight();
 	if (($('attach_file') && $('attach_file').visible())) {
@@ -196,6 +198,7 @@ TBG.Core._resizeWatcher = function() {
 };
 
 TBG.Core.popupVisiblizer = function() {
+	return;
 	var visible_popups = $$('.dropdown_box').findAll(function(el) {return el.visible();});
 	if (visible_popups.size()) {
 		visible_popups.each(function (element) {
@@ -5448,8 +5451,23 @@ TBG.Main.Helpers.toggler = function (elm) {
 	elm.next().toggle();
 };
 
+TBG.Main.loadParentArticles = function() {
+	if ($('parent_articles_list').childElements().size() == 0) {
+		TBG.Main.Helpers.ajax($('parent_selector_container').dataset.callbackUrl, {
+			loading: {
+				indicator: 'parent_selector_container_indicator',
+			},
+			complete: {
+				callback: function(json) {
+					$('parent_articles_list').update(json.list);
+				}
+			}
+		});
+	}
+}
+
 jQuery(document).ready(function(){
-	TBG.Main.Helpers.MarkitUp($$('textarea'));
+	TBG.Main.Helpers.MarkitUp($$('textarea.markuppable'));
 	(function($) {
 		$("body").on("click", ".dropper", function(e) {
 			var is_visible = (this).hasClassName('button-pressed');
@@ -5462,6 +5480,18 @@ jQuery(document).ready(function(){
 		$("body").on("click", function(e) {
 			TBG.Main.Profile.clearPopupsAndButtons();
 			e.stopPropagation();
+		});
+		$$("textarea").each(function (ta) {
+			ta.on('focus', function(e) {
+				var ec = this.up('.editor_container');
+				if (ec != undefined) ec.addClassName('focussed');
+			});
+		});
+		$$("textarea").each(function (ta) {
+			ta.on('blur', function(e) {
+				var ec = this.up('.editor_container');
+				if (ec != undefined) ec.removeClassName('focussed');
+			});
 		});
 	})(jQuery);
 });

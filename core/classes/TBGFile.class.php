@@ -11,6 +11,9 @@
 		 */
 		protected $_content_type;
 
+		/**
+		 * @Column(type="integer", length=10, name="uid")
+		 */
 		protected $_uploaded_by;
 
 		/**
@@ -98,7 +101,7 @@
 
 		public function getUploadedBy()
 		{
-			return $this->_uploaded_by;
+			return $this->_b2dbLazyload('_uploaded_by');
 		}
 
 		public function setUploadedBy($uploaded_by)

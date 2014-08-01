@@ -2590,6 +2590,7 @@
 				case 'article':
 					$target = TBGArticlesTable::getTable()->selectById($request['target_id']);
 					$base_id = 'article_'.mb_strtolower(urldecode($request['article_name'])).'_files';
+					$container_id = 'article_'.$target->getID().'_files';
 					$target_identifier = 'article_name';
 					$target_id = $request['article_name'];
 					break;
@@ -2609,7 +2610,7 @@
 				{
 					$target->detachFile($file);
 				}
-				$files[] = $this->getComponentHTML('main/attachedfile', array('base_id' => $base_id, 'mode' => $request['target'], $target_identifier => $target_id, 'file' => $file));
+				$files[] = $this->getComponentHTML('main/attachedfile', array('base_id' => $base_id, 'mode' => $request['target'], $request['target'] => $target, $target_identifier => $target_id, 'file' => $file));
 			}
 			$attachmentcount = ($request['target'] == 'issue') ? $target->countFiles() + $target->countLinks() : $target->countFiles();
 			

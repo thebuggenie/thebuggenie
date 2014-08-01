@@ -1,18 +1,7 @@
 <?php TBGContext::loadLibrary('publish/publish'); ?>
 <div class="article syntax_<?php echo TBGSettings::getSyntaxClass($article->getContentSyntax()); ?>">
 	<?php if ($show_title): ?>
-		<?php include_template('publish/header', array('article_name' => $article->getName(), 'article' => $article, 'show_actions' => $show_actions, 'mode' => $mode)); ?>
-	<?php endif; ?>
-	<?php if (!$embedded && $article->canDelete()): ?>
-		<div style="position: absolute; top: 55px; right: 15px;">
-			<a class="button button-silver more_actions_button dropper" id="more_actions_article_<?php echo $article->getID(); ?>_button"><?php echo __('More actions'); ?></a>
-			<ul class="simple_list rounded_box white shadowed more_actions_dropdown dropdown_box popup_box" onclick="$('more_actions_article_<?php echo $article->getID(); ?>_button').toggleClassName('button-pressed');TBG.Main.Profile.clearPopupsAndButtons();">
-				<li><?php echo javascript_link_tag(__('Delete this article'), array('onclick' => "TBG.Main.Helpers.Dialog.show('".__('Please confirm')."', '".__('Do you really want to delete this article?')."', {yes: {click: function() {TBG.Main.Helpers.ajax('".make_url('publish_article_delete', array('article_name' => $article->getName()))."', {method: 'post'}); TBG.Main.Helpers.Dialog.dismiss(); }}, no: {click: TBG.Main.Helpers.Dialog.dismiss}})")); ?></li>
-				<?php if (TBGSettings::isUploadsEnabled() && $article->canEdit()): ?>
-					<li><a href="javascript:void(0);" onclick="$('attach_file').show();"><?php echo __('Attach a file'); ?></a></li>
-				<?php endif; ?>
-			</ul>
-		</div>
+		<?php include_template('publish/header', array('article_name' => $article->getName(), 'article' => $article, 'show_actions' => $show_actions, 'mode' => $mode, 'embedded' => $embedded)); ?>
 	<?php endif; ?>
 	<?php if ($show_details && $show_article): ?>
 		<div class="details">

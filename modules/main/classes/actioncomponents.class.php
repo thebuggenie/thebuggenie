@@ -18,7 +18,14 @@
 				if (!$this->user instanceof TBGUser)
 				{
 					TBGLogging::log('loading user object in dropdown');
-					$this->user = TBGContext::factory()->TBGUser($this->user);
+					if (is_numeric($this->user))
+					{
+						$this->user = TBGUsersTable::getTable()->getByUserId($this->user);
+					}
+					else
+					{
+						$this->user = TBGUsersTable::getTable()->getByUsername($this->user);
+					}
 					TBGLogging::log('done (loading user object in dropdown)');
 				}
 			}

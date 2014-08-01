@@ -59,7 +59,7 @@
 						<?php include_component('main/uploader', array('article' => $article, 'mode' => 'article')); ?>
 					<?php endif;*/ ?>
 					<h4>
-						<?php echo __('Article attachments (%count)', array('%count' => count($attachments))); ?>
+						<?php echo __('Article attachments'); ?>
 						<?php if (TBGSettings::isUploadsEnabled() && $article->canEdit()): ?>
 							<button class="button button-silver" onclick="TBG.Main.showUploader('<?php echo make_url('get_partial_for_backdrop', array('key' => 'uploader', 'mode' => 'article', 'article_name' => $article_name)); ?>');"><?php echo __('Attach a file'); ?></button>
 						<?php else: ?>

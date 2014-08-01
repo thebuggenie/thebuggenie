@@ -10,9 +10,9 @@
 			<?php $extraClass = (!isset($size) || $size == 'small') ? "small" : ""; ?>
 			<?php echo image_tag($user->getAvatarURL(), array('alt' => ' ', 'class' => 'avatar '.$extraClass), true); ?>
 		<?php endif; ?>
-		<?php echo (isset($displayname)) ? $displayname : $user->getBuddyname(); ?>
+		<?php echo (isset($displayname)) ? $displayname : $user->getNameWithUsername(); ?>
 	</a>
-	<div class="rounded_box white shadowed user_popup dropdown_box <?php if (isset($class)) echo $class; ?> leftie">
+	<div class="rounded_box white shadowed user_popup popup_box dropdown_box <?php if (isset($class)) echo $class; ?> leftie">
 		<div style="padding: 3px;">
 			<div style="padding: 2px; width: 36px; height: 36px; text-align: center; background-color: #FFF; border: 1px solid #DDD; float: left;">
 				<?php echo image_tag($user->getAvatarURL(false), array('alt' => ' ', 'style' => "width: 36px; height: 36px;"), true); ?>

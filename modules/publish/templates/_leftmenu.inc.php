@@ -1,8 +1,8 @@
 <?php include_template('main/menulinks', array('links' => $links, 'target_type' => 'wiki', 'target_id' => $links_target_id, 'title' => __('Wiki menu'))); ?>
-<?php if ($article instanceof TBGWikiArticle): ?>
+<?php if ($article instanceof TBGWikiArticle && $article->getID()): ?>
 	<?php include_component('publish/whatlinkshere', compact('article')); ?>
+	<?php include_component('publish/tools', compact('special', 'article')); ?>
 <?php endif; ?>
-<?php include_component('publish/tools', compact('special', 'article')); ?>
 <?php include_component('publish/latestArticles'); ?>
 <?php /*?>
 <div style="margin: 10px 0 5px 5px;">
