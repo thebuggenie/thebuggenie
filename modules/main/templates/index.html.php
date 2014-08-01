@@ -22,13 +22,16 @@
 			<?php if ($show_project_list): ?>
 				<div class="project_overview">
 					<div class="header">
-						<div class="button-group">
-							<?php if ($show_project_config_link): ?>
-								<?php echo link_tag(make_url('configure_projects'), __('Manage projects'), array('class' => 'button button-silver')); ?>
-							<?php endif; ?>
-							<a class="button button-silver" href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'archived_projects')); ?>');"><?php echo __('Show archived projects'); ?></a>
-						</div>
 						<?php echo __('Projects'); ?>
+						<div class="dropper_container">
+							<?php echo image_tag('icon-mono-settings.png', array('class' => 'dropper')); ?>
+							<ul class="simple_list rounded_box white shadowed more_actions_dropdown dropdown_box popup_box leftie">
+								<?php if ($show_project_config_link): ?>
+									<li><?php echo link_tag(make_url('configure_projects'), __('Manage projects')); ?></li>
+								<?php endif; ?>
+								<li><a href="javascript:void(0);" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'archived_projects')); ?>');"><?php echo __('Show archived projects'); ?></a></li>
+							</ul>
+						</div>
 					</div>
 					<?php if ($project_count > 0): ?>
 						<ul class="project_list simple_list">
