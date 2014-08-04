@@ -28,7 +28,7 @@ GENERAL INSTALLATION NOTES
 
 ### 1: Download and install composer.json
 
-The Bug Genie uses a dependancy resolution tool called composer, which must
+The Bug Genie uses a dependency resolution tool called composer, which must
 be downloaded and run before The Bug Genie can be installed or used.
 
 Download and install composer.json from http://getcomposer.org
