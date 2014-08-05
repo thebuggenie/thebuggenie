@@ -2760,6 +2760,11 @@
 			return $this->_read_notifications_count + $this->_unread_notifications_count;
 		}
 		
+		public function markAllNotificationsRead()
+		{
+			TBGNotificationsTable::getTable()->markUserNotificationsReadByTypesAndId(array(), null, $this->getID());
+		}
+		
 		public function markNotificationsRead($type, $id)
 		{
 			if ($type == 'issue')
@@ -2768,7 +2773,16 @@
 				$comment_ids = TBGCommentsTable::getTable()->getCommentIDs($id, TBGComment::TYPE_ISSUE);
 				if (count($comment_ids))
 				{
-					TBGNotificationsTable::getTable()->markUserNotificationsReadByTypesAndId(array(TBGNotification::TYPE_ISSUE_COMMENTED), $comment_ids, $this->getID());
+					TBGNotificationsTable::getTable()->markUserNotificationsReadByTypesAndId(array(TBGNotification::TYPE_ISSUE_COMMENTED, TBGNotification::TYPE_COMMENT_MENTIONED), $comment_ids, $this->getID());
+				}
+			}
+			if ($type == 'article')
+			{
+				TBGNotificationsTable::getTable()->markUserNotificationsReadByTypesAndId(array(TBGNotification::TYPE_ARTICLE_UPDATED), $id, $this->getID());
+				$comment_ids = TBGCommentsTable::getTable()->getCommentIDs($id, TBGComment::TYPE_ARTICLE);
+				if (count($comment_ids))
+				{
+					TBGNotificationsTable::getTable()->markUserNotificationsReadByTypesAndId(array(TBGNotification::TYPE_ARTICLE_COMMENTED, TBGNotification::TYPE_COMMENT_MENTIONED), $comment_ids, $this->getID());
 				}
 			}
 			$this->_notifications = null;

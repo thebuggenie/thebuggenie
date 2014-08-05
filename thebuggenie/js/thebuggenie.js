@@ -42,6 +42,7 @@ var TBG = {
 			Backdrop: {}
 		},
 		Profile: {},
+		Notifications: {},
 		Dashboard: {
 			views: [],
 			View: {}
@@ -5463,7 +5464,45 @@ TBG.Main.loadParentArticles = function(form) {
 			}
 		}
 	});
-}
+};
+
+TBG.Main.Notifications.markAllRead = function() {
+	TBG.Main.Helpers.ajax(TBG.data_url, {
+		url_method: 'post',
+		params: '&say=notificationsread',
+		loading: {
+			callback: function() {
+				$('user_notifications').addClassName('toggling');
+			}
+		},
+		success: {
+			callback: function(json) {
+				var un = $('user_notifications');
+				un.select('li').each(function(li) { li.removeClassName('unread'); li.addClassName('read'); });
+				TBG.Core.Pollers.Callbacks.dataPoller();
+			}
+		}
+	});
+};
+
+TBG.Main.Notifications.toggleRead = function(notification_id) {
+	TBG.Main.Helpers.ajax(TBG.data_url, {
+		url_method: 'post',
+		params: '&say=notificationstatus&notification_id='+notification_id,
+		loading: {
+			callback: function() {
+				$('notification_'+notification_id+'_container').addClassName('toggling');
+			}
+		},
+		success: {
+			callback: function(json) {
+				var nc = $('notification_'+notification_id+'_container');
+				['toggling', 'read', 'unread'].each(function(cn) { nc.toggleClassName(cn); });
+				TBG.Core.Pollers.Callbacks.dataPoller();
+			}
+		}
+	});
+};
 
 jQuery(document).ready(function(){
 	TBG.Main.Helpers.MarkitUp($$('textarea.markuppable'));

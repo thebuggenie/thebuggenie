@@ -128,6 +128,8 @@
 		protected $_log_item_count = null;
 
 		protected static $_comment_count = array();
+		
+		protected $_parser = null;
 
 		/**
 		 *
@@ -260,8 +262,33 @@
 		{
 			foreach ($this->getTarget()->getSubscribers() as $user)
 			{
+				if ($user->getID() == $this->getPostedByID()) continue;
 				$this->_addNotification(TBGNotification::TYPE_ISSUE_COMMENTED, $user);
 			}
+		}
+		
+		/**
+		 * Returns the associated parser object
+		 * 
+		 * @return TBGContentParser
+		 */
+		protected function _getParser()
+		{
+			if (!isset($this->_parser))
+			{
+				$this->_parseContent();
+			}
+			return $this->_parser;
+		}
+		
+		public function hasMentions()
+		{
+			return $this->_getParser()->hasMentions();
+		}
+		
+		public function getMentions()
+		{
+			return $this->_getParser()->getMentions();
 		}
 		
 		protected function _postSave($is_new)
@@ -275,6 +302,15 @@
 				
 				if (!$this->isSystemComment())
 				{
+					if ($this->_getParser()->hasMentions())
+					{
+						foreach ($this->_getParser()->getMentions() as $user)
+						{
+//							if ($user->getID() == TBGContext::getUser()) continue;
+
+							$this->_addNotification(TBGNotification::TYPE_COMMENT_MENTIONED, $user);
+						}
+					}
 					if ($this->getTargetType() == self::TYPE_ISSUE)
 					{
 						$this->_addIssueNotifications();
@@ -543,27 +579,36 @@
 			return $this->_content;
 		}
 
-		public function getParsedContent($options = array())
+		protected function _parseContent($options = array())
 		{
 			switch ($this->_syntax)
 			{
 				case TBGSettings::SYNTAX_PT:
 					$options = array('plain' => true);
 				case TBGSettings::SYNTAX_MW:
-					$wiki_parser = new TBGTextParser($this->_content);
+					$parser = new TBGTextParser($this->_content);
 					foreach ($options as $option => $value)
 					{
-						$wiki_parser->setOption($option, $value);
+						$parser->setOption($option, $value);
 					}
-					$text = $wiki_parser->getParsedText();
+					$text = $parser->getParsedText();
 					break;
 				case TBGSettings::SYNTAX_MD:
 					$parser = new TBGTextParserMarkdown();
 					$text = $parser->transform($this->_content);
 					break;
 			}
-
+			
+			if (isset($parser))
+			{
+				$this->_parser = $parser;
+			}
 			return $text;
+		}
+		
+		public function getParsedContent($options = array())
+		{
+			return $this->_parseContent($options);
 		}
 		
 		public function getUpdated()

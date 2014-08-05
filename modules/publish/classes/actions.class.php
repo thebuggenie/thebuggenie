@@ -153,6 +153,8 @@
 				}
 				else
 				{
+					$this->getUser()->markNotificationsRead('article', $this->article->getID());
+
 					if (!$request->hasParameter('no_redirect') && $this->article->isRedirect())
 					{
 						if ($redirect_article = $this->article->getRedirectArticleName())

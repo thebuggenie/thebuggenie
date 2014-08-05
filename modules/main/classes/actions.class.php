@@ -294,7 +294,31 @@
 				return $this->renderJSON(array());
 			} else {
 				$data = array();
-				$data['unread_notifications'] = $this->getUser()->getNumberOfUnreadNotifications();
+				if ($request->isPost())
+				{
+					switch ($request['say'])
+					{
+						case 'notificationstatus':
+							$notification = TBGNotificationsTable::getTable()->selectById($request['notification_id']);
+							if ($notification instanceof TBGNotification)
+							{
+								$notification->setIsRead(!$notification->isRead());
+								$notification->save();
+								$data['notification_id'] = $notification->getID();
+								$data['is_read'] = (int) $notification->isRead();
+							}
+							break;
+						case 'notificationsread':
+							$this->getUser()->markAllNotificationsRead();
+							$data['all'] = 'read';
+							break;
+					}
+				}
+				else
+				{
+					$data['unread_notifications'] = $this->getUser()->getNumberOfUnreadNotifications();
+				}
+
 				return $this->renderJSON($data);
 			}
 		}

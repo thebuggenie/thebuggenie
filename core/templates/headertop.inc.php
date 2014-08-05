@@ -11,7 +11,10 @@
 		<?php endif; ?>
 		<nav class="tab_menu header_menu" id="header_userinfo">
 			<div class="notifications" id="user_notifications">
-				<h1><?php echo __('Your notifications'); ?></h1>
+				<h1>
+					<?php echo __('Your notifications'); ?>
+					<a href="javascript:void(0);" onclick="TBG.Main.Notifications.markAllRead();"><?php echo __('Mark all read'); ?></a>
+				</h1>
 				<?php echo image_tag('spinning_32.gif', array('id' => 'user_notifications_loading_indicator')); ?>
 				<div id="user_notifications_list" data-notifications-url="<?php echo make_url('get_partial_for_backdrop', array('key' => 'notifications')); ?>"></div>
 			</div>
