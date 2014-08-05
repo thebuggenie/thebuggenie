@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage main
 	 */
-	class TBGTextParser
+	class TBGTextParser implements TBGContentParser
 	{
 
 		protected static $additional_regexes = null;
@@ -36,6 +36,7 @@
 		protected $linknumber = 0;
 		protected $internallinks = array();
 		protected $categories = array();
+		protected $mentions = array();
 		protected $ignore_newline = false;
 		protected $parsed_text = null;
 		protected $toc = array();
@@ -688,6 +689,39 @@
 			}
 			return $output;
 		}
+		
+		protected function _parse_mention($matches)
+		{
+			$user = TBGUsersTable::getTable()->getByUsername($matches[1]);
+			if ($user instanceof TBGUser)
+			{
+				$output = TBGAction::returnComponentHTML('main/userdropdown', array('user' => $matches[1], 'displayname' => $matches[0]));
+				$this->mentions[$user->getID()] = $user;
+			}
+			else
+			{
+				$output = $matches[0];
+			}
+			
+			return $output;
+		}
+		
+		public function getMentions()
+		{
+			return $this->mentions;
+		}
+		
+		public function hasMentions()
+		{
+			return (bool) count($this->mentions);
+		}
+		
+		public function isMentioned($user)
+		{
+			$user_id = ($user instanceof TBGUser) ? $user->getID() : $user;
+			
+			return array_key_exists($user_id, $this->mentions);
+		}
 
 		protected function _parse_issuelink($matches)
 		{
@@ -972,6 +1006,7 @@
 			$char_regexes[] = array('/(^|[ \t\r\n])((ftp|http|https|gopher|mailto|news|nntp|telnet|wais|file|prospero|aim|webcal):(([A-Za-z0-9$_.+!*(),;\[\]\/?:@&~=-])|%[A-Fa-f0-9]{2}){2,}(#([a-zA-Z0-9][a-zA-Z0-9\[\]$_.+!*(),;\/?:@&~=-]*))?([A-Za-z0-9\[\]$_+!*();\/?:~-]))/', array($this, '_parse_autosensedlink'));
 			$char_regexes[] = array('/(\[([^\]]*?)(\s+[^\]]*?)?\])/i', array($this, "_parse_save_elink"));
 			$char_regexes[] = array(self::getIssueRegex(), array($this, '_parse_issuelink'));
+			$char_regexes[] = array('/\B\@([\w\-]+)/i', array($this, '_parse_mention'));
 			$char_regexes[] = array('/(?<=\s|^)(\:\(|\:-\(|\:\)|\:-\)|8\)|8-\)|B\)|B-\)|\:-\/|\:-D|\:-P|\(\!\)|\(\?\))(?=\s|$)/i', array($this, '_getsmiley'));
 			$char_regexes[] = array('/\&amp\;(.*)\;/i', array($this, '_parse_specialchar'));
 
@@ -1104,10 +1139,11 @@
 			}
 			else
 			{
-				$text = tbg_decodeUTF8($text, true);
+				$text = nl2br(tbg_decodeUTF8($text, true));
 				$text = preg_replace_callback(self::getIssueRegex(), array($this, '_parse_issuelink'), $text);
+				$text = preg_replace_callback('/\B\@([\w\-]+)/i', array($this, '_parse_mention'), $text);
 				
-				$output = nl2br($text);
+				$output = $text;
 			}
 
 			return $output;

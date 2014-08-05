@@ -26,6 +26,9 @@
 		const TYPE_ISSUE_COMMENTED = 3;
 		const TYPE_ARTICLE_UPDATED = 4;
 		const TYPE_ARTICLE_COMMENTED = 5;
+		const TYPE_ISSUE_MENTIONED = 6;
+		const TYPE_COMMENT_MENTIONED = 7;
+		const TYPE_ARTICLE_MENTIONED = 8;
 		
 		/**
 		 * @Column(type="integer", length=10)
@@ -99,6 +102,7 @@
 				{
 					case self::TYPE_ARTICLE_COMMENTED:
 					case self::TYPE_ISSUE_COMMENTED:
+					case self::TYPE_COMMENT_MENTIONED:
 						$this->_target = TBGCommentsTable::getTable()->selectById((int) $this->_target_id);
 						break;
 					case self::TYPE_ISSUE_UPDATED:
