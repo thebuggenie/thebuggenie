@@ -24,7 +24,7 @@ form, p { margin: 0px; padding: 0px; }
 input, select, textarea, button { font-family: 'Open Sans', sans-serif; font-size: 1em; color: #555; border: 1px solid #AAA; padding: 2px; }
 select { font-family: sans-serif !important; } /* Safari 5.1 mac fix */
 input, select, textarea { background-color: #FFF; }
-input[type="text"], input[type="email"], input[type="search"], input[type="password"], input[type="url"], textarea, select { box-shadow: inset 0 0 6px rgba(200, 200, 200, 0.4); -webkit-box-shadow: inset 0 0 6px rgba(200, 200, 200, 0.4); -moz-box-shadow: inset 0 0 6px rgba(200, 200, 200, 0.4); }
+input[type="text"], input[type="email"], input[type="search"], input[type="password"], input[type="url"], textarea, select { box-shadow: inset 0 0 6px rgba(200, 200, 200, 0.4); -webkit-box-shadow: inset 0 0 6px rgba(200, 200, 200, 0.4); -moz-box-shadow: inset 0 0 6px rgba(200, 200, 200, 0.4); vertical-align: middle; }
 input[type="image"] { border: 0px; padding: 0px; width: 16px; height: 16px; background-color: transparent; }
 input[type="checkbox"] { margin: 0; vertical-align: middle; }
 input[type="text"][disabled], input[type="email"][disabled], input[type="url"][disabled], input[type="search"][disabled], input[type="password"][disabled], textarea[disabled], select[disabled] { background-color: #F9F9F9; color: #BBB; }
@@ -1837,15 +1837,57 @@ ul.workflow_actions .more_actions_dropdown li:hover { box-shadow: none; -webkit-
 .title_left_images img { margin-left: 5px; }
 .title_left_images:first-child img { margin-left: 10px; }
 
+.typeahead.dropdown-menu {
+	list-style: none;
+	padding: 1px;
+	border: 1px solid rgba(100, 100, 100, 0.3);
+	border-radius: 2px;
+	font-size: 1.1em;
+	display: block;
+	width: 100%;
+	background: #FFF;
+	margin: 2px 0;
+	position: absolute;
+	box-sizing: border-box;
+	-o-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	z-index: 10000;
+}
+.typeahead.dropdown-menu li {
+	padding: 3px;
+	display: block;
+	font-size: 1em;
+	-o-transition: background-color 0.3s ease; 
+	-ms-transition: background-color 0.3s ease; 
+	-moz-transition: background-color 0.3s ease; 
+	-webkit-transition: background-color 0.3s ease; 
+	transition: background-color 0.3s ease; 
+	background-color: transparent;
+	font-size: 1.1em;
+}
+.typeahead.dropdown-menu li a, .typeahead.dropdown-menu li img {
+	vertical-align: middle;
+	display: inline-block;
+}
+.typeahead.dropdown-menu li.active {
+	background-color: rgba(100, 100, 100, 0.2);
+}
+.typeahead.dropdown-menu li img {
+	margin-right: 5px;
+}
 
 /* left hand dropdown boxes */
-.dropdown_header { font-weight: bold; }
+.dropdown_header { font-weight: normal; font-size: 1.05em; color: #888; border-bottom: 1px dotted #CCC; padding: 5px; margin-bottom: 5px; }
 .dropdown_content { font-weight: normal; padding-top: 5px; font-size: 0.9em; }
 .dropdown_content ul { list-style-type: none; padding: 0; margin: 5px 0 0 0; clear: both; }
 .dropdown_content table { margin: 5px 0 0 0; }
 .dropdown_content ul li { font-size: 1em; font-weight: normal; margin: 0; text-align: left; min-height: 18px; padding: 1px; }
 .dropdown_content table, .dropdown_content table td { font-weight: normal; margin: 0; text-align: left; height: 18px; padding: 1px; }
 .dropdown_content table { margin-top: 5px; }
+.dropdown_content label { display: block; text-transform: uppercase; font-weight: normal; color: #888; }
+.dropdown_content label + br { display: none; }
 .dropdown_content > ul.choices { max-height: 250px; overflow-y: auto; }
 /* end dropdown */
 /* end left hand list */
@@ -1951,6 +1993,7 @@ ul.attached_items { list-style: none; padding: 0; margin: 5px 0 0 0; }
 #viewissue_attached_information .attached_item .filename, #article_attachments .attached_item .filename { display: block; }
 #viewissue_attached_information .attached_item.file_image .removelink:first-of-type, #article_attachments .attached_item.file_image .removelink:first-of-type { right: 20px; }
 #viewissue_attached_information .attached_item.file_image:hover .removelink, #article_attachments .attached_item.file_image:hover .removelink { background-color: rgba(255, 255, 255, 0.9); border: 1px solid rgba(200, 200, 200, 0.8); border-radius: 2px; padding: 2px; line-height: 1em; width: 16px; height: 16px; }
+#file_upload_list { display: block; clear: both; }
 #file_upload_list li { clear: both; }
 #file_upload_list .imagepreview { display: block; float: left; margin-right: 5px; width: 160px; }
 .imagepreview { display: block; margin: 0; padding: 2px; border: 1px solid rgba(100, 100, 100, 0.3); transition: border-color 0.3s ease; box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); }
@@ -2252,7 +2295,18 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 #search_sidebar .container_div { border: none; box-shadow: none; }
 #search_sidebar .header { background: transparent; font-weight: normal; margin: 0; padding: 6px 0; border-bottom: 1px dotted #AAA; font-size: 1em; }
 #search_sidebar .container_div ul { margin: 5px 0; padding: 0; }
-#search_sidebar .container_div li { clear: both; display: block; list-style: none; margin: 0 0 2px 0; padding: 0; transition: background-color 0.3s ease; }
+#search_sidebar .container_div li { 
+	clear: both; 
+	display: block; 
+	list-style: none; 
+	margin: 0 0 2px 0; 
+	padding: 0; 
+	-o-transition: background-color 0.3s ease; 
+	-ms-transition: background-color 0.3s ease; 
+	-moz-transition: background-color 0.3s ease; 
+	-webkit-transition: background-color 0.3s ease; 
+	transition: background-color 0.3s ease; 
+}
 #search_sidebar .container_div li .action_icons { float: right; margin-left: 2px; display: none; }
 #search_sidebar .container_div li .action_icons img { vertical-align: middle; display: inline-block; margin: 0; }
 #search_sidebar .container_div li:hover .action_icons { display: block; }

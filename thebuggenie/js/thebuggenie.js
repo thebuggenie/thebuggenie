@@ -5504,6 +5504,29 @@ TBG.Main.Notifications.toggleRead = function(notification_id) {
 	});
 };
 
+TBG.Main.initializeMentionable = function(textarea) {
+	if ($(textarea).hasClassName('mentionable')) {
+		TBG.Main.Helpers.ajax(TBG.data_url, {
+			url_method: 'get',
+			params: 'say=get_mentionables',
+			success: {
+				callback: function(json) {
+					jQuery('#'+textarea.id).mention({
+						delimiter: '@',
+						sensitive: true,
+						emptyQuery: true,
+						queryBy: ['name', 'username'],
+						typeaheadOpts: {
+							items: 10 // Max number of items you want to show
+						},						
+						users: json.mentionables
+					});
+				}
+			}
+		});
+	};
+};
+
 jQuery(document).ready(function(){
 	TBG.Main.Helpers.MarkitUp($$('textarea.markuppable'));
 	(function($) {

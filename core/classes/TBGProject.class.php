@@ -18,7 +18,7 @@
 	 *
 	 * @Table(name="TBGProjectsTable")
 	 */
-	class TBGProject extends TBGQaLeadableItem
+	class TBGProject extends TBGQaLeadableItem implements TBGMentionableProvider
 	{
 
 		/**
@@ -3154,4 +3154,23 @@
 
 			return $columns;
 		}
+		
+		public function getMentionableUsers()
+		{
+			$users = array();
+			foreach ($this->getAssignedUsers() as $user)
+			{
+				$users[$user->getID()] = $user;
+			}
+			foreach ($this->getAssignedTeams() as $team)
+			{
+				foreach ($team->getUsers() as $user)
+				{
+					$users[$user->getID()] = $user;
+				}
+			}
+			
+			return $users;
+		}
+		
 	}
