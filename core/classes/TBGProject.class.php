@@ -3164,7 +3164,7 @@
 			}
 			foreach ($this->getAssignedTeams() as $team)
 			{
-				foreach ($team->getUsers() as $user)
+				foreach ($team->getMembers() as $user)
 				{
 					$users[$user->getID()] = $user;
 				}
