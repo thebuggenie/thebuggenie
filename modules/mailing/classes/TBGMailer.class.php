@@ -203,7 +203,7 @@
 				{
 					echo("No server? $errno $errstr<br>");
 				}
-				throw new Exception(TBGContext::getI18n()->__('Could not open connection to server %server on port port%', array('server%' => $this->server, 'port%' => $this->port)));
+				throw new Exception(TBGContext::getI18n()->__('Could not open connection to server %server on port %port', array('%server' => $this->server, '%port' => $this->port)));
 			}
 			$this->_read_buffer($fp, 'open');
 
