@@ -12,7 +12,7 @@
 		<?php endif; ?>
 		<?php echo (isset($displayname)) ? $displayname : $user->getNameWithUsername(); ?>
 	</a>
-	<div class="rounded_box white shadowed user_popup popup_box dropdown_box <?php if (isset($class)) echo $class; ?> leftie">
+	<div id="bud_<?php echo $user->getUsername() . "_" . $rnd_no ?>" class="rounded_box white shadowed user_popup popup_box dropdown_box <?php if (isset($class)) echo $class; ?> leftie">
 		<div style="padding: 3px;">
 			<div style="padding: 2px; width: 36px; height: 36px; text-align: center; background-color: #FFF; border: 1px solid #DDD; float: left;">
 				<?php echo image_tag($user->getAvatarURL(false), array('alt' => ' ', 'style' => "width: 36px; height: 36px;"), true); ?>
