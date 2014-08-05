@@ -5516,7 +5516,11 @@
 
 		public function getMentionableUsers()
 		{
-			$users = $this->getRelatedUsers();
+			$users = array();
+			foreach ($this->getRelatedUsers() as $user)
+			{
+				$users[$user->getID()] = $user;
+			}
 			foreach ($this->getComments() as $comment)
 			{
 				$users[$comment->getPostedBy()->getID()] = $comment->getPostedBy();
