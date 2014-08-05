@@ -137,7 +137,7 @@ header #user_notifications_count.unread + img { opacity: 1; }
 }
 #user_notifications_list{
     max-height : 500px;
-    overflow : auto;
+    overflow : scroll;
 }
 #user_notifications ul {
 	list-style: none;
