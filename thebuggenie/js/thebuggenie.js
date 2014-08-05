@@ -5451,19 +5451,18 @@ TBG.Main.Helpers.toggler = function (elm) {
 	elm.next().toggle();
 };
 
-TBG.Main.loadParentArticles = function() {
-	if ($('parent_articles_list').childElements().size() == 0) {
-		TBG.Main.Helpers.ajax($('parent_selector_container').dataset.callbackUrl, {
-			loading: {
-				indicator: 'parent_selector_container_indicator',
-			},
-			complete: {
-				callback: function(json) {
-					$('parent_articles_list').update(json.list);
-				}
+TBG.Main.loadParentArticles = function(form) {
+	TBG.Main.Helpers.ajax(form.action, {
+		params: $(form).serialize(),
+		loading: {
+			indicator: 'parent_selector_container_indicator',
+		},
+		complete: {
+			callback: function(json) {
+				$('parent_articles_list').update(json.list);
 			}
-		});
-	}
+		}
+	});
 }
 
 jQuery(document).ready(function(){

@@ -72,18 +72,6 @@
 				catch (Exception $e) {}
 			}
 
-			if ($this->selected_project instanceof TBGProject)
-			{
-				if (!$this->selected_project->hasAccess())
-				{
-					$this->forward403();
-				}
-				else
-				{
-					TBGContext::setCurrentProject($this->selected_project);
-				}
-			}
-
 			if (!$this->special)
 			{
 				if ($this->article_id)
@@ -105,19 +93,32 @@
 					elseif ($request->hasParameter('parent_article_name')) 
 					{
 						$this->article->setParentArticle(TBGArticlesTable::getTable()->getArticleByName($request['parent_article_name']));
+						$this->_getArticleNameDetails($request['parent_article_name']);
 						if ($this->article->getParentArticle() instanceof TBGWikiArticle)
 						{
 							if ($this->article->getParentArticle()->getArticleType() == TBGWikiArticle::TYPE_WIKI)
 							{
 								$this->article->setName($this->article->getParentArticle()->getName() . ':');
 							}
-							$this->_getArticleNameDetails($this->article->getParentArticle()->getName());
 							$this->article->setArticleType($this->article->getParentArticle()->getArticleType());
 						}
 					}
 					$this->article->setContentSyntax($this->getUser()->getPreferredWikiSyntax(true));
 				}
 			}
+
+			if ($this->selected_project instanceof TBGProject)
+			{
+				if (!$this->selected_project->hasAccess())
+				{
+					$this->forward403();
+				}
+				else
+				{
+					TBGContext::setCurrentProject($this->selected_project);
+				}
+			}
+
 		}
 		
 		public function runSpecialArticle(TBGRequest $request)
@@ -289,7 +290,7 @@
 		 */
 		public function runGetAvailableParents(TBGRequest $request)
 		{
-			$articles = TBGArticlesTable::getTable()->getManualSidebarArticles(TBGContext::getCurrentProject());
+			$articles = TBGArticlesTable::getTable()->getManualSidebarArticles(TBGContext::getCurrentProject(), $request['find_article']);
 			
 			$parent_articles = array();
 			foreach ($articles as $article)
@@ -329,7 +330,7 @@
 					$this->article->setManualName($request['manual_name']);
 					if ($this->article->getArticleType() == TBGWikiArticle::TYPE_MANUAL && !$this->article->getName())
 					{
-						$article_name_prefix = ($this->article->getParentArticle() instanceof TBGWikiArticle) ? $this->article->getParentArticle()->getName() . ':' : '';
+						$article_name_prefix = ($this->article->getParentArticle() instanceof TBGWikiArticle) ? $this->article->getParentArticle()->getName() . ':' : $request['parent_article_name'];
 						$this->article->setName(str_replace(' ', '', $article_name_prefix . $this->article->getManualName()));
 					}
 					$this->article->setContentSyntax($request['article_content_syntax']);

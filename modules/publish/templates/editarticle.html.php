@@ -69,7 +69,7 @@
 				</div>
 				<br style="clear: both;">
 				<div class="editor_container">
-					<?php include_template('main/textarea', array('area_name' => 'article_content', 'area_id' => 'article_content', 'syntax' => $article->getContentSyntax(), 'markuppable' => !($article->getContentSyntax(true) == TBGSettings::SYNTAX_PT), 'height' => '500px', 'width' => '100%', 'value' => htmlspecialchars($article->getContent()))); ?>
+					<?php include_template('main/textarea', array('area_name' => 'article_content', 'area_id' => 'article_content', 'syntax' => $article->getContentSyntax(), 'markuppable' => !($article->getContentSyntax(true) == TBGSettings::SYNTAX_PT), 'width' => '100%', 'value' => htmlspecialchars($article->getContent()))); ?>
 				</div>
 				<div id="change_reason_container" class="fullpage_backdrop" style="display: none;">
 					<div class="backdrop_box large">
@@ -99,19 +99,20 @@
 					<input class="button button-green" type="submit" value="<?php echo ($article instanceof TBGWikiArticle) ? __('Save changes') : __('Create article'); ?>">
 				</div>
 			</form>
-			<div id="parent_selector_container" class="fullpage_backdrop" style="display: none;" data-callback-url="<?php echo make_url('publish_article_parents', array('article_name' => $article->getName())); ?>">
+			<form id="parent_selector_container" class="fullpage_backdrop" style="display: none;" onsubmit="TBG.Main.loadParentArticles(this);return false;" action="<?php echo make_url('publish_article_parents', array('article_name' => $article->getName())); ?>">
 				<div class="backdrop_box medium">
 					<div class="backdrop_detail_header"><?php echo __('Select parent article'); ?></div>
 					<div class="backdrop_detail_content">
-						<?php /* <input type="search" name="parent_article_name"> */ ?>
-						<?php echo image_tag('spinning_32.gif', array('id' => 'parent_selector_container_indicator')); ?>
+						<input type="search" name="find_article" id="parent_article_name_search">
+						<input type="submit" class="button button-silver" value="<?php echo __('Find'); ?>">
+						<?php echo image_tag('spinning_32.gif', array('id' => 'parent_selector_container_indicator', 'style' => 'display: none;')); ?>
 						<ul id="parent_articles_list"></ul>
 						<div class="change_reason_actions">
 							<a href="javascript:void(0);" onclick="$('parent_selector_container').hide();"><?php echo __('Cancel'); ?></a>
 						</div>
 					</div>
 				</div>
-			</div>
+			</form>
 			<input type="hidden" id="article_serialized" value="">
 		</td>
 	</tr>

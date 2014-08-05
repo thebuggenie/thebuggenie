@@ -58,11 +58,12 @@
 			return $articles;
 		}
 		
-		public function getManualSidebarArticles(TBGProject $project = null)
+		public function getManualSidebarArticles(TBGProject $project = null, $filter = null)
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addWhere('articles.article_type', TBGWikiArticle::TYPE_MANUAL);
+			$crit->addWhere('articles.name', '%'.strtolower($filter).'%', Criteria::DB_LIKE);
 			if ($project instanceof TBGProject)
 			{
 				$ctn = $crit->returnCriterion(self::NAME, ucfirst($project->getKey()) . ":%", Criteria::DB_LIKE);

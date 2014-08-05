@@ -35,7 +35,7 @@
 			<li class="pt <?php if ($syntax == 'pt') echo 'selected'; ?>" data-syntax-name="<?php echo __('Plaintext'); ?>"><a href="javascript:void(0);" onclick="TBG.Main.Helpers.setSyntax('<?php echo $base_id; ?>', 'pt');"><?php echo __('Plain text'); ?></a></li>
 		</ul>
 	</div>
-	<textarea name="<?php echo $area_name; ?>" id="<?php echo $base_id; ?>" class="syntax_<?php echo $syntax; ?> <?php if ($markuppable) echo ' markuppable'; ?>" style="height: <?php echo $height; ?>; width: <?php echo $width; ?>;"><?php echo $value; ?></textarea>
+	<textarea name="<?php echo $area_name; ?>" id="<?php echo $base_id; ?>" class="syntax_<?php echo $syntax; ?> <?php if ($markuppable) echo ' markuppable'; ?>" style="<?php if (isset($height)) echo 'height: '.$height; ?>; width: <?php echo $width; ?>;"><?php echo $value; ?></textarea>
 	<?php if (!isset($hide_hint) || $hide_hint == false): ?>
 		<div class="textarea_hint">
 			<p class="syntax_pt_hint hint_container">

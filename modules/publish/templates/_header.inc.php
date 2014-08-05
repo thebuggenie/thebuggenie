@@ -48,7 +48,7 @@
 								<li class="separator"></li>
 								<li><?php echo link_tag(make_url('publish_article_new', array('parent_article_name' => $article_name)), __('Create new article here')); ?></li>
 								<?php if (TBGContext::isProjectContext()): ?>
-									<li><?php echo link_tag(make_url('publish_article_new', array('parent_article_name' => TBGContext::getCurrentProject()->getKey().':MainPage')), __('Create new article')); ?></li>
+									<li><?php echo link_tag(make_url('publish_article_new', array('parent_article_name' => TBGContext::getCurrentProject()->getKey().':')), __('Create new article')); ?></li>
 								<?php else: ?>
 									<li><?php echo link_tag(make_url('publish_article_new'), __('Create new article')); ?></li>
 								<?php endif; ?>
@@ -66,7 +66,7 @@
 	<?php if ($mode == 'edit'): ?>
 		<div id="article_edit_header_information">
 			<div id="article_parent_container">
-				<input type="hidden" name="parent_article_name" id="parent_article_name" value="<?php echo $article->getParentArticleName(); ?>" style="width: 400px;">
+				<input type="hidden" name="parent_article_name" id="parent_article_name" value="<?php echo ($article->getParentArticleName()) ? $article->getParentArticleName() : htmlentities($tbg_request['parent_article_name'], ENT_COMPAT, TBGContext::getI18n()->getCharset()); ?>" style="width: 400px;">
 				<span class="parent_article_name <?php if (!$article->getParentArticle() instanceof TBGWikiArticle) echo ' faded_out'; ?>">
 					<span id="parent_article_name_span">
 						<?php if ($article->getParentArticle() instanceof TBGWikiArticle): ?>
