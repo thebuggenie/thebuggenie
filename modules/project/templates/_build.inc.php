@@ -11,7 +11,7 @@
 				</tr>
 				<tr>
 					<td><label for="ver_mj"><?php echo __('Version: %version_number', array('%version_number' => '')); ?></label></td>
-					<td><input type="text" name="ver_mj" id="ver_mj" style="width: 20px; font-size: 0.9em; text-align: center;" value="<?php echo $build->getVersionMajor(); ?>">&nbsp;.&nbsp;<input type="text" name="ver_mn" id="ver_mn" style="width: 20px; font-size: 0.9em; text-align: center;" value="<?php echo $build->getVersionMinor(); ?>">&nbsp;.&nbsp;<input type="text" name="ver_rev" id="ver_rev" style="width: 20px; font-size: 0.9em; text-align: center;" value="<?php echo $build->getVersionRevision(); ?>"></td>
+					<td><input type="text" name="ver_mj" id="ver_mj" style="width: 20px; font-size: 0.9em; text-align: center;" value="<?php echo $build->getVersionMajor(); ?>">&nbsp;.&nbsp;<input type="text" name="ver_mn" id="ver_mn" style="width: 20px; font-size: 0.9em; text-align: center;" value="<?php echo $build->getVersionMinor(); ?>">&nbsp;.&nbsp;<input type="text" name="ver_rev" id="ver_rev" style="width: 20px; font-size: 0.9em; text-align: center;" value="<?php echo $build->getVersionRevision(); ?>">&nbsp;.&nbsp;<input type="text" name="ver_pt" id="ver_pt" style="width: 20px; font-size: 0.9em; text-align: center;" value="<?php echo $build->getVersionPatch(); ?>"></td>
 				</tr>
 				<tr>
 					<td><label for="is_released_yes"><?php echo __('Released'); ?></label></td>

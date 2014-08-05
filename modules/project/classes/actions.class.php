@@ -1809,7 +1809,7 @@
 						{
 							$build = new TBGBuild($request['build_id']);
 							$build->setName($b_name);
-							$build->setVersion($request->getParameter('ver_mj', 0), $request->getParameter('ver_mn', 0), $request->getParameter('ver_rev', 0));
+							$build->setVersion($request->getParameter('ver_mj', 0), $request->getParameter('ver_mn', 0), $request->getParameter('ver_rev', 0), $request->getParameter('ver_pt', 0));
 							$build->setReleased((bool) $request['isreleased']);
 							$build->setLocked((bool) $request['locked']);
 							if ($request['milestone'] && $milestone = TBGContext::factory()->TBGMilestone($request['milestone']))

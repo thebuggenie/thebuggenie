@@ -107,7 +107,16 @@
 		 * @Column(type="string", length=30)
 		 */
 		protected $_version_revision = 0;
-
+                
+       /**
+		 * Patch
+		 *
+		 * @var integer
+		 * @access protected
+		 * @Column(type="string", length=30)
+		 */
+		protected $_version_patch = 0;
+                
 		/**
 		 * Whether the item is locked or not
 		 *
@@ -390,7 +399,7 @@
 		 */
 		public function getVersion()
 		{
-			return $this->_version_major . '.' . $this->_version_minor . '.' . $this->_version_revision;
+			return $this->_version_major . '.' . $this->_version_minor . '.' . $this->_version_revision . '.' . $this->_version_patch;
 		}
 
 		/**
@@ -400,15 +409,17 @@
 		 * @param integer $ver_mn Minor version number
 		 * @param integer $ver_rev Version revision
 		 */
-		public function setVersion($ver_mj, $ver_mn, $ver_rev)
+		public function setVersion($ver_mj, $ver_mn, $ver_rev, $ver_pt)
 		{
 			$ver_mj = ((int) $ver_mj > 0) ? (int) $ver_mj : 0;
 			$ver_mn = ((int) $ver_mn > 0) ? (int) $ver_mn : 0;
 			$ver_rev = ((int) $ver_rev > 0) ? (int) $ver_rev : 0;
+            $ver_pt = ((int) $ver_pt > 0) ? (int) $ver_pt : 0;
 
 			$this->_version_major = $ver_mj;
 			$this->_version_minor = $ver_mn;
 			$this->_version_revision = $ver_rev;
+            $this->_version_patch = $ver_pt;
 		}
 
 		/**
@@ -443,7 +454,18 @@
 			$ver_rev = ((int) $ver_rev > 0) ? (int) $ver_rev : 0;
 			$this->_version_revision = $ver_rev;
 		}
-
+                
+        /**
+		 * Set the version patch number
+		 *
+		 * @param $ver_pt
+		 */
+		public function setVersionPatch($ver_pt)
+		{
+			$ver_pt= ((int) $ver_pt > 0) ? (int) $ver_pt : 0;
+			$this->_version_patch = $ver_pt;
+		}
+                
 		/**
 		 * Returns the major version number
 		 *
@@ -472,6 +494,16 @@
 		public function getVersionRevision()
 		{
 			return $this->_version_revision;
+		}
+                
+        /**
+		 * Returns patch number
+		 *
+		 * @return mixed
+		 */
+		public function getVersionPatch()
+		{
+			return $this->_version_patch;
 		}
 
 		/**
