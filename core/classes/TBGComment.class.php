@@ -306,8 +306,7 @@
 					{
 						foreach ($this->_getParser()->getMentions() as $user)
 						{
-//							if ($user->getID() == TBGContext::getUser()) continue;
-
+							if ($user->getID() == TBGContext::getUser()) continue;
 							$this->_addNotification(TBGNotification::TYPE_COMMENT_MENTIONED, $user);
 						}
 					}
