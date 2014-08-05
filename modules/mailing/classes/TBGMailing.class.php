@@ -593,7 +593,7 @@ EOT;
 			if ($this->isOutgoingNotificationsEnabled())
 			{
 				$issue = $event->getSubject();
-				$event->getParameter('user');
+				$user = $event->getParameter('user');
 				if ($issue instanceof TBGIssue)
 				{
 					$subject = 'Re: ['.$issue->getProject()->getKey().'] ' . $issue->getIssueType()->getName() . ' ' . $issue->getFormattedIssueNo(true) . ' - ' . html_entity_decode($issue->getTitle(), ENT_COMPAT, TBGContext::getI18n()->getCharset());
