@@ -35,6 +35,7 @@
 			$text = parent::transform($text);
 
 			$text = preg_replace_callback(TBGTextParser::getIssueRegex(), array($this, '_parse_issuelink'), $text);
+			$text = preg_replace_callback(TBGTextParser::getMentionsRegex(), array($this, '_parse_mention'), $text);
 
 			return $text;
 		}

@@ -18,7 +18,7 @@
 	 *
 	 * @Table(name="TBGIssuesTable")
 	 */
-	class TBGIssue extends TBGChangeableItem
+	class TBGIssue extends TBGChangeableItem implements TBGMentionableProvider
 	{
 	
 		/**
@@ -5512,6 +5512,25 @@
 		public function addSubscriber($user_id)
 		{
 			TBGUserIssuesTable::getTable()->addStarredIssue($user_id, $this->getID());
+		}
+
+		public function getMentionableUsers()
+		{
+			$users = array();
+			foreach ($this->getRelatedUsers() as $user)
+			{
+				$users[$user->getID()] = $user;
+			}
+			foreach ($this->getComments() as $comment)
+			{
+				$users[$comment->getPostedBy()->getID()] = $comment->getPostedBy();
+				foreach ($comment->getMentions() as $user)
+				{
+					$users[$user->getID()] = $user;
+				}
+			}
+			
+			return $users;
 		}
 		
 	}

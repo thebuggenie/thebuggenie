@@ -1,5 +1,7 @@
+<?php if (isset($target)): ?>
 <form action="<?php echo make_url('update_attachments', array('target' => $mode, 'target_id' => $target->getID())); ?>" method="post" onsubmit="TBG.Main.updateAttachments(this);return false;">
 	<div class="backdrop_detail_content">
+<?php endif; ?>
 		<div class="upload_container" id="upload_drop_zone">
 			<span class="double"><?php echo __('Drop files on this area or %click_here to add files', array('%click_here' => '<span class="upload_click_here">'.__('click here').'</span>')); ?></span>
 			<span class="single" style="display: none;"><?php echo __('%click_here to add files', array('%click_here' => '<span class="upload_click_here">'.__('click here').'</span>')); ?></span>
@@ -33,6 +35,7 @@
 				upload_container.down('.single').show();
 			}
 		</script>
+<?php if (isset($target)): ?>
 	</div>
 	<div class="backdrop_detail_footer">
 		<a href="javascript:void(0)" onclick="TBG.Main.Helpers.Backdrop.reset()"><?php echo __('Cancel'); ?></a>
@@ -41,3 +44,5 @@
 		<input type="submit" class="button button-silver" value="<?php echo __('Save attachments'); ?>" id="dynamic_uploader_submit">
 	</div>
 </form>
+<?php endif; ?>
+

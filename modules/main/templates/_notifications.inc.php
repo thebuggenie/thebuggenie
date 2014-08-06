@@ -17,8 +17,8 @@
 				<?php echo image_tag('icon_notification_read.png', array('class' => 'icon_read')); ?>
 				<?php echo image_tag('icon_notification_unread.png', array('class' => 'icon_unread')); ?>
 			</a>
-			<?php 
-			
+			<?php
+
 				switch ($notification->getNotificationType())
 				{
 					case TBGNotification::TYPE_ISSUE_CREATED:
@@ -61,11 +61,25 @@
 						<?php
 						break;
 					case TBGNotification::TYPE_ARTICLE_COMMENTED:
+						?>
+						<h1>
+							<time><?php echo tbg_formatTime($notification->getCreatedAt(), 20); ?></time>
+							<?php echo __('%user_name posted a %comment on %article_name', array('%user_name' => get_component_html('main/userdropdown', array('user' => $notification->getTriggeredByUser())), '%comment' => link_tag(make_url('publish_article', array('article_name' => $notification->getTarget()->getTarget()->getName())).'#comment_'.$notification->getTarget()->getID(), __('%username_posted_a comment %on_issue', array('%username_posted_a' => '', '%on_issue' => ''))), '%article_name' => link_tag(make_url('publish_article', array('article_name' => $notification->getTarget()->getTarget()->getName())), $notification->getTarget()->getTarget()->getName()))); ?>
+						</h1>
+						<?php
 						break;
 					case TBGNotification::TYPE_ARTICLE_UPDATED:
+						?>
+						<h1>
+							<time><?php echo tbg_formatTime($notification->getCreatedAt(), 20); ?></time>
+							<?php echo __('%user_name updated %article_name', array('%user_name' => get_component_html('main/userdropdown', array('user' => $notification->getTriggeredByUser())), '%article_name' => link_tag(make_url('publish_article', array('article_name' => $notification->getTarget()->getTarget()->getName())), $notification->getTarget()->getTarget()->getName()))); ?>
+						</h1>
+						<?php
 						break;
+					default:
+						TBGEvent::createNew('core', '_notification_view', $notification)->trigger();
 				}
-			
+
 			?>
 		</li>
 		<?php endforeach; ?>

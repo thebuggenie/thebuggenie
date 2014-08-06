@@ -69,7 +69,7 @@
 				</div>
 				<br style="clear: both;">
 				<div class="editor_container">
-					<?php include_template('main/textarea', array('area_name' => 'article_content', 'area_id' => 'article_content', 'syntax' => $article->getContentSyntax(), 'markuppable' => !($article->getContentSyntax(true) == TBGSettings::SYNTAX_PT), 'width' => '100%', 'value' => htmlspecialchars($article->getContent()))); ?>
+					<?php include_template('main/textarea', array('area_name' => 'article_content', 'target_type' => 'article', 'target_id' => $article->getID(), 'area_id' => 'article_content', 'syntax' => $article->getContentSyntax(), 'markuppable' => !($article->getContentSyntax(true) == TBGSettings::SYNTAX_PT), 'width' => '100%', 'value' => htmlspecialchars($article->getContent()))); ?>
 				</div>
 				<div id="change_reason_container" class="fullpage_backdrop" style="display: none;">
 					<div class="backdrop_box large">

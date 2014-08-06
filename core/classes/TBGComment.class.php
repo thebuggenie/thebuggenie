@@ -20,7 +20,7 @@
 	 *
 	 * @Table(name="TBGCommentsTable")
 	 */
-	class TBGComment extends TBGIdentifiableScopedClass
+	class TBGComment extends TBGIdentifiableScopedClass implements TBGMentionableProvider
 	{
 		
 		/**
@@ -306,7 +306,7 @@
 					{
 						foreach ($this->_getParser()->getMentions() as $user)
 						{
-							if ($user->getID() == TBGContext::getUser()) continue;
+							if ($user->getID() == TBGContext::getUser()->getID()) continue;
 							$this->_addNotification(TBGNotification::TYPE_COMMENT_MENTIONED, $user);
 						}
 					}
@@ -748,6 +748,17 @@
 			if (!is_numeric($syntax)) $syntax = TBGSettings::getSyntaxValue($syntax);
 
 			$this->_syntax = (int) $syntax;
+		}
+		
+		public function getMentionableUsers()
+		{
+			$users = array($this->getPostedByID() => $this->getPostedBy());
+			foreach ($this->getMentions() as $user)
+			{
+				$users[$user->getID()] = $user;
+			}
+			
+			return $users;
 		}
 
 	}

@@ -75,7 +75,7 @@
 							<button id="comment_add_button" class="button button-silver" onclick="TBG.Main.Comment.showPost();"><?php echo __('Post comment'); ?></button>
 						<?php endif; ?>
 					</h4>
-					<?php include_template('main/comments', array('target_id' => $article->getID(), 'target_type' => TBGComment::TYPE_ARTICLE, 'show_button' => false, 'comment_count_div' => 'article_comment_count', 'forward_url' => make_url('publish_article', array('article_name' => $article->getName())))); ?>
+					<?php include_template('main/comments', array('target_id' => $article->getID(), 'mentionable_target_type' => 'article', 'target_type' => TBGComment::TYPE_ARTICLE, 'show_button' => false, 'comment_count_div' => 'article_comment_count', 'forward_url' => make_url('publish_article', array('article_name' => $article->getName())))); ?>
 				</div>
 			<?php endif; ?>
 		</td>

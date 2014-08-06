@@ -316,7 +316,56 @@
 				}
 				else
 				{
-					$data['unread_notifications'] = $this->getUser()->getNumberOfUnreadNotifications();
+					switch ($request['say']) 
+					{
+						case 'get_mentionables':
+							switch ($request['target_type'])
+							{
+								case 'issue':
+									$target = TBGIssuesTable::getTable()->selectById($request['target_id']);
+									break;
+								case 'article':
+									$target = TBGArticlesTable::getTable()->selectById($request['target_id']);
+									break;
+								case 'project':
+									$target = TBGProjectsTable::getTable()->selectById($request['target_id']);
+									break;
+							}
+							$mentionables = array();
+							if (isset($target) && $target instanceof TBGMentionableProvider)
+							{
+								foreach ($target->getMentionableUsers() as $user)
+								{
+									if ($user->isOpenIdLocked()) continue;
+									$mentionables[$user->getID()] = array('username' => $user->getUsername(), 'name' => $user->getName(), 'image' => $user->getAvatarURL());
+								}
+							}
+							foreach ($this->getUser()->getFriends() as $user)
+							{
+								if ($user->isOpenIdLocked()) continue;
+								$mentionables[$user->getID()] = array('username' => $user->getUsername(), 'name' => $user->getName(), 'image' => $user->getAvatarURL());
+							}
+							foreach ($this->getUser()->getTeams() as $team)
+							{
+								foreach ($team->getMembers() as $user)
+								{
+									if ($user->isOpenIdLocked()) continue;
+									$mentionables[$user->getID()] = array('username' => $user->getUsername(), 'name' => $user->getName(), 'image' => $user->getAvatarURL());
+								}
+							}
+							foreach ($this->getUser()->getClients() as $client)
+							{
+								foreach ($client->getMembers() as $user)
+								{
+									if ($user->isOpenIdLocked()) continue;
+									$mentionables[$user->getID()] = array('username' => $user->getUsername(), 'name' => $user->getName(), 'image' => $user->getAvatarURL());
+								}
+							}
+							$data['mentionables'] = array_values($mentionables);
+							break;
+						default:
+							$data['unread_notifications'] = $this->getUser()->getNumberOfUnreadNotifications();
+					}
 				}
 
 				return $this->renderJSON($data);

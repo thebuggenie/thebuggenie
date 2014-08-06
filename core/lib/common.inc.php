@@ -401,6 +401,8 @@
 		$tbg_response->addJavascript('dragdrop.js');
 		$tbg_response->addJavascript('controls.js');
 		$tbg_response->addJavascript('jquery.markitup.js');
+		$tbg_response->addJavascript('bootstrap-typeahead.js');
+		$tbg_response->addJavascript('mention.js');
 		$tbg_response->addJavascript('scriptaculous.js');
 		$tbg_response->addJavascript('slider.js');
 		$tbg_response->addJavascript('thebuggenie.js');

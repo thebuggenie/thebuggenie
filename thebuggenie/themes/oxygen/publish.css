@@ -83,7 +83,8 @@
 .article.edit label[for=article_type] {
 	font-weight: normal;
 	color: #888;
-	font-size: 1.4em;
+	font-size: 1.3em;
+	text-transform: uppercase;
 	display: inline-block;
 	margin-right: 15px;
 	padding: 5px 0;

@@ -110,7 +110,7 @@
 	$strings['You need to add at least one recipient'] = 'You need to add at least one recipient';
 	$strings['You need to add a sender name and address'] = 'You need to add a sender name and address';
 	$strings['Timed out during server conversation'] = 'Timed out during server conversation';
-	$strings['Could not open connection to server %server on port %port%'] = 'Could not open connection to server %server on port %port%';
+	$strings['Could not open connection to server %server on port %port'] = 'Could not open connection to server %server on port %port';
 	$strings['Not ready to authenticate. (%rv%) Try changing server type'] = 'Not ready to authenticate. (%rv%) Try changing server type';
 	$strings['Username / password not accepted on server: %rv%'] = 'Username / password not accepted on server: %rv%';
 	$strings["You are not allowed to send emails through this server. \nThe error was: %rv%"] = "You are not allowed to send emails through this server. \nThe error was: %rv%";
