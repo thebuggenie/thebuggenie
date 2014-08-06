@@ -21,29 +21,29 @@
 	class TBGNotification extends TBGIdentifiableScopedClass
 	{
 
-		const TYPE_ISSUE_CREATED = 1;
-		const TYPE_ISSUE_UPDATED = 2;
-		const TYPE_ISSUE_COMMENTED = 3;
-		const TYPE_ARTICLE_UPDATED = 4;
-		const TYPE_ARTICLE_COMMENTED = 5;
-		const TYPE_ISSUE_MENTIONED = 6;
-		const TYPE_COMMENT_MENTIONED = 7;
-		const TYPE_ARTICLE_MENTIONED = 8;
-		
+		const TYPE_ISSUE_CREATED = 'issue_created';
+		const TYPE_ISSUE_UPDATED = 'issue_updated';
+		const TYPE_ISSUE_COMMENTED = 'issue_commented';
+		const TYPE_ISSUE_MENTIONED = 'issue_mentioned';
+		const TYPE_ARTICLE_UPDATED = 'article_updated';
+		const TYPE_ARTICLE_COMMENTED = 'article_commented';
+		const TYPE_ARTICLE_MENTIONED = 'article_mentioned';
+		const TYPE_COMMENT_MENTIONED = 'comment_mentioned';
+
 		/**
 		 * @Column(type="integer", length=10)
 		 */
 		protected $_target_id;
-		
+
 		/**
 		 * The notification target
-		 * 
+		 *
 		 * @var TBGIdentifiableScopedClass
 		 */
 		protected $_target;
 
 		/**
-		 * @Column(type="integer", length=5)
+		 * @Column(type="string", length=100)
 		 */
 		protected $_notification_type;
 
@@ -91,27 +91,38 @@
 
 		/**
 		 * Returns the object which the notification is for
-		 * 
+		 *
 		 * @return TBGIdentifiableScopedClass
 		 */
 		public function getTarget()
 		{
 			if ($this->_target === null)
 			{
-				switch ($this->_notification_type)
+				if ($this->_module_name == 'core')
 				{
-					case self::TYPE_ARTICLE_COMMENTED:
-					case self::TYPE_ISSUE_COMMENTED:
-					case self::TYPE_COMMENT_MENTIONED:
-						$this->_target = TBGCommentsTable::getTable()->selectById((int) $this->_target_id);
-						break;
-					case self::TYPE_ISSUE_UPDATED:
-					case self::TYPE_ISSUE_CREATED:
-						$this->_target = TBGIssuesTable::getTable()->selectById((int) $this->_target_id);
-						break;
-					case self::TYPE_ARTICLE_UPDATED:
-						$this->_target = TBGArticlesTable::getTable()->selectById((int) $this->_target_id);
-						break;
+					switch ($this->_notification_type)
+					{
+						case self::TYPE_ARTICLE_COMMENTED:
+						case self::TYPE_ARTICLE_MENTIONED:
+						case self::TYPE_ISSUE_COMMENTED:
+						case self::TYPE_ISSUE_MENTIONED:
+						case self::TYPE_COMMENT_MENTIONED:
+							$this->_target = TBGCommentsTable::getTable()->selectById((int) $this->_target_id);
+							break;
+						case self::TYPE_ISSUE_UPDATED:
+						case self::TYPE_ISSUE_CREATED:
+							$this->_target = TBGIssuesTable::getTable()->selectById((int) $this->_target_id);
+							break;
+						case self::TYPE_ARTICLE_UPDATED:
+							$this->_target = TBGArticlesTable::getTable()->selectById((int) $this->_target_id);
+							break;
+					}
+				}
+				else
+				{
+					$event = new TBGEvent('core', 'TBGNotification::getTarget', $this);
+					$event->triggerUntilProcessed();
+					$this->_target = $event->getReturnValue();
 				}
 			}
 			return $this->_target;
@@ -121,6 +132,11 @@
 		{
 			$this->_target_id = $target->getID();
 			$this->_target = $target;
+		}
+
+		public function getTargetID()
+		{
+			return $this->_target_id;
 		}
 
 		public function getNotificationType()
@@ -147,7 +163,7 @@
 		{
 			return $this->_b2dbLazyload('_triggered_by_user_id');
 		}
-		
+
 		public function setTriggeredByUser($uid)
 		{
 			$this->_triggered_by_user_id = $uid;
@@ -157,7 +173,7 @@
 		{
 			return $this->_b2dbLazyload('_user_id');
 		}
-		
+
 		public function setUser($uid)
 		{
 			$this->_user_id = $uid;
@@ -172,7 +188,7 @@
 		{
 			return $this->_is_read;
 		}
-		
+
 		public function isRead()
 		{
 			return $this->getIsRead();
@@ -189,5 +205,5 @@
 		}
 
 
-		
+
 	}

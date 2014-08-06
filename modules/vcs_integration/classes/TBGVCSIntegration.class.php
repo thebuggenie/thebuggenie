@@ -14,30 +14,32 @@
 	 *
 	 * @package thebuggenie
 	 * @subpackage vcs_integration
-	 * 
+	 *
 	 * @Table(name="TBGModulesTable")
 	 */
-	class TBGVCSIntegration extends TBGModule 
+	class TBGVCSIntegration extends TBGModule
 	{
 		const MODE_DISABLED = 0;
 		const MODE_ISSUECOMMITS = 1;
-		
+
 		const WORKFLOW_DISABLED = 0;
 		const WORKFLOW_ENABLED = 1;
-		
+
 		const ACCESS_DIRECT = 0;
 		const ACCESS_HTTP = 1;
-		
+
+		const NOTIFICATION_COMMIT_MENTIONED = 'commit_mentioned';
+
 		protected $_longname = 'VCS Integration';
-		
+
 		protected $_description = 'Allows details from source code checkins to be displayed in The Bug Genie. Configure in each project\'s settings.';
-		
+
 		protected $_module_config_title = 'VCS Integration';
-		
+
 		protected $_module_config_description = 'Configure repository settings for source code integration';
-		
+
 		protected $_has_config_settings = false;
-		
+
 		protected $_module_version = '2.0';
 
 		/**
@@ -53,18 +55,18 @@
 		protected function _initialize()
 		{
 		}
-		
+
 		protected function _install($scope)
 		{
 		}
-		
+
 		protected function _loadFixtures($scope)
 		{
 			TBGVCSIntegrationCommitsTable::getTable()->createIndexes();
 			TBGVCSIntegrationFilesTable::getTable()->createIndexes();
 			TBGVCSIntegrationIssueLinksTable::getTable()->createIndexes();
 		}
-		
+
 		protected function _addListeners()
 		{
 			TBGEvent::listen('core', 'project_sidebar_links', array($this, 'listen_project_links'));
@@ -74,6 +76,8 @@
 			TBGEvent::listen('core', 'config_project_tabs', array($this, 'listen_projectconfig_tab'));
 			TBGEvent::listen('core', 'config_project_panes', array($this, 'listen_projectconfig_panel'));
 			TBGEvent::listen('core', 'project_header_buttons', array($this, 'listen_projectheader'));
+			TBGEvent::listen('core', '_notification_view', array($this, 'listen_notificationview'));
+			TBGEvent::listen('core', 'TBGNotification::getTarget', array($this, 'listen_TBGNotification_getTarget'));
 		}
 
 		protected function _addRoutes()
@@ -93,7 +97,7 @@
 				TBGVCSIntegrationCommitsTable::getTable()->drop();
 				TBGVCSIntegrationFilesTable::getTable()->drop();
 				TBGVCSIntegrationIssueLinksTable::getTable()->drop();
-				
+
 				try
 				{
 					\b2db\Core::getTable('TBGVCSIntegrationTable')->drop();
@@ -102,7 +106,7 @@
 			}
 			parent::_uninstall();
 		}
-		
+
 		protected function _upgrade()
 		{
 			switch ($this->_version)
@@ -112,20 +116,20 @@
 					\b2db\Core::getTable('TBGVCSIntegrationCommitsTable')->create();
 					\b2db\Core::getTable('TBGVCSIntegrationFilesTable')->create();
 					\b2db\Core::getTable('TBGVCSIntegrationIssueLinksTable')->create();
-					
+
 					TBGVCSIntegrationCommitsTable::getTable()->createIndexes();
 					TBGVCSIntegrationFilesTable::getTable()->createIndexes();
 					TBGVCSIntegrationIssueLinksTable::getTable()->createIndexes();
-					
+
 					// Migrate data from old table to new tables
 					$crit = new \b2db\Criteria();
 					$crit->addOrderBy(TBGVCSIntegrationTable::DATE, \b2db\Criteria::SORT_DESC);
 					$results = TBGVCSIntegrationTable::getTable()->doSelect($crit);
-					
+
 					if ($results instanceof \b2db\Resultset && $results->count() > 0)
 					{
 						$commits = array();
-													
+
 						while ($row = $results->getNextRow())
 						{
 							$rev = $row->get(TBGVCSIntegrationTable::NEW_REV);
@@ -141,20 +145,20 @@
 								$issue = TBGContext::factory()->TBGIssue($results->get(TBGVCSIntegrationTable::ISSUE_NO));
 								// Add details of a new commit
 								$commits[$rev] = array('commit' => array(), 'files' => array(), 'issues' => array());
-								
+
 								$commits[$rev]['commit'] = array('new_rev' => $rev, 'old_rev' => $row->get(TBGVCSIntegrationTable::OLD_REV), 'author' => $row->get(TBGVCSIntegrationTable::AUTHOR), 'date' => $row->get(TBGVCSIntegrationTable::DATE), 'log' => $row->get(TBGVCSIntegrationTable::LOG), 'scope' => $row->get(TBGVCSIntegrationTable::SCOPE), 'project' => $issue->getProject());
 								$commits[$rev]['files'][$row->get(TBGVCSIntegrationTable::FILE_NAME)] = array('file_name' => $row->get(TBGVCSIntegrationTable::FILE_NAME), 'action' => $row->get(TBGVCSIntegrationTable::ACTION));
 								$commits[$rev]['issues'][$row->get(TBGVCSIntegrationTable::ISSUE_NO)] = $row->get(TBGVCSIntegrationTable::ISSUE_NO);
 							}
 						}
-						
+
 						foreach ($commits as $commit)
 						{
 							$files = array();
 							$issues = array();
 
 							$scope = TBGContext::factory()->TBGScope($commit['commit']['scope']);
-							
+
 							try
 							{
 								$author = TBGContext::factory()->TBGUser($commit['commit']['author']);
@@ -163,7 +167,7 @@
 							{
 								$author = TBGContext::factory()->TBGUser(TBGSettings::getDefaultUserID());
 							}
-							
+
 							if (!($author instanceof TBGUser))
 							{
 								$author = TBGContext::factory()->TBGUser(TBGSettings::getDefaultUserID());
@@ -179,13 +183,13 @@
 							$inst->setProject($commit['commit']['project']);
 							$inst->setScope($scope);
 							$inst->save();
-							
+
 							// Process issue list, remove duplicates
 							$issues = $commit['issues'];
 							$files = $commit['files'];
 
 							$commit = $inst;
-							
+
 							foreach ($files as $file)
 							{
 								// Add affected files
@@ -196,7 +200,7 @@
 								$inst->setScope($scope);
 								$inst->save();
 							}
-							
+
 							foreach ($issues as $issue)
 							{
 								// Add affected issues
@@ -212,16 +216,16 @@
 					// Migrate settings to new format
 					$access_method = $this->getSetting('use_web_interface');
 					$passkey = $this->getSetting('vcs_passkey');
-					
+
 					foreach (TBGProject::getAll() as $project)
 					{
 						$projectId = $project->getID();
 						$web_path = $this->getSetting('web_path_' . $projectId);
 						$web_repo = $this->getSetting('web_repo_' . $projectId);
-						
+
 						// Check if enabled
 						if ($web_path == ''): continue; endif;
-							
+
 						switch ($this->getSetting('web_type_' . $projectId))
 						{
 							case 'viewvc':
@@ -321,27 +325,27 @@
 						$this->saveSetting('blob_url_'.$projectId, $link_diff);
 						$this->saveSetting('diff_url_'.$projectId, $link_view);
 						$this->saveSetting('commit_url_'.$projectId, $link_rev);
-						
+
 						// Access method
 						$this->saveSetting('access_method_'.$projectId, $access_method);
 						if ($access_method == self::ACCESS_HTTP)
 						{
 							$this->saveSetting('access_passkey_'.$projectId, $passkey);
 						}
-						
+
 						// Enable VCS Integration
 						$this->saveSetting('vcs_mode_'.$projectId, self::MODE_ISSUECOMMITS);
-						
+
 						// Remove old settings
 						$this->deleteSetting('web_type_' . $projectId);
 						$this->deleteSetting('web_path_' . $projectId);
 						$this->deleteSetting('web_repo_' . $projectId);
 					}
-					
+
 					// Remove old settings
 					$this->deleteSetting('use_web_interface');
 					$this->deleteSetting('vcs_passkey');
-					
+
 					// Upgrade module version
 					$this->_version = $this->_module_version;
 					$this->save();
@@ -358,7 +362,7 @@
 		{
 			return false;
 		}
-		
+
 		public function listen_sidebar_links(TBGEvent $event)
 		{
 			if (TBGContext::isProjectContext())
@@ -366,54 +370,71 @@
 				TBGActionComponent::includeTemplate('vcs_integration/menustriplinks', array('project' => TBGContext::getCurrentProject(), 'module' => $this, 'submenu' => $event->getParameter('submenu')));
 			}
 		}
-		
+
 		public function listen_breadcrumb_links(TBGEvent $event)
 		{
 			$event->addToReturnList(array('url' => TBGContext::getRouting()->generate('vcs_commitspage', array('project_key' => TBGContext::getCurrentProject()->getKey())), 'title' => TBGContext::getI18n()->__('Commits')));
 		}
-		
+
 		public function listen_project_links(TBGEvent $event)
 		{
 			$event->addToReturnList(array('url' => TBGContext::getRouting()->generate('vcs_commitspage', array('project_key' => TBGContext::getCurrentProject()->getKey())), 'title' => TBGContext::getI18n()->__('Commits')));
 		}
-		
+
 		public function listen_projectheader(TBGEvent $event)
 		{
 			TBGActionComponent::includeTemplate('vcs_integration/projectheaderbutton');
 		}
-		
+
 		public function listen_projectconfig_tab(TBGEvent $event)
 		{
 			TBGActionComponent::includeTemplate('vcs_integration/projectconfig_tab', array('selected_tab' => $event->getParameter('selected_tab')));
 		}
-		
+
 		public function listen_projectconfig_panel(TBGEvent $event)
 		{
 			TBGActionComponent::includeTemplate('vcs_integration/projectconfig_panel', array('selected_tab' => $event->getParameter('selected_tab'), 'access_level' => $event->getParameter('access_level'), 'project' => $event->getParameter('project')));
 		}
-		
+
+		public function listen_notificationview(TBGEvent $event)
+		{
+			if ($event->getSubject()->getModuleName() != 'vcs_integration') return;
+
+			TBGActionComponent::includeTemplate('vcs_integration/notification_view', array('notification' => $event->getSubject()));
+			$event->setProcessed();
+		}
+
+		public function listen_TBGNotification_getTarget(TBGEvent $event)
+		{
+			if ($event->getSubject()->getModuleName() != 'vcs_integration') return;
+
+			$commit = TBGVCSIntegrationCommitsTable::getTable()->selectById($event->getSubject()->getTargetID());
+			$event->setReturnValue($commit);
+			$event->setProcessed();
+		}
+
 		public function listen_getcommit(TBGEvent $event)
 		{
 			$event->setReturnValue('vcs_integration/commitbackdrop');
 			$event->addToReturnList(TBGContext::getRequest()->getParameter('commit_id'), 'commit_id');
 			$event->setProcessed();
 		}
-		
+
 		public function listen_viewissue_panel(TBGEvent $event)
 		{
-			if (TBGContext::getModule('vcs_integration')->getSetting('vcs_mode_' . TBGContext::getCurrentProject()->getID()) == TBGVCSIntegration::MODE_DISABLED): return; endif;
+			if (TBGContext::getModule('vcs_integration')->getSetting('vcs_mode_' . TBGContext::getCurrentProject()->getID()) == TBGVCSIntegration::MODE_DISABLED) return;
 
 			$links = TBGVCSIntegrationIssueLink::getCommitsByIssue($event->getSubject());
 			TBGActionComponent::includeTemplate('vcs_integration/viewissue_commits', array('links' => $links, 'projectId' => $event->getSubject()->getProject()->getID()));
 		}
-		
+
 		public static function processCommit(TBGProject $project, $commit_msg, $old_rev, $new_rev, $date = null, $changed, $author, $branch = null)
 		{
 			$output = '';
 			TBGContext::setCurrentProject($project);
-			
+
 			if ($project->isArchived()): return; endif;
-			
+
 			try
 			{
 				TBGContext::getI18n();
@@ -422,7 +443,7 @@
 			{
 				TBGContext::reinitializeI18n(null);
 			}
-			
+
 			// Is VCS Integration enabled?
 			if (TBGSettings::get('vcs_mode_'.$project->getID(), 'vcs_integration') == TBGVCSIntegration::MODE_DISABLED)
 			{
@@ -441,24 +462,24 @@
 //				$output .= '[VCS '.$project->getKey().'] This project only accepts commits which affect issues' . "\n";
 //				return $output;
 //			}
-			
+
 			// Build list of affected files
 			$file_lines = preg_split('/[\n\r]+/', $changed);
 			$files = array();
-			
+
 			foreach ($file_lines as $aline)
 			{
 				$action = mb_substr($aline, 0, 1);
-			
+
 				if ($action == "A" || $action == "U" || $action == "D" || $action == "M")
 				{
 					$theline = trim(mb_substr($aline, 1));
 					$files[] = array($action, $theline);
 				}
 			}
-			
+
 			// Find author of commit, fallback is guest
-			
+
 			/*
 			 * Some VCSes use a different format of storing the committer's name. Systems like bzr, git and hg use the format
 			 * Joe Bloggs <me@example.com>, instead of a classic username. Therefore a user will be found via 4 queries:
@@ -468,14 +489,14 @@
 			 * d) and if we still havent found one, then we check against the username
 			 * e) and if we STILL havent found one, we use the guest user
 			 */
-			 
+
 			if (preg_match("/(?<=<)(.*)(?=>)/", $author, $matches))
 			{
 				$email = $matches[0];
 
 				// a)
 				$user = TBGUsersTable::getTable()->getByEmail($email);
-				
+
 				if (!$user instanceof TBGUser)
 				{
 					// Not found by email
@@ -487,29 +508,29 @@
 			// b)
 			if (!$user instanceof TBGUser)
 				$user = TBGUsersTable::getTable()->getByRealname($author);
-			
+
 			// c)
 			if (!$user instanceof TBGUser)
 				$user = TBGUsersTable::getTable()->getByBuddyname($author);
-			
+
 			// d)
 			if (!$user instanceof TBGUser)
 				$user = TBGUsersTable::getTable()->getByUsername($author);
-			
+
 			// e)
 			if (!$user instanceof TBGUser)
 				$user = TBGSettings::getDefaultUser();
-			
+
 			TBGContext::setUser($user);
 			TBGSettings::forceSettingsReload();
 			TBGContext::cacheAllPermissions();
-								
+
 			$output .= '[VCS '.$project->getKey().'] Commit to be logged by user ' . $user->getName() . "\n";
 
 			if ($date == null):
 				$date = NOW;
 			endif;
-			
+
 			// Create the commit data
 			$commit = new TBGVCSIntegrationCommit();
 			$commit->setAuthor($user);
@@ -518,17 +539,17 @@
 			$commit->setPreviousRevision($old_rev);
 			$commit->setRevision($new_rev);
 			$commit->setProject($project);
-			
+
 			if ($branch !== null)
 			{
 				$data = 'branch:'.$branch;
 				$commit->setMiscData($data);
 			}
-			
+
 			$commit->save();
-			
+
 			$output .= '[VCS '.$project->getKey().'] Commit logged with revision ' . $commit->getRevision() . "\n";
-			
+
 			// Iterate over affected issues and update them.
 			foreach ($issues as $issue)
 			{
@@ -595,7 +616,7 @@
 				$issue->addSystemComment(TBGContext::getI18n()->__('This issue has been updated with the latest changes from the code repository.<source>%commit_msg</source>', array('%commit_msg' => $commit_msg)), $user->getID());
 				$output .= '[VCS '.$project->getKey().'] Updated issue ' . $issue->getFormattedIssueNo() . "\n";
 			}
-			
+
 			// Create file links
 			foreach ($files as $afile)
 			{
@@ -605,7 +626,7 @@
 				$inst->setFile($afile[1]);
 				$inst->setCommit($commit);
 				$inst->save();
-				
+
 				$output .= '[VCS '.$project->getKey().'] Added with action '.$afile[0].' file ' . $afile[1] . "\n";
 			}
 
