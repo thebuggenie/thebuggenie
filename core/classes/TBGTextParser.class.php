@@ -120,6 +120,11 @@
 			// Return the regular expressions.
 			return $regex;
 		}
+		
+		public static function getMentionsRegex()
+		{
+			return '/\B\@([\w\-]+)/i';
+		}
 
 		/**
 		 * Setup the parser object
@@ -1141,7 +1146,7 @@
 			{
 				$text = nl2br(tbg_decodeUTF8($text, true));
 				$text = preg_replace_callback(self::getIssueRegex(), array($this, '_parse_issuelink'), $text);
-				$text = preg_replace_callback('/\B\@([\w\-]+)/i', array($this, '_parse_mention'), $text);
+				$text = preg_replace_callback(self::getMentionsRegex(), array($this, '_parse_mention'), $text);
 				
 				$output = $text;
 			}
