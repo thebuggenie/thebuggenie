@@ -26,12 +26,12 @@ http://issues.thebuggenie.com/wiki/TheBugGenie:FAQ
 GENERAL INSTALLATION NOTES
 --------------------------
 
-### 1: Download and install composer.json
+### 1: Download and install Composer
 
-The Bug Genie uses a dependency resolution tool called composer, which must
+The Bug Genie uses a dependency resolution tool called Composer, which must
 be downloaded and run before The Bug Genie can be installed or used.
 
-Download and install composer.json from http://getcomposer.org
+Download and install Composer from http://getcomposer.org
 
 
 ### 2: Install The Bug Genie dependencies
