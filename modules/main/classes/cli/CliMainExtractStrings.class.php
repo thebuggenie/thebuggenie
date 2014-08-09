@@ -77,7 +77,6 @@ use Symfony\Component\Finder\Finder;
 					$stringsWithoutDuplicatesFromAllStringsTab = array_diff($stringsWithoutDuplicates, $allstrings);
 
 					$numberOfStringsInFile = count($stringsWithoutDuplicatesFromAllStringsTab);	
-					$totalFiles++;			
 
 					if($numberOfStringsInFile){
 						if ($this->getProvidedArgument(2) == '-v'){
@@ -88,6 +87,7 @@ use Symfony\Component\Finder\Finder;
 						}
 
 						$totalStrings += $numberOfStringsInFile;
+						$totalFiles++;
 						$allstrings = array_merge($allstrings, $stringsWithoutDuplicatesFromAllStringsTab);
 						$stringsByFile[$filename] = array_values($stringsWithoutDuplicatesFromAllStringsTab);	
 					}else{
