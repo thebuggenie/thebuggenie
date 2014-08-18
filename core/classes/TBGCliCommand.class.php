@@ -255,9 +255,18 @@
 			fgets(STDIN);
 		}
 
+	    static public function getOS() {
+    	    switch (true) {
+        	    case stristr(PHP_OS, 'DAR'): return 'OS_OSX';
+            	case stristr(PHP_OS, 'WIN'): return 'OS_WIN';
+            	case stristr(PHP_OS, 'LINUX'): return 'OS_LINUX';
+            	default : return 'OS_UNKNOWN';
+        	}
+    	}
+
 		public static function cli_echo($text, $color = 'white', $style = null)
 		{
-			if (stristr(PHP_OS, 'WIN'))
+			if (self::getOS() === 'OS_WIN' || self::getOS() === 'OS_UNKNOWN')
 			{
 				$return_text = $text;
 			}
