@@ -51,7 +51,7 @@ The installation script will start automatically and guide you through the
 installation process.
 
 
-### 3: Install via command-line (unix/linux only)
+### 4: Install via command-line (unix/linux only)
 
 You can use the included command-line client to install, if you prefer that.
 Run `./tbg_cli` from this folder.
