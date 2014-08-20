@@ -15,6 +15,9 @@
 		"michelf/php-markdown" : "1.3",
 		"swiftmailer/swiftmailer" : "4.2.*"
 	},
+	"require-dev" : {
+		"symfony/finder" : "dev-master"
+	},
 	"minimum-stability" : "stable",
 	"config" : {
 		"vendor-dir" : "core/lib"
