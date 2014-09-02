@@ -599,6 +599,14 @@
 				</script>
 			<?php endif; ?>
 			<?php TBGEvent::createNew('core', 'reportissue.prefile')->trigger(); ?>
+
+			<table cellpadding="0" cellspacing="0" id="captcha_div" style="display: none; margin-top: 15px;"<?php if (array_key_exists('captcha', $errors)): ?> class="reportissue_error"<?php endif; ?>>
+				<tr>
+					<?php TBGActionComponent::includeComponent('main/guestCaptcha'); ?>
+				</tr>
+			</table>
+
+
 			<div class="rounded_box report_issue_submit_container report_issue_desc green borderless" style="clear: both; vertical-align: middle; margin-top: 10px; padding: 5px; height: 25px;">
 				<div style="float: left; padding-top: 3px;"><?php echo __('When you are satisfied, click the %file_issue% button to file your issue', array('%file_issue%' => '<strong>'.__('File issue').'</strong>')); ?></div>
 				<input type="submit" class="button button-silver" value="<?php echo __('File issue'); ?>" id="report_issue_submit_button">

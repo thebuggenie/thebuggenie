@@ -79,6 +79,9 @@
 			<div id="comment_reply_indicator_<?php echo $comment->getID(); ?>" style="display: none;">
 				<?php echo image_tag('spinning_16.gif', array('class' => 'spinning')); ?>
 			</div>
+			<div>
+				<?php TBGActionComponent::includeComponent('main/guestCaptcha'); ?>
+			</div>
 			<div id="comment_reply_controls_<?php echo $comment->getID(); ?>" class="comment_controls">
 				<input type="submit" class="comment_replysave" value="<?php echo __('Save changes'); ?>" /> <a href="javascript:void(0)" onclick="$('comment_reply_<?php echo $comment->getID(); ?>').hide();$('comment_view_<?php echo $comment->getID(); ?>').show();"><?php echo __('or cancel'); ?></a>
 			</div>
