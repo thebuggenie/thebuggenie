@@ -1375,6 +1375,12 @@
 			$available_fields[] = 'pain_bug_type';
 			$available_fields[] = 'pain_likelihood';
 			$available_fields[] = 'pain_effect';
+
+			if (TBGContext::getUser()->isGuest() && TBGSettings::isGuestCaptchaEnabled()) {
+				$available_fields[] = 'captcha';
+				$fields_array['captcha'] = Array("additional" => "", "required" => "1");
+			}
+
 			return $this->renderJSON(array('available_fields' => $available_fields, 'fields' => $fields_array));
 		}
 

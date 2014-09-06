@@ -599,10 +599,9 @@
 				</script>
 			<?php endif; ?>
 			<?php TBGEvent::createNew('core', 'reportissue.prefile')->trigger(); ?>
-
 			<table cellpadding="0" cellspacing="0" id="captcha_div" style="display: none; margin-top: 15px;"<?php if (array_key_exists('captcha', $errors)): ?> class="reportissue_error"<?php endif; ?>>
 				<tr>
-					<?php TBGActionComponent::includeComponent('main/guestCaptcha'); ?>
+					<td><?php TBGActionComponent::includeComponent('main/guestCaptcha'); ?></td>
 				</tr>
 			</table>
 
