@@ -623,14 +623,14 @@ TBG.Main.Helpers.ajax = function(url, options) {
 	});
 };
 
-/** 
+/**
  * Small helper function for updating captcha images and clearing captcha input
  * fields. The function will read a new captcha image location from passed-in
  * JSON structure, from property called 'captcha'. If the property is not
  * available, nothing happens.
- * 
+ *
  * @param json JSON response with a new captcha image link.
- * 
+ *
  */
 TBG.Main.Helpers.updateCaptcha = function(json) {
 	// Update captcha images and clear captcha entry fields only if new

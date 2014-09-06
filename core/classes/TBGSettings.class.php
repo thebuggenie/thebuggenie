@@ -805,7 +805,7 @@
 		}
 
 		/**
-		 * Checks if the captcha for guest actions is enabled or not.
+		 * Checks if the captcha for guest posting is enabled or not.
 		 *
 		 *
 		 * @return True, if the guest captcha is enabled, False if the guest captcha
