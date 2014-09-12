@@ -31,7 +31,7 @@ foreach ($search_object->getIssues() as $issue):
 			<thead>
 				<tr>
 					<?php if (!$tbg_user->isGuest()): ?>
-						<th class="nosort sca_action_selector" style="width: 20px; padding: 1px"><input type="checkbox" /></th>
+						<th style="max-width: 10px; max-height: 10px;" class="nosort sca_action_selector"><input style="margin-left: 20%; margin-bottom: 2%;" type="checkbox" /></th>
 					<?php endif; ?>
 					<?php if (!TBGContext::isProjectContext() && $show_project == true): ?>
 						<th style="padding-left: 3px;"><?php echo __('Project'); ?></th>
@@ -59,9 +59,9 @@ foreach ($search_object->getIssues() as $issue):
 	<?php endif; ?>
 				<tr class="<?php if ($issue->isClosed()): ?> closed<?php endif; ?><?php if ($issue->hasUnsavedChanges()): ?> changed<?php endif; ?><?php if ($issue->isBlocking()): ?> blocking<?php endif; ?> priority_<?php echo ($issue->getPriority() instanceof TBGPriority) ? $issue->getPriority()->getValue() : 0; ?>" id="issue_<?php echo $issue->getID(); ?>">
 					<?php if (!$tbg_user->isGuest()): ?>
-						<td class="sca_actions">
+						<td style="max-width: 10px; max-height: 10px;" class="sca_actions">
 							<?php if ($issue->isWorkflowTransitionsAvailable()): ?>
-								<input type="checkbox" name="update_issue[<?php echo $issue->getID(); ?>]" value="<?php echo $issue->getID(); ?>">
+								<input style="margin-left: 20%; margin-bottom: 10%;" type="checkbox" name="update_issue[<?php echo $issue->getID(); ?>]" value="<?php echo $issue->getID(); ?>">
 							<?php endif; ?>
 						</td>
 					<?php endif; ?>

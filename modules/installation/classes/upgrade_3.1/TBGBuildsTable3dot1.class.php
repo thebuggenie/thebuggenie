@@ -29,6 +29,7 @@
 		const VERSION_MAJOR = 'builds.version_major';
 		const VERSION_MINOR = 'builds.version_minor';
 		const VERSION_REVISION = 'builds.version_revision';
+        const VERSION_PATCH = 'builds.version_patch';
 		const EDITION = 'builds.edition';
 		const RELEASE_DATE = 'builds.release_date';
 		const LOCKED = 'builds.locked';
@@ -42,6 +43,7 @@
 			parent::_addInteger(self::VERSION_MAJOR, 3);
 			parent::_addInteger(self::VERSION_MINOR, 3);
 			parent::_addInteger(self::VERSION_REVISION, 5);
+            parent::_addInteger(self::VERSION_PATCH, 5);
 			parent::_addInteger(self::RELEASE_DATE, 10);
 			parent::_addBoolean(self::RELEASED);
 			parent::_addBoolean(self::LOCKED);

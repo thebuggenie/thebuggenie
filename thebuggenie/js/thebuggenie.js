@@ -767,10 +767,22 @@ TBG.Main.Helpers.Backdrop.reset = function() {
 
 TBG.Main.Helpers.tabSwitcher = function(visibletab, menu) {
 	if ($(menu)) {
-		$(menu).childElements().each(function(item){item.removeClassName('selected');});
-		$(visibletab).addClassName('selected');
-		$(menu + '_panes').childElements().each(function(item){item.hide();});
-		$(visibletab + '_pane').show();
+		if ($(visibletab).hasClassName('selected'))
+		{
+			/* only hide selected tab when we are viewing issue details */
+			if ($('viewissue_menu'))
+			{
+				$(menu).childElements().each(function(item){item.removeClassName('selected');});
+				$(menu + '_panes').childElements().each(function(item){item.hide();});	
+			}
+		}
+		else
+		{
+			$(menu).childElements().each(function(item){item.removeClassName('selected');});
+			$(visibletab).addClassName('selected');
+			$(menu + '_panes').childElements().each(function(item){item.hide();});
+			$(visibletab + '_pane').show();
+		}        
 	}
 };
 
@@ -1302,9 +1314,11 @@ TBG.Main.Profile.confirmScopeMembership = function(url, sid) {
 TBG.Main.Profile.clearPopupsAndButtons = function(event) {
 	if ($('account_info_container')) {
 		var pbuttons = $('account_info_container').down('.profile_buttons');
-		pbuttons.select('.button').each(function(element) {
-			$(element).removeClassName('button-pressed');
-		});
+		if (typeof pbuttons !== 'undefined'){
+			pbuttons.select('.button').each(function(element) {
+				$(element).removeClassName('button-pressed');
+			});
+		}
 	}
 	$$('.popup_box').each(function(element) {
 		var prev = $(element).previous();
@@ -3488,11 +3502,22 @@ TBG.Issues.showLog = function(url) {
 	if ($('viewissue_log_items').childElements().size() == 0) {
 		TBG.Main.Helpers.ajax(url, {
 			url_method: 'get',
-			loading: {indicator: 'viewissue_log_loading_indicator'},
-			success: {
-				update: {element: 'viewissue_log_items'}
+			loading: {
+				indicator: 'viewissue_log_loading_indicator',
+				disable:  'viewissue_history_button'
+			},
+			success: {	
+				update: {element: 'viewissue_log_items'},
+				enable:  'viewissue_history_button'
 			}
 		});
+		$('viewissue_history_button').writeAttribute("value", "Hide issue history")
+	}
+	else {
+		$('viewissue_history_button').writeAttribute("value", "Show issue history")
+		$('viewissue_log_items').childElements().forEach(function(child){
+			child.remove();
+		});		
 	}
 }
 
