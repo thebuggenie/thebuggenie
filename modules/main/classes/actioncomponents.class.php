@@ -397,9 +397,13 @@
 		}
 		
 		public function componentCaptcha()
-		{	
+		{
 		}
 		
+		public function componentGuestCaptcha()
+		{
+		}
+
 		public function componentIssueadditem()
 		{
 			$project = $this->issue->getProject();

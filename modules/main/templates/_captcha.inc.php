@@ -3,8 +3,8 @@
 	
 	if (function_exists('imagecreatetruecolor'))
 	{
-			// use of timestamped paramter in the captcha route for preventing image cache
-			echo image_tag(TBGContext::getRouting()->generate('captcha', array(time())), null, true, 'core', true);
+		// use of timestamped paramter in the captcha route for preventing image cache
+		echo image_tag(TBGContext::getRouting()->generate('captcha', array(time())), array("class" => "captcha_image"), true, 'core', true);
 	}
 	else 
 	{

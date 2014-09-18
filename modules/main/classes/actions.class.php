@@ -1042,6 +1042,11 @@
 			{
 				$fields_array = $this->selected_project->getReportableFieldsArray($this->issuetype_id);
 
+				if (!$this->_verifyCaptcha($request))
+				{
+					$errors['captcha'] = $i18n->__('To prevent automatic issue reporting, enter the verification number shown below.');
+				}
+
 				$this->title = $request->getRawParameter('title');
 				$this->selected_description = $request->getRawParameter('description', null, false);
 				$this->selected_reproduction_steps = $request->getRawParameter('reproduction_steps', null, false);
@@ -1370,6 +1375,12 @@
 			$available_fields[] = 'pain_bug_type';
 			$available_fields[] = 'pain_likelihood';
 			$available_fields[] = 'pain_effect';
+
+			if (TBGContext::getUser()->isGuest() && TBGSettings::isGuestCaptchaEnabled()) {
+				$available_fields[] = 'captcha';
+				$fields_array['captcha'] = Array("additional" => "", "required" => "1");
+			}
+
 			return $this->renderJSON(array('available_fields' => $available_fields, 'fields' => $fields_array));
 		}
 
@@ -2554,6 +2565,8 @@
 			$i18n = TBGContext::getI18n();
 			$comment = null;
 			$comment_applies_type = $request['comment_applies_type'];
+			$new_captcha = null;
+
 			try
 			{
 				if (!TBGContext::getUser()->canPostComments())
@@ -2562,6 +2575,11 @@
 				{
 					if ($request['comment_body'] == '')
 						throw new Exception($i18n->__('The comment must have some content'));
+
+					if (!$this->_verifyCaptcha($request))
+					{
+						throw new Exception($i18n->__('To prevent automatic comment posting, enter the verification number shown below.'));
+					}
 
 					if ($comment_applies_type == TBGComment::TYPE_ISSUE && !$request->isAjaxCall())
 					{
@@ -2612,8 +2630,10 @@
 			{
 				if ($request->isAjaxCall())
 				{
+					$new_captcha = $this->_newCaptcha();
+					TBGLogging::log($new_captcha, "captcha");
 					$this->getResponse()->setHttpStatus(400);
-					return $this->renderJSON(array('error' => $e->getMessage()));
+					return $this->renderJSON(array('error' => $e->getMessage(), 'captcha' => $new_captcha));
 				}
 				else
 				{
@@ -2623,8 +2643,11 @@
 					TBGContext::setMessage('comment_error_visibility', $request['comment_visibility']);
 				}
 			}
+
+			$new_captcha = $this->_newCaptcha();
+
 			if ($request->isAjaxCall())
-				return $this->renderJSON(array('title' => $i18n->__('Comment added!'), 'comment_data' => $comment_html, 'continue_url' => $request['forward_url'], 'commentcount' => TBGComment::countComments($request['comment_applies_id'], $request['comment_applies_type']/*, $request['comment_module']*/)));
+				return $this->renderJSON(array('title' => $i18n->__('Comment added!'), 'comment_data' => $comment_html, 'continue_url' => $request['forward_url'], 'commentcount' => TBGComment::countComments($request['comment_applies_id'], $request['comment_applies_type']/*, $request['comment_module']*/), 'captcha' => $new_captcha));
 			if ($comment instanceof TBGComment)
 				$this->forward($request['forward_url'] . "#comment_{$request['comment_applies_type']}_{$request['comment_applies_id']}_{$comment->getID()}");
 			else
@@ -3958,4 +3981,54 @@
 			}
 		}
 
+		/**
+		 * Verifies a captcha attempt. The captcha will be verified only if the
+		 * current user is a guest, and if guest captchas have been enabled in the
+		 * settings. For all other cases the captcha check is considered to
+		 * automatically pass.
+		 *
+		 * @param request Instance of a TBGRequest.
+		 *
+		 * @return True, if the captcha check has passed, False otherwise.
+		 */
+		protected function _verifyCaptcha(TBGRequest $request)
+		{
+			// Verify the captcha if a guest is attempting to report an issue (and
+			// if guest captcha feature was enabled).
+			$security = $request['verification_no'];
+
+			if (TBGContext::getUser()->isGuest() && TBGSettings::isGuestCaptchaEnabled() && $security != $_SESSION['activation_number'])
+			{
+				return false;
+			}
+
+			return true;
+		}
+
+		/**
+		 * Generates a new captcha value, and assigns it to current session if user
+		 * is a guest and guest captcha has been enabled.
+		 *
+		 * @return Relative link to new image representing the generated captcha for
+		 * guest users if guest captcha has been enabled. Returns null if user is
+		 * not a guest, or if guest captcha has not been enabled.
+		 */
+		protected function _newCaptcha()
+		{
+			$new_captcha_image = null;
+
+			if (TBGContext::getUser()->isGuest() && TBGSettings::isGuestCaptchaEnabled())
+			{
+				TBGContext::loadLibrary('common');
+
+				$_SESSION['activation_number'] = tbg_printRandomNumber();
+
+				// The generated captcha image depends on session value. Using timestamp
+				// in the captcha image link will prevent browser from bringing up the
+				// image from cache.
+				$new_captcha_image = TBGContext::getRouting()->generate('captcha', array(time()));
+			}
+
+			return $new_captcha_image;
+		}
 }
